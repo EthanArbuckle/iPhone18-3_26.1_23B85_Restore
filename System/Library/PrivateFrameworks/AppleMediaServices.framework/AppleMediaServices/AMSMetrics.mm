@@ -3,55 +3,55 @@
 + (BOOL)appAnalyticsAllowed;
 + (BOOL)diagnosticsSubmissionAllowed;
 + (BOOL)disableBackgroundMetrics;
-+ (BOOL)recordAppAnalyticsForEvent:(id)a3 bugType:(id)a4;
++ (BOOL)recordAppAnalyticsForEvent:(id)event bugType:(id)type;
 + (NSString)bagSubProfile;
 + (NSString)bagSubProfileVersion;
 + (OS_dispatch_queue)sharedTimerQueue;
-+ (id)_createURLSessionPromiseWith:(id)a3;
++ (id)_createURLSessionPromiseWith:(id)with;
 + (id)_defaultAccountClearingTopics;
 + (id)_makeMetricsEventAnomaliesDetector;
-+ (id)_urlSessionPromiseWith:(id)a3;
++ (id)_urlSessionPromiseWith:(id)with;
 + (id)createBagForSubProfile;
-+ (id)internalInstanceUsingBag:(id)a3;
-+ (id)serverTimeFromDate:(id)a3;
-+ (void)_configureAccountIdentifierForEvent:(id)a3 andActiveAccount:(id)a4;
-+ (void)_detectAnomaliesForMetricsEvent:(id)a3;
-+ (void)setDisableBackgroundMetrics:(BOOL)a3;
-+ (void)setFlushTimerEnabled:(BOOL)a3;
++ (id)internalInstanceUsingBag:(id)bag;
++ (id)serverTimeFromDate:(id)date;
++ (void)_configureAccountIdentifierForEvent:(id)event andActiveAccount:(id)account;
++ (void)_detectAnomaliesForMetricsEvent:(id)event;
++ (void)setDisableBackgroundMetrics:(BOOL)metrics;
++ (void)setFlushTimerEnabled:(BOOL)enabled;
 - (AMSBagProtocol)bag;
 - (AMSEngagement)engagement;
-- (AMSMetrics)initWithContainerID:(id)a3 bag:(id)a4;
-- (AMSMetrics)initWithContainerID:(id)a3 bag:(id)a4 flushTaskClass:(Class)a5;
-- (AMSMetrics)initWithContainerId:(id)a3 bagContract:(id)a4;
+- (AMSMetrics)initWithContainerID:(id)d bag:(id)bag;
+- (AMSMetrics)initWithContainerID:(id)d bag:(id)bag flushTaskClass:(Class)class;
+- (AMSMetrics)initWithContainerId:(id)id bagContract:(id)contract;
 - (AMSMetricsBagContract)bagContract;
-- (BOOL)_scheduledFlushAllowedForStyle:(int64_t)a3;
-- (double)_flushIntervalWithConfiguration:(id)a3 forEvents:(id)a4;
+- (BOOL)_scheduledFlushAllowedForStyle:(int64_t)style;
+- (double)_flushIntervalWithConfiguration:(id)configuration forEvents:(id)events;
 - (id)_cachedAccountClearingTopicsFromBag;
-- (id)_determineFlushStrategyWithDataSource:(id)a3 topic:(id)a4 urlSession:(id)a5;
-- (id)_enqueueFigaroEvents:(id)a3 scheduleDelayedFlush:(BOOL)a4;
-- (id)_flushDataSource:(id)a3 topic:(id)a4;
-- (id)_handleFlushIntervalWithStyle:(int64_t)a3;
-- (id)_modifiedEvents:(id)a3;
+- (id)_determineFlushStrategyWithDataSource:(id)source topic:(id)topic urlSession:(id)session;
+- (id)_enqueueFigaroEvents:(id)events scheduleDelayedFlush:(BOOL)flush;
+- (id)_flushDataSource:(id)source topic:(id)topic;
+- (id)_handleFlushIntervalWithStyle:(int64_t)style;
+- (id)_modifiedEvents:(id)events;
 - (id)_topicsRequiringAccountClearing;
-- (id)enqueueAsyncEvents:(id)a3 scheduleDelayedFlush:(BOOL)a4;
+- (id)enqueueAsyncEvents:(id)events scheduleDelayedFlush:(BOOL)flush;
 - (id)flush;
-- (id)flushEvents:(id)a3;
-- (id)flushTopic:(id)a3;
-- (id)promiseForEnqueueingEvents:(id)a3 options:(int64_t)a4;
+- (id)flushEvents:(id)events;
+- (id)flushTopic:(id)topic;
+- (id)promiseForEnqueueingEvents:(id)events options:(int64_t)options;
 - (int64_t)eventCount;
-- (void)_applicationDidBecomeActive:(id)a3;
-- (void)_beginFlushIntervalWithStyle:(int64_t)a3 events:(id)a4;
-- (void)_clearAccountForEventIfNeeded:(id)a3;
+- (void)_applicationDidBecomeActive:(id)active;
+- (void)_beginFlushIntervalWithStyle:(int64_t)style events:(id)events;
+- (void)_clearAccountForEventIfNeeded:(id)needed;
 - (void)_flushIntervalInvalidate;
 - (void)_processOperationQueue;
 - (void)cancel;
 - (void)dealloc;
 - (void)dropEvents;
-- (void)enqueueEvent:(id)a3;
-- (void)setBag:(id)a3;
-- (void)setBagContract:(id)a3;
-- (void)setEngagement:(id)a3;
-- (void)setFlushTimerEnabled:(BOOL)a3;
+- (void)enqueueEvent:(id)event;
+- (void)setBag:(id)bag;
+- (void)setBagContract:(id)contract;
+- (void)setEngagement:(id)engagement;
+- (void)setFlushTimerEnabled:(BOOL)enabled;
 @end
 
 @implementation AMSMetrics
@@ -65,11 +65,11 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"UIApplicationDidBecomeActiveNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"UIApplicationDidBecomeActiveNotification" object:0];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self name:@"AMSFlushTimerEnabledNotificationName" object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 removeObserver:self name:@"AMSFlushTimerEnabledNotificationName" object:0];
 
   v5.receiver = self;
   v5.super_class = AMSMetrics;
@@ -114,10 +114,10 @@ void __34__AMSMetrics_bagSubProfileVersion__block_invoke()
 
 + (BOOL)diagnosticsSubmissionAllowed
 {
-  v2 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  v3 = [v2 isDiagnosticSubmissionAllowed];
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+  isDiagnosticSubmissionAllowed = [mEMORY[0x1E69ADFB8] isDiagnosticSubmissionAllowed];
 
-  return v3;
+  return isDiagnosticSubmissionAllowed;
 }
 
 - (AMSEngagement)engagement
@@ -190,8 +190,8 @@ void __30__AMSMetrics_sharedTimerQueue__block_invoke()
 
 - (id)flush
 {
-  v3 = [(AMSMetrics *)self databaseSource];
-  v4 = [(AMSMetrics *)self _flushDataSource:v3 topic:0];
+  databaseSource = [(AMSMetrics *)self databaseSource];
+  v4 = [(AMSMetrics *)self _flushDataSource:databaseSource topic:0];
 
   return v4;
 }
@@ -205,20 +205,20 @@ void __30__AMSMetrics_sharedTimerQueue__block_invoke()
     v3 = +[AMSLogConfig sharedConfig];
   }
 
-  v4 = [v3 OSLogObject];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v3 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v5 = objc_opt_class();
     v6 = v5;
     v7 = AMSLogKey();
-    v8 = [(AMSMetrics *)self containerId];
+    containerId = [(AMSMetrics *)self containerId];
     *buf = 138543874;
     v51 = v5;
     v52 = 2114;
     v53 = v7;
     v54 = 2114;
-    v55 = v8;
-    _os_log_impl(&dword_192869000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Processing operation queue for container: %{public}@", buf, 0x20u);
+    v55 = containerId;
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Processing operation queue for container: %{public}@", buf, 0x20u);
   }
 
   os_unfair_lock_lock_with_options();
@@ -247,14 +247,14 @@ void __30__AMSMetrics_sharedTimerQueue__block_invoke()
     v10 = 0;
   }
 
-  v11 = [(NSMutableArray *)self->_enqueuedOperations firstObject];
-  if (v11)
+  firstObject = [(NSMutableArray *)self->_enqueuedOperations firstObject];
+  if (firstObject)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = [(AMSMetrics *)self databaseSource];
-      [v12 removeAllEvents];
+      databaseSource = [(AMSMetrics *)self databaseSource];
+      [databaseSource removeAllEvents];
     }
 
     v13 = [(NSMutableArray *)self->_enqueuedOperations indexOfObjectPassingTest:&__block_literal_global_139];
@@ -262,16 +262,16 @@ void __30__AMSMetrics_sharedTimerQueue__block_invoke()
     if (v13 != 0x7FFFFFFFFFFFFFFFLL)
     {
       [(NSMutableArray *)enqueuedOperations removeObjectsInRange:0];
-      v15 = [(NSMutableArray *)self->_enqueuedOperations firstObject];
+      firstObject2 = [(NSMutableArray *)self->_enqueuedOperations firstObject];
       [(NSMutableArray *)self->_enqueuedOperations removeObjectAtIndex:0];
-      objc_storeStrong(&self->_currentFlushOperation, v15);
+      objc_storeStrong(&self->_currentFlushOperation, firstObject2);
       goto LABEL_19;
     }
 
     [(NSMutableArray *)enqueuedOperations removeAllObjects];
   }
 
-  v15 = 0;
+  firstObject2 = 0;
 LABEL_19:
   os_unfair_lock_unlock(&self->_enqueuedOperationsLock);
   v16 = +[AMSMetrics sharedTimerQueue];
@@ -284,15 +284,15 @@ LABEL_19:
 
   if ([v10 count])
   {
-    v40 = v11;
+    v40 = firstObject;
     v17 = +[AMSLogConfig sharedMetricsConfig];
     if (!v17)
     {
       v17 = +[AMSLogConfig sharedConfig];
     }
 
-    v18 = [v17 OSLogObject];
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v17 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v19 = objc_opt_class();
       v20 = AMSLogKey();
@@ -300,7 +300,7 @@ LABEL_19:
       v51 = v19;
       v52 = 2114;
       v53 = v20;
-      _os_log_impl(&dword_192869000, v18, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Flushing disabled", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Flushing disabled", buf, 0x16u);
     }
 
     v21 = AMSError(11, @"Metrics Flush Failed", @"Flush disabled", 0);
@@ -324,8 +324,8 @@ LABEL_19:
             objc_enumerationMutation(v23);
           }
 
-          v28 = [*(*(&v44 + 1) + 8 * i) promise];
-          [v28 finishWithError:v21];
+          promise = [*(*(&v44 + 1) + 8 * i) promise];
+          [promise finishWithError:v21];
         }
 
         v25 = [v23 countByEnumeratingWithState:&v44 objects:v49 count:16];
@@ -335,10 +335,10 @@ LABEL_19:
     }
 
     v10 = v22;
-    v11 = v40;
+    firstObject = v40;
   }
 
-  if (v15)
+  if (firstObject2)
   {
     v29 = +[AMSLogConfig sharedMetricsConfig];
     if (!v29)
@@ -346,41 +346,41 @@ LABEL_19:
       v29 = +[AMSLogConfig sharedConfig];
     }
 
-    v30 = [v29 OSLogObject];
-    if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
+    oSLogObject3 = [v29 OSLogObject];
+    if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
     {
       v31 = objc_opt_class();
       v32 = v31;
       v33 = AMSLogKey();
-      v34 = [(AMSMetrics *)self containerId];
+      containerId2 = [(AMSMetrics *)self containerId];
       *buf = 138543874;
       v51 = v31;
       v52 = 2114;
       v53 = v33;
       v54 = 2114;
-      v55 = v34;
-      _os_log_impl(&dword_192869000, v30, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Flushing events for container: %{public}@", buf, 0x20u);
+      v55 = containerId2;
+      _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Flushing events for container: %{public}@", buf, 0x20u);
     }
 
-    v35 = [v15 strategy];
-    v36 = [v35 performFlush];
+    strategy = [firstObject2 strategy];
+    performFlush = [strategy performFlush];
 
     v42[0] = MEMORY[0x1E69E9820];
     v42[1] = 3221225472;
     v42[2] = __36__AMSMetrics__processOperationQueue__block_invoke_146;
     v42[3] = &unk_1E73B3078;
     v42[4] = self;
-    v37 = v15;
+    v37 = firstObject2;
     v43 = v37;
-    v38 = [v36 thenWithBlock:v42];
+    v38 = [performFlush thenWithBlock:v42];
     v41[0] = MEMORY[0x1E69E9820];
     v41[1] = 3221225472;
     v41[2] = __36__AMSMetrics__processOperationQueue__block_invoke_150;
     v41[3] = &unk_1E73B3A88;
     v41[4] = self;
     [v38 addFinishBlock:v41];
-    v39 = [v37 promise];
-    [v39 finishWithPromise:v38];
+    promise2 = [v37 promise];
+    [promise2 finishWithPromise:v38];
   }
 }
 
@@ -398,39 +398,39 @@ uint64_t __36__AMSMetrics__processOperationQueue__block_invoke_2(uint64_t a1, vo
   v3 = +[AMSMetrics sharedTimerQueue];
   dispatch_assert_queue_V2(v3);
 
-  v4 = [(AMSMetrics *)self flushIntervalBlock];
+  flushIntervalBlock = [(AMSMetrics *)self flushIntervalBlock];
 
-  if (v4)
+  if (flushIntervalBlock)
   {
-    v5 = [(AMSMetrics *)self flushIntervalBlock];
-    dispatch_block_cancel(v5);
+    flushIntervalBlock2 = [(AMSMetrics *)self flushIntervalBlock];
+    dispatch_block_cancel(flushIntervalBlock2);
 
     [(AMSMetrics *)self setFlushIntervalBlock:0];
   }
 }
 
-- (AMSMetrics)initWithContainerID:(id)a3 bag:(id)a4
+- (AMSMetrics)initWithContainerID:(id)d bag:(id)bag
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AMSMetrics *)self initWithContainerID:v7 bag:v6 flushTaskClass:objc_opt_class()];
+  bagCopy = bag;
+  dCopy = d;
+  v8 = [(AMSMetrics *)self initWithContainerID:dCopy bag:bagCopy flushTaskClass:objc_opt_class()];
 
   return v8;
 }
 
-- (AMSMetrics)initWithContainerID:(id)a3 bag:(id)a4 flushTaskClass:(Class)a5
+- (AMSMetrics)initWithContainerID:(id)d bag:(id)bag flushTaskClass:(Class)class
 {
-  v9 = a3;
-  v10 = a4;
+  dCopy = d;
+  bagCopy = bag;
   v28.receiver = self;
   v28.super_class = AMSMetrics;
   v11 = [(AMSMetrics *)&v28 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_bag, a4);
-    objc_storeStrong(&v12->_containerId, a3);
-    v13 = [[AMSMetricsDatabaseDataSource alloc] initWithContainerIdentifier:v9];
+    objc_storeStrong(&v11->_bag, bag);
+    objc_storeStrong(&v12->_containerId, d);
+    v13 = [[AMSMetricsDatabaseDataSource alloc] initWithContainerIdentifier:dCopy];
     databaseSource = v12->_databaseSource;
     v12->_databaseSource = v13;
 
@@ -444,7 +444,7 @@ uint64_t __36__AMSMetrics__processOperationQueue__block_invoke_2(uint64_t a1, vo
     v12->_enqueuedOperations = v15;
 
     *&v12->_enqueuedOperationsLock._os_unfair_lock_opaque = 0;
-    v12->_flushTaskClass = a5;
+    v12->_flushTaskClass = class;
     v12->_bagLock._os_unfair_lock_opaque = 0;
     v17 = [[AMSTreatmentStore alloc] initWithCachePolicy:0];
     treatmentStore = v12->_treatmentStore;
@@ -453,8 +453,8 @@ uint64_t __36__AMSMetrics__processOperationQueue__block_invoke_2(uint64_t a1, vo
     v12->_includeMMeClientInfoAndDeviceHeaders = 0;
     v12->_metricsSigningFlavour = 0;
     v19 = +[AMSProcessInfo currentProcess];
-    v20 = [v19 executableName];
-    v21 = [v20 isEqualToString:@"StoreKitUIService"];
+    executableName = [v19 executableName];
+    v21 = [executableName isEqualToString:@"StoreKitUIService"];
 
     v12->_monitorsLifecycleEvents = v21 ^ 1;
     v22 = dispatch_get_global_queue(9, 0);
@@ -462,14 +462,14 @@ uint64_t __36__AMSMetrics__processOperationQueue__block_invoke_2(uint64_t a1, vo
     block[1] = 3221225472;
     block[2] = __53__AMSMetrics_initWithContainerID_bag_flushTaskClass___block_invoke;
     block[3] = &unk_1E73B3680;
-    v27 = v10;
+    v27 = bagCopy;
     dispatch_async(v22, block);
 
-    v23 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v23 addObserver:v12 selector:sel__applicationDidBecomeActive_ name:@"UIApplicationDidBecomeActiveNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v12 selector:sel__applicationDidBecomeActive_ name:@"UIApplicationDidBecomeActiveNotification" object:0];
 
-    v24 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v24 addObserver:v12 selector:sel__flushTimerEnabledChanged name:@"AMSFlushTimerEnabledNotificationName" object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v12 selector:sel__flushTimerEnabledChanged name:@"AMSFlushTimerEnabledNotificationName" object:0];
 
     [(AMSMetrics *)v12 _beginFlushIntervalWithStyle:2 events:0];
   }
@@ -477,14 +477,14 @@ uint64_t __36__AMSMetrics__processOperationQueue__block_invoke_2(uint64_t a1, vo
   return v12;
 }
 
-+ (id)internalInstanceUsingBag:(id)a3
++ (id)internalInstanceUsingBag:(id)bag
 {
-  v3 = a3;
+  bagCopy = bag;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __39__AMSMetrics_internalInstanceUsingBag___block_invoke;
   block[3] = &unk_1E73B3680;
-  v4 = v3;
+  v4 = bagCopy;
   v8 = v4;
   if (_MergedGlobals_131 != -1)
   {
@@ -510,77 +510,77 @@ uint64_t __39__AMSMetrics_internalInstanceUsingBag___block_invoke(uint64_t a1)
 
 + (BOOL)appAnalyticsAllowed
 {
-  v2 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  v3 = [v2 isAppAnalyticsAllowed];
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+  isAppAnalyticsAllowed = [mEMORY[0x1E69ADFB8] isAppAnalyticsAllowed];
 
-  return v3;
+  return isAppAnalyticsAllowed;
 }
 
 + (BOOL)disableBackgroundMetrics
 {
-  v2 = [a1 internalInstanceUsingBag:0];
-  v3 = [v2 flushingDisabled];
+  v2 = [self internalInstanceUsingBag:0];
+  flushingDisabled = [v2 flushingDisabled];
 
-  return v3;
+  return flushingDisabled;
 }
 
 - (int64_t)eventCount
 {
-  v2 = [(AMSMetrics *)self databaseSource];
-  v3 = [v2 eventCount];
+  databaseSource = [(AMSMetrics *)self databaseSource];
+  eventCount = [databaseSource eventCount];
 
-  return v3;
+  return eventCount;
 }
 
-- (void)setBag:(id)a3
+- (void)setBag:(id)bag
 {
-  v6 = a3;
+  bagCopy = bag;
   os_unfair_lock_lock_with_options();
-  if (self->_bag == v6)
+  if (self->_bag == bagCopy)
   {
     os_unfair_lock_unlock(&self->_bagLock);
   }
 
   else
   {
-    objc_storeStrong(&self->_bag, a3);
+    objc_storeStrong(&self->_bag, bag);
     os_unfair_lock_unlock(&self->_bagLock);
-    v5 = [objc_opt_class() internalInstanceUsingBag:v6];
+    v5 = [objc_opt_class() internalInstanceUsingBag:bagCopy];
     [(AMSMetrics *)self _beginFlushIntervalWithStyle:2 events:0];
   }
 }
 
-+ (void)setDisableBackgroundMetrics:(BOOL)a3
++ (void)setDisableBackgroundMetrics:(BOOL)metrics
 {
-  v3 = a3;
-  v4 = [a1 internalInstanceUsingBag:0];
-  [v4 setFlushingDisabled:v3];
+  metricsCopy = metrics;
+  v4 = [self internalInstanceUsingBag:0];
+  [v4 setFlushingDisabled:metricsCopy];
 }
 
-- (void)setEngagement:(id)a3
+- (void)setEngagement:(id)engagement
 {
-  v4 = a3;
+  engagementCopy = engagement;
   os_unfair_lock_lock_with_options();
   engagement = self->_engagement;
-  self->_engagement = v4;
+  self->_engagement = engagementCopy;
 
   os_unfair_lock_unlock(&self->_engagementLock);
 }
 
-- (void)setFlushTimerEnabled:(BOOL)a3
+- (void)setFlushTimerEnabled:(BOOL)enabled
 {
   os_unfair_lock_lock_with_options();
-  self->_flushTimerEnabled = a3;
+  self->_flushTimerEnabled = enabled;
   os_unfair_lock_unlock(&self->_flushModeLock);
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 postNotificationName:@"AMSFlushTimerEnabledNotificationName" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"AMSFlushTimerEnabledNotificationName" object:0];
 }
 
-+ (void)setFlushTimerEnabled:(BOOL)a3
++ (void)setFlushTimerEnabled:(BOOL)enabled
 {
-  atomic_store(a3, _global_flush_timer_enabled);
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 postNotificationName:@"AMSFlushTimerEnabledNotificationName" object:0];
+  atomic_store(enabled, _global_flush_timer_enabled);
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"AMSFlushTimerEnabledNotificationName" object:0];
 }
 
 - (void)cancel
@@ -595,8 +595,8 @@ uint64_t __39__AMSMetrics_internalInstanceUsingBag___block_invoke(uint64_t a1)
   v6 = [(NSMutableArray *)self->_enqueuedOperations objectsAtIndexes:v5];
   [(NSMutableArray *)self->_enqueuedOperations removeObjectsAtIndexes:v5];
   os_unfair_lock_unlock(&self->_enqueuedOperationsLock);
-  v7 = [(AMSMetricsFlushOperation *)v3 strategy];
-  [v7 cancel];
+  strategy = [(AMSMetricsFlushOperation *)v3 strategy];
+  [strategy cancel];
 
   v18 = 0u;
   v19 = 0u;
@@ -618,8 +618,8 @@ uint64_t __39__AMSMetrics_internalInstanceUsingBag___block_invoke(uint64_t a1)
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * v12) promise];
-        [v13 cancel];
+        promise = [*(*(&v16 + 1) + 8 * v12) promise];
+        [promise cancel];
 
         ++v12;
       }
@@ -655,8 +655,8 @@ uint64_t __20__AMSMetrics_cancel__block_invoke(uint64_t a1, void *a2)
     v3 = +[AMSLogConfig sharedConfig];
   }
 
-  v4 = [v3 OSLogObject];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v3 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v5 = objc_opt_class();
     v6 = AMSLogKey();
@@ -664,7 +664,7 @@ uint64_t __20__AMSMetrics_cancel__block_invoke(uint64_t a1, void *a2)
     v10 = v5;
     v11 = 2114;
     v12 = v6;
-    _os_log_impl(&dword_192869000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Requested to drop all events from database", &v9, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Requested to drop all events from database", &v9, 0x16u);
   }
 
   os_unfair_lock_lock_with_options();
@@ -676,35 +676,35 @@ uint64_t __20__AMSMetrics_cancel__block_invoke(uint64_t a1, void *a2)
   [(AMSMetrics *)self _processOperationQueue];
 }
 
-- (void)enqueueEvent:(id)a3
+- (void)enqueueEvent:(id)event
 {
   v8 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  eventCopy = event;
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v7 count:1];
+  eventCopy2 = event;
+  v6 = [v4 arrayWithObjects:&eventCopy count:1];
 
-  [(AMSMetrics *)self enqueueEvents:v6, v7, v8];
+  [(AMSMetrics *)self enqueueEvents:v6, eventCopy, v8];
 }
 
-- (id)promiseForEnqueueingEvents:(id)a3 options:(int64_t)a4
+- (id)promiseForEnqueueingEvents:(id)events options:(int64_t)options
 {
   v42 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  eventsCopy = events;
   v5 = +[AMSLogConfig sharedMetricsConfig];
   if (!v5)
   {
     v5 = +[AMSLogConfig sharedConfig];
   }
 
-  v6 = [v5 OSLogObject];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v5 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v7 = objc_opt_class();
     v8 = v7;
     v9 = AMSLogKey();
-    v10 = [v4 count];
-    v11 = [(AMSMetrics *)self containerId];
+    v10 = [eventsCopy count];
+    containerId = [(AMSMetrics *)self containerId];
     *buf = 138544386;
     v33 = v7;
     v34 = 2114;
@@ -712,10 +712,10 @@ uint64_t __20__AMSMetrics_cancel__block_invoke(uint64_t a1, void *a2)
     v36 = 2050;
     v37 = v10;
     v38 = 2114;
-    v39 = v11;
+    v39 = containerId;
     v40 = 2050;
-    v41 = a4;
-    _os_log_impl(&dword_192869000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Enqueueing %{public}ld events to container %{public}@ with options %{public}ld", buf, 0x34u);
+    optionsCopy = options;
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Enqueueing %{public}ld events to container %{public}@ with options %{public}ld", buf, 0x34u);
   }
 
   v12 = objc_opt_new();
@@ -723,7 +723,7 @@ uint64_t __20__AMSMetrics_cancel__block_invoke(uint64_t a1, void *a2)
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v4;
+  obj = eventsCopy;
   v13 = [obj countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v13)
   {
@@ -748,14 +748,14 @@ uint64_t __20__AMSMetrics_cancel__block_invoke(uint64_t a1, void *a2)
         }
 
         v19 = [v17 copy];
-        if ((a4 & 1) == 0)
+        if ((options & 1) == 0)
         {
           [(AMSMetrics *)self _clearAccountForEventIfNeeded:v19];
         }
 
-        v20 = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
-        v21 = [v20 ams_activeiTunesAccount];
-        [AMSMetrics _configureAccountIdentifierForEvent:v19 andActiveAccount:v21];
+        ams_sharedAccountStore = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
+        ams_activeiTunesAccount = [ams_sharedAccountStore ams_activeiTunesAccount];
+        [AMSMetrics _configureAccountIdentifierForEvent:v19 andActiveAccount:ams_activeiTunesAccount];
         [v12 addObject:v19];
       }
 
@@ -765,33 +765,33 @@ uint64_t __20__AMSMetrics_cancel__block_invoke(uint64_t a1, void *a2)
     while (v14);
   }
 
-  v22 = [(AMSMetrics *)self enqueueAsyncEvents:v12 scheduleDelayedFlush:(a4 & 2) == 0];
+  v22 = [(AMSMetrics *)self enqueueAsyncEvents:v12 scheduleDelayedFlush:(options & 2) == 0];
 
   return v22;
 }
 
-- (id)enqueueAsyncEvents:(id)a3 scheduleDelayedFlush:(BOOL)a4
+- (id)enqueueAsyncEvents:(id)events scheduleDelayedFlush:(BOOL)flush
 {
-  v6 = a3;
-  if ([v6 count])
+  eventsCopy = events;
+  if ([eventsCopy count])
   {
-    v7 = [(AMSMetrics *)self _modifiedEvents:v6];
+    v7 = [(AMSMetrics *)self _modifiedEvents:eventsCopy];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __54__AMSMetrics_enqueueAsyncEvents_scheduleDelayedFlush___block_invoke;
     v11[3] = &unk_1E73B31B8;
     v11[4] = self;
-    v12 = a4;
+    flushCopy = flush;
     v8 = [v7 thenWithBlock:v11];
-    v9 = [v8 binaryPromiseAdapter];
+    binaryPromiseAdapter = [v8 binaryPromiseAdapter];
   }
 
   else
   {
-    v9 = +[AMSBinaryPromise promiseWithSuccess];
+    binaryPromiseAdapter = +[AMSBinaryPromise promiseWithSuccess];
   }
 
-  return v9;
+  return binaryPromiseAdapter;
 }
 
 id __54__AMSMetrics_enqueueAsyncEvents_scheduleDelayedFlush___block_invoke(uint64_t a1, void *a2)
@@ -846,35 +846,35 @@ id __54__AMSMetrics_enqueueAsyncEvents_scheduleDelayedFlush___block_invoke(uint6
   return v14;
 }
 
-- (id)flushTopic:(id)a3
+- (id)flushTopic:(id)topic
 {
-  v4 = a3;
-  v5 = [(AMSMetrics *)self databaseSource];
-  v6 = [(AMSMetrics *)self _flushDataSource:v5 topic:v4];
+  topicCopy = topic;
+  databaseSource = [(AMSMetrics *)self databaseSource];
+  v6 = [(AMSMetrics *)self _flushDataSource:databaseSource topic:topicCopy];
 
   return v6;
 }
 
-- (id)flushEvents:(id)a3
+- (id)flushEvents:(id)events
 {
-  v4 = a3;
-  v5 = [[AMSMetricsMemoryDataSource alloc] initWithEvents:v4];
+  eventsCopy = events;
+  v5 = [[AMSMetricsMemoryDataSource alloc] initWithEvents:eventsCopy];
 
   v6 = [(AMSMetrics *)self _flushDataSource:v5 topic:0];
 
   return v6;
 }
 
-+ (BOOL)recordAppAnalyticsForEvent:(id)a3 bugType:(id)a4
++ (BOOL)recordAppAnalyticsForEvent:(id)event bugType:(id)type
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 dictionaryForPosting];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v7])
+  eventCopy = event;
+  typeCopy = type;
+  dictionaryForPosting = [eventCopy dictionaryForPosting];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryForPosting])
   {
     v17 = 0;
-    v8 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v7 options:0 error:&v17];
+    v8 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryForPosting options:0 error:&v17];
     v9 = v17;
     if (v9)
     {
@@ -884,21 +884,21 @@ id __54__AMSMetrics_enqueueAsyncEvents_scheduleDelayedFlush___block_invoke(uint6
         v10 = +[AMSLogConfig sharedConfig];
       }
 
-      v11 = [v10 OSLogObject];
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+      oSLogObject = [v10 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v12 = objc_opt_class();
         *buf = 138543618;
         v19 = v12;
         v20 = 2114;
         v21 = v9;
-        _os_log_impl(&dword_192869000, v11, OS_LOG_TYPE_ERROR, "%{public}@: Failed to generate JSON for OSA log submission. %{public}@", buf, 0x16u);
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: Failed to generate JSON for OSA log submission. %{public}@", buf, 0x16u);
       }
     }
 
     if (v8)
     {
-      v13 = [v5 topic];
+      topic = [eventCopy topic];
       v16 = v8;
       v14 = v8;
       LOBYTE(v8) = OSAWriteLogForSubmission();
@@ -913,56 +913,56 @@ id __54__AMSMetrics_enqueueAsyncEvents_scheduleDelayedFlush___block_invoke(uint6
   return v8;
 }
 
-+ (id)serverTimeFromDate:(id)a3
++ (id)serverTimeFromDate:(id)date
 {
-  [a3 timeIntervalSince1970];
+  [date timeIntervalSince1970];
 
-  return [a1 serverTimeFromTimeInterval:?];
+  return [self serverTimeFromTimeInterval:?];
 }
 
 + (id)createBagForSubProfile
 {
-  v2 = [objc_opt_class() bagSubProfile];
-  v3 = [objc_opt_class() bagSubProfileVersion];
-  v4 = [AMSBag bagForProfile:v2 profileVersion:v3];
+  bagSubProfile = [objc_opt_class() bagSubProfile];
+  bagSubProfileVersion = [objc_opt_class() bagSubProfileVersion];
+  v4 = [AMSBag bagForProfile:bagSubProfile profileVersion:bagSubProfileVersion];
 
   return v4;
 }
 
-+ (void)_configureAccountIdentifierForEvent:(id)a3 andActiveAccount:(id)a4
++ (void)_configureAccountIdentifierForEvent:(id)event andActiveAccount:(id)account
 {
-  v20 = a3;
-  v5 = a4;
-  if (([v20 isAccountIdentifierAutoDecorationEnabled] & 1) == 0)
+  eventCopy = event;
+  accountCopy = account;
+  if (([eventCopy isAccountIdentifierAutoDecorationEnabled] & 1) == 0)
   {
-    [v20 setProperty:0 forBodyKey:@"enableAccountIdentifierAutoDecoration"];
-    [v20 setEnableAccountIdentifierAutoDecoration:0];
+    [eventCopy setProperty:0 forBodyKey:@"enableAccountIdentifierAutoDecoration"];
+    [eventCopy setEnableAccountIdentifierAutoDecoration:0];
     goto LABEL_19;
   }
 
-  v6 = [v20 propertyForBodyKey:@"canonicalAccountIdentifierOverride"];
+  v6 = [eventCopy propertyForBodyKey:@"canonicalAccountIdentifierOverride"];
   if (v6)
   {
-    [v20 setProperty:0 forBodyKey:@"canonicalAccountIdentifierOverride"];
-    [v20 setCanonicalAccountIdentifierOverride:v6];
+    [eventCopy setProperty:0 forBodyKey:@"canonicalAccountIdentifierOverride"];
+    [eventCopy setCanonicalAccountIdentifierOverride:v6];
   }
 
-  v7 = [v20 canonicalAccountIdentifierOverride];
+  canonicalAccountIdentifierOverride = [eventCopy canonicalAccountIdentifierOverride];
 
-  if (!v7)
+  if (!canonicalAccountIdentifierOverride)
   {
-    v8 = [v20 account];
-    if (v8 && ((v9 = v8, [v20 account], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "ams_accountFlagValueForAccountFlag:", AMSAccountFlagUnderThirteen), v11 = objc_claimAutoreleasedReturnValue(), v10, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) ? (v12 = 0) : (v12 = v11), v11, v13 = objc_msgSend(v12, "BOOLValue"), v12, v9, (v13 & 1) == 0))
+    account = [eventCopy account];
+    if (account && ((v9 = account, [eventCopy account], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "ams_accountFlagValueForAccountFlag:", AMSAccountFlagUnderThirteen), v11 = objc_claimAutoreleasedReturnValue(), v10, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) ? (v12 = 0) : (v12 = v11), v11, v13 = objc_msgSend(v12, "BOOLValue"), v12, v9, (v13 & 1) == 0))
     {
-      v17 = [v20 account];
-      v18 = [v17 ams_DSID];
-      v19 = [v18 stringValue];
-      [v20 setCanonicalAccountIdentifierOverride:v19];
+      account2 = [eventCopy account];
+      ams_DSID = [account2 ams_DSID];
+      stringValue = [ams_DSID stringValue];
+      [eventCopy setCanonicalAccountIdentifierOverride:stringValue];
     }
 
     else
     {
-      v14 = [v5 ams_accountFlagValueForAccountFlag:AMSAccountFlagUnderThirteen];
+      v14 = [accountCopy ams_accountFlagValueForAccountFlag:AMSAccountFlagUnderThirteen];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -974,15 +974,15 @@ id __54__AMSMetrics_enqueueAsyncEvents_scheduleDelayedFlush___block_invoke(uint6
         v15 = 0;
       }
 
-      v16 = [v15 BOOLValue];
-      if (v16)
+      bOOLValue = [v15 BOOLValue];
+      if (bOOLValue)
       {
         goto LABEL_18;
       }
 
-      v17 = [v5 ams_DSID];
-      v18 = [v17 stringValue];
-      [v20 setEnqueueTimeDefaultAccountIdentifier:v18];
+      account2 = [accountCopy ams_DSID];
+      ams_DSID = [account2 stringValue];
+      [eventCopy setEnqueueTimeDefaultAccountIdentifier:ams_DSID];
     }
   }
 
@@ -1039,8 +1039,8 @@ LABEL_11:
       v6 = +[AMSLogConfig sharedConfig];
     }
 
-    v7 = [v6 OSLogObject];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
+    oSLogObject = [v6 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
     {
       v11 = objc_opt_class();
       v12 = AMSLogKey();
@@ -1051,17 +1051,17 @@ LABEL_11:
       v17 = v12;
       v18 = 2114;
       v19 = v13;
-      _os_log_impl(&dword_192869000, v7, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] bag passed used is not of type AMSBag: %{public}@", v15, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] bag passed used is not of type AMSBag: %{public}@", v15, 0x20u);
     }
 
     goto LABEL_15;
   }
 
-  v7 = [MEMORY[0x1E695DFD8] setWithObject:@"metrics"];
+  oSLogObject = [MEMORY[0x1E695DFD8] setWithObject:@"metrics"];
   *v15 = +[AMSBag uninitializedToken];
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v6 cachedValuesForKeys:v7 observationToken:v15 updateHandler:&__block_literal_global_108];
+    v8 = [v6 cachedValuesForKeys:oSLogObject observationToken:v15 updateHandler:&__block_literal_global_108];
     [v6 removeObserverWithToken:*v15];
     v9 = [v8 objectForKeyedSubscript:@"metrics"];
     objc_opt_class();
@@ -1090,10 +1090,10 @@ LABEL_16:
 
 - (id)_topicsRequiringAccountClearing
 {
-  v2 = [(AMSMetrics *)self _cachedAccountClearingTopicsFromBag];
-  if (v2)
+  _cachedAccountClearingTopicsFromBag = [(AMSMetrics *)self _cachedAccountClearingTopicsFromBag];
+  if (_cachedAccountClearingTopicsFromBag)
   {
-    [MEMORY[0x1E695DFD8] setWithArray:v2];
+    [MEMORY[0x1E695DFD8] setWithArray:_cachedAccountClearingTopicsFromBag];
   }
 
   else
@@ -1105,13 +1105,13 @@ LABEL_16:
   return v3;
 }
 
-- (void)_clearAccountForEventIfNeeded:(id)a3
+- (void)_clearAccountForEventIfNeeded:(id)needed
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(AMSMetrics *)self _topicsRequiringAccountClearing];
-  v6 = [v4 topic];
-  if (v6 && [v5 containsObject:v6])
+  neededCopy = needed;
+  _topicsRequiringAccountClearing = [(AMSMetrics *)self _topicsRequiringAccountClearing];
+  topic = [neededCopy topic];
+  if (topic && [_topicsRequiringAccountClearing containsObject:topic])
   {
     v7 = +[AMSLogConfig sharedMetricsConfig];
     if (!v7)
@@ -1119,8 +1119,8 @@ LABEL_16:
       v7 = +[AMSLogConfig sharedConfig];
     }
 
-    v8 = [v7 OSLogObject];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+    oSLogObject = [v7 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
     {
       v9 = objc_opt_class();
       v10 = AMSLogKey();
@@ -1129,17 +1129,17 @@ LABEL_16:
       v13 = 2114;
       v14 = v10;
       v15 = 2114;
-      v16 = v6;
-      _os_log_impl(&dword_192869000, v8, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Clearing account for event with topic: %{public}@", &v11, 0x20u);
+      v16 = topic;
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Clearing account for event with topic: %{public}@", &v11, 0x20u);
     }
 
-    [v4 setAccount:0];
+    [neededCopy setAccount:0];
   }
 }
 
-+ (void)_detectAnomaliesForMetricsEvent:(id)a3
++ (void)_detectAnomaliesForMetricsEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if (qword_1ED6E2EB0 != -1)
   {
     dispatch_once(&qword_1ED6E2EB0, &__block_literal_global_114_0);
@@ -1150,7 +1150,7 @@ LABEL_16:
   v16[1] = 3221225472;
   v16[2] = __46__AMSMetrics__detectAnomaliesForMetricsEvent___block_invoke_2;
   v16[3] = &__block_descriptor_40_e5_v8__0l;
-  v16[4] = a1;
+  v16[4] = self;
   if (qword_1ED6E2EC0 != -1)
   {
     dispatch_once(&qword_1ED6E2EC0, v16);
@@ -1168,11 +1168,11 @@ LABEL_16:
   block[2] = __46__AMSMetrics__detectAnomaliesForMetricsEvent___block_invoke_4;
   block[3] = &unk_1E73B92F0;
   v12 = v6;
-  v13 = v4;
+  v13 = eventCopy;
   v14 = v7;
-  v15 = a1;
+  selfCopy = self;
   v8 = v7;
-  v9 = v4;
+  v9 = eventCopy;
   v10 = v6;
   dispatch_async(v5, block);
 }
@@ -1301,12 +1301,12 @@ void __46__AMSMetrics__detectAnomaliesForMetricsEvent___block_invoke_4(uint64_t 
 LABEL_21:
 }
 
-+ (id)_createURLSessionPromiseWith:(id)a3
++ (id)_createURLSessionPromiseWith:(id)with
 {
   v3 = MEMORY[0x1E695AC80];
-  v4 = a3;
+  withCopy = with;
   v5 = +[AMSProcessInfo currentProcess];
-  v6 = [v3 ams_configurationWithClientInfo:v5 bag:v4];
+  v6 = [v3 ams_configurationWithClientInfo:v5 bag:withCopy];
 
   v7 = [v6 thenWithBlock:&__block_literal_global_130];
 
@@ -1325,17 +1325,17 @@ id __43__AMSMetrics__createURLSessionPromiseWith___block_invoke(uint64_t a1, voi
   return v4;
 }
 
-+ (id)_urlSessionPromiseWith:(id)a3
++ (id)_urlSessionPromiseWith:(id)with
 {
-  v4 = a3;
+  withCopy = with;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __37__AMSMetrics__urlSessionPromiseWith___block_invoke;
   v10[3] = &unk_1E73B40A8;
-  v11 = v4;
-  v12 = a1;
+  v11 = withCopy;
+  selfCopy = self;
   v5 = qword_1ED6E2EE0;
-  v6 = v4;
+  v6 = withCopy;
   if (v5 != -1)
   {
     dispatch_once(&qword_1ED6E2EE0, v10);
@@ -1354,11 +1354,11 @@ uint64_t __37__AMSMetrics__urlSessionPromiseWith___block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)_determineFlushStrategyWithDataSource:(id)a3 topic:(id)a4 urlSession:(id)a5
+- (id)_determineFlushStrategyWithDataSource:(id)source topic:(id)topic urlSession:(id)session
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sourceCopy = source;
+  topicCopy = topic;
+  sessionCopy = session;
   if ([(AMSMetrics *)self destination])
   {
     v11 = 0;
@@ -1368,31 +1368,31 @@ uint64_t __37__AMSMetrics__urlSessionPromiseWith___block_invoke(uint64_t a1)
   {
     v12 = [(objc_class *)self->_flushTaskClass alloc];
     v13 = [(AMSMetrics *)self bag];
-    v11 = [(objc_class *)v12 initWithDataSource:v8 bag:v13 maxRequestCount:[(AMSMetrics *)self maxRequestCount] maxEventsPerBatch:[(AMSMetrics *)self maxEventsPerBatch] topic:v9 includeMMeClientInfoAndDeviceHeaders:[(AMSMetrics *)self includeMMeClientInfoAndDeviceHeaders] metricsSigningFlavour:[(AMSMetrics *)self metricsSigningFlavour] urlSession:v10];
+    v11 = [(objc_class *)v12 initWithDataSource:sourceCopy bag:v13 maxRequestCount:[(AMSMetrics *)self maxRequestCount] maxEventsPerBatch:[(AMSMetrics *)self maxEventsPerBatch] topic:topicCopy includeMMeClientInfoAndDeviceHeaders:[(AMSMetrics *)self includeMMeClientInfoAndDeviceHeaders] metricsSigningFlavour:[(AMSMetrics *)self metricsSigningFlavour] urlSession:sessionCopy];
   }
 
   return v11;
 }
 
-- (id)_enqueueFigaroEvents:(id)a3 scheduleDelayedFlush:(BOOL)a4
+- (id)_enqueueFigaroEvents:(id)events scheduleDelayedFlush:(BOOL)flush
 {
-  v4 = a4;
+  flushCopy = flush;
   v60 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (![v6 count])
+  eventsCopy = events;
+  if (![eventsCopy count])
   {
     v34 = +[AMSBinaryPromise promiseWithSuccess];
     goto LABEL_35;
   }
 
-  v36 = v4;
+  v36 = flushCopy;
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v37 = v6;
-  v8 = v6;
+  v37 = eventsCopy;
+  v8 = eventsCopy;
   v9 = [v8 countByEnumeratingWithState:&v44 objects:v59 count:16];
   if (!v9)
   {
@@ -1401,7 +1401,7 @@ uint64_t __37__AMSMetrics__urlSessionPromiseWith___block_invoke(uint64_t a1)
 
   v10 = v9;
   v11 = *v45;
-  v39 = self;
+  selfCopy = self;
   v40 = *v45;
   v38 = v8;
   do
@@ -1422,8 +1422,8 @@ uint64_t __37__AMSMetrics__urlSessionPromiseWith___block_invoke(uint64_t a1)
         v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v58 count:1];
         [v13 removePropertiesForKeys:v14];
 
-        v15 = [v13 diagnosticsSubmissionBugType];
-        if (([v13 checkDiagnosticsAndUsageSetting] & 1) == 0 && !v15)
+        diagnosticsSubmissionBugType = [v13 diagnosticsSubmissionBugType];
+        if (([v13 checkDiagnosticsAndUsageSetting] & 1) == 0 && !diagnosticsSubmissionBugType)
         {
 LABEL_10:
           v16 = +[AMSLogConfig sharedMetricsConfig];
@@ -1432,33 +1432,33 @@ LABEL_10:
             v16 = +[AMSLogConfig sharedConfig];
           }
 
-          v17 = [v16 OSLogObject];
-          if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
+          oSLogObject = [v16 OSLogObject];
+          if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
           {
-            v43 = v15;
+            v43 = diagnosticsSubmissionBugType;
             v18 = v7;
             v19 = objc_opt_class();
             v42 = v19;
             v20 = AMSLogKey();
-            v21 = [(AMSMetrics *)self containerId];
-            v22 = [v13 topic];
-            v23 = [v13 clientEventID];
+            containerId = [(AMSMetrics *)self containerId];
+            topic = [v13 topic];
+            clientEventID = [v13 clientEventID];
             *buf = 138544386;
             v49 = v19;
             v7 = v18;
-            v15 = v43;
+            diagnosticsSubmissionBugType = v43;
             v50 = 2114;
             v51 = v20;
             v52 = 2114;
-            v53 = v21;
+            v53 = containerId;
             v54 = 2114;
-            v55 = v22;
+            v55 = topic;
             v56 = 2114;
-            v57 = v23;
-            _os_log_impl(&dword_192869000, v17, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Enqueueing event (%{public}@) topic: %{public}@ id: %{public}@", buf, 0x34u);
+            v57 = clientEventID;
+            _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Enqueueing event (%{public}@) topic: %{public}@ id: %{public}@", buf, 0x34u);
 
             v8 = v38;
-            self = v39;
+            self = selfCopy;
 
             v11 = v40;
             v10 = v41;
@@ -1470,7 +1470,7 @@ LABEL_10:
 
         if (+[AMSMetrics diagnosticsSubmissionAllowed])
         {
-          if (!v15 || [AMSMetrics recordAppAnalyticsForEvent:v13 bugType:v15])
+          if (!diagnosticsSubmissionBugType || [AMSMetrics recordAppAnalyticsForEvent:v13 bugType:diagnosticsSubmissionBugType])
           {
             goto LABEL_10;
           }
@@ -1481,20 +1481,20 @@ LABEL_10:
             v24 = +[AMSLogConfig sharedConfig];
           }
 
-          v25 = [v24 OSLogObject];
-          if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
+          oSLogObject2 = [v24 OSLogObject];
+          if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
           {
             v26 = objc_opt_class();
             v27 = AMSLogKey();
-            v28 = [v13 topic];
+            topic2 = [v13 topic];
             *buf = 138543874;
             v49 = v26;
             v10 = v41;
             v50 = 2114;
             v51 = v27;
             v52 = 2114;
-            v53 = v28;
-            v29 = v25;
+            v53 = topic2;
+            v29 = oSLogObject2;
             v30 = OS_LOG_TYPE_ERROR;
             v31 = "%{public}@: [%{public}@] Dropping event due to failed recording of event flagged for appAnalytics recording. Topic: %{public}@";
             goto LABEL_26;
@@ -1509,20 +1509,20 @@ LABEL_10:
             v24 = +[AMSLogConfig sharedConfig];
           }
 
-          v25 = [v24 OSLogObject];
-          if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
+          oSLogObject2 = [v24 OSLogObject];
+          if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
           {
             v32 = objc_opt_class();
             v27 = AMSLogKey();
-            v28 = [v13 topic];
+            topic2 = [v13 topic];
             *buf = 138543874;
             v49 = v32;
             v10 = v41;
             v50 = 2114;
             v51 = v27;
             v52 = 2114;
-            v53 = v28;
-            v29 = v25;
+            v53 = topic2;
+            v29 = oSLogObject2;
             v30 = OS_LOG_TYPE_DEFAULT;
             v31 = "%{public}@: [%{public}@] Dropping event due to D&U. Topic: %{public}@";
 LABEL_26:
@@ -1545,36 +1545,36 @@ LABEL_28:
   while (v10);
 LABEL_31:
 
-  v33 = [(AMSMetrics *)self databaseSource];
-  v34 = [v33 enqueueEvents:v7];
+  databaseSource = [(AMSMetrics *)self databaseSource];
+  v34 = [databaseSource enqueueEvents:v7];
 
   if (v36)
   {
     [(AMSMetrics *)self _beginFlushIntervalWithStyle:1 events:v7];
   }
 
-  v6 = v37;
+  eventsCopy = v37;
 LABEL_35:
 
   return v34;
 }
 
-- (id)_flushDataSource:(id)a3 topic:(id)a4
+- (id)_flushDataSource:(id)source topic:(id)topic
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  topicCopy = topic;
   v8 = +[AMSLogConfig sharedMetricsConfig];
   v9 = v8;
-  if (v7)
+  if (topicCopy)
   {
     if (!v8)
     {
       v9 = +[AMSLogConfig sharedConfig];
     }
 
-    v10 = [v9 OSLogObject];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v9 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v11 = objc_opt_class();
       v12 = AMSLogKey();
@@ -1583,9 +1583,9 @@ LABEL_35:
       v28 = 2114;
       v29 = v12;
       v30 = 2114;
-      v31 = v7;
+      v31 = topicCopy;
       v13 = "%{public}@: [%{public}@] Requested to flush topic %{public}@";
-      v14 = v10;
+      v14 = oSLogObject;
       v15 = 32;
 LABEL_10:
       _os_log_impl(&dword_192869000, v14, OS_LOG_TYPE_DEFAULT, v13, buf, v15);
@@ -1599,8 +1599,8 @@ LABEL_10:
       v9 = +[AMSLogConfig sharedConfig];
     }
 
-    v10 = [v9 OSLogObject];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v9 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v16 = objc_opt_class();
       v12 = AMSLogKey();
@@ -1609,7 +1609,7 @@ LABEL_10:
       v28 = 2114;
       v29 = v12;
       v13 = "%{public}@: [%{public}@] Requested to flush all topics";
-      v14 = v10;
+      v14 = oSLogObject;
       v15 = 22;
       goto LABEL_10;
     }
@@ -1623,10 +1623,10 @@ LABEL_10:
   v23[2] = __37__AMSMetrics__flushDataSource_topic___block_invoke;
   v23[3] = &unk_1E73B9318;
   v23[4] = self;
-  v24 = v6;
-  v25 = v7;
-  v19 = v7;
-  v20 = v6;
+  v24 = sourceCopy;
+  v25 = topicCopy;
+  v19 = topicCopy;
+  v20 = sourceCopy;
   v21 = [v18 thenWithBlock:v23];
 
   return v21;
@@ -1796,11 +1796,11 @@ LABEL_10:
   [*(a1 + 32) _processOperationQueue];
 }
 
-- (void)_beginFlushIntervalWithStyle:(int64_t)a3 events:(id)a4
+- (void)_beginFlushIntervalWithStyle:(int64_t)style events:(id)events
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if ([(AMSMetrics *)self _scheduledFlushAllowedForStyle:a3])
+  eventsCopy = events;
+  if ([(AMSMetrics *)self _scheduledFlushAllowedForStyle:style])
   {
     v7 = [(AMSMetrics *)self bag];
     v8 = [AMSMetricsFigaroBagConfguration configurationPromiseWithBag:v7];
@@ -1809,8 +1809,8 @@ LABEL_10:
     v13[2] = __50__AMSMetrics__beginFlushIntervalWithStyle_events___block_invoke;
     v13[3] = &unk_1E73B9390;
     v13[4] = self;
-    v15 = a3;
-    v14 = v6;
+    styleCopy = style;
+    v14 = eventsCopy;
     [v8 addFinishBlock:v13];
   }
 
@@ -1822,18 +1822,18 @@ LABEL_10:
       v9 = +[AMSLogConfig sharedConfig];
     }
 
-    v10 = [v9 OSLogObject];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v9 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v11 = objc_opt_class();
-      v12 = [(AMSMetrics *)self containerId];
+      containerId = [(AMSMetrics *)self containerId];
       *buf = 138543874;
       v17 = v11;
       v18 = 2114;
-      v19 = v12;
+      v19 = containerId;
       v20 = 2050;
-      v21 = a3;
-      _os_log_impl(&dword_192869000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Cannot schedule flush with style %{public}ld because the style is currently not allowed.", buf, 0x20u);
+      styleCopy2 = style;
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Cannot schedule flush with style %{public}ld because the style is currently not allowed.", buf, 0x20u);
     }
   }
 }
@@ -2078,16 +2078,16 @@ void __50__AMSMetrics__beginFlushIntervalWithStyle_events___block_invoke_3(uint6
   }
 }
 
-- (double)_flushIntervalWithConfiguration:(id)a3 forEvents:(id)a4
+- (double)_flushIntervalWithConfiguration:(id)configuration forEvents:(id)events
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  configurationCopy = configuration;
+  eventsCopy = events;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v7 = [eventsCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (!v7)
   {
     goto LABEL_17;
@@ -2102,10 +2102,10 @@ void __50__AMSMetrics__beginFlushIntervalWithStyle_events___block_invoke_3(uint6
     {
       if (*v20 != v9)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(eventsCopy);
       }
 
-      v12 = [v5 modifierForEvent:*(*(&v19 + 1) + 8 * i)];
+      v12 = [configurationCopy modifierForEvent:*(*(&v19 + 1) + 8 * i)];
       [v12 flushInterval];
       if ((v10 > v13 || v10 == 0.0) && v13 > 0.0)
       {
@@ -2113,14 +2113,14 @@ void __50__AMSMetrics__beginFlushIntervalWithStyle_events___block_invoke_3(uint6
       }
     }
 
-    v8 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    v8 = [eventsCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
   }
 
   while (v8);
   if (v10 == 0.0)
   {
 LABEL_17:
-    v16 = [v5 modifierForEvent:0];
+    v16 = [configurationCopy modifierForEvent:0];
     [v16 flushInterval];
     v10 = v17;
   }
@@ -2128,7 +2128,7 @@ LABEL_17:
   return v10;
 }
 
-- (id)_handleFlushIntervalWithStyle:(int64_t)a3
+- (id)_handleFlushIntervalWithStyle:(int64_t)style
 {
   v5 = +[AMSMetrics sharedTimerQueue];
   dispatch_assert_queue_V2(v5);
@@ -2141,7 +2141,7 @@ LABEL_17:
   aBlock[2] = __44__AMSMetrics__handleFlushIntervalWithStyle___block_invoke;
   aBlock[3] = &unk_1E73B93E0;
   objc_copyWeak(v26, &location);
-  v26[1] = a3;
+  v26[1] = style;
   aBlock[4] = self;
   v8 = v7;
   v25 = v8;
@@ -2158,7 +2158,7 @@ LABEL_17:
     v20[3] = &unk_1E73B9408;
     v20[4] = self;
     v22 = v10;
-    v23 = a3;
+    styleCopy = style;
     v21 = v9;
     v13 = v20;
     v14 = v11;
@@ -2318,17 +2318,17 @@ void __44__AMSMetrics__handleFlushIntervalWithStyle___block_invoke_2(uint64_t a1
   }
 }
 
-- (id)_modifiedEvents:(id)a3
+- (id)_modifiedEvents:(id)events
 {
-  v4 = a3;
-  v5 = [(AMSMetrics *)self treatmentStore];
+  eventsCopy = events;
+  treatmentStore = [(AMSMetrics *)self treatmentStore];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __30__AMSMetrics__modifiedEvents___block_invoke;
   v10[3] = &unk_1E73B9458;
-  v11 = v5;
-  v6 = v5;
-  v7 = [v4 ams_mapWithTransform:v10];
+  v11 = treatmentStore;
+  v6 = treatmentStore;
+  v7 = [eventsCopy ams_mapWithTransform:v10];
 
   v8 = [AMSPromise promiseWithAll:v7];
 
@@ -2370,7 +2370,7 @@ id __30__AMSMetrics__modifiedEvents___block_invoke_2(uint64_t a1, void *a2)
   return v5;
 }
 
-- (BOOL)_scheduledFlushAllowedForStyle:(int64_t)a3
+- (BOOL)_scheduledFlushAllowedForStyle:(int64_t)style
 {
   os_unfair_lock_lock_with_options();
   if (!self->_flushTimerEnabled || !+[AMSMetrics flushTimerEnabled])
@@ -2378,7 +2378,7 @@ id __30__AMSMetrics__modifiedEvents___block_invoke_2(uint64_t a1, void *a2)
     goto LABEL_7;
   }
 
-  switch(a3)
+  switch(style)
   {
     case 0:
       LOBYTE(v5) = 1;
@@ -2399,13 +2399,13 @@ LABEL_7:
   return v5;
 }
 
-- (AMSMetrics)initWithContainerId:(id)a3 bagContract:(id)a4
+- (AMSMetrics)initWithContainerId:(id)id bagContract:(id)contract
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[AMSContractBagShim alloc] initWithBagContract:v6];
+  contractCopy = contract;
+  idCopy = id;
+  v8 = [[AMSContractBagShim alloc] initWithBagContract:contractCopy];
 
-  v9 = [(AMSMetrics *)self initWithContainerID:v7 bag:v8];
+  v9 = [(AMSMetrics *)self initWithContainerID:idCopy bag:v8];
   return v9;
 }
 
@@ -2418,19 +2418,19 @@ LABEL_7:
   return v5;
 }
 
-- (void)setBagContract:(id)a3
+- (void)setBagContract:(id)contract
 {
-  v4 = a3;
-  v5 = [[AMSContractBagShim alloc] initWithBagContract:v4];
+  contractCopy = contract;
+  v5 = [[AMSContractBagShim alloc] initWithBagContract:contractCopy];
 
   [(AMSMetrics *)self setBag:v5];
 }
 
-- (void)_applicationDidBecomeActive:(id)a3
+- (void)_applicationDidBecomeActive:(id)active
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = [(AMSMetrics *)self flushOnDidBecomeActiveBlock];
-  if (v4)
+  flushOnDidBecomeActiveBlock = [(AMSMetrics *)self flushOnDidBecomeActiveBlock];
+  if (flushOnDidBecomeActiveBlock)
   {
     v5 = +[AMSLogConfig sharedMetricsConfig];
     if (!v5)
@@ -2438,8 +2438,8 @@ LABEL_7:
       v5 = +[AMSLogConfig sharedConfig];
     }
 
-    v6 = [v5 OSLogObject];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v5 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v7 = objc_opt_class();
       v8 = v7;
@@ -2448,11 +2448,11 @@ LABEL_7:
       v11 = v7;
       v12 = 2114;
       v13 = v9;
-      _os_log_impl(&dword_192869000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Running deferred flush after app became active", &v10, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Running deferred flush after app became active", &v10, 0x16u);
     }
 
     [(AMSMetrics *)self setFlushOnDidBecomeActiveBlock:0];
-    v4[2](v4);
+    flushOnDidBecomeActiveBlock[2](flushOnDidBecomeActiveBlock);
   }
 }
 

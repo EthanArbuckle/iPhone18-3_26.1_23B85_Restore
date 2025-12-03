@@ -8,12 +8,12 @@
 {
   if (a3)
   {
-    return [a1 setProperty:a3 forKey:@"cnfreg-account"];
+    return [self setProperty:a3 forKey:@"cnfreg-account"];
   }
 
   else
   {
-    return [a1 removePropertyForKey:@"cnfreg-account"];
+    return [self removePropertyForKey:@"cnfreg-account"];
   }
 }
 

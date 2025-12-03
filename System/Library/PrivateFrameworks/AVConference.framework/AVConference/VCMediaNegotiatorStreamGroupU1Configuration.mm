@@ -1,26 +1,26 @@
 @interface VCMediaNegotiatorStreamGroupU1Configuration
-+ (BOOL)ssrcForStreamGroup:(unsigned int)a3 localConfig:(id)a4 ssrc:(unsigned int *)a5;
-+ (BOOL)updateCommonNegotiatedVideoSettings:(id)a3 localU1Config:(id)a4 remoteU1Config:(id)a5;
-+ (BOOL)updateVideoPayloadsAndParametersForU1Config:(id)a3;
-+ (id)negotiatedAudioSettingsForGroupID:(unsigned int)a3 localU1Config:(id)a4 remoteU1Config:(id)a5;
-+ (id)negotiatedMicrophoneSettingsBetweenLocalU1Config:(id)a3 remoteU1Config:(id)a4;
-+ (id)negotiatedScreenSettingsBetweenLocalU1Config:(id)a3 remoteU1Config:(id)a4;
-+ (id)negotiatedSystemAudioSettingsBetweenLocalU1Config:(id)a3 remoteU1Config:(id)a4;
-+ (id)negotiatedVideoSettingsBetweenLocalU1Config:(id)a3 remoteU1Config:(id)a4 streamGroupID:(unsigned int)a5;
-+ (id)negotiatedVideoSettingsForGroupID:(unsigned int)a3 localU1Config:(id)a4 remoteU1Config:(id)a5;
-+ (int64_t)negotiateU1CipherSuiteForStreamGroupID:(unsigned int)a3 remoteSupportedCipherSuites:(id)a4;
-+ (void)negotiateFeatureStrings:(id)a3 localU1Config:(id)a4 remoteU1Config:(id)a5;
-+ (void)updateBodyDataU1Config:(id)a3 bodyDataConfiguration:(id)a4;
-+ (void)updateCameraU1Config:(id)a3 cameraConfiguration:(id)a4;
-+ (void)updateFaceTextureU1Config:(id)a3 faceTextureConfiguration:(id)a4;
-+ (void)updateScreenU1Config:(id)a3 screenConfiguration:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (BOOL)ssrcForStreamGroup:(unsigned int)group localConfig:(id)config ssrc:(unsigned int *)ssrc;
++ (BOOL)updateCommonNegotiatedVideoSettings:(id)settings localU1Config:(id)config remoteU1Config:(id)u1Config;
++ (BOOL)updateVideoPayloadsAndParametersForU1Config:(id)config;
++ (id)negotiatedAudioSettingsForGroupID:(unsigned int)d localU1Config:(id)config remoteU1Config:(id)u1Config;
++ (id)negotiatedMicrophoneSettingsBetweenLocalU1Config:(id)config remoteU1Config:(id)u1Config;
++ (id)negotiatedScreenSettingsBetweenLocalU1Config:(id)config remoteU1Config:(id)u1Config;
++ (id)negotiatedSystemAudioSettingsBetweenLocalU1Config:(id)config remoteU1Config:(id)u1Config;
++ (id)negotiatedVideoSettingsBetweenLocalU1Config:(id)config remoteU1Config:(id)u1Config streamGroupID:(unsigned int)d;
++ (id)negotiatedVideoSettingsForGroupID:(unsigned int)d localU1Config:(id)config remoteU1Config:(id)u1Config;
++ (int64_t)negotiateU1CipherSuiteForStreamGroupID:(unsigned int)d remoteSupportedCipherSuites:(id)suites;
++ (void)negotiateFeatureStrings:(id)strings localU1Config:(id)config remoteU1Config:(id)u1Config;
++ (void)updateBodyDataU1Config:(id)config bodyDataConfiguration:(id)configuration;
++ (void)updateCameraU1Config:(id)config cameraConfiguration:(id)configuration;
++ (void)updateFaceTextureU1Config:(id)config faceTextureConfiguration:(id)configuration;
++ (void)updateScreenU1Config:(id)config screenConfiguration:(id)configuration;
+- (BOOL)isEqual:(id)equal;
 - (VCMediaNegotiatorStreamGroupU1Configuration)init;
-- (VCMediaNegotiatorStreamGroupU1Configuration)initWithSSRC:(unsigned int)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initStreamGroupU1ConfigForGroupId:(unsigned int)a3 withLocalConfig:(id)a4;
+- (VCMediaNegotiatorStreamGroupU1Configuration)initWithSSRC:(unsigned int)c;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initStreamGroupU1ConfigForGroupId:(unsigned int)id withLocalConfig:(id)config;
 - (void)dealloc;
-- (void)updateWithAudioConfiguration:(id)a3 mediaType:(unsigned __int8)a4;
+- (void)updateWithAudioConfiguration:(id)configuration mediaType:(unsigned __int8)type;
 @end
 
 @implementation VCMediaNegotiatorStreamGroupU1Configuration
@@ -33,12 +33,12 @@
   return [(VCMediaNegotiatorStreamGroupU1Configuration *)&v3 init];
 }
 
-- (VCMediaNegotiatorStreamGroupU1Configuration)initWithSSRC:(unsigned int)a3
+- (VCMediaNegotiatorStreamGroupU1Configuration)initWithSSRC:(unsigned int)c
 {
   result = [(VCMediaNegotiatorStreamGroupU1Configuration *)self init];
   if (result)
   {
-    result->_ssrc = a3;
+    result->_ssrc = c;
   }
 
   return result;
@@ -53,44 +53,44 @@
   [(VCMediaNegotiatorStreamGroupU1Configuration *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (!a3)
+  if (!equal)
   {
     LOBYTE(v6) = 0;
     return v6;
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || [a3 supportedDirection] != self->_supportedDirection || objc_msgSend(a3, "ssrc") != self->_ssrc || self->_allowAudioRecording != objc_msgSend(a3, "allowAudioRecording") || objc_msgSend(a3, "screenPixelCount") != self->_screenPixelCount)
+  if ((objc_opt_isKindOfClass() & 1) == 0 || [equal supportedDirection] != self->_supportedDirection || objc_msgSend(equal, "ssrc") != self->_ssrc || self->_allowAudioRecording != objc_msgSend(equal, "allowAudioRecording") || objc_msgSend(equal, "screenPixelCount") != self->_screenPixelCount)
   {
     goto LABEL_26;
   }
 
-  v5 = [a3 audioPayloads];
-  if (v5 == self->_audioPayloads || (v6 = [(NSSet *)v5 isEqual:?]) != 0)
+  audioPayloads = [equal audioPayloads];
+  if (audioPayloads == self->_audioPayloads || (v6 = [(NSSet *)audioPayloads isEqual:?]) != 0)
   {
-    v7 = [a3 supportedCipherSuites];
-    if (v7 == self->_supportedCipherSuites || (v6 = [(NSOrderedSet *)v7 isEqual:?]) != 0)
+    supportedCipherSuites = [equal supportedCipherSuites];
+    if (supportedCipherSuites == self->_supportedCipherSuites || (v6 = [(NSOrderedSet *)supportedCipherSuites isEqual:?]) != 0)
     {
-      v8 = [a3 payloadPreference];
-      if (v8 == self->_payloadPreference || (v6 = [(NSArray *)v8 isEqual:?]) != 0)
+      payloadPreference = [equal payloadPreference];
+      if (payloadPreference == self->_payloadPreference || (v6 = [(NSArray *)payloadPreference isEqual:?]) != 0)
       {
-        v9 = [a3 videoPayloads];
-        if (v9 == self->_videoPayloads || (v6 = [(NSArray *)v9 isEqual:?]) != 0)
+        videoPayloads = [equal videoPayloads];
+        if (videoPayloads == self->_videoPayloads || (v6 = [(NSArray *)videoPayloads isEqual:?]) != 0)
         {
-          v10 = [a3 videoParameterSet];
-          if (v10 == self->_videoParameterSet || (v6 = [(NSArray *)v10 isEqual:?]) != 0)
+          videoParameterSet = [equal videoParameterSet];
+          if (videoParameterSet == self->_videoParameterSet || (v6 = [(NSArray *)videoParameterSet isEqual:?]) != 0)
           {
-            v11 = [a3 videoFeatureStrings];
-            if (v11 == self->_videoFeatureStrings || (v6 = [(NSDictionary *)v11 isEqual:?]) != 0)
+            videoFeatureStrings = [equal videoFeatureStrings];
+            if (videoFeatureStrings == self->_videoFeatureStrings || (v6 = [(NSDictionary *)videoFeatureStrings isEqual:?]) != 0)
             {
-              v12 = [a3 videoFeatureStringsFixedPosition];
-              if (v12 == self->_videoFeatureStringsFixedPosition || (v6 = [(NSDictionary *)v12 isEqual:?]) != 0)
+              videoFeatureStringsFixedPosition = [equal videoFeatureStringsFixedPosition];
+              if (videoFeatureStringsFixedPosition == self->_videoFeatureStringsFixedPosition || (v6 = [(NSDictionary *)videoFeatureStringsFixedPosition isEqual:?]) != 0)
               {
-                if ([a3 videoRuleCollections])
+                if ([equal videoRuleCollections])
                 {
-                  if ([objc_msgSend(a3 "videoRuleCollections")])
+                  if ([objc_msgSend(equal "videoRuleCollections")])
                   {
 LABEL_23:
                     LOBYTE(v6) = 1;
@@ -116,19 +116,19 @@ LABEL_26:
   return v6;
 }
 
-- (void)updateWithAudioConfiguration:(id)a3 mediaType:(unsigned __int8)a4
+- (void)updateWithAudioConfiguration:(id)configuration mediaType:(unsigned __int8)type
 {
-  v4 = a4;
-  self->_allowAudioRecording = [a3 allowAudioRecording];
+  typeCopy = type;
+  self->_allowAudioRecording = [configuration allowAudioRecording];
 
-  self->_audioPayloads = [a3 audioPayloads];
+  self->_audioPayloads = [configuration audioPayloads];
   v7 = &unk_1F579CFF0;
-  if (v4 != 4)
+  if (typeCopy != 4)
   {
     v7 = 0;
   }
 
-  if (v4 == 1)
+  if (typeCopy == 1)
   {
     v8 = &unk_1F579CFD8;
   }
@@ -141,13 +141,13 @@ LABEL_26:
   self->_payloadPreference = v8;
 }
 
-+ (void)updateCameraU1Config:(id)a3 cameraConfiguration:(id)a4
++ (void)updateCameraU1Config:(id)config cameraConfiguration:(id)configuration
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = [a4 videoRuleCollections];
-  [a3 setVideoRuleCollections:v6];
-  [a3 setVideoFeatureStrings:{objc_msgSend(a4, "videoFeatureStrings")}];
-  [a3 setVideoFeatureStringsFixedPosition:{objc_msgSend(a4, "videoFeatureStringsFixedPosition")}];
+  videoRuleCollections = [configuration videoRuleCollections];
+  [config setVideoRuleCollections:videoRuleCollections];
+  [config setVideoFeatureStrings:{objc_msgSend(configuration, "videoFeatureStrings")}];
+  [config setVideoFeatureStringsFixedPosition:{objc_msgSend(configuration, "videoFeatureStringsFixedPosition")}];
   ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule();
   v8 = MEMORY[0x1E6986650];
   if (ErrorLogLevelForModule >= 7)
@@ -163,7 +163,7 @@ LABEL_26:
       v32 = 1024;
       v33 = 161;
       v34 = 2112;
-      v35 = [a4 videoFeatureStrings];
+      videoFeatureStrings = [configuration videoFeatureStrings];
       _os_log_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d u1Config.videoFeatureStrings=%@", buf, 0x26u);
     }
   }
@@ -174,7 +174,7 @@ LABEL_26:
     v12 = *v8;
     if (os_log_type_enabled(*v8, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [a4 videoFeatureStringsFixedPosition];
+      videoFeatureStringsFixedPosition = [configuration videoFeatureStringsFixedPosition];
       *buf = 136315906;
       *&buf[4] = v11;
       v30 = 2080;
@@ -182,7 +182,7 @@ LABEL_26:
       v32 = 1024;
       v33 = 162;
       v34 = 2112;
-      v35 = v13;
+      videoFeatureStrings = videoFeatureStringsFixedPosition;
       _os_log_impl(&dword_1DB56E000, v12, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d u1Config.videoFeatureStringsFixedPosition=%@", buf, 0x26u);
     }
   }
@@ -208,8 +208,8 @@ LABEL_22:
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v17 = [v6 supportedPayloads];
-  v18 = [v17 countByEnumeratingWithState:&v25 objects:v24 count:16];
+  supportedPayloads = [videoRuleCollections supportedPayloads];
+  v18 = [supportedPayloads countByEnumeratingWithState:&v25 objects:v24 count:16];
   if (v18)
   {
     v19 = v18;
@@ -220,30 +220,30 @@ LABEL_22:
       {
         if (*v26 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(supportedPayloads);
         }
 
-        v22 = [*(*(&v25 + 1) + 8 * i) unsignedIntValue];
-        if (v22 != 126)
+        unsignedIntValue = [*(*(&v25 + 1) + 8 * i) unsignedIntValue];
+        if (unsignedIntValue != 126)
         {
-          v23 = v22;
-          [v14 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", v22)}];
+          v23 = unsignedIntValue;
+          [v14 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", unsignedIntValue)}];
           [v16 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", VCVideoParamaterSets_DefaultSupportedSets(v23))}];
         }
       }
 
-      v19 = [v17 countByEnumeratingWithState:&v25 objects:v24 count:16];
+      v19 = [supportedPayloads countByEnumeratingWithState:&v25 objects:v24 count:16];
     }
 
     while (v19);
   }
 
-  [a3 setVideoPayloads:v14];
-  [a3 setVideoParameterSet:v16];
+  [config setVideoPayloads:v14];
+  [config setVideoParameterSet:v16];
 LABEL_19:
 }
 
-+ (BOOL)updateVideoPayloadsAndParametersForU1Config:(id)a3
++ (BOOL)updateVideoPayloadsAndParametersForU1Config:(id)config
 {
   v22 = *MEMORY[0x1E69E9840];
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -268,7 +268,7 @@ LABEL_14:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = [objc_msgSend(a3 "videoRuleCollections")];
+  v7 = [objc_msgSend(config "videoRuleCollections")];
   v8 = [v7 countByEnumeratingWithState:&v18 objects:v17 count:16];
   if (v8)
   {
@@ -283,9 +283,9 @@ LABEL_14:
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v18 + 1) + 8 * i) unsignedIntValue];
-        [v4 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", v12)}];
-        [v6 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", VCVideoParamaterSets_DefaultSupportedSets(v12))}];
+        unsignedIntValue = [*(*(&v18 + 1) + 8 * i) unsignedIntValue];
+        [v4 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", unsignedIntValue)}];
+        [v6 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", VCVideoParamaterSets_DefaultSupportedSets(unsignedIntValue))}];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v18 objects:v17 count:16];
@@ -294,28 +294,28 @@ LABEL_14:
     while (v9);
   }
 
-  [a3 setVideoPayloads:v4];
-  [a3 setVideoParameterSet:v6];
+  [config setVideoPayloads:v4];
+  [config setVideoParameterSet:v6];
   v13 = 1;
 LABEL_11:
 
   return v13;
 }
 
-+ (void)updateScreenU1Config:(id)a3 screenConfiguration:(id)a4
++ (void)updateScreenU1Config:(id)config screenConfiguration:(id)configuration
 {
-  [a3 setScreenPixelCount:5603328];
+  [config setScreenPixelCount:5603328];
   v7 = +[VCVideoRuleCollectionsScreen newU1VideoRuleCollections];
   if (v7)
   {
-    [a3 setVideoRuleCollections:v7];
-    [a3 setVideoFeatureStrings:{objc_msgSend(a4, "videoFeatureStrings")}];
-    if ([a3 videoFeatureStrings])
+    [config setVideoRuleCollections:v7];
+    [config setVideoFeatureStrings:{objc_msgSend(configuration, "videoFeatureStrings")}];
+    if ([config videoFeatureStrings])
     {
-      [a3 setVideoFeatureStringsFixedPosition:{objc_msgSend(a4, "videoFeatureStringsFixedPosition")}];
-      if ([a3 videoFeatureStringsFixedPosition])
+      [config setVideoFeatureStringsFixedPosition:{objc_msgSend(configuration, "videoFeatureStringsFixedPosition")}];
+      if ([config videoFeatureStringsFixedPosition])
       {
-        if (([a1 updateVideoPayloadsAndParametersForU1Config:a3] & 1) == 0)
+        if (([self updateVideoPayloadsAndParametersForU1Config:config] & 1) == 0)
         {
           +[VCMediaNegotiatorStreamGroupU1Configuration updateScreenU1Config:screenConfiguration:];
         }
@@ -339,16 +339,16 @@ LABEL_11:
   }
 }
 
-+ (void)updateFaceTextureU1Config:(id)a3 faceTextureConfiguration:(id)a4
++ (void)updateFaceTextureU1Config:(id)config faceTextureConfiguration:(id)configuration
 {
-  v7 = [a4 videoRuleCollections];
-  if (v7)
+  videoRuleCollections = [configuration videoRuleCollections];
+  if (videoRuleCollections)
   {
-    [a3 setVideoRuleCollections:v7];
-    [a3 setVideoFeatureStringsFixedPosition:{objc_msgSend(a4, "videoFeatureStringsFixedPosition")}];
-    if ([a3 videoFeatureStringsFixedPosition])
+    [config setVideoRuleCollections:videoRuleCollections];
+    [config setVideoFeatureStringsFixedPosition:{objc_msgSend(configuration, "videoFeatureStringsFixedPosition")}];
+    if ([config videoFeatureStringsFixedPosition])
     {
-      if (([a1 updateVideoPayloadsAndParametersForU1Config:a3] & 1) == 0)
+      if (([self updateVideoPayloadsAndParametersForU1Config:config] & 1) == 0)
       {
         +[VCMediaNegotiatorStreamGroupU1Configuration updateFaceTextureU1Config:faceTextureConfiguration:];
       }
@@ -366,11 +366,11 @@ LABEL_11:
   }
 }
 
-+ (void)updateBodyDataU1Config:(id)a3 bodyDataConfiguration:(id)a4
++ (void)updateBodyDataU1Config:(id)config bodyDataConfiguration:(id)configuration
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = [a4 videoRuleCollections];
-  if (!v5)
+  videoRuleCollections = [configuration videoRuleCollections];
+  if (!videoRuleCollections)
   {
     +[VCMediaNegotiatorStreamGroupU1Configuration updateBodyDataU1Config:bodyDataConfiguration:];
 LABEL_14:
@@ -378,8 +378,8 @@ LABEL_14:
     goto LABEL_11;
   }
 
-  v6 = v5;
-  [a3 setVideoRuleCollections:v5];
+  v6 = videoRuleCollections;
+  [config setVideoRuleCollections:videoRuleCollections];
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
   if (!v7)
   {
@@ -392,8 +392,8 @@ LABEL_14:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v9 = [v6 supportedPayloads];
-  v10 = [v9 countByEnumeratingWithState:&v17 objects:v16 count:16];
+  supportedPayloads = [v6 supportedPayloads];
+  v10 = [supportedPayloads countByEnumeratingWithState:&v17 objects:v16 count:16];
   if (v10)
   {
     v11 = v10;
@@ -405,28 +405,28 @@ LABEL_14:
       {
         if (*v18 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(supportedPayloads);
         }
 
-        v14 = [*(*(&v17 + 1) + 8 * v13) unsignedIntValue];
-        [v8 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", v14)}];
+        unsignedIntValue = [*(*(&v17 + 1) + 8 * v13) unsignedIntValue];
+        [v8 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", unsignedIntValue)}];
         ++v13;
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v17 objects:v16 count:16];
+      v11 = [supportedPayloads countByEnumeratingWithState:&v17 objects:v16 count:16];
     }
 
     while (v11);
   }
 
-  [a3 setVideoPayloads:v8];
+  [config setVideoPayloads:v8];
 LABEL_11:
 }
 
-- (id)initStreamGroupU1ConfigForGroupId:(unsigned int)a3 withLocalConfig:(id)a4
+- (id)initStreamGroupU1ConfigForGroupId:(unsigned int)id withLocalConfig:(id)config
 {
-  v5 = *&a3;
+  v5 = *&id;
   v22 = *MEMORY[0x1E69E9840];
   v14 = 0;
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -447,7 +447,7 @@ LABEL_11:
     }
   }
 
-  if (![VCMediaNegotiatorStreamGroupU1Configuration ssrcForStreamGroup:v5 localConfig:a4 ssrc:&v14])
+  if (![VCMediaNegotiatorStreamGroupU1Configuration ssrcForStreamGroup:v5 localConfig:config ssrc:&v14])
   {
     [VCMediaNegotiatorStreamGroupU1Configuration initStreamGroupU1ConfigForGroupId:v5 withLocalConfig:self];
     return 0;
@@ -462,7 +462,7 @@ LABEL_11:
 
   v10 = v9;
   v11 = VCMediaNegotiatorMediaType_MediaTypeFromStreamGroupID(v5);
-  v12 = [a4 mediaConfigurationForMediaType:v11];
+  v12 = [config mediaConfigurationForMediaType:v11];
   if (v5 <= 1835623281)
   {
     switch(v5)
@@ -497,40 +497,40 @@ LABEL_14:
 LABEL_18:
   v10->_supportedCipherSuites = [VCEncryptionRules supportedCipherSuitesForStreamGroupID:v5 isOneToOne:1];
   v10->_supportedDirection = 3;
-  v10->_videoFrameMetadataSupportedVersion = [a4 videoFrameMetadataSupportedVersion];
-  v10->_fullScreenFrontCameraCaptureSupported = [a4 frontCameraFullScreenSupported];
-  v10->_fullScreenBackCameraCaptureSupported = [a4 backCameraFullScreenSupported];
-  v10->_deviceInitialOrientation = [a4 deviceInitialOrientation];
-  v10->_enableACC24ForU1 = [a4 enableACC24ForU1];
+  v10->_videoFrameMetadataSupportedVersion = [config videoFrameMetadataSupportedVersion];
+  v10->_fullScreenFrontCameraCaptureSupported = [config frontCameraFullScreenSupported];
+  v10->_fullScreenBackCameraCaptureSupported = [config backCameraFullScreenSupported];
+  v10->_deviceInitialOrientation = [config deviceInitialOrientation];
+  v10->_enableACC24ForU1 = [config enableACC24ForU1];
   return v10;
 }
 
-+ (id)negotiatedAudioSettingsForGroupID:(unsigned int)a3 localU1Config:(id)a4 remoteU1Config:(id)a5
++ (id)negotiatedAudioSettingsForGroupID:(unsigned int)d localU1Config:(id)config remoteU1Config:(id)u1Config
 {
-  v6 = *&a3;
-  if (a3 == 1937339233)
+  v6 = *&d;
+  if (d == 1937339233)
   {
-    v8 = [VCMediaNegotiatorStreamGroupU1Configuration negotiatedSystemAudioSettingsBetweenLocalU1Config:a4 remoteU1Config:a5];
+    v8 = [VCMediaNegotiatorStreamGroupU1Configuration negotiatedSystemAudioSettingsBetweenLocalU1Config:config remoteU1Config:u1Config];
   }
 
   else
   {
-    if (a3 != 1835623282)
+    if (d != 1835623282)
     {
       v9 = 0;
       goto LABEL_7;
     }
 
-    v8 = [VCMediaNegotiatorStreamGroupU1Configuration negotiatedMicrophoneSettingsBetweenLocalU1Config:a4 remoteU1Config:a5];
+    v8 = [VCMediaNegotiatorStreamGroupU1Configuration negotiatedMicrophoneSettingsBetweenLocalU1Config:config remoteU1Config:u1Config];
   }
 
   v9 = v8;
 LABEL_7:
-  [v9 setCipherSuite:{objc_msgSend(a1, "negotiateU1CipherSuiteForStreamGroupID:remoteSupportedCipherSuites:", v6, objc_msgSend(a5, "supportedCipherSuites"))}];
+  [v9 setCipherSuite:{objc_msgSend(self, "negotiateU1CipherSuiteForStreamGroupID:remoteSupportedCipherSuites:", v6, objc_msgSend(u1Config, "supportedCipherSuites"))}];
   return v9;
 }
 
-+ (id)negotiatedSystemAudioSettingsBetweenLocalU1Config:(id)a3 remoteU1Config:(id)a4
++ (id)negotiatedSystemAudioSettingsBetweenLocalU1Config:(id)config remoteU1Config:(id)u1Config
 {
   v22 = *MEMORY[0x1E69E9840];
   v6 = +[VCHardwareSettings supportsDedicatedSystemAudioStream];
@@ -551,19 +551,19 @@ LABEL_7:
     }
   }
 
-  v10 = -[VCMediaNegotiatorResultsAudio initWithACC24ForU1Enabled:]([VCMediaNegotiatorResultsAudio alloc], "initWithACC24ForU1Enabled:", [a3 enableACC24ForU1]);
+  v10 = -[VCMediaNegotiatorResultsAudio initWithACC24ForU1Enabled:]([VCMediaNegotiatorResultsAudio alloc], "initWithACC24ForU1Enabled:", [config enableACC24ForU1]);
   if (!v10)
   {
     +[VCMediaNegotiatorStreamGroupU1Configuration negotiatedSystemAudioSettingsBetweenLocalU1Config:remoteU1Config:];
     goto LABEL_24;
   }
 
-  if ([a4 supportedDirection] == 2)
+  if ([u1Config supportedDirection] == 2)
   {
-    a4 = 0;
+    u1Config = 0;
   }
 
-  if (!a4)
+  if (!u1Config)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 5)
     {
@@ -583,7 +583,7 @@ LABEL_7:
 
     if (v6)
     {
-      v11 = 0;
+      ssrc = 0;
       goto LABEL_14;
     }
 
@@ -594,26 +594,26 @@ LABEL_24:
     return v10;
   }
 
-  v11 = [a4 ssrc];
+  ssrc = [u1Config ssrc];
 LABEL_14:
-  [(VCMediaNegotiatorResultsAudio *)v10 setRemoteSSRC:v11];
+  [(VCMediaNegotiatorResultsAudio *)v10 setRemoteSSRC:ssrc];
   [(VCMediaNegotiatorResultsAudio *)v10 setAudioUnitModel:65792];
   [(VCMediaNegotiatorResultsAudio *)v10 setUseSBR:1];
-  if ([a3 allowAudioRecording])
+  if ([config allowAudioRecording])
   {
-    v14 = [a4 allowAudioRecording];
+    allowAudioRecording = [u1Config allowAudioRecording];
   }
 
   else
   {
-    v14 = 0;
+    allowAudioRecording = 0;
   }
 
-  [(VCMediaNegotiatorResultsAudio *)v10 setAllowRecording:v14];
+  [(VCMediaNegotiatorResultsAudio *)v10 setAllowRecording:allowAudioRecording];
   [(VCMediaNegotiatorResultsAudio *)v10 setAllowSwitching:v7 == 128];
   if (v7 == 128)
   {
-    +[VCMediaNegotiatorBase setupNegotiatedAudioPayloads:negotiatedAudioSettings:primaryPayloadPreference:](VCMediaNegotiatorBase, "setupNegotiatedAudioPayloads:negotiatedAudioSettings:primaryPayloadPreference:", [a4 audioPayloads], v10, objc_msgSend(a3, "payloadPreference"));
+    +[VCMediaNegotiatorBase setupNegotiatedAudioPayloads:negotiatedAudioSettings:primaryPayloadPreference:](VCMediaNegotiatorBase, "setupNegotiatedAudioPayloads:negotiatedAudioSettings:primaryPayloadPreference:", [u1Config audioPayloads], v10, objc_msgSend(config, "payloadPreference"));
     if ([(VCMediaNegotiatorResultsAudio *)v10 primaryPayload]== 128 && v6)
     {
       +[VCMediaNegotiatorBase setupNegotiatedAudioPayloads:negotiatedAudioSettings:primaryPayloadPreference:](VCMediaNegotiatorBase, "setupNegotiatedAudioPayloads:negotiatedAudioSettings:primaryPayloadPreference:", [MEMORY[0x1E695DFD8] setWithArray:&unk_1F579D008], v10, &unk_1F579D020);
@@ -628,10 +628,10 @@ LABEL_14:
   return v10;
 }
 
-+ (int64_t)negotiateU1CipherSuiteForStreamGroupID:(unsigned int)a3 remoteSupportedCipherSuites:(id)a4
++ (int64_t)negotiateU1CipherSuiteForStreamGroupID:(unsigned int)d remoteSupportedCipherSuites:(id)suites
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = [VCEncryptionRules supportedCipherSuitesForStreamGroupID:*&a3 isOneToOne:1];
+  v6 = [VCEncryptionRules supportedCipherSuitesForStreamGroupID:*&d isOneToOne:1];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
@@ -651,9 +651,9 @@ LABEL_14:
         }
 
         v11 = *(*(&v31 + 1) + 8 * i);
-        if ([a4 containsObject:v11])
+        if ([suites containsObject:v11])
         {
-          v14 = [v11 integerValue];
+          integerValue = [v11 integerValue];
           if (VRTraceGetErrorLogLevelForModule() >= 7)
           {
             v15 = VRTraceErrorLogLevelToCSTR();
@@ -667,16 +667,16 @@ LABEL_14:
               v22 = 1024;
               v23 = 377;
               v24 = 2080;
-              v25 = VCMediaStreamCipherSuite_Description(v14);
+              v25 = VCMediaStreamCipherSuite_Description(integerValue);
               v26 = 2048;
-              v27 = v14;
+              v27 = integerValue;
               v28 = 2080;
-              v29 = FourccToCStr(a3);
+              v29 = FourccToCStr(d);
               _os_log_impl(&dword_1DB56E000, v16, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Negotiating cipherSuite=%s [%ld] for streamGroupID=%s", &v18, 0x3Au);
             }
           }
 
-          return v14;
+          return integerValue;
         }
       }
 
@@ -703,7 +703,7 @@ LABEL_14:
       v22 = 1024;
       v23 = 381;
       v24 = 2080;
-      v25 = FourccToCStr(a3);
+      v25 = FourccToCStr(d);
       _os_log_impl(&dword_1DB56E000, v13, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Falling back to VCMediaStreamCipherSuiteCipherAES128AuthNoneRCCM3 for streamGroupID=%s", &v18, 0x26u);
     }
   }
@@ -711,10 +711,10 @@ LABEL_14:
   return 3;
 }
 
-+ (id)negotiatedMicrophoneSettingsBetweenLocalU1Config:(id)a3 remoteU1Config:(id)a4
++ (id)negotiatedMicrophoneSettingsBetweenLocalU1Config:(id)config remoteU1Config:(id)u1Config
 {
   v6 = +[VCAudioRuleCollection getForcedPayload];
-  v7 = -[VCMediaNegotiatorResultsAudio initWithACC24ForU1Enabled:]([VCMediaNegotiatorResultsAudio alloc], "initWithACC24ForU1Enabled:", [a3 enableACC24ForU1]);
+  v7 = -[VCMediaNegotiatorResultsAudio initWithACC24ForU1Enabled:]([VCMediaNegotiatorResultsAudio alloc], "initWithACC24ForU1Enabled:", [config enableACC24ForU1]);
   if (!v7)
   {
     +[VCMediaNegotiatorStreamGroupU1Configuration negotiatedMicrophoneSettingsBetweenLocalU1Config:remoteU1Config:];
@@ -724,31 +724,31 @@ LABEL_13:
     return v7;
   }
 
-  if (!a3 || !a4)
+  if (!config || !u1Config)
   {
     +[VCMediaNegotiatorStreamGroupU1Configuration negotiatedMicrophoneSettingsBetweenLocalU1Config:remoteU1Config:];
     goto LABEL_13;
   }
 
-  -[VCMediaNegotiatorResultsAudio setRemoteSSRC:](v7, "setRemoteSSRC:", [a4 ssrc]);
+  -[VCMediaNegotiatorResultsAudio setRemoteSSRC:](v7, "setRemoteSSRC:", [u1Config ssrc]);
   [(VCMediaNegotiatorResultsAudio *)v7 setAudioUnitModel:65792];
   [(VCMediaNegotiatorResultsAudio *)v7 setUseSBR:1];
-  if ([a3 allowAudioRecording])
+  if ([config allowAudioRecording])
   {
-    v8 = [a4 allowAudioRecording];
+    allowAudioRecording = [u1Config allowAudioRecording];
   }
 
   else
   {
-    v8 = 0;
+    allowAudioRecording = 0;
   }
 
-  [(VCMediaNegotiatorResultsAudio *)v7 setAllowRecording:v8];
+  [(VCMediaNegotiatorResultsAudio *)v7 setAllowRecording:allowAudioRecording];
   [(VCMediaNegotiatorResultsAudio *)v7 setAllowSwitching:v6 == 128];
   if (v6 == 128)
   {
-    v9 = +[VCMediaNegotiatorBase newNegotiatedAudioPayloadsWithLocalPayloads:remotePayloads:](VCMediaNegotiatorBase, "newNegotiatedAudioPayloadsWithLocalPayloads:remotePayloads:", [a3 audioPayloads], objc_msgSend(a4, "audioPayloads"));
-    +[VCMediaNegotiatorBase setupNegotiatedAudioPayloads:negotiatedAudioSettings:primaryPayloadPreference:](VCMediaNegotiatorBase, "setupNegotiatedAudioPayloads:negotiatedAudioSettings:primaryPayloadPreference:", v9, v7, [a3 payloadPreference]);
+    v9 = +[VCMediaNegotiatorBase newNegotiatedAudioPayloadsWithLocalPayloads:remotePayloads:](VCMediaNegotiatorBase, "newNegotiatedAudioPayloadsWithLocalPayloads:remotePayloads:", [config audioPayloads], objc_msgSend(u1Config, "audioPayloads"));
+    +[VCMediaNegotiatorBase setupNegotiatedAudioPayloads:negotiatedAudioSettings:primaryPayloadPreference:](VCMediaNegotiatorBase, "setupNegotiatedAudioPayloads:negotiatedAudioSettings:primaryPayloadPreference:", v9, v7, [config payloadPreference]);
   }
 
   else
@@ -759,38 +759,38 @@ LABEL_13:
   return v7;
 }
 
-+ (id)negotiatedVideoSettingsForGroupID:(unsigned int)a3 localU1Config:(id)a4 remoteU1Config:(id)a5
++ (id)negotiatedVideoSettingsForGroupID:(unsigned int)d localU1Config:(id)config remoteU1Config:(id)u1Config
 {
-  v7 = *&a3;
+  v7 = *&d;
   v36 = *MEMORY[0x1E69E9840];
-  if (a3 == 1935897189)
+  if (d == 1935897189)
   {
-    v9 = [VCMediaNegotiatorStreamGroupU1Configuration negotiatedScreenSettingsBetweenLocalU1Config:a4 remoteU1Config:a5];
+    v9 = [VCMediaNegotiatorStreamGroupU1Configuration negotiatedScreenSettingsBetweenLocalU1Config:config remoteU1Config:u1Config];
   }
 
   else
   {
-    v9 = [VCMediaNegotiatorStreamGroupU1Configuration negotiatedVideoSettingsBetweenLocalU1Config:a4 remoteU1Config:a5 streamGroupID:*&a3];
+    v9 = [VCMediaNegotiatorStreamGroupU1Configuration negotiatedVideoSettingsBetweenLocalU1Config:config remoteU1Config:u1Config streamGroupID:*&d];
   }
 
   v10 = v9;
-  [v9 setCipherSuite:{objc_msgSend(a1, "negotiateU1CipherSuiteForStreamGroupID:remoteSupportedCipherSuites:", v7, objc_msgSend(a5, "supportedCipherSuites"))}];
+  [v9 setCipherSuite:{objc_msgSend(self, "negotiateU1CipherSuiteForStreamGroupID:remoteSupportedCipherSuites:", v7, objc_msgSend(u1Config, "supportedCipherSuites"))}];
   if (v7 == 1667329381)
   {
     v11 = +[VCHardwareSettings supportsFullBleedReceive];
-    [v10 setAfbRxFrontCameraEnabled:{objc_msgSend(a5, "fullScreenFrontCameraCaptureSupported") & v11}];
-    [v10 setAfbRxBackCameraEnabled:{objc_msgSend(a5, "fullScreenBackCameraCaptureSupported") & v11}];
-    [v10 setRemoteDeviceInitialOrientation:{objc_msgSend(a5, "deviceInitialOrientation")}];
-    v12 = [a5 videoFrameMetadataSupportedVersion];
-    v13 = [a4 videoFrameMetadataSupportedVersion];
-    if (v12 >= v13)
+    [v10 setAfbRxFrontCameraEnabled:{objc_msgSend(u1Config, "fullScreenFrontCameraCaptureSupported") & v11}];
+    [v10 setAfbRxBackCameraEnabled:{objc_msgSend(u1Config, "fullScreenBackCameraCaptureSupported") & v11}];
+    [v10 setRemoteDeviceInitialOrientation:{objc_msgSend(u1Config, "deviceInitialOrientation")}];
+    videoFrameMetadataSupportedVersion = [u1Config videoFrameMetadataSupportedVersion];
+    videoFrameMetadataSupportedVersion2 = [config videoFrameMetadataSupportedVersion];
+    if (videoFrameMetadataSupportedVersion >= videoFrameMetadataSupportedVersion2)
     {
-      v14 = v13;
+      v14 = videoFrameMetadataSupportedVersion2;
     }
 
     else
     {
-      v14 = v12;
+      v14 = videoFrameMetadataSupportedVersion;
     }
 
     [v10 setVideoFrameMetadataSupportedVersion:v14];
@@ -807,17 +807,17 @@ LABEL_13:
         v22 = 1024;
         v23 = 438;
         v24 = 1024;
-        v25 = [v10 afbRxFrontCameraEnabled];
+        afbRxFrontCameraEnabled = [v10 afbRxFrontCameraEnabled];
         v26 = 1024;
-        v27 = [v10 afbRxBackCameraEnabled];
+        afbRxBackCameraEnabled = [v10 afbRxBackCameraEnabled];
         v28 = 1024;
-        v29 = [v10 remoteDeviceInitialOrientation];
+        remoteDeviceInitialOrientation = [v10 remoteDeviceInitialOrientation];
         v30 = 1024;
-        v31 = [v10 videoFrameMetadataSupportedVersion];
+        videoFrameMetadataSupportedVersion3 = [v10 videoFrameMetadataSupportedVersion];
         v32 = 1024;
-        v33 = [a4 videoFrameMetadataSupportedVersion];
+        videoFrameMetadataSupportedVersion4 = [config videoFrameMetadataSupportedVersion];
         v34 = 1024;
-        v35 = [a5 videoFrameMetadataSupportedVersion];
+        videoFrameMetadataSupportedVersion5 = [u1Config videoFrameMetadataSupportedVersion];
         _os_log_impl(&dword_1DB56E000, v16, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d [RDAR] afbRxFrontCameraEnabled=%d afbRxBackCameraEnabled=%d remoteDeviceInitialOrientation=%d videoFrameMetadataSupportedVersion=%d (L:%d R:%d)", &v18, 0x40u);
       }
     }
@@ -826,30 +826,30 @@ LABEL_13:
   return v10;
 }
 
-+ (id)negotiatedVideoSettingsBetweenLocalU1Config:(id)a3 remoteU1Config:(id)a4 streamGroupID:(unsigned int)a5
++ (id)negotiatedVideoSettingsBetweenLocalU1Config:(id)config remoteU1Config:(id)u1Config streamGroupID:(unsigned int)d
 {
   v8 = objc_alloc_init(VCMediaNegotiatorResultsVideo);
   v9 = v8;
   if (!v8)
   {
-    [VCMediaNegotiatorStreamGroupU1Configuration negotiatedVideoSettingsBetweenLocalU1Config:a5 remoteU1Config:? streamGroupID:?];
+    [VCMediaNegotiatorStreamGroupU1Configuration negotiatedVideoSettingsBetweenLocalU1Config:d remoteU1Config:? streamGroupID:?];
     goto LABEL_6;
   }
 
   [(VCMediaNegotiatorResultsVideo *)v8 setIsSupported:0];
-  if (!a3 || !a4)
+  if (!config || !u1Config)
   {
-    [VCMediaNegotiatorStreamGroupU1Configuration negotiatedVideoSettingsBetweenLocalU1Config:a5 remoteU1Config:? streamGroupID:?];
+    [VCMediaNegotiatorStreamGroupU1Configuration negotiatedVideoSettingsBetweenLocalU1Config:d remoteU1Config:? streamGroupID:?];
     goto LABEL_6;
   }
 
-  if (![objc_msgSend(objc_msgSend(a3 "videoRuleCollections")])
+  if (![objc_msgSend(objc_msgSend(config "videoRuleCollections")])
   {
-    [VCMediaNegotiatorStreamGroupU1Configuration negotiatedVideoSettingsBetweenLocalU1Config:a5 remoteU1Config:? streamGroupID:?];
+    [VCMediaNegotiatorStreamGroupU1Configuration negotiatedVideoSettingsBetweenLocalU1Config:d remoteU1Config:? streamGroupID:?];
     goto LABEL_6;
   }
 
-  if (![VCMediaNegotiatorStreamGroupU1Configuration updateCommonNegotiatedVideoSettings:v9 localU1Config:a3 remoteU1Config:a4])
+  if (![VCMediaNegotiatorStreamGroupU1Configuration updateCommonNegotiatedVideoSettings:v9 localU1Config:config remoteU1Config:u1Config])
   {
 LABEL_6:
 
@@ -859,7 +859,7 @@ LABEL_6:
   return v9;
 }
 
-+ (id)negotiatedScreenSettingsBetweenLocalU1Config:(id)a3 remoteU1Config:(id)a4
++ (id)negotiatedScreenSettingsBetweenLocalU1Config:(id)config remoteU1Config:(id)u1Config
 {
   v6 = objc_alloc_init(VCMediaNegotiatorResultsVideo);
   v7 = v6;
@@ -870,19 +870,19 @@ LABEL_6:
   }
 
   [(VCMediaNegotiatorResultsVideo *)v6 setIsSupported:0];
-  if (!a3 || !a4)
+  if (!config || !u1Config)
   {
     +[VCMediaNegotiatorStreamGroupU1Configuration negotiatedScreenSettingsBetweenLocalU1Config:remoteU1Config:];
     goto LABEL_10;
   }
 
-  if (![objc_msgSend(objc_msgSend(a3 "videoRuleCollections")])
+  if (![objc_msgSend(objc_msgSend(config "videoRuleCollections")])
   {
     +[VCMediaNegotiatorStreamGroupU1Configuration negotiatedScreenSettingsBetweenLocalU1Config:remoteU1Config:];
     goto LABEL_10;
   }
 
-  +[VideoUtil computeResolutionForMainDisplayWithMaxScreenPixelCount:](VideoUtil, "computeResolutionForMainDisplayWithMaxScreenPixelCount:", [a4 screenPixelCount]);
+  +[VideoUtil computeResolutionForMainDisplayWithMaxScreenPixelCount:](VideoUtil, "computeResolutionForMainDisplayWithMaxScreenPixelCount:", [u1Config screenPixelCount]);
   if (v8)
   {
     v10 = v9 == 0;
@@ -904,7 +904,7 @@ LABEL_6:
   [(VCMediaNegotiatorResultsVideo *)v7 setCustomVideoHeight:v11];
   [(VCMediaNegotiatorResultsVideo *)v7 setIsRTCPFBEnabled:0];
   [(VCMediaNegotiatorResultsVideo *)v7 addPixelFormatSet:&unk_1F57999C0];
-  if (![VCMediaNegotiatorStreamGroupU1Configuration updateCommonNegotiatedVideoSettings:v7 localU1Config:a3 remoteU1Config:a4])
+  if (![VCMediaNegotiatorStreamGroupU1Configuration updateCommonNegotiatedVideoSettings:v7 localU1Config:config remoteU1Config:u1Config])
   {
 LABEL_10:
 
@@ -914,24 +914,24 @@ LABEL_10:
   return v7;
 }
 
-+ (void)negotiateFeatureStrings:(id)a3 localU1Config:(id)a4 remoteU1Config:(id)a5
++ (void)negotiateFeatureStrings:(id)strings localU1Config:(id)config remoteU1Config:(id)u1Config
 {
-  v6 = a4;
+  configCopy3 = config;
   v61 = *MEMORY[0x1E69E9840];
-  if (_os_feature_enabled_impl() && [v6 videoFeatureStringsFixedPosition] && objc_msgSend(a5, "videoFeatureStringsFixedPosition"))
+  if (_os_feature_enabled_impl() && [configCopy3 videoFeatureStringsFixedPosition] && objc_msgSend(u1Config, "videoFeatureStringsFixedPosition"))
   {
-    v32 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v57 = 0u;
     v58 = 0u;
     v59 = 0u;
     v60 = 0u;
-    obj = [v6 videoFeatureStringsFixedPosition];
+    obj = [configCopy3 videoFeatureStringsFixedPosition];
     v35 = [obj countByEnumeratingWithState:&v57 objects:v56 count:16];
     if (v35)
     {
       v8 = *v58;
       v30 = *v58;
-      v31 = a5;
+      u1ConfigCopy = u1Config;
       do
       {
         for (i = 0; i != v35; ++i)
@@ -942,9 +942,9 @@ LABEL_10:
           }
 
           v10 = *(*(&v57 + 1) + 8 * i);
-          v11 = [objc_msgSend(v6 "videoFeatureStringsFixedPosition")];
+          v11 = [objc_msgSend(configCopy3 "videoFeatureStringsFixedPosition")];
           v36 = v10;
-          v12 = [objc_msgSend(a5 "videoFeatureStringsFixedPosition")];
+          v12 = [objc_msgSend(u1Config "videoFeatureStringsFixedPosition")];
           if (v11)
           {
             v13 = v12 == 0;
@@ -992,11 +992,11 @@ LABEL_10:
               while (v17);
             }
 
-            [v32 setObject:v15 forKeyedSubscript:v36];
+            [dictionary setObject:v15 forKeyedSubscript:v36];
 
             v8 = v30;
-            a5 = v31;
-            v6 = a4;
+            u1Config = u1ConfigCopy;
+            configCopy3 = config;
           }
         }
 
@@ -1006,13 +1006,13 @@ LABEL_10:
       while (v35);
     }
 
-    [a3 setFeatureStrings:v32];
+    [strings setFeatureStrings:dictionary];
     v22 = 1;
   }
 
   else
   {
-    [a3 setFeatureStrings:{objc_msgSend(a5, "videoFeatureStrings")}];
+    [strings setFeatureStrings:{objc_msgSend(u1Config, "videoFeatureStrings")}];
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
       v23 = VRTraceErrorLogLevelToCSTR();
@@ -1028,10 +1028,10 @@ LABEL_10:
         v43 = 1024;
         v44 = _os_feature_enabled_impl();
         v45 = 2112;
-        v46 = [v6 videoFeatureStringsFixedPosition];
-        v6 = a4;
+        videoFeatureStringsFixedPosition = [configCopy3 videoFeatureStringsFixedPosition];
+        configCopy3 = config;
         v47 = 2112;
-        v48 = [a5 videoFeatureStringsFixedPosition];
+        videoFeatureStringsFixedPosition2 = [u1Config videoFeatureStringsFixedPosition];
         _os_log_impl(&dword_1DB56E000, v24, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d [FLS] Fallback to legacy. feature flag VideoCodecFeatureBitfield=%d, localFLSFixedPosition=%@, remoteFLSFixedPosition=%@", buf, 0x36u);
       }
     }
@@ -1045,17 +1045,17 @@ LABEL_10:
     v26 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      v27 = [a3 featureStrings];
+      featureStrings = [strings featureStrings];
       if (v22)
       {
-        v28 = [v6 videoFeatureStringsFixedPosition];
-        v29 = [a5 videoFeatureStringsFixedPosition];
+        videoFeatureStringsFixedPosition3 = [configCopy3 videoFeatureStringsFixedPosition];
+        videoFeatureStringsFixedPosition4 = [u1Config videoFeatureStringsFixedPosition];
       }
 
       else
       {
-        v28 = [v6 videoFeatureStrings];
-        v29 = [a5 videoFeatureStrings];
+        videoFeatureStringsFixedPosition3 = [configCopy3 videoFeatureStrings];
+        videoFeatureStringsFixedPosition4 = [u1Config videoFeatureStrings];
       }
 
       *buf = 136316674;
@@ -1067,35 +1067,35 @@ LABEL_10:
       v43 = 1024;
       v44 = v22;
       v45 = 2112;
-      v46 = v27;
+      videoFeatureStringsFixedPosition = featureStrings;
       v47 = 2112;
-      v48 = v28;
+      videoFeatureStringsFixedPosition2 = videoFeatureStringsFixedPosition3;
       v49 = 2112;
-      v50 = v29;
+      v50 = videoFeatureStringsFixedPosition4;
       _os_log_impl(&dword_1DB56E000, v26, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d [FLS] useFLSFixedPosition=%d. negotiatedSettings.videoFeatureStrings=%@. Local=%@, Remote=%@", buf, 0x40u);
     }
   }
 }
 
-+ (BOOL)updateCommonNegotiatedVideoSettings:(id)a3 localU1Config:(id)a4 remoteU1Config:(id)a5
++ (BOOL)updateCommonNegotiatedVideoSettings:(id)settings localU1Config:(id)config remoteU1Config:(id)u1Config
 {
   v27 = *MEMORY[0x1E69E9840];
-  [a1 negotiateFeatureStrings:? localU1Config:? remoteU1Config:?];
-  [a3 setRemoteSSRC:{objc_msgSend(a5, "ssrc")}];
+  [self negotiateFeatureStrings:? localU1Config:? remoteU1Config:?];
+  [settings setRemoteSSRC:{objc_msgSend(u1Config, "ssrc")}];
   v7 = 1;
-  [a3 setTilesPerFrame:1];
-  [a3 setLtrpEnabled:1];
-  v8 = [a5 videoParameterSet];
+  [settings setTilesPerFrame:1];
+  [settings setLtrpEnabled:1];
+  videoParameterSet = [u1Config videoParameterSet];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __112__VCMediaNegotiatorStreamGroupU1Configuration_updateCommonNegotiatedVideoSettings_localU1Config_remoteU1Config___block_invoke;
   v20[3] = &unk_1E85F6378;
-  v20[4] = a5;
-  v20[5] = a3;
-  v9 = a3;
-  [v8 enumerateObjectsUsingBlock:v20];
-  v10 = a5;
-  obj = [a5 payloadPreference];
+  v20[4] = u1Config;
+  v20[5] = settings;
+  settingsCopy = settings;
+  [videoParameterSet enumerateObjectsUsingBlock:v20];
+  u1ConfigCopy = u1Config;
+  obj = [u1Config payloadPreference];
   while (2)
   {
     v25 = 0u;
@@ -1117,7 +1117,7 @@ LABEL_4:
         }
 
         v15 = v7;
-        if (+[VCMediaNegotiatorBase selectBestVideoRuleForTransport:payload:encodingType:videoSettings:localVideoRuleCollection:remoteVideoRuleCollection:](VCMediaNegotiatorBase, "selectBestVideoRuleForTransport:payload:encodingType:videoSettings:localVideoRuleCollection:remoteVideoRuleCollection:", 1, [*(*(&v23 + 1) + 8 * v14) unsignedIntValue], v7, v9, objc_msgSend(a4, "videoRuleCollections"), objc_msgSend(v10, "videoRuleCollections")))
+        if (+[VCMediaNegotiatorBase selectBestVideoRuleForTransport:payload:encodingType:videoSettings:localVideoRuleCollection:remoteVideoRuleCollection:](VCMediaNegotiatorBase, "selectBestVideoRuleForTransport:payload:encodingType:videoSettings:localVideoRuleCollection:remoteVideoRuleCollection:", 1, [*(*(&v23 + 1) + 8 * v14) unsignedIntValue], v7, settingsCopy, objc_msgSend(config, "videoRuleCollections"), objc_msgSend(u1ConfigCopy, "videoRuleCollections")))
         {
           break;
         }
@@ -1141,7 +1141,7 @@ LABEL_4:
       }
 
       v16 = 1;
-      [v9 setIsSupported:1];
+      [settingsCopy setIsSupported:1];
     }
 
     else
@@ -1163,35 +1163,35 @@ uint64_t __112__VCMediaNegotiatorStreamGroupU1Configuration_updateCommonNegotiat
   return [v6 addParameterSet:a2 payload:v5];
 }
 
-+ (BOOL)ssrcForStreamGroup:(unsigned int)a3 localConfig:(id)a4 ssrc:(unsigned int *)a5
++ (BOOL)ssrcForStreamGroup:(unsigned int)group localConfig:(id)config ssrc:(unsigned int *)ssrc
 {
   result = 0;
-  if (a3 > 1835623281)
+  if (group > 1835623281)
   {
-    if (a3 != 1835623282 && a3 != 1937339233)
+    if (group != 1835623282 && group != 1937339233)
     {
       v6 = 1935897189;
 LABEL_8:
-      if (a3 != v6)
+      if (group != v6)
       {
         return result;
       }
     }
   }
 
-  else if (a3 != 1650745716 && a3 != 1667329381)
+  else if (group != 1650745716 && group != 1667329381)
   {
     v6 = 1718909044;
     goto LABEL_8;
   }
 
-  *a5 = [objc_msgSend(a4 mediaConfigurationForMediaType:{VCMediaNegotiatorMediaType_MediaTypeFromStreamGroupID(a3)), "ssrc"}];
+  *ssrc = [objc_msgSend(config mediaConfigurationForMediaType:{VCMediaNegotiatorMediaType_MediaTypeFromStreamGroupID(group)), "ssrc"}];
   return 1;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (v4)
   {

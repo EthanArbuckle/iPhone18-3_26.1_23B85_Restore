@@ -1,10 +1,10 @@
 @interface CCSetChangeXPCEventHandler
 + (id)sharedInstance;
 - (CCSetChangeXPCEventHandler)init;
-- (void)_handleXPCEvent:(id)a3;
-- (void)_setupEventHandlingWithListener:(id)a3;
-- (void)addListener:(id)a3;
-- (void)removeListener:(id)a3;
+- (void)_handleXPCEvent:(id)event;
+- (void)_setupEventHandlingWithListener:(id)listener;
+- (void)addListener:(id)listener;
+- (void)removeListener:(id)listener;
 @end
 
 @implementation CCSetChangeXPCEventHandler
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = __44__CCSetChangeXPCEventHandler_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance__pasOnceToken2_2 != -1)
   {
     dispatch_once(&sharedInstance__pasOnceToken2_2, block);
@@ -55,17 +55,17 @@ void __44__CCSetChangeXPCEventHandler_sharedInstance__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)_setupEventHandlingWithListener:(id)a3
+- (void)_setupEventHandlingWithListener:(id)listener
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CCSetChangeXPCEventHandler *)self queue];
-  dispatch_assert_queue_V2(v5);
+  listenerCopy = listener;
+  queue = [(CCSetChangeXPCEventHandler *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   listeners = self->_listeners;
   if (listeners)
   {
-    [(NSMutableArray *)listeners addObject:v4];
+    [(NSMutableArray *)listeners addObject:listenerCopy];
   }
 
   else
@@ -74,7 +74,7 @@ void __44__CCSetChangeXPCEventHandler_sharedInstance__block_invoke(uint64_t a1)
     v8 = self->_listeners;
     self->_listeners = v7;
 
-    [(NSMutableArray *)self->_listeners addObject:v4];
+    [(NSMutableArray *)self->_listeners addObject:listenerCopy];
     v9 = __biome_log_for_category();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
@@ -106,17 +106,17 @@ void __62__CCSetChangeXPCEventHandler__setupEventHandlingWithListener___block_in
   [WeakRetained _handleXPCEvent:v3];
 }
 
-- (void)_handleXPCEvent:(id)a3
+- (void)_handleXPCEvent:(id)event
 {
   v43 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CCSetChangeXPCEventHandler *)self queue];
-  dispatch_assert_queue_V2(v5);
+  eventCopy = event;
+  queue = [(CCSetChangeXPCEventHandler *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{xpc_dictionary_get_string(v4, *MEMORY[0x1E69E9E40])}];
+  v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{xpc_dictionary_get_string(eventCopy, *MEMORY[0x1E69E9E40])}];
   v37 = 0;
-  v27 = v4;
-  v7 = [CCSet setFromXPCDictionary:v4 error:&v37];
+  v27 = eventCopy;
+  v7 = [CCSet setFromXPCDictionary:eventCopy error:&v37];
   v8 = v37;
   v9 = __biome_log_for_category();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -140,8 +140,8 @@ void __62__CCSetChangeXPCEventHandler__setupEventHandlingWithListener___block_in
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v11 = [(CCSetChangeXPCEventHandler *)self listeners];
-  v12 = [v11 countByEnumeratingWithState:&v33 objects:v42 count:16];
+  listeners = [(CCSetChangeXPCEventHandler *)self listeners];
+  v12 = [listeners countByEnumeratingWithState:&v33 objects:v42 count:16];
   if (v12)
   {
     v13 = v12;
@@ -153,12 +153,12 @@ void __62__CCSetChangeXPCEventHandler__setupEventHandlingWithListener___block_in
       {
         if (*v34 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(listeners);
         }
 
         v16 = *(*(&v33 + 1) + 8 * v15);
-        v17 = [v16 identifier];
-        v18 = [v17 isEqual:v6];
+        identifier = [v16 identifier];
+        v18 = [identifier isEqual:v6];
 
         if (v18)
         {
@@ -175,11 +175,11 @@ void __62__CCSetChangeXPCEventHandler__setupEventHandlingWithListener___block_in
             goto LABEL_17;
           }
 
-          v19 = [v16 handlerBlock];
+          handlerBlock = [v16 handlerBlock];
 
-          if (v19)
+          if (handlerBlock)
           {
-            v20 = [v16 queue];
+            queue2 = [v16 queue];
             block[0] = MEMORY[0x1E69E9820];
             block[1] = 3221225472;
             block[2] = __46__CCSetChangeXPCEventHandler__handleXPCEvent___block_invoke;
@@ -187,14 +187,14 @@ void __62__CCSetChangeXPCEventHandler__setupEventHandlingWithListener___block_in
             v30 = v7;
             v31 = v16;
             v32 = v8;
-            dispatch_async(v20, block);
+            dispatch_async(queue2, block);
 
             goto LABEL_18;
           }
 
-          v22 = [v16 batchHandlerBlock];
+          batchHandlerBlock = [v16 batchHandlerBlock];
 
-          if (v22)
+          if (batchHandlerBlock)
           {
             if (v8)
             {
@@ -213,16 +213,16 @@ LABEL_17:
               goto LABEL_18;
             }
 
-            v23 = [v16 setChangeQueue];
-            [v23 enqueue:v7];
+            setChangeQueue = [v16 setChangeQueue];
+            [setChangeQueue enqueue:v7];
 
-            v24 = [v16 queue];
+            queue3 = [v16 queue];
             v28[0] = MEMORY[0x1E69E9820];
             v28[1] = 3221225472;
             v28[2] = __46__CCSetChangeXPCEventHandler__handleXPCEvent___block_invoke_11;
             v28[3] = &unk_1E7C8BE70;
             v28[4] = v16;
-            dispatch_async(v24, v28);
+            dispatch_async(queue3, v28);
           }
         }
 
@@ -231,7 +231,7 @@ LABEL_18:
       }
 
       while (v13 != v15);
-      v25 = [v11 countByEnumeratingWithState:&v33 objects:v42 count:16];
+      v25 = [listeners countByEnumeratingWithState:&v33 objects:v42 count:16];
       v13 = v25;
     }
 
@@ -326,18 +326,18 @@ void __46__CCSetChangeXPCEventHandler__handleXPCEvent___block_invoke_3(uint64_t 
   }
 }
 
-- (void)addListener:(id)a3
+- (void)addListener:(id)listener
 {
-  v4 = a3;
-  v5 = [(CCSetChangeXPCEventHandler *)self queue];
+  listenerCopy = listener;
+  queue = [(CCSetChangeXPCEventHandler *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __42__CCSetChangeXPCEventHandler_addListener___block_invoke;
   v7[3] = &unk_1E7C8B0D0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = listenerCopy;
+  v6 = listenerCopy;
+  dispatch_sync(queue, v7);
 }
 
 uint64_t __42__CCSetChangeXPCEventHandler_addListener___block_invoke(uint64_t a1)
@@ -361,18 +361,18 @@ uint64_t __42__CCSetChangeXPCEventHandler_addListener___block_invoke(uint64_t a1
   return result;
 }
 
-- (void)removeListener:(id)a3
+- (void)removeListener:(id)listener
 {
-  v4 = a3;
-  v5 = [(CCSetChangeXPCEventHandler *)self queue];
+  listenerCopy = listener;
+  queue = [(CCSetChangeXPCEventHandler *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __45__CCSetChangeXPCEventHandler_removeListener___block_invoke;
   v7[3] = &unk_1E7C8B0D0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = listenerCopy;
+  v6 = listenerCopy;
+  dispatch_sync(queue, v7);
 }
 
 void __45__CCSetChangeXPCEventHandler_removeListener___block_invoke(uint64_t a1)

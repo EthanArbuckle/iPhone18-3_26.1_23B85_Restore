@@ -1,22 +1,22 @@
 @interface TSAObject3DLayout
-- (CGAffineTransform)layoutTransformInInfoSpace:(SEL)a3;
-- (CGRect)baseFrameForFrameForCullingWithAdditionalTransform:(CGAffineTransform *)a3;
+- (CGAffineTransform)layoutTransformInInfoSpace:(SEL)space;
+- (CGRect)baseFrameForFrameForCullingWithAdditionalTransform:(CGAffineTransform *)transform;
 - (CGRect)boundsForStandardKnobs;
 - (CGRect)boundsInRoot;
 - (CGRect)boundsInfluencingExteriorWrap;
 - (CGRect)frameForCaptionPositioning;
 - (CGRect)p_visibleFrameFromInfo;
 - (CGRect)rectInRootForCalculatingActivityLineEndpoint;
-- (CGRect)rectInRootForPresentingAnnotationPopoverForSelectionPath:(id)a3;
-- (TSAObject3DLayout)initWithInfo:(id)a3;
+- (CGRect)rectInRootForPresentingAnnotationPopoverForSelectionPath:(id)path;
+- (TSAObject3DLayout)initWithInfo:(id)info;
 - (TSDLayoutGeometry)object3DGeometryInRoot;
 - (__n128)layout3DRotationFromInfo;
 - (double)opacity;
-- (double)p_normalizeAngleForVisualDisplay:(double)a3;
+- (double)p_normalizeAngleForVisualDisplay:(double)display;
 - (double)pitch;
 - (double)roll;
 - (double)yaw;
-- (id)computeInfoGeometryFromPureLayoutGeometry:(id)a3;
+- (id)computeInfoGeometryFromPureLayoutGeometry:(id)geometry;
 - (id)computeLayoutGeometry;
 - (id)i_computeWrapPath;
 - (id)layoutGeometryFromInfo;
@@ -25,18 +25,18 @@
 - (void)beginDynamicOperation;
 - (void)endDynamicOperation;
 - (void)endResize;
-- (void)processChangedProperty:(int)a3;
-- (void)willBeAddedToLayoutController:(id)a3;
+- (void)processChangedProperty:(int)property;
+- (void)willBeAddedToLayoutController:(id)controller;
 @end
 
 @implementation TSAObject3DLayout
 
-- (TSAObject3DLayout)initWithInfo:(id)a3
+- (TSAObject3DLayout)initWithInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v8.receiver = self;
   v8.super_class = TSAObject3DLayout;
-  v5 = [(TSAObject3DLayout *)&v8 initWithInfo:v4];
+  v5 = [(TSAObject3DLayout *)&v8 initWithInfo:infoCopy];
   if (v5)
   {
     objc_opt_class();
@@ -52,21 +52,21 @@
   return v5;
 }
 
-- (void)willBeAddedToLayoutController:(id)a3
+- (void)willBeAddedToLayoutController:(id)controller
 {
   v3.receiver = self;
   v3.super_class = TSAObject3DLayout;
-  [(TSAObject3DLayout *)&v3 willBeAddedToLayoutController:a3];
+  [(TSAObject3DLayout *)&v3 willBeAddedToLayoutController:controller];
 }
 
-- (void)processChangedProperty:(int)a3
+- (void)processChangedProperty:(int)property
 {
   v8.receiver = self;
   v8.super_class = TSAObject3DLayout;
   [(TSAObject3DLayout *)&v8 processChangedProperty:?];
-  if (a3 != 521)
+  if (property != 521)
   {
-    if (a3 != 529)
+    if (property != 529)
     {
       return;
     }
@@ -88,34 +88,34 @@
 
 - (id)layoutGeometryFromInfo
 {
-  if (!self->_dynamicInfoGeometry || (v3 = objc_alloc(MEMORY[0x277D80300]), (v6 = objc_msgSend_initWithInfoGeometry_(v3, v4, self->_dynamicInfoGeometry, v5)) == 0))
+  if (!self->_dynamicInfoGeometry || (v3 = objc_alloc(MEMORY[0x277D80300]), (layoutGeometryFromInfo = objc_msgSend_initWithInfoGeometry_(v3, v4, self->_dynamicInfoGeometry, v5)) == 0))
   {
     v8.receiver = self;
     v8.super_class = TSAObject3DLayout;
-    v6 = [(TSAObject3DLayout *)&v8 layoutGeometryFromInfo];
+    layoutGeometryFromInfo = [(TSAObject3DLayout *)&v8 layoutGeometryFromInfo];
   }
 
-  return v6;
+  return layoutGeometryFromInfo;
 }
 
 - (id)computeLayoutGeometry
 {
   v5.receiver = self;
   v5.super_class = TSAObject3DLayout;
-  v3 = [(TSAObject3DLayout *)&v5 computeLayoutGeometry];
-  objc_storeStrong(&self->_imageGeometry, v3);
+  computeLayoutGeometry = [(TSAObject3DLayout *)&v5 computeLayoutGeometry];
+  objc_storeStrong(&self->_imageGeometry, computeLayoutGeometry);
 
-  return v3;
+  return computeLayoutGeometry;
 }
 
-- (id)computeInfoGeometryFromPureLayoutGeometry:(id)a3
+- (id)computeInfoGeometryFromPureLayoutGeometry:(id)geometry
 {
-  v4 = a3;
+  geometryCopy = geometry;
   objc_opt_class();
   v8 = objc_msgSend_info(self, v5, v6, v7);
   v9 = TSUDynamicCast();
 
-  objc_msgSend_frame(v4, v10, v11, v12);
+  objc_msgSend_frame(geometryCopy, v10, v11, v12);
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -238,9 +238,9 @@
   self->_dynamicInfoGeometry = 0;
 }
 
-- (CGRect)rectInRootForPresentingAnnotationPopoverForSelectionPath:(id)a3
+- (CGRect)rectInRootForPresentingAnnotationPopoverForSelectionPath:(id)path
 {
-  objc_msgSend_boundsForStandardKnobs(self, a2, a3, v3);
+  objc_msgSend_boundsForStandardKnobs(self, a2, path, v3);
 
   MEMORY[0x2821F9670](self, sel_rectInRoot_, v5, v6);
   result.size.height = v10;
@@ -250,14 +250,14 @@
   return result;
 }
 
-- (CGRect)baseFrameForFrameForCullingWithAdditionalTransform:(CGAffineTransform *)a3
+- (CGRect)baseFrameForFrameForCullingWithAdditionalTransform:(CGAffineTransform *)transform
 {
-  v5 = objc_msgSend_pureGeometry(self, a2, a3, v3);
+  v5 = objc_msgSend_pureGeometry(self, a2, transform, v3);
   objc_msgSend_frame(v5, v6, v7, v8);
-  v9 = *&a3->c;
-  *&v18.a = *&a3->a;
+  v9 = *&transform->c;
+  *&v18.a = *&transform->a;
   *&v18.c = v9;
-  *&v18.tx = *&a3->tx;
+  *&v18.tx = *&transform->tx;
   v20 = CGRectApplyAffineTransform(v19, &v18);
   x = v20.origin.x;
   y = v20.origin.y;
@@ -275,7 +275,7 @@
   return result;
 }
 
-- (CGAffineTransform)layoutTransformInInfoSpace:(SEL)a3
+- (CGAffineTransform)layoutTransformInInfoSpace:(SEL)space
 {
   v4 = *&a4->c;
   *&retstr->a = *&a4->a;
@@ -325,14 +325,14 @@
 
 - (__n128)layout3DRotationFromInfo
 {
-  if (a1[19].n128_u8[0] == 1)
+  if (self[19].n128_u8[0] == 1)
   {
-    return a1[20];
+    return self[20];
   }
 
   else
   {
-    v5 = objc_msgSend_object3DInfo(a1, a2, a3, a4);
+    v5 = objc_msgSend_object3DInfo(self, a2, a3, a4);
     objc_msgSend_pose3D(v5, v6, v7, v8);
     v10 = v9;
 
@@ -354,7 +354,7 @@
   return v4;
 }
 
-- (double)p_normalizeAngleForVisualDisplay:(double)a3
+- (double)p_normalizeAngleForVisualDisplay:(double)display
 {
   TSUNormalizeAngleInRadians();
   if (fabs(result * 57.2957795 + -360.0) < 0.05 || result * 57.2957795 == 360.0)

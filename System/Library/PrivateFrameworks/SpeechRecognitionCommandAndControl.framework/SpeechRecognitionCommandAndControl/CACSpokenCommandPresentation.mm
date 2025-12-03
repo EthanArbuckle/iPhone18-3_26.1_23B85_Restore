@@ -3,20 +3,20 @@
 - (CACSpokenCommandPresentation)init;
 - (NSArray)flattenedCommandGroupsAndItems;
 - (NSArray)nestedCommandGroupsAndItems;
-- (id)_filteredCommandGroupsAndItemsWithSearchString:(id)a3;
-- (id)itemsConflictingWithItem:(id)a3;
-- (unint64_t)indexOfItemWithIdentifier:(id)a3 ignoreGroups:(BOOL)a4;
+- (id)_filteredCommandGroupsAndItemsWithSearchString:(id)string;
+- (id)itemsConflictingWithItem:(id)item;
+- (unint64_t)indexOfItemWithIdentifier:(id)identifier ignoreGroups:(BOOL)groups;
 - (void)_deepFlush;
 - (void)_flushCommands;
-- (void)addCustomCommandItem:(id)a3;
-- (void)deleteCustomCommandAtIndex:(unint64_t)a3;
-- (void)refreshItemWithIdentifier:(id)a3;
+- (void)addCustomCommandItem:(id)item;
+- (void)deleteCustomCommandAtIndex:(unint64_t)index;
+- (void)refreshItemWithIdentifier:(id)identifier;
 - (void)saveChanges;
-- (void)setAdditionalCommandInfo:(id)a3;
-- (void)setExternalCommandGroups:(id)a3;
-- (void)setLocale:(id)a3;
-- (void)setRelevantCommandIdentifiers:(id)a3;
-- (void)setSearchString:(id)a3;
+- (void)setAdditionalCommandInfo:(id)info;
+- (void)setExternalCommandGroups:(id)groups;
+- (void)setLocale:(id)locale;
+- (void)setRelevantCommandIdentifiers:(id)identifiers;
+- (void)setSearchString:(id)string;
 - (void)sortCustomCommands;
 @end
 
@@ -30,8 +30,8 @@
   if (v2)
   {
     v3 = +[CACPreferences sharedPreferences];
-    v4 = [v3 bestLocaleIdentifier];
-    [(CACSpokenCommandPresentation *)v2 setLocale:v4];
+    bestLocaleIdentifier = [v3 bestLocaleIdentifier];
+    [(CACSpokenCommandPresentation *)v2 setLocale:bestLocaleIdentifier];
   }
 
   return v2;
@@ -61,20 +61,20 @@
   self->_deletedCommandIdentifiers = 0;
 }
 
-- (void)setLocale:(id)a3
+- (void)setLocale:(id)locale
 {
-  v13 = a3;
+  localeCopy = locale;
   if (![(NSString *)self->_locale isEqualToString:?])
   {
     [(CACSpokenCommandPresentation *)self resetConflicts];
-    objc_storeStrong(&self->_locale, a3);
+    objc_storeStrong(&self->_locale, locale);
     v5 = +[CACPreferences sharedPreferences];
-    v6 = [v5 builtInCommandsStringsTableForLocaleIdentifier:v13];
+    v6 = [v5 builtInCommandsStringsTableForLocaleIdentifier:localeCopy];
     v7 = [v6 objectForKey:@"CommandManager.searchWordsToExclude"];
 
-    v8 = [v7 lowercaseString];
-    v9 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    v10 = [v8 componentsSeparatedByCharactersInSet:v9];
+    lowercaseString = [v7 lowercaseString];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    v10 = [lowercaseString componentsSeparatedByCharactersInSet:whitespaceAndNewlineCharacterSet];
 
     v11 = [MEMORY[0x277CBEB98] setWithArray:v10];
     excludedSearchWordSet = self->_excludedSearchWordSet;
@@ -89,8 +89,8 @@
   conflictDictionary = self->_conflictDictionary;
   if (!conflictDictionary)
   {
-    v4 = [MEMORY[0x277CBEB38] dictionary];
-    v5 = [(CACSpokenCommandPresentation *)self flattenedCommandGroupsAndItems];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    flattenedCommandGroupsAndItems = [(CACSpokenCommandPresentation *)self flattenedCommandGroupsAndItems];
     v6 = [(NSArray *)self->_commandsOnly count];
     if (v6)
     {
@@ -99,8 +99,8 @@
       do
       {
         v9 = [(NSArray *)self->_commandsOnly objectAtIndex:v8];
-        v10 = [v9 isGroup];
-        if (++v8 < v7 && (v10 & 1) == 0)
+        isGroup = [v9 isGroup];
+        if (++v8 < v7 && (isGroup & 1) == 0)
         {
           v11 = v8;
           do
@@ -108,28 +108,28 @@
             v12 = [(NSArray *)self->_commandsOnly objectAtIndex:v11];
             if (([v12 isGroup] & 1) == 0 && objc_msgSend(v9, "conflictsWithItem:", v12))
             {
-              v13 = [v9 identifier];
-              v14 = [v4 objectForKey:v13];
+              identifier = [v9 identifier];
+              array = [dictionary objectForKey:identifier];
 
-              if (!v14)
+              if (!array)
               {
-                v14 = [MEMORY[0x277CBEB18] array];
-                v15 = [v9 identifier];
-                [v4 setObject:v14 forKey:v15];
+                array = [MEMORY[0x277CBEB18] array];
+                identifier2 = [v9 identifier];
+                [dictionary setObject:array forKey:identifier2];
               }
 
-              [v14 addObject:v12];
-              v16 = [v12 identifier];
-              v17 = [v4 objectForKey:v16];
+              [array addObject:v12];
+              identifier3 = [v12 identifier];
+              array2 = [dictionary objectForKey:identifier3];
 
-              if (!v17)
+              if (!array2)
               {
-                v17 = [MEMORY[0x277CBEB18] array];
-                v18 = [v12 identifier];
-                [v4 setObject:v17 forKey:v18];
+                array2 = [MEMORY[0x277CBEB18] array];
+                identifier4 = [v12 identifier];
+                [dictionary setObject:array2 forKey:identifier4];
               }
 
-              [v17 addObject:v9];
+              [array2 addObject:v9];
             }
 
             ++v11;
@@ -142,7 +142,7 @@
       while (v8 != v7);
     }
 
-    v19 = [v4 copy];
+    v19 = [dictionary copy];
     v20 = self->_conflictDictionary;
     self->_conflictDictionary = v19;
 
@@ -152,14 +152,14 @@
   return [(NSDictionary *)conflictDictionary count]!= 0;
 }
 
-- (id)itemsConflictingWithItem:(id)a3
+- (id)itemsConflictingWithItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   [(CACSpokenCommandPresentation *)self hasConflicts];
   conflictDictionary = self->_conflictDictionary;
-  v6 = [v4 identifier];
+  identifier = [itemCopy identifier];
 
-  v7 = [(NSDictionary *)conflictDictionary objectForKey:v6];
+  v7 = [(NSDictionary *)conflictDictionary objectForKey:identifier];
 
   return v7;
 }
@@ -181,24 +181,24 @@
   [v5 endPropertyTransaction];
 }
 
-- (void)refreshItemWithIdentifier:(id)a3
+- (void)refreshItemWithIdentifier:(id)identifier
 {
-  v11 = a3;
+  identifierCopy = identifier;
   v4 = [(CACSpokenCommandPresentation *)self indexOfItemWithIdentifier:?];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (![v11 hasPrefix:@"Custom"])
+    if (![identifierCopy hasPrefix:@"Custom"])
     {
       goto LABEL_8;
     }
 
     v5 = +[CACPreferences sharedPreferences];
-    v6 = [v5 propertiesForCommandIdentifier:v11];
+    v6 = [v5 propertiesForCommandIdentifier:identifierCopy];
 
     if (v6)
     {
-      v7 = [[CACSpokenCommandItem alloc] initWithIdentifier:v11 properties:v6 locale:self->_locale];
-      v8 = [(NSDictionary *)self->_additionalCommandInfo objectForKey:v11];
+      v7 = [[CACSpokenCommandItem alloc] initWithIdentifier:identifierCopy properties:v6 locale:self->_locale];
+      v8 = [(NSDictionary *)self->_additionalCommandInfo objectForKey:identifierCopy];
       [(CACSpokenCommandItem *)v7 setCommandInfo:v8];
 
       [(CACSpokenCommandPresentation *)self addCustomCommandItem:v7];
@@ -208,8 +208,8 @@
   else
   {
     v9 = v4;
-    v10 = [(CACSpokenCommandPresentation *)self flattenedCommandGroupsAndItems];
-    v6 = [v10 objectAtIndex:v9];
+    flattenedCommandGroupsAndItems = [(CACSpokenCommandPresentation *)self flattenedCommandGroupsAndItems];
+    v6 = [flattenedCommandGroupsAndItems objectAtIndex:v9];
 
     [v6 refreshDataFromPreferences];
     if ([v6 isCustom])
@@ -248,8 +248,8 @@ LABEL_8:
         v8 = *(*(&v11 + 1) + 8 * i);
         if ([v8 isCustom])
         {
-          v9 = [v8 commandsArray];
-          [v9 sortUsingComparator:&__block_literal_global_39];
+          commandsArray = [v8 commandsArray];
+          [commandsArray sortUsingComparator:&__block_literal_global_39];
 
           commandItems = self->_commandItems;
           self->_commandItems = 0;
@@ -281,28 +281,28 @@ uint64_t __50__CACSpokenCommandPresentation_sortCustomCommands__block_invoke(uin
   return v7;
 }
 
-- (void)setExternalCommandGroups:(id)a3
+- (void)setExternalCommandGroups:(id)groups
 {
-  v4 = a3;
+  groupsCopy = groups;
   [(CACSpokenCommandPresentation *)self _flushCommands];
   externalCommandGroups = self->_externalCommandGroups;
-  self->_externalCommandGroups = v4;
+  self->_externalCommandGroups = groupsCopy;
 }
 
-- (void)setRelevantCommandIdentifiers:(id)a3
+- (void)setRelevantCommandIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   [(CACSpokenCommandPresentation *)self _flushCommands];
   relevantCommandIdentifiers = self->_relevantCommandIdentifiers;
-  self->_relevantCommandIdentifiers = v4;
+  self->_relevantCommandIdentifiers = identifiersCopy;
 }
 
-- (void)setAdditionalCommandInfo:(id)a3
+- (void)setAdditionalCommandInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   [(CACSpokenCommandPresentation *)self _flushCommands];
   additionalCommandInfo = self->_additionalCommandInfo;
-  self->_additionalCommandInfo = v4;
+  self->_additionalCommandInfo = infoCopy;
 }
 
 - (NSArray)nestedCommandGroupsAndItems
@@ -334,7 +334,7 @@ uint64_t __50__CACSpokenCommandPresentation_sortCustomCommands__block_invoke(uin
   {
     location = p_allCommandGroups;
     v6 = +[CACPreferences sharedPreferences];
-    v60 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     [v6 beginPropertyTransaction];
     v89 = 0u;
     v90 = 0u;
@@ -366,16 +366,16 @@ uint64_t __50__CACSpokenCommandPresentation_sortCustomCommands__block_invoke(uin
             if ([v12 count])
             {
               v13 = [[CACSpokenCommandGroup alloc] initWithIdentifier:v11];
-              v14 = [(CACSpokenCommandGroup *)v13 commandsArray];
+              commandsArray = [(CACSpokenCommandGroup *)v13 commandsArray];
               v66 = v13;
               if ([(CACSpokenCommandGroup *)v13 isCustom])
               {
-                [v60 insertObject:v13 atIndex:0];
+                [array insertObject:v13 atIndex:0];
               }
 
               else
               {
-                [v60 addObject:v13];
+                [array addObject:v13];
               }
 
               v85 = 0u;
@@ -405,7 +405,7 @@ uint64_t __50__CACSpokenCommandPresentation_sortCustomCommands__block_invoke(uin
                       v22 = [(NSDictionary *)self->_additionalCommandInfo objectForKey:v20];
                       [(CACSpokenCommandItem *)v21 setCommandInfo:v22];
 
-                      [v14 addObject:v21];
+                      [commandsArray addObject:v21];
                     }
                   }
 
@@ -417,8 +417,8 @@ uint64_t __50__CACSpokenCommandPresentation_sortCustomCommands__block_invoke(uin
 
               if ([(CACSpokenCommandGroup *)v66 isCustom])
               {
-                v23 = [(CACSpokenCommandGroup *)v66 commandsArray];
-                [v23 sortUsingComparator:&__block_literal_global_15];
+                commandsArray2 = [(CACSpokenCommandGroup *)v66 commandsArray];
+                [commandsArray2 sortUsingComparator:&__block_literal_global_15];
               }
 
               v9 = v58;
@@ -439,7 +439,7 @@ uint64_t __50__CACSpokenCommandPresentation_sortCustomCommands__block_invoke(uin
     }
 
     [v6 endPropertyTransaction];
-    v24 = [v60 copy];
+    v24 = [array copy];
     commandGroups = self->_commandGroups;
     self->_commandGroups = v24;
 
@@ -452,11 +452,11 @@ uint64_t __50__CACSpokenCommandPresentation_sortCustomCommands__block_invoke(uin
     locationa = p_allCommandGroups;
     if (![(NSMutableArray *)self->_newCommandItems count])
     {
-      v27 = [MEMORY[0x277CBEB18] arrayWithArray:self->_commandGroups];
+      array2 = [MEMORY[0x277CBEB18] arrayWithArray:self->_commandGroups];
       goto LABEL_52;
     }
 
-    v27 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     v79 = 0u;
     v80 = 0u;
     v81 = 0u;
@@ -480,23 +480,23 @@ uint64_t __50__CACSpokenCommandPresentation_sortCustomCommands__block_invoke(uin
           v34 = *(*(&v79 + 1) + 8 * j);
           if ([(CACSpokenCommandGroup *)v34 isCustom])
           {
-            v35 = [(CACSpokenCommandGroup *)v34 cloneWithoutCommands];
+            cloneWithoutCommands = [(CACSpokenCommandGroup *)v34 cloneWithoutCommands];
 
-            v36 = [v35 commandsArray];
-            v37 = [(CACSpokenCommandGroup *)v34 commandsArray];
-            [v36 addObjectsFromArray:v37];
+            commandsArray3 = [cloneWithoutCommands commandsArray];
+            commandsArray4 = [(CACSpokenCommandGroup *)v34 commandsArray];
+            [commandsArray3 addObjectsFromArray:commandsArray4];
 
-            v38 = [v35 commandsArray];
-            [v38 addObjectsFromArray:self->_newCommandItems];
+            commandsArray5 = [cloneWithoutCommands commandsArray];
+            [commandsArray5 addObjectsFromArray:self->_newCommandItems];
 
-            v31 = v35;
-            v39 = [(CACSpokenCommandGroup *)v31 commandsArray];
-            [v39 sortUsingComparator:&__block_literal_global_17];
+            v31 = cloneWithoutCommands;
+            commandsArray6 = [(CACSpokenCommandGroup *)v31 commandsArray];
+            [commandsArray6 sortUsingComparator:&__block_literal_global_17];
 
             v34 = v31;
           }
 
-          [v27 addObject:v34];
+          [array2 addObject:v34];
         }
 
         v30 = [(NSArray *)v28 countByEnumeratingWithState:&v79 objects:v93 count:16];
@@ -515,9 +515,9 @@ uint64_t __50__CACSpokenCommandPresentation_sortCustomCommands__block_invoke(uin
     }
 
     v31 = [[CACSpokenCommandGroup alloc] initWithIdentifier:@"Custom"];
-    [v27 insertObject:v31 atIndex:0];
-    v40 = [(CACSpokenCommandGroup *)v31 commandsArray];
-    [v40 addObjectsFromArray:self->_newCommandItems];
+    [array2 insertObject:v31 atIndex:0];
+    commandsArray7 = [(CACSpokenCommandGroup *)v31 commandsArray];
+    [commandsArray7 addObjectsFromArray:self->_newCommandItems];
 
 LABEL_51:
     p_allCommandGroups = locationa;
@@ -528,8 +528,8 @@ LABEL_52:
       v78 = 0u;
       v75 = 0u;
       v76 = 0u;
-      v61 = v27;
-      v63 = v27;
+      v61 = array2;
+      v63 = array2;
       v67 = [v63 countByEnumeratingWithState:&v75 objects:v92 count:16];
       if (v67)
       {
@@ -550,12 +550,12 @@ LABEL_52:
             v72 = 0u;
             v73 = 0u;
             v74 = 0u;
-            v43 = [v42 commandsArray];
-            v44 = [v43 countByEnumeratingWithState:&v71 objects:v91 count:16];
+            commandsArray8 = [v42 commandsArray];
+            v44 = [commandsArray8 countByEnumeratingWithState:&v71 objects:v91 count:16];
             if (v44)
             {
               v45 = v44;
-              v46 = 0;
+              cloneWithoutCommands2 = 0;
               v47 = *v72;
               do
               {
@@ -563,29 +563,29 @@ LABEL_52:
                 {
                   if (*v72 != v47)
                   {
-                    objc_enumerationMutation(v43);
+                    objc_enumerationMutation(commandsArray8);
                   }
 
                   v49 = *(*(&v71 + 1) + 8 * k);
-                  v50 = [v49 identifier];
+                  identifier = [v49 identifier];
                   relevantCommandIdentifiers = self->_relevantCommandIdentifiers;
-                  if ((!relevantCommandIdentifiers || [(NSArray *)relevantCommandIdentifiers containsObject:v50]) && ([(NSMutableArray *)self->_deletedCommandIdentifiers containsObject:v50]& 1) == 0)
+                  if ((!relevantCommandIdentifiers || [(NSArray *)relevantCommandIdentifiers containsObject:identifier]) && ([(NSMutableArray *)self->_deletedCommandIdentifiers containsObject:identifier]& 1) == 0)
                   {
-                    if (!v46)
+                    if (!cloneWithoutCommands2)
                     {
-                      v46 = [v42 cloneWithoutCommands];
-                      [v70 addObject:v46];
+                      cloneWithoutCommands2 = [v42 cloneWithoutCommands];
+                      [v70 addObject:cloneWithoutCommands2];
                     }
 
-                    v52 = [v46 commandsArray];
-                    [v52 addObject:v49];
+                    commandsArray9 = [cloneWithoutCommands2 commandsArray];
+                    [commandsArray9 addObject:v49];
 
-                    v53 = [(NSDictionary *)self->_additionalCommandInfo objectForKey:v50];
+                    v53 = [(NSDictionary *)self->_additionalCommandInfo objectForKey:identifier];
                     [v49 setCommandInfo:v53];
                   }
                 }
 
-                v45 = [v43 countByEnumeratingWithState:&v71 objects:v91 count:16];
+                v45 = [commandsArray8 countByEnumeratingWithState:&v71 objects:v91 count:16];
               }
 
               while (v45);
@@ -593,7 +593,7 @@ LABEL_52:
 
             else
             {
-              v46 = 0;
+              cloneWithoutCommands2 = 0;
             }
 
             v41 = v69 + 1;
@@ -607,12 +607,12 @@ LABEL_52:
       }
 
       p_allCommandGroups = locationa;
-      v27 = v61;
+      array2 = v61;
     }
 
     else
     {
-      [v70 addObjectsFromArray:v27];
+      [v70 addObjectsFromArray:array2];
     }
 
     objc_storeStrong(p_allCommandGroups, v70);
@@ -645,12 +645,12 @@ uint64_t __59__CACSpokenCommandPresentation_nestedCommandGroupsAndItems__block_i
   return v7;
 }
 
-- (void)setSearchString:(id)a3
+- (void)setSearchString:(id)string
 {
   v4 = MEMORY[0x277CCA900];
-  v5 = a3;
-  v6 = [v4 whitespaceCharacterSet];
-  v7 = [v5 stringByTrimmingCharactersInSet:v6];
+  stringCopy = string;
+  whitespaceCharacterSet = [v4 whitespaceCharacterSet];
+  v7 = [stringCopy stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
   searchString = self->_searchString;
   self->_searchString = v7;
@@ -661,14 +661,14 @@ uint64_t __59__CACSpokenCommandPresentation_nestedCommandGroupsAndItems__block_i
   v24 = *MEMORY[0x277D85DE8];
   if (!self->_commandItems)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v5 = [(CACSpokenCommandPresentation *)self nestedCommandGroupsAndItems];
-    v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    nestedCommandGroupsAndItems = [(CACSpokenCommandPresentation *)self nestedCommandGroupsAndItems];
+    v6 = [nestedCommandGroupsAndItems countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v6)
     {
       v7 = v6;
@@ -679,32 +679,32 @@ uint64_t __59__CACSpokenCommandPresentation_nestedCommandGroupsAndItems__block_i
         {
           if (*v20 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(nestedCommandGroupsAndItems);
           }
 
           v10 = *(*(&v19 + 1) + 8 * i);
-          [v4 addObject:v10];
+          [array2 addObject:v10];
           if (![(CACSpokenCommandPresentation *)self groupIsCollapsed:v10])
           {
-            v11 = [v10 commandsArray];
-            [v4 addObjectsFromArray:v11];
+            commandsArray = [v10 commandsArray];
+            [array2 addObjectsFromArray:commandsArray];
           }
 
-          v12 = [v10 commandsArray];
-          [v3 addObjectsFromArray:v12];
+          commandsArray2 = [v10 commandsArray];
+          [array addObjectsFromArray:commandsArray2];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v7 = [nestedCommandGroupsAndItems countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v7);
     }
 
-    v13 = [v3 copy];
+    v13 = [array copy];
     commandsOnly = self->_commandsOnly;
     self->_commandsOnly = v13;
 
-    v15 = [v4 copy];
+    v15 = [array2 copy];
     commandItems = self->_commandItems;
     self->_commandItems = v15;
   }
@@ -722,17 +722,17 @@ uint64_t __59__CACSpokenCommandPresentation_nestedCommandGroupsAndItems__block_i
   return v17;
 }
 
-- (id)_filteredCommandGroupsAndItemsWithSearchString:(id)a3
+- (id)_filteredCommandGroupsAndItemsWithSearchString:(id)string
 {
   v82 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 lowercaseString];
-  v84.length = [(__CFString *)v5 length];
-  str = v5;
+  stringCopy = string;
+  lowercaseString = [stringCopy lowercaseString];
+  v84.length = [(__CFString *)lowercaseString length];
+  str = lowercaseString;
   v84.location = 0;
-  v6 = CFStringTokenizerCreate(0, v5, v84, 0, 0);
-  v66 = [MEMORY[0x277CBEB18] array];
-  v65 = [MEMORY[0x277CBEB18] array];
+  v6 = CFStringTokenizerCreate(0, lowercaseString, v84, 0, 0);
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   while (CFStringTokenizerAdvanceToNextToken(v6))
   {
     CurrentTokenRange = CFStringTokenizerGetCurrentTokenRange(v6);
@@ -740,7 +740,7 @@ uint64_t __59__CACSpokenCommandPresentation_nestedCommandGroupsAndItems__block_i
     if (![(NSSet *)self->_excludedSearchWordSet containsObject:v7])
     {
       v8 = [MEMORY[0x277CCAC30] predicateWithFormat:@"SELF BEGINSWITH[cd] %@", v7];
-      [v66 addObject:v8];
+      [array addObject:v8];
       if (CFStringGetLength(v7) > 1 || CFStringGetLength(v7) == 1 && [(__CFString *)v7 characterAtIndex:0]>= 0x81)
       {
         v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"*%@*", v7];
@@ -754,22 +754,22 @@ uint64_t __59__CACSpokenCommandPresentation_nestedCommandGroupsAndItems__block_i
         v10 = [MEMORY[0x277CCAC30] predicateWithFormat:@"FALSEPREDICATE"];
       }
 
-      [v65 addObject:v10];
+      [array2 addObject:v10];
     }
 
     CFRelease(v7);
   }
 
   CFRelease(v6);
-  v11 = [v66 count];
-  v61 = [MEMORY[0x277CBEB18] array];
+  v11 = [array count];
+  array3 = [MEMORY[0x277CBEB18] array];
   v75 = 0u;
   v76 = 0u;
   v77 = 0u;
   v78 = 0u;
   obj = self->_allCommandGroups;
   v54 = [(NSArray *)obj countByEnumeratingWithState:&v75 objects:v81 count:16];
-  v49 = v4;
+  v49 = stringCopy;
   if (!v54)
   {
     v51 = 0;
@@ -797,8 +797,8 @@ uint64_t __59__CACSpokenCommandPresentation_nestedCommandGroupsAndItems__block_i
       v73 = 0u;
       v74 = 0u;
       v62 = v14;
-      v15 = [v14 commandsArray];
-      v60 = [v15 countByEnumeratingWithState:&v71 objects:v80 count:16];
+      commandsArray = [v14 commandsArray];
+      v60 = [commandsArray countByEnumeratingWithState:&v71 objects:v80 count:16];
       if (!v60)
       {
         v64 = 0;
@@ -810,7 +810,7 @@ uint64_t __59__CACSpokenCommandPresentation_nestedCommandGroupsAndItems__block_i
       v16 = 0;
       v64 = 0;
       v58 = *v72;
-      v59 = v15;
+      v59 = commandsArray;
       do
       {
         v17 = 0;
@@ -818,7 +818,7 @@ uint64_t __59__CACSpokenCommandPresentation_nestedCommandGroupsAndItems__block_i
         {
           if (*v72 != v58)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(commandsArray);
           }
 
           v63 = v17;
@@ -830,7 +830,7 @@ uint64_t __59__CACSpokenCommandPresentation_nestedCommandGroupsAndItems__block_i
             v20 = v56;
             do
             {
-              v21 = [v66 objectAtIndex:v19];
+              v21 = [array objectAtIndex:v19];
               if ([v18 evaluateCommandPredicate:v21])
               {
                 v22 = [v18 searchScore] + v20;
@@ -838,7 +838,7 @@ uint64_t __59__CACSpokenCommandPresentation_nestedCommandGroupsAndItems__block_i
 
               else
               {
-                v23 = [v65 objectAtIndex:v19];
+                v23 = [array2 objectAtIndex:v19];
                 v24 = [v18 evaluateCommandPredicate:v23];
 
                 if (!v24)
@@ -859,11 +859,11 @@ uint64_t __59__CACSpokenCommandPresentation_nestedCommandGroupsAndItems__block_i
                   if (!v64)
                   {
                     v27 = objc_alloc_init(CACSpokenCommandGroup);
-                    v28 = [v62 displayString];
-                    [(CACSpokenCommandGroup *)v27 setDisplayString:v28];
+                    displayString = [v62 displayString];
+                    [(CACSpokenCommandGroup *)v27 setDisplayString:displayString];
 
                     v64 = v27;
-                    [v61 addObject:v27];
+                    [array3 addObject:v27];
                     v29 = objc_alloc_init(MEMORY[0x277CBEB18]);
 
                     v16 = v29;
@@ -888,7 +888,7 @@ LABEL_32:
           }
 
           v17 = v63 + 1;
-          v15 = v59;
+          commandsArray = v59;
           v11 = v57;
         }
 
@@ -903,22 +903,22 @@ LABEL_32:
         v13 = v55;
         if (v16)
         {
-          v15 = [v16 sortedArrayUsingComparator:&__block_literal_global_34_0];
-          if ([v15 count])
+          commandsArray = [v16 sortedArrayUsingComparator:&__block_literal_global_34_0];
+          if ([commandsArray count])
           {
-            v30 = [v15 objectAtIndex:0];
-            v31 = [v30 searchScore];
+            v30 = [commandsArray objectAtIndex:0];
+            searchScore = [v30 searchScore];
 
-            [(CACSpokenCommandGroup *)v64 setSearchScore:v31];
-            v32 = [MEMORY[0x277CCAC30] predicateWithFormat:@"searchScore == %ld", v31];
-            v33 = [v15 filteredArrayUsingPredicate:v32];
-            v34 = [(CACSpokenCommandGroup *)v64 commandsArray];
-            [v34 addObjectsFromArray:v33];
+            [(CACSpokenCommandGroup *)v64 setSearchScore:searchScore];
+            v32 = [MEMORY[0x277CCAC30] predicateWithFormat:@"searchScore == %ld", searchScore];
+            v33 = [commandsArray filteredArrayUsingPredicate:v32];
+            commandsArray2 = [(CACSpokenCommandGroup *)v64 commandsArray];
+            [commandsArray2 addObjectsFromArray:v33];
 
             v35 = v51;
-            if (v31 > v51)
+            if (searchScore > v51)
             {
-              v35 = v31;
+              v35 = searchScore;
             }
 
             v51 = v35;
@@ -944,7 +944,7 @@ LABEL_42:
   while (v36);
 LABEL_49:
 
-  v37 = [v61 sortedArrayUsingComparator:&__block_literal_global_39];
+  v37 = [array3 sortedArrayUsingComparator:&__block_literal_global_39];
   v38 = v37;
   if ([v37 count])
   {
@@ -956,7 +956,7 @@ LABEL_49:
     }
   }
 
-  v40 = [MEMORY[0x277CBEB18] array];
+  array4 = [MEMORY[0x277CBEB18] array];
   v67 = 0u;
   v68 = 0u;
   v69 = 0u;
@@ -977,9 +977,9 @@ LABEL_49:
         }
 
         v46 = *(*(&v67 + 1) + 8 * i);
-        [v40 addObject:v46];
-        v47 = [v46 commandsArray];
-        [v40 addObjectsFromArray:v47];
+        [array4 addObject:v46];
+        commandsArray3 = [v46 commandsArray];
+        [array4 addObjectsFromArray:commandsArray3];
       }
 
       v43 = [v41 countByEnumeratingWithState:&v67 objects:v79 count:16];
@@ -988,7 +988,7 @@ LABEL_49:
     while (v43);
   }
 
-  return v40;
+  return array4;
 }
 
 uint64_t __79__CACSpokenCommandPresentation__filteredCommandGroupsAndItemsWithSearchString___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1045,19 +1045,19 @@ uint64_t __79__CACSpokenCommandPresentation__filteredCommandGroupsAndItemsWithSe
   return v7;
 }
 
-- (unint64_t)indexOfItemWithIdentifier:(id)a3 ignoreGroups:(BOOL)a4
+- (unint64_t)indexOfItemWithIdentifier:(id)identifier ignoreGroups:(BOOL)groups
 {
-  v4 = a4;
+  groupsCopy = groups;
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v6)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v7 = [(CACSpokenCommandPresentation *)self flattenedCommandGroupsAndItems];
-    v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    flattenedCommandGroupsAndItems = [(CACSpokenCommandPresentation *)self flattenedCommandGroupsAndItems];
+    v8 = [flattenedCommandGroupsAndItems countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v8)
     {
       v9 = v8;
@@ -1071,14 +1071,14 @@ LABEL_4:
       {
         if (*v19 != v11)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(flattenedCommandGroupsAndItems);
         }
 
         v14 = *(*(&v18 + 1) + 8 * v12);
-        if (!v4 || ([*(*(&v18 + 1) + 8 * v12) isGroup] & 1) == 0)
+        if (!groupsCopy || ([*(*(&v18 + 1) + 8 * v12) isGroup] & 1) == 0)
         {
-          v15 = [v14 identifier];
-          v16 = [v15 isEqualToString:v6];
+          identifier = [v14 identifier];
+          v16 = [identifier isEqualToString:identifierCopy];
 
           if (v16)
           {
@@ -1089,7 +1089,7 @@ LABEL_4:
         ++v13;
         if (v9 == ++v12)
         {
-          v9 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+          v9 = [flattenedCommandGroupsAndItems countByEnumeratingWithState:&v18 objects:v22 count:16];
           if (v9)
           {
             goto LABEL_4;
@@ -1115,13 +1115,13 @@ LABEL_12:
   return v13;
 }
 
-- (void)addCustomCommandItem:(id)a3
+- (void)addCustomCommandItem:(id)item
 {
-  v4 = a3;
-  v5 = v4;
+  itemCopy = item;
+  v5 = itemCopy;
   deletedCommandIdentifiers = self->_deletedCommandIdentifiers;
-  v12 = v4;
-  if (deletedCommandIdentifiers && ([v4 identifier], v7 = objc_claimAutoreleasedReturnValue(), v8 = -[NSMutableArray indexOfObject:](deletedCommandIdentifiers, "indexOfObject:", v7), v7, v5 = v12, v8 != 0x7FFFFFFFFFFFFFFFLL))
+  v12 = itemCopy;
+  if (deletedCommandIdentifiers && ([itemCopy identifier], v7 = objc_claimAutoreleasedReturnValue(), v8 = -[NSMutableArray indexOfObject:](deletedCommandIdentifiers, "indexOfObject:", v7), v7, v5 = v12, v8 != 0x7FFFFFFFFFFFFFFFLL))
   {
     [(NSMutableArray *)self->_deletedCommandIdentifiers removeObjectAtIndex:v8];
   }
@@ -1147,12 +1147,12 @@ LABEL_12:
   [(CACSpokenCommandPresentation *)self _flushCommands];
 }
 
-- (void)deleteCustomCommandAtIndex:(unint64_t)a3
+- (void)deleteCustomCommandAtIndex:(unint64_t)index
 {
-  v6 = [(CACSpokenCommandPresentation *)self flattenedCommandGroupsAndItems];
-  v7 = [v6 objectAtIndex:a3];
+  flattenedCommandGroupsAndItems = [(CACSpokenCommandPresentation *)self flattenedCommandGroupsAndItems];
+  v7 = [flattenedCommandGroupsAndItems objectAtIndex:index];
 
-  v8 = [v7 identifier];
+  identifier = [v7 identifier];
   [v7 removeFromPreferences];
   newCommandItems = self->_newCommandItems;
   if (newCommandItems)
@@ -1162,7 +1162,7 @@ LABEL_12:
     v14[2] = __59__CACSpokenCommandPresentation_deleteCustomCommandAtIndex___block_invoke;
     v14[3] = &unk_279CEC9A0;
     v3 = &v15;
-    v15 = v8;
+    v15 = identifier;
     v10 = [(NSMutableArray *)newCommandItems indexOfObjectPassingTest:v14];
     if (v10 != 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -1174,7 +1174,7 @@ LABEL_9:
     }
   }
 
-  if (([(NSMutableArray *)self->_deletedCommandIdentifiers containsObject:v8]& 1) == 0)
+  if (([(NSMutableArray *)self->_deletedCommandIdentifiers containsObject:identifier]& 1) == 0)
   {
     deletedCommandIdentifiers = self->_deletedCommandIdentifiers;
     if (!deletedCommandIdentifiers)
@@ -1186,7 +1186,7 @@ LABEL_9:
       deletedCommandIdentifiers = self->_deletedCommandIdentifiers;
     }
 
-    [(NSMutableArray *)deletedCommandIdentifiers addObject:v8];
+    [(NSMutableArray *)deletedCommandIdentifiers addObject:identifier];
   }
 
   [(CACSpokenCommandPresentation *)self _flushCommands];

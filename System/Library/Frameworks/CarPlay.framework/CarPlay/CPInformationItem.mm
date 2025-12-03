@@ -1,8 +1,8 @@
 @interface CPInformationItem
-- (CPInformationItem)initWithCoder:(id)a3;
+- (CPInformationItem)initWithCoder:(id)coder;
 - (CPInformationItem)initWithTitle:(NSString *)title detail:(NSString *)detail;
 - (id)_init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CPInformationItem
@@ -35,32 +35,32 @@
   return [(CPInformationItem *)&v3 init];
 }
 
-- (CPInformationItem)initWithCoder:(id)a3
+- (CPInformationItem)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CPInformationItem *)self _init];
-  if (v5)
+  coderCopy = coder;
+  _init = [(CPInformationItem *)self _init];
+  if (_init)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPInformationItemTitleKey"];
-    title = v5->_title;
-    v5->_title = v6;
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPInformationItemTitleKey"];
+    title = _init->_title;
+    _init->_title = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPInformationItemDetailKey"];
-    detail = v5->_detail;
-    v5->_detail = v8;
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPInformationItemDetailKey"];
+    detail = _init->_detail;
+    _init->_detail = v8;
   }
 
-  return v5;
+  return _init;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CPInformationItem *)self title];
-  [v4 encodeObject:v5 forKey:@"kCPInformationItemTitleKey"];
+  coderCopy = coder;
+  title = [(CPInformationItem *)self title];
+  [coderCopy encodeObject:title forKey:@"kCPInformationItemTitleKey"];
 
-  v6 = [(CPInformationItem *)self detail];
-  [v4 encodeObject:v6 forKey:@"kCPInformationItemDetailKey"];
+  detail = [(CPInformationItem *)self detail];
+  [coderCopy encodeObject:detail forKey:@"kCPInformationItemDetailKey"];
 }
 
 @end

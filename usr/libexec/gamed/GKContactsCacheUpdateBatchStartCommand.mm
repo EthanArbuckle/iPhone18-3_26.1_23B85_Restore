@@ -1,16 +1,16 @@
 @interface GKContactsCacheUpdateBatchStartCommand
-- (id)executeWithContext:(id)a3;
+- (id)executeWithContext:(id)context;
 @end
 
 @implementation GKContactsCacheUpdateBatchStartCommand
 
-- (id)executeWithContext:(id)a3
+- (id)executeWithContext:(id)context
 {
-  v3 = [GKCDContactInfoList _gkObjectsMatchingPredicate:0 withContext:a3];
-  v4 = [v3 firstObject];
+  v3 = [GKCDContactInfoList _gkObjectsMatchingPredicate:0 withContext:context];
+  firstObject = [v3 firstObject];
 
   v5 = 0;
-  if (!v4)
+  if (!firstObject)
   {
     if (!os_log_GKGeneral)
     {

@@ -1,143 +1,143 @@
 @interface PKPaymentBalance
-+ (id)identifiersFromComponentBalances:(id)a3;
++ (id)identifiersFromComponentBalances:(id)balances;
 - (BOOL)isCurrency;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isExpired;
 - (NSSet)identifiers;
 - (NSString)formattedValue;
 - (PKCurrencyAmount)currencyValue;
-- (PKPaymentBalance)initWithCoder:(id)a3;
-- (PKPaymentBalance)initWithComponentBalances:(id)a3 identifiers:(id)a4 expiredBalances:(id)a5;
-- (PKPaymentBalance)initWithDictionary:(id)a3;
-- (PKPaymentBalance)initWithIdentifier:(id)a3 forCurrencyAmount:(id)a4;
-- (PKPaymentBalance)initWithIdentifier:(id)a3 forValue:(id)a4 roundingToExponent:(int64_t)a5;
-- (PKPaymentBalance)initWithIdentifiers:(id)a3 forCurrencyAmount:(id)a4;
-- (PKPaymentBalance)initWithIdentifiers:(id)a3 forValue:(id)a4 roundingToExponent:(int64_t)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PKPaymentBalance)initWithCoder:(id)coder;
+- (PKPaymentBalance)initWithComponentBalances:(id)balances identifiers:(id)identifiers expiredBalances:(id)expiredBalances;
+- (PKPaymentBalance)initWithDictionary:(id)dictionary;
+- (PKPaymentBalance)initWithIdentifier:(id)identifier forCurrencyAmount:(id)amount;
+- (PKPaymentBalance)initWithIdentifier:(id)identifier forValue:(id)value roundingToExponent:(int64_t)exponent;
+- (PKPaymentBalance)initWithIdentifiers:(id)identifiers forCurrencyAmount:(id)amount;
+- (PKPaymentBalance)initWithIdentifiers:(id)identifiers forValue:(id)value roundingToExponent:(int64_t)exponent;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)_setValueWithRounding:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_setValueWithRounding:(id)rounding;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPaymentBalance
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKPaymentBalance allocWithZone:](PKPaymentBalance init];
-  v6 = [(NSDecimalNumber *)self->_value copyWithZone:a3];
+  v6 = [(NSDecimalNumber *)self->_value copyWithZone:zone];
   value = v5->_value;
   v5->_value = v6;
 
-  v8 = [(NSString *)self->_currencyCode copyWithZone:a3];
+  v8 = [(NSString *)self->_currencyCode copyWithZone:zone];
   currencyCode = v5->_currencyCode;
   v5->_currencyCode = v8;
 
   v5->_exponent = self->_exponent;
-  v10 = [(NSString *)self->_localizedTitle copyWithZone:a3];
+  v10 = [(NSString *)self->_localizedTitle copyWithZone:zone];
   localizedTitle = v5->_localizedTitle;
   v5->_localizedTitle = v10;
 
-  v12 = [(NSString *)self->_localizedDescription copyWithZone:a3];
+  v12 = [(NSString *)self->_localizedDescription copyWithZone:zone];
   localizedDescription = v5->_localizedDescription;
   v5->_localizedDescription = v12;
 
   v5->_isPrimary = self->_isPrimary;
-  v14 = [(NSDate *)self->_lastUpdateDate copyWithZone:a3];
+  v14 = [(NSDate *)self->_lastUpdateDate copyWithZone:zone];
   lastUpdateDate = v5->_lastUpdateDate;
   v5->_lastUpdateDate = v14;
 
-  v16 = [(NSDate *)self->_expirationDate copyWithZone:a3];
+  v16 = [(NSDate *)self->_expirationDate copyWithZone:zone];
   expirationDate = v5->_expirationDate;
   v5->_expirationDate = v16;
 
-  v18 = [(NSString *)self->_preformattedString copyWithZone:a3];
+  v18 = [(NSString *)self->_preformattedString copyWithZone:zone];
   preformattedString = v5->_preformattedString;
   v5->_preformattedString = v18;
 
-  v20 = [(NSArray *)self->_componentBalances copyWithZone:a3];
+  v20 = [(NSArray *)self->_componentBalances copyWithZone:zone];
   componentBalances = v5->_componentBalances;
   v5->_componentBalances = v20;
 
-  v22 = [(NSSet *)self->_identifiers copyWithZone:a3];
+  v22 = [(NSSet *)self->_identifiers copyWithZone:zone];
   identifiers = v5->_identifiers;
   v5->_identifiers = v22;
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   value = self->_value;
-  v5 = a3;
-  [v5 encodeObject:value forKey:@"value"];
-  [v5 encodeObject:self->_currencyCode forKey:@"currencyCode"];
-  [v5 encodeInteger:self->_exponent forKey:@"exponent"];
-  [v5 encodeObject:self->_localizedTitle forKey:@"localizedTitle"];
-  [v5 encodeObject:self->_localizedDescription forKey:@"localizedDescription"];
-  [v5 encodeBool:self->_isPrimary forKey:@"isPrimaryBalance"];
-  [v5 encodeObject:self->_lastUpdateDate forKey:@"lastUpdatedDate"];
-  [v5 encodeObject:self->_expirationDate forKey:@"expirationDate"];
-  [v5 encodeObject:self->_preformattedString forKey:@"preformattedString"];
-  [v5 encodeObject:self->_componentBalances forKey:@"componentBalances"];
-  [v5 encodeObject:self->_identifiers forKey:@"identifiers"];
+  coderCopy = coder;
+  [coderCopy encodeObject:value forKey:@"value"];
+  [coderCopy encodeObject:self->_currencyCode forKey:@"currencyCode"];
+  [coderCopy encodeInteger:self->_exponent forKey:@"exponent"];
+  [coderCopy encodeObject:self->_localizedTitle forKey:@"localizedTitle"];
+  [coderCopy encodeObject:self->_localizedDescription forKey:@"localizedDescription"];
+  [coderCopy encodeBool:self->_isPrimary forKey:@"isPrimaryBalance"];
+  [coderCopy encodeObject:self->_lastUpdateDate forKey:@"lastUpdatedDate"];
+  [coderCopy encodeObject:self->_expirationDate forKey:@"expirationDate"];
+  [coderCopy encodeObject:self->_preformattedString forKey:@"preformattedString"];
+  [coderCopy encodeObject:self->_componentBalances forKey:@"componentBalances"];
+  [coderCopy encodeObject:self->_identifiers forKey:@"identifiers"];
 }
 
-- (PKPaymentBalance)initWithCoder:(id)a3
+- (PKPaymentBalance)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v34.receiver = self;
   v34.super_class = PKPaymentBalance;
   v5 = [(PKPaymentBalance *)&v34 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currencyCode"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currencyCode"];
     currencyCode = v5->_currencyCode;
     v5->_currencyCode = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"value"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"value"];
     value = v5->_value;
     v5->_value = v8;
 
-    v5->_exponent = [v4 decodeIntegerForKey:@"exponent"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedTitle"];
+    v5->_exponent = [coderCopy decodeIntegerForKey:@"exponent"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedTitle"];
     localizedTitle = v5->_localizedTitle;
     v5->_localizedTitle = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedDescription"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedDescription"];
     localizedDescription = v5->_localizedDescription;
     v5->_localizedDescription = v12;
 
-    v5->_isPrimary = [v4 decodeBoolForKey:@"isPrimaryBalance"];
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastUpdatedDate"];
+    v5->_isPrimary = [coderCopy decodeBoolForKey:@"isPrimaryBalance"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastUpdatedDate"];
     lastUpdateDate = v5->_lastUpdateDate;
     v5->_lastUpdateDate = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
     expirationDate = v5->_expirationDate;
     v5->_expirationDate = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"preformattedString"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"preformattedString"];
     preformattedString = v5->_preformattedString;
     v5->_preformattedString = v18;
 
     v20 = objc_alloc(MEMORY[0x1E695DFD8]);
     v21 = objc_opt_class();
     v22 = [v20 initWithObjects:{v21, objc_opt_class(), 0}];
-    v23 = [v4 decodeObjectOfClasses:v22 forKey:@"componentBalances"];
+    v23 = [coderCopy decodeObjectOfClasses:v22 forKey:@"componentBalances"];
     componentBalances = v5->_componentBalances;
     v5->_componentBalances = v23;
 
     v25 = objc_alloc(MEMORY[0x1E695DFD8]);
     v26 = objc_opt_class();
     v27 = [v25 initWithObjects:{v26, objc_opt_class(), 0}];
-    v28 = [v4 decodeObjectOfClasses:v27 forKey:@"identifiers"];
+    v28 = [coderCopy decodeObjectOfClasses:v27 forKey:@"identifiers"];
     identifiers = v5->_identifiers;
     v5->_identifiers = v28;
 
     if (!v5->_identifiers)
     {
-      v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+      v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
       if (v30)
       {
         v31 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{v30, 0}];
@@ -150,15 +150,15 @@
   return v5;
 }
 
-- (PKPaymentBalance)initWithDictionary:(id)a3
+- (PKPaymentBalance)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v25.receiver = self;
   v25.super_class = PKPaymentBalance;
   v5 = [(PKPaymentBalance *)&v25 init];
   if (v5)
   {
-    v6 = [v4 PKArrayForKey:@"identifiers"];
+    v6 = [dictionaryCopy PKArrayForKey:@"identifiers"];
     if (v6)
     {
       v7 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:v6];
@@ -168,7 +168,7 @@
 
     else
     {
-      identifiers = [v4 PKStringForKey:@"identifier"];
+      identifiers = [dictionaryCopy PKStringForKey:@"identifier"];
       if (identifiers)
       {
         v9 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{identifiers, 0}];
@@ -177,32 +177,32 @@
       }
     }
 
-    v11 = [v4 PKStringForKey:@"currencyCode"];
+    v11 = [dictionaryCopy PKStringForKey:@"currencyCode"];
     currencyCode = v5->_currencyCode;
     v5->_currencyCode = v11;
 
-    v5->_exponent = [v4 PKIntegerForKey:@"exponent"];
-    v13 = [v4 PKDecimalNumberForKey:@"value"];
+    v5->_exponent = [dictionaryCopy PKIntegerForKey:@"exponent"];
+    v13 = [dictionaryCopy PKDecimalNumberForKey:@"value"];
     [(PKPaymentBalance *)v5 _setValueWithRounding:v13];
 
-    v14 = [v4 PKStringForKey:@"localizedTitle"];
+    v14 = [dictionaryCopy PKStringForKey:@"localizedTitle"];
     localizedTitle = v5->_localizedTitle;
     v5->_localizedTitle = v14;
 
-    v16 = [v4 PKStringForKey:@"localizedDescription"];
+    v16 = [dictionaryCopy PKStringForKey:@"localizedDescription"];
     localizedDescription = v5->_localizedDescription;
     v5->_localizedDescription = v16;
 
-    v5->_isPrimary = [v4 PKBoolForKey:@"isPrimaryBalance"];
-    v18 = [v4 PKDateForKey:@"lastUpdatedDate"];
+    v5->_isPrimary = [dictionaryCopy PKBoolForKey:@"isPrimaryBalance"];
+    v18 = [dictionaryCopy PKDateForKey:@"lastUpdatedDate"];
     lastUpdateDate = v5->_lastUpdateDate;
     v5->_lastUpdateDate = v18;
 
-    v20 = [v4 PKDateForKey:@"expirationDate"];
+    v20 = [dictionaryCopy PKDateForKey:@"expirationDate"];
     expirationDate = v5->_expirationDate;
     v5->_expirationDate = v20;
 
-    v22 = [v4 PKStringForKey:@"preformattedString"];
+    v22 = [dictionaryCopy PKStringForKey:@"preformattedString"];
     preformattedString = v5->_preformattedString;
     v5->_preformattedString = v22;
   }
@@ -210,111 +210,111 @@
   return v5;
 }
 
-- (PKPaymentBalance)initWithIdentifier:(id)a3 forCurrencyAmount:(id)a4
+- (PKPaymentBalance)initWithIdentifier:(id)identifier forCurrencyAmount:(id)amount
 {
-  v6 = a4;
-  if (a3)
+  amountCopy = amount;
+  if (identifier)
   {
     v7 = MEMORY[0x1E695DFD8];
-    v8 = a3;
-    a3 = [[v7 alloc] initWithObjects:{v8, 0}];
+    identifierCopy = identifier;
+    identifier = [[v7 alloc] initWithObjects:{identifierCopy, 0}];
   }
 
-  v9 = [(PKPaymentBalance *)self initWithIdentifiers:a3 forCurrencyAmount:v6];
+  v9 = [(PKPaymentBalance *)self initWithIdentifiers:identifier forCurrencyAmount:amountCopy];
 
   return v9;
 }
 
-- (PKPaymentBalance)initWithIdentifiers:(id)a3 forCurrencyAmount:(id)a4
+- (PKPaymentBalance)initWithIdentifiers:(id)identifiers forCurrencyAmount:(id)amount
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  amountCopy = amount;
   v17.receiver = self;
   v17.super_class = PKPaymentBalance;
   v8 = [(PKPaymentBalance *)&v17 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifiersCopy copy];
     identifiers = v8->_identifiers;
     v8->_identifiers = v9;
 
-    v11 = [v7 currency];
+    currency = [amountCopy currency];
     currencyCode = v8->_currencyCode;
-    v8->_currencyCode = v11;
+    v8->_currencyCode = currency;
 
-    v8->_exponent = [v7 exponent];
-    v13 = [v7 preformattedString];
+    v8->_exponent = [amountCopy exponent];
+    preformattedString = [amountCopy preformattedString];
     preformattedString = v8->_preformattedString;
-    v8->_preformattedString = v13;
+    v8->_preformattedString = preformattedString;
 
-    v15 = [v7 amount];
-    [(PKPaymentBalance *)v8 _setValueWithRounding:v15];
+    amount = [amountCopy amount];
+    [(PKPaymentBalance *)v8 _setValueWithRounding:amount];
   }
 
   return v8;
 }
 
-- (PKPaymentBalance)initWithIdentifier:(id)a3 forValue:(id)a4 roundingToExponent:(int64_t)a5
+- (PKPaymentBalance)initWithIdentifier:(id)identifier forValue:(id)value roundingToExponent:(int64_t)exponent
 {
-  v8 = a4;
-  if (a3)
+  valueCopy = value;
+  if (identifier)
   {
     v9 = MEMORY[0x1E695DFD8];
-    v10 = a3;
-    a3 = [[v9 alloc] initWithObjects:{v10, 0}];
+    identifierCopy = identifier;
+    identifier = [[v9 alloc] initWithObjects:{identifierCopy, 0}];
   }
 
-  v11 = [(PKPaymentBalance *)self initWithIdentifiers:a3 forValue:v8 roundingToExponent:a5];
+  v11 = [(PKPaymentBalance *)self initWithIdentifiers:identifier forValue:valueCopy roundingToExponent:exponent];
 
   return v11;
 }
 
-- (PKPaymentBalance)initWithIdentifiers:(id)a3 forValue:(id)a4 roundingToExponent:(int64_t)a5
+- (PKPaymentBalance)initWithIdentifiers:(id)identifiers forValue:(id)value roundingToExponent:(int64_t)exponent
 {
-  v8 = a3;
-  v9 = a4;
+  identifiersCopy = identifiers;
+  valueCopy = value;
   v14.receiver = self;
   v14.super_class = PKPaymentBalance;
   v10 = [(PKPaymentBalance *)&v14 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [identifiersCopy copy];
     identifiers = v10->_identifiers;
     v10->_identifiers = v11;
 
-    v10->_exponent = a5;
+    v10->_exponent = exponent;
     objc_storeStrong(&v10->_currencyCode, @"XXX");
-    [(PKPaymentBalance *)v10 _setValueWithRounding:v9];
+    [(PKPaymentBalance *)v10 _setValueWithRounding:valueCopy];
   }
 
   return v10;
 }
 
-- (PKPaymentBalance)initWithComponentBalances:(id)a3 identifiers:(id)a4 expiredBalances:(id)a5
+- (PKPaymentBalance)initWithComponentBalances:(id)balances identifiers:(id)identifiers expiredBalances:(id)expiredBalances
 {
   v69 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count] || objc_msgSend(v10, "count"))
+  balancesCopy = balances;
+  identifiersCopy = identifiers;
+  expiredBalancesCopy = expiredBalances;
+  if ([balancesCopy count] || objc_msgSend(expiredBalancesCopy, "count"))
   {
-    v55 = self;
-    v11 = [v8 count];
+    selfCopy = self;
+    v11 = [balancesCopy count];
     if (v11)
     {
-      v12 = v8;
+      v12 = balancesCopy;
     }
 
     else
     {
-      v12 = v10;
+      v12 = expiredBalancesCopy;
     }
 
     v13 = v12;
-    v14 = [v13 firstObject];
-    v15 = [v14 currencyCode];
-    v58 = [v14 exponent];
-    v57 = [MEMORY[0x1E696AB90] zero];
+    firstObject = [v13 firstObject];
+    currencyCode = [firstObject currencyCode];
+    exponent = [firstObject exponent];
+    zero = [MEMORY[0x1E696AB90] zero];
     v60 = 0u;
     v61 = 0u;
     v62 = 0u;
@@ -326,10 +326,10 @@
       v17 = v16;
       v18 = 0;
       v19 = *v61;
-      v53 = v9;
-      v54 = v8;
-      v51 = v14;
-      v52 = v10;
+      v53 = identifiersCopy;
+      v54 = balancesCopy;
+      v51 = firstObject;
+      v52 = expiredBalancesCopy;
 LABEL_8:
       v20 = 0;
       while (1)
@@ -340,9 +340,9 @@ LABEL_8:
         }
 
         v21 = *(*(&v60 + 1) + 8 * v20);
-        v22 = [v21 currencyCode];
-        v23 = v15;
-        v24 = v22;
+        currencyCode2 = [v21 currencyCode];
+        v23 = currencyCode;
+        v24 = currencyCode2;
         v25 = v24;
         if (v23 == v24)
         {
@@ -350,28 +350,28 @@ LABEL_8:
 
         else
         {
-          if (!v15 || !v24)
+          if (!currencyCode || !v24)
           {
 
 LABEL_37:
             v45 = PKLogFacilityTypeGetObject(0);
             if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
             {
-              v47 = [v21 currencyCode];
+              currencyCode3 = [v21 currencyCode];
               *buf = 138412546;
               v65 = v23;
               v66 = 2112;
-              v67 = v47;
+              v67 = currencyCode3;
               _os_log_impl(&dword_1AD337000, v45, OS_LOG_TYPE_DEFAULT, "Cannot create a combined balance with multiple currency codes (%@, %@)", buf, 0x16u);
             }
 
 LABEL_39:
-            v9 = v53;
-            v8 = v54;
-            v14 = v51;
-            v10 = v52;
+            identifiersCopy = v53;
+            balancesCopy = v54;
+            firstObject = v51;
+            expiredBalancesCopy = v52;
             v32 = obj;
-            v35 = v57;
+            v35 = zero;
 
             v48 = 0;
             goto LABEL_44;
@@ -385,16 +385,16 @@ LABEL_39:
           }
         }
 
-        if (v58 != [v21 exponent])
+        if (exponent != [v21 exponent])
         {
           v45 = PKLogFacilityTypeGetObject(0);
           if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
           {
-            v46 = [v21 exponent];
+            exponent2 = [v21 exponent];
             *buf = 134218240;
-            v65 = v58;
+            v65 = exponent;
             v66 = 2048;
-            v67 = v46;
+            v67 = exponent2;
             _os_log_impl(&dword_1AD337000, v45, OS_LOG_TYPE_DEFAULT, "Cannot create a combined balance with multiple exponents (%ld, %ld)", buf, 0x16u);
           }
 
@@ -403,20 +403,20 @@ LABEL_39:
 
         if (v11)
         {
-          v27 = [v21 value];
-          if (v27)
+          value = [v21 value];
+          if (value)
           {
-            v28 = [v57 decimalNumberByAdding:v27];
+            v28 = [zero decimalNumberByAdding:value];
 
-            v57 = v28;
+            zero = v28;
           }
         }
 
-        v29 = [v21 lastUpdateDate];
-        v30 = v29;
-        if (v18 || !v29)
+        lastUpdateDate = [v21 lastUpdateDate];
+        v30 = lastUpdateDate;
+        if (v18 || !lastUpdateDate)
         {
-          if ([v18 compare:v29] == -1)
+          if ([v18 compare:lastUpdateDate] == -1)
           {
             v31 = v30;
 
@@ -426,16 +426,16 @@ LABEL_39:
 
         else
         {
-          v18 = v29;
+          v18 = lastUpdateDate;
         }
 
         if (v17 == ++v20)
         {
           v17 = [obj countByEnumeratingWithState:&v60 objects:v68 count:16];
-          v9 = v53;
-          v8 = v54;
-          v14 = v51;
-          v10 = v52;
+          identifiersCopy = v53;
+          balancesCopy = v54;
+          firstObject = v51;
+          expiredBalancesCopy = v52;
           if (v17)
           {
             goto LABEL_8;
@@ -450,34 +450,34 @@ LABEL_39:
 LABEL_31:
     v32 = obj;
 
-    v59.receiver = v55;
+    v59.receiver = selfCopy;
     v59.super_class = PKPaymentBalance;
     v33 = [(PKPaymentBalance *)&v59 init];
     v34 = v33;
-    v35 = v57;
+    v35 = zero;
     if (v33)
     {
-      objc_storeStrong(&v33->_currencyCode, v15);
-      objc_storeStrong(&v34->_value, v57);
-      v34->_exponent = v58;
-      v36 = [obj firstObject];
-      v37 = [v36 localizedTitle];
+      objc_storeStrong(&v33->_currencyCode, currencyCode);
+      objc_storeStrong(&v34->_value, zero);
+      v34->_exponent = exponent;
+      firstObject2 = [obj firstObject];
+      localizedTitle = [firstObject2 localizedTitle];
       localizedTitle = v34->_localizedTitle;
-      v34->_localizedTitle = v37;
+      v34->_localizedTitle = localizedTitle;
 
-      v39 = [obj firstObject];
-      v40 = [v39 localizedDescription];
+      firstObject3 = [obj firstObject];
+      localizedDescription = [firstObject3 localizedDescription];
       localizedDescription = v34->_localizedDescription;
-      v34->_localizedDescription = v40;
+      v34->_localizedDescription = localizedDescription;
 
       objc_storeStrong(&v34->_lastUpdateDate, v18);
-      v42 = [v8 copy];
+      v42 = [balancesCopy copy];
       componentBalances = v34->_componentBalances;
       v34->_componentBalances = v42;
 
-      if (v9)
+      if (identifiersCopy)
       {
-        v44 = [v9 copy];
+        v44 = [identifiersCopy copy];
       }
 
       else
@@ -490,10 +490,10 @@ LABEL_31:
     }
 
     v48 = v34;
-    v55 = v48;
+    selfCopy = v48;
 LABEL_44:
 
-    self = v55;
+    self = selfCopy;
   }
 
   else
@@ -527,20 +527,20 @@ LABEL_44:
     return 0;
   }
 
-  v3 = [MEMORY[0x1E695DF00] date];
-  v4 = [v3 compare:self->_expirationDate] == 1;
+  date = [MEMORY[0x1E695DF00] date];
+  v4 = [date compare:self->_expirationDate] == 1;
 
   return v4;
 }
 
-- (void)_setValueWithRounding:(id)a3
+- (void)_setValueWithRounding:(id)rounding
 {
-  v8 = a3;
-  if (v8)
+  roundingCopy = rounding;
+  if (roundingCopy)
   {
     if ([(PKPaymentBalance *)self isCurrency])
     {
-      v4 = PKCurrencyDecimalAmountRound(v8);
+      v4 = PKCurrencyDecimalAmountRound(roundingCopy);
       value = self->_value;
       self->_value = v4;
     }
@@ -548,7 +548,7 @@ LABEL_44:
     else
     {
       value = [MEMORY[0x1E696AB98] decimalNumberHandlerWithRoundingMode:0 scale:SLOWORD(self->_exponent) raiseOnExactness:0 raiseOnOverflow:0 raiseOnUnderflow:0 raiseOnDivideByZero:0];
-      v6 = [v8 decimalNumberByRoundingAccordingToBehavior:value];
+      v6 = [roundingCopy decimalNumberByRoundingAccordingToBehavior:value];
       v7 = self->_value;
       self->_value = v6;
     }
@@ -574,9 +574,9 @@ LABEL_44:
 
 - (PKCurrencyAmount)currencyValue
 {
-  v3 = [(PKPaymentBalance *)self preformattedString];
+  preformattedString = [(PKPaymentBalance *)self preformattedString];
 
-  if (v3)
+  if (preformattedString)
   {
     v4 = [[PKCurrencyAmount alloc] initWithAmount:self->_value exponent:self->_exponent preformattedString:self->_preformattedString];
   }
@@ -596,11 +596,11 @@ LABEL_44:
 
 - (NSString)formattedValue
 {
-  v3 = [(PKPaymentBalance *)self currencyValue];
-  v4 = v3;
-  if (v3)
+  currencyValue = [(PKPaymentBalance *)self currencyValue];
+  v4 = currencyValue;
+  if (currencyValue)
   {
-    [v3 formattedStringValue];
+    [currencyValue formattedStringValue];
   }
 
   else
@@ -615,8 +615,8 @@ LABEL_44:
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(NSSet *)self->_identifiers allObjects];
-  v5 = [v4 componentsJoinedByString:{@", "}];
+  allObjects = [(NSSet *)self->_identifiers allObjects];
+  v5 = [allObjects componentsJoinedByString:{@", "}];
   if (self->_isPrimary)
   {
     v6 = " (Primary)";
@@ -627,16 +627,16 @@ LABEL_44:
     v6 = "";
   }
 
-  v7 = [(PKPaymentBalance *)self formattedValue];
-  v8 = [v3 stringWithFormat:@"{%@}%s: %@", v5, v6, v7];
+  formattedValue = [(PKPaymentBalance *)self formattedValue];
+  v8 = [v3 stringWithFormat:@"{%@}%s: %@", v5, v6, formattedValue];
 
   return v8;
 }
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_value];
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_value];
   if (self->_currencyCode)
   {
     currencyCode = self->_currencyCode;
@@ -647,28 +647,28 @@ LABEL_44:
     currencyCode = @"XXX";
   }
 
-  [v3 safelyAddObject:currencyCode];
-  [v3 safelyAddObject:self->_localizedTitle];
-  [v3 safelyAddObject:self->_localizedDescription];
-  [v3 safelyAddObject:self->_lastUpdateDate];
-  [v3 safelyAddObject:self->_componentBalances];
-  [v3 safelyAddObject:self->_identifiers];
-  v5 = PKCombinedHash(17, v3);
+  [array safelyAddObject:currencyCode];
+  [array safelyAddObject:self->_localizedTitle];
+  [array safelyAddObject:self->_localizedDescription];
+  [array safelyAddObject:self->_lastUpdateDate];
+  [array safelyAddObject:self->_componentBalances];
+  [array safelyAddObject:self->_identifiers];
+  v5 = PKCombinedHash(17, array);
   v6 = self->_exponent - v5 + 32 * v5;
   v7 = self->_isPrimary - v6 + 32 * v6;
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   value = self->_value;
-  v6 = [v4 value];
-  v7 = v6;
+  value = [equalCopy value];
+  v7 = value;
   if (value)
   {
-    v8 = v6 == 0;
+    v8 = value == 0;
   }
 
   else
@@ -678,7 +678,7 @@ LABEL_44:
 
   if (v8)
   {
-    if (value == v6)
+    if (value == value)
     {
 LABEL_9:
       if (self->_currencyCode)
@@ -691,11 +691,11 @@ LABEL_9:
         currencyCode = @"XXX";
       }
 
-      v12 = [v4 currencyCode];
-      v13 = v12;
-      if (v12)
+      currencyCode = [equalCopy currencyCode];
+      v13 = currencyCode;
+      if (currencyCode)
       {
-        v14 = v12;
+        v14 = currencyCode;
       }
 
       else
@@ -703,7 +703,7 @@ LABEL_9:
         v14 = @"XXX";
       }
 
-      if (!-[__CFString isEqualToString:](currencyCode, "isEqualToString:", v14) || (exponent = self->_exponent, exponent != [v4 exponent]))
+      if (!-[__CFString isEqualToString:](currencyCode, "isEqualToString:", v14) || (exponent = self->_exponent, exponent != [equalCopy exponent]))
       {
         v9 = 0;
 LABEL_49:
@@ -712,65 +712,65 @@ LABEL_49:
       }
 
       localizedTitle = self->_localizedTitle;
-      v17 = [v4 localizedTitle];
-      v18 = v17;
-      if (localizedTitle && v17)
+      localizedTitle = [equalCopy localizedTitle];
+      v18 = localizedTitle;
+      if (localizedTitle && localizedTitle)
       {
-        if (([(NSString *)localizedTitle isEqual:v17]& 1) != 0)
+        if (([(NSString *)localizedTitle isEqual:localizedTitle]& 1) != 0)
         {
 LABEL_20:
           localizedDescription = self->_localizedDescription;
-          v20 = [v4 localizedDescription];
-          v21 = v20;
-          if (localizedDescription && v20)
+          localizedDescription = [equalCopy localizedDescription];
+          v21 = localizedDescription;
+          if (localizedDescription && localizedDescription)
           {
-            if (([(NSString *)localizedDescription isEqual:v20]& 1) == 0)
+            if (([(NSString *)localizedDescription isEqual:localizedDescription]& 1) == 0)
             {
               goto LABEL_38;
             }
           }
 
-          else if (localizedDescription != v20)
+          else if (localizedDescription != localizedDescription)
           {
             goto LABEL_38;
           }
 
           isPrimary = self->_isPrimary;
-          if (isPrimary == [v4 isPrimary])
+          if (isPrimary == [equalCopy isPrimary])
           {
             lastUpdateDate = self->_lastUpdateDate;
-            v24 = [v4 lastUpdateDate];
-            v25 = v24;
-            if (lastUpdateDate && v24)
+            lastUpdateDate = [equalCopy lastUpdateDate];
+            v25 = lastUpdateDate;
+            if (lastUpdateDate && lastUpdateDate)
             {
-              if (([(NSDate *)lastUpdateDate isEqual:v24]& 1) != 0)
+              if (([(NSDate *)lastUpdateDate isEqual:lastUpdateDate]& 1) != 0)
               {
 LABEL_32:
                 componentBalances = self->_componentBalances;
-                v27 = [v4 componentBalances];
-                v28 = v27;
-                if (componentBalances && v27)
+                componentBalances = [equalCopy componentBalances];
+                v28 = componentBalances;
+                if (componentBalances && componentBalances)
                 {
-                  if (([(NSArray *)componentBalances isEqual:v27]& 1) != 0)
+                  if (([(NSArray *)componentBalances isEqual:componentBalances]& 1) != 0)
                   {
                     goto LABEL_35;
                   }
                 }
 
-                else if (componentBalances == v27)
+                else if (componentBalances == componentBalances)
                 {
 LABEL_35:
                   identifiers = self->_identifiers;
-                  v30 = [v4 identifiers];
-                  v31 = v30;
-                  if (identifiers && v30)
+                  identifiers = [equalCopy identifiers];
+                  v31 = identifiers;
+                  if (identifiers && identifiers)
                   {
-                    v9 = [(NSSet *)identifiers isEqual:v30];
+                    v9 = [(NSSet *)identifiers isEqual:identifiers];
                   }
 
                   else
                   {
-                    v9 = identifiers == v30;
+                    v9 = identifiers == identifiers;
                   }
 
                   goto LABEL_45;
@@ -783,7 +783,7 @@ LABEL_45:
               }
             }
 
-            else if (lastUpdateDate == v24)
+            else if (lastUpdateDate == lastUpdateDate)
             {
               goto LABEL_32;
             }
@@ -802,7 +802,7 @@ LABEL_47:
         }
       }
 
-      else if (localizedTitle == v17)
+      else if (localizedTitle == localizedTitle)
       {
         goto LABEL_20;
       }
@@ -816,7 +816,7 @@ LABEL_48:
 
   else
   {
-    v10 = [(NSDecimalNumber *)value isEqual:v6];
+    v10 = [(NSDecimalNumber *)value isEqual:value];
     if (v10)
     {
       goto LABEL_9;
@@ -829,16 +829,16 @@ LABEL_50:
   return v9;
 }
 
-+ (id)identifiersFromComponentBalances:(id)a3
++ (id)identifiersFromComponentBalances:(id)balances
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  balancesCopy = balances;
+  v4 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(balancesCopy, "count")}];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = balancesCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -853,8 +853,8 @@ LABEL_50:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) identifiers];
-        [v4 unionSet:v10];
+        identifiers = [*(*(&v13 + 1) + 8 * i) identifiers];
+        [v4 unionSet:identifiers];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];

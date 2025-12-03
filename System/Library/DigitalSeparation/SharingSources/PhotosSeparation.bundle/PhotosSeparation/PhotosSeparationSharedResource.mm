@@ -1,42 +1,42 @@
 @interface PhotosSeparationSharedResource
-- (PhotosSeparationSharedResource)initWithParticipants:(id)a3;
-- (void)stopSharingToParticipant:(id)a3 withCompletion:(id)a4;
-- (void)stopSharingWithCompletion:(id)a3;
-- (void)updateVisibility:(int64_t)a3 completion:(id)a4;
+- (PhotosSeparationSharedResource)initWithParticipants:(id)participants;
+- (void)stopSharingToParticipant:(id)participant withCompletion:(id)completion;
+- (void)stopSharingWithCompletion:(id)completion;
+- (void)updateVisibility:(int64_t)visibility completion:(id)completion;
 @end
 
 @implementation PhotosSeparationSharedResource
 
-- (void)updateVisibility:(int64_t)a3 completion:(id)a4
+- (void)updateVisibility:(int64_t)visibility completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4, 0);
+    (*(completion + 2))(completion, 0);
   }
 }
 
-- (void)stopSharingToParticipant:(id)a3 withCompletion:(id)a4
+- (void)stopSharingToParticipant:(id)participant withCompletion:(id)completion
 {
-  v6 = [NSAssertionHandler currentHandler:a3];
+  v6 = [NSAssertionHandler currentHandler:participant];
   [v6 handleFailureInMethod:a2 object:self file:@"PhotosSeparationSharedResource.m" lineNumber:37 description:{@"%s is an abstract method and requires a subclass to implement it", "-[PhotosSeparationSharedResource stopSharingToParticipant:withCompletion:]"}];
 }
 
-- (void)stopSharingWithCompletion:(id)a3
+- (void)stopSharingWithCompletion:(id)completion
 {
   v5 = +[NSAssertionHandler currentHandler];
   [v5 handleFailureInMethod:a2 object:self file:@"PhotosSeparationSharedResource.m" lineNumber:33 description:{@"%s is an abstract method and requires a subclass to implement it", "-[PhotosSeparationSharedResource stopSharingWithCompletion:]"}];
 }
 
-- (PhotosSeparationSharedResource)initWithParticipants:(id)a3
+- (PhotosSeparationSharedResource)initWithParticipants:(id)participants
 {
-  v5 = a3;
+  participantsCopy = participants;
   v9.receiver = self;
   v9.super_class = PhotosSeparationSharedResource;
   v6 = [(PhotosSeparationSharedResource *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_participants, a3);
+    objc_storeStrong(&v6->_participants, participants);
   }
 
   return v7;

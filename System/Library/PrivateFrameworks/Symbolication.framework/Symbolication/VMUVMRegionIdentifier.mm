@@ -1,15 +1,15 @@
 @interface VMUVMRegionIdentifier
-+ (id)descriptionForRange:(_VMURange)a3 inSortedRegions:(id)a4 options:(unint64_t)a5;
-- ($B3784314699B2BBEAD7DAC31D728563A)computedStatisticsForZoneWithName:(SEL)a3;
++ (id)descriptionForRange:(_VMURange)range inSortedRegions:(id)regions options:(unint64_t)options;
+- ($B3784314699B2BBEAD7DAC31D728563A)computedStatisticsForZoneWithName:(SEL)name;
 - ($B3784314699B2BBEAD7DAC31D728563A)summaryStatisticsOfAllZones;
 - (NSArray)zoneNames;
 - (VMUVMRegionIdentifier)init;
-- (VMUVMRegionIdentifier)initWithGraph:(id)a3 options:(unint64_t)a4;
-- (VMUVMRegionIdentifier)initWithVMUTask:(id)a3 options:(unint64_t)a4;
-- (id)descriptionForMallocZoneTotals:(unint64_t)a3 memorySizeDivisor:(unsigned int)a4;
-- (id)nonSubmapRegionContainingAddress:(unint64_t)a3;
-- (int)_recordRegionsAroundAddress:(unint64_t)a3 regionDescriptionOptions:(unint64_t)a4;
-- (void)_computeStatistics:(id *)a3;
+- (VMUVMRegionIdentifier)initWithGraph:(id)graph options:(unint64_t)options;
+- (VMUVMRegionIdentifier)initWithVMUTask:(id)task options:(unint64_t)options;
+- (id)descriptionForMallocZoneTotals:(unint64_t)totals memorySizeDivisor:(unsigned int)divisor;
+- (id)nonSubmapRegionContainingAddress:(unint64_t)address;
+- (int)_recordRegionsAroundAddress:(unint64_t)address regionDescriptionOptions:(unint64_t)options;
+- (void)_computeStatistics:(id *)statistics;
 @end
 
 @implementation VMUVMRegionIdentifier
@@ -33,15 +33,15 @@
   return v2;
 }
 
-- (VMUVMRegionIdentifier)initWithVMUTask:(id)a3 options:(unint64_t)a4
+- (VMUVMRegionIdentifier)initWithVMUTask:(id)task options:(unint64_t)options
 {
-  v7 = a3;
+  taskCopy = task;
   v8 = [(VMUVMRegionIdentifier *)self init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_task, a3);
-    v10 = [[VMUTaskThreadStates alloc] initWithVMUTask:v7];
+    objc_storeStrong(&v8->_task, task);
+    v10 = [[VMUTaskThreadStates alloc] initWithVMUTask:taskCopy];
     threadStates = v9->_threadStates;
     v9->_threadStates = v10;
 
@@ -49,9 +49,9 @@
     ledger = v9->_ledger;
     v9->_ledger = v12;
 
-    if ([(VMUTask *)v9->_task isCore]|| (v14 = [(VMUTask *)v9->_task taskPort], (a4 & 0x1000) == 0) && v14)
+    if ([(VMUTask *)v9->_task isCore]|| (v14 = [(VMUTask *)v9->_task taskPort], (options & 0x1000) == 0) && v14)
     {
-      if ([(VMUVMRegionIdentifier *)v9 _recordRegionsAroundAddress:0 regionDescriptionOptions:a4])
+      if ([(VMUVMRegionIdentifier *)v9 _recordRegionsAroundAddress:0 regionDescriptionOptions:options])
       {
 
         v9 = 0;
@@ -62,33 +62,33 @@
   return v9;
 }
 
-- (VMUVMRegionIdentifier)initWithGraph:(id)a3 options:(unint64_t)a4
+- (VMUVMRegionIdentifier)initWithGraph:(id)graph options:(unint64_t)options
 {
-  v6 = a3;
+  graphCopy = graph;
   v7 = [(VMUVMRegionIdentifier *)self init];
   if (v7)
   {
-    if ([v6 zoneCount])
+    if ([graphCopy zoneCount])
     {
-      v8 = malloc_type_malloc(8 * [v6 zoneCount], 0x2004093837F09uLL);
-      if ([v6 zoneCount])
+      v8 = malloc_type_malloc(8 * [graphCopy zoneCount], 0x2004093837F09uLL);
+      if ([graphCopy zoneCount])
       {
         v9 = 0;
         do
         {
           v8[v9] = malloc_type_calloc(1uLL, 0x50uLL, 0x10000404247E4FDuLL);
-          NSMapInsertKnownAbsent(v7->_mallocZoneStatisticsMap, [v6 zoneNameForIndex:v9], v8[v9]);
+          NSMapInsertKnownAbsent(v7->_mallocZoneStatisticsMap, [graphCopy zoneNameForIndex:v9], v8[v9]);
           ++v9;
         }
 
-        while (v9 < [v6 zoneCount]);
+        while (v9 < [graphCopy zoneCount]);
       }
 
       v22[0] = MEMORY[0x1E69E9820];
       v22[1] = 3221225472;
       v22[2] = __47__VMUVMRegionIdentifier_initWithGraph_options___block_invoke;
       v22[3] = &unk_1E8278E38;
-      v23 = v6;
+      v23 = graphCopy;
       v24 = v8;
       VMUEnumerateVMAnnotatedMallocObjectsWithBlock(v23, v22);
     }
@@ -98,7 +98,7 @@
       v8 = 0;
     }
 
-    v10 = [v6 vmPageSize] - 1;
+    v10 = [graphCopy vmPageSize] - 1;
     v20[0] = 0;
     v20[1] = v20;
     v20[2] = 0x3032000000;
@@ -111,16 +111,16 @@
     v13[3] = &unk_1E8278E60;
     v11 = v7;
     v14 = v11;
-    v15 = v6;
+    v15 = graphCopy;
     v16 = v20;
     v17 = v8;
-    v18 = a4;
+    optionsCopy = options;
     v19 = v10;
     [v15 enumerateRegionsWithBlock:v13];
-    coalesceIdenticalRegions(v11->_regions, a4);
+    coalesceIdenticalRegions(v11->_regions, options);
     free(v8);
-    v11->_recordedPhysFootprint = BYTE2(a4) & 1;
-    if ((a4 & 0x10000) != 0)
+    v11->_recordedPhysFootprint = BYTE2(options) & 1;
+    if ((options & 0x10000) != 0)
     {
       v11->_didPhysFootprintDirtyAccounting = 1;
     }
@@ -211,7 +211,7 @@ LABEL_13:
   objc_autoreleasePoolPop(v4);
 }
 
-- (id)nonSubmapRegionContainingAddress:(unint64_t)a3
+- (id)nonSubmapRegionContainingAddress:(unint64_t)address
 {
   v18 = *MEMORY[0x1E69E9840];
   v13 = 0u;
@@ -234,7 +234,7 @@ LABEL_13:
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        if (([v9 isSubmap] & 1) == 0 && a3 - v9[1] < v9[2])
+        if (([v9 isSubmap] & 1) == 0 && address - v9[1] < v9[2])
         {
           v10 = v9;
           goto LABEL_12;
@@ -259,7 +259,7 @@ LABEL_12:
   return v10;
 }
 
-- (int)_recordRegionsAroundAddress:(unint64_t)a3 regionDescriptionOptions:(unint64_t)a4
+- (int)_recordRegionsAroundAddress:(unint64_t)address regionDescriptionOptions:(unint64_t)options
 {
   v28 = *MEMORY[0x1E69E9840];
   if (_recordRegionsAroundAddress_regionDescriptionOptions__onceToken != -1)
@@ -269,17 +269,17 @@ LABEL_12:
 
   v7 = getprogname();
   v8 = strcmp(v7, "ReportCrash");
-  v9 = a4 | 0x500;
+  optionsCopy = options | 0x500;
   if (v8)
   {
-    v9 = a4;
+    optionsCopy = options;
   }
 
-  v10 = v9 & 0x30000;
-  v11 = v9 & 0xFFFFFFFFFFFDFFFFLL;
-  if ((v9 & 0x30000) == 0)
+  v10 = optionsCopy & 0x30000;
+  v11 = optionsCopy & 0xFFFFFFFFFFFDFFFFLL;
+  if ((optionsCopy & 0x30000) == 0)
   {
-    v9 |= 0x10000uLL;
+    optionsCopy |= 0x10000uLL;
   }
 
   if (v10 == 196608)
@@ -289,7 +289,7 @@ LABEL_12:
 
   else
   {
-    v12 = v9;
+    v12 = optionsCopy;
   }
 
   self->_recordedPhysFootprint = BYTE2(v12) & 1;
@@ -299,7 +299,7 @@ LABEL_12:
   }
 
   [_recordRegionsAroundAddress_regionDescriptionOptions__recordRegionsLock lock];
-  v13 = recordRegions(self->_task, a3, self->_regions, self->_threadStates, self->_mallocZoneStatisticsMap, self->_ledger, v12);
+  v13 = recordRegions(self->_task, address, self->_regions, self->_threadStates, self->_mallocZoneStatisticsMap, self->_ledger, v12);
   [_recordRegionsAroundAddress_regionDescriptionOptions__recordRegionsLock unlock];
   if (!v13)
   {
@@ -387,7 +387,7 @@ void __78__VMUVMRegionIdentifier__recordRegionsAroundAddress_regionDescriptionOp
   return v4;
 }
 
-- ($B3784314699B2BBEAD7DAC31D728563A)computedStatisticsForZoneWithName:(SEL)a3
+- ($B3784314699B2BBEAD7DAC31D728563A)computedStatisticsForZoneWithName:(SEL)name
 {
   v8 = a4;
   v6 = NSMapGet(self->_mallocZoneStatisticsMap, v8);
@@ -422,13 +422,13 @@ void __78__VMUVMRegionIdentifier__recordRegionsAroundAddress_regionDescriptionOp
   *&retstr->var2 = 0u;
   *&retstr->var4 = 0u;
   *&retstr->var0 = 0u;
-  v5 = [(VMUVMRegionIdentifier *)self zoneNames];
+  zoneNames = [(VMUVMRegionIdentifier *)self zoneNames];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v16 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v6 = [zoneNames countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
     v7 = v6;
@@ -443,7 +443,7 @@ void __78__VMUVMRegionIdentifier__recordRegionsAroundAddress_regionDescriptionOp
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(zoneNames);
         }
 
         v11 = NSMapGet(self->_mallocZoneStatisticsMap, *(*(&v17 + 1) + 8 * v10));
@@ -463,7 +463,7 @@ void __78__VMUVMRegionIdentifier__recordRegionsAroundAddress_regionDescriptionOp
       }
 
       while (v7 != v10);
-      v7 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v7 = [zoneNames countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v7);
@@ -475,12 +475,12 @@ void __78__VMUVMRegionIdentifier__recordRegionsAroundAddress_regionDescriptionOp
   return result;
 }
 
-- (void)_computeStatistics:(id *)a3
+- (void)_computeStatistics:(id *)statistics
 {
-  if (a3)
+  if (statistics)
   {
-    var0 = a3->var0;
-    v4 = a3->var5 + a3->var6;
+    var0 = statistics->var0;
+    v4 = statistics->var5 + statistics->var6;
     if (v4)
     {
       v5 = v4 > var0;
@@ -503,18 +503,18 @@ void __78__VMUVMRegionIdentifier__recordRegionsAroundAddress_regionDescriptionOp
       v7 = 0;
     }
 
-    a3->var8 = v6;
-    a3->var9 = v7;
+    statistics->var8 = v6;
+    statistics->var9 = v7;
   }
 }
 
-+ (id)descriptionForRange:(_VMURange)a3 inSortedRegions:(id)a4 options:(unint64_t)a5
++ (id)descriptionForRange:(_VMURange)range inSortedRegions:(id)regions options:(unint64_t)options
 {
-  length = a3.length;
-  location = a3.location;
-  v8 = a4;
-  v9 = [MEMORY[0x1E696AD60] string];
-  v10 = [v8 count];
+  length = range.length;
+  location = range.location;
+  regionsCopy = regions;
+  string = [MEMORY[0x1E696AD60] string];
+  v10 = [regionsCopy count];
   if (v10)
   {
     v11 = v10;
@@ -523,10 +523,10 @@ void __78__VMUVMRegionIdentifier__recordRegionsAroundAddress_regionDescriptionOp
     v25 = location + length;
     v23 = location;
     v24 = length;
-    v22 = a5;
+    optionsCopy = options;
     do
     {
-      v14 = [v8 objectAtIndexedSubscript:{v12, v22}];
+      v14 = [regionsCopy objectAtIndexedSubscript:{v12, optionsCopy}];
       if (VMURangeIntersectsRange(location, length, *(v14 + 8), *(v14 + 16)))
       {
         if ([v14 isSubmap])
@@ -534,14 +534,14 @@ void __78__VMUVMRegionIdentifier__recordRegionsAroundAddress_regionDescriptionOp
           v12 = (v13 + 1);
           if (v11 > v12)
           {
-            v15 = [v14 address];
-            v16 = [v8 objectAtIndexedSubscript:(v13 + 1)];
-            v17 = [v16 address];
+            address = [v14 address];
+            v16 = [regionsCopy objectAtIndexedSubscript:(v13 + 1)];
+            address2 = [v16 address];
 
-            v18 = v15 == v17;
+            v18 = address == address2;
             location = v23;
             length = v24;
-            a5 = v22;
+            options = optionsCopy;
             if (v18)
             {
               goto LABEL_12;
@@ -549,14 +549,14 @@ void __78__VMUVMRegionIdentifier__recordRegionsAroundAddress_regionDescriptionOp
           }
         }
 
-        if ([v9 length])
+        if ([string length])
         {
-          [v9 appendString:@"\n"];
+          [string appendString:@"\n"];
         }
 
         v19 = objc_autoreleasePoolPush();
-        v20 = [v14 descriptionWithOptions:a5 maximumLength:0];
-        [v9 appendString:v20];
+        v20 = [v14 descriptionWithOptions:options maximumLength:0];
+        [string appendString:v20];
 
         objc_autoreleasePoolPop(v19);
         location = v23;
@@ -578,7 +578,7 @@ LABEL_12:
     while (v11 > v12);
   }
 
-  return v9;
+  return string;
 }
 
 void __99__VMUVMRegionIdentifier_descriptionOfRegionsAroundAddress_options_maximumLength_memorySizeDivisor___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -616,18 +616,18 @@ void __99__VMUVMRegionIdentifier_descriptionOfRegionsAroundAddress_options_maxim
   }
 }
 
-- (id)descriptionForMallocZoneTotals:(unint64_t)a3 memorySizeDivisor:(unsigned int)a4
+- (id)descriptionForMallocZoneTotals:(unint64_t)totals memorySizeDivisor:(unsigned int)divisor
 {
-  v4 = a3;
+  totalsCopy = totals;
   v65 = *MEMORY[0x1E69E9840];
   v6 = objc_opt_new();
-  v7 = [(VMUVMRegionIdentifier *)self zoneNames];
-  v38 = v4;
+  zoneNames = [(VMUVMRegionIdentifier *)self zoneNames];
+  v38 = totalsCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __74__VMUVMRegionIdentifier_descriptionForMallocZoneTotals_memorySizeDivisor___block_invoke;
   aBlock[3] = &__block_descriptor_33_e22_Q16__0____QQQQQQQQQQ_8l;
-  v62 = (v4 & 0x100000) != 0;
+  v62 = (totalsCopy & 0x100000) != 0;
   v8 = _Block_copy(aBlock);
   v59[0] = MEMORY[0x1E69E9820];
   v59[1] = 3221225472;
@@ -636,7 +636,7 @@ void __99__VMUVMRegionIdentifier_descriptionOfRegionsAroundAddress_options_maxim
   v59[4] = self;
   v37 = v8;
   v60 = v37;
-  v9 = [v7 sortedArrayUsingComparator:v59];
+  v9 = [zoneNames sortedArrayUsingComparator:v59];
 
   v57 = 0u;
   v58 = 0u;
@@ -701,7 +701,7 @@ void __99__VMUVMRegionIdentifier_descriptionOfRegionsAroundAddress_options_maxim
   }
 
   appendMallocZoneTextLine(v6, v38, v19, ", "VIRTUAL", "RESIDENT", "DIRTY", "SWAPPED", "DIRTY+SWAP", "ALLOCATION", "BYTES", "DIRTY+SWAP", ", "REGION");
-  if (a4 <= 1)
+  if (divisor <= 1)
   {
     v20 = "SIZE";
   }
@@ -743,14 +743,14 @@ void __99__VMUVMRegionIdentifier_descriptionOfRegionsAroundAddress_options_maxim
         v46 = 0u;
         [(VMUVMRegionIdentifier *)self computedStatisticsForZoneWithName:v27];
         hasFractionalPageSizes = self->_hasFractionalPageSizes;
-        v29 = [v27 UTF8String];
+        uTF8String = [v27 UTF8String];
         v43 = v48;
         v44 = v49;
         v45 = v50;
         v41 = v46;
         v42 = v47;
         v6 = v12;
-        appendMallocZoneStatsLine(v12, v38, a4, hasFractionalPageSizes, v19, v29, &v41);
+        appendMallocZoneStatsLine(v12, v38, divisor, hasFractionalPageSizes, v19, uTF8String, &v41);
       }
 
       v24 = [v22 countByEnumeratingWithState:&v51 objects:v63 count:16];
@@ -788,7 +788,7 @@ void __99__VMUVMRegionIdentifier_descriptionOfRegionsAroundAddress_options_maxim
     v45 = v50;
     v41 = v46;
     v42 = v47;
-    appendMallocZoneStatsLine(v6, v38, a4, v33, v19, "TOTAL", &v41);
+    appendMallocZoneStatsLine(v6, v38, divisor, v33, v19, "TOTAL", &v41);
   }
 
   v34 = *MEMORY[0x1E69E9840];

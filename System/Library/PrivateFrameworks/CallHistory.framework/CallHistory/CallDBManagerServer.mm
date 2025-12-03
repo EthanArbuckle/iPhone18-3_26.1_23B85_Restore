@@ -1,36 +1,36 @@
 @interface CallDBManagerServer
-+ (id)downgradeDatabaseAtLocation:(id)a3 toVersion:(int64_t)a4;
-+ (id)getDestinationModel:(int64_t)a3;
-+ (id)getDestinationModelForVersion:(int64_t)a3;
-+ (id)getObjectIdsForAllRecords:(id)a3;
-+ (id)getObjectIdsForDuplicateRecordsWithUniqueIds:(id)a3 andHavingObjectIds:(id)a4;
-+ (id)getUniqueIdsForAllRecords:(id)a3;
-+ (int64_t)getNextVersionToDowngradeTo:(int64_t)a3;
-+ (int64_t)getNextVersionToDowngradeTo:(int64_t)a3 withSourceVersion:(int64_t)a4;
-+ (int64_t)getNextVersionToMigrateToCurrentVersion:(int64_t)a3;
++ (id)downgradeDatabaseAtLocation:(id)location toVersion:(int64_t)version;
++ (id)getDestinationModel:(int64_t)model;
++ (id)getDestinationModelForVersion:(int64_t)version;
++ (id)getObjectIdsForAllRecords:(id)records;
++ (id)getObjectIdsForDuplicateRecordsWithUniqueIds:(id)ids andHavingObjectIds:(id)objectIds;
++ (id)getUniqueIdsForAllRecords:(id)records;
++ (int64_t)getNextVersionToDowngradeTo:(int64_t)to;
++ (int64_t)getNextVersionToDowngradeTo:(int64_t)to withSourceVersion:(int64_t)version;
++ (int64_t)getNextVersionToMigrateToCurrentVersion:(int64_t)version;
 - (BOOL)createCallDBProperties;
-- (BOOL)dbShouldBePrunedForVersion:(int64_t)a3;
-- (BOOL)handleBootUpFailure:(id)a3;
+- (BOOL)dbShouldBePrunedForVersion:(int64_t)version;
+- (BOOL)handleBootUpFailure:(id)failure;
 - (CallDBManagerServer)init;
-- (CallDBManagerServer)initWithDeviceObserver:(id)a3;
-- (id)getUUIDsOfNMostRecentRecords:(unint64_t)a3 fromManagedObjectContext:(id)a4;
-- (id)permDBLocation:(unsigned __int8 *)a3;
-- (id)uniqueIDsFromCallRecords:(id)a3 forFaceTimeCalls:(BOOL)a4;
+- (CallDBManagerServer)initWithDeviceObserver:(id)observer;
+- (id)getUUIDsOfNMostRecentRecords:(unint64_t)records fromManagedObjectContext:(id)context;
+- (id)permDBLocation:(unsigned __int8 *)location;
+- (id)uniqueIDsFromCallRecords:(id)records forFaceTimeCalls:(BOOL)calls;
 - (void)createCallDBProperties;
 - (void)createPermanent;
 - (void)createTemporary;
-- (void)deleteObjectsWithPredicate:(id)a3 fromManagedObjectContext:(id)a4;
+- (void)deleteObjectsWithPredicate:(id)predicate fromManagedObjectContext:(id)context;
 - (void)moveCallsFromTempDatabase;
-- (void)pruneDBFromManagedContext:(id)a3 version:(unint64_t)a4;
+- (void)pruneDBFromManagedContext:(id)context version:(unint64_t)version;
 @end
 
 @implementation CallDBManagerServer
 
-+ (id)getDestinationModelForVersion:(int64_t)a3
++ (id)getDestinationModelForVersion:(int64_t)version
 {
   v16 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:version];
   v5 = [v3 stringWithFormat:@"%@.%@/%@ %@", @"CallHistory", @"momd", @"CallHistory", v4];
 
   v6 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
@@ -42,9 +42,9 @@
   v10 = v9;
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v7 path];
+    path = [v7 path];
     *buf = 138543362;
-    v15 = v11;
+    v15 = path;
     _os_log_impl(&dword_1C3E90000, v10, OS_LOG_TYPE_DEFAULT, "Got destination model URL %{public}@", buf, 0xCu);
   }
 
@@ -53,62 +53,62 @@
   return v7;
 }
 
-+ (int64_t)getNextVersionToMigrateToCurrentVersion:(int64_t)a3
++ (int64_t)getNextVersionToMigrateToCurrentVersion:(int64_t)version
 {
-  if ((a3 - 5) >= 0x26)
+  if ((version - 5) >= 0x26)
   {
     v3 = &kCHUnknownDBVersion;
   }
 
   else
   {
-    v3 = (&unk_1C40363C8 + 8 * a3 - 40);
+    v3 = (&unk_1C40363C8 + 8 * version - 40);
   }
 
   return *v3;
 }
 
-+ (int64_t)getNextVersionToDowngradeTo:(int64_t)a3
++ (int64_t)getNextVersionToDowngradeTo:(int64_t)to
 {
-  if ((a3 - 8) > 0x22)
+  if ((to - 8) > 0x22)
   {
     return 5;
   }
 
   else
   {
-    return qword_1C40364F8[a3 - 8];
+    return qword_1C40364F8[to - 8];
   }
 }
 
-+ (int64_t)getNextVersionToDowngradeTo:(int64_t)a3 withSourceVersion:(int64_t)a4
++ (int64_t)getNextVersionToDowngradeTo:(int64_t)to withSourceVersion:(int64_t)version
 {
-  if (a4 == a3)
+  if (version == to)
   {
-    return a4;
+    return version;
   }
 
   else
   {
-    return [CallDBManagerServer getNextVersionToDowngradeTo:a4];
+    return [CallDBManagerServer getNextVersionToDowngradeTo:version];
   }
 }
 
-+ (id)getDestinationModel:(int64_t)a3
++ (id)getDestinationModel:(int64_t)model
 {
-  v4 = [CallDBManagerServer getNextVersionToMigrateToCurrentVersion:a3];
+  v4 = [CallDBManagerServer getNextVersionToMigrateToCurrentVersion:model];
 
-  return [a1 getDestinationModelForVersion:v4];
+  return [self getDestinationModelForVersion:v4];
 }
 
-+ (id)downgradeDatabaseAtLocation:(id)a3 toVersion:(int64_t)a4
++ (id)downgradeDatabaseAtLocation:(id)location toVersion:(int64_t)version
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __61__CallDBManagerServer_downgradeDatabaseAtLocation_toVersion___block_invoke;
   v6[3] = &__block_descriptor_40_e15___NSURL_16__0q8l;
-  v6[4] = a4;
-  v4 = [DBManager migrateDataStoreAtLocation:a3 withGetDestinationModel:v6 isEncrypted:0];
+  v6[4] = version;
+  v4 = [DBManager migrateDataStoreAtLocation:location withGetDestinationModel:v6 isEncrypted:0];
 
   return v4;
 }
@@ -128,11 +128,11 @@ id __61__CallDBManagerServer_downgradeDatabaseAtLocation_toVersion___block_invok
   return v4;
 }
 
-- (CallDBManagerServer)initWithDeviceObserver:(id)a3
+- (CallDBManagerServer)initWithDeviceObserver:(id)observer
 {
   v7.receiver = self;
   v7.super_class = CallDBManagerServer;
-  v3 = [(CallDBManager *)&v7 initWithDeviceObserver:a3];
+  v3 = [(CallDBManager *)&v7 initWithDeviceObserver:observer];
   if (v3)
   {
     v4 = objc_alloc_init(CHFeatureFlags);
@@ -182,8 +182,8 @@ id __61__CallDBManagerServer_downgradeDatabaseAtLocation_toVersion___block_invok
   }
 
   v9 = [CallDBMetaInfo alloc];
-  v10 = [v3 URLByDeletingLastPathComponent];
-  v11 = [(CallDBMetaInfo *)v9 initWithURL:v10];
+  uRLByDeletingLastPathComponent = [v3 URLByDeletingLastPathComponent];
+  v11 = [(CallDBMetaInfo *)v9 initWithURL:uRLByDeletingLastPathComponent];
 
   [(CallDBMetaInfo *)v11 writeDatabaseVersion:v4 isTemp:0];
   v12 = *MEMORY[0x1E69E9840];
@@ -226,14 +226,14 @@ id __61__CallDBManagerServer_downgradeDatabaseAtLocation_toVersion___block_invok
   }
 
   v9 = [CallDBMetaInfo alloc];
-  v10 = [v3 URLByDeletingLastPathComponent];
-  v11 = [(CallDBMetaInfo *)v9 initWithURL:v10];
+  uRLByDeletingLastPathComponent = [v3 URLByDeletingLastPathComponent];
+  v11 = [(CallDBMetaInfo *)v9 initWithURL:uRLByDeletingLastPathComponent];
 
   [(CallDBMetaInfo *)v11 writeDatabaseVersion:v6 isTemp:1];
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)permDBLocation:(unsigned __int8 *)a3
+- (id)permDBLocation:(unsigned __int8 *)location
 {
   v13 = *MEMORY[0x1E69E9840];
   v4 = +[CHLogServer sharedInstance];
@@ -245,7 +245,7 @@ id __61__CallDBManagerServer_downgradeDatabaseAtLocation_toVersion___block_invok
     _os_log_impl(&dword_1C3E90000, v5, OS_LOG_TYPE_DEFAULT, "CallDBManagerServer: fetching permDBURL", &v11, 2u);
   }
 
-  v6 = [CallDBManager getDBLocationIsSandboxed:0 isTemporary:0 error:a3];
+  v6 = [CallDBManager getDBLocationIsSandboxed:0 isTemporary:0 error:location];
   v7 = +[CHLogServer sharedInstance];
   v8 = [v7 logHandleForDomain:"ch.calldbm"];
 
@@ -263,36 +263,36 @@ id __61__CallDBManagerServer_downgradeDatabaseAtLocation_toVersion___block_invok
 
 - (void)moveCallsFromTempDatabase
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 postNotificationName:@"kMoveCallRecordsFromTemporaryStoreNotitification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"kMoveCallRecordsFromTemporaryStoreNotitification" object:self];
 }
 
-- (BOOL)handleBootUpFailure:(id)a3
+- (BOOL)handleBootUpFailure:(id)failure
 {
-  v3 = a3;
-  v4 = [v3 URLByAppendingPathExtension:@"backup"];
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
-  v6 = [v4 path];
-  v7 = [v5 fileExistsAtPath:v6];
+  failureCopy = failure;
+  v4 = [failureCopy URLByAppendingPathExtension:@"backup"];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [v4 path];
+  v7 = [defaultManager fileExistsAtPath:path];
 
-  v8 = (!v7 || [DBManager destroyDBAtLocation:v4 withModelAtLocation:0]) && [DBManager moveDBAtLocation:v3 toLocation:v4 withModelAtLocation:0]&& [DBManager destroyDBAtLocation:v3 withModelAtLocation:0];
+  v8 = (!v7 || [DBManager destroyDBAtLocation:v4 withModelAtLocation:0]) && [DBManager moveDBAtLocation:failureCopy toLocation:v4 withModelAtLocation:0]&& [DBManager destroyDBAtLocation:failureCopy withModelAtLocation:0];
   return v8;
 }
 
-+ (id)getObjectIdsForDuplicateRecordsWithUniqueIds:(id)a3 andHavingObjectIds:(id)a4
++ (id)getObjectIdsForDuplicateRecordsWithUniqueIds:(id)ids andHavingObjectIds:(id)objectIds
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 count];
-  if (v7 == [v5 count])
+  idsCopy = ids;
+  objectIdsCopy = objectIds;
+  v7 = [objectIdsCopy count];
+  if (v7 == [idsCopy count])
   {
     v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v9 = v5;
+    v9 = idsCopy;
     v10 = [v9 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v10)
     {
@@ -315,7 +315,7 @@ id __61__CallDBManagerServer_downgradeDatabaseAtLocation_toVersion___block_invok
           {
             if ([v16 isEqualToString:v12])
             {
-              v17 = [v6 objectAtIndex:v14];
+              v17 = [objectIdsCopy objectAtIndex:v14];
               [v8 addObject:v17];
             }
 
@@ -358,10 +358,10 @@ id __61__CallDBManagerServer_downgradeDatabaseAtLocation_toVersion___block_invok
   return v8;
 }
 
-+ (id)getUniqueIdsForAllRecords:(id)a3
++ (id)getUniqueIdsForAllRecords:(id)records
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  recordsCopy = records;
   v4 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:@"CallRecord"];
   [v4 setResultType:2];
   v5 = MEMORY[0x1E695DEC8];
@@ -369,16 +369,16 @@ id __61__CallDBManagerServer_downgradeDatabaseAtLocation_toVersion___block_invok
   v7 = [v5 arrayWithObjects:{v6, 0}];
   [v4 setSortDescriptors:v7];
 
-  v21 = [DBManager entityDescriptionHavingName:@"CallRecord" forContext:v3];
-  v8 = [v21 propertiesByName];
-  v9 = [v8 objectForKey:@"unique_id"];
+  v21 = [DBManager entityDescriptionHavingName:@"CallRecord" forContext:recordsCopy];
+  propertiesByName = [v21 propertiesByName];
+  v9 = [propertiesByName objectForKey:@"unique_id"];
 
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:{v9, 0}];
   [v4 setPropertiesToFetch:v10];
 
   v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v22 = v3;
-  v12 = [v3 executeFetchRequest:v4 error:0];
+  v22 = recordsCopy;
+  v12 = [recordsCopy executeFetchRequest:v4 error:0];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -422,10 +422,10 @@ id __61__CallDBManagerServer_downgradeDatabaseAtLocation_toVersion___block_invok
   return v11;
 }
 
-+ (id)getObjectIdsForAllRecords:(id)a3
++ (id)getObjectIdsForAllRecords:(id)records
 {
   v3 = MEMORY[0x1E695D5E0];
-  v4 = a3;
+  recordsCopy = records;
   v5 = [v3 fetchRequestWithEntityName:@"CallRecord"];
   v6 = MEMORY[0x1E695DEC8];
   v7 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"unique_id" ascending:1];
@@ -433,7 +433,7 @@ id __61__CallDBManagerServer_downgradeDatabaseAtLocation_toVersion___block_invok
   [v5 setSortDescriptors:v8];
 
   [v5 setResultType:1];
-  v9 = [v4 executeFetchRequest:v5 error:0];
+  v9 = [recordsCopy executeFetchRequest:v5 error:0];
 
   return v9;
 }
@@ -500,26 +500,26 @@ id __67__CallDBManagerServer_handleDatabaseMigration_isEncrypted_isRetry___block
   return [CallDBManagerServer getDestinationModel:a2];
 }
 
-- (id)getUUIDsOfNMostRecentRecords:(unint64_t)a3 fromManagedObjectContext:(id)a4
+- (id)getUUIDsOfNMostRecentRecords:(unint64_t)records fromManagedObjectContext:(id)context
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  contextCopy = context;
   v6 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:@"CallRecord"];
   v7 = MEMORY[0x1E695DEC8];
   v8 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"date" ascending:0];
   v9 = [v7 arrayWithObjects:{v8, 0}];
   [v6 setSortDescriptors:v9];
 
-  [v6 setFetchLimit:a3];
-  v24 = [DBManager entityDescriptionHavingName:@"CallRecord" forContext:v5];
-  v10 = [v24 propertiesByName];
-  v11 = [v10 objectForKey:@"unique_id"];
+  [v6 setFetchLimit:records];
+  v24 = [DBManager entityDescriptionHavingName:@"CallRecord" forContext:contextCopy];
+  propertiesByName = [v24 propertiesByName];
+  v11 = [propertiesByName objectForKey:@"unique_id"];
 
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:{v11, 0}];
   [v6 setPropertiesToFetch:v12];
 
   [v6 setResultType:2];
-  v13 = [v5 executeFetchRequest:v6 error:0];
+  v13 = [contextCopy executeFetchRequest:v6 error:0];
   v14 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v25 = 0u;
   v26 = 0u;
@@ -567,12 +567,12 @@ id __67__CallDBManagerServer_handleDatabaseMigration_isEncrypted_isRetry___block
 
 - (BOOL)createCallDBProperties
 {
-  v2 = [(CallDBManager *)self dbManager];
-  v3 = [v2 createManagedObjectContext];
+  dbManager = [(CallDBManager *)self dbManager];
+  createManagedObjectContext = [dbManager createManagedObjectContext];
 
-  if (v3)
+  if (createManagedObjectContext)
   {
-    v4 = [DBManager entityDescriptionHavingName:@"CallDBProperties" forContext:v3];
+    v4 = [DBManager entityDescriptionHavingName:@"CallDBProperties" forContext:createManagedObjectContext];
     if (!v4)
     {
       v13 = +[CHLogServer sharedInstance];
@@ -590,7 +590,7 @@ id __67__CallDBManagerServer_handleDatabaseMigration_isEncrypted_isRetry___block
     v5 = objc_alloc_init(MEMORY[0x1E695D5E0]);
     [v5 setEntity:v4];
     v23 = 0;
-    v6 = [v3 executeFetchRequest:v5 error:&v23];
+    v6 = [createManagedObjectContext executeFetchRequest:v5 error:&v23];
     v7 = v23;
     if (v7)
     {
@@ -622,11 +622,11 @@ id __67__CallDBManagerServer_handleDatabaseMigration_isEncrypted_isRetry___block
       goto LABEL_28;
     }
 
-    v15 = [[CallDBProperties alloc] initWithEntity:v4 insertIntoManagedObjectContext:v3];
+    v15 = [[CallDBProperties alloc] initWithEntity:v4 insertIntoManagedObjectContext:createManagedObjectContext];
     if (v15)
     {
       v21 = 0;
-      v16 = [v3 save:&v21];
+      v16 = [createManagedObjectContext save:&v21];
       v8 = v21;
       if (v16)
       {
@@ -679,11 +679,11 @@ LABEL_30:
   return v11;
 }
 
-- (void)pruneDBFromManagedContext:(id)a3 version:(unint64_t)a4
+- (void)pruneDBFromManagedContext:(id)context version:(unint64_t)version
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if ([(CallDBManagerServer *)self dbShouldBePrunedForVersion:a4])
+  contextCopy = context;
+  if ([(CallDBManagerServer *)self dbShouldBePrunedForVersion:version])
   {
     v7 = +[CHLogServer sharedInstance];
     v8 = [v7 logHandleForDomain:"ch.calldbm"];
@@ -691,12 +691,12 @@ LABEL_30:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v25 = 134217984;
-      v26 = a4;
+      versionCopy = version;
       _os_log_impl(&dword_1C3E90000, v8, OS_LOG_TYPE_DEFAULT, "DB needs to be pruned for version: %lu", &v25, 0xCu);
     }
 
     v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v10 = [(CallDBManagerServer *)self uniqueIDsOfCallsToKeepFromManagedObjectContext:v6 forFaceTimeCalls:1];
+    v10 = [(CallDBManagerServer *)self uniqueIDsOfCallsToKeepFromManagedObjectContext:contextCopy forFaceTimeCalls:1];
     [v9 addObjectsFromArray:v10];
     v11 = +[CHLogServer sharedInstance];
     v12 = [v11 logHandleForDomain:"ch.calldbm"];
@@ -706,11 +706,11 @@ LABEL_30:
     {
       v14 = [v10 count];
       v25 = 134217984;
-      v26 = v14;
+      versionCopy = v14;
       _os_log_impl(&dword_1C3E90000, v13, OS_LOG_TYPE_DEFAULT, "Calls visible in FT App to user: %lu", &v25, 0xCu);
     }
 
-    v15 = [(CallDBManagerServer *)self uniqueIDsOfCallsToKeepFromManagedObjectContext:v6 forFaceTimeCalls:0];
+    v15 = [(CallDBManagerServer *)self uniqueIDsOfCallsToKeepFromManagedObjectContext:contextCopy forFaceTimeCalls:0];
     [v9 addObjectsFromArray:v15];
     v16 = +[CHLogServer sharedInstance];
     v17 = [v16 logHandleForDomain:"ch.calldbm"];
@@ -720,7 +720,7 @@ LABEL_30:
     {
       v19 = [v15 count];
       v25 = 134217984;
-      v26 = v19;
+      versionCopy = v19;
       _os_log_impl(&dword_1C3E90000, v18, OS_LOG_TYPE_DEFAULT, "Calls visible in Phone App to user: %lu", &v25, 0xCu);
     }
 
@@ -728,21 +728,21 @@ LABEL_30:
     v21 = [CHRecentCall predicateForCallsWithAnyUniqueIDs:v9];
     v22 = [v20 notPredicateWithSubpredicate:v21];
 
-    [(CallDBManagerServer *)self deleteObjectsWithPredicate:v22 fromManagedObjectContext:v6];
-    v23 = [MEMORY[0x1E695E000] standardUserDefaults];
-    [v23 setBool:1 forKey:@"CHDBLimitIncreasedPruned"];
+    [(CallDBManagerServer *)self deleteObjectsWithPredicate:v22 fromManagedObjectContext:contextCopy];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    [standardUserDefaults setBool:1 forKey:@"CHDBLimitIncreasedPruned"];
   }
 
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (id)uniqueIDsFromCallRecords:(id)a3 forFaceTimeCalls:(BOOL)a4
+- (id)uniqueIDsFromCallRecords:(id)records forFaceTimeCalls:(BOOL)calls
 {
-  v4 = a4;
+  callsCopy = calls;
   v35 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  recordsCopy = records;
   v6 = kCHCoalescingStrategyCollapseIfEqual;
-  if (!v4)
+  if (!callsCopy)
   {
     v6 = kCHCoalescingStrategyRecents;
   }
@@ -753,7 +753,7 @@ LABEL_30:
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v8 = v5;
+  v8 = recordsCopy;
   v9 = [v8 countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v9)
   {
@@ -775,16 +775,16 @@ LABEL_30:
 
         v16 = *(*(&v30 + 1) + 8 * v14);
         v17 = objc_autoreleasePoolPush();
-        v18 = [v16 chRecentCall];
-        v19 = v18;
+        chRecentCall = [v16 chRecentCall];
+        v19 = chRecentCall;
         if (v15)
         {
-          v20 = [v15 coalescedCallWithCall:v18 usingStrategy:v29];
+          v20 = [v15 coalescedCallWithCall:chRecentCall usingStrategy:v29];
         }
 
         else
         {
-          v20 = v18;
+          v20 = chRecentCall;
         }
 
         v21 = v20;
@@ -810,8 +810,8 @@ LABEL_30:
 
         v11 = v22;
 
-        v23 = [v19 uniqueId];
-        [v7 addObject:v23];
+        uniqueId = [v19 uniqueId];
+        [v7 addObject:uniqueId];
 
         objc_autoreleasePoolPop(v17);
         ++v14;
@@ -844,19 +844,19 @@ LABEL_20:
   return v7;
 }
 
-- (void)deleteObjectsWithPredicate:(id)a3 fromManagedObjectContext:(id)a4
+- (void)deleteObjectsWithPredicate:(id)predicate fromManagedObjectContext:(id)context
 {
   v20 = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E695D5E0];
-  v6 = a4;
-  v7 = a3;
+  contextCopy = context;
+  predicateCopy = predicate;
   v8 = [v5 fetchRequestWithEntityName:@"CallRecord"];
-  [v8 setPredicate:v7];
+  [v8 setPredicate:predicateCopy];
 
   v9 = [objc_alloc(MEMORY[0x1E695D538]) initWithFetchRequest:v8];
   [v9 setResultType:2];
   v17 = 0;
-  v10 = [v6 executeRequest:v9 error:&v17];
+  v10 = [contextCopy executeRequest:v9 error:&v17];
 
   if (v17)
   {
@@ -871,8 +871,8 @@ LABEL_20:
 
   else
   {
-    v13 = [v10 result];
-    v14 = [v13 unsignedIntegerValue];
+    result = [v10 result];
+    unsignedIntegerValue = [result unsignedIntegerValue];
 
     v15 = +[CHLogServer sharedInstance];
     v12 = [v15 logHandleForDomain:"ch.calldbm"];
@@ -880,7 +880,7 @@ LABEL_20:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v19 = v14;
+      v19 = unsignedIntegerValue;
       _os_log_impl(&dword_1C3E90000, v12, OS_LOG_TYPE_DEFAULT, "Deleted %ld calls from the data store.", buf, 0xCu);
     }
   }
@@ -888,13 +888,13 @@ LABEL_20:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)dbShouldBePrunedForVersion:(int64_t)a3
+- (BOOL)dbShouldBePrunedForVersion:(int64_t)version
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (a3 < 27)
+  if (version < 27)
   {
-    v5 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v6 = [v5 BOOLForKey:@"CHDBLimitIncreasedPruned"]^ 1;
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v6 = [standardUserDefaults BOOLForKey:@"CHDBLimitIncreasedPruned"]^ 1;
     v7 = +[CHLogServer sharedInstance];
     v8 = [v7 logHandleForDomain:"ch.calldbm"];
 
@@ -903,7 +903,7 @@ LABEL_20:
     {
       v10 = [MEMORY[0x1E696AD98] numberWithBool:v6];
       v13 = 138543362;
-      v14 = v10;
+      versionCopy = v10;
       _os_log_impl(&dword_1C3E90000, v9, OS_LOG_TYPE_DEFAULT, "DB version was eligible for pruning. shouldBePruned: %{public}@", &v13, 0xCu);
     }
   }
@@ -911,13 +911,13 @@ LABEL_20:
   else
   {
     v4 = +[CHLogServer sharedInstance];
-    v5 = [v4 logHandleForDomain:"ch.calldbm"];
+    standardUserDefaults = [v4 logHandleForDomain:"ch.calldbm"];
 
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(standardUserDefaults, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 134217984;
-      v14 = a3;
-      _os_log_impl(&dword_1C3E90000, v5, OS_LOG_TYPE_DEFAULT, "DB does not need to be pruned as version: %lu is greater than kCHDBVersionTwentySeven", &v13, 0xCu);
+      versionCopy = version;
+      _os_log_impl(&dword_1C3E90000, standardUserDefaults, OS_LOG_TYPE_DEFAULT, "DB does not need to be pruned as version: %lu is greater than kCHDBVersionTwentySeven", &v13, 0xCu);
     }
 
     LOBYTE(v6) = 0;

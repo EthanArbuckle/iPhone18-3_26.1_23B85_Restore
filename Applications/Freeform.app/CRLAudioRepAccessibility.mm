@@ -1,5 +1,5 @@
 @interface CRLAudioRepAccessibility
-+ (id)crlaxCastFrom:(id)a3;
++ (id)crlaxCastFrom:(id)from;
 - (BOOL)_accessibilitySupportsActivateAction;
 - (BOOL)_isInQuickSelectMode;
 - (BOOL)accessibilityActivate;
@@ -20,36 +20,36 @@
 
 @implementation CRLAudioRepAccessibility
 
-+ (id)crlaxCastFrom:(id)a3
++ (id)crlaxCastFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 0, 0);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, fromCopy, 0, 0);
 
   return v5;
 }
 
 - (NSString)crlaxLabel
 {
-  v3 = [(CRLAudioRepAccessibility *)self crlaxTarget];
-  v4 = [v3 movieItem];
+  crlaxTarget = [(CRLAudioRepAccessibility *)self crlaxTarget];
+  movieItem = [crlaxTarget movieItem];
 
-  v5 = [v4 accessibilityDescription];
-  v6 = [v4 title];
-  v7 = [v4 creator];
-  v8 = [v4 localizedName];
-  v9 = [(CRLAudioRepAccessibility *)self _crlaxMovieInfo];
-  v10 = [v9 crlaxDurationDescription];
+  accessibilityDescription = [movieItem accessibilityDescription];
+  title = [movieItem title];
+  creator = [movieItem creator];
+  localizedName = [movieItem localizedName];
+  _crlaxMovieInfo = [(CRLAudioRepAccessibility *)self _crlaxMovieInfo];
+  crlaxDurationDescription = [_crlaxMovieInfo crlaxDurationDescription];
 
-  if (![v6 length])
+  if (![title length])
   {
-    v17 = [v4 movieAssetPayload];
-    v18 = [v17 filename];
+    movieAssetPayload = [movieItem movieAssetPayload];
+    filename = [movieAssetPayload filename];
 
-    v6 = v18;
+    title = filename;
   }
 
-  v19 = __CRLAccessibilityStringForVariables(1, v5, v11, v12, v13, v14, v15, v16, v6);
+  v19 = __CRLAccessibilityStringForVariables(1, accessibilityDescription, v11, v12, v13, v14, v15, v16, title);
 
   return v19;
 }
@@ -73,11 +73,11 @@
 - (CRLAVPlayerControllerAccessibility)crlaxPlayerControllerForcingCreationIfNotPreExisting
 {
   v8 = 0;
-  v2 = [(CRLAudioRepAccessibility *)self crlaxTarget];
-  v3 = [v2 playerControllerForcingCreationIfNotPreExisting];
+  crlaxTarget = [(CRLAudioRepAccessibility *)self crlaxTarget];
+  playerControllerForcingCreationIfNotPreExisting = [crlaxTarget playerControllerForcingCreationIfNotPreExisting];
 
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 1, &v8);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, playerControllerForcingCreationIfNotPreExisting, 1, &v8);
   if (v8 == 1)
   {
     abort();
@@ -90,42 +90,42 @@
 
 - (BOOL)crlaxCanPlay
 {
-  v2 = [(CRLAudioRepAccessibility *)self crlaxTarget];
-  v3 = [v2 isPlayable];
+  crlaxTarget = [(CRLAudioRepAccessibility *)self crlaxTarget];
+  isPlayable = [crlaxTarget isPlayable];
 
-  return v3;
+  return isPlayable;
 }
 
 - (BOOL)crlaxIsPlaying
 {
-  v2 = [(CRLAudioRepAccessibility *)self crlaxTarget];
-  v3 = [v2 isPlaying];
+  crlaxTarget = [(CRLAudioRepAccessibility *)self crlaxTarget];
+  isPlaying = [crlaxTarget isPlaying];
 
-  return v3;
+  return isPlaying;
 }
 
 - (void)crlaxTogglePlayback
 {
-  v2 = [(CRLAudioRepAccessibility *)self crlaxTarget];
-  [v2 i_togglePlayback];
+  crlaxTarget = [(CRLAudioRepAccessibility *)self crlaxTarget];
+  [crlaxTarget i_togglePlayback];
 }
 
 - (id)accessibilityUserInputLabels
 {
   v3 = +[NSMutableArray array];
-  v4 = [(CRLAudioRepAccessibility *)self crlaxTarget];
-  v5 = [v4 movieItem];
+  crlaxTarget = [(CRLAudioRepAccessibility *)self crlaxTarget];
+  movieItem = [crlaxTarget movieItem];
 
-  v6 = [v5 accessibilityDescription];
-  v7 = [v5 title];
-  if ([v6 length])
+  accessibilityDescription = [movieItem accessibilityDescription];
+  title = [movieItem title];
+  if ([accessibilityDescription length])
   {
-    [v3 addObject:v6];
+    [v3 addObject:accessibilityDescription];
   }
 
-  if ([v7 length])
+  if ([title length])
   {
-    [v3 addObject:v7];
+    [v3 addObject:title];
   }
 
   v8 = [v3 copy];
@@ -135,12 +135,12 @@
 
 - (id)crlaxDescriptionForConnections
 {
-  v3 = [(CRLAudioRepAccessibility *)self crlaxTarget];
-  v4 = [v3 movieItem];
-  v5 = [v4 movieAssetPayload];
-  v6 = [v5 filename];
-  v7 = [(CRLCanvasRepAccessibility *)self crlaxDefaultDescriptionForConnections];
-  v8 = [(CRLCanvasRepAccessibility *)self crlaxRemoveExtensionFromFile:v6 inString:v7];
+  crlaxTarget = [(CRLAudioRepAccessibility *)self crlaxTarget];
+  movieItem = [crlaxTarget movieItem];
+  movieAssetPayload = [movieItem movieAssetPayload];
+  filename = [movieAssetPayload filename];
+  crlaxDefaultDescriptionForConnections = [(CRLCanvasRepAccessibility *)self crlaxDefaultDescriptionForConnections];
+  v8 = [(CRLCanvasRepAccessibility *)self crlaxRemoveExtensionFromFile:filename inString:crlaxDefaultDescriptionForConnections];
 
   return v8;
 }
@@ -148,11 +148,11 @@
 - (CRLMovieItemAccessibility)_crlaxMovieInfo
 {
   v8 = 0;
-  v2 = [(CRLAudioRepAccessibility *)self crlaxTarget];
-  v3 = [v2 movieItem];
+  crlaxTarget = [(CRLAudioRepAccessibility *)self crlaxTarget];
+  movieItem = [crlaxTarget movieItem];
 
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 1, &v8);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, movieItem, 1, &v8);
   if (v8 == 1)
   {
     abort();
@@ -174,13 +174,13 @@
 {
   v10.receiver = self;
   v10.super_class = CRLAudioRepAccessibility;
-  v3 = [(CRLCanvasRepAccessibility *)&v10 accessibilityHint];
+  accessibilityHint = [(CRLCanvasRepAccessibility *)&v10 accessibilityHint];
   if (![(CRLAudioRepAccessibility *)self _isInQuickSelectMode]&& [(CRLCanvasRepAccessibility *)self crlaxIsSelected])
   {
-    v4 = [(CRLAudioRepAccessibility *)self crlaxTarget];
-    v5 = [v4 i_playButtonFitsInFrame];
+    crlaxTarget = [(CRLAudioRepAccessibility *)self crlaxTarget];
+    i_playButtonFitsInFrame = [crlaxTarget i_playButtonFitsInFrame];
 
-    if (!v5)
+    if (!i_playButtonFitsInFrame)
     {
       v6 = @"Double tap to show full-screen preview";
       goto LABEL_7;
@@ -193,7 +193,7 @@ LABEL_7:
       v7 = +[NSBundle mainBundle];
       v8 = [v7 localizedStringForKey:v6 value:0 table:0];
 
-      v3 = v8;
+      accessibilityHint = v8;
       goto LABEL_8;
     }
 
@@ -206,7 +206,7 @@ LABEL_7:
 
 LABEL_8:
 
-  return v3;
+  return accessibilityHint;
 }
 
 - (BOOL)_accessibilitySupportsActivateAction
@@ -232,15 +232,15 @@ LABEL_8:
     v8.super_class = CRLAudioRepAccessibility;
     if (![(CRLCanvasRepAccessibility *)&v8 accessibilityActivate])
     {
-      v4 = [(CRLAudioRepAccessibility *)self crlaxTarget];
-      v5 = [v4 i_playButtonFitsInFrame];
+      crlaxTarget = [(CRLAudioRepAccessibility *)self crlaxTarget];
+      i_playButtonFitsInFrame = [crlaxTarget i_playButtonFitsInFrame];
 
-      if (v5)
+      if (i_playButtonFitsInFrame)
       {
-        v3 = [(CRLAudioRepAccessibility *)self crlaxCanPlay];
-        if (!v3)
+        crlaxCanPlay = [(CRLAudioRepAccessibility *)self crlaxCanPlay];
+        if (!crlaxCanPlay)
         {
-          return v3;
+          return crlaxCanPlay;
         }
 
         [(CRLAudioRepAccessibility *)self crlaxTogglePlayback];
@@ -248,17 +248,17 @@ LABEL_8:
 
       else
       {
-        v6 = [(CRLAudioRepAccessibility *)self crlaxTarget];
-        [v6 enterPreviewMode];
+        crlaxTarget2 = [(CRLAudioRepAccessibility *)self crlaxTarget];
+        [crlaxTarget2 enterPreviewMode];
       }
     }
 
-    LOBYTE(v3) = 1;
-    return v3;
+    LOBYTE(crlaxCanPlay) = 1;
+    return crlaxCanPlay;
   }
 
-  LOBYTE(v3) = 0;
-  return v3;
+  LOBYTE(crlaxCanPlay) = 0;
+  return crlaxCanPlay;
 }
 
 - (CGPoint)_accessibilityVisiblePoint
@@ -266,16 +266,16 @@ LABEL_8:
   [(CRLCanvasRepAccessibility *)self accessibilityActivationPoint];
   point.x = v3;
   v5 = v4;
-  v6 = [(CRLAudioRepAccessibility *)self crlaxTarget];
-  v7 = [v6 layout];
-  v8 = [v7 geometry];
-  [v8 size];
+  crlaxTarget = [(CRLAudioRepAccessibility *)self crlaxTarget];
+  layout = [crlaxTarget layout];
+  geometry = [layout geometry];
+  [geometry size];
   v10 = v9;
   v12 = v11;
 
-  v13 = [(CRLCanvasRepAccessibility *)self crlaxLayout];
-  v14 = [v13 crlaxTarget];
-  if (([v14 isInGroup] & 1) != 0 || v12 == 0.0)
+  crlaxLayout = [(CRLCanvasRepAccessibility *)self crlaxLayout];
+  crlaxTarget2 = [crlaxLayout crlaxTarget];
+  if (([crlaxTarget2 isInGroup] & 1) != 0 || v12 == 0.0)
   {
 LABEL_43:
 
@@ -284,10 +284,10 @@ LABEL_43:
 
   if (v10 != 0.0)
   {
-    v13 = [(CRLCanvasRepAccessibility *)self crlaxLayout];
-    v15 = [v13 crlaxInspectorGeometry];
-    v14 = v15;
-    if (v15)
+    crlaxLayout = [(CRLCanvasRepAccessibility *)self crlaxLayout];
+    crlaxInspectorGeometry = [crlaxLayout crlaxInspectorGeometry];
+    crlaxTarget2 = crlaxInspectorGeometry;
+    if (crlaxInspectorGeometry)
     {
       log = v5;
       b = CGAffineTransformIdentity.b;
@@ -295,7 +295,7 @@ LABEL_43:
       d = CGAffineTransformIdentity.d;
       tx = CGAffineTransformIdentity.tx;
       ty = CGAffineTransformIdentity.ty;
-      [v15 crlaxAngleInRadians];
+      [crlaxInspectorGeometry crlaxAngleInRadians];
       v88 = b;
       v103.a = CGAffineTransformIdentity.a;
       v103.b = b;
@@ -314,13 +314,13 @@ LABEL_43:
       v25 = *&v104[24];
       v27 = *&v104[32];
       v26 = *&v104[40];
-      v28 = [(CRLCanvasRepAccessibility *)self crlaxCanvas];
-      v29 = v28;
-      if (v28)
+      crlaxCanvas = [(CRLCanvasRepAccessibility *)self crlaxCanvas];
+      v29 = crlaxCanvas;
+      if (crlaxCanvas)
       {
         v30 = v26 + v12 * 0.25 * v25 + v23 * (v10 * 0.5);
         v31 = v27 + v12 * 0.25 * v24 + v22 * (v10 * 0.5);
-        [v28 crlaxViewScale];
+        [crlaxCanvas crlaxViewScale];
         v103.a = CGAffineTransformIdentity.a;
         v103.b = v88;
         v103.c = v87;
@@ -330,11 +330,11 @@ LABEL_43:
         CGAffineTransformScale(v104, &v103, v32, v32);
         pointa = *&v104[32] + v30 * *&v104[16] + *v104 * v31;
         loga = *&v104[40] + v30 * *&v104[24] + *&v104[8] * v31;
-        v33 = [v13 crlaxTarget];
-        v34 = v33;
-        if (v33)
+        crlaxTarget3 = [crlaxLayout crlaxTarget];
+        v34 = crlaxTarget3;
+        if (crlaxTarget3)
         {
-          [v33 transform];
+          [crlaxTarget3 transform];
           v35 = v102;
           [v34 transform];
           v36 = v101;
@@ -346,8 +346,8 @@ LABEL_43:
           v35 = 0.0;
         }
 
-        v37 = [(CRLCanvasRepAccessibility *)self crlaxCanvas];
-        [v37 crlaxScreenPointFromUnscaledCanvas:{v35, v36}];
+        crlaxCanvas2 = [(CRLCanvasRepAccessibility *)self crlaxCanvas];
+        [crlaxCanvas2 crlaxScreenPointFromUnscaledCanvas:{v35, v36}];
         v39 = v38;
         v41 = v40;
 
@@ -420,9 +420,9 @@ LABEL_43:
           [CRLAssertionHandler handleFailureInFunction:v53 file:v54 lineNumber:143 isFatal:0 description:"Attempted to compute an accessibilityVisiblePoint but it was outside the accessibilityFrame. (Point: %@, frame: %@)", v55, v56];
         }
 
-        v57 = [(CRLCanvasRepAccessibility *)self accessibilityPath];
-        v58 = v57;
-        if (v57 && ([v57 containsPoint:point] & 1) == 0)
+        accessibilityPath = [(CRLCanvasRepAccessibility *)self accessibilityPath];
+        v58 = accessibilityPath;
+        if (accessibilityPath && ([accessibilityPath containsPoint:point] & 1) == 0)
         {
           logb = +[CRLAssertionHandler _atomicIncrementAssertCount];
           if (qword_101AD5A10 != -1)
@@ -467,10 +467,10 @@ LABEL_43:
           [CRLAssertionHandler handleFailureInFunction:v61 file:v62 lineNumber:149 isFatal:0 description:"Attempted to compute an accessibilityVisiblePoint but it was outside the non-nil accessibilityPath. (Point: %@, path: %@)", v63, v58];
         }
 
-        v64 = [(CRLAudioRepAccessibility *)self crlaxTarget];
-        v65 = [v64 i_playButtonFitsInFrame];
+        crlaxTarget4 = [(CRLAudioRepAccessibility *)self crlaxTarget];
+        i_playButtonFitsInFrame = [crlaxTarget4 i_playButtonFitsInFrame];
 
-        if (v65)
+        if (i_playButtonFitsInFrame)
         {
           [(CRLAudioRepAccessibility *)self _accessibilityFrameOfPlayPauseButton];
           v67 = v66;
@@ -553,11 +553,11 @@ LABEL_44:
 
 - (CGRect)_accessibilityFrameOfPlayPauseButton
 {
-  v2 = [(CRLAudioRepAccessibility *)self crlaxTarget];
-  v3 = [v2 audioImageRenderable];
-  v4 = [v3 layer];
+  crlaxTarget = [(CRLAudioRepAccessibility *)self crlaxTarget];
+  audioImageRenderable = [crlaxTarget audioImageRenderable];
+  layer = [audioImageRenderable layer];
 
-  [v4 accessibilityFrame];
+  [layer accessibilityFrame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -576,13 +576,13 @@ LABEL_44:
 
 - (BOOL)_isInQuickSelectMode
 {
-  v2 = [(CRLCanvasRepAccessibility *)self crlaxInteractiveCanvasController];
-  v3 = [v2 crlaxTarget];
-  v4 = [v3 layerHost];
-  v5 = [v4 asiOSCVC];
-  v6 = [v5 isCurrentlyInQuickSelectMode];
+  crlaxInteractiveCanvasController = [(CRLCanvasRepAccessibility *)self crlaxInteractiveCanvasController];
+  crlaxTarget = [crlaxInteractiveCanvasController crlaxTarget];
+  layerHost = [crlaxTarget layerHost];
+  asiOSCVC = [layerHost asiOSCVC];
+  isCurrentlyInQuickSelectMode = [asiOSCVC isCurrentlyInQuickSelectMode];
 
-  return v6;
+  return isCurrentlyInQuickSelectMode;
 }
 
 @end

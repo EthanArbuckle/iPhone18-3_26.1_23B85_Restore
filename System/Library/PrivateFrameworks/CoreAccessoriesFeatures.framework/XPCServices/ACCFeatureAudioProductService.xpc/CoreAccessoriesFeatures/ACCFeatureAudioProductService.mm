@@ -1,7 +1,7 @@
 @interface ACCFeatureAudioProductService
 - (ACCFeatureAudioProductService)init;
 - (void)dealloc;
-- (void)processAudioProductCerts:(id)a3 forModel:(id)a4 firstConnectionAfterPair:(BOOL)a5 connection:(id)a6 endpoint:(id)a7 completionHandler:(id)a8;
+- (void)processAudioProductCerts:(id)certs forModel:(id)model firstConnectionAfterPair:(BOOL)pair connection:(id)connection endpoint:(id)endpoint completionHandler:(id)handler;
 @end
 
 @implementation ACCFeatureAudioProductService
@@ -138,14 +138,14 @@
   [(ACCFeatureAudioProductService *)&v8 dealloc];
 }
 
-- (void)processAudioProductCerts:(id)a3 forModel:(id)a4 firstConnectionAfterPair:(BOOL)a5 connection:(id)a6 endpoint:(id)a7 completionHandler:(id)a8
+- (void)processAudioProductCerts:(id)certs forModel:(id)model firstConnectionAfterPair:(BOOL)pair connection:(id)connection endpoint:(id)endpoint completionHandler:(id)handler
 {
-  v11 = a5;
-  v13 = a3;
-  v85 = a4;
-  v14 = a6;
-  v15 = a7;
-  v16 = a8;
+  pairCopy = pair;
+  certsCopy = certs;
+  modelCopy = model;
+  connectionCopy = connection;
+  endpointCopy = endpoint;
+  handlerCopy = handler;
   if (gLogObjects)
   {
     v17 = gNumLogObjects < 1;
@@ -175,15 +175,15 @@
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413314;
-    v106 = v14;
+    v106 = connectionCopy;
     v107 = 2112;
-    v108 = v15;
+    v108 = endpointCopy;
     v109 = 2112;
-    v110 = v85;
+    v110 = modelCopy;
     v111 = 2048;
-    v112 = [v13 count];
+    v112 = [certsCopy count];
     v113 = 1024;
-    v114 = v11;
+    v114 = pairCopy;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "ACCFeatureAudioProductService: processAudioProductCerts, %@-%@, %@, %lu certs, firstConnectionAfterPair %d", buf, 0x30u);
   }
 
@@ -193,8 +193,8 @@
     v96 = NSLocalizedDescriptionKey;
     v86 = [NSString stringWithFormat:@"Not entitled for %@", @"com.apple.coreaccessories.ACCFeatureAudioProductService.access"];
     v97 = v86;
-    v22 = [NSDictionary dictionaryWithObjects:&v97 forKeys:&v96 count:1];
-    v23 = [NSError errorWithDomain:NSCocoaErrorDomain code:0 userInfo:v22];
+    ams_activeiTunesAccount = [NSDictionary dictionaryWithObjects:&v97 forKeys:&v96 count:1];
+    v23 = [NSError errorWithDomain:NSCocoaErrorDomain code:0 userInfo:ams_activeiTunesAccount];
 LABEL_128:
 
     goto LABEL_129;
@@ -220,23 +220,23 @@ LABEL_128:
   v83 = v20;
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
   {
-    [ACCFeatureAudioProductService processAudioProductCerts:v13 forModel:v21 firstConnectionAfterPair:? connection:? endpoint:? completionHandler:?];
+    [ACCFeatureAudioProductService processAudioProductCerts:certsCopy forModel:v21 firstConnectionAfterPair:? connection:? endpoint:? completionHandler:?];
   }
 
   v94 = 0u;
   v95 = 0u;
   v92 = 0u;
   v93 = 0u;
-  v25 = v13;
+  v25 = certsCopy;
   v26 = [v25 countByEnumeratingWithState:&v92 objects:v104 count:16];
-  v84 = v16;
-  v82 = v15;
+  v84 = handlerCopy;
+  v82 = endpointCopy;
   if (v26)
   {
     v27 = v26;
-    v79 = v11;
-    v80 = v14;
-    v81 = v13;
+    v79 = pairCopy;
+    v80 = connectionCopy;
+    v81 = certsCopy;
     v28 = *v93;
     while (2)
     {
@@ -304,7 +304,7 @@ LABEL_128:
           goto LABEL_49;
         }
 
-        v38 = [[AMSDeviceOfferRegistrationItem alloc] initWithSerialNumber:v31 model:v85 validationData:v32];
+        v38 = [[AMSDeviceOfferRegistrationItem alloc] initWithSerialNumber:v31 model:modelCopy validationData:v32];
         [v86 addObject:v38];
         v39 = gLogObjects;
         v40 = gNumLogObjects;
@@ -349,11 +349,11 @@ LABEL_128:
 
     v23 = 0;
 LABEL_49:
-    v14 = v80;
-    v13 = v81;
-    v15 = v82;
-    v16 = v84;
-    v11 = v79;
+    connectionCopy = v80;
+    certsCopy = v81;
+    endpointCopy = v82;
+    handlerCopy = v84;
+    pairCopy = v79;
   }
 
   else
@@ -361,7 +361,7 @@ LABEL_49:
     v23 = 0;
   }
 
-  if (!v23 && v11)
+  if (!v23 && pairCopy)
   {
     v45 = [v86 count];
     if (gLogObjects)
@@ -424,8 +424,8 @@ LABEL_49:
       _os_log_impl(&_mh_execute_header, v48, OS_LOG_TYPE_DEFAULT, "ACCFeatureAudioProductService: processAudioProductCerts, remove registration items from cache", buf, 2u);
     }
 
-    v51 = v15;
-    v52 = v14;
+    v51 = endpointCopy;
+    v52 = connectionCopy;
 
     v90 = 0u;
     v91 = 0u;
@@ -465,14 +465,14 @@ LABEL_49:
     if (gLogObjects && gNumLogObjects >= 1)
     {
       v59 = *gLogObjects;
-      v14 = v52;
-      v16 = v84;
+      connectionCopy = v52;
+      handlerCopy = v84;
     }
 
     else
     {
-      v14 = v52;
-      v16 = v84;
+      connectionCopy = v52;
+      handlerCopy = v84;
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
       {
         [ACCFeatureAudioProductService init];
@@ -489,7 +489,7 @@ LABEL_49:
       _os_log_impl(&_mh_execute_header, v59, OS_LOG_TYPE_DEFAULT, "ACCFeatureAudioProductService: processAudioProductCerts, removed %d registration items from cache", buf, 8u);
     }
 
-    v15 = v51;
+    endpointCopy = v51;
   }
 
   v20 = v83;
@@ -499,7 +499,7 @@ LABEL_95:
     if ([v86 count])
     {
       v62 = +[ACAccountStore ams_sharedAccountStore];
-      v22 = [v62 ams_activeiTunesAccount];
+      ams_activeiTunesAccount = [v62 ams_activeiTunesAccount];
 
       v63 = +[AMSDeviceOfferRegistrationTask createBagForSubProfile];
       if (gLogObjects && gNumLogObjects >= 1)
@@ -521,7 +521,7 @@ LABEL_95:
       if (os_log_type_enabled(v64, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v106 = v22;
+        v106 = ams_activeiTunesAccount;
         v107 = 2112;
         v108 = v63;
         _os_log_impl(&_mh_execute_header, v64, OS_LOG_TYPE_DEFAULT, "ACCFeatureAudioProductService: processAudioProductCerts, account %@, bag %@", buf, 0x16u);
@@ -552,14 +552,14 @@ LABEL_95:
         _os_log_impl(&_mh_execute_header, v67, OS_LOG_TYPE_DEFAULT, "ACCFeatureAudioProductService: processAudioProductCerts, add to task, group %@", buf, 0xCu);
       }
 
-      v69 = [[AMSDeviceOfferRegistrationTask alloc] initWithAccount:v22 bag:v63];
+      v69 = [[AMSDeviceOfferRegistrationTask alloc] initWithAccount:ams_activeiTunesAccount bag:v63];
       v100 = v66;
       v70 = [NSArray arrayWithObjects:&v100 count:1];
       [v69 setRegistrationGroups:v70];
 
-      v71 = [v69 perform];
+      perform = [v69 perform];
       v87 = 0;
-      v72 = [v71 resultWithTimeout:&v87 error:30.0];
+      v72 = [perform resultWithTimeout:&v87 error:30.0];
       v23 = v87;
       if (gLogObjects && gNumLogObjects >= 1)
       {
@@ -584,15 +584,15 @@ LABEL_95:
         _os_log_impl(&_mh_execute_header, v73, OS_LOG_TYPE_DEFAULT, "ACCFeatureAudioProductService: processAudioProductCerts, Completed running device offer registration task. error = %@", buf, 0xCu);
       }
 
-      v16 = v84;
+      handlerCopy = v84;
       if (v84)
       {
         if (v23)
         {
-          v75 = [v23 domain];
-          v76 = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", v75, [v23 code], 0);
+          domain = [v23 domain];
+          v76 = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", domain, [v23 code], 0);
 
-          v16 = v84;
+          handlerCopy = v84;
         }
 
         else
@@ -600,17 +600,17 @@ LABEL_95:
           v76 = 0;
         }
 
-        v16[2](v16, v76);
+        handlerCopy[2](handlerCopy, v76);
       }
 
-      v15 = v82;
+      endpointCopy = v82;
     }
 
     else
     {
       v98 = NSLocalizedDescriptionKey;
-      v22 = [NSString stringWithFormat:@"No certificates found in list"];
-      v99 = v22;
+      ams_activeiTunesAccount = [NSString stringWithFormat:@"No certificates found in list"];
+      v99 = ams_activeiTunesAccount;
       v63 = [NSDictionary dictionaryWithObjects:&v99 forKeys:&v98 count:1];
       v23 = [NSError errorWithDomain:NSCocoaErrorDomain code:0 userInfo:v63];
     }
@@ -644,9 +644,9 @@ LABEL_129:
     _os_log_impl(&_mh_execute_header, v77, OS_LOG_TYPE_DEFAULT, "ACCFeatureAudioProductService: processAudioProductCerts, finished, error %@", buf, 0xCu);
   }
 
-  if (v16 && v23)
+  if (handlerCopy && v23)
   {
-    v16[2](v16, v23);
+    handlerCopy[2](handlerCopy, v23);
   }
 }
 

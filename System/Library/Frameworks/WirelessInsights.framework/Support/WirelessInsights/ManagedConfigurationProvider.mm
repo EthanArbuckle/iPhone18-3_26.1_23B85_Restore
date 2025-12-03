@@ -2,8 +2,8 @@
 - (BOOL)queryBasebandLoggingProfileInstalled;
 - (ManagedConfigurationProvider)init;
 - (void)dealloc;
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4;
-- (void)profileConnectionDidReceiveProfileListChangedNotification:(id)a3 userInfo:(id)a4;
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info;
+- (void)profileConnectionDidReceiveProfileListChangedNotification:(id)notification userInfo:(id)info;
 @end
 
 @implementation ManagedConfigurationProvider
@@ -25,9 +25,9 @@
       qword_1002D85F8 = Class;
       if (Class)
       {
-        v6 = [(objc_class *)Class sharedConnection];
-        v3->_managedConfigurationConnection = v6;
-        [(MCProfileConnection *)v6 registerObserver:v3];
+        class = [(objc_class *)Class sharedConnection];
+        v3->_managedConfigurationConnection = class;
+        [(MCProfileConnection *)class registerObserver:v3];
         [(ManagedConfigurationProvider *)v3 setImproveSafetyAllowed:[(MCProfileConnection *)v3->_managedConfigurationConnection isSafetyDataSubmissionAllowed]];
         [(ManagedConfigurationProvider *)v3 setBasebandLoggingProfileInstalled:[(ManagedConfigurationProvider *)v3 queryBasebandLoggingProfileInstalled]];
       }
@@ -99,22 +99,22 @@
   return v5;
 }
 
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info
 {
-  v5 = [a3 isSafetyDataSubmissionAllowed];
+  isSafetyDataSubmissionAllowed = [notification isSafetyDataSubmissionAllowed];
   v6 = *(qword_1002DBE98 + 112);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    sub_10020BEB0(v5, v6);
+    sub_10020BEB0(isSafetyDataSubmissionAllowed, v6);
   }
 
-  if (v5 != [(ManagedConfigurationProvider *)self improveSafetyAllowed])
+  if (isSafetyDataSubmissionAllowed != [(ManagedConfigurationProvider *)self improveSafetyAllowed])
   {
-    [(ManagedConfigurationProvider *)self setImproveSafetyAllowed:v5];
+    [(ManagedConfigurationProvider *)self setImproveSafetyAllowed:isSafetyDataSubmissionAllowed];
   }
 }
 
-- (void)profileConnectionDidReceiveProfileListChangedNotification:(id)a3 userInfo:(id)a4
+- (void)profileConnectionDidReceiveProfileListChangedNotification:(id)notification userInfo:(id)info
 {
   v5 = *(qword_1002DBE98 + 112);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))

@@ -27,7 +27,7 @@
           objc_enumerationMutation(v4);
         }
 
-        if ([a1 hasPrefix:*(*(&v13 + 1) + 8 * v8)])
+        if ([self hasPrefix:*(*(&v13 + 1) + 8 * v8)])
         {
           v9 = 1;
           goto LABEL_11;

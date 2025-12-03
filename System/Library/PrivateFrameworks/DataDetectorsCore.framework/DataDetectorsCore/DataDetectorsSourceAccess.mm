@@ -1,39 +1,39 @@
 @interface DataDetectorsSourceAccess
-- (BOOL)clientCanWriteSource:(int)a3;
+- (BOOL)clientCanWriteSource:(int)source;
 - (BOOL)privacySystemWriteEntitled;
 - (BOOL)privacyUserReadEntitled;
 - (BOOL)privacyUserWriteEntitled;
-- (BOOL)pushSourcesContent:(id)a3 forSource:(int)a4 signature:(id)a5;
-- (id)fileHandleForSourceRead:(int)a3 resourceType:(unint64_t)a4;
-- (void)fileForSourceRead:(id)a3 resourceType:(unint64_t)a4 withReply:(id)a5;
-- (void)filesForSourceRead:(id)a3 resourceType:(unint64_t)a4 withReply:(id)a5;
-- (void)writeSourceFromJSONFile:(id)a3 source:(id)a4 withReply:(id)a5;
-- (void)writeSourceFromRawData:(id)a3 source:(id)a4 signature:(id)a5 withReply:(id)a6;
+- (BOOL)pushSourcesContent:(id)content forSource:(int)source signature:(id)signature;
+- (id)fileHandleForSourceRead:(int)read resourceType:(unint64_t)type;
+- (void)fileForSourceRead:(id)read resourceType:(unint64_t)type withReply:(id)reply;
+- (void)filesForSourceRead:(id)read resourceType:(unint64_t)type withReply:(id)reply;
+- (void)writeSourceFromJSONFile:(id)file source:(id)source withReply:(id)reply;
+- (void)writeSourceFromRawData:(id)data source:(id)source signature:(id)signature withReply:(id)reply;
 @end
 
 @implementation DataDetectorsSourceAccess
 
-- (BOOL)pushSourcesContent:(id)a3 forSource:(int)a4 signature:(id)a5
+- (BOOL)pushSourcesContent:(id)content forSource:(int)source signature:(id)signature
 {
   keys[3] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  if ([v8 count])
+  contentCopy = content;
+  signatureCopy = signature;
+  if ([contentCopy count])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v71 = v9;
-      v72 = a4;
+      v71 = signatureCopy;
+      sourceCopy = source;
       v70[0] = self;
-      if ((a4 - 1) > 5)
+      if ((source - 1) > 5)
       {
         v10 = 0;
       }
 
       else
       {
-        v10 = qword_1BD018C28[a4 - 1];
+        v10 = qword_1BD018C28[source - 1];
       }
 
       StreamCompressor = DDLookupTableCreate();
@@ -41,7 +41,7 @@
       MEMORY[0x1EEE9AC00](StreamCompressor);
       v76 = v70 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0);
       v75 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      if ([v8 count])
+      if ([contentCopy count])
       {
         v14 = 0;
         v15 = 0;
@@ -49,16 +49,16 @@
         v16 = 0x1E695D000uLL;
         do
         {
-          v17 = [v8 firstObject];
-          [v8 removeObjectAtIndex:0];
-          if ([v8 count] < v10)
+          firstObject = [contentCopy firstObject];
+          [contentCopy removeObjectAtIndex:0];
+          if ([contentCopy count] < v10)
           {
             *&v76[4 * v14] = 0;
             v18 = *(v16 + 3872);
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v19 = v17;
+              v19 = firstObject;
               v20 = [v19 objectForKeyedSubscript:@"threshold"];
               v21 = [v19 objectForKeyedSubscript:@"domain"];
               v22 = [v19 objectForKeyedSubscript:@"entities"];
@@ -80,7 +80,7 @@
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
-                  DDSourceAddDomainContent(StreamCompressor, v72, v14, v22, v23);
+                  DDSourceAddDomainContent(StreamCompressor, sourceCopy, v14, v22, v23);
                   objc_opt_class();
                   isKindOfClass = objc_opt_isKindOfClass();
                   v26 = 0;
@@ -102,7 +102,7 @@
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                DDSourceAddDomainContent(StreamCompressor, v72, v14, v17, 0);
+                DDSourceAddDomainContent(StreamCompressor, sourceCopy, v14, firstObject, 0);
               }
             }
 
@@ -110,12 +110,12 @@
           }
         }
 
-        while ([v8 count]);
+        while ([contentCopy count]);
         if (v14 >= 1)
         {
           if (v15)
           {
-            DDLookupTableSetContextThresholds(StreamCompressor, v72, v76, v14);
+            DDLookupTableSetContextThresholds(StreamCompressor, sourceCopy, v76, v14);
           }
 
           v27 = v71;
@@ -130,7 +130,7 @@
 
           if ([v75 count] || v27)
           {
-            DDSourceAddDomainsNames(StreamCompressor, v72, v75, v27);
+            DDSourceAddDomainsNames(StreamCompressor, sourceCopy, v75, v27);
           }
         }
       }
@@ -146,8 +146,8 @@
       CFRelease(v12);
       if (FinalizedSourceContent)
       {
-        v30 = v72;
-        if (_DDTriePathForSource(v72, v79, 0, 1, v28))
+        v30 = sourceCopy;
+        if (_DDTriePathForSource(sourceCopy, v79, 0, 1, v28))
         {
           Length = CFDataGetLength(FinalizedSourceContent);
           if (_DDTriePathForSource(v30, v78, 0, 0, v28))
@@ -286,7 +286,7 @@ LABEL_78:
                   dispatch_once(&DDLogHandle_onceToken, &__block_literal_global_791);
                 }
 
-                v9 = v71;
+                signatureCopy = v71;
                 v58 = DDLogHandle_error_log_handle;
                 if (!os_log_type_enabled(DDLogHandle_error_log_handle, OS_LOG_TYPE_ERROR))
                 {
@@ -308,7 +308,7 @@ LABEL_78:
                   dispatch_once(&DDLogHandle_onceToken, &__block_literal_global_791);
                 }
 
-                v9 = v71;
+                signatureCopy = v71;
                 v59 = DDLogHandle_error_log_handle;
                 if (!os_log_type_enabled(DDLogHandle_error_log_handle, OS_LOG_TYPE_ERROR))
                 {
@@ -335,7 +335,7 @@ LABEL_78:
                   dispatch_once(&DDLogHandle_onceToken, &__block_literal_global_791);
                 }
 
-                v9 = v71;
+                signatureCopy = v71;
                 v52 = DDLogHandle_error_log_handle;
                 if (!os_log_type_enabled(DDLogHandle_error_log_handle, OS_LOG_TYPE_ERROR))
                 {
@@ -367,7 +367,7 @@ LABEL_98:
               LOBYTE(v12) = 1;
               DDSourceRemoveFile(v30, v28, 1);
 LABEL_67:
-              v9 = v71;
+              signatureCopy = v71;
 LABEL_99:
 
               goto LABEL_100;
@@ -381,7 +381,7 @@ LABEL_99:
               dispatch_once(&DDLogHandle_onceToken, &__block_literal_global_791);
             }
 
-            v9 = v71;
+            signatureCopy = v71;
             v46 = DDLogHandle_error_log_handle;
             if (!os_log_type_enabled(DDLogHandle_error_log_handle, OS_LOG_TYPE_ERROR))
             {
@@ -393,7 +393,7 @@ LABEL_99:
             _os_log_error_impl(&dword_1BCFDD000, v46, OS_LOG_TYPE_ERROR, "DDCore: Could create tmp path file for %s", v77, 0xCu);
           }
 
-          v9 = v71;
+          signatureCopy = v71;
           if (DDLogHandle_onceToken != -1)
           {
             dispatch_once(&DDLogHandle_onceToken, &__block_literal_global_791);
@@ -428,8 +428,8 @@ LABEL_74:
   else
   {
     LODWORD(v12) = self->_clientuid;
-    v11 = DDSourceRemoveFile(a4, v12, 0);
-    DDSourceRemoveFile(a4, v12, 1);
+    v11 = DDSourceRemoveFile(source, v12, 0);
+    DDSourceRemoveFile(source, v12, 1);
     LOBYTE(v12) = v11;
   }
 
@@ -439,14 +439,14 @@ LABEL_100:
   return v12;
 }
 
-- (BOOL)clientCanWriteSource:(int)a3
+- (BOOL)clientCanWriteSource:(int)source
 {
   if (altPath)
   {
     return 1;
   }
 
-  if ((a3 & 0xFFFFFFFD) == 4)
+  if ((source & 0xFFFFFFFD) == 4)
   {
     if ([(DataDetectorsSourceAccess *)self privacyUserWriteEntitled:v3])
     {
@@ -462,7 +462,7 @@ LABEL_100:
   return 0;
 }
 
-- (id)fileHandleForSourceRead:(int)a3 resourceType:(unint64_t)a4
+- (id)fileHandleForSourceRead:(int)read resourceType:(unint64_t)type
 {
   v13 = *MEMORY[0x1E69E9840];
   if (altPath)
@@ -472,10 +472,10 @@ LABEL_100:
 
   else
   {
-    v7 = (a3 & 0xFFFFFFFD) == 4;
+    v7 = (read & 0xFFFFFFFD) == 4;
   }
 
-  if ((!v7 || [(DataDetectorsSourceAccess *)self privacyUserReadEntitled]) && _DDTriePathForSource(a3, v12, a4 == 1, 1, self->_clientuid) && (v8 = open(v12, 0), v8 >= 3))
+  if ((!v7 || [(DataDetectorsSourceAccess *)self privacyUserReadEntitled]) && _DDTriePathForSource(read, v12, type == 1, 1, self->_clientuid) && (v8 = open(v12, 0), v8 >= 3))
   {
     v9 = [objc_alloc(MEMORY[0x1E696AC00]) initWithFileDescriptor:v8 closeOnDealloc:1];
   }
@@ -667,23 +667,23 @@ void __52__DataDetectorsSourceAccess_privacyUserReadEntitled__block_invoke(uint6
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)writeSourceFromJSONFile:(id)a3 source:(id)a4 withReply:(id)a5
+- (void)writeSourceFromJSONFile:(id)file source:(id)source withReply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  fileCopy = file;
+  sourceCopy = source;
+  replyCopy = reply;
   v11 = _dd_dispatch_get_queue_for_writing();
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __70__DataDetectorsSourceAccess_writeSourceFromJSONFile_source_withReply___block_invoke;
   v15[3] = &unk_1E8002698;
-  v16 = v9;
-  v17 = self;
-  v18 = v8;
-  v19 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v16 = sourceCopy;
+  selfCopy = self;
+  v18 = fileCopy;
+  v19 = replyCopy;
+  v12 = replyCopy;
+  v13 = fileCopy;
+  v14 = sourceCopy;
   dispatch_async(v11, v15);
 }
 
@@ -808,26 +808,26 @@ void __70__DataDetectorsSourceAccess_writeSourceFromJSONFile_source_withReply___
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)writeSourceFromRawData:(id)a3 source:(id)a4 signature:(id)a5 withReply:(id)a6
+- (void)writeSourceFromRawData:(id)data source:(id)source signature:(id)signature withReply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dataCopy = data;
+  sourceCopy = source;
+  signatureCopy = signature;
+  replyCopy = reply;
   v14 = _dd_dispatch_get_queue_for_writing();
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __79__DataDetectorsSourceAccess_writeSourceFromRawData_source_signature_withReply___block_invoke;
   block[3] = &unk_1E8002670;
-  v20 = v11;
-  v21 = self;
-  v22 = v10;
-  v23 = v12;
-  v24 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v10;
-  v18 = v11;
+  v20 = sourceCopy;
+  selfCopy = self;
+  v22 = dataCopy;
+  v23 = signatureCopy;
+  v24 = replyCopy;
+  v15 = replyCopy;
+  v16 = signatureCopy;
+  v17 = dataCopy;
+  v18 = sourceCopy;
   dispatch_sync(v14, block);
 }
 
@@ -849,18 +849,18 @@ void __79__DataDetectorsSourceAccess_writeSourceFromRawData_source_signature_wit
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)filesForSourceRead:(id)a3 resourceType:(unint64_t)a4 withReply:(id)a5
+- (void)filesForSourceRead:(id)read resourceType:(unint64_t)type withReply:(id)reply
 {
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v19 = a5;
+  readCopy = read;
+  replyCopy = reply;
   context = objc_autoreleasePoolPush();
-  v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v8, "count")}];
+  v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(readCopy, "count")}];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v10 = v8;
+  v10 = readCopy;
   v11 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v11)
   {
@@ -875,7 +875,7 @@ void __79__DataDetectorsSourceAccess_writeSourceFromRawData_source_signature_wit
           objc_enumerationMutation(v10);
         }
 
-        v15 = -[DataDetectorsSourceAccess fileHandleForSourceRead:resourceType:](self, "fileHandleForSourceRead:resourceType:", [*(*(&v20 + 1) + 8 * i) intValue], a4);
+        v15 = -[DataDetectorsSourceAccess fileHandleForSourceRead:resourceType:](self, "fileHandleForSourceRead:resourceType:", [*(*(&v20 + 1) + 8 * i) intValue], type);
         if (v15)
         {
           [v9 addObject:v15];
@@ -883,8 +883,8 @@ void __79__DataDetectorsSourceAccess_writeSourceFromRawData_source_signature_wit
 
         else
         {
-          v16 = [MEMORY[0x1E695DFB0] null];
-          [v9 addObject:v16];
+          null = [MEMORY[0x1E695DFB0] null];
+          [v9 addObject:null];
         }
       }
 
@@ -894,19 +894,19 @@ void __79__DataDetectorsSourceAccess_writeSourceFromRawData_source_signature_wit
     while (v12);
   }
 
-  v19[2](v19, v9);
+  replyCopy[2](replyCopy, v9);
   objc_autoreleasePoolPop(context);
 
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fileForSourceRead:(id)a3 resourceType:(unint64_t)a4 withReply:(id)a5
+- (void)fileForSourceRead:(id)read resourceType:(unint64_t)type withReply:(id)reply
 {
-  v11 = a3;
-  v8 = a5;
+  readCopy = read;
+  replyCopy = reply;
   v9 = objc_autoreleasePoolPush();
-  v10 = -[DataDetectorsSourceAccess fileHandleForSourceRead:resourceType:](self, "fileHandleForSourceRead:resourceType:", [v11 intValue], a4);
-  v8[2](v8, v10);
+  v10 = -[DataDetectorsSourceAccess fileHandleForSourceRead:resourceType:](self, "fileHandleForSourceRead:resourceType:", [readCopy intValue], type);
+  replyCopy[2](replyCopy, v10);
 
   objc_autoreleasePoolPop(v9);
 }

@@ -1,32 +1,32 @@
 @interface SBUserSessionController
 - (BOOL)canLogout;
-- (CGPoint)_portraitOrientedProgressLocationForOrientation:(int64_t)a3;
+- (CGPoint)_portraitOrientedProgressLocationForOrientation:(int64_t)orientation;
 - (SBMainDisplayPolicyAggregator)policyAggregator;
 - (SBUserSessionController)init;
 - (UMUser)user;
 - (id)_iconController;
-- (id)_initWithUserManager:(id)a3;
-- (id)_massageApplicationListForDisplay:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)_initWithUserManager:(id)manager;
+- (id)_massageApplicationListForDisplay:(id)display;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (int64_t)sessionType;
 - (void)_displayProgressTransientOverlayIfNeeded;
 - (void)_evaluateRunningApplications;
-- (void)_noteApplicationDidExit:(id)a3;
-- (void)_noteApplicationDidExitFromNotification:(id)a3;
-- (void)_readyToSwitchToUser:(id)a3;
+- (void)_noteApplicationDidExit:(id)exit;
+- (void)_noteApplicationDidExitFromNotification:(id)notification;
+- (void)_readyToSwitchToUser:(id)user;
 - (void)dealloc;
 - (void)disableCurrentUser;
 - (void)logout;
-- (void)logoutProgressTransientOverlayPresentationTransitionCoordinatorDidComplete:(id)a3;
-- (void)logoutProgressTransientOverlayViewControllerDidDisappear:(id)a3;
-- (void)logoutWithLogoutSupport:(id)a3;
-- (void)readyToSwitchToLoginSession:(id)a3;
-- (void)readyToSwitchToUser:(id)a3;
-- (void)setLoggingOut:(BOOL)a3;
-- (void)userSwitchBlockingTasksDidUpdate:(id)a3;
-- (void)willSwitchToUser:(id)a3;
+- (void)logoutProgressTransientOverlayPresentationTransitionCoordinatorDidComplete:(id)complete;
+- (void)logoutProgressTransientOverlayViewControllerDidDisappear:(id)disappear;
+- (void)logoutWithLogoutSupport:(id)support;
+- (void)readyToSwitchToLoginSession:(id)session;
+- (void)readyToSwitchToUser:(id)user;
+- (void)setLoggingOut:(BOOL)out;
+- (void)userSwitchBlockingTasksDidUpdate:(id)update;
+- (void)willSwitchToUser:(id)user;
 @end
 
 @implementation SBUserSessionController
@@ -38,12 +38,12 @@
     return 0;
   }
 
-  v3 = [(SBUserSessionController *)self user];
-  v4 = [v3 userType];
+  user = [(SBUserSessionController *)self user];
+  userType = [user userType];
 
-  if (v4)
+  if (userType)
   {
-    return 2 * (v4 == 1);
+    return 2 * (userType == 1);
   }
 
   else
@@ -54,24 +54,24 @@
 
 - (BOOL)canLogout
 {
-  v3 = [(SBUserSessionController *)self policyAggregator];
-  v4 = [v3 allowsCapability:16];
+  policyAggregator = [(SBUserSessionController *)self policyAggregator];
+  v4 = [policyAggregator allowsCapability:16];
 
   if (v4 && ![(SBUserSessionController *)self isLoggingOut])
   {
-    v5 = [(SBUserSessionController *)self isMultiUserSupported];
-    if (v5)
+    isMultiUserSupported = [(SBUserSessionController *)self isMultiUserSupported];
+    if (isMultiUserSupported)
     {
-      LOBYTE(v5) = ![(SBUserSessionController *)self isLoginSession];
+      LOBYTE(isMultiUserSupported) = ![(SBUserSessionController *)self isLoginSession];
     }
   }
 
   else
   {
-    LOBYTE(v5) = 0;
+    LOBYTE(isMultiUserSupported) = 0;
   }
 
-  return v5;
+  return isMultiUserSupported;
 }
 
 - (SBMainDisplayPolicyAggregator)policyAggregator
@@ -80,9 +80,9 @@
   if (!lazy_policyAggregator)
   {
     v4 = +[SBSceneManagerCoordinator mainDisplaySceneManager];
-    v5 = [v4 policyAggregator];
+    policyAggregator = [v4 policyAggregator];
     v6 = self->_lazy_policyAggregator;
-    self->_lazy_policyAggregator = v5;
+    self->_lazy_policyAggregator = policyAggregator;
 
     lazy_policyAggregator = self->_lazy_policyAggregator;
   }
@@ -92,22 +92,22 @@
 
 - (SBUserSessionController)init
 {
-  v3 = [MEMORY[0x277D77BF8] sharedManager];
-  v4 = [(SBUserSessionController *)self _initWithUserManager:v3];
+  mEMORY[0x277D77BF8] = [MEMORY[0x277D77BF8] sharedManager];
+  v4 = [(SBUserSessionController *)self _initWithUserManager:mEMORY[0x277D77BF8]];
 
   return v4;
 }
 
-- (id)_initWithUserManager:(id)a3
+- (id)_initWithUserManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v10.receiver = self;
   v10.super_class = SBUserSessionController;
   v6 = [(SBUserSessionController *)&v10 init];
   p_isa = &v6->super.isa;
   if (v6)
   {
-    objc_storeStrong(&v6->_userManager, a3);
+    objc_storeStrong(&v6->_userManager, manager);
     [p_isa[1] registerCriticalUserSwitchStakeHolder:p_isa];
     v8 = SBLogUserSession();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -127,22 +127,22 @@
   [(SBUserSessionController *)&v3 dealloc];
 }
 
-- (void)setLoggingOut:(BOOL)a3
+- (void)setLoggingOut:(BOOL)out
 {
-  if (self->_loggingOut != a3)
+  if (self->_loggingOut != out)
   {
-    v4 = a3;
-    self->_loggingOut = a3;
-    v5 = [SBApp restartManager];
-    v6 = v5;
-    if (v4)
+    outCopy = out;
+    self->_loggingOut = out;
+    restartManager = [SBApp restartManager];
+    v6 = restartManager;
+    if (outCopy)
     {
-      [v5 _addPendingExternallyControlledRestartReason:@"user-switch"];
+      [restartManager _addPendingExternallyControlledRestartReason:@"user-switch"];
     }
 
     else
     {
-      [v5 _removePendingExternallyControlledRestartReason:@"user-switch"];
+      [restartManager _removePendingExternallyControlledRestartReason:@"user-switch"];
     }
   }
 }
@@ -152,9 +152,9 @@
   lazy_user = self->_lazy_user;
   if (!lazy_user)
   {
-    v4 = [(UMUserManager *)self->_userManager currentUser];
+    currentUser = [(UMUserManager *)self->_userManager currentUser];
     v5 = self->_lazy_user;
-    self->_lazy_user = v4;
+    self->_lazy_user = currentUser;
 
     lazy_user = self->_lazy_user;
   }
@@ -177,16 +177,16 @@
   [(SBUserSessionController *)self logoutWithLogoutSupport:logoutSupport];
 }
 
-- (void)logoutWithLogoutSupport:(id)a3
+- (void)logoutWithLogoutSupport:(id)support
 {
   if ([(SBUserSessionController *)self canLogout])
   {
     v4 = +[SBLockScreenManager sharedInstance];
-    v5 = [v4 isInLostMode];
+    isInLostMode = [v4 isInLostMode];
 
     v6 = SBLogUserSession();
     v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG);
-    if (v5)
+    if (isInLostMode)
     {
       if (v7)
       {
@@ -231,30 +231,30 @@ void __45__SBUserSessionController_disableCurrentUser__block_invoke(uint64_t a1,
 
 - (id)succinctDescription
 {
-  v2 = [(SBUserSessionController *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBUserSessionController *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBUserSessionController *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBUserSessionController *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBUserSessionController *)self succinctDescriptionBuilder];
+  succinctDescriptionBuilder = [(SBUserSessionController *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __65__SBUserSessionController_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_2783A92D8;
-  v5 = v4;
+  v5 = succinctDescriptionBuilder;
   v10 = v5;
-  v11 = self;
+  selfCopy = self;
   v6 = [v5 modifyBody:v9];
   v7 = v5;
 
@@ -271,7 +271,7 @@ id __65__SBUserSessionController_descriptionBuilderWithMultilinePrefix___block_i
   return [*(a1 + 32) appendBool:objc_msgSend(*(a1 + 40) withName:{"canLogout"), @"canLogout"}];
 }
 
-- (void)logoutProgressTransientOverlayViewControllerDidDisappear:(id)a3
+- (void)logoutProgressTransientOverlayViewControllerDidDisappear:(id)disappear
 {
   progressTransientOverlayViewController = self->_progressTransientOverlayViewController;
   self->_progressTransientOverlayViewController = 0;
@@ -279,7 +279,7 @@ id __65__SBUserSessionController_descriptionBuilderWithMultilinePrefix___block_i
   self->_loggingOut = 0;
 }
 
-- (void)logoutProgressTransientOverlayPresentationTransitionCoordinatorDidComplete:(id)a3
+- (void)logoutProgressTransientOverlayPresentationTransitionCoordinatorDidComplete:(id)complete
 {
   logoutSupport = self->_logoutSupport;
   v4[0] = MEMORY[0x277D85DD0];
@@ -325,9 +325,9 @@ void __102__SBUserSessionController_logoutProgressTransientOverlayPresentationTr
   }
 }
 
-- (void)willSwitchToUser:(id)a3
+- (void)willSwitchToUser:(id)user
 {
-  v4 = a3;
+  userCopy = user;
   kdebug_trace();
   v5 = SBLogUserSession();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -444,9 +444,9 @@ void __44__SBUserSessionController_willSwitchToUser___block_invoke_2(uint64_t a1
   [*(a1 + 32) _evaluateRunningApplications];
 }
 
-- (void)readyToSwitchToUser:(id)a3
+- (void)readyToSwitchToUser:(id)user
 {
-  v4 = a3;
+  userCopy = user;
   kdebug_trace();
   kdebug_trace();
   v5 = SBLogUserSession();
@@ -465,8 +465,8 @@ void __44__SBUserSessionController_willSwitchToUser___block_invoke_2(uint64_t a1
   v7[2] = __47__SBUserSessionController_readyToSwitchToUser___block_invoke;
   v7[3] = &unk_2783A92D8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = userCopy;
+  v6 = userCopy;
   dispatch_sync(MEMORY[0x277D85CD0], v7);
 }
 
@@ -486,9 +486,9 @@ void __47__SBUserSessionController_readyToSwitchToUser___block_invoke(uint64_t a
   [v3 restartWithTransitionRequest:v2];
 }
 
-- (void)readyToSwitchToLoginSession:(id)a3
+- (void)readyToSwitchToLoginSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v5 = SBLogUserSession();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -507,8 +507,8 @@ void __47__SBUserSessionController_readyToSwitchToUser___block_invoke(uint64_t a
   v7[2] = __55__SBUserSessionController_readyToSwitchToLoginSession___block_invoke;
   v7[3] = &unk_2783A92D8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = sessionCopy;
+  v6 = sessionCopy;
   dispatch_sync(MEMORY[0x277D85CD0], v7);
 }
 
@@ -530,16 +530,16 @@ void __55__SBUserSessionController_readyToSwitchToLoginSession___block_invoke(ui
   kdebug_trace();
 }
 
-- (void)_readyToSwitchToUser:(id)a3
+- (void)_readyToSwitchToUser:(id)user
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  userCopy = user;
   debugBlockingTasks = self->_debugBlockingTasks;
   self->_debugBlockingTasks = 0;
 
   if ([(SBUserSessionController *)self isLoginSession])
   {
-    v6 = [v4 isLoginUser] ^ 1;
+    v6 = [userCopy isLoginUser] ^ 1;
   }
 
   else
@@ -549,9 +549,9 @@ void __55__SBUserSessionController_readyToSwitchToLoginSession___block_invoke(ui
 
   if ([(SBUserSessionController *)self isLoginSession])
   {
-    v7 = [v4 isLoginUser];
+    isLoginUser = [userCopy isLoginUser];
     v8 = @"login";
-    if (!v7)
+    if (!isLoginUser)
     {
       v9 = 0;
       v10 = 0;
@@ -576,15 +576,15 @@ LABEL_9:
   v12 = SBLogUserSession();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
-    v22 = [(UMUserManager *)self->_userManager currentUser];
+    currentUser = [(UMUserManager *)self->_userManager currentUser];
     v23[0] = 67109890;
     v23[1] = v6;
     v24 = 1024;
     v25 = v9;
     v26 = 2112;
-    v27 = v22;
+    v27 = currentUser;
     v28 = 2112;
-    v29 = v4;
+    v29 = userCopy;
     _os_log_debug_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_DEBUG, "[SBUserSessionController] _readyToSwitchToUser: (isLogin: %d, isLogout: %d, currentUser? %@) switching to user: %@", v23, 0x22u);
   }
 
@@ -592,16 +592,16 @@ LABEL_9:
   {
     [(SBLogoutProgressTransientOverlayViewController *)self->_progressTransientOverlayViewController prepareForRestart];
     kdebug_trace();
-    v13 = [SBApp activeInterfaceOrientation];
+    activeInterfaceOrientation = [SBApp activeInterfaceOrientation];
     v14 = MEMORY[0x277CF05E0];
-    [(SBUserSessionController *)self _portraitOrientedProgressLocationForOrientation:v13];
+    [(SBUserSessionController *)self _portraitOrientedProgressLocationForOrientation:activeInterfaceOrientation];
     v15 = [v14 progressIndicatorWithStyle:1 position:?];
     v16 = MEMORY[0x277CF05F0];
-    v17 = [MEMORY[0x277CD9E40] mainDisplay];
-    v18 = [v16 descriptorWithName:v11 display:v17];
+    mainDisplay = [MEMORY[0x277CD9E40] mainDisplay];
+    v18 = [v16 descriptorWithName:v11 display:mainDisplay];
 
     [v18 setProgressIndicatorProperties:v15];
-    [v18 setInterfaceOrientation:v13];
+    [v18 setInterfaceOrientation:activeInterfaceOrientation];
     v19 = +[SBBacklightController sharedInstance];
     if ([v19 shouldTurnOnScreenForBacklightSource:21])
     {
@@ -617,16 +617,16 @@ LABEL_9:
   }
 }
 
-- (void)userSwitchBlockingTasksDidUpdate:(id)a3
+- (void)userSwitchBlockingTasksDidUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __60__SBUserSessionController_userSwitchBlockingTasksDidUpdate___block_invoke;
   v6[3] = &unk_2783A92D8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = updateCopy;
+  v5 = updateCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -644,24 +644,24 @@ void __60__SBUserSessionController_userSwitchBlockingTasksDidUpdate___block_invo
 
 - (id)_iconController
 {
-  v2 = [(SBUserSessionController *)self policyAggregator];
-  v3 = [v2 _windowScene];
+  policyAggregator = [(SBUserSessionController *)self policyAggregator];
+  _windowScene = [policyAggregator _windowScene];
 
-  v4 = [v3 iconController];
+  iconController = [_windowScene iconController];
 
-  return v4;
+  return iconController;
 }
 
-- (void)_noteApplicationDidExitFromNotification:(id)a3
+- (void)_noteApplicationDidExitFromNotification:(id)notification
 {
-  v4 = [a3 object];
-  [(SBUserSessionController *)self _noteApplicationDidExit:v4];
+  object = [notification object];
+  [(SBUserSessionController *)self _noteApplicationDidExit:object];
 }
 
-- (void)_noteApplicationDidExit:(id)a3
+- (void)_noteApplicationDidExit:(id)exit
 {
-  v4 = a3;
-  if (!v4)
+  exitCopy = exit;
+  if (!exitCopy)
   {
     [SBUserSessionController _noteApplicationDidExit:];
   }
@@ -672,8 +672,8 @@ void __60__SBUserSessionController_userSwitchBlockingTasksDidUpdate___block_invo
     [SBUserSessionController _noteApplicationDidExit:];
   }
 
-  [(NSMutableSet *)self->_terminatingApplications removeObject:v4];
-  [(NSMutableArray *)self->_displayApplications removeObject:v4];
+  [(NSMutableSet *)self->_terminatingApplications removeObject:exitCopy];
+  [(NSMutableArray *)self->_displayApplications removeObject:exitCopy];
   [(SBLogoutProgressTransientOverlayViewController *)self->_progressTransientOverlayViewController refreshData];
   [(SBUserSessionController *)self _evaluateRunningApplications];
 }
@@ -682,7 +682,7 @@ void __60__SBUserSessionController_userSwitchBlockingTasksDidUpdate___block_invo
 {
   v3 = [(NSMutableSet *)self->_terminatingApplications count];
   v4 = SBLogUserSession();
-  v5 = v4;
+  defaultCenter = v4;
   if (v3)
   {
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -696,7 +696,7 @@ void __60__SBUserSessionController_userSwitchBlockingTasksDidUpdate___block_invo
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       *v8 = 0;
-      _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "LOGOUT: no more running applications pending; droping user switch assertion.", v8, 2u);
+      _os_log_impl(&dword_21ED4E000, defaultCenter, OS_LOG_TYPE_DEFAULT, "LOGOUT: no more running applications pending; droping user switch assertion.", v8, 2u);
     }
 
     kdebug_trace();
@@ -707,8 +707,8 @@ void __60__SBUserSessionController_userSwitchBlockingTasksDidUpdate___block_invo
     terminateApplicationsStartDate = self->_terminateApplicationsStartDate;
     self->_terminateApplicationsStartDate = 0;
 
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 removeObserver:self name:@"SBApplicationDidExitNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self name:@"SBApplicationDidExitNotification" object:0];
   }
 }
 
@@ -726,15 +726,15 @@ void __60__SBUserSessionController_userSwitchBlockingTasksDidUpdate___block_invo
 
     kdebug_trace();
     v4 = +[SBApplicationController sharedInstance];
-    v5 = [v4 runningApplications];
-    v6 = [(SBUserSessionController *)self _massageApplicationListForDisplay:v5];
+    runningApplications = [v4 runningApplications];
+    v6 = [(SBUserSessionController *)self _massageApplicationListForDisplay:runningApplications];
     v7 = [v6 mutableCopy];
     displayApplications = self->_displayApplications;
     self->_displayApplications = v7;
 
     v9 = [SBLogoutProgressTransientOverlayViewController alloc];
-    v10 = [(SBUserSessionController *)self user];
-    v11 = [(SBLogoutProgressTransientOverlayViewController *)v9 initWithUserAccount:v10];
+    user = [(SBUserSessionController *)self user];
+    v11 = [(SBLogoutProgressTransientOverlayViewController *)v9 initWithUserAccount:user];
     progressTransientOverlayViewController = self->_progressTransientOverlayViewController;
     self->_progressTransientOverlayViewController = v11;
 
@@ -757,27 +757,27 @@ void __60__SBUserSessionController_userSwitchBlockingTasksDidUpdate___block_invo
   }
 }
 
-- (id)_massageApplicationListForDisplay:(id)a3
+- (id)_massageApplicationListForDisplay:(id)display
 {
-  v4 = a3;
-  v5 = [v4 mutableCopy];
-  v6 = [(SBUserSessionController *)self _iconController];
-  v7 = [v6 visibleIconStateDisplayIdentifiers];
+  displayCopy = display;
+  v5 = [displayCopy mutableCopy];
+  _iconController = [(SBUserSessionController *)self _iconController];
+  visibleIconStateDisplayIdentifiers = [_iconController visibleIconStateDisplayIdentifiers];
 
   v8 = MEMORY[0x277CCAC30];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __61__SBUserSessionController__massageApplicationListForDisplay___block_invoke;
   v27[3] = &unk_2783B1998;
-  v9 = v7;
+  v9 = visibleIconStateDisplayIdentifiers;
   v28 = v9;
   v10 = [v8 predicateWithBlock:v27];
   [v5 filterUsingPredicate:v10];
 
   v11 = +[SBMainSwitcherControllerCoordinator sharedInstance];
-  v12 = [v11 recentAppLayouts];
+  recentAppLayouts = [v11 recentAppLayouts];
 
-  v13 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v12, "count")}];
+  v13 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(recentAppLayouts, "count")}];
   v26[0] = 0;
   v26[1] = v26;
   v26[2] = 0x2020000000;
@@ -789,7 +789,7 @@ void __60__SBUserSessionController_userSwitchBlockingTasksDidUpdate___block_invo
   v14 = v13;
   v24 = v14;
   v25 = v26;
-  [v12 enumerateObjectsUsingBlock:v23];
+  [recentAppLayouts enumerateObjectsUsingBlock:v23];
   v18 = MEMORY[0x277D85DD0];
   v19 = 3221225472;
   v20 = __61__SBUserSessionController__massageApplicationListForDisplay___block_invoke_4;
@@ -887,10 +887,10 @@ uint64_t __61__SBUserSessionController__massageApplicationListForDisplay___block
   return v19;
 }
 
-- (CGPoint)_portraitOrientedProgressLocationForOrientation:(int64_t)a3
+- (CGPoint)_portraitOrientedProgressLocationForOrientation:(int64_t)orientation
 {
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  [v3 _referenceBounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen _referenceBounds];
 
   _UIWindowConvertPointFromOrientationToOrientation();
   result.y = v5;

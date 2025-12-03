@@ -1,6 +1,6 @@
 @interface SSSQLitePropertyPredicate
-- (BOOL)isEqual:(id)a3;
-- (id)SQLJoinClausesForEntityClass:(Class)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)SQLJoinClausesForEntityClass:(Class)class;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
@@ -22,31 +22,31 @@
   return v3 + [(NSString *)[(SSSQLitePropertyPredicate *)self property] hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v8.receiver = self;
   v8.super_class = SSSQLitePropertyPredicate;
   v5 = [(SSSQLitePredicate *)&v8 isEqual:?];
   if (v5)
   {
-    v6 = [(SSSQLitePropertyPredicate *)self property];
-    if (v6 == [a3 property])
+    property = [(SSSQLitePropertyPredicate *)self property];
+    if (property == [equal property])
     {
       LOBYTE(v5) = 1;
     }
 
     else
     {
-      LOBYTE(v5) = -[NSString isEqual:](-[SSSQLitePropertyPredicate property](self, "property"), "isEqual:", [a3 property]);
+      LOBYTE(v5) = -[NSString isEqual:](-[SSSQLitePropertyPredicate property](self, "property"), "isEqual:", [equal property]);
     }
   }
 
   return v5;
 }
 
-- (id)SQLJoinClausesForEntityClass:(Class)a3
+- (id)SQLJoinClausesForEntityClass:(Class)class
 {
-  result = [(objc_class *)a3 joinClauseForProperty:self->_property];
+  result = [(objc_class *)class joinClauseForProperty:self->_property];
   if (result)
   {
     v4 = result;

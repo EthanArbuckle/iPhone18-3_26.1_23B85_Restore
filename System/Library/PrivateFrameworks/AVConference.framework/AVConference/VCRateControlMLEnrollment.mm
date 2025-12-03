@@ -2,20 +2,20 @@
 - (BOOL)checkSupportForPFLOrTrialEnrollment;
 - (BOOL)isEnrollmentDisabledByStorebagSwitch;
 - (BOOL)setupWithUserDefault;
-- (BOOL)validateFilePath:(id)a3;
-- (BOOL)validatePFLExpirationDateWithPFLJSON:(id)a3;
+- (BOOL)validateFilePath:(id)path;
+- (BOOL)validatePFLExpirationDateWithPFLJSON:(id)n;
 - (VCRateControlMLEnrollment)init;
-- (id)checkValidJSONAtPath:(id)a3;
+- (id)checkValidJSONAtPath:(id)path;
 - (int)setPFLPath;
-- (int)validateTrainingDataJSONPath:(id)a3 withPFLObject:(id)a4;
+- (int)validateTrainingDataJSONPath:(id)path withPFLObject:(id)object;
 - (void)cleanupTrainingDataFiles;
 - (void)dealloc;
 - (void)init;
-- (void)removeFileAtPath:(id)a3;
-- (void)setConfigurationWithPFLJSON:(id)a3;
+- (void)removeFileAtPath:(id)path;
+- (void)setConfigurationWithPFLJSON:(id)n;
 - (void)setPFLPath;
 - (void)setTrialPath;
-- (void)useTrialPath:(id)a3 trialGroup:(int64_t)a4 trialID:(id)a5;
+- (void)useTrialPath:(id)path trialGroup:(int64_t)group trialID:(id)d;
 @end
 
 @implementation VCRateControlMLEnrollment
@@ -170,9 +170,9 @@ LABEL_8:
     goto LABEL_7;
   }
 
-  v4 = [(VCRateControlMLEnrollment *)self validateHardwareSupport];
+  validateHardwareSupport = [(VCRateControlMLEnrollment *)self validateHardwareSupport];
   result = 1;
-  if (!v4 && !IntValueForKey)
+  if (!validateHardwareSupport && !IntValueForKey)
   {
 LABEL_7:
     result = 0;
@@ -199,9 +199,9 @@ LABEL_7:
 - (int)setPFLPath
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E6986628] getCachesDirectoryPath];
-  v4 = [v3 stringByAppendingString:@"/rc_fl_model/fl_model.json"];
-  v5 = [v3 stringByAppendingString:@"/rc_fl_data/training_data.json"];
+  getCachesDirectoryPath = [MEMORY[0x1E6986628] getCachesDirectoryPath];
+  v4 = [getCachesDirectoryPath stringByAppendingString:@"/rc_fl_model/fl_model.json"];
+  v5 = [getCachesDirectoryPath stringByAppendingString:@"/rc_fl_data/training_data.json"];
   if (![(VCRateControlMLEnrollment *)self validateFilePath:v4])
   {
     goto LABEL_10;
@@ -243,21 +243,21 @@ LABEL_10:
   return result;
 }
 
-- (void)setConfigurationWithPFLJSON:(id)a3
+- (void)setConfigurationWithPFLJSON:(id)n
 {
-  self->_modelPath = [objc_msgSend(a3 objectForKeyedSubscript:{@"path", "copy"}];
-  self->_recipeID = [objc_msgSend(a3 objectForKeyedSubscript:{@"recipe_id", "copy"}];
+  self->_modelPath = [objc_msgSend(n objectForKeyedSubscript:{@"path", "copy"}];
+  self->_recipeID = [objc_msgSend(n objectForKeyedSubscript:{@"recipe_id", "copy"}];
   self->_reportingGroup = 1;
   self->_shouldGenerateLocalTrainingData = 1;
-  self->_nIteration = [objc_msgSend(a3 objectForKeyedSubscript:{@"iteration_number", "intValue"}];
+  self->_nIteration = [objc_msgSend(n objectForKeyedSubscript:{@"iteration_number", "intValue"}];
 }
 
-- (BOOL)validatePFLExpirationDateWithPFLJSON:(id)a3
+- (BOOL)validatePFLExpirationDateWithPFLJSON:(id)n
 {
   v4 = [MEMORY[0x1E695DF00] now];
   v5 = objc_alloc_init(MEMORY[0x1E696AB78]);
   [v5 setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZ"];
-  v6 = [v5 dateFromString:{objc_msgSend(a3, "objectForKeyedSubscript:", @"expiration_time"}];
+  v6 = [v5 dateFromString:{objc_msgSend(n, "objectForKeyedSubscript:", @"expiration_time"}];
 
   v7 = [v4 compare:v6];
   if (v7 != -1)
@@ -268,14 +268,14 @@ LABEL_10:
   return v7 == -1;
 }
 
-- (int)validateTrainingDataJSONPath:(id)a3 withPFLObject:(id)a4
+- (int)validateTrainingDataJSONPath:(id)path withPFLObject:(id)object
 {
   v15 = *MEMORY[0x1E69E9840];
   v7 = [MEMORY[0x1E695DF00] now];
-  v8 = [(VCRateControlMLEnrollment *)self checkValidJSONAtPath:a3];
+  v8 = [(VCRateControlMLEnrollment *)self checkValidJSONAtPath:path];
   if (!v8)
   {
-    [VCRateControlMLEnrollment validateTrainingDataJSONPath:a3 withPFLObject:&v14];
+    [VCRateControlMLEnrollment validateTrainingDataJSONPath:path withPFLObject:&v14];
     return v14;
   }
 
@@ -283,7 +283,7 @@ LABEL_10:
   v10 = objc_alloc_init(MEMORY[0x1E696AB78]);
   [v10 setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZ"];
   v11 = [v10 dateFromString:{objc_msgSend(v9, "objectForKeyedSubscript:", @"generation_time"}];
-  v12 = [v10 dateFromString:{objc_msgSend(a4, "objectForKeyedSubscript:", @"download_time"}];
+  v12 = [v10 dateFromString:{objc_msgSend(object, "objectForKeyedSubscript:", @"download_time"}];
 
   if ([v11 compare:v7] != -1)
   {
@@ -293,17 +293,17 @@ LABEL_10:
 
   if ([v11 compare:v12] != -1)
   {
-    [(VCRateControlMLEnrollment *)v9 validateTrainingDataJSONPath:a4 withPFLObject:&v14];
+    [(VCRateControlMLEnrollment *)v9 validateTrainingDataJSONPath:object withPFLObject:&v14];
     return v14;
   }
 
   return 2;
 }
 
-- (void)useTrialPath:(id)a3 trialGroup:(int64_t)a4 trialID:(id)a5
+- (void)useTrialPath:(id)path trialGroup:(int64_t)group trialID:(id)d
 {
   self->_reportingGroup = 0;
-  if (a4 == 4)
+  if (group == 4)
   {
     v6 = 4;
 LABEL_8:
@@ -311,45 +311,45 @@ LABEL_8:
     return;
   }
 
-  if (a4 != 3)
+  if (group != 3)
   {
-    if (a4 != 2)
+    if (group != 2)
     {
       return;
     }
 
-    [(VCRateControlMLEnrollment *)self setDefaultPath:a3];
+    [(VCRateControlMLEnrollment *)self setDefaultPath:path];
     v6 = 2;
     goto LABEL_8;
   }
 
-  v8 = [a3 stringByAppendingPathComponent:@"rateController.mlmodelc/model.mil"];
+  v8 = [path stringByAppendingPathComponent:@"rateController.mlmodelc/model.mil"];
   if ([(VCRateControlMLEnrollment *)self validateFilePath:v8])
   {
     self->_modelPath = [v8 copy];
     self->_reportingGroup = 3;
-    self->_trialModelID = [a5 copy];
+    self->_trialModelID = [d copy];
   }
 }
 
 - (void)cleanupTrainingDataFiles
 {
-  v3 = [MEMORY[0x1E6986628] getCachesDirectoryPath];
-  v4 = [v3 stringByAppendingString:@"/rc_fl_data/training_data.json"];
-  v5 = [v3 stringByAppendingString:@"/rc_fl_data/training_data.db"];
+  getCachesDirectoryPath = [MEMORY[0x1E6986628] getCachesDirectoryPath];
+  v4 = [getCachesDirectoryPath stringByAppendingString:@"/rc_fl_data/training_data.json"];
+  v5 = [getCachesDirectoryPath stringByAppendingString:@"/rc_fl_data/training_data.db"];
   [(VCRateControlMLEnrollment *)self removeFileAtPath:v4];
 
   [(VCRateControlMLEnrollment *)self removeFileAtPath:v5];
 }
 
-- (void)removeFileAtPath:(id)a3
+- (void)removeFileAtPath:(id)path
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  if ([v4 fileExistsAtPath:a3])
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  if ([defaultManager fileExistsAtPath:path])
   {
     v14 = 0;
-    v5 = [v4 removeItemAtPath:a3 error:&v14];
+    v5 = [defaultManager removeItemAtPath:path error:&v14];
     ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule();
     if (v5)
     {
@@ -366,7 +366,7 @@ LABEL_8:
           v19 = 1024;
           v20 = 269;
           v21 = 2112;
-          v22 = a3;
+          pathCopy3 = path;
           v9 = " [%s] %s:%d Successfully deleted filePath=%@";
 LABEL_10:
           _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, v9, buf, 0x26u);
@@ -387,7 +387,7 @@ LABEL_10:
         v19 = 1024;
         v20 = 271;
         v21 = 2112;
-        v22 = a3;
+        pathCopy3 = path;
         v23 = 2112;
         v24 = v14;
         _os_log_error_impl(&dword_1DB56E000, v13, OS_LOG_TYPE_ERROR, " [%s] %s:%d Failed to delete filePath=%@ error=%@", buf, 0x30u);
@@ -419,7 +419,7 @@ LABEL_10:
       v19 = 1024;
       v20 = 274;
       v21 = 2112;
-      v22 = a3;
+      pathCopy3 = path;
       v9 = " [%s] %s:%d File does not exist at filePath=%@";
       goto LABEL_10;
     }
@@ -431,11 +431,11 @@ LABEL_10:
   }
 }
 
-- (id)checkValidJSONAtPath:(id)a3
+- (id)checkValidJSONAtPath:(id)path
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v8 = 0;
-  v4 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfFile:a3 options:0 error:&v8];
+  v4 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfFile:path options:0 error:&v8];
   v5 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v4 options:0 error:&v8];
 
   if (v5)
@@ -450,25 +450,25 @@ LABEL_10:
 
   if (!v6)
   {
-    [(VCRateControlMLEnrollment *)a3 checkValidJSONAtPath:v9];
+    [(VCRateControlMLEnrollment *)path checkValidJSONAtPath:v9];
     return v9[0];
   }
 
   return v5;
 }
 
-- (BOOL)validateFilePath:(id)a3
+- (BOOL)validateFilePath:(id)path
 {
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
 
-  return [v4 fileExistsAtPath:a3];
+  return [defaultManager fileExistsAtPath:path];
 }
 
 - (void)init
 {
   v5 = *MEMORY[0x1E69E9840];
   v2 = 136315650;
-  v3 = a1;
+  selfCopy = self;
   OUTLINED_FUNCTION_0();
   v4 = 84;
   _os_log_error_impl(&dword_1DB56E000, v1, OS_LOG_TYPE_ERROR, " [%s] %s:%d init failed", &v2, 0x1Cu);

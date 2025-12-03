@@ -2,40 +2,40 @@
 + (id)sharedController;
 + (void)releaseSharedController;
 - (MPClusterController)init;
-- (id)allSlidesSortedByPaths:(id)a3;
-- (id)clusterSlidesSortedByUserDefinedSortOrder:(id)a3 userDefinedSlideOrder:(id)a4;
-- (id)clustersBasedOnOrderedPaths:(id)a3;
-- (id)dayOfYearClusterForAssetAtPath:(id)a3;
+- (id)allSlidesSortedByPaths:(id)paths;
+- (id)clusterSlidesSortedByUserDefinedSortOrder:(id)order userDefinedSlideOrder:(id)slideOrder;
+- (id)clustersBasedOnOrderedPaths:(id)paths;
+- (id)dayOfYearClusterForAssetAtPath:(id)path;
 - (id)dayOfYearClusters;
-- (id)findBestChronologicalCluster:(id)a3 startingWithSlide:(id)a4;
-- (id)findBestCluster:(id)a3;
-- (id)findBestCluster:(id)a3 withMaxEffectSize:(int64_t)a4 idealEffectSize:(int64_t)a5;
-- (id)findBestClusterBasedOnUserDefinedSlideOrder:(id)a3 startingWithSlide:(id)a4;
-- (id)hourOfYearClusterForAssetAtPath:(id)a3;
+- (id)findBestChronologicalCluster:(id)cluster startingWithSlide:(id)slide;
+- (id)findBestCluster:(id)cluster;
+- (id)findBestCluster:(id)cluster withMaxEffectSize:(int64_t)size idealEffectSize:(int64_t)effectSize;
+- (id)findBestClusterBasedOnUserDefinedSlideOrder:(id)order startingWithSlide:(id)slide;
+- (id)hourOfYearClusterForAssetAtPath:(id)path;
 - (id)hourOfYearClusters;
 - (id)keywordClusters;
 - (id)locationClusters;
-- (id)minuteOfYearClusterForAssetAtPath:(id)a3;
+- (id)minuteOfYearClusterForAssetAtPath:(id)path;
 - (id)minuteOfYearClusters;
-- (id)monthClusterForAssetAtPath:(id)a3;
+- (id)monthClusterForAssetAtPath:(id)path;
 - (id)monthClusters;
-- (id)monthOfYearClusterForAssetAtPath:(id)a3;
+- (id)monthOfYearClusterForAssetAtPath:(id)path;
 - (id)monthOfYearClusters;
-- (id)nextLeastUsedSlides:(int64_t)a3 forLayer:(id)a4 markAsUsed:(BOOL)a5;
+- (id)nextLeastUsedSlides:(int64_t)slides forLayer:(id)layer markAsUsed:(BOOL)used;
 - (id)orderedAndPrioritizedSlideClusters;
 - (id)prioritizedSlideClustersDictionary;
-- (id)roundedFifteenMinuteOfYearClusterForAssetAtPath:(id)a3;
+- (id)roundedFifteenMinuteOfYearClusterForAssetAtPath:(id)path;
 - (id)roundedFifteenMinuteOfYearClusters;
-- (id)roundedFiveMinuteOfYearClusterForAssetAtPath:(id)a3;
+- (id)roundedFiveMinuteOfYearClusterForAssetAtPath:(id)path;
 - (id)roundedFiveMinuteOfYearClusters;
 - (id)userProvidedClusters;
-- (id)yearClusterForAssetAtPath:(id)a3;
+- (id)yearClusterForAssetAtPath:(id)path;
 - (id)yearClusters;
-- (int64_t)addSlideForPath:(id)a3 withIndex:(int64_t)a4;
-- (void)_removeAllSingleSlideClustersForClusterCategory:(id)a3;
-- (void)addKeywords:(id)a3 forSlide:(id)a4;
-- (void)addPaths:(id)a3 toUserDefinedCluster:(id)a4;
-- (void)createLocationClustersForPaths:(id)a3;
+- (int64_t)addSlideForPath:(id)path withIndex:(int64_t)index;
+- (void)_removeAllSingleSlideClustersForClusterCategory:(id)category;
+- (void)addKeywords:(id)keywords forSlide:(id)slide;
+- (void)addPaths:(id)paths toUserDefinedCluster:(id)cluster;
+- (void)createLocationClustersForPaths:(id)paths;
 - (void)dealloc;
 - (void)dumpClustersStatistics;
 - (void)dumpSlidesStatistics;
@@ -43,13 +43,13 @@
 - (void)flushClusters;
 - (void)removeAllSingleSlideClusters;
 - (void)resetAllUsageCounters;
-- (void)sortClusterSlidesChronologically:(id *)a3;
+- (void)sortClusterSlidesChronologically:(id *)chronologically;
 - (void)updateClusterRatings;
-- (void)updateDayOfYearClustersWithDate:(id)a3 ofSlide:(id)a4;
-- (void)updateHourOfYearClustersWithDate:(id)a3 ofSlide:(id)a4;
-- (void)updateMinuteOfYearClustersWithDate:(id)a3 ofSlide:(id)a4;
-- (void)updateMonthClustersWithDate:(id)a3 ofSlide:(id)a4;
-- (void)updateMonthOfYearClustersWithDate:(id)a3 ofSlide:(id)a4;
+- (void)updateDayOfYearClustersWithDate:(id)date ofSlide:(id)slide;
+- (void)updateHourOfYearClustersWithDate:(id)date ofSlide:(id)slide;
+- (void)updateMinuteOfYearClustersWithDate:(id)date ofSlide:(id)slide;
+- (void)updateMonthClustersWithDate:(id)date ofSlide:(id)slide;
+- (void)updateMonthOfYearClustersWithDate:(id)date ofSlide:(id)slide;
 - (void)updateRatingsForDayOfYearClusters;
 - (void)updateRatingsForHourOfYearClusters;
 - (void)updateRatingsForKeywordClusters;
@@ -60,9 +60,9 @@
 - (void)updateRatingsForRoundedFifteenMinuteOfYearClusters;
 - (void)updateRatingsForRoundedFiveMinuteOfYearClusters;
 - (void)updateRatingsForYearClusters;
-- (void)updateRoundedFifteenMinuteOfYearClustersWithDate:(id)a3 ofSlide:(id)a4;
-- (void)updateRoundedFiveMinuteOfYearClustersWithDate:(id)a3 ofSlide:(id)a4;
-- (void)updateYearClustersWithDate:(id)a3 ofSlide:(id)a4;
+- (void)updateRoundedFifteenMinuteOfYearClustersWithDate:(id)date ofSlide:(id)slide;
+- (void)updateRoundedFiveMinuteOfYearClustersWithDate:(id)date ofSlide:(id)slide;
+- (void)updateYearClustersWithDate:(id)date ofSlide:(id)slide;
 @end
 
 @implementation MPClusterController
@@ -72,13 +72,13 @@
   result = qword_1EF290;
   if (!qword_1EF290)
   {
-    objc_sync_enter(a1);
+    objc_sync_enter(self);
     if (!qword_1EF290)
     {
       qword_1EF290 = objc_alloc_init(MPClusterController);
     }
 
-    objc_sync_exit(a1);
+    objc_sync_exit(self);
     return qword_1EF290;
   }
 
@@ -89,11 +89,11 @@
 {
   if (qword_1EF290)
   {
-    objc_sync_enter(a1);
+    objc_sync_enter(self);
 
     qword_1EF290 = 0;
 
-    objc_sync_exit(a1);
+    objc_sync_exit(self);
   }
 }
 
@@ -124,8 +124,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(NSMutableDictionary *)self->mSlides objectEnumerator];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  objectEnumerator = [(NSMutableDictionary *)self->mSlides objectEnumerator];
+  v4 = [objectEnumerator countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -137,7 +137,7 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         [*(*(&v9 + 1) + 8 * v7) setUsableSlideClusters:0];
@@ -145,7 +145,7 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [objectEnumerator countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -169,8 +169,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(NSMutableDictionary *)self->mSlides objectEnumerator];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  objectEnumerator = [(NSMutableDictionary *)self->mSlides objectEnumerator];
+  v4 = [objectEnumerator countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -182,7 +182,7 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         [*(*(&v9 + 1) + 8 * v7) setUsableSlideClusters:0];
@@ -190,7 +190,7 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [objectEnumerator countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -205,19 +205,19 @@
   [(MPCluster *)self->mAllSlidesCluster setRating:0.0];
 }
 
-- (int64_t)addSlideForPath:(id)a3 withIndex:(int64_t)a4
+- (int64_t)addSlideForPath:(id)path withIndex:(int64_t)index
 {
   v7 = [(MPDocument *)self->mAuthoredDocument keywordsForPath:?];
-  v8 = [(MPDocument *)self->mAuthoredDocument creationDateForPath:a3];
+  v8 = [(MPDocument *)self->mAuthoredDocument creationDateForPath:path];
   v9 = +[NSMutableDictionary dictionary];
   if (!v8)
   {
-    NSLog(@"Asset: %@ has no creation date metadata, using epoch as a workaround.", a3);
+    NSLog(@"Asset: %@ has no creation date metadata, using epoch as a workaround.", path);
     v8 = [NSDate dateWithTimeIntervalSince1970:0.0];
   }
 
   [(NSDate *)v8 timeIntervalSince1970];
-  [v9 setObject:a3 forKey:{-[NSNumber stringValue](+[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:"), "stringValue")}];
+  [v9 setObject:path forKey:{-[NSNumber stringValue](+[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:"), "stringValue")}];
   p_mOldestSlideTimestamp = &self->mOldestSlideTimestamp;
   if ([(NSDate *)v8 compare:self->mOldestSlideTimestamp]== NSOrderedAscending || (p_mOldestSlideTimestamp = &self->mNewestSlideTimestamp, [(NSDate *)v8 compare:self->mNewestSlideTimestamp]== &dword_0 + 1))
   {
@@ -225,40 +225,40 @@
     *p_mOldestSlideTimestamp = [(NSDate *)v8 copy];
   }
 
-  v11 = [(NSMutableDictionary *)self->mSlides objectForKey:a3];
+  v11 = [(NSMutableDictionary *)self->mSlides objectForKey:path];
   if (v11)
   {
     v12 = v11;
     [(MPClusterSlide *)v11 setReferenceCounter:[(MPClusterSlide *)v11 referenceCounter]+ 1];
-    v13 = [(MPClusterSlide *)v12 referenceCounter];
+    referenceCounter = [(MPClusterSlide *)v12 referenceCounter];
   }
 
   else
   {
     v12 = objc_alloc_init(MPClusterSlide);
-    [(MPClusterSlide *)v12 setPath:a3];
-    [(MPClusterSlide *)v12 setIndex:a4];
-    v13 = 1;
+    [(MPClusterSlide *)v12 setPath:path];
+    [(MPClusterSlide *)v12 setIndex:index];
+    referenceCounter = 1;
     [(MPClusterSlide *)v12 setReferenceCounter:1];
     [(MPClusterSlide *)v12 setCaptureDate:v8];
     [(MPClusterController *)self addKeywords:v7 forSlide:v12];
-    [(NSMutableDictionary *)self->mSlides setValue:v12 forKey:a3];
+    [(NSMutableDictionary *)self->mSlides setValue:v12 forKey:path];
   }
 
-  v14 = [(MPClusterSlide *)v12 captureDate];
-  [(MPClusterController *)self updateYearClustersWithDate:v14 ofSlide:v12];
-  [(MPClusterController *)self updateMonthClustersWithDate:v14 ofSlide:v12];
-  [(MPClusterController *)self updateMonthOfYearClustersWithDate:v14 ofSlide:v12];
-  [(MPClusterController *)self updateDayOfYearClustersWithDate:v14 ofSlide:v12];
-  [(MPClusterController *)self updateHourOfYearClustersWithDate:v14 ofSlide:v12];
-  [(MPClusterController *)self updateMinuteOfYearClustersWithDate:v14 ofSlide:v12];
-  [(MPClusterController *)self updateRoundedFiveMinuteOfYearClustersWithDate:v14 ofSlide:v12];
-  [(MPClusterController *)self updateRoundedFifteenMinuteOfYearClustersWithDate:v14 ofSlide:v12];
+  captureDate = [(MPClusterSlide *)v12 captureDate];
+  [(MPClusterController *)self updateYearClustersWithDate:captureDate ofSlide:v12];
+  [(MPClusterController *)self updateMonthClustersWithDate:captureDate ofSlide:v12];
+  [(MPClusterController *)self updateMonthOfYearClustersWithDate:captureDate ofSlide:v12];
+  [(MPClusterController *)self updateDayOfYearClustersWithDate:captureDate ofSlide:v12];
+  [(MPClusterController *)self updateHourOfYearClustersWithDate:captureDate ofSlide:v12];
+  [(MPClusterController *)self updateMinuteOfYearClustersWithDate:captureDate ofSlide:v12];
+  [(MPClusterController *)self updateRoundedFiveMinuteOfYearClustersWithDate:captureDate ofSlide:v12];
+  [(MPClusterController *)self updateRoundedFifteenMinuteOfYearClustersWithDate:captureDate ofSlide:v12];
   [(MPClusterController *)self updateAllSlidesClusterWithSlide:v12];
-  return v13;
+  return referenceCounter;
 }
 
-- (void)addKeywords:(id)a3 forSlide:(id)a4
+- (void)addKeywords:(id)keywords forSlide:(id)slide
 {
   v7 = [(NSMutableDictionary *)self->mSlideClusters objectForKey:@"keywordClusters"];
   if (!v7)
@@ -271,7 +271,7 @@
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = [a3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v8 = [keywords countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
     v9 = v8;
@@ -282,7 +282,7 @@
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(keywords);
         }
 
         v12 = *(*(&v14 + 1) + 8 * i);
@@ -294,24 +294,24 @@
           [v7 setObject:v13 forKey:v12];
         }
 
-        [(MPCluster *)v13 addSlide:a4];
+        [(MPCluster *)v13 addSlide:slide];
       }
 
-      v9 = [a3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v9 = [keywords countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v9);
   }
 }
 
-- (id)allSlidesSortedByPaths:(id)a3
+- (id)allSlidesSortedByPaths:(id)paths
 {
   v5 = +[NSMutableArray array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [paths countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -323,7 +323,7 @@
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(paths);
         }
 
         v10 = [(NSMutableDictionary *)self->mSlides objectForKey:*(*(&v12 + 1) + 8 * v9)];
@@ -336,7 +336,7 @@
       }
 
       while (v7 != v9);
-      v7 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [paths countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -345,36 +345,36 @@
   return v5;
 }
 
-- (id)nextLeastUsedSlides:(int64_t)a3 forLayer:(id)a4 markAsUsed:(BOOL)a5
+- (id)nextLeastUsedSlides:(int64_t)slides forLayer:(id)layer markAsUsed:(BOOL)used
 {
-  v5 = a5;
-  v8 = [(MPClusterController *)self allSlidesSortedByUsage];
+  usedCopy = used;
+  allSlidesSortedByUsage = [(MPClusterController *)self allSlidesSortedByUsage];
   v9 = +[NSMutableArray array];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v10 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v10 = [allSlidesSortedByUsage countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
     v11 = v10;
     v12 = 0;
     v13 = *v19;
-    v14 = a3 - 1;
+    v14 = slides - 1;
 LABEL_3:
     v15 = 0;
     while (1)
     {
       if (*v19 != v13)
       {
-        objc_enumerationMutation(v8);
+        objc_enumerationMutation(allSlidesSortedByUsage);
       }
 
       v16 = *(*(&v18 + 1) + 8 * v15);
       [v9 addObject:{objc_msgSend(v16, "path")}];
-      if (v5)
+      if (usedCopy)
       {
-        [v16 setUsageCounterForLayer:a4 to:{objc_msgSend(v16, "overallUsageCounter") + 1}];
+        [v16 setUsageCounterForLayer:layer to:{objc_msgSend(v16, "overallUsageCounter") + 1}];
       }
 
       if (v14 == v12)
@@ -386,7 +386,7 @@ LABEL_3:
       ++v12;
       if (v11 == v15)
       {
-        v11 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v11 = [allSlidesSortedByUsage countByEnumeratingWithState:&v18 objects:v22 count:16];
         if (v11)
         {
           goto LABEL_3;
@@ -400,19 +400,19 @@ LABEL_3:
   return v9;
 }
 
-- (id)clusterSlidesSortedByUserDefinedSortOrder:(id)a3 userDefinedSlideOrder:(id)a4
+- (id)clusterSlidesSortedByUserDefinedSortOrder:(id)order userDefinedSlideOrder:(id)slideOrder
 {
-  v5 = [a3 allSlides];
+  allSlides = [order allSlides];
 
-  return [v5 sortedArrayUsingFunction:sortSlidesByUserDefinedOrder1 context:a4];
+  return [allSlides sortedArrayUsingFunction:sortSlidesByUserDefinedOrder1 context:slideOrder];
 }
 
-- (void)sortClusterSlidesChronologically:(id *)a3
+- (void)sortClusterSlidesChronologically:(id *)chronologically
 {
-  v4 = [*a3 allSlides];
+  allSlides = [*chronologically allSlides];
   v14 = 1;
-  v5 = [v4 sortedArrayUsingFunction:sortSlidesByCaptureDate1 context:&v14];
-  [*a3 removeAllSlides];
+  v5 = [allSlides sortedArrayUsingFunction:sortSlidesByCaptureDate1 context:&v14];
+  [*chronologically removeAllSlides];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
@@ -432,7 +432,7 @@ LABEL_3:
           objc_enumerationMutation(v5);
         }
 
-        [*a3 addSlide:*(*(&v10 + 1) + 8 * v9)];
+        [*chronologically addSlide:*(*(&v10 + 1) + 8 * v9)];
         v9 = v9 + 1;
       }
 
@@ -444,14 +444,14 @@ LABEL_3:
   }
 }
 
-- (id)clustersBasedOnOrderedPaths:(id)a3
+- (id)clustersBasedOnOrderedPaths:(id)paths
 {
   v5 = +[NSMutableArray array];
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v37 objects:v41 count:16];
+  v6 = [paths countByEnumeratingWithState:&v37 objects:v41 count:16];
   if (v6)
   {
     v7 = v6;
@@ -463,7 +463,7 @@ LABEL_3:
       {
         if (*v38 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(paths);
         }
 
         v10 = *(*(&v37 + 1) + 8 * v9);
@@ -561,7 +561,7 @@ LABEL_3:
       }
 
       while (v7 != v9);
-      v7 = [a3 countByEnumeratingWithState:&v37 objects:v41 count:16];
+      v7 = [paths countByEnumeratingWithState:&v37 objects:v41 count:16];
     }
 
     while (v7);
@@ -572,12 +572,12 @@ LABEL_3:
 
 - (void)resetAllUsageCounters
 {
-  v2 = [(MPClusterController *)self allSlides];
+  allSlides = [(MPClusterController *)self allSlides];
   v7 = 0u;
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  v3 = [allSlides countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -589,7 +589,7 @@ LABEL_3:
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allSlides);
         }
 
         [*(*(&v7 + 1) + 8 * v6) resetAllUsageCounters];
@@ -597,7 +597,7 @@ LABEL_3:
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [allSlides countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
@@ -610,8 +610,8 @@ LABEL_3:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(NSMutableDictionary *)self->mSlides objectEnumerator];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  objectEnumerator = [(NSMutableDictionary *)self->mSlides objectEnumerator];
+  v4 = [objectEnumerator countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -623,7 +623,7 @@ LABEL_3:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         [*(*(&v9 + 1) + 8 * v7) setUsableSlideClusters:0];
@@ -631,7 +631,7 @@ LABEL_3:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [objectEnumerator countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -646,20 +646,20 @@ LABEL_3:
   [(MPCluster *)self->mAllSlidesCluster setRating:0.0];
 }
 
-- (id)findBestCluster:(id)a3
+- (id)findBestCluster:(id)cluster
 {
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v4 = [cluster countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (!v4)
   {
     return 0;
   }
 
   v5 = v4;
-  v6 = 0;
+  slideCount = 0;
   v7 = 0;
   v8 = *v13;
   do
@@ -668,31 +668,31 @@ LABEL_3:
     {
       if (*v13 != v8)
       {
-        objc_enumerationMutation(a3);
+        objc_enumerationMutation(cluster);
       }
 
       v10 = *(*(&v12 + 1) + 8 * i);
-      if ([v10 slideCount] > v6)
+      if ([v10 slideCount] > slideCount)
       {
-        v6 = [v10 slideCount];
+        slideCount = [v10 slideCount];
         v7 = v10;
       }
     }
 
-    v5 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    v5 = [cluster countByEnumeratingWithState:&v12 objects:v16 count:16];
   }
 
   while (v5);
   return v7;
 }
 
-- (id)findBestCluster:(id)a3 withMaxEffectSize:(int64_t)a4 idealEffectSize:(int64_t)a5
+- (id)findBestCluster:(id)cluster withMaxEffectSize:(int64_t)size idealEffectSize:(int64_t)effectSize
 {
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v8 = [a3 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  v8 = [cluster countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (!v8)
   {
     return 0;
@@ -709,23 +709,23 @@ LABEL_3:
       v14 = v11;
       if (*v23 != v12)
       {
-        objc_enumerationMutation(a3);
+        objc_enumerationMutation(cluster);
       }
 
       v15 = *(*(&v22 + 1) + 8 * i);
-      v16 = [v15 slideCount];
-      v11 = v16 - a5;
-      if (v16 == a5)
+      slideCount = [v15 slideCount];
+      v11 = slideCount - effectSize;
+      if (slideCount == effectSize)
       {
         return v15;
       }
 
-      if (v16 <= a4)
+      if (slideCount <= size)
       {
         if (v11 < 1 || (v17 = v15, v14) && v11 >= v14)
         {
           v18 = v14 < 1;
-          v19 = v11 > a5;
+          v19 = v11 > effectSize;
           v20 = !v18 || !v19;
           if (v18 && v19)
           {
@@ -744,7 +744,7 @@ LABEL_3:
 
           else
           {
-            v11 = v16;
+            v11 = slideCount;
           }
         }
       }
@@ -766,7 +766,7 @@ LABEL_3:
       }
     }
 
-    v9 = [a3 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    v9 = [cluster countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v9)
     {
       continue;
@@ -778,14 +778,14 @@ LABEL_3:
   return v10;
 }
 
-- (id)findBestChronologicalCluster:(id)a3 startingWithSlide:(id)a4
+- (id)findBestChronologicalCluster:(id)cluster startingWithSlide:(id)slide
 {
   v7 = +[NSMutableArray array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = [a3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v8 = [cluster countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
     v9 = v8;
@@ -797,16 +797,16 @@ LABEL_3:
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(cluster);
         }
 
         v12 = *(*(&v15 + 1) + 8 * v11);
-        if ([v12 clusterContainsSlideAtPath:{objc_msgSend(a4, "path")}])
+        if ([v12 clusterContainsSlideAtPath:{objc_msgSend(slide, "path")}])
         {
-          v13 = [v12 allSlidesSortedChronologically];
-          if ([v13 count])
+          allSlidesSortedChronologically = [v12 allSlidesSortedChronologically];
+          if ([allSlidesSortedChronologically count])
           {
-            if ([v13 objectAtIndex:0] == a4)
+            if ([allSlidesSortedChronologically objectAtIndex:0] == slide)
             {
               [v7 addObject:v12];
             }
@@ -817,7 +817,7 @@ LABEL_3:
       }
 
       while (v9 != v11);
-      v9 = [a3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v9 = [cluster countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v9);
@@ -826,14 +826,14 @@ LABEL_3:
   return [(MPClusterController *)self findBestCluster:v7];
 }
 
-- (id)findBestClusterBasedOnUserDefinedSlideOrder:(id)a3 startingWithSlide:(id)a4
+- (id)findBestClusterBasedOnUserDefinedSlideOrder:(id)order startingWithSlide:(id)slide
 {
   v7 = +[NSMutableArray array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = [a3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v8 = [order countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
     v9 = v8;
@@ -845,16 +845,16 @@ LABEL_3:
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(order);
         }
 
         v12 = *(*(&v15 + 1) + 8 * v11);
-        if ([v12 clusterContainsSlideAtPath:{objc_msgSend(a4, "path")}])
+        if ([v12 clusterContainsSlideAtPath:{objc_msgSend(slide, "path")}])
         {
           v13 = [objc_msgSend(v12 "allSlides")];
           if ([v13 count])
           {
-            if ([v13 objectAtIndex:0] == a4)
+            if ([v13 objectAtIndex:0] == slide)
             {
               [v7 addObject:v12];
             }
@@ -865,7 +865,7 @@ LABEL_3:
       }
 
       while (v9 != v11);
-      v9 = [a3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v9 = [order countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v9);
@@ -889,9 +889,9 @@ LABEL_3:
   [(MPClusterController *)self _removeAllSingleSlideClustersForClusterCategory:@"locationClusters"];
 }
 
-- (void)updateYearClustersWithDate:(id)a3 ofSlide:(id)a4
+- (void)updateYearClustersWithDate:(id)date ofSlide:(id)slide
 {
-  v6 = [a3 descriptionWithFormat:@"'Y:'yyyy"];
+  v6 = [date descriptionWithFormat:@"'Y:'yyyy"];
   v7 = [(NSMutableDictionary *)self->mSlideClusters objectForKey:@"yearClusters"];
   if (!v7)
   {
@@ -907,12 +907,12 @@ LABEL_3:
     [v7 setObject:v8 forKey:v6];
   }
 
-  [(MPCluster *)v8 addSlide:a4];
+  [(MPCluster *)v8 addSlide:slide];
 }
 
-- (void)updateMonthClustersWithDate:(id)a3 ofSlide:(id)a4
+- (void)updateMonthClustersWithDate:(id)date ofSlide:(id)slide
 {
-  v6 = [a3 descriptionWithFormat:@"'M:'MM"];
+  v6 = [date descriptionWithFormat:@"'M:'MM"];
   v7 = [(NSMutableDictionary *)self->mSlideClusters objectForKey:@"monthClusters"];
   if (!v7)
   {
@@ -928,12 +928,12 @@ LABEL_3:
     [v7 setObject:v8 forKey:v6];
   }
 
-  [(MPCluster *)v8 addSlide:a4];
+  [(MPCluster *)v8 addSlide:slide];
 }
 
-- (void)updateMonthOfYearClustersWithDate:(id)a3 ofSlide:(id)a4
+- (void)updateMonthOfYearClustersWithDate:(id)date ofSlide:(id)slide
 {
-  v6 = [a3 descriptionWithFormat:@"'Y-M:'yyyy-MM"];
+  v6 = [date descriptionWithFormat:@"'Y-M:'yyyy-MM"];
   v7 = [(NSMutableDictionary *)self->mSlideClusters objectForKey:@"monthOfYearClusters"];
   if (!v7)
   {
@@ -949,12 +949,12 @@ LABEL_3:
     [v7 setObject:v8 forKey:v6];
   }
 
-  [(MPCluster *)v8 addSlide:a4];
+  [(MPCluster *)v8 addSlide:slide];
 }
 
-- (void)updateDayOfYearClustersWithDate:(id)a3 ofSlide:(id)a4
+- (void)updateDayOfYearClustersWithDate:(id)date ofSlide:(id)slide
 {
-  v6 = [a3 descriptionWithFormat:@"'Y-M-D:'yyyy-MM-dd"];
+  v6 = [date descriptionWithFormat:@"'Y-M-D:'yyyy-MM-dd"];
   v7 = [(NSMutableDictionary *)self->mSlideClusters objectForKey:@"dayOfYearClusters"];
   if (!v7)
   {
@@ -970,12 +970,12 @@ LABEL_3:
     [v7 setValue:v8 forKey:v6];
   }
 
-  [(MPCluster *)v8 addSlide:a4];
+  [(MPCluster *)v8 addSlide:slide];
 }
 
-- (void)updateHourOfYearClustersWithDate:(id)a3 ofSlide:(id)a4
+- (void)updateHourOfYearClustersWithDate:(id)date ofSlide:(id)slide
 {
-  v6 = [a3 descriptionWithFormat:@"'Y-M-D-H:'yyyy-MM-dd-HH"];
+  v6 = [date descriptionWithFormat:@"'Y-M-D-H:'yyyy-MM-dd-HH"];
   v7 = [(NSMutableDictionary *)self->mSlideClusters objectForKey:@"hourOfYearClusters"];
   if (!v7)
   {
@@ -991,12 +991,12 @@ LABEL_3:
     [v7 setObject:v8 forKey:v6];
   }
 
-  [(MPCluster *)v8 addSlide:a4];
+  [(MPCluster *)v8 addSlide:slide];
 }
 
-- (void)updateMinuteOfYearClustersWithDate:(id)a3 ofSlide:(id)a4
+- (void)updateMinuteOfYearClustersWithDate:(id)date ofSlide:(id)slide
 {
-  v6 = [a3 descriptionWithFormat:@"'Y-M-D-H-M:'yyyy-MM-dd-HH-mm"];
+  v6 = [date descriptionWithFormat:@"'Y-M-D-H-M:'yyyy-MM-dd-HH-mm"];
   v7 = [(NSMutableDictionary *)self->mSlideClusters objectForKey:@"minuteOfYearClusters"];
   if (!v7)
   {
@@ -1012,12 +1012,12 @@ LABEL_3:
     [v7 setObject:v8 forKey:v6];
   }
 
-  [(MPCluster *)v8 addSlide:a4];
+  [(MPCluster *)v8 addSlide:slide];
 }
 
-- (void)updateRoundedFiveMinuteOfYearClustersWithDate:(id)a3 ofSlide:(id)a4
+- (void)updateRoundedFiveMinuteOfYearClustersWithDate:(id)date ofSlide:(id)slide
 {
-  v6 = [objc_msgSend(a3 "roundMinuteToNearstFive")];
+  v6 = [objc_msgSend(date "roundMinuteToNearstFive")];
   v7 = [(NSMutableDictionary *)self->mSlideClusters objectForKey:@"roundedFiveMinuteOfYearClusters"];
   if (!v7)
   {
@@ -1033,12 +1033,12 @@ LABEL_3:
     [v7 setObject:v8 forKey:v6];
   }
 
-  [(MPCluster *)v8 addSlide:a4];
+  [(MPCluster *)v8 addSlide:slide];
 }
 
-- (void)updateRoundedFifteenMinuteOfYearClustersWithDate:(id)a3 ofSlide:(id)a4
+- (void)updateRoundedFifteenMinuteOfYearClustersWithDate:(id)date ofSlide:(id)slide
 {
-  v6 = [objc_msgSend(a3 "roundMinuteToNearstFifteen")];
+  v6 = [objc_msgSend(date "roundMinuteToNearstFifteen")];
   v7 = [(NSMutableDictionary *)self->mSlideClusters objectForKey:@"roundedFifteenMinuteOfYearClusters"];
   if (!v7)
   {
@@ -1054,7 +1054,7 @@ LABEL_3:
     [v7 setObject:v8 forKey:v6];
   }
 
-  [(MPCluster *)v8 addSlide:a4];
+  [(MPCluster *)v8 addSlide:slide];
 }
 
 - (id)yearClusters
@@ -1134,74 +1134,74 @@ LABEL_3:
   return [v2 allValues];
 }
 
-- (id)yearClusterForAssetAtPath:(id)a3
+- (id)yearClusterForAssetAtPath:(id)path
 {
   v5 = [(NSMutableDictionary *)self->mSlideClusters objectForKey:@"yearClusters"];
-  v6 = [-[MPDocument creationDateForPath:](self->mAuthoredDocument creationDateForPath:{a3), "descriptionWithFormat:", @"'Y:'yyyy"}];
+  v6 = [-[MPDocument creationDateForPath:](self->mAuthoredDocument creationDateForPath:{path), "descriptionWithFormat:", @"'Y:'yyyy"}];
 
   return [v5 objectForKey:v6];
 }
 
-- (id)monthClusterForAssetAtPath:(id)a3
+- (id)monthClusterForAssetAtPath:(id)path
 {
   v5 = [(NSMutableDictionary *)self->mSlideClusters objectForKey:@"monthClusters"];
-  v6 = [-[MPDocument creationDateForPath:](self->mAuthoredDocument creationDateForPath:{a3), "descriptionWithFormat:", @"'M:'MM"}];
+  v6 = [-[MPDocument creationDateForPath:](self->mAuthoredDocument creationDateForPath:{path), "descriptionWithFormat:", @"'M:'MM"}];
 
   return [v5 objectForKey:v6];
 }
 
-- (id)monthOfYearClusterForAssetAtPath:(id)a3
+- (id)monthOfYearClusterForAssetAtPath:(id)path
 {
   v5 = [(NSMutableDictionary *)self->mSlideClusters objectForKey:@"monthOfYearClusters"];
-  v6 = [-[MPDocument creationDateForPath:](self->mAuthoredDocument creationDateForPath:{a3), "descriptionWithFormat:", @"'Y-M:'yyyy-MM"}];
+  v6 = [-[MPDocument creationDateForPath:](self->mAuthoredDocument creationDateForPath:{path), "descriptionWithFormat:", @"'Y-M:'yyyy-MM"}];
 
   return [v5 objectForKey:v6];
 }
 
-- (id)dayOfYearClusterForAssetAtPath:(id)a3
+- (id)dayOfYearClusterForAssetAtPath:(id)path
 {
   v5 = [(NSMutableDictionary *)self->mSlideClusters objectForKey:@"dayOfYearClusters"];
-  v6 = [-[MPDocument creationDateForPath:](self->mAuthoredDocument creationDateForPath:{a3), "descriptionWithFormat:", @"'Y-M-D:'yyyy-MM-dd"}];
+  v6 = [-[MPDocument creationDateForPath:](self->mAuthoredDocument creationDateForPath:{path), "descriptionWithFormat:", @"'Y-M-D:'yyyy-MM-dd"}];
 
   return [v5 objectForKey:v6];
 }
 
-- (id)hourOfYearClusterForAssetAtPath:(id)a3
+- (id)hourOfYearClusterForAssetAtPath:(id)path
 {
   v5 = [(NSMutableDictionary *)self->mSlideClusters objectForKey:@"hourOfYearClusters"];
-  v6 = [-[MPDocument creationDateForPath:](self->mAuthoredDocument creationDateForPath:{a3), "descriptionWithFormat:", @"'Y-M-D-H:'yyyy-MM-dd-HH"}];
+  v6 = [-[MPDocument creationDateForPath:](self->mAuthoredDocument creationDateForPath:{path), "descriptionWithFormat:", @"'Y-M-D-H:'yyyy-MM-dd-HH"}];
 
   return [v5 objectForKey:v6];
 }
 
-- (id)minuteOfYearClusterForAssetAtPath:(id)a3
+- (id)minuteOfYearClusterForAssetAtPath:(id)path
 {
   v5 = [(NSMutableDictionary *)self->mSlideClusters objectForKey:@"minuteOfYearClusters"];
-  v6 = [-[MPDocument creationDateForPath:](self->mAuthoredDocument creationDateForPath:{a3), "descriptionWithFormat:", @"'Y-M-D-H-M:'yyyy-MM-dd-HH-mm"}];
+  v6 = [-[MPDocument creationDateForPath:](self->mAuthoredDocument creationDateForPath:{path), "descriptionWithFormat:", @"'Y-M-D-H-M:'yyyy-MM-dd-HH-mm"}];
 
   return [v5 objectForKey:v6];
 }
 
-- (id)roundedFiveMinuteOfYearClusterForAssetAtPath:(id)a3
+- (id)roundedFiveMinuteOfYearClusterForAssetAtPath:(id)path
 {
   v5 = [(NSMutableDictionary *)self->mSlideClusters objectForKey:@"roundedFiveMinuteOfYearClusters"];
-  v6 = [objc_msgSend(-[MPDocument creationDateForPath:](self->mAuthoredDocument creationDateForPath:{a3), "roundMinuteToNearstFive"), "descriptionWithFormat:", @"'Y-M-D-H-r5M:'yyyy-MM-dd-HH-mm"}];
+  v6 = [objc_msgSend(-[MPDocument creationDateForPath:](self->mAuthoredDocument creationDateForPath:{path), "roundMinuteToNearstFive"), "descriptionWithFormat:", @"'Y-M-D-H-r5M:'yyyy-MM-dd-HH-mm"}];
 
   return [v5 objectForKey:v6];
 }
 
-- (id)roundedFifteenMinuteOfYearClusterForAssetAtPath:(id)a3
+- (id)roundedFifteenMinuteOfYearClusterForAssetAtPath:(id)path
 {
   v5 = [(NSMutableDictionary *)self->mSlideClusters objectForKey:@"roundedFifteenMinuteOfYearClusters"];
-  v6 = [objc_msgSend(-[MPDocument creationDateForPath:](self->mAuthoredDocument creationDateForPath:{a3), "roundMinuteToNearstFifteen"), "descriptionWithFormat:", @"'Y-M-D-H-r15M:'yyyy-MM-dd-HH-mm"}];
+  v6 = [objc_msgSend(-[MPDocument creationDateForPath:](self->mAuthoredDocument creationDateForPath:{path), "roundMinuteToNearstFifteen"), "descriptionWithFormat:", @"'Y-M-D-H-r15M:'yyyy-MM-dd-HH-mm"}];
 
   return [v5 objectForKey:v6];
 }
 
-- (void)addPaths:(id)a3 toUserDefinedCluster:(id)a4
+- (void)addPaths:(id)paths toUserDefinedCluster:(id)cluster
 {
-  v7 = [a3 count];
-  if (a4 && v7)
+  v7 = [paths count];
+  if (cluster && v7)
   {
     v8 = [(NSMutableDictionary *)self->mSlideClusters objectForKey:@"userDefinedClusters"];
     if (!v8)
@@ -1210,11 +1210,11 @@ LABEL_3:
       [(NSMutableDictionary *)self->mSlideClusters setObject:v8 forKey:@"userDefinedClusters"];
     }
 
-    v9 = [v8 objectForKey:a4];
+    v9 = [v8 objectForKey:cluster];
     if (!v9)
     {
       v9 = objc_alloc_init(MPCluster);
-      [v8 setObject:v9 forKey:a4];
+      [v8 setObject:v9 forKey:cluster];
       [(MPCluster *)v9 setRating:10.0];
     }
 
@@ -1222,7 +1222,7 @@ LABEL_3:
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v10 = [a3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    v10 = [paths countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v10)
     {
       v11 = v10;
@@ -1233,7 +1233,7 @@ LABEL_3:
         {
           if (*v17 != v12)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(paths);
           }
 
           v14 = *(*(&v16 + 1) + 8 * i);
@@ -1247,7 +1247,7 @@ LABEL_3:
           [(MPCluster *)v9 addSlide:v15];
         }
 
-        v11 = [a3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v11 = [paths countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v11);
@@ -1255,14 +1255,14 @@ LABEL_3:
   }
 }
 
-- (void)createLocationClustersForPaths:(id)a3
+- (void)createLocationClustersForPaths:(id)paths
 {
   v21 = +[NSMutableDictionary dictionary];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v4 = [a3 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  v4 = [paths countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1273,7 +1273,7 @@ LABEL_3:
       {
         if (*v23 != v6)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(paths);
         }
 
         v8 = *(*(&v22 + 1) + 8 * i);
@@ -1289,56 +1289,56 @@ LABEL_3:
           v11 = 1;
         }
 
-        v12 = &stru_1AC858;
+        stringByDeletingLastPathComponent = &stru_1AC858;
         if (!v11)
         {
-          v12 = [&stru_1AC858 stringByAppendingPathComponent:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@:%@", v9, v10)}];
+          stringByDeletingLastPathComponent = [&stru_1AC858 stringByAppendingPathComponent:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@:%@", v9, v10)}];
         }
 
         v13 = [(MPDocument *)self->mAuthoredDocument placeForPath:v8];
         if (v13)
         {
-          v12 = [(__CFString *)v12 stringByAppendingPathComponent:v13];
+          stringByDeletingLastPathComponent = [(__CFString *)stringByDeletingLastPathComponent stringByAppendingPathComponent:v13];
         }
 
         v14 = [(MPDocument *)self->mAuthoredDocument cityForPath:v8];
         if (v14)
         {
-          v12 = [(__CFString *)v12 stringByAppendingPathComponent:v14];
+          stringByDeletingLastPathComponent = [(__CFString *)stringByDeletingLastPathComponent stringByAppendingPathComponent:v14];
         }
 
         v15 = [(MPDocument *)self->mAuthoredDocument stateForPath:v8];
         if (v15)
         {
-          v12 = [(__CFString *)v12 stringByAppendingPathComponent:v15];
+          stringByDeletingLastPathComponent = [(__CFString *)stringByDeletingLastPathComponent stringByAppendingPathComponent:v15];
         }
 
         v16 = [(MPDocument *)self->mAuthoredDocument countryForPath:v8];
         if (v16)
         {
-          v12 = [(__CFString *)v12 stringByAppendingPathComponent:v16];
+          stringByDeletingLastPathComponent = [(__CFString *)stringByDeletingLastPathComponent stringByAppendingPathComponent:v16];
         }
 
-        if ([(__CFString *)v12 length])
+        if ([(__CFString *)stringByDeletingLastPathComponent length])
         {
           v17 = v21;
-          if ([(__CFString *)v12 length])
+          if ([(__CFString *)stringByDeletingLastPathComponent length])
           {
             v17 = v21;
             do
             {
-              v18 = [(__CFString *)v12 lastPathComponent];
-              v17 = [v17 objectForKey:v18];
+              lastPathComponent = [(__CFString *)stringByDeletingLastPathComponent lastPathComponent];
+              v17 = [v17 objectForKey:lastPathComponent];
               if (!v17)
               {
-                [0 setObject:+[NSMutableDictionary dictionary](NSMutableDictionary forKey:{"dictionary"), v18}];
-                v17 = [0 objectForKey:v18];
+                [0 setObject:+[NSMutableDictionary dictionary](NSMutableDictionary forKey:{"dictionary"), lastPathComponent}];
+                v17 = [0 objectForKey:lastPathComponent];
               }
 
-              v12 = [(__CFString *)v12 stringByDeletingLastPathComponent];
+              stringByDeletingLastPathComponent = [(__CFString *)stringByDeletingLastPathComponent stringByDeletingLastPathComponent];
             }
 
-            while ([(__CFString *)v12 length]);
+            while ([(__CFString *)stringByDeletingLastPathComponent length]);
           }
 
           v19 = [v17 objectForKey:@"photos"];
@@ -1352,7 +1352,7 @@ LABEL_3:
         }
       }
 
-      v5 = [a3 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v5 = [paths countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v5);
@@ -1361,14 +1361,14 @@ LABEL_3:
 
 - (id)orderedAndPrioritizedSlideClusters
 {
-  v3 = [(MPClusterController *)self prioritizedSlideClustersDictionary];
-  v4 = [v3 allKeys];
+  prioritizedSlideClustersDictionary = [(MPClusterController *)self prioritizedSlideClustersDictionary];
+  allKeys = [prioritizedSlideClustersDictionary allKeys];
   v5 = +[NSMutableArray array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v6 = [allKeys countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1379,7 +1379,7 @@ LABEL_3:
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
@@ -1390,7 +1390,7 @@ LABEL_3:
         }
       }
 
-      v7 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v7);
@@ -1403,7 +1403,7 @@ LABEL_3:
   {
     do
     {
-      [v13 addObjectsFromArray:{objc_msgSend(v3, "objectForKey:", objc_msgSend(v12, "objectAtIndex:", v14--))}];
+      [v13 addObjectsFromArray:{objc_msgSend(prioritizedSlideClustersDictionary, "objectForKey:", objc_msgSend(v12, "objectAtIndex:", v14--))}];
     }
 
     while (v14 != -1);
@@ -1421,12 +1421,12 @@ LABEL_3:
 {
   [(MPClusterController *)self updateClusterRatings];
   v3 = +[NSMutableDictionary dictionary];
-  v4 = [(MPClusterController *)self yearClusters];
+  yearClusters = [(MPClusterController *)self yearClusters];
   v155 = 0u;
   v156 = 0u;
   v157 = 0u;
   v158 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v155 objects:v169 count:16];
+  v5 = [yearClusters countByEnumeratingWithState:&v155 objects:v169 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1437,7 +1437,7 @@ LABEL_3:
       {
         if (*v156 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(yearClusters);
         }
 
         v9 = *(*(&v155 + 1) + 8 * i);
@@ -1458,18 +1458,18 @@ LABEL_3:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v155 objects:v169 count:16];
+      v6 = [yearClusters countByEnumeratingWithState:&v155 objects:v169 count:16];
     }
 
     while (v6);
   }
 
-  v14 = [(MPClusterController *)self monthClusters];
+  monthClusters = [(MPClusterController *)self monthClusters];
   v151 = 0u;
   v152 = 0u;
   v153 = 0u;
   v154 = 0u;
-  v15 = [v14 countByEnumeratingWithState:&v151 objects:v168 count:16];
+  v15 = [monthClusters countByEnumeratingWithState:&v151 objects:v168 count:16];
   if (v15)
   {
     v16 = v15;
@@ -1480,7 +1480,7 @@ LABEL_3:
       {
         if (*v152 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(monthClusters);
         }
 
         v19 = *(*(&v151 + 1) + 8 * j);
@@ -1501,18 +1501,18 @@ LABEL_3:
         }
       }
 
-      v16 = [v14 countByEnumeratingWithState:&v151 objects:v168 count:16];
+      v16 = [monthClusters countByEnumeratingWithState:&v151 objects:v168 count:16];
     }
 
     while (v16);
   }
 
-  v24 = [(MPClusterController *)self monthOfYearClusters];
+  monthOfYearClusters = [(MPClusterController *)self monthOfYearClusters];
   v147 = 0u;
   v148 = 0u;
   v149 = 0u;
   v150 = 0u;
-  v25 = [v24 countByEnumeratingWithState:&v147 objects:v167 count:16];
+  v25 = [monthOfYearClusters countByEnumeratingWithState:&v147 objects:v167 count:16];
   if (v25)
   {
     v26 = v25;
@@ -1523,7 +1523,7 @@ LABEL_3:
       {
         if (*v148 != v27)
         {
-          objc_enumerationMutation(v24);
+          objc_enumerationMutation(monthOfYearClusters);
         }
 
         v29 = *(*(&v147 + 1) + 8 * k);
@@ -1544,18 +1544,18 @@ LABEL_3:
         }
       }
 
-      v26 = [v24 countByEnumeratingWithState:&v147 objects:v167 count:16];
+      v26 = [monthOfYearClusters countByEnumeratingWithState:&v147 objects:v167 count:16];
     }
 
     while (v26);
   }
 
-  v34 = [(MPClusterController *)self dayOfYearClusters];
+  dayOfYearClusters = [(MPClusterController *)self dayOfYearClusters];
   v143 = 0u;
   v144 = 0u;
   v145 = 0u;
   v146 = 0u;
-  v35 = [v34 countByEnumeratingWithState:&v143 objects:v166 count:16];
+  v35 = [dayOfYearClusters countByEnumeratingWithState:&v143 objects:v166 count:16];
   if (v35)
   {
     v36 = v35;
@@ -1566,7 +1566,7 @@ LABEL_3:
       {
         if (*v144 != v37)
         {
-          objc_enumerationMutation(v34);
+          objc_enumerationMutation(dayOfYearClusters);
         }
 
         v39 = *(*(&v143 + 1) + 8 * m);
@@ -1587,18 +1587,18 @@ LABEL_3:
         }
       }
 
-      v36 = [v34 countByEnumeratingWithState:&v143 objects:v166 count:16];
+      v36 = [dayOfYearClusters countByEnumeratingWithState:&v143 objects:v166 count:16];
     }
 
     while (v36);
   }
 
-  v44 = [(MPClusterController *)self hourOfYearClusters];
+  hourOfYearClusters = [(MPClusterController *)self hourOfYearClusters];
   v139 = 0u;
   v140 = 0u;
   v141 = 0u;
   v142 = 0u;
-  v45 = [v44 countByEnumeratingWithState:&v139 objects:v165 count:16];
+  v45 = [hourOfYearClusters countByEnumeratingWithState:&v139 objects:v165 count:16];
   if (v45)
   {
     v46 = v45;
@@ -1609,7 +1609,7 @@ LABEL_3:
       {
         if (*v140 != v47)
         {
-          objc_enumerationMutation(v44);
+          objc_enumerationMutation(hourOfYearClusters);
         }
 
         v49 = *(*(&v139 + 1) + 8 * n);
@@ -1630,18 +1630,18 @@ LABEL_3:
         }
       }
 
-      v46 = [v44 countByEnumeratingWithState:&v139 objects:v165 count:16];
+      v46 = [hourOfYearClusters countByEnumeratingWithState:&v139 objects:v165 count:16];
     }
 
     while (v46);
   }
 
-  v54 = [(MPClusterController *)self minuteOfYearClusters];
+  minuteOfYearClusters = [(MPClusterController *)self minuteOfYearClusters];
   v135 = 0u;
   v136 = 0u;
   v137 = 0u;
   v138 = 0u;
-  v55 = [v54 countByEnumeratingWithState:&v135 objects:v164 count:16];
+  v55 = [minuteOfYearClusters countByEnumeratingWithState:&v135 objects:v164 count:16];
   if (v55)
   {
     v56 = v55;
@@ -1652,7 +1652,7 @@ LABEL_3:
       {
         if (*v136 != v57)
         {
-          objc_enumerationMutation(v54);
+          objc_enumerationMutation(minuteOfYearClusters);
         }
 
         v59 = *(*(&v135 + 1) + 8 * ii);
@@ -1673,18 +1673,18 @@ LABEL_3:
         }
       }
 
-      v56 = [v54 countByEnumeratingWithState:&v135 objects:v164 count:16];
+      v56 = [minuteOfYearClusters countByEnumeratingWithState:&v135 objects:v164 count:16];
     }
 
     while (v56);
   }
 
-  v64 = [(MPClusterController *)self roundedFiveMinuteOfYearClusters];
+  roundedFiveMinuteOfYearClusters = [(MPClusterController *)self roundedFiveMinuteOfYearClusters];
   v131 = 0u;
   v132 = 0u;
   v133 = 0u;
   v134 = 0u;
-  v65 = [v64 countByEnumeratingWithState:&v131 objects:v163 count:16];
+  v65 = [roundedFiveMinuteOfYearClusters countByEnumeratingWithState:&v131 objects:v163 count:16];
   if (v65)
   {
     v66 = v65;
@@ -1695,7 +1695,7 @@ LABEL_3:
       {
         if (*v132 != v67)
         {
-          objc_enumerationMutation(v64);
+          objc_enumerationMutation(roundedFiveMinuteOfYearClusters);
         }
 
         v69 = *(*(&v131 + 1) + 8 * jj);
@@ -1716,18 +1716,18 @@ LABEL_3:
         }
       }
 
-      v66 = [v64 countByEnumeratingWithState:&v131 objects:v163 count:16];
+      v66 = [roundedFiveMinuteOfYearClusters countByEnumeratingWithState:&v131 objects:v163 count:16];
     }
 
     while (v66);
   }
 
-  v74 = [(MPClusterController *)self roundedFifteenMinuteOfYearClusters];
+  roundedFifteenMinuteOfYearClusters = [(MPClusterController *)self roundedFifteenMinuteOfYearClusters];
   v127 = 0u;
   v128 = 0u;
   v129 = 0u;
   v130 = 0u;
-  v75 = [v74 countByEnumeratingWithState:&v127 objects:v162 count:16];
+  v75 = [roundedFifteenMinuteOfYearClusters countByEnumeratingWithState:&v127 objects:v162 count:16];
   if (v75)
   {
     v76 = v75;
@@ -1738,7 +1738,7 @@ LABEL_3:
       {
         if (*v128 != v77)
         {
-          objc_enumerationMutation(v74);
+          objc_enumerationMutation(roundedFifteenMinuteOfYearClusters);
         }
 
         v79 = *(*(&v127 + 1) + 8 * kk);
@@ -1759,18 +1759,18 @@ LABEL_3:
         }
       }
 
-      v76 = [v74 countByEnumeratingWithState:&v127 objects:v162 count:16];
+      v76 = [roundedFifteenMinuteOfYearClusters countByEnumeratingWithState:&v127 objects:v162 count:16];
     }
 
     while (v76);
   }
 
-  v84 = [(MPClusterController *)self keywordClusters];
+  keywordClusters = [(MPClusterController *)self keywordClusters];
   v123 = 0u;
   v124 = 0u;
   v125 = 0u;
   v126 = 0u;
-  v85 = [v84 countByEnumeratingWithState:&v123 objects:v161 count:16];
+  v85 = [keywordClusters countByEnumeratingWithState:&v123 objects:v161 count:16];
   if (v85)
   {
     v86 = v85;
@@ -1781,7 +1781,7 @@ LABEL_3:
       {
         if (*v124 != v87)
         {
-          objc_enumerationMutation(v84);
+          objc_enumerationMutation(keywordClusters);
         }
 
         v89 = *(*(&v123 + 1) + 8 * mm);
@@ -1802,18 +1802,18 @@ LABEL_3:
         }
       }
 
-      v86 = [v84 countByEnumeratingWithState:&v123 objects:v161 count:16];
+      v86 = [keywordClusters countByEnumeratingWithState:&v123 objects:v161 count:16];
     }
 
     while (v86);
   }
 
-  v94 = [(MPClusterController *)self locationClusters];
+  locationClusters = [(MPClusterController *)self locationClusters];
   v119 = 0u;
   v120 = 0u;
   v121 = 0u;
   v122 = 0u;
-  v95 = [v94 countByEnumeratingWithState:&v119 objects:v160 count:16];
+  v95 = [locationClusters countByEnumeratingWithState:&v119 objects:v160 count:16];
   if (v95)
   {
     v96 = v95;
@@ -1824,7 +1824,7 @@ LABEL_3:
       {
         if (*v120 != v97)
         {
-          objc_enumerationMutation(v94);
+          objc_enumerationMutation(locationClusters);
         }
 
         v99 = *(*(&v119 + 1) + 8 * nn);
@@ -1845,18 +1845,18 @@ LABEL_3:
         }
       }
 
-      v96 = [v94 countByEnumeratingWithState:&v119 objects:v160 count:16];
+      v96 = [locationClusters countByEnumeratingWithState:&v119 objects:v160 count:16];
     }
 
     while (v96);
   }
 
-  v104 = [(MPClusterController *)self userProvidedClusters];
+  userProvidedClusters = [(MPClusterController *)self userProvidedClusters];
   v115 = 0u;
   v116 = 0u;
   v117 = 0u;
   v118 = 0u;
-  v105 = [v104 countByEnumeratingWithState:&v115 objects:v159 count:16];
+  v105 = [userProvidedClusters countByEnumeratingWithState:&v115 objects:v159 count:16];
   if (v105)
   {
     v106 = v105;
@@ -1867,7 +1867,7 @@ LABEL_3:
       {
         if (*v116 != v107)
         {
-          objc_enumerationMutation(v104);
+          objc_enumerationMutation(userProvidedClusters);
         }
 
         v109 = *(*(&v115 + 1) + 8 * i1);
@@ -1888,7 +1888,7 @@ LABEL_3:
         }
       }
 
-      v106 = [v104 countByEnumeratingWithState:&v115 objects:v159 count:16];
+      v106 = [userProvidedClusters countByEnumeratingWithState:&v115 objects:v159 count:16];
     }
 
     while (v106);
@@ -1915,12 +1915,12 @@ LABEL_3:
 
 - (void)updateRatingsForYearClusters
 {
-  v2 = [(MPClusterController *)self yearClusters];
+  yearClusters = [(MPClusterController *)self yearClusters];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v3 = [v2 countByEnumeratingWithState:&v23 objects:v28 count:16];
+  v3 = [yearClusters countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v3)
   {
     v4 = v3;
@@ -1932,7 +1932,7 @@ LABEL_3:
       {
         if (*v24 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(yearClusters);
         }
 
         v8 = *(*(&v23 + 1) + 8 * i);
@@ -1940,7 +1940,7 @@ LABEL_3:
         v5 += [v8 slideCount];
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v23 objects:v28 count:16];
+      v4 = [yearClusters countByEnumeratingWithState:&v23 objects:v28 count:16];
     }
 
     while (v4);
@@ -1952,7 +1952,7 @@ LABEL_3:
     v9 = 0.0;
   }
 
-  v10 = [v2 count];
+  v10 = [yearClusters count];
   if (v10 >= 3)
   {
     if (v10 >= 6)
@@ -1983,7 +1983,7 @@ LABEL_3:
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v12 = [v2 countByEnumeratingWithState:&v19 objects:v27 count:16];
+  v12 = [yearClusters countByEnumeratingWithState:&v19 objects:v27 count:16];
   if (v12)
   {
     v13 = v12;
@@ -1994,13 +1994,13 @@ LABEL_3:
       {
         if (*v20 != v14)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(yearClusters);
         }
 
         v16 = *(*(&v19 + 1) + 8 * j);
-        v17 = [v16 slideCount];
+        slideCount = [v16 slideCount];
         v18 = 0.0;
-        if (v17 >= 2)
+        if (slideCount >= 2)
         {
           v18 = (1.0 - [v16 slideCount] / v9) * 5.0;
         }
@@ -2008,7 +2008,7 @@ LABEL_3:
         [v16 setRating:v18 + v11 * 5.0];
       }
 
-      v13 = [v2 countByEnumeratingWithState:&v19 objects:v27 count:16];
+      v13 = [yearClusters countByEnumeratingWithState:&v19 objects:v27 count:16];
     }
 
     while (v13);
@@ -2017,13 +2017,13 @@ LABEL_3:
 
 - (void)updateRatingsForMonthClusters
 {
-  v2 = [(MPClusterController *)self monthClusters];
-  v3 = [v2 count];
+  monthClusters = [(MPClusterController *)self monthClusters];
+  v3 = [monthClusters count];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v4 = [v2 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  v4 = [monthClusters countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2035,13 +2035,13 @@ LABEL_3:
       {
         if (*v23 != v7)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(monthClusters);
         }
 
         v6 += [*(*(&v22 + 1) + 8 * i) slideCount];
       }
 
-      v5 = [v2 countByEnumeratingWithState:&v22 objects:v27 count:16];
+      v5 = [monthClusters countByEnumeratingWithState:&v22 objects:v27 count:16];
     }
 
     while (v5);
@@ -2083,7 +2083,7 @@ LABEL_3:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v11 = [v2 countByEnumeratingWithState:&v18 objects:v26 count:16];
+  v11 = [monthClusters countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v11)
   {
     v12 = v11;
@@ -2094,13 +2094,13 @@ LABEL_3:
       {
         if (*v19 != v13)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(monthClusters);
         }
 
         v15 = *(*(&v18 + 1) + 8 * j);
-        v16 = [v15 slideCount];
+        slideCount = [v15 slideCount];
         v17 = 0.0;
-        if (v16 >= 2)
+        if (slideCount >= 2)
         {
           v17 = (1.0 - [v15 slideCount] / v9) * 5.0;
         }
@@ -2108,7 +2108,7 @@ LABEL_3:
         [v15 setRating:v17 + v10 * 5.0];
       }
 
-      v12 = [v2 countByEnumeratingWithState:&v18 objects:v26 count:16];
+      v12 = [monthClusters countByEnumeratingWithState:&v18 objects:v26 count:16];
     }
 
     while (v12);
@@ -2117,13 +2117,13 @@ LABEL_3:
 
 - (void)updateRatingsForMonthOfYearClusters
 {
-  v2 = [(MPClusterController *)self monthOfYearClusters];
-  v3 = [v2 count];
+  monthOfYearClusters = [(MPClusterController *)self monthOfYearClusters];
+  v3 = [monthOfYearClusters count];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v4 = [v2 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  v4 = [monthOfYearClusters countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2135,13 +2135,13 @@ LABEL_3:
       {
         if (*v23 != v7)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(monthOfYearClusters);
         }
 
         v6 += [*(*(&v22 + 1) + 8 * i) slideCount];
       }
 
-      v5 = [v2 countByEnumeratingWithState:&v22 objects:v27 count:16];
+      v5 = [monthOfYearClusters countByEnumeratingWithState:&v22 objects:v27 count:16];
     }
 
     while (v5);
@@ -2183,7 +2183,7 @@ LABEL_3:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v11 = [v2 countByEnumeratingWithState:&v18 objects:v26 count:16];
+  v11 = [monthOfYearClusters countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v11)
   {
     v12 = v11;
@@ -2194,13 +2194,13 @@ LABEL_3:
       {
         if (*v19 != v13)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(monthOfYearClusters);
         }
 
         v15 = *(*(&v18 + 1) + 8 * j);
-        v16 = [v15 slideCount];
+        slideCount = [v15 slideCount];
         v17 = 0.0;
-        if (v16 >= 2)
+        if (slideCount >= 2)
         {
           v17 = (1.0 - [v15 slideCount] / v9) * 5.0;
         }
@@ -2208,7 +2208,7 @@ LABEL_3:
         [v15 setRating:v17 + v10 * 5.0];
       }
 
-      v12 = [v2 countByEnumeratingWithState:&v18 objects:v26 count:16];
+      v12 = [monthOfYearClusters countByEnumeratingWithState:&v18 objects:v26 count:16];
     }
 
     while (v12);
@@ -2217,13 +2217,13 @@ LABEL_3:
 
 - (void)updateRatingsForDayOfYearClusters
 {
-  v2 = [(MPClusterController *)self dayOfYearClusters];
-  v3 = [v2 count];
+  dayOfYearClusters = [(MPClusterController *)self dayOfYearClusters];
+  v3 = [dayOfYearClusters count];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v4 = [v2 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  v4 = [dayOfYearClusters countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2235,13 +2235,13 @@ LABEL_3:
       {
         if (*v23 != v7)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(dayOfYearClusters);
         }
 
         v6 += [*(*(&v22 + 1) + 8 * i) slideCount];
       }
 
-      v5 = [v2 countByEnumeratingWithState:&v22 objects:v27 count:16];
+      v5 = [dayOfYearClusters countByEnumeratingWithState:&v22 objects:v27 count:16];
     }
 
     while (v5);
@@ -2283,7 +2283,7 @@ LABEL_3:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v11 = [v2 countByEnumeratingWithState:&v18 objects:v26 count:16];
+  v11 = [dayOfYearClusters countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v11)
   {
     v12 = v11;
@@ -2294,13 +2294,13 @@ LABEL_3:
       {
         if (*v19 != v13)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(dayOfYearClusters);
         }
 
         v15 = *(*(&v18 + 1) + 8 * j);
-        v16 = [v15 slideCount];
+        slideCount = [v15 slideCount];
         v17 = 0.0;
-        if (v16 >= 2)
+        if (slideCount >= 2)
         {
           v17 = (1.0 - [v15 slideCount] / v9) * 5.0;
         }
@@ -2308,7 +2308,7 @@ LABEL_3:
         [v15 setRating:v17 + v10 * 5.0];
       }
 
-      v12 = [v2 countByEnumeratingWithState:&v18 objects:v26 count:16];
+      v12 = [dayOfYearClusters countByEnumeratingWithState:&v18 objects:v26 count:16];
     }
 
     while (v12);
@@ -2319,13 +2319,13 @@ LABEL_3:
 {
   [(NSDate *)self->mNewestSlideTimestamp timeIntervalSinceDate:self->mOldestSlideTimestamp];
   v4 = v3;
-  v5 = [(MPClusterController *)self hourOfYearClusters];
-  v6 = [v5 count];
+  hourOfYearClusters = [(MPClusterController *)self hourOfYearClusters];
+  v6 = [hourOfYearClusters count];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v7 = [v5 countByEnumeratingWithState:&v26 objects:v31 count:16];
+  v7 = [hourOfYearClusters countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v7)
   {
     v8 = v7;
@@ -2337,13 +2337,13 @@ LABEL_3:
       {
         if (*v27 != v10)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(hourOfYearClusters);
         }
 
         v9 += [*(*(&v26 + 1) + 8 * i) slideCount];
       }
 
-      v8 = [v5 countByEnumeratingWithState:&v26 objects:v31 count:16];
+      v8 = [hourOfYearClusters countByEnumeratingWithState:&v26 objects:v31 count:16];
     }
 
     while (v8);
@@ -2359,7 +2359,7 @@ LABEL_3:
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v13 = [v5 countByEnumeratingWithState:&v22 objects:v30 count:16];
+  v13 = [hourOfYearClusters countByEnumeratingWithState:&v22 objects:v30 count:16];
   if (v13)
   {
     v14 = v13;
@@ -2371,22 +2371,22 @@ LABEL_3:
       {
         if (*v23 != v16)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(hourOfYearClusters);
         }
 
         v18 = *(*(&v22 + 1) + 8 * j);
-        v19 = [v18 slideCount];
+        slideCount = [v18 slideCount];
         v20 = 0.0;
-        if (v19 >= 2)
+        if (slideCount >= 2)
         {
-          v21 = [v18 slideCount];
-          v20 = 1.0 - v21 / v12 + 1.0 - v21 / v12;
+          slideCount2 = [v18 slideCount];
+          v20 = 1.0 - slideCount2 / v12 + 1.0 - slideCount2 / v12;
         }
 
         [v18 setRating:v20 + v15 * 2.0];
       }
 
-      v14 = [v5 countByEnumeratingWithState:&v22 objects:v30 count:16];
+      v14 = [hourOfYearClusters countByEnumeratingWithState:&v22 objects:v30 count:16];
     }
 
     while (v14);
@@ -2395,13 +2395,13 @@ LABEL_3:
 
 - (void)updateRatingsForMinuteOfYearClusters
 {
-  v2 = [(MPClusterController *)self minuteOfYearClusters];
-  v3 = [v2 count];
+  minuteOfYearClusters = [(MPClusterController *)self minuteOfYearClusters];
+  v3 = [minuteOfYearClusters count];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v4 = [v2 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  v4 = [minuteOfYearClusters countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2413,13 +2413,13 @@ LABEL_3:
       {
         if (*v23 != v7)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(minuteOfYearClusters);
         }
 
         v6 += [*(*(&v22 + 1) + 8 * i) slideCount];
       }
 
-      v5 = [v2 countByEnumeratingWithState:&v22 objects:v27 count:16];
+      v5 = [minuteOfYearClusters countByEnumeratingWithState:&v22 objects:v27 count:16];
     }
 
     while (v5);
@@ -2461,7 +2461,7 @@ LABEL_3:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v11 = [v2 countByEnumeratingWithState:&v18 objects:v26 count:16];
+  v11 = [minuteOfYearClusters countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v11)
   {
     v12 = v11;
@@ -2472,13 +2472,13 @@ LABEL_3:
       {
         if (*v19 != v13)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(minuteOfYearClusters);
         }
 
         v15 = *(*(&v18 + 1) + 8 * j);
-        v16 = [v15 slideCount];
+        slideCount = [v15 slideCount];
         v17 = 0.0;
-        if (v16 >= 2)
+        if (slideCount >= 2)
         {
           v17 = (1.0 - [v15 slideCount] / v9) * 10.0;
         }
@@ -2486,7 +2486,7 @@ LABEL_3:
         [v15 setRating:v17 + v10 * 10.0];
       }
 
-      v12 = [v2 countByEnumeratingWithState:&v18 objects:v26 count:16];
+      v12 = [minuteOfYearClusters countByEnumeratingWithState:&v18 objects:v26 count:16];
     }
 
     while (v12);
@@ -2495,13 +2495,13 @@ LABEL_3:
 
 - (void)updateRatingsForRoundedFiveMinuteOfYearClusters
 {
-  v2 = [(MPClusterController *)self roundedFiveMinuteOfYearClusters];
-  v3 = [v2 count];
+  roundedFiveMinuteOfYearClusters = [(MPClusterController *)self roundedFiveMinuteOfYearClusters];
+  v3 = [roundedFiveMinuteOfYearClusters count];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v4 = [v2 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  v4 = [roundedFiveMinuteOfYearClusters countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2513,13 +2513,13 @@ LABEL_3:
       {
         if (*v23 != v7)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(roundedFiveMinuteOfYearClusters);
         }
 
         v6 += [*(*(&v22 + 1) + 8 * i) slideCount];
       }
 
-      v5 = [v2 countByEnumeratingWithState:&v22 objects:v27 count:16];
+      v5 = [roundedFiveMinuteOfYearClusters countByEnumeratingWithState:&v22 objects:v27 count:16];
     }
 
     while (v5);
@@ -2561,7 +2561,7 @@ LABEL_3:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v11 = [v2 countByEnumeratingWithState:&v18 objects:v26 count:16];
+  v11 = [roundedFiveMinuteOfYearClusters countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v11)
   {
     v12 = v11;
@@ -2572,13 +2572,13 @@ LABEL_3:
       {
         if (*v19 != v13)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(roundedFiveMinuteOfYearClusters);
         }
 
         v15 = *(*(&v18 + 1) + 8 * j);
-        v16 = [v15 slideCount];
+        slideCount = [v15 slideCount];
         v17 = 0.0;
-        if (v16 >= 2)
+        if (slideCount >= 2)
         {
           v17 = (1.0 - [v15 slideCount] / v9) * 10.0;
         }
@@ -2586,7 +2586,7 @@ LABEL_3:
         [v15 setRating:v17 + v10 * 10.0];
       }
 
-      v12 = [v2 countByEnumeratingWithState:&v18 objects:v26 count:16];
+      v12 = [roundedFiveMinuteOfYearClusters countByEnumeratingWithState:&v18 objects:v26 count:16];
     }
 
     while (v12);
@@ -2595,13 +2595,13 @@ LABEL_3:
 
 - (void)updateRatingsForRoundedFifteenMinuteOfYearClusters
 {
-  v2 = [(MPClusterController *)self roundedFifteenMinuteOfYearClusters];
-  v3 = [v2 count];
+  roundedFifteenMinuteOfYearClusters = [(MPClusterController *)self roundedFifteenMinuteOfYearClusters];
+  v3 = [roundedFifteenMinuteOfYearClusters count];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v4 = [v2 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  v4 = [roundedFifteenMinuteOfYearClusters countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2613,13 +2613,13 @@ LABEL_3:
       {
         if (*v23 != v7)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(roundedFifteenMinuteOfYearClusters);
         }
 
         v6 += [*(*(&v22 + 1) + 8 * i) slideCount];
       }
 
-      v5 = [v2 countByEnumeratingWithState:&v22 objects:v27 count:16];
+      v5 = [roundedFifteenMinuteOfYearClusters countByEnumeratingWithState:&v22 objects:v27 count:16];
     }
 
     while (v5);
@@ -2661,7 +2661,7 @@ LABEL_3:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v11 = [v2 countByEnumeratingWithState:&v18 objects:v26 count:16];
+  v11 = [roundedFifteenMinuteOfYearClusters countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v11)
   {
     v12 = v11;
@@ -2672,13 +2672,13 @@ LABEL_3:
       {
         if (*v19 != v13)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(roundedFifteenMinuteOfYearClusters);
         }
 
         v15 = *(*(&v18 + 1) + 8 * j);
-        v16 = [v15 slideCount];
+        slideCount = [v15 slideCount];
         v17 = 0.0;
-        if (v16 >= 2)
+        if (slideCount >= 2)
         {
           v17 = (1.0 - [v15 slideCount] / v9) * 10.0;
         }
@@ -2686,7 +2686,7 @@ LABEL_3:
         [v15 setRating:v17 + v10 * 10.0];
       }
 
-      v12 = [v2 countByEnumeratingWithState:&v18 objects:v26 count:16];
+      v12 = [roundedFifteenMinuteOfYearClusters countByEnumeratingWithState:&v18 objects:v26 count:16];
     }
 
     while (v12);
@@ -2695,12 +2695,12 @@ LABEL_3:
 
 - (void)updateRatingsForKeywordClusters
 {
-  v2 = [(MPClusterController *)self keywordClusters];
+  keywordClusters = [(MPClusterController *)self keywordClusters];
   v7 = 0u;
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  v3 = [keywordClusters countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -2712,7 +2712,7 @@ LABEL_3:
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(keywordClusters);
         }
 
         [*(*(&v7 + 1) + 8 * v6) setRating:7.5];
@@ -2720,7 +2720,7 @@ LABEL_3:
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [keywordClusters countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
@@ -2729,13 +2729,13 @@ LABEL_3:
 
 - (void)updateRatingsForLocationClusters
 {
-  v2 = [(MPClusterController *)self locationClusters];
-  v3 = [v2 count];
+  locationClusters = [(MPClusterController *)self locationClusters];
+  v3 = [locationClusters count];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v4 = [v2 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  v4 = [locationClusters countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2747,13 +2747,13 @@ LABEL_3:
       {
         if (*v23 != v7)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(locationClusters);
         }
 
         v6 += [*(*(&v22 + 1) + 8 * i) slideCount];
       }
 
-      v5 = [v2 countByEnumeratingWithState:&v22 objects:v27 count:16];
+      v5 = [locationClusters countByEnumeratingWithState:&v22 objects:v27 count:16];
     }
 
     while (v5);
@@ -2795,7 +2795,7 @@ LABEL_3:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v11 = [v2 countByEnumeratingWithState:&v18 objects:v26 count:16];
+  v11 = [locationClusters countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v11)
   {
     v12 = v11;
@@ -2806,13 +2806,13 @@ LABEL_3:
       {
         if (*v19 != v13)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(locationClusters);
         }
 
         v15 = *(*(&v18 + 1) + 8 * j);
-        v16 = [v15 slideCount];
+        slideCount = [v15 slideCount];
         v17 = 0.0;
-        if (v16 >= 2)
+        if (slideCount >= 2)
         {
           v17 = (1.0 - [v15 slideCount] / v9) * 5.0;
         }
@@ -2820,7 +2820,7 @@ LABEL_3:
         [v15 setRating:v17 + v10 * 5.0];
       }
 
-      v12 = [v2 countByEnumeratingWithState:&v18 objects:v26 count:16];
+      v12 = [locationClusters countByEnumeratingWithState:&v18 objects:v26 count:16];
     }
 
     while (v12);
@@ -2835,13 +2835,13 @@ LABEL_3:
   NSLog(@"--------------------");
   NSLog(@"Year clusters:");
   NSLog(@"--------------");
-  v153 = self;
+  selfCopy = self;
   v230 = 0u;
   v231 = 0u;
   v232 = 0u;
   v233 = 0u;
-  v3 = [(MPClusterController *)self yearClusters];
-  v4 = [v3 countByEnumeratingWithState:&v230 objects:v253 count:16];
+  yearClusters = [(MPClusterController *)self yearClusters];
+  v4 = [yearClusters countByEnumeratingWithState:&v230 objects:v253 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2852,20 +2852,20 @@ LABEL_3:
       {
         if (*v231 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(yearClusters);
         }
 
         v8 = *(*(&v230 + 1) + 8 * i);
-        v9 = [v8 name];
-        v10 = [v8 usageCountDescription];
+        name = [v8 name];
+        usageCountDescription = [v8 usageCountDescription];
         [v8 rating];
-        NSLog(@"cluster[%@]: usageCount = (%@), rating = (%.2f), slide count = %d", v9, v10, v11, [v8 slideCount]);
+        NSLog(@"cluster[%@]: usageCount = (%@), rating = (%.2f), slide count = %d", name, usageCountDescription, v11, [v8 slideCount]);
         v229 = 0u;
         v228 = 0u;
         v227 = 0u;
         v226 = 0u;
-        v12 = [v8 allSlides];
-        v13 = [v12 countByEnumeratingWithState:&v226 objects:v252 count:16];
+        allSlides = [v8 allSlides];
+        v13 = [allSlides countByEnumeratingWithState:&v226 objects:v252 count:16];
         if (v13)
         {
           v14 = v13;
@@ -2877,21 +2877,21 @@ LABEL_3:
             {
               if (*v227 != v16)
               {
-                objc_enumerationMutation(v12);
+                objc_enumerationMutation(allSlides);
               }
 
               NSLog(@"             slide[%d]:  %@", v15, [objc_msgSend(*(*(&v226 + 1) + 8 * j) "path")]);
               v15 = (v15 + 1);
             }
 
-            v14 = [v12 countByEnumeratingWithState:&v226 objects:v252 count:16];
+            v14 = [allSlides countByEnumeratingWithState:&v226 objects:v252 count:16];
           }
 
           while (v14);
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v230 objects:v253 count:16];
+      v5 = [yearClusters countByEnumeratingWithState:&v230 objects:v253 count:16];
     }
 
     while (v5);
@@ -2903,8 +2903,8 @@ LABEL_3:
   v223 = 0u;
   v224 = 0u;
   v225 = 0u;
-  v18 = [(MPClusterController *)v153 monthClusters];
-  v19 = [v18 countByEnumeratingWithState:&v222 objects:v251 count:16];
+  monthClusters = [(MPClusterController *)selfCopy monthClusters];
+  v19 = [monthClusters countByEnumeratingWithState:&v222 objects:v251 count:16];
   if (v19)
   {
     v20 = v19;
@@ -2915,20 +2915,20 @@ LABEL_3:
       {
         if (*v223 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(monthClusters);
         }
 
         v23 = *(*(&v222 + 1) + 8 * k);
-        v24 = [v23 name];
-        v25 = [v23 usageCountDescription];
+        name2 = [v23 name];
+        usageCountDescription2 = [v23 usageCountDescription];
         [v23 rating];
-        NSLog(@"cluster[%@]: usageCount = (%@), rating = (%.2f), slide count = %d", v24, v25, v26, [v23 slideCount]);
+        NSLog(@"cluster[%@]: usageCount = (%@), rating = (%.2f), slide count = %d", name2, usageCountDescription2, v26, [v23 slideCount]);
         v221 = 0u;
         v220 = 0u;
         v219 = 0u;
         v218 = 0u;
-        v27 = [v23 allSlides];
-        v28 = [v27 countByEnumeratingWithState:&v218 objects:v250 count:16];
+        allSlides2 = [v23 allSlides];
+        v28 = [allSlides2 countByEnumeratingWithState:&v218 objects:v250 count:16];
         if (v28)
         {
           v29 = v28;
@@ -2940,21 +2940,21 @@ LABEL_3:
             {
               if (*v219 != v31)
               {
-                objc_enumerationMutation(v27);
+                objc_enumerationMutation(allSlides2);
               }
 
               NSLog(@"             slide[%d]:  %@", v30, [objc_msgSend(*(*(&v218 + 1) + 8 * m) "path")]);
               v30 = (v30 + 1);
             }
 
-            v29 = [v27 countByEnumeratingWithState:&v218 objects:v250 count:16];
+            v29 = [allSlides2 countByEnumeratingWithState:&v218 objects:v250 count:16];
           }
 
           while (v29);
         }
       }
 
-      v20 = [v18 countByEnumeratingWithState:&v222 objects:v251 count:16];
+      v20 = [monthClusters countByEnumeratingWithState:&v222 objects:v251 count:16];
     }
 
     while (v20);
@@ -2966,8 +2966,8 @@ LABEL_3:
   v215 = 0u;
   v216 = 0u;
   v217 = 0u;
-  v33 = [(MPClusterController *)v153 monthOfYearClusters];
-  v34 = [v33 countByEnumeratingWithState:&v214 objects:v249 count:16];
+  monthOfYearClusters = [(MPClusterController *)selfCopy monthOfYearClusters];
+  v34 = [monthOfYearClusters countByEnumeratingWithState:&v214 objects:v249 count:16];
   if (v34)
   {
     v35 = v34;
@@ -2978,20 +2978,20 @@ LABEL_3:
       {
         if (*v215 != v36)
         {
-          objc_enumerationMutation(v33);
+          objc_enumerationMutation(monthOfYearClusters);
         }
 
         v38 = *(*(&v214 + 1) + 8 * n);
-        v39 = [v38 name];
-        v40 = [v38 usageCountDescription];
+        name3 = [v38 name];
+        usageCountDescription3 = [v38 usageCountDescription];
         [v38 rating];
-        NSLog(@"cluster[%@]: usageCount = (%@), rating = (%.2f), slide count = %d", v39, v40, v41, [v38 slideCount]);
+        NSLog(@"cluster[%@]: usageCount = (%@), rating = (%.2f), slide count = %d", name3, usageCountDescription3, v41, [v38 slideCount]);
         v212 = 0u;
         v213 = 0u;
         v210 = 0u;
         v211 = 0u;
-        v42 = [v38 allSlides];
-        v43 = [v42 countByEnumeratingWithState:&v210 objects:v248 count:16];
+        allSlides3 = [v38 allSlides];
+        v43 = [allSlides3 countByEnumeratingWithState:&v210 objects:v248 count:16];
         if (v43)
         {
           v44 = v43;
@@ -3003,21 +3003,21 @@ LABEL_3:
             {
               if (*v211 != v46)
               {
-                objc_enumerationMutation(v42);
+                objc_enumerationMutation(allSlides3);
               }
 
               NSLog(@"             slide[%d]:  %@", v45, [objc_msgSend(*(*(&v210 + 1) + 8 * ii) "path")]);
               v45 = (v45 + 1);
             }
 
-            v44 = [v42 countByEnumeratingWithState:&v210 objects:v248 count:16];
+            v44 = [allSlides3 countByEnumeratingWithState:&v210 objects:v248 count:16];
           }
 
           while (v44);
         }
       }
 
-      v35 = [v33 countByEnumeratingWithState:&v214 objects:v249 count:16];
+      v35 = [monthOfYearClusters countByEnumeratingWithState:&v214 objects:v249 count:16];
     }
 
     while (v35);
@@ -3029,8 +3029,8 @@ LABEL_3:
   v207 = 0u;
   v208 = 0u;
   v209 = 0u;
-  v48 = [(MPClusterController *)v153 dayOfYearClusters];
-  v49 = [v48 countByEnumeratingWithState:&v206 objects:v247 count:16];
+  dayOfYearClusters = [(MPClusterController *)selfCopy dayOfYearClusters];
+  v49 = [dayOfYearClusters countByEnumeratingWithState:&v206 objects:v247 count:16];
   if (v49)
   {
     v50 = v49;
@@ -3041,20 +3041,20 @@ LABEL_3:
       {
         if (*v207 != v51)
         {
-          objc_enumerationMutation(v48);
+          objc_enumerationMutation(dayOfYearClusters);
         }
 
         v53 = *(*(&v206 + 1) + 8 * jj);
-        v54 = [v53 name];
-        v55 = [v53 usageCountDescription];
+        name4 = [v53 name];
+        usageCountDescription4 = [v53 usageCountDescription];
         [v53 rating];
-        NSLog(@"cluster[%@]: usageCount = (%@), rating = (%.2f), slide count = %d", v54, v55, v56, [v53 slideCount]);
+        NSLog(@"cluster[%@]: usageCount = (%@), rating = (%.2f), slide count = %d", name4, usageCountDescription4, v56, [v53 slideCount]);
         v204 = 0u;
         v205 = 0u;
         v202 = 0u;
         v203 = 0u;
-        v57 = [v53 allSlides];
-        v58 = [v57 countByEnumeratingWithState:&v202 objects:v246 count:16];
+        allSlides4 = [v53 allSlides];
+        v58 = [allSlides4 countByEnumeratingWithState:&v202 objects:v246 count:16];
         if (v58)
         {
           v59 = v58;
@@ -3066,21 +3066,21 @@ LABEL_3:
             {
               if (*v203 != v61)
               {
-                objc_enumerationMutation(v57);
+                objc_enumerationMutation(allSlides4);
               }
 
               NSLog(@"             slide[%d]:  %@", v60, [objc_msgSend(*(*(&v202 + 1) + 8 * kk) "path")]);
               v60 = (v60 + 1);
             }
 
-            v59 = [v57 countByEnumeratingWithState:&v202 objects:v246 count:16];
+            v59 = [allSlides4 countByEnumeratingWithState:&v202 objects:v246 count:16];
           }
 
           while (v59);
         }
       }
 
-      v50 = [v48 countByEnumeratingWithState:&v206 objects:v247 count:16];
+      v50 = [dayOfYearClusters countByEnumeratingWithState:&v206 objects:v247 count:16];
     }
 
     while (v50);
@@ -3092,8 +3092,8 @@ LABEL_3:
   v199 = 0u;
   v200 = 0u;
   v201 = 0u;
-  v63 = [(MPClusterController *)v153 hourOfYearClusters];
-  v64 = [v63 countByEnumeratingWithState:&v198 objects:v245 count:16];
+  hourOfYearClusters = [(MPClusterController *)selfCopy hourOfYearClusters];
+  v64 = [hourOfYearClusters countByEnumeratingWithState:&v198 objects:v245 count:16];
   if (v64)
   {
     v65 = v64;
@@ -3104,20 +3104,20 @@ LABEL_3:
       {
         if (*v199 != v66)
         {
-          objc_enumerationMutation(v63);
+          objc_enumerationMutation(hourOfYearClusters);
         }
 
         v68 = *(*(&v198 + 1) + 8 * mm);
-        v69 = [v68 name];
-        v70 = [v68 usageCountDescription];
+        name5 = [v68 name];
+        usageCountDescription5 = [v68 usageCountDescription];
         [v68 rating];
-        NSLog(@"cluster[%@]: usageCount = (%@), rating = (%.2f), slide count = %d", v69, v70, v71, [v68 slideCount]);
+        NSLog(@"cluster[%@]: usageCount = (%@), rating = (%.2f), slide count = %d", name5, usageCountDescription5, v71, [v68 slideCount]);
         v196 = 0u;
         v197 = 0u;
         v194 = 0u;
         v195 = 0u;
-        v72 = [v68 allSlides];
-        v73 = [v72 countByEnumeratingWithState:&v194 objects:v244 count:16];
+        allSlides5 = [v68 allSlides];
+        v73 = [allSlides5 countByEnumeratingWithState:&v194 objects:v244 count:16];
         if (v73)
         {
           v74 = v73;
@@ -3129,21 +3129,21 @@ LABEL_3:
             {
               if (*v195 != v76)
               {
-                objc_enumerationMutation(v72);
+                objc_enumerationMutation(allSlides5);
               }
 
               NSLog(@"             slide[%d]:  %@", v75, [objc_msgSend(*(*(&v194 + 1) + 8 * nn) "path")]);
               v75 = (v75 + 1);
             }
 
-            v74 = [v72 countByEnumeratingWithState:&v194 objects:v244 count:16];
+            v74 = [allSlides5 countByEnumeratingWithState:&v194 objects:v244 count:16];
           }
 
           while (v74);
         }
       }
 
-      v65 = [v63 countByEnumeratingWithState:&v198 objects:v245 count:16];
+      v65 = [hourOfYearClusters countByEnumeratingWithState:&v198 objects:v245 count:16];
     }
 
     while (v65);
@@ -3155,8 +3155,8 @@ LABEL_3:
   v191 = 0u;
   v192 = 0u;
   v193 = 0u;
-  v78 = [(MPClusterController *)v153 minuteOfYearClusters];
-  v79 = [v78 countByEnumeratingWithState:&v190 objects:v243 count:16];
+  minuteOfYearClusters = [(MPClusterController *)selfCopy minuteOfYearClusters];
+  v79 = [minuteOfYearClusters countByEnumeratingWithState:&v190 objects:v243 count:16];
   if (v79)
   {
     v80 = v79;
@@ -3167,20 +3167,20 @@ LABEL_3:
       {
         if (*v191 != v81)
         {
-          objc_enumerationMutation(v78);
+          objc_enumerationMutation(minuteOfYearClusters);
         }
 
         v83 = *(*(&v190 + 1) + 8 * i1);
-        v84 = [v83 name];
-        v85 = [v83 usageCountDescription];
+        name6 = [v83 name];
+        usageCountDescription6 = [v83 usageCountDescription];
         [v83 rating];
-        NSLog(@"cluster[%@]: usageCount = (%@), rating = (%.2f), slide count = %d", v84, v85, v86, [v83 slideCount]);
+        NSLog(@"cluster[%@]: usageCount = (%@), rating = (%.2f), slide count = %d", name6, usageCountDescription6, v86, [v83 slideCount]);
         v188 = 0u;
         v189 = 0u;
         v186 = 0u;
         v187 = 0u;
-        v87 = [v83 allSlides];
-        v88 = [v87 countByEnumeratingWithState:&v186 objects:v242 count:16];
+        allSlides6 = [v83 allSlides];
+        v88 = [allSlides6 countByEnumeratingWithState:&v186 objects:v242 count:16];
         if (v88)
         {
           v89 = v88;
@@ -3192,21 +3192,21 @@ LABEL_3:
             {
               if (*v187 != v91)
               {
-                objc_enumerationMutation(v87);
+                objc_enumerationMutation(allSlides6);
               }
 
               NSLog(@"             slide[%d]:  %@", v90, [objc_msgSend(*(*(&v186 + 1) + 8 * i2) "path")]);
               v90 = (v90 + 1);
             }
 
-            v89 = [v87 countByEnumeratingWithState:&v186 objects:v242 count:16];
+            v89 = [allSlides6 countByEnumeratingWithState:&v186 objects:v242 count:16];
           }
 
           while (v89);
         }
       }
 
-      v80 = [v78 countByEnumeratingWithState:&v190 objects:v243 count:16];
+      v80 = [minuteOfYearClusters countByEnumeratingWithState:&v190 objects:v243 count:16];
     }
 
     while (v80);
@@ -3218,8 +3218,8 @@ LABEL_3:
   v183 = 0u;
   v184 = 0u;
   v185 = 0u;
-  v93 = [(MPClusterController *)v153 roundedFiveMinuteOfYearClusters];
-  v94 = [v93 countByEnumeratingWithState:&v182 objects:v241 count:16];
+  roundedFiveMinuteOfYearClusters = [(MPClusterController *)selfCopy roundedFiveMinuteOfYearClusters];
+  v94 = [roundedFiveMinuteOfYearClusters countByEnumeratingWithState:&v182 objects:v241 count:16];
   if (v94)
   {
     v95 = v94;
@@ -3230,20 +3230,20 @@ LABEL_3:
       {
         if (*v183 != v96)
         {
-          objc_enumerationMutation(v93);
+          objc_enumerationMutation(roundedFiveMinuteOfYearClusters);
         }
 
         v98 = *(*(&v182 + 1) + 8 * i3);
-        v99 = [v98 name];
-        v100 = [v98 usageCountDescription];
+        name7 = [v98 name];
+        usageCountDescription7 = [v98 usageCountDescription];
         [v98 rating];
-        NSLog(@"cluster[%@]: usageCount = (%@), rating = (%.2f), slide count = %d", v99, v100, v101, [v98 slideCount]);
+        NSLog(@"cluster[%@]: usageCount = (%@), rating = (%.2f), slide count = %d", name7, usageCountDescription7, v101, [v98 slideCount]);
         v180 = 0u;
         v181 = 0u;
         v178 = 0u;
         v179 = 0u;
-        v102 = [v98 allSlides];
-        v103 = [v102 countByEnumeratingWithState:&v178 objects:v240 count:16];
+        allSlides7 = [v98 allSlides];
+        v103 = [allSlides7 countByEnumeratingWithState:&v178 objects:v240 count:16];
         if (v103)
         {
           v104 = v103;
@@ -3255,21 +3255,21 @@ LABEL_3:
             {
               if (*v179 != v106)
               {
-                objc_enumerationMutation(v102);
+                objc_enumerationMutation(allSlides7);
               }
 
               NSLog(@"             slide[%d]:  %@", v105, [objc_msgSend(*(*(&v178 + 1) + 8 * i4) "path")]);
               v105 = (v105 + 1);
             }
 
-            v104 = [v102 countByEnumeratingWithState:&v178 objects:v240 count:16];
+            v104 = [allSlides7 countByEnumeratingWithState:&v178 objects:v240 count:16];
           }
 
           while (v104);
         }
       }
 
-      v95 = [v93 countByEnumeratingWithState:&v182 objects:v241 count:16];
+      v95 = [roundedFiveMinuteOfYearClusters countByEnumeratingWithState:&v182 objects:v241 count:16];
     }
 
     while (v95);
@@ -3281,8 +3281,8 @@ LABEL_3:
   v175 = 0u;
   v176 = 0u;
   v177 = 0u;
-  v108 = [(MPClusterController *)v153 roundedFifteenMinuteOfYearClusters];
-  v109 = [v108 countByEnumeratingWithState:&v174 objects:v239 count:16];
+  roundedFifteenMinuteOfYearClusters = [(MPClusterController *)selfCopy roundedFifteenMinuteOfYearClusters];
+  v109 = [roundedFifteenMinuteOfYearClusters countByEnumeratingWithState:&v174 objects:v239 count:16];
   if (v109)
   {
     v110 = v109;
@@ -3293,20 +3293,20 @@ LABEL_3:
       {
         if (*v175 != v111)
         {
-          objc_enumerationMutation(v108);
+          objc_enumerationMutation(roundedFifteenMinuteOfYearClusters);
         }
 
         v113 = *(*(&v174 + 1) + 8 * i5);
-        v114 = [v113 name];
-        v115 = [v113 usageCountDescription];
+        name8 = [v113 name];
+        usageCountDescription8 = [v113 usageCountDescription];
         [v113 rating];
-        NSLog(@"cluster[%@]: usageCount = (%@), rating = (%.2f), slide count = %d", v114, v115, v116, [v113 slideCount]);
+        NSLog(@"cluster[%@]: usageCount = (%@), rating = (%.2f), slide count = %d", name8, usageCountDescription8, v116, [v113 slideCount]);
         v172 = 0u;
         v173 = 0u;
         v170 = 0u;
         v171 = 0u;
-        v117 = [v113 allSlides];
-        v118 = [v117 countByEnumeratingWithState:&v170 objects:v238 count:16];
+        allSlides8 = [v113 allSlides];
+        v118 = [allSlides8 countByEnumeratingWithState:&v170 objects:v238 count:16];
         if (v118)
         {
           v119 = v118;
@@ -3318,21 +3318,21 @@ LABEL_3:
             {
               if (*v171 != v121)
               {
-                objc_enumerationMutation(v117);
+                objc_enumerationMutation(allSlides8);
               }
 
               NSLog(@"             slide[%d]:  %@", v120, [objc_msgSend(*(*(&v170 + 1) + 8 * i6) "path")]);
               v120 = (v120 + 1);
             }
 
-            v119 = [v117 countByEnumeratingWithState:&v170 objects:v238 count:16];
+            v119 = [allSlides8 countByEnumeratingWithState:&v170 objects:v238 count:16];
           }
 
           while (v119);
         }
       }
 
-      v110 = [v108 countByEnumeratingWithState:&v174 objects:v239 count:16];
+      v110 = [roundedFifteenMinuteOfYearClusters countByEnumeratingWithState:&v174 objects:v239 count:16];
     }
 
     while (v110);
@@ -3344,8 +3344,8 @@ LABEL_3:
   v167 = 0u;
   v168 = 0u;
   v169 = 0u;
-  v123 = [(MPClusterController *)v153 keywordClusters];
-  v124 = [v123 countByEnumeratingWithState:&v166 objects:v237 count:16];
+  keywordClusters = [(MPClusterController *)selfCopy keywordClusters];
+  v124 = [keywordClusters countByEnumeratingWithState:&v166 objects:v237 count:16];
   if (v124)
   {
     v125 = v124;
@@ -3356,20 +3356,20 @@ LABEL_3:
       {
         if (*v167 != v126)
         {
-          objc_enumerationMutation(v123);
+          objc_enumerationMutation(keywordClusters);
         }
 
         v128 = *(*(&v166 + 1) + 8 * i7);
-        v129 = [v128 name];
-        v130 = [v128 usageCountDescription];
+        name9 = [v128 name];
+        usageCountDescription9 = [v128 usageCountDescription];
         [v128 rating];
-        NSLog(@"cluster[%@]: usageCount = (%@), rating = (%.2f), slide count = %d", v129, v130, v131, [v128 slideCount]);
+        NSLog(@"cluster[%@]: usageCount = (%@), rating = (%.2f), slide count = %d", name9, usageCountDescription9, v131, [v128 slideCount]);
         v164 = 0u;
         v165 = 0u;
         v162 = 0u;
         v163 = 0u;
-        v132 = [v128 allSlides];
-        v133 = [v132 countByEnumeratingWithState:&v162 objects:v236 count:16];
+        allSlides9 = [v128 allSlides];
+        v133 = [allSlides9 countByEnumeratingWithState:&v162 objects:v236 count:16];
         if (v133)
         {
           v134 = v133;
@@ -3381,21 +3381,21 @@ LABEL_3:
             {
               if (*v163 != v136)
               {
-                objc_enumerationMutation(v132);
+                objc_enumerationMutation(allSlides9);
               }
 
               NSLog(@"             slide[%d]:  %@", v135, [objc_msgSend(*(*(&v162 + 1) + 8 * i8) "path")]);
               v135 = (v135 + 1);
             }
 
-            v134 = [v132 countByEnumeratingWithState:&v162 objects:v236 count:16];
+            v134 = [allSlides9 countByEnumeratingWithState:&v162 objects:v236 count:16];
           }
 
           while (v134);
         }
       }
 
-      v125 = [v123 countByEnumeratingWithState:&v166 objects:v237 count:16];
+      v125 = [keywordClusters countByEnumeratingWithState:&v166 objects:v237 count:16];
     }
 
     while (v125);
@@ -3407,8 +3407,8 @@ LABEL_3:
   v159 = 0u;
   v160 = 0u;
   v161 = 0u;
-  v138 = [(MPClusterController *)v153 locationClusters];
-  v139 = [v138 countByEnumeratingWithState:&v158 objects:v235 count:16];
+  locationClusters = [(MPClusterController *)selfCopy locationClusters];
+  v139 = [locationClusters countByEnumeratingWithState:&v158 objects:v235 count:16];
   if (v139)
   {
     v140 = v139;
@@ -3419,20 +3419,20 @@ LABEL_3:
       {
         if (*v159 != v141)
         {
-          objc_enumerationMutation(v138);
+          objc_enumerationMutation(locationClusters);
         }
 
         v143 = *(*(&v158 + 1) + 8 * i9);
-        v144 = [v143 name];
-        v145 = [v143 usageCountDescription];
+        name10 = [v143 name];
+        usageCountDescription10 = [v143 usageCountDescription];
         [v143 rating];
-        NSLog(@"cluster[%@]: usageCount = (%@), rating = (%.2f), slide count = %d", v144, v145, v146, [v143 slideCount]);
+        NSLog(@"cluster[%@]: usageCount = (%@), rating = (%.2f), slide count = %d", name10, usageCountDescription10, v146, [v143 slideCount]);
         v156 = 0u;
         v157 = 0u;
         v154 = 0u;
         v155 = 0u;
-        v147 = [v143 allSlides];
-        v148 = [v147 countByEnumeratingWithState:&v154 objects:v234 count:16];
+        allSlides10 = [v143 allSlides];
+        v148 = [allSlides10 countByEnumeratingWithState:&v154 objects:v234 count:16];
         if (v148)
         {
           v149 = v148;
@@ -3444,21 +3444,21 @@ LABEL_3:
             {
               if (*v155 != v151)
               {
-                objc_enumerationMutation(v147);
+                objc_enumerationMutation(allSlides10);
               }
 
               NSLog(@"             slide[%d]:  %@", v150, [objc_msgSend(*(*(&v154 + 1) + 8 * i10) "path")]);
               v150 = (v150 + 1);
             }
 
-            v149 = [v147 countByEnumeratingWithState:&v154 objects:v234 count:16];
+            v149 = [allSlides10 countByEnumeratingWithState:&v154 objects:v234 count:16];
           }
 
           while (v149);
         }
       }
 
-      v140 = [v138 countByEnumeratingWithState:&v158 objects:v235 count:16];
+      v140 = [locationClusters countByEnumeratingWithState:&v158 objects:v235 count:16];
     }
 
     while (v140);
@@ -3471,12 +3471,12 @@ LABEL_3:
   NSLog(@"==================");
   NSLog(@"Slides statistics:");
   NSLog(@"==================\n");
-  v3 = [(MPClusterController *)self allSlidesSortedByUsage];
+  allSlidesSortedByUsage = [(MPClusterController *)self allSlidesSortedByUsage];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v4 = [allSlidesSortedByUsage countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -3489,7 +3489,7 @@ LABEL_3:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allSlidesSortedByUsage);
         }
 
         NSLog(@"slide[%d]: usageCount = (%@), filename = %@", v6, [*(*(&v9 + 1) + 8 * v8) usageCountDescription], objc_msgSend(objc_msgSend(*(*(&v9 + 1) + 8 * v8), "path"), "lastPathComponent"));
@@ -3498,14 +3498,14 @@ LABEL_3:
       }
 
       while (v5 != v8);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [allSlidesSortedByUsage countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)_removeAllSingleSlideClustersForClusterCategory:(id)a3
+- (void)_removeAllSingleSlideClustersForClusterCategory:(id)category
 {
   v5 = [(NSMutableDictionary *)self->mSlideClusters objectForKey:?];
   v6 = +[NSMutableDictionary dictionary];
@@ -3541,7 +3541,7 @@ LABEL_3:
     while (v8);
   }
 
-  [(NSMutableDictionary *)self->mSlideClusters setObject:v6 forKey:a3];
+  [(NSMutableDictionary *)self->mSlideClusters setObject:v6 forKey:category];
 }
 
 @end

@@ -3,7 +3,7 @@
 - (NSArray)tokensForRange:(NSRange)range;
 - (NSRange)tokenRangeAtIndex:(NSUInteger)characterIndex;
 - (NSRange)tokenRangeForRange:(NSRange)range;
-- (const)_tokenAtIndex:(unint64_t)a3;
+- (const)_tokenAtIndex:(unint64_t)index;
 - (id)_wordCharacterSet;
 - (void)dealloc;
 - (void)enumerateTokensInRange:(NSRange)range usingBlock:(void *)block;
@@ -39,8 +39,8 @@
 
 - (NLTokenizer)initWithUnit:(NLTokenUnit)unit
 {
-  v4 = self;
-  if (unit == NLTokenUnitDocument && (v11.receiver = self, v11.super_class = NLTokenizer, v5 = [(NLTokenizer *)&v11 init], (v4 = v5) != 0))
+  selfCopy = self;
+  if (unit == NLTokenUnitDocument && (v11.receiver = self, v11.super_class = NLTokenizer, v5 = [(NLTokenizer *)&v11 init], (selfCopy = v5) != 0))
   {
     v5->_unit = 3;
   }
@@ -51,10 +51,10 @@
     if (v6)
     {
       v7 = v6;
-      v10.receiver = v4;
+      v10.receiver = selfCopy;
       v10.super_class = NLTokenizer;
       v8 = [(NLTokenizer *)&v10 init];
-      v4 = v8;
+      selfCopy = v8;
       if (v8)
       {
         v8->_unit = unit;
@@ -63,7 +63,7 @@
     }
   }
 
-  return v4;
+  return selfCopy;
 }
 
 - (void)setString:(NSString *)string
@@ -114,9 +114,9 @@ void __32__NLTokenizer__wordCharacterSet__block_invoke()
   _wordCharacterSet_wordCharacterSet = v2;
 }
 
-- (const)_tokenAtIndex:(unint64_t)a3
+- (const)_tokenAtIndex:(unint64_t)index
 {
-  if ([(NSString *)self->_string length]<= a3 || !self->_tokenizer)
+  if ([(NSString *)self->_string length]<= index || !self->_tokenizer)
   {
     return 0;
   }
@@ -129,8 +129,8 @@ void __32__NLTokenizer__wordCharacterSet__block_invoke()
       var0 = v4->var0.var0;
       var1 = v4->var0.var1;
       string = self->_string;
-      v8 = [(NLTokenizer *)self _wordCharacterSet];
-      [(NSString *)string rangeOfCharacterFromSet:v8 options:0 range:var0, var1];
+      _wordCharacterSet = [(NLTokenizer *)self _wordCharacterSet];
+      [(NSString *)string rangeOfCharacterFromSet:_wordCharacterSet options:0 range:var0, var1];
       v10 = v9;
 
       if (!v10)
@@ -298,12 +298,12 @@ LABEL_17:
 {
   length = range.length;
   location = range.location;
-  v6 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __30__NLTokenizer_tokensForRange___block_invoke;
   v9[3] = &unk_1E7629E80;
-  v7 = v6;
+  v7 = array;
   v10 = v7;
   [(NLTokenizer *)self enumerateTokensInRange:location usingBlock:length, v9];
 
@@ -324,8 +324,8 @@ void __30__NLTokenizer_tokensForRange___block_invoke(uint64_t a1, uint64_t a2, u
   v7 = block;
   v8 = [(NSString *)self->_string length];
   v41 = 0;
-  v9 = [(NLTokenizer *)self unit];
-  v10 = [(NLTokenizer *)self _wordCharacterSet];
+  unit = [(NLTokenizer *)self unit];
+  _wordCharacterSet = [(NLTokenizer *)self _wordCharacterSet];
   if (enumerateTokensInRange_usingBlock__onceToken != -1)
   {
     [NLTokenizer enumerateTokensInRange:usingBlock:];
@@ -350,8 +350,8 @@ void __30__NLTokenizer_tokensForRange___block_invoke(uint64_t a1, uint64_t a2, u
     {
 LABEL_8:
       NextToken = v12;
-      v38 = v9;
-      v39 = v10;
+      v38 = unit;
+      v39 = _wordCharacterSet;
       v40 = location;
       while (1)
       {
@@ -368,12 +368,12 @@ LABEL_8:
           goto LABEL_34;
         }
 
-        if (v9)
+        if (unit)
         {
           break;
         }
 
-        [(NSString *)self->_string rangeOfCharacterFromSet:v10 options:0 range:*NextToken, NextToken[1]];
+        [(NSString *)self->_string rangeOfCharacterFromSet:_wordCharacterSet options:0 range:*NextToken, NextToken[1]];
         if (v20)
         {
           v18 = (NextToken[2] >> 3) & 1;
@@ -437,9 +437,9 @@ LABEL_18:
       v18 = 0;
 LABEL_17:
       (*(v7 + 2))(v7, v15, v14, v18, &v41);
-      v10 = v39;
+      _wordCharacterSet = v39;
       location = v40;
-      v9 = v38;
+      unit = v38;
       goto LABEL_18;
     }
 

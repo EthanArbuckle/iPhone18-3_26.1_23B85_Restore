@@ -1,95 +1,95 @@
 @interface DOCIntentLocation
-+ (DOCIntentLocation)intentLocationWithIdentifier:(id)a3 displayString:(id)a4 type:(id)a5;
-+ (DOCIntentLocation)intentLocationWithItem:(id)a3;
-+ (DOCIntentLocation)intentLocationWithTag:(id)a3;
-+ (id)imageForType:(id)a3;
++ (DOCIntentLocation)intentLocationWithIdentifier:(id)identifier displayString:(id)string type:(id)type;
++ (DOCIntentLocation)intentLocationWithItem:(id)item;
++ (DOCIntentLocation)intentLocationWithTag:(id)tag;
++ (id)imageForType:(id)type;
 @end
 
 @implementation DOCIntentLocation
 
-+ (DOCIntentLocation)intentLocationWithIdentifier:(id)a3 displayString:(id)a4 type:(id)a5
++ (DOCIntentLocation)intentLocationWithIdentifier:(id)identifier displayString:(id)string type:(id)type
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  typeCopy = type;
+  stringCopy = string;
+  identifierCopy = identifier;
   v10 = [DOCIntentLocation alloc];
-  v11 = [DOCIntentLocation imageForType:v7];
-  v12 = [(DOCIntentLocation *)v10 initWithIdentifier:v9 displayString:v8 subtitleString:0 displayImage:v11];
+  v11 = [DOCIntentLocation imageForType:typeCopy];
+  v12 = [(DOCIntentLocation *)v10 initWithIdentifier:identifierCopy displayString:stringCopy subtitleString:0 displayImage:v11];
 
-  [(DOCIntentLocation *)v12 setLocationType:v7];
-  [(DOCIntentLocation *)v12 setLocationIdentifier:v9];
+  [(DOCIntentLocation *)v12 setLocationType:typeCopy];
+  [(DOCIntentLocation *)v12 setLocationIdentifier:identifierCopy];
 
   return v12;
 }
 
-+ (DOCIntentLocation)intentLocationWithTag:(id)a3
++ (DOCIntentLocation)intentLocationWithTag:(id)tag
 {
-  v3 = a3;
-  v4 = [v3 displayName];
-  v5 = [v3 displayName];
+  tagCopy = tag;
+  displayName = [tagCopy displayName];
+  displayName2 = [tagCopy displayName];
 
-  v6 = [DOCIntentLocation intentLocationWithIdentifier:v4 displayString:v5 type:@"tag"];
+  v6 = [DOCIntentLocation intentLocationWithIdentifier:displayName displayString:displayName2 type:@"tag"];
 
   return v6;
 }
 
-+ (DOCIntentLocation)intentLocationWithItem:(id)a3
++ (DOCIntentLocation)intentLocationWithItem:(id)item
 {
-  v3 = a3;
-  v4 = [v3 itemIdentifier];
-  v5 = [v3 displayName];
-  v6 = [DOCIntentLocation intentLocationWithIdentifier:v4 displayString:v5 type:@"location"];
+  itemCopy = item;
+  itemIdentifier = [itemCopy itemIdentifier];
+  displayName = [itemCopy displayName];
+  v6 = [DOCIntentLocation intentLocationWithIdentifier:itemIdentifier displayString:displayName type:@"location"];
 
-  v7 = [v3 itemID];
-  v8 = [v7 identifier];
-  [v6 setLocationIdentifier:v8];
+  itemID = [itemCopy itemID];
+  identifier = [itemID identifier];
+  [v6 setLocationIdentifier:identifier];
 
-  v9 = [v3 itemID];
+  itemID2 = [itemCopy itemID];
 
-  v10 = [v9 providerDomainID];
-  [v6 setDomainIdentifier:v10];
+  providerDomainID = [itemID2 providerDomainID];
+  [v6 setDomainIdentifier:providerDomainID];
 
   return v6;
 }
 
-+ (id)imageForType:(id)a3
++ (id)imageForType:(id)type
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 == @"location")
+  typeCopy = type;
+  v4 = typeCopy;
+  if (typeCopy == @"location")
   {
     goto LABEL_12;
   }
 
-  if (v3 == @"tag")
+  if (typeCopy == @"tag")
   {
     v7 = MEMORY[0x277CD3D10];
     v8 = @"circle";
     goto LABEL_17;
   }
 
-  if (v3 == @"recents")
+  if (typeCopy == @"recents")
   {
     v7 = MEMORY[0x277CD3D10];
     v8 = @"clock";
     goto LABEL_17;
   }
 
-  if (v3 == @"shared")
+  if (typeCopy == @"shared")
   {
     v7 = MEMORY[0x277CD3D10];
     v8 = @"folder.badge.person.crop";
     goto LABEL_17;
   }
 
-  if (v3 == @"downloads")
+  if (typeCopy == @"downloads")
   {
     v7 = MEMORY[0x277CD3D10];
     v8 = @"arrow.down.circle";
     goto LABEL_17;
   }
 
-  if (v3 == @"customFolder")
+  if (typeCopy == @"customFolder")
   {
 LABEL_12:
     v7 = MEMORY[0x277CD3D10];

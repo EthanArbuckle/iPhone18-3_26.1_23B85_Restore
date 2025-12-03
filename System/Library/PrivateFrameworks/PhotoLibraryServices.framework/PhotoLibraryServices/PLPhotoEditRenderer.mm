@@ -1,15 +1,15 @@
 @interface PLPhotoEditRenderer
 + (BOOL)currentDeviceShouldAllowLocalLight;
-+ (id)compositionWithController:(id)a3 source:(id)a4;
-+ (id)newImageDataFromCGImage:(CGImage *)a3 withCompressionQuality:(double)a4 metadataSourceImageURL:(id)a5 preserveRegionsInMetadata:(BOOL)a6;
-+ (id)rendererForVideoURL:(id)a3 livePhotoStillURL:(id)a4 adjustmentData:(id)a5 formatIdentifier:(id)a6 formatVersion:(id)a7;
++ (id)compositionWithController:(id)controller source:(id)source;
++ (id)newImageDataFromCGImage:(CGImage *)image withCompressionQuality:(double)quality metadataSourceImageURL:(id)l preserveRegionsInMetadata:(BOOL)metadata;
++ (id)rendererForVideoURL:(id)l livePhotoStillURL:(id)rL adjustmentData:(id)data formatIdentifier:(id)identifier formatVersion:(id)version;
 + (void)configureNeutrinoCacheDirectoryIfNeeded;
-+ (void)updateCompositionController:(id)a3 fromPortraitMetadata:(id)a4;
++ (void)updateCompositionController:(id)controller fromPortraitMetadata:(id)metadata;
 - (NUComposition)composition;
-- (PLPhotoEditRenderer)initWithEditSource:(id)a3 renderPriority:(int64_t)a4;
-- (double)_smartBWLevelWithAttributeKey:(id)a3 settingKey:(id)a4;
-- (double)_smartColorLevelWithAttributeKey:(id)a3 settingKey:(id)a4;
-- (double)_smartToneLevelWithAttributeKey:(id)a3 settingKey:(id)a4;
+- (PLPhotoEditRenderer)initWithEditSource:(id)source renderPriority:(int64_t)priority;
+- (double)_smartBWLevelWithAttributeKey:(id)key settingKey:(id)settingKey;
+- (double)_smartColorLevelWithAttributeKey:(id)key settingKey:(id)settingKey;
+- (double)_smartToneLevelWithAttributeKey:(id)key settingKey:(id)settingKey;
 - (double)smartBWBaseGrain;
 - (double)smartBWBaseHue;
 - (double)smartBWBaseNeutralGamma;
@@ -28,22 +28,22 @@
 - (id)_smartBWAdjustments;
 - (id)_smartColorAdjustments;
 - (id)_smartToneAdjustments;
-- (id)exportVideoToURL:(id)a3 preset:(id)a4 livePhotoPairingIdentifier:(id)a5 completion:(id)a6;
-- (id)getGeometryForComposition:(id)a3;
-- (id)getGeometryForComposition:(id)a3 pipelineFilters:(id)a4;
+- (id)exportVideoToURL:(id)l preset:(id)preset livePhotoPairingIdentifier:(id)identifier completion:(id)completion;
+- (id)getGeometryForComposition:(id)composition;
+- (id)getGeometryForComposition:(id)composition pipelineFilters:(id)filters;
 - (id)newExporter;
 - (id)newImageExporterOptions;
 - (id)newVideoExporterOptions;
-- (void)applySourceChangesToComposition:(id)a3 source:(id)a4 withBlock:(id)a5 executeSynchronously:(BOOL)a6 completionBlock:(id)a7;
-- (void)calculateLongExposureFusionParametersWithCompletionHandler:(id)a3;
+- (void)applySourceChangesToComposition:(id)composition source:(id)source withBlock:(id)block executeSynchronously:(BOOL)synchronously completionBlock:(id)completionBlock;
+- (void)calculateLongExposureFusionParametersWithCompletionHandler:(id)handler;
 - (void)cancelAllRenders;
-- (void)generateJPEGImageDataWithCompressionQuality:(double)a3 livePhotoPairingIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)renderImageWithTargetSize:(CGSize)a3 contentMode:(int64_t)a4 name:(id)a5 completion:(id)a6;
-- (void)renderImageWithTargetSize:(CGSize)a3 contentMode:(int64_t)a4 renderMode:(int64_t)a5 name:(id)a6 completion:(id)a7;
-- (void)renderImageWithTargetSize:(CGSize)a3 contentMode:(int64_t)a4 renderMode:(int64_t)a5 renderTime:(id *)a6 name:(id)a7 completion:(id)a8;
-- (void)renderVideoWithTargetSize:(CGSize)a3 contentMode:(int64_t)a4 name:(id)a5 completion:(id)a6;
-- (void)setCompositionController:(id)a3;
-- (void)setSmartFiltersCubeSize:(int64_t)a3;
+- (void)generateJPEGImageDataWithCompressionQuality:(double)quality livePhotoPairingIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)renderImageWithTargetSize:(CGSize)size contentMode:(int64_t)mode name:(id)name completion:(id)completion;
+- (void)renderImageWithTargetSize:(CGSize)size contentMode:(int64_t)mode renderMode:(int64_t)renderMode name:(id)name completion:(id)completion;
+- (void)renderImageWithTargetSize:(CGSize)size contentMode:(int64_t)mode renderMode:(int64_t)renderMode renderTime:(id *)time name:(id)name completion:(id)completion;
+- (void)renderVideoWithTargetSize:(CGSize)size contentMode:(int64_t)mode name:(id)name completion:(id)completion;
+- (void)setCompositionController:(id)controller;
+- (void)setSmartFiltersCubeSize:(int64_t)size;
 @end
 
 @implementation PLPhotoEditRenderer
@@ -58,25 +58,25 @@
   [(NURenderContext *)imageRenderContext cancelAllRequests];
 }
 
-- (void)applySourceChangesToComposition:(id)a3 source:(id)a4 withBlock:(id)a5 executeSynchronously:(BOOL)a6 completionBlock:(id)a7
+- (void)applySourceChangesToComposition:(id)composition source:(id)source withBlock:(id)block executeSynchronously:(BOOL)synchronously completionBlock:(id)completionBlock
 {
-  v74 = a6;
+  synchronouslyCopy = synchronously;
   v97 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v75 = a4;
-  v77 = a5;
-  v79 = a7;
-  v12 = [v11 copy];
-  v82 = self;
+  compositionCopy = composition;
+  sourceCopy = source;
+  blockCopy = block;
+  completionBlockCopy = completionBlock;
+  v12 = [compositionCopy copy];
+  selfCopy = self;
   p_editSource = &self->_editSource;
   v14 = [PLPhotoEditRenderer compositionWithController:v12 source:self->_editSource];
-  v81 = [(PLPhotoEditRenderer *)v82 getGeometryForComposition:v14];
-  v77[2](v77, v12);
+  v81 = [(PLPhotoEditRenderer *)selfCopy getGeometryForComposition:v14];
+  blockCopy[2](blockCopy, v12);
   v80 = [PLPhotoEditRenderer compositionWithController:v12 source:*p_editSource];
 
-  v78 = [(PLPhotoEditRenderer *)v82 getGeometryForComposition:v80];
+  v78 = [(PLPhotoEditRenderer *)selfCopy getGeometryForComposition:v80];
   v76 = +[PLCompositionHelper adjustmentConstants];
-  v15 = 0;
+  enabled = 0;
   if (v81 && v78)
   {
     *buf = 0u;
@@ -99,20 +99,20 @@
     v102.size.height = 0;
     if (CGRectEqualToRect(v98, v102))
     {
-      v15 = 0;
+      enabled = 0;
     }
 
     else
     {
-      v20 = [v12 cropAdjustmentController];
-      v21 = [v11 cropAdjustmentController];
-      v22 = [v20 isEqual:v21];
-      [v20 cropRect];
+      cropAdjustmentController = [v12 cropAdjustmentController];
+      cropAdjustmentController2 = [compositionCopy cropAdjustmentController];
+      v22 = [cropAdjustmentController isEqual:cropAdjustmentController2];
+      [cropAdjustmentController cropRect];
       v70 = v23;
       v71 = v24;
       v72 = v25;
       v73 = v26;
-      if (v22 && !CGRectIsEmpty(*&v23) && [v20 enabled])
+      if (v22 && !CGRectIsEmpty(*&v23) && [cropAdjustmentController enabled])
       {
         v99.origin.x = 0 + (v70 - 0) / v16 * v18;
         v99.origin.y = 0 + (v71 - 0) / v17 * v19;
@@ -124,7 +124,7 @@
         y = v101.origin.y;
         width = v101.size.width;
         height = v101.size.height;
-        v31 = [v76 PICropAdjustmentKey];
+        pICropAdjustmentKey = [v76 PICropAdjustmentKey];
         v91[0] = MEMORY[0x1E69E9820];
         v91[1] = 3221225472;
         v91[2] = __109__PLPhotoEditRenderer_applySourceChangesToComposition_source_withBlock_executeSynchronously_completionBlock___block_invoke;
@@ -133,47 +133,47 @@
         *&v91[5] = y;
         *&v91[6] = width;
         *&v91[7] = height;
-        [v12 modifyAdjustmentWithKey:v31 modificationBlock:v91];
+        [v12 modifyAdjustmentWithKey:pICropAdjustmentKey modificationBlock:v91];
       }
 
-      v32 = [v76 PIRedEyeAdjustmentKey];
-      [v12 removeAdjustmentWithKey:v32];
+      pIRedEyeAdjustmentKey = [v76 PIRedEyeAdjustmentKey];
+      [v12 removeAdjustmentWithKey:pIRedEyeAdjustmentKey];
 
-      v33 = [v12 smartToneAdjustmentController];
-      v15 = [v33 enabled];
+      smartToneAdjustmentController = [v12 smartToneAdjustmentController];
+      enabled = [smartToneAdjustmentController enabled];
     }
   }
 
-  v34 = [v11 portraitAdjustmentController];
-  v35 = [v34 enabled];
-  v36 = [v12 portraitAdjustmentController];
-  v37 = [v36 enabled];
+  portraitAdjustmentController = [compositionCopy portraitAdjustmentController];
+  enabled2 = [portraitAdjustmentController enabled];
+  portraitAdjustmentController2 = [v12 portraitAdjustmentController];
+  enabled3 = [portraitAdjustmentController2 enabled];
 
-  v38 = [v11 portraitAdjustmentController];
-  v39 = [v38 kind];
-  v40 = [v12 portraitAdjustmentController];
-  v41 = [v40 kind];
-  v42 = [v39 isEqualToString:v41];
+  portraitAdjustmentController3 = [compositionCopy portraitAdjustmentController];
+  kind = [portraitAdjustmentController3 kind];
+  portraitAdjustmentController4 = [v12 portraitAdjustmentController];
+  kind2 = [portraitAdjustmentController4 kind];
+  v42 = [kind isEqualToString:kind2];
 
   if ((v42 & 1) == 0)
   {
-    if (v35 == v37)
+    if (enabled2 == enabled3)
     {
-      v43 = [v12 portraitAdjustmentController];
-      v15 = [v43 enabled];
+      portraitAdjustmentController5 = [v12 portraitAdjustmentController];
+      enabled = [portraitAdjustmentController5 enabled];
     }
 
     else
     {
-      v15 = 1;
+      enabled = 1;
     }
   }
 
-  v44 = [v11 autoLoopAdjustmentController];
-  v45 = [v12 autoLoopAdjustmentController];
-  if (v44 | v45 && ([v44 isEqual:v45] & 1) == 0)
+  autoLoopAdjustmentController = [compositionCopy autoLoopAdjustmentController];
+  autoLoopAdjustmentController2 = [v12 autoLoopAdjustmentController];
+  if (autoLoopAdjustmentController | autoLoopAdjustmentController2 && ([autoLoopAdjustmentController isEqual:autoLoopAdjustmentController2] & 1) == 0)
   {
-    v54 = [v45 flavor];
+    flavor = [autoLoopAdjustmentController2 flavor];
     *&v92 = 0;
     *(&v92 + 1) = &v92;
     *&v93 = 0x2020000000;
@@ -196,7 +196,7 @@
     _Block_object_dispose(&v92, 8);
     if (v55)
     {
-      v58 = v55(v54);
+      v58 = v55(flavor);
 
       *&v92 = 0;
       *(&v92 + 1) = &v92;
@@ -222,7 +222,7 @@
       {
         if (v59(v58))
         {
-          if ((v15 & 1) == 0)
+          if ((enabled & 1) == 0)
           {
             goto LABEL_34;
           }
@@ -230,17 +230,17 @@
 
         else
         {
-          v62 = [v12 smartToneAdjustmentController];
-          v63 = [v62 enabled];
+          smartToneAdjustmentController2 = [v12 smartToneAdjustmentController];
+          enabled4 = [smartToneAdjustmentController2 enabled];
 
-          if (((v63 | v15) & 1) == 0)
+          if (((enabled4 | enabled) & 1) == 0)
           {
             goto LABEL_34;
           }
         }
 
 LABEL_17:
-        [(NURenderContext *)v82->_smartToneAutoCalculatorContext cancelAllRequests];
+        [(NURenderContext *)selfCopy->_smartToneAutoCalculatorContext cancelAllRequests];
         *&v92 = 0;
         *(&v92 + 1) = &v92;
         *&v93 = 0x2050000000;
@@ -261,8 +261,8 @@ LABEL_17:
         _Block_object_dispose(&v92, 8);
         v48 = [[v46 alloc] initWithComposition:v80];
         [v48 setName:@"PL-PISmartToneAutoCalculator"];
-        [v48 setRenderContext:v82->_smartToneAutoCalculatorContext];
-        if (!v74)
+        [v48 setRenderContext:selfCopy->_smartToneAutoCalculatorContext];
+        if (!synchronouslyCopy)
         {
           v83[0] = MEMORY[0x1E69E9820];
           v83[1] = 3221225472;
@@ -270,8 +270,8 @@ LABEL_17:
           v83[3] = &unk_1E756AAB0;
           v84 = v12;
           v85 = v76;
-          v86 = v11;
-          v87 = v79;
+          v86 = compositionCopy;
+          v87 = completionBlockCopy;
           [v48 submit:v83];
 
           v51 = v84;
@@ -286,22 +286,22 @@ LABEL_37:
         v51 = v50;
         if (v49)
         {
-          v52 = [v76 PISmartToneAdjustmentKey];
+          pISmartToneAdjustmentKey = [v76 PISmartToneAdjustmentKey];
           v88[0] = MEMORY[0x1E69E9820];
           v88[1] = 3221225472;
           v88[2] = __109__PLPhotoEditRenderer_applySourceChangesToComposition_source_withBlock_executeSynchronously_completionBlock___block_invoke_2;
           v88[3] = &unk_1E756AA88;
           v89 = v49;
-          [v12 modifyAdjustmentWithKey:v52 modificationBlock:v88];
+          [v12 modifyAdjustmentWithKey:pISmartToneAdjustmentKey modificationBlock:v88];
 
-          [v11 applyChangesFromCompositionController:v12];
+          [compositionCopy applyChangesFromCompositionController:v12];
           v53 = v89;
         }
 
         else
         {
-          v64 = [v50 domain];
-          if ([v64 isEqualToString:@"NUError"])
+          domain = [v50 domain];
+          if ([domain isEqualToString:@"NUError"])
           {
             v65 = [v51 code] == 10;
 
@@ -325,39 +325,39 @@ LABEL_37:
         }
 
 LABEL_23:
-        if (v79)
+        if (completionBlockCopy)
         {
-          v79[2]();
+          completionBlockCopy[2]();
         }
 
         goto LABEL_37;
       }
 
-      v68 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v69 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"BOOL SOFT_LINKED_PIAutoLoopFlavorProducesOnlyVideo(PIAutoLoopFlavor)"];
-      [v68 handleFailureInFunction:v69 file:@"PLPhotoEditRenderer.m" lineNumber:86 description:{@"%s", dlerror()}];
+      [currentHandler handleFailureInFunction:v69 file:@"PLPhotoEditRenderer.m" lineNumber:86 description:{@"%s", dlerror()}];
     }
 
     else
     {
-      v66 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
       v67 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"PIAutoLoopFlavor SOFT_LINKED_PIAutoLoopFlavorFromString(NSString *__strong)"];
-      [v66 handleFailureInFunction:v67 file:@"PLPhotoEditRenderer.m" lineNumber:85 description:{@"%s", dlerror()}];
+      [currentHandler2 handleFailureInFunction:v67 file:@"PLPhotoEditRenderer.m" lineNumber:85 description:{@"%s", dlerror()}];
     }
 
     __break(1u);
   }
 
-  if (v15)
+  if (enabled)
   {
     goto LABEL_17;
   }
 
 LABEL_34:
-  [v11 applyChangesFromCompositionController:v12];
-  if (v79)
+  [compositionCopy applyChangesFromCompositionController:v12];
+  if (completionBlockCopy)
   {
-    v79[2]();
+    completionBlockCopy[2]();
   }
 
 LABEL_38:
@@ -437,34 +437,34 @@ uint64_t __109__PLPhotoEditRenderer_applySourceChangesToComposition_source_withB
   return result;
 }
 
-- (id)getGeometryForComposition:(id)a3 pipelineFilters:(id)a4
+- (id)getGeometryForComposition:(id)composition pipelineFilters:(id)filters
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [getPIPhotoEditHelperClass_30489() geometryRequestWithComposition:v7];
+  filtersCopy = filters;
+  compositionCopy = composition;
+  v8 = [getPIPhotoEditHelperClass_30489() geometryRequestWithComposition:compositionCopy];
 
-  [v8 setPipelineFilters:v6];
+  [v8 setPipelineFilters:filtersCopy];
   [v8 setRenderContext:self->_geometryContext];
   [v8 setName:@"PLPhotoEditRenderer-geometry"];
   v12 = 0;
   v9 = [v8 submitSynchronous:&v12];
-  v10 = [v9 geometry];
+  geometry = [v9 geometry];
 
-  return v10;
+  return geometry;
 }
 
-- (id)getGeometryForComposition:(id)a3
+- (id)getGeometryForComposition:(id)composition
 {
-  v4 = a3;
-  v5 = [getPIPhotoEditHelperClass_30489() pipelineFiltersForOriginalGeometry];
-  v6 = [(PLPhotoEditRenderer *)self getGeometryForComposition:v4 pipelineFilters:v5];
+  compositionCopy = composition;
+  pipelineFiltersForOriginalGeometry = [getPIPhotoEditHelperClass_30489() pipelineFiltersForOriginalGeometry];
+  v6 = [(PLPhotoEditRenderer *)self getGeometryForComposition:compositionCopy pipelineFilters:pipelineFiltersForOriginalGeometry];
 
   return v6;
 }
 
-- (void)calculateLongExposureFusionParametersWithCompletionHandler:(id)a3
+- (void)calculateLongExposureFusionParametersWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2050000000;
@@ -484,16 +484,16 @@ uint64_t __109__PLPhotoEditRenderer_applySourceChangesToComposition_source_withB
   v6 = v5;
   _Block_object_dispose(&v14, 8);
   v7 = [v5 alloc];
-  v8 = [(PLPhotoEditRenderer *)self composition];
-  v9 = [v7 initWithComposition:v8];
+  composition = [(PLPhotoEditRenderer *)self composition];
+  v9 = [v7 initWithComposition:composition];
 
   [v9 setName:@"PL-PILongExposureFusionAutoCalculator"];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __82__PLPhotoEditRenderer_calculateLongExposureFusionParametersWithCompletionHandler___block_invoke;
   v11[3] = &unk_1E756A9C8;
-  v12 = v4;
-  v10 = v4;
+  v12 = handlerCopy;
+  v10 = handlerCopy;
   [v9 submit:v11];
 }
 
@@ -507,10 +507,10 @@ void __82__PLPhotoEditRenderer_calculateLongExposureFusionParametersWithCompleti
 
 - (id)_smartBWAdjustments
 {
-  v3 = [(PLPhotoEditRenderer *)self compositionController];
-  v4 = [v3 smartBWAdjustmentController];
+  compositionController = [(PLPhotoEditRenderer *)self compositionController];
+  smartBWAdjustmentController = [compositionController smartBWAdjustmentController];
 
-  [v4 hue];
+  [smartBWAdjustmentController hue];
   v6 = v5;
   if (v5 != self->_smartBWLevelInCachedAdjustments)
   {
@@ -521,8 +521,8 @@ void __82__PLPhotoEditRenderer_calculateLongExposureFusionParametersWithCompleti
   v8 = self->__smartBWAdjustments;
   if (!v8)
   {
-    v9 = [MEMORY[0x1E695F658] emptyImage];
-    v10 = [v9 smartBlackAndWhiteAdjustmentsForValue:0 andStatistics:v6];
+    emptyImage = [MEMORY[0x1E695F658] emptyImage];
+    v10 = [emptyImage smartBlackAndWhiteAdjustmentsForValue:0 andStatistics:v6];
     v11 = self->__smartBWAdjustments;
     self->__smartBWAdjustments = v10;
 
@@ -537,14 +537,14 @@ void __82__PLPhotoEditRenderer_calculateLongExposureFusionParametersWithCompleti
 
 - (id)_smartColorAdjustments
 {
-  v3 = [(PLPhotoEditRenderer *)self compositionController];
-  v4 = [v3 smartColorAdjustmentController];
+  compositionController = [(PLPhotoEditRenderer *)self compositionController];
+  smartColorAdjustmentController = [compositionController smartColorAdjustmentController];
 
-  [v4 inputColor];
+  [smartColorAdjustmentController inputColor];
   v6 = v5;
-  v7 = [v4 statistics];
-  v8 = v7;
-  if (v6 != self->_smartColorLevelInCachedAdjustments || v7 != self->_smartColorStatisticsInCachedAdjustments)
+  statistics = [smartColorAdjustmentController statistics];
+  v8 = statistics;
+  if (v6 != self->_smartColorLevelInCachedAdjustments || statistics != self->_smartColorStatisticsInCachedAdjustments)
   {
     smartColorAdjustments = self->__smartColorAdjustments;
     self->__smartColorAdjustments = 0;
@@ -569,14 +569,14 @@ void __82__PLPhotoEditRenderer_calculateLongExposureFusionParametersWithCompleti
 
 - (id)_smartToneAdjustments
 {
-  v3 = [(PLPhotoEditRenderer *)self compositionController];
-  v4 = [v3 smartToneAdjustmentController];
+  compositionController = [(PLPhotoEditRenderer *)self compositionController];
+  smartToneAdjustmentController = [compositionController smartToneAdjustmentController];
 
-  [v4 inputLight];
+  [smartToneAdjustmentController inputLight];
   v6 = v5;
-  v7 = [v4 statistics];
-  v8 = v7;
-  if (v6 != self->_smartToneLevelInCachedAdjustments || v7 != self->_smartToneStatisticsInCachedAdjustments)
+  statistics = [smartToneAdjustmentController statistics];
+  v8 = statistics;
+  if (v6 != self->_smartToneLevelInCachedAdjustments || statistics != self->_smartToneStatisticsInCachedAdjustments)
   {
     smartToneAdjustments = self->__smartToneAdjustments;
     self->__smartToneAdjustments = 0;
@@ -606,14 +606,14 @@ void __82__PLPhotoEditRenderer_calculateLongExposureFusionParametersWithCompleti
 - (double)smartBWBaseGrain
 {
   v3 = +[PLCompositionHelper adjustmentConstants];
-  v4 = [v3 PISmartBWAdjustmentKey];
+  pISmartBWAdjustmentKey = [v3 PISmartBWAdjustmentKey];
 
-  v5 = [(PLPhotoEditRenderer *)self compositionController];
-  v6 = [objc_opt_class() adjustmentControllerClassForKey:v4];
+  compositionController = [(PLPhotoEditRenderer *)self compositionController];
+  v6 = [objc_opt_class() adjustmentControllerClassForKey:pISmartBWAdjustmentKey];
 
-  v7 = [v6 attributeGrainKey];
-  v8 = [v6 grainKey];
-  [(PLPhotoEditRenderer *)self _smartBWLevelWithAttributeKey:v7 settingKey:v8];
+  attributeGrainKey = [v6 attributeGrainKey];
+  grainKey = [v6 grainKey];
+  [(PLPhotoEditRenderer *)self _smartBWLevelWithAttributeKey:attributeGrainKey settingKey:grainKey];
   v10 = v9;
 
   return v10;
@@ -622,14 +622,14 @@ void __82__PLPhotoEditRenderer_calculateLongExposureFusionParametersWithCompleti
 - (double)smartBWBaseHue
 {
   v3 = +[PLCompositionHelper adjustmentConstants];
-  v4 = [v3 PISmartBWAdjustmentKey];
+  pISmartBWAdjustmentKey = [v3 PISmartBWAdjustmentKey];
 
-  v5 = [(PLPhotoEditRenderer *)self compositionController];
-  v6 = [objc_opt_class() adjustmentControllerClassForKey:v4];
+  compositionController = [(PLPhotoEditRenderer *)self compositionController];
+  v6 = [objc_opt_class() adjustmentControllerClassForKey:pISmartBWAdjustmentKey];
 
-  v7 = [v6 attributeHueKey];
-  v8 = [v6 hueKey];
-  [(PLPhotoEditRenderer *)self _smartBWLevelWithAttributeKey:v7 settingKey:v8];
+  attributeHueKey = [v6 attributeHueKey];
+  hueKey = [v6 hueKey];
+  [(PLPhotoEditRenderer *)self _smartBWLevelWithAttributeKey:attributeHueKey settingKey:hueKey];
   v10 = v9;
 
   return v10;
@@ -638,14 +638,14 @@ void __82__PLPhotoEditRenderer_calculateLongExposureFusionParametersWithCompleti
 - (double)smartBWBaseTone
 {
   v3 = +[PLCompositionHelper adjustmentConstants];
-  v4 = [v3 PISmartBWAdjustmentKey];
+  pISmartBWAdjustmentKey = [v3 PISmartBWAdjustmentKey];
 
-  v5 = [(PLPhotoEditRenderer *)self compositionController];
-  v6 = [objc_opt_class() adjustmentControllerClassForKey:v4];
+  compositionController = [(PLPhotoEditRenderer *)self compositionController];
+  v6 = [objc_opt_class() adjustmentControllerClassForKey:pISmartBWAdjustmentKey];
 
-  v7 = [v6 attributeToneKey];
-  v8 = [v6 toneKey];
-  [(PLPhotoEditRenderer *)self _smartBWLevelWithAttributeKey:v7 settingKey:v8];
+  attributeToneKey = [v6 attributeToneKey];
+  toneKey = [v6 toneKey];
+  [(PLPhotoEditRenderer *)self _smartBWLevelWithAttributeKey:attributeToneKey settingKey:toneKey];
   v10 = v9;
 
   return v10;
@@ -654,14 +654,14 @@ void __82__PLPhotoEditRenderer_calculateLongExposureFusionParametersWithCompleti
 - (double)smartBWBaseNeutralGamma
 {
   v3 = +[PLCompositionHelper adjustmentConstants];
-  v4 = [v3 PISmartBWAdjustmentKey];
+  pISmartBWAdjustmentKey = [v3 PISmartBWAdjustmentKey];
 
-  v5 = [(PLPhotoEditRenderer *)self compositionController];
-  v6 = [objc_opt_class() adjustmentControllerClassForKey:v4];
+  compositionController = [(PLPhotoEditRenderer *)self compositionController];
+  v6 = [objc_opt_class() adjustmentControllerClassForKey:pISmartBWAdjustmentKey];
 
-  v7 = [v6 attributeNeutralGammaKey];
-  v8 = [v6 neutralKey];
-  [(PLPhotoEditRenderer *)self _smartBWLevelWithAttributeKey:v7 settingKey:v8];
+  attributeNeutralGammaKey = [v6 attributeNeutralGammaKey];
+  neutralKey = [v6 neutralKey];
+  [(PLPhotoEditRenderer *)self _smartBWLevelWithAttributeKey:attributeNeutralGammaKey settingKey:neutralKey];
   v10 = v9;
 
   return v10;
@@ -670,35 +670,35 @@ void __82__PLPhotoEditRenderer_calculateLongExposureFusionParametersWithCompleti
 - (double)smartBWBaseStrength
 {
   v3 = +[PLCompositionHelper adjustmentConstants];
-  v4 = [v3 PISmartBWAdjustmentKey];
+  pISmartBWAdjustmentKey = [v3 PISmartBWAdjustmentKey];
 
-  v5 = [(PLPhotoEditRenderer *)self compositionController];
-  v6 = [objc_opt_class() adjustmentControllerClassForKey:v4];
+  compositionController = [(PLPhotoEditRenderer *)self compositionController];
+  v6 = [objc_opt_class() adjustmentControllerClassForKey:pISmartBWAdjustmentKey];
 
-  v7 = [v6 attributeStrengthKey];
-  v8 = [v6 strengthKey];
-  [(PLPhotoEditRenderer *)self _smartBWLevelWithAttributeKey:v7 settingKey:v8];
+  attributeStrengthKey = [v6 attributeStrengthKey];
+  strengthKey = [v6 strengthKey];
+  [(PLPhotoEditRenderer *)self _smartBWLevelWithAttributeKey:attributeStrengthKey settingKey:strengthKey];
   v10 = v9;
 
   return v10;
 }
 
-- (double)_smartBWLevelWithAttributeKey:(id)a3 settingKey:(id)a4
+- (double)_smartBWLevelWithAttributeKey:(id)key settingKey:(id)settingKey
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PLPhotoEditRenderer *)self _smartBWAdjustments];
+  keyCopy = key;
+  settingKeyCopy = settingKey;
+  _smartBWAdjustments = [(PLPhotoEditRenderer *)self _smartBWAdjustments];
   v9 = +[PLCompositionHelper adjustmentConstants];
-  v10 = [v9 PISmartBWAdjustmentKey];
+  pISmartBWAdjustmentKey = [v9 PISmartBWAdjustmentKey];
 
-  if (v8)
+  if (_smartBWAdjustments)
   {
-    [v8 objectForKey:v6];
+    [_smartBWAdjustments objectForKey:keyCopy];
   }
 
   else
   {
-    [PLCompositionHelper defaultValueForAdjustmentKey:v10 settingKey:v7];
+    [PLCompositionHelper defaultValueForAdjustmentKey:pISmartBWAdjustmentKey settingKey:settingKeyCopy];
   }
   v11 = ;
   [v11 doubleValue];
@@ -710,14 +710,14 @@ void __82__PLPhotoEditRenderer_calculateLongExposureFusionParametersWithCompleti
 - (double)smartColorBaseCast
 {
   v3 = +[PLCompositionHelper adjustmentConstants];
-  v4 = [v3 PISmartColorAdjustmentKey];
+  pISmartColorAdjustmentKey = [v3 PISmartColorAdjustmentKey];
 
-  v5 = [(PLPhotoEditRenderer *)self compositionController];
-  v6 = [objc_opt_class() adjustmentControllerClassForKey:v4];
+  compositionController = [(PLPhotoEditRenderer *)self compositionController];
+  v6 = [objc_opt_class() adjustmentControllerClassForKey:pISmartColorAdjustmentKey];
 
-  v7 = [v6 attributeCastKey];
-  v8 = [v6 offsetCastKey];
-  [(PLPhotoEditRenderer *)self _smartColorLevelWithAttributeKey:v7 settingKey:v8];
+  attributeCastKey = [v6 attributeCastKey];
+  offsetCastKey = [v6 offsetCastKey];
+  [(PLPhotoEditRenderer *)self _smartColorLevelWithAttributeKey:attributeCastKey settingKey:offsetCastKey];
   v10 = v9;
 
   return v10;
@@ -726,14 +726,14 @@ void __82__PLPhotoEditRenderer_calculateLongExposureFusionParametersWithCompleti
 - (double)smartColorBaseSaturation
 {
   v3 = +[PLCompositionHelper adjustmentConstants];
-  v4 = [v3 PISmartColorAdjustmentKey];
+  pISmartColorAdjustmentKey = [v3 PISmartColorAdjustmentKey];
 
-  v5 = [(PLPhotoEditRenderer *)self compositionController];
-  v6 = [objc_opt_class() adjustmentControllerClassForKey:v4];
+  compositionController = [(PLPhotoEditRenderer *)self compositionController];
+  v6 = [objc_opt_class() adjustmentControllerClassForKey:pISmartColorAdjustmentKey];
 
-  v7 = [v6 attributeSaturationKey];
-  v8 = [v6 offsetSaturationKey];
-  [(PLPhotoEditRenderer *)self _smartColorLevelWithAttributeKey:v7 settingKey:v8];
+  attributeSaturationKey = [v6 attributeSaturationKey];
+  offsetSaturationKey = [v6 offsetSaturationKey];
+  [(PLPhotoEditRenderer *)self _smartColorLevelWithAttributeKey:attributeSaturationKey settingKey:offsetSaturationKey];
   v10 = v9;
 
   return v10;
@@ -742,35 +742,35 @@ void __82__PLPhotoEditRenderer_calculateLongExposureFusionParametersWithCompleti
 - (double)smartColorBaseContrast
 {
   v3 = +[PLCompositionHelper adjustmentConstants];
-  v4 = [v3 PISmartColorAdjustmentKey];
+  pISmartColorAdjustmentKey = [v3 PISmartColorAdjustmentKey];
 
-  v5 = [(PLPhotoEditRenderer *)self compositionController];
-  v6 = [objc_opt_class() adjustmentControllerClassForKey:v4];
+  compositionController = [(PLPhotoEditRenderer *)self compositionController];
+  v6 = [objc_opt_class() adjustmentControllerClassForKey:pISmartColorAdjustmentKey];
 
-  v7 = [v6 attributeContrastKey];
-  v8 = [v6 offsetContrastKey];
-  [(PLPhotoEditRenderer *)self _smartColorLevelWithAttributeKey:v7 settingKey:v8];
+  attributeContrastKey = [v6 attributeContrastKey];
+  offsetContrastKey = [v6 offsetContrastKey];
+  [(PLPhotoEditRenderer *)self _smartColorLevelWithAttributeKey:attributeContrastKey settingKey:offsetContrastKey];
   v10 = v9;
 
   return v10;
 }
 
-- (double)_smartColorLevelWithAttributeKey:(id)a3 settingKey:(id)a4
+- (double)_smartColorLevelWithAttributeKey:(id)key settingKey:(id)settingKey
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PLPhotoEditRenderer *)self _smartColorAdjustments];
+  keyCopy = key;
+  settingKeyCopy = settingKey;
+  _smartColorAdjustments = [(PLPhotoEditRenderer *)self _smartColorAdjustments];
   v9 = +[PLCompositionHelper adjustmentConstants];
-  v10 = [v9 PISmartColorAdjustmentKey];
+  pISmartColorAdjustmentKey = [v9 PISmartColorAdjustmentKey];
 
-  if (v8)
+  if (_smartColorAdjustments)
   {
-    [v8 objectForKey:v6];
+    [_smartColorAdjustments objectForKey:keyCopy];
   }
 
   else
   {
-    [PLCompositionHelper defaultValueForAdjustmentKey:v10 settingKey:v7];
+    [PLCompositionHelper defaultValueForAdjustmentKey:pISmartColorAdjustmentKey settingKey:settingKeyCopy];
   }
   v11 = ;
   [v11 doubleValue];
@@ -782,14 +782,14 @@ void __82__PLPhotoEditRenderer_calculateLongExposureFusionParametersWithCompleti
 - (double)smartToneBaseLocalLight
 {
   v3 = +[PLCompositionHelper adjustmentConstants];
-  v4 = [v3 PISmartToneAdjustmentKey];
+  pISmartToneAdjustmentKey = [v3 PISmartToneAdjustmentKey];
 
-  v5 = [(PLPhotoEditRenderer *)self compositionController];
-  v6 = [objc_opt_class() adjustmentControllerClassForKey:v4];
+  compositionController = [(PLPhotoEditRenderer *)self compositionController];
+  v6 = [objc_opt_class() adjustmentControllerClassForKey:pISmartToneAdjustmentKey];
 
-  v7 = [v6 attributeLocalLightKey];
-  v8 = [v6 offsetLocalLightKey];
-  [(PLPhotoEditRenderer *)self _smartToneLevelWithAttributeKey:v7 settingKey:v8];
+  attributeLocalLightKey = [v6 attributeLocalLightKey];
+  offsetLocalLightKey = [v6 offsetLocalLightKey];
+  [(PLPhotoEditRenderer *)self _smartToneLevelWithAttributeKey:attributeLocalLightKey settingKey:offsetLocalLightKey];
   v10 = v9;
 
   return v10;
@@ -798,14 +798,14 @@ void __82__PLPhotoEditRenderer_calculateLongExposureFusionParametersWithCompleti
 - (double)smartToneBaseBlackPoint
 {
   v3 = +[PLCompositionHelper adjustmentConstants];
-  v4 = [v3 PISmartToneAdjustmentKey];
+  pISmartToneAdjustmentKey = [v3 PISmartToneAdjustmentKey];
 
-  v5 = [(PLPhotoEditRenderer *)self compositionController];
-  v6 = [objc_opt_class() adjustmentControllerClassForKey:v4];
+  compositionController = [(PLPhotoEditRenderer *)self compositionController];
+  v6 = [objc_opt_class() adjustmentControllerClassForKey:pISmartToneAdjustmentKey];
 
-  v7 = [v6 attributeBlackPointKey];
-  v8 = [v6 offsetBlackKey];
-  [(PLPhotoEditRenderer *)self _smartToneLevelWithAttributeKey:v7 settingKey:v8];
+  attributeBlackPointKey = [v6 attributeBlackPointKey];
+  offsetBlackKey = [v6 offsetBlackKey];
+  [(PLPhotoEditRenderer *)self _smartToneLevelWithAttributeKey:attributeBlackPointKey settingKey:offsetBlackKey];
   v10 = v9;
 
   return v10;
@@ -814,14 +814,14 @@ void __82__PLPhotoEditRenderer_calculateLongExposureFusionParametersWithCompleti
 - (double)smartToneBaseShadows
 {
   v3 = +[PLCompositionHelper adjustmentConstants];
-  v4 = [v3 PISmartToneAdjustmentKey];
+  pISmartToneAdjustmentKey = [v3 PISmartToneAdjustmentKey];
 
-  v5 = [(PLPhotoEditRenderer *)self compositionController];
-  v6 = [objc_opt_class() adjustmentControllerClassForKey:v4];
+  compositionController = [(PLPhotoEditRenderer *)self compositionController];
+  v6 = [objc_opt_class() adjustmentControllerClassForKey:pISmartToneAdjustmentKey];
 
-  v7 = [v6 attributeShadowsKey];
-  v8 = [v6 offsetShadowsKey];
-  [(PLPhotoEditRenderer *)self _smartToneLevelWithAttributeKey:v7 settingKey:v8];
+  attributeShadowsKey = [v6 attributeShadowsKey];
+  offsetShadowsKey = [v6 offsetShadowsKey];
+  [(PLPhotoEditRenderer *)self _smartToneLevelWithAttributeKey:attributeShadowsKey settingKey:offsetShadowsKey];
   v10 = v9;
 
   return v10;
@@ -830,14 +830,14 @@ void __82__PLPhotoEditRenderer_calculateLongExposureFusionParametersWithCompleti
 - (double)smartToneBaseHighlights
 {
   v3 = +[PLCompositionHelper adjustmentConstants];
-  v4 = [v3 PISmartToneAdjustmentKey];
+  pISmartToneAdjustmentKey = [v3 PISmartToneAdjustmentKey];
 
-  v5 = [(PLPhotoEditRenderer *)self compositionController];
-  v6 = [objc_opt_class() adjustmentControllerClassForKey:v4];
+  compositionController = [(PLPhotoEditRenderer *)self compositionController];
+  v6 = [objc_opt_class() adjustmentControllerClassForKey:pISmartToneAdjustmentKey];
 
-  v7 = [v6 attributeHighlightsKey];
-  v8 = [v6 offsetHighlightsKey];
-  [(PLPhotoEditRenderer *)self _smartToneLevelWithAttributeKey:v7 settingKey:v8];
+  attributeHighlightsKey = [v6 attributeHighlightsKey];
+  offsetHighlightsKey = [v6 offsetHighlightsKey];
+  [(PLPhotoEditRenderer *)self _smartToneLevelWithAttributeKey:attributeHighlightsKey settingKey:offsetHighlightsKey];
   v10 = v9;
 
   return v10;
@@ -846,14 +846,14 @@ void __82__PLPhotoEditRenderer_calculateLongExposureFusionParametersWithCompleti
 - (double)smartToneBaseExposure
 {
   v3 = +[PLCompositionHelper adjustmentConstants];
-  v4 = [v3 PISmartToneAdjustmentKey];
+  pISmartToneAdjustmentKey = [v3 PISmartToneAdjustmentKey];
 
-  v5 = [(PLPhotoEditRenderer *)self compositionController];
-  v6 = [objc_opt_class() adjustmentControllerClassForKey:v4];
+  compositionController = [(PLPhotoEditRenderer *)self compositionController];
+  v6 = [objc_opt_class() adjustmentControllerClassForKey:pISmartToneAdjustmentKey];
 
-  v7 = [v6 attributeExposureKey];
-  v8 = [v6 offsetExposureKey];
-  [(PLPhotoEditRenderer *)self _smartToneLevelWithAttributeKey:v7 settingKey:v8];
+  attributeExposureKey = [v6 attributeExposureKey];
+  offsetExposureKey = [v6 offsetExposureKey];
+  [(PLPhotoEditRenderer *)self _smartToneLevelWithAttributeKey:attributeExposureKey settingKey:offsetExposureKey];
   v10 = v9;
 
   return v10;
@@ -862,14 +862,14 @@ void __82__PLPhotoEditRenderer_calculateLongExposureFusionParametersWithCompleti
 - (double)smartToneBaseContrast
 {
   v3 = +[PLCompositionHelper adjustmentConstants];
-  v4 = [v3 PISmartToneAdjustmentKey];
+  pISmartToneAdjustmentKey = [v3 PISmartToneAdjustmentKey];
 
-  v5 = [(PLPhotoEditRenderer *)self compositionController];
-  v6 = [objc_opt_class() adjustmentControllerClassForKey:v4];
+  compositionController = [(PLPhotoEditRenderer *)self compositionController];
+  v6 = [objc_opt_class() adjustmentControllerClassForKey:pISmartToneAdjustmentKey];
 
-  v7 = [v6 attributeBrightnessKey];
-  v8 = [v6 offsetBrightnessKey];
-  [(PLPhotoEditRenderer *)self _smartToneLevelWithAttributeKey:v7 settingKey:v8];
+  attributeBrightnessKey = [v6 attributeBrightnessKey];
+  offsetBrightnessKey = [v6 offsetBrightnessKey];
+  [(PLPhotoEditRenderer *)self _smartToneLevelWithAttributeKey:attributeBrightnessKey settingKey:offsetBrightnessKey];
   v10 = v9;
 
   return v10;
@@ -878,35 +878,35 @@ void __82__PLPhotoEditRenderer_calculateLongExposureFusionParametersWithCompleti
 - (double)smartToneBaseBrightness
 {
   v3 = +[PLCompositionHelper adjustmentConstants];
-  v4 = [v3 PISmartToneAdjustmentKey];
+  pISmartToneAdjustmentKey = [v3 PISmartToneAdjustmentKey];
 
-  v5 = [(PLPhotoEditRenderer *)self compositionController];
-  v6 = [objc_opt_class() adjustmentControllerClassForKey:v4];
+  compositionController = [(PLPhotoEditRenderer *)self compositionController];
+  v6 = [objc_opt_class() adjustmentControllerClassForKey:pISmartToneAdjustmentKey];
 
-  v7 = [v6 attributeBrightnessKey];
-  v8 = [v6 offsetBrightnessKey];
-  [(PLPhotoEditRenderer *)self _smartToneLevelWithAttributeKey:v7 settingKey:v8];
+  attributeBrightnessKey = [v6 attributeBrightnessKey];
+  offsetBrightnessKey = [v6 offsetBrightnessKey];
+  [(PLPhotoEditRenderer *)self _smartToneLevelWithAttributeKey:attributeBrightnessKey settingKey:offsetBrightnessKey];
   v10 = v9;
 
   return v10;
 }
 
-- (double)_smartToneLevelWithAttributeKey:(id)a3 settingKey:(id)a4
+- (double)_smartToneLevelWithAttributeKey:(id)key settingKey:(id)settingKey
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PLPhotoEditRenderer *)self _smartToneAdjustments];
+  keyCopy = key;
+  settingKeyCopy = settingKey;
+  _smartToneAdjustments = [(PLPhotoEditRenderer *)self _smartToneAdjustments];
   v9 = +[PLCompositionHelper adjustmentConstants];
-  v10 = [v9 PISmartToneAdjustmentKey];
+  pISmartToneAdjustmentKey = [v9 PISmartToneAdjustmentKey];
 
-  if (v8)
+  if (_smartToneAdjustments)
   {
-    [v8 objectForKey:v6];
+    [_smartToneAdjustments objectForKey:keyCopy];
   }
 
   else
   {
-    [PLCompositionHelper defaultValueForAdjustmentKey:v10 settingKey:v7];
+    [PLCompositionHelper defaultValueForAdjustmentKey:pISmartToneAdjustmentKey settingKey:settingKeyCopy];
   }
   v11 = ;
   [v11 doubleValue];
@@ -915,21 +915,21 @@ void __82__PLPhotoEditRenderer_calculateLongExposureFusionParametersWithCompleti
   return v13;
 }
 
-- (void)setSmartFiltersCubeSize:(int64_t)a3
+- (void)setSmartFiltersCubeSize:(int64_t)size
 {
-  if (self->_smartFiltersCubeSize != a3)
+  if (self->_smartFiltersCubeSize != size)
   {
-    self->_smartFiltersCubeSize = a3;
+    self->_smartFiltersCubeSize = size;
   }
 }
 
-- (void)setCompositionController:(id)a3
+- (void)setCompositionController:(id)controller
 {
-  v5 = a3;
-  if (self->_compositionController != v5)
+  controllerCopy = controller;
+  if (self->_compositionController != controllerCopy)
   {
-    v9 = v5;
-    objc_storeStrong(&self->_compositionController, a3);
+    v9 = controllerCopy;
+    objc_storeStrong(&self->_compositionController, controller);
     smartToneAdjustments = self->__smartToneAdjustments;
     self->__smartToneAdjustments = 0;
 
@@ -939,27 +939,27 @@ void __82__PLPhotoEditRenderer_calculateLongExposureFusionParametersWithCompleti
     smartBWAdjustments = self->__smartBWAdjustments;
     self->__smartBWAdjustments = 0;
 
-    v5 = v9;
+    controllerCopy = v9;
   }
 }
 
-- (void)generateJPEGImageDataWithCompressionQuality:(double)a3 livePhotoPairingIdentifier:(id)a4 completionHandler:(id)a5
+- (void)generateJPEGImageDataWithCompressionQuality:(double)quality livePhotoPairingIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [(PLPhotoEditRenderer *)self newExporter];
-  v11 = [(PLPhotoEditRenderer *)self newImageExporterOptions];
-  [v11 setPairingIdentifier:v9];
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  newExporter = [(PLPhotoEditRenderer *)self newExporter];
+  newImageExporterOptions = [(PLPhotoEditRenderer *)self newImageExporterOptions];
+  [newImageExporterOptions setPairingIdentifier:identifierCopy];
 
-  [v11 setJPEGCompressionQuality:a3];
-  v12 = [(PLPhotoEditRenderer *)self composition];
+  [newImageExporterOptions setJPEGCompressionQuality:quality];
+  composition = [(PLPhotoEditRenderer *)self composition];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __112__PLPhotoEditRenderer_generateJPEGImageDataWithCompressionQuality_livePhotoPairingIdentifier_completionHandler___block_invoke;
   v14[3] = &unk_1E756A9C8;
-  v15 = v8;
-  v13 = v8;
-  [v10 exportImageToDataWithComposition:v12 options:v11 completion:v14];
+  v15 = handlerCopy;
+  v13 = handlerCopy;
+  [newExporter exportImageToDataWithComposition:composition options:newImageExporterOptions completion:v14];
 }
 
 void __112__PLPhotoEditRenderer_generateJPEGImageDataWithCompressionQuality_livePhotoPairingIdentifier_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -986,25 +986,25 @@ void __112__PLPhotoEditRenderer_generateJPEGImageDataWithCompressionQuality_live
   }
 }
 
-- (void)renderVideoWithTargetSize:(CGSize)a3 contentMode:(int64_t)a4 name:(id)a5 completion:(id)a6
+- (void)renderVideoWithTargetSize:(CGSize)size contentMode:(int64_t)mode name:(id)name completion:(id)completion
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v28[1] = *MEMORY[0x1E69E9840];
-  v12 = a5;
-  v13 = a6;
+  nameCopy = name;
+  completionCopy = completion;
   if (!self->_editSource)
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"PLPhotoEditRenderer.m" lineNumber:474 description:@"editSource cannot be nil while rendering"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPhotoEditRenderer.m" lineNumber:474 description:@"editSource cannot be nil while rendering"];
   }
 
-  v14 = [(PLPhotoEditRenderer *)self compositionController];
+  compositionController = [(PLPhotoEditRenderer *)self compositionController];
 
-  if (!v14)
+  if (!compositionController)
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"PLPhotoEditRenderer.m" lineNumber:475 description:@"compositionController cannot be nil while rendering"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLPhotoEditRenderer.m" lineNumber:475 description:@"compositionController cannot be nil while rendering"];
   }
 
   if (width == *MEMORY[0x1E695F060] && height == *(MEMORY[0x1E695F060] + 8))
@@ -1014,35 +1014,35 @@ void __112__PLPhotoEditRenderer_generateJPEGImageDataWithCompressionQuality_live
     v27 = *MEMORY[0x1E696A578];
     v28[0] = @"Target size not specified";
     v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:&v27 count:1];
-    v16 = [v18 errorWithDomain:v19 code:41003 userInfo:v20];
+    composition = [v18 errorWithDomain:v19 code:41003 userInfo:v20];
 
-    (*(v13 + 2))(v13, 0, 0, 0, v16);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0, composition);
     goto LABEL_19;
   }
 
-  v16 = [(PLPhotoEditRenderer *)self composition];
-  if (a4 == 1)
+  composition = [(PLPhotoEditRenderer *)self composition];
+  if (mode == 1)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"PLPhotoEditRenderer.m" lineNumber:494 description:@"PLPhotoEditContentModeAspectFill is not supported for this path"];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PLPhotoEditRenderer.m" lineNumber:494 description:@"PLPhotoEditContentModeAspectFill is not supported for this path"];
 
     goto LABEL_14;
   }
 
-  if (a4)
+  if (mode)
   {
 LABEL_14:
     v17 = 0;
     goto LABEL_15;
   }
 
-  v17 = [getPIPhotoEditHelperClass_30489() videoRenderRequestWithComposition:v16 fitInSize:{width, height}];
+  v17 = [getPIPhotoEditHelperClass_30489() videoRenderRequestWithComposition:composition fitInSize:{width, height}];
 LABEL_15:
   [v17 setRenderContext:self->_videoRenderContext];
   [v17 setPriority:self->_priority];
-  if ([(__CFString *)v12 length])
+  if ([(__CFString *)nameCopy length])
   {
-    v22 = v12;
+    v22 = nameCopy;
   }
 
   else
@@ -1055,7 +1055,7 @@ LABEL_15:
   v25[1] = 3221225472;
   v25[2] = __77__PLPhotoEditRenderer_renderVideoWithTargetSize_contentMode_name_completion___block_invoke;
   v25[3] = &unk_1E756A9C8;
-  v26 = v13;
+  v26 = completionCopy;
   [v17 submit:v25];
 
 LABEL_19:
@@ -1095,42 +1095,42 @@ void __77__PLPhotoEditRenderer_renderVideoWithTargetSize_contentMode_name_comple
   }
 }
 
-- (void)renderImageWithTargetSize:(CGSize)a3 contentMode:(int64_t)a4 renderMode:(int64_t)a5 renderTime:(id *)a6 name:(id)a7 completion:(id)a8
+- (void)renderImageWithTargetSize:(CGSize)size contentMode:(int64_t)mode renderMode:(int64_t)renderMode renderTime:(id *)time name:(id)name completion:(id)completion
 {
-  height = a3.height;
-  width = a3.width;
-  v16 = a7;
-  v17 = a8;
+  height = size.height;
+  width = size.width;
+  nameCopy = name;
+  completionCopy = completion;
   if (!self->_editSource)
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"PLPhotoEditRenderer.m" lineNumber:405 description:@"editSource cannot be nil while rendering"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPhotoEditRenderer.m" lineNumber:405 description:@"editSource cannot be nil while rendering"];
   }
 
-  v18 = [(PLPhotoEditRenderer *)self compositionController];
+  compositionController = [(PLPhotoEditRenderer *)self compositionController];
 
-  if (!v18)
+  if (!compositionController)
   {
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"PLPhotoEditRenderer.m" lineNumber:406 description:@"compositionController cannot be nil while rendering"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLPhotoEditRenderer.m" lineNumber:406 description:@"compositionController cannot be nil while rendering"];
   }
 
-  v19 = [(PLPhotoEditRenderer *)self composition];
-  if (a4 == 1)
+  composition = [(PLPhotoEditRenderer *)self composition];
+  if (mode == 1)
   {
-    v20 = [getPIPhotoEditHelperClass_30489() imageRenderRequestWithComposition:v19 fillInSize:1 wideGamut:{width, height}];
+    v20 = [getPIPhotoEditHelperClass_30489() imageRenderRequestWithComposition:composition fillInSize:1 wideGamut:{width, height}];
     v21 = @"PLPhotoEditRenderer-fill";
     goto LABEL_9;
   }
 
-  if (!a4)
+  if (!mode)
   {
-    v20 = [getPIPhotoEditHelperClass_30489() imageRenderRequestWithComposition:v19 fitInSize:1 wideGamut:{width, height}];
+    v20 = [getPIPhotoEditHelperClass_30489() imageRenderRequestWithComposition:composition fitInSize:1 wideGamut:{width, height}];
     v21 = @"PLPhotoEditRenderer-fit";
 LABEL_9:
-    if ([(__CFString *)v16 length])
+    if ([(__CFString *)nameCopy length])
     {
-      v22 = v16;
+      v22 = nameCopy;
     }
 
     else
@@ -1144,15 +1144,15 @@ LABEL_9:
 
   v20 = 0;
 LABEL_14:
-  if (a5 == 1)
+  if (renderMode == 1)
   {
-    v23 = [getPIPhotoEditHelperClass_30489() pipelineFiltersForCropping];
-    [v20 setPipelineFilters:v23];
+    pipelineFiltersForCropping = [getPIPhotoEditHelperClass_30489() pipelineFiltersForCropping];
+    [v20 setPipelineFilters:pipelineFiltersForCropping];
   }
 
   [v20 setRenderContext:self->_imageRenderContext];
-  v29 = *&a6->var0;
-  var3 = a6->var3;
+  v29 = *&time->var0;
+  var3 = time->var3;
   [v20 setTime:&v29];
   [v20 setPriority:self->_priority];
   [(PLPhotoEditRenderer *)self displayMaximumEDRHeadroom];
@@ -1163,8 +1163,8 @@ LABEL_14:
   v27[1] = 3221225472;
   v27[2] = __99__PLPhotoEditRenderer_renderImageWithTargetSize_contentMode_renderMode_renderTime_name_completion___block_invoke;
   v27[3] = &unk_1E756A9C8;
-  v28 = v17;
-  v24 = v17;
+  v28 = completionCopy;
+  v24 = completionCopy;
   [v20 submit:v27];
 }
 
@@ -1222,25 +1222,25 @@ void __99__PLPhotoEditRenderer_renderImageWithTargetSize_contentMode_renderMode_
   }
 }
 
-- (void)renderImageWithTargetSize:(CGSize)a3 contentMode:(int64_t)a4 renderMode:(int64_t)a5 name:(id)a6 completion:(id)a7
+- (void)renderImageWithTargetSize:(CGSize)size contentMode:(int64_t)mode renderMode:(int64_t)renderMode name:(id)name completion:(id)completion
 {
   v7 = *MEMORY[0x1E6960C70];
   v8 = *(MEMORY[0x1E6960C70] + 16);
-  [(PLPhotoEditRenderer *)self renderImageWithTargetSize:a4 contentMode:a5 renderMode:&v7 renderTime:a6 name:a7 completion:a3.width, a3.height];
+  [(PLPhotoEditRenderer *)self renderImageWithTargetSize:mode contentMode:renderMode renderMode:&v7 renderTime:name name:completion completion:size.width, size.height];
 }
 
-- (void)renderImageWithTargetSize:(CGSize)a3 contentMode:(int64_t)a4 name:(id)a5 completion:(id)a6
+- (void)renderImageWithTargetSize:(CGSize)size contentMode:(int64_t)mode name:(id)name completion:(id)completion
 {
-  height = a3.height;
-  width = a3.width;
-  v11 = a6;
+  height = size.height;
+  width = size.width;
+  completionCopy = completion;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __77__PLPhotoEditRenderer_renderImageWithTargetSize_contentMode_name_completion___block_invoke;
   v13[3] = &unk_1E756A9F0;
-  v14 = v11;
-  v12 = v11;
-  [(PLPhotoEditRenderer *)self renderImageWithTargetSize:a4 contentMode:0 renderMode:a5 name:v13 completion:width, height];
+  v14 = completionCopy;
+  v12 = completionCopy;
+  [(PLPhotoEditRenderer *)self renderImageWithTargetSize:mode contentMode:0 renderMode:name name:v13 completion:width, height];
 }
 
 uint64_t __77__PLPhotoEditRenderer_renderImageWithTargetSize_contentMode_name_completion___block_invoke(uint64_t a1)
@@ -1256,29 +1256,29 @@ uint64_t __77__PLPhotoEditRenderer_renderImageWithTargetSize_contentMode_name_co
 
 - (NUComposition)composition
 {
-  v3 = [(PLPhotoEditRenderer *)self compositionController];
-  v4 = [PLPhotoEditRenderer compositionWithController:v3 source:self->_editSource];
+  compositionController = [(PLPhotoEditRenderer *)self compositionController];
+  v4 = [PLPhotoEditRenderer compositionWithController:compositionController source:self->_editSource];
 
   return v4;
 }
 
-- (id)exportVideoToURL:(id)a3 preset:(id)a4 livePhotoPairingIdentifier:(id)a5 completion:(id)a6
+- (id)exportVideoToURL:(id)l preset:(id)preset livePhotoPairingIdentifier:(id)identifier completion:(id)completion
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a3;
-  v12 = [(PLPhotoEditRenderer *)self newExporter];
-  v13 = [(PLPhotoEditRenderer *)self newVideoExporterOptions];
-  [v13 setPairingIdentifier:v10];
+  completionCopy = completion;
+  identifierCopy = identifier;
+  lCopy = l;
+  newExporter = [(PLPhotoEditRenderer *)self newExporter];
+  newVideoExporterOptions = [(PLPhotoEditRenderer *)self newVideoExporterOptions];
+  [newVideoExporterOptions setPairingIdentifier:identifierCopy];
 
-  v14 = [(PLPhotoEditRenderer *)self composition];
+  composition = [(PLPhotoEditRenderer *)self composition];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __85__PLPhotoEditRenderer_exportVideoToURL_preset_livePhotoPairingIdentifier_completion___block_invoke;
   v18[3] = &unk_1E756A9C8;
-  v19 = v9;
-  v15 = v9;
-  v16 = [v12 exportVideoToURL:v11 composition:v14 options:v13 completion:v18];
+  v19 = completionCopy;
+  v15 = completionCopy;
+  v16 = [newExporter exportVideoToURL:lCopy composition:composition options:newVideoExporterOptions completion:v18];
 
   return v16;
 }
@@ -1364,20 +1364,20 @@ void __85__PLPhotoEditRenderer_exportVideoToURL_preset_livePhotoPairingIdentifie
   return objc_alloc_init(PICompositionExporterClass);
 }
 
-- (PLPhotoEditRenderer)initWithEditSource:(id)a3 renderPriority:(int64_t)a4
+- (PLPhotoEditRenderer)initWithEditSource:(id)source renderPriority:(int64_t)priority
 {
-  v8 = a3;
-  if (!v8)
+  sourceCopy = source;
+  if (!sourceCopy)
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"PLPhotoEditRenderer.m" lineNumber:207 description:{@"Invalid parameter not satisfying: %@", @"editSource"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPhotoEditRenderer.m" lineNumber:207 description:{@"Invalid parameter not satisfying: %@", @"editSource"}];
   }
 
   v25.receiver = self;
   v25.super_class = PLPhotoEditRenderer;
   v9 = [(PLPhotoEditRenderer *)&v25 init];
   [objc_opt_class() configureNeutrinoCacheDirectoryIfNeeded];
-  objc_storeStrong(&v9->_editSource, a3);
+  objc_storeStrong(&v9->_editSource, source);
   v10 = objc_alloc_init(getNURenderContextClass());
   imageRenderContext = v9->_imageRenderContext;
   v9->_imageRenderContext = v10;
@@ -1410,9 +1410,9 @@ void __85__PLPhotoEditRenderer_exportVideoToURL_preset_livePhotoPairingIdentifie
     v18 = v28[3];
   }
 
-  if (a4 <= 3)
+  if (priority <= 3)
   {
-    v19 = 3 - a4;
+    v19 = 3 - priority;
   }
 
   else
@@ -1429,10 +1429,10 @@ void __85__PLPhotoEditRenderer_exportVideoToURL_preset_livePhotoPairingIdentifie
   return v9;
 }
 
-+ (void)updateCompositionController:(id)a3 fromPortraitMetadata:(id)a4
++ (void)updateCompositionController:(id)controller fromPortraitMetadata:(id)metadata
 {
-  v5 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  metadataCopy = metadata;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2050000000;
@@ -1451,26 +1451,26 @@ void __85__PLPhotoEditRenderer_exportVideoToURL_preset_livePhotoPairingIdentifie
 
   v8 = v7;
   _Block_object_dispose(&v21, 8);
-  v9 = [v7 portraitInfoDictionaryFromCameraMetadata:v6];
+  v9 = [v7 portraitInfoDictionaryFromCameraMetadata:metadataCopy];
   v10 = +[PLCompositionHelper adjustmentConstants];
-  v11 = [v10 PIDepthAdjustmentKey];
+  pIDepthAdjustmentKey = [v10 PIDepthAdjustmentKey];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __72__PLPhotoEditRenderer_updateCompositionController_fromPortraitMetadata___block_invoke;
   v18[3] = &unk_1E756AA18;
   v12 = v9;
   v19 = v12;
-  [v5 modifyAdjustmentWithKey:v11 modificationBlock:v18];
+  [controllerCopy modifyAdjustmentWithKey:pIDepthAdjustmentKey modificationBlock:v18];
 
   v13 = +[PLCompositionHelper adjustmentConstants];
-  v14 = [v13 PIPortraitAdjustmentKey];
+  pIPortraitAdjustmentKey = [v13 PIPortraitAdjustmentKey];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __72__PLPhotoEditRenderer_updateCompositionController_fromPortraitMetadata___block_invoke_2;
   v16[3] = &unk_1E756AA40;
   v17 = v12;
   v15 = v12;
-  [v5 modifyAdjustmentWithKey:v14 modificationBlock:v16];
+  [controllerCopy modifyAdjustmentWithKey:pIPortraitAdjustmentKey modificationBlock:v16];
 }
 
 void __72__PLPhotoEditRenderer_updateCompositionController_fromPortraitMetadata___block_invoke(uint64_t a1, void *a2)
@@ -1754,18 +1754,18 @@ void __57__PLPhotoEditRenderer_currentDeviceShouldAllowLocalLight__block_invoke(
   }
 }
 
-+ (id)newImageDataFromCGImage:(CGImage *)a3 withCompressionQuality:(double)a4 metadataSourceImageURL:(id)a5 preserveRegionsInMetadata:(BOOL)a6
++ (id)newImageDataFromCGImage:(CGImage *)image withCompressionQuality:(double)quality metadataSourceImageURL:(id)l preserveRegionsInMetadata:(BOOL)metadata
 {
-  v6 = a6;
+  metadataCopy = metadata;
   v23[1] = *MEMORY[0x1E69E9840];
-  v9 = a5;
+  lCopy = l;
   v10 = objc_alloc_init(MEMORY[0x1E695DF88]);
-  v11 = [*MEMORY[0x1E6982E58] identifier];
-  v12 = CGImageDestinationCreateWithData(v10, v11, 1uLL, 0);
+  identifier = [*MEMORY[0x1E6982E58] identifier];
+  v12 = CGImageDestinationCreateWithData(v10, identifier, 1uLL, 0);
 
   if (v12)
   {
-    if (v9 && (v13 = CGImageSourceCreateWithURL(v9, 0)) != 0)
+    if (lCopy && (v13 = CGImageSourceCreateWithURL(lCopy, 0)) != 0)
     {
       v14 = v13;
       v15 = CGImageSourceCopyPropertiesAtIndex(v13, 0, 0);
@@ -1778,7 +1778,7 @@ void __57__PLPhotoEditRenderer_currentDeviceShouldAllowLocalLight__block_invoke(
     }
 
     v22 = *MEMORY[0x1E696D338];
-    v16 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
+    v16 = [MEMORY[0x1E696AD98] numberWithDouble:quality];
     v23[0] = v16;
     v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
     CGImageDestinationSetProperties(v12, v17);
@@ -1788,8 +1788,8 @@ void __57__PLPhotoEditRenderer_currentDeviceShouldAllowLocalLight__block_invoke(
       v15 = MEMORY[0x1E695E0F8];
     }
 
-    v18 = [getPICompositionExporterClass() resetImageProperties:v15 preserveRegions:v6];
-    CGImageDestinationAddImage(v12, a3, v18);
+    v18 = [getPICompositionExporterClass() resetImageProperties:v15 preserveRegions:metadataCopy];
+    CGImageDestinationAddImage(v12, image, v18);
     if (!CGImageDestinationFinalize(v12))
     {
       v19 = PLBackendGetLog();
@@ -1808,43 +1808,43 @@ void __57__PLPhotoEditRenderer_currentDeviceShouldAllowLocalLight__block_invoke(
   return v10;
 }
 
-+ (id)compositionWithController:(id)a3 source:(id)a4
++ (id)compositionWithController:(id)controller source:(id)source
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 source];
-  [v6 setSource:v7 mediaType:{objc_msgSend(v5, "mediaType")}];
+  sourceCopy = source;
+  controllerCopy = controller;
+  source = [sourceCopy source];
+  [controllerCopy setSource:source mediaType:{objc_msgSend(sourceCopy, "mediaType")}];
 
-  v8 = [v5 mediaType];
-  v9 = [PLCompositionHelper validatedCompositionCopyFor:v6 mediaType:v8];
+  mediaType = [sourceCopy mediaType];
+  v9 = [PLCompositionHelper validatedCompositionCopyFor:controllerCopy mediaType:mediaType];
 
   return v9;
 }
 
-+ (id)rendererForVideoURL:(id)a3 livePhotoStillURL:(id)a4 adjustmentData:(id)a5 formatIdentifier:(id)a6 formatVersion:(id)a7
++ (id)rendererForVideoURL:(id)l livePhotoStillURL:(id)rL adjustmentData:(id)data formatIdentifier:(id)identifier formatVersion:(id)version
 {
   v57 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v44 = a5;
-  v45 = a6;
-  v46 = a7;
-  v42 = v13;
-  if (v14)
+  lCopy = l;
+  rLCopy = rL;
+  dataCopy = data;
+  identifierCopy = identifier;
+  versionCopy = version;
+  v42 = lCopy;
+  if (rLCopy)
   {
-    v43 = [PLLivePhotoEditSource livePhotoSourceWithPhotoURL:v14 videoComplementURL:v13];
+    v43 = [PLLivePhotoEditSource livePhotoSourceWithPhotoURL:rLCopy videoComplementURL:lCopy];
     v15 = 3;
   }
 
   else
   {
-    v43 = [[PLVideoEditSource alloc] initWithVideoURL:v13];
+    v43 = [[PLVideoEditSource alloc] initWithVideoURL:lCopy];
     v15 = 2;
   }
 
   v16 = objc_alloc_init(PLPhotoEditPersistenceManager);
   v48 = 0;
-  v17 = [(PLPhotoEditPersistenceManager *)v16 loadCompositionFrom:v44 formatIdentifier:v45 formatVersion:v46 sidecarData:0 error:&v48];
+  v17 = [(PLPhotoEditPersistenceManager *)v16 loadCompositionFrom:dataCopy formatIdentifier:identifierCopy formatVersion:versionCopy sidecarData:0 error:&v48];
   v18 = v48;
   v19 = v18;
   if (!v17 || v18)
@@ -1863,22 +1863,22 @@ void __57__PLPhotoEditRenderer_currentDeviceShouldAllowLocalLight__block_invoke(
   else
   {
     v20 = [getPIPhotoEditHelperClass_30489() newCompositionControllerWithComposition:v17];
-    v21 = [(PLEditSource *)v43 source];
-    [v20 setSource:v21 mediaType:v15];
+    source = [(PLEditSource *)v43 source];
+    [v20 setSource:source mediaType:v15];
 
     v41 = [v20 copy];
-    v22 = [v41 composition];
-    v23 = v22 == 0;
+    composition = [v41 composition];
+    v23 = composition == 0;
 
     if (v23)
     {
-      v37 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v37 handleFailureInMethod:a2 object:a1 file:@"PLPhotoEditRenderer.m" lineNumber:257 description:@"Composition controller has no NUComposition!"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PLPhotoEditRenderer.m" lineNumber:257 description:@"Composition controller has no NUComposition!"];
     }
 
     PIPhotoEditHelperClass_30489 = getPIPhotoEditHelperClass_30489();
-    v25 = [v41 composition];
-    v26 = [PIPhotoEditHelperClass_30489 videoPropertiesRequestWithComposition:v25];
+    composition2 = [v41 composition];
+    v26 = [PIPhotoEditHelperClass_30489 videoPropertiesRequestWithComposition:composition2];
 
     [v26 setName:@"PLPhotoEditRenderer-getInputOrientation"];
     v47 = 0;
@@ -1886,8 +1886,8 @@ void __57__PLPhotoEditRenderer_currentDeviceShouldAllowLocalLight__block_invoke(
     v40 = v47;
     if (v27)
     {
-      v28 = [v27 properties];
-      v29 = [v28 orientation];
+      properties = [v27 properties];
+      orientation = [properties orientation];
 
       v49 = 0;
       v50 = &v49;
@@ -1911,16 +1911,16 @@ void __57__PLPhotoEditRenderer_currentDeviceShouldAllowLocalLight__block_invoke(
       _Block_object_dispose(&v49, 8);
       if (!v30)
       {
-        v38 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
         v39 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NUOrientation SOFT_LINKED_NUOrientationIsValid(NUOrientation)"];
-        [v38 handleFailureInFunction:v39 file:@"PLPhotoEditRenderer.m" lineNumber:83 description:{@"%s", dlerror()}];
+        [currentHandler2 handleFailureInFunction:v39 file:@"PLPhotoEditRenderer.m" lineNumber:83 description:{@"%s", dlerror()}];
 
         __break(1u);
       }
 
-      if (v30(v29))
+      if (v30(orientation))
       {
-        [PLCompositionHelper compositionController:v20 setInputOrientation:v29];
+        [PLCompositionHelper compositionController:v20 setInputOrientation:orientation];
       }
 
       else
@@ -1929,7 +1929,7 @@ void __57__PLPhotoEditRenderer_currentDeviceShouldAllowLocalLight__block_invoke(
         if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
         {
           LODWORD(buf) = 67109120;
-          DWORD1(buf) = v29;
+          DWORD1(buf) = orientation;
           _os_log_impl(&dword_19BF1F000, v35, OS_LOG_TYPE_ERROR, "video orientation from the video properties is invalid: %d", &buf, 8u);
         }
       }

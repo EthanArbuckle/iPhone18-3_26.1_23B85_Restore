@@ -1,38 +1,38 @@
 @interface IMSuggestedRepliesMessagePartChatItem
-- (BOOL)isEqual:(id)a3;
-- (IMSuggestedRepliesMessagePartChatItem)initWithItem:(id)a3 suggestedRepliesList:(id)a4 selectedIndex:(int64_t)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (IMSuggestedRepliesMessagePartChatItem)initWithItem:(id)item suggestedRepliesList:(id)list selectedIndex:(int64_t)index;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation IMSuggestedRepliesMessagePartChatItem
 
-- (IMSuggestedRepliesMessagePartChatItem)initWithItem:(id)a3 suggestedRepliesList:(id)a4 selectedIndex:(int64_t)a5
+- (IMSuggestedRepliesMessagePartChatItem)initWithItem:(id)item suggestedRepliesList:(id)list selectedIndex:(int64_t)index
 {
-  v8 = a3;
-  v9 = a4;
+  itemCopy = item;
+  listCopy = list;
   v18.receiver = self;
   v18.super_class = IMSuggestedRepliesMessagePartChatItem;
-  v12 = [(IMChatItem *)&v18 _initWithItem:v8];
+  v12 = [(IMChatItem *)&v18 _initWithItem:itemCopy];
   if (v12)
   {
-    v13 = objc_msgSend_guid(v8, v10, v11);
+    v13 = objc_msgSend_guid(itemCopy, v10, v11);
     v15 = objc_msgSend_stringByAppendingString_(@"lre:", v14, v13);
     objc_msgSend__setGUID_(v12, v16, v15);
 
-    objc_storeStrong(&v12->_suggestedRepliesList, a4);
-    v12->_selectedIndex = a5;
+    objc_storeStrong(&v12->_suggestedRepliesList, list);
+    v12->_selectedIndex = index;
   }
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v8 = objc_msgSend_guid(self, v6, v7);
     v11 = objc_msgSend_guid(v5, v9, v10);
     if (objc_msgSend_isEqualToString_(v8, v12, v11))
@@ -65,7 +65,7 @@
   return v25;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   v7 = objc_msgSend_messageItem(self, v5, v6);

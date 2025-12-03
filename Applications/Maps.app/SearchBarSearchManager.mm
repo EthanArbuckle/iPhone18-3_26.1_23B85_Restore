@@ -1,15 +1,15 @@
 @interface SearchBarSearchManager
-- (SearchBarSearchManager)initWithDelegate:(id)a3;
+- (SearchBarSearchManager)initWithDelegate:(id)delegate;
 - (SearchBarSearchManagerDelegate)delegate;
-- (int64_t)_integerValueForDefaultsKey:(id)a3 networkDefaultsKey:(id)a4;
-- (void)_searchUsingSearchRequest:(id)a3 backfill:(int64_t)a4;
+- (int64_t)_integerValueForDefaultsKey:(id)key networkDefaultsKey:(id)defaultsKey;
+- (void)_searchUsingSearchRequest:(id)request backfill:(int64_t)backfill;
 - (void)dealloc;
-- (void)historyOperation:(id)a3 didFindMatches:(id)a4;
-- (void)searchAddressBookOperation:(id)a3 didMatchResults:(id)a4;
-- (void)searchFindMyFriendOperation:(id)a3 didMatchResults:(id)a4;
-- (void)searchMapsSyncOperation:(id)a3 didMatchResults:(id)a4;
-- (void)searchName:(id)a3 forSearchMode:(unsigned int)a4 backfill:(int64_t)a5 context:(id)a6 originationType:(int)a7;
-- (void)searchRecentsOperation:(id)a3 didMatchResults:(id)a4;
+- (void)historyOperation:(id)operation didFindMatches:(id)matches;
+- (void)searchAddressBookOperation:(id)operation didMatchResults:(id)results;
+- (void)searchFindMyFriendOperation:(id)operation didMatchResults:(id)results;
+- (void)searchMapsSyncOperation:(id)operation didMatchResults:(id)results;
+- (void)searchName:(id)name forSearchMode:(unsigned int)mode backfill:(int64_t)backfill context:(id)context originationType:(int)type;
+- (void)searchRecentsOperation:(id)operation didMatchResults:(id)results;
 @end
 
 @implementation SearchBarSearchManager
@@ -21,15 +21,15 @@
   return WeakRetained;
 }
 
-- (void)_searchUsingSearchRequest:(id)a3 backfill:(int64_t)a4
+- (void)_searchUsingSearchRequest:(id)request backfill:(int64_t)backfill
 {
-  v66 = a3;
+  requestCopy = request;
   v4 = sub_100067540();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
-    v5 = [v66 searchName];
+    searchName = [requestCopy searchName];
     *buf = 138412290;
-    v77 = v5;
+    v77 = searchName;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "SearchBarSearchManager - collecting results for query: %@", buf, 0xCu);
   }
 
@@ -48,10 +48,10 @@
   searchResults = self->_searchResults;
   self->_searchResults = v9;
 
-  v11 = [v66 searchName];
-  [(SearchBarSearchManager *)self setQuery:v11];
+  searchName2 = [requestCopy searchName];
+  [(SearchBarSearchManager *)self setQuery:searchName2];
 
-  v65 = [v66 context];
+  context = [requestCopy context];
   v12 = [(SearchBarSearchManager *)self _integerValueForDefaultsKey:@"HistorySearchOrderKey" networkDefaultsKey:145, &unk_10163D8F0];
   v13 = [(SearchBarSearchManager *)self _integerValueForDefaultsKey:@"RecentsSeachOrderKey" networkDefaultsKey:143, &unk_10163D880];
   v14 = [(SearchBarSearchManager *)self _integerValueForDefaultsKey:@"AddressBookSearchOrderKey" networkDefaultsKey:141, &unk_10163D810];
@@ -60,15 +60,15 @@
   BOOL = GEOConfigGetBOOL();
   v16 = +[NSMutableDictionary dictionary];
   v17 = +[Recents sharedRecents];
-  v18 = [v17 recents];
-  v19 = [v18 copy];
+  recents = [v17 recents];
+  v19 = [recents copy];
 
   v20 = [SearchHistoryOperation alloc];
-  v21 = [v66 searchName];
-  v22 = -[SearchHistoryOperation initWithSearchQuery:searchMode:history:context:](v20, "initWithSearchQuery:searchMode:history:context:", v21, [v66 searchMode], v19, v65);
+  searchName3 = [requestCopy searchName];
+  v22 = -[SearchHistoryOperation initWithSearchQuery:searchMode:history:context:](v20, "initWithSearchQuery:searchMode:history:context:", searchName3, [requestCopy searchMode], v19, context);
 
-  v23 = [v66 searchName];
-  v24 = [NSString stringWithFormat:@"%@-%@", @"HistoryOperation", v23];
+  searchName4 = [requestCopy searchName];
+  v24 = [NSString stringWithFormat:@"%@-%@", @"HistoryOperation", searchName4];
   [(SearchHistoryOperation *)v22 setName:v24];
 
   [(SearchHistoryOperation *)v22 setDelegate:self];
@@ -77,10 +77,10 @@
 
   if (+[MapsSuggestionsSiri isEnabled])
   {
-    v26 = [[SearchRecentsOperation alloc] initWithSearchQuery:self->_query context:v65];
+    v26 = [[SearchRecentsOperation alloc] initWithSearchQuery:self->_query context:context];
     [(SearchRecentsOperation *)v26 setDelegate:self];
-    v27 = [v66 searchName];
-    v28 = [NSString stringWithFormat:@"%@-%@", @"RecentsOperation", v27];
+    searchName5 = [requestCopy searchName];
+    v28 = [NSString stringWithFormat:@"%@-%@", @"RecentsOperation", searchName5];
     [(SearchRecentsOperation *)v26 setName:v28];
 
     v29 = [NSNumber numberWithInteger:v13];
@@ -89,10 +89,10 @@
 
   if ((MapsFeature_IsEnabled_MapsWally() & 1) == 0)
   {
-    v30 = [[SearchAddressBookOperation alloc] initWithSearchQuery:self->_query context:v65];
+    v30 = [[SearchAddressBookOperation alloc] initWithSearchQuery:self->_query context:context];
     [(SearchAddressBookOperation *)v30 setDelegate:self];
-    v31 = [v66 searchName];
-    v32 = [NSString stringWithFormat:@"%@-%@", @"AddressBookOperation", v31];
+    searchName6 = [requestCopy searchName];
+    v32 = [NSString stringWithFormat:@"%@-%@", @"AddressBookOperation", searchName6];
     [(SearchAddressBookOperation *)v30 setName:v32];
 
     v33 = [NSNumber numberWithInteger:v14];
@@ -101,25 +101,25 @@
 
   if (MapsFeature_IsEnabled_MapsWally())
   {
-    if ([v66 searchMode] == 3)
+    if ([requestCopy searchMode] == 3)
     {
-      v34 = [[SearchAddressBookOperation alloc] initWithSearchQuery:self->_query context:v65];
+      v34 = [[SearchAddressBookOperation alloc] initWithSearchQuery:self->_query context:context];
       v35 = @"CarPlay-AddressBookOperation";
     }
 
     else
     {
       v36 = +[MapsOfflineUIHelper sharedHelper];
-      v37 = [v36 isUsingOfflineMaps];
+      isUsingOfflineMaps = [v36 isUsingOfflineMaps];
 
-      v34 = -[SearchFindMyFriendOperation initWithSearchQuery:context:isOffline:singularResults:searchFindMySession:]([_TtC4Maps27SearchFindMyFriendOperation alloc], "initWithSearchQuery:context:isOffline:singularResults:searchFindMySession:", self->_query, v65, v37, [v66 originationType] - 1 < 2, self->_findMySession);
+      v34 = -[SearchFindMyFriendOperation initWithSearchQuery:context:isOffline:singularResults:searchFindMySession:]([_TtC4Maps27SearchFindMyFriendOperation alloc], "initWithSearchQuery:context:isOffline:singularResults:searchFindMySession:", self->_query, context, isUsingOfflineMaps, [requestCopy originationType] - 1 < 2, self->_findMySession);
       v14 = v15;
       v35 = @"SearchFMOperation";
     }
 
     [(SearchAddressBookOperation *)v34 setDelegate:self];
-    v38 = [v66 searchName];
-    v39 = [NSString stringWithFormat:@"%@-%@", v35, v38];
+    searchName7 = [requestCopy searchName];
+    v39 = [NSString stringWithFormat:@"%@-%@", v35, searchName7];
     [(SearchAddressBookOperation *)v34 setName:v39];
 
     v40 = [NSNumber numberWithInteger:v14];
@@ -128,20 +128,20 @@
 
   if (BOOL)
   {
-    if ([v66 originationType])
+    if ([requestCopy originationType])
     {
       v41 = 0;
     }
 
     else
     {
-      v41 = [v66 searchMode] == 1;
+      v41 = [requestCopy searchMode] == 1;
     }
 
-    v42 = [[_TtC4Maps23SearchMapsSyncOperation alloc] initWithSearchQuery:self->_query context:v65 includeCustomRoutes:v41];
+    v42 = [[_TtC4Maps23SearchMapsSyncOperation alloc] initWithSearchQuery:self->_query context:context includeCustomRoutes:v41];
     [(SearchMapsSyncOperation *)v42 setDelegate:self];
-    v43 = [v66 searchName];
-    v44 = [NSString stringWithFormat:@"%@-%@", @"MapsSyncOperation", v43];
+    searchName8 = [requestCopy searchName];
+    v44 = [NSString stringWithFormat:@"%@-%@", @"MapsSyncOperation", searchName8];
     [(SearchMapsSyncOperation *)v42 setName:v44];
 
     v45 = [NSNumber numberWithInteger:v63];
@@ -161,8 +161,8 @@
   v75 = 0u;
   v72 = 0u;
   v73 = 0u;
-  v49 = [v16 allKeys];
-  v50 = [v49 sortedArrayUsingSelector:"compare:"];
+  allKeys = [v16 allKeys];
+  v50 = [allKeys sortedArrayUsingSelector:"compare:"];
 
   v51 = [v50 countByEnumeratingWithState:&v72 objects:v82 count:16];
   if (v51)
@@ -181,9 +181,9 @@
         v55 = sub_100067540();
         if (os_log_type_enabled(v55, OS_LOG_TYPE_DEFAULT))
         {
-          v56 = [v54 name];
+          name = [v54 name];
           *buf = 138412290;
-          v77 = v56;
+          v77 = name;
           _os_log_impl(&_mh_execute_header, v55, OS_LOG_TYPE_DEFAULT, "SearchBarSearchManager - Adding operation: %@", buf, 0xCu);
         }
 
@@ -200,12 +200,12 @@
   if (os_log_type_enabled(v57, OS_LOG_TYPE_DEFAULT))
   {
     v58 = self->_searchQueue;
-    v59 = [(NSOperationQueue *)v58 operations];
+    operations = [(NSOperationQueue *)v58 operations];
     query = self->_query;
     *buf = 138412802;
     v77 = v58;
     v78 = 2112;
-    v79 = v59;
+    v79 = operations;
     v80 = 2112;
     v81 = query;
     _os_log_impl(&_mh_execute_header, v57, OS_LOG_TYPE_DEFAULT, "SearchBarSearchManager - searchQueue:%@ \n operations: %@ \n searchQuery: %@", buf, 0x20u);
@@ -218,9 +218,9 @@
   v69[2] = sub_1006B6268;
   v69[3] = &unk_10162BD20;
   objc_copyWeak(v71, buf);
-  v71[1] = a4;
+  v71[1] = backfill;
   v69[4] = self;
-  v62 = v65;
+  v62 = context;
   v70 = v62;
   [(NSOperationQueue *)v61 addOperationWithBlock:v69];
 
@@ -228,16 +228,16 @@
   objc_destroyWeak(buf);
 }
 
-- (int64_t)_integerValueForDefaultsKey:(id)a3 networkDefaultsKey:(id)a4
+- (int64_t)_integerValueForDefaultsKey:(id)key networkDefaultsKey:(id)defaultsKey
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = +[NSUserDefaults standardUserDefaults];
-  v6 = [v5 objectForKey:v4];
+  v6 = [v5 objectForKey:keyCopy];
 
   if (v6)
   {
     v7 = +[NSUserDefaults standardUserDefaults];
-    Integer = [v7 integerForKey:v4];
+    Integer = [v7 integerForKey:keyCopy];
   }
 
   else
@@ -248,28 +248,28 @@
   return Integer;
 }
 
-- (void)searchName:(id)a3 forSearchMode:(unsigned int)a4 backfill:(int64_t)a5 context:(id)a6 originationType:(int)a7
+- (void)searchName:(id)name forSearchMode:(unsigned int)mode backfill:(int64_t)backfill context:(id)context originationType:(int)type
 {
-  v7 = *&a7;
-  v9 = *&a4;
-  v12 = a6;
-  v13 = a3;
+  v7 = *&type;
+  v9 = *&mode;
+  contextCopy = context;
+  nameCopy = name;
   v14 = objc_alloc_init(SearchBarSearchManagerRequest);
-  [(SearchBarSearchManagerRequest *)v14 setSearchName:v13];
+  [(SearchBarSearchManagerRequest *)v14 setSearchName:nameCopy];
 
   [(SearchBarSearchManagerRequest *)v14 setSearchMode:v9];
-  [(SearchBarSearchManagerRequest *)v14 setContext:v12];
+  [(SearchBarSearchManagerRequest *)v14 setContext:contextCopy];
 
   [(SearchBarSearchManagerRequest *)v14 setOriginationType:v7];
-  [(SearchBarSearchManager *)self _searchUsingSearchRequest:v14 backfill:a5];
+  [(SearchBarSearchManager *)self _searchUsingSearchRequest:v14 backfill:backfill];
 }
 
-- (void)searchMapsSyncOperation:(id)a3 didMatchResults:(id)a4
+- (void)searchMapsSyncOperation:(id)operation didMatchResults:(id)results
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7 && [v7 count])
+  operationCopy = operation;
+  resultsCopy = results;
+  v8 = resultsCopy;
+  if (resultsCopy && [resultsCopy count])
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -277,47 +277,47 @@
     block[3] = &unk_101661A40;
     block[4] = self;
     v10 = v8;
-    v11 = v6;
+    v11 = operationCopy;
     dispatch_sync(&_dispatch_main_q, block);
   }
 }
 
-- (void)searchFindMyFriendOperation:(id)a3 didMatchResults:(id)a4
+- (void)searchFindMyFriendOperation:(id)operation didMatchResults:(id)results
 {
-  v6 = a3;
+  operationCopy = operation;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1006B68C0;
   block[3] = &unk_101661A40;
-  v10 = a4;
-  v11 = self;
-  v12 = v6;
-  v7 = v6;
-  v8 = v10;
+  resultsCopy = results;
+  selfCopy = self;
+  v12 = operationCopy;
+  v7 = operationCopy;
+  v8 = resultsCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)searchAddressBookOperation:(id)a3 didMatchResults:(id)a4
+- (void)searchAddressBookOperation:(id)operation didMatchResults:(id)results
 {
-  v6 = a3;
+  operationCopy = operation;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1006B6A94;
   block[3] = &unk_101661A40;
-  v10 = a4;
-  v11 = self;
-  v12 = v6;
-  v7 = v6;
-  v8 = v10;
+  resultsCopy = results;
+  selfCopy = self;
+  v12 = operationCopy;
+  v7 = operationCopy;
+  v8 = resultsCopy;
   dispatch_sync(&_dispatch_main_q, block);
 }
 
-- (void)searchRecentsOperation:(id)a3 didMatchResults:(id)a4
+- (void)searchRecentsOperation:(id)operation didMatchResults:(id)results
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7 && [v7 count])
+  operationCopy = operation;
+  resultsCopy = results;
+  v8 = resultsCopy;
+  if (resultsCopy && [resultsCopy count])
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -325,17 +325,17 @@
     block[3] = &unk_101661A40;
     block[4] = self;
     v10 = v8;
-    v11 = v6;
+    v11 = operationCopy;
     dispatch_sync(&_dispatch_main_q, block);
   }
 }
 
-- (void)historyOperation:(id)a3 didFindMatches:(id)a4
+- (void)historyOperation:(id)operation didFindMatches:(id)matches
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7 && [v7 count])
+  operationCopy = operation;
+  matchesCopy = matches;
+  v8 = matchesCopy;
+  if (matchesCopy && [matchesCopy count])
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -343,7 +343,7 @@
     block[3] = &unk_101661A40;
     block[4] = self;
     v10 = v8;
-    v11 = v6;
+    v11 = operationCopy;
     dispatch_sync(&_dispatch_main_q, block);
   }
 }
@@ -356,16 +356,16 @@
   [(SearchBarSearchManager *)&v3 dealloc];
 }
 
-- (SearchBarSearchManager)initWithDelegate:(id)a3
+- (SearchBarSearchManager)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = SearchBarSearchManager;
   v5 = [(SearchBarSearchManager *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    [(SearchBarSearchManager *)v5 setDelegate:v4];
+    [(SearchBarSearchManager *)v5 setDelegate:delegateCopy];
     v7 = objc_alloc_init(SearchBarSearchResults);
     searchResults = v6->_searchResults;
     v6->_searchResults = v7;

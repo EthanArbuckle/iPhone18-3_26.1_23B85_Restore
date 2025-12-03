@@ -1,24 +1,24 @@
 @interface OBPrivacyBundleProvider
 - (NSString)path;
-- (OBPrivacyBundleProvider)initWithEnclosingBundleIdentifier:(id)a3 privacyBundleName:(id)a4;
-- (id)_bundleRecordWithError:(id *)a3;
+- (OBPrivacyBundleProvider)initWithEnclosingBundleIdentifier:(id)identifier privacyBundleName:(id)name;
+- (id)_bundleRecordWithError:(id *)error;
 - (void)path;
 @end
 
 @implementation OBPrivacyBundleProvider
 
-- (OBPrivacyBundleProvider)initWithEnclosingBundleIdentifier:(id)a3 privacyBundleName:(id)a4
+- (OBPrivacyBundleProvider)initWithEnclosingBundleIdentifier:(id)identifier privacyBundleName:(id)name
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  nameCopy = name;
   v12.receiver = self;
   v12.super_class = OBPrivacyBundleProvider;
   v9 = [(OBPrivacyBundleProvider *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_enclosingBundleIdentifier, a3);
-    objc_storeStrong(&v10->_privacyBundleName, a4);
+    objc_storeStrong(&v9->_enclosingBundleIdentifier, identifier);
+    objc_storeStrong(&v10->_privacyBundleName, name);
   }
 
   return v10;
@@ -49,17 +49,17 @@
 
     if (v8)
     {
-      v9 = [(OBPrivacyBundleProvider *)self privacyBundleName];
-      v10 = [v9 stringByDeletingPathExtension];
-      v11 = [(OBPrivacyBundleProvider *)self privacyBundleName];
-      v12 = [v11 pathExtension];
-      v13 = [v8 pathForResource:v10 ofType:v12 inDirectory:0 forLocalization:0];
+      privacyBundleName = [(OBPrivacyBundleProvider *)self privacyBundleName];
+      stringByDeletingPathExtension = [privacyBundleName stringByDeletingPathExtension];
+      privacyBundleName2 = [(OBPrivacyBundleProvider *)self privacyBundleName];
+      pathExtension = [privacyBundleName2 pathExtension];
+      v13 = [v8 pathForResource:stringByDeletingPathExtension ofType:pathExtension inDirectory:0 forLocalization:0];
     }
 
     else
     {
-      v9 = _OBLoggingFacility();
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+      privacyBundleName = _OBLoggingFacility();
+      if (os_log_type_enabled(privacyBundleName, OS_LOG_TYPE_ERROR))
       {
         [(OBPrivacyBundleProvider *)self path];
       }
@@ -71,11 +71,11 @@
   return v13;
 }
 
-- (id)_bundleRecordWithError:(id *)a3
+- (id)_bundleRecordWithError:(id *)error
 {
   v4 = MEMORY[0x1E6963620];
-  v5 = [(OBPrivacyBundleProvider *)self enclosingBundleIdentifier];
-  v6 = [v4 bundleRecordWithBundleIdentifier:v5 allowPlaceholder:0 error:a3];
+  enclosingBundleIdentifier = [(OBPrivacyBundleProvider *)self enclosingBundleIdentifier];
+  v6 = [v4 bundleRecordWithBundleIdentifier:enclosingBundleIdentifier allowPlaceholder:0 error:error];
 
   return v6;
 }
@@ -83,17 +83,17 @@
 - (void)path
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = [a1 enclosingBundleIdentifier];
+  enclosingBundleIdentifier = [self enclosingBundleIdentifier];
   has_internal_ui = os_variant_has_internal_ui();
   if ((has_internal_ui & 1) == 0)
   {
     v8 = MEMORY[0x1E696AEC0];
-    v3 = [a2 domain];
-    a2 = [v8 stringWithFormat:@"<Error domain: %@, code %ld>", v3, objc_msgSend(a2, "code")];
+    domain = [a2 domain];
+    a2 = [v8 stringWithFormat:@"<Error domain: %@, code %ld>", domain, objc_msgSend(a2, "code")];
   }
 
   *buf = 138543618;
-  v11 = v6;
+  v11 = enclosingBundleIdentifier;
   v12 = 2114;
   v13 = a2;
   _os_log_error_impl(&dword_1B4FB6000, a3, OS_LOG_TYPE_ERROR, "Failed to create bundle record for %{public}@ error %{public}@", buf, 0x16u);

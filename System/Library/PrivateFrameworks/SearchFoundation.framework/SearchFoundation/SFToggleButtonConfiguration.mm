@@ -1,46 +1,46 @@
 @interface SFToggleButtonConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFToggleButtonConfiguration)initWithCoder:(id)a3;
-- (SFToggleButtonConfiguration)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFToggleButtonConfiguration)initWithCoder:(id)coder;
+- (SFToggleButtonConfiguration)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFToggleButtonConfiguration
 
 - (unint64_t)hash
 {
-  v3 = [(SFToggleButtonConfiguration *)self untoggledTitle];
-  v4 = [v3 hash];
-  v5 = [(SFToggleButtonConfiguration *)self toggledTitle];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(SFToggleButtonConfiguration *)self untoggledImage];
-  v8 = [v7 hash];
-  v9 = [(SFToggleButtonConfiguration *)self toggledImage];
-  v10 = v8 ^ [v9 hash];
+  untoggledTitle = [(SFToggleButtonConfiguration *)self untoggledTitle];
+  v4 = [untoggledTitle hash];
+  toggledTitle = [(SFToggleButtonConfiguration *)self toggledTitle];
+  v6 = [toggledTitle hash] ^ v4;
+  untoggledImage = [(SFToggleButtonConfiguration *)self untoggledImage];
+  v8 = [untoggledImage hash];
+  toggledImage = [(SFToggleButtonConfiguration *)self toggledImage];
+  v10 = v8 ^ [toggledImage hash];
 
   return v6 ^ v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(SFToggleButtonConfiguration *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(SFToggleButtonConfiguration *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v6 = v5;
-      v7 = [(SFToggleButtonConfiguration *)self untoggledTitle];
-      v8 = [(SFToggleButtonConfiguration *)v6 untoggledTitle];
-      if ((v7 != 0) == (v8 == 0))
+      v6 = equalCopy;
+      untoggledTitle = [(SFToggleButtonConfiguration *)self untoggledTitle];
+      untoggledTitle2 = [(SFToggleButtonConfiguration *)v6 untoggledTitle];
+      if ((untoggledTitle != 0) == (untoggledTitle2 == 0))
       {
         v11 = 0;
 LABEL_37:
@@ -48,65 +48,65 @@ LABEL_37:
         goto LABEL_38;
       }
 
-      v9 = [(SFToggleButtonConfiguration *)self untoggledTitle];
-      if (v9)
+      untoggledTitle3 = [(SFToggleButtonConfiguration *)self untoggledTitle];
+      if (untoggledTitle3)
       {
-        v10 = [(SFToggleButtonConfiguration *)self untoggledTitle];
-        v3 = [(SFToggleButtonConfiguration *)v6 untoggledTitle];
-        if (![v10 isEqual:v3])
+        untoggledTitle4 = [(SFToggleButtonConfiguration *)self untoggledTitle];
+        untoggledTitle5 = [(SFToggleButtonConfiguration *)v6 untoggledTitle];
+        if (![untoggledTitle4 isEqual:untoggledTitle5])
         {
           v11 = 0;
           goto LABEL_35;
         }
 
-        v41 = v10;
+        v41 = untoggledTitle4;
       }
 
-      v12 = [(SFToggleButtonConfiguration *)self toggledTitle];
-      v13 = [(SFToggleButtonConfiguration *)v6 toggledTitle];
-      v14 = v13;
-      if ((v12 != 0) == (v13 == 0))
+      toggledTitle = [(SFToggleButtonConfiguration *)self toggledTitle];
+      toggledTitle2 = [(SFToggleButtonConfiguration *)v6 toggledTitle];
+      v14 = toggledTitle2;
+      if ((toggledTitle != 0) == (toggledTitle2 == 0))
       {
 
         v11 = 0;
         goto LABEL_34;
       }
 
-      v15 = [(SFToggleButtonConfiguration *)self toggledTitle];
-      v40 = v15;
-      if (v15)
+      toggledTitle3 = [(SFToggleButtonConfiguration *)self toggledTitle];
+      v40 = toggledTitle3;
+      if (toggledTitle3)
       {
-        v16 = v15;
+        v16 = toggledTitle3;
         v35 = v14;
-        v17 = v12;
-        v18 = [(SFToggleButtonConfiguration *)self toggledTitle];
-        v37 = [(SFToggleButtonConfiguration *)v6 toggledTitle];
-        v38 = v18;
-        if (![v18 isEqual:?])
+        v17 = toggledTitle;
+        toggledTitle4 = [(SFToggleButtonConfiguration *)self toggledTitle];
+        toggledTitle5 = [(SFToggleButtonConfiguration *)v6 toggledTitle];
+        v38 = toggledTitle4;
+        if (![toggledTitle4 isEqual:?])
         {
           v11 = 0;
-          v12 = v17;
+          toggledTitle = v17;
           v14 = v35;
           goto LABEL_32;
         }
 
-        v39 = v3;
-        v12 = v17;
+        v39 = untoggledTitle5;
+        toggledTitle = v17;
         v14 = v35;
       }
 
       else
       {
-        v39 = v3;
+        v39 = untoggledTitle5;
       }
 
-      v19 = [(SFToggleButtonConfiguration *)self untoggledImage];
-      v20 = [(SFToggleButtonConfiguration *)v6 untoggledImage];
-      if ((v19 != 0) == (v20 == 0))
+      untoggledImage = [(SFToggleButtonConfiguration *)self untoggledImage];
+      untoggledImage2 = [(SFToggleButtonConfiguration *)v6 untoggledImage];
+      if ((untoggledImage != 0) == (untoggledImage2 == 0))
       {
 
         v11 = 0;
-        v3 = v39;
+        untoggledTitle5 = v39;
         v16 = v40;
         if (!v40)
         {
@@ -116,15 +116,15 @@ LABEL_37:
         goto LABEL_32;
       }
 
-      v33 = v20;
-      v34 = v19;
+      v33 = untoggledImage2;
+      v34 = untoggledImage;
       [(SFToggleButtonConfiguration *)self untoggledImage];
       v36 = v16 = v40;
       if (!v36 || (-[SFToggleButtonConfiguration untoggledImage](self, "untoggledImage"), v21 = objc_claimAutoreleasedReturnValue(), -[SFToggleButtonConfiguration untoggledImage](v6, "untoggledImage"), v31 = objc_claimAutoreleasedReturnValue(), v32 = v21, [v21 isEqual:?]))
       {
-        v22 = [(SFToggleButtonConfiguration *)self toggledImage];
-        v23 = [(SFToggleButtonConfiguration *)v6 toggledImage];
-        if ((v22 != 0) == (v23 == 0))
+        toggledImage = [(SFToggleButtonConfiguration *)self toggledImage];
+        toggledImage2 = [(SFToggleButtonConfiguration *)v6 toggledImage];
+        if ((toggledImage != 0) == (toggledImage2 == 0))
         {
 
           v11 = 0;
@@ -133,16 +133,16 @@ LABEL_37:
 
         else
         {
-          v29 = v22;
-          v30 = v23;
-          v24 = [(SFToggleButtonConfiguration *)self toggledImage];
+          v29 = toggledImage;
+          v30 = toggledImage2;
+          toggledImage3 = [(SFToggleButtonConfiguration *)self toggledImage];
           v16 = v40;
-          if (v24)
+          if (toggledImage3)
           {
-            v28 = v24;
-            v27 = [(SFToggleButtonConfiguration *)self toggledImage];
-            v25 = [(SFToggleButtonConfiguration *)v6 toggledImage];
-            v11 = [v27 isEqual:?];
+            v28 = toggledImage3;
+            toggledImage4 = [(SFToggleButtonConfiguration *)self toggledImage];
+            toggledImage5 = [(SFToggleButtonConfiguration *)v6 toggledImage];
+            v11 = [toggledImage4 isEqual:?];
           }
 
           else
@@ -152,7 +152,7 @@ LABEL_37:
           }
         }
 
-        v3 = v39;
+        untoggledTitle5 = v39;
         if (!v36)
         {
 LABEL_31:
@@ -162,8 +162,8 @@ LABEL_31:
 LABEL_33:
 
 LABEL_34:
-            v10 = v41;
-            if (!v9)
+            untoggledTitle4 = v41;
+            if (!untoggledTitle3)
             {
 LABEL_36:
 
@@ -184,7 +184,7 @@ LABEL_32:
       else
       {
         v11 = 0;
-        v3 = v39;
+        untoggledTitle5 = v39;
       }
 
       goto LABEL_31;
@@ -198,23 +198,23 @@ LABEL_38:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(SFToggleButtonConfiguration *)self untoggledTitle];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  untoggledTitle = [(SFToggleButtonConfiguration *)self untoggledTitle];
+  v6 = [untoggledTitle copy];
   [v4 setUntoggledTitle:v6];
 
-  v7 = [(SFToggleButtonConfiguration *)self toggledTitle];
-  v8 = [v7 copy];
+  toggledTitle = [(SFToggleButtonConfiguration *)self toggledTitle];
+  v8 = [toggledTitle copy];
   [v4 setToggledTitle:v8];
 
-  v9 = [(SFToggleButtonConfiguration *)self untoggledImage];
-  v10 = [v9 copy];
+  untoggledImage = [(SFToggleButtonConfiguration *)self untoggledImage];
+  v10 = [untoggledImage copy];
   [v4 setUntoggledImage:v10];
 
-  v11 = [(SFToggleButtonConfiguration *)self toggledImage];
-  v12 = [v11 copy];
+  toggledImage = [(SFToggleButtonConfiguration *)self toggledImage];
+  v12 = [toggledImage copy];
   [v4 setToggledImage:v12];
 
   return v4;
@@ -223,31 +223,31 @@ LABEL_38:
 - (NSData)jsonData
 {
   v2 = [[_SFPBToggleButtonConfiguration alloc] initWithFacade:self];
-  v3 = [(_SFPBToggleButtonConfiguration *)v2 jsonData];
+  jsonData = [(_SFPBToggleButtonConfiguration *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBToggleButtonConfiguration alloc] initWithFacade:self];
-  v3 = [(_SFPBToggleButtonConfiguration *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBToggleButtonConfiguration *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBToggleButtonConfiguration alloc] initWithFacade:self];
-  v5 = [(_SFPBToggleButtonConfiguration *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBToggleButtonConfiguration *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFToggleButtonConfiguration)initWithCoder:(id)a3
+- (SFToggleButtonConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBToggleButtonConfiguration alloc] initWithData:v5];
   v7 = [(SFToggleButtonConfiguration *)self initWithProtobuf:v6];
@@ -255,47 +255,47 @@ LABEL_38:
   return v7;
 }
 
-- (SFToggleButtonConfiguration)initWithProtobuf:(id)a3
+- (SFToggleButtonConfiguration)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v20.receiver = self;
   v20.super_class = SFToggleButtonConfiguration;
   v5 = [(SFToggleButtonConfiguration *)&v20 init];
   if (v5)
   {
-    v6 = [v4 untoggledTitle];
+    untoggledTitle = [protobufCopy untoggledTitle];
 
-    if (v6)
+    if (untoggledTitle)
     {
-      v7 = [v4 untoggledTitle];
-      [(SFToggleButtonConfiguration *)v5 setUntoggledTitle:v7];
+      untoggledTitle2 = [protobufCopy untoggledTitle];
+      [(SFToggleButtonConfiguration *)v5 setUntoggledTitle:untoggledTitle2];
     }
 
-    v8 = [v4 toggledTitle];
+    toggledTitle = [protobufCopy toggledTitle];
 
-    if (v8)
+    if (toggledTitle)
     {
-      v9 = [v4 toggledTitle];
-      [(SFToggleButtonConfiguration *)v5 setToggledTitle:v9];
+      toggledTitle2 = [protobufCopy toggledTitle];
+      [(SFToggleButtonConfiguration *)v5 setToggledTitle:toggledTitle2];
     }
 
-    v10 = [v4 untoggledImage];
+    untoggledImage = [protobufCopy untoggledImage];
 
-    if (v10)
+    if (untoggledImage)
     {
       v11 = [SFImage alloc];
-      v12 = [v4 untoggledImage];
-      v13 = [(SFImage *)v11 initWithProtobuf:v12];
+      untoggledImage2 = [protobufCopy untoggledImage];
+      v13 = [(SFImage *)v11 initWithProtobuf:untoggledImage2];
       [(SFToggleButtonConfiguration *)v5 setUntoggledImage:v13];
     }
 
-    v14 = [v4 toggledImage];
+    toggledImage = [protobufCopy toggledImage];
 
-    if (v14)
+    if (toggledImage)
     {
       v15 = [SFImage alloc];
-      v16 = [v4 toggledImage];
-      v17 = [(SFImage *)v15 initWithProtobuf:v16];
+      toggledImage2 = [protobufCopy toggledImage];
+      v17 = [(SFImage *)v15 initWithProtobuf:toggledImage2];
       [(SFToggleButtonConfiguration *)v5 setToggledImage:v17];
     }
 

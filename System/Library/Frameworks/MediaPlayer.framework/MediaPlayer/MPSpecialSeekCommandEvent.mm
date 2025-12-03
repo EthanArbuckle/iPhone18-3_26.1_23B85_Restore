@@ -1,24 +1,24 @@
 @interface MPSpecialSeekCommandEvent
-- (MPSpecialSeekCommandEvent)initWithCommand:(id)a3 mediaRemoteType:(unsigned int)a4 options:(id)a5;
+- (MPSpecialSeekCommandEvent)initWithCommand:(id)command mediaRemoteType:(unsigned int)type options:(id)options;
 @end
 
 @implementation MPSpecialSeekCommandEvent
 
-- (MPSpecialSeekCommandEvent)initWithCommand:(id)a3 mediaRemoteType:(unsigned int)a4 options:(id)a5
+- (MPSpecialSeekCommandEvent)initWithCommand:(id)command mediaRemoteType:(unsigned int)type options:(id)options
 {
   v8.receiver = self;
   v8.super_class = MPSpecialSeekCommandEvent;
-  result = [(MPRemoteCommandEvent *)&v8 initWithCommand:a3 mediaRemoteType:*&a4 options:a5];
+  result = [(MPRemoteCommandEvent *)&v8 initWithCommand:command mediaRemoteType:*&type options:options];
   if (result)
   {
-    if (a4 - 100 > 5)
+    if (type - 100 > 5)
     {
       v7 = 0;
     }
 
     else
     {
-      v7 = qword_1A2741A68[a4 - 100];
+      v7 = qword_1A2741A68[type - 100];
     }
 
     result->_type = v7;

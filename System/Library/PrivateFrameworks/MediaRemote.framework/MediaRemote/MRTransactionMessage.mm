@@ -1,33 +1,33 @@
 @interface MRTransactionMessage
 - (MRPlayerPath)playerPath;
-- (MRTransactionMessage)initWithContentItems:(id)a3 forPlayerPath:(id)a4;
-- (MRTransactionMessage)initWithName:(unint64_t)a3 packets:(id)a4 playerPath:(id)a5;
-- (MRTransactionMessage)initWithPlaybackQueue:(id)a3 forPlayerPath:(id)a4;
+- (MRTransactionMessage)initWithContentItems:(id)items forPlayerPath:(id)path;
+- (MRTransactionMessage)initWithName:(unint64_t)name packets:(id)packets playerPath:(id)path;
+- (MRTransactionMessage)initWithPlaybackQueue:(id)queue forPlayerPath:(id)path;
 - (NSArray)packets;
 - (unint64_t)name;
 @end
 
 @implementation MRTransactionMessage
 
-- (MRTransactionMessage)initWithName:(unint64_t)a3 packets:(id)a4 playerPath:(id)a5
+- (MRTransactionMessage)initWithName:(unint64_t)name packets:(id)packets playerPath:(id)path
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  packetsCopy = packets;
+  pathCopy = path;
   v27.receiver = self;
   v27.super_class = MRTransactionMessage;
   v10 = [(MRProtocolMessage *)&v27 init];
   if (v10)
   {
     v11 = objc_alloc_init(_MRTransactionMessageProtobuf);
-    [(_MRTransactionMessageProtobuf *)v11 setName:a3];
+    [(_MRTransactionMessageProtobuf *)v11 setName:name];
     context = objc_autoreleasePoolPush();
     v12 = objc_alloc_init(_MRTransactionPacketsProtobuf);
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v13 = v8;
+    v13 = packetsCopy;
     v14 = [v13 countByEnumeratingWithState:&v23 objects:v28 count:16];
     if (v14)
     {
@@ -43,8 +43,8 @@
             objc_enumerationMutation(v13);
           }
 
-          v18 = [*(*(&v23 + 1) + 8 * v17) protobuf];
-          [(_MRTransactionPacketsProtobuf *)v12 addPackets:v18];
+          protobuf = [*(*(&v23 + 1) + 8 * v17) protobuf];
+          [(_MRTransactionPacketsProtobuf *)v12 addPackets:protobuf];
 
           ++v17;
         }
@@ -58,8 +58,8 @@
 
     [(_MRTransactionMessageProtobuf *)v11 setPackets:v12];
     objc_autoreleasePoolPop(context);
-    v19 = [v9 protobuf];
-    [(_MRTransactionMessageProtobuf *)v11 setPlayerPath:v19];
+    protobuf2 = [pathCopy protobuf];
+    [(_MRTransactionMessageProtobuf *)v11 setPlayerPath:protobuf2];
 
     [(MRProtocolMessage *)v10 setUnderlyingCodableMessage:v11];
   }
@@ -68,20 +68,20 @@
   return v10;
 }
 
-- (MRTransactionMessage)initWithPlaybackQueue:(id)a3 forPlayerPath:(id)a4
+- (MRTransactionMessage)initWithPlaybackQueue:(id)queue forPlayerPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 contentItems];
-  v8 = [(MRTransactionMessage *)self initWithContentItems:v7 forPlayerPath:v6];
+  pathCopy = path;
+  contentItems = [queue contentItems];
+  v8 = [(MRTransactionMessage *)self initWithContentItems:contentItems forPlayerPath:pathCopy];
 
   return v8;
 }
 
-- (MRTransactionMessage)initWithContentItems:(id)a3 forPlayerPath:(id)a4
+- (MRTransactionMessage)initWithContentItems:(id)items forPlayerPath:(id)path
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  pathCopy = path;
   v34.receiver = self;
   v34.super_class = MRTransactionMessage;
   v8 = [(MRProtocolMessage *)&v34 init];
@@ -89,7 +89,7 @@
   if (v8)
   {
     v26 = v8;
-    v27 = v7;
+    v27 = pathCopy;
     v10 = objc_alloc_init(_MRTransactionMessageProtobuf);
     v11 = objc_alloc_init(_MRTransactionPacketsProtobuf);
     [(_MRTransactionMessageProtobuf *)v10 setPackets:v11];
@@ -98,8 +98,8 @@
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v28 = v6;
-    obj = v6;
+    v28 = itemsCopy;
+    obj = itemsCopy;
     v12 = [obj countByEnumeratingWithState:&v30 objects:v35 count:16];
     if (v12)
     {
@@ -120,9 +120,9 @@
           v19 = objc_alloc_init(_MRTransactionKeyProtobuf);
           [(_MRTransactionKeyProtobuf *)v19 setIdentifier:MRContentItemGetAncestorIdentifier(v17)];
           v20 = [[MRTransactionPacket alloc] initWithData:ExternalRepresentation forKey:v19];
-          v21 = [(_MRTransactionMessageProtobuf *)v10 packets];
-          v22 = [(MRTransactionPacket *)v20 protobuf];
-          [v21 addPackets:v22];
+          packets = [(_MRTransactionMessageProtobuf *)v10 packets];
+          protobuf = [(MRTransactionPacket *)v20 protobuf];
+          [packets addPackets:protobuf];
         }
 
         v13 = [obj countByEnumeratingWithState:&v30 objects:v35 count:16];
@@ -132,14 +132,14 @@
     }
 
     [(_MRTransactionMessageProtobuf *)v10 setName:2];
-    v7 = v27;
-    v23 = [v27 protobuf];
-    [(_MRTransactionMessageProtobuf *)v10 setPlayerPath:v23];
+    pathCopy = v27;
+    protobuf2 = [v27 protobuf];
+    [(_MRTransactionMessageProtobuf *)v10 setPlayerPath:protobuf2];
 
     v9 = v26;
     [(MRProtocolMessage *)v26 setUnderlyingCodableMessage:v10];
 
-    v6 = v28;
+    itemsCopy = v28;
   }
 
   v24 = *MEMORY[0x1E69E9840];
@@ -156,15 +156,15 @@
     v5 = self->_packets;
     self->_packets = v4;
 
-    v6 = [(MRProtocolMessage *)self underlyingCodableMessage];
-    v7 = [v6 packets];
-    v8 = [v7 packets];
+    underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+    packets = [underlyingCodableMessage packets];
+    v7Packets = [packets packets];
 
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v9 = v8;
+    v9 = v7Packets;
     v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v10)
     {
@@ -206,19 +206,19 @@
 - (MRPlayerPath)playerPath
 {
   v3 = [MRPlayerPath alloc];
-  v4 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v5 = [v4 playerPath];
-  v6 = [(MRPlayerPath *)v3 initWithProtobuf:v5];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  playerPath = [underlyingCodableMessage playerPath];
+  v6 = [(MRPlayerPath *)v3 initWithProtobuf:playerPath];
 
   return v6;
 }
 
 - (unint64_t)name
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = [v2 name];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  name = [underlyingCodableMessage name];
 
-  return v3;
+  return name;
 }
 
 @end

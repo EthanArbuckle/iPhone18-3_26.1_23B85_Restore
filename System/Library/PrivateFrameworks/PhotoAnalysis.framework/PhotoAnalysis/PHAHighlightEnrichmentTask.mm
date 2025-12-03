@@ -1,7 +1,7 @@
 @interface PHAHighlightEnrichmentTask
-- (BOOL)runWithGraphManager:(id)a3 progressReporter:(id)a4 error:(id *)a5;
+- (BOOL)runWithGraphManager:(id)manager progressReporter:(id)reporter error:(id *)error;
 - (unint64_t)tailorOptions;
-- (void)timeoutFatal:(BOOL)a3;
+- (void)timeoutFatal:(BOOL)fatal;
 @end
 
 @implementation PHAHighlightEnrichmentTask
@@ -19,9 +19,9 @@
   }
 }
 
-- (void)timeoutFatal:(BOOL)a3
+- (void)timeoutFatal:(BOOL)fatal
 {
-  if (a3)
+  if (fatal)
   {
     __assert_rtn("[PHAHighlightEnrichmentTask timeoutFatal:]", "PHAHighlightEnrichmentTask.m", 63, "NO");
   }
@@ -33,22 +33,22 @@
   }
 }
 
-- (BOOL)runWithGraphManager:(id)a3 progressReporter:(id)a4 error:(id *)a5
+- (BOOL)runWithGraphManager:(id)manager progressReporter:(id)reporter error:(id *)error
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  managerCopy = manager;
   v9 = MEMORY[0x277D3B9A0];
-  v10 = a4;
+  reporterCopy = reporter;
   v11 = [[v9 alloc] initWithHighlightTailorOptions:{-[PHAHighlightEnrichmentTask tailorOptions](self, "tailorOptions")}];
   v12 = objc_alloc(MEMORY[0x277D3B928]);
   v21[0] = v11;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:1];
-  v14 = [v12 initWithManager:v8 enrichmentProcessors:v13];
+  v14 = [v12 initWithManager:managerCopy enrichmentProcessors:v13];
 
-  v15 = [v14 enrichDataModelWithProgressReporter:v10 error:a5];
+  v15 = [v14 enrichDataModelWithProgressReporter:reporterCopy error:error];
   v16 = MEMORY[0x277D3B9A0];
-  v17 = [v8 photoLibrary];
-  self->_featureComplete = [v16 hasCompletedEnrichmentForLibrary:v17];
+  photoLibrary = [managerCopy photoLibrary];
+  self->_featureComplete = [v16 hasCompletedEnrichmentForLibrary:photoLibrary];
 
   if (self->_featureComplete)
   {
@@ -58,8 +58,8 @@
   else
   {
     v18 = MEMORY[0x277D3B9A0];
-    v19 = [v8 photoLibrary];
-    self->_featureAvailable = [v18 hasCompletedFirstTimeExperienceForLibrary:v19];
+    photoLibrary2 = [managerCopy photoLibrary];
+    self->_featureAvailable = [v18 hasCompletedFirstTimeExperienceForLibrary:photoLibrary2];
   }
 
   return v15;

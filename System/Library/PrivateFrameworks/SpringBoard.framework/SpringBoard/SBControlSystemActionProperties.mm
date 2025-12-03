@@ -1,14 +1,14 @@
 @interface SBControlSystemActionProperties
-+ (void)propertiesForControlInstance:(uint64_t)a1;
-- (BOOL)isEqual:(id)a3;
++ (void)propertiesForControlInstance:(uint64_t)instance;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
-- (void)_initWithViewModel:(void *)a3 control:(void *)a4 descriptor:;
-- (void)appendDescriptionToFormatter:(id)a3;
+- (void)_initWithViewModel:(void *)model control:(void *)control descriptor:;
+- (void)appendDescriptionToFormatter:(id)formatter;
 @end
 
 @implementation SBControlSystemActionProperties
 
-+ (void)propertiesForControlInstance:(uint64_t)a1
++ (void)propertiesForControlInstance:(uint64_t)instance
 {
   v2 = a2;
   v3 = objc_opt_self();
@@ -17,12 +17,12 @@
     [SBControlSystemActionProperties propertiesForControlInstance:?];
   }
 
-  v4 = [v2 sb_viewModel];
-  if (v4)
+  sb_viewModel = [v2 sb_viewModel];
+  if (sb_viewModel)
   {
-    v5 = [v2 control];
-    v6 = [v2 descriptor];
-    v7 = [(SBControlSystemActionProperties *)[v3 alloc] _initWithViewModel:v4 control:v5 descriptor:v6];
+    control = [v2 control];
+    descriptor = [v2 descriptor];
+    v7 = [(SBControlSystemActionProperties *)[v3 alloc] _initWithViewModel:sb_viewModel control:control descriptor:descriptor];
   }
 
   else
@@ -33,112 +33,112 @@
   return v7;
 }
 
-- (void)_initWithViewModel:(void *)a3 control:(void *)a4 descriptor:
+- (void)_initWithViewModel:(void *)model control:(void *)control descriptor:
 {
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  modelCopy = model;
+  controlCopy = control;
+  if (self)
   {
     if (!v7)
     {
       [SBControlSystemActionProperties _initWithViewModel:? control:? descriptor:?];
     }
 
-    v36.receiver = a1;
+    v36.receiver = self;
     v36.super_class = SBControlSystemActionProperties;
-    a1 = objc_msgSendSuper2(&v36, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v36, sel_init);
+    if (self)
     {
-      v10 = [v7 title];
-      v11 = [v10 copy];
+      title = [v7 title];
+      v11 = [title copy];
       v12 = v11;
       if (v11)
       {
-        v13 = v11;
+        displayName = v11;
       }
 
       else
       {
-        v13 = [v9 displayName];
+        displayName = [controlCopy displayName];
       }
 
-      v14 = a1[1];
-      a1[1] = v13;
+      v14 = self[1];
+      self[1] = displayName;
 
-      v15 = [v7 sb_secondaryText];
-      v16 = [v15 copy];
-      v17 = a1[2];
-      a1[2] = v16;
+      sb_secondaryText = [v7 sb_secondaryText];
+      v16 = [sb_secondaryText copy];
+      v17 = self[2];
+      self[2] = v16;
 
-      v18 = [v7 sb_secondaryTextColor];
-      v19 = a1[3];
-      a1[3] = v18;
+      sb_secondaryTextColor = [v7 sb_secondaryTextColor];
+      v19 = self[3];
+      self[3] = sb_secondaryTextColor;
 
-      v20 = [v7 sb_keyColor];
-      v21 = a1[4];
-      a1[4] = v20;
+      sb_keyColor = [v7 sb_keyColor];
+      v21 = self[4];
+      self[4] = sb_keyColor;
 
       v35 = 0;
-      v22 = [v7 sb_actionHintTextWithType:&v35];
-      if (!v22)
+      displayName2 = [v7 sb_actionHintTextWithType:&v35];
+      if (!displayName2)
       {
-        v22 = [v9 displayName];
+        displayName2 = [controlCopy displayName];
         v35 = 0;
       }
 
-      v23 = [v22 copy];
-      v24 = a1[5];
-      a1[5] = v23;
+      v23 = [displayName2 copy];
+      v24 = self[5];
+      self[5] = v23;
 
-      a1[6] = v35;
-      v25 = [v7 isRedacted];
+      self[6] = v35;
+      isRedacted = [v7 isRedacted];
       if ([v7 isDisabled])
       {
-        v25 |= 2uLL;
+        isRedacted |= 2uLL;
       }
 
-      v26 = [v7 hasError];
-      v27 = v25 | 4;
-      if (!v26)
+      hasError = [v7 hasError];
+      v27 = isRedacted | 4;
+      if (!hasError)
       {
-        v27 = v25;
+        v27 = isRedacted;
       }
 
-      a1[7] = v27;
-      v28 = [v7 accessibilityIdentifier];
-      v29 = v28;
-      if (v28)
+      self[7] = v27;
+      accessibilityIdentifier = [v7 accessibilityIdentifier];
+      v29 = accessibilityIdentifier;
+      if (accessibilityIdentifier)
       {
-        v30 = v28;
+        kind = accessibilityIdentifier;
       }
 
       else
       {
-        v30 = [v8 kind];
+        kind = [modelCopy kind];
       }
 
-      v31 = v30;
+      v31 = kind;
 
       v32 = [v31 copy];
-      v33 = a1[8];
-      a1[8] = v32;
+      v33 = self[8];
+      self[8] = v32;
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v4 = a3;
+  formatterCopy = formatter;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __64__SBControlSystemActionProperties_appendDescriptionToFormatter___block_invoke;
   v6[3] = &unk_2783A92D8;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = formatterCopy;
+  selfCopy = self;
+  v5 = formatterCopy;
   [v5 appendProem:0 block:v6];
 }
 
@@ -160,10 +160,10 @@ id __64__SBControlSystemActionProperties_appendDescriptionToFormatter___block_in
   return [*(a1 + 32) appendObject:*(*(a1 + 40) + 32) withName:@"keyColor"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -173,7 +173,7 @@ id __64__SBControlSystemActionProperties_appendDescriptionToFormatter___block_in
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if (BSEqualStrings() && BSEqualStrings() && BSEqualObjects() && BSEqualObjects() && BSEqualStrings() && self->_actionHintType == v5->_actionHintType && self->_attributes == v5->_attributes)
       {
         v6 = BSEqualStrings();

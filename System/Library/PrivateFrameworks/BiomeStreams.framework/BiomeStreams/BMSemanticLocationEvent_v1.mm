@@ -1,22 +1,22 @@
 @interface BMSemanticLocationEvent_v1
-- (BMSemanticLocationEvent_v1)initWithProto:(id)a3;
+- (BMSemanticLocationEvent_v1)initWithProto:(id)proto;
 @end
 
 @implementation BMSemanticLocationEvent_v1
 
-- (BMSemanticLocationEvent_v1)initWithProto:(id)a3
+- (BMSemanticLocationEvent_v1)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (v4)
+  protoCopy = proto;
+  if (protoCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = protoCopy;
       v6 = typeFromBMPBSemanticLocationUserSpecificPlaceType([v5 userSpecificPlaceType]);
-      v7 = [v5 placeType];
-      v8 = v7;
-      if (v7 >= 4)
+      placeType = [v5 placeType];
+      v8 = placeType;
+      if (placeType >= 4)
       {
         v11 = __biome_log_for_category();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -29,11 +29,11 @@
 
       else
       {
-        v9 = v7;
+        v9 = placeType;
       }
 
       self = [(BMSemanticLocationEvent *)self initWithUserSpecificPlaceType:v6 placeType:v9 starting:[v5 starting]];
-      v10 = self;
+      selfCopy = self;
     }
 
     else
@@ -44,16 +44,16 @@
         [BMSemanticLocationEvent initWithProto:];
       }
 
-      v10 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 @end

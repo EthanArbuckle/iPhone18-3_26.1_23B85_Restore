@@ -6,7 +6,7 @@
 
 - (void)handleCurrentLocaleDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_100299FEC();
 }
 

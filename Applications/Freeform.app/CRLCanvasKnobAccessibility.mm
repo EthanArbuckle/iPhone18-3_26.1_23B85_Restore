@@ -1,7 +1,7 @@
 @interface CRLCanvasKnobAccessibility
-+ (id)crlaxCastFrom:(id)a3;
-+ (int)crlaxEdgePositionTypeFromNormalizedPosition:(CGPoint)a3;
-- (BOOL)crlaxCanSnapKnobToConnectionMagnetAtUnscaledCanvasPoint:(CGPoint)a3;
++ (id)crlaxCastFrom:(id)from;
++ (int)crlaxEdgePositionTypeFromNormalizedPosition:(CGPoint)position;
+- (BOOL)crlaxCanSnapKnobToConnectionMagnetAtUnscaledCanvasPoint:(CGPoint)point;
 - (BOOL)crlaxEverOffersCustomActionsForMovement;
 - (BOOL)crlaxIs3DObjectPlayPauseKnob;
 - (BOOL)crlaxIs3DReorientationKnob;
@@ -13,8 +13,8 @@
 - (BOOL)crlaxIsSupported;
 - (BOOL)crlaxOffersCustomActionsForMovement;
 - (CALayer)crlaxLayer;
-- (CGPoint)_crlaxSnappedValueIfApplicableFromUnscaledCanvasPosition:(CGPoint)a3;
-- (CGPoint)crlaxCalculatedNextPositionInRepForAdjustable:(BOOL)a3;
+- (CGPoint)_crlaxSnappedValueIfApplicableFromUnscaledCanvasPosition:(CGPoint)position;
+- (CGPoint)crlaxCalculatedNextPositionInRepForAdjustable:(BOOL)adjustable;
 - (CGPoint)crlaxPosition;
 - (CGPoint)crlaxPositionInUnscaledCanvas;
 - (CGRect)crlaxFrame;
@@ -44,21 +44,21 @@
 - (id)crlaxNameFor3DObjectPlayPauseKnobState;
 - (id)crlaxPlatformSpecificHint;
 - (id)crlaxSmartPathSourceForShapeControlKnob;
-- (id)crlaxUnscaledCanvasPointForSnappingKnobToConnectionMagnetType:(unint64_t)a3;
+- (id)crlaxUnscaledCanvasPointForSnappingKnobToConnectionMagnetType:(unint64_t)type;
 - (id)getLabelForShapeControlKnob;
 - (unint64_t)crlaxConnectionMagnetType;
 - (unint64_t)crlaxKnobTag;
 - (unint64_t)crlaxNodeIndex;
-- (void)crlaxMoveKnobToRepPositionInNaturalSpace:(CGPoint)a3 shouldSnapToMagnets:(BOOL)a4;
+- (void)crlaxMoveKnobToRepPositionInNaturalSpace:(CGPoint)space shouldSnapToMagnets:(BOOL)magnets;
 @end
 
 @implementation CRLCanvasKnobAccessibility
 
-+ (id)crlaxCastFrom:(id)a3
++ (id)crlaxCastFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 0, 0);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, fromCopy, 0, 0);
 
   return v5;
 }
@@ -106,14 +106,14 @@
       {
         if ([(CRLCanvasKnobAccessibility *)self crlaxIs3DObjectPlayPauseKnob])
         {
-          v4 = [(CRLCanvasKnobAccessibility *)self crlaxNameFor3DObjectPlayPauseKnobState];
+          crlaxNameFor3DObjectPlayPauseKnobState = [(CRLCanvasKnobAccessibility *)self crlaxNameFor3DObjectPlayPauseKnobState];
           goto LABEL_43;
         }
 
-        v47 = [(CRLCanvasKnobAccessibility *)self crlaxIsReplaceMediaKnob];
+        crlaxIsReplaceMediaKnob = [(CRLCanvasKnobAccessibility *)self crlaxIsReplaceMediaKnob];
         v17 = +[NSBundle mainBundle];
         v18 = v17;
-        if (v47)
+        if (crlaxIsReplaceMediaKnob)
         {
           v19 = @"Replace media";
         }
@@ -130,20 +130,20 @@ LABEL_25:
 LABEL_26:
         if ([(CRLCanvasKnobAccessibility *)self crlaxIsConnectionLineCreationKnob])
         {
-          v32 = +[NSBundle mainBundle];
-          v33 = [v32 localizedStringForKey:@"Connection" value:0 table:0];
+          crlaxParentRepForKnob = +[NSBundle mainBundle];
+          crlaxKnobLabel = [crlaxParentRepForKnob localizedStringForKey:@"Connection" value:0 table:0];
         }
 
         else
         {
-          v32 = [(CRLCanvasKnobAccessibility *)self crlaxParentRepForKnob];
-          v33 = [v32 crlaxKnobLabel];
+          crlaxParentRepForKnob = [(CRLCanvasKnobAccessibility *)self crlaxParentRepForKnob];
+          crlaxKnobLabel = [crlaxParentRepForKnob crlaxKnobLabel];
           if (CRLAccessibilityShouldPerformValidationChecks())
           {
-            if (![(__CFString *)v33 length])
+            if (![(__CFString *)crlaxKnobLabel length])
             {
               ShouldCrashOnValidationErrorAfterLaunch = CRLAccessibilityShouldCrashOnValidationErrorAfterLaunch();
-              if (__CRLAccessibilityHandleValidationErrorWithDescription(ShouldCrashOnValidationErrorAfterLaunch, 0, @"No handle label for: %@", v35, v36, v37, v38, v39, v32))
+              if (__CRLAccessibilityHandleValidationErrorWithDescription(ShouldCrashOnValidationErrorAfterLaunch, 0, @"No handle label for: %@", v35, v36, v37, v38, v39, crlaxParentRepForKnob))
               {
 LABEL_37:
                 abort();
@@ -152,9 +152,9 @@ LABEL_37:
           }
         }
 
-        if (v33)
+        if (crlaxKnobLabel)
         {
-          v9 = v33;
+          v9 = crlaxKnobLabel;
         }
 
         else
@@ -166,7 +166,7 @@ LABEL_37:
         {
           if (v3)
           {
-            v4 = [NSString stringWithFormat:v3, v9];
+            crlaxNameFor3DObjectPlayPauseKnobState = [NSString stringWithFormat:v3, v9];
 LABEL_40:
 
             goto LABEL_42;
@@ -182,7 +182,7 @@ LABEL_40:
           }
         }
 
-        v4 = 0;
+        crlaxNameFor3DObjectPlayPauseKnobState = 0;
 LABEL_42:
 
         goto LABEL_43;
@@ -192,11 +192,11 @@ LABEL_42:
       v30 = v29;
       v31 = @"3D rotation";
 LABEL_21:
-      v4 = [v29 localizedStringForKey:v31 value:0 table:0];
+      crlaxNameFor3DObjectPlayPauseKnobState = [v29 localizedStringForKey:v31 value:0 table:0];
 
 LABEL_43:
 
-      return v4;
+      return crlaxNameFor3DObjectPlayPauseKnobState;
     case 6uLL:
       v17 = +[NSBundle mainBundle];
       v18 = v17;
@@ -220,15 +220,15 @@ LABEL_43:
     case 0xAuLL:
       v18 = +[NSBundle mainBundle];
       v20 = [v18 localizedStringForKey:@"Tail handle" value:0 table:0];
-      v21 = [(CRLCanvasKnobAccessibility *)self _getTailKnobArrowDescriptionForLine];
+      _getTailKnobArrowDescriptionForLine = [(CRLCanvasKnobAccessibility *)self _getTailKnobArrowDescriptionForLine];
       goto LABEL_15;
     case 0xBuLL:
       v18 = +[NSBundle mainBundle];
       v20 = [v18 localizedStringForKey:@"Head handle" value:0 table:0];
-      v21 = [(CRLCanvasKnobAccessibility *)self _getHeadKnobArrowDescriptionForLine];
+      _getTailKnobArrowDescriptionForLine = [(CRLCanvasKnobAccessibility *)self _getHeadKnobArrowDescriptionForLine];
 LABEL_15:
-      v22 = v21;
-      v48 = [(CRLCanvasKnobAccessibility *)self _connectionLineConnectionDescription];
+      v22 = _getTailKnobArrowDescriptionForLine;
+      _connectionLineConnectionDescription = [(CRLCanvasKnobAccessibility *)self _connectionLineConnectionDescription];
       v3 = __CRLAccessibilityStringForVariables(1, v20, v23, v24, v25, v26, v27, v28, v22);
 
       goto LABEL_25;
@@ -237,18 +237,18 @@ LABEL_15:
     case 0xEuLL:
     case 0xFuLL:
     case 0x10uLL:
-      v4 = [(CRLCanvasKnobAccessibility *)self getLabelForShapeControlKnob];
-      if (v4)
+      crlaxNameFor3DObjectPlayPauseKnobState = [(CRLCanvasKnobAccessibility *)self getLabelForShapeControlKnob];
+      if (crlaxNameFor3DObjectPlayPauseKnobState)
       {
         goto LABEL_43;
       }
 
       v49 = 0;
-      v5 = [(CRLCanvasKnobAccessibility *)self crlaxParentRepForKnob];
-      v6 = [v5 crlaxInfo];
+      crlaxParentRepForKnob2 = [(CRLCanvasKnobAccessibility *)self crlaxParentRepForKnob];
+      crlaxInfo = [crlaxParentRepForKnob2 crlaxInfo];
 
       v7 = objc_opt_class();
-      v8 = __CRLAccessibilityCastAsSafeCategory(v7, v6, 1, &v49);
+      v8 = __CRLAccessibilityCastAsSafeCategory(v7, crlaxInfo, 1, &v49);
       if (v49 == 1)
       {
         goto LABEL_37;
@@ -256,7 +256,7 @@ LABEL_15:
 
       v9 = v8;
 
-      v10 = [(CRLCanvasKnobAccessibility *)self crlaxParentRepForKnob];
+      crlaxParentRepForKnob3 = [(CRLCanvasKnobAccessibility *)self crlaxParentRepForKnob];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
@@ -274,9 +274,9 @@ LABEL_15:
 
       v3 = [v12 localizedStringForKey:v14 value:0 table:0];
 
-      v15 = [(__CFString *)v9 crlaxTypeDescription];
-      v16 = [v15 localizedLowercaseString];
-      v4 = [NSString localizedStringWithFormat:v3, v16];
+      crlaxTypeDescription = [(__CFString *)v9 crlaxTypeDescription];
+      localizedLowercaseString = [crlaxTypeDescription localizedLowercaseString];
+      crlaxNameFor3DObjectPlayPauseKnobState = [NSString localizedStringWithFormat:v3, localizedLowercaseString];
 
       goto LABEL_40;
     case 0x1CuLL:
@@ -294,8 +294,8 @@ LABEL_15:
 
 - (NSString)crlaxValue
 {
-  v3 = [(CRLCanvasKnobAccessibility *)self crlaxKnobTag];
-  if (v3 > 0x10)
+  crlaxKnobTag = [(CRLCanvasKnobAccessibility *)self crlaxKnobTag];
+  if (crlaxKnobTag > 0x10)
   {
 LABEL_7:
     if ([(CRLCanvasKnobAccessibility *)self crlaxIs3DReorientationKnob]|| [(CRLCanvasKnobAccessibility *)self crlaxIs3DObjectPlayPauseKnob])
@@ -305,27 +305,27 @@ LABEL_7:
 
     else
     {
-      v6 = [(CRLCanvasKnobAccessibility *)self crlaxSmartPathSourceForShapeControlKnob];
-      v7 = [(CRLCanvasKnobAccessibility *)self crlaxTarget];
-      v5 = [v6 getFeedbackStringForKnob:{objc_msgSend(v7, "tag")}];
+      crlaxSmartPathSourceForShapeControlKnob = [(CRLCanvasKnobAccessibility *)self crlaxSmartPathSourceForShapeControlKnob];
+      crlaxTarget = [(CRLCanvasKnobAccessibility *)self crlaxTarget];
+      v5 = [crlaxSmartPathSourceForShapeControlKnob getFeedbackStringForKnob:{objc_msgSend(crlaxTarget, "tag")}];
     }
 
     goto LABEL_14;
   }
 
-  if (((1 << v3) & 0x3DE) != 0)
+  if (((1 << crlaxKnobTag) & 0x3DE) != 0)
   {
     goto LABEL_3;
   }
 
-  if (((1 << v3) & 0x1F000) != 0)
+  if (((1 << crlaxKnobTag) & 0x1F000) != 0)
   {
-    v4 = [(CRLCanvasKnobAccessibility *)self _getValueForShapeControlKnob];
+    _getValueForShapeControlKnob = [(CRLCanvasKnobAccessibility *)self _getValueForShapeControlKnob];
   }
 
   else
   {
-    if (((1 << v3) & 0xC00) == 0)
+    if (((1 << crlaxKnobTag) & 0xC00) == 0)
     {
       goto LABEL_7;
     }
@@ -333,16 +333,16 @@ LABEL_7:
     if (![(CRLCanvasKnobAccessibility *)self crlaxIsConnectionLineEndpointHandleWithConnection])
     {
 LABEL_3:
-      v4 = [(CRLCanvasKnobAccessibility *)self _getAccessibleAbsolutePositionOfKnob];
+      _getValueForShapeControlKnob = [(CRLCanvasKnobAccessibility *)self _getAccessibleAbsolutePositionOfKnob];
       goto LABEL_6;
     }
 
-    v4 = [(CRLCanvasKnobAccessibility *)self crlaxConnectionLineMagnetDescription];
+    _getValueForShapeControlKnob = [(CRLCanvasKnobAccessibility *)self crlaxConnectionLineMagnetDescription];
   }
 
 LABEL_6:
-  v5 = v4;
-  if (!v4)
+  v5 = _getValueForShapeControlKnob;
+  if (!_getValueForShapeControlKnob)
   {
     goto LABEL_7;
   }
@@ -356,32 +356,32 @@ LABEL_14:
 {
   if ([(CRLCanvasKnobAccessibility *)self crlaxRespondsToSelector:"crlaxPlatformSpecificHint" fromExtrasProtocol:&OBJC_PROTOCOL___CRLCanvasKnobAccessibilityExtras])
   {
-    v3 = [(CRLCanvasKnobAccessibility *)self crlaxPlatformSpecificHint];
+    crlaxPlatformSpecificHint = [(CRLCanvasKnobAccessibility *)self crlaxPlatformSpecificHint];
   }
 
   else
   {
-    v3 = 0;
+    crlaxPlatformSpecificHint = 0;
   }
 
-  return v3;
+  return crlaxPlatformSpecificHint;
 }
 
 - (NSArray)crlaxUserInputLabels
 {
-  v3 = [(CRLCanvasKnobAccessibility *)self crlaxKnobTag];
-  if (v3 > 8)
+  crlaxKnobTag = [(CRLCanvasKnobAccessibility *)self crlaxKnobTag];
+  if (crlaxKnobTag > 8)
   {
-    if (v3 <= 11)
+    if (crlaxKnobTag <= 11)
     {
-      if (v3 == 9)
+      if (crlaxKnobTag == 9)
       {
         v4 = +[NSBundle mainBundle];
         v5 = v4;
         v6 = @"Lower right";
       }
 
-      else if (v3 == 10)
+      else if (crlaxKnobTag == 10)
       {
         v4 = +[NSBundle mainBundle];
         v5 = v4;
@@ -398,24 +398,24 @@ LABEL_14:
       goto LABEL_29;
     }
 
-    if ((v3 - 12) >= 5)
+    if ((crlaxKnobTag - 12) >= 5)
     {
 LABEL_27:
-      v7 = [(CRLCanvasKnobAccessibility *)self crlaxLabel];
+      crlaxLabel = [(CRLCanvasKnobAccessibility *)self crlaxLabel];
       goto LABEL_10;
     }
 
-    v7 = [(CRLCanvasKnobAccessibility *)self _getUserInputLabelForShapeControlKnob];
+    crlaxLabel = [(CRLCanvasKnobAccessibility *)self _getUserInputLabelForShapeControlKnob];
 LABEL_10:
-    v8 = v7;
+    v8 = crlaxLabel;
     goto LABEL_30;
   }
 
-  if (v3 > 4)
+  if (crlaxKnobTag > 4)
   {
-    if (v3 > 6)
+    if (crlaxKnobTag > 6)
     {
-      if (v3 == 7)
+      if (crlaxKnobTag == 7)
       {
         v4 = +[NSBundle mainBundle];
         v5 = v4;
@@ -432,7 +432,7 @@ LABEL_10:
       goto LABEL_29;
     }
 
-    if (v3 != 5)
+    if (crlaxKnobTag != 5)
     {
       v4 = +[NSBundle mainBundle];
       v5 = v4;
@@ -456,13 +456,13 @@ LABEL_10:
       goto LABEL_29;
     }
 
-    v7 = [(CRLCanvasKnobAccessibility *)self crlaxNameFor3DObjectPlayPauseKnobState];
+    crlaxLabel = [(CRLCanvasKnobAccessibility *)self crlaxNameFor3DObjectPlayPauseKnobState];
     goto LABEL_10;
   }
 
-  if (v3 > 2)
+  if (crlaxKnobTag > 2)
   {
-    if (v3 == 3)
+    if (crlaxKnobTag == 3)
     {
       v4 = +[NSBundle mainBundle];
       v5 = v4;
@@ -479,7 +479,7 @@ LABEL_10:
     goto LABEL_29;
   }
 
-  if (v3 == 1)
+  if (crlaxKnobTag == 1)
   {
     v4 = +[NSBundle mainBundle];
     v5 = v4;
@@ -487,7 +487,7 @@ LABEL_10:
     goto LABEL_29;
   }
 
-  if (v3 != 2)
+  if (crlaxKnobTag != 2)
   {
     goto LABEL_27;
   }
@@ -501,8 +501,8 @@ LABEL_29:
 LABEL_30:
   if (!v8)
   {
-    v10 = [(CRLCanvasKnobAccessibility *)self crlaxLabel];
-    v14 = v10;
+    crlaxLabel2 = [(CRLCanvasKnobAccessibility *)self crlaxLabel];
+    v14 = crlaxLabel2;
     v12 = [NSArray arrayWithObjects:&v14 count:1];
     goto LABEL_34;
   }
@@ -510,9 +510,9 @@ LABEL_30:
   if ([(CRLCanvasKnobAccessibility *)self crlaxIsConnectionLineCreationKnob])
   {
     v9 = +[NSBundle mainBundle];
-    v10 = [v9 localizedStringForKey:@"%@ connection" value:0 table:0];
+    crlaxLabel2 = [v9 localizedStringForKey:@"%@ connection" value:0 table:0];
 
-    v11 = [NSString localizedStringWithFormat:v10, v8];
+    v11 = [NSString localizedStringWithFormat:crlaxLabel2, v8];
     v16[0] = v11;
     v16[1] = v8;
     v12 = [NSArray arrayWithObjects:v16 count:2];
@@ -566,17 +566,17 @@ LABEL_36:
 
 - (CALayer)crlaxLayer
 {
-  v2 = [(CRLCanvasKnobAccessibility *)self crlaxTarget];
-  v3 = [v2 renderable];
-  v4 = [v3 layer];
+  crlaxTarget = [(CRLCanvasKnobAccessibility *)self crlaxTarget];
+  renderable = [crlaxTarget renderable];
+  layer = [renderable layer];
 
-  return v4;
+  return layer;
 }
 
 - (unint64_t)crlaxKnobTag
 {
-  v2 = [(CRLCanvasKnobAccessibility *)self crlaxTarget];
-  v3 = [v2 tag];
+  crlaxTarget = [(CRLCanvasKnobAccessibility *)self crlaxTarget];
+  v3 = [crlaxTarget tag];
 
   return v3;
 }
@@ -584,8 +584,8 @@ LABEL_36:
 - (CRLCanvasRepAccessibility)crlaxParentRepForKnob
 {
   v8 = 0;
-  v2 = [(CRLCanvasKnobAccessibility *)self crlaxTarget];
-  v3 = [v2 rep];
+  crlaxTarget = [(CRLCanvasKnobAccessibility *)self crlaxTarget];
+  v3 = [crlaxTarget rep];
 
   v4 = objc_opt_class();
   v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 1, &v8);
@@ -601,8 +601,8 @@ LABEL_36:
 
 - (CGPoint)crlaxPosition
 {
-  v2 = [(CRLCanvasKnobAccessibility *)self crlaxTarget];
-  [v2 position];
+  crlaxTarget = [(CRLCanvasKnobAccessibility *)self crlaxTarget];
+  [crlaxTarget position];
   v4 = v3;
   v6 = v5;
 
@@ -616,9 +616,9 @@ LABEL_36:
 - (CGPoint)crlaxPositionInUnscaledCanvas
 {
   v14 = 0;
-  v2 = self;
+  selfCopy = self;
   v3 = objc_opt_class();
-  v4 = __CRLAccessibilityCastAsClass(v3, v2, 1, &v14);
+  v4 = __CRLAccessibilityCastAsClass(v3, selfCopy, 1, &v14);
   if (v14 == 1)
   {
     abort();
@@ -626,10 +626,10 @@ LABEL_36:
 
   v5 = v4;
 
-  v6 = [(CRLCanvasKnobAccessibility *)v2 crlaxParentRepForKnob];
-  v7 = [v6 crlaxTarget];
+  crlaxParentRepForKnob = [(CRLCanvasKnobAccessibility *)selfCopy crlaxParentRepForKnob];
+  crlaxTarget = [crlaxParentRepForKnob crlaxTarget];
   [v5 position];
-  [v7 convertKnobPositionToUnscaledCanvas:?];
+  [crlaxTarget convertKnobPositionToUnscaledCanvas:?];
   v9 = v8;
   v11 = v10;
 
@@ -642,9 +642,9 @@ LABEL_36:
 
 - (CGSize)crlaxSize
 {
-  v2 = [(CRLCanvasKnobAccessibility *)self crlaxTarget];
-  v3 = [v2 knobImage];
-  [v3 size];
+  crlaxTarget = [(CRLCanvasKnobAccessibility *)self crlaxTarget];
+  knobImage = [crlaxTarget knobImage];
+  [knobImage size];
   v5 = v4;
   v7 = v6;
 
@@ -659,13 +659,13 @@ LABEL_36:
 {
   x = CGRectZero.origin.x;
   y = CGRectZero.origin.y;
-  v5 = [(CRLCanvasKnobAccessibility *)self crlaxParentRepForKnob];
-  v6 = v5;
-  if (v5)
+  crlaxParentRepForKnob = [(CRLCanvasKnobAccessibility *)self crlaxParentRepForKnob];
+  v6 = crlaxParentRepForKnob;
+  if (crlaxParentRepForKnob)
   {
-    v7 = [v5 crlaxCanvasView];
-    v8 = [(CRLCanvasKnobAccessibility *)self crlaxLayer];
-    if ([(CRLCanvasKnobAccessibility *)self crlaxUseFallbackFrameCalculation]|| !v8)
+    crlaxCanvasView = [crlaxParentRepForKnob crlaxCanvasView];
+    crlaxLayer = [(CRLCanvasKnobAccessibility *)self crlaxLayer];
+    if ([(CRLCanvasKnobAccessibility *)self crlaxUseFallbackFrameCalculation]|| !crlaxLayer)
     {
       [(CRLCanvasKnobAccessibility *)self crlaxSize];
       v17 = v16;
@@ -690,15 +690,15 @@ LABEL_36:
       v26 = v44.origin.y;
       width = v44.size.width;
       height = v44.size.height;
-      v9 = [v6 crlaxInteractiveCanvasController];
-      [v9 crlaxConvertUnscaledToBoundsRect:{v25, v26, width, height}];
+      crlaxInteractiveCanvasController = [v6 crlaxInteractiveCanvasController];
+      [crlaxInteractiveCanvasController crlaxConvertUnscaledToBoundsRect:{v25, v26, width, height}];
     }
 
     else
     {
-      v9 = [v7 crlaxCanvasLayer];
-      [v8 bounds];
-      [v8 convertRect:v9 toLayer:?];
+      crlaxInteractiveCanvasController = [crlaxCanvasView crlaxCanvasLayer];
+      [crlaxLayer bounds];
+      [crlaxLayer convertRect:crlaxInteractiveCanvasController toLayer:?];
     }
 
     v29 = v10;
@@ -706,7 +706,7 @@ LABEL_36:
     v31 = v12;
     v32 = v13;
 
-    [v7 crlaxFrameFromBounds:{v29, v30, v31, v32}];
+    [crlaxCanvasView crlaxFrameFromBounds:{v29, v30, v31, v32}];
     x = v33;
     y = v34;
     v14 = v35;
@@ -737,43 +737,43 @@ LABEL_36:
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 nodeIndex];
+    nodeIndex = [v4 nodeIndex];
   }
 
   else
   {
-    v6 = 0x7FFFFFFFFFFFFFFFLL;
+    nodeIndex = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return v6;
+  return nodeIndex;
 }
 
 - (BOOL)crlaxIsConnectionLineEndpointHandleWithConnection
 {
-  v2 = [(CRLCanvasKnobAccessibility *)self _connectionLineConnection];
-  v3 = v2 != 0;
+  _connectionLineConnection = [(CRLCanvasKnobAccessibility *)self _connectionLineConnection];
+  v3 = _connectionLineConnection != 0;
 
   return v3;
 }
 
 - (id)crlaxCreateKnobTracker
 {
-  v3 = [(CRLCanvasKnobAccessibility *)self _crlaxKnobTrackerClass];
-  v4 = [(CRLCanvasKnobAccessibility *)self crlaxParentRepForKnob];
-  v5 = [(objc_class *)v3 crlaxKnobTrackerWithRep:v4 knob:self];
+  _crlaxKnobTrackerClass = [(CRLCanvasKnobAccessibility *)self _crlaxKnobTrackerClass];
+  crlaxParentRepForKnob = [(CRLCanvasKnobAccessibility *)self crlaxParentRepForKnob];
+  v5 = [(objc_class *)_crlaxKnobTrackerClass crlaxKnobTrackerWithRep:crlaxParentRepForKnob knob:self];
 
   return v5;
 }
 
-- (void)crlaxMoveKnobToRepPositionInNaturalSpace:(CGPoint)a3 shouldSnapToMagnets:(BOOL)a4
+- (void)crlaxMoveKnobToRepPositionInNaturalSpace:(CGPoint)space shouldSnapToMagnets:(BOOL)magnets
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
-  v8 = [(CRLCanvasKnobAccessibility *)self crlaxParentRepForKnob];
+  magnetsCopy = magnets;
+  y = space.y;
+  x = space.x;
+  crlaxParentRepForKnob = [(CRLCanvasKnobAccessibility *)self crlaxParentRepForKnob];
   if (CRLAccessibilityShouldPerformValidationChecks())
   {
-    if (!v8)
+    if (!crlaxParentRepForKnob)
     {
       ShouldCrashOnValidationErrorAfterLaunch = CRLAccessibilityShouldCrashOnValidationErrorAfterLaunch();
       if (__CRLAccessibilityHandleValidationErrorWithDescription(ShouldCrashOnValidationErrorAfterLaunch, 0, @"Couldn't find parent rep for knob: %@", v10, v11, v12, v13, v14, self))
@@ -785,7 +785,7 @@ LABEL_36:
 
   if (CRLAccessibilityShouldPerformValidationChecks())
   {
-    if ([v8 crlaxInReadOnlyMode])
+    if ([crlaxParentRepForKnob crlaxInReadOnlyMode])
     {
       v15 = CRLAccessibilityShouldCrashOnValidationErrorAfterLaunch();
       if (__CRLAccessibilityHandleValidationErrorWithDescription(v15, 0, @"Should not attempt to move a knob in read-only mode.", v16, v17, v18, v19, v20, v37))
@@ -795,7 +795,7 @@ LABEL_36:
     }
   }
 
-  if (!v8 || ([v8 crlaxIsLocked] & 1) != 0)
+  if (!crlaxParentRepForKnob || ([crlaxParentRepForKnob crlaxIsLocked] & 1) != 0)
   {
     goto LABEL_19;
   }
@@ -830,10 +830,10 @@ LABEL_20:
   v28 = v27;
 
   [v28 setSnapEnabled:0];
-  [v28 setShouldSnapToMagnets:v4];
+  [v28 setShouldSnapToMagnets:magnetsCopy];
 
 LABEL_14:
-  [v8 crlaxConvertNaturalPointToUnscaledCanvas:{x, y}];
+  [crlaxParentRepForKnob crlaxConvertNaturalPointToUnscaledCanvas:{x, y}];
   [(CRLCanvasKnobAccessibility *)self _crlaxSnappedValueIfApplicableFromUnscaledCanvasPosition:?];
   v30 = v29;
   v32 = v31;
@@ -842,11 +842,11 @@ LABEL_14:
   v38[1] = 3221225472;
   v38[2] = sub_100157E54;
   v38[3] = &unk_1018406A8;
-  v39 = v8;
+  v39 = crlaxParentRepForKnob;
   v45 = v24 != 0;
   v34 = v33;
   v40 = v34;
-  v41 = self;
+  selfCopy = self;
   v43 = v30;
   v44 = v32;
   v35 = v21;
@@ -867,15 +867,15 @@ LABEL_19:
 
 - (id)crlaxSmartPathSourceForShapeControlKnob
 {
-  v2 = [(CRLCanvasKnobAccessibility *)self crlaxParentRepForKnob];
-  v3 = [v2 crlaxInfo];
+  crlaxParentRepForKnob = [(CRLCanvasKnobAccessibility *)self crlaxParentRepForKnob];
+  crlaxInfo = [crlaxParentRepForKnob crlaxInfo];
 
   if (objc_opt_respondsToSelector())
   {
     v9 = 0;
-    v4 = [v3 pathSource];
+    pathSource = [crlaxInfo pathSource];
     v5 = objc_opt_class();
-    v6 = __CRLAccessibilityCastAsClassAndProtocol(v5, &OBJC_PROTOCOL___CRLSmartPathSource, v4, 1, &v9);
+    v6 = __CRLAccessibilityCastAsClassAndProtocol(v5, &OBJC_PROTOCOL___CRLSmartPathSource, pathSource, 1, &v9);
     if (v9 == 1)
     {
       abort();
@@ -894,25 +894,25 @@ LABEL_19:
 
 - (BOOL)crlaxEverOffersCustomActionsForMovement
 {
-  v3 = [(CRLCanvasKnobAccessibility *)self crlaxKnobTag];
-  if (v3 - 12 >= 5)
+  crlaxKnobTag = [(CRLCanvasKnobAccessibility *)self crlaxKnobTag];
+  if (crlaxKnobTag - 12 >= 5)
   {
-    if (v3 - 10 > 1)
+    if (crlaxKnobTag - 10 > 1)
     {
       isKindOfClass = 0;
       return isKindOfClass & 1;
     }
 
-    v4 = [(CRLCanvasKnobAccessibility *)self crlaxParentRepForKnob];
-    v6 = [v4 crlaxTarget];
+    crlaxParentRepForKnob = [(CRLCanvasKnobAccessibility *)self crlaxParentRepForKnob];
+    crlaxTarget = [crlaxParentRepForKnob crlaxTarget];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }
 
   else
   {
-    v4 = [(CRLCanvasKnobAccessibility *)self crlaxSmartPathSourceForShapeControlKnob];
-    isKindOfClass = [v4 crlaxOffersMoveActionsForKnobTag:{-[CRLCanvasKnobAccessibility crlaxKnobTag](self, "crlaxKnobTag")}];
+    crlaxParentRepForKnob = [(CRLCanvasKnobAccessibility *)self crlaxSmartPathSourceForShapeControlKnob];
+    isKindOfClass = [crlaxParentRepForKnob crlaxOffersMoveActionsForKnobTag:{-[CRLCanvasKnobAccessibility crlaxKnobTag](self, "crlaxKnobTag")}];
   }
 
   return isKindOfClass & 1;
@@ -920,32 +920,32 @@ LABEL_19:
 
 - (BOOL)crlaxOffersCustomActionsForMovement
 {
-  v3 = [(CRLCanvasKnobAccessibility *)self crlaxParentRepForKnob];
-  if ([v3 crlaxInReadOnlyMode])
+  crlaxParentRepForKnob = [(CRLCanvasKnobAccessibility *)self crlaxParentRepForKnob];
+  if ([crlaxParentRepForKnob crlaxInReadOnlyMode])
   {
-    v4 = 0;
+    crlaxEverOffersCustomActionsForMovement = 0;
   }
 
   else
   {
-    v5 = [(CRLCanvasKnobAccessibility *)self crlaxParentRepForKnob];
-    if ([v5 crlaxIsLocked])
+    crlaxParentRepForKnob2 = [(CRLCanvasKnobAccessibility *)self crlaxParentRepForKnob];
+    if ([crlaxParentRepForKnob2 crlaxIsLocked])
     {
-      v4 = 0;
+      crlaxEverOffersCustomActionsForMovement = 0;
     }
 
     else
     {
-      v4 = [(CRLCanvasKnobAccessibility *)self crlaxEverOffersCustomActionsForMovement];
+      crlaxEverOffersCustomActionsForMovement = [(CRLCanvasKnobAccessibility *)self crlaxEverOffersCustomActionsForMovement];
     }
   }
 
-  return v4;
+  return crlaxEverOffersCustomActionsForMovement;
 }
 
 - (BOOL)crlaxIsReplaceMediaKnob
 {
-  v2 = [(CRLCanvasKnobAccessibility *)self crlaxTarget];
+  crlaxTarget = [(CRLCanvasKnobAccessibility *)self crlaxTarget];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -954,7 +954,7 @@ LABEL_19:
 
 - (BOOL)crlaxIsConnectionLineCreationKnob
 {
-  v2 = [(CRLCanvasKnobAccessibility *)self crlaxTarget];
+  crlaxTarget = [(CRLCanvasKnobAccessibility *)self crlaxTarget];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -963,7 +963,7 @@ LABEL_19:
 
 - (BOOL)crlaxIsConnectionLineEndpointKnob
 {
-  v3 = [(CRLCanvasKnobAccessibility *)self crlaxParentRepForKnob];
+  crlaxParentRepForKnob = [(CRLCanvasKnobAccessibility *)self crlaxParentRepForKnob];
   objc_opt_class();
   v4 = (objc_opt_isKindOfClass() & 1) != 0 && ([(CRLCanvasKnobAccessibility *)self crlaxKnobTag]== 10 || [(CRLCanvasKnobAccessibility *)self crlaxKnobTag]== 11);
 
@@ -972,7 +972,7 @@ LABEL_19:
 
 - (BOOL)crlaxIs3DReorientationKnob
 {
-  v2 = [(CRLCanvasKnobAccessibility *)self crlaxTarget];
+  crlaxTarget = [(CRLCanvasKnobAccessibility *)self crlaxTarget];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -981,7 +981,7 @@ LABEL_19:
 
 - (BOOL)crlaxIs3DObjectPlayPauseKnob
 {
-  v2 = [(CRLCanvasKnobAccessibility *)self crlaxTarget];
+  crlaxTarget = [(CRLCanvasKnobAccessibility *)self crlaxTarget];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -991,12 +991,12 @@ LABEL_19:
 - (unint64_t)crlaxConnectionMagnetType
 {
   v13 = 0;
-  v3 = [(CRLCanvasKnobAccessibility *)self crlaxParentRepForKnob];
-  v4 = [v3 crlaxLayout];
-  v5 = [v4 crlaxTarget];
+  crlaxParentRepForKnob = [(CRLCanvasKnobAccessibility *)self crlaxParentRepForKnob];
+  crlaxLayout = [crlaxParentRepForKnob crlaxLayout];
+  crlaxTarget = [crlaxLayout crlaxTarget];
 
   v6 = objc_opt_class();
-  v7 = __CRLAccessibilityCastAsClass(v6, v5, 1, &v13);
+  v7 = __CRLAccessibilityCastAsClass(v6, crlaxTarget, 1, &v13);
   if (v13 == 1)
   {
     abort();
@@ -1004,35 +1004,35 @@ LABEL_19:
 
   v8 = v7;
 
-  v9 = [(CRLCanvasKnobAccessibility *)self crlaxKnobTag];
-  if (v9 == 11)
+  crlaxKnobTag = [(CRLCanvasKnobAccessibility *)self crlaxKnobTag];
+  if (crlaxKnobTag == 11)
   {
-    v10 = [v8 headMagnetType];
+    headMagnetType = [v8 headMagnetType];
   }
 
   else
   {
-    if (v9 != 10)
+    if (crlaxKnobTag != 10)
     {
       v11 = 0;
       goto LABEL_8;
     }
 
-    v10 = [v8 tailMagnetType];
+    headMagnetType = [v8 tailMagnetType];
   }
 
-  v11 = v10;
+  v11 = headMagnetType;
 LABEL_8:
 
   return v11;
 }
 
-- (id)crlaxUnscaledCanvasPointForSnappingKnobToConnectionMagnetType:(unint64_t)a3
+- (id)crlaxUnscaledCanvasPointForSnappingKnobToConnectionMagnetType:(unint64_t)type
 {
   v10 = 0;
-  v4 = [(CRLCanvasKnobAccessibility *)self _connectionLineConnection];
+  _connectionLineConnection = [(CRLCanvasKnobAccessibility *)self _connectionLineConnection];
   v5 = objc_opt_class();
-  v6 = __CRLAccessibilityCastAsSafeCategory(v5, v4, 1, &v10);
+  v6 = __CRLAccessibilityCastAsSafeCategory(v5, _connectionLineConnection, 1, &v10);
   if (v10 == 1)
   {
     abort();
@@ -1042,7 +1042,7 @@ LABEL_8:
 
   if (v7)
   {
-    [v7 getCardinalPositionFromTypeInUnscaledCanvas:a3];
+    [v7 getCardinalPositionFromTypeInUnscaledCanvas:type];
     v8 = [NSValue valueWithCGPoint:?];
   }
 
@@ -1054,10 +1054,10 @@ LABEL_8:
   return v8;
 }
 
-- (BOOL)crlaxCanSnapKnobToConnectionMagnetAtUnscaledCanvasPoint:(CGPoint)a3
+- (BOOL)crlaxCanSnapKnobToConnectionMagnetAtUnscaledCanvasPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(CRLCanvasKnobAccessibility *)self _connectionLineConnection];
   v6 = v51 = 0;
   v7 = objc_opt_class();
@@ -1069,16 +1069,16 @@ LABEL_8:
 
   v9 = v8;
 
-  v45 = [v9 children];
+  children = [v9 children];
 
   if (v6)
   {
-    v10 = [(CRLCanvasKnobAccessibility *)self crlaxParentRepForKnob];
-    v11 = [v10 crlaxInteractiveCanvasController];
-    v12 = [v11 crlaxTarget];
+    crlaxParentRepForKnob = [(CRLCanvasKnobAccessibility *)self crlaxParentRepForKnob];
+    crlaxInteractiveCanvasController = [crlaxParentRepForKnob crlaxInteractiveCanvasController];
+    crlaxTarget = [crlaxInteractiveCanvasController crlaxTarget];
 
-    v13 = [v12 canvas];
-    [v13 visibleUnscaledRectForClippingReps];
+    canvas = [crlaxTarget canvas];
+    [canvas visibleUnscaledRectForClippingReps];
     v15 = v14;
     v17 = v16;
     v19 = v18;
@@ -1098,13 +1098,13 @@ LABEL_29:
       goto LABEL_30;
     }
 
-    v22 = [v12 canvas];
-    v23 = [v22 allRepsOrdered];
+    canvas2 = [crlaxTarget canvas];
+    allRepsOrdered = [canvas2 allRepsOrdered];
 
     v51 = 0;
-    v24 = [(CRLCanvasKnobAccessibility *)self crlaxParentRepForKnob];
+    crlaxParentRepForKnob2 = [(CRLCanvasKnobAccessibility *)self crlaxParentRepForKnob];
     v25 = objc_opt_class();
-    v46 = __CRLAccessibilityCastAsClass(v25, v24, 1, &v51);
+    v46 = __CRLAccessibilityCastAsClass(v25, crlaxParentRepForKnob2, 1, &v51);
     if (v51 != 1)
     {
 
@@ -1112,12 +1112,12 @@ LABEL_29:
       v48 = 0u;
       v49 = 0u;
       v50 = 0u;
-      v26 = v23;
+      v26 = allRepsOrdered;
       v27 = [v26 countByEnumeratingWithState:&v47 objects:v52 count:16];
       if (v27)
       {
         v28 = v27;
-        v44 = v12;
+        v44 = crlaxTarget;
         v29 = 0;
         v30 = *v48;
         while (2)
@@ -1130,9 +1130,9 @@ LABEL_29:
             }
 
             v32 = *(*(&v47 + 1) + 8 * i);
-            v33 = [v32 layout];
-            v34 = v33;
-            if (v33 == v6)
+            layout = [v32 layout];
+            v34 = layout;
+            if (layout == v6)
             {
               v29 = 1;
             }
@@ -1140,7 +1140,7 @@ LABEL_29:
             else
             {
               v35 = !v29;
-              v29 = v33 == v6;
+              v29 = layout == v6;
               if (!v35)
               {
                 v51 = 0;
@@ -1159,7 +1159,7 @@ LABEL_29:
                 {
                   if ([v46 canConnectToRep:v36])
                   {
-                    if (([v45 containsObject:v34] & 1) == 0)
+                    if (([children containsObject:v34] & 1) == 0)
                     {
                       [(CRLCanvasKnobAccessibility *)self crlaxConnectionLineMagnetSnapRadius];
                       v41 = v40;
@@ -1193,7 +1193,7 @@ LABEL_29:
 
         v42 = 1;
 LABEL_27:
-        v12 = v44;
+        crlaxTarget = v44;
       }
 
       else
@@ -1219,15 +1219,15 @@ LABEL_30:
   v3 = 0.0;
   if (+[CRLCanvasGuideController shouldSnapToGrid]&& ![(CRLCanvasKnobAccessibility *)self crlaxIsConnectionLineEndpointHandleWithConnection])
   {
-    v4 = [(CRLCanvasKnobAccessibility *)self crlaxParentRepForKnob];
-    v5 = [v4 crlaxCanvas];
-    v6 = [v5 crlaxTarget];
-    v7 = [v6 canvasController];
-    v8 = [v7 guideController];
+    crlaxParentRepForKnob = [(CRLCanvasKnobAccessibility *)self crlaxParentRepForKnob];
+    crlaxCanvas = [crlaxParentRepForKnob crlaxCanvas];
+    crlaxTarget = [crlaxCanvas crlaxTarget];
+    canvasController = [crlaxTarget canvasController];
+    guideController = [canvasController guideController];
 
-    if (v8)
+    if (guideController)
     {
-      [v8 snapDistanceToUseForGuides];
+      [guideController snapDistanceToUseForGuides];
       v3 = v9;
     }
   }
@@ -1237,9 +1237,9 @@ LABEL_30:
 
 - (double)crlaxConnectionLineMagnetSnapRadius
 {
-  v2 = [(CRLCanvasKnobAccessibility *)self crlaxParentRepForKnob];
-  v3 = [v2 crlaxCanvas];
-  [v3 crlaxViewScale];
+  crlaxParentRepForKnob = [(CRLCanvasKnobAccessibility *)self crlaxParentRepForKnob];
+  crlaxCanvas = [crlaxParentRepForKnob crlaxCanvas];
+  [crlaxCanvas crlaxViewScale];
   [CRLConnectionLineKnobTracker crlaxConnectionLineMagnetSnapRadiusForCanvasViewScale:?];
   v5 = v4;
 
@@ -1248,15 +1248,15 @@ LABEL_30:
 
 - (id)crlaxConnectionKnobMagnetPositionDescription
 {
-  v3 = [(CRLCanvasKnobAccessibility *)self crlaxConnectionMagnetType];
+  crlaxConnectionMagnetType = [(CRLCanvasKnobAccessibility *)self crlaxConnectionMagnetType];
   v4 = 0;
-  if (v3 <= 3)
+  if (crlaxConnectionMagnetType <= 3)
   {
-    if (v3 <= 1)
+    if (crlaxConnectionMagnetType <= 1)
     {
-      if (v3)
+      if (crlaxConnectionMagnetType)
       {
-        if (v3 != 1)
+        if (crlaxConnectionMagnetType != 1)
         {
           goto LABEL_19;
         }
@@ -1270,7 +1270,7 @@ LABEL_30:
       goto LABEL_13;
     }
 
-    if (v3 == 2)
+    if (crlaxConnectionMagnetType == 2)
     {
       v5 = +[NSBundle mainBundle];
       v6 = v5;
@@ -1290,9 +1290,9 @@ LABEL_16:
     goto LABEL_19;
   }
 
-  if (v3 <= 5)
+  if (crlaxConnectionMagnetType <= 5)
   {
-    if (v3 == 4)
+    if (crlaxConnectionMagnetType == 4)
     {
       v5 = +[NSBundle mainBundle];
       v6 = v5;
@@ -1309,43 +1309,43 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if (v3 == 6)
+  if (crlaxConnectionMagnetType == 6)
   {
-    v8 = [(CRLCanvasKnobAccessibility *)self crlaxConnectionLineConnectionCustomEdgeDescription];
+    crlaxConnectionLineConnectionCustomEdgeDescription = [(CRLCanvasKnobAccessibility *)self crlaxConnectionLineConnectionCustomEdgeDescription];
     goto LABEL_18;
   }
 
-  if (v3 != 7)
+  if (crlaxConnectionMagnetType != 7)
   {
     goto LABEL_19;
   }
 
 LABEL_13:
-  v8 = [(CRLCanvasKnobAccessibility *)self _getAccessibleAbsolutePositionOfKnob];
+  crlaxConnectionLineConnectionCustomEdgeDescription = [(CRLCanvasKnobAccessibility *)self _getAccessibleAbsolutePositionOfKnob];
 LABEL_18:
-  v4 = v8;
+  v4 = crlaxConnectionLineConnectionCustomEdgeDescription;
 LABEL_19:
 
   return v4;
 }
 
-+ (int)crlaxEdgePositionTypeFromNormalizedPosition:(CGPoint)a3
++ (int)crlaxEdgePositionTypeFromNormalizedPosition:(CGPoint)position
 {
-  v3 = a3.y == 0.0;
-  if (fabs(a3.y) < 0.05)
+  v3 = position.y == 0.0;
+  if (fabs(position.y) < 0.05)
   {
     v3 = 1;
   }
 
-  v4 = fabs(a3.y + -1.0) < 0.05 || a3.y == 1.0;
-  v5 = a3.x != 0.0;
-  if (fabs(a3.x) < 0.05)
+  v4 = fabs(position.y + -1.0) < 0.05 || position.y == 1.0;
+  v5 = position.x != 0.0;
+  if (fabs(position.x) < 0.05)
   {
     v5 = 0;
   }
 
-  v6 = a3.x == 1.0;
-  if (fabs(a3.x + -1.0) < 0.05)
+  v6 = position.x == 1.0;
+  if (fabs(position.x + -1.0) < 0.05)
   {
     v6 = 1;
   }
@@ -1416,10 +1416,10 @@ LABEL_19:
 {
   if (![(CRLCanvasKnobAccessibility *)self crlaxIsConnectionLineCreationKnob])
   {
-    v3 = [(CRLCanvasKnobAccessibility *)self crlaxKnobTag];
-    if (v3 - 12 >= 5 && v3 - 10 <= 1)
+    crlaxKnobTag = [(CRLCanvasKnobAccessibility *)self crlaxKnobTag];
+    if (crlaxKnobTag - 12 >= 5 && crlaxKnobTag - 10 <= 1)
     {
-      v4 = [(CRLCanvasKnobAccessibility *)self crlaxParentRepForKnob];
+      crlaxParentRepForKnob = [(CRLCanvasKnobAccessibility *)self crlaxParentRepForKnob];
       objc_opt_class();
       objc_opt_isKindOfClass();
     }
@@ -1432,11 +1432,11 @@ LABEL_19:
 
 - (id)getLabelForShapeControlKnob
 {
-  v3 = [(CRLCanvasKnobAccessibility *)self crlaxSmartPathSourceForShapeControlKnob];
+  crlaxSmartPathSourceForShapeControlKnob = [(CRLCanvasKnobAccessibility *)self crlaxSmartPathSourceForShapeControlKnob];
   v19 = 0;
-  v4 = self;
+  selfCopy = self;
   v5 = objc_opt_class();
-  v6 = __CRLAccessibilityCastAsClass(v5, v4, 1, &v19);
+  v6 = __CRLAccessibilityCastAsClass(v5, selfCopy, 1, &v19);
   if (v19 == 1)
   {
     abort();
@@ -1444,7 +1444,7 @@ LABEL_19:
 
   v7 = v6;
 
-  v8 = [v3 crlaxLabelComponentForKnobTag:{objc_msgSend(v7, "tag")}];
+  v8 = [crlaxSmartPathSourceForShapeControlKnob crlaxLabelComponentForKnobTag:{objc_msgSend(v7, "tag")}];
   if (v8)
   {
     v9 = +[NSBundle mainBundle];
@@ -1462,11 +1462,11 @@ LABEL_19:
 
 - (id)_getValueForShapeControlKnob
 {
-  v3 = [(CRLCanvasKnobAccessibility *)self crlaxSmartPathSourceForShapeControlKnob];
+  crlaxSmartPathSourceForShapeControlKnob = [(CRLCanvasKnobAccessibility *)self crlaxSmartPathSourceForShapeControlKnob];
   v11 = 0;
-  v4 = self;
+  selfCopy = self;
   v5 = objc_opt_class();
-  v6 = __CRLAccessibilityCastAsClass(v5, v4, 1, &v11);
+  v6 = __CRLAccessibilityCastAsClass(v5, selfCopy, 1, &v11);
   if (v11 == 1)
   {
     abort();
@@ -1474,12 +1474,12 @@ LABEL_19:
 
   v7 = v6;
 
-  v8 = [v3 crlaxValueForKnobTag:{objc_msgSend(v7, "tag")}];
-  if (![v8 length] && -[CRLCanvasKnobAccessibility crlaxEverOffersCustomActionsForMovement](v4, "crlaxEverOffersCustomActionsForMovement"))
+  v8 = [crlaxSmartPathSourceForShapeControlKnob crlaxValueForKnobTag:{objc_msgSend(v7, "tag")}];
+  if (![v8 length] && -[CRLCanvasKnobAccessibility crlaxEverOffersCustomActionsForMovement](selfCopy, "crlaxEverOffersCustomActionsForMovement"))
   {
-    v9 = [(CRLCanvasKnobAccessibility *)v4 _getAccessibleAbsolutePositionOfKnob];
+    _getAccessibleAbsolutePositionOfKnob = [(CRLCanvasKnobAccessibility *)selfCopy _getAccessibleAbsolutePositionOfKnob];
 
-    v8 = v9;
+    v8 = _getAccessibleAbsolutePositionOfKnob;
   }
 
   return v8;
@@ -1487,11 +1487,11 @@ LABEL_19:
 
 - (id)_getUserInputLabelForShapeControlKnob
 {
-  v3 = [(CRLCanvasKnobAccessibility *)self crlaxSmartPathSourceForShapeControlKnob];
+  crlaxSmartPathSourceForShapeControlKnob = [(CRLCanvasKnobAccessibility *)self crlaxSmartPathSourceForShapeControlKnob];
   v10 = 0;
-  v4 = self;
+  selfCopy = self;
   v5 = objc_opt_class();
-  v6 = __CRLAccessibilityCastAsClass(v5, v4, 1, &v10);
+  v6 = __CRLAccessibilityCastAsClass(v5, selfCopy, 1, &v10);
   if (v10 == 1)
   {
     abort();
@@ -1499,18 +1499,18 @@ LABEL_19:
 
   v7 = v6;
 
-  v8 = [v3 crlaxUserInputLabelForKnobTag:{objc_msgSend(v7, "tag")}];
+  v8 = [crlaxSmartPathSourceForShapeControlKnob crlaxUserInputLabelForKnobTag:{objc_msgSend(v7, "tag")}];
 
   return v8;
 }
 
 - (id)_getTailKnobArrowDescriptionForLine
 {
-  v2 = [(CRLCanvasKnobAccessibility *)self crlaxParentRepForKnob];
-  v3 = [v2 crlaxInfo];
+  crlaxParentRepForKnob = [(CRLCanvasKnobAccessibility *)self crlaxParentRepForKnob];
+  crlaxInfo = [crlaxParentRepForKnob crlaxInfo];
 
   v10 = 0;
-  v4 = [v3 crlaxValueForKey:@"tailLineEnd"];
+  v4 = [crlaxInfo crlaxValueForKey:@"tailLineEnd"];
   v5 = objc_opt_class();
   v6 = __CRLAccessibilityCastAsSafeCategory(v5, v4, 1, &v10);
   if (v10 == 1)
@@ -1520,18 +1520,18 @@ LABEL_19:
 
   v7 = v6;
 
-  v8 = [v7 crlaxStyleInfoDescription];
+  crlaxStyleInfoDescription = [v7 crlaxStyleInfoDescription];
 
-  return v8;
+  return crlaxStyleInfoDescription;
 }
 
 - (id)_getHeadKnobArrowDescriptionForLine
 {
-  v2 = [(CRLCanvasKnobAccessibility *)self crlaxParentRepForKnob];
-  v3 = [v2 crlaxInfo];
+  crlaxParentRepForKnob = [(CRLCanvasKnobAccessibility *)self crlaxParentRepForKnob];
+  crlaxInfo = [crlaxParentRepForKnob crlaxInfo];
 
   v10 = 0;
-  v4 = [v3 crlaxValueForKey:@"headLineEnd"];
+  v4 = [crlaxInfo crlaxValueForKey:@"headLineEnd"];
   v5 = objc_opt_class();
   v6 = __CRLAccessibilityCastAsSafeCategory(v5, v4, 1, &v10);
   if (v10 == 1)
@@ -1541,9 +1541,9 @@ LABEL_19:
 
   v7 = v6;
 
-  v8 = [v7 crlaxStyleInfoDescription];
+  crlaxStyleInfoDescription = [v7 crlaxStyleInfoDescription];
 
-  return v8;
+  return crlaxStyleInfoDescription;
 }
 
 - (id)_getAccessibleAbsolutePositionOfKnob
@@ -1567,12 +1567,12 @@ LABEL_19:
 - (id)_connectionLineConnection
 {
   v13 = 0;
-  v3 = [(CRLCanvasKnobAccessibility *)self crlaxParentRepForKnob];
-  v4 = [v3 crlaxLayout];
-  v5 = [v4 crlaxTarget];
+  crlaxParentRepForKnob = [(CRLCanvasKnobAccessibility *)self crlaxParentRepForKnob];
+  crlaxLayout = [crlaxParentRepForKnob crlaxLayout];
+  crlaxTarget = [crlaxLayout crlaxTarget];
 
   v6 = objc_opt_class();
-  v7 = __CRLAccessibilityCastAsClass(v6, v5, 1, &v13);
+  v7 = __CRLAccessibilityCastAsClass(v6, crlaxTarget, 1, &v13);
   if (v13 == 1)
   {
     abort();
@@ -1580,18 +1580,18 @@ LABEL_19:
 
   v8 = v7;
 
-  v9 = [(CRLCanvasKnobAccessibility *)self crlaxKnobTag];
-  if (v9 == 11)
+  crlaxKnobTag = [(CRLCanvasKnobAccessibility *)self crlaxKnobTag];
+  if (crlaxKnobTag == 11)
   {
-    v10 = [v8 connectedTo];
+    connectedTo = [v8 connectedTo];
     goto LABEL_6;
   }
 
-  if (v9 == 10)
+  if (crlaxKnobTag == 10)
   {
-    v10 = [v8 connectedFrom];
+    connectedTo = [v8 connectedFrom];
 LABEL_6:
-    v11 = v10;
+    v11 = connectedTo;
     goto LABEL_8;
   }
 
@@ -1603,14 +1603,14 @@ LABEL_8:
 
 - (id)_connectionLineConnectionDescription
 {
-  v3 = [(CRLCanvasKnobAccessibility *)self _connectionLineConnection];
-  v4 = [(CRLCanvasKnobAccessibility *)self crlaxParentRepForKnob];
-  v5 = [v4 crlaxInteractiveCanvasController];
-  v6 = [v5 crlaxTarget];
+  _connectionLineConnection = [(CRLCanvasKnobAccessibility *)self _connectionLineConnection];
+  crlaxParentRepForKnob = [(CRLCanvasKnobAccessibility *)self crlaxParentRepForKnob];
+  crlaxInteractiveCanvasController = [crlaxParentRepForKnob crlaxInteractiveCanvasController];
+  crlaxTarget = [crlaxInteractiveCanvasController crlaxTarget];
 
   v19 = 0;
-  v7 = [v3 info];
-  v8 = [v6 repForInfo:v7];
+  info = [_connectionLineConnection info];
+  v8 = [crlaxTarget repForInfo:info];
 
   v9 = objc_opt_class();
   v10 = __CRLAccessibilityCastAsSafeCategory(v9, v8, 1, &v19);
@@ -1621,21 +1621,21 @@ LABEL_8:
 
   v11 = v10;
 
-  v12 = [v11 crlaxDescriptionForConnections];
+  crlaxDescriptionForConnections = [v11 crlaxDescriptionForConnections];
 
-  if (![v12 length])
+  if (![crlaxDescriptionForConnections length])
   {
     goto LABEL_6;
   }
 
-  v13 = [(CRLCanvasKnobAccessibility *)self crlaxKnobTag];
-  if (v13 == 10)
+  crlaxKnobTag = [(CRLCanvasKnobAccessibility *)self crlaxKnobTag];
+  if (crlaxKnobTag == 10)
   {
     v14 = @"Connected from %@";
     goto LABEL_8;
   }
 
-  if (v13 != 11)
+  if (crlaxKnobTag != 11)
   {
 LABEL_6:
     v15 = 0;
@@ -1646,7 +1646,7 @@ LABEL_6:
 LABEL_8:
   v16 = +[NSBundle mainBundle];
   v17 = [v16 localizedStringForKey:v14 value:0 table:0];
-  v15 = [NSString localizedStringWithFormat:v17, v12];
+  v15 = [NSString localizedStringWithFormat:v17, crlaxDescriptionForConnections];
 
 LABEL_9:
 
@@ -1661,33 +1661,33 @@ LABEL_9:
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:@"Connected on %@" value:0 table:0];
 
-  v7 = [(CRLCanvasKnobAccessibility *)self crlaxConnectionMagnetType];
-  if (v7 - 2 >= 5)
+  crlaxConnectionMagnetType = [(CRLCanvasKnobAccessibility *)self crlaxConnectionMagnetType];
+  if (crlaxConnectionMagnetType - 2 >= 5)
   {
-    if (v7 >= 2)
+    if (crlaxConnectionMagnetType >= 2)
     {
       v10 = 0;
-      if (v7 != 7)
+      if (crlaxConnectionMagnetType != 7)
       {
         goto LABEL_9;
       }
 
-      v9 = [(CRLCanvasKnobAccessibility *)self _getAccessibleAbsolutePositionOfKnob];
+      _getAccessibleAbsolutePositionOfKnob = [(CRLCanvasKnobAccessibility *)self _getAccessibleAbsolutePositionOfKnob];
     }
 
     else
     {
-      v9 = [(CRLCanvasKnobAccessibility *)self crlaxConnectionKnobMagnetPositionDescription];
+      _getAccessibleAbsolutePositionOfKnob = [(CRLCanvasKnobAccessibility *)self crlaxConnectionKnobMagnetPositionDescription];
     }
 
-    v8 = v9;
-    [NSString localizedStringWithFormat:v4, v9];
+    crlaxConnectionKnobMagnetPositionDescription = _getAccessibleAbsolutePositionOfKnob;
+    [NSString localizedStringWithFormat:v4, _getAccessibleAbsolutePositionOfKnob];
   }
 
   else
   {
-    v8 = [(CRLCanvasKnobAccessibility *)self crlaxConnectionKnobMagnetPositionDescription];
-    [NSString localizedStringWithFormat:v6, v8];
+    crlaxConnectionKnobMagnetPositionDescription = [(CRLCanvasKnobAccessibility *)self crlaxConnectionKnobMagnetPositionDescription];
+    [NSString localizedStringWithFormat:v6, crlaxConnectionKnobMagnetPositionDescription];
   }
   v10 = ;
 
@@ -1701,11 +1701,11 @@ LABEL_9:
   if ([(CRLCanvasKnobAccessibility *)self crlaxConnectionMagnetType]== 6)
   {
     v17 = 0;
-    v3 = [(CRLCanvasKnobAccessibility *)self crlaxParentRepForKnob];
-    v4 = [v3 crlaxLayout];
+    crlaxParentRepForKnob = [(CRLCanvasKnobAccessibility *)self crlaxParentRepForKnob];
+    crlaxLayout = [crlaxParentRepForKnob crlaxLayout];
 
     v5 = objc_opt_class();
-    v6 = __CRLAccessibilityCastAsClass(v5, v4, 1, &v17);
+    v6 = __CRLAccessibilityCastAsClass(v5, crlaxLayout, 1, &v17);
     if (v17 == 1)
     {
       abort();
@@ -1732,9 +1732,9 @@ LABEL_9:
     if (v9 <= 7 && (v10 = *(&off_1018406C8 + v9), +[NSBundle mainBundle](NSBundle, "mainBundle"), v11 = objc_claimAutoreleasedReturnValue(), [v11 localizedStringForKey:v10 value:0 table:0], v12 = objc_claimAutoreleasedReturnValue(), v11, v12))
     {
       v13 = +[NSBundle mainBundle];
-      v14 = [v13 localizedStringForKey:@"%1$@ at %2$@" value:0 table:0];
-      v15 = [(CRLCanvasKnobAccessibility *)self _getAccessibleAbsolutePositionOfKnob];
-      v8 = [NSString localizedStringWithFormat:v14, v12, v15];
+      _getAccessibleAbsolutePositionOfKnob2 = [v13 localizedStringForKey:@"%1$@ at %2$@" value:0 table:0];
+      _getAccessibleAbsolutePositionOfKnob = [(CRLCanvasKnobAccessibility *)self _getAccessibleAbsolutePositionOfKnob];
+      v8 = [NSString localizedStringWithFormat:_getAccessibleAbsolutePositionOfKnob2, v12, _getAccessibleAbsolutePositionOfKnob];
     }
 
     else
@@ -1742,8 +1742,8 @@ LABEL_9:
 LABEL_11:
       v12 = +[NSBundle mainBundle];
       v13 = [v12 localizedStringForKey:@"edge at %@" value:0 table:0];
-      v14 = [(CRLCanvasKnobAccessibility *)self _getAccessibleAbsolutePositionOfKnob];
-      v8 = [NSString localizedStringWithFormat:v13, v14];
+      _getAccessibleAbsolutePositionOfKnob2 = [(CRLCanvasKnobAccessibility *)self _getAccessibleAbsolutePositionOfKnob];
+      v8 = [NSString localizedStringWithFormat:v13, _getAccessibleAbsolutePositionOfKnob2];
     }
   }
 
@@ -1758,9 +1758,9 @@ LABEL_11:
 - (id)crlaxNameFor3DObjectPlayPauseKnobState
 {
   v12 = 0;
-  v2 = self;
+  selfCopy = self;
   v3 = objc_opt_class();
-  v4 = __CRLAccessibilityCastAsClass(v3, v2, 1, &v12);
+  v4 = __CRLAccessibilityCastAsClass(v3, selfCopy, 1, &v12);
   if (v12 == 1)
   {
     abort();
@@ -1768,10 +1768,10 @@ LABEL_11:
 
   v5 = v4;
 
-  v6 = [v5 isPlaying];
+  isPlaying = [v5 isPlaying];
   v7 = +[NSBundle mainBundle];
   v8 = v7;
-  if (v6)
+  if (isPlaying)
   {
     v9 = @"Pause";
   }
@@ -1786,10 +1786,10 @@ LABEL_11:
   return v10;
 }
 
-- (CGPoint)_crlaxSnappedValueIfApplicableFromUnscaledCanvasPosition:(CGPoint)a3
+- (CGPoint)_crlaxSnappedValueIfApplicableFromUnscaledCanvasPosition:(CGPoint)position
 {
-  y = a3.y;
-  x = a3.x;
+  y = position.y;
+  x = position.x;
   [(CRLCanvasKnobAccessibility *)self crlaxCurrentGridSnapDistance];
   if (v5 != 0.0)
   {
@@ -1807,16 +1807,16 @@ LABEL_11:
 
 - (BOOL)crlaxIsSupported
 {
-  v3 = [(CRLCanvasKnobAccessibility *)self crlaxKnobTag];
+  crlaxKnobTag = [(CRLCanvasKnobAccessibility *)self crlaxKnobTag];
   result = 0;
-  if (v3 <= 0x1D)
+  if (crlaxKnobTag <= 0x1D)
   {
-    if (((1 << v3) & 0x2001FFDE) != 0)
+    if (((1 << crlaxKnobTag) & 0x2001FFDE) != 0)
     {
       return 1;
     }
 
-    if (v3 == 5)
+    if (crlaxKnobTag == 5)
     {
       if ([(CRLCanvasKnobAccessibility *)self crlaxIs3DReorientationKnob]|| [(CRLCanvasKnobAccessibility *)self crlaxIs3DObjectPlayPauseKnob])
       {
@@ -1832,27 +1832,27 @@ LABEL_11:
 
 - (id)crlaxPlatformSpecificHint
 {
-  v3 = [(CRLCanvasKnobAccessibility *)self crlaxParentRepForKnob];
-  if ([v3 crlaxInReadOnlyMode])
+  crlaxParentRepForKnob = [(CRLCanvasKnobAccessibility *)self crlaxParentRepForKnob];
+  if ([crlaxParentRepForKnob crlaxInReadOnlyMode])
   {
 
 LABEL_4:
-    v6 = 0;
+    crlaxConnectionLineKnobHint = 0;
     goto LABEL_5;
   }
 
-  v4 = [(CRLCanvasKnobAccessibility *)self crlaxParentRepForKnob];
-  v5 = [v4 crlaxIsLocked];
+  crlaxParentRepForKnob2 = [(CRLCanvasKnobAccessibility *)self crlaxParentRepForKnob];
+  crlaxIsLocked = [crlaxParentRepForKnob2 crlaxIsLocked];
 
-  if (v5)
+  if (crlaxIsLocked)
   {
     goto LABEL_4;
   }
 
-  v8 = [(CRLCanvasKnobAccessibility *)self crlaxKnobTag];
-  if (v8 <= 0x10)
+  crlaxKnobTag = [(CRLCanvasKnobAccessibility *)self crlaxKnobTag];
+  if (crlaxKnobTag <= 0x10)
   {
-    if (((1 << v8) & 0x1F000) != 0)
+    if (((1 << crlaxKnobTag) & 0x1F000) != 0)
     {
       if ([(CRLCanvasKnobAccessibility *)self crlaxIsAdjustable])
       {
@@ -1865,24 +1865,24 @@ LABEL_4:
       goto LABEL_28;
     }
 
-    if (((1 << v8) & 0x3C0) != 0)
+    if (((1 << crlaxKnobTag) & 0x3C0) != 0)
     {
       goto LABEL_11;
     }
 
-    if (((1 << v8) & 0xC00) != 0)
+    if (((1 << crlaxKnobTag) & 0xC00) != 0)
     {
-      v12 = [(CRLCanvasKnobAccessibility *)self crlaxParentRepForKnob];
-      v13 = [v12 crlaxTarget];
+      crlaxParentRepForKnob3 = [(CRLCanvasKnobAccessibility *)self crlaxParentRepForKnob];
+      crlaxTarget = [crlaxParentRepForKnob3 crlaxTarget];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v15 = [(CRLCanvasKnobAccessibility *)self crlaxIsConnectionLineEndpointHandleWithConnection];
+        crlaxIsConnectionLineEndpointHandleWithConnection = [(CRLCanvasKnobAccessibility *)self crlaxIsConnectionLineEndpointHandleWithConnection];
         v9 = +[NSBundle mainBundle];
         v10 = v9;
-        if (v15)
+        if (crlaxIsConnectionLineEndpointHandleWithConnection)
         {
           v11 = @"Double tap and hold, then drag to reposition and disconnect";
         }
@@ -1904,7 +1904,7 @@ LABEL_4:
     }
   }
 
-  if (v8 - 1 >= 5)
+  if (crlaxKnobTag - 1 >= 5)
   {
     goto LABEL_4;
   }
@@ -1933,7 +1933,7 @@ LABEL_4:
 LABEL_11:
   if ([(CRLCanvasKnobAccessibility *)self crlaxIsConnectionLineCreationKnob])
   {
-    v6 = [(CRLCanvasKnobAccessibility *)self crlaxConnectionLineKnobHint];
+    crlaxConnectionLineKnobHint = [(CRLCanvasKnobAccessibility *)self crlaxConnectionLineKnobHint];
     goto LABEL_5;
   }
 
@@ -1941,17 +1941,17 @@ LABEL_11:
   v10 = v9;
   v11 = @"Double tap and hold, then drag to resize";
 LABEL_28:
-  v6 = [v9 localizedStringForKey:v11 value:0 table:0];
+  crlaxConnectionLineKnobHint = [v9 localizedStringForKey:v11 value:0 table:0];
 
 LABEL_5:
 
-  return v6;
+  return crlaxConnectionLineKnobHint;
 }
 
 - (BOOL)crlaxIsAdjustable
 {
-  v3 = [(CRLCanvasKnobAccessibility *)self crlaxParentRepForKnob];
-  if ([v3 crlaxInReadOnlyMode])
+  crlaxParentRepForKnob = [(CRLCanvasKnobAccessibility *)self crlaxParentRepForKnob];
+  if ([crlaxParentRepForKnob crlaxInReadOnlyMode])
   {
 
 LABEL_4:
@@ -1959,31 +1959,31 @@ LABEL_4:
     return v6 & 1;
   }
 
-  v4 = [(CRLCanvasKnobAccessibility *)self crlaxParentRepForKnob];
-  v5 = [v4 crlaxIsLocked];
+  crlaxParentRepForKnob2 = [(CRLCanvasKnobAccessibility *)self crlaxParentRepForKnob];
+  crlaxIsLocked = [crlaxParentRepForKnob2 crlaxIsLocked];
 
-  if (v5)
+  if (crlaxIsLocked)
   {
     goto LABEL_4;
   }
 
-  v8 = [(CRLCanvasKnobAccessibility *)self crlaxKnobTag];
-  if (v8 > 0x10)
+  crlaxKnobTag = [(CRLCanvasKnobAccessibility *)self crlaxKnobTag];
+  if (crlaxKnobTag > 0x10)
   {
     goto LABEL_11;
   }
 
-  if (((1 << v8) & 0x1F000) == 0)
+  if (((1 << crlaxKnobTag) & 0x1F000) == 0)
   {
-    if (((1 << v8) & 0x3C0) != 0)
+    if (((1 << crlaxKnobTag) & 0x3C0) != 0)
     {
       goto LABEL_12;
     }
 
-    if (((1 << v8) & 0xC00) != 0)
+    if (((1 << crlaxKnobTag) & 0xC00) != 0)
     {
-      v9 = [(CRLCanvasKnobAccessibility *)self crlaxParentRepForKnob];
-      v10 = [v9 crlaxTarget];
+      crlaxParentRepForKnob3 = [(CRLCanvasKnobAccessibility *)self crlaxParentRepForKnob];
+      crlaxTarget = [crlaxParentRepForKnob3 crlaxTarget];
       objc_opt_class();
       v6 = objc_opt_isKindOfClass() ^ 1;
 
@@ -1991,48 +1991,48 @@ LABEL_4:
     }
 
 LABEL_11:
-    if (v8 - 1 >= 4)
+    if (crlaxKnobTag - 1 >= 4)
     {
-      if (v8 != 5 || [(CRLCanvasKnobAccessibility *)self crlaxIs3DReorientationKnob]|| [(CRLCanvasKnobAccessibility *)self crlaxIs3DObjectPlayPauseKnob])
+      if (crlaxKnobTag != 5 || [(CRLCanvasKnobAccessibility *)self crlaxIs3DReorientationKnob]|| [(CRLCanvasKnobAccessibility *)self crlaxIs3DObjectPlayPauseKnob])
       {
         goto LABEL_4;
       }
 
-      v11 = [(CRLCanvasKnobAccessibility *)self crlaxIsReplaceMediaKnob];
+      crlaxIsReplaceMediaKnob = [(CRLCanvasKnobAccessibility *)self crlaxIsReplaceMediaKnob];
 LABEL_13:
-      v6 = v11 ^ 1;
+      v6 = crlaxIsReplaceMediaKnob ^ 1;
       return v6 & 1;
     }
 
 LABEL_12:
-    v11 = [(CRLCanvasKnobAccessibility *)self crlaxIsConnectionLineCreationKnob];
+    crlaxIsReplaceMediaKnob = [(CRLCanvasKnobAccessibility *)self crlaxIsConnectionLineCreationKnob];
     goto LABEL_13;
   }
 
-  v12 = [(CRLCanvasKnobAccessibility *)self crlaxSmartPathSourceForShapeControlKnob];
-  v13 = [v12 crlaxIsAdjustableForKnobTag:{-[CRLCanvasKnobAccessibility crlaxKnobTag](self, "crlaxKnobTag")}];
+  crlaxSmartPathSourceForShapeControlKnob = [(CRLCanvasKnobAccessibility *)self crlaxSmartPathSourceForShapeControlKnob];
+  v13 = [crlaxSmartPathSourceForShapeControlKnob crlaxIsAdjustableForKnobTag:{-[CRLCanvasKnobAccessibility crlaxKnobTag](self, "crlaxKnobTag")}];
 
   return v13;
 }
 
-- (CGPoint)crlaxCalculatedNextPositionInRepForAdjustable:(BOOL)a3
+- (CGPoint)crlaxCalculatedNextPositionInRepForAdjustable:(BOOL)adjustable
 {
-  v3 = a3;
+  adjustableCopy = adjustable;
   [(CRLCanvasKnobAccessibility *)self crlaxPosition];
   v6 = v5;
   v8 = v7;
-  v9 = [(CRLCanvasKnobAccessibility *)self crlaxKnobTag];
-  v10 = v9;
-  v11 = v9 - 1;
-  if (v9 - 1 >= 0xA || (v12 = -1.0, ((0x249u >> v11) & 1) == 0))
+  crlaxKnobTag = [(CRLCanvasKnobAccessibility *)self crlaxKnobTag];
+  v10 = crlaxKnobTag;
+  v11 = crlaxKnobTag - 1;
+  if (crlaxKnobTag - 1 >= 0xA || (v12 = -1.0, ((0x249u >> v11) & 1) == 0))
   {
     x = 1.0;
-    if (((0x149u >> (v9 - 3)) & 1) == 0)
+    if (((0x149u >> (crlaxKnobTag - 3)) & 1) == 0)
     {
       x = CGPointZero.x;
     }
 
-    if (v9 - 3 >= 9)
+    if (crlaxKnobTag - 3 >= 9)
     {
       v12 = CGPointZero.x;
     }
@@ -2044,9 +2044,9 @@ LABEL_12:
   }
 
   y = CGPointZero.y;
-  v15 = [(CRLCanvasKnobAccessibility *)self crlaxParentRepForKnob];
-  v16 = [v15 crlaxTarget];
-  [v16 boundsForStandardKnobs];
+  crlaxParentRepForKnob = [(CRLCanvasKnobAccessibility *)self crlaxParentRepForKnob];
+  crlaxTarget = [crlaxParentRepForKnob crlaxTarget];
+  [crlaxTarget boundsForStandardKnobs];
   v18 = v17;
   v20 = v19;
 
@@ -2079,7 +2079,7 @@ LABEL_12:
     v26 = -1.0;
   }
 
-  if (!v3)
+  if (!adjustableCopy)
   {
     v25 = -1.0;
   }
@@ -2106,10 +2106,10 @@ LABEL_12:
 - (id)crlaxConnectionLineKnobHint
 {
   v3 = objc_opt_new();
-  v4 = [(CRLCanvasKnobAccessibility *)self crlaxParentRepForKnob];
-  v5 = [v4 crlaxHasAvailableRepsForConnecting];
+  crlaxParentRepForKnob = [(CRLCanvasKnobAccessibility *)self crlaxParentRepForKnob];
+  crlaxHasAvailableRepsForConnecting = [crlaxParentRepForKnob crlaxHasAvailableRepsForConnecting];
 
-  if (v5)
+  if (crlaxHasAvailableRepsForConnecting)
   {
     v6 = +[NSBundle mainBundle];
     v7 = [v6 localizedStringForKey:@"Use the Add Connections rotor to make connections to existing board items." value:0 table:0];

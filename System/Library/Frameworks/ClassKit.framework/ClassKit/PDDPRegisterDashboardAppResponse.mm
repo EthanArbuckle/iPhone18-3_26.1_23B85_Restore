@@ -1,12 +1,12 @@
 @interface PDDPRegisterDashboardAppResponse
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDDPRegisterDashboardAppResponse
@@ -16,8 +16,8 @@
   v7.receiver = self;
   v7.super_class = PDDPRegisterDashboardAppResponse;
   v3 = [(PDDPRegisterDashboardAppResponse *)&v7 description];
-  v4 = [(PDDPRegisterDashboardAppResponse *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDDPRegisterDashboardAppResponse *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -28,21 +28,21 @@
   status = self->_status;
   if (status)
   {
-    v5 = [(PDDPStatus *)status dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"status"];
+    dictionaryRepresentation = [(PDDPStatus *)status dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"status"];
   }
 
   return v3;
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     do
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
         break;
       }
@@ -53,18 +53,18 @@
       while (1)
       {
         LOBYTE(v17[0]) = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          v11 = [a3 data];
-          [v11 getBytes:v17 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:v17 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v17[0] & 0x7F) << v6;
@@ -81,9 +81,9 @@
         }
       }
 
-      v13 = [a3 hasError] ? 0 : v8;
+      v13 = [from hasError] ? 0 : v8;
 LABEL_15:
-      if (([a3 hasError] & 1) != 0 || (v13 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v13 & 7) == 4)
       {
         break;
       }
@@ -94,7 +94,7 @@ LABEL_15:
         objc_storeStrong(&self->_status, v14);
         v17[0] = 0;
         v17[1] = 0;
-        if (!PBReaderPlaceMark() || !sub_1000E2FD8(v14, a3))
+        if (!PBReaderPlaceMark() || !sub_1000E2FD8(v14, from))
         {
 
           return 0;
@@ -108,16 +108,16 @@ LABEL_15:
         return 0;
       }
 
-      v15 = [a3 position];
+      position2 = [from position];
     }
 
-    while (v15 < [a3 length]);
+    while (position2 < [from length]);
   }
 
-  return [a3 hasError] ^ 1;
+  return [from hasError] ^ 1;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (self->_status)
   {
@@ -125,32 +125,32 @@ LABEL_15:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   status = self->_status;
   if (status)
   {
-    [a3 setStatus:status];
+    [to setStatus:status];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(PDDPStatus *)self->_status copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(PDDPStatus *)self->_status copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     status = self->_status;
-    if (status | v4[1])
+    if (status | equalCopy[1])
     {
       v6 = [(PDDPStatus *)status isEqual:?];
     }
@@ -169,11 +169,11 @@ LABEL_15:
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   status = self->_status;
-  v6 = v4[1];
+  v6 = fromCopy[1];
   if (status)
   {
     if (!v6)
@@ -181,7 +181,7 @@ LABEL_15:
       goto LABEL_7;
     }
 
-    v7 = v4;
+    v7 = fromCopy;
     status = [(PDDPStatus *)status mergeFrom:?];
   }
 
@@ -192,14 +192,14 @@ LABEL_15:
       goto LABEL_7;
     }
 
-    v7 = v4;
+    v7 = fromCopy;
     status = [(PDDPRegisterDashboardAppResponse *)self setStatus:?];
   }
 
-  v4 = v7;
+  fromCopy = v7;
 LABEL_7:
 
-  _objc_release_x1(status, v4);
+  _objc_release_x1(status, fromCopy);
 }
 
 @end

@@ -1,37 +1,37 @@
 @interface RTLocationDownsamplerTree
-- (RTLocationDownsamplerTree)initWithLocations:(id)a3 errorFunction:(id)a4;
-- (double)evaluateLocationsWithErrorFunction:(id)a3;
+- (RTLocationDownsamplerTree)initWithLocations:(id)locations errorFunction:(id)function;
+- (double)evaluateLocationsWithErrorFunction:(id)function;
 - (id)allLocations;
 - (id)description;
 - (id)sampledLocations;
-- (void)splitLocationsWithErrorFunction:(id)a3;
+- (void)splitLocationsWithErrorFunction:(id)function;
 @end
 
 @implementation RTLocationDownsamplerTree
 
-- (RTLocationDownsamplerTree)initWithLocations:(id)a3 errorFunction:(id)a4
+- (RTLocationDownsamplerTree)initWithLocations:(id)locations errorFunction:(id)function
 {
-  v7 = a3;
-  v8 = a4;
+  locationsCopy = locations;
+  functionCopy = function;
   v13.receiver = self;
   v13.super_class = RTLocationDownsamplerTree;
   v9 = [(RTLocationDownsamplerTree *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_locations, a3);
-    [(RTLocationDownsamplerTree *)v10 evaluateLocationsWithErrorFunction:v8];
+    objc_storeStrong(&v9->_locations, locations);
+    [(RTLocationDownsamplerTree *)v10 evaluateLocationsWithErrorFunction:functionCopy];
     v10->_maximumError = v11;
   }
 
   return v10;
 }
 
-- (double)evaluateLocationsWithErrorFunction:(id)a3
+- (double)evaluateLocationsWithErrorFunction:(id)function
 {
-  v4 = a3;
-  v5 = [(RTLocationDownsamplerTree *)self locations];
-  v6 = [v5 count] & 0xFFFFFFFFFFFFFFFELL;
+  functionCopy = function;
+  locations = [(RTLocationDownsamplerTree *)self locations];
+  v6 = [locations count] & 0xFFFFFFFFFFFFFFFELL;
 
   if (v6 == 2)
   {
@@ -46,11 +46,11 @@
     v9 = 1;
     do
     {
-      v10 = [(RTLocationDownsamplerTree *)self locations];
-      v11 = [v10 objectAtIndex:v9];
+      locations2 = [(RTLocationDownsamplerTree *)self locations];
+      v11 = [locations2 objectAtIndex:v9];
 
-      v12 = [(RTLocationDownsamplerTree *)self locations];
-      v13 = v4[2](v4, v11, v12);
+      locations3 = [(RTLocationDownsamplerTree *)self locations];
+      v13 = functionCopy[2](functionCopy, v11, locations3);
 
       if (v13 > v8)
       {
@@ -59,8 +59,8 @@
       }
 
       ++v9;
-      v14 = [(RTLocationDownsamplerTree *)self locations];
-      v15 = [v14 count] - 2;
+      locations4 = [(RTLocationDownsamplerTree *)self locations];
+      v15 = [locations4 count] - 2;
     }
 
     while (v9 < v15);
@@ -72,51 +72,51 @@
   return v8;
 }
 
-- (void)splitLocationsWithErrorFunction:(id)a3
+- (void)splitLocationsWithErrorFunction:(id)function
 {
-  v28 = a3;
-  v4 = [(RTLocationDownsamplerTree *)self locations];
+  functionCopy = function;
+  locations = [(RTLocationDownsamplerTree *)self locations];
 
-  if (!v4)
+  if (!locations)
   {
-    v8 = [(RTLocationDownsamplerTree *)self left];
+    left = [(RTLocationDownsamplerTree *)self left];
     if ([(RTLocationDownsamplerTree *)self maximumErrorIndex])
     {
-      v15 = [(RTLocationDownsamplerTree *)self right];
+      right = [(RTLocationDownsamplerTree *)self right];
 
-      v8 = v15;
+      left = right;
     }
 
-    [v8 splitLocationsWithErrorFunction:v28];
+    [left splitLocationsWithErrorFunction:functionCopy];
     goto LABEL_7;
   }
 
-  v5 = [(RTLocationDownsamplerTree *)self locations];
-  v6 = [v5 count];
+  locations2 = [(RTLocationDownsamplerTree *)self locations];
+  v6 = [locations2 count];
 
   if (v6 >= 3)
   {
-    v7 = [(RTLocationDownsamplerTree *)self locations];
-    v8 = [v7 subarrayWithRange:{0, -[RTLocationDownsamplerTree maximumErrorIndex](self, "maximumErrorIndex") + 1}];
+    locations3 = [(RTLocationDownsamplerTree *)self locations];
+    left = [locations3 subarrayWithRange:{0, -[RTLocationDownsamplerTree maximumErrorIndex](self, "maximumErrorIndex") + 1}];
 
-    v9 = [(RTLocationDownsamplerTree *)self locations];
-    v10 = [(RTLocationDownsamplerTree *)self maximumErrorIndex];
-    v11 = [(RTLocationDownsamplerTree *)self locations];
-    v12 = [v9 subarrayWithRange:{v10, objc_msgSend(v11, "count") - -[RTLocationDownsamplerTree maximumErrorIndex](self, "maximumErrorIndex")}];
+    locations4 = [(RTLocationDownsamplerTree *)self locations];
+    maximumErrorIndex = [(RTLocationDownsamplerTree *)self maximumErrorIndex];
+    locations5 = [(RTLocationDownsamplerTree *)self locations];
+    v12 = [locations4 subarrayWithRange:{maximumErrorIndex, objc_msgSend(locations5, "count") - -[RTLocationDownsamplerTree maximumErrorIndex](self, "maximumErrorIndex")}];
 
-    v13 = [[RTLocationDownsamplerTree alloc] initWithLocations:v8 errorFunction:v28];
-    v14 = [[RTLocationDownsamplerTree alloc] initWithLocations:v12 errorFunction:v28];
+    v13 = [[RTLocationDownsamplerTree alloc] initWithLocations:left errorFunction:functionCopy];
+    v14 = [[RTLocationDownsamplerTree alloc] initWithLocations:v12 errorFunction:functionCopy];
     [(RTLocationDownsamplerTree *)self setLeft:v13];
     [(RTLocationDownsamplerTree *)self setRight:v14];
     [(RTLocationDownsamplerTree *)self setLocations:0];
 
 LABEL_7:
-    v16 = [(RTLocationDownsamplerTree *)self left];
-    [v16 maximumError];
+    left2 = [(RTLocationDownsamplerTree *)self left];
+    [left2 maximumError];
     v18 = v17;
 
-    v19 = [(RTLocationDownsamplerTree *)self right];
-    [v19 maximumError];
+    right2 = [(RTLocationDownsamplerTree *)self right];
+    [right2 maximumError];
     v21 = v20;
 
     if (v18 >= v21)
@@ -130,68 +130,68 @@ LABEL_7:
     }
 
     [(RTLocationDownsamplerTree *)self setMaximumError:v22];
-    v23 = [(RTLocationDownsamplerTree *)self left];
-    [v23 maximumError];
+    left3 = [(RTLocationDownsamplerTree *)self left];
+    [left3 maximumError];
     v25 = v24;
-    v26 = [(RTLocationDownsamplerTree *)self right];
-    [v26 maximumError];
+    right3 = [(RTLocationDownsamplerTree *)self right];
+    [right3 maximumError];
     [(RTLocationDownsamplerTree *)self setMaximumErrorIndex:v25 <= v27];
   }
 }
 
 - (id)allLocations
 {
-  v3 = [(RTLocationDownsamplerTree *)self left];
-  if (v3 && (v4 = v3, [(RTLocationDownsamplerTree *)self right], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
+  left = [(RTLocationDownsamplerTree *)self left];
+  if (left && (v4 = left, [(RTLocationDownsamplerTree *)self right], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
   {
-    v6 = objc_opt_new();
-    v7 = [(RTLocationDownsamplerTree *)self left];
-    v8 = [v7 allLocations];
+    locations = objc_opt_new();
+    left2 = [(RTLocationDownsamplerTree *)self left];
+    allLocations = [left2 allLocations];
 
-    v9 = [(RTLocationDownsamplerTree *)self right];
-    v10 = [v9 allLocations];
+    right = [(RTLocationDownsamplerTree *)self right];
+    allLocations2 = [right allLocations];
 
-    v11 = [v8 subarrayWithRange:{0, objc_msgSend(v8, "count") - 1}];
-    [v6 addObjectsFromArray:v11];
+    v11 = [allLocations subarrayWithRange:{0, objc_msgSend(allLocations, "count") - 1}];
+    [locations addObjectsFromArray:v11];
 
-    [v6 addObjectsFromArray:v10];
+    [locations addObjectsFromArray:allLocations2];
   }
 
   else
   {
-    v6 = [(RTLocationDownsamplerTree *)self locations];
+    locations = [(RTLocationDownsamplerTree *)self locations];
   }
 
-  return v6;
+  return locations;
 }
 
 - (id)sampledLocations
 {
   v16[2] = *MEMORY[0x1E69E9840];
-  v3 = [(RTLocationDownsamplerTree *)self left];
-  if (v3 && (v4 = v3, [(RTLocationDownsamplerTree *)self right], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
+  left = [(RTLocationDownsamplerTree *)self left];
+  if (left && (v4 = left, [(RTLocationDownsamplerTree *)self right], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
   {
     v6 = objc_opt_new();
-    v7 = [(RTLocationDownsamplerTree *)self left];
-    v8 = [v7 sampledLocations];
+    left2 = [(RTLocationDownsamplerTree *)self left];
+    sampledLocations = [left2 sampledLocations];
 
-    v9 = [(RTLocationDownsamplerTree *)self right];
-    v10 = [v9 sampledLocations];
+    right = [(RTLocationDownsamplerTree *)self right];
+    sampledLocations2 = [right sampledLocations];
 
-    v11 = [v8 subarrayWithRange:{0, objc_msgSend(v8, "count") - 1}];
+    v11 = [sampledLocations subarrayWithRange:{0, objc_msgSend(sampledLocations, "count") - 1}];
     [v6 addObjectsFromArray:v11];
 
-    [v6 addObjectsFromArray:v10];
+    [v6 addObjectsFromArray:sampledLocations2];
   }
 
   else
   {
-    v8 = [(RTLocationDownsamplerTree *)self locations];
-    v10 = [v8 firstObject];
-    v16[0] = v10;
-    v12 = [(RTLocationDownsamplerTree *)self locations];
-    v13 = [v12 lastObject];
-    v16[1] = v13;
+    sampledLocations = [(RTLocationDownsamplerTree *)self locations];
+    sampledLocations2 = [sampledLocations firstObject];
+    v16[0] = sampledLocations2;
+    locations = [(RTLocationDownsamplerTree *)self locations];
+    lastObject = [locations lastObject];
+    v16[1] = lastObject;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:2];
   }
 
@@ -202,29 +202,29 @@ LABEL_7:
 
 - (id)description
 {
-  v3 = [(RTLocationDownsamplerTree *)self left];
-  if (v3 && (v4 = v3, [(RTLocationDownsamplerTree *)self right], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
+  left = [(RTLocationDownsamplerTree *)self left];
+  if (left && (v4 = left, [(RTLocationDownsamplerTree *)self right], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
   {
     v6 = MEMORY[0x1E696AEC0];
     [(RTLocationDownsamplerTree *)self maximumError];
     v8 = v7;
-    v9 = [(RTLocationDownsamplerTree *)self maximumErrorIndex];
-    v10 = [(RTLocationDownsamplerTree *)self left];
-    v11 = [v10 description];
-    v12 = [(RTLocationDownsamplerTree *)self right];
-    v13 = [v12 description];
-    v14 = [v6 stringWithFormat:@"{ME:%f, MI:%lu, left:[%@], right:[%@]}", v8, v9, v11, v13];
+    maximumErrorIndex = [(RTLocationDownsamplerTree *)self maximumErrorIndex];
+    left2 = [(RTLocationDownsamplerTree *)self left];
+    v11 = [left2 description];
+    right = [(RTLocationDownsamplerTree *)self right];
+    v13 = [right description];
+    v14 = [v6 stringWithFormat:@"{ME:%f, MI:%lu, left:[%@], right:[%@]}", v8, maximumErrorIndex, v11, v13];
   }
 
   else
   {
-    v15 = [(RTLocationDownsamplerTree *)self locations];
-    v16 = [v15 valueForKey:@"description"];
-    v10 = [v16 componentsJoinedByString:{@", (")}];
+    locations = [(RTLocationDownsamplerTree *)self locations];
+    v16 = [locations valueForKey:@"description"];
+    left2 = [v16 componentsJoinedByString:{@", (")}];
 
     v17 = MEMORY[0x1E696AEC0];
     [(RTLocationDownsamplerTree *)self maximumError];
-    v14 = [v17 stringWithFormat:@"{ME:%f, MI:%lu, locs:(%@)}", v18, -[RTLocationDownsamplerTree maximumErrorIndex](self, "maximumErrorIndex"), v10];
+    v14 = [v17 stringWithFormat:@"{ME:%f, MI:%lu, locs:(%@)}", v18, -[RTLocationDownsamplerTree maximumErrorIndex](self, "maximumErrorIndex"), left2];
   }
 
   return v14;

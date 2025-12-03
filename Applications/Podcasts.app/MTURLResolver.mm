@@ -1,94 +1,94 @@
 @interface MTURLResolver
-+ (BOOL)_handleBrowseURL:(id)a3;
-+ (BOOL)_handleLegacyCoreSpotlightURL:(id)a3;
-+ (BOOL)_handleNowPlayingURL:(id)a3;
-+ (BOOL)_isLegacyCoreSpotlightURL:(id)a3;
-+ (id)episodeUrlForPodcastStoreId:(int64_t)a3 episodeStoreId:(int64_t)a4;
-+ (id)podcastUrlForStoreId:(int64_t)a3;
-+ (id)searchUrlForSearchText:(id)a3;
-+ (void)handlePodcastsUrlScheme:(id)a3;
-+ (void)handleiTMSUrlScheme:(id)a3;
-+ (void)showSearchControllerWithSearchText:(id)a3;
++ (BOOL)_handleBrowseURL:(id)l;
++ (BOOL)_handleLegacyCoreSpotlightURL:(id)l;
++ (BOOL)_handleNowPlayingURL:(id)l;
++ (BOOL)_isLegacyCoreSpotlightURL:(id)l;
++ (id)episodeUrlForPodcastStoreId:(int64_t)id episodeStoreId:(int64_t)storeId;
++ (id)podcastUrlForStoreId:(int64_t)id;
++ (id)searchUrlForSearchText:(id)text;
++ (void)handlePodcastsUrlScheme:(id)scheme;
++ (void)handleiTMSUrlScheme:(id)scheme;
++ (void)showSearchControllerWithSearchText:(id)text;
 @end
 
 @implementation MTURLResolver
 
-+ (void)handleiTMSUrlScheme:(id)a3
++ (void)handleiTMSUrlScheme:(id)scheme
 {
-  v4 = a3;
-  v5 = [v4 pf_cleanUrlToStoreId];
-  v6 = [v4 pf_cleanUrlToStoreTrackId];
-  v7 = [v4 pf_cleanUrlToEpisodeGuid];
+  schemeCopy = scheme;
+  pf_cleanUrlToStoreId = [schemeCopy pf_cleanUrlToStoreId];
+  pf_cleanUrlToStoreTrackId = [schemeCopy pf_cleanUrlToStoreTrackId];
+  pf_cleanUrlToEpisodeGuid = [schemeCopy pf_cleanUrlToEpisodeGuid];
   v8 = +[MTDB sharedInstance];
-  v9 = [v8 mainQueueContext];
+  mainQueueContext = [v8 mainQueueContext];
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100161C54;
   v13[3] = &unk_1004DE010;
-  v14 = v9;
-  v15 = v7;
-  v18 = v6;
-  v19 = a1;
-  v16 = v4;
-  v17 = v5;
-  v10 = v4;
-  v11 = v7;
-  v12 = v9;
+  v14 = mainQueueContext;
+  v15 = pf_cleanUrlToEpisodeGuid;
+  v18 = pf_cleanUrlToStoreTrackId;
+  selfCopy = self;
+  v16 = schemeCopy;
+  v17 = pf_cleanUrlToStoreId;
+  v10 = schemeCopy;
+  v11 = pf_cleanUrlToEpisodeGuid;
+  v12 = mainQueueContext;
   [v12 performBlock:v13];
 }
 
-+ (void)handlePodcastsUrlScheme:(id)a3
++ (void)handlePodcastsUrlScheme:(id)scheme
 {
-  v4 = a3;
-  if (([a1 _handleLegacyCoreSpotlightURL:v4] & 1) == 0 && (objc_msgSend(a1, "_handleNowPlayingURL:", v4) & 1) == 0 && (objc_msgSend(a1, "_handleBrowseURL:", v4) & 1) == 0)
+  schemeCopy = scheme;
+  if (([self _handleLegacyCoreSpotlightURL:schemeCopy] & 1) == 0 && (objc_msgSend(self, "_handleNowPlayingURL:", schemeCopy) & 1) == 0 && (objc_msgSend(self, "_handleBrowseURL:", schemeCopy) & 1) == 0)
   {
-    v5 = [v4 host];
-    v6 = [v4 pf_queryAsDictionary];
-    v7 = [v6 objectForKeyedSubscript:@"podcastUuid"];
-    v31 = v6;
-    v8 = [v6 objectForKeyedSubscript:@"episodeUuid"];
+    host = [schemeCopy host];
+    pf_queryAsDictionary = [schemeCopy pf_queryAsDictionary];
+    uuid2 = [pf_queryAsDictionary objectForKeyedSubscript:@"podcastUuid"];
+    v31 = pf_queryAsDictionary;
+    v8 = [pf_queryAsDictionary objectForKeyedSubscript:@"episodeUuid"];
     v33[0] = @"play";
     v33[1] = @"show";
     v9 = [NSArray arrayWithObjects:v33 count:2];
-    v32 = v5;
-    if (([v9 containsObject:v5] & 1) == 0)
+    v32 = host;
+    if (([v9 containsObject:host] & 1) == 0)
     {
       v10 = +[IMLogger sharedLogger];
-      [v10 logFile:"/Library/Caches/com.apple.xbs/Sources/Marmoset/Source/Utility/MTURLResolver.m" lineNumber:107 format:{@"unsupported url: %@", v4}];
+      [v10 logFile:"/Library/Caches/com.apple.xbs/Sources/Marmoset/Source/Utility/MTURLResolver.m" lineNumber:107 format:{@"unsupported url: %@", schemeCopy}];
     }
 
     v11 = +[MTDB sharedInstance];
-    v12 = [v11 mainQueueContext];
+    mainQueueContext = [v11 mainQueueContext];
 
-    v13 = [v12 episodeForUuid:v8];
-    v14 = [v13 podcast];
-    if (v14)
+    v13 = [mainQueueContext episodeForUuid:v8];
+    podcast = [v13 podcast];
+    if (podcast)
     {
-      v15 = v14;
-      v16 = v12;
+      v15 = podcast;
+      v16 = mainQueueContext;
       v17 = v9;
-      v18 = [v14 uuid];
-      v19 = v7;
-      v20 = [v7 isEqualToString:v18];
+      uuid = [podcast uuid];
+      v19 = uuid2;
+      v20 = [uuid2 isEqualToString:uuid];
 
       if (v20)
       {
-        v7 = v19;
+        uuid2 = v19;
       }
 
       else
       {
-        v7 = [v15 uuid];
+        uuid2 = [v15 uuid];
       }
 
       v9 = v17;
-      v12 = v16;
+      mainQueueContext = v16;
     }
 
     else
     {
-      v15 = [v12 podcastForUuid:v7];
+      v15 = [mainQueueContext podcastForUuid:uuid2];
     }
 
     v21 = [v8 length];
@@ -105,53 +105,53 @@
     v23 = !v22;
     v30 = v23;
     v24 = [v8 length];
-    if (v13 && v24 || ![v7 length])
+    if (v13 && v24 || ![uuid2 length])
     {
-      v25 = v7;
+      v25 = uuid2;
     }
 
     else
     {
-      v25 = v7;
-      v26 = [MTRecencyUtil upNextForPodcastUuid:v7 ctx:v12];
-      v27 = [v26 episodeUuid];
+      v25 = uuid2;
+      v26 = [MTRecencyUtil upNextForPodcastUuid:uuid2 ctx:mainQueueContext];
+      episodeUuid = [v26 episodeUuid];
 
-      v8 = v27;
+      v8 = episodeUuid;
     }
 
     if (v15)
     {
       v28 = [v32 isEqualToString:@"play"];
-      v29 = [a1 appController];
-      [v29 presentPodcast:v15 episodeUuid:v8 episodeNotAvailable:v30 podcastTab:0 startPlayback:v28 animated:0];
+      appController = [self appController];
+      [appController presentPodcast:v15 episodeUuid:v8 episodeNotAvailable:v30 podcastTab:0 startPlayback:v28 animated:0];
     }
   }
 }
 
-+ (void)showSearchControllerWithSearchText:(id)a3
++ (void)showSearchControllerWithSearchText:(id)text
 {
-  v6 = a3;
-  if ([v6 length])
+  textCopy = text;
+  if ([textCopy length])
   {
-    v4 = [MTURLResolver searchUrlForSearchText:v6];
-    v5 = [a1 appController];
-    [v5 openStoreURL:v4];
+    appController2 = [MTURLResolver searchUrlForSearchText:textCopy];
+    appController = [self appController];
+    [appController openStoreURL:appController2];
   }
 
   else
   {
-    v4 = [a1 appController];
-    [v4 selectSearchTabAndFocusSearchField];
+    appController2 = [self appController];
+    [appController2 selectSearchTabAndFocusSearchField];
   }
 }
 
-+ (id)searchUrlForSearchText:(id)a3
++ (id)searchUrlForSearchText:(id)text
 {
-  v3 = a3;
-  if ([v3 length])
+  textCopy = text;
+  if ([textCopy length])
   {
     v4 = +[NSCharacterSet URLQueryAllowedCharacterSet];
-    v5 = [v3 stringByAddingPercentEncodingWithAllowedCharacters:v4];
+    v5 = [textCopy stringByAddingPercentEncodingWithAllowedCharacters:v4];
 
     v6 = [NSString stringWithFormat:@"&term=%@", v5];
     v7 = [@"itms-podcasts://?action=search&activate=true" stringByAppendingString:v6];
@@ -167,11 +167,11 @@
   return v8;
 }
 
-+ (id)podcastUrlForStoreId:(int64_t)a3
++ (id)podcastUrlForStoreId:(int64_t)id
 {
   if ([MTStoreIdentifier isNotEmpty:?])
   {
-    v4 = [MTPodcast storeCleanURLForAdamID:a3];
+    v4 = [MTPodcast storeCleanURLForAdamID:id];
   }
 
   else
@@ -182,51 +182,51 @@
   return v4;
 }
 
-+ (id)episodeUrlForPodcastStoreId:(int64_t)a3 episodeStoreId:(int64_t)a4
++ (id)episodeUrlForPodcastStoreId:(int64_t)id episodeStoreId:(int64_t)storeId
 {
-  v6 = [NSString stringWithFormat:@"%llu", a4];
-  v7 = [a1 podcastUrlForStoreId:a3];
-  v8 = [v7 pf_URLByAppendingQueryParameterKey:@"i" value:v6];
+  storeId = [NSString stringWithFormat:@"%llu", storeId];
+  v7 = [self podcastUrlForStoreId:id];
+  v8 = [v7 pf_URLByAppendingQueryParameterKey:@"i" value:storeId];
 
   return v8;
 }
 
-+ (BOOL)_handleNowPlayingURL:(id)a3
++ (BOOL)_handleNowPlayingURL:(id)l
 {
-  v4 = a3;
-  v5 = [v4 host];
-  v6 = [v5 caseInsensitiveCompare:@"nowplaying"];
+  lCopy = l;
+  host = [lCopy host];
+  v6 = [host caseInsensitiveCompare:@"nowplaying"];
   v7 = v6 == 0;
   if (!v6)
   {
-    v9 = [v4 host];
+    host2 = [lCopy host];
 
-    if (!v9)
+    if (!host2)
     {
       v7 = 0;
       goto LABEL_3;
     }
 
-    v10 = [a1 appController];
-    [v10 presentNowPlayingAnimated:0];
+    appController = [self appController];
+    [appController presentNowPlayingAnimated:0];
 
-    v11 = [v4 pf_queryAsDictionary];
-    v12 = [v11 objectForKeyedSubscript:@"start"];
-    v13 = [v12 BOOLValue];
+    pf_queryAsDictionary = [lCopy pf_queryAsDictionary];
+    v12 = [pf_queryAsDictionary objectForKeyedSubscript:@"start"];
+    bOOLValue = [v12 BOOLValue];
 
     v14 = +[MTPlayerController defaultInstance];
-    v5 = v14;
-    if (v13)
+    host = v14;
+    if (bOOLValue)
     {
-      v15 = [v14 currentItem];
-      if (v15)
+      currentItem = [v14 currentItem];
+      if (currentItem)
       {
-        v16 = v15;
-        v17 = [v5 isPlayingLocally];
+        v16 = currentItem;
+        isPlayingLocally = [host isPlayingLocally];
 
-        if ((v17 & 1) == 0)
+        if ((isPlayingLocally & 1) == 0)
         {
-          [v5 playWithReason:11];
+          [host playWithReason:11];
         }
       }
     }
@@ -236,40 +236,40 @@ LABEL_3:
   return v7;
 }
 
-+ (BOOL)_handleBrowseURL:(id)a3
++ (BOOL)_handleBrowseURL:(id)l
 {
-  v4 = a3;
-  v5 = [v4 host];
-  v6 = [v5 caseInsensitiveCompare:@"browse"];
+  lCopy = l;
+  host = [lCopy host];
+  v6 = [host caseInsensitiveCompare:@"browse"];
   v7 = v6 == 0;
   if (!v6)
   {
-    v8 = [v4 host];
+    host2 = [lCopy host];
 
-    if (!v8)
+    if (!host2)
     {
       v7 = 0;
       goto LABEL_5;
     }
 
-    v5 = [a1 appController];
-    [v5 selectFeaturedTab];
+    host = [self appController];
+    [host selectFeaturedTab];
   }
 
 LABEL_5:
   return v7;
 }
 
-+ (BOOL)_isLegacyCoreSpotlightURL:(id)a3
++ (BOOL)_isLegacyCoreSpotlightURL:(id)l
 {
-  v3 = a3;
-  v4 = [v3 scheme];
-  v5 = [v4 isEqualToString:@"podcasts"];
+  lCopy = l;
+  scheme = [lCopy scheme];
+  v5 = [scheme isEqualToString:@"podcasts"];
 
-  if (v5 && ([v3 host], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "hasSuffix:", @"play"), v6, v7))
+  if (v5 && ([lCopy host], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "hasSuffix:", @"play"), v6, v7))
   {
-    v8 = [v3 absoluteString];
-    v9 = [v8 containsString:@"pid="];
+    absoluteString = [lCopy absoluteString];
+    v9 = [absoluteString containsString:@"pid="];
   }
 
   else
@@ -280,16 +280,16 @@ LABEL_5:
   return v9;
 }
 
-+ (BOOL)_handleLegacyCoreSpotlightURL:(id)a3
++ (BOOL)_handleLegacyCoreSpotlightURL:(id)l
 {
-  v3 = a3;
-  v4 = [v3 host];
-  v5 = [v4 hasSuffix:@"play"];
+  lCopy = l;
+  host = [lCopy host];
+  v5 = [host hasSuffix:@"play"];
 
   if (v5)
   {
-    v22 = [v3 query];
-    v6 = [v22 componentsSeparatedByString:@"&"];
+    query = [lCopy query];
+    v6 = [query componentsSeparatedByString:@"&"];
     v24 = 0;
     v25 = &v24;
     v26 = 0x3032000000;
@@ -307,21 +307,21 @@ LABEL_5:
       v7 = objc_alloc_init(NSNumberFormatter);
       [v7 setNumberStyle:1];
       v8 = +[MTDB sharedInstance];
-      v9 = [v8 mainOrPrivateContext];
+      mainOrPrivateContext = [v8 mainOrPrivateContext];
       v10 = [v7 numberFromString:v25[5]];
       v11 = [MTEpisode predicateForPersistentId:v10];
       v12 = kEpisodeUuid;
       v30[0] = kEpisodeUuid;
       v30[1] = kEpisodePodcastUuid;
       v13 = [NSArray arrayWithObjects:v30 count:2];
-      v14 = [v9 objectDictionariesInEntity:kMTEpisodeEntityName predicate:v11 sortDescriptors:0 propertiesToFetch:v13 includeObjectId:0];
+      v14 = [mainOrPrivateContext objectDictionariesInEntity:kMTEpisodeEntityName predicate:v11 sortDescriptors:0 propertiesToFetch:v13 includeObjectId:0];
 
       v15 = [v14 count];
       v16 = v15 != 0;
       if (v15)
       {
-        v17 = [v14 lastObject];
-        v18 = [v17 objectForKeyedSubscript:v12];
+        lastObject = [v14 lastObject];
+        v18 = [lastObject objectForKeyedSubscript:v12];
         v19 = [MTPlaybackQueueFactory playEpisodeUuid:v18];
         v20 = +[MTPlayerController defaultInstance];
         [v20 playManifest:v19 reason:3];

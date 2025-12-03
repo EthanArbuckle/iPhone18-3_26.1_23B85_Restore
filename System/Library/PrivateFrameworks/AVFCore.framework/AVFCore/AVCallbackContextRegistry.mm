@@ -1,17 +1,17 @@
 @interface AVCallbackContextRegistry
 + (void)initialize;
 - (AVCallbackContextRegistry)init;
-- (id)callbackContextForToken:(void *)a3;
+- (id)callbackContextForToken:(void *)token;
 - (void)dealloc;
-- (void)registerCallbackContextObject:(id)a3;
-- (void)unregisterCallbackContextForToken:(void *)a3;
+- (void)registerCallbackContextObject:(id)object;
+- (void)unregisterCallbackContextForToken:(void *)token;
 @end
 
 @implementation AVCallbackContextRegistry
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     _sSharedCallbackContextRegistry = objc_alloc_init(AVCallbackContextRegistry);
   }
@@ -46,15 +46,15 @@
   [(AVCallbackContextRegistry *)&v4 dealloc];
 }
 
-- (void)registerCallbackContextObject:(id)a3
+- (void)registerCallbackContextObject:(id)object
 {
-  if (!a3)
+  if (!object)
   {
     v13 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"invalid parameter not satisfying: %s", v3, v4, v5, v6, v7, "callbackContext != nil"), 0}];
     objc_exception_throw(v13);
   }
 
-  v9 = [[AVWeakReference alloc] initWithReferencedObject:a3];
+  v9 = [[AVWeakReference alloc] initWithReferencedObject:object];
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -87,9 +87,9 @@ uint64_t __59__AVCallbackContextRegistry_registerCallbackContextObject___block_i
   return [v6 setObject:v5 forKey:v4];
 }
 
-- (void)unregisterCallbackContextForToken:(void *)a3
+- (void)unregisterCallbackContextForToken:(void *)token
 {
-  if (!a3)
+  if (!token)
   {
     v19 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"invalid parameter not satisfying: %s", v3, v4, v5, v6, v7, "callbackContextToken != AVCallbackContextTokenInvalid"), 0}];
     objc_exception_throw(v19);
@@ -109,9 +109,9 @@ uint64_t __59__AVCallbackContextRegistry_registerCallbackContextObject___block_i
   v20[5] = v11;
   v20[6] = &v21;
   av_readwrite_dispatch_queue_write(readWriteQueue, v20);
-  if (v22[3] < a3)
+  if (v22[3] < token)
   {
-    v18 = AVMethodExceptionReasonWithObjectAndSelector(self, a2, @"Cannot unregister token %p that was not vended by %@.  Break on AVCallbackContextRegistryUnrecognizedTokenBreak() to debug.", v13, v14, v15, v16, v17, a3);
+    v18 = AVMethodExceptionReasonWithObjectAndSelector(self, a2, @"Cannot unregister token %p that was not vended by %@.  Break on AVCallbackContextRegistryUnrecognizedTokenBreak() to debug.", v13, v14, v15, v16, v17, token);
     NSLog(&stru_1F0A8FBF0.isa, v18, self);
   }
 
@@ -125,9 +125,9 @@ uint64_t __63__AVCallbackContextRegistry_unregisterCallbackContextForToken___blo
   return result;
 }
 
-- (id)callbackContextForToken:(void *)a3
+- (id)callbackContextForToken:(void *)token
 {
-  if (!a3)
+  if (!token)
   {
     v21 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"invalid parameter not satisfying: %s", v3, v4, v5, v6, v7, "callbackContextToken != AVCallbackContextTokenInvalid"), 0}];
     objc_exception_throw(v21);
@@ -154,17 +154,17 @@ uint64_t __63__AVCallbackContextRegistry_unregisterCallbackContextForToken___blo
   block[6] = &v27;
   block[7] = &v23;
   av_readwrite_dispatch_queue_read(readWriteQueue, block);
-  if (v24[3] < a3)
+  if (v24[3] < token)
   {
-    v18 = AVMethodExceptionReasonWithObjectAndSelector(self, a2, @"Cannot look up token %p that was not vended by %@.  Break on AVCallbackContextRegistryUnrecognizedTokenBreak() to debug.", v13, v14, v15, v16, v17, a3);
+    v18 = AVMethodExceptionReasonWithObjectAndSelector(self, a2, @"Cannot look up token %p that was not vended by %@.  Break on AVCallbackContextRegistryUnrecognizedTokenBreak() to debug.", v13, v14, v15, v16, v17, token);
     NSLog(&stru_1F0A8FBF0.isa, v18, self);
   }
 
-  v19 = [v28[5] referencedObject];
+  referencedObject = [v28[5] referencedObject];
 
   _Block_object_dispose(&v23, 8);
   _Block_object_dispose(&v27, 8);
-  return v19;
+  return referencedObject;
 }
 
 id __53__AVCallbackContextRegistry_callbackContextForToken___block_invoke(void *a1)

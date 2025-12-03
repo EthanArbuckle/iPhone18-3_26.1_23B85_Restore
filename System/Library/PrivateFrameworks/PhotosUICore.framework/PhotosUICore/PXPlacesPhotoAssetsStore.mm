@@ -1,30 +1,30 @@
 @interface PXPlacesPhotoAssetsStore
 + (id)_assetsImportQueue;
-- (PXPlacesPhotoAssetsStore)initWithFetchResults:(id)a3 photoLibrary:(id)a4;
-- (void)_addItems:(id)a3 intoStore:(id)a4;
+- (PXPlacesPhotoAssetsStore)initWithFetchResults:(id)results photoLibrary:(id)library;
+- (void)_addItems:(id)items intoStore:(id)store;
 - (void)_handleAssetsImport;
 - (void)dealloc;
-- (void)loadWithCompletion:(id)a3;
-- (void)photoLibraryDidChange:(id)a3;
+- (void)loadWithCompletion:(id)completion;
+- (void)photoLibraryDidChange:(id)change;
 @end
 
 @implementation PXPlacesPhotoAssetsStore
 
-- (void)photoLibraryDidChange:(id)a3
+- (void)photoLibraryDidChange:(id)change
 {
   v91 = *MEMORY[0x1E69E9840];
-  v65 = a3;
+  changeCopy = change;
   v82 = 0u;
   v83 = 0u;
   v84 = 0u;
   v85 = 0u;
-  v4 = [(PXPlacesPhotoAssetsStore *)self fetchResults];
-  v5 = [v4 countByEnumeratingWithState:&v82 objects:v90 count:16];
+  fetchResults = [(PXPlacesPhotoAssetsStore *)self fetchResults];
+  v5 = [fetchResults countByEnumeratingWithState:&v82 objects:v90 count:16];
   if (v5)
   {
     v6 = v5;
     v7 = *v83;
-    v55 = v4;
+    v55 = fetchResults;
     v58 = *v83;
     while (2)
     {
@@ -34,28 +34,28 @@
       {
         if (*v83 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(fetchResults);
         }
 
-        v9 = [v65 changeDetailsForFetchResult:*(*(&v82 + 1) + 8 * v8)];
+        v9 = [changeCopy changeDetailsForFetchResult:*(*(&v82 + 1) + 8 * v8)];
         v10 = v9;
         if (v9)
         {
           if (![v9 hasIncrementalChanges])
           {
 
-            v47 = [(PXPlacesPhotoAssetsStore *)self store];
-            v48 = [v47 allItems];
+            store = [(PXPlacesPhotoAssetsStore *)self store];
+            allItems = [store allItems];
 
-            v49 = [(PXPlacesPhotoAssetsStore *)self store];
-            [v49 beginUpdates];
+            store2 = [(PXPlacesPhotoAssetsStore *)self store];
+            [store2 beginUpdates];
 
             v68 = 0u;
             v69 = 0u;
             v66 = 0u;
             v67 = 0u;
-            v4 = v48;
-            v50 = [v4 countByEnumeratingWithState:&v66 objects:v86 count:16];
+            fetchResults = allItems;
+            v50 = [fetchResults countByEnumeratingWithState:&v66 objects:v86 count:16];
             if (v50)
             {
               v51 = v50;
@@ -66,20 +66,20 @@
                 {
                   if (*v67 != v52)
                   {
-                    objc_enumerationMutation(v4);
+                    objc_enumerationMutation(fetchResults);
                   }
 
                   [(PXPlacesStore *)self->_store removeItem:*(*(&v66 + 1) + 8 * i)];
                 }
 
-                v51 = [v4 countByEnumeratingWithState:&v66 objects:v86 count:16];
+                v51 = [fetchResults countByEnumeratingWithState:&v66 objects:v86 count:16];
               }
 
               while (v51);
             }
 
-            v54 = [(PXPlacesPhotoAssetsStore *)self store];
-            [v54 endUpdates];
+            store3 = [(PXPlacesPhotoAssetsStore *)self store];
+            [store3 endUpdates];
 
             [(PXPlacesPhotoAssetsStore *)self setDidInitiateLoad:0];
             [(PXPlacesPhotoAssetsStore *)self setDidCompleteLoad:0];
@@ -87,20 +87,20 @@
             goto LABEL_57;
           }
 
-          v11 = [v10 removedObjects];
-          v61 = [v10 insertedObjects];
+          removedObjects = [v10 removedObjects];
+          insertedObjects = [v10 insertedObjects];
           v60 = v10;
-          if ([v11 count] || objc_msgSend(v61, "count"))
+          if ([removedObjects count] || objc_msgSend(insertedObjects, "count"))
           {
-            v12 = [(PXPlacesPhotoAssetsStore *)self store];
-            [v12 beginUpdates];
+            store4 = [(PXPlacesPhotoAssetsStore *)self store];
+            [store4 beginUpdates];
 
             v80 = 0u;
             v81 = 0u;
             v78 = 0u;
             v79 = 0u;
-            v13 = v11;
-            v14 = v11;
+            v13 = removedObjects;
+            v14 = removedObjects;
             v15 = [v14 countByEnumeratingWithState:&v78 objects:v89 count:16];
             if (v15)
             {
@@ -133,7 +133,7 @@
             v77 = 0u;
             v74 = 0u;
             v75 = 0u;
-            v20 = v61;
+            v20 = insertedObjects;
             v21 = [v20 countByEnumeratingWithState:&v74 objects:v88 count:16];
             if (v21)
             {
@@ -162,22 +162,22 @@
               while (v22);
             }
 
-            v26 = [(PXPlacesPhotoAssetsStore *)self store];
-            [v26 endUpdates];
+            store5 = [(PXPlacesPhotoAssetsStore *)self store];
+            [store5 endUpdates];
             v6 = v59;
             v10 = v60;
-            v11 = v13;
-            v27 = v26;
+            removedObjects = v13;
+            v27 = store5;
             v7 = v58;
           }
 
           else
           {
-            v28 = [v10 changedObjects];
-            if (v28)
+            changedObjects = [v10 changedObjects];
+            if (changedObjects)
             {
-              v29 = v28;
-              v56 = v11;
+              v29 = changedObjects;
+              v56 = removedObjects;
               v57 = v8;
               v64 = objc_alloc_init(MEMORY[0x1E695DFA8]);
               v63 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -202,17 +202,17 @@
                     }
 
                     v34 = *(*(&v70 + 1) + 8 * m);
-                    v35 = [v65 changeDetailsForObject:v34];
-                    v36 = [v35 objectBeforeChanges];
+                    v35 = [changeCopy changeDetailsForObject:v34];
+                    objectBeforeChanges = [v35 objectBeforeChanges];
                     v37 = v34;
-                    v38 = [v36 location];
-                    v39 = [v37 location];
-                    [v38 coordinate];
+                    location = [objectBeforeChanges location];
+                    location2 = [v37 location];
+                    [location coordinate];
                     v41 = v40;
-                    [v39 coordinate];
-                    if (vabdd_f64(v41, v42) >= 2.22044605e-16 || ([v38 coordinate], v44 = v43, objc_msgSend(v39, "coordinate"), vabdd_f64(v44, v45) >= 2.22044605e-16))
+                    [location2 coordinate];
+                    if (vabdd_f64(v41, v42) >= 2.22044605e-16 || ([location coordinate], v44 = v43, objc_msgSend(location2, "coordinate"), vabdd_f64(v44, v45) >= 2.22044605e-16))
                     {
-                      [v64 addObject:v36];
+                      [v64 addObject:objectBeforeChanges];
                       [v63 addObject:v37];
                     }
                   }
@@ -224,7 +224,7 @@
                 while (v31);
               }
 
-              v11 = v56;
+              removedObjects = v56;
               v8 = v57;
               if ([v64 count])
               {
@@ -234,7 +234,7 @@
                 [(PXPlacesStore *)self->_store endUpdates];
               }
 
-              v4 = v55;
+              fetchResults = v55;
               v7 = v58;
               v6 = v59;
               v10 = v60;
@@ -251,7 +251,7 @@
       }
 
       while (v8 != v6);
-      v46 = [v4 countByEnumeratingWithState:&v82 objects:v90 count:16];
+      v46 = [fetchResults countByEnumeratingWithState:&v82 objects:v90 count:16];
       v6 = v46;
       if (v46)
       {
@@ -265,11 +265,11 @@
 LABEL_57:
 }
 
-- (void)_addItems:(id)a3 intoStore:(id)a4
+- (void)_addItems:(id)items intoStore:(id)store
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  itemsCopy = items;
+  storeCopy = store;
   v7 = PKPlacesKitGetLog();
   v8 = os_signpost_id_generate(v7);
 
@@ -277,15 +277,15 @@ LABEL_57:
   v10 = v9;
   if (v8 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v9))
   {
-    v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v5, "count")}];
+    v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(itemsCopy, "count")}];
     v14 = 138412290;
     v15 = v11;
     _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v10, OS_SIGNPOST_INTERVAL_BEGIN, v8, "AddItemsIntoStore", "%@", &v14, 0xCu);
   }
 
-  [v6 beginUpdates];
-  [v6 addItemsFromArray:v5];
-  [v6 endUpdates];
+  [storeCopy beginUpdates];
+  [storeCopy addItemsFromArray:itemsCopy];
+  [storeCopy endUpdates];
   v12 = v10;
   v13 = v12;
   if (v8 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v12))
@@ -315,12 +315,12 @@ LABEL_57:
   v28 = v6;
 
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v8 = [(PXPlacesPhotoAssetsStore *)self fetchResults];
+  fetchResults = [(PXPlacesPhotoAssetsStore *)self fetchResults];
   v49 = 0u;
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  obj = v8;
+  obj = fetchResults;
   v9 = [obj countByEnumeratingWithState:&v47 objects:v53 count:16];
   if (v9)
   {
@@ -362,8 +362,8 @@ LABEL_57:
 
               else
               {
-                v17 = [(PXPlacesPhotoAssetsStore *)self store];
-                [(PXPlacesPhotoAssetsStore *)self _addItems:v7 intoStore:v17];
+                store = [(PXPlacesPhotoAssetsStore *)self store];
+                [(PXPlacesPhotoAssetsStore *)self _addItems:v7 intoStore:store];
 
                 [v7 removeAllObjects];
                 v10 = 0;
@@ -385,8 +385,8 @@ LABEL_57:
 
   if ([v7 count])
   {
-    v18 = [(PXPlacesPhotoAssetsStore *)self store];
-    [(PXPlacesPhotoAssetsStore *)self _addItems:v7 intoStore:v18];
+    store2 = [(PXPlacesPhotoAssetsStore *)self store];
+    [(PXPlacesPhotoAssetsStore *)self _addItems:v7 intoStore:store2];
   }
 
   *buf = 0;
@@ -395,14 +395,14 @@ LABEL_57:
   v40 = __Block_byref_object_copy__33947;
   v41 = __Block_byref_object_dispose__33948;
   v42 = 0;
-  v19 = [(PXPlacesPhotoAssetsStore *)self serialQueue];
+  serialQueue = [(PXPlacesPhotoAssetsStore *)self serialQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __47__PXPlacesPhotoAssetsStore__handleAssetsImport__block_invoke;
   block[3] = &unk_1E7749A28;
   block[4] = self;
   block[5] = buf;
-  dispatch_sync(v19, block);
+  dispatch_sync(serialQueue, block);
 
   v34 = 0u;
   v35 = 0u;
@@ -456,42 +456,42 @@ void __47__PXPlacesPhotoAssetsStore__handleAssetsImport__block_invoke(uint64_t a
   [v6 removeAllObjects];
 }
 
-- (void)loadWithCompletion:(id)a3
+- (void)loadWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(PXPlacesPhotoAssetsStore *)self didCompleteLoad])
   {
-    if (v4)
+    if (completionCopy)
     {
-      v4[2](v4);
+      completionCopy[2](completionCopy);
     }
   }
 
   else
   {
-    if (v4)
+    if (completionCopy)
     {
-      v5 = [(PXPlacesPhotoAssetsStore *)self serialQueue];
+      serialQueue = [(PXPlacesPhotoAssetsStore *)self serialQueue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __47__PXPlacesPhotoAssetsStore_loadWithCompletion___block_invoke;
       block[3] = &unk_1E774C2F0;
       block[4] = self;
-      v11 = v4;
-      dispatch_sync(v5, block);
+      v11 = completionCopy;
+      dispatch_sync(serialQueue, block);
     }
 
     if (![(PXPlacesPhotoAssetsStore *)self didInitiateLoad])
     {
       [(PXPlacesPhotoAssetsStore *)self setDidInitiateLoad:1];
       objc_initWeak(&location, self);
-      v6 = [objc_opt_class() _assetsImportQueue];
+      _assetsImportQueue = [objc_opt_class() _assetsImportQueue];
       v7[0] = MEMORY[0x1E69E9820];
       v7[1] = 3221225472;
       v7[2] = __47__PXPlacesPhotoAssetsStore_loadWithCompletion___block_invoke_2;
       v7[3] = &unk_1E774C318;
       objc_copyWeak(&v8, &location);
-      dispatch_async(v6, v7);
+      dispatch_async(_assetsImportQueue, v7);
 
       objc_destroyWeak(&v8);
       objc_destroyWeak(&location);
@@ -520,18 +520,18 @@ void __47__PXPlacesPhotoAssetsStore_loadWithCompletion___block_invoke_2(uint64_t
   [(PXPlacesPhotoAssetsStore *)&v3 dealloc];
 }
 
-- (PXPlacesPhotoAssetsStore)initWithFetchResults:(id)a3 photoLibrary:(id)a4
+- (PXPlacesPhotoAssetsStore)initWithFetchResults:(id)results photoLibrary:(id)library
 {
-  v7 = a3;
-  v8 = a4;
+  resultsCopy = results;
+  libraryCopy = library;
   v18.receiver = self;
   v18.super_class = PXPlacesPhotoAssetsStore;
   v9 = [(PXPlacesPhotoAssetsStore *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_fetchResults, a3);
-    objc_storeStrong(&v10->_photoLibrary, a4);
+    objc_storeStrong(&v9->_fetchResults, results);
+    objc_storeStrong(&v10->_photoLibrary, library);
     v11 = objc_alloc_init(PXPlacesStore);
     store = v10->_store;
     v10->_store = v11;

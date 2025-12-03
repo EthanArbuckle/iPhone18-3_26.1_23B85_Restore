@@ -3,11 +3,11 @@
 - (BOOL)supportsCustomHighlightBehavior;
 - (NSDirectionalEdgeInsets)intrinsicContentInset;
 - (SearchUIRFCardSectionRowModel)init;
-- (SearchUIRFCardSectionRowModel)initWithCardSection:(id)a3 queryId:(unint64_t)a4 itemIdentifier:(id)a5;
-- (SearchUIRFCardSectionRowModel)initWithResult:(id)a3 cardSection:(id)a4 isInline:(BOOL)a5 queryId:(unint64_t)a6 itemIdentifier:(id)a7;
-- (SearchUIRFCardSectionRowModel)initWithResult:(id)a3 cardSection:(id)a4 queryId:(unint64_t)a5 itemIdentifier:(id)a6;
-- (SearchUIRFCardSectionRowModel)initWithResult:(id)a3 itemIdentifier:(id)a4;
-- (SearchUIRFCardSectionRowModel)initWithResults:(id)a3 itemIdentifier:(id)a4;
+- (SearchUIRFCardSectionRowModel)initWithCardSection:(id)section queryId:(unint64_t)id itemIdentifier:(id)identifier;
+- (SearchUIRFCardSectionRowModel)initWithResult:(id)result cardSection:(id)section isInline:(BOOL)inline queryId:(unint64_t)id itemIdentifier:(id)identifier;
+- (SearchUIRFCardSectionRowModel)initWithResult:(id)result cardSection:(id)section queryId:(unint64_t)id itemIdentifier:(id)identifier;
+- (SearchUIRFCardSectionRowModel)initWithResult:(id)result itemIdentifier:(id)identifier;
+- (SearchUIRFCardSectionRowModel)initWithResults:(id)results itemIdentifier:(id)identifier;
 - (double)highlightReferenceFrameCornerRadius;
 - (int)separatorStyle;
 @end
@@ -30,7 +30,7 @@
 
 - (int)separatorStyle
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1DA237A4C();
 
   return v3;
@@ -38,7 +38,7 @@
 
 - (BOOL)fillsBackgroundWithContent
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1DA237B40();
 
   return v3 & 1;
@@ -46,7 +46,7 @@
 
 - (BOOL)supportsCustomHighlightBehavior
 {
-  v2 = self;
+  selfCopy = self;
   sub_1DA238014(v5);
   v3 = LOBYTE(v5[0]);
 
@@ -55,7 +55,7 @@
 
 - (NSDirectionalEdgeInsets)intrinsicContentInset
 {
-  v2 = self;
+  selfCopy = self;
   sub_1DA238014(&v11);
   if (v11 == 2)
   {
@@ -86,7 +86,7 @@
 
 - (double)highlightReferenceFrameCornerRadius
 {
-  v2 = self;
+  selfCopy = self;
   sub_1DA238014(&v4);
 
   result = v5;
@@ -98,35 +98,35 @@
   return result;
 }
 
-- (SearchUIRFCardSectionRowModel)initWithResult:(id)a3 cardSection:(id)a4 isInline:(BOOL)a5 queryId:(unint64_t)a6 itemIdentifier:(id)a7
+- (SearchUIRFCardSectionRowModel)initWithResult:(id)result cardSection:(id)section isInline:(BOOL)inline queryId:(unint64_t)id itemIdentifier:(id)identifier
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (SearchUIRFCardSectionRowModel)initWithResult:(id)a3 itemIdentifier:(id)a4
+- (SearchUIRFCardSectionRowModel)initWithResult:(id)result itemIdentifier:(id)identifier
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (SearchUIRFCardSectionRowModel)initWithResult:(id)a3 cardSection:(id)a4 queryId:(unint64_t)a5 itemIdentifier:(id)a6
+- (SearchUIRFCardSectionRowModel)initWithResult:(id)result cardSection:(id)section queryId:(unint64_t)id itemIdentifier:(id)identifier
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (SearchUIRFCardSectionRowModel)initWithResults:(id)a3 itemIdentifier:(id)a4
+- (SearchUIRFCardSectionRowModel)initWithResults:(id)results itemIdentifier:(id)identifier
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (SearchUIRFCardSectionRowModel)initWithCardSection:(id)a3 queryId:(unint64_t)a4 itemIdentifier:(id)a5
+- (SearchUIRFCardSectionRowModel)initWithCardSection:(id)section queryId:(unint64_t)id itemIdentifier:(id)identifier
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

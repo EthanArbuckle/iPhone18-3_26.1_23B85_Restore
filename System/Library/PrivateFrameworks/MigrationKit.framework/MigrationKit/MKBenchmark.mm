@@ -1,22 +1,22 @@
 @interface MKBenchmark
-- (MKBenchmark)initWithLabel:(id)a3 count:(unint64_t)a4 time:(double)a5;
+- (MKBenchmark)initWithLabel:(id)label count:(unint64_t)count time:(double)time;
 - (id)benchmark;
 @end
 
 @implementation MKBenchmark
 
-- (MKBenchmark)initWithLabel:(id)a3 count:(unint64_t)a4 time:(double)a5
+- (MKBenchmark)initWithLabel:(id)label count:(unint64_t)count time:(double)time
 {
-  v8 = a3;
+  labelCopy = label;
   v12.receiver = self;
   v12.super_class = MKBenchmark;
   v9 = [(MKBenchmark *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    v9->_time = a5;
-    v9->_count = a4;
-    [(MKBenchmark *)v9 setLabel:v8];
+    v9->_time = time;
+    v9->_count = count;
+    [(MKBenchmark *)v9 setLabel:labelCopy];
   }
 
   return v10;
@@ -25,8 +25,8 @@
 - (id)benchmark
 {
   v3 = objc_alloc_init(MEMORY[0x277CCABB8]);
-  v4 = [MEMORY[0x277CBEAF8] currentLocale];
-  [v3 setLocale:v4];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  [v3 setLocale:currentLocale];
 
   [v3 setNumberStyle:1];
   [v3 setMaximumFractionDigits:1];

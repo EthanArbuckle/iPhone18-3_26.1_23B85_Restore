@@ -1,5 +1,5 @@
 @interface PUPhotoEditPortraitToolControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_setupDepthControlsIfNeeded;
 - (BOOL)_setupLightingControlsIfNeeded;
 - (void)_accessibilityLoadAccessibilityInformation;
@@ -8,15 +8,15 @@
 
 @implementation PUPhotoEditPortraitToolControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PXUIButton" isKindOfClass:@"UIButton"];
-  [v3 validateClass:@"PUPhotoEditPortraitToolController" hasInstanceVariable:@"_portraitToolbarButton" withType:"PUPhotoEditToolActivationButton"];
-  [v3 validateClass:@"PUPhotoEditPortraitToolController" hasInstanceMethod:@"_setupDepthControlsIfNeeded" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"PUPhotoEditPortraitToolController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PUPhotoEditPortraitToolController" hasInstanceVariable:@"_lightingIntensityButton" withType:"PUPhotoEditToolbarButton"];
-  [v3 validateClass:@"PUPhotoEditPortraitToolController" hasInstanceMethod:@"_setupLightingControlsIfNeeded" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PXUIButton" isKindOfClass:@"UIButton"];
+  [validationsCopy validateClass:@"PUPhotoEditPortraitToolController" hasInstanceVariable:@"_portraitToolbarButton" withType:"PUPhotoEditToolActivationButton"];
+  [validationsCopy validateClass:@"PUPhotoEditPortraitToolController" hasInstanceMethod:@"_setupDepthControlsIfNeeded" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"PUPhotoEditPortraitToolController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PUPhotoEditPortraitToolController" hasInstanceVariable:@"_lightingIntensityButton" withType:"PUPhotoEditToolbarButton"];
+  [validationsCopy validateClass:@"PUPhotoEditPortraitToolController" hasInstanceMethod:@"_setupLightingControlsIfNeeded" withFullSignature:{"B", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -100,18 +100,18 @@ id __92__PUPhotoEditPortraitToolControllerAccessibility__accessibilityLoadAccess
 {
   v5.receiver = self;
   v5.super_class = PUPhotoEditPortraitToolControllerAccessibility;
-  v3 = [(PUPhotoEditPortraitToolControllerAccessibility *)&v5 _setupDepthControlsIfNeeded];
+  _setupDepthControlsIfNeeded = [(PUPhotoEditPortraitToolControllerAccessibility *)&v5 _setupDepthControlsIfNeeded];
   [(PUPhotoEditPortraitToolControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
-  return v3;
+  return _setupDepthControlsIfNeeded;
 }
 
 - (BOOL)_setupLightingControlsIfNeeded
 {
   v5.receiver = self;
   v5.super_class = PUPhotoEditPortraitToolControllerAccessibility;
-  v3 = [(PUPhotoEditPortraitToolControllerAccessibility *)&v5 _setupLightingControlsIfNeeded];
+  _setupLightingControlsIfNeeded = [(PUPhotoEditPortraitToolControllerAccessibility *)&v5 _setupLightingControlsIfNeeded];
   [(PUPhotoEditPortraitToolControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
-  return v3;
+  return _setupLightingControlsIfNeeded;
 }
 
 - (void)viewDidLoad

@@ -1,8 +1,8 @@
 @interface SASWelcomeToDeviceViewControllerProvider
 - (SASWelcomeToDeviceViewControllerProvider)init;
-- (SASWelcomeToDeviceViewControllerProvider)initWithText:(id)a3 finalTextColor:(id)a4 onAnimationCompleteHandler:(id)a5;
+- (SASWelcomeToDeviceViewControllerProvider)initWithText:(id)text finalTextColor:(id)color onAnimationCompleteHandler:(id)handler;
 - (UIViewController)viewController;
-- (void)setViewController:(id)a3;
+- (void)setViewController:(id)controller;
 - (void)startAnimation;
 - (void)stopAnimation;
 @end
@@ -16,18 +16,18 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setViewController:(id)a3
+- (void)setViewController:(id)controller
 {
   v5 = OBJC_IVAR___SASWelcomeToDeviceViewControllerProvider_viewController;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = controller;
+  controllerCopy = controller;
 }
 
-- (SASWelcomeToDeviceViewControllerProvider)initWithText:(id)a3 finalTextColor:(id)a4 onAnimationCompleteHandler:(id)a5
+- (SASWelcomeToDeviceViewControllerProvider)initWithText:(id)text finalTextColor:(id)color onAnimationCompleteHandler:(id)handler
 {
-  v6 = _Block_copy(a5);
+  v6 = _Block_copy(handler);
   v7 = sub_265AA7570();
   v9 = v8;
   if (v6)
@@ -42,8 +42,8 @@
     v10 = 0;
   }
 
-  v11 = a4;
-  v12 = sub_265A66994(v7, v9, v11, v6, v10);
+  colorCopy = color;
+  v12 = sub_265A66994(v7, v9, colorCopy, v6, v10);
   sub_265A56D6C(v6);
 
   return v12;
@@ -52,14 +52,14 @@
 - (void)startAnimation
 {
   v2 = *(**(&self->super.isa + OBJC_IVAR___SASWelcomeToDeviceViewControllerProvider_viewModel) + 664);
-  v3 = self;
+  selfCopy = self;
   v2();
 }
 
 - (void)stopAnimation
 {
   v2 = *(**(&self->super.isa + OBJC_IVAR___SASWelcomeToDeviceViewControllerProvider_viewModel) + 696);
-  v3 = self;
+  selfCopy = self;
   v2();
 }
 

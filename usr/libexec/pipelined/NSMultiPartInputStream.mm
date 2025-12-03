@@ -1,26 +1,26 @@
 @interface NSMultiPartInputStream
-+ (id)pathMimeType:(const void *)a3;
++ (id)pathMimeType:(const void *)type;
 - (NSMultiPartInputStream)init;
 - (id).cxx_construct;
-- (id)createHeaderName:(id)a3 filename:(id)a4 mimeType:(id)a5;
+- (id)createHeaderName:(id)name filename:(id)filename mimeType:(id)type;
 - (id)streamError;
-- (int64_t)read:(char *)a3 maxLength:(unint64_t)a4;
+- (int64_t)read:(char *)read maxLength:(unint64_t)length;
 - (unint64_t)streamStatus;
-- (void)addMultiPart:(const void *)a3 withHeader:(const void *)a4;
-- (void)addPart:(id)a3 withData:(const void *)a4 andFilename:(id)a5;
-- (void)addPart:(id)a3 withPath:(const void *)a4;
-- (void)addPart:(id)a3 withPath:(const void *)a4 andFilename:(id)a5;
+- (void)addMultiPart:(const void *)part withHeader:(const void *)header;
+- (void)addPart:(id)part withData:(const void *)data andFilename:(id)filename;
+- (void)addPart:(id)part withPath:(const void *)path;
+- (void)addPart:(id)part withPath:(const void *)path andFilename:(id)filename;
 - (void)close;
 - (void)open;
 @end
 
 @implementation NSMultiPartInputStream
 
-+ (id)pathMimeType:(const void *)a3
++ (id)pathMimeType:(const void *)type
 {
-  v3 = [NSString ps_stringWithSTL:a3];
-  v4 = [v3 pathExtension];
-  PreferredIdentifierForTag = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, v4, 0);
+  v3 = [NSString ps_stringWithSTL:type];
+  pathExtension = [v3 pathExtension];
+  PreferredIdentifierForTag = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, pathExtension, 0);
   v6 = PreferredIdentifierForTag;
   if (PreferredIdentifierForTag)
   {
@@ -54,9 +54,9 @@ LABEL_6:
   {
     v2->fCurrentPart = 0;
     v4 = +[NSProcessInfo processInfo];
-    v5 = [v4 globallyUniqueString];
+    globallyUniqueString = [v4 globallyUniqueString];
     fMultiPartBoundary = v3->fMultiPartBoundary;
-    v3->fMultiPartBoundary = v5;
+    v3->fMultiPartBoundary = globallyUniqueString;
 
     v3->fNumBytesRead = 0;
     v3->fLength = 0;
@@ -73,48 +73,48 @@ LABEL_6:
   return v3;
 }
 
-- (void)addPart:(id)a3 withPath:(const void *)a4
+- (void)addPart:(id)part withPath:(const void *)path
 {
-  v6 = a3;
-  sub_10001B178(a4, __p);
+  partCopy = part;
+  sub_10001B178(path, __p);
   v7 = [NSString ps_stringWithSTL:__p];
   if (v9 < 0)
   {
     operator delete(__p[0]);
   }
 
-  [(NSMultiPartInputStream *)self addPart:v6 withPath:a4 andFilename:v7];
+  [(NSMultiPartInputStream *)self addPart:partCopy withPath:path andFilename:v7];
 }
 
-- (void)addPart:(id)a3 withPath:(const void *)a4 andFilename:(id)a5
+- (void)addPart:(id)part withPath:(const void *)path andFilename:(id)filename
 {
-  v8 = a3;
-  v9 = a5;
-  [NSMultiPartInputStream pathMimeType:a4];
-  [(NSMultiPartInputStream *)self createHeaderName:v8 filename:v9 mimeType:objc_claimAutoreleasedReturnValue()];
+  partCopy = part;
+  filenameCopy = filename;
+  [NSMultiPartInputStream pathMimeType:path];
+  [(NSMultiPartInputStream *)self createHeaderName:partCopy filename:filenameCopy mimeType:objc_claimAutoreleasedReturnValue()];
   objc_claimAutoreleasedReturnValue();
-  [NSInputStream ps_inputStreamWithFileAtPath:a4];
+  [NSInputStream ps_inputStreamWithFileAtPath:path];
   memset(__p, 0, 24);
   __p[3] = __p;
   v11 = 0;
   operator new();
 }
 
-- (id)createHeaderName:(id)a3 filename:(id)a4 mimeType:(id)a5
+- (id)createHeaderName:(id)name filename:(id)filename mimeType:(id)type
 {
-  v5 = [NSString stringWithFormat:@"Content-Disposition: form-data name=%@; filename=%@\r\nContent-Type: %@\r\n\r\n", a3, a4, a5];;
+  type = [NSString stringWithFormat:@"Content-Disposition: form-data name=%@; filename=%@\r\nContent-Type: %@\r\n\r\n", name, filename, type];;
 
-  return v5;
+  return type;
 }
 
-- (void)addPart:(id)a3 withData:(const void *)a4 andFilename:(id)a5
+- (void)addPart:(id)part withData:(const void *)data andFilename:(id)filename
 {
-  v7 = [(NSMultiPartInputStream *)self createHeaderName:a3 filename:a5 mimeType:@"application/octet-stream"];
+  v7 = [(NSMultiPartInputStream *)self createHeaderName:part filename:filename mimeType:@"application/octet-stream"];
   [NSInputStream ps_inputStreamWithString:v7];
-  [(NSMultiPartInputStream *)self addMultiPart:a4 withHeader:v8];
+  [(NSMultiPartInputStream *)self addMultiPart:data withHeader:v8];
 }
 
-- (void)addMultiPart:(const void *)a3 withHeader:(const void *)a4
+- (void)addMultiPart:(const void *)part withHeader:(const void *)header
 {
   v7 = [NSString stringWithFormat:@"--%@\r\n", self->fMultiPartBoundary];
   [NSInputStream ps_inputStreamWithString:v7];
@@ -126,12 +126,12 @@ LABEL_6:
     if (v9 < self->fParts.var1)
     {
 LABEL_3:
-      *v9 = *a4;
+      *v9 = *header;
       v10 = v9 + 1;
       self->fParts.var0 = v10;
-      v11 = *a3;
-      v12 = *(a3 + 1);
-      if (*a3 != v12)
+      v11 = *part;
+      v12 = *(part + 1);
+      if (*part != v12)
       {
         goto LABEL_4;
       }
@@ -153,11 +153,11 @@ LABEL_11:
     }
   }
 
-  v10 = sub_100333A14(&self->fParts, a4);
+  v10 = sub_100333A14(&self->fParts, header);
   self->fParts.var0 = v10;
-  v11 = *a3;
-  v12 = *(a3 + 1);
-  if (*a3 == v12)
+  v11 = *part;
+  v12 = *(part + 1);
+  if (*part == v12)
   {
     goto LABEL_11;
   }
@@ -183,7 +183,7 @@ LABEL_4:
 
   while (v11 != v12);
 LABEL_12:
-  [(NSMultiPartInputStream *)self addLength:v14[1] + *(a4 + 1) + v13];
+  [(NSMultiPartInputStream *)self addLength:v14[1] + *(header + 1) + v13];
 }
 
 - (void)open
@@ -229,14 +229,14 @@ LABEL_12:
   }
 }
 
-- (int64_t)read:(char *)a3 maxLength:(unint64_t)a4
+- (int64_t)read:(char *)read maxLength:(unint64_t)length
 {
   p_fParts = &self->fParts;
   begin = self->fParts.__begin_;
   var0 = self->fParts.var0;
   v10 = [(NSMultiPartInputStream *)self length];
   p_fNumBytesRead = &self->fNumBytesRead;
-  if (self->fNumBytesRead >= v10 || a4 == 0)
+  if (self->fNumBytesRead >= v10 || length == 0)
   {
     return 0;
   }
@@ -264,7 +264,7 @@ LABEL_12:
       [(__end_ *)v18 open];
     }
 
-    v19 = [(__end_ *)v18 read:&a3[v14] maxLength:a4 - v14];
+    v19 = [(__end_ *)v18 read:&read[v14] maxLength:length - v14];
     if (v19 < 0)
     {
       v14 = v19;
@@ -289,7 +289,7 @@ LABEL_12:
     *v20 += v19;
   }
 
-  while (*p_fNumBytesRead < v13 && v14 < a4);
+  while (*p_fNumBytesRead < v13 && v14 < length);
   return v14;
 }
 
@@ -311,9 +311,9 @@ LABEL_12:
     v8 = v7;
   }
 
-  v9 = [*v8 streamError];
+  streamError = [*v8 streamError];
 
-  return v9;
+  return streamError;
 }
 
 - (unint64_t)streamStatus

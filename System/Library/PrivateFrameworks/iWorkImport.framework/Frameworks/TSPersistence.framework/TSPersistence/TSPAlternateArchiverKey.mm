@@ -1,7 +1,7 @@
 @interface TSPAlternateArchiverKey
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (TSPAlternateArchiverKey)init;
-- (TSPAlternateArchiverKey)initWithVersion:(unint64_t)a3 fieldPath:(const void *)a4;
+- (TSPAlternateArchiverKey)initWithVersion:(unint64_t)version fieldPath:(const void *)path;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
@@ -24,15 +24,15 @@
   objc_exception_throw(v13);
 }
 
-- (TSPAlternateArchiverKey)initWithVersion:(unint64_t)a3 fieldPath:(const void *)a4
+- (TSPAlternateArchiverKey)initWithVersion:(unint64_t)version fieldPath:(const void *)path
 {
   v7.receiver = self;
   v7.super_class = TSPAlternateArchiverKey;
   result = [(TSPAlternateArchiverKey *)&v7 init];
   if (result)
   {
-    result->_version = a3;
-    if (a4)
+    result->_version = version;
+    if (path)
     {
       operator new();
     }
@@ -55,9 +55,9 @@
   [(TSPAlternateArchiverKey *)&v5 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = TSUDynamicCast();
   v8 = v5;

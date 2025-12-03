@@ -1,15 +1,15 @@
 @interface TTRITemplateSharingOffineViewController
-- (_TtC9Reminders39TTRITemplateSharingOffineViewController)initWithCoder:(id)a3;
-- (_TtC9Reminders39TTRITemplateSharingOffineViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)didTapClose:(id)a3;
-- (void)presentationControllerDidDismiss:(id)a3;
-- (void)ttr_updateContentUnavailableConfigurationUsingState:(id)a3;
+- (_TtC9Reminders39TTRITemplateSharingOffineViewController)initWithCoder:(id)coder;
+- (_TtC9Reminders39TTRITemplateSharingOffineViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)didTapClose:(id)close;
+- (void)presentationControllerDidDismiss:(id)dismiss;
+- (void)ttr_updateContentUnavailableConfigurationUsingState:(id)state;
 - (void)viewDidLoad;
 @end
 
 @implementation TTRITemplateSharingOffineViewController
 
-- (_TtC9Reminders39TTRITemplateSharingOffineViewController)initWithCoder:(id)a3
+- (_TtC9Reminders39TTRITemplateSharingOffineViewController)initWithCoder:(id)coder
 {
   if (qword_100767200 != -1)
   {
@@ -27,22 +27,22 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100338DB8();
 }
 
-- (void)ttr_updateContentUnavailableConfigurationUsingState:(id)a3
+- (void)ttr_updateContentUnavailableConfigurationUsingState:(id)state
 {
-  v4 = a3;
-  v5 = self;
+  stateCopy = state;
+  selfCopy = self;
   sub_1003395A0();
 }
 
-- (void)didTapClose:(id)a3
+- (void)didTapClose:(id)close
 {
-  if (a3)
+  if (close)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -51,7 +51,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_10033919C();
@@ -59,17 +59,17 @@
   sub_10000B070(v6);
 }
 
-- (_TtC9Reminders39TTRITemplateSharingOffineViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9Reminders39TTRITemplateSharingOffineViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
   v3 = qword_100766EF8;
-  v5 = self;
+  selfCopy = self;
   if (v3 != -1)
   {
     swift_once();

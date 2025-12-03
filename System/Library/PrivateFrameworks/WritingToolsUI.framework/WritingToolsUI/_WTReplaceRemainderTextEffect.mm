@@ -1,17 +1,17 @@
 @interface _WTReplaceRemainderTextEffect
-- (void)updateEffectWith:(id)a3;
+- (void)updateEffectWith:(id)with;
 @end
 
 @implementation _WTReplaceRemainderTextEffect
 
-- (void)updateEffectWith:(id)a3
+- (void)updateEffectWith:(id)with
 {
-  v4 = a3;
-  v5 = [(_WTTextEffect *)self rootLayer];
+  withCopy = with;
+  rootLayer = [(_WTTextEffect *)self rootLayer];
 
-  v6 = [v4 firstObject];
+  firstObject = [withCopy firstObject];
 
-  if (!v5)
+  if (!rootLayer)
   {
     [(_WTReplaceRemainderTextEffect *)self durationOverride];
     v8 = v7;
@@ -23,25 +23,25 @@
 
     [(_WTReplaceRemainderTextEffect *)self offset];
     v11 = v8 * dbl_1D455A330[v10 > 0.0];
-    v12 = [v6 layerWithContents];
-    [(_WTTextEffect *)self setRootLayer:v12];
+    layerWithContents = [firstObject layerWithContents];
+    [(_WTTextEffect *)self setRootLayer:layerWithContents];
 
-    v13 = [(_WTTextEffect *)self effectView];
-    v14 = [v13 layer];
-    v15 = [(_WTTextEffect *)self rootLayer];
-    [v14 addSublayer:v15];
+    effectView = [(_WTTextEffect *)self effectView];
+    layer = [effectView layer];
+    rootLayer2 = [(_WTTextEffect *)self rootLayer];
+    [layer addSublayer:rootLayer2];
 
-    v16 = [(_WTTextEffect *)self rootLayer];
-    [v16 position];
+    rootLayer3 = [(_WTTextEffect *)self rootLayer];
+    [rootLayer3 position];
     v18 = v17;
-    v19 = [(_WTTextEffect *)self rootLayer];
-    [v19 position];
+    rootLayer4 = [(_WTTextEffect *)self rootLayer];
+    [rootLayer4 position];
     v21 = v20;
     [(_WTReplaceRemainderTextEffect *)self offset];
     v23 = v21 - v22;
 
-    v24 = [(_WTTextEffect *)self rootLayer];
-    [v24 position];
+    rootLayer5 = [(_WTTextEffect *)self rootLayer];
+    [rootLayer5 position];
     v26 = v25;
     v28 = v27;
 
@@ -63,8 +63,8 @@
     [v29 setBeginTime:v11 + CACurrentMediaTime()];
     [v29 setFillMode:*MEMORY[0x1E69797E0]];
     [v29 setRemovedOnCompletion:0];
-    v33 = [(_WTTextEffect *)self rootLayer];
-    [v33 addAnimation:v29 forKey:0];
+    rootLayer6 = [(_WTTextEffect *)self rootLayer];
+    [rootLayer6 addAnimation:v29 forKey:0];
 
     [(_WTTextEffect *)self invalidationDelay];
     if (v34 > 0.0)

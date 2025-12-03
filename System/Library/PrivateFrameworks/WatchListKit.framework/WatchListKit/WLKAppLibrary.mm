@@ -2,27 +2,27 @@
 + (id)defaultAppLibrary;
 - (BOOL)isTVAppInstalled;
 - (WLKAppLibrary)init;
-- (id)_bundleIdentifiersfromProxies:(id)a3;
+- (id)_bundleIdentifiersfromProxies:(id)proxies;
 - (id)_nonConformingAppBundleIdentifiers;
 - (id)_nonConformingAppProxies;
 - (id)_refreshAppLibrary;
-- (id)_subscriptionInfosForProxies:(id)a3;
+- (id)_subscriptionInfosForProxies:(id)proxies;
 - (id)allAppBundleIdentifiers;
 - (id)allAppProxies;
 - (id)allAppProxiesPerCategory;
 - (id)dictionaryRepresentation;
 - (id)installedAppBundleIdentifiers;
 - (id)installedAppProxies;
-- (id)localizedNameForBundle:(id)a3;
+- (id)localizedNameForBundle:(id)bundle;
 - (id)refresh;
 - (id)subscribedAppBundleIdentifiers;
 - (id)subscribedAppProxies;
-- (id)subscriptionInfoForBundle:(id)a3;
+- (id)subscriptionInfoForBundle:(id)bundle;
 - (id)testAppBundleIdentifiers;
 - (id)testAppProxies;
-- (void)_handleInvalidationWithReason:(id)a3;
-- (void)applicationsDidInstall:(id)a3;
-- (void)applicationsDidUninstall:(id)a3;
+- (void)_handleInvalidationWithReason:(id)reason;
+- (void)applicationsDidInstall:(id)install;
+- (void)applicationsDidUninstall:(id)uninstall;
 - (void)beginIgnoringAppLibraryChanges;
 - (void)dealloc;
 - (void)endIgnoringAppLibraryChanges;
@@ -80,18 +80,18 @@ void __34__WLKAppLibrary_defaultAppLibrary__block_invoke()
 
     if (WLKIsDaemon())
     {
-      v7 = [(WLKAppLibrary *)v2 refresh];
-      v8 = [MEMORY[0x277CC1E80] defaultWorkspace];
-      [v8 addObserver:v2];
+      refresh = [(WLKAppLibrary *)v2 refresh];
+      defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+      [defaultWorkspace addObserver:v2];
     }
 
     else
     {
-      v9 = [(WLKAppLibrary *)v2 _refreshAppLibrary];
+      _refreshAppLibrary = [(WLKAppLibrary *)v2 _refreshAppLibrary];
     }
 
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v10 addObserver:v2 selector:sel__subscriptionsDidChangeNotification_ name:@"VSActiveSubscriptionsDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__subscriptionsDidChangeNotification_ name:@"VSActiveSubscriptionsDidChangeNotification" object:0];
 
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;
@@ -673,11 +673,11 @@ uint64_t __21__WLKAppLibrary_init__block_invoke(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CC1E80] defaultWorkspace];
-  [v3 removeObserver:self];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+  [defaultWorkspace removeObserver:self];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   didChangeNotificationToken = self->_didChangeNotificationToken;
   if (didChangeNotificationToken)
@@ -890,10 +890,10 @@ uint64_t __31__WLKAppLibrary_testAppProxies__block_invoke(uint64_t a1)
   v6[4] = self;
   v6[5] = &v7;
   dispatch_sync(accessQueue, v6);
-  v4 = [v8[5] allObjects];
+  allObjects = [v8[5] allObjects];
   _Block_object_dispose(&v7, 8);
 
-  return v4;
+  return allObjects;
 }
 
 void __30__WLKAppLibrary_allAppProxies__block_invoke(uint64_t a1)
@@ -912,9 +912,9 @@ void __30__WLKAppLibrary_allAppProxies__block_invoke(uint64_t a1)
   [v7 addObjectsFromArray:v8];
 }
 
-- (id)subscriptionInfoForBundle:(id)a3
+- (id)subscriptionInfoForBundle:(id)bundle
 {
-  v4 = a3;
+  bundleCopy = bundle;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -927,9 +927,9 @@ void __30__WLKAppLibrary_allAppProxies__block_invoke(uint64_t a1)
   block[2] = __43__WLKAppLibrary_subscriptionInfoForBundle___block_invoke;
   block[3] = &unk_279E5FE18;
   block[4] = self;
-  v10 = v4;
+  v10 = bundleCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = bundleCopy;
   dispatch_sync(accessQueue, block);
   v7 = v13[5];
 
@@ -990,32 +990,32 @@ LABEL_11:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)localizedNameForBundle:(id)a3
+- (id)localizedNameForBundle:(id)bundle
 {
-  v3 = a3;
+  bundleCopy = bundle;
   v11 = 0;
-  v4 = [MEMORY[0x277CC1E90] bundleRecordWithApplicationIdentifier:v3 error:&v11];
+  v4 = [MEMORY[0x277CC1E90] bundleRecordWithApplicationIdentifier:bundleCopy error:&v11];
   v5 = v11;
   if (v5)
   {
 
     v10 = 0;
-    v6 = [MEMORY[0x277CC1E90] bundleRecordWithBundleIdentifier:v3 allowPlaceholder:0 error:&v10];
+    v6 = [MEMORY[0x277CC1E90] bundleRecordWithBundleIdentifier:bundleCopy allowPlaceholder:0 error:&v10];
     v7 = v10;
 
     v4 = v6;
   }
 
-  v8 = [v4 localizedName];
+  localizedName = [v4 localizedName];
 
-  return v8;
+  return localizedName;
 }
 
 - (BOOL)isTVAppInstalled
 {
-  v2 = [(WLKAppLibrary *)self installedAppBundleIdentifiers];
+  installedAppBundleIdentifiers = [(WLKAppLibrary *)self installedAppBundleIdentifiers];
   v3 = WLKTVAppBundleID();
-  v4 = [v2 containsObject:v3];
+  v4 = [installedAppBundleIdentifiers containsObject:v3];
 
   return v4;
 }
@@ -1023,11 +1023,11 @@ LABEL_11:
 - (id)refresh
 {
   v3 = [[WLKTransactionScope alloc] initWithIdentifier:@"WLKAppLibrary.refresh"];
-  v4 = [(WLKAppLibrary *)self _refreshAppLibrary];
-  if (v4)
+  _refreshAppLibrary = [(WLKAppLibrary *)self _refreshAppLibrary];
+  if (_refreshAppLibrary)
   {
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 postNotificationName:@"WLKAppLibraryDidChangeNotification" object:v4];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"WLKAppLibraryDidChangeNotification" object:_refreshAppLibrary];
 
     if (WLKShouldRunInProcess())
     {
@@ -1045,13 +1045,13 @@ LABEL_11:
     }
   }
 
-  return v4;
+  return _refreshAppLibrary;
 }
 
-- (id)_subscriptionInfosForProxies:(id)a3
+- (id)_subscriptionInfosForProxies:(id)proxies
 {
   v3 = MEMORY[0x277CBEB38];
-  v4 = a3;
+  proxiesCopy = proxies;
   v5 = objc_alloc_init(v3);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -1059,7 +1059,7 @@ LABEL_11:
   v9[3] = &unk_279E5FE40;
   v10 = v5;
   v6 = v5;
-  [v4 enumerateObjectsUsingBlock:v9];
+  [proxiesCopy enumerateObjectsUsingBlock:v9];
 
   v7 = [v6 copy];
 
@@ -1207,16 +1207,16 @@ void __45__WLKAppLibrary_endIgnoringAppLibraryChanges__block_invoke_26(uint64_t 
   v1 = [WeakRetained refresh];
 }
 
-- (id)_bundleIdentifiersfromProxies:(id)a3
+- (id)_bundleIdentifiersfromProxies:(id)proxies
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
+  proxiesCopy = proxies;
+  array = [MEMORY[0x277CBEB18] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = proxiesCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -1231,8 +1231,8 @@ void __45__WLKAppLibrary_endIgnoringAppLibraryChanges__block_invoke_26(uint64_t 
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v14 + 1) + 8 * i) bundleIdentifier];
-        [v4 addObject:v10];
+        bundleIdentifier = [*(*(&v14 + 1) + 8 * i) bundleIdentifier];
+        [array addObject:bundleIdentifier];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -1241,16 +1241,16 @@ void __45__WLKAppLibrary_endIgnoringAppLibraryChanges__block_invoke_26(uint64_t 
     while (v7);
   }
 
-  v11 = [v4 copy];
+  v11 = [array copy];
   v12 = *MEMORY[0x277D85DE8];
 
   return v11;
 }
 
-- (void)_handleInvalidationWithReason:(id)a3
+- (void)_handleInvalidationWithReason:(id)reason
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonCopy = reason;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -1261,7 +1261,7 @@ void __45__WLKAppLibrary_endIgnoringAppLibraryChanges__block_invoke_26(uint64_t 
   block[2] = __47__WLKAppLibrary__handleInvalidationWithReason___block_invoke;
   block[3] = &unk_279E5FE18;
   block[4] = self;
-  v6 = v4;
+  v6 = reasonCopy;
   v13 = v6;
   v14 = &v15;
   dispatch_sync(accessQueue, block);
@@ -1321,16 +1321,16 @@ void __47__WLKAppLibrary__handleInvalidationWithReason___block_invoke_34(uint64_
   v1 = [WeakRetained refresh];
 }
 
-- (void)applicationsDidInstall:(id)a3
+- (void)applicationsDidInstall:(id)install
 {
   v21 = *MEMORY[0x277D85DE8];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
-  v6 = v4;
+  installCopy = install;
+  v5 = [installCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
+  defaultCenter = installCopy;
   if (v5)
   {
     v7 = v5;
@@ -1341,23 +1341,23 @@ void __47__WLKAppLibrary__handleInvalidationWithReason___block_invoke_34(uint64_
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(installCopy);
         }
 
-        v10 = [*(*(&v16 + 1) + 8 * i) bundleIdentifier];
+        bundleIdentifier = [*(*(&v16 + 1) + 8 * i) bundleIdentifier];
         v11 = WLKTVAppBundleID();
-        v12 = [v10 isEqualToString:v11];
+        v12 = [bundleIdentifier isEqualToString:v11];
 
         if (v12)
         {
 
-          v6 = [MEMORY[0x277CCAB98] defaultCenter];
-          [v6 postNotificationName:@"WLKAppLibraryTVAppDidInstallNotification" object:self];
+          defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+          [defaultCenter postNotificationName:@"WLKAppLibraryTVAppDidInstallNotification" object:self];
           goto LABEL_11;
         }
       }
 
-      v7 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [installCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v7)
       {
         continue;
@@ -1366,13 +1366,13 @@ void __47__WLKAppLibrary__handleInvalidationWithReason___block_invoke_34(uint64_
       break;
     }
 
-    v6 = v4;
+    defaultCenter = installCopy;
   }
 
 LABEL_11:
 
   v13 = +[WLKAppLibraryCore sharedInstance];
-  v14 = [v13 containsAppOfInterest:v4];
+  v14 = [v13 containsAppOfInterest:installCopy];
 
   if (v14)
   {
@@ -1382,11 +1382,11 @@ LABEL_11:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)applicationsDidUninstall:(id)a3
+- (void)applicationsDidUninstall:(id)uninstall
 {
-  v4 = a3;
+  uninstallCopy = uninstall;
   v5 = +[WLKAppLibraryCore sharedInstance];
-  v6 = [v5 containsAppOfInterest:v4];
+  v6 = [v5 containsAppOfInterest:uninstallCopy];
 
   if (v6)
   {

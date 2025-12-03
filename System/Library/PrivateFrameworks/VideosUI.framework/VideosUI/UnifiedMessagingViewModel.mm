@@ -1,14 +1,14 @@
 @interface UnifiedMessagingViewModel
-- (void)handleMessageDidUpdateWithNotification:(id)a3;
+- (void)handleMessageDidUpdateWithNotification:(id)notification;
 @end
 
 @implementation UnifiedMessagingViewModel
 
-- (void)handleMessageDidUpdateWithNotification:(id)a3
+- (void)handleMessageDidUpdateWithNotification:(id)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
 
-  sub_1E39EBD84(v3);
+  sub_1E39EBD84(notificationCopy);
 }
 
 @end

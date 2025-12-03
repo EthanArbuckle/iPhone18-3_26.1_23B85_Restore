@@ -1,18 +1,18 @@
 @interface SBSABasePreferencesProvider
 + (SBSystemApertureSettings)settings;
-+ (id)newAnimatedTransitionDescriptionWithBehaviorSettings:(id)a3;
++ (id)newAnimatedTransitionDescriptionWithBehaviorSettings:(id)settings;
 + (id)newUnanimatedTransitionDescription;
-- (SBSABasePreferencesProvider)initWithParentProvider:(id)a3;
+- (SBSABasePreferencesProvider)initWithParentProvider:(id)provider;
 - (SBSAStackablePreferencesProviding)parentProvider;
 - (SBSystemApertureTransitionSettings)defaultTransitionSettings;
-- (id)behaviorSettingsForProperty:(id)a3;
-- (id)firstChildPreferenceProviderOfClass:(Class)a3;
-- (id)firstChildPreferenceProviderRespondingToSelector:(SEL)a3;
-- (id)newAnimatedTransitionDescriptionForProperty:(id)a3 animated:(BOOL)a4;
-- (id)preferencesFromContext:(id)a3;
+- (id)behaviorSettingsForProperty:(id)property;
+- (id)firstChildPreferenceProviderOfClass:(Class)class;
+- (id)firstChildPreferenceProviderRespondingToSelector:(SEL)selector;
+- (id)newAnimatedTransitionDescriptionForProperty:(id)property animated:(BOOL)animated;
+- (id)preferencesFromContext:(id)context;
 - (id)stackDepiction;
 - (void)removeFromParentProvider;
-- (void)setChildProvider:(id)a3;
+- (void)setChildProvider:(id)provider;
 @end
 
 @implementation SBSABasePreferencesProvider
@@ -38,35 +38,35 @@
 
 - (SBSystemApertureTransitionSettings)defaultTransitionSettings
 {
-  v2 = [objc_opt_class() settings];
-  v3 = [v2 defaultInterfaceElementTransitionSettings];
+  settings = [objc_opt_class() settings];
+  defaultInterfaceElementTransitionSettings = [settings defaultInterfaceElementTransitionSettings];
 
-  return v3;
+  return defaultInterfaceElementTransitionSettings;
 }
 
 - (id)stackDepiction
 {
-  v2 = self;
-  v3 = [(SBSABasePreferencesProvider *)v2 parentProvider];
+  selfCopy = self;
+  parentProvider = [(SBSABasePreferencesProvider *)selfCopy parentProvider];
 
-  v4 = v2;
-  if (v3)
+  parentProvider2 = selfCopy;
+  if (parentProvider)
   {
-    v5 = v2;
+    v5 = selfCopy;
     do
     {
-      v4 = [(SBSABasePreferencesProvider *)v5 parentProvider];
+      parentProvider2 = [(SBSABasePreferencesProvider *)v5 parentProvider];
 
-      v6 = [(SBSABasePreferencesProvider *)v4 parentProvider];
+      v4ParentProvider = [(SBSABasePreferencesProvider *)parentProvider2 parentProvider];
 
-      v5 = v4;
+      v5 = parentProvider2;
     }
 
-    while (v6);
+    while (v4ParentProvider);
   }
 
-  v7 = v4;
-  v8 = v2;
+  v7 = parentProvider2;
+  v8 = selfCopy;
   v9 = objc_alloc_init(MEMORY[0x277CCAB68]);
   v10 = v7;
   v11 = v10;
@@ -76,14 +76,14 @@
     v13 = v10;
     while (1)
     {
-      v14 = [v13 descriptionForStackDepiction];
-      v15 = [v14 mutableCopy];
+      descriptionForStackDepiction = [v13 descriptionForStackDepiction];
+      v15 = [descriptionForStackDepiction mutableCopy];
 
       v16 = BSEqualObjects() ? @"* " : v12;
       [v15 insertString:v16 atIndex:0];
-      v17 = [v13 childProvider];
+      childProvider = [v13 childProvider];
 
-      if (!v17)
+      if (!childProvider)
       {
         break;
       }
@@ -91,7 +91,7 @@
       [v15 appendString:@"\n"];
       [v9 appendString:v15];
 
-      v13 = v17;
+      v13 = childProvider;
       v12 = @"| ";
     }
 
@@ -105,7 +105,7 @@
 {
   v4 = *MEMORY[0x277D85DE8];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_21ED4E000, a2, OS_LOG_TYPE_DEBUG, "Removing Provider: %@", &v2, 0xCu);
 }
 
@@ -116,12 +116,12 @@ void __39__SBSABasePreferencesProvider_settings__block_invoke()
   settings___settings = v0;
 }
 
-- (id)behaviorSettingsForProperty:(id)a3
+- (id)behaviorSettingsForProperty:(id)property
 {
-  v4 = a3;
-  v5 = [(SBSABasePreferencesProvider *)self defaultTransitionSettings];
+  propertyCopy = property;
+  defaultTransitionSettings = [(SBSABasePreferencesProvider *)self defaultTransitionSettings];
   v6 = objc_opt_class();
-  v7 = v5;
+  v7 = defaultTransitionSettings;
   if (v6)
   {
     if (objc_opt_isKindOfClass())
@@ -146,35 +146,35 @@ void __39__SBSABasePreferencesProvider_settings__block_invoke()
   {
     if (BSEqualStrings())
     {
-      v10 = [v9 centerBehaviorSettings];
+      centerBehaviorSettings = [v9 centerBehaviorSettings];
       goto LABEL_28;
     }
 
     if (BSEqualStrings())
     {
-      v10 = [v9 cornerRadiusBehaviorSettings];
+      centerBehaviorSettings = [v9 cornerRadiusBehaviorSettings];
       goto LABEL_28;
     }
 
     if (BSEqualStrings())
     {
-      v10 = [v9 alphaBehaviorSettings];
+      centerBehaviorSettings = [v9 alphaBehaviorSettings];
       goto LABEL_28;
     }
 
     if (BSEqualStrings())
     {
-      v10 = [v9 backgroundColorBehaviorSettings];
+      centerBehaviorSettings = [v9 backgroundColorBehaviorSettings];
 LABEL_28:
-      v16 = v10;
-      if (v10)
+      defaultBehaviorSettings = centerBehaviorSettings;
+      if (centerBehaviorSettings)
       {
         goto LABEL_30;
       }
     }
 
 LABEL_29:
-    v16 = [v7 defaultBehaviorSettings];
+    defaultBehaviorSettings = [v7 defaultBehaviorSettings];
     goto LABEL_30;
   }
 
@@ -204,57 +204,57 @@ LABEL_29:
   {
     if (BSEqualStrings())
     {
-      v15 = [v14 sensorObscuringShadowBehaviorSettings];
+      sensorObscuringShadowBehaviorSettings = [v14 sensorObscuringShadowBehaviorSettings];
 LABEL_25:
-      v16 = v15;
+      defaultBehaviorSettings = sensorObscuringShadowBehaviorSettings;
       goto LABEL_38;
     }
 
-    if (([v4 hasPrefix:@"leadingView"] & 1) != 0 || (objc_msgSend(v4, "hasPrefix:", @"trailingView") & 1) != 0 || objc_msgSend(v4, "hasPrefix:", @"minimalView"))
+    if (([propertyCopy hasPrefix:@"leadingView"] & 1) != 0 || (objc_msgSend(propertyCopy, "hasPrefix:", @"trailingView") & 1) != 0 || objc_msgSend(propertyCopy, "hasPrefix:", @"minimalView"))
     {
-      v15 = [v14 subcomponentBehaviorSettings];
+      sensorObscuringShadowBehaviorSettings = [v14 subcomponentBehaviorSettings];
       goto LABEL_25;
     }
 
-    if ([v4 hasPrefix:@"customContent"])
+    if ([propertyCopy hasPrefix:@"customContent"])
     {
-      v15 = [v14 customContentBehaviorSettings];
+      sensorObscuringShadowBehaviorSettings = [v14 customContentBehaviorSettings];
       goto LABEL_25;
     }
 
-    if ([v4 hasPrefix:@"snapshotView"])
+    if ([propertyCopy hasPrefix:@"snapshotView"])
     {
-      v15 = [v14 snapshotBehaviorSettings];
+      sensorObscuringShadowBehaviorSettings = [v14 snapshotBehaviorSettings];
       goto LABEL_25;
     }
   }
 
-  v16 = 0;
+  defaultBehaviorSettings = 0;
 LABEL_38:
 
-  if (!v16)
+  if (!defaultBehaviorSettings)
   {
     goto LABEL_29;
   }
 
 LABEL_30:
 
-  return v16;
+  return defaultBehaviorSettings;
 }
 
-+ (id)newAnimatedTransitionDescriptionWithBehaviorSettings:(id)a3
++ (id)newAnimatedTransitionDescriptionWithBehaviorSettings:(id)settings
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  settingsCopy = settings;
+  v6 = settingsCopy;
+  if (settingsCopy)
   {
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __84__SBSABasePreferencesProvider_newAnimatedTransitionDescriptionWithBehaviorSettings___block_invoke;
     v9[3] = &unk_2783ACD90;
     v11 = a2;
-    v12 = a1;
-    v10 = v5;
+    selfCopy = self;
+    v10 = settingsCopy;
     v7 = [SBSAAnimatedTransitionDescription instanceWithBlock:v9];
   }
 
@@ -314,19 +314,19 @@ void __84__SBSABasePreferencesProvider_newAnimatedTransitionDescriptionWithBehav
 
 + (id)newUnanimatedTransitionDescription
 {
-  v3 = [MEMORY[0x277D65E60] unanimatedBehaviorSettings];
-  v4 = [a1 newAnimatedTransitionDescriptionWithBehaviorSettings:v3];
+  unanimatedBehaviorSettings = [MEMORY[0x277D65E60] unanimatedBehaviorSettings];
+  v4 = [self newAnimatedTransitionDescriptionWithBehaviorSettings:unanimatedBehaviorSettings];
 
   return v4;
 }
 
-- (id)newAnimatedTransitionDescriptionForProperty:(id)a3 animated:(BOOL)a4
+- (id)newAnimatedTransitionDescriptionForProperty:(id)property animated:(BOOL)animated
 {
-  v6 = a3;
+  propertyCopy = property;
   v7 = objc_opt_class();
-  if (a4)
+  if (animated)
   {
-    [(SBSABasePreferencesProvider *)self behaviorSettingsForProperty:v6];
+    [(SBSABasePreferencesProvider *)self behaviorSettingsForProperty:propertyCopy];
   }
 
   else
@@ -339,41 +339,41 @@ void __84__SBSABasePreferencesProvider_newAnimatedTransitionDescriptionWithBehav
   return v9;
 }
 
-- (SBSABasePreferencesProvider)initWithParentProvider:(id)a3
+- (SBSABasePreferencesProvider)initWithParentProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v7.receiver = self;
   v7.super_class = SBSABasePreferencesProvider;
   v5 = [(SBSABasePreferencesProvider *)&v7 init];
   if (v5)
   {
-    [v4 setChildProvider:v5];
+    [providerCopy setChildProvider:v5];
   }
 
   return v5;
 }
 
-- (void)setChildProvider:(id)a3
+- (void)setChildProvider:(id)provider
 {
-  v6 = a3;
-  if (v6)
+  providerCopy = provider;
+  if (providerCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      [(SBSABasePreferencesProvider *)a2 setChildProvider:v6];
+      [(SBSABasePreferencesProvider *)a2 setChildProvider:providerCopy];
     }
 
     v7 = SBLogSystemAperturePreferencesStackMutation();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      [(SBSABasePreferencesProvider *)v6 setChildProvider:v7];
+      [(SBSABasePreferencesProvider *)providerCopy setChildProvider:v7];
     }
 
-    v8 = self;
-    objc_sync_enter(v8);
-    childProvider = v8->_childProvider;
-    if (childProvider != v6)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    childProvider = selfCopy->_childProvider;
+    if (childProvider != providerCopy)
     {
       v10 = objc_opt_class();
       v11 = childProvider;
@@ -397,9 +397,9 @@ void __84__SBSABasePreferencesProvider_newAnimatedTransitionDescriptionWithBehav
 
       v13 = v12;
 
-      objc_storeStrong(&v8->_childProvider, a3);
+      objc_storeStrong(&selfCopy->_childProvider, provider);
       v14 = objc_opt_class();
-      v15 = v6;
+      v15 = providerCopy;
       if (v14)
       {
         if (objc_opt_isKindOfClass())
@@ -420,7 +420,7 @@ void __84__SBSABasePreferencesProvider_newAnimatedTransitionDescriptionWithBehav
 
       v17 = v16;
 
-      objc_storeWeak(v17 + 2, v8);
+      objc_storeWeak(v17 + 2, selfCopy);
       objc_storeStrong(v17 + 3, v12);
       if (v13)
       {
@@ -428,22 +428,22 @@ void __84__SBSABasePreferencesProvider_newAnimatedTransitionDescriptionWithBehav
       }
     }
 
-    objc_sync_exit(v8);
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (id)firstChildPreferenceProviderOfClass:(Class)a3
+- (id)firstChildPreferenceProviderOfClass:(Class)class
 {
-  v3 = self;
-  if (v3)
+  selfCopy = self;
+  if (selfCopy)
   {
-    v4 = v3;
+    v4 = selfCopy;
     while ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v5 = [v4 childProvider];
+      childProvider = [v4 childProvider];
 
-      v4 = v5;
-      if (!v5)
+      v4 = childProvider;
+      if (!childProvider)
       {
         goto LABEL_5;
       }
@@ -461,18 +461,18 @@ LABEL_5:
   return v6;
 }
 
-- (id)firstChildPreferenceProviderRespondingToSelector:(SEL)a3
+- (id)firstChildPreferenceProviderRespondingToSelector:(SEL)selector
 {
-  v3 = self;
-  if (v3)
+  selfCopy = self;
+  if (selfCopy)
   {
-    v4 = v3;
+    v4 = selfCopy;
     while ((objc_opt_respondsToSelector() & 1) == 0)
     {
-      v5 = [v4 childProvider];
+      childProvider = [v4 childProvider];
 
-      v4 = v5;
-      if (!v5)
+      v4 = childProvider;
+      if (!childProvider)
       {
         goto LABEL_5;
       }
@@ -490,19 +490,19 @@ LABEL_5:
   return v6;
 }
 
-- (id)preferencesFromContext:(id)a3
+- (id)preferencesFromContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   childProvider = self->_childProvider;
   if (childProvider)
   {
-    v6 = [(SBSAStackablePreferencesProviding *)childProvider preferencesFromContext:v4];
+    preferences = [(SBSAStackablePreferencesProviding *)childProvider preferencesFromContext:contextCopy];
   }
 
   else
   {
     v7 = objc_opt_class();
-    v8 = v4;
+    v8 = contextCopy;
     if (v7)
     {
       if (objc_opt_isKindOfClass())
@@ -523,10 +523,10 @@ LABEL_5:
 
     v10 = v9;
 
-    v6 = [v10 preferences];
+    preferences = [v10 preferences];
   }
 
-  return v6;
+  return preferences;
 }
 
 void __84__SBSABasePreferencesProvider_newAnimatedTransitionDescriptionWithBehaviorSettings___block_invoke_cold_1(uint64_t a1)

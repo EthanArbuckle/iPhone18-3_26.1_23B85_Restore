@@ -1,52 +1,52 @@
 @interface PHAPrivateFederatedLearningAugmentersDecoder
 - (PHAPrivateFederatedLearningAugmentersDecoder)init;
-- (id)_generateErrorWithErrorCode:(int64_t)a3 errorMessage:(id)a4;
-- (id)augmentersFromArray:(id)a3 error:(id *)a4;
-- (id)instanceForAugmenterConfig:(id)a3 error:(id *)a4;
+- (id)_generateErrorWithErrorCode:(int64_t)code errorMessage:(id)message;
+- (id)augmentersFromArray:(id)array error:(id *)error;
+- (id)instanceForAugmenterConfig:(id)config error:(id *)error;
 @end
 
 @implementation PHAPrivateFederatedLearningAugmentersDecoder
 
-- (id)_generateErrorWithErrorCode:(int64_t)a3 errorMessage:(id)a4
+- (id)_generateErrorWithErrorCode:(int64_t)code errorMessage:(id)message
 {
   v12[1] = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CCA9B8];
   v11 = *MEMORY[0x277CCA450];
-  v12[0] = a4;
+  v12[0] = message;
   v6 = MEMORY[0x277CBEAC0];
-  v7 = a4;
+  messageCopy = message;
   v8 = [v6 dictionaryWithObjects:v12 forKeys:&v11 count:1];
-  v9 = [v5 errorWithDomain:@"com.apple.PhotoAnalysis.PHAPrivateFederatedLearningAugmentersDecoder" code:a3 userInfo:v8];
+  v9 = [v5 errorWithDomain:@"com.apple.PhotoAnalysis.PHAPrivateFederatedLearningAugmentersDecoder" code:code userInfo:v8];
 
   return v9;
 }
 
-- (id)instanceForAugmenterConfig:(id)a3 error:(id *)a4
+- (id)instanceForAugmenterConfig:(id)config error:(id *)error
 {
-  v6 = a3;
+  configCopy = config;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 objectForKeyedSubscript:@"name"];
+    v7 = [configCopy objectForKeyedSubscript:@"name"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [(PHAPrivateFederatedLearningAugmentersDecoder *)self augmenterNameToClass];
-      v9 = [v8 objectForKeyedSubscript:v7];
+      augmenterNameToClass = [(PHAPrivateFederatedLearningAugmentersDecoder *)self augmenterNameToClass];
+      v9 = [augmenterNameToClass objectForKeyedSubscript:v7];
 
       if (v9)
       {
-        v10 = [v6 objectForKeyedSubscript:@"params"];
+        v10 = [configCopy objectForKeyedSubscript:@"params"];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v11 = [v9 instanceWithParameters:v10 error:a4];
+          v11 = [v9 instanceWithParameters:v10 error:error];
         }
 
-        else if (a4)
+        else if (error)
         {
           [(PHAPrivateFederatedLearningAugmentersDecoder *)self _generateErrorWithErrorCode:1 errorMessage:@"Invalid augmenter format: augmenter parameters is not an array."];
-          *a4 = v11 = 0;
+          *error = v11 = 0;
         }
 
         else
@@ -57,17 +57,17 @@
         goto LABEL_18;
       }
 
-      if (a4)
+      if (error)
       {
         v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"Augmenter not supported: %@", v7];
-        *a4 = [(PHAPrivateFederatedLearningAugmentersDecoder *)self _generateErrorWithErrorCode:0 errorMessage:v12];
+        *error = [(PHAPrivateFederatedLearningAugmentersDecoder *)self _generateErrorWithErrorCode:0 errorMessage:v12];
       }
     }
 
-    else if (a4)
+    else if (error)
     {
       [(PHAPrivateFederatedLearningAugmentersDecoder *)self _generateErrorWithErrorCode:1 errorMessage:@"Invalid augmenter format: augmenter name is not a string."];
-      *a4 = v11 = 0;
+      *error = v11 = 0;
 LABEL_18:
 
       goto LABEL_19;
@@ -77,10 +77,10 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  if (a4)
+  if (error)
   {
     [(PHAPrivateFederatedLearningAugmentersDecoder *)self _generateErrorWithErrorCode:1 errorMessage:@"Invalid transformers format: transformer configuration is not dictionary."];
-    *a4 = v11 = 0;
+    *error = v11 = 0;
   }
 
   else
@@ -93,16 +93,16 @@ LABEL_19:
   return v11;
 }
 
-- (id)augmentersFromArray:(id)a3 error:(id *)a4
+- (id)augmentersFromArray:(id)array error:(id *)error
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  arrayCopy = array;
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = v6;
+  v8 = arrayCopy;
   v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
@@ -117,7 +117,7 @@ LABEL_19:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [(PHAPrivateFederatedLearningAugmentersDecoder *)self instanceForAugmenterConfig:*(*(&v17 + 1) + 8 * i) error:a4, v17];
+        v13 = [(PHAPrivateFederatedLearningAugmentersDecoder *)self instanceForAugmenterConfig:*(*(&v17 + 1) + 8 * i) error:error, v17];
         if (!v13)
         {
 
@@ -153,11 +153,11 @@ LABEL_11:
   v2 = [(PHAPrivateFederatedLearningAugmentersDecoder *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277D3B6D0] name];
-    v9[0] = v3;
+    name = [MEMORY[0x277D3B6D0] name];
+    v9[0] = name;
     v10[0] = objc_opt_class();
-    v4 = [MEMORY[0x277D3B6D8] name];
-    v9[1] = v4;
+    name2 = [MEMORY[0x277D3B6D8] name];
+    v9[1] = name2;
     v10[1] = objc_opt_class();
     v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:v9 count:2];
     augmenterNameToClass = v2->_augmenterNameToClass;

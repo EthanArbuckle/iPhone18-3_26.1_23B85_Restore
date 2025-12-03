@@ -1,7 +1,7 @@
 @interface NameRecognitionNotificationViewController
-- (_TtC37NameRecognitionNotificationsExtension41NameRecognitionNotificationViewController)initWithCoder:(id)a3;
-- (_TtC37NameRecognitionNotificationsExtension41NameRecognitionNotificationViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)didReceiveNotification:(id)a3;
+- (_TtC37NameRecognitionNotificationsExtension41NameRecognitionNotificationViewController)initWithCoder:(id)coder;
+- (_TtC37NameRecognitionNotificationsExtension41NameRecognitionNotificationViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)didReceiveNotification:(id)notification;
 - (void)viewDidLoad;
 @end
 
@@ -14,41 +14,41 @@
   [(NameRecognitionNotificationViewController *)&v2 viewDidLoad];
 }
 
-- (void)didReceiveNotification:(id)a3
+- (void)didReceiveNotification:(id)notification
 {
-  v4 = a3;
-  v5 = self;
-  _s37NameRecognitionNotificationsExtension0aB26NotificationViewControllerC10didReceiveyySo14UNNotificationCF_0(v4);
+  notificationCopy = notification;
+  selfCopy = self;
+  _s37NameRecognitionNotificationsExtension0aB26NotificationViewControllerC10didReceiveyySo14UNNotificationCF_0(notificationCopy);
 }
 
-- (_TtC37NameRecognitionNotificationsExtension41NameRecognitionNotificationViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC37NameRecognitionNotificationsExtension41NameRecognitionNotificationViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_100001B24();
-    v6 = a4;
+    bundleCopy = bundle;
     v7 = sub_100001B14();
   }
 
   else
   {
-    v8 = a4;
+    bundleCopy2 = bundle;
     v7 = 0;
   }
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for NameRecognitionNotificationViewController();
-  v9 = [(NameRecognitionNotificationViewController *)&v11 initWithNibName:v7 bundle:a4];
+  v9 = [(NameRecognitionNotificationViewController *)&v11 initWithNibName:v7 bundle:bundle];
 
   return v9;
 }
 
-- (_TtC37NameRecognitionNotificationsExtension41NameRecognitionNotificationViewController)initWithCoder:(id)a3
+- (_TtC37NameRecognitionNotificationsExtension41NameRecognitionNotificationViewController)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for NameRecognitionNotificationViewController();
-  v4 = a3;
-  v5 = [(NameRecognitionNotificationViewController *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(NameRecognitionNotificationViewController *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

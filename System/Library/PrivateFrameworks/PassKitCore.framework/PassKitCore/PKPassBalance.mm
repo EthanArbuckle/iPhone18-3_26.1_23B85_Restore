@@ -1,25 +1,25 @@
 @interface PKPassBalance
-- (PKPassBalance)initWithCoder:(id)a3;
-- (PKPassBalance)initWithDictionary:(id)a3;
+- (PKPassBalance)initWithCoder:(id)coder;
+- (PKPassBalance)initWithDictionary:(id)dictionary;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPassBalance
 
-- (PKPassBalance)initWithDictionary:(id)a3
+- (PKPassBalance)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = PKPassBalance;
   v5 = [(PKPassBalance *)&v12 init];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"identifier"];
+    v6 = [dictionaryCopy PKStringForKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 PKDictionaryForKey:@"paymentMethodMetadata"];
+    v8 = [dictionaryCopy PKDictionaryForKey:@"paymentMethodMetadata"];
     if (v8)
     {
       v9 = [[PKAutoReloadPaymentMethod alloc] initWithDictionary:v8];
@@ -31,19 +31,19 @@
   return v5;
 }
 
-- (PKPassBalance)initWithCoder:(id)a3
+- (PKPassBalance)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PKPassBalance;
   v5 = [(PKPassBalance *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"paymentMethod"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"paymentMethod"];
     paymentMethod = v5->_paymentMethod;
     v5->_paymentMethod = v8;
   }
@@ -51,12 +51,12 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_paymentMethod forKey:@"paymentMethod"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_paymentMethod forKey:@"paymentMethod"];
 }
 
 - (id)description

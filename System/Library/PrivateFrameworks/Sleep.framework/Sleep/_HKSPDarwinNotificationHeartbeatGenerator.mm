@@ -1,20 +1,20 @@
 @interface _HKSPDarwinNotificationHeartbeatGenerator
-- (_HKSPDarwinNotificationHeartbeatGenerator)initWithLifecycleNotification:(id)a3;
+- (_HKSPDarwinNotificationHeartbeatGenerator)initWithLifecycleNotification:(id)notification;
 - (void)sendHeartbeat;
 @end
 
 @implementation _HKSPDarwinNotificationHeartbeatGenerator
 
-- (_HKSPDarwinNotificationHeartbeatGenerator)initWithLifecycleNotification:(id)a3
+- (_HKSPDarwinNotificationHeartbeatGenerator)initWithLifecycleNotification:(id)notification
 {
-  v5 = a3;
+  notificationCopy = notification;
   v9.receiver = self;
   v9.super_class = _HKSPDarwinNotificationHeartbeatGenerator;
   v6 = [(_HKSPDarwinNotificationHeartbeatGenerator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_lifecycleNotification, a3);
+    objc_storeStrong(&v6->_lifecycleNotification, notification);
   }
 
   return v7;

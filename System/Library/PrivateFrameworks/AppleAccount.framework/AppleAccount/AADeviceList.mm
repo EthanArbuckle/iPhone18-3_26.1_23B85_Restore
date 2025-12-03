@@ -1,29 +1,29 @@
 @interface AADeviceList
-- (AADeviceList)initWithAccountManager:(id)a3;
+- (AADeviceList)initWithAccountManager:(id)manager;
 - (AADeviceListDelegate)delegate;
 - (id)_aidaAccount;
 - (id)_appleAccount;
 - (id)_authController;
-- (void)_createRequestForAccount:(id)a3 requestHandler:(id)a4;
+- (void)_createRequestForAccount:(id)account requestHandler:(id)handler;
 - (void)_loadDeviceList;
-- (void)_loadRequest:(id)a3 responseHandler:(id)a4;
+- (void)_loadRequest:(id)request responseHandler:(id)handler;
 - (void)_renewCredentials;
-- (void)_setDeviceList:(id)a3 loadError:(id)a4;
+- (void)_setDeviceList:(id)list loadError:(id)error;
 - (void)refreshDeviceList;
 @end
 
 @implementation AADeviceList
 
-- (AADeviceList)initWithAccountManager:(id)a3
+- (AADeviceList)initWithAccountManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = AADeviceList;
   v6 = [(AADeviceList *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_accountManager, a3);
+    objc_storeStrong(&v6->_accountManager, manager);
     [(AADeviceList *)v7 refreshDeviceList];
   }
 
@@ -40,9 +40,9 @@
   }
 
   [(AADeviceList *)self _setDeviceList:0 loadError:0];
-  v4 = [(AADeviceList *)self _appleAccount];
+  _appleAccount = [(AADeviceList *)self _appleAccount];
 
-  if (v4)
+  if (_appleAccount)
   {
     [(AADeviceList *)self _loadDeviceList];
   }
@@ -62,17 +62,17 @@
 
 - (id)_appleAccount
 {
-  v2 = [(AIDAAccountManager *)self->_accountManager accounts];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x1E698C218]];
+  accounts = [(AIDAAccountManager *)self->_accountManager accounts];
+  v3 = [accounts objectForKeyedSubscript:*MEMORY[0x1E698C218]];
 
   return v3;
 }
 
 - (id)_aidaAccount
 {
-  v3 = [(AADeviceList *)self _accountStore];
-  v4 = [(AADeviceList *)self _appleAccount];
-  v5 = [v3 aida_accountForiCloudAccount:v4];
+  _accountStore = [(AADeviceList *)self _accountStore];
+  _appleAccount = [(AADeviceList *)self _appleAccount];
+  v5 = [_accountStore aida_accountForiCloudAccount:_appleAccount];
 
   return v5;
 }
@@ -94,13 +94,13 @@
 
 - (void)_loadDeviceList
 {
-  v3 = [(AADeviceList *)self _appleAccount];
+  _appleAccount = [(AADeviceList *)self _appleAccount];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __31__AADeviceList__loadDeviceList__block_invoke;
   v4[3] = &unk_1E7C9CA50;
   v4[4] = self;
-  [(AADeviceList *)self _createRequestForAccount:v3 requestHandler:v4];
+  [(AADeviceList *)self _createRequestForAccount:_appleAccount requestHandler:v4];
 }
 
 uint64_t __31__AADeviceList__loadDeviceList__block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -142,24 +142,24 @@ void __31__AADeviceList__loadDeviceList__block_invoke_2(uint64_t a1, void *a2, v
   }
 }
 
-- (void)_setDeviceList:(id)a3 loadError:(id)a4
+- (void)_setDeviceList:(id)list loadError:(id)error
 {
-  v10 = a3;
-  v7 = a4;
+  listCopy = list;
+  errorCopy = error;
   v8 = self->_devices;
-  objc_storeStrong(&self->_devices, a3);
-  objc_storeStrong(&self->_loadError, a4);
-  if (v10 || !v8)
+  objc_storeStrong(&self->_devices, list);
+  objc_storeStrong(&self->_loadError, error);
+  if (listCopy || !v8)
   {
-    v9 = [(AADeviceList *)self delegate];
-    [v9 deviceListModified:v10];
+    delegate = [(AADeviceList *)self delegate];
+    [delegate deviceListModified:listCopy];
   }
 }
 
-- (void)_createRequestForAccount:(id)a3 requestHandler:(id)a4
+- (void)_createRequestForAccount:(id)account requestHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  accountCopy = account;
+  handlerCopy = handler;
   v8 = _AADeviceListLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -167,17 +167,17 @@ void __31__AADeviceList__loadDeviceList__block_invoke_2(uint64_t a1, void *a2, v
     _os_log_impl(&dword_1B6F6A000, v8, OS_LOG_TYPE_DEFAULT, "Fetching the URL bag", buf, 2u);
   }
 
-  v9 = [MEMORY[0x1E698DDF8] sharedBag];
+  mEMORY[0x1E698DDF8] = [MEMORY[0x1E698DDF8] sharedBag];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __56__AADeviceList__createRequestForAccount_requestHandler___block_invoke;
   v12[3] = &unk_1E7C9AFD8;
-  v13 = v6;
-  v14 = self;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
-  [v9 requestNewURLBagIfNecessaryWithCompletion:v12];
+  v13 = accountCopy;
+  selfCopy = self;
+  v15 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = accountCopy;
+  [mEMORY[0x1E698DDF8] requestNewURLBagIfNecessaryWithCompletion:v12];
 }
 
 void __56__AADeviceList__createRequestForAccount_requestHandler___block_invoke(id *a1, int a2, void *a3)
@@ -301,17 +301,17 @@ void __56__AADeviceList__createRequestForAccount_requestHandler___block_invoke_3
   }
 }
 
-- (void)_loadRequest:(id)a3 responseHandler:(id)a4
+- (void)_loadRequest:(id)request responseHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __45__AADeviceList__loadRequest_responseHandler___block_invoke;
   aBlock[3] = &unk_1E7C9CAA0;
   aBlock[4] = self;
-  v15 = v7;
-  v8 = v7;
+  v15 = handlerCopy;
+  v8 = handlerCopy;
   v9 = _Block_copy(aBlock);
   v10 = _AADeviceListLogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -320,8 +320,8 @@ void __56__AADeviceList__createRequestForAccount_requestHandler___block_invoke_3
     _os_log_impl(&dword_1B6F6A000, v10, OS_LOG_TYPE_DEFAULT, "Fetching the device list from the server", v13, 2u);
   }
 
-  v11 = [MEMORY[0x1E698DE00] sharedAnisetteFreeURLSession];
-  v12 = [v11 beginDataTaskWithRequest:v6 completionHandler:v9];
+  mEMORY[0x1E698DE00] = [MEMORY[0x1E698DE00] sharedAnisetteFreeURLSession];
+  v12 = [mEMORY[0x1E698DE00] beginDataTaskWithRequest:requestCopy completionHandler:v9];
 }
 
 void __45__AADeviceList__loadRequest_responseHandler___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -411,8 +411,8 @@ LABEL_18:
 - (void)_renewCredentials
 {
   v16[2] = *MEMORY[0x1E69E9840];
-  v3 = [(AADeviceList *)self _aidaAccount];
-  if (v3)
+  _aidaAccount = [(AADeviceList *)self _aidaAccount];
+  if (_aidaAccount)
   {
     v4 = *MEMORY[0x1E6959AA8];
     v16[0] = MEMORY[0x1E695E118];
@@ -431,13 +431,13 @@ LABEL_18:
       _os_log_impl(&dword_1B6F6A000, v8, OS_LOG_TYPE_DEFAULT, "Renewing credentials for AIDA account", buf, 2u);
     }
 
-    v9 = [(AADeviceList *)self _accountStore];
+    _accountStore = [(AADeviceList *)self _accountStore];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __33__AADeviceList__renewCredentials__block_invoke;
     v12[3] = &unk_1E7C9CAC8;
     v12[4] = self;
-    [v9 renewCredentialsForAccount:v3 options:v7 completion:v12];
+    [_accountStore renewCredentialsForAccount:_aidaAccount options:v7 completion:v12];
   }
 
   else

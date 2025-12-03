@@ -2,7 +2,7 @@
 + (id)PredictionFeedback;
 + (id)configurationForPredictionFeedback;
 + (id)storeConfigurationForPredictionFeedback;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
@@ -11,7 +11,7 @@
 + (id)PredictionFeedback
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForPredictionFeedback];
+  configurationForPredictionFeedback = [self configurationForPredictionFeedback];
   v3 = +[BMAirPlayPredictionFeedback columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -23,7 +23,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"AirPlay.PredictionFeedback" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"AirPlay.PredictionFeedback" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"AirPlay.PredictionFeedback" schema:v9 configuration:configurationForPredictionFeedback];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -32,13 +32,13 @@
 
 + (id)configurationForPredictionFeedback
 {
-  v3 = [a1 storeConfigurationForPredictionFeedback];
-  v4 = [a1 syncPolicyForPredictionFeedback];
+  storeConfigurationForPredictionFeedback = [self storeConfigurationForPredictionFeedback];
+  syncPolicyForPredictionFeedback = [self syncPolicyForPredictionFeedback];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"E21C6B88-AC75-49C8-8120-514EAB490CE1"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"AirPlay.PredictionFeedback" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"AirPlay.PredictionFeedback" eventClass:objc_opt_class() storeConfig:storeConfigurationForPredictionFeedback syncPolicy:syncPolicyForPredictionFeedback legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -51,19 +51,19 @@
   return v3;
 }
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  if ([a3 isEqualToString:@"PredictionFeedback"])
+  if ([name isEqualToString:@"PredictionFeedback"])
   {
-    v4 = [a1 PredictionFeedback];
+    predictionFeedback = [self PredictionFeedback];
   }
 
   else
   {
-    v4 = 0;
+    predictionFeedback = 0;
   }
 
-  return v4;
+  return predictionFeedback;
 }
 
 + (id)validKeyPaths

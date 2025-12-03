@@ -1,14 +1,14 @@
 @interface PVEffectScheduler
-- (BOOL)loadTimeIsNearEnd:(id *)a3;
+- (BOOL)loadTimeIsNearEnd:(id *)end;
 - (BOOL)previousLoadedIteratorIsLastInList;
 - (PVEffectScheduler)init;
 - (id).cxx_construct;
 - (void)dealloc;
-- (void)loadEffects:(id *)a3 playerRate:(float)a4;
-- (void)releaseAllUnusedEffects:(id *)a3;
-- (void)resetSchedule:(id)a3;
+- (void)loadEffects:(id *)effects playerRate:(float)rate;
+- (void)releaseAllUnusedEffects:(id *)effects;
+- (void)resetSchedule:(id)schedule;
 - (void)resetSearchPoint;
-- (void)setEffectLoadingRenderContext:(HGRef<PVInstructionGraphContext>)a3;
+- (void)setEffectLoadingRenderContext:(HGRef<PVInstructionGraphContext>)context;
 - (void)unloadInstructionFromPreviousSchedule;
 @end
 
@@ -92,10 +92,10 @@
   [(PVEffectScheduler *)&v10 dealloc];
 }
 
-- (void)resetSchedule:(id)a3
+- (void)resetSchedule:(id)schedule
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  scheduleCopy = schedule;
   effectScheduleLock = self->_effectScheduleLock;
   v25 = 0;
   HGSynchronizable::Lock(effectScheduleLock);
@@ -142,7 +142,7 @@
   self->_effectSchedule.__tree_.__begin_node_ = p_end_node;
   self->_lastLoadedEffectSetIterator.__ptr_ = p_end_node;
   self->_loadedFinalInstructions = 0;
-  [v4 instructions];
+  [scheduleCopy instructions];
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
@@ -228,18 +228,18 @@
   dispatch_async(loadQueue, block);
 }
 
-- (void)setEffectLoadingRenderContext:(HGRef<PVInstructionGraphContext>)a3
+- (void)setEffectLoadingRenderContext:(HGRef<PVInstructionGraphContext>)context
 {
   effectScheduleLock = self->_effectScheduleLock;
   HGSynchronizable::Lock(effectScheduleLock);
   m_Obj = self->_effectLoadRenderContext.m_Obj;
-  v7 = *a3.m_Obj;
-  if (m_Obj != *a3.m_Obj)
+  v7 = *context.m_Obj;
+  if (m_Obj != *context.m_Obj)
   {
     if (m_Obj)
     {
       (*(*m_Obj + 24))(self->_effectLoadRenderContext.m_Obj);
-      v7 = *a3.m_Obj;
+      v7 = *context.m_Obj;
     }
 
     self->_effectLoadRenderContext.m_Obj = v7;
@@ -252,9 +252,9 @@
   HGSynchronizable::Unlock(effectScheduleLock);
 }
 
-- (void)loadEffects:(id *)a3 playerRate:(float)a4
+- (void)loadEffects:(id *)effects playerRate:(float)rate
 {
-  if (a4 != 0.0 || (v6 = atomic_load(&self->_isScheduling), (v6 & 1) == 0))
+  if (rate != 0.0 || (v6 = atomic_load(&self->_isScheduling), (v6 & 1) == 0))
   {
     v11 = v4;
     v12 = v5;
@@ -264,8 +264,8 @@
     block[2] = __44__PVEffectScheduler_loadEffects_playerRate___block_invoke;
     block[3] = &unk_279AA57D0;
     block[4] = self;
-    v9 = *a3;
-    v10 = a4 == 0.0;
+    v9 = *effects;
+    v10 = rate == 0.0;
     dispatch_async(loadQueue, block);
   }
 }
@@ -478,7 +478,7 @@ LABEL_49:
   return HGSynchronizable::Unlock(v3);
 }
 
-- (void)releaseAllUnusedEffects:(id *)a3
+- (void)releaseAllUnusedEffects:(id *)effects
 {
   begin_node = self->_effectSchedule.__tree_.__begin_node_;
   p_end_node = &self->_effectSchedule.__tree_.__end_node_;
@@ -488,7 +488,7 @@ LABEL_49:
     do
     {
       v8 = begin_node->_previousScheduleToUnload.__tree_.__begin_node_;
-      v14 = *a3;
+      v14 = *effects;
       endTime = self->_endTime;
       if (LoadableInstruction::ShouldReleaseForTime(v8, &v14, &endTime))
       {
@@ -589,7 +589,7 @@ LABEL_49:
   self->_previousScheduleToUnload.__tree_.__begin_node_ = p_end_node;
 }
 
-- (BOOL)loadTimeIsNearEnd:(id *)a3
+- (BOOL)loadTimeIsNearEnd:(id *)end
 {
   memset(&v11, 0, sizeof(v11));
   v5 = +[PVDeviceCharacteristics isLowMemDevice];
@@ -601,7 +601,7 @@ LABEL_49:
 
   CMTimeMakeWithSeconds(&v11, v6, 30);
   memset(&v10, 0, sizeof(v10));
-  lhs = *a3;
+  lhs = *end;
   endTime = v11;
   CMTimeAdd(&v10, &lhs, &endTime);
   lhs = v10;

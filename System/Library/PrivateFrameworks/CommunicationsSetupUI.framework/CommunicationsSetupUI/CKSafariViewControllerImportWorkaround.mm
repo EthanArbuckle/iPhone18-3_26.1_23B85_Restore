@@ -1,18 +1,18 @@
 @interface CKSafariViewControllerImportWorkaround
 - (CKSafariViewControllerImportWorkaroundDelegate)delegate;
-- (id)_safariViewControllerWithURL:(id)a3;
-- (void)safariViewControllerDidFinish:(id)a3;
+- (id)_safariViewControllerWithURL:(id)l;
+- (void)safariViewControllerDidFinish:(id)finish;
 @end
 
 @implementation CKSafariViewControllerImportWorkaround
 
-- (id)_safariViewControllerWithURL:(id)a3
+- (id)_safariViewControllerWithURL:(id)l
 {
   v4 = MEMORY[0x277CDB708];
-  v5 = a3;
+  lCopy = l;
   v6 = objc_alloc_init(v4);
   [v6 setEntersReaderIfAvailable:0];
-  v7 = [objc_alloc(MEMORY[0x277CDB700]) initWithURL:v5 configuration:v6];
+  v7 = [objc_alloc(MEMORY[0x277CDB700]) initWithURL:lCopy configuration:v6];
 
   [v7 setDelegate:self];
   [v7 setModalPresentationStyle:2];
@@ -20,11 +20,11 @@
   return v7;
 }
 
-- (void)safariViewControllerDidFinish:(id)a3
+- (void)safariViewControllerDidFinish:(id)finish
 {
-  v4 = a3;
-  v5 = [(CKSafariViewControllerImportWorkaround *)self delegate];
-  [v5 safariViewControllerDidFinish:v4];
+  finishCopy = finish;
+  delegate = [(CKSafariViewControllerImportWorkaround *)self delegate];
+  [delegate safariViewControllerDidFinish:finishCopy];
 }
 
 - (CKSafariViewControllerImportWorkaroundDelegate)delegate

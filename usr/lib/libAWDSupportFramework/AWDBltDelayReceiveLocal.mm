@@ -1,14 +1,14 @@
 @interface AWDBltDelayReceiveLocal
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDelayMs:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasDelayMs:(BOOL)ms;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDBltDelayReceiveLocal
@@ -21,9 +21,9 @@
   [(AWDBltDelayReceiveLocal *)&v3 dealloc];
 }
 
-- (void)setHasDelayMs:(BOOL)a3
+- (void)setHasDelayMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 2;
   }
@@ -45,27 +45,27 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if (*&self->_has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
   uniqueid = self->_uniqueid;
   if (uniqueid)
   {
-    [v3 setObject:uniqueid forKey:@"uniqueid"];
+    [dictionary setObject:uniqueid forKey:@"uniqueid"];
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_delayMs), @"delayMs"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_delayMs), @"delayMs"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {
@@ -86,29 +86,29 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 32) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 32) |= 1u;
   }
 
   if (self->_uniqueid)
   {
-    [a3 setUniqueid:?];
+    [to setUniqueid:?];
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(a3 + 4) = self->_delayMs;
-    *(a3 + 32) |= 2u;
+    *(to + 4) = self->_delayMs;
+    *(to + 32) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -116,7 +116,7 @@
     *(v5 + 32) |= 1u;
   }
 
-  *(v6 + 24) = [(NSString *)self->_uniqueid copyWithZone:a3];
+  *(v6 + 24) = [(NSString *)self->_uniqueid copyWithZone:zone];
   if ((*&self->_has & 2) != 0)
   {
     *(v6 + 16) = self->_delayMs;
@@ -126,22 +126,22 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 32);
+    v7 = *(equal + 32);
     if (has)
     {
-      if ((*(a3 + 32) & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((*(equal + 32) & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_14;
       }
     }
 
-    else if (*(a3 + 32))
+    else if (*(equal + 32))
     {
 LABEL_14:
       LOBYTE(v5) = 0;
@@ -149,7 +149,7 @@ LABEL_14:
     }
 
     uniqueid = self->_uniqueid;
-    if (uniqueid | *(a3 + 3))
+    if (uniqueid | *(equal + 3))
     {
       v5 = [(NSString *)uniqueid isEqual:?];
       if (!v5)
@@ -160,10 +160,10 @@ LABEL_14:
       has = self->_has;
     }
 
-    LOBYTE(v5) = (*(a3 + 32) & 2) == 0;
+    LOBYTE(v5) = (*(equal + 32) & 2) == 0;
     if ((has & 2) != 0)
     {
-      if ((*(a3 + 32) & 2) == 0 || self->_delayMs != *(a3 + 4))
+      if ((*(equal + 32) & 2) == 0 || self->_delayMs != *(equal + 4))
       {
         goto LABEL_14;
       }
@@ -201,22 +201,22 @@ LABEL_14:
   return v4 ^ v3 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 32))
+  if (*(from + 32))
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(a3 + 3))
+  if (*(from + 3))
   {
     [(AWDBltDelayReceiveLocal *)self setUniqueid:?];
   }
 
-  if ((*(a3 + 32) & 2) != 0)
+  if ((*(from + 32) & 2) != 0)
   {
-    self->_delayMs = *(a3 + 4);
+    self->_delayMs = *(from + 4);
     *&self->_has |= 2u;
   }
 }

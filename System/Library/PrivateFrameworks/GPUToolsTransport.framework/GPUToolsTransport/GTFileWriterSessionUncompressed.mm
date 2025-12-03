@@ -1,32 +1,32 @@
 @interface GTFileWriterSessionUncompressed
-+ (id)sessionWithFileEntries:(id)a3 relativeToURL:(id)a4 options:(id)a5 error:(id *)a6;
-- (BOOL)_closeCurrentFileDescriptor:(id *)a3;
-- (BOOL)_writeUncompressedFileData:(const char *)a3 length:(unint64_t)a4 error:(id *)a5;
-- (BOOL)finish:(id *)a3;
-- (GTFileWriterSessionUncompressed)initWithFileEntries:(id)a3 relativeToURL:(id)a4 options:(id)a5 error:(id *)a6;
-- (int)_getCurrentFileDescriptor:(id *)a3;
-- (int)_openNextFile:(id *)a3;
-- (void)writeFileData:(id)a3 completionHandler:(id)a4;
++ (id)sessionWithFileEntries:(id)entries relativeToURL:(id)l options:(id)options error:(id *)error;
+- (BOOL)_closeCurrentFileDescriptor:(id *)descriptor;
+- (BOOL)_writeUncompressedFileData:(const char *)data length:(unint64_t)length error:(id *)error;
+- (BOOL)finish:(id *)finish;
+- (GTFileWriterSessionUncompressed)initWithFileEntries:(id)entries relativeToURL:(id)l options:(id)options error:(id *)error;
+- (int)_getCurrentFileDescriptor:(id *)descriptor;
+- (int)_openNextFile:(id *)file;
+- (void)writeFileData:(id)data completionHandler:(id)handler;
 @end
 
 @implementation GTFileWriterSessionUncompressed
 
-+ (id)sessionWithFileEntries:(id)a3 relativeToURL:(id)a4 options:(id)a5 error:(id *)a6
++ (id)sessionWithFileEntries:(id)entries relativeToURL:(id)l options:(id)options error:(id *)error
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[a1 alloc] initWithFileEntries:v12 relativeToURL:v11 options:v10 error:a6];
+  optionsCopy = options;
+  lCopy = l;
+  entriesCopy = entries;
+  v13 = [[self alloc] initWithFileEntries:entriesCopy relativeToURL:lCopy options:optionsCopy error:error];
 
   return v13;
 }
 
-- (GTFileWriterSessionUncompressed)initWithFileEntries:(id)a3 relativeToURL:(id)a4 options:(id)a5 error:(id *)a6
+- (GTFileWriterSessionUncompressed)initWithFileEntries:(id)entries relativeToURL:(id)l options:(id)options error:(id *)error
 {
   v96 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  entriesCopy = entries;
+  lCopy = l;
+  optionsCopy = options;
   v85.receiver = self;
   v85.super_class = GTFileWriterSessionUncompressed;
   v14 = [(GTFileWriterSessionUncompressed *)&v85 init];
@@ -36,13 +36,13 @@
     goto LABEL_53;
   }
 
-  objc_storeStrong(&v14->_fileEntries, a3);
-  objc_storeStrong(&v15->_baseURL, a4);
+  objc_storeStrong(&v14->_fileEntries, entries);
+  objc_storeStrong(&v15->_baseURL, l);
   v15->_currentFileIndex = 0;
   v15->_currentFileBytesWritten = 0;
   v15->_fd = -1;
-  v16 = v11;
-  v81 = v12;
+  v16 = entriesCopy;
+  v81 = lCopy;
   v87 = 0u;
   v88 = 0u;
   v89 = 0u;
@@ -56,10 +56,10 @@
     goto LABEL_50;
   }
 
-  v75 = a6;
+  errorCopy = error;
   v76 = v15;
-  v77 = v13;
-  v78 = v12;
+  v77 = optionsCopy;
+  v78 = lCopy;
   v17 = 0;
   v83 = *v88;
   v18 = *MEMORY[0x277CCA450];
@@ -84,12 +84,12 @@
       v25 = MEMORY[0x277CBEBC0];
       v26 = v19;
       v27 = [v25 alloc];
-      v28 = [v24 path];
-      v29 = [v27 initFileURLWithPath:v28 isDirectory:0 relativeToURL:v26];
+      path = [v24 path];
+      v29 = [v27 initFileURLWithPath:path isDirectory:0 relativeToURL:v26];
 
-      v30 = [MEMORY[0x277CCAA00] defaultManager];
-      v31 = [v29 URLByDeletingLastPathComponent];
-      LODWORD(v26) = [v30 createDirectoryAtURL:v31 withIntermediateDirectories:1 attributes:0 error:&v86];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      uRLByDeletingLastPathComponent = [v29 URLByDeletingLastPathComponent];
+      LODWORD(v26) = [defaultManager createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v86];
 
       if (!v26)
       {
@@ -98,14 +98,14 @@ LABEL_20:
         goto LABEL_44;
       }
 
-      v32 = [v24 destination];
+      destination = [v24 destination];
 
-      if (v32)
+      if (destination)
       {
-        v33 = [MEMORY[0x277CCAA00] defaultManager];
-        v34 = [v29 path];
-        v35 = [v24 destination];
-        v36 = [v33 createSymbolicLinkAtPath:v34 withDestinationPath:v35 error:&v86];
+        defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+        path2 = [v29 path];
+        destination2 = [v24 destination];
+        v36 = [defaultManager2 createSymbolicLinkAtPath:path2 withDestinationPath:destination2 error:&v86];
 
         if ((v36 & 1) == 0)
         {
@@ -164,7 +164,7 @@ LABEL_20:
         if (ftruncate(v40, [v24 fileSize]) < 0)
         {
           v47 = *__error();
-          v74 = v11;
+          v74 = entriesCopy;
           if (GTCoreLogUseOsLog())
           {
             v48 = gt_tagged_log(0x10u);
@@ -199,7 +199,7 @@ LABEL_20:
 
           close(v41);
           v37 = 0;
-          v11 = v74;
+          entriesCopy = v74;
           goto LABEL_43;
         }
 
@@ -306,16 +306,16 @@ LABEL_44:
   while (v84);
   v37 = 1;
 LABEL_48:
-  v13 = v77;
-  v12 = v78;
-  a6 = v75;
+  optionsCopy = v77;
+  lCopy = v78;
+  error = errorCopy;
   v15 = v76;
 LABEL_50:
 
-  if (a6)
+  if (error)
   {
     v70 = v17;
-    *a6 = v17;
+    *error = v17;
   }
 
   if (v37)
@@ -333,7 +333,7 @@ LABEL_53:
   return v71;
 }
 
-- (int)_openNextFile:(id *)a3
+- (int)_openNextFile:(id *)file
 {
   v33[1] = *MEMORY[0x277D85DE8];
   currentFileIndex = self->_currentFileIndex;
@@ -349,7 +349,7 @@ LABEL_9:
         [GTFileWriterSessionUncompressed _openNextFile:];
       }
 
-      if (a3)
+      if (file)
       {
         goto LABEL_13;
       }
@@ -361,7 +361,7 @@ LABEL_9:
       v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"No more files to write to"];
       fprintf(v15, "%s\n", [v16 UTF8String]);
 
-      if (a3)
+      if (file)
       {
 LABEL_13:
         v11 = MEMORY[0x277CCA9B8];
@@ -369,7 +369,7 @@ LABEL_13:
         v32 = *MEMORY[0x277CCA450];
         v33[0] = @"No more files to write to";
         v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v33 forKeys:&v32 count:1];
-        *a3 = [v11 errorWithDomain:v12 code:2 userInfo:v13];
+        *file = [v11 errorWithDomain:v12 code:2 userInfo:v13];
 LABEL_14:
         v14 = -1;
         goto LABEL_15;
@@ -386,8 +386,8 @@ LABEL_14:
     v7 = v6;
     v6 = [(NSArray *)self->_fileEntries objectAtIndexedSubscript:self->_currentFileIndex];
 
-    v8 = [v6 destination];
-    if (!v8)
+    destination = [v6 destination];
+    if (!destination)
     {
       break;
     }
@@ -407,8 +407,8 @@ LABEL_6:
   }
 
   v19 = objc_alloc(MEMORY[0x277CBEBC0]);
-  v20 = [v6 path];
-  v13 = [v19 initFileURLWithPath:v20 isDirectory:0 relativeToURL:self->_baseURL];
+  path = [v6 path];
+  v13 = [v19 initFileURLWithPath:path isDirectory:0 relativeToURL:self->_baseURL];
 
   v21 = open([v13 fileSystemRepresentation], 1, 0);
   if (v21 < 0)
@@ -429,7 +429,7 @@ LABEL_6:
       fprintf(v23, "%s\n", [v24 UTF8String]);
     }
 
-    if (a3)
+    if (file)
     {
       v25 = MEMORY[0x277CCA9B8];
       v26 = *MEMORY[0x277CCA5B8];
@@ -437,7 +437,7 @@ LABEL_6:
       v28 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to open file %@ for writing", v13, *MEMORY[0x277CCA450]];
       v31 = v28;
       v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v31 forKeys:&v30 count:1];
-      *a3 = [v25 errorWithDomain:v26 code:v27 userInfo:v29];
+      *file = [v25 errorWithDomain:v26 code:v27 userInfo:v29];
     }
 
     goto LABEL_14;
@@ -451,48 +451,48 @@ LABEL_18:
   return v14;
 }
 
-- (void)writeFileData:(id)a3 completionHandler:(id)a4
+- (void)writeFileData:(id)data completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a3;
-  v10 = [v9 bytes];
-  v11 = [v9 length];
+  dataCopy = data;
+  handlerCopy = handler;
+  dataCopy2 = data;
+  bytes = [dataCopy2 bytes];
+  v11 = [dataCopy2 length];
 
   v13 = 0;
-  [(GTFileWriterSessionUncompressed *)self _writeUncompressedFileData:v10 length:v11 error:&v13];
+  [(GTFileWriterSessionUncompressed *)self _writeUncompressedFileData:bytes length:v11 error:&v13];
   v12 = v13;
-  v8[2](v8, v12);
+  handlerCopy[2](handlerCopy, v12);
 }
 
-- (BOOL)_writeUncompressedFileData:(const char *)a3 length:(unint64_t)a4 error:(id *)a5
+- (BOOL)_writeUncompressedFileData:(const char *)data length:(unint64_t)length error:(id *)error
 {
   v33[1] = *MEMORY[0x277D85DE8];
-  if (a4)
+  if (length)
   {
     v9 = 0;
     while (1)
     {
-      v10 = [(GTFileWriterSessionUncompressed *)self _getCurrentFileDescriptor:a5];
+      v10 = [(GTFileWriterSessionUncompressed *)self _getCurrentFileDescriptor:error];
       if ((v10 & 0x80000000) != 0)
       {
         goto LABEL_21;
       }
 
       v11 = v10;
-      v12 = a4 - v9;
+      v12 = length - v9;
       v13 = [(NSArray *)self->_fileEntries objectAtIndexedSubscript:self->_currentFileIndex];
       v14 = [v13 fileSize] - self->_currentFileBytesWritten;
 
       v15 = 0;
-      if (a4 - v9 >= v14)
+      if (length - v9 >= v14)
       {
         v12 = v14;
       }
 
       do
       {
-        v16 = write(v11, &a3[v9 + v15], v12 - v15);
+        v16 = write(v11, &data[v9 + v15], v12 - v15);
         if (v16 < 0)
         {
           goto LABEL_14;
@@ -511,11 +511,11 @@ LABEL_18:
       v18 = self->_currentFileBytesWritten + v12;
       self->_currentFileBytesWritten = v18;
       v19 = [(NSArray *)self->_fileEntries objectAtIndexedSubscript:currentFileIndex];
-      v20 = [v19 fileSize];
+      fileSize = [v19 fileSize];
 
-      if (v18 == v20)
+      if (v18 == fileSize)
       {
-        v21 = [(GTFileWriterSessionUncompressed *)self _closeCurrentFileDescriptor:a5];
+        v21 = [(GTFileWriterSessionUncompressed *)self _closeCurrentFileDescriptor:error];
         if (!v21)
         {
           goto LABEL_22;
@@ -526,7 +526,7 @@ LABEL_18:
       }
 
       v9 += v12;
-      if (v9 >= a4)
+      if (v9 >= length)
       {
         goto LABEL_13;
       }
@@ -541,7 +541,7 @@ LABEL_14:
         [GTFileWriterSessionUncompressed _writeUncompressedFileData:length:error:];
       }
 
-      if (!a5)
+      if (!error)
       {
 LABEL_21:
         LOBYTE(v21) = 0;
@@ -555,7 +555,7 @@ LABEL_21:
       v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to write to fd (%d)", v11];
       fprintf(v23, "%s\n", [v24 UTF8String]);
 
-      if (!a5)
+      if (!error)
       {
         goto LABEL_21;
       }
@@ -567,7 +567,7 @@ LABEL_21:
     v28 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to write to fd (%d)", v11, *MEMORY[0x277CCA450]];
     v33[0] = v28;
     v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v33 forKeys:&v32 count:1];
-    *a5 = [v25 errorWithDomain:v26 code:v27 userInfo:v29];
+    *error = [v25 errorWithDomain:v26 code:v27 userInfo:v29];
 
     goto LABEL_21;
   }
@@ -579,19 +579,19 @@ LABEL_22:
   return v21;
 }
 
-- (int)_getCurrentFileDescriptor:(id *)a3
+- (int)_getCurrentFileDescriptor:(id *)descriptor
 {
   result = self->_fd;
   if (result < 0)
   {
-    result = [(GTFileWriterSessionUncompressed *)self _openNextFile:a3];
+    result = [(GTFileWriterSessionUncompressed *)self _openNextFile:descriptor];
     self->_fd = result;
   }
 
   return result;
 }
 
-- (BOOL)finish:(id *)a3
+- (BOOL)finish:(id *)finish
 {
   baseURL = self->_baseURL;
   self->_baseURL = 0;
@@ -602,10 +602,10 @@ LABEL_22:
   self->_currentFileIndex = 0;
   self->_currentFileBytesWritten = 0;
 
-  return [(GTFileWriterSessionUncompressed *)self _closeCurrentFileDescriptor:a3];
+  return [(GTFileWriterSessionUncompressed *)self _closeCurrentFileDescriptor:finish];
 }
 
-- (BOOL)_closeCurrentFileDescriptor:(id *)a3
+- (BOOL)_closeCurrentFileDescriptor:(id *)descriptor
 {
   v26[1] = *MEMORY[0x277D85DE8];
   fd = self->_fd;
@@ -625,7 +625,7 @@ LABEL_22:
         [GTFileWriterSessionUncompressed _closeCurrentFileDescriptor:];
       }
 
-      if (!a3)
+      if (!descriptor)
       {
         goto LABEL_20;
       }
@@ -637,7 +637,7 @@ LABEL_22:
       v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to flush fd (%d)", fd];
       fprintf(v10, "%s\n", [v11 UTF8String]);
 
-      if (!a3)
+      if (!descriptor)
       {
         goto LABEL_20;
       }
@@ -654,7 +654,7 @@ LABEL_22:
     v18 = &v25;
 LABEL_19:
     v21 = [v16 dictionaryWithObjects:v17 forKeys:v18 count:1];
-    *a3 = [v12 errorWithDomain:v13 code:v14 userInfo:v21];
+    *descriptor = [v12 errorWithDomain:v13 code:v14 userInfo:v21];
 
     goto LABEL_20;
   }
@@ -671,7 +671,7 @@ LABEL_19:
         [GTFileWriterSessionUncompressed _closeCurrentFileDescriptor:];
       }
 
-      if (!a3)
+      if (!descriptor)
       {
         goto LABEL_20;
       }
@@ -683,7 +683,7 @@ LABEL_19:
     v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to close fd (%d), status %d", fd, v8];
     fprintf(v19, "%s\n", [v20 UTF8String]);
 
-    if (a3)
+    if (descriptor)
     {
 LABEL_18:
       v12 = MEMORY[0x277CCA9B8];

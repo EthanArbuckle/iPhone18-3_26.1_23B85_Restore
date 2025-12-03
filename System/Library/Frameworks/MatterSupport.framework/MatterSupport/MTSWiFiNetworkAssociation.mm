@@ -1,29 +1,29 @@
 @interface MTSWiFiNetworkAssociation
-- (BOOL)isEqual:(id)a3;
-- (MTSWiFiNetworkAssociation)initWithCoder:(id)a3;
-- (MTSWiFiNetworkAssociation)initWithSSID:(id)a3 credentials:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (MTSWiFiNetworkAssociation)initWithCoder:(id)coder;
+- (MTSWiFiNetworkAssociation)initWithSSID:(id)d credentials:(id)credentials;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MTSWiFiNetworkAssociation
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(MTSWiFiNetworkAssociation *)self ssid];
-  [v4 encodeObject:v5 forKey:@"MTSWNA.ck.ssid"];
+  coderCopy = coder;
+  ssid = [(MTSWiFiNetworkAssociation *)self ssid];
+  [coderCopy encodeObject:ssid forKey:@"MTSWNA.ck.ssid"];
 
-  v6 = [(MTSWiFiNetworkAssociation *)self credentials];
-  [v4 encodeObject:v6 forKey:@"MTSWNA.ck.credentials"];
+  credentials = [(MTSWiFiNetworkAssociation *)self credentials];
+  [coderCopy encodeObject:credentials forKey:@"MTSWNA.ck.credentials"];
 }
 
-- (MTSWiFiNetworkAssociation)initWithCoder:(id)a3
+- (MTSWiFiNetworkAssociation)initWithCoder:(id)coder
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MTSWNA.ck.ssid"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MTSWNA.ck.credentials"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MTSWNA.ck.ssid"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MTSWNA.ck.credentials"];
   v7 = v6;
   if (v5)
   {
@@ -38,7 +38,7 @@
   if (v8)
   {
     v9 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -58,8 +58,8 @@
 
   else
   {
-    v12 = [(MTSWiFiNetworkAssociation *)self initWithSSID:v5 credentials:v6];
-    v13 = v12;
+    selfCopy = [(MTSWiFiNetworkAssociation *)self initWithSSID:v5 credentials:v6];
+    v13 = selfCopy;
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -68,21 +68,21 @@
 
 - (unint64_t)hash
 {
-  v3 = [(MTSWiFiNetworkAssociation *)self ssid];
-  v4 = [v3 hash];
-  v5 = [(MTSWiFiNetworkAssociation *)self credentials];
-  v6 = [v5 hash];
+  ssid = [(MTSWiFiNetworkAssociation *)self ssid];
+  v4 = [ssid hash];
+  credentials = [(MTSWiFiNetworkAssociation *)self credentials];
+  v6 = [credentials hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -93,13 +93,13 @@
   v6 = v5;
   if (v6)
   {
-    v7 = [(MTSWiFiNetworkAssociation *)self ssid];
-    v8 = [v6 ssid];
-    if ([v7 isEqual:v8])
+    ssid = [(MTSWiFiNetworkAssociation *)self ssid];
+    ssid2 = [v6 ssid];
+    if ([ssid isEqual:ssid2])
     {
-      v9 = [(MTSWiFiNetworkAssociation *)self credentials];
-      v10 = [v6 credentials];
-      v11 = [v9 isEqual:v10];
+      credentials = [(MTSWiFiNetworkAssociation *)self credentials];
+      credentials2 = [v6 credentials];
+      v11 = [credentials isEqual:credentials2];
     }
 
     else
@@ -116,18 +116,18 @@
   return v11;
 }
 
-- (MTSWiFiNetworkAssociation)initWithSSID:(id)a3 credentials:(id)a4
+- (MTSWiFiNetworkAssociation)initWithSSID:(id)d credentials:(id)credentials
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  dCopy = d;
+  credentialsCopy = credentials;
+  if (!dCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_7;
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = credentialsCopy;
+  if (!credentialsCopy)
   {
 LABEL_7:
     v15 = _HMFPreconditionFailure();
@@ -139,7 +139,7 @@ LABEL_7:
   v9 = [(MTSWiFiNetworkAssociation *)&v17 init];
   if (v9)
   {
-    v10 = [v6 copy];
+    v10 = [dCopy copy];
     ssid = v9->_ssid;
     v9->_ssid = v10;
 

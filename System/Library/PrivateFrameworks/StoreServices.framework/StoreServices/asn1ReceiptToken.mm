@@ -1,14 +1,14 @@
 @interface asn1ReceiptToken
-+ (id)readFromBuffer:(const char *)a3;
++ (id)readFromBuffer:(const char *)buffer;
 - (NSString)stringValue;
-- (id)_initWithType:(unint64_t)a3 typeVersion:(unint64_t)a4 contentToken:(id)a5;
+- (id)_initWithType:(unint64_t)type typeVersion:(unint64_t)version contentToken:(id)token;
 - (unint64_t)integerValue;
 - (void)dealloc;
 @end
 
 @implementation asn1ReceiptToken
 
-- (id)_initWithType:(unint64_t)a3 typeVersion:(unint64_t)a4 contentToken:(id)a5
+- (id)_initWithType:(unint64_t)type typeVersion:(unint64_t)version contentToken:(id)token
 {
   v11.receiver = self;
   v11.super_class = asn1ReceiptToken;
@@ -16,9 +16,9 @@
   v9 = v8;
   if (v8)
   {
-    v8->mType = a3;
-    v8->mTypeVersion = a4;
-    v8->mContentToken = a5;
+    v8->mType = type;
+    v8->mTypeVersion = version;
+    v8->mContentToken = token;
   }
 
   return v9;
@@ -31,9 +31,9 @@
   [(asn1ReceiptToken *)&v3 dealloc];
 }
 
-+ (id)readFromBuffer:(const char *)a3
++ (id)readFromBuffer:(const char *)buffer
 {
-  v3 = [asn1Token readTokenFromBuffer:a3];
+  v3 = [asn1Token readTokenFromBuffer:buffer];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -47,17 +47,17 @@
     return 0;
   }
 
-  v5 = [v4 content];
+  content = [v4 content];
   v6 = [v4 length];
-  v7 = [v3 value];
-  if (v7 > 0x18)
+  value = [v3 value];
+  if (value > 0x18)
   {
     return 0;
   }
 
-  if (((1 << v7) & 0x1E1FF1F) != 0)
+  if (((1 << value) & 0x1E1FF1F) != 0)
   {
-    v8 = [asn1Token readTokenFromBuffer:v5 + v6];
+    v8 = [asn1Token readTokenFromBuffer:content + v6];
     if ([v8 identifier] != 4 || objc_msgSend(v8, "tokenClass") || !v8)
     {
       return 0;
@@ -66,12 +66,12 @@
 
   else
   {
-    if (((1 << v7) & 0xE0) == 0)
+    if (((1 << value) & 0xE0) == 0)
     {
       return 0;
     }
 
-    v8 = [asn1Token readOpaqueTokenFromBuffer:v5 + v6];
+    v8 = [asn1Token readOpaqueTokenFromBuffer:content + v6];
     if (!v8)
     {
       return 0;
@@ -104,13 +104,13 @@
     return 0xFFFFLL;
   }
 
-  v3 = [(asn1Token *)self->mContentToken value];
-  if ([v3 tokenClass] || objc_msgSend(v3, "identifier") != 2)
+  value = [(asn1Token *)self->mContentToken value];
+  if ([value tokenClass] || objc_msgSend(value, "identifier") != 2)
   {
     return 0xFFFFLL;
   }
 
-  return [v3 value];
+  return [value value];
 }
 
 @end

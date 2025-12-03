@@ -1,20 +1,20 @@
 @interface AVAudioIONodeSessionDirectServer
-- (AVAudioIONodeSessionDirectServer)initWithSessionManager:(void *)a3 serverDelegate:(id)a4;
+- (AVAudioIONodeSessionDirectServer)initWithSessionManager:(void *)manager serverDelegate:(id)delegate;
 @end
 
 @implementation AVAudioIONodeSessionDirectServer
 
-- (AVAudioIONodeSessionDirectServer)initWithSessionManager:(void *)a3 serverDelegate:(id)a4
+- (AVAudioIONodeSessionDirectServer)initWithSessionManager:(void *)manager serverDelegate:(id)delegate
 {
-  v7 = a4;
+  delegateCopy = delegate;
   v11.receiver = self;
   v11.super_class = AVAudioIONodeSessionDirectServer;
   v8 = [(AVAudioIONodeSessionDirectServer *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_sessionManager = a3;
-    objc_storeStrong(&v8->_serverDelegate, a4);
+    v8->_sessionManager = manager;
+    objc_storeStrong(&v8->_serverDelegate, delegate);
   }
 
   return v9;

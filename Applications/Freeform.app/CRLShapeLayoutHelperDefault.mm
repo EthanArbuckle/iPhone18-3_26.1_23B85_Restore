@@ -1,27 +1,27 @@
 @interface CRLShapeLayoutHelperDefault
 - (BOOL)shouldComputeSeparateClippedPathBounds;
-- (CGRect)aliasedAlignmentFrameForScale:(double)a3;
-- (CGRect)boundsOfLineEndForHead:(BOOL)a3 transform:(CGAffineTransform *)a4;
-- (CGRect)computeClippedPathBoundsWithTransform:(CGAffineTransform *)a3;
+- (CGRect)aliasedAlignmentFrameForScale:(double)scale;
+- (CGRect)boundsOfLineEndForHead:(BOOL)head transform:(CGAffineTransform *)transform;
+- (CGRect)computeClippedPathBoundsWithTransform:(CGAffineTransform *)transform;
 - (CGRect)computePathBounds;
-- (CRLShapeLayoutHelperDefault)initWithShapeLayout:(id)a3;
+- (CRLShapeLayoutHelperDefault)initWithShapeLayout:(id)layout;
 @end
 
 @implementation CRLShapeLayoutHelperDefault
 
-- (CRLShapeLayoutHelperDefault)initWithShapeLayout:(id)a3
+- (CRLShapeLayoutHelperDefault)initWithShapeLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v11.receiver = self;
   v11.super_class = CRLShapeLayoutHelperDefault;
   v5 = [(CRLShapeLayoutHelperDefault *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_shapeLayout, v4);
+    objc_storeWeak(&v5->_shapeLayout, layoutCopy);
     v7 = objc_opt_class();
-    v8 = [v4 info];
-    v9 = sub_100013F00(v7, v8);
+    info = [layoutCopy info];
+    v9 = sub_100013F00(v7, info);
     objc_storeWeak(&v6->_shapeInfo, v9);
   }
 
@@ -31,9 +31,9 @@
 - (BOOL)shouldComputeSeparateClippedPathBounds
 {
   WeakRetained = objc_loadWeakRetained(&self->_shapeInfo);
-  v4 = [WeakRetained headLineEnd];
+  headLineEnd = [WeakRetained headLineEnd];
 
-  if (v4 && ![v4 isNone])
+  if (headLineEnd && ![headLineEnd isNone])
   {
     v7 = 1;
   }
@@ -41,9 +41,9 @@
   else
   {
     v5 = objc_loadWeakRetained(&self->_shapeInfo);
-    v6 = [v5 tailLineEnd];
+    tailLineEnd = [v5 tailLineEnd];
 
-    v7 = v6 && ![v6 isNone];
+    v7 = tailLineEnd && ![tailLineEnd isNone];
   }
 
   return v7;
@@ -52,11 +52,11 @@
 - (CGRect)computePathBounds
 {
   WeakRetained = objc_loadWeakRetained(&self->_shapeLayout);
-  v4 = [WeakRetained stroke];
+  stroke = [WeakRetained stroke];
 
   v5 = objc_loadWeakRetained(&self->_shapeLayout);
-  v6 = [v5 path];
-  [v6 boundsIncludingCRLStroke:v4];
+  path = [v5 path];
+  [path boundsIncludingCRLStroke:stroke];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -65,9 +65,9 @@
   v15 = objc_loadWeakRetained(&self->_shapeLayout);
   if ([v15 pathIsOpen])
   {
-    v16 = [v4 supportsWidth];
+    supportsWidth = [stroke supportsWidth];
 
-    if (v16)
+    if (supportsWidth)
     {
       v34 = *&CGAffineTransformIdentity.c;
       v36 = *&CGAffineTransformIdentity.a;
@@ -124,20 +124,20 @@
   return result;
 }
 
-- (CGRect)computeClippedPathBoundsWithTransform:(CGAffineTransform *)a3
+- (CGRect)computeClippedPathBoundsWithTransform:(CGAffineTransform *)transform
 {
   WeakRetained = objc_loadWeakRetained(&self->_shapeLayout);
-  v6 = [WeakRetained clippedPathForLineEnds];
-  v7 = [v6 copy];
+  clippedPathForLineEnds = [WeakRetained clippedPathForLineEnds];
+  v7 = [clippedPathForLineEnds copy];
 
-  v8 = *&a3->c;
-  v23[0] = *&a3->a;
+  v8 = *&transform->c;
+  v23[0] = *&transform->a;
   v23[1] = v8;
-  v23[2] = *&a3->tx;
+  v23[2] = *&transform->tx;
   [v7 transformUsingAffineTransform:v23];
   v9 = objc_loadWeakRetained(&self->_shapeLayout);
-  v10 = [v9 stroke];
-  [v7 boundsIncludingCRLStroke:v10];
+  stroke = [v9 stroke];
+  [v7 boundsIncludingCRLStroke:stroke];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -154,12 +154,12 @@
   return result;
 }
 
-- (CGRect)boundsOfLineEndForHead:(BOOL)a3 transform:(CGAffineTransform *)a4
+- (CGRect)boundsOfLineEndForHead:(BOOL)head transform:(CGAffineTransform *)transform
 {
-  v5 = a3;
+  headCopy = head;
   WeakRetained = objc_loadWeakRetained(&self->_shapeLayout);
   v8 = WeakRetained;
-  if (v5)
+  if (headCopy)
   {
     [WeakRetained strokeHeadLineEnd];
   }
@@ -178,7 +178,7 @@
   {
     v14 = objc_loadWeakRetained(&self->_shapeLayout);
     v15 = v14;
-    if (v5)
+    if (headCopy)
     {
       [v14 headLineEndPoint];
       v17 = v16;
@@ -201,16 +201,16 @@
     v24 = v21;
 
     v25 = objc_loadWeakRetained(&self->_shapeLayout);
-    [v25 lineEndScale:v5];
+    [v25 lineEndScale:headCopy];
     v27 = v26;
 
     v28 = objc_loadWeakRetained(&self->_shapeLayout);
-    v29 = [v28 stroke];
-    v30 = *&a4->c;
-    v39[0] = *&a4->a;
+    stroke = [v28 stroke];
+    v30 = *&transform->c;
+    v39[0] = *&transform->a;
     v39[1] = v30;
-    v39[2] = *&a4->tx;
-    [v29 boundsForLineEnd:v9 atPoint:v39 atAngle:v17 withScale:v19 transform:{v24, v27}];
+    v39[2] = *&transform->tx;
+    [stroke boundsForLineEnd:v9 atPoint:v39 atAngle:v17 withScale:v19 transform:{v24, v27}];
     x = v31;
     y = v32;
     width = v33;
@@ -228,7 +228,7 @@
   return result;
 }
 
-- (CGRect)aliasedAlignmentFrameForScale:(double)a3
+- (CGRect)aliasedAlignmentFrameForScale:(double)scale
 {
   v58 = 0.0;
   v59 = 0.0;
@@ -237,7 +237,7 @@
   WeakRetained = objc_loadWeakRetained(&self->_shapeLayout);
   v54 = 0;
   v55 = 0;
-  [WeakRetained aliasPathForScale:&v55 adjustedStroke:&v54 adjustedPath:&v58 startDelta:&v56 endDelta:a3];
+  [WeakRetained aliasPathForScale:&v55 adjustedStroke:&v54 adjustedPath:&v58 startDelta:&v56 endDelta:scale];
   v6 = v55;
   v7 = v54;
 
@@ -272,9 +272,9 @@
   v22 = v21;
   v24 = v23;
   v25 = objc_loadWeakRetained(&self->_shapeLayout);
-  v26 = [v25 pathIsOpen];
+  pathIsOpen = [v25 pathIsOpen];
 
-  if (v26)
+  if (pathIsOpen)
   {
     v52 = v53;
     [(CRLShapeLayoutHelperDefault *)self boundsOfLineEndForHead:1 transform:&v52];

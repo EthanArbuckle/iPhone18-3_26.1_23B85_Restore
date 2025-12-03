@@ -1,48 +1,48 @@
 @interface TRINamespaceFactorSubscriptionSettings
-+ (id)settingsWithKeyValueStore:(id)a3;
-- (BOOL)setSubscriptionWithFactorNames:(id)a3 inNamespaceName:(id)a4 error:(id *)a5;
-- (TRINamespaceFactorSubscriptionSettings)initWithKeyValueStore:(id)a3;
-- (id)subscribedFactorsForNamespaceName:(id)a3;
++ (id)settingsWithKeyValueStore:(id)store;
+- (BOOL)setSubscriptionWithFactorNames:(id)names inNamespaceName:(id)name error:(id *)error;
+- (TRINamespaceFactorSubscriptionSettings)initWithKeyValueStore:(id)store;
+- (id)subscribedFactorsForNamespaceName:(id)name;
 @end
 
 @implementation TRINamespaceFactorSubscriptionSettings
 
-+ (id)settingsWithKeyValueStore:(id)a3
++ (id)settingsWithKeyValueStore:(id)store
 {
-  v3 = a3;
-  v4 = [[TRINamespaceFactorSubscriptionSettings alloc] initWithKeyValueStore:v3];
+  storeCopy = store;
+  v4 = [[TRINamespaceFactorSubscriptionSettings alloc] initWithKeyValueStore:storeCopy];
 
   return v4;
 }
 
-- (TRINamespaceFactorSubscriptionSettings)initWithKeyValueStore:(id)a3
+- (TRINamespaceFactorSubscriptionSettings)initWithKeyValueStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v9.receiver = self;
   v9.super_class = TRINamespaceFactorSubscriptionSettings;
   v6 = [(TRINamespaceFactorSubscriptionSettings *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_keyValueStore, a3);
+    objc_storeStrong(&v6->_keyValueStore, store);
   }
 
   return v7;
 }
 
-- (id)subscribedFactorsForNamespaceName:(id)a3
+- (id)subscribedFactorsForNamespaceName:(id)name
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  nameCopy = name;
+  if (!nameCopy)
   {
-    v20 = [MEMORY[0x277CCA890] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"TRINamespaceFactorSubscriptionSettings.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRINamespaceFactorSubscriptionSettings.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
   }
 
-  v6 = [(TRINamespaceFactorSubscriptionSettings *)self keyValueStore];
-  v7 = [TRINamespaceFactorSubscriptionSettings keyForNamespaceSubscription:v5];
-  v8 = [v6 blobForKey:v7 usingTransaction:0];
+  keyValueStore = [(TRINamespaceFactorSubscriptionSettings *)self keyValueStore];
+  v7 = [TRINamespaceFactorSubscriptionSettings keyForNamespaceSubscription:nameCopy];
+  v8 = [keyValueStore blobForKey:v7 usingTransaction:0];
 
   if (v8)
   {
@@ -85,15 +85,15 @@
   return v16;
 }
 
-- (BOOL)setSubscriptionWithFactorNames:(id)a3 inNamespaceName:(id)a4 error:(id *)a5
+- (BOOL)setSubscriptionWithFactorNames:(id)names inNamespaceName:(id)name error:(id *)error
 {
   v31 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (v9)
+  namesCopy = names;
+  nameCopy = name;
+  v11 = nameCopy;
+  if (namesCopy)
   {
-    if (v10)
+    if (nameCopy)
     {
       goto LABEL_3;
     }
@@ -101,8 +101,8 @@
 
   else
   {
-    v24 = [MEMORY[0x277CCA890] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"TRINamespaceFactorSubscriptionSettings.m" lineNumber:60 description:{@"Invalid parameter not satisfying: %@", @"factorNames"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRINamespaceFactorSubscriptionSettings.m" lineNumber:60 description:{@"Invalid parameter not satisfying: %@", @"factorNames"}];
 
     if (v11)
     {
@@ -110,15 +110,15 @@
     }
   }
 
-  v25 = [MEMORY[0x277CCA890] currentHandler];
-  [v25 handleFailureInMethod:a2 object:self file:@"TRINamespaceFactorSubscriptionSettings.m" lineNumber:61 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRINamespaceFactorSubscriptionSettings.m" lineNumber:61 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
 
 LABEL_3:
-  v12 = [MEMORY[0x277CBEB98] setWithArray:v9];
-  v13 = [v12 allObjects];
+  v12 = [MEMORY[0x277CBEB98] setWithArray:namesCopy];
+  allObjects = [v12 allObjects];
 
   v26 = 0;
-  v14 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v13 requiringSecureCoding:0 error:&v26];
+  v14 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:allObjects requiringSecureCoding:0 error:&v26];
   v15 = v26;
   v16 = TRILogCategory_Server();
   v17 = v16;
@@ -126,7 +126,7 @@ LABEL_3:
   {
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [v13 componentsJoinedByString:{@", "}];
+      v18 = [allObjects componentsJoinedByString:{@", "}];
       *buf = 138543618;
       v28 = v18;
       v29 = 2114;
@@ -134,9 +134,9 @@ LABEL_3:
       _os_log_impl(&dword_26F567000, v17, OS_LOG_TYPE_DEFAULT, "Set subscription [%{public}@] in namespace '%{public}@'", buf, 0x16u);
     }
 
-    v19 = [(TRINamespaceFactorSubscriptionSettings *)self keyValueStore];
+    keyValueStore = [(TRINamespaceFactorSubscriptionSettings *)self keyValueStore];
     v20 = [TRINamespaceFactorSubscriptionSettings keyForNamespaceSubscription:v11];
-    [v19 setBlob:v14 forKey:v20 usingTransaction:0];
+    [keyValueStore setBlob:v14 forKey:v20 usingTransaction:0];
   }
 
   else
@@ -148,10 +148,10 @@ LABEL_3:
       _os_log_error_impl(&dword_26F567000, v17, OS_LOG_TYPE_ERROR, "Unable to archive subscription object. Error: %{public}@", buf, 0xCu);
     }
 
-    if (a5)
+    if (error)
     {
       v21 = v15;
-      *a5 = v15;
+      *error = v15;
     }
   }
 

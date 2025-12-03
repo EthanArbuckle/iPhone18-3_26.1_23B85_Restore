@@ -1,16 +1,16 @@
 @interface NTKAkitaMorph
-- (BOOL)isEqualToMorph:(id)a3;
+- (BOOL)isEqualToMorph:(id)morph;
 - (NTKAkitaMorphConfig)config;
 - (id)configurationString;
-- (id)initFromConfigurationString:(id)a3;
-- (id)initRandomNotMatching:(id)a3;
-- (id)initRandomWithBackgroundColor:(unint64_t)a3 notMatching:(id)a4;
-- (id)initStandardWithBackgroundColor:(unint64_t)a3;
+- (id)initFromConfigurationString:(id)string;
+- (id)initRandomNotMatching:(id)matching;
+- (id)initRandomWithBackgroundColor:(unint64_t)color notMatching:(id)matching;
+- (id)initStandardWithBackgroundColor:(unint64_t)color;
 @end
 
 @implementation NTKAkitaMorph
 
-- (id)initStandardWithBackgroundColor:(unint64_t)a3
+- (id)initStandardWithBackgroundColor:(unint64_t)color
 {
   v10.receiver = self;
   v10.super_class = NTKAkitaMorph;
@@ -22,7 +22,7 @@
       sub_60BC();
     }
 
-    v5 = (&unk_15338 + 64 * (a3 % 0x13));
+    v5 = (&unk_15338 + 64 * (color % 0x13));
     v6 = *v5;
     v7 = v5[1];
     v8 = v5[2];
@@ -35,9 +35,9 @@
   return v4;
 }
 
-- (id)initRandomWithBackgroundColor:(unint64_t)a3 notMatching:(id)a4
+- (id)initRandomWithBackgroundColor:(unint64_t)color notMatching:(id)matching
 {
-  v6 = a4;
+  matchingCopy = matching;
   v18.receiver = self;
   v18.super_class = NTKAkitaMorph;
   v7 = [(NTKAkitaMorph *)&v18 init];
@@ -47,9 +47,9 @@
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    if (v6)
+    if (matchingCopy)
     {
-      [v6 config];
+      [matchingCopy config];
     }
 
     else
@@ -66,7 +66,7 @@
     v12[1] = v15;
     v12[2] = v16;
     v12[3] = v17;
-    sub_120C(a3, v12, v13);
+    sub_120C(color, v12, v13);
     v9 = v13[1];
     *(v7 + 8) = v13[0];
     *(v7 + 24) = v9;
@@ -78,17 +78,17 @@
   return v7;
 }
 
-- (id)initRandomNotMatching:(id)a3
+- (id)initRandomNotMatching:(id)matching
 {
-  v4 = a3;
+  matchingCopy = matching;
   v20.receiver = self;
   v20.super_class = NTKAkitaMorph;
   v5 = [(NTKAkitaMorph *)&v20 init];
   if (v5)
   {
-    if (v4)
+    if (matchingCopy)
     {
-      [v4 config];
+      [matchingCopy config];
       v6 = *v15;
       v16 = *&v15[8];
       v17 = *&v15[24];
@@ -128,15 +128,15 @@
   return v5;
 }
 
-- (id)initFromConfigurationString:(id)a3
+- (id)initFromConfigurationString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v32.receiver = self;
   v32.super_class = NTKAkitaMorph;
   v5 = [(NTKAkitaMorph *)&v32 init];
   if (v5)
   {
-    v6 = [v4 dataUsingEncoding:4];
+    v6 = [stringCopy dataUsingEncoding:4];
     if (qword_15330 != -1)
     {
       sub_60BC();
@@ -165,8 +165,8 @@
       v44 = 0u;
       v45 = 0u;
       v26 = v10;
-      v11 = [v10 allKeys];
-      v12 = [v11 countByEnumeratingWithState:&v42 objects:v47 count:16];
+      allKeys = [v10 allKeys];
+      v12 = [allKeys countByEnumeratingWithState:&v42 objects:v47 count:16];
       if (v12)
       {
         v13 = v12;
@@ -177,7 +177,7 @@
           {
             if (*v43 != v14)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(allKeys);
             }
 
             if (!*(*(&v42 + 1) + 8 * i) || (objc_opt_isKindOfClass() & 1) == 0)
@@ -189,7 +189,7 @@
             }
           }
 
-          v13 = [v11 countByEnumeratingWithState:&v42 objects:v47 count:16];
+          v13 = [allKeys countByEnumeratingWithState:&v42 objects:v47 count:16];
           if (v13)
           {
             continue;
@@ -204,8 +204,8 @@
       v38 = 0u;
       v39 = 0u;
       v16 = v26;
-      v17 = [v26 allValues];
-      v18 = [v17 countByEnumeratingWithState:&v38 objects:v46 count:16];
+      allValues = [v26 allValues];
+      v18 = [allValues countByEnumeratingWithState:&v38 objects:v46 count:16];
       if (v18)
       {
         v19 = v18;
@@ -216,7 +216,7 @@
           {
             if (*v39 != v20)
             {
-              objc_enumerationMutation(v17);
+              objc_enumerationMutation(allValues);
             }
 
             if (!*(*(&v38 + 1) + 8 * j) || (objc_opt_isKindOfClass() & 1) == 0)
@@ -227,7 +227,7 @@
             }
           }
 
-          v19 = [v17 countByEnumeratingWithState:&v38 objects:v46 count:16];
+          v19 = [allValues countByEnumeratingWithState:&v38 objects:v46 count:16];
           if (v19)
           {
             continue;
@@ -267,15 +267,15 @@ LABEL_28:
   return v5;
 }
 
-- (BOOL)isEqualToMorph:(id)a3
+- (BOOL)isEqualToMorph:(id)morph
 {
-  if (!a3)
+  if (!morph)
   {
     return 0;
   }
 
   memset(v5, 0, 40);
-  [a3 config];
+  [morph config];
   return *&self->_config.backgroundColor == 0 && self->_config.skinColor == *&v5[0] && *&self->_config.shirtColor == *(v5 + 8) && *&self->_config.bodyPathIndex == *(&v5[1] + 8) && self->_config.lipsPathIndex == 0;
 }
 

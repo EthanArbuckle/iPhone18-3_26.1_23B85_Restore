@@ -19,7 +19,7 @@
 {
   if (self->_addressSpace == 3)
   {
-    v3 = 0;
+    label = 0;
   }
 
   else
@@ -27,17 +27,17 @@
     buffer = self->_buffer;
     if (buffer && (v5 = [(MTLBuffer *)buffer label], buffer = self->_buffer, v5))
     {
-      v3 = [(MTLBuffer *)buffer label];
+      label = [(MTLBuffer *)buffer label];
     }
 
     else if (buffer)
     {
-      v3 = @"<unnamed>";
+      label = @"<unnamed>";
     }
 
     else
     {
-      v3 = @"<nil>";
+      label = @"<nil>";
     }
   }
 
@@ -85,24 +85,24 @@
   if (specifiedUsage != 128)
   {
 LABEL_22:
-    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@, length:%llu, resident:%@", v3, -[MTLBuffer length](v6, "length"), v8];
+    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@, length:%llu, resident:%@", label, -[MTLBuffer length](v6, "length"), v8];
     goto LABEL_23;
   }
 
-  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@, length:%llu", v3, -[MTLBuffer length](v6, "length"), v21];
+  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@, length:%llu", label, -[MTLBuffer length](v6, "length"), v21];
 LABEL_23:
-  v3 = v9;
+  label = v9;
 LABEL_24:
   v11 = MEMORY[0x277CCACA8];
   addressSpace = self->_addressSpace;
   operation = self->_operation;
   v14 = MTLGPUOperationString();
   offset = self->_offset;
-  v16 = [(MTLGPUDebugGPULog *)self functionDescription];
+  functionDescription = [(MTLGPUDebugGPULog *)self functionDescription];
   v17 = [(MTLArgument *)self->_argument formattedDescription:4];
-  if (v3)
+  if (label)
   {
-    v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"buffer: %@", v3];
+    v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"buffer: %@", label];
   }
 
   else
@@ -125,7 +125,7 @@ LABEL_24:
     v19 = @"threadgroup";
   }
 
-  return [v11 stringWithFormat:@"Invalid %@ %@ at offset %llu, executing %@ %@\n%@\n%@\n", v19, v14, offset, v16, v17, v18, -[MTLGPUDebugGPULog locationDescription](self, "locationDescription")];
+  return [v11 stringWithFormat:@"Invalid %@ %@ at offset %llu, executing %@ %@\n%@\n%@\n", v19, v14, offset, functionDescription, v17, v18, -[MTLGPUDebugGPULog locationDescription](self, "locationDescription")];
 }
 
 - (void)dealloc

@@ -7,7 +7,7 @@
 - (id)presentedNotificationViewController
 {
   objc_opt_class();
-  v2 = [a1 presentedViewController];
+  presentedViewController = [self presentedViewController];
   v3 = UNSafeCast();
 
   return v3;

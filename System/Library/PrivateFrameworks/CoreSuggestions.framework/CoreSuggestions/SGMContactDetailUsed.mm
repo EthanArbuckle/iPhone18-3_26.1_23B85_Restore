@@ -1,47 +1,47 @@
 @interface SGMContactDetailUsed
 - (SGMContactDetailUsed)init;
-- (void)trackEventWithScalar:(unint64_t)a3 app:(SGMContactDetailUsedApp_)a4 type:(SGMContactDetailType_)a5;
+- (void)trackEventWithScalar:(unint64_t)scalar app:(SGMContactDetailUsedApp_)app type:(SGMContactDetailType_)type;
 @end
 
 @implementation SGMContactDetailUsed
 
-- (void)trackEventWithScalar:(unint64_t)a3 app:(SGMContactDetailUsedApp_)a4 type:(SGMContactDetailType_)a5
+- (void)trackEventWithScalar:(unint64_t)scalar app:(SGMContactDetailUsedApp_)app type:(SGMContactDetailType_)type
 {
   v19[2] = *MEMORY[0x1E69E9840];
-  if (a4.var0 >= 0xC)
+  if (app.var0 >= 0xC)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString * _Nonnull SGMContactDetailUsedApp_toString(SGMContactDetailUsedApp)"];
-    [v10 handleFailureInFunction:v11 file:@"SGMetricsDefines.h" lineNumber:94 description:{@"unrecognized tag %lu on SGMContactDetailUsedApp", a4.var0}];
+    [currentHandler handleFailureInFunction:v11 file:@"SGMetricsDefines.h" lineNumber:94 description:{@"unrecognized tag %lu on SGMContactDetailUsedApp", app.var0}];
 
     v9 = @"ERR_UNMATCHED_TAG";
   }
 
   else
   {
-    v9 = off_1E7EFBE68[a4.var0];
+    v9 = off_1E7EFBE68[app.var0];
   }
 
   v12 = v9;
-  if (a5.var0 >= 5)
+  if (type.var0 >= 5)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString * _Nonnull SGMContactDetailType_toString(SGMContactDetailType)"];
-    [v14 handleFailureInFunction:v15 file:@"SGMetricsDefines.h" lineNumber:159 description:{@"unrecognized tag %lu on SGMContactDetailType", a5.var0}];
+    [currentHandler2 handleFailureInFunction:v15 file:@"SGMetricsDefines.h" lineNumber:159 description:{@"unrecognized tag %lu on SGMContactDetailType", type.var0}];
 
     v13 = @"ERR_UNMATCHED_TAG";
   }
 
   else
   {
-    v13 = off_1E7EFC2B8[a5.var0];
+    v13 = off_1E7EFC2B8[type.var0];
   }
 
   tracker = self->_tracker;
   v19[0] = v12;
   v19[1] = v13;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:2];
-  [(PETScalarEventTracker *)tracker trackEventWithPropertyValues:v17 value:a3];
+  [(PETScalarEventTracker *)tracker trackEventWithPropertyValues:v17 value:scalar];
 
   v18 = *MEMORY[0x1E69E9840];
 }

@@ -8,33 +8,33 @@
 - (id)_dictionaryRepresentation;
 - (id)_metadata;
 - (id)_typedBackingStore;
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4;
-- (void)_setMetadata:(id)a3;
-- (void)setBillPayee:(id)a3;
-- (void)setBillType:(int64_t)a3;
-- (void)setDueDateRange:(id)a3;
-- (void)setPaymentDateRange:(id)a3;
-- (void)setStatus:(int64_t)a3;
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id;
+- (void)_setMetadata:(id)metadata;
+- (void)setBillPayee:(id)payee;
+- (void)setBillType:(int64_t)type;
+- (void)setDueDateRange:(id)range;
+- (void)setPaymentDateRange:(id)range;
+- (void)setStatus:(int64_t)status;
 @end
 
 @implementation INSearchForBillsIntent
 
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id
 {
-  v6 = a4;
-  v7 = [(INSearchForBillsIntent *)self _typedBackingStore];
-  v15 = v6;
-  v8 = [v7 copy];
-  v9 = [v7 billPayee];
-  v10 = INIntentSlotValueRedactedBillPayeeValueFromBillPayeeValue(v9, a3);
+  idCopy = id;
+  _typedBackingStore = [(INSearchForBillsIntent *)self _typedBackingStore];
+  v15 = idCopy;
+  v8 = [_typedBackingStore copy];
+  billPayee = [_typedBackingStore billPayee];
+  v10 = INIntentSlotValueRedactedBillPayeeValueFromBillPayeeValue(billPayee, options);
   [v8 setBillPayee:v10];
 
-  v11 = [v7 paymentDateRange];
-  v12 = INIntentSlotValueRedactedDateTimeRangeFromDateTimeRange(v11, a3);
+  paymentDateRange = [_typedBackingStore paymentDateRange];
+  v12 = INIntentSlotValueRedactedDateTimeRangeFromDateTimeRange(paymentDateRange, options);
   [v8 setPaymentDateRange:v12];
 
-  v13 = [v7 dueDateRange];
-  v14 = INIntentSlotValueRedactedDateTimeRangeFromDateTimeRange(v13, a3);
+  dueDateRange = [_typedBackingStore dueDateRange];
+  v14 = INIntentSlotValueRedactedDateTimeRangeFromDateTimeRange(dueDateRange, options);
 
   [v8 setDueDateRange:v14];
   [(INIntent *)self setBackingStore:v8];
@@ -44,70 +44,70 @@
 {
   v19[5] = *MEMORY[0x1E69E9840];
   v18[0] = @"billPayee";
-  v3 = [(INSearchForBillsIntent *)self billPayee];
-  v4 = v3;
-  if (!v3)
+  billPayee = [(INSearchForBillsIntent *)self billPayee];
+  null = billPayee;
+  if (!billPayee)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19[0] = v4;
+  v19[0] = null;
   v18[1] = @"paymentDateRange";
-  v5 = [(INSearchForBillsIntent *)self paymentDateRange];
-  v6 = v5;
-  if (!v5)
+  paymentDateRange = [(INSearchForBillsIntent *)self paymentDateRange];
+  null2 = paymentDateRange;
+  if (!paymentDateRange)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19[1] = v6;
+  v19[1] = null2;
   v18[2] = @"billType";
-  v7 = [(INSearchForBillsIntent *)self billType];
-  if ((v7 - 1) > 0x15)
+  billType = [(INSearchForBillsIntent *)self billType];
+  if ((billType - 1) > 0x15)
   {
     v8 = @"unknown";
   }
 
   else
   {
-    v8 = off_1E7280DF0[v7 - 1];
+    v8 = off_1E7280DF0[billType - 1];
   }
 
   v9 = v8;
   v19[2] = v9;
   v18[3] = @"status";
-  v10 = [(INSearchForBillsIntent *)self status];
-  if ((v10 - 1) > 4)
+  status = [(INSearchForBillsIntent *)self status];
+  if ((status - 1) > 4)
   {
     v11 = @"unknown";
   }
 
   else
   {
-    v11 = *(&off_1E727E730 + v10 - 1);
+    v11 = *(&off_1E727E730 + status - 1);
   }
 
   v12 = v11;
   v19[3] = v12;
   v18[4] = @"dueDateRange";
-  v13 = [(INSearchForBillsIntent *)self dueDateRange];
-  v14 = v13;
-  if (!v13)
+  dueDateRange = [(INSearchForBillsIntent *)self dueDateRange];
+  null3 = dueDateRange;
+  if (!dueDateRange)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19[4] = v14;
+  v19[4] = null3;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:v18 count:5];
-  if (!v13)
+  if (!dueDateRange)
   {
   }
 
-  if (!v5)
+  if (!paymentDateRange)
   {
   }
 
-  if (!v3)
+  if (!billPayee)
   {
   }
 
@@ -116,49 +116,49 @@
   return v15;
 }
 
-- (void)setDueDateRange:(id)a3
+- (void)setDueDateRange:(id)range
 {
-  v4 = a3;
-  v6 = [(INSearchForBillsIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToDateTimeRange(v4);
+  rangeCopy = range;
+  _typedBackingStore = [(INSearchForBillsIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToDateTimeRange(rangeCopy);
 
-  [v6 setDueDateRange:v5];
+  [_typedBackingStore setDueDateRange:v5];
 }
 
 - (INDateComponentsRange)dueDateRange
 {
-  v2 = [(INSearchForBillsIntent *)self _typedBackingStore];
-  v3 = [v2 dueDateRange];
-  v4 = INIntentSlotValueTransformFromDateTimeRange(v3);
+  _typedBackingStore = [(INSearchForBillsIntent *)self _typedBackingStore];
+  dueDateRange = [_typedBackingStore dueDateRange];
+  v4 = INIntentSlotValueTransformFromDateTimeRange(dueDateRange);
 
   return v4;
 }
 
-- (void)setStatus:(int64_t)a3
+- (void)setStatus:(int64_t)status
 {
-  v3 = a3 - 1;
-  v4 = [(INSearchForBillsIntent *)self _typedBackingStore];
-  v5 = v4;
+  v3 = status - 1;
+  _typedBackingStore = [(INSearchForBillsIntent *)self _typedBackingStore];
+  v5 = _typedBackingStore;
   if (v3 > 4)
   {
-    [v4 setHasStatus:0];
+    [_typedBackingStore setHasStatus:0];
   }
 
   else
   {
-    [v4 setStatus:?];
+    [_typedBackingStore setStatus:?];
   }
 }
 
 - (INPaymentStatus)status
 {
-  v3 = [(INSearchForBillsIntent *)self _typedBackingStore];
-  v4 = [v3 hasStatus];
-  v5 = [(INSearchForBillsIntent *)self _typedBackingStore];
-  v6 = [v5 status];
-  if (((v6 - 1 < 5) & v4) != 0)
+  _typedBackingStore = [(INSearchForBillsIntent *)self _typedBackingStore];
+  hasStatus = [_typedBackingStore hasStatus];
+  _typedBackingStore2 = [(INSearchForBillsIntent *)self _typedBackingStore];
+  status = [_typedBackingStore2 status];
+  if (((status - 1 < 5) & hasStatus) != 0)
   {
-    v7 = v6;
+    v7 = status;
   }
 
   else
@@ -169,31 +169,31 @@
   return v7;
 }
 
-- (void)setBillType:(int64_t)a3
+- (void)setBillType:(int64_t)type
 {
-  v3 = a3 - 1;
-  v4 = [(INSearchForBillsIntent *)self _typedBackingStore];
-  v5 = v4;
+  v3 = type - 1;
+  _typedBackingStore = [(INSearchForBillsIntent *)self _typedBackingStore];
+  v5 = _typedBackingStore;
   if (v3 > 0x15)
   {
-    [v4 setHasBillType:0];
+    [_typedBackingStore setHasBillType:0];
   }
 
   else
   {
-    [v4 setBillType:?];
+    [_typedBackingStore setBillType:?];
   }
 }
 
 - (INBillType)billType
 {
-  v3 = [(INSearchForBillsIntent *)self _typedBackingStore];
-  v4 = [v3 hasBillType];
-  v5 = [(INSearchForBillsIntent *)self _typedBackingStore];
-  v6 = [v5 billType];
-  if (((v6 - 1 < 0x16) & v4) != 0)
+  _typedBackingStore = [(INSearchForBillsIntent *)self _typedBackingStore];
+  hasBillType = [_typedBackingStore hasBillType];
+  _typedBackingStore2 = [(INSearchForBillsIntent *)self _typedBackingStore];
+  billType = [_typedBackingStore2 billType];
+  if (((billType - 1 < 0x16) & hasBillType) != 0)
   {
-    v7 = v6;
+    v7 = billType;
   }
 
   else
@@ -204,38 +204,38 @@
   return v7;
 }
 
-- (void)setPaymentDateRange:(id)a3
+- (void)setPaymentDateRange:(id)range
 {
-  v4 = a3;
-  v6 = [(INSearchForBillsIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToDateTimeRange(v4);
+  rangeCopy = range;
+  _typedBackingStore = [(INSearchForBillsIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToDateTimeRange(rangeCopy);
 
-  [v6 setPaymentDateRange:v5];
+  [_typedBackingStore setPaymentDateRange:v5];
 }
 
 - (INDateComponentsRange)paymentDateRange
 {
-  v2 = [(INSearchForBillsIntent *)self _typedBackingStore];
-  v3 = [v2 paymentDateRange];
-  v4 = INIntentSlotValueTransformFromDateTimeRange(v3);
+  _typedBackingStore = [(INSearchForBillsIntent *)self _typedBackingStore];
+  paymentDateRange = [_typedBackingStore paymentDateRange];
+  v4 = INIntentSlotValueTransformFromDateTimeRange(paymentDateRange);
 
   return v4;
 }
 
-- (void)setBillPayee:(id)a3
+- (void)setBillPayee:(id)payee
 {
-  v4 = a3;
-  v6 = [(INSearchForBillsIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToBillPayeeValue(v4);
+  payeeCopy = payee;
+  _typedBackingStore = [(INSearchForBillsIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToBillPayeeValue(payeeCopy);
 
-  [v6 setBillPayee:v5];
+  [_typedBackingStore setBillPayee:v5];
 }
 
 - (INBillPayee)billPayee
 {
-  v2 = [(INSearchForBillsIntent *)self _typedBackingStore];
-  v3 = [v2 billPayee];
-  v4 = INIntentSlotValueTransformFromBillPayeeValue(v3);
+  _typedBackingStore = [(INSearchForBillsIntent *)self _typedBackingStore];
+  billPayee = [_typedBackingStore billPayee];
+  v4 = INIntentSlotValueTransformFromBillPayeeValue(billPayee);
 
   return v4;
 }
@@ -261,28 +261,28 @@
   return v16;
 }
 
-- (void)_setMetadata:(id)a3
+- (void)_setMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(INSearchForBillsIntent *)self _typedBackingStore];
-  [v5 setIntentMetadata:v4];
+  metadataCopy = metadata;
+  _typedBackingStore = [(INSearchForBillsIntent *)self _typedBackingStore];
+  [_typedBackingStore setIntentMetadata:metadataCopy];
 }
 
 - (id)_metadata
 {
-  v2 = [(INSearchForBillsIntent *)self _typedBackingStore];
-  v3 = [v2 intentMetadata];
+  _typedBackingStore = [(INSearchForBillsIntent *)self _typedBackingStore];
+  intentMetadata = [_typedBackingStore intentMetadata];
 
-  return v3;
+  return intentMetadata;
 }
 
 - (id)_typedBackingStore
 {
-  v2 = [(INIntent *)self backingStore];
+  backingStore = [(INIntent *)self backingStore];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = backingStore;
   }
 
   else

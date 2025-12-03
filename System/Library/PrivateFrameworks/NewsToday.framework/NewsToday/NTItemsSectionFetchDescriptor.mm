@@ -1,10 +1,10 @@
 @interface NTItemsSectionFetchDescriptor
 - (NTItemsSectionFetchDescriptor)init;
-- (NTItemsSectionFetchDescriptor)initWithItemsConfiguration:(id)a3;
-- (id)assembleResultsWithCatchUpOperation:(id)a3;
-- (id)incrementalLimitTransformationWithFeedPersonalizer:(id)a3 limit:(unint64_t)a4 priorFeedItems:(id)a5;
-- (id)incrementalSortTransformationWithFeedPersonalizer:(id)a3;
-- (void)configureCatchUpOperationWithFetchRequest:(id)a3;
+- (NTItemsSectionFetchDescriptor)initWithItemsConfiguration:(id)configuration;
+- (id)assembleResultsWithCatchUpOperation:(id)operation;
+- (id)incrementalLimitTransformationWithFeedPersonalizer:(id)personalizer limit:(unint64_t)limit priorFeedItems:(id)items;
+- (id)incrementalSortTransformationWithFeedPersonalizer:(id)personalizer;
+- (void)configureCatchUpOperationWithFetchRequest:(id)request;
 @end
 
 @implementation NTItemsSectionFetchDescriptor
@@ -16,11 +16,11 @@
   return [(NTItemsSectionFetchDescriptor *)&v3 init];
 }
 
-- (NTItemsSectionFetchDescriptor)initWithItemsConfiguration:(id)a3
+- (NTItemsSectionFetchDescriptor)initWithItemsConfiguration:(id)configuration
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  configurationCopy = configuration;
+  if (!configurationCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTItemsSectionFetchDescriptor initWithItemsConfiguration:];
   }
@@ -30,17 +30,17 @@
   v5 = [(NTItemsSectionFetchDescriptor *)&v24 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [configurationCopy copy];
     itemsConfiguration = v5->_itemsConfiguration;
     v5->_itemsConfiguration = v6;
 
-    v8 = [MEMORY[0x277CBEB18] array];
-    v9 = [v4 items];
+    array = [MEMORY[0x277CBEB18] array];
+    items = [configurationCopy items];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v10 = [v9 countByEnumeratingWithState:&v20 objects:v25 count:16];
+    v10 = [items countByEnumeratingWithState:&v20 objects:v25 count:16];
     if (v10)
     {
       v11 = v10;
@@ -51,24 +51,24 @@
         {
           if (*v21 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(items);
           }
 
           v14 = *(*(&v20 + 1) + 8 * i);
           if (![v14 itemType])
           {
-            v15 = [v14 article];
-            [v8 addObject:v15];
+            article = [v14 article];
+            [array addObject:article];
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v20 objects:v25 count:16];
+        v11 = [items countByEnumeratingWithState:&v20 objects:v25 count:16];
       }
 
       while (v11);
     }
 
-    v16 = NTArticleIDsRequestWithArticles(v8);
+    v16 = NTArticleIDsRequestWithArticles(array);
     itemsArticlesRequest = v5->_itemsArticlesRequest;
     v5->_itemsArticlesRequest = v16;
   }
@@ -77,19 +77,19 @@
   return v5;
 }
 
-- (void)configureCatchUpOperationWithFetchRequest:(id)a3
+- (void)configureCatchUpOperationWithFetchRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(NTItemsSectionFetchDescriptor *)self itemsArticlesRequest];
-  [v4 addArticleIDsRequest:v5];
+  requestCopy = request;
+  itemsArticlesRequest = [(NTItemsSectionFetchDescriptor *)self itemsArticlesRequest];
+  [requestCopy addArticleIDsRequest:itemsArticlesRequest];
 }
 
-- (id)assembleResultsWithCatchUpOperation:(id)a3
+- (id)assembleResultsWithCatchUpOperation:(id)operation
 {
-  v4 = [a3 resultsByArticleIDsRequestID];
-  v5 = [(NTItemsSectionFetchDescriptor *)self itemsArticlesRequest];
-  v6 = [v5 identifier];
-  v7 = [v4 objectForKeyedSubscript:v6];
+  resultsByArticleIDsRequestID = [operation resultsByArticleIDsRequestID];
+  itemsArticlesRequest = [(NTItemsSectionFetchDescriptor *)self itemsArticlesRequest];
+  identifier = [itemsArticlesRequest identifier];
+  v7 = [resultsByArticleIDsRequestID objectForKeyedSubscript:identifier];
 
   if (!v7)
   {
@@ -97,15 +97,15 @@
     v7 = [(NTCatchUpOperationResults *)v8 initWithItems:MEMORY[0x277CBEBF8] rankingFeedback:0 supplementalInterestToken:0];
   }
 
-  v9 = [(NTItemsSectionFetchDescriptor *)self itemsConfiguration];
-  v10 = [v9 items];
+  itemsConfiguration = [(NTItemsSectionFetchDescriptor *)self itemsConfiguration];
+  items = [itemsConfiguration items];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __69__NTItemsSectionFetchDescriptor_assembleResultsWithCatchUpOperation___block_invoke;
   v15[3] = &unk_279982D50;
   v16 = v7;
   v11 = v7;
-  v12 = [v10 fc_arrayByTransformingWithBlock:v15];
+  v12 = [items fc_arrayByTransformingWithBlock:v15];
 
   v13 = [(NTCatchUpOperationResults *)v11 copyWithItems:v12];
 
@@ -145,16 +145,16 @@ uint64_t __69__NTItemsSectionFetchDescriptor_assembleResultsWithCatchUpOperation
   return v7;
 }
 
-- (id)incrementalSortTransformationWithFeedPersonalizer:(id)a3
+- (id)incrementalSortTransformationWithFeedPersonalizer:(id)personalizer
 {
   v3 = [[NTFeedTransformationLimit alloc] initWithLimit:-1];
 
   return v3;
 }
 
-- (id)incrementalLimitTransformationWithFeedPersonalizer:(id)a3 limit:(unint64_t)a4 priorFeedItems:(id)a5
+- (id)incrementalLimitTransformationWithFeedPersonalizer:(id)personalizer limit:(unint64_t)limit priorFeedItems:(id)items
 {
-  v5 = [[NTFeedTransformationLimit alloc] initWithLimit:a4];
+  v5 = [[NTFeedTransformationLimit alloc] initWithLimit:limit];
 
   return v5;
 }

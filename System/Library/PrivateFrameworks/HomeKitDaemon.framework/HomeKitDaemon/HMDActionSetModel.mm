@@ -1,6 +1,6 @@
 @interface HMDActionSetModel
-+ (id)cd_getMKFActionSetFromActionSet:(id)a3;
-+ (id)cd_getMKFActionSetFromActionSetUUID:(id)a3;
++ (id)cd_getMKFActionSetFromActionSet:(id)set;
++ (id)cd_getMKFActionSetFromActionSetUUID:(id)d;
 + (id)properties;
 @end
 
@@ -37,18 +37,18 @@ void __31__HMDActionSetModel_properties__block_invoke()
   v5 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)cd_getMKFActionSetFromActionSet:(id)a3
++ (id)cd_getMKFActionSetFromActionSet:(id)set
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  setCopy = set;
+  if (!setCopy)
   {
     _HMFPreconditionFailure();
   }
 
-  v5 = v4;
+  v5 = setCopy;
   v17 = 0;
-  v6 = [HMDBackingStore cdlsFetchManagedObjectWithUUID:v4 ofManagedObjectType:objc_opt_class() error:&v17];
+  v6 = [HMDBackingStore cdlsFetchManagedObjectWithUUID:setCopy ofManagedObjectType:objc_opt_class() error:&v17];
   v7 = v17;
   v8 = v7;
   if (v6)
@@ -69,7 +69,7 @@ void __31__HMDActionSetModel_properties__block_invoke()
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = a1;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -92,11 +92,11 @@ void __31__HMDActionSetModel_properties__block_invoke()
   return v14;
 }
 
-+ (id)cd_getMKFActionSetFromActionSetUUID:(id)a3
++ (id)cd_getMKFActionSetFromActionSetUUID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = objc_opt_class();
-  v5 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v3];
+  v5 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:dCopy];
 
   v6 = [v4 cd_getMKFActionSetFromActionSet:v5];
 

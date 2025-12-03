@@ -1,74 +1,74 @@
 @interface PaymentApplicationAssociatedReaderCA
-+ (id)_predicateForAssociatedReaderPID:(int64_t)a3;
-+ (id)_predicateForScheme:(unint64_t)a3;
++ (id)_predicateForAssociatedReaderPID:(int64_t)d;
++ (id)_predicateForScheme:(unint64_t)scheme;
 + (id)_propertySetters;
-+ (id)_propertyValuesFor:(id)a3;
-+ (id)_readerCAsWithPredicate:(id)a3 inDatabase:(id)a4;
-+ (id)readerCAsForAssociatedReaderPID:(int64_t)a3 inDatabase:(id)a4;
-+ (id)setReaderCAs:(id)a3 forReader:(id)a4 inDatabase:(id)a5;
-+ (void)deleteReaderCAForAssociatedReaderPID:(int64_t)a3 inDatabase:(id)a4;
-- (PaymentApplicationAssociatedReaderCA)initWithReaderCA:(id)a3 forAssociatedReaderPID:(int64_t)a4 inDatabase:(id)a5;
++ (id)_propertyValuesFor:(id)for;
++ (id)_readerCAsWithPredicate:(id)predicate inDatabase:(id)database;
++ (id)readerCAsForAssociatedReaderPID:(int64_t)d inDatabase:(id)database;
++ (id)setReaderCAs:(id)as forReader:(id)reader inDatabase:(id)database;
++ (void)deleteReaderCAForAssociatedReaderPID:(int64_t)d inDatabase:(id)database;
+- (PaymentApplicationAssociatedReaderCA)initWithReaderCA:(id)a forAssociatedReaderPID:(int64_t)d inDatabase:(id)database;
 - (id)readerCA;
-- (void)updateWithReaderCA:(id)a3 andOrderIndex:(int64_t)a4;
+- (void)updateWithReaderCA:(id)a andOrderIndex:(int64_t)index;
 @end
 
 @implementation PaymentApplicationAssociatedReaderCA
 
-- (PaymentApplicationAssociatedReaderCA)initWithReaderCA:(id)a3 forAssociatedReaderPID:(int64_t)a4 inDatabase:(id)a5
+- (PaymentApplicationAssociatedReaderCA)initWithReaderCA:(id)a forAssociatedReaderPID:(int64_t)d inDatabase:(id)database
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [objc_opt_class() _propertyValuesFor:v9];
+  databaseCopy = database;
+  aCopy = a;
+  v10 = [objc_opt_class() _propertyValuesFor:aCopy];
 
-  v11 = [NSNumber numberWithLongLong:a4];
+  v11 = [NSNumber numberWithLongLong:d];
   [v10 setObjectOrNull:v11 forKey:@"associated_reader_pid"];
 
-  v12 = [(SQLiteEntity *)self initWithPropertyValues:v10 inDatabase:v8];
+  v12 = [(SQLiteEntity *)self initWithPropertyValues:v10 inDatabase:databaseCopy];
   return v12;
 }
 
-- (void)updateWithReaderCA:(id)a3 andOrderIndex:(int64_t)a4
+- (void)updateWithReaderCA:(id)a andOrderIndex:(int64_t)index
 {
-  v5 = a3;
-  v6 = [objc_opt_class() _propertyValuesFor:v5];
+  aCopy = a;
+  v6 = [objc_opt_class() _propertyValuesFor:aCopy];
 
   [(SQLiteEntity *)self setValuesWithDictionary:v6];
 }
 
-+ (id)readerCAsForAssociatedReaderPID:(int64_t)a3 inDatabase:(id)a4
++ (id)readerCAsForAssociatedReaderPID:(int64_t)d inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = [a1 _predicateForAssociatedReaderPID:a3];
-  v8 = [a1 _readerCAsWithPredicate:v7 inDatabase:v6];
+  databaseCopy = database;
+  v7 = [self _predicateForAssociatedReaderPID:d];
+  v8 = [self _readerCAsWithPredicate:v7 inDatabase:databaseCopy];
 
   return v8;
 }
 
-+ (void)deleteReaderCAForAssociatedReaderPID:(int64_t)a3 inDatabase:(id)a4
++ (void)deleteReaderCAForAssociatedReaderPID:(int64_t)d inDatabase:(id)database
 {
-  v6 = a4;
-  v8 = [a1 _predicateForAssociatedReaderPID:a3];
-  v7 = [a1 queryWithDatabase:v6 predicate:v8];
+  databaseCopy = database;
+  v8 = [self _predicateForAssociatedReaderPID:d];
+  v7 = [self queryWithDatabase:databaseCopy predicate:v8];
 
   [v7 deleteAllEntities];
 }
 
-+ (id)setReaderCAs:(id)a3 forReader:(id)a4 inDatabase:(id)a5
++ (id)setReaderCAs:(id)as forReader:(id)reader inDatabase:(id)database
 {
-  v8 = a3;
+  asCopy = as;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10019C36C;
   v15[3] = &unk_100844490;
-  v16 = a4;
-  v17 = v8;
-  v20 = a1;
-  v18 = a5;
+  readerCopy = reader;
+  v17 = asCopy;
+  selfCopy = self;
+  databaseCopy = database;
   v9 = objc_alloc_init(NSMutableSet);
   v19 = v9;
-  v10 = v18;
-  v11 = v8;
-  v12 = v16;
+  v10 = databaseCopy;
+  v11 = asCopy;
+  v12 = readerCopy;
   sub_1005D4424(v10, v15);
   if ([v9 count])
   {
@@ -83,25 +83,25 @@
   return v13;
 }
 
-+ (id)_readerCAsWithPredicate:(id)a3 inDatabase:(id)a4
++ (id)_readerCAsWithPredicate:(id)predicate inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [objc_opt_class() queryWithDatabase:v6 predicate:v7];
+  databaseCopy = database;
+  predicateCopy = predicate;
+  v8 = [objc_opt_class() queryWithDatabase:databaseCopy predicate:predicateCopy];
 
-  v9 = [a1 _propertySetters];
+  _propertySetters = [self _propertySetters];
   v10 = objc_alloc_init(NSMutableSet);
-  v11 = [v9 allKeys];
+  allKeys = [_propertySetters allKeys];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_10019C808;
   v16[3] = &unk_10083C998;
-  v19 = a1;
-  v17 = v9;
+  selfCopy = self;
+  v17 = _propertySetters;
   v12 = v10;
   v18 = v12;
-  v13 = v9;
-  [v8 enumeratePersistentIDsAndProperties:v11 usingBlock:v16];
+  v13 = _propertySetters;
+  [v8 enumeratePersistentIDsAndProperties:allKeys usingBlock:v16];
 
   if ([v12 count])
   {
@@ -119,18 +119,18 @@
 - (id)readerCA
 {
   v3 = objc_alloc_init(PKPaymentApplicationAssociatedReaderCA);
-  v4 = [objc_opt_class() _propertySetters];
-  v5 = [v4 allKeys];
+  _propertySetters = [objc_opt_class() _propertySetters];
+  allKeys = [_propertySetters allKeys];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10019C98C;
   v11[3] = &unk_10083BEE0;
   v11[4] = self;
-  v12 = v4;
+  v12 = _propertySetters;
   v6 = v3;
   v13 = v6;
-  v7 = v4;
-  [(SQLiteEntity *)self getValuesForProperties:v5 withApplier:v11];
+  v7 = _propertySetters;
+  [(SQLiteEntity *)self getValuesForProperties:allKeys withApplier:v11];
 
   v8 = v13;
   v9 = v6;
@@ -138,33 +138,33 @@
   return v6;
 }
 
-+ (id)_predicateForAssociatedReaderPID:(int64_t)a3
++ (id)_predicateForAssociatedReaderPID:(int64_t)d
 {
-  v3 = [NSNumber numberWithLongLong:a3];
+  v3 = [NSNumber numberWithLongLong:d];
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"associated_reader_pid" equalToValue:v3];
 
   return v4;
 }
 
-+ (id)_predicateForScheme:(unint64_t)a3
++ (id)_predicateForScheme:(unint64_t)scheme
 {
-  v3 = [NSNumber numberWithUnsignedInteger:a3];
+  v3 = [NSNumber numberWithUnsignedInteger:scheme];
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"scheme" equalToValue:v3];
 
   return v4;
 }
 
-+ (id)_propertyValuesFor:(id)a3
++ (id)_propertyValuesFor:(id)for
 {
-  v3 = a3;
+  forCopy = for;
   v4 = objc_alloc_init(NSMutableDictionary);
-  [v3 scheme];
+  [forCopy scheme];
   v5 = PKTerminalPublicKeySchemeToString();
   [v4 setObjectOrNull:v5 forKey:@"scheme"];
 
-  v6 = [v3 publicKey];
+  publicKey = [forCopy publicKey];
 
-  [v4 setObjectOrNull:v6 forKey:@"public_key"];
+  [v4 setObjectOrNull:publicKey forKey:@"public_key"];
 
   return v4;
 }

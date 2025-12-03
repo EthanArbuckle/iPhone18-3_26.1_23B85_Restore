@@ -1,27 +1,27 @@
 @interface PXAssetsSectionButton
-+ (double)preferredHeightWithExtendedTraitCollection:(id)a3 numberOfLines:(int64_t)a4;
-+ (id)configurationWithTitle:(id)a3 numberOfLines:(int64_t)a4 action:(id)a5;
++ (double)preferredHeightWithExtendedTraitCollection:(id)collection numberOfLines:(int64_t)lines;
++ (id)configurationWithTitle:(id)title numberOfLines:(int64_t)lines action:(id)action;
 - (CGRect)clippingRect;
 - (NSCopying)userData;
-- (PXAssetsSectionButton)initWithCoder:(id)a3;
+- (PXAssetsSectionButton)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setClippingRect:(CGRect)a3;
-- (void)setUserData:(id)a3;
+- (void)setClippingRect:(CGRect)rect;
+- (void)setUserData:(id)data;
 @end
 
 @implementation PXAssetsSectionButton
 
-+ (double)preferredHeightWithExtendedTraitCollection:(id)a3 numberOfLines:(int64_t)a4
++ (double)preferredHeightWithExtendedTraitCollection:(id)collection numberOfLines:(int64_t)lines
 {
   objc_opt_self();
-  v5 = a3;
+  collectionCopy = collection;
   UIFontTextStyleFromPXFontTextStyle();
 }
 
-+ (id)configurationWithTitle:(id)a3 numberOfLines:(int64_t)a4 action:(id)a5
++ (id)configurationWithTitle:(id)title numberOfLines:(int64_t)lines action:(id)action
 {
-  v6 = _Block_copy(a5);
+  v6 = _Block_copy(action);
   v7 = sub_1A524C674();
   v9 = v8;
   v10 = swift_allocObject();
@@ -31,7 +31,7 @@
   v13 = &v12[OBJC_IVAR____TtCC12PhotosUICore19AssetsSectionButton13Configuration_title];
   *v13 = v7;
   v13[1] = v9;
-  *&v12[OBJC_IVAR____TtCC12PhotosUICore19AssetsSectionButton13Configuration_numberOfLines] = a4;
+  *&v12[OBJC_IVAR____TtCC12PhotosUICore19AssetsSectionButton13Configuration_numberOfLines] = lines;
   v14 = &v12[OBJC_IVAR____TtCC12PhotosUICore19AssetsSectionButton13Configuration_action];
   *v14 = sub_1A3F3D4CC;
   v14[1] = v10;
@@ -42,7 +42,7 @@
   return v15;
 }
 
-- (PXAssetsSectionButton)initWithCoder:(id)a3
+- (PXAssetsSectionButton)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR___PXAssetsSectionButton_configuration) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR___PXAssetsSectionButton_userData) = 0;
@@ -73,15 +73,15 @@
   return v2;
 }
 
-- (void)setUserData:(id)a3
+- (void)setUserData:(id)data
 {
   v5 = OBJC_IVAR___PXAssetsSectionButton_userData;
   swift_beginAccess();
-  *(&self->super.super.super.isa + v5) = a3;
+  *(&self->super.super.super.isa + v5) = data;
   swift_unknownObjectRetain_n();
-  v6 = self;
+  selfCopy = self;
   swift_unknownObjectRelease();
-  if (a3)
+  if (data)
   {
     type metadata accessor for AssetsSectionButton.Configuration();
     v7 = swift_dynamicCastClass();
@@ -98,7 +98,7 @@
     v7 = 0;
   }
 
-  (*((*MEMORY[0x1E69E7D40] & v6->super.super.super.isa) + 0x78))(v7);
+  (*((*MEMORY[0x1E69E7D40] & selfCopy->super.super.super.isa) + 0x78))(v7);
   swift_unknownObjectRelease();
 }
 
@@ -117,12 +117,12 @@
   return result;
 }
 
-- (void)setClippingRect:(CGRect)a3
+- (void)setClippingRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v7 = (self + OBJC_IVAR___PXAssetsSectionButton_clippingRect);
   swift_beginAccess();
   *v7 = x;
@@ -134,7 +134,7 @@
 - (void)prepareForReuse
 {
   v2 = *((*MEMORY[0x1E69E7D40] & self->super.super.super.isa) + 0x78);
-  v3 = self;
+  selfCopy = self;
   v2(0);
 }
 

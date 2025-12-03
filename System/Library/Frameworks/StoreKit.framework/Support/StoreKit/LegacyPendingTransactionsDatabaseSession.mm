@@ -1,39 +1,39 @@
 @interface LegacyPendingTransactionsDatabaseSession
-- (LegacyPendingTransactionsDatabaseSession)initWithConnection:(id)a3;
-- (id)_inAppPendingTransactionsPropertyForKey:(id)a3 bundleID:(id)a4;
-- (id)pendingLegacyTransactionsForBundleID:(id)a3 logKey:(id)a4 error:(id *)a5;
+- (LegacyPendingTransactionsDatabaseSession)initWithConnection:(id)connection;
+- (id)_inAppPendingTransactionsPropertyForKey:(id)key bundleID:(id)d;
+- (id)pendingLegacyTransactionsForBundleID:(id)d logKey:(id)key error:(id *)error;
 @end
 
 @implementation LegacyPendingTransactionsDatabaseSession
 
-- (LegacyPendingTransactionsDatabaseSession)initWithConnection:(id)a3
+- (LegacyPendingTransactionsDatabaseSession)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = LegacyPendingTransactionsDatabaseSession;
   v6 = [(LegacyPendingTransactionsDatabaseSession *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
   }
 
   return v7;
 }
 
-- (id)pendingLegacyTransactionsForBundleID:(id)a3 logKey:(id)a4 error:(id *)a5
+- (id)pendingLegacyTransactionsForBundleID:(id)d logKey:(id)key error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  keyCopy = key;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
   v22 = sub_10007C940;
   v23 = sub_10007C950;
   v24 = objc_alloc_init(NSMutableArray);
-  v9 = [SQLiteComparisonPredicate predicateWithProperty:@"bundle_id" value:v7 comparisonType:1];
-  v10 = [(LegacyPendingTransactionsDatabaseSession *)self connection];
-  v11 = [(SQLiteEntity *)InAppPendingTransactionsDatabaseEntity queryOnConnection:v10 predicate:v9];
+  v9 = [SQLiteComparisonPredicate predicateWithProperty:@"bundle_id" value:dCopy comparisonType:1];
+  connection = [(LegacyPendingTransactionsDatabaseSession *)self connection];
+  v11 = [(SQLiteEntity *)InAppPendingTransactionsDatabaseEntity queryOnConnection:connection predicate:v9];
 
   v25[0] = @"transaction_id";
   v25[1] = @"original_transaction_id";
@@ -51,7 +51,7 @@
   v16[1] = 3221225472;
   v16[2] = sub_10007C958;
   v16[3] = &unk_100381310;
-  v13 = v7;
+  v13 = dCopy;
   v17 = v13;
   v18 = &v19;
   [v11 enumeratePersistentIDsAndProperties:v12 usingBlock:v16];
@@ -62,28 +62,28 @@
   return v14;
 }
 
-- (id)_inAppPendingTransactionsPropertyForKey:(id)a3 bundleID:(id)a4
+- (id)_inAppPendingTransactionsPropertyForKey:(id)key bundleID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [SQLiteComparisonPredicate predicateWithProperty:@"bundle_id" value:v7 comparisonType:1];
+  keyCopy = key;
+  dCopy = d;
+  v8 = [SQLiteComparisonPredicate predicateWithProperty:@"bundle_id" value:dCopy comparisonType:1];
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
   v21 = sub_10007C940;
   v22 = sub_10007C950;
   v23 = 0;
-  v9 = [(LegacyPendingTransactionsDatabaseSession *)self connection];
-  v10 = [(SQLiteEntity *)InAppPendingTransactionsPropertiesDatabaseEntity queryOnConnection:v9 predicate:v8];
+  connection = [(LegacyPendingTransactionsDatabaseSession *)self connection];
+  v10 = [(SQLiteEntity *)InAppPendingTransactionsPropertiesDatabaseEntity queryOnConnection:connection predicate:v8];
 
-  v24 = v6;
+  v24 = keyCopy;
   v11 = [NSArray arrayWithObjects:&v24 count:1];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10007CF48;
   v15[3] = &unk_100381360;
   v17 = &v18;
-  v12 = v6;
+  v12 = keyCopy;
   v16 = v12;
   [v10 enumeratePersistentIDsAndProperties:v11 usingBlock:v15];
 

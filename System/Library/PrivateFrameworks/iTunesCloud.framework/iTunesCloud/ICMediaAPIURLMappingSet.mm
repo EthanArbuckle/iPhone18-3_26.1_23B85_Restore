@@ -1,15 +1,15 @@
 @interface ICMediaAPIURLMappingSet
-- (ICMediaAPIURLMappingSet)initWithResponsePayload:(id)a3;
-- (id)mappingsForFeatureName:(id)a3;
-- (void)enumerateMappingsUsingBlock:(id)a3;
+- (ICMediaAPIURLMappingSet)initWithResponsePayload:(id)payload;
+- (id)mappingsForFeatureName:(id)name;
+- (void)enumerateMappingsUsingBlock:(id)block;
 @end
 
 @implementation ICMediaAPIURLMappingSet
 
-- (id)mappingsForFeatureName:(id)a3
+- (id)mappingsForFeatureName:(id)name
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nameCopy = name;
   v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:1];
   v18 = 0u;
   v19 = 0u;
@@ -35,15 +35,15 @@
         {
           v12 = [ICMediaAPIURLMapping alloc];
           v13 = [(ICMediaAPIURLMapping *)v12 initWithResponseDictionary:v11, v18];
-          v14 = [(ICMediaAPIURLMapping *)v13 featureName];
-          v15 = v14;
-          if (v14 == v4)
+          featureName = [(ICMediaAPIURLMapping *)v13 featureName];
+          v15 = featureName;
+          if (featureName == nameCopy)
           {
           }
 
           else
           {
-            v16 = [v4 isEqual:v14];
+            v16 = [nameCopy isEqual:featureName];
 
             if (!v16)
             {
@@ -67,10 +67,10 @@ LABEL_12:
   return v5;
 }
 
-- (void)enumerateMappingsUsingBlock:(id)a3
+- (void)enumerateMappingsUsingBlock:(id)block
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -96,7 +96,7 @@ LABEL_12:
         {
           v11 = [ICMediaAPIURLMapping alloc];
           v12 = [(ICMediaAPIURLMapping *)v11 initWithResponseDictionary:v10, v13];
-          v4[2](v4, v12);
+          blockCopy[2](blockCopy, v12);
         }
 
         ++v9;
@@ -110,15 +110,15 @@ LABEL_12:
   }
 }
 
-- (ICMediaAPIURLMappingSet)initWithResponsePayload:(id)a3
+- (ICMediaAPIURLMappingSet)initWithResponsePayload:(id)payload
 {
-  v4 = a3;
+  payloadCopy = payload;
   v9.receiver = self;
   v9.super_class = ICMediaAPIURLMappingSet;
   v5 = [(ICMediaAPIURLMappingSet *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [payloadCopy copy];
     responsePayload = v5->_responsePayload;
     v5->_responsePayload = v6;
   }

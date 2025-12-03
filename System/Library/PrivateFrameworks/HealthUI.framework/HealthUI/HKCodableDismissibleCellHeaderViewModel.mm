@@ -1,11 +1,11 @@
 @interface HKCodableDismissibleCellHeaderViewModel
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HKCodableDismissibleCellHeaderViewModel
@@ -16,41 +16,41 @@
   v8.receiver = self;
   v8.super_class = HKCodableDismissibleCellHeaderViewModel;
   v4 = [(HKCodableDismissibleCellHeaderViewModel *)&v8 description];
-  v5 = [(HKCodableDismissibleCellHeaderViewModel *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HKCodableDismissibleCellHeaderViewModel *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   viewModel = self->_viewModel;
   if (viewModel)
   {
-    v5 = [(HKCodableCellHeaderViewModel *)viewModel dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"viewModel"];
+    dictionaryRepresentation = [(HKCodableCellHeaderViewModel *)viewModel dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"viewModel"];
   }
 
   backgroundColor = self->_backgroundColor;
   if (backgroundColor)
   {
-    v7 = [(HKCodableColorRepresentation *)backgroundColor dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"backgroundColor"];
+    dictionaryRepresentation2 = [(HKCodableColorRepresentation *)backgroundColor dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"backgroundColor"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_viewModel)
   {
     [HKCodableDismissibleCellHeaderViewModel writeTo:];
   }
 
-  v5 = v4;
+  v5 = toCopy;
   PBDataWriterWriteSubmessage();
   if (self->_backgroundColor)
   {
@@ -58,37 +58,37 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  [v4 setViewModel:self->_viewModel];
+  toCopy = to;
+  [toCopy setViewModel:self->_viewModel];
   if (self->_backgroundColor)
   {
-    [v4 setBackgroundColor:?];
+    [toCopy setBackgroundColor:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(HKCodableCellHeaderViewModel *)self->_viewModel copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(HKCodableCellHeaderViewModel *)self->_viewModel copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(HKCodableColorRepresentation *)self->_backgroundColor copyWithZone:a3];
+  v8 = [(HKCodableColorRepresentation *)self->_backgroundColor copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((viewModel = self->_viewModel, !(viewModel | v4[2])) || -[HKCodableCellHeaderViewModel isEqual:](viewModel, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((viewModel = self->_viewModel, !(viewModel | equalCopy[2])) || -[HKCodableCellHeaderViewModel isEqual:](viewModel, "isEqual:")))
   {
     backgroundColor = self->_backgroundColor;
-    if (backgroundColor | v4[1])
+    if (backgroundColor | equalCopy[1])
     {
       v7 = [(HKCodableColorRepresentation *)backgroundColor isEqual:?];
     }
@@ -107,12 +107,12 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   viewModel = self->_viewModel;
-  v6 = v4[2];
-  v9 = v4;
+  v6 = fromCopy[2];
+  v9 = fromCopy;
   if (viewModel)
   {
     if (!v6)
@@ -133,10 +133,10 @@
     [(HKCodableDismissibleCellHeaderViewModel *)self setViewModel:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_7:
   backgroundColor = self->_backgroundColor;
-  v8 = v4[1];
+  v8 = fromCopy[1];
   if (backgroundColor)
   {
     if (!v8)
@@ -157,10 +157,10 @@ LABEL_7:
     backgroundColor = [(HKCodableDismissibleCellHeaderViewModel *)self setBackgroundColor:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_13:
 
-  MEMORY[0x1EEE66BB8](backgroundColor, v4);
+  MEMORY[0x1EEE66BB8](backgroundColor, fromCopy);
 }
 
 @end

@@ -1,41 +1,41 @@
 @interface TCPConnectionProbe
-- (void)cancelTest:(id)a3;
-- (void)testConection:(id)a3 port:(unint64_t)a4 timeout:(double)a5 interfaceName:(id)a6 reply:(id)a7;
+- (void)cancelTest:(id)test;
+- (void)testConection:(id)conection port:(unint64_t)port timeout:(double)timeout interfaceName:(id)name reply:(id)reply;
 @end
 
 @implementation TCPConnectionProbe
 
-- (void)testConection:(id)a3 port:(unint64_t)a4 timeout:(double)a5 interfaceName:(id)a6 reply:(id)a7
+- (void)testConection:(id)conection port:(unint64_t)port timeout:(double)timeout interfaceName:(id)name reply:(id)reply
 {
   v54 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
+  conectionCopy = conection;
+  nameCopy = name;
+  replyCopy = reply;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __69__TCPConnectionProbe_testConection_port_timeout_interfaceName_reply___block_invoke;
   aBlock[3] = &unk_27898A0C8;
   aBlock[4] = self;
   v38 = _Block_copy(aBlock);
-  v15 = [v12 length];
-  if (a5 < 1.0 || a4 - 0x10000 < 0xFFFFFFFFFFFF0001 || v15 == 0)
+  v15 = [conectionCopy length];
+  if (timeout < 1.0 || port - 0x10000 < 0xFFFFFFFFFFFF0001 || v15 == 0)
   {
     v18 = debuggabilityLogHandle;
     if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v47 = v12;
+      v47 = conectionCopy;
       v48 = 2048;
-      v49 = a4;
+      portCopy2 = port;
       v50 = 2048;
-      v51 = a5;
+      timeoutCopy = timeout;
       _os_log_impl(&dword_23255B000, v18, OS_LOG_TYPE_ERROR, "TCPConnectionProbe: Invalid or missing parameters. (dest: %@, port: %ld, timeout: %.0lf)", buf, 0x20u);
     }
 
     [(TestProbe *)self setStatus:4];
-    if (v14)
+    if (replyCopy)
     {
-      (*(v14 + 2))(v14, 0, 0, 0.0);
+      (*(replyCopy + 2))(replyCopy, 0, 0, 0.0);
     }
   }
 
@@ -49,9 +49,9 @@
     }
 
     [(TestProbe *)self setStatus:4];
-    if (v14)
+    if (replyCopy)
     {
-      (*(v14 + 2))(v14, 0, 0, 0.0);
+      (*(replyCopy + 2))(replyCopy, 0, 0, 0.0);
     }
   }
 
@@ -60,29 +60,29 @@
   if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_INFO))
   {
     *buf = 138413058;
-    v47 = v12;
+    v47 = conectionCopy;
     v48 = 2048;
-    v49 = a4;
+    portCopy2 = port;
     v50 = 2112;
-    v51 = *&v13;
+    timeoutCopy = *&nameCopy;
     v52 = 2048;
-    v53 = a5;
+    timeoutCopy2 = timeout;
     _os_log_impl(&dword_23255B000, v20, OS_LOG_TYPE_INFO, "TCPConnectionProbe: Creating TCP connection probe to %@ [port %ld | iface %@] (timeout: %.0lf)", buf, 0x2Au);
   }
 
-  [v12 UTF8String];
+  [conectionCopy UTF8String];
   host_with_numeric_port = nw_endpoint_create_host_with_numeric_port();
   secure_tcp = nw_parameters_create_secure_tcp(*MEMORY[0x277CD9238], *MEMORY[0x277CD9230]);
-  if ([v13 length])
+  if ([nameCopy length])
   {
-    [v13 UTF8String];
+    [nameCopy UTF8String];
     v23 = nw_interface_create_with_name();
     nw_parameters_require_interface(secure_tcp, v23);
     v24 = debuggabilityLogHandle;
     if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v47 = v13;
+      v47 = nameCopy;
       _os_log_impl(&dword_23255B000, v24, OS_LOG_TYPE_INFO, "TCPConnectionProbe: configured connection with interface %@", buf, 0xCu);
     }
   }
@@ -94,8 +94,8 @@
   v27 = self->_connection;
   if (v27)
   {
-    v28 = [(TestProbe *)self queue];
-    nw_connection_set_queue(v27, v28);
+    queue = [(TestProbe *)self queue];
+    nw_connection_set_queue(v27, queue);
 
     v29 = self->_connection;
     v42[0] = MEMORY[0x277D85DD0];
@@ -103,19 +103,19 @@
     v42[2] = __69__TCPConnectionProbe_testConection_port_timeout_interfaceName_reply___block_invoke_1;
     v42[3] = &unk_27898E040;
     v42[4] = self;
-    v30 = v14;
+    v30 = replyCopy;
     v43 = v30;
     v31 = v38;
     v44 = v31;
     MEMORY[0x238388070](v29, v42);
     nw_connection_start(self->_connection);
-    v32 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     startTime = self->_startTime;
-    self->_startTime = v32;
+    self->_startTime = date;
 
     [(TestProbe *)self setStatus:1];
-    v34 = dispatch_time(0, (a5 * 1000000000.0));
-    v35 = [(TestProbe *)self queue];
+    v34 = dispatch_time(0, (timeout * 1000000000.0));
+    queue2 = [(TestProbe *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __69__TCPConnectionProbe_testConection_port_timeout_interfaceName_reply___block_invoke_2;
@@ -123,7 +123,7 @@
     block[4] = self;
     v40 = v30;
     v41 = v31;
-    dispatch_after(v34, v35, block);
+    dispatch_after(v34, queue2, block);
 
     self->_shouldSendReply = 1;
     [(TestProbe *)self setRunning:1];
@@ -139,9 +139,9 @@
     }
 
     [(TestProbe *)self setStatus:4];
-    if (v14)
+    if (replyCopy)
     {
-      (*(v14 + 2))(v14, 0, 0, 0.0);
+      (*(replyCopy + 2))(replyCopy, 0, 0, 0.0);
     }
   }
 
@@ -327,9 +327,9 @@ void __69__TCPConnectionProbe_testConection_port_timeout_interfaceName_reply___b
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cancelTest:(id)a3
+- (void)cancelTest:(id)test
 {
-  v8 = a3;
+  testCopy = test;
   connection = self->_connection;
   if (connection)
   {
@@ -345,11 +345,11 @@ void __69__TCPConnectionProbe_testConection_port_timeout_interfaceName_reply___b
   }
 
   [(TestProbe *)self setStatus:v6];
-  v7 = v8;
-  if (v8)
+  v7 = testCopy;
+  if (testCopy)
   {
-    (*(v8 + 2))(v8, [(TestProbe *)self status]);
-    v7 = v8;
+    (*(testCopy + 2))(testCopy, [(TestProbe *)self status]);
+    v7 = testCopy;
   }
 }
 

@@ -1,63 +1,63 @@
 @interface SIRINLURequest
-- (SIRINLURequest)initWithCoder:(id)a3;
-- (SIRINLURequest)initWithRequestId:(id)a3 currentTurnInput:(id)a4 previousTurnInputs:(id)a5;
+- (SIRINLURequest)initWithCoder:(id)coder;
+- (SIRINLURequest)initWithRequestId:(id)id currentTurnInput:(id)input previousTurnInputs:(id)inputs;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SIRINLURequest
 
 - (id)description
 {
-  v3 = [(SIRINLURequest *)self requestId];
-  v4 = [v3 description];
+  requestId = [(SIRINLURequest *)self requestId];
+  v4 = [requestId description];
   v5 = [SIRINLUPrintUtils indentLines:v4 numSpaces:4];
 
-  v6 = [(SIRINLURequest *)self currentTurnInput];
-  v7 = [v6 description];
+  currentTurnInput = [(SIRINLURequest *)self currentTurnInput];
+  v7 = [currentTurnInput description];
   v8 = [SIRINLUPrintUtils indentLines:v7 numSpaces:4];
 
-  v9 = [(SIRINLURequest *)self previousTurnInputs];
-  v10 = [SIRINLUPrintUtils indentArray:v9 numSpaces:4];
+  previousTurnInputs = [(SIRINLURequest *)self previousTurnInputs];
+  v10 = [SIRINLUPrintUtils indentArray:previousTurnInputs numSpaces:4];
 
   v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"{Request\n  requestId:\n%@\n  currentTurnInput:\n%@\n  previousTurnInputs:\n%@\n}", v5, v8, v10];
 
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SIRINLURequest *)self requestId];
-  [v4 encodeObject:v5 forKey:@"requestId"];
+  coderCopy = coder;
+  requestId = [(SIRINLURequest *)self requestId];
+  [coderCopy encodeObject:requestId forKey:@"requestId"];
 
-  v6 = [(SIRINLURequest *)self currentTurnInput];
-  [v4 encodeObject:v6 forKey:@"currentTurnInput"];
+  currentTurnInput = [(SIRINLURequest *)self currentTurnInput];
+  [coderCopy encodeObject:currentTurnInput forKey:@"currentTurnInput"];
 
-  v7 = [(SIRINLURequest *)self previousTurnInputs];
-  [v4 encodeObject:v7 forKey:@"previousTurnInputs"];
+  previousTurnInputs = [(SIRINLURequest *)self previousTurnInputs];
+  [coderCopy encodeObject:previousTurnInputs forKey:@"previousTurnInputs"];
 }
 
-- (SIRINLURequest)initWithCoder:(id)a3
+- (SIRINLURequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = SIRINLURequest;
   v5 = [(SIRINLURequest *)&v16 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requestId"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requestId"];
     requestId = v5->_requestId;
     v5->_requestId = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currentTurnInput"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currentTurnInput"];
     currentTurnInput = v5->_currentTurnInput;
     v5->_currentTurnInput = v8;
 
     v10 = MEMORY[0x1E695DFD8];
     v11 = objc_opt_class();
     v12 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"previousTurnInputs"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"previousTurnInputs"];
     previousTurnInputs = v5->_previousTurnInputs;
     v5->_previousTurnInputs = v13;
   }
@@ -65,20 +65,20 @@
   return v5;
 }
 
-- (SIRINLURequest)initWithRequestId:(id)a3 currentTurnInput:(id)a4 previousTurnInputs:(id)a5
+- (SIRINLURequest)initWithRequestId:(id)id currentTurnInput:(id)input previousTurnInputs:(id)inputs
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  idCopy = id;
+  inputCopy = input;
+  inputsCopy = inputs;
   v15.receiver = self;
   v15.super_class = SIRINLURequest;
   v12 = [(SIRINLURequest *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_requestId, a3);
-    objc_storeStrong(&v13->_currentTurnInput, a4);
-    objc_storeStrong(&v13->_previousTurnInputs, a5);
+    objc_storeStrong(&v12->_requestId, id);
+    objc_storeStrong(&v13->_currentTurnInput, input);
+    objc_storeStrong(&v13->_previousTurnInputs, inputs);
   }
 
   return v13;

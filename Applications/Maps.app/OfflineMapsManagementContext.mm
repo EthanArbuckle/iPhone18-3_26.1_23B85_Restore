@@ -2,25 +2,25 @@
 - (ChromeViewController)chromeViewController;
 - (OfflineMapsManagementContext)init;
 - (id)desiredCards;
-- (id)renameOfflineMapControllerForDefaultText:(id)a3 saveHandler:(id)a4 cancelHandler:(id)a5;
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4;
+- (id)renameOfflineMapControllerForDefaultText:(id)text saveHandler:(id)handler cancelHandler:(id)cancelHandler;
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation;
 - (void)closeAddNewMapSearchAutocomplete;
 - (void)closeExpiredMapsManagement;
 - (void)closeOfflineMapDetails;
 - (void)dismiss;
-- (void)enterStackInChromeViewController:(id)a3 withAnimation:(id)a4;
-- (void)leaveStackInChromeViewController:(id)a3 withAnimation:(id)a4;
+- (void)enterStackInChromeViewController:(id)controller withAnimation:(id)animation;
+- (void)leaveStackInChromeViewController:(id)controller withAnimation:(id)animation;
 - (void)presentAddNewMapSearchAutocomplete;
 - (void)presentExpiredMapsManagement;
-- (void)presentOfflineMapDetailsForSubscriptionInfo:(id)a3;
-- (void)presentOfflineMapRegionSelectorForRegion:(id)a3 name:(id)a4;
-- (void)presentOfflineMapRegionSelectorForSubscriptionInfo:(id)a3;
-- (void)presentRenameOfflineMapForSubscriptionInfo:(id)a3 completionHandler:(id)a4;
-- (void)restoreExpiredSubscriptions:(id)a3 completionHandler:(id)a4;
-- (void)resumeDownloadingForSubscriptionInfo:(id)a3;
-- (void)setAutomaticUpdatesEnabled:(BOOL)a3 completionHandler:(id)a4;
-- (void)setSyncToWatch:(BOOL)a3 completionHandler:(id)a4;
-- (void)showPairedDeviceDiskSpaceDialogWithRequiredDiskSpace:(int64_t)a3;
+- (void)presentOfflineMapDetailsForSubscriptionInfo:(id)info;
+- (void)presentOfflineMapRegionSelectorForRegion:(id)region name:(id)name;
+- (void)presentOfflineMapRegionSelectorForSubscriptionInfo:(id)info;
+- (void)presentRenameOfflineMapForSubscriptionInfo:(id)info completionHandler:(id)handler;
+- (void)restoreExpiredSubscriptions:(id)subscriptions completionHandler:(id)handler;
+- (void)resumeDownloadingForSubscriptionInfo:(id)info;
+- (void)setAutomaticUpdatesEnabled:(BOOL)enabled completionHandler:(id)handler;
+- (void)setSyncToWatch:(BOOL)watch completionHandler:(id)handler;
+- (void)showPairedDeviceDiskSpaceDialogWithRequiredDiskSpace:(int64_t)space;
 - (void)startUpdatingOfflineSubscriptions;
 @end
 
@@ -33,11 +33,11 @@
   return WeakRetained;
 }
 
-- (void)setAutomaticUpdatesEnabled:(BOOL)a3 completionHandler:(id)a4
+- (void)setAutomaticUpdatesEnabled:(BOOL)enabled completionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = a4;
-  if (v4)
+  enabledCopy = enabled;
+  handlerCopy = handler;
+  if (enabledCopy)
   {
     GEOConfigSetBOOL();
   }
@@ -49,7 +49,7 @@
     v11 = 3221225472;
     v12 = sub_100F91BF8;
     v13 = &unk_10165F6D8;
-    v14 = v6;
+    v14 = handlerCopy;
     v15 = 0;
     v8 = [v7 alertControllerForDisableAutomaticUpdatesWithActionHandler:&v10];
 
@@ -58,23 +58,23 @@
   }
 }
 
-- (void)showPairedDeviceDiskSpaceDialogWithRequiredDiskSpace:(int64_t)a3
+- (void)showPairedDeviceDiskSpaceDialogWithRequiredDiskSpace:(int64_t)space
 {
   v5 = +[MapsOfflineUIHelper sharedHelper];
-  v7 = [v5 alertControllerForInsufficientDiskSpaceOnPairedDeviceForDownloadSize:a3];
+  v7 = [v5 alertControllerForInsufficientDiskSpaceOnPairedDeviceForDownloadSize:space];
 
-  v6 = [(OfflineMapsManagementContext *)self chromeViewController];
-  [v6 _maps_topMostPresentViewController:v7 animated:1 completion:0];
+  chromeViewController = [(OfflineMapsManagementContext *)self chromeViewController];
+  [chromeViewController _maps_topMostPresentViewController:v7 animated:1 completion:0];
 }
 
-- (void)setSyncToWatch:(BOOL)a3 completionHandler:(id)a4
+- (void)setSyncToWatch:(BOOL)watch completionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = a4;
-  if (v4)
+  watchCopy = watch;
+  handlerCopy = handler;
+  if (watchCopy)
   {
     GEOConfigSetBOOL();
-    v6[2](v6, 1);
+    handlerCopy[2](handlerCopy, 1);
   }
 
   else
@@ -84,7 +84,7 @@
     v12 = 3221225472;
     v13 = sub_100F91E10;
     v14 = &unk_10165F6B0;
-    v8 = v6;
+    v8 = handlerCopy;
     v15 = v8;
     v16 = 0;
     v9 = [v7 alertControllerForDisableSyncToWatchWithActionHandler:&v11];
@@ -103,22 +103,22 @@
   }
 }
 
-- (void)presentOfflineMapRegionSelectorForSubscriptionInfo:(id)a3
+- (void)presentOfflineMapRegionSelectorForSubscriptionInfo:(id)info
 {
-  v11 = a3;
+  infoCopy = info;
   v4 = +[MapsOfflineUIHelper sharedHelper];
-  v5 = [v4 alertControllerForAttemptedRegionDownload];
+  alertControllerForAttemptedRegionDownload = [v4 alertControllerForAttemptedRegionDownload];
 
-  v6 = [(OfflineMapsManagementContext *)self chromeViewController];
-  v7 = v6;
-  if (v5)
+  chromeViewController = [(OfflineMapsManagementContext *)self chromeViewController];
+  v7 = chromeViewController;
+  if (alertControllerForAttemptedRegionDownload)
   {
-    [(OfflineRegionSelectorContext *)v6 _maps_topMostPresentViewController:v5 animated:1 completion:0];
+    [(OfflineRegionSelectorContext *)chromeViewController _maps_topMostPresentViewController:alertControllerForAttemptedRegionDownload animated:1 completion:0];
   }
 
   else
   {
-    v8 = [(OfflineRegionSelectorContext *)v6 topContext];
+    topContext = [(OfflineRegionSelectorContext *)chromeViewController topContext];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -127,31 +127,31 @@
       goto LABEL_6;
     }
 
-    v7 = [[OfflineRegionSelectorContext alloc] initWithSubscriptionInfo:v11];
-    v10 = [(OfflineMapsManagementContext *)self chromeViewController];
-    [v10 pushContext:v7 animated:1 completion:0];
+    v7 = [[OfflineRegionSelectorContext alloc] initWithSubscriptionInfo:infoCopy];
+    chromeViewController2 = [(OfflineMapsManagementContext *)self chromeViewController];
+    [chromeViewController2 pushContext:v7 animated:1 completion:0];
   }
 
 LABEL_6:
 }
 
-- (void)presentOfflineMapRegionSelectorForRegion:(id)a3 name:(id)a4
+- (void)presentOfflineMapRegionSelectorForRegion:(id)region name:(id)name
 {
-  v14 = a3;
-  v6 = a4;
+  regionCopy = region;
+  nameCopy = name;
   v7 = +[MapsOfflineUIHelper sharedHelper];
-  v8 = [v7 alertControllerForAttemptedRegionDownload];
+  alertControllerForAttemptedRegionDownload = [v7 alertControllerForAttemptedRegionDownload];
 
-  v9 = [(OfflineMapsManagementContext *)self chromeViewController];
-  v10 = v9;
-  if (v8)
+  chromeViewController = [(OfflineMapsManagementContext *)self chromeViewController];
+  v10 = chromeViewController;
+  if (alertControllerForAttemptedRegionDownload)
   {
-    [(OfflineRegionSelectorContext *)v9 _maps_topMostPresentViewController:v8 animated:1 completion:0];
+    [(OfflineRegionSelectorContext *)chromeViewController _maps_topMostPresentViewController:alertControllerForAttemptedRegionDownload animated:1 completion:0];
   }
 
   else
   {
-    v11 = [(OfflineRegionSelectorContext *)v9 topContext];
+    topContext = [(OfflineRegionSelectorContext *)chromeViewController topContext];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -160,19 +160,19 @@ LABEL_6:
       goto LABEL_6;
     }
 
-    v10 = [[OfflineRegionSelectorContext alloc] initWithRegion:v14 name:v6];
-    v13 = [(OfflineMapsManagementContext *)self chromeViewController];
-    [v13 pushContext:v10 animated:1 completion:0];
+    v10 = [[OfflineRegionSelectorContext alloc] initWithRegion:regionCopy name:nameCopy];
+    chromeViewController2 = [(OfflineMapsManagementContext *)self chromeViewController];
+    [chromeViewController2 pushContext:v10 animated:1 completion:0];
   }
 
 LABEL_6:
 }
 
-- (id)renameOfflineMapControllerForDefaultText:(id)a3 saveHandler:(id)a4 cancelHandler:(id)a5
+- (id)renameOfflineMapControllerForDefaultText:(id)text saveHandler:(id)handler cancelHandler:(id)cancelHandler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  textCopy = text;
+  handlerCopy = handler;
+  cancelHandlerCopy = cancelHandler;
   v10 = +[NSBundle mainBundle];
   v25 = [v10 localizedStringForKey:@"Rename Map alert title" value:@"localized string not found" table:@"Offline"];
 
@@ -181,11 +181,11 @@ LABEL_6:
   v31[1] = 3221225472;
   v31[2] = sub_100F92554;
   v31[3] = &unk_10165F640;
-  v32 = v7;
-  v24 = v7;
+  v32 = textCopy;
+  v24 = textCopy;
   [v11 addTextFieldWithConfigurationHandler:v31];
-  v12 = [v11 textFields];
-  v13 = [v12 firstObject];
+  textFields = [v11 textFields];
+  firstObject = [textFields firstObject];
 
   v14 = +[NSBundle mainBundle];
   v15 = [v14 localizedStringForKey:@"Cancel - Rename Map alert button" value:@"localized string not found" table:@"Offline"];
@@ -193,8 +193,8 @@ LABEL_6:
   v29[1] = 3221225472;
   v29[2] = sub_100F925C4;
   v29[3] = &unk_101660728;
-  v30 = v9;
-  v16 = v9;
+  v30 = cancelHandlerCopy;
+  v16 = cancelHandlerCopy;
   v17 = [UIAlertAction actionWithTitle:v15 style:1 handler:v29];
 
   v18 = +[NSBundle mainBundle];
@@ -203,10 +203,10 @@ LABEL_6:
   v26[1] = 3221225472;
   v26[2] = sub_100F925DC;
   v26[3] = &unk_10165F668;
-  v27 = v13;
-  v28 = v8;
-  v20 = v13;
-  v21 = v8;
+  v27 = firstObject;
+  v28 = handlerCopy;
+  v20 = firstObject;
+  v21 = handlerCopy;
   v22 = [UIAlertAction actionWithTitle:v19 style:0 handler:v26];
 
   [v11 addAction:v17];
@@ -216,29 +216,29 @@ LABEL_6:
   return v11;
 }
 
-- (void)presentRenameOfflineMapForSubscriptionInfo:(id)a3 completionHandler:(id)a4
+- (void)presentRenameOfflineMapForSubscriptionInfo:(id)info completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 subscription];
-  v9 = [v8 displayName];
+  infoCopy = info;
+  handlerCopy = handler;
+  subscription = [infoCopy subscription];
+  displayName = [subscription displayName];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_100F92824;
   v16[3] = &unk_10165F618;
-  v17 = v6;
-  v18 = v7;
+  v17 = infoCopy;
+  v18 = handlerCopy;
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100F9290C;
   v14[3] = &unk_101661760;
   v15 = v18;
   v10 = v18;
-  v11 = v6;
-  v12 = [(OfflineMapsManagementContext *)self renameOfflineMapControllerForDefaultText:v9 saveHandler:v16 cancelHandler:v14];
+  v11 = infoCopy;
+  v12 = [(OfflineMapsManagementContext *)self renameOfflineMapControllerForDefaultText:displayName saveHandler:v16 cancelHandler:v14];
 
-  v13 = [(OfflineMapsManagementContext *)self chromeViewController];
-  [v13 _maps_topMostPresentViewController:v12 animated:1 completion:0];
+  chromeViewController = [(OfflineMapsManagementContext *)self chromeViewController];
+  [chromeViewController _maps_topMostPresentViewController:v12 animated:1 completion:0];
 }
 
 - (void)closeOfflineMapDetails
@@ -246,8 +246,8 @@ LABEL_6:
   detailsViewController = self->_detailsViewController;
   self->_detailsViewController = 0;
 
-  v4 = [(OfflineMapsManagementContext *)self chromeViewController];
-  [v4 setNeedsUpdateComponent:@"cards" animated:1];
+  chromeViewController = [(OfflineMapsManagementContext *)self chromeViewController];
+  [chromeViewController setNeedsUpdateComponent:@"cards" animated:1];
 }
 
 - (void)startUpdatingOfflineSubscriptions
@@ -261,21 +261,21 @@ LABEL_6:
   [v3 fetchAllSubscriptionInfosWithCompletion:v4];
 }
 
-- (void)restoreExpiredSubscriptions:(id)a3 completionHandler:(id)a4
+- (void)restoreExpiredSubscriptions:(id)subscriptions completionHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a4;
+  subscriptionsCopy = subscriptions;
+  handlerCopy = handler;
   v6 = +[MapsOfflineUIHelper sharedHelper];
-  v16 = [v6 alertControllerForAttemptedRegionDownload];
+  alertControllerForAttemptedRegionDownload = [v6 alertControllerForAttemptedRegionDownload];
 
-  if (v16)
+  if (alertControllerForAttemptedRegionDownload)
   {
-    v7 = [(OfflineMapsManagementContext *)self chromeViewController];
-    [v7 _maps_topMostPresentViewController:v16 animated:1 completion:0];
+    chromeViewController = [(OfflineMapsManagementContext *)self chromeViewController];
+    [chromeViewController _maps_topMostPresentViewController:alertControllerForAttemptedRegionDownload animated:1 completion:0];
 
-    if (v15)
+    if (handlerCopy)
     {
-      v15[2](v15, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
   }
 
@@ -290,7 +290,7 @@ LABEL_6:
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    obj = v14;
+    obj = subscriptionsCopy;
     v9 = [obj countByEnumeratingWithState:&v24 objects:v30 count:16];
     if (v9)
     {
@@ -330,7 +330,7 @@ LABEL_6:
     block[1] = 3221225472;
     block[2] = sub_100F932DC;
     block[3] = &unk_10165F5A0;
-    v19 = v15;
+    v19 = handlerCopy;
     v20 = v28;
     dispatch_group_notify(v8, &_dispatch_main_q, block);
 
@@ -338,16 +338,16 @@ LABEL_6:
   }
 }
 
-- (void)resumeDownloadingForSubscriptionInfo:(id)a3
+- (void)resumeDownloadingForSubscriptionInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = +[MapsOfflineUIHelper sharedHelper];
-  v6 = [v5 alertControllerForAttemptedRegionDownload];
+  alertControllerForAttemptedRegionDownload = [v5 alertControllerForAttemptedRegionDownload];
 
-  if (v6)
+  if (alertControllerForAttemptedRegionDownload)
   {
-    v7 = [(OfflineMapsManagementContext *)self chromeViewController];
-    [v7 _maps_topMostPresentViewController:v6 animated:1 completion:0];
+    chromeViewController = [(OfflineMapsManagementContext *)self chromeViewController];
+    [chromeViewController _maps_topMostPresentViewController:alertControllerForAttemptedRegionDownload animated:1 completion:0];
 LABEL_10:
 
     goto LABEL_11;
@@ -359,8 +359,8 @@ LABEL_10:
   if (v9 == 2)
   {
     v10 = +[MapsOfflineUIHelper sharedHelper];
-    v7 = v10;
-    v11 = v4;
+    chromeViewController = v10;
+    v11 = infoCopy;
     v12 = 1;
     goto LABEL_9;
   }
@@ -368,24 +368,24 @@ LABEL_10:
   if (v9 == 1)
   {
     v13 = +[MapsOfflineUIHelper sharedHelper];
-    v14 = [v4 subscription];
-    v15 = [v14 displayName];
+    subscription = [infoCopy subscription];
+    displayName = [subscription displayName];
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_100F934E8;
     v18[3] = &unk_101661738;
-    v19 = v4;
-    v16 = [v13 alertControllerForCellularDownloadConfirmationForRegionName:v15 size:-1 actionHandler:v18];
+    v19 = infoCopy;
+    v16 = [v13 alertControllerForCellularDownloadConfirmationForRegionName:displayName size:-1 actionHandler:v18];
 
-    v17 = [(OfflineMapsManagementContext *)self chromeViewController];
-    [v17 _maps_topMostPresentViewController:v16 animated:1 completion:0];
+    chromeViewController2 = [(OfflineMapsManagementContext *)self chromeViewController];
+    [chromeViewController2 _maps_topMostPresentViewController:v16 animated:1 completion:0];
   }
 
   else if (!v9)
   {
     v10 = +[MapsOfflineUIHelper sharedHelper];
-    v7 = v10;
-    v11 = v4;
+    chromeViewController = v10;
+    v11 = infoCopy;
     v12 = 0;
 LABEL_9:
     [v10 resumeDownloadForSubscriptionInfo:v11 mode:v12];
@@ -395,17 +395,17 @@ LABEL_9:
 LABEL_11:
 }
 
-- (void)presentOfflineMapDetailsForSubscriptionInfo:(id)a3
+- (void)presentOfflineMapDetailsForSubscriptionInfo:(id)info
 {
-  v4 = a3;
-  v5 = [[OfflineMapDetailsViewController alloc] initWithSubscriptionInfo:v4];
+  infoCopy = info;
+  v5 = [[OfflineMapDetailsViewController alloc] initWithSubscriptionInfo:infoCopy];
 
   detailsViewController = self->_detailsViewController;
   self->_detailsViewController = v5;
 
   [(OfflineMapDetailsViewController *)self->_detailsViewController setDelegate:self];
-  v7 = [(OfflineMapsManagementContext *)self chromeViewController];
-  [v7 setNeedsUpdateComponent:@"cards" animated:1];
+  chromeViewController = [(OfflineMapsManagementContext *)self chromeViewController];
+  [chromeViewController setNeedsUpdateComponent:@"cards" animated:1];
 }
 
 - (void)closeAddNewMapSearchAutocomplete
@@ -413,19 +413,19 @@ LABEL_11:
   searchViewController = self->_searchViewController;
   self->_searchViewController = 0;
 
-  v4 = [(OfflineMapsManagementContext *)self chromeViewController];
-  [v4 setNeedsUpdateComponent:@"cards" animated:1];
+  chromeViewController = [(OfflineMapsManagementContext *)self chromeViewController];
+  [chromeViewController setNeedsUpdateComponent:@"cards" animated:1];
 }
 
 - (void)presentAddNewMapSearchAutocomplete
 {
   v3 = +[MapsOfflineUIHelper sharedHelper];
-  v7 = [v3 alertControllerForAttemptedRegionDownload];
+  alertControllerForAttemptedRegionDownload = [v3 alertControllerForAttemptedRegionDownload];
 
-  if (v7)
+  if (alertControllerForAttemptedRegionDownload)
   {
-    v4 = [(OfflineMapsManagementContext *)self chromeViewController];
-    [v4 _maps_topMostPresentViewController:v7 animated:1 completion:0];
+    chromeViewController = [(OfflineMapsManagementContext *)self chromeViewController];
+    [chromeViewController _maps_topMostPresentViewController:alertControllerForAttemptedRegionDownload animated:1 completion:0];
   }
 
   else
@@ -435,8 +435,8 @@ LABEL_11:
     self->_searchViewController = v5;
 
     [(OfflineMapsManagementSearchAutocompleteViewController *)self->_searchViewController setDelegate:self];
-    v4 = [(OfflineMapsManagementContext *)self chromeViewController];
-    [v4 setNeedsUpdateComponent:@"cards" animated:1];
+    chromeViewController = [(OfflineMapsManagementContext *)self chromeViewController];
+    [chromeViewController setNeedsUpdateComponent:@"cards" animated:1];
   }
 }
 
@@ -445,8 +445,8 @@ LABEL_11:
   expiredMapsManagementViewController = self->_expiredMapsManagementViewController;
   self->_expiredMapsManagementViewController = 0;
 
-  v4 = [(OfflineMapsManagementContext *)self chromeViewController];
-  [v4 setNeedsUpdateComponent:@"cards" animated:1];
+  chromeViewController = [(OfflineMapsManagementContext *)self chromeViewController];
+  [chromeViewController setNeedsUpdateComponent:@"cards" animated:1];
 }
 
 - (void)presentExpiredMapsManagement
@@ -456,42 +456,42 @@ LABEL_11:
   self->_expiredMapsManagementViewController = v3;
 
   [(OfflineMapsManagementExpiredViewController *)self->_expiredMapsManagementViewController setDelegate:self];
-  v5 = [(OfflineMapsManagementContext *)self chromeViewController];
-  [v5 setNeedsUpdateComponent:@"cards" animated:1];
+  chromeViewController = [(OfflineMapsManagementContext *)self chromeViewController];
+  [chromeViewController setNeedsUpdateComponent:@"cards" animated:1];
 }
 
 - (void)dismiss
 {
-  v4 = [(OfflineMapsManagementContext *)self iosBasedChromeViewController];
-  v3 = [(OfflineMapsManagementContext *)self chromeViewController];
-  [v4 popContext:self animated:objc_msgSend(v3 completion:{"isTopContext:", self), 0}];
+  iosBasedChromeViewController = [(OfflineMapsManagementContext *)self iosBasedChromeViewController];
+  chromeViewController = [(OfflineMapsManagementContext *)self chromeViewController];
+  [iosBasedChromeViewController popContext:self animated:objc_msgSend(chromeViewController completion:{"isTopContext:", self), 0}];
 }
 
-- (void)leaveStackInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)leaveStackInChromeViewController:(id)controller withAnimation:(id)animation
 {
-  v4 = [MapsOfflineUIHelper sharedHelper:a3];
+  v4 = [MapsOfflineUIHelper sharedHelper:controller];
   [v4 stopMonitoringPairedDeviceSubscriptionStates];
 }
 
-- (void)enterStackInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)enterStackInChromeViewController:(id)controller withAnimation:(id)animation
 {
-  v4 = [MapsOfflineUIHelper sharedHelper:a3];
+  v4 = [MapsOfflineUIHelper sharedHelper:controller];
   [v4 startMonitoringPairedDeviceSubscriptionStates];
 }
 
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  animationCopy = animation;
   objc_initWeak(&location, self);
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100F93A10;
   v9[3] = &unk_101661340;
   objc_copyWeak(&v11, &location);
-  v8 = v6;
+  v8 = controllerCopy;
   v10 = v8;
-  [v7 addPreparation:v9];
+  [animationCopy addPreparation:v9];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);

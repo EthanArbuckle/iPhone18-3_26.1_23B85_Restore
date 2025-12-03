@@ -1,20 +1,20 @@
 @interface SBVolumeHardwareButtonActions
-- (BOOL)_handleVolumeButtonDownForIncrease:(BOOL)a3 modifiers:(int64_t)a4;
-- (BOOL)_handleVolumeButtonUpForIncrease:(BOOL)a3;
+- (BOOL)_handleVolumeButtonDownForIncrease:(BOOL)increase modifiers:(int64_t)modifiers;
+- (BOOL)_handleVolumeButtonUpForIncrease:(BOOL)increase;
 - (BOOL)_handleVolumeDecreaseUp;
 - (BOOL)_handleVolumeIncreaseUp;
-- (BOOL)_sendVolumeButtonToSBUIControllerForIncrease:(BOOL)a3 down:(BOOL)a4;
-- (id)_sendVolumeButtonDownToLegacyRegisteredClientsForIncrease:(BOOL)a3;
-- (id)_sendVolumeButtonDownToOverridingSceneForIncrease:(BOOL)a3;
-- (id)_sendVolumeButtonDownToSBUIControllerForIncrease:(BOOL)a3;
-- (id)_sendVolumeButtonDownToSoundControllerForIncrease:(BOOL)a3;
-- (id)_sendVolumeButtonDownToSpringBoardInternalUIForIncrease:(BOOL)a3;
+- (BOOL)_sendVolumeButtonToSBUIControllerForIncrease:(BOOL)increase down:(BOOL)down;
+- (id)_sendVolumeButtonDownToLegacyRegisteredClientsForIncrease:(BOOL)increase;
+- (id)_sendVolumeButtonDownToOverridingSceneForIncrease:(BOOL)increase;
+- (id)_sendVolumeButtonDownToSBUIControllerForIncrease:(BOOL)increase;
+- (id)_sendVolumeButtonDownToSoundControllerForIncrease:(BOOL)increase;
+- (id)_sendVolumeButtonDownToSpringBoardInternalUIForIncrease:(BOOL)increase;
 - (void)_launchVolumeSettings;
 - (void)_sendBanditsVolumeDecreased;
 - (void)_sendBanditsVolumeIncreased;
-- (void)addVolumePressBandit:(id)a3;
+- (void)addVolumePressBandit:(id)bandit;
 - (void)cancelVolumePress;
-- (void)removeVolumePressBandit:(id)a3;
+- (void)removeVolumePressBandit:(id)bandit;
 - (void)volumeDecreasePressUp;
 - (void)volumeIncreasePressUp;
 @end
@@ -52,10 +52,10 @@
   [(SBVolumeHardwareButtonActions *)self volumeDecreasePressUp];
 }
 
-- (void)addVolumePressBandit:(id)a3
+- (void)addVolumePressBandit:(id)bandit
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  banditCopy = bandit;
   v5 = SBLogButtonsVolume();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -68,20 +68,20 @@
   volumePressBandits = self->_volumePressBandits;
   if (!volumePressBandits)
   {
-    v8 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v9 = self->_volumePressBandits;
-    self->_volumePressBandits = v8;
+    self->_volumePressBandits = weakObjectsHashTable;
 
     volumePressBandits = self->_volumePressBandits;
   }
 
-  [(NSHashTable *)volumePressBandits addObject:v4, *v10];
+  [(NSHashTable *)volumePressBandits addObject:banditCopy, *v10];
 }
 
-- (void)removeVolumePressBandit:(id)a3
+- (void)removeVolumePressBandit:(id)bandit
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  banditCopy = bandit;
   v5 = SBLogButtonsVolume();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -91,7 +91,7 @@
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "bandit removed: %{public}@", &v7, 0xCu);
   }
 
-  [(NSHashTable *)self->_volumePressBandits removeObject:v4];
+  [(NSHashTable *)self->_volumePressBandits removeObject:banditCopy];
 }
 
 - (void)_sendBanditsVolumeIncreased
@@ -182,13 +182,13 @@
   }
 }
 
-- (BOOL)_sendVolumeButtonToSBUIControllerForIncrease:(BOOL)a3 down:(BOOL)a4
+- (BOOL)_sendVolumeButtonToSBUIControllerForIncrease:(BOOL)increase down:(BOOL)down
 {
-  v4 = a4;
-  v5 = a3;
+  downCopy = down;
+  increaseCopy = increase;
   v6 = +[SBUIController sharedInstance];
   v7 = v6;
-  if (v5)
+  if (increaseCopy)
   {
     v8 = 102;
   }
@@ -198,7 +198,7 @@
     v8 = 103;
   }
 
-  [v6 handleVolumeButtonWithType:v8 down:v4];
+  [v6 handleVolumeButtonWithType:v8 down:downCopy];
 
   return 1;
 }
@@ -229,9 +229,9 @@
   return volumeDecreaseUpEventBlock != 0;
 }
 
-- (BOOL)_handleVolumeButtonUpForIncrease:(BOOL)a3
+- (BOOL)_handleVolumeButtonUpForIncrease:(BOOL)increase
 {
-  if (a3)
+  if (increase)
   {
     if ([(SBVolumeHardwareButtonActions *)self _handleVolumeIncreaseUp])
     {
@@ -247,27 +247,27 @@
   v5 = SBLogButtonsVolume();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    [(SBVolumeHardwareButtonActions *)a3 _handleVolumeButtonUpForIncrease:v5];
+    [(SBVolumeHardwareButtonActions *)increase _handleVolumeButtonUpForIncrease:v5];
   }
 
   return 0;
 }
 
-- (id)_sendVolumeButtonDownToSpringBoardInternalUIForIncrease:(BOOL)a3
+- (id)_sendVolumeButtonDownToSpringBoardInternalUIForIncrease:(BOOL)increase
 {
-  v3 = a3;
-  v4 = [SBApp windowSceneManager];
-  v5 = [v4 activeDisplayWindowScene];
+  increaseCopy = increase;
+  windowSceneManager = [SBApp windowSceneManager];
+  activeDisplayWindowScene = [windowSceneManager activeDisplayWindowScene];
 
   v6 = +[SBWorkspace mainWorkspace];
-  v7 = [v6 transientOverlayPresentationManager];
-  v8 = [v7 transientOverlayPresenterForWindowScene:v5];
+  transientOverlayPresentationManager = [v6 transientOverlayPresentationManager];
+  v8 = [transientOverlayPresentationManager transientOverlayPresenterForWindowScene:activeDisplayWindowScene];
 
-  v9 = [SBApp systemApertureControllerForMainDisplay];
-  v10 = v9;
-  if (v3)
+  systemApertureControllerForMainDisplay = [SBApp systemApertureControllerForMainDisplay];
+  v10 = systemApertureControllerForMainDisplay;
+  if (increaseCopy)
   {
-    if (([v9 handleVolumeUpButtonPress] & 1) == 0)
+    if (([systemApertureControllerForMainDisplay handleVolumeUpButtonPress] & 1) == 0)
     {
 LABEL_3:
       v11 = 0;
@@ -276,7 +276,7 @@ LABEL_3:
     }
   }
 
-  else if (![v9 handleVolumeDownButtonPress])
+  else if (![systemApertureControllerForMainDisplay handleVolumeDownButtonPress])
   {
     goto LABEL_3;
   }
@@ -284,20 +284,20 @@ LABEL_3:
   v12 = @"SystemApertureController";
   v11 = 1;
 LABEL_6:
-  v13 = [SBApp bannerManager];
-  v14 = v13;
+  bannerManager = [SBApp bannerManager];
+  v14 = bannerManager;
   if (v11)
   {
     goto LABEL_29;
   }
 
-  v15 = [v13 bannerWindowInWindowScene:v5];
+  v15 = [bannerManager bannerWindowInWindowScene:activeDisplayWindowScene];
   [v15 windowLevel];
   v16 = [v8 hasPresentationAboveWindowLevel:?];
 
   if ((v16 & 1) == 0)
   {
-    if (v3)
+    if (increaseCopy)
     {
       if (([v14 handleVolumeUpButtonPress] & 1) == 0)
       {
@@ -331,7 +331,7 @@ LABEL_29:
     goto LABEL_21;
   }
 
-  if (!v3)
+  if (!increaseCopy)
   {
 LABEL_19:
     if ([v8 handleVolumeDownButtonPress])
@@ -352,12 +352,12 @@ LABEL_20:
 
 LABEL_21:
   v17 = +[SBLockScreenManager sharedInstance];
-  v18 = [v17 lockScreenEnvironment];
-  v19 = [v18 buttonEventsHandler];
+  lockScreenEnvironment = [v17 lockScreenEnvironment];
+  buttonEventsHandler = [lockScreenEnvironment buttonEventsHandler];
 
-  if (v3)
+  if (increaseCopy)
   {
-    if ([v19 handleVolumeUpButtonPress])
+    if ([buttonEventsHandler handleVolumeUpButtonPress])
     {
 LABEL_23:
       v12 = @"LockScreenEnvironment";
@@ -367,14 +367,14 @@ LABEL_28:
     }
   }
 
-  else if ([v19 handleVolumeDownButtonPress])
+  else if ([buttonEventsHandler handleVolumeDownButtonPress])
   {
     goto LABEL_23;
   }
 
   v20 = +[SBMainSwitcherControllerCoordinator sharedInstance];
-  v19 = v20;
-  if (v3)
+  buttonEventsHandler = v20;
+  if (increaseCopy)
   {
     if ([v20 handleVolumeUpButtonPress])
     {
@@ -395,22 +395,22 @@ LABEL_30:
   return v21;
 }
 
-- (id)_sendVolumeButtonDownToLegacyRegisteredClientsForIncrease:(BOOL)a3
+- (id)_sendVolumeButtonDownToLegacyRegisteredClientsForIncrease:(BOOL)increase
 {
-  v3 = a3;
+  increaseCopy = increase;
   v27 = *MEMORY[0x277D85DE8];
-  v5 = [SBApp appsRegisteredForVolumeEvents];
-  v6 = [v5 firstObject];
+  appsRegisteredForVolumeEvents = [SBApp appsRegisteredForVolumeEvents];
+  firstObject = [appsRegisteredForVolumeEvents firstObject];
 
-  if (v6 && SBWorkspaceHasApplicationSceneInLockedOrUnlockedEnvironmentLayoutStateMatchingApplication(v6))
+  if (firstObject && SBWorkspaceHasApplicationSceneInLockedOrUnlockedEnvironmentLayoutStateMatchingApplication(firstObject))
   {
-    v7 = [v6 bundleIdentifier];
-    v8 = [@"Legacy Registered Client: " stringByAppendingString:v7];
+    bundleIdentifier = [firstObject bundleIdentifier];
+    v8 = [@"Legacy Registered Client: " stringByAppendingString:bundleIdentifier];
 
-    v9 = [v6 bundleIdentifier];
-    v10 = [v6 processState];
-    v11 = [v10 pid];
-    if (v3)
+    bundleIdentifier2 = [firstObject bundleIdentifier];
+    processState = [firstObject processState];
+    v11 = [processState pid];
+    if (increaseCopy)
     {
       v12 = 102;
     }
@@ -420,17 +420,17 @@ LABEL_30:
       v12 = 103;
     }
 
-    SBSendFakeButtonPressEventToApplication(v9, v11, v12, 1);
+    SBSendFakeButtonPressEventToApplication(bundleIdentifier2, v11, v12, 1);
 
     v13 = SBLogButtonsVolume();
     v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
-    if (v3)
+    if (increaseCopy)
     {
       if (v14)
       {
-        v15 = [v6 bundleIdentifier];
+        bundleIdentifier3 = [firstObject bundleIdentifier];
         *buf = 138543362;
-        v26 = v15;
+        v26 = bundleIdentifier3;
         _os_log_impl(&dword_21ED4E000, v13, OS_LOG_TYPE_DEFAULT, "sent volume increase down to %{public}@", buf, 0xCu);
       }
 
@@ -445,9 +445,9 @@ LABEL_30:
     {
       if (v14)
       {
-        v19 = [v6 bundleIdentifier];
+        bundleIdentifier4 = [firstObject bundleIdentifier];
         *buf = 138543362;
-        v26 = v19;
+        v26 = bundleIdentifier4;
         _os_log_impl(&dword_21ED4E000, v13, OS_LOG_TYPE_DEFAULT, "sent volume decrease down to %{public}@", buf, 0xCu);
       }
 
@@ -460,7 +460,7 @@ LABEL_30:
 
     v16[2] = v18;
     v16[3] = &unk_2783A8C18;
-    v16[4] = v6;
+    v16[4] = firstObject;
     v20 = [v16 copy];
     v21 = *(&self->super.isa + v17);
     *(&self->super.isa + v17) = v20;
@@ -506,12 +506,12 @@ void __91__SBVolumeHardwareButtonActions__sendVolumeButtonDownToLegacyRegistered
   SBSendFakeButtonPressEventToApplication(v2, [v4 pid], 103, 0);
 }
 
-- (id)_sendVolumeButtonDownToSoundControllerForIncrease:(BOOL)a3
+- (id)_sendVolumeButtonDownToSoundControllerForIncrease:(BOOL)increase
 {
   v3 = +[SBSoundController sharedInstance];
-  v4 = [v3 handleVolumeButtonDownEvent];
+  handleVolumeButtonDownEvent = [v3 handleVolumeButtonDownEvent];
 
-  if (v4)
+  if (handleVolumeButtonDownEvent)
   {
     return @"SBSoundController";
   }
@@ -522,15 +522,15 @@ void __91__SBVolumeHardwareButtonActions__sendVolumeButtonDownToLegacyRegistered
   }
 }
 
-- (id)_sendVolumeButtonDownToSBUIControllerForIncrease:(BOOL)a3
+- (id)_sendVolumeButtonDownToSBUIControllerForIncrease:(BOOL)increase
 {
-  v3 = a3;
+  increaseCopy = increase;
   v18 = *MEMORY[0x277D85DE8];
   v5 = SBLogButtonsVolume();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = "decrease";
-    if (v3)
+    if (increaseCopy)
     {
       v6 = "increase";
     }
@@ -540,9 +540,9 @@ void __91__SBVolumeHardwareButtonActions__sendVolumeButtonDownToLegacyRegistered
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "SBUIController will process %{public}s down event", buf, 0xCu);
   }
 
-  [(SBVolumeHardwareButtonActions *)self _sendVolumeButtonToSBUIControllerForIncrease:v3 down:1];
+  [(SBVolumeHardwareButtonActions *)self _sendVolumeButtonToSBUIControllerForIncrease:increaseCopy down:1];
   objc_initWeak(buf, self);
-  if (v3)
+  if (increaseCopy)
   {
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
@@ -614,17 +614,17 @@ void __82__SBVolumeHardwareButtonActions__sendVolumeButtonDownToSBUIControllerFo
   SBWorkspaceActivateApplicationFromURL(v3, 0, 0);
 }
 
-- (id)_sendVolumeButtonDownToOverridingSceneForIncrease:(BOOL)a3
+- (id)_sendVolumeButtonDownToOverridingSceneForIncrease:(BOOL)increase
 {
-  v3 = a3;
+  increaseCopy = increase;
   v5 = +[SBSceneManagerCoordinator mainDisplaySceneManager];
-  v6 = [v5 physicalButtonSceneOverrideManager];
+  physicalButtonSceneOverrideManager = [v5 physicalButtonSceneOverrideManager];
   v26 = 0;
-  v7 = [(SBPhysicalButtonSceneOverrideManager *)v6 sendVolumeButtonDownForIncrease:v3 shouldAlsoChangeVolume:&v26];
+  v7 = [(SBPhysicalButtonSceneOverrideManager *)physicalButtonSceneOverrideManager sendVolumeButtonDownForIncrease:increaseCopy shouldAlsoChangeVolume:&v26];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 identifier];
+    identifier = [v7 identifier];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __83__SBVolumeHardwareButtonActions__sendVolumeButtonDownToOverridingSceneForIncrease___block_invoke;
@@ -633,8 +633,8 @@ void __82__SBVolumeHardwareButtonActions__sendVolumeButtonDownToSBUIControllerFo
     v10 = [v24 copy];
     if (v26 == 1)
     {
-      [(SBVolumeHardwareButtonActions *)self _sendVolumeButtonToSBUIControllerForIncrease:v3 down:1];
-      v11 = [v9 stringByAppendingString:@" + SBUIController"];
+      [(SBVolumeHardwareButtonActions *)self _sendVolumeButtonToSBUIControllerForIncrease:increaseCopy down:1];
+      v11 = [identifier stringByAppendingString:@" + SBUIController"];
 
       objc_initWeak(&location, self);
       v12 = [v10 copy];
@@ -645,25 +645,25 @@ void __82__SBVolumeHardwareButtonActions__sendVolumeButtonDownToSBUIControllerFo
       v13 = v12;
       v20 = v13;
       objc_copyWeak(&v21, &location);
-      v22 = v3;
+      v22 = increaseCopy;
       v14 = [v19 copy];
 
       objc_destroyWeak(&v21);
       objc_destroyWeak(&location);
       v10 = v14;
-      v9 = v11;
+      identifier = v11;
     }
   }
 
   else
   {
     v10 = 0;
-    v9 = 0;
+    identifier = 0;
   }
 
   v15 = MEMORY[0x223D6F7F0](v10);
   v16 = 32;
-  if (v3)
+  if (increaseCopy)
   {
     v16 = 24;
   }
@@ -671,7 +671,7 @@ void __82__SBVolumeHardwareButtonActions__sendVolumeButtonDownToSBUIControllerFo
   v17 = *(&self->super.isa + v16);
   *(&self->super.isa + v16) = v15;
 
-  return v9;
+  return identifier;
 }
 
 void __83__SBVolumeHardwareButtonActions__sendVolumeButtonDownToOverridingSceneForIncrease___block_invoke_2(uint64_t a1)
@@ -681,15 +681,15 @@ void __83__SBVolumeHardwareButtonActions__sendVolumeButtonDownToOverridingSceneF
   [WeakRetained _sendVolumeButtonToSBUIControllerForIncrease:*(a1 + 48) down:0];
 }
 
-- (BOOL)_handleVolumeButtonDownForIncrease:(BOOL)a3 modifiers:(int64_t)a4
+- (BOOL)_handleVolumeButtonDownForIncrease:(BOOL)increase modifiers:(int64_t)modifiers
 {
-  v4 = a3;
+  increaseCopy = increase;
   v36 = *MEMORY[0x277D85DE8];
-  if (a4 == 0x80000)
+  if (modifiers == 0x80000)
   {
     [(SBVolumeHardwareButtonActions *)self _launchVolumeSettings];
     v6 = 32;
-    if (v4)
+    if (increaseCopy)
     {
       v6 = 24;
       v7 = &__block_literal_global_406;
@@ -713,7 +713,7 @@ void __83__SBVolumeHardwareButtonActions__sendVolumeButtonDownToOverridingSceneF
       goto LABEL_11;
     }
 
-    if (v4)
+    if (increaseCopy)
     {
       [(SBVolumeHardwareButtonActions *)self _sendBanditsVolumeIncreased];
     }
@@ -723,8 +723,8 @@ void __83__SBVolumeHardwareButtonActions__sendVolumeButtonDownToOverridingSceneF
       [(SBVolumeHardwareButtonActions *)self _sendBanditsVolumeDecreased];
     }
 
-    v10 = [(NSHashTable *)self->_volumePressBandits allObjects];
-    v11 = [v10 bs_map:&__block_literal_global_71_0];
+    allObjects = [(NSHashTable *)self->_volumePressBandits allObjects];
+    v11 = [allObjects bs_map:&__block_literal_global_71_0];
     v12 = [v11 componentsJoinedByString:{@", "}];
 
     v9 = [@"bandit(s): " stringByAppendingString:v12];
@@ -734,17 +734,17 @@ void __83__SBVolumeHardwareButtonActions__sendVolumeButtonDownToOverridingSceneF
 LABEL_11:
       v13 = +[SBPrototypeController sharedInstance];
       v14 = v13;
-      if (v4)
+      if (increaseCopy)
       {
-        v15 = [v13 handleVolumeIncreaseEvent];
+        handleVolumeIncreaseEvent = [v13 handleVolumeIncreaseEvent];
       }
 
       else
       {
-        v15 = [v13 handleVolumeDecreaseEvent];
+        handleVolumeIncreaseEvent = [v13 handleVolumeDecreaseEvent];
       }
 
-      v16 = v15;
+      v16 = handleVolumeIncreaseEvent;
 
       if (v16)
       {
@@ -752,18 +752,18 @@ LABEL_11:
         goto LABEL_18;
       }
 
-      v17 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v17 postNotificationName:*MEMORY[0x277D67AF8] object:0];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter postNotificationName:*MEMORY[0x277D67AF8] object:0];
 
-      v18 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v18 postNotificationName:*MEMORY[0x277D67AF0] object:0];
+      defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter2 postNotificationName:*MEMORY[0x277D67AF0] object:0];
 
-      v19 = [(SBVolumeHardwareButtonActions *)self _sendVolumeButtonDownToSpringBoardInternalUIForIncrease:v4];
+      v19 = [(SBVolumeHardwareButtonActions *)self _sendVolumeButtonDownToSpringBoardInternalUIForIncrease:increaseCopy];
       if (!v19)
       {
         v23 = +[SBHardwareButtonService sharedInstance];
         v24 = v23;
-        if (v4)
+        if (increaseCopy)
         {
           v31 = 0;
           v25 = [v23 consumeVolumeIncreaseButtonSinglePressDownWithPriority:0 continuation:&v31];
@@ -791,16 +791,16 @@ LABEL_11:
           goto LABEL_18;
         }
 
-        v19 = [(SBVolumeHardwareButtonActions *)self _sendVolumeButtonDownToSoundControllerForIncrease:v4];
+        v19 = [(SBVolumeHardwareButtonActions *)self _sendVolumeButtonDownToSoundControllerForIncrease:increaseCopy];
         if (!v19)
         {
-          v19 = [(SBVolumeHardwareButtonActions *)self _sendVolumeButtonDownToOverridingSceneForIncrease:v4];
+          v19 = [(SBVolumeHardwareButtonActions *)self _sendVolumeButtonDownToOverridingSceneForIncrease:increaseCopy];
           if (!v19)
           {
-            v19 = [(SBVolumeHardwareButtonActions *)self _sendVolumeButtonDownToLegacyRegisteredClientsForIncrease:v4];
+            v19 = [(SBVolumeHardwareButtonActions *)self _sendVolumeButtonDownToLegacyRegisteredClientsForIncrease:increaseCopy];
             if (!v19)
             {
-              v19 = [(SBVolumeHardwareButtonActions *)self _sendVolumeButtonDownToSBUIControllerForIncrease:v4];
+              v19 = [(SBVolumeHardwareButtonActions *)self _sendVolumeButtonDownToSBUIControllerForIncrease:increaseCopy];
             }
           }
         }
@@ -815,7 +815,7 @@ LABEL_18:
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
     v21 = @"decrease";
-    if (v4)
+    if (increaseCopy)
     {
       v21 = @"increase";
     }

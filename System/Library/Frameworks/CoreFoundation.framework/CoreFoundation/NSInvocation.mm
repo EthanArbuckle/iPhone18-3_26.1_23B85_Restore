@@ -1,10 +1,10 @@
 @interface NSInvocation
-+ (id)_invocationWithMethodSignature:(id)a3 frame:(void *)a4;
++ (id)_invocationWithMethodSignature:(id)signature frame:(void *)frame;
 - (SEL)selector;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)target;
-- (uint64_t)_initWithMethodSignature:(const void *)a3 frame:(void *)a4 buffer:(size_t)a5 size:;
-- (void)_addAttachedObject:(id)a3;
+- (uint64_t)_initWithMethodSignature:(const void *)signature frame:(void *)frame buffer:(size_t)buffer size:;
+- (void)_addAttachedObject:(id)object;
 - (void)dealloc;
 - (void)getArgument:(void *)argumentLocation atIndex:(NSInteger)idx;
 - (void)invoke;
@@ -36,9 +36,9 @@
   [(NSInvocation *)self getArgument:v28 atIndex:0];
   if (v28[0])
   {
-    v4 = [(NSMethodSignature *)self->_signature _frameDescriptor];
-    var0 = v4->var0;
-    if ((*(v4->var0 + 17) & 0x80) != 0 && !*(self->_frame + *(var0 + 28) + *(var0 + 32)))
+    _frameDescriptor = [(NSMethodSignature *)self->_signature _frameDescriptor];
+    var0 = _frameDescriptor->var0;
+    if ((*(_frameDescriptor->var0 + 17) & 0x80) != 0 && !*(self->_frame + *(var0 + 28) + *(var0 + 32)))
     {
       __NSICreateBackingForArgumentIfNeeded(self, var0, -1, 0);
     }
@@ -73,10 +73,10 @@ LABEL_15:
     v11 = self->_magic;
     signature = self->_signature;
     objc_opt_class();
-    v13 = [(NSMethodSignature *)self->_signature frameLength];
-    if (v13)
+    frameLength = [(NSMethodSignature *)self->_signature frameLength];
+    if (frameLength)
     {
-      if ((v13 & 7) != 0)
+      if ((frameLength & 7) != 0)
       {
         [NSInvocation invoke];
       }
@@ -99,16 +99,16 @@ LABEL_15:
 
     v19 = self->_frame;
     retdata = self->_retdata;
-    v20 = [(NSMethodSignature *)self->_signature frameLength];
-    var24 = v4->var0->var24;
-    __invoking___(v10, retdata, v19, v20);
+    frameLength2 = [(NSMethodSignature *)self->_signature frameLength];
+    var24 = _frameDescriptor->var0->var24;
+    __invoking___(v10, retdata, v19, frameLength2);
     if (_CFExecutableLinkedOnOrAfter(5uLL))
     {
       if (self->_retainedArgs)
       {
-        v22 = v4->var0;
+        v22 = _frameDescriptor->var0;
         v23 = 8;
-        if ((*(v4->var0 + 17) & 0x80) == 0)
+        if ((*(_frameDescriptor->var0 + 17) & 0x80) == 0)
         {
           v23 = 16;
         }
@@ -119,17 +119,17 @@ LABEL_25:
         __NSI3(v22, v24, p_container, 1);
         while (1)
         {
-          v4 = v4->var1;
-          if (!v4)
+          _frameDescriptor = _frameDescriptor->var1;
+          if (!_frameDescriptor)
           {
             break;
           }
 
-          if ((WORD1(v4[1].var1) & 3) != 1)
+          if ((WORD1(_frameDescriptor[1].var1) & 3) != 1)
           {
             v24 = self->_frame;
             p_container = &self->_container;
-            v22 = v4;
+            v22 = _frameDescriptor;
             goto LABEL_25;
           }
         }
@@ -139,12 +139,12 @@ LABEL_25:
     else
     {
       v26 = 8;
-      if ((*(v4->var0 + 17) & 0x80) == 0)
+      if ((*(_frameDescriptor->var0 + 17) & 0x80) == 0)
       {
         v26 = 16;
       }
 
-      __NSI3(v4->var0, *(&self->super.isa + v26), &self->_container, 1);
+      __NSI3(_frameDescriptor->var0, *(&self->super.isa + v26), &self->_container, 1);
     }
   }
 
@@ -210,10 +210,10 @@ LABEL_25:
     v4 = self->_magic;
     signature = self->_signature;
     objc_opt_class();
-    v6 = [(NSMethodSignature *)self->_signature frameLength];
-    if (v6)
+    frameLength = [(NSMethodSignature *)self->_signature frameLength];
+    if (frameLength)
     {
-      if ((v6 & 7) != 0)
+      if ((frameLength & 7) != 0)
       {
         [NSInvocation retainArguments];
       }
@@ -234,16 +234,16 @@ LABEL_25:
       _NSIPoisoned();
     }
 
-    v11 = [(NSMethodSignature *)self->_signature _frameDescriptor];
-    __NSICreateBackingForArgumentIfNeeded(self, v11->var0, -1, 1);
+    _frameDescriptor = [(NSMethodSignature *)self->_signature _frameDescriptor];
+    __NSICreateBackingForArgumentIfNeeded(self, _frameDescriptor->var0, -1, 1);
     v12 = 8;
-    if ((*(v11->var0 + 17) & 0x80) == 0)
+    if ((*(_frameDescriptor->var0 + 17) & 0x80) == 0)
     {
       v12 = 16;
     }
 
-    __NSI3(v11->var0, *(&self->super.isa + v12), &self->_container, 1);
-    var1 = v11->var1;
+    __NSI3(_frameDescriptor->var0, *(&self->super.isa + v12), &self->_container, 1);
+    var1 = _frameDescriptor->var1;
     if (var1)
     {
       v14 = 0;
@@ -262,10 +262,10 @@ LABEL_25:
     v15 = self->_magic;
     v16 = self->_signature;
     objc_opt_class();
-    v17 = [(NSMethodSignature *)self->_signature frameLength];
-    if (v17)
+    frameLength2 = [(NSMethodSignature *)self->_signature frameLength];
+    if (frameLength2)
     {
-      if ((v17 & 7) != 0)
+      if ((frameLength2 & 7) != 0)
       {
         [NSInvocation retainArguments];
       }
@@ -295,47 +295,47 @@ LABEL_25:
   return result;
 }
 
-- (uint64_t)_initWithMethodSignature:(const void *)a3 frame:(void *)a4 buffer:(size_t)a5 size:
+- (uint64_t)_initWithMethodSignature:(const void *)signature frame:(void *)frame buffer:(size_t)buffer size:
 {
-  if (a1)
+  if (self)
   {
-    if ([a2 frameLength] + 320 > a5)
+    if ([a2 frameLength] + 320 > buffer)
     {
       __break(1u);
     }
 
     else
     {
-      *(a1 + 24) = a2;
-      *(a1 + 32) = 0;
-      *(a1 + 16) = a4;
-      bzero(a4, a5);
-      *(a1 + 8) = *(a1 + 16) + 320;
+      *(self + 24) = a2;
+      *(self + 32) = 0;
+      *(self + 16) = frame;
+      bzero(frame, buffer);
+      *(self + 8) = *(self + 16) + 320;
       if (magic_cookie_oGuard != -1)
       {
         [NSInvocation _initWithMethodSignature:frame:buffer:size:];
       }
 
-      *(a1 + 56) = magic_cookie_oValue;
-      if (a3)
+      *(self + 56) = magic_cookie_oValue;
+      if (signature)
       {
-        memmove(*(a1 + 8), a3, [a2 frameLength]);
+        memmove(*(self + 8), signature, [a2 frameLength]);
       }
 
-      *(a1 + 60) = 256;
-      [*(a1 + 24) numberOfArguments];
-      v10 = *(a1 + 56);
-      v11 = *(a1 + 24);
+      *(self + 60) = 256;
+      [*(self + 24) numberOfArguments];
+      v10 = *(self + 56);
+      v11 = *(self + 24);
       objc_opt_class();
-      v12 = [*(a1 + 24) frameLength];
-      if (!v12)
+      frameLength = [*(self + 24) frameLength];
+      if (!frameLength)
       {
         goto LABEL_11;
       }
 
-      if ((v12 & 7) == 0)
+      if ((frameLength & 7) == 0)
       {
-        v14 = *(a1 + 8);
+        v14 = *(self + 8);
         v15 = 8;
         do
         {
@@ -345,39 +345,39 @@ LABEL_25:
 
         while (v15);
 LABEL_11:
-        *(a1 + 48) = v13;
-        return a1;
+        *(self + 48) = v13;
+        return self;
       }
     }
 
     [NSInvocation _initWithMethodSignature:frame:buffer:size:];
   }
 
-  return a1;
+  return self;
 }
 
-+ (id)_invocationWithMethodSignature:(id)a3 frame:(void *)a4
++ (id)_invocationWithMethodSignature:(id)signature frame:(void *)frame
 {
-  if (!a3)
+  if (!signature)
   {
-    v22 = __CFExceptionProem(a1, a2);
+    v22 = __CFExceptionProem(self, a2);
     v20 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"%@: method signature argument cannot be nil", v22);
     goto LABEL_16;
   }
 
-  v8 = [a3 frameLength];
-  v9 = v8 + 320;
-  if (((v8 >= 0xFFFFFFFFFFFFFEC0) << 63) >> 63 != v8 >= 0xFFFFFFFFFFFFFEC0)
+  frameLength = [signature frameLength];
+  v9 = frameLength + 320;
+  if (((frameLength >= 0xFFFFFFFFFFFFFEC0) << 63) >> 63 != frameLength >= 0xFFFFFFFFFFFFFEC0)
   {
-    v23 = __CFExceptionProem(a1, a2);
+    v23 = __CFExceptionProem(self, a2);
     v20 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"Overflow while allocating space for method signature %@", v23);
 LABEL_16:
     v21 = [NSException exceptionWithName:@"NSInvalidArgumentException" reason:_CFAutoreleasePoolAddObject(0 userInfo:v20), 0];
     objc_exception_throw(v21);
   }
 
-  v10 = [a1 alloc];
-  *(v10 + 3) = a3;
+  v10 = [self alloc];
+  *(v10 + 3) = signature;
   v11 = malloc_type_calloc(1uLL, v9, 0xB800B753uLL);
   *(v10 + 1) = v11 + 320;
   *(v10 + 2) = v11;
@@ -388,9 +388,9 @@ LABEL_16:
   }
 
   *(v10 + 14) = magic_cookie_oValue;
-  if (a4)
+  if (frame)
   {
-    memmove(*(v10 + 1), a4, [a3 frameLength]);
+    memmove(*(v10 + 1), frame, [signature frameLength]);
   }
 
   *(v10 + 60) = 0;
@@ -398,10 +398,10 @@ LABEL_16:
   v12 = *(v10 + 14);
   v13 = *(v10 + 3);
   objc_opt_class();
-  v14 = [*(v10 + 3) frameLength];
-  if (v14)
+  frameLength2 = [*(v10 + 3) frameLength];
+  if (frameLength2)
   {
-    if ((v14 & 7) != 0)
+    if ((frameLength2 & 7) != 0)
     {
       +[NSInvocation _invocationWithMethodSignature:frame:];
     }
@@ -422,9 +422,9 @@ LABEL_16:
   return v10;
 }
 
-- (void)_addAttachedObject:(id)a3
+- (void)_addAttachedObject:(id)object
 {
-  if (a3)
+  if (object)
   {
     container = self->_container;
     if (!container)
@@ -433,11 +433,11 @@ LABEL_16:
       self->_container = container;
     }
 
-    [(NSMutableArray *)container addObject:a3];
+    [(NSMutableArray *)container addObject:object];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   magic = self->_magic;
   if (magic_cookie_oGuard != -1)
@@ -466,10 +466,10 @@ LABEL_16:
   v7 = self->_magic;
   signature = self->_signature;
   objc_opt_class();
-  v9 = [(NSMethodSignature *)self->_signature frameLength];
-  if (v9)
+  frameLength = [(NSMethodSignature *)self->_signature frameLength];
+  if (frameLength)
   {
-    if ((v9 & 7) != 0)
+    if ((frameLength & 7) != 0)
     {
       [NSInvocation copyWithZone:];
     }
@@ -494,10 +494,10 @@ LABEL_16:
   v14 = *(v5 + 14);
   v15 = *(v5 + 3);
   objc_opt_class();
-  v16 = [*(v5 + 3) frameLength];
-  if (v16)
+  frameLength2 = [*(v5 + 3) frameLength];
+  if (frameLength2)
   {
-    if ((v16 & 7) != 0)
+    if ((frameLength2 & 7) != 0)
     {
       [NSInvocation copyWithZone:];
     }
@@ -538,10 +538,10 @@ LABEL_16:
   retdata = self->_retdata;
   signature = self->_signature;
   frame = self->_frame;
-  v10 = [(NSMethodSignature *)signature numberOfArguments];
-  if (idx < -1 || v10 <= idx)
+  numberOfArguments = [(NSMethodSignature *)signature numberOfArguments];
+  if (idx < -1 || numberOfArguments <= idx)
   {
-    v12 = v10;
+    v12 = numberOfArguments;
     v15 = __CFExceptionProem(self, sel_getArgument_atIndex_);
     v13 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"%@: index (%ld) out of bounds [-1, %ld]", v15, idx, v12 - 1);
     goto LABEL_10;
@@ -567,9 +567,9 @@ LABEL_10:
 
 - (void)setArgument:(void *)argumentLocation atIndex:(NSInteger)idx
 {
-  v8 = [(NSMethodSignature *)self->_signature numberOfArguments];
-  v9 = v8;
-  if (idx < -1 || v8 <= idx)
+  numberOfArguments = [(NSMethodSignature *)self->_signature numberOfArguments];
+  v9 = numberOfArguments;
+  if (idx < -1 || numberOfArguments <= idx)
   {
     v31 = __CFExceptionProem(self, a2);
     v29 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"%@: index (%ld) out of bounds [-1, %ld]", v31, idx, v9 - 1);
@@ -580,10 +580,10 @@ LABEL_10:
   magic = self->_magic;
   signature = self->_signature;
   objc_opt_class();
-  v12 = [(NSMethodSignature *)self->_signature frameLength];
-  if (v12)
+  frameLength = [(NSMethodSignature *)self->_signature frameLength];
+  if (frameLength)
   {
-    if ((v12 & 7) != 0)
+    if ((frameLength & 7) != 0)
     {
       [NSInvocation setArgument:atIndex:];
     }
@@ -647,10 +647,10 @@ LABEL_16:
   v22 = self->_magic;
   v23 = self->_signature;
   objc_opt_class();
-  v24 = [(NSMethodSignature *)self->_signature frameLength];
-  if (v24)
+  frameLength2 = [(NSMethodSignature *)self->_signature frameLength];
+  if (frameLength2)
   {
-    if ((v24 & 7) != 0)
+    if ((frameLength2 & 7) != 0)
     {
       [NSInvocation setArgument:atIndex:];
     }
@@ -687,9 +687,9 @@ LABEL_16:
   [(NSInvocation *)self getArgument:v22 atIndex:0];
   if (v22[0])
   {
-    v6 = [(NSMethodSignature *)self->_signature _frameDescriptor];
-    var0 = v6->var0;
-    if ((*(v6->var0 + 17) & 0x80) != 0 && !*(self->_frame + *(var0 + 28) + *(var0 + 32)))
+    _frameDescriptor = [(NSMethodSignature *)self->_signature _frameDescriptor];
+    var0 = _frameDescriptor->var0;
+    if ((*(_frameDescriptor->var0 + 17) & 0x80) != 0 && !*(self->_frame + *(var0 + 28) + *(var0 + 32)))
     {
       __NSICreateBackingForArgumentIfNeeded(self, var0, -1, 0);
     }
@@ -698,10 +698,10 @@ LABEL_16:
     v8 = self->_magic;
     signature = self->_signature;
     objc_opt_class();
-    v10 = [(NSMethodSignature *)self->_signature frameLength];
-    if (v10)
+    frameLength = [(NSMethodSignature *)self->_signature frameLength];
+    if (frameLength)
     {
-      if ((v10 & 7) != 0)
+      if ((frameLength & 7) != 0)
       {
         [NSInvocation invokeUsingIMP:];
       }
@@ -724,19 +724,19 @@ LABEL_16:
 
     v16 = self->_frame;
     retdata = self->_retdata;
-    v17 = [(NSMethodSignature *)self->_signature frameLength];
-    var24 = v6->var0->var24;
-    __invoking___(imp, retdata, v16, v17);
+    frameLength2 = [(NSMethodSignature *)self->_signature frameLength];
+    var24 = _frameDescriptor->var0->var24;
+    __invoking___(imp, retdata, v16, frameLength2);
     if (self->_retainedArgs)
     {
       v19 = 8;
-      if ((*(v6->var0 + 17) & 0x80) == 0)
+      if ((*(_frameDescriptor->var0 + 17) & 0x80) == 0)
       {
         v19 = 16;
       }
 
-      __NSI3(v6->var0, *(&self->super.isa + v19), &self->_container, 1);
-      for (i = v6->var1; i; i = i->var1)
+      __NSI3(_frameDescriptor->var0, *(&self->super.isa + v19), &self->_container, 1);
+      for (i = _frameDescriptor->var1; i; i = i->var1)
       {
         if ((*(i + 17) & 3) != 1)
         {

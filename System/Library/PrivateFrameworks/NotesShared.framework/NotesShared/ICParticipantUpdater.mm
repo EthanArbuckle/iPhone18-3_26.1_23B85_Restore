@@ -1,25 +1,25 @@
 @interface ICParticipantUpdater
-- (ICParticipantUpdater)initWithManagedObjectContext:(id)a3;
+- (ICParticipantUpdater)initWithManagedObjectContext:(id)context;
 - (id)missingNoteObjectsIDs;
-- (void)deleteOrphanedParticipantsWithCompletion:(id)a3;
-- (void)insertMissingParticipantsWithCompletion:(id)a3;
-- (void)insertParticipantsForNoteObjectID:(id)a3;
+- (void)deleteOrphanedParticipantsWithCompletion:(id)completion;
+- (void)insertMissingParticipantsWithCompletion:(id)completion;
+- (void)insertParticipantsForNoteObjectID:(id)d;
 - (void)missingNoteObjectsIDs;
-- (void)updateWithCompletion:(id)a3;
+- (void)updateWithCompletion:(id)completion;
 @end
 
 @implementation ICParticipantUpdater
 
-- (ICParticipantUpdater)initWithManagedObjectContext:(id)a3
+- (ICParticipantUpdater)initWithManagedObjectContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v13.receiver = self;
   v13.super_class = ICParticipantUpdater;
   v6 = [(ICParticipantUpdater *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_managedObjectContext, a3);
+    objc_storeStrong(&v6->_managedObjectContext, context);
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_attr_make_with_qos_class(v8, QOS_CLASS_DEFAULT, -1);
 
@@ -31,9 +31,9 @@
   return v7;
 }
 
-- (void)updateWithCompletion:(id)a3
+- (void)updateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = dispatch_group_create();
   dispatch_group_enter(v5);
   v14[0] = MEMORY[0x277D85DD0];
@@ -56,8 +56,8 @@
   block[1] = 3221225472;
   block[2] = __45__ICParticipantUpdater_updateWithCompletion___block_invoke_3;
   block[3] = &unk_278195F28;
-  v11 = v4;
-  v9 = v4;
+  v11 = completionCopy;
+  v9 = completionCopy;
   dispatch_group_notify(v7, v8, block);
 }
 
@@ -72,18 +72,18 @@ uint64_t __45__ICParticipantUpdater_updateWithCompletion___block_invoke_3(uint64
   return result;
 }
 
-- (void)insertMissingParticipantsWithCompletion:(id)a3
+- (void)insertMissingParticipantsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(ICParticipantUpdater *)self serialQueue];
+  completionCopy = completion;
+  serialQueue = [(ICParticipantUpdater *)self serialQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __64__ICParticipantUpdater_insertMissingParticipantsWithCompletion___block_invoke;
   v7[3] = &unk_2781957B0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(serialQueue, v7);
 }
 
 uint64_t __64__ICParticipantUpdater_insertMissingParticipantsWithCompletion___block_invoke(uint64_t a1)
@@ -144,18 +144,18 @@ void __64__ICParticipantUpdater_insertMissingParticipantsWithCompletion___block_
   }
 }
 
-- (void)deleteOrphanedParticipantsWithCompletion:(id)a3
+- (void)deleteOrphanedParticipantsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(ICParticipantUpdater *)self serialQueue];
+  completionCopy = completion;
+  serialQueue = [(ICParticipantUpdater *)self serialQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __65__ICParticipantUpdater_deleteOrphanedParticipantsWithCompletion___block_invoke;
   v7[3] = &unk_2781957B0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(serialQueue, v7);
 }
 
 uint64_t __65__ICParticipantUpdater_deleteOrphanedParticipantsWithCompletion___block_invoke(uint64_t a1)
@@ -216,21 +216,21 @@ void __65__ICParticipantUpdater_deleteOrphanedParticipantsWithCompletion___block
   }
 }
 
-- (void)insertParticipantsForNoteObjectID:(id)a3
+- (void)insertParticipantsForNoteObjectID:(id)d
 {
-  v4 = a3;
-  v5 = [(ICParticipantUpdater *)self managedObjectContext];
-  v6 = [v5 ic_existingObjectWithID:v4];
+  dCopy = d;
+  managedObjectContext = [(ICParticipantUpdater *)self managedObjectContext];
+  v6 = [managedObjectContext ic_existingObjectWithID:dCopy];
 
-  v7 = [v6 serverShareCheckingParent];
-  v8 = [v7 ic_acceptedParticipants];
+  serverShareCheckingParent = [v6 serverShareCheckingParent];
+  ic_acceptedParticipants = [serverShareCheckingParent ic_acceptedParticipants];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __58__ICParticipantUpdater_insertParticipantsForNoteObjectID___block_invoke;
   v11[3] = &unk_278197D28;
   v11[4] = self;
-  v9 = [v8 ic_map:v11];
+  v9 = [ic_acceptedParticipants ic_map:v11];
   v10 = [MEMORY[0x277CBEB98] setWithArray:v9];
   [v6 setParticipants:v10];
 }
@@ -257,8 +257,8 @@ ICNoteParticipant *__58__ICParticipantUpdater_insertParticipantsForNoteObjectID_
 - (id)missingNoteObjectsIDs
 {
   v24[2] = *MEMORY[0x277D85DE8];
-  v3 = [(ICParticipantUpdater *)self managedObjectContext];
-  v4 = [ICNote predicateForVisibleNotesInContext:v3];
+  managedObjectContext = [(ICParticipantUpdater *)self managedObjectContext];
+  v4 = [ICNote predicateForVisibleNotesInContext:managedObjectContext];
 
   v5 = [MEMORY[0x277CCAC30] predicateWithFormat:@"serverShareData != nil"];
   v24[0] = v5;
@@ -281,9 +281,9 @@ ICNoteParticipant *__58__ICParticipantUpdater_insertParticipantsForNoteObjectID_
   [v12 setPredicate:v15];
 
   [v12 setResultType:1];
-  v16 = [(ICParticipantUpdater *)self managedObjectContext];
+  managedObjectContext2 = [(ICParticipantUpdater *)self managedObjectContext];
   v22 = 0;
-  v17 = [v16 executeFetchRequest:v12 error:&v22];
+  v17 = [managedObjectContext2 executeFetchRequest:v12 error:&v22];
   v18 = v22;
 
   if (v18)

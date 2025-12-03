@@ -1,31 +1,31 @@
 @interface SCLTimeInterval
-- (BOOL)containsScheduleTime:(id)a3;
+- (BOOL)containsScheduleTime:(id)time;
 - (BOOL)crossesDayBoundary;
-- (BOOL)intersectsTimeInterval:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (SCLTimeInterval)initWithCoder:(id)a3;
-- (SCLTimeInterval)initWithStartTime:(id)a3 endTime:(id)a4;
+- (BOOL)intersectsTimeInterval:(id)interval;
+- (BOOL)isEqual:(id)equal;
+- (SCLTimeInterval)initWithCoder:(id)coder;
+- (SCLTimeInterval)initWithStartTime:(id)time endTime:(id)endTime;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SCLTimeInterval
 
-- (SCLTimeInterval)initWithStartTime:(id)a3 endTime:(id)a4
+- (SCLTimeInterval)initWithStartTime:(id)time endTime:(id)endTime
 {
-  v6 = a3;
-  v7 = a4;
+  timeCopy = time;
+  endTimeCopy = endTime;
   v14.receiver = self;
   v14.super_class = SCLTimeInterval;
   v8 = [(SCLTimeInterval *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [timeCopy copy];
     startTime = v8->_startTime;
     v8->_startTime = v9;
 
-    v11 = [v7 copy];
+    v11 = [endTimeCopy copy];
     endTime = v8->_endTime;
     v8->_endTime = v11;
   }
@@ -33,19 +33,19 @@
   return v8;
 }
 
-- (SCLTimeInterval)initWithCoder:(id)a3
+- (SCLTimeInterval)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = SCLTimeInterval;
   v5 = [(SCLTimeInterval *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startTime"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startTime"];
     startTime = v5->_startTime;
     v5->_startTime = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endTime"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endTime"];
     endTime = v5->_endTime;
     v5->_endTime = v8;
   }
@@ -53,97 +53,97 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   startTime = self->_startTime;
-  v5 = a3;
-  [v5 encodeObject:startTime forKey:@"startTime"];
-  [v5 encodeObject:self->_endTime forKey:@"endTime"];
+  coderCopy = coder;
+  [coderCopy encodeObject:startTime forKey:@"startTime"];
+  [coderCopy encodeObject:self->_endTime forKey:@"endTime"];
 }
 
 - (BOOL)crossesDayBoundary
 {
-  v3 = [(SCLTimeInterval *)self endTime];
-  if ([v3 hour])
+  endTime = [(SCLTimeInterval *)self endTime];
+  if ([endTime hour])
   {
   }
 
   else
   {
-    v4 = [(SCLTimeInterval *)self endTime];
-    v5 = [v4 minute];
+    endTime2 = [(SCLTimeInterval *)self endTime];
+    minute = [endTime2 minute];
 
-    if (!v5)
+    if (!minute)
     {
       return 0;
     }
   }
 
-  v6 = [(SCLTimeInterval *)self startTime];
-  v7 = [(SCLTimeInterval *)self endTime];
-  v8 = [v6 compare:v7] == 1;
+  startTime = [(SCLTimeInterval *)self startTime];
+  endTime3 = [(SCLTimeInterval *)self endTime];
+  v8 = [startTime compare:endTime3] == 1;
 
   return v8;
 }
 
-- (BOOL)containsScheduleTime:(id)a3
+- (BOOL)containsScheduleTime:(id)time
 {
-  v4 = a3;
+  timeCopy = time;
   if ([(SCLTimeInterval *)self crossesDayBoundary])
   {
-    v5 = [(SCLScheduleTime *)self->_endTime compare:v4]== 1 || [(SCLScheduleTime *)self->_startTime compare:v4]!= 1;
+    v5 = [(SCLScheduleTime *)self->_endTime compare:timeCopy]== 1 || [(SCLScheduleTime *)self->_startTime compare:timeCopy]!= 1;
   }
 
   else
   {
-    v6 = [(SCLTimeInterval *)self startTime];
-    if ([v6 compare:v4] == 1)
+    startTime = [(SCLTimeInterval *)self startTime];
+    if ([startTime compare:timeCopy] == 1)
     {
       v5 = 0;
     }
 
     else
     {
-      v7 = [(SCLTimeInterval *)self endTime];
-      v5 = [v7 compare:v4] == 1;
+      endTime = [(SCLTimeInterval *)self endTime];
+      v5 = [endTime compare:timeCopy] == 1;
     }
   }
 
   return v5;
 }
 
-- (BOOL)intersectsTimeInterval:(id)a3
+- (BOOL)intersectsTimeInterval:(id)interval
 {
-  v4 = a3;
-  v5 = [v4 startTime];
-  v6 = [(SCLTimeInterval *)self containsScheduleTime:v5];
+  intervalCopy = interval;
+  startTime = [intervalCopy startTime];
+  v6 = [(SCLTimeInterval *)self containsScheduleTime:startTime];
 
   if (v6)
   {
     goto LABEL_2;
   }
 
-  v8 = [v4 endTime];
-  v9 = [(SCLTimeInterval *)self containsScheduleTime:v8];
+  endTime = [intervalCopy endTime];
+  v9 = [(SCLTimeInterval *)self containsScheduleTime:endTime];
 
-  v10 = [(SCLTimeInterval *)self startTime];
+  startTime2 = [(SCLTimeInterval *)self startTime];
   if (v9)
   {
-    v11 = [v4 endTime];
+    endTime2 = [intervalCopy endTime];
 LABEL_5:
-    v12 = v11;
-    v13 = [v10 isEqual:v11];
+    v12 = endTime2;
+    v13 = [startTime2 isEqual:endTime2];
 
     v7 = v13 ^ 1;
     goto LABEL_6;
   }
 
-  v15 = [v4 containsScheduleTime:v10];
+  v15 = [intervalCopy containsScheduleTime:startTime2];
 
   if ((v15 & 1) == 0)
   {
-    v16 = [(SCLTimeInterval *)self endTime];
-    v17 = [v4 containsScheduleTime:v16];
+    endTime3 = [(SCLTimeInterval *)self endTime];
+    v17 = [intervalCopy containsScheduleTime:endTime3];
 
     if (!v17)
     {
@@ -151,8 +151,8 @@ LABEL_5:
       goto LABEL_6;
     }
 
-    v10 = [(SCLTimeInterval *)self endTime];
-    v11 = [v4 startTime];
+    startTime2 = [(SCLTimeInterval *)self endTime];
+    endTime2 = [intervalCopy startTime];
     goto LABEL_5;
   }
 
@@ -163,10 +163,10 @@ LABEL_6:
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
@@ -176,14 +176,14 @@ LABEL_6:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(SCLTimeInterval *)self startTime];
-      v7 = [(SCLTimeInterval *)v5 startTime];
-      if ([v6 isEqual:v7])
+      v5 = equalCopy;
+      startTime = [(SCLTimeInterval *)self startTime];
+      startTime2 = [(SCLTimeInterval *)v5 startTime];
+      if ([startTime isEqual:startTime2])
       {
-        v8 = [(SCLTimeInterval *)self endTime];
-        v9 = [(SCLTimeInterval *)v5 endTime];
-        v10 = [v8 isEqual:v9];
+        endTime = [(SCLTimeInterval *)self endTime];
+        endTime2 = [(SCLTimeInterval *)v5 endTime];
+        v10 = [endTime isEqual:endTime2];
       }
 
       else
@@ -203,10 +203,10 @@ LABEL_6:
 
 - (unint64_t)hash
 {
-  v3 = [(SCLTimeInterval *)self startTime];
-  v4 = [v3 hash];
-  v5 = [(SCLTimeInterval *)self endTime];
-  v6 = [v5 hash];
+  startTime = [(SCLTimeInterval *)self startTime];
+  v4 = [startTime hash];
+  endTime = [(SCLTimeInterval *)self endTime];
+  v6 = [endTime hash];
 
   return v6 ^ v4;
 }
@@ -216,14 +216,14 @@ LABEL_6:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(SCLTimeInterval *)self startTime];
-  v7 = [v6 hour];
-  v8 = [(SCLTimeInterval *)self startTime];
-  v9 = [v8 minute];
-  v10 = [(SCLTimeInterval *)self endTime];
-  v11 = [v10 hour];
-  v12 = [(SCLTimeInterval *)self endTime];
-  v13 = [v3 stringWithFormat:@"<%@ %p %02d:%02d - %02d:%02d>", v5, self, v7, v9, v11, objc_msgSend(v12, "minute")];;
+  startTime = [(SCLTimeInterval *)self startTime];
+  hour = [startTime hour];
+  startTime2 = [(SCLTimeInterval *)self startTime];
+  minute = [startTime2 minute];
+  endTime = [(SCLTimeInterval *)self endTime];
+  hour2 = [endTime hour];
+  endTime2 = [(SCLTimeInterval *)self endTime];
+  v13 = [v3 stringWithFormat:@"<%@ %p %02d:%02d - %02d:%02d>", v5, self, hour, minute, hour2, objc_msgSend(endTime2, "minute")];;
 
   return v13;
 }

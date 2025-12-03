@@ -1,20 +1,20 @@
 @interface ASCCustomLockupContentProvider
-- (ASCCustomLockupContentProvider)initWithLockupView:(id)a3;
+- (ASCCustomLockupContentProvider)initWithLockupView:(id)view;
 - (ASCLockupView)lockupView;
 @end
 
 @implementation ASCCustomLockupContentProvider
 
-- (ASCCustomLockupContentProvider)initWithLockupView:(id)a3
+- (ASCCustomLockupContentProvider)initWithLockupView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v8.receiver = self;
   v8.super_class = ASCCustomLockupContentProvider;
   v5 = [(ASCCustomLockupContentProvider *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_lockupView, v4);
+    objc_storeWeak(&v5->_lockupView, viewCopy);
   }
 
   return v6;

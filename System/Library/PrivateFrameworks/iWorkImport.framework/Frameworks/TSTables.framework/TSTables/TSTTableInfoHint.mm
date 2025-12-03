@@ -1,15 +1,15 @@
 @interface TSTTableInfoHint
-- (BOOL)containsStyleNetworkIndex:(unint64_t)a3;
+- (BOOL)containsStyleNetworkIndex:(unint64_t)index;
 - (BOOL)hasStylesInCells;
 - (BOOL)hasTableStyles;
 - (CGSize)maximumSize;
 - (TSTTableInfoHint)init;
 - (id).cxx_construct;
 - (vector<unsigned)cellFlags;
-- (void)addCellUID:(const TSKUIDStructCoord *)a3 flags:(unint64_t)a4 addingMaximumSize:(CGSize)a5;
-- (void)addTableStyleIndex:(unint64_t)a3;
-- (void)enumerateCellUIDsUsingBlock:(id)a3;
-- (void)enumerateTableStylesUsingBlock:(id)a3;
+- (void)addCellUID:(const TSKUIDStructCoord *)d flags:(unint64_t)flags addingMaximumSize:(CGSize)size;
+- (void)addTableStyleIndex:(unint64_t)index;
+- (void)enumerateCellUIDsUsingBlock:(id)block;
+- (void)enumerateTableStylesUsingBlock:(id)block;
 @end
 
 @implementation TSTTableInfoHint
@@ -27,7 +27,7 @@
   return result;
 }
 
-- (void)addTableStyleIndex:(unint64_t)a3
+- (void)addTableStyleIndex:(unint64_t)index
 {
   tableStyleIndexes = self->_tableStyleIndexes;
   if (!tableStyleIndexes)
@@ -39,7 +39,7 @@
     tableStyleIndexes = self->_tableStyleIndexes;
   }
 
-  objc_msgSend_addIndex_(tableStyleIndexes, a2, a3, v3, v4);
+  objc_msgSend_addIndex_(tableStyleIndexes, a2, index, v3, v4);
   TSUSizeMax();
   self->_maximumSize.width = v10;
   self->_maximumSize.height = v11;
@@ -56,33 +56,33 @@
   return tableStyleIndexes;
 }
 
-- (BOOL)containsStyleNetworkIndex:(unint64_t)a3
+- (BOOL)containsStyleNetworkIndex:(unint64_t)index
 {
   tableStyleIndexes = self->_tableStyleIndexes;
   if (tableStyleIndexes)
   {
-    LOBYTE(tableStyleIndexes) = objc_msgSend_containsIndex_(tableStyleIndexes, a2, a3, v3, v4);
+    LOBYTE(tableStyleIndexes) = objc_msgSend_containsIndex_(tableStyleIndexes, a2, index, v3, v4);
   }
 
   return tableStyleIndexes;
 }
 
-- (void)enumerateTableStylesUsingBlock:(id)a3
+- (void)enumerateTableStylesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   tableStyleIndexes = self->_tableStyleIndexes;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = sub_2211E5CF4;
   v10[3] = &unk_278461298;
-  v11 = v4;
-  v6 = v4;
+  v11 = blockCopy;
+  v6 = blockCopy;
   objc_msgSend_enumerateIndexesUsingBlock_(tableStyleIndexes, v7, v10, v8, v9);
 }
 
-- (void)addCellUID:(const TSKUIDStructCoord *)a3 flags:(unint64_t)a4 addingMaximumSize:(CGSize)a5
+- (void)addCellUID:(const TSKUIDStructCoord *)d flags:(unint64_t)flags addingMaximumSize:(CGSize)size
 {
-  if (a4)
+  if (flags)
   {
     cellUIDs = self->_cellUIDs;
     if (!cellUIDs)
@@ -94,7 +94,7 @@
       cellUIDs = self->_cellUIDs;
     }
 
-    objc_msgSend_addCellUID_(cellUIDs, a2, a3, a4, v5, a5.width, a5.height);
+    objc_msgSend_addCellUID_(cellUIDs, a2, d, flags, v5, size.width, size.height);
     end = self->_cellFlags.__end_;
     cap = self->_cellFlags.__cap_;
     if (end >= cap)
@@ -129,7 +129,7 @@
       v22 = end - begin;
       v23 = (8 * v17);
       v24 = (8 * v17 - 8 * v22);
-      *v23 = a4;
+      *v23 = flags;
       v14 = v23 + 1;
       memcpy(v24, begin, v16);
       v25 = self->_cellFlags.__begin_;
@@ -144,7 +144,7 @@
 
     else
     {
-      *end = a4;
+      *end = flags;
       v14 = end + 1;
     }
 
@@ -166,17 +166,17 @@
   return cellUIDs;
 }
 
-- (void)enumerateCellUIDsUsingBlock:(id)a3
+- (void)enumerateCellUIDsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   cellUIDs = self->_cellUIDs;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = sub_2211E5F18;
   v10[3] = &unk_2784612C0;
   v10[4] = self;
-  v11 = v4;
-  v6 = v4;
+  v11 = blockCopy;
+  v6 = blockCopy;
   objc_msgSend_enumerateCellUIDsUsingBlock_(cellUIDs, v7, v10, v8, v9);
 }
 

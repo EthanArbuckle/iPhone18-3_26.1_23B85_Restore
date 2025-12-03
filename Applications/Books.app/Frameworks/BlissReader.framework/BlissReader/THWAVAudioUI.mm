@@ -10,10 +10,10 @@
 - (void)layout;
 - (void)pConfigureHUDVisibility;
 - (void)pConfigureScrubberVisibility;
-- (void)pCreateHUDBackgroundForView:(id)a3;
-- (void)p_handlePlayButtonPressed_compactUI:(id)a3;
-- (void)rateChanged:(double)a3;
-- (void)timeChanged:(double)a3;
+- (void)pCreateHUDBackgroundForView:(id)view;
+- (void)p_handlePlayButtonPressed_compactUI:(id)i;
+- (void)rateChanged:(double)changed;
+- (void)timeChanged:(double)changed;
 @end
 
 @implementation THWAVAudioUI
@@ -28,20 +28,20 @@
   [(THWAVTransportUI *)&v3 dealloc];
 }
 
-- (void)pCreateHUDBackgroundForView:(id)a3
+- (void)pCreateHUDBackgroundForView:(id)view
 {
   v4 = [TSUImage imageNamed:@"ib_media_audio_transport_bg" inBundle:THBundle()];
-  [a3 setContentsFromImage:v4];
+  [view setContentsFromImage:v4];
   [v4 size];
 
-  [a3 setContentsCenter:{0.5, 0.0, 1.0 / v5, 1.0}];
+  [view setContentsCenter:{0.5, 0.0, 1.0 / v5, 1.0}];
 }
 
 - (void)createMovieUIViewBackground
 {
-  v3 = [(THWAVTransportUI *)self movieUIView];
+  movieUIView = [(THWAVTransportUI *)self movieUIView];
 
-  [(THWAVAudioUI *)self pCreateHUDBackgroundForView:v3];
+  [(THWAVAudioUI *)self pCreateHUDBackgroundForView:movieUIView];
 }
 
 - (void)initialConfiguration
@@ -70,14 +70,14 @@
       [(THWAVAudioUI *)self setHiddenPlayButton_compactUI:[UIButton tsdPlatformButtonWithFrame:CGRectZero.origin.x, y, width, height]];
       [(UIButton *)[(THWAVAudioUI *)self hiddenPlayButton_compactUI] setTarget:self action:"p_handlePlayButtonPressed_compactUI:"];
       [(THCustomLayerView *)[(THWAVTransportUI *)self compactUIView] addSubview:[(THWAVAudioUI *)self hiddenPlayButton_compactUI]];
-      v6 = [TSKBiggerButton tsdPlatformButtonWithFrame:CGRectZero.origin.x, y, width, height];
-      [v6 setTarget:self action:"p_handlePlayButtonPressed_compactUI:"];
-      [v6 setHitBufferTop:10.0 left:10.0 bottom:10.0 right:10.0];
-      [v6 setShowsTouchWhenHighlighted:1];
-      [objc_msgSend(v6 "imageView")];
-      [v6 setImageNamed:-[THWAVAudioUI imageNameForPlayButton](self inBundle:{"imageNameForPlayButton"), THBundle()}];
-      [v6 setAlternateImageNamed:-[THWAVAudioUI imageNameForPlayButtonPressed](self inBundle:{"imageNameForPlayButtonPressed"), THBundle()}];
-      [(THWAVAudioUI *)self setPlayButton_compactUI:v6];
+      height = [TSKBiggerButton tsdPlatformButtonWithFrame:CGRectZero.origin.x, y, width, height];
+      [height setTarget:self action:"p_handlePlayButtonPressed_compactUI:"];
+      [height setHitBufferTop:10.0 left:10.0 bottom:10.0 right:10.0];
+      [height setShowsTouchWhenHighlighted:1];
+      [objc_msgSend(height "imageView")];
+      [height setImageNamed:-[THWAVAudioUI imageNameForPlayButton](self inBundle:{"imageNameForPlayButton"), THBundle()}];
+      [height setAlternateImageNamed:-[THWAVAudioUI imageNameForPlayButtonPressed](self inBundle:{"imageNameForPlayButtonPressed"), THBundle()}];
+      [(THWAVAudioUI *)self setPlayButton_compactUI:height];
       [(THCustomLayerView *)[(THWAVTransportUI *)self compactUIView] addSubview:[(THWAVAudioUI *)self playButton_compactUI]];
     }
 
@@ -121,9 +121,9 @@
 
 - (CGRect)p_frameForHUDUI
 {
-  v3 = [(THWAVTransportUI *)self transportController];
+  transportController = [(THWAVTransportUI *)self transportController];
 
-  [(THWAVTransportController *)v3 frameOfHUDFor:self];
+  [(THWAVTransportController *)transportController frameOfHUDFor:self];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -253,16 +253,16 @@
   }
 }
 
-- (void)rateChanged:(double)a3
+- (void)rateChanged:(double)changed
 {
   v9.receiver = self;
   v9.super_class = THWAVAudioUI;
-  [(THWAVTransportUI *)&v9 rateChanged:a3];
+  [(THWAVTransportUI *)&v9 rateChanged:changed];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v6 = sub_16D7E8;
   v7 = &unk_45AE00;
-  v8 = self;
+  selfCopy = self;
   if (+[NSThread isMainThread])
   {
     v6(v5);
@@ -279,11 +279,11 @@
   }
 }
 
-- (void)timeChanged:(double)a3
+- (void)timeChanged:(double)changed
 {
   v4.receiver = self;
   v4.super_class = THWAVAudioUI;
-  [(THWAVTransportUI *)&v4 timeChanged:a3];
+  [(THWAVTransportUI *)&v4 timeChanged:changed];
   [(THWAVAudioUI *)self pConfigureScrubberVisibility];
 }
 
@@ -291,16 +291,16 @@
 {
   if ([(THWAVTransportUI *)self isCompact]&& [(THWAVTransportUI *)self movieIsPlaying])
   {
-    v3 = [(THWAVTransportUI *)self transportController];
+    transportController = [(THWAVTransportUI *)self transportController];
 
-    [(THWAVTransportController *)v3 showTransportHUDFor:self];
+    [(THWAVTransportController *)transportController showTransportHUDFor:self];
   }
 
   else
   {
-    v4 = [(THWAVTransportUI *)self transportController];
+    transportController2 = [(THWAVTransportUI *)self transportController];
 
-    [(THWAVTransportController *)v4 hideTransportHUDFor:self];
+    [(THWAVTransportController *)transportController2 hideTransportHUDFor:self];
   }
 }
 
@@ -333,7 +333,7 @@
   [(THWAVTransportUI *)self i_layout];
 }
 
-- (void)p_handlePlayButtonPressed_compactUI:(id)a3
+- (void)p_handlePlayButtonPressed_compactUI:(id)i
 {
   if (![(THWAVTransportUI *)self movieIsPlaying])
   {

@@ -1,17 +1,17 @@
 @interface MKMapItemAnnotation
 - (CLLocationCoordinate2D)coordinate;
-- (MKMapItemAnnotation)initWithMapItem:(id)a3;
+- (MKMapItemAnnotation)initWithMapItem:(id)item;
 @end
 
 @implementation MKMapItemAnnotation
 
 - (CLLocationCoordinate2D)coordinate
 {
-  v2 = [(MKMapItem *)self->_mapItem location];
-  v3 = v2;
-  if (v2)
+  location = [(MKMapItem *)self->_mapItem location];
+  v3 = location;
+  if (location)
   {
-    [v2 coordinate];
+    [location coordinate];
     v5 = v4;
     v7 = v6;
   }
@@ -29,18 +29,18 @@
   return result;
 }
 
-- (MKMapItemAnnotation)initWithMapItem:(id)a3
+- (MKMapItemAnnotation)initWithMapItem:(id)item
 {
-  v5 = a3;
-  v6 = [v5 location];
-  if (v6)
+  itemCopy = item;
+  selfCopy = [itemCopy location];
+  if (selfCopy)
   {
-    v7 = [v5 location];
-    [v7 coordinate];
+    location = [itemCopy location];
+    [location coordinate];
     v9 = v8;
     v11 = fabs(v10);
 
-    v6 = 0;
+    selfCopy = 0;
     if (v11 <= 180.0 && fabs(v9) <= 90.0)
     {
       v15.receiver = self;
@@ -49,15 +49,15 @@
       v13 = v12;
       if (v12)
       {
-        objc_storeStrong(&v12->_mapItem, a3);
+        objc_storeStrong(&v12->_mapItem, item);
       }
 
       self = v13;
-      v6 = self;
+      selfCopy = self;
     }
   }
 
-  return v6;
+  return selfCopy;
 }
 
 @end

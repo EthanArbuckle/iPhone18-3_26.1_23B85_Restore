@@ -1,30 +1,30 @@
 @interface AXSBUIAudiographRootViewController
 - (void)_setupRemoteProxy;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
+- (void)configureWithContext:(id)context completion:(id)completion;
 - (void)dismiss;
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4;
-- (void)selectedSeriesChanged:(id)a3;
-- (void)toggleAudiographPlaybackState:(id)a3;
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion;
+- (void)selectedSeriesChanged:(id)changed;
+- (void)toggleAudiographPlaybackState:(id)state;
 - (void)viewDidLoad;
 @end
 
 @implementation AXSBUIAudiographRootViewController
 
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4);
+    (*(completion + 2))(completion);
   }
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v10 = a4;
-  v6 = [a3 userInfo];
-  if (v6)
+  completionCopy = completion;
+  userInfo = [context userInfo];
+  if (userInfo)
   {
-    v7 = [[AXMChartDescriptor alloc] initWithDictionary:v6];
+    v7 = [[AXMChartDescriptor alloc] initWithDictionary:userInfo];
     [(AXSBUIAudiographRootViewController *)self setChartDescriptor:v7];
   }
 
@@ -33,13 +33,13 @@
     [(AXSBUIAudiographRootViewController *)self setChartDescriptor:0];
   }
 
-  v8 = [(AXSBUIAudiographRootViewController *)self chartDescriptor];
-  v9 = [AXAudiographExplorerProvider makeAudiographExplorerView:v8];
+  chartDescriptor = [(AXSBUIAudiographRootViewController *)self chartDescriptor];
+  v9 = [AXAudiographExplorerProvider makeAudiographExplorerView:chartDescriptor];
   [(AXSBUIAudiographRootViewController *)self setHostingController:v9];
 
-  if (v10)
+  if (completionCopy)
   {
-    v10[2]();
+    completionCopy[2]();
   }
 }
 
@@ -55,10 +55,10 @@
   [v4 addObserver:self selector:"toggleAudiographPlaybackState:" name:@"ToggleAudiographPlaybackState" object:0];
 }
 
-- (void)selectedSeriesChanged:(id)a3
+- (void)selectedSeriesChanged:(id)changed
 {
-  v3 = [a3 userInfo];
-  argument = [v3 objectForKeyedSubscript:@"seriesIndex"];
+  userInfo = [changed userInfo];
+  argument = [userInfo objectForKeyedSubscript:@"seriesIndex"];
 
   v4 = argument;
   if (argument)
@@ -68,10 +68,10 @@
   }
 }
 
-- (void)toggleAudiographPlaybackState:(id)a3
+- (void)toggleAudiographPlaybackState:(id)state
 {
-  v3 = [a3 userInfo];
-  argument = [v3 objectForKeyedSubscript:@"shouldPlay"];
+  userInfo = [state userInfo];
+  argument = [userInfo objectForKeyedSubscript:@"shouldPlay"];
 
   v4 = argument;
   if (argument)
@@ -93,12 +93,12 @@
 
 - (void)_setupRemoteProxy
 {
-  v2 = [(AXSBUIAudiographRootViewController *)self _remoteViewControllerProxy];
-  [v2 setOrientationChangedEventsEnabled:0];
-  [v2 setAllowsMenuButtonDismissal:1];
-  [v2 setWallpaperTunnelActive:1];
-  [v2 setWallpaperStyle:4 withDuration:0.3];
-  [v2 setStatusBarHidden:1 withDuration:0.3];
+  _remoteViewControllerProxy = [(AXSBUIAudiographRootViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setOrientationChangedEventsEnabled:0];
+  [_remoteViewControllerProxy setAllowsMenuButtonDismissal:1];
+  [_remoteViewControllerProxy setWallpaperTunnelActive:1];
+  [_remoteViewControllerProxy setWallpaperStyle:4 withDuration:0.3];
+  [_remoteViewControllerProxy setStatusBarHidden:1 withDuration:0.3];
 }
 
 @end

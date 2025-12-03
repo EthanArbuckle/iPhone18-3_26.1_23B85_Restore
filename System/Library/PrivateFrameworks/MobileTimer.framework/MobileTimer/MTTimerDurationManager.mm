@@ -1,56 +1,56 @@
 @interface MTTimerDurationManager
 + (id)defaultDurations;
-+ (id)durationFromTimer:(id)a3;
-+ (id)durationWithMinutes:(unint64_t)a3;
++ (id)durationFromTimer:(id)timer;
++ (id)durationWithMinutes:(unint64_t)minutes;
 - (MTDurationUpdateDelegate)updateDelegate;
-- (MTTimerDurationManager)initWithPersistence:(id)a3;
-- (MTTimerDurationManager)initWithPersistence:(id)a3 coreDataStore:(id)a4 storage:(id)a5;
-- (MTTimerDurationManager)initWithPersistence:(id)a3 storage:(id)a4;
+- (MTTimerDurationManager)initWithPersistence:(id)persistence;
+- (MTTimerDurationManager)initWithPersistence:(id)persistence coreDataStore:(id)store storage:(id)storage;
+- (MTTimerDurationManager)initWithPersistence:(id)persistence storage:(id)storage;
 - (id)favoriteDurations;
 - (id)latestDuration;
 - (id)recentDurations;
-- (id)restoreDurationWithKey:(id)a3;
-- (id)restoreDurationsWithKey:(id)a3;
-- (void)_withLock:(id)a3;
-- (void)addDuration:(id)a3 toCollection:(id)a4 withKey:(id)a5 limit:(unint64_t)a6;
-- (void)addFavoriteDuration:(id)a3;
-- (void)addRecentDuration:(id)a3;
-- (void)clearAllDurationsWithCompletion:(id)a3;
+- (id)restoreDurationWithKey:(id)key;
+- (id)restoreDurationsWithKey:(id)key;
+- (void)_withLock:(id)lock;
+- (void)addDuration:(id)duration toCollection:(id)collection withKey:(id)key limit:(unint64_t)limit;
+- (void)addFavoriteDuration:(id)duration;
+- (void)addRecentDuration:(id)duration;
+- (void)clearAllDurationsWithCompletion:(id)completion;
 - (void)clearPersistenceDurations;
 - (void)migrateFromDefaultsToCoreData;
-- (void)removeDuration:(id)a3 fromCollection:(id)a4 withKey:(id)a5 synchronize:(BOOL)a6;
-- (void)removeFavoriteDuration:(id)a3;
-- (void)removeRecentDuration:(id)a3;
+- (void)removeDuration:(id)duration fromCollection:(id)collection withKey:(id)key synchronize:(BOOL)synchronize;
+- (void)removeFavoriteDuration:(id)duration;
+- (void)removeRecentDuration:(id)duration;
 - (void)restoreFromDataStoreSync;
-- (void)restoreFromDataStoreWithCompletion:(id)a3;
+- (void)restoreFromDataStoreWithCompletion:(id)completion;
 - (void)restoreFromDefaults;
-- (void)saveLatestDuration:(id)a3;
-- (void)source:(id)a3 didAddTimers:(id)a4;
-- (void)source:(id)a3 didUpdateTimers:(id)a4 fromTimers:(id)a5;
-- (void)synchronizeCollection:(id)a3 withKey:(id)a4;
-- (void)syncrhonizeObject:(id)a3 withKey:(id)a4;
+- (void)saveLatestDuration:(id)duration;
+- (void)source:(id)source didAddTimers:(id)timers;
+- (void)source:(id)source didUpdateTimers:(id)timers fromTimers:(id)fromTimers;
+- (void)synchronizeCollection:(id)collection withKey:(id)key;
+- (void)syncrhonizeObject:(id)object withKey:(id)key;
 @end
 
 @implementation MTTimerDurationManager
 
-- (MTTimerDurationManager)initWithPersistence:(id)a3 storage:(id)a4
+- (MTTimerDurationManager)initWithPersistence:(id)persistence storage:(id)storage
 {
-  v6 = a4;
-  v7 = [(MTTimerDurationManager *)self initWithPersistence:a3];
+  storageCopy = storage;
+  v7 = [(MTTimerDurationManager *)self initWithPersistence:persistence];
   if (v7)
   {
-    [v6 registerObserver:v7];
+    [storageCopy registerObserver:v7];
   }
 
   return v7;
 }
 
-- (MTTimerDurationManager)initWithPersistence:(id)a3 coreDataStore:(id)a4 storage:(id)a5
+- (MTTimerDurationManager)initWithPersistence:(id)persistence coreDataStore:(id)store storage:(id)storage
 {
   v18 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  persistenceCopy = persistence;
+  storeCopy = store;
+  storageCopy = storage;
   v15.receiver = self;
   v15.super_class = MTTimerDurationManager;
   v11 = [(MTTimerDurationManager *)&v15 init];
@@ -64,9 +64,9 @@
       _os_log_impl(&dword_1B1F9F000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ initWithCoreDataStore", buf, 0xCu);
     }
 
-    [v10 registerObserver:v11];
-    [(MTTimerDurationManager *)v11 setPersistence:v8];
-    objc_storeStrong(&v11->_coreDataStore, a4);
+    [storageCopy registerObserver:v11];
+    [(MTTimerDurationManager *)v11 setPersistence:persistenceCopy];
+    objc_storeStrong(&v11->_coreDataStore, store);
   }
 
   v13 = *MEMORY[0x1E69E9840];
@@ -80,7 +80,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B1F9F000, v3, OS_LOG_TYPE_INFO, "%{public}@ restoreFromDataStoreSync", buf, 0xCu);
   }
 
@@ -97,24 +97,24 @@
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_lock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)restoreFromDataStoreWithCompletion:(id)a3
+- (void)restoreFromDataStoreWithCompletion:(id)completion
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = MTLogForCategory(4);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B1F9F000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ restoreFromDataStoreWithCompletion", buf, 0xCu);
   }
 
@@ -124,8 +124,8 @@
   v9[2] = __61__MTTimerDurationManager_restoreFromDataStoreWithCompletion___block_invoke;
   v9[3] = &unk_1E7B0E0A0;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
+  v10 = completionCopy;
+  v7 = completionCopy;
   [(MTCDDataStore *)coreDataStore getRecentsFavoritesLatestWithCompletion:v9];
 
   v8 = *MEMORY[0x1E69E9840];
@@ -225,10 +225,10 @@ void __55__MTTimerDurationManager_migrateFromDefaultsToCoreData__block_invoke(ui
   }
 }
 
-- (MTTimerDurationManager)initWithPersistence:(id)a3
+- (MTTimerDurationManager)initWithPersistence:(id)persistence
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  persistenceCopy = persistence;
   v9.receiver = self;
   v9.super_class = MTTimerDurationManager;
   v5 = [(MTTimerDurationManager *)&v9 init];
@@ -242,7 +242,7 @@ void __55__MTTimerDurationManager_migrateFromDefaultsToCoreData__block_invoke(ui
       _os_log_impl(&dword_1B1F9F000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ initWithPersistence", buf, 0xCu);
     }
 
-    [(MTTimerDurationManager *)v5 setPersistence:v4];
+    [(MTTimerDurationManager *)v5 setPersistence:persistenceCopy];
     [(MTTimerDurationManager *)v5 restoreFromDefaults];
   }
 
@@ -304,54 +304,54 @@ void __41__MTTimerDurationManager_recentDurations__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (void)addRecentDuration:(id)a3
+- (void)addRecentDuration:(id)duration
 {
-  v4 = a3;
-  v5 = [(MTTimerDurationManager *)self _recentDurations];
-  [(MTTimerDurationManager *)self addDuration:v4 toCollection:v5 withKey:@"kMTTimerDurationRecents" limit:20];
+  durationCopy = duration;
+  _recentDurations = [(MTTimerDurationManager *)self _recentDurations];
+  [(MTTimerDurationManager *)self addDuration:durationCopy toCollection:_recentDurations withKey:@"kMTTimerDurationRecents" limit:20];
 
-  v7 = [(MTTimerDurationManager *)self updateDelegate];
-  v6 = [(MTTimerDurationManager *)self recentDurations];
-  [v7 recentTimerDurationsDidUpdate:v6];
+  updateDelegate = [(MTTimerDurationManager *)self updateDelegate];
+  recentDurations = [(MTTimerDurationManager *)self recentDurations];
+  [updateDelegate recentTimerDurationsDidUpdate:recentDurations];
 }
 
-- (void)removeRecentDuration:(id)a3
+- (void)removeRecentDuration:(id)duration
 {
-  v4 = a3;
+  durationCopy = duration;
   if (+[MTFeatures supportsCoreData])
   {
-    [(MTCDDataStore *)self->_coreDataStore deleteDuration:v4 isFavorite:0];
-    v5 = [(MTTimerDurationManager *)self _recentDurations];
-    [(MTTimerDurationManager *)self removeDuration:v4 fromCollection:v5 withKey:@"kMTTimerDurationRecents" synchronize:0];
+    [(MTCDDataStore *)self->_coreDataStore deleteDuration:durationCopy isFavorite:0];
+    _recentDurations = [(MTTimerDurationManager *)self _recentDurations];
+    [(MTTimerDurationManager *)self removeDuration:durationCopy fromCollection:_recentDurations withKey:@"kMTTimerDurationRecents" synchronize:0];
   }
 
   else
   {
-    v5 = [(MTTimerDurationManager *)self _recentDurations];
-    [(MTTimerDurationManager *)self removeDuration:v4 fromCollection:v5 withKey:@"kMTTimerDurationRecents"];
+    _recentDurations = [(MTTimerDurationManager *)self _recentDurations];
+    [(MTTimerDurationManager *)self removeDuration:durationCopy fromCollection:_recentDurations withKey:@"kMTTimerDurationRecents"];
   }
 
-  v7 = [(MTTimerDurationManager *)self updateDelegate];
-  v6 = [(MTTimerDurationManager *)self recentDurations];
-  [v7 recentTimerDurationsDidUpdate:v6];
+  updateDelegate = [(MTTimerDurationManager *)self updateDelegate];
+  recentDurations = [(MTTimerDurationManager *)self recentDurations];
+  [updateDelegate recentTimerDurationsDidUpdate:recentDurations];
 }
 
-- (void)addDuration:(id)a3 toCollection:(id)a4 withKey:(id)a5 limit:(unint64_t)a6
+- (void)addDuration:(id)duration toCollection:(id)collection withKey:(id)key limit:(unint64_t)limit
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  durationCopy = duration;
+  collectionCopy = collection;
+  keyCopy = key;
   v13 = +[MTFeatures supportsCoreData];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __65__MTTimerDurationManager_addDuration_toCollection_withKey_limit___block_invoke;
   v19[3] = &unk_1E7B0E0C8;
-  v14 = v11;
+  v14 = collectionCopy;
   v20 = v14;
-  v15 = v10;
-  v22 = self;
-  v23 = a6;
+  v15 = durationCopy;
+  selfCopy = self;
+  limitCopy = limit;
   v24 = v13;
   v21 = v15;
   [(MTTimerDurationManager *)self _withLock:v19];
@@ -365,7 +365,7 @@ void __41__MTTimerDurationManager_recentDurations__block_invoke(uint64_t a1)
 
   else
   {
-    [(MTTimerDurationManager *)self synchronizeCollection:v14 withKey:v12];
+    [(MTTimerDurationManager *)self synchronizeCollection:v14 withKey:keyCopy];
   }
 
   v18 = *MEMORY[0x1E69E9840];
@@ -423,24 +423,24 @@ uint64_t __65__MTTimerDurationManager_addDuration_toCollection_withKey_limit___b
   return result;
 }
 
-- (void)removeDuration:(id)a3 fromCollection:(id)a4 withKey:(id)a5 synchronize:(BOOL)a6
+- (void)removeDuration:(id)duration fromCollection:(id)collection withKey:(id)key synchronize:(BOOL)synchronize
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  synchronizeCopy = synchronize;
+  durationCopy = duration;
+  collectionCopy = collection;
+  keyCopy = key;
   v15 = MEMORY[0x1E69E9820];
   v16 = 3221225472;
   v17 = __76__MTTimerDurationManager_removeDuration_fromCollection_withKey_synchronize___block_invoke;
   v18 = &unk_1E7B0C928;
-  v13 = v11;
+  v13 = collectionCopy;
   v19 = v13;
-  v20 = v10;
-  v14 = v10;
+  v20 = durationCopy;
+  v14 = durationCopy;
   [(MTTimerDurationManager *)self _withLock:&v15];
-  if (v6)
+  if (synchronizeCopy)
   {
-    [(MTTimerDurationManager *)self synchronizeCollection:v13 withKey:v12, v15, v16, v17, v18, v19, v20];
+    [(MTTimerDurationManager *)self synchronizeCollection:v13 withKey:keyCopy, v15, v16, v17, v18, v19, v20];
   }
 }
 
@@ -458,20 +458,20 @@ uint64_t __76__MTTimerDurationManager_removeDuration_fromCollection_withKey_sync
   return result;
 }
 
-- (id)restoreDurationsWithKey:(id)a3
+- (id)restoreDurationsWithKey:(id)key
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keyCopy = key;
   v5 = MTLogForCategory(4);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v18 = self;
+    selfCopy4 = self;
     _os_log_impl(&dword_1B1F9F000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ restoring timer durations", buf, 0xCu);
   }
 
-  v6 = [(MTTimerDurationManager *)self persistence];
-  v7 = [v6 objectForKey:v4];
+  persistence = [(MTTimerDurationManager *)self persistence];
+  v7 = [persistence objectForKey:keyCopy];
 
   if (v7)
   {
@@ -484,9 +484,9 @@ uint64_t __76__MTTimerDurationManager_removeDuration_fromCollection_withKey_sync
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543874;
-        v18 = self;
+        selfCopy4 = self;
         v19 = 2114;
-        v20 = v4;
+        v20 = keyCopy;
         v21 = 2114;
         v22 = v9;
         _os_log_error_impl(&dword_1B1F9F000, v10, OS_LOG_TYPE_ERROR, "%{public}@ error decoding durations with key: %{public}@, %{public}@", buf, 0x20u);
@@ -500,7 +500,7 @@ uint64_t __76__MTTimerDurationManager_removeDuration_fromCollection_withKey_sync
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v18 = self;
+      selfCopy4 = self;
       _os_log_impl(&dword_1B1F9F000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ no recent timer durations restored", buf, 0xCu);
     }
 
@@ -511,11 +511,11 @@ uint64_t __76__MTTimerDurationManager_removeDuration_fromCollection_withKey_sync
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v18 = self;
+    selfCopy4 = self;
     v19 = 2114;
     v20 = v8;
     v21 = 2114;
-    v22 = v4;
+    v22 = keyCopy;
     _os_log_impl(&dword_1B1F9F000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ restored durations: %{public}@ with key: %{public}@", buf, 0x20u);
   }
 
@@ -536,31 +536,31 @@ uint64_t __76__MTTimerDurationManager_removeDuration_fromCollection_withKey_sync
   return v13;
 }
 
-- (void)synchronizeCollection:(id)a3 withKey:(id)a4
+- (void)synchronizeCollection:(id)collection withKey:(id)key
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
+  keyCopy = key;
+  collectionCopy = collection;
   v8 = MTLogForCategory(4);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v17 = self;
+    selfCopy2 = self;
     v18 = 2114;
-    v19 = v6;
+    v19 = keyCopy;
     _os_log_impl(&dword_1B1F9F000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ synchronizing timer durations with key: %{public}@", buf, 0x16u);
   }
 
   v15 = 0;
-  v9 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v7 requiringSecureCoding:1 error:&v15];
+  v9 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:collectionCopy requiringSecureCoding:1 error:&v15];
 
   v10 = v15;
   if (v10)
   {
-    v11 = MTLogForCategory(8);
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    persistence2 = MTLogForCategory(8);
+    if (os_log_type_enabled(persistence2, OS_LOG_TYPE_ERROR))
     {
-      [(MTTimerDurationManager *)self synchronizeCollection:v10 withKey:v11];
+      [(MTTimerDurationManager *)self synchronizeCollection:v10 withKey:persistence2];
     }
   }
 
@@ -570,36 +570,36 @@ uint64_t __76__MTTimerDurationManager_removeDuration_fromCollection_withKey_sync
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v17 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1B1F9F000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ synchronized recent durations successfully", buf, 0xCu);
     }
 
-    v13 = [(MTTimerDurationManager *)self persistence];
-    [v13 setObject:v9 forKey:v6];
+    persistence = [(MTTimerDurationManager *)self persistence];
+    [persistence setObject:v9 forKey:keyCopy];
 
-    v11 = [(MTTimerDurationManager *)self persistence];
-    [v11 synchronize];
+    persistence2 = [(MTTimerDurationManager *)self persistence];
+    [persistence2 synchronize];
   }
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (id)restoreDurationWithKey:(id)a3
+- (id)restoreDurationWithKey:(id)key
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keyCopy = key;
   v5 = MTLogForCategory(4);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v16 = self;
+    selfCopy4 = self;
     v17 = 2114;
-    v18 = v4;
+    v18 = keyCopy;
     _os_log_impl(&dword_1B1F9F000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ restoring timer duration with key: %{public}@ ", buf, 0x16u);
   }
 
-  v6 = [(MTTimerDurationManager *)self persistence];
-  v7 = [v6 objectForKey:v4];
+  persistence = [(MTTimerDurationManager *)self persistence];
+  v7 = [persistence objectForKey:keyCopy];
 
   if (v7)
   {
@@ -612,9 +612,9 @@ uint64_t __76__MTTimerDurationManager_removeDuration_fromCollection_withKey_sync
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543874;
-        v16 = self;
+        selfCopy4 = self;
         v17 = 2114;
-        v18 = v4;
+        v18 = keyCopy;
         v19 = 2114;
         v20 = v9;
         _os_log_error_impl(&dword_1B1F9F000, v10, OS_LOG_TYPE_ERROR, "%{public}@ error decoding duration with key: %{public}@, %{public}@", buf, 0x20u);
@@ -628,9 +628,9 @@ uint64_t __76__MTTimerDurationManager_removeDuration_fromCollection_withKey_sync
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v16 = self;
+      selfCopy4 = self;
       v17 = 2114;
-      v18 = v4;
+      v18 = keyCopy;
       _os_log_impl(&dword_1B1F9F000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ no timer duration restored with key: %{public}@", buf, 0x16u);
     }
 
@@ -641,11 +641,11 @@ uint64_t __76__MTTimerDurationManager_removeDuration_fromCollection_withKey_sync
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v16 = self;
+    selfCopy4 = self;
     v17 = 2114;
     v18 = v8;
     v19 = 2114;
-    v20 = v4;
+    v20 = keyCopy;
     _os_log_impl(&dword_1B1F9F000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ restored duration: %{public}@ with key: %{public}@", buf, 0x20u);
   }
 
@@ -654,37 +654,37 @@ uint64_t __76__MTTimerDurationManager_removeDuration_fromCollection_withKey_sync
   return v8;
 }
 
-- (void)syncrhonizeObject:(id)a3 withKey:(id)a4
+- (void)syncrhonizeObject:(id)object withKey:(id)key
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
+  keyCopy = key;
+  objectCopy = object;
   v8 = MTLogForCategory(4);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v17 = self;
+    selfCopy3 = self;
     v18 = 2114;
-    v19 = v6;
+    v19 = keyCopy;
     _os_log_impl(&dword_1B1F9F000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ synchronizing timer duration with key: %{public}@", buf, 0x16u);
   }
 
   v15 = 0;
-  v9 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v7 requiringSecureCoding:1 error:&v15];
+  v9 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:objectCopy requiringSecureCoding:1 error:&v15];
 
   v10 = v15;
   if (v10)
   {
-    v11 = MTLogForCategory(8);
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    persistence2 = MTLogForCategory(8);
+    if (os_log_type_enabled(persistence2, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543874;
-      v17 = self;
+      selfCopy3 = self;
       v18 = 2114;
-      v19 = v6;
+      v19 = keyCopy;
       v20 = 2114;
       v21 = v10;
-      _os_log_error_impl(&dword_1B1F9F000, v11, OS_LOG_TYPE_ERROR, "%{public}@ error encoding duration with key: %{public}@ error: %{public}@", buf, 0x20u);
+      _os_log_error_impl(&dword_1B1F9F000, persistence2, OS_LOG_TYPE_ERROR, "%{public}@ error encoding duration with key: %{public}@ error: %{public}@", buf, 0x20u);
     }
   }
 
@@ -694,17 +694,17 @@ uint64_t __76__MTTimerDurationManager_removeDuration_fromCollection_withKey_sync
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v17 = self;
+      selfCopy3 = self;
       v18 = 2114;
-      v19 = v6;
+      v19 = keyCopy;
       _os_log_impl(&dword_1B1F9F000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ synchronized duration with key: %{public}@  successfully", buf, 0x16u);
     }
 
-    v13 = [(MTTimerDurationManager *)self persistence];
-    [v13 setObject:v9 forKey:v6];
+    persistence = [(MTTimerDurationManager *)self persistence];
+    [persistence setObject:v9 forKey:keyCopy];
 
-    v11 = [(MTTimerDurationManager *)self persistence];
-    [v11 synchronize];
+    persistence2 = [(MTTimerDurationManager *)self persistence];
+    [persistence2 synchronize];
   }
 
   v14 = *MEMORY[0x1E69E9840];
@@ -713,21 +713,21 @@ uint64_t __76__MTTimerDurationManager_removeDuration_fromCollection_withKey_sync
 + (id)defaultDurations
 {
   v14[8] = *MEMORY[0x1E69E9840];
-  v3 = [a1 durationWithMinutes:1];
+  v3 = [self durationWithMinutes:1];
   v14[0] = v3;
-  v4 = [a1 durationWithMinutes:3];
+  v4 = [self durationWithMinutes:3];
   v14[1] = v4;
-  v5 = [a1 durationWithMinutes:5];
+  v5 = [self durationWithMinutes:5];
   v14[2] = v5;
-  v6 = [a1 durationWithMinutes:10];
+  v6 = [self durationWithMinutes:10];
   v14[3] = v6;
-  v7 = [a1 durationWithMinutes:15];
+  v7 = [self durationWithMinutes:15];
   v14[4] = v7;
-  v8 = [a1 durationWithMinutes:30];
+  v8 = [self durationWithMinutes:30];
   v14[5] = v8;
-  v9 = [a1 durationWithMinutes:60];
+  v9 = [self durationWithMinutes:60];
   v14[6] = v9;
-  v10 = [a1 durationWithMinutes:120];
+  v10 = [self durationWithMinutes:120];
   v14[7] = v10;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:8];
 
@@ -736,30 +736,30 @@ uint64_t __76__MTTimerDurationManager_removeDuration_fromCollection_withKey_sync
   return v11;
 }
 
-+ (id)durationWithMinutes:(unint64_t)a3
++ (id)durationWithMinutes:(unint64_t)minutes
 {
   v5 = [MTTimerDuration alloc];
-  [a1 intervalWithMinutes:a3];
+  [self intervalWithMinutes:minutes];
   v6 = [(MTTimerDuration *)v5 initWithTitle:0 duration:?];
 
   return v6;
 }
 
-- (void)clearAllDurationsWithCompletion:(id)a3
+- (void)clearAllDurationsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (+[MTFeatures supportsCoreData])
   {
     [(MTCDDataStore *)self->_coreDataStore deleteAllDurations];
-    [(MTTimerDurationManager *)self restoreFromDataStoreWithCompletion:v4];
+    [(MTTimerDurationManager *)self restoreFromDataStoreWithCompletion:completionCopy];
   }
 
   else
   {
     [(MTTimerDurationManager *)self clearPersistenceDurations];
-    if (v4)
+    if (completionCopy)
     {
-      v4[2]();
+      completionCopy[2]();
     }
   }
 }
@@ -798,43 +798,43 @@ void __51__MTTimerDurationManager_clearPersistenceDurations__block_invoke(uint64
 
 - (id)favoriteDurations
 {
-  v2 = [(MTTimerDurationManager *)self _favoriteDurations];
-  v3 = [v2 copy];
+  _favoriteDurations = [(MTTimerDurationManager *)self _favoriteDurations];
+  v3 = [_favoriteDurations copy];
 
   return v3;
 }
 
-- (void)addFavoriteDuration:(id)a3
+- (void)addFavoriteDuration:(id)duration
 {
-  v4 = a3;
-  v5 = [(MTTimerDurationManager *)self _favoriteDurations];
-  [(MTTimerDurationManager *)self addDuration:v4 toCollection:v5 withKey:@"kMTTimerDurationFavorites" limit:20];
+  durationCopy = duration;
+  _favoriteDurations = [(MTTimerDurationManager *)self _favoriteDurations];
+  [(MTTimerDurationManager *)self addDuration:durationCopy toCollection:_favoriteDurations withKey:@"kMTTimerDurationFavorites" limit:20];
 
-  v8 = [(MTTimerDurationManager *)self updateDelegate];
-  v6 = [(MTTimerDurationManager *)self _favoriteDurations];
-  v7 = [v6 copy];
-  [v8 favoriteTimerDurationsDidUpdate:v7];
+  updateDelegate = [(MTTimerDurationManager *)self updateDelegate];
+  _favoriteDurations2 = [(MTTimerDurationManager *)self _favoriteDurations];
+  v7 = [_favoriteDurations2 copy];
+  [updateDelegate favoriteTimerDurationsDidUpdate:v7];
 }
 
-- (void)removeFavoriteDuration:(id)a3
+- (void)removeFavoriteDuration:(id)duration
 {
-  v4 = a3;
-  v5 = [(MTTimerDurationManager *)self _favoriteDurations];
-  [(MTTimerDurationManager *)self removeDuration:v4 fromCollection:v5 withKey:@"kMTTimerDurationFavorites"];
+  durationCopy = duration;
+  _favoriteDurations = [(MTTimerDurationManager *)self _favoriteDurations];
+  [(MTTimerDurationManager *)self removeDuration:durationCopy fromCollection:_favoriteDurations withKey:@"kMTTimerDurationFavorites"];
 
-  v8 = [(MTTimerDurationManager *)self updateDelegate];
-  v6 = [(MTTimerDurationManager *)self _favoriteDurations];
-  v7 = [v6 copy];
-  [v8 favoriteTimerDurationsDidUpdate:v7];
+  updateDelegate = [(MTTimerDurationManager *)self updateDelegate];
+  _favoriteDurations2 = [(MTTimerDurationManager *)self _favoriteDurations];
+  v7 = [_favoriteDurations2 copy];
+  [updateDelegate favoriteTimerDurationsDidUpdate:v7];
 }
 
 - (id)latestDuration
 {
-  v2 = [(MTTimerDurationManager *)self _latestDuration];
-  v3 = v2;
-  if (v2)
+  _latestDuration = [(MTTimerDurationManager *)self _latestDuration];
+  v3 = _latestDuration;
+  if (_latestDuration)
   {
-    v4 = v2;
+    v4 = _latestDuration;
   }
 
   else
@@ -847,50 +847,50 @@ void __51__MTTimerDurationManager_clearPersistenceDurations__block_invoke(uint64
   return v5;
 }
 
-- (void)saveLatestDuration:(id)a3
+- (void)saveLatestDuration:(id)duration
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [(MTTimerDurationManager *)self set_latestDuration:v4];
-  [(MTTimerDurationManager *)self syncrhonizeObject:v4 withKey:@"kMTTimerDurationLatest"];
+  durationCopy = duration;
+  [(MTTimerDurationManager *)self set_latestDuration:durationCopy];
+  [(MTTimerDurationManager *)self syncrhonizeObject:durationCopy withKey:@"kMTTimerDurationLatest"];
   v5 = MTLogForCategory(4);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(MTTimerDurationManager *)self updateDelegate];
+    updateDelegate = [(MTTimerDurationManager *)self updateDelegate];
     v10 = 138543874;
-    v11 = self;
+    selfCopy = self;
     v12 = 2114;
-    v13 = v6;
+    v13 = updateDelegate;
     v14 = 2114;
-    v15 = v4;
+    v15 = durationCopy;
     _os_log_impl(&dword_1B1F9F000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ saved latest duration, calling update delegate %{public}@ with duration: %{public}@", &v10, 0x20u);
   }
 
-  v7 = [(MTTimerDurationManager *)self updateDelegate];
-  v8 = [v4 copy];
-  [v7 latestTimerDurationDidUpdate:v8];
+  updateDelegate2 = [(MTTimerDurationManager *)self updateDelegate];
+  v8 = [durationCopy copy];
+  [updateDelegate2 latestTimerDurationDidUpdate:v8];
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)source:(id)a3 didAddTimers:(id)a4
+- (void)source:(id)source didAddTimers:(id)timers
 {
   v14 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  timersCopy = timers;
   v6 = MTLogForCategory(4);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138543618;
-    v11 = self;
+    selfCopy = self;
     v12 = 2114;
-    v13 = v5;
+    v13 = timersCopy;
     _os_log_impl(&dword_1B1F9F000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ didAddTimers %{public}@", &v10, 0x16u);
   }
 
-  v7 = [v5 firstObject];
-  if ([v7 state] == 3)
+  firstObject = [timersCopy firstObject];
+  if ([firstObject state] == 3)
   {
-    v8 = [objc_opt_class() durationFromTimer:v7];
+    v8 = [objc_opt_class() durationFromTimer:firstObject];
     [(MTTimerDurationManager *)self saveLatestDuration:v8];
     [(MTTimerDurationManager *)self addRecentDuration:v8];
   }
@@ -898,27 +898,27 @@ void __51__MTTimerDurationManager_clearPersistenceDurations__block_invoke(uint64
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)source:(id)a3 didUpdateTimers:(id)a4 fromTimers:(id)a5
+- (void)source:(id)source didUpdateTimers:(id)timers fromTimers:(id)fromTimers
 {
   v21 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
+  timersCopy = timers;
+  fromTimersCopy = fromTimers;
   v9 = MTLogForCategory(4);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138543874;
-    v16 = self;
+    selfCopy = self;
     v17 = 2114;
-    v18 = v8;
+    v18 = fromTimersCopy;
     v19 = 2114;
-    v20 = v7;
+    v20 = timersCopy;
     _os_log_impl(&dword_1B1F9F000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ didUpdateTimers fromTimers: %{public}@ toTimers: %{public}@", &v15, 0x20u);
   }
 
-  v10 = [v8 firstObject];
-  v11 = [v7 firstObject];
-  v12 = v11;
-  if (v10 && v11 && [v10 state] != 3 && objc_msgSend(v12, "state") == 3)
+  firstObject = [fromTimersCopy firstObject];
+  firstObject2 = [timersCopy firstObject];
+  v12 = firstObject2;
+  if (firstObject && firstObject2 && [firstObject state] != 3 && objc_msgSend(v12, "state") == 3)
   {
     v13 = [objc_opt_class() durationFromTimer:v12];
     [(MTTimerDurationManager *)self saveLatestDuration:v13];
@@ -928,27 +928,27 @@ void __51__MTTimerDurationManager_clearPersistenceDurations__block_invoke(uint64
   v14 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)durationFromTimer:(id)a3
++ (id)durationFromTimer:(id)timer
 {
-  v3 = a3;
+  timerCopy = timer;
   v4 = [MTTimerDuration alloc];
-  v5 = [v3 isCurrentTimer];
-  if (v5)
+  isCurrentTimer = [timerCopy isCurrentTimer];
+  if (isCurrentTimer)
   {
-    v6 = 0;
+    title = 0;
   }
 
   else
   {
-    v6 = [v3 title];
+    title = [timerCopy title];
   }
 
-  [v3 duration];
+  [timerCopy duration];
   v8 = v7;
-  v9 = [v3 sound];
-  v10 = [(MTTimerDuration *)v4 initWithTitle:v6 duration:v9 sound:v8];
+  sound = [timerCopy sound];
+  v10 = [(MTTimerDuration *)v4 initWithTitle:title duration:sound sound:v8];
 
-  if ((v5 & 1) == 0)
+  if ((isCurrentTimer & 1) == 0)
   {
   }
 

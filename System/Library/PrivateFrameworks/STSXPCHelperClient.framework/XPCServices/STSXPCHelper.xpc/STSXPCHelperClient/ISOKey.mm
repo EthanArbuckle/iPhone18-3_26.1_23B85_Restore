@@ -1,27 +1,27 @@
 @interface ISOKey
-- (ISOKey)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ISOKey)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ISOKey
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   keyType_low = LODWORD(self->_keyType);
-  v5 = a3;
-  [v5 encodeInt:keyType_low forKey:@"keyType"];
-  [v5 encodeObject:self->_keyStorage forKey:@"privateKey"];
+  coderCopy = coder;
+  [coderCopy encodeInt:keyType_low forKey:@"keyType"];
+  [coderCopy encodeObject:self->_keyStorage forKey:@"privateKey"];
 }
 
-- (ISOKey)initWithCoder:(id)a3
+- (ISOKey)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_new();
-  v5[1] = [v4 decodeIntegerForKey:@"keyType"];
+  v5[1] = [coderCopy decodeIntegerForKey:@"keyType"];
   v6 = objc_opt_class();
   v19 = objc_opt_class();
   v7 = [NSSet setWithObjects:v6];
-  v8 = [v4 decodeObjectOfClasses:v7 forKey:@"privateKey"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"privateKey"];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -48,9 +48,9 @@ LABEL_8:
 
   if (!v5[1])
   {
-    v14 = [v13 mutableBytes];
-    v5[3] = v14;
-    *v14 = ccec_cp_256();
+    mutableBytes = [v13 mutableBytes];
+    v5[3] = mutableBytes;
+    *mutableBytes = ccec_cp_256();
   }
 
   v15 = v5;

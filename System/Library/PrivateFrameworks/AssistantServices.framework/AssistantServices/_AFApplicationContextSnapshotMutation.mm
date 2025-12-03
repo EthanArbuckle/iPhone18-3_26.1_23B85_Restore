@@ -1,5 +1,5 @@
 @interface _AFApplicationContextSnapshotMutation
-- (_AFApplicationContextSnapshotMutation)initWithBase:(id)a3;
+- (_AFApplicationContextSnapshotMutation)initWithBase:(id)base;
 - (id)getApplicationContexts;
 @end
 
@@ -9,27 +9,27 @@
 {
   if ((*&self->_mutationFlags & 2) != 0)
   {
-    v2 = self->_applicationContexts;
+    applicationContexts = self->_applicationContexts;
   }
 
   else
   {
-    v2 = [(AFApplicationContextSnapshot *)self->_base applicationContexts];
+    applicationContexts = [(AFApplicationContextSnapshot *)self->_base applicationContexts];
   }
 
-  return v2;
+  return applicationContexts;
 }
 
-- (_AFApplicationContextSnapshotMutation)initWithBase:(id)a3
+- (_AFApplicationContextSnapshotMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _AFApplicationContextSnapshotMutation;
   v6 = [(_AFApplicationContextSnapshotMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

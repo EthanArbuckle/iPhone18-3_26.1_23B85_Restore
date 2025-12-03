@@ -1,39 +1,39 @@
 @interface _LSStringsFileContent
 + (id)IOQueue;
-- (id)_queryLoadedPlist:(void *)a3 forRawKey:(void *)a4 locale:;
+- (id)_queryLoadedPlist:(void *)plist forRawKey:(void *)key locale:;
 - (id)debugDescription;
-- (id)getStringsFileContentAfterLocTableLoadedInBundle:(void *)a3 forLocale:;
-- (id)getStringsFileContentInBundle:(void *)a3 forLocale:(const __CFString *)a4 withExtension:;
-- (id)initWithStringsFile:(id)a1;
-- (id)stringForString:(void *)a3 forLocale:(uint64_t)a4 fromBundle:(void *)a5 cacheLocalizations:;
-- (id)subscriptLoctableWithLocale:(uint64_t)a1;
-- (id)uncheckedObjectsForKeys:(void *)a3 forLocaleCode:(uint64_t)a4 fromBundle:(void *)a5 cacheLocalizations:;
-- (void)loadLoctableIfNecessaryFromBundle:(uint64_t)a1;
-- (void)prewarmAllLocalizationsWithBundle:(void *)a3 forLocalizations:;
-- (void)stringsFileContentFromBundle:(void *)a3 forLocaleCode:(void *)a4 cacheLocalizations:;
+- (id)getStringsFileContentAfterLocTableLoadedInBundle:(void *)bundle forLocale:;
+- (id)getStringsFileContentInBundle:(void *)bundle forLocale:(const __CFString *)locale withExtension:;
+- (id)initWithStringsFile:(id)file;
+- (id)stringForString:(void *)string forLocale:(uint64_t)locale fromBundle:(void *)bundle cacheLocalizations:;
+- (id)subscriptLoctableWithLocale:(uint64_t)locale;
+- (id)uncheckedObjectsForKeys:(void *)keys forLocaleCode:(uint64_t)code fromBundle:(void *)bundle cacheLocalizations:;
+- (void)loadLoctableIfNecessaryFromBundle:(uint64_t)bundle;
+- (void)prewarmAllLocalizationsWithBundle:(void *)bundle forLocalizations:;
+- (void)stringsFileContentFromBundle:(void *)bundle forLocaleCode:(void *)code cacheLocalizations:;
 @end
 
 @implementation _LSStringsFileContent
 
-- (id)initWithStringsFile:(id)a1
+- (id)initWithStringsFile:(id)file
 {
   v3 = a2;
-  if (a1)
+  if (file)
   {
-    v10.receiver = a1;
+    v10.receiver = file;
     v10.super_class = _LSStringsFileContent;
-    a1 = objc_msgSendSuper2(&v10, sel_init);
-    if (a1)
+    file = objc_msgSendSuper2(&v10, sel_init);
+    if (file)
     {
       v4 = [v3 copy];
-      v5 = *(a1 + 1);
-      *(a1 + 1) = v4;
+      v5 = *(file + 1);
+      *(file + 1) = v4;
 
       v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
-      v7 = *(a1 + 2);
-      *(a1 + 2) = v6;
+      v7 = *(file + 2);
+      *(file + 2) = v6;
 
-      *(a1 + 32) = 0;
+      *(file + 32) = 0;
       if ([v3 isEqualToString:@"InfoPlist"])
       {
         v8 = 2;
@@ -44,30 +44,30 @@
         v8 = 0;
       }
 
-      *(a1 + 32) = *(a1 + 32) & 0xFD | v8;
+      *(file + 32) = *(file + 32) & 0xFD | v8;
     }
   }
 
-  return a1;
+  return file;
 }
 
-- (id)uncheckedObjectsForKeys:(void *)a3 forLocaleCode:(uint64_t)a4 fromBundle:(void *)a5 cacheLocalizations:
+- (id)uncheckedObjectsForKeys:(void *)keys forLocaleCode:(uint64_t)code fromBundle:(void *)bundle cacheLocalizations:
 {
   v64[5] = *MEMORY[0x1E69E9840];
   v42 = a2;
-  v9 = a3;
-  v10 = a5;
-  v39 = v10;
-  v40 = v9;
-  if (a1)
+  keysCopy = keys;
+  bundleCopy = bundle;
+  v39 = bundleCopy;
+  v40 = keysCopy;
+  if (self)
   {
-    v11 = [(_LSStringsFileContent *)a1 stringsFileContentFromBundle:a4 forLocaleCode:v9 cacheLocalizations:v10];
+    v11 = [(_LSStringsFileContent *)self stringsFileContentFromBundle:code forLocaleCode:keysCopy cacheLocalizations:bundleCopy];
     v41 = v11;
     if (v11)
     {
-      if (v11 == *(a1 + 24))
+      if (v11 == *(self + 24))
       {
-        v12 = [(_LSStringsFileContent *)a1 subscriptLoctableWithLocale:v9];
+        v12 = [(_LSStringsFileContent *)self subscriptLoctableWithLocale:keysCopy];
         v13 = v12;
         v14 = MEMORY[0x1E695E0F8];
         if (v12)
@@ -77,7 +77,7 @@
 
         v15 = v14;
 
-        if ((*(a1 + 32) & 2) != 0)
+        if ((*(self + 32) & 2) != 0)
         {
           v16 = v42;
           v46 = v15;
@@ -224,19 +224,19 @@
   return v44;
 }
 
-- (id)stringForString:(void *)a3 forLocale:(uint64_t)a4 fromBundle:(void *)a5 cacheLocalizations:
+- (id)stringForString:(void *)string forLocale:(uint64_t)locale fromBundle:(void *)bundle cacheLocalizations:
 {
   v9 = a2;
-  v10 = a3;
-  v11 = a5;
-  if (a1)
+  stringCopy = string;
+  bundleCopy = bundle;
+  if (self)
   {
-    v12 = [(_LSStringsFileContent *)a1 stringsFileContentFromBundle:a4 forLocaleCode:v10 cacheLocalizations:v11];
+    v12 = [(_LSStringsFileContent *)self stringsFileContentFromBundle:locale forLocaleCode:stringCopy cacheLocalizations:bundleCopy];
     if (v12)
     {
-      if (![__LSDefaultsGetSharedInstance() isRegionChina] || (objc_msgSend(v9, "stringByAppendingString:", @"#CH"), v13 = objc_claimAutoreleasedReturnValue(), -[_LSStringsFileContent _queryLoadedPlist:forRawKey:locale:](a1, v12, v13, v10), v14 = objc_claimAutoreleasedReturnValue(), v13, !v14))
+      if (![__LSDefaultsGetSharedInstance() isRegionChina] || (objc_msgSend(v9, "stringByAppendingString:", @"#CH"), v13 = objc_claimAutoreleasedReturnValue(), -[_LSStringsFileContent _queryLoadedPlist:forRawKey:locale:](self, v12, v13, stringCopy), v14 = objc_claimAutoreleasedReturnValue(), v13, !v14))
       {
-        v14 = [(_LSStringsFileContent *)a1 _queryLoadedPlist:v12 forRawKey:v9 locale:v10];
+        v14 = [(_LSStringsFileContent *)self _queryLoadedPlist:v12 forRawKey:v9 locale:stringCopy];
       }
     }
 
@@ -274,21 +274,21 @@
   v16 = __Block_byref_object_copy__48;
   v17 = __Block_byref_object_dispose__48;
   v18 = 0;
-  v3 = [objc_opt_class() IOQueue];
+  iOQueue = [objc_opt_class() IOQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __41___LSStringsFileContent_debugDescription__block_invoke;
   block[3] = &unk_1E6A1AE60;
   block[4] = self;
   block[5] = &v13;
-  dispatch_sync(v3, block);
+  dispatch_sync(iOQueue, block);
 
   v4 = MEMORY[0x1E696AEC0];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
   v7 = [v14[5] count];
-  v8 = [v14[5] allKeys];
-  v9 = [v8 componentsJoinedByString:{@", "}];
+  allKeys = [v14[5] allKeys];
+  v9 = [allKeys componentsJoinedByString:{@", "}];
   v10 = [v4 stringWithFormat:@"<%@ %p> { %lu localizations loaded: %@ }", v6, self, v7, v9];
 
   _Block_object_dispose(&v13, 8);
@@ -296,20 +296,20 @@
   return v10;
 }
 
-- (id)getStringsFileContentInBundle:(void *)a3 forLocale:(const __CFString *)a4 withExtension:
+- (id)getStringsFileContentInBundle:(void *)bundle forLocale:(const __CFString *)locale withExtension:
 {
   v15 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (a1)
+  bundleCopy = bundle;
+  if (self)
   {
-    v8 = CFBundleCopyResourceURLForLocalization(a2, *(a1 + 8), a4, 0, v7);
+    v8 = CFBundleCopyResourceURLForLocalization(a2, *(self + 8), locale, 0, bundleCopy);
     if (v8)
     {
       v9 = _LSDefaultLog();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
-        v10 = [(__CFURL *)v8 lastPathComponent];
-        [(_LSStringsFileContent *)v10 getStringsFileContentInBundle:v7 forLocale:v14 withExtension:v9];
+        lastPathComponent = [(__CFURL *)v8 lastPathComponent];
+        [(_LSStringsFileContent *)lastPathComponent getStringsFileContentInBundle:bundleCopy forLocale:v14 withExtension:v9];
       }
 
       v11 = [_LSLazyPropertyList lazyPropertyListWithPropertyListURL:v8];
@@ -331,11 +331,11 @@
   return v11;
 }
 
-- (id)getStringsFileContentAfterLocTableLoadedInBundle:(void *)a3 forLocale:
+- (id)getStringsFileContentAfterLocTableLoadedInBundle:(void *)bundle forLocale:
 {
-  v5 = a3;
-  v6 = v5;
-  if (!a1)
+  bundleCopy = bundle;
+  v6 = bundleCopy;
+  if (!self)
   {
     v7 = 0;
     goto LABEL_8;
@@ -343,7 +343,7 @@
 
   if (a2)
   {
-    if (v5)
+    if (bundleCopy)
     {
       goto LABEL_4;
     }
@@ -351,9 +351,9 @@
 
   else
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[_LSStringsFileContent getStringsFileContentAfterLocTableLoadedInBundle:forLocale:]"];
-    [v10 handleFailureInFunction:v11 file:@"LSStringLocalizer.mm" lineNumber:1175 description:{@"Invalid parameter not satisfying: %@", @"bundle != NULL"}];
+    [currentHandler handleFailureInFunction:v11 file:@"LSStringLocalizer.mm" lineNumber:1175 description:{@"Invalid parameter not satisfying: %@", @"bundle != NULL"}];
 
     if (v6)
     {
@@ -361,15 +361,15 @@
     }
   }
 
-  v12 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
   v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[_LSStringsFileContent getStringsFileContentAfterLocTableLoadedInBundle:forLocale:]"];
-  [v12 handleFailureInFunction:v13 file:@"LSStringLocalizer.mm" lineNumber:1176 description:{@"Invalid parameter not satisfying: %@", @"localeCode != nil"}];
+  [currentHandler2 handleFailureInFunction:v13 file:@"LSStringLocalizer.mm" lineNumber:1176 description:{@"Invalid parameter not satisfying: %@", @"localeCode != nil"}];
 
 LABEL_4:
-  v7 = [(_LSStringsFileContent *)a1 getStringsFileContentInBundle:a2 forLocale:v6 withExtension:@"strings"];
+  v7 = [(_LSStringsFileContent *)self getStringsFileContentInBundle:a2 forLocale:v6 withExtension:@"strings"];
   if (!v7)
   {
-    v8 = *(a1 + 24);
+    v8 = *(self + 24);
     if (!v8)
     {
       v8 = _LSLazyPropertyListGetSharedEmptyPropertyList();
@@ -383,11 +383,11 @@ LABEL_8:
   return v7;
 }
 
-- (void)stringsFileContentFromBundle:(void *)a3 forLocaleCode:(void *)a4 cacheLocalizations:
+- (void)stringsFileContentFromBundle:(void *)bundle forLocaleCode:(void *)code cacheLocalizations:
 {
-  v7 = a3;
-  v8 = a4;
-  if (a1)
+  bundleCopy = bundle;
+  codeCopy = code;
+  if (self)
   {
     v30 = 0;
     v31 = &v30;
@@ -395,16 +395,16 @@ LABEL_8:
     v33 = __Block_byref_object_copy__48;
     v34 = __Block_byref_object_dispose__48;
     v35 = 0;
-    v9 = [objc_opt_class() IOQueue];
+    iOQueue = [objc_opt_class() IOQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __87___LSStringsFileContent_stringsFileContentFromBundle_forLocaleCode_cacheLocalizations___block_invoke;
     block[3] = &unk_1E6A1B118;
     v29 = &v30;
-    block[4] = a1;
-    v10 = v7;
+    block[4] = self;
+    v10 = bundleCopy;
     v28 = v10;
-    dispatch_sync(v9, block);
+    dispatch_sync(iOQueue, block);
 
     v11 = v31[5];
     if (!v11)
@@ -413,16 +413,16 @@ LABEL_8:
       v21 = 3221225472;
       v22 = __87___LSStringsFileContent_stringsFileContentFromBundle_forLocaleCode_cacheLocalizations___block_invoke_2;
       v23 = &unk_1E6A1E210;
-      v24 = a1;
+      selfCopy = self;
       v26 = a2;
       v12 = v10;
       v25 = v12;
       v13 = MEMORY[0x1865D71B0](&v20);
-      if ([v8 containsObject:{v12, v20, v21, v22, v23, v24}])
+      if ([codeCopy containsObject:{v12, v20, v21, v22, v23, selfCopy}])
       {
-        v14 = a1[2];
-        v15 = [objc_opt_class() IOQueue];
-        v16 = _LSLazyLoadObjectForKey(v14, v12, v15, v13);
+        v14 = self[2];
+        iOQueue2 = [objc_opt_class() IOQueue];
+        v16 = _LSLazyLoadObjectForKey(v14, v12, iOQueue2, v13);
         v17 = v31[5];
         v31[5] = v16;
       }
@@ -430,40 +430,40 @@ LABEL_8:
       else
       {
         v18 = v13[2](v13);
-        v15 = v31[5];
+        iOQueue2 = v31[5];
         v31[5] = v18;
       }
 
       v11 = v31[5];
     }
 
-    a1 = v11;
+    self = v11;
 
     _Block_object_dispose(&v30, 8);
   }
 
-  return a1;
+  return self;
 }
 
-- (void)prewarmAllLocalizationsWithBundle:(void *)a3 forLocalizations:
+- (void)prewarmAllLocalizationsWithBundle:(void *)bundle forLocalizations:
 {
-  v5 = a3;
-  if (a1 && a2)
+  bundleCopy = bundle;
+  if (self && a2)
   {
-    [(_LSStringsFileContent *)a1 loadLoctableIfNecessaryFromBundle:a2];
-    v6 = [objc_opt_class() IOQueue];
+    [(_LSStringsFileContent *)self loadLoctableIfNecessaryFromBundle:a2];
+    iOQueue = [objc_opt_class() IOQueue];
     v12 = MEMORY[0x1E69E9820];
     v13 = 3221225472;
     v14 = __76___LSStringsFileContent_prewarmAllLocalizationsWithBundle_forLocalizations___block_invoke;
     v15 = &unk_1E6A1E238;
-    v7 = v5;
+    v7 = bundleCopy;
     v16 = v7;
-    v17 = a1;
+    selfCopy = self;
     v19 = a2;
-    v8 = v6;
+    v8 = iOQueue;
     v18 = v8;
     v9 = MEMORY[0x1865D71B0](&v12);
-    v10 = *(a1 + 24);
+    v10 = *(self + 24);
     if (v10)
     {
       [v10 prewarm];
@@ -484,12 +484,12 @@ LABEL_8:
   }
 }
 
-- (id)subscriptLoctableWithLocale:(uint64_t)a1
+- (id)subscriptLoctableWithLocale:(uint64_t)locale
 {
   v35[5] = *MEMORY[0x1E69E9840];
   v3 = a2;
   v29 = v3;
-  if (a1)
+  if (locale)
   {
     v4 = v3;
     if (enumerateProductPlatformKeySuffixes<NSDictionary<NSString *,objc_object *> * {__strong},[_LSStringsFileContent subscriptLoctableWithLocale:]::$_1>(NSString *,[_LSStringsFileContent subscriptLoctableWithLocale:]::$_1 const&)::onceToken != -1)
@@ -519,7 +519,7 @@ LABEL_8:
     do
     {
       v12 = v35[v11];
-      v13 = [*(a1 + 24) objectForKey:v12 ofClass:objc_opt_class()];
+      v13 = [*(locale + 24) objectForKey:v12 ofClass:objc_opt_class()];
       v14 = v13;
       if (v13)
       {
@@ -574,42 +574,42 @@ LABEL_8:
   return v22;
 }
 
-- (id)_queryLoadedPlist:(void *)a3 forRawKey:(void *)a4 locale:
+- (id)_queryLoadedPlist:(void *)plist forRawKey:(void *)key locale:
 {
   v48[5] = *MEMORY[0x1E69E9840];
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (!a1)
+  plistCopy = plist;
+  keyCopy = key;
+  if (!self)
   {
     goto LABEL_38;
   }
 
-  if (a1[3] != v7)
+  if (self[3] != v7)
   {
-    a1 = [v7 objectForKey:v8 ofClass:objc_opt_class()];
+    self = [v7 objectForKey:plistCopy ofClass:objc_opt_class()];
     goto LABEL_38;
   }
 
-  v42 = v9;
-  v10 = [(_LSStringsFileContent *)a1 subscriptLoctableWithLocale:v9];
+  v42 = keyCopy;
+  v10 = [(_LSStringsFileContent *)self subscriptLoctableWithLocale:keyCopy];
   v11 = v10;
-  if ((a1[4] & 2) == 0)
+  if ((self[4] & 2) == 0)
   {
     v12 = objc_opt_class();
-    v13 = [v11 objectForKey:v8];
-    a1 = v13;
+    v13 = [v11 objectForKey:plistCopy];
+    self = v13;
     if (v12 && v13 && (objc_opt_isKindOfClass() & 1) == 0)
     {
 
-      a1 = 0;
+      self = 0;
     }
 
     goto LABEL_37;
   }
 
   v14 = v10;
-  v43 = v8;
+  v43 = plistCopy;
   if (enumerateProductPlatformKeySuffixes<NSString * {__strong},[_LSStringsFileContent _queryLoadedPlist:forRawKey:locale:]::$_2>(NSString *,[_LSStringsFileContent _queryLoadedPlist:forRawKey:locale:]::$_2 const&)::onceToken != -1)
   {
     [_LSStringsFileContent _queryLoadedPlist:forRawKey:locale:];
@@ -701,7 +701,7 @@ LABEL_24:
     v29 = 0;
   }
 
-  a1 = v29;
+  self = v29;
   if (v28 == 1)
   {
   }
@@ -709,25 +709,25 @@ LABEL_24:
   v11 = v40;
 LABEL_37:
 
-  v9 = v42;
+  keyCopy = v42;
 LABEL_38:
 
   v30 = *MEMORY[0x1E69E9840];
 
-  return a1;
+  return self;
 }
 
-- (void)loadLoctableIfNecessaryFromBundle:(uint64_t)a1
+- (void)loadLoctableIfNecessaryFromBundle:(uint64_t)bundle
 {
-  if (a1)
+  if (bundle)
   {
-    if ((*(a1 + 32) & 1) == 0)
+    if ((*(bundle + 32) & 1) == 0)
     {
-      v3 = [(_LSStringsFileContent *)a1 getStringsFileContentInBundle:a2 forLocale:0 withExtension:@"loctable"];
-      v4 = *(a1 + 24);
-      *(a1 + 24) = v3;
+      v3 = [(_LSStringsFileContent *)bundle getStringsFileContentInBundle:a2 forLocale:0 withExtension:@"loctable"];
+      v4 = *(bundle + 24);
+      *(bundle + 24) = v3;
 
-      *(a1 + 32) |= 1u;
+      *(bundle + 32) |= 1u;
     }
   }
 }

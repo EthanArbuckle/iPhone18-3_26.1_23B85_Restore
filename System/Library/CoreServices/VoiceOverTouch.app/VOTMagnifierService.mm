@@ -1,6 +1,6 @@
 @interface VOTMagnifierService
 + (VOTMagnifierService)shared;
-+ (void)setShared:(id)a3;
++ (void)setShared:(id)shared;
 - (VOTMagnifierService)init;
 - (void)dismissDetectionUI;
 - (void)hideDetectionUI;
@@ -30,21 +30,21 @@
   return v3;
 }
 
-+ (void)setShared:(id)a3
++ (void)setShared:(id)shared
 {
   v3 = qword_1001FE720;
-  v4 = a3;
+  sharedCopy = shared;
   if (v3 != -1)
   {
-    v6 = v4;
+    v6 = sharedCopy;
     swift_once();
-    v4 = v6;
+    sharedCopy = v6;
   }
 
   v5 = qword_1001FF190;
-  qword_1001FF190 = v4;
+  qword_1001FF190 = sharedCopy;
 
-  _objc_release_x1(v4, v5);
+  _objc_release_x1(sharedCopy, v5);
 }
 
 - (VOTMagnifierService)init
@@ -61,73 +61,73 @@
 
 - (void)showDetectionUI
 {
-  v2 = self;
+  selfCopy = self;
   sub_100116B54(&MAGService.presentDetectionUI());
 }
 
 - (void)dismissDetectionUI
 {
-  v2 = self;
+  selfCopy = self;
   sub_100116B54(&MAGService.dismissUI());
 }
 
 - (void)hideDetectionUI
 {
-  v2 = self;
+  selfCopy = self;
   sub_100116B54(&MAGService.hideUI());
 }
 
 - (void)toggleDetectionUI
 {
-  v2 = self;
+  selfCopy = self;
   sub_100116B54(&MAGService.toggleUI());
 }
 
 - (void)toggleTextDetection
 {
-  v2 = self;
+  selfCopy = self;
   sub_100116B54(&MAGService.toggleTextDetection());
 }
 
 - (void)toggleFurnitureDetection
 {
-  v2 = self;
+  selfCopy = self;
   sub_100116B54(&MAGService.toggleFurnitureDetection());
 }
 
 - (void)togglePeopleDetection
 {
-  v2 = self;
+  selfCopy = self;
   sub_100116B54(&MAGService.togglePeopleDetection());
 }
 
 - (void)toggleDoorDetection
 {
-  v2 = self;
+  selfCopy = self;
   sub_100116B54(&MAGService.toggleDoorDetection());
 }
 
 - (void)toggleImageDescriptions
 {
-  v2 = self;
+  selfCopy = self;
   sub_100116B54(&MAGService.toggleImageDescriptions());
 }
 
 - (void)togglePointAndSpeak
 {
-  v2 = self;
+  selfCopy = self;
   sub_100116B54(&MAGService.togglePointAndSpeak());
 }
 
 - (void)stopSpeech
 {
-  v2 = self;
+  selfCopy = self;
   sub_100116B54(&MAGService.stopSpeech());
 }
 
 - (void)toggleCurrentActivity
 {
-  v2 = self;
+  selfCopy = self;
   sub_100116B54(&MAGService.toggleCurrentActivity());
 }
 

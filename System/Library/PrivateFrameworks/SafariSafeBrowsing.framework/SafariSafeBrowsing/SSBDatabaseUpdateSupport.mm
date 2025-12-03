@@ -2,7 +2,7 @@
 - (SSBDatabaseUpdateSupport)init;
 - (id)fetchCellularDataPlanSynchronously;
 - (void)_fetchCellularDataPlan;
-- (void)_fetchCellularDataPlanWithCompletionHandler:(id)a3;
+- (void)_fetchCellularDataPlanWithCompletionHandler:(id)handler;
 @end
 
 @implementation SSBDatabaseUpdateSupport
@@ -23,9 +23,9 @@
   return v3;
 }
 
-- (void)_fetchCellularDataPlanWithCompletionHandler:(id)a3
+- (void)_fetchCellularDataPlanWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   carrierSpaceClient = self->_carrierSpaceClient;
   if (!carrierSpaceClient)
   {
@@ -40,8 +40,8 @@
   v9[1] = 3221225472;
   v9[2] = __72__SSBDatabaseUpdateSupport__fetchCellularDataPlanWithCompletionHandler___block_invoke;
   v9[3] = &unk_278564F38;
-  v10 = v4;
-  v8 = v4;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   [(CTCarrierSpaceClient *)carrierSpaceClient fetchDataPlanMetrics:v9];
 }
 

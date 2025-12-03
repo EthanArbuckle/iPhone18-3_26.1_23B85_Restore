@@ -48,7 +48,7 @@
 - (id)cmsCoded
 {
   v2 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:3];
-  [a1 _imageSize];
+  [self _imageSize];
   v4 = v3;
   if (v5 != 0.0 || v3 != 0.0)
   {
@@ -59,8 +59,8 @@
     [v2 setObject:v7 forKey:@"height"];
   }
 
-  v8 = [a1 _uri];
-  [v2 setObject:v8 forKey:@"url"];
+  _uri = [self _uri];
+  [v2 setObject:_uri forKey:@"url"];
 
   return v2;
 }

@@ -1,7 +1,7 @@
 @interface SKUIProductPageHeaderViewController
 - (BOOL)_isRestricted;
 - (SKUIProductPageHeaderFloatingView)floatingView;
-- (SKUIProductPageHeaderViewController)initWithItem:(id)a3;
+- (SKUIProductPageHeaderViewController)initWithItem:(id)item;
 - (SKUIProductPageHeaderViewDelegate)delegate;
 - (UIImage)iconImage;
 - (id)_activeItem;
@@ -9,40 +9,40 @@
 - (id)_artworkContext;
 - (id)_contentRatingResourceLoader;
 - (id)_segmentedControlTitles;
-- (void)_artistButtonAction:(id)a3;
+- (void)_artistButtonAction:(id)action;
 - (void)_destroyPopoverController;
-- (void)_disableItemOfferButtonWithTitle:(id)a3 animated:(BOOL)a4;
-- (void)_itemOfferButtonAction:(id)a3;
+- (void)_disableItemOfferButtonWithTitle:(id)title animated:(BOOL)animated;
+- (void)_itemOfferButtonAction:(id)action;
 - (void)_loadUberImageIfAvailable;
-- (void)_reloadItemStateAnimated:(BOOL)a3;
-- (void)_sectionControlAction:(id)a3;
+- (void)_reloadItemStateAnimated:(BOOL)animated;
+- (void)_sectionControlAction:(id)action;
 - (void)_sendDidReloadOffer;
-- (void)_setArtworkWithImage:(id)a3 error:(id)a4;
-- (void)_setItemState:(id)a3 animated:(BOOL)a4;
-- (void)_setPersonalizedOffer:(id)a3;
-- (void)_setUberWithImage:(id)a3 error:(id)a4;
-- (void)_shareButtonAction:(id)a3;
-- (void)_showActivityViewControllerFromView:(id)a3;
+- (void)_setArtworkWithImage:(id)image error:(id)error;
+- (void)_setItemState:(id)state animated:(BOOL)animated;
+- (void)_setPersonalizedOffer:(id)offer;
+- (void)_setUberWithImage:(id)image error:(id)error;
+- (void)_shareButtonAction:(id)action;
+- (void)_showActivityViewControllerFromView:(id)view;
 - (void)_showAskPermissionBanner;
-- (void)_showSynthesizedItemStateWithFlag:(unint64_t)a3 animated:(BOOL)a4;
+- (void)_showSynthesizedItemStateWithFlag:(unint64_t)flag animated:(BOOL)animated;
 - (void)dealloc;
-- (void)didRotateFromInterfaceOrientation:(int64_t)a3;
-- (void)itemStateCenter:(id)a3 itemStatesChanged:(id)a4;
-- (void)itemStateCenterRestrictionsChanged:(id)a3;
+- (void)didRotateFromInterfaceOrientation:(int64_t)orientation;
+- (void)itemStateCenter:(id)center itemStatesChanged:(id)changed;
+- (void)itemStateCenterRestrictionsChanged:(id)changed;
 - (void)loadView;
 - (void)reloadData;
-- (void)setAskPermission:(BOOL)a3;
-- (void)setProductPage:(id)a3;
-- (void)setSelectedSectionIndex:(int64_t)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)setAskPermission:(BOOL)permission;
+- (void)setProductPage:(id)page;
+- (void)setSelectedSectionIndex:(int64_t)index;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation SKUIProductPageHeaderViewController
 
-- (SKUIProductPageHeaderViewController)initWithItem:(id)a3
+- (SKUIProductPageHeaderViewController)initWithItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIProductPageHeaderViewController initWithItem:];
@@ -54,7 +54,7 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_item, a3);
+    objc_storeStrong(&v6->_item, item);
     v7->_itemIdentifier = [(SKUIItem *)v7->_item itemIdentifier];
     v8 = +[SKUIItemStateCenter defaultCenter];
     [v8 addObserver:v7];
@@ -69,14 +69,14 @@
   [v3 removeObserver:self];
   [(UIPopoverController *)self->_activityPopoverController setDelegate:0];
   [(UIPopoverController *)self->_activityPopoverController dismissPopoverAnimated:0];
-  v4 = [(SKUIProductPageHeaderView *)self->_headerView itemOfferButton];
-  [v4 removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
+  itemOfferButton = [(SKUIProductPageHeaderView *)self->_headerView itemOfferButton];
+  [itemOfferButton removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
 
-  v5 = [(SKUIProductPageHeaderView *)self->_headerView shareButton];
-  [v5 removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
+  shareButton = [(SKUIProductPageHeaderView *)self->_headerView shareButton];
+  [shareButton removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
 
-  v6 = [(SKUIProductPageHeaderFloatingView *)self->_floatingView sectionControl];
-  [v6 removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
+  sectionControl = [(SKUIProductPageHeaderFloatingView *)self->_floatingView sectionControl];
+  [sectionControl removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
 
   v7.receiver = self;
   v7.super_class = SKUIProductPageHeaderViewController;
@@ -88,18 +88,18 @@
   floatingView = self->_floatingView;
   if (!floatingView)
   {
-    v4 = [(SKUIProductPageHeaderViewController *)self _segmentedControlTitles];
-    v5 = [[SKUIProductPageHeaderFloatingView alloc] initWithSectionTitles:v4 isPad:SKUIUserInterfaceIdiom(self->_clientContext) == 1];
+    _segmentedControlTitles = [(SKUIProductPageHeaderViewController *)self _segmentedControlTitles];
+    v5 = [[SKUIProductPageHeaderFloatingView alloc] initWithSectionTitles:_segmentedControlTitles isPad:SKUIUserInterfaceIdiom(self->_clientContext) == 1];
     v6 = self->_floatingView;
     self->_floatingView = v5;
 
     v7 = self->_floatingView;
-    v8 = [(SKUIProductPage *)self->_productPage uber];
-    v9 = [v8 colorScheme];
-    [(SKUIProductPageHeaderFloatingView *)v7 setColorScheme:v9];
+    uber = [(SKUIProductPage *)self->_productPage uber];
+    colorScheme = [uber colorScheme];
+    [(SKUIProductPageHeaderFloatingView *)v7 setColorScheme:colorScheme];
 
-    v10 = [(SKUIProductPageHeaderFloatingView *)self->_floatingView sectionControl];
-    [v10 addTarget:self action:sel__sectionControlAction_ forControlEvents:4096];
+    sectionControl = [(SKUIProductPageHeaderFloatingView *)self->_floatingView sectionControl];
+    [sectionControl addTarget:self action:sel__sectionControlAction_ forControlEvents:4096];
 
     [(SKUIProductPageHeaderFloatingView *)self->_floatingView sizeToFit];
     floatingView = self->_floatingView;
@@ -119,12 +119,12 @@
 
   else
   {
-    v5 = [(SKUIProductPageHeaderViewController *)self _activeItem];
-    v6 = v5;
+    _activeItem = [(SKUIProductPageHeaderViewController *)self _activeItem];
+    v6 = _activeItem;
     placeholderImage = self->_placeholderImage;
     if (!placeholderImage)
     {
-      v29 = [v5 artworksProvider];
+      artworksProvider = [_activeItem artworksProvider];
       [SKUIArtworkProvidingFactory artworkCacheCandidatesForProvider:?];
       v30 = 0u;
       v31 = 0u;
@@ -149,17 +149,17 @@
             v14 = objc_alloc(MEMORY[0x277D69CD8]);
             v15 = [v13 URL];
             v16 = [v14 initWithURL:v15];
-            v17 = [v16 cachedURLResponse];
+            cachedURLResponse = [v16 cachedURLResponse];
 
-            if (v17)
+            if (cachedURLResponse)
             {
-              v18 = [(SKUIProductPageHeaderViewController *)self _artworkContext];
+              _artworkContext = [(SKUIProductPageHeaderViewController *)self _artworkContext];
               v6 = v28;
-              v19 = [v18 dataConsumerForItem:v28];
+              v19 = [_artworkContext dataConsumerForItem:v28];
 
-              v20 = [v17 data];
-              v21 = [v17 response];
-              v22 = [v19 objectForData:v20 response:v21 error:0];
+              data = [cachedURLResponse data];
+              response = [cachedURLResponse response];
+              v22 = [v19 objectForData:data response:response error:0];
               v23 = self->_placeholderImage;
               self->_placeholderImage = v22;
 
@@ -183,8 +183,8 @@ LABEL_14:
       placeholderImage = self->_placeholderImage;
       if (!placeholderImage)
       {
-        v24 = [(SKUIProductPageHeaderViewController *)self _artworkContext];
-        v25 = [v24 placeholderImageForItem:v6];
+        _artworkContext2 = [(SKUIProductPageHeaderViewController *)self _artworkContext];
+        v25 = [_artworkContext2 placeholderImageForItem:v6];
         v26 = self->_placeholderImage;
         self->_placeholderImage = v25;
 
@@ -200,11 +200,11 @@ LABEL_14:
 
 - (void)reloadData
 {
-  v3 = [(SKUIProductPageHeaderViewController *)self _activeItem];
-  v4 = v3;
+  _activeItem = [(SKUIProductPageHeaderViewController *)self _activeItem];
+  v4 = _activeItem;
   if (!self->_personalizationState)
   {
-    if ([v3 itemKind] == 17)
+    if ([_activeItem itemKind] == 17)
     {
       v5 = [[SKUIPersonalizeOfferOperation alloc] initWithItemIdentifier:self->_itemIdentifier clientContext:self->_clientContext];
       objc_initWeak(&location, self);
@@ -215,8 +215,8 @@ LABEL_14:
       objc_copyWeak(&v29, &location);
       [(SKUIPersonalizeOfferOperation *)v5 setOutputBlock:v28];
       self->_personalizationState = 1;
-      v6 = [(SKUIProductPageHeaderViewController *)self operationQueue];
-      [v6 addOperation:v5];
+      operationQueue = [(SKUIProductPageHeaderViewController *)self operationQueue];
+      [operationQueue addOperation:v5];
 
       objc_destroyWeak(&v29);
       objc_destroyWeak(&location);
@@ -230,11 +230,11 @@ LABEL_14:
 
   if (!self->_iconImage && !self->_loadIconOperation)
   {
-    v7 = [(SKUIProductPageHeaderViewController *)self _artworkContext];
-    v8 = [(SKUIProductPage *)self->_productPage item];
-    if (v8)
+    _artworkContext = [(SKUIProductPageHeaderViewController *)self _artworkContext];
+    item = [(SKUIProductPage *)self->_productPage item];
+    if (item)
     {
-      v9 = [v7 URLForItem:v8];
+      v9 = [_artworkContext URLForItem:item];
       if (!v9)
       {
         goto LABEL_16;
@@ -243,17 +243,17 @@ LABEL_14:
 
     else
     {
-      [v7 imageSizeForItem:self->_item];
+      [_artworkContext imageSizeForItem:self->_item];
       v11 = v10;
       v13 = v12;
-      v14 = [MEMORY[0x277D759A0] mainScreen];
-      [v14 scale];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen scale];
       v16 = v15;
 
-      v17 = [v7 artworkForItem:self->_item];
-      v18 = [v17 width];
+      v17 = [_artworkContext artworkForItem:self->_item];
+      width = [v17 width];
       v19 = v11 * v16;
-      if (v11 * v16 <= v18 || (v18 = [v17 height], v19 = v13 * v16, v13 * v16 <= v18))
+      if (v11 * v16 <= width || (width = [v17 height], v19 = v13 * v16, v13 * v16 <= width))
       {
         v9 = [v17 URL];
       }
@@ -274,7 +274,7 @@ LABEL_14:
     self->_loadIconOperation = v20;
 
     v22 = self->_loadIconOperation;
-    v23 = [v7 dataConsumerForItem:v4];
+    v23 = [_artworkContext dataConsumerForItem:v4];
     [(SSVLoadURLOperation *)v22 setDataConsumer:v23];
 
     [(SSVLoadURLOperation *)self->_loadIconOperation setQueuePriority:4];
@@ -286,8 +286,8 @@ LABEL_14:
     v26[3] = &unk_2781FA1F8;
     objc_copyWeak(&v27, &location);
     [(SSVLoadURLOperation *)v24 setOutputBlock:v26];
-    v25 = [(SKUIProductPageHeaderViewController *)self operationQueue];
-    [v25 addOperation:self->_loadIconOperation];
+    operationQueue2 = [(SKUIProductPageHeaderViewController *)self operationQueue];
+    [operationQueue2 addOperation:self->_loadIconOperation];
 
     objc_destroyWeak(&v27);
     objc_destroyWeak(&location);
@@ -342,68 +342,68 @@ void __49__SKUIProductPageHeaderViewController_reloadData__block_invoke_4(uint64
   [WeakRetained _setArtworkWithImage:*(a1 + 32) error:*(a1 + 40)];
 }
 
-- (void)setAskPermission:(BOOL)a3
+- (void)setAskPermission:(BOOL)permission
 {
-  if (self->_askPermission != a3)
+  if (self->_askPermission != permission)
   {
-    self->_askPermission = a3;
+    self->_askPermission = permission;
     [(SKUIProductPageHeaderViewController *)self _reloadItemStateAnimated:0];
-    v4 = [(SKUIProductPageHeaderView *)self->_headerView artistButton];
-    [v4 setEnabled:!self->_askPermission];
+    artistButton = [(SKUIProductPageHeaderView *)self->_headerView artistButton];
+    [artistButton setEnabled:!self->_askPermission];
 
-    v5 = [(SKUIProductPageHeaderView *)self->_headerView shareButton];
-    [v5 setHidden:self->_askPermission];
+    shareButton = [(SKUIProductPageHeaderView *)self->_headerView shareButton];
+    [shareButton setHidden:self->_askPermission];
   }
 }
 
-- (void)setProductPage:(id)a3
+- (void)setProductPage:(id)page
 {
-  v5 = a3;
-  if (self->_productPage != v5)
+  pageCopy = page;
+  if (self->_productPage != pageCopy)
   {
-    v46 = v5;
-    objc_storeStrong(&self->_productPage, a3);
-    v6 = [(SKUIProductPage *)self->_productPage item];
-    if (v6 && self->_wantsActivityViewController)
+    v46 = pageCopy;
+    objc_storeStrong(&self->_productPage, page);
+    item = [(SKUIProductPage *)self->_productPage item];
+    if (item && self->_wantsActivityViewController)
     {
-      v7 = [(SKUIProductPageHeaderView *)self->_headerView shareButton];
-      [(SKUIProductPageHeaderViewController *)self _showActivityViewControllerFromView:v7];
+      shareButton = [(SKUIProductPageHeaderView *)self->_headerView shareButton];
+      [(SKUIProductPageHeaderViewController *)self _showActivityViewControllerFromView:shareButton];
     }
 
-    v8 = [(SKUIProductPage *)self->_productPage uber];
+    uber = [(SKUIProductPage *)self->_productPage uber];
     artworkContext = self->_artworkContext;
-    v10 = [v8 colorScheme];
-    [(SKUIItemArtworkContext *)artworkContext setColorScheme:v10];
+    colorScheme = [uber colorScheme];
+    [(SKUIItemArtworkContext *)artworkContext setColorScheme:colorScheme];
 
     floatingView = self->_floatingView;
-    v12 = [v8 colorScheme];
-    [(SKUIProductPageHeaderFloatingView *)floatingView setColorScheme:v12];
+    colorScheme2 = [uber colorScheme];
+    [(SKUIProductPageHeaderFloatingView *)floatingView setColorScheme:colorScheme2];
 
     headerView = self->_headerView;
-    v14 = [(SKUIProductPage *)self->_productPage uber];
-    v15 = [v14 colorScheme];
-    v16 = [v15 backgroundColor];
-    if (v16)
+    uber2 = [(SKUIProductPage *)self->_productPage uber];
+    colorScheme3 = [uber2 colorScheme];
+    backgroundColor = [colorScheme3 backgroundColor];
+    if (backgroundColor)
     {
-      [(SKUIProductPageHeaderView *)headerView setBackgroundColor:v16];
+      [(SKUIProductPageHeaderView *)headerView setBackgroundColor:backgroundColor];
     }
 
     else
     {
-      v17 = [MEMORY[0x277D75348] whiteColor];
-      [(SKUIProductPageHeaderView *)headerView setBackgroundColor:v17];
+      whiteColor = [MEMORY[0x277D75348] whiteColor];
+      [(SKUIProductPageHeaderView *)headerView setBackgroundColor:whiteColor];
     }
 
     v18 = self->_headerView;
-    v19 = [v8 colorScheme];
-    [(SKUIProductPageHeaderView *)v18 setColorScheme:v19];
+    colorScheme4 = [uber colorScheme];
+    [(SKUIProductPageHeaderView *)v18 setColorScheme:colorScheme4];
 
     v20 = self->_headerView;
-    v21 = [v6 contentRating];
-    [(SKUIProductPageHeaderView *)v20 setContentRating:v21];
+    contentRating = [item contentRating];
+    [(SKUIProductPageHeaderView *)v20 setContentRating:contentRating];
 
     v22 = self->_headerView;
-    if ([v6 hasInAppPurchases])
+    if ([item hasInAppPurchases])
     {
       clientContext = self->_clientContext;
       if (clientContext)
@@ -424,30 +424,30 @@ void __49__SKUIProductPageHeaderViewController_reloadData__block_invoke_4(uint64
       [(SKUIProductPageHeaderView *)v22 setInAppPurchasesString:0];
     }
 
-    -[SKUIProductPageHeaderView setNumberOfUserRatings:](self->_headerView, "setNumberOfUserRatings:", [v6 numberOfUserRatings]);
+    -[SKUIProductPageHeaderView setNumberOfUserRatings:](self->_headerView, "setNumberOfUserRatings:", [item numberOfUserRatings]);
     v25 = self->_headerView;
-    [v6 userRating];
+    [item userRating];
     [(SKUIProductPageHeaderView *)v25 setUserRating:(v26 / 5.0)];
-    v27 = [v6 secondaryContentRatings];
-    if ([v27 count])
+    secondaryContentRatings = [item secondaryContentRatings];
+    if ([secondaryContentRatings count])
     {
       contentRatingArtworkLoader = self->_contentRatingArtworkLoader;
       if (!contentRatingArtworkLoader)
       {
-        v29 = [(SKUIProductPageHeaderViewController *)self _contentRatingResourceLoader];
+        _contentRatingResourceLoader = [(SKUIProductPageHeaderViewController *)self _contentRatingResourceLoader];
         v30 = self->_contentRatingArtworkLoader;
-        self->_contentRatingArtworkLoader = v29;
+        self->_contentRatingArtworkLoader = _contentRatingResourceLoader;
 
         contentRatingArtworkLoader = self->_contentRatingArtworkLoader;
       }
 
       [(SKUIProductPageHeaderView *)self->_headerView setContentRatingArtworkLoader:contentRatingArtworkLoader];
       v31 = self->_headerView;
-      v32 = [v27 lastObject];
-      [(SKUIProductPageHeaderView *)v31 setSecondaryContentRating:v32];
+      lastObject = [secondaryContentRatings lastObject];
+      [(SKUIProductPageHeaderView *)v31 setSecondaryContentRating:lastObject];
     }
 
-    v33 = [v8 artworkProvider];
+    artworkProvider = [uber artworkProvider];
     if (SKUIUserInterfaceIdiom(self->_clientContext) == 1)
     {
       v34 = 630.0;
@@ -458,17 +458,17 @@ void __49__SKUIProductPageHeaderViewController_reloadData__block_invoke_4(uint64
       v34 = 320.0;
     }
 
-    v35 = [MEMORY[0x277D759A0] mainScreen];
-    [v35 scale];
-    v37 = [v33 artworkWithWidth:vcvtmd_s64_f64(v34 * v36)];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
+    v37 = [artworkProvider artworkWithWidth:vcvtmd_s64_f64(v34 * v36)];
 
     if (v37)
     {
       v38 = self->_headerView;
       [v37 size];
       v40 = v39;
-      v41 = [MEMORY[0x277D759A0] mainScreen];
-      [v41 scale];
+      mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen2 scale];
       v43 = v40 / v42;
       v44 = SKUIUserInterfaceIdiom(self->_clientContext);
       v45 = -60.0;
@@ -492,77 +492,77 @@ void __49__SKUIProductPageHeaderViewController_reloadData__block_invoke_4(uint64
     [(SKUIProductPageHeaderViewController *)self _loadUberImageIfAvailable];
     [(SKUIProductPageHeaderViewController *)self _reloadItemStateAnimated:0];
 
-    v5 = v46;
+    pageCopy = v46;
   }
 }
 
-- (void)setSelectedSectionIndex:(int64_t)a3
+- (void)setSelectedSectionIndex:(int64_t)index
 {
-  v4 = [(SKUIProductPageHeaderViewController *)self floatingView];
-  [v4 setSelectedSectionIndex:a3];
+  floatingView = [(SKUIProductPageHeaderViewController *)self floatingView];
+  [floatingView setSelectedSectionIndex:index];
 }
 
-- (void)didRotateFromInterfaceOrientation:(int64_t)a3
+- (void)didRotateFromInterfaceOrientation:(int64_t)orientation
 {
   v15.receiver = self;
   v15.super_class = SKUIProductPageHeaderViewController;
-  [(SKUIProductPageHeaderViewController *)&v15 didRotateFromInterfaceOrientation:a3];
+  [(SKUIProductPageHeaderViewController *)&v15 didRotateFromInterfaceOrientation:orientation];
   if ([(UIPopoverController *)self->_activityPopoverController isPopoverVisible])
   {
-    v4 = [(SKUIProductPageHeaderView *)self->_headerView shareButton];
+    shareButton = [(SKUIProductPageHeaderView *)self->_headerView shareButton];
     activityPopoverController = self->_activityPopoverController;
-    [v4 frame];
+    [shareButton frame];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    v14 = [v4 superview];
-    [(UIPopoverController *)activityPopoverController presentPopoverFromRect:v14 inView:15 permittedArrowDirections:1 animated:v7, v9, v11, v13];
+    superview = [shareButton superview];
+    [(UIPopoverController *)activityPopoverController presentPopoverFromRect:superview inView:15 permittedArrowDirections:1 animated:v7, v9, v11, v13];
   }
 }
 
 - (void)loadView
 {
-  v56 = [(SKUIProductPage *)self->_productPage uber];
+  uber = [(SKUIProductPage *)self->_productPage uber];
   headerView = self->_headerView;
   if (!headerView)
   {
-    v4 = [(SKUIProductPageHeaderViewController *)self _activeItem];
-    v5 = [(SKUIProductPage *)self->_productPage item];
+    _activeItem = [(SKUIProductPageHeaderViewController *)self _activeItem];
+    item = [(SKUIProductPage *)self->_productPage item];
     v6 = [[SKUIProductPageHeaderView alloc] initWithClientContext:self->_clientContext];
     v7 = self->_headerView;
     self->_headerView = v6;
 
     v8 = self->_headerView;
-    v9 = [v56 colorScheme];
-    [(SKUIProductPageHeaderView *)v8 setColorScheme:v9];
+    colorScheme = [uber colorScheme];
+    [(SKUIProductPageHeaderView *)v8 setColorScheme:colorScheme];
 
     v10 = self->_headerView;
-    v11 = [v4 artistName];
-    [(SKUIProductPageHeaderView *)v10 setArtistName:v11];
+    artistName = [_activeItem artistName];
+    [(SKUIProductPageHeaderView *)v10 setArtistName:artistName];
 
     v12 = self->_headerView;
-    v13 = [(SKUIProductPageHeaderViewController *)self _ageBandString];
-    [(SKUIProductPageHeaderView *)v12 setAgeBandString:v13];
+    _ageBandString = [(SKUIProductPageHeaderViewController *)self _ageBandString];
+    [(SKUIProductPageHeaderView *)v12 setAgeBandString:_ageBandString];
 
     v14 = self->_headerView;
-    v15 = [(SKUIProductPageHeaderViewController *)self iconImage];
-    [(SKUIProductPageHeaderView *)v14 setIconImage:v15];
+    iconImage = [(SKUIProductPageHeaderViewController *)self iconImage];
+    [(SKUIProductPageHeaderView *)v14 setIconImage:iconImage];
 
     v16 = self->_headerView;
-    v17 = [v4 title];
-    [(SKUIProductPageHeaderView *)v16 setTitle:v17];
+    title = [_activeItem title];
+    [(SKUIProductPageHeaderView *)v16 setTitle:title];
 
     v18 = self->_headerView;
-    v19 = [v4 editorialBadge];
-    [(SKUIProductPageHeaderView *)v18 setEditorialBadge:v19];
+    editorialBadge = [_activeItem editorialBadge];
+    [(SKUIProductPageHeaderView *)v18 setEditorialBadge:editorialBadge];
 
     v20 = self->_headerView;
-    v21 = [v5 contentRating];
-    [(SKUIProductPageHeaderView *)v20 setContentRating:v21];
+    contentRating = [item contentRating];
+    [(SKUIProductPageHeaderView *)v20 setContentRating:contentRating];
 
     v22 = self->_headerView;
-    if ([v5 hasInAppPurchases])
+    if ([item hasInAppPurchases])
     {
       clientContext = self->_clientContext;
       if (clientContext)
@@ -584,29 +584,29 @@ void __49__SKUIProductPageHeaderViewController_reloadData__block_invoke_4(uint64
     }
 
     v25 = self->_headerView;
-    [v4 userRating];
+    [_activeItem userRating];
     [(SKUIProductPageHeaderView *)v25 setUserRating:(v26 / 5.0)];
-    -[SKUIProductPageHeaderView setNumberOfUserRatings:](self->_headerView, "setNumberOfUserRatings:", [v4 numberOfUserRatings]);
-    v27 = [v5 secondaryContentRatings];
-    if ([v27 count])
+    -[SKUIProductPageHeaderView setNumberOfUserRatings:](self->_headerView, "setNumberOfUserRatings:", [_activeItem numberOfUserRatings]);
+    secondaryContentRatings = [item secondaryContentRatings];
+    if ([secondaryContentRatings count])
     {
       contentRatingArtworkLoader = self->_contentRatingArtworkLoader;
       if (!contentRatingArtworkLoader)
       {
-        v29 = [(SKUIProductPageHeaderViewController *)self _contentRatingResourceLoader];
+        _contentRatingResourceLoader = [(SKUIProductPageHeaderViewController *)self _contentRatingResourceLoader];
         v30 = self->_contentRatingArtworkLoader;
-        self->_contentRatingArtworkLoader = v29;
+        self->_contentRatingArtworkLoader = _contentRatingResourceLoader;
 
         contentRatingArtworkLoader = self->_contentRatingArtworkLoader;
       }
 
       [(SKUIProductPageHeaderView *)self->_headerView setContentRatingArtworkLoader:contentRatingArtworkLoader];
       v31 = self->_headerView;
-      v32 = [v27 lastObject];
-      [(SKUIProductPageHeaderView *)v31 setSecondaryContentRating:v32];
+      lastObject = [secondaryContentRatings lastObject];
+      [(SKUIProductPageHeaderView *)v31 setSecondaryContentRating:lastObject];
     }
 
-    v33 = [v56 artworkProvider];
+    artworkProvider = [uber artworkProvider];
     if (SKUIUserInterfaceIdiom(self->_clientContext) == 1)
     {
       v34 = 630.0;
@@ -617,17 +617,17 @@ void __49__SKUIProductPageHeaderViewController_reloadData__block_invoke_4(uint64
       v34 = 320.0;
     }
 
-    v35 = [MEMORY[0x277D759A0] mainScreen];
-    [v35 scale];
-    v37 = [v33 artworkWithWidth:vcvtmd_s64_f64(v34 * v36)];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
+    v37 = [artworkProvider artworkWithWidth:vcvtmd_s64_f64(v34 * v36)];
 
     if (v37)
     {
       v38 = self->_headerView;
       [v37 size];
       v40 = v39;
-      v41 = [MEMORY[0x277D759A0] mainScreen];
-      [v41 scale];
+      mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen2 scale];
       v43 = v40 / v42;
       v44 = SKUIUserInterfaceIdiom(self->_clientContext);
       v45 = -60.0;
@@ -643,81 +643,81 @@ void __49__SKUIProductPageHeaderViewController_reloadData__block_invoke_4(uint64
 
     [(SKUIProductPageHeaderView *)self->_headerView setRestricted:[(SKUIProductPageHeaderViewController *)self _isRestricted]];
     [(SKUIProductPageHeaderViewController *)self _reloadItemStateAnimated:0];
-    v46 = [(SKUIProductPageHeaderView *)self->_headerView itemOfferButton];
-    [v46 setUniversal:{SKUIItemDeviceFamilyIsUniversal(objc_msgSend(v4, "deviceFamilies"))}];
+    itemOfferButton = [(SKUIProductPageHeaderView *)self->_headerView itemOfferButton];
+    [itemOfferButton setUniversal:{SKUIItemDeviceFamilyIsUniversal(objc_msgSend(_activeItem, "deviceFamilies"))}];
 
     [(SKUIProductPageHeaderView *)self->_headerView sizeToFit];
-    v47 = [(SKUIProductPageHeaderView *)self->_headerView shareButton];
-    [v47 addTarget:self action:sel__shareButtonAction_ forControlEvents:64];
+    shareButton = [(SKUIProductPageHeaderView *)self->_headerView shareButton];
+    [shareButton addTarget:self action:sel__shareButtonAction_ forControlEvents:64];
 
-    v48 = [(SKUIProductPageHeaderView *)self->_headerView shareButton];
-    [v48 setHidden:self->_askPermission];
+    shareButton2 = [(SKUIProductPageHeaderView *)self->_headerView shareButton];
+    [shareButton2 setHidden:self->_askPermission];
 
-    v49 = [(SKUIProductPageHeaderView *)self->_headerView artistButton];
-    [v49 addTarget:self action:sel__artistButtonAction_ forControlEvents:64];
+    artistButton = [(SKUIProductPageHeaderView *)self->_headerView artistButton];
+    [artistButton addTarget:self action:sel__artistButtonAction_ forControlEvents:64];
 
-    v50 = [(SKUIProductPageHeaderView *)self->_headerView artistButton];
-    [v50 setEnabled:!self->_askPermission];
+    artistButton2 = [(SKUIProductPageHeaderView *)self->_headerView artistButton];
+    [artistButton2 setEnabled:!self->_askPermission];
 
     headerView = self->_headerView;
   }
 
   [(SKUIProductPageHeaderViewController *)self setView:headerView];
   v51 = self->_headerView;
-  v52 = [(SKUIProductPage *)self->_productPage uber];
-  v53 = [v52 colorScheme];
-  v54 = [v53 backgroundColor];
-  if (v54)
+  uber2 = [(SKUIProductPage *)self->_productPage uber];
+  colorScheme2 = [uber2 colorScheme];
+  backgroundColor = [colorScheme2 backgroundColor];
+  if (backgroundColor)
   {
-    [(SKUIProductPageHeaderView *)v51 setBackgroundColor:v54];
+    [(SKUIProductPageHeaderView *)v51 setBackgroundColor:backgroundColor];
   }
 
   else
   {
-    v55 = [MEMORY[0x277D75348] whiteColor];
-    [(SKUIProductPageHeaderView *)v51 setBackgroundColor:v55];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(SKUIProductPageHeaderView *)v51 setBackgroundColor:whiteColor];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   [(SKUIProductPageHeaderViewController *)self reloadData];
   v5.receiver = self;
   v5.super_class = SKUIProductPageHeaderViewController;
-  [(SKUIProductPageHeaderViewController *)&v5 viewWillAppear:v3];
+  [(SKUIProductPageHeaderViewController *)&v5 viewWillAppear:appearCopy];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   [(SKUIProductPageHeaderViewController *)self _destroyPopoverController];
   v5.receiver = self;
   v5.super_class = SKUIProductPageHeaderViewController;
-  [(SKUIProductPageHeaderViewController *)&v5 viewWillDisappear:v3];
+  [(SKUIProductPageHeaderViewController *)&v5 viewWillDisappear:disappearCopy];
 }
 
-- (void)_artistButtonAction:(id)a3
+- (void)_artistButtonAction:(id)action
 {
   productPage = self->_productPage;
   if (productPage)
   {
-    v5 = [(SKUIProductPage *)productPage item];
-    v10 = [v5 artistPageURL];
+    item = [(SKUIProductPage *)productPage item];
+    artistPageURL = [item artistPageURL];
 
-    v6 = v10;
-    if (v10)
+    v6 = artistPageURL;
+    if (artistPageURL)
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       v8 = objc_opt_respondsToSelector();
 
-      v6 = v10;
+      v6 = artistPageURL;
       if (v8)
       {
         v9 = objc_loadWeakRetained(&self->_delegate);
-        [v9 productPageHeaderView:self didSelectURL:v10];
+        [v9 productPageHeaderView:self didSelectURL:artistPageURL];
 
-        v6 = v10;
+        v6 = artistPageURL;
       }
     }
   }
@@ -728,9 +728,9 @@ void __49__SKUIProductPageHeaderViewController_reloadData__block_invoke_4(uint64
   }
 }
 
-- (void)_itemOfferButtonAction:(id)a3
+- (void)_itemOfferButtonAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
 
@@ -745,20 +745,20 @@ void __49__SKUIProductPageHeaderViewController_reloadData__block_invoke_4(uint64
     v8 = 0;
   }
 
-  v9 = [(SKUIProductPageHeaderViewController *)self _activeItem];
-  v10 = v9;
+  _activeItem = [(SKUIProductPageHeaderViewController *)self _activeItem];
+  v10 = _activeItem;
   personalizedOffer = self->_personalizedOffer;
   if (personalizedOffer)
   {
-    v12 = personalizedOffer;
+    primaryItemOffer = personalizedOffer;
   }
 
   else
   {
-    v12 = [v9 primaryItemOffer];
+    primaryItemOffer = [_activeItem primaryItemOffer];
   }
 
-  v13 = v12;
+  v13 = primaryItemOffer;
   objc_initWeak(&location, self);
   if (!v8)
   {
@@ -979,10 +979,10 @@ void __62__SKUIProductPageHeaderViewController__itemOfferButtonAction___block_in
 LABEL_5:
 }
 
-- (void)_sectionControlAction:(id)a3
+- (void)_sectionControlAction:(id)action
 {
   v19[2] = *MEMORY[0x277D85DE8];
-  v4 = [(SKUIProductPageHeaderFloatingView *)self->_floatingView selectedSectionIndex];
+  selectedSectionIndex = [(SKUIProductPageHeaderFloatingView *)self->_floatingView selectedSectionIndex];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
 
@@ -994,15 +994,15 @@ LABEL_5:
     if ([v8 canRecordEventWithType:*MEMORY[0x277D6A478]])
     {
       v9 = objc_alloc_init(MEMORY[0x277D69B68]);
-      v10 = [(SKUIProductPageHeaderViewController *)self _segmentedControlTitles];
-      v11 = [v10 objectAtIndex:v4];
+      _segmentedControlTitles = [(SKUIProductPageHeaderViewController *)self _segmentedControlTitles];
+      v11 = [_segmentedControlTitles objectAtIndex:selectedSectionIndex];
       [v9 setActionDetails:v11];
 
       [v9 setActionType:*MEMORY[0x277D6A460]];
       v12 = *MEMORY[0x277D6A4E8];
       [v9 setTargetType:*MEMORY[0x277D6A4E8]];
       v13 = [v8 locationWithPosition:0 type:@"tabBar" fieldData:0];
-      v14 = [v8 locationWithPosition:v4 type:v12 fieldData:0];
+      v14 = [v8 locationWithPosition:selectedSectionIndex type:v12 fieldData:0];
       v19[0] = v14;
       v19[1] = v13;
       v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:2];
@@ -1018,15 +1018,15 @@ LABEL_5:
   if (v17)
   {
     v18 = objc_loadWeakRetained(&self->_delegate);
-    [v18 productPageHeaderView:self didSelectSectionIndex:v4];
+    [v18 productPageHeaderView:self didSelectSectionIndex:selectedSectionIndex];
   }
 }
 
-- (void)_shareButtonAction:(id)a3
+- (void)_shareButtonAction:(id)action
 {
   if (self->_productPage)
   {
-    [(SKUIProductPageHeaderViewController *)self _showActivityViewControllerFromView:a3];
+    [(SKUIProductPageHeaderViewController *)self _showActivityViewControllerFromView:action];
   }
 
   else
@@ -1035,16 +1035,16 @@ LABEL_5:
   }
 }
 
-- (void)itemStateCenter:(id)a3 itemStatesChanged:(id)a4
+- (void)itemStateCenter:(id)center itemStatesChanged:(id)changed
 {
-  v5 = a4;
+  changedCopy = changed;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __73__SKUIProductPageHeaderViewController_itemStateCenter_itemStatesChanged___block_invoke;
   v7[3] = &unk_2781F80C8;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = changedCopy;
+  v6 = changedCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
@@ -1097,7 +1097,7 @@ void __73__SKUIProductPageHeaderViewController_itemStateCenter_itemStatesChanged
 LABEL_12:
 }
 
-- (void)itemStateCenterRestrictionsChanged:(id)a3
+- (void)itemStateCenterRestrictionsChanged:(id)changed
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -1118,9 +1118,9 @@ uint64_t __74__SKUIProductPageHeaderViewController_itemStateCenterRestrictionsCh
 
 - (id)_activeItem
 {
-  v3 = [(SKUIProductPage *)self->_productPage item];
-  item = v3;
-  if (!v3)
+  item = [(SKUIProductPage *)self->_productPage item];
+  item = item;
+  if (!item)
   {
     item = self->_item;
   }
@@ -1132,11 +1132,11 @@ uint64_t __74__SKUIProductPageHeaderViewController_itemStateCenterRestrictionsCh
 
 - (id)_ageBandString
 {
-  v3 = [(SKUIProductPageHeaderViewController *)self _activeItem];
-  v4 = [v3 ageBandRange];
+  _activeItem = [(SKUIProductPageHeaderViewController *)self _activeItem];
+  ageBandRange = [_activeItem ageBandRange];
   v6 = v5;
 
-  if (v4 == 0x7FFFFFFFFFFFFFFFLL || SKUIUserInterfaceIdiom(self->_clientContext) != 1)
+  if (ageBandRange == 0x7FFFFFFFFFFFFFFFLL || SKUIUserInterfaceIdiom(self->_clientContext) != 1)
   {
     v13 = 0;
   }
@@ -1146,14 +1146,14 @@ uint64_t __74__SKUIProductPageHeaderViewController_itemStateCenterRestrictionsCh
     v7 = objc_alloc_init(MEMORY[0x277CCABB8]);
     [v7 setNumberStyle:1];
     [v7 setUsesGroupingSeparator:0];
-    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v4];
+    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:ageBandRange];
     v9 = [v7 stringFromNumber:v8];
 
-    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v4 + v6];
+    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:ageBandRange + v6];
     v11 = [v7 stringFromNumber:v10];
 
     clientContext = self->_clientContext;
-    if (v4)
+    if (ageBandRange)
     {
       if (clientContext)
       {
@@ -1240,9 +1240,9 @@ uint64_t __74__SKUIProductPageHeaderViewController_itemStateCenterRestrictionsCh
     [(SKUIItemArtworkContext *)v12 setGeneralConsumer:v14];
 
     v15 = self->_artworkContext;
-    v16 = [(SKUIProductPage *)self->_productPage uber];
-    v17 = [v16 colorScheme];
-    [(SKUIItemArtworkContext *)v15 setColorScheme:v17];
+    uber = [(SKUIProductPage *)self->_productPage uber];
+    colorScheme = [uber colorScheme];
+    [(SKUIItemArtworkContext *)v15 setColorScheme:colorScheme];
 
     artworkContext = self->_artworkContext;
   }
@@ -1261,8 +1261,8 @@ uint64_t __74__SKUIProductPageHeaderViewController_itemStateCenterRestrictionsCh
 - (id)_contentRatingResourceLoader
 {
   v3 = [SKUIResourceLoader alloc];
-  v4 = [(SKUIProductPageHeaderViewController *)self clientContext];
-  v5 = [(SKUIResourceLoader *)v3 initWithClientContext:v4];
+  clientContext = [(SKUIProductPageHeaderViewController *)self clientContext];
+  v5 = [(SKUIResourceLoader *)v3 initWithClientContext:clientContext];
 
   v6 = [[SKUIContentRatingArtworkResourceLoader alloc] initWithArtworkLoader:v5];
   v7 = [SKUIStyledImageDataConsumer appIconConsumerWithSize:11.0, 11.0];
@@ -1271,21 +1271,21 @@ uint64_t __74__SKUIProductPageHeaderViewController_itemStateCenterRestrictionsCh
   return v6;
 }
 
-- (void)_disableItemOfferButtonWithTitle:(id)a3 animated:(BOOL)a4
+- (void)_disableItemOfferButtonWithTitle:(id)title animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [[SKUIItemOffer alloc] initWithButtonText:v6];
+  animatedCopy = animated;
+  titleCopy = title;
+  v7 = [[SKUIItemOffer alloc] initWithButtonText:titleCopy];
 
   [(SKUIProductPageHeaderView *)self->_headerView setItemOffer:v7];
-  [(SKUIProductPageHeaderViewController *)self _setItemState:0 animated:v4];
+  [(SKUIProductPageHeaderViewController *)self _setItemState:0 animated:animatedCopy];
 }
 
 - (BOOL)_isRestricted
 {
-  v2 = [(SKUIProductPageHeaderViewController *)self _activeItem];
+  _activeItem = [(SKUIProductPageHeaderViewController *)self _activeItem];
   v3 = +[SKUIItemStateCenter defaultCenter];
-  v4 = [v3 isItemRestrictedWithParentalControlsRank:{objc_msgSend(v2, "parentalControlsRank")}];
+  v4 = [v3 isItemRestrictedWithParentalControlsRank:{objc_msgSend(_activeItem, "parentalControlsRank")}];
 
   return v4;
 }
@@ -1294,8 +1294,8 @@ uint64_t __74__SKUIProductPageHeaderViewController_itemStateCenterRestrictionsCh
 {
   if (!self->_uberImage && !self->_loadUberOperation)
   {
-    v3 = [(SKUIProductPage *)self->_productPage uber];
-    v4 = [v3 artworkProvider];
+    uber = [(SKUIProductPage *)self->_productPage uber];
+    artworkProvider = [uber artworkProvider];
     if (SKUIUserInterfaceIdiom(self->_clientContext) == 1)
     {
       v5 = 630.0;
@@ -1306,9 +1306,9 @@ uint64_t __74__SKUIProductPageHeaderViewController_itemStateCenterRestrictionsCh
       v5 = 320.0;
     }
 
-    v6 = [MEMORY[0x277D759A0] mainScreen];
-    [v6 scale];
-    v8 = [v4 artworkWithWidth:vcvtmd_s64_f64(v5 * v7)];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
+    v8 = [artworkProvider artworkWithWidth:vcvtmd_s64_f64(v5 * v7)];
     v9 = [v8 URL];
 
     if (v9)
@@ -1319,21 +1319,21 @@ uint64_t __74__SKUIProductPageHeaderViewController_itemStateCenterRestrictionsCh
 
       [(SSVLoadURLOperation *)self->_loadUberOperation setQueuePriority:4];
       v12 = +[(SSVURLDataConsumer *)SKUIUberImageDataConsumer];
-      v13 = [(SKUIProductPage *)self->_productPage uber];
-      if (v13)
+      uber2 = [(SKUIProductPage *)self->_productPage uber];
+      if (uber2)
       {
-        v14 = [(SKUIProductPage *)self->_productPage uber];
-        v15 = [v14 colorScheme];
-        v16 = [v15 backgroundColor];
-        if (v16)
+        uber3 = [(SKUIProductPage *)self->_productPage uber];
+        colorScheme = [uber3 colorScheme];
+        backgroundColor = [colorScheme backgroundColor];
+        if (backgroundColor)
         {
-          [v12 setBackgroundColor:v16];
+          [v12 setBackgroundColor:backgroundColor];
         }
 
         else
         {
-          v17 = [MEMORY[0x277D75348] whiteColor];
-          [v12 setBackgroundColor:v17];
+          whiteColor = [MEMORY[0x277D75348] whiteColor];
+          [v12 setBackgroundColor:whiteColor];
         }
       }
 
@@ -1384,16 +1384,16 @@ void __64__SKUIProductPageHeaderViewController__loadUberImageIfAvailable__block_
   [WeakRetained _setUberWithImage:*(a1 + 32) error:*(a1 + 40)];
 }
 
-- (void)_reloadItemStateAnimated:(BOOL)a3
+- (void)_reloadItemStateAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v4 = self;
+  animatedCopy = animated;
+  selfCopy = self;
   v65 = *MEMORY[0x277D85DE8];
-  v5 = [(SKUIProductPage *)self->_productPage item];
-  item = v5;
-  if (!v5)
+  item = [(SKUIProductPage *)self->_productPage item];
+  item = item;
+  if (!item)
   {
-    item = v4->_item;
+    item = selfCopy->_item;
   }
 
   v7 = item;
@@ -1401,20 +1401,20 @@ void __64__SKUIProductPageHeaderViewController__loadUberImageIfAvailable__block_
   v9 = [v8 stateForItemWithIdentifier:{-[SKUIItem itemIdentifier](v7, "itemIdentifier")}];
   if ([(SKUIItem *)v7 itemKind]== 17)
   {
-    if (v5 && v4->_personalizationState == 2)
+    if (item && selfCopy->_personalizationState == 2)
     {
-      v51 = v3;
+      v51 = animatedCopy;
       v53 = v9;
       v54 = v7;
-      v58 = v4;
-      v52 = v5;
-      v10 = [(SKUIItem *)v5 childItemIdentifiers];
-      v50 = [v10 count];
+      v58 = selfCopy;
+      v52 = item;
+      childItemIdentifiers = [(SKUIItem *)item childItemIdentifiers];
+      v50 = [childItemIdentifiers count];
       v60 = 0u;
       v61 = 0u;
       v62 = 0u;
       v63 = 0u;
-      obj = v10;
+      obj = childItemIdentifiers;
       v11 = [obj countByEnumeratingWithState:&v60 objects:v64 count:16];
       if (v11)
       {
@@ -1434,26 +1434,26 @@ void __64__SKUIProductPageHeaderViewController__loadUberImageIfAvailable__block_
             }
 
             v19 = [v8 stateForItemWithIdentifier:{objc_msgSend(*(*(&v60 + 1) + 8 * i), "longLongValue")}];
-            v20 = [v19 state];
+            state = [v19 state];
 
-            if ((v20 & 2) != 0)
+            if ((state & 2) != 0)
             {
               ++v16;
             }
 
-            else if (v20)
+            else if (state)
             {
               ++v14;
             }
 
-            else if ((v20 & 4) != 0)
+            else if ((state & 4) != 0)
             {
               ++v15;
             }
 
             else
             {
-              v13 += (v20 >> 3) & 1;
+              v13 += (state >> 3) & 1;
             }
           }
 
@@ -1480,19 +1480,19 @@ void __64__SKUIProductPageHeaderViewController__loadUberImageIfAvailable__block_
 
       else
       {
-        v28 = [(SKUIItem *)v54 primaryItemOffer];
-        [(SKUIProductPageHeaderView *)headerView setItemOffer:v28];
+        primaryItemOffer = [(SKUIItem *)v54 primaryItemOffer];
+        [(SKUIProductPageHeaderView *)headerView setItemOffer:primaryItemOffer];
       }
 
       v9 = v53;
       if (v21 || ([v53 state] & 1) != 0)
       {
-        v4 = v58;
+        selfCopy = v58;
         v30 = v58;
         v31 = 1;
 LABEL_36:
         [(SKUIProductPageHeaderViewController *)v30 _showSynthesizedItemStateWithFlag:v31 animated:v51];
-        v5 = v52;
+        item = v52;
         v7 = v54;
 LABEL_37:
 
@@ -1501,7 +1501,7 @@ LABEL_37:
 
       if (v16 >= 1 && v16 + v15 == v50)
       {
-        v4 = v58;
+        selfCopy = v58;
         clientContext = v58->_clientContext;
         if (clientContext)
         {
@@ -1513,7 +1513,7 @@ LABEL_37:
           [SKUIClientContext localizedStringForKey:@"APP_BUNDLE_DOWNLOADING" inBundles:0 inTable:@"ProductPage"];
         }
         v33 = ;
-        v5 = v52;
+        item = v52;
         v7 = v54;
         v34 = v51;
         v35 = v58;
@@ -1526,7 +1526,7 @@ LABEL_51:
 
       if (v15 >= 1 && v15 == v50)
       {
-        v4 = v58;
+        selfCopy = v58;
         v32 = v58->_clientContext;
         if (v32)
         {
@@ -1538,7 +1538,7 @@ LABEL_51:
           [SKUIClientContext localizedStringForKey:@"APP_BUNDLE_INSTALLED" inBundles:0 inTable:@"ProductPage"];
         }
         v33 = ;
-        v5 = v52;
+        item = v52;
         v7 = v54;
         v35 = v58;
         v36 = v33;
@@ -1548,13 +1548,13 @@ LABEL_51:
 
       if (v13 >= 1 && v15 + v13 == v50)
       {
-        v4 = v58;
+        selfCopy = v58;
         v30 = v58;
         v31 = 8;
         goto LABEL_36;
       }
 
-      v4 = v58;
+      selfCopy = v58;
       v37 = v58->_clientContext;
       if (v37)
       {
@@ -1571,14 +1571,14 @@ LABEL_51:
       {
         v55 = v58->_headerView;
         v39 = MEMORY[0x277CCACA8];
-        v40 = [(SKUIItem *)v7 primaryItemOffer];
-        v41 = [v40 buttonText];
-        v42 = [v39 stringWithValidatedFormat:v38 validFormatSpecifiers:@"%@" error:0, v41];
+        primaryItemOffer2 = [(SKUIItem *)v7 primaryItemOffer];
+        buttonText = [primaryItemOffer2 buttonText];
+        v42 = [v39 stringWithValidatedFormat:v38 validFormatSpecifiers:@"%@" error:0, buttonText];
         [(SKUIProductPageHeaderView *)v55 setItemOfferExplanationText:v42];
 
         v43 = v58->_headerView;
         v44 = v58->_clientContext;
-        v5 = v52;
+        item = v52;
         if (v44)
         {
           [(SKUIClientContext *)v44 localizedStringForKey:@"PRODUCT_PAGE_COMPLETE_MY_BUNDLE_TITLE" inTable:@"ProductPage"];
@@ -1588,16 +1588,16 @@ LABEL_51:
         {
           [SKUIClientContext localizedStringForKey:@"PRODUCT_PAGE_COMPLETE_MY_BUNDLE_TITLE" inBundles:0 inTable:@"ProductPage"];
         }
-        v45 = ;
+        regularPriceString = ;
         v48 = v51;
-        [(SKUIProductPageHeaderView *)v43 setItemOfferExplanationTitle:v45];
+        [(SKUIProductPageHeaderView *)v43 setItemOfferExplanationTitle:regularPriceString];
       }
 
       else
       {
-        v5 = v52;
-        v45 = [(SKUIItem *)v52 regularPriceString];
-        if (!v45)
+        item = v52;
+        regularPriceString = [(SKUIItem *)v52 regularPriceString];
+        if (!regularPriceString)
         {
           [(SKUIProductPageHeaderView *)v58->_headerView setItemOfferExplanationText:0];
           [(SKUIProductPageHeaderView *)v58->_headerView setItemOfferExplanationTitle:0];
@@ -1609,7 +1609,7 @@ LABEL_65:
         }
 
         v56 = v58->_headerView;
-        v46 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:v38 validFormatSpecifiers:@"%@" error:0, v45];
+        v46 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:v38 validFormatSpecifiers:@"%@" error:0, regularPriceString];
         [(SKUIProductPageHeaderView *)v56 setItemOfferExplanationText:v46];
 
         v57 = v58->_headerView;
@@ -1632,31 +1632,31 @@ LABEL_65:
       goto LABEL_65;
     }
 
-    [(SKUIProductPageHeaderView *)v4->_headerView setItemOffer:0];
-    [(SKUIProductPageHeaderView *)v4->_headerView setItemOfferExplanationText:0];
-    [(SKUIProductPageHeaderView *)v4->_headerView setItemOfferExplanationTitle:0];
-    v24 = v4;
+    [(SKUIProductPageHeaderView *)selfCopy->_headerView setItemOffer:0];
+    [(SKUIProductPageHeaderView *)selfCopy->_headerView setItemOfferExplanationText:0];
+    [(SKUIProductPageHeaderView *)selfCopy->_headerView setItemOfferExplanationTitle:0];
+    v24 = selfCopy;
     v25 = 0;
   }
 
   else
   {
-    v22 = v4->_headerView;
-    v23 = [(SKUIItem *)v7 primaryItemOffer];
-    [(SKUIProductPageHeaderView *)v22 setItemOffer:v23];
+    v22 = selfCopy->_headerView;
+    primaryItemOffer3 = [(SKUIItem *)v7 primaryItemOffer];
+    [(SKUIProductPageHeaderView *)v22 setItemOffer:primaryItemOffer3];
 
-    [(SKUIProductPageHeaderView *)v4->_headerView setItemOfferExplanationText:0];
-    [(SKUIProductPageHeaderView *)v4->_headerView setItemOfferExplanationTitle:0];
-    v24 = v4;
+    [(SKUIProductPageHeaderView *)selfCopy->_headerView setItemOfferExplanationText:0];
+    [(SKUIProductPageHeaderView *)selfCopy->_headerView setItemOfferExplanationTitle:0];
+    v24 = selfCopy;
     v25 = v9;
   }
 
-  [(SKUIProductPageHeaderViewController *)v24 _setItemState:v25 animated:v3];
+  [(SKUIProductPageHeaderViewController *)v24 _setItemState:v25 animated:animatedCopy];
 LABEL_24:
-  v26 = [(SKUIProductPageHeaderView *)v4->_headerView itemOfferButton];
-  [v26 removeTarget:v4 action:0 forControlEvents:0x20000];
-  [v26 addTarget:v4 action:sel__itemOfferButtonAction_ forControlEvents:0x20000];
-  [v26 setHidden:v4->_askPermission];
+  itemOfferButton = [(SKUIProductPageHeaderView *)selfCopy->_headerView itemOfferButton];
+  [itemOfferButton removeTarget:selfCopy action:0 forControlEvents:0x20000];
+  [itemOfferButton addTarget:selfCopy action:sel__itemOfferButtonAction_ forControlEvents:0x20000];
+  [itemOfferButton setHidden:selfCopy->_askPermission];
 }
 
 - (id)_segmentedControlTitles
@@ -1716,7 +1716,7 @@ LABEL_24:
 
   if (v4)
   {
-    v8 = [(SKUIProductPageHeaderViewController *)self _activeItem];
+    _activeItem = [(SKUIProductPageHeaderViewController *)self _activeItem];
     v5 = objc_loadWeakRetained(&self->_delegate);
     v6 = v5;
     if (self->_personalizedOffer)
@@ -1726,18 +1726,18 @@ LABEL_24:
 
     else
     {
-      v7 = [v8 primaryItemOffer];
-      [v6 productPageHeaderView:self didReloadItemOffer:v7];
+      primaryItemOffer = [_activeItem primaryItemOffer];
+      [v6 productPageHeaderView:self didReloadItemOffer:primaryItemOffer];
     }
   }
 }
 
-- (void)_setArtworkWithImage:(id)a3 error:(id)a4
+- (void)_setArtworkWithImage:(id)image error:(id)error
 {
-  v7 = a3;
-  if (v7)
+  imageCopy = image;
+  if (imageCopy)
   {
-    objc_storeStrong(&self->_iconImage, a3);
+    objc_storeStrong(&self->_iconImage, image);
     [(SKUIProductPageHeaderView *)self->_headerView setIconImage:self->_iconImage];
   }
 
@@ -1745,32 +1745,32 @@ LABEL_24:
   self->_loadIconOperation = 0;
 }
 
-- (void)_setPersonalizedOffer:(id)a3
+- (void)_setPersonalizedOffer:(id)offer
 {
   self->_personalizationState = 2;
-  objc_storeStrong(&self->_personalizedOffer, a3);
+  objc_storeStrong(&self->_personalizedOffer, offer);
   [(SKUIProductPageHeaderViewController *)self _reloadItemStateAnimated:0];
 
   [(SKUIProductPageHeaderViewController *)self _sendDidReloadOffer];
 }
 
-- (void)_setItemState:(id)a3 animated:(BOOL)a4
+- (void)_setItemState:(id)state animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   headerView = self->_headerView;
-  v8 = a3;
-  v7 = [(SKUIProductPageHeaderView *)headerView itemOfferButton];
-  [v7 setEnabled:1];
+  stateCopy = state;
+  itemOfferButton = [(SKUIProductPageHeaderView *)headerView itemOfferButton];
+  [itemOfferButton setEnabled:1];
 
-  [(SKUIProductPageHeaderView *)self->_headerView setItemState:v8 animated:v4];
+  [(SKUIProductPageHeaderView *)self->_headerView setItemState:stateCopy animated:animatedCopy];
 }
 
-- (void)_setUberWithImage:(id)a3 error:(id)a4
+- (void)_setUberWithImage:(id)image error:(id)error
 {
-  v7 = a3;
-  if (v7)
+  imageCopy = image;
+  if (imageCopy)
   {
-    objc_storeStrong(&self->_uberImage, a3);
+    objc_storeStrong(&self->_uberImage, image);
     [(SKUIProductPageHeaderView *)self->_headerView setHeaderImage:self->_uberImage];
   }
 
@@ -1778,14 +1778,14 @@ LABEL_24:
   self->_loadUberOperation = 0;
 }
 
-- (void)_showActivityViewControllerFromView:(id)a3
+- (void)_showActivityViewControllerFromView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if (!self->_activityPopoverController)
   {
     v5 = [SKUIProductPageActivityViewController alloc];
-    v6 = [(SKUIProductPage *)self->_productPage item];
-    v7 = [(SKUIProductPageActivityViewController *)v5 initWithProductPageItem:v6 clientContext:self->_clientContext];
+    item = [(SKUIProductPage *)self->_productPage item];
+    v7 = [(SKUIProductPageActivityViewController *)v5 initWithProductPageItem:item clientContext:self->_clientContext];
 
     objc_initWeak(&location, self);
     v21 = MEMORY[0x277D85DD0];
@@ -1800,13 +1800,13 @@ LABEL_24:
     self->_activityPopoverController = v9;
 
     v11 = self->_activityPopoverController;
-    [v4 frame];
+    [viewCopy frame];
     v13 = v12;
     v15 = v14;
     v17 = v16;
     v19 = v18;
-    v20 = [v4 superview];
-    [(UIPopoverController *)v11 presentPopoverFromRect:v20 inView:15 permittedArrowDirections:1 animated:v13, v15, v17, v19];
+    superview = [viewCopy superview];
+    [(UIPopoverController *)v11 presentPopoverFromRect:superview inView:15 permittedArrowDirections:1 animated:v13, v15, v17, v19];
 
     [(UIPopoverController *)self->_activityPopoverController setDelegate:self];
     objc_destroyWeak(&v25);
@@ -1838,17 +1838,17 @@ void __75__SKUIProductPageHeaderViewController__showActivityViewControllerFromVi
   [(SKUIProductPageHeaderView *)headerView setRestricted:1];
 }
 
-- (void)_showSynthesizedItemStateWithFlag:(unint64_t)a3 animated:(BOOL)a4
+- (void)_showSynthesizedItemStateWithFlag:(unint64_t)flag animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v10 = objc_alloc_init(SKUIItemState);
   v7 = MEMORY[0x277CCABB0];
-  v8 = [(SKUIProductPageHeaderViewController *)self _activeItem];
-  v9 = [v7 numberWithLongLong:{objc_msgSend(v8, "itemIdentifier")}];
+  _activeItem = [(SKUIProductPageHeaderViewController *)self _activeItem];
+  v9 = [v7 numberWithLongLong:{objc_msgSend(_activeItem, "itemIdentifier")}];
   [(SKUIItemState *)v10 setItemIdentifier:v9];
 
-  [(SKUIItemState *)v10 setState:a3];
-  [(SKUIProductPageHeaderViewController *)self _setItemState:v10 animated:v4];
+  [(SKUIItemState *)v10 setState:flag];
+  [(SKUIProductPageHeaderViewController *)self _setItemState:v10 animated:animatedCopy];
 }
 
 - (SKUIProductPageHeaderViewDelegate)delegate

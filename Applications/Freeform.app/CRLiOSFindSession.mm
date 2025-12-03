@@ -4,9 +4,9 @@
 - (_TtC8Freeform17CRLiOSFindSession)init;
 - (int64_t)highlightedResultIndex;
 - (int64_t)resultCount;
-- (void)highlightNextResultInDirection:(int64_t)a3;
+- (void)highlightNextResultInDirection:(int64_t)direction;
 - (void)invalidateFoundResults;
-- (void)performSearchWithQuery:(id)a3 options:(id)a4;
+- (void)performSearchWithQuery:(id)query options:(id)options;
 @end
 
 @implementation CRLiOSFindSession
@@ -25,11 +25,11 @@
 - (int64_t)highlightedResultIndex
 {
   v2 = *(&self->super.super.isa + OBJC_IVAR____TtC8Freeform17CRLiOSFindSession_findReplaceController);
-  v3 = self;
-  v4 = [v2 findResultIndex];
-  if (v4)
+  selfCopy = self;
+  findResultIndex = [v2 findResultIndex];
+  if (findResultIndex)
   {
-    v5 = v4;
+    v5 = findResultIndex;
 
     result = v5 - 1;
     if (v5 - 1 >= 0)
@@ -45,30 +45,30 @@
   return v7;
 }
 
-- (void)highlightNextResultInDirection:(int64_t)a3
+- (void)highlightNextResultInDirection:(int64_t)direction
 {
-  v4 = self;
-  sub_100FB1FC0(a3);
+  selfCopy = self;
+  sub_100FB1FC0(direction);
 }
 
 - (void)invalidateFoundResults
 {
-  v2 = self;
+  selfCopy = self;
   sub_100FB20B0();
 }
 
-- (void)performSearchWithQuery:(id)a3 options:(id)a4
+- (void)performSearchWithQuery:(id)query options:(id)options
 {
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
-  v9 = a4;
-  v10 = self;
-  sub_100FB21FC(v6, v8, a4);
+  optionsCopy = options;
+  selfCopy = self;
+  sub_100FB21FC(v6, v8, options);
 }
 
 - (BOOL)supportsReplacement
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100FB2380();
 
   return v3 & 1;
@@ -77,20 +77,20 @@
 - (BOOL)allowsReplacementForCurrentlyHighlightedResult
 {
   v2 = *(&self->super.super.isa + OBJC_IVAR____TtC8Freeform17CRLiOSFindSession_findReplaceController);
-  v3 = self;
-  v4 = [v2 primaryFindResultSearchReference];
-  if (v4)
+  selfCopy = self;
+  primaryFindResultSearchReference = [v2 primaryFindResultSearchReference];
+  if (primaryFindResultSearchReference)
   {
-    v5 = [v4 isReplaceable];
+    isReplaceable = [primaryFindResultSearchReference isReplaceable];
     swift_unknownObjectRelease();
   }
 
   else
   {
-    v5 = 0;
+    isReplaceable = 0;
   }
 
-  return v5;
+  return isReplaceable;
 }
 
 - (_TtC8Freeform17CRLiOSFindSession)init

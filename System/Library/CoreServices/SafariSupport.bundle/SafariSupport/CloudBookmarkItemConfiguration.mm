@@ -7,25 +7,25 @@
 + (CloudBookmarkItemConfiguration)tabGroupTabConfiguration;
 + (NSArray)cloudBookmarkConfigurations;
 + (NSArray)cloudTabGroupConfigurations;
-+ (id)bookmarkFolderConfigurationWithType:(int64_t)a3;
++ (id)bookmarkFolderConfigurationWithType:(int64_t)type;
 + (id)deviceConfiguration;
 + (id)profileConfiguration;
 + (id)tabGroupBookmarkConfiguration;
 + (id)tabGroupBookmarkFolderConfiguration;
-- (BOOL)canParseBookmark:(id)a3;
-- (BOOL)canParseChange:(void *)a3 usingDatabaseAccessor:(id)a4;
-- (BOOL)canParseItem:(void *)a3 usingDatabaseAccessor:(id)a4;
-- (BOOL)canParseRecord:(id)a3;
-- (BOOL)canParseRecordType:(id)a3;
-- (BOOL)canSaveIdentityHashAttributesInDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (CloudBookmarkItemConfiguration)initWithItemType:(int64_t)a3 itemSubtype:(int64_t)a4 recordType:(id)a5 knownKeys:(id)a6 identityHashKeys:(id)a7 keysWithoutGenerations:(id)a8 primaryCKRecordKeysToClear:(id)a9 primaryCKRecordKeysToSave:(id)a10 customAttributeGenerationKeys:(id)a11 attributeValueTransformers:(id)a12 identityHashValueTransformers:(id)a13 forRecordsPassingTest:(id)a14;
+- (BOOL)canParseBookmark:(id)bookmark;
+- (BOOL)canParseChange:(void *)change usingDatabaseAccessor:(id)accessor;
+- (BOOL)canParseItem:(void *)item usingDatabaseAccessor:(id)accessor;
+- (BOOL)canParseRecord:(id)record;
+- (BOOL)canParseRecordType:(id)type;
+- (BOOL)canSaveIdentityHashAttributesInDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
+- (CloudBookmarkItemConfiguration)initWithItemType:(int64_t)type itemSubtype:(int64_t)subtype recordType:(id)recordType knownKeys:(id)keys identityHashKeys:(id)hashKeys keysWithoutGenerations:(id)generations primaryCKRecordKeysToClear:(id)clear primaryCKRecordKeysToSave:(id)self0 customAttributeGenerationKeys:(id)self1 attributeValueTransformers:(id)self2 identityHashValueTransformers:(id)self3 forRecordsPassingTest:(id)self4;
 - (id)_defaultTransformer;
-- (id)generationKeyForKey:(id)a3;
-- (id)identityHashComponentsForRecord:(id)a3;
-- (id)valueTransformerForAttributeKey:(id)a3;
-- (id)valueTransformerForAttributeKey:(id)a3 record:(id)a4;
-- (id)valueTransformerForIdentityHashKey:(id)a3;
+- (id)generationKeyForKey:(id)key;
+- (id)identityHashComponentsForRecord:(id)record;
+- (id)valueTransformerForAttributeKey:(id)key;
+- (id)valueTransformerForAttributeKey:(id)key record:(id)record;
+- (id)valueTransformerForIdentityHashKey:(id)key;
 @end
 
 @implementation CloudBookmarkItemConfiguration
@@ -36,7 +36,7 @@
   block[1] = 3221225472;
   block[2] = sub_10004CD3C;
   block[3] = &unk_1001321B8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100153F00 != -1)
   {
     dispatch_once(&qword_100153F00, block);
@@ -53,7 +53,7 @@
   block[1] = 3221225472;
   block[2] = sub_10004CF08;
   block[3] = &unk_1001321B8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100153F10 != -1)
   {
     dispatch_once(&qword_100153F10, block);
@@ -70,7 +70,7 @@
   block[1] = 3221225472;
   block[2] = sub_10004D264;
   block[3] = &unk_1001321B8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100153F20 != -1)
   {
     dispatch_once(&qword_100153F20, block);
@@ -81,20 +81,20 @@
   return v2;
 }
 
-+ (id)bookmarkFolderConfigurationWithType:(int64_t)a3
++ (id)bookmarkFolderConfigurationWithType:(int64_t)type
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10004D728;
   block[3] = &unk_1001321B8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100153F30 != -1)
   {
     dispatch_once(&qword_100153F30, block);
   }
 
   v4 = qword_100153F28;
-  v5 = [NSNumber numberWithInteger:a3];
+  v5 = [NSNumber numberWithInteger:type];
   v6 = [v4 objectForKeyedSubscript:v5];
 
   return v6;
@@ -106,7 +106,7 @@
   block[1] = 3221225472;
   block[2] = sub_10004DDC4;
   block[3] = &unk_1001321B8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100153F40 != -1)
   {
     dispatch_once(&qword_100153F40, block);
@@ -123,7 +123,7 @@
   block[1] = 3221225472;
   block[2] = sub_10004DF80;
   block[3] = &unk_1001321B8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100153F50 != -1)
   {
     dispatch_once(&qword_100153F50, block);
@@ -140,7 +140,7 @@
   block[1] = 3221225472;
   block[2] = sub_10004E2E0;
   block[3] = &unk_1001321B8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100153F60 != -1)
   {
     dispatch_once(&qword_100153F60, block);
@@ -157,7 +157,7 @@
   block[1] = 3221225472;
   block[2] = sub_10004E6A8;
   block[3] = &unk_1001321B8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100153F70 != -1)
   {
     dispatch_once(&qword_100153F70, block);
@@ -174,7 +174,7 @@
   block[1] = 3221225472;
   block[2] = sub_10004E978;
   block[3] = &unk_1001321B8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100153F80 != -1)
   {
     dispatch_once(&qword_100153F80, block);
@@ -191,7 +191,7 @@
   block[1] = 3221225472;
   block[2] = sub_10004ECB0;
   block[3] = &unk_1001321B8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100153F90 != -1)
   {
     dispatch_once(&qword_100153F90, block);
@@ -208,7 +208,7 @@
   block[1] = 3221225472;
   block[2] = sub_10004F020;
   block[3] = &unk_1001321B8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100153FA0 != -1)
   {
     dispatch_once(&qword_100153FA0, block);
@@ -243,77 +243,77 @@
   return v3;
 }
 
-- (CloudBookmarkItemConfiguration)initWithItemType:(int64_t)a3 itemSubtype:(int64_t)a4 recordType:(id)a5 knownKeys:(id)a6 identityHashKeys:(id)a7 keysWithoutGenerations:(id)a8 primaryCKRecordKeysToClear:(id)a9 primaryCKRecordKeysToSave:(id)a10 customAttributeGenerationKeys:(id)a11 attributeValueTransformers:(id)a12 identityHashValueTransformers:(id)a13 forRecordsPassingTest:(id)a14
+- (CloudBookmarkItemConfiguration)initWithItemType:(int64_t)type itemSubtype:(int64_t)subtype recordType:(id)recordType knownKeys:(id)keys identityHashKeys:(id)hashKeys keysWithoutGenerations:(id)generations primaryCKRecordKeysToClear:(id)clear primaryCKRecordKeysToSave:(id)self0 customAttributeGenerationKeys:(id)self1 attributeValueTransformers:(id)self2 identityHashValueTransformers:(id)self3 forRecordsPassingTest:(id)self4
 {
-  v66 = a5;
-  v67 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
-  v20 = a10;
-  v21 = a11;
-  v22 = a12;
-  v23 = a13;
-  v24 = a14;
+  recordTypeCopy = recordType;
+  keysCopy = keys;
+  hashKeysCopy = hashKeys;
+  generationsCopy = generations;
+  clearCopy = clear;
+  saveCopy = save;
+  generationKeysCopy = generationKeys;
+  transformersCopy = transformers;
+  valueTransformersCopy = valueTransformers;
+  testCopy = test;
   v70.receiver = self;
   v70.super_class = CloudBookmarkItemConfiguration;
   v25 = [(CloudBookmarkItemConfiguration *)&v70 init];
   v26 = v25;
   if (v25)
   {
-    v25->_itemType = a3;
-    v25->_itemSubtype = a4;
-    v27 = [v66 copy];
+    v25->_itemType = type;
+    v25->_itemSubtype = subtype;
+    v27 = [recordTypeCopy copy];
     recordType = v26->_recordType;
     v26->_recordType = v27;
 
-    v29 = [v67 copy];
+    v29 = [keysCopy copy];
     knownKeys = v26->_knownKeys;
     v26->_knownKeys = v29;
 
-    v31 = [v17 copy];
+    v31 = [hashKeysCopy copy];
     identityHashKeys = v26->_identityHashKeys;
     v26->_identityHashKeys = v31;
 
-    v33 = [v18 copy];
+    v33 = [generationsCopy copy];
     keysWithoutGenerations = v26->_keysWithoutGenerations;
     v26->_keysWithoutGenerations = v33;
 
-    v35 = [v21 copy];
+    v35 = [generationKeysCopy copy];
     attributeKeysToGenerationKeys = v26->_attributeKeysToGenerationKeys;
     v26->_attributeKeysToGenerationKeys = v35;
 
-    v37 = [v22 copy];
+    v37 = [transformersCopy copy];
     attributeKeysToTransformers = v26->_attributeKeysToTransformers;
     v26->_attributeKeysToTransformers = v37;
 
-    v39 = [v23 copy];
+    v39 = [valueTransformersCopy copy];
     identityHashKeysToTransformers = v26->_identityHashKeysToTransformers;
     v26->_identityHashKeysToTransformers = v39;
 
-    v41 = objc_retainBlock(v24);
+    v41 = objc_retainBlock(testCopy);
     recordTestBlock = v26->_recordTestBlock;
     v26->_recordTestBlock = v41;
 
-    v63 = v24;
-    v43 = v20;
+    v63 = testCopy;
+    v43 = saveCopy;
     v44 = [(NSSet *)v26->_knownKeys mutableCopy];
-    [v44 intersectSet:v19];
+    [v44 intersectSet:clearCopy];
     v45 = [v44 copy];
     primaryCKRecordKeysToClear = v26->_primaryCKRecordKeysToClear;
     v26->_primaryCKRecordKeysToClear = v45;
 
-    v65 = v23;
-    v47 = v22;
-    v48 = v19;
+    v65 = valueTransformersCopy;
+    v47 = transformersCopy;
+    v48 = clearCopy;
     v49 = v26->_primaryCKRecordKeysToClear;
     v68[0] = _NSConcreteStackBlock;
     v68[1] = 3221225472;
     v68[2] = sub_10004F834;
     v68[3] = &unk_100133998;
-    v50 = v21;
-    v51 = v18;
-    v52 = v17;
+    v50 = generationKeysCopy;
+    v51 = generationsCopy;
+    v52 = hashKeysCopy;
     v53 = v26;
     v69 = v53;
     v54 = [(NSSet *)v49 safari_mapAndFilterObjectsUsingBlock:v68];
@@ -321,30 +321,30 @@
     v53->_primaryCKRecordGenerationKeysToClear = v54;
 
     v56 = [(NSSet *)v26->_knownKeys mutableCopy];
-    v20 = v43;
-    v24 = v63;
-    [v56 intersectSet:v20];
+    saveCopy = v43;
+    testCopy = v63;
+    [v56 intersectSet:saveCopy];
     v57 = [v56 copy];
     primaryCKRecordKeysToSave = v53->_primaryCKRecordKeysToSave;
     v53->_primaryCKRecordKeysToSave = v57;
 
     v59 = v53;
-    v17 = v52;
-    v18 = v51;
-    v21 = v50;
+    hashKeysCopy = v52;
+    generationsCopy = v51;
+    generationKeysCopy = v50;
 
-    v19 = v48;
-    v22 = v47;
-    v23 = v65;
+    clearCopy = v48;
+    transformersCopy = v47;
+    valueTransformersCopy = v65;
   }
 
   return v26;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -354,7 +354,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = v5;
       if (self->_itemType == v5->_itemType && self->_itemSubtype == v5->_itemSubtype && [(NSString *)self->_recordType isEqualToString:v5->_recordType]&& [(NSSet *)self->_knownKeys isEqualToSet:v6->_knownKeys]&& [(NSOrderedSet *)self->_identityHashKeys isEqualToOrderedSet:v6->_identityHashKeys])
       {
@@ -388,39 +388,39 @@
   return v3;
 }
 
-- (id)valueTransformerForAttributeKey:(id)a3
+- (id)valueTransformerForAttributeKey:(id)key
 {
-  v4 = [(NSDictionary *)self->_attributeKeysToTransformers objectForKeyedSubscript:a3];
+  v4 = [(NSDictionary *)self->_attributeKeysToTransformers objectForKeyedSubscript:key];
   v5 = v4;
   if (v4)
   {
-    v6 = v4;
+    _defaultTransformer = v4;
   }
 
   else
   {
-    v6 = [(CloudBookmarkItemConfiguration *)self _defaultTransformer];
+    _defaultTransformer = [(CloudBookmarkItemConfiguration *)self _defaultTransformer];
   }
 
-  v7 = v6;
+  v7 = _defaultTransformer;
 
   return v7;
 }
 
-- (id)valueTransformerForAttributeKey:(id)a3 record:(id)a4
+- (id)valueTransformerForAttributeKey:(id)key record:(id)record
 {
-  v6 = a4;
-  v7 = [(CloudBookmarkItemConfiguration *)self valueTransformerForAttributeKey:a3];
-  v8 = [v7 transformerForRecord:v6];
+  recordCopy = record;
+  v7 = [(CloudBookmarkItemConfiguration *)self valueTransformerForAttributeKey:key];
+  v8 = [v7 transformerForRecord:recordCopy];
 
   return v8;
 }
 
-- (id)generationKeyForKey:(id)a3
+- (id)generationKeyForKey:(id)key
 {
   attributeKeysToGenerationKeys = self->_attributeKeysToGenerationKeys;
-  v4 = a3;
-  v5 = [(NSDictionary *)attributeKeysToGenerationKeys objectForKeyedSubscript:v4];
+  keyCopy = key;
+  v5 = [(NSDictionary *)attributeKeysToGenerationKeys objectForKeyedSubscript:keyCopy];
   v6 = v5;
   if (v5)
   {
@@ -429,7 +429,7 @@
 
   else
   {
-    v7 = v4;
+    v7 = keyCopy;
   }
 
   v8 = v7;
@@ -437,9 +437,9 @@
   return v7;
 }
 
-- (BOOL)canSaveIdentityHashAttributesInDictionary:(id)a3
+- (BOOL)canSaveIdentityHashAttributesInDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -461,7 +461,7 @@
 
         v10 = *(*(&v16 + 1) + 8 * i);
         v11 = [(CloudBookmarkItemConfiguration *)self valueTransformerForAttributeKey:v10, v16];
-        v12 = [v4 objectForKeyedSubscript:v10];
+        v12 = [dictionaryCopy objectForKeyedSubscript:v10];
         v13 = [v11 isEmptyValue:v12];
 
         if (v13)
@@ -487,28 +487,28 @@ LABEL_11:
   return v14;
 }
 
-- (id)valueTransformerForIdentityHashKey:(id)a3
+- (id)valueTransformerForIdentityHashKey:(id)key
 {
-  v4 = [(NSDictionary *)self->_identityHashKeysToTransformers objectForKeyedSubscript:a3];
+  v4 = [(NSDictionary *)self->_identityHashKeysToTransformers objectForKeyedSubscript:key];
   v5 = v4;
   if (v4)
   {
-    v6 = v4;
+    _defaultTransformer = v4;
   }
 
   else
   {
-    v6 = [(CloudBookmarkItemConfiguration *)self _defaultTransformer];
+    _defaultTransformer = [(CloudBookmarkItemConfiguration *)self _defaultTransformer];
   }
 
-  v7 = v6;
+  v7 = _defaultTransformer;
 
   return v7;
 }
 
-- (BOOL)canParseRecordType:(id)a3
+- (BOOL)canParseRecordType:(id)type
 {
-  v4 = [a3 isEqualToString:self->_recordType];
+  v4 = [type isEqualToString:self->_recordType];
   if (v4)
   {
     LOBYTE(v4) = self->_recordTestBlock == 0;
@@ -517,18 +517,18 @@ LABEL_11:
   return v4;
 }
 
-- (BOOL)canParseRecord:(id)a3
+- (BOOL)canParseRecord:(id)record
 {
-  v4 = a3;
-  v5 = [v4 recordType];
-  v6 = [v5 isEqualToString:self->_recordType];
+  recordCopy = record;
+  recordType = [recordCopy recordType];
+  v6 = [recordType isEqualToString:self->_recordType];
 
   if (v6)
   {
     recordTestBlock = self->_recordTestBlock;
     if (recordTestBlock)
     {
-      v8 = recordTestBlock[2](recordTestBlock, v4);
+      v8 = recordTestBlock[2](recordTestBlock, recordCopy);
     }
 
     else
@@ -545,15 +545,15 @@ LABEL_11:
   return v8;
 }
 
-- (BOOL)canParseItem:(void *)a3 usingDatabaseAccessor:(id)a4
+- (BOOL)canParseItem:(void *)item usingDatabaseAccessor:(id)accessor
 {
-  v6 = a4;
-  v7 = [v6 itemTypeWithItem:a3];
+  accessorCopy = accessor;
+  v7 = [accessorCopy itemTypeWithItem:item];
   if (v7 == self->_itemType)
   {
     if (v7 == 1)
     {
-      v8 = [v6 folderTypeWithFolder:a3];
+      v8 = [accessorCopy folderTypeWithFolder:item];
     }
 
     else
@@ -564,7 +564,7 @@ LABEL_11:
         goto LABEL_9;
       }
 
-      v8 = [v6 bookmarkTypeWithBookmark:a3];
+      v8 = [accessorCopy bookmarkTypeWithBookmark:item];
     }
 
     v9 = v8 == self->_itemSubtype;
@@ -580,15 +580,15 @@ LABEL_9:
   return v9;
 }
 
-- (BOOL)canParseChange:(void *)a3 usingDatabaseAccessor:(id)a4
+- (BOOL)canParseChange:(void *)change usingDatabaseAccessor:(id)accessor
 {
-  v6 = a4;
-  v7 = [v6 itemTypeForChange:a3];
+  accessorCopy = accessor;
+  v7 = [accessorCopy itemTypeForChange:change];
   if (v7 == self->_itemType)
   {
     if (v7 == 1)
     {
-      v8 = [v6 folderTypeForChange:a3];
+      v8 = [accessorCopy folderTypeForChange:change];
     }
 
     else
@@ -599,7 +599,7 @@ LABEL_9:
         goto LABEL_9;
       }
 
-      v8 = [v6 bookmarkTypeForChange:a3];
+      v8 = [accessorCopy bookmarkTypeForChange:change];
     }
 
     v9 = v8 == self->_itemSubtype;
@@ -615,23 +615,23 @@ LABEL_9:
   return v9;
 }
 
-- (BOOL)canParseBookmark:(id)a3
+- (BOOL)canParseBookmark:(id)bookmark
 {
-  v4 = a3;
-  v5 = [v4 isFolder];
-  if ([v4 itemType] == self->_itemType)
+  bookmarkCopy = bookmark;
+  isFolder = [bookmarkCopy isFolder];
+  if ([bookmarkCopy itemType] == self->_itemType)
   {
-    if (v5)
+    if (isFolder)
     {
-      v6 = [v4 folderType];
+      folderType = [bookmarkCopy folderType];
     }
 
     else
     {
-      v6 = [v4 bookmarkType];
+      folderType = [bookmarkCopy bookmarkType];
     }
 
-    v7 = v6 == self->_itemSubtype;
+    v7 = folderType == self->_itemSubtype;
   }
 
   else
@@ -642,9 +642,9 @@ LABEL_9:
   return v7;
 }
 
-- (id)identityHashComponentsForRecord:(id)a3
+- (id)identityHashComponentsForRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   v18 = +[NSMutableArray array];
   v19 = 0u;
   v20 = 0u;
@@ -669,15 +669,15 @@ LABEL_9:
         v10 = [(CloudBookmarkItemConfiguration *)self valueTransformerForAttributeKey:v9];
         if ([v10 attributeRequiresEncryption])
         {
-          v11 = [v4 safari_encryptedValues];
-          v12 = [v11 objectForKeyedSubscript:v9];
+          safari_encryptedValues = [recordCopy safari_encryptedValues];
+          v12 = [safari_encryptedValues objectForKeyedSubscript:v9];
           v13 = [v10 reverseTransformedValue:v12];
         }
 
         else
         {
-          v11 = [v4 objectForKeyedSubscript:v9];
-          v13 = [v10 reverseTransformedValue:v11];
+          safari_encryptedValues = [recordCopy objectForKeyedSubscript:v9];
+          v13 = [v10 reverseTransformedValue:safari_encryptedValues];
         }
 
         v14 = [(CloudBookmarkItemConfiguration *)self valueTransformerForIdentityHashKey:v9];

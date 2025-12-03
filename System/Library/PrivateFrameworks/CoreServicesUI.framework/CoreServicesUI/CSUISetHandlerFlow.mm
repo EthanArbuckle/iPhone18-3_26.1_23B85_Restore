@@ -1,12 +1,12 @@
 @interface CSUISetHandlerFlow
 - (BOOL)isPrepared;
-- (BOOL)prepareAndReturnError:(id *)a3;
+- (BOOL)prepareAndReturnError:(id *)error;
 - (CSUIBoundBundleInfo)representativeBundle;
 - (CSUISetHandlerFlow)init;
 - (CSUISetHandlerFlowDelegate)delegate;
-- (id)buildMenuAndReturnError:(id *)a3;
-- (void)openWithMenuFromConstructor:(id)a3 didSelectBoundBundle:(id)a4;
-- (void)setDelegate:(id)a3;
+- (id)buildMenuAndReturnError:(id *)error;
+- (void)openWithMenuFromConstructor:(id)constructor didSelectBoundBundle:(id)bundle;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation CSUISetHandlerFlow
@@ -14,7 +14,7 @@
 - (CSUISetHandlerFlowDelegate)delegate
 {
   v2 = *(&self->super.isa + OBJC_IVAR___CSUISetHandlerFlow_mutableState);
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v2 + 18);
   Strong = swift_unknownObjectWeakLoadStrong();
   os_unfair_lock_unlock(v2 + 18);
@@ -22,11 +22,11 @@
   return Strong;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v4 = *(&self->super.isa + OBJC_IVAR___CSUISetHandlerFlow_mutableState);
   swift_unknownObjectRetain();
-  v5 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v4 + 18);
   swift_unknownObjectWeakAssign();
   os_unfair_lock_unlock(v4 + 18);
@@ -37,7 +37,7 @@
 - (BOOL)isPrepared
 {
   v2 = *(&self->super.isa + OBJC_IVAR___CSUISetHandlerFlow_mutableState);
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock((v2 + 72));
   v4 = *(v2 + 24) != 0;
   os_unfair_lock_unlock((v2 + 72));
@@ -48,23 +48,23 @@
 - (CSUIBoundBundleInfo)representativeBundle
 {
   v2 = *(&self->super.isa + OBJC_IVAR___CSUISetHandlerFlow_mutableState);
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock((v2 + 72));
-  v4 = [*(v2 + 24) representativeBundle];
+  representativeBundle = [*(v2 + 24) representativeBundle];
   os_unfair_lock_unlock((v2 + 72));
 
-  return v4;
+  return representativeBundle;
 }
 
-- (BOOL)prepareAndReturnError:(id *)a3
+- (BOOL)prepareAndReturnError:(id *)error
 {
-  v3 = self;
+  selfCopy = self;
   sub_2478D487C();
 
   return 1;
 }
 
-- (id)buildMenuAndReturnError:(id *)a3
+- (id)buildMenuAndReturnError:(id *)error
 {
   sub_2478D8B4C();
   sub_2478D8B3C();
@@ -74,7 +74,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = self;
+  selfCopy = self;
   sub_2478D4AE0();
   v6 = v5;
 
@@ -88,7 +88,7 @@
   return result;
 }
 
-- (void)openWithMenuFromConstructor:(id)a3 didSelectBoundBundle:(id)a4
+- (void)openWithMenuFromConstructor:(id)constructor didSelectBoundBundle:(id)bundle
 {
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EE551E0, &qword_2478DBE38);
   v7 = *(*(v6 - 8) + 64);
@@ -106,13 +106,13 @@
   v11 = sub_2478D8B6C();
   (*(*(v11 - 8) + 56))(v9, 1, 1, v11);
   swift_unknownObjectRetain_n();
-  v12 = self;
+  selfCopy = self;
   v13 = sub_2478D8B3C();
   v14 = swift_allocObject();
   v14[2] = v13;
   v14[3] = v10;
-  v14[4] = v12;
-  v14[5] = a4;
+  v14[4] = selfCopy;
+  v14[5] = bundle;
   sub_2478D791C(0, 0, v9, &unk_2478DBF28, v14);
 
   swift_unknownObjectRelease();

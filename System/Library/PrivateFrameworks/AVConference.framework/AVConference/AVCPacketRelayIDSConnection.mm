@@ -1,7 +1,7 @@
 @interface AVCPacketRelayIDSConnection
-- (AVCPacketRelayIDSConnection)initWithIDSDestination:(id)a3;
-- (AVCPacketRelayIDSConnection)initWithIDSSocketDescriptor:(unsigned __int16)a3;
-- (BOOL)sendData:(const void *)a3 size:(unsigned int)a4 error:(id *)a5;
+- (AVCPacketRelayIDSConnection)initWithIDSDestination:(id)destination;
+- (AVCPacketRelayIDSConnection)initWithIDSSocketDescriptor:(unsigned __int16)descriptor;
+- (BOOL)sendData:(const void *)data size:(unsigned int)size error:(id *)error;
 - (int)start;
 - (int)stop;
 - (void)dealloc;
@@ -11,9 +11,9 @@
 
 @implementation AVCPacketRelayIDSConnection
 
-- (AVCPacketRelayIDSConnection)initWithIDSSocketDescriptor:(unsigned __int16)a3
+- (AVCPacketRelayIDSConnection)initWithIDSSocketDescriptor:(unsigned __int16)descriptor
 {
-  v3 = a3;
+  descriptorCopy = descriptor;
   v23 = *MEMORY[0x1E69E9840];
   v13.receiver = self;
   v13.super_class = AVCPacketRelayIDSConnection;
@@ -36,7 +36,7 @@ LABEL_9:
     return 0;
   }
 
-  v8 = [(IDSService *)v7 datagramChannelForSocketDescriptor:v3 error:&v14];
+  v8 = [(IDSService *)v7 datagramChannelForSocketDescriptor:descriptorCopy error:&v14];
   v5->_datagramChannel = v8;
   if (!v8)
   {
@@ -67,7 +67,7 @@ LABEL_9:
   return v5;
 }
 
-- (AVCPacketRelayIDSConnection)initWithIDSDestination:(id)a3
+- (AVCPacketRelayIDSConnection)initWithIDSDestination:(id)destination
 {
   v23 = *MEMORY[0x1E69E9840];
   v13.receiver = self;
@@ -91,7 +91,7 @@ LABEL_9:
     return 0;
   }
 
-  v8 = [(IDSService *)v7 datagramChannelForSessionDestination:a3 error:&v14];
+  v8 = [(IDSService *)v7 datagramChannelForSessionDestination:destination error:&v14];
   v5->_datagramChannel = v8;
   if (!v8)
   {
@@ -378,29 +378,29 @@ LABEL_13:
   }
 }
 
-- (BOOL)sendData:(const void *)a3 size:(unsigned int)a4 error:(id *)a5
+- (BOOL)sendData:(const void *)data size:(unsigned int)size error:(id *)error
 {
-  v6 = *&a4;
+  v6 = *&size;
   v14 = *MEMORY[0x1E69E9840];
-  v9 = [(AVCPacketRelayIDSConnection *)self isResumed];
-  if (!v9)
+  isResumed = [(AVCPacketRelayIDSConnection *)self isResumed];
+  if (!isResumed)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3 && (VRTraceErrorLogLevelToCSTR(), os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR)))
     {
       [AVCPacketRelayIDSConnection sendData:size:error:];
-      if (!a5)
+      if (!error)
       {
-        return v9;
+        return isResumed;
       }
     }
 
-    else if (!a5)
+    else if (!error)
     {
-      return v9;
+      return isResumed;
     }
 
-    *a5 = [MEMORY[0x1E696ABC0] errorWithDomain:@"AVCPacketRelayErrorDomain" code:-2144731132 userInfo:0];
-    return v9;
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"AVCPacketRelayErrorDomain" code:-2144731132 userInfo:0];
+    return isResumed;
   }
 
   datagramChannel = self->_datagramChannel;
@@ -409,8 +409,8 @@ LABEL_13:
   v12[2] = __51__AVCPacketRelayIDSConnection_sendData_size_error___block_invoke;
   v12[3] = &__block_descriptor_36_e17_v16__0__NSError_8l;
   v13 = v6;
-  [(IDSDatagramChannel *)datagramChannel writeDatagram:a3 datagramSize:v6 flags:45875200 completionHandler:0, v12];
-  return v9;
+  [(IDSDatagramChannel *)datagramChannel writeDatagram:data datagramSize:v6 flags:45875200 completionHandler:0, v12];
+  return isResumed;
 }
 
 void __51__AVCPacketRelayIDSConnection_sendData_size_error___block_invoke(uint64_t a1, void *a2)

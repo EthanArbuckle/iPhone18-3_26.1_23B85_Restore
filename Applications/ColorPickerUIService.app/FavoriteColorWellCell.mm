@@ -1,10 +1,10 @@
 @interface FavoriteColorWellCell
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (BOOL)isSelected;
-- (CGRect)editMenuInteraction:(id)a3 targetRectForConfiguration:(id)a4;
+- (CGRect)editMenuInteraction:(id)interaction targetRectForConfiguration:(id)configuration;
 - (NSString)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
-- (void)delete:(id)a3;
+- (void)delete:(id)delete;
 - (void)layoutSubviews;
 @end
 
@@ -19,13 +19,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10003A494();
 }
 
-- (CGRect)editMenuInteraction:(id)a3 targetRectForConfiguration:(id)a4
+- (CGRect)editMenuInteraction:(id)interaction targetRectForConfiguration:(id)configuration
 {
-  [(FavoriteColorWellCell *)self bounds:a3];
+  [(FavoriteColorWellCell *)self bounds:interaction];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -33,11 +33,11 @@
   return result;
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
-    v5 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -46,7 +46,7 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v6 = self;
+    selfCopy2 = self;
   }
 
   v7 = static Selector.== infix(_:_:)();
@@ -70,11 +70,11 @@
   return 0;
 }
 
-- (void)delete:(id)a3
+- (void)delete:(id)delete
 {
-  if (a3)
+  if (delete)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -83,7 +83,7 @@
   else
   {
     memset(v9, 0, sizeof(v9));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC20ColorPickerUIService21FavoriteColorWellCell_onDelete);
@@ -101,8 +101,8 @@
 - (NSString)accessibilityLabel
 {
   v2 = *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC20ColorPickerUIService21FavoriteColorWellCell_color);
-  v3 = self;
-  v4 = [v2 _accessibilityNameWithLuma];
+  selfCopy = self;
+  _accessibilityNameWithLuma = [v2 _accessibilityNameWithLuma];
   static String._unconditionallyBridgeFromObjectiveC(_:)();
 
   v5 = String._bridgeToObjectiveC()();
@@ -112,7 +112,7 @@
 
 - (unint64_t)accessibilityTraits
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100037A44();
 
   return v3;

@@ -1,16 +1,16 @@
 @interface PKPaymentTransactionDetailHeaderViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)setSubtitleText:(id)a3;
+- (void)setSubtitleText:(id)text;
 @end
 
 @implementation PKPaymentTransactionDetailHeaderViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PKPaymentTransactionDetailHeaderView" hasInstanceVariable:@"_subtitleLabel" withType:"UILabel"];
-  [v3 validateClass:@"PKPaymentTransactionDetailHeaderView" hasInstanceMethod:@"setSubtitleText:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PKPaymentTransactionDetailHeaderView" hasInstanceVariable:@"_subtitleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"PKPaymentTransactionDetailHeaderView" hasInstanceMethod:@"setSubtitleText:" withFullSignature:{"v", "@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -18,8 +18,8 @@
   v8.receiver = self;
   v8.super_class = PKPaymentTransactionDetailHeaderViewAccessibility;
   [(PKPaymentTransactionDetailHeaderViewAccessibility *)&v8 _accessibilityLoadAccessibilityInformation];
-  v3 = [(PKPaymentTransactionDetailHeaderViewAccessibility *)self gestureRecognizers];
-  v4 = [v3 count];
+  gestureRecognizers = [(PKPaymentTransactionDetailHeaderViewAccessibility *)self gestureRecognizers];
+  v4 = [gestureRecognizers count];
 
   if (v4)
   {
@@ -32,11 +32,11 @@
   }
 }
 
-- (void)setSubtitleText:(id)a3
+- (void)setSubtitleText:(id)text
 {
   v4.receiver = self;
   v4.super_class = PKPaymentTransactionDetailHeaderViewAccessibility;
-  [(PKPaymentTransactionDetailHeaderViewAccessibility *)&v4 setSubtitleText:a3];
+  [(PKPaymentTransactionDetailHeaderViewAccessibility *)&v4 setSubtitleText:text];
   [(PKPaymentTransactionDetailHeaderViewAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 

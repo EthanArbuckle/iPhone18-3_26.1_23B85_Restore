@@ -3,10 +3,10 @@
 - (CMNoMovementManager)init;
 - (void)_connect;
 - (void)_disconnect;
-- (void)_handleMessage:(shared_ptr<CLConnectionMessage>)a3;
+- (void)_handleMessage:(shared_ptr<CLConnectionMessage>)message;
 - (void)dealloc;
 - (void)requestLatestStateUpdate;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation CMNoMovementManager
@@ -59,7 +59,7 @@
   return sub_19B43B6EC();
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v10 = *MEMORY[0x1E69E9840];
   fInternalQueue = self->fInternalQueue;
@@ -68,7 +68,7 @@
   block[2] = sub_19B5B6A00;
   block[3] = &unk_1E7532A00;
   block[4] = self;
-  block[5] = a3;
+  block[5] = delegate;
   dispatch_async(fInternalQueue, block);
   if (qword_1EAFE2AE8 != -1)
   {
@@ -135,9 +135,9 @@
   sub_19B5B79EC();
 }
 
-- (void)_handleMessage:(shared_ptr<CLConnectionMessage>)a3
+- (void)_handleMessage:(shared_ptr<CLConnectionMessage>)message
 {
-  var0 = a3.var0;
+  var0 = message.var0;
   v26 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE2AE8 != -1)
   {

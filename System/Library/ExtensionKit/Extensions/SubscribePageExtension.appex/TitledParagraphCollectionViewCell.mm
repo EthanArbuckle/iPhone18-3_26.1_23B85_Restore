@@ -1,21 +1,21 @@
 @interface TitledParagraphCollectionViewCell
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation TitledParagraphCollectionViewCell
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002EC608();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_1002ED230(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1002ED230(change);
 }
 
 @end

@@ -2,17 +2,17 @@
 + (id)processForCurrentTask;
 - (OS_dispatch_queue)queue;
 - (_DYProcess)init;
-- (id)getCurrentSnapshotAndReturnError:(id *)a3;
-- (id)registerChangeNotificationsWithError:(id *)a3 handler:(id)a4;
-- (void)setQueue:(id)a3;
-- (void)unregisterForEvent:(id)a3;
+- (id)getCurrentSnapshotAndReturnError:(id *)error;
+- (id)registerChangeNotificationsWithError:(id *)error handler:(id)handler;
+- (void)setQueue:(id)queue;
+- (void)unregisterForEvent:(id)event;
 @end
 
 @implementation _DYProcess
 
-- (id)getCurrentSnapshotAndReturnError:(id *)a3
+- (id)getCurrentSnapshotAndReturnError:(id *)error
 {
-  v3 = self;
+  selfCopy = self;
   v4 = sub_1AE4B486C();
 
   return v4;
@@ -32,11 +32,11 @@
   return result;
 }
 
-- (void)setQueue:(id)a3
+- (void)setQueue:(id)queue
 {
-  v5 = a3;
-  v6 = self;
-  sub_1AE4E48E0(a3);
+  queueCopy = queue;
+  selfCopy = self;
+  sub_1AE4E48E0(queue);
 }
 
 + (id)processForCurrentTask
@@ -47,9 +47,9 @@
   return v2;
 }
 
-- (id)registerChangeNotificationsWithError:(id *)a3 handler:(id)a4
+- (id)registerChangeNotificationsWithError:(id *)error handler:(id)handler
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(handler);
   v6 = swift_allocObject();
   *(v6 + 16) = v5;
   v7 = OBJC_IVAR____DYProcess_impl;
@@ -57,14 +57,14 @@
   if (*(&self->super.isa + v7))
   {
 
-    v9 = self;
+    selfCopy = self;
 
     sub_1AE4D2730(v10, sub_1AE4E4FCC, v6);
     v12 = v11;
 
-    v13 = [objc_allocWithZone(_DYEventHandlerToken) initWithValue_];
+    initWithValue_ = [objc_allocWithZone(_DYEventHandlerToken) initWithValue_];
 
-    return v13;
+    return initWithValue_;
   }
 
   else
@@ -75,16 +75,16 @@
   return result;
 }
 
-- (void)unregisterForEvent:(id)a3
+- (void)unregisterForEvent:(id)event
 {
   v5 = OBJC_IVAR____DYProcess_impl;
   swift_beginAccess();
   if (*(&self->super.isa + v5))
   {
-    v6 = a3;
-    v7 = self;
+    eventCopy = event;
+    selfCopy = self;
 
-    sub_1AE4D3440([v6 value]);
+    sub_1AE4D3440([eventCopy value]);
   }
 
   else

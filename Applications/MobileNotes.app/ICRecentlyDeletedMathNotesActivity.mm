@@ -1,18 +1,18 @@
 @interface ICRecentlyDeletedMathNotesActivity
 - (ICRecentlyDeletedMathNotesActivity)init;
-- (ICRecentlyDeletedMathNotesActivity)initWithPerformActivity:(id)a3;
-- (ICRecentlyDeletedMathNotesActivity)initWithViewControllerManager:(id)a3;
+- (ICRecentlyDeletedMathNotesActivity)initWithPerformActivity:(id)activity;
+- (ICRecentlyDeletedMathNotesActivity)initWithViewControllerManager:(id)manager;
 - (ICViewControllerManager)viewControllerManager;
 - (NSString)activityTitle;
 - (NSString)activityType;
 - (UIImage)activityImage;
-- (id)menuWithCompletion:(id)a3;
-- (void)performActivityWithCompletion:(id)a3;
+- (id)menuWithCompletion:(id)completion;
+- (void)performActivityWithCompletion:(id)completion;
 @end
 
 @implementation ICRecentlyDeletedMathNotesActivity
 
-- (ICRecentlyDeletedMathNotesActivity)initWithViewControllerManager:(id)a3
+- (ICRecentlyDeletedMathNotesActivity)initWithViewControllerManager:(id)manager
 {
   ObjectType = swift_getObjectType();
   swift_unknownObjectWeakInit();
@@ -31,9 +31,9 @@
 
 - (NSString)activityTitle
 {
-  v2 = [objc_opt_self() mainBundle];
+  mainBundle = [objc_opt_self() mainBundle];
   v3 = String._bridgeToObjectiveC()();
-  v4 = [v2 localizedStringForKey:v3 value:0 table:0];
+  v4 = [mainBundle localizedStringForKey:v3 value:0 table:0];
 
   static String._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = String._bridgeToObjectiveC()();
@@ -56,9 +56,9 @@
   return v2;
 }
 
-- (void)performActivityWithCompletion:(id)a3
+- (void)performActivityWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   if (v4)
   {
     *(swift_allocObject() + 16) = v4;
@@ -70,14 +70,14 @@
     v5 = 0;
   }
 
-  v6 = self;
+  selfCopy = self;
   sub_1004A00B8(v5);
   sub_10000C840(v5);
 }
 
-- (id)menuWithCompletion:(id)a3
+- (id)menuWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   if (v4)
   {
     v5 = v4;
@@ -92,14 +92,14 @@
     v6 = 0;
   }
 
-  v8 = self;
+  selfCopy = self;
   v9 = sub_10049FD18(v7, v6);
   sub_10000C840(v7);
 
   return v9;
 }
 
-- (ICRecentlyDeletedMathNotesActivity)initWithPerformActivity:(id)a3
+- (ICRecentlyDeletedMathNotesActivity)initWithPerformActivity:(id)activity
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

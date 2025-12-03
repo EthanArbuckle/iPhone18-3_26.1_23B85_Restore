@@ -1,15 +1,15 @@
 @interface ShelfFooterView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (void)didTapWithTitleButton:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (void)didTapWithTitleButton:(id)button;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation ShelfFooterView
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
+  selfCopy = self;
   v4 = sub_651608();
   v6 = v5;
 
@@ -22,7 +22,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_651858();
 }
 
@@ -42,11 +42,11 @@
   [*&v2[v5] setTitle:0 forState:0];
 }
 
-- (void)didTapWithTitleButton:(id)a3
+- (void)didTapWithTitleButton:(id)button
 {
-  v4 = a3;
-  v5 = self;
-  sub_651BB4(v4);
+  buttonCopy = button;
+  selfCopy = self;
+  sub_651BB4(buttonCopy);
 }
 
 @end

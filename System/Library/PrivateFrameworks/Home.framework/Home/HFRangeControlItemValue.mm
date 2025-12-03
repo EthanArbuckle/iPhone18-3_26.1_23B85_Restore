@@ -1,7 +1,7 @@
 @interface HFRangeControlItemValue
-+ (id)targetValueWithValue:(id)a3;
-+ (id)thresholdValueWithMinimumValue:(id)a3 maximumValue:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)targetValueWithValue:(id)value;
++ (id)thresholdValueWithMinimumValue:(id)value maximumValue:(id)maximumValue;
+- (BOOL)isEqual:(id)equal;
 - (HFNumberRange)numberRange;
 - (NSNumber)targetValue;
 - (id)description;
@@ -10,25 +10,25 @@
 
 @implementation HFRangeControlItemValue
 
-+ (id)thresholdValueWithMinimumValue:(id)a3 maximumValue:(id)a4
++ (id)thresholdValueWithMinimumValue:(id)value maximumValue:(id)maximumValue
 {
-  v5 = a4;
-  v6 = a3;
+  maximumValueCopy = maximumValue;
+  valueCopy = value;
   v7 = objc_alloc_init(objc_opt_class());
   [v7 setMode:2];
-  [v7 setMinimumValue:v6];
+  [v7 setMinimumValue:valueCopy];
 
-  [v7 setMaximumValue:v5];
+  [v7 setMaximumValue:maximumValueCopy];
 
   return v7;
 }
 
-+ (id)targetValueWithValue:(id)a3
++ (id)targetValueWithValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setMode:1];
-  [v4 setTargetValue:v3];
+  [v4 setTargetValue:valueCopy];
 
   return v4;
 }
@@ -44,11 +44,11 @@
   else
   {
     v5 = MEMORY[0x277CCABB0];
-    v6 = [(HFRangeControlItemValue *)self minimumValue];
-    [v6 doubleValue];
+    minimumValue = [(HFRangeControlItemValue *)self minimumValue];
+    [minimumValue doubleValue];
     v8 = v7;
-    v9 = [(HFRangeControlItemValue *)self maximumValue];
-    [v9 doubleValue];
+    maximumValue = [(HFRangeControlItemValue *)self maximumValue];
+    [maximumValue doubleValue];
     v3 = [v5 numberWithDouble:(v8 + v10) * 0.5];
   }
 
@@ -57,23 +57,23 @@
 
 - (HFNumberRange)numberRange
 {
-  v4 = [(HFRangeControlItemValue *)self mode];
-  if (v4 >= 2)
+  mode = [(HFRangeControlItemValue *)self mode];
+  if (mode >= 2)
   {
-    if (v4 != 2)
+    if (mode != 2)
     {
       goto LABEL_6;
     }
 
-    v5 = [(HFRangeControlItemValue *)self maximumValue];
-    v6 = [(HFRangeControlItemValue *)self minimumValue];
-    v2 = [HFNumberRange rangeWithMaxValue:v5 minValue:v6];
+    maximumValue = [(HFRangeControlItemValue *)self maximumValue];
+    minimumValue = [(HFRangeControlItemValue *)self minimumValue];
+    v2 = [HFNumberRange rangeWithMaxValue:maximumValue minValue:minimumValue];
   }
 
   else
   {
-    v5 = [(HFRangeControlItemValue *)self targetValue];
-    v2 = [HFNumberRange valueWithValue:v5];
+    maximumValue = [(HFRangeControlItemValue *)self targetValue];
+    v2 = [HFNumberRange valueWithValue:maximumValue];
   }
 
 LABEL_6:
@@ -81,21 +81,21 @@ LABEL_6:
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4;
-    v6 = [(HFRangeControlItemValue *)self mode];
-    if (v6 == [v5 mode])
+    v5 = equalCopy;
+    mode = [(HFRangeControlItemValue *)self mode];
+    if (mode == [v5 mode])
     {
       if ([(HFRangeControlItemValue *)self mode]== 1 || ![(HFRangeControlItemValue *)self mode])
       {
-        v8 = [(HFRangeControlItemValue *)self targetValue];
-        v9 = [v5 targetValue];
-        v10 = v8;
-        v11 = v9;
+        targetValue = [(HFRangeControlItemValue *)self targetValue];
+        targetValue2 = [v5 targetValue];
+        v10 = targetValue;
+        v11 = targetValue2;
         if (v10 == v11)
         {
           v7 = 1;
@@ -119,10 +119,10 @@ LABEL_6:
 
       if ([(HFRangeControlItemValue *)self mode]== 2 || ![(HFRangeControlItemValue *)self mode])
       {
-        v12 = [(HFRangeControlItemValue *)self minimumValue];
-        v13 = [v5 minimumValue];
-        v14 = v12;
-        v15 = v13;
+        minimumValue = [(HFRangeControlItemValue *)self minimumValue];
+        minimumValue2 = [v5 minimumValue];
+        v14 = minimumValue;
+        v15 = minimumValue2;
         if (v14 == v15)
         {
           v16 = 1;
@@ -138,10 +138,10 @@ LABEL_6:
           v16 = 0;
         }
 
-        v17 = [(HFRangeControlItemValue *)self maximumValue];
-        v18 = [v5 maximumValue];
-        v19 = v17;
-        v20 = v18;
+        maximumValue = [(HFRangeControlItemValue *)self maximumValue];
+        maximumValue2 = [v5 maximumValue];
+        v19 = maximumValue;
+        v20 = maximumValue2;
         if (v19 == v20)
         {
           v21 = 1;
@@ -177,22 +177,22 @@ LABEL_6:
 
 - (unint64_t)hash
 {
-  v4 = [(HFRangeControlItemValue *)self mode];
-  if (v4 < 2)
+  mode = [(HFRangeControlItemValue *)self mode];
+  if (mode < 2)
   {
-    v5 = [(HFRangeControlItemValue *)self targetValue];
-    v2 = [v5 hash];
+    targetValue = [(HFRangeControlItemValue *)self targetValue];
+    v2 = [targetValue hash];
 LABEL_5:
 
     return v2;
   }
 
-  if (v4 == 2)
+  if (mode == 2)
   {
-    v5 = [(HFRangeControlItemValue *)self minimumValue];
-    v6 = [v5 hash];
-    v7 = [(HFRangeControlItemValue *)self maximumValue];
-    v2 = [v7 hash] ^ v6;
+    targetValue = [(HFRangeControlItemValue *)self minimumValue];
+    v6 = [targetValue hash];
+    maximumValue = [(HFRangeControlItemValue *)self maximumValue];
+    v2 = [maximumValue hash] ^ v6;
 
     goto LABEL_5;
   }
@@ -203,10 +203,10 @@ LABEL_5:
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HFRangeControlItemValue *)self targetValue];
-  v5 = [(HFRangeControlItemValue *)self minimumValue];
-  v6 = [(HFRangeControlItemValue *)self maximumValue];
-  v7 = [v3 stringWithFormat:@"%@, min %@ max %@", v4, v5, v6];
+  targetValue = [(HFRangeControlItemValue *)self targetValue];
+  minimumValue = [(HFRangeControlItemValue *)self minimumValue];
+  maximumValue = [(HFRangeControlItemValue *)self maximumValue];
+  v7 = [v3 stringWithFormat:@"%@, min %@ max %@", targetValue, minimumValue, maximumValue];
 
   return v7;
 }

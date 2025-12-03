@@ -1,16 +1,16 @@
 @interface NMCGizmoConnection
 + (id)sharedInstance;
 + (void)initializePairedDeviceRegistry;
-- (BOOL)canSendMessageWithType:(int)a3;
-- (BOOL)supportsTransportType:(int)a3;
+- (BOOL)canSendMessageWithType:(int)type;
+- (BOOL)supportsTransportType:(int)type;
 - (BOOL)supportsXPCUseIPCForStartingCompanionNavigation;
 - (BOOL)supportsXPCUseMapsForRoutePlanning;
 - (NMCGizmoConnection)init;
 - (NRDevice)activeDevice;
 - (void)_updateActiveDevice;
 - (void)dealloc;
-- (void)service:(id)a3 devicesChanged:(id)a4;
-- (void)setActiveDevice:(id)a3;
+- (void)service:(id)service devicesChanged:(id)changed;
+- (void)setActiveDevice:(id)device;
 @end
 
 @implementation NMCGizmoConnection
@@ -29,21 +29,21 @@
 
 - (NRDevice)activeDevice
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  activeDevice = v2->_activeDevice;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  activeDevice = selfCopy->_activeDevice;
   if (!activeDevice)
   {
     v4 = +[NRPairedDeviceRegistry sharedInstance];
-    v5 = [v4 getActivePairedDevice];
-    v6 = v2->_activeDevice;
-    v2->_activeDevice = v5;
+    getActivePairedDevice = [v4 getActivePairedDevice];
+    v6 = selfCopy->_activeDevice;
+    selfCopy->_activeDevice = getActivePairedDevice;
 
-    activeDevice = v2->_activeDevice;
+    activeDevice = selfCopy->_activeDevice;
   }
 
   v7 = activeDevice;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
@@ -88,10 +88,10 @@
   }
 }
 
-- (BOOL)canSendMessageWithType:(int)a3
+- (BOOL)canSendMessageWithType:(int)type
 {
-  v3 = a3 - 305;
-  if ((a3 - 305) > 6 || ((0x59u >> v3) & 1) == 0)
+  v3 = type - 305;
+  if ((type - 305) > 6 || ((0x59u >> v3) & 1) == 0)
   {
     return 1;
   }
@@ -100,18 +100,18 @@
   return [(NMDeviceConnection *)self protocolVersion]> v4;
 }
 
-- (BOOL)supportsTransportType:(int)a3
+- (BOOL)supportsTransportType:(int)type
 {
-  v5 = [(NMCGizmoConnection *)self activeDevice];
+  activeDevice = [(NMCGizmoConnection *)self activeDevice];
 
-  if (!v5)
+  if (!activeDevice)
   {
     return 0;
   }
 
-  if (a3 != 3)
+  if (type != 3)
   {
-    return a3 != 6;
+    return type != 6;
   }
 
   if ([(NMDeviceConnection *)self protocolVersion]> 3)
@@ -119,20 +119,20 @@
     return 1;
   }
 
-  v7 = [(NMCGizmoConnection *)self activeDevice];
-  v8 = [v7 valueForProperty:NRDevicePropertySystemVersion];
+  activeDevice2 = [(NMCGizmoConnection *)self activeDevice];
+  v8 = [activeDevice2 valueForProperty:NRDevicePropertySystemVersion];
 
   v6 = [v8 compare:@"6.2" options:64] != -1;
   return v6;
 }
 
-- (void)setActiveDevice:(id)a3
+- (void)setActiveDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   obj = self;
   objc_sync_enter(obj);
   activeDevice = obj->_activeDevice;
-  obj->_activeDevice = v4;
+  obj->_activeDevice = deviceCopy;
 
   objc_sync_exit(obj);
 }
@@ -140,18 +140,18 @@
 - (void)_updateActiveDevice
 {
   v4 = +[NRPairedDeviceRegistry sharedInstance];
-  v3 = [v4 getActivePairedDevice];
-  [(NMCGizmoConnection *)self setActiveDevice:v3];
+  getActivePairedDevice = [v4 getActivePairedDevice];
+  [(NMCGizmoConnection *)self setActiveDevice:getActivePairedDevice];
 }
 
 - (BOOL)supportsXPCUseMapsForRoutePlanning
 {
-  v2 = [(NMCGizmoConnection *)self activeDevice];
+  activeDevice = [(NMCGizmoConnection *)self activeDevice];
   if (GEOConfigGetBOOL())
   {
-    if (v2)
+    if (activeDevice)
     {
-      v3 = [v2 valueForProperty:NRDevicePropertySystemVersion];
+      v3 = [activeDevice valueForProperty:NRDevicePropertySystemVersion];
       v4 = [v3 compare:@"9.0" options:64] != -1;
     }
 
@@ -171,12 +171,12 @@
 
 - (BOOL)supportsXPCUseIPCForStartingCompanionNavigation
 {
-  v2 = [(NMCGizmoConnection *)self activeDevice];
+  activeDevice = [(NMCGizmoConnection *)self activeDevice];
   if (GEOConfigGetBOOL())
   {
-    if (v2)
+    if (activeDevice)
     {
-      v3 = [v2 valueForProperty:NRDevicePropertySystemVersion];
+      v3 = [activeDevice valueForProperty:NRDevicePropertySystemVersion];
       v4 = [v3 compare:@"9.0" options:64] != -1;
     }
 
@@ -194,14 +194,14 @@
   return v4;
 }
 
-- (void)service:(id)a3 devicesChanged:(id)a4
+- (void)service:(id)service devicesChanged:(id)changed
 {
-  v6 = a4;
-  v7 = a3;
+  changedCopy = changed;
+  serviceCopy = service;
   [(NMCGizmoConnection *)self _updateActiveDevice];
   v8.receiver = self;
   v8.super_class = NMCGizmoConnection;
-  [(NMDeviceConnection *)&v8 service:v7 devicesChanged:v6];
+  [(NMDeviceConnection *)&v8 service:serviceCopy devicesChanged:changedCopy];
 }
 
 @end

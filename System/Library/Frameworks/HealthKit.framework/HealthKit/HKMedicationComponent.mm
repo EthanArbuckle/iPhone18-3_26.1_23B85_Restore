@@ -1,9 +1,9 @@
 @interface HKMedicationComponent
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKMedicationComponent)init;
-- (HKMedicationComponent)initWithCoder:(id)a3;
-- (HKMedicationComponent)initWithComponentForm:(int64_t)a3 ingredients:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (HKMedicationComponent)initWithCoder:(id)coder;
+- (HKMedicationComponent)initWithComponentForm:(int64_t)form ingredients:(id)ingredients;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKMedicationComponent
@@ -18,17 +18,17 @@
   return 0;
 }
 
-- (HKMedicationComponent)initWithComponentForm:(int64_t)a3 ingredients:(id)a4
+- (HKMedicationComponent)initWithComponentForm:(int64_t)form ingredients:(id)ingredients
 {
-  v6 = a4;
+  ingredientsCopy = ingredients;
   v12.receiver = self;
   v12.super_class = HKMedicationComponent;
   v7 = [(HKMedicationComponent *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_componentForm = a3;
-    v9 = [v6 copy];
+    v7->_componentForm = form;
+    v9 = [ingredientsCopy copy];
     ingredients = v8->_ingredients;
     v8->_ingredients = v9;
   }
@@ -36,10 +36,10 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v15 = 1;
   }
@@ -49,26 +49,26 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HKMedicationComponent *)v5 componentForm];
-      if (v6 == [(HKMedicationComponent *)self componentForm])
+      v5 = equalCopy;
+      componentForm = [(HKMedicationComponent *)v5 componentForm];
+      if (componentForm == [(HKMedicationComponent *)self componentForm])
       {
-        v7 = [(HKMedicationComponent *)v5 ingredients];
-        v8 = [(HKMedicationComponent *)self ingredients];
-        v9 = v8;
-        if (v7 == v8)
+        ingredients = [(HKMedicationComponent *)v5 ingredients];
+        ingredients2 = [(HKMedicationComponent *)self ingredients];
+        v9 = ingredients2;
+        if (ingredients == ingredients2)
         {
 
           goto LABEL_11;
         }
 
-        v10 = [(HKMedicationComponent *)self ingredients];
-        if (v10)
+        ingredients3 = [(HKMedicationComponent *)self ingredients];
+        if (ingredients3)
         {
-          v11 = v10;
-          v12 = [(HKMedicationComponent *)v5 ingredients];
-          v13 = [(HKMedicationComponent *)self ingredients];
-          v14 = [v12 isEqualToSet:v13];
+          v11 = ingredients3;
+          ingredients4 = [(HKMedicationComponent *)v5 ingredients];
+          ingredients5 = [(HKMedicationComponent *)self ingredients];
+          v14 = [ingredients4 isEqualToSet:ingredients5];
 
           if ((v14 & 1) == 0)
           {
@@ -96,17 +96,17 @@ LABEL_15:
   return v15;
 }
 
-- (HKMedicationComponent)initWithCoder:(id)a3
+- (HKMedicationComponent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = HKMedicationComponent;
   v5 = [(HKMedicationComponent *)&v10 init];
   if (v5)
   {
-    v5->_componentForm = [v4 decodeIntegerForKey:@"Form"];
+    v5->_componentForm = [coderCopy decodeIntegerForKey:@"Form"];
     v6 = [MEMORY[0x1E695DFD8] hk_typesForSetOf:objc_opt_class()];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"Ingredients"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"Ingredients"];
     ingredients = v5->_ingredients;
     v5->_ingredients = v7;
   }
@@ -114,12 +114,12 @@ LABEL_15:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   componentForm = self->_componentForm;
-  v5 = a3;
-  [v5 encodeInteger:componentForm forKey:@"Form"];
-  [v5 encodeObject:self->_ingredients forKey:@"Ingredients"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:componentForm forKey:@"Form"];
+  [coderCopy encodeObject:self->_ingredients forKey:@"Ingredients"];
 }
 
 @end

@@ -8,13 +8,13 @@
 - (void)applyTransformationForLandscapeLeft;
 - (void)applyTransformationForLandscapeRight;
 - (void)applyTransformationForPortraitUpsideDown;
-- (void)handleCameraSampleBuffer:(opaqueCMSampleBuffer *)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)printTransform:(CGAffineTransform *)a3;
+- (void)handleCameraSampleBuffer:(opaqueCMSampleBuffer *)buffer;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)printTransform:(CGAffineTransform *)transform;
 - (void)setUpFrameReceiver;
-- (void)startWithAppUsingCamera:(BOOL)a3 startHandler:(id)a4 outputHandler:(id)a5;
+- (void)startWithAppUsingCamera:(BOOL)camera startHandler:(id)handler outputHandler:(id)outputHandler;
 - (void)stop;
-- (void)updateTransformForSampleBuffer:(opaqueCMSampleBuffer *)a3;
+- (void)updateTransformForSampleBuffer:(opaqueCMSampleBuffer *)buffer;
 @end
 
 @implementation RPCameraCaptureManager
@@ -50,21 +50,21 @@
   return self;
 }
 
-- (void)startWithAppUsingCamera:(BOOL)a3 startHandler:(id)a4 outputHandler:(id)a5
+- (void)startWithAppUsingCamera:(BOOL)camera startHandler:(id)handler outputHandler:(id)outputHandler
 {
-  v8 = a4;
-  v9 = a5;
+  handlerCopy = handler;
+  outputHandlerCopy = outputHandler;
   queue = self->_queue;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100048048;
   v13[3] = &unk_1000A1150;
-  v16 = a3;
+  cameraCopy = camera;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = handlerCopy;
+  v15 = outputHandlerCopy;
+  v11 = outputHandlerCopy;
+  v12 = handlerCopy;
   dispatch_sync(queue, v13);
 }
 
@@ -79,11 +79,11 @@
   dispatch_sync(queue, block);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446978;
@@ -91,9 +91,9 @@
     v16 = 1024;
     v17 = 116;
     v18 = 2112;
-    v19 = v9;
+    v19 = pathCopy;
     v20 = 2112;
-    v21 = v11;
+    v21 = changeCopy;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d keyPath=%@, change=%@", buf, 0x26u);
   }
 
@@ -106,11 +106,11 @@
   dispatch_async(queue, block);
 }
 
-- (void)handleCameraSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (void)handleCameraSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
   if (self->_needTransformUpdate)
   {
-    [(RPCameraCaptureManager *)self updateTransformForSampleBuffer:a3];
+    [(RPCameraCaptureManager *)self updateTransformForSampleBuffer:buffer];
     self->_needTransformUpdate = 0;
   }
 
@@ -146,13 +146,13 @@
 
   v3 = +[CMCaptureFrameReceiver availableFrameSenderEndpointsByPID];
   memset(v18, 0, sizeof(v18));
-  v4 = [v3 allKeys];
-  if ([v4 countByEnumeratingWithState:v18 objects:v20 count:16])
+  allKeys = [v3 allKeys];
+  if ([allKeys countByEnumeratingWithState:v18 objects:v20 count:16])
   {
     v5 = [v3 objectForKeyedSubscript:**(&v18[0] + 1)];
-    v6 = [v5 firstObject];
+    firstObject = [v5 firstObject];
 
-    if (v6)
+    if (firstObject)
     {
       objc_initWeak(&buf, self);
       v7 = [CMCaptureFrameReceiver alloc];
@@ -161,7 +161,7 @@
       v16[2] = sub_100048930;
       v16[3] = &unk_1000A2558;
       objc_copyWeak(&v17, &buf);
-      v8 = [v7 initWithFrameSenderServerEndpoint:v6 frameReceiverHandler:v16];
+      v8 = [v7 initWithFrameSenderServerEndpoint:firstObject frameReceiverHandler:v16];
       frameReceiver = self->_frameReceiver;
       self->_frameReceiver = v8;
 
@@ -209,7 +209,7 @@ LABEL_13:
 - (int64_t)currentInterfaceOrientation
 {
   v2 = objc_alloc_init(FBSOrientationObserver);
-  v3 = [v2 activeInterfaceOrientation];
+  activeInterfaceOrientation = [v2 activeInterfaceOrientation];
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v4 = BSInterfaceOrientationDescription();
@@ -229,15 +229,15 @@ LABEL_13:
       sub_1000658E4();
     }
 
-    v3 = 1;
+    activeInterfaceOrientation = 1;
   }
 
-  return v3;
+  return activeInterfaceOrientation;
 }
 
-- (void)updateTransformForSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (void)updateTransformForSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
-  v4 = CMCopyDictionaryOfAttachments(kCFAllocatorDefault, a3, 1u);
+  v4 = CMCopyDictionaryOfAttachments(kCFAllocatorDefault, buffer, 1u);
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf.a) = 136446722;
@@ -324,7 +324,7 @@ LABEL_13:
     v8 = &off_1000A6D28;
   }
 
-  v17 = [(RPCameraCaptureManager *)self currentInterfaceOrientation];
+  currentInterfaceOrientation = [(RPCameraCaptureManager *)self currentInterfaceOrientation];
   if (dword_1000B6840 <= 1)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
@@ -363,7 +363,7 @@ LABEL_13:
         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
         {
           v21 = [NSNumber numberWithInteger:self->_orientation];
-          v22 = [NSNumber numberWithInteger:v17];
+          v22 = [NSNumber numberWithInteger:currentInterfaceOrientation];
           LODWORD(buf.a) = 136446978;
           *(&buf.a + 4) = "[RPCameraCaptureManager updateTransformForSampleBuffer:]";
           WORD2(buf.b) = 1024;
@@ -409,7 +409,7 @@ LABEL_13:
     }
   }
 
-  if ((!v8 || [(NSNumber *)self->_currentRotation isEqualToNumber:v8]) && v9 == self->_mirrorType && self->_orientation == v17 && [(__CFString *)v10 isEqualToString:self->_portType]&& v11 == self->_deviceType)
+  if ((!v8 || [(NSNumber *)self->_currentRotation isEqualToNumber:v8]) && v9 == self->_mirrorType && self->_orientation == currentInterfaceOrientation && [(__CFString *)v10 isEqualToString:self->_portType]&& v11 == self->_deviceType)
   {
 LABEL_63:
     if (!v4)
@@ -431,7 +431,7 @@ LABEL_63:
 
   objc_storeStrong(&self->_currentRotation, v8);
   self->_mirrorType = v9;
-  self->_orientation = v17;
+  self->_orientation = currentInterfaceOrientation;
   objc_storeStrong(&self->_portType, v10);
   objc_storeStrong(&self->_deviceType, v11);
   if ([(NSNumber *)v11 intValue]== 15 && [(__CFString *)v10 isEqualToString:@"PortTypeFront"])
@@ -1027,14 +1027,14 @@ LABEL_18:
   *&self->_cameraTransform.tx = *&v15.tx;
 }
 
-- (void)printTransform:(CGAffineTransform *)a3
+- (void)printTransform:(CGAffineTransform *)transform
 {
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [NSNumber numberWithDouble:a3->a];
-    v5 = [NSNumber numberWithDouble:a3->b];
-    v6 = [NSNumber numberWithDouble:a3->c];
-    v7 = [NSNumber numberWithDouble:a3->d];
+    v4 = [NSNumber numberWithDouble:transform->a];
+    v5 = [NSNumber numberWithDouble:transform->b];
+    v6 = [NSNumber numberWithDouble:transform->c];
+    v7 = [NSNumber numberWithDouble:transform->d];
     v8 = 136447490;
     v9 = "[RPCameraCaptureManager printTransform:]";
     v10 = 1024;

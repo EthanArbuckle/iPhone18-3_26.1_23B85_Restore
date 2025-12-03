@@ -24,7 +24,7 @@
 
 - (uint64_t)SBUISA_contentRoleforSetting:()SBUISystemAperture
 {
-  v1 = [a1 objectForSetting:?];
+  v1 = [self objectForSetting:?];
   v2 = objc_opt_class();
   v3 = v1;
   if (v2)
@@ -47,13 +47,13 @@
 
   v5 = v4;
 
-  v6 = [v5 unsignedIntegerValue];
-  return v6;
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
+  return unsignedIntegerValue;
 }
 
 - (void)SBUISA_stringforSetting:()SBUISystemAperture
 {
-  v1 = [a1 objectForSetting:?];
+  v1 = [self objectForSetting:?];
   v2 = objc_opt_class();
   v3 = v1;
   if (v2)
@@ -76,7 +76,7 @@
 
 - (void)SBUISA_URLforSetting:()SBUISystemAperture
 {
-  v1 = [a1 objectForSetting:?];
+  v1 = [self objectForSetting:?];
   v2 = objc_opt_class();
   v3 = v1;
   if (v2)
@@ -99,7 +99,7 @@
 
 - (void)SBUISA_BSActionforSetting:()SBUISystemAperture
 {
-  v1 = [a1 objectForSetting:?];
+  v1 = [self objectForSetting:?];
   v2 = objc_opt_class();
   v3 = v1;
   if (v2)
@@ -122,7 +122,7 @@
 
 - (double)SBUISA_CGRectforSetting:()SBUISystemAperture
 {
-  v1 = [a1 objectForSetting:?];
+  v1 = [self objectForSetting:?];
   v2 = objc_opt_class();
   v3 = v1;
   if (v2)
@@ -153,7 +153,7 @@
 
 - (double)SBUISA_CGSizeforSetting:()SBUISystemAperture
 {
-  v1 = [a1 objectForSetting:?];
+  v1 = [self objectForSetting:?];
   v2 = objc_opt_class();
   v3 = v1;
   if (v2)
@@ -184,7 +184,7 @@
 
 - (uint64_t)SBUISA_layoutModeforSetting:()SBUISystemAperture
 {
-  v1 = [a1 objectForSetting:?];
+  v1 = [self objectForSetting:?];
   v2 = objc_opt_class();
   v3 = v1;
   if (v2)
@@ -207,13 +207,13 @@
 
   v5 = v4;
 
-  v6 = [v5 integerValue];
-  return v6;
+  integerValue = [v5 integerValue];
+  return integerValue;
 }
 
 - (uint64_t)SBUISA_contextIdforSetting:()SBUISystemAperture
 {
-  v1 = [a1 objectForSetting:?];
+  v1 = [self objectForSetting:?];
   v2 = objc_opt_class();
   v3 = v1;
   if (v2)
@@ -236,13 +236,13 @@
 
   v5 = v4;
 
-  v6 = [v5 unsignedIntValue];
-  return v6;
+  unsignedIntValue = [v5 unsignedIntValue];
+  return unsignedIntValue;
 }
 
 - (uint64_t)SBUISA_renderingIdforSetting:()SBUISystemAperture
 {
-  v1 = [a1 objectForSetting:?];
+  v1 = [self objectForSetting:?];
   v2 = objc_opt_class();
   v3 = v1;
   if (v2)
@@ -265,13 +265,13 @@
 
   v5 = v4;
 
-  v6 = [v5 unsignedLongLongValue];
-  return v6;
+  unsignedLongLongValue = [v5 unsignedLongLongValue];
+  return unsignedLongLongValue;
 }
 
 - (double)SBUISA_directionalEdgeInsetsforSetting:()SBUISystemAperture
 {
-  v1 = [a1 objectForSetting:?];
+  v1 = [self objectForSetting:?];
   v2 = objc_opt_class();
   v3 = v1;
   if (v2)
@@ -302,7 +302,7 @@
 
 - (void)SBUISA_backgroundActivityIdentifiersForSetting:()SBUISystemAperture
 {
-  v1 = [a1 objectForSetting:?];
+  v1 = [self objectForSetting:?];
   v2 = objc_opt_class();
   v3 = v1;
   if (v2)
@@ -325,7 +325,7 @@
 
 - (uint64_t)SBUISA_customLayoutModeforSetting:()SBUISystemAperture
 {
-  v1 = [a1 objectForSetting:?];
+  v1 = [self objectForSetting:?];
   v2 = objc_opt_class();
   v3 = v1;
   if (v2)
@@ -348,13 +348,13 @@
 
   v5 = v4;
 
-  v6 = [v5 integerValue];
-  return v6;
+  integerValue = [v5 integerValue];
+  return integerValue;
 }
 
 - (uint64_t)SBUISA_presentationBehaviorsForSetting:()SBUISystemAperture
 {
-  v1 = [a1 objectForSetting:?];
+  v1 = [self objectForSetting:?];
   v2 = objc_opt_class();
   v3 = v1;
   if (v2)
@@ -377,13 +377,13 @@
 
   v5 = v4;
 
-  v6 = [v5 unsignedIntegerValue];
-  return v6;
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
+  return unsignedIntegerValue;
 }
 
 - (id)SBUISA_UIColorForSetting:()SBUISystemAperture
 {
-  v1 = [a1 objectForSetting:?];
+  v1 = [self objectForSetting:?];
   v2 = objc_opt_class();
   v3 = v1;
   if (v2)
@@ -429,7 +429,7 @@
 
 - (id)SBUISA_secureFlipBookElementConfigurationsForSetting:()SBUISystemAperture
 {
-  v1 = [a1 objectForSetting:?];
+  v1 = [self objectForSetting:?];
   v2 = objc_opt_class();
   v3 = v1;
   if (v2)
@@ -452,14 +452,14 @@
 
   v5 = v4;
 
-  v6 = [v5 array];
+  array = [v5 array];
 
-  return v6;
+  return array;
 }
 
 - (void)SBUISA_secureFlipBookElementSymmetricalConfigurationsForSetting:()SBUISystemAperture
 {
-  v1 = [a1 objectForSetting:?];
+  v1 = [self objectForSetting:?];
   v2 = objc_opt_class();
   v3 = v1;
   if (v2)
@@ -482,7 +482,7 @@
 
 - (void)SBUISA_componentStatesForSetting:()SBUISystemAperture
 {
-  v1 = [a1 objectForSetting:?];
+  v1 = [self objectForSetting:?];
   v2 = objc_opt_class();
   v3 = v1;
   if (v2)
@@ -522,18 +522,18 @@
 
 - (id)SBUI_systemApertureDescription
 {
-  v2 = [MEMORY[0x1E698E680] builderWithObject:a1];
+  v2 = [MEMORY[0x1E698E680] builderWithObject:self];
   v6 = MEMORY[0x1E69E9820];
   v7 = 3221225472;
   v8 = __64__BSSettings_SBUISystemAperture__SBUI_systemApertureDescription__block_invoke;
   v9 = &unk_1E789DD98;
   v10 = v2;
-  v11 = a1;
+  selfCopy = self;
   v3 = v2;
   [v3 appendBodySectionWithName:0 multilinePrefix:0 block:&v6];
-  v4 = [v3 build];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 - (id)SBUI_systemApertureDescriptionOfDiffFromSettings:()SBUISystemAperture
@@ -543,12 +543,12 @@
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 0;
-  v5 = [MEMORY[0x1E698E680] builderWithObject:a1];
+  v5 = [MEMORY[0x1E698E680] builderWithObject:self];
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __83__BSSettings_SBUISystemAperture__SBUI_systemApertureDescriptionOfDiffFromSettings___block_invoke;
   v13 = &unk_1E789EEC8;
-  v14 = a1;
+  selfCopy = self;
   v6 = v4;
   v15 = v6;
   v7 = v5;
@@ -557,17 +557,17 @@
   [v7 appendBodySectionWithName:0 multilinePrefix:0 block:&v10];
   if (*(v19 + 24) == 1)
   {
-    v8 = [v7 build];
+    build = [v7 build];
   }
 
   else
   {
-    v8 = 0;
+    build = 0;
   }
 
   _Block_object_dispose(&v18, 8);
 
-  return v8;
+  return build;
 }
 
 @end

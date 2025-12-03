@@ -1,7 +1,7 @@
 @interface PXCompositeEditorialLayoutMetrics
 - (PXCompositeEditorialLayoutMetrics)init;
 - (UIEdgeInsets)padding;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation PXCompositeEditorialLayoutMetrics
@@ -19,11 +19,11 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = PXCompositeEditorialLayoutMetrics;
-  v4 = [(PXLayoutMetrics *)&v7 copyWithZone:a3];
+  v4 = [(PXLayoutMetrics *)&v7 copyWithZone:zone];
   *(v4 + 4) = *&self->_interTileSpacing;
   v5 = *&self->_padding.bottom;
   *(v4 + 3) = *&self->_padding.top;

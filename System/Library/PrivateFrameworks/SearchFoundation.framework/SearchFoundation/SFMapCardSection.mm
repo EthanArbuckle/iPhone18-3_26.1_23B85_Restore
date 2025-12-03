@@ -1,12 +1,12 @@
 @interface SFMapCardSection
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFMapCardSection)initWithCoder:(id)a3;
-- (SFMapCardSection)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFMapCardSection)initWithCoder:(id)coder;
+- (SFMapCardSection)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFMapCardSection
@@ -16,59 +16,59 @@
   v34.receiver = self;
   v34.super_class = SFMapCardSection;
   v3 = [(SFCardSection *)&v34 hash];
-  v33 = [(SFCardSection *)self punchoutOptions];
-  v4 = [v33 hash];
-  v32 = [(SFCardSection *)self punchoutPickerTitle];
-  v5 = v4 ^ [v32 hash];
-  v31 = [(SFCardSection *)self punchoutPickerDismissText];
-  v6 = v5 ^ [v31 hash];
+  punchoutOptions = [(SFCardSection *)self punchoutOptions];
+  v4 = [punchoutOptions hash];
+  punchoutPickerTitle = [(SFCardSection *)self punchoutPickerTitle];
+  v5 = v4 ^ [punchoutPickerTitle hash];
+  punchoutPickerDismissText = [(SFCardSection *)self punchoutPickerDismissText];
+  v6 = v5 ^ [punchoutPickerDismissText hash];
   v7 = v6 ^ [(SFCardSection *)self canBeHidden];
   v8 = v7 ^ [(SFCardSection *)self hasTopPadding]^ v3;
-  v9 = [(SFCardSection *)self hasBottomPadding];
-  v10 = [(SFMapCardSection *)self type];
-  v11 = v9 ^ [v10 hash];
+  hasBottomPadding = [(SFCardSection *)self hasBottomPadding];
+  type = [(SFMapCardSection *)self type];
+  v11 = hasBottomPadding ^ [type hash];
   v12 = v11 ^ [(SFCardSection *)self separatorStyle];
-  v13 = [(SFCardSection *)self backgroundColor];
-  v14 = v12 ^ [v13 hash];
-  v15 = [(SFMapCardSection *)self location];
-  v16 = v8 ^ v14 ^ [v15 hash];
-  v17 = [(SFMapCardSection *)self pinColor];
-  v18 = [v17 hash];
-  v19 = [(SFMapCardSection *)self footnoteLabel];
-  v20 = v18 ^ [v19 hash];
-  v21 = [(SFMapCardSection *)self footnote];
-  v22 = v20 ^ [v21 hash];
+  backgroundColor = [(SFCardSection *)self backgroundColor];
+  v14 = v12 ^ [backgroundColor hash];
+  location = [(SFMapCardSection *)self location];
+  v16 = v8 ^ v14 ^ [location hash];
+  pinColor = [(SFMapCardSection *)self pinColor];
+  v18 = [pinColor hash];
+  footnoteLabel = [(SFMapCardSection *)self footnoteLabel];
+  v20 = v18 ^ [footnoteLabel hash];
+  footnote = [(SFMapCardSection *)self footnote];
+  v22 = v20 ^ [footnote hash];
   v23 = v22 ^ [(SFMapCardSection *)self interactive];
   v24 = v23 ^ [(SFMapCardSection *)self sizeFormat];
-  v25 = [(SFMapCardSection *)self boundingMapRegion];
-  v26 = v24 ^ [v25 hash];
+  boundingMapRegion = [(SFMapCardSection *)self boundingMapRegion];
+  v26 = v24 ^ [boundingMapRegion hash];
   v27 = v16 ^ v26 ^ [(SFMapCardSection *)self pinBehavior];
-  v28 = [(SFMapCardSection *)self pins];
-  v29 = [v28 hash];
+  pins = [(SFMapCardSection *)self pins];
+  v29 = [pins hash];
 
   return v27 ^ v29;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v19 = 1;
     goto LABEL_75;
   }
 
-  if (![(SFMapCardSection *)v4 isMemberOfClass:objc_opt_class()]|| (v123.receiver = self, v123.super_class = SFMapCardSection, ![(SFCardSection *)&v123 isEqual:v4]))
+  if (![(SFMapCardSection *)equalCopy isMemberOfClass:objc_opt_class()]|| (v123.receiver = self, v123.super_class = SFMapCardSection, ![(SFCardSection *)&v123 isEqual:equalCopy]))
   {
     v19 = 0;
     goto LABEL_75;
   }
 
-  v5 = v4;
-  v121 = [(SFCardSection *)self punchoutOptions];
-  v120 = [(SFCardSection *)v5 punchoutOptions];
-  v118 = v120 == 0;
-  v119 = v121 != 0;
+  v5 = equalCopy;
+  punchoutOptions = [(SFCardSection *)self punchoutOptions];
+  punchoutOptions2 = [(SFCardSection *)v5 punchoutOptions];
+  v118 = punchoutOptions2 == 0;
+  v119 = punchoutOptions != 0;
   if (v119 == v118)
   {
     v116 = 0;
@@ -88,15 +88,15 @@
     goto LABEL_16;
   }
 
-  v7 = [(SFCardSection *)self punchoutOptions];
-  v8 = v7 != 0;
-  v114 = v7;
-  if (v7)
+  punchoutOptions3 = [(SFCardSection *)self punchoutOptions];
+  v8 = punchoutOptions3 != 0;
+  v114 = punchoutOptions3;
+  if (punchoutOptions3)
   {
-    v9 = [(SFCardSection *)self punchoutOptions];
+    punchoutOptions4 = [(SFCardSection *)self punchoutOptions];
     [(SFCardSection *)v5 punchoutOptions];
-    v109 = v110 = v9;
-    if (![v9 isEqual:?])
+    v109 = v110 = punchoutOptions4;
+    if (![punchoutOptions4 isEqual:?])
     {
       v116 = 0;
       memset(v117, 0, 36);
@@ -117,10 +117,10 @@
     }
   }
 
-  v112 = [(SFCardSection *)self punchoutPickerTitle];
-  v111 = [(SFCardSection *)v5 punchoutPickerTitle];
+  punchoutPickerTitle = [(SFCardSection *)self punchoutPickerTitle];
+  punchoutPickerTitle2 = [(SFCardSection *)v5 punchoutPickerTitle];
   HIDWORD(v117[4]) = v8;
-  if ((v112 != 0) == (v111 == 0))
+  if ((punchoutPickerTitle != 0) == (punchoutPickerTitle2 == 0))
   {
     v116 = 0;
     memset(v117, 0, 20);
@@ -140,15 +140,15 @@
     goto LABEL_16;
   }
 
-  v20 = [(SFCardSection *)self punchoutPickerTitle];
-  v21 = v20 != 0;
-  v108 = v20;
-  if (v20)
+  punchoutPickerTitle3 = [(SFCardSection *)self punchoutPickerTitle];
+  v21 = punchoutPickerTitle3 != 0;
+  v108 = punchoutPickerTitle3;
+  if (punchoutPickerTitle3)
   {
-    v22 = [(SFCardSection *)self punchoutPickerTitle];
-    v104 = [(SFCardSection *)v5 punchoutPickerTitle];
-    v105 = v22;
-    if (![v22 isEqual:?])
+    punchoutPickerTitle4 = [(SFCardSection *)self punchoutPickerTitle];
+    punchoutPickerTitle5 = [(SFCardSection *)v5 punchoutPickerTitle];
+    v105 = punchoutPickerTitle4;
+    if (![punchoutPickerTitle4 isEqual:?])
     {
       v117[0] = 0;
       v117[1] = 0;
@@ -179,9 +179,9 @@
     LODWORD(v117[4]) = 0;
   }
 
-  v107 = [(SFCardSection *)self punchoutPickerDismissText];
-  v106 = [(SFCardSection *)v5 punchoutPickerDismissText];
-  if ((v107 != 0) == (v106 == 0))
+  punchoutPickerDismissText = [(SFCardSection *)self punchoutPickerDismissText];
+  punchoutPickerDismissText2 = [(SFCardSection *)v5 punchoutPickerDismissText];
+  if ((punchoutPickerDismissText != 0) == (punchoutPickerDismissText2 == 0))
   {
     v10 = 0;
     v117[3] = 0;
@@ -205,18 +205,18 @@
 
   else
   {
-    v35 = [(SFCardSection *)self punchoutPickerDismissText];
-    v36 = v35 != 0;
-    v103 = v35;
-    if (!v35 || (-[SFCardSection punchoutPickerDismissText](self, "punchoutPickerDismissText"), v37 = objc_claimAutoreleasedReturnValue(), -[SFCardSection punchoutPickerDismissText](v5, "punchoutPickerDismissText"), v101 = objc_claimAutoreleasedReturnValue(), v102 = v37, [v37 isEqual:?]))
+    punchoutPickerDismissText3 = [(SFCardSection *)self punchoutPickerDismissText];
+    v36 = punchoutPickerDismissText3 != 0;
+    v103 = punchoutPickerDismissText3;
+    if (!punchoutPickerDismissText3 || (-[SFCardSection punchoutPickerDismissText](self, "punchoutPickerDismissText"), v37 = objc_claimAutoreleasedReturnValue(), -[SFCardSection punchoutPickerDismissText](v5, "punchoutPickerDismissText"), v101 = objc_claimAutoreleasedReturnValue(), v102 = v37, [v37 isEqual:?]))
     {
-      v38 = [(SFCardSection *)self canBeHidden];
+      canBeHidden = [(SFCardSection *)self canBeHidden];
       HIDWORD(v117[3]) = v36;
-      if (v38 == [(SFCardSection *)v5 canBeHidden]&& (v39 = [(SFCardSection *)self hasTopPadding], v39 == [(SFCardSection *)v5 hasTopPadding]) && (v40 = [(SFCardSection *)self hasBottomPadding], v40 == [(SFCardSection *)v5 hasBottomPadding]))
+      if (canBeHidden == [(SFCardSection *)v5 canBeHidden]&& (v39 = [(SFCardSection *)self hasTopPadding], v39 == [(SFCardSection *)v5 hasTopPadding]) && (v40 = [(SFCardSection *)self hasBottomPadding], v40 == [(SFCardSection *)v5 hasBottomPadding]))
       {
-        v100 = [(SFMapCardSection *)self type];
-        v99 = [(SFMapCardSection *)v5 type];
-        if ((v100 != 0) == (v99 == 0))
+        type = [(SFMapCardSection *)self type];
+        type2 = [(SFMapCardSection *)v5 type];
+        if ((type != 0) == (type2 == 0))
         {
           v116 = 0;
           v11 = 0;
@@ -239,18 +239,18 @@
 
         else
         {
-          v41 = [(SFMapCardSection *)self type];
-          v42 = v41 != 0;
-          v98 = v41;
-          if (!v41 || (-[SFMapCardSection type](self, "type"), v43 = objc_claimAutoreleasedReturnValue(), -[SFMapCardSection type](v5, "type"), v96 = objc_claimAutoreleasedReturnValue(), v97 = v43, [v43 isEqual:?]))
+          type3 = [(SFMapCardSection *)self type];
+          v42 = type3 != 0;
+          v98 = type3;
+          if (!type3 || (-[SFMapCardSection type](self, "type"), v43 = objc_claimAutoreleasedReturnValue(), -[SFMapCardSection type](v5, "type"), v96 = objc_claimAutoreleasedReturnValue(), v97 = v43, [v43 isEqual:?]))
           {
             LODWORD(v117[3]) = v42;
-            v44 = [(SFCardSection *)self separatorStyle];
-            if (v44 == [(SFCardSection *)v5 separatorStyle])
+            separatorStyle = [(SFCardSection *)self separatorStyle];
+            if (separatorStyle == [(SFCardSection *)v5 separatorStyle])
             {
-              v95 = [(SFCardSection *)self backgroundColor];
-              v94 = [(SFCardSection *)v5 backgroundColor];
-              if ((v95 != 0) == (v94 == 0))
+              backgroundColor = [(SFCardSection *)self backgroundColor];
+              backgroundColor2 = [(SFCardSection *)v5 backgroundColor];
+              if ((backgroundColor != 0) == (backgroundColor2 == 0))
               {
                 v11 = 0;
                 v12 = 0;
@@ -272,14 +272,14 @@
 
               else
               {
-                v45 = [(SFCardSection *)self backgroundColor];
-                HIDWORD(v122[2]) = v45 != 0;
-                v93 = v45;
-                if (!v45 || (-[SFCardSection backgroundColor](self, "backgroundColor"), v46 = objc_claimAutoreleasedReturnValue(), -[SFCardSection backgroundColor](v5, "backgroundColor"), v89 = objc_claimAutoreleasedReturnValue(), v90 = v46, [v46 isEqual:?]))
+                backgroundColor3 = [(SFCardSection *)self backgroundColor];
+                HIDWORD(v122[2]) = backgroundColor3 != 0;
+                v93 = backgroundColor3;
+                if (!backgroundColor3 || (-[SFCardSection backgroundColor](self, "backgroundColor"), v46 = objc_claimAutoreleasedReturnValue(), -[SFCardSection backgroundColor](v5, "backgroundColor"), v89 = objc_claimAutoreleasedReturnValue(), v90 = v46, [v46 isEqual:?]))
                 {
-                  v92 = [(SFMapCardSection *)self location];
-                  v91 = [(SFMapCardSection *)v5 location];
-                  if ((v92 != 0) == (v91 == 0))
+                  location = [(SFMapCardSection *)self location];
+                  location2 = [(SFMapCardSection *)v5 location];
+                  if ((location != 0) == (location2 == 0))
                   {
                     v12 = 0;
                     v115 = 0uLL;
@@ -301,14 +301,14 @@
 
                   else
                   {
-                    v47 = [(SFMapCardSection *)self location];
-                    LODWORD(v122[2]) = v47 != 0;
-                    v88 = v47;
-                    if (!v47 || (-[SFMapCardSection location](self, "location"), v48 = objc_claimAutoreleasedReturnValue(), -[SFMapCardSection location](v5, "location"), v84 = objc_claimAutoreleasedReturnValue(), v85 = v48, [v48 isEqual:?]))
+                    location3 = [(SFMapCardSection *)self location];
+                    LODWORD(v122[2]) = location3 != 0;
+                    v88 = location3;
+                    if (!location3 || (-[SFMapCardSection location](self, "location"), v48 = objc_claimAutoreleasedReturnValue(), -[SFMapCardSection location](v5, "location"), v84 = objc_claimAutoreleasedReturnValue(), v85 = v48, [v48 isEqual:?]))
                     {
-                      v87 = [(SFMapCardSection *)self pinColor];
-                      v86 = [(SFMapCardSection *)v5 pinColor];
-                      if ((v87 != 0) == (v86 == 0))
+                      pinColor = [(SFMapCardSection *)self pinColor];
+                      pinColor2 = [(SFMapCardSection *)v5 pinColor];
+                      if ((pinColor != 0) == (pinColor2 == 0))
                       {
                         v13 = 0;
                         v122[0] = 0;
@@ -333,14 +333,14 @@
 
                       else
                       {
-                        v49 = [(SFMapCardSection *)self pinColor];
-                        HIDWORD(v122[1]) = v49 != 0;
-                        v83 = v49;
-                        if (!v49 || (-[SFMapCardSection pinColor](self, "pinColor"), v50 = objc_claimAutoreleasedReturnValue(), -[SFMapCardSection pinColor](v5, "pinColor"), v79 = objc_claimAutoreleasedReturnValue(), v80 = v50, [v50 isEqual:?]))
+                        pinColor3 = [(SFMapCardSection *)self pinColor];
+                        HIDWORD(v122[1]) = pinColor3 != 0;
+                        v83 = pinColor3;
+                        if (!pinColor3 || (-[SFMapCardSection pinColor](self, "pinColor"), v50 = objc_claimAutoreleasedReturnValue(), -[SFMapCardSection pinColor](v5, "pinColor"), v79 = objc_claimAutoreleasedReturnValue(), v80 = v50, [v50 isEqual:?]))
                         {
-                          v82 = [(SFMapCardSection *)self footnoteLabel];
-                          v81 = [(SFMapCardSection *)v5 footnoteLabel];
-                          if ((v82 != 0) == (v81 == 0))
+                          footnoteLabel = [(SFMapCardSection *)self footnoteLabel];
+                          footnoteLabel2 = [(SFMapCardSection *)v5 footnoteLabel];
+                          if ((footnoteLabel != 0) == (footnoteLabel2 == 0))
                           {
                             *(v122 + 4) = 0;
                             *&v115 = 0;
@@ -364,14 +364,14 @@
 
                           else
                           {
-                            v51 = [(SFMapCardSection *)self footnoteLabel];
-                            LODWORD(v122[1]) = v51 != 0;
-                            v78 = v51;
-                            if (!v51 || (-[SFMapCardSection footnoteLabel](self, "footnoteLabel"), v52 = objc_claimAutoreleasedReturnValue(), -[SFMapCardSection footnoteLabel](v5, "footnoteLabel"), v74 = objc_claimAutoreleasedReturnValue(), v75 = v52, [v52 isEqual:?]))
+                            footnoteLabel3 = [(SFMapCardSection *)self footnoteLabel];
+                            LODWORD(v122[1]) = footnoteLabel3 != 0;
+                            v78 = footnoteLabel3;
+                            if (!footnoteLabel3 || (-[SFMapCardSection footnoteLabel](self, "footnoteLabel"), v52 = objc_claimAutoreleasedReturnValue(), -[SFMapCardSection footnoteLabel](v5, "footnoteLabel"), v74 = objc_claimAutoreleasedReturnValue(), v75 = v52, [v52 isEqual:?]))
                             {
-                              v77 = [(SFMapCardSection *)self footnote];
-                              v76 = [(SFMapCardSection *)v5 footnote];
-                              if ((v77 != 0) == (v76 == 0))
+                              footnote = [(SFMapCardSection *)self footnote];
+                              footnote2 = [(SFMapCardSection *)v5 footnote];
+                              if ((footnote != 0) == (footnote2 == 0))
                               {
                                 v122[0] = 0;
                                 v14 = 0;
@@ -394,17 +394,17 @@
 
                               else
                               {
-                                v53 = [(SFMapCardSection *)self footnote];
-                                HIDWORD(v122[0]) = v53 != 0;
-                                v73 = v53;
-                                if (!v53 || (-[SFMapCardSection footnote](self, "footnote"), v54 = objc_claimAutoreleasedReturnValue(), -[SFMapCardSection footnote](v5, "footnote"), v71 = objc_claimAutoreleasedReturnValue(), v72 = v54, [v54 isEqual:?]))
+                                footnote3 = [(SFMapCardSection *)self footnote];
+                                HIDWORD(v122[0]) = footnote3 != 0;
+                                v73 = footnote3;
+                                if (!footnote3 || (-[SFMapCardSection footnote](self, "footnote"), v54 = objc_claimAutoreleasedReturnValue(), -[SFMapCardSection footnote](v5, "footnote"), v71 = objc_claimAutoreleasedReturnValue(), v72 = v54, [v54 isEqual:?]))
                                 {
-                                  v55 = [(SFMapCardSection *)self interactive];
-                                  if (v55 == [(SFMapCardSection *)v5 interactive]&& (v56 = [(SFMapCardSection *)self sizeFormat], v56 == [(SFMapCardSection *)v5 sizeFormat]))
+                                  interactive = [(SFMapCardSection *)self interactive];
+                                  if (interactive == [(SFMapCardSection *)v5 interactive]&& (v56 = [(SFMapCardSection *)self sizeFormat], v56 == [(SFMapCardSection *)v5 sizeFormat]))
                                   {
-                                    v70 = [(SFMapCardSection *)self boundingMapRegion];
-                                    v69 = [(SFMapCardSection *)v5 boundingMapRegion];
-                                    if ((v70 != 0) == (v69 == 0))
+                                    boundingMapRegion = [(SFMapCardSection *)self boundingMapRegion];
+                                    boundingMapRegion2 = [(SFMapCardSection *)v5 boundingMapRegion];
+                                    if ((boundingMapRegion != 0) == (boundingMapRegion2 == 0))
                                     {
                                       v15 = 0;
                                       LODWORD(v122[0]) = 0;
@@ -427,17 +427,17 @@
 
                                     else
                                     {
-                                      v57 = [(SFMapCardSection *)self boundingMapRegion];
-                                      LODWORD(v122[0]) = v57 != 0;
-                                      v68 = v57;
-                                      if (!v57 || (-[SFMapCardSection boundingMapRegion](self, "boundingMapRegion"), v58 = objc_claimAutoreleasedReturnValue(), -[SFMapCardSection boundingMapRegion](v5, "boundingMapRegion"), v66 = objc_claimAutoreleasedReturnValue(), v67 = v58, [v58 isEqual:?]))
+                                      boundingMapRegion3 = [(SFMapCardSection *)self boundingMapRegion];
+                                      LODWORD(v122[0]) = boundingMapRegion3 != 0;
+                                      v68 = boundingMapRegion3;
+                                      if (!boundingMapRegion3 || (-[SFMapCardSection boundingMapRegion](self, "boundingMapRegion"), v58 = objc_claimAutoreleasedReturnValue(), -[SFMapCardSection boundingMapRegion](v5, "boundingMapRegion"), v66 = objc_claimAutoreleasedReturnValue(), v67 = v58, [v58 isEqual:?]))
                                       {
-                                        v59 = [(SFMapCardSection *)self pinBehavior];
-                                        if (v59 == [(SFMapCardSection *)v5 pinBehavior])
+                                        pinBehavior = [(SFMapCardSection *)self pinBehavior];
+                                        if (pinBehavior == [(SFMapCardSection *)v5 pinBehavior])
                                         {
-                                          v65 = [(SFMapCardSection *)self pins];
-                                          v64 = [(SFMapCardSection *)v5 pins];
-                                          if ((v65 != 0) == (v64 == 0))
+                                          pins = [(SFMapCardSection *)self pins];
+                                          pins2 = [(SFMapCardSection *)v5 pins];
+                                          if ((pins != 0) == (pins2 == 0))
                                           {
                                             v17 = 0;
                                             v18 = 0;
@@ -459,14 +459,14 @@
 
                                           else
                                           {
-                                            v63 = [(SFMapCardSection *)self pins];
-                                            if (v63)
+                                            pins3 = [(SFMapCardSection *)self pins];
+                                            if (pins3)
                                             {
-                                              v60 = [(SFMapCardSection *)self pins];
-                                              v61 = [(SFMapCardSection *)v5 pins];
-                                              v62 = v60;
-                                              v19 = [v60 isEqual:v61];
-                                              v6 = v61;
+                                              pins4 = [(SFMapCardSection *)self pins];
+                                              pins5 = [(SFMapCardSection *)v5 pins];
+                                              v62 = pins4;
+                                              v19 = [pins4 isEqual:pins5];
+                                              v6 = pins5;
                                               v18 = 1;
                                               v117[2] = 0x100000001;
                                               v117[0] = 0x100000001;
@@ -486,7 +486,7 @@
 
                                             else
                                             {
-                                              v63 = 0;
+                                              pins3 = 0;
                                               v18 = 0;
                                               v117[2] = 0x100000001;
                                               v117[0] = 0x100000001;
@@ -786,7 +786,7 @@
 LABEL_16:
   if (v18)
   {
-    v113 = v4;
+    v113 = equalCopy;
     v23 = v19;
     v24 = v10;
     v25 = v13;
@@ -808,7 +808,7 @@ LABEL_16:
     v13 = v25;
     v10 = v24;
     v19 = v23;
-    v4 = v113;
+    equalCopy = v113;
     if (!v33)
     {
       goto LABEL_18;
@@ -984,60 +984,60 @@ LABEL_75:
   return v19;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v28.receiver = self;
   v28.super_class = SFMapCardSection;
-  v4 = [(SFCardSection *)&v28 copyWithZone:a3];
-  v5 = [(SFCardSection *)self punchoutOptions];
-  v6 = [v5 copy];
+  v4 = [(SFCardSection *)&v28 copyWithZone:zone];
+  punchoutOptions = [(SFCardSection *)self punchoutOptions];
+  v6 = [punchoutOptions copy];
   [v4 setPunchoutOptions:v6];
 
-  v7 = [(SFCardSection *)self punchoutPickerTitle];
-  v8 = [v7 copy];
+  punchoutPickerTitle = [(SFCardSection *)self punchoutPickerTitle];
+  v8 = [punchoutPickerTitle copy];
   [v4 setPunchoutPickerTitle:v8];
 
-  v9 = [(SFCardSection *)self punchoutPickerDismissText];
-  v10 = [v9 copy];
+  punchoutPickerDismissText = [(SFCardSection *)self punchoutPickerDismissText];
+  v10 = [punchoutPickerDismissText copy];
   [v4 setPunchoutPickerDismissText:v10];
 
   [v4 setCanBeHidden:{-[SFCardSection canBeHidden](self, "canBeHidden")}];
   [v4 setHasTopPadding:{-[SFCardSection hasTopPadding](self, "hasTopPadding")}];
   [v4 setHasBottomPadding:{-[SFCardSection hasBottomPadding](self, "hasBottomPadding")}];
-  v11 = [(SFMapCardSection *)self type];
-  v12 = [v11 copy];
+  type = [(SFMapCardSection *)self type];
+  v12 = [type copy];
   [v4 setType:v12];
 
   [v4 setSeparatorStyle:{-[SFCardSection separatorStyle](self, "separatorStyle")}];
-  v13 = [(SFCardSection *)self backgroundColor];
-  v14 = [v13 copy];
+  backgroundColor = [(SFCardSection *)self backgroundColor];
+  v14 = [backgroundColor copy];
   [v4 setBackgroundColor:v14];
 
-  v15 = [(SFMapCardSection *)self location];
-  v16 = [v15 copy];
+  location = [(SFMapCardSection *)self location];
+  v16 = [location copy];
   [v4 setLocation:v16];
 
-  v17 = [(SFMapCardSection *)self pinColor];
-  v18 = [v17 copy];
+  pinColor = [(SFMapCardSection *)self pinColor];
+  v18 = [pinColor copy];
   [v4 setPinColor:v18];
 
-  v19 = [(SFMapCardSection *)self footnoteLabel];
-  v20 = [v19 copy];
+  footnoteLabel = [(SFMapCardSection *)self footnoteLabel];
+  v20 = [footnoteLabel copy];
   [v4 setFootnoteLabel:v20];
 
-  v21 = [(SFMapCardSection *)self footnote];
-  v22 = [v21 copy];
+  footnote = [(SFMapCardSection *)self footnote];
+  v22 = [footnote copy];
   [v4 setFootnote:v22];
 
   [v4 setInteractive:{-[SFMapCardSection interactive](self, "interactive")}];
   [v4 setSizeFormat:-[SFMapCardSection sizeFormat](self, "sizeFormat")];
-  v23 = [(SFMapCardSection *)self boundingMapRegion];
-  v24 = [v23 copy];
+  boundingMapRegion = [(SFMapCardSection *)self boundingMapRegion];
+  v24 = [boundingMapRegion copy];
   [v4 setBoundingMapRegion:v24];
 
   [v4 setPinBehavior:{-[SFMapCardSection pinBehavior](self, "pinBehavior")}];
-  v25 = [(SFMapCardSection *)self pins];
-  v26 = [v25 copy];
+  pins = [(SFMapCardSection *)self pins];
+  v26 = [pins copy];
   [v4 setPins:v26];
 
   return v4;
@@ -1046,176 +1046,176 @@ LABEL_75:
 - (NSData)jsonData
 {
   v2 = [[_SFPBMapCardSection alloc] initWithFacade:self];
-  v3 = [(_SFPBMapCardSection *)v2 jsonData];
+  jsonData = [(_SFPBMapCardSection *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBMapCardSection alloc] initWithFacade:self];
-  v3 = [(_SFPBMapCardSection *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBMapCardSection *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = SFMapCardSection;
-  [(SFCardSection *)&v3 encodeWithCoder:a3];
+  [(SFCardSection *)&v3 encodeWithCoder:coder];
 }
 
-- (SFMapCardSection)initWithCoder:(id)a3
+- (SFMapCardSection)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SFCardSection *)self init];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v7 = [[_SFPBCardSection alloc] initWithData:v6];
   v8 = [[SFCardSection alloc] initWithProtobuf:v7];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [(SFCardSection *)v8 punchoutOptions];
-    [(SFCardSection *)v5 setPunchoutOptions:v9];
+    punchoutOptions = [(SFCardSection *)v8 punchoutOptions];
+    [(SFCardSection *)v5 setPunchoutOptions:punchoutOptions];
 
-    v10 = [(SFCardSection *)v8 punchoutPickerTitle];
-    [(SFCardSection *)v5 setPunchoutPickerTitle:v10];
+    punchoutPickerTitle = [(SFCardSection *)v8 punchoutPickerTitle];
+    [(SFCardSection *)v5 setPunchoutPickerTitle:punchoutPickerTitle];
 
-    v11 = [(SFCardSection *)v8 punchoutPickerDismissText];
-    [(SFCardSection *)v5 setPunchoutPickerDismissText:v11];
+    punchoutPickerDismissText = [(SFCardSection *)v8 punchoutPickerDismissText];
+    [(SFCardSection *)v5 setPunchoutPickerDismissText:punchoutPickerDismissText];
 
     [(SFCardSection *)v5 setCanBeHidden:[(SFCardSection *)v8 canBeHidden]];
     [(SFCardSection *)v5 setHasTopPadding:[(SFCardSection *)v8 hasTopPadding]];
     [(SFCardSection *)v5 setHasBottomPadding:[(SFCardSection *)v8 hasBottomPadding]];
-    v12 = [(SFCardSection *)v8 type];
-    [(SFMapCardSection *)v5 setType:v12];
+    type = [(SFCardSection *)v8 type];
+    [(SFMapCardSection *)v5 setType:type];
 
     [(SFCardSection *)v5 setSeparatorStyle:[(SFCardSection *)v8 separatorStyle]];
-    v13 = [(SFCardSection *)v8 backgroundColor];
-    [(SFCardSection *)v5 setBackgroundColor:v13];
+    backgroundColor = [(SFCardSection *)v8 backgroundColor];
+    [(SFCardSection *)v5 setBackgroundColor:backgroundColor];
 
-    v14 = [(SFCardSection *)v8 location];
-    [(SFMapCardSection *)v5 setLocation:v14];
+    location = [(SFCardSection *)v8 location];
+    [(SFMapCardSection *)v5 setLocation:location];
 
-    v15 = [(SFCardSection *)v8 pinColor];
-    [(SFMapCardSection *)v5 setPinColor:v15];
+    pinColor = [(SFCardSection *)v8 pinColor];
+    [(SFMapCardSection *)v5 setPinColor:pinColor];
 
-    v16 = [(SFCardSection *)v8 footnoteLabel];
-    [(SFMapCardSection *)v5 setFootnoteLabel:v16];
+    footnoteLabel = [(SFCardSection *)v8 footnoteLabel];
+    [(SFMapCardSection *)v5 setFootnoteLabel:footnoteLabel];
 
-    v17 = [(SFCardSection *)v8 footnote];
-    [(SFMapCardSection *)v5 setFootnote:v17];
+    footnote = [(SFCardSection *)v8 footnote];
+    [(SFMapCardSection *)v5 setFootnote:footnote];
 
     [(SFMapCardSection *)v5 setInteractive:[(SFCardSection *)v8 interactive]];
     [(SFMapCardSection *)v5 setSizeFormat:[(SFCardSection *)v8 sizeFormat]];
-    v18 = [(SFCardSection *)v8 boundingMapRegion];
-    [(SFMapCardSection *)v5 setBoundingMapRegion:v18];
+    boundingMapRegion = [(SFCardSection *)v8 boundingMapRegion];
+    [(SFMapCardSection *)v5 setBoundingMapRegion:boundingMapRegion];
 
     [(SFMapCardSection *)v5 setPinBehavior:[(SFCardSection *)v8 pinBehavior]];
-    v19 = [(SFCardSection *)v8 pins];
-    [(SFMapCardSection *)v5 setPins:v19];
+    pins = [(SFCardSection *)v8 pins];
+    [(SFMapCardSection *)v5 setPins:pins];
 
-    v20 = [(SFCardSection *)v8 nextCard];
-    [(SFCardSection *)v5 setNextCard:v20];
+    nextCard = [(SFCardSection *)v8 nextCard];
+    [(SFCardSection *)v5 setNextCard:nextCard];
 
-    v21 = [(SFCardSection *)v8 commands];
-    [(SFCardSection *)v5 setCommands:v21];
+    commands = [(SFCardSection *)v8 commands];
+    [(SFCardSection *)v5 setCommands:commands];
 
-    v22 = [(SFCardSection *)v8 parameterKeyPaths];
-    [(SFCardSection *)v5 setParameterKeyPaths:v22];
+    parameterKeyPaths = [(SFCardSection *)v8 parameterKeyPaths];
+    [(SFCardSection *)v5 setParameterKeyPaths:parameterKeyPaths];
 
-    v23 = [(SFCardSection *)v8 cardSectionId];
-    [(SFCardSection *)v5 setCardSectionId:v23];
+    cardSectionId = [(SFCardSection *)v8 cardSectionId];
+    [(SFCardSection *)v5 setCardSectionId:cardSectionId];
 
-    v24 = [(SFCardSection *)v8 resultIdentifier];
-    [(SFCardSection *)v5 setResultIdentifier:v24];
+    resultIdentifier = [(SFCardSection *)v8 resultIdentifier];
+    [(SFCardSection *)v5 setResultIdentifier:resultIdentifier];
 
-    v25 = [(SFCardSection *)v8 userReportRequest];
-    [(SFCardSection *)v5 setUserReportRequest:v25];
+    userReportRequest = [(SFCardSection *)v8 userReportRequest];
+    [(SFCardSection *)v5 setUserReportRequest:userReportRequest];
 
-    v26 = [(SFCardSection *)v8 command];
-    [(SFCardSection *)v5 setCommand:v26];
+    command = [(SFCardSection *)v8 command];
+    [(SFCardSection *)v5 setCommand:command];
 
-    v27 = [(SFCardSection *)v8 previewCommand];
-    [(SFCardSection *)v5 setPreviewCommand:v27];
+    previewCommand = [(SFCardSection *)v8 previewCommand];
+    [(SFCardSection *)v5 setPreviewCommand:previewCommand];
 
-    v28 = [(SFCardSection *)v8 previewButtonItems];
-    [(SFCardSection *)v5 setPreviewButtonItems:v28];
+    previewButtonItems = [(SFCardSection *)v8 previewButtonItems];
+    [(SFCardSection *)v5 setPreviewButtonItems:previewButtonItems];
 
-    v29 = [(SFCardSection *)v8 cardSectionDetail];
-    [(SFCardSection *)v5 setCardSectionDetail:v29];
+    cardSectionDetail = [(SFCardSection *)v8 cardSectionDetail];
+    [(SFCardSection *)v5 setCardSectionDetail:cardSectionDetail];
 
-    v30 = [(SFCardSection *)v8 previewButtonItemsTitle];
-    [(SFCardSection *)v5 setPreviewButtonItemsTitle:v30];
+    previewButtonItemsTitle = [(SFCardSection *)v8 previewButtonItemsTitle];
+    [(SFCardSection *)v5 setPreviewButtonItemsTitle:previewButtonItemsTitle];
 
-    v31 = [(SFCardSection *)v8 backgroundColor];
-    [(SFCardSection *)v5 setBackgroundColor:v31];
+    backgroundColor2 = [(SFCardSection *)v8 backgroundColor];
+    [(SFCardSection *)v5 setBackgroundColor:backgroundColor2];
 
     [(SFCardSection *)v5 setShouldHideInAmbientMode:[(SFCardSection *)v8 shouldHideInAmbientMode]];
-    v32 = [(SFCardSection *)v8 leadingSwipeButtonItems];
-    [(SFCardSection *)v5 setLeadingSwipeButtonItems:v32];
+    leadingSwipeButtonItems = [(SFCardSection *)v8 leadingSwipeButtonItems];
+    [(SFCardSection *)v5 setLeadingSwipeButtonItems:leadingSwipeButtonItems];
 
-    v33 = [(SFCardSection *)v8 trailingSwipeButtonItems];
-    [(SFCardSection *)v5 setTrailingSwipeButtonItems:v33];
+    trailingSwipeButtonItems = [(SFCardSection *)v8 trailingSwipeButtonItems];
+    [(SFCardSection *)v5 setTrailingSwipeButtonItems:trailingSwipeButtonItems];
 
-    v34 = [(SFCardSection *)v8 punchoutOptions];
-    [(SFCardSection *)v5 setPunchoutOptions:v34];
+    punchoutOptions2 = [(SFCardSection *)v8 punchoutOptions];
+    [(SFCardSection *)v5 setPunchoutOptions:punchoutOptions2];
 
-    v35 = [(SFCardSection *)v8 punchoutPickerTitle];
-    [(SFCardSection *)v5 setPunchoutPickerTitle:v35];
+    punchoutPickerTitle2 = [(SFCardSection *)v8 punchoutPickerTitle];
+    [(SFCardSection *)v5 setPunchoutPickerTitle:punchoutPickerTitle2];
 
-    v36 = [(SFCardSection *)v8 punchoutPickerDismissText];
-    [(SFCardSection *)v5 setPunchoutPickerDismissText:v36];
+    punchoutPickerDismissText2 = [(SFCardSection *)v8 punchoutPickerDismissText];
+    [(SFCardSection *)v5 setPunchoutPickerDismissText:punchoutPickerDismissText2];
 
     [(SFCardSection *)v5 setCanBeHidden:[(SFCardSection *)v8 canBeHidden]];
     [(SFCardSection *)v5 setHasTopPadding:[(SFCardSection *)v8 hasTopPadding]];
     [(SFCardSection *)v5 setHasBottomPadding:[(SFCardSection *)v8 hasBottomPadding]];
     [(SFCardSection *)v5 setSeparatorStyle:[(SFCardSection *)v8 separatorStyle]];
-    v37 = [(SFCardSection *)v8 referencedCommands];
-    [(SFCardSection *)v5 setReferencedCommands:v37];
+    referencedCommands = [(SFCardSection *)v8 referencedCommands];
+    [(SFCardSection *)v5 setReferencedCommands:referencedCommands];
 
     [(SFCardSection *)v5 setForceEnable3DTouch:[(SFCardSection *)v8 forceEnable3DTouch]];
     [(SFCardSection *)v5 setShouldShowInSmartDialog:[(SFCardSection *)v8 shouldShowInSmartDialog]];
-    v38 = [(SFCardSection *)v8 appEntityAnnotation];
-    [(SFCardSection *)v5 setAppEntityAnnotation:v38];
+    appEntityAnnotation = [(SFCardSection *)v8 appEntityAnnotation];
+    [(SFCardSection *)v5 setAppEntityAnnotation:appEntityAnnotation];
 
-    v39 = [(SFCardSection *)v8 emphasisSubjectId];
-    [(SFCardSection *)v5 setEmphasisSubjectId:v39];
+    emphasisSubjectId = [(SFCardSection *)v8 emphasisSubjectId];
+    [(SFCardSection *)v5 setEmphasisSubjectId:emphasisSubjectId];
 
     [(SFCardSection *)v5 setIncreasedContrastMode:[(SFCardSection *)v8 increasedContrastMode]];
-    v40 = [(SFCardSection *)v8 secondaryCommand];
-    [(SFCardSection *)v5 setSecondaryCommand:v40];
+    secondaryCommand = [(SFCardSection *)v8 secondaryCommand];
+    [(SFCardSection *)v5 setSecondaryCommand:secondaryCommand];
 
     [(SFCardSection *)v5 setRequiredLevelOfDetail:[(SFCardSection *)v8 requiredLevelOfDetail]];
-    v41 = [(SFCardSection *)v8 racFeedbackSubfeatureId];
-    [(SFCardSection *)v5 setRacFeedbackSubfeatureId:v41];
+    racFeedbackSubfeatureId = [(SFCardSection *)v8 racFeedbackSubfeatureId];
+    [(SFCardSection *)v5 setRacFeedbackSubfeatureId:racFeedbackSubfeatureId];
 
-    v42 = [(SFCardSection *)v8 racFeedbackLoggingContent];
-    [(SFCardSection *)v5 setRacFeedbackLoggingContent:v42];
+    racFeedbackLoggingContent = [(SFCardSection *)v8 racFeedbackLoggingContent];
+    [(SFCardSection *)v5 setRacFeedbackLoggingContent:racFeedbackLoggingContent];
 
-    v43 = [(SFCardSection *)v8 copyableItems];
-    [(SFCardSection *)v5 setCopyableItems:v43];
+    copyableItems = [(SFCardSection *)v8 copyableItems];
+    [(SFCardSection *)v5 setCopyableItems:copyableItems];
 
-    v44 = [(SFCardSection *)v8 applicationBundleIdentifier];
-    [(SFCardSection *)v5 setApplicationBundleIdentifier:v44];
+    applicationBundleIdentifier = [(SFCardSection *)v8 applicationBundleIdentifier];
+    [(SFCardSection *)v5 setApplicationBundleIdentifier:applicationBundleIdentifier];
   }
 
   return v5;
 }
 
-- (SFMapCardSection)initWithProtobuf:(id)a3
+- (SFMapCardSection)initWithProtobuf:(id)protobuf
 {
   v62 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  protobufCopy = protobuf;
   v59.receiver = self;
   v59.super_class = SFMapCardSection;
   v5 = [(SFCardSection *)&v59 init];
   if (v5)
   {
-    v6 = [v4 punchoutOptions];
-    if (v6)
+    punchoutOptions = [protobufCopy punchoutOptions];
+    if (punchoutOptions)
     {
       v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -1229,8 +1229,8 @@ LABEL_75:
     v58 = 0u;
     v55 = 0u;
     v56 = 0u;
-    v8 = [v4 punchoutOptions];
-    v9 = [v8 countByEnumeratingWithState:&v55 objects:v61 count:16];
+    punchoutOptions2 = [protobufCopy punchoutOptions];
+    v9 = [punchoutOptions2 countByEnumeratingWithState:&v55 objects:v61 count:16];
     if (v9)
     {
       v10 = v9;
@@ -1241,7 +1241,7 @@ LABEL_75:
         {
           if (*v56 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(punchoutOptions2);
           }
 
           v13 = [[SFPunchout alloc] initWithProtobuf:*(*(&v55 + 1) + 8 * i)];
@@ -1251,130 +1251,130 @@ LABEL_75:
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v55 objects:v61 count:16];
+        v10 = [punchoutOptions2 countByEnumeratingWithState:&v55 objects:v61 count:16];
       }
 
       while (v10);
     }
 
     [(SFCardSection *)v5 setPunchoutOptions:v7];
-    v14 = [v4 punchoutPickerTitle];
+    punchoutPickerTitle = [protobufCopy punchoutPickerTitle];
 
-    if (v14)
+    if (punchoutPickerTitle)
     {
-      v15 = [v4 punchoutPickerTitle];
-      [(SFCardSection *)v5 setPunchoutPickerTitle:v15];
+      punchoutPickerTitle2 = [protobufCopy punchoutPickerTitle];
+      [(SFCardSection *)v5 setPunchoutPickerTitle:punchoutPickerTitle2];
     }
 
-    v16 = [v4 punchoutPickerDismissText];
+    punchoutPickerDismissText = [protobufCopy punchoutPickerDismissText];
 
-    if (v16)
+    if (punchoutPickerDismissText)
     {
-      v17 = [v4 punchoutPickerDismissText];
-      [(SFCardSection *)v5 setPunchoutPickerDismissText:v17];
+      punchoutPickerDismissText2 = [protobufCopy punchoutPickerDismissText];
+      [(SFCardSection *)v5 setPunchoutPickerDismissText:punchoutPickerDismissText2];
     }
 
-    if ([v4 canBeHidden])
+    if ([protobufCopy canBeHidden])
     {
-      -[SFCardSection setCanBeHidden:](v5, "setCanBeHidden:", [v4 canBeHidden]);
+      -[SFCardSection setCanBeHidden:](v5, "setCanBeHidden:", [protobufCopy canBeHidden]);
     }
 
-    if ([v4 hasTopPadding])
+    if ([protobufCopy hasTopPadding])
     {
-      -[SFCardSection setHasTopPadding:](v5, "setHasTopPadding:", [v4 hasTopPadding]);
+      -[SFCardSection setHasTopPadding:](v5, "setHasTopPadding:", [protobufCopy hasTopPadding]);
     }
 
-    if ([v4 hasBottomPadding])
+    if ([protobufCopy hasBottomPadding])
     {
-      -[SFCardSection setHasBottomPadding:](v5, "setHasBottomPadding:", [v4 hasBottomPadding]);
+      -[SFCardSection setHasBottomPadding:](v5, "setHasBottomPadding:", [protobufCopy hasBottomPadding]);
     }
 
-    v18 = [v4 type];
+    type = [protobufCopy type];
 
-    if (v18)
+    if (type)
     {
-      v19 = [v4 type];
-      [(SFMapCardSection *)v5 setType:v19];
+      type2 = [protobufCopy type];
+      [(SFMapCardSection *)v5 setType:type2];
     }
 
-    if ([v4 separatorStyle])
+    if ([protobufCopy separatorStyle])
     {
-      -[SFCardSection setSeparatorStyle:](v5, "setSeparatorStyle:", [v4 separatorStyle]);
+      -[SFCardSection setSeparatorStyle:](v5, "setSeparatorStyle:", [protobufCopy separatorStyle]);
     }
 
-    v20 = [v4 backgroundColor];
+    backgroundColor = [protobufCopy backgroundColor];
 
-    if (v20)
+    if (backgroundColor)
     {
       v21 = [SFColor alloc];
-      v22 = [v4 backgroundColor];
-      v23 = [(SFColor *)v21 initWithProtobuf:v22];
+      backgroundColor2 = [protobufCopy backgroundColor];
+      v23 = [(SFColor *)v21 initWithProtobuf:backgroundColor2];
       [(SFCardSection *)v5 setBackgroundColor:v23];
     }
 
-    v24 = [v4 location];
+    location = [protobufCopy location];
 
-    if (v24)
+    if (location)
     {
       v25 = [SFLatLng alloc];
-      v26 = [v4 location];
-      v27 = [(SFLatLng *)v25 initWithProtobuf:v26];
+      location2 = [protobufCopy location];
+      v27 = [(SFLatLng *)v25 initWithProtobuf:location2];
       [(SFMapCardSection *)v5 setLocation:v27];
     }
 
-    v28 = [v4 pinColor];
+    pinColor = [protobufCopy pinColor];
 
-    if (v28)
+    if (pinColor)
     {
       v29 = [SFColor alloc];
-      v30 = [v4 pinColor];
-      v31 = [(SFColor *)v29 initWithProtobuf:v30];
+      pinColor2 = [protobufCopy pinColor];
+      v31 = [(SFColor *)v29 initWithProtobuf:pinColor2];
       [(SFMapCardSection *)v5 setPinColor:v31];
     }
 
-    v32 = [v4 footnoteLabel];
+    footnoteLabel = [protobufCopy footnoteLabel];
 
-    if (v32)
+    if (footnoteLabel)
     {
-      v33 = [v4 footnoteLabel];
-      [(SFMapCardSection *)v5 setFootnoteLabel:v33];
+      footnoteLabel2 = [protobufCopy footnoteLabel];
+      [(SFMapCardSection *)v5 setFootnoteLabel:footnoteLabel2];
     }
 
-    v34 = [v4 footnote];
+    footnote = [protobufCopy footnote];
 
-    if (v34)
+    if (footnote)
     {
-      v35 = [v4 footnote];
-      [(SFMapCardSection *)v5 setFootnote:v35];
+      footnote2 = [protobufCopy footnote];
+      [(SFMapCardSection *)v5 setFootnote:footnote2];
     }
 
-    if ([v4 interactive])
+    if ([protobufCopy interactive])
     {
-      -[SFMapCardSection setInteractive:](v5, "setInteractive:", [v4 interactive]);
+      -[SFMapCardSection setInteractive:](v5, "setInteractive:", [protobufCopy interactive]);
     }
 
-    if ([v4 sizeFormat])
+    if ([protobufCopy sizeFormat])
     {
-      -[SFMapCardSection setSizeFormat:](v5, "setSizeFormat:", [v4 sizeFormat]);
+      -[SFMapCardSection setSizeFormat:](v5, "setSizeFormat:", [protobufCopy sizeFormat]);
     }
 
-    v36 = [v4 boundingMapRegion];
+    boundingMapRegion = [protobufCopy boundingMapRegion];
 
-    if (v36)
+    if (boundingMapRegion)
     {
       v37 = [SFMapRegion alloc];
-      v38 = [v4 boundingMapRegion];
-      v39 = [(SFMapRegion *)v37 initWithProtobuf:v38];
+      boundingMapRegion2 = [protobufCopy boundingMapRegion];
+      v39 = [(SFMapRegion *)v37 initWithProtobuf:boundingMapRegion2];
       [(SFMapCardSection *)v5 setBoundingMapRegion:v39];
     }
 
-    if ([v4 pinBehavior])
+    if ([protobufCopy pinBehavior])
     {
-      -[SFMapCardSection setPinBehavior:](v5, "setPinBehavior:", [v4 pinBehavior]);
+      -[SFMapCardSection setPinBehavior:](v5, "setPinBehavior:", [protobufCopy pinBehavior]);
     }
 
-    v40 = [v4 pins];
-    if (v40)
+    pins = [protobufCopy pins];
+    if (pins)
     {
       v41 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -1388,8 +1388,8 @@ LABEL_75:
     v54 = 0u;
     v51 = 0u;
     v52 = 0u;
-    v42 = [v4 pins];
-    v43 = [v42 countByEnumeratingWithState:&v51 objects:v60 count:16];
+    pins2 = [protobufCopy pins];
+    v43 = [pins2 countByEnumeratingWithState:&v51 objects:v60 count:16];
     if (v43)
     {
       v44 = v43;
@@ -1400,7 +1400,7 @@ LABEL_75:
         {
           if (*v52 != v45)
           {
-            objc_enumerationMutation(v42);
+            objc_enumerationMutation(pins2);
           }
 
           v47 = [[SFPin alloc] initWithProtobuf:*(*(&v51 + 1) + 8 * j)];
@@ -1410,7 +1410,7 @@ LABEL_75:
           }
         }
 
-        v44 = [v42 countByEnumeratingWithState:&v51 objects:v60 count:16];
+        v44 = [pins2 countByEnumeratingWithState:&v51 objects:v60 count:16];
       }
 
       while (v44);

@@ -1,28 +1,28 @@
 @interface CLSNotificationBannerViewController
-- (BOOL)windowPointInside:(CGPoint)a3 withEvent:(id)a4;
-- (CGPoint)_hiddenBannerPosition:(CGSize)a3;
-- (CGPoint)_visibleBannerCenterPosition:(CGSize)a3;
-- (double)bannerWidthForViewSize:(CGSize)a3;
+- (BOOL)windowPointInside:(CGPoint)inside withEvent:(id)event;
+- (CGPoint)_hiddenBannerPosition:(CGSize)position;
+- (CGPoint)_visibleBannerCenterPosition:(CGSize)position;
+- (double)bannerWidthForViewSize:(CGSize)size;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)addBannerView:(id)a3;
+- (void)addBannerView:(id)view;
 - (void)addConstraintsForBannerView;
-- (void)handleWindowPan:(id)a3;
+- (void)handleWindowPan:(id)pan;
 - (void)showCurrentBanner;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation CLSNotificationBannerViewController
 
-- (BOOL)windowPointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)windowPointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   v31 = *MEMORY[0x277D85DE8];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v6 = objc_msgSend_view(self, a2, a4, 0);
+  v6 = objc_msgSend_view(self, a2, event, 0);
   v9 = objc_msgSend_subviews(v6, v7, v8);
 
   v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(v9, v10, &v26, v30, 16);
@@ -70,13 +70,13 @@ LABEL_12:
   return v11;
 }
 
-- (void)handleWindowPan:(id)a3
+- (void)handleWindowPan:(id)pan
 {
-  v13 = a3;
+  panCopy = pan;
   if (objc_msgSend_bannerVisible(self, v4, v5))
   {
     v8 = objc_msgSend_view(self, v6, v7);
-    objc_msgSend_translationInView_(v13, v9, v8);
+    objc_msgSend_translationInView_(panCopy, v9, v8);
     v11 = v10;
 
     if (v11 < 0.0)
@@ -86,9 +86,9 @@ LABEL_12:
   }
 }
 
-- (void)addBannerView:(id)a3
+- (void)addBannerView:(id)view
 {
-  v24 = a3;
+  viewCopy = view;
   v6 = objc_msgSend_bannerView(self, v4, v5);
 
   if (v6)
@@ -101,7 +101,7 @@ LABEL_12:
     objc_msgSend_setBannerView_(self, v14, 0);
   }
 
-  objc_msgSend_setBannerView_(self, v7, v24);
+  objc_msgSend_setBannerView_(self, v7, viewCopy);
   v17 = objc_msgSend_view(self, v15, v16);
   v20 = objc_msgSend_bannerView(self, v18, v19);
   objc_msgSend_addSubview_(v17, v21, v20);
@@ -202,14 +202,14 @@ LABEL_12:
   return v23;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v16.receiver = self;
   v16.super_class = CLSNotificationBannerViewController;
-  [(CLSNotificationBannerViewController *)&v16 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(CLSNotificationBannerViewController *)&v16 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v10 = objc_msgSend_bannerView(self, v8, v9);
   v13 = objc_msgSend_superview(v10, v11, v12);
 
@@ -222,13 +222,13 @@ LABEL_12:
     v15[4] = self;
     *&v15[5] = width;
     *&v15[6] = height;
-    objc_msgSend_animateAlongsideTransition_completion_(v7, v14, v15, 0);
+    objc_msgSend_animateAlongsideTransition_completion_(coordinatorCopy, v14, v15, 0);
   }
 }
 
-- (double)bannerWidthForViewSize:(CGSize)a3
+- (double)bannerWidthForViewSize:(CGSize)size
 {
-  width = a3.width;
+  width = size.width;
   if (qword_27ED78360 != -1)
   {
     dispatch_once(&qword_27ED78360, &unk_28563EF98);
@@ -326,9 +326,9 @@ LABEL_12:
   v78 = *MEMORY[0x277D85DE8];
 }
 
-- (CGPoint)_hiddenBannerPosition:(CGSize)a3
+- (CGPoint)_hiddenBannerPosition:(CGSize)position
 {
-  v4 = objc_msgSend_view(self, a2, v3, a3.width, a3.height);
+  v4 = objc_msgSend_view(self, a2, v3, position.width, position.height);
   objc_msgSend_bounds(v4, v5, v6);
   v8 = v7;
   v10 = v9;
@@ -363,9 +363,9 @@ LABEL_12:
   return result;
 }
 
-- (CGPoint)_visibleBannerCenterPosition:(CGSize)a3
+- (CGPoint)_visibleBannerCenterPosition:(CGSize)position
 {
-  v4 = objc_msgSend_view(self, a2, v3, a3.width, a3.height);
+  v4 = objc_msgSend_view(self, a2, v3, position.width, position.height);
   objc_msgSend_bounds(v4, v5, v6);
   v8 = v7;
   v10 = v9;

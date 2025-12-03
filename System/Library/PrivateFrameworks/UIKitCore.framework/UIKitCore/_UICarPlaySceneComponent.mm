@@ -4,8 +4,8 @@
 - (UICarPlayApplicationSceneSettings)carPlaySceneSettings;
 - (UIScene)_scene;
 - (UITraitCollection)_traitOverrides;
-- (_UICarPlaySceneComponent)initWithScene:(id)a3;
-- (id)_settingsDiffActionsForScene:(id)a3;
+- (_UICarPlaySceneComponent)initWithScene:(id)scene;
+- (id)_settingsDiffActionsForScene:(id)scene;
 - (void)_invalidateTraitOverrides;
 @end
 
@@ -29,19 +29,19 @@
 
 - (BOOL)blackWallpaperModeEnabled
 {
-  v2 = [(_UICarPlaySceneComponent *)self carPlaySceneSettings];
-  v3 = [v2 blackWallpaperModeEnabled];
+  carPlaySceneSettings = [(_UICarPlaySceneComponent *)self carPlaySceneSettings];
+  blackWallpaperModeEnabled = [carPlaySceneSettings blackWallpaperModeEnabled];
 
-  return v3;
+  return blackWallpaperModeEnabled;
 }
 
 - (UICarPlayApplicationSceneSettings)carPlaySceneSettings
 {
   WeakRetained = objc_loadWeakRetained(&self->_scene);
-  v3 = [WeakRetained _FBSScene];
-  v4 = [v3 settings];
+  _FBSScene = [WeakRetained _FBSScene];
+  settings = [_FBSScene settings];
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = settings;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -60,22 +60,22 @@
   return v5;
 }
 
-- (_UICarPlaySceneComponent)initWithScene:(id)a3
+- (_UICarPlaySceneComponent)initWithScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v8.receiver = self;
   v8.super_class = _UICarPlaySceneComponent;
   v5 = [(_UICarPlaySceneComponent *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_scene, v4);
+    objc_storeWeak(&v5->_scene, sceneCopy);
   }
 
   return v6;
 }
 
-- (id)_settingsDiffActionsForScene:(id)a3
+- (id)_settingsDiffActionsForScene:(id)scene
 {
   v6[1] = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
@@ -97,10 +97,10 @@
 
 - (BOOL)disableFiveRowKeyboards
 {
-  v2 = [(_UICarPlaySceneComponent *)self carPlaySceneSettings];
-  v3 = [v2 disableFiveRowKeyboards];
+  carPlaySceneSettings = [(_UICarPlaySceneComponent *)self carPlaySceneSettings];
+  disableFiveRowKeyboards = [carPlaySceneSettings disableFiveRowKeyboards];
 
-  return v3;
+  return disableFiveRowKeyboards;
 }
 
 - (UIScene)_scene

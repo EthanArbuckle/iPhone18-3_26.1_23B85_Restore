@@ -1,16 +1,16 @@
 @interface AFSiriTaskmaster
-+ (id)taskmasterForMachServiceForAppWithBundleIdentifier:(id)a3;
-+ (id)taskmasterForMachServiceWithName:(id)a3;
-+ (id)taskmasterForUIApplicationWithBundleIdentifier:(id)a3;
-- (AFSiriTaskmaster)initWithTaskDeliverer:(id)a3;
++ (id)taskmasterForMachServiceForAppWithBundleIdentifier:(id)identifier;
++ (id)taskmasterForMachServiceWithName:(id)name;
++ (id)taskmasterForUIApplicationWithBundleIdentifier:(id)identifier;
+- (AFSiriTaskmaster)initWithTaskDeliverer:(id)deliverer;
 - (AFSiriTaskmasterDelegate)delegate;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (NSString)description;
-- (void)_handleFailureOfRequest:(id)a3 error:(id)a4 atTime:(unint64_t)a5;
+- (void)_handleFailureOfRequest:(id)request error:(id)error atTime:(unint64_t)time;
 - (void)dealloc;
-- (void)handleFailureOfRequest:(id)a3 error:(id)a4 atTime:(unint64_t)a5;
-- (void)handleSiriRequest:(id)a3 deliveryHandler:(id)a4 completionHandler:(id)a5;
-- (void)handleSiriTaskUsageResult:(id)a3 fromRequest:(id)a4;
+- (void)handleFailureOfRequest:(id)request error:(id)error atTime:(unint64_t)time;
+- (void)handleSiriRequest:(id)request deliveryHandler:(id)handler completionHandler:(id)completionHandler;
+- (void)handleSiriTaskUsageResult:(id)result fromRequest:(id)request;
 @end
 
 @implementation AFSiriTaskmaster
@@ -22,22 +22,22 @@
   return WeakRetained;
 }
 
-- (void)handleSiriTaskUsageResult:(id)a3 fromRequest:(id)a4
+- (void)handleSiriTaskUsageResult:(id)result fromRequest:(id)request
 {
   v18[1] = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E69C7960];
-  v7 = a4;
-  v8 = a3;
+  requestCopy = request;
+  resultCopy = result;
   v9 = objc_alloc_init(v6);
-  v10 = [v8 _originatingAceID];
-  [v9 setOriginalCommandId:v10];
+  _originatingAceID = [resultCopy _originatingAceID];
+  [v9 setOriginalCommandId:_originatingAceID];
 
-  v11 = [v7 requestName];
+  requestName = [requestCopy requestName];
 
-  v17 = v11;
-  v12 = [v8 _resultDescription];
+  v17 = requestName;
+  _resultDescription = [resultCopy _resultDescription];
 
-  v18[0] = v12;
+  v18[0] = _resultDescription;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:&v17 count:1];
   [v9 setOutcomes:v13];
 
@@ -52,17 +52,17 @@
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   queue = self->_queue;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __55__AFSiriTaskmaster_listener_shouldAcceptNewConnection___block_invoke;
   v9[3] = &unk_1E7349860;
-  v10 = v5;
-  v11 = self;
-  v7 = v5;
+  v10 = connectionCopy;
+  selfCopy = self;
+  v7 = connectionCopy;
   dispatch_async(queue, v9);
 
   return 1;
@@ -80,16 +80,16 @@ uint64_t __55__AFSiriTaskmaster_listener_shouldAcceptNewConnection___block_invok
   return [v4 resume];
 }
 
-- (void)handleSiriRequest:(id)a3 deliveryHandler:(id)a4 completionHandler:(id)a5
+- (void)handleSiriRequest:(id)request deliveryHandler:(id)handler completionHandler:(id)completionHandler
 {
   v33 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  requestCopy = request;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  if (!requestCopy)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"AFSiriTaskmaster.m" lineNumber:109 description:{@"Invalid parameter not satisfying: %@", @"request"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"AFSiriTaskmaster.m" lineNumber:109 description:{@"Invalid parameter not satisfying: %@", @"request"}];
   }
 
   v12 = +[AFAnalytics sharedAnalytics];
@@ -99,11 +99,11 @@ uint64_t __55__AFSiriTaskmaster_listener_shouldAcceptNewConnection___block_invok
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
   {
     v14 = v13;
-    v15 = MEMORY[0x193AFB7B0](v11);
+    v15 = MEMORY[0x193AFB7B0](completionHandlerCopy);
     *buf = 136315650;
     v28 = "[AFSiriTaskmaster handleSiriRequest:deliveryHandler:completionHandler:]";
     v29 = 2112;
-    v30 = v9;
+    v30 = requestCopy;
     v31 = 2112;
     v32 = v15;
     _os_log_impl(&dword_1912FE000, v14, OS_LOG_TYPE_INFO, "%s %@ %@", buf, 0x20u);
@@ -114,13 +114,13 @@ uint64_t __55__AFSiriTaskmaster_listener_shouldAcceptNewConnection___block_invok
   block[1] = 3221225472;
   block[2] = __72__AFSiriTaskmaster_handleSiriRequest_deliveryHandler_completionHandler___block_invoke;
   block[3] = &unk_1E7346198;
-  v23 = v9;
-  v24 = self;
-  v25 = v10;
-  v26 = v11;
-  v17 = v11;
-  v18 = v10;
-  v19 = v9;
+  v23 = requestCopy;
+  selfCopy = self;
+  v25 = handlerCopy;
+  v26 = completionHandlerCopy;
+  v17 = completionHandlerCopy;
+  v18 = handlerCopy;
+  v19 = requestCopy;
   dispatch_async(queue, block);
 
   v20 = *MEMORY[0x1E69E9840];
@@ -237,20 +237,20 @@ uint64_t __72__AFSiriTaskmaster_handleSiriRequest_deliveryHandler_completionHand
   return v3;
 }
 
-- (void)handleFailureOfRequest:(id)a3 error:(id)a4 atTime:(unint64_t)a5
+- (void)handleFailureOfRequest:(id)request error:(id)error atTime:(unint64_t)time
 {
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  requestCopy = request;
+  errorCopy = error;
   v10 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     v20 = "[AFSiriTaskmaster handleFailureOfRequest:error:atTime:]";
     v21 = 2112;
-    v22 = v9;
+    v22 = errorCopy;
     v23 = 2112;
-    v24 = v8;
+    v24 = requestCopy;
     _os_log_impl(&dword_1912FE000, v10, OS_LOG_TYPE_INFO, "%s Unexpected failure %@ of request %@", buf, 0x20u);
   }
 
@@ -260,26 +260,26 @@ uint64_t __72__AFSiriTaskmaster_handleSiriRequest_deliveryHandler_completionHand
   v15[2] = __56__AFSiriTaskmaster_handleFailureOfRequest_error_atTime___block_invoke;
   v15[3] = &unk_1E73464F0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = a5;
-  v12 = v9;
-  v13 = v8;
+  v16 = requestCopy;
+  v17 = errorCopy;
+  timeCopy = time;
+  v12 = errorCopy;
+  v13 = requestCopy;
   dispatch_async(queue, v15);
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleFailureOfRequest:(id)a3 error:(id)a4 atTime:(unint64_t)a5
+- (void)_handleFailureOfRequest:(id)request error:(id)error atTime:(unint64_t)time
 {
   v18 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(NSMapTable *)self->_executorForRequest objectForKey:v8];
+  requestCopy = request;
+  errorCopy = error;
+  v10 = [(NSMapTable *)self->_executorForRequest objectForKey:requestCopy];
   v11 = v10;
   if (v10)
   {
-    [v10 handleFailureOfRequest:v8 error:v9 atTime:a5];
+    [v10 handleFailureOfRequest:requestCopy error:errorCopy atTime:time];
   }
 
   else
@@ -290,7 +290,7 @@ uint64_t __72__AFSiriTaskmaster_handleSiriRequest_deliveryHandler_completionHand
       v14 = 136315394;
       v15 = "[AFSiriTaskmaster _handleFailureOfRequest:error:atTime:]";
       v16 = 2112;
-      v17 = v8;
+      v17 = requestCopy;
       _os_log_error_impl(&dword_1912FE000, v12, OS_LOG_TYPE_ERROR, "%s No execution for this request, it can not be failed %@", &v14, 0x16u);
     }
   }
@@ -307,9 +307,9 @@ uint64_t __72__AFSiriTaskmaster_handleSiriRequest_deliveryHandler_completionHand
   [(AFSiriTaskmaster *)&v3 dealloc];
 }
 
-- (AFSiriTaskmaster)initWithTaskDeliverer:(id)a3
+- (AFSiriTaskmaster)initWithTaskDeliverer:(id)deliverer
 {
-  v5 = a3;
+  delivererCopy = deliverer;
   v15.receiver = self;
   v15.super_class = AFSiriTaskmaster;
   v6 = [(AFSiriTaskmaster *)&v15 init];
@@ -321,14 +321,14 @@ uint64_t __72__AFSiriTaskmaster_handleSiriRequest_deliveryHandler_completionHand
     queue = v6->_queue;
     v6->_queue = v8;
 
-    objc_storeStrong(&v6->_taskDeliverer, a3);
-    v10 = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
+    objc_storeStrong(&v6->_taskDeliverer, deliverer);
+    weakToWeakObjectsMapTable = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
     executorForRequest = v6->_executorForRequest;
-    v6->_executorForRequest = v10;
+    v6->_executorForRequest = weakToWeakObjectsMapTable;
 
-    v12 = [MEMORY[0x1E696B0D8] anonymousListener];
+    anonymousListener = [MEMORY[0x1E696B0D8] anonymousListener];
     usageResultListener = v6->_usageResultListener;
-    v6->_usageResultListener = v12;
+    v6->_usageResultListener = anonymousListener;
 
     [(NSXPCListener *)v6->_usageResultListener setDelegate:v6];
     [(NSXPCListener *)v6->_usageResultListener resume];
@@ -337,38 +337,38 @@ uint64_t __72__AFSiriTaskmaster_handleSiriRequest_deliveryHandler_completionHand
   return v6;
 }
 
-+ (id)taskmasterForUIApplicationWithBundleIdentifier:(id)a3
++ (id)taskmasterForUIApplicationWithBundleIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (!v5)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"AFUIApplicationSiriTaskDeliverer.m" lineNumber:385 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"AFUIApplicationSiriTaskDeliverer.m" lineNumber:385 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier"}];
   }
 
-  v6 = [[AFUIApplicationSiriTaskDeliverer alloc] initWithAppBundleIdentifier:v5];
-  v7 = [[a1 alloc] initWithTaskDeliverer:v6];
+  v6 = [[AFUIApplicationSiriTaskDeliverer alloc] initWithAppBundleIdentifier:identifierCopy];
+  v7 = [[self alloc] initWithTaskDeliverer:v6];
   [(AFUIApplicationSiriTaskDeliverer *)v6 setTaskmaster:v7];
 
   return v7;
 }
 
-+ (id)taskmasterForMachServiceForAppWithBundleIdentifier:(id)a3
++ (id)taskmasterForMachServiceForAppWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v6 = [AFMachServiceSiriTaskDeliverer machServiceSiriTaskDelivererForAppWithBundleIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [self alloc];
+  v6 = [AFMachServiceSiriTaskDeliverer machServiceSiriTaskDelivererForAppWithBundleIdentifier:identifierCopy];
 
   v7 = [v5 initWithTaskDeliverer:v6];
 
   return v7;
 }
 
-+ (id)taskmasterForMachServiceWithName:(id)a3
++ (id)taskmasterForMachServiceWithName:(id)name
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v6 = [[AFMachServiceSiriTaskDeliverer alloc] initWithMachServiceName:v4];
+  nameCopy = name;
+  v5 = [self alloc];
+  v6 = [[AFMachServiceSiriTaskDeliverer alloc] initWithMachServiceName:nameCopy];
 
   v7 = [v5 initWithTaskDeliverer:v6];
 

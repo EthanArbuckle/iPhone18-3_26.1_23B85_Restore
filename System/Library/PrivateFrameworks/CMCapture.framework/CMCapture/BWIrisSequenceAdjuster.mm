@@ -1,23 +1,23 @@
 @interface BWIrisSequenceAdjuster
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)adjustedTimeForStillImageTime:(SEL)a3;
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)adjustedTimeForTime:(SEL)a3;
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)audioOffsetForOriginalStillImageTime:(SEL)a3;
-- (BOOL)_getPreviousTimeSkewOut:(_BOOL8)result andNextTimeSkewOut:(void *)a2 forTime:(void *)a3;
-- (BOOL)discontinuityExistsBetweenCurrentPTS:(id *)a3 previousPTS:(id *)a4;
-- (BWIrisSequenceAdjuster)initWithMediaTypes:(id)a3 visMotionMetadataPreloadingEnabled:(BOOL)a4 generateIFrames:(BOOL)a5 attachedMediaKeysToPreserve:(id)a6;
-- (CMTime)_adjustedTimeForAudioBufferWithTime:(uint64_t)a3@<X8>;
-- (CMTime)_originalDurationForVideoBufferWithTime:(uint64_t)a3@<X2>;
-- (opaqueCMSampleBuffer)dequeueAndRetainAdjustedSampleBufferForMediaTypeWithIndex:(int64_t)a3;
-- (uint64_t)_adjustedTimeForVideoBufferWithTime:(unsigned int)a3@<W2> forceKeepingBuffer:(uint64_t)a4@<X3> discontinuityFrameAttributesOut:(uint64_t)a5@<X8>;
-- (uint64_t)_indexOfTime:(uint64_t)a3;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)adjustedTimeForStillImageTime:(SEL)time;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)adjustedTimeForTime:(SEL)time;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)audioOffsetForOriginalStillImageTime:(SEL)time;
+- (BOOL)_getPreviousTimeSkewOut:(_BOOL8)result andNextTimeSkewOut:(void *)out forTime:(void *)time;
+- (BOOL)discontinuityExistsBetweenCurrentPTS:(id *)s previousPTS:(id *)tS;
+- (BWIrisSequenceAdjuster)initWithMediaTypes:(id)types visMotionMetadataPreloadingEnabled:(BOOL)enabled generateIFrames:(BOOL)frames attachedMediaKeysToPreserve:(id)preserve;
+- (CMTime)_adjustedTimeForAudioBufferWithTime:(uint64_t)time@<X8>;
+- (CMTime)_originalDurationForVideoBufferWithTime:(uint64_t)time@<X2>;
+- (opaqueCMSampleBuffer)dequeueAndRetainAdjustedSampleBufferForMediaTypeWithIndex:(int64_t)index;
+- (uint64_t)_adjustedTimeForVideoBufferWithTime:(unsigned int)time@<W2> forceKeepingBuffer:(uint64_t)buffer@<X3> discontinuityFrameAttributesOut:(uint64_t)out@<X8>;
+- (uint64_t)_indexOfTime:(uint64_t)time;
 - (void)_adjustTimesInAudioInterleavingQueues;
-- (void)_audioOffsetForOriginalStillImageTime:(CMTime *)a3@<X2> adjustedStillImageTime:(uint64_t)a4@<X8>;
-- (void)adjustMovieInfoTimes:(id)a3;
+- (void)_audioOffsetForOriginalStillImageTime:(CMTime *)time@<X2> adjustedStillImageTime:(uint64_t)imageTime@<X8>;
+- (void)adjustMovieInfoTimes:(id)times;
 - (void)dealloc;
-- (void)enqueueSampleBuffer:(opaqueCMSampleBuffer *)a3 forMediaTypeWithIndex:(int64_t)a4;
-- (void)enqueueVideoBufferTime:(id *)a3 nativeTime:(id *)a4 isBracketFrame:(BOOL)a5 isSISFrame:(BOOL)a6;
+- (void)enqueueSampleBuffer:(opaqueCMSampleBuffer *)buffer forMediaTypeWithIndex:(int64_t)index;
+- (void)enqueueVideoBufferTime:(id *)time nativeTime:(id *)nativeTime isBracketFrame:(BOOL)frame isSISFrame:(BOOL)sFrame;
 - (void)reset;
-- (void)setMasterMovieOriginalStartTime:(id *)a3;
+- (void)setMasterMovieOriginalStartTime:(id *)time;
 @end
 
 @implementation BWIrisSequenceAdjuster
@@ -71,22 +71,22 @@
   }
 }
 
-- (BWIrisSequenceAdjuster)initWithMediaTypes:(id)a3 visMotionMetadataPreloadingEnabled:(BOOL)a4 generateIFrames:(BOOL)a5 attachedMediaKeysToPreserve:(id)a6
+- (BWIrisSequenceAdjuster)initWithMediaTypes:(id)types visMotionMetadataPreloadingEnabled:(BOOL)enabled generateIFrames:(BOOL)frames attachedMediaKeysToPreserve:(id)preserve
 {
   v24.receiver = self;
   v24.super_class = BWIrisSequenceAdjuster;
   v10 = [(BWIrisSequenceAdjuster *)&v24 init];
   if (v10)
   {
-    v18 = a6;
+    preserveCopy = preserve;
     v10->_interleavingQueues = objc_alloc_init(MEMORY[0x1E695DF70]);
     v10->_discontinuities = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v10->_mediaTypes = malloc_type_calloc(4uLL, [a3 count], 0x100004052888210uLL);
+    v10->_mediaTypes = malloc_type_calloc(4uLL, [types count], 0x100004052888210uLL);
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v11 = [a3 countByEnumeratingWithState:&v20 objects:v19 count:16];
+    v11 = [types countByEnumeratingWithState:&v20 objects:v19 count:16];
     if (v11)
     {
       v12 = v11;
@@ -100,7 +100,7 @@
         {
           if (*v21 != v14)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(types);
           }
 
           v13 = v16 + 1;
@@ -111,20 +111,20 @@
         }
 
         while (v12 != v15);
-        v12 = [a3 countByEnumeratingWithState:&v20 objects:v19 count:16];
+        v12 = [types countByEnumeratingWithState:&v20 objects:v19 count:16];
       }
 
       while (v12);
     }
 
     v10->_timeSkews = objc_alloc_init(MEMORY[0x1E695DF70]);
-    if (!a4)
+    if (!enabled)
     {
       v10->_motionDataPreserver = [[BWMotionDataPreserver alloc] initWithName:[(BWIrisSequenceAdjuster *)v10 description]];
     }
 
-    v10->_generateIFrames = a5;
-    v10->_attachedMediaKeysToPreserve = v18;
+    v10->_generateIFrames = frames;
+    v10->_attachedMediaKeysToPreserve = preserveCopy;
     [(BWIrisSequenceAdjuster *)v10 reset];
   }
 
@@ -140,14 +140,14 @@
   [(BWIrisSequenceAdjuster *)&v3 dealloc];
 }
 
-- (BOOL)discontinuityExistsBetweenCurrentPTS:(id *)a3 previousPTS:(id *)a4
+- (BOOL)discontinuityExistsBetweenCurrentPTS:(id *)s previousPTS:(id *)tS
 {
   memset(&v11, 0, sizeof(v11));
   time = self->_previewFrameDuration;
   CMTimeMultiply(&v11, &time, 3);
   memset(&time, 0, sizeof(time));
-  lhs = *a3;
-  rhs = *a4;
+  lhs = *s;
+  rhs = *tS;
   CMTimeSubtract(&time, &lhs, &rhs);
   memset(&lhs, 0, sizeof(lhs));
   CMTimeMake(&rhs, 5, 1000);
@@ -158,18 +158,18 @@
   return CMTimeCompare(&rhs, &v7) > 0;
 }
 
-- (void)enqueueVideoBufferTime:(id *)a3 nativeTime:(id *)a4 isBracketFrame:(BOOL)a5 isSISFrame:(BOOL)a6
+- (void)enqueueVideoBufferTime:(id *)time nativeTime:(id *)nativeTime isBracketFrame:(BOOL)frame isSISFrame:(BOOL)sFrame
 {
-  v6 = a6;
-  v7 = a5;
-  v10 = self;
+  sFrameCopy = sFrame;
+  frameCopy = frame;
+  selfCopy = self;
   v11 = [(NSMutableArray *)self->_timeSkews count];
   if (v11 < 2)
   {
     goto LABEL_52;
   }
 
-  v39 = a4;
+  nativeTimeCopy = nativeTime;
   v61 = *MEMORY[0x1E6960C70];
   v13 = *(MEMORY[0x1E6960C70] + 8);
   v12 = *(MEMORY[0x1E6960C70] + 12);
@@ -179,9 +179,9 @@
   value = v61;
   timescale = v13;
   v15 = (v12 & 1) == 0;
-  v41 = v7;
-  v42 = v6;
-  v40 = a3;
+  v41 = frameCopy;
+  v42 = sFrameCopy;
+  timeCopy = time;
   if ((v12 & 1) == 0)
   {
     v16 = v11;
@@ -196,8 +196,8 @@
       flags = v12;
       while (1)
       {
-        v21 = v10;
-        v22 = [(NSMutableArray *)v10->_timeSkews objectAtIndexedSubscript:v17];
+        v21 = selfCopy;
+        v22 = [(NSMutableArray *)selfCopy->_timeSkews objectAtIndexedSubscript:v17];
         if ([v22 isBracketFrame])
         {
           break;
@@ -223,9 +223,9 @@
           timescale = v58.timescale;
           if (v18)
           {
-            v23 = [v22 isSISFrame];
+            isSISFrame = [v22 isSISFrame];
             v24 = v43;
-            if (v23)
+            if (isSISFrame)
             {
               v24 = v22;
             }
@@ -258,7 +258,7 @@
             memset(&v58, 0, sizeof(v58));
           }
 
-          v10 = v21;
+          selfCopy = v21;
           v61 = v58.value;
           v62 = v58.timescale;
           v16 = v17;
@@ -274,7 +274,7 @@
         v19 = v12;
         timescale = v13;
 LABEL_8:
-        v10 = v21;
+        selfCopy = v21;
 LABEL_9:
         v15 = (v19 & 1) == 0;
         if ((v19 & 1) == 0)
@@ -310,8 +310,8 @@ LABEL_7:
   flags = v12;
   v19 = v12;
 LABEL_28:
-  v7 = v41;
-  a4 = v39;
+  frameCopy = v41;
+  nativeTime = nativeTimeCopy;
   if (!v15)
   {
     memset(&v58, 0, sizeof(v58));
@@ -325,7 +325,7 @@ LABEL_28:
     rhs.epoch = v45;
     CMTimeSubtract(&v58, &lhs, &rhs);
     lhs = v58;
-    if (CMTimeGetSeconds(&lhs) <= 0.133333333 || (v10->_previewFrameDuration.flags & 1) == 0)
+    if (CMTimeGetSeconds(&lhs) <= 0.133333333 || (selfCopy->_previewFrameDuration.flags & 1) == 0)
     {
       v55.epoch = v45;
       rhs.value = value;
@@ -336,18 +336,18 @@ LABEL_28:
       v55.timescale = v62;
       v55.flags = v19;
       CMTimeSubtract(&lhs, &rhs, &v55);
-      v10->_previewFrameDuration = lhs;
+      selfCopy->_previewFrameDuration = lhs;
     }
 
     memset(&lhs, 0, sizeof(lhs));
-    rhs = v10->_previewFrameDuration;
+    rhs = selfCopy->_previewFrameDuration;
     CMTimeMultiply(&lhs, &rhs, 3);
-    v25 = [(NSMutableArray *)v10->_timeSkews lastObject];
-    v26 = v25;
+    lastObject = [(NSMutableArray *)selfCopy->_timeSkews lastObject];
+    v26 = lastObject;
     memset(&rhs, 0, sizeof(rhs));
-    if (v25)
+    if (lastObject)
     {
-      [v25 native];
+      [lastObject native];
     }
 
     else
@@ -355,7 +355,7 @@ LABEL_28:
       memset(&v55, 0, sizeof(v55));
     }
 
-    time1 = *v39;
+    time1 = *nativeTimeCopy;
     CMTimeSubtract(&rhs, &time1, &v55);
     memset(&v55, 0, sizeof(v55));
     CMTimeMake(&time1, 5, 1000);
@@ -377,10 +377,10 @@ LABEL_28:
         memset(&time1, 0, sizeof(time1));
       }
 
-      generateIFrames = v10->_generateIFrames;
-      timeSkews = v10->_timeSkews;
+      generateIFrames = selfCopy->_generateIFrames;
+      timeSkews = selfCopy->_timeSkews;
       time2 = v55;
-      previewFrameDuration = v10->_previewFrameDuration;
+      previewFrameDuration = selfCopy->_previewFrameDuration;
       p_time1 = &time1;
       p_time2 = &time2;
       p_previewFrameDuration = &previewFrameDuration;
@@ -390,7 +390,7 @@ LABEL_46:
       v36 = [(BWIrisDiscontinuity *)v34 initWithTime:p_time1 duration:p_time2 targetFrameDuration:p_previewFrameDuration onlyRetime:v35 generateIFrames:generateIFrames timeSkews:timeSkews];
       if (v36)
       {
-        [(NSMutableArray *)v10->_discontinuities addObject:v36];
+        [(NSMutableArray *)selfCopy->_discontinuities addObject:v36];
       }
 
       goto LABEL_49;
@@ -404,15 +404,15 @@ LABEL_46:
         [v26 setIsStartOfDiscontinuity:1];
         memset(&time1, 0, sizeof(time1));
         [v43 native];
-        previewFrameDuration = *v39;
+        previewFrameDuration = *nativeTimeCopy;
         CMTimeSubtract(&time1, &previewFrameDuration, &time2);
         v28 = [BWIrisDiscontinuity alloc];
         [v43 original];
-        generateIFrames = v10->_generateIFrames;
-        timeSkews = v10->_timeSkews;
+        generateIFrames = selfCopy->_generateIFrames;
+        timeSkews = selfCopy->_timeSkews;
         previewFrameDuration = time1;
-        v47 = *&v10->_previewFrameDuration.value;
-        v48 = v10->_previewFrameDuration.epoch;
+        v47 = *&selfCopy->_previewFrameDuration.value;
+        v48 = selfCopy->_previewFrameDuration.epoch;
         p_time1 = &time2;
         p_time2 = &previewFrameDuration;
         p_previewFrameDuration = &v47;
@@ -431,41 +431,41 @@ LABEL_46:
   }
 
 LABEL_49:
-  if ([(NSMutableArray *)v10->_discontinuities count]>= 0xC9)
+  if ([(NSMutableArray *)selfCopy->_discontinuities count]>= 0xC9)
   {
-    [(NSMutableArray *)v10->_discontinuities removeObjectAtIndex:0];
+    [(NSMutableArray *)selfCopy->_discontinuities removeObjectAtIndex:0];
   }
 
-  v6 = v42;
-  a3 = v40;
+  sFrameCopy = v42;
+  time = timeCopy;
 LABEL_52:
   v37 = [BWTimeSkew alloc];
-  v58 = *a4;
-  lhs = *a3;
-  v38 = [(BWTimeSkew *)v37 initWithNativeTime:&v58 originalTime:&lhs isBracketFrame:v7 isSISFrame:v6];
-  [(NSMutableArray *)v10->_timeSkews addObject:v38];
+  v58 = *nativeTime;
+  lhs = *time;
+  v38 = [(BWTimeSkew *)v37 initWithNativeTime:&v58 originalTime:&lhs isBracketFrame:frameCopy isSISFrame:sFrameCopy];
+  [(NSMutableArray *)selfCopy->_timeSkews addObject:v38];
 
-  if ([(NSMutableArray *)v10->_timeSkews count]>= 0xC9)
+  if ([(NSMutableArray *)selfCopy->_timeSkews count]>= 0xC9)
   {
-    [(NSMutableArray *)v10->_timeSkews removeObjectAtIndex:0];
+    [(NSMutableArray *)selfCopy->_timeSkews removeObjectAtIndex:0];
   }
 }
 
-- (void)enqueueSampleBuffer:(opaqueCMSampleBuffer *)a3 forMediaTypeWithIndex:(int64_t)a4
+- (void)enqueueSampleBuffer:(opaqueCMSampleBuffer *)buffer forMediaTypeWithIndex:(int64_t)index
 {
-  if (a3)
+  if (buffer)
   {
     memset(&v57, 0, sizeof(v57));
-    CMSampleBufferGetPresentationTimeStamp(&v57, a3);
+    CMSampleBufferGetPresentationTimeStamp(&v57, buffer);
     flags = v57.flags;
     v54 = 0;
     v52 = xmmword_1AD056798;
     v53 = 0;
-    v8 = self->_mediaTypes[a4];
+    v8 = self->_mediaTypes[index];
     switch(v8)
     {
       case 0x6D657461u:
-        v54 = CFRetain(a3);
+        v54 = CFRetain(buffer);
         if ((flags & 1) == 0)
         {
           goto LABEL_39;
@@ -474,7 +474,7 @@ LABEL_52:
         break;
       case 0x76696465u:
         v10 = *MEMORY[0x1E69604E0];
-        v11 = CMGetAttachment(a3, *MEMORY[0x1E69604E0], 0);
+        v11 = CMGetAttachment(buffer, *MEMORY[0x1E69604E0], 0);
         v12 = *MEMORY[0x1E695E4D0];
         v13 = v11 == *MEMORY[0x1E695E4D0];
         time2 = v57;
@@ -509,7 +509,7 @@ LABEL_52:
           if (motionDataPreserver)
           {
             v34 = time1.epoch;
-            [(BWMotionDataPreserver *)motionDataPreserver preserveMotionDataForSoonToBeDroppedSampleBuffer:a3];
+            [(BWMotionDataPreserver *)motionDataPreserver preserveMotionDataForSoonToBeDroppedSampleBuffer:buffer];
           }
 
           else
@@ -523,7 +523,7 @@ LABEL_52:
 
             else
             {
-              CMSampleBufferGetPresentationTimeStamp(&time1, a3);
+              CMSampleBufferGetPresentationTimeStamp(&time1, buffer);
             }
 
             value = time1.value;
@@ -552,7 +552,7 @@ LABEL_52:
                   objc_enumerationMutation(attachedMediaKeysToPreserve);
                 }
 
-                [v17 setObject:BWSampleBufferGetAttachedMedia(a3 forKeyedSubscript:{*(*(&v45 + 1) + 8 * i)), *(*(&v45 + 1) + 8 * i)}];
+                [v17 setObject:BWSampleBufferGetAttachedMedia(buffer forKeyedSubscript:{*(*(&v45 + 1) + 8 * i)), *(*(&v45 + 1) + 8 * i)}];
               }
 
               v20 = [(NSArray *)attachedMediaKeysToPreserve countByEnumeratingWithState:&v45 objects:v44 count:16];
@@ -582,7 +582,7 @@ LABEL_52:
         time1.flags = v9;
         time1.epoch = epoch;
         time2 = **&MEMORY[0x1E6960C70];
-        BWCMSampleBufferCreateCopyWithNewTimingIncludingMetadata(a3, &time1, &time2.value, &v54);
+        BWCMSampleBufferCreateCopyWithNewTimingIncludingMetadata(buffer, &time1, &time2.value, &v54);
         v23 = v54;
         if (!v54)
         {
@@ -665,7 +665,7 @@ LABEL_52:
         LOBYTE(v9) = time1.flags;
         timescale = time1.timescale;
         time2 = **&MEMORY[0x1E6960C70];
-        BWCMSampleBufferCreateCopyWithNewTimingIncludingMetadata(a3, &time1, &time2.value, &v54);
+        BWCMSampleBufferCreateCopyWithNewTimingIncludingMetadata(buffer, &time1, &time2.value, &v54);
         if (!v54)
         {
           [BWIrisSequenceAdjuster enqueueSampleBuffer:forMediaTypeWithIndex:];
@@ -694,19 +694,19 @@ LABEL_39:
         break;
     }
 
-    v25 = [(NSMutableArray *)self->_interleavingQueues objectAtIndexedSubscript:a4];
+    v25 = [(NSMutableArray *)self->_interleavingQueues objectAtIndexedSubscript:index];
     [v25 addObject:v54];
     goto LABEL_39;
   }
 }
 
-- (CMTime)_adjustedTimeForAudioBufferWithTime:(uint64_t)a3@<X8>
+- (CMTime)_adjustedTimeForAudioBufferWithTime:(uint64_t)time@<X8>
 {
   if (result)
   {
     v5 = result;
-    *a3 = *&a2->value;
-    *(a3 + 16) = a2->epoch;
+    *time = *&a2->value;
+    *(time + 16) = a2->epoch;
     result = [*&result->timescale count];
     if (result)
     {
@@ -714,22 +714,22 @@ LABEL_39:
       {
         lhs = *a2;
         v6 = *&v5->epoch;
-        return CMTimeSubtract(a3, &lhs, &v6);
+        return CMTimeSubtract(time, &lhs, &v6);
       }
     }
   }
 
   else
   {
-    *a3 = 0;
-    *(a3 + 8) = 0;
-    *(a3 + 16) = 0;
+    *time = 0;
+    *(time + 8) = 0;
+    *(time + 16) = 0;
   }
 
   return result;
 }
 
-- (uint64_t)_adjustedTimeForVideoBufferWithTime:(unsigned int)a3@<W2> forceKeepingBuffer:(uint64_t)a4@<X3> discontinuityFrameAttributesOut:(uint64_t)a5@<X8>
+- (uint64_t)_adjustedTimeForVideoBufferWithTime:(unsigned int)time@<W2> forceKeepingBuffer:(uint64_t)buffer@<X3> discontinuityFrameAttributesOut:(uint64_t)out@<X8>
 {
   if (result)
   {
@@ -745,8 +745,8 @@ LABEL_39:
       v10 = a2;
     }
 
-    *a5 = *&v10->value;
-    *(a5 + 16) = v10->epoch;
+    *out = *&v10->value;
+    *(out + 16) = v10->epoch;
     v11 = MEMORY[0x1E6960C70];
     value = *MEMORY[0x1E6960C70];
     LODWORD(v12) = *(MEMORY[0x1E6960C70] + 12);
@@ -762,7 +762,7 @@ LABEL_39:
     {
       v21 = v15;
       v28 = v13;
-      v29 = a4;
+      bufferCopy = buffer;
       v27 = v12;
       v22 = *v37;
 LABEL_8:
@@ -797,7 +797,7 @@ LABEL_8:
       }
 
       v34 = *a2;
-      v24 = [v12 shouldKeepBufferWithTime:&v34 forceKeepingBuffer:a3 nextAdjustedTimeInOut:v8 + 48 discontinuityFrameAttributesOut:v29];
+      v24 = [v12 shouldKeepBufferWithTime:&v34 forceKeepingBuffer:time nextAdjustedTimeInOut:v8 + 48 discontinuityFrameAttributesOut:bufferCopy];
       if (v12)
       {
         [v12 targetFrameDuration];
@@ -820,18 +820,18 @@ LABEL_8:
         goto LABEL_20;
       }
 
-      *a5 = *v11;
-      *(a5 + 16) = v28;
+      *out = *v11;
+      *(out + 16) = v28;
     }
 
     else
     {
       v20 = 1;
 LABEL_20:
-      if ((*(a5 + 12) & 1) == 0)
+      if ((*(out + 12) & 1) == 0)
       {
-        *a5 = *&a2->value;
-        *(a5 + 16) = a2->epoch;
+        *out = *&a2->value;
+        *(out + 16) = a2->epoch;
       }
 
       if (v20)
@@ -855,7 +855,7 @@ LABEL_20:
           v34.epoch = v13;
         }
 
-        lhs = *a5;
+        lhs = *out;
         rhs = v34;
         CMTimeAdd(&v33, &lhs, &rhs);
         *v9 = *&v33.value;
@@ -868,22 +868,22 @@ LABEL_20:
     if (result != 0x7FFFFFFFFFFFFFFFLL)
     {
       v26 = [*(v8 + 80) objectAtIndexedSubscript:result];
-      v34 = *a5;
+      v34 = *out;
       return [v26 setAdjusted:&v34];
     }
   }
 
   else
   {
-    *a5 = 0;
-    *(a5 + 8) = 0;
-    *(a5 + 16) = 0;
+    *out = 0;
+    *(out + 8) = 0;
+    *(out + 16) = 0;
   }
 
   return result;
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)audioOffsetForOriginalStillImageTime:(SEL)a3
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)audioOffsetForOriginalStillImageTime:(SEL)time
 {
   v6 = *a4;
   v5 = **&MEMORY[0x1E6960C70];
@@ -891,30 +891,30 @@ LABEL_20:
   return result;
 }
 
-- (void)_audioOffsetForOriginalStillImageTime:(CMTime *)a3@<X2> adjustedStillImageTime:(uint64_t)a4@<X8>
+- (void)_audioOffsetForOriginalStillImageTime:(CMTime *)time@<X2> adjustedStillImageTime:(uint64_t)imageTime@<X8>
 {
-  if (a1)
+  if (self)
   {
-    flags = a3->flags;
+    flags = time->flags;
     if ((flags & 1) == 0)
     {
       lhs = *a2;
-      [a1 adjustedTimeForTime:&lhs];
-      *a3 = v13;
-      flags = a3->flags;
+      [self adjustedTimeForTime:&lhs];
+      *time = v13;
+      flags = time->flags;
     }
 
     if (~flags & 0x11) != 0 && (flags)
     {
       lhs = *a2;
-      v11 = *a3;
+      v11 = *time;
       CMTimeSubtract(&v13, &lhs, &v11);
       v14 = *&v13.timescale;
-      if (*(a1 + 28))
+      if (*(self + 28))
       {
         lhs.value = v13.value & ~(v13.value >> 63);
         *&lhs.timescale = v14;
-        v11 = *(a1 + 16);
+        v11 = *(self + 16);
         CMTimeSubtract(&v13, &lhs, &v11);
         value = v13.value;
         v14 = *&v13.timescale;
@@ -922,34 +922,34 @@ LABEL_20:
 
       else
       {
-        *(a1 + 16) = v13.value & ~(v13.value >> 63);
-        *(a1 + 24) = v14;
+        *(self + 16) = v13.value & ~(v13.value >> 63);
+        *(self + 24) = v14;
         value = *MEMORY[0x1E6960CC0];
         v14 = *(MEMORY[0x1E6960CC0] + 8);
-        [(BWIrisSequenceAdjuster *)a1 _adjustTimesInAudioInterleavingQueues];
+        [(BWIrisSequenceAdjuster *)self _adjustTimesInAudioInterleavingQueues];
       }
 
-      *a4 = value;
-      *(a4 + 8) = v14;
+      *imageTime = value;
+      *(imageTime + 8) = v14;
     }
 
     else
     {
       v9 = MEMORY[0x1E6960C70];
-      *a4 = *MEMORY[0x1E6960C70];
-      *(a4 + 16) = *(v9 + 16);
+      *imageTime = *MEMORY[0x1E6960C70];
+      *(imageTime + 16) = *(v9 + 16);
     }
   }
 
   else
   {
-    *a4 = 0;
-    *(a4 + 8) = 0;
-    *(a4 + 16) = 0;
+    *imageTime = 0;
+    *(imageTime + 8) = 0;
+    *(imageTime + 16) = 0;
   }
 }
 
-- (opaqueCMSampleBuffer)dequeueAndRetainAdjustedSampleBufferForMediaTypeWithIndex:(int64_t)a3
+- (opaqueCMSampleBuffer)dequeueAndRetainAdjustedSampleBufferForMediaTypeWithIndex:(int64_t)index
 {
   v5 = [(NSMutableArray *)self->_interleavingQueues objectAtIndexedSubscript:?];
   result = [v5 count];
@@ -959,7 +959,7 @@ LABEL_20:
     v12 = 0;
     memset(&v11, 0, sizeof(v11));
     CMSampleBufferGetPresentationTimeStamp(&v11, v7);
-    v8 = self->_mediaTypes[a3];
+    v8 = self->_mediaTypes[index];
     if (v8 != 1986618469)
     {
       if (v8 != 1936684398)
@@ -1010,18 +1010,18 @@ LABEL_13:
   return result;
 }
 
-- (void)adjustMovieInfoTimes:(id)a3
+- (void)adjustMovieInfoTimes:(id)times
 {
   memset(&v32[1], 0, sizeof(CMTime));
-  if (a3)
+  if (times)
   {
-    [a3 movieStartTime];
+    [times movieStartTime];
     memset(v32, 0, 24);
-    [a3 movieEndTime];
+    [times movieEndTime];
     memset(&v31, 0, sizeof(v31));
-    [a3 movieEndingVideoPTS];
+    [times movieEndingVideoPTS];
     memset(&v30, 0, sizeof(v30));
-    [a3 stillImageCaptureTime];
+    [times stillImageCaptureTime];
   }
 
   else
@@ -1067,10 +1067,10 @@ LABEL_13:
   if ((v29[1].flags & 0x11) == 1)
   {
     time1 = v29[1];
-    [a3 setMovieStartTime:&time1];
-    if (a3)
+    [times setMovieStartTime:&time1];
+    if (times)
     {
-      [a3 movieStartTime];
+      [times movieStartTime];
     }
 
     else
@@ -1079,22 +1079,22 @@ LABEL_13:
     }
 
     time1 = v22;
-    [a3 setMovieTrimStartTime:&time1];
+    [times setMovieTrimStartTime:&time1];
   }
 
   if ((v29[0].flags & 0x11) == 1)
   {
     time1 = v29[0];
-    [a3 setMovieEndingVideoPTS:&time1];
+    [times setMovieEndingVideoPTS:&time1];
   }
 
   if ((v28.flags & 0x11) == 1)
   {
     time1 = v28;
-    [a3 setMovieEndTime:&time1];
-    if (a3)
+    [times setMovieEndTime:&time1];
+    if (times)
     {
-      [a3 movieEndTime];
+      [times movieEndTime];
     }
 
     else
@@ -1103,13 +1103,13 @@ LABEL_13:
     }
 
     time1 = *&v21[1];
-    [a3 setMovieTrimEndTime:&time1];
+    [times setMovieTrimEndTime:&time1];
   }
 
   if ((v27.flags & 0x11) == 1)
   {
     time1 = v27;
-    [a3 setStillImageCaptureTime:&time1];
+    [times setStillImageCaptureTime:&time1];
     return;
   }
 
@@ -1124,9 +1124,9 @@ LABEL_13:
       [v21[0] adjusted];
       if (v19)
       {
-        if (a3)
+        if (times)
         {
-          [a3 audioOffset];
+          [times audioOffset];
           if ((v17 & 0x100000000) != 0)
           {
             return;
@@ -1190,18 +1190,18 @@ LABEL_13:
             if ((CMTimeCompare(&lhs, &rhs) & 0x80000000) == 0)
             {
               lhs = v27;
-              [a3 setStillImageCaptureTime:&lhs];
+              [times setStillImageCaptureTime:&lhs];
               lhs = time2;
-              [a3 setAudioOffset:&lhs];
+              [times setAudioOffset:&lhs];
             }
           }
         }
 
         if (flags)
         {
-          if (a3)
+          if (times)
           {
-            [a3 stillImageCaptureTime];
+            [times stillImageCaptureTime];
           }
 
           else
@@ -1219,13 +1219,13 @@ LABEL_13:
             time2.timescale = timescale;
             time2.flags = flags;
             time2.epoch = epoch;
-            [a3 setStillImageCaptureTime:&time2];
+            [times setStillImageCaptureTime:&time2];
           }
         }
 
-        if (a3)
+        if (times)
         {
-          [a3 audioOffset];
+          [times audioOffset];
           if ((v11 & 0x100000000) != 0)
           {
             return;
@@ -1239,31 +1239,31 @@ LABEL_13:
           v12 = 0;
         }
 
-        if ([a3 isFinalEnqueuedIrisRequest])
+        if ([times isFinalEnqueuedIrisRequest])
         {
           CMTimeMake(&v9, 1, 1000);
           time2 = v9;
-          [a3 setAudioOffset:&time2];
+          [times setAudioOffset:&time2];
         }
       }
     }
   }
 }
 
-- (void)setMasterMovieOriginalStartTime:(id *)a3
+- (void)setMasterMovieOriginalStartTime:(id *)time
 {
-  v5 = *&a3->var0;
-  self->_masterMovieOriginalStartTime.epoch = a3->var3;
+  v5 = *&time->var0;
+  self->_masterMovieOriginalStartTime.epoch = time->var3;
   *&self->_masterMovieOriginalStartTime.value = v5;
   if ([(NSMutableArray *)self->_timeSkews count])
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v7 = [(NSMutableArray *)self->_timeSkews reverseObjectEnumerator];
-    v8 = [v7 countByEnumeratingWithState:&v41 objects:v40 count:16];
+    reverseObjectEnumerator = [(NSMutableArray *)self->_timeSkews reverseObjectEnumerator];
+    v8 = [reverseObjectEnumerator countByEnumeratingWithState:&v41 objects:v40 count:16];
     if (v8)
     {
       v9 = v8;
@@ -1275,7 +1275,7 @@ LABEL_4:
       {
         if (*v42 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v13 = *(*(&v41 + 1) + 8 * v12);
@@ -1289,7 +1289,7 @@ LABEL_4:
           memset(&time1, 0, sizeof(time1));
         }
 
-        time2 = *a3;
+        time2 = *time;
         if (CMTimeCompare(&time1, &time2) < 0)
         {
           break;
@@ -1298,11 +1298,11 @@ LABEL_4:
         v14 = [v13 copy];
         time1 = *v11;
         [v14 setAdjusted:&time1];
-        [v6 insertObject:v14 atIndex:0];
+        [array insertObject:v14 atIndex:0];
 
         if (v9 == ++v12)
         {
-          v9 = [v7 countByEnumeratingWithState:&v41 objects:v40 count:16];
+          v9 = [reverseObjectEnumerator countByEnumeratingWithState:&v41 objects:v40 count:16];
           if (v9)
           {
             goto LABEL_4;
@@ -1313,7 +1313,7 @@ LABEL_4:
       }
     }
 
-    self->_timeSkews = v6;
+    self->_timeSkews = array;
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
@@ -1345,7 +1345,7 @@ LABEL_4:
 
   if ([(NSMutableArray *)self->_discontinuities count])
   {
-    v20 = [MEMORY[0x1E696AD50] indexSet];
+    indexSet = [MEMORY[0x1E696AD50] indexSet];
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
@@ -1377,13 +1377,13 @@ LABEL_23:
           memset(&time1, 0, sizeof(time1));
         }
 
-        time2 = *a3;
+        time2 = *time;
         if ((CMTimeCompare(&time1, &time2) & 0x80000000) == 0)
         {
           break;
         }
 
-        [v20 addIndex:v24++];
+        [indexSet addIndex:v24++];
         if (v23 == ++v26)
         {
           v23 = [(NSMutableArray *)v21 countByEnumeratingWithState:&v29 objects:v28 count:16];
@@ -1397,11 +1397,11 @@ LABEL_23:
       }
     }
 
-    [(NSMutableArray *)self->_discontinuities removeObjectsAtIndexes:v20];
+    [(NSMutableArray *)self->_discontinuities removeObjectsAtIndexes:indexSet];
   }
 }
 
-- (CMTime)_originalDurationForVideoBufferWithTime:(uint64_t)a3@<X2>
+- (CMTime)_originalDurationForVideoBufferWithTime:(uint64_t)time@<X2>
 {
   if (!result)
   {
@@ -1413,7 +1413,7 @@ LABEL_23:
 
   v8 = result;
   lhs = *a2;
-  result = [(BWIrisSequenceAdjuster *)result _indexOfTime:a3, a4, a5, a6];
+  result = [(BWIrisSequenceAdjuster *)result _indexOfTime:time, a4, a5, a6];
   if (result == 0x7FFFFFFFFFFFFFFFLL || (v9 = result, result = [*&v8[3].timescale count], v9 >= &result[-1].epoch + 7))
   {
     v12 = MEMORY[0x1E6960C70];
@@ -1448,19 +1448,19 @@ LABEL_6:
   return CMTimeSubtract(a7, &lhs, &rhs);
 }
 
-- (BOOL)_getPreviousTimeSkewOut:(_BOOL8)result andNextTimeSkewOut:(void *)a2 forTime:(void *)a3
+- (BOOL)_getPreviousTimeSkewOut:(_BOOL8)result andNextTimeSkewOut:(void *)out forTime:(void *)time
 {
   if (result)
   {
     v5 = result;
-    *a3 = 0;
-    *a2 = 0;
+    *time = 0;
+    *out = 0;
     v46 = 0u;
     v47 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v6 = [*(result + 80) reverseObjectEnumerator];
-    v7 = [v6 countByEnumeratingWithState:&v46 objects:v45 count:16];
+    reverseObjectEnumerator = [*(result + 80) reverseObjectEnumerator];
+    v7 = [reverseObjectEnumerator countByEnumeratingWithState:&v46 objects:v45 count:16];
     if (v7)
     {
       v8 = v7;
@@ -1471,7 +1471,7 @@ LABEL_6:
         {
           if (*v47 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           v11 = *(*(&v46 + 1) + 8 * i);
@@ -1480,11 +1480,11 @@ LABEL_6:
             [v11 adjusted];
             if (v44)
             {
-              v12 = [v11 original];
-              if (OUTLINED_FUNCTION_2_110(v12, v13, v14, v15, v16, v17, v18, v19, v36, v37, v38, v39, v40, v41, v42, v43) < 1)
+              original = [v11 original];
+              if (OUTLINED_FUNCTION_2_110(original, v13, v14, v15, v16, v17, v18, v19, v36, v37, v38, v39, v40, v41, v42, v43) < 1)
               {
                 result = 0;
-                *a2 = v11;
+                *out = v11;
                 return result;
               }
             }
@@ -1492,10 +1492,10 @@ LABEL_6:
             [v11 adjusted];
             if ((v38 & 0x100000000) != 0)
             {
-              v20 = [v11 original];
-              if (OUTLINED_FUNCTION_2_110(v20, v21, v22, v23, v24, v25, v26, v27, v36, v37, v38, v39, v40, v41, v42, v43) >= 1)
+              original2 = [v11 original];
+              if (OUTLINED_FUNCTION_2_110(original2, v21, v22, v23, v24, v25, v26, v27, v36, v37, v38, v39, v40, v41, v42, v43) >= 1)
               {
-                *a3 = v11;
+                *time = v11;
               }
             }
           }
@@ -1509,7 +1509,7 @@ LABEL_6:
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v46 objects:v45 count:16];
+        v8 = [reverseObjectEnumerator countByEnumeratingWithState:&v46 objects:v45 count:16];
         if (v8)
         {
           continue;
@@ -1519,10 +1519,10 @@ LABEL_6:
       }
     }
 
-    v28 = [*(v5 + 80) firstObject];
-    if (v28)
+    firstObject = [*(v5 + 80) firstObject];
+    if (firstObject)
     {
-      v28 = [v28 original];
+      firstObject = [firstObject original];
     }
 
     else
@@ -1530,15 +1530,15 @@ LABEL_6:
       v43 = 0;
     }
 
-    return OUTLINED_FUNCTION_2_110(v28, v29, v30, v31, v32, v33, v34, v35, v36, v37, v38, v39, v40, v41, v42, v43) > 0;
+    return OUTLINED_FUNCTION_2_110(firstObject, v29, v30, v31, v32, v33, v34, v35, v36, v37, v38, v39, v40, v41, v42, v43) > 0;
   }
 
   return result;
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)adjustedTimeForTime:(SEL)a3
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)adjustedTimeForTime:(SEL)time
 {
-  result = OUTLINED_FUNCTION_5_79(self, a3, a4);
+  result = OUTLINED_FUNCTION_5_79(self, time, a4);
   if (!v87 || (v7 = result, result = [v87 adjusted], (v86 & 1) == 0))
   {
     v8 = MEMORY[0x1E6960C68];
@@ -1560,8 +1560,8 @@ LABEL_4:
   v10 = v88;
   if (v88)
   {
-    v11 = [v88 original];
-    OUTLINED_FUNCTION_7_68(v11, v12, v13, v14, v15, v16, v17, v18, v60, v66, v71, v76, *rhs, *&rhs[8], *&rhs[16], *&rhs[24], lhs.value, *&lhs.timescale, lhs.epoch, v83.value, *&v83.timescale, v83.epoch, v84);
+    original = [v88 original];
+    OUTLINED_FUNCTION_7_68(original, v12, v13, v14, v15, v16, v17, v18, v60, v66, v71, v76, *rhs, *&rhs[8], *&rhs[16], *&rhs[24], lhs.value, *&lhs.timescale, lhs.epoch, v83.value, *&v83.timescale, v83.epoch, v84);
     OUTLINED_FUNCTION_13_39();
     [v88 original];
   }
@@ -1593,7 +1593,7 @@ LABEL_4:
   OUTLINED_FUNCTION_9_59(v44, v45, v46, v47, v48, v49, v50, v51, v43, v64, v70, v74, *rhs, *&rhs[16], *&rhs[24], lhs.value, *&lhs.timescale, lhs.epoch, v83.value, *&v83.timescale, v83.epoch, v84, v85);
   if (v10)
   {
-    v52 = [v10 adjusted];
+    adjusted = [v10 adjusted];
   }
 
   else
@@ -1601,12 +1601,12 @@ LABEL_4:
     OUTLINED_FUNCTION_66();
   }
 
-  return OUTLINED_FUNCTION_8_55(v52, v53, v54, v55, v56, v57, v58, v59, v65, v75, v80, *rhs, *&rhs[8], *&rhs[16], *&lhs.value, lhs.epoch);
+  return OUTLINED_FUNCTION_8_55(adjusted, v53, v54, v55, v56, v57, v58, v59, v65, v75, v80, *rhs, *&rhs[8], *&rhs[16], *&lhs.value, lhs.epoch);
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)adjustedTimeForStillImageTime:(SEL)a3
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)adjustedTimeForStillImageTime:(SEL)time
 {
-  v6 = OUTLINED_FUNCTION_5_79(self, a3, a4);
+  v6 = OUTLINED_FUNCTION_5_79(self, time, a4);
   if (!v91)
   {
     v87 = 0;
@@ -1677,8 +1677,8 @@ LABEL_14:
   v9 = v92;
   if (v92)
   {
-    v10 = [v92 original];
-    OUTLINED_FUNCTION_7_68(v10, v11, v12, v13, v14, v15, v16, v17, v62, v68, v73, v78, *rhs, *&rhs[8], *&rhs[16], *&rhs[24], lhs.value, *&lhs.timescale, lhs.epoch, v85.value, *&v85.timescale, v85.epoch, time2.value);
+    original = [v92 original];
+    OUTLINED_FUNCTION_7_68(original, v11, v12, v13, v14, v15, v16, v17, v62, v68, v73, v78, *rhs, *&rhs[8], *&rhs[16], *&rhs[24], lhs.value, *&lhs.timescale, lhs.epoch, v85.value, *&v85.timescale, v85.epoch, time2.value);
     OUTLINED_FUNCTION_13_39();
     [v92 original];
   }
@@ -1710,7 +1710,7 @@ LABEL_14:
   OUTLINED_FUNCTION_9_59(v46, v47, v48, v49, v50, v51, v52, v53, v45, v66, v72, v76, *rhs, *&rhs[16], *&rhs[24], lhs.value, *&lhs.timescale, lhs.epoch, v85.value, *&v85.timescale, v85.epoch, *&time2.value, time2.epoch);
   if (v9)
   {
-    v54 = [v9 adjusted];
+    adjusted = [v9 adjusted];
   }
 
   else
@@ -1718,19 +1718,19 @@ LABEL_14:
     OUTLINED_FUNCTION_66();
   }
 
-  return OUTLINED_FUNCTION_8_55(v54, v55, v56, v57, v58, v59, v60, v61, v67, v77, v82, *rhs, *&rhs[8], *&rhs[16], *&lhs.value, lhs.epoch);
+  return OUTLINED_FUNCTION_8_55(adjusted, v55, v56, v57, v58, v59, v60, v61, v67, v77, v82, *rhs, *&rhs[8], *&rhs[16], *&lhs.value, lhs.epoch);
 }
 
 - (void)_adjustTimesInAudioInterleavingQueues
 {
-  if (a1)
+  if (self)
   {
     v32 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v62 = 0u;
     v63 = 0u;
     v64 = 0u;
     v65 = 0u;
-    obj = *(a1 + 40);
+    obj = *(self + 40);
     v33 = [obj countByEnumeratingWithState:&v62 objects:v61 count:16];
     if (v33)
     {
@@ -1750,10 +1750,10 @@ LABEL_14:
 
           v5 = *(*(&v62 + 1) + 8 * v4);
           ++v2;
-          if (*(*(a1 + 72) + 4 * v2) == 1936684398)
+          if (*(*(self + 72) + 4 * v2) == 1936684398)
           {
-            v6 = [MEMORY[0x1E695DF70] array];
-            v7 = [v32 addObject:v6];
+            array = [MEMORY[0x1E695DF70] array];
+            v7 = [v32 addObject:array];
             v59 = 0u;
             v60 = 0u;
             v57 = 0u;
@@ -1776,12 +1776,12 @@ LABEL_14:
                   cf = 0;
                   memset(&v39, 0, sizeof(v39));
                   CMSampleBufferGetPresentationTimeStamp(&v37, v19);
-                  [(BWIrisSequenceAdjuster *)a1 _adjustedTimeForAudioBufferWithTime:&v39];
+                  [(BWIrisSequenceAdjuster *)self _adjustedTimeForAudioBufferWithTime:&v39];
                   v37 = v39;
                   v34 = *v3;
                   v35 = *(v3 + 16);
                   BWCMSampleBufferCreateCopyWithNewTimingIncludingMetadata(v19, &v37, &v34, &cf);
-                  [v6 addObject:cf];
+                  [array addObject:cf];
                   CFRelease(cf);
                 }
 
@@ -1808,13 +1808,13 @@ LABEL_14:
       while (v33);
     }
 
-    *(a1 + 40) = v32;
+    *(self + 40) = v32;
   }
 }
 
-- (uint64_t)_indexOfTime:(uint64_t)a3
+- (uint64_t)_indexOfTime:(uint64_t)time
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -1823,8 +1823,8 @@ LABEL_14:
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v7 = *(a1 + 80);
-  v8 = OUTLINED_FUNCTION_16_39(a1, a2, a3, a4, a5, a6);
+  v7 = *(self + 80);
+  v8 = OUTLINED_FUNCTION_16_39(self, a2, time, a4, a5, a6);
   if (!v8)
   {
     return 0x7FFFFFFFFFFFFFFFLL;

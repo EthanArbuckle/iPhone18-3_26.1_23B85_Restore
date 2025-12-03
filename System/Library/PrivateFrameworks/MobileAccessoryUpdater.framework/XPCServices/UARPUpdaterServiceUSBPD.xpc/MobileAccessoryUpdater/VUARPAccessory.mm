@@ -1,20 +1,20 @@
 @interface VUARPAccessory
 - (BOOL)addController;
-- (BOOL)connectToUARP:(id *)a3;
-- (BOOL)fullyStaged:(id)a3 error:(id *)a4;
-- (BOOL)payloadData:(id)a3 offset:(unint64_t)a4 asset:(id)a5 error:(id *)a6;
-- (BOOL)payloadDataComplete:(id)a3 error:(id *)a4;
-- (BOOL)payloadReady:(id)a3 error:(id *)a4;
+- (BOOL)connectToUARP:(id *)p;
+- (BOOL)fullyStaged:(id)staged error:(id *)error;
+- (BOOL)payloadData:(id)data offset:(unint64_t)offset asset:(id)asset error:(id *)error;
+- (BOOL)payloadDataComplete:(id)complete error:(id *)error;
+- (BOOL)payloadReady:(id)ready error:(id *)error;
 - (BOOL)removeController;
-- (BOOL)uarpApplyStagedAssets:(id)a3 flags:(unsigned __int16 *)a4 error:(id *)a5;
-- (BOOL)uarpAssetSolicited:(id)a3 tag:(UARP4ccTag *)a4 error:(id *)a5;
-- (BOOL)uarpDynamicAssetOffered:(id)a3 asset:(uarpPlatformAsset *)a4 error:(id *)a5;
-- (BOOL)uarpLastError:(unsigned int *)a3 lastAction:(unsigned int *)a4;
-- (BOOL)uarpRescindAllAssets:(id)a3 error:(id *)a4;
-- (BOOL)uarpSendMessage:(id)a3 controller:(id)a4 error:(id *)a5;
-- (BOOL)uarpSuperBinaryOffered:(id)a3 asset:(uarpPlatformAsset *)a4 error:(id *)a5;
-- (BOOL)uarpTransferPause:(id)a3 error:(id *)a4;
-- (BOOL)uarpTransferResume:(id)a3 error:(id *)a4;
+- (BOOL)uarpApplyStagedAssets:(id)assets flags:(unsigned __int16 *)flags error:(id *)error;
+- (BOOL)uarpAssetSolicited:(id)solicited tag:(UARP4ccTag *)tag error:(id *)error;
+- (BOOL)uarpDynamicAssetOffered:(id)offered asset:(uarpPlatformAsset *)asset error:(id *)error;
+- (BOOL)uarpLastError:(unsigned int *)error lastAction:(unsigned int *)action;
+- (BOOL)uarpRescindAllAssets:(id)assets error:(id *)error;
+- (BOOL)uarpSendMessage:(id)message controller:(id)controller error:(id *)error;
+- (BOOL)uarpSuperBinaryOffered:(id)offered asset:(uarpPlatformAsset *)asset error:(id *)error;
+- (BOOL)uarpTransferPause:(id)pause error:(id *)error;
+- (BOOL)uarpTransferResume:(id)resume error:(id *)error;
 - (NSString)appleModelNumber;
 - (NSString)expectedTag;
 - (NSString)hardwareVersion;
@@ -25,8 +25,8 @@
 - (UARPAssetVersion)fwActiveVersion;
 - (UARPAssetVersion)fwStagedVersion;
 - (VUARPAccessory)init;
-- (VUARPAccessory)initWithDelegate:(id)a3 options:(uarpPlatformOptionsObj *)a4;
-- (unsigned)recvMessage:(id)a3;
+- (VUARPAccessory)initWithDelegate:(id)delegate options:(uarpPlatformOptionsObj *)options;
+- (unsigned)recvMessage:(id)message;
 - (void)disconnectFromUARP;
 @end
 
@@ -39,9 +39,9 @@
   return 0;
 }
 
-- (VUARPAccessory)initWithDelegate:(id)a3 options:(uarpPlatformOptionsObj *)a4
+- (VUARPAccessory)initWithDelegate:(id)delegate options:(uarpPlatformOptionsObj *)options
 {
-  v6 = a3;
+  delegateCopy = delegate;
   v19.receiver = self;
   v19.super_class = VUARPAccessory;
   v7 = [(VUARPAccessory *)&v19 init];
@@ -55,7 +55,7 @@
     v11 = *(v7 + 2);
     *(v7 + 2) = v10;
 
-    objc_storeWeak(v7 + 238, v6);
+    objc_storeWeak(v7 + 238, delegateCopy);
     *(v7 + 159) = sub_100011F38;
     *(v7 + 160) = sub_100011F90;
     *(v7 + 161) = sub_100011FA0;
@@ -75,9 +75,9 @@
     *(v7 + 184) = sub_1000124C0;
     *(v7 + 187) = sub_100012520;
     *(v7 + 188) = sub_100012550;
-    v12 = *&a4->maxTxPayloadLength;
-    v13 = *&a4->responseTimeout;
-    *(v7 + 233) = *&a4->upgradeOnly;
+    v12 = *&options->maxTxPayloadLength;
+    v13 = *&options->responseTimeout;
+    *(v7 + 233) = *&options->upgradeOnly;
     *(v7 + 1832) = v12;
     *(v7 + 1848) = v13;
     *(v7 + 93) = sub_10001255C;
@@ -115,7 +115,7 @@
   return uarpPlatformRemoteEndpointRemove(&self->_uarpAccessoryInternal, [(VUARPController *)self->_remoteEndpoint uarpRemoteEndpoint]) == 0;
 }
 
-- (BOOL)connectToUARP:(id *)a3
+- (BOOL)connectToUARP:(id *)p
 {
   v4 = objc_alloc_init(VUARPController);
   remoteEndpoint = self->_remoteEndpoint;
@@ -141,19 +141,19 @@
   dispatch_async(queue, block);
 }
 
-- (BOOL)uarpSendMessage:(id)a3 controller:(id)a4 error:(id *)a5
+- (BOOL)uarpSendMessage:(id)message controller:(id)controller error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  messageCopy = message;
+  controllerCopy = controller;
   remoteEndpoint = self->_remoteEndpoint;
-  if (remoteEndpoint == v8)
+  if (remoteEndpoint == controllerCopy)
   {
     v21[0] = 0;
     v21[1] = v21;
     v21[2] = 0x3032000000;
     v21[3] = sub_1000129AC;
     v21[4] = sub_1000129BC;
-    v22 = [NSData dataWithData:v7];
+    v22 = [NSData dataWithData:messageCopy];
     queue = self->_queue;
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
@@ -174,14 +174,14 @@
     }
   }
 
-  return remoteEndpoint == v8;
+  return remoteEndpoint == controllerCopy;
 }
 
-- (BOOL)uarpTransferPause:(id)a3 error:(id *)a4
+- (BOOL)uarpTransferPause:(id)pause error:(id *)error
 {
-  v5 = a3;
+  pauseCopy = pause;
   remoteEndpoint = self->_remoteEndpoint;
-  if (remoteEndpoint == v5)
+  if (remoteEndpoint == pauseCopy)
   {
     [(VUARPController *)self->_remoteEndpoint pauseDataTransfer];
   }
@@ -195,14 +195,14 @@
     }
   }
 
-  return remoteEndpoint == v5;
+  return remoteEndpoint == pauseCopy;
 }
 
-- (BOOL)uarpTransferResume:(id)a3 error:(id *)a4
+- (BOOL)uarpTransferResume:(id)resume error:(id *)error
 {
-  v5 = a3;
+  resumeCopy = resume;
   remoteEndpoint = self->_remoteEndpoint;
-  if (remoteEndpoint == v5)
+  if (remoteEndpoint == resumeCopy)
   {
     [(VUARPController *)self->_remoteEndpoint resumeDataTransfer];
   }
@@ -216,15 +216,15 @@
     }
   }
 
-  return remoteEndpoint == v5;
+  return remoteEndpoint == resumeCopy;
 }
 
-- (BOOL)uarpSuperBinaryOffered:(id)a3 asset:(uarpPlatformAsset *)a4 error:(id *)a5
+- (BOOL)uarpSuperBinaryOffered:(id)offered asset:(uarpPlatformAsset *)asset error:(id *)error
 {
-  v7 = a3;
-  if (self->_remoteEndpoint == v7)
+  offeredCopy = offered;
+  if (self->_remoteEndpoint == offeredCopy)
   {
-    v17 = [[VUARPAsset alloc] initWithLayer2Asset:a4 controller:self->_remoteEndpoint];
+    v17 = [[VUARPAsset alloc] initWithLayer2Asset:asset controller:self->_remoteEndpoint];
     [(NSMutableArray *)self->_assets addObject:v17];
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
@@ -233,7 +233,7 @@
       *buf = 138412802;
       v28 = v17;
       v29 = 2112;
-      v30 = self;
+      selfCopy = self;
       v31 = 2112;
       v32 = remoteEndpoint;
       _os_log_debug_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEBUG, "Asset %@ offered to accessory %@ from controller %@", buf, 0x20u);
@@ -241,15 +241,15 @@
 
     v26 = 0;
     *buf = 0;
-    if (uarpPlatformEndpointAssetIsAcceptable(&self->_uarpAccessoryInternal._options.maxTxPayloadLength, a4, &v26, buf))
+    if (uarpPlatformEndpointAssetIsAcceptable(&self->_uarpAccessoryInternal._options.maxTxPayloadLength, asset, &v26, buf))
     {
       goto LABEL_8;
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v20 = [WeakRetained vuarpStageAllowed];
+    vuarpStageAllowed = [WeakRetained vuarpStageAllowed];
 
-    if (v20)
+    if (vuarpStageAllowed)
     {
       if (v26)
       {
@@ -258,12 +258,12 @@
           sub_1000268C0();
         }
 
-        if (!uarpPlatformEndpointAssetAccept(&self->_uarpAccessoryInternal, [(VUARPController *)self->_remoteEndpoint uarpRemoteEndpoint], a4, v17, [(VUARPAsset *)v17 uarpCallbacks]))
+        if (!uarpPlatformEndpointAssetAccept(&self->_uarpAccessoryInternal, [(VUARPController *)self->_remoteEndpoint uarpRemoteEndpoint], asset, v17, [(VUARPAsset *)v17 uarpCallbacks]))
         {
           v21 = objc_loadWeakRetained(&self->_delegate);
-          v22 = [v21 vuarpAssetOffered];
+          vuarpAssetOffered = [v21 vuarpAssetOffered];
 
-          if (v22)
+          if (vuarpAssetOffered)
           {
             v16 = 1;
             self->_isStaging = 1;
@@ -300,8 +300,8 @@ LABEL_22:
       sub_100026998();
     }
 
-    v23 = [(VUARPController *)self->_remoteEndpoint uarpRemoteEndpoint];
-    v16 = uarpPlatformEndpointAssetDeny(&self->_uarpAccessoryInternal, v23, a4, *buf, v17, [(VUARPAsset *)v17 uarpCallbacks]) == 0;
+    uarpRemoteEndpoint = [(VUARPController *)self->_remoteEndpoint uarpRemoteEndpoint];
+    v16 = uarpPlatformEndpointAssetDeny(&self->_uarpAccessoryInternal, uarpRemoteEndpoint, asset, *buf, v17, [(VUARPAsset *)v17 uarpCallbacks]) == 0;
     goto LABEL_22;
   }
 
@@ -317,13 +317,13 @@ LABEL_23:
   return v16;
 }
 
-- (BOOL)uarpDynamicAssetOffered:(id)a3 asset:(uarpPlatformAsset *)a4 error:(id *)a5
+- (BOOL)uarpDynamicAssetOffered:(id)offered asset:(uarpPlatformAsset *)asset error:(id *)error
 {
-  v7 = a3;
+  offeredCopy = offered;
   remoteEndpoint = self->_remoteEndpoint;
-  if (remoteEndpoint == v7)
+  if (remoteEndpoint == offeredCopy)
   {
-    uarpPlatformEndpointAssetDeny(&self->_uarpAccessoryInternal, [(VUARPController *)self->_remoteEndpoint uarpRemoteEndpoint], a4, 3072, 0, 0);
+    uarpPlatformEndpointAssetDeny(&self->_uarpAccessoryInternal, [(VUARPController *)self->_remoteEndpoint uarpRemoteEndpoint], asset, 3072, 0, 0);
   }
 
   else
@@ -335,27 +335,27 @@ LABEL_23:
     }
   }
 
-  return remoteEndpoint == v7;
+  return remoteEndpoint == offeredCopy;
 }
 
-- (BOOL)uarpApplyStagedAssets:(id)a3 flags:(unsigned __int16 *)a4 error:(id *)a5
+- (BOOL)uarpApplyStagedAssets:(id)assets flags:(unsigned __int16 *)flags error:(id *)error
 {
-  v7 = a3;
-  if (self->_remoteEndpoint == v7)
+  assetsCopy = assets;
+  if (self->_remoteEndpoint == assetsCopy)
   {
     if (self->_isStaging)
     {
-      *a4 = 5;
+      *flags = 5;
       v16 = 1;
     }
 
     else
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
-      v18 = [WeakRetained vuarpApplyStagedAssets];
+      vuarpApplyStagedAssets = [WeakRetained vuarpApplyStagedAssets];
 
-      v16 = v18 == 1;
-      *a4 = v18;
+      v16 = vuarpApplyStagedAssets == 1;
+      *flags = vuarpApplyStagedAssets;
     }
   }
 
@@ -373,13 +373,13 @@ LABEL_23:
   return v16;
 }
 
-- (BOOL)uarpAssetSolicited:(id)a3 tag:(UARP4ccTag *)a4 error:(id *)a5
+- (BOOL)uarpAssetSolicited:(id)solicited tag:(UARP4ccTag *)tag error:(id *)error
 {
-  v7 = a3;
-  if (self->_remoteEndpoint == v7)
+  solicitedCopy = solicited;
+  if (self->_remoteEndpoint == solicitedCopy)
   {
     v17 = uarpAssetTagStructLogs();
-    if (uarp4ccCompare(&a4->char1, v17))
+    if (uarp4ccCompare(&tag->char1, v17))
     {
       log = self->_log;
       if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
@@ -391,7 +391,7 @@ LABEL_23:
     else
     {
       v26 = uarpAssetTagStructAnalytics();
-      v27 = uarp4ccCompare(&a4->char1, v26);
+      v27 = uarp4ccCompare(&tag->char1, v26);
       v28 = self->_log;
       v29 = os_log_type_enabled(v28, OS_LOG_TYPE_ERROR);
       if (!v27)
@@ -401,7 +401,7 @@ LABEL_23:
           sub_100026B68(v28, v30, v31, v32, v33, v34, v35, v36);
         }
 
-        uarpPlatformEndpointDynamicAssetSolicitationDeny(&self->_uarpAccessoryInternal, [(VUARPController *)self->_remoteEndpoint uarpRemoteEndpoint], a4, 3072);
+        uarpPlatformEndpointDynamicAssetSolicitationDeny(&self->_uarpAccessoryInternal, [(VUARPController *)self->_remoteEndpoint uarpRemoteEndpoint], tag, 3072);
         goto LABEL_4;
       }
 
@@ -411,10 +411,10 @@ LABEL_23:
       }
     }
 
-    v37 = [[UARPAssetTag alloc] initWithChar1:a4->char1 char2:a4->char2 char3:a4->char3 char4:a4->char4];
+    v37 = [[UARPAssetTag alloc] initWithChar1:tag->char1 char2:tag->char2 char3:tag->char3 char4:tag->char4];
     v38 = [[VUARPAsset alloc] initSolicitedDynamicAsset:v37 controller:self->_remoteEndpoint];
     [(NSMutableArray *)self->_txAssets addObject:v38];
-    if (uarpPlatformEndpointPrepareDynamicAsset(&self->_uarpAccessoryInternal, -[VUARPController uarpRemoteEndpoint](self->_remoteEndpoint, "uarpRemoteEndpoint"), v38, a4, [v38 uarpCallbacks]))
+    if (uarpPlatformEndpointPrepareDynamicAsset(&self->_uarpAccessoryInternal, -[VUARPController uarpRemoteEndpoint](self->_remoteEndpoint, "uarpRemoteEndpoint"), v38, tag, [v38 uarpCallbacks]))
     {
       v39 = self->_log;
       if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
@@ -451,7 +451,7 @@ LABEL_23:
           sub_100026D48(v57, v58, v59, v60, v61, v62, v63, v64);
         }
 
-        uarpPlatformEndpointDynamicAssetSolicitationDeny(&self->_uarpAccessoryInternal, [(VUARPController *)self->_remoteEndpoint uarpRemoteEndpoint], a4, 2304);
+        uarpPlatformEndpointDynamicAssetSolicitationDeny(&self->_uarpAccessoryInternal, [(VUARPController *)self->_remoteEndpoint uarpRemoteEndpoint], tag, 2304);
       }
     }
 
@@ -474,15 +474,15 @@ LABEL_26:
   return v16;
 }
 
-- (BOOL)uarpRescindAllAssets:(id)a3 error:(id *)a4
+- (BOOL)uarpRescindAllAssets:(id)assets error:(id *)error
 {
-  v5 = a3;
-  if (self->_remoteEndpoint == v5)
+  assetsCopy = assets;
+  if (self->_remoteEndpoint == assetsCopy)
   {
     [(NSMutableArray *)self->_assets removeAllObjects];
     self->_isStaging = 0;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v14 = [WeakRetained vuarpRescindStagedAssets];
+    vuarpRescindStagedAssets = [WeakRetained vuarpRescindStagedAssets];
   }
 
   else
@@ -493,73 +493,73 @@ LABEL_26:
       sub_100026E38(log, v7, v8, v9, v10, v11, v12, v13);
     }
 
-    v14 = 0;
+    vuarpRescindStagedAssets = 0;
   }
 
-  return v14;
+  return vuarpRescindStagedAssets;
 }
 
-- (BOOL)payloadReady:(id)a3 error:(id *)a4
+- (BOOL)payloadReady:(id)ready error:(id *)error
 {
-  v5 = a3;
+  readyCopy = ready;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v7 = [v5 payloadAssetTag];
+  payloadAssetTag = [readyCopy payloadAssetTag];
 
-  LOBYTE(v5) = [WeakRetained vuarpFirmwarePayloadReady:v7];
-  return v5;
+  LOBYTE(readyCopy) = [WeakRetained vuarpFirmwarePayloadReady:payloadAssetTag];
+  return readyCopy;
 }
 
-- (BOOL)payloadData:(id)a3 offset:(unint64_t)a4 asset:(id)a5 error:(id *)a6
+- (BOOL)payloadData:(id)data offset:(unint64_t)offset asset:(id)asset error:(id *)error
 {
-  v9 = a5;
-  v10 = a3;
+  assetCopy = asset;
+  dataCopy = data;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v12 = [v9 payloadAssetTag];
+  payloadAssetTag = [assetCopy payloadAssetTag];
 
-  LOBYTE(a4) = [WeakRetained vuarpFirmwarePayloadData:v12 data:v10 offset:a4];
-  return a4;
+  LOBYTE(offset) = [WeakRetained vuarpFirmwarePayloadData:payloadAssetTag data:dataCopy offset:offset];
+  return offset;
 }
 
-- (BOOL)payloadDataComplete:(id)a3 error:(id *)a4
+- (BOOL)payloadDataComplete:(id)complete error:(id *)error
 {
-  v5 = a3;
+  completeCopy = complete;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v7 = [v5 payloadAssetTag];
+  payloadAssetTag = [completeCopy payloadAssetTag];
 
-  LOBYTE(v5) = [WeakRetained vuarpFirmwarePayloadComplete:v7];
-  return v5;
+  LOBYTE(completeCopy) = [WeakRetained vuarpFirmwarePayloadComplete:payloadAssetTag];
+  return completeCopy;
 }
 
-- (BOOL)fullyStaged:(id)a3 error:(id *)a4
+- (BOOL)fullyStaged:(id)staged error:(id *)error
 {
   self->_isStaging = 0;
-  v5 = a3;
+  stagedCopy = staged;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v7 = [v5 assetVersion];
-  v8 = [WeakRetained vuarpAssetFullyStaged:v7];
+  assetVersion = [stagedCopy assetVersion];
+  v8 = [WeakRetained vuarpAssetFullyStaged:assetVersion];
 
-  v9 = [v5 uarpAsset];
-  return (uarpPlatformEndpointAssetFullyStaged(&self->_uarpAccessoryInternal, v9) == 0) & v8;
+  uarpAsset = [stagedCopy uarpAsset];
+  return (uarpPlatformEndpointAssetFullyStaged(&self->_uarpAccessoryInternal, uarpAsset) == 0) & v8;
 }
 
-- (unsigned)recvMessage:(id)a3
+- (unsigned)recvMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v11[0] = 0;
   v11[1] = v11;
   v11[2] = 0x3032000000;
   v11[3] = sub_1000129AC;
   v11[4] = sub_1000129BC;
-  v12 = [NSData dataWithData:v4];
+  v12 = [NSData dataWithData:messageCopy];
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100013544;
   block[3] = &unk_100040830;
-  v9 = v4;
+  v9 = messageCopy;
   v10 = v11;
   block[4] = self;
-  v6 = v4;
+  v6 = messageCopy;
   dispatch_async(queue, block);
 
   _Block_object_dispose(v11, 8);
@@ -569,81 +569,81 @@ LABEL_26:
 - (NSString)manufacturerName
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v3 = [WeakRetained vuarpManufacturerName];
+  vuarpManufacturerName = [WeakRetained vuarpManufacturerName];
 
-  return v3;
+  return vuarpManufacturerName;
 }
 
 - (NSString)modelName
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v3 = [WeakRetained vuarpModelName];
+  vuarpModelName = [WeakRetained vuarpModelName];
 
-  return v3;
+  return vuarpModelName;
 }
 
 - (NSString)serialNumber
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v3 = [WeakRetained vuarpSerialNumber];
+  vuarpSerialNumber = [WeakRetained vuarpSerialNumber];
 
-  return v3;
+  return vuarpSerialNumber;
 }
 
 - (NSString)hardwareVersion
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v3 = [WeakRetained vuarpHardwareVersion];
+  vuarpHardwareVersion = [WeakRetained vuarpHardwareVersion];
 
-  return v3;
+  return vuarpHardwareVersion;
 }
 
 - (UARPAssetVersion)fwActiveVersion
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v3 = [WeakRetained vuarpActiveFirmwareVersion];
+  vuarpActiveFirmwareVersion = [WeakRetained vuarpActiveFirmwareVersion];
 
-  return v3;
+  return vuarpActiveFirmwareVersion;
 }
 
 - (UARPAssetVersion)fwStagedVersion
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v3 = [WeakRetained vuarpStagedFirmwareVersion];
+  vuarpStagedFirmwareVersion = [WeakRetained vuarpStagedFirmwareVersion];
 
-  return v3;
+  return vuarpStagedFirmwareVersion;
 }
 
 - (NSString)appleModelNumber
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v3 = [WeakRetained vuarpAppleModelNumber];
+  vuarpAppleModelNumber = [WeakRetained vuarpAppleModelNumber];
 
-  return v3;
+  return vuarpAppleModelNumber;
 }
 
 - (NSString)hwFusingType
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v3 = [WeakRetained vuarpHwFusingType];
+  vuarpHwFusingType = [WeakRetained vuarpHwFusingType];
 
-  return v3;
+  return vuarpHwFusingType;
 }
 
-- (BOOL)uarpLastError:(unsigned int *)a3 lastAction:(unsigned int *)a4
+- (BOOL)uarpLastError:(unsigned int *)error lastAction:(unsigned int *)action
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  LOBYTE(a4) = [WeakRetained vuarpLastError:a3 lastAction:a4];
+  LOBYTE(action) = [WeakRetained vuarpLastError:error lastAction:action];
 
-  return a4;
+  return action;
 }
 
 - (NSString)expectedTag
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v3 = [WeakRetained vuarpExpectedTag];
+  vuarpExpectedTag = [WeakRetained vuarpExpectedTag];
 
-  return v3;
+  return vuarpExpectedTag;
 }
 
 @end

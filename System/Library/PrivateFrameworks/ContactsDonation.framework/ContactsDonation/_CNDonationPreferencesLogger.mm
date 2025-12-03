@@ -1,7 +1,7 @@
 @interface _CNDonationPreferencesLogger
 - (_CNDonationPreferencesLogger)init;
-- (void)isDonationsEnabled:(BOOL)a3;
-- (void)setDonationsEnabled:(BOOL)a3;
+- (void)isDonationsEnabled:(BOOL)enabled;
+- (void)setDonationsEnabled:(BOOL)enabled;
 @end
 
 @implementation _CNDonationPreferencesLogger
@@ -23,31 +23,31 @@
   return v2;
 }
 
-- (void)isDonationsEnabled:(BOOL)a3
+- (void)isDonationsEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v7 = *MEMORY[0x277D85DE8];
-  v4 = [(_CNDonationPreferencesLogger *)self log_t];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
+  log_t = [(_CNDonationPreferencesLogger *)self log_t];
+  if (os_log_type_enabled(log_t, OS_LOG_TYPE_INFO))
   {
     v6[0] = 67109120;
-    v6[1] = v3;
-    _os_log_impl(&dword_2258E5000, v4, OS_LOG_TYPE_INFO, "-isDonationsEnabled: %d", v6, 8u);
+    v6[1] = enabledCopy;
+    _os_log_impl(&dword_2258E5000, log_t, OS_LOG_TYPE_INFO, "-isDonationsEnabled: %d", v6, 8u);
   }
 
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setDonationsEnabled:(BOOL)a3
+- (void)setDonationsEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v7 = *MEMORY[0x277D85DE8];
-  v4 = [(_CNDonationPreferencesLogger *)self log_t];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
+  log_t = [(_CNDonationPreferencesLogger *)self log_t];
+  if (os_log_type_enabled(log_t, OS_LOG_TYPE_INFO))
   {
     v6[0] = 67109120;
-    v6[1] = v3;
-    _os_log_impl(&dword_2258E5000, v4, OS_LOG_TYPE_INFO, "-setDonationsEnabled: %d", v6, 8u);
+    v6[1] = enabledCopy;
+    _os_log_impl(&dword_2258E5000, log_t, OS_LOG_TYPE_INFO, "-setDonationsEnabled: %d", v6, 8u);
   }
 
   v5 = *MEMORY[0x277D85DE8];

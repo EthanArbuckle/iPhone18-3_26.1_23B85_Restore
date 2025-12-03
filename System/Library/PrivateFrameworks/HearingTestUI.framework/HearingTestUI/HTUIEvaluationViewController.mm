@@ -1,15 +1,15 @@
 @interface HTUIEvaluationViewController
-- (_TtC13HearingTestUI28HTUIEvaluationViewController)initWithCoder:(id)a3;
-- (_TtC13HearingTestUI28HTUIEvaluationViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC13HearingTestUI28HTUIEvaluationViewController)initWithCoder:(id)coder;
+- (_TtC13HearingTestUI28HTUIEvaluationViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)loadView;
 - (void)pauseHearingTestSession;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
 @implementation HTUIEvaluationViewController
 
-- (_TtC13HearingTestUI28HTUIEvaluationViewController)initWithCoder:(id)a3
+- (_TtC13HearingTestUI28HTUIEvaluationViewController)initWithCoder:(id)coder
 {
   sub_20CE13B84();
   sub_20CE13B74();
@@ -19,7 +19,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = a3;
+  coderCopy = coder;
   sub_20CDD8D50();
 }
 
@@ -34,9 +34,9 @@
   }
 
   v3 = objc_allocWithZone(type metadata accessor for HTUIEvaluationViewController.View());
-  v5 = self;
-  v4 = [v3 initWithFrame_];
-  [(HTUIEvaluationViewController *)v5 setView:v4];
+  selfCopy = self;
+  initWithFrame_ = [v3 initWithFrame_];
+  [(HTUIEvaluationViewController *)selfCopy setView:initWithFrame_];
 }
 
 - (void)viewDidLoad
@@ -57,7 +57,7 @@
   v8 = type metadata accessor for HTUIEvaluationViewController();
   v10.receiver = self;
   v10.super_class = v8;
-  v9 = self;
+  selfCopy = self;
   [(HTUIEvaluationViewController *)&v10 viewDidLoad];
   sub_20CDD1D3C();
   sub_20CDD2764();
@@ -67,7 +67,7 @@
   (*(v4 + 8))(v7, v3);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   sub_20CE13B84();
   sub_20CE13B74();
@@ -77,11 +77,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = self;
-  sub_20CDD16A4(a3);
+  selfCopy = self;
+  sub_20CDD16A4(appear);
 }
 
-- (_TtC13HearingTestUI28HTUIEvaluationViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC13HearingTestUI28HTUIEvaluationViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   sub_20CE13B84();
   sub_20CE13B74();
@@ -108,7 +108,7 @@
 
   if (*(&self->super.super.super.isa + OBJC_IVAR____TtC13HearingTestUI28HTUIEvaluationViewController_sessionManager))
   {
-    v3 = self;
+    selfCopy = self;
 
     sub_20CD75A38();
 

@@ -1,29 +1,29 @@
 @interface BluetoothHCEAndTransactionSession
-+ (void)startFirstApproachForKeyWithIdentifier:(id)a3;
-- (BluetoothHCEAndTransactionSession)initWithDelegate:(id)a3;
++ (void)startFirstApproachForKeyWithIdentifier:(id)identifier;
+- (BluetoothHCEAndTransactionSession)initWithDelegate:(id)delegate;
 - (id)readAPDU;
-- (id)sendAPDU:(id)a3;
+- (id)sendAPDU:(id)u;
 - (void)dealloc;
 - (void)endSession;
-- (void)pairingEndedWithResult:(id)a3;
+- (void)pairingEndedWithResult:(id)result;
 - (void)startHceEmulation;
-- (void)startTransactionEmulationForKeyWithIdentifier:(id)a3;
+- (void)startTransactionEmulationForKeyWithIdentifier:(id)identifier;
 - (void)stopHceEmulation;
 - (void)stopTransactionEmulation;
 @end
 
 @implementation BluetoothHCEAndTransactionSession
 
-- (BluetoothHCEAndTransactionSession)initWithDelegate:(id)a3
+- (BluetoothHCEAndTransactionSession)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = BluetoothHCEAndTransactionSession;
   v5 = [(BluetoothHCEAndTransactionSession *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->delegate, v4);
+    objc_storeWeak(&v5->delegate, delegateCopy);
     v6->lock._os_unfair_lock_opaque = 0;
   }
 
@@ -64,13 +64,13 @@
   [v2 stopHceEmulation];
 }
 
-- (void)startTransactionEmulationForKeyWithIdentifier:(id)a3
+- (void)startTransactionEmulationForKeyWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v5 = +[_TtC10seserviced21AlishaPairingExternal shared];
-  v4 = [v3 hexStringAsData];
+  hexStringAsData = [identifierCopy hexStringAsData];
 
-  [v5 startTransactionEmulationFor:v4];
+  [v5 startTransactionEmulationFor:hexStringAsData];
 }
 
 - (void)stopTransactionEmulation
@@ -79,11 +79,11 @@
   [v2 stopTransactionEmulation];
 }
 
-- (void)pairingEndedWithResult:(id)a3
+- (void)pairingEndedWithResult:(id)result
 {
-  v3 = a3;
+  resultCopy = result;
   v4 = +[_TtC10seserviced21AlishaPairingExternal shared];
-  [v4 pairingEndedWithError:v3];
+  [v4 pairingEndedWithError:resultCopy];
 }
 
 - (void)endSession
@@ -95,27 +95,27 @@
 - (id)readAPDU
 {
   v2 = +[_TtC10seserviced21AlishaPairingExternal shared];
-  v3 = [v2 readAPDU];
+  readAPDU = [v2 readAPDU];
 
-  return v3;
+  return readAPDU;
 }
 
-- (id)sendAPDU:(id)a3
+- (id)sendAPDU:(id)u
 {
-  v3 = a3;
+  uCopy = u;
   v4 = +[_TtC10seserviced21AlishaPairingExternal shared];
-  v5 = [v4 sendAPDU:v3];
+  v5 = [v4 sendAPDU:uCopy];
 
   return v5;
 }
 
-+ (void)startFirstApproachForKeyWithIdentifier:(id)a3
++ (void)startFirstApproachForKeyWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v5 = +[_TtC10seserviced21AlishaPairingExternal shared];
-  v4 = [v3 hexStringAsData];
+  hexStringAsData = [identifierCopy hexStringAsData];
 
-  [v5 requestFirstApproachFor:v4];
+  [v5 requestFirstApproachFor:hexStringAsData];
 }
 
 @end

@@ -1,5 +1,5 @@
 @interface _UIResponder_Override_Host_Entry
-+ (id)entryWithResponder:(id)a3 forType:(int64_t)a4;
++ (id)entryWithResponder:(id)responder forType:(int64_t)type;
 - (UIResponder)overridden;
 - (id)description;
 - (unint64_t)hash;
@@ -7,15 +7,15 @@
 
 @implementation _UIResponder_Override_Host_Entry
 
-+ (id)entryWithResponder:(id)a3 forType:(int64_t)a4
++ (id)entryWithResponder:(id)responder forType:(int64_t)type
 {
-  v5 = a3;
+  responderCopy = responder;
   v6 = objc_opt_new();
   v7 = v6;
   if (v6)
   {
-    objc_storeWeak((v6 + 8), v5);
-    v7[2] = a4;
+    objc_storeWeak((v6 + 8), responderCopy);
+    v7[2] = type;
   }
 
   return v7;

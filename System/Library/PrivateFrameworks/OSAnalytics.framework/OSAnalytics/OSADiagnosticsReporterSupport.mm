@@ -1,5 +1,5 @@
 @interface OSADiagnosticsReporterSupport
-+ (void)handleDiagnosticLog:(int64_t)a3 logPath:(id)a4 completion:(id)a5;
++ (void)handleDiagnosticLog:(int64_t)log logPath:(id)path completion:(id)completion;
 + (void)initAlertDelegate;
 @end
 
@@ -22,10 +22,10 @@
   }
 }
 
-+ (void)handleDiagnosticLog:(int64_t)a3 logPath:(id)a4 completion:(id)a5
++ (void)handleDiagnosticLog:(int64_t)log logPath:(id)path completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
+  pathCopy = path;
+  completionCopy = completion;
   if (OSAIsFeedbackPromptingEnabled())
   {
     if (DiagnosticsReporterServicesLibraryCore())
@@ -53,16 +53,16 @@
       if (objc_opt_class() && objc_opt_class())
       {
         v11 = objc_opt_new();
-        [v11 setLog_path:v7];
-        v12 = MEMORY[0x1B2703360](v8);
+        [v11 setLog_path:pathCopy];
+        v12 = MEMORY[0x1B2703360](completionCopy);
         v13 = v12;
-        if (!v8)
+        if (!completionCopy)
         {
 
           v13 = &__block_literal_global_0;
         }
 
-        [handleDiagnosticLog_logPath_completion__OSADiagnosticsReporterClass launchAppWith:a3 options:v11 completion:v13];
+        [handleDiagnosticLog_logPath_completion__OSADiagnosticsReporterClass launchAppWith:log options:v11 completion:v13];
       }
 
       else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))

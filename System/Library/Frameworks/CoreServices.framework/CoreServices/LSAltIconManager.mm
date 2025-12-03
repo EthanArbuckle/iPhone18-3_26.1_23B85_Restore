@@ -1,13 +1,13 @@
 @interface LSAltIconManager
 + (id)sharedInstance;
-- (BOOL)_setAlternateIconName:(id)a3 forIdentifier:(id)a4 withIconsDictionary:(id)a5 error:(id *)a6;
-- (BOOL)isValidAlternateIcon:(id)a3 forIconsDict:(id)a4;
+- (BOOL)_setAlternateIconName:(id)name forIdentifier:(id)identifier withIconsDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isValidAlternateIcon:(id)icon forIconsDict:(id)dict;
 - (LSAltIconManager)init;
-- (id)_getPreferredIconNameForIdentifier:(id)a3;
-- (id)alternateIconNameForIdentifier:(id)a3 error:(id *)a4;
-- (void)changeIconWithAlertForApplicationIdentity:(id)a3 withIconsDictionary:(id)a4 toAlternateIconName:(id)a5 completion:(id)a6;
-- (void)clearAlternateNameForBundleIdentifier:(id)a3 validationDictionary:(id)a4;
-- (void)setAlternateIconName:(id)a3 forIdentifier:(id)a4 iconsDictionary:(id)a5 reply:(id)a6;
+- (id)_getPreferredIconNameForIdentifier:(id)identifier;
+- (id)alternateIconNameForIdentifier:(id)identifier error:(id *)error;
+- (void)changeIconWithAlertForApplicationIdentity:(id)identity withIconsDictionary:(id)dictionary toAlternateIconName:(id)name completion:(id)completion;
+- (void)clearAlternateNameForBundleIdentifier:(id)identifier validationDictionary:(id)dictionary;
+- (void)setAlternateIconName:(id)name forIdentifier:(id)identifier iconsDictionary:(id)dictionary reply:(id)reply;
 @end
 
 @implementation LSAltIconManager
@@ -46,17 +46,17 @@ void __34__LSAltIconManager_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)clearAlternateNameForBundleIdentifier:(id)a3 validationDictionary:(id)a4
+- (void)clearAlternateNameForBundleIdentifier:(id)identifier validationDictionary:(id)dictionary
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  identifierCopy = identifier;
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
-    v8 = [(LSAltIconManager *)self _getPreferredIconNameForIdentifier:v6];
+    v8 = [(LSAltIconManager *)self _getPreferredIconNameForIdentifier:identifierCopy];
     if (v8)
     {
-      v9 = ![(LSAltIconManager *)self isValidAlternateIcon:v8 forIconsDict:v7];
+      v9 = ![(LSAltIconManager *)self isValidAlternateIcon:v8 forIconsDict:dictionaryCopy];
     }
 
     else
@@ -87,26 +87,26 @@ void __34__LSAltIconManager_sharedInstance__block_invoke()
     v13 = 138412546;
     v14 = v11;
     v15 = 2112;
-    v16 = v6;
+    v16 = identifierCopy;
     _os_log_impl(&dword_18162D000, v10, OS_LOG_TYPE_DEFAULT, "clearAlternateNameForBundleIdentifier: %@ clear for %@", &v13, 0x16u);
   }
 
   if (v9)
   {
-    [(LSAltIconManager *)self _setPreferredIconName:0 forIdentifier:v6];
+    [(LSAltIconManager *)self _setPreferredIconName:0 forIdentifier:identifierCopy];
   }
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)alternateIconNameForIdentifier:(id)a3 error:(id *)a4
+- (id)alternateIconNameForIdentifier:(id)identifier error:(id *)error
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v5 = [(LSAltIconManager *)self _getPreferredIconNameForIdentifier:a3];
+  v5 = [(LSAltIconManager *)self _getPreferredIconNameForIdentifier:identifier];
   if (v5)
   {
     v6 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_4;
     }
@@ -119,11 +119,11 @@ void __34__LSAltIconManager_sharedInstance__block_invoke()
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
   v6 = _LSMakeNSErrorImpl(@"LSApplicationWorkspaceErrorDomain", 109, v10, "[LSAltIconManager alternateIconNameForIdentifier:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Workspace/LSAltIconManager.m", 96);
 
-  if (a4)
+  if (error)
   {
 LABEL_3:
     v7 = v6;
-    *a4 = v6;
+    *error = v6;
   }
 
 LABEL_4:
@@ -133,18 +133,18 @@ LABEL_4:
   return v5;
 }
 
-- (void)setAlternateIconName:(id)a3 forIdentifier:(id)a4 iconsDictionary:(id)a5 reply:(id)a6
+- (void)setAlternateIconName:(id)name forIdentifier:(id)identifier iconsDictionary:(id)dictionary reply:(id)reply
 {
   v41[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  nameCopy = name;
+  identifierCopy = identifier;
+  dictionaryCopy = dictionary;
+  replyCopy = reply;
   _LSAssertRunningInServer("[LSAltIconManager setAlternateIconName:forIdentifier:iconsDictionary:reply:]");
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = v12;
+    iconsDictionary = dictionaryCopy;
     v15 = 0;
   }
 
@@ -155,8 +155,8 @@ LABEL_4:
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v41 forKeys:&v40 count:1];
     v15 = _LSMakeNSErrorImpl(@"LSApplicationWorkspaceErrorDomain", -105, v16, "[LSAltIconManager setAlternateIconName:forIdentifier:iconsDictionary:reply:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Workspace/LSAltIconManager.m", 115);
 
-    v13[2](v13, 0, v15);
-    v14 = 0;
+    replyCopy[2](replyCopy, 0, v15);
+    iconsDictionary = 0;
   }
 
   v29 = 0;
@@ -171,15 +171,15 @@ LABEL_4:
   v26[2] = __77__LSAltIconManager_setAlternateIconName_forIdentifier_iconsDictionary_reply___block_invoke;
   v26[3] = &unk_1E6A18DA0;
   v28 = &v29;
-  v18 = v11;
+  v18 = identifierCopy;
   v27 = v18;
   [(LSDBExecutionContext *)v17 syncRead:v26];
 
-  if (v10 && !v14)
+  if (nameCopy && !iconsDictionary)
   {
-    if ([v10 isEqualToString:@"CFBundlePrimaryIcon"])
+    if ([nameCopy isEqualToString:@"CFBundlePrimaryIcon"])
     {
-      v14 = 0;
+      iconsDictionary = 0;
     }
 
     else
@@ -193,18 +193,18 @@ LABEL_4:
       if (os_log_type_enabled(_LSIconsLog_log, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v37 = v10;
+        v37 = nameCopy;
         v38 = 2112;
         v39 = v18;
         _os_log_impl(&dword_18162D000, v19, OS_LOG_TYPE_DEFAULT, "Setting alternate icon name %@ for app %@", buf, 0x16u);
       }
 
-      v14 = [v30[5] iconsDictionary];
+      iconsDictionary = [v30[5] iconsDictionary];
     }
   }
 
   v25 = v15;
-  v20 = [(LSAltIconManager *)self _setAlternateIconName:v10 forIdentifier:v18 withIconsDictionary:v14 error:&v25];
+  v20 = [(LSAltIconManager *)self _setAlternateIconName:nameCopy forIdentifier:v18 withIconsDictionary:iconsDictionary error:&v25];
   v21 = v25;
 
   if (v20)
@@ -215,7 +215,7 @@ LABEL_4:
     [v22 sendNotification:13 forAppProxies:v23 Plugins:0 completion:0];
   }
 
-  v13[2](v13, v20, v21);
+  replyCopy[2](replyCopy, v20, v21);
 
   _Block_object_dispose(&v29, 8);
   v24 = *MEMORY[0x1E69E9840];
@@ -229,9 +229,9 @@ void __77__LSAltIconManager_setAlternateIconName_forIdentifier_iconsDictionary_r
   *(v3 + 40) = v2;
 }
 
-- (id)_getPreferredIconNameForIdentifier:(id)a3
+- (id)_getPreferredIconNameForIdentifier:(id)identifier
 {
-  v3 = CFPreferencesCopyValue(a3, @"com.apple.lsd.iconNames", *MEMORY[0x1E695E8B8], *MEMORY[0x1E695E898]);
+  v3 = CFPreferencesCopyValue(identifier, @"com.apple.lsd.iconNames", *MEMORY[0x1E695E8B8], *MEMORY[0x1E695E898]);
   v4 = v3;
   if (v3)
   {
@@ -246,18 +246,18 @@ void __77__LSAltIconManager_setAlternateIconName_forIdentifier_iconsDictionary_r
   return v4;
 }
 
-- (BOOL)isValidAlternateIcon:(id)a3 forIconsDict:(id)a4
+- (BOOL)isValidAlternateIcon:(id)icon forIconsDict:(id)dict
 {
-  v5 = a3;
-  v6 = [a4 objectForKey:@"CFBundleAlternateIcons"];
-  if (_NSIsNSArray() && ([v6 containsObject:v5] & 1) != 0)
+  iconCopy = icon;
+  v6 = [dict objectForKey:@"CFBundleAlternateIcons"];
+  if (_NSIsNSArray() && ([v6 containsObject:iconCopy] & 1) != 0)
   {
     v7 = 1;
   }
 
   else if (_NSIsNSDictionary())
   {
-    v8 = [v6 objectForKey:v5];
+    v8 = [v6 objectForKey:iconCopy];
     v7 = v8 != 0;
   }
 
@@ -269,26 +269,26 @@ void __77__LSAltIconManager_setAlternateIconName_forIdentifier_iconsDictionary_r
   return v7;
 }
 
-- (BOOL)_setAlternateIconName:(id)a3 forIdentifier:(id)a4 withIconsDictionary:(id)a5 error:(id *)a6
+- (BOOL)_setAlternateIconName:(id)name forIdentifier:(id)identifier withIconsDictionary:(id)dictionary error:(id *)error
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (!v10 || ([v10 isEqualToString:@"CFBundlePrimaryIcon"] & 1) != 0)
+  nameCopy = name;
+  identifierCopy = identifier;
+  dictionaryCopy = dictionary;
+  if (!nameCopy || ([nameCopy isEqualToString:@"CFBundlePrimaryIcon"] & 1) != 0)
   {
     v13 = 0;
 LABEL_4:
-    [(LSAltIconManager *)self _setPreferredIconName:v13 forIdentifier:v11];
+    [(LSAltIconManager *)self _setPreferredIconName:v13 forIdentifier:identifierCopy];
     v14 = 1;
     goto LABEL_13;
   }
 
-  if (v12)
+  if (dictionaryCopy)
   {
-    if ([(LSAltIconManager *)self isValidAlternateIcon:v10 forIconsDict:v12])
+    if ([(LSAltIconManager *)self isValidAlternateIcon:nameCopy forIconsDict:dictionaryCopy])
     {
-      v13 = v10;
+      v13 = nameCopy;
       goto LABEL_4;
     }
 
@@ -316,10 +316,10 @@ LABEL_4:
   v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v25 forKeys:&v24 count:1];
   v20 = _LSMakeNSErrorImpl(v18, 4, v19, "[LSAltIconManager _setAlternateIconName:forIdentifier:withIconsDictionary:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Workspace/LSAltIconManager.m", 207);
 
-  if (a6)
+  if (error)
   {
     v21 = v20;
-    *a6 = v20;
+    *error = v20;
   }
 
   v14 = 0;
@@ -329,13 +329,13 @@ LABEL_13:
   return v14;
 }
 
-- (void)changeIconWithAlertForApplicationIdentity:(id)a3 withIconsDictionary:(id)a4 toAlternateIconName:(id)a5 completion:(id)a6
+- (void)changeIconWithAlertForApplicationIdentity:(id)identity withIconsDictionary:(id)dictionary toAlternateIconName:(id)name completion:(id)completion
 {
   v43 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identityCopy = identity;
+  dictionaryCopy = dictionary;
+  nameCopy = name;
+  completionCopy = completion;
   if (_LSIconsLog_onceToken != -1)
   {
     [LSAltIconManager clearAlternateNameForBundleIdentifier:validationDictionary:];
@@ -345,16 +345,16 @@ LABEL_13:
   if (os_log_type_enabled(_LSIconsLog_log, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v40 = v10;
+    v40 = identityCopy;
     v41 = 2112;
-    v42 = v12;
+    v42 = nameCopy;
     _os_log_impl(&dword_18162D000, v14, OS_LOG_TYPE_DEFAULT, "#ChangeIconWithAlert begin for %@ to %@", buf, 0x16u);
   }
 
-  v15 = [v10 bundleIdentifier];
-  v16 = [(LSAltIconManager *)self _getPreferredIconNameForIdentifier:v15];
+  bundleIdentifier = [identityCopy bundleIdentifier];
+  v16 = [(LSAltIconManager *)self _getPreferredIconNameForIdentifier:bundleIdentifier];
 
-  if (v16 == v12 || ([v16 isEqual:v12] & 1) != 0)
+  if (v16 == nameCopy || ([v16 isEqual:nameCopy] & 1) != 0)
   {
     if (_LSIconsLog_onceToken != -1)
     {
@@ -367,25 +367,25 @@ LABEL_13:
       *buf = 138412546;
       v40 = v16;
       v41 = 2112;
-      v42 = v12;
+      v42 = nameCopy;
       _os_log_impl(&dword_18162D000, v17, OS_LOG_TYPE_DEFAULT, "#ChangeIconWithAlert existing icon name %@ equal to new name %@, doing nothing successfully", buf, 0x16u);
     }
 
-    v13[2](v13, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 
   else
   {
     alertManager = self->_alertManager;
     v37 = 0;
-    v19 = [(LSIconAlertManager *)alertManager iconChangeAlertTokenForIdentity:v10 error:&v37];
+    v19 = [(LSIconAlertManager *)alertManager iconChangeAlertTokenForIdentity:identityCopy error:&v37];
     v20 = v37;
     if (v19)
     {
-      v21 = [v10 bundleIdentifier];
+      bundleIdentifier2 = [identityCopy bundleIdentifier];
       v36 = v20;
-      v32 = v11;
-      v22 = [(LSAltIconManager *)self _setAlternateIconName:v12 forIdentifier:v21 withIconsDictionary:v11 error:&v36];
+      v32 = dictionaryCopy;
+      v22 = [(LSAltIconManager *)self _setAlternateIconName:nameCopy forIdentifier:bundleIdentifier2 withIconsDictionary:dictionaryCopy error:&v36];
       v23 = v36;
 
       if (v22)
@@ -399,13 +399,13 @@ LABEL_13:
         if (os_log_type_enabled(_LSIconsLog_log, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v40 = v10;
+          v40 = identityCopy;
           _os_log_impl(&dword_18162D000, v24, OS_LOG_TYPE_DEFAULT, "#ChangeIconWithAlert send notification for %@", buf, 0xCu);
         }
 
         v25 = +[_LSInstallProgressService sharedInstance];
-        v26 = [v10 bundleIdentifier];
-        v38 = v26;
+        bundleIdentifier3 = [identityCopy bundleIdentifier];
+        v38 = bundleIdentifier3;
         v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v38 count:1];
         [v25 sendNotification:13 forApps:v27 withPlugins:0 completion:0];
 
@@ -414,12 +414,12 @@ LABEL_13:
           [LSAltIconManager setAlternateIconName:forIdentifier:iconsDictionary:reply:];
         }
 
-        v11 = v32;
+        dictionaryCopy = v32;
         v28 = _LSIconsLog_log;
         if (os_log_type_enabled(_LSIconsLog_log, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v40 = v10;
+          v40 = identityCopy;
           _os_log_impl(&dword_18162D000, v28, OS_LOG_TYPE_DEFAULT, "#ChangeIconWithAlert present for %@", buf, 0xCu);
         }
 
@@ -427,8 +427,8 @@ LABEL_13:
         v33[1] = 3221225472;
         v33[2] = __113__LSAltIconManager_changeIconWithAlertForApplicationIdentity_withIconsDictionary_toAlternateIconName_completion___block_invoke;
         v33[3] = &unk_1E6A18DC8;
-        v34 = v10;
-        v35 = v13;
+        v34 = identityCopy;
+        v35 = completionCopy;
         [v19 presentWithCompletion:v33];
       }
 
@@ -439,18 +439,18 @@ LABEL_13:
           [LSAltIconManager setAlternateIconName:forIdentifier:iconsDictionary:reply:];
         }
 
-        v11 = v32;
+        dictionaryCopy = v32;
         v30 = _LSIconsLog_log;
         if (os_log_type_enabled(_LSIconsLog_log, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
-          v40 = v10;
+          v40 = identityCopy;
           v41 = 2112;
           v42 = v23;
           _os_log_impl(&dword_18162D000, v30, OS_LOG_TYPE_DEFAULT, "#ChangeIconWithAlert couldn't set alternate icon name for %@: %@", buf, 0x16u);
         }
 
-        (v13)[2](v13, 0, v23);
+        (completionCopy)[2](completionCopy, 0, v23);
       }
     }
 
@@ -465,13 +465,13 @@ LABEL_13:
       if (os_log_type_enabled(_LSIconsLog_log, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v40 = v10;
+        v40 = identityCopy;
         v41 = 2112;
         v42 = v20;
         _os_log_impl(&dword_18162D000, v29, OS_LOG_TYPE_DEFAULT, "#ChangeIconWithAlert couldn't make icon alert token for %@: %@", buf, 0x16u);
       }
 
-      (v13)[2](v13, 0, v20);
+      (completionCopy)[2](completionCopy, 0, v20);
       v23 = v20;
     }
   }

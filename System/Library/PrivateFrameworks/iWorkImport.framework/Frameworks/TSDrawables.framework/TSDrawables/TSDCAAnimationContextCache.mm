@@ -1,48 +1,48 @@
 @interface TSDCAAnimationContextCache
-- (BOOL)shouldUseInitialValueAtAnimationTime:(double)a3;
-- (TSDCAAnimationContextCache)initWithAnimation:(id)a3;
-- (double)animationPercentFromAnimationTime:(double)a3;
-- (double)percentAtTime:(double)a3;
-- (double)workingPercentFromAnimationTime:(double)a3;
-- (id)valueAtTime:(double)a3 initialValue:(id)a4 groupTimingFactor:(double)a5;
-- (id)valueForKeyPath:(id)a3 atTime:(double)a4 animationCache:(id)a5;
+- (BOOL)shouldUseInitialValueAtAnimationTime:(double)time;
+- (TSDCAAnimationContextCache)initWithAnimation:(id)animation;
+- (double)animationPercentFromAnimationTime:(double)time;
+- (double)percentAtTime:(double)time;
+- (double)workingPercentFromAnimationTime:(double)time;
+- (id)valueAtTime:(double)time initialValue:(id)value groupTimingFactor:(double)factor;
+- (id)valueForKeyPath:(id)path atTime:(double)time animationCache:(id)cache;
 @end
 
 @implementation TSDCAAnimationContextCache
 
-- (TSDCAAnimationContextCache)initWithAnimation:(id)a3
+- (TSDCAAnimationContextCache)initWithAnimation:(id)animation
 {
-  v4 = a3;
+  animationCopy = animation;
   v29.receiver = self;
   v29.super_class = TSDCAAnimationContextCache;
   v7 = [(TSDCAAnimationContextCache *)&v29 init];
   if (v7)
   {
-    v8 = objc_msgSend_timingFunction(v4, v5, v6);
+    v8 = objc_msgSend_timingFunction(animationCopy, v5, v6);
     timingFunction = v7->_timingFunction;
     v7->_timingFunction = v8;
 
-    objc_msgSend_beginTime(v4, v10, v11);
+    objc_msgSend_beginTime(animationCopy, v10, v11);
     v7->_beginTime = v12;
-    objc_msgSend_timeOffset(v4, v13, v14);
+    objc_msgSend_timeOffset(animationCopy, v13, v14);
     v7->_timeOffset = v15;
-    objc_msgSend_duration(v4, v16, v17);
+    objc_msgSend_duration(animationCopy, v16, v17);
     v7->_duration = v18;
-    v21 = objc_msgSend_fillMode(v4, v19, v20);
+    v21 = objc_msgSend_fillMode(animationCopy, v19, v20);
     fillMode = v7->_fillMode;
     v7->_fillMode = v21;
 
-    v7->_autoreverses = objc_msgSend_autoreverses(v4, v23, v24);
-    objc_msgSend_repeatCount(v4, v25, v26);
+    v7->_autoreverses = objc_msgSend_autoreverses(animationCopy, v23, v24);
+    objc_msgSend_repeatCount(animationCopy, v25, v26);
     v7->_repeatCount = v27;
   }
 
   return v7;
 }
 
-- (BOOL)shouldUseInitialValueAtAnimationTime:(double)a3
+- (BOOL)shouldUseInitialValueAtAnimationTime:(double)time
 {
-  objc_msgSend_animationPercentFromAnimationTime_(self, a2, v3, a3);
+  objc_msgSend_animationPercentFromAnimationTime_(self, a2, v3, time);
   v8 = v7;
   if (v7 < 0.0)
   {
@@ -105,7 +105,7 @@
   return v28;
 }
 
-- (double)animationPercentFromAnimationTime:(double)a3
+- (double)animationPercentFromAnimationTime:(double)time
 {
   objc_msgSend_duration(self, a2, v3);
   v9 = v8;
@@ -113,7 +113,7 @@
   if (v9 != 0.0)
   {
     objc_msgSend_beginTime(self, v6, v7, 0.0);
-    v12 = a3 - v11;
+    v12 = time - v11;
     objc_msgSend_duration(self, v13, v14);
     return v12 / v15;
   }
@@ -121,9 +121,9 @@
   return result;
 }
 
-- (double)workingPercentFromAnimationTime:(double)a3
+- (double)workingPercentFromAnimationTime:(double)time
 {
-  objc_msgSend_animationPercentFromAnimationTime_(self, a2, v3, a3);
+  objc_msgSend_animationPercentFromAnimationTime_(self, a2, v3, time);
   v8 = 0.0;
   if (v7 >= 0.0)
   {
@@ -183,10 +183,10 @@
   return result;
 }
 
-- (id)valueForKeyPath:(id)a3 atTime:(double)a4 animationCache:(id)a5
+- (id)valueForKeyPath:(id)path atTime:(double)time animationCache:(id)cache
 {
   v5 = MEMORY[0x277D81150];
-  v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSDCAAnimationContextCache valueForKeyPath:atTime:animationCache:]", a5, a4);
+  v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSDCAAnimationContextCache valueForKeyPath:atTime:animationCache:]", cache, time);
   v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/drawables/animation/CAAnimationAdditions.m");
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v5, v9, v6, v8, 235, 0, "Implement me in subclass!");
 
@@ -194,10 +194,10 @@
   return 0;
 }
 
-- (id)valueAtTime:(double)a3 initialValue:(id)a4 groupTimingFactor:(double)a5
+- (id)valueAtTime:(double)time initialValue:(id)value groupTimingFactor:(double)factor
 {
   v5 = MEMORY[0x277D81150];
-  v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSDCAAnimationContextCache valueAtTime:initialValue:groupTimingFactor:]", a3, a5);
+  v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSDCAAnimationContextCache valueAtTime:initialValue:groupTimingFactor:]", time, factor);
   v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/drawables/animation/CAAnimationAdditions.m");
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v5, v9, v6, v8, 240, 0, "Implement me in subclass!");
 
@@ -205,10 +205,10 @@
   return 0;
 }
 
-- (double)percentAtTime:(double)a3
+- (double)percentAtTime:(double)time
 {
   v3 = MEMORY[0x277D81150];
-  v4 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSDCAAnimationContextCache percentAtTime:]", a3);
+  v4 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSDCAAnimationContextCache percentAtTime:]", time);
   v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/drawables/animation/CAAnimationAdditions.m");
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v3, v7, v4, v6, 249, 0, "Implement me in subclass!");
 

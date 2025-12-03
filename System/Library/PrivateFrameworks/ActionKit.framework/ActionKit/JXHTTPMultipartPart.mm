@@ -2,25 +2,25 @@
 - (id)filePath;
 - (int64_t)contentLength;
 - (int64_t)dataLength;
-- (unint64_t)loadMutableData:(id)a3 withDataInRange:(_NSRange)a4;
+- (unint64_t)loadMutableData:(id)data withDataInRange:(_NSRange)range;
 @end
 
 @implementation JXHTTPMultipartPart
 
-- (unint64_t)loadMutableData:(id)a3 withDataInRange:(_NSRange)a4
+- (unint64_t)loadMutableData:(id)data withDataInRange:(_NSRange)range
 {
   v40 = *MEMORY[0x277D85DE8];
-  v29 = a3;
+  dataCopy = data;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v5 = [(JXHTTPMultipartPart *)self preData];
-  v38[0] = v5;
-  v6 = [(JXHTTPMultipartPart *)self contentData];
-  v38[1] = v6;
-  v7 = [(JXHTTPMultipartPart *)self postData];
-  v38[2] = v7;
+  preData = [(JXHTTPMultipartPart *)self preData];
+  v38[0] = preData;
+  contentData = [(JXHTTPMultipartPart *)self contentData];
+  v38[1] = contentData;
+  postData = [(JXHTTPMultipartPart *)self postData];
+  v38[2] = postData;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v38 count:3];
 
   obj = v8;
@@ -41,28 +41,28 @@
         }
 
         v13 = *(*(&v34 + 1) + 8 * i);
-        v14 = [(JXHTTPMultipartPart *)self contentData];
-        if (v13 == v14)
+        contentData2 = [(JXHTTPMultipartPart *)self contentData];
+        if (v13 == contentData2)
         {
-          v15 = [(JXHTTPMultipartPart *)self contentLength];
+          contentLength = [(JXHTTPMultipartPart *)self contentLength];
         }
 
         else
         {
-          v15 = [v13 length];
+          contentLength = [v13 length];
         }
 
-        v16 = v15;
+        v16 = contentLength;
 
         v41.location = v11;
         v41.length = v16;
-        v17 = NSIntersectionRange(v41, a4);
+        v17 = NSIntersectionRange(v41, range);
         if (v17.length)
         {
           v18 = v17.location - v11;
-          v19 = [(JXHTTPMultipartPart *)self preData];
-          v20 = v19;
-          if (v13 == v19)
+          preData2 = [(JXHTTPMultipartPart *)self preData];
+          v20 = preData2;
+          if (v13 == preData2)
           {
 
 LABEL_19:
@@ -73,22 +73,22 @@ LABEL_19:
             }
 
 LABEL_20:
-            [v29 appendData:v26];
+            [dataCopy appendData:v26];
             v31 += [v26 length];
 
             goto LABEL_21;
           }
 
-          v21 = [(JXHTTPMultipartPart *)self postData];
+          postData2 = [(JXHTTPMultipartPart *)self postData];
 
-          if (v13 == v21)
+          if (v13 == postData2)
           {
             goto LABEL_19;
           }
 
-          v22 = [(JXHTTPMultipartPart *)self contentData];
+          contentData3 = [(JXHTTPMultipartPart *)self contentData];
 
-          if (v13 != v22)
+          if (v13 != contentData3)
           {
             goto LABEL_21;
           }
@@ -101,8 +101,8 @@ LABEL_20:
           if ([(JXHTTPMultipartPart *)self multipartType]== 1)
           {
             v23 = MEMORY[0x277CCA9F8];
-            v24 = [(JXHTTPMultipartPart *)self filePath];
-            v25 = [v23 fileHandleForReadingAtPath:v24];
+            filePath = [(JXHTTPMultipartPart *)self filePath];
+            v25 = [v23 fileHandleForReadingAtPath:filePath];
 
             if (!v25)
             {
@@ -148,39 +148,39 @@ LABEL_25:
       return 0;
     }
 
-    v3 = [MEMORY[0x277CCAA00] defaultManager];
-    v4 = [(JXHTTPMultipartPart *)self filePath];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    filePath = [(JXHTTPMultipartPart *)self filePath];
     v16 = 0;
-    v5 = [v3 attributesOfItemAtPath:v4 error:&v16];
+    v5 = [defaultManager attributesOfItemAtPath:filePath error:&v16];
     v6 = v16;
 
     if (v6)
     {
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Shortcuts/ShortcutsActions/ActionKit/External/JXHTTP/JXHTTP/JXHTTPMultipartBody.m"];
-      v8 = [v7 lastPathComponent];
-      v9 = [v6 localizedDescription];
-      NSLog(&cfstr_DError.isa, v8, 78, v9);
+      lastPathComponent = [v7 lastPathComponent];
+      localizedDescription = [v6 localizedDescription];
+      NSLog(&cfstr_DError.isa, lastPathComponent, 78, localizedDescription);
     }
 
     v10 = [v5 objectForKey:*MEMORY[0x277CCA1C0]];
     v11 = v10;
     if (v10)
     {
-      v12 = [v10 longLongValue];
+      longLongValue = [v10 longLongValue];
     }
 
     else
     {
-      v12 = 0;
+      longLongValue = 0;
     }
 
-    return v12;
+    return longLongValue;
   }
 
   else
   {
-    v13 = [(JXHTTPMultipartPart *)self contentData];
-    v14 = [v13 length];
+    contentData = [(JXHTTPMultipartPart *)self contentData];
+    v14 = [contentData length];
 
     return v14;
   }
@@ -188,12 +188,12 @@ LABEL_25:
 
 - (int64_t)dataLength
 {
-  v3 = [(JXHTTPMultipartPart *)self preData];
-  v4 = [v3 length];
+  preData = [(JXHTTPMultipartPart *)self preData];
+  v4 = [preData length];
 
   v5 = [(JXHTTPMultipartPart *)self contentLength]+ v4;
-  v6 = [(JXHTTPMultipartPart *)self postData];
-  v7 = [v6 length];
+  postData = [(JXHTTPMultipartPart *)self postData];
+  v7 = [postData length];
 
   return v5 + v7;
 }
@@ -203,8 +203,8 @@ LABEL_25:
   if ([(JXHTTPMultipartPart *)self multipartType]== 1)
   {
     v3 = objc_alloc(MEMORY[0x277CCACA8]);
-    v4 = [(JXHTTPMultipartPart *)self contentData];
-    v5 = [v3 initWithData:v4 encoding:4];
+    contentData = [(JXHTTPMultipartPart *)self contentData];
+    v5 = [v3 initWithData:contentData encoding:4];
   }
 
   else

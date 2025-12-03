@@ -20,7 +20,7 @@
 
 - (NSArray)defaultExtensions
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_26B9E3728();
 
   if (v3)

@@ -14,9 +14,9 @@
 
 - (unsigned)remotePort
 {
-  v2 = [(NWStatsConnProperties *)self remoteAddress];
-  v3 = v2;
-  if (v2 && ((v4 = [v2 bytes], *(v4 + 1) == 2) || (v4 = objc_msgSend(v3, "bytes"), *(v4 + 1) == 30)))
+  remoteAddress = [(NWStatsConnProperties *)self remoteAddress];
+  v3 = remoteAddress;
+  if (remoteAddress && ((v4 = [remoteAddress bytes], *(v4 + 1) == 2) || (v4 = objc_msgSend(v3, "bytes"), *(v4 + 1) == 30)))
   {
     v5 = bswap32(*(v4 + 2)) >> 16;
   }

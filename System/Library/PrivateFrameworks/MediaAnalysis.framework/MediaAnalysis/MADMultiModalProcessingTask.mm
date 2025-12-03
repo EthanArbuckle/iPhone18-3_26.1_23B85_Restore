@@ -1,22 +1,22 @@
 @interface MADMultiModalProcessingTask
-- (BOOL)run:(id *)a3;
-- (MADMultiModalProcessingTask)initWithRequests:(id)a3 inputs:(id)a4 cancelBlock:(id)a5 completionHandler:(id)a6;
+- (BOOL)run:(id *)run;
+- (MADMultiModalProcessingTask)initWithRequests:(id)requests inputs:(id)inputs cancelBlock:(id)block completionHandler:(id)handler;
 - (void)cancel;
 @end
 
 @implementation MADMultiModalProcessingTask
 
-- (MADMultiModalProcessingTask)initWithRequests:(id)a3 inputs:(id)a4 cancelBlock:(id)a5 completionHandler:(id)a6
+- (MADMultiModalProcessingTask)initWithRequests:(id)requests inputs:(id)inputs cancelBlock:(id)block completionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  requestsCopy = requests;
+  inputsCopy = inputs;
+  blockCopy = block;
+  handlerCopy = handler;
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __85__MADMultiModalProcessingTask_initWithRequests_inputs_cancelBlock_completionHandler___block_invoke;
   v25[3] = &unk_1E834CF90;
-  v15 = v14;
+  v15 = handlerCopy;
   v26 = v15;
   v24.receiver = self;
   v24.super_class = MADMultiModalProcessingTask;
@@ -24,16 +24,16 @@
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_requests, a3);
-    objc_storeStrong(&v17->_inputs, a4);
+    objc_storeStrong(&v16->_requests, requests);
+    objc_storeStrong(&v17->_inputs, inputs);
     signpostPayload = v17->_signpostPayload;
     v17->_signpostPayload = &stru_1F496CB30;
 
-    v19 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     subtasks = v17->_subtasks;
-    v17->_subtasks = v19;
+    v17->_subtasks = array;
 
-    [(VCPMABaseTask *)v17 setCancelBlock:v13];
+    [(VCPMABaseTask *)v17 setCancelBlock:blockCopy];
     v21 = dispatch_queue_create("MADMultiModalProcessingTask", 0);
     cancelQueue = v17->_cancelQueue;
     v17->_cancelQueue = v21;
@@ -50,7 +50,7 @@ void __85__MADMultiModalProcessingTask_initWithRequests_inputs_cancelBlock_compl
   (*(v4 + 16))(v4, v6, v5);
 }
 
-- (BOOL)run:(id *)a3
+- (BOOL)run:(id *)run
 {
   v73[1] = *MEMORY[0x1E69E9840];
   v5 = VCPSignPostLog();
@@ -81,7 +81,7 @@ void __85__MADMultiModalProcessingTask_initWithRequests_inputs_cancelBlock_compl
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "Request canceled", buf, 2u);
     }
 
-    if (!a3)
+    if (!run)
     {
       return 0;
     }
@@ -89,12 +89,12 @@ void __85__MADMultiModalProcessingTask_initWithRequests_inputs_cancelBlock_compl
     v11 = MEMORY[0x1E696ABC0];
     v12 = *MEMORY[0x1E696A768];
     v72 = *MEMORY[0x1E696A578];
-    v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Request was canceled"];
-    v73[0] = v13;
+    array = [MEMORY[0x1E696AEC0] stringWithFormat:@"Request was canceled"];
+    v73[0] = array;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v73 forKeys:&v72 count:1];
     v15 = [v11 errorWithDomain:v12 code:-128 userInfo:v14];
-    v16 = *a3;
-    *a3 = v15;
+    v16 = *run;
+    *run = v15;
 
 LABEL_39:
     v41 = 0;
@@ -104,13 +104,13 @@ LABEL_39:
   {
     spid = v6;
     v51 = v6 - 1;
-    v52 = a3;
+    runCopy = run;
     v59 = 0u;
     v60 = 0u;
     v57 = 0u;
     v58 = 0u;
-    v13 = self->_subtasks;
-    v17 = [(NSMutableArray *)v13 countByEnumeratingWithState:&v57 objects:v71 count:16];
+    array = self->_subtasks;
+    v17 = [(NSMutableArray *)array countByEnumeratingWithState:&v57 objects:v71 count:16];
     if (v17)
     {
       v18 = v17;
@@ -122,7 +122,7 @@ LABEL_39:
         {
           if (*v58 != v19)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(array);
           }
 
           v22 = *(*(&v57 + 1) + 8 * i);
@@ -139,7 +139,7 @@ LABEL_39:
                 _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "Request canceled", buf, 2u);
               }
 
-              if (v52)
+              if (runCopy)
               {
                 v43 = MEMORY[0x1E696ABC0];
                 v44 = *MEMORY[0x1E696A768];
@@ -148,8 +148,8 @@ LABEL_39:
                 v70 = v45;
                 v46 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v70 forKeys:&v69 count:1];
                 v47 = [v43 errorWithDomain:v44 code:-128 userInfo:v46];
-                v48 = *v52;
-                *v52 = v47;
+                v48 = *runCopy;
+                *runCopy = v47;
               }
 
               objc_autoreleasePoolPop(v23);
@@ -171,7 +171,7 @@ LABEL_39:
           objc_autoreleasePoolPop(v23);
         }
 
-        v18 = [(NSMutableArray *)v13 countByEnumeratingWithState:&v57 objects:v71 count:16];
+        v18 = [(NSMutableArray *)array countByEnumeratingWithState:&v57 objects:v71 count:16];
         if (v18)
         {
           continue;
@@ -181,7 +181,7 @@ LABEL_39:
       }
     }
 
-    v13 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v53 = 0u;
     v54 = 0u;
     v55 = 0u;
@@ -203,13 +203,13 @@ LABEL_39:
 
           v33 = *(*(&v53 + 1) + 8 * j);
           v34 = objc_alloc_init(MEMORY[0x1E69AE368]);
-          v35 = [v33 results];
-          [v34 setResults:v35];
+          results = [v33 results];
+          [v34 setResults:results];
 
-          v36 = [v33 error];
-          [v34 setError:v36];
+          error = [v33 error];
+          [v34 setError:error];
 
-          [(NSMutableArray *)v13 addObject:v34];
+          [(NSMutableArray *)array addObject:v34];
         }
 
         v30 = [(NSArray *)v28 countByEnumeratingWithState:&v53 objects:v64 count:16];
@@ -228,12 +228,12 @@ LABEL_39:
       _os_signpost_emit_with_name_impl(&dword_1C9B70000, v38, OS_SIGNPOST_INTERVAL_END, spid, "MADMultiModalProcessingTask_Run", "%@", buf, 0xCu);
     }
 
-    v40 = [(VCPMABaseTask *)self completionHandler];
+    completionHandler = [(VCPMABaseTask *)self completionHandler];
     v62 = @"Replies";
-    v63 = v13;
+    v63 = array;
     v41 = 1;
     v42 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v63 forKeys:&v62 count:1];
-    (v40)[2](v40, v42, 0);
+    (completionHandler)[2](completionHandler, v42, 0);
   }
 
   return v41;

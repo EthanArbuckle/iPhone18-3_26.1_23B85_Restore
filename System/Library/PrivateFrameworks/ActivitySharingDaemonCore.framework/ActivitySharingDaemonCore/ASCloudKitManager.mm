@@ -5,83 +5,83 @@
 + (id)relationshipZone;
 - (ASCloudKitManager)init;
 - (ASCloudKitManagerSecureCloudDelegate)secureCloudDelegate;
-- (BOOL)_queue_isLastCloudKitAddressDifferentFromNewCloudKitAddress:(id)a3;
+- (BOOL)_queue_isLastCloudKitAddressDifferentFromNewCloudKitAddress:(id)address;
 - (BOOL)allObserversReady;
 - (BOOL)hasCompletedFirstFetch;
-- (id)_observerQueue_friendUUIDForActivityDataShareRecordZoneID:(id)a3;
+- (id)_observerQueue_friendUUIDForActivityDataShareRecordZoneID:(id)d;
 - (id)_queue_apsEnvironmentString;
-- (id)additionalZoneIDsToFetchWithServerChangeTokenChange:(id)a3;
+- (id)additionalZoneIDsToFetchWithServerChangeTokenChange:(id)change;
 - (id)currentAccountInfo;
 - (id)currentCloudKitAddress;
 - (id)secureCloudPrivateDatabaseFetchConfigurations;
 - (void)_cancelNewAccountTasksTimer;
-- (void)_cloudKitAccountStatusChanged:(id)a3;
-- (void)_createActivityDataShareWithCompletion:(id)a3;
+- (void)_cloudKitAccountStatusChanged:(id)changed;
+- (void)_createActivityDataShareWithCompletion:(id)completion;
 - (void)_createNotificationSteps;
-- (void)_fetchAllChangesWithPriority:(int64_t)a3 activity:(id)a4 group:(id)a5;
-- (void)_fetchAllChangesWithPriority:(int64_t)a3 activity:(id)a4 group:(id)a5 completion:(id)a6;
+- (void)_fetchAllChangesWithPriority:(int64_t)priority activity:(id)activity group:(id)group;
+- (void)_fetchAllChangesWithPriority:(int64_t)priority activity:(id)activity group:(id)group completion:(id)completion;
 - (void)_fetchCloudKitAccountStatusAndNotifyOfChanges;
-- (void)_fetchCloudKitAddressWithCompletion:(id)a3;
-- (void)_handleAccountStatusChange:(int64_t)a3;
-- (void)_handleIncomingNotification:(id)a3;
-- (void)_handleNewPrivateDatabaseRecordChanges:(id)a3 sharedDatabaseRecordChanges:(id)a4 privateDatabaseDeletedRecordIDs:(id)a5 sharedDatabaseDeletedRecordIDs:(id)a6 fetchType:(int64_t)a7 activity:(id)a8 cloudKitGroup:(id)a9;
-- (void)_handleSecureCloudServerPush:(id)a3;
+- (void)_fetchCloudKitAddressWithCompletion:(id)completion;
+- (void)_handleAccountStatusChange:(int64_t)change;
+- (void)_handleIncomingNotification:(id)notification;
+- (void)_handleNewPrivateDatabaseRecordChanges:(id)changes sharedDatabaseRecordChanges:(id)recordChanges privateDatabaseDeletedRecordIDs:(id)ds sharedDatabaseDeletedRecordIDs:(id)iDs fetchType:(int64_t)type activity:(id)activity cloudKitGroup:(id)group;
+- (void)_handleSecureCloudServerPush:(id)push;
 - (void)_observerQueue_clearFriendUUIDByZoneIDCache;
-- (void)_observerQueue_notifyObserversOfBeginUpdatesForFetchWithType:(int64_t)a3;
-- (void)_observerQueue_notifyObserversOfEndUpdatesForFetchWithType:(int64_t)a3 activity:(id)a4 cloudKitGroup:(id)a5;
-- (void)_observerQueue_notifyObserversOfServerPushHandledWithCloudKitGroup:(id)a3;
-- (void)_observerQueue_notifyOfPrivateDatabaseDeletedRecordIDs:(id)a3 sharedDatabaseDeletedRecordIDs:(id)a4;
-- (void)_observerQueue_performNotificationStep:(id)a3 onRecords:(id)a4 dispatchGroup:(id)a5 activity:(id)a6 cloudKitGroup:(id)a7;
-- (void)_performAndRetryNewAccountTasksIfNecessaryWithShouldCreateSubscriptions:(BOOL)a3 shouldFetch:(BOOL)a4;
-- (void)_performNewAccountTasksCreatingSubscriptions:(BOOL)a3 fetching:(BOOL)a4 completion:(id)a5;
-- (void)_queue_callFetchCompletionBlocksWithSuccess:(BOOL)a3 error:(id)a4;
+- (void)_observerQueue_notifyObserversOfBeginUpdatesForFetchWithType:(int64_t)type;
+- (void)_observerQueue_notifyObserversOfEndUpdatesForFetchWithType:(int64_t)type activity:(id)activity cloudKitGroup:(id)group;
+- (void)_observerQueue_notifyObserversOfServerPushHandledWithCloudKitGroup:(id)group;
+- (void)_observerQueue_notifyOfPrivateDatabaseDeletedRecordIDs:(id)ds sharedDatabaseDeletedRecordIDs:(id)iDs;
+- (void)_observerQueue_performNotificationStep:(id)step onRecords:(id)records dispatchGroup:(id)group activity:(id)activity cloudKitGroup:(id)kitGroup;
+- (void)_performAndRetryNewAccountTasksIfNecessaryWithShouldCreateSubscriptions:(BOOL)subscriptions shouldFetch:(BOOL)fetch;
+- (void)_performNewAccountTasksCreatingSubscriptions:(BOOL)subscriptions fetching:(BOOL)fetching completion:(id)completion;
+- (void)_queue_callFetchCompletionBlocksWithSuccess:(BOOL)success error:(id)error;
 - (void)_queue_cancelAllExecutingFetches;
-- (void)_queue_clearChangeTokenCacheAndFriendListWithCompletion:(id)a3;
+- (void)_queue_clearChangeTokenCacheAndFriendListWithCompletion:(id)completion;
 - (void)_queue_clearChangeTokenCaches;
-- (void)_queue_notifyObserversOfStatusChanged:(int64_t)a3;
+- (void)_queue_notifyObserversOfStatusChanged:(int64_t)changed;
 - (void)_queue_pushDisable;
 - (void)_queue_pushEnable;
-- (void)_queue_setHasCompletedFirstFetch:(BOOL)a3;
-- (void)_queue_startFetchAllChangesOperationWithPriority:(int64_t)a3 activity:(id)a4 changeTokenCache:(id)a5 secureCloudChangeTokenCache:(id)a6 group:(id)a7 completion:(id)a8;
+- (void)_queue_setHasCompletedFirstFetch:(BOOL)fetch;
+- (void)_queue_startFetchAllChangesOperationWithPriority:(int64_t)priority activity:(id)activity changeTokenCache:(id)cache secureCloudChangeTokenCache:(id)tokenCache group:(id)group completion:(id)completion;
 - (void)_saveCloudKitAddressToKeyValueStore;
-- (void)_subscribeToChangesInDatabase:(id)a3 subscriptionPrefix:(id)a4 recordTypes:(id)a5 zoneNames:(id)a6 recordTypesToDelete:(id)a7 completion:(id)a8;
-- (void)_subscribeToChangesInPrivateDatabaseWithCompletion:(id)a3;
-- (void)_subscribeToChangesInSharedDatabaseWithCompletion:(id)a3;
-- (void)_verifyOrCreateSubscriptionsWithCompletion:(id)a3;
-- (void)acceptSharesWithURLs:(id)a3 cloudKitGroup:(id)a4 completion:(id)a5;
-- (void)activitySharingManagerReady:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)addParticipant:(id)a3 toShares:(id)a4 group:(id)a5 completion:(id)a6;
-- (void)addParticipantWithCloudKitAddress:(id)a3 toShares:(id)a4 group:(id)a5 completion:(id)a6;
+- (void)_subscribeToChangesInDatabase:(id)database subscriptionPrefix:(id)prefix recordTypes:(id)types zoneNames:(id)names recordTypesToDelete:(id)delete completion:(id)completion;
+- (void)_subscribeToChangesInPrivateDatabaseWithCompletion:(id)completion;
+- (void)_subscribeToChangesInSharedDatabaseWithCompletion:(id)completion;
+- (void)_verifyOrCreateSubscriptionsWithCompletion:(id)completion;
+- (void)acceptSharesWithURLs:(id)ls cloudKitGroup:(id)group completion:(id)completion;
+- (void)activitySharingManagerReady:(id)ready;
+- (void)addObserver:(id)observer;
+- (void)addParticipant:(id)participant toShares:(id)shares group:(id)group completion:(id)completion;
+- (void)addParticipantWithCloudKitAddress:(id)address toShares:(id)shares group:(id)group completion:(id)completion;
 - (void)beginHandlingOperations;
-- (void)clearChangeTokenCacheAndFriendListWithCompletion:(id)a3;
-- (void)clearChangeTokenCachesWithCompletion:(id)a3;
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4;
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4;
-- (void)connection:(id)a3 didReceiveToken:(id)a4 forTopic:(id)a5 identifier:(id)a6;
-- (void)createShareWithRootRecord:(id)a3 otherRecordsToSave:(id)a4 completion:(id)a5;
+- (void)clearChangeTokenCacheAndFriendListWithCompletion:(id)completion;
+- (void)clearChangeTokenCachesWithCompletion:(id)completion;
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message;
+- (void)connection:(id)connection didReceivePublicToken:(id)token;
+- (void)connection:(id)connection didReceiveToken:(id)token forTopic:(id)topic identifier:(id)identifier;
+- (void)createShareWithRootRecord:(id)record otherRecordsToSave:(id)save completion:(id)completion;
 - (void)dealloc;
 - (void)endHandlingOperations;
-- (void)expireChangeTokenWithCompletion:(id)a3;
-- (void)fetchAllChangesIfTimeSinceLastFetchIsGreaterThan:(unint64_t)a3 priority:(int64_t)a4 activity:(id)a5 group:(id)a6 completion:(id)a7;
-- (void)fetchAllChangesWithPriority:(int64_t)a3 activity:(id)a4 group:(id)a5 completion:(id)a6;
-- (void)fetchCloudKitAccountInfoWithCompletion:(id)a3;
-- (void)fetchCloudKitAccountStatusWithCompletion:(id)a3;
-- (void)fetchCloudKitAddressWithCompletion:(id)a3;
-- (void)fetchOrCreateActivityDataShareWithGroup:(id)a3 activity:(id)a4 completion:(id)a5;
-- (void)fetchShareParticipantForIdentifier:(id)a3 group:(id)a4 completion:(id)a5;
-- (void)fetchShareParticipantWithCloudKitAddress:(id)a3 group:(id)a4 completion:(id)a5;
-- (void)fetchShareWithShareRecordID:(id)a3 activity:(id)a4 group:(id)a5 completion:(id)a6;
-- (void)forceSaveRecordsIntoPrivateDatabaseIgnoringServerChanges:(id)a3 recordIDsToDelete:(id)a4 priority:(int64_t)a5 activity:(id)a6 group:(id)a7 completion:(id)a8;
-- (void)notifyOfCloudKitAccountStatusUpdate:(int64_t)a3;
-- (void)observerDidBecomeReadyToProcessChanges:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)removeParticipantWithCloudKitAddress:(id)a3 fromShares:(id)a4 group:(id)a5 completion:(id)a6;
-- (void)saveRecordsIntoPrivateDatabase:(id)a3 recordIDsToDelete:(id)a4 priority:(int64_t)a5 activity:(id)a6 group:(id)a7 completion:(id)a8;
-- (void)setHasCompletedFirstFetch:(BOOL)a3;
-- (void)subscribeToCloudKitDatabaseChangesWithCompletion:(id)a3;
+- (void)expireChangeTokenWithCompletion:(id)completion;
+- (void)fetchAllChangesIfTimeSinceLastFetchIsGreaterThan:(unint64_t)than priority:(int64_t)priority activity:(id)activity group:(id)group completion:(id)completion;
+- (void)fetchAllChangesWithPriority:(int64_t)priority activity:(id)activity group:(id)group completion:(id)completion;
+- (void)fetchCloudKitAccountInfoWithCompletion:(id)completion;
+- (void)fetchCloudKitAccountStatusWithCompletion:(id)completion;
+- (void)fetchCloudKitAddressWithCompletion:(id)completion;
+- (void)fetchOrCreateActivityDataShareWithGroup:(id)group activity:(id)activity completion:(id)completion;
+- (void)fetchShareParticipantForIdentifier:(id)identifier group:(id)group completion:(id)completion;
+- (void)fetchShareParticipantWithCloudKitAddress:(id)address group:(id)group completion:(id)completion;
+- (void)fetchShareWithShareRecordID:(id)d activity:(id)activity group:(id)group completion:(id)completion;
+- (void)forceSaveRecordsIntoPrivateDatabaseIgnoringServerChanges:(id)changes recordIDsToDelete:(id)delete priority:(int64_t)priority activity:(id)activity group:(id)group completion:(id)completion;
+- (void)notifyOfCloudKitAccountStatusUpdate:(int64_t)update;
+- (void)observerDidBecomeReadyToProcessChanges:(id)changes;
+- (void)removeObserver:(id)observer;
+- (void)removeParticipantWithCloudKitAddress:(id)address fromShares:(id)shares group:(id)group completion:(id)completion;
+- (void)saveRecordsIntoPrivateDatabase:(id)database recordIDsToDelete:(id)delete priority:(int64_t)priority activity:(id)activity group:(id)group completion:(id)completion;
+- (void)setHasCompletedFirstFetch:(BOOL)fetch;
+- (void)subscribeToCloudKitDatabaseChangesWithCompletion:(id)completion;
 - (void)updateCloudKitAddress;
-- (void)updateCurrentAccountInfo:(id)a3;
+- (void)updateCurrentAccountInfo:(id)info;
 @end
 
 @implementation ASCloudKitManager
@@ -107,13 +107,13 @@
     changeTokenQueue = v3->_changeTokenQueue;
     v3->_changeTokenQueue = v8;
 
-    v10 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v3->_observers;
-    v3->_observers = v10;
+    v3->_observers = weakObjectsHashTable;
 
-    v12 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable2 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observersNotReady = v3->_observersNotReady;
-    v3->_observersNotReady = v12;
+    v3->_observersNotReady = weakObjectsHashTable2;
 
     v14 = dispatch_group_create();
     observersNotReadyGroup = v3->_observersNotReadyGroup;
@@ -145,11 +145,11 @@
   [(ASCloudKitManager *)&v4 dealloc];
 }
 
-- (void)activitySharingManagerReady:(id)a3
+- (void)activitySharingManagerReady:(id)ready
 {
-  v4 = a3;
-  objc_storeWeak(&self->_activitySharingManager, v4);
-  obj = [v4 contactsManager];
+  readyCopy = ready;
+  objc_storeWeak(&self->_activitySharingManager, readyCopy);
+  obj = [readyCopy contactsManager];
 
   objc_storeWeak(&self->_contactsManager, obj);
 }
@@ -298,8 +298,8 @@ uint64_t __42__ASCloudKitManager_endHandlingOperations__block_invoke(uint64_t a1
 {
   v3 = objc_alloc(MEMORY[0x277CBC5D0]);
   v4 = *MEMORY[0x277CE8EC0];
-  v5 = [a1 activityDataRecordZoneID];
-  v6 = [v3 initWithRecordName:v4 zoneID:v5];
+  activityDataRecordZoneID = [self activityDataRecordZoneID];
+  v6 = [v3 initWithRecordName:v4 zoneID:activityDataRecordZoneID];
 
   return v6;
 }
@@ -307,34 +307,34 @@ uint64_t __42__ASCloudKitManager_endHandlingOperations__block_invoke(uint64_t a1
 + (id)_activityDataShareRecordID
 {
   v3 = objc_alloc(MEMORY[0x277CBC5D0]);
-  v4 = [a1 activityDataRecordZoneID];
-  v5 = [v3 initWithRecordName:@"ActivityDataZone" zoneID:v4];
+  activityDataRecordZoneID = [self activityDataRecordZoneID];
+  v5 = [v3 initWithRecordName:@"ActivityDataZone" zoneID:activityDataRecordZoneID];
 
   return v5;
 }
 
-- (void)_createActivityDataShareWithCompletion:(id)a3
+- (void)_createActivityDataShareWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [objc_opt_class() activityDataRootRecordID];
+  completionCopy = completion;
+  activityDataRootRecordID = [objc_opt_class() activityDataRootRecordID];
   v6 = _ASCreateActivityDataRootRecordWithID();
 
-  v7 = [(ASCloudKitManager *)self cloudKitUtility];
-  v8 = [objc_opt_class() _activityDataShareRecordID];
+  cloudKitUtility = [(ASCloudKitManager *)self cloudKitUtility];
+  _activityDataShareRecordID = [objc_opt_class() _activityDataShareRecordID];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __60__ASCloudKitManager__createActivityDataShareWithCompletion___block_invoke;
   v10[3] = &unk_278C4C640;
-  v11 = v4;
-  v9 = v4;
-  [v7 createShareAndAssociatedZoneWithShareRecordID:v8 rootRecord:v6 otherRecordsToSave:0 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [cloudKitUtility createShareAndAssociatedZoneWithShareRecordID:_activityDataShareRecordID rootRecord:v6 otherRecordsToSave:0 completion:v10];
 }
 
-- (void)fetchOrCreateActivityDataShareWithGroup:(id)a3 activity:(id)a4 completion:(id)a5
+- (void)fetchOrCreateActivityDataShareWithGroup:(id)group activity:(id)activity completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  groupCopy = group;
+  activityCopy = activity;
+  completionCopy = completion;
   if ([(ASCloudKitManager *)self readyForOperations])
   {
     objc_initWeak(&location, self);
@@ -345,9 +345,9 @@ uint64_t __42__ASCloudKitManager_endHandlingOperations__block_invoke(uint64_t a1
     v13[3] = &unk_278C4C6B8;
     objc_copyWeak(&v17, &location);
     v13[4] = self;
-    v14 = v9;
-    v15 = v8;
-    v16 = v10;
+    v14 = activityCopy;
+    v15 = groupCopy;
+    v16 = completionCopy;
     dispatch_async(serialQueue, v13);
 
     objc_destroyWeak(&v17);
@@ -357,7 +357,7 @@ uint64_t __42__ASCloudKitManager_endHandlingOperations__block_invoke(uint64_t a1
   else
   {
     v12 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.ActivitySharing.CloudKitManager" code:0 userInfo:0];
-    (*(v10 + 2))(v10, 0, v12, 0);
+    (*(completionCopy + 2))(completionCopy, 0, v12, 0);
   }
 }
 
@@ -440,8 +440,8 @@ uint64_t __37__ASCloudKitManager_relationshipZone__block_invoke()
     _os_log_impl(&dword_23E5E3000, v3, OS_LOG_TYPE_DEFAULT, "Cancelling all executing fetches", buf, 2u);
   }
 
-  v4 = [(ASCloudKitManager *)self cloudKitUtility];
-  [v4 cancelAllExecutingFetches];
+  cloudKitUtility = [(ASCloudKitManager *)self cloudKitUtility];
+  [cloudKitUtility cancelAllExecutingFetches];
 
   self->_currentFetchPriority = 0;
   [(HDDaemonTransaction *)self->_fetchTransaction invalidate];
@@ -505,13 +505,13 @@ void __53__ASCloudKitManager__queue_cancelAllExecutingFetches__block_invoke(uint
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_startFetchAllChangesOperationWithPriority:(int64_t)a3 activity:(id)a4 changeTokenCache:(id)a5 secureCloudChangeTokenCache:(id)a6 group:(id)a7 completion:(id)a8
+- (void)_queue_startFetchAllChangesOperationWithPriority:(int64_t)priority activity:(id)activity changeTokenCache:(id)cache secureCloudChangeTokenCache:(id)tokenCache group:(id)group completion:(id)completion
 {
-  v37 = a4;
-  v14 = a5;
-  v34 = a6;
-  v15 = a7;
-  v33 = a8;
+  activityCopy = activity;
+  cacheCopy = cache;
+  tokenCacheCopy = tokenCache;
+  groupCopy = group;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_serialQueue);
   v16 = dispatch_group_create();
   v86[0] = 0;
@@ -550,7 +550,7 @@ void __53__ASCloudKitManager__queue_cancelAllExecutingFetches__block_invoke(uint
   v76[3] = __Block_byref_object_copy__8;
   v76[4] = __Block_byref_object_dispose__8;
   v77 = 0;
-  v17 = [(ASCloudKitManager *)self additionalZoneIDsToFetchWithServerChangeTokenChange:v14];
+  v17 = [(ASCloudKitManager *)self additionalZoneIDsToFetchWithServerChangeTokenChange:cacheCopy];
   v18 = v17;
   v19 = MEMORY[0x277CBEBF8];
   if (v17)
@@ -559,11 +559,11 @@ void __53__ASCloudKitManager__queue_cancelAllExecutingFetches__block_invoke(uint
   }
 
   v36 = v19;
-  v20 = [(ASCloudKitManager *)self secureCloudDelegate];
-  v35 = [v20 sharedLegacyZoneIDsToSkip];
+  secureCloudDelegate = [(ASCloudKitManager *)self secureCloudDelegate];
+  sharedLegacyZoneIDsToSkip = [secureCloudDelegate sharedLegacyZoneIDsToSkip];
 
   dispatch_group_enter(v16);
-  v21 = [(ASCloudKitManager *)self cloudKitUtility];
+  cloudKitUtility = [(ASCloudKitManager *)self cloudKitUtility];
   v71[0] = MEMORY[0x277D85DD0];
   v71[1] = 3221225472;
   v71[2] = __141__ASCloudKitManager__queue_startFetchAllChangesOperationWithPriority_activity_changeTokenCache_secureCloudChangeTokenCache_group_completion___block_invoke;
@@ -574,10 +574,10 @@ void __53__ASCloudKitManager__queue_cancelAllExecutingFetches__block_invoke(uint
   v22 = v16;
   v72 = v22;
   v23 = MEMORY[0x277CBEC10];
-  [v21 fetchChangesInPrivateDatabaseWithServerChangeTokenCache:v14 priority:a3 activity:v37 group:v15 additionalZoneIDs:v36 zoneIDsToSkip:MEMORY[0x277CBEBF8] fetchConfigurations:MEMORY[0x277CBEC10] completion:v71];
+  [cloudKitUtility fetchChangesInPrivateDatabaseWithServerChangeTokenCache:cacheCopy priority:priority activity:activityCopy group:groupCopy additionalZoneIDs:v36 zoneIDsToSkip:MEMORY[0x277CBEBF8] fetchConfigurations:MEMORY[0x277CBEC10] completion:v71];
 
   dispatch_group_enter(v22);
-  v24 = [(ASCloudKitManager *)self cloudKitUtility];
+  cloudKitUtility2 = [(ASCloudKitManager *)self cloudKitUtility];
   v66[0] = MEMORY[0x277D85DD0];
   v66[1] = 3221225472;
   v66[2] = __141__ASCloudKitManager__queue_startFetchAllChangesOperationWithPriority_activity_changeTokenCache_secureCloudChangeTokenCache_group_completion___block_invoke_416;
@@ -587,7 +587,7 @@ void __53__ASCloudKitManager__queue_cancelAllExecutingFetches__block_invoke(uint
   v70 = v80;
   v25 = v22;
   v67 = v25;
-  [v24 fetchChangesInSharedDatabaseWithServerChangeTokenCache:v14 priority:a3 activity:v37 group:v15 additionalZoneIDs:MEMORY[0x277CBEBF8] zoneIDsToSkip:v35 fetchConfigurations:v23 completion:v66];
+  [cloudKitUtility2 fetchChangesInSharedDatabaseWithServerChangeTokenCache:cacheCopy priority:priority activity:activityCopy group:groupCopy additionalZoneIDs:MEMORY[0x277CBEBF8] zoneIDsToSkip:sharedLegacyZoneIDsToSkip fetchConfigurations:v23 completion:v66];
 
   v64[0] = 0;
   v64[1] = v64;
@@ -615,13 +615,13 @@ void __53__ASCloudKitManager__queue_cancelAllExecutingFetches__block_invoke(uint
   v59 = 0;
   if (ASSecureCloudEnabled())
   {
-    v26 = [(ASCloudKitManager *)self secureCloudDelegate];
+    secureCloudDelegate2 = [(ASCloudKitManager *)self secureCloudDelegate];
 
-    if (v26)
+    if (secureCloudDelegate2)
     {
       dispatch_group_enter(v25);
-      v27 = [(ASCloudKitManager *)self secureCloudDelegate];
-      v28 = [(ASCloudKitManager *)self secureCloudPrivateDatabaseFetchConfigurations];
+      secureCloudDelegate3 = [(ASCloudKitManager *)self secureCloudDelegate];
+      secureCloudPrivateDatabaseFetchConfigurations = [(ASCloudKitManager *)self secureCloudPrivateDatabaseFetchConfigurations];
       v54[0] = MEMORY[0x277D85DD0];
       v54[1] = 3221225472;
       v54[2] = __141__ASCloudKitManager__queue_startFetchAllChangesOperationWithPriority_activity_changeTokenCache_secureCloudChangeTokenCache_group_completion___block_invoke_417;
@@ -630,10 +630,10 @@ void __53__ASCloudKitManager__queue_cancelAllExecutingFetches__block_invoke(uint
       v57 = v62;
       v29 = v25;
       v55 = v29;
-      [v27 cloudKitManager:self fetchPrivateDatabaseChangesWithCache:v34 priority:a3 activity:v37 group:v15 fetchConfigurations:v28 completion:v54];
+      [secureCloudDelegate3 cloudKitManager:self fetchPrivateDatabaseChangesWithCache:tokenCacheCopy priority:priority activity:activityCopy group:groupCopy fetchConfigurations:secureCloudPrivateDatabaseFetchConfigurations completion:v54];
 
       dispatch_group_enter(v29);
-      v30 = [(ASCloudKitManager *)self secureCloudDelegate];
+      secureCloudDelegate4 = [(ASCloudKitManager *)self secureCloudDelegate];
       v50[0] = MEMORY[0x277D85DD0];
       v50[1] = 3221225472;
       v50[2] = __141__ASCloudKitManager__queue_startFetchAllChangesOperationWithPriority_activity_changeTokenCache_secureCloudChangeTokenCache_group_completion___block_invoke_419;
@@ -641,7 +641,7 @@ void __53__ASCloudKitManager__queue_cancelAllExecutingFetches__block_invoke(uint
       v52 = v60;
       v53 = v58;
       v51 = v29;
-      [v30 cloudKitManager:self fetchSharedDatabaseChangesWithCache:v34 priority:a3 activity:v37 group:v15 completion:v50];
+      [secureCloudDelegate4 cloudKitManager:self fetchSharedDatabaseChangesWithCache:tokenCacheCopy priority:priority activity:activityCopy group:groupCopy completion:v50];
     }
   }
 
@@ -656,12 +656,12 @@ void __53__ASCloudKitManager__queue_cancelAllExecutingFetches__block_invoke(uint
   v44 = v82;
   v45 = v60;
   v46 = v62;
-  v39 = v33;
+  v39 = completionCopy;
   v40 = v84;
   v47 = v58;
   v48 = v78;
   v49 = v76;
-  v32 = v33;
+  v32 = completionCopy;
   dispatch_group_notify(v25, serialQueue, block);
 
   _Block_object_dispose(v58, 8);
@@ -906,16 +906,16 @@ LABEL_26:
 LABEL_27:
 }
 
-- (void)_queue_callFetchCompletionBlocksWithSuccess:(BOOL)a3 error:(id)a4
+- (void)_queue_callFetchCompletionBlocksWithSuccess:(BOOL)success error:(id)error
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_serialQueue);
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v16 = self;
+  selfCopy = self;
   v7 = self->_blocksWaitingOnFetch;
   v8 = [(NSArray *)v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v8)
@@ -939,8 +939,8 @@ LABEL_27:
         block[2] = __71__ASCloudKitManager__queue_callFetchCompletionBlocksWithSuccess_error___block_invoke;
         block[3] = &unk_278C4BD38;
         v19 = v13;
-        v20 = a3;
-        v18 = v6;
+        successCopy = success;
+        v18 = errorCopy;
         dispatch_async(v11, block);
 
         ++v12;
@@ -953,26 +953,26 @@ LABEL_27:
     while (v9);
   }
 
-  blocksWaitingOnFetch = v16->_blocksWaitingOnFetch;
-  v16->_blocksWaitingOnFetch = MEMORY[0x277CBEBF8];
+  blocksWaitingOnFetch = selfCopy->_blocksWaitingOnFetch;
+  selfCopy->_blocksWaitingOnFetch = MEMORY[0x277CBEBF8];
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fetchAllChangesWithPriority:(int64_t)a3 activity:(id)a4 group:(id)a5
+- (void)_fetchAllChangesWithPriority:(int64_t)priority activity:(id)activity group:(id)group
 {
-  v8 = a4;
-  v9 = a5;
+  activityCopy = activity;
+  groupCopy = group;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __65__ASCloudKitManager__fetchAllChangesWithPriority_activity_group___block_invoke;
   v12[3] = &unk_278C4C7D0;
   v12[4] = self;
-  v13 = v8;
-  v14 = v9;
-  v15 = a3;
-  v10 = v9;
-  v11 = v8;
+  v13 = activityCopy;
+  v14 = groupCopy;
+  priorityCopy = priority;
+  v10 = groupCopy;
+  v11 = activityCopy;
   [(ASCloudKitManager *)self _performBlockWhenAllObserversBecomeReady:v12];
 }
 
@@ -1284,24 +1284,24 @@ uint64_t __65__ASCloudKitManager__fetchAllChangesWithPriority_activity_group___b
   return [v5 _queue_callFetchCompletionBlocksWithSuccess:v4 error:v6];
 }
 
-- (void)_fetchAllChangesWithPriority:(int64_t)a3 activity:(id)a4 group:(id)a5 completion:(id)a6
+- (void)_fetchAllChangesWithPriority:(int64_t)priority activity:(id)activity group:(id)group completion:(id)completion
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  activityCopy = activity;
+  groupCopy = group;
+  completionCopy = completion;
   serialQueue = self->_serialQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __76__ASCloudKitManager__fetchAllChangesWithPriority_activity_group_completion___block_invoke;
   block[3] = &unk_278C4C7F8;
-  v20 = v12;
-  v21 = a3;
+  v20 = completionCopy;
+  priorityCopy = priority;
   block[4] = self;
-  v18 = v10;
-  v19 = v11;
-  v14 = v11;
-  v15 = v10;
-  v16 = v12;
+  v18 = activityCopy;
+  v19 = groupCopy;
+  v14 = groupCopy;
+  v15 = activityCopy;
+  v16 = completionCopy;
   dispatch_async(serialQueue, block);
 }
 
@@ -1376,28 +1376,28 @@ void __76__ASCloudKitManager__fetchAllChangesWithPriority_activity_group_complet
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchAllChangesWithPriority:(int64_t)a3 activity:(id)a4 group:(id)a5 completion:(id)a6
+- (void)fetchAllChangesWithPriority:(int64_t)priority activity:(id)activity group:(id)group completion:(id)completion
 {
-  v13 = a4;
-  v10 = a5;
-  v11 = a6;
+  activityCopy = activity;
+  groupCopy = group;
+  completionCopy = completion;
   if ([(ASCloudKitManager *)self readyForOperations])
   {
-    [(ASCloudKitManager *)self _fetchAllChangesWithPriority:a3 activity:v13 group:v10 completion:v11];
+    [(ASCloudKitManager *)self _fetchAllChangesWithPriority:priority activity:activityCopy group:groupCopy completion:completionCopy];
   }
 
-  else if (v11)
+  else if (completionCopy)
   {
     v12 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.ActivitySharing.CloudKitManager" code:0 userInfo:0];
-    v11[2](v11, 0, v12);
+    completionCopy[2](completionCopy, 0, v12);
   }
 }
 
-- (void)fetchAllChangesIfTimeSinceLastFetchIsGreaterThan:(unint64_t)a3 priority:(int64_t)a4 activity:(id)a5 group:(id)a6 completion:(id)a7
+- (void)fetchAllChangesIfTimeSinceLastFetchIsGreaterThan:(unint64_t)than priority:(int64_t)priority activity:(id)activity group:(id)group completion:(id)completion
 {
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  activityCopy = activity;
+  groupCopy = group;
+  completionCopy = completion;
   if ([(ASCloudKitManager *)self readyForOperations])
   {
     serialQueue = self->_serialQueue;
@@ -1406,18 +1406,18 @@ void __76__ASCloudKitManager__fetchAllChangesWithPriority_activity_group_complet
     v17[2] = __105__ASCloudKitManager_fetchAllChangesIfTimeSinceLastFetchIsGreaterThan_priority_activity_group_completion___block_invoke;
     v17[3] = &unk_278C4C820;
     v17[4] = self;
-    v21 = a3;
-    v22 = a4;
-    v18 = v12;
-    v19 = v13;
-    v20 = v14;
+    thanCopy = than;
+    priorityCopy = priority;
+    v18 = activityCopy;
+    v19 = groupCopy;
+    v20 = completionCopy;
     dispatch_async(serialQueue, v17);
   }
 
   else
   {
     v16 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.ActivitySharing.CloudKitManager" code:0 userInfo:0];
-    (*(v14 + 2))(v14, 0, v16);
+    (*(completionCopy + 2))(completionCopy, 0, v16);
   }
 }
 
@@ -1524,7 +1524,7 @@ LABEL_11:
   return v3;
 }
 
-- (void)setHasCompletedFirstFetch:(BOOL)a3
+- (void)setHasCompletedFirstFetch:(BOOL)fetch
 {
   serialQueue = self->_serialQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -1532,24 +1532,24 @@ LABEL_11:
   v4[2] = __47__ASCloudKitManager_setHasCompletedFirstFetch___block_invoke;
   v4[3] = &unk_278C4B2A0;
   v4[4] = self;
-  v5 = a3;
+  fetchCopy = fetch;
   dispatch_sync(serialQueue, v4);
 }
 
-- (void)_queue_setHasCompletedFirstFetch:(BOOL)a3
+- (void)_queue_setHasCompletedFirstFetch:(BOOL)fetch
 {
-  v3 = a3;
+  fetchCopy = fetch;
   v16 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_serialQueue);
-  if (self->_hasCompletedFirstFetch != v3)
+  if (self->_hasCompletedFirstFetch != fetchCopy)
   {
-    self->_hasCompletedFirstFetch = v3;
+    self->_hasCompletedFirstFetch = fetchCopy;
     WeakRetained = objc_loadWeakRetained(&self->_activitySharingManager);
-    v6 = [WeakRetained deviceLocalActivitySharingKeyValueDomain];
+    deviceLocalActivitySharingKeyValueDomain = [WeakRetained deviceLocalActivitySharingKeyValueDomain];
 
     v7 = [MEMORY[0x277CCABB0] numberWithBool:self->_hasCompletedFirstFetch];
     v13 = 0;
-    [v6 setNumber:v7 forKey:@"ActivitySharingHasCompletedFirstCloudKitFetchKeyVersion2" error:&v13];
+    [deviceLocalActivitySharingKeyValueDomain setNumber:v7 forKey:@"ActivitySharingHasCompletedFirstCloudKitFetchKeyVersion2" error:&v13];
     v8 = v13;
 
     ASLoggingInitialize();
@@ -1575,17 +1575,17 @@ LABEL_11:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)expireChangeTokenWithCompletion:(id)a3
+- (void)expireChangeTokenWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__ASCloudKitManager_expireChangeTokenWithCompletion___block_invoke;
   v7[3] = &unk_278C4B1B0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(serialQueue, v7);
 }
 
@@ -1610,12 +1610,12 @@ uint64_t __53__ASCloudKitManager_expireChangeTokenWithCompletion___block_invoke(
   return result;
 }
 
-- (id)additionalZoneIDsToFetchWithServerChangeTokenChange:(id)a3
+- (id)additionalZoneIDsToFetchWithServerChangeTokenChange:(id)change
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  changeCopy = change;
   v4 = _MetadataZoneID();
-  v5 = [v3 fetchDateForRecordZoneID:v4];
+  v5 = [changeCopy fetchDateForRecordZoneID:v4];
 
   if (v5 && ([MEMORY[0x277CBEA80] currentCalendar], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(MEMORY[0x277CBEAA8], "date"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v6, "isDate:inSameDayAsDate:", v5, v7), v7, v6, v8))
   {
@@ -1655,9 +1655,9 @@ uint64_t __53__ASCloudKitManager_expireChangeTokenWithCompletion___block_invoke(
   v17[2] = v4;
   v16 = *MEMORY[0x277CE8EC8];
   v5 = [ASCloudKitFetchConfiguration alloc];
-  v6 = [MEMORY[0x277CBEA80] currentCalendar];
-  v7 = [MEMORY[0x277CBEAA8] date];
-  v8 = [v6 dateByAddingUnit:16 value:-4 toDate:v7 options:0];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  date = [MEMORY[0x277CBEAA8] date];
+  v8 = [currentCalendar dateByAddingUnit:16 value:-4 toDate:date options:0];
   v9 = [(ASCloudKitFetchConfiguration *)v5 initWithRecordType:v16 shouldSkip:0 shouldCoalesce:1 oldestAllowedModificationDate:v8];
   v17[3] = v9;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:&v13 count:4];
@@ -1667,9 +1667,9 @@ uint64_t __53__ASCloudKitManager_expireChangeTokenWithCompletion___block_invoke(
   return v10;
 }
 
-- (void)subscribeToCloudKitDatabaseChangesWithCompletion:(id)a3
+- (void)subscribeToCloudKitDatabaseChangesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(ASCloudKitManager *)self readyForOperations])
   {
     serialQueue = self->_serialQueue;
@@ -1678,37 +1678,37 @@ uint64_t __53__ASCloudKitManager_expireChangeTokenWithCompletion___block_invoke(
     v7[2] = __70__ASCloudKitManager_subscribeToCloudKitDatabaseChangesWithCompletion___block_invoke;
     v7[3] = &unk_278C4B1B0;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     dispatch_async(serialQueue, v7);
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
     v6 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.ActivitySharing.CloudKitManager" code:0 userInfo:0];
-    (*(v4 + 2))(v4, 0, v6);
+    (*(completionCopy + 2))(completionCopy, 0, v6);
   }
 }
 
-- (void)_subscribeToChangesInDatabase:(id)a3 subscriptionPrefix:(id)a4 recordTypes:(id)a5 zoneNames:(id)a6 recordTypesToDelete:(id)a7 completion:(id)a8
+- (void)_subscribeToChangesInDatabase:(id)database subscriptionPrefix:(id)prefix recordTypes:(id)types zoneNames:(id)names recordTypesToDelete:(id)delete completion:(id)completion
 {
   v78 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v52 = a6;
-  v53 = a7;
-  v17 = a8;
-  if ([v16 count] || objc_msgSend(v53, "count"))
+  databaseCopy = database;
+  prefixCopy = prefix;
+  typesCopy = types;
+  namesCopy = names;
+  deleteCopy = delete;
+  completionCopy = completion;
+  if ([typesCopy count] || objc_msgSend(deleteCopy, "count"))
   {
-    v49 = self;
-    v50 = v17;
+    selfCopy = self;
+    v50 = completionCopy;
     v18 = [MEMORY[0x277CBEB58] set];
     v67 = 0u;
     v68 = 0u;
     v69 = 0u;
     v70 = 0u;
-    v51 = v16;
-    obj = v16;
+    v51 = typesCopy;
+    obj = typesCopy;
     v19 = [obj countByEnumeratingWithState:&v67 objects:v77 count:16];
     if (v19)
     {
@@ -1729,7 +1729,7 @@ uint64_t __53__ASCloudKitManager_expireChangeTokenWithCompletion___block_invoke(
           if (os_log_type_enabled(*MEMORY[0x277CE8FD0], OS_LOG_TYPE_DEFAULT))
           {
             v25 = v24;
-            [v14 databaseScope];
+            [databaseCopy databaseScope];
             v26 = CKDatabaseScopeString();
             *buf = 138543618;
             v74 = v23;
@@ -1738,7 +1738,7 @@ uint64_t __53__ASCloudKitManager_expireChangeTokenWithCompletion___block_invoke(
             _os_log_impl(&dword_23E5E3000, v25, OS_LOG_TYPE_DEFAULT, "Creating subscription to records with type %{public}@ in database %{public}@", buf, 0x16u);
           }
 
-          v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", v15, v23];
+          v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", prefixCopy, v23];
           v28 = _CreateSubscription(v27, v23, 1);
 
           [v18 addObject:v28];
@@ -1754,7 +1754,7 @@ uint64_t __53__ASCloudKitManager_expireChangeTokenWithCompletion___block_invoke(
     v66 = 0u;
     v63 = 0u;
     v64 = 0u;
-    obja = v52;
+    obja = namesCopy;
     v29 = [obja countByEnumeratingWithState:&v63 objects:v72 count:16];
     if (v29)
     {
@@ -1775,7 +1775,7 @@ uint64_t __53__ASCloudKitManager_expireChangeTokenWithCompletion___block_invoke(
           if (os_log_type_enabled(*MEMORY[0x277CE8FD0], OS_LOG_TYPE_DEFAULT))
           {
             v35 = v34;
-            [v14 databaseScope];
+            [databaseCopy databaseScope];
             v36 = CKDatabaseScopeString();
             *buf = 138543618;
             v74 = v33;
@@ -1784,7 +1784,7 @@ uint64_t __53__ASCloudKitManager_expireChangeTokenWithCompletion___block_invoke(
             _os_log_impl(&dword_23E5E3000, v35, OS_LOG_TYPE_DEFAULT, "Creating subscription to zone with name %{public}@ in database %{public}@", buf, 0x16u);
           }
 
-          v37 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", v15, v33];
+          v37 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", prefixCopy, v33];
           v39 = _CreateZoneSubscription(v37, v38, 1);
 
           [v18 addObject:v39];
@@ -1801,7 +1801,7 @@ uint64_t __53__ASCloudKitManager_expireChangeTokenWithCompletion___block_invoke(
     v60 = 0u;
     v61 = 0u;
     v62 = 0u;
-    v41 = v53;
+    v41 = deleteCopy;
     v42 = [v41 countByEnumeratingWithState:&v59 objects:v71 count:16];
     if (v42)
     {
@@ -1816,7 +1816,7 @@ uint64_t __53__ASCloudKitManager_expireChangeTokenWithCompletion___block_invoke(
             objc_enumerationMutation(v41);
           }
 
-          v46 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", v15, *(*(&v59 + 1) + 8 * k)];
+          v46 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", prefixCopy, *(*(&v59 + 1) + 8 * k)];
           [v40 addObject:v46];
         }
 
@@ -1826,22 +1826,22 @@ uint64_t __53__ASCloudKitManager_expireChangeTokenWithCompletion___block_invoke(
       while (v43);
     }
 
-    v47 = [(ASCloudKitManager *)v49 cloudKitUtility];
+    cloudKitUtility = [(ASCloudKitManager *)selfCopy cloudKitUtility];
     v56[0] = MEMORY[0x277D85DD0];
     v56[1] = 3221225472;
     v56[2] = __123__ASCloudKitManager__subscribeToChangesInDatabase_subscriptionPrefix_recordTypes_zoneNames_recordTypesToDelete_completion___block_invoke;
     v56[3] = &unk_278C4C848;
-    v57 = v14;
-    v17 = v50;
+    v57 = databaseCopy;
+    completionCopy = v50;
     v58 = v50;
-    [v47 saveSubscriptions:v18 andDeleteSubscriptionsWithIdentifiers:v40 inDatabase:v57 completion:v56];
+    [cloudKitUtility saveSubscriptions:v18 andDeleteSubscriptionsWithIdentifiers:v40 inDatabase:v57 completion:v56];
 
-    v16 = v51;
+    typesCopy = v51;
   }
 
-  else if (v17)
+  else if (completionCopy)
   {
-    (*(v17 + 2))(v17, 1, 0);
+    (*(completionCopy + 2))(completionCopy, 1, 0);
   }
 
   v48 = *MEMORY[0x277D85DE8];
@@ -1884,63 +1884,63 @@ void __123__ASCloudKitManager__subscribeToChangesInDatabase_subscriptionPrefix_r
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_subscribeToChangesInSharedDatabaseWithCompletion:(id)a3
+- (void)_subscribeToChangesInSharedDatabaseWithCompletion:(id)completion
 {
   v10[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ASCloudKitManager *)self container];
-  v6 = [v5 sharedCloudDatabase];
+  completionCopy = completion;
+  container = [(ASCloudKitManager *)self container];
+  sharedCloudDatabase = [container sharedCloudDatabase];
   v7 = *MEMORY[0x277CE8F00];
   v10[0] = *MEMORY[0x277CE8EF0];
   v10[1] = v7;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:2];
-  [(ASCloudKitManager *)self _subscribeToChangesInDatabase:v6 subscriptionPrefix:@"ActivitySharingSharedDataSubscription" recordTypes:v8 zoneNames:MEMORY[0x277CBEBF8] recordTypesToDelete:&unk_2850F51C8 completion:v4];
+  [(ASCloudKitManager *)self _subscribeToChangesInDatabase:sharedCloudDatabase subscriptionPrefix:@"ActivitySharingSharedDataSubscription" recordTypes:v8 zoneNames:MEMORY[0x277CBEBF8] recordTypesToDelete:&unk_2850F51C8 completion:completionCopy];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_subscribeToChangesInPrivateDatabaseWithCompletion:(id)a3
+- (void)_subscribeToChangesInPrivateDatabaseWithCompletion:(id)completion
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ASCloudKitManager *)self container];
-  v6 = [v5 privateCloudDatabase];
+  completionCopy = completion;
+  container = [(ASCloudKitManager *)self container];
+  privateCloudDatabase = [container privateCloudDatabase];
   v11[0] = *MEMORY[0x277CE8F00];
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
   v10 = *MEMORY[0x277CE8EE0];
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:&v10 count:1];
-  [(ASCloudKitManager *)self _subscribeToChangesInDatabase:v6 subscriptionPrefix:@"ActivitySharingPrivateDataSubscription" recordTypes:v7 zoneNames:v8 recordTypesToDelete:&unk_2850F51E0 completion:v4];
+  [(ASCloudKitManager *)self _subscribeToChangesInDatabase:privateCloudDatabase subscriptionPrefix:@"ActivitySharingPrivateDataSubscription" recordTypes:v7 zoneNames:v8 recordTypesToDelete:&unk_2850F51E0 completion:completionCopy];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleSecureCloudServerPush:(id)a3
+- (void)_handleSecureCloudServerPush:(id)push
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277CE9300]];
+  userInfo = [push userInfo];
+  v5 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CE9300]];
 
   [(ASCloudKitManager *)self _handleIncomingNotification:v5];
 }
 
-- (void)_handleIncomingNotification:(id)a3
+- (void)_handleIncomingNotification:(id)notification
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   ASLoggingInitialize();
   v5 = MEMORY[0x277CE8FD0];
   v6 = *MEMORY[0x277CE8FD0];
   if (os_log_type_enabled(*MEMORY[0x277CE8FD0], OS_LOG_TYPE_DEFAULT))
   {
     v7 = v6;
-    v8 = [v4 subscriptionID];
+    subscriptionID = [notificationCopy subscriptionID];
     *buf = 138543362;
-    v16 = v8;
+    v16 = subscriptionID;
     _os_log_impl(&dword_23E5E3000, v7, OS_LOG_TYPE_DEFAULT, "Received CloudKit push notification for subscription with id: %{public}@", buf, 0xCu);
   }
 
-  v9 = [v4 alertBody];
+  alertBody = [notificationCopy alertBody];
 
-  if (v9)
+  if (alertBody)
   {
     serialQueue = self->_serialQueue;
     v13[0] = MEMORY[0x277D85DD0];
@@ -1948,7 +1948,7 @@ void __123__ASCloudKitManager__subscribeToChangesInDatabase_subscriptionPrefix_r
     v13[2] = __49__ASCloudKitManager__handleIncomingNotification___block_invoke;
     v13[3] = &unk_278C4B250;
     v13[4] = self;
-    v14 = v4;
+    v14 = notificationCopy;
     dispatch_async(serialQueue, v13);
   }
 
@@ -2083,18 +2083,18 @@ void __49__ASCloudKitManager__handleIncomingNotification___block_invoke_455(uint
   }
 }
 
-- (void)_verifyOrCreateSubscriptionsWithCompletion:(id)a3
+- (void)_verifyOrCreateSubscriptionsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __64__ASCloudKitManager__verifyOrCreateSubscriptionsWithCompletion___block_invoke;
   v7[3] = &unk_278C4BA08;
   v7[4] = self;
-  v8 = v4;
-  v5 = v4;
-  v6 = self;
-  [(ASCloudKitManager *)v6 _subscribeToChangesInPrivateDatabaseWithCompletion:v7];
+  v8 = completionCopy;
+  v5 = completionCopy;
+  selfCopy = self;
+  [(ASCloudKitManager *)selfCopy _subscribeToChangesInPrivateDatabaseWithCompletion:v7];
 }
 
 uint64_t __64__ASCloudKitManager__verifyOrCreateSubscriptionsWithCompletion___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -2151,7 +2151,7 @@ uint64_t __64__ASCloudKitManager__verifyOrCreateSubscriptionsWithCompletion___bl
   if (v5 && ![v5 compare:*MEMORY[0x277CBBFB8] options:1])
   {
     v7 = dispatch_semaphore_create(0);
-    v8 = [(ASCloudKitManager *)self container];
+    container = [(ASCloudKitManager *)self container];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __48__ASCloudKitManager__queue_apsEnvironmentString__block_invoke_2;
@@ -2159,7 +2159,7 @@ uint64_t __64__ASCloudKitManager__verifyOrCreateSubscriptionsWithCompletion___bl
     v19 = &v20;
     v9 = v7;
     v18 = v9;
-    [v8 serverPreferredPushEnvironmentWithCompletionHandler:v17];
+    [container serverPreferredPushEnvironmentWithCompletionHandler:v17];
 
     v10 = dispatch_time(0, 10000000000);
     if (dispatch_semaphore_wait(v9, v10))
@@ -2226,64 +2226,64 @@ void __48__ASCloudKitManager__queue_apsEnvironmentString__block_invoke_2(uint64_
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4
+- (void)connection:(id)connection didReceivePublicToken:(id)token
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  connectionCopy = connection;
+  tokenCopy = token;
   ASLoggingInitialize();
   v7 = *MEMORY[0x277CE8FD0];
   if (os_log_type_enabled(*MEMORY[0x277CE8FD0], OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412546;
-    v10 = v6;
+    v10 = tokenCopy;
     v11 = 2048;
-    v12 = v5;
+    v12 = connectionCopy;
     _os_log_impl(&dword_23E5E3000, v7, OS_LOG_TYPE_DEFAULT, "Received public token %@ on connection %p", &v9, 0x16u);
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)connection:(id)a3 didReceiveToken:(id)a4 forTopic:(id)a5 identifier:(id)a6
+- (void)connection:(id)connection didReceiveToken:(id)token forTopic:(id)topic identifier:(id)identifier
 {
   v23 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  connectionCopy = connection;
+  tokenCopy = token;
+  topicCopy = topic;
+  identifierCopy = identifier;
   ASLoggingInitialize();
   v13 = *MEMORY[0x277CE8FD0];
   if (os_log_type_enabled(*MEMORY[0x277CE8FD0], OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138413058;
-    v16 = v10;
+    v16 = tokenCopy;
     v17 = 2114;
-    v18 = v11;
+    v18 = topicCopy;
     v19 = 2112;
-    v20 = v12;
+    v20 = identifierCopy;
     v21 = 2048;
-    v22 = v9;
+    v22 = connectionCopy;
     _os_log_impl(&dword_23E5E3000, v13, OS_LOG_TYPE_DEFAULT, "Received per-topic push token %@ for topic %{public}@ identifier %@ on connection %p", &v15, 0x2Au);
   }
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [v5 userInfo];
-  v7 = [MEMORY[0x277CBC4C0] notificationFromRemoteNotificationDictionary:v6];
+  messageCopy = message;
+  userInfo = [messageCopy userInfo];
+  v7 = [MEMORY[0x277CBC4C0] notificationFromRemoteNotificationDictionary:userInfo];
   ASLoggingInitialize();
   v8 = *MEMORY[0x277CE8FD0];
   if (os_log_type_enabled(*MEMORY[0x277CE8FD0], OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [v5 topic];
+    topic = [messageCopy topic];
     v12 = 138412546;
-    v13 = v10;
+    v13 = topic;
     v14 = 2112;
     v15 = v7;
     _os_log_impl(&dword_23E5E3000, v9, OS_LOG_TYPE_DEFAULT, "APS push recieved: %@ %@", &v12, 0x16u);
@@ -2311,14 +2311,14 @@ void __48__ASCloudKitManager__queue_apsEnvironmentString__block_invoke_2(uint64_
 
   else
   {
-    v4 = [(ASCloudKitManager *)self _queue_apsEnvironmentString];
-    if (v4)
+    _queue_apsEnvironmentString = [(ASCloudKitManager *)self _queue_apsEnvironmentString];
+    if (_queue_apsEnvironmentString)
     {
       v5 = [@"com.apple.icloud-container." stringByAppendingString:@"com.apple.Fitness"];
       v6 = objc_alloc(MEMORY[0x277CEEA10]);
       v7 = *MEMORY[0x277CE92C0];
       v8 = dispatch_get_global_queue(0, 0);
-      v9 = [v6 initWithEnvironmentName:v4 namedDelegatePort:v7 queue:v8];
+      v9 = [v6 initWithEnvironmentName:_queue_apsEnvironmentString namedDelegatePort:v7 queue:v8];
       apsConnection = self->_apsConnection;
       self->_apsConnection = v9;
 
@@ -2368,8 +2368,8 @@ void __48__ASCloudKitManager__queue_apsEnvironmentString__block_invoke_2(uint64_
   apsConnection = self->_apsConnection;
   if (apsConnection)
   {
-    v4 = [(APSConnection *)apsConnection enabledTopics];
-    v5 = [v4 count];
+    enabledTopics = [(APSConnection *)apsConnection enabledTopics];
+    v5 = [enabledTopics count];
 
     if (v5)
     {
@@ -2381,47 +2381,47 @@ void __48__ASCloudKitManager__queue_apsEnvironmentString__block_invoke_2(uint64_
   }
 }
 
-- (void)forceSaveRecordsIntoPrivateDatabaseIgnoringServerChanges:(id)a3 recordIDsToDelete:(id)a4 priority:(int64_t)a5 activity:(id)a6 group:(id)a7 completion:(id)a8
+- (void)forceSaveRecordsIntoPrivateDatabaseIgnoringServerChanges:(id)changes recordIDsToDelete:(id)delete priority:(int64_t)priority activity:(id)activity group:(id)group completion:(id)completion
 {
-  v19 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  changesCopy = changes;
+  deleteCopy = delete;
+  activityCopy = activity;
+  groupCopy = group;
+  completionCopy = completion;
   if ([(ASCloudKitManager *)self readyForOperations])
   {
-    v18 = [(ASCloudKitManager *)self cloudKitUtility];
-    [v18 forceSaveRecordsIntoPrivateDatabaseIgnoringServerChanges:v19 recordIDsToDelete:v14 priority:a5 activity:v15 group:v16 completion:v17];
+    cloudKitUtility = [(ASCloudKitManager *)self cloudKitUtility];
+    [cloudKitUtility forceSaveRecordsIntoPrivateDatabaseIgnoringServerChanges:changesCopy recordIDsToDelete:deleteCopy priority:priority activity:activityCopy group:groupCopy completion:completionCopy];
   }
 
   else
   {
-    v18 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.ActivitySharing.CloudKitManager" code:0 userInfo:0];
-    (*(v17 + 2))(v17, 0, v18, 0);
+    cloudKitUtility = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.ActivitySharing.CloudKitManager" code:0 userInfo:0];
+    (*(completionCopy + 2))(completionCopy, 0, cloudKitUtility, 0);
   }
 }
 
-- (void)saveRecordsIntoPrivateDatabase:(id)a3 recordIDsToDelete:(id)a4 priority:(int64_t)a5 activity:(id)a6 group:(id)a7 completion:(id)a8
+- (void)saveRecordsIntoPrivateDatabase:(id)database recordIDsToDelete:(id)delete priority:(int64_t)priority activity:(id)activity group:(id)group completion:(id)completion
 {
-  v19 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  databaseCopy = database;
+  deleteCopy = delete;
+  activityCopy = activity;
+  groupCopy = group;
+  completionCopy = completion;
   if ([(ASCloudKitManager *)self readyForOperations])
   {
-    v18 = [(ASCloudKitManager *)self cloudKitUtility];
-    [v18 saveRecordsIntoPrivateDatabase:v19 recordIDsToDelete:v14 priority:a5 activity:v15 group:v16 completion:v17];
+    cloudKitUtility = [(ASCloudKitManager *)self cloudKitUtility];
+    [cloudKitUtility saveRecordsIntoPrivateDatabase:databaseCopy recordIDsToDelete:deleteCopy priority:priority activity:activityCopy group:groupCopy completion:completionCopy];
   }
 
   else
   {
-    v18 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.ActivitySharing.CloudKitManager" code:0 userInfo:0];
-    (*(v17 + 2))(v17, 0, v18, 0);
+    cloudKitUtility = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.ActivitySharing.CloudKitManager" code:0 userInfo:0];
+    (*(completionCopy + 2))(completionCopy, 0, cloudKitUtility, 0);
   }
 }
 
-- (void)_cloudKitAccountStatusChanged:(id)a3
+- (void)_cloudKitAccountStatusChanged:(id)changed
 {
   ASLoggingInitialize();
   v4 = *MEMORY[0x277CE8FD0];
@@ -2434,9 +2434,9 @@ void __48__ASCloudKitManager__queue_apsEnvironmentString__block_invoke_2(uint64_
   [(ASCloudKitManager *)self _fetchCloudKitAccountStatusAndNotifyOfChanges];
 }
 
-- (void)clearChangeTokenCacheAndFriendListWithCompletion:(id)a3
+- (void)clearChangeTokenCacheAndFriendListWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(ASCloudKitManager *)self readyForOperations])
   {
     serialQueue = self->_serialQueue;
@@ -2445,20 +2445,20 @@ void __48__ASCloudKitManager__queue_apsEnvironmentString__block_invoke_2(uint64_
     v7[2] = __70__ASCloudKitManager_clearChangeTokenCacheAndFriendListWithCompletion___block_invoke;
     v7[3] = &unk_278C4B1B0;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     dispatch_async(serialQueue, v7);
   }
 
   else
   {
     v6 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.ActivitySharing.CloudKitManager" code:0 userInfo:0];
-    (*(v4 + 2))(v4, 0, v6);
+    (*(completionCopy + 2))(completionCopy, 0, v6);
   }
 }
 
-- (void)clearChangeTokenCachesWithCompletion:(id)a3
+- (void)clearChangeTokenCachesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(ASCloudKitManager *)self readyForOperations])
   {
     serialQueue = self->_serialQueue;
@@ -2467,14 +2467,14 @@ void __48__ASCloudKitManager__queue_apsEnvironmentString__block_invoke_2(uint64_
     v7[2] = __58__ASCloudKitManager_clearChangeTokenCachesWithCompletion___block_invoke;
     v7[3] = &unk_278C4B1B0;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     dispatch_async(serialQueue, v7);
   }
 
   else
   {
     v6 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.ActivitySharing.CloudKitManager" code:0 userInfo:0];
-    (*(v4 + 2))(v4, 0, v6);
+    (*(completionCopy + 2))(completionCopy, 0, v6);
   }
 }
 
@@ -2486,16 +2486,16 @@ uint64_t __58__ASCloudKitManager_clearChangeTokenCachesWithCompletion___block_in
   return v2();
 }
 
-- (void)_queue_clearChangeTokenCacheAndFriendListWithCompletion:(id)a3
+- (void)_queue_clearChangeTokenCacheAndFriendListWithCompletion:(id)completion
 {
   serialQueue = self->_serialQueue;
-  v5 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(serialQueue);
   [(ASCloudKitManager *)self _queue_clearChangeTokenCaches];
   [(ASCloudKitManager *)self _queue_cancelAllExecutingFetches];
   [(ASCloudKitManager *)self _queue_setHasCompletedFirstFetch:0];
   WeakRetained = objc_loadWeakRetained(&self->_activitySharingManager);
-  [WeakRetained clearFriendListWithCompletion:v5];
+  [WeakRetained clearFriendListWithCompletion:completionCopy];
 }
 
 - (void)_queue_clearChangeTokenCaches
@@ -2512,11 +2512,11 @@ uint64_t __58__ASCloudKitManager_clearChangeTokenCachesWithCompletion___block_in
   }
 }
 
-- (void)_performNewAccountTasksCreatingSubscriptions:(BOOL)a3 fetching:(BOOL)a4 completion:(id)a5
+- (void)_performNewAccountTasksCreatingSubscriptions:(BOOL)subscriptions fetching:(BOOL)fetching completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
+  fetchingCopy = fetching;
+  subscriptionsCopy = subscriptions;
+  completionCopy = completion;
   v9 = dispatch_group_create();
   ASLoggingInitialize();
   v10 = MEMORY[0x277CE8FD0];
@@ -2537,7 +2537,7 @@ uint64_t __58__ASCloudKitManager_clearChangeTokenCachesWithCompletion___block_in
   v43 = __Block_byref_object_copy__8;
   v44 = __Block_byref_object_dispose__8;
   v45 = 0;
-  if (v6)
+  if (subscriptionsCopy)
   {
     dispatch_group_enter(v9);
     ASLoggingInitialize();
@@ -2568,7 +2568,7 @@ uint64_t __58__ASCloudKitManager_clearChangeTokenCachesWithCompletion___block_in
   v31 = __Block_byref_object_copy__8;
   v32 = __Block_byref_object_dispose__8;
   v33 = 0;
-  if (v5)
+  if (fetchingCopy)
   {
     dispatch_group_enter(v9);
     ASLoggingInitialize();
@@ -2598,9 +2598,9 @@ uint64_t __58__ASCloudKitManager_clearChangeTokenCachesWithCompletion___block_in
   v20 = v34;
   v21 = buf;
   v22 = v28;
-  v18 = v8;
+  v18 = completionCopy;
   v19 = v46;
-  v16 = v8;
+  v16 = completionCopy;
   dispatch_group_notify(v9, serialQueue, v17);
 
   _Block_object_dispose(v28, 8);
@@ -2751,9 +2751,9 @@ void __108__ASCloudKitManager__performAndRetryNewAccountTasksWithRetryInterval_s
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_performAndRetryNewAccountTasksIfNecessaryWithShouldCreateSubscriptions:(BOOL)a3 shouldFetch:(BOOL)a4
+- (void)_performAndRetryNewAccountTasksIfNecessaryWithShouldCreateSubscriptions:(BOOL)subscriptions shouldFetch:(BOOL)fetch
 {
-  if (a3 || a4)
+  if (subscriptions || fetch)
   {
     [ASCloudKitManager _performAndRetryNewAccountTasksWithRetryInterval:"_performAndRetryNewAccountTasksWithRetryInterval:shouldCreateSubscriptions:shouldFetch:" shouldCreateSubscriptions:120.0 shouldFetch:?];
   }
@@ -2816,15 +2816,15 @@ void __56__ASCloudKitManager__saveCloudKitAddressToKeyValueStore__block_invoke_2
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_queue_isLastCloudKitAddressDifferentFromNewCloudKitAddress:(id)a3
+- (BOOL)_queue_isLastCloudKitAddressDifferentFromNewCloudKitAddress:(id)address
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  addressCopy = address;
   dispatch_assert_queue_V2(self->_serialQueue);
   WeakRetained = objc_loadWeakRetained(&self->_activitySharingManager);
-  v6 = [WeakRetained deviceLocalActivitySharingKeyValueDomain];
+  deviceLocalActivitySharingKeyValueDomain = [WeakRetained deviceLocalActivitySharingKeyValueDomain];
   v14 = 0;
-  v7 = [v6 stringForKey:@"ActivitySharingCloudKitAccountKey" error:&v14];
+  v7 = [deviceLocalActivitySharingKeyValueDomain stringForKey:@"ActivitySharingCloudKitAccountKey" error:&v14];
   v8 = v14;
 
   v9 = MEMORY[0x277CE8FD0];
@@ -2837,7 +2837,7 @@ void __56__ASCloudKitManager__saveCloudKitAddressToKeyValueStore__block_invoke_2
     }
   }
 
-  if (v7 == v4 || v7 && ([v4 isEqualToString:v7] & 1) != 0)
+  if (v7 == addressCopy || v7 && ([addressCopy isEqualToString:v7] & 1) != 0)
   {
     v10 = 0;
   }
@@ -2849,7 +2849,7 @@ void __56__ASCloudKitManager__saveCloudKitAddressToKeyValueStore__block_invoke_2
     if (os_log_type_enabled(*v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v16 = v4;
+      v16 = addressCopy;
       v17 = 2112;
       v18 = v7;
       _os_log_impl(&dword_23E5E3000, v11, OS_LOG_TYPE_DEFAULT, "CloudKit address (%@) does not match previous CloudKit address (%@)", buf, 0x16u);
@@ -2865,13 +2865,13 @@ void __56__ASCloudKitManager__saveCloudKitAddressToKeyValueStore__block_invoke_2
 - (void)_fetchCloudKitAccountStatusAndNotifyOfChanges
 {
   objc_initWeak(&location, self);
-  v3 = [(ASCloudKitManager *)self container];
+  container = [(ASCloudKitManager *)self container];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __66__ASCloudKitManager__fetchCloudKitAccountStatusAndNotifyOfChanges__block_invoke;
   v4[3] = &unk_278C4C960;
   objc_copyWeak(&v5, &location);
-  [v3 accountStatusWithCompletionHandler:v4];
+  [container accountStatusWithCompletionHandler:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -2900,14 +2900,14 @@ void __66__ASCloudKitManager__fetchCloudKitAccountStatusAndNotifyOfChanges__bloc
   }
 }
 
-- (void)_handleAccountStatusChange:(int64_t)a3
+- (void)_handleAccountStatusChange:(int64_t)change
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __48__ASCloudKitManager__handleAccountStatusChange___block_invoke;
   v3[3] = &unk_278C4C9D8;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = change;
   [(ASCloudKitManager *)self _fetchCloudKitAddressWithCompletion:v3];
 }
 
@@ -3096,24 +3096,24 @@ void __48__ASCloudKitManager__handleAccountStatusChange___block_invoke_3()
   }
 }
 
-- (void)fetchCloudKitAccountStatusWithCompletion:(id)a3
+- (void)fetchCloudKitAccountStatusWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(ASCloudKitManager *)self readyForOperations])
   {
-    v5 = [(ASCloudKitManager *)self container];
+    container = [(ASCloudKitManager *)self container];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __62__ASCloudKitManager_fetchCloudKitAccountStatusWithCompletion___block_invoke;
     v7[3] = &unk_278C4CA00;
-    v8 = v4;
-    [v5 accountStatusWithCompletionHandler:v7];
+    v8 = completionCopy;
+    [container accountStatusWithCompletionHandler:v7];
   }
 
   else
   {
     v6 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.ActivitySharing.CloudKitManager" code:0 userInfo:0];
-    (*(v4 + 2))(v4, 0, 0, v6);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v6);
   }
 }
 
@@ -3146,38 +3146,38 @@ void __62__ASCloudKitManager_fetchCloudKitAccountStatusWithCompletion___block_in
   }
 }
 
-- (void)fetchCloudKitAddressWithCompletion:(id)a3
+- (void)fetchCloudKitAddressWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   if ([(ASCloudKitManager *)self readyForOperations])
   {
-    [(ASCloudKitManager *)self _fetchCloudKitAddressWithCompletion:v5];
+    [(ASCloudKitManager *)self _fetchCloudKitAddressWithCompletion:completionCopy];
   }
 
   else
   {
     v4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.ActivitySharing.CloudKitManager" code:0 userInfo:0];
-    v5[2](v5, 0, v4);
+    completionCopy[2](completionCopy, 0, v4);
   }
 }
 
-- (void)_fetchCloudKitAddressWithCompletion:(id)a3
+- (void)_fetchCloudKitAddressWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   ASLoggingInitialize();
   if (os_log_type_enabled(*MEMORY[0x277CE8FD0], OS_LOG_TYPE_DEBUG))
   {
     [ASCloudKitManager _fetchCloudKitAddressWithCompletion:];
   }
 
-  v5 = [(ASCloudKitManager *)self container];
+  container = [(ASCloudKitManager *)self container];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__ASCloudKitManager__fetchCloudKitAddressWithCompletion___block_invoke;
   v7[3] = &unk_278C4CA28;
-  v8 = v4;
-  v6 = v4;
-  [v5 fetchFullNameAndPrimaryEmailOnAccountWithCompletionHandler:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [container fetchFullNameAndPrimaryEmailOnAccountWithCompletionHandler:v7];
 }
 
 void __57__ASCloudKitManager__fetchCloudKitAddressWithCompletion___block_invoke(uint64_t a1, uint64_t a2, void *a3, void *a4)
@@ -3208,160 +3208,160 @@ void __57__ASCloudKitManager__fetchCloudKitAddressWithCompletion___block_invoke(
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)createShareWithRootRecord:(id)a3 otherRecordsToSave:(id)a4 completion:(id)a5
+- (void)createShareWithRootRecord:(id)record otherRecordsToSave:(id)save completion:(id)completion
 {
-  v17 = a3;
-  v8 = a4;
-  v9 = a5;
+  recordCopy = record;
+  saveCopy = save;
+  completionCopy = completion;
   if ([(ASCloudKitManager *)self readyForOperations])
   {
     v10 = objc_alloc(MEMORY[0x277CBC5D0]);
-    v11 = [MEMORY[0x277CCAD78] UUID];
-    v12 = [v11 UUIDString];
-    v13 = [v17 recordID];
-    v14 = [v13 zoneID];
-    v15 = [v10 initWithRecordName:v12 zoneID:v14];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    recordID = [recordCopy recordID];
+    zoneID = [recordID zoneID];
+    v15 = [v10 initWithRecordName:uUIDString zoneID:zoneID];
 
-    v16 = [(ASCloudKitManager *)self cloudKitUtility];
-    [v16 createShareAndAssociatedZoneWithShareRecordID:v15 rootRecord:v17 otherRecordsToSave:v8 completion:v9];
+    cloudKitUtility = [(ASCloudKitManager *)self cloudKitUtility];
+    [cloudKitUtility createShareAndAssociatedZoneWithShareRecordID:v15 rootRecord:recordCopy otherRecordsToSave:saveCopy completion:completionCopy];
 
-    v9 = v16;
+    completionCopy = cloudKitUtility;
   }
 
   else
   {
     v15 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.ActivitySharing.CloudKitManager" code:0 userInfo:0];
-    (*(v9 + 2))(v9, 0, v15, 0, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, v15, 0, 0, 0);
   }
 }
 
-- (void)fetchShareWithShareRecordID:(id)a3 activity:(id)a4 group:(id)a5 completion:(id)a6
+- (void)fetchShareWithShareRecordID:(id)d activity:(id)activity group:(id)group completion:(id)completion
 {
-  v14 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  dCopy = d;
+  activityCopy = activity;
+  groupCopy = group;
+  completionCopy = completion;
   if ([(ASCloudKitManager *)self readyForOperations])
   {
-    v13 = [(ASCloudKitManager *)self cloudKitUtility];
-    [v13 fetchShareWithShareRecordID:v14 activity:v10 group:v11 completion:v12];
+    cloudKitUtility = [(ASCloudKitManager *)self cloudKitUtility];
+    [cloudKitUtility fetchShareWithShareRecordID:dCopy activity:activityCopy group:groupCopy completion:completionCopy];
   }
 
   else
   {
-    v13 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.ActivitySharing.CloudKitManager" code:0 userInfo:0];
-    (*(v12 + 2))(v12, 0, v13, 0);
+    cloudKitUtility = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.ActivitySharing.CloudKitManager" code:0 userInfo:0];
+    (*(completionCopy + 2))(completionCopy, 0, cloudKitUtility, 0);
   }
 }
 
-- (void)acceptSharesWithURLs:(id)a3 cloudKitGroup:(id)a4 completion:(id)a5
+- (void)acceptSharesWithURLs:(id)ls cloudKitGroup:(id)group completion:(id)completion
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
+  lsCopy = ls;
+  groupCopy = group;
+  completionCopy = completion;
   if ([(ASCloudKitManager *)self readyForOperations])
   {
-    v10 = [(ASCloudKitManager *)self cloudKitUtility];
-    [v10 acceptSharesWithURLs:v11 cloudKitGroup:v8 completion:v9];
+    cloudKitUtility = [(ASCloudKitManager *)self cloudKitUtility];
+    [cloudKitUtility acceptSharesWithURLs:lsCopy cloudKitGroup:groupCopy completion:completionCopy];
   }
 
   else
   {
-    v10 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.ActivitySharing.CloudKitManager" code:0 userInfo:0];
-    (*(v9 + 2))(v9, 0, v10, 0);
+    cloudKitUtility = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.ActivitySharing.CloudKitManager" code:0 userInfo:0];
+    (*(completionCopy + 2))(completionCopy, 0, cloudKitUtility, 0);
   }
 }
 
-- (void)addParticipantWithCloudKitAddress:(id)a3 toShares:(id)a4 group:(id)a5 completion:(id)a6
+- (void)addParticipantWithCloudKitAddress:(id)address toShares:(id)shares group:(id)group completion:(id)completion
 {
-  v14 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  addressCopy = address;
+  sharesCopy = shares;
+  groupCopy = group;
+  completionCopy = completion;
   if ([(ASCloudKitManager *)self readyForOperations])
   {
-    v13 = [(ASCloudKitManager *)self cloudKitUtility];
-    [v13 addParticipantWithCloudKitAddress:v14 toShares:v10 group:v11 completion:v12];
+    cloudKitUtility = [(ASCloudKitManager *)self cloudKitUtility];
+    [cloudKitUtility addParticipantWithCloudKitAddress:addressCopy toShares:sharesCopy group:groupCopy completion:completionCopy];
   }
 
   else
   {
-    v13 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.ActivitySharing.CloudKitManager" code:0 userInfo:0];
-    v12[2](v12, 0, v13);
+    cloudKitUtility = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.ActivitySharing.CloudKitManager" code:0 userInfo:0];
+    completionCopy[2](completionCopy, 0, cloudKitUtility);
   }
 }
 
-- (void)addParticipant:(id)a3 toShares:(id)a4 group:(id)a5 completion:(id)a6
+- (void)addParticipant:(id)participant toShares:(id)shares group:(id)group completion:(id)completion
 {
-  v14 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  participantCopy = participant;
+  sharesCopy = shares;
+  groupCopy = group;
+  completionCopy = completion;
   if ([(ASCloudKitManager *)self readyForOperations])
   {
-    v13 = [(ASCloudKitManager *)self cloudKitUtility];
-    [v13 addParticipant:v14 toShares:v10 group:v11 completion:v12];
+    cloudKitUtility = [(ASCloudKitManager *)self cloudKitUtility];
+    [cloudKitUtility addParticipant:participantCopy toShares:sharesCopy group:groupCopy completion:completionCopy];
   }
 
   else
   {
-    v13 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.ActivitySharing.CloudKitManager" code:0 userInfo:0];
-    v12[2](v12, 0, v13);
+    cloudKitUtility = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.ActivitySharing.CloudKitManager" code:0 userInfo:0];
+    completionCopy[2](completionCopy, 0, cloudKitUtility);
   }
 }
 
-- (void)removeParticipantWithCloudKitAddress:(id)a3 fromShares:(id)a4 group:(id)a5 completion:(id)a6
+- (void)removeParticipantWithCloudKitAddress:(id)address fromShares:(id)shares group:(id)group completion:(id)completion
 {
-  v14 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  addressCopy = address;
+  sharesCopy = shares;
+  groupCopy = group;
+  completionCopy = completion;
   if ([(ASCloudKitManager *)self readyForOperations])
   {
-    v13 = [(ASCloudKitManager *)self cloudKitUtility];
-    [v13 removeParticipantWithCloudKitAddress:v14 fromShares:v10 group:v11 completion:v12];
+    cloudKitUtility = [(ASCloudKitManager *)self cloudKitUtility];
+    [cloudKitUtility removeParticipantWithCloudKitAddress:addressCopy fromShares:sharesCopy group:groupCopy completion:completionCopy];
   }
 
   else
   {
-    v13 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.ActivitySharing.CloudKitManager" code:0 userInfo:0];
-    v12[2](v12, 0, v13);
+    cloudKitUtility = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.ActivitySharing.CloudKitManager" code:0 userInfo:0];
+    completionCopy[2](completionCopy, 0, cloudKitUtility);
   }
 }
 
-- (void)fetchShareParticipantWithCloudKitAddress:(id)a3 group:(id)a4 completion:(id)a5
+- (void)fetchShareParticipantWithCloudKitAddress:(id)address group:(id)group completion:(id)completion
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
+  addressCopy = address;
+  groupCopy = group;
+  completionCopy = completion;
   if ([(ASCloudKitManager *)self readyForOperations])
   {
-    v10 = [(ASCloudKitManager *)self cloudKitUtility];
-    [v10 fetchShareParticipantForEmailAddress:v11 group:v8 completion:v9];
+    cloudKitUtility = [(ASCloudKitManager *)self cloudKitUtility];
+    [cloudKitUtility fetchShareParticipantForEmailAddress:addressCopy group:groupCopy completion:completionCopy];
   }
 
   else
   {
-    v10 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.ActivitySharing.CloudKitManager" code:0 userInfo:0];
-    (*(v9 + 2))(v9, 0, v10, 0);
+    cloudKitUtility = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.ActivitySharing.CloudKitManager" code:0 userInfo:0];
+    (*(completionCopy + 2))(completionCopy, 0, cloudKitUtility, 0);
   }
 }
 
-- (void)fetchShareParticipantForIdentifier:(id)a3 group:(id)a4 completion:(id)a5
+- (void)fetchShareParticipantForIdentifier:(id)identifier group:(id)group completion:(id)completion
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
+  identifierCopy = identifier;
+  groupCopy = group;
+  completionCopy = completion;
   if ([(ASCloudKitManager *)self readyForOperations])
   {
-    v10 = [(ASCloudKitManager *)self cloudKitUtility];
-    [v10 fetchShareParticipantForIdentifier:v11 group:v8 completion:v9];
+    cloudKitUtility = [(ASCloudKitManager *)self cloudKitUtility];
+    [cloudKitUtility fetchShareParticipantForIdentifier:identifierCopy group:groupCopy completion:completionCopy];
   }
 
   else
   {
-    v10 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.ActivitySharing.CloudKitManager" code:0 userInfo:0];
-    (*(v9 + 2))(v9, 0, v10, 0);
+    cloudKitUtility = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.ActivitySharing.CloudKitManager" code:0 userInfo:0];
+    (*(completionCopy + 2))(completionCopy, 0, cloudKitUtility, 0);
   }
 }
 
@@ -3387,12 +3387,12 @@ void __57__ASCloudKitManager__fetchCloudKitAddressWithCompletion___block_invoke(
   remoteRelationshipNotificationStep = self->_remoteRelationshipNotificationStep;
   self->_remoteRelationshipNotificationStep = v9;
 
-  v11 = [(ASNotificationStep *)self->_relationshipNotificationStep recordTypes];
-  v12 = [v11 copy];
+  recordTypes = [(ASNotificationStep *)self->_relationshipNotificationStep recordTypes];
+  v12 = [recordTypes copy];
   [(ASNotificationStep *)self->_remoteRelationshipNotificationStep setRecordTypes:v12];
 
-  v13 = [(ASNotificationStep *)self->_relationshipNotificationStep objectsTransformationBlock];
-  [(ASNotificationStep *)self->_remoteRelationshipNotificationStep setObjectsTransformationBlock:v13];
+  objectsTransformationBlock = [(ASNotificationStep *)self->_relationshipNotificationStep objectsTransformationBlock];
+  [(ASNotificationStep *)self->_remoteRelationshipNotificationStep setObjectsTransformationBlock:objectsTransformationBlock];
 
   [(ASNotificationStep *)self->_remoteRelationshipNotificationStep setShouldNotifyObserverBlock:&__block_literal_global_491];
   [(ASNotificationStep *)self->_remoteRelationshipNotificationStep setNotifyObserverBlock:&__block_literal_global_495];
@@ -3595,17 +3595,17 @@ id __45__ASCloudKitManager__createNotificationSteps__block_invoke_18(uint64_t a1
   return v9;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observerQueue = self->_observerQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __33__ASCloudKitManager_addObserver___block_invoke;
   v7[3] = &unk_278C4B250;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(observerQueue, v7);
 }
 
@@ -3632,17 +3632,17 @@ void __33__ASCloudKitManager_addObserver___block_invoke(uint64_t a1)
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observerQueue = self->_observerQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __36__ASCloudKitManager_removeObserver___block_invoke;
   v7[3] = &unk_278C4B250;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(observerQueue, v7);
 }
 
@@ -3669,17 +3669,17 @@ void __36__ASCloudKitManager_removeObserver___block_invoke(uint64_t a1)
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)observerDidBecomeReadyToProcessChanges:(id)a3
+- (void)observerDidBecomeReadyToProcessChanges:(id)changes
 {
-  v4 = a3;
+  changesCopy = changes;
   observerQueue = self->_observerQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __60__ASCloudKitManager_observerDidBecomeReadyToProcessChanges___block_invoke;
   v7[3] = &unk_278C4B250;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = changesCopy;
+  v6 = changesCopy;
   dispatch_async(observerQueue, v7);
 }
 
@@ -3731,24 +3731,24 @@ uint64_t __38__ASCloudKitManager_allObserversReady__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)_observerQueue_performNotificationStep:(id)a3 onRecords:(id)a4 dispatchGroup:(id)a5 activity:(id)a6 cloudKitGroup:(id)a7
+- (void)_observerQueue_performNotificationStep:(id)step onRecords:(id)records dispatchGroup:(id)group activity:(id)activity cloudKitGroup:(id)kitGroup
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  stepCopy = step;
+  recordsCopy = records;
+  groupCopy = group;
+  activityCopy = activity;
+  kitGroupCopy = kitGroup;
   dispatch_assert_queue_V2(self->_observerQueue);
-  v22 = v12;
-  v23 = v13;
-  v24 = v14;
-  v25 = v15;
-  v26 = v16;
-  v17 = v16;
-  v18 = v15;
-  v19 = v14;
-  v20 = v13;
-  v21 = v12;
+  v22 = stepCopy;
+  v23 = recordsCopy;
+  v24 = groupCopy;
+  v25 = activityCopy;
+  v26 = kitGroupCopy;
+  v17 = kitGroupCopy;
+  v18 = activityCopy;
+  v19 = groupCopy;
+  v20 = recordsCopy;
+  v21 = stepCopy;
   HKWithAutoreleasePool();
 }
 
@@ -3960,11 +3960,11 @@ void __107__ASCloudKitManager__observerQueue_performNotificationStep_onRecords_d
   dispatch_group_leave(*(a1 + 40));
 }
 
-- (void)_observerQueue_notifyOfPrivateDatabaseDeletedRecordIDs:(id)a3 sharedDatabaseDeletedRecordIDs:(id)a4
+- (void)_observerQueue_notifyOfPrivateDatabaseDeletedRecordIDs:(id)ds sharedDatabaseDeletedRecordIDs:(id)iDs
 {
   v27 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v14 = a4;
+  dsCopy = ds;
+  iDsCopy = iDs;
   dispatch_assert_queue_V2(self->_observerQueue);
   v6 = dispatch_group_create();
   v22 = 0u;
@@ -3997,7 +3997,7 @@ void __107__ASCloudKitManager__observerQueue_performNotificationStep_onRecords_d
           v20[0] = __107__ASCloudKitManager__observerQueue_notifyOfPrivateDatabaseDeletedRecordIDs_sharedDatabaseDeletedRecordIDs___block_invoke;
           v20[1] = &unk_278C4B278;
           v21 = v6;
-          [v11 cloudKitManager:self didDeleteRecordIDsForSelf:v15 changesProcessedHandler:{v19, v13}];
+          [v11 cloudKitManager:self didDeleteRecordIDsForSelf:dsCopy changesProcessedHandler:{v19, v13}];
         }
 
         if (objc_opt_respondsToSelector())
@@ -4008,7 +4008,7 @@ void __107__ASCloudKitManager__observerQueue_performNotificationStep_onRecords_d
           v17[2] = __107__ASCloudKitManager__observerQueue_notifyOfPrivateDatabaseDeletedRecordIDs_sharedDatabaseDeletedRecordIDs___block_invoke_2;
           v17[3] = &unk_278C4B278;
           v18 = v6;
-          [v11 cloudKitManager:self didDeleteRecordIDs:v14 changesProcessedHandler:v17];
+          [v11 cloudKitManager:self didDeleteRecordIDs:iDsCopy changesProcessedHandler:v17];
         }
 
         ++v10;
@@ -4025,7 +4025,7 @@ void __107__ASCloudKitManager__observerQueue_performNotificationStep_onRecords_d
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_observerQueue_notifyObserversOfBeginUpdatesForFetchWithType:(int64_t)a3
+- (void)_observerQueue_notifyObserversOfBeginUpdatesForFetchWithType:(int64_t)type
 {
   v19 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_observerQueue);
@@ -4060,7 +4060,7 @@ void __107__ASCloudKitManager__observerQueue_performNotificationStep_onRecords_d
         v11 = *(*(&v13 + 1) + 8 * v10);
         if (objc_opt_respondsToSelector())
         {
-          [v11 cloudKitManager:self didBeginUpdatesForFetchWithType:{a3, v13}];
+          [v11 cloudKitManager:self didBeginUpdatesForFetchWithType:{type, v13}];
         }
 
         ++v10;
@@ -4076,7 +4076,7 @@ void __107__ASCloudKitManager__observerQueue_performNotificationStep_onRecords_d
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_notifyObserversOfStatusChanged:(int64_t)a3
+- (void)_queue_notifyObserversOfStatusChanged:(int64_t)changed
 {
   v19 = *MEMORY[0x277D85DE8];
   ASLoggingInitialize();
@@ -4110,7 +4110,7 @@ void __107__ASCloudKitManager__observerQueue_performNotificationStep_onRecords_d
         v11 = *(*(&v13 + 1) + 8 * v10);
         if (objc_opt_respondsToSelector())
         {
-          [v11 cloudKitManager:self didUpdateAccountStatus:{a3, v13}];
+          [v11 cloudKitManager:self didUpdateAccountStatus:{changed, v13}];
         }
 
         ++v10;
@@ -4126,11 +4126,11 @@ void __107__ASCloudKitManager__observerQueue_performNotificationStep_onRecords_d
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_observerQueue_notifyObserversOfEndUpdatesForFetchWithType:(int64_t)a3 activity:(id)a4 cloudKitGroup:(id)a5
+- (void)_observerQueue_notifyObserversOfEndUpdatesForFetchWithType:(int64_t)type activity:(id)activity cloudKitGroup:(id)group
 {
   v27 = *MEMORY[0x277D85DE8];
-  v18 = a4;
-  v17 = a5;
+  activityCopy = activity;
+  groupCopy = group;
   dispatch_assert_queue_V2(self->_observerQueue);
   ASLoggingInitialize();
   v8 = *MEMORY[0x277CE8FD0];
@@ -4170,7 +4170,7 @@ void __107__ASCloudKitManager__observerQueue_performNotificationStep_onRecords_d
           v19[2] = __103__ASCloudKitManager__observerQueue_notifyObserversOfEndUpdatesForFetchWithType_activity_cloudKitGroup___block_invoke;
           v19[3] = &unk_278C4B278;
           v20 = v9;
-          [v15 cloudKitManager:self didEndUpdatesForFetchWithType:a3 activity:v18 cloudKitGroup:v17 changesProcessedHandler:v19];
+          [v15 cloudKitManager:self didEndUpdatesForFetchWithType:type activity:activityCopy cloudKitGroup:groupCopy changesProcessedHandler:v19];
         }
 
         ++v14;
@@ -4187,10 +4187,10 @@ void __107__ASCloudKitManager__observerQueue_performNotificationStep_onRecords_d
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_observerQueue_notifyObserversOfServerPushHandledWithCloudKitGroup:(id)a3
+- (void)_observerQueue_notifyObserversOfServerPushHandledWithCloudKitGroup:(id)group
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  groupCopy = group;
   dispatch_assert_queue_V2(self->_observerQueue);
   ASLoggingInitialize();
   v5 = *MEMORY[0x277CE8FD0];
@@ -4223,7 +4223,7 @@ void __107__ASCloudKitManager__observerQueue_performNotificationStep_onRecords_d
         v11 = *(*(&v13 + 1) + 8 * v10);
         if (objc_opt_respondsToSelector())
         {
-          [v11 cloudKitManager:self didHandleServerPushWithCloudKitGroup:{v4, v13}];
+          [v11 cloudKitManager:self didHandleServerPushWithCloudKitGroup:{groupCopy, v13}];
         }
 
         ++v10;
@@ -4239,33 +4239,33 @@ void __107__ASCloudKitManager__observerQueue_performNotificationStep_onRecords_d
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleNewPrivateDatabaseRecordChanges:(id)a3 sharedDatabaseRecordChanges:(id)a4 privateDatabaseDeletedRecordIDs:(id)a5 sharedDatabaseDeletedRecordIDs:(id)a6 fetchType:(int64_t)a7 activity:(id)a8 cloudKitGroup:(id)a9
+- (void)_handleNewPrivateDatabaseRecordChanges:(id)changes sharedDatabaseRecordChanges:(id)recordChanges privateDatabaseDeletedRecordIDs:(id)ds sharedDatabaseDeletedRecordIDs:(id)iDs fetchType:(int64_t)type activity:(id)activity cloudKitGroup:(id)group
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a8;
-  v20 = a9;
+  changesCopy = changes;
+  recordChangesCopy = recordChanges;
+  dsCopy = ds;
+  iDsCopy = iDs;
+  activityCopy = activity;
+  groupCopy = group;
   observerQueue = self->_observerQueue;
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __184__ASCloudKitManager__handleNewPrivateDatabaseRecordChanges_sharedDatabaseRecordChanges_privateDatabaseDeletedRecordIDs_sharedDatabaseDeletedRecordIDs_fetchType_activity_cloudKitGroup___block_invoke;
   v28[3] = &unk_278C4CC08;
   v28[4] = self;
-  v29 = v15;
-  v30 = v19;
-  v31 = v20;
-  v32 = v16;
-  v33 = v17;
-  v34 = v18;
-  v35 = a7;
-  v22 = v18;
-  v23 = v17;
-  v24 = v16;
-  v25 = v20;
-  v26 = v19;
-  v27 = v15;
+  v29 = changesCopy;
+  v30 = activityCopy;
+  v31 = groupCopy;
+  v32 = recordChangesCopy;
+  v33 = dsCopy;
+  v34 = iDsCopy;
+  typeCopy = type;
+  v22 = iDsCopy;
+  v23 = dsCopy;
+  v24 = recordChangesCopy;
+  v25 = groupCopy;
+  v26 = activityCopy;
+  v27 = changesCopy;
   dispatch_async(observerQueue, v28);
 }
 
@@ -4490,11 +4490,11 @@ void __184__ASCloudKitManager__handleNewPrivateDatabaseRecordChanges_sharedDatab
   [*(a1 + 32) _observerQueue_notifyObserversOfEndUpdatesForFetchWithType:*(a1 + 88) activity:*(a1 + 48) cloudKitGroup:*(a1 + 56)];
 }
 
-- (id)_observerQueue_friendUUIDForActivityDataShareRecordZoneID:(id)a3
+- (id)_observerQueue_friendUUIDForActivityDataShareRecordZoneID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   dispatch_assert_queue_V2(self->_observerQueue);
-  v5 = [(NSDictionary *)self->_friendUUIDsByZoneID objectForKeyedSubscript:v4];
+  v5 = [(NSDictionary *)self->_friendUUIDsByZoneID objectForKeyedSubscript:dCopy];
 
   if (!v5)
   {
@@ -4518,7 +4518,7 @@ void __184__ASCloudKitManager__handleNewPrivateDatabaseRecordChanges_sharedDatab
 
     v8[2] = v9;
     v8[3] = &unk_278C4B6B8;
-    v10 = v4;
+    v10 = dCopy;
     v8[4] = v10;
     v11 = [WeakRetained contactMatchingCriteriaBlock:v8];
 
@@ -4536,15 +4536,15 @@ void __184__ASCloudKitManager__handleNewPrivateDatabaseRecordChanges_sharedDatab
 
     v15 = v14;
 
-    v16 = [v11 UUID];
-    [v15 setObject:v16 forKeyedSubscript:v10];
+    uUID = [v11 UUID];
+    [v15 setObject:uUID forKeyedSubscript:v10];
 
     v17 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v15];
     friendUUIDsByZoneID = self->_friendUUIDsByZoneID;
     self->_friendUUIDsByZoneID = v17;
   }
 
-  v19 = [(NSDictionary *)self->_friendUUIDsByZoneID objectForKeyedSubscript:v4, v21, v22];
+  v19 = [(NSDictionary *)self->_friendUUIDsByZoneID objectForKeyedSubscript:dCopy, v21, v22];
 
   return v19;
 }
@@ -4595,19 +4595,19 @@ uint64_t __79__ASCloudKitManager__observerQueue_friendUUIDForActivityDataShareRe
   self->_friendUUIDsByZoneID = 0;
 }
 
-- (void)fetchCloudKitAccountInfoWithCompletion:(id)a3
+- (void)fetchCloudKitAccountInfoWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(ASCloudKitManager *)self readyForOperations])
   {
-    v5 = [(ASCloudKitManager *)self container];
-    [v5 accountInfoWithCompletionHandler:v4];
+    container = [(ASCloudKitManager *)self container];
+    [container accountInfoWithCompletionHandler:completionCopy];
   }
 
   else
   {
-    v5 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.ActivitySharing.CloudKitManager" code:0 userInfo:0];
-    v4[2](v4, 0);
+    container = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.ActivitySharing.CloudKitManager" code:0 userInfo:0];
+    completionCopy[2](completionCopy, 0);
   }
 }
 
@@ -4676,17 +4676,17 @@ void __43__ASCloudKitManager_currentCloudKitAddress__block_invoke(uint64_t a1)
   }
 }
 
-- (void)updateCurrentAccountInfo:(id)a3
+- (void)updateCurrentAccountInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __46__ASCloudKitManager_updateCurrentAccountInfo___block_invoke;
   v7[3] = &unk_278C4B250;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = infoCopy;
+  v6 = infoCopy;
   dispatch_sync(serialQueue, v7);
 }
 
@@ -4701,7 +4701,7 @@ void __43__ASCloudKitManager_currentCloudKitAddress__block_invoke(uint64_t a1)
   dispatch_async(serialQueue, block);
 }
 
-- (void)notifyOfCloudKitAccountStatusUpdate:(int64_t)a3
+- (void)notifyOfCloudKitAccountStatusUpdate:(int64_t)update
 {
   observerQueue = self->_observerQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -4709,7 +4709,7 @@ void __43__ASCloudKitManager_currentCloudKitAddress__block_invoke(uint64_t a1)
   v4[2] = __57__ASCloudKitManager_notifyOfCloudKitAccountStatusUpdate___block_invoke;
   v4[3] = &unk_278C4C9B0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = update;
   dispatch_async(observerQueue, v4);
   dispatch_async(MEMORY[0x277D85CD0], &__block_literal_global_610);
 }

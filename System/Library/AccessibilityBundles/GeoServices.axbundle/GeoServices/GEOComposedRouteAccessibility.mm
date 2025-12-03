@@ -1,5 +1,5 @@
 @interface GEOComposedRouteAccessibility
-+ (id)_accessibilityTransitArtworkTextForDataList:(id)a3;
++ (id)_accessibilityTransitArtworkTextForDataList:(id)list;
 - (id)_accessibilityTransitArtworkText;
 @end
 
@@ -8,20 +8,20 @@
 - (id)_accessibilityTransitArtworkText
 {
   v3 = objc_opt_class();
-  v4 = [(GEOComposedRouteAccessibility *)self routePlanningArtworks];
-  v5 = [v3 _accessibilityTransitArtworkTextForDataList:v4];
+  routePlanningArtworks = [(GEOComposedRouteAccessibility *)self routePlanningArtworks];
+  v5 = [v3 _accessibilityTransitArtworkTextForDataList:routePlanningArtworks];
 
   return v5;
 }
 
-+ (id)_accessibilityTransitArtworkTextForDataList:(id)a3
++ (id)_accessibilityTransitArtworkTextForDataList:(id)list
 {
   v62 = *MEMORY[0x29EDCA608];
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
-  obj = a3;
+  obj = list;
   v39 = [obj countByEnumeratingWithState:&v55 objects:v61 count:16];
   v3 = 0;
   if (v39)
@@ -104,8 +104,8 @@
                         v19 = *(*(&v47 + 1) + 8 * i);
                         if ([v19 conformsToProtocol:{*(v5 + 1848), v35}])
                         {
-                          v20 = [v19 accessibilityText];
-                          if (![v20 length] && objc_msgSend(v19, "artworkSourceType") == 3)
+                          accessibilityText = [v19 accessibilityText];
+                          if (![accessibilityText length] && objc_msgSend(v19, "artworkSourceType") == 3)
                           {
                             v21 = MEMORY[0x29C2D7700](@"MKServerFormattedStringParameters");
                             v22 = MEMORY[0x29C2D7700](@"MKServerFormattedString");
@@ -116,25 +116,25 @@
                               {
                                 v45 = [[v21 alloc] initWithInstructionsDistanceDetailLevel:0 variableOverrides:0];
                                 v24 = [v23 alloc];
-                                v25 = [v19 textDataSource];
-                                v26 = [v25 text];
-                                v27 = [v24 initWithGeoServerString:v26 parameters:v45];
+                                textDataSource = [v19 textDataSource];
+                                text = [textDataSource text];
+                                v27 = [v24 initWithGeoServerString:text parameters:v45];
 
                                 v28 = [v27 multiPartAttributedStringWithAttributes:MEMORY[0x29EDB8EA0]];
-                                v29 = [v28 attributedString];
-                                [v29 string];
+                                attributedString = [v28 attributedString];
+                                [attributedString string];
                                 v31 = v30 = v3;
 
                                 v5 = 0x29F2C1000;
-                                v20 = v31;
+                                accessibilityText = v31;
                                 v3 = v30;
                               }
                             }
                           }
 
-                          if ([v20 length])
+                          if ([accessibilityText length])
                           {
-                            v35 = v20;
+                            v35 = accessibilityText;
                             v36 = @"__AXStringForVariablesSentinel";
                             v32 = __AXStringForVariables();
 

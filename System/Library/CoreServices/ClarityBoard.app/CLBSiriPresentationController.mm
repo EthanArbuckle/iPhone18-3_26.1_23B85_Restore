@@ -5,14 +5,14 @@
 - (id)contentBackgroundColor;
 - (void)_setBackgroundColor;
 - (void)activateSiri;
-- (void)dismissSiri:(BOOL)a3 completion:(id)a4;
-- (void)dismissSiri:(int64_t)a3;
+- (void)dismissSiri:(BOOL)siri completion:(id)completion;
+- (void)dismissSiri:(int64_t)siri;
 - (void)prewarmSiri;
 - (void)setup;
-- (void)siriPresentation:(id)a3 isEnabledDidChange:(BOOL)a4;
-- (void)siriPresentation:(id)a3 requestsDismissalWithOptions:(id)a4 withHandler:(id)a5;
-- (void)siriPresentation:(id)a3 requestsPresentationWithOptions:(id)a4 withHandler:(id)a5;
-- (void)siriPresentation:(id)a3 requestsPunchout:(id)a4 withHandler:(id)a5;
+- (void)siriPresentation:(id)presentation isEnabledDidChange:(BOOL)change;
+- (void)siriPresentation:(id)presentation requestsDismissalWithOptions:(id)options withHandler:(id)handler;
+- (void)siriPresentation:(id)presentation requestsPresentationWithOptions:(id)options withHandler:(id)handler;
+- (void)siriPresentation:(id)presentation requestsPunchout:(id)punchout withHandler:(id)handler;
 @end
 
 @implementation CLBSiriPresentationController
@@ -23,7 +23,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000150A4;
   block[3] = &unk_1002FC8C8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1003310A0 != -1)
   {
     dispatch_once(&qword_1003310A0, block);
@@ -54,8 +54,8 @@
 
 - (void)setup
 {
-  v3 = [(CLBSiriPresentationController *)self presentationConnectionListener];
-  if (!v3)
+  presentationConnectionListener = [(CLBSiriPresentationController *)self presentationConnectionListener];
+  if (!presentationConnectionListener)
   {
     if (!AXDeviceIsSiriAvailableInClarity())
     {
@@ -65,9 +65,9 @@
     goto LABEL_10;
   }
 
-  v4 = v3;
-  v5 = [(CLBSiriPresentationController *)self signalConnectionListener];
-  if (!v5)
+  v4 = presentationConnectionListener;
+  signalConnectionListener = [(CLBSiriPresentationController *)self signalConnectionListener];
+  if (!signalConnectionListener)
   {
     IsSiriAvailableInClarity = AXDeviceIsSiriAvailableInClarity();
 
@@ -79,9 +79,9 @@
     goto LABEL_10;
   }
 
-  v6 = v5;
-  v7 = [(CLBSiriPresentationController *)self siriButtonSource];
-  if (v7)
+  v6 = signalConnectionListener;
+  siriButtonSource = [(CLBSiriPresentationController *)self siriButtonSource];
+  if (siriButtonSource)
   {
 
 LABEL_13:
@@ -147,7 +147,7 @@ LABEL_14:
   }
 }
 
-- (void)dismissSiri:(int64_t)a3
+- (void)dismissSiri:(int64_t)siri
 {
   v5 = +[CLFLog commonLog];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -156,7 +156,7 @@ LABEL_14:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Dismissing Siri", v7, 2u);
   }
 
-  v6 = [[SiriDismissalOptions alloc] initWithDeactivationOptions:0 animated:1 dismissalReason:a3];
+  v6 = [[SiriDismissalOptions alloc] initWithDeactivationOptions:0 animated:1 dismissalReason:siri];
   [(SiriPresentationViewController *)self->_viewController dismissWithOptions:v6];
   if ([(CLBSiriPresentationController *)self isPresented])
   {
@@ -164,101 +164,101 @@ LABEL_14:
   }
 }
 
-- (void)dismissSiri:(BOOL)a3 completion:(id)a4
+- (void)dismissSiri:(BOOL)siri completion:(id)completion
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000155C0;
   block[3] = &unk_1002FC978;
-  v7 = a3;
+  siriCopy = siri;
   block[4] = self;
-  v6 = a4;
-  v4 = v6;
+  completionCopy = completion;
+  v4 = completionCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
 - (void)_setBackgroundColor
 {
-  v4 = [(CLBSiriPresentationController *)self contentBackgroundColor];
-  v3 = [(SiriPresentationViewController *)self->_viewController view];
-  [v3 setBackgroundColor:v4];
+  contentBackgroundColor = [(CLBSiriPresentationController *)self contentBackgroundColor];
+  view = [(SiriPresentationViewController *)self->_viewController view];
+  [view setBackgroundColor:contentBackgroundColor];
 }
 
-- (void)siriPresentation:(id)a3 requestsPresentationWithOptions:(id)a4 withHandler:(id)a5
+- (void)siriPresentation:(id)presentation requestsPresentationWithOptions:(id)options withHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  presentationCopy = presentation;
+  optionsCopy = options;
+  handlerCopy = handler;
   v11 = +[CLFLog commonLog];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v22 = v9;
+    v22 = optionsCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Siri presentation requested %@", buf, 0xCu);
   }
 
   [(CLBSiriPresentationController *)self _setBackgroundColor];
   v12 = [BSUIAnimationFactory factoryWithDuration:0.5];
-  v13 = [(CLBSiriPresentationController *)self viewController];
+  viewController = [(CLBSiriPresentationController *)self viewController];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_1000158CC;
   v17[3] = &unk_1002FC9A0;
   v17[4] = self;
-  v18 = v8;
-  v19 = v9;
-  v20 = v10;
-  v14 = v10;
-  v15 = v9;
-  v16 = v8;
-  [v13 animatedAppearanceWithFactory:v12 completion:v17];
+  v18 = presentationCopy;
+  v19 = optionsCopy;
+  v20 = handlerCopy;
+  v14 = handlerCopy;
+  v15 = optionsCopy;
+  v16 = presentationCopy;
+  [viewController animatedAppearanceWithFactory:v12 completion:v17];
 }
 
-- (void)siriPresentation:(id)a3 requestsDismissalWithOptions:(id)a4 withHandler:(id)a5
+- (void)siriPresentation:(id)presentation requestsDismissalWithOptions:(id)options withHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  presentationCopy = presentation;
+  optionsCopy = options;
+  handlerCopy = handler;
   v11 = +[CLFLog commonLog];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 134217984;
-    v14 = [v9 dismissalReason];
+    dismissalReason = [optionsCopy dismissalReason];
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Siri dismissal requested with dismissal reason: %lu", &v13, 0xCu);
   }
 
-  if ([v9 dismissalReason] != 4)
+  if ([optionsCopy dismissalReason] != 4)
   {
-    v12 = [(CLBSiriPresentationController *)self delegate];
-    [v12 siriPresentation:v8 requestsDismissalWithOptions:v9 withHandler:v10];
+    delegate = [(CLBSiriPresentationController *)self delegate];
+    [delegate siriPresentation:presentationCopy requestsDismissalWithOptions:optionsCopy withHandler:handlerCopy];
 
     [(CLBSiriPresentationController *)self setIsPresented:0];
   }
 }
 
-- (void)siriPresentation:(id)a3 isEnabledDidChange:(BOOL)a4
+- (void)siriPresentation:(id)presentation isEnabledDidChange:(BOOL)change
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(CLBSiriPresentationController *)self delegate];
-  [v7 siriPresentation:v6 isEnabledDidChange:v4];
+  changeCopy = change;
+  presentationCopy = presentation;
+  delegate = [(CLBSiriPresentationController *)self delegate];
+  [delegate siriPresentation:presentationCopy isEnabledDidChange:changeCopy];
 }
 
-- (void)siriPresentation:(id)a3 requestsPunchout:(id)a4 withHandler:(id)a5
+- (void)siriPresentation:(id)presentation requestsPunchout:(id)punchout withHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  punchoutCopy = punchout;
+  handlerCopy = handler;
+  presentationCopy = presentation;
   v11 = +[CLFLog commonLog];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412290;
-    v14 = v8;
+    v14 = punchoutCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Siri punchout requested %@", &v13, 0xCu);
   }
 
-  v12 = [(CLBSiriPresentationController *)self delegate];
-  [v12 siriPresentation:v10 requestsPunchout:v8 withHandler:v9];
+  delegate = [(CLBSiriPresentationController *)self delegate];
+  [delegate siriPresentation:presentationCopy requestsPunchout:punchoutCopy withHandler:handlerCopy];
 }
 
 - (SiriPresentationControllerDelegate)delegate

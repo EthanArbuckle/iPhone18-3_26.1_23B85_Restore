@@ -1,30 +1,30 @@
 @interface _TVUberBlurImageDecorator
-- (id)decorate:(id)a3 scaledWithSize:(CGSize)a4 croppedToFit:(BOOL)a5;
+- (id)decorate:(id)decorate scaledWithSize:(CGSize)size croppedToFit:(BOOL)fit;
 @end
 
 @implementation _TVUberBlurImageDecorator
 
-- (id)decorate:(id)a3 scaledWithSize:(CGSize)a4 croppedToFit:(BOOL)a5
+- (id)decorate:(id)decorate scaledWithSize:(CGSize)size croppedToFit:(BOOL)fit
 {
   v89 = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277D755B8];
-  v7 = a3;
+  decorateCopy = decorate;
   v8 = [v6 alloc];
-  v9 = [v7 image];
+  image = [decorateCopy image];
 
-  v10 = [v8 initWithCGImage:v9];
-  v11 = [MEMORY[0x277D759A0] mainScreen];
-  [v11 bounds];
+  v10 = [v8 initWithCGImage:image];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v13 = v12;
   v15 = v14;
 
   if (self->_blurType > 1)
   {
-    v41 = [(_TVUberBlurImageDecorator *)self gradientColor];
-    v42 = v41;
-    if (v41)
+    gradientColor = [(_TVUberBlurImageDecorator *)self gradientColor];
+    v42 = gradientColor;
+    if (gradientColor)
     {
-      v43 = v41;
+      v43 = gradientColor;
     }
 
     else
@@ -41,8 +41,8 @@
       v84 = v45;
       image = v46;
       v86 = v10;
-      v47 = [MEMORY[0x277D759A0] mainScreen];
-      [v47 scale];
+      mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen2 scale];
       v49 = v48;
       v93.width = v13;
       v93.height = v15;
@@ -54,14 +54,14 @@
       v51 = +[TVMLUtilities TVMLKitBundle];
       v52 = [v51 tv_imageNamed:@"Music_Uber_Blur_Gradient"];
 
-      v53 = [v52 CGImage];
-      Width = CGImageGetWidth(v53);
-      Height = CGImageGetHeight(v53);
-      BitsPerComponent = CGImageGetBitsPerComponent(v53);
-      BitsPerPixel = CGImageGetBitsPerPixel(v53);
-      BytesPerRow = CGImageGetBytesPerRow(v53);
-      DataProvider = CGImageGetDataProvider(v53);
-      Decode = CGImageGetDecode(v53);
+      cGImage = [v52 CGImage];
+      Width = CGImageGetWidth(cGImage);
+      Height = CGImageGetHeight(cGImage);
+      BitsPerComponent = CGImageGetBitsPerComponent(cGImage);
+      BitsPerPixel = CGImageGetBitsPerPixel(cGImage);
+      BytesPerRow = CGImageGetBytesPerRow(cGImage);
+      DataProvider = CGImageGetDataProvider(cGImage);
+      Decode = CGImageGetDecode(cGImage);
       v61 = CGImageMaskCreate(Width, Height, BitsPerComponent, BitsPerPixel, BytesPerRow, DataProvider, Decode, 0);
       CGContextSetBlendMode(CurrentContext, kCGBlendModeCopy);
       v10 = v86;
@@ -88,12 +88,12 @@
       v73 = v72;
       v75 = v74;
       v77 = v76;
-      v78 = [v86 CGImage];
+      cGImage2 = [v86 CGImage];
       v99.origin.x = v71;
       v99.origin.y = v73;
       v99.size.width = v75;
       v99.size.height = v77;
-      CGContextDrawImage(CurrentContext, v99, v78);
+      CGContextDrawImage(CurrentContext, v99, cGImage2);
       CGContextSetBlendMode(CurrentContext, kCGBlendModeNormal);
       v79 = CGImageCreateWithMask(image, v61);
       [v52 size];
@@ -148,8 +148,8 @@
     y = v96.origin.y;
     v24 = v96.size.width;
     v25 = v96.size.height;
-    v26 = [MEMORY[0x277D759A0] mainScreen];
-    [v26 scale];
+    mainScreen3 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen3 scale];
     v28 = v27;
     v91.width = v13;
     v91.height = v15;

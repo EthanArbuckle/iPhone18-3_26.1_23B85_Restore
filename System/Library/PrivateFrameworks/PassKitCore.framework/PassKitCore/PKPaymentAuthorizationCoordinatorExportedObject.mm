@@ -1,40 +1,40 @@
 @interface PKPaymentAuthorizationCoordinatorExportedObject
 - (PKPaymentAuthorizationCoordinator)controller;
 - (PKPaymentAuthorizationCoordinatorDelegate)delegate;
-- (PKPaymentAuthorizationCoordinatorExportedObject)initWithController:(id)a3;
+- (PKPaymentAuthorizationCoordinatorExportedObject)initWithController:(id)controller;
 - (PKPaymentAuthorizationCoordinatorPrivateDelegate)privateDelegate;
-- (void)authorizationDidAuthorizeApplePayTrustSignature:(id)a3;
+- (void)authorizationDidAuthorizeApplePayTrustSignature:(id)signature;
 - (void)authorizationDidAuthorizeContext;
-- (void)authorizationDidAuthorizePayment:(id)a3;
-- (void)authorizationDidAuthorizePeerPaymentQuote:(id)a3;
-- (void)authorizationDidAuthorizePurchase:(id)a3;
-- (void)authorizationDidChangeCouponCode:(id)a3;
-- (void)authorizationDidFinishWithError:(id)a3;
+- (void)authorizationDidAuthorizePayment:(id)payment;
+- (void)authorizationDidAuthorizePeerPaymentQuote:(id)quote;
+- (void)authorizationDidAuthorizePurchase:(id)purchase;
+- (void)authorizationDidChangeCouponCode:(id)code;
+- (void)authorizationDidFinishWithError:(id)error;
 - (void)authorizationDidRequestMerchantSession;
-- (void)authorizationDidSelectPaymentMethod:(id)a3;
-- (void)authorizationDidSelectShippingAddress:(id)a3;
-- (void)authorizationDidSelectShippingMethod:(id)a3;
-- (void)authorizationDidUpdateAccountServicePaymentMethod:(id)a3;
+- (void)authorizationDidSelectPaymentMethod:(id)method;
+- (void)authorizationDidSelectShippingAddress:(id)address;
+- (void)authorizationDidSelectShippingMethod:(id)method;
+- (void)authorizationDidUpdateAccountServicePaymentMethod:(id)method;
 - (void)authorizationWillStart;
 - (void)dealloc;
-- (void)didEncounterAuthorizationEvent:(unint64_t)a3;
-- (void)handleConnectionDidOpenWithCompletion:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setPrivateDelegate:(id)a3;
+- (void)didEncounterAuthorizationEvent:(unint64_t)event;
+- (void)handleConnectionDidOpenWithCompletion:(id)completion;
+- (void)setDelegate:(id)delegate;
+- (void)setPrivateDelegate:(id)delegate;
 @end
 
 @implementation PKPaymentAuthorizationCoordinatorExportedObject
 
-- (PKPaymentAuthorizationCoordinatorExportedObject)initWithController:(id)a3
+- (PKPaymentAuthorizationCoordinatorExportedObject)initWithController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = PKPaymentAuthorizationCoordinatorExportedObject;
   v5 = [(PKPaymentAuthorizationCoordinatorExportedObject *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_controller, v4);
+    objc_storeWeak(&v5->_controller, controllerCopy);
     v6->_delegateLock._os_unfair_lock_opaque = 0;
   }
 
@@ -48,37 +48,37 @@
   [(PKPaymentAuthorizationCoordinatorExportedObject *)&v2 dealloc];
 }
 
-- (void)handleConnectionDidOpenWithCompletion:(id)a3
+- (void)handleConnectionDidOpenWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    (*(a3 + 2))(a3);
+    (*(completion + 2))(completion);
   }
 }
 
-- (void)didEncounterAuthorizationEvent:(unint64_t)a3
+- (void)didEncounterAuthorizationEvent:(unint64_t)event
 {
-  v6 = [(PKPaymentAuthorizationCoordinatorExportedObject *)self privateDelegate];
+  privateDelegate = [(PKPaymentAuthorizationCoordinatorExportedObject *)self privateDelegate];
   if (objc_opt_respondsToSelector())
   {
     WeakRetained = objc_loadWeakRetained(&self->_controller);
-    [v6 paymentAuthorizationCoordinator:WeakRetained didEncounterAuthorizationEvent:a3];
+    [privateDelegate paymentAuthorizationCoordinator:WeakRetained didEncounterAuthorizationEvent:event];
   }
 }
 
 - (void)authorizationWillStart
 {
-  v4 = [(PKPaymentAuthorizationCoordinatorExportedObject *)self delegate];
+  delegate = [(PKPaymentAuthorizationCoordinatorExportedObject *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     WeakRetained = objc_loadWeakRetained(&self->_controller);
-    [v4 paymentAuthorizationCoordinatorWillAuthorizePayment:WeakRetained];
+    [delegate paymentAuthorizationCoordinatorWillAuthorizePayment:WeakRetained];
   }
 }
 
 - (void)authorizationDidRequestMerchantSession
 {
-  v3 = [(PKPaymentAuthorizationCoordinatorExportedObject *)self delegate];
+  delegate = [(PKPaymentAuthorizationCoordinatorExportedObject *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     WeakRetained = objc_loadWeakRetained(&self->_controller);
@@ -87,7 +87,7 @@
     v5[2] = __89__PKPaymentAuthorizationCoordinatorExportedObject_authorizationDidRequestMerchantSession__block_invoke;
     v5[3] = &unk_1E79CEAC8;
     v5[4] = self;
-    [v3 paymentAuthorizationCoordinator:WeakRetained didRequestMerchantSessionUpdate:v5];
+    [delegate paymentAuthorizationCoordinator:WeakRetained didRequestMerchantSessionUpdate:v5];
   }
 
   else
@@ -97,24 +97,24 @@
   }
 }
 
-- (void)authorizationDidFinishWithError:(id)a3
+- (void)authorizationDidFinishWithError:(id)error
 {
-  v8 = a3;
-  v4 = [(PKPaymentAuthorizationCoordinatorExportedObject *)self delegate];
-  v5 = [(PKPaymentAuthorizationCoordinatorExportedObject *)self privateDelegate];
+  errorCopy = error;
+  delegate = [(PKPaymentAuthorizationCoordinatorExportedObject *)self delegate];
+  privateDelegate = [(PKPaymentAuthorizationCoordinatorExportedObject *)self privateDelegate];
   if (objc_opt_respondsToSelector())
   {
     WeakRetained = objc_loadWeakRetained(&self->_controller);
-    [v5 paymentAuthorizationCoordinator:WeakRetained willFinishWithError:v8];
+    [privateDelegate paymentAuthorizationCoordinator:WeakRetained willFinishWithError:errorCopy];
   }
 
   v7 = objc_loadWeakRetained(&self->_controller);
-  [v4 paymentAuthorizationCoordinatorDidFinish:v7];
+  [delegate paymentAuthorizationCoordinatorDidFinish:v7];
 }
 
 - (void)authorizationDidAuthorizeContext
 {
-  v3 = [(PKPaymentAuthorizationCoordinatorExportedObject *)self privateDelegate];
+  privateDelegate = [(PKPaymentAuthorizationCoordinatorExportedObject *)self privateDelegate];
   if (objc_opt_respondsToSelector())
   {
     WeakRetained = objc_loadWeakRetained(&self->_controller);
@@ -123,7 +123,7 @@
     v5[2] = __83__PKPaymentAuthorizationCoordinatorExportedObject_authorizationDidAuthorizeContext__block_invoke;
     v5[3] = &unk_1E79CEAF0;
     v5[4] = self;
-    [v3 paymentAuthorizationCoordinator:WeakRetained didAuthorizeContextWithHandler:v5];
+    [privateDelegate paymentAuthorizationCoordinator:WeakRetained didAuthorizeContextWithHandler:v5];
   }
 
   else
@@ -133,10 +133,10 @@
   }
 }
 
-- (void)authorizationDidAuthorizePayment:(id)a3
+- (void)authorizationDidAuthorizePayment:(id)payment
 {
-  v4 = a3;
-  v5 = [(PKPaymentAuthorizationCoordinatorExportedObject *)self delegate];
+  paymentCopy = payment;
+  delegate = [(PKPaymentAuthorizationCoordinatorExportedObject *)self delegate];
   v6 = objc_opt_respondsToSelector();
   WeakRetained = objc_loadWeakRetained(&self->_controller);
   if (v6)
@@ -146,7 +146,7 @@
     v9[2] = __84__PKPaymentAuthorizationCoordinatorExportedObject_authorizationDidAuthorizePayment___block_invoke;
     v9[3] = &unk_1E79CEAF0;
     v9[4] = self;
-    [v5 paymentAuthorizationCoordinator:WeakRetained didAuthorizePayment:v4 handler:v9];
+    [delegate paymentAuthorizationCoordinator:WeakRetained didAuthorizePayment:paymentCopy handler:v9];
   }
 
   else
@@ -156,7 +156,7 @@
     v8[2] = __84__PKPaymentAuthorizationCoordinatorExportedObject_authorizationDidAuthorizePayment___block_invoke_2;
     v8[3] = &unk_1E79CEB18;
     v8[4] = self;
-    [v5 paymentAuthorizationCoordinator:WeakRetained didAuthorizePayment:v4 completion:v8];
+    [delegate paymentAuthorizationCoordinator:WeakRetained didAuthorizePayment:paymentCopy completion:v8];
   }
 }
 
@@ -167,10 +167,10 @@ void __84__PKPaymentAuthorizationCoordinatorExportedObject_authorizationDidAutho
   [*(*(a1 + 32) + 40) authorizationDidAuthorizePaymentCompleteWithResult:v4];
 }
 
-- (void)authorizationDidAuthorizePurchase:(id)a3
+- (void)authorizationDidAuthorizePurchase:(id)purchase
 {
-  v4 = a3;
-  v5 = [(PKPaymentAuthorizationCoordinatorExportedObject *)self privateDelegate];
+  purchaseCopy = purchase;
+  privateDelegate = [(PKPaymentAuthorizationCoordinatorExportedObject *)self privateDelegate];
   if (objc_opt_respondsToSelector())
   {
     WeakRetained = objc_loadWeakRetained(&self->_controller);
@@ -179,7 +179,7 @@ void __84__PKPaymentAuthorizationCoordinatorExportedObject_authorizationDidAutho
     v7[2] = __85__PKPaymentAuthorizationCoordinatorExportedObject_authorizationDidAuthorizePurchase___block_invoke;
     v7[3] = &unk_1E79CEB18;
     v7[4] = self;
-    [v5 paymentAuthorizationCoordinator:WeakRetained didAuthorizePurchase:v4 completion:v7];
+    [privateDelegate paymentAuthorizationCoordinator:WeakRetained didAuthorizePurchase:purchaseCopy completion:v7];
   }
 
   else
@@ -188,10 +188,10 @@ void __84__PKPaymentAuthorizationCoordinatorExportedObject_authorizationDidAutho
   }
 }
 
-- (void)authorizationDidAuthorizePeerPaymentQuote:(id)a3
+- (void)authorizationDidAuthorizePeerPaymentQuote:(id)quote
 {
-  v4 = a3;
-  v5 = [(PKPaymentAuthorizationCoordinatorExportedObject *)self privateDelegate];
+  quoteCopy = quote;
+  privateDelegate = [(PKPaymentAuthorizationCoordinatorExportedObject *)self privateDelegate];
   if (objc_opt_respondsToSelector())
   {
     WeakRetained = objc_loadWeakRetained(&self->_controller);
@@ -200,7 +200,7 @@ void __84__PKPaymentAuthorizationCoordinatorExportedObject_authorizationDidAutho
     v7[2] = __93__PKPaymentAuthorizationCoordinatorExportedObject_authorizationDidAuthorizePeerPaymentQuote___block_invoke;
     v7[3] = &unk_1E79CEAF0;
     v7[4] = self;
-    [v5 paymentAuthorizationCoordinator:WeakRetained didAuthorizePeerPaymentQuote:v4 handler:v7];
+    [privateDelegate paymentAuthorizationCoordinator:WeakRetained didAuthorizePeerPaymentQuote:quoteCopy handler:v7];
   }
 
   else
@@ -209,10 +209,10 @@ void __84__PKPaymentAuthorizationCoordinatorExportedObject_authorizationDidAutho
   }
 }
 
-- (void)authorizationDidAuthorizeApplePayTrustSignature:(id)a3
+- (void)authorizationDidAuthorizeApplePayTrustSignature:(id)signature
 {
-  v4 = a3;
-  v5 = [(PKPaymentAuthorizationCoordinatorExportedObject *)self privateDelegate];
+  signatureCopy = signature;
+  privateDelegate = [(PKPaymentAuthorizationCoordinatorExportedObject *)self privateDelegate];
   if (objc_opt_respondsToSelector())
   {
     WeakRetained = objc_loadWeakRetained(&self->_controller);
@@ -221,7 +221,7 @@ void __84__PKPaymentAuthorizationCoordinatorExportedObject_authorizationDidAutho
     v7[2] = __99__PKPaymentAuthorizationCoordinatorExportedObject_authorizationDidAuthorizeApplePayTrustSignature___block_invoke;
     v7[3] = &unk_1E79CEAF0;
     v7[4] = self;
-    [v5 paymentAuthorizationCoordinator:WeakRetained didAuthorizeApplePayTrustSignature:v4 handler:v7];
+    [privateDelegate paymentAuthorizationCoordinator:WeakRetained didAuthorizeApplePayTrustSignature:signatureCopy handler:v7];
   }
 
   else
@@ -230,10 +230,10 @@ void __84__PKPaymentAuthorizationCoordinatorExportedObject_authorizationDidAutho
   }
 }
 
-- (void)authorizationDidUpdateAccountServicePaymentMethod:(id)a3
+- (void)authorizationDidUpdateAccountServicePaymentMethod:(id)method
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  methodCopy = method;
   v5 = PKLogFacilityTypeGetObject(0xFuLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -242,7 +242,7 @@ void __84__PKPaymentAuthorizationCoordinatorExportedObject_authorizationDidAutho
     _os_log_impl(&dword_1AD337000, v5, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  v6 = [(PKPaymentAuthorizationCoordinatorExportedObject *)self privateDelegate];
+  privateDelegate = [(PKPaymentAuthorizationCoordinatorExportedObject *)self privateDelegate];
   if (objc_opt_respondsToSelector())
   {
     WeakRetained = objc_loadWeakRetained(&self->_controller);
@@ -251,7 +251,7 @@ void __84__PKPaymentAuthorizationCoordinatorExportedObject_authorizationDidAutho
     v8[2] = __101__PKPaymentAuthorizationCoordinatorExportedObject_authorizationDidUpdateAccountServicePaymentMethod___block_invoke;
     v8[3] = &unk_1E79CEB40;
     v8[4] = self;
-    [v6 paymentAuthorizationCoordinator:WeakRetained didUpdateAccountServicePaymentMethod:v4 handler:v8];
+    [privateDelegate paymentAuthorizationCoordinator:WeakRetained didUpdateAccountServicePaymentMethod:methodCopy handler:v8];
   }
 
   else
@@ -260,10 +260,10 @@ void __84__PKPaymentAuthorizationCoordinatorExportedObject_authorizationDidAutho
   }
 }
 
-- (void)authorizationDidSelectShippingMethod:(id)a3
+- (void)authorizationDidSelectShippingMethod:(id)method
 {
-  v4 = a3;
-  v5 = [(PKPaymentAuthorizationCoordinatorExportedObject *)self delegate];
+  methodCopy = method;
+  delegate = [(PKPaymentAuthorizationCoordinatorExportedObject *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     WeakRetained = objc_loadWeakRetained(&self->_controller);
@@ -272,7 +272,7 @@ void __84__PKPaymentAuthorizationCoordinatorExportedObject_authorizationDidAutho
     v8[2] = __88__PKPaymentAuthorizationCoordinatorExportedObject_authorizationDidSelectShippingMethod___block_invoke;
     v8[3] = &unk_1E79CEB68;
     v8[4] = self;
-    [v5 paymentAuthorizationCoordinator:WeakRetained didSelectShippingMethod:v4 handler:v8];
+    [delegate paymentAuthorizationCoordinator:WeakRetained didSelectShippingMethod:methodCopy handler:v8];
   }
 
   else if (objc_opt_respondsToSelector())
@@ -283,7 +283,7 @@ void __84__PKPaymentAuthorizationCoordinatorExportedObject_authorizationDidAutho
     v7[2] = __88__PKPaymentAuthorizationCoordinatorExportedObject_authorizationDidSelectShippingMethod___block_invoke_2;
     v7[3] = &unk_1E79CEB90;
     v7[4] = self;
-    [v5 paymentAuthorizationCoordinator:WeakRetained didSelectShippingMethod:v4 completion:v7];
+    [delegate paymentAuthorizationCoordinator:WeakRetained didSelectShippingMethod:methodCopy completion:v7];
   }
 
   else
@@ -304,10 +304,10 @@ void __88__PKPaymentAuthorizationCoordinatorExportedObject_authorizationDidSelec
   [*(*(a1 + 32) + 40) authorizationDidSelectShippingMethodCompleteWithUpdate:v6];
 }
 
-- (void)authorizationDidSelectShippingAddress:(id)a3
+- (void)authorizationDidSelectShippingAddress:(id)address
 {
-  v4 = a3;
-  v5 = [(PKPaymentAuthorizationCoordinatorExportedObject *)self delegate];
+  addressCopy = address;
+  delegate = [(PKPaymentAuthorizationCoordinatorExportedObject *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     WeakRetained = objc_loadWeakRetained(&self->_controller);
@@ -316,7 +316,7 @@ void __88__PKPaymentAuthorizationCoordinatorExportedObject_authorizationDidSelec
     v8[2] = __89__PKPaymentAuthorizationCoordinatorExportedObject_authorizationDidSelectShippingAddress___block_invoke;
     v8[3] = &unk_1E79CEBB8;
     v8[4] = self;
-    [v5 paymentAuthorizationCoordinator:WeakRetained didSelectShippingAddress:v4 handler:v8];
+    [delegate paymentAuthorizationCoordinator:WeakRetained didSelectShippingAddress:addressCopy handler:v8];
   }
 
   else if (objc_opt_respondsToSelector())
@@ -327,7 +327,7 @@ void __88__PKPaymentAuthorizationCoordinatorExportedObject_authorizationDidSelec
     v7[2] = __89__PKPaymentAuthorizationCoordinatorExportedObject_authorizationDidSelectShippingAddress___block_invoke_2;
     v7[3] = &unk_1E79CEBE0;
     v7[4] = self;
-    [v5 paymentAuthorizationCoordinator:WeakRetained didSelectShippingAddress:v4 completion:v7];
+    [delegate paymentAuthorizationCoordinator:WeakRetained didSelectShippingAddress:addressCopy completion:v7];
   }
 
   else
@@ -349,10 +349,10 @@ void __89__PKPaymentAuthorizationCoordinatorExportedObject_authorizationDidSelec
   [*(*(a1 + 32) + 40) authorizationDidSelectShippingAddressCompleteWithUpdate:v10];
 }
 
-- (void)authorizationDidSelectPaymentMethod:(id)a3
+- (void)authorizationDidSelectPaymentMethod:(id)method
 {
-  v4 = a3;
-  v5 = [(PKPaymentAuthorizationCoordinatorExportedObject *)self delegate];
+  methodCopy = method;
+  delegate = [(PKPaymentAuthorizationCoordinatorExportedObject *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     WeakRetained = objc_loadWeakRetained(&self->_controller);
@@ -361,7 +361,7 @@ void __89__PKPaymentAuthorizationCoordinatorExportedObject_authorizationDidSelec
     v8[2] = __87__PKPaymentAuthorizationCoordinatorExportedObject_authorizationDidSelectPaymentMethod___block_invoke;
     v8[3] = &unk_1E79CEC08;
     v8[4] = self;
-    [v5 paymentAuthorizationCoordinator:WeakRetained didSelectPaymentMethod:v4 handler:v8];
+    [delegate paymentAuthorizationCoordinator:WeakRetained didSelectPaymentMethod:methodCopy handler:v8];
   }
 
   else if (objc_opt_respondsToSelector())
@@ -372,7 +372,7 @@ void __89__PKPaymentAuthorizationCoordinatorExportedObject_authorizationDidSelec
     v7[2] = __87__PKPaymentAuthorizationCoordinatorExportedObject_authorizationDidSelectPaymentMethod___block_invoke_2;
     v7[3] = &unk_1E79CEC30;
     v7[4] = self;
-    [v5 paymentAuthorizationCoordinator:WeakRetained didSelectPaymentMethod:v4 completion:v7];
+    [delegate paymentAuthorizationCoordinator:WeakRetained didSelectPaymentMethod:methodCopy completion:v7];
   }
 
   else
@@ -391,10 +391,10 @@ void __87__PKPaymentAuthorizationCoordinatorExportedObject_authorizationDidSelec
   [*(*(a1 + 32) + 40) authorizationDidSelectPaymentMethodCompleteWithUpdate:v4];
 }
 
-- (void)authorizationDidChangeCouponCode:(id)a3
+- (void)authorizationDidChangeCouponCode:(id)code
 {
-  v4 = a3;
-  v5 = [(PKPaymentAuthorizationCoordinatorExportedObject *)self delegate];
+  codeCopy = code;
+  delegate = [(PKPaymentAuthorizationCoordinatorExportedObject *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     aBlock[0] = MEMORY[0x1E69E9820];
@@ -404,7 +404,7 @@ void __87__PKPaymentAuthorizationCoordinatorExportedObject_authorizationDidSelec
     aBlock[4] = self;
     v6 = _Block_copy(aBlock);
     WeakRetained = objc_loadWeakRetained(&self->_controller);
-    [v5 paymentAuthorizationCoordinator:WeakRetained didChangeCouponCode:v4 handler:v6];
+    [delegate paymentAuthorizationCoordinator:WeakRetained didChangeCouponCode:codeCopy handler:v6];
   }
 
   else
@@ -423,11 +423,11 @@ void __87__PKPaymentAuthorizationCoordinatorExportedObject_authorizationDidSelec
   return WeakRetained;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   os_unfair_lock_lock(&self->_delegateLock);
-  objc_storeWeak(&self->_delegate, v4);
+  objc_storeWeak(&self->_delegate, delegateCopy);
 
   os_unfair_lock_unlock(&self->_delegateLock);
 }
@@ -441,11 +441,11 @@ void __87__PKPaymentAuthorizationCoordinatorExportedObject_authorizationDidSelec
   return WeakRetained;
 }
 
-- (void)setPrivateDelegate:(id)a3
+- (void)setPrivateDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   os_unfair_lock_lock(&self->_delegateLock);
-  objc_storeWeak(&self->_privateDelegate, v4);
+  objc_storeWeak(&self->_privateDelegate, delegateCopy);
 
   os_unfair_lock_unlock(&self->_delegateLock);
 }

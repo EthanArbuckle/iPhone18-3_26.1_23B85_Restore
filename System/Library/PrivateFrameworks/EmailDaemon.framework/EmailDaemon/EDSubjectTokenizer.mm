@@ -1,12 +1,12 @@
 @interface EDSubjectTokenizer
-+ (id)tokenizeString:(id)a3;
++ (id)tokenizeString:(id)string;
 @end
 
 @implementation EDSubjectTokenizer
 
-+ (id)tokenizeString:(id)a3
++ (id)tokenizeString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v17 = 0;
   v18 = &v17;
@@ -15,13 +15,13 @@
   v21 = __Block_byref_object_dispose__44;
   v22 = objc_alloc_init(MEMORY[0x1E696AD60]);
   v5 = MEMORY[0x1E696AD00];
-  v6 = [v3 length];
+  v6 = [stringCopy length];
   v7 = *MEMORY[0x1E696A550];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __37__EDSubjectTokenizer_tokenizeString___block_invoke;
   v13[3] = &unk_1E8257D48;
-  v8 = v3;
+  v8 = stringCopy;
   v14 = v8;
   v16 = &v17;
   v9 = v4;

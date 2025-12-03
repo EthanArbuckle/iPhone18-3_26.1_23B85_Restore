@@ -1,29 +1,29 @@
 @interface AVTCoreModelPairing
-- (AVTCoreModelPairing)initWithPairedCategory:(int64_t)a3 pairedTitle:(id)a4 pairTitle:(id)a5 unpairTitle:(id)a6 pairedDescription:(id)a7 unpairedDescription:(id)a8;
+- (AVTCoreModelPairing)initWithPairedCategory:(int64_t)category pairedTitle:(id)title pairTitle:(id)pairTitle unpairTitle:(id)unpairTitle pairedDescription:(id)description unpairedDescription:(id)unpairedDescription;
 - (id)description;
 @end
 
 @implementation AVTCoreModelPairing
 
-- (AVTCoreModelPairing)initWithPairedCategory:(int64_t)a3 pairedTitle:(id)a4 pairTitle:(id)a5 unpairTitle:(id)a6 pairedDescription:(id)a7 unpairedDescription:(id)a8
+- (AVTCoreModelPairing)initWithPairedCategory:(int64_t)category pairedTitle:(id)title pairTitle:(id)pairTitle unpairTitle:(id)unpairTitle pairedDescription:(id)description unpairedDescription:(id)unpairedDescription
 {
-  v22 = a4;
-  v21 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  titleCopy = title;
+  pairTitleCopy = pairTitle;
+  unpairTitleCopy = unpairTitle;
+  descriptionCopy = description;
+  unpairedDescriptionCopy = unpairedDescription;
   v23.receiver = self;
   v23.super_class = AVTCoreModelPairing;
   v18 = [(AVTCoreModelPairing *)&v23 init];
   v19 = v18;
   if (v18)
   {
-    v18->_pairedCategory = a3;
-    objc_storeStrong(&v18->_localizedPairedTitle, a4);
-    objc_storeStrong(&v19->_localizedPairTitle, a5);
-    objc_storeStrong(&v19->_localizedUnpairTitle, a6);
-    objc_storeStrong(&v19->_localizedPairedDescription, a7);
-    objc_storeStrong(&v19->_localizedUnpairedDescription, a8);
+    v18->_pairedCategory = category;
+    objc_storeStrong(&v18->_localizedPairedTitle, title);
+    objc_storeStrong(&v19->_localizedPairTitle, pairTitle);
+    objc_storeStrong(&v19->_localizedUnpairTitle, unpairTitle);
+    objc_storeStrong(&v19->_localizedPairedDescription, description);
+    objc_storeStrong(&v19->_localizedUnpairedDescription, unpairedDescription);
   }
 
   return v19;
@@ -38,12 +38,12 @@
 
   [(AVTCoreModelPairing *)self pairedCategory];
   v5 = AVTPresetCategoryToString();
-  v6 = [(AVTCoreModelPairing *)self localizedPairedTitle];
-  v7 = [(AVTCoreModelPairing *)self localizedPairTitle];
-  v8 = [(AVTCoreModelPairing *)self localizedUnpairTitle];
-  v9 = [(AVTCoreModelPairing *)self localizedPairedDescription];
-  v10 = [(AVTCoreModelPairing *)self localizedUnpairedDescription];
-  [v4 appendFormat:@" AVTCoreModelPairing: category:%@\n pairedTitle: %@\n, pairTitle: %@\n, unpairTitle: %@\n pairedDescription: %@\n unpairedDescription: %@", v5, v6, v7, v8, v9, v10];
+  localizedPairedTitle = [(AVTCoreModelPairing *)self localizedPairedTitle];
+  localizedPairTitle = [(AVTCoreModelPairing *)self localizedPairTitle];
+  localizedUnpairTitle = [(AVTCoreModelPairing *)self localizedUnpairTitle];
+  localizedPairedDescription = [(AVTCoreModelPairing *)self localizedPairedDescription];
+  localizedUnpairedDescription = [(AVTCoreModelPairing *)self localizedUnpairedDescription];
+  [v4 appendFormat:@" AVTCoreModelPairing: category:%@\n pairedTitle: %@\n, pairTitle: %@\n, unpairTitle: %@\n pairedDescription: %@\n unpairedDescription: %@", v5, localizedPairedTitle, localizedPairTitle, localizedUnpairTitle, localizedPairedDescription, localizedUnpairedDescription];
 
   v11 = [v4 copy];
 

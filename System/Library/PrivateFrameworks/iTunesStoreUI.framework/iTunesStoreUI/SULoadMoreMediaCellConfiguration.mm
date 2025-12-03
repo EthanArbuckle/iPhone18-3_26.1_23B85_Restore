@@ -1,20 +1,20 @@
 @interface SULoadMoreMediaCellConfiguration
-- (id)colorForLabelAtIndex:(unint64_t)a3 withModifiers:(unint64_t)a4;
-- (id)fontForLabelAtIndex:(unint64_t)a3;
+- (id)colorForLabelAtIndex:(unint64_t)index withModifiers:(unint64_t)modifiers;
+- (id)fontForLabelAtIndex:(unint64_t)index;
 - (void)reloadLayoutInformation;
 - (void)reloadStrings;
 @end
 
 @implementation SULoadMoreMediaCellConfiguration
 
-- (id)colorForLabelAtIndex:(unint64_t)a3 withModifiers:(unint64_t)a4
+- (id)colorForLabelAtIndex:(unint64_t)index withModifiers:(unint64_t)modifiers
 {
-  if (a4)
+  if (modifiers)
   {
     return [MEMORY[0x1E69DC888] whiteColor];
   }
 
-  if ((a4 & 2) != 0)
+  if ((modifiers & 2) != 0)
   {
     v4 = MEMORY[0x1E69DC888];
   }
@@ -22,7 +22,7 @@
   else
   {
     v4 = MEMORY[0x1E69DC888];
-    if (a3 == 1)
+    if (index == 1)
     {
       return [MEMORY[0x1E69DC888] colorWithRed:0.0 green:0.321568627 blue:0.91372549 alpha:1.0];
     }
@@ -31,9 +31,9 @@
   return [v4 grayColor];
 }
 
-- (id)fontForLabelAtIndex:(unint64_t)a3
+- (id)fontForLabelAtIndex:(unint64_t)index
 {
-  if (!a3)
+  if (!index)
   {
     return [MEMORY[0x1E69DB878] systemFontOfSize:14.0];
   }
@@ -115,12 +115,12 @@ LABEL_11:
 
 - (void)reloadStrings
 {
-  v3 = [self->super.super.super.super._representedObject title];
+  title = [self->super.super.super.super._representedObject title];
 
-  v4 = [v3 length];
+  v4 = [title length];
   if (v4)
   {
-    v4 = v3;
+    v4 = title;
   }
 
   *(self->super.super.super._strings + 1) = v4;

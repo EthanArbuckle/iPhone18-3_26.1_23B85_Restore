@@ -1,7 +1,7 @@
 @interface HKFeatureAvailabilityRequirementEntitlement
 + (id)OSEligibilityPlistFilePathReadAccessEntitlement;
 + (id)bluetoothSystemAccessEntitlement;
-+ (id)featureAvailabilityReadEntitlementForFeatureIdentifier:(id)a3;
++ (id)featureAvailabilityReadEntitlementForFeatureIdentifier:(id)identifier;
 + (id)healthKitAccessEntitlement;
 + (id)machLookupGlobalNameForAppConduitdDeviceConnectionEntitlement;
 + (id)machLookupGlobalNameForBluetoothXPCEntitlement;
@@ -15,10 +15,10 @@
 + (id)userDefaultsHealthSharedDomainReadWriteAccessEntitlement;
 + (id)userDefaultsNanolifestylePrivacyDomainReadWriteAccessEntitlement;
 + (id)userDefaultsRespiratoryDomainAccessEntitlement;
-+ (id)userNotificationsBundleIdentifiersEntitlementForBundleIdentifier:(id)a3;
++ (id)userNotificationsBundleIdentifiersEntitlementForBundleIdentifier:(id)identifier;
 + (id)userSettingsPlistFilePathReadAccessEntitlement;
-- (BOOL)isEqual:(id)a3;
-- (HKFeatureAvailabilityRequirementEntitlement)initWithKey:(id)a3 type:(int64_t)a4 value:(id)a5 detail:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (HKFeatureAvailabilityRequirementEntitlement)initWithKey:(id)key type:(int64_t)type value:(id)value detail:(id)detail;
 - (__CFString)typeDescription;
 - (id)description;
 - (unint64_t)hash;
@@ -26,26 +26,26 @@
 
 @implementation HKFeatureAvailabilityRequirementEntitlement
 
-- (HKFeatureAvailabilityRequirementEntitlement)initWithKey:(id)a3 type:(int64_t)a4 value:(id)a5 detail:(id)a6
+- (HKFeatureAvailabilityRequirementEntitlement)initWithKey:(id)key type:(int64_t)type value:(id)value detail:(id)detail
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  keyCopy = key;
+  valueCopy = value;
+  detailCopy = detail;
   v21.receiver = self;
   v21.super_class = HKFeatureAvailabilityRequirementEntitlement;
   v13 = [(HKFeatureAvailabilityRequirementEntitlement *)&v21 init];
   if (v13)
   {
-    v14 = [v10 copy];
+    v14 = [keyCopy copy];
     key = v13->_key;
     v13->_key = v14;
 
-    v13->_type = a4;
-    v16 = [v11 copy];
+    v13->_type = type;
+    v16 = [valueCopy copy];
     value = v13->_value;
     v13->_value = v16;
 
-    v18 = [v12 copy];
+    v18 = [detailCopy copy];
     detail = v13->_detail;
     v13->_detail = v18;
   }
@@ -53,10 +53,10 @@
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
@@ -66,7 +66,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       key = self->_key;
       v7 = v5->_key;
       if (key != v7 && (!v7 || ![(NSString *)key isEqual:?]))
@@ -126,18 +126,18 @@ LABEL_17:
   return v4 ^ type ^ [(NSString *)self->_detail hash];
 }
 
-+ (id)featureAvailabilityReadEntitlementForFeatureIdentifier:(id)a3
++ (id)featureAvailabilityReadEntitlementForFeatureIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [[HKFeatureAvailabilityRequirementEntitlement alloc] initWithKey:@"com.apple.private.healthkit.feature-availability.read" type:0 value:v3 detail:@"Value should be array containing feature identifier."];
+  identifierCopy = identifier;
+  v4 = [[HKFeatureAvailabilityRequirementEntitlement alloc] initWithKey:@"com.apple.private.healthkit.feature-availability.read" type:0 value:identifierCopy detail:@"Value should be array containing feature identifier."];
 
   return v4;
 }
 
-+ (id)userNotificationsBundleIdentifiersEntitlementForBundleIdentifier:(id)a3
++ (id)userNotificationsBundleIdentifiersEntitlementForBundleIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [[HKFeatureAvailabilityRequirementEntitlement alloc] initWithKey:@"com.apple.private.usernotifications.bundle-identifiers" type:0 value:v3 detail:@"Value should be array containing the bundle identifier"];
+  identifierCopy = identifier;
+  v4 = [[HKFeatureAvailabilityRequirementEntitlement alloc] initWithKey:@"com.apple.private.usernotifications.bundle-identifiers" type:0 value:identifierCopy detail:@"Value should be array containing the bundle identifier"];
 
   return v4;
 }
@@ -258,15 +258,15 @@ LABEL_17:
 {
   if (result)
   {
-    v1 = [(__CFString *)result type];
-    if (v1 > 6)
+    type = [(__CFString *)result type];
+    if (type > 6)
     {
       return @"Unknown";
     }
 
     else
     {
-      return off_1E7384FE8[v1];
+      return off_1E7384FE8[type];
     }
   }
 
@@ -275,22 +275,22 @@ LABEL_17:
 
 - (id)description
 {
-  v3 = [(HKFeatureAvailabilityRequirementEntitlement *)self detail];
-  if (v3)
+  detail = [(HKFeatureAvailabilityRequirementEntitlement *)self detail];
+  if (detail)
   {
-    v4 = [(HKFeatureAvailabilityRequirementEntitlement *)self detail];
+    detail2 = [(HKFeatureAvailabilityRequirementEntitlement *)self detail];
   }
 
   else
   {
-    v4 = @"--";
+    detail2 = @"--";
   }
 
   v5 = MEMORY[0x1E696AEC0];
   v6 = [(HKFeatureAvailabilityRequirementEntitlement *)self key];
-  v7 = [(HKFeatureAvailabilityRequirementEntitlement *)self typeDescription];
-  v8 = [(HKFeatureAvailabilityRequirementEntitlement *)self value];
-  v9 = [v5 stringWithFormat:@"\tKey: %@\n\tType: %@\n\tValue: %@\n\tDescription: %@", v6, v7, v8, v4];
+  typeDescription = [(HKFeatureAvailabilityRequirementEntitlement *)self typeDescription];
+  value = [(HKFeatureAvailabilityRequirementEntitlement *)self value];
+  v9 = [v5 stringWithFormat:@"\tKey: %@\n\tType: %@\n\tValue: %@\n\tDescription: %@", v6, typeDescription, value, detail2];
 
   return v9;
 }

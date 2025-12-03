@@ -1,24 +1,24 @@
 @interface WorkoutTaskServer
 + (id)taskIdentifier;
-- (_TtC25FitnessIntelligencePlugin17WorkoutTaskServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6;
+- (_TtC25FitnessIntelligencePlugin17WorkoutTaskServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate;
 - (id)exportedInterface;
 - (id)remoteInterface;
-- (void)queryWithStartDate:(id)a3 endDate:(id)a4 completion:(id)a5;
+- (void)queryWithStartDate:(id)date endDate:(id)endDate completion:(id)completion;
 @end
 
 @implementation WorkoutTaskServer
 
-- (_TtC25FitnessIntelligencePlugin17WorkoutTaskServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6
+- (_TtC25FitnessIntelligencePlugin17WorkoutTaskServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate
 {
   v9 = sub_749B8();
   v10 = *(*(v9 - 8) + 64);
   __chkstk_darwin(v9 - 8);
   v12 = &v17 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_74998();
-  v13 = a4;
-  v14 = a5;
+  configurationCopy = configuration;
+  clientCopy = client;
   swift_unknownObjectRetain();
-  v15 = sub_4F1B4(v12, a4, v14, a6);
+  v15 = sub_4F1B4(v12, configuration, clientCopy, delegate);
 
   swift_unknownObjectRelease();
   return v15;
@@ -46,7 +46,7 @@
   return v2;
 }
 
-- (void)queryWithStartDate:(id)a3 endDate:(id)a4 completion:(id)a5
+- (void)queryWithStartDate:(id)date endDate:(id)endDate completion:(id)completion
 {
   v7 = sub_74968();
   v8 = *(v7 - 8);
@@ -55,12 +55,12 @@
   v12 = &v19 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
   __chkstk_darwin(v10);
   v14 = &v19 - v13;
-  v15 = _Block_copy(a5);
+  v15 = _Block_copy(completion);
   sub_74938();
   sub_74938();
   v16 = swift_allocObject();
   *(v16 + 16) = v15;
-  v17 = self;
+  selfCopy = self;
   WorkoutTaskServer.query(startDate:endDate:completion:)(v14, v12, sub_199A0, v16);
 
   v18 = *(v8 + 8);

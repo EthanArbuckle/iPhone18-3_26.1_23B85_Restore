@@ -31,12 +31,12 @@
 
 - (void)postConnectionStatusNotification
 {
-  v3 = [MEMORY[0x277CCACC8] mainThread];
+  mainThread = [MEMORY[0x277CCACC8] mainThread];
 
-  if (v3)
+  if (mainThread)
   {
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 postNotificationName:@"AKPeripheralAvailabilityManagerAvailabilityNotification" object:self userInfo:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"AKPeripheralAvailabilityManagerAvailabilityNotification" object:self userInfo:0];
   }
 
   else
@@ -71,9 +71,9 @@
       IOHIDManagerRegisterDeviceMatchingCallback(self->stylusHidManager, sub_23F42DB04, self);
       IOHIDManagerRegisterDeviceRemovalCallback(self->stylusHidManager, sub_23F42DB78, self);
       stylusHidManager = self->stylusHidManager;
-      v8 = [MEMORY[0x277CBEB88] mainRunLoop];
-      v9 = [v8 getCFRunLoop];
-      IOHIDManagerScheduleWithRunLoop(stylusHidManager, v9, *MEMORY[0x277CBF048]);
+      mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+      getCFRunLoop = [mainRunLoop getCFRunLoop];
+      IOHIDManagerScheduleWithRunLoop(stylusHidManager, getCFRunLoop, *MEMORY[0x277CBF048]);
     }
   }
 }

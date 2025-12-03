@@ -1,30 +1,30 @@
 @interface CTCallCenter
-- (BOOL)calculateCallStateChanges_sync:(id)a3;
-- (BOOL)getCurrentCallSetFromServer_sync:(id)a3;
+- (BOOL)calculateCallStateChanges_sync:(id)changes_sync;
+- (BOOL)getCurrentCallSetFromServer_sync:(id)server_sync;
 - (CTCallCenter)init;
-- (CTCallCenter)initWithQueue:(dispatch_queue_s *)a3;
+- (CTCallCenter)initWithQueue:(dispatch_queue_s *)queue;
 - (NSSet)currentCalls;
 - (NSString)description;
 - (id).cxx_construct;
 - (void)callEventHandler;
-- (void)callObserver:(id)a3 callChanged:(id)a4;
+- (void)callObserver:(id)observer callChanged:(id)changed;
 - (void)dealloc;
-- (void)handleCallStatusChange_sync:(id)a3;
+- (void)handleCallStatusChange_sync:(id)change_sync;
 - (void)setCallEventHandler:(void *)callEventHandler;
-- (void)setCurrentCalls:(id)a3;
+- (void)setCurrentCalls:(id)calls;
 @end
 
 @implementation CTCallCenter
 
-- (CTCallCenter)initWithQueue:(dispatch_queue_s *)a3
+- (CTCallCenter)initWithQueue:(dispatch_queue_s *)queue
 {
-  if (a3)
+  if (queue)
   {
-    dispatch_retain(a3);
+    dispatch_retain(queue);
   }
 
   fObj = self->clientQueue.fObj.fObj;
-  self->clientQueue.fObj.fObj = a3;
+  self->clientQueue.fObj.fObj = queue;
   if (fObj)
   {
     dispatch_release(fObj);
@@ -105,18 +105,18 @@ uint64_t __20__CTCallCenter_init__block_invoke(uint64_t a1)
   return [v2 setDelegate:v3 queue:0];
 }
 
-- (void)handleCallStatusChange_sync:(id)a3
+- (void)handleCallStatusChange_sync:(id)change_sync
 {
-  v4 = [CTCall callForCXCall:a3];
+  v4 = [CTCall callForCXCall:change_sync];
   if (v4)
   {
     v5 = v4;
     currentCalls = self->_currentCalls;
     v7 = [(NSSet *)currentCalls member:v4];
-    v8 = [v5 callState];
+    callState = [v5 callState];
     if (v7)
     {
-      if (([v8 isEqualToString:{objc_msgSend(v7, "callState")}] & 1) == 0)
+      if (([callState isEqualToString:{objc_msgSend(v7, "callState")}] & 1) == 0)
       {
         [(NSSet *)currentCalls removeObject:v7];
         if ([objc_msgSend(v5 "callState")])
@@ -128,7 +128,7 @@ uint64_t __20__CTCallCenter_init__block_invoke(uint64_t a1)
       }
     }
 
-    else if (([v8 isEqualToString:@"CTCallStateDisconnected"] & 1) == 0)
+    else if (([callState isEqualToString:@"CTCallStateDisconnected"] & 1) == 0)
     {
 LABEL_7:
       [(NSSet *)currentCalls addObject:v5];
@@ -210,18 +210,18 @@ void __36__CTCallCenter_setCallEventHandler___block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)getCurrentCallSetFromServer_sync:(id)a3
+- (BOOL)getCurrentCallSetFromServer_sync:(id)server_sync
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (server_sync)
   {
     v5 = objc_autoreleasePoolPush();
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = [(CXCallObserver *)[(CTCallCenter *)self callKitObserver] calls];
-    v7 = [(NSArray *)v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    calls = [(CXCallObserver *)[(CTCallCenter *)self callKitObserver] calls];
+    v7 = [(NSArray *)calls countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
       v8 = v7;
@@ -233,20 +233,20 @@ void __36__CTCallCenter_setCallEventHandler___block_invoke(uint64_t a1)
         {
           if (*v15 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(calls);
           }
 
           v11 = [CTCall callForCXCall:*(*(&v14 + 1) + 8 * v10)];
           if (v11)
           {
-            [a3 addObject:v11];
+            [server_sync addObject:v11];
           }
 
           ++v10;
         }
 
         while (v8 != v10);
-        v8 = [(NSArray *)v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v8 = [(NSArray *)calls countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v8);
@@ -255,19 +255,19 @@ void __36__CTCallCenter_setCallEventHandler___block_invoke(uint64_t a1)
     objc_autoreleasePoolPop(v5);
   }
 
-  result = a3 != 0;
+  result = server_sync != 0;
   v13 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (BOOL)calculateCallStateChanges_sync:(id)a3
+- (BOOL)calculateCallStateChanges_sync:(id)changes_sync
 {
   v5 = objc_alloc_init(MEMORY[0x1E696AAC8]);
   currentCalls = self->_currentCalls;
-  v7 = a3;
-  if (!a3)
+  changes_syncCopy = changes_sync;
+  if (!changes_sync)
   {
-    v7 = objc_alloc_init(MEMORY[0x1E695DFA8]);
+    changes_syncCopy = objc_alloc_init(MEMORY[0x1E695DFA8]);
   }
 
   v8 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -276,14 +276,14 @@ void __36__CTCallCenter_setCallEventHandler___block_invoke(uint64_t a1)
   {
     if ([v8 count])
     {
-      v10 = [v8 objectEnumerator];
-      v11 = [v10 nextObject];
-      if (v11)
+      objectEnumerator = [v8 objectEnumerator];
+      nextObject = [objectEnumerator nextObject];
+      if (nextObject)
       {
-        v12 = v11;
+        nextObject2 = nextObject;
         while (1)
         {
-          v13 = [(NSSet *)currentCalls member:v12];
+          v13 = [(NSSet *)currentCalls member:nextObject2];
           if (!v13)
           {
             goto LABEL_10;
@@ -296,8 +296,8 @@ void __36__CTCallCenter_setCallEventHandler___block_invoke(uint64_t a1)
           }
 
 LABEL_13:
-          v12 = [v10 nextObject];
-          if (!v12)
+          nextObject2 = [objectEnumerator nextObject];
+          if (!nextObject2)
           {
             goto LABEL_14;
           }
@@ -305,81 +305,81 @@ LABEL_13:
 
         [(NSSet *)currentCalls removeObject:v14];
 LABEL_10:
-        if (([objc_msgSend(v12 "callState")] & 1) == 0)
+        if (([objc_msgSend(nextObject2 "callState")] & 1) == 0)
         {
-          [(NSSet *)currentCalls addObject:v12];
+          [(NSSet *)currentCalls addObject:nextObject2];
         }
 
-        [v7 addObject:v12];
+        [changes_syncCopy addObject:nextObject2];
         goto LABEL_13;
       }
 
 LABEL_14:
       v15 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-      v16 = [(NSSet *)currentCalls objectEnumerator];
-      v17 = [(NSEnumerator *)v16 nextObject];
-      if (v17)
+      objectEnumerator2 = [(NSSet *)currentCalls objectEnumerator];
+      nextObject3 = [(NSEnumerator *)objectEnumerator2 nextObject];
+      if (nextObject3)
       {
-        v18 = v17;
+        nextObject4 = nextObject3;
         do
         {
-          if (![v8 member:v18])
+          if (![v8 member:nextObject4])
           {
-            [v15 addObject:v18];
+            [v15 addObject:nextObject4];
           }
 
-          v18 = [(NSEnumerator *)v16 nextObject];
+          nextObject4 = [(NSEnumerator *)objectEnumerator2 nextObject];
         }
 
-        while (v18);
+        while (nextObject4);
       }
 
       if ([v15 count])
       {
-        v19 = [v15 objectEnumerator];
-        v20 = [v19 nextObject];
-        if (v20)
+        objectEnumerator3 = [v15 objectEnumerator];
+        nextObject5 = [objectEnumerator3 nextObject];
+        if (nextObject5)
         {
-          v21 = v20;
+          nextObject6 = nextObject5;
           do
           {
-            if (a3)
+            if (changes_sync)
             {
-              [v21 setCallState:@"CTCallStateDisconnected"];
-              [a3 addObject:v21];
+              [nextObject6 setCallState:@"CTCallStateDisconnected"];
+              [changes_sync addObject:nextObject6];
             }
 
-            [(NSSet *)currentCalls removeObject:v21];
-            v21 = [v19 nextObject];
+            [(NSSet *)currentCalls removeObject:nextObject6];
+            nextObject6 = [objectEnumerator3 nextObject];
           }
 
-          while (v21);
+          while (nextObject6);
         }
       }
     }
 
     else if ([(NSSet *)currentCalls count])
     {
-      v22 = [(NSSet *)currentCalls objectEnumerator];
-      v23 = [(NSEnumerator *)v22 nextObject];
-      if (v23)
+      objectEnumerator4 = [(NSSet *)currentCalls objectEnumerator];
+      nextObject7 = [(NSEnumerator *)objectEnumerator4 nextObject];
+      if (nextObject7)
       {
-        v24 = v23;
+        nextObject8 = nextObject7;
         do
         {
-          [v24 setCallState:@"CTCallStateDisconnected"];
-          [v7 addObject:v24];
-          v24 = [(NSEnumerator *)v22 nextObject];
+          [nextObject8 setCallState:@"CTCallStateDisconnected"];
+          [changes_syncCopy addObject:nextObject8];
+          nextObject8 = [(NSEnumerator *)objectEnumerator4 nextObject];
         }
 
-        while (v24);
+        while (nextObject8);
       }
 
       [(NSSet *)currentCalls removeAllObjects];
     }
   }
 
-  if (!a3 && v7)
+  if (!changes_sync && changes_syncCopy)
   {
   }
 
@@ -424,13 +424,13 @@ uint64_t __28__CTCallCenter_currentCalls__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setCurrentCalls:(id)a3
+- (void)setCurrentCalls:(id)calls
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __32__CTCallCenter_setCurrentCalls___block_invoke;
   v3[3] = &unk_1E6A47380;
-  v3[4] = a3;
+  v3[4] = calls;
   v3[5] = self;
   dispatch_async(self->_queue.fObj.fObj, v3);
 }
@@ -462,15 +462,15 @@ void __32__CTCallCenter_setCurrentCalls___block_invoke(uint64_t a1)
   return v7;
 }
 
-- (void)callObserver:(id)a3 callChanged:(id)a4
+- (void)callObserver:(id)observer callChanged:(id)changed
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __41__CTCallCenter_callObserver_callChanged___block_invoke;
   block[3] = &unk_1E6A47448;
-  block[4] = a3;
+  block[4] = observer;
   block[5] = self;
-  block[6] = a4;
+  block[6] = changed;
   dispatch_async(self->_queue.fObj.fObj, block);
 }
 

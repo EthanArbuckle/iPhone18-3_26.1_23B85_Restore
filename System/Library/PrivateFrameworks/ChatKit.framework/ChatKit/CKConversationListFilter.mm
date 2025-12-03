@@ -1,36 +1,36 @@
 @interface CKConversationListFilter
 + (CKConversationListFilter)defaultFilter;
-- (BOOL)_conversation:(id)a3 matchesInbox:(unint64_t)a4;
-- (BOOL)_conversation:(id)a3 matchesSpamFilterInbox:(unint64_t)a4;
-- (BOOL)_conversation:(id)a3 matchesSpamFilterInboxGroup:(unint64_t)a4;
-- (BOOL)_isSpamFilteredConversation:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToConversationListFilter:(id)a3;
-- (CKConversationListFilter)initWithCoder:(id)a3;
+- (BOOL)_conversation:(id)_conversation matchesInbox:(unint64_t)inbox;
+- (BOOL)_conversation:(id)_conversation matchesSpamFilterInbox:(unint64_t)inbox;
+- (BOOL)_conversation:(id)_conversation matchesSpamFilterInboxGroup:(unint64_t)group;
+- (BOOL)_isSpamFilteredConversation:(id)conversation;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToConversationListFilter:(id)filter;
+- (CKConversationListFilter)initWithCoder:(id)coder;
 - (NSPredicate)conversationPredicate;
 - (id)_focusConfigurationSubPredicate;
 - (id)_inboxSubPredicate;
-- (id)_initWithInbox:(unint64_t)a3 unreadOnly:(BOOL)a4 focusConfiguration:(id)a5;
+- (id)_initWithInbox:(unint64_t)inbox unreadOnly:(BOOL)only focusConfiguration:(id)configuration;
 - (id)_unreadOnlySubPredicate;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)filterByChangingFocusConfiguration:(id)a3;
-- (id)filterByChangingInbox:(unint64_t)a3;
-- (id)filterByChangingUnreadOnly:(BOOL)a3;
-- (unint64_t)_defaultSpamFilterInboxForCategory:(int64_t)a3;
-- (unint64_t)_spamFilterInboxForCategory:(int64_t)a3 subCategory:(int64_t)a4;
-- (unint64_t)_spamFilterInboxForConversation:(id)a3;
-- (unint64_t)_spamFilterInboxForConversationListInbox:(unint64_t)a3;
-- (unint64_t)_spamFilterInboxGroupForConversationListInbox:(unint64_t)a3;
-- (unint64_t)_spamFilterInboxGroupForInbox:(unint64_t)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)filterByChangingFocusConfiguration:(id)configuration;
+- (id)filterByChangingInbox:(unint64_t)inbox;
+- (id)filterByChangingUnreadOnly:(BOOL)only;
+- (unint64_t)_defaultSpamFilterInboxForCategory:(int64_t)category;
+- (unint64_t)_spamFilterInboxForCategory:(int64_t)category subCategory:(int64_t)subCategory;
+- (unint64_t)_spamFilterInboxForConversation:(id)conversation;
+- (unint64_t)_spamFilterInboxForConversationListInbox:(unint64_t)inbox;
+- (unint64_t)_spamFilterInboxGroupForConversationListInbox:(unint64_t)inbox;
+- (unint64_t)_spamFilterInboxGroupForInbox:(unint64_t)inbox;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKConversationListFilter
 
 - (id)_inboxSubPredicate
 {
-  v3 = [(CKConversationListFilter *)self inbox];
-  if (v3)
+  inbox = [(CKConversationListFilter *)self inbox];
+  if (inbox)
   {
     objc_initWeak(&location, self);
     v4 = MEMORY[0x1E696AE18];
@@ -39,13 +39,13 @@
     v6[2] = __53__CKConversationListFilter_Inbox___inboxSubPredicate__block_invoke;
     v6[3] = &unk_1E72F5800;
     objc_copyWeak(v7, &location);
-    v7[1] = v3;
-    v3 = [v4 predicateWithBlock:v6];
+    v7[1] = inbox;
+    inbox = [v4 predicateWithBlock:v6];
     objc_destroyWeak(v7);
     objc_destroyWeak(&location);
   }
 
-  return v3;
+  return inbox;
 }
 
 uint64_t __53__CKConversationListFilter_Inbox___inboxSubPredicate__block_invoke(uint64_t a1, void *a2)
@@ -62,44 +62,44 @@ uint64_t __53__CKConversationListFilter_Inbox___inboxSubPredicate__block_invoke(
   return v5;
 }
 
-- (BOOL)_conversation:(id)a3 matchesInbox:(unint64_t)a4
+- (BOOL)_conversation:(id)_conversation matchesInbox:(unint64_t)inbox
 {
-  v6 = a3;
-  v7 = v6;
+  _conversationCopy = _conversation;
+  v7 = _conversationCopy;
   LOBYTE(v8) = 0;
-  if (a4 > 2)
+  if (inbox > 2)
   {
-    if (a4 <= 0x13)
+    if (inbox <= 0x13)
     {
-      if (((1 << a4) & 0x77FC0) != 0)
+      if (((1 << inbox) & 0x77FC0) != 0)
       {
-        v9 = [(CKConversationListFilter *)self _conversation:v6 matchesSpamFilterInbox:[(CKConversationListFilter *)self _spamFilterInboxForConversationListInbox:a4]];
+        v9 = [(CKConversationListFilter *)self _conversation:_conversationCopy matchesSpamFilterInbox:[(CKConversationListFilter *)self _spamFilterInboxForConversationListInbox:inbox]];
 LABEL_5:
         LOBYTE(v8) = v9;
         goto LABEL_6;
       }
 
-      if (((1 << a4) & 0x8030) != 0)
+      if (((1 << inbox) & 0x8030) != 0)
       {
-        v9 = [(CKConversationListFilter *)self _conversation:v6 matchesSpamFilterInboxGroup:[(CKConversationListFilter *)self _spamFilterInboxGroupForConversationListInbox:a4]];
+        v9 = [(CKConversationListFilter *)self _conversation:_conversationCopy matchesSpamFilterInboxGroup:[(CKConversationListFilter *)self _spamFilterInboxGroupForConversationListInbox:inbox]];
         goto LABEL_5;
       }
 
-      if (a4 == 19)
+      if (inbox == 19)
       {
-        v13 = [v6 chat];
-        LOBYTE(v8) = [v13 recoverableMessagesCount] != 0;
+        chat = [_conversationCopy chat];
+        LOBYTE(v8) = [chat recoverableMessagesCount] != 0;
 
         goto LABEL_6;
       }
     }
 
-    if (a4 != 3)
+    if (inbox != 3)
     {
       goto LABEL_6;
     }
 
-    if ([(CKConversationListFilter *)self _isSpamFilteredConversation:v6])
+    if ([(CKConversationListFilter *)self _isSpamFilteredConversation:_conversationCopy])
     {
       LOBYTE(v8) = [(CKConversationListFilter *)self _spamFilterInboxForConversation:v7]!= 0;
       goto LABEL_6;
@@ -110,17 +110,17 @@ LABEL_19:
     goto LABEL_6;
   }
 
-  switch(a4)
+  switch(inbox)
   {
     case 0uLL:
       goto LABEL_19;
     case 1uLL:
-      v12 = [v6 isKnownSender];
-      v8 = v12 & [v7 wasKnownSender];
+      isKnownSender = [_conversationCopy isKnownSender];
+      v8 = isKnownSender & [v7 wasKnownSender];
       break;
     case 2uLL:
-      v11 = [v6 isKnownSender];
-      v8 = v11 & [v7 wasKnownSender] ^ 1;
+      isKnownSender2 = [_conversationCopy isKnownSender];
+      v8 = isKnownSender2 & [v7 wasKnownSender] ^ 1;
       break;
   }
 
@@ -129,12 +129,12 @@ LABEL_6:
   return v8;
 }
 
-- (BOOL)_isSpamFilteredConversation:(id)a3
+- (BOOL)_isSpamFilteredConversation:(id)conversation
 {
-  v3 = a3;
-  if (CKMessageSpamFilteringEnabled() && ([v3 chat], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "account"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "service"), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(MEMORY[0x1E69A5C90], "smsService"), v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v5, v4, v6 == v7) && objc_msgSend(v3, "wasDetectedAsSMSCategory"))
+  conversationCopy = conversation;
+  if (CKMessageSpamFilteringEnabled() && ([conversationCopy chat], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "account"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "service"), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(MEMORY[0x1E69A5C90], "smsService"), v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v5, v4, v6 == v7) && objc_msgSend(conversationCopy, "wasDetectedAsSMSCategory"))
   {
-    v8 = [v3 isKnownSender] ^ 1;
+    v8 = [conversationCopy isKnownSender] ^ 1;
   }
 
   else
@@ -145,25 +145,25 @@ LABEL_6:
   return v8;
 }
 
-- (unint64_t)_spamFilterInboxForConversation:(id)a3
+- (unint64_t)_spamFilterInboxForConversation:(id)conversation
 {
-  v4 = a3;
-  v5 = [v4 spamCategory];
-  v6 = [v4 spamSubCategory];
+  conversationCopy = conversation;
+  spamCategory = [conversationCopy spamCategory];
+  spamSubCategory = [conversationCopy spamSubCategory];
 
-  return [(CKConversationListFilter *)self _spamFilterInboxForCategory:v5 subCategory:v6];
+  return [(CKConversationListFilter *)self _spamFilterInboxForCategory:spamCategory subCategory:spamSubCategory];
 }
 
-- (unint64_t)_spamFilterInboxGroupForConversationListInbox:(unint64_t)a3
+- (unint64_t)_spamFilterInboxGroupForConversationListInbox:(unint64_t)inbox
 {
-  if (a3 <= 0x13)
+  if (inbox <= 0x13)
   {
-    if (a3 == 15)
+    if (inbox == 15)
     {
       return 2;
     }
 
-    if (((1 << a3) & 0x77FC0) != 0)
+    if (((1 << inbox) & 0x77FC0) != 0)
     {
       v4 = MEMORY[0x1E695DF30];
       v5 = *MEMORY[0x1E695D930];
@@ -171,7 +171,7 @@ LABEL_6:
       goto LABEL_13;
     }
 
-    if (a3 == 19)
+    if (inbox == 19)
     {
 LABEL_12:
       v4 = MEMORY[0x1E695DF30];
@@ -183,9 +183,9 @@ LABEL_13:
     }
   }
 
-  if (a3 != 5)
+  if (inbox != 5)
   {
-    if (a3 >= 4)
+    if (inbox >= 4)
     {
       return 0;
     }
@@ -196,10 +196,10 @@ LABEL_13:
   return 1;
 }
 
-- (unint64_t)_spamFilterInboxForConversationListInbox:(unint64_t)a3
+- (unint64_t)_spamFilterInboxForConversationListInbox:(unint64_t)inbox
 {
   result = 0;
-  switch(a3)
+  switch(inbox)
   {
     case 0uLL:
     case 1uLL:
@@ -261,25 +261,25 @@ LABEL_17:
   return result;
 }
 
-- (unint64_t)_spamFilterInboxGroupForInbox:(unint64_t)a3
+- (unint64_t)_spamFilterInboxGroupForInbox:(unint64_t)inbox
 {
-  if (a3 - 1 > 0xB)
+  if (inbox - 1 > 0xB)
   {
     return 0;
   }
 
   else
   {
-    return qword_190DD1298[a3 - 1];
+    return qword_190DD1298[inbox - 1];
   }
 }
 
-- (BOOL)_conversation:(id)a3 matchesSpamFilterInbox:(unint64_t)a4
+- (BOOL)_conversation:(id)_conversation matchesSpamFilterInbox:(unint64_t)inbox
 {
-  v6 = a3;
-  if ([(CKConversationListFilter *)self _isSpamFilteredConversation:v6])
+  _conversationCopy = _conversation;
+  if ([(CKConversationListFilter *)self _isSpamFilteredConversation:_conversationCopy])
   {
-    v7 = [(CKConversationListFilter *)self _spamFilterInboxForConversation:v6]== a4;
+    v7 = [(CKConversationListFilter *)self _spamFilterInboxForConversation:_conversationCopy]== inbox;
   }
 
   else
@@ -290,12 +290,12 @@ LABEL_17:
   return v7;
 }
 
-- (BOOL)_conversation:(id)a3 matchesSpamFilterInboxGroup:(unint64_t)a4
+- (BOOL)_conversation:(id)_conversation matchesSpamFilterInboxGroup:(unint64_t)group
 {
-  v6 = a3;
-  if ([(CKConversationListFilter *)self _isSpamFilteredConversation:v6])
+  _conversationCopy = _conversation;
+  if ([(CKConversationListFilter *)self _isSpamFilteredConversation:_conversationCopy])
   {
-    v7 = [(CKConversationListFilter *)self _spamFilterInboxGroupForInbox:[(CKConversationListFilter *)self _spamFilterInboxForConversation:v6]]== a4;
+    v7 = [(CKConversationListFilter *)self _spamFilterInboxGroupForInbox:[(CKConversationListFilter *)self _spamFilterInboxForConversation:_conversationCopy]]== group;
   }
 
   else
@@ -306,12 +306,12 @@ LABEL_17:
   return v7;
 }
 
-- (unint64_t)_spamFilterInboxForCategory:(int64_t)a3 subCategory:(int64_t)a4
+- (unint64_t)_spamFilterInboxForCategory:(int64_t)category subCategory:(int64_t)subCategory
 {
-  switch(a4)
+  switch(subCategory)
   {
     case 0:
-      result = [(CKConversationListFilter *)self _defaultSpamFilterInboxForCategory:a3];
+      result = [(CKConversationListFilter *)self _defaultSpamFilterInboxForCategory:category];
       break;
     case 1:
       result = 9;
@@ -357,19 +357,19 @@ LABEL_17:
   return result;
 }
 
-- (unint64_t)_defaultSpamFilterInboxForCategory:(int64_t)a3
+- (unint64_t)_defaultSpamFilterInboxForCategory:(int64_t)category
 {
-  if (a3 == 3)
+  if (category == 3)
   {
     return 12;
   }
 
-  if (a3 == 4)
+  if (category == 4)
   {
     return 9;
   }
 
-  if (a3 < 2)
+  if (category < 2)
   {
     v6 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"Attempted to convert non-spam message filter action to a spam filter inbox" userInfo:{0, v3, v4}];
     objc_exception_throw(v6);
@@ -378,18 +378,18 @@ LABEL_17:
   return 0;
 }
 
-- (id)_initWithInbox:(unint64_t)a3 unreadOnly:(BOOL)a4 focusConfiguration:(id)a5
+- (id)_initWithInbox:(unint64_t)inbox unreadOnly:(BOOL)only focusConfiguration:(id)configuration
 {
-  v8 = a5;
+  configurationCopy = configuration;
   v14.receiver = self;
   v14.super_class = CKConversationListFilter;
   v9 = [(CKConversationListFilter *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    v9->_inbox = a3;
-    v9->_unreadOnly = a4;
-    v11 = [v8 copy];
+    v9->_inbox = inbox;
+    v9->_unreadOnly = only;
+    v11 = [configurationCopy copy];
     focusConfiguration = v10->_focusConfiguration;
     v10->_focusConfiguration = v11;
   }
@@ -397,10 +397,10 @@ LABEL_17:
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -408,17 +408,17 @@ LABEL_17:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CKConversationListFilter *)self isEqualToConversationListFilter:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CKConversationListFilter *)self isEqualToConversationListFilter:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToConversationListFilter:(id)a3
+- (BOOL)isEqualToConversationListFilter:(id)filter
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_inbox == v4[2] && self->_unreadOnly == *(v4 + 8))
+  filterCopy = filter;
+  v5 = filterCopy;
+  if (self->_inbox == filterCopy[2] && self->_unreadOnly == *(filterCopy + 8))
   {
     focusConfiguration = self->_focusConfiguration;
     if (focusConfiguration | v5[3])
@@ -440,7 +440,7 @@ LABEL_17:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CKConversationListFilter alloc];
   unreadOnly = self->_unreadOnly;
@@ -450,26 +450,26 @@ LABEL_17:
   return [(CKConversationListFilter *)v4 _initWithInbox:inbox unreadOnly:unreadOnly focusConfiguration:focusConfiguration];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   inbox = self->_inbox;
-  v5 = a3;
-  [v5 encodeInteger:inbox forKey:@"i"];
-  [v5 encodeBool:self->_unreadOnly forKey:@"u"];
-  [v5 encodeObject:self->_focusConfiguration forKey:@"f"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:inbox forKey:@"i"];
+  [coderCopy encodeBool:self->_unreadOnly forKey:@"u"];
+  [coderCopy encodeObject:self->_focusConfiguration forKey:@"f"];
 }
 
-- (CKConversationListFilter)initWithCoder:(id)a3
+- (CKConversationListFilter)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = CKConversationListFilter;
   v5 = [(CKConversationListFilter *)&v9 init];
   if (v5)
   {
-    v5->_inbox = [v4 decodeIntegerForKey:@"i"];
-    v5->_unreadOnly = [v4 decodeBoolForKey:@"u"];
-    v6 = [v4 decodeObjectOfClass:MEMORY[0x193AF5EC0](@"DNDConfiguration" forKey:{@"DoNotDisturb", @"f"}];
+    v5->_inbox = [coderCopy decodeIntegerForKey:@"i"];
+    v5->_unreadOnly = [coderCopy decodeBoolForKey:@"u"];
+    v6 = [coderCopy decodeObjectOfClass:MEMORY[0x193AF5EC0](@"DNDConfiguration" forKey:{@"DoNotDisturb", @"f"}];
     focusConfiguration = v5->_focusConfiguration;
     v5->_focusConfiguration = v6;
   }
@@ -484,24 +484,24 @@ LABEL_17:
   return v2;
 }
 
-- (id)filterByChangingInbox:(unint64_t)a3
+- (id)filterByChangingInbox:(unint64_t)inbox
 {
-  v3 = [[CKConversationListFilter alloc] _initWithInbox:a3 unreadOnly:self->_unreadOnly focusConfiguration:self->_focusConfiguration];
+  v3 = [[CKConversationListFilter alloc] _initWithInbox:inbox unreadOnly:self->_unreadOnly focusConfiguration:self->_focusConfiguration];
 
   return v3;
 }
 
-- (id)filterByChangingUnreadOnly:(BOOL)a3
+- (id)filterByChangingUnreadOnly:(BOOL)only
 {
-  v3 = [[CKConversationListFilter alloc] _initWithInbox:self->_inbox unreadOnly:a3 focusConfiguration:self->_focusConfiguration];
+  v3 = [[CKConversationListFilter alloc] _initWithInbox:self->_inbox unreadOnly:only focusConfiguration:self->_focusConfiguration];
 
   return v3;
 }
 
-- (id)filterByChangingFocusConfiguration:(id)a3
+- (id)filterByChangingFocusConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [[CKConversationListFilter alloc] _initWithInbox:self->_inbox unreadOnly:self->_unreadOnly focusConfiguration:v4];
+  configurationCopy = configuration;
+  v5 = [[CKConversationListFilter alloc] _initWithInbox:self->_inbox unreadOnly:self->_unreadOnly focusConfiguration:configurationCopy];
 
   return v5;
 }
@@ -517,22 +517,22 @@ LABEL_17:
   }
 
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v7 = [(CKConversationListFilter *)self _inboxSubPredicate];
-  if (v7)
+  _inboxSubPredicate = [(CKConversationListFilter *)self _inboxSubPredicate];
+  if (_inboxSubPredicate)
   {
-    [v6 addObject:v7];
+    [v6 addObject:_inboxSubPredicate];
   }
 
-  v8 = [(CKConversationListFilter *)self _unreadOnlySubPredicate];
-  if (v8)
+  _unreadOnlySubPredicate = [(CKConversationListFilter *)self _unreadOnlySubPredicate];
+  if (_unreadOnlySubPredicate)
   {
-    [v6 addObject:v8];
+    [v6 addObject:_unreadOnlySubPredicate];
   }
 
-  v9 = [(CKConversationListFilter *)self _focusConfigurationSubPredicate];
-  if (v9)
+  _focusConfigurationSubPredicate = [(CKConversationListFilter *)self _focusConfigurationSubPredicate];
+  if (_focusConfigurationSubPredicate)
   {
-    [v6 addObject:v9];
+    [v6 addObject:_focusConfigurationSubPredicate];
   }
 
   if ([v6 count])
@@ -546,15 +546,15 @@ LABEL_17:
       goto LABEL_15;
     }
 
-    v10 = [v6 firstObject];
+    firstObject = [v6 firstObject];
   }
 
   else
   {
-    v10 = [MEMORY[0x1E696AE18] predicateWithValue:1];
+    firstObject = [MEMORY[0x1E696AE18] predicateWithValue:1];
   }
 
-  v4 = v10;
+  v4 = firstObject;
 LABEL_15:
   objc_storeStrong(p_cachedConversationPredicate, v4);
 
@@ -589,16 +589,16 @@ uint64_t __62__CKConversationListFilter_Predicate___unreadOnlySubPredicate__bloc
 
 - (id)_focusConfigurationSubPredicate
 {
-  v2 = [(CKConversationListFilter *)self focusConfiguration];
-  v3 = v2;
-  if (v2)
+  focusConfiguration = [(CKConversationListFilter *)self focusConfiguration];
+  v3 = focusConfiguration;
+  if (focusConfiguration)
   {
     v4 = MEMORY[0x1E696AE18];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __66__CKConversationListFilter_Focus___focusConfigurationSubPredicate__block_invoke;
     v7[3] = &unk_1E72F2F88;
-    v8 = v2;
+    v8 = focusConfiguration;
     v5 = [v4 predicateWithBlock:v7];
   }
 

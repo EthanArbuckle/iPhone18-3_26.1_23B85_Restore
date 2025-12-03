@@ -1,46 +1,46 @@
 @interface PLBackgroundJobResourceAvailabilityWorker
-- (PLBackgroundJobResourceAvailabilityWorker)initWithLibraryBundle:(id)a3;
+- (PLBackgroundJobResourceAvailabilityWorker)initWithLibraryBundle:(id)bundle;
 - (id)_nextRequestIdentifier;
 - (id)deferredPhotoFinalizer;
 - (id)imageConversionClient;
 - (id)videoConversionClient;
-- (id)workItemsNeedingProcessingInLibrary:(id)a3 validCriterias:(id)a4;
-- (void)_performWorkOnItem:(id)a3 inLibrary:(id)a4 completion:(id)a5;
-- (void)performWorkOnItem:(id)a3 inLibrary:(id)a4 completion:(id)a5;
-- (void)workerDidFinishWithDatabaseContext:(id)a3;
+- (id)workItemsNeedingProcessingInLibrary:(id)library validCriterias:(id)criterias;
+- (void)_performWorkOnItem:(id)item inLibrary:(id)library completion:(id)completion;
+- (void)performWorkOnItem:(id)item inLibrary:(id)library completion:(id)completion;
+- (void)workerDidFinishWithDatabaseContext:(id)context;
 @end
 
 @implementation PLBackgroundJobResourceAvailabilityWorker
 
-- (void)workerDidFinishWithDatabaseContext:(id)a3
+- (void)workerDidFinishWithDatabaseContext:(id)context
 {
   if (self->_countOfDeferredPhotosProcessed >= 1)
   {
-    v5 = [(PLBackgroundJobWorker *)self libraryBundle];
-    v4 = [v5 constraintsDirector];
-    [v4 informAssetsFinishedDeferredProcessing];
+    libraryBundle = [(PLBackgroundJobWorker *)self libraryBundle];
+    constraintsDirector = [libraryBundle constraintsDirector];
+    [constraintsDirector informAssetsFinishedDeferredProcessing];
   }
 }
 
-- (void)_performWorkOnItem:(id)a3 inLibrary:(id)a4 completion:(id)a5
+- (void)_performWorkOnItem:(id)item inLibrary:(id)library completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 managedObjectContext];
+  itemCopy = item;
+  libraryCopy = library;
+  completionCopy = completion;
+  managedObjectContext = [libraryCopy managedObjectContext];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __85__PLBackgroundJobResourceAvailabilityWorker__performWorkOnItem_inLibrary_completion___block_invoke;
   v16[3] = &unk_1E7576EE8;
-  v17 = v8;
-  v18 = v11;
-  v20 = self;
-  v21 = v10;
-  v19 = v9;
-  v12 = v9;
-  v13 = v10;
-  v14 = v11;
-  v15 = v8;
+  v17 = itemCopy;
+  v18 = managedObjectContext;
+  selfCopy = self;
+  v21 = completionCopy;
+  v19 = libraryCopy;
+  v12 = libraryCopy;
+  v13 = completionCopy;
+  v14 = managedObjectContext;
+  v15 = itemCopy;
   [v12 performBlockAndWait:v16];
 }
 
@@ -408,15 +408,15 @@ void __85__PLBackgroundJobResourceAvailabilityWorker__performWorkOnItem_inLibrar
   }
 }
 
-- (void)performWorkOnItem:(id)a3 inLibrary:(id)a4 completion:(id)a5
+- (void)performWorkOnItem:(id)item inLibrary:(id)library completion:(id)completion
 {
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  itemCopy = item;
+  completionCopy = completion;
+  libraryCopy = library;
   v11 = PLBackendGetLog();
   v12 = os_signpost_id_generate(v11);
-  v13 = v8;
+  v13 = itemCopy;
   v14 = v11;
   v15 = v14;
   if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v14))
@@ -431,11 +431,11 @@ void __85__PLBackgroundJobResourceAvailabilityWorker__performWorkOnItem_inLibrar
   v18[2] = __84__PLBackgroundJobResourceAvailabilityWorker_performWorkOnItem_inLibrary_completion___block_invoke;
   v18[3] = &unk_1E7566590;
   v19 = v15;
-  v20 = v9;
+  v20 = completionCopy;
   v21 = v12;
   v16 = v15;
-  v17 = v9;
-  [(PLBackgroundJobResourceAvailabilityWorker *)self _performWorkOnItem:v13 inLibrary:v10 completion:v18];
+  v17 = completionCopy;
+  [(PLBackgroundJobResourceAvailabilityWorker *)self _performWorkOnItem:v13 inLibrary:libraryCopy completion:v18];
 }
 
 void __84__PLBackgroundJobResourceAvailabilityWorker_performWorkOnItem_inLibrary_completion___block_invoke(uint64_t a1)
@@ -451,12 +451,12 @@ void __84__PLBackgroundJobResourceAvailabilityWorker_performWorkOnItem_inLibrary
   }
 }
 
-- (id)workItemsNeedingProcessingInLibrary:(id)a3 validCriterias:(id)a4
+- (id)workItemsNeedingProcessingInLibrary:(id)library validCriterias:(id)criterias
 {
-  v5 = a3;
-  v6 = a4;
+  libraryCopy = library;
+  criteriasCopy = criterias;
   v7 = +[PLBackgroundJobCriteria criteriaForUrgentResourceWorker];
-  if ([v6 containsObject:v7])
+  if ([criteriasCopy containsObject:v7])
   {
     v17 = 0;
     v18 = &v17;
@@ -468,21 +468,21 @@ void __84__PLBackgroundJobResourceAvailabilityWorker_performWorkOnItem_inLibrary
     v12 = 3221225472;
     v13 = __96__PLBackgroundJobResourceAvailabilityWorker_workItemsNeedingProcessingInLibrary_validCriterias___block_invoke;
     v14 = &unk_1E7578910;
-    v15 = v5;
+    v15 = libraryCopy;
     v16 = &v17;
     [v15 performBlockAndWait:&v11];
     v8 = [PLBackgroundJobWorkerPendingWorkItems alloc];
-    v9 = [(PLBackgroundJobWorkerPendingWorkItems *)v8 initWithCriteria:v7 workItemsNeedingProcessing:v18[5], v11, v12, v13, v14];
+    initWithZeroWorkItemsForValidCriteria = [(PLBackgroundJobWorkerPendingWorkItems *)v8 initWithCriteria:v7 workItemsNeedingProcessing:v18[5], v11, v12, v13, v14];
 
     _Block_object_dispose(&v17, 8);
   }
 
   else
   {
-    v9 = [[PLBackgroundJobWorkerPendingWorkItems alloc] initWithZeroWorkItemsForValidCriteria];
+    initWithZeroWorkItemsForValidCriteria = [[PLBackgroundJobWorkerPendingWorkItems alloc] initWithZeroWorkItemsForValidCriteria];
   }
 
-  return v9;
+  return initWithZeroWorkItemsForValidCriteria;
 }
 
 void __96__PLBackgroundJobResourceAvailabilityWorker_workItemsNeedingProcessingInLibrary_validCriterias___block_invoke(uint64_t a1)
@@ -528,11 +528,11 @@ void __96__PLBackgroundJobResourceAvailabilityWorker_workItemsNeedingProcessingI
   }
 }
 
-- (PLBackgroundJobResourceAvailabilityWorker)initWithLibraryBundle:(id)a3
+- (PLBackgroundJobResourceAvailabilityWorker)initWithLibraryBundle:(id)bundle
 {
   v8.receiver = self;
   v8.super_class = PLBackgroundJobResourceAvailabilityWorker;
-  v3 = [(PLBackgroundJobWorker *)&v8 initWithLibraryBundle:a3];
+  v3 = [(PLBackgroundJobWorker *)&v8 initWithLibraryBundle:bundle];
   v4 = v3;
   if (v3)
   {
@@ -592,10 +592,10 @@ void __96__PLBackgroundJobResourceAvailabilityWorker_workItemsNeedingProcessingI
 
 - (id)_nextRequestIdentifier
 {
-  v3 = [(PLBackgroundJobWorker *)self workerName];
+  workerName = [(PLBackgroundJobWorker *)self workerName];
   v4 = self->_nextRequestID + 1;
   self->_nextRequestID = v4;
-  v5 = [v3 stringByAppendingFormat:@"%lu", v4];
+  v5 = [workerName stringByAppendingFormat:@"%lu", v4];
 
   return v5;
 }

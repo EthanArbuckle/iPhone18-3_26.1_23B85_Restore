@@ -1,16 +1,16 @@
 @interface MedicationDetailCell
-- (_TtC19HealthMedicationsUI20MedicationDetailCell)initWithCoder:(id)a3;
-- (_TtC19HealthMedicationsUI20MedicationDetailCell)initWithFrame:(CGRect)a3;
+- (_TtC19HealthMedicationsUI20MedicationDetailCell)initWithCoder:(id)coder;
+- (_TtC19HealthMedicationsUI20MedicationDetailCell)initWithFrame:(CGRect)frame;
 @end
 
 @implementation MedicationDetailCell
 
-- (_TtC19HealthMedicationsUI20MedicationDetailCell)initWithFrame:(CGRect)a3
+- (_TtC19HealthMedicationsUI20MedicationDetailCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI20MedicationDetailCell____lazy_storage___nickNameLabel) = 0;
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI20MedicationDetailCell____lazy_storage___medicationNameFormLabel) = 0;
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI20MedicationDetailCell____lazy_storage___strengthLabel) = 0;
@@ -21,13 +21,13 @@
   *(v8 + 4) = 0;
   v12.receiver = self;
   v12.super_class = v9;
-  v10 = [(MedicationDetailCell *)&v12 initWithFrame:x, y, width, height];
+  height = [(MedicationDetailCell *)&v12 initWithFrame:x, y, width, height];
   sub_228269FD0();
 
-  return v10;
+  return height;
 }
 
-- (_TtC19HealthMedicationsUI20MedicationDetailCell)initWithCoder:(id)a3
+- (_TtC19HealthMedicationsUI20MedicationDetailCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI20MedicationDetailCell____lazy_storage___nickNameLabel) = 0;
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI20MedicationDetailCell____lazy_storage___medicationNameFormLabel) = 0;

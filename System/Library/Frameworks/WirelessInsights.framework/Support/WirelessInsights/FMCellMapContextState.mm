@@ -1,20 +1,20 @@
 @interface FMCellMapContextState
-- (FMCellMapContextState)initWithStartTime:(id)a3 subscriptionID:(id)a4;
+- (FMCellMapContextState)initWithStartTime:(id)time subscriptionID:(id)d;
 @end
 
 @implementation FMCellMapContextState
 
-- (FMCellMapContextState)initWithStartTime:(id)a3 subscriptionID:(id)a4
+- (FMCellMapContextState)initWithStartTime:(id)time subscriptionID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  timeCopy = time;
+  dCopy = d;
   v17.receiver = self;
   v17.super_class = FMCellMapContextState;
-  v8 = [(FMContextState *)&v17 initWithStartTime:v6];
+  v8 = [(FMContextState *)&v17 initWithStartTime:timeCopy];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_subscriptionID, a4);
+    objc_storeStrong(&v8->_subscriptionID, d);
     lastRegistrationState = v9->_lastRegistrationState;
     v9->_lastRegistrationState = 0;
 

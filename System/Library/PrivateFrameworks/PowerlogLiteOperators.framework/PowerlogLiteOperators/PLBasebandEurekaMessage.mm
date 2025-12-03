@@ -1,55 +1,55 @@
 @interface PLBasebandEurekaMessage
-- (BOOL)parseData:(id)a3;
-- (PLBasebandEurekaMessage)initWithData:(id)a3;
+- (BOOL)parseData:(id)data;
+- (PLBasebandEurekaMessage)initWithData:(id)data;
 - (id)actionSystemSelection;
-- (id)callTypeString:(char *)a3;
-- (id)cdmaExitString:(char *)a3;
-- (id)cellUpdateCause:(char *)a3;
-- (id)cellularSystemStringSystemSelection:(char *)a3;
-- (id)convertCMCallConnectPayloadToDictionary:(_CMCallConnectPayload *)a3;
-- (id)convertCMCallConnectV2PayloadToDictionary:(_NewCMCallConnectPayload *)a3;
-- (id)convertCMCallOrigPayloadToDictionary:(_CMCallOrigPayload *)a3;
-- (id)convertCMCallOrigV2PayloadToDictionary:(_NewCMCallOrigPayload *)a3;
-- (id)estCauseLTE:(char *)a3;
-- (id)establishmentCauseStringWCDMA:(char *)a3;
-- (id)eventStringACC:(char *)a3;
-- (id)eventStringOOS:(char *)a3;
+- (id)callTypeString:(char *)string;
+- (id)cdmaExitString:(char *)string;
+- (id)cellUpdateCause:(char *)cause;
+- (id)cellularSystemStringSystemSelection:(char *)selection;
+- (id)convertCMCallConnectPayloadToDictionary:(_CMCallConnectPayload *)dictionary;
+- (id)convertCMCallConnectV2PayloadToDictionary:(_NewCMCallConnectPayload *)dictionary;
+- (id)convertCMCallOrigPayloadToDictionary:(_CMCallOrigPayload *)dictionary;
+- (id)convertCMCallOrigV2PayloadToDictionary:(_NewCMCallOrigPayload *)dictionary;
+- (id)estCauseLTE:(char *)e;
+- (id)establishmentCauseStringWCDMA:(char *)a;
+- (id)eventStringACC:(char *)c;
+- (id)eventStringOOS:(char *)s;
 - (id)eventSystemSelection;
-- (id)iratHOStringLTE:(char *)a3;
-- (id)iratStringLTE:(char *)a3;
-- (id)pagingCauseWCDMA:(char *)a3;
-- (id)pagingTypeWCDMA:(char *)a3;
+- (id)iratHOStringLTE:(char *)e;
+- (id)iratStringLTE:(char *)e;
+- (id)pagingCauseWCDMA:(char *)a;
+- (id)pagingTypeWCDMA:(char *)a;
 - (id)payloadString;
-- (id)procedureStringPSSI:(char *)a3;
-- (id)ratStringPSSI:(char *)a3;
-- (id)relCauseLTE:(char *)a3;
-- (id)releaseCauseStringWCDMA:(char *)a3;
-- (id)scanTypeStartWCDMA:(char *)a3;
-- (id)scanTypeStopWCDMA:(char *)a3;
-- (id)searchPhaseStringPSSI:(char *)a3;
-- (id)smgmmEventType:(char *)a3;
-- (id)soCallTypeString:(char *)a3;
-- (id)stateStringACC:(char *)a3;
-- (id)stateStringGSM:(char *)a3;
-- (id)stateStringHSDPA:(char *)a3;
-- (id)stateStringHSPAPLUS_DC:(char *)a3;
-- (id)stateStringHSUPA:(char *)a3;
-- (id)stateStringLTE:(char *)a3;
-- (id)stateStringMotion:(char *)a3;
-- (id)stateStringOOS:(char *)a3;
-- (id)stateStringUTRANL1:(char *)a3;
-- (id)stateStringWCDMA:(char *)a3;
+- (id)procedureStringPSSI:(char *)i;
+- (id)ratStringPSSI:(char *)i;
+- (id)relCauseLTE:(char *)e;
+- (id)releaseCauseStringWCDMA:(char *)a;
+- (id)scanTypeStartWCDMA:(char *)a;
+- (id)scanTypeStopWCDMA:(char *)a;
+- (id)searchPhaseStringPSSI:(char *)i;
+- (id)smgmmEventType:(char *)type;
+- (id)soCallTypeString:(char *)string;
+- (id)stateStringACC:(char *)c;
+- (id)stateStringGSM:(char *)m;
+- (id)stateStringHSDPA:(char *)a;
+- (id)stateStringHSPAPLUS_DC:(char *)c;
+- (id)stateStringHSUPA:(char *)a;
+- (id)stateStringLTE:(char *)e;
+- (id)stateStringMotion:(char *)motion;
+- (id)stateStringOOS:(char *)s;
+- (id)stateStringUTRANL1:(char *)l1;
+- (id)stateStringWCDMA:(char *)a;
 - (id)stateSystemSelection;
-- (id)termStringSystemSelection:(char *)a3;
-- (void)logWithLogger:(id)a3;
+- (id)termStringSystemSelection:(char *)selection;
+- (void)logWithLogger:(id)logger;
 @end
 
 @implementation PLBasebandEurekaMessage
 
-- (PLBasebandEurekaMessage)initWithData:(id)a3
+- (PLBasebandEurekaMessage)initWithData:(id)data
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v5 = objc_opt_class();
@@ -68,9 +68,9 @@
       v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBasebandEurekaMessage initWithData:]"];
       v7 = MEMORY[0x277D3F178];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBasebandEurekaMessage.m"];
-      v9 = [v8 lastPathComponent];
+      lastPathComponent = [v8 lastPathComponent];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBasebandEurekaMessage initWithData:]"];
-      [v7 logMessage:v6 fromFile:v9 fromFunction:v10 fromLineNumber:31];
+      [v7 logMessage:v6 fromFile:lastPathComponent fromFunction:v10 fromLineNumber:31];
 
       v11 = PLLogCommon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -84,7 +84,7 @@
 
   v18.receiver = self;
   v18.super_class = PLBasebandEurekaMessage;
-  v12 = [(PLBasebandMessage *)&v18 initWithData:v4];
+  v12 = [(PLBasebandMessage *)&v18 initWithData:dataCopy];
   v13 = v12;
   if (!v12)
   {
@@ -100,7 +100,7 @@
   v13->_ssstate = 0;
   v13->_skip = 0;
   v15 = 0;
-  if ([(PLBasebandEurekaMessage *)v13 parseData:v4])
+  if ([(PLBasebandEurekaMessage *)v13 parseData:dataCopy])
   {
 LABEL_10:
     v15 = v13;
@@ -117,10 +117,10 @@ uint64_t __40__PLBasebandEurekaMessage_initWithData___block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)parseData:(id)a3
+- (BOOL)parseData:(id)data
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v5 = objc_opt_class();
@@ -139,9 +139,9 @@ uint64_t __40__PLBasebandEurekaMessage_initWithData___block_invoke(uint64_t a1)
       v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBasebandEurekaMessage parseData:]", block, v25, v26, v27, v28];
       v7 = MEMORY[0x277D3F178];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBasebandEurekaMessage.m"];
-      v9 = [v8 lastPathComponent];
+      lastPathComponent = [v8 lastPathComponent];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBasebandEurekaMessage parseData:]"];
-      [v7 logMessage:v6 fromFile:v9 fromFunction:v10 fromLineNumber:48];
+      [v7 logMessage:v6 fromFile:lastPathComponent fromFunction:v10 fromLineNumber:48];
 
       v11 = PLLogCommon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -153,8 +153,8 @@ uint64_t __40__PLBasebandEurekaMessage_initWithData___block_invoke(uint64_t a1)
     }
   }
 
-  v12 = [v4 bytes];
-  v13 = &v12[2 * (*v12 == 129)];
+  bytes = [dataCopy bytes];
+  v13 = &bytes[2 * (*bytes == 129)];
   self->_header = v13;
   v14 = (v13 + 14);
   v15 = [MEMORY[0x277CBEA90] dataWithBytes:v13 + 14 length:{-[PLBasebandEurekaMessage header](self, "header")[13]}];
@@ -169,15 +169,15 @@ uint64_t __40__PLBasebandEurekaMessage_initWithData___block_invoke(uint64_t a1)
     v14 = (v13 + 18);
   }
 
-  v17 = v14 - [v4 bytes];
-  v18 = [v4 length];
+  v17 = v14 - [dataCopy bytes];
+  v18 = [dataCopy length];
   if (v17 > v18)
   {
     v19 = PLLogCommon();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      v22 = v14 - [v4 bytes];
-      v23 = [v4 length];
+      v22 = v14 - [dataCopy bytes];
+      v23 = [dataCopy length];
       *buf = 134218498;
       v30 = v22;
       v31 = 2048;
@@ -199,12 +199,12 @@ uint64_t __37__PLBasebandEurekaMessage_parseData___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)logWithLogger:(id)a3
+- (void)logWithLogger:(id)logger
 {
   v285 = *MEMORY[0x277D85DE8];
   v282.receiver = self;
   v282.super_class = PLBasebandEurekaMessage;
-  [(PLBasebandMessage *)&v282 logWithLogger:a3];
+  [(PLBasebandMessage *)&v282 logWithLogger:logger];
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v4 = objc_opt_class();
@@ -223,9 +223,9 @@ uint64_t __37__PLBasebandEurekaMessage_parseData___block_invoke(uint64_t a1)
       v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBasebandEurekaMessage logWithLogger:]"];
       v6 = MEMORY[0x277D3F178];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBasebandEurekaMessage.m"];
-      v8 = [v7 lastPathComponent];
+      lastPathComponent = [v7 lastPathComponent];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBasebandEurekaMessage logWithLogger:]"];
-      [v6 logMessage:v5 fromFile:v8 fromFunction:v9 fromLineNumber:92];
+      [v6 logMessage:v5 fromFile:lastPathComponent fromFunction:v9 fromLineNumber:92];
 
       v10 = PLLogCommon();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -237,29 +237,29 @@ uint64_t __37__PLBasebandEurekaMessage_parseData___block_invoke(uint64_t a1)
     }
   }
 
-  v11 = [(PLBasebandEurekaMessage *)self payloadString];
+  payloadString = [(PLBasebandEurekaMessage *)self payloadString];
   [(PLBasebandEurekaMessage *)self setSkip:0];
   v12 = objc_alloc_init(PLBBEurekaEventMsg);
-  v13 = [(PLBasebandMessage *)self agent];
-  [(PLBasebandMessage *)v12 setAgent:v13];
+  agent = [(PLBasebandMessage *)self agent];
+  [(PLBasebandMessage *)v12 setAgent:agent];
 
   [(PLBBEurekaEventMsg *)v12 setEventCode:[(PLBasebandEurekaMessage *)self eventCode]];
   [(PLBBEurekaEventMsg *)v12 setError:&stru_282B650A0];
-  v14 = [(PLBasebandMessage *)self seqNum];
-  v15 = [(PLBasebandMessage *)self date];
+  seqNum = [(PLBasebandMessage *)self seqNum];
+  date = [(PLBasebandMessage *)self date];
   [(PLBasebandMessage *)self timeCal];
-  [(PLBBEurekaEventMsg *)v12 setHeaderWithSeqNum:v14 andDate:v15 andTimeCal:?];
+  [(PLBBEurekaEventMsg *)v12 setHeaderWithSeqNum:seqNum andDate:date andTimeCal:?];
 
-  if (v11)
+  if (payloadString)
   {
-    v16 = [objc_alloc(MEMORY[0x277CCACA8]) initWithString:v11];
+    v16 = [objc_alloc(MEMORY[0x277CCACA8]) initWithString:payloadString];
     [(PLBBEurekaEventMsg *)v12 setPayload:v16];
   }
 
-  v17 = [(PLBasebandEurekaMessage *)self payload];
-  v18 = [v17 bytes];
+  payload = [(PLBasebandEurekaMessage *)self payload];
+  bytes = [payload bytes];
 
-  if (!v18)
+  if (!bytes)
   {
     [(PLBBEurekaEventMsg *)v12 setError:@"payloadIsNil;"];
     goto LABEL_259;
@@ -281,39 +281,39 @@ uint64_t __37__PLBasebandEurekaMessage_parseData___block_invoke(uint64_t a1)
               goto LABEL_117;
             }
 
-            v88 = [(PLBasebandEurekaMessage *)self payload];
-            v89 = [v88 bytes];
+            payload2 = [(PLBasebandEurekaMessage *)self payload];
+            bytes2 = [payload2 bytes];
 
-            v23 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%d", v89[1]];
-            v90 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%d", *v89];
-            v91 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%d", v89[2]];
-            [(PLBBEurekaEventMsg *)v12 logEventCMCallEventEndWithId:v23 andNumCalls:v90 andClientId:v91];
+            payload16 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%d", bytes2[1]];
+            v90 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%d", *bytes2];
+            v91 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%d", bytes2[2]];
+            [(PLBBEurekaEventMsg *)v12 logEventCMCallEventEndWithId:payload16 andNumCalls:v90 andClientId:v91];
             [(PLBasebandEurekaMessage *)self setSkip:1];
 
             goto LABEL_258;
           }
 
-          v112 = [(PLBasebandEurekaMessage *)self payload];
-          v113 = [v112 bytes];
+          payload3 = [(PLBasebandEurekaMessage *)self payload];
+          bytes3 = [payload3 bytes];
 
-          v23 = [(PLBasebandEurekaMessage *)self convertCMCallConnectV2PayloadToDictionary:v113];
+          payload16 = [(PLBasebandEurekaMessage *)self convertCMCallConnectV2PayloadToDictionary:bytes3];
           v114 = objc_alloc(MEMORY[0x277CCACA8]);
-          v115 = [(__CFString *)v23 objectForKeyedSubscript:@"callId"];
-          v41 = [v114 initWithString:v115];
+          v115 = [(__CFString *)payload16 objectForKeyedSubscript:@"callId"];
+          stringValue = [v114 initWithString:v115];
 
           v116 = objc_alloc(MEMORY[0x277CCACA8]);
-          v117 = [(__CFString *)v23 objectForKeyedSubscript:@"callType"];
+          v117 = [(__CFString *)payload16 objectForKeyedSubscript:@"callType"];
           v44 = [v116 initWithString:v117];
 
           v118 = objc_alloc(MEMORY[0x277CCACA8]);
-          v119 = [(__CFString *)v23 objectForKeyedSubscript:@"systemMode"];
+          v119 = [(__CFString *)payload16 objectForKeyedSubscript:@"systemMode"];
           v47 = [v118 initWithString:v119];
 
           v120 = objc_alloc(MEMORY[0x277CCACA8]);
-          v121 = [(__CFString *)v23 objectForKeyedSubscript:@"clientId"];
+          v121 = [(__CFString *)payload16 objectForKeyedSubscript:@"clientId"];
           v60 = [v120 initWithString:v121];
 
-          [(PLBBEurekaEventMsg *)v12 logEventCMCallEventConnWithId:v41 andCallType:v44 andSysMode:v47 andClientId:v60];
+          [(PLBBEurekaEventMsg *)v12 logEventCMCallEventConnWithId:stringValue andCallType:v44 andSysMode:v47 andClientId:v60];
         }
 
         else
@@ -328,29 +328,29 @@ uint64_t __37__PLBasebandEurekaMessage_parseData___block_invoke(uint64_t a1)
             goto LABEL_117;
           }
 
-          v48 = [(PLBasebandEurekaMessage *)self payload];
-          v49 = [v48 bytes];
+          payload4 = [(PLBasebandEurekaMessage *)self payload];
+          bytes4 = [payload4 bytes];
 
-          v23 = [(PLBasebandEurekaMessage *)self convertCMCallOrigV2PayloadToDictionary:v49];
+          payload16 = [(PLBasebandEurekaMessage *)self convertCMCallOrigV2PayloadToDictionary:bytes4];
           v50 = objc_alloc(MEMORY[0x277CCACA8]);
           v51 = MEMORY[0x277CCACA8];
-          v52 = [(__CFString *)v23 objectForKeyedSubscript:@"callId"];
+          v52 = [(__CFString *)payload16 objectForKeyedSubscript:@"callId"];
           v53 = [v51 stringWithFormat:@"%@", v52];
-          v41 = [v50 initWithString:v53];
+          stringValue = [v50 initWithString:v53];
 
           v54 = objc_alloc(MEMORY[0x277CCACA8]);
-          v55 = [(__CFString *)v23 objectForKeyedSubscript:@"callType"];
+          v55 = [(__CFString *)payload16 objectForKeyedSubscript:@"callType"];
           v44 = [v54 initWithString:v55];
 
           v56 = objc_alloc(MEMORY[0x277CCACA8]);
-          v57 = [(__CFString *)v23 objectForKeyedSubscript:@"serviceType"];
+          v57 = [(__CFString *)payload16 objectForKeyedSubscript:@"serviceType"];
           v47 = [v56 initWithString:v57];
 
           v58 = objc_alloc(MEMORY[0x277CCACA8]);
-          v59 = [(__CFString *)v23 objectForKeyedSubscript:@"clientId"];
+          v59 = [(__CFString *)payload16 objectForKeyedSubscript:@"clientId"];
           v60 = [v58 initWithString:v59];
 
-          [(PLBBEurekaEventMsg *)v12 logEventCMCallEventOrigWithId:v41 andCallType:v44 andSrvType:v47 andClientId:v60];
+          [(PLBBEurekaEventMsg *)v12 logEventCMCallEventOrigWithId:stringValue andCallType:v44 andSrvType:v47 andClientId:v60];
         }
 
         [(PLBasebandEurekaMessage *)self setSkip:1];
@@ -414,9 +414,9 @@ LABEL_191:
               v62 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error: bad length PL_EVENT_MAV_LMAPO_SD"];
               v140 = MEMORY[0x277D3F178];
               v141 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBasebandEurekaMessage.m"];
-              v142 = [v141 lastPathComponent];
+              lastPathComponent2 = [v141 lastPathComponent];
               v143 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBasebandEurekaMessage logWithLogger:]"];
-              [v140 logMessage:v62 fromFile:v142 fromFunction:v143 fromLineNumber:879];
+              [v140 logMessage:v62 fromFile:lastPathComponent2 fromFunction:v143 fromLineNumber:879];
 
               v67 = PLLogCommon();
               if (!os_log_type_enabled(v67, OS_LOG_TYPE_DEBUG))
@@ -429,36 +429,36 @@ LABEL_191:
               goto LABEL_220;
             }
 
-            v198 = [(PLBasebandEurekaMessage *)self payload];
-            v199 = [v198 bytes];
+            payload5 = [(PLBasebandEurekaMessage *)self payload];
+            bytes5 = [payload5 bytes];
 
-            if (*(v199 + 8) == 1)
+            if (*(bytes5 + 8) == 1)
             {
-              v23 = @"ACC_FSM";
+              payload16 = @"ACC_FSM";
               [(PLBBEurekaEventMsg *)v12 addPairWithKey:@"STATE_MACHINE_ID" andWithVal:@"ACC_FSM"];
-              v41 = [(PLBasebandEurekaMessage *)self stateStringACC:v199 + 9];
-              v200 = [(PLBasebandEurekaMessage *)self stateStringACC:v199 + 10];
-              v201 = [(PLBasebandEurekaMessage *)self stateStringACC:v199 + 11];
+              stringValue = [(PLBasebandEurekaMessage *)self stateStringACC:bytes5 + 9];
+              v200 = [(PLBasebandEurekaMessage *)self stateStringACC:bytes5 + 10];
+              v201 = [(PLBasebandEurekaMessage *)self stateStringACC:bytes5 + 11];
             }
 
             else
             {
-              if (*(v199 + 8))
+              if (*(bytes5 + 8))
               {
-                v23 = [(PLBasebandEurekaMessage *)self stringForUnknownBytes:?];
+                payload16 = [(PLBasebandEurekaMessage *)self stringForUnknownBytes:?];
                 v32 = @"STATE_MACHINE_ID";
                 goto LABEL_257;
               }
 
-              v23 = @"OOS_FSM";
+              payload16 = @"OOS_FSM";
               [(PLBBEurekaEventMsg *)v12 addPairWithKey:@"STATE_MACHINE_ID" andWithVal:@"OOS_FSM"];
-              v41 = [(PLBasebandEurekaMessage *)self stateStringOOS:v199 + 9];
-              v200 = [(PLBasebandEurekaMessage *)self eventStringOOS:v199 + 10];
-              v201 = [(PLBasebandEurekaMessage *)self stateStringOOS:v199 + 11];
+              stringValue = [(PLBasebandEurekaMessage *)self stateStringOOS:bytes5 + 9];
+              v200 = [(PLBasebandEurekaMessage *)self eventStringOOS:bytes5 + 10];
+              v201 = [(PLBasebandEurekaMessage *)self stateStringOOS:bytes5 + 11];
             }
 
             v229 = v201;
-            [(PLBBEurekaEventMsg *)v12 addPairWithKey:@"CURRENT_STATE" andWithVal:v41];
+            [(PLBBEurekaEventMsg *)v12 addPairWithKey:@"CURRENT_STATE" andWithVal:stringValue];
             [(PLBBEurekaEventMsg *)v12 addPairWithKey:@"EVENT" andWithVal:v200];
             [(PLBBEurekaEventMsg *)v12 addPairWithKey:@"NEXT_STATE" andWithVal:v229];
 
@@ -469,11 +469,11 @@ LABEL_191:
           {
             if ([(PLBasebandEurekaMessage *)self header][13] > 3u)
             {
-              v133 = [(PLBasebandEurekaMessage *)self payload];
-              v134 = [v133 bytes];
+              payload6 = [(PLBasebandEurekaMessage *)self payload];
+              bytes6 = [payload6 bytes];
 
-              v23 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:*v134];
-              v41 = [(__CFString *)v23 stringValue];
+              payload16 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:*bytes6];
+              stringValue = [(__CFString *)payload16 stringValue];
               v79 = @"InActivity_Time";
               goto LABEL_190;
             }
@@ -486,27 +486,27 @@ LABEL_191:
             goto LABEL_222;
           }
 
-          v69 = [(PLBasebandEurekaMessage *)self payload];
-          v70 = [v69 bytes];
+          payload7 = [(PLBasebandEurekaMessage *)self payload];
+          bytes7 = [payload7 bytes];
 
-          v71 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedShort:v70[1]];
-          v72 = [v71 stringValue];
-          [(PLBBEurekaEventMsg *)v12 addPairWithKey:@"On_duration_timer" andWithVal:v72];
+          v71 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedShort:bytes7[1]];
+          stringValue2 = [v71 stringValue];
+          [(PLBBEurekaEventMsg *)v12 addPairWithKey:@"On_duration_timer" andWithVal:stringValue2];
 
-          v73 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedShort:v70[2]];
-          v74 = [v73 stringValue];
-          [(PLBBEurekaEventMsg *)v12 addPairWithKey:@"Inactivity_timer" andWithVal:v74];
+          v73 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedShort:bytes7[2]];
+          stringValue3 = [v73 stringValue];
+          [(PLBBEurekaEventMsg *)v12 addPairWithKey:@"Inactivity_timer" andWithVal:stringValue3];
 
-          v75 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedShort:v70[3]];
-          v76 = [v75 stringValue];
-          [(PLBBEurekaEventMsg *)v12 addPairWithKey:@"Short_drx_cycle" andWithVal:v76];
+          v75 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedShort:bytes7[3]];
+          stringValue4 = [v75 stringValue];
+          [(PLBBEurekaEventMsg *)v12 addPairWithKey:@"Short_drx_cycle" andWithVal:stringValue4];
 
-          v77 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedShort:v70[4]];
-          v78 = [v77 stringValue];
-          [(PLBBEurekaEventMsg *)v12 addPairWithKey:@"Short_drx_cycle_timer" andWithVal:v78];
+          v77 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedShort:bytes7[4]];
+          stringValue5 = [v77 stringValue];
+          [(PLBBEurekaEventMsg *)v12 addPairWithKey:@"Short_drx_cycle_timer" andWithVal:stringValue5];
 
-          v23 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedShort:v70[5]];
-          v41 = [(__CFString *)v23 stringValue];
+          payload16 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedShort:bytes7[5]];
+          stringValue = [(__CFString *)payload16 stringValue];
           v79 = @"Long_drx_cycle";
         }
 
@@ -521,8 +521,8 @@ LABEL_191:
                 goto LABEL_222;
               }
 
-              v123 = [(PLBasebandEurekaMessage *)self payload];
-              v28 = -[PLBasebandEurekaMessage estCauseLTE:](self, "estCauseLTE:", [v123 bytes]);
+              payload8 = [(PLBasebandEurekaMessage *)self payload];
+              payload15 = -[PLBasebandEurekaMessage estCauseLTE:](self, "estCauseLTE:", [payload8 bytes]);
 
               v29 = @"est_cause";
             }
@@ -539,8 +539,8 @@ LABEL_191:
                 goto LABEL_222;
               }
 
-              v27 = [(PLBasebandEurekaMessage *)self payload];
-              v28 = -[PLBasebandEurekaMessage relCauseLTE:](self, "relCauseLTE:", [v27 bytes]);
+              payload9 = [(PLBasebandEurekaMessage *)self payload];
+              payload15 = -[PLBasebandEurekaMessage relCauseLTE:](self, "relCauseLTE:", [payload9 bytes]);
 
               v29 = @"rel_cause";
             }
@@ -560,12 +560,12 @@ LABEL_191:
               goto LABEL_222;
             }
 
-            v98 = [(PLBasebandEurekaMessage *)self payload];
-            v99 = [v98 bytes];
+            payload10 = [(PLBasebandEurekaMessage *)self payload];
+            bytes8 = [payload10 bytes];
 
-            v100 = [MEMORY[0x277CCAB68] string];
-            v23 = v100;
-            if (*v99)
+            string = [MEMORY[0x277CCAB68] string];
+            payload16 = string;
+            if (*bytes8)
             {
               v101 = @"Start";
             }
@@ -575,10 +575,10 @@ LABEL_191:
               v101 = @"Stop";
             }
 
-            [(__CFString *)v100 appendFormat:@"%@", v101];
+            [(__CFString *)string appendFormat:@"%@", v101];
             v32 = @"State";
 LABEL_257:
-            [(PLBBEurekaEventMsg *)v12 addPairWithKey:v32 andWithVal:v23];
+            [(PLBBEurekaEventMsg *)v12 addPairWithKey:v32 andWithVal:payload16];
             goto LABEL_258;
           }
 
@@ -608,9 +608,9 @@ LABEL_257:
             v62 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error: bad length PL_EVENT_MAV_PSSI_SCAN"];
             v125 = MEMORY[0x277D3F178];
             v126 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBasebandEurekaMessage.m"];
-            v127 = [v126 lastPathComponent];
+            lastPathComponent3 = [v126 lastPathComponent];
             v128 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBasebandEurekaMessage logWithLogger:]"];
-            [v125 logMessage:v62 fromFile:v127 fromFunction:v128 fromLineNumber:816];
+            [v125 logMessage:v62 fromFile:lastPathComponent3 fromFunction:v128 fromLineNumber:816];
 
             v67 = PLLogCommon();
             if (!os_log_type_enabled(v67, OS_LOG_TYPE_DEBUG))
@@ -623,36 +623,36 @@ LABEL_257:
             goto LABEL_220;
           }
 
-          v179 = [(PLBasebandEurekaMessage *)self payload];
-          v180 = [v179 bytes];
+          payload11 = [(PLBasebandEurekaMessage *)self payload];
+          bytes9 = [payload11 bytes];
 
-          v181 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedChar:*v180];
-          v182 = [v181 stringValue];
-          [(PLBBEurekaEventMsg *)v12 addPairWithKey:@"CUR_STEP" andWithVal:v182];
+          v181 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedChar:*bytes9];
+          stringValue6 = [v181 stringValue];
+          [(PLBBEurekaEventMsg *)v12 addPairWithKey:@"CUR_STEP" andWithVal:stringValue6];
 
-          v183 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedChar:v180[1]];
-          v184 = [v183 stringValue];
-          [(PLBBEurekaEventMsg *)v12 addPairWithKey:@"PSSI_SEARCH_PHASE" andWithVal:v184];
+          v183 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedChar:bytes9[1]];
+          stringValue7 = [v183 stringValue];
+          [(PLBBEurekaEventMsg *)v12 addPairWithKey:@"PSSI_SEARCH_PHASE" andWithVal:stringValue7];
 
-          v185 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedChar:v180[2]];
-          v186 = [v185 stringValue];
-          [(PLBBEurekaEventMsg *)v12 addPairWithKey:@"MCC" andWithVal:v186];
+          v185 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedChar:bytes9[2]];
+          stringValue8 = [v185 stringValue];
+          [(PLBBEurekaEventMsg *)v12 addPairWithKey:@"MCC" andWithVal:stringValue8];
 
-          v187 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedChar:v180[4]];
-          v188 = [v187 stringValue];
-          [(PLBBEurekaEventMsg *)v12 addPairWithKey:@"MNC" andWithVal:v188];
+          v187 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedChar:bytes9[4]];
+          stringValue9 = [v187 stringValue];
+          [(PLBBEurekaEventMsg *)v12 addPairWithKey:@"MNC" andWithVal:stringValue9];
 
-          v189 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedChar:v180[6]];
-          v190 = [v189 stringValue];
-          [(PLBBEurekaEventMsg *)v12 addPairWithKey:@"RAT" andWithVal:v190];
+          v189 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedChar:bytes9[6]];
+          stringValue10 = [v189 stringValue];
+          [(PLBBEurekaEventMsg *)v12 addPairWithKey:@"RAT" andWithVal:stringValue10];
 
-          v23 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedChar:v180[7]];
-          v41 = [(__CFString *)v23 stringValue];
+          payload16 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedChar:bytes9[7]];
+          stringValue = [(__CFString *)payload16 stringValue];
           v79 = @"PROCEDURE";
         }
 
 LABEL_190:
-        [(PLBBEurekaEventMsg *)v12 addPairWithKey:v79 andWithVal:v41];
+        [(PLBBEurekaEventMsg *)v12 addPairWithKey:v79 andWithVal:stringValue];
         goto LABEL_191;
       }
 
@@ -665,15 +665,15 @@ LABEL_190:
             goto LABEL_259;
           }
 
-          v154 = [(PLBasebandEurekaMessage *)self payload];
-          v155 = [v154 bytes];
+          payload12 = [(PLBasebandEurekaMessage *)self payload];
+          bytes10 = [payload12 bytes];
 
-          v23 = [(PLBasebandEurekaMessage *)self stateStringWCDMA:v155];
-          v24 = [(PLBasebandEurekaMessage *)self stateStringWCDMA:v155 + 1];
-          v156 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:*(v155 + 2)];
-          v26 = [v156 stringValue];
+          payload16 = [(PLBasebandEurekaMessage *)self stateStringWCDMA:bytes10];
+          v24 = [(PLBasebandEurekaMessage *)self stateStringWCDMA:bytes10 + 1];
+          v156 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:*(bytes10 + 2)];
+          stringValue11 = [v156 stringValue];
 
-          [(PLBBEurekaEventMsg *)v12 logEventForwardUTRANRRCNextStateAs:v24 andCurrStateAs:v23 andRateAs:v26];
+          [(PLBBEurekaEventMsg *)v12 logEventForwardUTRANRRCNextStateAs:v24 andCurrStateAs:payload16 andRateAs:stringValue11];
           goto LABEL_161;
         }
 
@@ -713,9 +713,9 @@ LABEL_190:
           v62 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error: bad length PL_EVENT_UTRAN_L1_STATE"];
           v225 = MEMORY[0x277D3F178];
           v226 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBasebandEurekaMessage.m"];
-          v227 = [v226 lastPathComponent];
+          lastPathComponent4 = [v226 lastPathComponent];
           v228 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBasebandEurekaMessage logWithLogger:]"];
-          [v225 logMessage:v62 fromFile:v227 fromFunction:v228 fromLineNumber:802];
+          [v225 logMessage:v62 fromFile:lastPathComponent4 fromFunction:v228 fromLineNumber:802];
 
           v67 = PLLogCommon();
           if (!os_log_type_enabled(v67, OS_LOG_TYPE_DEBUG))
@@ -728,10 +728,10 @@ LABEL_190:
           goto LABEL_220;
         }
 
-        v144 = [(PLBasebandEurekaMessage *)self payload];
-        v145 = [v144 bytes];
+        payload13 = [(PLBasebandEurekaMessage *)self payload];
+        bytes11 = [payload13 bytes];
 
-        v23 = [(PLBasebandEurekaMessage *)self stateStringUTRANL1:v145];
+        payload16 = [(PLBasebandEurekaMessage *)self stateStringUTRANL1:bytes11];
         v32 = @"currState";
         goto LABEL_257;
       }
@@ -774,9 +774,9 @@ LABEL_190:
           v62 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error: bad length PL_EVENT_MAV_MOTION_SRV"];
           v84 = MEMORY[0x277D3F178];
           v85 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBasebandEurekaMessage.m"];
-          v86 = [v85 lastPathComponent];
+          lastPathComponent5 = [v85 lastPathComponent];
           v87 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBasebandEurekaMessage logWithLogger:]"];
-          [v84 logMessage:v62 fromFile:v86 fromFunction:v87 fromLineNumber:847];
+          [v84 logMessage:v62 fromFile:lastPathComponent5 fromFunction:v87 fromLineNumber:847];
 
           v67 = PLLogCommon();
           if (!os_log_type_enabled(v67, OS_LOG_TYPE_DEBUG))
@@ -793,29 +793,29 @@ LABEL_221:
           goto LABEL_222;
         }
 
-        v193 = [(PLBasebandEurekaMessage *)self payload];
-        v194 = [v193 bytes];
+        payload14 = [(PLBasebandEurekaMessage *)self payload];
+        bytes12 = [payload14 bytes];
 
-        v195 = [(PLBasebandEurekaMessage *)self stateStringMotion:v194 + 8];
+        v195 = [(PLBasebandEurekaMessage *)self stateStringMotion:bytes12 + 8];
         [(PLBBEurekaEventMsg *)v12 addPairWithKey:@"RAW_MOTION_STATE" andWithVal:v195];
 
-        v196 = [(PLBasebandEurekaMessage *)self stateStringMotion:v194 + 9];
+        v196 = [(PLBasebandEurekaMessage *)self stateStringMotion:bytes12 + 9];
         [(PLBBEurekaEventMsg *)v12 addPairWithKey:@"FILTERED_MOTION_STATE" andWithVal:v196];
 
-        v197 = *(v194 + 10);
+        v197 = *(bytes12 + 10);
         switch(v197)
         {
           case 1:
-            v23 = @"CM";
+            payload16 = @"CM";
             break;
           case 4:
-            v23 = @"GPS";
+            payload16 = @"GPS";
             break;
           case 2:
-            v23 = @"SD";
+            payload16 = @"SD";
             break;
           default:
-            v23 = [(PLBasebandEurekaMessage *)self stringForUnknownBytes:*(v194 + 10)];
+            payload16 = [(PLBasebandEurekaMessage *)self stringForUnknownBytes:*(bytes12 + 10)];
             break;
         }
 
@@ -825,8 +825,8 @@ LABEL_221:
     }
 
     v33 = MEMORY[0x277CCACA8];
-    v28 = [(PLBasebandEurekaMessage *)self payload];
-    v34 = [v33 stringWithFormat:@"%@", v28];
+    payload15 = [(PLBasebandEurekaMessage *)self payload];
+    v34 = [v33 stringWithFormat:@"%@", payload15];
     [(PLBBEurekaEventMsg *)v12 addPairWithKey:@"payload" andWithVal:v34];
 LABEL_39:
 
@@ -884,9 +884,9 @@ LABEL_132:
         v62 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error: bad length PL_EVENT_WCDMA_BPLMN_SCAN_START"];
         v215 = MEMORY[0x277D3F178];
         v216 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBasebandEurekaMessage.m"];
-        v217 = [v216 lastPathComponent];
+        lastPathComponent6 = [v216 lastPathComponent];
         v218 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBasebandEurekaMessage logWithLogger:]"];
-        [v215 logMessage:v62 fromFile:v217 fromFunction:v218 fromLineNumber:555];
+        [v215 logMessage:v62 fromFile:lastPathComponent6 fromFunction:v218 fromLineNumber:555];
 
         v67 = PLLogCommon();
         if (!os_log_type_enabled(v67, OS_LOG_TYPE_DEBUG))
@@ -899,8 +899,8 @@ LABEL_132:
         goto LABEL_220;
       }
 
-      v23 = [(PLBasebandEurekaMessage *)self payload];
-      v68 = [(PLBasebandEurekaMessage *)self scanTypeStartWCDMA:[(__CFString *)v23 bytes]];
+      payload16 = [(PLBasebandEurekaMessage *)self payload];
+      stringValue12 = [(PLBasebandEurekaMessage *)self scanTypeStartWCDMA:[(__CFString *)payload16 bytes]];
     }
 
     else
@@ -924,10 +924,10 @@ LABEL_132:
             goto LABEL_222;
           }
 
-          v30 = [(PLBasebandEurekaMessage *)self payload];
-          v31 = [v30 bytes];
+          payload17 = [(PLBasebandEurekaMessage *)self payload];
+          bytes13 = [payload17 bytes];
 
-          v23 = [(PLBasebandEurekaMessage *)self stateStringHSPAPLUS_DC:v31 + 8];
+          payload16 = [(PLBasebandEurekaMessage *)self stateStringHSPAPLUS_DC:bytes13 + 8];
           v32 = @"Action";
           goto LABEL_257;
         }
@@ -960,9 +960,9 @@ LABEL_132:
             v62 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error: bad length PL_EVENT_LTE_RRC_PLMN_SEARCH_START"];
             v210 = MEMORY[0x277D3F178];
             v211 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBasebandEurekaMessage.m"];
-            v212 = [v211 lastPathComponent];
+            lastPathComponent7 = [v211 lastPathComponent];
             v213 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBasebandEurekaMessage logWithLogger:]"];
-            [v210 logMessage:v62 fromFile:v212 fromFunction:v213 fromLineNumber:735];
+            [v210 logMessage:v62 fromFile:lastPathComponent7 fromFunction:v213 fromLineNumber:735];
 
             v67 = PLLogCommon();
             if (!os_log_type_enabled(v67, OS_LOG_TYPE_DEBUG))
@@ -1009,9 +1009,9 @@ LABEL_132:
             v62 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error: bad length PL_EVENT_LTE_RRC_PLMN_SEARCH_ENDED"];
             v94 = MEMORY[0x277D3F178];
             v95 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBasebandEurekaMessage.m"];
-            v96 = [v95 lastPathComponent];
+            lastPathComponent8 = [v95 lastPathComponent];
             v97 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBasebandEurekaMessage logWithLogger:]"];
-            [v94 logMessage:v62 fromFile:v96 fromFunction:v97 fromLineNumber:750];
+            [v94 logMessage:v62 fromFile:lastPathComponent8 fromFunction:v97 fromLineNumber:750];
 
             v67 = PLLogCommon();
             if (!os_log_type_enabled(v67, OS_LOG_TYPE_DEBUG))
@@ -1025,12 +1025,12 @@ LABEL_132:
           }
         }
 
-        v122 = [(PLBasebandEurekaMessage *)self payload];
-        v28 = -[PLBasebandEurekaMessage iratStringLTE:](self, "iratStringLTE:", [v122 bytes]);
+        payload18 = [(PLBasebandEurekaMessage *)self payload];
+        payload15 = -[PLBasebandEurekaMessage iratStringLTE:](self, "iratStringLTE:", [payload18 bytes]);
 
         v29 = @"RAT";
 LABEL_131:
-        [(PLBBEurekaEventMsg *)v12 addPairWithKey:v29 andWithVal:v28];
+        [(PLBBEurekaEventMsg *)v12 addPairWithKey:v29 andWithVal:payload15];
         goto LABEL_132;
       }
 
@@ -1069,9 +1069,9 @@ LABEL_131:
             v62 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error: bad length PL_EVENT_LTE_RRC_PAGING_DRX_CYCLE"];
             v63 = MEMORY[0x277D3F178];
             v64 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBasebandEurekaMessage.m"];
-            v65 = [v64 lastPathComponent];
+            lastPathComponent9 = [v64 lastPathComponent];
             v66 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBasebandEurekaMessage logWithLogger:]"];
-            [v63 logMessage:v62 fromFile:v65 fromFunction:v66 fromLineNumber:648];
+            [v63 logMessage:v62 fromFile:lastPathComponent9 fromFunction:v66 fromLineNumber:648];
 
             v67 = PLLogCommon();
             if (!os_log_type_enabled(v67, OS_LOG_TYPE_DEBUG))
@@ -1084,11 +1084,11 @@ LABEL_131:
             goto LABEL_220;
           }
 
-          v191 = [(PLBasebandEurekaMessage *)self payload];
-          v192 = [v191 bytes];
+          payload19 = [(PLBasebandEurekaMessage *)self payload];
+          bytes14 = [payload19 bytes];
 
-          v23 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedShort:*v192];
-          v41 = [(__CFString *)v23 stringValue];
+          payload16 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedShort:*bytes14];
+          stringValue = [(__CFString *)payload16 stringValue];
           v79 = @"drx_cycle";
           goto LABEL_190;
         }
@@ -1098,17 +1098,17 @@ LABEL_131:
         if (!v129)
         {
 LABEL_176:
-          v28 = [(PLBasebandEurekaMessage *)self tooShortErrorString];
-          v34 = [v130 initWithString:v28];
+          payload15 = [(PLBasebandEurekaMessage *)self tooShortErrorString];
+          v34 = [v130 initWithString:payload15];
           [(PLBBEurekaEventMsg *)v12 setError:v34];
           goto LABEL_39;
         }
 
-        v131 = [(PLBasebandEurekaMessage *)self payload];
-        v132 = -[PLBasebandEurekaMessage stateStringLTE:](self, "stateStringLTE:", [v131 bytes]);
-        v23 = [v130 initWithString:v132];
+        payload20 = [(PLBasebandEurekaMessage *)self payload];
+        v132 = -[PLBasebandEurekaMessage stateStringLTE:](self, "stateStringLTE:", [payload20 bytes]);
+        payload16 = [v130 initWithString:v132];
 
-        [(PLBBEurekaEventMsg *)v12 logEventForwardLTERRCStateAs:v23];
+        [(PLBBEurekaEventMsg *)v12 logEventForwardLTERRCStateAs:payload16];
         [(PLBasebandEurekaMessage *)self setSkip:1];
 LABEL_258:
 
@@ -1141,9 +1141,9 @@ LABEL_258:
         v62 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error: bad length PL_EVENT_WCDMA_BPLMN_SCAN_ENDED"];
         v220 = MEMORY[0x277D3F178];
         v221 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBasebandEurekaMessage.m"];
-        v222 = [v221 lastPathComponent];
+        lastPathComponent10 = [v221 lastPathComponent];
         v223 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBasebandEurekaMessage logWithLogger:]"];
-        [v220 logMessage:v62 fromFile:v222 fromFunction:v223 fromLineNumber:569];
+        [v220 logMessage:v62 fromFile:lastPathComponent10 fromFunction:v223 fromLineNumber:569];
 
         v67 = PLLogCommon();
         if (!os_log_type_enabled(v67, OS_LOG_TYPE_DEBUG))
@@ -1156,12 +1156,12 @@ LABEL_258:
         goto LABEL_220;
       }
 
-      v23 = [(PLBasebandEurekaMessage *)self payload];
-      v68 = [(PLBasebandEurekaMessage *)self scanTypeStopWCDMA:[(__CFString *)v23 bytes]];
+      payload16 = [(PLBasebandEurekaMessage *)self payload];
+      stringValue12 = [(PLBasebandEurekaMessage *)self scanTypeStopWCDMA:[(__CFString *)payload16 bytes]];
     }
 
 LABEL_189:
-    v41 = v68;
+    stringValue = stringValue12;
     v79 = @"scan_type";
     goto LABEL_190;
   }
@@ -1180,15 +1180,15 @@ LABEL_189:
       {
         if ([(PLBasebandEurekaMessage *)self header][13] > 2u)
         {
-          v21 = [(PLBasebandEurekaMessage *)self payload];
-          v22 = [v21 bytes];
+          payload21 = [(PLBasebandEurekaMessage *)self payload];
+          bytes15 = [payload21 bytes];
 
-          v23 = [(PLBasebandEurekaMessage *)self stateStringWCDMA:v22];
-          v24 = [(PLBasebandEurekaMessage *)self stateStringWCDMA:v22 + 1];
-          v25 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInteger:*(v22 + 2)];
-          v26 = [v25 stringValue];
+          payload16 = [(PLBasebandEurekaMessage *)self stateStringWCDMA:bytes15];
+          v24 = [(PLBasebandEurekaMessage *)self stateStringWCDMA:bytes15 + 1];
+          v25 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInteger:*(bytes15 + 2)];
+          stringValue11 = [v25 stringValue];
 
-          [(PLBBEurekaEventMsg *)v12 logEventForwardWCDMARRCPrevStateAs:v23 andCurrState:v24 andRate:v26];
+          [(PLBBEurekaEventMsg *)v12 logEventForwardWCDMARRCPrevStateAs:payload16 andCurrState:v24 andRate:stringValue11];
 LABEL_161:
           [(PLBasebandEurekaMessage *)self setSkip:1];
 
@@ -1205,10 +1205,10 @@ LABEL_175:
     {
       if ([(PLBasebandEurekaMessage *)self header][13])
       {
-        v178 = [(PLBasebandEurekaMessage *)self payload];
-        v28 = -[PLBasebandEurekaMessage stateStringGSM:](self, "stateStringGSM:", [v178 bytes]);
+        payload22 = [(PLBasebandEurekaMessage *)self payload];
+        payload15 = -[PLBasebandEurekaMessage stateStringGSM:](self, "stateStringGSM:", [payload22 bytes]);
 
-        [(PLBBEurekaEventMsg *)v12 logEventForwardGSML1StateWith:v28];
+        [(PLBBEurekaEventMsg *)v12 logEventForwardGSML1StateWith:payload15];
         [(PLBasebandEurekaMessage *)self setSkip:1];
         goto LABEL_132;
       }
@@ -1218,10 +1218,10 @@ LABEL_175:
 
     if (v19 == 424)
     {
-      v92 = [(PLBasebandEurekaMessage *)self payload];
-      v28 = -[PLBasebandEurekaMessage cdmaExitString:](self, "cdmaExitString:", [v92 bytes]);
+      payload23 = [(PLBasebandEurekaMessage *)self payload];
+      payload15 = -[PLBasebandEurekaMessage cdmaExitString:](self, "cdmaExitString:", [payload23 bytes]);
 
-      v34 = [objc_alloc(MEMORY[0x277CCACA8]) initWithString:v28];
+      v34 = [objc_alloc(MEMORY[0x277CCACA8]) initWithString:payload15];
       [(PLBBEurekaEventMsg *)v12 logEventPointCMExitCodeWithState:v34];
       [(PLBasebandEurekaMessage *)self setSkip:1];
       goto LABEL_39;
@@ -1234,33 +1234,33 @@ LABEL_175:
   {
     if (v19 == 630)
     {
-      v146 = [(PLBasebandEurekaMessage *)self payload];
-      v147 = [v146 bytes];
+      payload24 = [(PLBasebandEurekaMessage *)self payload];
+      bytes16 = [payload24 bytes];
 
-      v23 = [(PLBasebandEurekaMessage *)self convertCMCallConnectPayloadToDictionary:v147];
+      payload16 = [(PLBasebandEurekaMessage *)self convertCMCallConnectPayloadToDictionary:bytes16];
       v148 = objc_alloc(MEMORY[0x277CCACA8]);
-      v149 = [(__CFString *)v23 objectForKeyedSubscript:@"callId"];
-      v41 = [v148 initWithString:v149];
+      v149 = [(__CFString *)payload16 objectForKeyedSubscript:@"callId"];
+      stringValue = [v148 initWithString:v149];
 
       v150 = objc_alloc(MEMORY[0x277CCACA8]);
-      v151 = [(__CFString *)v23 objectForKeyedSubscript:@"callType"];
+      v151 = [(__CFString *)payload16 objectForKeyedSubscript:@"callType"];
       v44 = [v150 initWithString:v151];
 
       v152 = objc_alloc(MEMORY[0x277CCACA8]);
-      v153 = [(__CFString *)v23 objectForKeyedSubscript:@"systemMode"];
+      v153 = [(__CFString *)payload16 objectForKeyedSubscript:@"systemMode"];
       v47 = [v152 initWithString:v153];
 
-      [(PLBBEurekaEventMsg *)v12 logEventCMCallEventConnWithId:v41 andCallType:v44 andSysMode:v47];
+      [(PLBBEurekaEventMsg *)v12 logEventCMCallEventConnWithId:stringValue andCallType:v44 andSysMode:v47];
       goto LABEL_157;
     }
 
     if (v19 == 631)
     {
-      v135 = [(PLBasebandEurekaMessage *)self payload];
-      v136 = [v135 bytes];
+      payload25 = [(PLBasebandEurekaMessage *)self payload];
+      bytes17 = [payload25 bytes];
 
-      v137 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%d", v136[1]];
-      v138 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%d", *v136];
+      v137 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%d", bytes17[1]];
+      v138 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%d", *bytes17];
       [(PLBBEurekaEventMsg *)v12 logEventCMCallEventEndWithId:v137 andNumCalls:v138];
       [(PLBasebandEurekaMessage *)self setSkip:1];
 
@@ -1288,9 +1288,9 @@ LABEL_117:
           v106 = [MEMORY[0x277CCACA8] stringWithFormat:@"Eureka Msg not processed"];
           v107 = MEMORY[0x277D3F178];
           v108 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBasebandEurekaMessage.m"];
-          v109 = [v108 lastPathComponent];
+          lastPathComponent11 = [v108 lastPathComponent];
           v110 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBasebandEurekaMessage logWithLogger:]"];
-          [v107 logMessage:v106 fromFile:v109 fromFunction:v110 fromLineNumber:955];
+          [v107 logMessage:v106 fromFile:lastPathComponent11 fromFunction:v110 fromLineNumber:955];
 
           v111 = PLLogCommon();
           if (os_log_type_enabled(v111, OS_LOG_TYPE_DEBUG))
@@ -1308,21 +1308,21 @@ LABEL_117:
 
     if ([(PLBasebandEurekaMessage *)self header][13] > 2u)
     {
-      v80 = [(PLBasebandEurekaMessage *)self payload];
-      v81 = [v80 bytes];
+      payload26 = [(PLBasebandEurekaMessage *)self payload];
+      bytes18 = [payload26 bytes];
 
-      v82 = [(PLBasebandEurekaMessage *)self stateStringHSDPA:v81];
+      v82 = [(PLBasebandEurekaMessage *)self stateStringHSDPA:bytes18];
       [(PLBBEurekaEventMsg *)v12 addPairWithKey:@"HS_Operation" andWithVal:v82];
 
-      v23 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedShort:*v81];
-      v41 = [(__CFString *)v23 stringValue];
+      payload16 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedShort:*bytes18];
+      stringValue = [(__CFString *)payload16 stringValue];
       v79 = @"PSC_HS_Cell";
       goto LABEL_190;
     }
 
 LABEL_222:
-    v23 = [(PLBasebandEurekaMessage *)self tooShortErrorString];
-    [(PLBBEurekaEventMsg *)v12 setError:v23];
+    payload16 = [(PLBasebandEurekaMessage *)self tooShortErrorString];
+    [(PLBBEurekaEventMsg *)v12 setError:payload16];
     goto LABEL_258;
   }
 
@@ -1332,25 +1332,25 @@ LABEL_222:
     {
       if (v19 == 629)
       {
-        v35 = [(PLBasebandEurekaMessage *)self payload];
-        v36 = [v35 bytes];
+        payload27 = [(PLBasebandEurekaMessage *)self payload];
+        bytes19 = [payload27 bytes];
 
-        v23 = [(PLBasebandEurekaMessage *)self convertCMCallOrigPayloadToDictionary:v36];
+        payload16 = [(PLBasebandEurekaMessage *)self convertCMCallOrigPayloadToDictionary:bytes19];
         v37 = objc_alloc(MEMORY[0x277CCACA8]);
         v38 = MEMORY[0x277CCACA8];
-        v39 = [(__CFString *)v23 objectForKeyedSubscript:@"callId"];
+        v39 = [(__CFString *)payload16 objectForKeyedSubscript:@"callId"];
         v40 = [v38 stringWithFormat:@"%@", v39];
-        v41 = [v37 initWithString:v40];
+        stringValue = [v37 initWithString:v40];
 
         v42 = objc_alloc(MEMORY[0x277CCACA8]);
-        v43 = [(__CFString *)v23 objectForKeyedSubscript:@"callType"];
+        v43 = [(__CFString *)payload16 objectForKeyedSubscript:@"callType"];
         v44 = [v42 initWithString:v43];
 
         v45 = objc_alloc(MEMORY[0x277CCACA8]);
-        v46 = [(__CFString *)v23 objectForKeyedSubscript:@"serviceType"];
+        v46 = [(__CFString *)payload16 objectForKeyedSubscript:@"serviceType"];
         v47 = [v45 initWithString:v46];
 
-        [(PLBBEurekaEventMsg *)v12 logEventCMCallEventOrigWithId:v41 andCallType:v44 andSrvType:v47];
+        [(PLBBEurekaEventMsg *)v12 logEventCMCallEventOrigWithId:stringValue andCallType:v44 andSrvType:v47];
 LABEL_157:
         [(PLBasebandEurekaMessage *)self setSkip:1];
         goto LABEL_158;
@@ -1385,9 +1385,9 @@ LABEL_157:
       v62 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error: bad length PL_EVENT_WCDMA_DRX_CYCLE"];
       v158 = MEMORY[0x277D3F178];
       v159 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBasebandEurekaMessage.m"];
-      v160 = [v159 lastPathComponent];
+      lastPathComponent12 = [v159 lastPathComponent];
       v161 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBasebandEurekaMessage logWithLogger:]"];
-      [v158 logMessage:v62 fromFile:v160 fromFunction:v161 fromLineNumber:540];
+      [v158 logMessage:v62 fromFile:lastPathComponent12 fromFunction:v161 fromLineNumber:540];
 
       v67 = PLLogCommon();
       if (!os_log_type_enabled(v67, OS_LOG_TYPE_DEBUG))
@@ -1400,33 +1400,33 @@ LABEL_157:
       goto LABEL_220;
     }
 
-    v202 = [(PLBasebandEurekaMessage *)self payload];
-    v203 = [v202 bytes];
+    payload28 = [(PLBasebandEurekaMessage *)self payload];
+    bytes20 = [payload28 bytes];
 
-    v23 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedChar:*(v203 + 2)];
-    v68 = [(__CFString *)v23 stringValue];
+    payload16 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedChar:*(bytes20 + 2)];
+    stringValue12 = [(__CFString *)payload16 stringValue];
     goto LABEL_189;
   }
 
   if ([(PLBasebandEurekaMessage *)self header][13] <= 3u)
   {
     v102 = objc_alloc(MEMORY[0x277CCACA8]);
-    v103 = [(PLBasebandEurekaMessage *)self tooShortErrorString];
-    v104 = [v102 initWithString:v103];
-    [(PLBBEurekaEventMsg *)v12 setError:v104];
+    tooShortErrorString = [(PLBasebandEurekaMessage *)self tooShortErrorString];
+    stringValue27 = [v102 initWithString:tooShortErrorString];
+    [(PLBBEurekaEventMsg *)v12 setError:stringValue27];
 LABEL_244:
 
     goto LABEL_245;
   }
 
-  v162 = [(PLBasebandEurekaMessage *)self eventSystemSelection];
-  v163 = [(PLBasebandEurekaMessage *)self actionSystemSelection];
-  v164 = [(PLBasebandEurekaMessage *)self stateSystemSelection];
-  [(PLBBEurekaEventMsg *)v12 setSDEventActionCodeWith:v162 andSDAction:v163 andSDState:v164];
+  eventSystemSelection = [(PLBasebandEurekaMessage *)self eventSystemSelection];
+  actionSystemSelection = [(PLBasebandEurekaMessage *)self actionSystemSelection];
+  stateSystemSelection = [(PLBasebandEurekaMessage *)self stateSystemSelection];
+  [(PLBBEurekaEventMsg *)v12 setSDEventActionCodeWith:eventSystemSelection andSDAction:actionSystemSelection andSDState:stateSystemSelection];
 
-  v165 = [(PLBasebandEurekaMessage *)self payload];
-  v166 = [v165 bytes];
-  v167 = (v166 + 4);
+  payload29 = [(PLBasebandEurekaMessage *)self payload];
+  bytes21 = [payload29 bytes];
+  v167 = (bytes21 + 4);
 
   v168 = *[(PLBasebandEurekaMessage *)self ssaction];
   if (v168 <= 2)
@@ -1435,46 +1435,46 @@ LABEL_244:
     {
       if (v168 == 1)
       {
-        v234 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedChar:*(v166 + 4)];
-        v235 = [v234 stringValue];
-        [(PLBBEurekaEventMsg *)v12 addPairWithKey:@"band" andWithVal:v235];
+        v234 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedChar:*(bytes21 + 4)];
+        stringValue13 = [v234 stringValue];
+        [(PLBBEurekaEventMsg *)v12 addPairWithKey:@"band" andWithVal:stringValue13];
 
         v236 = objc_alloc(MEMORY[0x277CCACA8]);
-        v237 = [(PLBasebandEurekaMessage *)self cellularSystemStringSystemSelection:v166 + 5];
+        v237 = [(PLBasebandEurekaMessage *)self cellularSystemStringSystemSelection:bytes21 + 5];
         v238 = [v236 initWithString:v237];
 
         [(PLBBEurekaEventMsg *)v12 addPairWithKey:@"block_cellular_system" andWithVal:v238];
-        v167 = (v166 + 8);
-        v239 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedShort:*(v166 + 6)];
-        v240 = [v239 stringValue];
-        [(PLBBEurekaEventMsg *)v12 addPairWithKey:@"CDMA_Channel" andWithVal:v240];
+        v167 = (bytes21 + 8);
+        v239 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedShort:*(bytes21 + 6)];
+        stringValue14 = [v239 stringValue];
+        [(PLBBEurekaEventMsg *)v12 addPairWithKey:@"CDMA_Channel" andWithVal:stringValue14];
 
         goto LABEL_238;
       }
 
-      v169 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedChar:*(v166 + 4)];
-      v170 = [v169 stringValue];
-      [(PLBBEurekaEventMsg *)v12 addPairWithKey:@"band" andWithVal:v170];
+      v169 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedChar:*(bytes21 + 4)];
+      stringValue15 = [v169 stringValue];
+      [(PLBBEurekaEventMsg *)v12 addPairWithKey:@"band" andWithVal:stringValue15];
 
-      v171 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedChar:*(v166 + 5)];
-      v172 = [v171 stringValue];
-      [(PLBBEurekaEventMsg *)v12 addPairWithKey:@"sys" andWithVal:v172];
+      v171 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedChar:*(bytes21 + 5)];
+      stringValue16 = [v171 stringValue];
+      [(PLBBEurekaEventMsg *)v12 addPairWithKey:@"sys" andWithVal:stringValue16];
 
-      v173 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedChar:*(v166 + 6)];
-      v174 = [v173 stringValue];
-      [(PLBBEurekaEventMsg *)v12 addPairWithKey:@"is_amps_2nd_cch" andWithVal:v174];
+      v173 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedChar:*(bytes21 + 6)];
+      stringValue17 = [v173 stringValue];
+      [(PLBBEurekaEventMsg *)v12 addPairWithKey:@"is_amps_2nd_cch" andWithVal:stringValue17];
 
-      v167 = (v166 + 8);
-      v175 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedChar:*(v166 + 7)];
-      v176 = [v175 stringValue];
+      v167 = (bytes21 + 8);
+      v175 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedChar:*(bytes21 + 7)];
+      stringValue18 = [v175 stringValue];
       v177 = @"max_redirect_delay";
     }
 
     else
     {
-      v167 = (v166 + 8);
-      v175 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedShort:*(v166 + 4)];
-      v176 = [v175 stringValue];
+      v167 = (bytes21 + 8);
+      v175 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedShort:*(bytes21 + 4)];
+      stringValue18 = [v175 stringValue];
       v177 = @"timer";
     }
 
@@ -1484,60 +1484,60 @@ LABEL_244:
   switch(v168)
   {
     case 3u:
-      v230 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedChar:*(v166 + 4)];
-      v231 = [v230 stringValue];
-      [(PLBBEurekaEventMsg *)v12 addPairWithKey:@"band" andWithVal:v231];
+      v230 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedChar:*(bytes21 + 4)];
+      stringValue19 = [v230 stringValue];
+      [(PLBBEurekaEventMsg *)v12 addPairWithKey:@"band" andWithVal:stringValue19];
 
-      v232 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedChar:*(v166 + 5)];
-      v233 = [v232 stringValue];
-      [(PLBBEurekaEventMsg *)v12 addPairWithKey:@"acq_mode" andWithVal:v233];
+      v232 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedChar:*(bytes21 + 5)];
+      stringValue20 = [v232 stringValue];
+      [(PLBBEurekaEventMsg *)v12 addPairWithKey:@"acq_mode" andWithVal:stringValue20];
 
-      v167 = (v166 + 8);
-      v175 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedShort:*(v166 + 6)];
-      v176 = [v175 stringValue];
+      v167 = (bytes21 + 8);
+      v175 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedShort:*(bytes21 + 6)];
+      stringValue18 = [v175 stringValue];
       v177 = @"channel";
 LABEL_228:
-      [(PLBBEurekaEventMsg *)v12 addPairWithKey:v177 andWithVal:v176];
+      [(PLBBEurekaEventMsg *)v12 addPairWithKey:v177 andWithVal:stringValue18];
 
       break;
     case 0xBu:
       if ([MEMORY[0x277D3F180] fullMode])
       {
         v241 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedChar:*v167];
-        v242 = [v241 stringValue];
-        [(PLBBEurekaEventMsg *)v12 addPairWithKey:@"plmn1" andWithVal:v242];
+        stringValue21 = [v241 stringValue];
+        [(PLBBEurekaEventMsg *)v12 addPairWithKey:@"plmn1" andWithVal:stringValue21];
       }
 
       if ([MEMORY[0x277D3F180] fullMode])
       {
-        v243 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedChar:*(v166 + 5)];
-        v244 = [v243 stringValue];
-        [(PLBBEurekaEventMsg *)v12 addPairWithKey:@"plmn2" andWithVal:v244];
+        v243 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedChar:*(bytes21 + 5)];
+        stringValue22 = [v243 stringValue];
+        [(PLBBEurekaEventMsg *)v12 addPairWithKey:@"plmn2" andWithVal:stringValue22];
       }
 
       if ([MEMORY[0x277D3F180] fullMode])
       {
-        v245 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedChar:*(v166 + 6)];
-        v246 = [v245 stringValue];
-        [(PLBBEurekaEventMsg *)v12 addPairWithKey:@"plmn3" andWithVal:v246];
+        v245 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedChar:*(bytes21 + 6)];
+        stringValue23 = [v245 stringValue];
+        [(PLBBEurekaEventMsg *)v12 addPairWithKey:@"plmn3" andWithVal:stringValue23];
       }
 
-      v206 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedChar:*(v166 + 7)];
-      v207 = [v206 stringValue];
+      v206 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedChar:*(bytes21 + 7)];
+      stringValue24 = [v206 stringValue];
       v208 = @"net_sel_mode";
       goto LABEL_237;
     case 0xCu:
-      v204 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedChar:*(v166 + 4)];
-      v205 = [v204 stringValue];
-      [(PLBBEurekaEventMsg *)v12 addPairWithKey:@"mode_pref" andWithVal:v205];
+      v204 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedChar:*(bytes21 + 4)];
+      stringValue25 = [v204 stringValue];
+      [(PLBBEurekaEventMsg *)v12 addPairWithKey:@"mode_pref" andWithVal:stringValue25];
 
-      v206 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedChar:*(v166 + 5)];
-      v207 = [v206 stringValue];
+      v206 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedChar:*(bytes21 + 5)];
+      stringValue24 = [v206 stringValue];
       v208 = @"srv_domain_pref";
 LABEL_237:
-      [(PLBBEurekaEventMsg *)v12 addPairWithKey:v208 andWithVal:v207];
+      [(PLBBEurekaEventMsg *)v12 addPairWithKey:v208 andWithVal:stringValue24];
 
-      v167 = (v166 + 8);
+      v167 = (bytes21 + 8);
       break;
   }
 
@@ -1546,11 +1546,11 @@ LABEL_238:
   if (v247 == 906 || v247 == 413)
   {
     v259 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedChar:*v167];
-    v260 = [v259 stringValue];
-    [(PLBBEurekaEventMsg *)v12 addPairWithKey:@"reason" andWithVal:v260];
+    stringValue26 = [v259 stringValue];
+    [(PLBBEurekaEventMsg *)v12 addPairWithKey:@"reason" andWithVal:stringValue26];
 
-    v103 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedChar:*v167];
-    v104 = [v103 stringValue];
+    tooShortErrorString = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedChar:*v167];
+    stringValue27 = [tooShortErrorString stringValue];
     v258 = @"term";
     goto LABEL_243;
   }
@@ -1558,30 +1558,30 @@ LABEL_238:
   if (v247 == 5)
   {
     v248 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedChar:*v167];
-    v249 = [v248 stringValue];
-    [(PLBBEurekaEventMsg *)v12 addPairWithKey:@"reason" andWithVal:v249];
+    stringValue28 = [v248 stringValue];
+    [(PLBBEurekaEventMsg *)v12 addPairWithKey:@"reason" andWithVal:stringValue28];
 
     v250 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedChar:v167[1]];
-    v251 = [v250 stringValue];
-    [(PLBBEurekaEventMsg *)v12 addPairWithKey:@"orig_mode" andWithVal:v251];
+    stringValue29 = [v250 stringValue];
+    [(PLBBEurekaEventMsg *)v12 addPairWithKey:@"orig_mode" andWithVal:stringValue29];
 
     v252 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedShort:*(v167 + 1)];
-    v253 = [v252 stringValue];
-    [(PLBBEurekaEventMsg *)v12 addPairWithKey:@"mode_pref" andWithVal:v253];
+    stringValue30 = [v252 stringValue];
+    [(PLBBEurekaEventMsg *)v12 addPairWithKey:@"mode_pref" andWithVal:stringValue30];
 
     v254 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:*(v167 + 1)];
-    v255 = [v254 stringValue];
-    [(PLBBEurekaEventMsg *)v12 addPairWithKey:@"band_pref" andWithVal:v255];
+    stringValue31 = [v254 stringValue];
+    [(PLBBEurekaEventMsg *)v12 addPairWithKey:@"band_pref" andWithVal:stringValue31];
 
     v256 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedChar:v167[8]];
-    v257 = [v256 stringValue];
-    [(PLBBEurekaEventMsg *)v12 addPairWithKey:@"roam_pref" andWithVal:v257];
+    stringValue32 = [v256 stringValue];
+    [(PLBBEurekaEventMsg *)v12 addPairWithKey:@"roam_pref" andWithVal:stringValue32];
 
-    v103 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedChar:v167[9]];
-    v104 = [v103 stringValue];
+    tooShortErrorString = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedChar:v167[9]];
+    stringValue27 = [tooShortErrorString stringValue];
     v258 = @"hybr_pref";
 LABEL_243:
-    [(PLBBEurekaEventMsg *)v12 addPairWithKey:v258 andWithVal:v104];
+    [(PLBBEurekaEventMsg *)v12 addPairWithKey:v258 andWithVal:stringValue27];
     goto LABEL_244;
   }
 
@@ -1604,9 +1604,9 @@ LABEL_245:
       v262 = [MEMORY[0x277CCACA8] stringWithFormat:@"Decoded SDEventAction/Hybrid"];
       v263 = MEMORY[0x277D3F178];
       v264 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBasebandEurekaMessage.m"];
-      v265 = [v264 lastPathComponent];
+      lastPathComponent13 = [v264 lastPathComponent];
       v266 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBasebandEurekaMessage logWithLogger:]"];
-      [v263 logMessage:v262 fromFile:v265 fromFunction:v266 fromLineNumber:350];
+      [v263 logMessage:v262 fromFile:lastPathComponent13 fromFunction:v266 fromLineNumber:350];
 
       v267 = PLLogCommon();
       if (os_log_type_enabled(v267, OS_LOG_TYPE_DEBUG))
@@ -1727,9 +1727,9 @@ uint64_t __41__PLBasebandEurekaMessage_logWithLogger___block_invoke_284(uint64_t
   return [v2 numberWithUnsignedShort:v3];
 }
 
-- (id)eventStringACC:(char *)a3
+- (id)eventStringACC:(char *)c
 {
-  v5 = *a3;
+  v5 = *c;
   if (v5 >= 3)
   {
     v6 = [(PLBasebandEurekaMessage *)self stringForUnknownBytes:v3];
@@ -1743,9 +1743,9 @@ uint64_t __41__PLBasebandEurekaMessage_logWithLogger___block_invoke_284(uint64_t
   return v6;
 }
 
-- (id)eventStringOOS:(char *)a3
+- (id)eventStringOOS:(char *)s
 {
-  v5 = *a3;
+  v5 = *s;
   if (v5 >= 4)
   {
     v6 = [(PLBasebandEurekaMessage *)self stringForUnknownBytes:v3];
@@ -1775,9 +1775,9 @@ uint64_t __41__PLBasebandEurekaMessage_logWithLogger___block_invoke_284(uint64_t
   return [v2 numberWithUnsignedChar:v3];
 }
 
-- (id)stateStringGSM:(char *)a3
+- (id)stateStringGSM:(char *)m
 {
-  v5 = *a3;
+  v5 = *m;
   if (v5 > 29)
   {
     if (v5 <= 40)
@@ -1896,9 +1896,9 @@ LABEL_62:
   return v6;
 }
 
-- (id)stateStringLTE:(char *)a3
+- (id)stateStringLTE:(char *)e
 {
-  v5 = *a3;
+  v5 = *e;
   if (v5 >= 8)
   {
     v6 = [(PLBasebandEurekaMessage *)self stringForUnknownBytes:v3];
@@ -1912,9 +1912,9 @@ LABEL_62:
   return v6;
 }
 
-- (id)stateStringWCDMA:(char *)a3
+- (id)stateStringWCDMA:(char *)a
 {
-  v5 = *a3;
+  v5 = *a;
   if (v5 >= 6)
   {
     v6 = [(PLBasebandEurekaMessage *)self stringForUnknownBytes:v3];
@@ -1928,9 +1928,9 @@ LABEL_62:
   return v6;
 }
 
-- (id)stateStringUTRANL1:(char *)a3
+- (id)stateStringUTRANL1:(char *)l1
 {
-  v5 = *a3;
+  v5 = *l1;
   if (v5 >= 0xE)
   {
     v6 = [(PLBasebandEurekaMessage *)self stringForUnknownBytes:v3];
@@ -1944,9 +1944,9 @@ LABEL_62:
   return v6;
 }
 
-- (id)stateStringHSDPA:(char *)a3
+- (id)stateStringHSDPA:(char *)a
 {
-  v5 = *a3;
+  v5 = *a;
   if (v5 >= 4)
   {
     v6 = [(PLBasebandEurekaMessage *)self stringForUnknownBytes:v3];
@@ -1960,9 +1960,9 @@ LABEL_62:
   return v6;
 }
 
-- (id)stateStringHSUPA:(char *)a3
+- (id)stateStringHSUPA:(char *)a
 {
-  v5 = *a3;
+  v5 = *a;
   if (v5 >= 4)
   {
     v6 = [(PLBasebandEurekaMessage *)self stringForUnknownBytes:v3];
@@ -1976,9 +1976,9 @@ LABEL_62:
   return v6;
 }
 
-- (id)stateStringHSPAPLUS_DC:(char *)a3
+- (id)stateStringHSPAPLUS_DC:(char *)c
 {
-  v5 = *a3;
+  v5 = *c;
   if (v5 >= 5)
   {
     v6 = [(PLBasebandEurekaMessage *)self stringForUnknownBytes:v3];
@@ -1992,9 +1992,9 @@ LABEL_62:
   return v6;
 }
 
-- (id)stateStringMotion:(char *)a3
+- (id)stateStringMotion:(char *)motion
 {
-  v5 = *a3;
+  v5 = *motion;
   if (v5 > 15)
   {
     if (v5 == 16)
@@ -2036,9 +2036,9 @@ LABEL_12:
   return v6;
 }
 
-- (id)stateStringACC:(char *)a3
+- (id)stateStringACC:(char *)c
 {
-  v5 = *a3;
+  v5 = *c;
   if (v5)
   {
     if (v5 == 1)
@@ -2060,9 +2060,9 @@ LABEL_12:
   return v6;
 }
 
-- (id)stateStringOOS:(char *)a3
+- (id)stateStringOOS:(char *)s
 {
-  v5 = *a3;
+  v5 = *s;
   if (v5 >= 6)
   {
     v6 = [(PLBasebandEurekaMessage *)self stringForUnknownBytes:v3];
@@ -2153,8 +2153,8 @@ LABEL_12:
 
 LABEL_68:
       v19 = MEMORY[0x277CCACA8];
-      v20 = [(PLBasebandEurekaMessage *)self payload];
-      v3 = [v19 stringWithFormat:@"%@", v20];
+      payload = [(PLBasebandEurekaMessage *)self payload];
+      v3 = [v19 stringWithFormat:@"%@", payload];
 
       goto LABEL_69;
     }
@@ -2188,21 +2188,21 @@ LABEL_69:
   return v3;
 }
 
-- (id)convertCMCallConnectPayloadToDictionary:(_CMCallConnectPayload *)a3
+- (id)convertCMCallConnectPayloadToDictionary:(_CMCallConnectPayload *)dictionary
 {
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v6 = objc_alloc(MEMORY[0x277CCACA8]);
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:a3->var0];
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:dictionary->var0];
   v8 = [v6 initWithFormat:@"%@", v7];
   [v5 setObject:v8 forKeyedSubscript:@"callId"];
 
-  v9 = [(PLBasebandEurekaMessage *)self callTypeString:&a3->var1];
+  v9 = [(PLBasebandEurekaMessage *)self callTypeString:&dictionary->var1];
   [v5 setObject:v9 forKeyedSubscript:@"callType"];
 
-  var2 = a3->var2;
+  var2 = dictionary->var2;
   if (var2 > 5)
   {
-    if (a3->var2 > 8u)
+    if (dictionary->var2 > 8u)
     {
       if (var2 == 9)
       {
@@ -2247,9 +2247,9 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  if (a3->var2 <= 2u)
+  if (dictionary->var2 <= 2u)
   {
-    if (a3->var2)
+    if (dictionary->var2)
     {
       if (var2 == 1)
       {
@@ -2294,21 +2294,21 @@ LABEL_29:
   return v5;
 }
 
-- (id)convertCMCallConnectV2PayloadToDictionary:(_NewCMCallConnectPayload *)a3
+- (id)convertCMCallConnectV2PayloadToDictionary:(_NewCMCallConnectPayload *)dictionary
 {
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v6 = objc_alloc(MEMORY[0x277CCACA8]);
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:a3->var0];
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:dictionary->var0];
   v8 = [v6 initWithFormat:@"%@", v7];
   [v5 setObject:v8 forKeyedSubscript:@"callId"];
 
-  v9 = [(PLBasebandEurekaMessage *)self callTypeString:&a3->var1];
+  v9 = [(PLBasebandEurekaMessage *)self callTypeString:&dictionary->var1];
   [v5 setObject:v9 forKeyedSubscript:@"callType"];
 
-  var2 = a3->var2;
+  var2 = dictionary->var2;
   if (var2 > 5)
   {
-    if (a3->var2 > 8u)
+    if (dictionary->var2 > 8u)
     {
       switch(var2)
       {
@@ -2345,9 +2345,9 @@ LABEL_27:
 
   else
   {
-    if (a3->var2 <= 2u)
+    if (dictionary->var2 <= 2u)
     {
-      if (a3->var2)
+      if (dictionary->var2)
       {
         if (var2 == 1)
         {
@@ -2387,23 +2387,23 @@ LABEL_27:
 
 LABEL_28:
   v12 = objc_alloc(MEMORY[0x277CCACA8]);
-  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:a3->var3];
+  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:dictionary->var3];
   v14 = [v12 initWithFormat:@"%@", v13];
   [v5 setObject:v14 forKeyedSubscript:@"clientId"];
 
   return v5;
 }
 
-- (id)convertCMCallOrigPayloadToDictionary:(_CMCallOrigPayload *)a3
+- (id)convertCMCallOrigPayloadToDictionary:(_CMCallOrigPayload *)dictionary
 {
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:a3->var0];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:dictionary->var0];
   [v5 setObject:v6 forKeyedSubscript:@"callId"];
 
-  v7 = [(PLBasebandEurekaMessage *)self callTypeString:&a3->var1];
+  v7 = [(PLBasebandEurekaMessage *)self callTypeString:&dictionary->var1];
   [v5 setObject:v7 forKeyedSubscript:@"callType"];
 
-  switch(a3->var2)
+  switch(dictionary->var2)
   {
     case 0u:
       v8 = @"AMPS";
@@ -2476,7 +2476,7 @@ LABEL_26:
       [v5 setObject:v8 forKeyedSubscript:@"serviceType"];
       break;
     default:
-      v10 = [(PLBasebandEurekaMessage *)self stringForUnknownBytes:a3->var2];
+      v10 = [(PLBasebandEurekaMessage *)self stringForUnknownBytes:dictionary->var2];
       [v5 setObject:v10 forKeyedSubscript:@"serviceType"];
 
       break;
@@ -2485,16 +2485,16 @@ LABEL_26:
   return v5;
 }
 
-- (id)convertCMCallOrigV2PayloadToDictionary:(_NewCMCallOrigPayload *)a3
+- (id)convertCMCallOrigV2PayloadToDictionary:(_NewCMCallOrigPayload *)dictionary
 {
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:a3->var0];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:dictionary->var0];
   [v5 setObject:v6 forKeyedSubscript:@"callId"];
 
-  v7 = [(PLBasebandEurekaMessage *)self callTypeString:&a3->var1];
+  v7 = [(PLBasebandEurekaMessage *)self callTypeString:&dictionary->var1];
   [v5 setObject:v7 forKeyedSubscript:@"callType"];
 
-  switch(a3->var2)
+  switch(dictionary->var2)
   {
     case 0u:
       v8 = @"AMPS";
@@ -2565,23 +2565,23 @@ LABEL_25:
       [v5 setObject:v8 forKeyedSubscript:@"serviceType"];
       break;
     default:
-      v9 = [(PLBasebandEurekaMessage *)self stringForUnknownBytes:a3->var2];
+      v9 = [(PLBasebandEurekaMessage *)self stringForUnknownBytes:dictionary->var2];
       [v5 setObject:v9 forKeyedSubscript:@"serviceType"];
 
       break;
   }
 
   v10 = objc_alloc(MEMORY[0x277CCACA8]);
-  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:a3->var3];
+  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:dictionary->var3];
   v12 = [v10 initWithFormat:@"%@", v11];
   [v5 setObject:v12 forKeyedSubscript:@"clientId"];
 
   return v5;
 }
 
-- (id)cdmaExitString:(char *)a3
+- (id)cdmaExitString:(char *)string
 {
-  v5 = *a3;
+  v5 = *string;
   if (v5 < 0x2F && ((0x7FEE4FFFCFF3uLL >> v5) & 1) != 0)
   {
     v6 = off_27825BF10[v5];
@@ -2595,9 +2595,9 @@ LABEL_25:
   return v6;
 }
 
-- (id)soCallTypeString:(char *)a3
+- (id)soCallTypeString:(char *)string
 {
-  v5 = *a3;
+  v5 = *string;
   if (v5 >= 4)
   {
     v6 = [(PLBasebandEurekaMessage *)self stringForUnknownBytes:v3];
@@ -2611,9 +2611,9 @@ LABEL_25:
   return v6;
 }
 
-- (id)callTypeString:(char *)a3
+- (id)callTypeString:(char *)string
 {
-  v5 = *a3;
+  v5 = *string;
   if (v5 >= 0xF)
   {
     v6 = [(PLBasebandEurekaMessage *)self stringForUnknownBytes:v3];
@@ -2627,9 +2627,9 @@ LABEL_25:
   return v6;
 }
 
-- (id)termStringSystemSelection:(char *)a3
+- (id)termStringSystemSelection:(char *)selection
 {
-  v5 = *a3;
+  v5 = *selection;
   if (v5 >= 0xC)
   {
     v6 = [(PLBasebandEurekaMessage *)self stringForUnknownBytes:v3];
@@ -2643,9 +2643,9 @@ LABEL_25:
   return v6;
 }
 
-- (id)cellularSystemStringSystemSelection:(char *)a3
+- (id)cellularSystemStringSystemSelection:(char *)selection
 {
-  v5 = *a3;
+  v5 = *selection;
   if (v5 >= 8)
   {
     v6 = [(PLBasebandEurekaMessage *)self stringForUnknownBytes:v3];
@@ -2659,9 +2659,9 @@ LABEL_25:
   return v6;
 }
 
-- (id)establishmentCauseStringWCDMA:(char *)a3
+- (id)establishmentCauseStringWCDMA:(char *)a
 {
-  v5 = *a3;
+  v5 = *a;
   if (v5 >= 0x14)
   {
     v6 = [(PLBasebandEurekaMessage *)self stringForUnknownBytes:v3];
@@ -2675,9 +2675,9 @@ LABEL_25:
   return v6;
 }
 
-- (id)releaseCauseStringWCDMA:(char *)a3
+- (id)releaseCauseStringWCDMA:(char *)a
 {
-  v5 = *a3;
+  v5 = *a;
   if (v5 >= 0x18)
   {
     v6 = [(PLBasebandEurekaMessage *)self stringForUnknownBytes:v3];
@@ -2691,9 +2691,9 @@ LABEL_25:
   return v6;
 }
 
-- (id)pagingTypeWCDMA:(char *)a3
+- (id)pagingTypeWCDMA:(char *)a
 {
-  v5 = *a3;
+  v5 = *a;
   if (v5)
   {
     if (v5 == 1)
@@ -2715,9 +2715,9 @@ LABEL_25:
   return v6;
 }
 
-- (id)pagingCauseWCDMA:(char *)a3
+- (id)pagingCauseWCDMA:(char *)a
 {
-  v5 = *a3;
+  v5 = *a;
   if (v5 >= 8)
   {
     v6 = [(PLBasebandEurekaMessage *)self stringForUnknownBytes:v3];
@@ -2731,9 +2731,9 @@ LABEL_25:
   return v6;
 }
 
-- (id)scanTypeStartWCDMA:(char *)a3
+- (id)scanTypeStartWCDMA:(char *)a
 {
-  v5 = *a3;
+  v5 = *a;
   if (v5 >= 3)
   {
     v6 = [(PLBasebandEurekaMessage *)self stringForUnknownBytes:v3];
@@ -2747,9 +2747,9 @@ LABEL_25:
   return v6;
 }
 
-- (id)scanTypeStopWCDMA:(char *)a3
+- (id)scanTypeStopWCDMA:(char *)a
 {
-  v5 = *a3;
+  v5 = *a;
   if (v5 >= 3)
   {
     v6 = [(PLBasebandEurekaMessage *)self stringForUnknownBytes:v3];
@@ -2763,9 +2763,9 @@ LABEL_25:
   return v6;
 }
 
-- (id)searchPhaseStringPSSI:(char *)a3
+- (id)searchPhaseStringPSSI:(char *)i
 {
-  v5 = *a3;
+  v5 = *i;
   if (v5 >= 6)
   {
     v6 = [(PLBasebandEurekaMessage *)self stringForUnknownBytes:v3];
@@ -2779,9 +2779,9 @@ LABEL_25:
   return v6;
 }
 
-- (id)ratStringPSSI:(char *)a3
+- (id)ratStringPSSI:(char *)i
 {
-  v3 = *a3;
+  v3 = *i;
   if (v3 > 1)
   {
     if (v3 == 2)
@@ -2817,9 +2817,9 @@ LABEL_11:
   return v5;
 }
 
-- (id)procedureStringPSSI:(char *)a3
+- (id)procedureStringPSSI:(char *)i
 {
-  v5 = *a3;
+  v5 = *i;
   if (v5 >= 0xB)
   {
     v6 = [(PLBasebandEurekaMessage *)self stringForUnknownBytes:v3];
@@ -2833,9 +2833,9 @@ LABEL_11:
   return v6;
 }
 
-- (id)estCauseLTE:(char *)a3
+- (id)estCauseLTE:(char *)e
 {
-  v5 = *a3;
+  v5 = *e;
   if (v5 >= 5)
   {
     v6 = [(PLBasebandEurekaMessage *)self stringForUnknownBytes:v3];
@@ -2849,9 +2849,9 @@ LABEL_11:
   return v6;
 }
 
-- (id)relCauseLTE:(char *)a3
+- (id)relCauseLTE:(char *)e
 {
-  v5 = *a3;
+  v5 = *e;
   if (v5 >= 0xB)
   {
     v6 = [(PLBasebandEurekaMessage *)self stringForUnknownBytes:v3];
@@ -2865,9 +2865,9 @@ LABEL_11:
   return v6;
 }
 
-- (id)iratHOStringLTE:(char *)a3
+- (id)iratHOStringLTE:(char *)e
 {
-  v5 = *a3;
+  v5 = *e;
   if (v5 >= 5)
   {
     v6 = [(PLBasebandEurekaMessage *)self stringForUnknownBytes:v3];
@@ -2881,9 +2881,9 @@ LABEL_11:
   return v6;
 }
 
-- (id)iratStringLTE:(char *)a3
+- (id)iratStringLTE:(char *)e
 {
-  v3 = *a3;
+  v3 = *e;
   if (v3 <= 2)
   {
     if (!v3)
@@ -2925,9 +2925,9 @@ LABEL_15:
   return v5;
 }
 
-- (id)smgmmEventType:(char *)a3
+- (id)smgmmEventType:(char *)type
 {
-  v5 = *a3;
+  v5 = *type;
   if (v5 >= 0xB)
   {
     v6 = [(PLBasebandEurekaMessage *)self stringForUnknownBytes:v3];
@@ -2941,9 +2941,9 @@ LABEL_15:
   return v6;
 }
 
-- (id)cellUpdateCause:(char *)a3
+- (id)cellUpdateCause:(char *)cause
 {
-  v5 = *a3;
+  v5 = *cause;
   if (v5 >= 8)
   {
     v6 = [(PLBasebandEurekaMessage *)self stringForUnknownBytes:v3];

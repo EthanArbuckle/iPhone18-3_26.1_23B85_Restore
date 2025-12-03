@@ -1,29 +1,29 @@
 @interface ICCRDictionary
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (ICCRDictionary)init;
-- (ICCRDictionary)initWithDocument:(id)a3;
-- (ICCRDictionary)initWithICCRCoder:(id)a3;
-- (ICCRDictionary)initWithICCRCoder:(id)a3 dictionary:(const void *)a4 elementValueDecoder:(id)a5;
+- (ICCRDictionary)initWithDocument:(id)document;
+- (ICCRDictionary)initWithICCRCoder:(id)coder;
+- (ICCRDictionary)initWithICCRCoder:(id)coder dictionary:(const void *)dictionary elementValueDecoder:(id)decoder;
 - (ICCRDocument)document;
 - (NSString)description;
-- (id)deltaSince:(id)a3 in:(id)a4;
+- (id)deltaSince:(id)since in:(id)in;
 - (id)keyEnumerator;
-- (id)objectForKey:(id)a3;
-- (id)objectForKeyedSubscript:(id)a3;
+- (id)objectForKey:(id)key;
+- (id)objectForKeyedSubscript:(id)subscript;
 - (unint64_t)count;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
 - (unint64_t)hash;
-- (void)encodeWithICCRCoder:(id)a3;
-- (void)encodeWithICCRCoder:(id)a3 dictionary:(void *)a4 elementValueCoder:(id)a5;
-- (void)enumerateKeysObjectsAndTimestampsUsingBlock:(id)a3;
-- (void)mergeWith:(id)a3;
-- (void)mergeWithDictionary:(id)a3;
-- (void)realizeLocalChangesIn:(id)a3;
+- (void)encodeWithICCRCoder:(id)coder;
+- (void)encodeWithICCRCoder:(id)coder dictionary:(void *)dictionary elementValueCoder:(id)valueCoder;
+- (void)enumerateKeysObjectsAndTimestampsUsingBlock:(id)block;
+- (void)mergeWith:(id)with;
+- (void)mergeWithDictionary:(id)dictionary;
+- (void)realizeLocalChangesIn:(id)in;
 - (void)removeAllObjects;
-- (void)removeObjectForKey:(id)a3;
-- (void)setDocument:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
-- (void)walkGraph:(id)a3;
+- (void)removeObjectForKey:(id)key;
+- (void)setDocument:(id)document;
+- (void)setObject:(id)object forKey:(id)key;
+- (void)walkGraph:(id)graph;
 @end
 
 @implementation ICCRDictionary
@@ -35,45 +35,45 @@
   v2 = [(ICCRDictionary *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     contents = v2->_contents;
-    v2->_contents = v3;
+    v2->_contents = strongToStrongObjectsMapTable;
   }
 
   return v2;
 }
 
-- (ICCRDictionary)initWithDocument:(id)a3
+- (ICCRDictionary)initWithDocument:(id)document
 {
-  v4 = a3;
+  documentCopy = document;
   v9.receiver = self;
   v9.super_class = ICCRDictionary;
   v5 = [(ICCRDictionary *)&v9 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     contents = v5->_contents;
-    v5->_contents = v6;
+    v5->_contents = strongToStrongObjectsMapTable;
 
-    objc_storeWeak(&v5->_document, v4);
+    objc_storeWeak(&v5->_document, documentCopy);
   }
 
   return v5;
 }
 
-- (void)encodeWithICCRCoder:(id)a3
+- (void)encodeWithICCRCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [v6 currentDocumentObjectForEncoding];
-  v5 = v4;
-  if (*(v4 + 48) != 6)
+  coderCopy = coder;
+  currentDocumentObjectForEncoding = [coderCopy currentDocumentObjectForEncoding];
+  v5 = currentDocumentObjectForEncoding;
+  if (*(currentDocumentObjectForEncoding + 48) != 6)
   {
-    CRDT::Document_DocObject::clear_contents(v4);
+    CRDT::Document_DocObject::clear_contents(currentDocumentObjectForEncoding);
     *(v5 + 48) = 6;
     operator new();
   }
 
-  [(ICCRDictionary *)self encodeWithICCRCoder:v6 dictionary:*(v4 + 40)];
+  [(ICCRDictionary *)self encodeWithICCRCoder:coderCopy dictionary:*(currentDocumentObjectForEncoding + 40)];
 }
 
 void __49__ICCRDictionary_encodeWithICCRCoder_dictionary___block_invoke(uint64_t a1, void *a2, void *a3, uint64_t a4, void *a5)
@@ -103,16 +103,16 @@ void __49__ICCRDictionary_encodeWithICCRCoder_dictionary___block_invoke(uint64_t
   [v9 encodeObject:v12 forObjectID:v11];
 }
 
-- (void)encodeWithICCRCoder:(id)a3 dictionary:(void *)a4 elementValueCoder:(id)a5
+- (void)encodeWithICCRCoder:(id)coder dictionary:(void *)dictionary elementValueCoder:(id)valueCoder
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  coderCopy = coder;
+  valueCoderCopy = valueCoder;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v25 = self;
+  selfCopy = self;
   obj = [(ICCRDictionary *)self contents];
   v10 = [obj countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v10)
@@ -128,29 +128,29 @@ void __49__ICCRDictionary_encodeWithICCRCoder_dictionary___block_invoke(uint64_t
         }
 
         v12 = *(*(&v26 + 1) + 8 * i);
-        v13 = *(a4 + 13);
-        v14 = *(a4 + 12);
+        v13 = *(dictionary + 13);
+        v14 = *(dictionary + 12);
         if (v14 >= v13)
         {
-          if (v13 == *(a4 + 14))
+          if (v13 == *(dictionary + 14))
           {
-            google::protobuf::internal::RepeatedPtrFieldBase::Reserve(a4 + 40, v13 + 1);
+            google::protobuf::internal::RepeatedPtrFieldBase::Reserve(dictionary + 40, v13 + 1);
           }
 
           google::protobuf::internal::GenericTypeHandler<CRDT::Dictionary_Element>::New();
         }
 
-        v15 = *(a4 + 5);
-        *(a4 + 12) = v14 + 1;
+        v15 = *(dictionary + 5);
+        *(dictionary + 12) = v14 + 1;
         v16 = *(v15 + 8 * v14);
-        v17 = [(ICCRDictionary *)v25 contents];
-        v18 = [v17 objectForKey:v12];
+        contents = [(ICCRDictionary *)selfCopy contents];
+        v18 = [contents objectForKey:v12];
 
-        v19 = [v18 value];
-        v9[2](v9, v12, v19, v16, v8);
+        value = [v18 value];
+        valueCoderCopy[2](valueCoderCopy, v12, value, v16, coderCopy);
 
-        v20 = [v18 timestamp];
-        v21 = v20;
+        timestamp = [v18 timestamp];
+        v21 = timestamp;
         *(v16 + 32) |= 4u;
         v22 = *(v16 + 56);
         if (!v22)
@@ -158,7 +158,7 @@ void __49__ICCRDictionary_encodeWithICCRCoder_dictionary___block_invoke(uint64_t
           operator new();
         }
 
-        [v20 encodeIntoProtobufTimestamp:v22 coder:v8];
+        [timestamp encodeIntoProtobufTimestamp:v22 coder:coderCopy];
       }
 
       v10 = [obj countByEnumeratingWithState:&v26 objects:v30 count:16];
@@ -168,19 +168,19 @@ void __49__ICCRDictionary_encodeWithICCRCoder_dictionary___block_invoke(uint64_t
   }
 }
 
-- (ICCRDictionary)initWithICCRCoder:(id)a3
+- (ICCRDictionary)initWithICCRCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 currentDocumentObjectForDecoding];
-  if (*(v5 + 48) == 6)
+  coderCopy = coder;
+  currentDocumentObjectForDecoding = [coderCopy currentDocumentObjectForDecoding];
+  if (*(currentDocumentObjectForDecoding + 48) == 6)
   {
-    v6 = [(ICCRDictionary *)self initWithICCRCoder:v4 dictionary:*(v5 + 40)];
+    v6 = [(ICCRDictionary *)self initWithICCRCoder:coderCopy dictionary:*(currentDocumentObjectForDecoding + 40)];
   }
 
   else
   {
-    v7 = [v4 document];
-    v6 = [(ICCRDictionary *)self initWithDocument:v7];
+    document = [coderCopy document];
+    v6 = [(ICCRDictionary *)self initWithDocument:document];
   }
 
   v8 = v6;
@@ -188,23 +188,23 @@ void __49__ICCRDictionary_encodeWithICCRCoder_dictionary___block_invoke(uint64_t
   return v8;
 }
 
-- (ICCRDictionary)initWithICCRCoder:(id)a3 dictionary:(const void *)a4 elementValueDecoder:(id)a5
+- (ICCRDictionary)initWithICCRCoder:(id)coder dictionary:(const void *)dictionary elementValueDecoder:(id)decoder
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 document];
-  v11 = [(ICCRDictionary *)self initWithDocument:v10];
+  coderCopy = coder;
+  decoderCopy = decoder;
+  document = [coderCopy document];
+  v11 = [(ICCRDictionary *)self initWithDocument:document];
 
   if (v11)
   {
-    v12 = [MEMORY[0x277CBEB18] arrayWithCapacity:*(a4 + 12)];
-    if (*(a4 + 12))
+    v12 = [MEMORY[0x277CBEB18] arrayWithCapacity:*(dictionary + 12)];
+    if (*(dictionary + 12))
     {
-      for (i = *(a4 + 5); i != (*(a4 + 5) + 8 * *(a4 + 12)); ++i)
+      for (i = *(dictionary + 5); i != (*(dictionary + 5) + 8 * *(dictionary + 12)); ++i)
       {
         v14 = *i;
         v28 = 0;
-        v15 = v9[2](v9, v14, &v28, v8);
+        v15 = decoderCopy[2](decoderCopy, v14, &v28, coderCopy);
         v16 = v28;
         v17 = v16;
         if ((*(v14 + 32) & 4) != 0)
@@ -217,7 +217,7 @@ void __49__ICCRDictionary_encodeWithICCRCoder_dictionary___block_invoke(uint64_t
             v21 = *(CRDT::Dictionary_Element::default_instance(v19) + 56);
           }
 
-          v18 = [(ICCRVectorTimestamp *)v20 initWithProtobufTimestamp:v21 decoder:v8];
+          v18 = [(ICCRVectorTimestamp *)v20 initWithProtobufTimestamp:v21 decoder:coderCopy];
           if (!v17)
           {
             goto LABEL_11;
@@ -248,7 +248,7 @@ LABEL_11:
     v23 = v12;
     v26 = v23;
     v27 = v11;
-    [v8 addDecoderCompletionHandler:v25 dependency:0 for:v27];
+    [coderCopy addDecoderCompletionHandler:v25 dependency:0 for:v27];
   }
 
   return v11;
@@ -272,32 +272,32 @@ void __67__ICCRDictionary_initWithICCRCoder_dictionary_elementValueDecoder___blo
 
 - (unint64_t)count
 {
-  v2 = [(ICCRDictionary *)self contents];
-  v3 = [v2 count];
+  contents = [(ICCRDictionary *)self contents];
+  v3 = [contents count];
 
   return v3;
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  v8 = [(ICCRDictionary *)self contents];
-  v9 = [v8 countByEnumeratingWithState:a3 objects:a4 count:a5];
+  contents = [(ICCRDictionary *)self contents];
+  v9 = [contents countByEnumeratingWithState:state objects:objects count:count];
 
   return v9;
 }
 
 - (id)keyEnumerator
 {
-  v2 = [(ICCRDictionary *)self contents];
-  v3 = [v2 keyEnumerator];
+  contents = [(ICCRDictionary *)self contents];
+  keyEnumerator = [contents keyEnumerator];
 
-  return v3;
+  return keyEnumerator;
 }
 
-- (void)enumerateKeysObjectsAndTimestampsUsingBlock:(id)a3
+- (void)enumerateKeysObjectsAndTimestampsUsingBlock:(id)block
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v18 = 0;
   v14 = 0u;
   v15 = 0u;
@@ -318,15 +318,15 @@ LABEL_3:
       }
 
       v8 = *(*(&v14 + 1) + 8 * v7);
-      v9 = [(ICCRDictionary *)self contents];
-      v10 = [v9 objectForKey:v8];
+      contents = [(ICCRDictionary *)self contents];
+      v10 = [contents objectForKey:v8];
 
-      v11 = [v10 value];
-      v12 = [v10 timestamp];
-      v4[2](v4, v8, v11, v12, &v18);
+      value = [v10 value];
+      timestamp = [v10 timestamp];
+      blockCopy[2](blockCopy, v8, value, timestamp, &v18);
 
-      LOBYTE(v11) = v18;
-      if (v11)
+      LOBYTE(value) = v18;
+      if (value)
       {
         break;
       }
@@ -347,21 +347,21 @@ LABEL_3:
 
 - (unint64_t)hash
 {
-  v2 = [(ICCRDictionary *)self contents];
-  v3 = [v2 hash];
+  contents = [(ICCRDictionary *)self contents];
+  v3 = [contents hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(ICCRDictionary *)self contents];
-    v6 = [v4 contents];
-    v7 = [v5 isEqual:v6];
+    contents = [(ICCRDictionary *)self contents];
+    contents2 = [equalCopy contents];
+    v7 = [contents isEqual:contents2];
   }
 
   else
@@ -372,24 +372,24 @@ LABEL_3:
   return v7;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(ICCRDictionary *)self contents];
-  v6 = [v5 objectForKey:v4];
-  v7 = [v6 value];
+  keyCopy = key;
+  contents = [(ICCRDictionary *)self contents];
+  v6 = [contents objectForKey:keyCopy];
+  value = [v6 value];
 
-  return v7;
+  return value;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  objectCopy = object;
+  keyCopy = key;
+  if (objectCopy)
   {
-    v8 = [(ICCRDictionary *)self contents];
-    v9 = [v8 objectForKey:v7];
+    contents = [(ICCRDictionary *)self contents];
+    v9 = [contents objectForKey:keyCopy];
 
     if (v9)
     {
@@ -402,61 +402,61 @@ LABEL_3:
 
     else
     {
-      v10 = [[ICCRDictionaryElement alloc] initWithValue:v6];
-      v11 = [(ICCRDictionary *)self document];
-      v12 = [v11 replicaClock];
+      v10 = [[ICCRDictionaryElement alloc] initWithValue:objectCopy];
+      document = [(ICCRDictionary *)self document];
+      replicaClock = [document replicaClock];
 
-      v13 = [(ICCRDictionaryElement *)v10 timestamp];
-      v14 = [MEMORY[0x277CCAD78] CR_unserialized];
-      [v13 setClock:v12 + 1 forUUID:v14];
+      timestamp = [(ICCRDictionaryElement *)v10 timestamp];
+      cR_unserialized = [MEMORY[0x277CCAD78] CR_unserialized];
+      [timestamp setClock:replicaClock + 1 forUUID:cR_unserialized];
 
-      v15 = [(ICCRDictionary *)self contents];
-      [v15 setObject:v10 forKey:v7];
+      contents2 = [(ICCRDictionary *)self contents];
+      [contents2 setObject:v10 forKey:keyCopy];
 
-      v16 = [(ICCRDictionary *)self document];
-      [v16 setDocumentFor:v7];
+      document2 = [(ICCRDictionary *)self document];
+      [document2 setDocumentFor:keyCopy];
 
-      v17 = [(ICCRDictionary *)self document];
-      [v17 setDocumentFor:v6];
+      document3 = [(ICCRDictionary *)self document];
+      [document3 setDocumentFor:objectCopy];
     }
   }
 
   else
   {
-    [(ICCRDictionary *)self removeObjectForKey:v7];
+    [(ICCRDictionary *)self removeObjectForKey:keyCopy];
   }
 }
 
-- (id)objectForKeyedSubscript:(id)a3
+- (id)objectForKeyedSubscript:(id)subscript
 {
-  v3 = [(ICCRDictionary *)self objectForKey:a3];
+  v3 = [(ICCRDictionary *)self objectForKey:subscript];
 
   return v3;
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
-  v6 = a3;
-  v4 = [(ICCRDictionary *)self contents];
-  [v4 removeObjectForKey:v6];
+  keyCopy = key;
+  contents = [(ICCRDictionary *)self contents];
+  [contents removeObjectForKey:keyCopy];
 
-  v5 = [(ICCRDictionary *)self document];
-  -[ICCRDictionary setRemoveClock:](self, "setRemoveClock:", [v5 replicaClock] + 1);
+  document = [(ICCRDictionary *)self document];
+  -[ICCRDictionary setRemoveClock:](self, "setRemoveClock:", [document replicaClock] + 1);
 }
 
 - (void)removeAllObjects
 {
-  v3 = [(ICCRDictionary *)self contents];
-  [v3 removeAllObjects];
+  contents = [(ICCRDictionary *)self contents];
+  [contents removeAllObjects];
 
-  v4 = [(ICCRDictionary *)self document];
-  -[ICCRDictionary setRemoveClock:](self, "setRemoveClock:", [v4 replicaClock] + 1);
+  document = [(ICCRDictionary *)self document];
+  -[ICCRDictionary setRemoveClock:](self, "setRemoveClock:", [document replicaClock] + 1);
 }
 
-- (void)realizeLocalChangesIn:(id)a3
+- (void)realizeLocalChangesIn:(id)in
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  inCopy = in;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -477,35 +477,35 @@ LABEL_3:
         }
 
         v8 = *(*(&v24 + 1) + 8 * v7);
-        v9 = [(ICCRDictionary *)self contents];
-        v10 = [v9 objectForKey:v8];
+        contents = [(ICCRDictionary *)self contents];
+        v10 = [contents objectForKey:v8];
 
-        v11 = [v10 timestamp];
-        v12 = [MEMORY[0x277CCAD78] CR_unserialized];
-        v13 = [v11 clockForUUID:v12];
+        timestamp = [v10 timestamp];
+        cR_unserialized = [MEMORY[0x277CCAD78] CR_unserialized];
+        v13 = [timestamp clockForUUID:cR_unserialized];
 
         if (v13 >= 1)
         {
-          v14 = [v10 timestamp];
-          v15 = [MEMORY[0x277CCAD78] CR_unserialized];
-          [v14 removeUUID:v15];
+          timestamp2 = [v10 timestamp];
+          cR_unserialized2 = [MEMORY[0x277CCAD78] CR_unserialized];
+          [timestamp2 removeUUID:cR_unserialized2];
 
-          v16 = [v10 timestamp];
-          v17 = [v4 replica];
-          [v16 setClock:v13 forUUID:v17];
+          timestamp3 = [v10 timestamp];
+          replica = [inCopy replica];
+          [timestamp3 setClock:v13 forUUID:replica];
 
-          v18 = [v4 unserializedReplicaClock];
-          if (v18 <= v13)
+          unserializedReplicaClock = [inCopy unserializedReplicaClock];
+          if (unserializedReplicaClock <= v13)
           {
             v19 = v13;
           }
 
           else
           {
-            v19 = v18;
+            v19 = unserializedReplicaClock;
           }
 
-          [v4 setUnserializedReplicaClock:v19];
+          [inCopy setUnserializedReplicaClock:v19];
         }
 
         ++v7;
@@ -520,27 +520,27 @@ LABEL_3:
 
   if ([(ICCRDictionary *)self removeClock]>= 1)
   {
-    v20 = [v4 unserializedReplicaClock];
-    v21 = [(ICCRDictionary *)self removeClock];
-    if (v20 <= v21)
+    unserializedReplicaClock2 = [inCopy unserializedReplicaClock];
+    removeClock = [(ICCRDictionary *)self removeClock];
+    if (unserializedReplicaClock2 <= removeClock)
     {
-      v22 = v21;
+      v22 = removeClock;
     }
 
     else
     {
-      v22 = v20;
+      v22 = unserializedReplicaClock2;
     }
 
-    [v4 setUnserializedReplicaClock:v22];
+    [inCopy setUnserializedReplicaClock:v22];
   }
 
   [(ICCRDictionary *)self setRemoveClock:0];
 }
 
-- (void)mergeWith:(id)a3
+- (void)mergeWith:(id)with
 {
-  v5 = a3;
+  withCopy = with;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -548,13 +548,13 @@ LABEL_3:
     objc_exception_throw(v4);
   }
 
-  [(ICCRDictionary *)self mergeWithDictionary:v5];
+  [(ICCRDictionary *)self mergeWithDictionary:withCopy];
 }
 
-- (void)mergeWithDictionary:(id)a3
+- (void)mergeWithDictionary:(id)dictionary
 {
   v55 = *MEMORY[0x277D85DE8];
-  v39 = a3;
+  dictionaryCopy = dictionary;
   v35 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v50 = 0u;
   v51 = 0u;
@@ -576,11 +576,11 @@ LABEL_3:
         }
 
         v7 = *(*(&v48 + 1) + 8 * v6);
-        v8 = [(ICCRDictionary *)self contents];
-        v9 = [v8 objectForKey:v7];
+        contents = [(ICCRDictionary *)self contents];
+        v9 = [contents objectForKey:v7];
 
-        v10 = [v39 contents];
-        v11 = [v10 objectForKey:v7];
+        contents2 = [dictionaryCopy contents];
+        v11 = [contents2 objectForKey:v7];
 
         if (v11)
         {
@@ -589,15 +589,15 @@ LABEL_3:
 
         else
         {
-          v12 = [v9 timestamp];
-          v13 = [v39 document];
-          v14 = [v13 version];
-          [v12 minusVectorTimestamp:v14];
+          timestamp = [v9 timestamp];
+          document = [dictionaryCopy document];
+          version = [document version];
+          [timestamp minusVectorTimestamp:version];
 
-          v15 = [v9 timestamp];
-          LODWORD(v12) = [v15 count] == 0;
+          timestamp2 = [v9 timestamp];
+          LODWORD(timestamp) = [timestamp2 count] == 0;
 
-          if (v12)
+          if (timestamp)
           {
             [v35 addObject:v7];
           }
@@ -633,8 +633,8 @@ LABEL_3:
         }
 
         v19 = *(*(&v44 + 1) + 8 * v18);
-        v20 = [(ICCRDictionary *)self contents];
-        [v20 removeObjectForKey:v19];
+        contents3 = [(ICCRDictionary *)self contents];
+        [contents3 removeObjectForKey:v19];
 
         ++v18;
       }
@@ -650,8 +650,8 @@ LABEL_3:
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v36 = [v39 contents];
-  v21 = [v36 countByEnumeratingWithState:&v40 objects:v52 count:16];
+  contents4 = [dictionaryCopy contents];
+  v21 = [contents4 countByEnumeratingWithState:&v40 objects:v52 count:16];
   if (v21)
   {
     v22 = *v41;
@@ -662,28 +662,28 @@ LABEL_3:
       {
         if (*v41 != v22)
         {
-          objc_enumerationMutation(v36);
+          objc_enumerationMutation(contents4);
         }
 
         v24 = *(*(&v40 + 1) + 8 * v23);
-        v25 = [(ICCRDictionary *)self contents];
-        v26 = [v25 objectForKey:v24];
+        contents5 = [(ICCRDictionary *)self contents];
+        v26 = [contents5 objectForKey:v24];
         v27 = v26 == 0;
 
         if (v27)
         {
-          v28 = [v39 contents];
-          v29 = [v28 objectForKey:v24];
+          contents6 = [dictionaryCopy contents];
+          v29 = [contents6 objectForKey:v24];
 
-          v30 = [(ICCRDictionary *)self document];
-          v31 = [v30 version];
-          v32 = [v29 timestamp];
-          v33 = ([v31 compare:v32] & 1) == 0;
+          document2 = [(ICCRDictionary *)self document];
+          version2 = [document2 version];
+          timestamp3 = [v29 timestamp];
+          v33 = ([version2 compare:timestamp3] & 1) == 0;
 
           if (!v33)
           {
-            v34 = [(ICCRDictionary *)self contents];
-            [v34 setObject:v29 forKey:v24];
+            contents7 = [(ICCRDictionary *)self contents];
+            [contents7 setObject:v29 forKey:v24];
           }
         }
 
@@ -691,24 +691,24 @@ LABEL_3:
       }
 
       while (v21 != v23);
-      v21 = [v36 countByEnumeratingWithState:&v40 objects:v52 count:16];
+      v21 = [contents4 countByEnumeratingWithState:&v40 objects:v52 count:16];
     }
 
     while (v21);
   }
 }
 
-- (void)setDocument:(id)a3
+- (void)setDocument:(id)document
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  objc_storeWeak(&self->_document, v4);
+  documentCopy = document;
+  objc_storeWeak(&self->_document, documentCopy);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(ICCRDictionary *)self contents];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  contents = [(ICCRDictionary *)self contents];
+  v6 = [contents countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = *v17;
@@ -719,20 +719,20 @@ LABEL_3:
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(contents);
         }
 
         v9 = *(*(&v16 + 1) + 8 * v8);
-        v10 = [(ICCRDictionary *)self contents];
-        v11 = [v10 objectForKey:v9];
+        contents2 = [(ICCRDictionary *)self contents];
+        v11 = [contents2 objectForKey:v9];
 
-        v12 = [v11 value];
-        v13 = [v4 localObject:v12];
+        value = [v11 value];
+        v13 = [documentCopy localObject:value];
 
         if (v13)
         {
-          v14 = [v11 value];
-          v15 = v14 == v13;
+          value2 = [v11 value];
+          v15 = value2 == v13;
 
           if (!v15)
           {
@@ -744,19 +744,19 @@ LABEL_3:
       }
 
       while (v6 != v8);
-      v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [contents countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v6);
   }
 }
 
-- (id)deltaSince:(id)a3 in:(id)a4
+- (id)deltaSince:(id)since in:(id)in
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v21 = a4;
-  v20 = [[ICCRDictionary alloc] initWithDocument:v21];
+  sinceCopy = since;
+  inCopy = in;
+  v20 = [[ICCRDictionary alloc] initWithDocument:inCopy];
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
@@ -776,21 +776,21 @@ LABEL_3:
         }
 
         v9 = *(*(&v23 + 1) + 8 * i);
-        v10 = [(ICCRDictionary *)self contents];
-        v11 = [v10 objectForKey:v9];
+        contents = [(ICCRDictionary *)self contents];
+        v11 = [contents objectForKey:v9];
 
-        v12 = [v11 timestamp];
-        v13 = [v12 copy];
+        timestamp = [v11 timestamp];
+        v13 = [timestamp copy];
 
-        [v13 minusVectorTimestamp:v5];
-        v14 = [v11 value];
-        v15 = [v14 deltaSince:v5 in:v21];
+        [v13 minusVectorTimestamp:sinceCopy];
+        value = [v11 value];
+        v15 = [value deltaSince:sinceCopy in:inCopy];
 
         v16 = objc_alloc_init(ICCRDictionaryElement);
         [(ICCRDictionaryElement *)v16 setValue:v15];
         [(ICCRDictionaryElement *)v16 setTimestamp:v13];
-        v17 = [(ICCRDictionary *)v20 contents];
-        [v17 setObject:v16 forKey:v9];
+        contents2 = [(ICCRDictionary *)v20 contents];
+        [contents2 setObject:v16 forKey:v9];
       }
 
       v6 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];
@@ -802,16 +802,16 @@ LABEL_3:
   return v20;
 }
 
-- (void)walkGraph:(id)a3
+- (void)walkGraph:(id)graph
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  graphCopy = graph;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(ICCRDictionary *)self contents];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  contents = [(ICCRDictionary *)self contents];
+  v6 = [contents countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -821,18 +821,18 @@ LABEL_3:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(contents);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v4[2](v4, v9);
-        v10 = [(ICCRDictionary *)self contents];
-        v11 = [v10 objectForKey:v9];
-        v12 = [v11 value];
-        (v4)[2](v4, v12);
+        graphCopy[2](graphCopy, v9);
+        contents2 = [(ICCRDictionary *)self contents];
+        v11 = [contents2 objectForKey:v9];
+        value = [v11 value];
+        (graphCopy)[2](graphCopy, value);
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [contents countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -868,23 +868,23 @@ LABEL_3:
           }
 
           v10 = *(*(&v22 + 1) + 8 * i);
-          v11 = [(ICCRDictionary *)self contents];
-          v12 = [v11 objectForKey:v10];
+          contents = [(ICCRDictionary *)self contents];
+          v12 = [contents objectForKey:v10];
 
-          v13 = [v12 value];
-          LODWORD(v11) = v13 == v10;
+          value = [v12 value];
+          LODWORD(contents) = value == v10;
 
-          v14 = [v12 timestamp];
-          v15 = [v14 shortDescription];
+          timestamp = [v12 timestamp];
+          shortDescription = [timestamp shortDescription];
           [v12 value];
-          if (v11)
+          if (contents)
             v16 = {;
-            [v6 appendFormat:@"  %@ %@, \n", v15, v16];
+            [v6 appendFormat:@"  %@ %@, \n", shortDescription, v16];
           }
 
           else
             v16 = {;
-            [v6 appendFormat:@"  %@ : %@ %@, \n", v10, v15, v16];
+            [v6 appendFormat:@"  %@ : %@ %@, \n", v10, shortDescription, v16];
           }
         }
 

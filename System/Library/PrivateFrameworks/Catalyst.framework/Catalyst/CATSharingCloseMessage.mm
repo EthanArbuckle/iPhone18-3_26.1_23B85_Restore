@@ -1,21 +1,21 @@
 @interface CATSharingCloseMessage
-+ (id)instanceWithDictionary:(id)a3;
-- (CATSharingCloseMessage)initWithError:(id)a3;
++ (id)instanceWithDictionary:(id)dictionary;
+- (CATSharingCloseMessage)initWithError:(id)error;
 - (NSDictionary)dictionaryValue;
 @end
 
 @implementation CATSharingCloseMessage
 
-- (CATSharingCloseMessage)initWithError:(id)a3
+- (CATSharingCloseMessage)initWithError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   v9.receiver = self;
   v9.super_class = CATSharingCloseMessage;
   v6 = [(CATSharingCloseMessage *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_closeError, a3);
+    objc_storeStrong(&v6->_closeError, error);
   }
 
   return v7;
@@ -24,19 +24,19 @@
 - (NSDictionary)dictionaryValue
 {
   v3 = objc_opt_new();
-  v4 = [(CATSharingCloseMessage *)self closeError];
-  [v3 setObject:v4 forKeyedSubscript:@"SharingCloseMessageError"];
+  closeError = [(CATSharingCloseMessage *)self closeError];
+  [v3 setObject:closeError forKeyedSubscript:@"SharingCloseMessageError"];
 
   v5 = [v3 copy];
 
   return v5;
 }
 
-+ (id)instanceWithDictionary:(id)a3
++ (id)instanceWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v6 = [v4 objectForKeyedSubscript:@"SharingCloseMessageError"];
+  dictionaryCopy = dictionary;
+  v5 = [self alloc];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"SharingCloseMessageError"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())

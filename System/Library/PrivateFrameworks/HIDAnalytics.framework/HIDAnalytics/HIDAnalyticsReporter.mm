@@ -1,13 +1,13 @@
 @interface HIDAnalyticsReporter
 - (HIDAnalyticsReporter)init;
-- (id)createBucketData:(id)a3 fieldvalue:(id)a4 fieldDescription:(id)a5;
+- (id)createBucketData:(id)data fieldvalue:(id)fieldvalue fieldDescription:(id)description;
 - (void)dealloc;
-- (void)dispatchAnalyticsForEvent:(id)a3;
-- (void)logAnalyticsEvent:(id)a3;
-- (void)logAnalyticsEvent:(id)a3 eventDescription:(id)a4 eventValue:(id)a5;
-- (void)registerEvent:(id)a3;
+- (void)dispatchAnalyticsForEvent:(id)event;
+- (void)logAnalyticsEvent:(id)event;
+- (void)logAnalyticsEvent:(id)event eventDescription:(id)description eventValue:(id)value;
+- (void)registerEvent:(id)event;
 - (void)start;
-- (void)unregisterEvent:(id)a3;
+- (void)unregisterEvent:(id)event;
 @end
 
 @implementation HIDAnalyticsReporter
@@ -188,22 +188,22 @@ LABEL_24:
   [(HIDAnalyticsReporter *)&v3 dealloc];
 }
 
-- (id)createBucketData:(id)a3 fieldvalue:(id)a4 fieldDescription:(id)a5
+- (id)createBucketData:(id)data fieldvalue:(id)fieldvalue fieldDescription:(id)description
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  dataCopy = data;
+  fieldvalueCopy = fieldvalue;
+  descriptionCopy = description;
+  if (fieldvalueCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v10 = MEMORY[0x277CBEB18];
-    v11 = v8;
+    v11 = fieldvalueCopy;
     v12 = objc_alloc_init(v10);
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __69__HIDAnalyticsReporter_createBucketData_fieldvalue_fieldDescription___block_invoke;
     v17[3] = &unk_2796A1DC0;
-    v18 = v7;
-    v19 = v9;
+    v18 = dataCopy;
+    v19 = descriptionCopy;
     v13 = v12;
     v20 = v13;
     [v11 enumerateObjectsUsingBlock:v17];
@@ -247,21 +247,21 @@ void __69__HIDAnalyticsReporter_createBucketData_fieldvalue_fieldDescription___b
   }
 }
 
-- (void)logAnalyticsEvent:(id)a3 eventDescription:(id)a4 eventValue:(id)a5
+- (void)logAnalyticsEvent:(id)event eventDescription:(id)description eventValue:(id)value
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (a5)
+  eventCopy = event;
+  descriptionCopy = description;
+  v10 = descriptionCopy;
+  if (value)
   {
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __70__HIDAnalyticsReporter_logAnalyticsEvent_eventDescription_eventValue___block_invoke;
     v11[3] = &unk_2796A1DC0;
     v11[4] = self;
-    v12 = v9;
-    v13 = v8;
-    [a5 enumerateObjectsUsingBlock:v11];
+    v12 = descriptionCopy;
+    v13 = eventCopy;
+    [value enumerateObjectsUsingBlock:v11];
   }
 }
 
@@ -332,19 +332,19 @@ void __70__HIDAnalyticsReporter_logAnalyticsEvent_eventDescription_eventValue___
   AnalyticsSendEventLazy();
 }
 
-- (void)logAnalyticsEvent:(id)a3
+- (void)logAnalyticsEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   objc_initWeak(&location, self);
-  v5 = [v4 value];
-  DeepCopy = CFPropertyListCreateDeepCopy(0, v5, 2uLL);
+  value = [eventCopy value];
+  DeepCopy = CFPropertyListCreateDeepCopy(0, value, 2uLL);
 
-  v7 = [v4 name];
-  if (v7)
+  name = [eventCopy name];
+  if (name)
   {
     v8 = MEMORY[0x277CCACA8];
-    v9 = [v4 name];
-    v10 = [v8 stringWithFormat:@"%@", v9];
+    name2 = [eventCopy name];
+    v10 = [v8 stringWithFormat:@"%@", name2];
   }
 
   else
@@ -352,12 +352,12 @@ void __70__HIDAnalyticsReporter_logAnalyticsEvent_eventDescription_eventValue___
     v10 = @"unknown";
   }
 
-  v11 = [v4 desc];
-  if (v11)
+  desc = [eventCopy desc];
+  if (desc)
   {
     v12 = MEMORY[0x277CCACA8];
-    v13 = [v4 desc];
-    v14 = [v12 stringWithFormat:@"%@", v13];
+    desc2 = [eventCopy desc];
+    v14 = [v12 stringWithFormat:@"%@", desc2];
   }
 
   else
@@ -395,33 +395,33 @@ void __42__HIDAnalyticsReporter_logAnalyticsEvent___block_invoke(uint64_t a1)
   }
 }
 
-- (void)registerEvent:(id)a3
+- (void)registerEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableSet *)self->_events addObject:v4];
+  [(NSMutableSet *)self->_events addObject:eventCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)unregisterEvent:(id)a3
+- (void)unregisterEvent:(id)event
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableSet *)self->_events removeObject:v4];
+  [(NSMutableSet *)self->_events removeObject:eventCopy];
   os_unfair_lock_unlock(&self->_lock);
-  if (([v4 isLogged] & 1) == 0)
+  if (([eventCopy isLogged] & 1) == 0)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [v4 name];
+      name = [eventCopy name];
       v7 = 138412290;
-      v8 = v5;
+      v8 = name;
       _os_log_impl(&dword_25092B000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "HIDAnalytics Unregister Send event %@", &v7, 0xCu);
     }
 
-    [(HIDAnalyticsReporter *)self logAnalyticsEvent:v4];
+    [(HIDAnalyticsReporter *)self logAnalyticsEvent:eventCopy];
   }
 
   v6 = *MEMORY[0x277D85DE8];
@@ -435,24 +435,24 @@ void __42__HIDAnalyticsReporter_logAnalyticsEvent___block_invoke(uint64_t a1)
   dispatch_source_set_timer(timer, v3, 0x274A48A78000uLL, 0);
 }
 
-- (void)dispatchAnalyticsForEvent:(id)a3
+- (void)dispatchAnalyticsForEvent:(id)event
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSMutableSet *)self->_events containsObject:v4];
+  v5 = [(NSMutableSet *)self->_events containsObject:eventCopy];
   os_unfair_lock_unlock(&self->_lock);
   if (v5)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [v4 name];
+      name = [eventCopy name];
       v8 = 138412290;
-      v9 = v6;
+      v9 = name;
       _os_log_impl(&dword_25092B000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "HIDAnalytics Set Value Send event %@", &v8, 0xCu);
     }
 
-    [(HIDAnalyticsReporter *)self logAnalyticsEvent:v4];
+    [(HIDAnalyticsReporter *)self logAnalyticsEvent:eventCopy];
   }
 
   v7 = *MEMORY[0x277D85DE8];

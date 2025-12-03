@@ -1,90 +1,90 @@
 @interface PKThresholdTopUpSelectionSectionController
-- (BOOL)shouldHighlightItem:(id)a3;
+- (BOOL)shouldHighlightItem:(id)item;
 - (BOOL)valuesEdited;
 - (NSArray)identifiers;
-- (PKThresholdTopUpSelectionSectionController)initWithAmountSuggestions:(id)a3 selectedAmount:(id)a4 thresholdSuggestions:(id)a5 selectedThreshold:(id)a6 currencyCode:(id)a7 paymentMethodName:(id)a8 paymentMethodIdentifier:(id)a9 viewStyle:(int64_t)a10 delegate:(id)a11 useSetupMargins:(BOOL)a12;
-- (id)_buttonAccessoryForItem:(id)a3;
-- (id)cellRegistrationForItem:(id)a3;
-- (id)layoutWithLayoutEnvironment:(id)a3 sectionIdentifier:(id)a4;
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4;
+- (PKThresholdTopUpSelectionSectionController)initWithAmountSuggestions:(id)suggestions selectedAmount:(id)amount thresholdSuggestions:(id)thresholdSuggestions selectedThreshold:(id)threshold currencyCode:(id)code paymentMethodName:(id)name paymentMethodIdentifier:(id)identifier viewStyle:(int64_t)self0 delegate:(id)self1 useSetupMargins:(BOOL)self2;
+- (id)_buttonAccessoryForItem:(id)item;
+- (id)cellRegistrationForItem:(id)item;
+- (id)layoutWithLayoutEnvironment:(id)environment sectionIdentifier:(id)identifier;
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier;
 - (void)applyUpdate;
-- (void)didSelectItem:(id)a3;
-- (void)setEditing:(BOOL)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)updatePaymentMethod:(id)a3;
-- (void)updateTopUpAmount:(id)a3 threshold:(id)a4 paymentMethodName:(id)a5 paymentMethodIdentifier:(id)a6;
+- (void)didSelectItem:(id)item;
+- (void)setEditing:(BOOL)editing;
+- (void)setEnabled:(BOOL)enabled;
+- (void)updatePaymentMethod:(id)method;
+- (void)updateTopUpAmount:(id)amount threshold:(id)threshold paymentMethodName:(id)name paymentMethodIdentifier:(id)identifier;
 @end
 
 @implementation PKThresholdTopUpSelectionSectionController
 
-- (PKThresholdTopUpSelectionSectionController)initWithAmountSuggestions:(id)a3 selectedAmount:(id)a4 thresholdSuggestions:(id)a5 selectedThreshold:(id)a6 currencyCode:(id)a7 paymentMethodName:(id)a8 paymentMethodIdentifier:(id)a9 viewStyle:(int64_t)a10 delegate:(id)a11 useSetupMargins:(BOOL)a12
+- (PKThresholdTopUpSelectionSectionController)initWithAmountSuggestions:(id)suggestions selectedAmount:(id)amount thresholdSuggestions:(id)thresholdSuggestions selectedThreshold:(id)threshold currencyCode:(id)code paymentMethodName:(id)name paymentMethodIdentifier:(id)identifier viewStyle:(int64_t)self0 delegate:(id)self1 useSetupMargins:(BOOL)self2
 {
-  v19 = a3;
-  v20 = a4;
-  obj = a5;
-  v21 = a5;
-  v22 = a6;
-  v36 = a7;
-  v34 = a8;
-  v23 = a8;
-  v24 = v22;
-  v35 = a9;
-  v25 = a11;
+  suggestionsCopy = suggestions;
+  amountCopy = amount;
+  obj = thresholdSuggestions;
+  thresholdSuggestionsCopy = thresholdSuggestions;
+  thresholdCopy = threshold;
+  codeCopy = code;
+  nameCopy = name;
+  nameCopy2 = name;
+  v24 = thresholdCopy;
+  identifierCopy = identifier;
+  delegateCopy = delegate;
   v37.receiver = self;
   v37.super_class = PKThresholdTopUpSelectionSectionController;
   v26 = [(PKThresholdTopUpSelectionSectionController *)&v37 init];
   v27 = v26;
   if (v26)
   {
-    objc_storeStrong(&v26->_amountSuggestions, a3);
+    objc_storeStrong(&v26->_amountSuggestions, suggestions);
     objc_storeStrong(&v27->_thresholdSuggestions, obj);
-    objc_storeStrong(&v27->_currencyCode, a7);
+    objc_storeStrong(&v27->_currencyCode, code);
     v27->_amountIsExpanded = 1;
     *&v27->_enabled = 257;
-    objc_storeWeak(&v27->_delegate, v25);
-    if (v20)
+    objc_storeWeak(&v27->_delegate, delegateCopy);
+    if (amountCopy)
     {
-      v28 = v20;
+      firstObject = amountCopy;
     }
 
     else
     {
-      v28 = [v19 firstObject];
+      firstObject = [suggestionsCopy firstObject];
     }
 
     currentAmount = v27->_currentAmount;
-    v27->_currentAmount = v28;
+    v27->_currentAmount = firstObject;
 
     objc_storeStrong(&v27->_originalAmount, v27->_currentAmount);
     if (v24)
     {
-      v30 = v24;
+      firstObject2 = v24;
     }
 
     else
     {
-      v30 = [v21 firstObject];
+      firstObject2 = [thresholdSuggestionsCopy firstObject];
     }
 
     currentThreshold = v27->_currentThreshold;
-    v27->_currentThreshold = v30;
+    v27->_currentThreshold = firstObject2;
 
     objc_storeStrong(&v27->_originalThreshold, v27->_currentThreshold);
-    objc_storeStrong(&v27->_currentPaymentMethodName, v34);
+    objc_storeStrong(&v27->_currentPaymentMethodName, nameCopy);
     objc_storeStrong(&v27->_originalPaymentMethodName, v27->_currentPaymentMethodName);
-    objc_storeStrong(&v27->_currentPaymentMethodIdentifier, a9);
+    objc_storeStrong(&v27->_currentPaymentMethodIdentifier, identifier);
     objc_storeStrong(&v27->_originalPaymentMethodIdentifier, v27->_currentPaymentMethodIdentifier);
-    v27->_viewStyle = a10;
-    v27->_useSetupMargins = a12;
+    v27->_viewStyle = style;
+    v27->_useSetupMargins = margins;
   }
 
   return v27;
 }
 
-- (void)setEditing:(BOOL)a3
+- (void)setEditing:(BOOL)editing
 {
-  self->_editing = a3;
-  if (!a3)
+  self->_editing = editing;
+  if (!editing)
   {
     *&self->_amountIsExpanded = 0;
     objc_storeStrong(&self->_currentAmount, self->_originalAmount);
@@ -97,9 +97,9 @@
   [WeakRetained reloadDataAnimated:1];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  self->_enabled = a3;
+  self->_enabled = enabled;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained reloadDataAnimated:1];
 }
@@ -136,14 +136,14 @@
   return v2;
 }
 
-- (BOOL)shouldHighlightItem:(id)a3
+- (BOOL)shouldHighlightItem:(id)item
 {
   if (!self->_editing)
   {
     return 0;
   }
 
-  v3 = [a3 identifier];
+  identifier = [item identifier];
   if (PKEqualObjects() & 1) != 0 || (PKEqualObjects())
   {
     v4 = 1;
@@ -157,52 +157,52 @@
   return v4;
 }
 
-- (void)updateTopUpAmount:(id)a3 threshold:(id)a4 paymentMethodName:(id)a5 paymentMethodIdentifier:(id)a6
+- (void)updateTopUpAmount:(id)amount threshold:(id)threshold paymentMethodName:(id)name paymentMethodIdentifier:(id)identifier
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  amountCopy = amount;
+  thresholdCopy = threshold;
+  nameCopy = name;
+  identifierCopy = identifier;
   self->_amountIsExpanded = self->_editing;
   self->_enabled = 1;
   currentAmount = self->_currentAmount;
-  self->_currentAmount = v10;
-  v15 = v10;
+  self->_currentAmount = amountCopy;
+  v15 = amountCopy;
 
   currentThreshold = self->_currentThreshold;
-  self->_currentThreshold = v11;
-  v17 = v11;
+  self->_currentThreshold = thresholdCopy;
+  v17 = thresholdCopy;
 
   currentPaymentMethodName = self->_currentPaymentMethodName;
-  self->_currentPaymentMethodName = v12;
-  v19 = v12;
+  self->_currentPaymentMethodName = nameCopy;
+  v19 = nameCopy;
 
   currentPaymentMethodIdentifier = self->_currentPaymentMethodIdentifier;
-  self->_currentPaymentMethodIdentifier = v13;
+  self->_currentPaymentMethodIdentifier = identifierCopy;
 
   [(PKThresholdTopUpSelectionSectionController *)self applyUpdate];
 }
 
-- (void)updatePaymentMethod:(id)a3
+- (void)updatePaymentMethod:(id)method
 {
-  v4 = a3;
-  v5 = [v4 localizedDescription];
+  methodCopy = method;
+  localizedDescription = [methodCopy localizedDescription];
   currentPaymentMethodName = self->_currentPaymentMethodName;
-  self->_currentPaymentMethodName = v5;
+  self->_currentPaymentMethodName = localizedDescription;
 
-  v7 = [v4 primaryAccountIdentifier];
+  primaryAccountIdentifier = [methodCopy primaryAccountIdentifier];
 
   currentPaymentMethodIdentifier = self->_currentPaymentMethodIdentifier;
-  self->_currentPaymentMethodIdentifier = v7;
+  self->_currentPaymentMethodIdentifier = primaryAccountIdentifier;
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v9 = [[PKThresholdTopUpSelectionItem alloc] initWithIdentifier:@"paymentMethodIdentifier"];
   [WeakRetained reloadItem:v9 animated:1];
 }
 
-- (void)didSelectItem:(id)a3
+- (void)didSelectItem:(id)item
 {
-  v7 = [a3 identifier];
+  identifier = [item identifier];
   if (PKEqualObjects() && !self->_amountIsExpanded)
   {
     v5 = 1;
@@ -233,11 +233,11 @@ LABEL_11:
   [v6 deselectCells];
 }
 
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier
 {
-  v5 = a4;
+  identifierCopy = identifier;
   v6 = objc_alloc_init(MEMORY[0x1E69DC5D0]);
-  v7 = v5;
+  v7 = identifierCopy;
   v8 = v7;
   if (v7 == @"thresholdSelection" || v7 && (v9 = [(__CFString *)v7 isEqualToString:@"thresholdSelection"], v8, v9))
   {
@@ -273,10 +273,10 @@ LABEL_11:
   return v6;
 }
 
-- (id)cellRegistrationForItem:(id)a3
+- (id)cellRegistrationForItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 identifier];
+  itemCopy = item;
+  identifier = [itemCopy identifier];
   if (PKEqualObjects() & 1) != 0 || (PKEqualObjects())
   {
     objc_initWeak(&location, self);
@@ -691,10 +691,10 @@ void __70__PKThresholdTopUpSelectionSectionController_cellRegistrationForItem___
   }
 }
 
-- (id)_buttonAccessoryForItem:(id)a3
+- (id)_buttonAccessoryForItem:(id)item
 {
   v38[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemCopy = item;
   objc_initWeak(&location, self);
   v5 = MEMORY[0x1E69DC628];
   v30 = MEMORY[0x1E69E9820];
@@ -702,17 +702,17 @@ void __70__PKThresholdTopUpSelectionSectionController_cellRegistrationForItem___
   v32 = __70__PKThresholdTopUpSelectionSectionController__buttonAccessoryForItem___block_invoke;
   v33 = &unk_1E8012328;
   objc_copyWeak(&v35, &location);
-  v6 = v4;
+  v6 = itemCopy;
   v34 = v6;
   v7 = [v5 actionWithHandler:&v30];
-  v8 = [v6 identifier];
+  identifier = [v6 identifier];
   v9 = MEMORY[0x1E69DC738];
-  v10 = [MEMORY[0x1E69DC740] filledButtonConfiguration];
-  v11 = [v9 buttonWithConfiguration:v10 primaryAction:v7];
+  filledButtonConfiguration = [MEMORY[0x1E69DC740] filledButtonConfiguration];
+  v11 = [v9 buttonWithConfiguration:filledButtonConfiguration primaryAction:v7];
 
-  v12 = [v11 configuration];
-  v13 = [MEMORY[0x1E69DC888] labelColor];
-  v14 = v8;
+  configuration = [v11 configuration];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  v14 = identifier;
   v15 = v14;
   if (v14 == @"amountIdentifier")
   {
@@ -756,7 +756,7 @@ LABEL_6:
         v18 = LABEL_7:;
         v22 = v18;
 
-        v13 = v22;
+        labelColor = v22;
         goto LABEL_15;
       }
 
@@ -774,16 +774,16 @@ LABEL_13:
 
 LABEL_15:
   v23 = objc_alloc(MEMORY[0x1E696AAB0]);
-  v24 = [v17 minimalFormattedStringValue];
+  minimalFormattedStringValue = [v17 minimalFormattedStringValue];
   v37 = *MEMORY[0x1E69DB650];
-  v38[0] = v13;
+  v38[0] = labelColor;
   v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v38 forKeys:&v37 count:1];
-  v26 = [v23 initWithString:v24 attributes:v25];
-  [v12 setAttributedTitle:v26];
+  v26 = [v23 initWithString:minimalFormattedStringValue attributes:v25];
+  [configuration setAttributedTitle:v26];
 
-  [v11 setConfiguration:v12];
-  v27 = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
-  [v11 setTintColor:v27];
+  [v11 setConfiguration:configuration];
+  systemGroupedBackgroundColor = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
+  [v11 setTintColor:systemGroupedBackgroundColor];
 
   v28 = [objc_alloc(MEMORY[0x1E69DC790]) initWithCustomView:v11 placement:1];
   objc_destroyWeak(&v35);
@@ -798,12 +798,12 @@ void __70__PKThresholdTopUpSelectionSectionController__buttonAccessoryForItem___
   [WeakRetained didSelectItem:*(a1 + 32)];
 }
 
-- (id)layoutWithLayoutEnvironment:(id)a3 sectionIdentifier:(id)a4
+- (id)layoutWithLayoutEnvironment:(id)environment sectionIdentifier:(id)identifier
 {
   v5 = MEMORY[0x1E69DC7E0];
-  v6 = a3;
+  environmentCopy = environment;
   v7 = [[v5 alloc] initWithAppearance:2];
-  v8 = [MEMORY[0x1E6995580] sectionWithListConfiguration:v7 layoutEnvironment:v6];
+  v8 = [MEMORY[0x1E6995580] sectionWithListConfiguration:v7 layoutEnvironment:environmentCopy];
 
   [v8 contentInsets];
   if (self->_useSetupMargins)

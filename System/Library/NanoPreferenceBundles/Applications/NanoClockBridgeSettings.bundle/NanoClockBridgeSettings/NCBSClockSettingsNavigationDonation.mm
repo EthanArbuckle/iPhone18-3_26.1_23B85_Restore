@@ -9,7 +9,7 @@
 + (id)soundsSettingsURLString;
 + (id)tapticTimeSettingsTitle;
 + (id)tapticTimeSettingsURLString;
-+ (void)donateSettingWithTitle:(id)a3 navigationComponents:(id)a4 urlString:(id)a5;
++ (void)donateSettingWithTitle:(id)title navigationComponents:(id)components urlString:(id)string;
 + (void)donateUserVisitForCityAbbreviationsSettings;
 + (void)donateUserVisitForClockSettings;
 + (void)donateUserVisitForSoundsSettings;
@@ -21,30 +21,30 @@
 + (void)donateUserVisitForClockSettings
 {
   v2 = objc_opt_class();
-  v4 = [objc_opt_class() clockSettingsTitle];
-  v3 = [objc_opt_class() clockSettingsURLString];
-  [v2 donateSettingWithTitle:v4 navigationComponents:&__NSArray0__struct urlString:v3];
+  clockSettingsTitle = [objc_opt_class() clockSettingsTitle];
+  clockSettingsURLString = [objc_opt_class() clockSettingsURLString];
+  [v2 donateSettingWithTitle:clockSettingsTitle navigationComponents:&__NSArray0__struct urlString:clockSettingsURLString];
 }
 
-+ (void)donateSettingWithTitle:(id)a3 navigationComponents:(id)a4 urlString:(id)a5
++ (void)donateSettingWithTitle:(id)title navigationComponents:(id)components urlString:(id)string
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v7)
+  titleCopy = title;
+  componentsCopy = components;
+  stringCopy = string;
+  if (titleCopy)
   {
-    v10 = [objc_opt_class() currentBundle];
-    v11 = [v10 bundleIdentifier];
-    v12 = [NSURL URLWithString:v9];
-    [BPSWatchSettingsNavigationDonation emitNavigationEventForApplicationSettingWithIconSpecifierIdentifier:v11 title:v7 localizedNavigationComponents:v8 deepLink:v12];
+    currentBundle = [objc_opt_class() currentBundle];
+    bundleIdentifier = [currentBundle bundleIdentifier];
+    v12 = [NSURL URLWithString:stringCopy];
+    [BPSWatchSettingsNavigationDonation emitNavigationEventForApplicationSettingWithIconSpecifierIdentifier:bundleIdentifier title:titleCopy localizedNavigationComponents:componentsCopy deepLink:v12];
   }
 
   else
   {
-    v10 = NTALogForCategory(5uLL);
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    currentBundle = NTALogForCategory(5uLL);
+    if (os_log_type_enabled(currentBundle, OS_LOG_TYPE_ERROR))
     {
-      sub_6008(v9, v10);
+      sub_6008(stringCopy, currentBundle);
     }
   }
 }
@@ -64,27 +64,27 @@
     [v2 load];
   }
 
-  v3 = [v2 bundleURL];
+  bundleURL = [v2 bundleURL];
 
-  return v3;
+  return bundleURL;
 }
 
 + (id)clockSettingsTitle
 {
   v2 = [_NSLocalizedStringResource alloc];
   v3 = +[NSLocale currentLocale];
-  v4 = [objc_opt_class() currentBundle];
-  v5 = [v4 bundleURL];
-  v6 = [v2 initWithKey:@"PANE_TITLE" table:@"NanoClockBridgeSettings" locale:v3 bundleURL:v5];
+  currentBundle = [objc_opt_class() currentBundle];
+  bundleURL = [currentBundle bundleURL];
+  v6 = [v2 initWithKey:@"PANE_TITLE" table:@"NanoClockBridgeSettings" locale:v3 bundleURL:bundleURL];
 
   return v6;
 }
 
 + (id)clockSettingsURLString
 {
-  v2 = [objc_opt_class() currentBundle];
-  v3 = [v2 bundleIdentifier];
-  v4 = [NSString stringWithFormat:@"bridge:root=%@", v3];
+  currentBundle = [objc_opt_class() currentBundle];
+  bundleIdentifier = [currentBundle bundleIdentifier];
+  v4 = [NSString stringWithFormat:@"bridge:root=%@", bundleIdentifier];
 
   return v4;
 }
@@ -92,22 +92,22 @@
 + (void)donateUserVisitForSoundsSettings
 {
   v2 = objc_opt_class();
-  v3 = [objc_opt_class() soundsSettingsTitle];
-  v4 = [objc_opt_class() clockSettingsTitle];
-  v7 = v4;
+  soundsSettingsTitle = [objc_opt_class() soundsSettingsTitle];
+  clockSettingsTitle = [objc_opt_class() clockSettingsTitle];
+  v7 = clockSettingsTitle;
   v5 = [NSArray arrayWithObjects:&v7 count:1];
-  v6 = [objc_opt_class() soundsSettingsURLString];
-  [v2 donateSettingWithTitle:v3 navigationComponents:v5 urlString:v6];
+  soundsSettingsURLString = [objc_opt_class() soundsSettingsURLString];
+  [v2 donateSettingWithTitle:soundsSettingsTitle navigationComponents:v5 urlString:soundsSettingsURLString];
 }
 
 + (id)soundsSettingsTitle
 {
-  v2 = [objc_opt_class() axBundleURL];
-  if (v2)
+  axBundleURL = [objc_opt_class() axBundleURL];
+  if (axBundleURL)
   {
     v3 = [_NSLocalizedStringResource alloc];
     v4 = +[NSLocale currentLocale];
-    v5 = [v3 initWithKey:@"TAPTIC_CHIMES_SOUNDS_TITLE" table:@"Localizable" locale:v4 bundleURL:v2];
+    v5 = [v3 initWithKey:@"TAPTIC_CHIMES_SOUNDS_TITLE" table:@"Localizable" locale:v4 bundleURL:axBundleURL];
   }
 
   else
@@ -120,8 +120,8 @@
 
 + (id)soundsSettingsURLString
 {
-  v2 = [objc_opt_class() clockSettingsURLString];
-  v3 = [v2 stringByAppendingString:@"&path=CHIMES_SOUNDS_ID"];
+  clockSettingsURLString = [objc_opt_class() clockSettingsURLString];
+  v3 = [clockSettingsURLString stringByAppendingString:@"&path=CHIMES_SOUNDS_ID"];
 
   return v3;
 }
@@ -129,22 +129,22 @@
 + (void)donateUserVisitForTapticTimeSettings
 {
   v2 = objc_opt_class();
-  v3 = [objc_opt_class() tapticTimeSettingsTitle];
-  v4 = [objc_opt_class() clockSettingsTitle];
-  v7 = v4;
+  tapticTimeSettingsTitle = [objc_opt_class() tapticTimeSettingsTitle];
+  clockSettingsTitle = [objc_opt_class() clockSettingsTitle];
+  v7 = clockSettingsTitle;
   v5 = [NSArray arrayWithObjects:&v7 count:1];
-  v6 = [objc_opt_class() tapticTimeSettingsURLString];
-  [v2 donateSettingWithTitle:v3 navigationComponents:v5 urlString:v6];
+  tapticTimeSettingsURLString = [objc_opt_class() tapticTimeSettingsURLString];
+  [v2 donateSettingWithTitle:tapticTimeSettingsTitle navigationComponents:v5 urlString:tapticTimeSettingsURLString];
 }
 
 + (id)tapticTimeSettingsTitle
 {
-  v2 = [objc_opt_class() axBundleURL];
-  if (v2)
+  axBundleURL = [objc_opt_class() axBundleURL];
+  if (axBundleURL)
   {
     v3 = [_NSLocalizedStringResource alloc];
     v4 = +[NSLocale currentLocale];
-    v5 = [v3 initWithKey:@"TAPTIC_TIME_TITLE" table:@"Localizable" locale:v4 bundleURL:v2];
+    v5 = [v3 initWithKey:@"TAPTIC_TIME_TITLE" table:@"Localizable" locale:v4 bundleURL:axBundleURL];
   }
 
   else
@@ -157,8 +157,8 @@
 
 + (id)tapticTimeSettingsURLString
 {
-  v2 = [objc_opt_class() clockSettingsURLString];
-  v3 = [v2 stringByAppendingString:@"&path=TAPTIC_TIME_IDENTIFIER"];
+  clockSettingsURLString = [objc_opt_class() clockSettingsURLString];
+  v3 = [clockSettingsURLString stringByAppendingString:@"&path=TAPTIC_TIME_IDENTIFIER"];
 
   return v3;
 }
@@ -166,29 +166,29 @@
 + (void)donateUserVisitForCityAbbreviationsSettings
 {
   v2 = objc_opt_class();
-  v3 = [objc_opt_class() cityAbbreviationsSettingsTitle];
-  v4 = [objc_opt_class() clockSettingsTitle];
-  v7 = v4;
+  cityAbbreviationsSettingsTitle = [objc_opt_class() cityAbbreviationsSettingsTitle];
+  clockSettingsTitle = [objc_opt_class() clockSettingsTitle];
+  v7 = clockSettingsTitle;
   v5 = [NSArray arrayWithObjects:&v7 count:1];
-  v6 = [objc_opt_class() cityAbbreviationsSettingsURLString];
-  [v2 donateSettingWithTitle:v3 navigationComponents:v5 urlString:v6];
+  cityAbbreviationsSettingsURLString = [objc_opt_class() cityAbbreviationsSettingsURLString];
+  [v2 donateSettingWithTitle:cityAbbreviationsSettingsTitle navigationComponents:v5 urlString:cityAbbreviationsSettingsURLString];
 }
 
 + (id)cityAbbreviationsSettingsTitle
 {
   v2 = [_NSLocalizedStringResource alloc];
   v3 = +[NSLocale currentLocale];
-  v4 = [objc_opt_class() currentBundle];
-  v5 = [v4 bundleURL];
-  v6 = [v2 initWithKey:@"CITY_ABBREVIATIONS" table:@"NanoClockBridgeSettings" locale:v3 bundleURL:v5];
+  currentBundle = [objc_opt_class() currentBundle];
+  bundleURL = [currentBundle bundleURL];
+  v6 = [v2 initWithKey:@"CITY_ABBREVIATIONS" table:@"NanoClockBridgeSettings" locale:v3 bundleURL:bundleURL];
 
   return v6;
 }
 
 + (id)cityAbbreviationsSettingsURLString
 {
-  v2 = [objc_opt_class() clockSettingsURLString];
-  v3 = [v2 stringByAppendingString:@"&path=CITY_ABBREVIATIONS_ID"];
+  clockSettingsURLString = [objc_opt_class() clockSettingsURLString];
+  v3 = [clockSettingsURLString stringByAppendingString:@"&path=CITY_ABBREVIATIONS_ID"];
 
   return v3;
 }

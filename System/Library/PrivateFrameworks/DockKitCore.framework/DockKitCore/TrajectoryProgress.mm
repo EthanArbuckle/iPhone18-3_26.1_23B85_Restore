@@ -1,13 +1,13 @@
 @interface TrajectoryProgress
 - (_TtC11DockKitCore18TrajectoryProgress)init;
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 @end
 
 @implementation TrajectoryProgress
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   sub_224522998(v6);
 
   __swift_project_boxed_opaque_existential_1Tm(v6, v6[3]);

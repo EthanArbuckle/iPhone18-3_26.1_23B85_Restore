@@ -1,9 +1,9 @@
 @interface _UIDragInteractionClickPresentationDriver
-- (BOOL)canBeginLiftAtLocation:(CGPoint)a3;
+- (BOOL)canBeginLiftAtLocation:(CGPoint)location;
 - (BOOL)isLifted;
 - (void)_performDelayedLift;
-- (void)beginDragWithTouches:(id)a3 itemIterator:(id)a4 beginningSessionHandler:(id)a5;
-- (void)beginLiftAtLocation:(CGPoint)a3 useDefaultLiftAnimation:(BOOL)a4 delay:(double)a5 completion:(id)a6;
+- (void)beginDragWithTouches:(id)touches itemIterator:(id)iterator beginningSessionHandler:(id)handler;
+- (void)beginLiftAtLocation:(CGPoint)location useDefaultLiftAnimation:(BOOL)animation delay:(double)delay completion:(id)completion;
 - (void)cancel;
 - (void)didTransitionToBeginState;
 - (void)didTransitionToInactiveState;
@@ -22,20 +22,20 @@
   self->_delayedLift = 0;
 }
 
-- (BOOL)canBeginLiftAtLocation:(CGPoint)a3
+- (BOOL)canBeginLiftAtLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(_UIDragInteractionDriver *)self isEnabled];
-  if (v6)
+  y = location.y;
+  x = location.x;
+  isEnabled = [(_UIDragInteractionDriver *)self isEnabled];
+  if (isEnabled)
   {
-    v7 = [(_UIDragInteractionDriver *)self delegate];
-    v8 = [v7 dragDriver:self shouldBeginAtLocation:{x, y}];
+    delegate = [(_UIDragInteractionDriver *)self delegate];
+    v8 = [delegate dragDriver:self shouldBeginAtLocation:{x, y}];
 
-    LOBYTE(v6) = v8;
+    LOBYTE(isEnabled) = v8;
   }
 
-  return v6;
+  return isEnabled;
 }
 
 - (BOOL)isLifted
@@ -48,20 +48,20 @@
   return self;
 }
 
-- (void)beginLiftAtLocation:(CGPoint)a3 useDefaultLiftAnimation:(BOOL)a4 delay:(double)a5 completion:(id)a6
+- (void)beginLiftAtLocation:(CGPoint)location useDefaultLiftAnimation:(BOOL)animation delay:(double)delay completion:(id)completion
 {
-  v7 = a4;
-  y = a3.y;
-  x = a3.x;
-  v11 = a6;
-  [(_UIDragInteractionDriver *)self setShouldAnimateLift:v7];
+  animationCopy = animation;
+  y = location.y;
+  x = location.x;
+  completionCopy = completion;
+  [(_UIDragInteractionDriver *)self setShouldAnimateLift:animationCopy];
   [(_UIDragInteractionDriver *)self setInitialLocationInWindow:x, y];
-  v12 = _Block_copy(v11);
+  v12 = _Block_copy(completionCopy);
 
   liftCompletion = self->_liftCompletion;
   self->_liftCompletion = v12;
 
-  if (a5 <= 0.0)
+  if (delay <= 0.0)
   {
 
     _UIDragInteractionDriverStateMachineHandleEvent(&self->super._stateMachine, self, 0);
@@ -69,32 +69,32 @@
 
   else
   {
-    v14 = [[UIDelayedAction alloc] initWithTarget:self action:sel__performDelayedLift userInfo:0 delay:a5];
+    v14 = [[UIDelayedAction alloc] initWithTarget:self action:sel__performDelayedLift userInfo:0 delay:delay];
     delayedLift = self->_delayedLift;
     self->_delayedLift = v14;
   }
 }
 
-- (void)beginDragWithTouches:(id)a3 itemIterator:(id)a4 beginningSessionHandler:(id)a5
+- (void)beginDragWithTouches:(id)touches itemIterator:(id)iterator beginningSessionHandler:(id)handler
 {
-  v9 = a3;
-  aBlock = a4;
-  v10 = a5;
-  if (!v9)
+  touchesCopy = touches;
+  aBlock = iterator;
+  handlerCopy = handler;
+  if (!touchesCopy)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"_UIDragInteractionClickPresentationDriver.m" lineNumber:63 description:{@"Invalid parameter not satisfying: %@", @"touches"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIDragInteractionClickPresentationDriver.m" lineNumber:63 description:{@"Invalid parameter not satisfying: %@", @"touches"}];
   }
 
   touches = self->_touches;
-  self->_touches = v9;
-  v12 = v9;
+  self->_touches = touchesCopy;
+  v12 = touchesCopy;
 
   v13 = _Block_copy(aBlock);
   itemIterator = self->_itemIterator;
   self->_itemIterator = v13;
 
-  v15 = _Block_copy(v10);
+  v15 = _Block_copy(handlerCopy);
   sessionHandler = self->_sessionHandler;
   self->_sessionHandler = v15;
 
@@ -114,16 +114,16 @@
   v7.receiver = self;
   v7.super_class = _UIDragInteractionClickPresentationDriver;
   [(_UIDragInteractionDriver *)&v7 didTransitionToBeginState];
-  v3 = [(_UIDragInteractionDriver *)self delegate];
-  [v3 dragDriver:self beginDragWithTouches:self->_touches itemUpdater:self->_itemIterator beginningSessionHandler:self->_sessionHandler];
+  delegate = [(_UIDragInteractionDriver *)self delegate];
+  [delegate dragDriver:self beginDragWithTouches:self->_touches itemUpdater:self->_itemIterator beginningSessionHandler:self->_sessionHandler];
 
-  v4 = [(NSSet *)self->_touches anyObject];
-  v5 = [v4 window];
-  v6 = [v5 windowScene];
+  anyObject = [(NSSet *)self->_touches anyObject];
+  window = [anyObject window];
+  windowScene = [window windowScene];
 
-  if (v6)
+  if (windowScene)
   {
-    [UIApp _cancelAllEventsOfType:0 onEventRoutingScene:v6];
+    [UIApp _cancelAllEventsOfType:0 onEventRoutingScene:windowScene];
   }
 
   _UIDragInteractionDriverStateMachineHandleEvent(&self->super._stateMachine, self, 4);
@@ -149,8 +149,8 @@
 
 - (void)didTransitionToInflightState
 {
-  v3 = [(_UIDragInteractionDriver *)self delegate];
-  v4 = [v3 dragDriverBeginLift:self];
+  delegate = [(_UIDragInteractionDriver *)self delegate];
+  v4 = [delegate dragDriverBeginLift:self];
 
   if ((v4 & 1) == 0)
   {

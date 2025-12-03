@@ -1,13 +1,13 @@
 @interface EMCategory
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isPrimary;
-- (EMCategory)initWithCoder:(id)a3;
-- (EMCategory)initWithType:(unint64_t)a3 subtype:(unint64_t)a4 isHighImpact:(BOOL)a5 state:(unint64_t)a6;
+- (EMCategory)initWithCoder:(id)coder;
+- (EMCategory)initWithType:(unint64_t)type subtype:(unint64_t)subtype isHighImpact:(BOOL)impact state:(unint64_t)state;
 - (NSString)ef_publicDescription;
 - (id)_shortDescription;
 - (id)cachedSelf;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation EMCategory
@@ -28,8 +28,8 @@
 
 - (unint64_t)hash
 {
-  v3 = [(EMCategory *)self type];
-  v4 = 33 * (33 * v3 + [(EMCategory *)self subtype]);
+  type = [(EMCategory *)self type];
+  v4 = 33 * (33 * type + [(EMCategory *)self subtype]);
   v5 = 33 * (v4 + [(EMCategory *)self state]);
   return v5 + [(EMCategory *)self isHighImpact]+ 0x17C5D0F85;
 }
@@ -51,9 +51,9 @@
     v8 = off_1E826C6A0[v7];
   }
 
-  v9 = [(EMCategory *)self isHighImpact];
+  isHighImpact = [(EMCategory *)self isHighImpact];
   v10 = &stru_1F45FD218;
-  if (v9)
+  if (isHighImpact)
   {
     v10 = @" (high impact)";
   }
@@ -71,7 +71,7 @@ void __37__EMCategory_EFCacheable__cachedSelf__block_invoke()
   cachedSelf_sUniqueObjectIDs = v0;
 }
 
-- (EMCategory)initWithType:(unint64_t)a3 subtype:(unint64_t)a4 isHighImpact:(BOOL)a5 state:(unint64_t)a6
+- (EMCategory)initWithType:(unint64_t)type subtype:(unint64_t)subtype isHighImpact:(BOOL)impact state:(unint64_t)state
 {
   v14.receiver = self;
   v14.super_class = EMCategory;
@@ -79,15 +79,15 @@ void __37__EMCategory_EFCacheable__cachedSelf__block_invoke()
   v11 = v10;
   if (v10)
   {
-    v10->_type = a3;
-    v10->_subtype = a4;
-    v10->_isHighImpact = a5;
-    v10->_state = a6;
+    v10->_type = type;
+    v10->_subtype = subtype;
+    v10->_isHighImpact = impact;
+    v10->_state = state;
   }
 
-  v12 = [(EMCategory *)v10 cachedSelf];
+  cachedSelf = [(EMCategory *)v10 cachedSelf];
 
-  return v12;
+  return cachedSelf;
 }
 
 - (BOOL)isPrimary
@@ -100,14 +100,14 @@ void __37__EMCategory_EFCacheable__cachedSelf__block_invoke()
   return [(EMCategory *)self isHighImpact];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = -[EMCategory type](self, "type"), v5 == [v4 type]) && (v6 = -[EMCategory subtype](self, "subtype"), v6 == objc_msgSend(v4, "subtype")) && (v7 = -[EMCategory state](self, "state"), v7 == objc_msgSend(v4, "state")))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = -[EMCategory type](self, "type"), v5 == [equalCopy type]) && (v6 = -[EMCategory subtype](self, "subtype"), v6 == objc_msgSend(equalCopy, "subtype")) && (v7 = -[EMCategory state](self, "state"), v7 == objc_msgSend(equalCopy, "state")))
   {
-    v8 = [(EMCategory *)self isHighImpact];
-    v9 = v8 ^ [v4 isHighImpact] ^ 1;
+    isHighImpact = [(EMCategory *)self isHighImpact];
+    v9 = isHighImpact ^ [equalCopy isHighImpact] ^ 1;
   }
 
   else
@@ -128,30 +128,30 @@ void __37__EMCategory_EFCacheable__cachedSelf__block_invoke()
   return v6;
 }
 
-- (EMCategory)initWithCoder:(id)a3
+- (EMCategory)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = EMCategory;
   v5 = [(EMCategory *)&v7 init];
   if (v5)
   {
-    v5->_type = [v4 decodeIntegerForKey:@"EFPropertyKey_type"];
-    v5->_subtype = [v4 decodeIntegerForKey:@"EFPropertyKey_subtype"];
-    v5->_state = [v4 decodeIntegerForKey:@"EFPropertyKey_state"];
-    v5->_isHighImpact = [v4 decodeBoolForKey:@"EFPropertyKey_isHighImpact"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"EFPropertyKey_type"];
+    v5->_subtype = [coderCopy decodeIntegerForKey:@"EFPropertyKey_subtype"];
+    v5->_state = [coderCopy decodeIntegerForKey:@"EFPropertyKey_state"];
+    v5->_isHighImpact = [coderCopy decodeBoolForKey:@"EFPropertyKey_isHighImpact"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[EMCategory type](self forKey:{"type"), @"EFPropertyKey_type"}];
-  [v4 encodeInteger:-[EMCategory subtype](self forKey:{"subtype"), @"EFPropertyKey_subtype"}];
-  [v4 encodeInteger:-[EMCategory state](self forKey:{"state"), @"EFPropertyKey_state"}];
-  [v4 encodeBool:-[EMCategory isHighImpact](self forKey:{"isHighImpact"), @"EFPropertyKey_isHighImpact"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[EMCategory type](self forKey:{"type"), @"EFPropertyKey_type"}];
+  [coderCopy encodeInteger:-[EMCategory subtype](self forKey:{"subtype"), @"EFPropertyKey_subtype"}];
+  [coderCopy encodeInteger:-[EMCategory state](self forKey:{"state"), @"EFPropertyKey_state"}];
+  [coderCopy encodeBool:-[EMCategory isHighImpact](self forKey:{"isHighImpact"), @"EFPropertyKey_isHighImpact"}];
 }
 
 @end

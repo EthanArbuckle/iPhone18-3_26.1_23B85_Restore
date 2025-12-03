@@ -7,7 +7,7 @@
 
 - (void)hxui_primaryFooterButtonTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BA35D788();
 }
 
@@ -16,11 +16,11 @@
   memset(v4, 0, 24);
   v4[3] = 12;
   v5 = 0;
-  v3 = self;
+  selfCopy = self;
 
   sub_1B9FEF9F4(self, v4);
 
-  [(SummarySharingOnboardingAlertsSelectionViewController *)v3 dismissViewControllerAnimated:1 completion:0];
+  [(SummarySharingOnboardingAlertsSelectionViewController *)selfCopy dismissViewControllerAnimated:1 completion:0];
 }
 
 @end

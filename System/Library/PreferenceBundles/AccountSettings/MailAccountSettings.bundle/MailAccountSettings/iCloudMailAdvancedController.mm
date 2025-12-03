@@ -1,5 +1,5 @@
 @interface iCloudMailAdvancedController
-- (iCloudMailAdvancedController)initWithPageType:(int64_t)a3;
+- (iCloudMailAdvancedController)initWithPageType:(int64_t)type;
 - (id)specifiers;
 - (void)configureNavigationItems;
 - (void)save;
@@ -8,14 +8,14 @@
 
 @implementation iCloudMailAdvancedController
 
-- (iCloudMailAdvancedController)initWithPageType:(int64_t)a3
+- (iCloudMailAdvancedController)initWithPageType:(int64_t)type
 {
   v5.receiver = self;
   v5.super_class = iCloudMailAdvancedController;
   result = [(iCloudMailAdvancedController *)&v5 init];
   if (result)
   {
-    result->_pageType = a3;
+    result->_pageType = type;
   }
 
   return result;
@@ -32,19 +32,19 @@
 - (void)configureNavigationItems
 {
   v5 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:self action:"save"];
-  v3 = [(iCloudMailAdvancedController *)self navigationItem];
-  [v3 setRightBarButtonItem:v5];
+  navigationItem = [(iCloudMailAdvancedController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v5];
 
   v6 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:self action:"cancel"];
-  v4 = [(iCloudMailAdvancedController *)self navigationItem];
-  [v4 setLeftBarButtonItem:v6];
+  navigationItem2 = [(iCloudMailAdvancedController *)self navigationItem];
+  [navigationItem2 setLeftBarButtonItem:v6];
 }
 
 - (id)specifiers
 {
   v36.receiver = self;
   v36.super_class = iCloudMailAdvancedController;
-  v33 = [(AccountPSAdvancedController *)&v36 specifiers];
+  specifiers = [(AccountPSAdvancedController *)&v36 specifiers];
   pageType = self->_pageType;
   if (pageType == 1)
   {
@@ -110,7 +110,7 @@ LABEL_7:
   v34[3] = &unk_B9B68;
   v35 = v12;
   v13 = v12;
-  v14 = [v33 ef_filter:v34];
+  v14 = [specifiers ef_filter:v34];
   v15 = OBJC_IVAR___PSListController__specifiers;
   v16 = *&self->super.PSListController_opaque[OBJC_IVAR___PSListController__specifiers];
   *&self->super.PSListController_opaque[OBJC_IVAR___PSListController__specifiers] = v14;
@@ -123,12 +123,12 @@ LABEL_7:
 
 - (void)save
 {
-  v3 = [(AccountPSAdvancedController *)self account];
-  v4 = [(AccountPSAdvancedController *)self accountValues];
-  [v3 setAccountPropertiesWithDictionary:v4];
+  account = [(AccountPSAdvancedController *)self account];
+  accountValues = [(AccountPSAdvancedController *)self accountValues];
+  [account setAccountPropertiesWithDictionary:accountValues];
 
-  v5 = [(AccountPSAdvancedController *)self account];
-  [v5 savePersistentAccount];
+  account2 = [(AccountPSAdvancedController *)self account];
+  [account2 savePersistentAccount];
 
   [(iCloudMailAdvancedController *)self dismissViewControllerAnimated:1 completion:0];
 }

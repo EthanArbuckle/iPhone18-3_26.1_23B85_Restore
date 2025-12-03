@@ -1,18 +1,18 @@
 @interface RankedMusicVideoVerticalCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation RankedMusicVideoVerticalCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MusicApplication.RankedMusicVideoVerticalCell" hasInstanceMethod:@"accessibilityRankString" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.RankedMusicVideoVerticalCell" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.RankedMusicVideoVerticalCell" hasInstanceMethod:@"artistName" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.RankedMusicVideoVerticalCell" hasInstanceMethod:@"accessibilityIsExplicit" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MusicApplication.RankedMusicVideoVerticalCell" hasInstanceMethod:@"accessibilityRankString" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.RankedMusicVideoVerticalCell" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.RankedMusicVideoVerticalCell" hasInstanceMethod:@"artistName" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.RankedMusicVideoVerticalCell" hasInstanceMethod:@"accessibilityIsExplicit" withFullSignature:{"B", 0}];
 }
 
 - (id)accessibilityLabel

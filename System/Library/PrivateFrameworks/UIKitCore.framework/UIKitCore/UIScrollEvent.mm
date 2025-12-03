@@ -1,32 +1,32 @@
 @interface UIScrollEvent
-- (BOOL)_consumeBeforeDeliveryToGestureRecognizers:(id)a3 inWindow:(id)a4;
+- (BOOL)_consumeBeforeDeliveryToGestureRecognizers:(id)recognizers inWindow:(id)window;
 - (BOOL)_isHighResolution;
 - (BOOL)directionInvertedFromDevice;
-- (CGPoint)_convertPointFromSceneReferenceSpace:(CGPoint)a3 toView:(id)a4;
-- (CGPoint)_convertPointToSceneReferenceSpace:(CGPoint)a3 fromView:(id)a4;
-- (CGPoint)locationInView:(id)a3;
-- (CGVector)_adjustedAcceleratedDeltaInView:(id)a3;
-- (CGVector)_adjustedDeltaForPanWithAcceleration:(BOOL)a3 honoringScrollDirectionPreference:(BOOL)a4;
-- (CGVector)_convertDeltaFromHIDDeviceSpaceToSceneReferenceSpaceIfNeeded:(CGVector)a3;
+- (CGPoint)_convertPointFromSceneReferenceSpace:(CGPoint)space toView:(id)view;
+- (CGPoint)_convertPointToSceneReferenceSpace:(CGPoint)space fromView:(id)view;
+- (CGPoint)locationInView:(id)view;
+- (CGVector)_adjustedAcceleratedDeltaInView:(id)view;
+- (CGVector)_adjustedDeltaForPanWithAcceleration:(BOOL)acceleration honoringScrollDirectionPreference:(BOOL)preference;
+- (CGVector)_convertDeltaFromHIDDeviceSpaceToSceneReferenceSpaceIfNeeded:(CGVector)needed;
 - (CGVector)_stifledDelta;
 - (CGVector)acceleratedDelta;
 - (CGVector)nonAcceleratedDelta;
 - (id)_allWindows;
 - (id)_cloneEvent;
-- (id)_gestureRecognizersForWindow:(id)a3;
+- (id)_gestureRecognizersForWindow:(id)window;
 - (id)_init;
-- (id)_initWithEvent:(__GSEvent *)a3 touches:(id)a4;
+- (id)_initWithEvent:(__GSEvent *)event touches:(id)touches;
 - (id)_windowServerHitTestWindow;
 - (unint64_t)_scrollDeviceCategory;
 - (unint64_t)_scrollType;
 - (void)_beginStiflingDeltas;
 - (void)_cleanupAfterDispatch;
 - (void)_endStiflingDeltas;
-- (void)_removeGestureRecognizer:(id)a3 fromComponents:(id)a4;
+- (void)_removeGestureRecognizer:(id)recognizer fromComponents:(id)components;
 - (void)_removeGestureRecognizersFromWindows;
-- (void)_removeGestureRecognizersSendingCancelledEvent:(id)a3;
-- (void)_setHIDEvent:(__IOHIDEvent *)a3;
-- (void)_simulateMomentumWithDelta:(CGVector)a3 inView:(id)a4;
+- (void)_removeGestureRecognizersSendingCancelledEvent:(id)event;
+- (void)_setHIDEvent:(__IOHIDEvent *)event;
+- (void)_simulateMomentumWithDelta:(CGVector)delta inView:(id)view;
 - (void)_wasDeliveredToGestureRecognizers;
 @end
 
@@ -43,7 +43,7 @@
       if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
       {
         *buf = 134217984;
-        v17 = self;
+        selfCopy2 = self;
         _os_log_fault_impl(&dword_188A29000, v9, OS_LOG_TYPE_FAULT, "Cloned scroll event for async delivery %p should never get _removeGestureRecognizersFromWindows", buf, 0xCu);
       }
     }
@@ -55,7 +55,7 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       *buf = 134217984;
-      v17 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_188A29000, v10, OS_LOG_TYPE_ERROR, "Cloned scroll event for async delivery %p should never get _removeGestureRecognizersFromWindows", buf, 0xCu);
     }
   }
@@ -101,21 +101,21 @@
 {
   v5.receiver = self;
   v5.super_class = UIScrollEvent;
-  v2 = [(UIEvent *)&v5 _init];
-  v3 = v2;
-  if (v2)
+  _init = [(UIEvent *)&v5 _init];
+  v3 = _init;
+  if (_init)
   {
-    _UIScrollEventCommonInit(v2);
+    _UIScrollEventCommonInit(_init);
   }
 
   return v3;
 }
 
-- (id)_initWithEvent:(__GSEvent *)a3 touches:(id)a4
+- (id)_initWithEvent:(__GSEvent *)event touches:(id)touches
 {
   v7.receiver = self;
   v7.super_class = UIScrollEvent;
-  v4 = [(UIEvent *)&v7 _init:a3];
+  v4 = [(UIEvent *)&v7 _init:event];
   v5 = v4;
   if (v4)
   {
@@ -125,18 +125,18 @@
   return v5;
 }
 
-- (void)_setHIDEvent:(__IOHIDEvent *)a3
+- (void)_setHIDEvent:(__IOHIDEvent *)event
 {
   v17.receiver = self;
   v17.super_class = UIScrollEvent;
   [(UIEvent *)&v17 _setHIDEvent:?];
   if ([(UIEvent *)self _hidEvent])
   {
-    v6 = _UIEventHIDGetChildPointerEvent(a3);
+    v6 = _UIEventHIDGetChildPointerEvent(event);
     if (!v6)
     {
-      v14 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v14 handleFailureInMethod:a2 object:self file:@"UIScrollEvent.m" lineNumber:187 description:{@"Invalid event structure for %@: missing child pointer HID event: %@", objc_opt_class(), a3}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UIScrollEvent.m" lineNumber:187 description:{@"Invalid event structure for %@: missing child pointer HID event: %@", objc_opt_class(), event}];
     }
 
     v7 = BKSHIDEventGetPointerAttributes();
@@ -158,7 +158,7 @@
 
     if (os_variant_has_internal_diagnostics())
     {
-      if (!a3)
+      if (!event)
       {
         v15 = __UIFaultDebugAssertLog();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
@@ -171,7 +171,7 @@
       }
     }
 
-    else if (!a3)
+    else if (!event)
     {
       v16 = *(__UILogGetCategoryCachedImpl("Assert", &_scrollPhaseForHIDEvent___s_category) + 8);
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -238,27 +238,27 @@ LABEL_31:
 
 - (id)_cloneEvent
 {
-  v2 = self;
+  selfCopy = self;
   v25 = *MEMORY[0x1E69E9840];
   v23.receiver = self;
   v23.super_class = UIScrollEvent;
-  v3 = [(UIEvent *)&v23 _cloneEvent];
-  *(v3 + 29) = v2->_phase;
-  *(v3 + 136) = v2->_sceneReferenceLocation;
-  *(v3 + 19) = v2->_lastDeliveredPhase;
-  *(v3 + 20) = v2->_lastReceivedPhase;
-  objc_storeStrong(v3 + 21, v2->_pointerAttributes);
-  if (v2->_gestureRecognizersByWindow)
+  _cloneEvent = [(UIEvent *)&v23 _cloneEvent];
+  *(_cloneEvent + 29) = selfCopy->_phase;
+  *(_cloneEvent + 136) = selfCopy->_sceneReferenceLocation;
+  *(_cloneEvent + 19) = selfCopy->_lastDeliveredPhase;
+  *(_cloneEvent + 20) = selfCopy->_lastReceivedPhase;
+  objc_storeStrong(_cloneEvent + 21, selfCopy->_pointerAttributes);
+  if (selfCopy->_gestureRecognizersByWindow)
   {
-    v4 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
-    v5 = *(v3 + 16);
-    *(v3 + 16) = v4;
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    v5 = *(_cloneEvent + 16);
+    *(_cloneEvent + 16) = strongToStrongObjectsMapTable;
 
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v6 = v2->_gestureRecognizersByWindow;
+    v6 = selfCopy->_gestureRecognizersByWindow;
     v7 = [(NSMapTable *)v6 countByEnumeratingWithState:&v19 objects:v24 count:16];
     if (v7)
     {
@@ -275,12 +275,12 @@ LABEL_31:
           }
 
           v11 = *(*(&v19 + 1) + 8 * i);
-          v12 = [(NSMapTable *)v2->_gestureRecognizersByWindow objectForKey:v11];
-          v13 = v2;
-          v14 = *(v3 + 16);
+          v12 = [(NSMapTable *)selfCopy->_gestureRecognizersByWindow objectForKey:v11];
+          v13 = selfCopy;
+          v14 = *(_cloneEvent + 16);
           v15 = [v12 mutableCopy];
           v16 = v14;
-          v2 = v13;
+          selfCopy = v13;
           [v16 setObject:v15 forKey:v11];
         }
 
@@ -294,11 +294,11 @@ LABEL_31:
 
   else
   {
-    v6 = *(v3 + 16);
-    *(v3 + 16) = 0;
+    v6 = *(_cloneEvent + 16);
+    *(_cloneEvent + 16) = 0;
   }
 
-  return v3;
+  return _cloneEvent;
 }
 
 - (void)_cleanupAfterDispatch
@@ -383,33 +383,33 @@ LABEL_31:
   [(UIEvent *)&v16 _cleanupAfterDispatch];
 }
 
-- (CGPoint)_convertPointFromSceneReferenceSpace:(CGPoint)a3 toView:(id)a4
+- (CGPoint)_convertPointFromSceneReferenceSpace:(CGPoint)space toView:(id)view
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  y = space.y;
+  x = space.x;
+  viewCopy = view;
+  v8 = viewCopy;
+  if (viewCopy)
   {
-    v9 = v7;
+    anyObject = viewCopy;
   }
 
   else
   {
-    v10 = [(UIScrollEvent *)self _allWindows];
-    v9 = [v10 anyObject];
+    _allWindows = [(UIScrollEvent *)self _allWindows];
+    anyObject = [_allWindows anyObject];
   }
 
-  v11 = [v9 _window];
-  v12 = v11;
-  if (v11)
+  _window = [anyObject _window];
+  v12 = _window;
+  if (_window)
   {
-    [v11 _convertPointFromSceneReferenceSpace:{x, y}];
+    [_window _convertPointFromSceneReferenceSpace:{x, y}];
     x = v13;
     y = v14;
   }
 
-  [v9 convertPoint:0 fromView:{x, y}];
+  [anyObject convertPoint:0 fromView:{x, y}];
   v16 = v15;
   v18 = v17;
 
@@ -420,30 +420,30 @@ LABEL_31:
   return result;
 }
 
-- (CGPoint)_convertPointToSceneReferenceSpace:(CGPoint)a3 fromView:(id)a4
+- (CGPoint)_convertPointToSceneReferenceSpace:(CGPoint)space fromView:(id)view
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  y = space.y;
+  x = space.x;
+  viewCopy = view;
+  v8 = viewCopy;
+  if (viewCopy)
   {
-    v9 = v7;
+    anyObject = viewCopy;
   }
 
   else
   {
-    v10 = [(UIScrollEvent *)self _allWindows];
-    v9 = [v10 anyObject];
+    _allWindows = [(UIScrollEvent *)self _allWindows];
+    anyObject = [_allWindows anyObject];
   }
 
-  v11 = [v9 _window];
-  [v9 convertPoint:0 toView:{x, y}];
+  _window = [anyObject _window];
+  [anyObject convertPoint:0 toView:{x, y}];
   v14 = v12;
   v15 = v13;
-  if (v11)
+  if (_window)
   {
-    [v11 _convertPointToSceneReferenceSpace:{v12, v13}];
+    [_window _convertPointToSceneReferenceSpace:{v12, v13}];
     v14 = v16;
     v15 = v17;
   }
@@ -499,14 +499,14 @@ LABEL_31:
   {
     if ([(BKSHIDEventPointerAttributes *)v4 source]== 11)
     {
-      v9 = [(UIScrollEvent *)self _scrollType];
-      if (v9 == 1)
+      _scrollType = [(UIScrollEvent *)self _scrollType];
+      if (_scrollType == 1)
       {
         v8 = 3;
         goto LABEL_19;
       }
 
-      if (!v9)
+      if (!_scrollType)
       {
         if ([(UIScrollEvent *)self _isHighResolution])
         {
@@ -543,22 +543,22 @@ LABEL_19:
   return v8;
 }
 
-- (CGPoint)locationInView:(id)a3
+- (CGPoint)locationInView:(id)view
 {
-  [(UIScrollEvent *)self _convertPointFromSceneReferenceSpace:a3 toView:self->_sceneReferenceLocation.x, self->_sceneReferenceLocation.y];
+  [(UIScrollEvent *)self _convertPointFromSceneReferenceSpace:view toView:self->_sceneReferenceLocation.x, self->_sceneReferenceLocation.y];
   result.y = v4;
   result.x = v3;
   return result;
 }
 
-- (CGVector)_convertDeltaFromHIDDeviceSpaceToSceneReferenceSpaceIfNeeded:(CGVector)a3
+- (CGVector)_convertDeltaFromHIDDeviceSpaceToSceneReferenceSpaceIfNeeded:(CGVector)needed
 {
-  dy = a3.dy;
-  dx = a3.dx;
-  v6 = [(BKSHIDEventPointerAttributes *)self->_pointerAttributes options];
-  if ((v6 & 0x40) != 0)
+  dy = needed.dy;
+  dx = needed.dx;
+  options = [(BKSHIDEventPointerAttributes *)self->_pointerAttributes options];
+  if ((options & 0x40) != 0)
   {
-    v7 = v6;
+    v7 = options;
     v8 = _UIEventHIDGetInterfaceOrientationForEvent(self->super._hidEvent);
     if (v8 == 3)
     {
@@ -700,9 +700,9 @@ LABEL_19:
   return result;
 }
 
-- (CGVector)_adjustedDeltaForPanWithAcceleration:(BOOL)a3 honoringScrollDirectionPreference:(BOOL)a4
+- (CGVector)_adjustedDeltaForPanWithAcceleration:(BOOL)acceleration honoringScrollDirectionPreference:(BOOL)preference
 {
-  if (a3)
+  if (acceleration)
   {
     [(UIScrollEvent *)self acceleratedDelta];
   }
@@ -716,7 +716,7 @@ LABEL_19:
   v29 = v6;
   if ([(UIScrollEvent *)self _scrollType])
   {
-    if (a4)
+    if (preference)
     {
       goto LABEL_9;
     }
@@ -775,13 +775,13 @@ LABEL_16:
   }
 
   *v26.i64 = v21;
-  if (!a4)
+  if (!preference)
   {
 LABEL_6:
-    v10 = [(UIScrollEvent *)self directionInvertedFromDevice];
+    directionInvertedFromDevice = [(UIScrollEvent *)self directionInvertedFromDevice];
     v12 = v27;
     v11 = *v29.i64;
-    if (!v10)
+    if (!directionInvertedFromDevice)
     {
       v12 = -v27;
       v11 = -*v29.i64;
@@ -794,10 +794,10 @@ LABEL_6:
 LABEL_9:
   if (([(UIEvent *)self _modifierFlags]& 0x20000) != 0 && ![(UIScrollEvent *)self _scrollType])
   {
-    v24 = [(UIScrollEvent *)self _isHighResolution];
+    _isHighResolution = [(UIScrollEvent *)self _isHighResolution];
     v14 = v28;
     v13 = *v29.i64;
-    if (!v24)
+    if (!_isHighResolution)
     {
       v14 = -*v29.i64;
       v13 = -v28;
@@ -815,16 +815,16 @@ LABEL_9:
   return result;
 }
 
-- (CGVector)_adjustedAcceleratedDeltaInView:(id)a3
+- (CGVector)_adjustedAcceleratedDeltaInView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(UIScrollEvent *)self _adjustedDeltaForPanWithAcceleration:1 honoringScrollDirectionPreference:1];
   v6 = v5;
   v8 = v7;
-  [(UIScrollEvent *)self _convertPointFromSceneReferenceSpace:v4 toView:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)];
+  [(UIScrollEvent *)self _convertPointFromSceneReferenceSpace:viewCopy toView:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)];
   v10 = v9;
   v12 = v11;
-  [(UIScrollEvent *)self _convertPointFromSceneReferenceSpace:v4 toView:v6, v8];
+  [(UIScrollEvent *)self _convertPointFromSceneReferenceSpace:viewCopy toView:v6, v8];
   v14 = v13;
   v16 = v15;
 
@@ -850,10 +850,10 @@ LABEL_9:
   return v3;
 }
 
-- (id)_gestureRecognizersForWindow:(id)a3
+- (id)_gestureRecognizersForWindow:(id)window
 {
-  v4 = a3;
-  v5 = [(NSMapTable *)self->_gestureRecognizersByWindow objectForKey:v4];
+  windowCopy = window;
+  v5 = [(NSMapTable *)self->_gestureRecognizersByWindow objectForKey:windowCopy];
   v6 = v5;
   if (v5)
   {
@@ -867,20 +867,20 @@ LABEL_9:
 
   else
   {
-    v8 = [(UIScrollEvent *)self _windowServerHitTestWindow];
-    v7 = _UINonComponentEventHitTestGestureRecognizers(self, v8, v8, self->_sceneReferenceLocation.x, self->_sceneReferenceLocation.y);
+    _windowServerHitTestWindow = [(UIScrollEvent *)self _windowServerHitTestWindow];
+    v7 = _UINonComponentEventHitTestGestureRecognizers(self, _windowServerHitTestWindow, _windowServerHitTestWindow, self->_sceneReferenceLocation.x, self->_sceneReferenceLocation.y);
     gestureRecognizersByWindow = self->_gestureRecognizersByWindow;
     v10 = [v7 mutableCopy];
-    [(NSMapTable *)gestureRecognizersByWindow setObject:v10 forKey:v4];
+    [(NSMapTable *)gestureRecognizersByWindow setObject:v10 forKey:windowCopy];
   }
 
   return v7;
 }
 
-- (void)_removeGestureRecognizer:(id)a3 fromComponents:(id)a4
+- (void)_removeGestureRecognizer:(id)recognizer fromComponents:(id)components
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  recognizerCopy = recognizer;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -901,7 +901,7 @@ LABEL_9:
           objc_enumerationMutation(v6);
         }
 
-        [*(*(&v11 + 1) + 8 * v10++) removeObject:{v5, v11}];
+        [*(*(&v11 + 1) + 8 * v10++) removeObject:{recognizerCopy, v11}];
       }
 
       while (v8 != v10);
@@ -912,11 +912,11 @@ LABEL_9:
   }
 }
 
-- (BOOL)_consumeBeforeDeliveryToGestureRecognizers:(id)a3 inWindow:(id)a4
+- (BOOL)_consumeBeforeDeliveryToGestureRecognizers:(id)recognizers inWindow:(id)window
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  recognizersCopy = recognizers;
+  windowCopy = window;
   if (self->_isCloneForAsyncDelivery)
   {
     goto LABEL_20;
@@ -936,7 +936,7 @@ LABEL_9:
     v15 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:0 ascending:1 selector:sel__depthFirstCompare_];
     v34 = v15;
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v34 count:1];
-    v17 = [v6 sortedArrayUsingDescriptors:v16];
+    v17 = [recognizersCopy sortedArrayUsingDescriptors:v16];
 
     v18 = [v17 countByEnumeratingWithState:&v30 objects:v35 count:16];
     if (v18)
@@ -983,15 +983,15 @@ LABEL_18:
     if (!self->_asyncDeliveryTarget)
     {
 LABEL_19:
-      [v6 count];
+      [recognizersCopy count];
 LABEL_20:
       v14 = 0;
       goto LABEL_21;
     }
   }
 
-  v8 = [(UIScrollEvent *)self _cloneEvent];
-  v8[193] = 1;
+  _cloneEvent = [(UIScrollEvent *)self _cloneEvent];
+  _cloneEvent[193] = 1;
   self->_isDoingAsyncDelivery = 1;
   outstandingSnapshotEventsForAsyncDelivery = self->_outstandingSnapshotEventsForAsyncDelivery;
   if (!outstandingSnapshotEventsForAsyncDelivery)
@@ -1003,16 +1003,16 @@ LABEL_20:
     outstandingSnapshotEventsForAsyncDelivery = self->_outstandingSnapshotEventsForAsyncDelivery;
   }
 
-  [(NSMutableSet *)outstandingSnapshotEventsForAsyncDelivery addObject:v8];
+  [(NSMutableSet *)outstandingSnapshotEventsForAsyncDelivery addObject:_cloneEvent];
   v12 = self->_asyncDeliveryTarget;
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __69__UIScrollEvent__consumeBeforeDeliveryToGestureRecognizers_inWindow___block_invoke;
   v27[3] = &unk_1E70F4638;
   v27[4] = self;
-  v28 = v8;
-  v29 = v7;
-  v13 = v8;
+  v28 = _cloneEvent;
+  v29 = windowCopy;
+  v13 = _cloneEvent;
   [(_UIScrollEventAsyncDeliveryTarget *)v12 _asynchronouslyDeliverScrollEvent:v13 completion:v27];
 
   v14 = 1;
@@ -1065,18 +1065,18 @@ uint64_t __69__UIScrollEvent__consumeBeforeDeliveryToGestureRecognizers_inWindow
   self->_isStiflingDeltas = 0;
 }
 
-- (void)_simulateMomentumWithDelta:(CGVector)a3 inView:(id)a4
+- (void)_simulateMomentumWithDelta:(CGVector)delta inView:(id)view
 {
-  dy = a3.dy;
-  dx = a3.dx;
+  dy = delta.dy;
+  dx = delta.dx;
   self->_hasSimulatedMomentumDelta = 1;
   v7 = *MEMORY[0x1E695EFF8];
   v8 = *(MEMORY[0x1E695EFF8] + 8);
-  v9 = a4;
-  [(UIScrollEvent *)self _convertPointToSceneReferenceSpace:v9 fromView:v7, v8];
+  viewCopy = view;
+  [(UIScrollEvent *)self _convertPointToSceneReferenceSpace:viewCopy fromView:v7, v8];
   v11 = v10;
   v13 = v12;
-  [(UIScrollEvent *)self _convertPointToSceneReferenceSpace:v9 fromView:dx, dy];
+  [(UIScrollEvent *)self _convertPointToSceneReferenceSpace:viewCopy fromView:dx, dy];
   v15 = v14;
   v17 = v16;
 
@@ -1092,28 +1092,28 @@ uint64_t __69__UIScrollEvent__consumeBeforeDeliveryToGestureRecognizers_inWindow
   self->_lastDeliveredPhase = self->_phase;
 }
 
-- (void)_removeGestureRecognizersSendingCancelledEvent:(id)a3
+- (void)_removeGestureRecognizersSendingCancelledEvent:(id)event
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  eventCopy = event;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  v5 = [eventCopy countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v5)
   {
     v6 = v5;
     v7 = *v22;
     v16 = v19;
-    v17 = v4;
+    v17 = eventCopy;
     do
     {
       for (i = 0; i != v6; ++i)
       {
         if (*v22 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(eventCopy);
         }
 
         v9 = *(*(&v21 + 1) + 8 * i);
@@ -1134,17 +1134,17 @@ uint64_t __69__UIScrollEvent__consumeBeforeDeliveryToGestureRecognizers_inWindow
 
           if (self->_asyncDeliveryTarget)
           {
-            v11 = [(UIScrollEvent *)self _cloneEvent];
-            v11[193] = 1;
-            *(v11 + 29) = 5;
+            _cloneEvent = [(UIScrollEvent *)self _cloneEvent];
+            _cloneEvent[193] = 1;
+            *(_cloneEvent + 29) = 5;
             asyncDeliveryTarget = self->_asyncDeliveryTarget;
             v18[0] = MEMORY[0x1E69E9820];
             v18[1] = 3221225472;
             v19[0] = __64__UIScrollEvent__removeGestureRecognizersSendingCancelledEvent___block_invoke;
             v19[1] = &unk_1E70F3C60;
             v19[2] = self;
-            v20 = v11;
-            v13 = v11;
+            v20 = _cloneEvent;
+            v13 = _cloneEvent;
             [(_UIScrollEventAsyncDeliveryTarget *)asyncDeliveryTarget _asynchronouslyDeliverScrollEvent:v13 completion:v18];
             v14 = self->_asyncDeliveryTarget;
             self->_asyncDeliveryTarget = 0;
@@ -1152,14 +1152,14 @@ uint64_t __69__UIScrollEvent__consumeBeforeDeliveryToGestureRecognizers_inWindow
             asyncDeliveryGesture = self->_asyncDeliveryGesture;
             self->_asyncDeliveryGesture = 0;
 
-            v4 = v17;
+            eventCopy = v17;
           }
         }
 
         [(UIScrollEvent *)self _removeGestureRecognizer:v9 fromComponents:0, v16];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v6 = [eventCopy countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v6);
@@ -1168,10 +1168,10 @@ uint64_t __69__UIScrollEvent__consumeBeforeDeliveryToGestureRecognizers_inWindow
 
 - (id)_allWindows
 {
-  v2 = [(UIScrollEvent *)self _windowServerHitTestWindow];
-  if (v2)
+  _windowServerHitTestWindow = [(UIScrollEvent *)self _windowServerHitTestWindow];
+  if (_windowServerHitTestWindow)
   {
-    v3 = [MEMORY[0x1E695DFD8] setWithObject:v2];
+    v3 = [MEMORY[0x1E695DFD8] setWithObject:_windowServerHitTestWindow];
   }
 
   else

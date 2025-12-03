@@ -1,26 +1,26 @@
 @interface ICInlineAttachmentUIModel
 + (id)attributesForInlineAttachmentUIModel;
-+ (id)filteredStyleAttributes:(id)a3;
++ (id)filteredStyleAttributes:(id)attributes;
 - (ICInlineAttachment)attachment;
-- (ICInlineAttachmentUIModel)initWithAttachment:(id)a3;
-- (_NSRange)highlightRangeForTextFindingMatchRange:(_NSRange)a3;
-- (id)attributedStringWithSurroundingAttributes:(id)a3 formatter:(id)a4;
-- (id)highlightingAttributedString:(id)a3 withRegexMatches:(id)a4;
-- (id)highlightingAttributedString:(id)a3 withSurroundingAttributes:(id)a4;
+- (ICInlineAttachmentUIModel)initWithAttachment:(id)attachment;
+- (_NSRange)highlightRangeForTextFindingMatchRange:(_NSRange)range;
+- (id)attributedStringWithSurroundingAttributes:(id)attributes formatter:(id)formatter;
+- (id)highlightingAttributedString:(id)string withRegexMatches:(id)matches;
+- (id)highlightingAttributedString:(id)string withSurroundingAttributes:(id)attributes;
 @end
 
 @implementation ICInlineAttachmentUIModel
 
-- (ICInlineAttachmentUIModel)initWithAttachment:(id)a3
+- (ICInlineAttachmentUIModel)initWithAttachment:(id)attachment
 {
-  v4 = a3;
+  attachmentCopy = attachment;
   v8.receiver = self;
   v8.super_class = ICInlineAttachmentUIModel;
   v5 = [(ICInlineAttachmentUIModel *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_attachment, v4);
+    objc_storeWeak(&v5->_attachment, attachmentCopy);
   }
 
   return v6;
@@ -59,17 +59,17 @@ void __65__ICInlineAttachmentUIModel_attributesForInlineAttachmentUIModel__block
   attributesForInlineAttachmentUIModel_attributes = v5;
 }
 
-+ (id)filteredStyleAttributes:(id)a3
++ (id)filteredStyleAttributes:(id)attributes
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  attributesCopy = attributes;
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = [a1 attributesForInlineAttachmentUIModel];
-  v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  attributesForInlineAttachmentUIModel = [self attributesForInlineAttachmentUIModel];
+  v7 = [attributesForInlineAttachmentUIModel countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
     v8 = v7;
@@ -81,11 +81,11 @@ void __65__ICInlineAttachmentUIModel_attributesForInlineAttachmentUIModel__block
       {
         if (*v20 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(attributesForInlineAttachmentUIModel);
         }
 
         v12 = *(*(&v19 + 1) + 8 * i);
-        v13 = [v4 objectForKeyedSubscript:v12];
+        v13 = [attributesCopy objectForKeyedSubscript:v12];
         if (v13)
         {
           v14 = v13;
@@ -93,13 +93,13 @@ void __65__ICInlineAttachmentUIModel_attributesForInlineAttachmentUIModel__block
 
           if ((v15 & 1) == 0)
           {
-            v16 = [v4 objectForKeyedSubscript:v12];
+            v16 = [attributesCopy objectForKeyedSubscript:v12];
             [v5 setObject:v16 forKeyedSubscript:v12];
           }
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v8 = [attributesForInlineAttachmentUIModel countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v8);
@@ -110,37 +110,37 @@ void __65__ICInlineAttachmentUIModel_attributesForInlineAttachmentUIModel__block
   return v17;
 }
 
-- (id)attributedStringWithSurroundingAttributes:(id)a3 formatter:(id)a4
+- (id)attributedStringWithSurroundingAttributes:(id)attributes formatter:(id)formatter
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ICInlineAttachmentUIModel *)self attachment];
-  v9 = [v8 displayText];
-  v10 = v9;
+  formatterCopy = formatter;
+  attributesCopy = attributes;
+  attachment = [(ICInlineAttachmentUIModel *)self attachment];
+  displayText = [attachment displayText];
+  v10 = displayText;
   v11 = &stru_1F4F94F00;
-  if (v9)
+  if (displayText)
   {
-    v11 = v9;
+    v11 = displayText;
   }
 
   v12 = v11;
 
-  if (v6)
+  if (formatterCopy)
   {
-    v13 = [(ICInlineAttachmentUIModel *)self attachment];
-    v14 = v6[2](v6, v12, [v13 attachmentType]);
+    attachment2 = [(ICInlineAttachmentUIModel *)self attachment];
+    v14 = formatterCopy[2](formatterCopy, v12, [attachment2 attachmentType]);
 
     v12 = v14;
   }
 
-  v15 = [(ICInlineAttachmentUIModel *)self labelColor];
-  v16 = [objc_opt_class() filteredStyleAttributes:v7];
+  labelColor = [(ICInlineAttachmentUIModel *)self labelColor];
+  v16 = [objc_opt_class() filteredStyleAttributes:attributesCopy];
 
   v17 = [v16 mutableCopy];
-  [v17 setObject:v15 forKeyedSubscript:*MEMORY[0x1E69DB650]];
-  [v17 setObject:v15 forKeyedSubscript:*MEMORY[0x1E69B7960]];
-  v18 = [v15 CGColor];
-  [v17 setObject:v18 forKeyedSubscript:*MEMORY[0x1E69B75F0]];
+  [v17 setObject:labelColor forKeyedSubscript:*MEMORY[0x1E69DB650]];
+  [v17 setObject:labelColor forKeyedSubscript:*MEMORY[0x1E69B7960]];
+  cGColor = [labelColor CGColor];
+  [v17 setObject:cGColor forKeyedSubscript:*MEMORY[0x1E69B75F0]];
   v19 = objc_alloc(MEMORY[0x1E696AAB0]);
   v20 = [v17 copy];
   v21 = [v19 initWithString:v12 attributes:v20];
@@ -148,18 +148,18 @@ void __65__ICInlineAttachmentUIModel_attributesForInlineAttachmentUIModel__block
   return v21;
 }
 
-- (id)highlightingAttributedString:(id)a3 withSurroundingAttributes:(id)a4
+- (id)highlightingAttributedString:(id)string withSurroundingAttributes:(id)attributes
 {
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  attributesCopy = attributes;
   objc_opt_class();
-  v8 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69B7940]];
+  v8 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x1E69B7940]];
   v9 = ICCheckedDynamicCast();
   [v9 floatValue];
   v11 = v10;
 
   objc_opt_class();
-  v12 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69DB650]];
+  v12 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x1E69DB650]];
 
   v13 = ICCheckedDynamicCast();
 
@@ -179,9 +179,9 @@ void __65__ICInlineAttachmentUIModel_attributesForInlineAttachmentUIModel__block
     v14 = 1.0;
   }
 
-  v16 = [v6 mutableCopy];
+  v16 = [stringCopy mutableCopy];
   v17 = *MEMORY[0x1E69B7960];
-  v18 = [v16 ic_range];
+  ic_range = [v16 ic_range];
   v20 = v19;
   v24 = MEMORY[0x1E69E9820];
   v25 = 3221225472;
@@ -189,10 +189,10 @@ void __65__ICInlineAttachmentUIModel_attributesForInlineAttachmentUIModel__block
   v27 = &unk_1E846E070;
   v30 = v11;
   v31 = v14;
-  v28 = self;
+  selfCopy = self;
   v29 = v16;
   v21 = v16;
-  [v21 enumerateAttribute:v17 inRange:v18 options:v20 usingBlock:{0, &v24}];
+  [v21 enumerateAttribute:v17 inRange:ic_range options:v20 usingBlock:{0, &v24}];
   v22 = [v21 copy];
 
   return v22;
@@ -257,21 +257,21 @@ void __84__ICInlineAttachmentUIModel_highlightingAttributedString_withSurroundin
   }
 }
 
-- (id)highlightingAttributedString:(id)a3 withRegexMatches:(id)a4
+- (id)highlightingAttributedString:(id)string withRegexMatches:(id)matches
 {
   v5 = MEMORY[0x1E69DC888];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 ICFindInNoteHighlightColor];
-  v9 = [v7 ic_attributedStringByHighlightingRegexFinderMatches:v6 withHighlightColor:v8 attributeName:*MEMORY[0x1E69DB600]];
+  matchesCopy = matches;
+  stringCopy = string;
+  iCFindInNoteHighlightColor = [v5 ICFindInNoteHighlightColor];
+  v9 = [stringCopy ic_attributedStringByHighlightingRegexFinderMatches:matchesCopy withHighlightColor:iCFindInNoteHighlightColor attributeName:*MEMORY[0x1E69DB600]];
 
   return v9;
 }
 
-- (_NSRange)highlightRangeForTextFindingMatchRange:(_NSRange)a3
+- (_NSRange)highlightRangeForTextFindingMatchRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   result.length = length;
   result.location = location;
   return result;

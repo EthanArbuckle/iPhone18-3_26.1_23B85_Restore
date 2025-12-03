@@ -1,6 +1,6 @@
 @interface RUIStyle
 + (RUIStyle)sharedInstance;
-+ (id)_staticButtonTitleColorWithTintColor:(id)a3;
++ (id)_staticButtonTitleColorWithTintColor:(id)color;
 + (id)defaultStyle;
 + (id)frontRowStyle;
 + (id)osloStyle;
@@ -9,9 +9,9 @@
 - (NSDirectionalEdgeInsets)directionalLayoutMargins;
 - (RUIStyle)init;
 - (UIEdgeInsets)headerMargin;
-- (id)boldButtonTitleColorWithTintColor:(id)a3;
-- (void)applyToNavigationBar:(id)a3;
-- (void)applyToNavigationController:(id)a3;
+- (id)boldButtonTitleColorWithTintColor:(id)color;
+- (void)applyToNavigationBar:(id)bar;
+- (void)applyToNavigationController:(id)controller;
 @end
 
 @implementation RUIStyle
@@ -23,17 +23,17 @@
   v2 = [(RUIStyle *)&v33 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277D75348] tableBackgroundColor];
+    tableBackgroundColor = [MEMORY[0x277D75348] tableBackgroundColor];
     v4 = *(v2 + 2);
-    *(v2 + 2) = v3;
+    *(v2 + 2) = tableBackgroundColor;
 
-    v5 = [MEMORY[0x277D75348] tableCellBlueTextColor];
+    tableCellBlueTextColor = [MEMORY[0x277D75348] tableCellBlueTextColor];
     v6 = *(v2 + 4);
-    *(v2 + 4) = v5;
+    *(v2 + 4) = tableCellBlueTextColor;
 
-    v7 = [MEMORY[0x277D75348] tableCellBlueTextColor];
+    tableCellBlueTextColor2 = [MEMORY[0x277D75348] tableCellBlueTextColor];
     v8 = *(v2 + 3);
-    *(v2 + 3) = v7;
+    *(v2 + 3) = tableCellBlueTextColor2;
 
     if (+[RUIPlatform isSolariumEnabled])
     {
@@ -48,13 +48,13 @@
     v10 = *(v2 + 6);
     *(v2 + 6) = v9;
 
-    v11 = [MEMORY[0x277D75348] _labelColor];
+    _labelColor = [MEMORY[0x277D75348] _labelColor];
     v12 = *(v2 + 5);
-    *(v2 + 5) = v11;
+    *(v2 + 5) = _labelColor;
 
-    v13 = [MEMORY[0x277D75348] _labelColor];
+    _labelColor2 = [MEMORY[0x277D75348] _labelColor];
     v14 = *(v2 + 7);
-    *(v2 + 7) = v13;
+    *(v2 + 7) = _labelColor2;
 
     v15 = RemoteUIHeaderTextColor();
     v16 = *(v2 + 8);
@@ -72,9 +72,9 @@
     v22 = *(v2 + 11);
     *(v2 + 11) = v21;
 
-    v23 = [MEMORY[0x277D75348] labelColor];
+    labelColor = [MEMORY[0x277D75348] labelColor];
     v24 = *(v2 + 12);
-    *(v2 + 12) = v23;
+    *(v2 + 12) = labelColor;
 
     v25 = vdupq_n_s64(4uLL);
     *(v2 + 104) = v25;
@@ -106,8 +106,8 @@
     [v2 setHeaderMargin:{0.0, 0.0, 8.0, 0.0}];
     [v2 setHeaderContainerSideMargin:20.0];
     [v2 setSectionHeaderHeight:*MEMORY[0x277D76F30]];
-    v30 = [MEMORY[0x277D75348] _secondaryLabelColor];
-    [v2 setSpinnerLabelColor:v30];
+    _secondaryLabelColor = [MEMORY[0x277D75348] _secondaryLabelColor];
+    [v2 setSpinnerLabelColor:_secondaryLabelColor];
 
     v31 = [MEMORY[0x277D74300] systemFontOfSize:15.0];
     [v2 setSpinnerLabelFont:v31];
@@ -132,14 +132,14 @@
     v3 = sharedInstance_instances;
   }
 
-  v6 = NSStringFromClass(a1);
+  v6 = NSStringFromClass(self);
   v7 = [v3 objectForKeyedSubscript:v6];
 
   if (!v7)
   {
     v7 = objc_opt_new();
     v8 = sharedInstance_instances;
-    v9 = NSStringFromClass(a1);
+    v9 = NSStringFromClass(self);
     [v8 setObject:v7 forKeyedSubscript:v9];
   }
 
@@ -207,40 +207,40 @@ uint64_t __24__RUIStyle_defaultStyle__block_invoke()
   return v2;
 }
 
-- (void)applyToNavigationController:(id)a3
+- (void)applyToNavigationController:(id)controller
 {
-  v4 = [a3 navigationBar];
-  [(RUIStyle *)self applyToNavigationBar:v4];
+  navigationBar = [controller navigationBar];
+  [(RUIStyle *)self applyToNavigationBar:navigationBar];
 }
 
-- (void)applyToNavigationBar:(id)a3
+- (void)applyToNavigationBar:(id)bar
 {
   v7 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  [v3 setRequestedContentSize:3];
+  barCopy = bar;
+  [barCopy setRequestedContentSize:3];
   if (_isInternalInstall())
   {
     v4 = _RUILoggingFacility();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v5 = 138412290;
-      v6 = v3;
+      v6 = barCopy;
       _os_log_impl(&dword_21B93D000, v4, OS_LOG_TYPE_DEFAULT, "applyToNavigationBar: %@", &v5, 0xCu);
     }
   }
 }
 
-- (id)boldButtonTitleColorWithTintColor:(id)a3
+- (id)boldButtonTitleColorWithTintColor:(id)color
 {
-  v3 = a3;
-  if (v3)
+  colorCopy = color;
+  if (colorCopy)
   {
     v4 = objc_alloc(MEMORY[0x277D75348]);
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __46__RUIStyle_boldButtonTitleColorWithTintColor___block_invoke;
     v7[3] = &unk_2782E8210;
-    v8 = v3;
+    v8 = colorCopy;
     v5 = [v4 initWithDynamicProvider:v7];
   }
 
@@ -252,11 +252,11 @@ uint64_t __24__RUIStyle_defaultStyle__block_invoke()
   return v5;
 }
 
-+ (id)_staticButtonTitleColorWithTintColor:(id)a3
++ (id)_staticButtonTitleColorWithTintColor:(id)color
 {
-  v3 = [a3 CGColor];
-  Components = CGColorGetComponents(v3);
-  NumberOfComponents = CGColorGetNumberOfComponents(v3);
+  cGColor = [color CGColor];
+  Components = CGColorGetComponents(cGColor);
+  NumberOfComponents = CGColorGetNumberOfComponents(cGColor);
   v6 = *Components;
   v7 = *Components;
   if (NumberOfComponents != 2)

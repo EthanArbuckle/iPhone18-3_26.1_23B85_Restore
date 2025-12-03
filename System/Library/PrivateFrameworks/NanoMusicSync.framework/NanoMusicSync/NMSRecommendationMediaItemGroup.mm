@@ -1,20 +1,20 @@
 @interface NMSRecommendationMediaItemGroup
-- (id)identifiersForContainerType:(unint64_t)a3;
+- (id)identifiersForContainerType:(unint64_t)type;
 - (id)itemList;
 @end
 
 @implementation NMSRecommendationMediaItemGroup
 
-- (id)identifiersForContainerType:(unint64_t)a3
+- (id)identifiersForContainerType:(unint64_t)type
 {
   v26 = *MEMORY[0x277D85DE8];
-  if (a3 == 1)
+  if (type == 1)
   {
     v4 = 0x277CD5E40;
     goto LABEL_5;
   }
 
-  if (!a3)
+  if (!type)
   {
     v4 = 0x277CD5EF0;
 LABEL_5:
@@ -25,15 +25,15 @@ LABEL_5:
 
   v6 = 0;
 LABEL_7:
-  v7 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v8 = [(NMSRecommendationMediaItemGroup *)self recommendation];
-  v9 = [v8 items];
+  recommendation = [(NMSRecommendationMediaItemGroup *)self recommendation];
+  items = [recommendation items];
 
-  v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  v10 = [items countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v10)
   {
     v11 = v10;
@@ -44,7 +44,7 @@ LABEL_7:
       {
         if (*v22 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(items);
         }
 
         v14 = *(*(&v21 + 1) + 8 * i);
@@ -57,18 +57,18 @@ LABEL_7:
           }
         }
 
-        v16 = [v14 identifiers];
-        v17 = [v16 copy];
-        [v7 addObject:v17];
+        identifiers = [v14 identifiers];
+        v17 = [identifiers copy];
+        [array addObject:v17];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v11 = [items countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v11);
   }
 
-  v18 = [v7 copy];
+  v18 = [array copy];
   v19 = *MEMORY[0x277D85DE8];
 
   return v18;

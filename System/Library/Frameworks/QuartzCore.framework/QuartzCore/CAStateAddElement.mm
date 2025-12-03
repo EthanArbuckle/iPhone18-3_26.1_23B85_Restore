@@ -1,16 +1,16 @@
 @interface CAStateAddElement
-- (BOOL)CAMLTypeSupportedForKey:(id)a3;
-- (BOOL)matches:(id)a3;
-- (CAStateAddElement)initWithCoder:(id)a3;
-- (id)CAMLTypeForKey:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)CAMLTypeSupportedForKey:(id)key;
+- (BOOL)matches:(id)matches;
+- (CAStateAddElement)initWithCoder:(id)coder;
+- (id)CAMLTypeForKey:(id)key;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
-- (void)CAMLParser:(id)a3 setValue:(id)a4 forKey:(id)a5;
-- (void)apply:(id)a3;
+- (void)CAMLParser:(id)parser setValue:(id)value forKey:(id)key;
+- (void)apply:(id)apply;
 - (void)dealloc;
-- (void)encodeWithCAMLWriter:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)foreachLayer:(id)a3;
+- (void)encodeWithCAMLWriter:(id)writer;
+- (void)encodeWithCoder:(id)coder;
+- (void)foreachLayer:(id)layer;
 @end
 
 @implementation CAStateAddElement
@@ -33,7 +33,7 @@
   [(CAStateElement *)&v3 dealloc];
 }
 
-- (CAStateAddElement)initWithCoder:(id)a3
+- (CAStateAddElement)initWithCoder:(id)coder
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
@@ -41,52 +41,52 @@
   v4 = [(CAStateElement *)&v6 initWithCoder:?];
   if (v4)
   {
-    v4->_keyPath = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"keyPath", "copy"}];
-    v4->_object = [a3 CA_decodeObjectForKey:@"object"];
-    v4->_beforeObject = [a3 CA_decodeObjectForKey:@"beforeObject"];
+    v4->_keyPath = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"keyPath", "copy"}];
+    v4->_object = [coder CA_decodeObjectForKey:@"object"];
+    v4->_beforeObject = [coder CA_decodeObjectForKey:@"beforeObject"];
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6 = *MEMORY[0x1E69E9840];
   v5.receiver = self;
   v5.super_class = CAStateAddElement;
   [(CAStateElement *)&v5 encodeWithCoder:?];
-  [a3 encodeObject:self->_keyPath forKey:@"keyPath"];
-  [a3 CA_encodeObject:self->_object forKey:@"object" conditional:0];
-  [a3 CA_encodeObject:self->_beforeObject forKey:@"beforeObject" conditional:0];
+  [coder encodeObject:self->_keyPath forKey:@"keyPath"];
+  [coder CA_encodeObject:self->_object forKey:@"object" conditional:0];
+  [coder CA_encodeObject:self->_beforeObject forKey:@"beforeObject" conditional:0];
 }
 
-- (BOOL)CAMLTypeSupportedForKey:(id)a3
+- (BOOL)CAMLTypeSupportedForKey:(id)key
 {
   v7 = *MEMORY[0x1E69E9840];
-  if ([a3 isEqualToString:@"object"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"beforeObject"))
+  if ([key isEqualToString:@"object"] & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"beforeObject"))
   {
     return 1;
   }
 
   v6.receiver = self;
   v6.super_class = CAStateAddElement;
-  return [(CAStateElement *)&v6 CAMLTypeSupportedForKey:a3];
+  return [(CAStateElement *)&v6 CAMLTypeSupportedForKey:key];
 }
 
-- (id)CAMLTypeForKey:(id)a3
+- (id)CAMLTypeForKey:(id)key
 {
   v7 = *MEMORY[0x1E69E9840];
-  if ([a3 isEqualToString:@"keyPath"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"objectId") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"beforeObjectId"))
+  if ([key isEqualToString:@"keyPath"] & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"objectId") & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"beforeObjectId"))
   {
     return @"string";
   }
 
   v6.receiver = self;
   v6.super_class = CAStateAddElement;
-  return [(CAStateElement *)&v6 CAMLTypeForKey:a3];
+  return [(CAStateElement *)&v6 CAMLTypeForKey:key];
 }
 
-- (void)encodeWithCAMLWriter:(id)a3
+- (void)encodeWithCAMLWriter:(id)writer
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
@@ -95,49 +95,49 @@
   keyPath = self->_keyPath;
   if (keyPath)
   {
-    [a3 setElementAttribute:keyPath forKey:@"keyPath"];
+    [writer setElementAttribute:keyPath forKey:@"keyPath"];
   }
 
   if (self->_object)
   {
-    [a3 beginPropertyElement:@"object"];
-    [a3 encodeObject:self->_object];
-    [a3 endElement];
+    [writer beginPropertyElement:@"object"];
+    [writer encodeObject:self->_object];
+    [writer endElement];
   }
 
   if (self->_beforeObject)
   {
-    [a3 beginPropertyElement:@"beforeObject"];
-    [a3 encodeObject:self->_beforeObject];
-    [a3 endElement];
+    [writer beginPropertyElement:@"beforeObject"];
+    [writer encodeObject:self->_beforeObject];
+    [writer endElement];
   }
 }
 
-- (void)CAMLParser:(id)a3 setValue:(id)a4 forKey:(id)a5
+- (void)CAMLParser:(id)parser setValue:(id)value forKey:(id)key
 {
-  v5 = a5;
+  keyCopy = key;
   v10 = *MEMORY[0x1E69E9840];
-  if ([a5 isEqualToString:@"objectId"])
+  if ([key isEqualToString:@"objectId"])
   {
-    v5 = @"object";
+    keyCopy = @"object";
 LABEL_5:
-    a4 = [a3 objectById:a4];
+    value = [parser objectById:value];
     goto LABEL_6;
   }
 
-  if ([(__CFString *)v5 isEqualToString:@"beforeObjectId"])
+  if ([(__CFString *)keyCopy isEqualToString:@"beforeObjectId"])
   {
-    v5 = @"beforeObject";
+    keyCopy = @"beforeObject";
     goto LABEL_5;
   }
 
 LABEL_6:
   v9.receiver = self;
   v9.super_class = CAStateAddElement;
-  [(CAStateElement *)&v9 CAMLParser:a3 setValue:a4 forKey:v5];
+  [(CAStateElement *)&v9 CAMLParser:parser setValue:value forKey:keyCopy];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(CAStateAddElement);
   [(CAStateAddElement *)v4 setKeyPath:self->_keyPath];
@@ -147,18 +147,18 @@ LABEL_6:
   return v4;
 }
 
-- (void)foreachLayer:(id)a3
+- (void)foreachLayer:(id)layer
 {
   if ([(NSString *)self->_keyPath isEqualToString:@"sublayers"])
   {
     object = self->_object;
-    v6 = *(a3 + 2);
+    v6 = *(layer + 2);
 
-    v6(a3, object);
+    v6(layer, object);
   }
 }
 
-- (void)apply:(id)a3
+- (void)apply:(id)apply
 {
   if (self->_object && self->_keyPath)
   {
@@ -178,20 +178,20 @@ LABEL_6:
       }
     }
 
-    if (a3)
+    if (apply)
     {
       v7 = objc_alloc_init(CAStateRemoveElement);
       [(CAStateElement *)v7 setTarget:objc_loadWeak(&self->super._target)];
       [(CAStateRemoveElement *)v7 setKeyPath:self->_keyPath];
       [(CAStateRemoveElement *)v7 setObject:self->_object];
       [(CAStateElement *)v7 setSource:self];
-      [a3 addElement:v7];
+      [apply addElement:v7];
 
       if ([(NSString *)self->_keyPath isEqualToString:@"sublayers"])
       {
         if (objc_opt_respondsToSelector())
         {
-          [a3 willAddLayer:self->_object];
+          [apply willAddLayer:self->_object];
         }
       }
     }
@@ -206,18 +206,18 @@ LABEL_6:
   }
 }
 
-- (BOOL)matches:(id)a3
+- (BOOL)matches:(id)matches
 {
-  v5 = [a3 target];
-  if (v5 != objc_loadWeak(&self->super._target))
+  target = [matches target];
+  if (target != objc_loadWeak(&self->super._target))
   {
     return 0;
   }
 
-  v7 = [a3 keyPath];
+  keyPath = [matches keyPath];
   keyPath = self->_keyPath;
 
-  return [v7 isEqualToString:keyPath];
+  return [keyPath isEqualToString:keyPath];
 }
 
 @end

@@ -1,24 +1,24 @@
 @interface UserRegistryDB
 - (BOOL)beginExclusiveTransaction;
-- (BOOL)deleteEscrowKey:(id)a3;
-- (BOOL)deleteMirrorKeys:(int)a3;
+- (BOOL)deleteEscrowKey:(id)key;
+- (BOOL)deleteMirrorKeys:(int)keys;
 - (BOOL)deleteRecordAll;
-- (BOOL)deleteRecordID:(id)a3;
-- (BOOL)endTransaction:(BOOL)a3;
-- (BOOL)markMirrorKey:(int)a3 type:(int)a4;
-- (BOOL)prepare:(const char *)a3 statement:(sqlite3_stmt *)a4;
-- (BOOL)replaceRecord:(id)a3 type:(int)a4 data:(id)a5 publicKey:(id)a6;
-- (BOOL)setEscrowKey:(id)a3 escrowBlob:(id)a4;
-- (BOOL)setMirrorKey:(id)a3 service:(int)a4 type:(int)a5 publicIdentity:(id)a6;
+- (BOOL)deleteRecordID:(id)d;
+- (BOOL)endTransaction:(BOOL)transaction;
+- (BOOL)markMirrorKey:(int)key type:(int)type;
+- (BOOL)prepare:(const char *)prepare statement:(sqlite3_stmt *)statement;
+- (BOOL)replaceRecord:(id)record type:(int)type data:(id)data publicKey:(id)key;
+- (BOOL)setEscrowKey:(id)key escrowBlob:(id)blob;
+- (BOOL)setMirrorKey:(id)key service:(int)service type:(int)type publicIdentity:(id)identity;
 - (BOOL)setupDatabase;
-- (BOOL)syncedKeyToDevice:(id)a3 type:(int)a4 device:(id)a5;
-- (BOOL)updateEscrowKey:(id)a3 escrowBlob:(id)a4;
-- (BOOL)updateMirrorKey:(id)a3 service:(int)a4 type:(int)a5 newType:(int)a6 current:(BOOL)a7;
-- (BOOL)updateSyncDevice:(id)a3 seen:(id)a4 version:(id)a5;
-- (UserRegistryDB)initWithDSID:(id)a3;
-- (id)getData:(id)a3 type:(int)a4;
-- (id)missingKeysFromDevice:(id)a3 type:(int)a4;
-- (id)queryEscrowKey:(id)a3;
+- (BOOL)syncedKeyToDevice:(id)device type:(int)type device:(id)a5;
+- (BOOL)updateEscrowKey:(id)key escrowBlob:(id)blob;
+- (BOOL)updateMirrorKey:(id)key service:(int)service type:(int)type newType:(int)newType current:(BOOL)current;
+- (BOOL)updateSyncDevice:(id)device seen:(id)seen version:(id)version;
+- (UserRegistryDB)initWithDSID:(id)d;
+- (id)getData:(id)data type:(int)type;
+- (id)missingKeysFromDevice:(id)device type:(int)type;
+- (id)queryEscrowKey:(id)key;
 - (id)queryEscrowKeys;
 - (id)syncDevices;
 - (void)dealloc;
@@ -27,13 +27,13 @@
 
 @implementation UserRegistryDB
 
-- (UserRegistryDB)initWithDSID:(id)a3
+- (UserRegistryDB)initWithDSID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = UserRegistryDB;
   v5 = [(UserRegistryDB *)&v9 init];
-  if (v5 && (v6 = os_log_create("com.apple.ProtectedCloudStorage", "UserDB"), [(UserRegistryDB *)v5 setOslog:v6], v6, [(UserRegistryDB *)v5 setDsid:v4], [(UserRegistryDB *)v5 setupDatabase]))
+  if (v5 && (v6 = os_log_create("com.apple.ProtectedCloudStorage", "UserDB"), [(UserRegistryDB *)v5 setOslog:v6], v6, [(UserRegistryDB *)v5 setDsid:dCopy], [(UserRegistryDB *)v5 setupDatabase]))
   {
     v7 = v5;
   }
@@ -53,9 +53,9 @@
   __break(1u);
 }
 
-- (BOOL)prepare:(const char *)a3 statement:(sqlite3_stmt *)a4
+- (BOOL)prepare:(const char *)prepare statement:(sqlite3_stmt *)statement
 {
-  v5 = sqlite3_prepare_v2(self->_sqliteHandle, a3, -1, a4, 0);
+  v5 = sqlite3_prepare_v2(self->_sqliteHandle, prepare, -1, statement, 0);
   if (v5)
   {
     [UserRegistryDB prepare:? statement:?];
@@ -73,30 +73,30 @@
   {
     v4 = MEMORY[0x1E696AEC0];
     v5 = [v3 objectAtIndexedSubscript:0];
-    v6 = [v4 stringWithFormat:@"%@/com.apple.ProtectedCloudStorage", v5];
+    oslog6 = [v4 stringWithFormat:@"%@/com.apple.ProtectedCloudStorage", v5];
 
-    v7 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v29 = 0;
-    v8 = [v7 createDirectoryAtPath:v6 withIntermediateDirectories:1 attributes:0 error:&v29];
+    v8 = [defaultManager createDirectoryAtPath:oslog6 withIntermediateDirectories:1 attributes:0 error:&v29];
     v9 = v29;
 
     if (v8)
     {
       v10 = MEMORY[0x1E696AEC0];
-      v11 = [(UserRegistryDB *)self dsid];
-      v12 = [v10 stringWithFormat:@"KeysSyncing{, Version2}-%@-%@*", v11, kPCSServiceName[0]];
-      v13 = [v6 stringByAppendingPathComponent:v12];
+      dsid = [(UserRegistryDB *)self dsid];
+      v12 = [v10 stringWithFormat:@"KeysSyncing{, Version2}-%@-%@*", dsid, kPCSServiceName[0]];
+      v13 = [oslog6 stringByAppendingPathComponent:v12];
 
       memset(&v33, 0, sizeof(v33));
       if (!glob([v13 UTF8String], 128, 0, &v33))
       {
         v28 = v9;
-        v14 = [(UserRegistryDB *)self oslog];
-        if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+        oslog = [(UserRegistryDB *)self oslog];
+        if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 67109120;
           LODWORD(v32) = v33.gl_matchc;
-          _os_log_impl(&dword_1B229C000, v14, OS_LOG_TYPE_DEFAULT, "Found %d PCS databases files to delete", buf, 8u);
+          _os_log_impl(&dword_1B229C000, oslog, OS_LOG_TYPE_DEFAULT, "Found %d PCS databases files to delete", buf, 8u);
         }
 
         if (v33.gl_matchc >= 1)
@@ -105,12 +105,12 @@
           do
           {
             v16 = v33.gl_pathv[v15];
-            v17 = [(UserRegistryDB *)self oslog];
-            if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+            oslog2 = [(UserRegistryDB *)self oslog];
+            if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 136315138;
               v32 = v16;
-              _os_log_impl(&dword_1B229C000, v17, OS_LOG_TYPE_DEFAULT, "removing: %s", buf, 0xCu);
+              _os_log_impl(&dword_1B229C000, oslog2, OS_LOG_TYPE_DEFAULT, "removing: %s", buf, 0xCu);
             }
 
             removefile(v16, 0, 0);
@@ -125,19 +125,19 @@
       }
 
       v18 = MEMORY[0x1E696AEC0];
-      v19 = [(UserRegistryDB *)self dsid];
-      v20 = [v18 stringWithFormat:@"KeysSyncingVersion3-%@-%@.db", v19, kPCSServiceName[0]];
-      v21 = [v6 stringByAppendingPathComponent:v20];
+      dsid2 = [(UserRegistryDB *)self dsid];
+      v20 = [v18 stringWithFormat:@"KeysSyncingVersion3-%@-%@.db", dsid2, kPCSServiceName[0]];
+      oslog5 = [oslog6 stringByAppendingPathComponent:v20];
 
-      if (sqlite3_open_v2([v21 UTF8String], &self->_sqliteHandle, 6, 0))
+      if (sqlite3_open_v2([oslog5 UTF8String], &self->_sqliteHandle, 6, 0))
       {
-        v22 = [(UserRegistryDB *)self oslog];
-        if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+        oslog3 = [(UserRegistryDB *)self oslog];
+        if (os_log_type_enabled(oslog3, OS_LOG_TYPE_DEFAULT))
         {
           v23 = sqlite3_errmsg(self->_sqliteHandle);
           LODWORD(v33.gl_pathc) = 136315138;
           *(&v33.gl_pathc + 4) = v23;
-          _os_log_impl(&dword_1B229C000, v22, OS_LOG_TYPE_DEFAULT, "Failed to open userDB database: %s", &v33, 0xCu);
+          _os_log_impl(&dword_1B229C000, oslog3, OS_LOG_TYPE_DEFAULT, "Failed to open userDB database: %s", &v33, 0xCu);
         }
       }
 
@@ -146,12 +146,12 @@
         [(UserRegistryDB *)self beginExclusiveTransaction];
         if (sqlite3_exec(self->_sqliteHandle, "CREATE TABLE IF NOT EXISTS PCSKeys(recordID TEXT PRIMARY KEY, type INTEGER NOT NULL, data BLOB, publicKey TEXT);CREATE TABLE IF NOT EXISTS SyncDevices(deviceID TEXT PRIMARY KEY NOT NULL, lastSeen TEXT, firstSeen TEXT, version TEXT);CREATE TABLE IF NOT EXISTS MirrorKeys(publicKey TEXT PRIMARY KEY NOT NULL, escrow BLOB, dsid TEXT NOT NULL, service INTEGER NOT NULL, current INTEGER NOT NULL, type INTEGER NOT NULL,publicIdentity BLOB);CREATE TABLE IF NOT EXISTS SyncedKeys(deviceNumber INTEGER NOT NULL, pubkeyNumber INTEGER NOT NULL, current INTEGER DEFAULT 0, PRIMARY KEY (deviceNumber,pubkeyNumber)) ;CREATE TABLE IF NOT EXISTS EscrowedKeys(publicKey TEXT PRIMARY KEY NOT NULL, escrow BLOB,dsid TEXT NOT NULL);CREATE TRIGGER IF NOT EXISTS removeSyncedKeys DELETE ON SyncDevices    FOR EACH ROW BEGIN        DELETE FROM SyncedKeys WHERE OLD.rowid = SyncedKeys.deviceNumber ;    END  ; CREATE TRIGGER IF NOT EXISTS removeMirrorKeys DELETE ON MirrorKeys    FOR EACH ROW BEGIN        DELETE FROM SyncedKeys WHERE OLD.rowid = SyncedKeys.pubkeyNumber ;    END  ; CREATE TABLE IF NOT EXISTS UpdateLimits(updateType TEXT PRIMARY KEY NOT NULL, mod_date DATETIME DEFAULT CURRENT_TIMESTAMP, counter INTEGER, digest TEXT);", 0, 0, &errmsg))
         {
-          v25 = [(UserRegistryDB *)self oslog];
-          if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
+          oslog4 = [(UserRegistryDB *)self oslog];
+          if (os_log_type_enabled(oslog4, OS_LOG_TYPE_DEFAULT))
           {
             LODWORD(v33.gl_pathc) = 136315138;
             *(&v33.gl_pathc + 4) = errmsg;
-            _os_log_impl(&dword_1B229C000, v25, OS_LOG_TYPE_DEFAULT, "Create schema for database: %s", &v33, 0xCu);
+            _os_log_impl(&dword_1B229C000, oslog4, OS_LOG_TYPE_DEFAULT, "Create schema for database: %s", &v33, 0xCu);
           }
 
           sqlite3_free(errmsg);
@@ -175,12 +175,12 @@ LABEL_44:
 
     else
     {
-      v21 = [(UserRegistryDB *)self oslog];
-      if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+      oslog5 = [(UserRegistryDB *)self oslog];
+      if (os_log_type_enabled(oslog5, OS_LOG_TYPE_DEFAULT))
       {
         LODWORD(v33.gl_pathc) = 138412290;
         *(&v33.gl_pathc + 4) = v9;
-        _os_log_impl(&dword_1B229C000, v21, OS_LOG_TYPE_DEFAULT, "Failed to create ApplicationSupport directory: %@", &v33, 0xCu);
+        _os_log_impl(&dword_1B229C000, oslog5, OS_LOG_TYPE_DEFAULT, "Failed to create ApplicationSupport directory: %@", &v33, 0xCu);
       }
     }
 
@@ -188,11 +188,11 @@ LABEL_44:
     goto LABEL_44;
   }
 
-  v6 = [(UserRegistryDB *)self oslog];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  oslog6 = [(UserRegistryDB *)self oslog];
+  if (os_log_type_enabled(oslog6, OS_LOG_TYPE_DEFAULT))
   {
     LOWORD(v33.gl_pathc) = 0;
-    _os_log_impl(&dword_1B229C000, v6, OS_LOG_TYPE_DEFAULT, "Failed to get ApplicationSupport directory", &v33, 2u);
+    _os_log_impl(&dword_1B229C000, oslog6, OS_LOG_TYPE_DEFAULT, "Failed to get ApplicationSupport directory", &v33, 2u);
   }
 
   v24 = 0;
@@ -204,14 +204,14 @@ LABEL_45:
 
 - (BOOL)deleteRecordAll
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   errmsg = 0;
-  v3 = sqlite3_exec(v2->_sqliteHandle, "DELETE FROM PCSKeys; DELETE FROM SyncedKeys; DELETE FROM MirrorKeys; DELETE FROM SyncDevices;DELETE FROM UpdateLimits;", 0, 0, &errmsg);
+  v3 = sqlite3_exec(selfCopy->_sqliteHandle, "DELETE FROM PCSKeys; DELETE FROM SyncedKeys; DELETE FROM MirrorKeys; DELETE FROM SyncDevices;DELETE FROM UpdateLimits;", 0, 0, &errmsg);
   if (v3)
   {
-    v5 = [(UserRegistryDB *)v2 oslog];
-    [(UserRegistryDB *)v5 deleteRecordAll];
+    oslog = [(UserRegistryDB *)selfCopy oslog];
+    [(UserRegistryDB *)oslog deleteRecordAll];
   }
 
   if (errmsg)
@@ -219,7 +219,7 @@ LABEL_45:
     sqlite3_free(errmsg);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3 == 0;
 }
@@ -236,9 +236,9 @@ LABEL_45:
   return v2 == 0;
 }
 
-- (BOOL)endTransaction:(BOOL)a3
+- (BOOL)endTransaction:(BOOL)transaction
 {
-  if (a3)
+  if (transaction)
   {
     v3 = "COMMIT TRANSACTION;";
   }
@@ -252,20 +252,20 @@ LABEL_45:
   return 1;
 }
 
-- (id)getData:(id)a3 type:(int)a4
+- (id)getData:(id)data type:(int)type
 {
-  v6 = a3;
-  v7 = self;
-  objc_sync_enter(v7);
-  if (sqlite3_bind_text(v7->_recordIDStatment, 1, [v6 UTF8String], -1, 0) || sqlite3_bind_int(v7->_recordIDStatment, 2, a4) || sqlite3_step(v7->_recordIDStatment) != 100)
+  dataCopy = data;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (sqlite3_bind_text(selfCopy->_recordIDStatment, 1, [dataCopy UTF8String], -1, 0) || sqlite3_bind_int(selfCopy->_recordIDStatment, 2, type) || sqlite3_step(selfCopy->_recordIDStatment) != 100)
   {
     v10 = 0;
   }
 
   else
   {
-    v8 = sqlite3_column_blob(v7->_recordIDStatment, 0);
-    v9 = sqlite3_column_bytes(v7->_recordIDStatment, 0);
+    v8 = sqlite3_column_blob(selfCopy->_recordIDStatment, 0);
+    v9 = sqlite3_column_bytes(selfCopy->_recordIDStatment, 0);
     v10 = 0;
     if (v8 && v9 >= 1)
     {
@@ -273,65 +273,65 @@ LABEL_45:
     }
   }
 
-  sqlite3_reset(v7->_recordIDStatment);
-  objc_sync_exit(v7);
+  sqlite3_reset(selfCopy->_recordIDStatment);
+  objc_sync_exit(selfCopy);
 
   return v10;
 }
 
-- (BOOL)replaceRecord:(id)a3 type:(int)a4 data:(id)a5 publicKey:(id)a6
+- (BOOL)replaceRecord:(id)record type:(int)type data:(id)data publicKey:(id)key
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = self;
-  objc_sync_enter(v13);
-  v14 = !sqlite3_bind_text(v13->_replaceStatment, 1, [v10 UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL) && !sqlite3_bind_int(v13->_replaceStatment, 2, a4) && !sqlite3_bind_blob(v13->_replaceStatment, 3, objc_msgSend(v11, "bytes"), objc_msgSend(v11, "length"), 0xFFFFFFFFFFFFFFFFLL) && !sqlite3_bind_text(v13->_replaceStatment, 4, objc_msgSend(v12, "UTF8String"), -1, 0xFFFFFFFFFFFFFFFFLL) && sqlite3_step(v13->_replaceStatment) == 101;
-  sqlite3_reset(v13->_replaceStatment);
-  objc_sync_exit(v13);
+  recordCopy = record;
+  dataCopy = data;
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v14 = !sqlite3_bind_text(selfCopy->_replaceStatment, 1, [recordCopy UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL) && !sqlite3_bind_int(selfCopy->_replaceStatment, 2, type) && !sqlite3_bind_blob(selfCopy->_replaceStatment, 3, objc_msgSend(dataCopy, "bytes"), objc_msgSend(dataCopy, "length"), 0xFFFFFFFFFFFFFFFFLL) && !sqlite3_bind_text(selfCopy->_replaceStatment, 4, objc_msgSend(keyCopy, "UTF8String"), -1, 0xFFFFFFFFFFFFFFFFLL) && sqlite3_step(selfCopy->_replaceStatment) == 101;
+  sqlite3_reset(selfCopy->_replaceStatment);
+  objc_sync_exit(selfCopy);
 
   return v14;
 }
 
-- (BOOL)deleteRecordID:(id)a3
+- (BOOL)deleteRecordID:(id)d
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (sqlite3_bind_text(v5->_deleteStatment, 1, [v4 UTF8String], -1, 0))
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (sqlite3_bind_text(selfCopy->_deleteStatment, 1, [dCopy UTF8String], -1, 0))
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = sqlite3_step(v5->_deleteStatment) == 101;
+    v6 = sqlite3_step(selfCopy->_deleteStatment) == 101;
   }
 
-  sqlite3_reset(v5->_deleteStatment);
-  objc_sync_exit(v5);
+  sqlite3_reset(selfCopy->_deleteStatment);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (BOOL)setMirrorKey:(id)a3 service:(int)a4 type:(int)a5 publicIdentity:(id)a6
+- (BOOL)setMirrorKey:(id)key service:(int)service type:(int)type publicIdentity:(id)identity
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = self;
-  objc_sync_enter(v12);
-  v13 = !sqlite3_bind_text(v12->_insertMirrorKey, 1, [v10 UTF8String], -1, 0) && !sqlite3_bind_text(v12->_insertMirrorKey, 2, -[NSString UTF8String](v12->_dsid, "UTF8String"), -1, 0) && !sqlite3_bind_int(v12->_insertMirrorKey, 3, a4) && !sqlite3_bind_int(v12->_insertMirrorKey, 4, a5) && !sqlite3_bind_blob(v12->_insertMirrorKey, 5, objc_msgSend(v11, "bytes"), objc_msgSend(v11, "length"), 0) && sqlite3_step(v12->_insertMirrorKey) == 101;
-  sqlite3_reset(v12->_insertMirrorKey);
-  objc_sync_exit(v12);
+  keyCopy = key;
+  identityCopy = identity;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v13 = !sqlite3_bind_text(selfCopy->_insertMirrorKey, 1, [keyCopy UTF8String], -1, 0) && !sqlite3_bind_text(selfCopy->_insertMirrorKey, 2, -[NSString UTF8String](selfCopy->_dsid, "UTF8String"), -1, 0) && !sqlite3_bind_int(selfCopy->_insertMirrorKey, 3, service) && !sqlite3_bind_int(selfCopy->_insertMirrorKey, 4, type) && !sqlite3_bind_blob(selfCopy->_insertMirrorKey, 5, objc_msgSend(identityCopy, "bytes"), objc_msgSend(identityCopy, "length"), 0) && sqlite3_step(selfCopy->_insertMirrorKey) == 101;
+  sqlite3_reset(selfCopy->_insertMirrorKey);
+  objc_sync_exit(selfCopy);
 
   return v13;
 }
 
-- (BOOL)markMirrorKey:(int)a3 type:(int)a4
+- (BOOL)markMirrorKey:(int)key type:(int)type
 {
-  v6 = self;
-  objc_sync_enter(v6);
-  if (sqlite3_bind_int(v6->_markMirrorKey, 1, a4) || sqlite3_bind_int(v6->_markMirrorKey, 2, a3) || sqlite3_bind_text(v6->_markMirrorKey, 3, [(NSString *)v6->_dsid UTF8String], -1, 0))
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (sqlite3_bind_int(selfCopy->_markMirrorKey, 1, type) || sqlite3_bind_int(selfCopy->_markMirrorKey, 2, key) || sqlite3_bind_text(selfCopy->_markMirrorKey, 3, [(NSString *)selfCopy->_dsid UTF8String], -1, 0))
   {
     v7 = 0;
   }
@@ -344,21 +344,21 @@ LABEL_45:
     v7 = 1;
   }
 
-  sqlite3_reset(v6->_markMirrorKey);
-  objc_sync_exit(v6);
+  sqlite3_reset(selfCopy->_markMirrorKey);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
-- (BOOL)updateMirrorKey:(id)a3 service:(int)a4 type:(int)a5 newType:(int)a6 current:(BOOL)a7
+- (BOOL)updateMirrorKey:(id)key service:(int)service type:(int)type newType:(int)newType current:(BOOL)current
 {
-  v7 = a7;
-  v12 = a3;
-  v13 = self;
-  objc_sync_enter(v13);
-  if (v7)
+  currentCopy = current;
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (currentCopy)
   {
-    if (sqlite3_bind_int(v13->_resetCurrentMirrorKey, 1, a4) || sqlite3_bind_text(v13->_resetCurrentMirrorKey, 2, [(NSString *)v13->_dsid UTF8String], -1, 0))
+    if (sqlite3_bind_int(selfCopy->_resetCurrentMirrorKey, 1, service) || sqlite3_bind_text(selfCopy->_resetCurrentMirrorKey, 2, [(NSString *)selfCopy->_dsid UTF8String], -1, 0))
     {
       goto LABEL_12;
     }
@@ -367,52 +367,52 @@ LABEL_45:
     }
   }
 
-  if (sqlite3_bind_int(v13->_updateMirrorKey, 1, v7) || sqlite3_bind_int(v13->_updateMirrorKey, 2, a6) || sqlite3_bind_text(v13->_updateMirrorKey, 3, [v12 UTF8String], -1, 0) || sqlite3_bind_int(v13->_updateMirrorKey, 4, a5) || sqlite3_bind_text(v13->_updateMirrorKey, 5, -[NSString UTF8String](v13->_dsid, "UTF8String"), -1, 0))
+  if (sqlite3_bind_int(selfCopy->_updateMirrorKey, 1, currentCopy) || sqlite3_bind_int(selfCopy->_updateMirrorKey, 2, newType) || sqlite3_bind_text(selfCopy->_updateMirrorKey, 3, [keyCopy UTF8String], -1, 0) || sqlite3_bind_int(selfCopy->_updateMirrorKey, 4, type) || sqlite3_bind_text(selfCopy->_updateMirrorKey, 5, -[NSString UTF8String](selfCopy->_dsid, "UTF8String"), -1, 0))
   {
 LABEL_12:
     v14 = 0;
     goto LABEL_11;
   }
 
-  v14 = sqlite3_step(v13->_updateMirrorKey) == 101;
+  v14 = sqlite3_step(selfCopy->_updateMirrorKey) == 101;
 LABEL_11:
-  sqlite3_reset(v13->_resetCurrentMirrorKey);
-  sqlite3_reset(v13->_updateMirrorKey);
-  objc_sync_exit(v13);
+  sqlite3_reset(selfCopy->_resetCurrentMirrorKey);
+  sqlite3_reset(selfCopy->_updateMirrorKey);
+  objc_sync_exit(selfCopy);
 
   return v14;
 }
 
-- (BOOL)deleteMirrorKeys:(int)a3
+- (BOOL)deleteMirrorKeys:(int)keys
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  if (sqlite3_bind_int(v4->_deleteMirrorKeys, 1, a3))
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (sqlite3_bind_int(selfCopy->_deleteMirrorKeys, 1, keys))
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = sqlite3_step(v4->_deleteMirrorKeys) == 101;
+    v5 = sqlite3_step(selfCopy->_deleteMirrorKeys) == 101;
   }
 
-  sqlite3_reset(v4->_deleteMirrorKeys);
-  objc_sync_exit(v4);
+  sqlite3_reset(selfCopy->_deleteMirrorKeys);
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
 
-- (BOOL)setEscrowKey:(id)a3 escrowBlob:(id)a4
+- (BOOL)setEscrowKey:(id)key escrowBlob:(id)blob
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  if (sqlite3_bind_text(v8->_insertEscrowKey, 1, [v6 UTF8String], -1, 0) || sqlite3_bind_blob(v8->_insertEscrowKey, 2, objc_msgSend(v7, "bytes"), objc_msgSend(v7, "length"), 0) || sqlite3_bind_text(v8->_insertEscrowKey, 3, -[NSString UTF8String](v8->_dsid, "UTF8String"), -1, 0) || sqlite3_step(v8->_insertEscrowKey) != 101)
+  keyCopy = key;
+  blobCopy = blob;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (sqlite3_bind_text(selfCopy->_insertEscrowKey, 1, [keyCopy UTF8String], -1, 0) || sqlite3_bind_blob(selfCopy->_insertEscrowKey, 2, objc_msgSend(blobCopy, "bytes"), objc_msgSend(blobCopy, "length"), 0) || sqlite3_bind_text(selfCopy->_insertEscrowKey, 3, -[NSString UTF8String](selfCopy->_dsid, "UTF8String"), -1, 0) || sqlite3_step(selfCopy->_insertEscrowKey) != 101)
   {
-    v11 = [(UserRegistryDB *)v8 oslog];
-    [UserRegistryDB setEscrowKey:v11 escrowBlob:?];
+    oslog = [(UserRegistryDB *)selfCopy oslog];
+    [UserRegistryDB setEscrowKey:oslog escrowBlob:?];
     v9 = 0;
   }
 
@@ -421,103 +421,103 @@ LABEL_11:
     v9 = 1;
   }
 
-  sqlite3_reset(v8->_insertEscrowKey);
-  objc_sync_exit(v8);
+  sqlite3_reset(selfCopy->_insertEscrowKey);
+  objc_sync_exit(selfCopy);
 
   return v9;
 }
 
-- (BOOL)updateEscrowKey:(id)a3 escrowBlob:(id)a4
+- (BOOL)updateEscrowKey:(id)key escrowBlob:(id)blob
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  v9 = !sqlite3_bind_blob(v8->_updateEscrowKey, 1, [v7 bytes], objc_msgSend(v7, "length"), 0) && !sqlite3_bind_text(v8->_updateEscrowKey, 2, objc_msgSend(v6, "UTF8String"), -1, 0) && !sqlite3_bind_text(v8->_updateEscrowKey, 3, -[NSString UTF8String](v8->_dsid, "UTF8String"), -1, 0) && sqlite3_step(v8->_updateEscrowKey) == 101;
-  sqlite3_reset(v8->_updateEscrowKey);
-  objc_sync_exit(v8);
+  keyCopy = key;
+  blobCopy = blob;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v9 = !sqlite3_bind_blob(selfCopy->_updateEscrowKey, 1, [blobCopy bytes], objc_msgSend(blobCopy, "length"), 0) && !sqlite3_bind_text(selfCopy->_updateEscrowKey, 2, objc_msgSend(keyCopy, "UTF8String"), -1, 0) && !sqlite3_bind_text(selfCopy->_updateEscrowKey, 3, -[NSString UTF8String](selfCopy->_dsid, "UTF8String"), -1, 0) && sqlite3_step(selfCopy->_updateEscrowKey) == 101;
+  sqlite3_reset(selfCopy->_updateEscrowKey);
+  objc_sync_exit(selfCopy);
 
   return v9;
 }
 
-- (BOOL)deleteEscrowKey:(id)a3
+- (BOOL)deleteEscrowKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = !sqlite3_bind_text(v5->_deleteEscrowKey, 1, [v4 UTF8String], -1, 0) && !sqlite3_bind_text(v5->_deleteEscrowKey, 2, -[NSString UTF8String](v5->_dsid, "UTF8String"), -1, 0) && sqlite3_step(v5->_deleteEscrowKey) == 101;
-  sqlite3_reset(v5->_deleteEscrowKey);
-  objc_sync_exit(v5);
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = !sqlite3_bind_text(selfCopy->_deleteEscrowKey, 1, [keyCopy UTF8String], -1, 0) && !sqlite3_bind_text(selfCopy->_deleteEscrowKey, 2, -[NSString UTF8String](selfCopy->_dsid, "UTF8String"), -1, 0) && sqlite3_step(selfCopy->_deleteEscrowKey) == 101;
+  sqlite3_reset(selfCopy->_deleteEscrowKey);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (id)queryEscrowKey:(id)a3
+- (id)queryEscrowKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (sqlite3_bind_text(v5->_queryEscrowKey, 1, [v4 UTF8String], -1, 0) || sqlite3_bind_text(v5->_queryEscrowKey, 2, -[NSString UTF8String](v5->_dsid, "UTF8String"), -1, 0) || sqlite3_step(v5->_queryEscrowKey) != 100)
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (sqlite3_bind_text(selfCopy->_queryEscrowKey, 1, [keyCopy UTF8String], -1, 0) || sqlite3_bind_text(selfCopy->_queryEscrowKey, 2, -[NSString UTF8String](selfCopy->_dsid, "UTF8String"), -1, 0) || sqlite3_step(selfCopy->_queryEscrowKey) != 100)
   {
     v8 = 0;
     goto LABEL_7;
   }
 
-  v6 = sqlite3_column_blob(v5->_queryEscrowKey, 0);
-  v7 = sqlite3_column_bytes(v5->_queryEscrowKey, 0);
+  v6 = sqlite3_column_blob(selfCopy->_queryEscrowKey, 0);
+  v7 = sqlite3_column_bytes(selfCopy->_queryEscrowKey, 0);
   if (v6 && (v7 & 0x80000000) == 0)
   {
     v8 = [MEMORY[0x1E695DEF0] dataWithBytes:v6 length:v7];
 LABEL_7:
-    sqlite3_reset(v5->_queryEscrowKey);
+    sqlite3_reset(selfCopy->_queryEscrowKey);
     goto LABEL_9;
   }
 
-  sqlite3_reset(v5->_queryEscrowKey);
+  sqlite3_reset(selfCopy->_queryEscrowKey);
   v8 = 0;
 LABEL_9:
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v8;
 }
 
-- (BOOL)updateSyncDevice:(id)a3 seen:(id)a4 version:(id)a5
+- (BOOL)updateSyncDevice:(id)device seen:(id)seen version:(id)version
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  objc_sync_enter(v11);
-  v12 = !sqlite3_bind_text(v11->_insertWatch, 1, [v8 UTF8String], -1, 0) && !sqlite3_bind_text(v11->_insertWatch, 2, objc_msgSend(v9, "UTF8String"), -1, 0) && (sqlite3_step(v11->_insertWatch), !sqlite3_bind_text(v11->_updateWatch, 1, objc_msgSend(v9, "UTF8String"), -1, 0)) && !sqlite3_bind_text(v11->_updateWatch, 2, objc_msgSend(v10, "UTF8String"), -1, 0) && !sqlite3_bind_text(v11->_updateWatch, 3, objc_msgSend(v8, "UTF8String"), -1, 0) && sqlite3_step(v11->_updateWatch) == 101;
-  sqlite3_reset(v11->_insertWatch);
-  sqlite3_reset(v11->_updateWatch);
-  objc_sync_exit(v11);
+  deviceCopy = device;
+  seenCopy = seen;
+  versionCopy = version;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v12 = !sqlite3_bind_text(selfCopy->_insertWatch, 1, [deviceCopy UTF8String], -1, 0) && !sqlite3_bind_text(selfCopy->_insertWatch, 2, objc_msgSend(seenCopy, "UTF8String"), -1, 0) && (sqlite3_step(selfCopy->_insertWatch), !sqlite3_bind_text(selfCopy->_updateWatch, 1, objc_msgSend(seenCopy, "UTF8String"), -1, 0)) && !sqlite3_bind_text(selfCopy->_updateWatch, 2, objc_msgSend(versionCopy, "UTF8String"), -1, 0) && !sqlite3_bind_text(selfCopy->_updateWatch, 3, objc_msgSend(deviceCopy, "UTF8String"), -1, 0) && sqlite3_step(selfCopy->_updateWatch) == 101;
+  sqlite3_reset(selfCopy->_insertWatch);
+  sqlite3_reset(selfCopy->_updateWatch);
+  objc_sync_exit(selfCopy);
 
   return v12;
 }
 
-- (BOOL)syncedKeyToDevice:(id)a3 type:(int)a4 device:(id)a5
+- (BOOL)syncedKeyToDevice:(id)device type:(int)type device:(id)a5
 {
-  v8 = a3;
+  deviceCopy = device;
   v9 = a5;
-  v10 = self;
-  objc_sync_enter(v10);
-  v11 = !sqlite3_bind_text(v10->_insertWatchKey, 1, [v9 UTF8String], -1, 0) && !sqlite3_bind_text(v10->_insertWatchKey, 2, objc_msgSend(v8, "UTF8String"), -1, 0) && !sqlite3_bind_int(v10->_insertWatchKey, 3, a4) && !sqlite3_bind_text(v10->_insertWatchKey, 4, -[NSString UTF8String](v10->_dsid, "UTF8String"), -1, 0) && sqlite3_step(v10->_insertWatchKey) == 101;
-  sqlite3_reset(v10->_insertWatchKey);
-  objc_sync_exit(v10);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v11 = !sqlite3_bind_text(selfCopy->_insertWatchKey, 1, [v9 UTF8String], -1, 0) && !sqlite3_bind_text(selfCopy->_insertWatchKey, 2, objc_msgSend(deviceCopy, "UTF8String"), -1, 0) && !sqlite3_bind_int(selfCopy->_insertWatchKey, 3, type) && !sqlite3_bind_text(selfCopy->_insertWatchKey, 4, -[NSString UTF8String](selfCopy->_dsid, "UTF8String"), -1, 0) && sqlite3_step(selfCopy->_insertWatchKey) == 101;
+  sqlite3_reset(selfCopy->_insertWatchKey);
+  objc_sync_exit(selfCopy);
 
   return v11;
 }
 
 - (id)syncDevices
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [MEMORY[0x1E695DF70] array];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  array = [MEMORY[0x1E695DF70] array];
   while (1)
   {
-    v4 = sqlite3_step(v2->_queryWatches);
-    queryWatches = v2->_queryWatches;
+    v4 = sqlite3_step(selfCopy->_queryWatches);
+    queryWatches = selfCopy->_queryWatches;
     if (v4 != 100)
     {
       break;
@@ -527,39 +527,39 @@ LABEL_9:
     if (v6)
     {
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v6];
-      [v3 addObject:v7];
+      [array addObject:v7];
     }
   }
 
   sqlite3_reset(queryWatches);
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return array;
 }
 
-- (id)missingKeysFromDevice:(id)a3 type:(int)a4
+- (id)missingKeysFromDevice:(id)device type:(int)type
 {
-  v6 = a3;
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = [MEMORY[0x1E695DF70] array];
-  if (!sqlite3_bind_text(v7->_queryMissingKeys, 1, -[NSString UTF8String](v7->_dsid, "UTF8String"), -1, 0) && !sqlite3_bind_int(v7->_queryMissingKeys, 2, a4) && !sqlite3_bind_text(v7->_queryMissingKeys, 3, [v6 UTF8String], -1, 0))
+  deviceCopy = device;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  array = [MEMORY[0x1E695DF70] array];
+  if (!sqlite3_bind_text(selfCopy->_queryMissingKeys, 1, -[NSString UTF8String](selfCopy->_dsid, "UTF8String"), -1, 0) && !sqlite3_bind_int(selfCopy->_queryMissingKeys, 2, type) && !sqlite3_bind_text(selfCopy->_queryMissingKeys, 3, [deviceCopy UTF8String], -1, 0))
   {
-    while (sqlite3_step(v7->_queryMissingKeys) == 100)
+    while (sqlite3_step(selfCopy->_queryMissingKeys) == 100)
     {
-      v9 = sqlite3_column_text(v7->_queryMissingKeys, 0);
+      v9 = sqlite3_column_text(selfCopy->_queryMissingKeys, 0);
       if (v9)
       {
         v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v9];
-        [v8 addObject:v10];
+        [array addObject:v10];
       }
     }
   }
 
-  sqlite3_reset(v7->_queryMissingKeys);
-  objc_sync_exit(v7);
+  sqlite3_reset(selfCopy->_queryMissingKeys);
+  objc_sync_exit(selfCopy);
 
-  return v8;
+  return array;
 }
 
 - (id)queryEscrowKeys
@@ -605,7 +605,7 @@ LABEL_9:
 - (void)deleteRecordAll
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (os_log_type_enabled(a1, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(self, OS_LOG_TYPE_DEFAULT))
   {
     v10 = *a2;
     OUTLINED_FUNCTION_0_9();

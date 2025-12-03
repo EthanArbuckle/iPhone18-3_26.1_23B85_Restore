@@ -1,33 +1,33 @@
 @interface _NFSecureTransactionServicesHandoverSession
-+ (id)validateEntitlements:(id)a3;
++ (id)validateEntitlements:(id)entitlements;
 - (BOOL)willStartSession;
 - (void)cleanup;
 - (void)coreDuetActivityRevoked;
-- (void)didStartSession:(id)a3;
-- (void)endSession:(id)a3;
-- (void)handleFieldNotification:(id)a3;
-- (void)handleHostCardReaderDetected:(id)a3;
-- (void)handleRemoteTagsDetected:(id)a3;
+- (void)didStartSession:(id)session;
+- (void)endSession:(id)session;
+- (void)handleFieldNotification:(id)notification;
+- (void)handleHostCardReaderDetected:(id)detected;
+- (void)handleRemoteTagsDetected:(id)detected;
 - (void)iso18013DataRetrievalCompleted;
 - (void)relinquishSEProxy;
 - (void)reqlinquishNFCReaderProxy;
 - (void)restartNFCReaderDiscovery;
-- (void)startSTSNotificationListenerEndpoint:(id)a3;
-- (void)startTNEPDeviceWithServices:(id)a3 optionalRecords:(id)a4 callback:(id)a5;
-- (void)startTNEPReaderWithCallback:(id)a3;
-- (void)staticReaderEngagementDiscovered:(id)a3;
-- (void)tnepReaderDeselectWithCallback:(id)a3;
-- (void)tnepReaderRestartPollingWithCallback:(id)a3;
-- (void)tnepReaderSelectService:(id)a3 callback:(id)a4;
-- (void)tnepReaderSend:(id)a3 callback:(id)a4;
-- (void)tnepReaderServicesAborted:(id)a3;
-- (void)tnepReaderServicesDiscovered:(id)a3;
+- (void)startSTSNotificationListenerEndpoint:(id)endpoint;
+- (void)startTNEPDeviceWithServices:(id)services optionalRecords:(id)records callback:(id)callback;
+- (void)startTNEPReaderWithCallback:(id)callback;
+- (void)staticReaderEngagementDiscovered:(id)discovered;
+- (void)tnepReaderDeselectWithCallback:(id)callback;
+- (void)tnepReaderRestartPollingWithCallback:(id)callback;
+- (void)tnepReaderSelectService:(id)service callback:(id)callback;
+- (void)tnepReaderSend:(id)send callback:(id)callback;
+- (void)tnepReaderServicesAborted:(id)aborted;
+- (void)tnepReaderServicesDiscovered:(id)discovered;
 - (void)tnepServiceInvalidate;
-- (void)tnepTagDeviceDeselected:(id)a3;
-- (void)tnepTagDeviceNDEFMessageReceived:(id)a3;
+- (void)tnepTagDeviceDeselected:(id)deselected;
+- (void)tnepTagDeviceNDEFMessageReceived:(id)received;
 - (void)tnepTagDeviceReaderDetected;
-- (void)tnepTagDeviceSelected:(id)a3 respondHandler:(id)a4;
-- (void)tnepTagDeviceSendNDEFMessage:(id)a3 callback:(id)a4;
+- (void)tnepTagDeviceSelected:(id)selected respondHandler:(id)handler;
+- (void)tnepTagDeviceSendNDEFMessage:(id)message callback:(id)callback;
 @end
 
 @implementation _NFSecureTransactionServicesHandoverSession
@@ -42,7 +42,7 @@
   return [(_NFSession *)&v5 willStartSession];
 }
 
-- (void)endSession:(id)a3
+- (void)endSession:(id)session
 {
   if (self)
   {
@@ -54,17 +54,17 @@
     stsHelper = 0;
   }
 
-  v5 = a3;
+  sessionCopy = session;
   [(STSHelperLibrary *)stsHelper invalidate];
   sub_10004CB7C(self, 0);
   v6.receiver = self;
   v6.super_class = _NFSecureTransactionServicesHandoverSession;
-  [(_NFXPCSession *)&v6 endSession:v5];
+  [(_NFXPCSession *)&v6 endSession:sessionCopy];
 }
 
-- (void)startSTSNotificationListenerEndpoint:(id)a3
+- (void)startSTSNotificationListenerEndpoint:(id)endpoint
 {
-  v5 = a3;
+  endpointCopy = endpoint;
   if (![(_NFSession *)self didStart]|| [(_NFSession *)self isSuspended]|| [(_NFSession *)self didEnd])
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -76,14 +76,14 @@
       isMetaClass = class_isMetaClass(Class);
       ClassName = object_getClassName(self);
       Name = sel_getName(a2);
-      v12 = [(_NFSession *)self sessionUID];
+      sessionUID = [(_NFSession *)self sessionUID];
       v13 = 45;
       if (isMetaClass)
       {
         v13 = 43;
       }
 
-      v7(3, "%c[%{public}s %{public}s]:%i Session %{public}@ is not active", v13, ClassName, Name, 101, v12);
+      v7(3, "%c[%{public}s %{public}s]:%i Session %{public}@ is not active", v13, ClassName, Name, 101, sessionUID);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -103,7 +103,7 @@
 
       v17 = object_getClassName(self);
       v18 = sel_getName(a2);
-      v19 = [(_NFSession *)self sessionUID];
+      sessionUID2 = [(_NFSession *)self sessionUID];
       *buf = 67110146;
       v33 = v16;
       v34 = 2082;
@@ -113,7 +113,7 @@
       v38 = 1024;
       v39 = 101;
       v40 = 2114;
-      v41 = v19;
+      v41 = sessionUID2;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Session %{public}@ is not active", buf, 0x2Cu);
     }
   }
@@ -174,31 +174,31 @@
       stsHelper = 0;
     }
 
-    v30 = [(STSHelperLibrary *)stsHelper connectToNotificationListener:v5];
+    v30 = [(STSHelperLibrary *)stsHelper connectToNotificationListener:endpointCopy];
   }
 }
 
-- (void)handleFieldNotification:(id)a3
+- (void)handleFieldNotification:(id)notification
 {
   v6 = _NSConcreteStackBlock;
   v7 = 3221225472;
   v8 = sub_10004D294;
   v9 = &unk_1003162B8;
-  v10 = self;
+  selfCopy = self;
   v11 = a2;
-  v4 = a3;
+  notificationCopy = notification;
   v5 = sub_10004D188(self, &v6);
-  [v5 fieldNotification:{v4, v6, v7, v8, v9, v10, v11}];
+  [v5 fieldNotification:{notificationCopy, v6, v7, v8, v9, selfCopy, v11}];
 }
 
-- (void)handleHostCardReaderDetected:(id)a3
+- (void)handleHostCardReaderDetected:(id)detected
 {
-  v4 = a3;
+  detectedCopy = detected;
   v5 = NFSharedSignpostLog();
-  v6 = [(_NFSession *)self signpostId];
-  if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  signpostId = [(_NFSession *)self signpostId];
+  if (signpostId - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v7 = v6;
+    v7 = signpostId;
     if (os_signpost_enabled(v5))
     {
       *buf = 0;
@@ -206,7 +206,7 @@
     }
   }
 
-  v8 = v4;
+  v8 = detectedCopy;
   if (self)
   {
     tnepHandler = self->_tnepHandler;
@@ -266,14 +266,14 @@
   }
 }
 
-- (void)handleRemoteTagsDetected:(id)a3
+- (void)handleRemoteTagsDetected:(id)detected
 {
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = a3;
-  v6 = [v5 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  detectedCopy = detected;
+  v6 = [detectedCopy countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (!v6)
   {
     goto LABEL_10;
@@ -286,12 +286,12 @@
     {
       if (*v22 != v7)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(detectedCopy);
       }
 
       v9 = *(*(&v21 + 1) + 8 * i);
-      v10 = [v9 tagA];
-      if (v10)
+      tagA = [v9 tagA];
+      if (tagA)
       {
 
 LABEL_13:
@@ -315,10 +315,10 @@ LABEL_13:
         }
 
         v14 = NFSharedSignpostLog();
-        v15 = [(_NFSession *)self signpostId];
-        if (v15 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+        signpostId = [(_NFSession *)self signpostId];
+        if (signpostId - 1 <= 0xFFFFFFFFFFFFFFFDLL)
         {
-          v16 = v15;
+          v16 = signpostId;
           if (os_signpost_enabled(v14))
           {
             *v20 = 0;
@@ -353,15 +353,15 @@ LABEL_29:
         goto LABEL_11;
       }
 
-      v11 = [v9 tagB];
+      tagB = [v9 tagB];
 
-      if (v11)
+      if (tagB)
       {
         goto LABEL_13;
       }
     }
 
-    v6 = [v5 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    v6 = [detectedCopy countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v6)
     {
       continue;
@@ -371,7 +371,7 @@ LABEL_29:
   }
 
 LABEL_10:
-  v12 = v5;
+  v12 = detectedCopy;
 LABEL_11:
 
 LABEL_24:
@@ -390,10 +390,10 @@ LABEL_25:
 LABEL_27:
 }
 
-+ (id)validateEntitlements:(id)a3
++ (id)validateEntitlements:(id)entitlements
 {
-  v5 = a3;
-  if ([v5 seSessionAccess] && (objc_msgSend(v5, "hceAccess") & 1) != 0)
+  entitlementsCopy = entitlements;
+  if ([entitlementsCopy seSessionAccess] && (objc_msgSend(entitlementsCopy, "hceAccess") & 1) != 0)
   {
     v6 = 0;
   }
@@ -405,9 +405,9 @@ LABEL_27:
     if (Logger)
     {
       v8 = Logger;
-      Class = object_getClass(a1);
+      Class = object_getClass(self);
       isMetaClass = class_isMetaClass(Class);
-      ClassName = object_getClassName(a1);
+      ClassName = object_getClassName(self);
       Name = sel_getName(a2);
       v12 = 45;
       if (isMetaClass)
@@ -422,7 +422,7 @@ LABEL_27:
     v13 = NFSharedLogGetLogger();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v14 = object_getClass(a1);
+      v14 = object_getClass(self);
       if (class_isMetaClass(v14))
       {
         v15 = 43;
@@ -436,7 +436,7 @@ LABEL_27:
       *buf = 67109890;
       v27 = v15;
       v28 = 2082;
-      v29 = object_getClassName(a1);
+      v29 = object_getClassName(self);
       v30 = 2082;
       v31 = sel_getName(a2);
       v32 = 1024;
@@ -503,12 +503,12 @@ LABEL_27:
   }
 }
 
-- (void)didStartSession:(id)a3
+- (void)didStartSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   v127.receiver = self;
   v127.super_class = _NFSecureTransactionServicesHandoverSession;
-  [(_NFXPCSession *)&v127 didStartSession:v5];
+  [(_NFXPCSession *)&v127 didStartSession:sessionCopy];
   v126[0] = _NSConcreteStackBlock;
   v126[1] = 3221225472;
   v126[2] = sub_10004EE88;
@@ -523,16 +523,16 @@ LABEL_27:
   v125[4] = self;
   v125[5] = a2;
   v7 = objc_retainBlock(v125);
-  if (v5)
+  if (sessionCopy)
   {
-    (v6[2])(v6, v5);
+    (v6[2])(v6, sessionCopy);
     goto LABEL_92;
   }
 
   v8 = +[_NFHardwareManager sharedHardwareManager];
-  v9 = [v8 secureElementWrapper];
+  secureElementWrapper = [v8 secureElementWrapper];
   seWrapper = self->_seWrapper;
-  self->_seWrapper = v9;
+  self->_seWrapper = secureElementWrapper;
 
   role = self->_role;
   if (role > 2)
@@ -588,13 +588,13 @@ LABEL_27:
         }
 
         v34 = NFSharedSignpostLog();
-        v51 = [(_NFSession *)self signpostId];
-        if (v51 - 1 > 0xFFFFFFFFFFFFFFFDLL)
+        signpostId = [(_NFSession *)self signpostId];
+        if (signpostId - 1 > 0xFFFFFFFFFFFFFFFDLL)
         {
           goto LABEL_43;
         }
 
-        v36 = v51;
+        v36 = signpostId;
         if (!os_signpost_enabled(v34))
         {
           goto LABEL_43;
@@ -657,10 +657,10 @@ LABEL_27:
     }
 
     v100 = NFSharedSignpostLog();
-    v101 = [(_NFSession *)self signpostId];
-    if (v101 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+    signpostId2 = [(_NFSession *)self signpostId];
+    if (signpostId2 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
     {
-      v102 = v101;
+      v102 = signpostId2;
       if (os_signpost_enabled(v100))
       {
         *buf = 0;
@@ -739,10 +739,10 @@ LABEL_90:
     }
 
     v81 = NFSharedSignpostLog();
-    v82 = [(_NFSession *)self signpostId];
-    if (v82 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+    signpostId3 = [(_NFSession *)self signpostId];
+    if (signpostId3 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
     {
-      v83 = v82;
+      v83 = signpostId3;
       if (os_signpost_enabled(v81))
       {
         *buf = 0;
@@ -755,10 +755,10 @@ LABEL_90:
     v27 = [(STSHelperLibrary *)v84 startISO18013WithConnectionHandoverConfiguration:v85 type:sub_10004F63C(self) credentialType:2 delegate:self];
 
     v86 = NFSharedSignpostLog();
-    v87 = [(_NFSession *)self signpostId];
-    if (v87 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+    signpostId4 = [(_NFSession *)self signpostId];
+    if (signpostId4 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
     {
-      v88 = v87;
+      v88 = signpostId4;
       if (os_signpost_enabled(v86))
       {
         *buf = 138412290;
@@ -777,10 +777,10 @@ LABEL_91:
     }
 
     v106 = NFSharedSignpostLog();
-    v107 = [(_NFSession *)self signpostId];
-    if (v107 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+    signpostId5 = [(_NFSession *)self signpostId];
+    if (signpostId5 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
     {
-      v108 = v107;
+      v108 = signpostId5;
       if (os_signpost_enabled(v106))
       {
         *buf = 0;
@@ -790,10 +790,10 @@ LABEL_91:
 
     sub_10004DD74(self);
     v100 = NFSharedSignpostLog();
-    v109 = [(_NFSession *)self signpostId];
-    if (v109 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+    signpostId6 = [(_NFSession *)self signpostId];
+    if (signpostId6 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
     {
-      v102 = v109;
+      v102 = signpostId6;
       if (os_signpost_enabled(v100))
       {
         *buf = 0;
@@ -859,10 +859,10 @@ LABEL_91:
     }
 
     v23 = NFSharedSignpostLog();
-    v24 = [(_NFSession *)self signpostId];
-    if (v24 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+    signpostId7 = [(_NFSession *)self signpostId];
+    if (signpostId7 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
     {
-      v25 = v24;
+      v25 = signpostId7;
       if (os_signpost_enabled(v23))
       {
         *buf = 0;
@@ -874,10 +874,10 @@ LABEL_91:
     v27 = [(STSHelperLibrary *)v26 startISO18013WithConnectionHandoverConfiguration:v12 type:sub_10004F63C(self) credentialType:2 delegate:self];
 
     v28 = NFSharedSignpostLog();
-    v29 = [(_NFSession *)self signpostId];
-    if (v29 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+    signpostId8 = [(_NFSession *)self signpostId];
+    if (signpostId8 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
     {
-      v30 = v29;
+      v30 = signpostId8;
       if (os_signpost_enabled(v28))
       {
         *buf = 138412290;
@@ -889,10 +889,10 @@ LABEL_91:
     if (!v27)
     {
       v31 = NFSharedSignpostLog();
-      v32 = [(_NFSession *)self signpostId];
-      if (v32 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+      signpostId9 = [(_NFSession *)self signpostId];
+      if (signpostId9 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
       {
-        v33 = v32;
+        v33 = signpostId9;
         if (os_signpost_enabled(v31))
         {
           *buf = 0;
@@ -902,13 +902,13 @@ LABEL_91:
 
       sub_10004DD74(self);
       v34 = NFSharedSignpostLog();
-      v35 = [(_NFSession *)self signpostId];
-      if (v35 - 1 > 0xFFFFFFFFFFFFFFFDLL)
+      signpostId10 = [(_NFSession *)self signpostId];
+      if (signpostId10 - 1 > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_43;
       }
 
-      v36 = v35;
+      v36 = signpostId10;
       if (!os_signpost_enabled(v34))
       {
         goto LABEL_43;
@@ -1216,133 +1216,133 @@ LABEL_92:
 
 - (void)coreDuetActivityRevoked
 {
-  v3 = [(_NFSession *)self workQueue];
+  workQueue = [(_NFSession *)self workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100050EE4;
   block[3] = &unk_100315F30;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
-- (void)startTNEPDeviceWithServices:(id)a3 optionalRecords:(id)a4 callback:(id)a5
+- (void)startTNEPDeviceWithServices:(id)services optionalRecords:(id)records callback:(id)callback
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(_NFSession *)self workQueue];
+  servicesCopy = services;
+  recordsCopy = records;
+  callbackCopy = callback;
+  workQueue = [(_NFSession *)self workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100051094;
   block[3] = &unk_1003165C0;
-  v19 = v11;
+  v19 = callbackCopy;
   v20 = a2;
   block[4] = self;
-  v17 = v9;
-  v18 = v10;
-  v13 = v10;
-  v14 = v9;
-  v15 = v11;
-  dispatch_async(v12, block);
+  v17 = servicesCopy;
+  v18 = recordsCopy;
+  v13 = recordsCopy;
+  v14 = servicesCopy;
+  v15 = callbackCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (void)tnepTagDeviceSendNDEFMessage:(id)a3 callback:(id)a4
+- (void)tnepTagDeviceSendNDEFMessage:(id)message callback:(id)callback
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(_NFSession *)self workQueue];
+  messageCopy = message;
+  callbackCopy = callback;
+  workQueue = [(_NFSession *)self workQueue];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1000518B0;
   v12[3] = &unk_1003165E8;
-  v14 = v8;
+  v14 = callbackCopy;
   v15 = a2;
   v12[4] = self;
-  v13 = v7;
-  v10 = v7;
-  v11 = v8;
-  dispatch_async(v9, v12);
+  v13 = messageCopy;
+  v10 = messageCopy;
+  v11 = callbackCopy;
+  dispatch_async(workQueue, v12);
 }
 
-- (void)startTNEPReaderWithCallback:(id)a3
+- (void)startTNEPReaderWithCallback:(id)callback
 {
-  v5 = a3;
-  v6 = [(_NFSession *)self workQueue];
+  callbackCopy = callback;
+  workQueue = [(_NFSession *)self workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100051F58;
   block[3] = &unk_100316050;
-  v9 = v5;
+  v9 = callbackCopy;
   v10 = a2;
   block[4] = self;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v7 = callbackCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (void)tnepReaderSelectService:(id)a3 callback:(id)a4
+- (void)tnepReaderSelectService:(id)service callback:(id)callback
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(_NFSession *)self workQueue];
+  serviceCopy = service;
+  callbackCopy = callback;
+  workQueue = [(_NFSession *)self workQueue];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100052518;
   v12[3] = &unk_1003165E8;
-  v14 = v8;
+  v14 = callbackCopy;
   v15 = a2;
   v12[4] = self;
-  v13 = v7;
-  v10 = v7;
-  v11 = v8;
-  dispatch_async(v9, v12);
+  v13 = serviceCopy;
+  v10 = serviceCopy;
+  v11 = callbackCopy;
+  dispatch_async(workQueue, v12);
 }
 
-- (void)tnepReaderDeselectWithCallback:(id)a3
+- (void)tnepReaderDeselectWithCallback:(id)callback
 {
-  v5 = a3;
-  v6 = [(_NFSession *)self workQueue];
+  callbackCopy = callback;
+  workQueue = [(_NFSession *)self workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100052BA8;
   block[3] = &unk_100316050;
-  v9 = v5;
+  v9 = callbackCopy;
   v10 = a2;
   block[4] = self;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v7 = callbackCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (void)tnepReaderSend:(id)a3 callback:(id)a4
+- (void)tnepReaderSend:(id)send callback:(id)callback
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(_NFSession *)self workQueue];
+  sendCopy = send;
+  callbackCopy = callback;
+  workQueue = [(_NFSession *)self workQueue];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100053248;
   v12[3] = &unk_1003165E8;
-  v14 = v8;
+  v14 = callbackCopy;
   v15 = a2;
   v12[4] = self;
-  v13 = v7;
-  v10 = v7;
-  v11 = v8;
-  dispatch_async(v9, v12);
+  v13 = sendCopy;
+  v10 = sendCopy;
+  v11 = callbackCopy;
+  dispatch_async(workQueue, v12);
 }
 
-- (void)tnepReaderRestartPollingWithCallback:(id)a3
+- (void)tnepReaderRestartPollingWithCallback:(id)callback
 {
-  v5 = a3;
-  v6 = [(_NFSession *)self workQueue];
+  callbackCopy = callback;
+  workQueue = [(_NFSession *)self workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000538C8;
   block[3] = &unk_100316050;
-  v9 = v5;
+  v9 = callbackCopy;
   v10 = a2;
   block[4] = self;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v7 = callbackCopy;
+  dispatch_async(workQueue, block);
 }
 
 - (void)tnepServiceInvalidate
@@ -1358,14 +1358,14 @@ LABEL_92:
       isMetaClass = class_isMetaClass(Class);
       ClassName = object_getClassName(self);
       Name = sel_getName(a2);
-      v10 = [(_NFSession *)self sessionUID];
+      sessionUID = [(_NFSession *)self sessionUID];
       v11 = 45;
       if (isMetaClass)
       {
         v11 = 43;
       }
 
-      v5(3, "%c[%{public}s %{public}s]:%i Session %{public}@ is not active", v11, ClassName, Name, 574, v10);
+      v5(3, "%c[%{public}s %{public}s]:%i Session %{public}@ is not active", v11, ClassName, Name, 574, sessionUID);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -1385,7 +1385,7 @@ LABEL_92:
 
       v15 = object_getClassName(self);
       v16 = sel_getName(a2);
-      v17 = [(_NFSession *)self sessionUID];
+      sessionUID2 = [(_NFSession *)self sessionUID];
       LODWORD(buf) = 67110146;
       HIDWORD(buf) = v14;
       v32 = 2082;
@@ -1395,7 +1395,7 @@ LABEL_92:
       v36 = 1024;
       v37 = 574;
       v38 = 2114;
-      v39 = v17;
+      v39 = sessionUID2;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Session %{public}@ is not active", &buf, 0x2Cu);
     }
   }
@@ -1447,14 +1447,14 @@ LABEL_92:
     }
 
     objc_initWeak(&buf, self);
-    v27 = [(_NFSession *)self workQueue];
+    workQueue = [(_NFSession *)self workQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10005427C;
     block[3] = &unk_100316610;
     objc_copyWeak(v30, &buf);
     v30[1] = a2;
-    dispatch_async(v27, block);
+    dispatch_async(workQueue, block);
 
     objc_destroyWeak(v30);
     objc_destroyWeak(&buf);
@@ -1508,11 +1508,11 @@ LABEL_92:
   }
 }
 
-- (void)tnepTagDeviceSelected:(id)a3 respondHandler:(id)a4
+- (void)tnepTagDeviceSelected:(id)selected respondHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 isEqualToString:@"urn:nfc:sn:handover"];
+  selectedCopy = selected;
+  handlerCopy = handler;
+  v9 = [selectedCopy isEqualToString:@"urn:nfc:sn:handover"];
   v10 = v9 ^ 1;
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
@@ -1529,7 +1529,7 @@ LABEL_92:
       v16 = 43;
     }
 
-    v12(6, "%c[%{public}s %{public}s]:%i service=%{public}@, status=%ld", v16, ClassName, Name, 605, v7, v10);
+    v12(6, "%c[%{public}s %{public}s]:%i service=%{public}@, status=%ld", v16, ClassName, Name, 605, selectedCopy, v10);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -1556,7 +1556,7 @@ LABEL_92:
     v29 = 1024;
     v30 = 605;
     v31 = 2114;
-    v32 = v7;
+    v32 = selectedCopy;
     v33 = 2048;
     v34 = v9 ^ 1;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i service=%{public}@, status=%ld", buf, 0x36u);
@@ -1574,12 +1574,12 @@ LABEL_92:
     [v20 connectionHandoverTNEPServiceSelected:@"urn:nfc:sn:handover"];
   }
 
-  v8[2](v8, v10, 0);
+  handlerCopy[2](handlerCopy, v10, 0);
 }
 
-- (void)tnepTagDeviceDeselected:(id)a3
+- (void)tnepTagDeviceDeselected:(id)deselected
 {
-  v5 = a3;
+  deselectedCopy = deselected;
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
   if (Logger)
@@ -1608,7 +1608,7 @@ LABEL_92:
       deviceHandoverSelectError = 0;
     }
 
-    v7(6, "%c[%{public}s %{public}s]:%i CH status=%{public}@, link error=%{public}@", v9, ClassName, Name, 619, deviceHandoverSelectError, v5);
+    v7(6, "%c[%{public}s %{public}s]:%i CH status=%{public}@, link error=%{public}@", v9, ClassName, Name, 619, deviceHandoverSelectError, deselectedCopy);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -1649,7 +1649,7 @@ LABEL_92:
     v39 = 2114;
     v40 = v18;
     v41 = 2114;
-    v42 = v5;
+    v42 = deselectedCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i CH status=%{public}@, link error=%{public}@", buf, 0x36u);
   }
 
@@ -1667,9 +1667,9 @@ LABEL_92:
     sub_100055040(self, 0);
   }
 
-  else if (v5)
+  else if (deselectedCopy)
   {
-    if ([v5 code] == 28)
+    if ([deselectedCopy code] == 28)
     {
       v20 = STS_XCPHELPER_ERROR_DOMAIN;
       v43 = NSLocalizedDescriptionKey;
@@ -1679,7 +1679,7 @@ LABEL_92:
       v23 = 8;
     }
 
-    else if ([v5 code] == 62 || objc_msgSend(v5, "code") == 59)
+    else if ([deselectedCopy code] == 62 || objc_msgSend(deselectedCopy, "code") == 59)
     {
       v25 = STS_XCPHELPER_ERROR_DOMAIN;
       v43 = NSLocalizedDescriptionKey;
@@ -1724,14 +1724,14 @@ LABEL_92:
   }
 }
 
-- (void)tnepTagDeviceNDEFMessageReceived:(id)a3
+- (void)tnepTagDeviceNDEFMessageReceived:(id)received
 {
-  v5 = a3;
+  receivedCopy = received;
   v6 = NFSharedSignpostLog();
-  v7 = [(_NFSession *)self signpostId];
-  if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  signpostId = [(_NFSession *)self signpostId];
+  if (signpostId - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v8 = v7;
+    v8 = signpostId;
     if (os_signpost_enabled(v6))
     {
       *buf = 0;
@@ -1750,21 +1750,21 @@ LABEL_92:
   }
 
   v10 = stsHelper;
-  v11 = [v5 asData];
+  asData = [receivedCopy asData];
 
-  v12 = [(_NFSession *)self workQueue];
+  workQueue = [(_NFSession *)self workQueue];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000554E0;
   v13[3] = &unk_100316660;
   v13[4] = self;
   v13[5] = a2;
-  [(STSHelperLibrary *)v10 processConnectionHandoverRequestData:v11 callbackQueue:v12 responseHandler:v13];
+  [(STSHelperLibrary *)v10 processConnectionHandoverRequestData:asData callbackQueue:workQueue responseHandler:v13];
 }
 
-- (void)tnepReaderServicesDiscovered:(id)a3
+- (void)tnepReaderServicesDiscovered:(id)discovered
 {
-  v5 = a3;
+  discoveredCopy = discovered;
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
   if (Logger)
@@ -1780,7 +1780,7 @@ LABEL_92:
       v10 = 43;
     }
 
-    v7(6, "%c[%{public}s %{public}s]:%i services=%{public}@", v10, ClassName, Name, 680, v5);
+    v7(6, "%c[%{public}s %{public}s]:%i services=%{public}@", v10, ClassName, Name, 680, discoveredCopy);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -1807,7 +1807,7 @@ LABEL_92:
     v53 = 1024;
     v54 = 680;
     v55 = 2114;
-    v56 = v5;
+    v56 = discoveredCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i services=%{public}@", buf, 0x2Cu);
   }
 
@@ -1815,7 +1815,7 @@ LABEL_92:
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v14 = v5;
+  v14 = discoveredCopy;
   v15 = [v14 countByEnumeratingWithState:&v42 objects:v46 count:16];
   if (v15)
   {
@@ -1932,9 +1932,9 @@ LABEL_92:
 LABEL_31:
 }
 
-- (void)staticReaderEngagementDiscovered:(id)a3
+- (void)staticReaderEngagementDiscovered:(id)discovered
 {
-  v5 = a3;
+  discoveredCopy = discovered;
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
   if (Logger)
@@ -1950,7 +1950,7 @@ LABEL_31:
       v10 = 43;
     }
 
-    v7(6, "%c[%{public}s %{public}s]:%i handover select = %@", v10, ClassName, Name, 762, v5);
+    v7(6, "%c[%{public}s %{public}s]:%i handover select = %@", v10, ClassName, Name, 762, discoveredCopy);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -1977,7 +1977,7 @@ LABEL_31:
     v27 = 1024;
     v28 = 762;
     v29 = 2112;
-    v30 = v5;
+    v30 = discoveredCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i handover select = %@", buf, 0x2Cu);
   }
 
@@ -1992,25 +1992,25 @@ LABEL_31:
   }
 
   v15 = stsHelper;
-  v16 = [v5 asData];
-  v17 = [(_NFSession *)self workQueue];
+  asData = [discoveredCopy asData];
+  workQueue = [(_NFSession *)self workQueue];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_10005763C;
   v20[3] = &unk_1003162B8;
   v20[4] = self;
   v20[5] = a2;
-  [(STSHelperLibrary *)v15 connectRemoteWithConnectionHandoverSelect:v16 callbackQueue:v17 responseHandler:v20];
+  [(STSHelperLibrary *)v15 connectRemoteWithConnectionHandoverSelect:asData callbackQueue:workQueue responseHandler:v20];
 }
 
-- (void)tnepReaderServicesAborted:(id)a3
+- (void)tnepReaderServicesAborted:(id)aborted
 {
-  v5 = a3;
+  abortedCopy = aborted;
   v6 = NFSharedSignpostLog();
-  v7 = [(_NFSession *)self signpostId];
-  if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  signpostId = [(_NFSession *)self signpostId];
+  if (signpostId - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v8 = v7;
+    v8 = signpostId;
     if (os_signpost_enabled(v6))
     {
       *buf = 0;
@@ -2033,7 +2033,7 @@ LABEL_31:
       v13 = 43;
     }
 
-    v10(3, "%c[%{public}s %{public}s]:%i error=%{public}@", v13, ClassName, Name, 785, v5);
+    v10(3, "%c[%{public}s %{public}s]:%i error=%{public}@", v13, ClassName, Name, 785, abortedCopy);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -2062,7 +2062,7 @@ LABEL_31:
     v29 = 1024;
     v30 = 785;
     v31 = 2114;
-    v32 = v5;
+    v32 = abortedCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i error=%{public}@", buf, 0x2Cu);
   }
 
@@ -2073,7 +2073,7 @@ LABEL_31:
   v22[4] = self;
   v22[5] = a2;
   v19 = sub_10004D188(self, v22);
-  [v19 tnepReaderServicesAborted:v5];
+  [v19 tnepReaderServicesAborted:abortedCopy];
 }
 
 @end

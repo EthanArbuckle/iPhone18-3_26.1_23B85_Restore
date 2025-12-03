@@ -1,106 +1,106 @@
 @interface CRKSetUserPropertiesRequest
-- (CRKSetUserPropertiesRequest)initWithCoder:(id)a3;
-- (CRKSetUserPropertiesRequest)initWithUser:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (CRKSetUserPropertiesRequest)initWithCoder:(id)coder;
+- (CRKSetUserPropertiesRequest)initWithUser:(id)user;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CRKSetUserPropertiesRequest
 
-- (CRKSetUserPropertiesRequest)initWithUser:(id)a3
+- (CRKSetUserPropertiesRequest)initWithUser:(id)user
 {
-  v4 = a3;
+  userCopy = user;
   v5 = [(CATTaskRequest *)self init];
   if (v5)
   {
-    v6 = [v4 userIdentifier];
+    userIdentifier = [userCopy userIdentifier];
     userIdentifier = v5->_userIdentifier;
-    v5->_userIdentifier = v6;
+    v5->_userIdentifier = userIdentifier;
 
-    v8 = [v4 displayName];
-    v9 = v8;
-    if (!v8)
+    displayName = [userCopy displayName];
+    null = displayName;
+    if (!displayName)
     {
-      v9 = [MEMORY[0x277CBEB68] null];
+      null = [MEMORY[0x277CBEB68] null];
     }
 
-    objc_storeStrong(&v5->_displayName, v9);
-    if (!v8)
-    {
-    }
-
-    v10 = [v4 givenName];
-    v11 = v10;
-    if (!v10)
-    {
-      v11 = [MEMORY[0x277CBEB68] null];
-    }
-
-    objc_storeStrong(&v5->_givenName, v11);
-    if (!v10)
+    objc_storeStrong(&v5->_displayName, null);
+    if (!displayName)
     {
     }
 
-    v12 = [v4 familyName];
-    v13 = v12;
-    if (!v12)
+    givenName = [userCopy givenName];
+    null2 = givenName;
+    if (!givenName)
     {
-      v13 = [MEMORY[0x277CBEB68] null];
+      null2 = [MEMORY[0x277CBEB68] null];
     }
 
-    objc_storeStrong(&v5->_familyName, v13);
-    if (!v12)
-    {
-    }
-
-    v14 = [v4 phoneticGivenName];
-    v15 = v14;
-    if (!v14)
-    {
-      v15 = [MEMORY[0x277CBEB68] null];
-    }
-
-    objc_storeStrong(&v5->_phoneticGivenName, v15);
-    if (!v14)
+    objc_storeStrong(&v5->_givenName, null2);
+    if (!givenName)
     {
     }
 
-    v16 = [v4 phoneticFamilyName];
-    v17 = v16;
-    if (!v16)
+    familyName = [userCopy familyName];
+    null3 = familyName;
+    if (!familyName)
     {
-      v17 = [MEMORY[0x277CBEB68] null];
+      null3 = [MEMORY[0x277CBEB68] null];
     }
 
-    objc_storeStrong(&v5->_phoneticFamilyName, v17);
-    if (!v16)
-    {
-    }
-
-    v18 = [v4 userSource];
-    v19 = v18;
-    if (!v18)
-    {
-      v19 = [MEMORY[0x277CBEB68] null];
-    }
-
-    objc_storeStrong(&v5->_userSource, v19);
-    if (!v18)
+    objc_storeStrong(&v5->_familyName, null3);
+    if (!familyName)
     {
     }
 
-    v20 = [v4 userImageData];
-    v21 = v20;
-    if (!v20)
+    phoneticGivenName = [userCopy phoneticGivenName];
+    null4 = phoneticGivenName;
+    if (!phoneticGivenName)
     {
-      v21 = [MEMORY[0x277CBEB68] null];
+      null4 = [MEMORY[0x277CBEB68] null];
     }
 
-    objc_storeStrong(&v5->_imageData, v21);
-    if (!v20)
+    objc_storeStrong(&v5->_phoneticGivenName, null4);
+    if (!phoneticGivenName)
     {
     }
 
-    v22 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v4, "shouldUseMeCardIfAvailable")}];
+    phoneticFamilyName = [userCopy phoneticFamilyName];
+    null5 = phoneticFamilyName;
+    if (!phoneticFamilyName)
+    {
+      null5 = [MEMORY[0x277CBEB68] null];
+    }
+
+    objc_storeStrong(&v5->_phoneticFamilyName, null5);
+    if (!phoneticFamilyName)
+    {
+    }
+
+    userSource = [userCopy userSource];
+    null6 = userSource;
+    if (!userSource)
+    {
+      null6 = [MEMORY[0x277CBEB68] null];
+    }
+
+    objc_storeStrong(&v5->_userSource, null6);
+    if (!userSource)
+    {
+    }
+
+    userImageData = [userCopy userImageData];
+    null7 = userImageData;
+    if (!userImageData)
+    {
+      null7 = [MEMORY[0x277CBEB68] null];
+    }
+
+    objc_storeStrong(&v5->_imageData, null7);
+    if (!userImageData)
+    {
+    }
+
+    v22 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(userCopy, "shouldUseMeCardIfAvailable")}];
     useMeCardIfAvailable = v5->_useMeCardIfAvailable;
     v5->_useMeCardIfAvailable = v22;
   }
@@ -108,75 +108,75 @@
   return v5;
 }
 
-- (CRKSetUserPropertiesRequest)initWithCoder:(id)a3
+- (CRKSetUserPropertiesRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v51.receiver = self;
   v51.super_class = CRKSetUserPropertiesRequest;
-  v5 = [(CATTaskRequest *)&v51 initWithCoder:v4];
+  v5 = [(CATTaskRequest *)&v51 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"userIdentifier"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"userIdentifier"];
     userIdentifier = v5->_userIdentifier;
     v5->_userIdentifier = v7;
 
     v9 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"courseIdentifier"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"courseIdentifier"];
     courseIdentifier = v5->_courseIdentifier;
     v5->_courseIdentifier = v10;
 
     v12 = MEMORY[0x277CBEB98];
     v13 = objc_opt_class();
     v14 = [v12 setWithObjects:{v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"displayName"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"displayName"];
     displayName = v5->_displayName;
     v5->_displayName = v15;
 
     v17 = MEMORY[0x277CBEB98];
     v18 = objc_opt_class();
     v19 = [v17 setWithObjects:{v18, objc_opt_class(), 0}];
-    v20 = [v4 decodeObjectOfClasses:v19 forKey:@"givenName"];
+    v20 = [coderCopy decodeObjectOfClasses:v19 forKey:@"givenName"];
     givenName = v5->_givenName;
     v5->_givenName = v20;
 
     v22 = MEMORY[0x277CBEB98];
     v23 = objc_opt_class();
     v24 = [v22 setWithObjects:{v23, objc_opt_class(), 0}];
-    v25 = [v4 decodeObjectOfClasses:v24 forKey:@"familyName"];
+    v25 = [coderCopy decodeObjectOfClasses:v24 forKey:@"familyName"];
     familyName = v5->_familyName;
     v5->_familyName = v25;
 
     v27 = MEMORY[0x277CBEB98];
     v28 = objc_opt_class();
     v29 = [v27 setWithObjects:{v28, objc_opt_class(), 0}];
-    v30 = [v4 decodeObjectOfClasses:v29 forKey:@"phoneticGivenName"];
+    v30 = [coderCopy decodeObjectOfClasses:v29 forKey:@"phoneticGivenName"];
     phoneticGivenName = v5->_phoneticGivenName;
     v5->_phoneticGivenName = v30;
 
     v32 = MEMORY[0x277CBEB98];
     v33 = objc_opt_class();
     v34 = [v32 setWithObjects:{v33, objc_opt_class(), 0}];
-    v35 = [v4 decodeObjectOfClasses:v34 forKey:@"phoneticFamilyName"];
+    v35 = [coderCopy decodeObjectOfClasses:v34 forKey:@"phoneticFamilyName"];
     phoneticFamilyName = v5->_phoneticFamilyName;
     v5->_phoneticFamilyName = v35;
 
     v37 = MEMORY[0x277CBEB98];
     v38 = objc_opt_class();
     v39 = [v37 setWithObjects:{v38, objc_opt_class(), 0}];
-    v40 = [v4 decodeObjectOfClasses:v39 forKey:@"userSource"];
+    v40 = [coderCopy decodeObjectOfClasses:v39 forKey:@"userSource"];
     userSource = v5->_userSource;
     v5->_userSource = v40;
 
     v42 = MEMORY[0x277CBEB98];
     v43 = objc_opt_class();
     v44 = [v42 setWithObjects:{v43, objc_opt_class(), 0}];
-    v45 = [v4 decodeObjectOfClasses:v44 forKey:@"imageData"];
+    v45 = [coderCopy decodeObjectOfClasses:v44 forKey:@"imageData"];
     imageData = v5->_imageData;
     v5->_imageData = v45;
 
     v47 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v48 = [v4 decodeObjectOfClasses:v47 forKey:@"useMeCardIfAvailable"];
+    v48 = [coderCopy decodeObjectOfClasses:v47 forKey:@"useMeCardIfAvailable"];
     useMeCardIfAvailable = v5->_useMeCardIfAvailable;
     v5->_useMeCardIfAvailable = v48;
   }
@@ -184,41 +184,41 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v15.receiver = self;
   v15.super_class = CRKSetUserPropertiesRequest;
-  v4 = a3;
-  [(CATTaskRequest *)&v15 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CATTaskRequest *)&v15 encodeWithCoder:coderCopy];
   v5 = [(CRKSetUserPropertiesRequest *)self userIdentifier:v15.receiver];
-  [v4 encodeObject:v5 forKey:@"userIdentifier"];
+  [coderCopy encodeObject:v5 forKey:@"userIdentifier"];
 
-  v6 = [(CRKSetUserPropertiesRequest *)self courseIdentifier];
-  [v4 encodeObject:v6 forKey:@"courseIdentifier"];
+  courseIdentifier = [(CRKSetUserPropertiesRequest *)self courseIdentifier];
+  [coderCopy encodeObject:courseIdentifier forKey:@"courseIdentifier"];
 
-  v7 = [(CRKSetUserPropertiesRequest *)self displayName];
-  [v4 encodeObject:v7 forKey:@"displayName"];
+  displayName = [(CRKSetUserPropertiesRequest *)self displayName];
+  [coderCopy encodeObject:displayName forKey:@"displayName"];
 
-  v8 = [(CRKSetUserPropertiesRequest *)self givenName];
-  [v4 encodeObject:v8 forKey:@"givenName"];
+  givenName = [(CRKSetUserPropertiesRequest *)self givenName];
+  [coderCopy encodeObject:givenName forKey:@"givenName"];
 
-  v9 = [(CRKSetUserPropertiesRequest *)self familyName];
-  [v4 encodeObject:v9 forKey:@"familyName"];
+  familyName = [(CRKSetUserPropertiesRequest *)self familyName];
+  [coderCopy encodeObject:familyName forKey:@"familyName"];
 
-  v10 = [(CRKSetUserPropertiesRequest *)self phoneticGivenName];
-  [v4 encodeObject:v10 forKey:@"phoneticGivenName"];
+  phoneticGivenName = [(CRKSetUserPropertiesRequest *)self phoneticGivenName];
+  [coderCopy encodeObject:phoneticGivenName forKey:@"phoneticGivenName"];
 
-  v11 = [(CRKSetUserPropertiesRequest *)self phoneticFamilyName];
-  [v4 encodeObject:v11 forKey:@"phoneticFamilyName"];
+  phoneticFamilyName = [(CRKSetUserPropertiesRequest *)self phoneticFamilyName];
+  [coderCopy encodeObject:phoneticFamilyName forKey:@"phoneticFamilyName"];
 
-  v12 = [(CRKSetUserPropertiesRequest *)self userSource];
-  [v4 encodeObject:v12 forKey:@"userSource"];
+  userSource = [(CRKSetUserPropertiesRequest *)self userSource];
+  [coderCopy encodeObject:userSource forKey:@"userSource"];
 
-  v13 = [(CRKSetUserPropertiesRequest *)self imageData];
-  [v4 encodeObject:v13 forKey:@"imageData"];
+  imageData = [(CRKSetUserPropertiesRequest *)self imageData];
+  [coderCopy encodeObject:imageData forKey:@"imageData"];
 
-  v14 = [(CRKSetUserPropertiesRequest *)self useMeCardIfAvailable];
-  [v4 encodeObject:v14 forKey:@"useMeCardIfAvailable"];
+  useMeCardIfAvailable = [(CRKSetUserPropertiesRequest *)self useMeCardIfAvailable];
+  [coderCopy encodeObject:useMeCardIfAvailable forKey:@"useMeCardIfAvailable"];
 }
 
 @end

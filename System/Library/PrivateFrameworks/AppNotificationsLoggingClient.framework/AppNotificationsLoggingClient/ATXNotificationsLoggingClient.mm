@@ -2,15 +2,15 @@
 + (id)sharedInstance;
 - (ATXNotificationsLoggingClient)init;
 - (void)_processActiveSuggestionsRequests;
-- (void)activeSuggestionsWithReply:(id)a3;
+- (void)activeSuggestionsWithReply:(id)reply;
 - (void)dealloc;
-- (void)logNotificationDeliveryUI:(unint64_t)a3 notificationUUIDs:(id)a4;
-- (void)logNotificationEvent:(int64_t)a3 notification:(id)a4;
-- (void)logNotificationEvent:(int64_t)a3 notification:(id)a4 reason:(unint64_t)a5;
-- (void)logNotificationEvent:(int64_t)a3 notification:(id)a4 reason:(unint64_t)a5 interactionUI:(unint64_t)a6;
-- (void)logNotificationGroupEvent:(int64_t)a3 eventIdentifier:(id)a4;
-- (void)logNotificationGroupEvent:(int64_t)a3 eventIdentifier:(id)a4 timestamp:(id)a5;
-- (void)logSuggestionEvent:(int64_t)a3 suggestionType:(int64_t)a4 suggestionIdentifier:(id)a5 timestamp:(id)a6;
+- (void)logNotificationDeliveryUI:(unint64_t)i notificationUUIDs:(id)ds;
+- (void)logNotificationEvent:(int64_t)event notification:(id)notification;
+- (void)logNotificationEvent:(int64_t)event notification:(id)notification reason:(unint64_t)reason;
+- (void)logNotificationEvent:(int64_t)event notification:(id)notification reason:(unint64_t)reason interactionUI:(unint64_t)i;
+- (void)logNotificationGroupEvent:(int64_t)event eventIdentifier:(id)identifier;
+- (void)logNotificationGroupEvent:(int64_t)event eventIdentifier:(id)identifier timestamp:(id)timestamp;
+- (void)logSuggestionEvent:(int64_t)event suggestionType:(int64_t)type suggestionIdentifier:(id)identifier timestamp:(id)timestamp;
 @end
 
 @implementation ATXNotificationsLoggingClient
@@ -207,12 +207,12 @@ void __66__ATXNotificationsLoggingClient__processActiveSuggestionsRequests__bloc
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)activeSuggestionsWithReply:(id)a3
+- (void)activeSuggestionsWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = __atxlog_handle_notification_management();
   v6 = v5;
-  if (v4)
+  if (replyCopy)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
@@ -220,14 +220,14 @@ void __66__ATXNotificationsLoggingClient__processActiveSuggestionsRequests__bloc
       _os_log_impl(&dword_24001A000, v6, OS_LOG_TYPE_DEFAULT, "activeSuggestionsWithReply: queued request", v10, 2u);
     }
 
-    v7 = self;
-    objc_sync_enter(v7);
-    activeSuggestionsRequests = v7->_activeSuggestionsRequests;
-    v9 = MEMORY[0x245CB55D0](v4);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    activeSuggestionsRequests = selfCopy->_activeSuggestionsRequests;
+    v9 = MEMORY[0x245CB55D0](replyCopy);
     [(NSMutableArray *)activeSuggestionsRequests addObject:v9];
 
-    objc_sync_exit(v7);
-    [(_PASSimpleCoalescingTimer *)v7->_coalescingTimer runAfterDelaySeconds:1 coalescingBehavior:0.5];
+    objc_sync_exit(selfCopy);
+    [(_PASSimpleCoalescingTimer *)selfCopy->_coalescingTimer runAfterDelaySeconds:1 coalescingBehavior:0.5];
   }
 
   else
@@ -239,15 +239,15 @@ void __66__ATXNotificationsLoggingClient__processActiveSuggestionsRequests__bloc
   }
 }
 
-- (void)logNotificationEvent:(int64_t)a3 notification:(id)a4 reason:(unint64_t)a5 interactionUI:(unint64_t)a6
+- (void)logNotificationEvent:(int64_t)event notification:(id)notification reason:(unint64_t)reason interactionUI:(unint64_t)i
 {
-  v10 = a4;
-  v11 = [v10 uuid];
+  notificationCopy = notification;
+  uuid = [notificationCopy uuid];
 
-  if (v11)
+  if (uuid)
   {
     v12 = [(NSXPCConnection *)self->_xpcConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_79];
-    [v12 logNotificationEvent:a3 notification:v10 reason:a5 interactionUI:a6];
+    [v12 logNotificationEvent:event notification:notificationCopy reason:reason interactionUI:i];
   }
 
   else
@@ -270,15 +270,15 @@ void __88__ATXNotificationsLoggingClient_logNotificationEvent_notification_reaso
   }
 }
 
-- (void)logNotificationEvent:(int64_t)a3 notification:(id)a4
+- (void)logNotificationEvent:(int64_t)event notification:(id)notification
 {
-  v6 = a4;
-  v7 = [v6 uuid];
+  notificationCopy = notification;
+  uuid = [notificationCopy uuid];
 
-  if (v7)
+  if (uuid)
   {
     v8 = [(NSXPCConnection *)self->_xpcConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_81];
-    [v8 logNotificationEvent:a3 notification:v6 reason:0 interactionUI:5];
+    [v8 logNotificationEvent:event notification:notificationCopy reason:0 interactionUI:5];
   }
 
   else
@@ -301,15 +301,15 @@ void __67__ATXNotificationsLoggingClient_logNotificationEvent_notification___blo
   }
 }
 
-- (void)logNotificationEvent:(int64_t)a3 notification:(id)a4 reason:(unint64_t)a5
+- (void)logNotificationEvent:(int64_t)event notification:(id)notification reason:(unint64_t)reason
 {
-  v8 = a4;
-  v9 = [v8 uuid];
+  notificationCopy = notification;
+  uuid = [notificationCopy uuid];
 
-  if (v9)
+  if (uuid)
   {
     v10 = [(NSXPCConnection *)self->_xpcConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_83_0];
-    [v10 logNotificationEvent:a3 notification:v8 reason:a5 interactionUI:5];
+    [v10 logNotificationEvent:event notification:notificationCopy reason:reason interactionUI:5];
   }
 
   else
@@ -332,13 +332,13 @@ void __74__ATXNotificationsLoggingClient_logNotificationEvent_notification_reaso
   }
 }
 
-- (void)logSuggestionEvent:(int64_t)a3 suggestionType:(int64_t)a4 suggestionIdentifier:(id)a5 timestamp:(id)a6
+- (void)logSuggestionEvent:(int64_t)event suggestionType:(int64_t)type suggestionIdentifier:(id)identifier timestamp:(id)timestamp
 {
   xpcConnection = self->_xpcConnection;
-  v10 = a6;
-  v11 = a5;
+  timestampCopy = timestamp;
+  identifierCopy = identifier;
   v12 = [(NSXPCConnection *)xpcConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_85];
-  [v12 logSuggestionEvent:a3 suggestionType:a4 suggestionIdentifier:v11 timestamp:v10];
+  [v12 logSuggestionEvent:event suggestionType:type suggestionIdentifier:identifierCopy timestamp:timestampCopy];
 }
 
 void __98__ATXNotificationsLoggingClient_logSuggestionEvent_suggestionType_suggestionIdentifier_timestamp___block_invoke(uint64_t a1, void *a2)
@@ -351,13 +351,13 @@ void __98__ATXNotificationsLoggingClient_logSuggestionEvent_suggestionType_sugge
   }
 }
 
-- (void)logNotificationGroupEvent:(int64_t)a3 eventIdentifier:(id)a4 timestamp:(id)a5
+- (void)logNotificationGroupEvent:(int64_t)event eventIdentifier:(id)identifier timestamp:(id)timestamp
 {
   xpcConnection = self->_xpcConnection;
-  v8 = a5;
-  v9 = a4;
+  timestampCopy = timestamp;
+  identifierCopy = identifier;
   v10 = [(NSXPCConnection *)xpcConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_87];
-  [v10 logNotificationGroupEvent:a3 eventIdentifier:v9 timestamp:v8];
+  [v10 logNotificationGroupEvent:event eventIdentifier:identifierCopy timestamp:timestampCopy];
 }
 
 void __85__ATXNotificationsLoggingClient_logNotificationGroupEvent_eventIdentifier_timestamp___block_invoke(uint64_t a1, void *a2)
@@ -370,13 +370,13 @@ void __85__ATXNotificationsLoggingClient_logNotificationGroupEvent_eventIdentifi
   }
 }
 
-- (void)logNotificationGroupEvent:(int64_t)a3 eventIdentifier:(id)a4
+- (void)logNotificationGroupEvent:(int64_t)event eventIdentifier:(id)identifier
 {
   xpcConnection = self->_xpcConnection;
-  v6 = a4;
+  identifierCopy = identifier;
   v8 = [(NSXPCConnection *)xpcConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_89_0];
   v7 = [MEMORY[0x277CBEAA8] now];
-  [v8 logNotificationGroupEvent:a3 eventIdentifier:v6 timestamp:v7];
+  [v8 logNotificationGroupEvent:event eventIdentifier:identifierCopy timestamp:v7];
 }
 
 void __75__ATXNotificationsLoggingClient_logNotificationGroupEvent_eventIdentifier___block_invoke(uint64_t a1, void *a2)
@@ -389,22 +389,22 @@ void __75__ATXNotificationsLoggingClient_logNotificationGroupEvent_eventIdentifi
   }
 }
 
-- (void)logNotificationDeliveryUI:(unint64_t)a3 notificationUUIDs:(id)a4
+- (void)logNotificationDeliveryUI:(unint64_t)i notificationUUIDs:(id)ds
 {
-  v6 = a4;
-  if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  dsCopy = ds;
+  if (dsCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v8 = __atxlog_handle_notification_management();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
     {
-      [ATXNotificationsLoggingClient logNotificationDeliveryUI:v6 notificationUUIDs:v8];
+      [ATXNotificationsLoggingClient logNotificationDeliveryUI:dsCopy notificationUUIDs:v8];
     }
   }
 
   else
   {
     v7 = [(NSXPCConnection *)self->_xpcConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_92_0];
-    [v7 logNotificationDeliveryUI:a3 notificationUUIDs:v6];
+    [v7 logNotificationDeliveryUI:i notificationUUIDs:dsCopy];
   }
 }
 

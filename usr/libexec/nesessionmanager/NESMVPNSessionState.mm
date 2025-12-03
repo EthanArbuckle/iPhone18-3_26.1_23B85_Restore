@@ -1,30 +1,30 @@
 @interface NESMVPNSessionState
-+ (NESMVPNSessionState)stateWithType:(int64_t)a3;
++ (NESMVPNSessionState)stateWithType:(int64_t)type;
 - (BOOL)canSleep;
 - (BOOL)handleClearConfiguration;
 - (BOOL)handleSetConfiguration;
 - (BOOL)handleSleep;
-- (NESMVPNSessionState)initWithType:(int64_t)a3 andTimeout:(unint64_t)a4;
-- (void)enterWithSession:(id)a3;
-- (void)handleClearConfigurationResult:(BOOL)a3;
+- (NESMVPNSessionState)initWithType:(int64_t)type andTimeout:(unint64_t)timeout;
+- (void)enterWithSession:(id)session;
+- (void)handleClearConfigurationResult:(BOOL)result;
 - (void)handleEstablishIPC;
 - (void)handleEstablishIPCReplySent;
-- (void)handleInterfaceAvailable:(id)a3 changed:(BOOL)a4;
-- (void)handleInterfaceUnavailable:(id)a3;
-- (void)handlePlugin:(id)a3 authenticationCompleteWithResults:(id)a4 status:(int)a5 andError:(id)a6;
-- (void)handlePlugin:(id)a3 didAttachIPCWithEndpoint:(id)a4;
-- (void)handlePlugin:(id)a3 didStartWithPID:(int)a4 error:(id)a5;
-- (void)handlePlugin:(id)a3 statusDidChangeToDisconnectingWithReason:(int)a4;
-- (void)handlePluginDidDetachIPC:(id)a3;
-- (void)handlePluginDisposeComplete:(id)a3;
-- (void)handlePluginStatusDidChangeToAuthenticating:(id)a3;
-- (void)handlePluginStatusDidChangeToConnected:(id)a3;
-- (void)handlePluginStatusDidChangeToContacting:(id)a3;
-- (void)handlePluginStatusDidChangeToNegotiating:(id)a3;
-- (void)handlePluginStatusDidChangeToReasserting:(id)a3;
-- (void)handlePluginStatusDidChangeToUpdating:(id)a3;
-- (void)handleSetConfigurationResult:(BOOL)a3;
-- (void)handleStartMessage:(id)a3;
+- (void)handleInterfaceAvailable:(id)available changed:(BOOL)changed;
+- (void)handleInterfaceUnavailable:(id)unavailable;
+- (void)handlePlugin:(id)plugin authenticationCompleteWithResults:(id)results status:(int)status andError:(id)error;
+- (void)handlePlugin:(id)plugin didAttachIPCWithEndpoint:(id)endpoint;
+- (void)handlePlugin:(id)plugin didStartWithPID:(int)d error:(id)error;
+- (void)handlePlugin:(id)plugin statusDidChangeToDisconnectingWithReason:(int)reason;
+- (void)handlePluginDidDetachIPC:(id)c;
+- (void)handlePluginDisposeComplete:(id)complete;
+- (void)handlePluginStatusDidChangeToAuthenticating:(id)authenticating;
+- (void)handlePluginStatusDidChangeToConnected:(id)connected;
+- (void)handlePluginStatusDidChangeToContacting:(id)contacting;
+- (void)handlePluginStatusDidChangeToNegotiating:(id)negotiating;
+- (void)handlePluginStatusDidChangeToReasserting:(id)reasserting;
+- (void)handlePluginStatusDidChangeToUpdating:(id)updating;
+- (void)handleSetConfigurationResult:(BOOL)result;
+- (void)handleStartMessage:(id)message;
 - (void)handleStop;
 - (void)handleTimeout;
 - (void)handleUpdateConfiguration;
@@ -36,9 +36,9 @@
 
 @implementation NESMVPNSessionState
 
-- (void)handlePluginStatusDidChangeToUpdating:(id)a3
+- (void)handlePluginStatusDidChangeToUpdating:(id)updating
 {
-  v4 = a3;
+  updatingCopy = updating;
   v5 = ne_log_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -59,7 +59,7 @@
     v14 = 2112;
     v15 = v9;
     v16 = 2112;
-    v17 = v4;
+    v17 = updatingCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ in state %@: plugin %@ status changed to updating", &v12, 0x20u);
   }
 
@@ -112,7 +112,7 @@
     v10 = 0;
   }
 
-  v12 = [v10 primaryTunnelPlugin];
+  primaryTunnelPlugin = [v10 primaryTunnelPlugin];
   if (self)
   {
     v13 = objc_getProperty(self, v11, 16, 1);
@@ -123,13 +123,13 @@
     v13 = 0;
   }
 
-  v14 = [v13 configuration];
-  sub_100019EA0(v12, v14);
+  configuration = [v13 configuration];
+  sub_100019EA0(primaryTunnelPlugin, configuration);
 }
 
-- (void)handleClearConfigurationResult:(BOOL)a3
+- (void)handleClearConfigurationResult:(BOOL)result
 {
-  v3 = a3;
+  resultCopy = result;
   v5 = ne_log_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -150,7 +150,7 @@
     v14 = 2112;
     v15 = v9;
     v16 = 1024;
-    v17 = v3;
+    v17 = resultCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ in state %@: clear configuration completed with result %d", &v12, 0x1Cu);
   }
 
@@ -205,9 +205,9 @@
   return 1;
 }
 
-- (void)handleSetConfigurationResult:(BOOL)a3
+- (void)handleSetConfigurationResult:(BOOL)result
 {
-  v3 = a3;
+  resultCopy = result;
   v5 = ne_log_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -228,7 +228,7 @@
     v14 = 2112;
     v15 = v9;
     v16 = 1024;
-    v17 = v3;
+    v17 = resultCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ in state %@: set configuration completed with result %d", &v12, 0x1Cu);
   }
 
@@ -392,13 +392,13 @@
     v9 = 0;
   }
 
-  v10 = [v9 primaryTunnelPlugin];
-  if (v10)
+  primaryTunnelPlugin = [v9 primaryTunnelPlugin];
+  if (primaryTunnelPlugin)
   {
-    v12 = v10;
+    v12 = primaryTunnelPlugin;
     v13 = self ? objc_getProperty(self, v11, 16, 1) : 0;
-    v14 = [v13 primaryTunnelPlugin];
-    v15 = sub_10001A2D4(v14);
+    primaryTunnelPlugin2 = [v13 primaryTunnelPlugin];
+    v15 = sub_10001A2D4(primaryTunnelPlugin2);
 
     if (v15)
     {
@@ -412,8 +412,8 @@
         v17 = 0;
       }
 
-      v18 = [v17 primaryTunnelPlugin];
-      sub_10001A254(v18);
+      primaryTunnelPlugin3 = [v17 primaryTunnelPlugin];
+      sub_10001A254(primaryTunnelPlugin3);
     }
   }
 }
@@ -479,8 +479,8 @@
     v9 = 0;
   }
 
-  v10 = [v9 primaryTunnelPlugin];
-  if (v10 && ((v12 = v10, !self) ? (v13 = 0) : (v13 = objc_getProperty(self, v11, 16, 1)), [v13 primaryTunnelPlugin], v14 = objc_claimAutoreleasedReturnValue(), v15 = sub_10001A2D4(v14), v14, v12, v15))
+  primaryTunnelPlugin = [v9 primaryTunnelPlugin];
+  if (primaryTunnelPlugin && ((v12 = primaryTunnelPlugin, !self) ? (v13 = 0) : (v13 = objc_getProperty(self, v11, 16, 1)), [v13 primaryTunnelPlugin], v14 = objc_claimAutoreleasedReturnValue(), v15 = sub_10001A2D4(v14), v14, v12, v15))
   {
     if (self)
     {
@@ -492,8 +492,8 @@
       v16 = 0;
     }
 
-    v17 = [v16 primaryTunnelPlugin];
-    sub_100019F08(v17);
+    primaryTunnelPlugin2 = [v16 primaryTunnelPlugin];
+    sub_100019F08(primaryTunnelPlugin2);
   }
 
   else
@@ -520,13 +520,13 @@
         v20 = 0;
       }
 
-      v17 = [v20 parent];
+      primaryTunnelPlugin2 = [v20 parent];
       if (self)
       {
         objc_getProperty(self, v21, 16, 1);
       }
 
-      sub_10009A9A8(v17);
+      sub_10009A9A8(primaryTunnelPlugin2);
     }
 
     else
@@ -541,17 +541,17 @@
         v22 = 0;
       }
 
-      v17 = [v22 server];
-      sub_100059ED4(v17, v23);
+      primaryTunnelPlugin2 = [v22 server];
+      sub_100059ED4(primaryTunnelPlugin2, v23);
     }
   }
 
   return 1;
 }
 
-- (void)handlePluginDidDetachIPC:(id)a3
+- (void)handlePluginDidDetachIPC:(id)c
 {
-  v4 = a3;
+  cCopy = c;
   v5 = ne_log_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -572,15 +572,15 @@
     v16 = 2112;
     v17 = v9;
     v18 = 2112;
-    v19 = v4;
+    v19 = cCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ in state %@: plugin %@ did detach from IPC", &v14, 0x20u);
   }
 
   if (!self)
   {
-    v13 = [0 establishIPCPending];
+    establishIPCPending = [0 establishIPCPending];
     v12 = 0;
-    if ((v13 & 1) == 0)
+    if ((establishIPCPending & 1) == 0)
     {
       goto LABEL_9;
     }
@@ -598,9 +598,9 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)handlePluginDisposeComplete:(id)a3
+- (void)handlePluginDisposeComplete:(id)complete
 {
-  v4 = a3;
+  completeCopy = complete;
   v5 = ne_log_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -621,15 +621,15 @@ LABEL_9:
     v16 = 2112;
     v17 = v9;
     v18 = 2112;
-    v19 = v4;
+    v19 = completeCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ in state %@: plugin %@ dispose complete", &v14, 0x20u);
   }
 
   if (!self)
   {
-    v13 = [0 establishIPCPending];
+    establishIPCPending = [0 establishIPCPending];
     v12 = 0;
-    if ((v13 & 1) == 0)
+    if ((establishIPCPending & 1) == 0)
     {
       goto LABEL_9;
     }
@@ -647,11 +647,11 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)handlePlugin:(id)a3 authenticationCompleteWithResults:(id)a4 status:(int)a5 andError:(id)a6
+- (void)handlePlugin:(id)plugin authenticationCompleteWithResults:(id)results status:(int)status andError:(id)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  pluginCopy = plugin;
+  resultsCopy = results;
+  errorCopy = error;
   v13 = ne_log_obj();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
@@ -672,20 +672,20 @@ LABEL_9:
     v20 = 2112;
     v21 = v17;
     v22 = 2112;
-    v23 = v10;
+    v23 = pluginCopy;
     v24 = 2048;
-    v25 = v11;
+    v25 = resultsCopy;
     v26 = 1024;
-    v27 = a5;
+    statusCopy = status;
     v28 = 2112;
-    v29 = v12;
+    v29 = errorCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%@ in state %@: plugin %@ authentication is complete with results %p, status %d, error %@", &v18, 0x3Au);
   }
 }
 
-- (void)handlePlugin:(id)a3 statusDidChangeToDisconnectingWithReason:(int)a4
+- (void)handlePlugin:(id)plugin statusDidChangeToDisconnectingWithReason:(int)reason
 {
-  v5 = a3;
+  pluginCopy = plugin;
   v6 = ne_log_obj();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -706,7 +706,7 @@ LABEL_9:
     v15 = 2112;
     v16 = v10;
     v17 = 2112;
-    v18 = v5;
+    v18 = pluginCopy;
     v19 = 2080;
     v20 = ne_session_stop_reason_to_string();
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%@ in state %@: plugin %@ status changed to disconnecting with reason %s", &v13, 0x2Au);
@@ -725,9 +725,9 @@ LABEL_9:
   [v12 setState:5];
 }
 
-- (void)handlePluginStatusDidChangeToReasserting:(id)a3
+- (void)handlePluginStatusDidChangeToReasserting:(id)reasserting
 {
-  v4 = a3;
+  reassertingCopy = reasserting;
   v5 = ne_log_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -748,7 +748,7 @@ LABEL_9:
     v14 = 2112;
     v15 = v9;
     v16 = 2112;
-    v17 = v4;
+    v17 = reassertingCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ in state %@: plugin %@ status changed to reasserting", &v12, 0x20u);
   }
 
@@ -765,9 +765,9 @@ LABEL_9:
   [v11 setReassertedByPlugin:1];
 }
 
-- (void)handlePluginStatusDidChangeToConnected:(id)a3
+- (void)handlePluginStatusDidChangeToConnected:(id)connected
 {
-  v4 = a3;
+  connectedCopy = connected;
   v5 = ne_log_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -788,7 +788,7 @@ LABEL_9:
     v14 = 2112;
     v15 = v9;
     v16 = 2112;
-    v17 = v4;
+    v17 = connectedCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ in state %@: plugin %@ status changed to connected", &v12, 0x20u);
   }
 
@@ -805,9 +805,9 @@ LABEL_9:
   [v11 setReassertedByPlugin:0];
 }
 
-- (void)handlePluginStatusDidChangeToNegotiating:(id)a3
+- (void)handlePluginStatusDidChangeToNegotiating:(id)negotiating
 {
-  v4 = a3;
+  negotiatingCopy = negotiating;
   v5 = ne_log_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -828,14 +828,14 @@ LABEL_9:
     v12 = 2112;
     v13 = v9;
     v14 = 2112;
-    v15 = v4;
+    v15 = negotiatingCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ in state %@: plugin %@ status changed to negotiating", &v10, 0x20u);
   }
 }
 
-- (void)handlePluginStatusDidChangeToAuthenticating:(id)a3
+- (void)handlePluginStatusDidChangeToAuthenticating:(id)authenticating
 {
-  v4 = a3;
+  authenticatingCopy = authenticating;
   v5 = ne_log_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -856,14 +856,14 @@ LABEL_9:
     v12 = 2112;
     v13 = v9;
     v14 = 2112;
-    v15 = v4;
+    v15 = authenticatingCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ in state %@: plugin %@ status changed to authenticating", &v10, 0x20u);
   }
 }
 
-- (void)handlePluginStatusDidChangeToContacting:(id)a3
+- (void)handlePluginStatusDidChangeToContacting:(id)contacting
 {
-  v4 = a3;
+  contactingCopy = contacting;
   v5 = ne_log_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -884,15 +884,15 @@ LABEL_9:
     v12 = 2112;
     v13 = v9;
     v14 = 2112;
-    v15 = v4;
+    v15 = contactingCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ in state %@: plugin %@ status changed to contacting", &v10, 0x20u);
   }
 }
 
-- (void)handlePlugin:(id)a3 didAttachIPCWithEndpoint:(id)a4
+- (void)handlePlugin:(id)plugin didAttachIPCWithEndpoint:(id)endpoint
 {
-  v6 = a3;
-  v7 = a4;
+  pluginCopy = plugin;
+  endpointCopy = endpoint;
   v8 = ne_log_obj();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -913,9 +913,9 @@ LABEL_9:
     v23 = 2112;
     v24 = v12;
     v25 = 2112;
-    v26 = v6;
+    v26 = pluginCopy;
     v27 = 2048;
-    v28 = v7;
+    v28 = endpointCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%@ in state %@: plugin %@ attached IPC with endpoint %p", &v21, 0x2Au);
   }
 
@@ -931,19 +931,19 @@ LABEL_9:
 
   else
   {
-    v20 = [0 establishIPCPending];
+    establishIPCPending = [0 establishIPCPending];
     v15 = 0;
-    if ((v20 & 1) == 0)
+    if ((establishIPCPending & 1) == 0)
     {
       goto LABEL_16;
     }
   }
 
-  v16 = [v15 primaryTunnelPlugin];
+  primaryTunnelPlugin = [v15 primaryTunnelPlugin];
 
-  if (v16 == v6)
+  if (primaryTunnelPlugin == pluginCopy)
   {
-    if (v7)
+    if (endpointCopy)
     {
       if (self)
       {
@@ -955,7 +955,7 @@ LABEL_9:
         v18 = 0;
       }
 
-      [v18 setEndpointInEstablishIPCReply:v7 forPlugin:v6];
+      [v18 setEndpointInEstablishIPCReply:endpointCopy forPlugin:pluginCopy];
     }
 
     else
@@ -977,10 +977,10 @@ LABEL_9:
 LABEL_16:
 }
 
-- (void)handlePlugin:(id)a3 didStartWithPID:(int)a4 error:(id)a5
+- (void)handlePlugin:(id)plugin didStartWithPID:(int)d error:(id)error
 {
-  v8 = a3;
-  v9 = a5;
+  pluginCopy = plugin;
+  errorCopy = error;
   v10 = ne_log_obj();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -1001,19 +1001,19 @@ LABEL_16:
     v17 = 2112;
     v18 = v14;
     v19 = 2112;
-    v20 = v8;
+    v20 = pluginCopy;
     v21 = 1024;
-    v22 = a4;
+    dCopy = d;
     v23 = 2112;
-    v24 = v9;
+    v24 = errorCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%@ in state %@: plugin %@ started with PID %d error %@", &v15, 0x30u);
   }
 }
 
-- (void)handleInterfaceAvailable:(id)a3 changed:(BOOL)a4
+- (void)handleInterfaceAvailable:(id)available changed:(BOOL)changed
 {
-  v4 = a4;
-  v6 = a3;
+  changedCopy = changed;
+  availableCopy = available;
   v7 = ne_log_obj();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -1034,23 +1034,23 @@ LABEL_16:
     v14 = 138413058;
     v15 = Property;
     v16 = 2112;
-    if (v4)
+    if (changedCopy)
     {
       v13 = "changed";
     }
 
     v17 = v11;
     v18 = 2112;
-    v19 = v6;
+    v19 = availableCopy;
     v20 = 2080;
     v21 = v13;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%@ in state %@: interface %@ is now available, address %s", &v14, 0x2Au);
   }
 }
 
-- (void)handleInterfaceUnavailable:(id)a3
+- (void)handleInterfaceUnavailable:(id)unavailable
 {
-  v4 = a3;
+  unavailableCopy = unavailable;
   v5 = ne_log_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1071,7 +1071,7 @@ LABEL_16:
     v12 = 2112;
     v13 = v9;
     v14 = 2112;
-    v15 = v4;
+    v15 = unavailableCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ in state %@: interface %@ is now unavailable", &v10, 0x20u);
   }
 }
@@ -1172,10 +1172,10 @@ LABEL_16:
     v9 = 0;
   }
 
-  v10 = [v9 primaryTunnelPlugin];
-  if (v10)
+  primaryTunnelPlugin = [v9 primaryTunnelPlugin];
+  if (primaryTunnelPlugin)
   {
-    v12 = v10;
+    primaryTunnelPlugin3 = primaryTunnelPlugin;
     if (self)
     {
       v13 = objc_getProperty(self, v11, 16, 1);
@@ -1186,10 +1186,10 @@ LABEL_16:
       v13 = 0;
     }
 
-    v14 = [v13 primaryTunnelPlugin];
-    if (v14)
+    primaryTunnelPlugin2 = [v13 primaryTunnelPlugin];
+    if (primaryTunnelPlugin2)
     {
-      v15 = v14[16];
+      v15 = primaryTunnelPlugin2[16];
 
       if ((v15 & 1) == 0)
       {
@@ -1206,13 +1206,13 @@ LABEL_16:
         v17 = 0;
       }
 
-      v12 = [v17 primaryTunnelPlugin];
-      sub_10001A5E8(v12);
+      primaryTunnelPlugin3 = [v17 primaryTunnelPlugin];
+      sub_10001A5E8(primaryTunnelPlugin3);
     }
   }
 }
 
-- (void)handleStartMessage:(id)a3
+- (void)handleStartMessage:(id)message
 {
   v4 = ne_log_obj();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1274,12 +1274,12 @@ LABEL_16:
   }
 }
 
-- (void)enterWithSession:(id)a3
+- (void)enterWithSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   if (self)
   {
-    objc_setProperty_atomic(self, v4, v5, 16);
+    objc_setProperty_atomic(self, v4, sessionCopy, 16);
     if (self->_timeout)
     {
       v6 = ne_log_obj();
@@ -1289,7 +1289,7 @@ LABEL_16:
         v8 = NSStringFromClass(v7);
         timeout = self->_timeout;
         *buf = 138412802;
-        v19 = v5;
+        v19 = sessionCopy;
         v20 = 2112;
         v21 = v8;
         v22 = 2048;
@@ -1300,9 +1300,9 @@ LABEL_16:
 LABEL_9:
       if (self->_timeout && (objc_opt_respondsToSelector() & 1) != 0)
       {
-        v13 = [v5 queue];
+        queue = [sessionCopy queue];
         v14 = self->_timeout;
-        v17 = v5;
+        v17 = sessionCopy;
         v15 = NECreateTimerSource();
         objc_setProperty_atomic(self, v16, v15, 32);
       }
@@ -1317,7 +1317,7 @@ LABEL_9:
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
     *buf = 138412546;
-    v19 = v5;
+    v19 = sessionCopy;
     v20 = 2112;
     v21 = v12;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%@: Entering state %@", buf, 0x16u);
@@ -1331,7 +1331,7 @@ LABEL_9:
 LABEL_12:
 }
 
-- (NESMVPNSessionState)initWithType:(int64_t)a3 andTimeout:(unint64_t)a4
+- (NESMVPNSessionState)initWithType:(int64_t)type andTimeout:(unint64_t)timeout
 {
   v10.receiver = self;
   v10.super_class = NESMVPNSessionState;
@@ -1340,24 +1340,24 @@ LABEL_12:
   if (v6)
   {
     session = v6->_session;
-    v6->_type = a3;
+    v6->_type = type;
     v6->_session = 0;
-    v6->_timeout = a4;
+    v6->_timeout = timeout;
   }
 
   return v7;
 }
 
-+ (NESMVPNSessionState)stateWithType:(int64_t)a3
++ (NESMVPNSessionState)stateWithType:(int64_t)type
 {
-  if ((a3 - 1) > 9)
+  if ((type - 1) > 9)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = objc_alloc_init(*(&off_1000EA670)[a3 - 1]);
+    v4 = objc_alloc_init(*(&off_1000EA670)[type - 1]);
   }
 
   return v4;

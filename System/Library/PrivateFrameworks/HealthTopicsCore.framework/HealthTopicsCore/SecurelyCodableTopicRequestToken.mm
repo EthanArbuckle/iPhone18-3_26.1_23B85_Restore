@@ -1,26 +1,26 @@
 @interface SecurelyCodableTopicRequestToken
 - (NSString)description;
 - (_TtC16HealthTopicsCore32SecurelyCodableTopicRequestToken)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SecurelyCodableTopicRequestToken
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC16HealthTopicsCore32SecurelyCodableTopicRequestToken_payload);
   v5 = *&self->payload[OBJC_IVAR____TtC16HealthTopicsCore32SecurelyCodableTopicRequestToken_payload];
-  v6 = a3;
-  v9 = self;
+  coderCopy = coder;
+  selfCopy = self;
   v7 = sub_251F4DEDC();
   v8 = sub_251F4DF9C();
-  [v6 encodeObject:v7 forKey:v8];
+  [coderCopy encodeObject:v7 forKey:v8];
 }
 
 - (NSString)description
 {
   swift_getObjectType();
-  v3 = self;
+  selfCopy = self;
   sub_251F4E3CC();
   MEMORY[0x2530931F0](58, 0xE100000000000000);
   v4 = TopicRequestToken.description.getter();

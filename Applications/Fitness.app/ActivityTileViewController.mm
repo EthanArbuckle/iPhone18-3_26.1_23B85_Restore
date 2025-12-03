@@ -1,38 +1,38 @@
 @interface ActivityTileViewController
 - (CHAwardsDataProvider)awardsDataProviderWrapper;
-- (_TtC10FitnessApp26ActivityTileViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC10FitnessApp26ActivityTileViewController)initWithStyle:(int64_t)a3;
+- (_TtC10FitnessApp26ActivityTileViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC10FitnessApp26ActivityTileViewController)initWithStyle:(int64_t)style;
 - (_TtP10FitnessApp34ActivityTileViewControllerDelegate_)delegate;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (id)navigateToTrophyCaseAnimated:(BOOL)a3 initialAchievement:(id)a4 shouldShowCelebration:(BOOL)a5 forModalPresentation:(BOOL)a6;
-- (id)navigationController:(id)a3 animationControllerForOperation:(int64_t)a4 fromViewController:(id)a5 toViewController:(id)a6;
-- (id)showActivityOnDate:(id)a3 shareImmediately:(BOOL)a4 animated:(BOOL)a5 forGoalCompleteNotification:(BOOL)a6 goalRecommendation:(id)a7;
-- (id)showTodayAndShareImmediately:(BOOL)a3 animated:(BOOL)a4 forGoalCompleteNotification:(BOOL)a5 goalRecommendation:(id)a6;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)navigateToHistoryAnimated:(BOOL)a3;
-- (void)navigateToMindfulnessHistoryAnimated:(BOOL)a3;
-- (void)navigateToTrophyCaseSection:(id)a3 withAchievementID:(id)a4 animated:(BOOL)a5;
-- (void)navigateToWorkoutHistoryWithActivityType:(id)a3 animated:(BOOL)a4;
-- (void)presentAppSettingsShowingPane:(int64_t)a3;
-- (void)presentWorkoutConfigurationWithData:(id)a3;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (id)navigateToTrophyCaseAnimated:(BOOL)animated initialAchievement:(id)achievement shouldShowCelebration:(BOOL)celebration forModalPresentation:(BOOL)presentation;
+- (id)navigationController:(id)controller animationControllerForOperation:(int64_t)operation fromViewController:(id)viewController toViewController:(id)toViewController;
+- (id)showActivityOnDate:(id)date shareImmediately:(BOOL)immediately animated:(BOOL)animated forGoalCompleteNotification:(BOOL)notification goalRecommendation:(id)recommendation;
+- (id)showTodayAndShareImmediately:(BOOL)immediately animated:(BOOL)animated forGoalCompleteNotification:(BOOL)notification goalRecommendation:(id)recommendation;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)navigateToHistoryAnimated:(BOOL)animated;
+- (void)navigateToMindfulnessHistoryAnimated:(BOOL)animated;
+- (void)navigateToTrophyCaseSection:(id)section withAchievementID:(id)d animated:(BOOL)animated;
+- (void)navigateToWorkoutHistoryWithActivityType:(id)type animated:(BOOL)animated;
+- (void)presentAppSettingsShowingPane:(int64_t)pane;
+- (void)presentWorkoutConfigurationWithData:(id)data;
 - (void)ringCelebrationDidBegin;
 - (void)scrollToTop;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)showAllTrendsAnimated:(BOOL)a3;
-- (void)showMindfulnessSessionWithUUID:(id)a3;
-- (void)showTrendWithIdentifier:(int64_t)a3 animated:(BOOL)a4;
-- (void)showWorkoutWithId:(id)a3 activityId:(id)a4 page:(id)a5;
-- (void)tableView:(id)a3 didEndDisplayingCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)trophyCaseDidBeginCelebration:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)showAllTrendsAnimated:(BOOL)animated;
+- (void)showMindfulnessSessionWithUUID:(id)d;
+- (void)showTrendWithIdentifier:(int64_t)identifier animated:(BOOL)animated;
+- (void)showWorkoutWithId:(id)id activityId:(id)activityId page:(id)page;
+- (void)tableView:(id)view didEndDisplayingCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)trophyCaseDidBeginCelebration:(id)celebration;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation ActivityTileViewController
@@ -60,35 +60,35 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002701B0();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_100272D14(a3);
+  selfCopy = self;
+  sub_100272D14(appear);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_100272FC8(a3);
+  selfCopy = self;
+  sub_100272FC8(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_1002731D0(a3);
+  selfCopy = self;
+  sub_1002731D0(disappear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v7.receiver = self;
   v7.super_class = type metadata accessor for ActivityTileViewController();
   v4 = v7.receiver;
-  [(ActivityTileViewController *)&v7 viewDidDisappear:v3];
+  [(ActivityTileViewController *)&v7 viewDidDisappear:disappearCopy];
   sub_100281448(&qword_1008E4EF0, v5, type metadata accessor for ActivityTileViewController);
   sub_100281448(&qword_1008E4EF8, v6, type metadata accessor for ActivityTileViewController);
   MetricResignActiveObserving<>.removeResignActiveObserver()();
@@ -96,62 +96,62 @@
 
 - (void)scrollToTop
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002734D0();
 }
 
-- (_TtC10FitnessApp26ActivityTileViewController)initWithStyle:(int64_t)a3
+- (_TtC10FitnessApp26ActivityTileViewController)initWithStyle:(int64_t)style
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC10FitnessApp26ActivityTileViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC10FitnessApp26ActivityTileViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = self;
-  v8 = sub_100281AAC(a4);
+  viewCopy = view;
+  selfCopy = self;
+  v8 = sub_100281AAC(section);
 
   return v8;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  v12 = sub_100273E6C(v10);
+  viewCopy = view;
+  selfCopy = self;
+  v12 = sub_100273E6C(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 
   return v12;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = self;
-  v8 = sub_10027645C(v6, a4);
+  viewCopy = view;
+  selfCopy = self;
+  v8 = sub_10027645C(viewCopy, section);
 
   return v8;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  v5 = a3;
-  if ([v5 numberOfRowsInSection:a4] <= 0)
+  viewCopy = view;
+  if ([viewCopy numberOfRowsInSection:section] <= 0)
   {
     v6 = 0.0;
   }
@@ -164,37 +164,37 @@
   return v6;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_100281F58();
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
   v8 = type metadata accessor for IndexPath();
   v9 = *(v8 - 8);
   __chkstk_darwin(v8);
   v11 = &v21 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v12 = a3;
-  v13 = a4;
-  v14 = self;
+  viewCopy = view;
+  cellCopy = cell;
+  selfCopy = self;
   v15 = IndexPath.section.getter();
   v16 = sub_100145D40(v15);
-  if (v16 != 6 && (v17 = v16, swift_getObjectType(), (v18 = swift_conformsToProtocol2()) != 0) && v13)
+  if (v16 != 6 && (v17 = v16, swift_getObjectType(), (v18 = swift_conformsToProtocol2()) != 0) && cellCopy)
   {
     v19 = v18;
-    v20 = v13;
-    sub_1004F8AB4(v20, v19, v17, v11, v12);
+    v20 = cellCopy;
+    sub_1004F8AB4(v20, v19, v17, v11, viewCopy);
 
     (*(v9 + 8))(v11, v8);
   }
@@ -206,20 +206,20 @@
   }
 }
 
-- (void)tableView:(id)a3 didEndDisplayingCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view didEndDisplayingCell:(id)cell forRowAtIndexPath:(id)path
 {
   v8 = type metadata accessor for IndexPath();
   v9 = *(v8 - 8);
   __chkstk_darwin(v8);
   v11 = &v17 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v12 = a3;
-  v13 = a4;
-  v14 = self;
+  viewCopy = view;
+  cellCopy = cell;
+  selfCopy = self;
   v15 = IndexPath.section.getter();
-  if (sub_100145D40(v15) != 6 && (swift_getObjectType(), swift_conformsToProtocol2()) && v13)
+  if (sub_100145D40(v15) != 6 && (swift_getObjectType(), swift_conformsToProtocol2()) && cellCopy)
   {
-    v16 = v13;
+    v16 = cellCopy;
     sub_1004F956C(v11);
 
     (*(v9 + 8))(v11, v8);
@@ -232,28 +232,28 @@
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v5 = a3;
-  v4 = self;
-  [v5 bounds];
+  scrollCopy = scroll;
+  selfCopy = self;
+  [scrollCopy bounds];
   sub_1004F941C();
   ImpressionsCalculator.viewBounds.setter();
 }
 
-- (void)presentAppSettingsShowingPane:(int64_t)a3
+- (void)presentAppSettingsShowingPane:(int64_t)pane
 {
-  v4 = self;
-  sub_100278730(a3);
+  selfCopy = self;
+  sub_100278730(pane);
 }
 
-- (void)presentWorkoutConfigurationWithData:(id)a3
+- (void)presentWorkoutConfigurationWithData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
 
-  v7 = [objc_opt_self() sharedInstance];
+  sharedInstance = [objc_opt_self() sharedInstance];
   isa = Data._bridgeToObjectiveC()().super.isa;
   v10[4] = sub_100278A60;
   v10[5] = 0;
@@ -262,23 +262,23 @@
   v10[2] = sub_1004DCFFC;
   v10[3] = &unk_10084F040;
   v9 = _Block_copy(v10);
-  [v7 presentWorkoutConfigurationData:isa completion:v9];
+  [sharedInstance presentWorkoutConfigurationData:isa completion:v9];
   sub_10000AF88(v4, v6);
   _Block_release(v9);
 }
 
-- (id)showTodayAndShareImmediately:(BOOL)a3 animated:(BOOL)a4 forGoalCompleteNotification:(BOOL)a5 goalRecommendation:(id)a6
+- (id)showTodayAndShareImmediately:(BOOL)immediately animated:(BOOL)animated forGoalCompleteNotification:(BOOL)notification goalRecommendation:(id)recommendation
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  notificationCopy = notification;
+  animatedCopy = animated;
+  immediatelyCopy = immediately;
   v11 = objc_allocWithZone(NSDate);
-  v12 = a6;
-  v13 = self;
+  recommendationCopy = recommendation;
+  selfCopy = self;
   v14 = [v11 init];
-  if (v12)
+  if (recommendationCopy)
   {
-    [v12 doubleValue];
+    [recommendationCopy doubleValue];
     v16 = v15;
   }
 
@@ -287,44 +287,44 @@
     v16 = 0;
   }
 
-  v17 = sub_100278DCC(v14, v9, v8, v7, v16, v12 == 0);
+  v17 = sub_100278DCC(v14, immediatelyCopy, animatedCopy, notificationCopy, v16, recommendationCopy == 0);
 
   return v17;
 }
 
-- (id)showActivityOnDate:(id)a3 shareImmediately:(BOOL)a4 animated:(BOOL)a5 forGoalCompleteNotification:(BOOL)a6 goalRecommendation:(id)a7
+- (id)showActivityOnDate:(id)date shareImmediately:(BOOL)immediately animated:(BOOL)animated forGoalCompleteNotification:(BOOL)notification goalRecommendation:(id)recommendation
 {
-  v8 = a6;
-  v9 = a5;
-  v10 = a4;
-  v12 = a3;
-  if (a7)
+  notificationCopy = notification;
+  animatedCopy = animated;
+  immediatelyCopy = immediately;
+  dateCopy = date;
+  if (recommendation)
   {
-    v13 = a7;
-    v14 = self;
-    [v13 doubleValue];
+    recommendationCopy = recommendation;
+    selfCopy = self;
+    [recommendationCopy doubleValue];
     v16 = v15;
   }
 
   else
   {
-    v17 = self;
+    selfCopy2 = self;
     v16 = 0;
   }
 
-  v18 = sub_100278DCC(v12, v10, v9, v8, v16, a7 == 0);
+  v18 = sub_100278DCC(dateCopy, immediatelyCopy, animatedCopy, notificationCopy, v16, recommendation == 0);
 
   return v18;
 }
 
-- (void)navigateToWorkoutHistoryWithActivityType:(id)a3 animated:(BOOL)a4
+- (void)navigateToWorkoutHistoryWithActivityType:(id)type animated:(BOOL)animated
 {
-  v7 = a3;
-  v8 = self;
-  sub_10027AF00(a3, a4);
+  typeCopy = type;
+  selfCopy = self;
+  sub_10027AF00(type, animated);
 }
 
-- (void)showWorkoutWithId:(id)a3 activityId:(id)a4 page:(id)a5
+- (void)showWorkoutWithId:(id)id activityId:(id)activityId page:(id)page
 {
   v8 = sub_100140278(&unk_1008DB8A0);
   __chkstk_darwin(v8 - 8);
@@ -334,7 +334,7 @@
   __chkstk_darwin(v11);
   v14 = &v19 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
-  if (a4)
+  if (activityId)
   {
     static UUID._unconditionallyBridgeFromObjectiveC(_:)();
     v15 = 0;
@@ -346,10 +346,10 @@
   }
 
   (*(v12 + 56))(v10, v15, 1, v11);
-  if (a5)
+  if (page)
   {
     v16 = static String._unconditionallyBridgeFromObjectiveC(_:)();
-    a5 = v17;
+    page = v17;
   }
 
   else
@@ -357,68 +357,68 @@
     v16 = 0;
   }
 
-  v18 = self;
-  sub_10027BC18(v14, v10, v16, a5);
+  selfCopy = self;
+  sub_10027BC18(v14, v10, v16, page);
 
   sub_10000EA04(v10, &unk_1008DB8A0);
   (*(v12 + 8))(v14, v11);
 }
 
-- (void)showMindfulnessSessionWithUUID:(id)a3
+- (void)showMindfulnessSessionWithUUID:(id)d
 {
   v4 = type metadata accessor for UUID();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   sub_10027CAAC(v7);
 
   (*(v5 + 8))(v7, v4);
 }
 
-- (void)navigateToHistoryAnimated:(BOOL)a3
+- (void)navigateToHistoryAnimated:(BOOL)animated
 {
-  v4 = self;
-  sub_10027D52C(a3);
+  selfCopy = self;
+  sub_10027D52C(animated);
 }
 
-- (void)navigateToMindfulnessHistoryAnimated:(BOOL)a3
+- (void)navigateToMindfulnessHistoryAnimated:(BOOL)animated
 {
-  v4 = self;
-  sub_10027E160(a3);
+  selfCopy = self;
+  sub_10027E160(animated);
 }
 
-- (void)showAllTrendsAnimated:(BOOL)a3
+- (void)showAllTrendsAnimated:(BOOL)animated
 {
-  v4 = self;
-  sub_10027EDA0(a3);
+  selfCopy = self;
+  sub_10027EDA0(animated);
 }
 
-- (void)showTrendWithIdentifier:(int64_t)a3 animated:(BOOL)a4
+- (void)showTrendWithIdentifier:(int64_t)identifier animated:(BOOL)animated
 {
-  v6 = self;
-  sub_10027F37C(a3, a4);
+  selfCopy = self;
+  sub_10027F37C(identifier, animated);
 }
 
-- (id)navigateToTrophyCaseAnimated:(BOOL)a3 initialAchievement:(id)a4 shouldShowCelebration:(BOOL)a5 forModalPresentation:(BOOL)a6
+- (id)navigateToTrophyCaseAnimated:(BOOL)animated initialAchievement:(id)achievement shouldShowCelebration:(BOOL)celebration forModalPresentation:(BOOL)presentation
 {
-  v11 = a4;
-  v12 = self;
-  sub_10027F9E8(a3, a4, a5, a6);
+  achievementCopy = achievement;
+  selfCopy = self;
+  sub_10027F9E8(animated, achievement, celebration, presentation);
   v14 = v13;
 
   return v14;
 }
 
-- (void)navigateToTrophyCaseSection:(id)a3 withAchievementID:(id)a4 animated:(BOOL)a5
+- (void)navigateToTrophyCaseSection:(id)section withAchievementID:(id)d animated:(BOOL)animated
 {
   v7 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v9 = v8;
-  if (a4)
+  if (d)
   {
     v10 = static String._unconditionallyBridgeFromObjectiveC(_:)();
-    a4 = v11;
+    d = v11;
   }
 
   else
@@ -426,17 +426,17 @@
     v10 = 0;
   }
 
-  v12 = self;
-  sub_100282094(v7, v9, v10, a4);
+  selfCopy = self;
+  sub_100282094(v7, v9, v10, d);
 }
 
-- (id)navigationController:(id)a3 animationControllerForOperation:(int64_t)a4 fromViewController:(id)a5 toViewController:(id)a6
+- (id)navigationController:(id)controller animationControllerForOperation:(int64_t)operation fromViewController:(id)viewController toViewController:(id)toViewController
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = self;
-  v14 = sub_100282720(a4, v11, v12);
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  toViewControllerCopy = toViewController;
+  selfCopy = self;
+  v14 = sub_100282720(operation, viewControllerCopy, toViewControllerCopy);
 
   return v14;
 }
@@ -452,7 +452,7 @@
   }
 }
 
-- (void)trophyCaseDidBeginCelebration:(id)a3
+- (void)trophyCaseDidBeginCelebration:(id)celebration
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)

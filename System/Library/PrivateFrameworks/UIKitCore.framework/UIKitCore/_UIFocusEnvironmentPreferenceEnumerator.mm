@@ -1,12 +1,12 @@
 @interface _UIFocusEnvironmentPreferenceEnumerator
-- (BOOL)_shouldInferDefaultPreferenceForEnvironmentInContext:(id)a3;
-- (_UIFocusEnvironmentPreferenceEnumerator)initWithEnumerationMode:(int64_t)a3;
-- (void)enumeratePreferencesForEnvironment:(id)a3 usingBlock:(id)a4;
+- (BOOL)_shouldInferDefaultPreferenceForEnvironmentInContext:(id)context;
+- (_UIFocusEnvironmentPreferenceEnumerator)initWithEnumerationMode:(int64_t)mode;
+- (void)enumeratePreferencesForEnvironment:(id)environment usingBlock:(id)block;
 @end
 
 @implementation _UIFocusEnvironmentPreferenceEnumerator
 
-- (_UIFocusEnvironmentPreferenceEnumerator)initWithEnumerationMode:(int64_t)a3
+- (_UIFocusEnvironmentPreferenceEnumerator)initWithEnumerationMode:(int64_t)mode
 {
   v5.receiver = self;
   v5.super_class = _UIFocusEnvironmentPreferenceEnumerator;
@@ -14,20 +14,20 @@
   if (result)
   {
     result->_allowsInferringPreferences = 1;
-    result->_enumerationMode = a3;
+    result->_enumerationMode = mode;
   }
 
   return result;
 }
 
-- (void)enumeratePreferencesForEnvironment:(id)a3 usingBlock:(id)a4
+- (void)enumeratePreferencesForEnvironment:(id)environment usingBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  environmentCopy = environment;
+  blockCopy = block;
+  v9 = blockCopy;
+  if (environmentCopy)
   {
-    if (v8)
+    if (blockCopy)
     {
       goto LABEL_3;
     }
@@ -35,8 +35,8 @@
 
   else
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"_UIFocusEnvironmentPreferenceEnumerator.m" lineNumber:527 description:{@"Invalid parameter not satisfying: %@", @"environment"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusEnvironmentPreferenceEnumerator.m" lineNumber:527 description:{@"Invalid parameter not satisfying: %@", @"environment"}];
 
     if (v9)
     {
@@ -44,16 +44,16 @@
     }
   }
 
-  v13 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v13 handleFailureInMethod:a2 object:self file:@"_UIFocusEnvironmentPreferenceEnumerator.m" lineNumber:528 description:{@"Invalid parameter not satisfying: %@", @"block"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UIFocusEnvironmentPreferenceEnumerator.m" lineNumber:528 description:{@"Invalid parameter not satisfying: %@", @"block"}];
 
 LABEL_3:
-  v10 = [[_UIFocusEnvironmentPreferenceEnumerationContext alloc] initWithFocusEnvironment:v7 enumerationMode:[(_UIFocusEnvironmentPreferenceEnumerator *)self enumerationMode]];
+  v10 = [[_UIFocusEnvironmentPreferenceEnumerationContext alloc] initWithFocusEnvironment:environmentCopy enumerationMode:[(_UIFocusEnvironmentPreferenceEnumerator *)self enumerationMode]];
   [(_UIFocusEnvironmentPreferenceEnumerationContext *)v10 setDelegate:self];
   if (self->_debugLog)
   {
-    v11 = [(_UIFocusEnvironmentPreferenceEnumerationContext *)v10 _startLogging];
-    [(_UIDebugLogNode *)self->_debugLog addMessage:v11];
+    _startLogging = [(_UIFocusEnvironmentPreferenceEnumerationContext *)v10 _startLogging];
+    [(_UIDebugLogNode *)self->_debugLog addMessage:_startLogging];
   }
 
   v14 = 0;
@@ -64,11 +64,11 @@ LABEL_3:
   }
 }
 
-- (BOOL)_shouldInferDefaultPreferenceForEnvironmentInContext:(id)a3
+- (BOOL)_shouldInferDefaultPreferenceForEnvironmentInContext:(id)context
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_allowsInferringPreferences && [v4 isInPreferredSubtree])
+  contextCopy = context;
+  v5 = contextCopy;
+  if (self->_allowsInferringPreferences && [contextCopy isInPreferredSubtree])
   {
     v6 = _Block_copy(self->_shouldInferPreferenceForEnvironmentHandler);
     v7 = v6;

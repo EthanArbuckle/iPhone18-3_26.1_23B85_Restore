@@ -1,14 +1,14 @@
 @interface EDPersistenceDatabaseJournalManager
 + (OS_os_log)log;
 - (EDPersistenceDatabaseJournal)oldestJournal;
-- (EDPersistenceDatabaseJournalManager)initWithBasePath:(id)a3;
+- (EDPersistenceDatabaseJournalManager)initWithBasePath:(id)path;
 - (NSArray)allJournals;
-- (id)_getJournalWithBlock:(id)a3;
-- (id)_journalForIndex:(unint64_t)a3;
-- (id)currentJournalCreateIfNeeded:(BOOL)a3;
-- (void)_deleteJournalNumber:(unint64_t)a3;
-- (void)_journalNoLongerReferenced:(id)a3;
-- (void)mergedJournal:(id)a3;
+- (id)_getJournalWithBlock:(id)block;
+- (id)_journalForIndex:(unint64_t)index;
+- (id)currentJournalCreateIfNeeded:(BOOL)needed;
+- (void)_deleteJournalNumber:(unint64_t)number;
+- (void)_journalNoLongerReferenced:(id)referenced;
+- (void)mergedJournal:(id)journal;
 - (void)test_tearDown;
 - (void)waitForDeletes;
 @end
@@ -21,7 +21,7 @@
   block[1] = 3221225472;
   block[2] = __42__EDPersistenceDatabaseJournalManager_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_76 != -1)
   {
     dispatch_once(&log_onceToken_76, block);
@@ -40,15 +40,15 @@ void __42__EDPersistenceDatabaseJournalManager_log__block_invoke(uint64_t a1)
   log_log_76 = v1;
 }
 
-- (EDPersistenceDatabaseJournalManager)initWithBasePath:(id)a3
+- (EDPersistenceDatabaseJournalManager)initWithBasePath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v20.receiver = self;
   v20.super_class = EDPersistenceDatabaseJournalManager;
   v5 = [(EDPersistenceDatabaseJournalManager *)&v20 init];
   if (v5)
   {
-    v6 = [v4 stringByAppendingPathComponent:@"Protected Index Journals"];
+    v6 = [pathCopy stringByAppendingPathComponent:@"Protected Index Journals"];
     v7 = *(v5 + 7);
     *(v5 + 7) = v6;
 
@@ -220,7 +220,7 @@ void __56__EDPersistenceDatabaseJournalManager_initWithBasePath___block_invoke(u
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (id)currentJournalCreateIfNeeded:(BOOL)a3
+- (id)currentJournalCreateIfNeeded:(BOOL)needed
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
@@ -228,7 +228,7 @@ void __56__EDPersistenceDatabaseJournalManager_initWithBasePath___block_invoke(u
   v5[3] = &unk_1E8255C58;
   v5[4] = self;
   v5[5] = a2;
-  v6 = a3;
+  neededCopy = needed;
   v3 = [(EDPersistenceDatabaseJournalManager *)self _getJournalWithBlock:v5];
 
   return v3;
@@ -315,21 +315,21 @@ id __68__EDPersistenceDatabaseJournalManager_currentJournalCreateIfNeeded___bloc
   return v18;
 }
 
-- (void)_journalNoLongerReferenced:(id)a3
+- (void)_journalNoLongerReferenced:(id)referenced
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  referencedCopy = referenced;
   os_unfair_lock_lock(&self->_journalLock);
   currentJournal = self->_currentJournal;
-  if (currentJournal == v4)
+  if (currentJournal == referencedCopy)
   {
     if (self->_shouldDeleteCurrentJournal)
     {
-      v6 = [(EDPersistenceDatabaseJournal *)currentJournal number];
-      [(NSMutableIndexSet *)self->_journalNumbers removeIndex:v6];
-      [(NSMutableIndexSet *)self->_pendingDeleteJournalNumbers addIndex:v6];
+      number = [(EDPersistenceDatabaseJournal *)currentJournal number];
+      [(NSMutableIndexSet *)self->_journalNumbers removeIndex:number];
+      [(NSMutableIndexSet *)self->_pendingDeleteJournalNumbers addIndex:number];
       journalsByIndexes = self->_journalsByIndexes;
-      v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v6];
+      v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:number];
       [(NSMapTable *)journalsByIndexes removeObjectForKey:v8];
 
       self->_shouldDeleteCurrentJournal = 0;
@@ -338,7 +338,7 @@ id __68__EDPersistenceDatabaseJournalManager_currentJournalCreateIfNeeded___bloc
 
     else
     {
-      v6 = 0;
+      number = 0;
     }
 
     self->_currentJournal = 0;
@@ -347,22 +347,22 @@ id __68__EDPersistenceDatabaseJournalManager_currentJournalCreateIfNeeded___bloc
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v10 = @"YES";
-      if (!v6)
+      if (!number)
       {
         v10 = @"NO";
       }
 
       v12 = 138412546;
-      v13 = v4;
+      v13 = referencedCopy;
       v14 = 2114;
       v15 = v10;
       _os_log_impl(&dword_1C61EF000, v9, OS_LOG_TYPE_DEFAULT, "Unsetting current journal %@ - should delete: %{public}@", &v12, 0x16u);
     }
 
     os_unfair_lock_unlock(&self->_journalLock);
-    if (v6)
+    if (number)
     {
-      [(EDPersistenceDatabaseJournalManager *)self _deleteJournalNumber:v6];
+      [(EDPersistenceDatabaseJournalManager *)self _deleteJournalNumber:number];
     }
   }
 
@@ -468,10 +468,10 @@ id __52__EDPersistenceDatabaseJournalManager_oldestJournal__block_invoke(uint64_
   return v3;
 }
 
-- (id)_journalForIndex:(unint64_t)a3
+- (id)_journalForIndex:(unint64_t)index
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     v3 = 0;
   }
@@ -488,13 +488,13 @@ id __52__EDPersistenceDatabaseJournalManager_oldestJournal__block_invoke(uint64_
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         v13 = 134217984;
-        v14 = a3;
+        indexCopy = index;
         _os_log_impl(&dword_1C61EF000, v8, OS_LOG_TYPE_DEFAULT, "Journal %lu does not already exist. Creating...", &v13, 0xCu);
       }
 
-      v3 = [[EDPersistenceDatabaseJournal alloc] initWithJournalManager:self number:a3];
+      v3 = [[EDPersistenceDatabaseJournal alloc] initWithJournalManager:self number:index];
       v9 = self->_journalsByIndexes;
-      v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+      v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
       [(NSMapTable *)v9 setObject:v3 forKey:v10];
     }
   }
@@ -504,24 +504,24 @@ id __52__EDPersistenceDatabaseJournalManager_oldestJournal__block_invoke(uint64_
   return v3;
 }
 
-- (void)mergedJournal:(id)a3
+- (void)mergedJournal:(id)journal
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(EDPersistenceDatabaseJournal *)v4 number];
+  journalCopy = journal;
+  number = [(EDPersistenceDatabaseJournal *)journalCopy number];
   os_unfair_lock_lock(&self->_journalLock);
   currentJournal = self->_currentJournal;
-  if (currentJournal == v4)
+  if (currentJournal == journalCopy)
   {
     self->_shouldDeleteCurrentJournal = 1;
   }
 
   else
   {
-    [(NSMutableIndexSet *)self->_journalNumbers removeIndex:v5];
-    [(NSMutableIndexSet *)self->_pendingDeleteJournalNumbers addIndex:v5];
+    [(NSMutableIndexSet *)self->_journalNumbers removeIndex:number];
+    [(NSMutableIndexSet *)self->_pendingDeleteJournalNumbers addIndex:number];
     journalsByIndexes = self->_journalsByIndexes;
-    v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v5];
+    v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:number];
     [(NSMapTable *)journalsByIndexes removeObjectForKey:v8];
   }
 
@@ -530,34 +530,34 @@ id __52__EDPersistenceDatabaseJournalManager_oldestJournal__block_invoke(uint64_
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = @"YES";
-    if (currentJournal == v4)
+    if (currentJournal == journalCopy)
     {
       v10 = @"NO";
     }
 
     v12 = 134218242;
-    v13 = v5;
+    v13 = number;
     v14 = 2114;
     v15 = v10;
     _os_log_impl(&dword_1C61EF000, v9, OS_LOG_TYPE_DEFAULT, "Merged journal %lu - should delete: %{public}@", &v12, 0x16u);
   }
 
-  if (currentJournal != v4)
+  if (currentJournal != journalCopy)
   {
-    [(EDPersistenceDatabaseJournalManager *)self _deleteJournalNumber:v5];
+    [(EDPersistenceDatabaseJournalManager *)self _deleteJournalNumber:number];
   }
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_deleteJournalNumber:(unint64_t)a3
+- (void)_deleteJournalNumber:(unint64_t)number
 {
   v19 = *MEMORY[0x1E69E9840];
   v5 = +[EDPersistenceDatabaseJournalManager log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v18 = a3;
+    numberCopy = number;
     _os_log_impl(&dword_1C61EF000, v5, OS_LOG_TYPE_DEFAULT, "Start to delete journalNumber %lu", buf, 0xCu);
   }
 
@@ -566,22 +566,22 @@ id __52__EDPersistenceDatabaseJournalManager_oldestJournal__block_invoke(uint64_
   aBlock[2] = __60__EDPersistenceDatabaseJournalManager__deleteJournalNumber___block_invoke;
   aBlock[3] = &unk_1E8250A90;
   aBlock[4] = self;
-  aBlock[5] = a3;
+  aBlock[5] = number;
   v6 = _Block_copy(aBlock);
-  v7 = [(EDPersistenceDatabaseJournalManager *)self journalDirectoryPath];
-  v8 = v7;
-  if (v7)
+  journalDirectoryPath = [(EDPersistenceDatabaseJournalManager *)self journalDirectoryPath];
+  v8 = journalDirectoryPath;
+  if (journalDirectoryPath)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __60__EDPersistenceDatabaseJournalManager__deleteJournalNumber___block_invoke_2;
     block[3] = &unk_1E8255CF8;
-    v15 = a3;
-    v13 = v7;
+    numberCopy2 = number;
+    v13 = journalDirectoryPath;
     v14 = v6;
     v9 = dispatch_block_create_with_qos_class(0, QOS_CLASS_BACKGROUND, 0, block);
-    v10 = [(EDPersistenceDatabaseJournalManager *)self deleteQueue];
-    dispatch_async(v10, v9);
+    deleteQueue = [(EDPersistenceDatabaseJournalManager *)self deleteQueue];
+    dispatch_async(deleteQueue, v9);
   }
 
   else
@@ -684,20 +684,20 @@ LABEL_15:
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_getJournalWithBlock:(id)a3
+- (id)_getJournalWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->_journalLock);
   if (!self->_journalNumbers)
   {
     os_unfair_lock_unlock(&self->_journalLock);
-    v5 = [(EDPersistenceDatabaseJournalManager *)self checkExistingQueue];
-    dispatch_sync(v5, &__block_literal_global_63);
+    checkExistingQueue = [(EDPersistenceDatabaseJournalManager *)self checkExistingQueue];
+    dispatch_sync(checkExistingQueue, &__block_literal_global_63);
 
     os_unfair_lock_lock(&self->_journalLock);
   }
 
-  v6 = v4[2](v4);
+  v6 = blockCopy[2](blockCopy);
   os_unfair_lock_unlock(&self->_journalLock);
 
   return v6;
@@ -705,21 +705,21 @@ LABEL_15:
 
 - (void)waitForDeletes
 {
-  v2 = [(EDPersistenceDatabaseJournalManager *)self deleteQueue];
-  dispatch_barrier_sync(v2, &__block_literal_global_73_1);
+  deleteQueue = [(EDPersistenceDatabaseJournalManager *)self deleteQueue];
+  dispatch_barrier_sync(deleteQueue, &__block_literal_global_73_1);
 }
 
 - (void)test_tearDown
 {
   if ((EFIsRunningUnitTests() & 1) == 0)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"EDPersistenceDatabaseJournal.m" lineNumber:347 description:{@"%s can only be called from unit tests", "-[EDPersistenceDatabaseJournalManager test_tearDown]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EDPersistenceDatabaseJournal.m" lineNumber:347 description:{@"%s can only be called from unit tests", "-[EDPersistenceDatabaseJournalManager test_tearDown]"}];
   }
 
   [(EDPersistenceDatabaseJournalManager *)self waitForDeletes];
-  v5 = [(EDPersistenceDatabaseJournalManager *)self checkExistingQueue];
-  dispatch_barrier_sync(v5, &__block_literal_global_78);
+  checkExistingQueue = [(EDPersistenceDatabaseJournalManager *)self checkExistingQueue];
+  dispatch_barrier_sync(checkExistingQueue, &__block_literal_global_78);
 }
 
 void __56__EDPersistenceDatabaseJournalManager_initWithBasePath___block_invoke_cold_1(void *a1, uint8_t *buf, os_log_t log)

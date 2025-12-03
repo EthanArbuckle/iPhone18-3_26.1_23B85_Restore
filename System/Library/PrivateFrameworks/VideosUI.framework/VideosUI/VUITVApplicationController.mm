@@ -1,32 +1,32 @@
 @interface VUITVApplicationController
-+ (id)_jsLaunchOptionsWithApplicationOptions:(id)a3;
++ (id)_jsLaunchOptionsWithApplicationOptions:(id)options;
 + (void)initialize;
 - (BOOL)_hasReloadOnResumeMinIntervalPassed;
 - (BOOL)_shouldReloadOnResume;
-- (BOOL)openURL:(id)a3 options:(id)a4;
+- (BOOL)openURL:(id)l options:(id)options;
 - (UITraitEnvironment)keyTraitEnvironment;
 - (VUITVApplicationController)init;
-- (VUITVApplicationController)initWithContext:(id)a3 window:(id)a4 delegate:(id)a5;
+- (VUITVApplicationController)initWithContext:(id)context window:(id)window delegate:(id)delegate;
 - (VUITVApplicationControllerDelegate)delegate;
 - (id)_currentNavigationController;
 - (id)_rootViewController;
-- (void)_applicationDidEnterBackgroundNotification:(id)a3;
+- (void)_applicationDidEnterBackgroundNotification:(id)notification;
 - (void)_launchApp;
-- (void)_openURLControllerHandler:(BOOL)a3;
-- (void)_reloadControllerDidDisplay:(id)a3;
-- (void)_statusBarOrientationDidChange:(id)a3;
-- (void)appContext:(id)a3 didFailWithError:(id)a4;
-- (void)appContext:(id)a3 didStartWithOptions:(id)a4;
-- (void)appContext:(id)a3 didStopWithOptions:(id)a4;
-- (void)appContext:(id)a3 evaluateAppJavaScriptInContext:(id)a4;
-- (void)appContext:(id)a3 needsReloadWithUrgency:(unint64_t)a4 options:(id)a5;
-- (void)appContext:(id)a3 scriptForURL:(id)a4 cachePolicy:(unint64_t)a5 completion:(id)a6;
-- (void)applicationDidResume:(id)a3;
-- (void)applicationWillSuspend:(id)a3;
+- (void)_openURLControllerHandler:(BOOL)handler;
+- (void)_reloadControllerDidDisplay:(id)display;
+- (void)_statusBarOrientationDidChange:(id)change;
+- (void)appContext:(id)context didFailWithError:(id)error;
+- (void)appContext:(id)context didStartWithOptions:(id)options;
+- (void)appContext:(id)context didStopWithOptions:(id)options;
+- (void)appContext:(id)context evaluateAppJavaScriptInContext:(id)inContext;
+- (void)appContext:(id)context needsReloadWithUrgency:(unint64_t)urgency options:(id)options;
+- (void)appContext:(id)context scriptForURL:(id)l cachePolicy:(unint64_t)policy completion:(id)completion;
+- (void)applicationDidResume:(id)resume;
+- (void)applicationWillSuspend:(id)suspend;
 - (void)dealloc;
-- (void)evaluateInJavaScriptContext:(id)a3 completion:(id)a4;
+- (void)evaluateInJavaScriptContext:(id)context completion:(id)completion;
 - (void)registerForApplicationNotifications;
-- (void)setKeyTraitEnvironment:(id)a3;
+- (void)setKeyTraitEnvironment:(id)environment;
 - (void)stop;
 @end
 
@@ -44,8 +44,8 @@
 
 - (id)_rootViewController
 {
-  v3 = [(VUITVApplicationController *)self delegate];
-  if (!v3 || (objc_opt_respondsToSelector() & 1) == 0 || ([v3 rootViewControllerForAppController:self], (v4 = objc_claimAutoreleasedReturnValue()) == 0))
+  delegate = [(VUITVApplicationController *)self delegate];
+  if (!delegate || (objc_opt_respondsToSelector() & 1) == 0 || ([delegate rootViewControllerForAppController:self], (v4 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v4 = objc_alloc_init(_VUITVAppNavigationController);
   }
@@ -73,10 +73,10 @@
       _os_log_impl(&dword_1E323F000, v5, OS_LOG_TYPE_INFO, "VUITVApplicationController - _launchApp", v10, 2u);
     }
 
-    v6 = [(VUITVApplicationControllerContext *)self->_context javaScriptApplicationURL];
-    v7 = [v6 isFileURL];
+    javaScriptApplicationURL = [(VUITVApplicationControllerContext *)self->_context javaScriptApplicationURL];
+    isFileURL = [javaScriptApplicationURL isFileURL];
 
-    v8 = [[VUIAppContext alloc] initWithApplication:self->_application mode:v7 delegate:self];
+    v8 = [[VUIAppContext alloc] initWithApplication:self->_application mode:isFileURL delegate:self];
     appContext = self->_appContext;
     self->_appContext = v8;
 
@@ -86,37 +86,37 @@
 
 - (void)registerForApplicationNotifications
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__applicationDidBecomeActiveNotification_ name:*MEMORY[0x1E69DF7D8] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__applicationDidBecomeActiveNotification_ name:*MEMORY[0x1E69DF7D8] object:0];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 addObserver:self selector:sel__applicationDidEnterBackgroundNotification_ name:*MEMORY[0x1E69DF7E0] object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel__applicationDidEnterBackgroundNotification_ name:*MEMORY[0x1E69DF7E0] object:0];
 
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 addObserver:self selector:sel__applicationWillResignActiveNotification_ name:*MEMORY[0x1E69DF7F0] object:0];
+  defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter3 addObserver:self selector:sel__applicationWillResignActiveNotification_ name:*MEMORY[0x1E69DF7F0] object:0];
 
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v6 addObserver:self selector:sel__applicationWillTerminateNotification_ name:*MEMORY[0x1E69DF7F8] object:0];
+  defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter4 addObserver:self selector:sel__applicationWillTerminateNotification_ name:*MEMORY[0x1E69DF7F8] object:0];
 
   self->_interfaceOrientation = [*MEMORY[0x1E69DDA98] statusBarOrientation];
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v7 addObserver:self selector:sel__statusBarOrientationDidChange_ name:*MEMORY[0x1E69DDAC0] object:0];
+  defaultCenter5 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter5 addObserver:self selector:sel__statusBarOrientationDidChange_ name:*MEMORY[0x1E69DDAC0] object:0];
 }
 
-+ (id)_jsLaunchOptionsWithApplicationOptions:(id)a3
++ (id)_jsLaunchOptionsWithApplicationOptions:(id)options
 {
-  v3 = a3;
+  optionsCopy = options;
   v4 = objc_opt_new();
-  if ([v3 count])
+  if ([optionsCopy count])
   {
-    v5 = [v3 mutableCopy];
+    v5 = [optionsCopy mutableCopy];
     v6 = *MEMORY[0x1E69DDB28];
     v7 = [v5 objectForKeyedSubscript:*MEMORY[0x1E69DDB28]];
     v8 = v7;
     if (v7)
     {
-      v9 = [v7 absoluteString];
-      [v4 setObject:v9 forKeyedSubscript:@"openURL"];
+      absoluteString = [v7 absoluteString];
+      [v4 setObject:absoluteString forKeyedSubscript:@"openURL"];
 
       v10 = *MEMORY[0x1E69DDB20];
       v11 = [v5 objectForKeyedSubscript:*MEMORY[0x1E69DDB20]];
@@ -148,11 +148,11 @@
   return 0;
 }
 
-- (VUITVApplicationController)initWithContext:(id)a3 window:(id)a4 delegate:(id)a5
+- (VUITVApplicationController)initWithContext:(id)context window:(id)window delegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  windowCopy = window;
+  delegateCopy = delegate;
   v28.receiver = self;
   v28.super_class = VUITVApplicationController;
   v11 = [(VUITVApplicationController *)&v28 init];
@@ -163,15 +163,15 @@
     v13 = *(v11 + 4);
     *(v11 + 4) = 0;
 
-    objc_storeStrong(&v12->_window, a4);
-    objc_storeWeak(&v12->_delegate, v10);
-    v14 = [v8 copy];
+    objc_storeStrong(&v12->_window, window);
+    objc_storeWeak(&v12->_delegate, delegateCopy);
+    v14 = [contextCopy copy];
     context = v12->_context;
     v12->_context = v14;
 
-    v16 = [(VUITVApplicationController *)v12 _rootViewController];
+    _rootViewController = [(VUITVApplicationController *)v12 _rootViewController];
     appRootViewController = v12->_appRootViewController;
-    v12->_appRootViewController = v16;
+    v12->_appRootViewController = _rootViewController;
 
     window = v12->_window;
     if (window)
@@ -186,13 +186,13 @@
 
     v21 = v12->_application;
     v22 = objc_opt_class();
-    v23 = [(VUITVApplicationControllerContext *)v12->_context launchOptions];
-    v24 = [v22 _jsLaunchOptionsWithApplicationOptions:v23];
+    launchOptions = [(VUITVApplicationControllerContext *)v12->_context launchOptions];
+    v24 = [v22 _jsLaunchOptionsWithApplicationOptions:launchOptions];
     [(_VUICoreApplication *)v21 setJavaScriptLaunchOptions:v24];
 
-    [(_VUICoreApplication *)v12->_application setKeyWindow:v9];
-    v25 = [(VUITVApplicationControllerContext *)v12->_context launchOptions];
-    v26 = [v25 objectForKeyedSubscript:*MEMORY[0x1E69DDB28]];
+    [(_VUICoreApplication *)v12->_application setKeyWindow:windowCopy];
+    launchOptions2 = [(VUITVApplicationControllerContext *)v12->_context launchOptions];
+    v26 = [launchOptions2 objectForKeyedSubscript:*MEMORY[0x1E69DDB28]];
 
     if (v26)
     {
@@ -209,8 +209,8 @@
 - (void)dealloc
 {
   [(VUITVApplicationController *)self stop];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = VUITVApplicationController;
@@ -224,23 +224,23 @@
   self->_appContext = 0;
 }
 
-- (BOOL)openURL:(id)a3 options:(id)a4
+- (BOOL)openURL:(id)l options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  lCopy = l;
+  optionsCopy = options;
+  if (!lCopy)
   {
     goto LABEL_23;
   }
 
   v8 = objc_opt_new();
-  v9 = [v6 absoluteString];
-  [v8 setObject:v9 forKeyedSubscript:@"openURL"];
+  absoluteString = [lCopy absoluteString];
+  [v8 setObject:absoluteString forKeyedSubscript:@"openURL"];
 
-  v10 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69DDB20]];
+  v10 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x1E69DDB20]];
 
   v11 = *MEMORY[0x1E69DDB68];
-  v12 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69DDB68]];
+  v12 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x1E69DDB68]];
   v13 = v12;
   if (v10)
   {
@@ -249,7 +249,7 @@
 
   if (v13)
   {
-    v13 = [v7 objectForKeyedSubscript:v11];
+    v13 = [optionsCopy objectForKeyedSubscript:v11];
 LABEL_5:
     [v8 setObject:v13 forKeyedSubscript:@"sourceAppIdentifier"];
   }
@@ -258,8 +258,8 @@ LABEL_5:
   {
     if (!self->_doLaunchOpenURLHandling)
     {
-      v14 = [(VUITVApplicationController *)self delegate];
-      if (v14 && (objc_opt_respondsToSelector() & 1) != 0 && ![v14 appController:self shouldDisplayShroudForURL:v6 withOptions:v7])
+      delegate = [(VUITVApplicationController *)self delegate];
+      if (delegate && (objc_opt_respondsToSelector() & 1) != 0 && ![delegate appController:self shouldDisplayShroudForURL:lCopy withOptions:optionsCopy])
       {
         v28 = +[VUIAppLoadingView loadingScreen];
         [v28 setTimeout:20.0];
@@ -277,35 +277,35 @@ LABEL_5:
         [v15 setHidden:0 animated:1 withCompletionHandler:0];
       }
 
-      v16 = [(VUITVApplicationController *)self _currentNavigationController];
-      v17 = [v16 presentedViewController];
+      _currentNavigationController = [(VUITVApplicationController *)self _currentNavigationController];
+      presentedViewController = [_currentNavigationController presentedViewController];
 
-      if (v17)
+      if (presentedViewController)
       {
-        [v16 dismissViewControllerAnimated:1 completion:0];
+        [_currentNavigationController dismissViewControllerAnimated:1 completion:0];
       }
 
-      v18 = [(VUITVApplicationController *)self rootViewController];
-      v19 = [v18 presentedViewController];
+      rootViewController = [(VUITVApplicationController *)self rootViewController];
+      presentedViewController2 = [rootViewController presentedViewController];
 
-      if (v19)
+      if (presentedViewController2)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v20 = [v19 popToRootViewControllerAnimated:0];
+          v20 = [presentedViewController2 popToRootViewControllerAnimated:0];
         }
 
-        v21 = [(VUITVApplicationController *)self rootViewController];
-        [v21 dismissViewControllerAnimated:0 completion:0];
+        rootViewController2 = [(VUITVApplicationController *)self rootViewController];
+        [rootViewController2 dismissViewControllerAnimated:0 completion:0];
       }
 
-      v22 = [v16 popToRootViewControllerAnimated:0];
-      v23 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v23 removeObserver:self name:@"VUITVAppNavigationDidDisplayViewControllerNotification" object:0];
+      v22 = [_currentNavigationController popToRootViewControllerAnimated:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter removeObserver:self name:@"VUITVAppNavigationDidDisplayViewControllerNotification" object:0];
 
-      v24 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v24 addObserver:self selector:sel__openURLControllerDidDisplay_ name:@"VUITVAppNavigationDidDisplayViewControllerNotification" object:0];
+      defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter2 addObserver:self selector:sel__openURLControllerDidDisplay_ name:@"VUITVAppNavigationDidDisplayViewControllerNotification" object:0];
     }
 
     self->_doLaunchOpenURLHandling = 0;
@@ -319,49 +319,49 @@ LABEL_5:
   }
 
 LABEL_23:
-  return v6 != 0;
+  return lCopy != 0;
 }
 
-- (void)evaluateInJavaScriptContext:(id)a3 completion:(id)a4
+- (void)evaluateInJavaScriptContext:(id)context completion:(id)completion
 {
-  v8 = a3;
-  v6 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   appContext = self->_appContext;
   if (appContext)
   {
-    [(VUIAppContext *)appContext evaluate:v8 completionBlock:v6 completionQueue:0];
+    [(VUIAppContext *)appContext evaluate:contextCopy completionBlock:completionCopy completionQueue:0];
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
-    v6[2](v6, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (void)_applicationDidEnterBackgroundNotification:(id)a3
+- (void)_applicationDidEnterBackgroundNotification:(id)notification
 {
   if (self->_popViewControllerOnBackground)
   {
-    v4 = [(VUITVAppRootViewController *)self->_appRootViewController vuiNavigationController];
-    v5 = [v4 popViewControllerAnimated:0];
+    vuiNavigationController = [(VUITVAppRootViewController *)self->_appRootViewController vuiNavigationController];
+    v5 = [vuiNavigationController popViewControllerAnimated:0];
 
     self->_popViewControllerOnBackground = 0;
   }
 }
 
-- (void)_statusBarOrientationDidChange:(id)a3
+- (void)_statusBarOrientationDidChange:(id)change
 {
-  v4 = [*MEMORY[0x1E69DDA98] statusBarOrientation];
-  if (v4 != self->_interfaceOrientation)
+  statusBarOrientation = [*MEMORY[0x1E69DDA98] statusBarOrientation];
+  if (statusBarOrientation != self->_interfaceOrientation)
   {
-    self->_interfaceOrientation = v4;
+    self->_interfaceOrientation = statusBarOrientation;
   }
 }
 
-- (void)appContext:(id)a3 didStartWithOptions:(id)a4
+- (void)appContext:(id)context didStartWithOptions:(id)options
 {
-  v6 = a4;
-  v7 = a3;
+  optionsCopy = options;
+  contextCopy = context;
   v8 = VUIDefaultLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -372,12 +372,12 @@ LABEL_23:
   +[_TtC8VideosUI8VideosUI fetchUMConfigurations];
   appContext = self->_appContext;
 
-  if (appContext == v7 && !self->_reloadInProgress)
+  if (appContext == contextCopy && !self->_reloadInProgress)
   {
-    v10 = [(VUITVApplicationController *)self delegate];
-    if (v10 && (objc_opt_respondsToSelector() & 1) != 0)
+    delegate = [(VUITVApplicationController *)self delegate];
+    if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [v10 appController:self didFinishLaunchingWithOptions:v6];
+      [delegate appController:self didFinishLaunchingWithOptions:optionsCopy];
     }
   }
 
@@ -401,12 +401,12 @@ LABEL_23:
   }
 }
 
-- (void)appContext:(id)a3 didFailWithError:(id)a4
+- (void)appContext:(id)context didFailWithError:(id)error
 {
   v13 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  errorCopy = error;
   appContext = self->_appContext;
-  if (appContext == a3)
+  if (appContext == context)
   {
     self->_appContext = 0;
 
@@ -414,23 +414,23 @@ LABEL_23:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v11 = 138412290;
-      v12 = v6;
+      v12 = errorCopy;
       _os_log_impl(&dword_1E323F000, v8, OS_LOG_TYPE_INFO, "VUITVApplicationController - App Context Failed with Error: %@", &v11, 0xCu);
     }
 
-    v9 = [(VUITVApplicationController *)self delegate];
-    if (v9 && (objc_opt_respondsToSelector() & 1) != 0)
+    delegate = [(VUITVApplicationController *)self delegate];
+    if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
     {
       v10 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69DF888] code:3 userInfo:0];
-      [v9 appController:self didFailWithError:v10];
+      [delegate appController:self didFailWithError:v10];
     }
   }
 }
 
-- (void)appContext:(id)a3 didStopWithOptions:(id)a4
+- (void)appContext:(id)context didStopWithOptions:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  optionsCopy = options;
   v8 = VUIDefaultLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -440,23 +440,23 @@ LABEL_23:
 
   if (!self->_reloadInProgress)
   {
-    v9 = [(VUITVApplicationController *)self delegate];
-    if (v9 && (objc_opt_respondsToSelector() & 1) != 0)
+    delegate = [(VUITVApplicationController *)self delegate];
+    if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [v9 appController:self didStopWithOptions:v7];
+      [delegate appController:self didStopWithOptions:optionsCopy];
     }
 
     appContext = self->_appContext;
-    if (appContext == v6)
+    if (appContext == contextCopy)
     {
       self->_appContext = 0;
     }
   }
 }
 
-- (void)appContext:(id)a3 evaluateAppJavaScriptInContext:(id)a4
+- (void)appContext:(id)context evaluateAppJavaScriptInContext:(id)inContext
 {
-  v5 = a4;
+  inContextCopy = inContext;
   v6 = VUIDefaultLogObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -464,36 +464,36 @@ LABEL_23:
     _os_log_impl(&dword_1E323F000, v6, OS_LOG_TYPE_INFO, "VUITVApplicationController - evaluateAppJavaScriptInContext", v8, 2u);
   }
 
-  v7 = [(VUITVApplicationController *)self delegate];
-  if (v7 && (objc_opt_respondsToSelector() & 1) != 0)
+  delegate = [(VUITVApplicationController *)self delegate];
+  if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v7 appController:self evaluateAppJavaScriptInContext:v5];
+    [delegate appController:self evaluateAppJavaScriptInContext:inContextCopy];
   }
 }
 
-- (void)appContext:(id)a3 needsReloadWithUrgency:(unint64_t)a4 options:(id)a5
+- (void)appContext:(id)context needsReloadWithUrgency:(unint64_t)urgency options:(id)options
 {
-  v8 = a3;
-  v9 = a5;
+  contextCopy = context;
+  optionsCopy = options;
   if (!+[VUIUtilities isInFullscreenOrPipPlayback])
   {
-    if (a4 == 1)
+    if (urgency == 1)
     {
       self->_reloadOnResume = 1;
-      v10 = [v9 objectForKeyedSubscript:@"VUIAppReloadUrgencyMinSuspensionTime"];
+      v10 = [optionsCopy objectForKeyedSubscript:@"VUIAppReloadUrgencyMinSuspensionTime"];
       [v10 doubleValue];
       self->_reloadOnResumeMinInterval = v11;
 
       if (self->_reloadOnResumeMinInterval > 0.0)
       {
-        v12 = [MEMORY[0x1E695E000] standardUserDefaults];
-        [v12 floatForKey:@"override-minSuspensionTime"];
+        standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+        [standardUserDefaults floatForKey:@"override-minSuspensionTime"];
         v14 = v13;
 
         if (v14 > 0.0)
         {
-          v15 = [MEMORY[0x1E695E000] standardUserDefaults];
-          [v15 floatForKey:@"override-minSuspensionTime"];
+          standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+          [standardUserDefaults2 floatForKey:@"override-minSuspensionTime"];
           self->_reloadOnResumeMinInterval = v16;
         }
       }
@@ -522,11 +522,11 @@ LABEL_12:
           v18 = +[VUIAppLoadingView loadingScreen];
           [v18 showOverKeyWindowWithSpinnerOnly:0];
 
-          v19 = [MEMORY[0x1E696AD88] defaultCenter];
-          [v19 removeObserver:self name:@"VUITVAppNavigationDidDisplayViewControllerNotification" object:0];
+          defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+          [defaultCenter removeObserver:self name:@"VUITVAppNavigationDidDisplayViewControllerNotification" object:0];
 
-          v20 = [MEMORY[0x1E696AD88] defaultCenter];
-          [v20 addObserver:self selector:sel__reloadControllerDidDisplay_ name:@"VUITVAppNavigationDidDisplayViewControllerNotification" object:0];
+          defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+          [defaultCenter2 addObserver:self selector:sel__reloadControllerDidDisplay_ name:@"VUITVAppNavigationDidDisplayViewControllerNotification" object:0];
         }
       }
 
@@ -543,13 +543,13 @@ LABEL_12:
         aBlock[2] = __72__VUITVApplicationController_appContext_needsReloadWithUrgency_options___block_invoke;
         aBlock[3] = &unk_1E872F038;
         objc_copyWeak(&v30, &location);
-        v29 = v8;
+        v29 = contextCopy;
         v22 = _Block_copy(aBlock);
-        v23 = [(VUITVApplicationController *)self _currentNavigationController];
+        _currentNavigationController = [(VUITVApplicationController *)self _currentNavigationController];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v24 = v23;
+          v24 = _currentNavigationController;
         }
 
         else
@@ -625,10 +625,10 @@ void __72__VUITVApplicationController_appContext_needsReloadWithUrgency_options_
   }
 }
 
-- (void)appContext:(id)a3 scriptForURL:(id)a4 cachePolicy:(unint64_t)a5 completion:(id)a6
+- (void)appContext:(id)context scriptForURL:(id)l cachePolicy:(unint64_t)policy completion:(id)completion
 {
-  v8 = a6;
-  v9 = a4;
+  completionCopy = completion;
+  lCopy = l;
   v10 = VUIDefaultLogObject();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -637,10 +637,10 @@ void __72__VUITVApplicationController_appContext_needsReloadWithUrgency_options_
   }
 
   v11 = +[VUIAppScriptDownloadManager sharedInstance];
-  [v11 fetchAppJavascript:v9 cachePolicy:a5 completionHandler:v8];
+  [v11 fetchAppJavascript:lCopy cachePolicy:policy completionHandler:completionCopy];
 }
 
-- (void)applicationDidResume:(id)a3
+- (void)applicationDidResume:(id)resume
 {
   suspended = self->_suspended;
   self->_suspended = 0;
@@ -666,11 +666,11 @@ void __72__VUITVApplicationController_appContext_needsReloadWithUrgency_options_
   }
 }
 
-- (void)applicationWillSuspend:(id)a3
+- (void)applicationWillSuspend:(id)suspend
 {
-  v4 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   reloadOnResumeBackgroundedDate = self->_reloadOnResumeBackgroundedDate;
-  self->_reloadOnResumeBackgroundedDate = v4;
+  self->_reloadOnResumeBackgroundedDate = date;
 
   appContext = self->_appContext;
   if (appContext)
@@ -684,55 +684,55 @@ void __72__VUITVApplicationController_appContext_needsReloadWithUrgency_options_
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(VUITVAppRootViewController *)self->_appRootViewController currentNavigationController];
+    currentNavigationController = [(VUITVAppRootViewController *)self->_appRootViewController currentNavigationController];
   }
 
   else
   {
-    v3 = objc_alloc_init(MEMORY[0x1E69DCCD8]);
+    currentNavigationController = objc_alloc_init(MEMORY[0x1E69DCCD8]);
   }
 
-  return v3;
+  return currentNavigationController;
 }
 
-- (void)_openURLControllerHandler:(BOOL)a3
+- (void)_openURLControllerHandler:(BOOL)handler
 {
-  v3 = a3;
-  v5 = [(VUITVApplicationController *)self _currentNavigationController];
-  v6 = [v5 viewControllers];
-  v7 = [v6 count];
+  handlerCopy = handler;
+  _currentNavigationController = [(VUITVApplicationController *)self _currentNavigationController];
+  viewControllers = [_currentNavigationController viewControllers];
+  v7 = [viewControllers count];
 
   if (v7 < 2)
   {
-    if (!v3)
+    if (!handlerCopy)
     {
       return;
     }
 
-    v9 = +[VUIAppLoadingView loadingScreen];
-    [v9 hide];
+    defaultCenter = +[VUIAppLoadingView loadingScreen];
+    [defaultCenter hide];
   }
 
   else
   {
-    if (v3)
+    if (handlerCopy)
     {
       v8 = +[VUIAppLoadingView loadingScreen];
       [v8 hide];
     }
 
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 removeObserver:self name:@"VUITVAppNavigationDidDisplayViewControllerNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:@"VUITVAppNavigationDidDisplayViewControllerNotification" object:0];
   }
 }
 
-- (void)_reloadControllerDidDisplay:(id)a3
+- (void)_reloadControllerDidDisplay:(id)display
 {
   v4 = +[VUIAppLoadingView loadingScreen];
   [v4 hide];
 
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 removeObserver:self name:@"VUITVAppNavigationDidDisplayViewControllerNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"VUITVAppNavigationDidDisplayViewControllerNotification" object:0];
 }
 
 - (BOOL)_shouldReloadOnResume
@@ -755,18 +755,18 @@ void __72__VUITVApplicationController_appContext_needsReloadWithUrgency_options_
   v3 = objc_alloc(MEMORY[0x1E695DEE8]);
   v4 = [v3 initWithCalendarIdentifier:*MEMORY[0x1E695D850]];
   reloadOnResumeBackgroundedDate = self->_reloadOnResumeBackgroundedDate;
-  v6 = [MEMORY[0x1E695DF00] date];
-  v7 = [v4 components:128 fromDate:reloadOnResumeBackgroundedDate toDate:v6 options:0];
+  date = [MEMORY[0x1E695DF00] date];
+  v7 = [v4 components:128 fromDate:reloadOnResumeBackgroundedDate toDate:date options:0];
 
   LOBYTE(self) = self->_reloadOnResumeMinInterval <= [v7 second];
   return self;
 }
 
-- (void)setKeyTraitEnvironment:(id)a3
+- (void)setKeyTraitEnvironment:(id)environment
 {
-  v4 = a3;
-  objc_storeWeak(&self->_keyTraitEnvironment, v4);
-  [(_VUICoreApplication *)self->_application setKeyTraitEnvironment:v4];
+  environmentCopy = environment;
+  objc_storeWeak(&self->_keyTraitEnvironment, environmentCopy);
+  [(_VUICoreApplication *)self->_application setKeyTraitEnvironment:environmentCopy];
 }
 
 - (UITraitEnvironment)keyTraitEnvironment

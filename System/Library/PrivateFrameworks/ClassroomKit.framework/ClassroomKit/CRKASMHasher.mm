@@ -1,18 +1,18 @@
 @interface CRKASMHasher
-+ (unint64_t)asmHashForString:(id)a3 maximumExclusive:(unint64_t)a4;
++ (unint64_t)asmHashForString:(id)string maximumExclusive:(unint64_t)exclusive;
 @end
 
 @implementation CRKASMHasher
 
-+ (unint64_t)asmHashForString:(id)a3 maximumExclusive:(unint64_t)a4
++ (unint64_t)asmHashForString:(id)string maximumExclusive:(unint64_t)exclusive
 {
-  v5 = a3;
-  if ([v5 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
     v13 = 0;
-    v6 = malloc_type_malloc(2 * [v5 length], 0x100004077774924uLL);
+    v6 = malloc_type_malloc(2 * [stringCopy length], 0x100004077774924uLL);
     v7 = 0;
-    if ([v5 getBytes:v6 maxLength:2 * objc_msgSend(v5 usedLength:"length") encoding:&v13 options:4 range:1 remainingRange:{0, objc_msgSend(v5, "length"), 0}])
+    if ([stringCopy getBytes:v6 maxLength:2 * objc_msgSend(stringCopy usedLength:"length") encoding:&v13 options:4 range:1 remainingRange:{0, objc_msgSend(stringCopy, "length"), 0}])
     {
       v8 = v13;
       if (v13)
@@ -34,7 +34,7 @@
         v9 = 0;
       }
 
-      v7 = v9 % a4;
+      v7 = v9 % exclusive;
     }
 
     free(v6);

@@ -1,19 +1,19 @@
 @interface SBAppToAppWorkspaceTransactionAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_setupAnimation;
 @end
 
 @implementation SBAppToAppWorkspaceTransactionAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBToAppsWorkspaceTransaction" hasInstanceMethod:@"fromApplicationSceneEntities" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBToAppsWorkspaceTransaction" hasInstanceMethod:@"toApplicationSceneEntities" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBAppToAppWorkspaceTransaction" isKindOfClass:@"SBToAppsWorkspaceTransaction"];
-  [v3 validateClass:@"SBApplicationSceneEntity" hasInstanceMethod:@"application" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBApplication" hasInstanceMethod:@"processState" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBApplicationProcessState" hasInstanceMethod:@"pid" withFullSignature:{"i", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBToAppsWorkspaceTransaction" hasInstanceMethod:@"fromApplicationSceneEntities" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBToAppsWorkspaceTransaction" hasInstanceMethod:@"toApplicationSceneEntities" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBAppToAppWorkspaceTransaction" isKindOfClass:@"SBToAppsWorkspaceTransaction"];
+  [validationsCopy validateClass:@"SBApplicationSceneEntity" hasInstanceMethod:@"application" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBApplication" hasInstanceMethod:@"processState" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBApplicationProcessState" hasInstanceMethod:@"pid" withFullSignature:{"i", 0}];
 }
 
 - (id)_setupAnimation
@@ -21,7 +21,7 @@
   v39 = *MEMORY[0x29EDCA608];
   v37.receiver = self;
   v37.super_class = SBAppToAppWorkspaceTransactionAccessibility;
-  v27 = [(SBAppToAppWorkspaceTransactionAccessibility *)&v37 _setupAnimation];
+  _setupAnimation = [(SBAppToAppWorkspaceTransactionAccessibility *)&v37 _setupAnimation];
   v3 = objc_alloc_init(MEMORY[0x29EDB8DE8]);
   v36 = 0;
   objc_opt_class();
@@ -98,7 +98,7 @@
     while (v8);
   }
 
-  return v27;
+  return _setupAnimation;
 }
 
 void __62__SBAppToAppWorkspaceTransactionAccessibility__setupAnimation__block_invoke(uint64_t a1, void *a2)

@@ -1,37 +1,37 @@
 @interface AVSpatialOverCaptureVideoPreviewLayer
-- (AVSpatialOverCaptureVideoPreviewLayer)initWithLayer:(id)a3;
-- (BOOL)performContentUpdates:(id)a3;
-- (CGAffineTransform)captureDeviceTransformForSensorSize:(SEL)a3 previewSize:(CGSize)a4 sensorToPreviewVTScalingMode:(CGSize)a5 applyDynamicAspectRatio:(id)a6;
+- (AVSpatialOverCaptureVideoPreviewLayer)initWithLayer:(id)layer;
+- (BOOL)performContentUpdates:(id)updates;
+- (CGAffineTransform)captureDeviceTransformForSensorSize:(SEL)size previewSize:(CGSize)previewSize sensorToPreviewVTScalingMode:(CGSize)mode applyDynamicAspectRatio:(id)ratio;
 - (CGPoint)primaryCaptureRectCenterPoint;
 - (CGRect)overCaptureRect;
 - (CGRect)primaryCaptureRect;
 - (CGSize)contentSize;
 - (double)primaryCaptureRectAspectRatio;
-- (id)_initWithSession:(id)a3 makeConnection:(BOOL)a4;
-- (id)addConnection:(id)a3 error:(id *)a4;
+- (id)_initWithSession:(id)session makeConnection:(BOOL)connection;
+- (id)addConnection:(id)connection error:(id *)error;
 - (id)semanticStyle;
 - (id)semanticStyles;
 - (id)semanticStylesRegions;
 - (int64_t)overCaptureStatus;
 - (int64_t)primaryCaptureRectUniqueID;
-- (void)_handleSpatialNotification:(id)a3 payload:(id)a4;
-- (void)_setPrimaryCaptureRectAspectRatio:(double)a3 centerPoint:(CGPoint)a4 trueVideoTransitionPercentComplete:(double)a5 smartFramingTransitionPercentComplete:(double)a6 smartFramingTransitionTargetFieldOfView:(id)a7;
-- (void)_updatePrimaryCaptureRectWithCamerasMountedInLandscapeOrientation:(BOOL)a3 center:(CGPoint *)a4 aspectRatio:(double *)a5;
+- (void)_handleSpatialNotification:(id)notification payload:(id)payload;
+- (void)_setPrimaryCaptureRectAspectRatio:(double)ratio centerPoint:(CGPoint)point trueVideoTransitionPercentComplete:(double)complete smartFramingTransitionPercentComplete:(double)percentComplete smartFramingTransitionTargetFieldOfView:(id)view;
+- (void)_updatePrimaryCaptureRectWithCamerasMountedInLandscapeOrientation:(BOOL)orientation center:(CGPoint *)center aspectRatio:(double *)ratio;
 - (void)_updateSemanticStyleRenderingSupported;
-- (void)attachSafelyToFigCaptureSession:(OpaqueFigCaptureSession *)a3;
+- (void)attachSafelyToFigCaptureSession:(OpaqueFigCaptureSession *)session;
 - (void)dealloc;
-- (void)detachSafelyFromFigCaptureSession:(OpaqueFigCaptureSession *)a3;
-- (void)didUpdatePreviewImageQueueSlot:(unsigned int)a3 imageQueue:(id)a4 rotationDegrees:(double)a5 size:(CGSize)a6;
-- (void)getPrimaryCaptureRectCenter:(CGPoint *)a3 aspectRatio:(double *)a4 uniqueID:(int64_t *)a5;
-- (void)getPrimaryCaptureRectWithCamerasMountedInLandscapeOrientation:(BOOL)a3 center:(CGPoint *)a4 aspectRatio:(double *)a5 uniqueID:(int64_t *)a6;
+- (void)detachSafelyFromFigCaptureSession:(OpaqueFigCaptureSession *)session;
+- (void)didUpdatePreviewImageQueueSlot:(unsigned int)slot imageQueue:(id)queue rotationDegrees:(double)degrees size:(CGSize)size;
+- (void)getPrimaryCaptureRectCenter:(CGPoint *)center aspectRatio:(double *)ratio uniqueID:(int64_t *)d;
+- (void)getPrimaryCaptureRectWithCamerasMountedInLandscapeOrientation:(BOOL)orientation center:(CGPoint *)center aspectRatio:(double *)ratio uniqueID:(int64_t *)d;
 - (void)layoutSublayers;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)removeConnection:(id)a3;
-- (void)setAutomaticallyDimsOverCaptureRegion:(BOOL)a3;
-- (void)setPrimaryAndOverCaptureCompositingEnabled:(BOOL)a3;
-- (void)setSemanticStyle:(id)a3 animated:(BOOL)a4;
-- (void)setSemanticStyleRenderingEnabled:(BOOL)a3;
-- (void)setSemanticStyles:(id)a3 semanticStylesRegions:(id)a4;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)removeConnection:(id)connection;
+- (void)setAutomaticallyDimsOverCaptureRegion:(BOOL)region;
+- (void)setPrimaryAndOverCaptureCompositingEnabled:(BOOL)enabled;
+- (void)setSemanticStyle:(id)style animated:(BOOL)animated;
+- (void)setSemanticStyleRenderingEnabled:(BOOL)enabled;
+- (void)setSemanticStyles:(id)styles semanticStylesRegions:(id)regions;
 @end
 
 @implementation AVSpatialOverCaptureVideoPreviewLayer
@@ -137,9 +137,9 @@ LABEL_18:
 
 - (id)semanticStyle
 {
-  v2 = [(NSArray *)self->_semanticStyles firstObject];
+  firstObject = [(NSArray *)self->_semanticStyles firstObject];
 
-  return v2;
+  return firstObject;
 }
 
 - (double)primaryCaptureRectAspectRatio
@@ -228,11 +228,11 @@ LABEL_18:
   return v2;
 }
 
-- (id)_initWithSession:(id)a3 makeConnection:(BOOL)a4
+- (id)_initWithSession:(id)session makeConnection:(BOOL)connection
 {
   v14.receiver = self;
   v14.super_class = AVSpatialOverCaptureVideoPreviewLayer;
-  v4 = [(AVCaptureVideoPreviewLayer *)&v14 _initWithSession:a3 makeConnection:a4];
+  v4 = [(AVCaptureVideoPreviewLayer *)&v14 _initWithSession:session makeConnection:connection];
   v5 = v4;
   if (v4)
   {
@@ -259,14 +259,14 @@ LABEL_18:
   return v5;
 }
 
-- (AVSpatialOverCaptureVideoPreviewLayer)initWithLayer:(id)a3
+- (AVSpatialOverCaptureVideoPreviewLayer)initWithLayer:(id)layer
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v19.receiver = self;
     v19.super_class = AVSpatialOverCaptureVideoPreviewLayer;
-    v5 = [(AVCaptureVideoPreviewLayer *)&v19 initWithLayer:a3];
+    v5 = [(AVCaptureVideoPreviewLayer *)&v19 initWithLayer:layer];
     v6 = v5;
     if (v5)
     {
@@ -275,27 +275,27 @@ LABEL_18:
       v18 = *MEMORY[0x1E695EFF8];
       v16 = 0;
       v17 = 0.0;
-      [a3 getPrimaryCaptureRectCenter:&v18 aspectRatio:&v17 uniqueID:&v16];
+      [layer getPrimaryCaptureRectCenter:&v18 aspectRatio:&v17 uniqueID:&v16];
       v6->_primaryCaptureRectCenterPoint = v18;
       v6->_primaryCaptureRectAspectRatio = v17;
       v6->_primaryCaptureRectUniqueID = v16;
-      [a3 primaryCaptureRect];
+      [layer primaryCaptureRect];
       v6->_primaryCaptureRect.origin.x = v7;
       v6->_primaryCaptureRect.origin.y = v8;
       v6->_primaryCaptureRect.size.width = v9;
       v6->_primaryCaptureRect.size.height = v10;
-      [a3 overCaptureRect];
+      [layer overCaptureRect];
       v6->_overCaptureRect.origin.x = v11;
       v6->_overCaptureRect.origin.y = v12;
       v6->_overCaptureRect.size.width = v13;
       v6->_overCaptureRect.size.height = v14;
-      v6->_primaryAndOverCaptureCompositingEnabled = [a3 isPrimaryAndOverCaptureCompositingEnabled];
-      -[AVSpatialOverCaptureVideoPreviewLayer setAutomaticallyDimsOverCaptureRegion:](v6, "setAutomaticallyDimsOverCaptureRegion:", [a3 automaticallyDimsOverCaptureRegion]);
-      v6->_semanticStyleRenderingSupported = [a3 isSemanticStyleRenderingSupported];
-      v6->_semanticStyleRenderingEnabled = [a3 isSemanticStyleRenderingEnabled];
-      v6->_semanticStyles = [objc_msgSend(a3 "semanticStyles")];
-      v6->_semanticStylesRegions = [objc_msgSend(a3 "semanticStylesRegions")];
-      v6->_maxSemanticStyles = [a3 maxSemanticStyles];
+      v6->_primaryAndOverCaptureCompositingEnabled = [layer isPrimaryAndOverCaptureCompositingEnabled];
+      -[AVSpatialOverCaptureVideoPreviewLayer setAutomaticallyDimsOverCaptureRegion:](v6, "setAutomaticallyDimsOverCaptureRegion:", [layer automaticallyDimsOverCaptureRegion]);
+      v6->_semanticStyleRenderingSupported = [layer isSemanticStyleRenderingSupported];
+      v6->_semanticStyleRenderingEnabled = [layer isSemanticStyleRenderingEnabled];
+      v6->_semanticStyles = [objc_msgSend(layer "semanticStyles")];
+      v6->_semanticStylesRegions = [objc_msgSend(layer "semanticStylesRegions")];
+      v6->_maxSemanticStyles = [layer maxSemanticStyles];
     }
   }
 
@@ -318,12 +318,12 @@ LABEL_18:
   [(AVCaptureVideoPreviewLayer *)&v3 dealloc];
 }
 
-- (void)_setPrimaryCaptureRectAspectRatio:(double)a3 centerPoint:(CGPoint)a4 trueVideoTransitionPercentComplete:(double)a5 smartFramingTransitionPercentComplete:(double)a6 smartFramingTransitionTargetFieldOfView:(id)a7
+- (void)_setPrimaryCaptureRectAspectRatio:(double)ratio centerPoint:(CGPoint)point trueVideoTransitionPercentComplete:(double)complete smartFramingTransitionPercentComplete:(double)percentComplete smartFramingTransitionTargetFieldOfView:(id)view
 {
-  y = a4.y;
-  x = a4.x;
-  v31 = a4;
-  v30 = a3;
+  y = point.y;
+  x = point.x;
+  pointCopy = point;
+  ratioCopy = ratio;
   [(AVCaptureConnection *)[(AVCaptureVideoPreviewLayer *)self connection] sourcesFromFrontFacingCamera];
   [(AVCaptureConnection *)[(AVCaptureVideoPreviewLayer *)self connection] sourcesFromExternalCamera];
   v14 = AVCapturePlatformMountsCamerasInLandscapeOrientation();
@@ -331,14 +331,14 @@ LABEL_18:
   os_unfair_lock_lock(&self->_primaryCaptureRectLock);
   primaryCaptureRectAspectRatio = self->_primaryCaptureRectAspectRatio;
   v16 = y != self->_primaryCaptureRectCenterPoint.y || x != self->_primaryCaptureRectCenterPoint.x;
-  v17 = @"FieldOfViewNone" != a7 && self->_primaryCaptureRectSmartFramingTransitionPercentComplete != a6;
+  v17 = @"FieldOfViewNone" != view && self->_primaryCaptureRectSmartFramingTransitionPercentComplete != percentComplete;
   v24 = 120;
   lastCamerasMountedInLandscapeOrientation = self->_lastCamerasMountedInLandscapeOrientation;
   os_unfair_lock_unlock(&self->_primaryCaptureRectLock);
   v19 = v16;
-  if (primaryCaptureRectAspectRatio != a3 || v16 || (lastCamerasMountedInLandscapeOrientation == v14 ? (v20 = !v17) : (v20 = 0), !v20))
+  if (primaryCaptureRectAspectRatio != ratio || v16 || (lastCamerasMountedInLandscapeOrientation == v14 ? (v20 = !v17) : (v20 = 0), !v20))
   {
-    if (primaryCaptureRectAspectRatio != a3)
+    if (primaryCaptureRectAspectRatio != ratio)
     {
       [(AVSpatialOverCaptureVideoPreviewLayer *)self willChangeValueForKey:@"primaryCaptureRectAspectRatio"];
     }
@@ -349,23 +349,23 @@ LABEL_18:
     }
 
     os_unfair_lock_lock(&self->_primaryCaptureRectLock);
-    self->_primaryCaptureRectAspectRatio = a3;
-    self->_primaryCaptureRectCenterPoint = v31;
-    self->_primaryCaptureRectTrueVideoTransitionPercentComplete = a5;
-    self->_primaryCaptureRectSmartFramingTransitionPercentComplete = a6;
-    self->_primaryCaptureRectSmartFramingTransitionTargetFieldOfView = a7;
-    v21 = [objc_opt_class() uniqueID];
-    self->_primaryCaptureRectUniqueID = v21;
+    self->_primaryCaptureRectAspectRatio = ratio;
+    self->_primaryCaptureRectCenterPoint = pointCopy;
+    self->_primaryCaptureRectTrueVideoTransitionPercentComplete = complete;
+    self->_primaryCaptureRectSmartFramingTransitionPercentComplete = percentComplete;
+    self->_primaryCaptureRectSmartFramingTransitionTargetFieldOfView = view;
+    uniqueID = [objc_opt_class() uniqueID];
+    self->_primaryCaptureRectUniqueID = uniqueID;
     self->_lastCamerasMountedInLandscapeOrientation = v14;
     os_unfair_lock_unlock(&self->_primaryCaptureRectLock);
-    [(AVSpatialOverCaptureVideoPreviewLayer *)self _updatePrimaryCaptureRectWithCamerasMountedInLandscapeOrientation:v14 center:&v31 aspectRatio:&v30];
+    [(AVSpatialOverCaptureVideoPreviewLayer *)self _updatePrimaryCaptureRectWithCamerasMountedInLandscapeOrientation:v14 center:&pointCopy aspectRatio:&ratioCopy];
     if (![(AVCaptureSession *)[(AVCaptureVideoPreviewLayer *)self session] isBeingConfiguredOnCurrentThread])
     {
       if ([MEMORY[0x1E6979518] currentState])
       {
-        v22 = [(AVSpatialOverCaptureVideoPreviewLayer *)self context];
-        v23 = [objc_alloc(MEMORY[0x1E698F7A0]) initWithPort:{objc_msgSend(v22, "createFencePort")}];
-        [v22 setFencePort:{objc_msgSend(v23, "port")}];
+        context = [(AVSpatialOverCaptureVideoPreviewLayer *)self context];
+        v23 = [objc_alloc(MEMORY[0x1E698F7A0]) initWithPort:{objc_msgSend(context, "createFencePort")}];
+        [context setFencePort:{objc_msgSend(v23, "port")}];
       }
 
       else
@@ -377,12 +377,12 @@ LABEL_18:
       v25[1] = 3221225472;
       v25[2] = __200__AVSpatialOverCaptureVideoPreviewLayer__setPrimaryCaptureRectAspectRatio_centerPoint_trueVideoTransitionPercentComplete_smartFramingTransitionPercentComplete_smartFramingTransitionTargetFieldOfView___block_invoke;
       v25[3] = &unk_1E786EF30;
-      *&v25[7] = v30;
-      v26 = v31;
-      v27 = a5;
-      v28 = a6;
-      v29 = v21;
-      v25[4] = a7;
+      *&v25[7] = ratioCopy;
+      v26 = pointCopy;
+      completeCopy = complete;
+      percentCompleteCopy = percentComplete;
+      v29 = uniqueID;
+      v25[4] = view;
       v25[5] = v23;
       v25[6] = self;
       [(AVCaptureVideoPreviewLayer *)self performFigCaptureSessionOperationSafelyUsingBlock:v25, 120];
@@ -394,7 +394,7 @@ LABEL_18:
       [(AVSpatialOverCaptureVideoPreviewLayer *)self didChangeValueForKey:@"primaryCaptureRectCenterPoint"];
     }
 
-    if (primaryCaptureRectAspectRatio != a3)
+    if (primaryCaptureRectAspectRatio != ratio)
     {
       [(AVSpatialOverCaptureVideoPreviewLayer *)self didChangeValueForKey:@"primaryCaptureRectAspectRatio"];
     }
@@ -449,19 +449,19 @@ void __200__AVSpatialOverCaptureVideoPreviewLayer__setPrimaryCaptureRectAspectRa
   }
 }
 
-- (void)setPrimaryAndOverCaptureCompositingEnabled:(BOOL)a3
+- (void)setPrimaryAndOverCaptureCompositingEnabled:(BOOL)enabled
 {
-  if (self->_primaryAndOverCaptureCompositingEnabled != a3)
+  if (self->_primaryAndOverCaptureCompositingEnabled != enabled)
   {
     v7 = v3;
     v8 = v4;
-    self->_primaryAndOverCaptureCompositingEnabled = a3;
+    self->_primaryAndOverCaptureCompositingEnabled = enabled;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __84__AVSpatialOverCaptureVideoPreviewLayer_setPrimaryAndOverCaptureCompositingEnabled___block_invoke;
     v5[3] = &unk_1E786EF58;
     v5[4] = self;
-    v6 = a3;
+    enabledCopy = enabled;
     [(AVCaptureVideoPreviewLayer *)self performFigCaptureSessionOperationSafelyUsingBlock:v5];
   }
 }
@@ -496,64 +496,64 @@ uint64_t __84__AVSpatialOverCaptureVideoPreviewLayer_setPrimaryAndOverCaptureCom
   return primaryCaptureRectUniqueID;
 }
 
-- (void)getPrimaryCaptureRectCenter:(CGPoint *)a3 aspectRatio:(double *)a4 uniqueID:(int64_t *)a5
+- (void)getPrimaryCaptureRectCenter:(CGPoint *)center aspectRatio:(double *)ratio uniqueID:(int64_t *)d
 {
   os_unfair_lock_lock(&self->_primaryCaptureRectLock);
   primaryCaptureRectCenterPoint = self->_primaryCaptureRectCenterPoint;
   primaryCaptureRectAspectRatio = self->_primaryCaptureRectAspectRatio;
   primaryCaptureRectUniqueID = self->_primaryCaptureRectUniqueID;
   os_unfair_lock_unlock(&self->_primaryCaptureRectLock);
-  if (a3)
+  if (center)
   {
-    *a3 = primaryCaptureRectCenterPoint;
+    *center = primaryCaptureRectCenterPoint;
   }
 
-  if (a4)
+  if (ratio)
   {
-    *a4 = primaryCaptureRectAspectRatio;
+    *ratio = primaryCaptureRectAspectRatio;
   }
 
-  if (a5)
+  if (d)
   {
-    *a5 = primaryCaptureRectUniqueID;
+    *d = primaryCaptureRectUniqueID;
   }
 }
 
-- (void)_updatePrimaryCaptureRectWithCamerasMountedInLandscapeOrientation:(BOOL)a3 center:(CGPoint *)a4 aspectRatio:(double *)a5
+- (void)_updatePrimaryCaptureRectWithCamerasMountedInLandscapeOrientation:(BOOL)orientation center:(CGPoint *)center aspectRatio:(double *)ratio
 {
-  if (!a3)
+  if (!orientation)
   {
-    if (a4)
+    if (center)
     {
-      *a4 = vextq_s8(*a4, *a4, 8uLL);
+      *center = vextq_s8(*center, *center, 8uLL);
     }
 
-    if (a5)
+    if (ratio)
     {
-      *a5 = 1.0 / *a5;
+      *ratio = 1.0 / *ratio;
     }
   }
 }
 
-- (void)getPrimaryCaptureRectWithCamerasMountedInLandscapeOrientation:(BOOL)a3 center:(CGPoint *)a4 aspectRatio:(double *)a5 uniqueID:(int64_t *)a6
+- (void)getPrimaryCaptureRectWithCamerasMountedInLandscapeOrientation:(BOOL)orientation center:(CGPoint *)center aspectRatio:(double *)ratio uniqueID:(int64_t *)d
 {
-  v8 = a3;
-  [(AVSpatialOverCaptureVideoPreviewLayer *)self getPrimaryCaptureRectCenter:a4 aspectRatio:a5 uniqueID:a6];
+  orientationCopy = orientation;
+  [(AVSpatialOverCaptureVideoPreviewLayer *)self getPrimaryCaptureRectCenter:center aspectRatio:ratio uniqueID:d];
 
-  [(AVSpatialOverCaptureVideoPreviewLayer *)self _updatePrimaryCaptureRectWithCamerasMountedInLandscapeOrientation:v8 center:a4 aspectRatio:a5];
+  [(AVSpatialOverCaptureVideoPreviewLayer *)self _updatePrimaryCaptureRectWithCamerasMountedInLandscapeOrientation:orientationCopy center:center aspectRatio:ratio];
 }
 
-- (void)setAutomaticallyDimsOverCaptureRegion:(BOOL)a3
+- (void)setAutomaticallyDimsOverCaptureRegion:(BOOL)region
 {
-  if (self->_automaticallyDimsOverCaptureRegion != a3)
+  if (self->_automaticallyDimsOverCaptureRegion != region)
   {
     v15 = v3;
     v16 = v4;
-    v5 = a3;
-    self->_automaticallyDimsOverCaptureRegion = a3;
+    regionCopy = region;
+    self->_automaticallyDimsOverCaptureRegion = region;
     [MEMORY[0x1E6979518] begin];
     [MEMORY[0x1E6979518] setDisableActions:1];
-    if (v5)
+    if (regionCopy)
     {
       v13 = 0u;
       v14 = 0u;
@@ -561,13 +561,13 @@ uint64_t __84__AVSpatialOverCaptureVideoPreviewLayer_setPrimaryAndOverCaptureCom
       v8 = CFAutorelease(DeviceRGB);
       v9 = CGColorCreate(v8, &v13);
       v10 = CFAutorelease(v9);
-      v11 = [MEMORY[0x1E6979398] layer];
-      self->_topDimmingOverlay = v11;
-      [(CALayer *)v11 setBackgroundColor:v10];
+      layer = [MEMORY[0x1E6979398] layer];
+      self->_topDimmingOverlay = layer;
+      [(CALayer *)layer setBackgroundColor:v10];
       [(AVSpatialOverCaptureVideoPreviewLayer *)self addSublayer:self->_topDimmingOverlay];
-      v12 = [MEMORY[0x1E6979398] layer];
-      self->_bottomDimmingOverlay = v12;
-      [(CALayer *)v12 setBackgroundColor:v10];
+      layer2 = [MEMORY[0x1E6979398] layer];
+      self->_bottomDimmingOverlay = layer2;
+      [(CALayer *)layer2 setBackgroundColor:v10];
       [(AVSpatialOverCaptureVideoPreviewLayer *)self addSublayer:self->_bottomDimmingOverlay];
     }
 
@@ -583,9 +583,9 @@ uint64_t __84__AVSpatialOverCaptureVideoPreviewLayer_setPrimaryAndOverCaptureCom
   }
 }
 
-- (void)setSemanticStyleRenderingEnabled:(BOOL)a3
+- (void)setSemanticStyleRenderingEnabled:(BOOL)enabled
 {
-  if (!a3)
+  if (!enabled)
   {
     p_semanticStyleRenderingEnabled = &self->_semanticStyleRenderingEnabled;
     if (!self->_semanticStyleRenderingEnabled)
@@ -620,7 +620,7 @@ uint64_t __84__AVSpatialOverCaptureVideoPreviewLayer_setPrimaryAndOverCaptureCom
   if (self->_semanticStyleRenderingSupported)
   {
     p_semanticStyleRenderingEnabled = &self->_semanticStyleRenderingEnabled;
-    if (self->_semanticStyleRenderingEnabled == a3)
+    if (self->_semanticStyleRenderingEnabled == enabled)
     {
       return;
     }
@@ -629,7 +629,7 @@ uint64_t __84__AVSpatialOverCaptureVideoPreviewLayer_setPrimaryAndOverCaptureCom
     self->_maxSemanticStyles = 3;
 LABEL_12:
     [(AVSpatialOverCaptureVideoPreviewLayer *)self didChangeValueForKey:@"maxSemanticStyles"];
-    *p_semanticStyleRenderingEnabled = a3;
+    *p_semanticStyleRenderingEnabled = enabled;
 
     [(AVCaptureVideoPreviewLayer *)self bumpChangeSeed];
     return;
@@ -644,7 +644,7 @@ LABEL_12:
   NSLog(&cfstr_SuppressingExc.isa, v7);
 }
 
-- (void)setSemanticStyle:(id)a3 animated:(BOOL)a4
+- (void)setSemanticStyle:(id)style animated:(BOOL)animated
 {
   if (![(AVSpatialOverCaptureVideoPreviewLayer *)self isSemanticStyleRenderingEnabled])
   {
@@ -683,7 +683,7 @@ LABEL_12:
     [(AVSpatialOverCaptureVideoPreviewLayer *)self willChangeValueForKey:@"semanticStyle"];
     [(AVSpatialOverCaptureVideoPreviewLayer *)self willChangeValueForKey:@"semanticStyles"];
 
-    self->_semanticStyles = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{a3, 0}];
+    self->_semanticStyles = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{style, 0}];
     v10 = 1;
     v11 = 1;
     if (v9)
@@ -721,8 +721,8 @@ LABEL_14:
     v13[1] = 3221225472;
     v13[2] = __67__AVSpatialOverCaptureVideoPreviewLayer_setSemanticStyle_animated___block_invoke;
     v13[3] = &unk_1E786EF80;
-    v14 = a4;
-    v13[4] = a3;
+    animatedCopy = animated;
+    v13[4] = style;
     v13[5] = self;
     [(AVCaptureVideoPreviewLayer *)self performFigCaptureSessionOperationSafelyUsingBlock:v13];
     if (v11)
@@ -797,7 +797,7 @@ uint64_t __67__AVSpatialOverCaptureVideoPreviewLayer_setSemanticStyle_animated__
   return result;
 }
 
-- (void)setSemanticStyles:(id)a3 semanticStylesRegions:(id)a4
+- (void)setSemanticStyles:(id)styles semanticStylesRegions:(id)regions
 {
   if (![(AVSpatialOverCaptureVideoPreviewLayer *)self isSemanticStyleRenderingEnabled])
   {
@@ -806,37 +806,37 @@ uint64_t __67__AVSpatialOverCaptureVideoPreviewLayer_setSemanticStyle_animated__
     goto LABEL_28;
   }
 
-  v7 = [a3 count];
-  if (v7 != [a4 count])
+  v7 = [styles count];
+  if (v7 != [regions count])
   {
     v9 = MEMORY[0x1E695DF30];
     v10 = *MEMORY[0x1E695D940];
     goto LABEL_28;
   }
 
-  if (![a3 count])
+  if (![styles count])
   {
     v9 = MEMORY[0x1E695DF30];
     v10 = *MEMORY[0x1E695D940];
     goto LABEL_28;
   }
 
-  v8 = [a3 count];
+  v8 = [styles count];
   if (v8 <= [(AVSpatialOverCaptureVideoPreviewLayer *)self maxSemanticStyles])
   {
-    if ([a4 count] != 1)
+    if ([regions count] != 1)
     {
       v14 = 0;
       while (1)
       {
         v15 = v14++;
-        if (v14 < [a4 count])
+        if (v14 < [regions count])
         {
           break;
         }
 
 LABEL_25:
-        if (v14 >= [a4 count] - 1)
+        if (v14 >= [regions count] - 1)
         {
           goto LABEL_10;
         }
@@ -845,8 +845,8 @@ LABEL_25:
       v16 = v14;
       while (1)
       {
-        v17 = [a4 objectAtIndexedSubscript:v15];
-        v18 = [a4 objectAtIndexedSubscript:v16];
+        v17 = [regions objectAtIndexedSubscript:v15];
+        v18 = [regions objectAtIndexedSubscript:v16];
         v19 = vpl_valueToRect(v17);
         v21 = v20;
         v23 = v22;
@@ -868,7 +868,7 @@ LABEL_25:
           break;
         }
 
-        if (++v16 >= [a4 count])
+        if (++v16 >= [regions count])
         {
           goto LABEL_25;
         }
@@ -883,8 +883,8 @@ LABEL_25:
     }
 
 LABEL_10:
-    v11 = [(NSArray *)self->_semanticStyles isEqual:a3];
-    v12 = [(NSArray *)self->_semanticStylesRegions isEqual:a4];
+    v11 = [(NSArray *)self->_semanticStyles isEqual:styles];
+    v12 = [(NSArray *)self->_semanticStylesRegions isEqual:regions];
     v13 = v12;
     if (v11 && (v12 & 1) != 0)
     {
@@ -896,14 +896,14 @@ LABEL_10:
       [(AVSpatialOverCaptureVideoPreviewLayer *)self willChangeValueForKey:@"semanticStyle"];
       [(AVSpatialOverCaptureVideoPreviewLayer *)self willChangeValueForKey:@"semanticStyles"];
 
-      self->_semanticStyles = [a3 copy];
+      self->_semanticStyles = [styles copy];
     }
 
     if ((v13 & 1) == 0)
     {
       [(AVSpatialOverCaptureVideoPreviewLayer *)self willChangeValueForKey:@"semanticStylesRegions"];
 
-      self->_semanticStylesRegions = [a4 copy];
+      self->_semanticStylesRegions = [regions copy];
     }
 
     if ([(AVCaptureSession *)[(AVCaptureVideoPreviewLayer *)self session] isBeingConfigured])
@@ -918,9 +918,9 @@ LABEL_10:
     {
       if ([MEMORY[0x1E6979518] currentState])
       {
-        v36 = [(AVSpatialOverCaptureVideoPreviewLayer *)self context];
-        v37 = [objc_alloc(MEMORY[0x1E698F7A0]) initWithPort:{objc_msgSend(v36, "createFencePort")}];
-        [v36 setFencePort:{objc_msgSend(v37, "port")}];
+        context = [(AVSpatialOverCaptureVideoPreviewLayer *)self context];
+        v37 = [objc_alloc(MEMORY[0x1E698F7A0]) initWithPort:{objc_msgSend(context, "createFencePort")}];
+        [context setFencePort:{objc_msgSend(v37, "port")}];
       }
 
       else
@@ -1035,11 +1035,11 @@ void __81__AVSpatialOverCaptureVideoPreviewLayer_setSemanticStyles_semanticStyle
   }
 }
 
-- (BOOL)performContentUpdates:(id)a3
+- (BOOL)performContentUpdates:(id)updates
 {
   if ([MEMORY[0x1E6979518] currentState])
   {
-    (*(a3 + 2))(a3);
+    (*(updates + 2))(updates);
   }
 
   else
@@ -1056,22 +1056,22 @@ void __81__AVSpatialOverCaptureVideoPreviewLayer_setSemanticStyles_semanticStyle
   return 0;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v6.receiver = self;
   v6.super_class = AVSpatialOverCaptureVideoPreviewLayer;
-  [(AVCaptureVideoPreviewLayer *)&v6 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:a6];
+  [(AVCaptureVideoPreviewLayer *)&v6 observeValueForKeyPath:path ofObject:object change:change context:context];
 }
 
-- (CGAffineTransform)captureDeviceTransformForSensorSize:(SEL)a3 previewSize:(CGSize)a4 sensorToPreviewVTScalingMode:(CGSize)a5 applyDynamicAspectRatio:(id)a6
+- (CGAffineTransform)captureDeviceTransformForSensorSize:(SEL)size previewSize:(CGSize)previewSize sensorToPreviewVTScalingMode:(CGSize)mode applyDynamicAspectRatio:(id)ratio
 {
-  height = a5.height;
-  width = a5.width;
-  v9 = a4.height;
-  v10 = a4.width;
+  height = mode.height;
+  width = mode.width;
+  v9 = previewSize.height;
+  v10 = previewSize.width;
   v44 = *MEMORY[0x1E695EFF8];
   v43 = 0.0;
-  [(AVCaptureConnection *)[(AVCaptureVideoPreviewLayer *)self connection:a6] sourcesFromFrontFacingCamera];
+  [(AVCaptureConnection *)[(AVCaptureVideoPreviewLayer *)self connection:ratio] sourcesFromFrontFacingCamera];
   [(AVCaptureConnection *)[(AVCaptureVideoPreviewLayer *)self connection] sourcesFromExternalCamera];
   v13 = AVCapturePlatformMountsCamerasInLandscapeOrientation();
   [(AVSpatialOverCaptureVideoPreviewLayer *)self getPrimaryCaptureRectWithCamerasMountedInLandscapeOrientation:v13 center:&v44 aspectRatio:&v43 uniqueID:0];
@@ -1200,26 +1200,26 @@ void __81__AVSpatialOverCaptureVideoPreviewLayer_setSemanticStyles_semanticStyle
   return CGAffineTransformConcat(retstr, &t1, &v37);
 }
 
-- (id)addConnection:(id)a3 error:(id *)a4
+- (id)addConnection:(id)connection error:(id *)error
 {
   v5.receiver = self;
   v5.super_class = AVSpatialOverCaptureVideoPreviewLayer;
-  return [(AVCaptureVideoPreviewLayer *)&v5 addConnection:a3 error:a4];
+  return [(AVCaptureVideoPreviewLayer *)&v5 addConnection:connection error:error];
 }
 
-- (void)removeConnection:(id)a3
+- (void)removeConnection:(id)connection
 {
   v3.receiver = self;
   v3.super_class = AVSpatialOverCaptureVideoPreviewLayer;
-  [(AVCaptureVideoPreviewLayer *)&v3 removeConnection:a3];
+  [(AVCaptureVideoPreviewLayer *)&v3 removeConnection:connection];
 }
 
-- (void)attachSafelyToFigCaptureSession:(OpaqueFigCaptureSession *)a3
+- (void)attachSafelyToFigCaptureSession:(OpaqueFigCaptureSession *)session
 {
   v22.receiver = self;
   v22.super_class = AVSpatialOverCaptureVideoPreviewLayer;
   [(AVCaptureVideoPreviewLayer *)&v22 attachSafelyToFigCaptureSession:?];
-  if (a3)
+  if (session)
   {
     if (self->_havePendingPrimaryCaptureRectChange)
     {
@@ -1253,51 +1253,51 @@ void __81__AVSpatialOverCaptureVideoPreviewLayer_setSemanticStyles_semanticStyle
       v18[6] = v12;
       v19[6] = [MEMORY[0x1E696AD98] numberWithLongLong:primaryCaptureRectUniqueID];
       v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:v18 count:7];
-      v14 = [(AVCaptureVideoPreviewLayer *)self sinkID];
+      sinkID = [(AVCaptureVideoPreviewLayer *)self sinkID];
       v15 = *(*(CMBaseObjectGetVTable() + 16) + 8);
       if (v15)
       {
-        v15(a3, v14, *MEMORY[0x1E698FDD8], v13);
+        v15(session, sinkID, *MEMORY[0x1E698FDD8], v13);
       }
     }
   }
 
   v16 = [MEMORY[0x1E6987F48] notificationDispatcherForCMNotificationCenter:CMNotificationCenterGetDefaultLocalCenter()];
-  v17 = [(AVCaptureVideoPreviewLayer *)self weakReference];
-  [v16 addListenerWithWeakReference:v17 callback:socvpl_figCaptureSessionNotification name:*MEMORY[0x1E698FEA0] object:a3 flags:0];
+  weakReference = [(AVCaptureVideoPreviewLayer *)self weakReference];
+  [v16 addListenerWithWeakReference:weakReference callback:socvpl_figCaptureSessionNotification name:*MEMORY[0x1E698FEA0] object:session flags:0];
 }
 
-- (void)detachSafelyFromFigCaptureSession:(OpaqueFigCaptureSession *)a3
+- (void)detachSafelyFromFigCaptureSession:(OpaqueFigCaptureSession *)session
 {
   v5 = [MEMORY[0x1E6987F48] notificationDispatcherForCMNotificationCenter:CMNotificationCenterGetDefaultLocalCenter()];
-  v6 = [(AVCaptureVideoPreviewLayer *)self weakReference];
-  [v5 removeListenerWithWeakReference:v6 callback:socvpl_figCaptureSessionNotification name:*MEMORY[0x1E698FEA0] object:a3];
+  weakReference = [(AVCaptureVideoPreviewLayer *)self weakReference];
+  [v5 removeListenerWithWeakReference:weakReference callback:socvpl_figCaptureSessionNotification name:*MEMORY[0x1E698FEA0] object:session];
   v7.receiver = self;
   v7.super_class = AVSpatialOverCaptureVideoPreviewLayer;
-  [(AVCaptureVideoPreviewLayer *)&v7 detachSafelyFromFigCaptureSession:a3];
+  [(AVCaptureVideoPreviewLayer *)&v7 detachSafelyFromFigCaptureSession:session];
 }
 
-- (void)didUpdatePreviewImageQueueSlot:(unsigned int)a3 imageQueue:(id)a4 rotationDegrees:(double)a5 size:(CGSize)a6
+- (void)didUpdatePreviewImageQueueSlot:(unsigned int)slot imageQueue:(id)queue rotationDegrees:(double)degrees size:(CGSize)size
 {
-  height = a6.height;
-  width = a6.width;
-  v10 = *&a3;
+  height = size.height;
+  width = size.width;
+  v10 = *&slot;
   [(AVSpatialOverCaptureVideoPreviewLayer *)self willChangeValueForKey:@"contentSize"];
   self->_contentSize.width = width;
   self->_contentSize.height = height;
   [(AVSpatialOverCaptureVideoPreviewLayer *)self didChangeValueForKey:@"contentSize"];
   v12.receiver = self;
   v12.super_class = AVSpatialOverCaptureVideoPreviewLayer;
-  [(AVCaptureVideoPreviewLayer *)&v12 didUpdatePreviewImageQueueSlot:v10 imageQueue:a4 rotationDegrees:a5 size:width, height];
+  [(AVCaptureVideoPreviewLayer *)&v12 didUpdatePreviewImageQueueSlot:v10 imageQueue:queue rotationDegrees:degrees size:width, height];
 }
 
-- (void)_handleSpatialNotification:(id)a3 payload:(id)a4
+- (void)_handleSpatialNotification:(id)notification payload:(id)payload
 {
-  if ([objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E698FCD8]), "isEqualToString:", -[AVCaptureVideoPreviewLayer sinkID](self, "sinkID")}])
+  if ([objc_msgSend(payload objectForKeyedSubscript:{*MEMORY[0x1E698FCD8]), "isEqualToString:", -[AVCaptureVideoPreviewLayer sinkID](self, "sinkID")}])
   {
-    if ([a3 isEqualToString:*MEMORY[0x1E698FEA0]])
+    if ([notification isEqualToString:*MEMORY[0x1E698FEA0]])
     {
-      v7 = [objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E698FD58]), "integerValue"}];
+      v7 = [objc_msgSend(payload objectForKeyedSubscript:{*MEMORY[0x1E698FD58]), "integerValue"}];
       if (v7 != [(AVSpatialOverCaptureVideoPreviewLayer *)self overCaptureStatus])
       {
         [(AVSpatialOverCaptureVideoPreviewLayer *)self willChangeValueForKey:@"overCaptureStatus"];

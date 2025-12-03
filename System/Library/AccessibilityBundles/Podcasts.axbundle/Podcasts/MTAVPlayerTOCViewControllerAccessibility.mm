@@ -1,19 +1,19 @@
 @interface MTAVPlayerTOCViewControllerAccessibility
-- (void)configureCell:(id)a3 withObject:(id)a4 atIndexPath:(id)a5;
+- (void)configureCell:(id)cell withObject:(id)object atIndexPath:(id)path;
 @end
 
 @implementation MTAVPlayerTOCViewControllerAccessibility
 
-- (void)configureCell:(id)a3 withObject:(id)a4 atIndexPath:(id)a5
+- (void)configureCell:(id)cell withObject:(id)object atIndexPath:(id)path
 {
   v12.receiver = self;
   v12.super_class = MTAVPlayerTOCViewControllerAccessibility;
-  v7 = a4;
-  v8 = a3;
-  [(MTAVPlayerTOCViewControllerAccessibility *)&v12 configureCell:v8 withObject:v7 atIndexPath:a5];
-  v9 = [v8 safeValueForKey:{@"durationLabel", v12.receiver, v12.super_class}];
+  objectCopy = object;
+  cellCopy = cell;
+  [(MTAVPlayerTOCViewControllerAccessibility *)&v12 configureCell:cellCopy withObject:objectCopy atIndexPath:path];
+  v9 = [cellCopy safeValueForKey:{@"durationLabel", v12.receiver, v12.super_class}];
 
-  v10 = [v7 safeValueForKey:@"duration"];
+  v10 = [objectCopy safeValueForKey:@"duration"];
 
   [v10 doubleValue];
   v11 = AXDurationStringForDuration();

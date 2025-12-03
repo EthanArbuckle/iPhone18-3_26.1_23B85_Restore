@@ -1,11 +1,11 @@
 @interface WFOpenWorkflowActionMigration
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4;
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version;
 - (void)migrateWorkflow;
 @end
 
 @implementation WFOpenWorkflowActionMigration
 
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version
 {
   sub_1CA94C1C8();
   sub_1CA94C3A8();
@@ -16,7 +16,7 @@
 
 - (void)migrateWorkflow
 {
-  v2 = self;
+  selfCopy = self;
   OpenWorkflowActionMigration.migrateWorkflow()();
 }
 

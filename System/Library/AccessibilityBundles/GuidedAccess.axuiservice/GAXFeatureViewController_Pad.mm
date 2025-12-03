@@ -1,122 +1,122 @@
 @interface GAXFeatureViewController_Pad
-- (BOOL)optionsViewController:(id)a3 stateForForFeatureAtIndex:(unint64_t)a4;
-- (BOOL)timeRestrictiosEnabledForAppWithOptionsViewController:(id)a3;
-- (id)optionsViewController:(id)a3 textForFeatureAtIndex:(unint64_t)a4;
-- (int64_t)timeRestrictionDurationForAppWithOptionsViewController:(id)a3;
-- (void)dismissOptionsAnimated:(BOOL)a3;
-- (void)optionsViewController:(id)a3 featureAtIndex:(unint64_t)a4 didChangeState:(BOOL)a5;
-- (void)optionsViewController:(id)a3 timeRestrictionValueDidChange:(int64_t)a4 timeRestrictionsEnabled:(BOOL)a5;
-- (void)presentOptionsAnimated:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (BOOL)optionsViewController:(id)controller stateForForFeatureAtIndex:(unint64_t)index;
+- (BOOL)timeRestrictiosEnabledForAppWithOptionsViewController:(id)controller;
+- (id)optionsViewController:(id)controller textForFeatureAtIndex:(unint64_t)index;
+- (int64_t)timeRestrictionDurationForAppWithOptionsViewController:(id)controller;
+- (void)dismissOptionsAnimated:(BOOL)animated;
+- (void)optionsViewController:(id)controller featureAtIndex:(unint64_t)index didChangeState:(BOOL)state;
+- (void)optionsViewController:(id)controller timeRestrictionValueDidChange:(int64_t)change timeRestrictionsEnabled:(BOOL)enabled;
+- (void)presentOptionsAnimated:(BOOL)animated;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation GAXFeatureViewController_Pad
 
-- (void)dismissOptionsAnimated:(BOOL)a3
+- (void)dismissOptionsAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v4 = [(GAXOptionsViewController *)self->_optionsViewController presentingViewController];
-  [v4 dismissViewControllerAnimated:v3 completion:0];
+  animatedCopy = animated;
+  presentingViewController = [(GAXOptionsViewController *)self->_optionsViewController presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:animatedCopy completion:0];
 }
 
-- (void)presentOptionsAnimated:(BOOL)a3
+- (void)presentOptionsAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v5 = +[GAXOptionsViewController optionsViewController];
   optionsViewController = self->_optionsViewController;
   self->_optionsViewController = v5;
 
   [(GAXOptionsViewController *)self->_optionsViewController setDataSource:self];
   [(GAXOptionsViewController *)self->_optionsViewController setDelegate:self];
-  v7 = [(GAXFeatureViewController *)self styleProvider];
-  [(GAXOptionsViewController *)self->_optionsViewController setStyleProvider:v7];
+  styleProvider = [(GAXFeatureViewController *)self styleProvider];
+  [(GAXOptionsViewController *)self->_optionsViewController setStyleProvider:styleProvider];
 
   v8 = self->_optionsViewController;
-  v9 = [(GAXFeatureViewController *)self userInterfaceServer];
-  v10 = [v9 appTimeRestrictionsEnabled];
-  v11 = [(GAXFeatureViewController *)self userInterfaceServer];
-  -[GAXOptionsViewController setTimeRestrictionsEnabled:currentDurationInMinutes:animated:](v8, "setTimeRestrictionsEnabled:currentDurationInMinutes:animated:", v10, [v11 appTimeRestrictionDurationInMinutes], 0);
+  userInterfaceServer = [(GAXFeatureViewController *)self userInterfaceServer];
+  appTimeRestrictionsEnabled = [userInterfaceServer appTimeRestrictionsEnabled];
+  userInterfaceServer2 = [(GAXFeatureViewController *)self userInterfaceServer];
+  -[GAXOptionsViewController setTimeRestrictionsEnabled:currentDurationInMinutes:animated:](v8, "setTimeRestrictionsEnabled:currentDurationInMinutes:animated:", appTimeRestrictionsEnabled, [userInterfaceServer2 appTimeRestrictionDurationInMinutes], 0);
 
   [(GAXOptionsViewController *)self->_optionsViewController initialPreferredContentSize];
   [(GAXOptionsViewController *)self->_optionsViewController setPreferredContentSize:?];
-  v23 = [(GAXFeatureViewController *)self _viewForPresentingOverlayUserInterface];
-  v12 = [(GAXFeatureViewController *)self optionsButton];
-  v13 = [(GAXFeatureViewController *)self optionsButton];
-  [v13 bounds];
-  [v12 convertRect:v23 toView:?];
+  _viewForPresentingOverlayUserInterface = [(GAXFeatureViewController *)self _viewForPresentingOverlayUserInterface];
+  optionsButton = [(GAXFeatureViewController *)self optionsButton];
+  optionsButton2 = [(GAXFeatureViewController *)self optionsButton];
+  [optionsButton2 bounds];
+  [optionsButton convertRect:_viewForPresentingOverlayUserInterface toView:?];
   v15 = v14;
   v17 = v16;
   v19 = v18;
   v21 = v20;
 
   [(GAXOptionsViewController *)self->_optionsViewController setModalPresentationStyle:7];
-  v22 = [(GAXOptionsViewController *)self->_optionsViewController popoverPresentationController];
-  [v22 setSourceView:v23];
-  [v22 setSourceRect:{v15, v17, v19, v21}];
-  [v22 setPermittedArrowDirections:2];
-  [(GAXFeatureViewController_Pad *)self presentViewController:self->_optionsViewController animated:v3 completion:0];
+  popoverPresentationController = [(GAXOptionsViewController *)self->_optionsViewController popoverPresentationController];
+  [popoverPresentationController setSourceView:_viewForPresentingOverlayUserInterface];
+  [popoverPresentationController setSourceRect:{v15, v17, v19, v21}];
+  [popoverPresentationController setPermittedArrowDirections:2];
+  [(GAXFeatureViewController_Pad *)self presentViewController:self->_optionsViewController animated:animatedCopy completion:0];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   v5.receiver = self;
   v5.super_class = GAXFeatureViewController_Pad;
-  [(GAXFeatureViewController_Pad *)&v5 viewWillTransitionToSize:a4 withTransitionCoordinator:a3.width, a3.height];
+  [(GAXFeatureViewController_Pad *)&v5 viewWillTransitionToSize:coordinator withTransitionCoordinator:size.width, size.height];
   [(GAXFeatureViewController_Pad *)self dismissOptionsAnimated:1];
 }
 
-- (id)optionsViewController:(id)a3 textForFeatureAtIndex:(unint64_t)a4
+- (id)optionsViewController:(id)controller textForFeatureAtIndex:(unint64_t)index
 {
-  v6 = [(GAXFeatureViewController *)self hardwareFeatureViewsParameters];
-  v7 = [v6 count];
+  hardwareFeatureViewsParameters = [(GAXFeatureViewController *)self hardwareFeatureViewsParameters];
+  v7 = [hardwareFeatureViewsParameters count];
 
-  v8 = [(GAXFeatureViewController *)self hardwareFeatureViewsParameters];
-  v9 = v8;
-  if (v7 > a4)
+  hardwareFeatureViewsParameters2 = [(GAXFeatureViewController *)self hardwareFeatureViewsParameters];
+  v9 = hardwareFeatureViewsParameters2;
+  if (v7 > index)
   {
-    v10 = [v8 objectAtIndexedSubscript:a4];
-    v11 = [v10 objectForKeyedSubscript:@"GAXFeatureViewLocalizedTextKey"];
+    userInterfaceServer3 = [hardwareFeatureViewsParameters2 objectAtIndexedSubscript:index];
+    v11 = [userInterfaceServer3 objectForKeyedSubscript:@"GAXFeatureViewLocalizedTextKey"];
     v12 = GAXLocString(v11);
 
 LABEL_3:
     goto LABEL_9;
   }
 
-  v13 = a4 - [v8 count];
+  v13 = index - [hardwareFeatureViewsParameters2 count];
 
-  v14 = [(GAXFeatureViewController *)self systemFeatureViewsParameters];
-  v15 = [v14 count];
+  systemFeatureViewsParameters = [(GAXFeatureViewController *)self systemFeatureViewsParameters];
+  v15 = [systemFeatureViewsParameters count];
 
-  v16 = [(GAXFeatureViewController *)self systemFeatureViewsParameters];
-  v17 = v16;
+  systemFeatureViewsParameters2 = [(GAXFeatureViewController *)self systemFeatureViewsParameters];
+  v17 = systemFeatureViewsParameters2;
   if (v13 >= v15)
   {
-    v20 = v13 - [v16 count];
+    v20 = v13 - [systemFeatureViewsParameters2 count];
 
-    v21 = [(GAXFeatureViewController *)self userInterfaceServer];
-    v22 = [v21 appRestrictionIdentifiers];
-    v23 = [v22 count];
+    userInterfaceServer = [(GAXFeatureViewController *)self userInterfaceServer];
+    appRestrictionIdentifiers = [userInterfaceServer appRestrictionIdentifiers];
+    v23 = [appRestrictionIdentifiers count];
 
-    v24 = [(GAXFeatureViewController *)self userInterfaceServer];
-    v25 = [v24 appRestrictionIdentifiers];
-    v26 = v25;
+    userInterfaceServer2 = [(GAXFeatureViewController *)self userInterfaceServer];
+    appRestrictionIdentifiers2 = [userInterfaceServer2 appRestrictionIdentifiers];
+    v26 = appRestrictionIdentifiers2;
     if (v20 < v23)
     {
-      v9 = [v25 objectAtIndexedSubscript:v20];
+      v9 = [appRestrictionIdentifiers2 objectAtIndexedSubscript:v20];
 
-      v10 = [(GAXFeatureViewController *)self userInterfaceServer];
-      v12 = [v10 textForAppRestrictionWithIdentifier:v9];
+      userInterfaceServer3 = [(GAXFeatureViewController *)self userInterfaceServer];
+      v12 = [userInterfaceServer3 textForAppRestrictionWithIdentifier:v9];
       goto LABEL_3;
     }
 
-    [v25 count];
+    [appRestrictionIdentifiers2 count];
 
     v12 = GAXLocString(@"TIME_RESTRICTION_FEATURE");
   }
 
   else
   {
-    v18 = [v16 objectAtIndexedSubscript:v13];
+    v18 = [systemFeatureViewsParameters2 objectAtIndexedSubscript:v13];
     v19 = [v18 objectForKeyedSubscript:@"GAXFeatureViewLocalizedTextKey"];
     v12 = GAXLocString(v19);
   }
@@ -126,170 +126,170 @@ LABEL_9:
   return v12;
 }
 
-- (BOOL)optionsViewController:(id)a3 stateForForFeatureAtIndex:(unint64_t)a4
+- (BOOL)optionsViewController:(id)controller stateForForFeatureAtIndex:(unint64_t)index
 {
-  v6 = [(GAXFeatureViewController *)self hardwareFeatureViewsParameters];
-  v7 = [v6 count];
+  hardwareFeatureViewsParameters = [(GAXFeatureViewController *)self hardwareFeatureViewsParameters];
+  v7 = [hardwareFeatureViewsParameters count];
 
-  if (v7 > a4)
+  if (v7 > index)
   {
-    v8 = [(GAXFeatureViewController *)self userInterfaceServer];
-    v9 = [(GAXFeatureViewController *)self hardwareFeatureViewsParameters];
+    userInterfaceServer = [(GAXFeatureViewController *)self userInterfaceServer];
+    hardwareFeatureViewsParameters2 = [(GAXFeatureViewController *)self hardwareFeatureViewsParameters];
 LABEL_5:
-    v13 = v9;
-    v14 = [v9 objectAtIndexedSubscript:a4];
+    userInterfaceServer4 = hardwareFeatureViewsParameters2;
+    v14 = [hardwareFeatureViewsParameters2 objectAtIndexedSubscript:index];
     v15 = [v14 objectForKeyedSubscript:@"GAXFeatureViewIdentifierKey"];
-    v16 = [v8 isFeatureEnabledForIdentifier:v15];
+    appTimeRestrictionsEnabled = [userInterfaceServer isFeatureEnabledForIdentifier:v15];
 
     goto LABEL_6;
   }
 
-  v10 = [(GAXFeatureViewController *)self hardwareFeatureViewsParameters];
-  a4 -= [v10 count];
+  hardwareFeatureViewsParameters3 = [(GAXFeatureViewController *)self hardwareFeatureViewsParameters];
+  index -= [hardwareFeatureViewsParameters3 count];
 
-  v11 = [(GAXFeatureViewController *)self systemFeatureViewsParameters];
-  v12 = [v11 count];
+  systemFeatureViewsParameters = [(GAXFeatureViewController *)self systemFeatureViewsParameters];
+  v12 = [systemFeatureViewsParameters count];
 
-  if (a4 < v12)
+  if (index < v12)
   {
-    v8 = [(GAXFeatureViewController *)self userInterfaceServer];
-    v9 = [(GAXFeatureViewController *)self systemFeatureViewsParameters];
+    userInterfaceServer = [(GAXFeatureViewController *)self userInterfaceServer];
+    hardwareFeatureViewsParameters2 = [(GAXFeatureViewController *)self systemFeatureViewsParameters];
     goto LABEL_5;
   }
 
-  v18 = [(GAXFeatureViewController *)self systemFeatureViewsParameters];
-  v19 = a4 - [v18 count];
+  systemFeatureViewsParameters2 = [(GAXFeatureViewController *)self systemFeatureViewsParameters];
+  v19 = index - [systemFeatureViewsParameters2 count];
 
-  v20 = [(GAXFeatureViewController *)self userInterfaceServer];
-  v21 = [v20 appRestrictionIdentifiers];
-  v22 = [v21 count];
+  userInterfaceServer2 = [(GAXFeatureViewController *)self userInterfaceServer];
+  appRestrictionIdentifiers = [userInterfaceServer2 appRestrictionIdentifiers];
+  v22 = [appRestrictionIdentifiers count];
 
-  v23 = [(GAXFeatureViewController *)self userInterfaceServer];
-  v8 = v23;
+  userInterfaceServer3 = [(GAXFeatureViewController *)self userInterfaceServer];
+  userInterfaceServer = userInterfaceServer3;
   if (v19 >= v22)
   {
-    v26 = [v23 appRestrictionIdentifiers];
-    [v26 count];
+    appRestrictionIdentifiers2 = [userInterfaceServer3 appRestrictionIdentifiers];
+    [appRestrictionIdentifiers2 count];
 
-    v8 = [(GAXFeatureViewController *)self userInterfaceServer];
-    v16 = [v8 appTimeRestrictionsEnabled];
+    userInterfaceServer = [(GAXFeatureViewController *)self userInterfaceServer];
+    appTimeRestrictionsEnabled = [userInterfaceServer appTimeRestrictionsEnabled];
     goto LABEL_7;
   }
 
-  v13 = [(GAXFeatureViewController *)self userInterfaceServer];
-  v24 = [v13 appRestrictionIdentifiers];
-  v25 = [v24 objectAtIndexedSubscript:v19];
-  v16 = [v8 appRestrictionStateForIdentifier:v25] == 0;
+  userInterfaceServer4 = [(GAXFeatureViewController *)self userInterfaceServer];
+  appRestrictionIdentifiers3 = [userInterfaceServer4 appRestrictionIdentifiers];
+  v25 = [appRestrictionIdentifiers3 objectAtIndexedSubscript:v19];
+  appTimeRestrictionsEnabled = [userInterfaceServer appRestrictionStateForIdentifier:v25] == 0;
 
 LABEL_6:
 LABEL_7:
 
-  return v16;
+  return appTimeRestrictionsEnabled;
 }
 
-- (int64_t)timeRestrictionDurationForAppWithOptionsViewController:(id)a3
+- (int64_t)timeRestrictionDurationForAppWithOptionsViewController:(id)controller
 {
-  v3 = [(GAXFeatureViewController *)self userInterfaceServer];
-  v4 = [v3 appTimeRestrictionDurationInMinutes];
+  userInterfaceServer = [(GAXFeatureViewController *)self userInterfaceServer];
+  appTimeRestrictionDurationInMinutes = [userInterfaceServer appTimeRestrictionDurationInMinutes];
 
-  return v4;
+  return appTimeRestrictionDurationInMinutes;
 }
 
-- (BOOL)timeRestrictiosEnabledForAppWithOptionsViewController:(id)a3
+- (BOOL)timeRestrictiosEnabledForAppWithOptionsViewController:(id)controller
 {
-  v3 = [(GAXFeatureViewController *)self userInterfaceServer];
-  v4 = [v3 appTimeRestrictionsEnabled];
+  userInterfaceServer = [(GAXFeatureViewController *)self userInterfaceServer];
+  appTimeRestrictionsEnabled = [userInterfaceServer appTimeRestrictionsEnabled];
 
-  return v4;
+  return appTimeRestrictionsEnabled;
 }
 
-- (void)optionsViewController:(id)a3 featureAtIndex:(unint64_t)a4 didChangeState:(BOOL)a5
+- (void)optionsViewController:(id)controller featureAtIndex:(unint64_t)index didChangeState:(BOOL)state
 {
-  v5 = a5;
-  v8 = [(GAXFeatureViewController *)self hardwareFeatureViewsParameters];
-  v9 = [v8 count];
+  stateCopy = state;
+  hardwareFeatureViewsParameters = [(GAXFeatureViewController *)self hardwareFeatureViewsParameters];
+  v9 = [hardwareFeatureViewsParameters count];
 
-  if (v9 > a4)
+  if (v9 > index)
   {
-    v50 = [(GAXFeatureViewController *)self userInterfaceServer];
-    v10 = [(GAXFeatureViewController *)self hardwareFeatureViewsParameters];
-    v11 = [v10 objectAtIndexedSubscript:a4];
+    userInterfaceServer = [(GAXFeatureViewController *)self userInterfaceServer];
+    hardwareFeatureViewsParameters2 = [(GAXFeatureViewController *)self hardwareFeatureViewsParameters];
+    v11 = [hardwareFeatureViewsParameters2 objectAtIndexedSubscript:index];
     v12 = [v11 objectForKeyedSubscript:@"GAXFeatureViewIdentifierKey"];
-    [v50 setFeatureEnabled:v5 withIdentifier:v12];
+    [userInterfaceServer setFeatureEnabled:stateCopy withIdentifier:v12];
 
 LABEL_3:
 
     return;
   }
 
-  v13 = [(GAXFeatureViewController *)self hardwareFeatureViewsParameters];
-  v14 = a4 - [v13 count];
+  hardwareFeatureViewsParameters3 = [(GAXFeatureViewController *)self hardwareFeatureViewsParameters];
+  v14 = index - [hardwareFeatureViewsParameters3 count];
 
-  v15 = [(GAXFeatureViewController *)self systemFeatureViewsParameters];
-  v16 = [v15 count];
+  systemFeatureViewsParameters = [(GAXFeatureViewController *)self systemFeatureViewsParameters];
+  v16 = [systemFeatureViewsParameters count];
 
-  v17 = [(GAXFeatureViewController *)self systemFeatureViewsParameters];
-  v18 = v17;
+  systemFeatureViewsParameters2 = [(GAXFeatureViewController *)self systemFeatureViewsParameters];
+  v18 = systemFeatureViewsParameters2;
   if (v14 >= v16)
   {
-    v24 = v14 - [v17 count];
+    v24 = v14 - [systemFeatureViewsParameters2 count];
 
-    v25 = [(GAXFeatureViewController *)self userInterfaceServer];
-    v26 = [v25 appRestrictionIdentifiers];
-    v27 = [v26 count];
+    userInterfaceServer2 = [(GAXFeatureViewController *)self userInterfaceServer];
+    appRestrictionIdentifiers = [userInterfaceServer2 appRestrictionIdentifiers];
+    v27 = [appRestrictionIdentifiers count];
 
-    v28 = [(GAXFeatureViewController *)self userInterfaceServer];
-    v50 = v28;
+    userInterfaceServer3 = [(GAXFeatureViewController *)self userInterfaceServer];
+    userInterfaceServer = userInterfaceServer3;
     if (v24 < v27)
     {
-      v10 = [(GAXFeatureViewController *)self userInterfaceServer];
-      v29 = [v10 appRestrictionIdentifiers];
-      v30 = [v29 objectAtIndexedSubscript:v24];
-      [v50 setAppRestrictionState:v5 ^ 1 withIdentifier:v30];
+      hardwareFeatureViewsParameters2 = [(GAXFeatureViewController *)self userInterfaceServer];
+      appRestrictionIdentifiers2 = [hardwareFeatureViewsParameters2 appRestrictionIdentifiers];
+      v30 = [appRestrictionIdentifiers2 objectAtIndexedSubscript:v24];
+      [userInterfaceServer setAppRestrictionState:stateCopy ^ 1 withIdentifier:v30];
 
       goto LABEL_3;
     }
 
-    v31 = [v28 appRestrictionIdentifiers];
-    [v31 count];
+    appRestrictionIdentifiers3 = [userInterfaceServer3 appRestrictionIdentifiers];
+    [appRestrictionIdentifiers3 count];
 
-    v32 = [(GAXFeatureViewController *)self userInterfaceServer];
-    v33 = [v32 appTimeRestrictionDurationInMinutes];
+    userInterfaceServer4 = [(GAXFeatureViewController *)self userInterfaceServer];
+    appTimeRestrictionDurationInMinutes = [userInterfaceServer4 appTimeRestrictionDurationInMinutes];
 
-    if (v33 <= 1)
+    if (appTimeRestrictionDurationInMinutes <= 1)
     {
       v34 = 1;
     }
 
     else
     {
-      v34 = v33;
+      v34 = appTimeRestrictionDurationInMinutes;
     }
 
-    if (v5)
+    if (stateCopy)
     {
       v35 = v34;
     }
 
     else
     {
-      v35 = v33;
+      v35 = appTimeRestrictionDurationInMinutes;
     }
 
-    [(GAXOptionsViewController *)self->_optionsViewController setTimeRestrictionsEnabled:v5 currentDurationInMinutes:v35 animated:1];
-    v36 = [(GAXFeatureViewController *)self userInterfaceServer];
-    [v36 updateTimeRestrictionWithDuration:v35 enabled:v5];
+    [(GAXOptionsViewController *)self->_optionsViewController setTimeRestrictionsEnabled:stateCopy currentDurationInMinutes:v35 animated:1];
+    userInterfaceServer5 = [(GAXFeatureViewController *)self userInterfaceServer];
+    [userInterfaceServer5 updateTimeRestrictionWithDuration:v35 enabled:stateCopy];
 
-    v37 = [(GAXOptionsViewController *)self->_optionsViewController view];
-    v38 = [(GAXOptionsViewController *)self->_optionsViewController view];
-    [v38 bounds];
+    view = [(GAXOptionsViewController *)self->_optionsViewController view];
+    view2 = [(GAXOptionsViewController *)self->_optionsViewController view];
+    [view2 bounds];
     v40 = v39;
     LODWORD(v39) = 1148846080;
-    [v37 systemLayoutSizeFittingSize:v40 withHorizontalFittingPriority:1000.0 verticalFittingPriority:{v39, 0.0}];
+    [view systemLayoutSizeFittingSize:v40 withHorizontalFittingPriority:1000.0 verticalFittingPriority:{v39, 0.0}];
     v42 = v41;
 
-    v43 = [(GAXFeatureViewController *)self _viewForPresentingOverlayUserInterface];
-    [v43 bounds];
+    _viewForPresentingOverlayUserInterface = [(GAXFeatureViewController *)self _viewForPresentingOverlayUserInterface];
+    [_viewForPresentingOverlayUserInterface bounds];
     v45 = v44;
 
     if (v42 >= v45)
@@ -297,8 +297,8 @@ LABEL_3:
       v42 = v45;
     }
 
-    v46 = [(GAXOptionsViewController *)self->_optionsViewController view];
-    [v46 bounds];
+    view3 = [(GAXOptionsViewController *)self->_optionsViewController view];
+    [view3 bounds];
     v48 = v47;
 
     optionsViewController = self->_optionsViewController;
@@ -308,38 +308,38 @@ LABEL_3:
 
   else
   {
-    v19 = [v17 objectAtIndexedSubscript:v14];
+    v19 = [systemFeatureViewsParameters2 objectAtIndexedSubscript:v14];
     v20 = [v19 objectForKeyedSubscript:@"GAXFeatureViewIdentifierKey"];
 
     if ([v20 isEqualToString:@"GAXProfileAllowsTouch"])
     {
-      v21 = [(GAXFeatureViewController *)self delegate];
+      delegate = [(GAXFeatureViewController *)self delegate];
       if (objc_opt_respondsToSelector())
       {
-        [v21 featureViewController:self touchSystemFeatureDidChange:v5];
+        [delegate featureViewController:self touchSystemFeatureDidChange:stateCopy];
       }
 
-      v22 = [(GAXFeatureViewController *)self styleProvider];
-      [v22 defaultAnimationDuration];
+      styleProvider = [(GAXFeatureViewController *)self styleProvider];
+      [styleProvider defaultAnimationDuration];
       v51[0] = _NSConcreteStackBlock;
       v51[1] = 3221225472;
       v51[2] = sub_25194;
       v51[3] = &unk_5DB80;
       v51[4] = self;
-      v52 = v5;
+      v52 = stateCopy;
       [UIView animateWithDuration:v51 animations:?];
     }
 
-    v23 = [(GAXFeatureViewController *)self userInterfaceServer];
-    [v23 setFeatureEnabled:v5 withIdentifier:v20];
+    userInterfaceServer6 = [(GAXFeatureViewController *)self userInterfaceServer];
+    [userInterfaceServer6 setFeatureEnabled:stateCopy withIdentifier:v20];
   }
 }
 
-- (void)optionsViewController:(id)a3 timeRestrictionValueDidChange:(int64_t)a4 timeRestrictionsEnabled:(BOOL)a5
+- (void)optionsViewController:(id)controller timeRestrictionValueDidChange:(int64_t)change timeRestrictionsEnabled:(BOOL)enabled
 {
-  v5 = a5;
-  v7 = [(GAXFeatureViewController *)self userInterfaceServer];
-  [v7 updateTimeRestrictionWithDuration:a4 enabled:v5];
+  enabledCopy = enabled;
+  userInterfaceServer = [(GAXFeatureViewController *)self userInterfaceServer];
+  [userInterfaceServer updateTimeRestrictionWithDuration:change enabled:enabledCopy];
 }
 
 @end

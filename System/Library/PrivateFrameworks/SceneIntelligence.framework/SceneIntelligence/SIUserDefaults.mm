@@ -1,26 +1,26 @@
 @interface SIUserDefaults
-+ (BOOL)BOOLForKey:(id)a3;
++ (BOOL)BOOLForKey:(id)key;
 + (BOOL)shouldUseCache;
-+ (double)doubleForKey:(id)a3;
-+ (float)floatForKey:(id)a3;
-+ (id)_numberForObject:(id)a3;
-+ (id)cachedObjectForKey:(id)a3;
++ (double)doubleForKey:(id)key;
++ (float)floatForKey:(id)key;
++ (id)_numberForObject:(id)object;
++ (id)cachedObjectForKey:(id)key;
 + (id)defaultValues;
-+ (id)listForKey:(id)a3;
-+ (id)numberForKey:(id)a3;
-+ (id)objectForKey:(id)a3;
-+ (id)objectForKey:(id)a3 useCache:(BOOL)a4;
-+ (id)objectForKeySlow:(id)a3;
-+ (id)resolutionDictionaryForKey:(id)a3;
-+ (id)stringForKey:(id)a3;
++ (id)listForKey:(id)key;
++ (id)numberForKey:(id)key;
++ (id)objectForKey:(id)key;
++ (id)objectForKey:(id)key useCache:(BOOL)cache;
++ (id)objectForKeySlow:(id)slow;
++ (id)resolutionDictionaryForKey:(id)key;
++ (id)stringForKey:(id)key;
 + (id)userDefaultsCache;
-+ (int64_t)integerForKey:(id)a3;
-+ (void)cacheObject:(id)a3 forKey:(id)a4;
++ (int64_t)integerForKey:(id)key;
++ (void)cacheObject:(id)object forKey:(id)key;
 + (void)clearUserDefaultsCache;
 + (void)removeAllKeys;
-+ (void)removeCachedObjectForKey:(id)a3;
-+ (void)removeObjectForKey:(id)a3;
-+ (void)setObject:(id)a3 forKey:(id)a4;
++ (void)removeCachedObjectForKey:(id)key;
++ (void)removeObjectForKey:(id)key;
++ (void)setObject:(id)object forKey:(id)key;
 + (void)synchronize;
 @end
 
@@ -92,43 +92,43 @@ uint64_t __32__SIUserDefaults_shouldUseCache__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)cachedObjectForKey:(id)a3
++ (id)cachedObjectForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = +[SIUserDefaults userDefaultsCache];
   os_unfair_lock_lock(&gDefaultsCacheLock);
-  v5 = [v4 objectForKeyedSubscript:v3];
+  v5 = [v4 objectForKeyedSubscript:keyCopy];
 
   os_unfair_lock_unlock(&gDefaultsCacheLock);
 
   return v5;
 }
 
-+ (void)removeCachedObjectForKey:(id)a3
++ (void)removeCachedObjectForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = +[SIUserDefaults userDefaultsCache];
   os_unfair_lock_lock(&gDefaultsCacheLock);
-  [v4 removeObjectForKey:v3];
+  [v4 removeObjectForKey:keyCopy];
 
   os_unfair_lock_unlock(&gDefaultsCacheLock);
 }
 
-+ (void)cacheObject:(id)a3 forKey:(id)a4
++ (void)cacheObject:(id)object forKey:(id)key
 {
-  v8 = a3;
-  v5 = a4;
+  objectCopy = object;
+  keyCopy = key;
   v6 = +[SIUserDefaults userDefaultsCache];
   os_unfair_lock_lock(&gDefaultsCacheLock);
-  if (v8)
+  if (objectCopy)
   {
-    [v6 setObject:v8 forKeyedSubscript:v5];
+    [v6 setObject:objectCopy forKeyedSubscript:keyCopy];
   }
 
   else
   {
-    v7 = [MEMORY[0x277CBEB68] null];
-    [v6 setObject:v7 forKeyedSubscript:v5];
+    null = [MEMORY[0x277CBEB68] null];
+    [v6 setObject:null forKeyedSubscript:keyCopy];
   }
 
   os_unfair_lock_unlock(&gDefaultsCacheLock);
@@ -150,8 +150,8 @@ uint64_t __32__SIUserDefaults_shouldUseCache__block_invoke()
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [MEMORY[0x277CBEBD0] appleGlobalDomainSIKeys];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  appleGlobalDomainSIKeys = [MEMORY[0x277CBEBD0] appleGlobalDomainSIKeys];
+  v3 = [appleGlobalDomainSIKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -163,18 +163,18 @@ uint64_t __32__SIUserDefaults_shouldUseCache__block_invoke()
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(appleGlobalDomainSIKeys);
         }
 
         v7 = *(*(&v10 + 1) + 8 * v6);
-        v8 = [MEMORY[0x277CBEBD0] appleGlobalDomain];
-        [v8 removeObjectForKey:v7];
+        appleGlobalDomain = [MEMORY[0x277CBEBD0] appleGlobalDomain];
+        [appleGlobalDomain removeObjectForKey:v7];
 
         ++v6;
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [appleGlobalDomainSIKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v4);
@@ -183,38 +183,38 @@ uint64_t __32__SIUserDefaults_shouldUseCache__block_invoke()
   v9 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)removeObjectForKey:(id)a3
++ (void)removeObjectForKey:(id)key
 {
-  v3 = a3;
-  [SIUserDefaults removeCachedObjectForKey:v3];
-  v4 = [MEMORY[0x277CBEBD0] appleGlobalDomain];
-  [v4 removeObjectForKey:v3];
+  keyCopy = key;
+  [SIUserDefaults removeCachedObjectForKey:keyCopy];
+  appleGlobalDomain = [MEMORY[0x277CBEBD0] appleGlobalDomain];
+  [appleGlobalDomain removeObjectForKey:keyCopy];
 }
 
-+ (id)objectForKeySlow:(id)a3
++ (id)objectForKeySlow:(id)slow
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEBD0] appleGlobalDomain];
-  v6 = [v5 objectForKey:v4];
+  slowCopy = slow;
+  appleGlobalDomain = [MEMORY[0x277CBEBD0] appleGlobalDomain];
+  v6 = [appleGlobalDomain objectForKey:slowCopy];
 
   if (!v6)
   {
-    v7 = [a1 defaultValues];
-    v6 = [v7 objectForKeyedSubscript:v4];
+    defaultValues = [self defaultValues];
+    v6 = [defaultValues objectForKeyedSubscript:slowCopy];
   }
 
   return v6;
 }
 
-+ (id)objectForKey:(id)a3
++ (id)objectForKey:(id)key
 {
-  v3 = a3;
-  if ([objc_opt_class() shouldUseCache] && (+[SIUserDefaults cachedObjectForKey:](SIUserDefaults, "cachedObjectForKey:", v3), (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+  keyCopy = key;
+  if ([objc_opt_class() shouldUseCache] && (+[SIUserDefaults cachedObjectForKey:](SIUserDefaults, "cachedObjectForKey:", keyCopy), (v4 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v5 = v4;
-    v6 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
 
-    if (v5 == v6)
+    if (v5 == null)
     {
       v7 = 0;
     }
@@ -228,74 +228,74 @@ uint64_t __32__SIUserDefaults_shouldUseCache__block_invoke()
 
   else
   {
-    v7 = [SIUserDefaults objectForKeySlow:v3];
-    [SIUserDefaults cacheObject:v7 forKey:v3];
+    v7 = [SIUserDefaults objectForKeySlow:keyCopy];
+    [SIUserDefaults cacheObject:v7 forKey:keyCopy];
     v5 = 0;
   }
 
   return v7;
 }
 
-+ (id)objectForKey:(id)a3 useCache:(BOOL)a4
++ (id)objectForKey:(id)key useCache:(BOOL)cache
 {
-  v4 = a4;
-  v5 = a3;
+  cacheCopy = cache;
+  keyCopy = key;
   v6 = objc_opt_class();
-  if (v4)
+  if (cacheCopy)
   {
-    [v6 objectForKey:v5];
+    [v6 objectForKey:keyCopy];
   }
 
   else
   {
-    [v6 objectForKeySlow:v5];
+    [v6 objectForKeySlow:keyCopy];
   }
   v7 = ;
 
   return v7;
 }
 
-+ (void)setObject:(id)a3 forKey:(id)a4
++ (void)setObject:(id)object forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  [SIUserDefaults removeCachedObjectForKey:v6];
-  [a1 cacheObject:v7 forKey:v6];
-  v8 = [MEMORY[0x277CBEBD0] appleGlobalDomain];
-  [v8 setObject:v7 forKey:v6];
+  keyCopy = key;
+  objectCopy = object;
+  [SIUserDefaults removeCachedObjectForKey:keyCopy];
+  [self cacheObject:objectCopy forKey:keyCopy];
+  appleGlobalDomain = [MEMORY[0x277CBEBD0] appleGlobalDomain];
+  [appleGlobalDomain setObject:objectCopy forKey:keyCopy];
 }
 
-+ (BOOL)BOOLForKey:(id)a3
++ (BOOL)BOOLForKey:(id)key
 {
-  v3 = [SIUserDefaults objectForKey:a3];
+  v3 = [SIUserDefaults objectForKey:key];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-+ (id)stringForKey:(id)a3
++ (id)stringForKey:(id)key
 {
-  v3 = [SIUserDefaults objectForKey:a3];
+  v3 = [SIUserDefaults objectForKey:key];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    stringValue = v3;
 LABEL_5:
-    v5 = v4;
+    v5 = stringValue;
     goto LABEL_7;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 stringValue];
+    stringValue = [v3 stringValue];
     goto LABEL_5;
   }
 
@@ -305,21 +305,21 @@ LABEL_7:
   return v5;
 }
 
-+ (id)numberForKey:(id)a3
++ (id)numberForKey:(id)key
 {
-  v3 = [SIUserDefaults objectForKey:a3];
+  v3 = [SIUserDefaults objectForKey:key];
   v4 = [SIUserDefaults _numberForObject:v3];
 
   return v4;
 }
 
-+ (id)_numberForObject:(id)a3
++ (id)_numberForObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = objectCopy;
   }
 
   else
@@ -328,18 +328,18 @@ LABEL_7:
     if (objc_opt_isKindOfClass())
     {
       v5 = MEMORY[0x277CCAB50];
-      v6 = v3;
-      v7 = [v5 decimalDigitCharacterSet];
-      [v7 addCharactersInString:@"-."];
-      v8 = [v7 invertedSet];
-      v9 = [v6 componentsSeparatedByCharactersInSet:v8];
+      v6 = objectCopy;
+      decimalDigitCharacterSet = [v5 decimalDigitCharacterSet];
+      [decimalDigitCharacterSet addCharactersInString:@"-."];
+      invertedSet = [decimalDigitCharacterSet invertedSet];
+      v9 = [v6 componentsSeparatedByCharactersInSet:invertedSet];
 
-      v10 = [v9 firstObject];
+      firstObject = [v9 firstObject];
 
       v11 = objc_alloc_init(MEMORY[0x277CCABB8]);
       [v11 setDecimalSeparator:@"."];
       [v11 setNumberStyle:1];
-      v4 = [v11 numberFromString:v10];
+      v4 = [v11 numberFromString:firstObject];
     }
 
     else
@@ -351,35 +351,35 @@ LABEL_7:
   return v4;
 }
 
-+ (int64_t)integerForKey:(id)a3
++ (int64_t)integerForKey:(id)key
 {
-  v3 = [SIUserDefaults numberForKey:a3];
-  v4 = [v3 integerValue];
+  v3 = [SIUserDefaults numberForKey:key];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
-+ (float)floatForKey:(id)a3
++ (float)floatForKey:(id)key
 {
-  v3 = [SIUserDefaults numberForKey:a3];
+  v3 = [SIUserDefaults numberForKey:key];
   [v3 floatValue];
   v5 = v4;
 
   return v5;
 }
 
-+ (double)doubleForKey:(id)a3
++ (double)doubleForKey:(id)key
 {
-  v3 = [SIUserDefaults numberForKey:a3];
+  v3 = [SIUserDefaults numberForKey:key];
   [v3 doubleValue];
   v5 = v4;
 
   return v5;
 }
 
-+ (id)listForKey:(id)a3
++ (id)listForKey:(id)key
 {
-  v3 = [SIUserDefaults objectForKey:a3];
+  v3 = [SIUserDefaults objectForKey:key];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -394,10 +394,10 @@ LABEL_7:
   return v4;
 }
 
-+ (id)resolutionDictionaryForKey:(id)a3
++ (id)resolutionDictionaryForKey:(id)key
 {
   v20[2] = *MEMORY[0x277D85DE8];
-  v3 = [SIUserDefaults objectForKey:a3];
+  v3 = [SIUserDefaults objectForKey:key];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -459,8 +459,8 @@ LABEL_10:
 
 + (void)synchronize
 {
-  v2 = [MEMORY[0x277CBEBD0] appleGlobalDomain];
-  [v2 synchronize];
+  appleGlobalDomain = [MEMORY[0x277CBEBD0] appleGlobalDomain];
+  [appleGlobalDomain synchronize];
 }
 
 @end

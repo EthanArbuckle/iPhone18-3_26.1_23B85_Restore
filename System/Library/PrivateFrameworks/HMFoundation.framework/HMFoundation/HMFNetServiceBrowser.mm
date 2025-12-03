@@ -4,24 +4,24 @@
 - (BOOL)isBrowsing;
 - (BOOL)shouldCache;
 - (HMFNetServiceBrowser)init;
-- (HMFNetServiceBrowser)initWithDomain:(id)a3 serviceType:(id)a4;
+- (HMFNetServiceBrowser)initWithDomain:(id)domain serviceType:(id)type;
 - (HMFNetServiceBrowserDelegate)delegate;
 - (NSArray)cachedNetServices;
-- (id)descriptionWithPointer:(BOOL)a3;
+- (id)descriptionWithPointer:(BOOL)pointer;
 - (id)logIdentifier;
 - (id)shortDescription;
-- (void)_stopBrowsingWithError:(id)a3;
-- (void)addNetServiceToCache:(id)a3;
+- (void)_stopBrowsingWithError:(id)error;
+- (void)addNetServiceToCache:(id)cache;
 - (void)dealloc;
-- (void)netServiceBrowser:(id)a3 didFindService:(id)a4 moreComing:(BOOL)a5;
-- (void)netServiceBrowser:(id)a3 didNotSearch:(id)a4;
-- (void)netServiceBrowser:(id)a3 didRemoveDomain:(id)a4 moreComing:(BOOL)a5;
-- (void)netServiceBrowser:(id)a3 didRemoveService:(id)a4 moreComing:(BOOL)a5;
-- (void)netServiceBrowserDidStopSearch:(id)a3;
-- (void)netServiceBrowserWillSearch:(id)a3;
-- (void)setBrowsing:(BOOL)a3;
-- (void)setShouldCache:(BOOL)a3;
-- (void)startBrowsingWithCompletionHandler:(id)a3;
+- (void)netServiceBrowser:(id)browser didFindService:(id)service moreComing:(BOOL)coming;
+- (void)netServiceBrowser:(id)browser didNotSearch:(id)search;
+- (void)netServiceBrowser:(id)browser didRemoveDomain:(id)domain moreComing:(BOOL)coming;
+- (void)netServiceBrowser:(id)browser didRemoveService:(id)service moreComing:(BOOL)coming;
+- (void)netServiceBrowserDidStopSearch:(id)search;
+- (void)netServiceBrowserWillSearch:(id)search;
+- (void)setBrowsing:(BOOL)browsing;
+- (void)setShouldCache:(BOOL)cache;
+- (void)startBrowsingWithCompletionHandler:(id)handler;
 - (void)stopBrowsing;
 @end
 
@@ -40,11 +40,11 @@
   objc_exception_throw(v7);
 }
 
-- (HMFNetServiceBrowser)initWithDomain:(id)a3 serviceType:(id)a4
+- (HMFNetServiceBrowser)initWithDomain:(id)domain serviceType:(id)type
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  domainCopy = domain;
+  typeCopy = type;
   v29.receiver = self;
   v29.super_class = HMFNetServiceBrowser;
   v8 = [(HMFNetServiceBrowser *)&v29 init];
@@ -55,15 +55,15 @@
   }
 
   objc_storeStrong(&v8->_clientQueue, MEMORY[0x277D85CD0]);
-  v10 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+  weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
   netServices = v9->_netServices;
-  v9->_netServices = v10;
+  v9->_netServices = weakObjectsHashTable;
 
-  v12 = [v6 copy];
+  v12 = [domainCopy copy];
   domain = v9->_domain;
   v9->_domain = v12;
 
-  v14 = [v7 copy];
+  v14 = [typeCopy copy];
   serviceType = v9->_serviceType;
   v9->_serviceType = v14;
 
@@ -75,12 +75,12 @@
     v18 = v16;
 
     [(NSNetServiceBrowser *)v18 setDelegate:v9];
-    v19 = [MEMORY[0x277CBEB88] currentRunLoop];
+    currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
     v20 = *MEMORY[0x277CBE738];
-    [(NSNetServiceBrowser *)v18 removeFromRunLoop:v19 forMode:*MEMORY[0x277CBE738]];
+    [(NSNetServiceBrowser *)v18 removeFromRunLoop:currentRunLoop forMode:*MEMORY[0x277CBE738]];
 
-    v21 = [MEMORY[0x277CBEB88] mainRunLoop];
-    [(NSNetServiceBrowser *)v18 scheduleInRunLoop:v21 forMode:v20];
+    mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+    [(NSNetServiceBrowser *)v18 scheduleInRunLoop:mainRunLoop forMode:v20];
 
 LABEL_4:
     v22 = v9;
@@ -128,22 +128,22 @@ LABEL_8:
   return [v2 shortDescription];
 }
 
-- (id)descriptionWithPointer:(BOOL)a3
+- (id)descriptionWithPointer:(BOOL)pointer
 {
   v5 = MEMORY[0x277CCACA8];
-  v6 = [(HMFNetServiceBrowser *)self shortDescription];
-  v7 = [(HMFNetServiceBrowser *)self domain];
-  v8 = [(HMFNetServiceBrowser *)self serviceType];
-  v9 = v8;
-  if (a3)
+  shortDescription = [(HMFNetServiceBrowser *)self shortDescription];
+  domain = [(HMFNetServiceBrowser *)self domain];
+  serviceType = [(HMFNetServiceBrowser *)self serviceType];
+  v9 = serviceType;
+  if (pointer)
   {
     v10 = [MEMORY[0x277CCACA8] stringWithFormat:@" %p", self];
-    v11 = [v5 stringWithFormat:@"<%@%@, Domain = %@, Service Type = %@>", v6, v7, v9, v10];
+    v11 = [v5 stringWithFormat:@"<%@%@, Domain = %@, Service Type = %@>", shortDescription, domain, v9, v10];
   }
 
   else
   {
-    v11 = [v5 stringWithFormat:@"<%@%@, Domain = %@, Service Type = %@>", v6, v7, v8, &stru_283EBDA30];
+    v11 = [v5 stringWithFormat:@"<%@%@, Domain = %@, Service Type = %@>", shortDescription, domain, serviceType, &stru_283EBDA30];
   }
 
   return v11;
@@ -157,16 +157,16 @@ LABEL_8:
   return v3;
 }
 
-- (void)setShouldCache:(BOOL)a3
+- (void)setShouldCache:(BOOL)cache
 {
-  v3 = a3;
+  cacheCopy = cache;
   v19 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock_with_options();
-  if (v3)
+  if (cacheCopy)
   {
-    v5 = [MEMORY[0x277CBEB40] orderedSet];
+    orderedSet = [MEMORY[0x277CBEB40] orderedSet];
     cachedNetServices = self->_cachedNetServices;
-    self->_cachedNetServices = v5;
+    self->_cachedNetServices = orderedSet;
 
     v16 = 0u;
     v17 = 0u;
@@ -213,25 +213,25 @@ LABEL_8:
 - (NSArray)cachedNetServices
 {
   os_unfair_lock_lock_with_options();
-  v3 = [(NSMutableOrderedSet *)self->_cachedNetServices array];
-  v4 = [v3 copy];
+  array = [(NSMutableOrderedSet *)self->_cachedNetServices array];
+  v4 = [array copy];
 
   os_unfair_lock_unlock(&self->_lock);
 
   return v4;
 }
 
-- (void)addNetServiceToCache:(id)a3
+- (void)addNetServiceToCache:(id)cache
 {
-  v4 = a3;
-  if (v4)
+  cacheCopy = cache;
+  if (cacheCopy)
   {
-    v5 = v4;
+    v5 = cacheCopy;
     os_unfair_lock_lock_with_options();
     [(NSHashTable *)self->_netServices addObject:v5];
     [(NSMutableOrderedSet *)self->_cachedNetServices addObject:v5];
     os_unfair_lock_unlock(&self->_lock);
-    v4 = v5;
+    cacheCopy = v5;
   }
 }
 
@@ -243,26 +243,26 @@ LABEL_8:
   return browsing;
 }
 
-- (void)setBrowsing:(BOOL)a3
+- (void)setBrowsing:(BOOL)browsing
 {
   os_unfair_lock_lock_with_options();
-  self->_browsing = a3;
+  self->_browsing = browsing;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)startBrowsingWithCompletionHandler:(id)a3
+- (void)startBrowsingWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(HMFNetServiceBrowser *)self clientQueue];
+  handlerCopy = handler;
+  clientQueue = [(HMFNetServiceBrowser *)self clientQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __59__HMFNetServiceBrowser_startBrowsingWithCompletionHandler___block_invoke;
   v7[3] = &unk_2786E6D68;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(clientQueue, v7);
 }
 
 void __59__HMFNetServiceBrowser_startBrowsingWithCompletionHandler___block_invoke(uint64_t a1)
@@ -321,44 +321,44 @@ void __59__HMFNetServiceBrowser_startBrowsingWithCompletionHandler___block_invok
 
 - (void)stopBrowsing
 {
-  v3 = [(HMFNetServiceBrowser *)self clientQueue];
+  clientQueue = [(HMFNetServiceBrowser *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __36__HMFNetServiceBrowser_stopBrowsing__block_invoke;
   block[3] = &unk_2786E6C80;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(clientQueue, block);
 }
 
-- (void)_stopBrowsingWithError:(id)a3
+- (void)_stopBrowsingWithError:(id)error
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   if ([(HMFNetServiceBrowser *)self isBrowsing])
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      v8 = HMFGetLogIdentifier(v6);
+      v8 = HMFGetLogIdentifier(selfCopy);
       v14 = 138543362;
       v15 = v8;
       _os_log_impl(&dword_22ADEC000, v7, OS_LOG_TYPE_INFO, "%{public}@Stopping the browse", &v14, 0xCu);
     }
 
     objc_autoreleasePoolPop(v5);
-    v9 = [(HMFNetServiceBrowser *)v6 internal];
-    [v9 stop];
+    internal = [(HMFNetServiceBrowser *)selfCopy internal];
+    [internal stop];
 
-    v10 = v6;
-    v11 = v4;
+    v10 = selfCopy;
+    v11 = errorCopy;
     if (v10)
     {
-      v12 = [(HMFNetServiceBrowser *)v10 delegate];
+      delegate = [(HMFNetServiceBrowser *)v10 delegate];
       if (objc_opt_respondsToSelector())
       {
-        [v12 netServiceBrowser:v10 didStopBrowsingWithError:v11];
+        [delegate netServiceBrowser:v10 didStopBrowsingWithError:v11];
       }
     }
   }
@@ -388,22 +388,22 @@ uint64_t __35__HMFNetServiceBrowser_logCategory__block_invoke()
 - (id)logIdentifier
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMFNetServiceBrowser *)self domain];
-  v5 = [(HMFNetServiceBrowser *)self serviceType];
-  v6 = [v3 stringWithFormat:@"%@ - %@", v4, v5];
+  domain = [(HMFNetServiceBrowser *)self domain];
+  serviceType = [(HMFNetServiceBrowser *)self serviceType];
+  v6 = [v3 stringWithFormat:@"%@ - %@", domain, serviceType];
 
   return v6;
 }
 
-- (void)netServiceBrowserWillSearch:(id)a3
+- (void)netServiceBrowserWillSearch:(id)search
 {
-  v4 = [(HMFNetServiceBrowser *)self clientQueue];
+  clientQueue = [(HMFNetServiceBrowser *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__HMFNetServiceBrowser_netServiceBrowserWillSearch___block_invoke;
   block[3] = &unk_2786E6C80;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(clientQueue, block);
 }
 
 void __52__HMFNetServiceBrowser_netServiceBrowserWillSearch___block_invoke(uint64_t a1)
@@ -431,39 +431,39 @@ void __52__HMFNetServiceBrowser_netServiceBrowserWillSearch___block_invoke(uint6
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)netServiceBrowserDidStopSearch:(id)a3
+- (void)netServiceBrowserDidStopSearch:(id)search
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  searchCopy = search;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    v8 = HMFGetLogIdentifier(v6);
+    v8 = HMFGetLogIdentifier(selfCopy);
     v10 = 138543362;
     v11 = v8;
     _os_log_impl(&dword_22ADEC000, v7, OS_LOG_TYPE_DEBUG, "%{public}@Browse did stop", &v10, 0xCu);
   }
 
   objc_autoreleasePoolPop(v5);
-  [(HMFNetServiceBrowser *)v6 setBrowsing:0];
+  [(HMFNetServiceBrowser *)selfCopy setBrowsing:0];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)netServiceBrowser:(id)a3 didNotSearch:(id)a4
+- (void)netServiceBrowser:(id)browser didNotSearch:(id)search
 {
-  v5 = a4;
-  v6 = [(HMFNetServiceBrowser *)self clientQueue];
+  searchCopy = search;
+  clientQueue = [(HMFNetServiceBrowser *)self clientQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __55__HMFNetServiceBrowser_netServiceBrowser_didNotSearch___block_invoke;
   v8[3] = &unk_2786E6D18;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  dispatch_async(v6, v8);
+  v9 = searchCopy;
+  v7 = searchCopy;
+  dispatch_async(clientQueue, v8);
 }
 
 void __55__HMFNetServiceBrowser_netServiceBrowser_didNotSearch___block_invoke(uint64_t a1)
@@ -510,18 +510,18 @@ void __55__HMFNetServiceBrowser_netServiceBrowser_didNotSearch___block_invoke(ui
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)netServiceBrowser:(id)a3 didFindService:(id)a4 moreComing:(BOOL)a5
+- (void)netServiceBrowser:(id)browser didFindService:(id)service moreComing:(BOOL)coming
 {
-  v6 = a4;
-  v7 = [(HMFNetServiceBrowser *)self clientQueue];
+  serviceCopy = service;
+  clientQueue = [(HMFNetServiceBrowser *)self clientQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __68__HMFNetServiceBrowser_netServiceBrowser_didFindService_moreComing___block_invoke;
   v9[3] = &unk_2786E6D18;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
-  dispatch_async(v7, v9);
+  v10 = serviceCopy;
+  v8 = serviceCopy;
+  dispatch_async(clientQueue, v9);
 }
 
 void __68__HMFNetServiceBrowser_netServiceBrowser_didFindService_moreComing___block_invoke(uint64_t a1)
@@ -607,18 +607,18 @@ LABEL_13:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)netServiceBrowser:(id)a3 didRemoveDomain:(id)a4 moreComing:(BOOL)a5
+- (void)netServiceBrowser:(id)browser didRemoveDomain:(id)domain moreComing:(BOOL)coming
 {
-  v6 = a4;
-  v7 = [(HMFNetServiceBrowser *)self clientQueue];
+  domainCopy = domain;
+  clientQueue = [(HMFNetServiceBrowser *)self clientQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __69__HMFNetServiceBrowser_netServiceBrowser_didRemoveDomain_moreComing___block_invoke;
   v9[3] = &unk_2786E6D18;
-  v10 = v6;
-  v11 = self;
-  v8 = v6;
-  dispatch_async(v7, v9);
+  v10 = domainCopy;
+  selfCopy = self;
+  v8 = domainCopy;
+  dispatch_async(clientQueue, v9);
 }
 
 void __69__HMFNetServiceBrowser_netServiceBrowser_didRemoveDomain_moreComing___block_invoke(uint64_t a1)
@@ -652,18 +652,18 @@ void __69__HMFNetServiceBrowser_netServiceBrowser_didRemoveDomain_moreComing___b
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)netServiceBrowser:(id)a3 didRemoveService:(id)a4 moreComing:(BOOL)a5
+- (void)netServiceBrowser:(id)browser didRemoveService:(id)service moreComing:(BOOL)coming
 {
-  v6 = a4;
-  v7 = [(HMFNetServiceBrowser *)self clientQueue];
+  serviceCopy = service;
+  clientQueue = [(HMFNetServiceBrowser *)self clientQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __70__HMFNetServiceBrowser_netServiceBrowser_didRemoveService_moreComing___block_invoke;
   v9[3] = &unk_2786E6D18;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
-  dispatch_async(v7, v9);
+  v10 = serviceCopy;
+  v8 = serviceCopy;
+  dispatch_async(clientQueue, v9);
 }
 
 void __70__HMFNetServiceBrowser_netServiceBrowser_didRemoveService_moreComing___block_invoke(uint64_t a1)

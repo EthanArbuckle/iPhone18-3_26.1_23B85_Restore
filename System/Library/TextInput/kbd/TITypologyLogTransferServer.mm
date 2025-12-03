@@ -1,9 +1,9 @@
 @interface TITypologyLogTransferServer
 + (id)sharedServer;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (TITypologyLogTransferServer)init;
 - (id)typologyLogsFolder;
-- (void)service:(id)a3 account:(id)a4 incomingResourceAtURL:(id)a5 fromID:(id)a6 context:(id)a7;
+- (void)service:(id)service account:(id)account incomingResourceAtURL:(id)l fromID:(id)d context:(id)context;
 - (void)syncTypologyLogs;
 @end
 
@@ -49,20 +49,20 @@
   return v2;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   has_internal_ui = os_variant_has_internal_ui();
   if (has_internal_ui)
   {
-    [v5 setExportedObject:self];
+    [connectionCopy setExportedObject:self];
     v7 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___TITypologyLogTransferServerProtocol];
-    [v5 setExportedInterface:v7];
+    [connectionCopy setExportedInterface:v7];
 
     v8 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___TITypologyLogTransferClientProtocol];
-    [v5 setRemoteObjectInterface:v8];
+    [connectionCopy setRemoteObjectInterface:v8];
 
-    [v5 resume];
+    [connectionCopy resume];
   }
 
   return has_internal_ui;
@@ -93,8 +93,8 @@
     v46[1] = v4;
     v31 = [NSDictionary dictionaryWithObjects:v46 forKeys:v45 count:2];
 
-    v5 = [(IDSService *)self->_service devices];
-    v6 = [v5 indexOfObjectPassingTest:&stru_10001C8C8];
+    devices = [(IDSService *)self->_service devices];
+    v6 = [devices indexOfObjectPassingTest:&stru_10001C8C8];
 
     v30 = v6;
     if (v6 == 0x7FFFFFFFFFFFFFFFLL)
@@ -112,8 +112,8 @@
       v36 = 0u;
       v37 = 0u;
       v7 = +[NSFileManager defaultManager];
-      v8 = [(TITypologyLogTransferServer *)self typologyLogsFolder];
-      v9 = [v7 subpathsAtPath:v8];
+      typologyLogsFolder = [(TITypologyLogTransferServer *)self typologyLogsFolder];
+      v9 = [v7 subpathsAtPath:typologyLogsFolder];
 
       obj = v9;
       v32 = [v9 countByEnumeratingWithState:&v36 objects:v44 count:16];
@@ -122,7 +122,7 @@
         v10 = 0;
         v11 = 0;
         v28 = *v37;
-        v29 = self;
+        selfCopy = self;
         do
         {
           for (i = 0; i != v32; i = i + 1)
@@ -134,13 +134,13 @@
             }
 
             v14 = *(*(&v36 + 1) + 8 * i);
-            v15 = [(TITypologyLogTransferServer *)self typologyLogsFolder];
-            v16 = [v15 stringByAppendingPathComponent:v14];
+            typologyLogsFolder2 = [(TITypologyLogTransferServer *)self typologyLogsFolder];
+            v16 = [typologyLogsFolder2 stringByAppendingPathComponent:v14];
             v17 = [NSURL fileURLWithPath:v16];
 
             service = self->_service;
-            v19 = [(IDSService *)service devices];
-            v20 = [v19 objectAtIndexedSubscript:v30];
+            devices2 = [(IDSService *)service devices];
+            v20 = [devices2 objectAtIndexedSubscript:v30];
             v21 = IDSCopyIDForDevice();
             v22 = [NSSet setWithObject:v21];
             v34 = v10;
@@ -153,16 +153,16 @@
             {
               if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
               {
-                v26 = [v23 localizedDescription];
+                localizedDescription = [v23 localizedDescription];
                 *buf = 136315394;
                 v41 = "[TITypologyLogTransferServer syncTypologyLogs]";
                 v42 = 2112;
-                v43 = v26;
+                v43 = localizedDescription;
                 _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "%s  typology log IDS service failed, with error %@", buf, 0x16u);
               }
 
               v10 = v23;
-              self = v29;
+              self = selfCopy;
             }
 
             else
@@ -181,14 +181,14 @@
               [v24 removeItemAtURL:v17 error:&v33];
               v10 = v33;
 
-              self = v29;
+              self = selfCopy;
               if (v10 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
               {
-                v25 = [v10 localizedDescription];
+                localizedDescription2 = [v10 localizedDescription];
                 *buf = 136315394;
                 v41 = "[TITypologyLogTransferServer syncTypologyLogs]";
                 v42 = 2112;
-                v43 = v25;
+                v43 = localizedDescription2;
                 _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "%s  Could not delete log file. %@", buf, 0x16u);
               }
             }
@@ -203,14 +203,14 @@
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingResourceAtURL:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingResourceAtURL:(id)l fromID:(id)d context:(id)context
 {
-  v9 = a5;
-  v10 = a6;
+  lCopy = l;
+  dCopy = d;
   if (os_variant_has_internal_ui())
   {
-    v11 = [v9 lastPathComponent];
-    if (![v11 length] || (objc_msgSend(v11, "isEqualToString:", @"..") & 1) != 0 || objc_msgSend(v11, "isEqualToString:", @"."))
+    lastPathComponent = [lCopy lastPathComponent];
+    if (![lastPathComponent length] || (objc_msgSend(lastPathComponent, "isEqualToString:", @"..") & 1) != 0 || objc_msgSend(lastPathComponent, "isEqualToString:", @"."))
     {
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
       {
@@ -220,13 +220,13 @@
 
     else
     {
-      v12 = [(TITypologyLogTransferServer *)self typologyLogsFolder];
-      v13 = [NSURL fileURLWithPath:v12 isDirectory:1];
+      typologyLogsFolder = [(TITypologyLogTransferServer *)self typologyLogsFolder];
+      v13 = [NSURL fileURLWithPath:typologyLogsFolder isDirectory:1];
 
-      v14 = [v13 URLByAppendingPathComponent:v11];
+      v14 = [v13 URLByAppendingPathComponent:lastPathComponent];
       v15 = +[NSFileManager defaultManager];
       v25 = 0;
-      [v15 moveItemAtURL:v9 toURL:v14 error:&v25];
+      [v15 moveItemAtURL:lCopy toURL:v14 error:&v25];
       v16 = v25;
 
       v17 = &_os_log_default;
@@ -234,20 +234,20 @@
       {
         if (v16)
         {
-          v18 = [v16 localizedDescription];
+          localizedDescription = [v16 localizedDescription];
         }
 
         else
         {
-          v18 = @"NONE";
+          localizedDescription = @"NONE";
         }
 
         *buf = 136315650;
         v29 = "[TITypologyLogTransferServer service:account:incomingResourceAtURL:fromID:context:]";
         v30 = 2112;
-        v31 = v10;
+        v31 = dCopy;
         v32 = 2112;
-        v33 = v18;
+        v33 = localizedDescription;
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%s  Recieving file from ID %@ and putting in final location. error? %@", buf, 0x20u);
         if (v16)
         {

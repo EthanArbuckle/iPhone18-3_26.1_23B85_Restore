@@ -15,77 +15,77 @@
   [v5 setObject:@"http://schema.org/BusReservation" forKeyedSubscript:@"@type"];
   v6 = objc_opt_new();
   [v6 setObject:@"http://schema.org/BusTrip" forKeyedSubscript:@"@type"];
-  v7 = [v3 busTrip];
-  v8 = [v7 tripDuration];
-  v9 = [v8 startDateComponents];
+  busTrip = [v3 busTrip];
+  tripDuration = [busTrip tripDuration];
+  startDateComponents = [tripDuration startDateComponents];
 
-  if (v9)
+  if (startDateComponents)
   {
-    v10 = [v3 busTrip];
-    v11 = [v10 tripDuration];
-    v12 = [v11 startDateComponents];
-    v13 = [v12 schema];
-    [v6 setObject:v13 forKeyedSubscript:@"departureTime"];
+    busTrip2 = [v3 busTrip];
+    tripDuration2 = [busTrip2 tripDuration];
+    startDateComponents2 = [tripDuration2 startDateComponents];
+    schema = [startDateComponents2 schema];
+    [v6 setObject:schema forKeyedSubscript:@"departureTime"];
   }
 
-  v14 = [v3 busTrip];
-  v15 = [v14 tripDuration];
-  v16 = [v15 endDateComponents];
+  busTrip3 = [v3 busTrip];
+  tripDuration3 = [busTrip3 tripDuration];
+  endDateComponents = [tripDuration3 endDateComponents];
 
-  if (v16)
+  if (endDateComponents)
   {
-    v17 = [v3 busTrip];
-    v18 = [v17 tripDuration];
-    v19 = [v18 endDateComponents];
-    v20 = [v19 schema];
-    [v6 setObject:v20 forKeyedSubscript:@"arrivalTime"];
+    busTrip4 = [v3 busTrip];
+    tripDuration4 = [busTrip4 tripDuration];
+    endDateComponents2 = [tripDuration4 endDateComponents];
+    schema2 = [endDateComponents2 schema];
+    [v6 setObject:schema2 forKeyedSubscript:@"arrivalTime"];
   }
 
-  v21 = [v3 busTrip];
-  v22 = [v21 busName];
+  busTrip5 = [v3 busTrip];
+  busName = [busTrip5 busName];
 
-  if (v22)
+  if (busName)
   {
-    v23 = [v3 busTrip];
-    v24 = [v23 busName];
-    [v6 setObject:v24 forKeyedSubscript:@"busName"];
+    busTrip6 = [v3 busTrip];
+    busName2 = [busTrip6 busName];
+    [v6 setObject:busName2 forKeyedSubscript:@"busName"];
   }
 
-  v25 = [v3 busTrip];
-  v26 = [v25 busNumber];
+  busTrip7 = [v3 busTrip];
+  busNumber = [busTrip7 busNumber];
 
-  if (v26)
+  if (busNumber)
   {
-    v27 = [v3 busTrip];
-    v28 = [v27 busNumber];
-    [v6 setObject:v28 forKeyedSubscript:@"busNumber"];
+    busTrip8 = [v3 busTrip];
+    busNumber2 = [busTrip8 busNumber];
+    [v6 setObject:busNumber2 forKeyedSubscript:@"busNumber"];
   }
 
   v29 = objc_opt_new();
   [v29 setObject:@"http://schema.org/BusStation" forKeyedSubscript:@"@type"];
-  v30 = [v3 busTrip];
-  v31 = [v30 departureBusStopLocation];
-  v32 = [v31 name];
+  busTrip9 = [v3 busTrip];
+  departureBusStopLocation = [busTrip9 departureBusStopLocation];
+  name = [departureBusStopLocation name];
 
-  if (v32)
+  if (name)
   {
-    v33 = [v3 busTrip];
-    v34 = [v33 departureBusStopLocation];
-    v35 = [v34 name];
-    [v29 setObject:v35 forKeyedSubscript:@"name"];
+    busTrip10 = [v3 busTrip];
+    departureBusStopLocation2 = [busTrip10 departureBusStopLocation];
+    name2 = [departureBusStopLocation2 name];
+    [v29 setObject:name2 forKeyedSubscript:@"name"];
   }
 
-  v36 = [v3 busTrip];
-  v37 = [v36 departureBusStopLocation];
-  v38 = [v37 postalAddress];
+  busTrip11 = [v3 busTrip];
+  departureBusStopLocation3 = [busTrip11 departureBusStopLocation];
+  postalAddress = [departureBusStopLocation3 postalAddress];
 
-  if (v38)
+  if (postalAddress)
   {
-    v39 = [v3 busTrip];
-    v40 = [v39 departureBusStopLocation];
-    v41 = [v40 postalAddress];
-    v42 = [v41 schema];
-    [v29 setObject:v42 forKeyedSubscript:@"address"];
+    busTrip12 = [v3 busTrip];
+    departureBusStopLocation4 = [busTrip12 departureBusStopLocation];
+    postalAddress2 = [departureBusStopLocation4 postalAddress];
+    schema3 = [postalAddress2 schema];
+    [v29 setObject:schema3 forKeyedSubscript:@"address"];
   }
 
   if ([v29 count] >= 2)
@@ -93,41 +93,41 @@
     [v6 setObject:v29 forKeyedSubscript:@"departureBusStop"];
   }
 
-  v43 = [v3 busTrip];
-  v44 = [v43 departurePlatform];
+  busTrip13 = [v3 busTrip];
+  departurePlatform = [busTrip13 departurePlatform];
 
-  if (v44)
+  if (departurePlatform)
   {
-    v45 = [v3 busTrip];
-    v46 = [v45 departurePlatform];
-    [v6 setObject:v46 forKeyedSubscript:@"departurePlatform"];
+    busTrip14 = [v3 busTrip];
+    departurePlatform2 = [busTrip14 departurePlatform];
+    [v6 setObject:departurePlatform2 forKeyedSubscript:@"departurePlatform"];
   }
 
   v47 = objc_opt_new();
   [v47 setObject:@"http://schema.org/BusStation" forKeyedSubscript:@"@type"];
-  v48 = [v3 busTrip];
-  v49 = [v48 arrivalBusStopLocation];
-  v50 = [v49 name];
+  busTrip15 = [v3 busTrip];
+  arrivalBusStopLocation = [busTrip15 arrivalBusStopLocation];
+  name3 = [arrivalBusStopLocation name];
 
-  if (v50)
+  if (name3)
   {
-    v51 = [v3 busTrip];
-    v52 = [v51 arrivalBusStopLocation];
-    v53 = [v52 name];
-    [v47 setObject:v53 forKeyedSubscript:@"name"];
+    busTrip16 = [v3 busTrip];
+    arrivalBusStopLocation2 = [busTrip16 arrivalBusStopLocation];
+    name4 = [arrivalBusStopLocation2 name];
+    [v47 setObject:name4 forKeyedSubscript:@"name"];
   }
 
-  v54 = [v3 busTrip];
-  v55 = [v54 arrivalBusStopLocation];
-  v56 = [v55 postalAddress];
+  busTrip17 = [v3 busTrip];
+  arrivalBusStopLocation3 = [busTrip17 arrivalBusStopLocation];
+  postalAddress3 = [arrivalBusStopLocation3 postalAddress];
 
-  if (v56)
+  if (postalAddress3)
   {
-    v57 = [v3 busTrip];
-    v58 = [v57 arrivalBusStopLocation];
-    v59 = [v58 postalAddress];
-    v60 = [v59 schema];
-    [v47 setObject:v60 forKeyedSubscript:@"address"];
+    busTrip18 = [v3 busTrip];
+    arrivalBusStopLocation4 = [busTrip18 arrivalBusStopLocation];
+    postalAddress4 = [arrivalBusStopLocation4 postalAddress];
+    schema4 = [postalAddress4 schema];
+    [v47 setObject:schema4 forKeyedSubscript:@"address"];
   }
 
   if ([v47 count] >= 2)
@@ -135,27 +135,27 @@
     [v6 setObject:v47 forKeyedSubscript:@"arrivalBusStop"];
   }
 
-  v61 = [v3 busTrip];
-  v62 = [v61 arrivalPlatform];
+  busTrip19 = [v3 busTrip];
+  arrivalPlatform = [busTrip19 arrivalPlatform];
 
-  if (v62)
+  if (arrivalPlatform)
   {
-    v63 = [v3 busTrip];
-    v64 = [v63 arrivalPlatform];
-    [v6 setObject:v64 forKeyedSubscript:@"arrivalPlatform"];
+    busTrip20 = [v3 busTrip];
+    arrivalPlatform2 = [busTrip20 arrivalPlatform];
+    [v6 setObject:arrivalPlatform2 forKeyedSubscript:@"arrivalPlatform"];
   }
 
-  v65 = [v3 busTrip];
-  v66 = [v65 provider];
+  busTrip21 = [v3 busTrip];
+  provider = [busTrip21 provider];
 
-  if (v66)
+  if (provider)
   {
     v72[0] = @"@type";
     v72[1] = @"name";
     v73[0] = @"http://schema.org/Organization";
-    v67 = [v3 busTrip];
-    v68 = [v67 provider];
-    v73[1] = v68;
+    busTrip22 = [v3 busTrip];
+    provider2 = [busTrip22 provider];
+    v73[1] = provider2;
     v69 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v73 forKeys:v72 count:2];
     [v6 setObject:v69 forKeyedSubscript:@"provider"];
   }
@@ -203,8 +203,8 @@
 
   v18 = objc_alloc(MEMORY[0x277CD4188]);
   v19 = objc_opt_new();
-  v20 = [v19 UUIDString];
-  v21 = [v18 initWithVocabularyIdentifier:v20 spokenPhrase:@"Bus Trip" pronunciationHint:0];
+  uUIDString = [v19 UUIDString];
+  v21 = [v18 initWithVocabularyIdentifier:uUIDString spokenPhrase:@"Bus Trip" pronunciationHint:0];
 
   v22 = [objc_alloc(MEMORY[0x277CD3AC0]) initWithItemReference:v21 reservationNumber:v33 bookingTime:v32 reservationStatus:v31 reservationHolderName:v30 actions:0 URL:v29 reservedSeat:0 busTrip:v27];
 

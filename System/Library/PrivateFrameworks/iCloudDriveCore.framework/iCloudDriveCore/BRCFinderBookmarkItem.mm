@@ -32,12 +32,12 @@
 
 - (id)documentRecordID
 {
-  v3 = [(BRCItemID *)self->super.super._itemID itemIDString];
-  v4 = [@"finderBookmark/" stringByAppendingString:v3];
+  itemIDString = [(BRCItemID *)self->super.super._itemID itemIDString];
+  v4 = [@"finderBookmark/" stringByAppendingString:itemIDString];
 
   v5 = objc_alloc(MEMORY[0x277CBC5D0]);
-  v6 = [(BRCServerZone *)self->super.super._serverZone zoneID];
-  v7 = [v5 initWithRecordName:v4 zoneID:v6];
+  zoneID = [(BRCServerZone *)self->super.super._serverZone zoneID];
+  v7 = [v5 initWithRecordName:v4 zoneID:zoneID];
 
   return v7;
 }
@@ -61,7 +61,7 @@
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_fault_impl(&dword_223E7A000, a2, OS_LOG_TYPE_FAULT, "[CRIT] UNREACHABLE: -asShareableItem called on a non-shareable item%@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

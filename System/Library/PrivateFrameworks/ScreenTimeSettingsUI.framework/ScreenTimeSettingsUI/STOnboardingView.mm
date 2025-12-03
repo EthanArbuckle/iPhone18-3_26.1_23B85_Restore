@@ -1,16 +1,16 @@
 @interface STOnboardingView
-- (STOnboardingView)initWithTopInset:(double)a3;
+- (STOnboardingView)initWithTopInset:(double)inset;
 - (UIEdgeInsets)safeAreaInsets;
 @end
 
 @implementation STOnboardingView
 
-- (STOnboardingView)initWithTopInset:(double)a3
+- (STOnboardingView)initWithTopInset:(double)inset
 {
   v6.receiver = self;
   v6.super_class = STOnboardingView;
   v4 = [(STOnboardingView *)&v6 init];
-  [(STOnboardingView *)v4 setTopInset:a3];
+  [(STOnboardingView *)v4 setTopInset:inset];
   return v4;
 }
 

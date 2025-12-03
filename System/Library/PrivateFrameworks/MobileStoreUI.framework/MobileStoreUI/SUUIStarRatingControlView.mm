@@ -1,23 +1,23 @@
 @interface SUUIStarRatingControlView
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SUUIStarRatingControlView)initWithFrame:(CGRect)a3;
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SUUIStarRatingControlView)initWithFrame:(CGRect)frame;
 - (void)dealloc;
-- (void)didRating:(id)a3;
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (void)setContentInset:(UIEdgeInsets)a3;
-- (void)setEnabled:(BOOL)a3;
+- (void)didRating:(id)rating;
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context;
+- (void)setContentInset:(UIEdgeInsets)inset;
+- (void)setEnabled:(BOOL)enabled;
 @end
 
 @implementation SUUIStarRatingControlView
 
-- (SUUIStarRatingControlView)initWithFrame:(CGRect)a3
+- (SUUIStarRatingControlView)initWithFrame:(CGRect)frame
 {
   v16.receiver = self;
   v16.super_class = SUUIStarRatingControlView;
-  v3 = [(SUUIStarRatingControlView *)&v16 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUUIStarRatingControlView *)&v16 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -55,7 +55,7 @@
   [(SUUIStarRatingControlView *)&v3 dealloc];
 }
 
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context
 {
   v4 = *MEMORY[0x277CBF3A8];
   v5 = *(MEMORY[0x277CBF3A8] + 8);
@@ -64,7 +64,7 @@
   return result;
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context
 {
   v5 = MEMORY[0x277D755B8];
   v6 = SUUIBundle();
@@ -81,11 +81,11 @@
   return result;
 }
 
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context
 {
-  v10 = a3;
-  objc_storeStrong(&self->_viewElement, a3);
-  [v10 ratingValue];
+  elementCopy = element;
+  objc_storeStrong(&self->_viewElement, element);
+  [elementCopy ratingValue];
   if (v7 <= 0.0)
   {
     v9 = 0;
@@ -93,7 +93,7 @@
 
   else
   {
-    [v10 ratingValue];
+    [elementCopy ratingValue];
     v9 = (v8 * 5.0);
   }
 
@@ -102,32 +102,32 @@
   [(SUUIStarRatingControlView *)self setNeedsDisplay];
 }
 
-- (void)setContentInset:(UIEdgeInsets)a3
+- (void)setContentInset:(UIEdgeInsets)inset
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = inset.top;
+  v3.f64[1] = inset.left;
+  v4.f64[0] = inset.bottom;
+  v4.f64[1] = inset.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_contentInset.top, v3), vceqq_f64(*&self->_contentInset.bottom, v4)))) & 1) == 0)
   {
-    self->_contentInset = a3;
+    self->_contentInset = inset;
     [(SUUIStarRatingControlView *)self setNeedsDisplay];
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v5.receiver = self;
   v5.super_class = SUUIStarRatingControlView;
   [(SUUIStarRatingControlView *)&v5 setEnabled:?];
-  [(SUUIStarRatingControl *)self->_control setEnabled:v3];
+  [(SUUIStarRatingControl *)self->_control setEnabled:enabledCopy];
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(SUUIStarRatingControlView *)self bounds];
   v11 = CGRectInset(v10, -20.0, -20.0);
   v6 = x;
@@ -136,22 +136,22 @@
   return CGRectContainsPoint(v11, *&v6);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(UIImage *)self->_emptyStars size:a3.width];
+  [(UIImage *)self->_emptyStars size:fits.width];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (void)didRating:(id)a3
+- (void)didRating:(id)rating
 {
   v7[1] = *MEMORY[0x277D85DE8];
   viewElement = self->_viewElement;
   if (viewElement)
   {
     v6 = @"value";
-    v4 = [MEMORY[0x277CCABB0] numberWithInteger:{-[SUUIStarRatingControl userRating](self->_control, "userRating", a3)}];
+    v4 = [MEMORY[0x277CCABB0] numberWithInteger:{-[SUUIStarRatingControl userRating](self->_control, "userRating", rating)}];
     v7[0] = v4;
     v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:&v6 count:1];
     [(SUUIStarRatingViewElement *)viewElement dispatchEventOfType:15 canBubble:1 isCancelable:1 extraInfo:v5 completionBlock:0];

@@ -1,16 +1,16 @@
 @interface SKUIGridViewGradientLayoutAttributes
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation SKUIGridViewGradientLayoutAttributes
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = SKUIGridViewGradientLayoutAttributes;
-  v4 = [(UICollectionViewLayoutAttributes *)&v8 copyWithZone:a3];
+  v4 = [(UICollectionViewLayoutAttributes *)&v8 copyWithZone:zone];
   v5 = [(IKColor *)self->_gradientColor copy];
   v6 = v4[44];
   v4[44] = v5;
@@ -18,10 +18,10 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -29,11 +29,11 @@
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && ((gradientColor = v4->_gradientColor, gradientColor == self->_gradientColor) || [(IKColor *)gradientColor isEqual:?]))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && ((gradientColor = equalCopy->_gradientColor, gradientColor == self->_gradientColor) || [(IKColor *)gradientColor isEqual:?]))
     {
       v8.receiver = self;
       v8.super_class = SKUIGridViewGradientLayoutAttributes;
-      v6 = [(UICollectionViewLayoutAttributes *)&v8 isEqual:v4];
+      v6 = [(UICollectionViewLayoutAttributes *)&v8 isEqual:equalCopy];
     }
 
     else

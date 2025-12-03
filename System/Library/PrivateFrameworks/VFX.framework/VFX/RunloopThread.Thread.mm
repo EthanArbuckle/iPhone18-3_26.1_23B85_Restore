@@ -21,7 +21,7 @@
 
 - (void)main
 {
-  v2 = self;
+  selfCopy = self;
   sub_1AF719D88();
 }
 

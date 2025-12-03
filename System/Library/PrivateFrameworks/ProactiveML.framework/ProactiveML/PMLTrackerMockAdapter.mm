@@ -1,11 +1,11 @@
 @interface PMLTrackerMockAdapter
 - (PMLTrackerMockAdapter)init;
-- (id)trackedMessagesByClass:(Class)a3;
+- (id)trackedMessagesByClass:(Class)class;
 @end
 
 @implementation PMLTrackerMockAdapter
 
-- (id)trackedMessagesByClass:(Class)a3
+- (id)trackedMessagesByClass:(Class)class
 {
   v18 = *MEMORY[0x277D85DE8];
   v4 = objc_opt_new();

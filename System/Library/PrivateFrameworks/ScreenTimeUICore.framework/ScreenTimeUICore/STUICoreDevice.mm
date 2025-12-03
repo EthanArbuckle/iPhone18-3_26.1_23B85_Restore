@@ -9,37 +9,37 @@
 
 + (BOOL)isiPad
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 model];
-  v4 = [v3 hasPrefix:@"iPad"];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  model = [currentDevice model];
+  v4 = [model hasPrefix:@"iPad"];
 
   return v4;
 }
 
 + (BOOL)isiPhone
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 model];
-  v4 = [v3 hasPrefix:@"iPhone"];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  model = [currentDevice model];
+  v4 = [model hasPrefix:@"iPhone"];
 
   return v4;
 }
 
 + (BOOL)isiPodTouch
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 model];
-  v4 = [v3 hasPrefix:@"iPod touch"];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  model = [currentDevice model];
+  v4 = [model hasPrefix:@"iPod touch"];
 
   return v4;
 }
 
 + (NSString)localizedModel
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 localizedModel];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  localizedModel = [currentDevice localizedModel];
 
-  return v3;
+  return localizedModel;
 }
 
 @end

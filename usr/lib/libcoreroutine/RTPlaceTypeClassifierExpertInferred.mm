@@ -1,20 +1,20 @@
 @interface RTPlaceTypeClassifierExpertInferred
-- (RTPlaceTypeClassifierExpertInferred)initWithBiomeManager:(id)a3 defaultsManager:(id)a4 distanceCalculator:(id)a5 learnedLocationStore:(id)a6 placeTypeClassifierMetricsCalculator:(id)a7 platform:(id)a8;
-- (id)classifyWithError:(id *)a3;
+- (RTPlaceTypeClassifierExpertInferred)initWithBiomeManager:(id)manager defaultsManager:(id)defaultsManager distanceCalculator:(id)calculator learnedLocationStore:(id)store placeTypeClassifierMetricsCalculator:(id)metricsCalculator platform:(id)platform;
+- (id)classifyWithError:(id *)error;
 @end
 
 @implementation RTPlaceTypeClassifierExpertInferred
 
-- (RTPlaceTypeClassifierExpertInferred)initWithBiomeManager:(id)a3 defaultsManager:(id)a4 distanceCalculator:(id)a5 learnedLocationStore:(id)a6 placeTypeClassifierMetricsCalculator:(id)a7 platform:(id)a8
+- (RTPlaceTypeClassifierExpertInferred)initWithBiomeManager:(id)manager defaultsManager:(id)defaultsManager distanceCalculator:(id)calculator learnedLocationStore:(id)store placeTypeClassifierMetricsCalculator:(id)metricsCalculator platform:(id)platform
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v27 = a6;
-  v26 = a7;
-  v18 = a8;
-  v25 = v18;
-  if (!v15)
+  managerCopy = manager;
+  defaultsManagerCopy = defaultsManager;
+  calculatorCopy = calculator;
+  storeCopy = store;
+  metricsCalculatorCopy = metricsCalculator;
+  platformCopy = platform;
+  v25 = platformCopy;
+  if (!managerCopy)
   {
     v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -29,7 +29,7 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  if (!v16)
+  if (!defaultsManagerCopy)
   {
     v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -42,7 +42,7 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  if (!v17)
+  if (!calculatorCopy)
   {
     v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -55,7 +55,7 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  if (!v27)
+  if (!storeCopy)
   {
     v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -68,7 +68,7 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  if (!v26)
+  if (!metricsCalculatorCopy)
   {
     v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -81,7 +81,7 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  if (!v18)
+  if (!platformCopy)
   {
     v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -93,7 +93,7 @@ LABEL_22:
 
 LABEL_23:
 
-    v21 = 0;
+    selfCopy = 0;
     goto LABEL_24;
   }
 
@@ -103,22 +103,22 @@ LABEL_23:
   p_isa = &v19->super.isa;
   if (v19)
   {
-    objc_storeStrong(&v19->_biomeManager, a3);
-    objc_storeStrong(p_isa + 2, a4);
-    objc_storeStrong(p_isa + 3, a5);
-    objc_storeStrong(p_isa + 4, a6);
-    objc_storeStrong(p_isa + 5, a7);
-    objc_storeStrong(p_isa + 6, a8);
+    objc_storeStrong(&v19->_biomeManager, manager);
+    objc_storeStrong(p_isa + 2, defaultsManager);
+    objc_storeStrong(p_isa + 3, calculator);
+    objc_storeStrong(p_isa + 4, store);
+    objc_storeStrong(p_isa + 5, metricsCalculator);
+    objc_storeStrong(p_isa + 6, platform);
   }
 
   self = p_isa;
-  v21 = self;
+  selfCopy = self;
 LABEL_24:
 
-  return v21;
+  return selfCopy;
 }
 
-- (id)classifyWithError:(id *)a3
+- (id)classifyWithError:(id *)error
 {
   v62 = *MEMORY[0x277D85DE8];
   context = objc_autoreleasePoolPush();
@@ -128,18 +128,18 @@ LABEL_24:
   v57 = __Block_byref_object_copy__83;
   v58 = __Block_byref_object_dispose__83;
   v4 = [RTLearnedPlaceTypeInferenceGenerator alloc];
-  v5 = [(RTPlaceTypeClassifierExpertInferred *)self biomeManager];
-  v6 = [(RTPlaceTypeClassifierExpertInferred *)self defaultsManager];
-  v7 = [(RTPlaceTypeClassifierExpertInferred *)self distanceCalculator];
-  v8 = [(RTPlaceTypeClassifierExpertInferred *)self learnedLocationStore];
-  v9 = [(RTPlaceTypeClassifierExpertInferred *)self placeTypeClassifierMetricsCalculator];
-  v10 = [(RTPlaceTypeClassifierExpertInferred *)self platform];
-  v59 = [(RTLearnedPlaceTypeInferenceGenerator *)v4 initWithBiomeManager:v5 defaultsManager:v6 distanceCalculator:v7 learnedLocationStore:v8 placeTypeClassifierMetricsCalculator:v9 platform:v10];
+  biomeManager = [(RTPlaceTypeClassifierExpertInferred *)self biomeManager];
+  defaultsManager = [(RTPlaceTypeClassifierExpertInferred *)self defaultsManager];
+  distanceCalculator = [(RTPlaceTypeClassifierExpertInferred *)self distanceCalculator];
+  learnedLocationStore = [(RTPlaceTypeClassifierExpertInferred *)self learnedLocationStore];
+  placeTypeClassifierMetricsCalculator = [(RTPlaceTypeClassifierExpertInferred *)self placeTypeClassifierMetricsCalculator];
+  platform = [(RTPlaceTypeClassifierExpertInferred *)self platform];
+  v59 = [(RTLearnedPlaceTypeInferenceGenerator *)v4 initWithBiomeManager:biomeManager defaultsManager:defaultsManager distanceCalculator:distanceCalculator learnedLocationStore:learnedLocationStore placeTypeClassifierMetricsCalculator:placeTypeClassifierMetricsCalculator platform:platform];
 
   v11 = objc_alloc(MEMORY[0x277CCA970]);
   v12 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-3628800.0];
-  v13 = [MEMORY[0x277CBEAA8] distantFuture];
-  v14 = [v11 initWithStartDate:v12 endDate:v13];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  v14 = [v11 initWithStartDate:v12 endDate:distantFuture];
 
   v15 = [[RTStoredLocationOfInterestEnumerationOptions alloc] initWithAscendingVisitEntryDate:1 batchSize:5 dateInterval:v14 singleVisit:0];
   v16 = dispatch_semaphore_create(0);
@@ -169,11 +169,11 @@ LABEL_24:
     v24 = v23;
     v25 = objc_opt_new();
     v26 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_68];
-    v27 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v28 = [v27 filteredArrayUsingPredicate:v26];
-    v29 = [v28 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v28 = [callStackSymbols filteredArrayUsingPredicate:v26];
+    firstObject = [v28 firstObject];
 
-    [v25 submitToCoreAnalytics:v29 type:1 duration:v24];
+    [v25 submitToCoreAnalytics:firstObject type:1 duration:v24];
     v30 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v30, OS_LOG_TYPE_FAULT))
     {
@@ -214,25 +214,25 @@ LABEL_8:
   if (v37)
   {
     v38 = v37;
-    v39 = 0;
+    inferPlaceTypes = 0;
   }
 
   else
   {
-    v39 = [v55[5] inferPlaceTypes];
+    inferPlaceTypes = [v55[5] inferPlaceTypes];
   }
 
   _Block_object_dispose(&v48, 8);
   _Block_object_dispose(&v54, 8);
 
   objc_autoreleasePoolPop(context);
-  if (a3)
+  if (error)
   {
     v40 = v37;
-    *a3 = v37;
+    *error = v37;
   }
 
-  return v39;
+  return inferPlaceTypes;
 }
 
 void __57__RTPlaceTypeClassifierExpertInferred_classifyWithError___block_invoke(uint64_t a1, void *a2, void *a3, _BYTE *a4)

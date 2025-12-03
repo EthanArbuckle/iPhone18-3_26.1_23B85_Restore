@@ -1,24 +1,24 @@
 @interface _CRKProviderBundle
 - (NSString)providerIdentifier;
-- (id)cardViewControllerForCard:(id)a3;
+- (id)cardViewControllerForCard:(id)card;
 - (id)provider;
-- (unint64_t)displayPriorityForCard:(id)a3;
-- (void)_initializeProviderWithClass:(Class)a3;
-- (void)presentation:(id)a3 didApplyCardSectionViewSource:(id)a4 toCardViewController:(id)a5;
-- (void)requestCardSectionViewProviderForCard:(id)a3 delegate:(id)a4 reply:(id)a5;
-- (void)requestIdentifiedCardSectionViewProviderForCard:(id)a3 delegate:(id)a4 reply:(id)a5;
-- (void)unregisterCardViewController:(id)a3;
+- (unint64_t)displayPriorityForCard:(id)card;
+- (void)_initializeProviderWithClass:(Class)class;
+- (void)presentation:(id)presentation didApplyCardSectionViewSource:(id)source toCardViewController:(id)controller;
+- (void)requestCardSectionViewProviderForCard:(id)card delegate:(id)delegate reply:(id)reply;
+- (void)requestIdentifiedCardSectionViewProviderForCard:(id)card delegate:(id)delegate reply:(id)reply;
+- (void)unregisterCardViewController:(id)controller;
 @end
 
 @implementation _CRKProviderBundle
 
 - (id)provider
 {
-  v3 = [(_CRKProviderBundle *)self principalClass];
+  principalClass = [(_CRKProviderBundle *)self principalClass];
   if (!self->_provider)
   {
-    v4 = v3;
-    if ([v3 conformsToProtocol:&unk_285603878])
+    v4 = principalClass;
+    if ([principalClass conformsToProtocol:&unk_285603878])
     {
       [(_CRKProviderBundle *)self _initializeProviderWithClass:v4];
     }
@@ -29,7 +29,7 @@
   return provider;
 }
 
-- (void)_initializeProviderWithClass:(Class)a3
+- (void)_initializeProviderWithClass:(Class)class
 {
   v40 = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CF93F0];
@@ -37,23 +37,23 @@
   if (os_log_type_enabled(*MEMORY[0x277CF93F0], OS_LOG_TYPE_INFO))
   {
     v6 = v5;
-    v7 = NSStringFromClass(a3);
+    v7 = NSStringFromClass(class);
     *buf = 138412290;
     v34 = v7;
     _os_log_impl(&dword_243247000, v6, OS_LOG_TYPE_INFO, "Initializing a provider of class %@", buf, 0xCu);
   }
 
-  v8 = objc_alloc_init(a3);
+  v8 = objc_alloc_init(class);
   provider = self->_provider;
   self->_provider = v8;
 
-  v10 = [(_CRKProviderBundle *)self infoDictionary];
-  v11 = [v10 objectForKey:@"Card section view controller classes"];
+  infoDictionary = [(_CRKProviderBundle *)self infoDictionary];
+  v11 = [infoDictionary objectForKey:@"Card section view controller classes"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v26 = v11;
-    v27 = v10;
+    v27 = infoDictionary;
     v12 = v11;
     v29 = 0u;
     v30 = 0u;
@@ -86,7 +86,7 @@
               *buf = 138412546;
               v34 = v21;
               v35 = 2112;
-              v36 = self;
+              selfCopy2 = self;
               _os_log_impl(&dword_243247000, v20, OS_LOG_TYPE_INFO, "Registering card section view controller %@ for plugin bundle %@", buf, 0x16u);
             }
 
@@ -102,7 +102,7 @@
             *buf = 138412802;
             v34 = v23;
             v35 = 2112;
-            v36 = self;
+            selfCopy2 = self;
             v37 = 2112;
             v38 = v25;
             _os_log_error_impl(&dword_243247000, v22, OS_LOG_TYPE_ERROR, "Cannot register card section view controller %@ for plugin bundle %@ as it is not a subclass of %@", buf, 0x20u);
@@ -119,17 +119,17 @@
     }
 
     v11 = v26;
-    v10 = v27;
+    infoDictionary = v27;
   }
 }
 
 - (NSString)providerIdentifier
 {
-  v2 = [(_CRKProviderBundle *)self bundleIdentifier];
-  v3 = v2;
-  if (v2)
+  bundleIdentifier = [(_CRKProviderBundle *)self bundleIdentifier];
+  v3 = bundleIdentifier;
+  if (bundleIdentifier)
   {
-    v4 = v2;
+    v4 = bundleIdentifier;
   }
 
   else
@@ -143,65 +143,65 @@
   return v4;
 }
 
-- (void)requestCardSectionViewProviderForCard:(id)a3 delegate:(id)a4 reply:(id)a5
+- (void)requestCardSectionViewProviderForCard:(id)card delegate:(id)delegate reply:(id)reply
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(_CRKProviderBundle *)self provider];
+  cardCopy = card;
+  delegateCopy = delegate;
+  replyCopy = reply;
+  provider = [(_CRKProviderBundle *)self provider];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    v12 = [(_CRKProviderBundle *)self provider];
-    [v12 requestCardSectionViewProviderForCard:v13 delegate:v8 reply:v9];
+    provider2 = [(_CRKProviderBundle *)self provider];
+    [provider2 requestCardSectionViewProviderForCard:cardCopy delegate:delegateCopy reply:replyCopy];
   }
 
-  else if (v9)
+  else if (replyCopy)
   {
-    (*(v9 + 2))(v9, 0, 0);
+    (*(replyCopy + 2))(replyCopy, 0, 0);
   }
 }
 
-- (void)requestIdentifiedCardSectionViewProviderForCard:(id)a3 delegate:(id)a4 reply:(id)a5
+- (void)requestIdentifiedCardSectionViewProviderForCard:(id)card delegate:(id)delegate reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  cardCopy = card;
+  delegateCopy = delegate;
+  replyCopy = reply;
+  if (replyCopy)
   {
-    v11 = [(_CRKProviderBundle *)self provider];
+    provider = [(_CRKProviderBundle *)self provider];
     v12 = objc_opt_respondsToSelector();
 
     if (v12)
     {
-      v13 = [(_CRKProviderBundle *)self provider];
+      provider2 = [(_CRKProviderBundle *)self provider];
       v14[0] = MEMORY[0x277D85DD0];
       v14[1] = 3221225472;
       v14[2] = __85___CRKProviderBundle_requestIdentifiedCardSectionViewProviderForCard_delegate_reply___block_invoke;
       v14[3] = &unk_278DA3838;
       v14[4] = self;
-      v15 = v10;
-      [v13 requestCardSectionViewProviderForCard:v8 delegate:v9 reply:v14];
+      v15 = replyCopy;
+      [provider2 requestCardSectionViewProviderForCard:cardCopy delegate:delegateCopy reply:v14];
     }
 
     else
     {
-      (*(v10 + 2))(v10, 0, 0);
+      (*(replyCopy + 2))(replyCopy, 0, 0);
     }
   }
 }
 
-- (id)cardViewControllerForCard:(id)a3
+- (id)cardViewControllerForCard:(id)card
 {
-  v4 = a3;
-  v5 = [(_CRKProviderBundle *)self provider];
+  cardCopy = card;
+  provider = [(_CRKProviderBundle *)self provider];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(_CRKProviderBundle *)self provider];
-    v8 = [v7 cardViewControllerForCard:v4];
+    provider2 = [(_CRKProviderBundle *)self provider];
+    v8 = [provider2 cardViewControllerForCard:cardCopy];
   }
 
   else
@@ -212,29 +212,29 @@
   return v8;
 }
 
-- (void)unregisterCardViewController:(id)a3
+- (void)unregisterCardViewController:(id)controller
 {
-  v7 = a3;
-  v4 = [(_CRKProviderBundle *)self provider];
+  controllerCopy = controller;
+  provider = [(_CRKProviderBundle *)self provider];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(_CRKProviderBundle *)self provider];
-    [v6 unregisterCardViewController:v7];
+    provider2 = [(_CRKProviderBundle *)self provider];
+    [provider2 unregisterCardViewController:controllerCopy];
   }
 }
 
-- (unint64_t)displayPriorityForCard:(id)a3
+- (unint64_t)displayPriorityForCard:(id)card
 {
-  v4 = a3;
-  v5 = [(_CRKProviderBundle *)self provider];
+  cardCopy = card;
+  provider = [(_CRKProviderBundle *)self provider];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(_CRKProviderBundle *)self provider];
-    v8 = [v7 displayPriorityForCard:v4];
+    provider2 = [(_CRKProviderBundle *)self provider];
+    v8 = [provider2 displayPriorityForCard:cardCopy];
   }
 
   else
@@ -245,18 +245,18 @@
   return v8;
 }
 
-- (void)presentation:(id)a3 didApplyCardSectionViewSource:(id)a4 toCardViewController:(id)a5
+- (void)presentation:(id)presentation didApplyCardSectionViewSource:(id)source toCardViewController:(id)controller
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(_CRKProviderBundle *)self provider];
+  presentationCopy = presentation;
+  sourceCopy = source;
+  controllerCopy = controller;
+  provider = [(_CRKProviderBundle *)self provider];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    v12 = [(_CRKProviderBundle *)self provider];
-    [v12 presentation:v13 didApplyCardSectionViewSource:v8 toCardViewController:v9];
+    provider2 = [(_CRKProviderBundle *)self provider];
+    [provider2 presentation:presentationCopy didApplyCardSectionViewSource:sourceCopy toCardViewController:controllerCopy];
   }
 }
 

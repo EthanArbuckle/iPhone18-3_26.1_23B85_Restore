@@ -1,17 +1,17 @@
 @interface DebugFormatUploadDiffVersionsViewController
-- (_TtC8NewsFeed43DebugFormatUploadDiffVersionsViewController)initWithCoder:(id)a3;
-- (_TtC8NewsFeed43DebugFormatUploadDiffVersionsViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (_TtC8NewsFeed43DebugFormatUploadDiffVersionsViewController)initWithCoder:(id)coder;
+- (_TtC8NewsFeed43DebugFormatUploadDiffVersionsViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation DebugFormatUploadDiffVersionsViewController
 
-- (_TtC8NewsFeed43DebugFormatUploadDiffVersionsViewController)initWithCoder:(id)a3
+- (_TtC8NewsFeed43DebugFormatUploadDiffVersionsViewController)initWithCoder:(id)coder
 {
   v3 = OBJC_IVAR____TtC8NewsFeed43DebugFormatUploadDiffVersionsViewController_tableView;
   *(&self->super.super.super.isa + v3) = [objc_allocWithZone(MEMORY[0x1E69DD020]) initWithFrame:1 style:{0.0, 0.0, 0.0, 0.0}];
@@ -22,7 +22,7 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D69BCB88();
 }
 
@@ -33,11 +33,11 @@
   v2 = v14.receiver;
   [(DebugFormatUploadDiffVersionsViewController *)&v14 viewWillLayoutSubviews];
   v3 = *&v2[OBJC_IVAR____TtC8NewsFeed43DebugFormatUploadDiffVersionsViewController_tableView];
-  v4 = [v2 view];
-  if (v4)
+  view = [v2 view];
+  if (view)
   {
-    v5 = v4;
-    [v4 bounds];
+    v5 = view;
+    [view bounds];
     v7 = v6;
     v9 = v8;
     v11 = v10;
@@ -52,41 +52,41 @@
   }
 }
 
-- (_TtC8NewsFeed43DebugFormatUploadDiffVersionsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8NewsFeed43DebugFormatUploadDiffVersionsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = self;
-  v8 = sub_1D69BEFA4(a4);
+  viewCopy = view;
+  selfCopy = self;
+  v8 = sub_1D69BEFA4(section);
 
   return v8;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = sub_1D7258DBC();
   v7 = *(v6 - 8);
   MEMORY[0x1EEE9AC00](v6, v8);
   v10 = &v15 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1D7258D6C();
-  v11 = a3;
-  v12 = self;
-  v13 = sub_1D69BD0F8(v11);
+  viewCopy = view;
+  selfCopy = self;
+  v13 = sub_1D69BD0F8(viewCopy);
 
   (*(v7 + 8))(v10, v6);
 
   return v13;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  sub_1D69BF0A4(a4);
+  sub_1D69BF0A4(section);
   if (v4)
   {
     v5 = sub_1D726203C();
@@ -100,11 +100,11 @@
   return v5;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = self;
-  sub_1D69BF1C0(a4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_1D69BF1C0(section);
   v9 = v8;
 
   if (v9)

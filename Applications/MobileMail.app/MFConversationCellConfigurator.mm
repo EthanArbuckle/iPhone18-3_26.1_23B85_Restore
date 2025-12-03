@@ -1,25 +1,25 @@
 @interface MFConversationCellConfigurator
 + (id)log;
 - (BOOL)animatePendingHeightChangesIfNecessary;
-- (BOOL)isMessageItemAtIndexPath:(id)a3;
-- (BOOL)isSummaryItemAtIndexPath:(id)a3;
-- (BOOL)updateSemiExpandedToFullyExpandedIfNecessaryAtIndexPath:(id)a3 renderedHeight:(double)a4;
-- (CGSize)sizeForItemAtIndexPath:(id)a3;
-- (MFConversationCellConfigurator)initWithCollectionView:(id)a3;
+- (BOOL)isMessageItemAtIndexPath:(id)path;
+- (BOOL)isSummaryItemAtIndexPath:(id)path;
+- (BOOL)updateSemiExpandedToFullyExpandedIfNecessaryAtIndexPath:(id)path renderedHeight:(double)height;
+- (CGSize)sizeForItemAtIndexPath:(id)path;
+- (MFConversationCellConfigurator)initWithCollectionView:(id)view;
 - (MFConversationCellConfiguratorDelegate)delegate;
 - (UIViewPropertyAnimator)heightChangeAnimator;
-- (id)unconfiguredCellForItemAtIndexPath:(id)a3;
-- (int64_t)expansionStatusForMessageAtIndexPath:(id)a3;
-- (void)_setCellAtIndexPath:(id)a3 highlighted:(BOOL)a4 animated:(BOOL)a5 completion:(id)a6;
-- (void)configureCell:(id)a3 forItemAtIndexPath:(id)a4 itemID:(id)a5 manualSummaryViewModel:(id)a6;
-- (void)configureCell:(id)a3 forItemAtIndexPath:(id)a4 itemID:(id)a5 messageFuture:(id)a6 contentRequest:(id)a7;
-- (void)enumerateCollapsedCellsWithBlock:(id)a3;
-- (void)enumerateExpandedCellsWithBlock:(id)a3;
-- (void)enumeratePreparedCellsWithBlock:(id)a3;
-- (void)expandCellAtIndexPath:(id)a3 animated:(BOOL)a4 highlightFirst:(BOOL)a5 expansionStatus:(int64_t)a6;
-- (void)expansionTracker:(id)a3 didChangeCollapsingAllowed:(BOOL)a4;
+- (id)unconfiguredCellForItemAtIndexPath:(id)path;
+- (int64_t)expansionStatusForMessageAtIndexPath:(id)path;
+- (void)_setCellAtIndexPath:(id)path highlighted:(BOOL)highlighted animated:(BOOL)animated completion:(id)completion;
+- (void)configureCell:(id)cell forItemAtIndexPath:(id)path itemID:(id)d manualSummaryViewModel:(id)model;
+- (void)configureCell:(id)cell forItemAtIndexPath:(id)path itemID:(id)d messageFuture:(id)future contentRequest:(id)request;
+- (void)enumerateCollapsedCellsWithBlock:(id)block;
+- (void)enumerateExpandedCellsWithBlock:(id)block;
+- (void)enumeratePreparedCellsWithBlock:(id)block;
+- (void)expandCellAtIndexPath:(id)path animated:(BOOL)animated highlightFirst:(BOOL)first expansionStatus:(int64_t)status;
+- (void)expansionTracker:(id)tracker didChangeCollapsingAllowed:(BOOL)allowed;
 - (void)resetCaches;
-- (void)setDisplayMetrics:(id)a3;
+- (void)setDisplayMetrics:(id)metrics;
 @end
 
 @implementation MFConversationCellConfigurator
@@ -30,7 +30,7 @@
   block[1] = 3221225472;
   block[2] = sub_1001B754C;
   block[3] = &unk_10064C4F8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1006DD478 != -1)
   {
     dispatch_once(&qword_1006DD478, block);
@@ -41,16 +41,16 @@
   return v2;
 }
 
-- (MFConversationCellConfigurator)initWithCollectionView:(id)a3
+- (MFConversationCellConfigurator)initWithCollectionView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v13.receiver = self;
   v13.super_class = MFConversationCellConfigurator;
   v6 = [(MFConversationCellConfigurator *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_collectionView, a3);
+    objc_storeStrong(&v6->_collectionView, view);
     v8 = [[MFConversationViewCellExpansionTracker alloc] initWithDelegate:v7];
     expansionTracker = v7->_expansionTracker;
     v7->_expansionTracker = v8;
@@ -59,32 +59,32 @@
     sizeTracker = v7->_sizeTracker;
     v7->_sizeTracker = v10;
 
-    [v5 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"kExpandedMessageCell"];
-    [v5 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"kCollapsedMessageCell"];
-    [v5 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"kCollapsedSubjectMessageCell"];
-    [v5 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"kSummaryMessageCell"];
+    [viewCopy registerClass:objc_opt_class() forCellWithReuseIdentifier:@"kExpandedMessageCell"];
+    [viewCopy registerClass:objc_opt_class() forCellWithReuseIdentifier:@"kCollapsedMessageCell"];
+    [viewCopy registerClass:objc_opt_class() forCellWithReuseIdentifier:@"kCollapsedSubjectMessageCell"];
+    [viewCopy registerClass:objc_opt_class() forCellWithReuseIdentifier:@"kSummaryMessageCell"];
   }
 
   return v7;
 }
 
-- (id)unconfiguredCellForItemAtIndexPath:(id)a3
+- (id)unconfiguredCellForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  if ([(MFConversationCellConfigurator *)self isSummaryItemAtIndexPath:v4])
+  pathCopy = path;
+  if ([(MFConversationCellConfigurator *)self isSummaryItemAtIndexPath:pathCopy])
   {
     v5 = @"kSummaryMessageCell";
   }
 
-  else if ([(MFConversationCellConfigurator *)self messageAtIndexPathIsExpandedOrSemiExpanded:v4])
+  else if ([(MFConversationCellConfigurator *)self messageAtIndexPathIsExpandedOrSemiExpanded:pathCopy])
   {
     v5 = @"kExpandedMessageCell";
   }
 
   else
   {
-    v6 = [(MFConversationCellConfigurator *)self delegate];
-    v7 = [v6 collapsedCellsShowsSubjectForCellConfigurator:self];
+    delegate = [(MFConversationCellConfigurator *)self delegate];
+    v7 = [delegate collapsedCellsShowsSubjectForCellConfigurator:self];
 
     if (v7)
     {
@@ -97,44 +97,44 @@
     }
   }
 
-  v8 = [(MFConversationCellConfigurator *)self collectionView];
-  v9 = [v8 dequeueReusableCellWithReuseIdentifier:v5 forIndexPath:v4];
+  collectionView = [(MFConversationCellConfigurator *)self collectionView];
+  v9 = [collectionView dequeueReusableCellWithReuseIdentifier:v5 forIndexPath:pathCopy];
 
   return v9;
 }
 
-- (void)configureCell:(id)a3 forItemAtIndexPath:(id)a4 itemID:(id)a5 messageFuture:(id)a6 contentRequest:(id)a7
+- (void)configureCell:(id)cell forItemAtIndexPath:(id)path itemID:(id)d messageFuture:(id)future contentRequest:(id)request
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (!v15)
+  cellCopy = cell;
+  pathCopy = path;
+  dCopy = d;
+  futureCopy = future;
+  requestCopy = request;
+  if (!futureCopy)
   {
     v17 = +[MFConversationCellConfigurator log];
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       *location = 134218498;
-      *&location[4] = v12;
+      *&location[4] = cellCopy;
       v32 = 2114;
-      v33 = v14;
+      v33 = dCopy;
       v34 = 2112;
-      v35 = v16;
+      v35 = requestCopy;
       _os_log_error_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "Fail to configure cell with nil messageFuture - cell:%p itemID: %{public}@ contentRequest: %@", location, 0x20u);
     }
   }
 
-  [v12 setItemID:v14];
-  v18 = [(MFConversationCellConfigurator *)self displayMetrics];
-  [v12 setDisplayMetrics:v18];
+  [cellCopy setItemID:dCopy];
+  displayMetrics = [(MFConversationCellConfigurator *)self displayMetrics];
+  [cellCopy setDisplayMetrics:displayMetrics];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v19 = v12;
-    v20 = [(MFConversationCellConfigurator *)self contactStore];
-    [v19 setContactStore:v20];
+    v19 = cellCopy;
+    contactStore = [(MFConversationCellConfigurator *)self contactStore];
+    [v19 setContactStore:contactStore];
 
     objc_initWeak(location, self);
     v21 = +[EFScheduler mainThreadScheduler];
@@ -145,32 +145,32 @@
     objc_copyWeak(&v30, location);
     v22 = v19;
     v27 = v22;
-    v28 = v13;
-    v23 = v16;
+    v28 = pathCopy;
+    v23 = requestCopy;
     v29 = v23;
-    [v15 onScheduler:v21 addSuccessBlock:v26];
+    [futureCopy onScheduler:v21 addSuccessBlock:v26];
 
     v24[0] = _NSConcreteStackBlock;
     v24[1] = 3221225472;
     v24[2] = sub_1001B8298;
     v24[3] = &unk_10064D028;
     v25 = v23;
-    [v15 addFailureBlock:v24];
+    [futureCopy addFailureBlock:v24];
 
     objc_destroyWeak(&v30);
     objc_destroyWeak(location);
   }
 }
 
-- (void)configureCell:(id)a3 forItemAtIndexPath:(id)a4 itemID:(id)a5 manualSummaryViewModel:(id)a6
+- (void)configureCell:(id)cell forItemAtIndexPath:(id)path itemID:(id)d manualSummaryViewModel:(id)model
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  [v10 setItemID:v12];
-  v14 = [(MFConversationCellConfigurator *)self displayMetrics];
-  [v10 setDisplayMetrics:v14];
+  cellCopy = cell;
+  pathCopy = path;
+  dCopy = d;
+  modelCopy = model;
+  [cellCopy setItemID:dCopy];
+  displayMetrics = [(MFConversationCellConfigurator *)self displayMetrics];
+  [cellCopy setDisplayMetrics:displayMetrics];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -180,39 +180,39 @@
     v18[1] = 3221225472;
     v18[2] = sub_1001B84F0;
     v18[3] = &unk_100653A50;
-    v19 = v13;
+    v19 = modelCopy;
     v16 = [(ConversationCellViewModel *)v15 initWithBuilder:v18];
-    [v10 setViewModel:v16];
+    [cellCopy setViewModel:v16];
 
-    v17 = [(MFConversationCellConfigurator *)self delegate];
-    [v17 cellConfigurator:self didConfigureCell:v10 atIndexPath:v11];
+    delegate = [(MFConversationCellConfigurator *)self delegate];
+    [delegate cellConfigurator:self didConfigureCell:cellCopy atIndexPath:pathCopy];
   }
 }
 
-- (int64_t)expansionStatusForMessageAtIndexPath:(id)a3
+- (int64_t)expansionStatusForMessageAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(MFConversationCellConfigurator *)self delegate];
-  v6 = [v5 cellConfigurator:self messageItemIDAtIndexPath:v4];
+  pathCopy = path;
+  delegate = [(MFConversationCellConfigurator *)self delegate];
+  v6 = [delegate cellConfigurator:self messageItemIDAtIndexPath:pathCopy];
   if (!v6)
   {
     v11 = +[MFConversationCellConfigurator log];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      sub_10048B33C(v4, v11);
+      sub_10048B33C(pathCopy, v11);
     }
 
     goto LABEL_7;
   }
 
-  v7 = [(MFConversationCellConfigurator *)self expansionTracker];
-  v8 = [v7 expansionStatusForCellWithItemID:v6];
+  expansionTracker = [(MFConversationCellConfigurator *)self expansionTracker];
+  v8 = [expansionTracker expansionStatusForCellWithItemID:v6];
 
   if (!v8)
   {
-    v9 = [v5 cellConfigurator:self expansionStatusForMessageAtIndexPath:v4];
-    v10 = [(MFConversationCellConfigurator *)self expansionTracker];
-    [v10 setMessageWithItemID:v6 expansionStatus:v9];
+    v9 = [delegate cellConfigurator:self expansionStatusForMessageAtIndexPath:pathCopy];
+    expansionTracker2 = [(MFConversationCellConfigurator *)self expansionTracker];
+    [expansionTracker2 setMessageWithItemID:v6 expansionStatus:v9];
 
     v11 = +[MFConversationCellConfigurator log];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -222,7 +222,7 @@
       v15 = 2114;
       v16 = v6;
       v17 = 2114;
-      v18 = v4;
+      v18 = pathCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Determined expansion status:%ld itemID:%{public}@ indexPath:%{public}@", &v13, 0x20u);
     }
 
@@ -234,53 +234,53 @@ LABEL_7:
   return v8;
 }
 
-- (BOOL)isMessageItemAtIndexPath:(id)a3
+- (BOOL)isMessageItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(MFConversationCellConfigurator *)self delegate];
-  v6 = [v5 cellConfigurator:self messageItemIDAtIndexPath:v4];
+  pathCopy = path;
+  delegate = [(MFConversationCellConfigurator *)self delegate];
+  v6 = [delegate cellConfigurator:self messageItemIDAtIndexPath:pathCopy];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (BOOL)isSummaryItemAtIndexPath:(id)a3
+- (BOOL)isSummaryItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(MFConversationCellConfigurator *)self delegate];
-  v6 = [v5 cellConfigurator:self messageItemIDAtIndexPath:v4];
+  pathCopy = path;
+  delegate = [(MFConversationCellConfigurator *)self delegate];
+  v6 = [delegate cellConfigurator:self messageItemIDAtIndexPath:pathCopy];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (CGSize)sizeForItemAtIndexPath:(id)a3
+- (CGSize)sizeForItemAtIndexPath:(id)path
 {
-  v5 = a3;
-  v6 = [(MFConversationCellConfigurator *)self delegate];
-  v7 = v6;
+  pathCopy = path;
+  delegate = [(MFConversationCellConfigurator *)self delegate];
+  v7 = delegate;
   width = CGSizeZero.width;
   height = CGSizeZero.height;
-  if (v6)
+  if (delegate)
   {
-    v10 = [v6 cellConfigurator:self messageItemIDAtIndexPath:v5];
+    v10 = [delegate cellConfigurator:self messageItemIDAtIndexPath:pathCopy];
     if (!v10)
     {
       v29 = +[NSAssertionHandler currentHandler];
       [v29 handleFailureInMethod:a2 object:self file:@"MFConversationCellConfigurator.m" lineNumber:204 description:@"messageItemID cannot be nil."];
     }
 
-    v11 = [(MFConversationCellConfigurator *)self sizeTracker];
-    [v11 displaySizeForCellWithItemID:v10];
+    sizeTracker = [(MFConversationCellConfigurator *)self sizeTracker];
+    [sizeTracker displaySizeForCellWithItemID:v10];
     v13 = v12;
     v15 = v14;
 
-    if ([(MFConversationCellConfigurator *)self isSummaryItemAtIndexPath:v5])
+    if ([(MFConversationCellConfigurator *)self isSummaryItemAtIndexPath:pathCopy])
     {
-      v16 = [(MFConversationCellConfigurator *)self sizeTracker];
-      [v16 intrinsicSizeForCellWithItemID:v10];
+      sizeTracker2 = [(MFConversationCellConfigurator *)self sizeTracker];
+      [sizeTracker2 intrinsicSizeForCellWithItemID:v10];
       v18 = v17;
       v20 = v19;
 
@@ -292,20 +292,20 @@ LABEL_7:
 
     else
     {
-      v22 = [(MFConversationCellConfigurator *)self expansionTracker];
-      v23 = [v22 expansionStatusForCellWithItemID:v10];
+      expansionTracker = [(MFConversationCellConfigurator *)self expansionTracker];
+      v23 = [expansionTracker expansionStatusForCellWithItemID:v10];
 
       if (!v23)
       {
-        v23 = [v7 cellConfigurator:self expansionStatusForMessageAtIndexPath:v5];
-        v24 = [(MFConversationCellConfigurator *)self expansionTracker];
-        [v24 setMessageWithItemID:v10 expansionStatus:v23];
+        v23 = [v7 cellConfigurator:self expansionStatusForMessageAtIndexPath:pathCopy];
+        expansionTracker2 = [(MFConversationCellConfigurator *)self expansionTracker];
+        [expansionTracker2 setMessageWithItemID:v10 expansionStatus:v23];
       }
 
       if (v23 == 1)
       {
-        v25 = [(MFConversationCellConfigurator *)self displayMetrics];
-        [MFCollapsedMessageCell defaultHeightWithDisplayMetrics:v25];
+        displayMetrics = [(MFConversationCellConfigurator *)self displayMetrics];
+        [MFCollapsedMessageCell defaultHeightWithDisplayMetrics:displayMetrics];
         v15 = v26;
       }
     }
@@ -321,72 +321,72 @@ LABEL_7:
   return result;
 }
 
-- (void)setDisplayMetrics:(id)a3
+- (void)setDisplayMetrics:(id)metrics
 {
-  v5 = a3;
-  if (([v5 isEqual:self->_displayMetrics] & 1) == 0)
+  metricsCopy = metrics;
+  if (([metricsCopy isEqual:self->_displayMetrics] & 1) == 0)
   {
-    objc_storeStrong(&self->_displayMetrics, a3);
+    objc_storeStrong(&self->_displayMetrics, metrics);
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_1001B8B98;
     v6[3] = &unk_10064DE30;
-    v7 = v5;
+    v7 = metricsCopy;
     [(MFConversationCellConfigurator *)self enumeratePreparedCellsWithBlock:v6];
   }
 }
 
-- (void)enumeratePreparedCellsWithBlock:(id)a3
+- (void)enumeratePreparedCellsWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(MFConversationCellConfigurator *)self collectionView];
-  if ([v5 numberOfSections])
+  blockCopy = block;
+  collectionView = [(MFConversationCellConfigurator *)self collectionView];
+  if ([collectionView numberOfSections])
   {
-    v6 = [v5 numberOfItemsInSection:0];
+    v6 = [collectionView numberOfItemsInSection:0];
     if (v6)
     {
-      v7 = [v5 preparedCells];
+      preparedCells = [collectionView preparedCells];
       v8[0] = _NSConcreteStackBlock;
       v8[1] = 3221225472;
       v8[2] = sub_1001B8CD4;
       v8[3] = &unk_100653A78;
-      v9 = v5;
+      v9 = collectionView;
       v11 = v6;
-      v10 = v4;
-      [v7 enumerateObjectsUsingBlock:v8];
+      v10 = blockCopy;
+      [preparedCells enumerateObjectsUsingBlock:v8];
     }
   }
 }
 
-- (void)enumerateExpandedCellsWithBlock:(id)a3
+- (void)enumerateExpandedCellsWithBlock:(id)block
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1001B8ED0;
   v5[3] = &unk_100653AA0;
-  v6 = a3;
-  v4 = v6;
+  blockCopy = block;
+  v4 = blockCopy;
   [(MFConversationCellConfigurator *)self enumeratePreparedCellsWithBlock:v5];
 }
 
-- (void)enumerateCollapsedCellsWithBlock:(id)a3
+- (void)enumerateCollapsedCellsWithBlock:(id)block
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1001B9028;
   v5[3] = &unk_100653AA0;
-  v6 = a3;
-  v4 = v6;
+  blockCopy = block;
+  v4 = blockCopy;
   [(MFConversationCellConfigurator *)self enumeratePreparedCellsWithBlock:v5];
 }
 
 - (void)resetCaches
 {
-  v3 = [(MFConversationCellConfigurator *)self expansionTracker];
-  [v3 resetRecord];
+  expansionTracker = [(MFConversationCellConfigurator *)self expansionTracker];
+  [expansionTracker resetRecord];
 
-  v4 = [(MFConversationCellConfigurator *)self sizeTracker];
-  [v4 resetAllCellSizes];
+  sizeTracker = [(MFConversationCellConfigurator *)self sizeTracker];
+  [sizeTracker resetAllCellSizes];
 
   [(MFConversationCellConfigurator *)self setLastAnimatedExpansionTimestamp:0];
 }
@@ -406,14 +406,14 @@ LABEL_7:
   return heightChangeAnimator;
 }
 
-- (void)_setCellAtIndexPath:(id)a3 highlighted:(BOOL)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)_setCellAtIndexPath:(id)path highlighted:(BOOL)highlighted animated:(BOOL)animated completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v10 = a3;
-  v11 = a6;
-  v12 = [(MFConversationCellConfigurator *)self collectionView];
-  v13 = [v12 cellForItemAtIndexPath:v10];
+  animatedCopy = animated;
+  highlightedCopy = highlighted;
+  pathCopy = path;
+  completionCopy = completion;
+  collectionView = [(MFConversationCellConfigurator *)self collectionView];
+  v13 = [collectionView cellForItemAtIndexPath:pathCopy];
 
   if (v13 && ([v13 disallowsHighlighting] & 1) == 0)
   {
@@ -421,83 +421,83 @@ LABEL_7:
     v18 = 3221225472;
     v19 = sub_1001B9364;
     v20 = &unk_10064D9D8;
-    v22 = v8;
+    v22 = highlightedCopy;
     v21 = v13;
     v14 = objc_retainBlock(&v17);
     v15 = v14;
-    if (v7)
+    if (animatedCopy)
     {
       v16 = 0.4;
-      if (v8)
+      if (highlightedCopy)
       {
         v16 = 0.45;
       }
 
-      [UIView animateWithDuration:0 delay:v14 usingSpringWithDamping:v11 initialSpringVelocity:v16 options:0.0 animations:1.0 completion:0.0, v17, v18, v19, v20];
+      [UIView animateWithDuration:0 delay:v14 usingSpringWithDamping:completionCopy initialSpringVelocity:v16 options:0.0 animations:1.0 completion:0.0, v17, v18, v19, v20];
     }
 
     else
     {
       (v14[2])(v14);
-      if (v11)
+      if (completionCopy)
       {
-        v11[2](v11, 1);
+        completionCopy[2](completionCopy, 1);
       }
     }
   }
 }
 
-- (void)expandCellAtIndexPath:(id)a3 animated:(BOOL)a4 highlightFirst:(BOOL)a5 expansionStatus:(int64_t)a6
+- (void)expandCellAtIndexPath:(id)path animated:(BOOL)animated highlightFirst:(BOOL)first expansionStatus:(int64_t)status
 {
-  v28 = a5;
-  v7 = a4;
-  v10 = a3;
+  firstCopy = first;
+  animatedCopy = animated;
+  pathCopy = path;
   v11 = +[MFConversationCellConfigurator log];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v43 = v10;
+    v43 = pathCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "cellConfigurator expandCellAtIndexPath:%@", buf, 0xCu);
   }
 
-  v12 = [(MFConversationCellConfigurator *)self delegate];
-  v29 = [(MFConversationCellConfigurator *)self collectionView];
-  v13 = [v12 cellConfigurator:self messageItemIDAtIndexPath:v10];
+  delegate = [(MFConversationCellConfigurator *)self delegate];
+  collectionView = [(MFConversationCellConfigurator *)self collectionView];
+  v13 = [delegate cellConfigurator:self messageItemIDAtIndexPath:pathCopy];
   if (!v13)
   {
     v27 = +[NSAssertionHandler currentHandler];
     [v27 handleFailureInMethod:a2 object:self file:@"MFConversationCellConfigurator.m" lineNumber:349 description:@"messageItemID cannot be nil."];
   }
 
-  v14 = [v12 cellConfigurator:self targetHeightForExpandingCellAtIndexPath:v10];
+  v14 = [delegate cellConfigurator:self targetHeightForExpandingCellAtIndexPath:pathCopy];
   if (v14)
   {
-    v15 = [(MFConversationCellConfigurator *)self sizeTracker];
-    [v29 frame];
+    sizeTracker = [(MFConversationCellConfigurator *)self sizeTracker];
+    [collectionView frame];
     v17 = v16;
     [v14 floatValue];
-    [v15 setIntrinsicSize:v13 forCellWithItemID:{v17, v18}];
+    [sizeTracker setIntrinsicSize:v13 forCellWithItemID:{v17, v18}];
   }
 
-  v19 = [(MFConversationCellConfigurator *)self expansionTracker];
-  [v19 setMessageWithItemID:v13 expansionStatus:a6];
+  expansionTracker = [(MFConversationCellConfigurator *)self expansionTracker];
+  [expansionTracker setMessageWithItemID:v13 expansionStatus:status];
 
-  v20 = [v29 collectionViewLayout];
-  [v20 setExpandingIndexPath:v10];
+  collectionViewLayout = [collectionView collectionViewLayout];
+  [collectionViewLayout setExpandingIndexPath:pathCopy];
   objc_initWeak(buf, self);
-  v21 = [(MFConversationCellConfigurator *)self heightChangeAnimator];
+  heightChangeAnimator = [(MFConversationCellConfigurator *)self heightChangeAnimator];
   v39[0] = _NSConcreteStackBlock;
   v39[1] = 3221225472;
   v39[2] = sub_1001B9964;
   v39[3] = &unk_100653AC8;
   objc_copyWeak(&v41, buf);
-  v22 = v20;
+  v22 = collectionViewLayout;
   v40 = v22;
-  [v21 addCompletion:v39];
+  [heightChangeAnimator addCompletion:v39];
 
   [(MFConversationCellConfigurator *)self setAnimatingHeightChange:1];
-  objc_initWeak(&location, v12);
-  v23 = [(MFConversationCellConfigurator *)self heightChangeAnimator];
+  objc_initWeak(&location, delegate);
+  heightChangeAnimator2 = [(MFConversationCellConfigurator *)self heightChangeAnimator];
   v32[0] = _NSConcreteStackBlock;
   v32[1] = 3221225472;
   v32[2] = sub_1001B99E0;
@@ -506,12 +506,12 @@ LABEL_7:
   objc_copyWeak(&v36, &location);
   v24 = v22;
   v33 = v24;
-  v25 = v10;
+  v25 = pathCopy;
   v34 = v25;
-  v37 = v7;
-  [v23 addAnimations:v32];
+  v37 = animatedCopy;
+  [heightChangeAnimator2 addAnimations:v32];
 
-  if (v7 && v28)
+  if (animatedCopy && firstCopy)
   {
     v30[0] = _NSConcreteStackBlock;
     v30[1] = 3221225472;
@@ -524,8 +524,8 @@ LABEL_7:
 
   else
   {
-    v26 = [(MFConversationCellConfigurator *)self heightChangeAnimator];
-    [v26 startAnimation];
+    heightChangeAnimator3 = [(MFConversationCellConfigurator *)self heightChangeAnimator];
+    [heightChangeAnimator3 startAnimation];
   }
 
   objc_destroyWeak(&v36);
@@ -536,20 +536,20 @@ LABEL_7:
   objc_destroyWeak(buf);
 }
 
-- (BOOL)updateSemiExpandedToFullyExpandedIfNecessaryAtIndexPath:(id)a3 renderedHeight:(double)a4
+- (BOOL)updateSemiExpandedToFullyExpandedIfNecessaryAtIndexPath:(id)path renderedHeight:(double)height
 {
-  v6 = a3;
-  v7 = [(MFConversationCellConfigurator *)self delegate];
-  v8 = [(MFConversationCellConfigurator *)self sizeTracker];
-  v9 = [v8 delegate];
+  pathCopy = path;
+  delegate = [(MFConversationCellConfigurator *)self delegate];
+  sizeTracker = [(MFConversationCellConfigurator *)self sizeTracker];
+  delegate2 = [sizeTracker delegate];
   v10 = 0;
-  if ([(MFConversationCellConfigurator *)self expansionStatusForMessageAtIndexPath:v6]== 2 && v7 && v9)
+  if ([(MFConversationCellConfigurator *)self expansionStatusForMessageAtIndexPath:pathCopy]== 2 && delegate && delegate2)
   {
-    v11 = [v7 cellConfigurator:self messageItemIDAtIndexPath:v6];
-    if (v11 && ([v9 defaultSemiExpandedHeightForTracker:v8], v12 >= a4))
+    v11 = [delegate cellConfigurator:self messageItemIDAtIndexPath:pathCopy];
+    if (v11 && ([delegate2 defaultSemiExpandedHeightForTracker:sizeTracker], v12 >= height))
     {
-      v13 = [(MFConversationCellConfigurator *)self expansionTracker];
-      [v13 setMessageWithItemID:v11 expansionStatus:3];
+      expansionTracker = [(MFConversationCellConfigurator *)self expansionTracker];
+      [expansionTracker setMessageWithItemID:v11 expansionStatus:3];
 
       v14 = +[MFConversationCellConfigurator log];
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -557,7 +557,7 @@ LABEL_7:
         v16 = 138543618;
         v17 = v11;
         v18 = 2048;
-        v19 = a4;
+        heightCopy = height;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "updating SemiExpanded to Expanded for itemID:%{public}@ based on renderedHeight:%f", &v16, 0x16u);
       }
 
@@ -575,8 +575,8 @@ LABEL_7:
 
 - (BOOL)animatePendingHeightChangesIfNecessary
 {
-  v3 = [(MFConversationCellConfigurator *)self lastAnimatedExpansionTimestamp];
-  [v3 timeIntervalSinceNow];
+  lastAnimatedExpansionTimestamp = [(MFConversationCellConfigurator *)self lastAnimatedExpansionTimestamp];
+  [lastAnimatedExpansionTimestamp timeIntervalSinceNow];
   v5 = v4;
 
   if (![(MFConversationCellConfigurator *)self animatingHeightChange]&& (v5 >= 0.0 || v5 <= -1.0))
@@ -584,27 +584,27 @@ LABEL_7:
     return 0;
   }
 
-  v8 = [(MFConversationCellConfigurator *)self collectionView];
-  v9 = [v8 collectionViewLayout];
-  [v9 invalidateLayout];
+  collectionView = [(MFConversationCellConfigurator *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
+  [collectionViewLayout invalidateLayout];
 
   objc_initWeak(&location, self);
-  v10 = [(MFConversationCellConfigurator *)self heightChangeAnimator];
+  heightChangeAnimator = [(MFConversationCellConfigurator *)self heightChangeAnimator];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1001B9EE4;
   v11[3] = &unk_10064C838;
   objc_copyWeak(&v12, &location);
-  [v10 addAnimations:v11];
+  [heightChangeAnimator addAnimations:v11];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
   return 1;
 }
 
-- (void)expansionTracker:(id)a3 didChangeCollapsingAllowed:(BOOL)a4
+- (void)expansionTracker:(id)tracker didChangeCollapsingAllowed:(BOOL)allowed
 {
-  v5 = [(MFConversationCellConfigurator *)self delegate:a3];
+  v5 = [(MFConversationCellConfigurator *)self delegate:tracker];
   [v5 cellConfigurator:self didInvalidateConfigurationForCellsAtIndexPaths:0];
 }
 

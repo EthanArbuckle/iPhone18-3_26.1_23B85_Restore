@@ -1,20 +1,20 @@
 @interface HDCodableOnboardingCompletion
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isValidWithError:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isValidWithError:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)decodedCompletionDate;
 - (id)decodedModificationDate;
 - (id)decodedUUID;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCountryCodeProvenance:(BOOL)a3;
-- (void)setHasDeleted:(BOOL)a3;
-- (void)setHasModificationDate:(BOOL)a3;
-- (void)setHasVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCountryCodeProvenance:(BOOL)provenance;
+- (void)setHasDeleted:(BOOL)deleted;
+- (void)setHasModificationDate:(BOOL)date;
+- (void)setHasVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableOnboardingCompletion
@@ -56,8 +56,8 @@
   if ([(HDCodableOnboardingCompletion *)self hasUuid])
   {
     v3 = MEMORY[0x277CCAD78];
-    v4 = [(HDCodableOnboardingCompletion *)self uuid];
-    v5 = [v3 hk_UUIDWithData:v4];
+    uuid = [(HDCodableOnboardingCompletion *)self uuid];
+    v5 = [v3 hk_UUIDWithData:uuid];
   }
 
   else
@@ -68,11 +68,11 @@
   return v5;
 }
 
-- (BOOL)isValidWithError:(id *)a3
+- (BOOL)isValidWithError:(id *)error
 {
-  v5 = [(HDCodableOnboardingCompletion *)self decodedUUID];
+  decodedUUID = [(HDCodableOnboardingCompletion *)self decodedUUID];
 
-  if (v5)
+  if (decodedUUID)
   {
     if ([(HDCodableOnboardingCompletion *)self hasModificationDate])
     {
@@ -108,13 +108,13 @@
     v7 = @"Failed to decode onboarding completion due to missing UUID";
   }
 
-  [MEMORY[0x277CCA9B8] hk_assignError:a3 code:3 format:v7];
+  [MEMORY[0x277CCA9B8] hk_assignError:error code:3 format:v7];
   return 0;
 }
 
-- (void)setHasVersion:(BOOL)a3
+- (void)setHasVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 8;
   }
@@ -127,9 +127,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasModificationDate:(BOOL)a3
+- (void)setHasModificationDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 4;
   }
@@ -142,9 +142,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasDeleted:(BOOL)a3
+- (void)setHasDeleted:(BOOL)deleted
 {
-  if (a3)
+  if (deleted)
   {
     v3 = 16;
   }
@@ -157,9 +157,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasCountryCodeProvenance:(BOOL)a3
+- (void)setHasCountryCodeProvenance:(BOOL)provenance
 {
-  if (a3)
+  if (provenance)
   {
     v3 = 2;
   }
@@ -178,20 +178,20 @@
   v8.receiver = self;
   v8.super_class = HDCodableOnboardingCompletion;
   v4 = [(HDCodableOnboardingCompletion *)&v8 description];
-  v5 = [(HDCodableOnboardingCompletion *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableOnboardingCompletion *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   uuid = self->_uuid;
   if (uuid)
   {
-    [v3 setObject:uuid forKey:@"uuid"];
+    [dictionary setObject:uuid forKey:@"uuid"];
   }
 
   featureIdentifier = self->_featureIdentifier;
@@ -259,27 +259,27 @@ LABEL_15:
   syncIdentity = self->_syncIdentity;
   if (syncIdentity)
   {
-    v14 = [(HDCodableSyncIdentity *)syncIdentity dictionaryRepresentation];
-    [v4 setObject:v14 forKey:@"syncIdentity"];
+    dictionaryRepresentation = [(HDCodableSyncIdentity *)syncIdentity dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"syncIdentity"];
   }
 
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v12 = v4;
+  toCopy = to;
+  v12 = toCopy;
   if (self->_uuid)
   {
     PBDataWriterWriteDataField();
-    v4 = v12;
+    toCopy = v12;
   }
 
   if (self->_featureIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v12;
+    toCopy = v12;
   }
 
   has = self->_has;
@@ -287,7 +287,7 @@ LABEL_15:
   {
     version = self->_version;
     PBDataWriterWriteInt64Field();
-    v4 = v12;
+    toCopy = v12;
     has = self->_has;
   }
 
@@ -295,13 +295,13 @@ LABEL_15:
   {
     completionDate = self->_completionDate;
     PBDataWriterWriteDoubleField();
-    v4 = v12;
+    toCopy = v12;
   }
 
   if (self->_countryCode)
   {
     PBDataWriterWriteStringField();
-    v4 = v12;
+    toCopy = v12;
   }
 
   v8 = self->_has;
@@ -309,7 +309,7 @@ LABEL_15:
   {
     modificationDate = self->_modificationDate;
     PBDataWriterWriteDoubleField();
-    v4 = v12;
+    toCopy = v12;
     v8 = self->_has;
     if ((v8 & 0x10) == 0)
     {
@@ -330,64 +330,64 @@ LABEL_13:
 
   deleted = self->_deleted;
   PBDataWriterWriteBOOLField();
-  v4 = v12;
+  toCopy = v12;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_14:
     countryCodeProvenance = self->_countryCodeProvenance;
     PBDataWriterWriteInt64Field();
-    v4 = v12;
+    toCopy = v12;
   }
 
 LABEL_15:
   if (self->_syncIdentity)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v12;
+    toCopy = v12;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (self->_uuid)
   {
-    [v4 setUuid:?];
-    v4 = v7;
+    [toCopy setUuid:?];
+    toCopy = v7;
   }
 
   if (self->_featureIdentifier)
   {
     [v7 setFeatureIdentifier:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   has = self->_has;
   if ((has & 8) != 0)
   {
-    *(v4 + 4) = self->_version;
-    *(v4 + 76) |= 8u;
+    *(toCopy + 4) = self->_version;
+    *(toCopy + 76) |= 8u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v4 + 1) = *&self->_completionDate;
-    *(v4 + 76) |= 1u;
+    *(toCopy + 1) = *&self->_completionDate;
+    *(toCopy + 76) |= 1u;
   }
 
   if (self->_countryCode)
   {
     [v7 setCountryCode:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   v6 = self->_has;
   if ((v6 & 4) != 0)
   {
-    *(v4 + 3) = *&self->_modificationDate;
-    *(v4 + 76) |= 4u;
+    *(toCopy + 3) = *&self->_modificationDate;
+    *(toCopy + 76) |= 4u;
     v6 = self->_has;
     if ((v6 & 0x10) == 0)
     {
@@ -406,31 +406,31 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  *(v4 + 72) = self->_deleted;
-  *(v4 + 76) |= 0x10u;
+  *(toCopy + 72) = self->_deleted;
+  *(toCopy + 76) |= 0x10u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_14:
-    *(v4 + 2) = self->_countryCodeProvenance;
-    *(v4 + 76) |= 2u;
+    *(toCopy + 2) = self->_countryCodeProvenance;
+    *(toCopy + 76) |= 2u;
   }
 
 LABEL_15:
   if (self->_syncIdentity)
   {
     [v7 setSyncIdentity:?];
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_uuid copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_uuid copyWithZone:zone];
   v7 = *(v5 + 64);
   *(v5 + 64) = v6;
 
-  v8 = [(NSString *)self->_featureIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_featureIdentifier copyWithZone:zone];
   v9 = *(v5 + 48);
   *(v5 + 48) = v8;
 
@@ -448,7 +448,7 @@ LABEL_15:
     *(v5 + 76) |= 1u;
   }
 
-  v11 = [(NSString *)self->_countryCode copyWithZone:a3];
+  v11 = [(NSString *)self->_countryCode copyWithZone:zone];
   v12 = *(v5 + 40);
   *(v5 + 40) = v11;
 
@@ -488,23 +488,23 @@ LABEL_8:
   }
 
 LABEL_9:
-  v14 = [(HDCodableSyncIdentity *)self->_syncIdentity copyWithZone:a3];
+  v14 = [(HDCodableSyncIdentity *)self->_syncIdentity copyWithZone:zone];
   v15 = *(v5 + 56);
   *(v5 + 56) = v14;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_38;
   }
 
   uuid = self->_uuid;
-  if (uuid | *(v4 + 8))
+  if (uuid | *(equalCopy + 8))
   {
     if (![(NSData *)uuid isEqual:?])
     {
@@ -513,7 +513,7 @@ LABEL_9:
   }
 
   featureIdentifier = self->_featureIdentifier;
-  if (featureIdentifier | *(v4 + 6))
+  if (featureIdentifier | *(equalCopy + 6))
   {
     if (![(NSString *)featureIdentifier isEqual:?])
     {
@@ -522,35 +522,35 @@ LABEL_9:
   }
 
   has = self->_has;
-  v8 = *(v4 + 76);
+  v8 = *(equalCopy + 76);
   if ((has & 8) != 0)
   {
-    if ((*(v4 + 76) & 8) == 0 || self->_version != *(v4 + 4))
+    if ((*(equalCopy + 76) & 8) == 0 || self->_version != *(equalCopy + 4))
     {
       goto LABEL_38;
     }
   }
 
-  else if ((*(v4 + 76) & 8) != 0)
+  else if ((*(equalCopy + 76) & 8) != 0)
   {
     goto LABEL_38;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 76) & 1) == 0 || self->_completionDate != *(v4 + 1))
+    if ((*(equalCopy + 76) & 1) == 0 || self->_completionDate != *(equalCopy + 1))
     {
       goto LABEL_38;
     }
   }
 
-  else if (*(v4 + 76))
+  else if (*(equalCopy + 76))
   {
     goto LABEL_38;
   }
 
   countryCode = self->_countryCode;
-  if (countryCode | *(v4 + 5))
+  if (countryCode | *(equalCopy + 5))
   {
     if (![(NSString *)countryCode isEqual:?])
     {
@@ -558,12 +558,12 @@ LABEL_9:
     }
 
     has = self->_has;
-    v8 = *(v4 + 76);
+    v8 = *(equalCopy + 76);
   }
 
   if ((has & 4) != 0)
   {
-    if ((v8 & 4) == 0 || self->_modificationDate != *(v4 + 3))
+    if ((v8 & 4) == 0 || self->_modificationDate != *(equalCopy + 3))
     {
       goto LABEL_38;
     }
@@ -591,16 +591,16 @@ LABEL_38:
     goto LABEL_38;
   }
 
-  v10 = *(v4 + 72);
+  v10 = *(equalCopy + 72);
   if (self->_deleted)
   {
-    if ((*(v4 + 72) & 1) == 0)
+    if ((*(equalCopy + 72) & 1) == 0)
     {
       goto LABEL_38;
     }
   }
 
-  else if (*(v4 + 72))
+  else if (*(equalCopy + 72))
   {
     goto LABEL_38;
   }
@@ -608,7 +608,7 @@ LABEL_38:
 LABEL_26:
   if ((has & 2) != 0)
   {
-    if ((v8 & 2) == 0 || self->_countryCodeProvenance != *(v4 + 2))
+    if ((v8 & 2) == 0 || self->_countryCodeProvenance != *(equalCopy + 2))
     {
       goto LABEL_38;
     }
@@ -620,7 +620,7 @@ LABEL_26:
   }
 
   syncIdentity = self->_syncIdentity;
-  if (syncIdentity | *(v4 + 7))
+  if (syncIdentity | *(equalCopy + 7))
   {
     v12 = [(HDCodableSyncIdentity *)syncIdentity isEqual:?];
   }
@@ -743,48 +743,48 @@ LABEL_21:
   return v4 ^ v3 ^ v7 ^ v11 ^ v12 ^ v15 ^ v19 ^ v20 ^ [(HDCodableSyncIdentity *)self->_syncIdentity hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v9 = v4;
-  if (*(v4 + 8))
+  fromCopy = from;
+  v9 = fromCopy;
+  if (*(fromCopy + 8))
   {
     [(HDCodableOnboardingCompletion *)self setUuid:?];
-    v4 = v9;
+    fromCopy = v9;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(HDCodableOnboardingCompletion *)self setFeatureIdentifier:?];
-    v4 = v9;
+    fromCopy = v9;
   }
 
-  v5 = *(v4 + 76);
+  v5 = *(fromCopy + 76);
   if ((v5 & 8) != 0)
   {
-    self->_version = *(v4 + 4);
+    self->_version = *(fromCopy + 4);
     *&self->_has |= 8u;
-    v5 = *(v4 + 76);
+    v5 = *(fromCopy + 76);
   }
 
   if (v5)
   {
-    self->_completionDate = *(v4 + 1);
+    self->_completionDate = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(HDCodableOnboardingCompletion *)self setCountryCode:?];
-    v4 = v9;
+    fromCopy = v9;
   }
 
-  v6 = *(v4 + 76);
+  v6 = *(fromCopy + 76);
   if ((v6 & 4) != 0)
   {
-    self->_modificationDate = *(v4 + 3);
+    self->_modificationDate = *(fromCopy + 3);
     *&self->_has |= 4u;
-    v6 = *(v4 + 76);
+    v6 = *(fromCopy + 76);
     if ((v6 & 0x10) == 0)
     {
 LABEL_13:
@@ -797,23 +797,23 @@ LABEL_13:
     }
   }
 
-  else if ((*(v4 + 76) & 0x10) == 0)
+  else if ((*(fromCopy + 76) & 0x10) == 0)
   {
     goto LABEL_13;
   }
 
-  self->_deleted = *(v4 + 72);
+  self->_deleted = *(fromCopy + 72);
   *&self->_has |= 0x10u;
-  if ((*(v4 + 76) & 2) != 0)
+  if ((*(fromCopy + 76) & 2) != 0)
   {
 LABEL_14:
-    self->_countryCodeProvenance = *(v4 + 2);
+    self->_countryCodeProvenance = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 
 LABEL_15:
   syncIdentity = self->_syncIdentity;
-  v8 = *(v4 + 7);
+  v8 = *(fromCopy + 7);
   if (syncIdentity)
   {
     if (!v8)
@@ -834,10 +834,10 @@ LABEL_15:
     syncIdentity = [(HDCodableOnboardingCompletion *)self setSyncIdentity:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_24:
 
-  MEMORY[0x2821F96F8](syncIdentity, v4);
+  MEMORY[0x2821F96F8](syncIdentity, fromCopy);
 }
 
 @end

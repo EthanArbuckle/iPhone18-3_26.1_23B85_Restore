@@ -1,20 +1,20 @@
 @interface StocksTodayAgent
 - (_TtC9StocksApp16StocksTodayAgent)init;
-- (void)bundleSubscriptionDidChange:(id)a3 previousBundleSubscription:(id)a4;
+- (void)bundleSubscriptionDidChange:(id)change previousBundleSubscription:(id)subscription;
 - (void)dealloc;
 - (void)markPurchaseDirty;
-- (void)operationThrottler:(id)a3 performAsyncOperationWithCompletion:(id)a4;
+- (void)operationThrottler:(id)throttler performAsyncOperationWithCompletion:(id)completion;
 @end
 
 @implementation StocksTodayAgent
 
-- (void)operationThrottler:(id)a3 performAsyncOperationWithCompletion:(id)a4
+- (void)operationThrottler:(id)throttler performAsyncOperationWithCompletion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   v6 = swift_allocObject();
   *(v6 + 16) = v5;
   swift_unknownObjectRetain();
-  v7 = self;
+  selfCopy = self;
   sub_100010F80(sub_100037E5C, v6);
   swift_unknownObjectRelease();
 }
@@ -23,11 +23,11 @@
 {
   ObjectType = swift_getObjectType();
   v4 = objc_opt_self();
-  v5 = self;
-  v6 = [v4 defaultCenter];
-  [v6 removeObserver:v5];
+  selfCopy = self;
+  defaultCenter = [v4 defaultCenter];
+  [defaultCenter removeObserver:selfCopy];
 
-  v7.receiver = v5;
+  v7.receiver = selfCopy;
   v7.super_class = ObjectType;
   [(StocksTodayAgent *)&v7 dealloc];
 }
@@ -39,7 +39,7 @@
   return result;
 }
 
-- (void)bundleSubscriptionDidChange:(id)a3 previousBundleSubscription:(id)a4
+- (void)bundleSubscriptionDidChange:(id)change previousBundleSubscription:(id)subscription
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC9StocksApp16StocksTodayAgent_operationThrottler);
   if (v4)

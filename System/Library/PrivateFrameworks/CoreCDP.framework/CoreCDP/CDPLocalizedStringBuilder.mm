@@ -1,38 +1,38 @@
 @interface CDPLocalizedStringBuilder
-+ (id)builderForKey:(id)a3;
-+ (id)builderForKey:(id)a3 inTable:(id)a4;
-- (id)addDeviceClass:(id)a3;
-- (id)addSecretType:(unint64_t)a3;
-- (id)addUnqualifiedDeviceClass:(id)a3;
++ (id)builderForKey:(id)key;
++ (id)builderForKey:(id)key inTable:(id)table;
+- (id)addDeviceClass:(id)class;
+- (id)addSecretType:(unint64_t)type;
+- (id)addUnqualifiedDeviceClass:(id)class;
 - (id)currentKey;
 @end
 
 @implementation CDPLocalizedStringBuilder
 
-+ (id)builderForKey:(id)a3
++ (id)builderForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = objc_alloc_init(CDPLocalizedStringBuilder);
   key = v4->_key;
-  v4->_key = v3;
+  v4->_key = keyCopy;
 
   return v4;
 }
 
-+ (id)builderForKey:(id)a3 inTable:(id)a4
++ (id)builderForKey:(id)key inTable:(id)table
 {
-  v6 = a4;
-  v7 = [a1 builderForKey:a3];
+  tableCopy = table;
+  v7 = [self builderForKey:key];
   v8 = v7[2];
-  v7[2] = v6;
+  v7[2] = tableCopy;
 
   return v7;
 }
 
-- (id)addDeviceClass:(id)a3
+- (id)addDeviceClass:(id)class
 {
   key = self->_key;
-  v5 = _CDPSuffixForDeviceClass(a3);
+  v5 = _CDPSuffixForDeviceClass(class);
   v6 = [(NSString *)key stringByAppendingString:v5];
   v7 = self->_key;
   self->_key = v6;
@@ -40,10 +40,10 @@
   return self;
 }
 
-- (id)addUnqualifiedDeviceClass:(id)a3
+- (id)addUnqualifiedDeviceClass:(id)class
 {
   key = self->_key;
-  v5 = _CDPSuffixForUnqualifiedDeviceClass(a3);
+  v5 = _CDPSuffixForUnqualifiedDeviceClass(class);
   v6 = [(NSString *)key stringByAppendingString:v5];
   v7 = self->_key;
   self->_key = v6;
@@ -51,10 +51,10 @@
   return self;
 }
 
-- (id)addSecretType:(unint64_t)a3
+- (id)addSecretType:(unint64_t)type
 {
   key = self->_key;
-  if (a3 == 2)
+  if (type == 2)
   {
     v5 = @"_PASSWORD";
   }

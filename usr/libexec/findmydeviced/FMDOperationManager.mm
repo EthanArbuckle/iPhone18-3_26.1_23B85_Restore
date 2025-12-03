@@ -1,7 +1,7 @@
 @interface FMDOperationManager
 + (id)sharedManager;
-- (BOOL)addAction:(id)a3 forIdentifier:(id)a4;
-- (BOOL)cancelAction:(id)a3 forIdentifier:(id)a4;
+- (BOOL)addAction:(id)action forIdentifier:(id)identifier;
+- (BOOL)cancelAction:(id)action forIdentifier:(id)identifier;
 - (FMDOperationManager)init;
 @end
 
@@ -36,56 +36,56 @@
   return v2;
 }
 
-- (BOOL)addAction:(id)a3 forIdentifier:(id)a4
+- (BOOL)addAction:(id)action forIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  actionCopy = action;
+  identifierCopy = identifier;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
   v20 = 0;
-  v8 = [(FMDOperationManager *)self serialQueue];
+  serialQueue = [(FMDOperationManager *)self serialQueue];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10017FCD0;
   v12[3] = &unk_1002CFB10;
-  v13 = v6;
-  v14 = self;
-  v15 = v7;
+  v13 = actionCopy;
+  selfCopy = self;
+  v15 = identifierCopy;
   v16 = &v17;
-  v9 = v7;
-  v10 = v6;
-  dispatch_sync(v8, v12);
+  v9 = identifierCopy;
+  v10 = actionCopy;
+  dispatch_sync(serialQueue, v12);
 
-  LOBYTE(v7) = *(v18 + 24);
+  LOBYTE(identifierCopy) = *(v18 + 24);
   _Block_object_dispose(&v17, 8);
-  return v7;
+  return identifierCopy;
 }
 
-- (BOOL)cancelAction:(id)a3 forIdentifier:(id)a4
+- (BOOL)cancelAction:(id)action forIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  actionCopy = action;
+  identifierCopy = identifier;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
   v20 = 0;
-  v8 = [(FMDOperationManager *)self serialQueue];
+  serialQueue = [(FMDOperationManager *)self serialQueue];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100180084;
   v12[3] = &unk_1002CFB10;
-  v13 = v6;
-  v14 = self;
-  v15 = v7;
+  v13 = actionCopy;
+  selfCopy = self;
+  v15 = identifierCopy;
   v16 = &v17;
-  v9 = v7;
-  v10 = v6;
-  dispatch_sync(v8, v12);
+  v9 = identifierCopy;
+  v10 = actionCopy;
+  dispatch_sync(serialQueue, v12);
 
-  LOBYTE(v7) = *(v18 + 24);
+  LOBYTE(identifierCopy) = *(v18 + 24);
   _Block_object_dispose(&v17, 8);
-  return v7;
+  return identifierCopy;
 }
 
 @end

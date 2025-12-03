@@ -1,13 +1,13 @@
 @interface AMSAutoBugCaptureDiagnosticActionOptions
-- (AMSAutoBugCaptureDiagnosticActionOptions)initWithLogArchive:(BOOL)a3 getNetworkInfo:(BOOL)a4 crashAndSpinLogs:(BOOL)a5 diagnosticExtensionOptions:(id)a6 probeOptions:(id)a7;
+- (AMSAutoBugCaptureDiagnosticActionOptions)initWithLogArchive:(BOOL)archive getNetworkInfo:(BOOL)info crashAndSpinLogs:(BOOL)logs diagnosticExtensionOptions:(id)options probeOptions:(id)probeOptions;
 @end
 
 @implementation AMSAutoBugCaptureDiagnosticActionOptions
 
-- (AMSAutoBugCaptureDiagnosticActionOptions)initWithLogArchive:(BOOL)a3 getNetworkInfo:(BOOL)a4 crashAndSpinLogs:(BOOL)a5 diagnosticExtensionOptions:(id)a6 probeOptions:(id)a7
+- (AMSAutoBugCaptureDiagnosticActionOptions)initWithLogArchive:(BOOL)archive getNetworkInfo:(BOOL)info crashAndSpinLogs:(BOOL)logs diagnosticExtensionOptions:(id)options probeOptions:(id)probeOptions
 {
-  v8 = a6;
-  v9 = a7;
+  optionsCopy = options;
+  probeOptionsCopy = probeOptions;
   return DiagnosticActionOptions.init(logArchive:getNetworkInfo:crashAndSpinLogs:diagnosticExtensionOptions:probeOptions:)();
 }
 

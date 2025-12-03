@@ -2,7 +2,7 @@
 - (id)buttons;
 - (id)message;
 - (id)title;
-- (void)_activateInstallLaterAlert:(id)a3;
+- (void)_activateInstallLaterAlert:(id)alert;
 - (void)downloadAndInstall;
 - (void)downloadAndInstallLater;
 @end
@@ -13,9 +13,9 @@
 {
   location[2] = self;
   location[1] = a2;
-  v6 = [(SUSUIBaseSoftwareUpdateAlertItem *)self descriptor];
-  v5 = [(SUDescriptor *)v6 documentation];
-  location[0] = [v5 notificationTitleString];
+  descriptor = [(SUSUIBaseSoftwareUpdateAlertItem *)self descriptor];
+  documentation = [(SUDescriptor *)descriptor documentation];
+  location[0] = [documentation notificationTitleString];
 
   if (location[0])
   {
@@ -36,11 +36,11 @@
 
 - (id)message
 {
-  v14 = self;
+  selfCopy = self;
   v13[1] = a2;
-  v10 = [(SUSUIBaseSoftwareUpdateAlertItem *)self descriptor];
-  v9 = [(SUDescriptor *)v10 documentation];
-  v13[0] = [v9 notificationBodyString];
+  descriptor = [(SUSUIBaseSoftwareUpdateAlertItem *)self descriptor];
+  documentation = [(SUDescriptor *)descriptor documentation];
+  v13[0] = [documentation notificationBodyString];
 
   if (v13[0])
   {
@@ -61,8 +61,8 @@
     }
 
     v4 = v11;
-    v5 = [(SUSUIBaseSoftwareUpdateAlertItem *)v14 updateName];
-    v15 = [NSString stringWithValidatedFormat:v4 validFormatSpecifiers:@"%@" error:v5];
+    updateName = [(SUSUIBaseSoftwareUpdateAlertItem *)selfCopy updateName];
+    v15 = [NSString stringWithValidatedFormat:v4 validFormatSpecifiers:@"%@" error:updateName];
 
     v12 = 1;
     objc_storeStrong(&v11, 0);
@@ -82,7 +82,7 @@
   v31 = 0;
   v30 = 0;
   v29 = 0;
-  v28 = self;
+  selfCopy = self;
   v11 = [SUSUIAlertButtonDefinition alloc];
   v13 = sub_58F8();
   v12 = [v13 localizedStringForKey:@"SOFTWARE_UPDATE_AVAILABLE_ALERT_ACTION_DOWNLOAD_AND_INSTALL" value:? table:?];
@@ -91,7 +91,7 @@
   v24 = 0;
   v25 = sub_4304;
   v26 = &unk_5CCB0;
-  v27 = v28;
+  v27 = selfCopy;
   v2 = [SUSUIAlertButtonDefinition initWithLabel:v11 presentationStyle:"initWithLabel:presentationStyle:isPreferredButton:handler:" isPreferredButton:v12 handler:?];
   v3 = v31;
   v31 = v2;
@@ -103,7 +103,7 @@
   v21[2] = 3221225472;
   v21[3] = sub_43D4;
   v21[4] = &unk_5CCB0;
-  v22[0] = v28;
+  v22[0] = selfCopy;
   v4 = [(SUSUIAlertButtonDefinition *)v14 initWithLabel:v15 presentationStyle:0 isPreferredButton:0 handler:?];
   v5 = v30;
   v30 = v4;
@@ -111,7 +111,7 @@
   v17 = [SUSUIAlertButtonDefinition alloc];
   v19 = sub_58F8();
   v18 = [v19 localizedStringForKey:@"SOFTWARE_UPDATE_AVAILABLE_ALERT_ACTION_DETAILS" value:&stru_62DF0 table:@"ui_alerts"];
-  v21[0] = v28;
+  v21[0] = selfCopy;
   v6 = [(SUSUIAlertButtonDefinition *)v17 initWithLabel:v18 presentationStyle:2 isPreferredButton:0 handler:?];
   v7 = v29;
   v29 = v6;
@@ -127,7 +127,7 @@
   objc_storeStrong(v21, 0);
   objc_storeStrong(v22, 0);
   objc_storeStrong(&v27, 0);
-  objc_storeStrong(&v28, 0);
+  objc_storeStrong(&selfCopy, 0);
   objc_storeStrong(&v29, 0);
   objc_storeStrong(&v30, 0);
   objc_storeStrong(&v31, 0);
@@ -138,7 +138,7 @@
 
 - (void)downloadAndInstall
 {
-  v20 = self;
+  selfCopy = self;
   v19[1] = a2;
   v19[0] = self;
   v11 = _NSConcreteStackBlock;
@@ -147,23 +147,23 @@
   v14 = sub_48C4;
   v15 = &unk_5D008;
   v16 = v19[0];
-  v17 = v20;
+  v17 = selfCopy;
   v18 = objc_retainBlock(&v11);
   v2 = [SUSUIFullScreenAuthenticationAlert alloc];
-  v5 = [v19[0] descriptor];
-  v4 = [v19[0] softwareUpdateController];
-  v3 = [v4 clientQueue];
+  descriptor = [v19[0] descriptor];
+  softwareUpdateController = [v19[0] softwareUpdateController];
+  clientQueue = [softwareUpdateController clientQueue];
   v8[1] = _NSConcreteStackBlock;
   v8[2] = 3221225472;
   v8[3] = sub_4E58;
   v8[4] = &unk_5D030;
   v9 = v18;
-  v10 = [SUSUIFullScreenAuthenticationAlert initWithDescriptor:v2 autoInstallForecast:"initWithDescriptor:autoInstallForecast:forInstallTonight:canDeferInstallation:completionQueue:completionBlock:" forInstallTonight:v5 canDeferInstallation:? completionQueue:? completionBlock:?];
+  v10 = [SUSUIFullScreenAuthenticationAlert initWithDescriptor:v2 autoInstallForecast:"initWithDescriptor:autoInstallForecast:forInstallTonight:canDeferInstallation:completionQueue:completionBlock:" forInstallTonight:descriptor canDeferInstallation:? completionQueue:? completionBlock:?];
 
-  v7 = [v19[0] softwareUpdateController];
+  softwareUpdateController2 = [v19[0] softwareUpdateController];
   v6 = v10;
   v8[0] = v19[0];
-  [v7 presentFullScreenAlert:v6 completion:?];
+  [softwareUpdateController2 presentFullScreenAlert:v6 completion:?];
 
   objc_storeStrong(v8, 0);
   objc_storeStrong(&v10, 0);
@@ -176,24 +176,24 @@
 
 - (void)downloadAndInstallLater
 {
-  v14 = self;
+  selfCopy = self;
   v13[1] = a2;
   v13[0] = self;
   v2 = [SUDownloadOptions alloc];
-  v3 = [(SUSUIBaseSoftwareUpdateAlertItem *)v14 descriptor];
+  descriptor = [(SUSUIBaseSoftwareUpdateAlertItem *)selfCopy descriptor];
   v12 = [v2 initWithDescriptor:?];
 
   [v12 setDownloadOnly:1];
   [v12 setUserUpdateTonight:1];
-  v5 = [(SUSUIBaseSoftwareUpdateAlertItem *)v14 softwareUpdateController];
+  softwareUpdateController = [(SUSUIBaseSoftwareUpdateAlertItem *)selfCopy softwareUpdateController];
   v4 = v12;
   v6 = _NSConcreteStackBlock;
   v7 = 3221225472;
   v8 = sub_50B0;
   v9 = &unk_5D080;
   v10 = v13[0];
-  v11 = v14;
-  [(SUSUISoftwareUpdateController *)v5 startDownloadWithOptions:v4 withResult:?];
+  v11 = selfCopy;
+  [(SUSUISoftwareUpdateController *)softwareUpdateController startDownloadWithOptions:v4 withResult:?];
 
   objc_storeStrong(&v11, 0);
   objc_storeStrong(&v10, 0);
@@ -201,12 +201,12 @@
   objc_storeStrong(v13, 0);
 }
 
-- (void)_activateInstallLaterAlert:(id)a3
+- (void)_activateInstallLaterAlert:(id)alert
 {
-  v27 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, alert);
   v25 = SUSUILog();
   v24 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
@@ -223,20 +223,20 @@
   }
 
   objc_storeStrong(&v25, 0);
-  v22 = v27;
+  v22 = selfCopy;
   v10 = +[SUKeybagInterface sharedInstance];
-  v11 = [(SUKeybagInterface *)v10 hasPasscodeSet];
+  hasPasscodeSet = [(SUKeybagInterface *)v10 hasPasscodeSet];
 
-  if (v11)
+  if (hasPasscodeSet)
   {
-    v9 = [v22 softwareUpdateController];
+    softwareUpdateController = [v22 softwareUpdateController];
     v16 = _NSConcreteStackBlock;
     v17 = -1073741824;
     v18 = 0;
     v19 = sub_58AC;
     v20 = &unk_5D0A8;
     v21 = v22;
-    [v9 _presentAuthenticationUIForInstallation:&v16 withInstallType:1 withInstallOperationForecast:location[0]];
+    [softwareUpdateController _presentAuthenticationUIForInstallation:&v16 withInstallType:1 withInstallOperationForecast:location[0]];
 
     objc_storeStrong(&v21, 0);
   }
@@ -244,13 +244,13 @@
   else
   {
     v4 = [SUSUISoftwareUpdateInstallLaterAlertItem alloc];
-    v6 = [v22 descriptor];
-    v5 = [v22 softwareUpdateController];
-    v15 = [SUSUISoftwareUpdateInstallLaterAlertItem initWithDescriptor:v4 softwareUpdateController:"initWithDescriptor:softwareUpdateController:tryTonightOperationForecast:" tryTonightOperationForecast:v6];
+    descriptor = [v22 descriptor];
+    softwareUpdateController2 = [v22 softwareUpdateController];
+    v15 = [SUSUISoftwareUpdateInstallLaterAlertItem initWithDescriptor:v4 softwareUpdateController:"initWithDescriptor:softwareUpdateController:tryTonightOperationForecast:" tryTonightOperationForecast:descriptor];
 
-    v8 = [v22 softwareUpdateController];
-    v7 = [v8 alertPresentationManager];
-    [v7 presentAlert:v15 animated:1];
+    softwareUpdateController3 = [v22 softwareUpdateController];
+    alertPresentationManager = [softwareUpdateController3 alertPresentationManager];
+    [alertPresentationManager presentAlert:v15 animated:1];
 
     [v22 dismissAlert];
     objc_storeStrong(&v15, 0);

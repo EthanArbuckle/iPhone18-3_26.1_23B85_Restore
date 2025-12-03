@@ -17,30 +17,30 @@
 - (BOOL)shouldProhibitStoreAppsActionForCurrentNetworkConditions;
 - (BOOL)shouldProhibitVideosActionForCurrentNetworkConditions;
 - (HSCloudAvailabilityController)init;
-- (void)_applicationWillEnterForeground:(id)a3;
-- (void)_onQueue_updateCanShowCloudDownloadButtonsWithNotification:(BOOL)a3;
-- (void)_onQueue_updateCanShowCloudTracksWithNotification:(BOOL)a3;
+- (void)_applicationWillEnterForeground:(id)foreground;
+- (void)_onQueue_updateCanShowCloudDownloadButtonsWithNotification:(BOOL)notification;
+- (void)_onQueue_updateCanShowCloudTracksWithNotification:(BOOL)notification;
 - (void)_onQueue_updateIsCellularDataRestrictedForMusic;
-- (void)_setNewIsNetworkReachable:(BOOL)a3 networkType:(int64_t)a4;
-- (void)_wifiStateDidChangeNotification:(id)a3;
+- (void)_setNewIsNetworkReachable:(BOOL)reachable networkType:(int64_t)type;
+- (void)_wifiStateDidChangeNotification:(id)notification;
 - (void)airplaneModeChanged;
 - (void)beginObservingNetworkReachability;
-- (void)connectionStateChanged:(id)a3 connection:(int)a4 dataConnectionStatusInfo:(id)a5;
+- (void)connectionStateChanged:(id)changed connection:(int)connection dataConnectionStatusInfo:(id)info;
 - (void)dealloc;
 - (void)endObservingNetworkReachability;
-- (void)environmentMonitorDidChangeNetworkReachability:(id)a3;
-- (void)environmentMonitorDidChangeNetworkType:(id)a3;
+- (void)environmentMonitorDidChangeNetworkReachability:(id)reachability;
+- (void)environmentMonitorDidChangeNetworkType:(id)type;
 @end
 
 @implementation HSCloudAvailabilityController
 
-- (void)connectionStateChanged:(id)a3 connection:(int)a4 dataConnectionStatusInfo:(id)a5
+- (void)connectionStateChanged:(id)changed connection:(int)connection dataConnectionStatusInfo:(id)info
 {
   v25 = *MEMORY[0x277D85DE8];
-  v7 = a5;
+  infoCopy = info;
   telephonyClient = self->_telephonyClient;
   v18 = 0;
-  v9 = a3;
+  changedCopy = changed;
   v10 = [(CoreTelephonyClient *)telephonyClient getCurrentDataSubscriptionContextSync:&v18];
   v11 = v18;
   if (v11)
@@ -52,20 +52,20 @@
       *buf = 138412802;
       v20 = v13;
       v21 = 2048;
-      v22 = self;
+      selfCopy = self;
       v23 = 2114;
       v24 = v11;
       _os_log_impl(&dword_254418000, v12, OS_LOG_TYPE_DEFAULT, "<%@ %p> Error getting current data context. error=%{public}@", buf, 0x20u);
     }
   }
 
-  v14 = [v10 uuid];
-  v15 = [v9 uuid];
+  uuid = [v10 uuid];
+  uuid2 = [changedCopy uuid];
 
-  v16 = [v14 isEqual:v15];
+  v16 = [uuid isEqual:uuid2];
   if (v16)
   {
-    v17 = [v7 state] == 2;
+    v17 = [infoCopy state] == 2;
     if (self->_isCellularDataActive != v17)
     {
       self->_isCellularDataActive = v17;
@@ -75,17 +75,17 @@
   }
 }
 
-- (void)environmentMonitorDidChangeNetworkType:(id)a3
+- (void)environmentMonitorDidChangeNetworkType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __72__HSCloudAvailabilityController_environmentMonitorDidChangeNetworkType___block_invoke;
   v7[3] = &unk_279779E90;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = typeCopy;
+  selfCopy = self;
+  v6 = typeCopy;
   dispatch_async(accessQueue, v7);
 }
 
@@ -118,17 +118,17 @@ void __72__HSCloudAvailabilityController_environmentMonitorDidChangeNetworkType_
   [v2 postNotificationName:@"HSCloudAvailabilityControllerCanShowCloudTracksDidChangeNotification" object:*(a1 + 32)];
 }
 
-- (void)environmentMonitorDidChangeNetworkReachability:(id)a3
+- (void)environmentMonitorDidChangeNetworkReachability:(id)reachability
 {
-  v4 = a3;
+  reachabilityCopy = reachability;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __80__HSCloudAvailabilityController_environmentMonitorDidChangeNetworkReachability___block_invoke;
   v7[3] = &unk_279779E90;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = reachabilityCopy;
+  selfCopy = self;
+  v6 = reachabilityCopy;
   dispatch_async(accessQueue, v7);
 }
 
@@ -155,9 +155,9 @@ void __80__HSCloudAvailabilityController_environmentMonitorDidChangeNetworkReach
   [v2 postNotificationName:@"HSCloudAvailabilityControllerNetworkReachabilityDidChangeNotification" object:*(a1 + 32)];
 }
 
-- (void)_onQueue_updateCanShowCloudTracksWithNotification:(BOOL)a3
+- (void)_onQueue_updateCanShowCloudTracksWithNotification:(BOOL)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
   if ([(HSCloudAvailabilityController *)self _hasWiFiCapability])
   {
     isWiFiEnabled = self->_isWiFiEnabled;
@@ -195,7 +195,7 @@ void __80__HSCloudAvailabilityController_environmentMonitorDidChangeNetworkReach
   {
     self->_canShowCloudMusic = isShowingAllMusic;
     self->_canShowCloudVideo = v9;
-    if (v3)
+    if (notificationCopy)
     {
       v10 = dispatch_get_global_queue(0, 0);
       block[0] = MEMORY[0x277D85DD0];
@@ -231,7 +231,7 @@ LABEL_21:
   if (self->_hasProperNetworkConditionsToShowCloudMedia != v12)
   {
     self->_hasProperNetworkConditionsToShowCloudMedia = v12;
-    if (v3)
+    if (notificationCopy)
     {
       v13 = dispatch_get_global_queue(0, 0);
       v14[0] = MEMORY[0x277D85DD0];
@@ -256,9 +256,9 @@ void __83__HSCloudAvailabilityController__onQueue_updateCanShowCloudTracksWithNo
   [v2 postNotificationName:@"HSCloudAvailabilityControllerHasProperNetworkConditionsToShowCloudMediaDidChangeNotification" object:*(a1 + 32)];
 }
 
-- (void)_onQueue_updateCanShowCloudDownloadButtonsWithNotification:(BOOL)a3
+- (void)_onQueue_updateCanShowCloudDownloadButtonsWithNotification:(BOOL)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
   if ([(HSCloudAvailabilityController *)self _hasCellularCapability]&& !self->_isAirplaneModeActive && self->_isCellularDataActive)
   {
     v5 = 1;
@@ -273,7 +273,7 @@ void __83__HSCloudAvailabilityController__onQueue_updateCanShowCloudTracksWithNo
   if (self->_canShowCloudDownloadButtons != v6)
   {
     self->_canShowCloudDownloadButtons = v6;
-    if (v3)
+    if (notificationCopy)
     {
 
       [(HSCloudAvailabilityController *)self _onQueue_updateCanShowCloudTracksWithNotification:1];
@@ -300,16 +300,16 @@ void __83__HSCloudAvailabilityController__onQueue_updateCanShowCloudTracksWithNo
   }
 }
 
-- (void)_setNewIsNetworkReachable:(BOOL)a3 networkType:(int64_t)a4
+- (void)_setNewIsNetworkReachable:(BOOL)reachable networkType:(int64_t)type
 {
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __71__HSCloudAvailabilityController__setNewIsNetworkReachable_networkType___block_invoke;
   block[3] = &unk_279779E68;
-  v6 = a3;
+  reachableCopy = reachable;
   block[4] = self;
-  block[5] = a4;
+  block[5] = type;
   dispatch_async(accessQueue, block);
 }
 
@@ -436,7 +436,7 @@ void __55__HSCloudAvailabilityController__hasCellularCapability__block_invoke()
   return v3;
 }
 
-- (void)_applicationWillEnterForeground:(id)a3
+- (void)_applicationWillEnterForeground:(id)foreground
 {
   v15 = *MEMORY[0x277D85DE8];
   isCellularDataRestrictedForMusic = self->_isCellularDataRestrictedForMusic;
@@ -483,13 +483,13 @@ uint64_t __65__HSCloudAvailabilityController__applicationWillEnterForeground___b
   return result;
 }
 
-- (void)_wifiStateDidChangeNotification:(id)a3
+- (void)_wifiStateDidChangeNotification:(id)notification
 {
   v4 = +[HSWiFiManager sharedWiFiManager];
-  v5 = [v4 isWiFiEnabled];
+  isWiFiEnabled = [v4 isWiFiEnabled];
 
   v6 = +[HSWiFiManager sharedWiFiManager];
-  v7 = [v6 isWiFiAssociated];
+  isWiFiAssociated = [v6 isWiFiAssociated];
 
   accessQueue = self->_accessQueue;
   v9[0] = MEMORY[0x277D85DD0];
@@ -497,8 +497,8 @@ uint64_t __65__HSCloudAvailabilityController__applicationWillEnterForeground___b
   v9[2] = __65__HSCloudAvailabilityController__wifiStateDidChangeNotification___block_invoke;
   v9[3] = &unk_279779E40;
   v9[4] = self;
-  v10 = v5;
-  v11 = v7;
+  v10 = isWiFiEnabled;
+  v11 = isWiFiAssociated;
   dispatch_async(accessQueue, v9);
 }
 
@@ -522,14 +522,14 @@ uint64_t __65__HSCloudAvailabilityController__wifiStateDidChangeNotification___b
 
 - (void)airplaneModeChanged
 {
-  v3 = [(RadiosPreferences *)self->_radiosPreferences airplaneMode];
+  airplaneMode = [(RadiosPreferences *)self->_radiosPreferences airplaneMode];
   accessQueue = self->_accessQueue;
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __52__HSCloudAvailabilityController_airplaneModeChanged__block_invoke;
   v5[3] = &unk_279779E18;
   v5[4] = self;
-  v6 = v3;
+  v6 = airplaneMode;
   dispatch_async(accessQueue, v5);
 }
 
@@ -750,16 +750,16 @@ void *__66__HSCloudAvailabilityController_beginObservingNetworkReachability__blo
 - (BOOL)isCellularDataRestrictedForVideos
 {
   v6 = *MEMORY[0x277D85DE8];
-  v2 = [(HSCloudAvailabilityController *)self _isAutoDownloadOnCellularAllowed];
+  _isAutoDownloadOnCellularAllowed = [(HSCloudAvailabilityController *)self _isAutoDownloadOnCellularAllowed];
   v3 = os_log_create("com.apple.amp.HomeSharing", "Availability");
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5[0] = 67109120;
-    v5[1] = v2;
+    v5[1] = _isAutoDownloadOnCellularAllowed;
     _os_log_impl(&dword_254418000, v3, OS_LOG_TYPE_DEFAULT, "Videos allow cellular data: %d", v5, 8u);
   }
 
-  return !v2;
+  return !_isAutoDownloadOnCellularAllowed;
 }
 
 - (BOOL)shouldProhibitMusicActionForCurrentNetworkConditions
@@ -837,17 +837,17 @@ void *__66__HSCloudAvailabilityController_beginObservingNetworkReachability__blo
 {
   [(CoreTelephonyClient *)self->_telephonyClient setDelegate:0];
   [(RadiosPreferences *)self->_radiosPreferences setDelegate:0];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:@"UIApplicationWillEnterForegroundNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"UIApplicationWillEnterForegroundNotification" object:0];
 
   if (self->_preferencesChangedNotifyTokenIsValid)
   {
     notify_cancel(self->_preferencesChangedNotifyToken);
   }
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
   v5 = +[HSWiFiManager sharedWiFiManager];
-  [v4 removeObserver:self name:@"HSWiFiManagerWiFiDidChangeNotification" object:v5];
+  [defaultCenter2 removeObserver:self name:@"HSWiFiManagerWiFiDidChangeNotification" object:v5];
 
   if (self->_ctServerConnection)
   {
@@ -922,8 +922,8 @@ void *__66__HSCloudAvailabilityController_beginObservingNetworkReachability__blo
     handler[3] = &unk_279779DC8;
     handler[4] = &buf;
     v13->_preferencesChangedNotifyTokenIsValid = notify_register_dispatch("com.apple.mobileipod-prefsChanged", &v13->_preferencesChangedNotifyToken, v14, handler) == 0;
-    v15 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v15 addObserver:v13 selector:sel__applicationWillEnterForeground_ name:@"UIApplicationWillEnterForegroundNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v13 selector:sel__applicationWillEnterForeground_ name:@"UIApplicationWillEnterForegroundNotification" object:0];
 
     v27 = MEMORY[0x277D85DD0];
     v28 = 3221225472;
@@ -951,14 +951,14 @@ void *__66__HSCloudAvailabilityController_beginObservingNetworkReachability__blo
     v19 = +[HSWiFiManager sharedWiFiManager];
     v13->_isWiFiAssociated = [v19 isWiFiAssociated];
 
-    v20 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
     v21 = +[HSWiFiManager sharedWiFiManager];
-    [v20 addObserver:v13 selector:sel__wifiStateDidChangeNotification_ name:@"HSWiFiManagerWiFiDidChangeNotification" object:v21];
+    [defaultCenter2 addObserver:v13 selector:sel__wifiStateDidChangeNotification_ name:@"HSWiFiManagerWiFiDidChangeNotification" object:v21];
 
-    v22 = [MEMORY[0x277D7FA90] sharedMonitor];
-    [v22 registerObserver:v13];
-    v13->_isNetworkReachable = [v22 isRemoteServerLikelyReachable];
-    v13->_networkType = [v22 networkType];
+    mEMORY[0x277D7FA90] = [MEMORY[0x277D7FA90] sharedMonitor];
+    [mEMORY[0x277D7FA90] registerObserver:v13];
+    v13->_isNetworkReachable = [mEMORY[0x277D7FA90] isRemoteServerLikelyReachable];
+    v13->_networkType = [mEMORY[0x277D7FA90] networkType];
     v13->_networkReachabilityObservationCount = 0;
     [(HSCloudAvailabilityController *)v13 _onQueue_updateCanShowCloudDownloadButtonsWithNotification:0];
     [(HSCloudAvailabilityController *)v13 _onQueue_updateCanShowCloudTracksWithNotification:0];

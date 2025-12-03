@@ -1,29 +1,29 @@
 @interface EKAutocompleter
-- (BOOL)directorySearchWithCompletion:(id)a3;
+- (BOOL)directorySearchWithCompletion:(id)completion;
 - (BOOL)isRunning;
-- (EKAutocompleter)initWithDelegate:(id)a3;
+- (EKAutocompleter)initWithDelegate:(id)delegate;
 - (EKAutocompleterDelegate)delegate;
 - (id)allResults;
-- (id)autocompleteResultsFromDirectoryRecords:(id)a3 withType:(int64_t)a4;
+- (id)autocompleteResultsFromDirectoryRecords:(id)records withType:(int64_t)type;
 - (id)cnResults;
-- (id)removeIgnoredAddressesFromResults:(id)a3;
-- (id)searchFor:(id)a3 onSource:(id)a4 withContext:(id)a5;
-- (void)autocompleteFetch:(id)a3 didFailWithError:(id)a4;
-- (void)autocompleteFetch:(id)a3 didReceiveResults:(id)a4;
-- (void)autocompleteFetchDidBeginNetworkActivity:(id)a3;
-- (void)autocompleteFetchDidEndNetworkActivity:(id)a3;
-- (void)autocompleteFetchDidFinish:(id)a3;
+- (id)removeIgnoredAddressesFromResults:(id)results;
+- (id)searchFor:(id)for onSource:(id)source withContext:(id)context;
+- (void)autocompleteFetch:(id)fetch didFailWithError:(id)error;
+- (void)autocompleteFetch:(id)fetch didReceiveResults:(id)results;
+- (void)autocompleteFetchDidBeginNetworkActivity:(id)activity;
+- (void)autocompleteFetchDidEndNetworkActivity:(id)activity;
+- (void)autocompleteFetchDidFinish:(id)finish;
 - (void)cancelSearch;
 - (void)clearLastResults;
-- (void)setIgnoredAddresses:(id)a3;
-- (void)setIgnoredAddresses:(id)a3 ignoredAddressesFromParticipants:(id)a4;
+- (void)setIgnoredAddresses:(id)addresses;
+- (void)setIgnoredAddresses:(id)addresses ignoredAddressesFromParticipants:(id)participants;
 @end
 
 @implementation EKAutocompleter
 
-- (EKAutocompleter)initWithDelegate:(id)a3
+- (EKAutocompleter)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v18.receiver = self;
   v18.super_class = EKAutocompleter;
   v5 = [(EKAutocompleter *)&v18 init];
@@ -65,12 +65,12 @@
     autocompleteStore = v5->_autocompleteStore;
     v5->_autocompleteStore = v15;
 
-    if ([v4 conformsToProtocol:&unk_1F1B9C2C0])
+    if ([delegateCopy conformsToProtocol:&unk_1F1B9C2C0])
     {
-      [(EKAutocompleter *)v5 setDelegate:v4];
+      [(EKAutocompleter *)v5 setDelegate:delegateCopy];
       if (objc_opt_respondsToSelector())
       {
-        [v4 autocompleterSetCNAutocompleteStore:v5->_autocompleteStore];
+        [delegateCopy autocompleterSetCNAutocompleteStore:v5->_autocompleteStore];
       }
     }
   }
@@ -78,44 +78,44 @@
   return v5;
 }
 
-- (id)searchFor:(id)a3 onSource:(id)a4 withContext:(id)a5
+- (id)searchFor:(id)for onSource:(id)source withContext:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  forCopy = for;
+  sourceCopy = source;
+  contextCopy = context;
   v11 = EKLogHandle;
   if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_DEBUG))
   {
-    [EKAutocompleter searchFor:v8 onSource:v11 withContext:?];
+    [EKAutocompleter searchFor:forCopy onSource:v11 withContext:?];
   }
 
-  v12 = [v8 length];
-  if (!v10 && !v12)
+  v12 = [forCopy length];
+  if (!contextCopy && !v12)
   {
     [(EKAutocompleter *)self cancelSearch];
     [(EKAutocompleter *)self clearLastResults];
-    v13 = [(EKAutocompleter *)self delegate];
-    [v13 autocompleter:self finishedWithError:0];
+    delegate = [(EKAutocompleter *)self delegate];
+    [delegate autocompleter:self finishedWithError:0];
 
-    v14 = 0;
+    allResults = 0;
     goto LABEL_27;
   }
 
-  v15 = [(EKAutocompleter *)self prefix];
-  if ([v15 isEqualToString:v8])
+  prefix = [(EKAutocompleter *)self prefix];
+  if ([prefix isEqualToString:forCopy])
   {
-    v16 = [(EKAutocompleter *)self source];
-    v17 = [v16 isEqual:v9];
+    source = [(EKAutocompleter *)self source];
+    v17 = [source isEqual:sourceCopy];
 
     if (v17)
     {
       v18 = EKLogHandle;
       if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_DEBUG))
       {
-        [EKAutocompleter searchFor:v8 onSource:v18 withContext:self];
+        [EKAutocompleter searchFor:forCopy onSource:v18 withContext:self];
       }
 
-      v14 = [(EKAutocompleter *)self allResults];
+      allResults = [(EKAutocompleter *)self allResults];
       goto LABEL_27;
     }
   }
@@ -124,13 +124,13 @@
   {
   }
 
-  [(EKAutocompleter *)self setPrefix:v8];
-  [(EKAutocompleter *)self setSource:v9];
-  v19 = [(EKAutocompleter *)self source];
-  v20 = [v19 eventStore];
-  v21 = [v20 blockList];
+  [(EKAutocompleter *)self setPrefix:forCopy];
+  [(EKAutocompleter *)self setSource:sourceCopy];
+  source2 = [(EKAutocompleter *)self source];
+  eventStore = [source2 eventStore];
+  blockList = [eventStore blockList];
   blockList = self->_blockList;
-  self->_blockList = v21;
+  self->_blockList = blockList;
 
   [(EKAutocompleter *)self cancelSearch];
   [(EKAutocompleter *)self clearLastResults];
@@ -152,9 +152,9 @@
 
   v24 = v23;
   _Block_object_dispose(&v33, 8);
-  v25 = [v23 request];
-  [v25 setSearchString:v8];
-  [v25 setSearchType:3];
+  request = [v23 request];
+  [request setSearchString:forCopy];
+  [request setSearchType:3];
   if ([(EKAutocompleter *)self findPeople])
   {
     v26 = [(EKAutocompleter *)self excludeLocal]^ 1;
@@ -165,7 +165,7 @@
     v26 = 0;
   }
 
-  [v25 setIncludeContacts:v26];
+  [request setIncludeContacts:v26];
   if ([(EKAutocompleter *)self findSuggestions])
   {
     v27 = [(EKAutocompleter *)self excludeLocal]^ 1;
@@ -176,7 +176,7 @@
     v27 = 0;
   }
 
-  [v25 setIncludeSuggestions:v27];
+  [request setIncludeSuggestions:v27];
   if ([(EKAutocompleter *)self findRecents])
   {
     v28 = [(EKAutocompleter *)self excludeLocal]^ 1;
@@ -187,29 +187,29 @@
     v28 = 0;
   }
 
-  [v25 setIncludeRecents:v28];
-  [v25 setIncludeDirectoryServers:{-[EKAutocompleter useACDirectorySearch](self, "useACDirectorySearch")}];
-  [v25 setFetchContext:v10];
-  [v25 setShouldIncludeGroupResults:{-[EKAutocompleter findGroups](self, "findGroups")}];
-  [v25 setIncludeCalendarServers:0];
+  [request setIncludeRecents:v28];
+  [request setIncludeDirectoryServers:{-[EKAutocompleter useACDirectorySearch](self, "useACDirectorySearch")}];
+  [request setFetchContext:contextCopy];
+  [request setShouldIncludeGroupResults:{-[EKAutocompleter findGroups](self, "findGroups")}];
+  [request setIncludeCalendarServers:0];
   [(EKAutocompleter *)self setAutocompleteRunning:1];
-  v29 = [(EKAutocompleter *)self autocompleteStore];
-  v30 = [v29 scheduleFetchRequest:v25];
+  autocompleteStore = [(EKAutocompleter *)self autocompleteStore];
+  v30 = [autocompleteStore scheduleFetchRequest:request];
   [(EKAutocompleter *)self setAutocompletionSearchRequest:v30];
 
   if ([(EKAutocompleter *)self isRunning])
   {
-    v14 = 0;
+    allResults = 0;
   }
 
   else
   {
-    v14 = [(EKAutocompleter *)self allResults];
+    allResults = [(EKAutocompleter *)self allResults];
   }
 
 LABEL_27:
 
-  return v14;
+  return allResults;
 }
 
 - (void)clearLastResults
@@ -220,16 +220,16 @@ LABEL_27:
     [(EKAutocompleter *)v3 clearLastResults];
   }
 
-  v4 = [(EKAutocompleter *)self contactResults];
-  [v4 removeAllObjects];
+  contactResults = [(EKAutocompleter *)self contactResults];
+  [contactResults removeAllObjects];
 
-  v5 = [(EKAutocompleter *)self directorySearchQueue];
+  directorySearchQueue = [(EKAutocompleter *)self directorySearchQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __35__EKAutocompleter_clearLastResults__block_invoke;
   block[3] = &unk_1E77FD418;
   block[4] = self;
-  dispatch_sync(v5, block);
+  dispatch_sync(directorySearchQueue, block);
 }
 
 void __35__EKAutocompleter_clearLastResults__block_invoke(uint64_t a1)
@@ -241,11 +241,11 @@ void __35__EKAutocompleter_clearLastResults__block_invoke(uint64_t a1)
 - (void)cancelSearch
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = a1;
-  v4 = [a2 prefix];
+  selfCopy = self;
+  prefix = [a2 prefix];
   v6 = 138412290;
-  v7 = v4;
-  _os_log_debug_impl(&dword_1A805E000, v3, OS_LOG_TYPE_DEBUG, "[EKAutocomplete] Cancel search for %@", &v6, 0xCu);
+  v7 = prefix;
+  _os_log_debug_impl(&dword_1A805E000, selfCopy, OS_LOG_TYPE_DEBUG, "[EKAutocomplete] Cancel search for %@", &v6, 0xCu);
 
   v5 = *MEMORY[0x1E69E9840];
 }
@@ -257,16 +257,16 @@ void __35__EKAutocompleter_clearLastResults__block_invoke(uint64_t a1)
     return 1;
   }
 
-  v4 = [(EKAutocompleter *)self directorySearchOperation];
-  v5 = [v4 isExecuting];
+  directorySearchOperation = [(EKAutocompleter *)self directorySearchOperation];
+  isExecuting = [directorySearchOperation isExecuting];
 
-  return v5;
+  return isExecuting;
 }
 
 - (id)allResults
 {
-  v3 = [(EKAutocompleter *)self contactResults];
-  v4 = [(EKAutocompleter *)self removeIgnoredAddressesFromResults:v3];
+  contactResults = [(EKAutocompleter *)self contactResults];
+  v4 = [(EKAutocompleter *)self removeIgnoredAddressesFromResults:contactResults];
 
   return v4;
 }
@@ -275,15 +275,15 @@ void __35__EKAutocompleter_clearLastResults__block_invoke(uint64_t a1)
 {
   v25 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E695DFA0];
-  v4 = [(EKAutocompleter *)self contactResults];
-  v5 = [v3 orderedSetWithArray:v4];
+  contactResults = [(EKAutocompleter *)self contactResults];
+  v5 = [v3 orderedSetWithArray:contactResults];
 
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = [(EKAutocompleter *)self contactResults];
-  v7 = [v6 copy];
+  contactResults2 = [(EKAutocompleter *)self contactResults];
+  v7 = [contactResults2 copy];
 
   v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v8)
@@ -300,13 +300,13 @@ void __35__EKAutocompleter_clearLastResults__block_invoke(uint64_t a1)
         }
 
         v12 = *(*(&v20 + 1) + 8 * i);
-        v13 = [v12 value];
-        v14 = [v13 address];
+        value = [v12 value];
+        address = [value address];
 
-        if (v14)
+        if (address)
         {
-          v15 = [(EKAutocompleter *)self addressesToIgnore];
-          v16 = [v15 containsObject:v14];
+          addressesToIgnore = [(EKAutocompleter *)self addressesToIgnore];
+          v16 = [addressesToIgnore containsObject:address];
 
           if (v16)
           {
@@ -321,29 +321,29 @@ void __35__EKAutocompleter_clearLastResults__block_invoke(uint64_t a1)
     while (v9);
   }
 
-  v17 = [v5 array];
+  array = [v5 array];
 
   v18 = *MEMORY[0x1E69E9840];
 
-  return v17;
+  return array;
 }
 
-- (void)setIgnoredAddresses:(id)a3 ignoredAddressesFromParticipants:(id)a4
+- (void)setIgnoredAddresses:(id)addresses ignoredAddressesFromParticipants:(id)participants
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v7, "count") + objc_msgSend(v6, "count")}];
-  if ([v6 count])
+  addressesCopy = addresses;
+  participantsCopy = participants;
+  v8 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(participantsCopy, "count") + objc_msgSend(addressesCopy, "count")}];
+  if ([addressesCopy count])
   {
-    [v8 addObjectsFromArray:v6];
+    [v8 addObjectsFromArray:addressesCopy];
   }
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v9 = v7;
+  v9 = participantsCopy;
   v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v10)
   {
@@ -359,38 +359,38 @@ void __35__EKAutocompleter_clearLastResults__block_invoke(uint64_t a1)
         }
 
         v14 = *(*(&v21 + 1) + 8 * i);
-        v15 = [v14 emailAddress];
+        emailAddress = [v14 emailAddress];
         v16 = [v14 URL];
-        v17 = [v16 absoluteString];
+        absoluteString = [v16 absoluteString];
 
-        if (![v17 hasMailto])
+        if (![absoluteString hasMailto])
         {
-          v18 = 0;
-          if (!v15)
+          stringRemovingMailto = 0;
+          if (!emailAddress)
           {
             goto LABEL_13;
           }
 
 LABEL_12:
-          [v8 addObject:v15];
+          [v8 addObject:emailAddress];
           goto LABEL_13;
         }
 
-        v18 = [v17 stringRemovingMailto];
-        if (v15)
+        stringRemovingMailto = [absoluteString stringRemovingMailto];
+        if (emailAddress)
         {
           goto LABEL_12;
         }
 
 LABEL_13:
-        if (v18)
+        if (stringRemovingMailto)
         {
-          [v8 addObject:v18];
+          [v8 addObject:stringRemovingMailto];
         }
 
-        if (v17)
+        if (absoluteString)
         {
-          [v8 addObject:v17];
+          [v8 addObject:absoluteString];
         }
       }
 
@@ -400,19 +400,19 @@ LABEL_13:
     while (v11);
   }
 
-  v19 = [v8 allObjects];
-  [(EKAutocompleter *)self setIgnoredAddresses:v19];
+  allObjects = [v8 allObjects];
+  [(EKAutocompleter *)self setIgnoredAddresses:allObjects];
 
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setIgnoredAddresses:(id)a3
+- (void)setIgnoredAddresses:(id)addresses
 {
   v35[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  addressesCopy = addresses;
+  if (addressesCopy)
   {
-    v5 = v4;
+    v5 = addressesCopy;
   }
 
   else
@@ -421,14 +421,14 @@ LABEL_13:
   }
 
   v6 = [MEMORY[0x1E695DFA8] setWithArray:v5];
-  if ([v4 count])
+  if ([addressesCopy count])
   {
-    v23 = self;
-    v7 = [MEMORY[0x1E6992F50] defaultProvider];
+    selfCopy = self;
+    defaultProvider = [MEMORY[0x1E6992F50] defaultProvider];
     v35[0] = *MEMORY[0x1E695C208];
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v35 count:1];
-    v24 = v4;
-    v9 = [v7 unifiedContactsForHandleStrings:v4 keysToFetch:v8];
+    v24 = addressesCopy;
+    v9 = [defaultProvider unifiedContactsForHandleStrings:addressesCopy keysToFetch:v8];
 
     v31 = 0u;
     v32 = 0u;
@@ -454,8 +454,8 @@ LABEL_13:
           v26 = 0u;
           v27 = 0u;
           v28 = 0u;
-          v16 = [v15 emailAddresses];
-          v17 = [v16 countByEnumeratingWithState:&v25 objects:v33 count:16];
+          emailAddresses = [v15 emailAddresses];
+          v17 = [emailAddresses countByEnumeratingWithState:&v25 objects:v33 count:16];
           if (v17)
           {
             v18 = v17;
@@ -466,14 +466,14 @@ LABEL_13:
               {
                 if (*v26 != v19)
                 {
-                  objc_enumerationMutation(v16);
+                  objc_enumerationMutation(emailAddresses);
                 }
 
-                v21 = [*(*(&v25 + 1) + 8 * j) value];
-                [v6 addObject:v21];
+                value = [*(*(&v25 + 1) + 8 * j) value];
+                [v6 addObject:value];
               }
 
-              v18 = [v16 countByEnumeratingWithState:&v25 objects:v33 count:16];
+              v18 = [emailAddresses countByEnumeratingWithState:&v25 objects:v33 count:16];
             }
 
             while (v18);
@@ -486,8 +486,8 @@ LABEL_13:
       while (v12);
     }
 
-    self = v23;
-    v4 = v24;
+    self = selfCopy;
+    addressesCopy = v24;
   }
 
   [(EKAutocompleter *)self setAddressesToIgnore:v6];
@@ -495,21 +495,21 @@ LABEL_13:
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (id)removeIgnoredAddressesFromResults:(id)a3
+- (id)removeIgnoredAddressesFromResults:(id)results
 {
-  v4 = a3;
-  v5 = [(EKAutocompleter *)self addressesToIgnore];
-  if ([v5 count])
+  resultsCopy = results;
+  addressesToIgnore = [(EKAutocompleter *)self addressesToIgnore];
+  if ([addressesToIgnore count])
   {
   }
 
   else
   {
-    v6 = [(CalBlockList *)self->_blockList isEmpty];
+    isEmpty = [(CalBlockList *)self->_blockList isEmpty];
 
-    if (v6)
+    if (isEmpty)
     {
-      v7 = v4;
+      v7 = resultsCopy;
       goto LABEL_6;
     }
   }
@@ -520,7 +520,7 @@ LABEL_13:
   v10[3] = &unk_1E77FD8A0;
   v10[4] = self;
   v8 = [MEMORY[0x1E696AE18] predicateWithBlock:v10];
-  v7 = [v4 filteredArrayUsingPredicate:v8];
+  v7 = [resultsCopy filteredArrayUsingPredicate:v8];
 
 LABEL_6:
 
@@ -576,25 +576,25 @@ LABEL_8:
   return v14;
 }
 
-- (void)autocompleteFetch:(id)a3 didReceiveResults:(id)a4
+- (void)autocompleteFetch:(id)fetch didReceiveResults:(id)results
 {
   v44 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = v7;
-  v10 = [(EKAutocompleter *)self autocompletionSearchRequest];
+  fetchCopy = fetch;
+  resultsCopy = results;
+  selfCopy = self;
+  v9 = resultsCopy;
+  autocompletionSearchRequest = [(EKAutocompleter *)self autocompletionSearchRequest];
 
-  if (v10 == v6)
+  if (autocompletionSearchRequest == fetchCopy)
   {
-    v31 = v6;
+    v31 = fetchCopy;
     v11 = EKLogHandle;
     if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_INFO))
     {
       v12 = v11;
-      v13 = [(EKAutocompleter *)self prefix];
+      prefix = [(EKAutocompleter *)self prefix];
       *buf = 138412546;
-      v41 = v13;
+      v41 = prefix;
       v42 = 2112;
       v43 = v9;
       _os_log_impl(&dword_1A805E000, v12, OS_LOG_TYPE_INFO, ":: :: CNAutocomplete Update %@ with %@", buf, 0x16u);
@@ -620,33 +620,33 @@ LABEL_8:
           }
 
           v15 = *(*(&v35 + 1) + 8 * i);
-          v16 = [v15 value];
-          v17 = [v16 address];
+          value = [v15 value];
+          address = [value address];
 
-          v18 = [v15 resultType];
-          v19 = [v15 resultType];
-          [(EKAutocompleter *)v8 addressesToIgnore];
-          v21 = v20 = v8;
-          v22 = [v15 value];
-          v23 = [v22 address];
-          v24 = [v21 containsObject:v23];
+          resultType = [v15 resultType];
+          resultType2 = [v15 resultType];
+          [(EKAutocompleter *)selfCopy addressesToIgnore];
+          v21 = v20 = selfCopy;
+          value2 = [v15 value];
+          address2 = [value2 address];
+          v24 = [v21 containsObject:address2];
 
-          v8 = v20;
-          if (v17)
+          selfCopy = v20;
+          if (address)
           {
             v25 = 1;
           }
 
           else
           {
-            v25 = v19 == 3;
+            v25 = resultType2 == 3;
           }
 
-          v26 = v25 || v18 == 1;
+          v26 = v25 || resultType == 1;
           if (v26 && (v24 & 1) == 0)
           {
-            v27 = [(EKAutocompleter *)v20 contactResults];
-            [v27 addObject:v15];
+            contactResults = [(EKAutocompleter *)v20 contactResults];
+            [contactResults addObject:v15];
           }
         }
 
@@ -657,48 +657,48 @@ LABEL_8:
     }
 
     v9 = v30;
-    v6 = v31;
+    fetchCopy = v31;
   }
 
-  v28 = [(EKAutocompleter *)v8 delegate];
-  [v28 autocompleterUpdated:v8];
+  delegate = [(EKAutocompleter *)selfCopy delegate];
+  [delegate autocompleterUpdated:selfCopy];
 
   v29 = *MEMORY[0x1E69E9840];
 }
 
-- (void)autocompleteFetch:(id)a3 didFailWithError:(id)a4
+- (void)autocompleteFetch:(id)fetch didFailWithError:(id)error
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  errorCopy = error;
   v6 = EKLogHandle;
   if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_INFO))
   {
     v7 = v6;
-    v8 = [(EKAutocompleter *)self prefix];
+    prefix = [(EKAutocompleter *)self prefix];
     v11 = 138412546;
-    v12 = v8;
+    v12 = prefix;
     v13 = 2112;
-    v14 = v5;
+    v14 = errorCopy;
     _os_log_impl(&dword_1A805E000, v7, OS_LOG_TYPE_INFO, ":: :: CNAutocomplete Failed %@ with error %@", &v11, 0x16u);
   }
 
   [(EKAutocompleter *)self setAutocompleteRunning:0];
-  v9 = [(EKAutocompleter *)self delegate];
-  [v9 autocompleter:self finishedWithError:v5];
+  delegate = [(EKAutocompleter *)self delegate];
+  [delegate autocompleter:self finishedWithError:errorCopy];
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)autocompleteFetchDidFinish:(id)a3
+- (void)autocompleteFetchDidFinish:(id)finish
 {
   v11 = *MEMORY[0x1E69E9840];
   v4 = EKLogHandle;
   if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_INFO))
   {
     v5 = v4;
-    v6 = [(EKAutocompleter *)self prefix];
+    prefix = [(EKAutocompleter *)self prefix];
     *buf = 138412290;
-    v10 = v6;
+    v10 = prefix;
     _os_log_impl(&dword_1A805E000, v5, OS_LOG_TYPE_INFO, ":: :: CNAutocomplete Finished %@", buf, 0xCu);
   }
 
@@ -718,21 +718,21 @@ void __46__EKAutocompleter_autocompleteFetchDidFinish___block_invoke(uint64_t a1
   [v2 autocompleter:*(a1 + 32) finishedWithError:0];
 }
 
-- (void)autocompleteFetchDidBeginNetworkActivity:(id)a3
+- (void)autocompleteFetchDidBeginNetworkActivity:(id)activity
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  activityCopy = activity;
   v5 = EKLogHandle;
   if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_INFO))
   {
     v6 = v5;
-    v7 = [(EKAutocompleter *)self prefix];
+    prefix = [(EKAutocompleter *)self prefix];
     *buf = 138412290;
-    v13 = v7;
+    v13 = prefix;
     _os_log_impl(&dword_1A805E000, v6, OS_LOG_TYPE_INFO, ":: :: CNAutocomplete Began network activity for %@", buf, 0xCu);
   }
 
-  v8 = [(EKAutocompleter *)self delegate];
+  delegate = [(EKAutocompleter *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
@@ -754,21 +754,21 @@ void __60__EKAutocompleter_autocompleteFetchDidBeginNetworkActivity___block_invo
   [v2 autocompleterDidBeginNetworkActivity:*(a1 + 32)];
 }
 
-- (void)autocompleteFetchDidEndNetworkActivity:(id)a3
+- (void)autocompleteFetchDidEndNetworkActivity:(id)activity
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  activityCopy = activity;
   v5 = EKLogHandle;
   if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_INFO))
   {
     v6 = v5;
-    v7 = [(EKAutocompleter *)self prefix];
+    prefix = [(EKAutocompleter *)self prefix];
     *buf = 138412290;
-    v13 = v7;
+    v13 = prefix;
     _os_log_impl(&dword_1A805E000, v6, OS_LOG_TYPE_INFO, ":: :: CNAutocomplete finished network activity for %@", buf, 0xCu);
   }
 
-  v8 = [(EKAutocompleter *)self delegate];
+  delegate = [(EKAutocompleter *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
@@ -790,17 +790,17 @@ void __58__EKAutocompleter_autocompleteFetchDidEndNetworkActivity___block_invoke
   [v2 autocompleterDidFinishNetworkActivity:*(a1 + 32)];
 }
 
-- (id)autocompleteResultsFromDirectoryRecords:(id)a3 withType:(int64_t)a4
+- (id)autocompleteResultsFromDirectoryRecords:(id)records withType:(int64_t)type
 {
   v48 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  recordsCopy = records;
   v26 = objc_opt_new();
-  v5 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v4, "count")}];
+  v5 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(recordsCopy, "count")}];
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = v4;
+  obj = recordsCopy;
   v6 = [obj countByEnumeratingWithState:&v32 objects:v47 count:16];
   if (v6)
   {
@@ -815,31 +815,31 @@ void __58__EKAutocompleter_autocompleteFetchDidEndNetworkActivity___block_invoke
         }
 
         v8 = *(*(&v32 + 1) + 8 * i);
-        v9 = [v8 preferredAddress];
-        v10 = [v9 stringRemovingMailto];
+        preferredAddress = [v8 preferredAddress];
+        stringRemovingMailto = [preferredAddress stringRemovingMailto];
 
-        if (v10)
+        if (stringRemovingMailto)
         {
-          v11 = v10;
+          preferredAddress2 = stringRemovingMailto;
         }
 
         else
         {
-          v11 = [v8 preferredAddress];
-          if (!v11)
+          preferredAddress2 = [v8 preferredAddress];
+          if (!preferredAddress2)
           {
-            v11 = [v8 displayName];
-            if (!v11)
+            preferredAddress2 = [v8 displayName];
+            if (!preferredAddress2)
             {
               goto LABEL_23;
             }
           }
         }
 
-        if (([v5 containsObject:v11] & 1) == 0)
+        if (([v5 containsObject:preferredAddress2] & 1) == 0)
         {
-          [v5 addObject:v11];
-          if (a4)
+          [v5 addObject:preferredAddress2];
+          if (type)
           {
             v12 = 0;
           }
@@ -864,19 +864,19 @@ void __58__EKAutocompleter_autocompleteFetchDidEndNetworkActivity___block_invoke
 
             v14 = v13;
             _Block_object_dispose(&v41, 8);
-            v15 = [v8 firstName];
-            v16 = [v8 lastName];
-            v12 = [v13 nameComponentsWithFirstName:v15 lastName:v16 nickname:0 nameSuffix:0];
+            firstName = [v8 firstName];
+            lastName = [v8 lastName];
+            v12 = [v13 nameComponentsWithFirstName:firstName lastName:lastName nickname:0 nameSuffix:0];
           }
 
-          v17 = [v8 principalPath];
+          principalPath = [v8 principalPath];
 
-          if (v17)
+          if (principalPath)
           {
             v45 = EKDirectoryRecordPrincipalPathKey;
-            v18 = [v8 principalPath];
-            v46 = v18;
-            v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v46 forKeys:&v45 count:1];
+            principalPath2 = [v8 principalPath];
+            v46 = principalPath2;
+            principalPath = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v46 forKeys:&v45 count:1];
           }
 
           aBlock[0] = MEMORY[0x1E69E9820];
@@ -904,8 +904,8 @@ void __58__EKAutocompleter_autocompleteFetchDidEndNetworkActivity___block_invoke
 
           v21 = v20;
           _Block_object_dispose(&v41, 8);
-          v22 = [v8 displayName];
-          v23 = [v20 calDAVResultWithAddress:v10 displayName:v22 nameComponents:v12 resultType:a4 groupMembersProvider:v19 userInfo:v17];
+          displayName = [v8 displayName];
+          v23 = [v20 calDAVResultWithAddress:stringRemovingMailto displayName:displayName nameComponents:v12 resultType:type groupMembersProvider:v19 userInfo:principalPath];
 
           if (v23)
           {
@@ -1051,29 +1051,29 @@ uint64_t __68__EKAutocompleter_autocompleteResultsFromDirectoryRecords_withType_
   return v7;
 }
 
-- (BOOL)directorySearchWithCompletion:(id)a3
+- (BOOL)directorySearchWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(EKAutocompleter *)self useDirectorySearch])
   {
-    v5 = [(EKAutocompleter *)self source];
-    if ([v5 sourceType] == 2 || objc_msgSend(v5, "sourceType") == 3 || objc_msgSend(v5, "sourceType") == 1)
+    source = [(EKAutocompleter *)self source];
+    if ([source sourceType] == 2 || objc_msgSend(source, "sourceType") == 3 || objc_msgSend(source, "sourceType") == 1)
     {
-      v6 = [(EKAutocompleter *)self directorySearchOperation];
-      [v6 cancel];
+      directorySearchOperation = [(EKAutocompleter *)self directorySearchOperation];
+      [directorySearchOperation cancel];
 
-      v7 = [(EKAutocompleter *)self directorySearchQueue];
+      directorySearchQueue = [(EKAutocompleter *)self directorySearchQueue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __49__EKAutocompleter_directorySearchWithCompletion___block_invoke;
       block[3] = &unk_1E77FD418;
       block[4] = self;
-      dispatch_sync(v7, block);
+      dispatch_sync(directorySearchQueue, block);
 
       v8 = objc_opt_new();
-      v9 = [(EKAutocompleter *)self prefix];
-      v10 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-      v11 = [v9 componentsSeparatedByCharactersInSet:v10];
+      prefix = [(EKAutocompleter *)self prefix];
+      whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+      v11 = [prefix componentsSeparatedByCharactersInSet:whitespaceAndNewlineCharacterSet];
 
       v12 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:v11];
       [v8 setTerms:v12];
@@ -1083,8 +1083,8 @@ uint64_t __68__EKAutocompleter_autocompleteResultsFromDirectoryRecords_withType_
       [v8 setFindLocations:{-[EKAutocompleter findRooms](self, "findRooms")}];
       [v8 setFindResources:{-[EKAutocompleter findResources](self, "findResources")}];
       objc_initWeak(&location, self);
-      v13 = [(EKAutocompleter *)self directorySearchOperation];
-      objc_initWeak(&from, v13);
+      directorySearchOperation2 = [(EKAutocompleter *)self directorySearchOperation];
+      objc_initWeak(&from, directorySearchOperation2);
 
       v14 = [EKDirectorySearchOperation alloc];
       v24[0] = MEMORY[0x1E69E9820];
@@ -1092,7 +1092,7 @@ uint64_t __68__EKAutocompleter_autocompleteResultsFromDirectoryRecords_withType_
       v24[2] = __49__EKAutocompleter_directorySearchWithCompletion___block_invoke_2;
       v24[3] = &unk_1E77FD938;
       objc_copyWeak(&v25, &location);
-      v15 = [(EKDirectorySearchOperation *)v14 initWithSource:v5 query:v8 resultsBlock:v24];
+      v15 = [(EKDirectorySearchOperation *)v14 initWithSource:source query:v8 resultsBlock:v24];
       [(EKAutocompleter *)self setDirectorySearchOperation:v15];
 
       v20[0] = MEMORY[0x1E69E9820];
@@ -1100,13 +1100,13 @@ uint64_t __68__EKAutocompleter_autocompleteResultsFromDirectoryRecords_withType_
       v20[2] = __49__EKAutocompleter_directorySearchWithCompletion___block_invoke_4;
       v20[3] = &unk_1E77FD988;
       objc_copyWeak(&v22, &location);
-      v21 = v4;
+      v21 = completionCopy;
       objc_copyWeak(&v23, &from);
-      v16 = [(EKAutocompleter *)self directorySearchOperation];
-      [v16 setCompletionBlock:v20];
+      directorySearchOperation3 = [(EKAutocompleter *)self directorySearchOperation];
+      [directorySearchOperation3 setCompletionBlock:v20];
 
-      v17 = [(EKAutocompleter *)self directorySearchOperation];
-      [v17 start];
+      directorySearchOperation4 = [(EKAutocompleter *)self directorySearchOperation];
+      [directorySearchOperation4 start];
 
       objc_destroyWeak(&v23);
       objc_destroyWeak(&v22);

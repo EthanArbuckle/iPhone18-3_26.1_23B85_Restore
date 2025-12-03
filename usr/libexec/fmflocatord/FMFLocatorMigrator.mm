@@ -2,8 +2,8 @@
 - (BOOL)performMigration;
 - (id)_currentVersionIdentifiersDict;
 - (id)_oldVersionIdentifiersDict;
-- (void)_saveVersionIdentifiersDict:(id)a3;
-- (void)migrateFromVersion:(id)a3 toVersion:(id)a4;
+- (void)_saveVersionIdentifiersDict:(id)dict;
+- (void)migrateFromVersion:(id)version toVersion:(id)toVersion;
 @end
 
 @implementation FMFLocatorMigrator
@@ -17,30 +17,30 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "FMFLocatorMigrator is migrating", v9, 2u);
   }
 
-  v4 = [(FMFLocatorMigrator *)self _oldVersionIdentifiersDict];
-  v5 = [(FMFLocatorMigrator *)self _currentVersionIdentifiersDict];
-  [(FMFLocatorMigrator *)self _saveVersionIdentifiersDict:v5];
-  v6 = [v4 objectForKeyedSubscript:@"buildVersion"];
-  v7 = [v5 objectForKeyedSubscript:@"buildVersion"];
+  _oldVersionIdentifiersDict = [(FMFLocatorMigrator *)self _oldVersionIdentifiersDict];
+  _currentVersionIdentifiersDict = [(FMFLocatorMigrator *)self _currentVersionIdentifiersDict];
+  [(FMFLocatorMigrator *)self _saveVersionIdentifiersDict:_currentVersionIdentifiersDict];
+  v6 = [_oldVersionIdentifiersDict objectForKeyedSubscript:@"buildVersion"];
+  v7 = [_currentVersionIdentifiersDict objectForKeyedSubscript:@"buildVersion"];
   [(FMFLocatorMigrator *)self migrateFromVersion:v6 toVersion:v7];
 
   return 1;
 }
 
-- (void)migrateFromVersion:(id)a3 toVersion:(id)a4
+- (void)migrateFromVersion:(id)version toVersion:(id)toVersion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 compare:v6];
+  versionCopy = version;
+  toVersionCopy = toVersion;
+  v7 = [versionCopy compare:toVersionCopy];
   if (v7 == 1)
   {
     v8 = sub_100002830();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412546;
-      v11 = v5;
+      v11 = versionCopy;
       v12 = 2112;
-      v13 = v6;
+      v13 = toVersionCopy;
       v9 = "Back-migration from %@ to %@";
       goto LABEL_7;
     }
@@ -56,9 +56,9 @@ LABEL_8:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412546;
-      v11 = v5;
+      v11 = versionCopy;
       v12 = 2112;
-      v13 = v6;
+      v13 = toVersionCopy;
       v9 = "Migrating from %@ to %@";
 LABEL_7:
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, v9, &v10, 0x16u);
@@ -124,8 +124,8 @@ LABEL_9:
 
   [v2 setObject:v8 forKeyedSubscript:@"productVersion"];
   v9 = [NSBundle bundleForClass:objc_opt_class()];
-  v10 = [v9 infoDictionary];
-  v11 = [v10 objectForKeyedSubscript:kCFBundleVersionKey];
+  infoDictionary = [v9 infoDictionary];
+  v11 = [infoDictionary objectForKeyedSubscript:kCFBundleVersionKey];
 
   if (v11)
   {
@@ -142,10 +142,10 @@ LABEL_9:
   return v2;
 }
 
-- (void)_saveVersionIdentifiersDict:(id)a3
+- (void)_saveVersionIdentifiersDict:(id)dict
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"buildVersion"];
+  dictCopy = dict;
+  v4 = [dictCopy objectForKeyedSubscript:@"buildVersion"];
   v5 = v4;
   if (v4)
   {
@@ -157,7 +157,7 @@ LABEL_9:
     v6 = &stru_10005FAB8;
   }
 
-  v7 = [v3 objectForKeyedSubscript:@"productVersion"];
+  v7 = [dictCopy objectForKeyedSubscript:@"productVersion"];
   v8 = v7;
   if (v7)
   {
@@ -169,7 +169,7 @@ LABEL_9:
     v9 = &stru_10005FAB8;
   }
 
-  v10 = [v3 objectForKeyedSubscript:@"fmflocatorVersion"];
+  v10 = [dictCopy objectForKeyedSubscript:@"fmflocatorVersion"];
 
   if (v10)
   {

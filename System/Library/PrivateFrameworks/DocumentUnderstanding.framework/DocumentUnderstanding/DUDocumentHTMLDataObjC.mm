@@ -1,15 +1,15 @@
 @interface DUDocumentHTMLDataObjC
 - (DUDocumentEmailDataObjC)documentEmailData;
 - (DUDocumentHTMLDataObjC)init;
-- (void)setDocumentEmailData:(id)a3;
-- (void)setHtmlString:(id)a3;
+- (void)setDocumentEmailData:(id)data;
+- (void)setHtmlString:(id)string;
 @end
 
 @implementation DUDocumentHTMLDataObjC
 
-- (void)setDocumentEmailData:(id)a3
+- (void)setDocumentEmailData:(id)data
 {
-  v9 = objc_msgSend_emailDataForObjCEmailData_(DUObjCCompatibilityUtils, a2, a3, v3, v4);
+  v9 = objc_msgSend_emailDataForObjCEmailData_(DUObjCCompatibilityUtils, a2, data, v3, v4);
   objc_msgSend_setDocumentEmailData_(self->_underlyingElement, v6, v9, v7, v8);
 }
 
@@ -31,9 +31,9 @@
   return v15;
 }
 
-- (void)setHtmlString:(id)a3
+- (void)setHtmlString:(id)string
 {
-  v9 = objc_msgSend_copy(a3, a2, a3, v3, v4);
+  v9 = objc_msgSend_copy(string, a2, string, v3, v4);
   objc_msgSend_setHtmlString_(self->_underlyingElement, v6, v9, v7, v8);
 }
 

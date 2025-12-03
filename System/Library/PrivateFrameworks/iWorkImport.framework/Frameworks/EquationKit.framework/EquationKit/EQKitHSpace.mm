@@ -1,51 +1,51 @@
 @interface EQKitHSpace
-- (BOOL)isEqual:(id)a3;
-- (EQKitHSpace)initWithWidth:(double)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (EQKitHSpace)initWithWidth:(double)width;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation EQKitHSpace
 
-- (EQKitHSpace)initWithWidth:(double)a3
+- (EQKitHSpace)initWithWidth:(double)width
 {
   v5.receiver = self;
   v5.super_class = EQKitHSpace;
   result = [(EQKitHSpace *)&v5 init];
   if (result)
   {
-    result->mWidth = a3;
+    result->mWidth = width;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v8 = objc_msgSend_allocWithZone_(v5, v6, a3, v7);
+  v8 = objc_msgSend_allocWithZone_(v5, v6, zone, v7);
   objc_msgSend_width(self, v9, v10, v11);
 
   return objc_msgSend_initWithWidth_(v8, v12, v13, v14);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(isMemberOfClass) = 1;
   }
 
-  else if (a3)
+  else if (equal)
   {
     v5 = objc_opt_class();
-    isMemberOfClass = objc_msgSend_isMemberOfClass_(a3, v6, v5, v7);
+    isMemberOfClass = objc_msgSend_isMemberOfClass_(equal, v6, v5, v7);
     if (isMemberOfClass)
     {
       objc_msgSend_width(self, v9, v10, v11);
       v13 = v12;
-      objc_msgSend_width(a3, v14, v15, v16);
+      objc_msgSend_width(equal, v14, v15, v16);
       LOBYTE(isMemberOfClass) = v13 == v17;
     }
   }

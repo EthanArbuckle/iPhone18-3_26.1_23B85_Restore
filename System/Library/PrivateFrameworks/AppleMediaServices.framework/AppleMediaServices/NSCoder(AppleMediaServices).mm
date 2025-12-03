@@ -20,7 +20,7 @@
 - (id)_ams_decodePropertyListObjectForKey:()AppleMediaServices error:
 {
   v6 = a3;
-  v7 = [a1 decodeObjectOfClass:objc_opt_class() forKey:v6];
+  v7 = [self decodeObjectOfClass:objc_opt_class() forKey:v6];
 
   if (v7)
   {
@@ -38,7 +38,7 @@
 - (id)_ams_decodeJSONObjectForKey:()AppleMediaServices error:
 {
   v6 = a3;
-  v7 = [a1 decodeObjectOfClass:objc_opt_class() forKey:v6];
+  v7 = [self decodeObjectOfClass:objc_opt_class() forKey:v6];
 
   if (v7)
   {
@@ -64,7 +64,7 @@
     v11 = v10 != 0;
     if (v10)
     {
-      [a1 encodeObject:v10 forKey:v9];
+      [self encodeObject:v10 forKey:v9];
     }
   }
 
@@ -76,8 +76,8 @@
       v12 = +[AMSLogConfig sharedConfig];
     }
 
-    v13 = [v12 OSLogObject];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v12 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v14 = objc_opt_class();
       v15 = AMSLogKey();
@@ -88,7 +88,7 @@
       v21 = v15;
       v22 = 2114;
       v23 = v16;
-      _os_log_impl(&dword_192869000, v13, OS_LOG_TYPE_ERROR, "%{public}@ [%{public}@]: Error encoding JSON object. object = %{public}@", &v18, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@ [%{public}@]: Error encoding JSON object. object = %{public}@", &v18, 0x20u);
     }
 
     if (a5)
@@ -112,7 +112,7 @@
   v11 = [MEMORY[0x1E696AE40] dataWithPropertyList:a3 format:a5 options:0 error:a6];
   if (v11)
   {
-    [a1 encodeObject:v11 forKey:v10];
+    [self encodeObject:v11 forKey:v10];
   }
 
   return v11 != 0;
@@ -122,7 +122,7 @@
 {
   v4 = MEMORY[0x1E696AEC0];
   v5 = a3;
-  v6 = [a1 decodeObjectOfClass:objc_msgSend(v4 forKey:{"classForKeyedUnarchiver"), v5}];
+  v6 = [self decodeObjectOfClass:objc_msgSend(v4 forKey:{"classForKeyedUnarchiver"), v5}];
 
   if (v6)
   {
@@ -142,7 +142,7 @@
   v24 = *MEMORY[0x1E69E9840];
   v4 = a3;
   v15 = 0;
-  v5 = [a1 _ams_decodeJSONObjectForKey:v4 error:&v15];
+  v5 = [self _ams_decodeJSONObjectForKey:v4 error:&v15];
   v6 = v15;
   if (v6)
   {
@@ -152,8 +152,8 @@
       v7 = +[AMSLogConfig sharedConfig];
     }
 
-    v8 = [v7 OSLogObject];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v7 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v9 = objc_opt_class();
       v10 = AMSLogKey();
@@ -166,7 +166,7 @@
       v21 = v4;
       v22 = 2114;
       v23 = v11;
-      _os_log_impl(&dword_192869000, v8, OS_LOG_TYPE_ERROR, "%{public}@ [%{public}@]: Error decoding JSON array. key = %{public}@, error = %{public}@", buf, 0x2Au);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@ [%{public}@]: Error decoding JSON array. key = %{public}@, error = %{public}@", buf, 0x2Au);
     }
   }
 
@@ -190,7 +190,7 @@
   v24 = *MEMORY[0x1E69E9840];
   v4 = a3;
   v15 = 0;
-  v5 = [a1 _ams_decodeJSONObjectForKey:v4 error:&v15];
+  v5 = [self _ams_decodeJSONObjectForKey:v4 error:&v15];
   v6 = v15;
   if (v6)
   {
@@ -200,8 +200,8 @@
       v7 = +[AMSLogConfig sharedConfig];
     }
 
-    v8 = [v7 OSLogObject];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v7 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v9 = objc_opt_class();
       v10 = AMSLogKey();
@@ -214,7 +214,7 @@
       v21 = v4;
       v22 = 2114;
       v23 = v11;
-      _os_log_impl(&dword_192869000, v8, OS_LOG_TYPE_ERROR, "%{public}@ [%{public}@]: Error decoding JSON dictionary. key = %{public}@, error = %{public}@", buf, 0x2Au);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@ [%{public}@]: Error decoding JSON dictionary. key = %{public}@, error = %{public}@", buf, 0x2Au);
     }
   }
 
@@ -238,7 +238,7 @@
   v24 = *MEMORY[0x1E69E9840];
   v4 = a3;
   v15 = 0;
-  v5 = [a1 _ams_decodePropertyListObjectForKey:v4 error:&v15];
+  v5 = [self _ams_decodePropertyListObjectForKey:v4 error:&v15];
   v6 = v15;
   if (v6)
   {
@@ -248,8 +248,8 @@
       v7 = +[AMSLogConfig sharedConfig];
     }
 
-    v8 = [v7 OSLogObject];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v7 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v9 = objc_opt_class();
       v10 = AMSLogKey();
@@ -262,7 +262,7 @@
       v21 = v4;
       v22 = 2114;
       v23 = v11;
-      _os_log_impl(&dword_192869000, v8, OS_LOG_TYPE_ERROR, "%{public}@ [%{public}@]: Error decoding property list array. key = %{public}@, error = %{public}@", buf, 0x2Au);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@ [%{public}@]: Error decoding property list array. key = %{public}@, error = %{public}@", buf, 0x2Au);
     }
   }
 
@@ -286,7 +286,7 @@
   v24 = *MEMORY[0x1E69E9840];
   v4 = a3;
   v15 = 0;
-  v5 = [a1 _ams_decodePropertyListObjectForKey:v4 error:&v15];
+  v5 = [self _ams_decodePropertyListObjectForKey:v4 error:&v15];
   v6 = v15;
   if (v6)
   {
@@ -296,8 +296,8 @@
       v7 = +[AMSLogConfig sharedConfig];
     }
 
-    v8 = [v7 OSLogObject];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v7 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v9 = objc_opt_class();
       v10 = AMSLogKey();
@@ -310,7 +310,7 @@
       v21 = v4;
       v22 = 2114;
       v23 = v11;
-      _os_log_impl(&dword_192869000, v8, OS_LOG_TYPE_ERROR, "%{public}@ [%{public}@]: Error decoding property list dictionary. key = %{public}@, error = %{public}@", buf, 0x2Au);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@ [%{public}@]: Error decoding property list dictionary. key = %{public}@, error = %{public}@", buf, 0x2Au);
     }
   }
 
@@ -333,7 +333,7 @@
 {
   v6 = a4;
   v7 = [a3 base64EncodedStringWithOptions:0];
-  [a1 encodeObject:v7 forKey:v6];
+  [self encodeObject:v7 forKey:v6];
 }
 
 - (void)ams_encodeJSONArray:()AppleMediaServices forKey:
@@ -341,7 +341,7 @@
   v22 = *MEMORY[0x1E69E9840];
   v6 = a4;
   v13 = 0;
-  [a1 _ams_encodeJSONObject:a3 forKey:v6 error:&v13];
+  [self _ams_encodeJSONObject:a3 forKey:v6 error:&v13];
   v7 = v13;
   if (v7)
   {
@@ -351,8 +351,8 @@
       v8 = +[AMSLogConfig sharedConfig];
     }
 
-    v9 = [v8 OSLogObject];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v8 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v10 = objc_opt_class();
       v11 = AMSLogKey();
@@ -365,7 +365,7 @@
       v19 = v6;
       v20 = 2114;
       v21 = v12;
-      _os_log_impl(&dword_192869000, v9, OS_LOG_TYPE_ERROR, "%{public}@ [%{public}@]: Error encoding JSON array. key = %{public}@, error = %{public}@", buf, 0x2Au);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@ [%{public}@]: Error encoding JSON array. key = %{public}@, error = %{public}@", buf, 0x2Au);
     }
   }
 }
@@ -375,7 +375,7 @@
   v22 = *MEMORY[0x1E69E9840];
   v6 = a4;
   v13 = 0;
-  [a1 _ams_encodeJSONObject:a3 forKey:v6 error:&v13];
+  [self _ams_encodeJSONObject:a3 forKey:v6 error:&v13];
   v7 = v13;
   if (v7)
   {
@@ -385,8 +385,8 @@
       v8 = +[AMSLogConfig sharedConfig];
     }
 
-    v9 = [v8 OSLogObject];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v8 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v10 = objc_opt_class();
       v11 = AMSLogKey();
@@ -399,7 +399,7 @@
       v19 = v6;
       v20 = 2114;
       v21 = v12;
-      _os_log_impl(&dword_192869000, v9, OS_LOG_TYPE_ERROR, "%{public}@ [%{public}@]: Error encoding JSON dictionary. key = %{public}@, error = %{public}@", buf, 0x2Au);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@ [%{public}@]: Error encoding JSON dictionary. key = %{public}@, error = %{public}@", buf, 0x2Au);
     }
   }
 }
@@ -409,7 +409,7 @@
   v24 = *MEMORY[0x1E69E9840];
   v8 = a5;
   v15 = 0;
-  [a1 _ams_encodePropertyListObject:a3 forKey:v8 format:a4 error:&v15];
+  [self _ams_encodePropertyListObject:a3 forKey:v8 format:a4 error:&v15];
   v9 = v15;
   if (v9)
   {
@@ -419,8 +419,8 @@
       v10 = +[AMSLogConfig sharedConfig];
     }
 
-    v11 = [v10 OSLogObject];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v10 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v12 = objc_opt_class();
       v13 = AMSLogKey();
@@ -433,7 +433,7 @@
       v21 = v8;
       v22 = 2114;
       v23 = v14;
-      _os_log_impl(&dword_192869000, v11, OS_LOG_TYPE_ERROR, "%{public}@ [%{public}@]: Error encoding property list array. key = %{public}@, error = %{public}@", buf, 0x2Au);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@ [%{public}@]: Error encoding property list array. key = %{public}@, error = %{public}@", buf, 0x2Au);
     }
   }
 }
@@ -443,7 +443,7 @@
   v24 = *MEMORY[0x1E69E9840];
   v8 = a5;
   v15 = 0;
-  [a1 _ams_encodePropertyListObject:a3 forKey:v8 format:a4 error:&v15];
+  [self _ams_encodePropertyListObject:a3 forKey:v8 format:a4 error:&v15];
   v9 = v15;
   if (v9)
   {
@@ -453,8 +453,8 @@
       v10 = +[AMSLogConfig sharedConfig];
     }
 
-    v11 = [v10 OSLogObject];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v10 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v12 = objc_opt_class();
       v13 = AMSLogKey();
@@ -467,7 +467,7 @@
       v21 = v8;
       v22 = 2114;
       v23 = v14;
-      _os_log_impl(&dword_192869000, v11, OS_LOG_TYPE_ERROR, "%{public}@ [%{public}@]: Error encoding property list dictionary. key = %{public}@, error = %{public}@", buf, 0x2Au);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@ [%{public}@]: Error encoding property list dictionary. key = %{public}@, error = %{public}@", buf, 0x2Au);
     }
   }
 }

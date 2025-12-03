@@ -1,27 +1,27 @@
 @interface ENRegionUserConsent
-- (BOOL)isEqual:(id)a3;
-- (ENRegionUserConsent)initWithCoder:(id)a3;
-- (ENRegionUserConsent)initWithConsentVersion:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (ENRegionUserConsent)initWithCoder:(id)coder;
+- (ENRegionUserConsent)initWithConsentVersion:(id)version;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)updatedConsent:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setConsent:(int64_t)a3;
-- (void)setDifferentialPrivacyConsent:(int64_t)a3;
+- (id)updatedConsent:(id)consent;
+- (void)encodeWithCoder:(id)coder;
+- (void)setConsent:(int64_t)consent;
+- (void)setDifferentialPrivacyConsent:(int64_t)consent;
 @end
 
 @implementation ENRegionUserConsent
 
-- (ENRegionUserConsent)initWithConsentVersion:(id)a3
+- (ENRegionUserConsent)initWithConsentVersion:(id)version
 {
-  v5 = a3;
+  versionCopy = version;
   v9.receiver = self;
   v9.super_class = ENRegionUserConsent;
   v6 = [(ENRegionUserConsent *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_consentVersion, a3);
+    objc_storeStrong(&v6->_consentVersion, version);
   }
 
   return v7;
@@ -30,53 +30,53 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(ENRegionUserConsent *)self consentVersion];
-  v5 = [(ENRegionUserConsent *)self consent];
-  if (v5 > 4)
+  consentVersion = [(ENRegionUserConsent *)self consentVersion];
+  consent = [(ENRegionUserConsent *)self consent];
+  if (consent > 4)
   {
     v6 = "?";
   }
 
   else
   {
-    v6 = (&off_278A4BC48)[v5];
+    v6 = (&off_278A4BC48)[consent];
   }
 
   [(ENRegionUserConsent *)self consentTimestamp];
   v8 = v7;
-  v9 = [(ENRegionUserConsent *)self differentialPrivacyConsent];
-  if (v9 > 4)
+  differentialPrivacyConsent = [(ENRegionUserConsent *)self differentialPrivacyConsent];
+  if (differentialPrivacyConsent > 4)
   {
     v10 = "?";
   }
 
   else
   {
-    v10 = (&off_278A4BC48)[v9];
+    v10 = (&off_278A4BC48)[differentialPrivacyConsent];
   }
 
   [(ENRegionUserConsent *)self differentialPrivacyConsentTimestamp];
-  v12 = [v3 stringWithFormat:@"Consent [version: %@] - %s, ConsentTimestamp: %f, DPConsent: %s, DPConsentTimestamp: %f", v4, v6, v8, v10, v11];
+  v12 = [v3 stringWithFormat:@"Consent [version: %@] - %s, ConsentTimestamp: %f, DPConsent: %s, DPConsentTimestamp: %f", consentVersion, v6, v8, v10, v11];
 
   return v12;
 }
 
-- (ENRegionUserConsent)initWithCoder:(id)a3
+- (ENRegionUserConsent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = ENRegionUserConsent;
   v5 = [(ENRegionUserConsent *)&v14 init];
   if (v5)
   {
-    v5->_consent = [v4 decodeIntegerForKey:@"consent"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"consentText"];
+    v5->_consent = [coderCopy decodeIntegerForKey:@"consent"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"consentText"];
     consentText = v5->_consentText;
     v5->_consentText = v6;
 
-    [v4 decodeDoubleForKey:@"consentTimestamp"];
+    [coderCopy decodeDoubleForKey:@"consentTimestamp"];
     v5->_consentTimestamp = v8;
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"consentVersion"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"consentVersion"];
     if (!v9)
     {
       [ENRegionUserConsent initWithCoder:?];
@@ -87,8 +87,8 @@
     consentVersion = v5->_consentVersion;
     v5->_consentVersion = v9;
 
-    v5->_differentialPrivacyConsent = [v4 decodeIntegerForKey:@"differentialPrivacyConsent"];
-    [v4 decodeDoubleForKey:@"differentialPrivacyConsentTimestamp"];
+    v5->_differentialPrivacyConsent = [coderCopy decodeIntegerForKey:@"differentialPrivacyConsent"];
+    [coderCopy decodeDoubleForKey:@"differentialPrivacyConsentTimestamp"];
     v5->_differentialPrivacyConsentTimestamp = v11;
   }
 
@@ -98,24 +98,24 @@ LABEL_5:
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  [v6 encodeInteger:-[ENRegionUserConsent consent](self forKey:{"consent"), @"consent"}];
-  v4 = [(ENRegionUserConsent *)self consentText];
-  [v6 encodeObject:v4 forKey:@"consentText"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[ENRegionUserConsent consent](self forKey:{"consent"), @"consent"}];
+  consentText = [(ENRegionUserConsent *)self consentText];
+  [coderCopy encodeObject:consentText forKey:@"consentText"];
 
   [(ENRegionUserConsent *)self consentTimestamp];
-  [v6 encodeDouble:@"consentTimestamp" forKey:?];
-  v5 = [(ENRegionUserConsent *)self consentVersion];
-  [v6 encodeObject:v5 forKey:@"consentVersion"];
+  [coderCopy encodeDouble:@"consentTimestamp" forKey:?];
+  consentVersion = [(ENRegionUserConsent *)self consentVersion];
+  [coderCopy encodeObject:consentVersion forKey:@"consentVersion"];
 
-  [v6 encodeInteger:-[ENRegionUserConsent differentialPrivacyConsent](self forKey:{"differentialPrivacyConsent"), @"differentialPrivacyConsent"}];
+  [coderCopy encodeInteger:-[ENRegionUserConsent differentialPrivacyConsent](self forKey:{"differentialPrivacyConsent"), @"differentialPrivacyConsent"}];
   [(ENRegionUserConsent *)self differentialPrivacyConsentTimestamp];
-  [v6 encodeDouble:@"differentialPrivacyConsentTimestamp" forKey:?];
+  [coderCopy encodeDouble:@"differentialPrivacyConsentTimestamp" forKey:?];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[ENRegionUserConsent allocWithZone:?], "initWithConsentVersion:", self->_consentVersion];
   [(ENRegionUserConsent *)v4 setConsent:[(ENRegionUserConsent *)self consent]];
@@ -127,27 +127,27 @@ LABEL_5:
   return v4;
 }
 
-- (id)updatedConsent:(id)a3
+- (id)updatedConsent:(id)consent
 {
-  v6 = a3;
+  consentCopy = consent;
   v7 = [(ENRegionUserConsent *)self copy];
-  if ([v7 consent] != 4 && !-[ENRegionUserConsent consent](v6, "consent") || (v8 = -[ENRegionUserConsent consent](v6, "consent"), v9 = -[ENRegionUserConsent consent](self, "consent"), v10 = v6, v8 == v9))
+  if ([v7 consent] != 4 && !-[ENRegionUserConsent consent](consentCopy, "consent") || (v8 = -[ENRegionUserConsent consent](consentCopy, "consent"), v9 = -[ENRegionUserConsent consent](self, "consent"), selfCopy = consentCopy, v8 == v9))
   {
-    v10 = self;
+    selfCopy = self;
   }
 
-  [v7 setConsent:{-[ENRegionUserConsent consent](v10, "consent")}];
-  v11 = [(ENRegionUserConsent *)v6 consentText];
-  v12 = [v11 length];
+  [v7 setConsent:{-[ENRegionUserConsent consent](selfCopy, "consent")}];
+  consentText = [(ENRegionUserConsent *)consentCopy consentText];
+  v12 = [consentText length];
   if (!v12)
   {
     goto LABEL_12;
   }
 
-  v13 = [(ENRegionUserConsent *)v6 consentText];
-  v14 = [(ENRegionUserConsent *)self consentText];
-  v3 = v13;
-  v15 = v14;
+  consentText2 = [(ENRegionUserConsent *)consentCopy consentText];
+  consentText3 = [(ENRegionUserConsent *)self consentText];
+  v3 = consentText2;
+  v15 = consentText3;
   v4 = v15;
   if (v3 == v15)
   {
@@ -165,8 +165,8 @@ LABEL_5:
     }
 
 LABEL_12:
-    v17 = [(ENRegionUserConsent *)self consentText];
-    [v7 setConsentText:v17];
+    consentText4 = [(ENRegionUserConsent *)self consentText];
+    [v7 setConsentText:consentText4];
 
     if (!v12)
     {
@@ -177,18 +177,18 @@ LABEL_12:
   }
 
 LABEL_15:
-  v18 = [(ENRegionUserConsent *)v6 consentText];
-  [v7 setConsentText:v18];
+  consentText5 = [(ENRegionUserConsent *)consentCopy consentText];
+  [v7 setConsentText:consentText5];
 
 LABEL_16:
 LABEL_17:
 
-  v19 = [(ENRegionUserConsent *)v6 consentVersion];
-  v20 = [v19 length];
-  if (!v20 || (-[ENRegionUserConsent consentVersion](v6, "consentVersion"), v3 = objc_claimAutoreleasedReturnValue(), -[ENRegionUserConsent consentVersion](self, "consentVersion"), v4 = objc_claimAutoreleasedReturnValue(), ([v3 isEqualToString:v4] & 1) != 0))
+  consentVersion = [(ENRegionUserConsent *)consentCopy consentVersion];
+  v20 = [consentVersion length];
+  if (!v20 || (-[ENRegionUserConsent consentVersion](consentCopy, "consentVersion"), v3 = objc_claimAutoreleasedReturnValue(), -[ENRegionUserConsent consentVersion](self, "consentVersion"), v4 = objc_claimAutoreleasedReturnValue(), ([v3 isEqualToString:v4] & 1) != 0))
   {
-    v22 = [(ENRegionUserConsent *)self consentVersion];
-    [v7 setConsentVersion:v22];
+    consentVersion2 = [(ENRegionUserConsent *)self consentVersion];
+    [v7 setConsentVersion:consentVersion2];
 
     if (!v20)
     {
@@ -198,34 +198,34 @@ LABEL_17:
 
   else
   {
-    v21 = [(ENRegionUserConsent *)v6 consentVersion];
-    [v7 setConsentVersion:v21];
+    consentVersion3 = [(ENRegionUserConsent *)consentCopy consentVersion];
+    [v7 setConsentVersion:consentVersion3];
   }
 
 LABEL_22:
-  if ([v7 differentialPrivacyConsent] != 4 && !-[ENRegionUserConsent differentialPrivacyConsent](v6, "differentialPrivacyConsent") || (v23 = -[ENRegionUserConsent differentialPrivacyConsent](v6, "differentialPrivacyConsent"), v24 = -[ENRegionUserConsent differentialPrivacyConsent](self, "differentialPrivacyConsent"), v25 = v6, v23 == v24))
+  if ([v7 differentialPrivacyConsent] != 4 && !-[ENRegionUserConsent differentialPrivacyConsent](consentCopy, "differentialPrivacyConsent") || (v23 = -[ENRegionUserConsent differentialPrivacyConsent](consentCopy, "differentialPrivacyConsent"), v24 = -[ENRegionUserConsent differentialPrivacyConsent](self, "differentialPrivacyConsent"), selfCopy2 = consentCopy, v23 == v24))
   {
-    v25 = self;
+    selfCopy2 = self;
   }
 
-  [v7 setDifferentialPrivacyConsent:{-[ENRegionUserConsent differentialPrivacyConsent](v25, "differentialPrivacyConsent")}];
+  [v7 setDifferentialPrivacyConsent:{-[ENRegionUserConsent differentialPrivacyConsent](selfCopy2, "differentialPrivacyConsent")}];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(ENRegionUserConsent *)self consent];
-    if (v5 == [v4 consent])
+    consent = [(ENRegionUserConsent *)self consent];
+    if (consent == [equalCopy consent])
     {
-      v6 = [(ENRegionUserConsent *)self consentText];
-      v7 = [v4 consentText];
-      v8 = v6;
-      v9 = v7;
+      consentText = [(ENRegionUserConsent *)self consentText];
+      consentText2 = [equalCopy consentText];
+      v8 = consentText;
+      v9 = consentText2;
       v10 = v9;
       if (v8 == v9)
       {
@@ -236,8 +236,8 @@ LABEL_22:
         if ((v8 != 0) == (v9 == 0))
         {
           v12 = 0;
-          v14 = v9;
-          v13 = v8;
+          consentVersion2 = v9;
+          consentVersion = v8;
 LABEL_13:
 
           goto LABEL_14;
@@ -254,12 +254,12 @@ LABEL_14:
         }
       }
 
-      v13 = [(ENRegionUserConsent *)self consentVersion];
-      v14 = [v4 consentVersion];
-      if ([v13 isEqualToString:v14])
+      consentVersion = [(ENRegionUserConsent *)self consentVersion];
+      consentVersion2 = [equalCopy consentVersion];
+      if ([consentVersion isEqualToString:consentVersion2])
       {
-        v15 = [(ENRegionUserConsent *)self differentialPrivacyConsent];
-        v12 = v15 == [v4 differentialPrivacyConsent];
+        differentialPrivacyConsent = [(ENRegionUserConsent *)self differentialPrivacyConsent];
+        v12 = differentialPrivacyConsent == [equalCopy differentialPrivacyConsent];
       }
 
       else
@@ -277,19 +277,19 @@ LABEL_15:
   return v12;
 }
 
-- (void)setConsent:(int64_t)a3
+- (void)setConsent:(int64_t)consent
 {
-  self->_consent = a3;
-  v5 = [MEMORY[0x277CBEAA8] date];
-  [v5 timeIntervalSince1970];
+  self->_consent = consent;
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSince1970];
   self->_consentTimestamp = v4;
 }
 
-- (void)setDifferentialPrivacyConsent:(int64_t)a3
+- (void)setDifferentialPrivacyConsent:(int64_t)consent
 {
-  self->_differentialPrivacyConsent = a3;
-  v5 = [MEMORY[0x277CBEAA8] date];
-  [v5 timeIntervalSince1970];
+  self->_differentialPrivacyConsent = consent;
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSince1970];
   self->_differentialPrivacyConsentTimestamp = v4;
 }
 

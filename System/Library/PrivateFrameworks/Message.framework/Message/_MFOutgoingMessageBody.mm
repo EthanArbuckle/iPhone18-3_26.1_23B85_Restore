@@ -1,7 +1,7 @@
 @interface _MFOutgoingMessageBody
 - (_MFOutgoingMessageBody)init;
 - (id)rawData;
-- (int64_t)appendData:(id)a3;
+- (int64_t)appendData:(id)data;
 - (void)done;
 @end
 
@@ -27,24 +27,24 @@
   rawData = self->_rawData;
   if (rawData)
   {
-    v3 = rawData;
+    data = rawData;
   }
 
   else
   {
-    v3 = [(MFBufferedDataConsumer *)self->_consumer data];
+    data = [(MFBufferedDataConsumer *)self->_consumer data];
   }
 
-  return v3;
+  return data;
 }
 
-- (int64_t)appendData:(id)a3
+- (int64_t)appendData:(id)data
 {
-  v4 = a3;
-  v5 = [(MFBufferedDataConsumer *)self->_consumer appendData:v4];
+  dataCopy = data;
+  v5 = [(MFBufferedDataConsumer *)self->_consumer appendData:dataCopy];
   if (v5 >= 1)
   {
-    self->_lastNewLine = *([v4 bytes] + v5 - 1) == 10;
+    self->_lastNewLine = *([dataCopy bytes] + v5 - 1) == 10;
     self->_count += v5;
   }
 
@@ -54,9 +54,9 @@
 - (void)done
 {
   [(MFBufferedDataConsumer *)self->_consumer done];
-  v3 = [(MFBufferedDataConsumer *)self->_consumer data];
+  data = [(MFBufferedDataConsumer *)self->_consumer data];
   rawData = self->_rawData;
-  self->_rawData = v3;
+  self->_rawData = data;
 
   consumer = self->_consumer;
   self->_consumer = 0;

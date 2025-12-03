@@ -1,6 +1,6 @@
 @interface FeedHeadlinePlaybackCommandHandler
 - (_TtC7NewsUI234FeedHeadlinePlaybackCommandHandler)init;
-- (void)readingHistory:(id)a3 didChangeFeaturesForArticles:(id)a4;
+- (void)readingHistory:(id)history didChangeFeaturesForArticles:(id)articles;
 @end
 
 @implementation FeedHeadlinePlaybackCommandHandler
@@ -12,12 +12,12 @@
   return result;
 }
 
-- (void)readingHistory:(id)a3 didChangeFeaturesForArticles:(id)a4
+- (void)readingHistory:(id)history didChangeFeaturesForArticles:(id)articles
 {
   sub_21870AD58();
   v6 = sub_219BF5214();
-  v7 = a3;
-  v8 = self;
+  historyCopy = history;
+  selfCopy = self;
   sub_21998AB00(v6);
 }
 

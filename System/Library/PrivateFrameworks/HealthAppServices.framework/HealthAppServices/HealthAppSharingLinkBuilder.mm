@@ -13,17 +13,17 @@
   v5 = +[HAServicesDefines sharingOverviewHostName];
   [v3 setHost:v5];
 
-  v6 = [(HealthAppLinkBuilder *)self profileIdentifier];
-  v7 = [v6 type];
+  profileIdentifier = [(HealthAppLinkBuilder *)self profileIdentifier];
+  type = [profileIdentifier type];
 
-  if (v7 == 2)
+  if (type == 2)
   {
     v9 = [v3 URL];
-    v10 = [(HealthAppLinkBuilder *)self profileIdentifier];
-    v8 = [v9 _hk_appendProfileIdentifier:v10];
+    profileIdentifier2 = [(HealthAppLinkBuilder *)self profileIdentifier];
+    v8 = [v9 _hk_appendProfileIdentifier:profileIdentifier2];
   }
 
-  else if (v7 == 1)
+  else if (type == 1)
   {
     v8 = [v3 URL];
   }

@@ -1,13 +1,13 @@
 @interface _DASLowPowerModePolicy
 + (id)policyInstance;
-- (BOOL)appliesToActivity:(id)a3;
+- (BOOL)appliesToActivity:(id)activity;
 - (BOOL)isChallengedForBatteryLife;
-- (BOOL)isLowPowerModeEnabledWithContext:(id)a3;
-- (BOOL)isLowPowerModePolicyEnforced:(id)a3;
-- (BOOL)shouldIgnoreTrigger:(id)a3 withState:(id)a4;
+- (BOOL)isLowPowerModeEnabledWithContext:(id)context;
+- (BOOL)isLowPowerModePolicyEnforced:(id)enforced;
+- (BOOL)shouldIgnoreTrigger:(id)trigger withState:(id)state;
 - (_DASLowPowerModePolicy)init;
 - (id)initializeTriggers;
-- (id)responseForActivity:(id)a3 withState:(id)a4;
+- (id)responseForActivity:(id)activity withState:(id)state;
 @end
 
 @implementation _DASLowPowerModePolicy
@@ -91,9 +91,9 @@
     v3->_pluginStatusKeyPath = v9;
 
     v3->_lastSavedBatteryLevel = 0;
-    v11 = [(_DASLowPowerModePolicy *)v3 initializeTriggers];
+    initializeTriggers = [(_DASLowPowerModePolicy *)v3 initializeTriggers];
     triggers = v3->_triggers;
-    v3->_triggers = v11;
+    v3->_triggers = initializeTriggers;
 
     lpmEngagementDate = v3->_lpmEngagementDate;
     v3->_lpmEngagementDate = 0;
@@ -106,25 +106,25 @@
   return v3;
 }
 
-- (BOOL)shouldIgnoreTrigger:(id)a3 withState:(id)a4
+- (BOOL)shouldIgnoreTrigger:(id)trigger withState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
-  if (([v6 isEqualToString:@"com.apple.das.lpmchange"] & 1) != 0 || !objc_msgSend(v6, "isEqualToString:", @"com.apple.das.lowpowermodepolicy.batterylevelchange"))
+  triggerCopy = trigger;
+  stateCopy = state;
+  if (([triggerCopy isEqualToString:@"com.apple.das.lpmchange"] & 1) != 0 || !objc_msgSend(triggerCopy, "isEqualToString:", @"com.apple.das.lowpowermodepolicy.batterylevelchange"))
   {
     v11 = 0;
   }
 
   else
   {
-    v8 = [v7 objectForKeyedSubscript:self->_batteryLevelKeyPath];
-    v9 = [v8 integerValue];
+    v8 = [stateCopy objectForKeyedSubscript:self->_batteryLevelKeyPath];
+    integerValue = [v8 integerValue];
 
     lastSavedBatteryLevel = self->_lastSavedBatteryLevel;
-    v11 = v9 - lastSavedBatteryLevel < 5;
-    if (v9 - lastSavedBatteryLevel > 4 || v9 < lastSavedBatteryLevel)
+    v11 = integerValue - lastSavedBatteryLevel < 5;
+    if (integerValue - lastSavedBatteryLevel > 4 || integerValue < lastSavedBatteryLevel)
     {
-      self->_lastSavedBatteryLevel = v9;
+      self->_lastSavedBatteryLevel = integerValue;
     }
 
     else
@@ -136,16 +136,16 @@
   return v11;
 }
 
-- (BOOL)appliesToActivity:(id)a3
+- (BOOL)appliesToActivity:(id)activity
 {
-  v3 = a3;
-  if ([v3 allowsUnrestrictedBackgroundLaunches] & 1) != 0 || (objc_msgSend(v3, "isSoftwareUpdateActivity"))
+  activityCopy = activity;
+  if ([activityCopy allowsUnrestrictedBackgroundLaunches] & 1) != 0 || (objc_msgSend(activityCopy, "isSoftwareUpdateActivity"))
   {
     goto LABEL_6;
   }
 
-  v4 = [v3 name];
-  if ([v4 isEqualToString:@"com.apple.dasd.dataCollectiontask.dummyAutoSU"])
+  name = [activityCopy name];
+  if ([name isEqualToString:@"com.apple.dasd.dataCollectiontask.dummyAutoSU"])
   {
 
 LABEL_6:
@@ -153,23 +153,23 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v5 = [v3 name];
-  v6 = [v5 isEqualToString:@"com.apple.osintelligence.iblm.evaluate"];
+  name2 = [activityCopy name];
+  v6 = [name2 isEqualToString:@"com.apple.osintelligence.iblm.evaluate"];
 
   if (v6)
   {
     goto LABEL_6;
   }
 
-  if ([v3 isContinuedProcessingTask])
+  if ([activityCopy isContinuedProcessingTask])
   {
     v7 = 1;
   }
 
   else
   {
-    v9 = [v3 schedulingPriority];
-    v7 = v9 < _DASSchedulingPriorityUserInitiated;
+    schedulingPriority = [activityCopy schedulingPriority];
+    v7 = schedulingPriority < _DASSchedulingPriorityUserInitiated;
   }
 
 LABEL_7:
@@ -177,13 +177,13 @@ LABEL_7:
   return v7;
 }
 
-- (BOOL)isLowPowerModeEnabledWithContext:(id)a3
+- (BOOL)isLowPowerModeEnabledWithContext:(id)context
 {
-  v4 = [a3 objectForKeyedSubscript:self->_lpmKeyPath];
-  v5 = [v4 BOOLValue];
+  v4 = [context objectForKeyedSubscript:self->_lpmKeyPath];
+  bOOLValue = [v4 BOOLValue];
 
   lpmEngagementDate = self->_lpmEngagementDate;
-  if (!v5)
+  if (!bOOLValue)
   {
     v7 = 0;
     goto LABEL_5;
@@ -197,13 +197,13 @@ LABEL_5:
     self->_lpmEngagementDate = v7;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
-- (BOOL)isLowPowerModePolicyEnforced:(id)a3
+- (BOOL)isLowPowerModePolicyEnforced:(id)enforced
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:self->_batteryLevelKeyPath];
+  enforcedCopy = enforced;
+  v5 = [enforcedCopy objectForKeyedSubscript:self->_batteryLevelKeyPath];
   [v5 doubleValue];
   if (v6 == 0.0)
   {
@@ -212,13 +212,13 @@ LABEL_5:
 
   else
   {
-    v8 = [v5 unsignedIntegerValue];
-    v9 = [v4 objectForKeyedSubscript:self->_pluginStatusKeyPath];
-    v10 = [v9 BOOLValue];
+    unsignedIntegerValue = [v5 unsignedIntegerValue];
+    v9 = [enforcedCopy objectForKeyedSubscript:self->_pluginStatusKeyPath];
+    bOOLValue = [v9 BOOLValue];
 
-    v11 = [(_DASLowPowerModePolicy *)self isLowPowerModeEnabledWithContext:v4];
-    v12 = v10 ^ 1;
-    if (v8 < 0x1E)
+    v11 = [(_DASLowPowerModePolicy *)self isLowPowerModeEnabledWithContext:enforcedCopy];
+    v12 = bOOLValue ^ 1;
+    if (unsignedIntegerValue < 0x1E)
     {
       v12 = 1;
     }
@@ -237,25 +237,25 @@ LABEL_5:
   return v7;
 }
 
-- (id)responseForActivity:(id)a3 withState:(id)a4
+- (id)responseForActivity:(id)activity withState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
+  activityCopy = activity;
+  stateCopy = state;
   v8 = [[_DASPolicyResponseRationale alloc] initWithPolicyName:self->_policyName];
-  if (![(_DASLowPowerModePolicy *)self isLowPowerModePolicyEnforced:v7])
+  if (![(_DASLowPowerModePolicy *)self isLowPowerModePolicyEnforced:stateCopy])
   {
-    v14 = [v7 objectForKeyedSubscript:self->_pluginStatusKeyPath];
-    v15 = [v14 BOOLValue];
+    v14 = [stateCopy objectForKeyedSubscript:self->_pluginStatusKeyPath];
+    bOOLValue = [v14 BOOLValue];
 
-    if ((v15 & 1) != 0 || ![(_DASLowPowerModePolicy *)self isChallengedForBatteryLife])
+    if ((bOOLValue & 1) != 0 || ![(_DASLowPowerModePolicy *)self isChallengedForBatteryLife])
     {
       goto LABEL_15;
     }
 
     v16 = +[NSDate date];
-    v17 = [v6 startBefore];
-    v18 = [v6 startAfter];
-    [v17 timeIntervalSinceDate:v18];
+    startBefore = [activityCopy startBefore];
+    startAfter = [activityCopy startAfter];
+    [startBefore timeIntervalSinceDate:startAfter];
     v20 = v19;
 
     if (v20 >= 1.0)
@@ -268,16 +268,16 @@ LABEL_5:
       v21 = 1.0;
     }
 
-    v22 = [v6 startAfter];
-    [v16 timeIntervalSinceDate:v22];
+    startAfter2 = [activityCopy startAfter];
+    [v16 timeIntervalSinceDate:startAfter2];
     v24 = v23;
 
     v25 = v24 / v21;
-    v26 = [v6 schedulingPriority];
-    if (v26 >= _DASSchedulingPriorityUtility || v25 >= 0.9)
+    schedulingPriority = [activityCopy schedulingPriority];
+    if (schedulingPriority >= _DASSchedulingPriorityUtility || v25 >= 0.9)
     {
-      v43 = [v6 schedulingPriority];
-      v27 = v25 < 0.5 && v43 < _DASSchedulingPriorityUserInitiated;
+      schedulingPriority2 = [activityCopy schedulingPriority];
+      v27 = v25 < 0.5 && schedulingPriority2 < _DASSchedulingPriorityUserInitiated;
     }
 
     else
@@ -285,8 +285,8 @@ LABEL_5:
       v27 = 1;
     }
 
-    v45 = [v6 fastPass];
-    if (v45 || ([v6 isContinuedProcessingTask] & 1) != 0 || (objc_msgSend(v6, "requestsImmediateRuntime") & 1) != 0)
+    fastPass = [activityCopy fastPass];
+    if (fastPass || ([activityCopy isContinuedProcessingTask] & 1) != 0 || (objc_msgSend(activityCopy, "requestsImmediateRuntime") & 1) != 0)
     {
     }
 
@@ -304,12 +304,12 @@ LABEL_36:
     goto LABEL_37;
   }
 
-  if ([v6 isContinuedProcessingTask])
+  if ([activityCopy isContinuedProcessingTask])
   {
-    if (([v6 isRunning] & 1) != 0 || !self->_lpmEngagementDate || (objc_msgSend(v6, "submitDate"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isAfter:", self->_lpmEngagementDate), v9, v10))
+    if (([activityCopy isRunning] & 1) != 0 || !self->_lpmEngagementDate || (objc_msgSend(activityCopy, "submitDate"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isAfter:", self->_lpmEngagementDate), v9, v10))
     {
-      v11 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v6 isContinuedProcessingTask]);
-      v12 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v6 isRunning]);
+      v11 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [activityCopy isContinuedProcessingTask]);
+      v12 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [activityCopy isRunning]);
       v13 = [NSPredicate predicateWithFormat:@"continuedProcessingTask == %@ AND (activity.isRunning == %@ OR lpmEngagementDate < activity.startDate)", v11, v12];
       [(_DASPolicyResponseRationale *)v8 addRationaleWithCondition:v13];
 
@@ -320,9 +320,9 @@ LABEL_15:
   }
 
   v16 = +[NSDate date];
-  v29 = [v6 startBefore];
-  v30 = [v6 startAfter];
-  [v29 timeIntervalSinceDate:v30];
+  startBefore2 = [activityCopy startBefore];
+  startAfter3 = [activityCopy startAfter];
+  [startBefore2 timeIntervalSinceDate:startAfter3];
   v32 = v31;
 
   if (v32 >= 1.0)
@@ -335,24 +335,24 @@ LABEL_15:
     v33 = 1.0;
   }
 
-  v34 = [v6 startAfter];
-  [v16 timeIntervalSinceDate:v34];
+  startAfter4 = [activityCopy startAfter];
+  [v16 timeIntervalSinceDate:startAfter4];
   v36 = v35;
 
   v37 = [NSPredicate predicateWithFormat:@"lowPowerModeEnforced == %@", &__kCFBooleanTrue];
   [(_DASPolicyResponseRationale *)v8 addRationaleWithCondition:v37];
 
-  if (([v6 isContinuedProcessingTask] & 1) == 0 && (objc_msgSend(v6, "budgeted") & 1) == 0)
+  if (([activityCopy isContinuedProcessingTask] & 1) == 0 && (objc_msgSend(activityCopy, "budgeted") & 1) == 0)
   {
-    v39 = [v6 schedulingPriority];
-    if (v39 >= _DASSchedulingPriorityUtility)
+    schedulingPriority3 = [activityCopy schedulingPriority];
+    if (schedulingPriority3 >= _DASSchedulingPriorityUtility)
     {
       v38 = v36 / v33;
       if (v36 / v33 >= 0.9)
       {
-        v40 = [v6 fastPass];
+        fastPass2 = [activityCopy fastPass];
 
-        if (!v40)
+        if (!fastPass2)
         {
           goto LABEL_36;
         }

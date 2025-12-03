@@ -1,17 +1,17 @@
 @interface TVAppDelegate
 + (void)hideAppLoadingView;
-+ (void)showAppLoadingViewWithTimeout:(double)a3;
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
-- (BOOL)application:(id)a3 openURL:(id)a4 options:(id)a5;
++ (void)showAppLoadingViewWithTimeout:(double)timeout;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
+- (BOOL)application:(id)application openURL:(id)l options:(id)options;
 - (TVAppDelegate)init;
 - (id)_launchContext;
-- (void)_controllerDidDisplay:(id)a3;
-- (void)_presetDialogWithError:(int64_t)a3 appController:(id)a4;
-- (void)_runScrollMoveTest:(id)a3;
-- (void)_successTest:(id)a3 callback:(id)a4;
-- (void)appController:(id)a3 didFailWithError:(id)a4;
-- (void)appController:(id)a3 evaluateAppJavaScriptInContext:(id)a4;
-- (void)applicationDidEnterBackground:(id)a3;
+- (void)_controllerDidDisplay:(id)display;
+- (void)_presetDialogWithError:(int64_t)error appController:(id)controller;
+- (void)_runScrollMoveTest:(id)test;
+- (void)_successTest:(id)test callback:(id)callback;
+- (void)appController:(id)controller didFailWithError:(id)error;
+- (void)appController:(id)controller evaluateAppJavaScriptInContext:(id)context;
+- (void)applicationDidEnterBackground:(id)background;
 - (void)dealloc;
 @end
 
@@ -26,30 +26,30 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = TVAppDelegate;
   [(TVAppDelegate *)&v4 dealloc];
 }
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
-  v5 = a4;
+  optionsCopy = options;
   v6 = objc_alloc(MEMORY[0x277D75DA0]);
-  v7 = [MEMORY[0x277D759A0] mainScreen];
-  [v7 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v8 = [v6 initWithFrame:?];
   window = self->_window;
   self->_window = v8;
 
   [(UIWindow *)self->_window makeKeyWindow];
-  v10 = [(TVAppDelegate *)self _launchContext];
-  v11 = [(TVAppDelegate *)self launchOptionsWithDefaultOptions:v5];
+  _launchContext = [(TVAppDelegate *)self _launchContext];
+  v11 = [(TVAppDelegate *)self launchOptionsWithDefaultOptions:optionsCopy];
   if (v11)
   {
-    v12 = [(TVAppDelegate *)self launchOptionsWithDefaultOptions:v5];
+    v12 = [(TVAppDelegate *)self launchOptionsWithDefaultOptions:optionsCopy];
     v13 = [v12 mutableCopy];
   }
 
@@ -59,13 +59,13 @@
   }
 
   v14 = [v13 copy];
-  [v10 setLaunchOptions:v14];
+  [_launchContext setLaunchOptions:v14];
 
-  v15 = [[TVApplicationController alloc] initWithContext:v10 window:self->_window delegate:self];
+  v15 = [[TVApplicationController alloc] initWithContext:_launchContext window:self->_window delegate:self];
   objc_storeStrong(&self->_appController, v15);
-  v16 = [(TVApplicationController *)self->_appController _currentNavigationController];
-  v17 = [v16 viewControllers];
-  v18 = [v17 count];
+  _currentNavigationController = [(TVApplicationController *)self->_appController _currentNavigationController];
+  viewControllers = [_currentNavigationController viewControllers];
+  v18 = [viewControllers count];
 
   if (!v18)
   {
@@ -75,36 +75,36 @@
     v20 = +[_TVAppLoadingView loadingScreen];
     [v20 showOverKeyWindowWithSpinnerOnly:0];
 
-    v21 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v21 addObserver:self selector:sel__controllerDidDisplay_ name:@"TVAppNavigationDidDisplayViewControllerNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__controllerDidDisplay_ name:@"TVAppNavigationDidDisplayViewControllerNotification" object:0];
   }
 
   return 1;
 }
 
-- (void)applicationDidEnterBackground:(id)a3
+- (void)applicationDidEnterBackground:(id)background
 {
   if ([(TVAppDelegate *)self shouldTerminateOnEnterBackground])
   {
-    v3 = [MEMORY[0x277D75128] sharedApplication];
-    [v3 terminateWithSuccess];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    [mEMORY[0x277D75128] terminateWithSuccess];
   }
 }
 
-- (BOOL)application:(id)a3 openURL:(id)a4 options:(id)a5
+- (BOOL)application:(id)application openURL:(id)l options:(id)options
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(TVAppDelegate *)self appController];
-  v10 = [v9 openURL:v8 options:v7];
+  optionsCopy = options;
+  lCopy = l;
+  appController = [(TVAppDelegate *)self appController];
+  v10 = [appController openURL:lCopy options:optionsCopy];
 
   return v10;
 }
 
-- (void)appController:(id)a3 evaluateAppJavaScriptInContext:(id)a4
+- (void)appController:(id)controller evaluateAppJavaScriptInContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  contextCopy = context;
   objc_initWeak(&location, self);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -112,7 +112,7 @@
   v12[3] = &unk_279D6F228;
   objc_copyWeak(&v13, &location);
   v8 = MEMORY[0x26D6AFBB0](v12);
-  [v7 setObject:v8 forKeyedSubscript:@"ppt_scrollMoveTest"];
+  [contextCopy setObject:v8 forKeyedSubscript:@"ppt_scrollMoveTest"];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -120,7 +120,7 @@
   v10[3] = &unk_279D6F250;
   objc_copyWeak(&v11, &location);
   v9 = MEMORY[0x26D6AFBB0](v10);
-  [v7 setObject:v9 forKeyedSubscript:@"ppt_successTest"];
+  [contextCopy setObject:v9 forKeyedSubscript:@"ppt_successTest"];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&v13);
@@ -142,16 +142,16 @@ void __62__TVAppDelegate_appController_evaluateAppJavaScriptInContext___block_in
   [WeakRetained _successTest:v6 callback:v5];
 }
 
-- (void)appController:(id)a3 didFailWithError:(id)a4
+- (void)appController:(id)controller didFailWithError:(id)error
 {
-  v6 = a3;
-  -[TVAppDelegate _presetDialogWithError:appController:](self, "_presetDialogWithError:appController:", [a4 code], v6);
+  controllerCopy = controller;
+  -[TVAppDelegate _presetDialogWithError:appController:](self, "_presetDialogWithError:appController:", [error code], controllerCopy);
 }
 
-+ (void)showAppLoadingViewWithTimeout:(double)a3
++ (void)showAppLoadingViewWithTimeout:(double)timeout
 {
   v4 = +[_TVAppLoadingView loadingScreen];
-  [v4 setTimeout:a3];
+  [v4 setTimeout:timeout];
 
   v5 = +[_TVAppLoadingView loadingScreen];
   [v5 showOverKeyWindowWithSpinnerOnly:0];
@@ -163,14 +163,14 @@ void __62__TVAppDelegate_appController_evaluateAppJavaScriptInContext___block_in
   [v2 hide];
 }
 
-- (void)_runScrollMoveTest:(id)a3
+- (void)_runScrollMoveTest:(id)test
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D1B028] currentAppContext];
+  testCopy = test;
+  currentAppContext = [MEMORY[0x277D1B028] currentAppContext];
   v24[0] = 0;
   v24[1] = v24;
   v24[2] = 0x2020000000;
-  v6 = [v4 objectForKeyedSubscript:@"heading"];
+  v6 = [testCopy objectForKeyedSubscript:@"heading"];
   if ([v6 isEqualToString:@"down"])
   {
     v7 = 2;
@@ -182,7 +182,7 @@ void __62__TVAppDelegate_appController_evaluateAppJavaScriptInContext___block_in
   }
 
   v24[3] = v7;
-  v8 = [v4 objectForKeyedSubscript:@"testName"];
+  v8 = [testCopy objectForKeyedSubscript:@"testName"];
   v9 = v8;
   v10 = @"subTest";
   if (v8)
@@ -192,28 +192,28 @@ void __62__TVAppDelegate_appController_evaluateAppJavaScriptInContext___block_in
 
   v11 = v10;
 
-  v12 = [v4 objectForKeyedSubscript:@"iterations"];
+  v12 = [testCopy objectForKeyedSubscript:@"iterations"];
   if (v12)
   {
-    v13 = [v4 objectForKeyedSubscript:@"iterations"];
-    v14 = [v13 intValue];
+    v13 = [testCopy objectForKeyedSubscript:@"iterations"];
+    intValue = [v13 intValue];
   }
 
   else
   {
-    v14 = 1;
+    intValue = 1;
   }
 
-  v15 = [v4 objectForKeyedSubscript:@"offset"];
+  v15 = [testCopy objectForKeyedSubscript:@"offset"];
   if (v15)
   {
-    v16 = [v4 objectForKeyedSubscript:@"offset"];
-    v17 = [v16 intValue];
+    v16 = [testCopy objectForKeyedSubscript:@"offset"];
+    intValue2 = [v16 intValue];
   }
 
   else
   {
-    v17 = 20;
+    intValue2 = 20;
   }
 
   v19[0] = MEMORY[0x277D85DD0];
@@ -224,9 +224,9 @@ void __62__TVAppDelegate_appController_evaluateAppJavaScriptInContext___block_in
   v21 = v24;
   v18 = v11;
   v20 = v18;
-  v22 = v14;
-  v23 = v17;
-  [v5 evaluateDelegateBlockSync:v19];
+  v22 = intValue;
+  v23 = intValue2;
+  [currentAppContext evaluateDelegateBlockSync:v19];
 
   _Block_object_dispose(v24, 8);
 }
@@ -300,12 +300,12 @@ void __36__TVAppDelegate__runScrollMoveTest___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_successTest:(id)a3 callback:(id)a4
+- (void)_successTest:(id)test callback:(id)callback
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277D1B028] currentAppContext];
-  v9 = [v6 objectForKeyedSubscript:@"testName"];
+  testCopy = test;
+  callbackCopy = callback;
+  currentAppContext = [MEMORY[0x277D1B028] currentAppContext];
+  v9 = [testCopy objectForKeyedSubscript:@"testName"];
   v10 = v9;
   v11 = @"subTest";
   if (v9)
@@ -323,17 +323,17 @@ void __36__TVAppDelegate__runScrollMoveTest___block_invoke(uint64_t a1)
   v13 = v12;
   v20 = v13;
   objc_copyWeak(&v23, &location);
-  v14 = v8;
+  v14 = currentAppContext;
   v21 = v14;
-  v15 = v7;
+  v15 = callbackCopy;
   v22 = v15;
   [v14 evaluateDelegateBlockSync:v19];
   if (v15)
   {
-    v16 = [v14 jsContext];
-    v17 = [v16 objectForKeyedSubscript:@"App"];
-    v18 = [v16 virtualMachine];
-    [v18 addManagedReference:v15 withOwner:v17];
+    jsContext = [v14 jsContext];
+    v17 = [jsContext objectForKeyedSubscript:@"App"];
+    virtualMachine = [jsContext virtualMachine];
+    [virtualMachine addManagedReference:v15 withOwner:v17];
   }
 
   objc_destroyWeak(&v23);
@@ -393,15 +393,15 @@ void __39__TVAppDelegate__successTest_callback___block_invoke_3(uint64_t a1, voi
 {
   v15 = *MEMORY[0x277D85DE8];
   v2 = objc_alloc_init(TVApplicationControllerContext);
-  v3 = [MEMORY[0x277CCA8D8] mainBundle];
-  v4 = [v3 infoDictionary];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  infoDictionary = [mainBundle infoDictionary];
 
-  v5 = [v4 objectForKey:@"TVBootURL"];
+  v5 = [infoDictionary objectForKey:@"TVBootURL"];
   if ([v5 length] && (objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:", v5), (v6 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v7 = v6;
-    v8 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v9 = [v8 stringForKey:@"boot-url"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v9 = [standardUserDefaults stringForKey:@"boot-url"];
 
     if ([v9 length])
     {
@@ -429,25 +429,25 @@ void __39__TVAppDelegate__successTest_callback___block_invoke_3(uint64_t a1, voi
   return v2;
 }
 
-- (void)_controllerDidDisplay:(id)a3
+- (void)_controllerDidDisplay:(id)display
 {
   v4 = +[_TVAppLoadingView loadingScreen];
   [v4 hide];
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 removeObserver:self name:@"TVAppNavigationDidDisplayViewControllerNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"TVAppNavigationDidDisplayViewControllerNotification" object:0];
 }
 
-- (void)_presetDialogWithError:(int64_t)a3 appController:(id)a4
+- (void)_presetDialogWithError:(int64_t)error appController:(id)controller
 {
-  v26 = a4;
+  controllerCopy = controller;
   if (self->_headLess)
   {
-    v6 = [MEMORY[0x277D75128] sharedApplication];
-    [v6 terminateWithSuccess];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    [mEMORY[0x277D75128] terminateWithSuccess];
   }
 
-  if (a3 == 2)
+  if (error == 2)
   {
     v7 = _TVMLLocString(@"TVAppInternetUnavailableTitle", @"Localizable");
     v8 = _TVMLLocString(@"TVAppInternetUnavailableError", @"Localizable");
@@ -455,15 +455,15 @@ void __39__TVAppDelegate__successTest_callback___block_invoke_3(uint64_t a1, voi
 
   else
   {
-    v9 = [MEMORY[0x277CCA8D8] mainBundle];
-    v10 = [v9 localizedInfoDictionary];
-    v11 = [v10 objectForKey:@"CFBundleName"];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    localizedInfoDictionary = [mainBundle localizedInfoDictionary];
+    v11 = [localizedInfoDictionary objectForKey:@"CFBundleName"];
 
     if (!v11)
     {
-      v12 = [MEMORY[0x277CCA8D8] mainBundle];
-      v13 = [v12 infoDictionary];
-      v11 = [v13 objectForKey:@"CFBundleName"];
+      mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+      infoDictionary = [mainBundle2 infoDictionary];
+      v11 = [infoDictionary objectForKey:@"CFBundleName"];
     }
 
     if ([v11 length] >= 0x15)
@@ -493,14 +493,14 @@ void __39__TVAppDelegate__successTest_callback___block_invoke_3(uint64_t a1, voi
   [v23 hide];
 
   [(UIWindow *)self->_window makeKeyAndVisible];
-  window = v26;
-  if (!v26)
+  window = controllerCopy;
+  if (!controllerCopy)
   {
     window = self->_window;
   }
 
-  v25 = [(UIWindow *)window rootViewController];
-  [v25 presentViewController:v19 animated:1 completion:0];
+  rootViewController = [(UIWindow *)window rootViewController];
+  [rootViewController presentViewController:v19 animated:1 completion:0];
 }
 
 void __54__TVAppDelegate__presetDialogWithError_appController___block_invoke()

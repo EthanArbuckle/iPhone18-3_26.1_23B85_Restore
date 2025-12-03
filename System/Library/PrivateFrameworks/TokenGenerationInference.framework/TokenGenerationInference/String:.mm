@@ -45,19 +45,6 @@
   return result;
 }
 
-{
-  result = lazy protocol witness table cache variable for type [String : AppAssetGarbageCollector.Manifest.Entry] and conformance <> [A : B];
-  if (!lazy protocol witness table cache variable for type [String : AppAssetGarbageCollector.Manifest.Entry] and conformance <> [A : B])
-  {
-    __swift_instantiateConcreteTypeFromMangledNameAbstractV2(&_sSDySS24TokenGenerationInference24AppAssetGarbageCollectorV8ManifestV5EntryVGMd);
-    lazy protocol witness table accessor for type JSONEncoder.OutputFormatting and conformance JSONEncoder.OutputFormatting(&lazy protocol witness table cache variable for type AppAssetGarbageCollector.Manifest.Entry and conformance AppAssetGarbageCollector.Manifest.Entry, type metadata accessor for AppAssetGarbageCollector.Manifest.Entry);
-    result = swift_getWitnessTable();
-    atomic_store(result, &lazy protocol witness table cache variable for type [String : AppAssetGarbageCollector.Manifest.Entry] and conformance <> [A : B]);
-  }
-
-  return result;
-}
-
 - (unint64_t)MetadataSpecialToken
 {
   result = lazy protocol witness table cache variable for type [String : MetadataSpecialToken] and conformance <> [A : B];
@@ -72,33 +59,7 @@
   return result;
 }
 
-{
-  result = lazy protocol witness table cache variable for type [String : MetadataSpecialToken] and conformance <> [A : B];
-  if (!lazy protocol witness table cache variable for type [String : MetadataSpecialToken] and conformance <> [A : B])
-  {
-    __swift_instantiateConcreteTypeFromMangledNameAbstractV2(&_sSDySS24TokenGenerationInference015MetadataSpecialA0OGMd);
-    lazy protocol witness table accessor for type MetadataSpecialToken and conformance MetadataSpecialToken();
-    result = swift_getWitnessTable();
-    atomic_store(result, &lazy protocol witness table cache variable for type [String : MetadataSpecialToken] and conformance <> [A : B]);
-  }
-
-  return result;
-}
-
 - (unint64_t)E5Function
-{
-  result = lazy protocol witness table cache variable for type [String : E5Function] and conformance <> [A : B];
-  if (!lazy protocol witness table cache variable for type [String : E5Function] and conformance <> [A : B])
-  {
-    __swift_instantiateConcreteTypeFromMangledNameAbstractV2(&_sSDySS24TokenGenerationInference10E5FunctionVGMd);
-    lazy protocol witness table accessor for type E5Function and conformance E5Function();
-    result = swift_getWitnessTable();
-    atomic_store(result, &lazy protocol witness table cache variable for type [String : E5Function] and conformance <> [A : B]);
-  }
-
-  return result;
-}
-
 {
   result = lazy protocol witness table cache variable for type [String : E5Function] and conformance <> [A : B];
   if (!lazy protocol witness table cache variable for type [String : E5Function] and conformance <> [A : B])

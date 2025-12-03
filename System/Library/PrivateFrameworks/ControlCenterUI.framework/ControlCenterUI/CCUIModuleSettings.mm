@@ -1,46 +1,46 @@
 @interface CCUIModuleSettings
-- (BOOL)isEqual:(id)a3;
-- (CCUIModuleSettings)initWithGridSizeClass:(id)a3 moduleContainerBundleIdentifier:(id)a4 controlExtensionIdentifier:(id)a5 controlContainerBundleIdentifier:(id)a6 controlKind:(id)a7 controlType:(id)a8;
+- (BOOL)isEqual:(id)equal;
+- (CCUIModuleSettings)initWithGridSizeClass:(id)class moduleContainerBundleIdentifier:(id)identifier controlExtensionIdentifier:(id)extensionIdentifier controlContainerBundleIdentifier:(id)bundleIdentifier controlKind:(id)kind controlType:(id)type;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation CCUIModuleSettings
 
-- (CCUIModuleSettings)initWithGridSizeClass:(id)a3 moduleContainerBundleIdentifier:(id)a4 controlExtensionIdentifier:(id)a5 controlContainerBundleIdentifier:(id)a6 controlKind:(id)a7 controlType:(id)a8
+- (CCUIModuleSettings)initWithGridSizeClass:(id)class moduleContainerBundleIdentifier:(id)identifier controlExtensionIdentifier:(id)extensionIdentifier controlContainerBundleIdentifier:(id)bundleIdentifier controlKind:(id)kind controlType:(id)type
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  classCopy = class;
+  identifierCopy = identifier;
+  extensionIdentifierCopy = extensionIdentifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  kindCopy = kind;
+  typeCopy = type;
   v34.receiver = self;
   v34.super_class = CCUIModuleSettings;
   v20 = [(CCUIModuleSettings *)&v34 init];
   if (v20)
   {
-    v21 = [v14 copy];
+    v21 = [classCopy copy];
     gridSizeClass = v20->_gridSizeClass;
     v20->_gridSizeClass = v21;
 
-    v23 = [v15 copy];
+    v23 = [identifierCopy copy];
     moduleContainerBundleIdentifier = v20->_moduleContainerBundleIdentifier;
     v20->_moduleContainerBundleIdentifier = v23;
 
-    v25 = [v16 copy];
+    v25 = [extensionIdentifierCopy copy];
     parityControlExtensionIdentifier = v20->_parityControlExtensionIdentifier;
     v20->_parityControlExtensionIdentifier = v25;
 
-    v27 = [v17 copy];
+    v27 = [bundleIdentifierCopy copy];
     parityControlContainerBundleIdentifier = v20->_parityControlContainerBundleIdentifier;
     v20->_parityControlContainerBundleIdentifier = v27;
 
-    v29 = [v18 copy];
+    v29 = [kindCopy copy];
     parityControlKind = v20->_parityControlKind;
     v20->_parityControlKind = v29;
 
-    v31 = [v19 copy];
+    v31 = [typeCopy copy];
     parityControlType = v20->_parityControlType;
     v20->_parityControlType = v31;
   }
@@ -77,45 +77,45 @@
     [v3 appendString:parityControlType withName:@"Parity control type"];
   }
 
-  v8 = [v3 build];
+  build = [v3 build];
 
-  return v8;
+  return build;
 }
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendString:self->_gridSizeClass];
-  v5 = [v3 appendString:self->_moduleContainerBundleIdentifier];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendString:self->_gridSizeClass];
+  v5 = [builder appendString:self->_moduleContainerBundleIdentifier];
   if (self->_parityControlExtensionIdentifier)
   {
-    v6 = [v3 appendString:?];
+    v6 = [builder appendString:?];
   }
 
   if (self->_parityControlContainerBundleIdentifier)
   {
-    v7 = [v3 appendString:?];
+    v7 = [builder appendString:?];
   }
 
   if (self->_parityControlKind)
   {
-    v8 = [v3 appendString:?];
+    v8 = [builder appendString:?];
   }
 
   if (self->_parityControlType)
   {
-    v9 = [v3 appendString:?];
+    v9 = [builder appendString:?];
   }
 
-  v10 = [v3 hash];
+  v10 = [builder hash];
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -125,7 +125,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
-      v5 = v4;
+      v5 = equalCopy;
       if (BSEqualStrings() && BSEqualStrings() && BSEqualStrings() && BSEqualStrings() && BSEqualStrings())
       {
         v6 = BSEqualStrings();

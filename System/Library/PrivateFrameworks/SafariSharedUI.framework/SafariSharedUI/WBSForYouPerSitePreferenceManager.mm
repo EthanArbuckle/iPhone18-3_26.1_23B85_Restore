@@ -1,22 +1,22 @@
 @interface WBSForYouPerSitePreferenceManager
-- (WBSForYouPerSitePreferenceManager)initWithPerSitePreferencesStore:(id)a3;
+- (WBSForYouPerSitePreferenceManager)initWithPerSitePreferencesStore:(id)store;
 - (id)preferences;
-- (void)allowedForYouRecommendationsFromRecommendations:(id)a3 completionHandler:(id)a4;
-- (void)setPreferenceValue:(int64_t)a3 forURL:(id)a4 completionHandler:(id)a5;
+- (void)allowedForYouRecommendationsFromRecommendations:(id)recommendations completionHandler:(id)handler;
+- (void)setPreferenceValue:(int64_t)value forURL:(id)l completionHandler:(id)handler;
 @end
 
 @implementation WBSForYouPerSitePreferenceManager
 
-- (WBSForYouPerSitePreferenceManager)initWithPerSitePreferencesStore:(id)a3
+- (WBSForYouPerSitePreferenceManager)initWithPerSitePreferencesStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v13.receiver = self;
   v13.super_class = WBSForYouPerSitePreferenceManager;
   v6 = [(WBSForYouPerSitePreferenceManager *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_preferencesStore, a3);
+    objc_storeStrong(&v6->_preferencesStore, store);
     v8 = objc_alloc(MEMORY[0x1E69C8FB8]);
     v9 = [v8 initWithIdentifier:*MEMORY[0x1E69C9308]];
     preference = v7->_preference;
@@ -30,10 +30,10 @@
   return v7;
 }
 
-- (void)allowedForYouRecommendationsFromRecommendations:(id)a3 completionHandler:(id)a4
+- (void)allowedForYouRecommendationsFromRecommendations:(id)recommendations completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [a3 copy];
+  handlerCopy = handler;
+  v7 = [recommendations copy];
   preferencesStore = self->_preferencesStore;
   v9 = *MEMORY[0x1E69C94E0];
   v12[0] = MEMORY[0x1E69E9820];
@@ -41,9 +41,9 @@
   v12[2] = __103__WBSForYouPerSitePreferenceManager_allowedForYouRecommendationsFromRecommendations_completionHandler___block_invoke;
   v12[3] = &unk_1E8285158;
   v13 = v7;
-  v14 = v6;
+  v14 = handlerCopy;
   v10 = v7;
-  v11 = v6;
+  v11 = handlerCopy;
   [(WBSPerSitePreferencesSQLiteStore *)preferencesStore getAllDomainsConfiguredForPreference:v9 completionHandler:v12];
 }
 
@@ -98,16 +98,16 @@ void __103__WBSForYouPerSitePreferenceManager_allowedForYouRecommendationsFromRe
   }
 }
 
-- (void)setPreferenceValue:(int64_t)a3 forURL:(id)a4 completionHandler:(id)a5
+- (void)setPreferenceValue:(int64_t)value forURL:(id)l completionHandler:(id)handler
 {
   v8 = MEMORY[0x1E696AD98];
-  v9 = a5;
-  v10 = a4;
-  v13 = [v8 numberWithInteger:a3];
+  handlerCopy = handler;
+  lCopy = l;
+  v13 = [v8 numberWithInteger:value];
   preference = self->_preference;
-  v12 = [v10 safari_userVisibleHostWithoutWWWSubdomain];
+  safari_userVisibleHostWithoutWWWSubdomain = [lCopy safari_userVisibleHostWithoutWWWSubdomain];
 
-  [(WBSPerSitePreferenceManager *)self setValue:v13 ofPreference:preference forDomain:v12 completionHandler:v9];
+  [(WBSPerSitePreferenceManager *)self setValue:v13 ofPreference:preference forDomain:safari_userVisibleHostWithoutWWWSubdomain completionHandler:handlerCopy];
 }
 
 - (id)preferences

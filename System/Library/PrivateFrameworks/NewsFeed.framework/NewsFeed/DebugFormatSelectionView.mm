@@ -1,25 +1,25 @@
 @interface DebugFormatSelectionView
-- (_TtC8NewsFeed24DebugFormatSelectionView)initWithFrame:(CGRect)a3;
+- (_TtC8NewsFeed24DebugFormatSelectionView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation DebugFormatSelectionView
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D7153B44();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_1D715403C(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1D715403C(change);
 }
 
-- (_TtC8NewsFeed24DebugFormatSelectionView)initWithFrame:(CGRect)a3
+- (_TtC8NewsFeed24DebugFormatSelectionView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

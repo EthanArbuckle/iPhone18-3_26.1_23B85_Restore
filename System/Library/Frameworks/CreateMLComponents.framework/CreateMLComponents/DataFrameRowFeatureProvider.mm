@@ -1,6 +1,6 @@
 @interface DataFrameRowFeatureProvider
 - (NSSet)featureNames;
-- (id)featureValueForName:(id)a3;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation DataFrameRowFeatureProvider
@@ -15,7 +15,7 @@
   return v2;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
   sub_237EF8590();
 

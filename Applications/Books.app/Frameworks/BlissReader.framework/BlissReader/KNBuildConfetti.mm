@@ -1,22 +1,22 @@
 @interface KNBuildConfetti
 + (id)defaultAttributes;
-+ (void)downgradeAttributes:(id *)a3 animationName:(id *)a4 warning:(id *)a5 type:(int)a6 isToClassic:(BOOL)a7 version:(unint64_t)a8;
-+ (void)upgradeAttributes:(id *)a3 animationName:(id)a4 warning:(id *)a5 type:(int)a6 isFromClassic:(BOOL)a7 version:(unint64_t)a8;
-- (CGRect)frameOfEffectWithContext:(id)a3;
-- (KNBuildConfetti)initWithAnimationContext:(id)a3;
-- (void)metalPrepareAnimationWithContext:(id)a3;
-- (void)metalTeardownAnimationsWithContext:(id)a3;
-- (void)p_drawWithContext:(id)a3;
-- (void)p_setupParticleSystemWithImage:(id)a3 build:(id)a4 randomGenerator:(id)a5 metalContext:(id)a6;
++ (void)downgradeAttributes:(id *)attributes animationName:(id *)name warning:(id *)warning type:(int)type isToClassic:(BOOL)classic version:(unint64_t)version;
++ (void)upgradeAttributes:(id *)attributes animationName:(id)name warning:(id *)warning type:(int)type isFromClassic:(BOOL)classic version:(unint64_t)version;
+- (CGRect)frameOfEffectWithContext:(id)context;
+- (KNBuildConfetti)initWithAnimationContext:(id)context;
+- (void)metalPrepareAnimationWithContext:(id)context;
+- (void)metalTeardownAnimationsWithContext:(id)context;
+- (void)p_drawWithContext:(id)context;
+- (void)p_setupParticleSystemWithImage:(id)image build:(id)build randomGenerator:(id)generator metalContext:(id)context;
 @end
 
 @implementation KNBuildConfetti
 
-- (KNBuildConfetti)initWithAnimationContext:(id)a3
+- (KNBuildConfetti)initWithAnimationContext:(id)context
 {
   v4.receiver = self;
   v4.super_class = KNBuildConfetti;
-  return [(KNAnimationEffect *)&v4 initWithAnimationContext:a3];
+  return [(KNAnimationEffect *)&v4 initWithAnimationContext:context];
 }
 
 + (id)defaultAttributes
@@ -28,15 +28,15 @@
   return v2;
 }
 
-- (CGRect)frameOfEffectWithContext:(id)a3
+- (CGRect)frameOfEffectWithContext:(id)context
 {
-  v4 = a3;
-  [v4 drawableFrame];
+  contextCopy = context;
+  [contextCopy drawableFrame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  [v4 direction];
+  [contextCopy direction];
 
   self->_drawableFrame.origin.x = v6;
   self->_drawableFrame.origin.y = v8;
@@ -78,13 +78,13 @@
   return result;
 }
 
-- (void)p_setupParticleSystemWithImage:(id)a3 build:(id)a4 randomGenerator:(id)a5 metalContext:(id)a6
+- (void)p_setupParticleSystemWithImage:(id)image build:(id)build randomGenerator:(id)generator metalContext:(id)context
 {
-  v28 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (!v11)
+  imageCopy = image;
+  buildCopy = build;
+  generatorCopy = generator;
+  contextCopy = context;
+  if (!generatorCopy)
   {
     v13 = +[TSUAssertionHandler currentHandler];
     v14 = [NSString stringWithUTF8String:"[KNBuildConfetti p_setupParticleSystemWithImage:build:randomGenerator:metalContext:]"];
@@ -95,16 +95,16 @@
   [(KNAnimationContext *)self->super.mAnimationContext slideRect];
   v17 = v16;
   v19 = v18;
-  [v28 frame];
+  [imageCopy frame];
   v21 = v20;
   v23 = v22;
-  [v10 duration];
-  v24 = [v10 direction];
-  if (v12)
+  [buildCopy duration];
+  direction = [buildCopy direction];
+  if (contextCopy)
   {
-    v25 = v24;
-    [v28 size];
-    v26 = [KNBuildConfettiSystem newParticleSystemWithNumberOfParticles:"newParticleSystemWithNumberOfParticles:objectSize:slideSize:duration:direction:randomGenerator:shader:metalContext:" objectSize:(sqrt(sqrt(v21 * (v23 / v19) / v17)) * 10000.0) slideSize:v25 duration:v11 direction:self->_metalShader randomGenerator:v12 shader:? metalContext:?];
+    v25 = direction;
+    [imageCopy size];
+    v26 = [KNBuildConfettiSystem newParticleSystemWithNumberOfParticles:"newParticleSystemWithNumberOfParticles:objectSize:slideSize:duration:direction:randomGenerator:shader:metalContext:" objectSize:(sqrt(sqrt(v21 * (v23 / v19) / v17)) * 10000.0) slideSize:v25 duration:generatorCopy direction:self->_metalShader randomGenerator:contextCopy shader:? metalContext:?];
     particleSystem = self->_particleSystem;
     self->_particleSystem = v26;
   }
@@ -112,20 +112,20 @@
   [(KNBuildConfettiSystem *)self->_particleSystem setupWithTexture:0 particleTextureSize:0 reverseDrawOrder:CGSizeZero.width, CGSizeZero.height];
 }
 
-- (void)p_drawWithContext:(id)a3
+- (void)p_drawWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 textures];
-  v6 = [v4 animatedBuild];
-  [v4 percent];
+  contextCopy = context;
+  textures = [contextCopy textures];
+  animatedBuild = [contextCopy animatedBuild];
+  [contextCopy percent];
   v8 = v7;
-  v9 = [v6 direction];
-  v10 = [v6 isBuildIn];
+  direction = [animatedBuild direction];
+  isBuildIn = [animatedBuild isBuildIn];
   [(KNAnimationContext *)self->super.mAnimationContext slideRect];
   v12 = v11;
   v14 = v13;
-  v15 = [v5 lastObject];
-  [v15 frame];
+  lastObject = [textures lastObject];
+  [lastObject frame];
   v17 = v16;
   v19 = v18;
   v35 = *&self->_baseTransform.m11;
@@ -136,9 +136,9 @@
   v38 = *&self->_baseTransform.m13;
   v42 = *&self->_baseTransform.m43;
   v39 = *&self->_baseTransform.m41;
-  [v15 singleTextureOpacity];
+  [lastObject singleTextureOpacity];
   v21 = v20;
-  if (v10)
+  if (isBuildIn)
   {
     v22 = 1.0 - v8;
   }
@@ -150,7 +150,7 @@
 
   v23 = 1.0 - v22;
   v24 = v22 * v22 * (1.0 - v23 * v23);
-  if (v10)
+  if (isBuildIn)
   {
     v25 = (v22 + v24 + (-(v23 * v23) * v23 + 1.0) * (1.0 - v22 * v22)) * 0.5;
     v26 = v25 * v25;
@@ -161,7 +161,7 @@
     v26 = (v22 + v24 + (-(v23 * v23) * v23 + 1.0) * (1.0 - v22 * v22)) * 0.5;
   }
 
-  if (v9 == &stru_68.segname[1])
+  if (direction == &stru_68.segname[1])
   {
     *&v43.m11 = v35;
     *&v43.m13 = v38;
@@ -182,9 +182,9 @@
     v39 = *&v44.m41;
   }
 
-  v27 = [v4 metalContext];
-  v28 = [v27 renderEncoder];
-  if (!v28)
+  metalContext = [contextCopy metalContext];
+  renderEncoder = [metalContext renderEncoder];
+  if (!renderEncoder)
   {
     v29 = +[TSUAssertionHandler currentHandler];
     v30 = [NSString stringWithUTF8String:"[KNBuildConfetti p_drawWithContext:]"];
@@ -192,7 +192,7 @@
     [v29 handleFailureInFunction:v30 file:v31 lineNumber:250 description:{@"invalid nil value for '%s'", "renderEncoder"}];
   }
 
-  v32 = [v15 metalTextureWithContext:v27];
+  v32 = [lastObject metalTextureWithContext:metalContext];
   if (v32)
   {
     self->_vertexInput = vcvt_hight_f32_f64(vcvt_f32_f64(v35), v38);
@@ -203,29 +203,29 @@
     v34 = v23 * v21;
     *&self->_anon_b0[56] = v33;
     *&self->_anon_b0[60] = v34;
-    [(TSDMetalShader *)self->_metalShader setPipelineStateWithEncoder:v28 vertexBytes:?];
-    [v28 setFragmentTexture:v32 atIndex:0];
-    [(KNBuildConfettiSystem *)self->_particleSystem drawMetalWithEncoder:v28];
+    [(TSDMetalShader *)self->_metalShader setPipelineStateWithEncoder:renderEncoder vertexBytes:?];
+    [renderEncoder setFragmentTexture:v32 atIndex:0];
+    [(KNBuildConfettiSystem *)self->_particleSystem drawMetalWithEncoder:renderEncoder];
   }
 }
 
-- (void)metalPrepareAnimationWithContext:(id)a3
+- (void)metalPrepareAnimationWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 animatedBuild];
-  v6 = [v4 textures];
-  if ([v6 count] != &dword_0 + 1)
+  contextCopy = context;
+  animatedBuild = [contextCopy animatedBuild];
+  textures = [contextCopy textures];
+  if ([textures count] != &dword_0 + 1)
   {
     v7 = +[TSUAssertionHandler currentHandler];
     v8 = [NSString stringWithUTF8String:"[KNBuildConfetti metalPrepareAnimationWithContext:]"];
     v9 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Alder/bliss/Classes/Widgets/Keynote/Animations/Builds/KNBuildConfetti.m"];
-    [v7 handleFailureInFunction:v8 file:v9 lineNumber:288 description:{@"Effect expects one texture. Passed (%lu) textures.", objc_msgSend(v6, "count")}];
+    [v7 handleFailureInFunction:v8 file:v9 lineNumber:288 description:{@"Effect expects one texture. Passed (%lu) textures.", objc_msgSend(textures, "count")}];
   }
 
-  v10 = [v4 metalContext];
-  v11 = [v10 device];
+  metalContext = [contextCopy metalContext];
+  device = [metalContext device];
 
-  if (!v11)
+  if (!device)
   {
     v12 = +[TSUAssertionHandler currentHandler];
     v13 = [NSString stringWithUTF8String:"[KNBuildConfetti metalPrepareAnimationWithContext:]"];
@@ -234,13 +234,13 @@
   }
 
   v15 = objc_alloc_init(MTLRenderPipelineColorAttachmentDescriptor);
-  v16 = [v4 metalContext];
-  [v15 setPixelFormat:objc_msgSend(v16, "pixelFormat")];
+  metalContext2 = [contextCopy metalContext];
+  [v15 setPixelFormat:objc_msgSend(metalContext2, "pixelFormat")];
 
   [v15 setBlendingEnabled:1];
   [v15 setDestinationAlphaBlendFactor:5];
   [v15 setDestinationRGBBlendFactor:5];
-  v17 = [[TSDMetalShader alloc] initCustomShaderWithVertexShader:@"transitionConfettiVertexShader" fragmentShader:@"transitionConfettiFragmentShader" device:v11 library:@"KeynoteMetalLibrary" colorAttachment:v15];
+  v17 = [[TSDMetalShader alloc] initCustomShaderWithVertexShader:@"transitionConfettiVertexShader" fragmentShader:@"transitionConfettiFragmentShader" device:device library:@"KeynoteMetalLibrary" colorAttachment:v15];
   metalShader = self->_metalShader;
   self->_metalShader = v17;
 
@@ -249,10 +249,10 @@
   self->_frameRect.origin.y = v20;
   self->_frameRect.size.width = v21;
   self->_frameRect.size.height = v22;
-  v23 = [v6 objectAtIndexedSubscript:0];
-  v24 = [v4 randomGenerator];
-  v25 = [v4 metalContext];
-  [(KNBuildConfetti *)self p_setupParticleSystemWithImage:v23 build:v5 randomGenerator:v24 metalContext:v25];
+  v23 = [textures objectAtIndexedSubscript:0];
+  randomGenerator = [contextCopy randomGenerator];
+  metalContext3 = [contextCopy metalContext];
+  [(KNBuildConfetti *)self p_setupParticleSystemWithImage:v23 build:animatedBuild randomGenerator:randomGenerator metalContext:metalContext3];
 
   [(KNBuildConfettiSystem *)self->_particleSystem rotationMax];
   *&v26 = v26;
@@ -260,7 +260,7 @@
   [(KNBuildConfettiSystem *)self->_particleSystem speedMax];
   *&v27 = v27;
   *&self->_anon_b0[52] = LODWORD(v27);
-  [(KNAnimationEffect *)self perspectiveMVPMatrixWithContext:v4];
+  [(KNAnimationEffect *)self perspectiveMVPMatrixWithContext:contextCopy];
   v28 = v37;
   *&self->_baseTransform.m31 = v36;
   *&self->_baseTransform.m33 = v28;
@@ -275,7 +275,7 @@
   *&self->_baseTransform.m23 = v31;
 }
 
-- (void)metalTeardownAnimationsWithContext:(id)a3
+- (void)metalTeardownAnimationsWithContext:(id)context
 {
   metalShader = self->_metalShader;
   self->_metalShader = 0;
@@ -284,18 +284,18 @@
   self->_particleSystem = 0;
 }
 
-+ (void)upgradeAttributes:(id *)a3 animationName:(id)a4 warning:(id *)a5 type:(int)a6 isFromClassic:(BOOL)a7 version:(unint64_t)a8
++ (void)upgradeAttributes:(id *)attributes animationName:(id)name warning:(id *)warning type:(int)type isFromClassic:(BOOL)classic version:(unint64_t)version
 {
-  if ((a6 - 1) <= 1 && a8 <= 0x174876E7FFLL && a7)
+  if ((type - 1) <= 1 && version <= 0x174876E7FFLL && classic)
   {
-    v11 = [*a3 objectForKeyedSubscript:{@"KNBuildAttributesDirection", a4, a5}];
+    v11 = [*attributes objectForKeyedSubscript:{@"KNBuildAttributesDirection", name, warning}];
 
     if (v11)
     {
-      v12 = [*a3 objectForKeyedSubscript:@"KNBuildAttributesDirection"];
-      v13 = [v12 unsignedIntegerValue];
+      v12 = [*attributes objectForKeyedSubscript:@"KNBuildAttributesDirection"];
+      unsignedIntegerValue = [v12 unsignedIntegerValue];
 
-      if (v13 == &dword_C)
+      if (unsignedIntegerValue == &dword_C)
       {
         v14 = 121;
       }
@@ -305,34 +305,34 @@
         v14 = 122;
       }
 
-      v17 = [*a3 mutableCopy];
+      v17 = [*attributes mutableCopy];
       v15 = [NSNumber numberWithUnsignedInteger:v14];
       [v17 setObject:v15 forKeyedSubscript:@"KNBuildAttributesDirection"];
 
       v16 = v17;
-      *a3 = v17;
+      *attributes = v17;
     }
   }
 }
 
-+ (void)downgradeAttributes:(id *)a3 animationName:(id *)a4 warning:(id *)a5 type:(int)a6 isToClassic:(BOOL)a7 version:(unint64_t)a8
++ (void)downgradeAttributes:(id *)attributes animationName:(id *)name warning:(id *)warning type:(int)type isToClassic:(BOOL)classic version:(unint64_t)version
 {
-  if ((a6 - 1) <= 1 && a8 <= 0x174876E7FFLL && a7)
+  if ((type - 1) <= 1 && version <= 0x174876E7FFLL && classic)
   {
-    v11 = [*a3 objectForKeyedSubscript:{@"direction", a4, a5}];
+    v11 = [*attributes objectForKeyedSubscript:{@"direction", name, warning}];
 
     if (v11)
     {
-      v12 = [*a3 objectForKeyedSubscript:@"direction"];
-      v13 = [v12 unsignedIntegerValue];
+      v12 = [*attributes objectForKeyedSubscript:@"direction"];
+      unsignedIntegerValue = [v12 unsignedIntegerValue];
 
       v14 = 122;
-      if (v13 == &stru_68.segname[1])
+      if (unsignedIntegerValue == &stru_68.segname[1])
       {
         v14 = 12;
       }
 
-      if (v13 == &stru_68.segname[2])
+      if (unsignedIntegerValue == &stru_68.segname[2])
       {
         v15 = 11;
       }
@@ -342,12 +342,12 @@
         v15 = v14;
       }
 
-      v18 = [*a3 mutableCopy];
+      v18 = [*attributes mutableCopy];
       v16 = [NSNumber numberWithUnsignedInteger:v15];
       [v18 setObject:v16 forKeyedSubscript:@"direction"];
 
       v17 = v18;
-      *a3 = v18;
+      *attributes = v18;
     }
   }
 }

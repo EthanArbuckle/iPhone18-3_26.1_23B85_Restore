@@ -1,26 +1,26 @@
 @interface VUIPagePerformanceController
-+ (void)postNotificationForImageProxy:(id)a3 withLoadingStatus:(BOOL)a4 withError:(id)a5;
++ (void)postNotificationForImageProxy:(id)proxy withLoadingStatus:(BOOL)status withError:(id)error;
 @end
 
 @implementation VUIPagePerformanceController
 
-+ (void)postNotificationForImageProxy:(id)a3 withLoadingStatus:(BOOL)a4 withError:(id)a5
++ (void)postNotificationForImageProxy:(id)proxy withLoadingStatus:(BOOL)status withError:(id)error
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = a5;
+  statusCopy = status;
+  proxyCopy = proxy;
+  errorCopy = error;
   v9 = mach_absolute_time();
-  v10 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v11 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v9];
-  [v10 setObject:v11 forKeyedSubscript:@"VUIPagePerformanceImageProxyNotificationTimestamp"];
+  [dictionary setObject:v11 forKeyedSubscript:@"VUIPagePerformanceImageProxyNotificationTimestamp"];
 
-  if (v8)
+  if (errorCopy)
   {
-    [v10 setObject:v8 forKeyedSubscript:@"VUIPagePerformanceImageProxyNotificationError"];
+    [dictionary setObject:errorCopy forKeyedSubscript:@"VUIPagePerformanceImageProxyNotificationError"];
   }
 
   v12 = @"VUIPagePerformanceImageProxyDidLoadNotification";
-  if (v6)
+  if (statusCopy)
   {
     v12 = @"VUIPagePerformanceImageProxyWillLoadNotification";
   }
@@ -31,10 +31,10 @@
   v18[2] = __90__VUIPagePerformanceController_postNotificationForImageProxy_withLoadingStatus_withError___block_invoke;
   v18[3] = &unk_279E21980;
   v19 = v13;
-  v20 = v7;
-  v21 = v10;
-  v14 = v10;
-  v15 = v7;
+  v20 = proxyCopy;
+  v21 = dictionary;
+  v14 = dictionary;
+  v15 = proxyCopy;
   v16 = v13;
   v17 = MEMORY[0x2743B7C30](v18);
   dispatch_async(MEMORY[0x277D85CD0], v17);

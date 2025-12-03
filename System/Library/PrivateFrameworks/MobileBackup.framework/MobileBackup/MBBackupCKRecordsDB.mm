@@ -1,121 +1,121 @@
 @interface MBBackupCKRecordsDB
-+ (id)openOrCreateDatabaseIn:(id)a3 error:(id *)a4;
-- (BOOL)enumerateAssetRecordReferences:(id)a3 error:(id *)a4 block:(id)a5;
-- (BOOL)enumerateDomainRecords:(id)a3 error:(id *)a4 block:(id)a5;
-- (BOOL)enumerateSnapshotRecords:(id *)a3 block:(id)a4;
-- (BOOL)hasAssetReference:(id)a3 error:(id *)a4;
-- (BOOL)insertDomainRecordForSnapshotID:(id)a3 domain:(id)a4 error:(id *)a5;
-- (BOOL)insertSnapshotRecord:(id)a3 error:(id *)a4;
++ (id)openOrCreateDatabaseIn:(id)in error:(id *)error;
+- (BOOL)enumerateAssetRecordReferences:(id)references error:(id *)error block:(id)block;
+- (BOOL)enumerateDomainRecords:(id)records error:(id *)error block:(id)block;
+- (BOOL)enumerateSnapshotRecords:(id *)records block:(id)block;
+- (BOOL)hasAssetReference:(id)reference error:(id *)error;
+- (BOOL)insertDomainRecordForSnapshotID:(id)d domain:(id)domain error:(id *)error;
+- (BOOL)insertSnapshotRecord:(id)record error:(id *)error;
 @end
 
 @implementation MBBackupCKRecordsDB
 
-+ (id)openOrCreateDatabaseIn:(id)a3 error:(id *)a4
++ (id)openOrCreateDatabaseIn:(id)in error:(id *)error
 {
-  v5 = [a3 stringByAppendingPathComponent:@"backup_ck_records.db"];
-  v6 = [[MBBackupCKRecordsDB alloc] initWithPath:v5 readOnly:0 error:a4];
+  v5 = [in stringByAppendingPathComponent:@"backup_ck_records.db"];
+  v6 = [[MBBackupCKRecordsDB alloc] initWithPath:v5 readOnly:0 error:error];
 
   return v6;
 }
 
-- (BOOL)insertSnapshotRecord:(id)a3 error:(id *)a4
+- (BOOL)insertSnapshotRecord:(id)record error:(id *)error
 {
-  v6 = a3;
-  if (!v6)
+  recordCopy = record;
+  if (!recordCopy)
   {
     __assert_rtn("[MBBackupCKRecordsDB insertSnapshotRecord:error:]", "MBBackupCKRecordsDB.m", 75, "snapshot");
   }
 
-  v7 = v6;
+  v7 = recordCopy;
   db = self->_db;
-  v9 = [v6 recordIDString];
-  v10 = [v7 commitID];
-  v11 = -[MBSQLiteDB executeWithError:sql:](db, "executeWithError:sql:", a4, @"INSERT OR REPLACE INTO SnapshotRecords (recordID, commitID, snapshotFormat) VALUES (%@, %@, %d)", v9, v10, [v7 snapshotFormat]);
+  recordIDString = [recordCopy recordIDString];
+  commitID = [v7 commitID];
+  v11 = -[MBSQLiteDB executeWithError:sql:](db, "executeWithError:sql:", error, @"INSERT OR REPLACE INTO SnapshotRecords (recordID, commitID, snapshotFormat) VALUES (%@, %@, %d)", recordIDString, commitID, [v7 snapshotFormat]);
 
   return v11;
 }
 
-- (BOOL)insertDomainRecordForSnapshotID:(id)a3 domain:(id)a4 error:(id *)a5
+- (BOOL)insertDomainRecordForSnapshotID:(id)d domain:(id)domain error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  dCopy = d;
+  domainCopy = domain;
+  if (!dCopy)
   {
     __assert_rtn("[MBBackupCKRecordsDB insertDomainRecordForSnapshotID:domain:error:]", "MBBackupCKRecordsDB.m", 80, "snapshotRecordID");
   }
 
-  v10 = v9;
-  if (!v9)
+  v10 = domainCopy;
+  if (!domainCopy)
   {
     __assert_rtn("[MBBackupCKRecordsDB insertDomainRecordForSnapshotID:domain:error:]", "MBBackupCKRecordsDB.m", 81, "domain");
   }
 
   db = self->_db;
-  v12 = [v9 recordID];
-  v13 = [v12 recordName];
-  v14 = [v10 domainName];
-  v15 = [(MBSQLiteDB *)db executeWithError:a5 sql:@"INSERT OR REPLACE INTO DomainRecords (recordID, parentSnapshotRecordID, domainName) VALUES (%@, %@, %@)", v13, v8, v14];
+  recordID = [domainCopy recordID];
+  recordName = [recordID recordName];
+  domainName = [v10 domainName];
+  v15 = [(MBSQLiteDB *)db executeWithError:error sql:@"INSERT OR REPLACE INTO DomainRecords (recordID, parentSnapshotRecordID, domainName) VALUES (%@, %@, %@)", recordName, dCopy, domainName];
 
   return v15;
 }
 
-- (BOOL)hasAssetReference:(id)a3 error:(id *)a4
+- (BOOL)hasAssetReference:(id)reference error:(id *)error
 {
-  v6 = a3;
-  if (!v6)
+  referenceCopy = reference;
+  if (!referenceCopy)
   {
     __assert_rtn("[MBBackupCKRecordsDB hasAssetReference:error:]", "MBBackupCKRecordsDB.m", 92, "assetRecordID");
   }
 
-  v7 = v6;
-  v8 = [(MBSQLiteDB *)self->_db fetchCountWithError:a4 sql:@"SELECT COUNT(*) FROM AssetRecordReferences WHERE recordID = %@ AND isDeletedAsset = FALSE", v6]!= 0;
+  v7 = referenceCopy;
+  v8 = [(MBSQLiteDB *)self->_db fetchCountWithError:error sql:@"SELECT COUNT(*) FROM AssetRecordReferences WHERE recordID = %@ AND isDeletedAsset = FALSE", referenceCopy]!= 0;
 
   return v8;
 }
 
-- (BOOL)enumerateSnapshotRecords:(id *)a3 block:(id)a4
+- (BOOL)enumerateSnapshotRecords:(id *)records block:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = [(MBSQLiteDB *)self->_db fetchSQL:@"SELECT recordID, commitID, snapshotFormat FROM SnapshotRecords"];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1000EE138;
   v10[3] = &unk_1003BE658;
-  v11 = v6;
-  v8 = v6;
-  LOBYTE(a3) = [v7 enumerateWithError:a3 block:v10];
+  v11 = blockCopy;
+  v8 = blockCopy;
+  LOBYTE(records) = [v7 enumerateWithError:records block:v10];
 
-  return a3;
+  return records;
 }
 
-- (BOOL)enumerateDomainRecords:(id)a3 error:(id *)a4 block:(id)a5
+- (BOOL)enumerateDomainRecords:(id)records error:(id *)error block:(id)block
 {
-  v8 = a5;
-  v9 = [(MBSQLiteDB *)self->_db fetchSQL:@"SELECT recordID, domainName FROM DomainRecords WHERE parentSnapshotRecordID=%@ ORDER BY recordID", a3];
+  blockCopy = block;
+  records = [(MBSQLiteDB *)self->_db fetchSQL:@"SELECT recordID, domainName FROM DomainRecords WHERE parentSnapshotRecordID=%@ ORDER BY recordID", records];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1000EE2B0;
   v12[3] = &unk_1003BE658;
-  v13 = v8;
-  v10 = v8;
-  LOBYTE(a4) = [v9 enumerateWithError:a4 block:v12];
+  v13 = blockCopy;
+  v10 = blockCopy;
+  LOBYTE(error) = [records enumerateWithError:error block:v12];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)enumerateAssetRecordReferences:(id)a3 error:(id *)a4 block:(id)a5
+- (BOOL)enumerateAssetRecordReferences:(id)references error:(id *)error block:(id)block
 {
-  v8 = a5;
-  v9 = [(MBSQLiteDB *)self->_db fetchSQL:@"SELECT recordID, isDeletedAsset FROM AssetRecordReferences WHERE parentDomainRecordID=%@ ORDER BY recordID, isDeletedAsset", a3];
+  blockCopy = block;
+  references = [(MBSQLiteDB *)self->_db fetchSQL:@"SELECT recordID, isDeletedAsset FROM AssetRecordReferences WHERE parentDomainRecordID=%@ ORDER BY recordID, isDeletedAsset", references];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1000EE414;
   v12[3] = &unk_1003BE658;
-  v13 = v8;
-  v10 = v8;
-  LOBYTE(a4) = [v9 enumerateWithError:a4 block:v12];
+  v13 = blockCopy;
+  v10 = blockCopy;
+  LOBYTE(error) = [references enumerateWithError:error block:v12];
 
-  return a4;
+  return error;
 }
 
 @end

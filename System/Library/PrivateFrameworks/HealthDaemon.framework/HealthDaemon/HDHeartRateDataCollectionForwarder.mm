@@ -1,7 +1,7 @@
 @interface HDHeartRateDataCollectionForwarder
 - (HDHeartRateDataCollectionForwarder)init;
 - (void)dealloc;
-- (void)insertSamples:(id)a3 device:(id)a4 source:(id)a5;
+- (void)insertSamples:(id)samples device:(id)device source:(id)source;
 @end
 
 @implementation HDHeartRateDataCollectionForwarder
@@ -20,14 +20,14 @@
     v2->_heartRateEnabledInPrivacy = HKIsHeartRateEnabled();
     objc_initWeak(&location, v2);
     v2->_privacyPreferencesNotificationToken = -1;
-    v5 = [*MEMORY[0x277CCE4C0] UTF8String];
+    uTF8String = [*MEMORY[0x277CCE4C0] UTF8String];
     v6 = v2->_queue;
     v10 = MEMORY[0x277D85DD0];
     v11 = 3221225472;
     v12 = __42__HDHeartRateDataCollectionForwarder_init__block_invoke;
     v13 = &unk_278613BF0;
     objc_copyWeak(&v14, &location);
-    notify_register_dispatch(v5, &v2->_privacyPreferencesNotificationToken, v6, &v10);
+    notify_register_dispatch(uTF8String, &v2->_privacyPreferencesNotificationToken, v6, &v10);
     if (v2->_heartRateEnabledInPrivacy)
     {
       v7 = [(HDHeartRateDataCollectionForwarder *)v2 _newCatherineFeeder:v10];
@@ -123,17 +123,17 @@ LABEL_13:
   [(HDHeartRateDataCollectionForwarder *)&v4 dealloc];
 }
 
-- (void)insertSamples:(id)a3 device:(id)a4 source:(id)a5
+- (void)insertSamples:(id)samples device:(id)device source:(id)source
 {
-  v7 = a3;
-  if (self->_heartRateEnabledInPrivacy && ([a5 _isAppleWatch] & 1) == 0)
+  samplesCopy = samples;
+  if (self->_heartRateEnabledInPrivacy && ([source _isAppleWatch] & 1) == 0)
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __66__HDHeartRateDataCollectionForwarder_insertSamples_device_source___block_invoke;
     v8[3] = &unk_278627648;
     v8[4] = self;
-    [v7 enumerateObjectsUsingBlock:v8];
+    [samplesCopy enumerateObjectsUsingBlock:v8];
   }
 }
 

@@ -1,24 +1,24 @@
 @interface SHInnerCircleMaskLayer
-+ (BOOL)needsDisplayForKey:(id)a3;
-- (void)drawInContext:(CGContext *)a3;
++ (BOOL)needsDisplayForKey:(id)key;
+- (void)drawInContext:(CGContext *)context;
 - (void)setup;
 @end
 
 @implementation SHInnerCircleMaskLayer
 
-+ (BOOL)needsDisplayForKey:(id)a3
++ (BOOL)needsDisplayForKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"innerCircleRelativeSize"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"innerCircleRelativeSize"])
   {
     v5 = 1;
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___SHInnerCircleMaskLayer;
-    v5 = objc_msgSendSuper2(&v7, sel_needsDisplayForKey_, v4);
+    v5 = objc_msgSendSuper2(&v7, sel_needsDisplayForKey_, keyCopy);
   }
 
   return v5;
@@ -32,9 +32,9 @@
   [(SHInnerCircleMaskLayer *)self setContentsScale:?];
 }
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
-  ClipBoundingBox = CGContextGetClipBoundingBox(a3);
+  ClipBoundingBox = CGContextGetClipBoundingBox(context);
   x = ClipBoundingBox.origin.x;
   y = ClipBoundingBox.origin.y;
   width = ClipBoundingBox.size.width;
@@ -45,11 +45,11 @@
   v24.size.width = width;
   v24.size.height = height;
   CGPathAddRect(Mutable, 0, v24);
-  v10 = [(SHPaletteLayer *)self palette];
-  CGContextSetFillColorWithColor(a3, [v10 blackColor]);
+  palette = [(SHPaletteLayer *)self palette];
+  CGContextSetFillColorWithColor(context, [palette blackColor]);
 
-  CGContextAddPath(a3, Mutable);
-  CGContextDrawPath(a3, kCGPathFill);
+  CGContextAddPath(context, Mutable);
+  CGContextDrawPath(context, kCGPathFill);
   CGPathRelease(Mutable);
   [(SHInnerCircleMaskLayer *)self innerCircleRelativeSize];
   v12 = 1.0 / v11;
@@ -82,15 +82,15 @@
   v28.size.width = v15;
   v28.size.height = v16;
   CGPathAddEllipseInRect(v19, 0, v28);
-  v20 = [(SHPaletteLayer *)self palette];
-  CGContextSetFillColorWithColor(a3, [v20 clearColor]);
+  palette2 = [(SHPaletteLayer *)self palette];
+  CGContextSetFillColorWithColor(context, [palette2 clearColor]);
 
-  CGContextSetBlendMode(a3, kCGBlendModeClear);
-  CGContextBeginPath(a3);
-  CGContextAddPath(a3, v19);
-  CGContextDrawPath(a3, kCGPathFill);
+  CGContextSetBlendMode(context, kCGBlendModeClear);
+  CGContextBeginPath(context);
+  CGContextAddPath(context, v19);
+  CGContextDrawPath(context, kCGPathFill);
   CGPathRelease(v19);
-  CGContextSetBlendMode(a3, kCGBlendModeNormal);
+  CGContextSetBlendMode(context, kCGBlendModeNormal);
 }
 
 @end

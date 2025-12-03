@@ -1,68 +1,68 @@
 @interface TSWPFilteredStorage
-- (BOOL)adjustRangesByDelta:(int64_t)a3;
-- (BOOL)hasColumnBreakAtCharIndex:(unint64_t)a3;
-- (BOOL)hasColumnStyleForParagraphBreakAtCharIndex:(unint64_t)a3;
-- (BOOL)hasSmartFieldsInRange:(_NSRange)a3;
-- (BOOL)isWritingDirectionRightToLeftForParagraphAtCharIndex:(unint64_t)a3;
-- (TSWPFilteredStorage)initWithStorage:(id)a3 subRange:(_NSRange)a4;
-- (TSWPFilteredStorage)initWithStorage:(id)a3 subRange:(_NSRange)a4 removeRanges:(id)a5;
-- (_NSRange)charRangeMappedFromStorage:(_NSRange)a3;
-- (_NSRange)charRangeMappedToStorage:(_NSRange)a3;
-- (_NSRange)rangeForSelectionAtCharIndex:(unint64_t)a3 caretIndex:(unint64_t)a4;
-- (_NSRange)scanBackwardForWordAtCharIndex:(unint64_t)a3;
-- (_NSRange)whiteSpaceRangeAtCharIndex:(unint64_t)a3 includingBreaks:(BOOL)a4;
-- (_NSRange)wordAtCharIndex:(unint64_t)a3 includePreviousWord:(BOOL)a4;
-- (__CFDictionary)createFilteredCoreTextAttributes:(__CFDictionary *)a3 effectiveRange:(_NSRange *)a4 filterDelegate:(id)a5;
-- (double)filteredCoreTextAttributesFontScaleEffectiveRange:(_NSRange *)a3 filterDelegate:(id)a4;
-- (id)attachmentAtCharIndex:(unint64_t)a3;
-- (id)attachmentOrFootnoteAtCharIndex:(unint64_t)a3;
-- (id)characterStyleAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4;
-- (id)footnoteReferenceAtCharIndex:(unint64_t)a3;
-- (id)objectAtLocationPriorToMappedCharIndex:(unint64_t)a3 forAttributeKind:(unsigned int)a4 effectiveRange:(_NSRange *)a5;
-- (id)paragraphStyleAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4;
-- (id)smartFieldAtCharIndex:(unint64_t)a3 attributeKind:(unsigned int)a4 effectiveRange:(_NSRange *)a5;
-- (id)smartFieldsWithAttributeKind:(unsigned int)a3 intersectingRange:(_NSRange)a4;
+- (BOOL)adjustRangesByDelta:(int64_t)delta;
+- (BOOL)hasColumnBreakAtCharIndex:(unint64_t)index;
+- (BOOL)hasColumnStyleForParagraphBreakAtCharIndex:(unint64_t)index;
+- (BOOL)hasSmartFieldsInRange:(_NSRange)range;
+- (BOOL)isWritingDirectionRightToLeftForParagraphAtCharIndex:(unint64_t)index;
+- (TSWPFilteredStorage)initWithStorage:(id)storage subRange:(_NSRange)range;
+- (TSWPFilteredStorage)initWithStorage:(id)storage subRange:(_NSRange)range removeRanges:(id)ranges;
+- (_NSRange)charRangeMappedFromStorage:(_NSRange)storage;
+- (_NSRange)charRangeMappedToStorage:(_NSRange)storage;
+- (_NSRange)rangeForSelectionAtCharIndex:(unint64_t)index caretIndex:(unint64_t)caretIndex;
+- (_NSRange)scanBackwardForWordAtCharIndex:(unint64_t)index;
+- (_NSRange)whiteSpaceRangeAtCharIndex:(unint64_t)index includingBreaks:(BOOL)breaks;
+- (_NSRange)wordAtCharIndex:(unint64_t)index includePreviousWord:(BOOL)word;
+- (__CFDictionary)createFilteredCoreTextAttributes:(__CFDictionary *)attributes effectiveRange:(_NSRange *)range filterDelegate:(id)delegate;
+- (double)filteredCoreTextAttributesFontScaleEffectiveRange:(_NSRange *)range filterDelegate:(id)delegate;
+- (id)attachmentAtCharIndex:(unint64_t)index;
+- (id)attachmentOrFootnoteAtCharIndex:(unint64_t)index;
+- (id)characterStyleAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
+- (id)footnoteReferenceAtCharIndex:(unint64_t)index;
+- (id)objectAtLocationPriorToMappedCharIndex:(unint64_t)index forAttributeKind:(unsigned int)kind effectiveRange:(_NSRange *)range;
+- (id)paragraphStyleAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
+- (id)smartFieldAtCharIndex:(unint64_t)index attributeKind:(unsigned int)kind effectiveRange:(_NSRange *)range;
+- (id)smartFieldsWithAttributeKind:(unsigned int)kind intersectingRange:(_NSRange)range;
 - (id)string;
-- (id)substringWithRange:(_NSRange)a3;
-- (int64_t)hyphenationLocationBeforeIndex:(int64_t)a3 inRange:(_NSRange)a4 locale:(__CFLocale *)a5 hyphenChar:(unsigned int *)a6;
-- (unint64_t)charIndexRemappedFromStorage:(unint64_t)a3;
-- (unint64_t)nextCharacterIndex:(unint64_t)a3;
-- (unint64_t)previousCharacterIndex:(unint64_t)a3;
-- (unsigned)characterAtIndex:(unint64_t)a3;
-- (void)attributesAtCharIndex:(unint64_t)a3 attributesOfInterest:(BOOL)a4[19] attributesTable:(id)a5[19] effectiveRange:(_NSRange *)a6;
+- (id)substringWithRange:(_NSRange)range;
+- (int64_t)hyphenationLocationBeforeIndex:(int64_t)index inRange:(_NSRange)range locale:(__CFLocale *)locale hyphenChar:(unsigned int *)char;
+- (unint64_t)charIndexRemappedFromStorage:(unint64_t)storage;
+- (unint64_t)nextCharacterIndex:(unint64_t)index;
+- (unint64_t)previousCharacterIndex:(unint64_t)index;
+- (unsigned)characterAtIndex:(unint64_t)index;
+- (void)attributesAtCharIndex:(unint64_t)index attributesOfInterest:(BOOL)interest[19] attributesTable:(id)table[19] effectiveRange:(_NSRange *)range;
 - (void)dealloc;
-- (void)enumerateSmartFieldsWithAttributeKind:(unsigned int)a3 inRange:(_NSRange)a4 usingBlock:(id)a5;
-- (void)enumerateWithAttributeKind:(unsigned int)a3 inRange:(_NSRange)a4 usingBlock:(id)a5;
-- (void)getCharacters:(unsigned __int16 *)a3 range:(_NSRange)a4;
+- (void)enumerateSmartFieldsWithAttributeKind:(unsigned int)kind inRange:(_NSRange)range usingBlock:(id)block;
+- (void)enumerateWithAttributeKind:(unsigned int)kind inRange:(_NSRange)range usingBlock:(id)block;
+- (void)getCharacters:(unsigned __int16 *)characters range:(_NSRange)range;
 @end
 
 @implementation TSWPFilteredStorage
 
-- (TSWPFilteredStorage)initWithStorage:(id)a3 subRange:(_NSRange)a4
+- (TSWPFilteredStorage)initWithStorage:(id)storage subRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v8 = [a3 hiddenRangesInRange:{a4.location, a4.length}];
+  length = range.length;
+  location = range.location;
+  v8 = [storage hiddenRangesInRange:{range.location, range.length}];
 
-  return [(TSWPFilteredStorage *)self initWithStorage:a3 subRange:location removeRanges:length, v8];
+  return [(TSWPFilteredStorage *)self initWithStorage:storage subRange:location removeRanges:length, v8];
 }
 
-- (TSWPFilteredStorage)initWithStorage:(id)a3 subRange:(_NSRange)a4 removeRanges:(id)a5
+- (TSWPFilteredStorage)initWithStorage:(id)storage subRange:(_NSRange)range removeRanges:(id)ranges
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v14.receiver = self;
   v14.super_class = TSWPFilteredStorage;
   v9 = [(TSWPFilteredStorage *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    v9->_storage = a3;
-    v11 = [[TSWPDeletionRangeMap alloc] initWithSubRange:location removeRanges:length, a5];
-    v10->_rangeMap = v11;
-    [(TSWPDeletionRangeMap *)v11 mappedCharRange:location, length];
+    v9->_storage = storage;
+    ranges = [[TSWPDeletionRangeMap alloc] initWithSubRange:location removeRanges:length, ranges];
+    v10->_rangeMap = ranges;
+    [(TSWPDeletionRangeMap *)ranges mappedCharRange:location, length];
     v10->_length = v12;
-    v10->_storageLength = [a3 length];
+    v10->_storageLength = [storage length];
   }
 
   return v10;
@@ -77,17 +77,17 @@
 
 - (id)string
 {
-  v3 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v4 = [(TSWPDeletionRangeMap *)self->_rangeMap unmappedCharRange:0, self->_length];
   v6 = [(TSWPDeletionRangeMap *)self->_rangeMap inverseRangesInStorageRange:v4, v5];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __29__TSWPFilteredStorage_string__block_invoke;
   v8[3] = &unk_279D49AF0;
-  v8[4] = v3;
+  v8[4] = string;
   v8[5] = self;
   [v6 enumerateRangesUsingBlock:v8];
-  return v3;
+  return string;
 }
 
 uint64_t __29__TSWPFilteredStorage_string__block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -98,19 +98,19 @@ uint64_t __29__TSWPFilteredStorage_string__block_invoke(uint64_t a1, uint64_t a2
   return [v3 appendString:v4];
 }
 
-- (unsigned)characterAtIndex:(unint64_t)a3
+- (unsigned)characterAtIndex:(unint64_t)index
 {
   storage = self->_storage;
-  v4 = [(TSWPDeletionRangeMap *)self->_rangeMap unmappedCharIndex:a3];
+  v4 = [(TSWPDeletionRangeMap *)self->_rangeMap unmappedCharIndex:index];
 
   return [(TSWPStorage *)storage characterAtIndex:v4];
 }
 
-- (void)getCharacters:(unsigned __int16 *)a3 range:(_NSRange)a4
+- (void)getCharacters:(unsigned __int16 *)characters range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v8 = [(TSWPDeletionRangeMap *)self->_rangeMap unmappedCharRange:a4.location, a4.length];
+  length = range.length;
+  location = range.location;
+  v8 = [(TSWPDeletionRangeMap *)self->_rangeMap unmappedCharRange:range.location, range.length];
   v10 = v9;
   v11 = [(TSWPDeletionRangeMap *)self->_rangeMap inverseRangesInStorageRange:v8, v9];
   v13[0] = 0;
@@ -127,7 +127,7 @@ uint64_t __29__TSWPFilteredStorage_string__block_invoke(uint64_t a1, uint64_t a2
   v12[9] = length;
   v12[4] = self;
   v12[5] = v13;
-  v12[10] = a3;
+  v12[10] = characters;
   [v11 enumerateRangesUsingBlock:v12];
   _Block_object_dispose(v13, 8);
 }
@@ -165,86 +165,86 @@ uint64_t __43__TSWPFilteredStorage_getCharacters_range___block_invoke(uint64_t r
   return result;
 }
 
-- (BOOL)hasColumnBreakAtCharIndex:(unint64_t)a3
+- (BOOL)hasColumnBreakAtCharIndex:(unint64_t)index
 {
   storage = self->_storage;
-  v4 = [(TSWPDeletionRangeMap *)self->_rangeMap unmappedCharIndex:a3];
+  v4 = [(TSWPDeletionRangeMap *)self->_rangeMap unmappedCharIndex:index];
 
   return [(TSWPStorage *)storage hasColumnBreakAtCharIndex:v4];
 }
 
-- (BOOL)hasColumnStyleForParagraphBreakAtCharIndex:(unint64_t)a3
+- (BOOL)hasColumnStyleForParagraphBreakAtCharIndex:(unint64_t)index
 {
   storage = self->_storage;
-  v4 = [(TSWPDeletionRangeMap *)self->_rangeMap unmappedCharIndex:a3];
+  v4 = [(TSWPDeletionRangeMap *)self->_rangeMap unmappedCharIndex:index];
 
   return [(TSWPStorage *)storage hasColumnStyleForParagraphBreakAtCharIndex:v4];
 }
 
-- (void)attributesAtCharIndex:(unint64_t)a3 attributesOfInterest:(BOOL)a4[19] attributesTable:(id)a5[19] effectiveRange:(_NSRange *)a6
+- (void)attributesAtCharIndex:(unint64_t)index attributesOfInterest:(BOOL)interest[19] attributesTable:(id)table[19] effectiveRange:(_NSRange *)range
 {
   v9 = xmmword_26CA637B0;
-  [(TSWPStorage *)self->_storage attributesAtCharIndex:[(TSWPDeletionRangeMap *)self->_rangeMap unmappedCharIndex:a3] attributesOfInterest:a4 attributesTable:a5 effectiveRange:&v9];
-  if (a6)
+  [(TSWPStorage *)self->_storage attributesAtCharIndex:[(TSWPDeletionRangeMap *)self->_rangeMap unmappedCharIndex:index] attributesOfInterest:interest attributesTable:table effectiveRange:&v9];
+  if (range)
   {
-    a6->location = [(TSWPDeletionRangeMap *)self->_rangeMap mappedCharRange:v9];
-    a6->length = v8;
+    range->location = [(TSWPDeletionRangeMap *)self->_rangeMap mappedCharRange:v9];
+    range->length = v8;
   }
 }
 
-- (id)smartFieldAtCharIndex:(unint64_t)a3 attributeKind:(unsigned int)a4 effectiveRange:(_NSRange *)a5
+- (id)smartFieldAtCharIndex:(unint64_t)index attributeKind:(unsigned int)kind effectiveRange:(_NSRange *)range
 {
   v11 = xmmword_26CA637B0;
-  v7 = [(TSWPStorage *)self->_storage smartFieldAtCharIndex:[(TSWPDeletionRangeMap *)self->_rangeMap unmappedCharIndex:a3] attributeKind:*&a4 effectiveRange:&v11];
+  v7 = [(TSWPStorage *)self->_storage smartFieldAtCharIndex:[(TSWPDeletionRangeMap *)self->_rangeMap unmappedCharIndex:index] attributeKind:*&kind effectiveRange:&v11];
   v8 = v7;
-  if (a5 && v7)
+  if (range && v7)
   {
-    a5->location = [(TSWPDeletionRangeMap *)self->_rangeMap mappedCharRange:v11];
-    a5->length = v9;
+    range->location = [(TSWPDeletionRangeMap *)self->_rangeMap mappedCharRange:v11];
+    range->length = v9;
   }
 
   return v8;
 }
 
-- (id)smartFieldsWithAttributeKind:(unsigned int)a3 intersectingRange:(_NSRange)a4
+- (id)smartFieldsWithAttributeKind:(unsigned int)kind intersectingRange:(_NSRange)range
 {
-  v4 = *&a3;
+  v4 = *&kind;
   storage = self->_storage;
-  v7 = [(TSWPDeletionRangeMap *)self->_rangeMap unmappedCharRange:a4.location, a4.length];
+  v7 = [(TSWPDeletionRangeMap *)self->_rangeMap unmappedCharRange:range.location, range.length];
 
   return [(TSWPStorage *)storage smartFieldsWithAttributeKind:v4 intersectingRange:v7, v6];
 }
 
-- (id)footnoteReferenceAtCharIndex:(unint64_t)a3
+- (id)footnoteReferenceAtCharIndex:(unint64_t)index
 {
   storage = self->_storage;
-  v4 = [(TSWPDeletionRangeMap *)self->_rangeMap unmappedCharIndex:a3];
+  v4 = [(TSWPDeletionRangeMap *)self->_rangeMap unmappedCharIndex:index];
 
   return [(TSWPStorage *)storage footnoteReferenceAtCharIndex:v4];
 }
 
-- (id)attachmentAtCharIndex:(unint64_t)a3
+- (id)attachmentAtCharIndex:(unint64_t)index
 {
   storage = self->_storage;
-  v4 = [(TSWPDeletionRangeMap *)self->_rangeMap unmappedCharIndex:a3];
+  v4 = [(TSWPDeletionRangeMap *)self->_rangeMap unmappedCharIndex:index];
 
   return [(TSWPStorage *)storage attachmentAtCharIndex:v4];
 }
 
-- (id)attachmentOrFootnoteAtCharIndex:(unint64_t)a3
+- (id)attachmentOrFootnoteAtCharIndex:(unint64_t)index
 {
   storage = self->_storage;
-  v4 = [(TSWPDeletionRangeMap *)self->_rangeMap unmappedCharIndex:a3];
+  v4 = [(TSWPDeletionRangeMap *)self->_rangeMap unmappedCharIndex:index];
 
   return [(TSWPStorage *)storage attachmentOrFootnoteAtCharIndex:v4];
 }
 
-- (id)characterStyleAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)characterStyleAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
   v12 = xmmword_26CA637B0;
   storage = self->_storage;
-  v7 = [(TSWPDeletionRangeMap *)self->_rangeMap unmappedCharIndex:a3];
-  if (a4)
+  v7 = [(TSWPDeletionRangeMap *)self->_rangeMap unmappedCharIndex:index];
+  if (range)
   {
     v8 = &v12;
   }
@@ -255,18 +255,18 @@ uint64_t __43__TSWPFilteredStorage_getCharacters_range___block_invoke(uint64_t r
   }
 
   v9 = [(TSWPStorage *)storage characterStyleAtCharIndex:v7 effectiveRange:v8];
-  if (a4)
+  if (range)
   {
-    a4->location = [(TSWPDeletionRangeMap *)self->_rangeMap mappedCharRange:v12];
-    a4->length = v10;
+    range->location = [(TSWPDeletionRangeMap *)self->_rangeMap mappedCharRange:v12];
+    range->length = v10;
   }
 
   return v9;
 }
 
-- (_NSRange)wordAtCharIndex:(unint64_t)a3 includePreviousWord:(BOOL)a4
+- (_NSRange)wordAtCharIndex:(unint64_t)index includePreviousWord:(BOOL)word
 {
-  v4 = a4;
+  wordCopy = word;
   v7 = MEMORY[0x277D6C268];
   v9 = *MEMORY[0x277D6C268];
   v8 = *(MEMORY[0x277D6C268] + 8);
@@ -326,9 +326,9 @@ uint64_t __43__TSWPFilteredStorage_getCharacters_range___block_invoke(uint64_t r
 
   else
   {
-    v22 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v23 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPFilteredStorage wordAtCharIndex:includePreviousWord:]"];
-    [v22 handleFailureInFunction:v23 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPFilteredStorage.mm"), 224, @"unexpected paragraph range past the end of mapped storage"}];
+    [currentHandler handleFailureInFunction:v23 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPFilteredStorage.mm"), 224, @"unexpected paragraph range past the end of mapped storage"}];
     location = *v7;
     length = v7[1];
   }
@@ -336,7 +336,7 @@ uint64_t __43__TSWPFilteredStorage_getCharacters_range___block_invoke(uint64_t r
   if (location != *v7 || length != v7[1])
   {
     v25 = [(TSWPDeletionRangeMap *)self->_rangeMap mappedCharRange:location, length];
-    v27 = [-[TSWPFilteredStorage substringWithRange:](self substringWithRange:{v25, v26), "rangeOfWordAtCharacterIndex:range:includePreviousWord:", a3 - v25, 0, v26, v4}];
+    v27 = [-[TSWPFilteredStorage substringWithRange:](self substringWithRange:{v25, v26), "rangeOfWordAtCharacterIndex:range:includePreviousWord:", index - v25, 0, v26, wordCopy}];
     v8 = v28;
     if (v27 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -356,17 +356,17 @@ uint64_t __43__TSWPFilteredStorage_getCharacters_range___block_invoke(uint64_t r
   return result;
 }
 
-- (int64_t)hyphenationLocationBeforeIndex:(int64_t)a3 inRange:(_NSRange)a4 locale:(__CFLocale *)a5 hyphenChar:(unsigned int *)a6
+- (int64_t)hyphenationLocationBeforeIndex:(int64_t)index inRange:(_NSRange)range locale:(__CFLocale *)locale hyphenChar:(unsigned int *)char
 {
-  length = a4.length;
-  location = a4.location;
-  v11 = [(TSWPDeletionRangeMap *)self->_rangeMap unmappedCharIndex:a3];
+  length = range.length;
+  location = range.location;
+  v11 = [(TSWPDeletionRangeMap *)self->_rangeMap unmappedCharIndex:index];
   v12 = [(TSWPDeletionRangeMap *)self->_rangeMap unmappedCharRange:location, length];
   v14 = v13;
-  v15 = [(TSWPStorage *)self->_storage string];
+  string = [(TSWPStorage *)self->_storage string];
   v20.location = v12;
   v20.length = v14;
-  result = CFStringGetHyphenationLocationBeforeIndex(v15, v11, v20, 0, a5, a6);
+  result = CFStringGetHyphenationLocationBeforeIndex(string, v11, v20, 0, locale, char);
   if (result != -1)
   {
     v17 = result;
@@ -378,28 +378,28 @@ uint64_t __43__TSWPFilteredStorage_getCharacters_range___block_invoke(uint64_t r
   return result;
 }
 
-- (id)objectAtLocationPriorToMappedCharIndex:(unint64_t)a3 forAttributeKind:(unsigned int)a4 effectiveRange:(_NSRange *)a5
+- (id)objectAtLocationPriorToMappedCharIndex:(unint64_t)index forAttributeKind:(unsigned int)kind effectiveRange:(_NSRange *)range
 {
-  v7 = [(TSWPStorage *)self->_storage objectAtLocationPriorToMappedCharIndex:[(TSWPDeletionRangeMap *)self->_rangeMap unmappedCharIndex:a3] forAttributeKind:*&a4 effectiveRange:a5];
-  if (a5)
+  v7 = [(TSWPStorage *)self->_storage objectAtLocationPriorToMappedCharIndex:[(TSWPDeletionRangeMap *)self->_rangeMap unmappedCharIndex:index] forAttributeKind:*&kind effectiveRange:range];
+  if (range)
   {
-    a5->location = [(TSWPDeletionRangeMap *)self->_rangeMap mappedCharRange:a5->location, a5->length];
-    a5->length = v8;
+    range->location = [(TSWPDeletionRangeMap *)self->_rangeMap mappedCharRange:range->location, range->length];
+    range->length = v8;
   }
 
   return v7;
 }
 
-- (double)filteredCoreTextAttributesFontScaleEffectiveRange:(_NSRange *)a3 filterDelegate:(id)a4
+- (double)filteredCoreTextAttributesFontScaleEffectiveRange:(_NSRange *)range filterDelegate:(id)delegate
 {
-  if (a3)
+  if (range)
   {
-    a3->location = [(TSWPDeletionRangeMap *)self->_rangeMap unmappedCharRange:a3->location, a3->length];
-    a3->length = v7;
-    [(TSWPStorage *)self->_storage filteredCoreTextAttributesFontScaleEffectiveRange:a3 filterDelegate:a4];
+    range->location = [(TSWPDeletionRangeMap *)self->_rangeMap unmappedCharRange:range->location, range->length];
+    range->length = v7;
+    [(TSWPStorage *)self->_storage filteredCoreTextAttributesFontScaleEffectiveRange:range filterDelegate:delegate];
     v9 = v8;
-    a3->location = [(TSWPDeletionRangeMap *)self->_rangeMap mappedCharRange:a3->location, a3->length];
-    a3->length = v10;
+    range->location = [(TSWPDeletionRangeMap *)self->_rangeMap mappedCharRange:range->location, range->length];
+    range->length = v10;
     return v9;
   }
 
@@ -413,15 +413,15 @@ uint64_t __43__TSWPFilteredStorage_getCharacters_range___block_invoke(uint64_t r
   return result;
 }
 
-- (__CFDictionary)createFilteredCoreTextAttributes:(__CFDictionary *)a3 effectiveRange:(_NSRange *)a4 filterDelegate:(id)a5
+- (__CFDictionary)createFilteredCoreTextAttributes:(__CFDictionary *)attributes effectiveRange:(_NSRange *)range filterDelegate:(id)delegate
 {
-  if (a4)
+  if (range)
   {
-    a4->location = [(TSWPDeletionRangeMap *)self->_rangeMap unmappedCharRange:a4->location, a4->length];
-    a4->length = v9;
-    v10 = [(TSWPStorage *)self->_storage createFilteredCoreTextAttributes:a3 effectiveRange:a4 filterDelegate:a5];
-    a4->location = [(TSWPDeletionRangeMap *)self->_rangeMap mappedCharRange:a4->location, a4->length];
-    a4->length = v11;
+    range->location = [(TSWPDeletionRangeMap *)self->_rangeMap unmappedCharRange:range->location, range->length];
+    range->length = v9;
+    v10 = [(TSWPStorage *)self->_storage createFilteredCoreTextAttributes:attributes effectiveRange:range filterDelegate:delegate];
+    range->location = [(TSWPDeletionRangeMap *)self->_rangeMap mappedCharRange:range->location, range->length];
+    range->length = v11;
     return v10;
   }
 
@@ -433,65 +433,65 @@ uint64_t __43__TSWPFilteredStorage_getCharacters_range___block_invoke(uint64_t r
   }
 }
 
-- (_NSRange)charRangeMappedToStorage:(_NSRange)a3
+- (_NSRange)charRangeMappedToStorage:(_NSRange)storage
 {
-  v3 = [(TSWPDeletionRangeMap *)self->_rangeMap unmappedCharRange:a3.location, a3.length];
+  v3 = [(TSWPDeletionRangeMap *)self->_rangeMap unmappedCharRange:storage.location, storage.length];
   result.length = v4;
   result.location = v3;
   return result;
 }
 
-- (_NSRange)charRangeMappedFromStorage:(_NSRange)a3
+- (_NSRange)charRangeMappedFromStorage:(_NSRange)storage
 {
-  v3 = [(TSWPDeletionRangeMap *)self->_rangeMap mappedCharRange:a3.location, a3.length];
+  v3 = [(TSWPDeletionRangeMap *)self->_rangeMap mappedCharRange:storage.location, storage.length];
   result.length = v4;
   result.location = v3;
   return result;
 }
 
-- (unint64_t)charIndexRemappedFromStorage:(unint64_t)a3
+- (unint64_t)charIndexRemappedFromStorage:(unint64_t)storage
 {
-  v4 = [(TSWPFilteredStorage *)self charIndexMappedFromStorage:a3];
+  v4 = [(TSWPFilteredStorage *)self charIndexMappedFromStorage:storage];
 
   return [(TSWPFilteredStorage *)self charIndexMappedToStorage:v4];
 }
 
-- (id)paragraphStyleAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)paragraphStyleAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
-  v6 = [(TSWPStorage *)self->_storage paragraphStyleAtCharIndex:[(TSWPDeletionRangeMap *)self->_rangeMap unmappedCharIndex:a3] effectiveRange:a4];
-  if (a4)
+  v6 = [(TSWPStorage *)self->_storage paragraphStyleAtCharIndex:[(TSWPDeletionRangeMap *)self->_rangeMap unmappedCharIndex:index] effectiveRange:range];
+  if (range)
   {
-    a4->location = [(TSWPDeletionRangeMap *)self->_rangeMap mappedCharRange:a4->location, a4->length];
-    a4->length = v7;
+    range->location = [(TSWPDeletionRangeMap *)self->_rangeMap mappedCharRange:range->location, range->length];
+    range->length = v7;
   }
 
   return v6;
 }
 
-- (BOOL)isWritingDirectionRightToLeftForParagraphAtCharIndex:(unint64_t)a3
+- (BOOL)isWritingDirectionRightToLeftForParagraphAtCharIndex:(unint64_t)index
 {
   storage = self->_storage;
-  v4 = [(TSWPDeletionRangeMap *)self->_rangeMap unmappedCharIndex:a3];
+  v4 = [(TSWPDeletionRangeMap *)self->_rangeMap unmappedCharIndex:index];
 
   return [(TSWPStorage *)storage isWritingDirectionRightToLeftForParagraphAtCharIndex:v4];
 }
 
-- (BOOL)adjustRangesByDelta:(int64_t)a3
+- (BOOL)adjustRangesByDelta:(int64_t)delta
 {
-  v5 = [(TSWPStorage *)self->_storage storageLength];
-  if (a3 && self->_storageLength != v5)
+  storageLength = [(TSWPStorage *)self->_storage storageLength];
+  if (delta && self->_storageLength != storageLength)
   {
-    self->_storageLength = v5;
-    [(TSWPDeletionRangeMap *)self->_rangeMap adjustByDelta:a3];
+    self->_storageLength = storageLength;
+    [(TSWPDeletionRangeMap *)self->_rangeMap adjustByDelta:delta];
   }
 
   return 1;
 }
 
-- (id)substringWithRange:(_NSRange)a3
+- (id)substringWithRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v7 = [(TSWPDeletionRangeMap *)self->_rangeMap unmappedCharRange:?];
   v8 = v6;
   if (v6 == length)
@@ -557,17 +557,17 @@ uint64_t __42__TSWPFilteredStorage_substringWithRange___block_invoke(uint64_t re
   return result;
 }
 
-- (void)enumerateWithAttributeKind:(unsigned int)a3 inRange:(_NSRange)a4 usingBlock:(id)a5
+- (void)enumerateWithAttributeKind:(unsigned int)kind inRange:(_NSRange)range usingBlock:(id)block
 {
-  v6 = *&a3;
-  v8 = [(TSWPDeletionRangeMap *)self->_rangeMap unmappedCharRange:a4.location, a4.length];
+  v6 = *&kind;
+  v8 = [(TSWPDeletionRangeMap *)self->_rangeMap unmappedCharRange:range.location, range.length];
   storage = self->_storage;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __69__TSWPFilteredStorage_enumerateWithAttributeKind_inRange_usingBlock___block_invoke;
   v11[3] = &unk_279D49B68;
   v11[4] = self;
-  v11[5] = a5;
+  v11[5] = block;
   [(TSWPStorage *)storage enumerateWithAttributeKind:v6 inRange:v8 usingBlock:v10, v11];
 }
 
@@ -584,17 +584,17 @@ uint64_t __69__TSWPFilteredStorage_enumerateWithAttributeKind_inRange_usingBlock
   return result;
 }
 
-- (void)enumerateSmartFieldsWithAttributeKind:(unsigned int)a3 inRange:(_NSRange)a4 usingBlock:(id)a5
+- (void)enumerateSmartFieldsWithAttributeKind:(unsigned int)kind inRange:(_NSRange)range usingBlock:(id)block
 {
-  v6 = *&a3;
-  v8 = [(TSWPDeletionRangeMap *)self->_rangeMap unmappedCharRange:a4.location, a4.length];
+  v6 = *&kind;
+  v8 = [(TSWPDeletionRangeMap *)self->_rangeMap unmappedCharRange:range.location, range.length];
   storage = self->_storage;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __80__TSWPFilteredStorage_enumerateSmartFieldsWithAttributeKind_inRange_usingBlock___block_invoke;
   v11[3] = &unk_279D49B68;
   v11[4] = self;
-  v11[5] = a5;
+  v11[5] = block;
   [(TSWPStorage *)storage enumerateSmartFieldsWithAttributeKind:v6 inRange:v8 usingBlock:v10, v11];
 }
 
@@ -611,26 +611,26 @@ uint64_t __80__TSWPFilteredStorage_enumerateSmartFieldsWithAttributeKind_inRange
   return result;
 }
 
-- (BOOL)hasSmartFieldsInRange:(_NSRange)a3
+- (BOOL)hasSmartFieldsInRange:(_NSRange)range
 {
-  v3 = self;
+  selfCopy = self;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
   rangeMap = self->_rangeMap;
-  v5 = [(TSWPDeletionRangeMap *)rangeMap unmappedCharRange:a3.location, a3.length];
+  v5 = [(TSWPDeletionRangeMap *)rangeMap unmappedCharRange:range.location, range.length];
   v7 = [(TSWPDeletionRangeMap *)rangeMap inverseRangesInStorageRange:v5, v6];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __45__TSWPFilteredStorage_hasSmartFieldsInRange___block_invoke;
   v9[3] = &unk_279D49B90;
-  v9[4] = v3;
+  v9[4] = selfCopy;
   v9[5] = &v10;
   [v7 enumerateRangesUsingBlock:v9];
-  LOBYTE(v3) = *(v11 + 24);
+  LOBYTE(selfCopy) = *(v11 + 24);
   _Block_object_dispose(&v10, 8);
-  return v3;
+  return selfCopy;
 }
 
 uint64_t __45__TSWPFilteredStorage_hasSmartFieldsInRange___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4, _BYTE *a5)
@@ -645,42 +645,42 @@ uint64_t __45__TSWPFilteredStorage_hasSmartFieldsInRange___block_invoke(uint64_t
   return result;
 }
 
-- (_NSRange)scanBackwardForWordAtCharIndex:(unint64_t)a3
+- (_NSRange)scanBackwardForWordAtCharIndex:(unint64_t)index
 {
-  v5 = a3;
-  if (self->_length > a3)
+  indexCopy3 = index;
+  if (self->_length > index)
   {
-    v5 = a3;
-    if (IsWhitespaceCharacter([(TSWPFilteredStorage *)self characterAtIndex:a3]))
+    indexCopy3 = index;
+    if (IsWhitespaceCharacter([(TSWPFilteredStorage *)self characterAtIndex:index]))
     {
-      v6 = [(TSWPFilteredStorage *)self whiteSpaceRangeAtCharIndex:a3 includingBreaks:1];
+      v6 = [(TSWPFilteredStorage *)self whiteSpaceRangeAtCharIndex:index includingBreaks:1];
       if (v6 == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v5 = a3;
+        indexCopy3 = index;
       }
 
       else
       {
-        v5 = v6;
+        indexCopy3 = v6;
       }
     }
   }
 
-  v7 = [(TSWPFilteredStorage *)self wordAtCharIndex:a3 includePreviousWord:1];
+  v7 = [(TSWPFilteredStorage *)self wordAtCharIndex:index includePreviousWord:1];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = v5;
+    v7 = indexCopy3;
   }
 
-  v8 = a3 - v7;
+  v8 = index - v7;
   result.length = v8;
   result.location = v7;
   return result;
 }
 
-- (unint64_t)previousCharacterIndex:(unint64_t)a3
+- (unint64_t)previousCharacterIndex:(unint64_t)index
 {
-  v4 = [(TSWPDeletionRangeMap *)self->_rangeMap unmappedCharIndex:a3];
+  v4 = [(TSWPDeletionRangeMap *)self->_rangeMap unmappedCharIndex:index];
   do
   {
     v4 = [(TSWPStorage *)self->_storage previousCharacterIndex:v4];
@@ -692,9 +692,9 @@ uint64_t __45__TSWPFilteredStorage_hasSmartFieldsInRange___block_invoke(uint64_t
   return [(TSWPDeletionRangeMap *)rangeMap mappedCharIndex:v4];
 }
 
-- (unint64_t)nextCharacterIndex:(unint64_t)a3
+- (unint64_t)nextCharacterIndex:(unint64_t)index
 {
-  v4 = [(TSWPDeletionRangeMap *)self->_rangeMap unmappedCharIndex:a3];
+  v4 = [(TSWPDeletionRangeMap *)self->_rangeMap unmappedCharIndex:index];
   do
   {
     v4 = [(TSWPStorage *)self->_storage nextCharacterIndex:v4];
@@ -706,15 +706,15 @@ uint64_t __45__TSWPFilteredStorage_hasSmartFieldsInRange___block_invoke(uint64_t
   return [(TSWPDeletionRangeMap *)rangeMap mappedCharIndex:v4];
 }
 
-- (_NSRange)whiteSpaceRangeAtCharIndex:(unint64_t)a3 includingBreaks:(BOOL)a4
+- (_NSRange)whiteSpaceRangeAtCharIndex:(unint64_t)index includingBreaks:(BOOL)breaks
 {
-  v5 = a3;
+  indexCopy = index;
   length = self->_length;
-  if ([(TSWPFilteredStorage *)self length]> a3 && IsWhitespaceCharacter([(TSWPFilteredStorage *)self characterAtIndex:v5]))
+  if ([(TSWPFilteredStorage *)self length]> index && IsWhitespaceCharacter([(TSWPFilteredStorage *)self characterAtIndex:indexCopy]))
   {
-    if (v5)
+    if (indexCopy)
     {
-      v8 = v5;
+      v8 = indexCopy;
       do
       {
         v9 = v8 - 1;
@@ -724,7 +724,7 @@ uint64_t __45__TSWPFilteredStorage_hasSmartFieldsInRange___block_invoke(uint64_t
           break;
         }
 
-        if (!a4)
+        if (!breaks)
         {
           v11 = IsParagraphBreakingCharacter(v10);
           if (v10 == 8232 || (v11 & 1) != 0)
@@ -744,17 +744,17 @@ uint64_t __45__TSWPFilteredStorage_hasSmartFieldsInRange___block_invoke(uint64_t
       v8 = 0;
     }
 
-    if (length > v5)
+    if (length > indexCopy)
     {
       while (1)
       {
-        v13 = [(TSWPFilteredStorage *)self characterAtIndex:v5];
+        v13 = [(TSWPFilteredStorage *)self characterAtIndex:indexCopy];
         if (!IsWhitespaceCharacter(v13))
         {
           break;
         }
 
-        if (!a4)
+        if (!breaks)
         {
           v14 = IsParagraphBreakingCharacter(v13);
           if (v13 == 8232 || (v14 & 1) != 0)
@@ -763,15 +763,15 @@ uint64_t __45__TSWPFilteredStorage_hasSmartFieldsInRange___block_invoke(uint64_t
           }
         }
 
-        if (length == ++v5)
+        if (length == ++indexCopy)
         {
-          v5 = length;
+          indexCopy = length;
           break;
         }
       }
     }
 
-    v12 = v5 - v8;
+    v12 = indexCopy - v8;
   }
 
   else
@@ -786,32 +786,32 @@ uint64_t __45__TSWPFilteredStorage_hasSmartFieldsInRange___block_invoke(uint64_t
   return result;
 }
 
-- (_NSRange)rangeForSelectionAtCharIndex:(unint64_t)a3 caretIndex:(unint64_t)a4
+- (_NSRange)rangeForSelectionAtCharIndex:(unint64_t)index caretIndex:(unint64_t)caretIndex
 {
-  v5 = a3;
-  if (a3 != a4 && [(TSWPFilteredStorage *)self previousCharacterIndex:a4]!= a3)
+  caretIndexCopy = index;
+  if (index != caretIndex && [(TSWPFilteredStorage *)self previousCharacterIndex:caretIndex]!= index)
   {
-    v7 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPFilteredStorage rangeForSelectionAtCharIndex:caretIndex:]"];
-    [v7 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPFilteredStorage.mm"), 547, @"Precondition: caretIndex is either equal to the given charIndex or one past"}];
+    [currentHandler handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPFilteredStorage.mm"), 547, @"Precondition: caretIndex is either equal to the given charIndex or one past"}];
   }
 
   length = self->_length;
-  if (length - 1 < v5)
+  if (length - 1 < caretIndexCopy)
   {
-    v10 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPFilteredStorage rangeForSelectionAtCharIndex:caretIndex:]"];
-    [v10 handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPFilteredStorage.mm"), 557, @"Character index should be inside allowable selection range."}];
+    [currentHandler2 handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPFilteredStorage.mm"), 557, @"Character index should be inside allowable selection range."}];
   }
 
-  if (length <= v5)
+  if (length <= caretIndexCopy)
   {
     v12 = 0;
   }
 
   else
   {
-    v12 = [(TSWPFilteredStorage *)self characterAtIndex:v5];
+    v12 = [(TSWPFilteredStorage *)self characterAtIndex:caretIndexCopy];
   }
 
   if (!IsSpecialCharacter(v12))
@@ -820,7 +820,7 @@ uint64_t __45__TSWPFilteredStorage_hasSmartFieldsInRange___block_invoke(uint64_t
     goto LABEL_16;
   }
 
-  v13 = [(TSWPFilteredStorage *)self attachmentOrFootnoteAtCharIndex:v5];
+  v13 = [(TSWPFilteredStorage *)self attachmentOrFootnoteAtCharIndex:caretIndexCopy];
   v14 = v13;
   if (!v13)
   {
@@ -831,25 +831,25 @@ LABEL_16:
 
   if ([v13 isDrawable] && objc_msgSend(v14, "isAnchored"))
   {
-    if (length <= a4)
+    if (length <= caretIndex)
     {
       v12 = 0;
     }
 
     else
     {
-      v12 = [(TSWPFilteredStorage *)self characterAtIndex:a4];
+      v12 = [(TSWPFilteredStorage *)self characterAtIndex:caretIndex];
     }
 
     v14 = 0;
     v15 = 0x7FFFFFFFFFFFFFFFLL;
-    v5 = a4;
+    caretIndexCopy = caretIndex;
   }
 
   else
   {
     v14 = 1;
-    v15 = v5;
+    v15 = caretIndexCopy;
   }
 
 LABEL_20:
@@ -860,31 +860,31 @@ LABEL_20:
 
   if (IsWhitespaceCharacter(v12))
   {
-    if (v5 == a4 && v5)
+    if (caretIndexCopy == caretIndex && caretIndexCopy)
     {
-      v16 = a4 - 1;
+      v16 = caretIndex - 1;
     }
 
     else
     {
-      if (length <= a4)
+      if (length <= caretIndex)
       {
-        v17 = v5;
+        caretIndexCopy2 = caretIndexCopy;
       }
 
       else
       {
-        v17 = a4;
+        caretIndexCopy2 = caretIndex;
       }
 
-      if (v5 + 1 == a4)
+      if (caretIndexCopy + 1 == caretIndex)
       {
-        v16 = v17;
+        v16 = caretIndexCopy2;
       }
 
       else
       {
-        v16 = v5;
+        v16 = caretIndexCopy;
       }
     }
 
@@ -895,11 +895,11 @@ LABEL_20:
       goto LABEL_35;
     }
 
-    v15 = [(TSWPFilteredStorage *)self whiteSpaceRangeAtCharIndex:v5 includingBreaks:0];
+    v15 = [(TSWPFilteredStorage *)self whiteSpaceRangeAtCharIndex:caretIndexCopy includingBreaks:0];
     v14 = v20;
   }
 
-  v16 = v5;
+  v16 = caretIndexCopy;
 LABEL_35:
   if (v15 == 0x7FFFFFFFFFFFFFFFLL || !v14)
   {

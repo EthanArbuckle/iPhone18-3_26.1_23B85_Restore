@@ -1,28 +1,28 @@
 @interface PKSpendingSummaryView
-- (BOOL)_needsLayoutWithSummary:(id)a3;
-- (CGSize)_layoutWithBounds:(CGRect)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKSpendingSummaryView)initWithFrame:(CGRect)a3;
-- (id)_trendDescriptionForSummary:(id)a3;
+- (BOOL)_needsLayoutWithSummary:(id)summary;
+- (CGSize)_layoutWithBounds:(CGRect)bounds;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKSpendingSummaryView)initWithFrame:(CGRect)frame;
+- (id)_trendDescriptionForSummary:(id)summary;
 - (void)_createSubviews;
-- (void)configureWithSummary:(id)a3 presentationStyle:(unint64_t)a4;
+- (void)configureWithSummary:(id)summary presentationStyle:(unint64_t)style;
 - (void)layoutSubviews;
-- (void)setVisible:(BOOL)a3;
+- (void)setVisible:(BOOL)visible;
 @end
 
 @implementation PKSpendingSummaryView
 
-- (PKSpendingSummaryView)initWithFrame:(CGRect)a3
+- (PKSpendingSummaryView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = PKSpendingSummaryView;
-  v3 = [(PKSpendingSummaryView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKSpendingSummaryView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(PKSpendingSummaryView *)v3 _createSubviews];
-    v5 = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
-    [(PKSpendingSummaryView *)v4 setBackgroundColor:v5];
+    secondarySystemGroupedBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
+    [(PKSpendingSummaryView *)v4 setBackgroundColor:secondarySystemGroupedBackgroundColor];
   }
 
   return v4;
@@ -31,7 +31,7 @@
 - (void)_createSubviews
 {
   v40[1] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69DC888] labelColor];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
   v4 = objc_alloc(MEMORY[0x1E69DCC10]);
   v5 = *MEMORY[0x1E695F058];
   v6 = *(MEMORY[0x1E695F058] + 8);
@@ -42,7 +42,7 @@
   self->_totalAmount = v9;
 
   [(UILabel *)self->_totalAmount setNumberOfLines:1];
-  [(UILabel *)self->_totalAmount setTextColor:v3];
+  [(UILabel *)self->_totalAmount setTextColor:labelColor];
   v11 = self->_totalAmount;
   v12 = *MEMORY[0x1E69DDC70];
   v13 = PKFontForDesign(*MEMORY[0x1E69DB8D8], *MEMORY[0x1E69DDDB8], *MEMORY[0x1E69DDC70], 2, 0, *MEMORY[0x1E69DB958]);
@@ -56,8 +56,8 @@
 
   [(UILabel *)self->_spendingLabel setNumberOfLines:1];
   v16 = self->_spendingLabel;
-  v17 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [(UILabel *)v16 setTextColor:v17];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [(UILabel *)v16 setTextColor:secondaryLabelColor];
 
   v18 = self->_spendingLabel;
   v19 = PKFontForDefaultDesign(*MEMORY[0x1E69DDD80], v12, 0x8000, 0);
@@ -80,8 +80,8 @@
   v26 = [v24 configurationWithFont:v25];
 
   v27 = MEMORY[0x1E69DCAD8];
-  v28 = [MEMORY[0x1E69DC888] labelColor];
-  v40[0] = v28;
+  labelColor2 = [MEMORY[0x1E69DC888] labelColor];
+  v40[0] = labelColor2;
   v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:1];
   v30 = [v27 configurationWithPaletteColors:v29];
   v31 = [v26 configurationByApplyingConfiguration:v30];
@@ -119,22 +119,22 @@
   [(PKSpendingSummaryView *)self _layoutWithBounds:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   self->_isTemplateLayout = 1;
-  [(PKSpendingSummaryView *)self _layoutWithBounds:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), a3.width, a3.height];
+  [(PKSpendingSummaryView *)self _layoutWithBounds:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), fits.width, fits.height];
   self->_isTemplateLayout = 0;
   result.height = v5;
   result.width = v4;
   return result;
 }
 
-- (CGSize)_layoutWithBounds:(CGRect)a3
+- (CGSize)_layoutWithBounds:(CGRect)bounds
 {
-  width = a3.size.width;
-  v5 = a3.origin.x + 12.0;
-  v6 = a3.origin.y + 13.0;
-  v7 = a3.size.height + -20.0;
+  width = bounds.size.width;
+  v5 = bounds.origin.x + 12.0;
+  v6 = bounds.origin.y + 13.0;
+  v7 = bounds.size.height + -20.0;
   if ([(PKSpendingSummaryView *)self _shouldReverseLayoutDirection])
   {
     v8 = CGRectMaxXEdge;
@@ -224,28 +224,28 @@
   return result;
 }
 
-- (BOOL)_needsLayoutWithSummary:(id)a3
+- (BOOL)_needsLayoutWithSummary:(id)summary
 {
-  v4 = a3;
-  v5 = [v4 startDate];
-  v6 = [(PKSpendingSummary *)self->_summary startDate];
+  summaryCopy = summary;
+  startDate = [summaryCopy startDate];
+  startDate2 = [(PKSpendingSummary *)self->_summary startDate];
   if (!PKEqualObjects())
   {
     goto LABEL_6;
   }
 
-  v7 = [v4 totalSpending];
-  v8 = [(PKSpendingSummary *)self->_summary totalSpending];
-  if (!PKEqualObjects() || (v9 = [v4 summaryType], v9 != -[PKSpendingSummary summaryType](self->_summary, "summaryType")) || (objc_msgSend(v4, "isLoading") & 1) != 0)
+  totalSpending = [summaryCopy totalSpending];
+  totalSpending2 = [(PKSpendingSummary *)self->_summary totalSpending];
+  if (!PKEqualObjects() || (v9 = [summaryCopy summaryType], v9 != -[PKSpendingSummary summaryType](self->_summary, "summaryType")) || (objc_msgSend(summaryCopy, "isLoading") & 1) != 0)
   {
 
 LABEL_6:
     goto LABEL_7;
   }
 
-  v12 = [(PKSpendingSummary *)self->_summary isLoading];
+  isLoading = [(PKSpendingSummary *)self->_summary isLoading];
 
-  if (v12)
+  if (isLoading)
   {
     LOBYTE(v10) = 0;
     goto LABEL_8;
@@ -258,12 +258,12 @@ LABEL_8:
   return v10;
 }
 
-- (void)configureWithSummary:(id)a3 presentationStyle:(unint64_t)a4
+- (void)configureWithSummary:(id)summary presentationStyle:(unint64_t)style
 {
-  v7 = a3;
-  if ([(PKSpendingSummaryView *)self _needsLayoutWithSummary:v7])
+  summaryCopy = summary;
+  if ([(PKSpendingSummaryView *)self _needsLayoutWithSummary:summaryCopy])
   {
-    if (a4 == 2)
+    if (style == 2)
     {
       objc_storeStrong(&self->_chartViewToFadeOut, self->_chartView);
       v8 = [PKSpendingSummaryChartView alloc];
@@ -278,17 +278,17 @@ LABEL_8:
       [(PKSpendingSummaryChartView *)self->_chartViewToFadeOut frame];
       [(PKSpendingSummaryChartView *)v11 setFrame:?];
       [(PKSpendingSummaryView *)self insertSubview:self->_chartView belowSubview:self->_chartViewToFadeOut];
-      v12 = [(PKSpendingSummaryChartView *)self->_chartView layer];
+      layer = [(PKSpendingSummaryChartView *)self->_chartView layer];
       v13 = [MEMORY[0x1E69B92B0] springAnimationWithKeyPath:@"opacity"];
       [v13 pkui_updateForAdditiveAnimationFromScalar:0.0 toScalar:1.0];
-      v14 = [v12 pkui_addAdditiveAnimation:v13];
+      v14 = [layer pkui_addAdditiveAnimation:v13];
       LODWORD(v15) = 1.0;
-      [v12 setOpacity:v15];
-      v16 = [(PKSpendingSummaryChartView *)self->_chartViewToFadeOut layer];
+      [layer setOpacity:v15];
+      layer2 = [(PKSpendingSummaryChartView *)self->_chartViewToFadeOut layer];
       v17 = [MEMORY[0x1E69B92B0] springAnimationWithKeyPath:@"opacity"];
       [v13 pkui_updateForAdditiveAnimationFromScalar:1.0 toScalar:0.0];
-      v18 = [v16 pkui_addAdditiveAnimation:v17];
-      [v16 setOpacity:0.0];
+      v18 = [layer2 pkui_addAdditiveAnimation:v17];
+      [layer2 setOpacity:0.0];
       v45[0] = MEMORY[0x1E69E9820];
       v45[1] = 3221225472;
       v45[2] = __64__PKSpendingSummaryView_configureWithSummary_presentationStyle___block_invoke;
@@ -297,10 +297,10 @@ LABEL_8:
       [v17 pkui_setCompletionHandler:v45];
     }
 
-    objc_storeStrong(&self->_summary, a3);
-    v19 = [v7 totalSpending];
+    objc_storeStrong(&self->_summary, summary);
+    totalSpending = [summaryCopy totalSpending];
 
-    if (!v19)
+    if (!totalSpending)
     {
       [(UILabel *)self->_totalAmount setText:@"-"];
       [(UIImageView *)self->_arrowImageView setHidden:1];
@@ -308,18 +308,18 @@ LABEL_8:
       goto LABEL_14;
     }
 
-    v20 = [v7 totalSpending];
+    totalSpending2 = [summaryCopy totalSpending];
     totalAmount = self->_totalAmount;
-    v22 = [v20 formattedStringValue];
-    [(UILabel *)totalAmount setText:v22];
+    formattedStringValue = [totalSpending2 formattedStringValue];
+    [(UILabel *)totalAmount setText:formattedStringValue];
 
-    v23 = [v7 insights];
+    insights = [summaryCopy insights];
     [(UIImageView *)self->_arrowImageView setHidden:1];
     [(UILabel *)self->_trendDescriptionLabel setHidden:1];
-    if (v23)
+    if (insights)
     {
-      v24 = [v23 overallSpendingTrend];
-      v25 = [v24 direction] - 2;
+      overallSpendingTrend = [insights overallSpendingTrend];
+      v25 = [overallSpendingTrend direction] - 2;
       if (v25 <= 3)
       {
         v26 = off_1E8015670[v25];
@@ -327,25 +327,25 @@ LABEL_8:
         [(UIImageView *)self->_arrowImageView setImage:*(&self->super.super.super.isa + *v26)];
       }
 
-      v27 = [v24 direction];
-      if ((v27 - 1) >= 5)
+      direction = [overallSpendingTrend direction];
+      if ((direction - 1) >= 5)
       {
-        if (v27)
+        if (direction)
         {
           goto LABEL_11;
         }
 
         trendDescriptionLabel = self->_trendDescriptionLabel;
-        v29 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-        [(UILabel *)trendDescriptionLabel setTextColor:v29];
+        secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+        [(UILabel *)trendDescriptionLabel setTextColor:secondaryLabelColor];
         v30 = 0;
       }
 
       else
       {
         v28 = self->_trendDescriptionLabel;
-        v29 = [MEMORY[0x1E69DC888] labelColor];
-        [(UILabel *)v28 setTextColor:v29];
+        secondaryLabelColor = [MEMORY[0x1E69DC888] labelColor];
+        [(UILabel *)v28 setTextColor:secondaryLabelColor];
         v30 = 2;
       }
 
@@ -356,41 +356,41 @@ LABEL_8:
 LABEL_11:
       [(UILabel *)self->_trendDescriptionLabel setHidden:0];
       v33 = self->_trendDescriptionLabel;
-      v34 = [(PKSpendingSummaryView *)self _trendDescriptionForSummary:v7];
-      [(UILabel *)v33 setText:v34];
+      amount = [(PKSpendingSummaryView *)self _trendDescriptionForSummary:summaryCopy];
+      [(UILabel *)v33 setText:amount];
       goto LABEL_12;
     }
 
-    v24 = [v20 amount];
-    v35 = [v7 previousTotalSpending];
-    v34 = [v35 amount];
+    overallSpendingTrend = [totalSpending2 amount];
+    previousTotalSpending = [summaryCopy previousTotalSpending];
+    amount = [previousTotalSpending amount];
 
-    if (!v34 || ([v7 isCurrentPeriod] & 1) != 0)
+    if (!amount || ([summaryCopy isCurrentPeriod] & 1) != 0)
     {
       goto LABEL_12;
     }
 
-    v36 = [MEMORY[0x1E696AB90] zero];
-    if ([v24 compare:v36] != 1)
+    zero = [MEMORY[0x1E696AB90] zero];
+    if ([overallSpendingTrend compare:zero] != 1)
     {
 
       goto LABEL_12;
     }
 
-    v37 = [MEMORY[0x1E696AB90] zero];
-    v44 = [v34 compare:v37];
+    zero2 = [MEMORY[0x1E696AB90] zero];
+    v44 = [amount compare:zero2];
 
     if (v44 != 1)
     {
 LABEL_12:
 
 LABEL_14:
-      [(PKSpendingSummaryChartView *)self->_chartView configureWithSummary:v7 presentationStyle:a4, v44];
+      [(PKSpendingSummaryChartView *)self->_chartView configureWithSummary:summaryCopy presentationStyle:style, v44];
       [(PKSpendingSummaryView *)self setNeedsLayout];
       goto LABEL_15;
     }
 
-    v38 = [v34 compare:v24];
+    v38 = [amount compare:overallSpendingTrend];
     if (v38 == -1)
     {
       arrowImageView = self->_arrowImageView;
@@ -434,51 +434,51 @@ void __64__PKSpendingSummaryView_configureWithSummary_presentationStyle___block_
   *(v2 + 464) = 0;
 }
 
-- (void)setVisible:(BOOL)a3
+- (void)setVisible:(BOOL)visible
 {
-  if (self->_visible == !a3)
+  if (self->_visible == !visible)
   {
-    v4 = a3;
-    self->_visible = a3;
+    visibleCopy = visible;
+    self->_visible = visible;
     [(PKSpendingSummaryChartView *)self->_chartView setVisible:?];
     chartViewToFadeOut = self->_chartViewToFadeOut;
 
-    [(PKSpendingSummaryChartView *)chartViewToFadeOut setVisible:v4];
+    [(PKSpendingSummaryChartView *)chartViewToFadeOut setVisible:visibleCopy];
   }
 }
 
-- (id)_trendDescriptionForSummary:(id)a3
+- (id)_trendDescriptionForSummary:(id)summary
 {
-  v3 = a3;
-  v4 = [v3 insights];
-  v5 = [v4 overallSpendingTrend];
+  summaryCopy = summary;
+  insights = [summaryCopy insights];
+  overallSpendingTrend = [insights overallSpendingTrend];
 
-  if (!v5)
+  if (!overallSpendingTrend)
   {
     v8 = 0;
     goto LABEL_38;
   }
 
-  v6 = [v3 summaryType];
-  if (v6 > 2)
+  summaryType = [summaryCopy summaryType];
+  if (summaryType > 2)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = off_1E8015690[v6];
+    v7 = off_1E8015690[summaryType];
   }
 
-  v9 = [v3 isCurrentPeriod];
-  v10 = [v5 direction];
+  isCurrentPeriod = [summaryCopy isCurrentPeriod];
+  direction = [overallSpendingTrend direction];
   v8 = 0;
-  if (v10 > 3)
+  if (direction > 3)
   {
-    if (v10 == 4)
+    if (direction == 4)
     {
-      v14 = v9 == 0;
-      if (v9)
+      v14 = isCurrentPeriod == 0;
+      if (isCurrentPeriod)
       {
         v15 = @"_LAST";
       }
@@ -494,13 +494,13 @@ void __64__PKSpendingSummaryView_configureWithSummary_presentationStyle___block_
 
     else
     {
-      if (v10 != 5)
+      if (direction != 5)
       {
         goto LABEL_37;
       }
 
-      v14 = v9 == 0;
-      if (v9)
+      v14 = isCurrentPeriod == 0;
+      if (isCurrentPeriod)
       {
         v15 = @"_LAST";
       }
@@ -525,22 +525,22 @@ void __64__PKSpendingSummaryView_configureWithSummary_presentationStyle___block_
     }
 
     v7 = [(__CFString *)v7 stringByAppendingString:v15];
-    if ([v3 isFamilySummary])
+    if ([summaryCopy isFamilySummary])
     {
       v12 = [(__CFString *)v12 stringByAppendingString:@"_FAMILY"];
     }
 
     v13 = PKLocalizedFeatureString();
-    v18 = [v5 amountChange];
-    v20 = [v18 formattedStringValue];
+    amountChange = [overallSpendingTrend amountChange];
+    formattedStringValue = [amountChange formattedStringValue];
     v8 = PKLocalizedFeatureString();
 
     goto LABEL_35;
   }
 
-  if ((v10 - 1) < 3)
+  if ((direction - 1) < 3)
   {
-    if (v9)
+    if (isCurrentPeriod)
     {
       v11 = @"_LAST";
     }
@@ -550,7 +550,7 @@ void __64__PKSpendingSummaryView_configureWithSummary_presentationStyle___block_
       v11 = @"_PREVIOUS";
     }
 
-    if (v9)
+    if (isCurrentPeriod)
     {
       v12 = @"ACCOUNT_INSIGHT_TREND_STEADY_CURRENT_PERIOD";
     }
@@ -561,7 +561,7 @@ void __64__PKSpendingSummaryView_configureWithSummary_presentationStyle___block_
     }
 
     v7 = [(__CFString *)v7 stringByAppendingString:v11];
-    if ([v3 isFamilySummary])
+    if ([summaryCopy isFamilySummary])
     {
       v12 = [(__CFString *)v12 stringByAppendingString:@"_FAMILY"];
     }
@@ -573,7 +573,7 @@ LABEL_35:
     goto LABEL_36;
   }
 
-  if (!v10)
+  if (!direction)
   {
     v7 = [(__CFString *)v7 stringByAppendingString:@"_THIS"];
     v12 = PKLocalizedFeatureString();

@@ -6,7 +6,7 @@
 
 - (void)performTap
 {
-  v2 = self;
+  selfCopy = self;
   sub_89BF8();
 }
 

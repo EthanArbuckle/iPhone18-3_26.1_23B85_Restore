@@ -1,68 +1,68 @@
 @interface ENDownloadManager
-- (BOOL)_copyDownloadedFileAtPath:(id)a3 toPath:(id)a4 removeExisting:(BOOL)a5 error:(id *)a6;
-- (BOOL)_enumerateDownloadsWithError:(id *)a3 handler:(id)a4;
-- (BOOL)_readStateIfNecessaryWithError:(id *)a3;
+- (BOOL)_copyDownloadedFileAtPath:(id)path toPath:(id)toPath removeExisting:(BOOL)existing error:(id *)error;
+- (BOOL)_enumerateDownloadsWithError:(id *)error handler:(id)handler;
+- (BOOL)_readStateIfNecessaryWithError:(id *)error;
 - (BOOL)_saveState;
-- (BOOL)_shouldFetchFromEndpointWithState:(id)a3 time:(double)a4;
-- (BOOL)enumerateDownloadsWithError:(id *)a3 handler:(id)a4;
+- (BOOL)_shouldFetchFromEndpointWithState:(id)state time:(double)time;
+- (BOOL)enumerateDownloadsWithError:(id *)error handler:(id)handler;
 - (BOOL)resetStateFile;
-- (ENDownloadManager)initWithDirectoryURL:(id)a3 queue:(id)a4;
-- (ENDownloadManager)initWithQueue:(id)a3;
-- (double)_aggregateDownloadIntervalFromEndpoints:(id)a3;
-- (id)_baseDirectoryPathForEndpointWithState:(id)a3;
-- (id)_countOfAvailableDownloadsWithError:(id *)a3;
-- (id)_downloadsDirectoryPathForEndpointState:(id)a3;
-- (id)_indexFilePathForEndpointState:(id)a3;
-- (id)_nextFilePathToDownloadWithEndpointState:(id)a3;
-- (id)countOfAvailableDownloadsWithError:(id *)a3;
+- (ENDownloadManager)initWithDirectoryURL:(id)l queue:(id)queue;
+- (ENDownloadManager)initWithQueue:(id)queue;
+- (double)_aggregateDownloadIntervalFromEndpoints:(id)endpoints;
+- (id)_baseDirectoryPathForEndpointWithState:(id)state;
+- (id)_countOfAvailableDownloadsWithError:(id *)error;
+- (id)_downloadsDirectoryPathForEndpointState:(id)state;
+- (id)_indexFilePathForEndpointState:(id)state;
+- (id)_nextFilePathToDownloadWithEndpointState:(id)state;
+- (id)countOfAvailableDownloadsWithError:(id *)error;
 - (id)createScheduler;
 - (id)description;
 - (uint64_t)resetStateFile;
 - (unint64_t)enabledEndpointCount;
 - (void)_activate;
-- (void)_backgroundActivityFiredWithCompletion:(id)a3;
-- (void)_downloadIndexWithTask:(id)a3;
-- (void)_downloadNextFileFromServerWithTask:(id)a3;
-- (void)_handleFileDownloadFinishedForTask:(id)a3 serverFilePath:(id)a4 downloadedFilePath:(id)a5;
-- (void)_handleIndexFileDownloadFinishedForTask:(id)a3 filePath:(id)a4;
+- (void)_backgroundActivityFiredWithCompletion:(id)completion;
+- (void)_downloadIndexWithTask:(id)task;
+- (void)_downloadNextFileFromServerWithTask:(id)task;
+- (void)_handleFileDownloadFinishedForTask:(id)task serverFilePath:(id)path downloadedFilePath:(id)filePath;
+- (void)_handleIndexFileDownloadFinishedForTask:(id)task filePath:(id)path;
 - (void)_invalidate;
 - (void)_purgeAllDownloads;
-- (void)_purgeExpiredDownloadsWithDate:(id)a3;
-- (void)_purgeKeepingDownloadsForIdentifiers:(id)a3 expiryDate:(id)a4;
-- (void)_reportErrorMetricForHTTPStatus:(int64_t)a3 forIndexFile:(BOOL)a4;
+- (void)_purgeExpiredDownloadsWithDate:(id)date;
+- (void)_purgeKeepingDownloadsForIdentifiers:(id)identifiers expiryDate:(id)date;
+- (void)_reportErrorMetricForHTTPStatus:(int64_t)status forIndexFile:(BOOL)file;
 - (void)_saveState;
-- (void)_setDownloadEndpoints:(id)a3;
+- (void)_setDownloadEndpoints:(id)endpoints;
 - (void)_update;
 - (void)_updateFetchSchedule;
 - (void)activate;
 - (void)invalidate;
-- (void)performDownloadsAtDate:(id)a3 forced:(BOOL)a4 completion:(id)a5;
-- (void)performDownloadsForced:(BOOL)a3 completion:(id)a4;
+- (void)performDownloadsAtDate:(id)date forced:(BOOL)forced completion:(id)completion;
+- (void)performDownloadsForced:(BOOL)forced completion:(id)completion;
 - (void)purgeAllDownloads;
-- (void)purgeExpiredDownloadsWithDate:(id)a3;
+- (void)purgeExpiredDownloadsWithDate:(id)date;
 - (void)resetStateFile;
-- (void)setDownloadEndpoints:(id)a3;
+- (void)setDownloadEndpoints:(id)endpoints;
 - (void)update;
 @end
 
 @implementation ENDownloadManager
 
-- (ENDownloadManager)initWithQueue:(id)a3
+- (ENDownloadManager)initWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v5 = ENDataVaultPath();
   v6 = [v5 stringByAppendingPathComponent:@"Downloads"];
 
   v7 = [MEMORY[0x277CBEBC8] fileURLWithPath:v6];
-  v8 = [(ENDownloadManager *)self initWithDirectoryURL:v7 queue:v4];
+  v8 = [(ENDownloadManager *)self initWithDirectoryURL:v7 queue:queueCopy];
 
   return v8;
 }
 
-- (ENDownloadManager)initWithDirectoryURL:(id)a3 queue:(id)a4
+- (ENDownloadManager)initWithDirectoryURL:(id)l queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  queueCopy = queue;
   v16.receiver = self;
   v16.super_class = ENDownloadManager;
   v8 = [(ENDownloadManager *)&v16 init];
@@ -71,25 +71,25 @@
     goto LABEL_4;
   }
 
-  v9 = [v6 copy];
+  v9 = [lCopy copy];
   directoryURL = v8->_directoryURL;
   v8->_directoryURL = v9;
 
-  objc_storeStrong(&v8->_queue, a4);
+  objc_storeStrong(&v8->_queue, queue);
   v11 = [(NSURL *)v8->_directoryURL URLByAppendingPathComponent:@"state.dat"];
-  v12 = [v11 path];
+  path = [v11 path];
 
-  if (v12)
+  if (path)
   {
-    v13 = [[ENSecureArchiveFileWrapper alloc] initWithPath:v12];
+    v13 = [[ENSecureArchiveFileWrapper alloc] initWithPath:path];
     stateFileWrapper = v8->_stateFileWrapper;
     v8->_stateFileWrapper = v13;
 
 LABEL_4:
-    v12 = v8;
+    path = v8;
   }
 
-  return v12;
+  return path;
 }
 
 - (void)activate
@@ -107,11 +107,11 @@ LABEL_4:
 {
   if (!self->_URLSession)
   {
-    v3 = [MEMORY[0x277CBABC0] defaultSessionConfiguration];
+    defaultSessionConfiguration = [MEMORY[0x277CBABC0] defaultSessionConfiguration];
     v4 = ENBundleIdentifierForURLSessions();
-    [v3 set_sourceApplicationBundleIdentifier:v4];
+    [defaultSessionConfiguration set_sourceApplicationBundleIdentifier:v4];
 
-    v5 = [MEMORY[0x277CBABB0] sessionWithConfiguration:v3];
+    v5 = [MEMORY[0x277CBABB0] sessionWithConfiguration:defaultSessionConfiguration];
     URLSession = self->_URLSession;
     self->_URLSession = v5;
   }
@@ -143,9 +143,9 @@ LABEL_4:
   self->_URLSession = 0;
 }
 
-- (void)_reportErrorMetricForHTTPStatus:(int64_t)a3 forIndexFile:(BOOL)a4
+- (void)_reportErrorMetricForHTTPStatus:(int64_t)status forIndexFile:(BOOL)file
 {
-  if (a4)
+  if (file)
   {
     v4 = 8000;
   }
@@ -155,20 +155,20 @@ LABEL_4:
     v4 = 9000;
   }
 
-  if (a3 <= 0x3E7)
+  if (status <= 0x3E7)
   {
-    v5 = a3;
+    statusCopy = status;
   }
 
   else
   {
-    v5 = 0;
+    statusCopy = 0;
   }
 
-  [(ENDownloadManager *)self _reportErrorMetric:(v4 + v5)];
+  [(ENDownloadManager *)self _reportErrorMetric:(v4 + statusCopy)];
 }
 
-- (id)countOfAvailableDownloadsWithError:(id *)a3
+- (id)countOfAvailableDownloadsWithError:(id *)error
 {
   v7 = 0;
   v8 = &v7;
@@ -183,7 +183,7 @@ LABEL_4:
   block[3] = &unk_278FD1290;
   block[4] = self;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = error;
   dispatch_sync(queue, block);
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -199,7 +199,7 @@ void __56__ENDownloadManager_countOfAvailableDownloadsWithError___block_invoke(u
   *(v3 + 40) = v2;
 }
 
-- (id)_countOfAvailableDownloadsWithError:(id *)a3
+- (id)_countOfAvailableDownloadsWithError:(id *)error
 {
   v6 = 0;
   v7 = &v6;
@@ -210,7 +210,7 @@ void __56__ENDownloadManager_countOfAvailableDownloadsWithError___block_invoke(u
   v5[2] = __57__ENDownloadManager__countOfAvailableDownloadsWithError___block_invoke;
   v5[3] = &unk_278FD2428;
   v5[4] = &v6;
-  if ([(ENDownloadManager *)self _enumerateDownloadsWithError:a3 handler:v5])
+  if ([(ENDownloadManager *)self _enumerateDownloadsWithError:error handler:v5])
   {
     v3 = [MEMORY[0x277CCABA8] numberWithInteger:v7[3]];
   }
@@ -225,9 +225,9 @@ void __56__ENDownloadManager_countOfAvailableDownloadsWithError___block_invoke(u
   return v3;
 }
 
-- (BOOL)enumerateDownloadsWithError:(id *)a3 handler:(id)a4
+- (BOOL)enumerateDownloadsWithError:(id *)error handler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -238,10 +238,10 @@ void __56__ENDownloadManager_countOfAvailableDownloadsWithError___block_invoke(u
   v10[2] = __57__ENDownloadManager_enumerateDownloadsWithError_handler___block_invoke;
   v10[3] = &unk_278FD2450;
   v12 = &v14;
-  v13 = a3;
+  errorCopy = error;
   v10[4] = self;
-  v11 = v6;
-  v8 = v6;
+  v11 = handlerCopy;
+  v8 = handlerCopy;
   dispatch_barrier_sync(queue, v10);
   LOBYTE(self) = *(v15 + 24);
 
@@ -256,12 +256,12 @@ uint64_t __57__ENDownloadManager_enumerateDownloadsWithError_handler___block_inv
   return result;
 }
 
-- (BOOL)_enumerateDownloadsWithError:(id *)a3 handler:(id)a4
+- (BOOL)_enumerateDownloadsWithError:(id *)error handler:(id)handler
 {
   v72 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  handlerCopy = handler;
   v7 = objc_alloc_init(MEMORY[0x277CCAA08]);
-  v46 = self;
+  selfCopy = self;
   [(ENDownloadManagerState *)self->_state endpointStates];
   v64 = 0u;
   v65 = 0u;
@@ -276,12 +276,12 @@ uint64_t __57__ENDownloadManager_enumerateDownloadsWithError_handler___block_inv
   }
 
   v9 = v8;
-  v42 = a3;
+  errorCopy = error;
   v10 = 0;
   v11 = *v65;
   v43 = *v65;
   v44 = *MEMORY[0x277CBE790];
-  v52 = v6;
+  v52 = handlerCopy;
 LABEL_3:
   v12 = 0;
   v45 = v9;
@@ -293,15 +293,15 @@ LABEL_3:
     }
 
     v13 = *(*(&v64 + 1) + 8 * v12);
-    v53 = [v13 endpoint];
-    if (![v53 enabled])
+    endpoint = [v13 endpoint];
+    if (![endpoint enabled])
     {
       goto LABEL_41;
     }
 
     v49 = v12;
     v14 = MEMORY[0x277CBEBC8];
-    v15 = [(ENDownloadManager *)v46 _downloadsDirectoryPathForEndpointState:v13];
+    v15 = [(ENDownloadManager *)selfCopy _downloadsDirectoryPathForEndpointState:v13];
     v16 = [v14 fileURLWithPath:v15 isDirectory:1];
 
     if (v16)
@@ -357,7 +357,7 @@ LABEL_41:
         v24 = *(*(&v60 + 1) + 8 * v22);
         v25 = objc_autoreleasePoolPush();
         v59 = v23;
-        v26 = v52[2](v52, v24, v53, &v59);
+        v26 = v52[2](v52, v24, endpoint, &v59);
         v10 = v59;
 
         if (v26 == 1)
@@ -446,16 +446,16 @@ LABEL_25:
     goto LABEL_40;
   }
 
-  if (v42 && v10)
+  if (errorCopy && v10)
   {
     v39 = v10;
-    *v42 = v10;
+    *errorCopy = v10;
   }
 
   v38 = v10 == 0;
 
 LABEL_50:
-  v6 = v52;
+  handlerCopy = v52;
 LABEL_52:
 
   v40 = *MEMORY[0x277D85DE8];
@@ -475,48 +475,48 @@ LABEL_52:
 
 - (void)_update
 {
-  v2 = [a1 shortIdentifier];
-  v3 = [a1 endpoint];
-  v4 = [v3 serverBaseURL];
-  v5 = [a1 endpoint];
-  [v5 enabled];
-  v6 = [a1 endpoint];
-  [v6 downloadInterval];
+  shortIdentifier = [self shortIdentifier];
+  endpoint = [self endpoint];
+  serverBaseURL = [endpoint serverBaseURL];
+  endpoint2 = [self endpoint];
+  [endpoint2 enabled];
+  endpoint3 = [self endpoint];
+  [endpoint3 downloadInterval];
   v7 = CUPrintDurationDouble();
-  v8 = [a1 lastFetchAttemptDate];
-  [v8 timeIntervalSinceNow];
+  lastFetchAttemptDate = [self lastFetchAttemptDate];
+  [lastFetchAttemptDate timeIntervalSinceNow];
   v9 = CUPrintDurationDouble();
   LogPrintF_safe();
 }
 
-- (void)setDownloadEndpoints:(id)a3
+- (void)setDownloadEndpoints:(id)endpoints
 {
-  v4 = a3;
+  endpointsCopy = endpoints;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__ENDownloadManager_setDownloadEndpoints___block_invoke;
   v7[3] = &unk_278FD1120;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = endpointsCopy;
+  v6 = endpointsCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)_setDownloadEndpoints:(id)a3
+- (void)_setDownloadEndpoints:(id)endpoints
 {
-  v4 = a3;
-  v8 = v4;
+  endpointsCopy = endpoints;
+  v8 = endpointsCopy;
   if (gLogCategory_ENDownloadManager <= 10)
   {
-    if (gLogCategory_ENDownloadManager != -1 || (v5 = _LogCategory_Initialize(), v4 = v8, v5))
+    if (gLogCategory_ENDownloadManager != -1 || (v5 = _LogCategory_Initialize(), endpointsCopy = v8, v5))
     {
-      [ENDownloadManager _setDownloadEndpoints:v4];
-      v4 = v8;
+      [ENDownloadManager _setDownloadEndpoints:endpointsCopy];
+      endpointsCopy = v8;
     }
   }
 
-  v6 = [v4 copy];
+  v6 = [endpointsCopy copy];
   pendingEndpoints = self->_pendingEndpoints;
   self->_pendingEndpoints = v6;
 
@@ -530,8 +530,8 @@ LABEL_52:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(ENDownloadManagerState *)self->_state endpointStates];
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  endpointStates = [(ENDownloadManagerState *)self->_state endpointStates];
+  v3 = [endpointStates countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v3)
   {
     v4 = v3;
@@ -543,14 +543,14 @@ LABEL_52:
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(endpointStates);
         }
 
-        v8 = [*(*(&v11 + 1) + 8 * i) endpoint];
-        v5 += [v8 enabled];
+        endpoint = [*(*(&v11 + 1) + 8 * i) endpoint];
+        v5 += [endpoint enabled];
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [endpointStates countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v4);
@@ -565,18 +565,18 @@ LABEL_52:
   return v5;
 }
 
-- (void)performDownloadsForced:(BOOL)a3 completion:(id)a4
+- (void)performDownloadsForced:(BOOL)forced completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__ENDownloadManager_performDownloadsForced_completion___block_invoke;
   block[3] = &unk_278FD24A0;
-  v11 = a3;
+  forcedCopy = forced;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = completionCopy;
+  v8 = completionCopy;
   dispatch_sync(queue, block);
 }
 
@@ -593,21 +593,21 @@ void __55__ENDownloadManager_performDownloadsForced_completion___block_invoke(ui
   [v2 _performDownloadsWithScheduler:0 atDate:v3 forced:v4 completion:v5];
 }
 
-- (void)performDownloadsAtDate:(id)a3 forced:(BOOL)a4 completion:(id)a5
+- (void)performDownloadsAtDate:(id)date forced:(BOOL)forced completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  dateCopy = date;
+  completionCopy = completion;
   queue = self->_queue;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __62__ENDownloadManager_performDownloadsAtDate_forced_completion___block_invoke;
   v13[3] = &unk_278FD24C8;
   v13[4] = self;
-  v14 = v8;
-  v16 = a4;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = dateCopy;
+  forcedCopy = forced;
+  v15 = completionCopy;
+  v11 = completionCopy;
+  v12 = dateCopy;
   dispatch_sync(queue, v13);
 }
 
@@ -684,20 +684,20 @@ LABEL_14:
   return result;
 }
 
-- (BOOL)_shouldFetchFromEndpointWithState:(id)a3 time:(double)a4
+- (BOOL)_shouldFetchFromEndpointWithState:(id)state time:(double)time
 {
-  v5 = a3;
-  v6 = [v5 endpoint];
-  if ([v6 enabled])
+  stateCopy = state;
+  endpoint = [stateCopy endpoint];
+  if ([endpoint enabled])
   {
-    v7 = [v5 lastFetchAttemptDate];
-    v8 = v7;
-    if (v7)
+    lastFetchAttemptDate = [stateCopy lastFetchAttemptDate];
+    v8 = lastFetchAttemptDate;
+    if (lastFetchAttemptDate)
     {
-      [v7 timeIntervalSinceReferenceDate];
+      [lastFetchAttemptDate timeIntervalSinceReferenceDate];
       v10 = v9;
-      [v6 downloadInterval];
-      v12 = v10 + v11 * 0.75 < a4;
+      [endpoint downloadInterval];
+      v12 = v10 + v11 * 0.75 < time;
     }
 
     else
@@ -714,14 +714,14 @@ LABEL_14:
   return v12;
 }
 
-- (void)_downloadIndexWithTask:(id)a3
+- (void)_downloadIndexWithTask:(id)task
 {
-  v4 = a3;
-  v5 = [v4 endpointState];
-  v6 = [v5 endpoint];
+  taskCopy = task;
+  endpointState = [taskCopy endpointState];
+  endpoint = [endpointState endpoint];
 
-  v7 = [v6 serverIndexURL];
-  v8 = [objc_alloc(MEMORY[0x277CBAB58]) initWithURL:v7];
+  serverIndexURL = [endpoint serverIndexURL];
+  v8 = [objc_alloc(MEMORY[0x277CBAB58]) initWithURL:serverIndexURL];
   [v8 addValue:@"text/plain" forHTTPHeaderField:@"Accept"];
   Current = CFAbsoluteTimeGetCurrent();
   URLSession = self->_URLSession;
@@ -729,12 +729,12 @@ LABEL_14:
   v15 = 3221225472;
   v16 = __44__ENDownloadManager__downloadIndexWithTask___block_invoke;
   v17 = &unk_278FD2518;
-  v18 = self;
-  v19 = v6;
-  v20 = v4;
+  selfCopy = self;
+  v19 = endpoint;
+  v20 = taskCopy;
   v21 = Current;
-  v11 = v4;
-  v12 = v6;
+  v11 = taskCopy;
+  v12 = endpoint;
   v13 = [(NSURLSession *)URLSession downloadTaskWithRequest:v8 completionHandler:&v14];
   [v13 resume];
 }
@@ -818,51 +818,51 @@ LABEL_17:
   [v10 _reportErrorMetric:2000];
 }
 
-- (id)_baseDirectoryPathForEndpointWithState:(id)a3
+- (id)_baseDirectoryPathForEndpointWithState:(id)state
 {
   directoryURL = self->_directoryURL;
-  v6 = [a3 identifier];
-  v7 = [v6 UUIDString];
-  v8 = [(NSURL *)directoryURL URLByAppendingPathComponent:v7];
-  v9 = [v8 path];
+  identifier = [state identifier];
+  uUIDString = [identifier UUIDString];
+  v8 = [(NSURL *)directoryURL URLByAppendingPathComponent:uUIDString];
+  path = [v8 path];
 
-  if (!v9)
+  if (!path)
   {
     [(ENDownloadManager *)a2 _baseDirectoryPathForEndpointWithState:?];
   }
 
-  return v9;
+  return path;
 }
 
-- (id)_downloadsDirectoryPathForEndpointState:(id)a3
+- (id)_downloadsDirectoryPathForEndpointState:(id)state
 {
-  v3 = [(ENDownloadManager *)self _baseDirectoryPathForEndpointWithState:a3];
+  v3 = [(ENDownloadManager *)self _baseDirectoryPathForEndpointWithState:state];
   v4 = [v3 stringByAppendingPathComponent:@"Downloads"];
 
   return v4;
 }
 
-- (id)_indexFilePathForEndpointState:(id)a3
+- (id)_indexFilePathForEndpointState:(id)state
 {
-  v3 = [(ENDownloadManager *)self _baseDirectoryPathForEndpointWithState:a3];
+  v3 = [(ENDownloadManager *)self _baseDirectoryPathForEndpointWithState:state];
   v4 = [v3 stringByAppendingPathComponent:@"index.txt"];
 
   return v4;
 }
 
-- (BOOL)_copyDownloadedFileAtPath:(id)a3 toPath:(id)a4 removeExisting:(BOOL)a5 error:(id *)a6
+- (BOOL)_copyDownloadedFileAtPath:(id)path toPath:(id)toPath removeExisting:(BOOL)existing error:(id *)error
 {
-  v7 = a5;
-  v9 = a3;
-  v10 = a4;
-  v11 = v9;
+  existingCopy = existing;
+  pathCopy = path;
+  toPathCopy = toPath;
+  v11 = pathCopy;
   if (v11)
   {
-    v12 = [v10 stringByDeletingLastPathComponent];
+    stringByDeletingLastPathComponent = [toPathCopy stringByDeletingLastPathComponent];
     v13 = objc_alloc_init(MEMORY[0x277CCAA08]);
-    if ([v13 createDirectoryAtPath:v12 withIntermediateDirectories:1 attributes:0 error:a6])
+    if ([v13 createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:error])
     {
-      if (v7 && [v13 fileExistsAtPath:v10] && (objc_msgSend(v13, "removeItemAtPath:error:", v10, a6) & 1) == 0)
+      if (existingCopy && [v13 fileExistsAtPath:toPathCopy] && (objc_msgSend(v13, "removeItemAtPath:error:", toPathCopy, error) & 1) == 0)
       {
         if (gLogCategory_ENDownloadManager <= 90 && (gLogCategory_ENDownloadManager != -1 || _LogCategory_Initialize()))
         {
@@ -872,7 +872,7 @@ LABEL_17:
 
       else
       {
-        if ([v13 copyItemAtPath:v11 toPath:v10 error:a6])
+        if ([v13 copyItemAtPath:v11 toPath:toPathCopy error:error])
         {
           v14 = 1;
 LABEL_23:
@@ -896,10 +896,10 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  if (a6)
+  if (error)
   {
     ENErrorF();
-    *a6 = v14 = 0;
+    *error = v14 = 0;
   }
 
   else
@@ -912,74 +912,74 @@ LABEL_24:
   return v14;
 }
 
-- (void)_handleIndexFileDownloadFinishedForTask:(id)a3 filePath:(id)a4
+- (void)_handleIndexFileDownloadFinishedForTask:(id)task filePath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  taskCopy = task;
+  pathCopy = path;
   if (self->_invalidated)
   {
-    v8 = ENErrorF();
-    [v6 finishDeferred:0 error:v8];
+    endpointState = ENErrorF();
+    [taskCopy finishDeferred:0 error:endpointState];
   }
 
   else
   {
-    v8 = [v6 endpointState];
+    endpointState = [taskCopy endpointState];
     if (gLogCategory_ENDownloadManager <= 50 && (gLogCategory_ENDownloadManager != -1 || _LogCategory_Initialize()))
     {
-      [ENDownloadManager _handleIndexFileDownloadFinishedForTask:v6 filePath:?];
+      [ENDownloadManager _handleIndexFileDownloadFinishedForTask:taskCopy filePath:?];
     }
 
-    v9 = [(ENDownloadManager *)self _indexFilePathForEndpointState:v8];
+    v9 = [(ENDownloadManager *)self _indexFilePathForEndpointState:endpointState];
     v12 = 0;
-    v10 = [(ENDownloadManager *)self _copyDownloadedFileAtPath:v7 toPath:v9 removeExisting:1 error:&v12];
+    v10 = [(ENDownloadManager *)self _copyDownloadedFileAtPath:pathCopy toPath:v9 removeExisting:1 error:&v12];
     v11 = v12;
     if (v10)
     {
-      [(ENDownloadManager *)self _downloadNextFileFromServerWithTask:v6];
+      [(ENDownloadManager *)self _downloadNextFileFromServerWithTask:taskCopy];
     }
 
     else
     {
       if (gLogCategory_ENDownloadManager <= 90 && (gLogCategory_ENDownloadManager != -1 || _LogCategory_Initialize()))
       {
-        [ENDownloadManager _handleIndexFileDownloadFinishedForTask:v6 filePath:?];
+        [ENDownloadManager _handleIndexFileDownloadFinishedForTask:taskCopy filePath:?];
       }
 
-      [v6 finishDeferred:0 error:v11];
+      [taskCopy finishDeferred:0 error:v11];
     }
   }
 }
 
-- (void)_downloadNextFileFromServerWithTask:(id)a3
+- (void)_downloadNextFileFromServerWithTask:(id)task
 {
-  v4 = a3;
-  v5 = v4;
+  taskCopy = task;
+  v5 = taskCopy;
   if (self->_invalidated)
   {
-    v6 = ENErrorF();
-    [v5 finishDeferred:0 error:v6];
+    endpointState = ENErrorF();
+    [v5 finishDeferred:0 error:endpointState];
 LABEL_19:
 
     goto LABEL_20;
   }
 
-  if (![v4 shouldDefer])
+  if (![taskCopy shouldDefer])
   {
-    v6 = [v5 endpointState];
-    v7 = [v6 endpoint];
-    v8 = [(ENDownloadManager *)self _nextFilePathToDownloadWithEndpointState:v6];
+    endpointState = [v5 endpointState];
+    endpoint = [endpointState endpoint];
+    v8 = [(ENDownloadManager *)self _nextFilePathToDownloadWithEndpointState:endpointState];
     if (v8)
     {
-      v9 = [v7 serverURLForFileWithRelativePath:v8];
+      v9 = [endpoint serverURLForFileWithRelativePath:v8];
       if (v9)
       {
         v10 = [objc_alloc(MEMORY[0x277CBAB58]) initWithURL:v9];
         [v10 setValue:@"application/zip" forHTTPHeaderField:@"Accept"];
         v11 = +[ENLoggingPrefs sharedENLoggingPrefs];
-        v12 = [v11 isSensitiveLoggingAllowed];
+        isSensitiveLoggingAllowed = [v11 isSensitiveLoggingAllowed];
 
-        if (v12 && gLogCategory_ENDownloadManager <= 50 && (gLogCategory_ENDownloadManager != -1 || _LogCategory_Initialize()))
+        if (isSensitiveLoggingAllowed && gLogCategory_ENDownloadManager <= 50 && (gLogCategory_ENDownloadManager != -1 || _LogCategory_Initialize()))
         {
           [(ENDownloadManager *)v9 _downloadNextFileFromServerWithTask:v5];
         }
@@ -990,12 +990,12 @@ LABEL_19:
         v17 = 3221225472;
         v18 = __57__ENDownloadManager__downloadNextFileFromServerWithTask___block_invoke;
         v19 = &unk_278FD2568;
-        v20 = self;
+        selfCopy = self;
         v21 = v5;
         v22 = v9;
         v25 = Current;
         v23 = v8;
-        v24 = v6;
+        v24 = endpointState;
         v15 = [(NSURLSession *)URLSession downloadTaskWithRequest:v10 completionHandler:&v16];
         [v15 resume];
       }
@@ -1011,7 +1011,7 @@ LABEL_19:
     {
       if (gLogCategory_ENDownloadManager <= 50 && (gLogCategory_ENDownloadManager != -1 || _LogCategory_Initialize()))
       {
-        [ENDownloadManager _downloadNextFileFromServerWithTask:v6];
+        [ENDownloadManager _downloadNextFileFromServerWithTask:endpointState];
       }
 
       [v5 finishDeferred:0 error:0];
@@ -1115,68 +1115,68 @@ LABEL_19:
   [v11 _reportErrorMetric:2002];
 }
 
-- (void)_handleFileDownloadFinishedForTask:(id)a3 serverFilePath:(id)a4 downloadedFilePath:(id)a5
+- (void)_handleFileDownloadFinishedForTask:(id)task serverFilePath:(id)path downloadedFilePath:(id)filePath
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 endpointState];
+  taskCopy = task;
+  pathCopy = path;
+  filePathCopy = filePath;
+  endpointState = [taskCopy endpointState];
   if (gLogCategory_ENDownloadManager <= 50 && (gLogCategory_ENDownloadManager != -1 || _LogCategory_Initialize()))
   {
-    [ENDownloadManager _handleFileDownloadFinishedForTask:v8 serverFilePath:? downloadedFilePath:?];
+    [ENDownloadManager _handleFileDownloadFinishedForTask:taskCopy serverFilePath:? downloadedFilePath:?];
   }
 
-  v12 = [v9 pathComponents];
-  v13 = [v12 componentsJoinedByString:@"_"];
+  pathComponents = [pathCopy pathComponents];
+  v13 = [pathComponents componentsJoinedByString:@"_"];
 
-  v14 = [(ENDownloadManager *)self _downloadsDirectoryPathForEndpointState:v11];
+  v14 = [(ENDownloadManager *)self _downloadsDirectoryPathForEndpointState:endpointState];
   v15 = [v14 stringByAppendingPathComponent:v13];
 
   v21 = 0;
-  LOBYTE(v13) = [(ENDownloadManager *)self _copyDownloadedFileAtPath:v10 toPath:v15 removeExisting:0 error:&v21];
+  LOBYTE(v13) = [(ENDownloadManager *)self _copyDownloadedFileAtPath:filePathCopy toPath:v15 removeExisting:0 error:&v21];
 
   v16 = v21;
   if (v13)
   {
-    v17 = [v8 date];
-    [v11 setLastSuccessfulFetchDate:v17];
+    date = [taskCopy date];
+    [endpointState setLastSuccessfulFetchDate:date];
 
-    [v11 setLastDownloadedFilePath:v9];
+    [endpointState setLastDownloadedFilePath:pathCopy];
     v20 = v16;
     v18 = [(ENDownloadManager *)self _saveStateWithError:&v20];
     v19 = v20;
 
     if (!v18 && gLogCategory_ENDownloadManager <= 90 && (gLogCategory_ENDownloadManager != -1 || _LogCategory_Initialize()))
     {
-      [ENDownloadManager _handleFileDownloadFinishedForTask:v8 serverFilePath:? downloadedFilePath:?];
+      [ENDownloadManager _handleFileDownloadFinishedForTask:taskCopy serverFilePath:? downloadedFilePath:?];
     }
 
-    [v8 incrementDownloadCount];
-    [(ENDownloadManager *)self _downloadNextFileFromServerWithTask:v8];
+    [taskCopy incrementDownloadCount];
+    [(ENDownloadManager *)self _downloadNextFileFromServerWithTask:taskCopy];
   }
 
   else
   {
     if (gLogCategory_ENDownloadManager <= 90 && (gLogCategory_ENDownloadManager != -1 || _LogCategory_Initialize()))
     {
-      [ENDownloadManager _handleFileDownloadFinishedForTask:v8 serverFilePath:? downloadedFilePath:?];
+      [ENDownloadManager _handleFileDownloadFinishedForTask:taskCopy serverFilePath:? downloadedFilePath:?];
     }
 
-    [v8 finishDeferred:0 error:v16];
+    [taskCopy finishDeferred:0 error:v16];
     v19 = v16;
   }
 }
 
-- (id)_nextFilePathToDownloadWithEndpointState:(id)a3
+- (id)_nextFilePathToDownloadWithEndpointState:(id)state
 {
-  v4 = a3;
-  v5 = [(ENDownloadManager *)self _indexFilePathForEndpointState:v4];
+  stateCopy = state;
+  v5 = [(ENDownloadManager *)self _indexFilePathForEndpointState:stateCopy];
   v6 = open([v5 fileSystemRepresentation], 0);
   if (v6 < 0)
   {
     if (gLogCategory_ENDownloadManager <= 90 && (gLogCategory_ENDownloadManager != -1 || _LogCategory_Initialize()))
     {
-      [ENDownloadManager _nextFilePathToDownloadWithEndpointState:v4];
+      [ENDownloadManager _nextFilePathToDownloadWithEndpointState:stateCopy];
     }
 
     v15 = 0;
@@ -1185,7 +1185,7 @@ LABEL_19:
   else
   {
     v7 = v6;
-    v8 = [v4 lastDownloadedFilePath];
+    lastDownloadedFilePath = [stateCopy lastDownloadedFilePath];
     v29 = 0;
     v30 = &v29;
     v31 = 0x3032000000;
@@ -1202,9 +1202,9 @@ LABEL_19:
     v20 = &v19;
     v21 = 0x2020000000;
     v22 = 0;
-    v9 = [MEMORY[0x277CCA908] whitespaceAndNewlineCharacterSet];
-    v10 = v8;
-    v11 = v4;
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA908] whitespaceAndNewlineCharacterSet];
+    v10 = lastDownloadedFilePath;
+    v11 = stateCopy;
     v12 = ENReadLinesFromFile();
     v13 = 0;
     close(v7);
@@ -1227,7 +1227,7 @@ LABEL_19:
     {
       if (gLogCategory_ENDownloadManager <= 90 && (gLogCategory_ENDownloadManager != -1 || _LogCategory_Initialize()))
       {
-        v16 = [v11 shortIdentifier];
+        shortIdentifier = [v11 shortIdentifier];
         v18 = CUPrintNSError();
         LogPrintF_safe();
       }
@@ -1310,24 +1310,24 @@ LABEL_16:
   LogPrintF_safe();
 }
 
-- (void)purgeExpiredDownloadsWithDate:(id)a3
+- (void)purgeExpiredDownloadsWithDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__ENDownloadManager_purgeExpiredDownloadsWithDate___block_invoke;
   v7[3] = &unk_278FD1120;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dateCopy;
+  v6 = dateCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)_purgeExpiredDownloadsWithDate:(id)a3
+- (void)_purgeExpiredDownloadsWithDate:(id)date
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dateCopy = date;
   if (self->_state)
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB50]);
@@ -1335,12 +1335,12 @@ LABEL_16:
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v6 = [(ENDownloadManagerState *)self->_state endpointStates];
-    v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    endpointStates = [(ENDownloadManagerState *)self->_state endpointStates];
+    v7 = [endpointStates countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v7)
     {
       v8 = v7;
-      v17 = v4;
+      v17 = dateCopy;
       v9 = 0;
       v10 = *v19;
       do
@@ -1349,17 +1349,17 @@ LABEL_16:
         {
           if (*v19 != v10)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(endpointStates);
           }
 
           v12 = *(*(&v18 + 1) + 8 * i);
-          v13 = [v12 endpoint];
-          v14 = [v13 enabled];
+          endpoint = [v12 endpoint];
+          enabled = [endpoint enabled];
 
-          if (v14)
+          if (enabled)
           {
-            v15 = [v12 identifier];
-            [v5 addObject:v15];
+            identifier = [v12 identifier];
+            [v5 addObject:identifier];
           }
 
           else
@@ -1369,12 +1369,12 @@ LABEL_16:
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v8 = [endpointStates countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v8);
 
-      v4 = v17;
+      dateCopy = v17;
       [(ENDownloadManager *)self _purgeKeepingDownloadsForIdentifiers:v5 expiryDate:v17];
       if (v9)
       {
@@ -1385,7 +1385,7 @@ LABEL_16:
     else
     {
 
-      [(ENDownloadManager *)self _purgeKeepingDownloadsForIdentifiers:v5 expiryDate:v4];
+      [(ENDownloadManager *)self _purgeKeepingDownloadsForIdentifiers:v5 expiryDate:dateCopy];
     }
   }
 
@@ -1397,14 +1397,14 @@ LABEL_16:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_purgeKeepingDownloadsForIdentifiers:(id)a3 expiryDate:(id)a4
+- (void)_purgeKeepingDownloadsForIdentifiers:(id)identifiers expiryDate:(id)date
 {
   v57 = *MEMORY[0x277D85DE8];
-  v32 = a3;
-  v29 = a4;
+  identifiersCopy = identifiers;
+  dateCopy = date;
   v31 = objc_alloc_init(MEMORY[0x277CBEB10]);
   v6 = objc_alloc_init(MEMORY[0x277CCAA08]);
-  v30 = self;
+  selfCopy = self;
   [v6 enumeratorAtURL:self->_directoryURL includingPropertiesForKeys:0 options:1 errorHandler:0];
   v53 = 0u;
   v54 = 0u;
@@ -1426,14 +1426,14 @@ LABEL_16:
         v11 = *(*(&v51 + 1) + 8 * i);
         v12 = objc_autoreleasePoolPush();
         LOBYTE(v42) = 0;
-        v13 = [v11 path];
-        if ([v6 fileExistsAtPath:v13 isDirectory:&v42] && v42 == 1)
+        path = [v11 path];
+        if ([v6 fileExistsAtPath:path isDirectory:&v42] && v42 == 1)
         {
-          v14 = [v11 path];
-          v15 = [v14 lastPathComponent];
+          path2 = [v11 path];
+          lastPathComponent = [path2 lastPathComponent];
 
-          v16 = [objc_alloc(MEMORY[0x277CCAD70]) initWithUUIDString:v15];
-          if (v16 && ([v32 containsObject:v16] & 1) == 0)
+          v16 = [objc_alloc(MEMORY[0x277CCAD70]) initWithUUIDString:lastPathComponent];
+          if (v16 && ([identifiersCopy containsObject:v16] & 1) == 0)
           {
             [v31 addObject:v11];
           }
@@ -1501,10 +1501,10 @@ LABEL_16:
   v33[2] = __69__ENDownloadManager__purgeKeepingDownloadsForIdentifiers_expiryDate___block_invoke;
   v33[3] = &unk_278FD25B8;
   v35 = &v42;
-  v24 = v29;
+  v24 = dateCopy;
   v34 = v24;
   v36 = &v38;
-  [(ENDownloadManager *)v30 _enumerateDownloadsWithError:&v37 handler:v33];
+  [(ENDownloadManager *)selfCopy _enumerateDownloadsWithError:&v37 handler:v33];
   v25 = v37;
   if (gLogCategory_ENDownloadManager <= 50 && (gLogCategory_ENDownloadManager != -1 || _LogCategory_Initialize()))
   {
@@ -1572,12 +1572,12 @@ LABEL_13:
   if (directoryURL)
   {
     v5 = [(NSURL *)directoryURL URLByAppendingPathComponent:@"state.dat"];
-    v6 = [v5 path];
+    path = [v5 path];
 
-    if (v6)
+    if (path)
     {
       v13 = 0;
-      v7 = [v3 removeItemAtPath:v6 error:&v13];
+      v7 = [v3 removeItemAtPath:path error:&v13];
       v8 = v13;
       v9 = v8;
       if (v7)
@@ -1625,7 +1625,7 @@ LABEL_13:
 
 - (void)_updateFetchSchedule
 {
-  v2 = [*a1 identifier];
+  identifier = [*self identifier];
   CUPrintDurationDouble();
   objc_claimAutoreleasedReturnValue();
   [OUTLINED_FUNCTION_2_2() count];
@@ -1655,9 +1655,9 @@ void __41__ENDownloadManager__updateFetchSchedule__block_invoke(uint64_t a1, voi
   }
 }
 
-- (void)_backgroundActivityFiredWithCompletion:(id)a3
+- (void)_backgroundActivityFiredWithCompletion:(id)completion
 {
-  v6 = a3;
+  completionCopy = completion;
   if (gLogCategory_ENDownloadManager <= 50 && (gLogCategory_ENDownloadManager != -1 || _LogCategory_Initialize()))
   {
     [ENDownloadManager _backgroundActivityFiredWithCompletion:];
@@ -1667,8 +1667,8 @@ void __41__ENDownloadManager__updateFetchSchedule__block_invoke(uint64_t a1, voi
   if (v4)
   {
     [(ENDownloadManager *)self _update];
-    v5 = [MEMORY[0x277CBEAA0] date];
-    [(ENDownloadManager *)self _performDownloadsWithScheduler:v4 atDate:v5 forced:0 completion:v6];
+    date = [MEMORY[0x277CBEAA0] date];
+    [(ENDownloadManager *)self _performDownloadsWithScheduler:v4 atDate:date forced:0 completion:completionCopy];
   }
 
   else
@@ -1678,19 +1678,19 @@ void __41__ENDownloadManager__updateFetchSchedule__block_invoke(uint64_t a1, voi
       [ENDownloadManager _backgroundActivityFiredWithCompletion:];
     }
 
-    v6[2](v6, 1);
+    completionCopy[2](completionCopy, 1);
   }
 }
 
-- (double)_aggregateDownloadIntervalFromEndpoints:(id)a3
+- (double)_aggregateDownloadIntervalFromEndpoints:(id)endpoints
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  endpointsCopy = endpoints;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v4 = [endpointsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   v5 = 86400.0;
   if (v4)
   {
@@ -1703,7 +1703,7 @@ void __41__ENDownloadManager__updateFetchSchedule__block_invoke(uint64_t a1, voi
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(endpointsCopy);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
@@ -1717,7 +1717,7 @@ void __41__ENDownloadManager__updateFetchSchedule__block_invoke(uint64_t a1, voi
         }
       }
 
-      v6 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [endpointsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -1735,7 +1735,7 @@ void __41__ENDownloadManager__updateFetchSchedule__block_invoke(uint64_t a1, voi
   return v5;
 }
 
-- (BOOL)_readStateIfNecessaryWithError:(id *)a3
+- (BOOL)_readStateIfNecessaryWithError:(id *)error
 {
   if (self->_state)
   {
@@ -1744,23 +1744,23 @@ void __41__ENDownloadManager__updateFetchSchedule__block_invoke(uint64_t a1, voi
 
   else
   {
-    v7 = [(NSURL *)self->_directoryURL path];
-    if (!v7)
+    path = [(NSURL *)self->_directoryURL path];
+    if (!path)
     {
       [(ENDownloadManager *)a2 _readStateIfNecessaryWithError:?];
     }
 
     v8 = objc_alloc_init(MEMORY[0x277CCAA08]);
-    if ([v8 createDirectoryAtPath:v7 withIntermediateDirectories:1 attributes:0 error:a3])
+    if ([v8 createDirectoryAtPath:path withIntermediateDirectories:1 attributes:0 error:error])
     {
-      if (![(NSURL *)self->_directoryURL setResourceValue:MEMORY[0x277CBEC20] forKey:*MEMORY[0x277CBE870] error:a3]&& gLogCategory_ENDownloadManager <= 90 && (gLogCategory_ENDownloadManager != -1 || _LogCategory_Initialize()))
+      if (![(NSURL *)self->_directoryURL setResourceValue:MEMORY[0x277CBEC20] forKey:*MEMORY[0x277CBE870] error:error]&& gLogCategory_ENDownloadManager <= 90 && (gLogCategory_ENDownloadManager != -1 || _LogCategory_Initialize()))
       {
         [ENDownloadManager _readStateIfNecessaryWithError:];
       }
 
       stateFileWrapper = self->_stateFileWrapper;
       v15 = 0;
-      v3 = [(ENSecureArchiveFileWrapper *)stateFileWrapper readObject:&v15 ofClass:objc_opt_class() error:a3];
+      v3 = [(ENSecureArchiveFileWrapper *)stateFileWrapper readObject:&v15 ofClass:objc_opt_class() error:error];
       v10 = v15;
       v11 = v10;
       if (v3)
@@ -1812,10 +1812,10 @@ void __41__ENDownloadManager__updateFetchSchedule__block_invoke(uint64_t a1, voi
 - (id)description
 {
   v37 = *MEMORY[0x277D85DE8];
-  v2 = [(ENDownloadManager *)self state];
-  v3 = [v2 endpointStates];
+  state = [(ENDownloadManager *)self state];
+  endpointStates = [state endpointStates];
 
-  v4 = [v3 count];
+  v4 = [endpointStates count];
   v35 = 0;
   v5 = "s";
   if (v4 == 1)
@@ -1831,7 +1831,7 @@ void __41__ENDownloadManager__updateFetchSchedule__block_invoke(uint64_t a1, voi
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = v3;
+  obj = endpointStates;
   v7 = [obj countByEnumeratingWithState:&v31 objects:v36 count:{16, v24, v28}];
   if (v7)
   {
@@ -1847,12 +1847,12 @@ void __41__ENDownloadManager__updateFetchSchedule__block_invoke(uint64_t a1, voi
         }
 
         v11 = *(*(&v31 + 1) + 8 * i);
-        v12 = [v11 endpoint];
-        v26 = [v12 region];
+        endpoint = [v11 endpoint];
+        region = [endpoint region];
         NSAppendPrintF_safe();
         v13 = v6;
 
-        if (([v12 enabled] & 1) == 0)
+        if (([endpoint enabled] & 1) == 0)
         {
           NSAppendPrintF_safe();
           v14 = v13;
@@ -1860,13 +1860,13 @@ void __41__ENDownloadManager__updateFetchSchedule__block_invoke(uint64_t a1, voi
           v13 = v14;
         }
 
-        v15 = [v11 lastFetchAttemptDate];
-        v16 = [v11 lastSuccessfulFetchDate];
-        if (v15 | v16)
+        lastFetchAttemptDate = [v11 lastFetchAttemptDate];
+        lastSuccessfulFetchDate = [v11 lastSuccessfulFetchDate];
+        if (lastFetchAttemptDate | lastSuccessfulFetchDate)
         {
-          [v15 timeIntervalSinceNow];
+          [lastFetchAttemptDate timeIntervalSinceNow];
           v18 = -v17;
-          [v16 timeIntervalSinceNow];
+          [lastSuccessfulFetchDate timeIntervalSinceNow];
           v27 = v18;
           v29 = -v19;
           NSAppendPrintF();
@@ -1875,13 +1875,13 @@ void __41__ENDownloadManager__updateFetchSchedule__block_invoke(uint64_t a1, voi
           v13 = v20;
         }
 
-        v21 = [v12 serverBaseURL];
-        v25 = [v21 absoluteString];
+        serverBaseURL = [endpoint serverBaseURL];
+        absoluteString = [serverBaseURL absoluteString];
         NSAppendPrintF_safe();
         v6 = v13;
       }
 
-      v8 = [obj countByEnumeratingWithState:&v31 objects:v36 count:{16, v25}];
+      v8 = [obj countByEnumeratingWithState:&v31 objects:v36 count:{16, absoluteString}];
     }
 
     while (v8);
@@ -2057,7 +2057,7 @@ void __69__ENDownloadManager__purgeKeepingDownloadsForIdentifiers_expiryDate___b
   }
 
   *a3 = 0;
-  *a2 = a1;
+  *a2 = self;
 }
 
 - (uint64_t)resetStateFile

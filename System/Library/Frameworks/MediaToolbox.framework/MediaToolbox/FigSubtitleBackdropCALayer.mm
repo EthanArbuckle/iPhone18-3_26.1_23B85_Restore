@@ -1,19 +1,19 @@
 @interface FigSubtitleBackdropCALayer
 - (BOOL)shouldEnableBackdropLayer;
 - (FigSubtitleBackdropCALayer)init;
-- (void)_addBoundsAnimationToLayer:(id)a3 usingAnimation:(id)a4 forKey:(id)a5;
-- (void)_addPositionAnimationToLayer:(id)a3 usingAnimation:(id)a4 forKey:(id)a5;
-- (void)addAnimation:(id)a3 forKey:(id)a4;
+- (void)_addBoundsAnimationToLayer:(id)layer usingAnimation:(id)animation forKey:(id)key;
+- (void)_addPositionAnimationToLayer:(id)layer usingAnimation:(id)animation forKey:(id)key;
+- (void)addAnimation:(id)animation forKey:(id)key;
 - (void)dealloc;
-- (void)setBounds:(CGRect)a3;
-- (void)setContents:(id)a3;
-- (void)setCornerRadius:(double)a3;
-- (void)setDelegate:(id)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setContents:(id)contents;
+- (void)setCornerRadius:(double)radius;
+- (void)setDelegate:(id)delegate;
 - (void)setNeedsDisplay;
 - (void)setNeedsLayout;
 - (void)updateBackdropLayer;
-- (void)updateHDRContentState:(BOOL)a3;
-- (void)updateWindowOpacity:(double)a3;
+- (void)updateHDRContentState:(BOOL)state;
+- (void)updateWindowOpacity:(double)opacity;
 @end
 
 @implementation FigSubtitleBackdropCALayer
@@ -67,7 +67,7 @@
   [(FigBaseCALayer *)&v5 dealloc];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   var1 = self->bdLayerInternal->var1;
   block[0] = MEMORY[0x1E69E9820];
@@ -75,14 +75,14 @@
   block[2] = __42__FigSubtitleBackdropCALayer_setDelegate___block_invoke;
   block[3] = &unk_1E7483A30;
   block[4] = self;
-  block[5] = a3;
+  block[5] = delegate;
   dispatch_sync(var1, block);
   v6.receiver = self;
   v6.super_class = FigSubtitleBackdropCALayer;
-  [(FigSubtitleBackdropCALayer *)&v6 setDelegate:a3];
+  [(FigSubtitleBackdropCALayer *)&v6 setDelegate:delegate];
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
   v20 = 0;
   v21 = &v20;
@@ -112,13 +112,13 @@
   dispatch_sync(var1, block);
   if (*(v21 + 24) == 1)
   {
-    [v15[5] setCornerRadius:a3];
-    [v9[5] setCornerRadius:a3];
+    [v15[5] setCornerRadius:radius];
+    [v9[5] setCornerRadius:radius];
   }
 
   v6.receiver = self;
   v6.super_class = FigSubtitleBackdropCALayer;
-  [(FigSubtitleBackdropCALayer *)&v6 setCornerRadius:a3];
+  [(FigSubtitleBackdropCALayer *)&v6 setCornerRadius:radius];
   _Block_object_dispose(&v8, 8);
   _Block_object_dispose(&v14, 8);
   _Block_object_dispose(&v20, 8);
@@ -133,12 +133,12 @@ id __46__FigSubtitleBackdropCALayer_setCornerRadius___block_invoke(void *a1)
   return result;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
@@ -209,7 +209,7 @@ id __40__FigSubtitleBackdropCALayer_setBounds___block_invoke(void *a1)
   return result;
 }
 
-- (void)setContents:(id)a3
+- (void)setContents:(id)contents
 {
   v14 = 0;
   v15 = &v14;
@@ -232,14 +232,14 @@ id __40__FigSubtitleBackdropCALayer_setBounds___block_invoke(void *a1)
   dispatch_sync(var1, block);
   if (*(v15 + 24) == 1)
   {
-    [v9[5] setContents:a3];
+    [v9[5] setContents:contents];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = FigSubtitleBackdropCALayer;
-    [(FigSubtitleBackdropCALayer *)&v6 setContents:a3];
+    [(FigSubtitleBackdropCALayer *)&v6 setContents:contents];
   }
 
   _Block_object_dispose(&v8, 8);
@@ -422,9 +422,9 @@ double __55__FigSubtitleBackdropCALayer_shouldEnableBackdropLayer__block_invoke(
   v15[3] = __Block_byref_object_copy__2;
   v15[4] = __Block_byref_object_dispose__2;
   v15[5] = 0;
-  v3 = [(FigSubtitleBackdropCALayer *)self shouldEnableBackdropLayer];
+  shouldEnableBackdropLayer = [(FigSubtitleBackdropCALayer *)self shouldEnableBackdropLayer];
   var1 = self->bdLayerInternal->var1;
-  if (v3)
+  if (shouldEnableBackdropLayer)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -559,7 +559,7 @@ uint64_t __49__FigSubtitleBackdropCALayer_updateBackdropLayer__block_invoke_6(ui
   return [v2 commit];
 }
 
-- (void)updateWindowOpacity:(double)a3
+- (void)updateWindowOpacity:(double)opacity
 {
   var1 = self->bdLayerInternal->var1;
   v5[0] = MEMORY[0x1E69E9820];
@@ -567,7 +567,7 @@ uint64_t __49__FigSubtitleBackdropCALayer_updateBackdropLayer__block_invoke_6(ui
   v5[2] = __50__FigSubtitleBackdropCALayer_updateWindowOpacity___block_invoke;
   v5[3] = &unk_1E7483B48;
   v5[4] = self;
-  *&v5[5] = a3;
+  *&v5[5] = opacity;
   dispatch_sync(var1, v5);
   [(FigSubtitleBackdropCALayer *)self updateBackdropLayer];
 }
@@ -579,7 +579,7 @@ double __50__FigSubtitleBackdropCALayer_updateWindowOpacity___block_invoke(uint6
   return result;
 }
 
-- (void)updateHDRContentState:(BOOL)a3
+- (void)updateHDRContentState:(BOOL)state
 {
   var1 = self->bdLayerInternal->var1;
   v5[0] = MEMORY[0x1E69E9820];
@@ -587,15 +587,15 @@ double __50__FigSubtitleBackdropCALayer_updateWindowOpacity___block_invoke(uint6
   v5[2] = __52__FigSubtitleBackdropCALayer_updateHDRContentState___block_invoke;
   v5[3] = &unk_1E7483B70;
   v5[4] = self;
-  v6 = a3;
+  stateCopy = state;
   dispatch_sync(var1, v5);
   [(FigSubtitleBackdropCALayer *)self updateBackdropLayer];
 }
 
-- (void)_addBoundsAnimationToLayer:(id)a3 usingAnimation:(id)a4 forKey:(id)a5
+- (void)_addBoundsAnimationToLayer:(id)layer usingAnimation:(id)animation forKey:(id)key
 {
-  v8 = _animationByTransformingValues(a4, &__block_literal_global_23);
-  if ([a4 isAdditive])
+  v8 = _animationByTransformingValues(animation, &__block_literal_global_23);
+  if ([animation isAdditive])
   {
     v9 = @"bounds.size";
   }
@@ -608,12 +608,12 @@ double __50__FigSubtitleBackdropCALayer_updateWindowOpacity___block_invoke(uint6
   [v8 setKeyPath:v9];
   [v8 setDelegate:0];
 
-  [a3 addAnimation:v8 forKey:a5];
+  [layer addAnimation:v8 forKey:key];
 }
 
-- (void)_addPositionAnimationToLayer:(id)a3 usingAnimation:(id)a4 forKey:(id)a5
+- (void)_addPositionAnimationToLayer:(id)layer usingAnimation:(id)animation forKey:(id)key
 {
-  if ([a4 isAdditive])
+  if ([animation isAdditive])
   {
     v8 = &__block_literal_global_31;
   }
@@ -623,11 +623,11 @@ double __50__FigSubtitleBackdropCALayer_updateWindowOpacity___block_invoke(uint6
     v8 = &__block_literal_global_34;
   }
 
-  v9 = _animationByTransformingValues(a4, v8);
+  v9 = _animationByTransformingValues(animation, v8);
   [v9 setKeyPath:@"position"];
   [v9 setDelegate:0];
 
-  [a3 addAnimation:v9 forKey:a5];
+  [layer addAnimation:v9 forKey:key];
 }
 
 uint64_t __81__FigSubtitleBackdropCALayer__addPositionAnimationToLayer_usingAnimation_forKey___block_invoke(uint64_t a1, void *a2)
@@ -650,23 +650,23 @@ uint64_t __81__FigSubtitleBackdropCALayer__addPositionAnimationToLayer_usingAnim
   return [v2 valueWithPoint:{v5, v8}];
 }
 
-- (void)addAnimation:(id)a3 forKey:(id)a4
+- (void)addAnimation:(id)animation forKey:(id)key
 {
   if (self->bdLayerInternal->var2)
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (([@"bounds.size" isEqualToString:{objc_msgSend(a3, "keyPath")}] & 1) != 0 || objc_msgSend(@"bounds", "isEqualToString:", objc_msgSend(a3, "keyPath"))))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (([@"bounds.size" isEqualToString:{objc_msgSend(animation, "keyPath")}] & 1) != 0 || objc_msgSend(@"bounds", "isEqualToString:", objc_msgSend(animation, "keyPath"))))
     {
-      [(FigSubtitleBackdropCALayer *)self _addBoundsAnimationToLayer:self->bdLayerInternal->var6 usingAnimation:a3 forKey:a4];
-      [(FigSubtitleBackdropCALayer *)self _addBoundsAnimationToLayer:self->bdLayerInternal->var5 usingAnimation:a3 forKey:a4];
-      [(FigSubtitleBackdropCALayer *)self _addPositionAnimationToLayer:self->bdLayerInternal->var6 usingAnimation:a3 forKey:a4];
-      [(FigSubtitleBackdropCALayer *)self _addPositionAnimationToLayer:self->bdLayerInternal->var5 usingAnimation:a3 forKey:a4];
+      [(FigSubtitleBackdropCALayer *)self _addBoundsAnimationToLayer:self->bdLayerInternal->var6 usingAnimation:animation forKey:key];
+      [(FigSubtitleBackdropCALayer *)self _addBoundsAnimationToLayer:self->bdLayerInternal->var5 usingAnimation:animation forKey:key];
+      [(FigSubtitleBackdropCALayer *)self _addPositionAnimationToLayer:self->bdLayerInternal->var6 usingAnimation:animation forKey:key];
+      [(FigSubtitleBackdropCALayer *)self _addPositionAnimationToLayer:self->bdLayerInternal->var5 usingAnimation:animation forKey:key];
     }
   }
 
   v7.receiver = self;
   v7.super_class = FigSubtitleBackdropCALayer;
-  [(FigSubtitleBackdropCALayer *)&v7 addAnimation:a3 forKey:a4];
+  [(FigSubtitleBackdropCALayer *)&v7 addAnimation:animation forKey:key];
 }
 
 @end

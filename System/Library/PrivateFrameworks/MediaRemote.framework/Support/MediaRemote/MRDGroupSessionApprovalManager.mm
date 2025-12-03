@@ -1,16 +1,16 @@
 @interface MRDGroupSessionApprovalManager
-+ (id)hashForIdentity:(id)a3;
-+ (void)donateApprovedIdentity:(id)a3;
-+ (void)donateRemovedIdentity:(id)a3;
-+ (void)shouldAutoApproveIdentity:(id)a3 completion:(id)a4;
-+ (void)shouldAutoApproveRequest:(id)a3 withSession:(id)a4 completion:(id)a5;
++ (id)hashForIdentity:(id)identity;
++ (void)donateApprovedIdentity:(id)identity;
++ (void)donateRemovedIdentity:(id)identity;
++ (void)shouldAutoApproveIdentity:(id)identity completion:(id)completion;
++ (void)shouldAutoApproveRequest:(id)request withSession:(id)session completion:(id)completion;
 @end
 
 @implementation MRDGroupSessionApprovalManager
 
-+ (id)hashForIdentity:(id)a3
++ (id)hashForIdentity:(id)identity
 {
-  v3 = a3;
+  identityCopy = identity;
   v66 = 0u;
   v65 = 0u;
   v64 = 0u;
@@ -20,10 +20,10 @@
   v60 = 0u;
   memset(&v59, 0, sizeof(v59));
   CC_SHA1_Init(&v59);
-  v4 = [v3 identifier];
+  identifier = [identityCopy identifier];
   v5 = +[MRDSettings currentSettings];
-  v6 = [v5 recentGroupSessionParticipantsPepper];
-  v7 = [v4 stringByAppendingString:v6];
+  recentGroupSessionParticipantsPepper = [v5 recentGroupSessionParticipantsPepper];
+  v7 = [identifier stringByAppendingString:recentGroupSessionParticipantsPepper];
   CC_SHA1_Update(&v59, [v7 UTF8String], objc_msgSend(v7, "length"));
 
   memset(&v67[8], 0, 64);
@@ -270,51 +270,51 @@ LABEL_47:
   return v55;
 }
 
-+ (void)donateApprovedIdentity:(id)a3
++ (void)donateApprovedIdentity:(id)identity
 {
-  v9 = a3;
-  if ([v9 type])
+  identityCopy = identity;
+  if ([identityCopy type])
   {
-    v3 = [MRDGroupSessionApprovalManager hashForIdentity:v9];
+    v3 = [MRDGroupSessionApprovalManager hashForIdentity:identityCopy];
     v4 = BiomeLibrary();
-    v5 = [v4 MediaRemote];
-    v6 = [v5 GroupSessionRecentParticipant];
+    mediaRemote = [v4 MediaRemote];
+    groupSessionRecentParticipant = [mediaRemote GroupSessionRecentParticipant];
 
     v7 = [[BMMediaRemoteGroupSessionRecentParticipant alloc] initWithHashedUserIdentityIdentifier:v3];
-    v8 = [v6 source];
-    [v8 sendEvent:v7];
+    source = [groupSessionRecentParticipant source];
+    [source sendEvent:v7];
   }
 }
 
-+ (void)donateRemovedIdentity:(id)a3
++ (void)donateRemovedIdentity:(id)identity
 {
-  v3 = a3;
-  if ([v3 type])
+  identityCopy = identity;
+  if ([identityCopy type])
   {
-    v4 = [MRDGroupSessionApprovalManager hashForIdentity:v3];
+    v4 = [MRDGroupSessionApprovalManager hashForIdentity:identityCopy];
     v5 = BiomeLibrary();
-    v6 = [v5 MediaRemote];
-    v7 = [v6 GroupSessionRecentParticipant];
+    mediaRemote = [v5 MediaRemote];
+    groupSessionRecentParticipant = [mediaRemote GroupSessionRecentParticipant];
 
-    v8 = [v7 pruner];
+    pruner = [groupSessionRecentParticipant pruner];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_100064C94;
     v10[3] = &unk_1004B7D98;
     v11 = v4;
     v9 = v4;
-    [v8 deleteEventsPassingTest:v10];
+    [pruner deleteEventsPassingTest:v10];
   }
 }
 
-+ (void)shouldAutoApproveRequest:(id)a3 withSession:(id)a4 completion:(id)a5
++ (void)shouldAutoApproveRequest:(id)request withSession:(id)session completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  sessionCopy = session;
+  completionCopy = completion;
   if (sub_1001A0314() || (+[MRUserSettings currentSettings](MRUserSettings, "currentSettings"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 supportGroupSessionAutoApproval], v11, (v12 & 1) == 0))
   {
-    v10[2](v10, 0, -1, 1);
+    completionCopy[2](completionCopy, 0, -1, 1);
   }
 
   else
@@ -323,23 +323,23 @@ LABEL_47:
     v22[1] = 3221225472;
     v22[2] = sub_100064EEC;
     v22[3] = &unk_1004B7DC0;
-    v13 = v8;
+    v13 = requestCopy;
     v23 = v13;
-    v14 = v10;
+    v14 = completionCopy;
     v24 = v14;
     v15 = objc_retainBlock(v22);
-    v16 = [v13 identity];
-    if ([v16 type])
+    identity = [v13 identity];
+    if ([identity type])
     {
-      v17 = [v13 oobKeys];
+      oobKeys = [v13 oobKeys];
       v18[0] = _NSConcreteStackBlock;
       v18[1] = 3221225472;
       v18[2] = sub_100065010;
       v18[3] = &unk_1004B7E10;
       v20 = v15;
-      v21 = a1;
-      v19 = v16;
-      [a1 shouldAutoApproveOOBKeys:v17 withSession:v9 completion:v18];
+      selfCopy = self;
+      v19 = identity;
+      [self shouldAutoApproveOOBKeys:oobKeys withSession:sessionCopy completion:v18];
     }
 
     else
@@ -349,14 +349,14 @@ LABEL_47:
   }
 }
 
-+ (void)shouldAutoApproveIdentity:(id)a3 completion:(id)a4
++ (void)shouldAutoApproveIdentity:(id)identity completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MRDGroupSessionApprovalManager hashForIdentity:v5];
+  identityCopy = identity;
+  completionCopy = completion;
+  v7 = [MRDGroupSessionApprovalManager hashForIdentity:identityCopy];
   v8 = BiomeLibrary();
-  v9 = [v8 MediaRemote];
-  v10 = [v9 GroupSessionRecentParticipant];
+  mediaRemote = [v8 MediaRemote];
+  groupSessionRecentParticipant = [mediaRemote GroupSessionRecentParticipant];
 
   v25[0] = 0;
   v25[1] = v25;
@@ -367,12 +367,12 @@ LABEL_47:
   v24[2] = 0x2020000000;
   v24[3] = 0;
   v11 = [[BMPublisherOptions alloc] initWithStartDate:0 endDate:0 maxEvents:0 lastN:0 reversed:1];
-  v12 = [v10 publisherWithOptions:v11];
+  v12 = [groupSessionRecentParticipant publisherWithOptions:v11];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_100065310;
   v20[3] = &unk_1004B7E38;
-  v13 = v6;
+  v13 = completionCopy;
   v21 = v13;
   v22 = v25;
   v23 = v24;

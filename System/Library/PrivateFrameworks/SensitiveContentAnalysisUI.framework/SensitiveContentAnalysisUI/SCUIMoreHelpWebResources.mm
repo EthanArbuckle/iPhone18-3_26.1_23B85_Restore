@@ -2,7 +2,7 @@
 + (id)defaultLanguageForCountryPairings;
 + (id)validLanguageCountryPairings;
 + (id)waysToGetHelpURL;
-+ (id)waysToGetHelpURLForInterventionType:(int64_t)a3;
++ (id)waysToGetHelpURLForInterventionType:(int64_t)type;
 @end
 
 @implementation SCUIMoreHelpWebResources
@@ -14,54 +14,54 @@
   return [SCUIMoreHelpWebResources waysToGetHelpURLForInterventionType:v2];
 }
 
-+ (id)waysToGetHelpURLForInterventionType:(int64_t)a3
++ (id)waysToGetHelpURLForInterventionType:(int64_t)type
 {
   v4 = +[SCUIMoreHelpWebResources validLanguageCountryPairings];
   v5 = +[SCUIMoreHelpWebResources defaultLanguageForCountryPairings];
-  if (a3 > 2)
+  if (type > 2)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = off_1E7FF2350[a3];
+    v6 = off_1E7FF2350[type];
   }
 
-  v7 = [MEMORY[0x1E698DC80] sharedInstance];
-  v8 = [v7 primaryAuthKitAccount];
-  if (v8)
+  mEMORY[0x1E698DC80] = [MEMORY[0x1E698DC80] sharedInstance];
+  primaryAuthKitAccount = [mEMORY[0x1E698DC80] primaryAuthKitAccount];
+  if (primaryAuthKitAccount)
   {
-    v9 = [v7 appleIDCountryCodeForAccount:v8];
-    v10 = [v9 lowercaseString];
+    v9 = [mEMORY[0x1E698DC80] appleIDCountryCodeForAccount:primaryAuthKitAccount];
+    lowercaseString = [v9 lowercaseString];
   }
 
   else
   {
-    v10 = 0;
+    lowercaseString = 0;
   }
 
-  v11 = [MEMORY[0x1E695DF58] currentLocale];
-  v12 = [v11 languageCode];
-  v13 = [v12 lowercaseString];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  languageCode = [currentLocale languageCode];
+  lowercaseString2 = [languageCode lowercaseString];
 
-  if (v10 && v13)
+  if (lowercaseString && lowercaseString2)
   {
-    v14 = [v4 objectForKey:v10];
+    v14 = [v4 objectForKey:lowercaseString];
     v15 = v14;
     if (v14)
     {
-      v16 = [v14 containsObject:v13];
+      v16 = [v14 containsObject:lowercaseString2];
       v17 = MEMORY[0x1E696AEC0];
       if (v16)
       {
-        v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", v13, v10];
+        v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", lowercaseString2, lowercaseString];
       }
 
       else
       {
-        v19 = [v5 objectForKey:v10];
-        v18 = [v17 stringWithFormat:@"%@-%@", v19, v10];
+        v19 = [v5 objectForKey:lowercaseString];
+        v18 = [v17 stringWithFormat:@"%@-%@", v19, lowercaseString];
       }
 
       v6 = [(__CFString *)v6 stringByAppendingString:v18];

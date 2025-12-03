@@ -6,37 +6,37 @@
 + (NSPersistentHistoryChangeRequest)fetchHistoryAfterToken:(NSPersistentHistoryToken *)token;
 + (NSPersistentHistoryChangeRequest)fetchHistoryAfterTransaction:(NSPersistentHistoryTransaction *)transaction;
 + (NSPersistentHistoryChangeRequest)fetchHistoryWithFetchRequest:(NSFetchRequest *)fetchRequest;
-+ (id)_stringForHistoryRequestResultType:(int64_t)a3;
-+ (id)decodeFromXPCArchive:(id)a3 withContext:(id)a4 withPolicy:(id)a5;
-+ (id)deleteHistoryBeforeDate:(id)a3 whenHistoryPercentageOfStoreIsGreaterThan:(unint64_t)a4;
-+ (id)deleteHistoryBeforeToken:(id)a3 whenHistoryPercentageOfStoreIsGreaterThan:(unint64_t)a4;
++ (id)_stringForHistoryRequestResultType:(int64_t)type;
++ (id)decodeFromXPCArchive:(id)archive withContext:(id)context withPolicy:(id)policy;
++ (id)deleteHistoryBeforeDate:(id)date whenHistoryPercentageOfStoreIsGreaterThan:(unint64_t)than;
++ (id)deleteHistoryBeforeToken:(id)token whenHistoryPercentageOfStoreIsGreaterThan:(unint64_t)than;
 + (id)deleteRequest;
-+ (id)fetchHistoryTransactionForToken:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (NSFetchRequest)fetchRequestDescribingChangeRequestForStore:(void *)a1;
-- (NSFetchRequest)fetchRequestDescribingTokenCheckForStore:(NSFetchRequest *)a1;
++ (id)fetchHistoryTransactionForToken:(id)token;
+- (BOOL)isEqual:(id)equal;
+- (NSFetchRequest)fetchRequestDescribingChangeRequestForStore:(void *)store;
+- (NSFetchRequest)fetchRequestDescribingTokenCheckForStore:(NSFetchRequest *)store;
 - (NSPersistentHistoryChangeRequest)init;
-- (NSPersistentHistoryChangeRequest)initWithDate:(id)a3 delete:(BOOL)a4 percentageOfDB:(unint64_t)a5;
-- (NSPersistentHistoryChangeRequest)initWithFetchRequest:(id)a3;
-- (NSPersistentHistoryChangeRequest)initWithToken:(id)a3 delete:(BOOL)a4 percentageOfDB:(unint64_t)a5;
-- (NSPersistentHistoryChangeRequest)initWithTransactionID:(id)a3 delete:(BOOL)a4 transactionOnly:(BOOL)a5 percentageOfDB:(unint64_t)a6;
-- (NSPersistentHistoryChangeRequest)initWithTransactionIDs:(id)a3;
-- (NSPersistentHistoryChangeRequest)initWithTransactionToken:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NSPersistentHistoryChangeRequest)initWithDate:(id)date delete:(BOOL)delete percentageOfDB:(unint64_t)b;
+- (NSPersistentHistoryChangeRequest)initWithFetchRequest:(id)request;
+- (NSPersistentHistoryChangeRequest)initWithToken:(id)token delete:(BOOL)delete percentageOfDB:(unint64_t)b;
+- (NSPersistentHistoryChangeRequest)initWithTransactionID:(id)d delete:(BOOL)delete transactionOnly:(BOOL)only percentageOfDB:(unint64_t)b;
+- (NSPersistentHistoryChangeRequest)initWithTransactionIDs:(id)ds;
+- (NSPersistentHistoryChangeRequest)initWithTransactionToken:(id)token;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)description;
 - (id)encodeForXPC;
 - (id)entityNameToFetch;
-- (id)predicateForStoreIdentifier:(id)a3;
-- (id)propertiesToFetchForEntity:(id)a3 includeTransactionStrings:(BOOL)a4;
+- (id)predicateForStoreIdentifier:(id)identifier;
+- (id)propertiesToFetchForEntity:(id)entity includeTransactionStrings:(BOOL)strings;
 - (unint64_t)fetchBatchSize;
 - (unint64_t)fetchLimit;
 - (unint64_t)fetchOffset;
 - (void)_predicateForStoreID:(void *)result;
 - (void)dealloc;
-- (void)setFetchBatchSize:(unint64_t)a3;
-- (void)setFetchLimit:(unint64_t)a3;
-- (void)setFetchOffset:(unint64_t)a3;
+- (void)setFetchBatchSize:(unint64_t)size;
+- (void)setFetchLimit:(unint64_t)limit;
+- (void)setFetchOffset:(unint64_t)offset;
 - (void)setResultType:(NSPersistentHistoryResultType)resultType;
 @end
 
@@ -150,20 +150,20 @@
   [v3 setDelegate:objc_opt_class()];
   [v3 encodeObject:v2 forKey:@"root"];
   [v3 finishEncoding];
-  v4 = [v3 encodedData];
+  encodedData = [v3 encodedData];
 
-  return v4;
+  return encodedData;
 }
 
-+ (id)decodeFromXPCArchive:(id)a3 withContext:(id)a4 withPolicy:(id)a5
++ (id)decodeFromXPCArchive:(id)archive withContext:(id)context withPolicy:(id)policy
 {
-  v7 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:a3 error:0];
-  [v7 setDelegate:a4];
+  v7 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:archive error:0];
+  [v7 setDelegate:context];
   v8 = [v7 decodeObjectOfClass:objc_opt_class() forKey:@"root"];
 
   if ([v8 fetchData])
   {
-    v9 = +[NSFetchRequest decodeFromXPCArchive:withContext:andPolicy:](NSFetchRequest, "decodeFromXPCArchive:withContext:andPolicy:", [v8 fetchData], a4, a5);
+    v9 = +[NSFetchRequest decodeFromXPCArchive:withContext:andPolicy:](NSFetchRequest, "decodeFromXPCArchive:withContext:andPolicy:", [v8 fetchData], context, policy);
     if ([v8 delete])
     {
       v10 = +[NSPersistentHistoryChangeRequest deleteRequest];
@@ -240,16 +240,16 @@
     {
       if ([v8 delete])
       {
-        v14 = [v8 percentageOfDB];
-        v15 = [v8 date];
-        if (v14)
+        percentageOfDB = [v8 percentageOfDB];
+        date = [v8 date];
+        if (percentageOfDB)
         {
-          v16 = +[NSPersistentHistoryChangeRequest deleteHistoryBeforeDate:whenHistoryPercentageOfStoreIsGreaterThan:](NSPersistentHistoryChangeRequest, "deleteHistoryBeforeDate:whenHistoryPercentageOfStoreIsGreaterThan:", v15, [v8 percentageOfDB]);
+          v16 = +[NSPersistentHistoryChangeRequest deleteHistoryBeforeDate:whenHistoryPercentageOfStoreIsGreaterThan:](NSPersistentHistoryChangeRequest, "deleteHistoryBeforeDate:whenHistoryPercentageOfStoreIsGreaterThan:", date, [v8 percentageOfDB]);
         }
 
         else
         {
-          v16 = [NSPersistentHistoryChangeRequest deleteHistoryBeforeDate:v15];
+          v16 = [NSPersistentHistoryChangeRequest deleteHistoryBeforeDate:date];
         }
       }
 
@@ -282,75 +282,75 @@
 
 + (NSPersistentHistoryChangeRequest)fetchHistoryAfterDate:(NSDate *)date
 {
-  v3 = [[a1 alloc] initWithDate:date];
+  v3 = [[self alloc] initWithDate:date];
 
   return v3;
 }
 
 + (NSPersistentHistoryChangeRequest)fetchHistoryAfterToken:(NSPersistentHistoryToken *)token
 {
-  v3 = [[a1 alloc] initWithToken:token];
+  v3 = [[self alloc] initWithToken:token];
 
   return v3;
 }
 
 + (NSPersistentHistoryChangeRequest)fetchHistoryAfterTransaction:(NSPersistentHistoryTransaction *)transaction
 {
-  v3 = [[a1 alloc] initWithToken:{-[NSPersistentHistoryTransaction token](transaction, "token")}];
+  v3 = [[self alloc] initWithToken:{-[NSPersistentHistoryTransaction token](transaction, "token")}];
 
   return v3;
 }
 
-+ (id)fetchHistoryTransactionForToken:(id)a3
++ (id)fetchHistoryTransactionForToken:(id)token
 {
-  if (!a3)
+  if (!token)
   {
     return 0;
   }
 
-  v3 = [[a1 alloc] initWithTransactionToken:a3];
+  v3 = [[self alloc] initWithTransactionToken:token];
 
   return v3;
 }
 
 + (NSPersistentHistoryChangeRequest)fetchHistoryWithFetchRequest:(NSFetchRequest *)fetchRequest
 {
-  v3 = [[a1 alloc] initWithFetchRequest:fetchRequest];
+  v3 = [[self alloc] initWithFetchRequest:fetchRequest];
 
   return v3;
 }
 
 + (NSPersistentHistoryChangeRequest)deleteHistoryBeforeDate:(NSDate *)date
 {
-  v3 = [[a1 alloc] initWithDate:date delete:1];
+  v3 = [[self alloc] initWithDate:date delete:1];
 
   return v3;
 }
 
 + (NSPersistentHistoryChangeRequest)deleteHistoryBeforeToken:(NSPersistentHistoryToken *)token
 {
-  v3 = [[a1 alloc] initWithToken:token delete:1];
+  v3 = [[self alloc] initWithToken:token delete:1];
 
   return v3;
 }
 
 + (NSPersistentHistoryChangeRequest)deleteHistoryBeforeTransaction:(NSPersistentHistoryTransaction *)transaction
 {
-  v3 = [[a1 alloc] initWithToken:-[NSPersistentHistoryTransaction token](transaction delete:{"token"), 1}];
+  v3 = [[self alloc] initWithToken:-[NSPersistentHistoryTransaction token](transaction delete:{"token"), 1}];
 
   return v3;
 }
 
-+ (id)deleteHistoryBeforeDate:(id)a3 whenHistoryPercentageOfStoreIsGreaterThan:(unint64_t)a4
++ (id)deleteHistoryBeforeDate:(id)date whenHistoryPercentageOfStoreIsGreaterThan:(unint64_t)than
 {
-  v4 = [[a1 alloc] initWithDate:a3 delete:1 percentageOfDB:a4];
+  v4 = [[self alloc] initWithDate:date delete:1 percentageOfDB:than];
 
   return v4;
 }
 
-+ (id)deleteHistoryBeforeToken:(id)a3 whenHistoryPercentageOfStoreIsGreaterThan:(unint64_t)a4
++ (id)deleteHistoryBeforeToken:(id)token whenHistoryPercentageOfStoreIsGreaterThan:(unint64_t)than
 {
-  v4 = [[a1 alloc] initWithToken:a3 delete:1 percentageOfDB:a4];
+  v4 = [[self alloc] initWithToken:token delete:1 percentageOfDB:than];
 
   return v4;
 }
@@ -364,28 +364,28 @@
   return v2;
 }
 
-- (NSPersistentHistoryChangeRequest)initWithDate:(id)a3 delete:(BOOL)a4 percentageOfDB:(unint64_t)a5
+- (NSPersistentHistoryChangeRequest)initWithDate:(id)date delete:(BOOL)delete percentageOfDB:(unint64_t)b
 {
-  v6 = a4;
+  deleteCopy = delete;
   v8 = [(NSPersistentHistoryChangeRequest *)self init];
   if (v8)
   {
-    *v8->_additionalPrivateIvars = a3;
+    *v8->_additionalPrivateIvars = date;
     v9 = 5;
-    if (v6)
+    if (deleteCopy)
     {
       v9 = 0;
     }
 
     v8->_resultType = v9;
     v8->_transactionIDs = NSArray_EmptyArray;
-    if (a5)
+    if (b)
     {
       *&v8->_persistentHistoryChangeRequestDescriptionFlags |= 8u;
-      v8->_percentageOfDB = a5;
+      v8->_percentageOfDB = b;
     }
 
-    if (v6)
+    if (deleteCopy)
     {
       v10 = 2;
     }
@@ -401,10 +401,10 @@
   return v8;
 }
 
-- (NSPersistentHistoryChangeRequest)initWithFetchRequest:(id)a3
+- (NSPersistentHistoryChangeRequest)initWithFetchRequest:(id)request
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (([objc_msgSend(a3 "entityName")] & 1) == 0 && (objc_msgSend(objc_msgSend(a3, "entityName"), "isEqualToString:", @"Transaction") & 1) == 0)
+  if (([objc_msgSend(request "entityName")] & 1) == 0 && (objc_msgSend(objc_msgSend(request, "entityName"), "isEqualToString:", @"Transaction") & 1) == 0)
   {
     v6 = objc_autoreleasePoolPush();
     _pflogInitialize(1);
@@ -441,9 +441,9 @@ LABEL_13:
   v5 = [(NSPersistentHistoryChangeRequest *)self init];
   if (v5)
   {
-    *(v5->_additionalPrivateIvars + 3) = a3;
+    *(v5->_additionalPrivateIvars + 3) = request;
     v5->_transactionIDs = NSArray_EmptyArray;
-    if ([objc_msgSend(a3 "entityName")])
+    if ([objc_msgSend(request "entityName")])
     {
       v5->_resultType = 4;
     }
@@ -454,23 +454,23 @@ LABEL_12:
   return v5;
 }
 
-- (NSPersistentHistoryChangeRequest)initWithTransactionIDs:(id)a3
+- (NSPersistentHistoryChangeRequest)initWithTransactionIDs:(id)ds
 {
   v4 = [(NSPersistentHistoryChangeRequest *)self init];
   if (v4)
   {
-    v4->_transactionIDs = a3;
+    v4->_transactionIDs = ds;
     v4->_resultType = 4;
   }
 
   return v4;
 }
 
-- (NSPersistentHistoryChangeRequest)initWithTransactionID:(id)a3 delete:(BOOL)a4 transactionOnly:(BOOL)a5 percentageOfDB:(unint64_t)a6
+- (NSPersistentHistoryChangeRequest)initWithTransactionID:(id)d delete:(BOOL)delete transactionOnly:(BOOL)only percentageOfDB:(unint64_t)b
 {
-  v7 = a5;
-  v8 = a4;
-  if (a4 && a5)
+  onlyCopy = only;
+  deleteCopy = delete;
+  if (delete && only)
   {
     return 0;
   }
@@ -478,18 +478,18 @@ LABEL_12:
   v10 = [(NSPersistentHistoryChangeRequest *)self init];
   if (v10)
   {
-    v10->_transactionNumber = a3;
+    v10->_transactionNumber = d;
     persistentHistoryChangeRequestDescriptionFlags = v10->_persistentHistoryChangeRequestDescriptionFlags;
-    if (a6)
+    if (b)
     {
       v10->_persistentHistoryChangeRequestDescriptionFlags = (*&persistentHistoryChangeRequestDescriptionFlags | 8);
-      v10->_percentageOfDB = a6;
+      v10->_percentageOfDB = b;
       v12 = v10->_persistentHistoryChangeRequestDescriptionFlags;
     }
 
     else
     {
-      if (v8)
+      if (deleteCopy)
       {
         v13 = 2;
       }
@@ -502,7 +502,7 @@ LABEL_12:
       v12 = *&persistentHistoryChangeRequestDescriptionFlags & 0xFFFFFFFD | v13;
     }
 
-    if (v7)
+    if (onlyCopy)
     {
       v14 = 4;
     }
@@ -514,7 +514,7 @@ LABEL_12:
 
     v10->_persistentHistoryChangeRequestDescriptionFlags = (v12 & 0xFFFFFFFB | v14);
     v15 = 5;
-    if (v8)
+    if (deleteCopy)
     {
       v15 = 0;
     }
@@ -525,29 +525,29 @@ LABEL_12:
   return v10;
 }
 
-- (NSPersistentHistoryChangeRequest)initWithToken:(id)a3 delete:(BOOL)a4 percentageOfDB:(unint64_t)a5
+- (NSPersistentHistoryChangeRequest)initWithToken:(id)token delete:(BOOL)delete percentageOfDB:(unint64_t)b
 {
-  v6 = a4;
+  deleteCopy = delete;
   v8 = [(NSPersistentHistoryChangeRequest *)self init];
   if (v8)
   {
-    if (a3)
+    if (token)
     {
-      v8->_token = a3;
+      v8->_token = token;
     }
 
     v9 = 5;
-    if (v6)
+    if (deleteCopy)
     {
       v9 = 0;
     }
 
     v8->_resultType = v9;
-    if (v6)
+    if (deleteCopy)
     {
-      if (a5)
+      if (b)
       {
-        v8->_percentageOfDB = a5;
+        v8->_percentageOfDB = b;
         v10 = 8;
       }
 
@@ -563,9 +563,9 @@ LABEL_12:
   return v8;
 }
 
-- (NSPersistentHistoryChangeRequest)initWithTransactionToken:(id)a3
+- (NSPersistentHistoryChangeRequest)initWithTransactionToken:(id)token
 {
-  if (!a3)
+  if (!token)
   {
     return 0;
   }
@@ -573,7 +573,7 @@ LABEL_12:
   v4 = [(NSPersistentHistoryChangeRequest *)self init];
   if (v4)
   {
-    v4->_token = a3;
+    v4->_token = token;
     *&v4->_persistentHistoryChangeRequestDescriptionFlags |= 4u;
     v4->_resultType = 5;
   }
@@ -581,11 +581,11 @@ LABEL_12:
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = NSPersistentHistoryChangeRequest;
-  v4 = [(NSPersistentStoreRequest *)&v9 copyWithZone:a3];
+  v4 = [(NSPersistentStoreRequest *)&v9 copyWithZone:zone];
   if (v4)
   {
     token = self->_token;
@@ -619,14 +619,14 @@ LABEL_12:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     goto LABEL_33;
   }
 
-  if (!a3)
+  if (!equal)
   {
     goto LABEL_32;
   }
@@ -637,148 +637,148 @@ LABEL_12:
     goto LABEL_32;
   }
 
-  v5 = [(NSPersistentHistoryChangeRequest *)self token];
-  v6 = [a3 token];
-  if (v5 != v6)
+  token = [(NSPersistentHistoryChangeRequest *)self token];
+  token2 = [equal token];
+  if (token != token2)
   {
-    v7 = v6;
-    LOBYTE(v6) = 0;
-    if (!v5)
+    v7 = token2;
+    LOBYTE(token2) = 0;
+    if (!token)
     {
-      return v6;
+      return token2;
     }
 
     if (!v7)
     {
-      return v6;
+      return token2;
     }
 
-    LODWORD(v6) = [(NSPersistentHistoryToken *)v5 isEqual:?];
-    if (!v6)
+    LODWORD(token2) = [(NSPersistentHistoryToken *)token isEqual:?];
+    if (!token2)
     {
-      return v6;
+      return token2;
     }
   }
 
-  v8 = [(NSPersistentHistoryChangeRequest *)self transactionNumber];
-  v6 = [a3 transactionNumber];
-  if (v8 != v6)
+  transactionNumber = [(NSPersistentHistoryChangeRequest *)self transactionNumber];
+  token2 = [equal transactionNumber];
+  if (transactionNumber != token2)
   {
-    v9 = v6;
-    LOBYTE(v6) = 0;
-    if (!v8)
+    v9 = token2;
+    LOBYTE(token2) = 0;
+    if (!transactionNumber)
     {
-      return v6;
+      return token2;
     }
 
     if (!v9)
     {
-      return v6;
+      return token2;
     }
 
-    LODWORD(v6) = [v8 isEqual:?];
-    if (!v6)
+    LODWORD(token2) = [transactionNumber isEqual:?];
+    if (!token2)
     {
-      return v6;
+      return token2;
     }
   }
 
-  v10 = [(NSPersistentHistoryChangeRequest *)self transactionIDs];
-  v6 = [a3 transactionIDs];
-  if (v10 != v6)
+  transactionIDs = [(NSPersistentHistoryChangeRequest *)self transactionIDs];
+  token2 = [equal transactionIDs];
+  if (transactionIDs != token2)
   {
-    v11 = v6;
-    LOBYTE(v6) = 0;
-    if (!v10)
+    v11 = token2;
+    LOBYTE(token2) = 0;
+    if (!transactionIDs)
     {
-      return v6;
+      return token2;
     }
 
     if (!v11)
     {
-      return v6;
+      return token2;
     }
 
-    LODWORD(v6) = [v10 isEqual:?];
-    if (!v6)
+    LODWORD(token2) = [transactionIDs isEqual:?];
+    if (!token2)
     {
-      return v6;
+      return token2;
     }
   }
 
-  if (((*(a3 + 12) ^ *&self->_persistentHistoryChangeRequestDescriptionFlags) & 0xF) != 0)
+  if (((*(equal + 12) ^ *&self->_persistentHistoryChangeRequestDescriptionFlags) & 0xF) != 0)
   {
     goto LABEL_32;
   }
 
-  v12 = [(NSPersistentHistoryChangeRequest *)self resultType];
-  if (v12 != [a3 resultType])
+  resultType = [(NSPersistentHistoryChangeRequest *)self resultType];
+  if (resultType != [equal resultType])
   {
     goto LABEL_32;
   }
 
-  v13 = [(NSPersistentHistoryChangeRequest *)self percentageOfDB];
-  if (v13 != [a3 percentageOfDB])
+  percentageOfDB = [(NSPersistentHistoryChangeRequest *)self percentageOfDB];
+  if (percentageOfDB != [equal percentageOfDB])
   {
     goto LABEL_32;
   }
 
-  v14 = [(NSPersistentHistoryChangeRequest *)self date];
-  v6 = [a3 date];
-  if (v14 != v6)
+  date = [(NSPersistentHistoryChangeRequest *)self date];
+  token2 = [equal date];
+  if (date != token2)
   {
-    v15 = v6;
-    LOBYTE(v6) = 0;
-    if (!v14)
+    v15 = token2;
+    LOBYTE(token2) = 0;
+    if (!date)
     {
-      return v6;
+      return token2;
     }
 
     if (!v15)
     {
-      return v6;
+      return token2;
     }
 
-    LODWORD(v6) = [v14 isEqual:?];
-    if (!v6)
+    LODWORD(token2) = [date isEqual:?];
+    if (!token2)
     {
-      return v6;
+      return token2;
     }
   }
 
-  v16 = [(NSPersistentHistoryChangeRequest *)self fetchLimit];
-  if (v16 != [a3 fetchLimit] || (v17 = -[NSPersistentHistoryChangeRequest fetchOffset](self, "fetchOffset"), v17 != objc_msgSend(a3, "fetchOffset")) || (v18 = -[NSPersistentHistoryChangeRequest fetchBatchSize](self, "fetchBatchSize"), v18 != objc_msgSend(a3, "fetchBatchSize")))
+  fetchLimit = [(NSPersistentHistoryChangeRequest *)self fetchLimit];
+  if (fetchLimit != [equal fetchLimit] || (v17 = -[NSPersistentHistoryChangeRequest fetchOffset](self, "fetchOffset"), v17 != objc_msgSend(equal, "fetchOffset")) || (v18 = -[NSPersistentHistoryChangeRequest fetchBatchSize](self, "fetchBatchSize"), v18 != objc_msgSend(equal, "fetchBatchSize")))
   {
 LABEL_32:
-    LOBYTE(v6) = 0;
-    return v6;
+    LOBYTE(token2) = 0;
+    return token2;
   }
 
-  v19 = [(NSPersistentHistoryChangeRequest *)self fetchRequest];
-  v6 = [a3 fetchRequest];
-  if (v19 == v6)
+  fetchRequest = [(NSPersistentHistoryChangeRequest *)self fetchRequest];
+  token2 = [equal fetchRequest];
+  if (fetchRequest == token2)
   {
 LABEL_33:
-    LOBYTE(v6) = 1;
-    return v6;
+    LOBYTE(token2) = 1;
+    return token2;
   }
 
-  v20 = v6;
-  LOBYTE(v6) = 0;
-  if (v19 && v20)
+  v20 = token2;
+  LOBYTE(token2) = 0;
+  if (fetchRequest && v20)
   {
 
-    LOBYTE(v6) = [(NSFetchRequest *)v19 isEqual:?];
+    LOBYTE(token2) = [(NSFetchRequest *)fetchRequest isEqual:?];
   }
 
-  return v6;
+  return token2;
 }
 
-- (id)propertiesToFetchForEntity:(id)a3 includeTransactionStrings:(BOOL)a4
+- (id)propertiesToFetchForEntity:(id)entity includeTransactionStrings:(BOOL)strings
 {
-  v4 = a4;
+  stringsCopy = strings;
   v37[3] = *MEMORY[0x1E69E9840];
-  if (-[NSPersistentHistoryChangeRequest resultType](self, "resultType") == NSPersistentHistoryResultTypeObjectIDs && [a3 name] == @"CHANGE")
+  if (-[NSPersistentHistoryChangeRequest resultType](self, "resultType") == NSPersistentHistoryResultTypeObjectIDs && [entity name] == @"CHANGE")
   {
     v37[0] = @"CHANGETYPE";
     v37[1] = @"ENTITY";
@@ -793,9 +793,9 @@ LABEL_33:
   [(NSExpressionDescription *)v7 setExpressionResultType:2000];
   v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{v7, 0}];
 
-  if (![objc_msgSend(a3 "name")] || -[NSPersistentHistoryChangeRequest resultType](self, "resultType") != NSPersistentHistoryResultTypeObjectIDs && -[NSPersistentHistoryChangeRequest resultType](self, "resultType") != NSPersistentHistoryResultTypeChangesOnly)
+  if (![objc_msgSend(entity "name")] || -[NSPersistentHistoryChangeRequest resultType](self, "resultType") != NSPersistentHistoryResultTypeObjectIDs && -[NSPersistentHistoryChangeRequest resultType](self, "resultType") != NSPersistentHistoryResultTypeChangesOnly)
   {
-    if ([objc_msgSend(a3 "name")] && v4)
+    if ([objc_msgSend(entity "name")] && stringsCopy)
     {
       v36[0] = @"AUTHORTS";
       v36[1] = @"BUNDLEIDTS";
@@ -820,10 +820,10 @@ LABEL_33:
               objc_enumerationMutation(v9);
             }
 
-            if (a3)
+            if (entity)
             {
               v14 = *(*(&v30 + 1) + 8 * i);
-              if ([objc_msgSend(a3 "propertiesByName")])
+              if ([objc_msgSend(entity "propertiesByName")])
               {
                 v15 = [MEMORY[0x1E696ABC8] expressionForKeyPath:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"%@.%@", v14, @"NAME"}];
                 v16 = objc_alloc_init(NSExpressionDescription);
@@ -844,15 +844,15 @@ LABEL_33:
       goto LABEL_21;
     }
 
-    if (![objc_msgSend(a3 "name")] || (v17 = objc_msgSend(MEMORY[0x1E696ABC8], "expressionForKeyPath:", @"TRANSACTIONID"), v18 = objc_alloc_init(NSExpressionDescription), -[NSPropertyDescription setName:](v18, "setName:", @"TRANSACTIONID"), -[NSExpressionDescription setExpression:](v18, "setExpression:", v17), -[NSExpressionDescription setExpressionResultType:](v18, "setExpressionResultType:", 2000), objc_msgSend(v8, "addObject:", v18), v18, -[NSPersistentHistoryChangeRequest resultType](self, "resultType") != NSPersistentHistoryResultTypeTransactionsOnly))
+    if (![objc_msgSend(entity "name")] || (v17 = objc_msgSend(MEMORY[0x1E696ABC8], "expressionForKeyPath:", @"TRANSACTIONID"), v18 = objc_alloc_init(NSExpressionDescription), -[NSPropertyDescription setName:](v18, "setName:", @"TRANSACTIONID"), -[NSExpressionDescription setExpression:](v18, "setExpression:", v17), -[NSExpressionDescription setExpressionResultType:](v18, "setExpressionResultType:", 2000), objc_msgSend(v8, "addObject:", v18), v18, -[NSPersistentHistoryChangeRequest resultType](self, "resultType") != NSPersistentHistoryResultTypeTransactionsOnly))
     {
 LABEL_21:
       v28 = 0u;
       v29 = 0u;
       v26 = 0u;
       v27 = 0u;
-      v19 = [a3 attributeKeys];
-      v20 = [v19 countByEnumeratingWithState:&v26 objects:v34 count:16];
+      attributeKeys = [entity attributeKeys];
+      v20 = [attributeKeys countByEnumeratingWithState:&v26 objects:v34 count:16];
       if (v20)
       {
         v21 = v20;
@@ -863,13 +863,13 @@ LABEL_21:
           {
             if (*v27 != v22)
             {
-              objc_enumerationMutation(v19);
+              objc_enumerationMutation(attributeKeys);
             }
 
             [v8 addObject:*(*(&v26 + 1) + 8 * j)];
           }
 
-          v21 = [v19 countByEnumeratingWithState:&v26 objects:v34 count:16];
+          v21 = [attributeKeys countByEnumeratingWithState:&v26 objects:v34 count:16];
         }
 
         while (v21);
@@ -901,12 +901,12 @@ LABEL_29:
   self->_resultType = resultType;
 }
 
-- (void)setFetchLimit:(unint64_t)a3
+- (void)setFetchLimit:(unint64_t)limit
 {
   v5 = *(self->_additionalPrivateIvars + 1);
   if (v5)
   {
-    if ([v5 unsignedIntegerValue] == a3)
+    if ([v5 unsignedIntegerValue] == limit)
     {
       return;
     }
@@ -919,15 +919,15 @@ LABEL_29:
     v6 = 0;
   }
 
-  *(self->_additionalPrivateIvars + 1) = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInteger:a3];
+  *(self->_additionalPrivateIvars + 1) = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInteger:limit];
 }
 
-- (void)setFetchOffset:(unint64_t)a3
+- (void)setFetchOffset:(unint64_t)offset
 {
   v5 = *(self->_additionalPrivateIvars + 4);
   if (v5)
   {
-    if ([v5 unsignedIntegerValue] == a3)
+    if ([v5 unsignedIntegerValue] == offset)
     {
       return;
     }
@@ -940,15 +940,15 @@ LABEL_29:
     v6 = 0;
   }
 
-  *(self->_additionalPrivateIvars + 4) = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInteger:a3];
+  *(self->_additionalPrivateIvars + 4) = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInteger:offset];
 }
 
-- (void)setFetchBatchSize:(unint64_t)a3
+- (void)setFetchBatchSize:(unint64_t)size
 {
   v5 = *(self->_additionalPrivateIvars + 2);
   if (v5)
   {
-    if ([v5 unsignedIntegerValue] == a3)
+    if ([v5 unsignedIntegerValue] == size)
     {
       return;
     }
@@ -961,19 +961,19 @@ LABEL_29:
     v6 = 0;
   }
 
-  *(self->_additionalPrivateIvars + 2) = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInteger:a3];
+  *(self->_additionalPrivateIvars + 2) = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInteger:size];
 }
 
-- (id)predicateForStoreIdentifier:(id)a3
+- (id)predicateForStoreIdentifier:(id)identifier
 {
   if ([(NSPersistentHistoryChangeRequest *)self fetchRequest])
   {
     v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:2];
-    v6 = [(NSFetchRequest *)[(NSPersistentHistoryChangeRequest *)self fetchRequest] predicate];
-    if (v6)
+    predicate = [(NSFetchRequest *)[(NSPersistentHistoryChangeRequest *)self fetchRequest] predicate];
+    if (predicate)
     {
-      v7 = v6;
-      v8 = [[_NSPersistentHistoryPredicateRemapper alloc] initWithStoreIdentifier:a3];
+      v7 = predicate;
+      v8 = [[_NSPersistentHistoryPredicateRemapper alloc] initWithStoreIdentifier:identifier];
       v9 = [(_NSPersistentHistoryPredicateRemapper *)v8 createPredicateForFetchFromPredicate:v7];
       v10 = v9;
     }
@@ -986,10 +986,10 @@ LABEL_29:
     [v5 addObject:v9];
     if (self->_token || [(NSPersistentHistoryChangeRequest *)self date]|| self->_transactionNumber || [(NSArray *)self->_transactionIDs count])
     {
-      v12 = [(NSPersistentHistoryChangeRequest *)self predicate];
-      if (v12)
+      predicate2 = [(NSPersistentHistoryChangeRequest *)self predicate];
+      if (predicate2)
       {
-        [v5 addObject:v12];
+        [v5 addObject:predicate2];
       }
     }
 
@@ -1001,7 +1001,7 @@ LABEL_29:
   else
   {
 
-    return [(NSPersistentHistoryChangeRequest *)self _predicateForStoreID:a3];
+    return [(NSPersistentHistoryChangeRequest *)self _predicateForStoreID:identifier];
   }
 }
 
@@ -1013,7 +1013,7 @@ LABEL_29:
   }
 
   v3 = result;
-  v4 = [result date];
+  date = [result date];
   v5 = *(v3 + 3);
   v6 = v5 > 6;
   v7 = (1 << v5) & 0x52;
@@ -1042,14 +1042,14 @@ LABEL_29:
         v10 = @">";
       }
 
-      v37 = v10;
-      v38 = [*(v3 + 5) longLongValue];
+      longLongValue2 = v10;
+      longLongValue = [*(v3 + 5) longLongValue];
       v36 = @"TRANSACTIONID";
       v18 = @"ANY %@ %@ %lld";
 LABEL_41:
       v22 = v9;
 LABEL_68:
-      v23 = [v22 stringWithFormat:v18, v36, v37, v38, v39];
+      v23 = [v22 stringWithFormat:v18, v36, longLongValue2, longLongValue, v39];
       goto LABEL_69;
     }
 
@@ -1075,16 +1075,16 @@ LABEL_69:
 
       else
       {
-        v25 = [v3 isDelete];
+        isDelete = [v3 isDelete];
         v17 = @">";
-        if (v25)
+        if (isDelete)
         {
           v17 = @"<";
         }
       }
 
-      v37 = v17;
-      v38 = v15;
+      longLongValue2 = v17;
+      longLongValue = v15;
       v36 = @"TRANSACTIONID";
       v18 = @"ANY %@ %@ %@";
     }
@@ -1102,9 +1102,9 @@ LABEL_69:
         v20 = @">";
       }
 
-      if (v4)
+      if (date)
       {
-        [v4 timeIntervalSinceReferenceDate];
+        [date timeIntervalSinceReferenceDate];
       }
 
       else
@@ -1113,8 +1113,8 @@ LABEL_69:
       }
 
       v39 = v21;
-      v37 = @"TIMESTAMP";
-      v38 = v20;
+      longLongValue2 = @"TIMESTAMP";
+      longLongValue = v20;
       v36 = @"TRANSACTIONID";
       v18 = @"ANY %@.%@ %@ %f";
     }
@@ -1145,8 +1145,8 @@ LABEL_67:
         v12 = @">";
       }
 
-      v37 = v12;
-      v38 = [*(v3 + 5) longLongValue];
+      longLongValue2 = v12;
+      longLongValue = [*(v3 + 5) longLongValue];
       v36 = @"TRANSACTIONID";
       v18 = @"%@ %@ %lld";
     }
@@ -1169,7 +1169,7 @@ LABEL_67:
       }
 
       v36 = v19;
-      v37 = [*(v3 + 5) longLongValue];
+      longLongValue2 = [*(v3 + 5) longLongValue];
       v18 = @"_pk %@ %lld";
     }
 
@@ -1181,7 +1181,7 @@ LABEL_67:
     return [MEMORY[0x1E696AE18] predicateWithFormat:@"ANY _pk IN %@", *(v3 + 4)];
   }
 
-  if (v4 || *(v3 + 2))
+  if (date || *(v3 + 2))
   {
     if ([objc_msgSend(objc_msgSend(v3 "fetchRequest")])
     {
@@ -1208,9 +1208,9 @@ LABEL_67:
 
         else
         {
-          v31 = [v3 isDelete];
+          isDelete2 = [v3 isDelete];
           v30 = @">";
-          if (v31)
+          if (isDelete2)
           {
             v30 = @"<";
           }
@@ -1235,9 +1235,9 @@ LABEL_67:
       v32 = @">";
     }
 
-    if (v4)
+    if (date)
     {
-      [v4 timeIntervalSinceReferenceDate];
+      [date timeIntervalSinceReferenceDate];
     }
 
     else
@@ -1246,8 +1246,8 @@ LABEL_67:
     }
 
     v39 = v33;
-    v37 = @"TIMESTAMP";
-    v38 = v32;
+    longLongValue2 = @"TIMESTAMP";
+    longLongValue = v32;
     v36 = v24;
     v18 = @"%@%@ %@ %f";
     goto LABEL_67;
@@ -1258,17 +1258,17 @@ LABEL_67:
   return [v35 predicateWithValue:1];
 }
 
-- (NSFetchRequest)fetchRequestDescribingTokenCheckForStore:(NSFetchRequest *)a1
+- (NSFetchRequest)fetchRequestDescribingTokenCheckForStore:(NSFetchRequest *)store
 {
-  v2 = a1;
-  if (a1)
+  storeCopy = store;
+  if (store)
   {
-    if (-[NSFetchRequest token](a1, "token") && (v4 = [-[NSArray storeTokens](v2->_groupByProperties "storeTokens")], objc_msgSend(v4, "longLongValue") >= 1))
+    if (-[NSFetchRequest token](store, "token") && (v4 = [-[NSArray storeTokens](storeCopy->_groupByProperties "storeTokens")], objc_msgSend(v4, "longLongValue") >= 1))
     {
-      v2 = -[NSFetchRequest initWithEntityName:]([NSFetchRequest alloc], "initWithEntityName:", [MEMORY[0x1E696AEC0] stringWithFormat:@"%@/%@", +[_PFPersistentHistoryModel ancillaryModelNamespace](_PFPersistentHistoryModel, "ancillaryModelNamespace"), @"TRANSACTION"]);
-      [(NSFetchRequest *)v2 setIncludesSubentities:0];
-      -[NSFetchRequest setPredicate:](v2, "setPredicate:", [MEMORY[0x1E696AE18] predicateWithFormat:@"_pk = %@", v4]);
-      [(NSFetchRequest *)v2 setResultType:4];
+      storeCopy = -[NSFetchRequest initWithEntityName:]([NSFetchRequest alloc], "initWithEntityName:", [MEMORY[0x1E696AEC0] stringWithFormat:@"%@/%@", +[_PFPersistentHistoryModel ancillaryModelNamespace](_PFPersistentHistoryModel, "ancillaryModelNamespace"), @"TRANSACTION"]);
+      [(NSFetchRequest *)storeCopy setIncludesSubentities:0];
+      -[NSFetchRequest setPredicate:](storeCopy, "setPredicate:", [MEMORY[0x1E696AE18] predicateWithFormat:@"_pk = %@", v4]);
+      [(NSFetchRequest *)storeCopy setResultType:4];
     }
 
     else
@@ -1277,23 +1277,23 @@ LABEL_67:
     }
   }
 
-  return v2;
+  return storeCopy;
 }
 
-- (NSFetchRequest)fetchRequestDescribingChangeRequestForStore:(void *)a1
+- (NSFetchRequest)fetchRequestDescribingChangeRequestForStore:(void *)store
 {
   v21 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!store)
   {
     v10 = 0;
     goto LABEL_38;
   }
 
-  v4 = [a1 entityNameToFetch];
-  v5 = [a2 persistentStoreCoordinator];
-  if (v5)
+  entityNameToFetch = [store entityNameToFetch];
+  persistentStoreCoordinator = [a2 persistentStoreCoordinator];
+  if (persistentStoreCoordinator)
   {
-    v6 = *(v5 + 96);
+    v6 = *(persistentStoreCoordinator + 96);
   }
 
   else
@@ -1302,16 +1302,16 @@ LABEL_67:
   }
 
   v7 = @"TRANSACTION";
-  if (([v4 isEqualToString:@"TRANSACTION"] & 1) == 0 && !objc_msgSend(v4, "isEqualToString:", @"Transaction"))
+  if (([entityNameToFetch isEqualToString:@"TRANSACTION"] & 1) == 0 && !objc_msgSend(entityNameToFetch, "isEqualToString:", @"Transaction"))
   {
     v7 = @"CHANGE";
-    if (([v4 isEqualToString:@"CHANGE"] & 1) == 0 && !objc_msgSend(v4, "isEqualToString:", @"Change"))
+    if (([entityNameToFetch isEqualToString:@"CHANGE"] & 1) == 0 && !objc_msgSend(entityNameToFetch, "isEqualToString:", @"Change"))
     {
       LogStream = _PFLogGetLogStream(17);
       if (os_log_type_enabled(LogStream, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v20 = v4;
+        v20 = entityNameToFetch;
         _os_log_error_impl(&dword_18565F000, LogStream, OS_LOG_TYPE_ERROR, "CoreData: fault: Unexepected Entity Name for a History Request - %@\n", buf, 0xCu);
       }
 
@@ -1319,7 +1319,7 @@ LABEL_67:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
       {
         *buf = 138412290;
-        v20 = v4;
+        v20 = entityNameToFetch;
         _os_log_fault_impl(&dword_18565F000, v14, OS_LOG_TYPE_FAULT, "CoreData: Unexepected Entity Name for a History Request - %@", buf, 0xCu);
       }
 
@@ -1339,7 +1339,7 @@ LABEL_32:
 LABEL_10:
   v10 = -[NSFetchRequest initWithEntityName:]([NSFetchRequest alloc], "initWithEntityName:", [MEMORY[0x1E696AEC0] stringWithFormat:@"%@/%@", +[_PFPersistentHistoryModel ancillaryModelNamespace](_PFPersistentHistoryModel, "ancillaryModelNamespace"), objc_msgSend(objc_msgSend(v9, "name"), "uppercaseString")]);
   [(NSFetchRequest *)v10 setIncludesSubentities:0];
-  v11 = [a1 predicateForStoreIdentifier:{objc_msgSend(a2, "identifier")}];
+  v11 = [store predicateForStoreIdentifier:{objc_msgSend(a2, "identifier")}];
   if (v11)
   {
     [(NSFetchRequest *)v10 setPredicate:v11];
@@ -1347,23 +1347,23 @@ LABEL_10:
 
   [(NSFetchRequest *)v10 setIncludesPropertyValues:1];
   [(NSFetchRequest *)v10 setIncludesPendingChanges:0];
-  if ([a1 fetchLimit])
+  if ([store fetchLimit])
   {
-    -[NSFetchRequest setFetchLimit:](v10, "setFetchLimit:", [a1 fetchLimit]);
-    if ([a1 fetchOffset])
+    -[NSFetchRequest setFetchLimit:](v10, "setFetchLimit:", [store fetchLimit]);
+    if ([store fetchOffset])
     {
-      -[NSFetchRequest setFetchOffset:](v10, "setFetchOffset:", [a1 fetchOffset]);
+      -[NSFetchRequest setFetchOffset:](v10, "setFetchOffset:", [store fetchOffset]);
     }
   }
 
-  if ([a1 fetchRequest] && objc_msgSend(objc_msgSend(objc_msgSend(a1, "fetchRequest"), "sortDescriptors"), "count"))
+  if ([store fetchRequest] && objc_msgSend(objc_msgSend(objc_msgSend(store, "fetchRequest"), "sortDescriptors"), "count"))
   {
-    -[NSFetchRequest setSortDescriptors:](v10, "setSortDescriptors:", [objc_msgSend(a1 "fetchRequest")]);
+    -[NSFetchRequest setSortDescriptors:](v10, "setSortDescriptors:", [objc_msgSend(store "fetchRequest")]);
   }
 
-  if ([a1 fetchBatchSize])
+  if ([store fetchBatchSize])
   {
-    -[NSFetchRequest setFetchBatchSize:](v10, "setFetchBatchSize:", [a1 fetchBatchSize]);
+    -[NSFetchRequest setFetchBatchSize:](v10, "setFetchBatchSize:", [store fetchBatchSize]);
     if (![(NSArray *)[(NSFetchRequest *)v10 sortDescriptors] count])
     {
       v18 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"self" ascending:1];
@@ -1371,34 +1371,34 @@ LABEL_10:
     }
   }
 
-  if ([a1 resultType] == 5)
+  if ([store resultType] == 5)
   {
     v17 = @"CHANGES";
     -[NSFetchRequest setRelationshipKeyPathsForPrefetching:](v10, "setRelationshipKeyPathsForPrefetching:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v17 count:1]);
   }
 
-  if ([a1 resultType] && objc_msgSend(a1, "resultType") != 2 && objc_msgSend(a1, "resultType") != 6)
+  if ([store resultType] && objc_msgSend(store, "resultType") != 2 && objc_msgSend(store, "resultType") != 6)
   {
-    if ([a1 propertiesToFetch])
+    if ([store propertiesToFetch])
     {
-      v12 = [a1 propertiesToFetch];
+      propertiesToFetch = [store propertiesToFetch];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DF70] arrayWithArray:{objc_msgSend(a1, "propertiesToFetchForEntity:includeTransactionStrings:", v9, 1)}];
+      propertiesToFetch = [MEMORY[0x1E695DF70] arrayWithArray:{objc_msgSend(store, "propertiesToFetchForEntity:includeTransactionStrings:", v9, 1)}];
       if ([objc_msgSend(a2 "type")])
       {
-        [v12 removeObject:@"QUERYGEN"];
+        [propertiesToFetch removeObject:@"QUERYGEN"];
       }
     }
 
-    [(NSFetchRequest *)v10 setPropertiesToFetch:v12];
+    [(NSFetchRequest *)v10 setPropertiesToFetch:propertiesToFetch];
   }
 
-  if ([objc_msgSend(a1 "affectedStores")])
+  if ([objc_msgSend(store "affectedStores")])
   {
-    -[NSFetchRequest setAffectedStores:](v10, "setAffectedStores:", [a1 affectedStores]);
+    -[NSFetchRequest setAffectedStores:](v10, "setAffectedStores:", [store affectedStores]);
   }
 
 LABEL_38:
@@ -1441,30 +1441,30 @@ LABEL_38:
   v5 = *self->_additionalPrivateIvars;
   token = self->_token;
   transactionNumber = self->_transactionNumber;
-  v8 = [(NSPersistentHistoryChangeRequest *)self fetchLimit];
-  v9 = [(NSPersistentHistoryChangeRequest *)self fetchOffset];
-  v10 = [(NSPersistentHistoryChangeRequest *)self fetchBatchSize];
+  fetchLimit = [(NSPersistentHistoryChangeRequest *)self fetchLimit];
+  fetchOffset = [(NSPersistentHistoryChangeRequest *)self fetchOffset];
+  fetchBatchSize = [(NSPersistentHistoryChangeRequest *)self fetchBatchSize];
   v11 = [NSPersistentHistoryChangeRequest _stringForHistoryRequestResultType:self->_resultType];
-  v12 = [(NSPersistentHistoryChangeRequest *)self fetchRequest];
+  fetchRequest = [(NSPersistentHistoryChangeRequest *)self fetchRequest];
   v13 = @"nil";
-  if (v12)
+  if (fetchRequest)
   {
-    v13 = v12;
+    v13 = fetchRequest;
   }
 
-  return [v3 stringWithFormat:@"NSPersistentHistoryChangeRequest : %@ <Date-%@ Token-%@ TransactionID-%@> limit - %lu offset - %lu batchSize - %lu, resultType - %@, fetchRequest - %@", v4, v5, token, transactionNumber, v8, v9, v10, v11, v13];
+  return [v3 stringWithFormat:@"NSPersistentHistoryChangeRequest : %@ <Date-%@ Token-%@ TransactionID-%@> limit - %lu offset - %lu batchSize - %lu, resultType - %@, fetchRequest - %@", v4, v5, token, transactionNumber, fetchLimit, fetchOffset, fetchBatchSize, v11, v13];
 }
 
-+ (id)_stringForHistoryRequestResultType:(int64_t)a3
++ (id)_stringForHistoryRequestResultType:(int64_t)type
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (a3 >= 7)
+  if (type >= 7)
   {
     LogStream = _PFLogGetLogStream(17);
     if (os_log_type_enabled(LogStream, OS_LOG_TYPE_ERROR))
     {
       v8 = 134217984;
-      v9 = a3;
+      typeCopy2 = type;
       _os_log_error_impl(&dword_18565F000, LogStream, OS_LOG_TYPE_ERROR, "CoreData: fault: Unknown fetch request result type: %ld\n", &v8, 0xCu);
     }
 
@@ -1472,7 +1472,7 @@ LABEL_38:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
     {
       v8 = 134217984;
-      v9 = a3;
+      typeCopy2 = type;
       _os_log_fault_impl(&dword_18565F000, v6, OS_LOG_TYPE_FAULT, "CoreData: Unknown fetch request result type: %ld", &v8, 0xCu);
     }
 
@@ -1481,7 +1481,7 @@ LABEL_38:
 
   else
   {
-    result = off_1E6EC1480[a3];
+    result = off_1E6EC1480[type];
   }
 
   v7 = *MEMORY[0x1E69E9840];

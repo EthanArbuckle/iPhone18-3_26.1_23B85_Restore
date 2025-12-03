@@ -1,12 +1,12 @@
 @interface DEKeyboardExtension
-- (id)attachmentsForParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
 @end
 
 @implementation DEKeyboardExtension
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
-  v4 = [a3 objectForKeyedSubscript:@"DEExtensionAttachmentsParamConsentProvidedKey"];
+  v4 = [parameters objectForKeyedSubscript:@"DEExtensionAttachmentsParamConsentProvidedKey"];
   if ([v4 BOOLValue])
   {
     v5 = [NSRegularExpression regularExpressionWithPattern:@".*" options:1 error:0];

@@ -1,9 +1,9 @@
 @interface WiFiScanObserver
 - (WiFiScanObserver)init;
-- (void)addScanResultsCallback:(id)a3;
+- (void)addScanResultsCallback:(id)callback;
 - (void)dealloc;
-- (void)ingestScanResults:(id)a3 ofType:(unint64_t)a4 clientName:(id)a5 directed:(BOOL)a6;
-- (void)removeScanResultsCallback:(id)a3;
+- (void)ingestScanResults:(id)results ofType:(unint64_t)type clientName:(id)name directed:(BOOL)directed;
+- (void)removeScanResultsCallback:(id)callback;
 @end
 
 @implementation WiFiScanObserver
@@ -28,40 +28,40 @@
   [(WiFiScanObserver *)&v3 dealloc];
 }
 
-- (void)addScanResultsCallback:(id)a3
+- (void)addScanResultsCallback:(id)callback
 {
-  if (a3)
+  if (callback)
   {
-    v4 = [(WiFiScanObserver *)self callbacks];
-    v5 = _Block_copy(a3);
+    callbacks = [(WiFiScanObserver *)self callbacks];
+    v5 = _Block_copy(callback);
 
-    [(NSMutableArray *)v4 addObject:v5];
+    [(NSMutableArray *)callbacks addObject:v5];
   }
 }
 
-- (void)removeScanResultsCallback:(id)a3
+- (void)removeScanResultsCallback:(id)callback
 {
-  if (a3)
+  if (callback)
   {
-    v4 = [(WiFiScanObserver *)self callbacks];
+    callbacks = [(WiFiScanObserver *)self callbacks];
 
-    [(NSMutableArray *)v4 removeObject:a3];
+    [(NSMutableArray *)callbacks removeObject:callback];
   }
 }
 
-- (void)ingestScanResults:(id)a3 ofType:(unint64_t)a4 clientName:(id)a5 directed:(BOOL)a6
+- (void)ingestScanResults:(id)results ofType:(unint64_t)type clientName:(id)name directed:(BOOL)directed
 {
-  v6 = a6;
+  directedCopy = directed;
   v11 = objc_autoreleasePoolPush();
   v12 = os_transaction_create();
-  if (a3 && [(NSMutableArray *)[(WiFiScanObserver *)self callbacks] count])
+  if (results && [(NSMutableArray *)[(WiFiScanObserver *)self callbacks] count])
   {
-    HIDWORD(v49) = v6;
+    HIDWORD(v49) = directedCopy;
     v13 = objc_alloc_init(NSMutableSet);
     v14 = objc_autoreleasePoolPush();
     if (off_100298C40)
     {
-      [off_100298C40 WFLog:3 message:{"%s: ingested %lu networks", "-[WiFiScanObserver ingestScanResults:ofType:clientName:directed:]", objc_msgSend(a3, "count")}];
+      [off_100298C40 WFLog:3 message:{"%s: ingested %lu networks", "-[WiFiScanObserver ingestScanResults:ofType:clientName:directed:]", objc_msgSend(results, "count")}];
     }
 
     objc_autoreleasePoolPop(v14);
@@ -80,7 +80,7 @@
         {
           if (*v58 != v25)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(results);
           }
 
           v27 = [[WiFiScanObserverNetwork alloc] initWithWiFiNetworkRef:*(*(&v57 + 1) + 8 * i)];
@@ -118,10 +118,10 @@
     }
 
     v36 = objc_alloc_init(NSMutableDictionary);
-    [v36 setObject:+[NSNumber numberWithUnsignedInteger:](NSNumber forKey:{"numberWithUnsignedInteger:", a4), @"resultType"}];
-    if (a5)
+    [v36 setObject:+[NSNumber numberWithUnsignedInteger:](NSNumber forKey:{"numberWithUnsignedInteger:", type), @"resultType"}];
+    if (name)
     {
-      [v36 setObject:a5 forKey:@"clientName"];
+      [v36 setObject:name forKey:@"clientName"];
     }
 
     if (HIDWORD(v50))
@@ -133,8 +133,8 @@
     v56 = 0u;
     v53 = 0u;
     v54 = 0u;
-    v37 = [(WiFiScanObserver *)self callbacks];
-    v38 = [(NSMutableArray *)v37 countByEnumeratingWithState:&v53 objects:v61 count:16];
+    callbacks = [(WiFiScanObserver *)self callbacks];
+    v38 = [(NSMutableArray *)callbacks countByEnumeratingWithState:&v53 objects:v61 count:16];
     if (v38)
     {
       v39 = v38;
@@ -145,13 +145,13 @@
         {
           if (*v54 != v40)
           {
-            objc_enumerationMutation(v37);
+            objc_enumerationMutation(callbacks);
           }
 
           (*(*(*(&v53 + 1) + 8 * j) + 16))();
         }
 
-        v39 = [(NSMutableArray *)v37 countByEnumeratingWithState:&v53 objects:v61 count:16];
+        v39 = [(NSMutableArray *)callbacks countByEnumeratingWithState:&v53 objects:v61 count:16];
       }
 
       while (v39);

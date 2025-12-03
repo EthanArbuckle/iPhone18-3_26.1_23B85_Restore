@@ -1,38 +1,38 @@
 @interface PKApplyActionContentActionItemCell
-- (CGSize)_layoutWithBounds:(CGRect)a3 isTemplateLayout:(BOOL)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)_layoutWithBounds:(CGRect)bounds isTemplateLayout:(BOOL)layout;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)_resetState;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setActionItem:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setActionItem:(id)item;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation PKApplyActionContentActionItemCell
 
-- (void)setActionItem:(id)a3
+- (void)setActionItem:(id)item
 {
   v46 = *MEMORY[0x1E69E9840];
-  v33 = a3;
-  objc_storeStrong(&self->_actionItem, a3);
+  itemCopy = item;
+  objc_storeStrong(&self->_actionItem, item);
   [(PKApplyActionContentActionItemCell *)self _resetState];
-  v5 = [(PKApplyActionContentActionItemCell *)self contentView];
-  v6 = [(PKApplyActionContentActionItem *)self->_actionItem contextPrimaryActionIdentifier];
+  contentView = [(PKApplyActionContentActionItemCell *)self contentView];
+  contextPrimaryActionIdentifier = [(PKApplyActionContentActionItem *)self->_actionItem contextPrimaryActionIdentifier];
 
-  if (v6)
+  if (contextPrimaryActionIdentifier)
   {
     v7 = objc_alloc(MEMORY[0x1E69DCAE0]);
     v8 = PKUIChevronImage();
     v9 = [v7 initWithImage:v8];
 
-    v10 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
-    [(UIImageView *)v9 setTintColor:v10];
+    tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+    [(UIImageView *)v9 setTintColor:tertiaryLabelColor];
 
     disclosureView = self->_disclosureView;
     self->_disclosureView = v9;
     v12 = v9;
 
-    [v5 addSubview:self->_disclosureView];
+    [contentView addSubview:self->_disclosureView];
   }
 
   v40 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -41,7 +41,7 @@
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v32 = self;
+  selfCopy = self;
   obj = [(PKApplyActionContentActionItem *)self->_actionItem items];
   v13 = [obj countByEnumeratingWithState:&v41 objects:v45 count:16];
   if (v13)
@@ -64,32 +64,32 @@
 
         v18 = *(*(&v41 + 1) + 8 * i);
         v19 = objc_alloc_init(MEMORY[0x1E69DCC10]);
-        v20 = [v18 title];
-        [v19 setText:v20];
+        title = [v18 title];
+        [v19 setText:title];
 
         [v19 setNumberOfLines:0];
-        v21 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-        [v19 setTextColor:v21];
+        secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+        [v19 setTextColor:secondaryLabelColor];
 
         v22 = PKFontForDefaultDesign(v37, v15, 0, 0);
         [v19 setFont:v22];
 
         [v19 setAccessibilityIdentifier:v36];
-        [v5 addSubview:v19];
+        [contentView addSubview:v19];
         v23 = objc_alloc_init(MEMORY[0x1E69DCC10]);
-        v24 = [v18 subtitle];
-        [v23 setText:v24];
+        subtitle = [v18 subtitle];
+        [v23 setText:subtitle];
 
         [v23 setNumberOfLines:0];
-        v25 = [MEMORY[0x1E69DC888] labelColor];
-        [v23 setTextColor:v25];
+        labelColor = [MEMORY[0x1E69DC888] labelColor];
+        [v23 setTextColor:labelColor];
 
         v26 = PKFontForDefaultDesign(v35, v15, 0, 0);
         [v23 setFont:v26];
 
         [v23 pkui_setExcludedFromScreenCapture:1 andBroadcasting:1];
         [v23 setAccessibilityIdentifier:v16];
-        [v5 addSubview:v23];
+        [contentView addSubview:v23];
         [v40 addObject:v19];
         [v39 addObject:v23];
       }
@@ -101,25 +101,25 @@
   }
 
   v27 = [v40 copy];
-  titleLabels = v32->_titleLabels;
-  v32->_titleLabels = v27;
+  titleLabels = selfCopy->_titleLabels;
+  selfCopy->_titleLabels = v27;
 
   v29 = [v39 copy];
-  subtitleLabels = v32->_subtitleLabels;
-  v32->_subtitleLabels = v29;
+  subtitleLabels = selfCopy->_subtitleLabels;
+  selfCopy->_subtitleLabels = v29;
 
-  v31 = [(PKApplyActionContentActionItem *)v32->_actionItem contextPrimaryActionIdentifier];
-  [(PKApplyActionContentActionItemCell *)v32 setAccessibilityIdentifier:v31];
+  contextPrimaryActionIdentifier2 = [(PKApplyActionContentActionItem *)selfCopy->_actionItem contextPrimaryActionIdentifier];
+  [(PKApplyActionContentActionItemCell *)selfCopy setAccessibilityIdentifier:contextPrimaryActionIdentifier2];
 
-  [(PKApplyActionContentActionItemCell *)v32 setNeedsLayout];
+  [(PKApplyActionContentActionItemCell *)selfCopy setNeedsLayout];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v10.receiver = self;
   v10.super_class = PKApplyActionContentActionItemCell;
   [(PKApplyActionContentActionItemCell *)&v10 setHighlighted:?];
-  if (a3)
+  if (highlighted)
   {
     [MEMORY[0x1E69DC888] tableCellDefaultSelectionTintColor];
   }
@@ -145,25 +145,25 @@
   v4.receiver = self;
   v4.super_class = PKApplyActionContentActionItemCell;
   [(PKApplyActionContentActionItemCell *)&v4 layoutSubviews];
-  v3 = [(PKApplyActionContentActionItemCell *)self contentView];
-  [v3 bounds];
+  contentView = [(PKApplyActionContentActionItemCell *)self contentView];
+  [contentView bounds];
   [(PKApplyActionContentActionItemCell *)self _layoutWithBounds:0 isTemplateLayout:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(PKApplyActionContentActionItemCell *)self _layoutWithBounds:1 isTemplateLayout:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), a3.width, a3.height];
+  [(PKApplyActionContentActionItemCell *)self _layoutWithBounds:1 isTemplateLayout:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (CGSize)_layoutWithBounds:(CGRect)a3 isTemplateLayout:(BOOL)a4
+- (CGSize)_layoutWithBounds:(CGRect)bounds isTemplateLayout:(BOOL)layout
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v10 = PKTableViewCellTextInset();
   v11 = x + v10;
   v12 = y + 12.0;
@@ -230,7 +230,7 @@
   if (![(NSArray *)self->_titleLabels count])
   {
     v40 = 24.0;
-    if (a4)
+    if (layout)
     {
       goto LABEL_21;
     }
@@ -266,7 +266,7 @@
     v45.origin.y = v37;
     v45.size.width = v38;
     v45.size.height = v39;
-    if (!a4)
+    if (!layout)
     {
       [v26 setFrame:{v46.origin.x, v46.origin.y, v46.size.width, v46.size.height}];
       [v29 setFrame:{v45.origin.x, v45.origin.y, v45.size.width, v45.size.height}];
@@ -282,7 +282,7 @@
 
   while (v24 < [(NSArray *)self->_titleLabels count]);
   v40 = v25 + 24.0;
-  if (!a4)
+  if (!layout)
   {
 LABEL_20:
     [(UIImageView *)self->_disclosureView setFrame:slice.origin.x, slice.origin.y, slice.size.width, slice.size.height];

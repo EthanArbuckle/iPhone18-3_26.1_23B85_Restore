@@ -1,18 +1,18 @@
 @interface HKFHIRCredential
 + (id)nilCredential;
-- (BOOL)isEqualToCredential:(id)a3 epsilonExpiration:(double)a4;
-- (HKFHIRCredential)initWithAccessToken:(id)a3 refreshToken:(id)a4 expiration:(id)a5 requestedScopeString:(id)a6 scopes:(id)a7;
-- (HKFHIRCredential)initWithAccessToken:(id)a3 refreshToken:(id)a4 patientID:(id)a5 expiration:(id)a6 requestedScopeString:(id)a7 scopeString:(id)a8;
-- (HKFHIRCredential)initWithAccessToken:(id)a3 refreshToken:(id)a4 patientID:(id)a5 expiration:(id)a6 requestedScopeString:(id)a7 scopes:(id)a8;
-- (HKFHIRCredential)initWithCoder:(id)a3;
-- (id)asRefreshResultWithError:(id)a3;
+- (BOOL)isEqualToCredential:(id)credential epsilonExpiration:(double)expiration;
+- (HKFHIRCredential)initWithAccessToken:(id)token refreshToken:(id)refreshToken expiration:(id)expiration requestedScopeString:(id)string scopes:(id)scopes;
+- (HKFHIRCredential)initWithAccessToken:(id)token refreshToken:(id)refreshToken patientID:(id)d expiration:(id)expiration requestedScopeString:(id)string scopeString:(id)scopeString;
+- (HKFHIRCredential)initWithAccessToken:(id)token refreshToken:(id)refreshToken patientID:(id)d expiration:(id)expiration requestedScopeString:(id)string scopes:(id)scopes;
+- (HKFHIRCredential)initWithCoder:(id)coder;
+- (id)asRefreshResultWithError:(id)error;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKFHIRCredential
 
-- (HKFHIRCredential)initWithAccessToken:(id)a3 refreshToken:(id)a4 expiration:(id)a5 requestedScopeString:(id)a6 scopes:(id)a7
+- (HKFHIRCredential)initWithAccessToken:(id)token refreshToken:(id)refreshToken expiration:(id)expiration requestedScopeString:(id)string scopes:(id)scopes
 {
   v8 = MEMORY[0x277CBEAD8];
   v9 = *MEMORY[0x277CBE660];
@@ -22,16 +22,16 @@
   return 0;
 }
 
-- (HKFHIRCredential)initWithAccessToken:(id)a3 refreshToken:(id)a4 patientID:(id)a5 expiration:(id)a6 requestedScopeString:(id)a7 scopeString:(id)a8
+- (HKFHIRCredential)initWithAccessToken:(id)token refreshToken:(id)refreshToken patientID:(id)d expiration:(id)expiration requestedScopeString:(id)string scopeString:(id)scopeString
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = v20;
-  if (!v17)
+  tokenCopy = token;
+  refreshTokenCopy = refreshToken;
+  dCopy = d;
+  expirationCopy = expiration;
+  stringCopy = string;
+  scopeStringCopy = scopeString;
+  v21 = scopeStringCopy;
+  if (!dCopy)
   {
     [HKFHIRCredential initWithAccessToken:a2 refreshToken:self patientID:? expiration:? requestedScopeString:? scopeString:?];
     if (v21)
@@ -44,7 +44,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (!v20)
+  if (!scopeStringCopy)
   {
     goto LABEL_5;
   }
@@ -52,20 +52,20 @@ LABEL_5:
 LABEL_3:
   v22 = [HKOAuth2ScopeSet scopesFromScopeString:v21];
 LABEL_6:
-  v23 = [(HKFHIRCredential *)self initWithAccessToken:v15 refreshToken:v16 patientID:v17 expiration:v18 requestedScopeString:v19 scopes:v22];
+  v23 = [(HKFHIRCredential *)self initWithAccessToken:tokenCopy refreshToken:refreshTokenCopy patientID:dCopy expiration:expirationCopy requestedScopeString:stringCopy scopes:v22];
 
   return v23;
 }
 
-- (HKFHIRCredential)initWithAccessToken:(id)a3 refreshToken:(id)a4 patientID:(id)a5 expiration:(id)a6 requestedScopeString:(id)a7 scopes:(id)a8
+- (HKFHIRCredential)initWithAccessToken:(id)token refreshToken:(id)refreshToken patientID:(id)d expiration:(id)expiration requestedScopeString:(id)string scopes:(id)scopes
 {
-  v14 = a5;
+  dCopy = d;
   v19.receiver = self;
   v19.super_class = HKFHIRCredential;
-  v15 = [(HKOAuth2Credential *)&v19 initWithAccessToken:a3 refreshToken:a4 expiration:a6 requestedScopeString:a7 scopes:a8];
+  v15 = [(HKOAuth2Credential *)&v19 initWithAccessToken:token refreshToken:refreshToken expiration:expiration requestedScopeString:string scopes:scopes];
   if (v15)
   {
-    v16 = [v14 copy];
+    v16 = [dCopy copy];
     patientID = v15->_patientID;
     v15->_patientID = v16;
   }
@@ -80,36 +80,36 @@ LABEL_6:
   return v2;
 }
 
-- (id)asRefreshResultWithError:(id)a3
+- (id)asRefreshResultWithError:(id)error
 {
-  v4 = a3;
-  v5 = [[HKFHIRCredentialRefreshResult alloc] initWithCredential:self authResponse:0 endStates:0 error:v4];
+  errorCopy = error;
+  v5 = [[HKFHIRCredentialRefreshResult alloc] initWithCredential:self authResponse:0 endStates:0 error:errorCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToCredential:(id)a3 epsilonExpiration:(double)a4
+- (BOOL)isEqualToCredential:(id)credential epsilonExpiration:(double)expiration
 {
-  v6 = a3;
+  credentialCopy = credential;
   v14.receiver = self;
   v14.super_class = HKFHIRCredential;
-  if ([(HKOAuth2Credential *)&v14 isEqualToCredential:v6 epsilonExpiration:a4])
+  if ([(HKOAuth2Credential *)&v14 isEqualToCredential:credentialCopy epsilonExpiration:expiration])
   {
     patientID = self->_patientID;
-    v8 = [v6 patientID];
-    if (patientID == v8)
+    patientID = [credentialCopy patientID];
+    if (patientID == patientID)
     {
       v12 = 1;
     }
 
     else
     {
-      v9 = [v6 patientID];
-      if (v9)
+      patientID2 = [credentialCopy patientID];
+      if (patientID2)
       {
         v10 = self->_patientID;
-        v11 = [v6 patientID];
-        v12 = [(NSString *)v10 isEqualToString:v11];
+        patientID3 = [credentialCopy patientID];
+        v12 = [(NSString *)v10 isEqualToString:patientID3];
       }
 
       else
@@ -135,25 +135,25 @@ LABEL_6:
   return [(NSString *)self->_patientID hash]^ v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   patientID = self->_patientID;
-  v5 = a3;
-  [v5 encodeObject:patientID forKey:@"patientID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:patientID forKey:@"patientID"];
   v6.receiver = self;
   v6.super_class = HKFHIRCredential;
-  [(HKOAuth2Credential *)&v6 encodeWithCoder:v5];
+  [(HKOAuth2Credential *)&v6 encodeWithCoder:coderCopy];
 }
 
-- (HKFHIRCredential)initWithCoder:(id)a3
+- (HKFHIRCredential)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"patientID"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"patientID"];
   if (v5)
   {
     v11.receiver = self;
     v11.super_class = HKFHIRCredential;
-    v6 = [(HKOAuth2Credential *)&v11 initWithCoder:v4];
+    v6 = [(HKOAuth2Credential *)&v11 initWithCoder:coderCopy];
 
     if (v6)
     {
@@ -163,17 +163,17 @@ LABEL_6:
     }
 
     self = v6;
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    [v4 hrs_failWithCocoaValueNotFoundError];
+    [coderCopy hrs_failWithCocoaValueNotFoundError];
 
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (void)initWithAccessToken:(uint64_t)a1 refreshToken:(uint64_t)a2 patientID:expiration:requestedScopeString:scopeString:.cold.1(uint64_t a1, uint64_t a2)

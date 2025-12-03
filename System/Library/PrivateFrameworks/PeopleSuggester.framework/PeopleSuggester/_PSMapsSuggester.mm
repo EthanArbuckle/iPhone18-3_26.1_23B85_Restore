@@ -1,14 +1,14 @@
 @interface _PSMapsSuggester
-- (id)suggestionsFromContext:(id)a3 maxSuggestions:(unint64_t)a4;
-- (void)deleteMapsFeedbackEventsMatchingHandle:(id)a3 contactId:(id)a4 startLocationId:(id)a5 endLocationId:(id)a6;
-- (void)provideMapsFeedback:(id)a3;
+- (id)suggestionsFromContext:(id)context maxSuggestions:(unint64_t)suggestions;
+- (void)deleteMapsFeedbackEventsMatchingHandle:(id)handle contactId:(id)id startLocationId:(id)locationId endLocationId:(id)endLocationId;
+- (void)provideMapsFeedback:(id)feedback;
 @end
 
 @implementation _PSMapsSuggester
 
-- (id)suggestionsFromContext:(id)a3 maxSuggestions:(unint64_t)a4
+- (id)suggestionsFromContext:(id)context maxSuggestions:(unint64_t)suggestions
 {
-  v5 = a3;
+  contextCopy = context;
   v6 = +[_PSLogging suggestionSignpost];
   if (os_signpost_enabled(v6))
   {
@@ -17,7 +17,7 @@
   }
 
   v7 = objc_alloc_init(_PSEnsembleModel);
-  v8 = [(_PSEnsembleModel *)v7 predictWithMapsPredictionContext:v5 maxSuggestions:a4];
+  v8 = [(_PSEnsembleModel *)v7 predictWithMapsPredictionContext:contextCopy maxSuggestions:suggestions];
 
   v9 = +[_PSLogging suggestionSignpost];
   if (os_signpost_enabled(v9))
@@ -29,18 +29,18 @@
   return v8;
 }
 
-- (void)provideMapsFeedback:(id)a3
+- (void)provideMapsFeedback:(id)feedback
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 action];
-  v5 = [v4 type];
+  feedbackCopy = feedback;
+  action = [feedbackCopy action];
+  type = [action type];
 
-  if (v5 <= 1)
+  if (type <= 1)
   {
-    if (v5)
+    if (type)
     {
-      if (v5 == 1)
+      if (type == 1)
       {
         v6 = +[_PSLogging feedbackChannel];
         if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -66,10 +66,10 @@ LABEL_11:
     }
 
 LABEL_8:
-    v8 = [v3 indexOfEngagedSuggestion];
+    indexOfEngagedSuggestion = [feedbackCopy indexOfEngagedSuggestion];
     v9 = +[_PSLogging feedbackChannel];
     v6 = v9;
-    if (v8 == 0x7FFFFFFFFFFFFFFFLL)
+    if (indexOfEngagedSuggestion == 0x7FFFFFFFFFFFFFFFLL)
     {
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
@@ -79,22 +79,22 @@ LABEL_8:
 
     else if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
-      v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v8];
-      v11 = [v3 action];
-      v12 = [v11 transportBundleID];
+      v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:indexOfEngagedSuggestion];
+      action2 = [feedbackCopy action];
+      transportBundleID = [action2 transportBundleID];
       *buf = 138412546;
       v17 = v10;
       v18 = 2112;
-      v19 = v12;
+      v19 = transportBundleID;
       _os_log_impl(&dword_1B5ED1000, v6, OS_LOG_TYPE_INFO, "Feedback for maps suggestions: Engagement with suggestion at index %@, transport: %@", buf, 0x16u);
     }
 
     goto LABEL_18;
   }
 
-  if (v5 != 2)
+  if (type != 2)
   {
-    if (v5 != 4)
+    if (type != 4)
     {
       goto LABEL_11;
     }
@@ -112,38 +112,38 @@ LABEL_8:
 
 LABEL_18:
 
-  [v3 donateToBiome];
-  v15 = v3;
-  v13 = v3;
+  [feedbackCopy donateToBiome];
+  v15 = feedbackCopy;
+  v13 = feedbackCopy;
   AnalyticsSendEventLazy();
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)deleteMapsFeedbackEventsMatchingHandle:(id)a3 contactId:(id)a4 startLocationId:(id)a5 endLocationId:(id)a6
+- (void)deleteMapsFeedbackEventsMatchingHandle:(id)handle contactId:(id)id startLocationId:(id)locationId endLocationId:(id)endLocationId
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  handleCopy = handle;
+  idCopy = id;
+  locationIdCopy = locationId;
+  endLocationIdCopy = endLocationId;
   v13 = BiomeLibrary();
-  v14 = [v13 MapsShare];
-  v15 = [v14 ETAFeedback];
+  mapsShare = [v13 MapsShare];
+  eTAFeedback = [mapsShare ETAFeedback];
 
-  v16 = [v15 pruner];
+  pruner = [eTAFeedback pruner];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __99___PSMapsSuggester_deleteMapsFeedbackEventsMatchingHandle_contactId_startLocationId_endLocationId___block_invoke;
   v21[3] = &unk_1E7C256C0;
-  v22 = v9;
-  v23 = v11;
-  v24 = v12;
-  v25 = v10;
-  v17 = v10;
-  v18 = v12;
-  v19 = v11;
-  v20 = v9;
-  [v16 deleteWithPolicy:@"delete-maps-feedback" eventsPassingTest:v21];
+  v22 = handleCopy;
+  v23 = locationIdCopy;
+  v24 = endLocationIdCopy;
+  v25 = idCopy;
+  v17 = idCopy;
+  v18 = endLocationIdCopy;
+  v19 = locationIdCopy;
+  v20 = handleCopy;
+  [pruner deleteWithPolicy:@"delete-maps-feedback" eventsPassingTest:v21];
 }
 
 @end

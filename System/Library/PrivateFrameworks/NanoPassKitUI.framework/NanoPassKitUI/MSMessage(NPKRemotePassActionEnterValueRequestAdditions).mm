@@ -6,7 +6,7 @@
 
 - (NPKRemotePassActionEnterValueRequest)enterValueRequest
 {
-  v1 = [[NPKRemotePassActionEnterValueRequest alloc] initWithUnderlyingMessage:a1];
+  v1 = [[NPKRemotePassActionEnterValueRequest alloc] initWithUnderlyingMessage:self];
 
   return v1;
 }

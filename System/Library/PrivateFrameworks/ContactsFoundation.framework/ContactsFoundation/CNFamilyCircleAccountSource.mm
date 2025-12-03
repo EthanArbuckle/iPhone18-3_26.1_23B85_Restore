@@ -1,5 +1,5 @@
 @interface CNFamilyCircleAccountSource
-- (CNFamilyCircleAccountSource)initWithFamilyCircle:(id)a3;
+- (CNFamilyCircleAccountSource)initWithFamilyCircle:(id)circle;
 - (NSString)description;
 - (id)delegateAccounts;
 - (id)myFamilyMemberRecord;
@@ -8,16 +8,16 @@
 
 @implementation CNFamilyCircleAccountSource
 
-- (CNFamilyCircleAccountSource)initWithFamilyCircle:(id)a3
+- (CNFamilyCircleAccountSource)initWithFamilyCircle:(id)circle
 {
-  v5 = a3;
+  circleCopy = circle;
   v10.receiver = self;
   v10.super_class = CNFamilyCircleAccountSource;
   v6 = [(CNFamilyCircleAccountSource *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_familyCircle, a3);
+    objc_storeStrong(&v6->_familyCircle, circle);
     v8 = v7;
   }
 
@@ -28,25 +28,25 @@
 {
   v3 = [CNDescriptionBuilder descriptionBuilderWithObject:self];
   v4 = [v3 appendName:@"familyCircle" object:self->_familyCircle];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
 - (id)myFamilyMemberRecord
 {
-  v2 = [(FAFamilyCircle *)self->_familyCircle members];
-  v3 = [v2 _cn_firstObjectPassingTest:&__block_literal_global_61];
+  members = [(FAFamilyCircle *)self->_familyCircle members];
+  v3 = [members _cn_firstObjectPassingTest:&__block_literal_global_61];
 
   return v3;
 }
 
 - (id)primaryAccount
 {
-  v2 = [(CNFamilyCircleAccountSource *)self myFamilyMemberRecord];
-  if (v2)
+  myFamilyMemberRecord = [(CNFamilyCircleAccountSource *)self myFamilyMemberRecord];
+  if (myFamilyMemberRecord)
   {
-    v3 = (*(CNCoreDelegateInfoFromFamilyMember + 2))(CNCoreDelegateInfoFromFamilyMember, v2);
+    v3 = (*(CNCoreDelegateInfoFromFamilyMember + 2))(CNCoreDelegateInfoFromFamilyMember, myFamilyMemberRecord);
   }
 
   else
@@ -59,11 +59,11 @@
 
 - (id)delegateAccounts
 {
-  v3 = [(CNFamilyCircleAccountSource *)self myFamilyMemberRecord];
-  if ([CNFamilyMember isAdministrativeGuardianFamilyMember:v3])
+  myFamilyMemberRecord = [(CNFamilyCircleAccountSource *)self myFamilyMemberRecord];
+  if ([CNFamilyMember isAdministrativeGuardianFamilyMember:myFamilyMemberRecord])
   {
-    v4 = [(FAFamilyCircle *)self->_familyCircle members];
-    v5 = [v4 _cn_filter:CNFamilyMemberIsDelegateChild];
+    members = [(FAFamilyCircle *)self->_familyCircle members];
+    v5 = [members _cn_filter:CNFamilyMemberIsDelegateChild];
     v6 = [v5 _cn_map:CNCoreDelegateInfoFromFamilyMember];
   }
 

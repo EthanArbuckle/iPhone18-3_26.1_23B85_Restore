@@ -1,59 +1,59 @@
 @interface CPSGridTemplateViewController
 - (CPGridTemplate)gridTemplate;
-- (CPSGridTemplateViewController)initWithGridTemplate:(id)a3 interfaceDelegate:(id)a4 templateEnvironment:(id)a5;
+- (CPSGridTemplateViewController)initWithGridTemplate:(id)template interfaceDelegate:(id)delegate templateEnvironment:(id)environment;
 - (CPUIGridTemplateCollectionView)gridView;
-- (id)_buttonForIdentifier:(id)a3;
-- (id)_prepareCPUIGridButtonsForButtons:(id)a3;
+- (id)_buttonForIdentifier:(id)identifier;
+- (id)_prepareCPUIGridButtonsForButtons:(id)buttons;
 - (void)_viewDidLoad;
-- (void)gridButton:(id)a3 setImageSet:(id)a4;
-- (void)gridButton:(id)a3 setTitleVariants:(id)a4;
-- (void)gridButton:(id)a3 setUnread:(BOOL)a4;
-- (void)reloadTemplate:(id)a3;
-- (void)setControl:(id)a3 enabled:(BOOL)a4;
+- (void)gridButton:(id)button setImageSet:(id)set;
+- (void)gridButton:(id)button setTitleVariants:(id)variants;
+- (void)gridButton:(id)button setUnread:(BOOL)unread;
+- (void)reloadTemplate:(id)template;
+- (void)setControl:(id)control enabled:(BOOL)enabled;
 @end
 
 @implementation CPSGridTemplateViewController
 
-- (CPSGridTemplateViewController)initWithGridTemplate:(id)a3 interfaceDelegate:(id)a4 templateEnvironment:(id)a5
+- (CPSGridTemplateViewController)initWithGridTemplate:(id)template interfaceDelegate:(id)delegate templateEnvironment:(id)environment
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, template);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
+  objc_storeStrong(&v15, delegate);
   v14 = 0;
-  objc_storeStrong(&v14, a5);
-  v5 = v17;
-  v17 = 0;
+  objc_storeStrong(&v14, environment);
+  v5 = selfCopy;
+  selfCopy = 0;
   v13.receiver = v5;
   v13.super_class = CPSGridTemplateViewController;
   v12 = [(CPSBaseTemplateViewController *)&v13 initWithTemplate:location[0] templateDelegate:v15 templateEnvironment:v14];
-  v17 = v12;
-  objc_storeStrong(&v17, v12);
+  selfCopy = v12;
+  objc_storeStrong(&selfCopy, v12);
   if (v12)
   {
-    v9 = [(CPSGridTemplateViewController *)v17 gridTemplate];
-    v8 = [(CPGridTemplate *)v9 title];
-    [(CPSGridTemplateViewController *)v17 setTitle:?];
-    MEMORY[0x277D82BD8](v8);
-    MEMORY[0x277D82BD8](v9);
+    gridTemplate = [(CPSGridTemplateViewController *)selfCopy gridTemplate];
+    title = [(CPGridTemplate *)gridTemplate title];
+    [(CPSGridTemplateViewController *)selfCopy setTitle:?];
+    MEMORY[0x277D82BD8](title);
+    MEMORY[0x277D82BD8](gridTemplate);
   }
 
-  v7 = MEMORY[0x277D82BE0](v17);
+  v7 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v14, 0);
   objc_storeStrong(&v15, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v17, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v7;
 }
 
 - (CPGridTemplate)gridTemplate
 {
   v3 = objc_opt_class();
-  v4 = [(CPSBaseTemplateViewController *)self associatedTemplate];
-  v5 = CPSSafeCast_12(v3, v4);
-  MEMORY[0x277D82BD8](v4);
+  associatedTemplate = [(CPSBaseTemplateViewController *)self associatedTemplate];
+  v5 = CPSSafeCast_12(v3, associatedTemplate);
+  MEMORY[0x277D82BD8](associatedTemplate);
 
   return v5;
 }
@@ -61,95 +61,95 @@
 - (void)_viewDidLoad
 {
   v39[4] = *MEMORY[0x277D85DE8];
-  v38 = self;
+  selfCopy = self;
   v37 = a2;
   v36.receiver = self;
   v36.super_class = CPSGridTemplateViewController;
   [(CPSBaseTemplateViewController *)&v36 _viewDidLoad];
-  v35 = [(CPSGridTemplateViewController *)v38 view];
+  view = [(CPSGridTemplateViewController *)selfCopy view];
   if (_UISolariumEnabled())
   {
-    v31 = [(CPSGridTemplateViewController *)v38 view];
-    v30 = [MEMORY[0x277D75348] clearColor];
-    [v31 setBackgroundColor:?];
-    MEMORY[0x277D82BD8](v30);
-    v2 = MEMORY[0x277D82BD8](v31).n128_u64[0];
+    view2 = [(CPSGridTemplateViewController *)selfCopy view];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [view2 setBackgroundColor:?];
+    MEMORY[0x277D82BD8](clearColor);
+    v2 = MEMORY[0x277D82BD8](view2).n128_u64[0];
   }
 
   else
   {
-    v29 = [(CPSGridTemplateViewController *)v38 view];
-    v28 = [MEMORY[0x277D75348] tableBackgroundColor];
-    [v29 setBackgroundColor:?];
-    MEMORY[0x277D82BD8](v28);
-    v2 = MEMORY[0x277D82BD8](v29).n128_u64[0];
+    view3 = [(CPSGridTemplateViewController *)selfCopy view];
+    tableBackgroundColor = [MEMORY[0x277D75348] tableBackgroundColor];
+    [view3 setBackgroundColor:?];
+    MEMORY[0x277D82BD8](tableBackgroundColor);
+    v2 = MEMORY[0x277D82BD8](view3).n128_u64[0];
   }
 
-  v10 = [(CPSGridTemplateViewController *)v38 gridTemplate:*&v2];
-  v9 = [(CPGridTemplate *)v10 gridButtons];
+  v10 = [(CPSGridTemplateViewController *)selfCopy gridTemplate:*&v2];
+  gridButtons = [(CPGridTemplate *)v10 gridButtons];
   v34 = [v8 _prepareCPUIGridButtonsForButtons:?];
-  MEMORY[0x277D82BD8](v9);
+  MEMORY[0x277D82BD8](gridButtons);
   MEMORY[0x277D82BD8](v10);
   v11 = objc_alloc(MEMORY[0x277CF9108]);
-  [v35 frame];
+  [view frame];
   v32[1] = v3;
   v32[2] = v4;
   v32[3] = v5;
   v32[4] = v6;
   v33 = [v11 initWithFrame:v34 gridButtons:{*&v3, *&v4, *&v5, *&v6}];
   [v33 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v35 addSubview:v33];
-  [(CPSGridTemplateViewController *)v38 setGridView:v33];
-  v27 = [v35 safeAreaLayoutGuide];
-  v26 = [v27 topAnchor];
-  v25 = [v33 topAnchor];
-  v24 = [v26 constraintEqualToAnchor:?];
+  [view addSubview:v33];
+  [(CPSGridTemplateViewController *)selfCopy setGridView:v33];
+  safeAreaLayoutGuide = [view safeAreaLayoutGuide];
+  topAnchor = [safeAreaLayoutGuide topAnchor];
+  topAnchor2 = [v33 topAnchor];
+  v24 = [topAnchor constraintEqualToAnchor:?];
   v39[0] = v24;
-  v23 = [v35 safeAreaLayoutGuide];
-  v22 = [v23 bottomAnchor];
-  v21 = [v33 bottomAnchor];
-  v20 = [v22 constraintEqualToAnchor:?];
+  safeAreaLayoutGuide2 = [view safeAreaLayoutGuide];
+  bottomAnchor = [safeAreaLayoutGuide2 bottomAnchor];
+  bottomAnchor2 = [v33 bottomAnchor];
+  v20 = [bottomAnchor constraintEqualToAnchor:?];
   v39[1] = v20;
-  v19 = [v35 safeAreaLayoutGuide];
-  v18 = [v19 leadingAnchor];
-  v17 = [v33 leadingAnchor];
-  v16 = [v18 constraintEqualToAnchor:?];
+  safeAreaLayoutGuide3 = [view safeAreaLayoutGuide];
+  leadingAnchor = [safeAreaLayoutGuide3 leadingAnchor];
+  leadingAnchor2 = [v33 leadingAnchor];
+  v16 = [leadingAnchor constraintEqualToAnchor:?];
   v39[2] = v16;
-  v15 = [v35 safeAreaLayoutGuide];
-  v14 = [v15 trailingAnchor];
-  v13 = [v33 trailingAnchor];
-  v12 = [v14 constraintEqualToAnchor:?];
+  safeAreaLayoutGuide4 = [view safeAreaLayoutGuide];
+  trailingAnchor = [safeAreaLayoutGuide4 trailingAnchor];
+  trailingAnchor2 = [v33 trailingAnchor];
+  v12 = [trailingAnchor constraintEqualToAnchor:?];
   v39[3] = v12;
   v32[0] = [MEMORY[0x277CBEA60] arrayWithObjects:v39 count:4];
   MEMORY[0x277D82BD8](v12);
-  MEMORY[0x277D82BD8](v13);
-  MEMORY[0x277D82BD8](v14);
-  MEMORY[0x277D82BD8](v15);
+  MEMORY[0x277D82BD8](trailingAnchor2);
+  MEMORY[0x277D82BD8](trailingAnchor);
+  MEMORY[0x277D82BD8](safeAreaLayoutGuide4);
   MEMORY[0x277D82BD8](v16);
-  MEMORY[0x277D82BD8](v17);
-  MEMORY[0x277D82BD8](v18);
-  MEMORY[0x277D82BD8](v19);
+  MEMORY[0x277D82BD8](leadingAnchor2);
+  MEMORY[0x277D82BD8](leadingAnchor);
+  MEMORY[0x277D82BD8](safeAreaLayoutGuide3);
   MEMORY[0x277D82BD8](v20);
-  MEMORY[0x277D82BD8](v21);
-  MEMORY[0x277D82BD8](v22);
-  MEMORY[0x277D82BD8](v23);
+  MEMORY[0x277D82BD8](bottomAnchor2);
+  MEMORY[0x277D82BD8](bottomAnchor);
+  MEMORY[0x277D82BD8](safeAreaLayoutGuide2);
   MEMORY[0x277D82BD8](v24);
-  MEMORY[0x277D82BD8](v25);
-  MEMORY[0x277D82BD8](v26);
-  *&v7 = MEMORY[0x277D82BD8](v27).n128_u64[0];
+  MEMORY[0x277D82BD8](topAnchor2);
+  MEMORY[0x277D82BD8](topAnchor);
+  *&v7 = MEMORY[0x277D82BD8](safeAreaLayoutGuide).n128_u64[0];
   [MEMORY[0x277CCAAD0] activateConstraints:{v32[0], v7}];
   objc_storeStrong(v32, 0);
   objc_storeStrong(&v33, 0);
   objc_storeStrong(&v34, 0);
-  objc_storeStrong(&v35, 0);
+  objc_storeStrong(&view, 0);
 }
 
-- (id)_buttonForIdentifier:(id)a3
+- (id)_buttonForIdentifier:(id)identifier
 {
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, identifier);
   v13 = 0;
   v14 = &v13;
   v15 = 838860800;
@@ -157,8 +157,8 @@
   v17 = __Block_byref_object_copy__2;
   v18 = __Block_byref_object_dispose__2;
   v19 = 0;
-  v6 = [(CPSGridTemplateViewController *)v21 gridView];
-  v5 = [(CPUIGridTemplateCollectionView *)v6 gridButtons];
+  gridView = [(CPSGridTemplateViewController *)selfCopy gridView];
+  gridButtons = [(CPUIGridTemplateCollectionView *)gridView gridButtons];
   v7 = MEMORY[0x277D85DD0];
   v8 = -1073741824;
   v9 = 0;
@@ -166,9 +166,9 @@
   v11 = &unk_278D92DB0;
   v12[0] = MEMORY[0x277D82BE0](location[0]);
   v12[1] = &v13;
-  [v5 enumerateObjectsUsingBlock:&v7];
-  MEMORY[0x277D82BD8](v5);
-  MEMORY[0x277D82BD8](v6);
+  [gridButtons enumerateObjectsUsingBlock:&v7];
+  MEMORY[0x277D82BD8](gridButtons);
+  MEMORY[0x277D82BD8](gridView);
   v4 = MEMORY[0x277D82BE0](v14[5]);
   objc_storeStrong(v12, 0);
   _Block_object_dispose(&v13, 8);
@@ -195,16 +195,16 @@ void __54__CPSGridTemplateViewController__buttonForIdentifier___block_invoke(voi
   objc_storeStrong(location, 0);
 }
 
-- (id)_prepareCPUIGridButtonsForButtons:(id)a3
+- (id)_prepareCPUIGridButtonsForButtons:(id)buttons
 {
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, buttons);
   v20 = objc_opt_new();
   v10 = objc_alloc(MEMORY[0x277CF9100]);
-  v11 = [(CPSGridTemplateViewController *)v22 view];
-  [v11 frame];
+  view = [(CPSGridTemplateViewController *)selfCopy view];
+  [view frame];
   v16[3] = v3;
   v16[4] = v4;
   *&v17 = v5;
@@ -214,10 +214,10 @@ void __54__CPSGridTemplateViewController__buttonForIdentifier___block_invoke(voi
   v16[1] = v7;
   v16[2] = v8;
   v19 = [v10 initWithSize:1 style:v17 imageSize:{*&v7, *&v8}];
-  MEMORY[0x277D82BD8](v11);
+  MEMORY[0x277D82BD8](view);
   v12 = location[0];
   v14 = MEMORY[0x277D82BE0](v19);
-  v15 = MEMORY[0x277D82BE0](v22);
+  v15 = MEMORY[0x277D82BE0](selfCopy);
   v16[0] = MEMORY[0x277D82BE0](v20);
   [v12 enumerateObjectsUsingBlock:?];
   v13 = MEMORY[0x277D82BE0](v20);
@@ -256,13 +256,13 @@ void __67__CPSGridTemplateViewController__prepareCPUIGridButtonsForButtons___blo
   objc_storeStrong(location, 0);
 }
 
-- (void)setControl:(id)a3 enabled:(BOOL)a4
+- (void)setControl:(id)control enabled:(BOOL)enabled
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v16 = a4;
+  objc_storeStrong(location, control);
+  enabledCopy = enabled;
   v6 = MEMORY[0x277D85CD0];
   v4 = MEMORY[0x277D85CD0];
   queue = v6;
@@ -272,8 +272,8 @@ void __67__CPSGridTemplateViewController__prepareCPUIGridButtonsForButtons___blo
   v11 = __52__CPSGridTemplateViewController_setControl_enabled___block_invoke;
   v12 = &unk_278D92318;
   v13 = MEMORY[0x277D82BE0](location[0]);
-  v15 = v16;
-  v14 = MEMORY[0x277D82BE0](v18);
+  v15 = enabledCopy;
+  v14 = MEMORY[0x277D82BE0](selfCopy);
   dispatch_async(queue, &v8);
   MEMORY[0x277D82BD8](queue);
   objc_storeStrong(&v14, 0);
@@ -295,12 +295,12 @@ void __52__CPSGridTemplateViewController_setControl_enabled___block_invoke(uint6
   objc_storeStrong(&v4, 0);
 }
 
-- (void)reloadTemplate:(id)a3
+- (void)reloadTemplate:(id)template
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, template);
   v4 = MEMORY[0x277D85CD0];
   v3 = MEMORY[0x277D85CD0];
   queue = v4;
@@ -310,7 +310,7 @@ void __52__CPSGridTemplateViewController_setControl_enabled___block_invoke(uint6
   v9 = __48__CPSGridTemplateViewController_reloadTemplate___block_invoke;
   v10 = &unk_278D910D8;
   v11 = MEMORY[0x277D82BE0](location[0]);
-  v12 = MEMORY[0x277D82BE0](v14);
+  v12 = MEMORY[0x277D82BE0](selfCopy);
   dispatch_async(queue, &v6);
   MEMORY[0x277D82BD8](queue);
   objc_storeStrong(&v12, 0);
@@ -348,14 +348,14 @@ double __48__CPSGridTemplateViewController_reloadTemplate___block_invoke(uint64_
   return result;
 }
 
-- (void)gridButton:(id)a3 setImageSet:(id)a4
+- (void)gridButton:(id)button setImageSet:(id)set
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, button);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, set);
   v6 = MEMORY[0x277D85CD0];
   v4 = MEMORY[0x277D85CD0];
   queue = v6;
@@ -364,7 +364,7 @@ double __48__CPSGridTemplateViewController_reloadTemplate___block_invoke(uint64_
   v10 = 0;
   v11 = __56__CPSGridTemplateViewController_gridButton_setImageSet___block_invoke;
   v12 = &unk_278D926F0;
-  v13 = MEMORY[0x277D82BE0](v18);
+  v13 = MEMORY[0x277D82BE0](selfCopy);
   v14 = MEMORY[0x277D82BE0](location[0]);
   v15 = MEMORY[0x277D82BE0](v16);
   dispatch_async(queue, &v8);
@@ -385,14 +385,14 @@ void __56__CPSGridTemplateViewController_gridButton_setImageSet___block_invoke(u
   objc_storeStrong(v2, 0);
 }
 
-- (void)gridButton:(id)a3 setTitleVariants:(id)a4
+- (void)gridButton:(id)button setTitleVariants:(id)variants
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, button);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, variants);
   v6 = MEMORY[0x277D85CD0];
   v4 = MEMORY[0x277D85CD0];
   queue = v6;
@@ -401,7 +401,7 @@ void __56__CPSGridTemplateViewController_gridButton_setImageSet___block_invoke(u
   v10 = 0;
   v11 = __61__CPSGridTemplateViewController_gridButton_setTitleVariants___block_invoke;
   v12 = &unk_278D926F0;
-  v13 = MEMORY[0x277D82BE0](v18);
+  v13 = MEMORY[0x277D82BE0](selfCopy);
   v14 = MEMORY[0x277D82BE0](location[0]);
   v15 = MEMORY[0x277D82BE0](v16);
   dispatch_async(queue, &v8);
@@ -422,13 +422,13 @@ void __61__CPSGridTemplateViewController_gridButton_setTitleVariants___block_inv
   objc_storeStrong(v2, 0);
 }
 
-- (void)gridButton:(id)a3 setUnread:(BOOL)a4
+- (void)gridButton:(id)button setUnread:(BOOL)unread
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v16 = a4;
+  objc_storeStrong(location, button);
+  unreadCopy = unread;
   v6 = MEMORY[0x277D85CD0];
   v4 = MEMORY[0x277D85CD0];
   queue = v6;
@@ -437,9 +437,9 @@ void __61__CPSGridTemplateViewController_gridButton_setTitleVariants___block_inv
   v10 = 0;
   v11 = __54__CPSGridTemplateViewController_gridButton_setUnread___block_invoke;
   v12 = &unk_278D92318;
-  v13 = MEMORY[0x277D82BE0](v18);
+  v13 = MEMORY[0x277D82BE0](selfCopy);
   v14 = MEMORY[0x277D82BE0](location[0]);
-  v15 = v16;
+  v15 = unreadCopy;
   dispatch_async(queue, &v8);
   MEMORY[0x277D82BD8](queue);
   objc_storeStrong(&v14, 0);

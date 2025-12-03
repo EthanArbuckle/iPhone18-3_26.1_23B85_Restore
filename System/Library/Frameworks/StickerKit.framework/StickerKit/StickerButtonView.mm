@@ -1,11 +1,11 @@
 @interface StickerButtonView
-- (_TtC10StickerKit17StickerButtonView)initWithCoder:(id)a3;
+- (_TtC10StickerKit17StickerButtonView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation StickerButtonView
 
-- (_TtC10StickerKit17StickerButtonView)initWithCoder:(id)a3
+- (_TtC10StickerKit17StickerButtonView)initWithCoder:(id)coder
 {
   *(&self->super.super.super._responderFlags + OBJC_IVAR____TtC10StickerKit17StickerButtonView_delegate) = 0;
   swift_unknownObjectWeakInit();

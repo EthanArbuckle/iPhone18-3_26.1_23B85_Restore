@@ -7,10 +7,10 @@
 - (CGRect)normalizedVisibleFrame;
 - (NSString)description;
 - (PFPosterEditConfiguration)init;
-- (PFPosterEditConfiguration)initWithCoder:(id)a3;
+- (PFPosterEditConfiguration)initWithCoder:(id)coder;
 - (id)analyticsPayload;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PFPosterEditConfiguration
@@ -98,7 +98,7 @@
   v47 = objc_alloc(MEMORY[0x1E696AEC0]);
   v3 = objc_opt_class();
   v46 = NSStringFromClass(v3);
-  v45 = [(PFPosterEditConfiguration *)self style];
+  style = [(PFPosterEditConfiguration *)self style];
   [(PFPosterEditConfiguration *)self normalizedVisibleFrame];
   v44 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"{{%.2f, %.2f}, {%.2f, %.2f}}", v4, v5, v6, v7];
   [(PFPosterEditConfiguration *)self normalizedAdaptiveVisibleFrame];
@@ -188,20 +188,20 @@
     v36 = @"N";
   }
 
-  v37 = [v47 initWithFormat:@"<%@ %p; style: %@; norm. visible frame: %@; norm. adapt. visible frame: %@; norm. adapt. time frame: %@; land. norm. visible frame: %@; land. norm. adapt. visible frame: %@; land. norm. adapt. time frame: %@; zoom: %@; depth: %@|%@; settle: %@|%@ spatial: %@|%@; user adj. vis. frame:%@>", v46, self, v45, v44, v43, v42, v41, v40, v28, v39, v31, v32, v33, v34, v30, v35, v36];
+  v37 = [v47 initWithFormat:@"<%@ %p; style: %@; norm. visible frame: %@; norm. adapt. visible frame: %@; norm. adapt. time frame: %@; land. norm. visible frame: %@; land. norm. adapt. visible frame: %@; land. norm. adapt. time frame: %@; zoom: %@; depth: %@|%@; settle: %@|%@ spatial: %@|%@; user adj. vis. frame:%@>", v46, self, style, v44, v43, v42, v41, v40, v28, v39, v31, v32, v33, v34, v30, v35, v36];
 
   return v37;
 }
 
-- (PFPosterEditConfiguration)initWithCoder:(id)a3
+- (PFPosterEditConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v42.receiver = self;
   v42.super_class = PFPosterEditConfiguration;
   v5 = [(PFPosterEditConfiguration *)&v42 init];
-  if ([v4 containsValueForKey:@"version"])
+  if ([coderCopy containsValueForKey:@"version"])
   {
-    v6 = [v4 decodeIntegerForKey:@"version"];
+    v6 = [coderCopy decodeIntegerForKey:@"version"];
   }
 
   else
@@ -209,40 +209,40 @@
     v6 = 0;
   }
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"style"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"style"];
   style = v5->_style;
   v5->_style = v7;
 
   if (v6)
   {
-    [v4 decodeRectForKey:@"visibleFrame"];
+    [coderCopy decodeRectForKey:@"visibleFrame"];
     v5->_normalizedVisibleFrame.origin.x = v9;
     v5->_normalizedVisibleFrame.origin.y = v10;
     v5->_normalizedVisibleFrame.size.width = v11;
     v5->_normalizedVisibleFrame.size.height = v12;
-    [v4 decodeRectForKey:@"landscapeVisibleFrame"];
+    [coderCopy decodeRectForKey:@"landscapeVisibleFrame"];
     v5->_normalizedLandscapeVisibleFrame.origin.x = v13;
     v5->_normalizedLandscapeVisibleFrame.origin.y = v14;
     v5->_normalizedLandscapeVisibleFrame.size.width = v15;
     v5->_normalizedLandscapeVisibleFrame.size.height = v16;
     if (v6 >= 4)
     {
-      [v4 decodeRectForKey:@"adaptiveVisibleFrame"];
+      [coderCopy decodeRectForKey:@"adaptiveVisibleFrame"];
       v5->_normalizedAdaptiveVisibleFrame.origin.x = v17;
       v5->_normalizedAdaptiveVisibleFrame.origin.y = v18;
       v5->_normalizedAdaptiveVisibleFrame.size.width = v19;
       v5->_normalizedAdaptiveVisibleFrame.size.height = v20;
-      [v4 decodeRectForKey:@"landscapeAdaptiveVisibleFrame"];
+      [coderCopy decodeRectForKey:@"landscapeAdaptiveVisibleFrame"];
       v5->_normalizedLandscapeAdaptiveVisibleFrame.origin.x = v21;
       v5->_normalizedLandscapeAdaptiveVisibleFrame.origin.y = v22;
       v5->_normalizedLandscapeAdaptiveVisibleFrame.size.width = v23;
       v5->_normalizedLandscapeAdaptiveVisibleFrame.size.height = v24;
-      [v4 decodeRectForKey:@"adaptiveTimeFrame"];
+      [coderCopy decodeRectForKey:@"adaptiveTimeFrame"];
       v5->_normalizedAdaptiveTimeFrame.origin.x = v25;
       v5->_normalizedAdaptiveTimeFrame.origin.y = v26;
       v5->_normalizedAdaptiveTimeFrame.size.width = v27;
       v5->_normalizedAdaptiveTimeFrame.size.height = v28;
-      [v4 decodeRectForKey:@"landscapeAdaptiveTimeFrame"];
+      [coderCopy decodeRectForKey:@"landscapeAdaptiveTimeFrame"];
       v5->_normalizedLandscapeAdaptiveTimeFrame.origin.x = v29;
       v5->_normalizedLandscapeAdaptiveTimeFrame.origin.y = v30;
       v5->_normalizedLandscapeAdaptiveTimeFrame.size.width = v31;
@@ -270,31 +270,31 @@
   }
 
 LABEL_11:
-  v5->_isPerspectiveZoomEnabled = [v4 decodeBoolForKey:@"isPerspectiveZoomEnabled"];
-  v5->_isDepthEnabled = [v4 decodeBoolForKey:@"isDepthEnabled"];
-  v5->_isDepthAvailable = [v4 decodeBoolForKey:@"isDepthAvailable"];
-  v5->_isLandscapeDepthEnabled = [v4 decodeBoolForKey:@"isLandscapeDepthEnabled"];
-  if ([v4 containsValueForKey:@"additionalTitleLabelHeight"])
+  v5->_isPerspectiveZoomEnabled = [coderCopy decodeBoolForKey:@"isPerspectiveZoomEnabled"];
+  v5->_isDepthEnabled = [coderCopy decodeBoolForKey:@"isDepthEnabled"];
+  v5->_isDepthAvailable = [coderCopy decodeBoolForKey:@"isDepthAvailable"];
+  v5->_isLandscapeDepthEnabled = [coderCopy decodeBoolForKey:@"isLandscapeDepthEnabled"];
+  if ([coderCopy containsValueForKey:@"additionalTitleLabelHeight"])
   {
-    [v4 decodeDoubleForKey:@"additionalTitleLabelHeight"];
+    [coderCopy decodeDoubleForKey:@"additionalTitleLabelHeight"];
     v5->_additionalTitleLabelHeight = v34;
   }
 
-  if ([v4 containsValueForKey:@"landscapeAdditionalTitleLabelHeight"])
+  if ([coderCopy containsValueForKey:@"landscapeAdditionalTitleLabelHeight"])
   {
-    [v4 decodeDoubleForKey:@"landscapeAdditionalTitleLabelHeight"];
+    [coderCopy decodeDoubleForKey:@"landscapeAdditionalTitleLabelHeight"];
     v5->_landscapeAdditionalTitleLabelHeight = v35;
   }
 
-  if ([v4 containsValueForKey:@"userAdjustedTitleLabelHeightOffset"])
+  if ([coderCopy containsValueForKey:@"userAdjustedTitleLabelHeightOffset"])
   {
-    [v4 decodeDoubleForKey:@"userAdjustedTitleLabelHeightOffset"];
+    [coderCopy decodeDoubleForKey:@"userAdjustedTitleLabelHeightOffset"];
     v5->_userAdjustedTitleLabelHeightOffset = v36;
   }
 
-  if ([v4 containsValueForKey:@"landscapeUserAdjustedTitleLabelHeightOffset"])
+  if ([coderCopy containsValueForKey:@"landscapeUserAdjustedTitleLabelHeightOffset"])
   {
-    [v4 decodeDoubleForKey:@"landscapeUserAdjustedTitleLabelHeightOffset"];
+    [coderCopy decodeDoubleForKey:@"landscapeUserAdjustedTitleLabelHeightOffset"];
     v5->_landscapeUserAdjustedTitleLabelHeightOffset = v37;
   }
 
@@ -306,13 +306,13 @@ LABEL_11:
 
   else
   {
-    v5->_isSettlingEffectEnabled = [v4 decodeBoolForKey:@"isSettlingEffectEnabled"];
-    v5->_isSettlingEffectAvailable = [v4 decodeBoolForKey:@"isSettlingEffectAvailable"];
+    v5->_isSettlingEffectEnabled = [coderCopy decodeBoolForKey:@"isSettlingEffectEnabled"];
+    v5->_isSettlingEffectAvailable = [coderCopy decodeBoolForKey:@"isSettlingEffectAvailable"];
     if (v6 != 2)
     {
-      v5->_isSpatialPhotoEnabled = [v4 decodeBoolForKey:@"isSpatialPhotoEnabled"];
-      v5->_isSpatialPhotoAvailable = [v4 decodeBoolForKey:@"isSpatialPhotoAvailable"];
-      v39 = [v4 decodeBoolForKey:@"userAdjustedVisibleFrame"];
+      v5->_isSpatialPhotoEnabled = [coderCopy decodeBoolForKey:@"isSpatialPhotoEnabled"];
+      v5->_isSpatialPhotoAvailable = [coderCopy decodeBoolForKey:@"isSpatialPhotoAvailable"];
+      v39 = [coderCopy decodeBoolForKey:@"userAdjustedVisibleFrame"];
       v38 = 0;
       v5->_userAdjustedVisibleFrame = v39;
       goto LABEL_25;
@@ -329,47 +329,47 @@ LABEL_25:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeInteger:4 forKey:@"version"];
-  v4 = [(PFPosterEditConfiguration *)self style];
-  [v5 encodeObject:v4 forKey:@"style"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:4 forKey:@"version"];
+  style = [(PFPosterEditConfiguration *)self style];
+  [coderCopy encodeObject:style forKey:@"style"];
 
   [(PFPosterEditConfiguration *)self normalizedVisibleFrame];
-  [v5 encodeRect:@"visibleFrame" forKey:?];
+  [coderCopy encodeRect:@"visibleFrame" forKey:?];
   [(PFPosterEditConfiguration *)self normalizedLandscapeVisibleFrame];
-  [v5 encodeRect:@"landscapeVisibleFrame" forKey:?];
+  [coderCopy encodeRect:@"landscapeVisibleFrame" forKey:?];
   [(PFPosterEditConfiguration *)self normalizedAdaptiveVisibleFrame];
-  [v5 encodeRect:@"adaptiveVisibleFrame" forKey:?];
+  [coderCopy encodeRect:@"adaptiveVisibleFrame" forKey:?];
   [(PFPosterEditConfiguration *)self normalizedLandscapeAdaptiveVisibleFrame];
-  [v5 encodeRect:@"landscapeAdaptiveVisibleFrame" forKey:?];
+  [coderCopy encodeRect:@"landscapeAdaptiveVisibleFrame" forKey:?];
   [(PFPosterEditConfiguration *)self normalizedAdaptiveTimeFrame];
-  [v5 encodeRect:@"adaptiveTimeFrame" forKey:?];
+  [coderCopy encodeRect:@"adaptiveTimeFrame" forKey:?];
   [(PFPosterEditConfiguration *)self normalizedLandscapeAdaptiveTimeFrame];
-  [v5 encodeRect:@"landscapeAdaptiveTimeFrame" forKey:?];
-  [v5 encodeBool:-[PFPosterEditConfiguration isPerspectiveZoomEnabled](self forKey:{"isPerspectiveZoomEnabled"), @"isPerspectiveZoomEnabled"}];
-  [v5 encodeBool:-[PFPosterEditConfiguration isDepthEnabled](self forKey:{"isDepthEnabled"), @"isDepthEnabled"}];
-  [v5 encodeBool:-[PFPosterEditConfiguration isDepthAvailable](self forKey:{"isDepthAvailable"), @"isDepthAvailable"}];
-  [v5 encodeBool:-[PFPosterEditConfiguration isLandscapeDepthEnabled](self forKey:{"isLandscapeDepthEnabled"), @"isLandscapeDepthEnabled"}];
-  [v5 encodeBool:-[PFPosterEditConfiguration isSettlingEffectEnabled](self forKey:{"isSettlingEffectEnabled"), @"isSettlingEffectEnabled"}];
-  [v5 encodeBool:-[PFPosterEditConfiguration isSettlingEffectAvailable](self forKey:{"isSettlingEffectAvailable"), @"isSettlingEffectAvailable"}];
-  [v5 encodeBool:-[PFPosterEditConfiguration isSpatialPhotoEnabled](self forKey:{"isSpatialPhotoEnabled"), @"isSpatialPhotoEnabled"}];
-  [v5 encodeBool:-[PFPosterEditConfiguration isSpatialPhotoAvailable](self forKey:{"isSpatialPhotoAvailable"), @"isSpatialPhotoAvailable"}];
-  [v5 encodeBool:-[PFPosterEditConfiguration userAdjustedVisibleFrame](self forKey:{"userAdjustedVisibleFrame"), @"userAdjustedVisibleFrame"}];
+  [coderCopy encodeRect:@"landscapeAdaptiveTimeFrame" forKey:?];
+  [coderCopy encodeBool:-[PFPosterEditConfiguration isPerspectiveZoomEnabled](self forKey:{"isPerspectiveZoomEnabled"), @"isPerspectiveZoomEnabled"}];
+  [coderCopy encodeBool:-[PFPosterEditConfiguration isDepthEnabled](self forKey:{"isDepthEnabled"), @"isDepthEnabled"}];
+  [coderCopy encodeBool:-[PFPosterEditConfiguration isDepthAvailable](self forKey:{"isDepthAvailable"), @"isDepthAvailable"}];
+  [coderCopy encodeBool:-[PFPosterEditConfiguration isLandscapeDepthEnabled](self forKey:{"isLandscapeDepthEnabled"), @"isLandscapeDepthEnabled"}];
+  [coderCopy encodeBool:-[PFPosterEditConfiguration isSettlingEffectEnabled](self forKey:{"isSettlingEffectEnabled"), @"isSettlingEffectEnabled"}];
+  [coderCopy encodeBool:-[PFPosterEditConfiguration isSettlingEffectAvailable](self forKey:{"isSettlingEffectAvailable"), @"isSettlingEffectAvailable"}];
+  [coderCopy encodeBool:-[PFPosterEditConfiguration isSpatialPhotoEnabled](self forKey:{"isSpatialPhotoEnabled"), @"isSpatialPhotoEnabled"}];
+  [coderCopy encodeBool:-[PFPosterEditConfiguration isSpatialPhotoAvailable](self forKey:{"isSpatialPhotoAvailable"), @"isSpatialPhotoAvailable"}];
+  [coderCopy encodeBool:-[PFPosterEditConfiguration userAdjustedVisibleFrame](self forKey:{"userAdjustedVisibleFrame"), @"userAdjustedVisibleFrame"}];
   [(PFPosterEditConfiguration *)self additionalTitleLabelHeight];
-  [v5 encodeDouble:@"additionalTitleLabelHeight" forKey:?];
+  [coderCopy encodeDouble:@"additionalTitleLabelHeight" forKey:?];
   [(PFPosterEditConfiguration *)self landscapeAdditionalTitleLabelHeight];
-  [v5 encodeDouble:@"landscapeAdditionalTitleLabelHeight" forKey:?];
+  [coderCopy encodeDouble:@"landscapeAdditionalTitleLabelHeight" forKey:?];
   [(PFPosterEditConfiguration *)self userAdjustedTitleLabelHeightOffset];
-  [v5 encodeDouble:@"userAdjustedTitleLabelHeightOffset" forKey:?];
+  [coderCopy encodeDouble:@"userAdjustedTitleLabelHeightOffset" forKey:?];
   [(PFPosterEditConfiguration *)self landscapeUserAdjustedTitleLabelHeightOffset];
-  [v5 encodeDouble:@"landscapeUserAdjustedTitleLabelHeightOffset" forKey:?];
+  [coderCopy encodeDouble:@"landscapeUserAdjustedTitleLabelHeightOffset" forKey:?];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [PFPosterEditConfiguration allocWithZone:a3];
+  v4 = [PFPosterEditConfiguration allocWithZone:zone];
   objc_storeStrong(&v4->_style, self->_style);
   size = self->_normalizedVisibleFrame.size;
   v4->_normalizedVisibleFrame.origin = self->_normalizedVisibleFrame.origin;
@@ -436,13 +436,13 @@ LABEL_25:
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:v18 count:8];
   v12 = [v3 initWithDictionary:v11];
 
-  v13 = [(PFPosterEditConfiguration *)self style];
+  style = [(PFPosterEditConfiguration *)self style];
 
-  if (v13)
+  if (style)
   {
-    v14 = [(PFPosterEditConfiguration *)self style];
-    v15 = [v14 kind];
-    [v12 setObject:v15 forKeyedSubscript:@"style_kind"];
+    style2 = [(PFPosterEditConfiguration *)self style];
+    kind = [style2 kind];
+    [v12 setObject:kind forKeyedSubscript:@"style_kind"];
   }
 
   return v12;

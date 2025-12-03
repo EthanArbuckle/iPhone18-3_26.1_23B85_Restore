@@ -6,30 +6,30 @@
 
 - (void)performBackgroundTask
 {
-  v4 = [(PXCMMActionPerformer *)self session];
-  v5 = [v4 dataSourceManager];
-  v6 = [v5 dataSource];
+  session = [(PXCMMActionPerformer *)self session];
+  dataSourceManager = [session dataSourceManager];
+  dataSource = [dataSourceManager dataSource];
 
-  if ([v6 numberOfSections] >= 1)
+  if ([dataSource numberOfSections] >= 1)
   {
-    *buf = [v6 identifier];
+    *buf = [dataSource identifier];
     v17 = xmmword_1A5380D10;
     v18 = 0x7FFFFFFFFFFFFFFFLL;
-    v7 = [v6 assetCollectionAtSectionIndexPath:buf];
+    v7 = [dataSource assetCollectionAtSectionIndexPath:buf];
     if (v7)
     {
       v8 = v7;
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v11 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v12 = objc_opt_class();
         v13 = NSStringFromClass(v12);
-        v14 = [v8 px_descriptionForAssertionMessage];
-        [v11 handleFailureInMethod:a2 object:self file:@"PXCMMPhotoKitNotifyWhenReadyActionPerformer.m" lineNumber:28 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"assetCollection", v13, v14}];
+        px_descriptionForAssertionMessage = [v8 px_descriptionForAssertionMessage];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMPhotoKitNotifyWhenReadyActionPerformer.m" lineNumber:28 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"assetCollection", v13, px_descriptionForAssertionMessage}];
       }
 
-      v9 = [v6 numberOfItemsInSection:0];
+      v9 = [dataSource numberOfItemsInSection:0];
 
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
@@ -41,7 +41,7 @@
       goto LABEL_10;
     }
 
-    [v6 numberOfItemsInSection:0];
+    [dataSource numberOfItemsInSection:0];
   }
 
   v10 = PLSharingGetLog();

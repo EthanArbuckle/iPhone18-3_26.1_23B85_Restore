@@ -1,13 +1,13 @@
 @interface NSData
-+ (id)CAF_encodeCarDataFrom:(id)a3 error:(id *)a4;
-- (id)CAF_decodeCarData:(id *)a3;
++ (id)CAF_encodeCarDataFrom:(id)from error:(id *)error;
+- (id)CAF_decodeCarData:(id *)data;
 @end
 
 @implementation NSData
 
-+ (id)CAF_encodeCarDataFrom:(id)a3 error:(id *)a4
++ (id)CAF_encodeCarDataFrom:(id)from error:(id *)error
 {
-  if (a3)
+  if (from)
   {
     Data = OPACKEncoderCreateData();
   }
@@ -20,7 +20,7 @@
   return Data;
 }
 
-- (id)CAF_decodeCarData:(id *)a3
+- (id)CAF_decodeCarData:(id *)data
 {
   v3 = OPACKDecodeData();
 

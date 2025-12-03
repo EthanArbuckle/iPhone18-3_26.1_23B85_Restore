@@ -10,7 +10,7 @@
 
 - (TTSAssetType)assetType
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B1ABC12C();
 
   return v3;
@@ -18,7 +18,7 @@
 
 - (TTSAssetTechnology)technology
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B1ABC150();
 
   return v3;
@@ -26,7 +26,7 @@
 
 - (TTSAssetQuality)quality
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B1B2ECA4();
 
   return v3;

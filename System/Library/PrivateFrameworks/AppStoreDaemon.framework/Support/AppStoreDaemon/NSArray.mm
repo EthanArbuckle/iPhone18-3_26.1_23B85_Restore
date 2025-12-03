@@ -1,17 +1,17 @@
 @interface NSArray
 - (id)_tcr_associatedReader;
-- (void)lib_enumerateObjectsUsingAsyncBlock:(id)a3 completionHandler:;
+- (void)lib_enumerateObjectsUsingAsyncBlock:(id)block completionHandler:;
 @end
 
 @implementation NSArray
 
-- (void)lib_enumerateObjectsUsingAsyncBlock:(id)a3 completionHandler:
+- (void)lib_enumerateObjectsUsingAsyncBlock:(id)block completionHandler:
 {
   v4 = v3;
   v7 = sub_100085D40(&qword_10059C3E0);
   __chkstk_darwin(v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a3);
+  v10 = _Block_copy(block);
   v11 = _Block_copy(v4);
   v12 = swift_allocObject();
   v12[2] = v10;
@@ -29,7 +29,7 @@
   v15[3] = 0;
   v15[4] = &unk_1004366D0;
   v15[5] = v14;
-  v16 = self;
+  selfCopy = self;
   sub_1001BD9B4(0, 0, v9, &unk_1004344E0, v15);
 }
 
@@ -37,12 +37,12 @@
 {
   v8.receiver = self;
   v8.super_class = NSArray;
-  v3 = [(NSArray *)&v8 _tcr_associatedReader];
+  _tcr_associatedReader = [(NSArray *)&v8 _tcr_associatedReader];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v4 = [TypeCheckedArrayReader alloc];
-    v5 = self;
+    selfCopy = self;
     if (v4)
     {
       v9.receiver = v4;
@@ -51,15 +51,15 @@
       v4 = v6;
       if (v6)
       {
-        objc_storeWeak(&v6[1].super.isa, v5);
+        objc_storeWeak(&v6[1].super.isa, selfCopy);
       }
     }
 
-    [(NSArray *)v5 _tcr_associateWithReader:v4];
-    v3 = v4;
+    [(NSArray *)selfCopy _tcr_associateWithReader:v4];
+    _tcr_associatedReader = v4;
   }
 
-  return v3;
+  return _tcr_associatedReader;
 }
 
 @end

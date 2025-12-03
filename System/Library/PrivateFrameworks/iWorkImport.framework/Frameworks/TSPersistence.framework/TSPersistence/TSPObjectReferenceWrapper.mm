@@ -1,12 +1,12 @@
 @interface TSPObjectReferenceWrapper
-+ (BOOL)allowUnarchivingObjectClass:(Class)a3;
++ (BOOL)allowUnarchivingObjectClass:(Class)class;
 - (TSPObjectReferenceWrapper)init;
-- (TSPObjectReferenceWrapper)initWithReferencedObject:(id)a3;
+- (TSPObjectReferenceWrapper)initWithReferencedObject:(id)object;
 @end
 
 @implementation TSPObjectReferenceWrapper
 
-+ (BOOL)allowUnarchivingObjectClass:(Class)a3
++ (BOOL)allowUnarchivingObjectClass:(Class)class
 {
   v3 = MEMORY[0x277D81150];
   v4 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "+[TSPObjectReferenceWrapper allowUnarchivingObjectClass:]");
@@ -45,16 +45,16 @@
   objc_exception_throw(v14);
 }
 
-- (TSPObjectReferenceWrapper)initWithReferencedObject:(id)a3
+- (TSPObjectReferenceWrapper)initWithReferencedObject:(id)object
 {
-  v5 = a3;
+  objectCopy = object;
   v9.receiver = self;
   v9.super_class = TSPObjectReferenceWrapper;
   v6 = [(TSPObjectReferenceWrapper *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_object, a3);
+    objc_storeStrong(&v6->_object, object);
   }
 
   return v7;

@@ -6,9 +6,9 @@
 
 - (void)setupFilteringContexts
 {
-  v2 = self;
+  selfCopy = self;
   v3 = objc_opt_class();
-  if (!v2)
+  if (!selfCopy)
   {
     NSStringFromClass(v3);
     objc_claimAutoreleasedReturnValue();
@@ -18,7 +18,7 @@ LABEL_8:
     return;
   }
 
-  if (([(PGAmbientCityWallpaperSuggester *)v2 isMemberOfClass:v3]& 1) == 0)
+  if (([(PGAmbientCityWallpaperSuggester *)selfCopy isMemberOfClass:v3]& 1) == 0)
   {
     v5 = objc_opt_class();
     NSStringFromClass(v5);
@@ -29,10 +29,10 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v4 = [[PGCityscapeWallpaperSuggesterFilteringContext alloc] initForAmbient];
-  [(PGCityscapeWallpaperSuggester *)v2 setPrimaryFilteringContext:v4];
+  initForAmbient = [[PGCityscapeWallpaperSuggesterFilteringContext alloc] initForAmbient];
+  [(PGCityscapeWallpaperSuggester *)selfCopy setPrimaryFilteringContext:initForAmbient];
 
-  [(PGCityscapeWallpaperSuggester *)v2 setSecondaryFilteringContext:0];
+  [(PGCityscapeWallpaperSuggester *)selfCopy setSecondaryFilteringContext:0];
 }
 
 @end

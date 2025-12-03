@@ -1,13 +1,13 @@
 @interface OrgApacheLuceneCodecsCompressingCompressingTermVectorsWriter
 + (void)initialize;
-- (BOOL)tooDirtyWithOrgApacheLuceneCodecsCompressingCompressingTermVectorsReader:(id)a3;
+- (BOOL)tooDirtyWithOrgApacheLuceneCodecsCompressingCompressingTermVectorsReader:(id)reader;
 - (BOOL)triggerFlush;
 - (id)flush;
-- (int)mergeWithOrgApacheLuceneIndexMergeState:(id)a3;
+- (int)mergeWithOrgApacheLuceneIndexMergeState:(id)state;
 - (void)close;
 - (void)dealloc;
 - (void)finishDocument;
-- (void)startDocumentWithInt:(int)a3;
+- (void)startDocumentWithInt:(int)int;
 @end
 
 @implementation OrgApacheLuceneCodecsCompressingCompressingTermVectorsWriter
@@ -23,9 +23,9 @@
   JreStrongAssign(&self->indexWriter_, 0);
 }
 
-- (void)startDocumentWithInt:(int)a3
+- (void)startDocumentWithInt:(int)int
 {
-  v4 = sub_1000055F0(&self->super.super.isa, a3);
+  v4 = sub_1000055F0(&self->super.super.isa, int);
 
   JreStrongAssign(&self->curDoc_, v4);
 }
@@ -51,15 +51,15 @@
 
 - (BOOL)triggerFlush
 {
-  v1 = *(a1 + 144);
+  v1 = *(self + 144);
   if (!v1)
   {
     goto LABEL_7;
   }
 
-  if (*(v1 + 24) < *(a1 + 48))
+  if (*(v1 + 24) < *(self + 48))
   {
-    v2 = *(a1 + 80);
+    v2 = *(self + 80);
     if (v2)
     {
       return [v2 size] > 127;
@@ -74,85 +74,85 @@ LABEL_7:
 
 - (id)flush
 {
-  v2 = *(a1 + 80);
+  v2 = *(self + 80);
   if (!v2)
   {
     goto LABEL_10;
   }
 
   v3 = [v2 size];
-  v4 = *(a1 + 16);
+  v4 = *(self + 16);
   if (!v4)
   {
     goto LABEL_10;
   }
 
   v5 = v3;
-  v6 = *(a1 + 24);
+  v6 = *(self + 24);
   if (!v6)
   {
     goto LABEL_10;
   }
 
   [v4 writeIndexWithInt:v5 withLong:{objc_msgSend(v6, "getFilePointer")}];
-  [*(a1 + 24) writeVIntWithInt:(*(a1 + 72) - v5)];
-  [*(a1 + 24) writeVIntWithInt:v5];
-  v7 = sub_100006308(a1, v5);
+  [*(self + 24) writeVIntWithInt:(*(self + 72) - v5)];
+  [*(self + 24) writeVIntWithInt:v5];
+  v7 = sub_100006308(self, v5);
   if (v7 < 1)
   {
     goto LABEL_8;
   }
 
   v8 = v7;
-  v9 = sub_1000064AC(a1);
-  sub_1000068C0(a1, v8, v9, v10, v11, v12, v13, v14);
-  sub_100006AF8(a1, v8, v9);
-  sub_100006FCC(a1, v8);
-  sub_10000730C(a1);
-  sub_100007714(a1);
-  sub_100007964(a1);
-  sub_100007C4C(a1, v9);
-  sub_100008AC0(a1);
-  v15 = *(a1 + 40);
-  if (!v15 || (v16 = *(a1 + 144)) == 0)
+  v9 = sub_1000064AC(self);
+  sub_1000068C0(self, v8, v9, v10, v11, v12, v13, v14);
+  sub_100006AF8(self, v8, v9);
+  sub_100006FCC(self, v8);
+  sub_10000730C(self);
+  sub_100007714(self);
+  sub_100007964(self);
+  sub_100007C4C(self, v9);
+  sub_100008AC0(self);
+  v15 = *(self + 40);
+  if (!v15 || (v16 = *(self + 144)) == 0)
   {
 LABEL_10:
     JreThrowNullPointerException();
   }
 
-  [v15 compressWithByteArray:*(v16 + 16) withInt:0 withInt:*(v16 + 24) withOrgApacheLuceneStoreDataOutput:*(a1 + 24)];
+  [v15 compressWithByteArray:*(v16 + 16) withInt:0 withInt:*(v16 + 24) withOrgApacheLuceneStoreDataOutput:*(self + 24)];
 LABEL_8:
-  [*(a1 + 80) clear];
-  JreStrongAssign((a1 + 88), 0);
-  result = JreStrongAssign((a1 + 96), 0);
-  v18 = *(a1 + 144);
+  [*(self + 80) clear];
+  JreStrongAssign((self + 88), 0);
+  result = JreStrongAssign((self + 96), 0);
+  v18 = *(self + 144);
   if (!v18)
   {
     goto LABEL_10;
   }
 
   *(v18 + 24) = 0;
-  ++*(a1 + 56);
+  ++*(self + 56);
   return result;
 }
 
-- (int)mergeWithOrgApacheLuceneIndexMergeState:(id)a3
+- (int)mergeWithOrgApacheLuceneIndexMergeState:(id)state
 {
-  if (!a3 || (v4 = *(a3 + 12)) == 0)
+  if (!state || (v4 = *(state + 12)) == 0)
   {
 LABEL_64:
     JreThrowNullPointerException();
   }
 
   v61 = *(v4 + 8);
-  v62 = new_OrgApacheLuceneCodecsCompressingMatchingReaders_initWithOrgApacheLuceneIndexMergeState_(a3);
+  v62 = new_OrgApacheLuceneCodecsCompressingMatchingReaders_initWithOrgApacheLuceneIndexMergeState_(state);
   if (v61 >= 1)
   {
     v6 = 0;
     v7 = 0;
     while (1)
     {
-      v8 = *(a3 + 4);
+      v8 = *(state + 4);
       if (!v8)
       {
         goto LABEL_64;
@@ -193,14 +193,14 @@ LABEL_64:
         }
       }
 
-      v15 = *(a3 + 12);
+      v15 = *(state + 12);
       v16 = *(v15 + 8);
       if (v6 >= v16)
       {
         IOSArray_throwOutOfBoundsWithMsg(v16, v6);
       }
 
-      v17 = *(a3 + 8);
+      v17 = *(state + 8);
       if (!v17)
       {
         goto LABEL_64;
@@ -229,35 +229,35 @@ LABEL_64:
           ++self->numDirtyChunks_;
         }
 
-        v24 = [v14 getVectorsStream];
-        v25 = [v14 getIndexReader];
-        if (!v24)
+        getVectorsStream = [v14 getVectorsStream];
+        getIndexReader = [v14 getIndexReader];
+        if (!getVectorsStream)
         {
           goto LABEL_64;
         }
 
-        v26 = v25;
-        if (!v25)
+        v26 = getIndexReader;
+        if (!getIndexReader)
         {
           goto LABEL_64;
         }
 
-        [v24 seekWithLong:{objc_msgSend(v25, "getStartPointerWithInt:", 0)}];
+        [getVectorsStream seekWithLong:{objc_msgSend(getIndexReader, "getStartPointerWithInt:", 0)}];
         if (v18 >= 1)
         {
           v59 = v26;
-          v60 = v24;
+          v60 = getVectorsStream;
           v27 = 0;
-          while ([v24 readVInt] == v27)
+          while ([getVectorsStream readVInt] == v27)
           {
-            v35 = [v24 readVInt];
+            readVInt = [getVectorsStream readVInt];
             indexWriter = self->indexWriter_;
             if (!indexWriter)
             {
               goto LABEL_64;
             }
 
-            v37 = v35;
+            v37 = readVInt;
             vectorsStream = self->vectorsStream_;
             if (!vectorsStream)
             {
@@ -280,17 +280,17 @@ LABEL_68:
 
             if (v27 == v18)
             {
-              v46 = [v14 getMaxPointer];
+              getMaxPointer = [v14 getMaxPointer];
             }
 
             else
             {
-              v46 = [v59 getStartPointerWithInt:?];
+              getMaxPointer = [v59 getStartPointerWithInt:?];
             }
 
             v7 = (v37 + v7);
-            v24 = v60;
-            -[OrgApacheLuceneStoreDataOutput copyBytesWithOrgApacheLuceneStoreDataInput:withLong:](self->vectorsStream_, "copyBytesWithOrgApacheLuceneStoreDataInput:withLong:", v60, v46 - [v60 getFilePointer]);
+            getVectorsStream = v60;
+            -[OrgApacheLuceneStoreDataOutput copyBytesWithOrgApacheLuceneStoreDataInput:withLong:](self->vectorsStream_, "copyBytesWithOrgApacheLuceneStoreDataInput:withLong:", v60, getMaxPointer - [v60 getFilePointer]);
             if (v27 >= v18)
             {
               goto LABEL_56;
@@ -299,15 +299,15 @@ LABEL_68:
 
           v49 = JreStrcat("$I$I", v28, v29, v30, v31, v32, v33, v34, @"invalid state: base=");
 LABEL_66:
-          v50 = v24;
+          v50 = getVectorsStream;
           goto LABEL_68;
         }
 
 LABEL_56:
-        v47 = [v24 getFilePointer];
-        if (v47 != [v14 getMaxPointer])
+        getFilePointer = [getVectorsStream getFilePointer];
+        if (getFilePointer != [v14 getMaxPointer])
         {
-          [v24 getFilePointer];
+          [getVectorsStream getFilePointer];
           [v14 getMaxPointer];
           v49 = JreStrcat("$J$J", v52, v53, v54, v55, v56, v57, v58, @"invalid state: pos=");
           goto LABEL_66;
@@ -341,7 +341,7 @@ LABEL_56:
                 v22 = 0;
               }
 
-              [(OrgApacheLuceneCodecsTermVectorsWriter *)self addAllDocVectorsWithOrgApacheLuceneIndexFields:v22 withOrgApacheLuceneIndexMergeState:a3];
+              [(OrgApacheLuceneCodecsTermVectorsWriter *)self addAllDocVectorsWithOrgApacheLuceneIndexFields:v22 withOrgApacheLuceneIndexMergeState:state];
               v7 = (v7 + 1);
             }
 
@@ -361,24 +361,24 @@ LABEL_56:
 
   v7 = 0;
 LABEL_63:
-  [(OrgApacheLuceneCodecsCompressingCompressingTermVectorsWriter *)self finishWithOrgApacheLuceneIndexFieldInfos:*(a3 + 2) withInt:v7];
+  [(OrgApacheLuceneCodecsCompressingCompressingTermVectorsWriter *)self finishWithOrgApacheLuceneIndexFieldInfos:*(state + 2) withInt:v7];
   return v7;
 }
 
-- (BOOL)tooDirtyWithOrgApacheLuceneCodecsCompressingCompressingTermVectorsReader:(id)a3
+- (BOOL)tooDirtyWithOrgApacheLuceneCodecsCompressingCompressingTermVectorsReader:(id)reader
 {
-  if (!a3)
+  if (!reader)
   {
     JreThrowNullPointerException();
   }
 
-  if ([a3 getNumDirtyChunks] > 1024)
+  if ([reader getNumDirtyChunks] > 1024)
   {
     return 1;
   }
 
-  v5 = 100 * [a3 getNumDirtyChunks];
-  return v5 > [a3 getNumChunks];
+  v5 = 100 * [reader getNumDirtyChunks];
+  return v5 > [reader getNumChunks];
 }
 
 - (void)dealloc
@@ -390,11 +390,11 @@ LABEL_63:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     OrgApacheLuceneCodecsCompressingCompressingTermVectorsWriter_FLAGS_BITS_ = OrgApacheLuceneUtilPackedPackedInts_bitsRequiredWithLong_(7uLL, v2, v3, v4, v5, v6, v7, v8);
-    v9 = [OrgApacheLuceneCodecsCompressingCompressingTermVectorsWriter_class_() getName];
-    v17 = JreStrcat("$$", v10, v11, v12, v13, v14, v15, v16, v9);
+    getName = [OrgApacheLuceneCodecsCompressingCompressingTermVectorsWriter_class_() getName];
+    v17 = JreStrcat("$$", v10, v11, v12, v13, v14, v15, v16, getName);
     JreStrongAssign(&OrgApacheLuceneCodecsCompressingCompressingTermVectorsWriter_BULK_MERGE_ENABLED_SYSPROP_, v17);
     PropertyWithNSString_withNSString = JavaLangSystem_getPropertyWithNSString_withNSString_(OrgApacheLuceneCodecsCompressingCompressingTermVectorsWriter_BULK_MERGE_ENABLED_SYSPROP_, @"true");
     OrgApacheLuceneCodecsCompressingCompressingTermVectorsWriter_BULK_MERGE_ENABLED_ = JavaLangBoolean_parseBooleanWithNSString_(PropertyWithNSString_withNSString);

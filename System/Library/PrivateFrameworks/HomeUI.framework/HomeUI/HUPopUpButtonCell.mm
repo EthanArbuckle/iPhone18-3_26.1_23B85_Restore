@@ -1,86 +1,86 @@
 @interface HUPopUpButtonCell
-- (HUPopUpButtonCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (HUPopUpButtonCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)prepareForReuse;
-- (void)updateUIWithAnimation:(BOOL)a3;
+- (void)updateUIWithAnimation:(BOOL)animation;
 @end
 
 @implementation HUPopUpButtonCell
 
-- (HUPopUpButtonCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (HUPopUpButtonCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v47.receiver = self;
   v47.super_class = HUPopUpButtonCell;
-  v4 = [(HUPopUpButtonCell *)&v47 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(HUPopUpButtonCell *)&v47 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
-    v5 = [MEMORY[0x277D75230] plainButtonConfiguration];
-    [v5 setTitleLineBreakMode:4];
-    v6 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [v5 setBaseForegroundColor:v6];
+    plainButtonConfiguration = [MEMORY[0x277D75230] plainButtonConfiguration];
+    [plainButtonConfiguration setTitleLineBreakMode:4];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    [plainButtonConfiguration setBaseForegroundColor:secondaryLabelColor];
 
-    [v5 contentInsets];
+    [plainButtonConfiguration contentInsets];
     v8 = v7;
-    [v5 contentInsets];
-    [v5 setContentInsets:{v8, 0.0}];
-    v9 = [MEMORY[0x277D75220] buttonWithConfiguration:v5 primaryAction:0];
+    [plainButtonConfiguration contentInsets];
+    [plainButtonConfiguration setContentInsets:{v8, 0.0}];
+    v9 = [MEMORY[0x277D75220] buttonWithConfiguration:plainButtonConfiguration primaryAction:0];
     button = v4->_button;
     v4->_button = v9;
 
     [(UIButton *)v4->_button setShowsMenuAsPrimaryAction:1];
     [(UIButton *)v4->_button setChangesSelectionAsPrimaryAction:1];
     [(UIButton *)v4->_button setTranslatesAutoresizingMaskIntoConstraints:0];
-    v11 = [(HUPopUpButtonCell *)v4 contentView];
-    [v11 addSubview:v4->_button];
+    contentView = [(HUPopUpButtonCell *)v4 contentView];
+    [contentView addSubview:v4->_button];
 
-    v12 = [(HUPopUpButtonCell *)v4 textLabel];
-    [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
+    textLabel = [(HUPopUpButtonCell *)v4 textLabel];
+    [textLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v13 = [MEMORY[0x277CBEB18] array];
-    v14 = [(HUPopUpButtonCell *)v4 textLabel];
-    v15 = [v14 topAnchor];
-    v16 = [(HUPopUpButtonCell *)v4 contentView];
-    v17 = [v16 layoutMarginsGuide];
-    v18 = [v17 topAnchor];
-    v19 = [v15 constraintEqualToAnchor:v18];
-    [v13 addObject:v19];
+    array = [MEMORY[0x277CBEB18] array];
+    textLabel2 = [(HUPopUpButtonCell *)v4 textLabel];
+    topAnchor = [textLabel2 topAnchor];
+    contentView2 = [(HUPopUpButtonCell *)v4 contentView];
+    layoutMarginsGuide = [contentView2 layoutMarginsGuide];
+    topAnchor2 = [layoutMarginsGuide topAnchor];
+    v19 = [topAnchor constraintEqualToAnchor:topAnchor2];
+    [array addObject:v19];
 
-    v20 = [(HUPopUpButtonCell *)v4 textLabel];
-    v21 = [v20 bottomAnchor];
-    v22 = [(HUPopUpButtonCell *)v4 contentView];
-    v23 = [v22 layoutMarginsGuide];
-    v24 = [v23 bottomAnchor];
-    v25 = [v21 constraintEqualToAnchor:v24];
-    [v13 addObject:v25];
+    textLabel3 = [(HUPopUpButtonCell *)v4 textLabel];
+    bottomAnchor = [textLabel3 bottomAnchor];
+    contentView3 = [(HUPopUpButtonCell *)v4 contentView];
+    layoutMarginsGuide2 = [contentView3 layoutMarginsGuide];
+    bottomAnchor2 = [layoutMarginsGuide2 bottomAnchor];
+    v25 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
+    [array addObject:v25];
 
-    v26 = [(HUPopUpButtonCell *)v4 textLabel];
-    v27 = [v26 leadingAnchor];
-    v28 = [(HUPopUpButtonCell *)v4 contentView];
-    v29 = [v28 layoutMarginsGuide];
-    v30 = [v29 leadingAnchor];
-    v31 = [v27 constraintEqualToAnchor:v30];
-    [v13 addObject:v31];
+    textLabel4 = [(HUPopUpButtonCell *)v4 textLabel];
+    leadingAnchor = [textLabel4 leadingAnchor];
+    contentView4 = [(HUPopUpButtonCell *)v4 contentView];
+    layoutMarginsGuide3 = [contentView4 layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide3 leadingAnchor];
+    v31 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
+    [array addObject:v31];
 
-    v32 = [(UIButton *)v4->_button leadingAnchor];
-    v33 = [(HUPopUpButtonCell *)v4 textLabel];
-    v34 = [v33 trailingAnchor];
-    v35 = [v32 constraintGreaterThanOrEqualToAnchor:v34 constant:15.0];
-    [v13 addObject:v35];
+    leadingAnchor3 = [(UIButton *)v4->_button leadingAnchor];
+    textLabel5 = [(HUPopUpButtonCell *)v4 textLabel];
+    trailingAnchor = [textLabel5 trailingAnchor];
+    v35 = [leadingAnchor3 constraintGreaterThanOrEqualToAnchor:trailingAnchor constant:15.0];
+    [array addObject:v35];
 
-    v36 = [(UIButton *)v4->_button centerYAnchor];
-    v37 = [(HUPopUpButtonCell *)v4 contentView];
-    v38 = [v37 layoutMarginsGuide];
-    v39 = [v38 centerYAnchor];
-    v40 = [v36 constraintEqualToAnchor:v39];
-    [v13 addObject:v40];
+    centerYAnchor = [(UIButton *)v4->_button centerYAnchor];
+    contentView5 = [(HUPopUpButtonCell *)v4 contentView];
+    layoutMarginsGuide4 = [contentView5 layoutMarginsGuide];
+    centerYAnchor2 = [layoutMarginsGuide4 centerYAnchor];
+    v40 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
+    [array addObject:v40];
 
-    v41 = [(UIButton *)v4->_button trailingAnchor];
-    v42 = [(HUPopUpButtonCell *)v4 contentView];
-    v43 = [v42 layoutMarginsGuide];
-    v44 = [v43 trailingAnchor];
-    v45 = [v41 constraintEqualToAnchor:v44];
-    [v13 addObject:v45];
+    trailingAnchor2 = [(UIButton *)v4->_button trailingAnchor];
+    contentView6 = [(HUPopUpButtonCell *)v4 contentView];
+    layoutMarginsGuide5 = [contentView6 layoutMarginsGuide];
+    trailingAnchor3 = [layoutMarginsGuide5 trailingAnchor];
+    v45 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
+    [array addObject:v45];
 
-    [MEMORY[0x277CCAAD0] activateConstraints:v13];
+    [MEMORY[0x277CCAAD0] activateConstraints:array];
   }
 
   return v4;
@@ -91,55 +91,55 @@
   v4.receiver = self;
   v4.super_class = HUPopUpButtonCell;
   [(HUPopUpButtonCell *)&v4 prepareForReuse];
-  v3 = [(HUPopUpButtonCell *)self button];
-  [v3 setMenu:0];
+  button = [(HUPopUpButtonCell *)self button];
+  [button setMenu:0];
 
   [(HUPopUpButtonCell *)self setDisabled:0];
 }
 
-- (void)updateUIWithAnimation:(BOOL)a3
+- (void)updateUIWithAnimation:(BOOL)animation
 {
-  v4 = [(HUPopUpButtonCell *)self item];
-  v5 = [v4 latestResults];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
-  v7 = [(HUPopUpButtonCell *)self textLabel];
-  [v7 setText:v6];
+  item = [(HUPopUpButtonCell *)self item];
+  latestResults = [item latestResults];
+  v6 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+  textLabel = [(HUPopUpButtonCell *)self textLabel];
+  [textLabel setText:v6];
 
-  v8 = [(HUPopUpButtonCell *)self item];
-  v9 = [v8 latestResults];
-  v23 = [v9 objectForKeyedSubscript:*MEMORY[0x277D13E20]];
+  item2 = [(HUPopUpButtonCell *)self item];
+  latestResults2 = [item2 latestResults];
+  v23 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D13E20]];
 
   if (v23)
   {
-    v10 = [(HUPopUpButtonCell *)self button];
-    [v10 setTitle:v23 forState:0];
+    button = [(HUPopUpButtonCell *)self button];
+    [button setTitle:v23 forState:0];
   }
 
-  v11 = [(HUPopUpButtonCell *)self button];
-  v12 = [v11 menu];
+  button2 = [(HUPopUpButtonCell *)self button];
+  menu = [button2 menu];
 
-  if (v12)
+  if (menu)
   {
-    v13 = [(HUPopUpButtonCell *)self button];
-    [(HUPopUpButtonCell *)self _setPopupMenuButton:v13];
+    button3 = [(HUPopUpButtonCell *)self button];
+    [(HUPopUpButtonCell *)self _setPopupMenuButton:button3];
   }
 
-  v14 = [(HUPopUpButtonCell *)self isDisabled];
-  v15 = [(HUPopUpButtonCell *)self button];
-  [v15 setEnabled:!v14];
+  isDisabled = [(HUPopUpButtonCell *)self isDisabled];
+  button4 = [(HUPopUpButtonCell *)self button];
+  [button4 setEnabled:!isDisabled];
 
   if ([(HUPopUpButtonCell *)self isDisabled])
   {
-    v16 = [(HUPopUpButtonCell *)self button];
-    v17 = [v16 menu];
-    v18 = [v17 children];
+    button5 = [(HUPopUpButtonCell *)self button];
+    menu2 = [button5 menu];
+    children = [menu2 children];
 
-    [v18 na_each:&__block_literal_global_65];
-    v19 = [(HUPopUpButtonCell *)self button];
-    v20 = [v19 menu];
-    v21 = [v20 menuByReplacingChildren:v18];
-    v22 = [(HUPopUpButtonCell *)self button];
-    [v22 setMenu:v21];
+    [children na_each:&__block_literal_global_65];
+    button6 = [(HUPopUpButtonCell *)self button];
+    menu3 = [button6 menu];
+    v21 = [menu3 menuByReplacingChildren:children];
+    button7 = [(HUPopUpButtonCell *)self button];
+    [button7 setMenu:v21];
   }
 }
 

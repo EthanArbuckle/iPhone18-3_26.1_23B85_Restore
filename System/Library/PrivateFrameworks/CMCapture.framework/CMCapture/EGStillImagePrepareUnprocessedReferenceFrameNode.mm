@@ -1,16 +1,16 @@
 @interface EGStillImagePrepareUnprocessedReferenceFrameNode
-- (EGStillImagePrepareUnprocessedReferenceFrameNode)initWithName:(id)a3;
+- (EGStillImagePrepareUnprocessedReferenceFrameNode)initWithName:(id)name;
 - (void)dealloc;
-- (void)receiveData:(id)a3 fromInput:(id)a4;
+- (void)receiveData:(id)data fromInput:(id)input;
 @end
 
 @implementation EGStillImagePrepareUnprocessedReferenceFrameNode
 
-- (EGStillImagePrepareUnprocessedReferenceFrameNode)initWithName:(id)a3
+- (EGStillImagePrepareUnprocessedReferenceFrameNode)initWithName:(id)name
 {
   v7.receiver = self;
   v7.super_class = EGStillImagePrepareUnprocessedReferenceFrameNode;
-  v3 = [(EGNode *)&v7 initWithName:a3];
+  v3 = [(EGNode *)&v7 initWithName:name];
   if (v3)
   {
     v4 = [[EGInput alloc] initWithName:@"sbuf"];
@@ -31,12 +31,12 @@
   [(EGNode *)&v3 dealloc];
 }
 
-- (void)receiveData:(id)a3 fromInput:(id)a4
+- (void)receiveData:(id)data fromInput:(id)input
 {
-  v5 = [a3 sampleBuffer];
-  if (v5)
+  sampleBuffer = [data sampleBuffer];
+  if (sampleBuffer)
   {
-    if ([(EGStillImagePrepareUnprocessedReferenceFrameNode *)v5 receiveData:self fromInput:&v8])
+    if ([(EGStillImagePrepareUnprocessedReferenceFrameNode *)sampleBuffer receiveData:self fromInput:&v8])
     {
       return;
     }

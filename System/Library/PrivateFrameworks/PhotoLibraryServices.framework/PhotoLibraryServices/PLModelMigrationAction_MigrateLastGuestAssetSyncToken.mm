@@ -1,45 +1,45 @@
 @interface PLModelMigrationAction_MigrateLastGuestAssetSyncToken
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_MigrateLastGuestAssetSyncToken
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v75 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v7 = 1;
   v8 = [(PLModelMigrationActionCore *)self cancellableDiscreteProgressWithTotalUnitCount:1 pendingParentUnitCount:0];
-  v9 = [PLGlobalKeyValue fetchGlobalKeyValueForKey:@"LastGuestAssetSyncToken" withManagedObjectContext:v6 createIfMissing:0];
+  v9 = [PLGlobalKeyValue fetchGlobalKeyValueForKey:@"LastGuestAssetSyncToken" withManagedObjectContext:contextCopy createIfMissing:0];
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 anyGlobalValue];
-    if (!v11)
+    anyGlobalValue = [v9 anyGlobalValue];
+    if (!anyGlobalValue)
     {
 LABEL_5:
       v7 = 1;
       goto LABEL_25;
     }
 
-    v12 = [v10 anyGlobalValue];
+    anyGlobalValue2 = [v10 anyGlobalValue];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v11 = 0;
+      anyGlobalValue = 0;
       goto LABEL_5;
     }
 
-    v14 = [v10 anyGlobalValue];
-    v15 = [PLPersistentHistoryUtilities unarchiveTokenWithData:v14];
+    anyGlobalValue3 = [v10 anyGlobalValue];
+    v15 = [PLPersistentHistoryUtilities unarchiveTokenWithData:anyGlobalValue3];
 
     v38 = v15;
-    [PLGlobalKeyValue setGlobalValue:v15 forKey:@"LastGuestAssetSyncToken" managedObjectContext:v6];
+    [PLGlobalKeyValue setGlobalValue:v15 forKey:@"LastGuestAssetSyncToken" managedObjectContext:contextCopy];
     v39 = 0;
-    v16 = [v6 save:&v39];
-    v11 = v39;
+    v16 = [contextCopy save:&v39];
+    anyGlobalValue = v39;
     if (v16)
     {
       v7 = 1;
@@ -49,9 +49,9 @@ LABEL_5:
 
       if (v18)
       {
-        v19 = [(PLModelMigrationActionCore *)self logger];
+        logger = [(PLModelMigrationActionCore *)self logger];
 
-        if (v19)
+        if (logger)
         {
           v73 = 0u;
           v74 = 0u;
@@ -126,9 +126,9 @@ LABEL_5:
 
       if (v24)
       {
-        v25 = [(PLModelMigrationActionCore *)self logger];
+        logger2 = [(PLModelMigrationActionCore *)self logger];
 
-        if (v25)
+        if (logger2)
         {
           v73 = 0u;
           v74 = 0u;
@@ -168,7 +168,7 @@ LABEL_5:
           v40 = 138543618;
           v41 = v28;
           v42 = 2112;
-          v43 = v11;
+          v43 = anyGlobalValue;
           LODWORD(v37) = 22;
           v29 = _os_log_send_and_compose_impl();
 
@@ -191,7 +191,7 @@ LABEL_5:
             *buf = 138543618;
             *&buf[4] = v34;
             *&buf[12] = 2112;
-            *&buf[14] = v11;
+            *&buf[14] = anyGlobalValue;
             _os_log_impl(&dword_19BF1F000, v32, OS_LOG_TYPE_ERROR, "Failed to perform a save operation for %{public}@. Error: %@", buf, 0x16u);
           }
         }
@@ -203,15 +203,15 @@ LABEL_5:
 
   else
   {
-    v11 = 0;
+    anyGlobalValue = 0;
   }
 
 LABEL_25:
   [(PLModelMigrationActionCore *)self finalizeProgress];
-  if (a4)
+  if (error)
   {
-    v35 = v11;
-    *a4 = v11;
+    v35 = anyGlobalValue;
+    *error = anyGlobalValue;
   }
 
   return v7;

@@ -1,16 +1,16 @@
 @interface KNBuildAnvilSmokeSystem
-- ($94F468A8D4C62B317260615823C2B210)lifeSpanAtIndexPoint:(CGPoint)a3;
-- ($E2C29196C7A5C696474C6955C5A9CE06)rotationAtIndexPoint:(CGPoint)a3;
-- ($E2C29196C7A5C696474C6955C5A9CE06)speedAtIndexPoint:(CGPoint)a3;
-- (CGPoint)startingPointAtIndexPoint:(CGPoint)a3;
-- (double)scaleAtIndexPoint:(CGPoint)a3;
+- ($94F468A8D4C62B317260615823C2B210)lifeSpanAtIndexPoint:(CGPoint)point;
+- ($E2C29196C7A5C696474C6955C5A9CE06)rotationAtIndexPoint:(CGPoint)point;
+- ($E2C29196C7A5C696474C6955C5A9CE06)speedAtIndexPoint:(CGPoint)point;
+- (CGPoint)startingPointAtIndexPoint:(CGPoint)point;
+- (double)scaleAtIndexPoint:(CGPoint)point;
 @end
 
 @implementation KNBuildAnvilSmokeSystem
 
-- (CGPoint)startingPointAtIndexPoint:(CGPoint)a3
+- (CGPoint)startingPointAtIndexPoint:(CGPoint)point
 {
-  v4 = [(KNBuildAnvilSmokeSystem *)self indexFromPoint:a3.x, a3.y];
+  v4 = [(KNBuildAnvilSmokeSystem *)self indexFromPoint:point.x, point.y];
   v5 = v4 / [(KNBuildAnvilSmokeSystem *)self particleCount];
   [(KNBuildAnvilSmokeSystem *)self objectSize];
   v6 = -8.0;
@@ -20,11 +20,11 @@
   return result;
 }
 
-- ($E2C29196C7A5C696474C6955C5A9CE06)speedAtIndexPoint:(CGPoint)a3
+- ($E2C29196C7A5C696474C6955C5A9CE06)speedAtIndexPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(KNBuildAnvilSmokeSystem *)self randomGenerator];
+  y = point.y;
+  x = point.x;
+  randomGenerator = [(KNBuildAnvilSmokeSystem *)self randomGenerator];
   v7 = (2 * [(KNBuildAnvilSmokeSystem *)self indexFromPoint:x, y]);
   v8 = v7 / [(KNBuildAnvilSmokeSystem *)self particleCount]+ -1.0;
   v9 = sqrt(fabs(v8));
@@ -40,9 +40,9 @@
 
   v24 = v10;
   v11 = fabs(v9) + 0.25;
-  [v6 doubleBetween:-1.0 :0.1];
+  [randomGenerator doubleBetween:-1.0 :0.1];
   v23 = v12;
-  [v6 doubleBetween:0.25 :1.0];
+  [randomGenerator doubleBetween:0.25 :1.0];
   v13.f64[0] = v24;
   v14.f64[1] = v23;
   v13.f64[1] = -v11;
@@ -59,12 +59,12 @@
   return result;
 }
 
-- ($E2C29196C7A5C696474C6955C5A9CE06)rotationAtIndexPoint:(CGPoint)a3
+- ($E2C29196C7A5C696474C6955C5A9CE06)rotationAtIndexPoint:(CGPoint)point
 {
-  v4 = (2 * [(KNBuildAnvilSmokeSystem *)self indexFromPoint:a3.x, a3.y]);
+  v4 = (2 * [(KNBuildAnvilSmokeSystem *)self indexFromPoint:point.x, point.y]);
   v5 = v4 / [(KNBuildAnvilSmokeSystem *)self particleCount]+ -1.0;
-  v6 = [(KNBuildAnvilSmokeSystem *)self randomGenerator];
-  [v6 doubleBetween:0.5 :1.0];
+  randomGenerator = [(KNBuildAnvilSmokeSystem *)self randomGenerator];
+  [randomGenerator doubleBetween:0.5 :1.0];
   v8 = v5 * v7;
 
   v9 = v8;
@@ -76,9 +76,9 @@
   return result;
 }
 
-- (double)scaleAtIndexPoint:(CGPoint)a3
+- (double)scaleAtIndexPoint:(CGPoint)point
 {
-  v4 = [(KNBuildAnvilSmokeSystem *)self indexFromPoint:a3.x, a3.y];
+  v4 = [(KNBuildAnvilSmokeSystem *)self indexFromPoint:point.x, point.y];
   v5 = fabs((v4 + v4) / [(KNBuildAnvilSmokeSystem *)self particleCount]+ -1.0) + 1.25;
   TSURandom();
   TSDMixFloats();
@@ -87,12 +87,12 @@
   return v8 * 0.0625 * v7;
 }
 
-- ($94F468A8D4C62B317260615823C2B210)lifeSpanAtIndexPoint:(CGPoint)a3
+- ($94F468A8D4C62B317260615823C2B210)lifeSpanAtIndexPoint:(CGPoint)point
 {
-  [(KNBuildAnvilSmokeSystem *)self duration:a3.x];
+  [(KNBuildAnvilSmokeSystem *)self duration:point.x];
   v5 = v4;
-  v6 = [(KNBuildAnvilSmokeSystem *)self randomGenerator];
-  [v6 doubleBetween:0.15 :1.0];
+  randomGenerator = [(KNBuildAnvilSmokeSystem *)self randomGenerator];
+  [randomGenerator doubleBetween:0.15 :1.0];
   *&v5 = v5 * v7;
 
   v8 = 0.0;

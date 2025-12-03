@@ -1,19 +1,19 @@
 @interface PLMediaAnalysisEmbedding
-- (PLMediaAnalysisEmbedding)initWithMADEmbedding:(id)a3;
+- (PLMediaAnalysisEmbedding)initWithMADEmbedding:(id)embedding;
 @end
 
 @implementation PLMediaAnalysisEmbedding
 
-- (PLMediaAnalysisEmbedding)initWithMADEmbedding:(id)a3
+- (PLMediaAnalysisEmbedding)initWithMADEmbedding:(id)embedding
 {
-  v5 = a3;
+  embeddingCopy = embedding;
   v9.receiver = self;
   v9.super_class = PLMediaAnalysisEmbedding;
   v6 = [(PLMediaAnalysisEmbedding *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_madEmbedding, a3);
+    objc_storeStrong(&v6->_madEmbedding, embedding);
   }
 
   return v7;

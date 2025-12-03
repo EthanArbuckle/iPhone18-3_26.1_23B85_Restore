@@ -16,7 +16,7 @@
   v23 = &v22;
   v24 = 0x2020000000;
   v25 = 0;
-  v15 = [[a1 alloc] initWithFilePresenter:v13];
+  v15 = [[self alloc] initWithFilePresenter:v13];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __106__NSFileCoordinator_TSPersistence__tsp_coordinateReadingItemAtURL_options_filePresenter_error_byAccessor___block_invoke;
@@ -41,7 +41,7 @@
   v27 = &v26;
   v28 = 0x2020000000;
   v29 = 0;
-  v19 = [[a1 alloc] initWithFilePresenter:v17];
+  v19 = [[self alloc] initWithFilePresenter:v17];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __131__NSFileCoordinator_TSPersistence__tsp_coordinateReadingItemAtURL_options_writingItemAtURL_options_filePresenter_error_byAccessor___block_invoke;
@@ -65,7 +65,7 @@
   v23 = &v22;
   v24 = 0x2020000000;
   v25 = 0;
-  v15 = [[a1 alloc] initWithFilePresenter:v13];
+  v15 = [[self alloc] initWithFilePresenter:v13];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __106__NSFileCoordinator_TSPersistence__tsp_coordinateWritingItemAtURL_options_filePresenter_error_byAccessor___block_invoke;
@@ -90,7 +90,7 @@
   v29 = &v28;
   v30 = 0x2020000000;
   v31 = 0;
-  v19 = [[a1 alloc] initWithFilePresenter:v17];
+  v19 = [[self alloc] initWithFilePresenter:v17];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __131__NSFileCoordinator_TSPersistence__tsp_coordinateWritingItemAtURL_options_writingItemAtURL_options_filePresenter_error_byAccessor___block_invoke;

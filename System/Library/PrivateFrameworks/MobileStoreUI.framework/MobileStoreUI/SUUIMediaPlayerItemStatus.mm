@@ -1,6 +1,6 @@
 @interface SUUIMediaPlayerItemStatus
 - (SUUIMediaPlayerItemStatus)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -13,22 +13,22 @@
   return [(SUUIMediaPlayerItemStatus *)&v3 init];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 40) = self->_currentTime;
   *(v5 + 40) = self->_duration;
-  v6 = [(NSString *)self->_itemIdentifier copyWithZone:a3];
+  v6 = [(NSString *)self->_itemIdentifier copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
   *(v5 + 56) = self->_itemType;
   *(v5 + 64) = self->_playState;
-  v8 = [(NSString *)self->_storeID copyWithZone:a3];
+  v8 = [(NSString *)self->_storeID copyWithZone:zone];
   v9 = *(v5 + 16);
   *(v5 + 16) = v8;
 
-  v10 = [(NSString *)self->_storeAlbumID copyWithZone:a3];
+  v10 = [(NSString *)self->_storeAlbumID copyWithZone:zone];
   v11 = *(v5 + 24);
   *(v5 + 24) = v10;
 

@@ -1,30 +1,30 @@
 @interface BCSQRCodePayload
-- (BCSQRCodePayload)initWithBarcodeDescriptor:(id)a3;
-- (BCSQRCodePayload)initWithCoder:(id)a3;
+- (BCSQRCodePayload)initWithBarcodeDescriptor:(id)descriptor;
+- (BCSQRCodePayload)initWithCoder:(id)coder;
 @end
 
 @implementation BCSQRCodePayload
 
-- (BCSQRCodePayload)initWithBarcodeDescriptor:(id)a3
+- (BCSQRCodePayload)initWithBarcodeDescriptor:(id)descriptor
 {
-  v5 = a3;
+  descriptorCopy = descriptor;
   v10.receiver = self;
   v10.super_class = BCSQRCodePayload;
   v6 = [(BCSQRCodePayload *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_barcodeDescriptor, a3);
+    objc_storeStrong(&v6->_barcodeDescriptor, descriptor);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (BCSQRCodePayload)initWithCoder:(id)a3
+- (BCSQRCodePayload)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 _bcs_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"payloadData"];
+  coderCopy = coder;
+  v5 = [coderCopy _bcs_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"payloadData"];
 
   v6 = [(BCSQRCodePayload *)self initWithBarcodeDescriptor:v5];
   return v6;

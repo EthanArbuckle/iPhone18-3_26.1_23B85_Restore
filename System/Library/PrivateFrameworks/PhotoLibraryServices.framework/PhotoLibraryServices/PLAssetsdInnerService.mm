@@ -1,17 +1,17 @@
 @interface PLAssetsdInnerService
-- (PLAssetsdInnerService)initWithPermissions:(id)a3 requiredLibraryServicesState:(int64_t)a4 lazyService:(id)a5;
-- (PLAssetsdInnerService)innerServiceWithContext:(id)a3 forceValidation:(BOOL)a4;
-- (id)_awaitForRequiredLibraryStateWithContext:(id)a3;
-- (id)_validateWithContext:(id)a3;
-- (void)getInnerServiceWithContext:(id)a3 reply:(id)a4;
+- (PLAssetsdInnerService)initWithPermissions:(id)permissions requiredLibraryServicesState:(int64_t)state lazyService:(id)service;
+- (PLAssetsdInnerService)innerServiceWithContext:(id)context forceValidation:(BOOL)validation;
+- (id)_awaitForRequiredLibraryStateWithContext:(id)context;
+- (id)_validateWithContext:(id)context;
+- (void)getInnerServiceWithContext:(id)context reply:(id)reply;
 @end
 
 @implementation PLAssetsdInnerService
 
-- (id)_awaitForRequiredLibraryStateWithContext:(id)a3
+- (id)_awaitForRequiredLibraryStateWithContext:(id)context
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   requiredState = self->_requiredState;
   v6 = PLGatekeeperXPCGetLog();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG);
@@ -20,51 +20,51 @@
     if (v7)
     {
       v8 = PLStringFromLibraryServicesState();
-      v9 = [v4 clientDebugDescription];
+      clientDebugDescription = [contextCopy clientDebugDescription];
       v15 = 138412546;
       v16 = v8;
       v17 = 2112;
-      v18 = v9;
+      v18 = clientDebugDescription;
       _os_log_impl(&dword_19BF1F000, v6, OS_LOG_TYPE_DEBUG, "Waiting for library services manager state: %@ for client: %@", &v15, 0x16u);
     }
 
-    v10 = [v4 awaitLibraryState:self->_requiredState];
+    v10 = [contextCopy awaitLibraryState:self->_requiredState];
   }
 
   else
   {
     if (v7)
     {
-      v11 = [v4 clientDebugDescription];
+      clientDebugDescription2 = [contextCopy clientDebugDescription];
       v15 = 138412290;
-      v16 = v11;
+      v16 = clientDebugDescription2;
       _os_log_impl(&dword_19BF1F000, v6, OS_LOG_TYPE_DEBUG, "No required library services manager state for client: %@", &v15, 0xCu);
     }
 
     v12 = MEMORY[0x1E69BF2D0];
-    v13 = [MEMORY[0x1E695DFB0] null];
-    v10 = [v12 successWithResult:v13];
+    null = [MEMORY[0x1E695DFB0] null];
+    v10 = [v12 successWithResult:null];
   }
 
   return v10;
 }
 
-- (id)_validateWithContext:(id)a3
+- (id)_validateWithContext:(id)context
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [(PLAssetsdServicePermissions *)self->_permissions refreshCachedAuthorizationsWithContext:v4];
-  v5 = [(PLAssetsdServicePermissions *)self->_permissions verifyPermissionsWithContext:v4];
+  contextCopy = context;
+  [(PLAssetsdServicePermissions *)self->_permissions refreshCachedAuthorizationsWithContext:contextCopy];
+  v5 = [(PLAssetsdServicePermissions *)self->_permissions verifyPermissionsWithContext:contextCopy];
   if (v5)
   {
     v6 = PLGatekeeperXPCGetLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v7 = [v4 clientDebugDescription];
+      clientDebugDescription = [contextCopy clientDebugDescription];
       v13 = 138412546;
       v14 = v5;
       v15 = 2114;
-      v16 = v7;
+      v16 = clientDebugDescription;
       _os_log_impl(&dword_19BF1F000, v6, OS_LOG_TYPE_ERROR, "Verify permissions error: %@ for client: %{public}@", &v13, 0x16u);
     }
 
@@ -73,18 +73,18 @@
 
   else
   {
-    v8 = [(PLAssetsdInnerService *)self _awaitForRequiredLibraryStateWithContext:v4];
+    v8 = [(PLAssetsdInnerService *)self _awaitForRequiredLibraryStateWithContext:contextCopy];
     if ([v8 isFailure])
     {
       v9 = PLGatekeeperXPCGetLog();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        v10 = [v8 error];
-        v11 = [v4 clientDebugDescription];
+        error = [v8 error];
+        clientDebugDescription2 = [contextCopy clientDebugDescription];
         v13 = 138412546;
-        v14 = v10;
+        v14 = error;
         v15 = 2114;
-        v16 = v11;
+        v16 = clientDebugDescription2;
         _os_log_impl(&dword_19BF1F000, v9, OS_LOG_TYPE_ERROR, "Await for required library state error: %@ for client: %{public}@", &v13, 0x16u);
       }
     }
@@ -93,65 +93,65 @@
   return v8;
 }
 
-- (PLAssetsdInnerService)innerServiceWithContext:(id)a3 forceValidation:(BOOL)a4
+- (PLAssetsdInnerService)innerServiceWithContext:(id)context forceValidation:(BOOL)validation
 {
-  v4 = a4;
+  validationCopy = validation;
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 shutdownReason];
-  if (v7)
+  contextCopy = context;
+  shutdownReason = [contextCopy shutdownReason];
+  if (shutdownReason)
   {
     v8 = PLGatekeeperXPCGetLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v26 = v7;
+      v26 = shutdownReason;
       _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_DEFAULT, "Library is shutting down: %@", buf, 0xCu);
     }
 
-    v9 = [MEMORY[0x1E69BF2D0] failureWithError:v7];
+    v9 = [MEMORY[0x1E69BF2D0] failureWithError:shutdownReason];
   }
 
   else
   {
-    if (v4)
+    if (validationCopy)
     {
-      v10 = [(PLAssetsdInnerService *)self _validateWithContext:v6];
+      v10 = [(PLAssetsdInnerService *)self _validateWithContext:contextCopy];
       if ([v10 isFailure])
       {
         v11 = MEMORY[0x1E69BF2D0];
-        v12 = [v10 error];
-        v9 = [v11 failureWithError:v12];
+        error = [v10 error];
+        v9 = [v11 failureWithError:error];
 
         goto LABEL_17;
       }
     }
 
-    v13 = [(PLLazyObject *)self->_lazyService objectValue];
+    objectValue = [(PLLazyObject *)self->_lazyService objectValue];
     v14 = PLGatekeeperXPCGetLog();
     v15 = v14;
-    if (v13)
+    if (objectValue)
     {
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
       {
-        v16 = [v6 clientDebugDescription];
+        clientDebugDescription = [contextCopy clientDebugDescription];
         *buf = 138412546;
-        v26 = v13;
+        v26 = objectValue;
         v27 = 2112;
-        v28 = v16;
+        v28 = clientDebugDescription;
         _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_DEBUG, "Sending back service: %@ for client: %@", buf, 0x16u);
       }
 
-      v9 = [MEMORY[0x1E69BF2D0] successWithResult:v13];
+      v9 = [MEMORY[0x1E69BF2D0] successWithResult:objectValue];
     }
 
     else
     {
       if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
       {
-        v17 = [v6 clientDebugDescription];
+        clientDebugDescription2 = [contextCopy clientDebugDescription];
         *buf = 138412290;
-        v26 = v17;
+        v26 = clientDebugDescription2;
         _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_FAULT, "assetsd service could not be initialized for client: %@", buf, 0xCu);
       }
 
@@ -171,30 +171,30 @@ LABEL_17:
   return v9;
 }
 
-- (void)getInnerServiceWithContext:(id)a3 reply:(id)a4
+- (void)getInnerServiceWithContext:(id)context reply:(id)reply
 {
-  v6 = a4;
-  v9 = [(PLAssetsdInnerService *)self innerServiceWithContext:a3 forceValidation:1];
-  v7 = [v9 result];
-  v8 = [v9 error];
-  v6[2](v6, v7, v8);
+  replyCopy = reply;
+  v9 = [(PLAssetsdInnerService *)self innerServiceWithContext:context forceValidation:1];
+  result = [v9 result];
+  error = [v9 error];
+  replyCopy[2](replyCopy, result, error);
 }
 
-- (PLAssetsdInnerService)initWithPermissions:(id)a3 requiredLibraryServicesState:(int64_t)a4 lazyService:(id)a5
+- (PLAssetsdInnerService)initWithPermissions:(id)permissions requiredLibraryServicesState:(int64_t)state lazyService:(id)service
 {
-  v8 = a3;
-  v9 = a5;
+  permissionsCopy = permissions;
+  serviceCopy = service;
   v15.receiver = self;
   v15.super_class = PLAssetsdInnerService;
   v10 = [(PLAssetsdInnerService *)&v15 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [permissionsCopy copy];
     permissions = v10->_permissions;
     v10->_permissions = v11;
 
-    v10->_requiredState = a4;
-    objc_storeStrong(&v10->_lazyService, a5);
+    v10->_requiredState = state;
+    objc_storeStrong(&v10->_lazyService, service);
     v13 = v10;
   }
 

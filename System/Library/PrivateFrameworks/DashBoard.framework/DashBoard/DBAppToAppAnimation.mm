@@ -1,12 +1,12 @@
 @interface DBAppToAppAnimation
-+ (id)animationWithSettings:(id)a3;
++ (id)animationWithSettings:(id)settings;
 @end
 
 @implementation DBAppToAppAnimation
 
-+ (id)animationWithSettings:(id)a3
++ (id)animationWithSettings:(id)settings
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(settings);
   type metadata accessor for DBAnimationSettings();
   v4 = DBAnimationSettings.__allocating_init()();
   v3[2](v3, v4);

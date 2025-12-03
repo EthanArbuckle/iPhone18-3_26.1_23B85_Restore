@@ -6,10 +6,10 @@
 
 - (id)mpc_radioContentReference
 {
-  v1 = [a1 genericObjectRepresentation];
-  v2 = [v1 mpc_radioContentReference];
+  genericObjectRepresentation = [self genericObjectRepresentation];
+  mpc_radioContentReference = [genericObjectRepresentation mpc_radioContentReference];
 
-  return v2;
+  return mpc_radioContentReference;
 }
 
 @end

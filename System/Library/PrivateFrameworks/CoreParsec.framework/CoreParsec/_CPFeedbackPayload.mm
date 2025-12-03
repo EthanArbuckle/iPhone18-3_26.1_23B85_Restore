@@ -1,5 +1,5 @@
 @interface _CPFeedbackPayload
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_CPCBAEngagementFeedback)cbaEngagementFeedback;
 - (_CPCacheHitFeedback)cacheHitFeedback;
 - (_CPCardSectionEngagementFeedback)cardSectionEngagementFeedback;
@@ -20,8 +20,8 @@
 - (_CPErrorFeedback)errorFeedback;
 - (_CPExperimentTriggeredFeedback)experimentTriggeredFeedback;
 - (_CPFeedback)feedback;
-- (_CPFeedbackPayload)initWithCodable:(id)a3;
-- (_CPFeedbackPayload)initWithFeedback:(id)a3;
+- (_CPFeedbackPayload)initWithCodable:(id)codable;
+- (_CPFeedbackPayload)initWithFeedback:(id)feedback;
 - (_CPLateSectionsAppendedFeedback)lateSectionsAppendedFeedback;
 - (_CPLookupHintRelevancyFeedback)lookupHintRelevancyFeedback;
 - (_CPMapsCardSectionEngagementFeedback)mapsCardSectionEngagementFeedback;
@@ -50,54 +50,54 @@
 - (_CPVisibleSuggestionsFeedback)visibleSuggestionsFeedback;
 - (unint64_t)hash;
 - (void)clearContained_Feedback;
-- (void)setCacheHitFeedback:(id)a3;
-- (void)setCardSectionEngagementFeedback:(id)a3;
-- (void)setCardSectionFeedback:(id)a3;
-- (void)setCardViewAppearFeedback:(id)a3;
-- (void)setCardViewDisappearFeedback:(id)a3;
-- (void)setCbaEngagementFeedback:(id)a3;
-- (void)setClearInputFeedback:(id)a3;
-- (void)setClientTimingFeedback:(id)a3;
-- (void)setCommandEngagementFeedback:(id)a3;
-- (void)setConnectionInvalidatedFeedback:(id)a3;
-- (void)setCustomFeedback:(id)a3;
-- (void)setDidGoToSearchFeedback:(id)a3;
-- (void)setDidGoToSiteFeedback:(id)a3;
-- (void)setDynamicButtonVisibilityFeedback:(id)a3;
-- (void)setEndLocalSearchFeedback:(id)a3;
-- (void)setEndNetworkSearchFeedback:(id)a3;
-- (void)setEndSearchFeedback:(id)a3;
-- (void)setErrorFeedback:(id)a3;
-- (void)setExperimentTriggeredFeedback:(id)a3;
-- (void)setFeedback:(id)a3;
-- (void)setLateSectionsAppendedFeedback:(id)a3;
-- (void)setLookupHintRelevancyFeedback:(id)a3;
-- (void)setMapsCardSectionEngagementFeedback:(id)a3;
-- (void)setRankingFeedback:(id)a3;
-- (void)setResultEngagementFeedback:(id)a3;
-- (void)setResultFeedback:(id)a3;
-- (void)setResultGradingFeedback:(id)a3;
-- (void)setResultRankingFeedback:(id)a3;
-- (void)setResultsReceivedAfterTimeoutFeedback:(id)a3;
-- (void)setSearchViewAppearFeedback:(id)a3;
-- (void)setSearchViewDisappearFeedback:(id)a3;
-- (void)setSectionEngagementFeedback:(id)a3;
-- (void)setSectionRankingFeedback:(id)a3;
-- (void)setSessionEndFeedback:(id)a3;
-- (void)setSessionMissingResultsFeedback:(id)a3;
-- (void)setSessionMissingSuggestionsFeedback:(id)a3;
-- (void)setSkipSearchFeedback:(id)a3;
-- (void)setStartLocalSearchFeedback:(id)a3;
-- (void)setStartNetworkSearchFeedback:(id)a3;
-- (void)setStartSearchFeedback:(id)a3;
-- (void)setStoreCardSectionEngagementFeedback:(id)a3;
-- (void)setSuggestionEngagementFeedback:(id)a3;
-- (void)setVisibleResultsFeedback:(id)a3;
-- (void)setVisibleSectionHeaderFeedback:(id)a3;
-- (void)setVisibleSuggestionsFeedback:(id)a3;
-- (void)updateQueryId:(unint64_t)a3;
-- (void)updateResults:(id)a3 withId:(unint64_t)a4;
-- (void)writeTo:(id)a3;
+- (void)setCacheHitFeedback:(id)feedback;
+- (void)setCardSectionEngagementFeedback:(id)feedback;
+- (void)setCardSectionFeedback:(id)feedback;
+- (void)setCardViewAppearFeedback:(id)feedback;
+- (void)setCardViewDisappearFeedback:(id)feedback;
+- (void)setCbaEngagementFeedback:(id)feedback;
+- (void)setClearInputFeedback:(id)feedback;
+- (void)setClientTimingFeedback:(id)feedback;
+- (void)setCommandEngagementFeedback:(id)feedback;
+- (void)setConnectionInvalidatedFeedback:(id)feedback;
+- (void)setCustomFeedback:(id)feedback;
+- (void)setDidGoToSearchFeedback:(id)feedback;
+- (void)setDidGoToSiteFeedback:(id)feedback;
+- (void)setDynamicButtonVisibilityFeedback:(id)feedback;
+- (void)setEndLocalSearchFeedback:(id)feedback;
+- (void)setEndNetworkSearchFeedback:(id)feedback;
+- (void)setEndSearchFeedback:(id)feedback;
+- (void)setErrorFeedback:(id)feedback;
+- (void)setExperimentTriggeredFeedback:(id)feedback;
+- (void)setFeedback:(id)feedback;
+- (void)setLateSectionsAppendedFeedback:(id)feedback;
+- (void)setLookupHintRelevancyFeedback:(id)feedback;
+- (void)setMapsCardSectionEngagementFeedback:(id)feedback;
+- (void)setRankingFeedback:(id)feedback;
+- (void)setResultEngagementFeedback:(id)feedback;
+- (void)setResultFeedback:(id)feedback;
+- (void)setResultGradingFeedback:(id)feedback;
+- (void)setResultRankingFeedback:(id)feedback;
+- (void)setResultsReceivedAfterTimeoutFeedback:(id)feedback;
+- (void)setSearchViewAppearFeedback:(id)feedback;
+- (void)setSearchViewDisappearFeedback:(id)feedback;
+- (void)setSectionEngagementFeedback:(id)feedback;
+- (void)setSectionRankingFeedback:(id)feedback;
+- (void)setSessionEndFeedback:(id)feedback;
+- (void)setSessionMissingResultsFeedback:(id)feedback;
+- (void)setSessionMissingSuggestionsFeedback:(id)feedback;
+- (void)setSkipSearchFeedback:(id)feedback;
+- (void)setStartLocalSearchFeedback:(id)feedback;
+- (void)setStartNetworkSearchFeedback:(id)feedback;
+- (void)setStartSearchFeedback:(id)feedback;
+- (void)setStoreCardSectionEngagementFeedback:(id)feedback;
+- (void)setSuggestionEngagementFeedback:(id)feedback;
+- (void)setVisibleResultsFeedback:(id)feedback;
+- (void)setVisibleSectionHeaderFeedback:(id)feedback;
+- (void)setVisibleSuggestionsFeedback:(id)feedback;
+- (void)updateQueryId:(unint64_t)id;
+- (void)updateResults:(id)results withId:(unint64_t)id;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPFeedbackPayload
@@ -1204,28 +1204,28 @@ LABEL_38:
   return v39 ^ v46 ^ [(_CPExperimentTriggeredFeedback *)self->_experimentTriggeredFeedback hash]^ (2654435761u * self->_queryId);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_227;
   }
 
-  v5 = [(_CPFeedbackPayload *)self feedback];
-  v6 = [v4 feedback];
-  if ((v5 != 0) == (v6 == 0))
+  feedback = [(_CPFeedbackPayload *)self feedback];
+  feedback2 = [equalCopy feedback];
+  if ((feedback != 0) == (feedback2 == 0))
   {
     goto LABEL_226;
   }
 
-  v7 = [(_CPFeedbackPayload *)self feedback];
-  if (v7)
+  feedback3 = [(_CPFeedbackPayload *)self feedback];
+  if (feedback3)
   {
-    v8 = v7;
-    v9 = [(_CPFeedbackPayload *)self feedback];
-    v10 = [v4 feedback];
-    v11 = [v9 isEqual:v10];
+    v8 = feedback3;
+    feedback4 = [(_CPFeedbackPayload *)self feedback];
+    feedback5 = [equalCopy feedback];
+    v11 = [feedback4 isEqual:feedback5];
 
     if (!v11)
     {
@@ -1237,20 +1237,20 @@ LABEL_38:
   {
   }
 
-  v5 = [(_CPFeedbackPayload *)self searchViewAppearFeedback];
-  v6 = [v4 searchViewAppearFeedback];
-  if ((v5 != 0) == (v6 == 0))
+  feedback = [(_CPFeedbackPayload *)self searchViewAppearFeedback];
+  feedback2 = [equalCopy searchViewAppearFeedback];
+  if ((feedback != 0) == (feedback2 == 0))
   {
     goto LABEL_226;
   }
 
-  v12 = [(_CPFeedbackPayload *)self searchViewAppearFeedback];
-  if (v12)
+  searchViewAppearFeedback = [(_CPFeedbackPayload *)self searchViewAppearFeedback];
+  if (searchViewAppearFeedback)
   {
-    v13 = v12;
-    v14 = [(_CPFeedbackPayload *)self searchViewAppearFeedback];
-    v15 = [v4 searchViewAppearFeedback];
-    v16 = [v14 isEqual:v15];
+    v13 = searchViewAppearFeedback;
+    searchViewAppearFeedback2 = [(_CPFeedbackPayload *)self searchViewAppearFeedback];
+    searchViewAppearFeedback3 = [equalCopy searchViewAppearFeedback];
+    v16 = [searchViewAppearFeedback2 isEqual:searchViewAppearFeedback3];
 
     if (!v16)
     {
@@ -1262,20 +1262,20 @@ LABEL_38:
   {
   }
 
-  v5 = [(_CPFeedbackPayload *)self searchViewDisappearFeedback];
-  v6 = [v4 searchViewDisappearFeedback];
-  if ((v5 != 0) == (v6 == 0))
+  feedback = [(_CPFeedbackPayload *)self searchViewDisappearFeedback];
+  feedback2 = [equalCopy searchViewDisappearFeedback];
+  if ((feedback != 0) == (feedback2 == 0))
   {
     goto LABEL_226;
   }
 
-  v17 = [(_CPFeedbackPayload *)self searchViewDisappearFeedback];
-  if (v17)
+  searchViewDisappearFeedback = [(_CPFeedbackPayload *)self searchViewDisappearFeedback];
+  if (searchViewDisappearFeedback)
   {
-    v18 = v17;
-    v19 = [(_CPFeedbackPayload *)self searchViewDisappearFeedback];
-    v20 = [v4 searchViewDisappearFeedback];
-    v21 = [v19 isEqual:v20];
+    v18 = searchViewDisappearFeedback;
+    searchViewDisappearFeedback2 = [(_CPFeedbackPayload *)self searchViewDisappearFeedback];
+    searchViewDisappearFeedback3 = [equalCopy searchViewDisappearFeedback];
+    v21 = [searchViewDisappearFeedback2 isEqual:searchViewDisappearFeedback3];
 
     if (!v21)
     {
@@ -1287,20 +1287,20 @@ LABEL_38:
   {
   }
 
-  v5 = [(_CPFeedbackPayload *)self rankingFeedback];
-  v6 = [v4 rankingFeedback];
-  if ((v5 != 0) == (v6 == 0))
+  feedback = [(_CPFeedbackPayload *)self rankingFeedback];
+  feedback2 = [equalCopy rankingFeedback];
+  if ((feedback != 0) == (feedback2 == 0))
   {
     goto LABEL_226;
   }
 
-  v22 = [(_CPFeedbackPayload *)self rankingFeedback];
-  if (v22)
+  rankingFeedback = [(_CPFeedbackPayload *)self rankingFeedback];
+  if (rankingFeedback)
   {
-    v23 = v22;
-    v24 = [(_CPFeedbackPayload *)self rankingFeedback];
-    v25 = [v4 rankingFeedback];
-    v26 = [v24 isEqual:v25];
+    v23 = rankingFeedback;
+    rankingFeedback2 = [(_CPFeedbackPayload *)self rankingFeedback];
+    rankingFeedback3 = [equalCopy rankingFeedback];
+    v26 = [rankingFeedback2 isEqual:rankingFeedback3];
 
     if (!v26)
     {
@@ -1312,20 +1312,20 @@ LABEL_38:
   {
   }
 
-  v5 = [(_CPFeedbackPayload *)self sectionRankingFeedback];
-  v6 = [v4 sectionRankingFeedback];
-  if ((v5 != 0) == (v6 == 0))
+  feedback = [(_CPFeedbackPayload *)self sectionRankingFeedback];
+  feedback2 = [equalCopy sectionRankingFeedback];
+  if ((feedback != 0) == (feedback2 == 0))
   {
     goto LABEL_226;
   }
 
-  v27 = [(_CPFeedbackPayload *)self sectionRankingFeedback];
-  if (v27)
+  sectionRankingFeedback = [(_CPFeedbackPayload *)self sectionRankingFeedback];
+  if (sectionRankingFeedback)
   {
-    v28 = v27;
-    v29 = [(_CPFeedbackPayload *)self sectionRankingFeedback];
-    v30 = [v4 sectionRankingFeedback];
-    v31 = [v29 isEqual:v30];
+    v28 = sectionRankingFeedback;
+    sectionRankingFeedback2 = [(_CPFeedbackPayload *)self sectionRankingFeedback];
+    sectionRankingFeedback3 = [equalCopy sectionRankingFeedback];
+    v31 = [sectionRankingFeedback2 isEqual:sectionRankingFeedback3];
 
     if (!v31)
     {
@@ -1337,20 +1337,20 @@ LABEL_38:
   {
   }
 
-  v5 = [(_CPFeedbackPayload *)self resultRankingFeedback];
-  v6 = [v4 resultRankingFeedback];
-  if ((v5 != 0) == (v6 == 0))
+  feedback = [(_CPFeedbackPayload *)self resultRankingFeedback];
+  feedback2 = [equalCopy resultRankingFeedback];
+  if ((feedback != 0) == (feedback2 == 0))
   {
     goto LABEL_226;
   }
 
-  v32 = [(_CPFeedbackPayload *)self resultRankingFeedback];
-  if (v32)
+  resultRankingFeedback = [(_CPFeedbackPayload *)self resultRankingFeedback];
+  if (resultRankingFeedback)
   {
-    v33 = v32;
-    v34 = [(_CPFeedbackPayload *)self resultRankingFeedback];
-    v35 = [v4 resultRankingFeedback];
-    v36 = [v34 isEqual:v35];
+    v33 = resultRankingFeedback;
+    resultRankingFeedback2 = [(_CPFeedbackPayload *)self resultRankingFeedback];
+    resultRankingFeedback3 = [equalCopy resultRankingFeedback];
+    v36 = [resultRankingFeedback2 isEqual:resultRankingFeedback3];
 
     if (!v36)
     {
@@ -1362,20 +1362,20 @@ LABEL_38:
   {
   }
 
-  v5 = [(_CPFeedbackPayload *)self resultFeedback];
-  v6 = [v4 resultFeedback];
-  if ((v5 != 0) == (v6 == 0))
+  feedback = [(_CPFeedbackPayload *)self resultFeedback];
+  feedback2 = [equalCopy resultFeedback];
+  if ((feedback != 0) == (feedback2 == 0))
   {
     goto LABEL_226;
   }
 
-  v37 = [(_CPFeedbackPayload *)self resultFeedback];
-  if (v37)
+  resultFeedback = [(_CPFeedbackPayload *)self resultFeedback];
+  if (resultFeedback)
   {
-    v38 = v37;
-    v39 = [(_CPFeedbackPayload *)self resultFeedback];
-    v40 = [v4 resultFeedback];
-    v41 = [v39 isEqual:v40];
+    v38 = resultFeedback;
+    resultFeedback2 = [(_CPFeedbackPayload *)self resultFeedback];
+    resultFeedback3 = [equalCopy resultFeedback];
+    v41 = [resultFeedback2 isEqual:resultFeedback3];
 
     if (!v41)
     {
@@ -1387,20 +1387,20 @@ LABEL_38:
   {
   }
 
-  v5 = [(_CPFeedbackPayload *)self resultEngagementFeedback];
-  v6 = [v4 resultEngagementFeedback];
-  if ((v5 != 0) == (v6 == 0))
+  feedback = [(_CPFeedbackPayload *)self resultEngagementFeedback];
+  feedback2 = [equalCopy resultEngagementFeedback];
+  if ((feedback != 0) == (feedback2 == 0))
   {
     goto LABEL_226;
   }
 
-  v42 = [(_CPFeedbackPayload *)self resultEngagementFeedback];
-  if (v42)
+  resultEngagementFeedback = [(_CPFeedbackPayload *)self resultEngagementFeedback];
+  if (resultEngagementFeedback)
   {
-    v43 = v42;
-    v44 = [(_CPFeedbackPayload *)self resultEngagementFeedback];
-    v45 = [v4 resultEngagementFeedback];
-    v46 = [v44 isEqual:v45];
+    v43 = resultEngagementFeedback;
+    resultEngagementFeedback2 = [(_CPFeedbackPayload *)self resultEngagementFeedback];
+    resultEngagementFeedback3 = [equalCopy resultEngagementFeedback];
+    v46 = [resultEngagementFeedback2 isEqual:resultEngagementFeedback3];
 
     if (!v46)
     {
@@ -1412,20 +1412,20 @@ LABEL_38:
   {
   }
 
-  v5 = [(_CPFeedbackPayload *)self visibleResultsFeedback];
-  v6 = [v4 visibleResultsFeedback];
-  if ((v5 != 0) == (v6 == 0))
+  feedback = [(_CPFeedbackPayload *)self visibleResultsFeedback];
+  feedback2 = [equalCopy visibleResultsFeedback];
+  if ((feedback != 0) == (feedback2 == 0))
   {
     goto LABEL_226;
   }
 
-  v47 = [(_CPFeedbackPayload *)self visibleResultsFeedback];
-  if (v47)
+  visibleResultsFeedback = [(_CPFeedbackPayload *)self visibleResultsFeedback];
+  if (visibleResultsFeedback)
   {
-    v48 = v47;
-    v49 = [(_CPFeedbackPayload *)self visibleResultsFeedback];
-    v50 = [v4 visibleResultsFeedback];
-    v51 = [v49 isEqual:v50];
+    v48 = visibleResultsFeedback;
+    visibleResultsFeedback2 = [(_CPFeedbackPayload *)self visibleResultsFeedback];
+    visibleResultsFeedback3 = [equalCopy visibleResultsFeedback];
+    v51 = [visibleResultsFeedback2 isEqual:visibleResultsFeedback3];
 
     if (!v51)
     {
@@ -1437,20 +1437,20 @@ LABEL_38:
   {
   }
 
-  v5 = [(_CPFeedbackPayload *)self cardSectionFeedback];
-  v6 = [v4 cardSectionFeedback];
-  if ((v5 != 0) == (v6 == 0))
+  feedback = [(_CPFeedbackPayload *)self cardSectionFeedback];
+  feedback2 = [equalCopy cardSectionFeedback];
+  if ((feedback != 0) == (feedback2 == 0))
   {
     goto LABEL_226;
   }
 
-  v52 = [(_CPFeedbackPayload *)self cardSectionFeedback];
-  if (v52)
+  cardSectionFeedback = [(_CPFeedbackPayload *)self cardSectionFeedback];
+  if (cardSectionFeedback)
   {
-    v53 = v52;
-    v54 = [(_CPFeedbackPayload *)self cardSectionFeedback];
-    v55 = [v4 cardSectionFeedback];
-    v56 = [v54 isEqual:v55];
+    v53 = cardSectionFeedback;
+    cardSectionFeedback2 = [(_CPFeedbackPayload *)self cardSectionFeedback];
+    cardSectionFeedback3 = [equalCopy cardSectionFeedback];
+    v56 = [cardSectionFeedback2 isEqual:cardSectionFeedback3];
 
     if (!v56)
     {
@@ -1462,20 +1462,20 @@ LABEL_38:
   {
   }
 
-  v5 = [(_CPFeedbackPayload *)self mapsCardSectionEngagementFeedback];
-  v6 = [v4 mapsCardSectionEngagementFeedback];
-  if ((v5 != 0) == (v6 == 0))
+  feedback = [(_CPFeedbackPayload *)self mapsCardSectionEngagementFeedback];
+  feedback2 = [equalCopy mapsCardSectionEngagementFeedback];
+  if ((feedback != 0) == (feedback2 == 0))
   {
     goto LABEL_226;
   }
 
-  v57 = [(_CPFeedbackPayload *)self mapsCardSectionEngagementFeedback];
-  if (v57)
+  mapsCardSectionEngagementFeedback = [(_CPFeedbackPayload *)self mapsCardSectionEngagementFeedback];
+  if (mapsCardSectionEngagementFeedback)
   {
-    v58 = v57;
-    v59 = [(_CPFeedbackPayload *)self mapsCardSectionEngagementFeedback];
-    v60 = [v4 mapsCardSectionEngagementFeedback];
-    v61 = [v59 isEqual:v60];
+    v58 = mapsCardSectionEngagementFeedback;
+    mapsCardSectionEngagementFeedback2 = [(_CPFeedbackPayload *)self mapsCardSectionEngagementFeedback];
+    mapsCardSectionEngagementFeedback3 = [equalCopy mapsCardSectionEngagementFeedback];
+    v61 = [mapsCardSectionEngagementFeedback2 isEqual:mapsCardSectionEngagementFeedback3];
 
     if (!v61)
     {
@@ -1487,20 +1487,20 @@ LABEL_38:
   {
   }
 
-  v5 = [(_CPFeedbackPayload *)self storeCardSectionEngagementFeedback];
-  v6 = [v4 storeCardSectionEngagementFeedback];
-  if ((v5 != 0) == (v6 == 0))
+  feedback = [(_CPFeedbackPayload *)self storeCardSectionEngagementFeedback];
+  feedback2 = [equalCopy storeCardSectionEngagementFeedback];
+  if ((feedback != 0) == (feedback2 == 0))
   {
     goto LABEL_226;
   }
 
-  v62 = [(_CPFeedbackPayload *)self storeCardSectionEngagementFeedback];
-  if (v62)
+  storeCardSectionEngagementFeedback = [(_CPFeedbackPayload *)self storeCardSectionEngagementFeedback];
+  if (storeCardSectionEngagementFeedback)
   {
-    v63 = v62;
-    v64 = [(_CPFeedbackPayload *)self storeCardSectionEngagementFeedback];
-    v65 = [v4 storeCardSectionEngagementFeedback];
-    v66 = [v64 isEqual:v65];
+    v63 = storeCardSectionEngagementFeedback;
+    storeCardSectionEngagementFeedback2 = [(_CPFeedbackPayload *)self storeCardSectionEngagementFeedback];
+    storeCardSectionEngagementFeedback3 = [equalCopy storeCardSectionEngagementFeedback];
+    v66 = [storeCardSectionEngagementFeedback2 isEqual:storeCardSectionEngagementFeedback3];
 
     if (!v66)
     {
@@ -1512,20 +1512,20 @@ LABEL_38:
   {
   }
 
-  v5 = [(_CPFeedbackPayload *)self startSearchFeedback];
-  v6 = [v4 startSearchFeedback];
-  if ((v5 != 0) == (v6 == 0))
+  feedback = [(_CPFeedbackPayload *)self startSearchFeedback];
+  feedback2 = [equalCopy startSearchFeedback];
+  if ((feedback != 0) == (feedback2 == 0))
   {
     goto LABEL_226;
   }
 
-  v67 = [(_CPFeedbackPayload *)self startSearchFeedback];
-  if (v67)
+  startSearchFeedback = [(_CPFeedbackPayload *)self startSearchFeedback];
+  if (startSearchFeedback)
   {
-    v68 = v67;
-    v69 = [(_CPFeedbackPayload *)self startSearchFeedback];
-    v70 = [v4 startSearchFeedback];
-    v71 = [v69 isEqual:v70];
+    v68 = startSearchFeedback;
+    startSearchFeedback2 = [(_CPFeedbackPayload *)self startSearchFeedback];
+    startSearchFeedback3 = [equalCopy startSearchFeedback];
+    v71 = [startSearchFeedback2 isEqual:startSearchFeedback3];
 
     if (!v71)
     {
@@ -1537,20 +1537,20 @@ LABEL_38:
   {
   }
 
-  v5 = [(_CPFeedbackPayload *)self endSearchFeedback];
-  v6 = [v4 endSearchFeedback];
-  if ((v5 != 0) == (v6 == 0))
+  feedback = [(_CPFeedbackPayload *)self endSearchFeedback];
+  feedback2 = [equalCopy endSearchFeedback];
+  if ((feedback != 0) == (feedback2 == 0))
   {
     goto LABEL_226;
   }
 
-  v72 = [(_CPFeedbackPayload *)self endSearchFeedback];
-  if (v72)
+  endSearchFeedback = [(_CPFeedbackPayload *)self endSearchFeedback];
+  if (endSearchFeedback)
   {
-    v73 = v72;
-    v74 = [(_CPFeedbackPayload *)self endSearchFeedback];
-    v75 = [v4 endSearchFeedback];
-    v76 = [v74 isEqual:v75];
+    v73 = endSearchFeedback;
+    endSearchFeedback2 = [(_CPFeedbackPayload *)self endSearchFeedback];
+    endSearchFeedback3 = [equalCopy endSearchFeedback];
+    v76 = [endSearchFeedback2 isEqual:endSearchFeedback3];
 
     if (!v76)
     {
@@ -1562,20 +1562,20 @@ LABEL_38:
   {
   }
 
-  v5 = [(_CPFeedbackPayload *)self startNetworkSearchFeedback];
-  v6 = [v4 startNetworkSearchFeedback];
-  if ((v5 != 0) == (v6 == 0))
+  feedback = [(_CPFeedbackPayload *)self startNetworkSearchFeedback];
+  feedback2 = [equalCopy startNetworkSearchFeedback];
+  if ((feedback != 0) == (feedback2 == 0))
   {
     goto LABEL_226;
   }
 
-  v77 = [(_CPFeedbackPayload *)self startNetworkSearchFeedback];
-  if (v77)
+  startNetworkSearchFeedback = [(_CPFeedbackPayload *)self startNetworkSearchFeedback];
+  if (startNetworkSearchFeedback)
   {
-    v78 = v77;
-    v79 = [(_CPFeedbackPayload *)self startNetworkSearchFeedback];
-    v80 = [v4 startNetworkSearchFeedback];
-    v81 = [v79 isEqual:v80];
+    v78 = startNetworkSearchFeedback;
+    startNetworkSearchFeedback2 = [(_CPFeedbackPayload *)self startNetworkSearchFeedback];
+    startNetworkSearchFeedback3 = [equalCopy startNetworkSearchFeedback];
+    v81 = [startNetworkSearchFeedback2 isEqual:startNetworkSearchFeedback3];
 
     if (!v81)
     {
@@ -1587,20 +1587,20 @@ LABEL_38:
   {
   }
 
-  v5 = [(_CPFeedbackPayload *)self endNetworkSearchFeedback];
-  v6 = [v4 endNetworkSearchFeedback];
-  if ((v5 != 0) == (v6 == 0))
+  feedback = [(_CPFeedbackPayload *)self endNetworkSearchFeedback];
+  feedback2 = [equalCopy endNetworkSearchFeedback];
+  if ((feedback != 0) == (feedback2 == 0))
   {
     goto LABEL_226;
   }
 
-  v82 = [(_CPFeedbackPayload *)self endNetworkSearchFeedback];
-  if (v82)
+  endNetworkSearchFeedback = [(_CPFeedbackPayload *)self endNetworkSearchFeedback];
+  if (endNetworkSearchFeedback)
   {
-    v83 = v82;
-    v84 = [(_CPFeedbackPayload *)self endNetworkSearchFeedback];
-    v85 = [v4 endNetworkSearchFeedback];
-    v86 = [v84 isEqual:v85];
+    v83 = endNetworkSearchFeedback;
+    endNetworkSearchFeedback2 = [(_CPFeedbackPayload *)self endNetworkSearchFeedback];
+    endNetworkSearchFeedback3 = [equalCopy endNetworkSearchFeedback];
+    v86 = [endNetworkSearchFeedback2 isEqual:endNetworkSearchFeedback3];
 
     if (!v86)
     {
@@ -1612,20 +1612,20 @@ LABEL_38:
   {
   }
 
-  v5 = [(_CPFeedbackPayload *)self startLocalSearchFeedback];
-  v6 = [v4 startLocalSearchFeedback];
-  if ((v5 != 0) == (v6 == 0))
+  feedback = [(_CPFeedbackPayload *)self startLocalSearchFeedback];
+  feedback2 = [equalCopy startLocalSearchFeedback];
+  if ((feedback != 0) == (feedback2 == 0))
   {
     goto LABEL_226;
   }
 
-  v87 = [(_CPFeedbackPayload *)self startLocalSearchFeedback];
-  if (v87)
+  startLocalSearchFeedback = [(_CPFeedbackPayload *)self startLocalSearchFeedback];
+  if (startLocalSearchFeedback)
   {
-    v88 = v87;
-    v89 = [(_CPFeedbackPayload *)self startLocalSearchFeedback];
-    v90 = [v4 startLocalSearchFeedback];
-    v91 = [v89 isEqual:v90];
+    v88 = startLocalSearchFeedback;
+    startLocalSearchFeedback2 = [(_CPFeedbackPayload *)self startLocalSearchFeedback];
+    startLocalSearchFeedback3 = [equalCopy startLocalSearchFeedback];
+    v91 = [startLocalSearchFeedback2 isEqual:startLocalSearchFeedback3];
 
     if (!v91)
     {
@@ -1637,20 +1637,20 @@ LABEL_38:
   {
   }
 
-  v5 = [(_CPFeedbackPayload *)self endLocalSearchFeedback];
-  v6 = [v4 endLocalSearchFeedback];
-  if ((v5 != 0) == (v6 == 0))
+  feedback = [(_CPFeedbackPayload *)self endLocalSearchFeedback];
+  feedback2 = [equalCopy endLocalSearchFeedback];
+  if ((feedback != 0) == (feedback2 == 0))
   {
     goto LABEL_226;
   }
 
-  v92 = [(_CPFeedbackPayload *)self endLocalSearchFeedback];
-  if (v92)
+  endLocalSearchFeedback = [(_CPFeedbackPayload *)self endLocalSearchFeedback];
+  if (endLocalSearchFeedback)
   {
-    v93 = v92;
-    v94 = [(_CPFeedbackPayload *)self endLocalSearchFeedback];
-    v95 = [v4 endLocalSearchFeedback];
-    v96 = [v94 isEqual:v95];
+    v93 = endLocalSearchFeedback;
+    endLocalSearchFeedback2 = [(_CPFeedbackPayload *)self endLocalSearchFeedback];
+    endLocalSearchFeedback3 = [equalCopy endLocalSearchFeedback];
+    v96 = [endLocalSearchFeedback2 isEqual:endLocalSearchFeedback3];
 
     if (!v96)
     {
@@ -1662,20 +1662,20 @@ LABEL_38:
   {
   }
 
-  v5 = [(_CPFeedbackPayload *)self errorFeedback];
-  v6 = [v4 errorFeedback];
-  if ((v5 != 0) == (v6 == 0))
+  feedback = [(_CPFeedbackPayload *)self errorFeedback];
+  feedback2 = [equalCopy errorFeedback];
+  if ((feedback != 0) == (feedback2 == 0))
   {
     goto LABEL_226;
   }
 
-  v97 = [(_CPFeedbackPayload *)self errorFeedback];
-  if (v97)
+  errorFeedback = [(_CPFeedbackPayload *)self errorFeedback];
+  if (errorFeedback)
   {
-    v98 = v97;
-    v99 = [(_CPFeedbackPayload *)self errorFeedback];
-    v100 = [v4 errorFeedback];
-    v101 = [v99 isEqual:v100];
+    v98 = errorFeedback;
+    errorFeedback2 = [(_CPFeedbackPayload *)self errorFeedback];
+    errorFeedback3 = [equalCopy errorFeedback];
+    v101 = [errorFeedback2 isEqual:errorFeedback3];
 
     if (!v101)
     {
@@ -1687,20 +1687,20 @@ LABEL_38:
   {
   }
 
-  v5 = [(_CPFeedbackPayload *)self customFeedback];
-  v6 = [v4 customFeedback];
-  if ((v5 != 0) == (v6 == 0))
+  feedback = [(_CPFeedbackPayload *)self customFeedback];
+  feedback2 = [equalCopy customFeedback];
+  if ((feedback != 0) == (feedback2 == 0))
   {
     goto LABEL_226;
   }
 
-  v102 = [(_CPFeedbackPayload *)self customFeedback];
-  if (v102)
+  customFeedback = [(_CPFeedbackPayload *)self customFeedback];
+  if (customFeedback)
   {
-    v103 = v102;
-    v104 = [(_CPFeedbackPayload *)self customFeedback];
-    v105 = [v4 customFeedback];
-    v106 = [v104 isEqual:v105];
+    v103 = customFeedback;
+    customFeedback2 = [(_CPFeedbackPayload *)self customFeedback];
+    customFeedback3 = [equalCopy customFeedback];
+    v106 = [customFeedback2 isEqual:customFeedback3];
 
     if (!v106)
     {
@@ -1712,20 +1712,20 @@ LABEL_38:
   {
   }
 
-  v5 = [(_CPFeedbackPayload *)self suggestionEngagementFeedback];
-  v6 = [v4 suggestionEngagementFeedback];
-  if ((v5 != 0) == (v6 == 0))
+  feedback = [(_CPFeedbackPayload *)self suggestionEngagementFeedback];
+  feedback2 = [equalCopy suggestionEngagementFeedback];
+  if ((feedback != 0) == (feedback2 == 0))
   {
     goto LABEL_226;
   }
 
-  v107 = [(_CPFeedbackPayload *)self suggestionEngagementFeedback];
-  if (v107)
+  suggestionEngagementFeedback = [(_CPFeedbackPayload *)self suggestionEngagementFeedback];
+  if (suggestionEngagementFeedback)
   {
-    v108 = v107;
-    v109 = [(_CPFeedbackPayload *)self suggestionEngagementFeedback];
-    v110 = [v4 suggestionEngagementFeedback];
-    v111 = [v109 isEqual:v110];
+    v108 = suggestionEngagementFeedback;
+    suggestionEngagementFeedback2 = [(_CPFeedbackPayload *)self suggestionEngagementFeedback];
+    suggestionEngagementFeedback3 = [equalCopy suggestionEngagementFeedback];
+    v111 = [suggestionEngagementFeedback2 isEqual:suggestionEngagementFeedback3];
 
     if (!v111)
     {
@@ -1737,20 +1737,20 @@ LABEL_38:
   {
   }
 
-  v5 = [(_CPFeedbackPayload *)self cardViewDisappearFeedback];
-  v6 = [v4 cardViewDisappearFeedback];
-  if ((v5 != 0) == (v6 == 0))
+  feedback = [(_CPFeedbackPayload *)self cardViewDisappearFeedback];
+  feedback2 = [equalCopy cardViewDisappearFeedback];
+  if ((feedback != 0) == (feedback2 == 0))
   {
     goto LABEL_226;
   }
 
-  v112 = [(_CPFeedbackPayload *)self cardViewDisappearFeedback];
-  if (v112)
+  cardViewDisappearFeedback = [(_CPFeedbackPayload *)self cardViewDisappearFeedback];
+  if (cardViewDisappearFeedback)
   {
-    v113 = v112;
-    v114 = [(_CPFeedbackPayload *)self cardViewDisappearFeedback];
-    v115 = [v4 cardViewDisappearFeedback];
-    v116 = [v114 isEqual:v115];
+    v113 = cardViewDisappearFeedback;
+    cardViewDisappearFeedback2 = [(_CPFeedbackPayload *)self cardViewDisappearFeedback];
+    cardViewDisappearFeedback3 = [equalCopy cardViewDisappearFeedback];
+    v116 = [cardViewDisappearFeedback2 isEqual:cardViewDisappearFeedback3];
 
     if (!v116)
     {
@@ -1762,20 +1762,20 @@ LABEL_38:
   {
   }
 
-  v5 = [(_CPFeedbackPayload *)self visibleSuggestionsFeedback];
-  v6 = [v4 visibleSuggestionsFeedback];
-  if ((v5 != 0) == (v6 == 0))
+  feedback = [(_CPFeedbackPayload *)self visibleSuggestionsFeedback];
+  feedback2 = [equalCopy visibleSuggestionsFeedback];
+  if ((feedback != 0) == (feedback2 == 0))
   {
     goto LABEL_226;
   }
 
-  v117 = [(_CPFeedbackPayload *)self visibleSuggestionsFeedback];
-  if (v117)
+  visibleSuggestionsFeedback = [(_CPFeedbackPayload *)self visibleSuggestionsFeedback];
+  if (visibleSuggestionsFeedback)
   {
-    v118 = v117;
-    v119 = [(_CPFeedbackPayload *)self visibleSuggestionsFeedback];
-    v120 = [v4 visibleSuggestionsFeedback];
-    v121 = [v119 isEqual:v120];
+    v118 = visibleSuggestionsFeedback;
+    visibleSuggestionsFeedback2 = [(_CPFeedbackPayload *)self visibleSuggestionsFeedback];
+    visibleSuggestionsFeedback3 = [equalCopy visibleSuggestionsFeedback];
+    v121 = [visibleSuggestionsFeedback2 isEqual:visibleSuggestionsFeedback3];
 
     if (!v121)
     {
@@ -1787,20 +1787,20 @@ LABEL_38:
   {
   }
 
-  v5 = [(_CPFeedbackPayload *)self resultsReceivedAfterTimeoutFeedback];
-  v6 = [v4 resultsReceivedAfterTimeoutFeedback];
-  if ((v5 != 0) == (v6 == 0))
+  feedback = [(_CPFeedbackPayload *)self resultsReceivedAfterTimeoutFeedback];
+  feedback2 = [equalCopy resultsReceivedAfterTimeoutFeedback];
+  if ((feedback != 0) == (feedback2 == 0))
   {
     goto LABEL_226;
   }
 
-  v122 = [(_CPFeedbackPayload *)self resultsReceivedAfterTimeoutFeedback];
-  if (v122)
+  resultsReceivedAfterTimeoutFeedback = [(_CPFeedbackPayload *)self resultsReceivedAfterTimeoutFeedback];
+  if (resultsReceivedAfterTimeoutFeedback)
   {
-    v123 = v122;
-    v124 = [(_CPFeedbackPayload *)self resultsReceivedAfterTimeoutFeedback];
-    v125 = [v4 resultsReceivedAfterTimeoutFeedback];
-    v126 = [v124 isEqual:v125];
+    v123 = resultsReceivedAfterTimeoutFeedback;
+    resultsReceivedAfterTimeoutFeedback2 = [(_CPFeedbackPayload *)self resultsReceivedAfterTimeoutFeedback];
+    resultsReceivedAfterTimeoutFeedback3 = [equalCopy resultsReceivedAfterTimeoutFeedback];
+    v126 = [resultsReceivedAfterTimeoutFeedback2 isEqual:resultsReceivedAfterTimeoutFeedback3];
 
     if (!v126)
     {
@@ -1812,20 +1812,20 @@ LABEL_38:
   {
   }
 
-  v5 = [(_CPFeedbackPayload *)self lateSectionsAppendedFeedback];
-  v6 = [v4 lateSectionsAppendedFeedback];
-  if ((v5 != 0) == (v6 == 0))
+  feedback = [(_CPFeedbackPayload *)self lateSectionsAppendedFeedback];
+  feedback2 = [equalCopy lateSectionsAppendedFeedback];
+  if ((feedback != 0) == (feedback2 == 0))
   {
     goto LABEL_226;
   }
 
-  v127 = [(_CPFeedbackPayload *)self lateSectionsAppendedFeedback];
-  if (v127)
+  lateSectionsAppendedFeedback = [(_CPFeedbackPayload *)self lateSectionsAppendedFeedback];
+  if (lateSectionsAppendedFeedback)
   {
-    v128 = v127;
-    v129 = [(_CPFeedbackPayload *)self lateSectionsAppendedFeedback];
-    v130 = [v4 lateSectionsAppendedFeedback];
-    v131 = [v129 isEqual:v130];
+    v128 = lateSectionsAppendedFeedback;
+    lateSectionsAppendedFeedback2 = [(_CPFeedbackPayload *)self lateSectionsAppendedFeedback];
+    lateSectionsAppendedFeedback3 = [equalCopy lateSectionsAppendedFeedback];
+    v131 = [lateSectionsAppendedFeedback2 isEqual:lateSectionsAppendedFeedback3];
 
     if (!v131)
     {
@@ -1837,20 +1837,20 @@ LABEL_38:
   {
   }
 
-  v5 = [(_CPFeedbackPayload *)self clearInputFeedback];
-  v6 = [v4 clearInputFeedback];
-  if ((v5 != 0) == (v6 == 0))
+  feedback = [(_CPFeedbackPayload *)self clearInputFeedback];
+  feedback2 = [equalCopy clearInputFeedback];
+  if ((feedback != 0) == (feedback2 == 0))
   {
     goto LABEL_226;
   }
 
-  v132 = [(_CPFeedbackPayload *)self clearInputFeedback];
-  if (v132)
+  clearInputFeedback = [(_CPFeedbackPayload *)self clearInputFeedback];
+  if (clearInputFeedback)
   {
-    v133 = v132;
-    v134 = [(_CPFeedbackPayload *)self clearInputFeedback];
-    v135 = [v4 clearInputFeedback];
-    v136 = [v134 isEqual:v135];
+    v133 = clearInputFeedback;
+    clearInputFeedback2 = [(_CPFeedbackPayload *)self clearInputFeedback];
+    clearInputFeedback3 = [equalCopy clearInputFeedback];
+    v136 = [clearInputFeedback2 isEqual:clearInputFeedback3];
 
     if (!v136)
     {
@@ -1862,20 +1862,20 @@ LABEL_38:
   {
   }
 
-  v5 = [(_CPFeedbackPayload *)self sectionEngagementFeedback];
-  v6 = [v4 sectionEngagementFeedback];
-  if ((v5 != 0) == (v6 == 0))
+  feedback = [(_CPFeedbackPayload *)self sectionEngagementFeedback];
+  feedback2 = [equalCopy sectionEngagementFeedback];
+  if ((feedback != 0) == (feedback2 == 0))
   {
     goto LABEL_226;
   }
 
-  v137 = [(_CPFeedbackPayload *)self sectionEngagementFeedback];
-  if (v137)
+  sectionEngagementFeedback = [(_CPFeedbackPayload *)self sectionEngagementFeedback];
+  if (sectionEngagementFeedback)
   {
-    v138 = v137;
-    v139 = [(_CPFeedbackPayload *)self sectionEngagementFeedback];
-    v140 = [v4 sectionEngagementFeedback];
-    v141 = [v139 isEqual:v140];
+    v138 = sectionEngagementFeedback;
+    sectionEngagementFeedback2 = [(_CPFeedbackPayload *)self sectionEngagementFeedback];
+    sectionEngagementFeedback3 = [equalCopy sectionEngagementFeedback];
+    v141 = [sectionEngagementFeedback2 isEqual:sectionEngagementFeedback3];
 
     if (!v141)
     {
@@ -1887,20 +1887,20 @@ LABEL_38:
   {
   }
 
-  v5 = [(_CPFeedbackPayload *)self visibleSectionHeaderFeedback];
-  v6 = [v4 visibleSectionHeaderFeedback];
-  if ((v5 != 0) == (v6 == 0))
+  feedback = [(_CPFeedbackPayload *)self visibleSectionHeaderFeedback];
+  feedback2 = [equalCopy visibleSectionHeaderFeedback];
+  if ((feedback != 0) == (feedback2 == 0))
   {
     goto LABEL_226;
   }
 
-  v142 = [(_CPFeedbackPayload *)self visibleSectionHeaderFeedback];
-  if (v142)
+  visibleSectionHeaderFeedback = [(_CPFeedbackPayload *)self visibleSectionHeaderFeedback];
+  if (visibleSectionHeaderFeedback)
   {
-    v143 = v142;
-    v144 = [(_CPFeedbackPayload *)self visibleSectionHeaderFeedback];
-    v145 = [v4 visibleSectionHeaderFeedback];
-    v146 = [v144 isEqual:v145];
+    v143 = visibleSectionHeaderFeedback;
+    visibleSectionHeaderFeedback2 = [(_CPFeedbackPayload *)self visibleSectionHeaderFeedback];
+    visibleSectionHeaderFeedback3 = [equalCopy visibleSectionHeaderFeedback];
+    v146 = [visibleSectionHeaderFeedback2 isEqual:visibleSectionHeaderFeedback3];
 
     if (!v146)
     {
@@ -1912,20 +1912,20 @@ LABEL_38:
   {
   }
 
-  v5 = [(_CPFeedbackPayload *)self didGoToSiteFeedback];
-  v6 = [v4 didGoToSiteFeedback];
-  if ((v5 != 0) == (v6 == 0))
+  feedback = [(_CPFeedbackPayload *)self didGoToSiteFeedback];
+  feedback2 = [equalCopy didGoToSiteFeedback];
+  if ((feedback != 0) == (feedback2 == 0))
   {
     goto LABEL_226;
   }
 
-  v147 = [(_CPFeedbackPayload *)self didGoToSiteFeedback];
-  if (v147)
+  didGoToSiteFeedback = [(_CPFeedbackPayload *)self didGoToSiteFeedback];
+  if (didGoToSiteFeedback)
   {
-    v148 = v147;
-    v149 = [(_CPFeedbackPayload *)self didGoToSiteFeedback];
-    v150 = [v4 didGoToSiteFeedback];
-    v151 = [v149 isEqual:v150];
+    v148 = didGoToSiteFeedback;
+    didGoToSiteFeedback2 = [(_CPFeedbackPayload *)self didGoToSiteFeedback];
+    didGoToSiteFeedback3 = [equalCopy didGoToSiteFeedback];
+    v151 = [didGoToSiteFeedback2 isEqual:didGoToSiteFeedback3];
 
     if (!v151)
     {
@@ -1937,20 +1937,20 @@ LABEL_38:
   {
   }
 
-  v5 = [(_CPFeedbackPayload *)self didGoToSearchFeedback];
-  v6 = [v4 didGoToSearchFeedback];
-  if ((v5 != 0) == (v6 == 0))
+  feedback = [(_CPFeedbackPayload *)self didGoToSearchFeedback];
+  feedback2 = [equalCopy didGoToSearchFeedback];
+  if ((feedback != 0) == (feedback2 == 0))
   {
     goto LABEL_226;
   }
 
-  v152 = [(_CPFeedbackPayload *)self didGoToSearchFeedback];
-  if (v152)
+  didGoToSearchFeedback = [(_CPFeedbackPayload *)self didGoToSearchFeedback];
+  if (didGoToSearchFeedback)
   {
-    v153 = v152;
-    v154 = [(_CPFeedbackPayload *)self didGoToSearchFeedback];
-    v155 = [v4 didGoToSearchFeedback];
-    v156 = [v154 isEqual:v155];
+    v153 = didGoToSearchFeedback;
+    didGoToSearchFeedback2 = [(_CPFeedbackPayload *)self didGoToSearchFeedback];
+    didGoToSearchFeedback3 = [equalCopy didGoToSearchFeedback];
+    v156 = [didGoToSearchFeedback2 isEqual:didGoToSearchFeedback3];
 
     if (!v156)
     {
@@ -1962,20 +1962,20 @@ LABEL_38:
   {
   }
 
-  v5 = [(_CPFeedbackPayload *)self sessionMissingResultsFeedback];
-  v6 = [v4 sessionMissingResultsFeedback];
-  if ((v5 != 0) == (v6 == 0))
+  feedback = [(_CPFeedbackPayload *)self sessionMissingResultsFeedback];
+  feedback2 = [equalCopy sessionMissingResultsFeedback];
+  if ((feedback != 0) == (feedback2 == 0))
   {
     goto LABEL_226;
   }
 
-  v157 = [(_CPFeedbackPayload *)self sessionMissingResultsFeedback];
-  if (v157)
+  sessionMissingResultsFeedback = [(_CPFeedbackPayload *)self sessionMissingResultsFeedback];
+  if (sessionMissingResultsFeedback)
   {
-    v158 = v157;
-    v159 = [(_CPFeedbackPayload *)self sessionMissingResultsFeedback];
-    v160 = [v4 sessionMissingResultsFeedback];
-    v161 = [v159 isEqual:v160];
+    v158 = sessionMissingResultsFeedback;
+    sessionMissingResultsFeedback2 = [(_CPFeedbackPayload *)self sessionMissingResultsFeedback];
+    sessionMissingResultsFeedback3 = [equalCopy sessionMissingResultsFeedback];
+    v161 = [sessionMissingResultsFeedback2 isEqual:sessionMissingResultsFeedback3];
 
     if (!v161)
     {
@@ -1987,20 +1987,20 @@ LABEL_38:
   {
   }
 
-  v5 = [(_CPFeedbackPayload *)self sessionMissingSuggestionsFeedback];
-  v6 = [v4 sessionMissingSuggestionsFeedback];
-  if ((v5 != 0) == (v6 == 0))
+  feedback = [(_CPFeedbackPayload *)self sessionMissingSuggestionsFeedback];
+  feedback2 = [equalCopy sessionMissingSuggestionsFeedback];
+  if ((feedback != 0) == (feedback2 == 0))
   {
     goto LABEL_226;
   }
 
-  v162 = [(_CPFeedbackPayload *)self sessionMissingSuggestionsFeedback];
-  if (v162)
+  sessionMissingSuggestionsFeedback = [(_CPFeedbackPayload *)self sessionMissingSuggestionsFeedback];
+  if (sessionMissingSuggestionsFeedback)
   {
-    v163 = v162;
-    v164 = [(_CPFeedbackPayload *)self sessionMissingSuggestionsFeedback];
-    v165 = [v4 sessionMissingSuggestionsFeedback];
-    v166 = [v164 isEqual:v165];
+    v163 = sessionMissingSuggestionsFeedback;
+    sessionMissingSuggestionsFeedback2 = [(_CPFeedbackPayload *)self sessionMissingSuggestionsFeedback];
+    sessionMissingSuggestionsFeedback3 = [equalCopy sessionMissingSuggestionsFeedback];
+    v166 = [sessionMissingSuggestionsFeedback2 isEqual:sessionMissingSuggestionsFeedback3];
 
     if (!v166)
     {
@@ -2012,20 +2012,20 @@ LABEL_38:
   {
   }
 
-  v5 = [(_CPFeedbackPayload *)self resultGradingFeedback];
-  v6 = [v4 resultGradingFeedback];
-  if ((v5 != 0) == (v6 == 0))
+  feedback = [(_CPFeedbackPayload *)self resultGradingFeedback];
+  feedback2 = [equalCopy resultGradingFeedback];
+  if ((feedback != 0) == (feedback2 == 0))
   {
     goto LABEL_226;
   }
 
-  v167 = [(_CPFeedbackPayload *)self resultGradingFeedback];
-  if (v167)
+  resultGradingFeedback = [(_CPFeedbackPayload *)self resultGradingFeedback];
+  if (resultGradingFeedback)
   {
-    v168 = v167;
-    v169 = [(_CPFeedbackPayload *)self resultGradingFeedback];
-    v170 = [v4 resultGradingFeedback];
-    v171 = [v169 isEqual:v170];
+    v168 = resultGradingFeedback;
+    resultGradingFeedback2 = [(_CPFeedbackPayload *)self resultGradingFeedback];
+    resultGradingFeedback3 = [equalCopy resultGradingFeedback];
+    v171 = [resultGradingFeedback2 isEqual:resultGradingFeedback3];
 
     if (!v171)
     {
@@ -2037,20 +2037,20 @@ LABEL_38:
   {
   }
 
-  v5 = [(_CPFeedbackPayload *)self lookupHintRelevancyFeedback];
-  v6 = [v4 lookupHintRelevancyFeedback];
-  if ((v5 != 0) == (v6 == 0))
+  feedback = [(_CPFeedbackPayload *)self lookupHintRelevancyFeedback];
+  feedback2 = [equalCopy lookupHintRelevancyFeedback];
+  if ((feedback != 0) == (feedback2 == 0))
   {
     goto LABEL_226;
   }
 
-  v172 = [(_CPFeedbackPayload *)self lookupHintRelevancyFeedback];
-  if (v172)
+  lookupHintRelevancyFeedback = [(_CPFeedbackPayload *)self lookupHintRelevancyFeedback];
+  if (lookupHintRelevancyFeedback)
   {
-    v173 = v172;
-    v174 = [(_CPFeedbackPayload *)self lookupHintRelevancyFeedback];
-    v175 = [v4 lookupHintRelevancyFeedback];
-    v176 = [v174 isEqual:v175];
+    v173 = lookupHintRelevancyFeedback;
+    lookupHintRelevancyFeedback2 = [(_CPFeedbackPayload *)self lookupHintRelevancyFeedback];
+    lookupHintRelevancyFeedback3 = [equalCopy lookupHintRelevancyFeedback];
+    v176 = [lookupHintRelevancyFeedback2 isEqual:lookupHintRelevancyFeedback3];
 
     if (!v176)
     {
@@ -2062,20 +2062,20 @@ LABEL_38:
   {
   }
 
-  v5 = [(_CPFeedbackPayload *)self connectionInvalidatedFeedback];
-  v6 = [v4 connectionInvalidatedFeedback];
-  if ((v5 != 0) == (v6 == 0))
+  feedback = [(_CPFeedbackPayload *)self connectionInvalidatedFeedback];
+  feedback2 = [equalCopy connectionInvalidatedFeedback];
+  if ((feedback != 0) == (feedback2 == 0))
   {
     goto LABEL_226;
   }
 
-  v177 = [(_CPFeedbackPayload *)self connectionInvalidatedFeedback];
-  if (v177)
+  connectionInvalidatedFeedback = [(_CPFeedbackPayload *)self connectionInvalidatedFeedback];
+  if (connectionInvalidatedFeedback)
   {
-    v178 = v177;
-    v179 = [(_CPFeedbackPayload *)self connectionInvalidatedFeedback];
-    v180 = [v4 connectionInvalidatedFeedback];
-    v181 = [v179 isEqual:v180];
+    v178 = connectionInvalidatedFeedback;
+    connectionInvalidatedFeedback2 = [(_CPFeedbackPayload *)self connectionInvalidatedFeedback];
+    connectionInvalidatedFeedback3 = [equalCopy connectionInvalidatedFeedback];
+    v181 = [connectionInvalidatedFeedback2 isEqual:connectionInvalidatedFeedback3];
 
     if (!v181)
     {
@@ -2087,20 +2087,20 @@ LABEL_38:
   {
   }
 
-  v5 = [(_CPFeedbackPayload *)self cardSectionEngagementFeedback];
-  v6 = [v4 cardSectionEngagementFeedback];
-  if ((v5 != 0) == (v6 == 0))
+  feedback = [(_CPFeedbackPayload *)self cardSectionEngagementFeedback];
+  feedback2 = [equalCopy cardSectionEngagementFeedback];
+  if ((feedback != 0) == (feedback2 == 0))
   {
     goto LABEL_226;
   }
 
-  v182 = [(_CPFeedbackPayload *)self cardSectionEngagementFeedback];
-  if (v182)
+  cardSectionEngagementFeedback = [(_CPFeedbackPayload *)self cardSectionEngagementFeedback];
+  if (cardSectionEngagementFeedback)
   {
-    v183 = v182;
-    v184 = [(_CPFeedbackPayload *)self cardSectionEngagementFeedback];
-    v185 = [v4 cardSectionEngagementFeedback];
-    v186 = [v184 isEqual:v185];
+    v183 = cardSectionEngagementFeedback;
+    cardSectionEngagementFeedback2 = [(_CPFeedbackPayload *)self cardSectionEngagementFeedback];
+    cardSectionEngagementFeedback3 = [equalCopy cardSectionEngagementFeedback];
+    v186 = [cardSectionEngagementFeedback2 isEqual:cardSectionEngagementFeedback3];
 
     if (!v186)
     {
@@ -2112,20 +2112,20 @@ LABEL_38:
   {
   }
 
-  v5 = [(_CPFeedbackPayload *)self sessionEndFeedback];
-  v6 = [v4 sessionEndFeedback];
-  if ((v5 != 0) == (v6 == 0))
+  feedback = [(_CPFeedbackPayload *)self sessionEndFeedback];
+  feedback2 = [equalCopy sessionEndFeedback];
+  if ((feedback != 0) == (feedback2 == 0))
   {
     goto LABEL_226;
   }
 
-  v187 = [(_CPFeedbackPayload *)self sessionEndFeedback];
-  if (v187)
+  sessionEndFeedback = [(_CPFeedbackPayload *)self sessionEndFeedback];
+  if (sessionEndFeedback)
   {
-    v188 = v187;
-    v189 = [(_CPFeedbackPayload *)self sessionEndFeedback];
-    v190 = [v4 sessionEndFeedback];
-    v191 = [v189 isEqual:v190];
+    v188 = sessionEndFeedback;
+    sessionEndFeedback2 = [(_CPFeedbackPayload *)self sessionEndFeedback];
+    sessionEndFeedback3 = [equalCopy sessionEndFeedback];
+    v191 = [sessionEndFeedback2 isEqual:sessionEndFeedback3];
 
     if (!v191)
     {
@@ -2137,20 +2137,20 @@ LABEL_38:
   {
   }
 
-  v5 = [(_CPFeedbackPayload *)self cardViewAppearFeedback];
-  v6 = [v4 cardViewAppearFeedback];
-  if ((v5 != 0) == (v6 == 0))
+  feedback = [(_CPFeedbackPayload *)self cardViewAppearFeedback];
+  feedback2 = [equalCopy cardViewAppearFeedback];
+  if ((feedback != 0) == (feedback2 == 0))
   {
     goto LABEL_226;
   }
 
-  v192 = [(_CPFeedbackPayload *)self cardViewAppearFeedback];
-  if (v192)
+  cardViewAppearFeedback = [(_CPFeedbackPayload *)self cardViewAppearFeedback];
+  if (cardViewAppearFeedback)
   {
-    v193 = v192;
-    v194 = [(_CPFeedbackPayload *)self cardViewAppearFeedback];
-    v195 = [v4 cardViewAppearFeedback];
-    v196 = [v194 isEqual:v195];
+    v193 = cardViewAppearFeedback;
+    cardViewAppearFeedback2 = [(_CPFeedbackPayload *)self cardViewAppearFeedback];
+    cardViewAppearFeedback3 = [equalCopy cardViewAppearFeedback];
+    v196 = [cardViewAppearFeedback2 isEqual:cardViewAppearFeedback3];
 
     if (!v196)
     {
@@ -2162,20 +2162,20 @@ LABEL_38:
   {
   }
 
-  v5 = [(_CPFeedbackPayload *)self skipSearchFeedback];
-  v6 = [v4 skipSearchFeedback];
-  if ((v5 != 0) == (v6 == 0))
+  feedback = [(_CPFeedbackPayload *)self skipSearchFeedback];
+  feedback2 = [equalCopy skipSearchFeedback];
+  if ((feedback != 0) == (feedback2 == 0))
   {
     goto LABEL_226;
   }
 
-  v197 = [(_CPFeedbackPayload *)self skipSearchFeedback];
-  if (v197)
+  skipSearchFeedback = [(_CPFeedbackPayload *)self skipSearchFeedback];
+  if (skipSearchFeedback)
   {
-    v198 = v197;
-    v199 = [(_CPFeedbackPayload *)self skipSearchFeedback];
-    v200 = [v4 skipSearchFeedback];
-    v201 = [v199 isEqual:v200];
+    v198 = skipSearchFeedback;
+    skipSearchFeedback2 = [(_CPFeedbackPayload *)self skipSearchFeedback];
+    skipSearchFeedback3 = [equalCopy skipSearchFeedback];
+    v201 = [skipSearchFeedback2 isEqual:skipSearchFeedback3];
 
     if (!v201)
     {
@@ -2187,20 +2187,20 @@ LABEL_38:
   {
   }
 
-  v5 = [(_CPFeedbackPayload *)self cacheHitFeedback];
-  v6 = [v4 cacheHitFeedback];
-  if ((v5 != 0) == (v6 == 0))
+  feedback = [(_CPFeedbackPayload *)self cacheHitFeedback];
+  feedback2 = [equalCopy cacheHitFeedback];
+  if ((feedback != 0) == (feedback2 == 0))
   {
     goto LABEL_226;
   }
 
-  v202 = [(_CPFeedbackPayload *)self cacheHitFeedback];
-  if (v202)
+  cacheHitFeedback = [(_CPFeedbackPayload *)self cacheHitFeedback];
+  if (cacheHitFeedback)
   {
-    v203 = v202;
-    v204 = [(_CPFeedbackPayload *)self cacheHitFeedback];
-    v205 = [v4 cacheHitFeedback];
-    v206 = [v204 isEqual:v205];
+    v203 = cacheHitFeedback;
+    cacheHitFeedback2 = [(_CPFeedbackPayload *)self cacheHitFeedback];
+    cacheHitFeedback3 = [equalCopy cacheHitFeedback];
+    v206 = [cacheHitFeedback2 isEqual:cacheHitFeedback3];
 
     if (!v206)
     {
@@ -2212,20 +2212,20 @@ LABEL_38:
   {
   }
 
-  v5 = [(_CPFeedbackPayload *)self cbaEngagementFeedback];
-  v6 = [v4 cbaEngagementFeedback];
-  if ((v5 != 0) == (v6 == 0))
+  feedback = [(_CPFeedbackPayload *)self cbaEngagementFeedback];
+  feedback2 = [equalCopy cbaEngagementFeedback];
+  if ((feedback != 0) == (feedback2 == 0))
   {
     goto LABEL_226;
   }
 
-  v207 = [(_CPFeedbackPayload *)self cbaEngagementFeedback];
-  if (v207)
+  cbaEngagementFeedback = [(_CPFeedbackPayload *)self cbaEngagementFeedback];
+  if (cbaEngagementFeedback)
   {
-    v208 = v207;
-    v209 = [(_CPFeedbackPayload *)self cbaEngagementFeedback];
-    v210 = [v4 cbaEngagementFeedback];
-    v211 = [v209 isEqual:v210];
+    v208 = cbaEngagementFeedback;
+    cbaEngagementFeedback2 = [(_CPFeedbackPayload *)self cbaEngagementFeedback];
+    cbaEngagementFeedback3 = [equalCopy cbaEngagementFeedback];
+    v211 = [cbaEngagementFeedback2 isEqual:cbaEngagementFeedback3];
 
     if (!v211)
     {
@@ -2237,20 +2237,20 @@ LABEL_38:
   {
   }
 
-  v5 = [(_CPFeedbackPayload *)self clientTimingFeedback];
-  v6 = [v4 clientTimingFeedback];
-  if ((v5 != 0) == (v6 == 0))
+  feedback = [(_CPFeedbackPayload *)self clientTimingFeedback];
+  feedback2 = [equalCopy clientTimingFeedback];
+  if ((feedback != 0) == (feedback2 == 0))
   {
     goto LABEL_226;
   }
 
-  v212 = [(_CPFeedbackPayload *)self clientTimingFeedback];
-  if (v212)
+  clientTimingFeedback = [(_CPFeedbackPayload *)self clientTimingFeedback];
+  if (clientTimingFeedback)
   {
-    v213 = v212;
-    v214 = [(_CPFeedbackPayload *)self clientTimingFeedback];
-    v215 = [v4 clientTimingFeedback];
-    v216 = [v214 isEqual:v215];
+    v213 = clientTimingFeedback;
+    clientTimingFeedback2 = [(_CPFeedbackPayload *)self clientTimingFeedback];
+    clientTimingFeedback3 = [equalCopy clientTimingFeedback];
+    v216 = [clientTimingFeedback2 isEqual:clientTimingFeedback3];
 
     if (!v216)
     {
@@ -2262,20 +2262,20 @@ LABEL_38:
   {
   }
 
-  v5 = [(_CPFeedbackPayload *)self commandEngagementFeedback];
-  v6 = [v4 commandEngagementFeedback];
-  if ((v5 != 0) == (v6 == 0))
+  feedback = [(_CPFeedbackPayload *)self commandEngagementFeedback];
+  feedback2 = [equalCopy commandEngagementFeedback];
+  if ((feedback != 0) == (feedback2 == 0))
   {
     goto LABEL_226;
   }
 
-  v217 = [(_CPFeedbackPayload *)self commandEngagementFeedback];
-  if (v217)
+  commandEngagementFeedback = [(_CPFeedbackPayload *)self commandEngagementFeedback];
+  if (commandEngagementFeedback)
   {
-    v218 = v217;
-    v219 = [(_CPFeedbackPayload *)self commandEngagementFeedback];
-    v220 = [v4 commandEngagementFeedback];
-    v221 = [v219 isEqual:v220];
+    v218 = commandEngagementFeedback;
+    commandEngagementFeedback2 = [(_CPFeedbackPayload *)self commandEngagementFeedback];
+    commandEngagementFeedback3 = [equalCopy commandEngagementFeedback];
+    v221 = [commandEngagementFeedback2 isEqual:commandEngagementFeedback3];
 
     if (!v221)
     {
@@ -2287,20 +2287,20 @@ LABEL_38:
   {
   }
 
-  v5 = [(_CPFeedbackPayload *)self dynamicButtonVisibilityFeedback];
-  v6 = [v4 dynamicButtonVisibilityFeedback];
-  if ((v5 != 0) == (v6 == 0))
+  feedback = [(_CPFeedbackPayload *)self dynamicButtonVisibilityFeedback];
+  feedback2 = [equalCopy dynamicButtonVisibilityFeedback];
+  if ((feedback != 0) == (feedback2 == 0))
   {
     goto LABEL_226;
   }
 
-  v222 = [(_CPFeedbackPayload *)self dynamicButtonVisibilityFeedback];
-  if (v222)
+  dynamicButtonVisibilityFeedback = [(_CPFeedbackPayload *)self dynamicButtonVisibilityFeedback];
+  if (dynamicButtonVisibilityFeedback)
   {
-    v223 = v222;
-    v224 = [(_CPFeedbackPayload *)self dynamicButtonVisibilityFeedback];
-    v225 = [v4 dynamicButtonVisibilityFeedback];
-    v226 = [v224 isEqual:v225];
+    v223 = dynamicButtonVisibilityFeedback;
+    dynamicButtonVisibilityFeedback2 = [(_CPFeedbackPayload *)self dynamicButtonVisibilityFeedback];
+    dynamicButtonVisibilityFeedback3 = [equalCopy dynamicButtonVisibilityFeedback];
+    v226 = [dynamicButtonVisibilityFeedback2 isEqual:dynamicButtonVisibilityFeedback3];
 
     if (!v226)
     {
@@ -2312,24 +2312,24 @@ LABEL_38:
   {
   }
 
-  v5 = [(_CPFeedbackPayload *)self experimentTriggeredFeedback];
-  v6 = [v4 experimentTriggeredFeedback];
-  if ((v5 != 0) != (v6 == 0))
+  feedback = [(_CPFeedbackPayload *)self experimentTriggeredFeedback];
+  feedback2 = [equalCopy experimentTriggeredFeedback];
+  if ((feedback != 0) != (feedback2 == 0))
   {
-    v227 = [(_CPFeedbackPayload *)self experimentTriggeredFeedback];
-    if (!v227)
+    experimentTriggeredFeedback = [(_CPFeedbackPayload *)self experimentTriggeredFeedback];
+    if (!experimentTriggeredFeedback)
     {
 
 LABEL_230:
       queryId = self->_queryId;
-      v232 = queryId == [v4 queryId];
+      v232 = queryId == [equalCopy queryId];
       goto LABEL_228;
     }
 
-    v228 = v227;
-    v229 = [(_CPFeedbackPayload *)self experimentTriggeredFeedback];
-    v230 = [v4 experimentTriggeredFeedback];
-    v231 = [v229 isEqual:v230];
+    v228 = experimentTriggeredFeedback;
+    experimentTriggeredFeedback2 = [(_CPFeedbackPayload *)self experimentTriggeredFeedback];
+    experimentTriggeredFeedback3 = [equalCopy experimentTriggeredFeedback];
+    v231 = [experimentTriggeredFeedback2 isEqual:experimentTriggeredFeedback3];
 
     if (v231)
     {
@@ -2349,366 +2349,366 @@ LABEL_228:
   return v232;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  a3;
-  v4 = [(_CPFeedbackPayload *)self feedback];
+  to;
+  feedback = [(_CPFeedbackPayload *)self feedback];
 
-  if (v4)
+  if (feedback)
   {
-    v5 = [(_CPFeedbackPayload *)self feedback];
+    feedback2 = [(_CPFeedbackPayload *)self feedback];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_CPFeedbackPayload *)self searchViewAppearFeedback];
+  searchViewAppearFeedback = [(_CPFeedbackPayload *)self searchViewAppearFeedback];
 
-  if (v6)
+  if (searchViewAppearFeedback)
   {
-    v7 = [(_CPFeedbackPayload *)self searchViewAppearFeedback];
+    searchViewAppearFeedback2 = [(_CPFeedbackPayload *)self searchViewAppearFeedback];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(_CPFeedbackPayload *)self searchViewDisappearFeedback];
+  searchViewDisappearFeedback = [(_CPFeedbackPayload *)self searchViewDisappearFeedback];
 
-  if (v8)
+  if (searchViewDisappearFeedback)
   {
-    v9 = [(_CPFeedbackPayload *)self searchViewDisappearFeedback];
+    searchViewDisappearFeedback2 = [(_CPFeedbackPayload *)self searchViewDisappearFeedback];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(_CPFeedbackPayload *)self rankingFeedback];
+  rankingFeedback = [(_CPFeedbackPayload *)self rankingFeedback];
 
-  if (v10)
+  if (rankingFeedback)
   {
-    v11 = [(_CPFeedbackPayload *)self rankingFeedback];
+    rankingFeedback2 = [(_CPFeedbackPayload *)self rankingFeedback];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(_CPFeedbackPayload *)self sectionRankingFeedback];
+  sectionRankingFeedback = [(_CPFeedbackPayload *)self sectionRankingFeedback];
 
-  if (v12)
+  if (sectionRankingFeedback)
   {
-    v13 = [(_CPFeedbackPayload *)self sectionRankingFeedback];
+    sectionRankingFeedback2 = [(_CPFeedbackPayload *)self sectionRankingFeedback];
     PBDataWriterWriteSubmessage();
   }
 
-  v14 = [(_CPFeedbackPayload *)self resultRankingFeedback];
+  resultRankingFeedback = [(_CPFeedbackPayload *)self resultRankingFeedback];
 
-  if (v14)
+  if (resultRankingFeedback)
   {
-    v15 = [(_CPFeedbackPayload *)self resultRankingFeedback];
+    resultRankingFeedback2 = [(_CPFeedbackPayload *)self resultRankingFeedback];
     PBDataWriterWriteSubmessage();
   }
 
-  v16 = [(_CPFeedbackPayload *)self resultFeedback];
+  resultFeedback = [(_CPFeedbackPayload *)self resultFeedback];
 
-  if (v16)
+  if (resultFeedback)
   {
-    v17 = [(_CPFeedbackPayload *)self resultFeedback];
+    resultFeedback2 = [(_CPFeedbackPayload *)self resultFeedback];
     PBDataWriterWriteSubmessage();
   }
 
-  v18 = [(_CPFeedbackPayload *)self resultEngagementFeedback];
+  resultEngagementFeedback = [(_CPFeedbackPayload *)self resultEngagementFeedback];
 
-  if (v18)
+  if (resultEngagementFeedback)
   {
-    v19 = [(_CPFeedbackPayload *)self resultEngagementFeedback];
+    resultEngagementFeedback2 = [(_CPFeedbackPayload *)self resultEngagementFeedback];
     PBDataWriterWriteSubmessage();
   }
 
-  v20 = [(_CPFeedbackPayload *)self visibleResultsFeedback];
+  visibleResultsFeedback = [(_CPFeedbackPayload *)self visibleResultsFeedback];
 
-  if (v20)
+  if (visibleResultsFeedback)
   {
-    v21 = [(_CPFeedbackPayload *)self visibleResultsFeedback];
+    visibleResultsFeedback2 = [(_CPFeedbackPayload *)self visibleResultsFeedback];
     PBDataWriterWriteSubmessage();
   }
 
-  v22 = [(_CPFeedbackPayload *)self cardSectionFeedback];
+  cardSectionFeedback = [(_CPFeedbackPayload *)self cardSectionFeedback];
 
-  if (v22)
+  if (cardSectionFeedback)
   {
-    v23 = [(_CPFeedbackPayload *)self cardSectionFeedback];
+    cardSectionFeedback2 = [(_CPFeedbackPayload *)self cardSectionFeedback];
     PBDataWriterWriteSubmessage();
   }
 
-  v24 = [(_CPFeedbackPayload *)self mapsCardSectionEngagementFeedback];
+  mapsCardSectionEngagementFeedback = [(_CPFeedbackPayload *)self mapsCardSectionEngagementFeedback];
 
-  if (v24)
+  if (mapsCardSectionEngagementFeedback)
   {
-    v25 = [(_CPFeedbackPayload *)self mapsCardSectionEngagementFeedback];
+    mapsCardSectionEngagementFeedback2 = [(_CPFeedbackPayload *)self mapsCardSectionEngagementFeedback];
     PBDataWriterWriteSubmessage();
   }
 
-  v26 = [(_CPFeedbackPayload *)self storeCardSectionEngagementFeedback];
+  storeCardSectionEngagementFeedback = [(_CPFeedbackPayload *)self storeCardSectionEngagementFeedback];
 
-  if (v26)
+  if (storeCardSectionEngagementFeedback)
   {
-    v27 = [(_CPFeedbackPayload *)self storeCardSectionEngagementFeedback];
+    storeCardSectionEngagementFeedback2 = [(_CPFeedbackPayload *)self storeCardSectionEngagementFeedback];
     PBDataWriterWriteSubmessage();
   }
 
-  v28 = [(_CPFeedbackPayload *)self startSearchFeedback];
+  startSearchFeedback = [(_CPFeedbackPayload *)self startSearchFeedback];
 
-  if (v28)
+  if (startSearchFeedback)
   {
-    v29 = [(_CPFeedbackPayload *)self startSearchFeedback];
+    startSearchFeedback2 = [(_CPFeedbackPayload *)self startSearchFeedback];
     PBDataWriterWriteSubmessage();
   }
 
-  v30 = [(_CPFeedbackPayload *)self endSearchFeedback];
+  endSearchFeedback = [(_CPFeedbackPayload *)self endSearchFeedback];
 
-  if (v30)
+  if (endSearchFeedback)
   {
-    v31 = [(_CPFeedbackPayload *)self endSearchFeedback];
+    endSearchFeedback2 = [(_CPFeedbackPayload *)self endSearchFeedback];
     PBDataWriterWriteSubmessage();
   }
 
-  v32 = [(_CPFeedbackPayload *)self startNetworkSearchFeedback];
+  startNetworkSearchFeedback = [(_CPFeedbackPayload *)self startNetworkSearchFeedback];
 
-  if (v32)
+  if (startNetworkSearchFeedback)
   {
-    v33 = [(_CPFeedbackPayload *)self startNetworkSearchFeedback];
+    startNetworkSearchFeedback2 = [(_CPFeedbackPayload *)self startNetworkSearchFeedback];
     PBDataWriterWriteSubmessage();
   }
 
-  v34 = [(_CPFeedbackPayload *)self endNetworkSearchFeedback];
+  endNetworkSearchFeedback = [(_CPFeedbackPayload *)self endNetworkSearchFeedback];
 
-  if (v34)
+  if (endNetworkSearchFeedback)
   {
-    v35 = [(_CPFeedbackPayload *)self endNetworkSearchFeedback];
+    endNetworkSearchFeedback2 = [(_CPFeedbackPayload *)self endNetworkSearchFeedback];
     PBDataWriterWriteSubmessage();
   }
 
-  v36 = [(_CPFeedbackPayload *)self startLocalSearchFeedback];
+  startLocalSearchFeedback = [(_CPFeedbackPayload *)self startLocalSearchFeedback];
 
-  if (v36)
+  if (startLocalSearchFeedback)
   {
-    v37 = [(_CPFeedbackPayload *)self startLocalSearchFeedback];
+    startLocalSearchFeedback2 = [(_CPFeedbackPayload *)self startLocalSearchFeedback];
     PBDataWriterWriteSubmessage();
   }
 
-  v38 = [(_CPFeedbackPayload *)self endLocalSearchFeedback];
+  endLocalSearchFeedback = [(_CPFeedbackPayload *)self endLocalSearchFeedback];
 
-  if (v38)
+  if (endLocalSearchFeedback)
   {
-    v39 = [(_CPFeedbackPayload *)self endLocalSearchFeedback];
+    endLocalSearchFeedback2 = [(_CPFeedbackPayload *)self endLocalSearchFeedback];
     PBDataWriterWriteSubmessage();
   }
 
-  v40 = [(_CPFeedbackPayload *)self errorFeedback];
+  errorFeedback = [(_CPFeedbackPayload *)self errorFeedback];
 
-  if (v40)
+  if (errorFeedback)
   {
-    v41 = [(_CPFeedbackPayload *)self errorFeedback];
+    errorFeedback2 = [(_CPFeedbackPayload *)self errorFeedback];
     PBDataWriterWriteSubmessage();
   }
 
-  v42 = [(_CPFeedbackPayload *)self customFeedback];
+  customFeedback = [(_CPFeedbackPayload *)self customFeedback];
 
-  if (v42)
+  if (customFeedback)
   {
-    v43 = [(_CPFeedbackPayload *)self customFeedback];
+    customFeedback2 = [(_CPFeedbackPayload *)self customFeedback];
     PBDataWriterWriteSubmessage();
   }
 
-  v44 = [(_CPFeedbackPayload *)self suggestionEngagementFeedback];
+  suggestionEngagementFeedback = [(_CPFeedbackPayload *)self suggestionEngagementFeedback];
 
-  if (v44)
+  if (suggestionEngagementFeedback)
   {
-    v45 = [(_CPFeedbackPayload *)self suggestionEngagementFeedback];
+    suggestionEngagementFeedback2 = [(_CPFeedbackPayload *)self suggestionEngagementFeedback];
     PBDataWriterWriteSubmessage();
   }
 
-  v46 = [(_CPFeedbackPayload *)self cardViewDisappearFeedback];
+  cardViewDisappearFeedback = [(_CPFeedbackPayload *)self cardViewDisappearFeedback];
 
-  if (v46)
+  if (cardViewDisappearFeedback)
   {
-    v47 = [(_CPFeedbackPayload *)self cardViewDisappearFeedback];
+    cardViewDisappearFeedback2 = [(_CPFeedbackPayload *)self cardViewDisappearFeedback];
     PBDataWriterWriteSubmessage();
   }
 
-  v48 = [(_CPFeedbackPayload *)self visibleSuggestionsFeedback];
+  visibleSuggestionsFeedback = [(_CPFeedbackPayload *)self visibleSuggestionsFeedback];
 
-  if (v48)
+  if (visibleSuggestionsFeedback)
   {
-    v49 = [(_CPFeedbackPayload *)self visibleSuggestionsFeedback];
+    visibleSuggestionsFeedback2 = [(_CPFeedbackPayload *)self visibleSuggestionsFeedback];
     PBDataWriterWriteSubmessage();
   }
 
-  v50 = [(_CPFeedbackPayload *)self resultsReceivedAfterTimeoutFeedback];
+  resultsReceivedAfterTimeoutFeedback = [(_CPFeedbackPayload *)self resultsReceivedAfterTimeoutFeedback];
 
-  if (v50)
+  if (resultsReceivedAfterTimeoutFeedback)
   {
-    v51 = [(_CPFeedbackPayload *)self resultsReceivedAfterTimeoutFeedback];
+    resultsReceivedAfterTimeoutFeedback2 = [(_CPFeedbackPayload *)self resultsReceivedAfterTimeoutFeedback];
     PBDataWriterWriteSubmessage();
   }
 
-  v52 = [(_CPFeedbackPayload *)self lateSectionsAppendedFeedback];
+  lateSectionsAppendedFeedback = [(_CPFeedbackPayload *)self lateSectionsAppendedFeedback];
 
-  if (v52)
+  if (lateSectionsAppendedFeedback)
   {
-    v53 = [(_CPFeedbackPayload *)self lateSectionsAppendedFeedback];
+    lateSectionsAppendedFeedback2 = [(_CPFeedbackPayload *)self lateSectionsAppendedFeedback];
     PBDataWriterWriteSubmessage();
   }
 
-  v54 = [(_CPFeedbackPayload *)self clearInputFeedback];
+  clearInputFeedback = [(_CPFeedbackPayload *)self clearInputFeedback];
 
-  if (v54)
+  if (clearInputFeedback)
   {
-    v55 = [(_CPFeedbackPayload *)self clearInputFeedback];
+    clearInputFeedback2 = [(_CPFeedbackPayload *)self clearInputFeedback];
     PBDataWriterWriteSubmessage();
   }
 
-  v56 = [(_CPFeedbackPayload *)self sectionEngagementFeedback];
+  sectionEngagementFeedback = [(_CPFeedbackPayload *)self sectionEngagementFeedback];
 
-  if (v56)
+  if (sectionEngagementFeedback)
   {
-    v57 = [(_CPFeedbackPayload *)self sectionEngagementFeedback];
+    sectionEngagementFeedback2 = [(_CPFeedbackPayload *)self sectionEngagementFeedback];
     PBDataWriterWriteSubmessage();
   }
 
-  v58 = [(_CPFeedbackPayload *)self visibleSectionHeaderFeedback];
+  visibleSectionHeaderFeedback = [(_CPFeedbackPayload *)self visibleSectionHeaderFeedback];
 
-  if (v58)
+  if (visibleSectionHeaderFeedback)
   {
-    v59 = [(_CPFeedbackPayload *)self visibleSectionHeaderFeedback];
+    visibleSectionHeaderFeedback2 = [(_CPFeedbackPayload *)self visibleSectionHeaderFeedback];
     PBDataWriterWriteSubmessage();
   }
 
-  v60 = [(_CPFeedbackPayload *)self didGoToSiteFeedback];
+  didGoToSiteFeedback = [(_CPFeedbackPayload *)self didGoToSiteFeedback];
 
-  if (v60)
+  if (didGoToSiteFeedback)
   {
-    v61 = [(_CPFeedbackPayload *)self didGoToSiteFeedback];
+    didGoToSiteFeedback2 = [(_CPFeedbackPayload *)self didGoToSiteFeedback];
     PBDataWriterWriteSubmessage();
   }
 
-  v62 = [(_CPFeedbackPayload *)self didGoToSearchFeedback];
+  didGoToSearchFeedback = [(_CPFeedbackPayload *)self didGoToSearchFeedback];
 
-  if (v62)
+  if (didGoToSearchFeedback)
   {
-    v63 = [(_CPFeedbackPayload *)self didGoToSearchFeedback];
+    didGoToSearchFeedback2 = [(_CPFeedbackPayload *)self didGoToSearchFeedback];
     PBDataWriterWriteSubmessage();
   }
 
-  v64 = [(_CPFeedbackPayload *)self sessionMissingResultsFeedback];
+  sessionMissingResultsFeedback = [(_CPFeedbackPayload *)self sessionMissingResultsFeedback];
 
-  if (v64)
+  if (sessionMissingResultsFeedback)
   {
-    v65 = [(_CPFeedbackPayload *)self sessionMissingResultsFeedback];
+    sessionMissingResultsFeedback2 = [(_CPFeedbackPayload *)self sessionMissingResultsFeedback];
     PBDataWriterWriteSubmessage();
   }
 
-  v66 = [(_CPFeedbackPayload *)self sessionMissingSuggestionsFeedback];
+  sessionMissingSuggestionsFeedback = [(_CPFeedbackPayload *)self sessionMissingSuggestionsFeedback];
 
-  if (v66)
+  if (sessionMissingSuggestionsFeedback)
   {
-    v67 = [(_CPFeedbackPayload *)self sessionMissingSuggestionsFeedback];
+    sessionMissingSuggestionsFeedback2 = [(_CPFeedbackPayload *)self sessionMissingSuggestionsFeedback];
     PBDataWriterWriteSubmessage();
   }
 
-  v68 = [(_CPFeedbackPayload *)self resultGradingFeedback];
+  resultGradingFeedback = [(_CPFeedbackPayload *)self resultGradingFeedback];
 
-  if (v68)
+  if (resultGradingFeedback)
   {
-    v69 = [(_CPFeedbackPayload *)self resultGradingFeedback];
+    resultGradingFeedback2 = [(_CPFeedbackPayload *)self resultGradingFeedback];
     PBDataWriterWriteSubmessage();
   }
 
-  v70 = [(_CPFeedbackPayload *)self lookupHintRelevancyFeedback];
+  lookupHintRelevancyFeedback = [(_CPFeedbackPayload *)self lookupHintRelevancyFeedback];
 
-  if (v70)
+  if (lookupHintRelevancyFeedback)
   {
-    v71 = [(_CPFeedbackPayload *)self lookupHintRelevancyFeedback];
+    lookupHintRelevancyFeedback2 = [(_CPFeedbackPayload *)self lookupHintRelevancyFeedback];
     PBDataWriterWriteSubmessage();
   }
 
-  v72 = [(_CPFeedbackPayload *)self connectionInvalidatedFeedback];
+  connectionInvalidatedFeedback = [(_CPFeedbackPayload *)self connectionInvalidatedFeedback];
 
-  if (v72)
+  if (connectionInvalidatedFeedback)
   {
-    v73 = [(_CPFeedbackPayload *)self connectionInvalidatedFeedback];
+    connectionInvalidatedFeedback2 = [(_CPFeedbackPayload *)self connectionInvalidatedFeedback];
     PBDataWriterWriteSubmessage();
   }
 
-  v74 = [(_CPFeedbackPayload *)self cardSectionEngagementFeedback];
+  cardSectionEngagementFeedback = [(_CPFeedbackPayload *)self cardSectionEngagementFeedback];
 
-  if (v74)
+  if (cardSectionEngagementFeedback)
   {
-    v75 = [(_CPFeedbackPayload *)self cardSectionEngagementFeedback];
+    cardSectionEngagementFeedback2 = [(_CPFeedbackPayload *)self cardSectionEngagementFeedback];
     PBDataWriterWriteSubmessage();
   }
 
-  v76 = [(_CPFeedbackPayload *)self sessionEndFeedback];
+  sessionEndFeedback = [(_CPFeedbackPayload *)self sessionEndFeedback];
 
-  if (v76)
+  if (sessionEndFeedback)
   {
-    v77 = [(_CPFeedbackPayload *)self sessionEndFeedback];
+    sessionEndFeedback2 = [(_CPFeedbackPayload *)self sessionEndFeedback];
     PBDataWriterWriteSubmessage();
   }
 
-  v78 = [(_CPFeedbackPayload *)self cardViewAppearFeedback];
+  cardViewAppearFeedback = [(_CPFeedbackPayload *)self cardViewAppearFeedback];
 
-  if (v78)
+  if (cardViewAppearFeedback)
   {
-    v79 = [(_CPFeedbackPayload *)self cardViewAppearFeedback];
+    cardViewAppearFeedback2 = [(_CPFeedbackPayload *)self cardViewAppearFeedback];
     PBDataWriterWriteSubmessage();
   }
 
-  v80 = [(_CPFeedbackPayload *)self skipSearchFeedback];
+  skipSearchFeedback = [(_CPFeedbackPayload *)self skipSearchFeedback];
 
-  if (v80)
+  if (skipSearchFeedback)
   {
-    v81 = [(_CPFeedbackPayload *)self skipSearchFeedback];
+    skipSearchFeedback2 = [(_CPFeedbackPayload *)self skipSearchFeedback];
     PBDataWriterWriteSubmessage();
   }
 
-  v82 = [(_CPFeedbackPayload *)self cacheHitFeedback];
+  cacheHitFeedback = [(_CPFeedbackPayload *)self cacheHitFeedback];
 
-  if (v82)
+  if (cacheHitFeedback)
   {
-    v83 = [(_CPFeedbackPayload *)self cacheHitFeedback];
+    cacheHitFeedback2 = [(_CPFeedbackPayload *)self cacheHitFeedback];
     PBDataWriterWriteSubmessage();
   }
 
-  v84 = [(_CPFeedbackPayload *)self cbaEngagementFeedback];
+  cbaEngagementFeedback = [(_CPFeedbackPayload *)self cbaEngagementFeedback];
 
-  if (v84)
+  if (cbaEngagementFeedback)
   {
-    v85 = [(_CPFeedbackPayload *)self cbaEngagementFeedback];
+    cbaEngagementFeedback2 = [(_CPFeedbackPayload *)self cbaEngagementFeedback];
     PBDataWriterWriteSubmessage();
   }
 
-  v86 = [(_CPFeedbackPayload *)self clientTimingFeedback];
+  clientTimingFeedback = [(_CPFeedbackPayload *)self clientTimingFeedback];
 
-  if (v86)
+  if (clientTimingFeedback)
   {
-    v87 = [(_CPFeedbackPayload *)self clientTimingFeedback];
+    clientTimingFeedback2 = [(_CPFeedbackPayload *)self clientTimingFeedback];
     PBDataWriterWriteSubmessage();
   }
 
-  v88 = [(_CPFeedbackPayload *)self commandEngagementFeedback];
+  commandEngagementFeedback = [(_CPFeedbackPayload *)self commandEngagementFeedback];
 
-  if (v88)
+  if (commandEngagementFeedback)
   {
-    v89 = [(_CPFeedbackPayload *)self commandEngagementFeedback];
+    commandEngagementFeedback2 = [(_CPFeedbackPayload *)self commandEngagementFeedback];
     PBDataWriterWriteSubmessage();
   }
 
-  v90 = [(_CPFeedbackPayload *)self dynamicButtonVisibilityFeedback];
+  dynamicButtonVisibilityFeedback = [(_CPFeedbackPayload *)self dynamicButtonVisibilityFeedback];
 
-  if (v90)
+  if (dynamicButtonVisibilityFeedback)
   {
-    v91 = [(_CPFeedbackPayload *)self dynamicButtonVisibilityFeedback];
+    dynamicButtonVisibilityFeedback2 = [(_CPFeedbackPayload *)self dynamicButtonVisibilityFeedback];
     PBDataWriterWriteSubmessage();
   }
 
-  v92 = [(_CPFeedbackPayload *)self experimentTriggeredFeedback];
+  experimentTriggeredFeedback = [(_CPFeedbackPayload *)self experimentTriggeredFeedback];
 
-  if (v92)
+  if (experimentTriggeredFeedback)
   {
-    v93 = [(_CPFeedbackPayload *)self experimentTriggeredFeedback];
+    experimentTriggeredFeedback2 = [(_CPFeedbackPayload *)self experimentTriggeredFeedback];
     PBDataWriterWriteSubmessage();
   }
 
@@ -2721,648 +2721,648 @@ LABEL_228:
   MEMORY[0x1EEE66BE0]();
 }
 
-- (void)setExperimentTriggeredFeedback:(id)a3
+- (void)setExperimentTriggeredFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   [(_CPFeedbackPayload *)self clearContained_Feedback];
   v5 = 45;
-  if (!v4)
+  if (!feedbackCopy)
   {
     v5 = 0;
   }
 
   self->_whichContained_Feedback = v5;
   experimentTriggeredFeedback = self->_experimentTriggeredFeedback;
-  self->_experimentTriggeredFeedback = v4;
+  self->_experimentTriggeredFeedback = feedbackCopy;
 }
 
-- (void)setDynamicButtonVisibilityFeedback:(id)a3
+- (void)setDynamicButtonVisibilityFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   [(_CPFeedbackPayload *)self clearContained_Feedback];
   v5 = 44;
-  if (!v4)
+  if (!feedbackCopy)
   {
     v5 = 0;
   }
 
   self->_whichContained_Feedback = v5;
   dynamicButtonVisibilityFeedback = self->_dynamicButtonVisibilityFeedback;
-  self->_dynamicButtonVisibilityFeedback = v4;
+  self->_dynamicButtonVisibilityFeedback = feedbackCopy;
 }
 
-- (void)setCommandEngagementFeedback:(id)a3
+- (void)setCommandEngagementFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   [(_CPFeedbackPayload *)self clearContained_Feedback];
   v5 = 43;
-  if (!v4)
+  if (!feedbackCopy)
   {
     v5 = 0;
   }
 
   self->_whichContained_Feedback = v5;
   commandEngagementFeedback = self->_commandEngagementFeedback;
-  self->_commandEngagementFeedback = v4;
+  self->_commandEngagementFeedback = feedbackCopy;
 }
 
-- (void)setClientTimingFeedback:(id)a3
+- (void)setClientTimingFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   [(_CPFeedbackPayload *)self clearContained_Feedback];
   v5 = 42;
-  if (!v4)
+  if (!feedbackCopy)
   {
     v5 = 0;
   }
 
   self->_whichContained_Feedback = v5;
   clientTimingFeedback = self->_clientTimingFeedback;
-  self->_clientTimingFeedback = v4;
+  self->_clientTimingFeedback = feedbackCopy;
 }
 
-- (void)setCbaEngagementFeedback:(id)a3
+- (void)setCbaEngagementFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   [(_CPFeedbackPayload *)self clearContained_Feedback];
   v5 = 41;
-  if (!v4)
+  if (!feedbackCopy)
   {
     v5 = 0;
   }
 
   self->_whichContained_Feedback = v5;
   cbaEngagementFeedback = self->_cbaEngagementFeedback;
-  self->_cbaEngagementFeedback = v4;
+  self->_cbaEngagementFeedback = feedbackCopy;
 }
 
-- (void)setCacheHitFeedback:(id)a3
+- (void)setCacheHitFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   [(_CPFeedbackPayload *)self clearContained_Feedback];
   v5 = 40;
-  if (!v4)
+  if (!feedbackCopy)
   {
     v5 = 0;
   }
 
   self->_whichContained_Feedback = v5;
   cacheHitFeedback = self->_cacheHitFeedback;
-  self->_cacheHitFeedback = v4;
+  self->_cacheHitFeedback = feedbackCopy;
 }
 
-- (void)setSkipSearchFeedback:(id)a3
+- (void)setSkipSearchFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   [(_CPFeedbackPayload *)self clearContained_Feedback];
   v5 = 39;
-  if (!v4)
+  if (!feedbackCopy)
   {
     v5 = 0;
   }
 
   self->_whichContained_Feedback = v5;
   skipSearchFeedback = self->_skipSearchFeedback;
-  self->_skipSearchFeedback = v4;
+  self->_skipSearchFeedback = feedbackCopy;
 }
 
-- (void)setCardViewAppearFeedback:(id)a3
+- (void)setCardViewAppearFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   [(_CPFeedbackPayload *)self clearContained_Feedback];
   v5 = 38;
-  if (!v4)
+  if (!feedbackCopy)
   {
     v5 = 0;
   }
 
   self->_whichContained_Feedback = v5;
   cardViewAppearFeedback = self->_cardViewAppearFeedback;
-  self->_cardViewAppearFeedback = v4;
+  self->_cardViewAppearFeedback = feedbackCopy;
 }
 
-- (void)setSessionEndFeedback:(id)a3
+- (void)setSessionEndFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   [(_CPFeedbackPayload *)self clearContained_Feedback];
   v5 = 37;
-  if (!v4)
+  if (!feedbackCopy)
   {
     v5 = 0;
   }
 
   self->_whichContained_Feedback = v5;
   sessionEndFeedback = self->_sessionEndFeedback;
-  self->_sessionEndFeedback = v4;
+  self->_sessionEndFeedback = feedbackCopy;
 }
 
-- (void)setCardSectionEngagementFeedback:(id)a3
+- (void)setCardSectionEngagementFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   [(_CPFeedbackPayload *)self clearContained_Feedback];
   v5 = 36;
-  if (!v4)
+  if (!feedbackCopy)
   {
     v5 = 0;
   }
 
   self->_whichContained_Feedback = v5;
   cardSectionEngagementFeedback = self->_cardSectionEngagementFeedback;
-  self->_cardSectionEngagementFeedback = v4;
+  self->_cardSectionEngagementFeedback = feedbackCopy;
 }
 
-- (void)setConnectionInvalidatedFeedback:(id)a3
+- (void)setConnectionInvalidatedFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   [(_CPFeedbackPayload *)self clearContained_Feedback];
   v5 = 35;
-  if (!v4)
+  if (!feedbackCopy)
   {
     v5 = 0;
   }
 
   self->_whichContained_Feedback = v5;
   connectionInvalidatedFeedback = self->_connectionInvalidatedFeedback;
-  self->_connectionInvalidatedFeedback = v4;
+  self->_connectionInvalidatedFeedback = feedbackCopy;
 }
 
-- (void)setLookupHintRelevancyFeedback:(id)a3
+- (void)setLookupHintRelevancyFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   [(_CPFeedbackPayload *)self clearContained_Feedback];
   v5 = 34;
-  if (!v4)
+  if (!feedbackCopy)
   {
     v5 = 0;
   }
 
   self->_whichContained_Feedback = v5;
   lookupHintRelevancyFeedback = self->_lookupHintRelevancyFeedback;
-  self->_lookupHintRelevancyFeedback = v4;
+  self->_lookupHintRelevancyFeedback = feedbackCopy;
 }
 
-- (void)setResultGradingFeedback:(id)a3
+- (void)setResultGradingFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   [(_CPFeedbackPayload *)self clearContained_Feedback];
   v5 = 33;
-  if (!v4)
+  if (!feedbackCopy)
   {
     v5 = 0;
   }
 
   self->_whichContained_Feedback = v5;
   resultGradingFeedback = self->_resultGradingFeedback;
-  self->_resultGradingFeedback = v4;
+  self->_resultGradingFeedback = feedbackCopy;
 }
 
-- (void)setSessionMissingSuggestionsFeedback:(id)a3
+- (void)setSessionMissingSuggestionsFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   [(_CPFeedbackPayload *)self clearContained_Feedback];
-  self->_whichContained_Feedback = 32 * (v4 != 0);
+  self->_whichContained_Feedback = 32 * (feedbackCopy != 0);
   sessionMissingSuggestionsFeedback = self->_sessionMissingSuggestionsFeedback;
-  self->_sessionMissingSuggestionsFeedback = v4;
+  self->_sessionMissingSuggestionsFeedback = feedbackCopy;
 }
 
-- (void)setSessionMissingResultsFeedback:(id)a3
+- (void)setSessionMissingResultsFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   [(_CPFeedbackPayload *)self clearContained_Feedback];
   v5 = 31;
-  if (!v4)
+  if (!feedbackCopy)
   {
     v5 = 0;
   }
 
   self->_whichContained_Feedback = v5;
   sessionMissingResultsFeedback = self->_sessionMissingResultsFeedback;
-  self->_sessionMissingResultsFeedback = v4;
+  self->_sessionMissingResultsFeedback = feedbackCopy;
 }
 
-- (void)setDidGoToSearchFeedback:(id)a3
+- (void)setDidGoToSearchFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   [(_CPFeedbackPayload *)self clearContained_Feedback];
   v5 = 30;
-  if (!v4)
+  if (!feedbackCopy)
   {
     v5 = 0;
   }
 
   self->_whichContained_Feedback = v5;
   didGoToSearchFeedback = self->_didGoToSearchFeedback;
-  self->_didGoToSearchFeedback = v4;
+  self->_didGoToSearchFeedback = feedbackCopy;
 }
 
-- (void)setDidGoToSiteFeedback:(id)a3
+- (void)setDidGoToSiteFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   [(_CPFeedbackPayload *)self clearContained_Feedback];
   v5 = 29;
-  if (!v4)
+  if (!feedbackCopy)
   {
     v5 = 0;
   }
 
   self->_whichContained_Feedback = v5;
   didGoToSiteFeedback = self->_didGoToSiteFeedback;
-  self->_didGoToSiteFeedback = v4;
+  self->_didGoToSiteFeedback = feedbackCopy;
 }
 
-- (void)setVisibleSectionHeaderFeedback:(id)a3
+- (void)setVisibleSectionHeaderFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   [(_CPFeedbackPayload *)self clearContained_Feedback];
   v5 = 28;
-  if (!v4)
+  if (!feedbackCopy)
   {
     v5 = 0;
   }
 
   self->_whichContained_Feedback = v5;
   visibleSectionHeaderFeedback = self->_visibleSectionHeaderFeedback;
-  self->_visibleSectionHeaderFeedback = v4;
+  self->_visibleSectionHeaderFeedback = feedbackCopy;
 }
 
-- (void)setSectionEngagementFeedback:(id)a3
+- (void)setSectionEngagementFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   [(_CPFeedbackPayload *)self clearContained_Feedback];
   v5 = 27;
-  if (!v4)
+  if (!feedbackCopy)
   {
     v5 = 0;
   }
 
   self->_whichContained_Feedback = v5;
   sectionEngagementFeedback = self->_sectionEngagementFeedback;
-  self->_sectionEngagementFeedback = v4;
+  self->_sectionEngagementFeedback = feedbackCopy;
 }
 
-- (void)setClearInputFeedback:(id)a3
+- (void)setClearInputFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   [(_CPFeedbackPayload *)self clearContained_Feedback];
   v5 = 26;
-  if (!v4)
+  if (!feedbackCopy)
   {
     v5 = 0;
   }
 
   self->_whichContained_Feedback = v5;
   clearInputFeedback = self->_clearInputFeedback;
-  self->_clearInputFeedback = v4;
+  self->_clearInputFeedback = feedbackCopy;
 }
 
-- (void)setLateSectionsAppendedFeedback:(id)a3
+- (void)setLateSectionsAppendedFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   [(_CPFeedbackPayload *)self clearContained_Feedback];
   v5 = 25;
-  if (!v4)
+  if (!feedbackCopy)
   {
     v5 = 0;
   }
 
   self->_whichContained_Feedback = v5;
   lateSectionsAppendedFeedback = self->_lateSectionsAppendedFeedback;
-  self->_lateSectionsAppendedFeedback = v4;
+  self->_lateSectionsAppendedFeedback = feedbackCopy;
 }
 
-- (void)setResultsReceivedAfterTimeoutFeedback:(id)a3
+- (void)setResultsReceivedAfterTimeoutFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   [(_CPFeedbackPayload *)self clearContained_Feedback];
   v5 = 24;
-  if (!v4)
+  if (!feedbackCopy)
   {
     v5 = 0;
   }
 
   self->_whichContained_Feedback = v5;
   resultsReceivedAfterTimeoutFeedback = self->_resultsReceivedAfterTimeoutFeedback;
-  self->_resultsReceivedAfterTimeoutFeedback = v4;
+  self->_resultsReceivedAfterTimeoutFeedback = feedbackCopy;
 }
 
-- (void)setVisibleSuggestionsFeedback:(id)a3
+- (void)setVisibleSuggestionsFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   [(_CPFeedbackPayload *)self clearContained_Feedback];
   v5 = 23;
-  if (!v4)
+  if (!feedbackCopy)
   {
     v5 = 0;
   }
 
   self->_whichContained_Feedback = v5;
   visibleSuggestionsFeedback = self->_visibleSuggestionsFeedback;
-  self->_visibleSuggestionsFeedback = v4;
+  self->_visibleSuggestionsFeedback = feedbackCopy;
 }
 
-- (void)setCardViewDisappearFeedback:(id)a3
+- (void)setCardViewDisappearFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   [(_CPFeedbackPayload *)self clearContained_Feedback];
   v5 = 22;
-  if (!v4)
+  if (!feedbackCopy)
   {
     v5 = 0;
   }
 
   self->_whichContained_Feedback = v5;
   cardViewDisappearFeedback = self->_cardViewDisappearFeedback;
-  self->_cardViewDisappearFeedback = v4;
+  self->_cardViewDisappearFeedback = feedbackCopy;
 }
 
-- (void)setSuggestionEngagementFeedback:(id)a3
+- (void)setSuggestionEngagementFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   [(_CPFeedbackPayload *)self clearContained_Feedback];
   v5 = 21;
-  if (!v4)
+  if (!feedbackCopy)
   {
     v5 = 0;
   }
 
   self->_whichContained_Feedback = v5;
   suggestionEngagementFeedback = self->_suggestionEngagementFeedback;
-  self->_suggestionEngagementFeedback = v4;
+  self->_suggestionEngagementFeedback = feedbackCopy;
 }
 
-- (void)setCustomFeedback:(id)a3
+- (void)setCustomFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   [(_CPFeedbackPayload *)self clearContained_Feedback];
   v5 = 20;
-  if (!v4)
+  if (!feedbackCopy)
   {
     v5 = 0;
   }
 
   self->_whichContained_Feedback = v5;
   customFeedback = self->_customFeedback;
-  self->_customFeedback = v4;
+  self->_customFeedback = feedbackCopy;
 }
 
-- (void)setErrorFeedback:(id)a3
+- (void)setErrorFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   [(_CPFeedbackPayload *)self clearContained_Feedback];
   v5 = 19;
-  if (!v4)
+  if (!feedbackCopy)
   {
     v5 = 0;
   }
 
   self->_whichContained_Feedback = v5;
   errorFeedback = self->_errorFeedback;
-  self->_errorFeedback = v4;
+  self->_errorFeedback = feedbackCopy;
 }
 
-- (void)setEndLocalSearchFeedback:(id)a3
+- (void)setEndLocalSearchFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   [(_CPFeedbackPayload *)self clearContained_Feedback];
   v5 = 18;
-  if (!v4)
+  if (!feedbackCopy)
   {
     v5 = 0;
   }
 
   self->_whichContained_Feedback = v5;
   endLocalSearchFeedback = self->_endLocalSearchFeedback;
-  self->_endLocalSearchFeedback = v4;
+  self->_endLocalSearchFeedback = feedbackCopy;
 }
 
-- (void)setStartLocalSearchFeedback:(id)a3
+- (void)setStartLocalSearchFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   [(_CPFeedbackPayload *)self clearContained_Feedback];
   v5 = 17;
-  if (!v4)
+  if (!feedbackCopy)
   {
     v5 = 0;
   }
 
   self->_whichContained_Feedback = v5;
   startLocalSearchFeedback = self->_startLocalSearchFeedback;
-  self->_startLocalSearchFeedback = v4;
+  self->_startLocalSearchFeedback = feedbackCopy;
 }
 
-- (void)setEndNetworkSearchFeedback:(id)a3
+- (void)setEndNetworkSearchFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   [(_CPFeedbackPayload *)self clearContained_Feedback];
-  self->_whichContained_Feedback = 16 * (v4 != 0);
+  self->_whichContained_Feedback = 16 * (feedbackCopy != 0);
   endNetworkSearchFeedback = self->_endNetworkSearchFeedback;
-  self->_endNetworkSearchFeedback = v4;
+  self->_endNetworkSearchFeedback = feedbackCopy;
 }
 
-- (void)setStartNetworkSearchFeedback:(id)a3
+- (void)setStartNetworkSearchFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   [(_CPFeedbackPayload *)self clearContained_Feedback];
   v5 = 15;
-  if (!v4)
+  if (!feedbackCopy)
   {
     v5 = 0;
   }
 
   self->_whichContained_Feedback = v5;
   startNetworkSearchFeedback = self->_startNetworkSearchFeedback;
-  self->_startNetworkSearchFeedback = v4;
+  self->_startNetworkSearchFeedback = feedbackCopy;
 }
 
-- (void)setEndSearchFeedback:(id)a3
+- (void)setEndSearchFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   [(_CPFeedbackPayload *)self clearContained_Feedback];
   v5 = 14;
-  if (!v4)
+  if (!feedbackCopy)
   {
     v5 = 0;
   }
 
   self->_whichContained_Feedback = v5;
   endSearchFeedback = self->_endSearchFeedback;
-  self->_endSearchFeedback = v4;
+  self->_endSearchFeedback = feedbackCopy;
 }
 
-- (void)setStartSearchFeedback:(id)a3
+- (void)setStartSearchFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   [(_CPFeedbackPayload *)self clearContained_Feedback];
   v5 = 13;
-  if (!v4)
+  if (!feedbackCopy)
   {
     v5 = 0;
   }
 
   self->_whichContained_Feedback = v5;
   startSearchFeedback = self->_startSearchFeedback;
-  self->_startSearchFeedback = v4;
+  self->_startSearchFeedback = feedbackCopy;
 }
 
-- (void)setStoreCardSectionEngagementFeedback:(id)a3
+- (void)setStoreCardSectionEngagementFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   [(_CPFeedbackPayload *)self clearContained_Feedback];
   v5 = 12;
-  if (!v4)
+  if (!feedbackCopy)
   {
     v5 = 0;
   }
 
   self->_whichContained_Feedback = v5;
   storeCardSectionEngagementFeedback = self->_storeCardSectionEngagementFeedback;
-  self->_storeCardSectionEngagementFeedback = v4;
+  self->_storeCardSectionEngagementFeedback = feedbackCopy;
 }
 
-- (void)setMapsCardSectionEngagementFeedback:(id)a3
+- (void)setMapsCardSectionEngagementFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   [(_CPFeedbackPayload *)self clearContained_Feedback];
   v5 = 11;
-  if (!v4)
+  if (!feedbackCopy)
   {
     v5 = 0;
   }
 
   self->_whichContained_Feedback = v5;
   mapsCardSectionEngagementFeedback = self->_mapsCardSectionEngagementFeedback;
-  self->_mapsCardSectionEngagementFeedback = v4;
+  self->_mapsCardSectionEngagementFeedback = feedbackCopy;
 }
 
-- (void)setCardSectionFeedback:(id)a3
+- (void)setCardSectionFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   [(_CPFeedbackPayload *)self clearContained_Feedback];
   v5 = 10;
-  if (!v4)
+  if (!feedbackCopy)
   {
     v5 = 0;
   }
 
   self->_whichContained_Feedback = v5;
   cardSectionFeedback = self->_cardSectionFeedback;
-  self->_cardSectionFeedback = v4;
+  self->_cardSectionFeedback = feedbackCopy;
 }
 
-- (void)setVisibleResultsFeedback:(id)a3
+- (void)setVisibleResultsFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   [(_CPFeedbackPayload *)self clearContained_Feedback];
   v5 = 9;
-  if (!v4)
+  if (!feedbackCopy)
   {
     v5 = 0;
   }
 
   self->_whichContained_Feedback = v5;
   visibleResultsFeedback = self->_visibleResultsFeedback;
-  self->_visibleResultsFeedback = v4;
+  self->_visibleResultsFeedback = feedbackCopy;
 }
 
-- (void)setResultEngagementFeedback:(id)a3
+- (void)setResultEngagementFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   [(_CPFeedbackPayload *)self clearContained_Feedback];
-  self->_whichContained_Feedback = 8 * (v4 != 0);
+  self->_whichContained_Feedback = 8 * (feedbackCopy != 0);
   resultEngagementFeedback = self->_resultEngagementFeedback;
-  self->_resultEngagementFeedback = v4;
+  self->_resultEngagementFeedback = feedbackCopy;
 }
 
-- (void)setResultFeedback:(id)a3
+- (void)setResultFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   [(_CPFeedbackPayload *)self clearContained_Feedback];
   v5 = 7;
-  if (!v4)
+  if (!feedbackCopy)
   {
     v5 = 0;
   }
 
   self->_whichContained_Feedback = v5;
   resultFeedback = self->_resultFeedback;
-  self->_resultFeedback = v4;
+  self->_resultFeedback = feedbackCopy;
 }
 
-- (void)setResultRankingFeedback:(id)a3
+- (void)setResultRankingFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   [(_CPFeedbackPayload *)self clearContained_Feedback];
   v5 = 6;
-  if (!v4)
+  if (!feedbackCopy)
   {
     v5 = 0;
   }
 
   self->_whichContained_Feedback = v5;
   resultRankingFeedback = self->_resultRankingFeedback;
-  self->_resultRankingFeedback = v4;
+  self->_resultRankingFeedback = feedbackCopy;
 }
 
-- (void)setSectionRankingFeedback:(id)a3
+- (void)setSectionRankingFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   [(_CPFeedbackPayload *)self clearContained_Feedback];
   v5 = 5;
-  if (!v4)
+  if (!feedbackCopy)
   {
     v5 = 0;
   }
 
   self->_whichContained_Feedback = v5;
   sectionRankingFeedback = self->_sectionRankingFeedback;
-  self->_sectionRankingFeedback = v4;
+  self->_sectionRankingFeedback = feedbackCopy;
 }
 
-- (void)setRankingFeedback:(id)a3
+- (void)setRankingFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   [(_CPFeedbackPayload *)self clearContained_Feedback];
-  self->_whichContained_Feedback = 4 * (v4 != 0);
+  self->_whichContained_Feedback = 4 * (feedbackCopy != 0);
   rankingFeedback = self->_rankingFeedback;
-  self->_rankingFeedback = v4;
+  self->_rankingFeedback = feedbackCopy;
 }
 
-- (void)setSearchViewDisappearFeedback:(id)a3
+- (void)setSearchViewDisappearFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   [(_CPFeedbackPayload *)self clearContained_Feedback];
   v5 = 3;
-  if (!v4)
+  if (!feedbackCopy)
   {
     v5 = 0;
   }
 
   self->_whichContained_Feedback = v5;
   searchViewDisappearFeedback = self->_searchViewDisappearFeedback;
-  self->_searchViewDisappearFeedback = v4;
+  self->_searchViewDisappearFeedback = feedbackCopy;
 }
 
-- (void)setSearchViewAppearFeedback:(id)a3
+- (void)setSearchViewAppearFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   [(_CPFeedbackPayload *)self clearContained_Feedback];
-  self->_whichContained_Feedback = 2 * (v4 != 0);
+  self->_whichContained_Feedback = 2 * (feedbackCopy != 0);
   searchViewAppearFeedback = self->_searchViewAppearFeedback;
-  self->_searchViewAppearFeedback = v4;
+  self->_searchViewAppearFeedback = feedbackCopy;
 }
 
-- (void)setFeedback:(id)a3
+- (void)setFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   [(_CPFeedbackPayload *)self clearContained_Feedback];
-  self->_whichContained_Feedback = v4 != 0;
+  self->_whichContained_Feedback = feedbackCopy != 0;
   feedback = self->_feedback;
-  self->_feedback = v4;
+  self->_feedback = feedbackCopy;
 }
 
-- (_CPFeedbackPayload)initWithCodable:(id)a3
+- (_CPFeedbackPayload)initWithCodable:(id)codable
 {
-  v4 = a3;
+  codableCopy = codable;
   v8.receiver = self;
   v8.super_class = _CPFeedbackPayload;
   v5 = [(_CPFeedbackPayload *)&v8 init];
@@ -3372,271 +3372,271 @@ LABEL_228:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(_CPFeedbackPayload *)v5 setFeedback:v4];
+      [(_CPFeedbackPayload *)v5 setFeedback:codableCopy];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(_CPFeedbackPayload *)v5 setSearchViewAppearFeedback:v4];
+      [(_CPFeedbackPayload *)v5 setSearchViewAppearFeedback:codableCopy];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(_CPFeedbackPayload *)v5 setSearchViewDisappearFeedback:v4];
+      [(_CPFeedbackPayload *)v5 setSearchViewDisappearFeedback:codableCopy];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(_CPFeedbackPayload *)v5 setRankingFeedback:v4];
+      [(_CPFeedbackPayload *)v5 setRankingFeedback:codableCopy];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(_CPFeedbackPayload *)v5 setSectionRankingFeedback:v4];
+      [(_CPFeedbackPayload *)v5 setSectionRankingFeedback:codableCopy];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(_CPFeedbackPayload *)v5 setResultRankingFeedback:v4];
+      [(_CPFeedbackPayload *)v5 setResultRankingFeedback:codableCopy];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(_CPFeedbackPayload *)v5 setResultFeedback:v4];
+      [(_CPFeedbackPayload *)v5 setResultFeedback:codableCopy];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(_CPFeedbackPayload *)v5 setResultEngagementFeedback:v4];
+      [(_CPFeedbackPayload *)v5 setResultEngagementFeedback:codableCopy];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(_CPFeedbackPayload *)v5 setVisibleResultsFeedback:v4];
+      [(_CPFeedbackPayload *)v5 setVisibleResultsFeedback:codableCopy];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(_CPFeedbackPayload *)v5 setCardSectionFeedback:v4];
+      [(_CPFeedbackPayload *)v5 setCardSectionFeedback:codableCopy];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(_CPFeedbackPayload *)v5 setMapsCardSectionEngagementFeedback:v4];
+      [(_CPFeedbackPayload *)v5 setMapsCardSectionEngagementFeedback:codableCopy];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(_CPFeedbackPayload *)v5 setStoreCardSectionEngagementFeedback:v4];
+      [(_CPFeedbackPayload *)v5 setStoreCardSectionEngagementFeedback:codableCopy];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(_CPFeedbackPayload *)v5 setStartSearchFeedback:v4];
+      [(_CPFeedbackPayload *)v5 setStartSearchFeedback:codableCopy];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(_CPFeedbackPayload *)v5 setEndSearchFeedback:v4];
+      [(_CPFeedbackPayload *)v5 setEndSearchFeedback:codableCopy];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(_CPFeedbackPayload *)v5 setStartNetworkSearchFeedback:v4];
+      [(_CPFeedbackPayload *)v5 setStartNetworkSearchFeedback:codableCopy];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(_CPFeedbackPayload *)v5 setEndNetworkSearchFeedback:v4];
+      [(_CPFeedbackPayload *)v5 setEndNetworkSearchFeedback:codableCopy];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(_CPFeedbackPayload *)v5 setStartLocalSearchFeedback:v4];
+      [(_CPFeedbackPayload *)v5 setStartLocalSearchFeedback:codableCopy];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(_CPFeedbackPayload *)v5 setEndLocalSearchFeedback:v4];
+      [(_CPFeedbackPayload *)v5 setEndLocalSearchFeedback:codableCopy];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(_CPFeedbackPayload *)v5 setErrorFeedback:v4];
+      [(_CPFeedbackPayload *)v5 setErrorFeedback:codableCopy];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(_CPFeedbackPayload *)v5 setCustomFeedback:v4];
+      [(_CPFeedbackPayload *)v5 setCustomFeedback:codableCopy];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(_CPFeedbackPayload *)v5 setSuggestionEngagementFeedback:v4];
+      [(_CPFeedbackPayload *)v5 setSuggestionEngagementFeedback:codableCopy];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(_CPFeedbackPayload *)v5 setCardViewDisappearFeedback:v4];
+      [(_CPFeedbackPayload *)v5 setCardViewDisappearFeedback:codableCopy];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(_CPFeedbackPayload *)v5 setVisibleSuggestionsFeedback:v4];
+      [(_CPFeedbackPayload *)v5 setVisibleSuggestionsFeedback:codableCopy];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(_CPFeedbackPayload *)v5 setResultsReceivedAfterTimeoutFeedback:v4];
+      [(_CPFeedbackPayload *)v5 setResultsReceivedAfterTimeoutFeedback:codableCopy];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(_CPFeedbackPayload *)v5 setLateSectionsAppendedFeedback:v4];
+      [(_CPFeedbackPayload *)v5 setLateSectionsAppendedFeedback:codableCopy];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(_CPFeedbackPayload *)v5 setClearInputFeedback:v4];
+      [(_CPFeedbackPayload *)v5 setClearInputFeedback:codableCopy];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(_CPFeedbackPayload *)v5 setSectionEngagementFeedback:v4];
+      [(_CPFeedbackPayload *)v5 setSectionEngagementFeedback:codableCopy];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(_CPFeedbackPayload *)v5 setVisibleSectionHeaderFeedback:v4];
+      [(_CPFeedbackPayload *)v5 setVisibleSectionHeaderFeedback:codableCopy];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(_CPFeedbackPayload *)v5 setDidGoToSiteFeedback:v4];
+      [(_CPFeedbackPayload *)v5 setDidGoToSiteFeedback:codableCopy];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(_CPFeedbackPayload *)v5 setDidGoToSearchFeedback:v4];
+      [(_CPFeedbackPayload *)v5 setDidGoToSearchFeedback:codableCopy];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(_CPFeedbackPayload *)v5 setSessionMissingResultsFeedback:v4];
+      [(_CPFeedbackPayload *)v5 setSessionMissingResultsFeedback:codableCopy];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(_CPFeedbackPayload *)v5 setSessionMissingSuggestionsFeedback:v4];
+      [(_CPFeedbackPayload *)v5 setSessionMissingSuggestionsFeedback:codableCopy];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(_CPFeedbackPayload *)v5 setResultGradingFeedback:v4];
+      [(_CPFeedbackPayload *)v5 setResultGradingFeedback:codableCopy];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(_CPFeedbackPayload *)v5 setLookupHintRelevancyFeedback:v4];
+      [(_CPFeedbackPayload *)v5 setLookupHintRelevancyFeedback:codableCopy];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(_CPFeedbackPayload *)v5 setConnectionInvalidatedFeedback:v4];
+      [(_CPFeedbackPayload *)v5 setConnectionInvalidatedFeedback:codableCopy];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(_CPFeedbackPayload *)v5 setCardSectionEngagementFeedback:v4];
+      [(_CPFeedbackPayload *)v5 setCardSectionEngagementFeedback:codableCopy];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(_CPFeedbackPayload *)v5 setSessionEndFeedback:v4];
+      [(_CPFeedbackPayload *)v5 setSessionEndFeedback:codableCopy];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(_CPFeedbackPayload *)v5 setCardViewAppearFeedback:v4];
+      [(_CPFeedbackPayload *)v5 setCardViewAppearFeedback:codableCopy];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(_CPFeedbackPayload *)v5 setSkipSearchFeedback:v4];
+      [(_CPFeedbackPayload *)v5 setSkipSearchFeedback:codableCopy];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(_CPFeedbackPayload *)v5 setCacheHitFeedback:v4];
+      [(_CPFeedbackPayload *)v5 setCacheHitFeedback:codableCopy];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(_CPFeedbackPayload *)v5 setCbaEngagementFeedback:v4];
+      [(_CPFeedbackPayload *)v5 setCbaEngagementFeedback:codableCopy];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(_CPFeedbackPayload *)v5 setClientTimingFeedback:v4];
+      [(_CPFeedbackPayload *)v5 setClientTimingFeedback:codableCopy];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(_CPFeedbackPayload *)v5 setCommandEngagementFeedback:v4];
+      [(_CPFeedbackPayload *)v5 setCommandEngagementFeedback:codableCopy];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(_CPFeedbackPayload *)v5 setDynamicButtonVisibilityFeedback:v4];
+      [(_CPFeedbackPayload *)v5 setDynamicButtonVisibilityFeedback:codableCopy];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(_CPFeedbackPayload *)v5 setExperimentTriggeredFeedback:v4];
+      [(_CPFeedbackPayload *)v5 setExperimentTriggeredFeedback:codableCopy];
     }
 
     v6 = v5;
@@ -3645,9 +3645,9 @@ LABEL_228:
   return v5;
 }
 
-- (_CPFeedbackPayload)initWithFeedback:(id)a3
+- (_CPFeedbackPayload)initWithFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   v84.receiver = self;
   v84.super_class = _CPFeedbackPayload;
   v5 = [(_CPFeedbackPayload *)&v84 init];
@@ -3657,266 +3657,266 @@ LABEL_228:
     v6 = objc_opt_class();
     if (v6 == objc_opt_class())
     {
-      v7 = [[_CPFeedback alloc] initWithFacade:v4];
+      v7 = [[_CPFeedback alloc] initWithFacade:feedbackCopy];
       [(_CPFeedbackPayload *)v5 setFeedback:v7];
     }
 
     v8 = objc_opt_class();
     if (v8 == objc_opt_class())
     {
-      v9 = [[_CPSearchViewAppearFeedback alloc] initWithFacade:v4];
+      v9 = [[_CPSearchViewAppearFeedback alloc] initWithFacade:feedbackCopy];
       [(_CPFeedbackPayload *)v5 setSearchViewAppearFeedback:v9];
     }
 
     v10 = objc_opt_class();
     if (v10 == objc_opt_class())
     {
-      v11 = [[_CPSearchViewDisappearFeedback alloc] initWithFacade:v4];
+      v11 = [[_CPSearchViewDisappearFeedback alloc] initWithFacade:feedbackCopy];
       [(_CPFeedbackPayload *)v5 setSearchViewDisappearFeedback:v11];
     }
 
     v12 = objc_opt_class();
     if (v12 == objc_opt_class())
     {
-      v13 = [[_CPRankingFeedback alloc] initWithFacade:v4];
+      v13 = [[_CPRankingFeedback alloc] initWithFacade:feedbackCopy];
       [(_CPFeedbackPayload *)v5 setRankingFeedback:v13];
     }
 
     v14 = objc_opt_class();
     if (v14 == objc_opt_class())
     {
-      v15 = [[_CPSectionRankingFeedback alloc] initWithFacade:v4];
+      v15 = [[_CPSectionRankingFeedback alloc] initWithFacade:feedbackCopy];
       [(_CPFeedbackPayload *)v5 setSectionRankingFeedback:v15];
     }
 
     v16 = objc_opt_class();
     if (v16 == objc_opt_class())
     {
-      v17 = [[_CPResultRankingFeedback alloc] initWithFacade:v4];
+      v17 = [[_CPResultRankingFeedback alloc] initWithFacade:feedbackCopy];
       [(_CPFeedbackPayload *)v5 setResultRankingFeedback:v17];
     }
 
     v18 = objc_opt_class();
     if (v18 == objc_opt_class())
     {
-      v19 = [[_CPResultFeedback alloc] initWithFacade:v4];
+      v19 = [[_CPResultFeedback alloc] initWithFacade:feedbackCopy];
       [(_CPFeedbackPayload *)v5 setResultFeedback:v19];
     }
 
     v20 = objc_opt_class();
     if (v20 == objc_opt_class())
     {
-      v21 = [[_CPResultEngagementFeedback alloc] initWithFacade:v4];
+      v21 = [[_CPResultEngagementFeedback alloc] initWithFacade:feedbackCopy];
       [(_CPFeedbackPayload *)v5 setResultEngagementFeedback:v21];
     }
 
     v22 = objc_opt_class();
     if (v22 == objc_opt_class())
     {
-      v23 = [[_CPVisibleResultsFeedback alloc] initWithFacade:v4];
+      v23 = [[_CPVisibleResultsFeedback alloc] initWithFacade:feedbackCopy];
       [(_CPFeedbackPayload *)v5 setVisibleResultsFeedback:v23];
     }
 
     v24 = objc_opt_class();
     if (v24 == objc_opt_class())
     {
-      v25 = [[_CPCardSectionFeedback alloc] initWithFacade:v4];
+      v25 = [[_CPCardSectionFeedback alloc] initWithFacade:feedbackCopy];
       [(_CPFeedbackPayload *)v5 setCardSectionFeedback:v25];
     }
 
     v26 = objc_opt_class();
     if (v26 == objc_opt_class())
     {
-      v27 = [[_CPMapsCardSectionEngagementFeedback alloc] initWithFacade:v4];
+      v27 = [[_CPMapsCardSectionEngagementFeedback alloc] initWithFacade:feedbackCopy];
       [(_CPFeedbackPayload *)v5 setMapsCardSectionEngagementFeedback:v27];
     }
 
     v28 = objc_opt_class();
     if (v28 == objc_opt_class())
     {
-      v29 = [[_CPStoreCardSectionEngagementFeedback alloc] initWithFacade:v4];
+      v29 = [[_CPStoreCardSectionEngagementFeedback alloc] initWithFacade:feedbackCopy];
       [(_CPFeedbackPayload *)v5 setStoreCardSectionEngagementFeedback:v29];
     }
 
     v30 = objc_opt_class();
     if (v30 == objc_opt_class())
     {
-      v31 = [[_CPStartSearchFeedback alloc] initWithFacade:v4];
+      v31 = [[_CPStartSearchFeedback alloc] initWithFacade:feedbackCopy];
       [(_CPFeedbackPayload *)v5 setStartSearchFeedback:v31];
     }
 
     v32 = objc_opt_class();
     if (v32 == objc_opt_class())
     {
-      v33 = [[_CPEndSearchFeedback alloc] initWithFacade:v4];
+      v33 = [[_CPEndSearchFeedback alloc] initWithFacade:feedbackCopy];
       [(_CPFeedbackPayload *)v5 setEndSearchFeedback:v33];
     }
 
     v34 = objc_opt_class();
     if (v34 == objc_opt_class())
     {
-      v35 = [[_CPStartNetworkSearchFeedback alloc] initWithFacade:v4];
+      v35 = [[_CPStartNetworkSearchFeedback alloc] initWithFacade:feedbackCopy];
       [(_CPFeedbackPayload *)v5 setStartNetworkSearchFeedback:v35];
     }
 
     v36 = objc_opt_class();
     if (v36 == objc_opt_class())
     {
-      v37 = [[_CPEndNetworkSearchFeedback alloc] initWithFacade:v4];
+      v37 = [[_CPEndNetworkSearchFeedback alloc] initWithFacade:feedbackCopy];
       [(_CPFeedbackPayload *)v5 setEndNetworkSearchFeedback:v37];
     }
 
     v38 = objc_opt_class();
     if (v38 == objc_opt_class())
     {
-      v39 = [[_CPStartLocalSearchFeedback alloc] initWithFacade:v4];
+      v39 = [[_CPStartLocalSearchFeedback alloc] initWithFacade:feedbackCopy];
       [(_CPFeedbackPayload *)v5 setStartLocalSearchFeedback:v39];
     }
 
     v40 = objc_opt_class();
     if (v40 == objc_opt_class())
     {
-      v41 = [[_CPEndLocalSearchFeedback alloc] initWithFacade:v4];
+      v41 = [[_CPEndLocalSearchFeedback alloc] initWithFacade:feedbackCopy];
       [(_CPFeedbackPayload *)v5 setEndLocalSearchFeedback:v41];
     }
 
     v42 = objc_opt_class();
     if (v42 == objc_opt_class())
     {
-      v43 = [[_CPErrorFeedback alloc] initWithFacade:v4];
+      v43 = [[_CPErrorFeedback alloc] initWithFacade:feedbackCopy];
       [(_CPFeedbackPayload *)v5 setErrorFeedback:v43];
     }
 
     v44 = objc_opt_class();
     if (v44 == objc_opt_class())
     {
-      v45 = [[_CPCustomFeedback alloc] initWithFacade:v4];
+      v45 = [[_CPCustomFeedback alloc] initWithFacade:feedbackCopy];
       [(_CPFeedbackPayload *)v5 setCustomFeedback:v45];
     }
 
     v46 = objc_opt_class();
     if (v46 == objc_opt_class())
     {
-      v47 = [[_CPSuggestionEngagementFeedback alloc] initWithFacade:v4];
+      v47 = [[_CPSuggestionEngagementFeedback alloc] initWithFacade:feedbackCopy];
       [(_CPFeedbackPayload *)v5 setSuggestionEngagementFeedback:v47];
     }
 
     v48 = objc_opt_class();
     if (v48 == objc_opt_class())
     {
-      v49 = [[_CPCardViewDisappearFeedback alloc] initWithFacade:v4];
+      v49 = [[_CPCardViewDisappearFeedback alloc] initWithFacade:feedbackCopy];
       [(_CPFeedbackPayload *)v5 setCardViewDisappearFeedback:v49];
     }
 
     v50 = objc_opt_class();
     if (v50 == objc_opt_class())
     {
-      v51 = [[_CPVisibleSuggestionsFeedback alloc] initWithFacade:v4];
+      v51 = [[_CPVisibleSuggestionsFeedback alloc] initWithFacade:feedbackCopy];
       [(_CPFeedbackPayload *)v5 setVisibleSuggestionsFeedback:v51];
     }
 
     v52 = objc_opt_class();
     if (v52 == objc_opt_class())
     {
-      v53 = [[_CPResultsReceivedAfterTimeoutFeedback alloc] initWithFacade:v4];
+      v53 = [[_CPResultsReceivedAfterTimeoutFeedback alloc] initWithFacade:feedbackCopy];
       [(_CPFeedbackPayload *)v5 setResultsReceivedAfterTimeoutFeedback:v53];
     }
 
     v54 = objc_opt_class();
     if (v54 == objc_opt_class())
     {
-      v55 = [[_CPLateSectionsAppendedFeedback alloc] initWithFacade:v4];
+      v55 = [[_CPLateSectionsAppendedFeedback alloc] initWithFacade:feedbackCopy];
       [(_CPFeedbackPayload *)v5 setLateSectionsAppendedFeedback:v55];
     }
 
     v56 = objc_opt_class();
     if (v56 == objc_opt_class())
     {
-      v57 = [[_CPClearInputFeedback alloc] initWithFacade:v4];
+      v57 = [[_CPClearInputFeedback alloc] initWithFacade:feedbackCopy];
       [(_CPFeedbackPayload *)v5 setClearInputFeedback:v57];
     }
 
     v58 = objc_opt_class();
     if (v58 == objc_opt_class())
     {
-      v59 = [[_CPSectionEngagementFeedback alloc] initWithFacade:v4];
+      v59 = [[_CPSectionEngagementFeedback alloc] initWithFacade:feedbackCopy];
       [(_CPFeedbackPayload *)v5 setSectionEngagementFeedback:v59];
     }
 
     v60 = objc_opt_class();
     if (v60 == objc_opt_class())
     {
-      v61 = [[_CPVisibleSectionHeaderFeedback alloc] initWithFacade:v4];
+      v61 = [[_CPVisibleSectionHeaderFeedback alloc] initWithFacade:feedbackCopy];
       [(_CPFeedbackPayload *)v5 setVisibleSectionHeaderFeedback:v61];
     }
 
     v62 = objc_opt_class();
     if (v62 == objc_opt_class())
     {
-      v63 = [[_CPDidGoToSiteFeedback alloc] initWithFacade:v4];
+      v63 = [[_CPDidGoToSiteFeedback alloc] initWithFacade:feedbackCopy];
       [(_CPFeedbackPayload *)v5 setDidGoToSiteFeedback:v63];
     }
 
     v64 = objc_opt_class();
     if (v64 == objc_opt_class())
     {
-      v65 = [[_CPDidGoToSearchFeedback alloc] initWithFacade:v4];
+      v65 = [[_CPDidGoToSearchFeedback alloc] initWithFacade:feedbackCopy];
       [(_CPFeedbackPayload *)v5 setDidGoToSearchFeedback:v65];
     }
 
     v66 = objc_opt_class();
     if (v66 == objc_opt_class())
     {
-      v67 = [[_CPResultGradingFeedback alloc] initWithFacade:v4];
+      v67 = [[_CPResultGradingFeedback alloc] initWithFacade:feedbackCopy];
       [(_CPFeedbackPayload *)v5 setResultGradingFeedback:v67];
     }
 
     v68 = objc_opt_class();
     if (v68 == objc_opt_class())
     {
-      v69 = [[_CPLookupHintRelevancyFeedback alloc] initWithFacade:v4];
+      v69 = [[_CPLookupHintRelevancyFeedback alloc] initWithFacade:feedbackCopy];
       [(_CPFeedbackPayload *)v5 setLookupHintRelevancyFeedback:v69];
     }
 
     v70 = objc_opt_class();
     if (v70 == objc_opt_class())
     {
-      v71 = [[_CPCardSectionEngagementFeedback alloc] initWithFacade:v4];
+      v71 = [[_CPCardSectionEngagementFeedback alloc] initWithFacade:feedbackCopy];
       [(_CPFeedbackPayload *)v5 setCardSectionEngagementFeedback:v71];
     }
 
     v72 = objc_opt_class();
     if (v72 == objc_opt_class())
     {
-      v73 = [[_CPCardViewAppearFeedback alloc] initWithFacade:v4];
+      v73 = [[_CPCardViewAppearFeedback alloc] initWithFacade:feedbackCopy];
       [(_CPFeedbackPayload *)v5 setCardViewAppearFeedback:v73];
     }
 
     v74 = objc_opt_class();
     if (v74 == objc_opt_class())
     {
-      v75 = [[_CPClientTimingFeedback alloc] initWithFacade:v4];
+      v75 = [[_CPClientTimingFeedback alloc] initWithFacade:feedbackCopy];
       [(_CPFeedbackPayload *)v5 setClientTimingFeedback:v75];
     }
 
     v76 = objc_opt_class();
     if (v76 == objc_opt_class())
     {
-      v77 = [[_CPCommandEngagementFeedback alloc] initWithFacade:v4];
+      v77 = [[_CPCommandEngagementFeedback alloc] initWithFacade:feedbackCopy];
       [(_CPFeedbackPayload *)v5 setCommandEngagementFeedback:v77];
     }
 
     v78 = objc_opt_class();
     if (v78 == objc_opt_class())
     {
-      v79 = [[_CPDynamicButtonVisibilityFeedback alloc] initWithFacade:v4];
+      v79 = [[_CPDynamicButtonVisibilityFeedback alloc] initWithFacade:feedbackCopy];
       [(_CPFeedbackPayload *)v5 setDynamicButtonVisibilityFeedback:v79];
     }
 
     v80 = objc_opt_class();
     if (v80 == objc_opt_class())
     {
-      v81 = [[_CPExperimentTriggeredFeedback alloc] initWithFacade:v4];
+      v81 = [[_CPExperimentTriggeredFeedback alloc] initWithFacade:feedbackCopy];
       [(_CPFeedbackPayload *)v5 setExperimentTriggeredFeedback:v81];
     }
 
@@ -3926,15 +3926,15 @@ LABEL_228:
   return v5;
 }
 
-- (void)updateResults:(id)a3 withId:(unint64_t)a4
+- (void)updateResults:(id)results withId:(unint64_t)id
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  resultsCopy = results;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v6 = [resultsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -3946,14 +3946,14 @@ LABEL_228:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(resultsCopy);
         }
 
-        [*(*(&v11 + 1) + 8 * v9++) setQueryId:a4];
+        [*(*(&v11 + 1) + 8 * v9++) setQueryId:id];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [resultsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -3962,42 +3962,42 @@ LABEL_228:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateQueryId:(unint64_t)a3
+- (void)updateQueryId:(unint64_t)id
 {
   v48 = *MEMORY[0x1E69E9840];
   [(_CPFeedbackPayload *)self setQueryId:?];
-  v5 = [(_CPFeedbackPayload *)self startLocalSearchFeedback];
-  [v5 setQueryId:a3];
+  startLocalSearchFeedback = [(_CPFeedbackPayload *)self startLocalSearchFeedback];
+  [startLocalSearchFeedback setQueryId:id];
 
-  v6 = [(_CPFeedbackPayload *)self startNetworkSearchFeedback];
-  [v6 setQueryId:a3];
+  startNetworkSearchFeedback = [(_CPFeedbackPayload *)self startNetworkSearchFeedback];
+  [startNetworkSearchFeedback setQueryId:id];
 
-  v7 = [(_CPFeedbackPayload *)self clientTimingFeedback];
-  [v7 setQueryId:a3];
+  clientTimingFeedback = [(_CPFeedbackPayload *)self clientTimingFeedback];
+  [clientTimingFeedback setQueryId:id];
 
-  v8 = [(_CPFeedbackPayload *)self cbaEngagementFeedback];
-  [v8 setQueryId:a3];
+  cbaEngagementFeedback = [(_CPFeedbackPayload *)self cbaEngagementFeedback];
+  [cbaEngagementFeedback setQueryId:id];
 
-  v9 = [(_CPFeedbackPayload *)self commandEngagementFeedback];
-  v10 = [v9 result];
-  [v10 setQueryId:a3];
+  commandEngagementFeedback = [(_CPFeedbackPayload *)self commandEngagementFeedback];
+  result = [commandEngagementFeedback result];
+  [result setQueryId:id];
 
-  v11 = [(_CPFeedbackPayload *)self resultEngagementFeedback];
-  v12 = [v11 result];
-  [v12 setQueryId:a3];
+  resultEngagementFeedback = [(_CPFeedbackPayload *)self resultEngagementFeedback];
+  result2 = [resultEngagementFeedback result];
+  [result2 setQueryId:id];
 
-  v13 = [(_CPFeedbackPayload *)self startSearchFeedback];
-  [v13 setQueryId:a3];
+  startSearchFeedback = [(_CPFeedbackPayload *)self startSearchFeedback];
+  [startSearchFeedback setQueryId:id];
 
   v44 = 0u;
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v14 = [(_CPFeedbackPayload *)self rankingFeedback];
-  v15 = [v14 sections];
+  rankingFeedback = [(_CPFeedbackPayload *)self rankingFeedback];
+  sections = [rankingFeedback sections];
 
-  obj = v15;
-  v16 = [v15 countByEnumeratingWithState:&v42 objects:v47 count:16];
+  obj = sections;
+  v16 = [sections countByEnumeratingWithState:&v42 objects:v47 count:16];
   if (v16)
   {
     v17 = v16;
@@ -4016,8 +4016,8 @@ LABEL_228:
         v39 = 0u;
         v40 = 0u;
         v41 = 0u;
-        v20 = [v19 results];
-        v21 = [v20 countByEnumeratingWithState:&v38 objects:v46 count:16];
+        results = [v19 results];
+        v21 = [results countByEnumeratingWithState:&v38 objects:v46 count:16];
         if (v21)
         {
           v22 = v21;
@@ -4028,21 +4028,21 @@ LABEL_228:
             {
               if (*v39 != v23)
               {
-                objc_enumerationMutation(v20);
+                objc_enumerationMutation(results);
               }
 
               v25 = *(*(&v38 + 1) + 8 * j);
-              v26 = [v25 result];
-              [v26 setQueryId:a3];
+              result3 = [v25 result];
+              [result3 setQueryId:id];
 
-              v27 = [v25 hiddenResults];
-              [(_CPFeedbackPayload *)self updateResults:v27 withId:a3];
+              hiddenResults = [v25 hiddenResults];
+              [(_CPFeedbackPayload *)self updateResults:hiddenResults withId:id];
 
-              v28 = [v25 duplicateResults];
-              [(_CPFeedbackPayload *)self updateResults:v28 withId:a3];
+              duplicateResults = [v25 duplicateResults];
+              [(_CPFeedbackPayload *)self updateResults:duplicateResults withId:id];
             }
 
-            v22 = [v20 countByEnumeratingWithState:&v38 objects:v46 count:16];
+            v22 = [results countByEnumeratingWithState:&v38 objects:v46 count:16];
           }
 
           while (v22);
@@ -4055,17 +4055,17 @@ LABEL_228:
     while (v17);
   }
 
-  v29 = [(_CPFeedbackPayload *)self sessionMissingResultsFeedback];
-  v30 = [v29 results];
-  [(_CPFeedbackPayload *)self updateResults:v30 withId:a3];
+  sessionMissingResultsFeedback = [(_CPFeedbackPayload *)self sessionMissingResultsFeedback];
+  results2 = [sessionMissingResultsFeedback results];
+  [(_CPFeedbackPayload *)self updateResults:results2 withId:id];
 
-  v31 = [(_CPFeedbackPayload *)self visibleResultsFeedback];
-  v32 = [v31 results];
-  [(_CPFeedbackPayload *)self updateResults:v32 withId:a3];
+  visibleResultsFeedback = [(_CPFeedbackPayload *)self visibleResultsFeedback];
+  results3 = [visibleResultsFeedback results];
+  [(_CPFeedbackPayload *)self updateResults:results3 withId:id];
 
-  v33 = [(_CPFeedbackPayload *)self resultsReceivedAfterTimeoutFeedback];
-  v34 = [v33 results];
-  [(_CPFeedbackPayload *)self updateResults:v34 withId:a3];
+  resultsReceivedAfterTimeoutFeedback = [(_CPFeedbackPayload *)self resultsReceivedAfterTimeoutFeedback];
+  results4 = [resultsReceivedAfterTimeoutFeedback results];
+  [(_CPFeedbackPayload *)self updateResults:results4 withId:id];
 
   v35 = *MEMORY[0x1E69E9840];
 }

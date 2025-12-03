@@ -12,7 +12,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   _CAFDSessionBoosted.description.getter();
 
   v3 = String._bridgeToObjectiveC()();
@@ -29,31 +29,31 @@
 
 - (void)activate
 {
-  v2 = self;
+  selfCopy = self;
   _CAFDSessionBoosted.activate()();
 }
 
 - (void)connectionAttempted
 {
-  v2 = self;
+  selfCopy = self;
   _CAFDSessionBoosted.connectionAttempted()();
 }
 
 - (void)connectionRequested
 {
-  v2 = self;
+  selfCopy = self;
   _CAFDSessionBoosted.connectionRequested()();
 }
 
 - (void)sessionConnected
 {
-  v2 = self;
+  selfCopy = self;
   _CAFDSessionBoosted.sessionConnected()();
 }
 
 - (void)sessionDidUpdate
 {
-  v2 = self;
+  selfCopy = self;
   _CAFDSessionBoosted.sessionDidUpdate()();
 }
 

@@ -15,8 +15,8 @@
   if (v2)
   {
     [(FCSupportedCountryNetworkReachabilityRequirement *)v2 _update];
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:v3 selector:sel__update name:*MEMORY[0x1E69A1620] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__update name:*MEMORY[0x1E69A1620] object:0];
   }
 
   return v3;
@@ -29,8 +29,8 @@
   self->_satisfied = v3;
   if (satisfied != v3)
   {
-    v5 = [(FCSupportedCountryNetworkReachabilityRequirement *)self observer];
-    [v5 networkReachabilityRequirementDidBecomeDirty:self];
+    observer = [(FCSupportedCountryNetworkReachabilityRequirement *)self observer];
+    [observer networkReachabilityRequirementDidBecomeDirty:self];
   }
 }
 

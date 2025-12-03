@@ -1,23 +1,23 @@
 @interface JavaIoObjectStreamField
 - (BOOL)isPrimitive;
-- (BOOL)writeFieldWithJavaIoDataOutputStream:(id)a3;
+- (BOOL)writeFieldWithJavaIoDataOutputStream:(id)stream;
 - (NSString)description;
 - (id)getType;
 - (id)getTypeInternal;
 - (id)getTypeString;
-- (int)compareToWithId:(id)a3;
+- (int)compareToWithId:(id)id;
 - (uint64_t)defaultResolve;
 - (unsigned)getTypeCode;
 - (void)dealloc;
-- (void)resolveWithJavaLangClassLoader:(id)a3;
+- (void)resolveWithJavaLangClassLoader:(id)loader;
 @end
 
 @implementation JavaIoObjectStreamField
 
-- (int)compareToWithId:(id)a3
+- (int)compareToWithId:(id)id
 {
   objc_opt_class();
-  if (!a3)
+  if (!id)
   {
     objc_opt_class();
     [(JavaIoObjectStreamField *)self isPrimitive];
@@ -29,22 +29,22 @@
     JreThrowClassCastException();
   }
 
-  v5 = [(JavaIoObjectStreamField *)self isPrimitive];
-  if (v5 == [a3 isPrimitive])
+  isPrimitive = [(JavaIoObjectStreamField *)self isPrimitive];
+  if (isPrimitive == [id isPrimitive])
   {
-    v7 = [(JavaIoObjectStreamField *)self getName];
-    if (!v7)
+    getName = [(JavaIoObjectStreamField *)self getName];
+    if (!getName)
     {
       JreThrowNullPointerException();
     }
 
-    v8 = v7;
-    v9 = [a3 getName];
+    v8 = getName;
+    getName2 = [id getName];
 
-    return [v8 compareToWithId:v9];
+    return [v8 compareToWithId:getName2];
   }
 
-  else if (v5)
+  else if (isPrimitive)
   {
     return -1;
   }
@@ -89,19 +89,19 @@ LABEL_8:
 
 - (id)getType
 {
-  v3 = [(JavaIoObjectStreamField *)self getTypeInternal];
-  v4 = v3;
+  getTypeInternal = [(JavaIoObjectStreamField *)self getTypeInternal];
+  v4 = getTypeInternal;
   if (!self->isDeserialized_)
   {
     return v4;
   }
 
-  if (!v3)
+  if (!getTypeInternal)
   {
     JreThrowNullPointerException();
   }
 
-  if ([v3 isPrimitive])
+  if ([getTypeInternal isPrimitive])
   {
     return v4;
   }
@@ -111,9 +111,9 @@ LABEL_8:
 
 - (unsigned)getTypeCode
 {
-  v2 = [(JavaIoObjectStreamField *)self getTypeInternal];
+  getTypeInternal = [(JavaIoObjectStreamField *)self getTypeInternal];
 
-  return sub_100285074(v2);
+  return sub_100285074(getTypeInternal);
 }
 
 - (id)getTypeString
@@ -127,8 +127,8 @@ LABEL_8:
   result = self->typeString_;
   if (!result)
   {
-    v5 = [(JavaIoObjectStreamField *)self getTypeInternal];
-    if (!v5 || (v6 = v5, (v7 = [v5 getName]) == 0))
+    getTypeInternal = [(JavaIoObjectStreamField *)self getTypeInternal];
+    if (!getTypeInternal || (v6 = getTypeInternal, (v7 = [getTypeInternal getName]) == 0))
     {
       JreThrowNullPointerException();
     }
@@ -148,27 +148,27 @@ LABEL_8:
 
 - (BOOL)isPrimitive
 {
-  v2 = [(JavaIoObjectStreamField *)self getTypeInternal];
-  if (v2)
+  getTypeInternal = [(JavaIoObjectStreamField *)self getTypeInternal];
+  if (getTypeInternal)
   {
 
-    LOBYTE(v2) = [v2 isPrimitive];
+    LOBYTE(getTypeInternal) = [getTypeInternal isPrimitive];
   }
 
-  return v2;
+  return getTypeInternal;
 }
 
-- (BOOL)writeFieldWithJavaIoDataOutputStream:(id)a3
+- (BOOL)writeFieldWithJavaIoDataOutputStream:(id)stream
 {
-  v5 = [(JavaIoObjectStreamField *)self getTypeInternal];
-  if (!a3)
+  getTypeInternal = [(JavaIoObjectStreamField *)self getTypeInternal];
+  if (!stream)
   {
     JreThrowNullPointerException();
   }
 
-  v6 = v5;
-  [a3 writeByteWithInt:sub_100285074(v5)];
-  [a3 writeUTFWithNSString:self->name_];
+  v6 = getTypeInternal;
+  [stream writeByteWithInt:sub_100285074(getTypeInternal)];
+  [stream writeUTFWithNSString:self->name_];
   if (!v6)
   {
     return 0;
@@ -185,7 +185,7 @@ LABEL_8:
   return JreStrcat("$C$C@C", v4, v5, v6, v7, v8, v9, v10, v3);
 }
 
-- (void)resolveWithJavaLangClassLoader:(id)a3
+- (void)resolveWithJavaLangClassLoader:(id)loader
 {
   p_typeString = &self->typeString_;
   typeString = self->typeString_;
@@ -222,7 +222,7 @@ LABEL_15:
     v9 = [v9 substring:1 endIndex:{objc_msgSend(v9, "length") - 1}];
   }
 
-  v10 = IOSClass_forName_initialize_classLoader_(v9, 0, a3);
+  v10 = IOSClass_forName_initialize_classLoader_(v9, 0, loader);
   v11 = v10;
   if (!v10)
   {
@@ -239,7 +239,7 @@ LABEL_15:
 
 - (uint64_t)defaultResolve
 {
-  v2 = *(a1 + 32);
+  v2 = *(self + 32);
   if (!v2)
   {
     JreThrowNullPointerException();
@@ -317,7 +317,7 @@ LABEL_21:
   v5 = v4;
   v6 = 1;
 LABEL_22:
-  JreStrongAssign((a1 + 24), v5);
+  JreStrongAssign((self + 24), v5);
   return v6;
 }
 

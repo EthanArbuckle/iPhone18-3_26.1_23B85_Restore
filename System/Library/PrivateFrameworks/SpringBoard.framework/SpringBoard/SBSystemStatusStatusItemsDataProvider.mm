@@ -1,8 +1,8 @@
 @interface SBSystemStatusStatusItemsDataProvider
 - (BOOL)_isDisplayWarningItemEnabled;
 - (BOOL)_isVPNItemEnabled;
-- (BOOL)_wantsAttributionForStatusItemWithIdentifier:(id)a3;
-- (SBSystemStatusStatusItemsDataProvider)initWithMainDisplayWindowScene:(id)a3;
+- (BOOL)_wantsAttributionForStatusItemWithIdentifier:(id)identifier;
+- (SBSystemStatusStatusItemsDataProvider)initWithMainDisplayWindowScene:(id)scene;
 - (SBWindowScene)mainDisplayWindowScene;
 - (id)_identifiersForSupportedStatusItems;
 - (void)_registerForNotifications;
@@ -13,42 +13,42 @@
 - (void)_updateDataForCarPlay;
 - (void)_updateDataForDisplayWarning;
 - (void)_updateDataForRotationLock;
-- (void)_updateDataForStatusItemsWithIdentifiers:(id)a3;
+- (void)_updateDataForStatusItemsWithIdentifiers:(id)identifiers;
 - (void)_updateDataForTTY;
 - (void)_updateDataForVPN;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setAlarmEnabled:(BOOL)a3;
+- (void)setAlarmEnabled:(BOOL)enabled;
 @end
 
 @implementation SBSystemStatusStatusItemsDataProvider
 
-- (SBSystemStatusStatusItemsDataProvider)initWithMainDisplayWindowScene:(id)a3
+- (SBSystemStatusStatusItemsDataProvider)initWithMainDisplayWindowScene:(id)scene
 {
-  v5 = a3;
+  sceneCopy = scene;
   v16.receiver = self;
   v16.super_class = SBSystemStatusStatusItemsDataProvider;
   v6 = [(SBSystemStatusStatusItemsDataProvider *)&v16 init];
   if (v6)
   {
-    v7 = [SBApp systemStatusServer];
-    if (!v7)
+    systemStatusServer = [SBApp systemStatusServer];
+    if (!systemStatusServer)
     {
       [(SBSystemStatusStatusItemsDataProvider *)v6 initWithMainDisplayWindowScene:a2];
     }
 
-    v8 = [objc_alloc(MEMORY[0x277D6BB90]) initWithServerHandle:v7];
+    v8 = [objc_alloc(MEMORY[0x277D6BB90]) initWithServerHandle:systemStatusServer];
     telephonyStatusDomain = v6->_telephonyStatusDomain;
     v6->_telephonyStatusDomain = v8;
 
-    v10 = [objc_alloc(MEMORY[0x277D6BBB0]) initWithServerHandle:v7];
+    v10 = [objc_alloc(MEMORY[0x277D6BBB0]) initWithServerHandle:systemStatusServer];
     wifiStatusDomain = v6->_wifiStatusDomain;
     v6->_wifiStatusDomain = v10;
 
-    objc_storeWeak(&v6->_mainDisplayWindowScene, v5);
-    v12 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    objc_storeWeak(&v6->_mainDisplayWindowScene, sceneCopy);
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     dataProvidersByIdentifier = v6->_dataProvidersByIdentifier;
-    v6->_dataProvidersByIdentifier = v12;
+    v6->_dataProvidersByIdentifier = strongToStrongObjectsMapTable;
 
     [(SBSystemStatusStatusItemsDataProvider *)v6 _registerForNotifications];
     v15 = v6;
@@ -66,11 +66,11 @@
   [(SBSystemStatusStatusItemsDataProvider *)&v3 dealloc];
 }
 
-- (void)setAlarmEnabled:(BOOL)a3
+- (void)setAlarmEnabled:(BOOL)enabled
 {
-  if (self->_alarmEnabled != a3)
+  if (self->_alarmEnabled != enabled)
   {
-    self->_alarmEnabled = a3;
+    self->_alarmEnabled = enabled;
     [(SBSystemStatusStatusItemsDataProvider *)self _updateDataForAlarm];
   }
 }
@@ -82,10 +82,10 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(NSMapTable *)self->_dataProvidersByIdentifier dictionaryRepresentation];
-  v4 = [v3 allValues];
+  dictionaryRepresentation = [(NSMapTable *)self->_dataProvidersByIdentifier dictionaryRepresentation];
+  allValues = [dictionaryRepresentation allValues];
 
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -97,14 +97,14 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v10 + 1) + 8 * v8++) invalidate];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -112,8 +112,8 @@
 
   [(STTelephonyStatusDomain *)self->_telephonyStatusDomain invalidate];
   [(STWifiStatusDomain *)self->_wifiStatusDomain invalidate];
-  v9 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v9 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 }
 
 - (void)_registerForNotifications
@@ -123,8 +123,8 @@
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v3 = [(SBSystemStatusStatusItemsDataProvider *)self _identifiersForSupportedStatusItems];
-  v4 = [v3 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  _identifiersForSupportedStatusItems = [(SBSystemStatusStatusItemsDataProvider *)self _identifiersForSupportedStatusItems];
+  v4 = [_identifiersForSupportedStatusItems countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v4)
   {
     v5 = v4;
@@ -136,7 +136,7 @@
       {
         if (*v24 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(_identifiersForSupportedStatusItems);
         }
 
         v8 = *(*(&v23 + 1) + 8 * v7);
@@ -149,29 +149,29 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v5 = [_identifiersForSupportedStatusItems countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v5);
   }
 
-  v12 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v12 addObserver:self selector:sel__updateDataForRotationLock name:*MEMORY[0x277D67A98] object:0];
-  [v12 addObserver:self selector:sel__updateDataForAirplaneMode name:*MEMORY[0x277D679E8] object:0];
-  [v12 addObserver:self selector:sel__updateDataForTTY name:@"SBTTYChangedNotification" object:0];
-  [v12 addObserver:self selector:sel__updateDataForVPN name:@"SBVPNConnectionChangedNotification" object:0];
-  [v12 addObserver:self selector:sel__updateDataForAirPlay name:@"SBAirPlayScreenSharingStatusChangedNotificationName" object:0];
-  [v12 addObserver:self selector:sel__updateDataForCarPlay name:@"SBNotificationCarPlayDestinationAvailabilityDidChange" object:0];
-  [v12 addObserver:self selector:sel__updateDataForAlarm name:@"SBTTYChangedNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__updateDataForRotationLock name:*MEMORY[0x277D67A98] object:0];
+  [defaultCenter addObserver:self selector:sel__updateDataForAirplaneMode name:*MEMORY[0x277D679E8] object:0];
+  [defaultCenter addObserver:self selector:sel__updateDataForTTY name:@"SBTTYChangedNotification" object:0];
+  [defaultCenter addObserver:self selector:sel__updateDataForVPN name:@"SBVPNConnectionChangedNotification" object:0];
+  [defaultCenter addObserver:self selector:sel__updateDataForAirPlay name:@"SBAirPlayScreenSharingStatusChangedNotificationName" object:0];
+  [defaultCenter addObserver:self selector:sel__updateDataForCarPlay name:@"SBNotificationCarPlayDestinationAvailabilityDidChange" object:0];
+  [defaultCenter addObserver:self selector:sel__updateDataForAlarm name:@"SBTTYChangedNotification" object:0];
   v13 = [SBTelephonyManager sharedTelephonyManagerCreatingIfNecessary:0];
   telephonyManager = self->_telephonyManager;
   self->_telephonyManager = v13;
 
   v15 = objc_alloc_init(SBDisplayReferenceModeMonitor);
-  v16 = [(SBSystemStatusStatusItemsDataProvider *)self mainDisplayWindowScene];
-  v17 = [v16 screen];
-  v18 = [v17 displayConfiguration];
-  [(SBDisplayReferenceModeMonitor *)v15 addReferenceModeStatusObserver:self forDisplayWithConfiguration:v18];
+  mainDisplayWindowScene = [(SBSystemStatusStatusItemsDataProvider *)self mainDisplayWindowScene];
+  screen = [mainDisplayWindowScene screen];
+  displayConfiguration = [screen displayConfiguration];
+  [(SBDisplayReferenceModeMonitor *)v15 addReferenceModeStatusObserver:self forDisplayWithConfiguration:displayConfiguration];
   displayReferenceModeMonitor = self->_displayReferenceModeMonitor;
   self->_displayReferenceModeMonitor = v15;
   v20 = v15;
@@ -188,13 +188,13 @@
 
 - (BOOL)_isDisplayWarningItemEnabled
 {
-  v2 = self;
-  v3 = [(SBSystemStatusStatusItemsDataProvider *)self mainDisplayWindowScene];
-  v4 = [v3 screen];
-  v5 = [v4 displayConfiguration];
-  LOBYTE(v2) = [(SBDisplayReferenceModeMonitor *)v2->_displayReferenceModeMonitor referenceModeStatusForDisplayWithConfiguration:v5]== 2;
+  selfCopy = self;
+  mainDisplayWindowScene = [(SBSystemStatusStatusItemsDataProvider *)self mainDisplayWindowScene];
+  screen = [mainDisplayWindowScene screen];
+  displayConfiguration = [screen displayConfiguration];
+  LOBYTE(selfCopy) = [(SBDisplayReferenceModeMonitor *)selfCopy->_displayReferenceModeMonitor referenceModeStatusForDisplayWithConfiguration:displayConfiguration]== 2;
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)_isVPNItemEnabled
@@ -205,13 +205,13 @@
     return 0;
   }
 
-  v3 = [(SBSystemStatusStatusItemsDataProvider *)self telephonyStatusDomain];
-  v4 = [v3 data];
-  v5 = [v4 primarySIMInfo];
-  v6 = [v5 isProvidingDataConnection];
+  telephonyStatusDomain = [(SBSystemStatusStatusItemsDataProvider *)self telephonyStatusDomain];
+  data = [telephonyStatusDomain data];
+  primarySIMInfo = [data primarySIMInfo];
+  isProvidingDataConnection = [primarySIMInfo isProvidingDataConnection];
 
-  v7 = [(SBTelephonyManager *)self->_telephonyManager hasNonCellularNetworkConnection];
-  if ((v6 & 1) == 0 && !v7)
+  hasNonCellularNetworkConnection = [(SBTelephonyManager *)self->_telephonyManager hasNonCellularNetworkConnection];
+  if ((isProvidingDataConnection & 1) == 0 && !hasNonCellularNetworkConnection)
   {
     return 0;
   }
@@ -221,62 +221,62 @@
   return [(SBTelephonyManager *)telephonyManager isUsingVPNConnection];
 }
 
-- (BOOL)_wantsAttributionForStatusItemWithIdentifier:(id)a3
+- (BOOL)_wantsAttributionForStatusItemWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([*MEMORY[0x277D6BF70] isEqualToString:v4])
+  identifierCopy = identifier;
+  if ([*MEMORY[0x277D6BF70] isEqualToString:identifierCopy])
   {
-    v5 = +[SBOrientationLockManager sharedInstance];
-    v6 = [v5 isUserLocked];
+    notificationDispatcher = +[SBOrientationLockManager sharedInstance];
+    isUserLocked = [notificationDispatcher isUserLocked];
 LABEL_7:
-    alarmEnabled = v6;
+    alarmEnabled = isUserLocked;
 
     goto LABEL_8;
   }
 
-  if ([*MEMORY[0x277D6BF48] isEqualToString:v4])
+  if ([*MEMORY[0x277D6BF48] isEqualToString:identifierCopy])
   {
-    v5 = +[SBAirplaneModeController sharedInstance];
-    v6 = [v5 isInAirplaneMode];
+    notificationDispatcher = +[SBAirplaneModeController sharedInstance];
+    isUserLocked = [notificationDispatcher isInAirplaneMode];
     goto LABEL_7;
   }
 
-  if ([*MEMORY[0x277D6BF80] isEqualToString:v4])
+  if ([*MEMORY[0x277D6BF80] isEqualToString:identifierCopy])
   {
-    v5 = [SBTelephonyManager sharedTelephonyManagerCreatingIfNecessary:0];
-    v6 = [v5 isTTYEnabled];
+    notificationDispatcher = [SBTelephonyManager sharedTelephonyManagerCreatingIfNecessary:0];
+    isUserLocked = [notificationDispatcher isTTYEnabled];
     goto LABEL_7;
   }
 
-  if ([*MEMORY[0x277D6BF88] isEqualToString:v4])
+  if ([*MEMORY[0x277D6BF88] isEqualToString:identifierCopy])
   {
-    v9 = [(SBSystemStatusStatusItemsDataProvider *)self _isVPNItemEnabled];
+    _isVPNItemEnabled = [(SBSystemStatusStatusItemsDataProvider *)self _isVPNItemEnabled];
 LABEL_13:
-    alarmEnabled = v9;
+    alarmEnabled = _isVPNItemEnabled;
     goto LABEL_8;
   }
 
-  if ([*MEMORY[0x277D6BF60] isEqualToString:v4])
+  if ([*MEMORY[0x277D6BF60] isEqualToString:identifierCopy])
   {
-    v9 = [(SBSystemStatusStatusItemsDataProvider *)self _isDisplayWarningItemEnabled];
+    _isVPNItemEnabled = [(SBSystemStatusStatusItemsDataProvider *)self _isDisplayWarningItemEnabled];
     goto LABEL_13;
   }
 
-  if ([*MEMORY[0x277D6BF40] isEqualToString:v4])
+  if ([*MEMORY[0x277D6BF40] isEqualToString:identifierCopy])
   {
-    v5 = +[SBVideoOutController sharedInstanceIfExists];
-    v6 = [v5 isScreenSharing];
+    notificationDispatcher = +[SBVideoOutController sharedInstanceIfExists];
+    isUserLocked = [notificationDispatcher isScreenSharing];
     goto LABEL_7;
   }
 
-  if ([*MEMORY[0x277D6BF58] isEqualToString:v4])
+  if ([*MEMORY[0x277D6BF58] isEqualToString:identifierCopy])
   {
-    v5 = [SBApp notificationDispatcher];
-    v6 = [v5 isCarDestinationActive];
+    notificationDispatcher = [SBApp notificationDispatcher];
+    isUserLocked = [notificationDispatcher isCarDestinationActive];
     goto LABEL_7;
   }
 
-  if ([*MEMORY[0x277D6BF50] isEqualToString:v4])
+  if ([*MEMORY[0x277D6BF50] isEqualToString:identifierCopy])
   {
     alarmEnabled = self->_alarmEnabled;
   }
@@ -313,15 +313,15 @@ LABEL_8:
   return v8;
 }
 
-- (void)_updateDataForStatusItemsWithIdentifiers:(id)a3
+- (void)_updateDataForStatusItemsWithIdentifiers:(id)identifiers
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifiersCopy = identifiers;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [identifiersCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -332,7 +332,7 @@ LABEL_8:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(identifiersCopy);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -341,7 +341,7 @@ LABEL_8:
         [v11 setStatusItemEnabled:v10 withCompletion:0];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [identifiersCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -350,8 +350,8 @@ LABEL_8:
 
 - (void)_updateAllData
 {
-  v3 = [(SBSystemStatusStatusItemsDataProvider *)self _identifiersForSupportedStatusItems];
-  [(SBSystemStatusStatusItemsDataProvider *)self _updateDataForStatusItemsWithIdentifiers:v3];
+  _identifiersForSupportedStatusItems = [(SBSystemStatusStatusItemsDataProvider *)self _identifiersForSupportedStatusItems];
+  [(SBSystemStatusStatusItemsDataProvider *)self _updateDataForStatusItemsWithIdentifiers:_identifiersForSupportedStatusItems];
 }
 
 - (void)_updateDataForRotationLock

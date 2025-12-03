@@ -1,10 +1,10 @@
 @interface HIDApplePencilGen3Device
-- (HIDApplePencilGen3Device)initWithProperties:(id)a3 reports:(id)a4;
+- (HIDApplePencilGen3Device)initWithProperties:(id)properties reports:(id)reports;
 - (id)desiredConnectionParameters;
-- (id)newUserDevices:(id)a3;
-- (void)authCompleted:(BOOL)a3;
-- (void)checkAndLogHostInputReportCollision:(unsigned __int8)a3 reportID:(unsigned __int8)a4;
-- (void)notifyDownstreamOnChargerState:(BOOL)a3;
+- (id)newUserDevices:(id)devices;
+- (void)authCompleted:(BOOL)completed;
+- (void)checkAndLogHostInputReportCollision:(unsigned __int8)collision reportID:(unsigned __int8)d;
+- (void)notifyDownstreamOnChargerState:(BOOL)state;
 - (void)pairingInfoCompleted;
 - (void)setChargingConnParamDefaults;
 - (void)setNormalConnParamDefaults;
@@ -12,9 +12,9 @@
 
 @implementation HIDApplePencilGen3Device
 
-- (HIDApplePencilGen3Device)initWithProperties:(id)a3 reports:(id)a4
+- (HIDApplePencilGen3Device)initWithProperties:(id)properties reports:(id)reports
 {
-  v4 = [(HIDApplePencilGen2Device *)self initWithProperties:a3 reports:a4 loggingIdentifier:@"Pencil3"];
+  v4 = [(HIDApplePencilGen2Device *)self initWithProperties:properties reports:reports loggingIdentifier:@"Pencil3"];
   LODWORD(v5) = 15.0;
   [(HIDApplePencilGen3Device *)v4 setPreferredInterval:v5];
   [(HIDApplePencilGen3Device *)v4 setLatency:65];
@@ -23,21 +23,21 @@
   return v4;
 }
 
-- (id)newUserDevices:(id)a3
+- (id)newUserDevices:(id)devices
 {
-  v4 = a3;
-  v5 = [(HIDApplePencilGen2Device *)self newDeviceMgntDevice:v4 keyholeID:0];
-  v6 = [(HIDApplePencilGen2Device *)self newTouchDevice:v4 keyholeID:1];
-  v7 = [(HIDApplePencilGen3Device *)self newMotionDevice:v4 keyholeID:2];
-  v8 = [(HIDApplePencilGen3Device *)self newHapticsDevice:v4 keyholeID:3];
-  v9 = [(HIDApplePencilGen2p5Device *)self newFwUpgradeDevice:v4 keyholeID:5];
-  v10 = [(HIDApplePencilGen2Device *)self newForceDevice:v4 keyholeID:8];
+  devicesCopy = devices;
+  v5 = [(HIDApplePencilGen2Device *)self newDeviceMgntDevice:devicesCopy keyholeID:0];
+  v6 = [(HIDApplePencilGen2Device *)self newTouchDevice:devicesCopy keyholeID:1];
+  v7 = [(HIDApplePencilGen3Device *)self newMotionDevice:devicesCopy keyholeID:2];
+  v8 = [(HIDApplePencilGen3Device *)self newHapticsDevice:devicesCopy keyholeID:3];
+  v9 = [(HIDApplePencilGen2p5Device *)self newFwUpgradeDevice:devicesCopy keyholeID:5];
+  v10 = [(HIDApplePencilGen2Device *)self newForceDevice:devicesCopy keyholeID:8];
 
   if (!v5)
   {
     sub_1000725C0(&v16);
 LABEL_15:
-    v14 = v16;
+    allValues = v16;
     goto LABEL_8;
   }
 
@@ -86,14 +86,14 @@ LABEL_15:
   v11 = [NSDictionary dictionaryWithObjects:v18 forKeys:v17 count:6];
   [(HIDApplePencilGen2Device *)self setUserDevices:v11];
 
-  v12 = [(HIDApplePencilGen2Device *)self userDevices];
-  [v12 enumerateKeysAndObjectsUsingBlock:&stru_1000BD568];
+  userDevices = [(HIDApplePencilGen2Device *)self userDevices];
+  [userDevices enumerateKeysAndObjectsUsingBlock:&stru_1000BD568];
 
-  v13 = [(HIDApplePencilGen2Device *)self userDevices];
-  v14 = [v13 allValues];
+  userDevices2 = [(HIDApplePencilGen2Device *)self userDevices];
+  allValues = [userDevices2 allValues];
 
 LABEL_8:
-  return v14;
+  return allValues;
 }
 
 - (void)setNormalConnParamDefaults
@@ -164,24 +164,24 @@ LABEL_8:
 {
   v8.receiver = self;
   v8.super_class = HIDApplePencilGen3Device;
-  v3 = [(HIDApplePencilGen2Device *)&v8 desiredConnectionParameters];
+  desiredConnectionParameters = [(HIDApplePencilGen2Device *)&v8 desiredConnectionParameters];
   [(HIDApplePencilGen3Device *)self preferredInterval];
-  [v3 setMinInterval:?];
+  [desiredConnectionParameters setMinInterval:?];
   [(HIDApplePencilGen3Device *)self preferredInterval];
-  [v3 setPreferredInterval:?];
-  [v3 setPreferredPeripheralLatency:{-[HIDApplePencilGen3Device latency](self, "latency")}];
-  [v3 setMaxPeripheralLatency:{-[HIDApplePencilGen3Device latency](self, "latency")}];
-  v4 = ([v3 preferredPeripheralLatency] + 1);
-  [v3 preferredInterval];
+  [desiredConnectionParameters setPreferredInterval:?];
+  [desiredConnectionParameters setPreferredPeripheralLatency:{-[HIDApplePencilGen3Device latency](self, "latency")}];
+  [desiredConnectionParameters setMaxPeripheralLatency:{-[HIDApplePencilGen3Device latency](self, "latency")}];
+  v4 = ([desiredConnectionParameters preferredPeripheralLatency] + 1);
+  [desiredConnectionParameters preferredInterval];
   v6 = ((v5 * v4) * 4.0) + 1.0;
   if (v6 < 2000.0)
   {
     v6 = 2000.0;
   }
 
-  [v3 setTimeout:v6];
+  [desiredConnectionParameters setTimeout:v6];
 
-  return v3;
+  return desiredConnectionParameters;
 }
 
 - (void)pairingInfoCompleted
@@ -190,33 +190,33 @@ LABEL_8:
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     v4 = v3;
-    v5 = [(HIDApplePencilDevice *)self loggingIdentifier];
+    loggingIdentifier = [(HIDApplePencilDevice *)self loggingIdentifier];
     v6 = 138412290;
-    v7 = v5;
+    v7 = loggingIdentifier;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%@ received pairing info", &v6, 0xCu);
   }
 }
 
-- (void)authCompleted:(BOOL)a3
+- (void)authCompleted:(BOOL)completed
 {
   v5 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
   {
-    sub_10007261C(v5, self, a3);
+    sub_10007261C(v5, self, completed);
   }
 }
 
-- (void)notifyDownstreamOnChargerState:(BOOL)a3
+- (void)notifyDownstreamOnChargerState:(BOOL)state
 {
   v4[0] = -1;
-  v4[1] = a3;
-  v3 = [(HIDApplePencilGen2Device *)self deviceMgntUserDevice];
-  [v3 handleInputReport:v4 reportLength:2];
+  v4[1] = state;
+  deviceMgntUserDevice = [(HIDApplePencilGen2Device *)self deviceMgntUserDevice];
+  [deviceMgntUserDevice handleInputReport:v4 reportLength:2];
 }
 
-- (void)checkAndLogHostInputReportCollision:(unsigned __int8)a3 reportID:(unsigned __int8)a4
+- (void)checkAndLogHostInputReportCollision:(unsigned __int8)collision reportID:(unsigned __int8)d
 {
-  if (!a3 && a4 == 255)
+  if (!collision && d == 255)
   {
     v4 = qword_1000DDBC8;
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))

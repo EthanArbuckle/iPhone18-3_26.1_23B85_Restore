@@ -2,7 +2,7 @@
 + (CalDefaultReminderMigrationDefaultsProvider)sharedInstance;
 - (BOOL)havePerformedReminderMigrationCleanup;
 - (BOOL)shouldBackupBeforeMigration;
-- (void)setHavePerformedReminderMigrationCleanup:(BOOL)a3;
+- (void)setHavePerformedReminderMigrationCleanup:(BOOL)cleanup;
 @end
 
 @implementation CalDefaultReminderMigrationDefaultsProvider
@@ -28,32 +28,32 @@ uint64_t __61__CalDefaultReminderMigrationDefaultsProvider_sharedInstance__block
 
 - (BOOL)shouldBackupBeforeMigration
 {
-  v2 = [MEMORY[0x277CF77A8] shared];
-  v3 = [v2 BOOLForKey:@"ShouldBackupBeforeRemindersMigration"];
+  mEMORY[0x277CF77A8] = [MEMORY[0x277CF77A8] shared];
+  v3 = [mEMORY[0x277CF77A8] BOOLForKey:@"ShouldBackupBeforeRemindersMigration"];
 
   return v3;
 }
 
 - (BOOL)havePerformedReminderMigrationCleanup
 {
-  v2 = [MEMORY[0x277CF77A8] shared];
-  v3 = [v2 integerForKey:@"LastReminderMigrationCleanupVersion"];
+  mEMORY[0x277CF77A8] = [MEMORY[0x277CF77A8] shared];
+  v3 = [mEMORY[0x277CF77A8] integerForKey:@"LastReminderMigrationCleanupVersion"];
 
   return v3 == 1;
 }
 
-- (void)setHavePerformedReminderMigrationCleanup:(BOOL)a3
+- (void)setHavePerformedReminderMigrationCleanup:(BOOL)cleanup
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CF77A8] shared];
-  v6 = v4;
-  if (v3)
+  cleanupCopy = cleanup;
+  mEMORY[0x277CF77A8] = [MEMORY[0x277CF77A8] shared];
+  v6 = mEMORY[0x277CF77A8];
+  if (cleanupCopy)
   {
-    [v4 setInteger:1 forKey:@"LastReminderMigrationCleanupVersion"];
+    [mEMORY[0x277CF77A8] setInteger:1 forKey:@"LastReminderMigrationCleanupVersion"];
 
-    v4 = [MEMORY[0x277CF77A8] shared];
+    mEMORY[0x277CF77A8] = [MEMORY[0x277CF77A8] shared];
     v5 = @"LastReminderMigrationCleanupSystemVersion";
-    v6 = v4;
+    v6 = mEMORY[0x277CF77A8];
   }
 
   else
@@ -61,7 +61,7 @@ uint64_t __61__CalDefaultReminderMigrationDefaultsProvider_sharedInstance__block
     v5 = @"LastReminderMigrationCleanupVersion";
   }
 
-  [v4 removeObjectForKey:v5];
+  [mEMORY[0x277CF77A8] removeObjectForKey:v5];
 }
 
 @end

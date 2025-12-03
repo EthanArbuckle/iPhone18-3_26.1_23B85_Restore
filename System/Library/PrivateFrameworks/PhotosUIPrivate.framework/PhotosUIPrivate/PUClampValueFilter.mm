@@ -1,21 +1,21 @@
 @interface PUClampValueFilter
-- (double)updatedValue:(double)a3 withTargetValue:(double)a4;
+- (double)updatedValue:(double)value withTargetValue:(double)targetValue;
 @end
 
 @implementation PUClampValueFilter
 
-- (double)updatedValue:(double)a3 withTargetValue:(double)a4
+- (double)updatedValue:(double)value withTargetValue:(double)targetValue
 {
   [(PUClampValueFilter *)self minimumValue];
-  if (v6 > a4)
+  if (v6 > targetValue)
   {
-    a4 = v6;
+    targetValue = v6;
   }
 
   [(PUClampValueFilter *)self maximumValue];
-  if (a4 < result)
+  if (targetValue < result)
   {
-    return a4;
+    return targetValue;
   }
 
   return result;

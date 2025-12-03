@@ -1,29 +1,29 @@
 @interface ACHAwardsWorkoutServer
-- (ACHAwardsWorkoutServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6;
+- (ACHAwardsWorkoutServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate;
 - (id)_protectedDataAvailabilityError;
-- (void)remote_bestDistanceForFirstPartyWorkoutsWithType:(unint64_t)a3 endingBeforeDate:(id)a4 completion:(id)a5;
-- (void)remote_bestEnergyBurnedForFirstPartyWorkoutsWithType:(unint64_t)a3 endingBeforeDate:(id)a4 completion:(id)a5;
-- (void)remote_mindfulMinutesForForDateInterval:(id)a3 completion:(id)a4;
-- (void)remote_numberOfFirstPartyWorkoutsWithDuration:(double)a3 containedInInterval:(id)a4 completion:(id)a5;
-- (void)remote_numberOfFirstPartyWorkoutsWithDuration:(double)a3 type:(unint64_t)a4 andLocation:(unint64_t)a5 containedInInterval:(id)a6 completion:(id)a7;
-- (void)remote_numberOfFirstPartyWorkoutsWithDuration:(double)a3 type:(unint64_t)a4 endingOnOrBeforeDate:(id)a5 completion:(id)a6;
-- (void)remote_numberOfWorkoutsWithDuration:(double)a3 containedInInterval:(id)a4 completion:(id)a5;
-- (void)remote_workoutsInDateInterval:(id)a3 completion:(id)a4;
+- (void)remote_bestDistanceForFirstPartyWorkoutsWithType:(unint64_t)type endingBeforeDate:(id)date completion:(id)completion;
+- (void)remote_bestEnergyBurnedForFirstPartyWorkoutsWithType:(unint64_t)type endingBeforeDate:(id)date completion:(id)completion;
+- (void)remote_mindfulMinutesForForDateInterval:(id)interval completion:(id)completion;
+- (void)remote_numberOfFirstPartyWorkoutsWithDuration:(double)duration containedInInterval:(id)interval completion:(id)completion;
+- (void)remote_numberOfFirstPartyWorkoutsWithDuration:(double)duration type:(unint64_t)type andLocation:(unint64_t)location containedInInterval:(id)interval completion:(id)completion;
+- (void)remote_numberOfFirstPartyWorkoutsWithDuration:(double)duration type:(unint64_t)type endingOnOrBeforeDate:(id)date completion:(id)completion;
+- (void)remote_numberOfWorkoutsWithDuration:(double)duration containedInInterval:(id)interval completion:(id)completion;
+- (void)remote_workoutsInDateInterval:(id)interval completion:(id)completion;
 @end
 
 @implementation ACHAwardsWorkoutServer
 
-- (ACHAwardsWorkoutServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6
+- (ACHAwardsWorkoutServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate
 {
-  v10 = a5;
+  clientCopy = client;
   v21.receiver = self;
   v21.super_class = ACHAwardsWorkoutServer;
-  v11 = [(HDStandardTaskServer *)&v21 initWithUUID:a3 configuration:a4 client:v10 delegate:a6];
+  v11 = [(HDStandardTaskServer *)&v21 initWithUUID:d configuration:configuration client:clientCopy delegate:delegate];
   if (v11)
   {
     v12 = [ACHWorkoutUtility alloc];
-    v13 = [v10 profile];
-    v14 = [(ACHWorkoutUtility *)v12 initWithProfile:v13];
+    profile = [clientCopy profile];
+    v14 = [(ACHWorkoutUtility *)v12 initWithProfile:profile];
     workoutUtility = v11->_workoutUtility;
     v11->_workoutUtility = v14;
 
@@ -53,21 +53,21 @@
   return v4;
 }
 
-- (void)remote_workoutsInDateInterval:(id)a3 completion:(id)a4
+- (void)remote_workoutsInDateInterval:(id)interval completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ACHAwardsWorkoutServer *)self queue];
+  intervalCopy = interval;
+  completionCopy = completion;
+  queue = [(ACHAwardsWorkoutServer *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __67__ACHAwardsWorkoutServer_remote_workoutsInDateInterval_completion___block_invoke;
   block[3] = &unk_278491280;
-  v12 = v6;
-  v13 = v7;
+  v12 = intervalCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v9 = intervalCopy;
+  v10 = completionCopy;
+  dispatch_async(queue, block);
 }
 
 void __67__ACHAwardsWorkoutServer_remote_workoutsInDateInterval_completion___block_invoke(uint64_t a1)
@@ -118,22 +118,22 @@ void __67__ACHAwardsWorkoutServer_remote_workoutsInDateInterval_completion___blo
   (*(v1 + 16))(v1, MEMORY[0x277CBEBF8], v2);
 }
 
-- (void)remote_numberOfWorkoutsWithDuration:(double)a3 containedInInterval:(id)a4 completion:(id)a5
+- (void)remote_numberOfWorkoutsWithDuration:(double)duration containedInInterval:(id)interval completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(ACHAwardsWorkoutServer *)self queue];
+  intervalCopy = interval;
+  completionCopy = completion;
+  queue = [(ACHAwardsWorkoutServer *)self queue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __93__ACHAwardsWorkoutServer_remote_numberOfWorkoutsWithDuration_containedInInterval_completion___block_invoke;
   v13[3] = &unk_2784912D0;
-  v14 = v8;
-  v15 = v9;
-  v16 = a3;
+  v14 = intervalCopy;
+  v15 = completionCopy;
+  durationCopy = duration;
   v13[4] = self;
-  v11 = v8;
-  v12 = v9;
-  dispatch_async(v10, v13);
+  v11 = intervalCopy;
+  v12 = completionCopy;
+  dispatch_async(queue, v13);
 }
 
 void __93__ACHAwardsWorkoutServer_remote_numberOfWorkoutsWithDuration_containedInInterval_completion___block_invoke(uint64_t a1)
@@ -184,23 +184,23 @@ void __93__ACHAwardsWorkoutServer_remote_numberOfWorkoutsWithDuration_containedI
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (void)remote_numberOfFirstPartyWorkoutsWithDuration:(double)a3 type:(unint64_t)a4 endingOnOrBeforeDate:(id)a5 completion:(id)a6
+- (void)remote_numberOfFirstPartyWorkoutsWithDuration:(double)duration type:(unint64_t)type endingOnOrBeforeDate:(id)date completion:(id)completion
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = [(ACHAwardsWorkoutServer *)self queue];
+  dateCopy = date;
+  completionCopy = completion;
+  queue = [(ACHAwardsWorkoutServer *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __109__ACHAwardsWorkoutServer_remote_numberOfFirstPartyWorkoutsWithDuration_type_endingOnOrBeforeDate_completion___block_invoke;
   block[3] = &unk_2784912F8;
-  v16 = v10;
-  v17 = v11;
-  v18 = a3;
-  v19 = a4;
+  v16 = dateCopy;
+  v17 = completionCopy;
+  durationCopy = duration;
+  typeCopy = type;
   block[4] = self;
-  v13 = v10;
-  v14 = v11;
-  dispatch_async(v12, block);
+  v13 = dateCopy;
+  v14 = completionCopy;
+  dispatch_async(queue, block);
 }
 
 void __109__ACHAwardsWorkoutServer_remote_numberOfFirstPartyWorkoutsWithDuration_type_endingOnOrBeforeDate_completion___block_invoke(uint64_t a1)
@@ -251,22 +251,22 @@ void __109__ACHAwardsWorkoutServer_remote_numberOfFirstPartyWorkoutsWithDuration
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (void)remote_numberOfFirstPartyWorkoutsWithDuration:(double)a3 containedInInterval:(id)a4 completion:(id)a5
+- (void)remote_numberOfFirstPartyWorkoutsWithDuration:(double)duration containedInInterval:(id)interval completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(ACHAwardsWorkoutServer *)self queue];
+  intervalCopy = interval;
+  completionCopy = completion;
+  queue = [(ACHAwardsWorkoutServer *)self queue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __103__ACHAwardsWorkoutServer_remote_numberOfFirstPartyWorkoutsWithDuration_containedInInterval_completion___block_invoke;
   v13[3] = &unk_2784912D0;
-  v14 = v8;
-  v15 = v9;
-  v16 = a3;
+  v14 = intervalCopy;
+  v15 = completionCopy;
+  durationCopy = duration;
   v13[4] = self;
-  v11 = v8;
-  v12 = v9;
-  dispatch_async(v10, v13);
+  v11 = intervalCopy;
+  v12 = completionCopy;
+  dispatch_async(queue, v13);
 }
 
 void __103__ACHAwardsWorkoutServer_remote_numberOfFirstPartyWorkoutsWithDuration_containedInInterval_completion___block_invoke(uint64_t a1)
@@ -317,24 +317,24 @@ void __103__ACHAwardsWorkoutServer_remote_numberOfFirstPartyWorkoutsWithDuration
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (void)remote_numberOfFirstPartyWorkoutsWithDuration:(double)a3 type:(unint64_t)a4 andLocation:(unint64_t)a5 containedInInterval:(id)a6 completion:(id)a7
+- (void)remote_numberOfFirstPartyWorkoutsWithDuration:(double)duration type:(unint64_t)type andLocation:(unint64_t)location containedInInterval:(id)interval completion:(id)completion
 {
-  v12 = a6;
-  v13 = a7;
-  v14 = [(ACHAwardsWorkoutServer *)self queue];
+  intervalCopy = interval;
+  completionCopy = completion;
+  queue = [(ACHAwardsWorkoutServer *)self queue];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __120__ACHAwardsWorkoutServer_remote_numberOfFirstPartyWorkoutsWithDuration_type_andLocation_containedInInterval_completion___block_invoke;
   v17[3] = &unk_278491320;
-  v18 = v12;
-  v19 = v13;
-  v20 = a3;
-  v21 = a4;
-  v22 = a5;
+  v18 = intervalCopy;
+  v19 = completionCopy;
+  durationCopy = duration;
+  typeCopy = type;
+  locationCopy = location;
   v17[4] = self;
-  v15 = v12;
-  v16 = v13;
-  dispatch_async(v14, v17);
+  v15 = intervalCopy;
+  v16 = completionCopy;
+  dispatch_async(queue, v17);
 }
 
 void __120__ACHAwardsWorkoutServer_remote_numberOfFirstPartyWorkoutsWithDuration_type_andLocation_containedInInterval_completion___block_invoke(uint64_t a1)
@@ -385,22 +385,22 @@ void __120__ACHAwardsWorkoutServer_remote_numberOfFirstPartyWorkoutsWithDuration
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (void)remote_bestEnergyBurnedForFirstPartyWorkoutsWithType:(unint64_t)a3 endingBeforeDate:(id)a4 completion:(id)a5
+- (void)remote_bestEnergyBurnedForFirstPartyWorkoutsWithType:(unint64_t)type endingBeforeDate:(id)date completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(ACHAwardsWorkoutServer *)self queue];
+  dateCopy = date;
+  completionCopy = completion;
+  queue = [(ACHAwardsWorkoutServer *)self queue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __107__ACHAwardsWorkoutServer_remote_bestEnergyBurnedForFirstPartyWorkoutsWithType_endingBeforeDate_completion___block_invoke;
   v13[3] = &unk_2784912D0;
-  v15 = v9;
-  v16 = a3;
+  v15 = completionCopy;
+  typeCopy = type;
   v13[4] = self;
-  v14 = v8;
-  v11 = v8;
-  v12 = v9;
-  dispatch_async(v10, v13);
+  v14 = dateCopy;
+  v11 = dateCopy;
+  v12 = completionCopy;
+  dispatch_async(queue, v13);
 }
 
 void __107__ACHAwardsWorkoutServer_remote_bestEnergyBurnedForFirstPartyWorkoutsWithType_endingBeforeDate_completion___block_invoke(uint64_t a1)
@@ -451,22 +451,22 @@ void __107__ACHAwardsWorkoutServer_remote_bestEnergyBurnedForFirstPartyWorkoutsW
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (void)remote_bestDistanceForFirstPartyWorkoutsWithType:(unint64_t)a3 endingBeforeDate:(id)a4 completion:(id)a5
+- (void)remote_bestDistanceForFirstPartyWorkoutsWithType:(unint64_t)type endingBeforeDate:(id)date completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(ACHAwardsWorkoutServer *)self queue];
+  dateCopy = date;
+  completionCopy = completion;
+  queue = [(ACHAwardsWorkoutServer *)self queue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __103__ACHAwardsWorkoutServer_remote_bestDistanceForFirstPartyWorkoutsWithType_endingBeforeDate_completion___block_invoke;
   v13[3] = &unk_2784912D0;
-  v15 = v9;
-  v16 = a3;
+  v15 = completionCopy;
+  typeCopy = type;
   v13[4] = self;
-  v14 = v8;
-  v11 = v8;
-  v12 = v9;
-  dispatch_async(v10, v13);
+  v14 = dateCopy;
+  v11 = dateCopy;
+  v12 = completionCopy;
+  dispatch_async(queue, v13);
 }
 
 void __103__ACHAwardsWorkoutServer_remote_bestDistanceForFirstPartyWorkoutsWithType_endingBeforeDate_completion___block_invoke(uint64_t a1)
@@ -517,21 +517,21 @@ void __103__ACHAwardsWorkoutServer_remote_bestDistanceForFirstPartyWorkoutsWithT
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (void)remote_mindfulMinutesForForDateInterval:(id)a3 completion:(id)a4
+- (void)remote_mindfulMinutesForForDateInterval:(id)interval completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ACHAwardsWorkoutServer *)self queue];
+  intervalCopy = interval;
+  completionCopy = completion;
+  queue = [(ACHAwardsWorkoutServer *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __77__ACHAwardsWorkoutServer_remote_mindfulMinutesForForDateInterval_completion___block_invoke;
   block[3] = &unk_278491280;
-  v12 = v6;
-  v13 = v7;
+  v12 = intervalCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v9 = intervalCopy;
+  v10 = completionCopy;
+  dispatch_async(queue, block);
 }
 
 void __77__ACHAwardsWorkoutServer_remote_mindfulMinutesForForDateInterval_completion___block_invoke(uint64_t a1)

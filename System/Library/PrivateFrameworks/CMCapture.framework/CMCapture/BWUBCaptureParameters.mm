@@ -1,6 +1,6 @@
 @interface BWUBCaptureParameters
-- (BWUBCaptureParameters)initWithPortType:(id)a3 sensorIDDictionary:(id)a4;
-- (int)deepFusionHDREVZeroCountForEffectiveIntegrationTime:(double)a3;
+- (BWUBCaptureParameters)initWithPortType:(id)type sensorIDDictionary:(id)dictionary;
+- (int)deepFusionHDREVZeroCountForEffectiveIntegrationTime:(double)time;
 - (void)dealloc;
 @end
 
@@ -13,9 +13,9 @@
   [(BWUBCaptureParameters *)&v3 dealloc];
 }
 
-- (BWUBCaptureParameters)initWithPortType:(id)a3 sensorIDDictionary:(id)a4
+- (BWUBCaptureParameters)initWithPortType:(id)type sensorIDDictionary:(id)dictionary
 {
-  if (a3 && (v6 = [a4 objectForKeyedSubscript:@"UBCaptureParameters"]) != 0)
+  if (type && (v6 = [dictionary objectForKeyedSubscript:@"UBCaptureParameters"]) != 0)
   {
     v7 = v6;
     v54.receiver = self;
@@ -23,7 +23,7 @@
     v8 = [(BWUBCaptureParameters *)&v54 init];
     if (v8)
     {
-      v8->_portType = a3;
+      v8->_portType = type;
       v8->_nonHDRBrightLightCapturesEnabled = [objc_msgSend(v7 objectForKeyedSubscript:{@"NonHDRBrightLightCapturesEnabled", "BOOLValue"}];
       [objc_msgSend(v7 objectForKeyedSubscript:{@"LowLightEffectiveIntegrationTimeThreshold", "doubleValue"}];
       v8->_lowLightEffectiveIntegrationTimeThreshold = v9;
@@ -209,7 +209,7 @@
   return v8;
 }
 
-- (int)deepFusionHDREVZeroCountForEffectiveIntegrationTime:(double)a3
+- (int)deepFusionHDREVZeroCountForEffectiveIntegrationTime:(double)time
 {
   if (![(NSArray *)self->_deepFusionHDREVZeroCountByEffectiveIntegrationTime count])
   {
@@ -233,7 +233,7 @@ LABEL_6:
   while (1)
   {
     [-[NSArray objectAtIndexedSubscript:](self->_deepFusionHDREVZeroCountByEffectiveIntegrationTime objectAtIndexedSubscript:{v5), "doubleValue"}];
-    if (v6 < a3)
+    if (v6 < time)
     {
       break;
     }

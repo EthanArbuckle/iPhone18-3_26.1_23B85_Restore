@@ -1,7 +1,7 @@
 @interface FocusStatusSettingsManager
 - (_TtC15FocusSettingsUIP33_505BD96902FEE6013A0D99281DBB05A426FocusStatusSettingsManager)init;
 - (void)dealloc;
-- (void)modeConfigurationService:(id)a3 didReceiveAvailableModesUpdate:(id)a4;
+- (void)modeConfigurationService:(id)service didReceiveAvailableModesUpdate:(id)update;
 @end
 
 @implementation FocusStatusSettingsManager
@@ -15,7 +15,7 @@
 
   else
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   v4.receiver = self;
@@ -30,10 +30,10 @@
   return result;
 }
 
-- (void)modeConfigurationService:(id)a3 didReceiveAvailableModesUpdate:(id)a4
+- (void)modeConfigurationService:(id)service didReceiveAvailableModesUpdate:(id)update
 {
-  v5 = a3;
-  v6 = self;
+  serviceCopy = service;
+  selfCopy = self;
   sub_24BA2BB90();
 }
 

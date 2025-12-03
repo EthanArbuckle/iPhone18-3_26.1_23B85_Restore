@@ -1,13 +1,13 @@
 @interface EMTop
-- (Class)mapperClassForIndexing:(BOOL)a3;
+- (Class)mapperClassForIndexing:(BOOL)indexing;
 - (void)initializeClasses;
-- (void)readFile:(id)a3 orData:(id)a4 dataFileName:(id)a5 format:(unint64_t)a6 archiver:(id)a7 forIndexing:(BOOL)a8;
-- (void)readerDidStartDocument:(id)a3 withElementCount:(int64_t)a4;
+- (void)readFile:(id)file orData:(id)data dataFileName:(id)name format:(unint64_t)format archiver:(id)archiver forIndexing:(BOOL)indexing;
+- (void)readerDidStartDocument:(id)document withElementCount:(int64_t)count;
 @end
 
 @implementation EMTop
 
-- (Class)mapperClassForIndexing:(BOOL)a3
+- (Class)mapperClassForIndexing:(BOOL)indexing
 {
   v3 = objc_opt_class();
 
@@ -27,27 +27,27 @@
   [(QLTop *)&v3 initializeClasses];
 }
 
-- (void)readFile:(id)a3 orData:(id)a4 dataFileName:(id)a5 format:(unint64_t)a6 archiver:(id)a7 forIndexing:(BOOL)a8
+- (void)readFile:(id)file orData:(id)data dataFileName:(id)name format:(unint64_t)format archiver:(id)archiver forIndexing:(BOOL)indexing
 {
-  v8 = a8;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  [v17 setAutoCommit:0];
+  indexingCopy = indexing;
+  fileCopy = file;
+  dataCopy = data;
+  nameCopy = name;
+  archiverCopy = archiver;
+  [archiverCopy setAutoCommit:0];
   v18.receiver = self;
   v18.super_class = EMTop;
-  [(QLTop *)&v18 readFile:v14 orData:v15 dataFileName:v16 format:a6 archiver:v17 forIndexing:v8];
+  [(QLTop *)&v18 readFile:fileCopy orData:dataCopy dataFileName:nameCopy format:format archiver:archiverCopy forIndexing:indexingCopy];
 }
 
-- (void)readerDidStartDocument:(id)a3 withElementCount:(int64_t)a4
+- (void)readerDidStartDocument:(id)document withElementCount:(int64_t)count
 {
-  v6 = a3;
+  documentCopy = document;
   v8.receiver = self;
   v8.super_class = EMTop;
-  [(QLTop *)&v8 readerDidStartDocument:v6 withElementCount:a4];
-  v7 = [(QLTop *)self mapper];
-  [v7 setElementCount:a4];
+  [(QLTop *)&v8 readerDidStartDocument:documentCopy withElementCount:count];
+  mapper = [(QLTop *)self mapper];
+  [mapper setElementCount:count];
 }
 
 @end

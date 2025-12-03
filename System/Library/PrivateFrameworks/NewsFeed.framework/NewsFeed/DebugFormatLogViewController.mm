@@ -1,14 +1,14 @@
 @interface DebugFormatLogViewController
-- (_TtC8NewsFeed28DebugFormatLogViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (_TtC8NewsFeed28DebugFormatLogViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)doClearLog;
 - (void)doNow;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)searchBar:(id)a3 textDidChange:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)searchBar:(id)bar textDidChange:(id)change;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
@@ -17,7 +17,7 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D6E30DD4();
 }
 
@@ -28,11 +28,11 @@
   v2 = v14.receiver;
   [(DebugFormatLogViewController *)&v14 viewWillLayoutSubviews];
   v3 = *&v2[OBJC_IVAR____TtC8NewsFeed28DebugFormatLogViewController_tableView];
-  v4 = [v2 view];
-  if (v4)
+  view = [v2 view];
+  if (view)
   {
-    v5 = v4;
-    [v4 bounds];
+    v5 = view;
+    [view bounds];
     v7 = v6;
     v9 = v8;
     v11 = v10;
@@ -49,7 +49,7 @@
 
 - (void)doNow
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D6E31AC8();
 }
 
@@ -63,14 +63,14 @@
   sub_1D725BFFC();
 }
 
-- (_TtC8NewsFeed28DebugFormatLogViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8NewsFeed28DebugFormatLogViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   v5 = OBJC_IVAR____TtC8NewsFeed28DebugFormatLogViewController_entries;
   swift_beginAccess();
@@ -86,15 +86,15 @@
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = sub_1D7258DBC();
   v7 = *(v6 - 8);
   MEMORY[0x1EEE9AC00](v6, v8);
   v10 = &v15 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1D7258D6C();
-  v11 = a3;
-  v12 = self;
+  viewCopy = view;
+  selfCopy = self;
   v13 = sub_1D6E31DC8();
 
   (*(v7 + 8))(v10, v6);
@@ -102,56 +102,56 @@
   return v13;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
   v6 = sub_1D7258DBC();
   v7 = *(v6 - 8);
   MEMORY[0x1EEE9AC00](v6, v8);
   v10 = &v16 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1D7258D6C();
-  v11 = a3;
-  v12 = self;
-  sub_1D6E321BC(v11);
+  viewCopy = view;
+  selfCopy = self;
+  sub_1D6E321BC(viewCopy);
   v14 = v13;
 
   (*(v7 + 8))(v10, v6);
   return v14;
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  v4 = a3;
-  v5 = self;
+  deceleratingCopy = decelerating;
+  selfCopy = self;
   sub_1D6E323D4();
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  v6 = a3;
-  v7 = self;
-  sub_1D6E324D4(v6, a4);
+  draggingCopy = dragging;
+  selfCopy = self;
+  sub_1D6E324D4(draggingCopy, decelerate);
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v6 = sub_1D7258DBC();
   v7 = *(v6 - 8);
   MEMORY[0x1EEE9AC00](v6, v8);
   v10 = &v13 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1D7258D6C();
-  v11 = a3;
-  v12 = self;
-  sub_1D6E32644(v11, v10);
+  viewCopy = view;
+  selfCopy = self;
+  sub_1D6E32644(viewCopy, v10);
 
   (*(v7 + 8))(v10, v6);
 }
 
-- (void)searchBar:(id)a3 textDidChange:(id)a4
+- (void)searchBar:(id)bar textDidChange:(id)change
 {
   v6 = sub_1D726207C();
   v8 = v7;
-  v9 = a3;
-  v10 = self;
+  barCopy = bar;
+  selfCopy = self;
   sub_1D6E33864(v6, v8);
 }
 

@@ -1,47 +1,47 @@
 @interface WFWeatherAlmanacRequestFormatterV3
-+ (id)forecastRequest:(unint64_t)a3 forLocation:(id)a4 withUnits:(int)a5 locale:(id)a6 date:(id)a7 rules:(id)a8 options:(id)a9;
++ (id)forecastRequest:(unint64_t)request forLocation:(id)location withUnits:(int)units locale:(id)locale date:(id)date rules:(id)rules options:(id)options;
 @end
 
 @implementation WFWeatherAlmanacRequestFormatterV3
 
-+ (id)forecastRequest:(unint64_t)a3 forLocation:(id)a4 withUnits:(int)a5 locale:(id)a6 date:(id)a7 rules:(id)a8 options:(id)a9
++ (id)forecastRequest:(unint64_t)request forLocation:(id)location withUnits:(int)units locale:(id)locale date:(id)date rules:(id)rules options:(id)options
 {
-  v12 = a4;
-  v35 = a8;
-  v13 = a7;
-  v34 = a6;
+  locationCopy = location;
+  rulesCopy = rules;
+  dateCopy = date;
+  localeCopy = locale;
   v14 = +[WFWeatherConditions calendar];
   v15 = [v14 copy];
 
-  v16 = [v12 timeZone];
-  if (v16)
+  timeZone = [locationCopy timeZone];
+  if (timeZone)
   {
-    [v15 setTimeZone:v16];
+    [v15 setTimeZone:timeZone];
   }
 
   else
   {
-    v17 = [MEMORY[0x277CBEBB0] systemTimeZone];
-    [v15 setTimeZone:v17];
+    systemTimeZone = [MEMORY[0x277CBEBB0] systemTimeZone];
+    [v15 setTimeZone:systemTimeZone];
   }
 
-  v18 = [v15 components:24 fromDate:v13];
+  v18 = [v15 components:24 fromDate:dateCopy];
   v19 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v18, "month")}];
-  v20 = [v19 stringValue];
+  stringValue = [v19 stringValue];
 
   v21 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v18, "day")}];
-  v22 = [v21 stringValue];
+  stringValue2 = [v21 stringValue];
 
   v23 = objc_opt_new();
-  v24 = [MEMORY[0x277CCAD18] queryItemWithName:@"month" value:v20];
+  v24 = [MEMORY[0x277CCAD18] queryItemWithName:@"month" value:stringValue];
   [v23 addObject:v24];
 
-  v25 = [MEMORY[0x277CCAD18] queryItemWithName:@"day" value:v22];
+  v25 = [MEMORY[0x277CCAD18] queryItemWithName:@"day" value:stringValue2];
   [v23 addObject:v25];
 
   v26 = MEMORY[0x277CCAD18];
-  v27 = [v12 wf_weatherChannelGeocodeValue];
-  v28 = [v26 queryItemWithName:@"geocode" value:v27];
+  wf_weatherChannelGeocodeValue = [locationCopy wf_weatherChannelGeocodeValue];
+  v28 = [v26 queryItemWithName:@"geocode" value:wf_weatherChannelGeocodeValue];
   [v23 addObject:v28];
 
   v29 = [MEMORY[0x277CCAD18] queryItemWithName:@"format" value:@"json"];
@@ -53,7 +53,7 @@
   v31 = [MEMORY[0x277CCAD18] queryItemWithName:@"apiKey" value:@"2f816d1e1526478c816d1e1526578cc7"];
   [v23 addObject:v31];
 
-  v32 = [WFWeatherChannelRequestFormatterV3 forecastRequest:@"v3-wx-almanac-daily-1day" forLocation:v12 locale:v34 date:v13 queryItems:v23 rules:v35];
+  v32 = [WFWeatherChannelRequestFormatterV3 forecastRequest:@"v3-wx-almanac-daily-1day" forLocation:locationCopy locale:localeCopy date:dateCopy queryItems:v23 rules:rulesCopy];
 
   return v32;
 }

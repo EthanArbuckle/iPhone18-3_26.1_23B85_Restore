@@ -1,20 +1,20 @@
 @interface CXProviderConfiguration
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToConfiguration:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToConfiguration:(id)configuration;
 - (CXProviderConfiguration)init;
-- (CXProviderConfiguration)initWithCoder:(id)a3;
+- (CXProviderConfiguration)initWithCoder:(id)coder;
 - (CXProviderConfiguration)initWithLocalizedName:(NSString *)localizedName;
 - (NSSet)senderIdentities;
 - (NSString)description;
 - (NSString)ringtoneSound;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)sanitizedCopyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)sanitizedCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setRingtoneSound:(NSString *)ringtoneSound;
-- (void)setSenderIdentities:(id)a3;
-- (void)updateCopy:(id)a3 withZone:(_NSZone *)a4;
-- (void)updateSanitizedCopy:(id)a3 withZone:(_NSZone *)a4;
+- (void)setSenderIdentities:(id)identities;
+- (void)updateCopy:(id)copy withZone:(_NSZone *)zone;
+- (void)updateSanitizedCopy:(id)copy withZone:(_NSZone *)zone;
 @end
 
 @implementation CXProviderConfiguration
@@ -38,9 +38,9 @@
     handoffIdentifiers = v3->_handoffIdentifiers;
     v3->_handoffIdentifiers = v5;
 
-    v8 = [MEMORY[0x1E695DFB8] orderedSet];
+    orderedSet = [MEMORY[0x1E695DFB8] orderedSet];
     prioritizedSenderIdentities = v3->_prioritizedSenderIdentities;
-    v3->_prioritizedSenderIdentities = v8;
+    v3->_prioritizedSenderIdentities = orderedSet;
 
     *&v3->_maximumCallGroups = xmmword_1B4865C10;
     v3->_supportsAudioOnly = 1;
@@ -95,14 +95,14 @@
 - (NSString)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(CXProviderConfiguration *)self localizedName];
-  [v3 appendFormat:@" localizedName=%@", v4];
+  localizedName = [(CXProviderConfiguration *)self localizedName];
+  [v3 appendFormat:@" localizedName=%@", localizedName];
 
-  v5 = [(CXProviderConfiguration *)self ringtoneSoundURL];
-  [v3 appendFormat:@" ringtoneSoundURL=%@", v5];
+  ringtoneSoundURL = [(CXProviderConfiguration *)self ringtoneSoundURL];
+  [v3 appendFormat:@" ringtoneSoundURL=%@", ringtoneSoundURL];
 
-  v6 = [(CXProviderConfiguration *)self iconTemplateImageData];
-  [v3 appendFormat:@" iconTemplateImageData=%p", v6];
+  iconTemplateImageData = [(CXProviderConfiguration *)self iconTemplateImageData];
+  [v3 appendFormat:@" iconTemplateImageData=%p", iconTemplateImageData];
 
   [v3 appendFormat:@" maximumCallGroups=%lu", -[CXProviderConfiguration maximumCallGroups](self, "maximumCallGroups")];
   [v3 appendFormat:@" maximumCallsPerCallGroup=%lu", -[CXProviderConfiguration maximumCallsPerCallGroup](self, "maximumCallsPerCallGroup")];
@@ -115,50 +115,50 @@
   [v3 appendFormat:@" includesCallsInRecents=%d", -[CXProviderConfiguration includesCallsInRecents](self, "includesCallsInRecents")];
   [v3 appendFormat:@" audioSessionID=%u", -[CXProviderConfiguration audioSessionID](self, "audioSessionID")];
   [v3 appendFormat:@" supportsDynamicSystemUI=%d", -[CXProviderConfiguration supportsDynamicSystemUI](self, "supportsDynamicSystemUI")];
-  v7 = [(CXProviderConfiguration *)self supportedHandleTypes];
-  v8 = [v7 allObjects];
-  v9 = [v8 componentsJoinedByString:{@", "}];
+  supportedHandleTypes = [(CXProviderConfiguration *)self supportedHandleTypes];
+  allObjects = [supportedHandleTypes allObjects];
+  v9 = [allObjects componentsJoinedByString:{@", "}];
   [v3 appendFormat:@" supportedHandleTypes=%@", v9];
 
   [v3 appendFormat:@" supportsAudioTranslation=%d", -[CXProviderConfiguration supportsAudioTranslation](self, "supportsAudioTranslation")];
-  v10 = [(CXProviderConfiguration *)self emergencyHandles];
-  v11 = [v10 count];
+  emergencyHandles = [(CXProviderConfiguration *)self emergencyHandles];
+  v11 = [emergencyHandles count];
 
   if (v11)
   {
-    v12 = [(CXProviderConfiguration *)self emergencyHandles];
-    v13 = [v12 componentsJoinedByString:{@", "}];
+    emergencyHandles2 = [(CXProviderConfiguration *)self emergencyHandles];
+    v13 = [emergencyHandles2 componentsJoinedByString:{@", "}];
     [v3 appendFormat:@" emergencyHandles=%@", v13];
   }
 
-  v14 = [(CXProviderConfiguration *)self emergencyLabeledHandles];
-  v15 = [v14 count];
+  emergencyLabeledHandles = [(CXProviderConfiguration *)self emergencyLabeledHandles];
+  v15 = [emergencyLabeledHandles count];
 
   if (v15)
   {
-    v16 = [(CXProviderConfiguration *)self emergencyLabeledHandles];
-    v17 = [v16 componentsJoinedByString:{@", "}];
+    emergencyLabeledHandles2 = [(CXProviderConfiguration *)self emergencyLabeledHandles];
+    v17 = [emergencyLabeledHandles2 componentsJoinedByString:{@", "}];
     [v3 appendFormat:@" emergencyLabeledHandles=%@", v17];
   }
 
-  v18 = [(CXProviderConfiguration *)self handoffIdentifiers];
-  v19 = [v18 count];
+  handoffIdentifiers = [(CXProviderConfiguration *)self handoffIdentifiers];
+  v19 = [handoffIdentifiers count];
 
   if (v19)
   {
-    v20 = [(CXProviderConfiguration *)self handoffIdentifiers];
-    v21 = [v20 componentsJoinedByString:{@", "}];
+    handoffIdentifiers2 = [(CXProviderConfiguration *)self handoffIdentifiers];
+    v21 = [handoffIdentifiers2 componentsJoinedByString:{@", "}];
     [v3 appendFormat:@" handoffIdentifiers=%@", v21];
   }
 
-  v22 = [(CXProviderConfiguration *)self prioritizedSenderIdentities];
-  v23 = [v22 count];
+  prioritizedSenderIdentities = [(CXProviderConfiguration *)self prioritizedSenderIdentities];
+  v23 = [prioritizedSenderIdentities count];
 
   if (v23)
   {
-    v24 = [(CXProviderConfiguration *)self prioritizedSenderIdentities];
-    v25 = [v24 array];
-    v26 = [v25 componentsJoinedByString:{@", "}];
+    prioritizedSenderIdentities2 = [(CXProviderConfiguration *)self prioritizedSenderIdentities];
+    array = [prioritizedSenderIdentities2 array];
+    v26 = [array componentsJoinedByString:{@", "}];
     [v3 appendFormat:@" prioritizedSenderIdentities=%@", v26];
   }
 
@@ -167,27 +167,27 @@
   return v3;
 }
 
-- (void)setSenderIdentities:(id)a3
+- (void)setSenderIdentities:(id)identities
 {
-  v4 = [MEMORY[0x1E695DFB8] orderedSetWithSet:a3];
+  v4 = [MEMORY[0x1E695DFB8] orderedSetWithSet:identities];
   [(CXProviderConfiguration *)self setPrioritizedSenderIdentities:v4];
 }
 
 - (NSSet)senderIdentities
 {
-  v2 = [(CXProviderConfiguration *)self prioritizedSenderIdentities];
-  v3 = [v2 set];
+  prioritizedSenderIdentities = [(CXProviderConfiguration *)self prioritizedSenderIdentities];
+  v3 = [prioritizedSenderIdentities set];
 
   return v3;
 }
 
 - (NSString)ringtoneSound
 {
-  v2 = [(CXProviderConfiguration *)self ringtoneSoundURL];
-  v3 = [v2 URL];
-  v4 = [v3 lastPathComponent];
+  ringtoneSoundURL = [(CXProviderConfiguration *)self ringtoneSoundURL];
+  v3 = [ringtoneSoundURL URL];
+  lastPathComponent = [v3 lastPathComponent];
 
-  return v4;
+  return lastPathComponent;
 }
 
 - (void)setRingtoneSound:(NSString *)ringtoneSound
@@ -196,23 +196,23 @@
   [(CXProviderConfiguration *)self setRingtoneSoundURL:0];
   if ([(NSString *)v4 length])
   {
-    v5 = [MEMORY[0x1E696AC08] defaultManager];
-    v6 = [v5 URLsForDirectory:5 inDomains:1];
-    v7 = [v6 firstObject];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v6 = [defaultManager URLsForDirectory:5 inDomains:1];
+    firstObject = [v6 firstObject];
 
-    v8 = [v7 URLByAppendingPathComponent:@"Sounds"];
+    v8 = [firstObject URLByAppendingPathComponent:@"Sounds"];
     v9 = [v8 URLByAppendingPathComponent:v4];
 
-    v10 = [MEMORY[0x1E696AC08] defaultManager];
-    v11 = [v9 path];
-    v12 = [v10 fileExistsAtPath:v11];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+    path = [v9 path];
+    v12 = [defaultManager2 fileExistsAtPath:path];
 
     if (v12)
     {
-      v13 = [MEMORY[0x1E696AC08] defaultManager];
-      v14 = [v9 path];
+      defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
+      path2 = [v9 path];
       v25 = 0;
-      v15 = [v13 attributesOfItemAtPath:v14 error:&v25];
+      v15 = [defaultManager3 attributesOfItemAtPath:path2 error:&v25];
       v16 = v25;
 
       if (v15)
@@ -237,12 +237,12 @@
       }
     }
 
-    v21 = [(CXProviderConfiguration *)self ringtoneSoundURL];
+    ringtoneSoundURL = [(CXProviderConfiguration *)self ringtoneSoundURL];
 
-    if (!v21)
+    if (!ringtoneSoundURL)
     {
-      v22 = [MEMORY[0x1E696AAE8] mainBundle];
-      v23 = [v22 URLForResource:v4 withExtension:0];
+      mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+      v23 = [mainBundle URLForResource:v4 withExtension:0];
 
       if (v23)
       {
@@ -253,78 +253,78 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CXProviderConfiguration *)self isEqualToConfiguration:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CXProviderConfiguration *)self isEqualToConfiguration:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToConfiguration:(id)a3
+- (BOOL)isEqualToConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(CXProviderConfiguration *)self emergencyHandles];
-  v6 = [v4 emergencyHandles];
-  if ([v5 isEqualToArray:v6])
+  configurationCopy = configuration;
+  emergencyHandles = [(CXProviderConfiguration *)self emergencyHandles];
+  emergencyHandles2 = [configurationCopy emergencyHandles];
+  if ([emergencyHandles isEqualToArray:emergencyHandles2])
   {
-    v7 = [(CXProviderConfiguration *)self emergencyLabeledHandles];
-    v8 = [v4 emergencyLabeledHandles];
-    if ([v7 isEqualToArray:v8])
+    emergencyLabeledHandles = [(CXProviderConfiguration *)self emergencyLabeledHandles];
+    emergencyLabeledHandles2 = [configurationCopy emergencyLabeledHandles];
+    if ([emergencyLabeledHandles isEqualToArray:emergencyLabeledHandles2])
     {
-      v9 = [(CXProviderConfiguration *)self handoffIdentifiers];
-      v10 = [v4 handoffIdentifiers];
-      if ([v9 isEqualToArray:v10])
+      handoffIdentifiers = [(CXProviderConfiguration *)self handoffIdentifiers];
+      handoffIdentifiers2 = [configurationCopy handoffIdentifiers];
+      if ([handoffIdentifiers isEqualToArray:handoffIdentifiers2])
       {
-        v11 = [(CXProviderConfiguration *)self prioritizedSenderIdentities];
-        v12 = [v4 prioritizedSenderIdentities];
-        if ([v11 isEqualToOrderedSet:v12])
+        prioritizedSenderIdentities = [(CXProviderConfiguration *)self prioritizedSenderIdentities];
+        prioritizedSenderIdentities2 = [configurationCopy prioritizedSenderIdentities];
+        if ([prioritizedSenderIdentities isEqualToOrderedSet:prioritizedSenderIdentities2])
         {
-          v35 = v12;
-          v13 = [(CXProviderConfiguration *)self ringtoneSoundURL];
-          v36 = [v4 ringtoneSoundURL];
-          v37 = v13;
-          if (v13 | v36 && ![v13 isEqual:v36])
+          v35 = prioritizedSenderIdentities2;
+          ringtoneSoundURL = [(CXProviderConfiguration *)self ringtoneSoundURL];
+          ringtoneSoundURL2 = [configurationCopy ringtoneSoundURL];
+          v37 = ringtoneSoundURL;
+          if (ringtoneSoundURL | ringtoneSoundURL2 && ![ringtoneSoundURL isEqual:ringtoneSoundURL2])
           {
             LOBYTE(v25) = 0;
-            v12 = v35;
+            prioritizedSenderIdentities2 = v35;
           }
 
           else
           {
-            v14 = [(CXProviderConfiguration *)self iconTemplateImageData];
-            v33 = [v4 iconTemplateImageData];
-            v34 = v14;
-            v15 = [v14 isEqualToData:?];
-            v12 = v35;
+            iconTemplateImageData = [(CXProviderConfiguration *)self iconTemplateImageData];
+            iconTemplateImageData2 = [configurationCopy iconTemplateImageData];
+            v34 = iconTemplateImageData;
+            v15 = [iconTemplateImageData isEqualToData:?];
+            prioritizedSenderIdentities2 = v35;
             if (v15)
             {
-              v32 = v11;
-              v16 = [(CXProviderConfiguration *)self maximumCallGroups];
-              if (v16 != [v4 maximumCallGroups])
+              v32 = prioritizedSenderIdentities;
+              maximumCallGroups = [(CXProviderConfiguration *)self maximumCallGroups];
+              if (maximumCallGroups != [configurationCopy maximumCallGroups])
               {
                 goto LABEL_17;
               }
 
-              v17 = [(CXProviderConfiguration *)self maximumCallsPerCallGroup];
-              if (v17 != [v4 maximumCallsPerCallGroup])
+              maximumCallsPerCallGroup = [(CXProviderConfiguration *)self maximumCallsPerCallGroup];
+              if (maximumCallsPerCallGroup != [configurationCopy maximumCallsPerCallGroup])
               {
                 goto LABEL_17;
               }
 
-              v18 = [(CXProviderConfiguration *)self supportsAudioOnly];
-              if (v18 == [v4 supportsAudioOnly] && (v19 = -[CXProviderConfiguration supportsVideo](self, "supportsVideo"), v19 == objc_msgSend(v4, "supportsVideo")) && (v20 = -[CXProviderConfiguration supportsEmergency](self, "supportsEmergency"), v20 == objc_msgSend(v4, "supportsEmergency")) && (v21 = -[CXProviderConfiguration supportsCurrentPlatform](self, "supportsCurrentPlatform"), v21 == objc_msgSend(v4, "supportsCurrentPlatform")) && (v22 = -[CXProviderConfiguration supportsVoicemail](self, "supportsVoicemail"), v22 == objc_msgSend(v4, "supportsVoicemail")) && (v23 = -[CXProviderConfiguration supportsRinging](self, "supportsRinging"), v23 == objc_msgSend(v4, "supportsRinging")) && (v24 = -[CXProviderConfiguration includesCallsInRecents](self, "includesCallsInRecents"), v24 == objc_msgSend(v4, "includesCallsInRecents")))
+              supportsAudioOnly = [(CXProviderConfiguration *)self supportsAudioOnly];
+              if (supportsAudioOnly == [configurationCopy supportsAudioOnly] && (v19 = -[CXProviderConfiguration supportsVideo](self, "supportsVideo"), v19 == objc_msgSend(configurationCopy, "supportsVideo")) && (v20 = -[CXProviderConfiguration supportsEmergency](self, "supportsEmergency"), v20 == objc_msgSend(configurationCopy, "supportsEmergency")) && (v21 = -[CXProviderConfiguration supportsCurrentPlatform](self, "supportsCurrentPlatform"), v21 == objc_msgSend(configurationCopy, "supportsCurrentPlatform")) && (v22 = -[CXProviderConfiguration supportsVoicemail](self, "supportsVoicemail"), v22 == objc_msgSend(configurationCopy, "supportsVoicemail")) && (v23 = -[CXProviderConfiguration supportsRinging](self, "supportsRinging"), v23 == objc_msgSend(configurationCopy, "supportsRinging")) && (v24 = -[CXProviderConfiguration includesCallsInRecents](self, "includesCallsInRecents"), v24 == objc_msgSend(configurationCopy, "includesCallsInRecents")))
               {
-                v27 = [(CXProviderConfiguration *)self audioSessionID];
-                if (v27 == [v4 audioSessionID] && (v28 = -[CXProviderConfiguration supportsDynamicSystemUI](self, "supportsDynamicSystemUI"), v28 == objc_msgSend(v4, "supportsDynamicSystemUI")))
+                audioSessionID = [(CXProviderConfiguration *)self audioSessionID];
+                if (audioSessionID == [configurationCopy audioSessionID] && (v28 = -[CXProviderConfiguration supportsDynamicSystemUI](self, "supportsDynamicSystemUI"), v28 == objc_msgSend(configurationCopy, "supportsDynamicSystemUI")))
                 {
-                  v29 = [(CXProviderConfiguration *)self supportedHandleTypes];
-                  v30 = [v4 supportedHandleTypes];
-                  if ([v29 isEqualToSet:?])
+                  supportedHandleTypes = [(CXProviderConfiguration *)self supportedHandleTypes];
+                  supportedHandleTypes2 = [configurationCopy supportedHandleTypes];
+                  if ([supportedHandleTypes isEqualToSet:?])
                   {
-                    v31 = [(CXProviderConfiguration *)self supportsAudioTranslation];
-                    v25 = v31 ^ [v4 supportsAudioTranslation] ^ 1;
+                    supportsAudioTranslation = [(CXProviderConfiguration *)self supportsAudioTranslation];
+                    v25 = supportsAudioTranslation ^ [configurationCopy supportsAudioTranslation] ^ 1;
                   }
 
                   else
@@ -338,15 +338,15 @@
                   LOBYTE(v25) = 0;
                 }
 
-                v11 = v32;
-                v12 = v35;
+                prioritizedSenderIdentities = v32;
+                prioritizedSenderIdentities2 = v35;
               }
 
               else
               {
 LABEL_17:
                 LOBYTE(v25) = 0;
-                v11 = v32;
+                prioritizedSenderIdentities = v32;
               }
             }
 
@@ -385,20 +385,20 @@ LABEL_17:
 
 - (unint64_t)hash
 {
-  v35 = [(CXProviderConfiguration *)self emergencyHandles];
-  v3 = [v35 hash];
-  v4 = [(CXProviderConfiguration *)self emergencyLabeledHandles];
-  v5 = [v4 hash] ^ v3;
-  v6 = [(CXProviderConfiguration *)self handoffIdentifiers];
-  v7 = [v6 hash];
-  v8 = [(CXProviderConfiguration *)self prioritizedSenderIdentities];
-  v9 = v5 ^ v7 ^ [v8 hash];
-  v10 = [(CXProviderConfiguration *)self ringtoneSoundURL];
-  v11 = [v10 hash];
-  v12 = [(CXProviderConfiguration *)self iconTemplateImageData];
-  v13 = v11 ^ [v12 hash];
+  emergencyHandles = [(CXProviderConfiguration *)self emergencyHandles];
+  v3 = [emergencyHandles hash];
+  emergencyLabeledHandles = [(CXProviderConfiguration *)self emergencyLabeledHandles];
+  v5 = [emergencyLabeledHandles hash] ^ v3;
+  handoffIdentifiers = [(CXProviderConfiguration *)self handoffIdentifiers];
+  v7 = [handoffIdentifiers hash];
+  prioritizedSenderIdentities = [(CXProviderConfiguration *)self prioritizedSenderIdentities];
+  v9 = v5 ^ v7 ^ [prioritizedSenderIdentities hash];
+  ringtoneSoundURL = [(CXProviderConfiguration *)self ringtoneSoundURL];
+  v11 = [ringtoneSoundURL hash];
+  iconTemplateImageData = [(CXProviderConfiguration *)self iconTemplateImageData];
+  v13 = v11 ^ [iconTemplateImageData hash];
   v14 = v9 ^ v13 ^ [(CXProviderConfiguration *)self maximumCallGroups];
-  v15 = [(CXProviderConfiguration *)self maximumCallsPerCallGroup];
+  maximumCallsPerCallGroup = [(CXProviderConfiguration *)self maximumCallsPerCallGroup];
   if ([(CXProviderConfiguration *)self supportsAudioOnly])
   {
     v16 = 1231;
@@ -409,7 +409,7 @@ LABEL_17:
     v16 = 1237;
   }
 
-  v17 = v15 ^ v16;
+  v17 = maximumCallsPerCallGroup ^ v16;
   if ([(CXProviderConfiguration *)self supportsVideo])
   {
     v18 = 1231;
@@ -496,76 +496,76 @@ LABEL_17:
   }
 
   v31 = v29 ^ v30 ^ [(CXProviderConfiguration *)self audioSessionID];
-  v32 = [(CXProviderConfiguration *)self supportedHandleTypes];
-  v33 = v31 ^ [v32 hash];
+  supportedHandleTypes = [(CXProviderConfiguration *)self supportedHandleTypes];
+  v33 = v31 ^ [supportedHandleTypes hash];
 
   return v26 ^ v33;
 }
 
-- (void)updateSanitizedCopy:(id)a3 withZone:(_NSZone *)a4
+- (void)updateSanitizedCopy:(id)copy withZone:(_NSZone *)zone
 {
-  v8 = a3;
-  [v8 setAudioSessionID:{-[CXProviderConfiguration audioSessionID](self, "audioSessionID")}];
-  v5 = [(CXProviderConfiguration *)self ringtoneSoundURL];
-  [v8 setRingtoneSoundURL:v5];
+  copyCopy = copy;
+  [copyCopy setAudioSessionID:{-[CXProviderConfiguration audioSessionID](self, "audioSessionID")}];
+  ringtoneSoundURL = [(CXProviderConfiguration *)self ringtoneSoundURL];
+  [copyCopy setRingtoneSoundURL:ringtoneSoundURL];
 
-  v6 = [(CXProviderConfiguration *)self iconTemplateImageData];
-  [v8 setIconTemplateImageData:v6];
+  iconTemplateImageData = [(CXProviderConfiguration *)self iconTemplateImageData];
+  [copyCopy setIconTemplateImageData:iconTemplateImageData];
 
-  [v8 setMaximumCallGroups:{-[CXProviderConfiguration maximumCallGroups](self, "maximumCallGroups")}];
-  [v8 setMaximumCallsPerCallGroup:{-[CXProviderConfiguration maximumCallsPerCallGroup](self, "maximumCallsPerCallGroup")}];
-  [v8 setSupportsVideo:{-[CXProviderConfiguration supportsVideo](self, "supportsVideo")}];
-  [v8 setIncludesCallsInRecents:{-[CXProviderConfiguration includesCallsInRecents](self, "includesCallsInRecents")}];
-  v7 = [(CXProviderConfiguration *)self supportedHandleTypes];
-  [v8 setSupportedHandleTypes:v7];
+  [copyCopy setMaximumCallGroups:{-[CXProviderConfiguration maximumCallGroups](self, "maximumCallGroups")}];
+  [copyCopy setMaximumCallsPerCallGroup:{-[CXProviderConfiguration maximumCallsPerCallGroup](self, "maximumCallsPerCallGroup")}];
+  [copyCopy setSupportsVideo:{-[CXProviderConfiguration supportsVideo](self, "supportsVideo")}];
+  [copyCopy setIncludesCallsInRecents:{-[CXProviderConfiguration includesCallsInRecents](self, "includesCallsInRecents")}];
+  supportedHandleTypes = [(CXProviderConfiguration *)self supportedHandleTypes];
+  [copyCopy setSupportedHandleTypes:supportedHandleTypes];
 
-  [v8 setSupportsDynamicSystemUI:{-[CXProviderConfiguration supportsDynamicSystemUI](self, "supportsDynamicSystemUI")}];
-  [v8 setSupportsAudioTranslation:{-[CXProviderConfiguration supportsAudioTranslation](self, "supportsAudioTranslation")}];
+  [copyCopy setSupportsDynamicSystemUI:{-[CXProviderConfiguration supportsDynamicSystemUI](self, "supportsDynamicSystemUI")}];
+  [copyCopy setSupportsAudioTranslation:{-[CXProviderConfiguration supportsAudioTranslation](self, "supportsAudioTranslation")}];
 }
 
-- (id)sanitizedCopyWithZone:(_NSZone *)a3
+- (id)sanitizedCopyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  [(CXProviderConfiguration *)self updateSanitizedCopy:v5 withZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  [(CXProviderConfiguration *)self updateSanitizedCopy:v5 withZone:zone];
 
   return v5;
 }
 
-- (void)updateCopy:(id)a3 withZone:(_NSZone *)a4
+- (void)updateCopy:(id)copy withZone:(_NSZone *)zone
 {
-  v10 = a3;
-  [(CXProviderConfiguration *)self updateSanitizedCopy:v10 withZone:a4];
-  v6 = [(CXProviderConfiguration *)self emergencyHandles];
-  [v10 setEmergencyHandles:v6];
+  copyCopy = copy;
+  [(CXProviderConfiguration *)self updateSanitizedCopy:copyCopy withZone:zone];
+  emergencyHandles = [(CXProviderConfiguration *)self emergencyHandles];
+  [copyCopy setEmergencyHandles:emergencyHandles];
 
-  v7 = [(CXProviderConfiguration *)self emergencyLabeledHandles];
-  [v10 setEmergencyLabeledHandles:v7];
+  emergencyLabeledHandles = [(CXProviderConfiguration *)self emergencyLabeledHandles];
+  [copyCopy setEmergencyLabeledHandles:emergencyLabeledHandles];
 
-  v8 = [(CXProviderConfiguration *)self handoffIdentifiers];
-  [v10 setHandoffIdentifiers:v8];
+  handoffIdentifiers = [(CXProviderConfiguration *)self handoffIdentifiers];
+  [copyCopy setHandoffIdentifiers:handoffIdentifiers];
 
-  v9 = [(CXProviderConfiguration *)self prioritizedSenderIdentities];
-  [v10 setPrioritizedSenderIdentities:v9];
+  prioritizedSenderIdentities = [(CXProviderConfiguration *)self prioritizedSenderIdentities];
+  [copyCopy setPrioritizedSenderIdentities:prioritizedSenderIdentities];
 
-  [v10 setSupportsAudioOnly:{-[CXProviderConfiguration supportsAudioOnly](self, "supportsAudioOnly")}];
-  [v10 setSupportsEmergency:{-[CXProviderConfiguration supportsEmergency](self, "supportsEmergency")}];
-  [v10 setSupportsVoicemail:{-[CXProviderConfiguration supportsVoicemail](self, "supportsVoicemail")}];
-  [v10 setSupportsCurrentPlatform:{-[CXProviderConfiguration supportsCurrentPlatform](self, "supportsCurrentPlatform")}];
-  [v10 setSupportsRinging:{-[CXProviderConfiguration supportsRinging](self, "supportsRinging")}];
-  [v10 setSupportsAudioTranslation:{-[CXProviderConfiguration supportsAudioTranslation](self, "supportsAudioTranslation")}];
+  [copyCopy setSupportsAudioOnly:{-[CXProviderConfiguration supportsAudioOnly](self, "supportsAudioOnly")}];
+  [copyCopy setSupportsEmergency:{-[CXProviderConfiguration supportsEmergency](self, "supportsEmergency")}];
+  [copyCopy setSupportsVoicemail:{-[CXProviderConfiguration supportsVoicemail](self, "supportsVoicemail")}];
+  [copyCopy setSupportsCurrentPlatform:{-[CXProviderConfiguration supportsCurrentPlatform](self, "supportsCurrentPlatform")}];
+  [copyCopy setSupportsRinging:{-[CXProviderConfiguration supportsRinging](self, "supportsRinging")}];
+  [copyCopy setSupportsAudioTranslation:{-[CXProviderConfiguration supportsAudioTranslation](self, "supportsAudioTranslation")}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  [(CXProviderConfiguration *)self updateCopy:v5 withZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  [(CXProviderConfiguration *)self updateCopy:v5 withZone:zone];
   return v5;
 }
 
-- (CXProviderConfiguration)initWithCoder:(id)a3
+- (CXProviderConfiguration)initWithCoder:(id)coder
 {
   v68 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -573,7 +573,7 @@ LABEL_17:
     objc_exception_throw(v65);
   }
 
-  v5 = [v4 connection];
+  connection = [coderCopy connection];
   v6 = [(CXProviderConfiguration *)self init];
   if (v6)
   {
@@ -581,7 +581,7 @@ LABEL_17:
     v8 = objc_opt_class();
     v9 = [v7 setWithObjects:{v8, objc_opt_class(), 0}];
     v10 = NSStringFromSelector(sel_emergencyHandles);
-    v11 = [v4 decodeObjectOfClasses:v9 forKey:v10];
+    v11 = [coderCopy decodeObjectOfClasses:v9 forKey:v10];
     emergencyHandles = v6->_emergencyHandles;
     v6->_emergencyHandles = v11;
 
@@ -589,7 +589,7 @@ LABEL_17:
     v14 = objc_opt_class();
     v15 = [v13 setWithObjects:{v14, objc_opt_class(), 0}];
     v16 = NSStringFromSelector(sel_emergencyLabeledHandles);
-    v17 = [v4 decodeObjectOfClasses:v15 forKey:v16];
+    v17 = [coderCopy decodeObjectOfClasses:v15 forKey:v16];
     emergencyLabeledHandles = v6->_emergencyLabeledHandles;
     v6->_emergencyLabeledHandles = v17;
 
@@ -597,13 +597,13 @@ LABEL_17:
     v20 = objc_opt_class();
     v21 = [v19 setWithObjects:{v20, objc_opt_class(), 0}];
     v22 = NSStringFromSelector(sel_handoffIdentifiers);
-    v23 = [v4 decodeObjectOfClasses:v21 forKey:v22];
+    v23 = [coderCopy decodeObjectOfClasses:v21 forKey:v22];
     handoffIdentifiers = v6->_handoffIdentifiers;
     v6->_handoffIdentifiers = v23;
 
     v25 = objc_opt_class();
     v26 = NSStringFromSelector(sel_localizedName);
-    v27 = [v4 decodeObjectOfClass:v25 forKey:v26];
+    v27 = [coderCopy decodeObjectOfClass:v25 forKey:v26];
     localizedName = v6->_localizedName;
     v6->_localizedName = v27;
 
@@ -611,68 +611,68 @@ LABEL_17:
     v30 = objc_opt_class();
     v31 = [v29 setWithObjects:{v30, objc_opt_class(), 0}];
     v32 = NSStringFromSelector(sel_prioritizedSenderIdentities);
-    v33 = [v4 decodeObjectOfClasses:v31 forKey:v32];
+    v33 = [coderCopy decodeObjectOfClasses:v31 forKey:v32];
     prioritizedSenderIdentities = v6->_prioritizedSenderIdentities;
     v6->_prioritizedSenderIdentities = v33;
 
     v35 = objc_opt_class();
     v36 = NSStringFromSelector(sel_iconTemplateImageData);
-    v37 = [v4 decodeObjectOfClass:v35 forKey:v36];
+    v37 = [coderCopy decodeObjectOfClass:v35 forKey:v36];
     iconTemplateImageData = v6->_iconTemplateImageData;
     v6->_iconTemplateImageData = v37;
 
     v39 = NSStringFromSelector(sel_maximumCallGroups);
-    v6->_maximumCallGroups = [v4 decodeIntegerForKey:v39];
+    v6->_maximumCallGroups = [coderCopy decodeIntegerForKey:v39];
 
     v40 = NSStringFromSelector(sel_maximumCallsPerCallGroup);
-    v6->_maximumCallsPerCallGroup = [v4 decodeIntegerForKey:v40];
+    v6->_maximumCallsPerCallGroup = [coderCopy decodeIntegerForKey:v40];
 
     v41 = NSStringFromSelector(sel_supportsAudioOnly);
-    v6->_supportsAudioOnly = [v4 decodeBoolForKey:v41];
+    v6->_supportsAudioOnly = [coderCopy decodeBoolForKey:v41];
 
     v42 = NSStringFromSelector(sel_supportsVideo);
-    v6->_supportsVideo = [v4 decodeBoolForKey:v42];
+    v6->_supportsVideo = [coderCopy decodeBoolForKey:v42];
 
     v43 = NSStringFromSelector(sel_supportsEmergency);
-    v6->_supportsEmergency = [v4 decodeBoolForKey:v43];
+    v6->_supportsEmergency = [coderCopy decodeBoolForKey:v43];
 
     v44 = NSStringFromSelector(sel_supportsCurrentPlatform);
-    v6->_supportsCurrentPlatform = [v4 decodeBoolForKey:v44];
+    v6->_supportsCurrentPlatform = [coderCopy decodeBoolForKey:v44];
 
     v45 = NSStringFromSelector(sel_supportsVoicemail);
-    v6->_supportsVoicemail = [v4 decodeBoolForKey:v45];
+    v6->_supportsVoicemail = [coderCopy decodeBoolForKey:v45];
 
     v46 = NSStringFromSelector(sel_supportsRinging);
-    v6->_supportsRinging = [v4 decodeBoolForKey:v46];
+    v6->_supportsRinging = [coderCopy decodeBoolForKey:v46];
 
     v47 = NSStringFromSelector(sel_supportsDynamicSystemUI);
-    v6->_supportsDynamicSystemUI = [v4 decodeBoolForKey:v47];
+    v6->_supportsDynamicSystemUI = [coderCopy decodeBoolForKey:v47];
 
     v48 = NSStringFromSelector(sel_includesCallsInRecents);
-    v6->_includesCallsInRecents = [v4 decodeBoolForKey:v48];
+    v6->_includesCallsInRecents = [coderCopy decodeBoolForKey:v48];
 
     v49 = NSStringFromSelector(sel_audioSessionID);
-    v6->_audioSessionID = [v4 decodeInt32ForKey:v49];
+    v6->_audioSessionID = [coderCopy decodeInt32ForKey:v49];
 
     v50 = MEMORY[0x1E695DFD8];
     v51 = objc_opt_class();
     v52 = [v50 setWithObjects:{v51, objc_opt_class(), 0}];
     v53 = NSStringFromSelector(sel_supportedHandleTypes);
-    v54 = [v4 decodeObjectOfClasses:v52 forKey:v53];
+    v54 = [coderCopy decodeObjectOfClasses:v52 forKey:v53];
     supportedHandleTypes = v6->_supportedHandleTypes;
     v6->_supportedHandleTypes = v54;
 
     v56 = NSStringFromSelector(sel_supportsAudioTranslation);
-    v6->_supportsAudioTranslation = [v4 decodeBoolForKey:v56];
+    v6->_supportsAudioTranslation = [coderCopy decodeBoolForKey:v56];
 
     v57 = objc_opt_class();
     v58 = NSStringFromSelector(sel_ringtoneSoundURL);
-    v59 = [v4 decodeObjectOfClass:v57 forKey:v58];
+    v59 = [coderCopy decodeObjectOfClass:v57 forKey:v58];
 
-    if (v59 && v5)
+    if (v59 && connection)
     {
       v60 = [v59 URL];
-      v61 = [v5 cx_clientSandboxCanAccessFileURL:v60];
+      v61 = [connection cx_clientSandboxCanAccessFileURL:v60];
 
       if (v61)
       {
@@ -696,88 +696,88 @@ LABEL_17:
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CXProviderConfiguration *)self localizedName];
+  coderCopy = coder;
+  localizedName = [(CXProviderConfiguration *)self localizedName];
   v6 = NSStringFromSelector(sel_localizedName);
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:localizedName forKey:v6];
 
-  v7 = [(CXProviderConfiguration *)self emergencyHandles];
+  emergencyHandles = [(CXProviderConfiguration *)self emergencyHandles];
   v8 = NSStringFromSelector(sel_emergencyHandles);
-  [v4 encodeObject:v7 forKey:v8];
+  [coderCopy encodeObject:emergencyHandles forKey:v8];
 
-  v9 = [(CXProviderConfiguration *)self emergencyLabeledHandles];
+  emergencyLabeledHandles = [(CXProviderConfiguration *)self emergencyLabeledHandles];
   v10 = NSStringFromSelector(sel_emergencyLabeledHandles);
-  [v4 encodeObject:v9 forKey:v10];
+  [coderCopy encodeObject:emergencyLabeledHandles forKey:v10];
 
-  v11 = [(CXProviderConfiguration *)self handoffIdentifiers];
+  handoffIdentifiers = [(CXProviderConfiguration *)self handoffIdentifiers];
   v12 = NSStringFromSelector(sel_handoffIdentifiers);
-  [v4 encodeObject:v11 forKey:v12];
+  [coderCopy encodeObject:handoffIdentifiers forKey:v12];
 
-  v13 = [(CXProviderConfiguration *)self prioritizedSenderIdentities];
+  prioritizedSenderIdentities = [(CXProviderConfiguration *)self prioritizedSenderIdentities];
   v14 = NSStringFromSelector(sel_prioritizedSenderIdentities);
-  [v4 encodeObject:v13 forKey:v14];
+  [coderCopy encodeObject:prioritizedSenderIdentities forKey:v14];
 
-  v15 = [(CXProviderConfiguration *)self ringtoneSoundURL];
+  ringtoneSoundURL = [(CXProviderConfiguration *)self ringtoneSoundURL];
   v16 = NSStringFromSelector(sel_ringtoneSoundURL);
-  [v4 encodeObject:v15 forKey:v16];
+  [coderCopy encodeObject:ringtoneSoundURL forKey:v16];
 
-  v17 = [(CXProviderConfiguration *)self iconTemplateImageData];
+  iconTemplateImageData = [(CXProviderConfiguration *)self iconTemplateImageData];
   v18 = NSStringFromSelector(sel_iconTemplateImageData);
-  [v4 encodeObject:v17 forKey:v18];
+  [coderCopy encodeObject:iconTemplateImageData forKey:v18];
 
-  v19 = [(CXProviderConfiguration *)self maximumCallGroups];
+  maximumCallGroups = [(CXProviderConfiguration *)self maximumCallGroups];
   v20 = NSStringFromSelector(sel_maximumCallGroups);
-  [v4 encodeInteger:v19 forKey:v20];
+  [coderCopy encodeInteger:maximumCallGroups forKey:v20];
 
-  v21 = [(CXProviderConfiguration *)self maximumCallsPerCallGroup];
+  maximumCallsPerCallGroup = [(CXProviderConfiguration *)self maximumCallsPerCallGroup];
   v22 = NSStringFromSelector(sel_maximumCallsPerCallGroup);
-  [v4 encodeInteger:v21 forKey:v22];
+  [coderCopy encodeInteger:maximumCallsPerCallGroup forKey:v22];
 
-  v23 = [(CXProviderConfiguration *)self supportsAudioOnly];
+  supportsAudioOnly = [(CXProviderConfiguration *)self supportsAudioOnly];
   v24 = NSStringFromSelector(sel_supportsAudioOnly);
-  [v4 encodeBool:v23 forKey:v24];
+  [coderCopy encodeBool:supportsAudioOnly forKey:v24];
 
-  v25 = [(CXProviderConfiguration *)self supportsVideo];
+  supportsVideo = [(CXProviderConfiguration *)self supportsVideo];
   v26 = NSStringFromSelector(sel_supportsVideo);
-  [v4 encodeBool:v25 forKey:v26];
+  [coderCopy encodeBool:supportsVideo forKey:v26];
 
-  v27 = [(CXProviderConfiguration *)self supportsEmergency];
+  supportsEmergency = [(CXProviderConfiguration *)self supportsEmergency];
   v28 = NSStringFromSelector(sel_supportsEmergency);
-  [v4 encodeBool:v27 forKey:v28];
+  [coderCopy encodeBool:supportsEmergency forKey:v28];
 
-  v29 = [(CXProviderConfiguration *)self supportsVoicemail];
+  supportsVoicemail = [(CXProviderConfiguration *)self supportsVoicemail];
   v30 = NSStringFromSelector(sel_supportsVoicemail);
-  [v4 encodeBool:v29 forKey:v30];
+  [coderCopy encodeBool:supportsVoicemail forKey:v30];
 
-  v31 = [(CXProviderConfiguration *)self supportsCurrentPlatform];
+  supportsCurrentPlatform = [(CXProviderConfiguration *)self supportsCurrentPlatform];
   v32 = NSStringFromSelector(sel_supportsCurrentPlatform);
-  [v4 encodeBool:v31 forKey:v32];
+  [coderCopy encodeBool:supportsCurrentPlatform forKey:v32];
 
-  v33 = [(CXProviderConfiguration *)self supportsRinging];
+  supportsRinging = [(CXProviderConfiguration *)self supportsRinging];
   v34 = NSStringFromSelector(sel_supportsRinging);
-  [v4 encodeBool:v33 forKey:v34];
+  [coderCopy encodeBool:supportsRinging forKey:v34];
 
-  v35 = [(CXProviderConfiguration *)self includesCallsInRecents];
+  includesCallsInRecents = [(CXProviderConfiguration *)self includesCallsInRecents];
   v36 = NSStringFromSelector(sel_includesCallsInRecents);
-  [v4 encodeBool:v35 forKey:v36];
+  [coderCopy encodeBool:includesCallsInRecents forKey:v36];
 
-  v37 = [(CXProviderConfiguration *)self audioSessionID];
+  audioSessionID = [(CXProviderConfiguration *)self audioSessionID];
   v38 = NSStringFromSelector(sel_audioSessionID);
-  [v4 encodeInt32:v37 forKey:v38];
+  [coderCopy encodeInt32:audioSessionID forKey:v38];
 
-  v39 = [(CXProviderConfiguration *)self supportedHandleTypes];
+  supportedHandleTypes = [(CXProviderConfiguration *)self supportedHandleTypes];
   v40 = NSStringFromSelector(sel_supportedHandleTypes);
-  [v4 encodeObject:v39 forKey:v40];
+  [coderCopy encodeObject:supportedHandleTypes forKey:v40];
 
-  v41 = [(CXProviderConfiguration *)self supportsDynamicSystemUI];
+  supportsDynamicSystemUI = [(CXProviderConfiguration *)self supportsDynamicSystemUI];
   v42 = NSStringFromSelector(sel_supportsDynamicSystemUI);
-  [v4 encodeBool:v41 forKey:v42];
+  [coderCopy encodeBool:supportsDynamicSystemUI forKey:v42];
 
-  v43 = [(CXProviderConfiguration *)self supportsAudioTranslation];
+  supportsAudioTranslation = [(CXProviderConfiguration *)self supportsAudioTranslation];
   v44 = NSStringFromSelector(sel_supportsAudioTranslation);
-  [v4 encodeBool:v43 forKey:v44];
+  [coderCopy encodeBool:supportsAudioTranslation forKey:v44];
 }
 
 - (void)setRingtoneSound:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

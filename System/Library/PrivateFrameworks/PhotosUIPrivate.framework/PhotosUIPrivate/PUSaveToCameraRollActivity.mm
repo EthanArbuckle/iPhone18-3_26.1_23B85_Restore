@@ -1,6 +1,6 @@
 @interface PUSaveToCameraRollActivity
-- (BOOL)_itemIsVideoAtURL:(id)a3;
-- (BOOL)canPerformWithActivityItems:(id)a3;
+- (BOOL)_itemIsVideoAtURL:(id)l;
+- (BOOL)canPerformWithActivityItems:(id)items;
 - (PXActivityItemSourceController)itemSourceController;
 - (void)performActivity;
 @end
@@ -14,19 +14,19 @@
   return WeakRetained;
 }
 
-- (BOOL)_itemIsVideoAtURL:(id)a3
+- (BOOL)_itemIsVideoAtURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v12 = 0;
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  v5 = [v3 path];
-  v6 = [v4 fileExistsAtPath:v5 isDirectory:&v12];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [lCopy path];
+  v6 = [defaultManager fileExistsAtPath:path isDirectory:&v12];
 
   if (v6 && (v12 & 1) == 0)
   {
     v8 = MEMORY[0x1E6982C40];
-    v9 = [v3 pathExtension];
-    v10 = [v8 typeWithFilenameExtension:v9];
+    pathExtension = [lCopy pathExtension];
+    v10 = [v8 typeWithFilenameExtension:pathExtension];
 
     if (v10)
     {
@@ -50,17 +50,17 @@
 - (void)performActivity
 {
   v82 = *MEMORY[0x1E69E9840];
-  v38 = [(PUSaveToCameraRollActivity *)self itemSourceController];
-  v50 = [v38 activityViewController];
-  v49 = [(UISaveToCameraRollActivity *)self activityType];
-  v2 = [v38 assetItemSources];
+  itemSourceController = [(PUSaveToCameraRollActivity *)self itemSourceController];
+  activityViewController = [itemSourceController activityViewController];
+  activityType = [(UISaveToCameraRollActivity *)self activityType];
+  assetItemSources = [itemSourceController assetItemSources];
   v3 = dispatch_group_create();
-  v41 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v75 = 0u;
   v76 = 0u;
   v73 = 0u;
   v74 = 0u;
-  obj = v2;
+  obj = assetItemSources;
   v4 = [obj countByEnumeratingWithState:&v73 objects:v81 count:16];
   if (v4)
   {
@@ -80,15 +80,15 @@
         }
 
         v7 = *(*(&v73 + 1) + 8 * v6);
-        v8 = [v7 asset];
-        if (v8)
+        asset = [v7 asset];
+        if (asset)
         {
           dispatch_group_enter(v3);
-          v9 = [v8 isStreamedVideo];
-          v10 = [v7 activityViewController:v50 itemForActivityType:v49];
+          isStreamedVideo = [asset isStreamedVideo];
+          v10 = [v7 activityViewController:activityViewController itemForActivityType:activityType];
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
-          if (v9)
+          if (isStreamedVideo)
           {
             if ((isKindOfClass & 1) != 0 && [(PUSaveToCameraRollActivity *)self _itemIsVideoAtURL:v10])
             {
@@ -108,22 +108,22 @@
               v61 = buf;
               v60 = v3;
               dispatch_group_notify(v13, MEMORY[0x1E69E96A0], block);
-              if ([v8 sourceType] == 2 && objc_msgSend(v8, "playbackStyle") == 5)
+              if ([asset sourceType] == 2 && objc_msgSend(asset, "playbackStyle") == 5)
               {
                 v14 = v12;
-                v43 = [v14 lastPathComponent];
+                lastPathComponent = [v14 lastPathComponent];
                 v42 = v14;
-                v15 = [v14 URLByDeletingLastPathComponent];
-                v44 = [v15 URLByAppendingPathComponent:@"transcoded"];
+                uRLByDeletingLastPathComponent = [v14 URLByDeletingLastPathComponent];
+                v44 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:@"transcoded"];
 
-                v46 = [v44 URLByAppendingPathComponent:v43];
-                v16 = [v46 path];
-                v17 = [v41 fileExistsAtPath:v16];
+                v46 = [v44 URLByAppendingPathComponent:lastPathComponent];
+                path = [v46 path];
+                v17 = [defaultManager fileExistsAtPath:path];
 
                 if (v17)
                 {
                   v58 = 0;
-                  v18 = [v41 removeItemAtURL:v46 error:&v58];
+                  v18 = [defaultManager removeItemAtURL:v46 error:&v58];
                   v19 = v58;
                   if ((v18 & 1) == 0)
                   {
@@ -146,7 +146,7 @@
                 else
                 {
                   v57 = 0;
-                  v28 = [v41 createDirectoryAtURL:v44 withIntermediateDirectories:1 attributes:0 error:&v57];
+                  v28 = [defaultManager createDirectoryAtURL:v44 withIntermediateDirectories:1 attributes:0 error:&v57];
                   v19 = v57;
                   if ((v28 & 1) == 0)
                   {
@@ -168,14 +168,14 @@ LABEL_30:
                 }
 
                 v45 = [MEMORY[0x1E6987E28] assetWithURL:v42];
-                v29 = [MEMORY[0x1E695DF70] array];
+                array = [MEMORY[0x1E695DF70] array];
                 v30 = MEMORY[0x1E69C0728];
-                v31 = [MEMORY[0x1E69C0718] playbackVariationMetadataIdentifier];
-                v32 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:{objc_msgSend(v8, "playbackVariation")}];
-                [v30 addQuickTimeMetadataItemsWithIdentifier:v31 value:v32 toItems:v29];
+                playbackVariationMetadataIdentifier = [MEMORY[0x1E69C0718] playbackVariationMetadataIdentifier];
+                v32 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:{objc_msgSend(asset, "playbackVariation")}];
+                [v30 addQuickTimeMetadataItemsWithIdentifier:playbackVariationMetadataIdentifier value:v32 toItems:array];
 
-                v33 = [v45 metadata];
-                [v29 addObjectsFromArray:v33];
+                metadata = [v45 metadata];
+                [array addObjectsFromArray:metadata];
 
                 v34 = MEMORY[0x1E69BE890];
                 v53[0] = MEMORY[0x1E69E9820];
@@ -186,7 +186,7 @@ LABEL_30:
                 v35 = v42;
                 v54 = v35;
                 v55 = v13;
-                [v34 transcodeVideo:v45 outputURL:v46 presetName:v40 outputFileType:v39 metadata:v29 completionHandler:v53];
+                [v34 transcodeVideo:v45 outputURL:v46 presetName:v40 outputFileType:v39 metadata:array completionHandler:v53];
               }
 
               else
@@ -206,7 +206,7 @@ LABEL_22:
             if (isKindOfClass)
             {
               v23 = [objc_alloc(MEMORY[0x1E69C0918]) initWithBundleAtURL:v10];
-              v24 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+              px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
               v25 = MEMORY[0x1E69E9820];
               v70[0] = MEMORY[0x1E69E9820];
               v70[1] = 3221225472;
@@ -220,7 +220,7 @@ LABEL_22:
               v68[3] = &unk_1E7B80280;
               v69 = v3;
               v26 = v23;
-              [v24 performChanges:v70 completionHandler:v68];
+              [px_deprecated_appPhotoLibrary performChanges:v70 completionHandler:v68];
 
               goto LABEL_22;
             }
@@ -338,21 +338,21 @@ void __45__PUSaveToCameraRollActivity_performActivity__block_invoke_2_194(uint64
   [v2 addResourceWithType:2 fileURL:*(*(*(a1 + 32) + 8) + 40) options:v3];
 }
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
   v18 = *MEMORY[0x1E69E9840];
   v16.receiver = self;
   v16.super_class = PUSaveToCameraRollActivity;
-  if ([(UISaveToCameraRollActivity *)&v16 canPerformWithActivityItems:a3])
+  if ([(UISaveToCameraRollActivity *)&v16 canPerformWithActivityItems:items])
   {
-    v4 = [(PUSaveToCameraRollActivity *)self itemSourceController];
-    v5 = [v4 assets];
+    itemSourceController = [(PUSaveToCameraRollActivity *)self itemSourceController];
+    assets = [itemSourceController assets];
 
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v6 = v5;
+    v6 = assets;
     v7 = [v6 countByEnumeratingWithState:&v12 objects:v17 count:16];
     if (v7)
     {

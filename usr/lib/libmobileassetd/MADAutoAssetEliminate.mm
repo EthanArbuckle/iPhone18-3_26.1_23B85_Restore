@@ -1,19 +1,19 @@
 @interface MADAutoAssetEliminate
-- (MADAutoAssetEliminate)initWithClientRequest:(id)a3 withAssetSelector:(id)a4 forClientDomain:(id)a5 forSetIdentifier:(id)a6 withDownloadedSetDescriptors:(id)a7 awaitingUnlocked:(BOOL)a8;
-- (MADAutoAssetEliminate)initWithCoder:(id)a3;
+- (MADAutoAssetEliminate)initWithClientRequest:(id)request withAssetSelector:(id)selector forClientDomain:(id)domain forSetIdentifier:(id)identifier withDownloadedSetDescriptors:(id)descriptors awaitingUnlocked:(BOOL)unlocked;
+- (MADAutoAssetEliminate)initWithCoder:(id)coder;
 - (id)summary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MADAutoAssetEliminate
 
-- (MADAutoAssetEliminate)initWithClientRequest:(id)a3 withAssetSelector:(id)a4 forClientDomain:(id)a5 forSetIdentifier:(id)a6 withDownloadedSetDescriptors:(id)a7 awaitingUnlocked:(BOOL)a8
+- (MADAutoAssetEliminate)initWithClientRequest:(id)request withAssetSelector:(id)selector forClientDomain:(id)domain forSetIdentifier:(id)identifier withDownloadedSetDescriptors:(id)descriptors awaitingUnlocked:(BOOL)unlocked
 {
-  v15 = a3;
-  v52 = a4;
-  v16 = a5;
-  v17 = a6;
-  v51 = a7;
+  requestCopy = request;
+  selectorCopy = selector;
+  domainCopy = domain;
+  identifierCopy = identifier;
+  descriptorsCopy = descriptors;
   v53.receiver = self;
   v53.super_class = MADAutoAssetEliminate;
   v18 = [(MADAutoAssetEliminate *)&v53 init];
@@ -23,13 +23,13 @@
     goto LABEL_27;
   }
 
-  objc_storeStrong(&v18->_clientRequest, a3);
-  objc_storeStrong(&v19->_assetSelector, a4);
-  objc_storeStrong(&v19->_clientDomainName, a5);
-  objc_storeStrong(&v19->_assetSetIdentifier, a6);
-  if (v16)
+  objc_storeStrong(&v18->_clientRequest, request);
+  objc_storeStrong(&v19->_assetSelector, selector);
+  objc_storeStrong(&v19->_clientDomainName, domain);
+  objc_storeStrong(&v19->_assetSetIdentifier, identifier);
+  if (domainCopy)
   {
-    v20 = v17 == 0;
+    v20 = identifierCopy == 0;
   }
 
   else
@@ -39,11 +39,11 @@
 
   v21 = !v20;
   v19->_eliminatingSet = v21;
-  objc_storeStrong(&v19->_downloadedSetDescriptors, a7);
-  v19->_awaitingUnlocked = a8;
+  objc_storeStrong(&v19->_downloadedSetDescriptors, descriptors);
+  v19->_awaitingUnlocked = unlocked;
   if (!v19->_eliminatingSet)
   {
-    if (!v15)
+    if (!requestCopy)
     {
 LABEL_24:
       assetSelector = v19->_assetSelector;
@@ -52,36 +52,36 @@ LABEL_24:
         v45 = _MADLog(@"Auto");
         if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
         {
-          if (v15)
+          if (requestCopy)
           {
-            v46 = [v15 summary];
+            summary = [requestCopy summary];
           }
 
           else
           {
-            v46 = @"N";
+            summary = @"N";
           }
 
-          if (v52)
+          if (selectorCopy)
           {
-            v47 = [v52 summary];
+            summary2 = [selectorCopy summary];
           }
 
           else
           {
-            v47 = @"N";
+            summary2 = @"N";
           }
 
           *buf = 138543618;
-          v55 = v46;
+          v55 = summary;
           v56 = 2114;
-          v57 = v47;
+          v57 = summary2;
           _os_log_impl(&dword_0, v45, OS_LOG_TYPE_ERROR, "{AUTO-ELIMINATE:initWithClientRequest} invalid asset-selector | clientRequest:%{public}@, fullAssetSelector:%{public}@", buf, 0x16u);
-          if (v52)
+          if (selectorCopy)
           {
           }
 
-          if (v15)
+          if (requestCopy)
           {
           }
         }
@@ -93,10 +93,10 @@ LABEL_24:
       goto LABEL_26;
     }
 
-    v25 = [v15 clientRequestMessage];
-    v26 = [v25 message];
+    clientRequestMessage = [requestCopy clientRequestMessage];
+    message = [clientRequestMessage message];
 
-    v27 = [v26 safeObjectForKey:@"instance" ofClass:objc_opt_class()];
+    v27 = [message safeObjectForKey:@"instance" ofClass:objc_opt_class()];
     v28 = v27;
     if (!v27)
     {
@@ -105,24 +105,24 @@ LABEL_23:
       goto LABEL_24;
     }
 
-    v29 = [v27 clientAssetSelector];
-    v30 = [v29 assetVersion];
-    if (v30)
+    clientAssetSelector = [v27 clientAssetSelector];
+    assetVersion = [clientAssetSelector assetVersion];
+    if (assetVersion)
     {
     }
 
     else
     {
-      v31 = [v28 clientAssetSelector];
-      v32 = [v31 assetSpecifier];
-      v33 = [SUCore stringIsEqual:v32 to:@"MAAutoAsset-all-asset-specifiers"];
+      clientAssetSelector2 = [v28 clientAssetSelector];
+      assetSpecifier = [clientAssetSelector2 assetSpecifier];
+      v33 = [SUCore stringIsEqual:assetSpecifier to:@"MAAutoAsset-all-asset-specifiers"];
 
       if (v33)
       {
         v34 = [MAAutoAssetSelector alloc];
-        v35 = [v28 clientAssetSelector];
-        v36 = [v35 assetType];
-        v37 = [v34 initForAssetType:v36];
+        clientAssetSelector3 = [v28 clientAssetSelector];
+        assetType = [clientAssetSelector3 assetType];
+        v37 = [v34 initForAssetType:assetType];
         v38 = v19->_assetSelector;
         v19->_assetSelector = v37;
 
@@ -131,13 +131,13 @@ LABEL_22:
       }
     }
 
-    v39 = [v28 clientAssetSelector];
-    v35 = v19->_assetSelector;
-    v19->_assetSelector = v39;
+    clientAssetSelector4 = [v28 clientAssetSelector];
+    clientAssetSelector3 = v19->_assetSelector;
+    v19->_assetSelector = clientAssetSelector4;
     goto LABEL_22;
   }
 
-  if (v15 && v16 && v17)
+  if (requestCopy && domainCopy && identifierCopy)
   {
 LABEL_26:
     *&v19->_awaitingSchedulerAck = 0;
@@ -151,27 +151,27 @@ LABEL_26:
 LABEL_27:
     v44 = v19;
 LABEL_40:
-    v23 = v51;
+    v23 = descriptorsCopy;
     goto LABEL_41;
   }
 
   v22 = _MADLog(@"Auto");
-  v23 = v51;
+  v23 = descriptorsCopy;
   if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
   {
-    if (v15)
+    if (requestCopy)
     {
-      v24 = [v15 summary];
+      summary3 = [requestCopy summary];
     }
 
     else
     {
-      v24 = @"N";
+      summary3 = @"N";
     }
 
-    if (v16)
+    if (domainCopy)
     {
-      v49 = v16;
+      v49 = domainCopy;
     }
 
     else
@@ -180,9 +180,9 @@ LABEL_40:
     }
 
     *buf = 138543874;
-    if (v17)
+    if (identifierCopy)
     {
-      v50 = v17;
+      v50 = identifierCopy;
     }
 
     else
@@ -190,13 +190,13 @@ LABEL_40:
       v50 = @"N";
     }
 
-    v55 = v24;
+    v55 = summary3;
     v56 = 2114;
     v57 = v49;
     v58 = 2114;
     v59 = v50;
     _os_log_impl(&dword_0, v22, OS_LOG_TYPE_ERROR, "{AUTO-ELIMINATE:initWithClientRequest} MISSING required auto-asset-set information | clientRequest:%{public}@, clientDomainName:%{public}@, assetSetIdentifier:%{public}@", buf, 0x20u);
-    if (v15)
+    if (requestCopy)
     {
     }
   }
@@ -207,112 +207,112 @@ LABEL_41:
   return v44;
 }
 
-- (MADAutoAssetEliminate)initWithCoder:(id)a3
+- (MADAutoAssetEliminate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = MADAutoAssetEliminate;
   v5 = [(MADAutoAssetEliminate *)&v25 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientRequest"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientRequest"];
     clientRequest = v5->_clientRequest;
     v5->_clientRequest = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assetSelector"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assetSelector"];
     assetSelector = v5->_assetSelector;
     v5->_assetSelector = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientDomainName"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientDomainName"];
     clientDomainName = v5->_clientDomainName;
     v5->_clientDomainName = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assetSetIdentifier"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assetSetIdentifier"];
     assetSetIdentifier = v5->_assetSetIdentifier;
     v5->_assetSetIdentifier = v12;
 
-    v5->_eliminatingSet = [v4 decodeBoolForKey:@"eliminatingSet"];
+    v5->_eliminatingSet = [coderCopy decodeBoolForKey:@"eliminatingSet"];
     v14 = [NSSet alloc];
     v27[0] = objc_opt_class();
     v27[1] = objc_opt_class();
     v15 = [NSArray arrayWithObjects:v27 count:2];
     v16 = [v14 initWithArray:v15];
-    v17 = [v4 decodeObjectOfClasses:v16 forKey:@"downloadedSetDescriptors"];
+    v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"downloadedSetDescriptors"];
     downloadedSetDescriptors = v5->_downloadedSetDescriptors;
     v5->_downloadedSetDescriptors = v17;
 
-    v5->_awaitingUnlocked = [v4 decodeBoolForKey:@"awaitingUnlocked"];
-    v5->_awaitingSchedulerAck = [v4 decodeBoolForKey:@"awaitingSchedulerAck"];
-    v5->_awaitingCancelActivityAck = [v4 decodeBoolForKey:@"awaitingCancelActivityAck"];
-    v5->_awaitingStagerAck = [v4 decodeBoolForKey:@"awaitingStagerAck"];
-    v5->_awaitingSecureOperations = [v4 decodeIntegerForKey:@"awaitingSecureOperations"];
+    v5->_awaitingUnlocked = [coderCopy decodeBoolForKey:@"awaitingUnlocked"];
+    v5->_awaitingSchedulerAck = [coderCopy decodeBoolForKey:@"awaitingSchedulerAck"];
+    v5->_awaitingCancelActivityAck = [coderCopy decodeBoolForKey:@"awaitingCancelActivityAck"];
+    v5->_awaitingStagerAck = [coderCopy decodeBoolForKey:@"awaitingStagerAck"];
+    v5->_awaitingSecureOperations = [coderCopy decodeIntegerForKey:@"awaitingSecureOperations"];
     v19 = [NSSet alloc];
     v26[0] = objc_opt_class();
     v26[1] = objc_opt_class();
     v20 = [NSArray arrayWithObjects:v26 count:2];
     v21 = [v19 initWithArray:v20];
-    v22 = [v4 decodeObjectOfClasses:v21 forKey:@"activeJobsByUUID"];
+    v22 = [coderCopy decodeObjectOfClasses:v21 forKey:@"activeJobsByUUID"];
     activeJobsByUUID = v5->_activeJobsByUUID;
     v5->_activeJobsByUUID = v22;
 
-    v5->_limitedToCancelActivity = [v4 decodeBoolForKey:@"limitedToCancelActivity"];
+    v5->_limitedToCancelActivity = [coderCopy decodeBoolForKey:@"limitedToCancelActivity"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v10 = a3;
-  v4 = [(MADAutoAssetEliminate *)self clientRequest];
-  [v10 encodeObject:v4 forKey:@"clientRequest"];
+  coderCopy = coder;
+  clientRequest = [(MADAutoAssetEliminate *)self clientRequest];
+  [coderCopy encodeObject:clientRequest forKey:@"clientRequest"];
 
-  v5 = [(MADAutoAssetEliminate *)self assetSelector];
-  [v10 encodeObject:v5 forKey:@"assetSelector"];
+  assetSelector = [(MADAutoAssetEliminate *)self assetSelector];
+  [coderCopy encodeObject:assetSelector forKey:@"assetSelector"];
 
-  v6 = [(MADAutoAssetEliminate *)self clientDomainName];
-  [v10 encodeObject:v6 forKey:@"clientDomainName"];
+  clientDomainName = [(MADAutoAssetEliminate *)self clientDomainName];
+  [coderCopy encodeObject:clientDomainName forKey:@"clientDomainName"];
 
-  v7 = [(MADAutoAssetEliminate *)self assetSetIdentifier];
-  [v10 encodeObject:v7 forKey:@"assetSetIdentifier"];
+  assetSetIdentifier = [(MADAutoAssetEliminate *)self assetSetIdentifier];
+  [coderCopy encodeObject:assetSetIdentifier forKey:@"assetSetIdentifier"];
 
-  [v10 encodeBool:-[MADAutoAssetEliminate eliminatingSet](self forKey:{"eliminatingSet"), @"eliminatingSet"}];
-  v8 = [(MADAutoAssetEliminate *)self downloadedSetDescriptors];
-  [v10 encodeObject:v8 forKey:@"downloadedSetDescriptors"];
+  [coderCopy encodeBool:-[MADAutoAssetEliminate eliminatingSet](self forKey:{"eliminatingSet"), @"eliminatingSet"}];
+  downloadedSetDescriptors = [(MADAutoAssetEliminate *)self downloadedSetDescriptors];
+  [coderCopy encodeObject:downloadedSetDescriptors forKey:@"downloadedSetDescriptors"];
 
-  [v10 encodeBool:-[MADAutoAssetEliminate awaitingUnlocked](self forKey:{"awaitingUnlocked"), @"awaitingUnlocked"}];
-  [v10 encodeBool:-[MADAutoAssetEliminate awaitingSchedulerAck](self forKey:{"awaitingSchedulerAck"), @"awaitingSchedulerAck"}];
-  [v10 encodeBool:-[MADAutoAssetEliminate awaitingCancelActivityAck](self forKey:{"awaitingCancelActivityAck"), @"awaitingCancelActivityAck"}];
-  [v10 encodeBool:-[MADAutoAssetEliminate awaitingStagerAck](self forKey:{"awaitingStagerAck"), @"awaitingStagerAck"}];
-  [v10 encodeInteger:-[MADAutoAssetEliminate awaitingSecureOperations](self forKey:{"awaitingSecureOperations"), @"awaitingSecureOperations"}];
-  v9 = [(MADAutoAssetEliminate *)self activeJobsByUUID];
-  [v10 encodeObject:v9 forKey:@"activeJobsByUUID"];
+  [coderCopy encodeBool:-[MADAutoAssetEliminate awaitingUnlocked](self forKey:{"awaitingUnlocked"), @"awaitingUnlocked"}];
+  [coderCopy encodeBool:-[MADAutoAssetEliminate awaitingSchedulerAck](self forKey:{"awaitingSchedulerAck"), @"awaitingSchedulerAck"}];
+  [coderCopy encodeBool:-[MADAutoAssetEliminate awaitingCancelActivityAck](self forKey:{"awaitingCancelActivityAck"), @"awaitingCancelActivityAck"}];
+  [coderCopy encodeBool:-[MADAutoAssetEliminate awaitingStagerAck](self forKey:{"awaitingStagerAck"), @"awaitingStagerAck"}];
+  [coderCopy encodeInteger:-[MADAutoAssetEliminate awaitingSecureOperations](self forKey:{"awaitingSecureOperations"), @"awaitingSecureOperations"}];
+  activeJobsByUUID = [(MADAutoAssetEliminate *)self activeJobsByUUID];
+  [coderCopy encodeObject:activeJobsByUUID forKey:@"activeJobsByUUID"];
 
-  [v10 encodeBool:-[MADAutoAssetEliminate limitedToCancelActivity](self forKey:{"limitedToCancelActivity"), @"limitedToCancelActivity"}];
+  [coderCopy encodeBool:-[MADAutoAssetEliminate limitedToCancelActivity](self forKey:{"limitedToCancelActivity"), @"limitedToCancelActivity"}];
 }
 
 - (id)summary
 {
-  v4 = [(MADAutoAssetEliminate *)self eliminatingSet];
-  v5 = [(MADAutoAssetEliminate *)self clientRequest];
-  v39 = v5;
-  if (v4)
+  eliminatingSet = [(MADAutoAssetEliminate *)self eliminatingSet];
+  clientRequest = [(MADAutoAssetEliminate *)self clientRequest];
+  v39 = clientRequest;
+  if (eliminatingSet)
   {
-    if (v5)
+    if (clientRequest)
     {
-      v36 = [(MADAutoAssetEliminate *)self clientRequest];
-      v37 = [v36 summary];
+      clientRequest2 = [(MADAutoAssetEliminate *)self clientRequest];
+      summary = [clientRequest2 summary];
     }
 
     else
     {
-      v37 = @"N";
+      summary = @"N";
     }
 
-    v34 = [(MADAutoAssetEliminate *)self clientDomainName];
-    v32 = [(MADAutoAssetEliminate *)self assetSetIdentifier];
-    v30 = [(MADAutoAssetEliminate *)self downloadedSetDescriptors];
-    v29 = [v30 count];
+    clientDomainName = [(MADAutoAssetEliminate *)self clientDomainName];
+    assetSetIdentifier = [(MADAutoAssetEliminate *)self assetSetIdentifier];
+    downloadedSetDescriptors = [(MADAutoAssetEliminate *)self downloadedSetDescriptors];
+    v29 = [downloadedSetDescriptors count];
     if ([(MADAutoAssetEliminate *)self awaitingUnlocked])
     {
       v6 = @"Y";
@@ -355,18 +355,18 @@ LABEL_41:
       v9 = @"N";
     }
 
-    v10 = [(MADAutoAssetEliminate *)self awaitingSecureOperations];
-    v11 = [(MADAutoAssetEliminate *)self activeJobsByUUID];
-    v12 = [v11 count];
+    awaitingSecureOperations = [(MADAutoAssetEliminate *)self awaitingSecureOperations];
+    activeJobsByUUID = [(MADAutoAssetEliminate *)self activeJobsByUUID];
+    v12 = [activeJobsByUUID count];
     if (v12)
     {
-      v2 = [(MADAutoAssetEliminate *)self activeJobsByUUID];
-      v13 = [v2 safeSummary];
+      activeJobsByUUID2 = [(MADAutoAssetEliminate *)self activeJobsByUUID];
+      safeSummary = [activeJobsByUUID2 safeSummary];
     }
 
     else
     {
-      v13 = @"N";
+      safeSummary = @"N";
     }
 
     if ([(MADAutoAssetEliminate *)self limitedToCancelActivity])
@@ -379,8 +379,8 @@ LABEL_41:
       v22 = @"N";
     }
 
-    v23 = v37;
-    v24 = [NSString stringWithFormat:@"[clientRequest:%@|clientDomain:%@|setIdentifier:%@|downloadedSetDescriptors:%ld|awaitingUnlocked:%@|awaitingSchedulerAck:%@|awaitingCancelActivityAck:%@|awaitingStagerAck:%@|awaitingSecureOperations:%d|activeJobsByUUID:%@|limitedToCancelActivity:%@]", v37, v34, v32, v29, v28, v27, v8, v9, v10, v13, v22];
+    v23 = summary;
+    v24 = [NSString stringWithFormat:@"[clientRequest:%@|clientDomain:%@|setIdentifier:%@|downloadedSetDescriptors:%ld|awaitingUnlocked:%@|awaitingSchedulerAck:%@|awaitingCancelActivityAck:%@|awaitingStagerAck:%@|awaitingSecureOperations:%d|activeJobsByUUID:%@|limitedToCancelActivity:%@]", summary, clientDomainName, assetSetIdentifier, v29, v28, v27, v8, v9, awaitingSecureOperations, safeSummary, v22];
     if (v12)
     {
     }
@@ -388,19 +388,19 @@ LABEL_41:
 
   else
   {
-    if (v5)
+    if (clientRequest)
     {
-      v36 = [(MADAutoAssetEliminate *)self clientRequest];
-      v38 = [v36 summary];
+      clientRequest2 = [(MADAutoAssetEliminate *)self clientRequest];
+      summary2 = [clientRequest2 summary];
     }
 
     else
     {
-      v38 = @"N";
+      summary2 = @"N";
     }
 
-    v35 = [(MADAutoAssetEliminate *)self assetSelector];
-    v14 = [v35 summary];
+    assetSelector = [(MADAutoAssetEliminate *)self assetSelector];
+    summary3 = [assetSelector summary];
     if ([(MADAutoAssetEliminate *)self awaitingSchedulerAck])
     {
       v15 = @"Y";
@@ -433,18 +433,18 @@ LABEL_41:
       v17 = @"N";
     }
 
-    v18 = [(MADAutoAssetEliminate *)self awaitingSecureOperations];
-    v19 = [(MADAutoAssetEliminate *)self activeJobsByUUID];
-    v20 = [v19 count];
+    awaitingSecureOperations2 = [(MADAutoAssetEliminate *)self awaitingSecureOperations];
+    activeJobsByUUID3 = [(MADAutoAssetEliminate *)self activeJobsByUUID];
+    v20 = [activeJobsByUUID3 count];
     if (v20)
     {
-      v2 = [(MADAutoAssetEliminate *)self activeJobsByUUID];
-      v21 = [v2 safeSummary];
+      activeJobsByUUID2 = [(MADAutoAssetEliminate *)self activeJobsByUUID];
+      safeSummary2 = [activeJobsByUUID2 safeSummary];
     }
 
     else
     {
-      v21 = @"N";
+      safeSummary2 = @"N";
     }
 
     if ([(MADAutoAssetEliminate *)self limitedToCancelActivity])
@@ -457,8 +457,8 @@ LABEL_41:
       v25 = @"N";
     }
 
-    v23 = v38;
-    v24 = [NSString stringWithFormat:@"[clientRequest:%@|assetSelector:%@|awaitingSchedulerAck:%@|awaitingCancelActivityAck:%@|awaitingStagerAck:%@|awaitingSecureOperations:%d|activeJobsByUUID:%@|limitedToCancelActivity:%@]", v38, v14, v33, v31, v17, v18, v21, v25];
+    v23 = summary2;
+    v24 = [NSString stringWithFormat:@"[clientRequest:%@|assetSelector:%@|awaitingSchedulerAck:%@|awaitingCancelActivityAck:%@|awaitingStagerAck:%@|awaitingSecureOperations:%d|activeJobsByUUID:%@|limitedToCancelActivity:%@]", summary2, summary3, v33, v31, v17, awaitingSecureOperations2, safeSummary2, v25];
     if (v20)
     {
     }

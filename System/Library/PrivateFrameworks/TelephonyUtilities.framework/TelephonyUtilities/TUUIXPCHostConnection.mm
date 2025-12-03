@@ -1,70 +1,70 @@
 @interface TUUIXPCHostConnection
 - (TUUIXPCHostConnection)init;
-- (TUUIXPCHostConnection)initWithConnection:(id)a3 hostDelegate:(id)a4 connectionDelegate:(id)a5 queue:(id)a6;
+- (TUUIXPCHostConnection)initWithConnection:(id)connection hostDelegate:(id)delegate connectionDelegate:(id)connectionDelegate queue:(id)queue;
 - (TUUIXPCHostConnectionDelegate)connectionDelegate;
 - (TUUIXPCHostDelegate)hostDelegate;
 - (id)remoteObjectProxy;
 - (void)dealloc;
-- (void)fetchInCallUIState:(id)a3;
-- (void)fetchRemoteControlStatus:(id)a3;
-- (void)handleRedialCommandWhileScreening:(id)a3;
-- (void)shouldHostHandleMRCommand:(unsigned int)a3 completion:(id)a4;
-- (void)shouldHostHandleMRCommand:(unsigned int)a3 sourceIdentifier:(id)a4 completion:(id)a5;
+- (void)fetchInCallUIState:(id)state;
+- (void)fetchRemoteControlStatus:(id)status;
+- (void)handleRedialCommandWhileScreening:(id)screening;
+- (void)shouldHostHandleMRCommand:(unsigned int)command completion:(id)completion;
+- (void)shouldHostHandleMRCommand:(unsigned int)command sourceIdentifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation TUUIXPCHostConnection
 
 - (TUUIXPCHostConnection)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"TUUIXPCHostConnection.m" lineNumber:56 description:{@"%s is unavailable. Use a designated initializer instead", "-[TUUIXPCHostConnection init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"TUUIXPCHostConnection.m" lineNumber:56 description:{@"%s is unavailable. Use a designated initializer instead", "-[TUUIXPCHostConnection init]"}];
 
   return 0;
 }
 
-- (TUUIXPCHostConnection)initWithConnection:(id)a3 hostDelegate:(id)a4 connectionDelegate:(id)a5 queue:(id)a6
+- (TUUIXPCHostConnection)initWithConnection:(id)connection hostDelegate:(id)delegate connectionDelegate:(id)connectionDelegate queue:(id)queue
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  connectionCopy = connection;
+  delegateCopy = delegate;
+  connectionDelegateCopy = connectionDelegate;
+  queueCopy = queue;
   v30.receiver = self;
   v30.super_class = TUUIXPCHostConnection;
   v15 = [(TUUIXPCHostConnection *)&v30 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_queue, a6);
-    objc_storeStrong(&v16->_connection, a3);
-    v17 = [(TUUIXPCHostConnection *)v16 connection];
-    [v17 setExportedObject:v16];
+    objc_storeStrong(&v15->_queue, queue);
+    objc_storeStrong(&v16->_connection, connection);
+    connection = [(TUUIXPCHostConnection *)v16 connection];
+    [connection setExportedObject:v16];
 
-    v18 = [MEMORY[0x1E696B0D0] hostConnectionInterface];
-    v19 = [(TUUIXPCHostConnection *)v16 connection];
-    [v19 setExportedInterface:v18];
+    hostConnectionInterface = [MEMORY[0x1E696B0D0] hostConnectionInterface];
+    connection2 = [(TUUIXPCHostConnection *)v16 connection];
+    [connection2 setExportedInterface:hostConnectionInterface];
 
-    v20 = [MEMORY[0x1E696B0D0] remoteObjectInterface];
-    v21 = [(TUUIXPCHostConnection *)v16 connection];
-    [v21 setRemoteObjectInterface:v20];
+    remoteObjectInterface = [MEMORY[0x1E696B0D0] remoteObjectInterface];
+    connection3 = [(TUUIXPCHostConnection *)v16 connection];
+    [connection3 setRemoteObjectInterface:remoteObjectInterface];
 
-    [(TUUIXPCHostConnection *)v16 setHostDelegate:v12];
-    [(TUUIXPCHostConnection *)v16 setConnectionDelegate:v13];
+    [(TUUIXPCHostConnection *)v16 setHostDelegate:delegateCopy];
+    [(TUUIXPCHostConnection *)v16 setConnectionDelegate:connectionDelegateCopy];
     objc_initWeak(&location, v16);
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __82__TUUIXPCHostConnection_initWithConnection_hostDelegate_connectionDelegate_queue___block_invoke;
     v27[3] = &unk_1E7424998;
     objc_copyWeak(&v28, &location);
-    v22 = [(TUUIXPCHostConnection *)v16 connection];
-    [v22 setInvalidationHandler:v27];
+    connection4 = [(TUUIXPCHostConnection *)v16 connection];
+    [connection4 setInvalidationHandler:v27];
 
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __82__TUUIXPCHostConnection_initWithConnection_hostDelegate_connectionDelegate_queue___block_invoke_95;
     v25[3] = &unk_1E7424998;
     objc_copyWeak(&v26, &location);
-    v23 = [(TUUIXPCHostConnection *)v16 connection];
-    [v23 setInterruptionHandler:v25];
+    connection5 = [(TUUIXPCHostConnection *)v16 connection];
+    [connection5 setInterruptionHandler:v25];
 
     [(NSXPCConnection *)v16->_connection resume];
     objc_destroyWeak(&v26);
@@ -145,8 +145,8 @@ void __82__TUUIXPCHostConnection_initWithConnection_hostDelegate_connectionDeleg
 
 - (void)dealloc
 {
-  v3 = [(TUUIXPCHostConnection *)self connection];
-  [v3 invalidate];
+  connection = [(TUUIXPCHostConnection *)self connection];
+  [connection invalidate];
 
   v4.receiver = self;
   v4.super_class = TUUIXPCHostConnection;
@@ -155,25 +155,25 @@ void __82__TUUIXPCHostConnection_initWithConnection_hostDelegate_connectionDeleg
 
 - (id)remoteObjectProxy
 {
-  v2 = [(TUUIXPCHostConnection *)self connection];
-  v3 = [v2 remoteObjectProxy];
+  connection = [(TUUIXPCHostConnection *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
 
-  return v3;
+  return remoteObjectProxy;
 }
 
-- (void)shouldHostHandleMRCommand:(unsigned int)a3 completion:(id)a4
+- (void)shouldHostHandleMRCommand:(unsigned int)command completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(TUUIXPCHostConnection *)self queue];
+  completionCopy = completion;
+  queue = [(TUUIXPCHostConnection *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __62__TUUIXPCHostConnection_shouldHostHandleMRCommand_completion___block_invoke;
   block[3] = &unk_1E7424DD0;
-  v11 = a3;
+  commandCopy = command;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = completionCopy;
+  v8 = completionCopy;
+  dispatch_async(queue, block);
 }
 
 void __62__TUUIXPCHostConnection_shouldHostHandleMRCommand_completion___block_invoke(uint64_t a1)
@@ -189,22 +189,22 @@ void __62__TUUIXPCHostConnection_shouldHostHandleMRCommand_completion___block_in
   [v3 shouldHandleMRCommand:*(a1 + 48) completion:*(a1 + 40)];
 }
 
-- (void)shouldHostHandleMRCommand:(unsigned int)a3 sourceIdentifier:(id)a4 completion:(id)a5
+- (void)shouldHostHandleMRCommand:(unsigned int)command sourceIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(TUUIXPCHostConnection *)self queue];
+  identifierCopy = identifier;
+  completionCopy = completion;
+  queue = [(TUUIXPCHostConnection *)self queue];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __79__TUUIXPCHostConnection_shouldHostHandleMRCommand_sourceIdentifier_completion___block_invoke;
   v13[3] = &unk_1E7424DF8;
-  v16 = a3;
+  commandCopy = command;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, v13);
+  v14 = identifierCopy;
+  v15 = completionCopy;
+  v11 = completionCopy;
+  v12 = identifierCopy;
+  dispatch_async(queue, v13);
 }
 
 void __79__TUUIXPCHostConnection_shouldHostHandleMRCommand_sourceIdentifier_completion___block_invoke(uint64_t a1)
@@ -220,18 +220,18 @@ void __79__TUUIXPCHostConnection_shouldHostHandleMRCommand_sourceIdentifier_comp
   [v3 shouldHandleMRCommand:*(a1 + 56) sourceIdentifier:*(a1 + 40) completion:*(a1 + 48)];
 }
 
-- (void)handleRedialCommandWhileScreening:(id)a3
+- (void)handleRedialCommandWhileScreening:(id)screening
 {
-  v4 = a3;
-  v5 = [(TUUIXPCHostConnection *)self queue];
+  screeningCopy = screening;
+  queue = [(TUUIXPCHostConnection *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __59__TUUIXPCHostConnection_handleRedialCommandWhileScreening___block_invoke;
   v7[3] = &unk_1E7424898;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = screeningCopy;
+  v6 = screeningCopy;
+  dispatch_async(queue, v7);
 }
 
 void __59__TUUIXPCHostConnection_handleRedialCommandWhileScreening___block_invoke(uint64_t a1)
@@ -247,18 +247,18 @@ void __59__TUUIXPCHostConnection_handleRedialCommandWhileScreening___block_invok
   [v3 handleRedialCommandWhileScreening:*(a1 + 40)];
 }
 
-- (void)fetchInCallUIState:(id)a3
+- (void)fetchInCallUIState:(id)state
 {
-  v4 = a3;
-  v5 = [(TUUIXPCHostConnection *)self queue];
+  stateCopy = state;
+  queue = [(TUUIXPCHostConnection *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__TUUIXPCHostConnection_fetchInCallUIState___block_invoke;
   v7[3] = &unk_1E7424E20;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = stateCopy;
+  v6 = stateCopy;
+  dispatch_async(queue, v7);
 }
 
 void __44__TUUIXPCHostConnection_fetchInCallUIState___block_invoke(uint64_t a1)
@@ -274,18 +274,18 @@ void __44__TUUIXPCHostConnection_fetchInCallUIState___block_invoke(uint64_t a1)
   [v3 fetchInCallUIState:*(a1 + 40)];
 }
 
-- (void)fetchRemoteControlStatus:(id)a3
+- (void)fetchRemoteControlStatus:(id)status
 {
-  v4 = a3;
-  v5 = [(TUUIXPCHostConnection *)self queue];
+  statusCopy = status;
+  queue = [(TUUIXPCHostConnection *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50__TUUIXPCHostConnection_fetchRemoteControlStatus___block_invoke;
   v7[3] = &unk_1E7424E20;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = statusCopy;
+  v6 = statusCopy;
+  dispatch_async(queue, v7);
 }
 
 void __50__TUUIXPCHostConnection_fetchRemoteControlStatus___block_invoke(uint64_t a1)

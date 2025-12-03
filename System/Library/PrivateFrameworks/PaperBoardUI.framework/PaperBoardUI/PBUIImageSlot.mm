@@ -1,22 +1,22 @@
 @interface PBUIImageSlot
-- (id)_initWithImage:(id)a3 lifetimeToken:(id)a4;
+- (id)_initWithImage:(id)image lifetimeToken:(id)token;
 - (void)dealloc;
 @end
 
 @implementation PBUIImageSlot
 
-- (id)_initWithImage:(id)a3 lifetimeToken:(id)a4
+- (id)_initWithImage:(id)image lifetimeToken:(id)token
 {
-  v7 = a3;
-  v8 = a4;
+  imageCopy = image;
+  tokenCopy = token;
   v12.receiver = self;
   v12.super_class = PBUIImageSlot;
   v9 = [(PBUIImageSlot *)&v12 init];
   p_isa = &v9->super.isa;
   if (v9)
   {
-    objc_storeStrong(&v9->_image, a3);
-    objc_storeStrong(p_isa + 2, a4);
+    objc_storeStrong(&v9->_image, image);
+    objc_storeStrong(p_isa + 2, token);
   }
 
   return p_isa;

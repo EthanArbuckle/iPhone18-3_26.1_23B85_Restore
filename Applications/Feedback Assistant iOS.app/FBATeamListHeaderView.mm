@@ -1,10 +1,10 @@
 @interface FBATeamListHeaderView
 + (NSString)reuseIdentifier;
-- (void)configureForTeam:(id)a3;
+- (void)configureForTeam:(id)team;
 - (void)hide;
-- (void)setTeamNameLabel:(id)a3;
-- (void)setTeamTypeLabel:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setTeamNameLabel:(id)label;
+- (void)setTeamTypeLabel:(id)label;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation FBATeamListHeaderView
@@ -21,32 +21,32 @@
   return v2;
 }
 
-- (void)setTeamNameLabel:(id)a3
+- (void)setTeamNameLabel:(id)label
 {
   v4 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC18Feedback_Assistant21FBATeamListHeaderView_teamNameLabel);
-  *(&self->super.super.super.super.isa + OBJC_IVAR____TtC18Feedback_Assistant21FBATeamListHeaderView_teamNameLabel) = a3;
-  v3 = a3;
+  *(&self->super.super.super.super.isa + OBJC_IVAR____TtC18Feedback_Assistant21FBATeamListHeaderView_teamNameLabel) = label;
+  labelCopy = label;
 }
 
-- (void)setTeamTypeLabel:(id)a3
+- (void)setTeamTypeLabel:(id)label
 {
   v4 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC18Feedback_Assistant21FBATeamListHeaderView_teamTypeLabel);
-  *(&self->super.super.super.super.isa + OBJC_IVAR____TtC18Feedback_Assistant21FBATeamListHeaderView_teamTypeLabel) = a3;
-  v3 = a3;
+  *(&self->super.super.super.super.isa + OBJC_IVAR____TtC18Feedback_Assistant21FBATeamListHeaderView_teamTypeLabel) = label;
+  labelCopy = label;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
+  changeCopy = change;
+  selfCopy = self;
   sub_10007EC38();
 }
 
-- (void)configureForTeam:(id)a3
+- (void)configureForTeam:(id)team
 {
-  v4 = a3;
-  v5 = self;
-  sub_10007E88C(v4);
+  teamCopy = team;
+  selfCopy = self;
+  sub_10007E88C(teamCopy);
 }
 
 - (void)hide

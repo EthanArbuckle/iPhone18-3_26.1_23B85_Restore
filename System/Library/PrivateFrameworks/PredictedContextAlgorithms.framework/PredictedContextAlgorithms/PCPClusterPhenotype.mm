@@ -1,27 +1,27 @@
 @interface PCPClusterPhenotype
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDayOfWeekSin:(BOOL)a3;
-- (void)setHasIsWeekend:(BOOL)a3;
-- (void)setHasLatLongCircularStd:(BOOL)a3;
-- (void)setHasNormalizedDuration:(BOOL)a3;
-- (void)setHasTimeOfDayCircularStd:(BOOL)a3;
-- (void)setHasTimeOfDayCos:(BOOL)a3;
-- (void)setHasTimeOfDaySin:(BOOL)a3;
-- (void)setHasWeekOfYear:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDayOfWeekSin:(BOOL)sin;
+- (void)setHasIsWeekend:(BOOL)weekend;
+- (void)setHasLatLongCircularStd:(BOOL)std;
+- (void)setHasNormalizedDuration:(BOOL)duration;
+- (void)setHasTimeOfDayCircularStd:(BOOL)std;
+- (void)setHasTimeOfDayCos:(BOOL)cos;
+- (void)setHasTimeOfDaySin:(BOOL)sin;
+- (void)setHasWeekOfYear:(BOOL)year;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PCPClusterPhenotype
 
-- (void)setHasDayOfWeekSin:(BOOL)a3
+- (void)setHasDayOfWeekSin:(BOOL)sin
 {
-  if (a3)
+  if (sin)
   {
     v3 = 2;
   }
@@ -34,9 +34,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasNormalizedDuration:(BOOL)a3
+- (void)setHasNormalizedDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 8;
   }
@@ -49,9 +49,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasTimeOfDayCos:(BOOL)a3
+- (void)setHasTimeOfDayCos:(BOOL)cos
 {
-  if (a3)
+  if (cos)
   {
     v3 = 32;
   }
@@ -64,9 +64,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasTimeOfDaySin:(BOOL)a3
+- (void)setHasTimeOfDaySin:(BOOL)sin
 {
-  if (a3)
+  if (sin)
   {
     v3 = 64;
   }
@@ -79,9 +79,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasWeekOfYear:(BOOL)a3
+- (void)setHasWeekOfYear:(BOOL)year
 {
-  if (a3)
+  if (year)
   {
     v3 = 128;
   }
@@ -94,9 +94,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasIsWeekend:(BOOL)a3
+- (void)setHasIsWeekend:(BOOL)weekend
 {
-  if (a3)
+  if (weekend)
   {
     v3 = 256;
   }
@@ -109,9 +109,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasTimeOfDayCircularStd:(BOOL)a3
+- (void)setHasTimeOfDayCircularStd:(BOOL)std
 {
-  if (a3)
+  if (std)
   {
     v3 = 16;
   }
@@ -124,9 +124,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasLatLongCircularStd:(BOOL)a3
+- (void)setHasLatLongCircularStd:(BOOL)std
 {
-  if (a3)
+  if (std)
   {
     v3 = 4;
   }
@@ -145,20 +145,20 @@
   v8.receiver = self;
   v8.super_class = PCPClusterPhenotype;
   v4 = [(PCPClusterPhenotype *)&v8 description];
-  v5 = [(PCPClusterPhenotype *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PCPClusterPhenotype *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   activityType = self->_activityType;
   if (activityType)
   {
-    [v3 setObject:activityType forKey:@"activityType"];
+    [dictionary setObject:activityType forKey:@"activityType"];
   }
 
   placeName = self->_placeName;
@@ -176,8 +176,8 @@
   placeLocation = self->_placeLocation;
   if (placeLocation)
   {
-    v9 = [(PCPLocation *)placeLocation dictionaryRepresentation];
-    [v4 setObject:v9 forKey:@"placeLocation"];
+    dictionaryRepresentation = [(PCPLocation *)placeLocation dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"placeLocation"];
   }
 
   has = self->_has;
@@ -315,32 +315,32 @@ LABEL_19:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v15 = v4;
+  toCopy = to;
+  v15 = toCopy;
   if (self->_activityType)
   {
     PBDataWriterWriteStringField();
-    v4 = v15;
+    toCopy = v15;
   }
 
   if (self->_placeName)
   {
     PBDataWriterWriteStringField();
-    v4 = v15;
+    toCopy = v15;
   }
 
   if (self->_placeType)
   {
     PBDataWriterWriteStringField();
-    v4 = v15;
+    toCopy = v15;
   }
 
   if (self->_placeLocation)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v15;
+    toCopy = v15;
   }
 
   has = self->_has;
@@ -348,7 +348,7 @@ LABEL_19:
   {
     dayOfWeekCos = self->_dayOfWeekCos;
     PBDataWriterWriteDoubleField();
-    v4 = v15;
+    toCopy = v15;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -369,7 +369,7 @@ LABEL_11:
 
   dayOfWeekSin = self->_dayOfWeekSin;
   PBDataWriterWriteDoubleField();
-  v4 = v15;
+  toCopy = v15;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -385,7 +385,7 @@ LABEL_12:
 LABEL_24:
   normalizedDuration = self->_normalizedDuration;
   PBDataWriterWriteDoubleField();
-  v4 = v15;
+  toCopy = v15;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -401,7 +401,7 @@ LABEL_13:
 LABEL_25:
   timeOfDayCos = self->_timeOfDayCos;
   PBDataWriterWriteDoubleField();
-  v4 = v15;
+  toCopy = v15;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -417,7 +417,7 @@ LABEL_14:
 LABEL_26:
   timeOfDaySin = self->_timeOfDaySin;
   PBDataWriterWriteDoubleField();
-  v4 = v15;
+  toCopy = v15;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -433,7 +433,7 @@ LABEL_15:
 LABEL_27:
   weekOfYear = self->_weekOfYear;
   PBDataWriterWriteUint32Field();
-  v4 = v15;
+  toCopy = v15;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -449,7 +449,7 @@ LABEL_16:
 LABEL_28:
   isWeekend = self->_isWeekend;
   PBDataWriterWriteBOOLField();
-  v4 = v15;
+  toCopy = v15;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -465,51 +465,51 @@ LABEL_17:
 LABEL_29:
   timeOfDayCircularStd = self->_timeOfDayCircularStd;
   PBDataWriterWriteDoubleField();
-  v4 = v15;
+  toCopy = v15;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_18:
     latLongCircularStd = self->_latLongCircularStd;
     PBDataWriterWriteDoubleField();
-    v4 = v15;
+    toCopy = v15;
   }
 
 LABEL_19:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_activityType)
   {
-    [v4 setActivityType:?];
-    v4 = v6;
+    [toCopy setActivityType:?];
+    toCopy = v6;
   }
 
   if (self->_placeName)
   {
     [v6 setPlaceName:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_placeType)
   {
     [v6 setPlaceType:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_placeLocation)
   {
     [v6 setPlaceLocation:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 1) = *&self->_dayOfWeekCos;
-    *(v4 + 52) |= 1u;
+    *(toCopy + 1) = *&self->_dayOfWeekCos;
+    *(toCopy + 52) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -528,8 +528,8 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  *(v4 + 2) = *&self->_dayOfWeekSin;
-  *(v4 + 52) |= 2u;
+  *(toCopy + 2) = *&self->_dayOfWeekSin;
+  *(toCopy + 52) |= 2u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -543,8 +543,8 @@ LABEL_12:
   }
 
 LABEL_24:
-  *(v4 + 4) = *&self->_normalizedDuration;
-  *(v4 + 52) |= 8u;
+  *(toCopy + 4) = *&self->_normalizedDuration;
+  *(toCopy + 52) |= 8u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -558,8 +558,8 @@ LABEL_13:
   }
 
 LABEL_25:
-  *(v4 + 6) = *&self->_timeOfDayCos;
-  *(v4 + 52) |= 0x20u;
+  *(toCopy + 6) = *&self->_timeOfDayCos;
+  *(toCopy + 52) |= 0x20u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -573,8 +573,8 @@ LABEL_14:
   }
 
 LABEL_26:
-  *(v4 + 7) = *&self->_timeOfDaySin;
-  *(v4 + 52) |= 0x40u;
+  *(toCopy + 7) = *&self->_timeOfDaySin;
+  *(toCopy + 52) |= 0x40u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -588,8 +588,8 @@ LABEL_15:
   }
 
 LABEL_27:
-  *(v4 + 24) = self->_weekOfYear;
-  *(v4 + 52) |= 0x80u;
+  *(toCopy + 24) = self->_weekOfYear;
+  *(toCopy + 52) |= 0x80u;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -603,8 +603,8 @@ LABEL_16:
   }
 
 LABEL_28:
-  *(v4 + 100) = self->_isWeekend;
-  *(v4 + 52) |= 0x100u;
+  *(toCopy + 100) = self->_isWeekend;
+  *(toCopy + 52) |= 0x100u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -618,34 +618,34 @@ LABEL_17:
   }
 
 LABEL_29:
-  *(v4 + 5) = *&self->_timeOfDayCircularStd;
-  *(v4 + 52) |= 0x10u;
+  *(toCopy + 5) = *&self->_timeOfDayCircularStd;
+  *(toCopy + 52) |= 0x10u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_18:
-    *(v4 + 3) = *&self->_latLongCircularStd;
-    *(v4 + 52) |= 4u;
+    *(toCopy + 3) = *&self->_latLongCircularStd;
+    *(toCopy + 52) |= 4u;
   }
 
 LABEL_19:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_activityType copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_activityType copyWithZone:zone];
   v7 = *(v5 + 64);
   *(v5 + 64) = v6;
 
-  v8 = [(NSString *)self->_placeName copyWithZone:a3];
+  v8 = [(NSString *)self->_placeName copyWithZone:zone];
   v9 = *(v5 + 80);
   *(v5 + 80) = v8;
 
-  v10 = [(NSString *)self->_placeType copyWithZone:a3];
+  v10 = [(NSString *)self->_placeType copyWithZone:zone];
   v11 = *(v5 + 88);
   *(v5 + 88) = v10;
 
-  v12 = [(PCPLocation *)self->_placeLocation copyWithZone:a3];
+  v12 = [(PCPLocation *)self->_placeLocation copyWithZone:zone];
   v13 = *(v5 + 72);
   *(v5 + 72) = v12;
 
@@ -774,16 +774,16 @@ LABEL_10:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_58;
   }
 
   activityType = self->_activityType;
-  if (activityType | *(v4 + 8))
+  if (activityType | *(equalCopy + 8))
   {
     if (![(NSString *)activityType isEqual:?])
     {
@@ -792,7 +792,7 @@ LABEL_10:
   }
 
   placeName = self->_placeName;
-  if (placeName | *(v4 + 10))
+  if (placeName | *(equalCopy + 10))
   {
     if (![(NSString *)placeName isEqual:?])
     {
@@ -801,7 +801,7 @@ LABEL_10:
   }
 
   placeType = self->_placeType;
-  if (placeType | *(v4 + 11))
+  if (placeType | *(equalCopy + 11))
   {
     if (![(NSString *)placeType isEqual:?])
     {
@@ -810,7 +810,7 @@ LABEL_10:
   }
 
   placeLocation = self->_placeLocation;
-  if (placeLocation | *(v4 + 9))
+  if (placeLocation | *(equalCopy + 9))
   {
     if (![(PCPLocation *)placeLocation isEqual:?])
     {
@@ -819,10 +819,10 @@ LABEL_10:
   }
 
   has = self->_has;
-  v10 = *(v4 + 52);
+  v10 = *(equalCopy + 52);
   if (has)
   {
-    if ((v10 & 1) == 0 || self->_dayOfWeekCos != *(v4 + 1))
+    if ((v10 & 1) == 0 || self->_dayOfWeekCos != *(equalCopy + 1))
     {
       goto LABEL_58;
     }
@@ -835,7 +835,7 @@ LABEL_10:
 
   if ((has & 2) != 0)
   {
-    if ((v10 & 2) == 0 || self->_dayOfWeekSin != *(v4 + 2))
+    if ((v10 & 2) == 0 || self->_dayOfWeekSin != *(equalCopy + 2))
     {
       goto LABEL_58;
     }
@@ -848,7 +848,7 @@ LABEL_10:
 
   if ((has & 8) != 0)
   {
-    if ((v10 & 8) == 0 || self->_normalizedDuration != *(v4 + 4))
+    if ((v10 & 8) == 0 || self->_normalizedDuration != *(equalCopy + 4))
     {
       goto LABEL_58;
     }
@@ -861,7 +861,7 @@ LABEL_10:
 
   if ((has & 0x20) != 0)
   {
-    if ((v10 & 0x20) == 0 || self->_timeOfDayCos != *(v4 + 6))
+    if ((v10 & 0x20) == 0 || self->_timeOfDayCos != *(equalCopy + 6))
     {
       goto LABEL_58;
     }
@@ -874,7 +874,7 @@ LABEL_10:
 
   if ((has & 0x40) != 0)
   {
-    if ((v10 & 0x40) == 0 || self->_timeOfDaySin != *(v4 + 7))
+    if ((v10 & 0x40) == 0 || self->_timeOfDaySin != *(equalCopy + 7))
     {
       goto LABEL_58;
     }
@@ -887,7 +887,7 @@ LABEL_10:
 
   if ((has & 0x80) != 0)
   {
-    if ((v10 & 0x80) == 0 || self->_weekOfYear != *(v4 + 24))
+    if ((v10 & 0x80) == 0 || self->_weekOfYear != *(equalCopy + 24))
     {
       goto LABEL_58;
     }
@@ -900,7 +900,7 @@ LABEL_10:
 
   if ((*&self->_has & 0x100) == 0)
   {
-    if ((*(v4 + 52) & 0x100) == 0)
+    if ((*(equalCopy + 52) & 0x100) == 0)
     {
       goto LABEL_42;
     }
@@ -910,21 +910,21 @@ LABEL_58:
     goto LABEL_59;
   }
 
-  if ((*(v4 + 52) & 0x100) == 0)
+  if ((*(equalCopy + 52) & 0x100) == 0)
   {
     goto LABEL_58;
   }
 
-  v11 = *(v4 + 100);
+  v11 = *(equalCopy + 100);
   if (self->_isWeekend)
   {
-    if ((*(v4 + 100) & 1) == 0)
+    if ((*(equalCopy + 100) & 1) == 0)
     {
       goto LABEL_58;
     }
   }
 
-  else if (*(v4 + 100))
+  else if (*(equalCopy + 100))
   {
     goto LABEL_58;
   }
@@ -932,7 +932,7 @@ LABEL_58:
 LABEL_42:
   if ((has & 0x10) != 0)
   {
-    if ((v10 & 0x10) == 0 || self->_timeOfDayCircularStd != *(v4 + 5))
+    if ((v10 & 0x10) == 0 || self->_timeOfDayCircularStd != *(equalCopy + 5))
     {
       goto LABEL_58;
     }
@@ -945,7 +945,7 @@ LABEL_42:
 
   if ((has & 4) != 0)
   {
-    if ((v10 & 4) == 0 || self->_latLongCircularStd != *(v4 + 3))
+    if ((v10 & 4) == 0 || self->_latLongCircularStd != *(equalCopy + 3))
     {
       goto LABEL_58;
     }
@@ -1237,30 +1237,30 @@ LABEL_51:
   return v4 ^ v3 ^ v5 ^ v6 ^ v10 ^ v14 ^ v18 ^ v22 ^ v26 ^ v30 ^ v31 ^ v35 ^ v36;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v8 = v4;
-  if (*(v4 + 8))
+  fromCopy = from;
+  v8 = fromCopy;
+  if (*(fromCopy + 8))
   {
     [(PCPClusterPhenotype *)self setActivityType:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 10))
+  if (*(fromCopy + 10))
   {
     [(PCPClusterPhenotype *)self setPlaceName:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 11))
+  if (*(fromCopy + 11))
   {
     [(PCPClusterPhenotype *)self setPlaceType:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
   placeLocation = self->_placeLocation;
-  v6 = *(v4 + 9);
+  v6 = *(fromCopy + 9);
   if (placeLocation)
   {
     if (!v6)
@@ -1281,14 +1281,14 @@ LABEL_51:
     [(PCPClusterPhenotype *)self setPlaceLocation:?];
   }
 
-  v4 = v8;
+  fromCopy = v8;
 LABEL_13:
-  v7 = *(v4 + 52);
+  v7 = *(fromCopy + 52);
   if (v7)
   {
-    self->_dayOfWeekCos = *(v4 + 1);
+    self->_dayOfWeekCos = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v7 = *(v4 + 52);
+    v7 = *(fromCopy + 52);
     if ((v7 & 2) == 0)
     {
 LABEL_15:
@@ -1306,9 +1306,9 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  self->_dayOfWeekSin = *(v4 + 2);
+  self->_dayOfWeekSin = *(fromCopy + 2);
   *&self->_has |= 2u;
-  v7 = *(v4 + 52);
+  v7 = *(fromCopy + 52);
   if ((v7 & 8) == 0)
   {
 LABEL_16:
@@ -1321,9 +1321,9 @@ LABEL_16:
   }
 
 LABEL_28:
-  self->_normalizedDuration = *(v4 + 4);
+  self->_normalizedDuration = *(fromCopy + 4);
   *&self->_has |= 8u;
-  v7 = *(v4 + 52);
+  v7 = *(fromCopy + 52);
   if ((v7 & 0x20) == 0)
   {
 LABEL_17:
@@ -1336,9 +1336,9 @@ LABEL_17:
   }
 
 LABEL_29:
-  self->_timeOfDayCos = *(v4 + 6);
+  self->_timeOfDayCos = *(fromCopy + 6);
   *&self->_has |= 0x20u;
-  v7 = *(v4 + 52);
+  v7 = *(fromCopy + 52);
   if ((v7 & 0x40) == 0)
   {
 LABEL_18:
@@ -1351,9 +1351,9 @@ LABEL_18:
   }
 
 LABEL_30:
-  self->_timeOfDaySin = *(v4 + 7);
+  self->_timeOfDaySin = *(fromCopy + 7);
   *&self->_has |= 0x40u;
-  v7 = *(v4 + 52);
+  v7 = *(fromCopy + 52);
   if ((v7 & 0x80) == 0)
   {
 LABEL_19:
@@ -1366,9 +1366,9 @@ LABEL_19:
   }
 
 LABEL_31:
-  self->_weekOfYear = *(v4 + 24);
+  self->_weekOfYear = *(fromCopy + 24);
   *&self->_has |= 0x80u;
-  v7 = *(v4 + 52);
+  v7 = *(fromCopy + 52);
   if ((v7 & 0x100) == 0)
   {
 LABEL_20:
@@ -1381,9 +1381,9 @@ LABEL_20:
   }
 
 LABEL_32:
-  self->_isWeekend = *(v4 + 100);
+  self->_isWeekend = *(fromCopy + 100);
   *&self->_has |= 0x100u;
-  v7 = *(v4 + 52);
+  v7 = *(fromCopy + 52);
   if ((v7 & 0x10) == 0)
   {
 LABEL_21:
@@ -1396,12 +1396,12 @@ LABEL_21:
   }
 
 LABEL_33:
-  self->_timeOfDayCircularStd = *(v4 + 5);
+  self->_timeOfDayCircularStd = *(fromCopy + 5);
   *&self->_has |= 0x10u;
-  if ((*(v4 + 52) & 4) != 0)
+  if ((*(fromCopy + 52) & 4) != 0)
   {
 LABEL_22:
-    self->_latLongCircularStd = *(v4 + 3);
+    self->_latLongCircularStd = *(fromCopy + 3);
     *&self->_has |= 4u;
   }
 

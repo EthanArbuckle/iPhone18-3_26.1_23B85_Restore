@@ -1,28 +1,28 @@
 @interface _PSFTZKWOrchestrator
-- (_PSFTZKWOrchestrator)initWithKNNModel:(id)a3 interactionStore:(id)a4;
-- (id)_getBlendingLayerSuggestionsWithContext:(id)a3;
-- (id)_getDirectSuggestionsWithContext:(id)a3 withTimeout:(double)a4;
-- (id)getSuggestionsWithPredictionContext:(id)a3;
-- (void)_createFaceTimeInteractionModelWithKNNModel:(id)a3;
-- (void)_createFallbackInteractionModelWithKNNModel:(id)a3;
-- (void)_createStructuredCalendarModelWithEventStore:(id)a3 contactStore:(id)a4;
-- (void)_createUnstructuredCalendarModelWithEventStore:(id)a3 contactStore:(id)a4 interactionStore:(id)a5;
-- (void)_createUnstructuredReminderModelWithEventStore:(id)a3 contactStore:(id)a4 interactionStore:(id)a5;
+- (_PSFTZKWOrchestrator)initWithKNNModel:(id)model interactionStore:(id)store;
+- (id)_getBlendingLayerSuggestionsWithContext:(id)context;
+- (id)_getDirectSuggestionsWithContext:(id)context withTimeout:(double)timeout;
+- (id)getSuggestionsWithPredictionContext:(id)context;
+- (void)_createFaceTimeInteractionModelWithKNNModel:(id)model;
+- (void)_createFallbackInteractionModelWithKNNModel:(id)model;
+- (void)_createStructuredCalendarModelWithEventStore:(id)store contactStore:(id)contactStore;
+- (void)_createUnstructuredCalendarModelWithEventStore:(id)store contactStore:(id)contactStore interactionStore:(id)interactionStore;
+- (void)_createUnstructuredReminderModelWithEventStore:(id)store contactStore:(id)contactStore interactionStore:(id)interactionStore;
 - (void)populateCaches;
-- (void)updateConfigWithTrialData:(id)a3;
+- (void)updateConfigWithTrialData:(id)data;
 @end
 
 @implementation _PSFTZKWOrchestrator
 
-- (void)_createStructuredCalendarModelWithEventStore:(id)a3 contactStore:(id)a4
+- (void)_createStructuredCalendarModelWithEventStore:(id)store contactStore:(id)contactStore
 {
-  v6 = a4;
-  v7 = a3;
-  v15 = [[_PSCalendarEventPredictor alloc] initWithEventStore:v7 contactStore:v6];
+  contactStoreCopy = contactStore;
+  storeCopy = store;
+  v15 = [[_PSCalendarEventPredictor alloc] initWithEventStore:storeCopy contactStore:contactStoreCopy];
 
   v8 = [_PSCalendarEventPredictorDelegateWrapper alloc];
-  v9 = [(_PSFTZKWConfig *)self->_config calendarEventConfig];
-  v10 = [(_PSCalendarEventPredictorDelegateWrapper *)v8 initWithCalendarEventPredictor:v15 config:v9];
+  calendarEventConfig = [(_PSFTZKWConfig *)self->_config calendarEventConfig];
+  v10 = [(_PSCalendarEventPredictorDelegateWrapper *)v8 initWithCalendarEventPredictor:v15 config:calendarEventConfig];
   calendarDelegateWrapper = self->_calendarDelegateWrapper;
   self->_calendarDelegateWrapper = v10;
 
@@ -39,15 +39,15 @@
   }
 }
 
-- (void)_createUnstructuredCalendarModelWithEventStore:(id)a3 contactStore:(id)a4 interactionStore:(id)a5
+- (void)_createUnstructuredCalendarModelWithEventStore:(id)store contactStore:(id)contactStore interactionStore:(id)interactionStore
 {
-  v7 = a5;
-  v8 = a3;
-  v16 = [[_PSSuggestionFromTextPredictor alloc] initWithEventStore:v8 interactionStore:v7];
+  interactionStoreCopy = interactionStore;
+  storeCopy = store;
+  v16 = [[_PSSuggestionFromTextPredictor alloc] initWithEventStore:storeCopy interactionStore:interactionStoreCopy];
 
   v9 = [_PSSuggestionFromTextPredictorDelegateWrapper alloc];
-  v10 = [(_PSFTZKWConfig *)self->_config unstructuredCalendarConfig];
-  v11 = [(_PSSuggestionFromTextPredictorDelegateWrapper *)v9 initWithTextPredictor:v16 calendarConfig:v10];
+  unstructuredCalendarConfig = [(_PSFTZKWConfig *)self->_config unstructuredCalendarConfig];
+  v11 = [(_PSSuggestionFromTextPredictorDelegateWrapper *)v9 initWithTextPredictor:v16 calendarConfig:unstructuredCalendarConfig];
   unstructuredCalendarDelegateWrapper = self->_unstructuredCalendarDelegateWrapper;
   self->_unstructuredCalendarDelegateWrapper = v11;
 
@@ -61,15 +61,15 @@
   }
 }
 
-- (void)_createUnstructuredReminderModelWithEventStore:(id)a3 contactStore:(id)a4 interactionStore:(id)a5
+- (void)_createUnstructuredReminderModelWithEventStore:(id)store contactStore:(id)contactStore interactionStore:(id)interactionStore
 {
-  v7 = a5;
-  v8 = a3;
-  v16 = [[_PSSuggestionFromTextPredictor alloc] initWithEventStore:v8 interactionStore:v7];
+  interactionStoreCopy = interactionStore;
+  storeCopy = store;
+  v16 = [[_PSSuggestionFromTextPredictor alloc] initWithEventStore:storeCopy interactionStore:interactionStoreCopy];
 
   v9 = [_PSSuggestionFromTextPredictorDelegateWrapper alloc];
-  v10 = [(_PSFTZKWConfig *)self->_config unstructuredRemindersConfig];
-  v11 = [(_PSSuggestionFromTextPredictorDelegateWrapper *)v9 initWithTextPredictor:v16 remindersConfig:v10];
+  unstructuredRemindersConfig = [(_PSFTZKWConfig *)self->_config unstructuredRemindersConfig];
+  v11 = [(_PSSuggestionFromTextPredictorDelegateWrapper *)v9 initWithTextPredictor:v16 remindersConfig:unstructuredRemindersConfig];
   unstructuredRemindersDelegateWrapper = self->_unstructuredRemindersDelegateWrapper;
   self->_unstructuredRemindersDelegateWrapper = v11;
 
@@ -83,12 +83,12 @@
   }
 }
 
-- (void)_createFaceTimeInteractionModelWithKNNModel:(id)a3
+- (void)_createFaceTimeInteractionModelWithKNNModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v5 = [_PSKNNZKWATXDelegateWrapper alloc];
-  v6 = [(_PSFTZKWConfig *)self->_config faceTimeInteractionsConfig];
-  v7 = [(_PSKNNZKWATXDelegateWrapper *)v5 initWithKNNModel:v4 primaryInteractionsConfig:v6];
+  faceTimeInteractionsConfig = [(_PSFTZKWConfig *)self->_config faceTimeInteractionsConfig];
+  v7 = [(_PSKNNZKWATXDelegateWrapper *)v5 initWithKNNModel:modelCopy primaryInteractionsConfig:faceTimeInteractionsConfig];
 
   faceTimeInteractionModelDelegateWrapper = self->_faceTimeInteractionModelDelegateWrapper;
   self->_faceTimeInteractionModelDelegateWrapper = v7;
@@ -103,12 +103,12 @@
   }
 }
 
-- (void)_createFallbackInteractionModelWithKNNModel:(id)a3
+- (void)_createFallbackInteractionModelWithKNNModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v5 = [_PSKNNZKWATXDelegateWrapper alloc];
-  v6 = [(_PSFTZKWConfig *)self->_config fallbackInteractionsConfig];
-  v7 = [(_PSKNNZKWATXDelegateWrapper *)v5 initWithKNNModel:v4 fallbackInteractionConfig:v6];
+  fallbackInteractionsConfig = [(_PSFTZKWConfig *)self->_config fallbackInteractionsConfig];
+  v7 = [(_PSKNNZKWATXDelegateWrapper *)v5 initWithKNNModel:modelCopy fallbackInteractionConfig:fallbackInteractionsConfig];
 
   fallbackInteractionModelDelegateWrapper = self->_fallbackInteractionModelDelegateWrapper;
   self->_fallbackInteractionModelDelegateWrapper = v7;
@@ -123,10 +123,10 @@
   }
 }
 
-- (_PSFTZKWOrchestrator)initWithKNNModel:(id)a3 interactionStore:(id)a4
+- (_PSFTZKWOrchestrator)initWithKNNModel:(id)model interactionStore:(id)store
 {
-  v6 = a3;
-  v7 = a4;
+  modelCopy = model;
+  storeCopy = store;
   v22.receiver = self;
   v22.super_class = _PSFTZKWOrchestrator;
   v8 = [(_PSFTZKWOrchestrator *)&v22 init];
@@ -140,7 +140,7 @@
     config = v8->_config;
     v8->_config = v11;
 
-    objc_storeStrong(&v8->_interactionStore, a4);
+    objc_storeStrong(&v8->_interactionStore, store);
     v28 = 0;
     v29 = &v28;
     v30 = 0x2050000000;
@@ -180,10 +180,10 @@
     _Block_object_dispose(&v28, 8);
     v18 = objc_opt_new();
     [(_PSFTZKWOrchestrator *)v8 _createStructuredCalendarModelWithEventStore:v15 contactStore:v18];
-    [(_PSFTZKWOrchestrator *)v8 _createUnstructuredCalendarModelWithEventStore:v15 contactStore:v18 interactionStore:v7];
-    [(_PSFTZKWOrchestrator *)v8 _createUnstructuredReminderModelWithEventStore:v15 contactStore:v18 interactionStore:v7];
-    [(_PSFTZKWOrchestrator *)v8 _createFaceTimeInteractionModelWithKNNModel:v6];
-    [(_PSFTZKWOrchestrator *)v8 _createFallbackInteractionModelWithKNNModel:v6];
+    [(_PSFTZKWOrchestrator *)v8 _createUnstructuredCalendarModelWithEventStore:v15 contactStore:v18 interactionStore:storeCopy];
+    [(_PSFTZKWOrchestrator *)v8 _createUnstructuredReminderModelWithEventStore:v15 contactStore:v18 interactionStore:storeCopy];
+    [(_PSFTZKWOrchestrator *)v8 _createFaceTimeInteractionModelWithKNNModel:modelCopy];
+    [(_PSFTZKWOrchestrator *)v8 _createFallbackInteractionModelWithKNNModel:modelCopy];
     v19 = [MEMORY[0x1E69C5D10] autoreleasingSerialQueueWithLabel:"ps_ft_zkw_orchestrator"];
     queue = v8->_queue;
     v8->_queue = v19;
@@ -192,7 +192,7 @@
   return v8;
 }
 
-- (void)updateConfigWithTrialData:(id)a3
+- (void)updateConfigWithTrialData:(id)data
 {
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -203,9 +203,9 @@
   dispatch_sync(queue, block);
 }
 
-- (id)_getBlendingLayerSuggestionsWithContext:(id)a3
+- (id)_getBlendingLayerSuggestionsWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2050000000;
@@ -226,7 +226,7 @@
 
   v5 = v4;
   _Block_object_dispose(&v23, 8);
-  v6 = [[v4 alloc] initWithOriginatorId:@"PeopleSuggester" consumerSubType:42 psPredictionContext:v3 timeout:5.0];
+  v6 = [[v4 alloc] initWithOriginatorId:@"PeopleSuggester" consumerSubType:42 psPredictionContext:contextCopy timeout:5.0];
   v23 = 0;
   v24 = &v23;
   v25 = 0x2050000000;
@@ -295,8 +295,8 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v13 = [v10 oneByOneSuggestions];
-  v14 = [v13 _pas_mappedArrayWithTransform:&__block_literal_global_36];
+  oneByOneSuggestions = [v10 oneByOneSuggestions];
+  v14 = [oneByOneSuggestions _pas_mappedArrayWithTransform:&__block_literal_global_36];
 
   v15 = MEMORY[0x1E695E0F0];
   if (v14)
@@ -310,9 +310,9 @@ LABEL_17:
   return v16;
 }
 
-- (id)_getDirectSuggestionsWithContext:(id)a3 withTimeout:(double)a4
+- (id)_getDirectSuggestionsWithContext:(id)context withTimeout:(double)timeout
 {
-  v6 = a3;
+  contextCopy = context;
   v7 = objc_opt_new();
   [v7 setObject:self->_calendarDelegateWrapper forKeyedSubscript:&unk_1F2D8BBF8];
   [v7 setObject:self->_unstructuredCalendarDelegateWrapper forKeyedSubscript:&unk_1F2D8BC10];
@@ -347,12 +347,12 @@ LABEL_17:
   v27 = &unk_1F2D8C588;
   v22 = v7;
   v28 = v22;
-  v12 = v6;
+  v12 = contextCopy;
   v29 = v12;
   v31 = &v33;
   v13 = v8;
   v30 = v13;
-  v32 = a4;
+  timeoutCopy = timeout;
   v14 = dispatch_block_create(DISPATCH_BLOCK_ASSIGN_CURRENT, &block);
   if (_getDirectSuggestionsWithContext_withTimeout___pasOnceToken10 != -1)
   {
@@ -361,14 +361,14 @@ LABEL_17:
 
   v15 = _getDirectSuggestionsWithContext_withTimeout___pasExprOnceResult;
   dispatch_async(v15, v14);
-  if (a4 <= 0.0)
+  if (timeout <= 0.0)
   {
     v16 = 0;
   }
 
-  else if (a4 <= 9223372040.0)
+  else if (timeout <= 9223372040.0)
   {
-    v16 = dispatch_time(0, (a4 * 1000000000.0));
+    v16 = dispatch_time(0, (timeout * 1000000000.0));
   }
 
   else
@@ -393,9 +393,9 @@ LABEL_17:
   return v17;
 }
 
-- (id)getSuggestionsWithPredictionContext:(id)a3
+- (id)getSuggestionsWithPredictionContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -407,10 +407,10 @@ LABEL_17:
   block[1] = 3221225472;
   block[2] = __60___PSFTZKWOrchestrator_getSuggestionsWithPredictionContext___block_invoke;
   block[3] = &unk_1E7C253F8;
-  v10 = v4;
+  v10 = contextCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = contextCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 

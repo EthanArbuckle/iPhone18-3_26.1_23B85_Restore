@@ -1,84 +1,84 @@
 @interface EKDuetSignalEventSerializer
-+ (id)componentsForDate:(id)a3 inTimeZone:(id)a4;
-+ (id)serializedEventWithEvent:(id)a3;
++ (id)componentsForDate:(id)date inTimeZone:(id)zone;
++ (id)serializedEventWithEvent:(id)event;
 @end
 
 @implementation EKDuetSignalEventSerializer
 
-+ (id)serializedEventWithEvent:(id)a3
++ (id)serializedEventWithEvent:(id)event
 {
   v82 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF90] dictionary];
-  v5 = [v3 title];
+  eventCopy = event;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  title = [eventCopy title];
 
-  if (v5)
+  if (title)
   {
-    v6 = [v3 title];
-    [v4 setObject:v6 forKey:@"title"];
+    title2 = [eventCopy title];
+    [dictionary setObject:title2 forKey:@"title"];
   }
 
-  v7 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v3, "isAllDay")}];
-  [v4 setObject:v7 forKey:@"isAllDay"];
+  v7 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(eventCopy, "isAllDay")}];
+  [dictionary setObject:v7 forKey:@"isAllDay"];
 
-  v8 = [v3 startDate];
+  startDate = [eventCopy startDate];
 
-  if (v8)
+  if (startDate)
   {
-    v9 = [v3 startDate];
-    v10 = [v3 startTimeZone];
-    v11 = [a1 componentsForDate:v9 inTimeZone:v10];
-    [v4 setObject:v11 forKey:@"startDate"];
+    startDate2 = [eventCopy startDate];
+    startTimeZone = [eventCopy startTimeZone];
+    v11 = [self componentsForDate:startDate2 inTimeZone:startTimeZone];
+    [dictionary setObject:v11 forKey:@"startDate"];
   }
 
-  v12 = [v3 endDateUnadjustedForLegacyClients];
+  endDateUnadjustedForLegacyClients = [eventCopy endDateUnadjustedForLegacyClients];
 
-  if (v12)
+  if (endDateUnadjustedForLegacyClients)
   {
-    v13 = [v3 endDateUnadjustedForLegacyClients];
-    v14 = [v3 endTimeZone];
-    v15 = [a1 componentsForDate:v13 inTimeZone:v14];
-    [v4 setObject:v15 forKey:@"endDate"];
+    endDateUnadjustedForLegacyClients2 = [eventCopy endDateUnadjustedForLegacyClients];
+    endTimeZone = [eventCopy endTimeZone];
+    v15 = [self componentsForDate:endDateUnadjustedForLegacyClients2 inTimeZone:endTimeZone];
+    [dictionary setObject:v15 forKey:@"endDate"];
   }
 
-  v16 = [v3 location];
+  location = [eventCopy location];
 
-  if (v16)
+  if (location)
   {
-    v17 = [v3 location];
-    [v4 setObject:v17 forKey:@"location"];
+    location2 = [eventCopy location];
+    [dictionary setObject:location2 forKey:@"location"];
   }
 
-  v18 = [v3 attendees];
+  attendees = [eventCopy attendees];
 
-  if (v18)
+  if (attendees)
   {
     v19 = MEMORY[0x1E695DF70];
-    v20 = [v3 attendees];
-    v21 = [v19 arrayWithCapacity:{objc_msgSend(v20, "count")}];
+    attendees2 = [eventCopy attendees];
+    v21 = [v19 arrayWithCapacity:{objc_msgSend(attendees2, "count")}];
 
-    v22 = [v3 attendees];
+    attendees3 = [eventCopy attendees];
     v78[0] = MEMORY[0x1E69E9820];
     v78[1] = 3221225472;
     v78[2] = __56__EKDuetSignalEventSerializer_serializedEventWithEvent___block_invoke;
     v78[3] = &unk_1E77FFD90;
     v79 = v21;
     v23 = v21;
-    [v22 enumerateObjectsUsingBlock:v78];
+    [attendees3 enumerateObjectsUsingBlock:v78];
 
-    [v4 setObject:v23 forKey:@"attendees"];
+    [dictionary setObject:v23 forKey:@"attendees"];
   }
 
-  v24 = [v3 recurrenceRules];
+  recurrenceRules = [eventCopy recurrenceRules];
 
-  v60 = v3;
-  if (v24)
+  v60 = eventCopy;
+  if (recurrenceRules)
   {
     v76 = 0u;
     v77 = 0u;
     v74 = 0u;
     v75 = 0u;
-    obj = [v3 recurrenceRules];
+    obj = [eventCopy recurrenceRules];
     v68 = [obj countByEnumeratingWithState:&v74 objects:v81 count:16];
     if (v68)
     {
@@ -98,15 +98,15 @@
           v29 = [MEMORY[0x1E696AEC0] stringWithFormat:@"rrule_%d_interval", v25];
           v30 = [MEMORY[0x1E696AEC0] stringWithFormat:@"rrule_%d_end", v25];
           v31 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v27, "frequency")}];
-          [v4 setObject:v31 forKey:v28];
+          [dictionary setObject:v31 forKey:v28];
 
           v32 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v27, "interval")}];
-          [v4 setObject:v32 forKey:v29];
+          [dictionary setObject:v32 forKey:v29];
 
           v33 = MEMORY[0x1E696AD98];
-          v34 = [v27 recurrenceEnd];
-          v35 = [v33 numberWithInt:v34 == 0];
-          [v4 setObject:v35 forKey:v30];
+          recurrenceEnd = [v27 recurrenceEnd];
+          v35 = [v33 numberWithInt:recurrenceEnd == 0];
+          [dictionary setObject:v35 forKey:v30];
 
           v25 = (v25 + 1);
         }
@@ -117,19 +117,19 @@
       while (v68);
     }
 
-    v3 = v60;
+    eventCopy = v60;
   }
 
-  v36 = [v3 alarms];
+  alarms = [eventCopy alarms];
 
-  if (v36)
+  if (alarms)
   {
     v72 = 0u;
     v73 = 0u;
     v70 = 0u;
     v71 = 0u;
-    v61 = [v3 alarms];
-    v66 = [v61 countByEnumeratingWithState:&v70 objects:v80 count:16];
+    alarms2 = [eventCopy alarms];
+    v66 = [alarms2 countByEnumeratingWithState:&v70 objects:v80 count:16];
     if (v66)
     {
       v37 = 0;
@@ -140,7 +140,7 @@
         {
           if (*v71 != obja)
           {
-            objc_enumerationMutation(v61);
+            objc_enumerationMutation(alarms2);
           }
 
           v39 = *(*(&v70 + 1) + 8 * j);
@@ -148,9 +148,9 @@
           v67 = [MEMORY[0x1E696AEC0] stringWithFormat:@"alarm_%d_relativeOffset", v37];
           v40 = [MEMORY[0x1E696AEC0] stringWithFormat:@"alarm_%d_locationTitle", v37];
           v41 = [MEMORY[0x1E696AEC0] stringWithFormat:@"alarm_%d_proximity", v37];
-          v42 = [v39 absoluteDate];
+          absoluteDate = [v39 absoluteDate];
 
-          if (v42)
+          if (absoluteDate)
           {
             [v39 absoluteDate];
           }
@@ -160,25 +160,25 @@
             [MEMORY[0x1E695DF00] distantPast];
           }
           v43 = ;
-          v44 = [MEMORY[0x1E695DFE8] systemTimeZone];
-          v45 = [a1 componentsForDate:v43 inTimeZone:v44];
+          systemTimeZone = [MEMORY[0x1E695DFE8] systemTimeZone];
+          v45 = [self componentsForDate:v43 inTimeZone:systemTimeZone];
 
-          [v4 setObject:v45 forKey:v69];
+          [dictionary setObject:v45 forKey:v69];
           v46 = MEMORY[0x1E696AD98];
           [v39 relativeOffset];
           v47 = [v46 numberWithDouble:?];
-          [v4 setObject:v47 forKey:v67];
+          [dictionary setObject:v47 forKey:v67];
 
-          v48 = [v39 structuredLocation];
-          if (v48)
+          structuredLocation = [v39 structuredLocation];
+          if (structuredLocation)
           {
-            v49 = [v39 structuredLocation];
-            v50 = [v49 title];
-            v51 = v4;
-            v52 = v50;
-            if (v50)
+            structuredLocation2 = [v39 structuredLocation];
+            title3 = [structuredLocation2 title];
+            v51 = dictionary;
+            v52 = title3;
+            if (title3)
             {
-              v53 = v50;
+              v53 = title3;
             }
 
             else
@@ -191,38 +191,38 @@
 
           else
           {
-            [v4 setObject:&stru_1F1B49D68 forKey:v40];
-            v51 = v4;
+            [dictionary setObject:&stru_1F1B49D68 forKey:v40];
+            v51 = dictionary;
           }
 
           v54 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v39, "proximity")}];
           [v51 setObject:v54 forKey:v41];
 
           v37 = (v37 + 1);
-          v4 = v51;
+          dictionary = v51;
         }
 
-        v66 = [v61 countByEnumeratingWithState:&v70 objects:v80 count:16];
+        v66 = [alarms2 countByEnumeratingWithState:&v70 objects:v80 count:16];
       }
 
       while (v66);
     }
 
-    v3 = v60;
+    eventCopy = v60;
   }
 
-  v55 = [v3 calendar];
+  calendar = [eventCopy calendar];
 
-  if (v55)
+  if (calendar)
   {
-    v56 = [v3 calendar];
-    v57 = [v56 calendarIdentifier];
-    [v4 setObject:v57 forKey:@"calendar"];
+    calendar2 = [eventCopy calendar];
+    calendarIdentifier = [calendar2 calendarIdentifier];
+    [dictionary setObject:calendarIdentifier forKey:@"calendar"];
   }
 
   v58 = *MEMORY[0x1E69E9840];
 
-  return v4;
+  return dictionary;
 }
 
 void __56__EKDuetSignalEventSerializer_serializedEventWithEvent___block_invoke(uint64_t a1, void *a2)
@@ -238,16 +238,16 @@ void __56__EKDuetSignalEventSerializer_serializedEventWithEvent___block_invoke(u
   }
 }
 
-+ (id)componentsForDate:(id)a3 inTimeZone:(id)a4
++ (id)componentsForDate:(id)date inTimeZone:(id)zone
 {
   v5 = MEMORY[0x1E695DEE8];
-  v6 = a4;
-  v7 = a3;
+  zoneCopy = zone;
+  dateCopy = date;
   v8 = [v5 alloc];
   v9 = [v8 initWithCalendarIdentifier:*MEMORY[0x1E695D850]];
-  [v9 setTimeZone:v6];
+  [v9 setTimeZone:zoneCopy];
 
-  v10 = [v9 components:3145854 fromDate:v7];
+  v10 = [v9 components:3145854 fromDate:dateCopy];
 
   return v10;
 }

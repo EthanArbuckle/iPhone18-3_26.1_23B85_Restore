@@ -1,24 +1,24 @@
 @interface _EXSceneSession
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)shouldAcceptXPCConnection:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)shouldAcceptXPCConnection:(id)connection;
 - (NSXPCConnection)sessionXPCConnection;
 - (_EXExtension)extension;
-- (_EXSceneSession)initWithExtension:(id)a3;
-- (id)makeConfigurationWithParameters:(id)a3;
+- (_EXSceneSession)initWithExtension:(id)extension;
+- (id)makeConfigurationWithParameters:(id)parameters;
 - (id)makeConnectionResponse;
-- (id)makeSceneWithError:(id *)a3;
-- (id)makeXPCConnectionWithError:(id *)a3;
-- (void)connectSceneSessionWithRequest:(id)a3 reply:(id)a4;
-- (void)connectToScene:(id)a3;
+- (id)makeSceneWithError:(id *)error;
+- (id)makeXPCConnectionWithError:(id *)error;
+- (void)connectSceneSessionWithRequest:(id)request reply:(id)reply;
+- (void)connectToScene:(id)scene;
 - (void)dealloc;
 - (void)invalidate;
 @end
 
 @implementation _EXSceneSession
 
-- (_EXSceneSession)initWithExtension:(id)a3
+- (_EXSceneSession)initWithExtension:(id)extension
 {
-  v4 = a3;
+  extensionCopy = extension;
   v10.receiver = self;
   v10.super_class = _EXSceneSession;
   v5 = [(_EXSceneSession *)&v10 init];
@@ -30,10 +30,10 @@
       [_EXSceneSession initWithExtension:];
     }
 
-    objc_storeWeak(&v5->_extension, v4);
-    v7 = [MEMORY[0x1E696B0D8] anonymousListener];
+    objc_storeWeak(&v5->_extension, extensionCopy);
+    anonymousListener = [MEMORY[0x1E696B0D8] anonymousListener];
     sceneConnectionListener = v5->_sceneConnectionListener;
-    v5->_sceneConnectionListener = v7;
+    v5->_sceneConnectionListener = anonymousListener;
 
     [(NSXPCListener *)v5->_sceneConnectionListener setDelegate:v5];
   }
@@ -49,7 +49,7 @@
   {
     identifier = self->_identifier;
     *buf = 138412546;
-    v13 = self;
+    selfCopy = self;
     v14 = 2114;
     v15 = identifier;
     _os_log_impl(&dword_1847D1000, v3, OS_LOG_TYPE_DEFAULT, "%@ deallocated with identifier: '%{public}@'", buf, 0x16u);
@@ -75,18 +75,18 @@
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a4;
-  v7 = a3;
+  connectionCopy = connection;
+  listenerCopy = listener;
   v8 = _EXDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [_EXSceneSession listener:v6 shouldAcceptNewConnection:?];
+    [_EXSceneSession listener:connectionCopy shouldAcceptNewConnection:?];
   }
 
   sceneConnectionListener = self->_sceneConnectionListener;
-  if (sceneConnectionListener == v7 && ([(_EXSceneSession *)self setSceneXPCConnection:v6], scene = self->_scene, (objc_opt_respondsToSelector() & 1) != 0) && [(_EXScene *)self->_scene shouldAcceptConnection:v6])
+  if (sceneConnectionListener == listenerCopy && ([(_EXSceneSession *)self setSceneXPCConnection:connectionCopy], scene = self->_scene, (objc_opt_respondsToSelector() & 1) != 0) && [(_EXScene *)self->_scene shouldAcceptConnection:connectionCopy])
   {
     v11 = _EXDefaultLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -105,30 +105,30 @@
   return v12;
 }
 
-- (BOOL)shouldAcceptXPCConnection:(id)a3
+- (BOOL)shouldAcceptXPCConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   WeakRetained = objc_loadWeakRetained(&self->_sessionXPCConnection);
 
   if (!WeakRetained)
   {
-    [v4 setExportedObject:self];
+    [connectionCopy setExportedObject:self];
     v6 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1EF2A1500];
-    [v4 setExportedInterface:v6];
+    [connectionCopy setExportedInterface:v6];
 
     v7 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1EF2ABF98];
-    [v4 setRemoteObjectInterface:v7];
+    [connectionCopy setRemoteObjectInterface:v7];
 
-    [v4 _setQueue:MEMORY[0x1E69E96A0]];
+    [connectionCopy _setQueue:MEMORY[0x1E69E96A0]];
     objc_initWeak(&location, self);
     v9 = MEMORY[0x1E69E9820];
     v10 = 3221225472;
     v11 = __45___EXSceneSession_shouldAcceptXPCConnection___block_invoke;
     v12 = &unk_1E6E4DDB8;
     objc_copyWeak(&v13, &location);
-    [v4 setInvalidationHandler:&v9];
-    [(_EXSceneSession *)self setSessionXPCConnection:v4, v9, v10, v11, v12];
-    [v4 activate];
+    [connectionCopy setInvalidationHandler:&v9];
+    [(_EXSceneSession *)self setSessionXPCConnection:connectionCopy, v9, v10, v11, v12];
+    [connectionCopy activate];
     objc_destroyWeak(&v13);
     objc_destroyWeak(&location);
   }
@@ -136,15 +136,15 @@
   return WeakRetained == 0;
 }
 
-- (id)makeConfigurationWithParameters:(id)a3
+- (id)makeConfigurationWithParameters:(id)parameters
 {
-  v3 = a3;
-  v4 = [[_EXSceneConfiguration alloc] initWithParameters:v3];
+  parametersCopy = parameters;
+  v4 = [[_EXSceneConfiguration alloc] initWithParameters:parametersCopy];
 
   return v4;
 }
 
-- (id)makeSceneWithError:(id *)a3
+- (id)makeSceneWithError:(id *)error
 {
   v4 = _EXDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -152,9 +152,9 @@
     [_EXSceneSession makeSceneWithError:];
   }
 
-  v5 = [(_EXSceneSession *)self configuration];
-  v6 = [(_EXSceneSession *)self extension];
-  [v6 prepareForSceneConnectionWithConfiguration:v5];
+  configuration = [(_EXSceneSession *)self configuration];
+  extension = [(_EXSceneSession *)self extension];
+  [extension prepareForSceneConnectionWithConfiguration:configuration];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -162,20 +162,20 @@
     v9 = _EXDefaultLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
     {
-      [(_EXSceneSession *)v5 makeSceneWithError:v9];
+      [(_EXSceneSession *)configuration makeSceneWithError:v9];
     }
 
     goto LABEL_33;
   }
 
-  v7 = class_conformsToProtocol([v5 sceneClass], &unk_1EF2A3888);
+  v7 = class_conformsToProtocol([configuration sceneClass], &unk_1EF2A3888);
   v8 = _EXDefaultLog();
   v9 = v8;
   if (!v7)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
     {
-      [_EXSceneSession makeSceneWithError:v5];
+      [_EXSceneSession makeSceneWithError:configuration];
     }
 
     goto LABEL_33;
@@ -183,10 +183,10 @@
 
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [_EXSceneSession makeSceneWithError:v5];
+    [_EXSceneSession makeSceneWithError:configuration];
   }
 
-  v10 = objc_alloc_init([v5 sceneClass]);
+  v10 = objc_alloc_init([configuration sceneClass]);
   v11 = _EXDefaultLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
@@ -198,7 +198,7 @@
     v9 = _EXDefaultLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
     {
-      [_EXSceneSession makeSceneWithError:v5];
+      [_EXSceneSession makeSceneWithError:configuration];
     }
 
     goto LABEL_33;
@@ -206,8 +206,8 @@
 
   if (([v10 conformsToProtocol:&unk_1EF2A3888] & 1) == 0)
   {
-    v5 = _EXDefaultLog();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
+    configuration = _EXDefaultLog();
+    if (os_log_type_enabled(configuration, OS_LOG_TYPE_FAULT))
     {
       [_EXSceneSession makeSceneWithError:];
     }
@@ -217,7 +217,7 @@ LABEL_31:
     v9 = _EXDefaultLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
     {
-      [_EXSceneSession makeSceneWithError:v5];
+      [_EXSceneSession makeSceneWithError:configuration];
     }
 
 LABEL_33:
@@ -226,15 +226,15 @@ LABEL_33:
     return result;
   }
 
-  if ([v5 sceneDelegateClass]&& (objc_opt_respondsToSelector() & 1) != 0)
+  if ([configuration sceneDelegateClass]&& (objc_opt_respondsToSelector() & 1) != 0)
   {
     v12 = _EXDefaultLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      [_EXSceneSession makeSceneWithError:v5];
+      [_EXSceneSession makeSceneWithError:configuration];
     }
 
-    v13 = objc_alloc_init([v5 sceneDelegateClass]);
+    v13 = objc_alloc_init([configuration sceneDelegateClass]);
     v14 = _EXDefaultLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
@@ -256,22 +256,22 @@ LABEL_19:
   return v10;
 }
 
-- (void)connectToScene:(id)a3
+- (void)connectToScene:(id)scene
 {
-  v4 = a3;
-  if (v4)
+  sceneCopy = scene;
+  if (sceneCopy)
   {
-    v8 = v4;
-    v5 = [(_EXSceneSession *)self scene];
+    v8 = sceneCopy;
+    scene = [(_EXSceneSession *)self scene];
     v6 = objc_opt_respondsToSelector();
 
-    v4 = v8;
+    sceneCopy = v8;
     if (v6)
     {
-      v7 = [(_EXSceneSession *)self scene];
-      [v7 connectToSession:self];
+      scene2 = [(_EXSceneSession *)self scene];
+      [scene2 connectToSession:self];
 
-      v4 = v8;
+      sceneCopy = v8;
     }
   }
 }
@@ -279,31 +279,31 @@ LABEL_19:
 - (id)makeConnectionResponse
 {
   v3 = objc_alloc_init(_EXSceneSessionConnectionResponse);
-  v4 = [(_EXSceneSession *)self sceneConnectionListener];
-  v5 = [v4 endpoint];
-  [(_EXSceneSessionConnectionResponse *)v3 setSceneEndpoint:v5];
+  sceneConnectionListener = [(_EXSceneSession *)self sceneConnectionListener];
+  endpoint = [sceneConnectionListener endpoint];
+  [(_EXSceneSessionConnectionResponse *)v3 setSceneEndpoint:endpoint];
 
   return v3;
 }
 
-- (void)connectSceneSessionWithRequest:(id)a3 reply:(id)a4
+- (void)connectSceneSessionWithRequest:(id)request reply:(id)reply
 {
   v55 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  replyCopy = reply;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   v8 = _EXDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 identifier];
+    identifier = [requestCopy identifier];
     *buf = 138543362;
-    v54 = v9;
+    v54 = identifier;
     _os_log_impl(&dword_1847D1000, v8, OS_LOG_TYPE_DEFAULT, "Received UI session %{public}@ root view controller from UIKit", buf, 0xCu);
   }
 
-  v10 = [v6 identifier];
+  identifier2 = [requestCopy identifier];
   identifier = self->_identifier;
-  self->_identifier = v10;
+  self->_identifier = identifier2;
 
   v12 = _EXSignpostLog();
   v13 = os_signpost_id_make_with_pointer(v12, self->_identifier);
@@ -325,25 +325,25 @@ LABEL_19:
   if ([(_EXSceneSession *)self signpost]&& os_signpost_enabled(v17))
   {
     v18 = v17;
-    v19 = [(_EXSceneSession *)self signpost];
-    if (v19 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v18))
+    signpost = [(_EXSceneSession *)self signpost];
+    if (signpost - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v18))
     {
       *buf = 0;
-      _os_signpost_emit_with_name_impl(&dword_1847D1000, v18, OS_SIGNPOST_EVENT, v19, "extensionkit-lifecycle", "[EXSceneSession shouldAcceptXPCConnection:]", buf, 2u);
+      _os_signpost_emit_with_name_impl(&dword_1847D1000, v18, OS_SIGNPOST_EVENT, signpost, "extensionkit-lifecycle", "[EXSceneSession shouldAcceptXPCConnection:]", buf, 2u);
     }
   }
 
-  v20 = [v6 parameters];
-  v21 = [(_EXSceneSession *)self makeConfigurationWithParameters:v20];
+  parameters = [requestCopy parameters];
+  v21 = [(_EXSceneSession *)self makeConfigurationWithParameters:parameters];
   configuration = self->_configuration;
   self->_configuration = v21;
 
-  v23 = [v6 hostEndpoint];
+  hostEndpoint = [requestCopy hostEndpoint];
   hostEndpoint = self->_hostEndpoint;
-  self->_hostEndpoint = v23;
+  self->_hostEndpoint = hostEndpoint;
 
-  v25 = [(_EXSceneSession *)self extension];
-  [v25 prepareForSceneConnectionWithConfiguration:self->_configuration];
+  extension = [(_EXSceneSession *)self extension];
+  [extension prepareForSceneConnectionWithConfiguration:self->_configuration];
 
   v26 = +[_EXSceneSessionManager sharedInstance];
   [v26 addSession:self];
@@ -352,11 +352,11 @@ LABEL_19:
   if ([(_EXSceneSession *)self signpost]&& os_signpost_enabled(v27))
   {
     v28 = v27;
-    v29 = [(_EXSceneSession *)self signpost];
-    if (v29 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v28))
+    signpost2 = [(_EXSceneSession *)self signpost];
+    if (signpost2 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v28))
     {
       *buf = 0;
-      _os_signpost_emit_with_name_impl(&dword_1847D1000, v28, OS_SIGNPOST_EVENT, v29, "extensionkit-lifecycle", "PRE: [EXSceneSession makeSceneWithError:]", buf, 2u);
+      _os_signpost_emit_with_name_impl(&dword_1847D1000, v28, OS_SIGNPOST_EVENT, signpost2, "extensionkit-lifecycle", "PRE: [EXSceneSession makeSceneWithError:]", buf, 2u);
     }
   }
 
@@ -367,11 +367,11 @@ LABEL_19:
   if ([(_EXSceneSession *)self signpost]&& os_signpost_enabled(v32))
   {
     v33 = v32;
-    v34 = [(_EXSceneSession *)self signpost];
-    if (v34 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v33))
+    signpost3 = [(_EXSceneSession *)self signpost];
+    if (signpost3 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v33))
     {
       *buf = 0;
-      _os_signpost_emit_with_name_impl(&dword_1847D1000, v33, OS_SIGNPOST_EVENT, v34, "extensionkit-lifecycle", "POST: [EXSceneSession makeSceneWithError:]", buf, 2u);
+      _os_signpost_emit_with_name_impl(&dword_1847D1000, v33, OS_SIGNPOST_EVENT, signpost3, "extensionkit-lifecycle", "POST: [EXSceneSession makeSceneWithError:]", buf, 2u);
     }
   }
 
@@ -382,11 +382,11 @@ LABEL_19:
     if ([(_EXSceneSession *)self signpost]&& os_signpost_enabled(v35))
     {
       v36 = v35;
-      v37 = [(_EXSceneSession *)self signpost];
-      if (v37 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v36))
+      signpost4 = [(_EXSceneSession *)self signpost];
+      if (signpost4 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v36))
       {
         *buf = 0;
-        _os_signpost_emit_with_name_impl(&dword_1847D1000, v36, OS_SIGNPOST_EVENT, v37, "extensionkit-lifecycle", "PRE: [EXSceneSession connectToScene:]", buf, 2u);
+        _os_signpost_emit_with_name_impl(&dword_1847D1000, v36, OS_SIGNPOST_EVENT, signpost4, "extensionkit-lifecycle", "PRE: [EXSceneSession connectToScene:]", buf, 2u);
       }
     }
 
@@ -395,43 +395,43 @@ LABEL_19:
     if ([(_EXSceneSession *)self signpost]&& os_signpost_enabled(v38))
     {
       v39 = v38;
-      v40 = [(_EXSceneSession *)self signpost];
-      if (v40 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v39))
+      signpost5 = [(_EXSceneSession *)self signpost];
+      if (signpost5 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v39))
       {
         *buf = 0;
-        _os_signpost_emit_with_name_impl(&dword_1847D1000, v39, OS_SIGNPOST_EVENT, v40, "extensionkit-lifecycle", "POST: [EXSceneSession connectToScene:]", buf, 2u);
+        _os_signpost_emit_with_name_impl(&dword_1847D1000, v39, OS_SIGNPOST_EVENT, signpost5, "extensionkit-lifecycle", "POST: [EXSceneSession connectToScene:]", buf, 2u);
       }
     }
 
     [(NSXPCListener *)self->_sceneConnectionListener resume];
-    v41 = [(_EXSceneSession *)self makeConnectionResponse];
+    makeConnectionResponse = [(_EXSceneSession *)self makeConnectionResponse];
     v42 = _EXSignpostLog();
     if ([(_EXSceneSession *)self signpost]&& os_signpost_enabled(v42))
     {
       v43 = v42;
-      v44 = [(_EXSceneSession *)self signpost];
-      if (v44 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v43))
+      signpost6 = [(_EXSceneSession *)self signpost];
+      if (signpost6 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v43))
       {
         *buf = 0;
-        _os_signpost_emit_with_name_impl(&dword_1847D1000, v43, OS_SIGNPOST_EVENT, v44, "extensionkit-lifecycle", "Initialized", buf, 2u);
+        _os_signpost_emit_with_name_impl(&dword_1847D1000, v43, OS_SIGNPOST_EVENT, signpost6, "extensionkit-lifecycle", "Initialized", buf, 2u);
       }
     }
 
-    v7[2](v7, v41, 0);
+    replyCopy[2](replyCopy, makeConnectionResponse, 0);
   }
 
   else
   {
-    (v7)[2](v7, 0, v31);
+    (replyCopy)[2](replyCopy, 0, v31);
     v45 = _EXSignpostLog();
     if ([(_EXSceneSession *)self signpost]&& os_signpost_enabled(v45))
     {
       v46 = v45;
-      v47 = [(_EXSceneSession *)self signpost];
-      if (v47 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v46))
+      signpost7 = [(_EXSceneSession *)self signpost];
+      if (signpost7 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v46))
       {
         *buf = 0;
-        _os_signpost_emit_with_name_impl(&dword_1847D1000, v46, OS_SIGNPOST_EVENT, v47, "extensionkit-lifecycle", "Failure", buf, 2u);
+        _os_signpost_emit_with_name_impl(&dword_1847D1000, v46, OS_SIGNPOST_EVENT, signpost7, "extensionkit-lifecycle", "Failure", buf, 2u);
       }
     }
 
@@ -451,12 +451,12 @@ LABEL_19:
   v49 = *MEMORY[0x1E69E9840];
 }
 
-- (id)makeXPCConnectionWithError:(id *)a3
+- (id)makeXPCConnectionWithError:(id *)error
 {
-  v3 = [(_EXSceneSession *)self hostEndpoint];
-  if (v3)
+  hostEndpoint = [(_EXSceneSession *)self hostEndpoint];
+  if (hostEndpoint)
   {
-    v4 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithListenerEndpoint:v3];
+    v4 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithListenerEndpoint:hostEndpoint];
   }
 
   else
@@ -473,10 +473,10 @@ LABEL_19:
   if ([(_EXSceneSession *)self signpost]&& os_signpost_enabled(v3))
   {
     v4 = v3;
-    v5 = [(_EXSceneSession *)self signpost];
-    if (v5 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+    signpost = [(_EXSceneSession *)self signpost];
+    if (signpost - 1 <= 0xFFFFFFFFFFFFFFFDLL)
     {
-      v6 = v5;
+      v6 = signpost;
       if (os_signpost_enabled(v4))
       {
         *v8 = 0;

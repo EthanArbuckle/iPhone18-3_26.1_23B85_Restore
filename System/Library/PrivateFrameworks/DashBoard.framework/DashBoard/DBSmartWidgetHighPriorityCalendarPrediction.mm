@@ -1,13 +1,13 @@
 @interface DBSmartWidgetHighPriorityCalendarPrediction
-- (id)_uuidFromString:(id)a3;
+- (id)_uuidFromString:(id)string;
 @end
 
 @implementation DBSmartWidgetHighPriorityCalendarPrediction
 
-- (id)_uuidFromString:(id)a3
+- (id)_uuidFromString:(id)string
 {
-  v3 = a3;
-  v8 = [v3 hash] ^ 0x1AA2B3CD;
+  stringCopy = string;
+  v8 = [stringCopy hash] ^ 0x1AA2B3CD;
   v4 = [MEMORY[0x277CBEA90] dataWithBytes:&v8 length:8];
   v5 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:{objc_msgSend(v4, "bytes")}];
   v6 = DBLogForCategory(9uLL);

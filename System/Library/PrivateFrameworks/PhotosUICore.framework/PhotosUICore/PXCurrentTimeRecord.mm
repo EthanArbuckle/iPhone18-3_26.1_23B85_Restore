@@ -1,6 +1,6 @@
 @interface PXCurrentTimeRecord
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)currentTime;
-- (PXCurrentTimeRecord)initWithSampleTime:(id *)a3 rate:(float)a4;
+- (PXCurrentTimeRecord)initWithSampleTime:(id *)time rate:(float)rate;
 - (id)description;
 @end
 
@@ -44,7 +44,7 @@
   return result;
 }
 
-- (PXCurrentTimeRecord)initWithSampleTime:(id *)a3 rate:(float)a4
+- (PXCurrentTimeRecord)initWithSampleTime:(id *)time rate:(float)rate
 {
   v9.receiver = self;
   v9.super_class = PXCurrentTimeRecord;
@@ -52,11 +52,11 @@
   if (v6)
   {
     *(v6 + 1) = CFAbsoluteTimeGetCurrent();
-    var3 = a3->var3;
-    *(v6 + 24) = *&a3->var0;
+    var3 = time->var3;
+    *(v6 + 24) = *&time->var0;
     *(v6 + 5) = var3;
-    *(v6 + 5) = a4;
-    v6[16] = a3->var2 & 1;
+    *(v6 + 5) = rate;
+    v6[16] = time->var2 & 1;
   }
 
   return v6;

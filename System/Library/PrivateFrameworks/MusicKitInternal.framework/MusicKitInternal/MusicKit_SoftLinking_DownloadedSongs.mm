@@ -1,13 +1,13 @@
 @interface MusicKit_SoftLinking_DownloadedSongs
-+ (void)requestDownloadedSongsForMediaLibrary:(id)a3 completionHandler:(id)a4;
++ (void)requestDownloadedSongsForMediaLibrary:(id)library completionHandler:(id)handler;
 @end
 
 @implementation MusicKit_SoftLinking_DownloadedSongs
 
-+ (void)requestDownloadedSongsForMediaLibrary:(id)a3 completionHandler:(id)a4
++ (void)requestDownloadedSongsForMediaLibrary:(id)library completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  libraryCopy = library;
+  handlerCopy = handler;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2050000000;
@@ -27,8 +27,8 @@
   v8 = v7;
   _Block_object_dispose(&v16, 8);
   v9 = objc_alloc_init(v7);
-  v10 = [v5 _underlyingMediaLibrary];
-  [v9 setMediaLibrary:v10];
+  _underlyingMediaLibrary = [libraryCopy _underlyingMediaLibrary];
+  [v9 setMediaLibrary:_underlyingMediaLibrary];
 
   [v9 setLabel:@"MusicKit_DownloadedSongsRequest"];
   v11 = [MEMORY[0x1E6977628] _modelKindForModelObjectType:28];
@@ -39,8 +39,8 @@
   v13[1] = 3221225472;
   v13[2] = __96__MusicKit_SoftLinking_DownloadedSongs_requestDownloadedSongsForMediaLibrary_completionHandler___block_invoke;
   v13[3] = &unk_1E84C38C8;
-  v14 = v6;
-  v12 = v6;
+  v14 = handlerCopy;
+  v12 = handlerCopy;
   [v9 performWithResponseHandler:v13];
 }
 

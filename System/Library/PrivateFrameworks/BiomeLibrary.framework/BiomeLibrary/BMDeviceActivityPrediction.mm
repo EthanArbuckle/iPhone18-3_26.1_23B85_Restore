@@ -1,15 +1,15 @@
 @interface BMDeviceActivityPrediction
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMDeviceActivityPrediction)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMDeviceActivityPrediction)initWithVersion:(id)a3 predictionType:(int)a4 confidenceLevel:(int)a5 confidenceValue:(id)a6 predictedDuration:(id)a7 outputReason:(int)a8;
-- (BOOL)isEqual:(id)a3;
+- (BMDeviceActivityPrediction)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMDeviceActivityPrediction)initWithVersion:(id)version predictionType:(int)type confidenceLevel:(int)level confidenceValue:(id)value predictedDuration:(id)duration outputReason:(int)reason;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMDeviceActivityPrediction
@@ -36,13 +36,13 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (-[BMDeviceActivityPrediction hasVersion](self, "hasVersion") || [v5 hasVersion])
     {
       if (![(BMDeviceActivityPrediction *)self hasVersion])
@@ -55,21 +55,21 @@
         goto LABEL_21;
       }
 
-      v6 = [(BMDeviceActivityPrediction *)self version];
-      if (v6 != [v5 version])
+      version = [(BMDeviceActivityPrediction *)self version];
+      if (version != [v5 version])
       {
         goto LABEL_21;
       }
     }
 
-    v7 = [(BMDeviceActivityPrediction *)self predictionType];
-    if (v7 != [v5 predictionType])
+    predictionType = [(BMDeviceActivityPrediction *)self predictionType];
+    if (predictionType != [v5 predictionType])
     {
       goto LABEL_21;
     }
 
-    v8 = [(BMDeviceActivityPrediction *)self confidenceLevel];
-    if (v8 != [v5 confidenceLevel])
+    confidenceLevel = [(BMDeviceActivityPrediction *)self confidenceLevel];
+    if (confidenceLevel != [v5 confidenceLevel])
     {
       goto LABEL_21;
     }
@@ -97,8 +97,8 @@
 
     if (!-[BMDeviceActivityPrediction hasPredictedDuration](self, "hasPredictedDuration") && ![v5 hasPredictedDuration] || -[BMDeviceActivityPrediction hasPredictedDuration](self, "hasPredictedDuration") && objc_msgSend(v5, "hasPredictedDuration") && (-[BMDeviceActivityPrediction predictedDuration](self, "predictedDuration"), v13 = v12, objc_msgSend(v5, "predictedDuration"), v13 == v14))
     {
-      v15 = [(BMDeviceActivityPrediction *)self outputReason];
-      v16 = v15 == [v5 outputReason];
+      outputReason = [(BMDeviceActivityPrediction *)self outputReason];
+      v16 = outputReason == [v5 outputReason];
     }
 
     else
@@ -160,55 +160,55 @@ LABEL_21:
   v12 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMDeviceActivityPrediction outputReason](self, "outputReason")}];
   v25 = v3;
   v26[0] = @"version";
-  v13 = v3;
+  null = v3;
   if (!v3)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v22 = v13;
+  v22 = null;
   v24 = v4;
-  v27[0] = v13;
+  v27[0] = null;
   v26[1] = @"predictionType";
-  v14 = v4;
+  null2 = v4;
   if (!v4)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27[1] = v14;
+  v27[1] = null2;
   v26[2] = @"confidenceLevel";
-  v15 = v5;
+  null3 = v5;
   if (!v5)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27[2] = v15;
+  v27[2] = null3;
   v26[3] = @"confidenceValue";
-  v16 = v8;
+  null4 = v8;
   if (!v8)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27[3] = v16;
+  v27[3] = null4;
   v26[4] = @"predictedDuration";
-  v17 = v11;
+  null5 = v11;
   if (!v11)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27[4] = v17;
+  v27[4] = null5;
   v26[5] = @"outputReason";
-  v18 = v12;
+  null6 = v12;
   if (!v12)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27[5] = v18;
+  v27[5] = null6;
   v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:v26 count:{6, v22}];
   if (v12)
   {
@@ -267,21 +267,21 @@ LABEL_28:
   return v19;
 }
 
-- (BMDeviceActivityPrediction)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMDeviceActivityPrediction)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v63[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"version"];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"version"];
   if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (!a4)
+      if (!error)
       {
         v7 = 0;
         v19 = 0;
-        v18 = self;
+        selfCopy7 = self;
         goto LABEL_25;
       }
 
@@ -294,7 +294,7 @@ LABEL_28:
       v24 = [v22 initWithDomain:v23 code:2 userInfo:v9];
       v7 = 0;
       v19 = 0;
-      *a4 = v24;
+      *error = v24;
       goto LABEL_63;
     }
 
@@ -306,7 +306,7 @@ LABEL_28:
     v7 = 0;
   }
 
-  v8 = [v5 objectForKeyedSubscript:@"predictionType"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"predictionType"];
   v47 = v8;
   if (v8)
   {
@@ -321,7 +321,7 @@ LABEL_28:
         goto LABEL_7;
       }
 
-      v25 = a4;
+      errorCopy = error;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -329,7 +329,7 @@ LABEL_28:
         goto LABEL_7;
       }
 
-      if (a4)
+      if (error)
       {
         v33 = objc_alloc(MEMORY[0x1E696ABC0]);
         v34 = v7;
@@ -342,21 +342,21 @@ LABEL_28:
         v7 = v34;
         v49 = 0;
         v19 = 0;
-        *v25 = [v33 initWithDomain:v36 code:2 userInfo:v11];
+        *errorCopy = [v33 initWithDomain:v36 code:2 userInfo:v11];
         goto LABEL_65;
       }
 
       v49 = 0;
       v19 = 0;
 LABEL_63:
-      v18 = self;
+      selfCopy7 = self;
       goto LABEL_24;
     }
   }
 
   v10 = 0;
 LABEL_7:
-  v11 = [v5 objectForKeyedSubscript:@"confidenceLevel"];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"confidenceLevel"];
   v46 = v6;
   v49 = v10;
   if (v11)
@@ -371,7 +371,7 @@ LABEL_7:
         goto LABEL_10;
       }
 
-      v26 = a4;
+      errorCopy2 = error;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -379,7 +379,7 @@ LABEL_7:
         goto LABEL_10;
       }
 
-      if (a4)
+      if (error)
       {
         v37 = objc_alloc(MEMORY[0x1E696ABC0]);
         v38 = v7;
@@ -392,33 +392,33 @@ LABEL_7:
         v7 = v38;
         v17 = 0;
         v19 = 0;
-        *v26 = [v37 initWithDomain:v40 code:2 userInfo:v12];
-        v18 = self;
+        *errorCopy2 = [v37 initWithDomain:v40 code:2 userInfo:v12];
+        selfCopy7 = self;
         goto LABEL_22;
       }
 
       v17 = 0;
       v19 = 0;
 LABEL_65:
-      v18 = self;
+      selfCopy7 = self;
       goto LABEL_23;
     }
   }
 
   v45 = 0;
 LABEL_10:
-  v12 = [v5 objectForKeyedSubscript:@"confidenceValue"];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"confidenceValue"];
   v48 = v7;
   if (v12 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (!a4)
+      if (!error)
       {
         v50 = 0;
         v19 = 0;
-        v18 = self;
+        selfCopy7 = self;
         v17 = v45;
         goto LABEL_22;
       }
@@ -431,7 +431,7 @@ LABEL_10:
       v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v57 forKeys:&v56 count:1];
       v50 = 0;
       v19 = 0;
-      *a4 = [v27 initWithDomain:v28 code:2 userInfo:v13];
+      *error = [v27 initWithDomain:v28 code:2 userInfo:v13];
       goto LABEL_61;
     }
 
@@ -443,7 +443,7 @@ LABEL_10:
     v50 = 0;
   }
 
-  v13 = [v5 objectForKeyedSubscript:@"predictedDuration"];
+  v13 = [dictionaryCopy objectForKeyedSubscript:@"predictedDuration"];
   if (v13)
   {
     objc_opt_class();
@@ -456,9 +456,9 @@ LABEL_10:
         goto LABEL_16;
       }
 
-      if (a4)
+      if (error)
       {
-        v29 = a4;
+        errorCopy3 = error;
         v30 = objc_alloc(MEMORY[0x1E696ABC0]);
         v31 = *MEMORY[0x1E698F240];
         v54 = *MEMORY[0x1E696A578];
@@ -468,14 +468,14 @@ LABEL_10:
         v32 = [v30 initWithDomain:v31 code:2 userInfo:v15];
         v14 = 0;
         v19 = 0;
-        *v29 = v32;
+        *errorCopy3 = v32;
         goto LABEL_59;
       }
 
       v14 = 0;
       v19 = 0;
 LABEL_61:
-      v18 = self;
+      selfCopy7 = self;
       v17 = v45;
       goto LABEL_21;
     }
@@ -483,7 +483,7 @@ LABEL_61:
 
   v14 = 0;
 LABEL_16:
-  v15 = [v5 objectForKeyedSubscript:@"outputReason"];
+  v15 = [dictionaryCopy objectForKeyedSubscript:@"outputReason"];
   if (v15)
   {
     objc_opt_class();
@@ -503,7 +503,7 @@ LABEL_16:
         goto LABEL_19;
       }
 
-      if (a4)
+      if (error)
       {
         v41 = objc_alloc(MEMORY[0x1E696ABC0]);
         v44 = *MEMORY[0x1E698F240];
@@ -511,13 +511,13 @@ LABEL_16:
         v42 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (corresponding to enum value), or NSString (string version of enum)", objc_opt_class(), @"outputReason"];
         v53 = v42;
         v43 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v53 forKeys:&v52 count:1];
-        *a4 = [v41 initWithDomain:v44 code:2 userInfo:v43];
+        *error = [v41 initWithDomain:v44 code:2 userInfo:v43];
       }
 
       v16 = 0;
       v19 = 0;
 LABEL_59:
-      v18 = self;
+      selfCopy7 = self;
       v17 = v45;
       goto LABEL_20;
     }
@@ -526,8 +526,8 @@ LABEL_59:
   v16 = 0;
 LABEL_19:
   v17 = v45;
-  v18 = -[BMDeviceActivityPrediction initWithVersion:predictionType:confidenceLevel:confidenceValue:predictedDuration:outputReason:](self, "initWithVersion:predictionType:confidenceLevel:confidenceValue:predictedDuration:outputReason:", v48, [v10 intValue], objc_msgSend(v45, "intValue"), v50, v14, objc_msgSend(v16, "intValue"));
-  v19 = v18;
+  selfCopy7 = -[BMDeviceActivityPrediction initWithVersion:predictionType:confidenceLevel:confidenceValue:predictedDuration:outputReason:](self, "initWithVersion:predictionType:confidenceLevel:confidenceValue:predictedDuration:outputReason:", v48, [v10 intValue], objc_msgSend(v45, "intValue"), v50, v14, objc_msgSend(v16, "intValue"));
+  v19 = selfCopy7;
 LABEL_20:
 
 LABEL_21:
@@ -549,14 +549,14 @@ LABEL_25:
 {
   v3 = objc_opt_new();
   [(BMDeviceActivityPrediction *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
+  toCopy = to;
   if (self->_hasVersion)
   {
     version = self->_version;
@@ -583,9 +583,9 @@ LABEL_25:
   PBDataWriterWriteUint32Field();
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v52.receiver = self;
   v52.super_class = BMDeviceActivityPrediction;
   v5 = [(BMEventBase *)&v52 init];
@@ -594,12 +594,12 @@ LABEL_25:
     goto LABEL_94;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -610,18 +610,18 @@ LABEL_25:
       while (1)
       {
         LOBYTE(v53) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v53 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v53 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v53 & 0x7F) << v7;
@@ -639,9 +639,9 @@ LABEL_25:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -653,18 +653,18 @@ LABEL_16:
         {
           v5->_hasConfidenceValue = 1;
           v53 = 0;
-          v35 = [v4 position] + 8;
-          if (v35 >= [v4 position] && (v36 = objc_msgSend(v4, "position") + 8, v36 <= objc_msgSend(v4, "length")))
+          v35 = [fromCopy position] + 8;
+          if (v35 >= [fromCopy position] && (v36 = objc_msgSend(fromCopy, "position") + 8, v36 <= objc_msgSend(fromCopy, "length")))
           {
-            v45 = [v4 data];
-            [v45 getBytes:&v53 range:{objc_msgSend(v4, "position"), 8}];
+            data2 = [fromCopy data];
+            [data2 getBytes:&v53 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v46 = v53;
@@ -676,18 +676,18 @@ LABEL_16:
         {
           v5->_hasPredictedDuration = 1;
           v53 = 0;
-          v42 = [v4 position] + 8;
-          if (v42 >= [v4 position] && (v43 = objc_msgSend(v4, "position") + 8, v43 <= objc_msgSend(v4, "length")))
+          v42 = [fromCopy position] + 8;
+          if (v42 >= [fromCopy position] && (v43 = objc_msgSend(fromCopy, "position") + 8, v43 <= objc_msgSend(fromCopy, "length")))
           {
-            v48 = [v4 data];
-            [v48 getBytes:&v53 range:{objc_msgSend(v4, "position"), 8}];
+            data3 = [fromCopy data];
+            [data3 getBytes:&v53 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v46 = v53;
@@ -714,18 +714,18 @@ LABEL_55:
         while (1)
         {
           LOBYTE(v53) = 0;
-          v25 = [v4 position] + 1;
-          if (v25 >= [v4 position] && (v26 = objc_msgSend(v4, "position") + 1, v26 <= objc_msgSend(v4, "length")))
+          v25 = [fromCopy position] + 1;
+          if (v25 >= [fromCopy position] && (v26 = objc_msgSend(fromCopy, "position") + 1, v26 <= objc_msgSend(fromCopy, "length")))
           {
-            v27 = [v4 data];
-            [v27 getBytes:&v53 range:{objc_msgSend(v4, "position"), 1}];
+            data4 = [fromCopy data];
+            [data4 getBytes:&v53 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v18 |= (v53 & 0x7F) << v23;
@@ -742,7 +742,7 @@ LABEL_55:
           }
         }
 
-        if (([v4 hasError] & 1) != 0 || v18 > 5)
+        if (([fromCopy hasError] & 1) != 0 || v18 > 5)
         {
 LABEL_79:
           LODWORD(v18) = 0;
@@ -763,18 +763,18 @@ LABEL_79:
             while (1)
             {
               LOBYTE(v53) = 0;
-              v31 = [v4 position] + 1;
-              if (v31 >= [v4 position] && (v32 = objc_msgSend(v4, "position") + 1, v32 <= objc_msgSend(v4, "length")))
+              v31 = [fromCopy position] + 1;
+              if (v31 >= [fromCopy position] && (v32 = objc_msgSend(fromCopy, "position") + 1, v32 <= objc_msgSend(fromCopy, "length")))
               {
-                v33 = [v4 data];
-                [v33 getBytes:&v53 range:{objc_msgSend(v4, "position"), 1}];
+                data5 = [fromCopy data];
+                [data5 getBytes:&v53 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v30 |= (v53 & 0x7F) << v28;
@@ -792,7 +792,7 @@ LABEL_79:
               }
             }
 
-            if ([v4 hasError])
+            if ([fromCopy hasError])
             {
               v34 = 0;
             }
@@ -812,18 +812,18 @@ LABEL_72:
             while (1)
             {
               LOBYTE(v53) = 0;
-              v39 = [v4 position] + 1;
-              if (v39 >= [v4 position] && (v40 = objc_msgSend(v4, "position") + 1, v40 <= objc_msgSend(v4, "length")))
+              v39 = [fromCopy position] + 1;
+              if (v39 >= [fromCopy position] && (v40 = objc_msgSend(fromCopy, "position") + 1, v40 <= objc_msgSend(fromCopy, "length")))
               {
-                v41 = [v4 data];
-                [v41 getBytes:&v53 range:{objc_msgSend(v4, "position"), 1}];
+                data6 = [fromCopy data];
+                [data6 getBytes:&v53 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v18 |= (v53 & 0x7F) << v37;
@@ -840,7 +840,7 @@ LABEL_72:
               }
             }
 
-            if (([v4 hasError] & 1) != 0 || v18 > 2)
+            if (([fromCopy hasError] & 1) != 0 || v18 > 2)
             {
 LABEL_83:
               LODWORD(v18) = 0;
@@ -855,18 +855,18 @@ LABEL_83:
             while (1)
             {
               LOBYTE(v53) = 0;
-              v19 = [v4 position] + 1;
-              if (v19 >= [v4 position] && (v20 = objc_msgSend(v4, "position") + 1, v20 <= objc_msgSend(v4, "length")))
+              v19 = [fromCopy position] + 1;
+              if (v19 >= [fromCopy position] && (v20 = objc_msgSend(fromCopy, "position") + 1, v20 <= objc_msgSend(fromCopy, "length")))
               {
-                v21 = [v4 data];
-                [v21 getBytes:&v53 range:{objc_msgSend(v4, "position"), 1}];
+                data7 = [fromCopy data];
+                [data7 getBytes:&v53 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v18 |= (v53 & 0x7F) << v16;
@@ -883,7 +883,7 @@ LABEL_83:
               }
             }
 
-            if (([v4 hasError] & 1) != 0 || v18 > 3)
+            if (([fromCopy hasError] & 1) != 0 || v18 > 3)
             {
 LABEL_75:
               LODWORD(v18) = 0;
@@ -898,13 +898,13 @@ LABEL_75:
 
       *(&v5->super.super.isa + v44) = v18;
 LABEL_91:
-      v49 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v49 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_93:
     v50 = 0;
@@ -937,36 +937,36 @@ LABEL_94:
   return v12;
 }
 
-- (BMDeviceActivityPrediction)initWithVersion:(id)a3 predictionType:(int)a4 confidenceLevel:(int)a5 confidenceValue:(id)a6 predictedDuration:(id)a7 outputReason:(int)a8
+- (BMDeviceActivityPrediction)initWithVersion:(id)version predictionType:(int)type confidenceLevel:(int)level confidenceValue:(id)value predictedDuration:(id)duration outputReason:(int)reason
 {
-  v14 = a3;
-  v15 = a6;
-  v16 = a7;
+  versionCopy = version;
+  valueCopy = value;
+  durationCopy = duration;
   v22.receiver = self;
   v22.super_class = BMDeviceActivityPrediction;
   v17 = [(BMEventBase *)&v22 init];
   if (v17)
   {
     v17->_dataVersion = [objc_opt_class() latestDataVersion];
-    if (v14)
+    if (versionCopy)
     {
       v17->_hasVersion = 1;
-      v18 = [v14 intValue];
+      intValue = [versionCopy intValue];
     }
 
     else
     {
       v17->_hasVersion = 0;
-      v18 = -1;
+      intValue = -1;
     }
 
-    v17->_version = v18;
-    v17->_predictionType = a4;
-    v17->_confidenceLevel = a5;
-    if (v15)
+    v17->_version = intValue;
+    v17->_predictionType = type;
+    v17->_confidenceLevel = level;
+    if (valueCopy)
     {
       v17->_hasConfidenceValue = 1;
-      [v15 doubleValue];
+      [valueCopy doubleValue];
     }
 
     else
@@ -976,10 +976,10 @@ LABEL_94:
     }
 
     v17->_confidenceValue = v19;
-    if (v16)
+    if (durationCopy)
     {
       v17->_hasPredictedDuration = 1;
-      [v16 doubleValue];
+      [durationCopy doubleValue];
     }
 
     else
@@ -989,7 +989,7 @@ LABEL_94:
     }
 
     v17->_predictedDuration = v20;
-    v17->_outputReason = a8;
+    v17->_outputReason = reason;
   }
 
   return v17;
@@ -1017,9 +1017,9 @@ LABEL_94:
   return v8;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1027,8 +1027,8 @@ LABEL_94:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMDeviceActivityPrediction alloc] initByReadFrom:v7];
     v4 = v8;

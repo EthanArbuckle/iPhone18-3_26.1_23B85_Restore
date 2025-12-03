@@ -1,81 +1,81 @@
 @interface NPKProtoStandalonePaymentSetupProduct
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addPaymentOptions:(id)a3;
-- (void)addRegions:(id)a3;
-- (void)addRequestedProvisioningMethods:(id)a3;
-- (void)addRequiredFields:(id)a3;
-- (void)addSupportedProtocols:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasHsa2Requirement:(BOOL)a3;
-- (void)setHasSupportedProvisioningMethods:(BOOL)a3;
-- (void)setHasSuppressPendingPurchases:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addPaymentOptions:(id)options;
+- (void)addRegions:(id)regions;
+- (void)addRequestedProvisioningMethods:(id)methods;
+- (void)addRequiredFields:(id)fields;
+- (void)addSupportedProtocols:(id)protocols;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasHsa2Requirement:(BOOL)requirement;
+- (void)setHasSupportedProvisioningMethods:(BOOL)methods;
+- (void)setHasSuppressPendingPurchases:(BOOL)purchases;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoStandalonePaymentSetupProduct
 
-- (void)addRegions:(id)a3
+- (void)addRegions:(id)regions
 {
-  v4 = a3;
+  regionsCopy = regions;
   regions = self->_regions;
-  v8 = v4;
+  v8 = regionsCopy;
   if (!regions)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_regions;
     self->_regions = v6;
 
-    v4 = v8;
+    regionsCopy = v8;
     regions = self->_regions;
   }
 
-  [(NSMutableArray *)regions addObject:v4];
+  [(NSMutableArray *)regions addObject:regionsCopy];
 }
 
-- (void)addRequiredFields:(id)a3
+- (void)addRequiredFields:(id)fields
 {
-  v4 = a3;
+  fieldsCopy = fields;
   requiredFields = self->_requiredFields;
-  v8 = v4;
+  v8 = fieldsCopy;
   if (!requiredFields)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_requiredFields;
     self->_requiredFields = v6;
 
-    v4 = v8;
+    fieldsCopy = v8;
     requiredFields = self->_requiredFields;
   }
 
-  [(NSMutableArray *)requiredFields addObject:v4];
+  [(NSMutableArray *)requiredFields addObject:fieldsCopy];
 }
 
-- (void)addSupportedProtocols:(id)a3
+- (void)addSupportedProtocols:(id)protocols
 {
-  v4 = a3;
+  protocolsCopy = protocols;
   supportedProtocols = self->_supportedProtocols;
-  v8 = v4;
+  v8 = protocolsCopy;
   if (!supportedProtocols)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_supportedProtocols;
     self->_supportedProtocols = v6;
 
-    v4 = v8;
+    protocolsCopy = v8;
     supportedProtocols = self->_supportedProtocols;
   }
 
-  [(NSMutableArray *)supportedProtocols addObject:v4];
+  [(NSMutableArray *)supportedProtocols addObject:protocolsCopy];
 }
 
-- (void)setHasSupportedProvisioningMethods:(BOOL)a3
+- (void)setHasSupportedProvisioningMethods:(BOOL)methods
 {
-  if (a3)
+  if (methods)
   {
     v3 = 4;
   }
@@ -88,9 +88,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasHsa2Requirement:(BOOL)a3
+- (void)setHasHsa2Requirement:(BOOL)requirement
 {
-  if (a3)
+  if (requirement)
   {
     v3 = 2;
   }
@@ -103,9 +103,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasSuppressPendingPurchases:(BOOL)a3
+- (void)setHasSuppressPendingPurchases:(BOOL)purchases
 {
-  if (a3)
+  if (purchases)
   {
     v3 = 8;
   }
@@ -118,40 +118,40 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)addPaymentOptions:(id)a3
+- (void)addPaymentOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   paymentOptions = self->_paymentOptions;
-  v8 = v4;
+  v8 = optionsCopy;
   if (!paymentOptions)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_paymentOptions;
     self->_paymentOptions = v6;
 
-    v4 = v8;
+    optionsCopy = v8;
     paymentOptions = self->_paymentOptions;
   }
 
-  [(NSMutableArray *)paymentOptions addObject:v4];
+  [(NSMutableArray *)paymentOptions addObject:optionsCopy];
 }
 
-- (void)addRequestedProvisioningMethods:(id)a3
+- (void)addRequestedProvisioningMethods:(id)methods
 {
-  v4 = a3;
+  methodsCopy = methods;
   requestedProvisioningMethods = self->_requestedProvisioningMethods;
-  v8 = v4;
+  v8 = methodsCopy;
   if (!requestedProvisioningMethods)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_requestedProvisioningMethods;
     self->_requestedProvisioningMethods = v6;
 
-    v4 = v8;
+    methodsCopy = v8;
     requestedProvisioningMethods = self->_requestedProvisioningMethods;
   }
 
-  [(NSMutableArray *)requestedProvisioningMethods addObject:v4];
+  [(NSMutableArray *)requestedProvisioningMethods addObject:methodsCopy];
 }
 
 - (id)description
@@ -160,8 +160,8 @@
   v8.receiver = self;
   v8.super_class = NPKProtoStandalonePaymentSetupProduct;
   v4 = [(NPKProtoStandalonePaymentSetupProduct *)&v8 description];
-  v5 = [(NPKProtoStandalonePaymentSetupProduct *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoStandalonePaymentSetupProduct *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -169,12 +169,12 @@
 - (id)dictionaryRepresentation
 {
   v58 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   displayName = self->_displayName;
   if (displayName)
   {
-    [v3 setObject:displayName forKey:@"displayName"];
+    [dictionary setObject:displayName forKey:@"displayName"];
   }
 
   regions = self->_regions;
@@ -223,8 +223,8 @@
             objc_enumerationMutation(v11);
           }
 
-          v16 = [*(*(&v51 + 1) + 8 * i) dictionaryRepresentation];
-          [v10 addObject:v16];
+          dictionaryRepresentation = [*(*(&v51 + 1) + 8 * i) dictionaryRepresentation];
+          [v10 addObject:dictionaryRepresentation];
         }
 
         v13 = [(NSMutableArray *)v11 countByEnumeratingWithState:&v51 objects:v57 count:16];
@@ -278,8 +278,8 @@
   imageAssetURLs = self->_imageAssetURLs;
   if (imageAssetURLs)
   {
-    v25 = [(NPKProtoStandalonePaymentSetupProductImageAssetURLs *)imageAssetURLs dictionaryRepresentation];
-    [v4 setObject:v25 forKey:@"imageAssetURLs"];
+    dictionaryRepresentation2 = [(NPKProtoStandalonePaymentSetupProductImageAssetURLs *)imageAssetURLs dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"imageAssetURLs"];
   }
 
   if ((*&self->_has & 8) != 0)
@@ -310,8 +310,8 @@
             objc_enumerationMutation(v28);
           }
 
-          v33 = [*(*(&v47 + 1) + 8 * j) dictionaryRepresentation];
-          [v27 addObject:v33];
+          dictionaryRepresentation3 = [*(*(&v47 + 1) + 8 * j) dictionaryRepresentation];
+          [v27 addObject:dictionaryRepresentation3];
         }
 
         v30 = [(NSMutableArray *)v28 countByEnumeratingWithState:&v47 objects:v56 count:16];
@@ -345,8 +345,8 @@
             objc_enumerationMutation(v35);
           }
 
-          v40 = [*(*(&v43 + 1) + 8 * k) dictionaryRepresentation];
-          [v34 addObject:v40];
+          dictionaryRepresentation4 = [*(*(&v43 + 1) + 8 * k) dictionaryRepresentation];
+          [v34 addObject:dictionaryRepresentation4];
         }
 
         v37 = [(NSMutableArray *)v35 countByEnumeratingWithState:&v43 objects:v55 count:16];
@@ -363,10 +363,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v66 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_displayName)
   {
     PBDataWriterWriteStringField();
@@ -576,90 +576,90 @@
   v40 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v26 = a3;
+  toCopy = to;
   if (self->_displayName)
   {
-    [v26 setDisplayName:?];
+    [toCopy setDisplayName:?];
   }
 
   if ([(NPKProtoStandalonePaymentSetupProduct *)self regionsCount])
   {
-    [v26 clearRegions];
-    v4 = [(NPKProtoStandalonePaymentSetupProduct *)self regionsCount];
-    if (v4)
+    [toCopy clearRegions];
+    regionsCount = [(NPKProtoStandalonePaymentSetupProduct *)self regionsCount];
+    if (regionsCount)
     {
-      v5 = v4;
+      v5 = regionsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(NPKProtoStandalonePaymentSetupProduct *)self regionsAtIndex:i];
-        [v26 addRegions:v7];
+        [toCopy addRegions:v7];
       }
     }
   }
 
   if (self->_productIdentifier)
   {
-    [v26 setProductIdentifier:?];
+    [toCopy setProductIdentifier:?];
   }
 
   if (self->_partnerIdentifier)
   {
-    [v26 setPartnerIdentifier:?];
+    [toCopy setPartnerIdentifier:?];
   }
 
   if (self->_partnerName)
   {
-    [v26 setPartnerName:?];
+    [toCopy setPartnerName:?];
   }
 
   if ([(NPKProtoStandalonePaymentSetupProduct *)self requiredFieldsCount])
   {
-    [v26 clearRequiredFields];
-    v8 = [(NPKProtoStandalonePaymentSetupProduct *)self requiredFieldsCount];
-    if (v8)
+    [toCopy clearRequiredFields];
+    requiredFieldsCount = [(NPKProtoStandalonePaymentSetupProduct *)self requiredFieldsCount];
+    if (requiredFieldsCount)
     {
-      v9 = v8;
+      v9 = requiredFieldsCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(NPKProtoStandalonePaymentSetupProduct *)self requiredFieldsAtIndex:j];
-        [v26 addRequiredFields:v11];
+        [toCopy addRequiredFields:v11];
       }
     }
   }
 
   if ([(NPKProtoStandalonePaymentSetupProduct *)self supportedProtocolsCount])
   {
-    [v26 clearSupportedProtocols];
-    v12 = [(NPKProtoStandalonePaymentSetupProduct *)self supportedProtocolsCount];
-    if (v12)
+    [toCopy clearSupportedProtocols];
+    supportedProtocolsCount = [(NPKProtoStandalonePaymentSetupProduct *)self supportedProtocolsCount];
+    if (supportedProtocolsCount)
     {
-      v13 = v12;
+      v13 = supportedProtocolsCount;
       for (k = 0; k != v13; ++k)
       {
         v15 = [(NPKProtoStandalonePaymentSetupProduct *)self supportedProtocolsAtIndex:k];
-        [v26 addSupportedProtocols:v15];
+        [toCopy addSupportedProtocols:v15];
       }
     }
   }
 
   if (self->_termsURL)
   {
-    [v26 setTermsURL:?];
+    [toCopy setTermsURL:?];
   }
 
-  v16 = v26;
+  v16 = toCopy;
   if ((*&self->_has & 4) != 0)
   {
-    *(v26 + 3) = self->_supportedProvisioningMethods;
-    *(v26 + 132) |= 4u;
+    *(toCopy + 3) = self->_supportedProvisioningMethods;
+    *(toCopy + 132) |= 4u;
   }
 
   if (self->_readerModeMetadataJson)
   {
-    [v26 setReaderModeMetadataJson:?];
-    v16 = v26;
+    [toCopy setReaderModeMetadataJson:?];
+    v16 = toCopy;
   }
 
   has = self->_has;
@@ -678,8 +678,8 @@
 
   if (self->_imageAssetURLs)
   {
-    [v26 setImageAssetURLs:?];
-    v16 = v26;
+    [toCopy setImageAssetURLs:?];
+    v16 = toCopy;
   }
 
   if ((*&self->_has & 8) != 0)
@@ -690,40 +690,40 @@
 
   if ([(NPKProtoStandalonePaymentSetupProduct *)self paymentOptionsCount])
   {
-    [v26 clearPaymentOptions];
-    v18 = [(NPKProtoStandalonePaymentSetupProduct *)self paymentOptionsCount];
-    if (v18)
+    [toCopy clearPaymentOptions];
+    paymentOptionsCount = [(NPKProtoStandalonePaymentSetupProduct *)self paymentOptionsCount];
+    if (paymentOptionsCount)
     {
-      v19 = v18;
+      v19 = paymentOptionsCount;
       for (m = 0; m != v19; ++m)
       {
         v21 = [(NPKProtoStandalonePaymentSetupProduct *)self paymentOptionsAtIndex:m];
-        [v26 addPaymentOptions:v21];
+        [toCopy addPaymentOptions:v21];
       }
     }
   }
 
   if ([(NPKProtoStandalonePaymentSetupProduct *)self requestedProvisioningMethodsCount])
   {
-    [v26 clearRequestedProvisioningMethods];
-    v22 = [(NPKProtoStandalonePaymentSetupProduct *)self requestedProvisioningMethodsCount];
-    if (v22)
+    [toCopy clearRequestedProvisioningMethods];
+    requestedProvisioningMethodsCount = [(NPKProtoStandalonePaymentSetupProduct *)self requestedProvisioningMethodsCount];
+    if (requestedProvisioningMethodsCount)
     {
-      v23 = v22;
+      v23 = requestedProvisioningMethodsCount;
       for (n = 0; n != v23; ++n)
       {
         v25 = [(NPKProtoStandalonePaymentSetupProduct *)self requestedProvisioningMethodsAtIndex:n];
-        [v26 addRequestedProvisioningMethods:v25];
+        [toCopy addRequestedProvisioningMethods:v25];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v78 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_displayName copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_displayName copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
@@ -746,7 +746,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v69 + 1) + 8 * i) copyWithZone:a3];
+        v13 = [*(*(&v69 + 1) + 8 * i) copyWithZone:zone];
         [v5 addRegions:v13];
       }
 
@@ -756,15 +756,15 @@
     while (v10);
   }
 
-  v14 = [(NSString *)self->_productIdentifier copyWithZone:a3];
+  v14 = [(NSString *)self->_productIdentifier copyWithZone:zone];
   v15 = *(v5 + 72);
   *(v5 + 72) = v14;
 
-  v16 = [(NSString *)self->_partnerIdentifier copyWithZone:a3];
+  v16 = [(NSString *)self->_partnerIdentifier copyWithZone:zone];
   v17 = *(v5 + 48);
   *(v5 + 48) = v16;
 
-  v18 = [(NSString *)self->_partnerName copyWithZone:a3];
+  v18 = [(NSString *)self->_partnerName copyWithZone:zone];
   v19 = *(v5 + 56);
   *(v5 + 56) = v18;
 
@@ -787,7 +787,7 @@
           objc_enumerationMutation(v20);
         }
 
-        v25 = [*(*(&v65 + 1) + 8 * j) copyWithZone:a3];
+        v25 = [*(*(&v65 + 1) + 8 * j) copyWithZone:zone];
         [v5 addRequiredFields:v25];
       }
 
@@ -816,7 +816,7 @@
           objc_enumerationMutation(v26);
         }
 
-        v31 = [*(*(&v61 + 1) + 8 * k) copyWithZone:a3];
+        v31 = [*(*(&v61 + 1) + 8 * k) copyWithZone:zone];
         [v5 addSupportedProtocols:v31];
       }
 
@@ -826,7 +826,7 @@
     while (v28);
   }
 
-  v32 = [(NSString *)self->_termsURL copyWithZone:a3];
+  v32 = [(NSString *)self->_termsURL copyWithZone:zone];
   v33 = *(v5 + 120);
   *(v5 + 120) = v32;
 
@@ -836,7 +836,7 @@
     *(v5 + 132) |= 4u;
   }
 
-  v34 = [(NSString *)self->_readerModeMetadataJson copyWithZone:a3];
+  v34 = [(NSString *)self->_readerModeMetadataJson copyWithZone:zone];
   v35 = *(v5 + 80);
   *(v5 + 80) = v34;
 
@@ -854,7 +854,7 @@
     *(v5 + 132) |= 2u;
   }
 
-  v37 = [(NPKProtoStandalonePaymentSetupProductImageAssetURLs *)self->_imageAssetURLs copyWithZone:a3];
+  v37 = [(NPKProtoStandalonePaymentSetupProductImageAssetURLs *)self->_imageAssetURLs copyWithZone:zone];
   v38 = *(v5 + 40);
   *(v5 + 40) = v37;
 
@@ -883,7 +883,7 @@
           objc_enumerationMutation(v39);
         }
 
-        v44 = [*(*(&v57 + 1) + 8 * m) copyWithZone:a3];
+        v44 = [*(*(&v57 + 1) + 8 * m) copyWithZone:zone];
         [v5 addPaymentOptions:v44];
       }
 
@@ -912,7 +912,7 @@
           objc_enumerationMutation(v45);
         }
 
-        v50 = [*(*(&v53 + 1) + 8 * n) copyWithZone:{a3, v53}];
+        v50 = [*(*(&v53 + 1) + 8 * n) copyWithZone:{zone, v53}];
         [v5 addRequestedProvisioningMethods:v50];
       }
 
@@ -926,16 +926,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_46;
   }
 
   displayName = self->_displayName;
-  if (displayName | *(v4 + 4))
+  if (displayName | *(equalCopy + 4))
   {
     if (![(NSString *)displayName isEqual:?])
     {
@@ -944,7 +944,7 @@
   }
 
   regions = self->_regions;
-  if (regions | *(v4 + 11))
+  if (regions | *(equalCopy + 11))
   {
     if (![(NSMutableArray *)regions isEqual:?])
     {
@@ -953,7 +953,7 @@
   }
 
   productIdentifier = self->_productIdentifier;
-  if (productIdentifier | *(v4 + 9))
+  if (productIdentifier | *(equalCopy + 9))
   {
     if (![(NSString *)productIdentifier isEqual:?])
     {
@@ -962,7 +962,7 @@
   }
 
   partnerIdentifier = self->_partnerIdentifier;
-  if (partnerIdentifier | *(v4 + 6))
+  if (partnerIdentifier | *(equalCopy + 6))
   {
     if (![(NSString *)partnerIdentifier isEqual:?])
     {
@@ -971,7 +971,7 @@
   }
 
   partnerName = self->_partnerName;
-  if (partnerName | *(v4 + 7))
+  if (partnerName | *(equalCopy + 7))
   {
     if (![(NSString *)partnerName isEqual:?])
     {
@@ -980,7 +980,7 @@
   }
 
   requiredFields = self->_requiredFields;
-  if (requiredFields | *(v4 + 13))
+  if (requiredFields | *(equalCopy + 13))
   {
     if (![(NSMutableArray *)requiredFields isEqual:?])
     {
@@ -989,7 +989,7 @@
   }
 
   supportedProtocols = self->_supportedProtocols;
-  if (supportedProtocols | *(v4 + 14))
+  if (supportedProtocols | *(equalCopy + 14))
   {
     if (![(NSMutableArray *)supportedProtocols isEqual:?])
     {
@@ -998,7 +998,7 @@
   }
 
   termsURL = self->_termsURL;
-  if (termsURL | *(v4 + 15))
+  if (termsURL | *(equalCopy + 15))
   {
     if (![(NSString *)termsURL isEqual:?])
     {
@@ -1007,22 +1007,22 @@
   }
 
   has = self->_has;
-  v14 = *(v4 + 132);
+  v14 = *(equalCopy + 132);
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 132) & 4) == 0 || self->_supportedProvisioningMethods != *(v4 + 3))
+    if ((*(equalCopy + 132) & 4) == 0 || self->_supportedProvisioningMethods != *(equalCopy + 3))
     {
       goto LABEL_46;
     }
   }
 
-  else if ((*(v4 + 132) & 4) != 0)
+  else if ((*(equalCopy + 132) & 4) != 0)
   {
     goto LABEL_46;
   }
 
   readerModeMetadataJson = self->_readerModeMetadataJson;
-  if (readerModeMetadataJson | *(v4 + 10))
+  if (readerModeMetadataJson | *(equalCopy + 10))
   {
     if (![(NSString *)readerModeMetadataJson isEqual:?])
     {
@@ -1032,35 +1032,35 @@
     has = self->_has;
   }
 
-  v16 = *(v4 + 132);
+  v16 = *(equalCopy + 132);
   if (has)
   {
-    if ((*(v4 + 132) & 1) == 0 || self->_flags != *(v4 + 1))
+    if ((*(equalCopy + 132) & 1) == 0 || self->_flags != *(equalCopy + 1))
     {
       goto LABEL_46;
     }
   }
 
-  else if (*(v4 + 132))
+  else if (*(equalCopy + 132))
   {
     goto LABEL_46;
   }
 
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 132) & 2) == 0 || self->_hsa2Requirement != *(v4 + 2))
+    if ((*(equalCopy + 132) & 2) == 0 || self->_hsa2Requirement != *(equalCopy + 2))
     {
       goto LABEL_46;
     }
   }
 
-  else if ((*(v4 + 132) & 2) != 0)
+  else if ((*(equalCopy + 132) & 2) != 0)
   {
     goto LABEL_46;
   }
 
   imageAssetURLs = self->_imageAssetURLs;
-  if (imageAssetURLs | *(v4 + 5))
+  if (imageAssetURLs | *(equalCopy + 5))
   {
     if (![(NPKProtoStandalonePaymentSetupProductImageAssetURLs *)imageAssetURLs isEqual:?])
     {
@@ -1070,10 +1070,10 @@
     has = self->_has;
   }
 
-  v18 = *(v4 + 132);
+  v18 = *(equalCopy + 132);
   if ((has & 8) == 0)
   {
-    if ((*(v4 + 132) & 8) == 0)
+    if ((*(equalCopy + 132) & 8) == 0)
     {
       goto LABEL_41;
     }
@@ -1083,34 +1083,34 @@ LABEL_46:
     goto LABEL_47;
   }
 
-  if ((*(v4 + 132) & 8) == 0)
+  if ((*(equalCopy + 132) & 8) == 0)
   {
     goto LABEL_46;
   }
 
-  v23 = *(v4 + 128);
+  v23 = *(equalCopy + 128);
   if (self->_suppressPendingPurchases)
   {
-    if ((*(v4 + 128) & 1) == 0)
+    if ((*(equalCopy + 128) & 1) == 0)
     {
       goto LABEL_46;
     }
   }
 
-  else if (*(v4 + 128))
+  else if (*(equalCopy + 128))
   {
     goto LABEL_46;
   }
 
 LABEL_41:
   paymentOptions = self->_paymentOptions;
-  if (paymentOptions | *(v4 + 8) && ![(NSMutableArray *)paymentOptions isEqual:?])
+  if (paymentOptions | *(equalCopy + 8) && ![(NSMutableArray *)paymentOptions isEqual:?])
   {
     goto LABEL_46;
   }
 
   requestedProvisioningMethods = self->_requestedProvisioningMethods;
-  if (requestedProvisioningMethods | *(v4 + 12))
+  if (requestedProvisioningMethods | *(equalCopy + 12))
   {
     v21 = [(NSMutableArray *)requestedProvisioningMethods isEqual:?];
   }
@@ -1183,11 +1183,11 @@ LABEL_9:
   return v17 ^ v18 ^ v16 ^ v15 ^ v14 ^ v3 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v12 ^ [(NSMutableArray *)self->_requestedProvisioningMethods hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v59 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 4))
+  fromCopy = from;
+  if (*(fromCopy + 4))
   {
     [(NPKProtoStandalonePaymentSetupProduct *)self setDisplayName:?];
   }
@@ -1196,7 +1196,7 @@ LABEL_9:
   v53 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v5 = *(v4 + 11);
+  v5 = *(fromCopy + 11);
   v6 = [v5 countByEnumeratingWithState:&v50 objects:v58 count:16];
   if (v6)
   {
@@ -1220,17 +1220,17 @@ LABEL_9:
     while (v7);
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(NPKProtoStandalonePaymentSetupProduct *)self setProductIdentifier:?];
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(NPKProtoStandalonePaymentSetupProduct *)self setPartnerIdentifier:?];
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(NPKProtoStandalonePaymentSetupProduct *)self setPartnerName:?];
   }
@@ -1239,7 +1239,7 @@ LABEL_9:
   v49 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v10 = *(v4 + 13);
+  v10 = *(fromCopy + 13);
   v11 = [v10 countByEnumeratingWithState:&v46 objects:v57 count:16];
   if (v11)
   {
@@ -1267,7 +1267,7 @@ LABEL_9:
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v15 = *(v4 + 14);
+  v15 = *(fromCopy + 14);
   v16 = [v15 countByEnumeratingWithState:&v42 objects:v56 count:16];
   if (v16)
   {
@@ -1291,38 +1291,38 @@ LABEL_9:
     while (v17);
   }
 
-  if (*(v4 + 15))
+  if (*(fromCopy + 15))
   {
     [(NPKProtoStandalonePaymentSetupProduct *)self setTermsURL:?];
   }
 
-  if ((*(v4 + 132) & 4) != 0)
+  if ((*(fromCopy + 132) & 4) != 0)
   {
-    self->_supportedProvisioningMethods = *(v4 + 3);
+    self->_supportedProvisioningMethods = *(fromCopy + 3);
     *&self->_has |= 4u;
   }
 
-  if (*(v4 + 10))
+  if (*(fromCopy + 10))
   {
     [(NPKProtoStandalonePaymentSetupProduct *)self setReaderModeMetadataJson:?];
   }
 
-  v20 = *(v4 + 132);
+  v20 = *(fromCopy + 132);
   if (v20)
   {
-    self->_flags = *(v4 + 1);
+    self->_flags = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v20 = *(v4 + 132);
+    v20 = *(fromCopy + 132);
   }
 
   if ((v20 & 2) != 0)
   {
-    self->_hsa2Requirement = *(v4 + 2);
+    self->_hsa2Requirement = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 
   imageAssetURLs = self->_imageAssetURLs;
-  v22 = *(v4 + 5);
+  v22 = *(fromCopy + 5);
   if (imageAssetURLs)
   {
     if (v22)
@@ -1336,9 +1336,9 @@ LABEL_9:
     [(NPKProtoStandalonePaymentSetupProduct *)self setImageAssetURLs:?];
   }
 
-  if ((*(v4 + 132) & 8) != 0)
+  if ((*(fromCopy + 132) & 8) != 0)
   {
-    self->_suppressPendingPurchases = *(v4 + 128);
+    self->_suppressPendingPurchases = *(fromCopy + 128);
     *&self->_has |= 8u;
   }
 
@@ -1346,7 +1346,7 @@ LABEL_9:
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v23 = *(v4 + 8);
+  v23 = *(fromCopy + 8);
   v24 = [v23 countByEnumeratingWithState:&v38 objects:v55 count:16];
   if (v24)
   {
@@ -1374,7 +1374,7 @@ LABEL_9:
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v28 = *(v4 + 12);
+  v28 = *(fromCopy + 12);
   v29 = [v28 countByEnumeratingWithState:&v34 objects:v54 count:16];
   if (v29)
   {

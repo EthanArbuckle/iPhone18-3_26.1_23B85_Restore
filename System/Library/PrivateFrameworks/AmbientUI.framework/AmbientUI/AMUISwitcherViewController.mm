@@ -2,60 +2,60 @@
 - (AMUISwitcherDataSource)dataSource;
 - (AMUISwitcherDelegate)delegate;
 - (AMUISwitcherLayout)layout;
-- (AMUISwitcherViewController)initWithLayout:(id)a3;
-- (BOOL)_beginTransitionIfNeededFromRecord:(id)a3 toRecord:(id)a4;
+- (AMUISwitcherViewController)initWithLayout:(id)layout;
+- (BOOL)_beginTransitionIfNeededFromRecord:(id)record toRecord:(id)toRecord;
 - (BOOL)_endTransitionIfNeeded;
 - (BOOL)_shouldAdjustForRTL;
 - (BOOL)isScrollingInteractively;
 - (CGSize)_pageSize;
 - (NSArray)visibleIndices;
 - (NSArray)visibleItems;
-- (double)_point:(double)a3 setValue:(double)a4 onAxis:(double)a5;
-- (double)_presentationProgressForItemIndex:(int64_t)a3;
-- (double)_size:(double)a3 valueOnAxis:(double)a4;
-- (double)presentationProgressForIdentifier:(id)a3;
-- (double)presentationProgressForItem:(id)a3;
+- (double)_point:(double)_point setValue:(double)value onAxis:(double)axis;
+- (double)_presentationProgressForItemIndex:(int64_t)index;
+- (double)_size:(double)_size valueOnAxis:(double)axis;
+- (double)presentationProgressForIdentifier:(id)identifier;
+- (double)presentationProgressForItem:(id)item;
 - (id)_accessibilityIdentifierPrefix;
 - (id)_switcherLayout;
-- (id)acquireUnsettledAssertionForReason:(id)a3;
-- (int64_t)_indexOfItem:(id)a3;
-- (int64_t)_indexOfItemWithIdentifier:(id)a3;
-- (void)_detachItemRecord:(id)a3;
-- (void)_noteTransitionFrom:(id)a3 to:(id)a4 progress:(double)a5;
+- (id)acquireUnsettledAssertionForReason:(id)reason;
+- (int64_t)_indexOfItem:(id)item;
+- (int64_t)_indexOfItemWithIdentifier:(id)identifier;
+- (void)_detachItemRecord:(id)record;
+- (void)_noteTransitionFrom:(id)from to:(id)to progress:(double)progress;
 - (void)_noteTransitionProgressIfNeeded;
 - (void)_sendTransitionUpdate;
-- (void)_updateForUnsettled:(BOOL)a3;
+- (void)_updateForUnsettled:(BOOL)unsettled;
 - (void)_updateTrailingSpacerConstraints;
 - (void)dealloc;
 - (void)reload;
-- (void)reloadItemAtIndex:(int64_t)a3;
-- (void)reloadItemWithIdentifier:(id)a3;
-- (void)scrollViewDidEndScrolling:(id)a3;
-- (void)scrollViewDidScroll:(id)a3 withContext:(id *)a4;
-- (void)setDataSource:(id)a3;
+- (void)reloadItemAtIndex:(int64_t)index;
+- (void)reloadItemWithIdentifier:(id)identifier;
+- (void)scrollViewDidEndScrolling:(id)scrolling;
+- (void)scrollViewDidScroll:(id)scroll withContext:(id *)context;
+- (void)setDataSource:(id)source;
 - (void)updateViewConstraints;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillMoveToWindow:(id)a3;
+- (void)viewWillMoveToWindow:(id)window;
 @end
 
 @implementation AMUISwitcherViewController
 
-- (AMUISwitcherViewController)initWithLayout:(id)a3
+- (AMUISwitcherViewController)initWithLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v8.receiver = self;
   v8.super_class = AMUISwitcherViewController;
   v5 = [(AMUISwitcherViewController *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_layout, v4);
+    objc_storeWeak(&v5->_layout, layoutCopy);
   }
 
   return v6;
@@ -68,8 +68,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(NSMutableDictionary *)self->_knownItems allValues];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allValues = [(NSMutableDictionary *)self->_knownItems allValues];
+  v4 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -81,14 +81,14 @@
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         [(AMUISwitcherViewController *)self _detachItemRecord:*(*(&v11 + 1) + 8 * v7++)];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -112,8 +112,8 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(NSMutableDictionary *)self->_knownItems allValues];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allValues = [(NSMutableDictionary *)self->_knownItems allValues];
+  v4 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -125,14 +125,14 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         [(AMUISwitcherViewController *)self _detachItemRecord:*(*(&v10 + 1) + 8 * v7++)];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -140,15 +140,15 @@
 
   [(NSMutableDictionary *)self->_knownItems removeAllObjects];
   [(NSMutableDictionary *)self->_visibleItems removeAllObjects];
-  v8 = [(AMUISwitcherViewController *)self viewIfLoaded];
-  [v8 setNeedsLayout];
+  viewIfLoaded = [(AMUISwitcherViewController *)self viewIfLoaded];
+  [viewIfLoaded setNeedsLayout];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reloadItemWithIdentifier:(id)a3
+- (void)reloadItemWithIdentifier:(id)identifier
 {
-  v4 = [(AMUISwitcherViewController *)self _indexOfItemWithIdentifier:a3];
+  v4 = [(AMUISwitcherViewController *)self _indexOfItemWithIdentifier:identifier];
   if (v4 != 0x7FFFFFFFFFFFFFFFLL)
   {
 
@@ -156,7 +156,7 @@
   }
 }
 
-- (void)reloadItemAtIndex:(int64_t)a3
+- (void)reloadItemAtIndex:(int64_t)index
 {
   knownItems = self->_knownItems;
   v6 = [MEMORY[0x277CCABB0] numberWithInteger:?];
@@ -168,20 +168,20 @@
   }
 
   v7 = self->_knownItems;
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:index];
   [(NSMutableDictionary *)v7 removeObjectForKey:v8];
 
   visibleItems = self->_visibleItems;
-  v10 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v10 = [MEMORY[0x277CCABB0] numberWithInteger:index];
   [(NSMutableDictionary *)visibleItems removeObjectForKey:v10];
 
-  v11 = [(AMUISwitcherViewController *)self viewIfLoaded];
-  [v11 setNeedsLayout];
+  viewIfLoaded = [(AMUISwitcherViewController *)self viewIfLoaded];
+  [viewIfLoaded setNeedsLayout];
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  obj = a3;
+  obj = source;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   if (WeakRetained != obj)
   {
@@ -193,8 +193,8 @@
 
 - (NSArray)visibleIndices
 {
-  v3 = [(AMUISwitcherViewController *)self viewIfLoaded];
-  [v3 layoutIfNeeded];
+  viewIfLoaded = [(AMUISwitcherViewController *)self viewIfLoaded];
+  [viewIfLoaded layoutIfNeeded];
 
   visibleItems = self->_visibleItems;
 
@@ -203,11 +203,11 @@
 
 - (NSArray)visibleItems
 {
-  v3 = [(AMUISwitcherViewController *)self viewIfLoaded];
-  [v3 layoutIfNeeded];
+  viewIfLoaded = [(AMUISwitcherViewController *)self viewIfLoaded];
+  [viewIfLoaded layoutIfNeeded];
 
-  v4 = [(NSMutableDictionary *)self->_visibleItems allValues];
-  v5 = [v4 bs_map:&__block_literal_global];
+  allValues = [(NSMutableDictionary *)self->_visibleItems allValues];
+  v5 = [allValues bs_map:&__block_literal_global];
 
   return v5;
 }
@@ -228,25 +228,25 @@
   return scrollView;
 }
 
-- (double)presentationProgressForIdentifier:(id)a3
+- (double)presentationProgressForIdentifier:(id)identifier
 {
-  v4 = [(AMUISwitcherViewController *)self _indexOfItemWithIdentifier:a3];
+  v4 = [(AMUISwitcherViewController *)self _indexOfItemWithIdentifier:identifier];
 
   [(AMUISwitcherViewController *)self _presentationProgressForItemIndex:v4];
   return result;
 }
 
-- (double)presentationProgressForItem:(id)a3
+- (double)presentationProgressForItem:(id)item
 {
-  v4 = [(AMUISwitcherViewController *)self _indexOfItem:a3];
+  v4 = [(AMUISwitcherViewController *)self _indexOfItem:item];
 
   [(AMUISwitcherViewController *)self _presentationProgressForItemIndex:v4];
   return result;
 }
 
-- (id)acquireUnsettledAssertionForReason:(id)a3
+- (id)acquireUnsettledAssertionForReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   unsettledAssertions = self->_unsettledAssertions;
   if (!unsettledAssertions)
   {
@@ -267,7 +267,7 @@
     unsettledAssertions = self->_unsettledAssertions;
   }
 
-  v10 = [(BSCompoundAssertion *)unsettledAssertions acquireForReason:v4];
+  v10 = [(BSCompoundAssertion *)unsettledAssertions acquireForReason:reasonCopy];
 
   return v10;
 }
@@ -287,17 +287,17 @@ void __65__AMUISwitcherViewController_acquireUnsettledAssertionForReason___block
   v34.receiver = self;
   v34.super_class = AMUISwitcherViewController;
   [(AMUISwitcherViewController *)&v34 viewDidLoad];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   visibleItems = self->_visibleItems;
-  self->_visibleItems = v3;
+  self->_visibleItems = dictionary;
 
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   knownItems = self->_knownItems;
-  self->_knownItems = v5;
+  self->_knownItems = dictionary2;
 
-  v7 = [(AMUISwitcherViewController *)self view];
+  view = [(AMUISwitcherViewController *)self view];
   v8 = objc_alloc(MEMORY[0x277CF0D88]);
-  [v7 bounds];
+  [view bounds];
   v9 = [v8 initWithFrame:?];
   [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v9 setPagingEnabled:1];
@@ -307,37 +307,37 @@ void __65__AMUISwitcherViewController_acquireUnsettledAssertionForReason___block
   [v9 setBounces:1];
   [v9 setDelegate:self];
   v10 = MEMORY[0x277CCACA8];
-  v11 = [(AMUISwitcherViewController *)self _accessibilityIdentifierPrefix];
-  v12 = [v10 stringWithFormat:@"%@-scroll-view", v11];
+  _accessibilityIdentifierPrefix = [(AMUISwitcherViewController *)self _accessibilityIdentifierPrefix];
+  v12 = [v10 stringWithFormat:@"%@-scroll-view", _accessibilityIdentifierPrefix];
   [v9 setAccessibilityIdentifier:v12];
 
   scrollView = self->_scrollView;
   self->_scrollView = v9;
   v14 = v9;
 
-  [v7 addSubview:v14];
-  [v7 setClipsToBounds:1];
-  v15 = [v7 trailingAnchor];
-  v16 = [v14 trailingAnchor];
-  v17 = [v15 constraintEqualToAnchor:v16 constant:0.0];
+  [view addSubview:v14];
+  [view setClipsToBounds:1];
+  trailingAnchor = [view trailingAnchor];
+  trailingAnchor2 = [v14 trailingAnchor];
+  v17 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:0.0];
   horizontalTrailingSpacerConstraint = self->_horizontalTrailingSpacerConstraint;
   self->_horizontalTrailingSpacerConstraint = v17;
 
-  v19 = [v7 bottomAnchor];
-  v20 = [v14 bottomAnchor];
-  v21 = [v19 constraintEqualToAnchor:v20 constant:0.0];
+  bottomAnchor = [view bottomAnchor];
+  bottomAnchor2 = [v14 bottomAnchor];
+  v21 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:0.0];
   verticalTrailingSpacerConstraint = self->_verticalTrailingSpacerConstraint;
   self->_verticalTrailingSpacerConstraint = v21;
 
   v32 = MEMORY[0x277CCAAD0];
-  v33 = v7;
-  v23 = [v7 leadingAnchor];
-  v24 = [v14 leadingAnchor];
-  v25 = [v23 constraintEqualToAnchor:v24];
+  v33 = view;
+  leadingAnchor = [view leadingAnchor];
+  leadingAnchor2 = [v14 leadingAnchor];
+  v25 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v35[0] = v25;
-  v26 = [v7 topAnchor];
-  v27 = [v14 topAnchor];
-  v28 = [v26 constraintEqualToAnchor:v27];
+  topAnchor = [view topAnchor];
+  topAnchor2 = [v14 topAnchor];
+  v28 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v29 = self->_horizontalTrailingSpacerConstraint;
   v35[1] = v28;
   v35[2] = v29;
@@ -365,25 +365,25 @@ void __65__AMUISwitcherViewController_acquireUnsettledAssertionForReason___block
   v104.receiver = self;
   v104.super_class = AMUISwitcherViewController;
   [(AMUISwitcherViewController *)&v104 viewWillLayoutSubviews];
-  v94 = [(AMUISwitcherViewController *)self view];
+  view = [(AMUISwitcherViewController *)self view];
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v4 = [(AMUISwitcherViewController *)self _switcherLayout];
+  _switcherLayout = [(AMUISwitcherViewController *)self _switcherLayout];
   v93 = WeakRetained;
   v5 = [WeakRetained switcherNumberOfItems:self];
-  v6 = [v4 isCircular];
+  isCircular = [_switcherLayout isCircular];
   [(AMUISwitcherViewController *)self _pageSize];
   v8 = v7;
   v10 = v9;
-  v11 = [v4 switcherAxis];
-  v12 = v11;
+  switcherAxis = [_switcherLayout switcherAxis];
+  v12 = switcherAxis;
   v13 = v5;
-  if ((v6 & (v5 > 1)) != 0)
+  if ((isCircular & (v5 > 1)) != 0)
   {
     v13 = 3.0;
   }
 
   v14 = v10 * v13;
-  if (v11)
+  if (switcherAxis)
   {
     v15 = v10;
   }
@@ -393,7 +393,7 @@ void __65__AMUISwitcherViewController_acquireUnsettledAssertionForReason___block
     v15 = v8;
   }
 
-  if (v11)
+  if (switcherAxis)
   {
     v16 = v8;
   }
@@ -403,7 +403,7 @@ void __65__AMUISwitcherViewController_acquireUnsettledAssertionForReason___block
     v16 = v8 * v13;
   }
 
-  if (v11)
+  if (switcherAxis)
   {
     v17 = v14;
   }
@@ -414,7 +414,7 @@ void __65__AMUISwitcherViewController_acquireUnsettledAssertionForReason___block
   }
 
   [(BSUIScrollView *)self->_scrollView setContentSize:v16, v17, v14];
-  v97 = v6 & (v5 > 1);
+  v97 = isCircular & (v5 > 1);
   if (v97 == 1)
   {
     if (self->_firstLayout)
@@ -556,13 +556,13 @@ LABEL_46:
   if (v5 >= 1)
   {
     v45 = 0;
-    v46 = v6 & (v5 > 1);
+    v46 = isCircular & (v5 > 1);
     v96 = (v43 / v15) - v46;
     v85 = v46;
     v95 = ((v15 + v43 + -1.0) / v15) - v46;
     v47 = *MEMORY[0x277CBF348];
     v48 = *(MEMORY[0x277CBF348] + 8);
-    v86 = v4;
+    v86 = _switcherLayout;
     while (1)
     {
       v49 = v45;
@@ -636,17 +636,17 @@ LABEL_85:
     v90 = 0;
 LABEL_69:
     v89 = MEMORY[0x277CCACA8];
-    v88 = [(AMUISwitcherViewController *)self _accessibilityIdentifierPrefix];
+    _accessibilityIdentifierPrefix = [(AMUISwitcherViewController *)self _accessibilityIdentifierPrefix];
     v92 = v61;
-    v63 = [v61 identifier];
-    v64 = [v63 description];
-    v65 = [v89 stringWithFormat:@"%@-item, identifier:%@", v88, v64];
+    identifier = [v61 identifier];
+    v64 = [identifier description];
+    v65 = [v89 stringWithFormat:@"%@-item, identifier:%@", _accessibilityIdentifierPrefix, v64];
 
     [v62 setAccessibilityIdentifier:v65];
-    v66 = [v62 superview];
+    superview = [v62 superview];
     scrollView = self->_scrollView;
 
-    if (v66 != scrollView)
+    if (superview != scrollView)
     {
       [(BSUIScrollView *)self->_scrollView addSubview:v62];
     }
@@ -654,7 +654,7 @@ LABEL_69:
     v102 = 0u;
     v103 = 0u;
     v101 = 0u;
-    v4 = v86;
+    _switcherLayout = v86;
     if (v62)
     {
       [v62 transform];
@@ -666,13 +666,13 @@ LABEL_69:
     v100 = *(MEMORY[0x277CBF2C0] + 32);
     [v62 setTransform:&v98];
     [v62 frame];
-    [v94 bounds];
+    [view bounds];
     v70 = v69;
     v72 = v71;
-    v73 = [(AMUISwitcherViewController *)self _shouldAdjustForRTL];
+    _shouldAdjustForRTL = [(AMUISwitcherViewController *)self _shouldAdjustForRTL];
     v74 = 0.0;
     v75 = v92;
-    if (v73)
+    if (_shouldAdjustForRTL)
     {
       [v86 spacing];
     }
@@ -706,10 +706,10 @@ LABEL_69:
     v100 = v103;
     [v62 setTransform:&v98];
     [v86 switcher:self updateItem:v92 view:v62 forPresentationProgress:v80];
-    v81 = [(BSCompoundAssertion *)self->_unsettledAssertions isActive];
+    isActive = [(BSCompoundAssertion *)self->_unsettledAssertions isActive];
     if ((v90 & 1) == 0)
     {
-      *(v54 + 16) = v81;
+      *(v54 + 16) = isActive;
       [v54 _updateAppearState];
     }
 
@@ -723,14 +723,14 @@ LABEL_87:
   [(AMUISwitcherViewController *)self _sendTransitionUpdate];
 }
 
-- (double)_size:(double)a3 valueOnAxis:(double)a4
+- (double)_size:(double)_size valueOnAxis:(double)axis
 {
   if (a2)
   {
-    result = a4;
+    result = axis;
   }
 
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
@@ -738,14 +738,14 @@ LABEL_87:
   return result;
 }
 
-- (double)_point:(double)a3 setValue:(double)a4 onAxis:(double)a5
+- (double)_point:(double)_point setValue:(double)value onAxis:(double)axis
 {
   if (!a2)
   {
-    result = a5;
+    result = axis;
   }
 
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
@@ -753,7 +753,7 @@ LABEL_87:
   return result;
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v17 = *MEMORY[0x277D85DE8];
   v15.receiver = self;
@@ -763,8 +763,8 @@ LABEL_87:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(NSMutableDictionary *)self->_visibleItems allValues];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v16 count:16];
+  allValues = [(NSMutableDictionary *)self->_visibleItems allValues];
+  v5 = [allValues countByEnumeratingWithState:&v11 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -776,7 +776,7 @@ LABEL_87:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         v9 = *(*(&v11 + 1) + 8 * v8);
@@ -789,7 +789,7 @@ LABEL_87:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v16 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v11 objects:v16 count:16];
     }
 
     while (v6);
@@ -798,7 +798,7 @@ LABEL_87:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v16 = *MEMORY[0x277D85DE8];
   v14.receiver = self;
@@ -808,8 +808,8 @@ LABEL_87:
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [(NSMutableDictionary *)self->_visibleItems allValues];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v15 count:16];
+  allValues = [(NSMutableDictionary *)self->_visibleItems allValues];
+  v5 = [allValues countByEnumeratingWithState:&v10 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -821,14 +821,14 @@ LABEL_87:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         [_AMUISwitcherVisibleItemRecord sendCallbackForState:0 animated:?];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v15 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v10 objects:v15 count:16];
     }
 
     while (v6);
@@ -837,7 +837,7 @@ LABEL_87:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v19 = *MEMORY[0x277D85DE8];
   v17.receiver = self;
@@ -847,8 +847,8 @@ LABEL_87:
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(NSMutableDictionary *)self->_visibleItems allValues];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v18 count:16];
+  allValues = [(NSMutableDictionary *)self->_visibleItems allValues];
+  v5 = [allValues countByEnumeratingWithState:&v13 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -860,7 +860,7 @@ LABEL_87:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         v9 = *(*(&v13 + 1) + 8 * v8);
@@ -887,7 +887,7 @@ LABEL_87:
       }
 
       while (v6 != v8);
-      v11 = [v4 countByEnumeratingWithState:&v13 objects:v18 count:16];
+      v11 = [allValues countByEnumeratingWithState:&v13 objects:v18 count:16];
       v6 = v11;
     }
 
@@ -897,7 +897,7 @@ LABEL_87:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v19 = *MEMORY[0x277D85DE8];
   v17.receiver = self;
@@ -907,8 +907,8 @@ LABEL_87:
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(NSMutableDictionary *)self->_visibleItems allValues];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v18 count:16];
+  allValues = [(NSMutableDictionary *)self->_visibleItems allValues];
+  v5 = [allValues countByEnumeratingWithState:&v13 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -920,7 +920,7 @@ LABEL_87:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         v9 = *(*(&v13 + 1) + 8 * v8);
@@ -939,7 +939,7 @@ LABEL_87:
       }
 
       while (v6 != v8);
-      v11 = [v4 countByEnumeratingWithState:&v13 objects:v18 count:16];
+      v11 = [allValues countByEnumeratingWithState:&v13 objects:v18 count:16];
       v6 = v11;
     }
 
@@ -949,16 +949,16 @@ LABEL_87:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)viewWillMoveToWindow:(id)a3
+- (void)viewWillMoveToWindow:(id)window
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  windowCopy = window;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(NSMutableDictionary *)self->_visibleItems allValues];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  allValues = [(NSMutableDictionary *)self->_visibleItems allValues];
+  v6 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -970,7 +970,7 @@ LABEL_87:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         v10 = *(*(&v14 + 1) + 8 * v9);
@@ -986,14 +986,14 @@ LABEL_87:
 
         if (objc_opt_respondsToSelector())
         {
-          [WeakRetained switcher:self willMoveToWindow:v4];
+          [WeakRetained switcher:self willMoveToWindow:windowCopy];
         }
 
         ++v9;
       }
 
       while (v7 != v9);
-      v12 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v12 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
       v7 = v12;
     }
 
@@ -1003,16 +1003,16 @@ LABEL_87:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  windowCopy = window;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [(NSMutableDictionary *)self->_visibleItems allValues];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  allValues = [(NSMutableDictionary *)self->_visibleItems allValues];
+  v7 = [allValues countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1024,7 +1024,7 @@ LABEL_87:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues);
         }
 
         v11 = *(*(&v15 + 1) + 8 * v10);
@@ -1040,14 +1040,14 @@ LABEL_87:
 
         if (objc_opt_respondsToSelector())
         {
-          [WeakRetained switcher:self didMoveToWindow:v5];
+          [WeakRetained switcher:self didMoveToWindow:windowCopy];
         }
 
         ++v10;
       }
 
       while (v8 != v10);
-      v13 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v13 = [allValues countByEnumeratingWithState:&v15 objects:v19 count:16];
       v8 = v13;
     }
 
@@ -1057,37 +1057,37 @@ LABEL_87:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)scrollViewDidScroll:(id)a3 withContext:(id *)a4
+- (void)scrollViewDidScroll:(id)scroll withContext:(id *)context
 {
-  v6 = [(AMUISwitcherViewController *)self view];
-  [v6 setNeedsLayout];
+  view = [(AMUISwitcherViewController *)self view];
+  [view setNeedsLayout];
 
-  self->_lastScrollMethod = a4->var0;
+  self->_lastScrollMethod = context->var0;
 }
 
-- (void)scrollViewDidEndScrolling:(id)a3
+- (void)scrollViewDidEndScrolling:(id)scrolling
 {
   lastScrollMethod = self->_lastScrollMethod;
   self->_lastScrollMethod = 0;
-  v7 = [(AMUISwitcherViewController *)self delegate];
+  delegate = [(AMUISwitcherViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(AMUISwitcherViewController *)self visibleItems];
-    v6 = [v5 firstObject];
+    visibleItems = [(AMUISwitcherViewController *)self visibleItems];
+    firstObject = [visibleItems firstObject];
 
-    if (v6)
+    if (firstObject)
     {
-      [v7 switcher:self didSettleOnItem:v6 interactive:lastScrollMethod == 3];
+      [delegate switcher:self didSettleOnItem:firstObject interactive:lastScrollMethod == 3];
     }
   }
 }
 
 - (id)_accessibilityIdentifierPrefix
 {
-  v2 = [(AMUISwitcherViewController *)self _switcherLayout];
-  v3 = [v2 switcherAxis];
+  _switcherLayout = [(AMUISwitcherViewController *)self _switcherLayout];
+  switcherAxis = [_switcherLayout switcherAxis];
   v4 = @"vertical";
-  if (!v3)
+  if (!switcherAxis)
   {
     v4 = @"horizontal";
   }
@@ -1101,17 +1101,17 @@ LABEL_87:
 
 - (id)_switcherLayout
 {
-  v2 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_layout);
   v4 = WeakRetained;
   if (WeakRetained)
   {
-    v2 = WeakRetained;
+    selfCopy = WeakRetained;
   }
 
-  v5 = v2;
+  v5 = selfCopy;
 
-  return v2;
+  return selfCopy;
 }
 
 uint64_t __65__AMUISwitcherViewController__scrollToIndex_animated_completion___block_invoke_2(uint64_t a1)
@@ -1125,13 +1125,13 @@ uint64_t __65__AMUISwitcherViewController__scrollToIndex_animated_completion___b
   return result;
 }
 
-- (int64_t)_indexOfItemWithIdentifier:(id)a3
+- (int64_t)_indexOfItemWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   if (objc_opt_respondsToSelector())
   {
-    v6 = [WeakRetained switcher:self indexOfItemWithIdentifier:v4];
+    v6 = [WeakRetained switcher:self indexOfItemWithIdentifier:identifierCopy];
   }
 
   else
@@ -1150,7 +1150,7 @@ LABEL_7:
       while (1)
       {
         v9 = [WeakRetained switcher:self itemAtIndex:v6];
-        v10 = [v9 identifier];
+        identifier = [v9 identifier];
         v11 = BSEqualObjects();
 
         if (v11)
@@ -1169,13 +1169,13 @@ LABEL_7:
   return v6;
 }
 
-- (int64_t)_indexOfItem:(id)a3
+- (int64_t)_indexOfItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   if (objc_opt_respondsToSelector())
   {
-    v6 = [WeakRetained switcher:self indexOfItem:v4];
+    v6 = [WeakRetained switcher:self indexOfItem:itemCopy];
   }
 
   else
@@ -1214,11 +1214,11 @@ LABEL_7:
 
 - (void)_updateTrailingSpacerConstraints
 {
-  v8 = [(AMUISwitcherViewController *)self _switcherLayout];
-  [v8 spacing];
+  _switcherLayout = [(AMUISwitcherViewController *)self _switcherLayout];
+  [_switcherLayout spacing];
   v4 = -v3;
-  v5 = [v8 switcherAxis];
-  if (v5)
+  switcherAxis = [_switcherLayout switcherAxis];
+  if (switcherAxis)
   {
     v6 = &OBJC_IVAR___AMUISwitcherViewController__verticalTrailingSpacerConstraint;
   }
@@ -1228,7 +1228,7 @@ LABEL_7:
     v6 = &OBJC_IVAR___AMUISwitcherViewController__horizontalTrailingSpacerConstraint;
   }
 
-  if (v5)
+  if (switcherAxis)
   {
     v7 = &OBJC_IVAR___AMUISwitcherViewController__horizontalTrailingSpacerConstraint;
   }
@@ -1242,22 +1242,22 @@ LABEL_7:
   [*(&self->super.super.super.isa + *v7) setConstant:0.0];
 }
 
-- (void)_noteTransitionFrom:(id)a3 to:(id)a4 progress:(double)a5
+- (void)_noteTransitionFrom:(id)from to:(id)to progress:(double)progress
 {
-  v10 = a3;
-  v8 = a4;
+  fromCopy = from;
+  toCopy = to;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained switcher:self transitioningFromItem:v10 toItem:v8 progress:a5];
+    [WeakRetained switcher:self transitioningFromItem:fromCopy toItem:toCopy progress:progress];
   }
 }
 
 - (void)_sendTransitionUpdate
 {
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 48));
+    WeakRetained = objc_loadWeakRetained((self + 48));
   }
 
   else
@@ -1270,17 +1270,17 @@ LABEL_7:
   [OUTLINED_FUNCTION_2() _noteTransitionFrom:? to:? progress:?];
 }
 
-- (BOOL)_beginTransitionIfNeededFromRecord:(id)a3 toRecord:(id)a4
+- (BOOL)_beginTransitionIfNeededFromRecord:(id)record toRecord:(id)toRecord
 {
-  v6 = a3;
-  v7 = a4;
+  recordCopy = record;
+  toRecordCopy = toRecord;
   currentTransition = self->_currentTransition;
   if (!currentTransition)
   {
     goto LABEL_2;
   }
 
-  if (([(_AMUISwitcherTransitionContext *)currentTransition hasSameItemsAsFromRecord:v6 toRecord:v7]& 1) == 0)
+  if (([(_AMUISwitcherTransitionContext *)currentTransition hasSameItemsAsFromRecord:recordCopy toRecord:toRecordCopy]& 1) == 0)
   {
     [(AMUISwitcherViewController *)self _endTransitionIfNeeded];
   }
@@ -1293,12 +1293,12 @@ LABEL_7:
   else
   {
 LABEL_2:
-    v9 = [(AMUISwitcherViewController *)self delegate];
-    v10 = [(AMUISwitcherViewController *)self _switcherLayout];
-    v11 = [v10 switcherAxis];
+    delegate = [(AMUISwitcherViewController *)self delegate];
+    _switcherLayout = [(AMUISwitcherViewController *)self _switcherLayout];
+    switcherAxis = [_switcherLayout switcherAxis];
 
     scrollView = self->_scrollView;
-    if (v11)
+    if (switcherAxis)
     {
       [(BSUIScrollView *)scrollView _verticalVelocity];
     }
@@ -1309,20 +1309,20 @@ LABEL_2:
     }
 
     v14 = v13;
-    v15 = [(AMUISwitcherViewController *)self _shouldAdjustForRTL];
+    _shouldAdjustForRTL = [(AMUISwitcherViewController *)self _shouldAdjustForRTL];
     v16 = -v14;
-    if (!v15)
+    if (!_shouldAdjustForRTL)
     {
       v16 = v14;
     }
 
-    v17 = [_AMUISwitcherTransitionContext contextWithFromRecord:v6 toRecord:v7 direction:v16 < 0.0 interactive:self->_lastScrollMethod == 3];
+    v17 = [_AMUISwitcherTransitionContext contextWithFromRecord:recordCopy toRecord:toRecordCopy direction:v16 < 0.0 interactive:self->_lastScrollMethod == 3];
     v18 = self->_currentTransition;
     self->_currentTransition = v17;
 
     if (objc_opt_respondsToSelector())
     {
-      [v9 switcher:self transitionDidBegin:self->_currentTransition];
+      [delegate switcher:self transitionDidBegin:self->_currentTransition];
     }
 
     v19 = 1;
@@ -1336,10 +1336,10 @@ LABEL_2:
   currentTransition = self->_currentTransition;
   if (currentTransition)
   {
-    v4 = [(AMUISwitcherViewController *)self delegate];
+    delegate = [(AMUISwitcherViewController *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v4 switcher:self transitionDidEnd:self->_currentTransition];
+      [delegate switcher:self transitionDidEnd:self->_currentTransition];
     }
 
     v5 = self->_currentTransition;
@@ -1353,7 +1353,7 @@ LABEL_2:
 {
   if (self->_currentTransition)
   {
-    v8 = [(AMUISwitcherViewController *)self delegate];
+    delegate = [(AMUISwitcherViewController *)self delegate];
     if (objc_opt_respondsToSelector())
     {
       currentTransition = self->_currentTransition;
@@ -1387,24 +1387,24 @@ LABEL_2:
         presentationProgress = 0.0;
       }
 
-      [v8 switcher:self transitionDidUpdate:presentationProgress withProgress:?];
+      [delegate switcher:self transitionDidUpdate:presentationProgress withProgress:?];
     }
   }
 }
 
 - (CGSize)_pageSize
 {
-  v3 = [(AMUISwitcherViewController *)self _switcherLayout];
-  [v3 spacing];
+  _switcherLayout = [(AMUISwitcherViewController *)self _switcherLayout];
+  [_switcherLayout spacing];
   v5 = v4;
-  v6 = [(AMUISwitcherViewController *)self view];
-  [v6 bounds];
+  view = [(AMUISwitcherViewController *)self view];
+  [view bounds];
   v8 = v7;
   v10 = v9;
 
-  v11 = [v3 switcherAxis];
+  switcherAxis = [_switcherLayout switcherAxis];
   v12 = v5 + v10;
-  if (v11)
+  if (switcherAxis)
   {
     v13 = v8;
   }
@@ -1414,7 +1414,7 @@ LABEL_2:
     v13 = v5 + v8;
   }
 
-  if (v11)
+  if (switcherAxis)
   {
     v14 = v12;
   }
@@ -1431,13 +1431,13 @@ LABEL_2:
   return result;
 }
 
-- (void)_detachItemRecord:(id)a3
+- (void)_detachItemRecord:(id)record
 {
-  v4 = a3;
-  v11 = v4;
-  if (v4)
+  recordCopy = record;
+  v11 = recordCopy;
+  if (recordCopy)
   {
-    WeakRetained = objc_loadWeakRetained(v4 + 7);
+    WeakRetained = objc_loadWeakRetained(recordCopy + 7);
     v6 = objc_loadWeakRetained(v11 + 8);
     v7 = objc_loadWeakRetained(v11 + 6);
     *(v11 + 16) = 0;
@@ -1454,17 +1454,17 @@ LABEL_2:
     v7 = 0;
   }
 
-  v8 = [WeakRetained superview];
+  superview = [WeakRetained superview];
   scrollView = self->_scrollView;
 
-  if (v8 == scrollView)
+  if (superview == scrollView)
   {
     [WeakRetained removeFromSuperview];
   }
 
-  v10 = [v6 parentViewController];
+  parentViewController = [v6 parentViewController];
 
-  if (v10 == self)
+  if (parentViewController == self)
   {
     [(AMUISwitcherViewController *)self bs_removeChildViewController:v6];
   }
@@ -1475,10 +1475,10 @@ LABEL_2:
   }
 }
 
-- (double)_presentationProgressForItemIndex:(int64_t)a3
+- (double)_presentationProgressForItemIndex:(int64_t)index
 {
   v3 = 0.0;
-  if (a3 != 0x7FFFFFFFFFFFFFFFLL)
+  if (index != 0x7FFFFFFFFFFFFFFFLL)
   {
     visibleItems = self->_visibleItems;
     v5 = [MEMORY[0x277CCABB0] numberWithInteger:?];
@@ -1495,8 +1495,8 @@ LABEL_2:
 
 - (BOOL)_shouldAdjustForRTL
 {
-  v2 = [(AMUISwitcherViewController *)self _switcherLayout];
-  if ([v2 switcherAxis])
+  _switcherLayout = [(AMUISwitcherViewController *)self _switcherLayout];
+  if ([_switcherLayout switcherAxis])
   {
     v3 = 0;
   }
@@ -1509,15 +1509,15 @@ LABEL_2:
   return v3;
 }
 
-- (void)_updateForUnsettled:(BOOL)a3
+- (void)_updateForUnsettled:(BOOL)unsettled
 {
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(NSMutableDictionary *)self->_visibleItems allValues];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allValues = [(NSMutableDictionary *)self->_visibleItems allValues];
+  v5 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1529,13 +1529,13 @@ LABEL_2:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         v9 = *(*(&v11 + 1) + 8 * v8);
         if (v9)
         {
-          v9[16] = a3;
+          v9[16] = unsettled;
           [v9 _updateAppearState];
         }
 
@@ -1543,7 +1543,7 @@ LABEL_2:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);

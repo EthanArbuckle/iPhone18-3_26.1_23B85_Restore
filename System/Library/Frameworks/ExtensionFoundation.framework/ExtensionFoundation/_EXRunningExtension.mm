@@ -1,5 +1,5 @@
 @interface _EXRunningExtension
-- (BOOL)shouldAcceptXPCConnection:(id)a3;
+- (BOOL)shouldAcceptXPCConnection:(id)connection;
 - (_TtC19ExtensionFoundation19_EXRunningExtension)init;
 @end
 
@@ -23,7 +23,7 @@
   return [(_EXRunningExtension *)&v5 init];
 }
 
-- (BOOL)shouldAcceptXPCConnection:(id)a3
+- (BOOL)shouldAcceptXPCConnection:(id)connection
 {
   v3 = *(&self->super.isa + OBJC_IVAR____TtC19ExtensionFoundation19_EXRunningExtension__appExtension);
   if (v3)

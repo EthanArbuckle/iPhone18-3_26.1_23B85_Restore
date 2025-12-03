@@ -1,5 +1,5 @@
 @interface HMDWidgetTimelineRefresherDailyTotalLogEvent
-- (HMDWidgetTimelineRefresherDailyTotalLogEvent)initWithKind:(id)a3 reason:(id)a4 count:(unint64_t)a5;
+- (HMDWidgetTimelineRefresherDailyTotalLogEvent)initWithKind:(id)kind reason:(id)reason count:(unint64_t)count;
 - (NSDictionary)coreAnalyticsEventDictionary;
 @end
 
@@ -9,11 +9,11 @@
 {
   v10[3] = *MEMORY[0x277D85DE8];
   v9[0] = @"widgetKind";
-  v3 = [(HMDWidgetTimelineRefresherDailyTotalLogEvent *)self kind];
-  v10[0] = v3;
+  kind = [(HMDWidgetTimelineRefresherDailyTotalLogEvent *)self kind];
+  v10[0] = kind;
   v9[1] = @"refreshReason";
-  v4 = [(HMDWidgetTimelineRefresherDailyTotalLogEvent *)self reason];
-  v10[1] = v4;
+  reason = [(HMDWidgetTimelineRefresherDailyTotalLogEvent *)self reason];
+  v10[1] = reason;
   v9[2] = @"refreshCount";
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDWidgetTimelineRefresherDailyTotalLogEvent count](self, "count")}];
   v10[2] = v5;
@@ -24,18 +24,18 @@
   return v6;
 }
 
-- (HMDWidgetTimelineRefresherDailyTotalLogEvent)initWithKind:(id)a3 reason:(id)a4 count:(unint64_t)a5
+- (HMDWidgetTimelineRefresherDailyTotalLogEvent)initWithKind:(id)kind reason:(id)reason count:(unint64_t)count
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  kindCopy = kind;
+  reasonCopy = reason;
+  if (!kindCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_7;
   }
 
-  v10 = v9;
-  if (!v9)
+  v10 = reasonCopy;
+  if (!reasonCopy)
   {
 LABEL_7:
     v17 = _HMFPreconditionFailure();
@@ -48,7 +48,7 @@ LABEL_7:
   v11 = [(HMMLogEvent *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [kindCopy copy];
     kind = v11->_kind;
     v11->_kind = v12;
 
@@ -56,7 +56,7 @@ LABEL_7:
     reason = v11->_reason;
     v11->_reason = v14;
 
-    v11->_count = a5;
+    v11->_count = count;
   }
 
   return v11;

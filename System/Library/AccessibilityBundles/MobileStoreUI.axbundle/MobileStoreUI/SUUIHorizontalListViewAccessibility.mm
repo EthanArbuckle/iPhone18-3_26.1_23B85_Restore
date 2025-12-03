@@ -1,34 +1,34 @@
 @interface SUUIHorizontalListViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)setImage:(id)a3 forArtworkRequest:(id)a4 context:(id)a5;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)setImage:(id)image forArtworkRequest:(id)request context:(id)context;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5;
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context;
 @end
 
 @implementation SUUIHorizontalListViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SUUIHorizontalListView" hasInstanceMethod:@"setImage: forArtworkRequest: context:" withFullSignature:{"B", "@", "@", "@", 0}];
-  [v3 validateClass:@"SUUIHorizontalListView" hasInstanceMethod:@"reloadWithViewElement: width: context:" withFullSignature:{"v", "@", "d", "@", 0}];
-  [v3 validateClass:@"SUUIHorizontalListView" hasInstanceVariable:@"_imageViewToImageResourceCacheKey" withType:"NSMapTable"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SUUIHorizontalListView" hasInstanceMethod:@"setImage: forArtworkRequest: context:" withFullSignature:{"B", "@", "@", "@", 0}];
+  [validationsCopy validateClass:@"SUUIHorizontalListView" hasInstanceMethod:@"reloadWithViewElement: width: context:" withFullSignature:{"v", "@", "d", "@", 0}];
+  [validationsCopy validateClass:@"SUUIHorizontalListView" hasInstanceVariable:@"_imageViewToImageResourceCacheKey" withType:"NSMapTable"];
 }
 
-- (BOOL)setImage:(id)a3 forArtworkRequest:(id)a4 context:(id)a5
+- (BOOL)setImage:(id)image forArtworkRequest:(id)request context:(id)context
 {
   v8.receiver = self;
   v8.super_class = SUUIHorizontalListViewAccessibility;
-  v6 = [(SUUIHorizontalListViewAccessibility *)&v8 setImage:a3 forArtworkRequest:a4 context:a5];
+  v6 = [(SUUIHorizontalListViewAccessibility *)&v8 setImage:image forArtworkRequest:request context:context];
   [(SUUIHorizontalListViewAccessibility *)self _accessibilityLoadAccessibilityInformation];
   return v6;
 }
 
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context
 {
   v6.receiver = self;
   v6.super_class = SUUIHorizontalListViewAccessibility;
-  [(SUUIHorizontalListViewAccessibility *)&v6 reloadWithViewElement:a3 width:a5 context:a4];
+  [(SUUIHorizontalListViewAccessibility *)&v6 reloadWithViewElement:element width:context context:width];
   [(SUUIHorizontalListViewAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
@@ -73,10 +73,10 @@
           abort();
         }
 
-        v13 = [v12 absoluteString];
-        v14 = [v13 containsString:@"itunes-mastered"];
+        absoluteString = [v12 absoluteString];
+        v14 = [absoluteString containsString:@"itunes-mastered"];
         v15 = @"itunes-mastered";
-        if ((v14 & 1) != 0 || (v16 = [v13 containsString:@"parental-advisory"], v15 = @"parental.advisory", v16))
+        if ((v14 & 1) != 0 || (v16 = [absoluteString containsString:@"parental-advisory"], v15 = @"parental.advisory", v16))
         {
           [v10 setAccessibilityIdentifier:v15];
         }

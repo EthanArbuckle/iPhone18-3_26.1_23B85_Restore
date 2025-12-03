@@ -1,20 +1,20 @@
 @interface PTCinematographyTrackAllocator
-- (PTCinematographyTrackAllocator)initWithTrackIdentifier:(int64_t)a3;
+- (PTCinematographyTrackAllocator)initWithTrackIdentifier:(int64_t)identifier;
 - (id)_asCinematographyDictionary;
-- (id)_initWithCinematographyDictionary:(id)a3;
+- (id)_initWithCinematographyDictionary:(id)dictionary;
 - (int64_t)nextTrackIdentifier;
 @end
 
 @implementation PTCinematographyTrackAllocator
 
-- (PTCinematographyTrackAllocator)initWithTrackIdentifier:(int64_t)a3
+- (PTCinematographyTrackAllocator)initWithTrackIdentifier:(int64_t)identifier
 {
   v5.receiver = self;
   v5.super_class = PTCinematographyTrackAllocator;
   result = [(PTCinematographyTrackAllocator *)&v5 init];
   if (result)
   {
-    result->_trackIdentifier = a3;
+    result->_trackIdentifier = identifier;
   }
 
   return result;
@@ -38,22 +38,22 @@
   return v5;
 }
 
-- (id)_initWithCinematographyDictionary:(id)a3
+- (id)_initWithCinematographyDictionary:(id)dictionary
 {
-  v4 = [a3 objectForKeyedSubscript:@"track_id"];
+  v4 = [dictionary objectForKeyedSubscript:@"track_id"];
   v5 = v4;
   if (v4)
   {
     self = -[PTCinematographyTrackAllocator initWithTrackIdentifier:](self, "initWithTrackIdentifier:", [v4 integerValue]);
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 @end

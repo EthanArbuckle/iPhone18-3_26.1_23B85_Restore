@@ -1,16 +1,16 @@
 @interface PTTensorSwapPair
-- (PTTensorSwapPair)initWithIOSurfaces:(__IOSurface *)a3 names:(id)a4;
-- (__CVBuffer)tensorWithIndex:(int)a3;
-- (id)tensorNameWithIndex:(int)a3;
+- (PTTensorSwapPair)initWithIOSurfaces:(__IOSurface *)surfaces names:(id)names;
+- (__CVBuffer)tensorWithIndex:(int)index;
+- (id)tensorNameWithIndex:(int)index;
 - (void)dealloc;
 @end
 
 @implementation PTTensorSwapPair
 
-- (PTTensorSwapPair)initWithIOSurfaces:(__IOSurface *)a3 names:(id)a4
+- (PTTensorSwapPair)initWithIOSurfaces:(__IOSurface *)surfaces names:(id)names
 {
   *&v21[5] = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  namesCopy = names;
   v19.receiver = self;
   v19.super_class = PTTensorSwapPair;
   v7 = [(PTTensorSwapPair *)&v19 init];
@@ -24,7 +24,7 @@
     do
     {
       v13 = v12;
-      if (CVPixelBufferCreateWithIOSurface(v10, a3[v9], 0, &v8->_tensorPair[v9]))
+      if (CVPixelBufferCreateWithIOSurface(v10, surfaces[v9], 0, &v8->_tensorPair[v9]))
       {
         v14 = _PTLogSystem();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -33,7 +33,7 @@
         }
       }
 
-      v15 = [v6 objectAtIndexedSubscript:v9];
+      v15 = [namesCopy objectAtIndexedSubscript:v9];
       v16 = names[v9];
       names[v9] = v15;
 
@@ -72,10 +72,10 @@
   [(PTTensorSwapPair *)&v8 dealloc];
 }
 
-- (__CVBuffer)tensorWithIndex:(int)a3
+- (__CVBuffer)tensorWithIndex:(int)index
 {
-  v3 = a3 & 1;
-  if (a3 < 0)
+  v3 = index & 1;
+  if (index < 0)
   {
     v3 = -v3;
   }
@@ -83,10 +83,10 @@
   return self->_tensorPair[v3];
 }
 
-- (id)tensorNameWithIndex:(int)a3
+- (id)tensorNameWithIndex:(int)index
 {
-  v3 = a3 & 1;
-  if (a3 < 0)
+  v3 = index & 1;
+  if (index < 0)
   {
     v3 = -v3;
   }

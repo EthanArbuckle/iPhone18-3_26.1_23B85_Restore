@@ -2,30 +2,30 @@
 + (id)loggingStateCache;
 + (void)initialize;
 - (BOOL)_loadLoggingSupport;
-- (BOOL)validateActionsDictionary:(id)a3;
-- (BOOL)validateActionsDictionaryContent:(id)a3 identifier:(id)a4;
-- (BOOL)validateDiagnosticsConfiguration:(id)a3;
-- (BOOL)validateOSLogPreferencesProtocol:(id)a3;
-- (BOOL)validateSettingsDictionary:(id)a3;
-- (BOOL)validateSettingsNodeContents:(id)a3 identifier:(id)a4;
-- (BOOL)validateSettingsNodeDictionary:(id)a3 identifier:(id)a4 isDefault:(BOOL)a5;
-- (DiagnosticsController)initWithConfiguration:(id)a3;
-- (id)actionsDictionaryForProcess:(id)a3 logLevel:(id)a4 diagnosticExtensions:(id)a5;
-- (id)consolidatedLogLevelSetsFromActions:(id)a3;
-- (id)defaultsDictionaryWithAlwaysRunActions:(id)a3;
-- (id)diagActionsForSignature:(id)a3 commonActions:(id)a4;
+- (BOOL)validateActionsDictionary:(id)dictionary;
+- (BOOL)validateActionsDictionaryContent:(id)content identifier:(id)identifier;
+- (BOOL)validateDiagnosticsConfiguration:(id)configuration;
+- (BOOL)validateOSLogPreferencesProtocol:(id)protocol;
+- (BOOL)validateSettingsDictionary:(id)dictionary;
+- (BOOL)validateSettingsNodeContents:(id)contents identifier:(id)identifier;
+- (BOOL)validateSettingsNodeDictionary:(id)dictionary identifier:(id)identifier isDefault:(BOOL)default;
+- (DiagnosticsController)initWithConfiguration:(id)configuration;
+- (id)actionsDictionaryForProcess:(id)process logLevel:(id)level diagnosticExtensions:(id)extensions;
+- (id)consolidatedLogLevelSetsFromActions:(id)actions;
+- (id)defaultsDictionaryWithAlwaysRunActions:(id)actions;
+- (id)diagActionsForSignature:(id)signature commonActions:(id)actions;
 - (id)diagExtensionCollector;
-- (id)diagnosticExtensionsForDiagnosticCase:(id)a3 enableCommonActions:(id)a4;
-- (unint64_t)collectDiagnosticExtensionFilesForDiagnosticCase:(id)a3 parameters:(id)a4 options:(id)a5 queue:(id)a6 reply:(id)a7;
-- (void)applyLogLevel:(id)a3 forIdentifier:(id)a4 logSettingType:(unint64_t)a5;
-- (void)applyLogLevelSets:(id)a3;
-- (void)configureWithDiagnosticActions:(id)a3;
-- (void)consolidateLoggingLevelsIntoSet:(id)a3 withCurrentState:(id)a4;
+- (id)diagnosticExtensionsForDiagnosticCase:(id)case enableCommonActions:(id)actions;
+- (unint64_t)collectDiagnosticExtensionFilesForDiagnosticCase:(id)case parameters:(id)parameters options:(id)options queue:(id)queue reply:(id)reply;
+- (void)applyLogLevel:(id)level forIdentifier:(id)identifier logSettingType:(unint64_t)type;
+- (void)applyLogLevelSets:(id)sets;
+- (void)configureWithDiagnosticActions:(id)actions;
+- (void)consolidateLoggingLevelsIntoSet:(id)set withCurrentState:(id)state;
 - (void)dealloc;
-- (void)lowerLoggingForDiagnosticCase:(id)a3;
-- (void)lowerLoggingForIdentifier:(id)a3;
-- (void)raiseLoggingForActions:(id)a3 identifier:(id)a4;
-- (void)raiseLoggingForDiagnosticCase:(id)a3;
+- (void)lowerLoggingForDiagnosticCase:(id)case;
+- (void)lowerLoggingForIdentifier:(id)identifier;
+- (void)raiseLoggingForActions:(id)actions identifier:(id)identifier;
+- (void)raiseLoggingForDiagnosticCase:(id)case;
 @end
 
 @implementation DiagnosticsController
@@ -46,16 +46,16 @@
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (DiagnosticsController)initWithConfiguration:(id)a3
+- (DiagnosticsController)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v8.receiver = self;
   v8.super_class = DiagnosticsController;
   v5 = [(DiagnosticsController *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(DiagnosticsController *)v5 configureWithDiagnosticActions:v4];
+    [(DiagnosticsController *)v5 configureWithDiagnosticActions:configurationCopy];
   }
 
   return v6;
@@ -150,25 +150,25 @@ LABEL_22:
 LABEL_23:
 }
 
-- (void)configureWithDiagnosticActions:(id)a3
+- (void)configureWithDiagnosticActions:(id)actions
 {
-  v4 = a3;
+  actionsCopy = actions;
   v5 = +[ABCAdministrator sharedInstance];
-  v6 = [v5 configurationManager];
-  v7 = [v6 autoBugCaptureRegularPayloads];
+  configurationManager = [v5 configurationManager];
+  autoBugCaptureRegularPayloads = [configurationManager autoBugCaptureRegularPayloads];
 
-  if (v7)
+  if (autoBugCaptureRegularPayloads)
   {
-    if ([(DiagnosticsController *)self validateDiagnosticsConfiguration:v4])
+    if ([(DiagnosticsController *)self validateDiagnosticsConfiguration:actionsCopy])
     {
       v8 = MEMORY[0x277CBEB38];
-      v9 = [v4 objectForKeyedSubscript:@"DIAGNOSTIC_ACTIONS"];
+      v9 = [actionsCopy objectForKeyedSubscript:@"DIAGNOSTIC_ACTIONS"];
       v10 = [v8 dictionaryWithDictionary:v9];
       actionsDict = self->_actionsDict;
       self->_actionsDict = v10;
 
       v12 = MEMORY[0x277CBEB38];
-      v13 = [v4 objectForKeyedSubscript:@"DIAGNOSTIC_SETTINGS"];
+      v13 = [actionsCopy objectForKeyedSubscript:@"DIAGNOSTIC_SETTINGS"];
       v14 = [v12 dictionaryWithDictionary:v13];
       settingsDict = self->_settingsDict;
       self->_settingsDict = v14;
@@ -186,11 +186,11 @@ LABEL_23:
   }
 }
 
-- (BOOL)validateDiagnosticsConfiguration:(id)a3
+- (BOOL)validateDiagnosticsConfiguration:(id)configuration
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"DIAGNOSTIC_ACTIONS"];
+  configurationCopy = configuration;
+  v5 = [configurationCopy objectForKeyedSubscript:@"DIAGNOSTIC_ACTIONS"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -245,7 +245,7 @@ LABEL_23:
 
 LABEL_11:
 
-  v14 = [v4 objectForKeyedSubscript:@"DIAGNOSTIC_SETTINGS"];
+  v14 = [configurationCopy objectForKeyedSubscript:@"DIAGNOSTIC_SETTINGS"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -297,15 +297,15 @@ LABEL_20:
   return v6 && v15;
 }
 
-- (BOOL)validateActionsDictionary:(id)a3
+- (BOOL)validateActionsDictionary:(id)dictionary
 {
   v33 = *MEMORY[0x277D85DE8];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v4 = [a3 allKeys];
-  v5 = [v4 countByEnumeratingWithState:&v26 objects:v32 count:16];
+  allKeys = [dictionary allKeys];
+  v5 = [allKeys countByEnumeratingWithState:&v26 objects:v32 count:16];
   if (v5)
   {
     v6 = v5;
@@ -319,7 +319,7 @@ LABEL_20:
       {
         if (*v27 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
         v12 = *(*(&v26 + 1) + 8 * i);
@@ -339,8 +339,8 @@ LABEL_20:
 
             else if (v15)
             {
-              v18 = v4;
-              v19 = self;
+              v18 = allKeys;
+              selfCopy = self;
               v20 = v10;
               v21 = diagcollectLogHandle();
               if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
@@ -354,8 +354,8 @@ LABEL_20:
 
               v8 = 0;
               v10 = v20;
-              self = v19;
-              v4 = v18;
+              self = selfCopy;
+              allKeys = v18;
               v9 = 0x277CCA000;
             }
           }
@@ -394,7 +394,7 @@ LABEL_20:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v26 objects:v32 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v26 objects:v32 count:16];
       if (!v6)
       {
         goto LABEL_27;
@@ -409,17 +409,17 @@ LABEL_27:
   return v8 & 1;
 }
 
-- (BOOL)validateActionsDictionaryContent:(id)a3 identifier:(id)a4
+- (BOOL)validateActionsDictionaryContent:(id)content identifier:(id)identifier
 {
   v93 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v68 = a4;
+  contentCopy = content;
+  identifierCopy = identifier;
   v78 = 0u;
   v79 = 0u;
   v80 = 0u;
   v81 = 0u;
-  v6 = [v5 allKeys];
-  v7 = [v6 countByEnumeratingWithState:&v78 objects:v92 count:16];
+  allKeys = [contentCopy allKeys];
+  v7 = [allKeys countByEnumeratingWithState:&v78 objects:v92 count:16];
   if (!v7)
   {
     v9 = 1;
@@ -429,9 +429,9 @@ LABEL_27:
   v8 = v7;
   v9 = 1;
   v10 = *v79;
-  v63 = v5;
+  v63 = contentCopy;
   v64 = *v79;
-  v62 = v6;
+  v62 = allKeys;
   do
   {
     v11 = 0;
@@ -440,7 +440,7 @@ LABEL_27:
     {
       if (*v79 != v10)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(allKeys);
       }
 
       v67 = v11;
@@ -449,7 +449,7 @@ LABEL_27:
       if (objc_opt_isKindOfClass())
       {
         v13 = v12;
-        v14 = [v5 objectForKeyedSubscript:v13];
+        v14 = [contentCopy objectForKeyedSubscript:v13];
         v66 = v14;
         if ([v13 isEqualToString:@"oslog"])
         {
@@ -462,8 +462,8 @@ LABEL_27:
             v75 = 0u;
             v76 = 0u;
             v77 = 0u;
-            v16 = [v15 allKeys];
-            v17 = [v16 countByEnumeratingWithState:&v74 objects:v91 count:16];
+            allKeys2 = [v15 allKeys];
+            v17 = [allKeys2 countByEnumeratingWithState:&v74 objects:v91 count:16];
             if (!v17)
             {
               goto LABEL_54;
@@ -478,7 +478,7 @@ LABEL_27:
               {
                 if (*v75 != v19)
                 {
-                  objc_enumerationMutation(v16);
+                  objc_enumerationMutation(allKeys2);
                 }
 
                 v21 = *(*(&v74 + 1) + 8 * v20);
@@ -542,7 +542,7 @@ LABEL_40:
                       v30 = objc_opt_class();
                       v31 = NSStringFromClass(v30);
                       *buf = 138413058;
-                      v84 = v68;
+                      v84 = identifierCopy;
                       v85 = 2112;
                       v86 = v69;
                       v87 = 2112;
@@ -588,7 +588,7 @@ LABEL_40:
                     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
                     {
                       *buf = 138412802;
-                      v84 = v68;
+                      v84 = identifierCopy;
                       v85 = 2112;
                       v86 = v69;
                       v87 = 2112;
@@ -612,7 +612,7 @@ LABEL_40:
                   v27 = objc_opt_class();
                   v28 = NSStringFromClass(v27);
                   *buf = 138412802;
-                  v84 = v68;
+                  v84 = identifierCopy;
                   v85 = 2112;
                   v86 = v69;
                   v87 = 2112;
@@ -628,14 +628,14 @@ LABEL_49:
               }
 
               while (v18 != v20);
-              v32 = [v16 countByEnumeratingWithState:&v74 objects:v91 count:16];
+              v32 = [allKeys2 countByEnumeratingWithState:&v74 objects:v91 count:16];
               v18 = v32;
               if (!v32)
               {
 LABEL_54:
 
-                v6 = v62;
-                v5 = v63;
+                allKeys = v62;
+                contentCopy = v63;
                 v10 = v64;
                 v8 = v65;
                 goto LABEL_55;
@@ -655,7 +655,7 @@ LABEL_54:
             NSStringFromClass(v39);
             v41 = v40 = v13;
             *buf = 138412802;
-            v84 = v68;
+            v84 = identifierCopy;
             v85 = 2112;
             v86 = v40;
             v87 = 2112;
@@ -709,7 +709,7 @@ LABEL_106:
           NSStringFromClass(v58);
           v41 = v40 = v13;
           *buf = 138412802;
-          v84 = v68;
+          v84 = identifierCopy;
           v85 = 2112;
           v86 = v40;
           v87 = 2112;
@@ -797,7 +797,7 @@ LABEL_116:
           }
 
           *buf = 138412546;
-          v84 = v68;
+          v84 = identifierCopy;
           v85 = 2112;
           v86 = v13;
           v36 = v15;
@@ -913,7 +913,7 @@ LABEL_111:
           v34 = objc_opt_class();
           v35 = NSStringFromClass(v34);
           *buf = 138412546;
-          v84 = v68;
+          v84 = identifierCopy;
           v85 = 2112;
           v86 = v35;
           _os_log_impl(&dword_241804000, v33, OS_LOG_TYPE_DEBUG, "Found unexpected class for actions key %@: %@ (should be NSString)", buf, 0x16u);
@@ -929,7 +929,7 @@ LABEL_112:
     }
 
     while (v67 + 1 != v8);
-    v59 = [v6 countByEnumeratingWithState:&v78 objects:v92 count:16];
+    v59 = [allKeys countByEnumeratingWithState:&v78 objects:v92 count:16];
     v8 = v59;
   }
 
@@ -940,15 +940,15 @@ LABEL_121:
   return v9 & 1;
 }
 
-- (BOOL)validateSettingsDictionary:(id)a3
+- (BOOL)validateSettingsDictionary:(id)dictionary
 {
   v29 = *MEMORY[0x277D85DE8];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v4 = [a3 allKeys];
-  v5 = [v4 countByEnumeratingWithState:&v20 objects:v28 count:16];
+  allKeys = [dictionary allKeys];
+  v5 = [allKeys countByEnumeratingWithState:&v20 objects:v28 count:16];
   if (v5)
   {
     v6 = v5;
@@ -960,7 +960,7 @@ LABEL_121:
       {
         if (*v21 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v20 + 1) + 8 * i);
@@ -1030,7 +1030,7 @@ LABEL_20:
 LABEL_22:
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v20 objects:v28 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v20 objects:v28 count:16];
       if (!v6)
       {
         goto LABEL_27;
@@ -1045,24 +1045,24 @@ LABEL_27:
   return v8;
 }
 
-- (BOOL)validateSettingsNodeDictionary:(id)a3 identifier:(id)a4 isDefault:(BOOL)a5
+- (BOOL)validateSettingsNodeDictionary:(id)dictionary identifier:(id)identifier isDefault:(BOOL)default
 {
-  v33 = a5;
+  defaultCopy = default;
   v46 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  identifierCopy = identifier;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  obj = [v6 allKeys];
+  obj = [dictionaryCopy allKeys];
   v8 = [obj countByEnumeratingWithState:&v35 objects:v45 count:16];
   if (v8)
   {
     v9 = v8;
     v10 = 1;
     v11 = *v36;
-    v32 = v6;
+    v32 = dictionaryCopy;
     while (1)
     {
       for (i = 0; i != v9; ++i)
@@ -1077,21 +1077,21 @@ LABEL_27:
         if (objc_opt_isKindOfClass())
         {
           v14 = v13;
-          v15 = [v6 objectForKeyedSubscript:v14];
+          v15 = [dictionaryCopy objectForKeyedSubscript:v14];
           if (![v14 length])
           {
             v16 = diagcollectLogHandle();
             if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
             {
               *buf = 138412290;
-              v40 = v7;
+              v40 = identifierCopy;
               _os_log_impl(&dword_241804000, v16, OS_LOG_TYPE_DEBUG, "Found empty key in node %@", buf, 0xCu);
             }
 
             goto LABEL_31;
           }
 
-          if (v33)
+          if (defaultCopy)
           {
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1104,7 +1104,7 @@ LABEL_27:
                   v17 = objc_opt_class();
                   v18 = NSStringFromClass(v17);
                   *buf = 138412802;
-                  v40 = v7;
+                  v40 = identifierCopy;
                   v41 = 2112;
                   v42 = v14;
                   v43 = 2112;
@@ -1125,12 +1125,12 @@ LABEL_33:
 LABEL_25:
             v27 = MEMORY[0x277CCACA8];
             v25 = v15;
-            v16 = [v27 stringWithFormat:@"%@.%@", v7, v14];
+            v16 = [v27 stringWithFormat:@"%@.%@", identifierCopy, v14];
             v26 = [(DiagnosticsController *)self validateSettingsNodeContents:v25 identifier:v16];
 LABEL_26:
             v10 = v26;
 
-            v6 = v32;
+            dictionaryCopy = v32;
           }
 
           else
@@ -1143,7 +1143,7 @@ LABEL_26:
                 *buf = 138412802;
                 v40 = @"alwaysRun";
                 v41 = 2112;
-                v42 = v7;
+                v42 = identifierCopy;
                 v43 = 2112;
                 v44 = v14;
                 _os_log_impl(&dword_241804000, v23, OS_LOG_TYPE_DEBUG, "Warning: Node key %@ is reserved for default dictionaries. (Found at %@.%@)", buf, 0x20u);
@@ -1157,7 +1157,7 @@ LABEL_26:
             {
               v24 = MEMORY[0x277CCACA8];
               v25 = v15;
-              v16 = [v24 stringWithFormat:@"%@.%@", v7, v14];
+              v16 = [v24 stringWithFormat:@"%@.%@", identifierCopy, v14];
               v26 = [(DiagnosticsController *)self validateSettingsNodeDictionary:v25 identifier:v16 isDefault:[v14 isEqualToString:@"DEFAULTS"]];
               goto LABEL_26;
             }
@@ -1179,7 +1179,7 @@ LABEL_26:
               v28 = objc_opt_class();
               v18 = NSStringFromClass(v28);
               *buf = 138412802;
-              v40 = v7;
+              v40 = identifierCopy;
               v41 = 2112;
               v42 = v14;
               v43 = 2112;
@@ -1189,7 +1189,7 @@ LABEL_26:
 LABEL_30:
               _os_log_impl(&dword_241804000, v19, OS_LOG_TYPE_DEBUG, v20, buf, 0x20u);
 
-              v6 = v32;
+              dictionaryCopy = v32;
             }
 
 LABEL_31:
@@ -1205,7 +1205,7 @@ LABEL_31:
           v21 = objc_opt_class();
           v22 = NSStringFromClass(v21);
           *buf = 138412546;
-          v40 = v7;
+          v40 = identifierCopy;
           v41 = 2112;
           v42 = v22;
           _os_log_impl(&dword_241804000, v14, OS_LOG_TYPE_DEBUG, "Found unexpected class for key in node %@: %@ (should be NSString)", buf, 0x16u);
@@ -1230,16 +1230,16 @@ LABEL_38:
   return v10 & 1;
 }
 
-- (BOOL)validateSettingsNodeContents:(id)a3 identifier:(id)a4
+- (BOOL)validateSettingsNodeContents:(id)contents identifier:(id)identifier
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  contentsCopy = contents;
+  identifierCopy = identifier;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v7 = [v5 countByEnumeratingWithState:&v18 objects:v26 count:16];
+  v7 = [contentsCopy countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1251,7 +1251,7 @@ LABEL_38:
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(contentsCopy);
         }
 
         v12 = *(*(&v18 + 1) + 8 * i);
@@ -1267,7 +1267,7 @@ LABEL_38:
           if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138412290;
-            v23 = v6;
+            v23 = identifierCopy;
             _os_log_impl(&dword_241804000, v13, OS_LOG_TYPE_DEBUG, "Action identifiers must not be empty. (%@)", buf, 0xCu);
           }
         }
@@ -1280,7 +1280,7 @@ LABEL_38:
             v14 = objc_opt_class();
             v15 = NSStringFromClass(v14);
             *buf = 138412546;
-            v23 = v6;
+            v23 = identifierCopy;
             v24 = 2112;
             v25 = v15;
             _os_log_impl(&dword_241804000, v13, OS_LOG_TYPE_DEBUG, "Found unexpected class for action identifiers in node key %@: %@ (should be NSString)", buf, 0x16u);
@@ -1290,7 +1290,7 @@ LABEL_38:
         v10 = 0;
       }
 
-      v8 = [v5 countByEnumeratingWithState:&v18 objects:v26 count:16];
+      v8 = [contentsCopy countByEnumeratingWithState:&v18 objects:v26 count:16];
       if (!v8)
       {
         goto LABEL_17;
@@ -1332,11 +1332,11 @@ uint64_t __42__DiagnosticsController_loggingStateCache__block_invoke()
   if (!deCollector)
   {
     v4 = +[ABCAdministrator sharedInstance];
-    v5 = [v4 configurationManager];
+    configurationManager = [v4 configurationManager];
 
     v6 = [DiagnosticExtensionController alloc];
-    v7 = [v5 logArchivePath];
-    v8 = [(DiagnosticExtensionController *)v6 initWithDestinationDirectory:v7];
+    logArchivePath = [configurationManager logArchivePath];
+    v8 = [(DiagnosticExtensionController *)v6 initWithDestinationDirectory:logArchivePath];
     v9 = self->deCollector;
     self->deCollector = v8;
 
@@ -1346,50 +1346,50 @@ uint64_t __42__DiagnosticsController_loggingStateCache__block_invoke()
   return deCollector;
 }
 
-- (id)defaultsDictionaryWithAlwaysRunActions:(id)a3
+- (id)defaultsDictionaryWithAlwaysRunActions:(id)actions
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  if ([v3 count])
+  actionsCopy = actions;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if ([actionsCopy count])
   {
-    [v4 setObject:v3 forKey:@"alwaysRun"];
+    [dictionary setObject:actionsCopy forKey:@"alwaysRun"];
   }
 
-  return v4;
+  return dictionary;
 }
 
-- (id)actionsDictionaryForProcess:(id)a3 logLevel:(id)a4 diagnosticExtensions:(id)a5
+- (id)actionsDictionaryForProcess:(id)process logLevel:(id)level diagnosticExtensions:(id)extensions
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x277CBEB38] dictionary];
-  v11 = [v7 length];
-  if (v8 && v11)
+  processCopy = process;
+  levelCopy = level;
+  extensionsCopy = extensions;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v11 = [processCopy length];
+  if (levelCopy && v11)
   {
-    [v10 setObject:v7 forKey:@"process"];
-    [v10 setObject:v8 forKey:@"level"];
+    [dictionary setObject:processCopy forKey:@"process"];
+    [dictionary setObject:levelCopy forKey:@"level"];
   }
 
-  if ([v9 count])
+  if ([extensionsCopy count])
   {
-    [v10 setObject:v9 forKey:@"diagExt"];
+    [dictionary setObject:extensionsCopy forKey:@"diagExt"];
   }
 
-  return v10;
+  return dictionary;
 }
 
-- (id)consolidatedLogLevelSetsFromActions:(id)a3
+- (id)consolidatedLogLevelSetsFromActions:(id)actions
 {
   v75 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(DiagnosticsController *)self actionsDict];
-  v55 = [MEMORY[0x277CBEB38] dictionary];
+  actionsCopy = actions;
+  actionsDict = [(DiagnosticsController *)self actionsDict];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v6 = diagcollectLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    v67 = [v4 count];
+    v67 = [actionsCopy count];
     _os_log_impl(&dword_241804000, v6, OS_LOG_TYPE_DEBUG, "Consolidating log levels from %ld actions", buf, 0xCu);
   }
 
@@ -1397,14 +1397,14 @@ uint64_t __42__DiagnosticsController_loggingStateCache__block_invoke()
   v65 = 0u;
   v62 = 0u;
   v63 = 0u;
-  obj = v4;
+  obj = actionsCopy;
   v7 = [obj countByEnumeratingWithState:&v62 objects:v74 count:16];
   if (v7)
   {
     v8 = v7;
     v9 = 0x277CBE000uLL;
     v10 = *v63;
-    v56 = v5;
+    v56 = actionsDict;
     v58 = *v63;
     do
     {
@@ -1417,7 +1417,7 @@ uint64_t __42__DiagnosticsController_loggingStateCache__block_invoke()
           objc_enumerationMutation(obj);
         }
 
-        v12 = [v5 objectForKeyedSubscript:*(*(&v62 + 1) + 8 * v11)];
+        v12 = [actionsDict objectForKeyedSubscript:*(*(&v62 + 1) + 8 * v11)];
         v13 = *(v9 + 2752);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
@@ -1434,18 +1434,18 @@ uint64_t __42__DiagnosticsController_loggingStateCache__block_invoke()
             {
               v17 = v16;
               v18 = v15;
-              v19 = [v55 objectForKeyedSubscript:@"process"];
-              if (!v19)
+              dictionary2 = [dictionary objectForKeyedSubscript:@"process"];
+              if (!dictionary2)
               {
-                v19 = [MEMORY[0x277CBEB38] dictionary];
-                [v55 setObject:v19 forKeyedSubscript:@"process"];
+                dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+                [dictionary setObject:dictionary2 forKeyedSubscript:@"process"];
               }
 
-              v20 = [v19 objectForKeyedSubscript:v18];
+              v20 = [dictionary2 objectForKeyedSubscript:v18];
               v21 = [v17 maximumLogLevelString:v20];
 
-              [v19 setObject:v21 forKeyedSubscript:v18];
-              v5 = v56;
+              [dictionary2 setObject:v21 forKeyedSubscript:v18];
+              actionsDict = v56;
               v8 = v57;
               v9 = 0x277CBE000;
               v16 = v61;
@@ -1455,8 +1455,8 @@ uint64_t __42__DiagnosticsController_loggingStateCache__block_invoke()
 
           if (v15 | v16)
           {
-            v19 = diagcollectLogHandle();
-            if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
+            dictionary2 = diagcollectLogHandle();
+            if (os_log_type_enabled(dictionary2, OS_LOG_TYPE_DEBUG))
             {
               v24 = objc_opt_class();
               v25 = NSStringFromClass(v24);
@@ -1470,7 +1470,7 @@ uint64_t __42__DiagnosticsController_loggingStateCache__block_invoke()
               v71 = v25;
               v72 = 2112;
               v73 = v27;
-              _os_log_impl(&dword_241804000, v19, OS_LOG_TYPE_DEBUG, "Found unexpected class for keys %@,%@ in the action dictionary (should be NSString): %@,%@", buf, 0x2Au);
+              _os_log_impl(&dword_241804000, dictionary2, OS_LOG_TYPE_DEBUG, "Found unexpected class for keys %@,%@ in the action dictionary (should be NSString): %@,%@", buf, 0x2Au);
 
               v9 = 0x277CBE000uLL;
               v8 = v57;
@@ -1543,7 +1543,7 @@ LABEL_36:
 
 LABEL_53:
 
-            v5 = v56;
+            actionsDict = v56;
             v8 = v57;
             v9 = 0x277CBE000;
 LABEL_54:
@@ -1601,16 +1601,16 @@ LABEL_54:
             v54 = v42;
             if ([(__CFString *)v42 length])
             {
-              v53 = [v55 objectForKeyedSubscript:@"process"];
-              if (!v53)
+              dictionary3 = [dictionary objectForKeyedSubscript:@"process"];
+              if (!dictionary3)
               {
-                v53 = [MEMORY[0x277CBEB38] dictionary];
-                [v55 setObject:? forKeyedSubscript:?];
+                dictionary3 = [MEMORY[0x277CBEB38] dictionary];
+                [dictionary setObject:? forKeyedSubscript:?];
               }
 
-              v49 = [v53 objectForKeyedSubscript:v42];
+              v49 = [dictionary3 objectForKeyedSubscript:v42];
               v48 = [v36 maximumLogLevelString:?];
-              [v53 setObject:? forKeyedSubscript:?];
+              [dictionary3 setObject:? forKeyedSubscript:?];
               v32 = v50;
               goto LABEL_48;
             }
@@ -1620,31 +1620,31 @@ LABEL_54:
             {
               if ([v51 length])
               {
-                v53 = [v55 objectForKeyedSubscript:@"category"];
-                if (!v53)
+                dictionary3 = [dictionary objectForKeyedSubscript:@"category"];
+                if (!dictionary3)
                 {
-                  v53 = [MEMORY[0x277CBEB38] dictionary];
-                  [v55 setObject:? forKeyedSubscript:?];
+                  dictionary3 = [MEMORY[0x277CBEB38] dictionary];
+                  [dictionary setObject:? forKeyedSubscript:?];
                 }
 
                 v49 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%@", v51, v52];
-                v48 = [v53 objectForKeyedSubscript:v49];
+                v48 = [dictionary3 objectForKeyedSubscript:v49];
                 v47 = [v36 maximumLogLevelString:?];
-                [v53 setObject:v47 forKeyedSubscript:v49];
+                [dictionary3 setObject:v47 forKeyedSubscript:v49];
               }
 
               else
               {
-                v53 = [v55 objectForKeyedSubscript:@"subsystem"];
-                if (!v53)
+                dictionary3 = [dictionary objectForKeyedSubscript:@"subsystem"];
+                if (!dictionary3)
                 {
-                  v53 = [MEMORY[0x277CBEB38] dictionary];
-                  [v55 setObject:? forKeyedSubscript:?];
+                  dictionary3 = [MEMORY[0x277CBEB38] dictionary];
+                  [dictionary setObject:? forKeyedSubscript:?];
                 }
 
-                v49 = [v53 objectForKeyedSubscript:v52];
+                v49 = [dictionary3 objectForKeyedSubscript:v52];
                 v48 = [v36 maximumLogLevelString:?];
-                [v53 setObject:? forKeyedSubscript:?];
+                [dictionary3 setObject:? forKeyedSubscript:?];
               }
 
 LABEL_48:
@@ -1702,20 +1702,20 @@ LABEL_57:
 
   v45 = *MEMORY[0x277D85DE8];
 
-  return v55;
+  return dictionary;
 }
 
-- (id)diagActionsForSignature:(id)a3 commonActions:(id)a4
+- (id)diagActionsForSignature:(id)signature commonActions:(id)actions
 {
   v82 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v71 = a4;
-  v7 = [(__CFString *)v6 objectForKeyedSubscript:@"domain"];
-  v70 = [(__CFString *)v6 objectForKeyedSubscript:@"type"];
-  v68 = [(__CFString *)v6 objectForKeyedSubscript:@"subtype"];
+  signatureCopy = signature;
+  actionsCopy = actions;
+  v7 = [(__CFString *)signatureCopy objectForKeyedSubscript:@"domain"];
+  v70 = [(__CFString *)signatureCopy objectForKeyedSubscript:@"type"];
+  v68 = [(__CFString *)signatureCopy objectForKeyedSubscript:@"subtype"];
   v8 = @"additional";
-  v67 = [(__CFString *)v6 objectForKeyedSubscript:@"additional"];
-  v9 = [(__CFString *)v6 objectForKeyedSubscript:@"detected"];
+  v67 = [(__CFString *)signatureCopy objectForKeyedSubscript:@"additional"];
+  v9 = [(__CFString *)signatureCopy objectForKeyedSubscript:@"detected"];
   if (v9)
   {
     v10 = v9;
@@ -1745,9 +1745,9 @@ LABEL_57:
     LOBYTE(v12) = 1;
   }
 
-  if (v71)
+  if (actionsCopy)
   {
-    LODWORD(v12) = [v71 BOOLValue];
+    LODWORD(v12) = [actionsCopy BOOLValue];
     v13 = diagcollectLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
@@ -1765,13 +1765,13 @@ LABEL_57:
     v7 = v69;
   }
 
-  v75 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ([v7 length] && objc_msgSend(v70, "length"))
   {
-    [v75 setObject:@"type" forKeyedSubscript:@"domain"];
+    [dictionary setObject:@"type" forKeyedSubscript:@"domain"];
     if ([v70 length] && objc_msgSend(v68, "length"))
     {
-      [v75 setObject:@"subtype" forKeyedSubscript:@"type"];
+      [dictionary setObject:@"subtype" forKeyedSubscript:@"type"];
       if (![v68 length])
       {
         goto LABEL_32;
@@ -1782,14 +1782,14 @@ LABEL_57:
         goto LABEL_32;
       }
 
-      [v75 setObject:@"additional" forKeyedSubscript:@"subtype"];
+      [dictionary setObject:@"additional" forKeyedSubscript:@"subtype"];
       if (![v67 length] || !-[__CFString length](v10, "length"))
       {
         goto LABEL_32;
       }
 
 LABEL_31:
-      [v75 setObject:@"detected" forKeyedSubscript:v8];
+      [dictionary setObject:@"detected" forKeyedSubscript:v8];
       goto LABEL_32;
     }
 
@@ -1814,11 +1814,11 @@ LABEL_31:
 
 LABEL_32:
   v73 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v15 = [(DiagnosticsController *)self settingsDict];
+  settingsDict = [(DiagnosticsController *)self settingsDict];
   v16 = @"domain";
   v18 = v16;
   v19 = "ghtStatus";
-  if (v15)
+  if (settingsDict)
   {
     v20 = 0;
     *&v17 = 134218242;
@@ -1850,17 +1850,17 @@ LABEL_32:
       if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v77 = v6;
+        v77 = signatureCopy;
         _os_log_impl(&dword_241804000, v23, OS_LOG_TYPE_INFO, "Skipped evaluating common diagnostic extension actions for signature: %@", buf, 0xCu);
       }
 
 LABEL_69:
 
-      v42 = [(__CFString *)v6 objectForKeyedSubscript:v18];
+      v42 = [(__CFString *)signatureCopy objectForKeyedSubscript:v18];
 
       if ([(__CFString *)v42 length])
       {
-        v43 = [v15 objectForKeyedSubscript:v42];
+        v43 = [settingsDict objectForKeyedSubscript:v42];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -1926,15 +1926,15 @@ LABEL_69:
           goto LABEL_81;
         }
 
-        v44 = [v15 objectForKeyedSubscript:v10];
+        v44 = [settingsDict objectForKeyedSubscript:v10];
 
         if (!v44)
         {
-          v45 = v15;
+          v45 = settingsDict;
           goto LABEL_85;
         }
 
-        v45 = [v15 objectForKeyedSubscript:v10];
+        v45 = [settingsDict objectForKeyedSubscript:v10];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -2022,12 +2022,12 @@ LABEL_100:
       }
 
       v44 = 0;
-      v43 = v15;
+      v43 = settingsDict;
 LABEL_86:
 
-      v53 = [v75 objectForKeyedSubscript:v18];
+      v53 = [dictionary objectForKeyedSubscript:v18];
 
-      v15 = v44;
+      settingsDict = v44;
       v18 = v53;
       v20 = v42;
       if (!v44)
@@ -2039,7 +2039,7 @@ LABEL_86:
       }
     }
 
-    v23 = [v15 objectForKeyedSubscript:@"DEFAULTS"];
+    v23 = [settingsDict objectForKeyedSubscript:@"DEFAULTS"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -2208,16 +2208,16 @@ LABEL_103:
   return v73;
 }
 
-- (void)consolidateLoggingLevelsIntoSet:(id)a3 withCurrentState:(id)a4
+- (void)consolidateLoggingLevelsIntoSet:(id)set withCurrentState:(id)state
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  setCopy = set;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [a4 allValues];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v22 count:16];
+  allValues = [state allValues];
+  v7 = [allValues countByEnumeratingWithState:&v16 objects:v22 count:16];
   if (v7)
   {
     v8 = v7;
@@ -2228,7 +2228,7 @@ LABEL_103:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
@@ -2247,12 +2247,12 @@ LABEL_103:
           v14[1] = 3221225472;
           v14[2] = __74__DiagnosticsController_consolidateLoggingLevelsIntoSet_withCurrentState___block_invoke;
           v14[3] = &unk_278CF0C68;
-          v15 = v5;
+          v15 = setCopy;
           [v11 enumerateKeysAndObjectsUsingBlock:v14];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v22 count:16];
+      v8 = [allValues countByEnumeratingWithState:&v16 objects:v22 count:16];
     }
 
     while (v8);
@@ -2371,12 +2371,12 @@ void __74__DiagnosticsController_consolidateLoggingLevelsIntoSet_withCurrentStat
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)raiseLoggingForActions:(id)a3 identifier:(id)a4
+- (void)raiseLoggingForActions:(id)actions identifier:(id)identifier
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (![v7 length])
+  actionsCopy = actions;
+  identifierCopy = identifier;
+  if (![identifierCopy length])
   {
     v8 = diagcollectLogHandle();
     if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -2391,7 +2391,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (![v6 count])
+  if (![actionsCopy count])
   {
     v8 = diagcollectLogHandle();
     if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -2405,7 +2405,7 @@ LABEL_16:
   }
 
   v8 = +[DiagnosticsController loggingStateCache];
-  v9 = [(DiagnosticsController *)self consolidatedLogLevelSetsFromActions:v6];
+  v9 = [(DiagnosticsController *)self consolidatedLogLevelSetsFromActions:actionsCopy];
   v10 = diagcollectLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -2420,13 +2420,13 @@ LABEL_16:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
       v16 = 138412290;
-      v17 = v7;
+      v17 = identifierCopy;
       _os_log_impl(&dword_241804000, v11, OS_LOG_TYPE_DEBUG, "Storing logging state for session: %@", &v16, 0xCu);
     }
 
-    [v8 setObject:v9 forKeyedSubscript:v7];
-    v12 = [MEMORY[0x277CBEB38] dictionary];
-    [(DiagnosticsController *)self consolidateLoggingLevelsIntoSet:v12 withCurrentState:v8];
+    [v8 setObject:v9 forKeyedSubscript:identifierCopy];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [(DiagnosticsController *)self consolidateLoggingLevelsIntoSet:dictionary withCurrentState:v8];
     v13 = diagcollectLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
@@ -2434,40 +2434,40 @@ LABEL_16:
       _os_log_impl(&dword_241804000, v13, OS_LOG_TYPE_DEBUG, "Applying the consolidated log levels", &v16, 2u);
     }
 
-    [(DiagnosticsController *)self applyLogLevelSets:v12];
+    [(DiagnosticsController *)self applyLogLevelSets:dictionary];
   }
 
 LABEL_17:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)lowerLoggingForIdentifier:(id)a3
+- (void)lowerLoggingForIdentifier:(id)identifier
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 length])
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
     v5 = +[DiagnosticsController loggingStateCache];
-    v6 = [v5 objectForKeyedSubscript:v4];
+    v6 = [v5 objectForKeyedSubscript:identifierCopy];
     if ([v6 count])
     {
-      [v5 setObject:0 forKeyedSubscript:v4];
+      [v5 setObject:0 forKeyedSubscript:identifierCopy];
       v7 = diagcollectLogHandle();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v15 = v4;
+        v15 = identifierCopy;
         _os_log_impl(&dword_241804000, v7, OS_LOG_TYPE_DEBUG, "Removed logging state for session: %@", buf, 0xCu);
       }
 
-      v8 = [MEMORY[0x277CBEB38] dictionary];
-      [(DiagnosticsController *)self consolidateLoggingLevelsIntoSet:v8 withCurrentState:v5];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
+      [(DiagnosticsController *)self consolidateLoggingLevelsIntoSet:dictionary withCurrentState:v5];
       v12[0] = MEMORY[0x277D85DD0];
       v12[1] = 3221225472;
       v12[2] = __51__DiagnosticsController_lowerLoggingForIdentifier___block_invoke;
       v12[3] = &unk_278CF0C68;
-      v13 = v8;
-      v9 = v8;
+      v13 = dictionary;
+      v9 = dictionary;
       [v6 enumerateKeysAndObjectsUsingBlock:v12];
       v10 = diagcollectLogHandle();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -2485,7 +2485,7 @@ LABEL_17:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v15 = v4;
+        v15 = identifierCopy;
         _os_log_impl(&dword_241804000, v9, OS_LOG_TYPE_DEBUG, "No logging state for session: %@", buf, 0xCu);
       }
     }
@@ -2576,14 +2576,14 @@ void __51__DiagnosticsController_lowerLoggingForIdentifier___block_invoke(uint64
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)applyLogLevelSets:(id)a3
+- (void)applyLogLevelSets:(id)sets
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __43__DiagnosticsController_applyLogLevelSets___block_invoke;
   v3[3] = &unk_278CF0C68;
   v3[4] = self;
-  [a3 enumerateKeysAndObjectsUsingBlock:v3];
+  [sets enumerateKeysAndObjectsUsingBlock:v3];
 }
 
 void __43__DiagnosticsController_applyLogLevelSets___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -2619,40 +2619,40 @@ void __43__DiagnosticsController_applyLogLevelSets___block_invoke(uint64_t a1, v
   [v6 enumerateKeysAndObjectsUsingBlock:v9];
 }
 
-- (BOOL)validateOSLogPreferencesProtocol:(id)a3
+- (BOOL)validateOSLogPreferencesProtocol:(id)protocol
 {
-  v3 = a3;
+  protocolCopy = protocol;
   v4 = (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0;
 
   return v4;
 }
 
-- (void)applyLogLevel:(id)a3 forIdentifier:(id)a4 logSettingType:(unint64_t)a5
+- (void)applyLogLevel:(id)level forIdentifier:(id)identifier logSettingType:(unint64_t)type
 {
   v59 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(DiagnosticsController *)self _loadLoggingSupport];
+  levelCopy = level;
+  identifierCopy = identifier;
+  _loadLoggingSupport = [(DiagnosticsController *)self _loadLoggingSupport];
   v11 = diagcollectLogHandle();
   v12 = v11;
-  if (v10)
+  if (_loadLoggingSupport)
   {
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
       v13 = LogSettingToString;
-      v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a5];
+      v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
       v15 = [v13 objectForKeyedSubscript:v14];
       v47 = 138412546;
-      v48 = v15;
+      typeCopy = v15;
       v49 = 2112;
-      v50 = v9;
+      v50 = identifierCopy;
       _os_log_impl(&dword_241804000, v12, OS_LOG_TYPE_DEBUG, " - %@ identifier: %@", &v47, 0x16u);
     }
 
-    switch(a5)
+    switch(type)
     {
       case 3uLL:
-        v17 = [v9 componentsSeparatedByString:@":"];
+        v17 = [identifierCopy componentsSeparatedByString:@":"];
         if ([v17 count] == 2)
         {
           v18 = [v17 objectAtIndexedSubscript:0];
@@ -2668,10 +2668,10 @@ void __43__DiagnosticsController_applyLogLevelSets___block_invoke(uint64_t a1, v
 
         break;
       case 2uLL:
-        v16 = [[gOSLogPreferencesSubsystem alloc] initWithName:v9];
+        v16 = [[gOSLogPreferencesSubsystem alloc] initWithName:identifierCopy];
         goto LABEL_11;
       case 1uLL:
-        v16 = [[gOSLogPreferencesProcess alloc] initWithBundleID:v9];
+        v16 = [[gOSLogPreferencesProcess alloc] initWithBundleID:identifierCopy];
 LABEL_11:
         v12 = v16;
         break;
@@ -2680,7 +2680,7 @@ LABEL_11:
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
         {
           v47 = 134217984;
-          v48 = a5;
+          typeCopy = type;
           _os_log_impl(&dword_241804000, v21, OS_LOG_TYPE_DEBUG, "Unsupported log setting type: %ld", &v47, 0xCu);
         }
 
@@ -2696,7 +2696,7 @@ LABEL_11:
       if (v24)
       {
         v47 = 138412290;
-        v48 = v12;
+        typeCopy = v12;
         v32 = "OSLogPreferences object %@ no longer conforms to our expected definition!";
         v33 = v23;
         v34 = 12;
@@ -2721,22 +2721,22 @@ LABEL_54:
         v25 = @"Off";
       }
 
-      v26 = [v12 effectiveEnabledLevel];
-      v27 = [v12 enabledLevel];
-      v28 = [v12 effectivePersistedLevel];
-      v29 = [v12 persistedLevel];
+      effectiveEnabledLevel = [v12 effectiveEnabledLevel];
+      enabledLevel = [v12 enabledLevel];
+      effectivePersistedLevel = [v12 effectivePersistedLevel];
+      persistedLevel = [v12 persistedLevel];
       v47 = 138413570;
-      v48 = v12;
+      typeCopy = v12;
       v49 = 2112;
       v50 = v25;
       v51 = 2048;
-      v52 = v26;
+      v52 = effectiveEnabledLevel;
       v53 = 2048;
-      v54 = v27;
+      v54 = enabledLevel;
       v55 = 2048;
-      v56 = v28;
+      v56 = effectivePersistedLevel;
       v57 = 2048;
-      v58 = v29;
+      v58 = persistedLevel;
       _os_log_impl(&dword_241804000, v23, OS_LOG_TYPE_DEBUG, "(Before) OSLogPreferences: %@, isLocked: %@, effectiveEnabled:%ld, enabled:%ld effectivePersisted: %ld, persisted: %ld", &v47, 0x3Eu);
     }
 
@@ -2748,31 +2748,31 @@ LABEL_54:
         v30 = objc_opt_class();
         v31 = NSStringFromClass(v30);
         v47 = 138412290;
-        v48 = v31;
+        typeCopy = v31;
         _os_log_impl(&dword_241804000, v23, OS_LOG_TYPE_DEBUG, "No means to adjust log levels!! (%@ is locked)", &v47, 0xCu);
       }
 
       goto LABEL_54;
     }
 
-    if ([v8 isEqualToString:@"info"])
+    if ([levelCopy isEqualToString:@"info"])
     {
       v35 = 3;
     }
 
-    else if ([v8 isEqualToString:@"debug"])
+    else if ([levelCopy isEqualToString:@"debug"])
     {
       v35 = 4;
     }
 
-    else if ([v8 isEqualToString:@"none"])
+    else if ([levelCopy isEqualToString:@"none"])
     {
       v35 = 0;
     }
 
     else
     {
-      if ([v8 isEqualToString:@"reset"])
+      if ([levelCopy isEqualToString:@"reset"])
       {
         v36 = diagcollectLogHandle();
         if (os_log_type_enabled(v36, OS_LOG_TYPE_DEBUG))
@@ -2796,22 +2796,22 @@ LABEL_48:
             v41 = @"Off";
           }
 
-          v42 = [v12 effectiveEnabledLevel];
-          v43 = [v12 enabledLevel];
-          v44 = [v12 effectivePersistedLevel];
-          v45 = [v12 persistedLevel];
+          effectiveEnabledLevel2 = [v12 effectiveEnabledLevel];
+          enabledLevel2 = [v12 enabledLevel];
+          effectivePersistedLevel2 = [v12 effectivePersistedLevel];
+          persistedLevel2 = [v12 persistedLevel];
           v47 = 138413570;
-          v48 = v12;
+          typeCopy = v12;
           v49 = 2112;
           v50 = v41;
           v51 = 2048;
-          v52 = v42;
+          v52 = effectiveEnabledLevel2;
           v53 = 2048;
-          v54 = v43;
+          v54 = enabledLevel2;
           v55 = 2048;
-          v56 = v44;
+          v56 = effectivePersistedLevel2;
           v57 = 2048;
-          v58 = v45;
+          v58 = persistedLevel2;
           v32 = "(After) OSLogPreferences: %@, isLocked: %@, effectiveEnabled: %ld, enabled: %ld effectivePersisted: %ld, persisted: %ld";
           v33 = v23;
           v34 = 62;
@@ -2828,7 +2828,7 @@ LABEL_48:
     if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
     {
       v47 = 138412546;
-      v48 = v8;
+      typeCopy = levelCopy;
       v49 = 2048;
       v50 = v35;
       _os_log_impl(&dword_241804000, v37, OS_LOG_TYPE_DEBUG, "Requesting log level change to: %@ (%ld)", &v47, 0x16u);
@@ -2841,16 +2841,16 @@ LABEL_48:
       v38 = diagcollectLogHandle();
       if (os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG))
       {
-        v39 = [v12 persistedLevel];
-        v40 = [v12 enabledLevel];
+        persistedLevel3 = [v12 persistedLevel];
+        enabledLevel3 = [v12 enabledLevel];
         v47 = 138413058;
-        v48 = v8;
+        typeCopy = levelCopy;
         v49 = 2048;
         v50 = v35;
         v51 = 2048;
-        v52 = v39;
+        v52 = persistedLevel3;
         v53 = 2048;
-        v54 = v40;
+        v54 = enabledLevel3;
         _os_log_impl(&dword_241804000, v38, OS_LOG_TYPE_DEBUG, "Adjusted log level to: %@ (%ld) - p:%ld | e:%ld", &v47, 0x2Au);
       }
     }
@@ -2869,76 +2869,76 @@ LABEL_55:
   v46 = *MEMORY[0x277D85DE8];
 }
 
-- (void)raiseLoggingForDiagnosticCase:(id)a3
+- (void)raiseLoggingForDiagnosticCase:(id)case
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  caseCopy = case;
   v5 = diagcollectLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [v4 caseId];
+    caseId = [caseCopy caseId];
     v12 = 138412290;
-    v13 = v6;
+    v13 = caseId;
     _os_log_impl(&dword_241804000, v5, OS_LOG_TYPE_DEBUG, "raiseLoggingForDiagnosticCase: %@", &v12, 0xCu);
   }
 
-  v7 = [v4 caseId];
-  v8 = [v7 UUIDString];
+  caseId2 = [caseCopy caseId];
+  uUIDString = [caseId2 UUIDString];
 
-  v9 = [v4 signature];
-  if ([v8 length] && objc_msgSend(v9, "count"))
+  signature = [caseCopy signature];
+  if ([uUIDString length] && objc_msgSend(signature, "count"))
   {
-    v10 = [(DiagnosticsController *)self diagActionsForSignature:v9];
-    [(DiagnosticsController *)self raiseLoggingForActions:v10 identifier:v8];
+    v10 = [(DiagnosticsController *)self diagActionsForSignature:signature];
+    [(DiagnosticsController *)self raiseLoggingForActions:v10 identifier:uUIDString];
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)lowerLoggingForDiagnosticCase:(id)a3
+- (void)lowerLoggingForDiagnosticCase:(id)case
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  caseCopy = case;
   v5 = diagcollectLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [v4 caseId];
+    caseId = [caseCopy caseId];
     v10 = 138412290;
-    v11 = v6;
+    v11 = caseId;
     _os_log_impl(&dword_241804000, v5, OS_LOG_TYPE_DEBUG, "lowerLoggingForDiagnosticCase: %@", &v10, 0xCu);
   }
 
-  v7 = [v4 caseId];
-  v8 = [v7 UUIDString];
+  caseId2 = [caseCopy caseId];
+  uUIDString = [caseId2 UUIDString];
 
-  if ([v8 length])
+  if ([uUIDString length])
   {
-    [(DiagnosticsController *)self lowerLoggingForIdentifier:v8];
+    [(DiagnosticsController *)self lowerLoggingForIdentifier:uUIDString];
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)diagnosticExtensionsForDiagnosticCase:(id)a3 enableCommonActions:(id)a4
+- (id)diagnosticExtensionsForDiagnosticCase:(id)case enableCommonActions:(id)actions
 {
   v75 = *MEMORY[0x277D85DE8];
-  v43 = a3;
-  v41 = a4;
+  caseCopy = case;
+  actionsCopy = actions;
   v6 = diagcollectLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    v7 = [v43 caseId];
+    caseId = [caseCopy caseId];
     *buf = 138412290;
-    *&buf[4] = v7;
+    *&buf[4] = caseId;
     _os_log_impl(&dword_241804000, v6, OS_LOG_TYPE_DEBUG, "diagnosticExtensionsForDiagnosticCase: %@", buf, 0xCu);
   }
 
   v8 = objc_alloc_init(MEMORY[0x277CBEB40]);
-  v44 = [v43 signature];
-  v45 = [(DiagnosticsController *)self actionsDict];
-  if ([v44 count])
+  signature = [caseCopy signature];
+  actionsDict = [(DiagnosticsController *)self actionsDict];
+  if ([signature count])
   {
-    v9 = [(DiagnosticsController *)self diagActionsForSignature:v44 commonActions:v41];
+    v9 = [(DiagnosticsController *)self diagActionsForSignature:signature commonActions:actionsCopy];
     v10 = diagcollectLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
@@ -2973,7 +2973,7 @@ LABEL_55:
           if (objc_opt_isKindOfClass())
           {
             v14 = v13;
-            v52 = [v45 objectForKeyedSubscript:v14];
+            v52 = [actionsDict objectForKeyedSubscript:v14];
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
@@ -2996,7 +2996,7 @@ LABEL_55:
                 v58[1] = 3221225472;
                 v58[2] = __83__DiagnosticsController_diagnosticExtensionsForDiagnosticCase_enableCommonActions___block_invoke;
                 v58[3] = &unk_278CF0CB8;
-                v59 = v44;
+                v59 = signature;
                 v60 = buf;
                 v61 = &v71;
                 [v16 enumerateKeysAndObjectsUsingBlock:v58];
@@ -3136,9 +3136,9 @@ LABEL_47:
   }
 
   v32 = +[SystemProperties sharedInstance];
-  v33 = [v32 customerSeedBuild];
+  customerSeedBuild = [v32 customerSeedBuild];
 
-  if (v33)
+  if (customerSeedBuild)
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -3179,11 +3179,11 @@ LABEL_47:
     _os_log_impl(&dword_241804000, v36, OS_LOG_TYPE_INFO, "Found %ld diagnostic extensions: %@", buf, 0x16u);
   }
 
-  v38 = [v8 array];
+  array = [v8 array];
 
   v39 = *MEMORY[0x277D85DE8];
 
-  return v38;
+  return array;
 }
 
 void __83__DiagnosticsController_diagnosticExtensionsForDiagnosticCase_enableCommonActions___block_invoke(uint64_t a1, void *a2, void *a3, _BYTE *a4)
@@ -3286,14 +3286,14 @@ void __83__DiagnosticsController_diagnosticExtensionsForDiagnosticCase_enableCom
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)collectDiagnosticExtensionFilesForDiagnosticCase:(id)a3 parameters:(id)a4 options:(id)a5 queue:(id)a6 reply:(id)a7
+- (unint64_t)collectDiagnosticExtensionFilesForDiagnosticCase:(id)case parameters:(id)parameters options:(id)options queue:(id)queue reply:(id)reply
 {
   v80 = *MEMORY[0x277D85DE8];
-  v61 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  caseCopy = case;
+  parametersCopy = parameters;
+  optionsCopy = options;
+  queueCopy = queue;
+  replyCopy = reply;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -3301,11 +3301,11 @@ void __83__DiagnosticsController_diagnosticExtensionsForDiagnosticCase_enableCom
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v75 = v13;
+      v75 = optionsCopy;
       _os_log_impl(&dword_241804000, v16, OS_LOG_TYPE_DEBUG, "Found diagnostic extensions options dictionary: %@", buf, 0xCu);
     }
 
-    v17 = [v13 objectForKeyedSubscript:@"diagextcommon"];
+    v17 = [optionsCopy objectForKeyedSubscript:@"diagextcommon"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -3330,15 +3330,15 @@ void __83__DiagnosticsController_diagnosticExtensionsForDiagnosticCase_enableCom
     v18 = 0;
   }
 
-  v20 = [(DiagnosticsController *)self diagnosticExtensionsForDiagnosticCase:v61 enableCommonActions:v18];
+  v20 = [(DiagnosticsController *)self diagnosticExtensionsForDiagnosticCase:caseCopy enableCommonActions:v18];
   v21 = [v20 count];
   v22 = diagcollectLogHandle();
   v23 = os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG);
   if (v21)
   {
-    v53 = self;
-    v55 = v15;
-    v56 = v14;
+    selfCopy = self;
+    v55 = replyCopy;
+    v56 = queueCopy;
     if (v23)
     {
       v24 = [v20 count];
@@ -3347,11 +3347,11 @@ void __83__DiagnosticsController_diagnosticExtensionsForDiagnosticCase_enableCom
       v76 = 2112;
       v77 = v20;
       v78 = 2112;
-      v79 = v12;
+      v79 = parametersCopy;
       _os_log_impl(&dword_241804000, v22, OS_LOG_TYPE_DEBUG, "Ready to collect from %ld diagnostic extensions (%@) with parameters: %@", buf, 0x20u);
     }
 
-    v57 = v13;
+    v57 = optionsCopy;
 
     v54 = v20;
     v25 = [MEMORY[0x277CBEB98] setWithArray:v20];
@@ -3363,8 +3363,8 @@ void __83__DiagnosticsController_diagnosticExtensionsForDiagnosticCase_enableCom
     v71[3] = &unk_278CF0C68;
     v60 = v26;
     v72 = v60;
-    v58 = v12;
-    [v12 enumerateKeysAndObjectsUsingBlock:v71];
+    v58 = parametersCopy;
+    [parametersCopy enumerateKeysAndObjectsUsingBlock:v71];
     v27 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v67 = 0u;
     v68 = 0u;
@@ -3399,7 +3399,7 @@ void __83__DiagnosticsController_diagnosticExtensionsForDiagnosticCase_enableCom
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v36 = [v35 mutableCopy];
+            dictionary = [v35 mutableCopy];
           }
 
           else
@@ -3419,16 +3419,16 @@ void __83__DiagnosticsController_diagnosticExtensionsForDiagnosticCase_enableCom
               }
             }
 
-            v36 = [MEMORY[0x277CBEB38] dictionary];
+            dictionary = [MEMORY[0x277CBEB38] dictionary];
           }
 
-          v40 = v36;
+          v40 = dictionary;
 
           [v40 setObject:@"com.apple.symptomsd" forKeyedSubscript:@"DEExtensionHostAppKey"];
           if (([v33 isEqualToString:@"com.apple.DiagnosticExtensions.WiFi"] & 1) != 0 || objc_msgSend(v33, "isEqualToString:", @"com.apple.diagnosticextensions.osx.wifi"))
           {
-            v41 = [v61 signature];
-            v42 = [v41 objectForKeyedSubscript:@"subtype"];
+            signature = [caseCopy signature];
+            v42 = [signature objectForKeyedSubscript:@"subtype"];
 
             [v40 setObject:v42 forKeyedSubscript:@"trigger"];
           }
@@ -3440,11 +3440,11 @@ void __83__DiagnosticsController_diagnosticExtensionsForDiagnosticCase_enableCom
 
           else
           {
-            v43 = [MEMORY[0x277CBEB68] null];
-            [v27 setValue:v43 forKey:v33];
+            null = [MEMORY[0x277CBEB68] null];
+            [v27 setValue:null forKey:v33];
           }
 
-          [v61 addRequiredAttachmentType:@"diagext" pattern:v33];
+          [caseCopy addRequiredAttachmentType:@"diagext" pattern:v33];
         }
 
         v28 = obj;
@@ -3454,21 +3454,21 @@ void __83__DiagnosticsController_diagnosticExtensionsForDiagnosticCase_enableCom
       while (v30);
     }
 
-    v44 = [(DiagnosticsController *)v53 diagExtensionCollector];
-    v45 = [v61 caseId];
-    v46 = [v45 UUIDString];
+    diagExtensionCollector = [(DiagnosticsController *)selfCopy diagExtensionCollector];
+    caseId = [caseCopy caseId];
+    uUIDString = [caseId UUIDString];
     v64[0] = MEMORY[0x277D85DD0];
     v64[1] = 3221225472;
     v64[2] = __105__DiagnosticsController_collectDiagnosticExtensionFilesForDiagnosticCase_parameters_options_queue_reply___block_invoke_226;
     v64[3] = &unk_278CF0D08;
-    v15 = v55;
+    replyCopy = v55;
     v66 = v55;
-    v14 = v56;
+    queueCopy = v56;
     v65 = v56;
-    [v44 collectDEPayloadsWithIdentifier:v46 diagnosticExtensionsWithParameters:v27 queue:v65 reply:v64];
+    [diagExtensionCollector collectDEPayloadsWithIdentifier:uUIDString diagnosticExtensionsWithParameters:v27 queue:v65 reply:v64];
 
-    v13 = v57;
-    v12 = v58;
+    optionsCopy = v57;
+    parametersCopy = v58;
     v20 = v54;
     v47 = v52;
   }
@@ -3477,14 +3477,14 @@ void __83__DiagnosticsController_diagnosticExtensionsForDiagnosticCase_enableCom
   {
     if (v23)
     {
-      v48 = [v61 caseId];
-      v49 = [v48 UUIDString];
+      caseId2 = [caseCopy caseId];
+      uUIDString2 = [caseId2 UUIDString];
       *buf = 138412290;
-      v75 = v49;
+      v75 = uUIDString2;
       _os_log_impl(&dword_241804000, v22, OS_LOG_TYPE_DEBUG, "No matching diagnostic extensions found for the case ID %@", buf, 0xCu);
     }
 
-    if (!v15)
+    if (!replyCopy)
     {
       v47 = 0;
       goto LABEL_42;
@@ -3494,8 +3494,8 @@ void __83__DiagnosticsController_diagnosticExtensionsForDiagnosticCase_enableCom
     block[1] = 3221225472;
     block[2] = __105__DiagnosticsController_collectDiagnosticExtensionFilesForDiagnosticCase_parameters_options_queue_reply___block_invoke_229;
     block[3] = &unk_278CF0A58;
-    v63 = v15;
-    dispatch_async(v14, block);
+    v63 = replyCopy;
+    dispatch_async(queueCopy, block);
     v47 = 0;
     v28 = v63;
   }

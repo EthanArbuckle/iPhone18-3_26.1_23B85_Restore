@@ -5,17 +5,17 @@
 - (id)request;
 - (id)response;
 - (void)_onQueue_reloadIfNeeded;
-- (void)_onQueue_scheduleRetryAfterInterval:(double)a3;
+- (void)_onQueue_scheduleRetryAfterInterval:(double)interval;
 - (void)_onQueue_updateRequestID;
-- (void)_responseDidInvalidate:(id)a3;
+- (void)_responseDidInvalidate:(id)invalidate;
 - (void)beginAutomaticResponseLoading;
 - (void)dealloc;
 - (void)endAutomaticResponseLoading;
 - (void)reloadIfNeeded;
 - (void)setNeedsReload;
 - (void)setNeedsReloadForSignificantRequestChange;
-- (void)setRequest:(id)a3;
-- (void)setResponse:(id)a3;
+- (void)setRequest:(id)request;
+- (void)setResponse:(id)response;
 @end
 
 @implementation MPRequestResponseController
@@ -734,7 +734,7 @@ void __54__MPRequestResponseController__onQueue_reloadIfNeeded__block_invoke_95(
   dispatch_async(*(*(a1 + 64) + 112), *(a1 + 72));
 }
 
-- (void)_onQueue_scheduleRetryAfterInterval:(double)a3
+- (void)_onQueue_scheduleRetryAfterInterval:(double)interval
 {
   dispatch_assert_queue_V2(self->_queue);
   if (!self->_retryTimer)
@@ -747,7 +747,7 @@ void __54__MPRequestResponseController__onQueue_reloadIfNeeded__block_invoke_95(
     self->_retryTimer = v7;
 
     v9 = self->_retryTimer;
-    v10 = dispatch_time(0, (a3 * 1000000000.0));
+    v10 = dispatch_time(0, (interval * 1000000000.0));
     dispatch_source_set_timer(v9, v10, 0xFFFFFFFFFFFFFFFFLL, 0x1DCD6500uLL);
     v11 = self->_retryTimer;
     v13[0] = MEMORY[0x1E69E9820];
@@ -757,7 +757,7 @@ void __54__MPRequestResponseController__onQueue_reloadIfNeeded__block_invoke_95(
     v14 = v5;
     v12 = v5;
     objc_copyWeak(v15, &location);
-    v15[1] = *&a3;
+    v15[1] = *&interval;
     dispatch_source_set_event_handler(v11, v13);
     dispatch_resume(self->_retryTimer);
     objc_destroyWeak(v15);
@@ -842,7 +842,7 @@ void __67__MPRequestResponseController__onQueue_scheduleRetryAfterInterval___blo
   v9 = [MEMORY[0x1E696AD98] numberWithBool:self->_needsReload];
   v10 = v9;
   requestID = self->_requestID;
-  v12 = @"<NULL>";
+  weakRetained = @"<NULL>";
   if (!requestID)
   {
     requestID = @"<NULL>";
@@ -874,10 +874,10 @@ void __67__MPRequestResponseController__onQueue_scheduleRetryAfterInterval___blo
   v21[7] = @"delegate";
   if (WeakRetained)
   {
-    v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@: %p>", objc_opt_class(), WeakRetained];
+    weakRetained = [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@: %p>", objc_opt_class(), WeakRetained];
   }
 
-  v22[7] = v12;
+  v22[7] = weakRetained;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:v21 count:8];
   v16 = [v5 dictionaryWithDictionary:v15];
 
@@ -906,7 +906,7 @@ void __67__MPRequestResponseController__onQueue_scheduleRetryAfterInterval___blo
   return v16;
 }
 
-- (void)_responseDidInvalidate:(id)a3
+- (void)_responseDidInvalidate:(id)invalidate
 {
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -1092,8 +1092,8 @@ uint64_t __72__MPRequestResponseController_setNeedsReloadForSignificantRequestCh
   dispatch_sync(queue, v6);
   if (*(v8 + 24) == 1)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"MPRequestResponseController.m" lineNumber:173 description:@"Mismatched begin/endAutomaticResponseLoading."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPRequestResponseController.m" lineNumber:173 description:@"Mismatched begin/endAutomaticResponseLoading."];
   }
 
   _Block_object_dispose(&v7, 8);
@@ -1118,22 +1118,22 @@ void __58__MPRequestResponseController_endAutomaticResponseLoading__block_invoke
   }
 }
 
-- (void)setResponse:(id)a3
+- (void)setResponse:(id)response
 {
-  v5 = a3;
-  if (v5)
+  responseCopy = response;
+  if (responseCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:a2 object:self file:@"MPRequestResponseController.m" lineNumber:103 description:@"Response must be subclass of MPResponse."];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"MPRequestResponseController.m" lineNumber:103 description:@"Response must be subclass of MPResponse."];
     }
   }
 
-  v6 = [(MPRequestResponseController *)self response];
+  response = [(MPRequestResponseController *)self response];
 
-  if (v6 != v5)
+  if (response != responseCopy)
   {
     [(MPRequestResponseController *)self willChangeValueForKey:@"response"];
     queue = self->_queue;
@@ -1141,10 +1141,10 @@ void __58__MPRequestResponseController_endAutomaticResponseLoading__block_invoke
     v10 = 3221225472;
     v11 = __43__MPRequestResponseController_setResponse___block_invoke;
     v12 = &unk_1E76823C0;
-    v13 = self;
-    v14 = v5;
+    selfCopy = self;
+    v14 = responseCopy;
     dispatch_async(queue, &v9);
-    [(MPRequestResponseController *)self didChangeValueForKey:@"response", v9, v10, v11, v12, v13];
+    [(MPRequestResponseController *)self didChangeValueForKey:@"response", v9, v10, v11, v12, selfCopy];
   }
 }
 
@@ -1278,22 +1278,22 @@ LABEL_21:
   return result;
 }
 
-- (void)setRequest:(id)a3
+- (void)setRequest:(id)request
 {
-  v5 = a3;
-  if (v5)
+  requestCopy = request;
+  if (requestCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:a2 object:self file:@"MPRequestResponseController.m" lineNumber:69 description:@"Request must be subclass of MPRequest."];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"MPRequestResponseController.m" lineNumber:69 description:@"Request must be subclass of MPRequest."];
     }
   }
 
-  v6 = [(MPRequestResponseController *)self request];
+  request = [(MPRequestResponseController *)self request];
 
-  if (v6 != v5)
+  if (request != requestCopy)
   {
     [(MPRequestResponseController *)self willChangeValueForKey:@"request"];
     queue = self->_queue;
@@ -1301,10 +1301,10 @@ LABEL_21:
     v10 = 3221225472;
     v11 = __42__MPRequestResponseController_setRequest___block_invoke;
     v12 = &unk_1E76823C0;
-    v13 = self;
-    v14 = v5;
+    selfCopy = self;
+    v14 = requestCopy;
     dispatch_async(queue, &v9);
-    [(MPRequestResponseController *)self didChangeValueForKey:@"request", v9, v10, v11, v12, v13];
+    [(MPRequestResponseController *)self didChangeValueForKey:@"request", v9, v10, v11, v12, selfCopy];
   }
 }
 

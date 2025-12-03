@@ -1,9 +1,9 @@
 @interface ArtworkShelfViewController
-- (_TtC9CarPlayUI26ArtworkShelfViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
+- (_TtC9CarPlayUI26ArtworkShelfViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -12,19 +12,19 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   ArtworkShelfViewController.viewDidLoad()();
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   ArtworkShelfViewController.viewDidLayoutSubviews()();
 }
 
-- (_TtC9CarPlayUI26ArtworkShelfViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9CarPlayUI26ArtworkShelfViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -36,52 +36,52 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return ArtworkShelfViewController.init(nibName:bundle:)(v5, v7, a4);
+  bundleCopy = bundle;
+  return ArtworkShelfViewController.init(nibName:bundle:)(v5, v7, bundle);
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
   v5 = OBJC_IVAR____TtC9CarPlayUI26ArtworkShelfViewController_items;
   swift_beginAccess();
   return (*(&self->super.super.super.isa + v5))[2];
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   MEMORY[0x28223BE20](v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  v12 = ArtworkShelfViewController.collectionView(_:cellForItemAt:)(v10);
+  viewCopy = view;
+  selfCopy = self;
+  v12 = ArtworkShelfViewController.collectionView(_:cellForItemAt:)(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 
   return v12;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   MEMORY[0x28223BE20](v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  ArtworkShelfViewController.collectionView(_:didSelectItemAt:)(v10, v9);
+  viewCopy = view;
+  selfCopy = self;
+  ArtworkShelfViewController.collectionView(_:didSelectItemAt:)(viewCopy, v9);
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  v7 = a3;
-  v8 = self;
-  specialized ArtworkShelfViewController.scrollViewWillEndDragging(_:withVelocity:targetContentOffset:)(v7, &a5->x);
+  draggingCopy = dragging;
+  selfCopy = self;
+  specialized ArtworkShelfViewController.scrollViewWillEndDragging(_:withVelocity:targetContentOffset:)(draggingCopy, &offset->x);
 }
 
 @end

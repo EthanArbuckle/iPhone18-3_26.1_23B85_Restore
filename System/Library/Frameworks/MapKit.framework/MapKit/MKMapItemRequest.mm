@@ -2,14 +2,14 @@
 - (BOOL)isCancelled;
 - (BOOL)isLoading;
 - (MKMapFeatureAnnotation)featureAnnotation;
-- (MKMapItemRequest)initWithInternalSwiftExtensions:(id)a3 descriptorResolutionParameters:(id)a4;
-- (MKMapItemRequest)initWithInternalSwiftExtensions:(id)a3 mapItemIdentifier:(id)a4;
+- (MKMapItemRequest)initWithInternalSwiftExtensions:(id)extensions descriptorResolutionParameters:(id)parameters;
+- (MKMapItemRequest)initWithInternalSwiftExtensions:(id)extensions mapItemIdentifier:(id)identifier;
 - (MKMapItemRequest)initWithMapFeatureAnnotation:(MKMapFeatureAnnotation *)mapFeatureAnnotation;
-- (MKMapItemRequest)initWithMapItemIdentifier:(id)a3;
-- (void)_handleMapItems:(id)a3 error:(id)a4 completionHandler:(id)a5;
-- (void)_performLookupRequestWithTicket:(id)a3 queue:(id)a4 completionHandler:(id)a5;
+- (MKMapItemRequest)initWithMapItemIdentifier:(id)identifier;
+- (void)_handleMapItems:(id)items error:(id)error completionHandler:(id)handler;
+- (void)_performLookupRequestWithTicket:(id)ticket queue:(id)queue completionHandler:(id)handler;
 - (void)cancel;
-- (void)getMapItemWithQueue:(id)a3 completionHandler:(id)a4;
+- (void)getMapItemWithQueue:(id)queue completionHandler:(id)handler;
 @end
 
 @implementation MKMapItemRequest
@@ -56,53 +56,53 @@
   return featureAnnotation;
 }
 
-- (void)_handleMapItems:(id)a3 error:(id)a4 completionHandler:(id)a5
+- (void)_handleMapItems:(id)items error:(id)error completionHandler:(id)handler
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
+  itemsCopy = items;
+  errorCopy = error;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_stateLock);
   cancelled = self->_cancelled;
   os_unfair_lock_unlock(&self->_stateLock);
-  if (v9 && !cancelled)
+  if (handlerCopy && !cancelled)
   {
-    if (v8)
+    if (errorCopy)
     {
-      v11 = [v8 _mapkit_error];
-      v9[2](v9, 0, v11);
+      _mapkit_error = [errorCopy _mapkit_error];
+      handlerCopy[2](handlerCopy, 0, _mapkit_error);
     }
 
-    else if ([v13 count])
+    else if ([itemsCopy count])
     {
-      v11 = [v13 firstObject];
-      (v9)[2](v9, v11, 0);
+      _mapkit_error = [itemsCopy firstObject];
+      (handlerCopy)[2](handlerCopy, _mapkit_error, 0);
     }
 
     else
     {
       v12 = objc_alloc(MEMORY[0x1E696ABC0]);
-      v11 = [v12 initWithDomain:MKErrorDomain code:1 userInfo:0];
-      v9[2](v9, 0, v11);
+      _mapkit_error = [v12 initWithDomain:MKErrorDomain code:1 userInfo:0];
+      handlerCopy[2](handlerCopy, 0, _mapkit_error);
     }
   }
 }
 
-- (void)_performLookupRequestWithTicket:(id)a3 queue:(id)a4 completionHandler:(id)a5
+- (void)_performLookupRequestWithTicket:(id)ticket queue:(id)queue completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  ticketCopy = ticket;
+  queueCopy = queue;
+  handlerCopy = handler;
   v15 = MEMORY[0x1E69E9820];
   v16 = __76__MKMapItemRequest__performLookupRequestWithTicket_queue_completionHandler___block_invoke;
   v17 = &unk_1E76C7B40;
-  v20 = v8;
-  v21 = v10;
-  v18 = self;
-  v19 = v9;
+  v20 = ticketCopy;
+  v21 = handlerCopy;
+  selfCopy = self;
+  v19 = queueCopy;
   v11 = MEMORY[0x1E696AF00];
-  v12 = v9;
-  v13 = v10;
-  v14 = v8;
+  v12 = queueCopy;
+  v13 = handlerCopy;
+  v14 = ticketCopy;
   if ([v11 isMainThread])
   {
     v16(&v15);
@@ -161,10 +161,10 @@ void __76__MKMapItemRequest__performLookupRequestWithTicket_queue_completionHand
   [*(a1 + 32) _handleMapItems:v8 error:v5 completionHandler:*(a1 + 40)];
 }
 
-- (void)getMapItemWithQueue:(id)a3 completionHandler:(id)a4
+- (void)getMapItemWithQueue:(id)queue completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  handlerCopy = handler;
   os_unfair_lock_lock_with_options();
   if (self->_loading)
   {
@@ -181,9 +181,9 @@ LABEL_5:
       block[2] = __58__MKMapItemRequest_getMapItemWithQueue_completionHandler___block_invoke;
       block[3] = &unk_1E76CDA20;
       v29 = v11;
-      v30 = v7;
+      v30 = handlerCopy;
       v12 = v11;
-      dispatch_async(v6, block);
+      dispatch_async(queueCopy, block);
 
       v13 = v30;
 LABEL_17:
@@ -203,10 +203,10 @@ LABEL_4:
   featureAnnotation = self->_featureAnnotation;
   if (featureAnnotation)
   {
-    v15 = [(MKMapFeatureAnnotation *)featureAnnotation marker];
-    v16 = [v15 identifier];
+    marker = [(MKMapFeatureAnnotation *)featureAnnotation marker];
+    identifier = [marker identifier];
 
-    if (!v16)
+    if (!identifier)
     {
       v8 = MKGetMapItemRequestLog();
       if (!os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -223,13 +223,13 @@ LABEL_4:
   mapItemIdentifier = self->_mapItemIdentifier;
   if (mapItemIdentifier)
   {
-    v18 = mapItemIdentifier;
+    identifier2 = mapItemIdentifier;
   }
 
   else
   {
-    v19 = [(MKMapFeatureAnnotation *)self->_featureAnnotation marker];
-    v18 = [v19 identifier];
+    marker2 = [(MKMapFeatureAnnotation *)self->_featureAnnotation marker];
+    identifier2 = [marker2 identifier];
   }
 
   if (self->_descriptorResolutionParameters)
@@ -239,11 +239,11 @@ LABEL_4:
     v25[2] = __58__MKMapItemRequest_getMapItemWithQueue_completionHandler___block_invoke_2;
     v25[3] = &unk_1E76CAA70;
     v25[4] = self;
-    v26 = v6;
-    v27 = v7;
+    v26 = queueCopy;
+    v27 = handlerCopy;
     v13 = MEMORY[0x1A58E9F30](v25);
 
-    if (!v18)
+    if (!identifier2)
     {
       if (!v13)
       {
@@ -261,23 +261,23 @@ LABEL_4:
 
   v13 = 0;
   v12 = 0;
-  if (v18)
+  if (identifier2)
   {
 LABEL_16:
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __58__MKMapItemRequest_getMapItemWithQueue_completionHandler___block_invoke_4;
     v23[3] = &unk_1E76C7AF0;
-    v12 = v18;
+    v12 = identifier2;
     v24 = v12;
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __58__MKMapItemRequest_getMapItemWithQueue_completionHandler___block_invoke_5;
     v20[3] = &unk_1E76C7B18;
     v21 = v13;
-    v22 = v7;
+    v22 = handlerCopy;
     v13 = v13;
-    [(MKMapItemRequest *)self _performLookupRequestWithTicket:v23 queue:v6 completionHandler:v20];
+    [(MKMapItemRequest *)self _performLookupRequestWithTicket:v23 queue:queueCopy completionHandler:v20];
 
     goto LABEL_17;
   }
@@ -333,52 +333,52 @@ id __58__MKMapItemRequest_getMapItemWithQueue_completionHandler___block_invoke_3
   return v5;
 }
 
-- (MKMapItemRequest)initWithInternalSwiftExtensions:(id)a3 descriptorResolutionParameters:(id)a4
+- (MKMapItemRequest)initWithInternalSwiftExtensions:(id)extensions descriptorResolutionParameters:(id)parameters
 {
-  v7 = a3;
-  v8 = a4;
+  extensionsCopy = extensions;
+  parametersCopy = parameters;
   v12.receiver = self;
   v12.super_class = MKMapItemRequest;
   v9 = [(MKMapItemRequest *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_internalSwiftExtensions, a3);
-    objc_storeStrong(&v10->_descriptorResolutionParameters, a4);
+    objc_storeStrong(&v9->_internalSwiftExtensions, extensions);
+    objc_storeStrong(&v10->_descriptorResolutionParameters, parameters);
     v10->_stateLock._os_unfair_lock_opaque = 0;
   }
 
   return v10;
 }
 
-- (MKMapItemRequest)initWithInternalSwiftExtensions:(id)a3 mapItemIdentifier:(id)a4
+- (MKMapItemRequest)initWithInternalSwiftExtensions:(id)extensions mapItemIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  extensionsCopy = extensions;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = MKMapItemRequest;
   v9 = [(MKMapItemRequest *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_internalSwiftExtensions, a3);
-    objc_storeStrong(&v10->_mapItemIdentifier, a4);
+    objc_storeStrong(&v9->_internalSwiftExtensions, extensions);
+    objc_storeStrong(&v10->_mapItemIdentifier, identifier);
     v10->_stateLock._os_unfair_lock_opaque = 0;
   }
 
   return v10;
 }
 
-- (MKMapItemRequest)initWithMapItemIdentifier:(id)a3
+- (MKMapItemRequest)initWithMapItemIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = MKMapItemRequest;
   v6 = [(MKMapItemRequest *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mapItemIdentifier, a3);
+    objc_storeStrong(&v6->_mapItemIdentifier, identifier);
     v7->_stateLock._os_unfair_lock_opaque = 0;
   }
 

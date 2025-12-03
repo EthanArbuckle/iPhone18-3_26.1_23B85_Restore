@@ -1,10 +1,10 @@
 @interface HDClinicalGateway
-+ (BOOL)validateContent:(id)a3 error:(id *)a4;
-+ (int64_t)_pkceAlgorithmForRawType:(id)a3;
-+ (int64_t)_statusForRawStatus:(id)a3;
-- (HDClinicalGateway)initWithContent:(id)a3;
-- (HDClinicalGateway)initWithRawContent:(id)a3;
-- (HDClinicalGateway)initWithoutValidatingContent:(id)a3;
++ (BOOL)validateContent:(id)content error:(id *)error;
++ (int64_t)_pkceAlgorithmForRawType:(id)type;
++ (int64_t)_statusForRawStatus:(id)status;
+- (HDClinicalGateway)initWithContent:(id)content;
+- (HDClinicalGateway)initWithRawContent:(id)content;
+- (HDClinicalGateway)initWithoutValidatingContent:(id)content;
 - (HKClinicalBrand)brand;
 - (HKClinicalGateway)hkGateway;
 - (HKFHIRVersion)FHIRVersion;
@@ -20,13 +20,13 @@
 - (NSString)subtitle;
 - (NSString)title;
 - (NSURL)baseURL;
-- (id)_URLForKey:(id)a3;
-- (id)authScopeWithError:(id *)a3;
+- (id)_URLForKey:(id)key;
+- (id)authScopeWithError:(id *)error;
 - (id)authenticationInformation;
-- (id)authorizeSchemaWithError:(id *)a3;
+- (id)authorizeSchemaWithError:(id *)error;
 - (id)clientID;
 - (id)clientSecret;
-- (id)connectionInformationWithAccountIdentifier:(id)a3 credential:(id)a4 error:(id *)a5;
+- (id)connectionInformationWithAccountIdentifier:(id)identifier credential:(id)credential error:(id *)error;
 - (id)description;
 - (int64_t)PKCEAlgorithm;
 - (int64_t)lastReportedStatus;
@@ -43,9 +43,9 @@
   return v2;
 }
 
-- (HDClinicalGateway)initWithContent:(id)a3
+- (HDClinicalGateway)initWithContent:(id)content
 {
-  v4 = sub_70FB8(a3);
+  v4 = sub_70FB8(content);
   v7.receiver = self;
   v7.super_class = HDClinicalGateway;
   v5 = [(HDClinicalProviderServiceModel *)&v7 initWithContent:v4];
@@ -53,9 +53,9 @@
   return v5;
 }
 
-- (HDClinicalGateway)initWithoutValidatingContent:(id)a3
+- (HDClinicalGateway)initWithoutValidatingContent:(id)content
 {
-  v4 = sub_70FB8(a3);
+  v4 = sub_70FB8(content);
   v7.receiver = self;
   v7.super_class = HDClinicalGateway;
   v5 = [(HDClinicalProviderServiceModel *)&v7 initWithoutValidatingContent:v4];
@@ -63,28 +63,28 @@
   return v5;
 }
 
-- (HDClinicalGateway)initWithRawContent:(id)a3
+- (HDClinicalGateway)initWithRawContent:(id)content
 {
   v4.receiver = self;
   v4.super_class = HDClinicalGateway;
-  return [(HDClinicalProviderServiceModel *)&v4 initWithoutValidatingContent:a3];
+  return [(HDClinicalProviderServiceModel *)&v4 initWithoutValidatingContent:content];
 }
 
 - (id)description
 {
   v3 = [NSString alloc];
   v4 = objc_opt_class();
-  v5 = [(HDClinicalGateway *)self externalID];
-  v6 = [(HDClinicalGateway *)self title];
-  v7 = [v3 initWithFormat:@"<%@:%p externalID: %@; name: %@; revision: %lld; status: %zd;>", v4, self, v5, v6, -[HDClinicalProviderServiceModel revision](self, "revision"), -[HDClinicalGateway lastReportedStatus](self, "lastReportedStatus")];
+  externalID = [(HDClinicalGateway *)self externalID];
+  title = [(HDClinicalGateway *)self title];
+  v7 = [v3 initWithFormat:@"<%@:%p externalID: %@; name: %@; revision: %lld; status: %zd;>", v4, self, externalID, title, -[HDClinicalProviderServiceModel revision](self, "revision"), -[HDClinicalGateway lastReportedStatus](self, "lastReportedStatus")];
 
   return v7;
 }
 
-- (id)authorizeSchemaWithError:(id *)a3
+- (id)authorizeSchemaWithError:(id *)error
 {
-  v4 = [(HDClinicalGateway *)self authSchemaDefinitions];
-  v5 = [HKClinicalGatewayEndpointSchema endpointSchemasFromDefinitions:v4 error:a3];
+  authSchemaDefinitions = [(HDClinicalGateway *)self authSchemaDefinitions];
+  v5 = [HKClinicalGatewayEndpointSchema endpointSchemasFromDefinitions:authSchemaDefinitions error:error];
 
   if (v5)
   {
@@ -97,7 +97,7 @@
 
     else
     {
-      [NSError hk_assignError:a3 code:100 format:@"No authorization schema found"];
+      [NSError hk_assignError:error code:100 format:@"No authorization schema found"];
     }
   }
 
@@ -112,21 +112,21 @@
 - (id)authenticationInformation
 {
   v3 = [HKFHIRServerAuthenticationInformation alloc];
-  v4 = [(HDClinicalGateway *)self clientID];
-  v5 = [(HDClinicalGateway *)self clientSecret];
-  v6 = [v3 initWithClientID:v4 clientSecret:v5 PKCEAlgorithm:{-[HDClinicalGateway PKCEAlgorithm](self, "PKCEAlgorithm")}];
+  clientID = [(HDClinicalGateway *)self clientID];
+  clientSecret = [(HDClinicalGateway *)self clientSecret];
+  v6 = [v3 initWithClientID:clientID clientSecret:clientSecret PKCEAlgorithm:{-[HDClinicalGateway PKCEAlgorithm](self, "PKCEAlgorithm")}];
 
   return v6;
 }
 
-- (id)connectionInformationWithAccountIdentifier:(id)a3 credential:(id)a4 error:(id *)a5
+- (id)connectionInformationWithAccountIdentifier:(id)identifier credential:(id)credential error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  credentialCopy = credential;
   v10 = [[HKClinicalGateway alloc] initWithDaemonClinicalGateway:self];
-  if (v9)
+  if (credentialCopy)
   {
-    v11 = [v9 credentialWithPopulatedAccessTokenWithError:a5];
+    v11 = [credentialCopy credentialWithPopulatedAccessTokenWithError:error];
     if (!v11)
     {
       v12 = 0;
@@ -140,22 +140,22 @@
   }
 
   v13 = [HKClinicalAccountConnectionInformation alloc];
-  v14 = [(HDClinicalGateway *)self authenticationInformation];
-  v12 = [v13 initWithAccountIdentifier:v8 gateway:v10 authorization:v11 authentication:v14];
+  authenticationInformation = [(HDClinicalGateway *)self authenticationInformation];
+  v12 = [v13 initWithAccountIdentifier:identifierCopy gateway:v10 authorization:v11 authentication:authenticationInformation];
 
 LABEL_6:
 
   return v12;
 }
 
-+ (BOOL)validateContent:(id)a3 error:(id *)a4
++ (BOOL)validateContent:(id)content error:(id *)error
 {
-  v6 = a3;
-  v11.receiver = a1;
+  contentCopy = content;
+  v11.receiver = self;
   v11.super_class = &OBJC_METACLASS___HDClinicalGateway;
-  if (objc_msgSendSuper2(&v11, "validateContent:error:", v6, a4))
+  if (objc_msgSendSuper2(&v11, "validateContent:error:", contentCopy, error))
   {
-    v7 = v6;
+    v7 = contentCopy;
     if (v7)
     {
       objc_opt_class();
@@ -177,13 +177,13 @@ LABEL_6:
   return v9;
 }
 
-- (id)authScopeWithError:(id *)a3
+- (id)authScopeWithError:(id *)error
 {
   v4 = [(HDClinicalGateway *)self authorizeSchemaWithError:?];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 currentScopeStringWithError:a3];
+    v6 = [v4 currentScopeStringWithError:error];
     v7 = v6;
     if (v6)
     {
@@ -218,56 +218,56 @@ LABEL_6:
 
 - (NSString)externalID
 {
-  v2 = [(HDClinicalProviderServiceModel *)self content];
-  v3 = [v2 objectForKeyedSubscript:@"gatewayID"];
+  content = [(HDClinicalProviderServiceModel *)self content];
+  v3 = [content objectForKeyedSubscript:@"gatewayID"];
 
   return v3;
 }
 
 - (NSString)batchID
 {
-  v2 = [(HDClinicalProviderServiceModel *)self content];
-  v3 = [v2 objectForKeyedSubscript:@"gatewayBatchID"];
+  content = [(HDClinicalProviderServiceModel *)self content];
+  v3 = [content objectForKeyedSubscript:@"gatewayBatchID"];
 
   return v3;
 }
 
 - (NSString)title
 {
-  v2 = [(HDClinicalProviderServiceModel *)self content];
-  v3 = [v2 objectForKeyedSubscript:@"title"];
+  content = [(HDClinicalProviderServiceModel *)self content];
+  v3 = [content objectForKeyedSubscript:@"title"];
 
   return v3;
 }
 
 - (NSString)subtitle
 {
-  v2 = [(HDClinicalProviderServiceModel *)self content];
-  v3 = [v2 objectForKeyedSubscript:@"subtitle"];
+  content = [(HDClinicalProviderServiceModel *)self content];
+  v3 = [content objectForKeyedSubscript:@"subtitle"];
 
   return v3;
 }
 
 - (NSString)displayableDescription
 {
-  v2 = [(HDClinicalProviderServiceModel *)self content];
-  v3 = [v2 objectForKeyedSubscript:@"displayableDescription"];
+  content = [(HDClinicalProviderServiceModel *)self content];
+  v3 = [content objectForKeyedSubscript:@"displayableDescription"];
 
   return v3;
 }
 
 - (id)clientID
 {
-  v2 = [(HDClinicalProviderServiceModel *)self content];
-  v3 = [v2 objectForKeyedSubscript:@"clientID"];
+  content = [(HDClinicalProviderServiceModel *)self content];
+  v3 = [content objectForKeyedSubscript:@"clientID"];
 
   return v3;
 }
 
 - (id)clientSecret
 {
-  v2 = [(HDClinicalProviderServiceModel *)self content];
-  v3 = [v2 objectForKeyedSubscript:@"clientSecret"];
+  content = [(HDClinicalProviderServiceModel *)self content];
+  v3 = [content objectForKeyedSubscript:@"clientSecret"];
   v4 = [[NSData alloc] initWithBase64EncodedString:v3 options:0];
   if (!v4)
   {
@@ -286,24 +286,24 @@ LABEL_6:
 
 - (NSArray)authSchemaDefinitions
 {
-  v2 = [(HDClinicalProviderServiceModel *)self content];
-  v3 = [v2 objectForKeyedSubscript:@"authSchemas"];
+  content = [(HDClinicalProviderServiceModel *)self content];
+  v3 = [content objectForKeyedSubscript:@"authSchemas"];
 
   return v3;
 }
 
 - (NSArray)resourceSchemaDefinitions
 {
-  v2 = [(HDClinicalProviderServiceModel *)self content];
-  v3 = [v2 objectForKeyedSubscript:@"resourceSchemas"];
+  content = [(HDClinicalProviderServiceModel *)self content];
+  v3 = [content objectForKeyedSubscript:@"resourceSchemas"];
 
   return v3;
 }
 
 - (NSArray)featureDefinitions
 {
-  v2 = [(HDClinicalProviderServiceModel *)self content];
-  v3 = [v2 objectForKeyedSubscript:@"features"];
+  content = [(HDClinicalProviderServiceModel *)self content];
+  v3 = [content objectForKeyedSubscript:@"features"];
   v4 = v3;
   if (v3)
   {
@@ -322,8 +322,8 @@ LABEL_6:
 
 - (NSArray)gatewayVersions
 {
-  v2 = [(HDClinicalProviderServiceModel *)self content];
-  v3 = [v2 objectForKeyedSubscript:@"gatewayVersions"];
+  content = [(HDClinicalProviderServiceModel *)self content];
+  v3 = [content objectForKeyedSubscript:@"gatewayVersions"];
   v4 = v3;
   if (v3)
   {
@@ -343,8 +343,8 @@ LABEL_6:
 - (NSURL)baseURL
 {
   v3 = [NSURL alloc];
-  v4 = [(HDClinicalProviderServiceModel *)self content];
-  v5 = [v4 objectForKeyedSubscript:@"baseURL"];
+  content = [(HDClinicalProviderServiceModel *)self content];
+  v5 = [content objectForKeyedSubscript:@"baseURL"];
   v6 = [v3 initWithString:v5];
 
   return v6;
@@ -352,8 +352,8 @@ LABEL_6:
 
 - (HKClinicalBrand)brand
 {
-  v2 = [(HDClinicalProviderServiceModel *)self content];
-  v3 = [v2 objectForKeyedSubscript:@"brand"];
+  content = [(HDClinicalProviderServiceModel *)self content];
+  v3 = [content objectForKeyedSubscript:@"brand"];
 
   v4 = [v3 objectForKeyedSubscript:@"brandID"];
   v5 = [v3 objectForKeyedSubscript:@"brandBatchID"];
@@ -364,8 +364,8 @@ LABEL_6:
 
 - (NSString)country
 {
-  v2 = [(HDClinicalProviderServiceModel *)self content];
-  v3 = [v2 objectForKeyedSubscript:HDClinicalGatewayContentCountryKey];
+  content = [(HDClinicalProviderServiceModel *)self content];
+  v3 = [content objectForKeyedSubscript:HDClinicalGatewayContentCountryKey];
   v4 = v3;
   if (v3)
   {
@@ -384,8 +384,8 @@ LABEL_6:
 
 - (HKFHIRVersion)FHIRVersion
 {
-  v2 = [(HDClinicalProviderServiceModel *)self content];
-  v3 = [v2 objectForKeyedSubscript:HDClinicalGatewayContentFHIRVersionKey];
+  content = [(HDClinicalProviderServiceModel *)self content];
+  v3 = [content objectForKeyedSubscript:HDClinicalGatewayContentFHIRVersionKey];
   v4 = v3;
   v5 = @"unknown";
   if (v3)
@@ -402,8 +402,8 @@ LABEL_6:
 
 - (NSString)phoneNumber
 {
-  v2 = [(HDClinicalProviderServiceModel *)self content];
-  v3 = [v2 objectForKeyedSubscript:@"phoneNumber"];
+  content = [(HDClinicalProviderServiceModel *)self content];
+  v3 = [content objectForKeyedSubscript:@"phoneNumber"];
 
   return v3;
 }
@@ -411,8 +411,8 @@ LABEL_6:
 - (int64_t)lastReportedStatus
 {
   v3 = objc_opt_class();
-  v4 = [(HDClinicalProviderServiceModel *)self content];
-  v5 = [v4 objectForKeyedSubscript:@"status"];
+  content = [(HDClinicalProviderServiceModel *)self content];
+  v5 = [content objectForKeyedSubscript:@"status"];
   v6 = [v3 _statusForRawStatus:v5];
 
   return v6;
@@ -421,8 +421,8 @@ LABEL_6:
 - (int64_t)type
 {
   v3 = objc_opt_class();
-  v4 = [(HDClinicalProviderServiceModel *)self content];
-  v5 = [v4 objectForKeyedSubscript:@"type"];
+  content = [(HDClinicalProviderServiceModel *)self content];
+  v5 = [content objectForKeyedSubscript:@"type"];
   v6 = [v3 _typeForRawType:v5];
 
   return v6;
@@ -431,8 +431,8 @@ LABEL_6:
 - (int64_t)PKCEAlgorithm
 {
   v3 = objc_opt_class();
-  v4 = [(HDClinicalProviderServiceModel *)self content];
-  v5 = [v4 objectForKeyedSubscript:@"pkceAlgorithm"];
+  content = [(HDClinicalProviderServiceModel *)self content];
+  v5 = [content objectForKeyedSubscript:@"pkceAlgorithm"];
   v6 = [v3 _pkceAlgorithmForRawType:v5];
 
   return v6;
@@ -440,27 +440,27 @@ LABEL_6:
 
 - (int64_t)minCompatibleAPIVersion
 {
-  v2 = [(HDClinicalProviderServiceModel *)self content];
-  v3 = [v2 objectForKeyedSubscript:@"minCompatibleApiVersion"];
+  content = [(HDClinicalProviderServiceModel *)self content];
+  v3 = [content objectForKeyedSubscript:@"minCompatibleApiVersion"];
 
-  v4 = [v3 integerValue];
-  return v4;
+  integerValue = [v3 integerValue];
+  return integerValue;
 }
 
-+ (int64_t)_statusForRawStatus:(id)a3
++ (int64_t)_statusForRawStatus:(id)status
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Active"])
+  statusCopy = status;
+  if ([statusCopy isEqualToString:@"Active"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Disabled"])
+  else if ([statusCopy isEqualToString:@"Disabled"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Removed"])
+  else if ([statusCopy isEqualToString:@"Removed"])
   {
     v4 = 3;
   }
@@ -473,11 +473,11 @@ LABEL_6:
   return v4;
 }
 
-+ (int64_t)_pkceAlgorithmForRawType:(id)a3
++ (int64_t)_pkceAlgorithmForRawType:(id)type
 {
-  if (a3)
+  if (type)
   {
-    v4 = a3;
+    typeCopy = type;
     objc_opt_class();
     v5 = HKSafeObject();
 
@@ -505,7 +505,7 @@ LABEL_10:
       v8 = HKLogHealthRecords;
       if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_ERROR))
       {
-        sub_A6508(v8, a1, v6);
+        sub_A6508(v8, self, v6);
       }
     }
 
@@ -516,15 +516,15 @@ LABEL_10:
   return 0;
 }
 
-- (id)_URLForKey:(id)a3
+- (id)_URLForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(HDClinicalProviderServiceModel *)self content];
-  v6 = [v5 objectForKeyedSubscript:@"urls"];
+  keyCopy = key;
+  content = [(HDClinicalProviderServiceModel *)self content];
+  v6 = [content objectForKeyedSubscript:@"urls"];
 
   if (v6)
   {
-    v7 = [v6 objectForKeyedSubscript:v4];
+    v7 = [v6 objectForKeyedSubscript:keyCopy];
     if (v7)
     {
       v8 = [[NSURLComponents alloc] initWithString:v7];

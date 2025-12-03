@@ -3,53 +3,53 @@
 - (NSString)language;
 - (NSString)name;
 - (NSString)path;
-- (TTSVBSiriTTSTrainingAsset)initWithSiriTTSTrainingAsset:(id)a3;
+- (TTSVBSiriTTSTrainingAsset)initWithSiriTTSTrainingAsset:(id)asset;
 @end
 
 @implementation TTSVBSiriTTSTrainingAsset
 
 - (NSString)factor
 {
-  v2 = [(TTSVBSiriTTSTrainingAsset *)self asset];
-  v3 = [v2 factor];
+  asset = [(TTSVBSiriTTSTrainingAsset *)self asset];
+  factor = [asset factor];
 
-  return v3;
+  return factor;
 }
 
 - (NSString)path
 {
-  v2 = [(TTSVBSiriTTSTrainingAsset *)self asset];
-  v3 = [v2 path];
+  asset = [(TTSVBSiriTTSTrainingAsset *)self asset];
+  path = [asset path];
 
-  return v3;
+  return path;
 }
 
 - (NSString)language
 {
-  v2 = [(TTSVBSiriTTSTrainingAsset *)self asset];
-  v3 = [v2 language];
+  asset = [(TTSVBSiriTTSTrainingAsset *)self asset];
+  language = [asset language];
 
-  return v3;
+  return language;
 }
 
 - (NSString)name
 {
-  v2 = [(TTSVBSiriTTSTrainingAsset *)self asset];
-  v3 = [v2 name];
+  asset = [(TTSVBSiriTTSTrainingAsset *)self asset];
+  name = [asset name];
 
-  return v3;
+  return name;
 }
 
-- (TTSVBSiriTTSTrainingAsset)initWithSiriTTSTrainingAsset:(id)a3
+- (TTSVBSiriTTSTrainingAsset)initWithSiriTTSTrainingAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   v8.receiver = self;
   v8.super_class = TTSVBSiriTTSTrainingAsset;
   v5 = [(TTSVBSiriTTSTrainingAsset *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(TTSVBSiriTTSTrainingAsset *)v5 setAsset:v4];
+    [(TTSVBSiriTTSTrainingAsset *)v5 setAsset:assetCopy];
   }
 
   return v6;

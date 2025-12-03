@@ -1,41 +1,41 @@
 @interface _GCNintendoFusedJoyConHapticDriver
-- (_GCNintendoFusedJoyConHapticDriver)initWithDevice:(id)a3;
-- (id)getDriver:(unint64_t)a3;
+- (_GCNintendoFusedJoyConHapticDriver)initWithDevice:(id)device;
+- (id)getDriver:(unint64_t)driver;
 - (void)enableHaptics;
-- (void)enqueueTransient:(id)a3 hapticMotor:(unint64_t)a4;
-- (void)setHapticMotor:(unint64_t)a3 frequency:(float)a4 amplitude:(float)a5;
+- (void)enqueueTransient:(id)transient hapticMotor:(unint64_t)motor;
+- (void)setHapticMotor:(unint64_t)motor frequency:(float)frequency amplitude:(float)amplitude;
 @end
 
 @implementation _GCNintendoFusedJoyConHapticDriver
 
-- (_GCNintendoFusedJoyConHapticDriver)initWithDevice:(id)a3
+- (_GCNintendoFusedJoyConHapticDriver)initWithDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v15.receiver = self;
   v15.super_class = _GCNintendoFusedJoyConHapticDriver;
   v5 = [(_GCNintendoFusedJoyConHapticDriver *)&v15 init];
   if (v5)
   {
-    v6 = [v4 leftDevice];
-    v7 = [v6 driverConnection];
-    v8 = [v7 remoteProxy];
+    leftDevice = [deviceCopy leftDevice];
+    driverConnection = [leftDevice driverConnection];
+    remoteProxy = [driverConnection remoteProxy];
     leftDriver = v5->_leftDriver;
-    v5->_leftDriver = v8;
+    v5->_leftDriver = remoteProxy;
 
-    v10 = [v4 rightDevice];
-    v11 = [v10 driverConnection];
-    v12 = [v11 remoteProxy];
+    rightDevice = [deviceCopy rightDevice];
+    driverConnection2 = [rightDevice driverConnection];
+    remoteProxy2 = [driverConnection2 remoteProxy];
     rightDriver = v5->_rightDriver;
-    v5->_rightDriver = v12;
+    v5->_rightDriver = remoteProxy2;
   }
 
   return v5;
 }
 
-- (id)getDriver:(unint64_t)a3
+- (id)getDriver:(unint64_t)driver
 {
   v3 = 16;
-  if (!a3)
+  if (!driver)
   {
     v3 = 8;
   }
@@ -51,19 +51,19 @@
   [(_GCDriverClientInterface *)rightDriver enableHaptics];
 }
 
-- (void)enqueueTransient:(id)a3 hapticMotor:(unint64_t)a4
+- (void)enqueueTransient:(id)transient hapticMotor:(unint64_t)motor
 {
-  v6 = a3;
-  v7 = [(_GCNintendoFusedJoyConHapticDriver *)self getDriver:a4];
-  [v7 enqueueTransient:v6 hapticMotor:a4];
+  transientCopy = transient;
+  v7 = [(_GCNintendoFusedJoyConHapticDriver *)self getDriver:motor];
+  [v7 enqueueTransient:transientCopy hapticMotor:motor];
 }
 
-- (void)setHapticMotor:(unint64_t)a3 frequency:(float)a4 amplitude:(float)a5
+- (void)setHapticMotor:(unint64_t)motor frequency:(float)frequency amplitude:(float)amplitude
 {
   v10 = [(_GCNintendoFusedJoyConHapticDriver *)self getDriver:?];
-  *&v8 = a4;
-  *&v9 = a5;
-  [v10 setHapticMotor:a3 frequency:v8 amplitude:v9];
+  *&v8 = frequency;
+  *&v9 = amplitude;
+  [v10 setHapticMotor:motor frequency:v8 amplitude:v9];
 }
 
 @end

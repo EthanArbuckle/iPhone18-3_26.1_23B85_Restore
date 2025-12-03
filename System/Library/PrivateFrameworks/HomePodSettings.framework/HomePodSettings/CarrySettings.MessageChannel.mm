@@ -1,110 +1,110 @@
 @interface CarrySettings.MessageChannel
-- (void)channel:(id)a3 didAddConsumer:(id)a4;
-- (void)channel:(id)a3 didAddProducer:(id)a4;
-- (void)consumer:(COMessageSessionConsumer *)a3 shouldStartSessionWithMember:(COClusterMemberRoleSnapshot *)a4 request:(COMessageSessionRequest *)a5 completionHandler:(id)a6;
-- (void)consumer:(id)a3 didStartSession:(id)a4;
-- (void)consumer:(id)a3 didStopSession:(id)a4 initiator:(id)a5 notice:(id)a6 error:(id)a7;
-- (void)producer:(COMessageSessionProducer *)a3 shouldStartSessionWithMember:(COClusterMemberRoleSnapshot *)a4 completionHandler:(id)a5;
-- (void)producer:(id)a3 didFailToStartSessionWithMember:(id)a4 error:(id)a5;
-- (void)producer:(id)a3 didStartSession:(id)a4 member:(id)a5 response:(id)a6;
-- (void)producer:(id)a3 didStopSession:(id)a4 initiator:(id)a5 notice:(id)a6 error:(id)a7;
+- (void)channel:(id)channel didAddConsumer:(id)consumer;
+- (void)channel:(id)channel didAddProducer:(id)producer;
+- (void)consumer:(COMessageSessionConsumer *)consumer shouldStartSessionWithMember:(COClusterMemberRoleSnapshot *)member request:(COMessageSessionRequest *)request completionHandler:(id)handler;
+- (void)consumer:(id)consumer didStartSession:(id)session;
+- (void)consumer:(id)consumer didStopSession:(id)session initiator:(id)initiator notice:(id)notice error:(id)error;
+- (void)producer:(COMessageSessionProducer *)producer shouldStartSessionWithMember:(COClusterMemberRoleSnapshot *)member completionHandler:(id)handler;
+- (void)producer:(id)producer didFailToStartSessionWithMember:(id)member error:(id)error;
+- (void)producer:(id)producer didStartSession:(id)session member:(id)member response:(id)response;
+- (void)producer:(id)producer didStopSession:(id)session initiator:(id)initiator notice:(id)notice error:(id)error;
 @end
 
 @implementation CarrySettings.MessageChannel
 
-- (void)channel:(id)a3 didAddConsumer:(id)a4
+- (void)channel:(id)channel didAddConsumer:(id)consumer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  channelCopy = channel;
+  consumerCopy = consumer;
+  selfCopy = self;
   sub_2542CD2B8();
 }
 
-- (void)consumer:(id)a3 didStartSession:(id)a4
+- (void)consumer:(id)consumer didStartSession:(id)session
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  consumerCopy = consumer;
+  sessionCopy = session;
+  selfCopy = self;
   sub_2542CD5B4();
 }
 
-- (void)consumer:(id)a3 didStopSession:(id)a4 initiator:(id)a5 notice:(id)a6 error:(id)a7
+- (void)consumer:(id)consumer didStopSession:(id)session initiator:(id)initiator notice:(id)notice error:(id)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = self;
-  v17 = a7;
+  consumerCopy = consumer;
+  sessionCopy = session;
+  initiatorCopy = initiator;
+  noticeCopy = notice;
+  selfCopy = self;
+  errorCopy = error;
   sub_2542CD848();
 }
 
-- (void)consumer:(COMessageSessionConsumer *)a3 shouldStartSessionWithMember:(COClusterMemberRoleSnapshot *)a4 request:(COMessageSessionRequest *)a5 completionHandler:(id)a6
+- (void)consumer:(COMessageSessionConsumer *)consumer shouldStartSessionWithMember:(COClusterMemberRoleSnapshot *)member request:(COMessageSessionRequest *)request completionHandler:(id)handler
 {
-  v10 = _Block_copy(a6);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
-  v11[3] = a4;
-  v11[4] = a5;
+  v11[2] = consumer;
+  v11[3] = member;
+  v11[4] = request;
   v11[5] = v10;
   v11[6] = self;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = self;
+  consumerCopy = consumer;
+  memberCopy = member;
+  requestCopy = request;
+  selfCopy = self;
 
   sub_254366AA8(&unk_2543A6CC8, v11);
 }
 
-- (void)channel:(id)a3 didAddProducer:(id)a4
+- (void)channel:(id)channel didAddProducer:(id)producer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  channelCopy = channel;
+  producerCopy = producer;
+  selfCopy = self;
   sub_2542CE1DC();
 }
 
-- (void)producer:(id)a3 didFailToStartSessionWithMember:(id)a4 error:(id)a5
+- (void)producer:(id)producer didFailToStartSessionWithMember:(id)member error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v11 = a5;
-  v10 = self;
+  producerCopy = producer;
+  memberCopy = member;
+  errorCopy = error;
+  selfCopy = self;
   sub_2542CE6E0();
 }
 
-- (void)producer:(id)a3 didStartSession:(id)a4 member:(id)a5 response:(id)a6
+- (void)producer:(id)producer didStartSession:(id)session member:(id)member response:(id)response
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = self;
+  producerCopy = producer;
+  sessionCopy = session;
+  memberCopy = member;
+  responseCopy = response;
+  selfCopy = self;
   sub_2542CE970();
 }
 
-- (void)producer:(id)a3 didStopSession:(id)a4 initiator:(id)a5 notice:(id)a6 error:(id)a7
+- (void)producer:(id)producer didStopSession:(id)session initiator:(id)initiator notice:(id)notice error:(id)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = self;
-  v17 = a7;
+  producerCopy = producer;
+  sessionCopy = session;
+  initiatorCopy = initiator;
+  noticeCopy = notice;
+  selfCopy = self;
+  errorCopy = error;
   sub_2542CEE44();
 }
 
-- (void)producer:(COMessageSessionProducer *)a3 shouldStartSessionWithMember:(COClusterMemberRoleSnapshot *)a4 completionHandler:(id)a5
+- (void)producer:(COMessageSessionProducer *)producer shouldStartSessionWithMember:(COClusterMemberRoleSnapshot *)member completionHandler:(id)handler
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
-  v9[2] = a3;
-  v9[3] = a4;
+  v9[2] = producer;
+  v9[3] = member;
   v9[4] = v8;
   v9[5] = self;
-  v10 = a3;
-  v11 = a4;
-  v12 = self;
+  producerCopy = producer;
+  memberCopy = member;
+  selfCopy = self;
 
   sub_254366AA8(&unk_2543A6CB8, v9);
 }

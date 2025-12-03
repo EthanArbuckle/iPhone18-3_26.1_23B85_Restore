@@ -1,49 +1,49 @@
 @interface WatchControlGreyInputController
-- (BOOL)canShowActionGroup:(unint64_t)a3 forDetailController:(id)a4;
-- (id)_actionValueForSpecifier:(id)a3;
+- (BOOL)canShowActionGroup:(unint64_t)group forDetailController:(id)controller;
+- (id)_actionValueForSpecifier:(id)specifier;
 - (id)activationGestureTitle;
 - (id)greyQuickActionsEnabled;
 - (id)inputSourceCustomizationSpecifiers;
-- (id)selectedCustomActionIdentifierForCustomActionType:(int64_t)a3 forDetailController:(id)a4;
+- (id)selectedCustomActionIdentifierForCustomActionType:(int64_t)type forDetailController:(id)controller;
 - (id)showDetectedGestureBanner;
-- (id)specifierIdentifierForGreyEvent:(int64_t)a3;
-- (unint64_t)selectedActionForDetailController:(id)a3;
-- (void)customizeEnableInputSourceGroupSpecifier:(id)a3;
+- (id)specifierIdentifierForGreyEvent:(int64_t)event;
+- (unint64_t)selectedActionForDetailController:(id)controller;
+- (void)customizeEnableInputSourceGroupSpecifier:(id)specifier;
 - (void)resetGreyCustomizations;
-- (void)setAction:(unint64_t)a3 forDetailController:(id)a4;
-- (void)setCustomActionType:(int64_t)a3 withCustomActionIdentifier:(id)a4 forDetailController:(id)a5;
-- (void)setShowDetectedGestureBanner:(id)a3;
+- (void)setAction:(unint64_t)action forDetailController:(id)controller;
+- (void)setCustomActionType:(int64_t)type withCustomActionIdentifier:(id)identifier forDetailController:(id)controller;
+- (void)setShowDetectedGestureBanner:(id)banner;
 @end
 
 @implementation WatchControlGreyInputController
 
-- (id)specifierIdentifierForGreyEvent:(int64_t)a3
+- (id)specifierIdentifierForGreyEvent:(int64_t)event
 {
-  if (a3 > 3)
+  if (event > 3)
   {
     return 0;
   }
 
   else
   {
-    return off_278B90B98[a3];
+    return off_278B90B98[event];
   }
 }
 
 - (id)inputSourceCustomizationSpecifiers
 {
   v54 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = MEMORY[0x277D3FAD8];
   v5 = settingsLocString(@"GREY_CUSTOMIZATIONS_TITLE", @"AccessibilitySettings-watchcontrol");
   v6 = [v4 groupSpecifierWithName:v5];
-  v45 = v3;
-  v7 = v3;
+  v45 = array;
+  v7 = array;
   v8 = 0x277D3F000uLL;
   [v7 addObject:v6];
 
-  v9 = [MEMORY[0x277D7A910] sharedInstance];
-  v44 = [v9 greyEventActionCustomizations];
+  mEMORY[0x277D7A910] = [MEMORY[0x277D7A910] sharedInstance];
+  greyEventActionCustomizations = [mEMORY[0x277D7A910] greyEventActionCustomizations];
 
   v49 = 0u;
   v50 = 0u;
@@ -63,10 +63,10 @@
           objc_enumerationMutation(obj);
         }
 
-        v11 = [*(*(&v47 + 1) + 8 * i) unsignedIntegerValue];
-        v12 = [MEMORY[0x277CCABB0] numberWithInteger:v11];
-        v13 = [v44 objectForKeyedSubscript:v12];
-        v14 = [v13 unsignedIntegerValue];
+        unsignedIntegerValue = [*(*(&v47 + 1) + 8 * i) unsignedIntegerValue];
+        v12 = [MEMORY[0x277CCABB0] numberWithInteger:unsignedIntegerValue];
+        v13 = [greyEventActionCustomizations objectForKeyedSubscript:v12];
+        unsignedIntegerValue2 = [v13 unsignedIntegerValue];
 
         v15 = v8;
         v16 = *(v8 + 2776);
@@ -74,17 +74,17 @@
         v18 = [v16 preferenceSpecifierNamed:v17 target:self set:0 get:sel__actionValueForSpecifier_ detail:objc_opt_class() cell:2 edit:0];
 
         v51[0] = @"GreyEvent";
-        v19 = [MEMORY[0x277CCABB0] numberWithInteger:v11];
+        v19 = [MEMORY[0x277CCABB0] numberWithInteger:unsignedIntegerValue];
         v52[0] = v19;
         v51[1] = @"Action";
-        v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v14];
+        v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue2];
         v51[2] = @"ActionDetailDelegate";
         v52[1] = v20;
         v52[2] = self;
         v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v52 forKeys:v51 count:3];
         [v18 setUserInfo:v21];
 
-        v22 = [(WatchControlGreyInputController *)self specifierIdentifierForGreyEvent:v11];
+        v22 = [(WatchControlGreyInputController *)self specifierIdentifierForGreyEvent:unsignedIntegerValue];
         if (v22)
         {
           [v18 setIdentifier:v22];
@@ -111,11 +111,11 @@
 
   [v27 setButtonAction:sel_resetGreyCustomizations];
   [v45 addObject:v27];
-  v28 = [*(v23 + 2776) emptyGroupSpecifier];
+  emptyGroupSpecifier = [*(v23 + 2776) emptyGroupSpecifier];
   v29 = settingsLocString(@"GREY_GESTURE_TO_START_FOOTER", @"AccessibilitySettings-watchcontrol");
-  [v28 setProperty:v29 forKey:*MEMORY[0x277D3FF88]];
+  [emptyGroupSpecifier setProperty:v29 forKey:*MEMORY[0x277D3FF88]];
 
-  [v45 addObject:v28];
+  [v45 addObject:emptyGroupSpecifier];
   v30 = *(v23 + 2776);
   v31 = settingsLocString(@"GREY_GESTURE_TO_START_TITLE", @"AccessibilitySettings-watchcontrol");
   v32 = [v30 preferenceSpecifierNamed:v31 target:self set:0 get:sel_activationGestureTitle detail:objc_opt_class() cell:2 edit:0];
@@ -128,8 +128,8 @@
 
   if ((v35 & 1) == 0)
   {
-    v36 = [*(v23 + 2776) emptyGroupSpecifier];
-    [v45 addObject:v36];
+    emptyGroupSpecifier2 = [*(v23 + 2776) emptyGroupSpecifier];
+    [v45 addObject:emptyGroupSpecifier2];
 
     v37 = *(v23 + 2776);
     v38 = settingsLocString(@"GREY_QUICK_ACTIONS_SWITCH", @"AccessibilitySettings-watchcontrol");
@@ -142,47 +142,47 @@
   return v45;
 }
 
-- (void)customizeEnableInputSourceGroupSpecifier:(id)a3
+- (void)customizeEnableInputSourceGroupSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 setProperty:v6 forKey:*MEMORY[0x277D3FF48]];
+  [specifierCopy setProperty:v6 forKey:*MEMORY[0x277D3FF48]];
 
   v13 = settingsLocString(@"GREY_GESTURE_EDUCATION_ACTION", @"AccessibilitySettings-watchcontrol");
   v7 = [v13 rangeOfString:v13];
   v9 = v8;
-  [v4 setProperty:v13 forKey:*MEMORY[0x277D3FF70]];
+  [specifierCopy setProperty:v13 forKey:*MEMORY[0x277D3FF70]];
   v15.location = v7;
   v15.length = v9;
   v10 = NSStringFromRange(v15);
-  [v4 setProperty:v10 forKey:*MEMORY[0x277D3FF58]];
+  [specifierCopy setProperty:v10 forKey:*MEMORY[0x277D3FF58]];
 
   v11 = [MEMORY[0x277CCAE60] valueWithNonretainedObject:self];
-  [v4 setProperty:v11 forKey:*MEMORY[0x277D3FF68]];
+  [specifierCopy setProperty:v11 forKey:*MEMORY[0x277D3FF68]];
 
   v12 = NSStringFromSelector(sel__didTapLearnMore);
-  [v4 setProperty:v12 forKey:*MEMORY[0x277D3FF50]];
+  [specifierCopy setProperty:v12 forKey:*MEMORY[0x277D3FF50]];
 }
 
-- (id)_actionValueForSpecifier:(id)a3
+- (id)_actionValueForSpecifier:(id)specifier
 {
-  v3 = a3;
-  v4 = [v3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"GreyEvent"];
+  specifierCopy = specifier;
+  userInfo = [specifierCopy userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"GreyEvent"];
 
-  v6 = [v3 userInfo];
+  userInfo2 = [specifierCopy userInfo];
 
-  v7 = [v6 objectForKeyedSubscript:@"Action"];
+  v7 = [userInfo2 objectForKeyedSubscript:@"Action"];
 
   v8 = 0;
   if (v5 && v7)
   {
     if ([v7 unsignedIntegerValue] == 10020)
     {
-      v9 = [MEMORY[0x277D7A910] sharedInstance];
-      v10 = [v9 greyEventCustomActionCustomizations];
-      v11 = [v10 objectForKey:v5];
+      mEMORY[0x277D7A910] = [MEMORY[0x277D7A910] sharedInstance];
+      greyEventCustomActionCustomizations = [mEMORY[0x277D7A910] greyEventCustomActionCustomizations];
+      v11 = [greyEventCustomActionCustomizations objectForKey:v5];
 
       WCRetrieveCustomActionFromPayload();
       v8 = 0;
@@ -199,16 +199,16 @@
 
 - (void)resetGreyCustomizations
 {
-  v3 = [MEMORY[0x277D7A910] sharedInstance];
-  [v3 resetGreyEventActionCustomizations];
+  mEMORY[0x277D7A910] = [MEMORY[0x277D7A910] sharedInstance];
+  [mEMORY[0x277D7A910] resetGreyEventActionCustomizations];
 
   [(WatchControlGreyInputController *)self reloadSpecifiers];
 }
 
 - (id)activationGestureTitle
 {
-  v2 = [MEMORY[0x277D7A910] sharedInstance];
-  [v2 greyActivationGesture];
+  mEMORY[0x277D7A910] = [MEMORY[0x277D7A910] sharedInstance];
+  [mEMORY[0x277D7A910] greyActivationGesture];
   v3 = WCNameForGreyEvent();
 
   return v3;
@@ -216,10 +216,10 @@
 
 - (id)greyQuickActionsEnabled
 {
-  v2 = [MEMORY[0x277D7A910] sharedInstance];
-  v3 = [v2 greyQuickActionsEnabled];
+  mEMORY[0x277D7A910] = [MEMORY[0x277D7A910] sharedInstance];
+  greyQuickActionsEnabled = [mEMORY[0x277D7A910] greyQuickActionsEnabled];
 
-  if (v3)
+  if (greyQuickActionsEnabled)
   {
     v4 = @"ON";
   }
@@ -237,37 +237,37 @@
 - (id)showDetectedGestureBanner
 {
   v2 = MEMORY[0x277CCABB0];
-  v3 = [MEMORY[0x277D7A910] sharedInstance];
-  v4 = [v2 numberWithBool:{objc_msgSend(v3, "showDetectedGestureBanner")}];
+  mEMORY[0x277D7A910] = [MEMORY[0x277D7A910] sharedInstance];
+  v4 = [v2 numberWithBool:{objc_msgSend(mEMORY[0x277D7A910], "showDetectedGestureBanner")}];
 
   return v4;
 }
 
-- (void)setShowDetectedGestureBanner:(id)a3
+- (void)setShowDetectedGestureBanner:(id)banner
 {
   v3 = MEMORY[0x277D7A910];
-  v4 = a3;
-  v6 = [v3 sharedInstance];
-  v5 = [v4 BOOLValue];
+  bannerCopy = banner;
+  sharedInstance = [v3 sharedInstance];
+  bOOLValue = [bannerCopy BOOLValue];
 
-  [v6 setShowDetectedGestureBanner:v5];
+  [sharedInstance setShowDetectedGestureBanner:bOOLValue];
 }
 
-- (unint64_t)selectedActionForDetailController:(id)a3
+- (unint64_t)selectedActionForDetailController:(id)controller
 {
-  v3 = [a3 greyEvent];
-  v4 = [MEMORY[0x277D7A910] sharedInstance];
-  v5 = [v4 greyEventActionCustomizations];
-  v6 = [MEMORY[0x277CCABB0] numberWithInteger:v3];
-  v7 = [v5 objectForKey:v6];
-  v8 = [v7 unsignedIntegerValue];
+  greyEvent = [controller greyEvent];
+  mEMORY[0x277D7A910] = [MEMORY[0x277D7A910] sharedInstance];
+  greyEventActionCustomizations = [mEMORY[0x277D7A910] greyEventActionCustomizations];
+  v6 = [MEMORY[0x277CCABB0] numberWithInteger:greyEvent];
+  v7 = [greyEventActionCustomizations objectForKey:v6];
+  unsignedIntegerValue = [v7 unsignedIntegerValue];
 
-  return v8;
+  return unsignedIntegerValue;
 }
 
-- (BOOL)canShowActionGroup:(unint64_t)a3 forDetailController:(id)a4
+- (BOOL)canShowActionGroup:(unint64_t)group forDetailController:(id)controller
 {
-  if (a3 != 10002)
+  if (group != 10002)
   {
     return 1;
   }
@@ -279,20 +279,20 @@
   return v6;
 }
 
-- (void)setAction:(unint64_t)a3 forDetailController:(id)a4
+- (void)setAction:(unint64_t)action forDetailController:(id)controller
 {
-  v5 = [a4 greyEvent];
-  v6 = [MEMORY[0x277D7A910] sharedInstance];
-  [v6 setAction:a3 forGreyEvent:v5];
+  greyEvent = [controller greyEvent];
+  mEMORY[0x277D7A910] = [MEMORY[0x277D7A910] sharedInstance];
+  [mEMORY[0x277D7A910] setAction:action forGreyEvent:greyEvent];
 }
 
-- (id)selectedCustomActionIdentifierForCustomActionType:(int64_t)a3 forDetailController:(id)a4
+- (id)selectedCustomActionIdentifierForCustomActionType:(int64_t)type forDetailController:(id)controller
 {
-  v5 = [a4 greyEvent];
-  v6 = [MEMORY[0x277D7A910] sharedInstance];
-  v7 = [v6 greyEventCustomActionCustomizations];
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:v5];
-  v9 = [v7 objectForKey:v8];
+  greyEvent = [controller greyEvent];
+  mEMORY[0x277D7A910] = [MEMORY[0x277D7A910] sharedInstance];
+  greyEventCustomActionCustomizations = [mEMORY[0x277D7A910] greyEventCustomActionCustomizations];
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:greyEvent];
+  v9 = [greyEventCustomActionCustomizations objectForKey:v8];
 
   if (v9)
   {
@@ -301,7 +301,7 @@
     v12 = v11;
     if (v10)
     {
-      v13 = a3 == 0;
+      v13 = type == 0;
     }
 
     else
@@ -321,12 +321,12 @@ LABEL_8:
   return v12;
 }
 
-- (void)setCustomActionType:(int64_t)a3 withCustomActionIdentifier:(id)a4 forDetailController:(id)a5
+- (void)setCustomActionType:(int64_t)type withCustomActionIdentifier:(id)identifier forDetailController:(id)controller
 {
-  v7 = a4;
-  v8 = [a5 greyEvent];
-  v9 = [MEMORY[0x277D7A910] sharedInstance];
-  [v9 setCustomActionType:a3 withCustomActionIdentifier:v7 forGreyEvent:v8];
+  identifierCopy = identifier;
+  greyEvent = [controller greyEvent];
+  mEMORY[0x277D7A910] = [MEMORY[0x277D7A910] sharedInstance];
+  [mEMORY[0x277D7A910] setCustomActionType:type withCustomActionIdentifier:identifierCopy forGreyEvent:greyEvent];
 }
 
 @end

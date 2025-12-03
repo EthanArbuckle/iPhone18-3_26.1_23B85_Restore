@@ -1,8 +1,8 @@
 @interface _UIApplicationIntelligenceSupport
 + (Class)remoteContextWrapperClass;
 + (_UIApplicationIntelligenceSupport)sharedInstance;
-+ (void)collectRemoteContentForRootViews:(id)a3 withRemoteContextWrapper:(id)a4;
-- (void)setApplicationState:(int64_t)a3;
++ (void)collectRemoteContentForRootViews:(id)views withRemoteContextWrapper:(id)wrapper;
+- (void)setApplicationState:(int64_t)state;
 @end
 
 @implementation _UIApplicationIntelligenceSupport
@@ -19,11 +19,11 @@
   return v3;
 }
 
-- (void)setApplicationState:(int64_t)a3
+- (void)setApplicationState:(int64_t)state
 {
-  *(&self->super.isa + OBJC_IVAR____UIApplicationIntelligenceSupport_applicationState) = a3;
+  *(&self->super.isa + OBJC_IVAR____UIApplicationIntelligenceSupport_applicationState) = state;
   sub_18A4A40F8();
-  v4 = self;
+  selfCopy = self;
   sub_18A4A40D8();
   sub_188B00CD0();
   sub_18A4A40C8();
@@ -36,12 +36,12 @@
   return swift_getObjCClassFromMetadata();
 }
 
-+ (void)collectRemoteContentForRootViews:(id)a3 withRemoteContextWrapper:(id)a4
++ (void)collectRemoteContentForRootViews:(id)views withRemoteContextWrapper:(id)wrapper
 {
   sub_188A34624(0, &qword_1ED48F680);
   v5 = sub_18A4A7548();
   swift_unknownObjectRetain();
-  sub_18917F238(v5, a4);
+  sub_18917F238(v5, wrapper);
   swift_unknownObjectRelease();
 }
 

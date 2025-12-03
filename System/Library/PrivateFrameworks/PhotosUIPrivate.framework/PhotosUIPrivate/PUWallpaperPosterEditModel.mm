@@ -1,39 +1,39 @@
 @interface PUWallpaperPosterEditModel
-- (PUWallpaperPosterEditModel)initWithEditor:(id)a3;
+- (PUWallpaperPosterEditModel)initWithEditor:(id)editor;
 - (void)dealloc;
-- (void)performChanges:(id)a3;
-- (void)setDepthEffectDisabled:(BOOL)a3;
-- (void)setIdleTimerDisabled:(BOOL)a3;
-- (void)setIdleTimerDisabled:(BOOL)a3 forReason:(id)a4;
+- (void)performChanges:(id)changes;
+- (void)setDepthEffectDisabled:(BOOL)disabled;
+- (void)setIdleTimerDisabled:(BOOL)disabled;
+- (void)setIdleTimerDisabled:(BOOL)disabled forReason:(id)reason;
 @end
 
 @implementation PUWallpaperPosterEditModel
 
-- (void)setDepthEffectDisabled:(BOOL)a3
+- (void)setDepthEffectDisabled:(BOOL)disabled
 {
-  if (self->_depthEffectDisabled != a3)
+  if (self->_depthEffectDisabled != disabled)
   {
-    self->_depthEffectDisabled = a3;
+    self->_depthEffectDisabled = disabled;
     [(PUWallpaperPosterEditModel *)self signalChange:2];
   }
 }
 
-- (void)setIdleTimerDisabled:(BOOL)a3
+- (void)setIdleTimerDisabled:(BOOL)disabled
 {
-  if (self->_idleTimerDisabled != a3)
+  if (self->_idleTimerDisabled != disabled)
   {
-    self->_idleTimerDisabled = a3;
-    if (a3)
+    self->_idleTimerDisabled = disabled;
+    if (disabled)
     {
-      v5 = [(PUWallpaperPosterEditModel *)self editor];
-      v6 = [v5 pu_disableIdleTimer];
-      [(PUWallpaperPosterEditModel *)self setIdleTimerAssertion:v6];
+      editor = [(PUWallpaperPosterEditModel *)self editor];
+      pu_disableIdleTimer = [editor pu_disableIdleTimer];
+      [(PUWallpaperPosterEditModel *)self setIdleTimerAssertion:pu_disableIdleTimer];
     }
 
     else
     {
-      v7 = [(PUWallpaperPosterEditModel *)self idleTimerAssertion];
-      [v7 px_invalidate];
+      idleTimerAssertion = [(PUWallpaperPosterEditModel *)self idleTimerAssertion];
+      [idleTimerAssertion px_invalidate];
 
       [(PUWallpaperPosterEditModel *)self setIdleTimerAssertion:0];
     }
@@ -42,30 +42,30 @@
   }
 }
 
-- (void)setIdleTimerDisabled:(BOOL)a3 forReason:(id)a4
+- (void)setIdleTimerDisabled:(BOOL)disabled forReason:(id)reason
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(PUWallpaperPosterEditModel *)self idleTimerDisablingReasons];
-  v8 = v7;
-  if (v4)
+  disabledCopy = disabled;
+  reasonCopy = reason;
+  idleTimerDisablingReasons = [(PUWallpaperPosterEditModel *)self idleTimerDisablingReasons];
+  v8 = idleTimerDisablingReasons;
+  if (disabledCopy)
   {
-    [v7 addObject:v6];
+    [idleTimerDisablingReasons addObject:reasonCopy];
   }
 
   else
   {
-    [v7 removeObject:v6];
+    [idleTimerDisablingReasons removeObject:reasonCopy];
   }
 
   -[PUWallpaperPosterEditModel setIdleTimerDisabled:](self, "setIdleTimerDisabled:", [v8 count] != 0);
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
   v3.receiver = self;
   v3.super_class = PUWallpaperPosterEditModel;
-  [(PUWallpaperPosterEditModel *)&v3 performChanges:a3];
+  [(PUWallpaperPosterEditModel *)&v3 performChanges:changes];
 }
 
 - (void)dealloc
@@ -75,9 +75,9 @@
   [(PUWallpaperPosterEditModel *)&v2 dealloc];
 }
 
-- (PUWallpaperPosterEditModel)initWithEditor:(id)a3
+- (PUWallpaperPosterEditModel)initWithEditor:(id)editor
 {
-  v5 = a3;
+  editorCopy = editor;
   v10.receiver = self;
   v10.super_class = PUWallpaperPosterEditModel;
   v6 = [(PUWallpaperPosterEditModel *)&v10 init];
@@ -87,7 +87,7 @@
     idleTimerDisablingReasons = v6->_idleTimerDisablingReasons;
     v6->_idleTimerDisablingReasons = v7;
 
-    objc_storeStrong(&v6->_editor, a3);
+    objc_storeStrong(&v6->_editor, editor);
   }
 
   return v6;

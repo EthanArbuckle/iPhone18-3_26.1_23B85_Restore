@@ -1,16 +1,16 @@
 @interface PRAmbientEditingTitledViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)loadView;
 @end
 
 @implementation PRAmbientEditingTitledViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PRAmbientEditingTitledViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"PRAmbientEditingTitledViewController" hasInstanceMethod:@"accessibilityTitleLabel" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PRAmbientEditingTitledViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"PRAmbientEditingTitledViewController" hasInstanceMethod:@"accessibilityTitleLabel" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -18,8 +18,8 @@
   v4.receiver = self;
   v4.super_class = PRAmbientEditingTitledViewControllerAccessibility;
   [(PRAmbientEditingTitledViewControllerAccessibility *)&v4 _accessibilityLoadAccessibilityInformation];
-  v3 = [(PRAmbientEditingTitledViewControllerAccessibility *)self accessibilityTitleLabel];
-  [v3 setAccessibilityTraits:*MEMORY[0x29EDC7F80]];
+  accessibilityTitleLabel = [(PRAmbientEditingTitledViewControllerAccessibility *)self accessibilityTitleLabel];
+  [accessibilityTitleLabel setAccessibilityTraits:*MEMORY[0x29EDC7F80]];
 }
 
 - (void)loadView

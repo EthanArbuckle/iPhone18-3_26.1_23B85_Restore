@@ -1,13 +1,13 @@
 @interface SBSApplicationRestrictionMonitoringService
-+ (id)registerMonitor:(id)a3;
++ (id)registerMonitor:(id)monitor;
 @end
 
 @implementation SBSApplicationRestrictionMonitoringService
 
-+ (id)registerMonitor:(id)a3
++ (id)registerMonitor:(id)monitor
 {
-  v3 = a3;
-  v4 = [[SBSApplicationRestrictionMonitorProxy alloc] initWithMonitor:v3];
+  monitorCopy = monitor;
+  v4 = [[SBSApplicationRestrictionMonitorProxy alloc] initWithMonitor:monitorCopy];
 
   return v4;
 }

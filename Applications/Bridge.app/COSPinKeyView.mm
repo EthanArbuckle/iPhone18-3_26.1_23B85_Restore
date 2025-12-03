@@ -1,16 +1,16 @@
 @interface COSPinKeyView
-- (COSPinKeyView)initWithFrame:(CGRect)a3;
+- (COSPinKeyView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setCodeLength:(int64_t)a3;
+- (void)setCodeLength:(int64_t)length;
 @end
 
 @implementation COSPinKeyView
 
-- (COSPinKeyView)initWithFrame:(CGRect)a3
+- (COSPinKeyView)initWithFrame:(CGRect)frame
 {
   v26.receiver = self;
   v26.super_class = COSPinKeyView;
-  v3 = [(COSPinKeyView *)&v26 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(COSPinKeyView *)&v26 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[NSMutableArray array];
@@ -77,7 +77,7 @@
 {
   [(COSPinKeyView *)self bounds];
   Width = CGRectGetWidth(v34);
-  v4 = [(COSPinKeyView *)self expectedPinLength];
+  expectedPinLength = [(COSPinKeyView *)self expectedPinLength];
   v5 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   v6 = [UIFont systemFontOfSize:45.0];
   [v5 setFont:v6];
@@ -106,7 +106,7 @@
   {
     v20 = v19;
     LODWORD(v21) = 0;
-    v22 = Width / v4;
+    v22 = Width / expectedPinLength;
     v23 = floorf(v22);
     v24 = *v30;
     do
@@ -143,7 +143,7 @@
   }
 }
 
-- (void)setCodeLength:(int64_t)a3
+- (void)setCodeLength:(int64_t)length
 {
   v18 = 0u;
   v19 = 0u;
@@ -170,7 +170,7 @@
         v10 = *(*(&v18 + 1) + 8 * v9);
         v11 = +[NSBundle mainBundle];
         v12 = v11;
-        if (v7 >= a3)
+        if (v7 >= length)
         {
           v16 = [v11 localizedStringForKey:@"EMPTY_DIGIT_DASH" value:&stru_10026E598 table:@"Localizable"];
           [v10 setText:v16];

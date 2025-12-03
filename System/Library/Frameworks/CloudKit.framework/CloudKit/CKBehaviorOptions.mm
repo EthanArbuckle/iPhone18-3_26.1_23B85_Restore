@@ -4,7 +4,7 @@
 - (BOOL)fetchNewestChangesFirst;
 - (BOOL)isDASRateLimitingDisabled;
 - (const)CKCtlPrompt;
-- (id)_getDictionaryOptionForKey:(id)a3 defaultValue:(id)a4;
+- (id)_getDictionaryOptionForKey:(id)key defaultValue:(id)value;
 - (id)buildVersion;
 - (id)customCloudDBBaseURL;
 - (id)initInternal;
@@ -12,26 +12,26 @@
 - (id)productVersion;
 - (id)recordNamesForFakingDecryptionFailure;
 - (id)transcoderPermittedRemoteMeasurement;
-- (void)_reallySetPref:(id)a3 forKey:(id)a4;
-- (void)_setArrayPref:(id)a3 forKey:(id)a4;
-- (void)_setPref:(id)a3 forKey:(id)a4;
-- (void)setCKCtlPrompt:(char *)a3;
-- (void)setConfigBaseURL:(id)a3;
-- (void)setCustomCloudDBBaseURL:(id)a3;
-- (void)setCustomCodeServiceBaseURL:(id)a3;
-- (void)setCustomDeviceServiceBaseURL:(id)a3;
-- (void)setCustomMetricsServiceBaseURL:(id)a3;
-- (void)setCustomShareServiceBaseURL:(id)a3;
-- (void)setFakeManateeOverride:(BOOL)a3;
-- (void)setFakeWalrusOverride:(BOOL)a3;
-- (void)setMaxPCSSizeForKeyRolls:(int64_t)a3;
-- (void)setMaximumMergeableDeltaRequestSize:(unint64_t)a3;
-- (void)setOperationTimeout:(double)a3;
-- (void)setOverrideSavePolicyForShareRecords:(BOOL)a3;
-- (void)setPCSCacheValidTime:(int64_t)a3;
-- (void)setSetupBaseURL:(id)a3;
-- (void)setSqlBatchCount:(int64_t)a3;
-- (void)setSqlBatchTime:(double)a3;
+- (void)_reallySetPref:(id)pref forKey:(id)key;
+- (void)_setArrayPref:(id)pref forKey:(id)key;
+- (void)_setPref:(id)pref forKey:(id)key;
+- (void)setCKCtlPrompt:(char *)prompt;
+- (void)setConfigBaseURL:(id)l;
+- (void)setCustomCloudDBBaseURL:(id)l;
+- (void)setCustomCodeServiceBaseURL:(id)l;
+- (void)setCustomDeviceServiceBaseURL:(id)l;
+- (void)setCustomMetricsServiceBaseURL:(id)l;
+- (void)setCustomShareServiceBaseURL:(id)l;
+- (void)setFakeManateeOverride:(BOOL)override;
+- (void)setFakeWalrusOverride:(BOOL)override;
+- (void)setMaxPCSSizeForKeyRolls:(int64_t)rolls;
+- (void)setMaximumMergeableDeltaRequestSize:(unint64_t)size;
+- (void)setOperationTimeout:(double)timeout;
+- (void)setOverrideSavePolicyForShareRecords:(BOOL)records;
+- (void)setPCSCacheValidTime:(int64_t)time;
+- (void)setSetupBaseURL:(id)l;
+- (void)setSqlBatchCount:(int64_t)count;
+- (void)setSqlBatchTime:(double)time;
 @end
 
 @implementation CKBehaviorOptions
@@ -166,10 +166,10 @@ LABEL_10:
   return v11;
 }
 
-- (id)_getDictionaryOptionForKey:(id)a3 defaultValue:(id)a4
+- (id)_getDictionaryOptionForKey:(id)key defaultValue:(id)value
 {
-  v6 = a4;
-  v7 = sub_1886A28D4(self, a3);
+  valueCopy = value;
+  v7 = sub_1886A28D4(self, key);
   if (v7)
   {
     v10 = v7;
@@ -192,7 +192,7 @@ LABEL_10:
     if (!v10)
     {
 LABEL_7:
-      v14 = v6;
+      v14 = valueCopy;
       goto LABEL_8;
     }
   }
@@ -210,10 +210,10 @@ LABEL_8:
   return v14;
 }
 
-- (void)_setPref:(id)a3 forKey:(id)a4
+- (void)_setPref:(id)pref forKey:(id)key
 {
-  v11 = a3;
-  v7 = a4;
+  prefCopy = pref;
+  keyCopy = key;
   if (byte_1EA919CC8 == 1)
   {
     objc_msgSend_bundleWithIdentifier_(MEMORY[0x1E696AAE8], v6, @"com.apple.cloudkit.CloudKitIntegrationTests");
@@ -225,15 +225,15 @@ LABEL_8:
     }
   }
 
-  objc_msgSend__reallySetPref_forKey_(self, v6, v11, v7);
+  objc_msgSend__reallySetPref_forKey_(self, v6, prefCopy, keyCopy);
 }
 
-- (void)_reallySetPref:(id)a3 forKey:(id)a4
+- (void)_reallySetPref:(id)pref forKey:(id)key
 {
-  v26 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
+  prefCopy = pref;
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v10 = objc_msgSend_CKUserDefaults(CKUserDefaults, v8, v9);
   v12 = objc_msgSend_dictionaryForKey_(v10, v11, @"BehaviorOptions");
 
@@ -248,46 +248,46 @@ LABEL_8:
   }
 
   v17 = v15;
-  if (objc_msgSend_conformsToProtocol_(v26, v16, &unk_1EFA9C3D0))
+  if (objc_msgSend_conformsToProtocol_(prefCopy, v16, &unk_1EFA9C3D0))
   {
-    v20 = objc_msgSend_CKDeepCopy(v26, v18, v19);
+    v20 = objc_msgSend_CKDeepCopy(prefCopy, v18, v19);
 
     v21 = v20;
   }
 
   else
   {
-    v21 = v26;
+    v21 = prefCopy;
   }
 
   v27 = v21;
   if (v21)
   {
-    objc_msgSend_setObject_forKeyedSubscript_(v17, v18, v21, v6);
+    objc_msgSend_setObject_forKeyedSubscript_(v17, v18, v21, keyCopy);
   }
 
   else
   {
-    objc_msgSend_removeObjectForKey_(v17, v18, v6);
+    objc_msgSend_removeObjectForKey_(v17, v18, keyCopy);
   }
 
   v24 = objc_msgSend_CKUserDefaults(CKUserDefaults, v22, v23);
   objc_msgSend_setObject_forKey_(v24, v25, v17, @"BehaviorOptions");
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_setArrayPref:(id)a3 forKey:(id)a4
+- (void)_setArrayPref:(id)pref forKey:(id)key
 {
-  v18 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
+  prefCopy = pref;
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v8 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v10 = v8;
-  if (v18)
+  if (prefCopy)
   {
-    objc_msgSend_addObjectsFromArray_(v8, v9, v18);
+    objc_msgSend_addObjectsFromArray_(v8, v9, prefCopy);
   }
 
   else
@@ -297,14 +297,14 @@ LABEL_8:
 
   v13 = objc_msgSend_CKUserDefaults(CKUserDefaults, v11, v12);
   v16 = objc_msgSend_allObjects(v10, v14, v15);
-  objc_msgSend_setObject_forKey_(v13, v17, v16, v6);
+  objc_msgSend_setObject_forKey_(v13, v17, v16, keyCopy);
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setOperationTimeout:(double)a3
+- (void)setOperationTimeout:(double)timeout
 {
-  v6 = objc_msgSend_numberWithDouble_(MEMORY[0x1E696AD98], a2, v3, a3);
+  v6 = objc_msgSend_numberWithDouble_(MEMORY[0x1E696AD98], a2, v3, timeout);
   objc_msgSend__setPref_forKey_(self, v5, v6, @"OperationTimeout");
 }
 
@@ -316,11 +316,11 @@ LABEL_8:
   return v5;
 }
 
-- (void)setCKCtlPrompt:(char *)a3
+- (void)setCKCtlPrompt:(char *)prompt
 {
-  if (a3)
+  if (prompt)
   {
-    v5 = objc_msgSend_stringWithUTF8String_(MEMORY[0x1E696AEC0], a2, a3);
+    v5 = objc_msgSend_stringWithUTF8String_(MEMORY[0x1E696AEC0], a2, prompt);
     objc_msgSend__setPref_forKey_(self, v4, v5, @"CKCtlPrompt");
   }
 
@@ -331,77 +331,77 @@ LABEL_8:
   }
 }
 
-- (void)setConfigBaseURL:(id)a3
+- (void)setConfigBaseURL:(id)l
 {
-  v5 = objc_msgSend_absoluteString(a3, a2, a3);
+  v5 = objc_msgSend_absoluteString(l, a2, l);
   objc_msgSend__setPref_forKey_(self, v4, v5, @"ConfigBaseURL");
 }
 
-- (void)setSetupBaseURL:(id)a3
+- (void)setSetupBaseURL:(id)l
 {
-  v5 = objc_msgSend_absoluteString(a3, a2, a3);
+  v5 = objc_msgSend_absoluteString(l, a2, l);
   objc_msgSend__setPref_forKey_(self, v4, v5, @"SetupBaseURL");
 }
 
-- (void)setCustomCloudDBBaseURL:(id)a3
+- (void)setCustomCloudDBBaseURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   objc_msgSend__setPref_forKey_(self, v5, 0, @"CloudDBBaseURL");
-  v9 = objc_msgSend_absoluteString(v4, v6, v7);
+  v9 = objc_msgSend_absoluteString(lCopy, v6, v7);
 
   objc_msgSend__setPref_forKey_(self, v8, v9, @"DatabaseServiceBaseURL");
 }
 
-- (void)setCustomShareServiceBaseURL:(id)a3
+- (void)setCustomShareServiceBaseURL:(id)l
 {
-  v5 = objc_msgSend_absoluteString(a3, a2, a3);
+  v5 = objc_msgSend_absoluteString(l, a2, l);
   objc_msgSend__setPref_forKey_(self, v4, v5, @"ShareServiceBaseURL");
 }
 
-- (void)setCustomDeviceServiceBaseURL:(id)a3
+- (void)setCustomDeviceServiceBaseURL:(id)l
 {
-  v5 = objc_msgSend_absoluteString(a3, a2, a3);
+  v5 = objc_msgSend_absoluteString(l, a2, l);
   objc_msgSend__setPref_forKey_(self, v4, v5, @"DeviceServiceBaseURL");
 }
 
-- (void)setCustomCodeServiceBaseURL:(id)a3
+- (void)setCustomCodeServiceBaseURL:(id)l
 {
-  v5 = objc_msgSend_absoluteString(a3, a2, a3);
+  v5 = objc_msgSend_absoluteString(l, a2, l);
   objc_msgSend__setPref_forKey_(self, v4, v5, @"CodeServiceBaseURL");
 }
 
-- (void)setCustomMetricsServiceBaseURL:(id)a3
+- (void)setCustomMetricsServiceBaseURL:(id)l
 {
-  v5 = objc_msgSend_absoluteString(a3, a2, a3);
+  v5 = objc_msgSend_absoluteString(l, a2, l);
   objc_msgSend__setPref_forKey_(self, v4, v5, @"MetricsServiceBaseURL");
 }
 
-- (void)setMaxPCSSizeForKeyRolls:(int64_t)a3
+- (void)setMaxPCSSizeForKeyRolls:(int64_t)rolls
 {
-  if (a3 < 0)
+  if (rolls < 0)
   {
-    a3 = 0x80000;
+    rolls = 0x80000;
   }
 
-  v5 = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], a2, a3);
+  v5 = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], a2, rolls);
   objc_msgSend__setPref_forKey_(self, v4, v5, @"MaxPCSSizeForKeyRolls");
 }
 
-- (void)setSqlBatchCount:(int64_t)a3
+- (void)setSqlBatchCount:(int64_t)count
 {
-  v5 = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], a2, a3);
+  v5 = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], a2, count);
   objc_msgSend__setPref_forKey_(self, v4, v5, @"SQLBatchCount");
 }
 
-- (void)setSqlBatchTime:(double)a3
+- (void)setSqlBatchTime:(double)time
 {
-  v6 = objc_msgSend_numberWithDouble_(MEMORY[0x1E696AD98], a2, v3, a3);
+  v6 = objc_msgSend_numberWithDouble_(MEMORY[0x1E696AD98], a2, v3, time);
   objc_msgSend__setPref_forKey_(self, v5, v6, @"SQLBatchTime");
 }
 
-- (void)setPCSCacheValidTime:(int64_t)a3
+- (void)setPCSCacheValidTime:(int64_t)time
 {
-  v5 = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], a2, a3);
+  v5 = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], a2, time);
   objc_msgSend__setPref_forKey_(self, v4, v5, @"PCSCacheValidTime");
 }
 
@@ -457,9 +457,9 @@ LABEL_10:
   return v11;
 }
 
-- (void)setFakeWalrusOverride:(BOOL)a3
+- (void)setFakeWalrusOverride:(BOOL)override
 {
-  if (a3)
+  if (override)
   {
     v6 = objc_msgSend_numberWithBool_(MEMORY[0x1E696AD98], a2, 1);
     objc_msgSend__setPref_forKey_(self, v4, v6, @"FakeWalrusOverride");
@@ -473,9 +473,9 @@ LABEL_10:
   }
 }
 
-- (void)setFakeManateeOverride:(BOOL)a3
+- (void)setFakeManateeOverride:(BOOL)override
 {
-  if (a3)
+  if (override)
   {
     v6 = objc_msgSend_numberWithBool_(MEMORY[0x1E696AD98], a2, 1);
     objc_msgSend__setPref_forKey_(self, v4, v6, @"FakeManateeOverride");
@@ -499,9 +499,9 @@ LABEL_10:
   return sub_1886A2950(self, @"DisableDASRateLimiting", 0);
 }
 
-- (void)setOverrideSavePolicyForShareRecords:(BOOL)a3
+- (void)setOverrideSavePolicyForShareRecords:(BOOL)records
 {
-  if (a3)
+  if (records)
   {
     objc_msgSend__setPref_forKey_(self, a2, MEMORY[0x1E695E118], @"OverrideSavePolicyForShareRecords");
   }
@@ -526,9 +526,9 @@ LABEL_10:
   return sub_1886A2950(self, @"DefaultContainerToLaunchPersona", v3);
 }
 
-- (void)setMaximumMergeableDeltaRequestSize:(unint64_t)a3
+- (void)setMaximumMergeableDeltaRequestSize:(unint64_t)size
 {
-  v5 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x1E696AD98], a2, a3);
+  v5 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x1E696AD98], a2, size);
   objc_msgSend__setPref_forKey_(self, v4, v5, @"MergeableDeltaRequestSize");
 }
 

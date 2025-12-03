@@ -1,33 +1,33 @@
 @interface PSChannelSubscriptionsRequestPayload
-+ (id)createPayloadForSubscriptionChannels:(id)a3 unsubscriptionChannels:(id)a4 subscriptionType:(int)a5;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)createPayloadForSubscriptionChannels:(id)channels unsubscriptionChannels:(id)unsubscriptionChannels subscriptionType:(int)type;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsSubscriptionsType:(id)a3;
+- (int)StringAsSubscriptionsType:(id)type;
 - (int)subscriptionsType;
 - (int)version;
 - (unint64_t)hash;
-- (void)addAppChannelSubscriptions:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasSubscriptionsType:(BOOL)a3;
-- (void)setHasVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addAppChannelSubscriptions:(id)subscriptions;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasSubscriptionsType:(BOOL)type;
+- (void)setHasVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PSChannelSubscriptionsRequestPayload
 
-+ (id)createPayloadForSubscriptionChannels:(id)a3 unsubscriptionChannels:(id)a4 subscriptionType:(int)a5
++ (id)createPayloadForSubscriptionChannels:(id)channels unsubscriptionChannels:(id)unsubscriptionChannels subscriptionType:(int)type
 {
-  v6 = a3;
-  v63 = a4;
+  channelsCopy = channels;
+  unsubscriptionChannelsCopy = unsubscriptionChannels;
   v66 = +[NSMutableDictionary dictionary];
   v79 = 0u;
   v80 = 0u;
   v81 = 0u;
   v82 = 0u;
-  obj = v6;
+  obj = channelsCopy;
   v7 = [obj countByEnumeratingWithState:&v79 objects:v86 count:16];
   if (v7)
   {
@@ -45,12 +45,12 @@
         v11 = *(*(&v79 + 1) + 8 * i);
         v12 = objc_alloc_init(PSChannelSubscription);
         v13 = [NSData alloc];
-        v14 = [v11 channelID];
-        v15 = [v13 initWithBase64EncodedString:v14 options:0];
+        channelID = [v11 channelID];
+        v15 = [v13 initWithBase64EncodedString:channelID options:0];
 
         [(PSChannelSubscription *)v12 setChannelId:v15];
-        v16 = [v11 channelTopic];
-        v17 = [&off_100197B88 objectForKeyedSubscript:v16];
+        channelTopic = [v11 channelTopic];
+        v17 = [&off_100197B88 objectForKeyedSubscript:channelTopic];
 
         if ([v11 checkpoint])
         {
@@ -72,8 +72,8 @@
           -[PSChannelSubscription setMessageReplayCount:](v12, "setMessageReplayCount:", [v17 unsignedLongLongValue]);
         }
 
-        v19 = [v11 channelTopic];
-        v20 = [v66 objectForKeyedSubscript:v19];
+        channelTopic2 = [v11 channelTopic];
+        v20 = [v66 objectForKeyedSubscript:channelTopic2];
         v21 = v20;
         if (v20)
         {
@@ -88,8 +88,8 @@
         v23 = v22;
 
         [v23 addObject:v12];
-        v24 = [v11 channelTopic];
-        [v66 setObject:v23 forKeyedSubscript:v24];
+        channelTopic3 = [v11 channelTopic];
+        [v66 setObject:v23 forKeyedSubscript:channelTopic3];
       }
 
       v8 = [obj countByEnumeratingWithState:&v79 objects:v86 count:16];
@@ -103,7 +103,7 @@
   v76 = 0u;
   v77 = 0u;
   v78 = 0u;
-  v64 = v63;
+  v64 = unsubscriptionChannelsCopy;
   v26 = [v64 countByEnumeratingWithState:&v75 objects:v85 count:16];
   if (v26)
   {
@@ -121,12 +121,12 @@
         v30 = *(*(&v75 + 1) + 8 * j);
         v31 = objc_alloc_init(PSChannelUnsubscription);
         v32 = [NSData alloc];
-        v33 = [v30 channelID];
-        v34 = [v32 initWithBase64EncodedString:v33 options:0];
+        channelID2 = [v30 channelID];
+        v34 = [v32 initWithBase64EncodedString:channelID2 options:0];
 
         [(PSChannelUnsubscription *)v31 setChannelId:v34];
-        v35 = [v30 channelTopic];
-        v36 = [v25 objectForKeyedSubscript:v35];
+        channelTopic4 = [v30 channelTopic];
+        v36 = [v25 objectForKeyedSubscript:channelTopic4];
         v37 = v36;
         if (v36)
         {
@@ -141,8 +141,8 @@
         v39 = v38;
 
         [v39 addObject:v31];
-        v40 = [v30 channelTopic];
-        [v25 setObject:v39 forKeyedSubscript:v40];
+        channelTopic5 = [v30 channelTopic];
+        [v25 setObject:v39 forKeyedSubscript:channelTopic5];
       }
 
       v27 = [v64 countByEnumeratingWithState:&v75 objects:v85 count:16];
@@ -156,8 +156,8 @@
   v72 = 0u;
   v73 = 0u;
   v74 = 0u;
-  v62 = [v66 allKeys];
-  v42 = [v62 countByEnumeratingWithState:&v71 objects:v84 count:16];
+  allKeys = [v66 allKeys];
+  v42 = [allKeys countByEnumeratingWithState:&v71 objects:v84 count:16];
   if (v42)
   {
     v43 = v42;
@@ -168,7 +168,7 @@
       {
         if (*v72 != v44)
         {
-          objc_enumerationMutation(v62);
+          objc_enumerationMutation(allKeys);
         }
 
         v46 = *(*(&v71 + 1) + 8 * k);
@@ -182,7 +182,7 @@
         [v41 addObject:v49];
       }
 
-      v43 = [v62 countByEnumeratingWithState:&v71 objects:v84 count:16];
+      v43 = [allKeys countByEnumeratingWithState:&v71 objects:v84 count:16];
     }
 
     while (v43);
@@ -192,8 +192,8 @@
   v70 = 0u;
   v67 = 0u;
   v68 = 0u;
-  v50 = [v25 allKeys];
-  v51 = [v50 countByEnumeratingWithState:&v67 objects:v83 count:16];
+  allKeys2 = [v25 allKeys];
+  v51 = [allKeys2 countByEnumeratingWithState:&v67 objects:v83 count:16];
   if (v51)
   {
     v52 = v51;
@@ -204,7 +204,7 @@
       {
         if (*v68 != v53)
         {
-          objc_enumerationMutation(v50);
+          objc_enumerationMutation(allKeys2);
         }
 
         v55 = *(*(&v67 + 1) + 8 * m);
@@ -215,14 +215,14 @@
         [v41 addObject:v57];
       }
 
-      v52 = [v50 countByEnumeratingWithState:&v67 objects:v83 count:16];
+      v52 = [allKeys2 countByEnumeratingWithState:&v67 objects:v83 count:16];
     }
 
     while (v52);
   }
 
   v58 = objc_alloc_init(PSChannelSubscriptionsRequestPayload);
-  [(PSChannelSubscriptionsRequestPayload *)v58 setSubscriptionsType:a5];
+  [(PSChannelSubscriptionsRequestPayload *)v58 setSubscriptionsType:type];
   v59 = [NSMutableArray arrayWithArray:v41];
   [(PSChannelSubscriptionsRequestPayload *)v58 setAppChannelSubscriptions:v59];
 
@@ -244,9 +244,9 @@
   }
 }
 
-- (void)setHasVersion:(BOOL)a3
+- (void)setHasVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 4;
   }
@@ -259,22 +259,22 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)addAppChannelSubscriptions:(id)a3
+- (void)addAppChannelSubscriptions:(id)subscriptions
 {
-  v4 = a3;
+  subscriptionsCopy = subscriptions;
   appChannelSubscriptions = self->_appChannelSubscriptions;
-  v8 = v4;
+  v8 = subscriptionsCopy;
   if (!appChannelSubscriptions)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_appChannelSubscriptions;
     self->_appChannelSubscriptions = v6;
 
-    v4 = v8;
+    subscriptionsCopy = v8;
     appChannelSubscriptions = self->_appChannelSubscriptions;
   }
 
-  [(NSMutableArray *)appChannelSubscriptions addObject:v4];
+  [(NSMutableArray *)appChannelSubscriptions addObject:subscriptionsCopy];
 }
 
 - (int)subscriptionsType
@@ -290,9 +290,9 @@
   }
 }
 
-- (void)setHasSubscriptionsType:(BOOL)a3
+- (void)setHasSubscriptionsType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -305,17 +305,17 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsSubscriptionsType:(id)a3
+- (int)StringAsSubscriptionsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"DELTA_SUBSCRIPTION"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"DELTA_SUBSCRIPTION"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"FULL_SUBSCRIPTION"];
+    v4 = [typeCopy isEqualToString:@"FULL_SUBSCRIPTION"];
   }
 
   return v4;
@@ -326,8 +326,8 @@
   v7.receiver = self;
   v7.super_class = PSChannelSubscriptionsRequestPayload;
   v3 = [(PSChannelSubscriptionsRequestPayload *)&v7 description];
-  v4 = [(PSChannelSubscriptionsRequestPayload *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PSChannelSubscriptionsRequestPayload *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -372,8 +372,8 @@
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
-          [v5 addObject:v11];
+          dictionaryRepresentation = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
+          [v5 addObject:dictionaryRepresentation];
         }
 
         v8 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -421,9 +421,9 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 4) != 0)
   {
     version = self->_version;
@@ -474,23 +474,23 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 4) != 0)
   {
-    v4[7] = self->_version;
-    *(v4 + 32) |= 4u;
+    toCopy[7] = self->_version;
+    *(toCopy + 32) |= 4u;
   }
 
-  v10 = v4;
+  v10 = toCopy;
   if ([(PSChannelSubscriptionsRequestPayload *)self appChannelSubscriptionsCount])
   {
     [v10 clearAppChannelSubscriptions];
-    v5 = [(PSChannelSubscriptionsRequestPayload *)self appChannelSubscriptionsCount];
-    if (v5)
+    appChannelSubscriptionsCount = [(PSChannelSubscriptionsRequestPayload *)self appChannelSubscriptionsCount];
+    if (appChannelSubscriptionsCount)
     {
-      v6 = v5;
+      v6 = appChannelSubscriptionsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(PSChannelSubscriptionsRequestPayload *)self appChannelSubscriptionsAtIndex:i];
@@ -514,9 +514,9 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 4) != 0)
   {
@@ -543,7 +543,7 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v15 + 1) + 8 * i) copyWithZone:{a3, v15}];
+        v12 = [*(*(&v15 + 1) + 8 * i) copyWithZone:{zone, v15}];
         [v6 addAppChannelSubscriptions:v12];
       }
 
@@ -570,31 +570,31 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
   has = self->_has;
-  v6 = *(v4 + 32);
+  v6 = *(equalCopy + 32);
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 32) & 4) == 0 || self->_version != *(v4 + 7))
+    if ((*(equalCopy + 32) & 4) == 0 || self->_version != *(equalCopy + 7))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 32) & 4) != 0)
+  else if ((*(equalCopy + 32) & 4) != 0)
   {
     goto LABEL_19;
   }
 
   appChannelSubscriptions = self->_appChannelSubscriptions;
-  if (appChannelSubscriptions | *(v4 + 2))
+  if (appChannelSubscriptions | *(equalCopy + 2))
   {
     if (![(NSMutableArray *)appChannelSubscriptions isEqual:?])
     {
@@ -608,21 +608,21 @@ LABEL_19:
 
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 32) & 2) == 0 || self->_subscriptionsType != *(v4 + 6))
+    if ((*(equalCopy + 32) & 2) == 0 || self->_subscriptionsType != *(equalCopy + 6))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 32) & 2) != 0)
+  else if ((*(equalCopy + 32) & 2) != 0)
   {
     goto LABEL_19;
   }
 
-  v8 = (*(v4 + 32) & 1) == 0;
+  v8 = (*(equalCopy + 32) & 1) == 0;
   if (has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_sequenceNumber != *(v4 + 1))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_sequenceNumber != *(equalCopy + 1))
     {
       goto LABEL_19;
     }
@@ -672,13 +672,13 @@ LABEL_6:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if ((*(v4 + 32) & 4) != 0)
+  fromCopy = from;
+  v5 = fromCopy;
+  if ((*(fromCopy + 32) & 4) != 0)
   {
-    self->_version = *(v4 + 7);
+    self->_version = *(fromCopy + 7);
     *&self->_has |= 4u;
   }
 
@@ -686,7 +686,7 @@ LABEL_6:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = *(v4 + 2);
+  v6 = *(fromCopy + 2);
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {

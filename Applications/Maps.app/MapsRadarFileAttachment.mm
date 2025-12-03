@@ -1,26 +1,26 @@
 @interface MapsRadarFileAttachment
-+ (id)attachmentWithFileName:(id)a3 fileURL:(id)a4 deleteOnAttach:(BOOL)a5;
-- (MapsRadarFileAttachment)initWithFileName:(id)a3 fileURL:(id)a4 deleteOnAttach:(BOOL)a5;
++ (id)attachmentWithFileName:(id)name fileURL:(id)l deleteOnAttach:(BOOL)attach;
+- (MapsRadarFileAttachment)initWithFileName:(id)name fileURL:(id)l deleteOnAttach:(BOOL)attach;
 - (id)debugDescription;
 - (id)description;
-- (void)_maps_buildDescriptionWithBlock:(id)a3;
+- (void)_maps_buildDescriptionWithBlock:(id)block;
 - (void)writeToTemporaryFolder;
 @end
 
 @implementation MapsRadarFileAttachment
 
-- (void)_maps_buildDescriptionWithBlock:(id)a3
+- (void)_maps_buildDescriptionWithBlock:(id)block
 {
   v5.receiver = self;
   v5.super_class = MapsRadarFileAttachment;
-  v4 = a3;
-  [(MapsRadarAttachment *)&v5 _maps_buildDescriptionWithBlock:v4];
-  v4[2](v4, @"file url", self->_fileURL);
+  blockCopy = block;
+  [(MapsRadarAttachment *)&v5 _maps_buildDescriptionWithBlock:blockCopy];
+  blockCopy[2](blockCopy, @"file url", self->_fileURL);
 }
 
 - (id)debugDescription
 {
-  v2 = self;
+  selfCopy = self;
   v14 = _NSConcreteStackBlock;
   v15 = 3221225472;
   v16 = sub_100C0D7D0;
@@ -28,8 +28,8 @@
   v3 = objc_alloc_init(NSMutableArray);
   v18 = v3;
   v4 = objc_retainBlock(&v14);
-  [(MapsRadarFileAttachment *)v2 _maps_buildDescriptionWithBlock:v4];
-  v5 = v2;
+  [(MapsRadarFileAttachment *)selfCopy _maps_buildDescriptionWithBlock:v4];
+  v5 = selfCopy;
   if (v5)
   {
     v6 = objc_opt_class();
@@ -63,7 +63,7 @@ LABEL_9:
 
 - (id)description
 {
-  v2 = self;
+  selfCopy = self;
   v14 = _NSConcreteStackBlock;
   v15 = 3221225472;
   v16 = sub_100C0DA20;
@@ -71,8 +71,8 @@ LABEL_9:
   v3 = objc_alloc_init(NSMutableArray);
   v18 = v3;
   v4 = objc_retainBlock(&v14);
-  [(MapsRadarFileAttachment *)v2 _maps_buildDescriptionWithBlock:v4];
-  v5 = v2;
+  [(MapsRadarFileAttachment *)selfCopy _maps_buildDescriptionWithBlock:v4];
+  v5 = selfCopy;
   if (v5)
   {
     v6 = objc_opt_class();
@@ -109,13 +109,13 @@ LABEL_9:
   v19.receiver = self;
   v19.super_class = MapsRadarFileAttachment;
   [(MapsRadarAttachment *)&v19 writeToTemporaryFolder];
-  v3 = [(MapsRadarAttachment *)self temporaryFileURL];
+  temporaryFileURL = [(MapsRadarAttachment *)self temporaryFileURL];
   if ([(MapsRadarFileAttachment *)self deleteOnAttach])
   {
     v4 = +[NSFileManager defaultManager];
-    v5 = [(MapsRadarFileAttachment *)self fileURL];
+    fileURL = [(MapsRadarFileAttachment *)self fileURL];
     v18 = 0;
-    v6 = [v4 moveItemAtURL:v5 toURL:v3 error:&v18];
+    v6 = [v4 moveItemAtURL:fileURL toURL:temporaryFileURL error:&v18];
     v7 = v18;
 
     if ((v6 & 1) == 0)
@@ -123,15 +123,15 @@ LABEL_9:
       v12 = sub_100C0DFBC();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v13 = [(MapsRadarAttachment *)self fileName];
-        v14 = [(MapsRadarFileAttachment *)self fileURL];
-        v15 = [v3 path];
+        fileName = [(MapsRadarAttachment *)self fileName];
+        fileURL2 = [(MapsRadarFileAttachment *)self fileURL];
+        path = [temporaryFileURL path];
         *buf = 138413058;
-        v21 = v13;
+        v21 = fileName;
         v22 = 2112;
-        v23 = v14;
+        v23 = fileURL2;
         v24 = 2112;
-        v25 = v15;
+        v25 = path;
         v26 = 2112;
         v27 = v7;
         v16 = "Failed to move file with name '%@' from path '%@' to path '%@': %@";
@@ -154,9 +154,9 @@ LABEL_12:
   if (![(MapsRadarFileAttachment *)self deleteOnAttach])
   {
     v9 = +[NSFileManager defaultManager];
-    v10 = [(MapsRadarFileAttachment *)self fileURL];
+    fileURL3 = [(MapsRadarFileAttachment *)self fileURL];
     v17 = v8;
-    v11 = [v9 copyItemAtURL:v10 toURL:v3 error:&v17];
+    v11 = [v9 copyItemAtURL:fileURL3 toURL:temporaryFileURL error:&v17];
     v7 = v17;
 
     if (v11)
@@ -169,15 +169,15 @@ LABEL_13:
     v12 = sub_100C0DFBC();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v13 = [(MapsRadarAttachment *)self fileName];
-      v14 = [(MapsRadarFileAttachment *)self fileURL];
-      v15 = [v3 path];
+      fileName = [(MapsRadarAttachment *)self fileName];
+      fileURL2 = [(MapsRadarFileAttachment *)self fileURL];
+      path = [temporaryFileURL path];
       *buf = 138413058;
-      v21 = v13;
+      v21 = fileName;
       v22 = 2112;
-      v23 = v14;
+      v23 = fileURL2;
       v24 = 2112;
-      v25 = v15;
+      v25 = path;
       v26 = 2112;
       v27 = v7;
       v16 = "Failed to copy file with name '%@' from path '%@' to path '%@': %@";
@@ -193,11 +193,11 @@ LABEL_11:
 LABEL_14:
 }
 
-- (MapsRadarFileAttachment)initWithFileName:(id)a3 fileURL:(id)a4 deleteOnAttach:(BOOL)a5
+- (MapsRadarFileAttachment)initWithFileName:(id)name fileURL:(id)l deleteOnAttach:(BOOL)attach
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v9)
+  nameCopy = name;
+  lCopy = l;
+  if (!lCopy)
   {
     v14 = sub_10006D178();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -226,7 +226,7 @@ LABEL_14:
     }
   }
 
-  if (([v9 isFileURL] & 1) == 0)
+  if (([lCopy isFileURL] & 1) == 0)
   {
     v17 = sub_10006D178();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -257,25 +257,25 @@ LABEL_14:
 
   v20.receiver = self;
   v20.super_class = MapsRadarFileAttachment;
-  v10 = [(MapsRadarAttachment *)&v20 initWithFileName:v8];
+  v10 = [(MapsRadarAttachment *)&v20 initWithFileName:nameCopy];
   if (v10)
   {
-    v11 = [v9 copy];
+    v11 = [lCopy copy];
     fileURL = v10->_fileURL;
     v10->_fileURL = v11;
 
-    v10->_deleteOnAttach = a5;
+    v10->_deleteOnAttach = attach;
   }
 
   return v10;
 }
 
-+ (id)attachmentWithFileName:(id)a3 fileURL:(id)a4 deleteOnAttach:(BOOL)a5
++ (id)attachmentWithFileName:(id)name fileURL:(id)l deleteOnAttach:(BOOL)attach
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[a1 alloc] initWithFileName:v9 fileURL:v8 deleteOnAttach:v5];
+  attachCopy = attach;
+  lCopy = l;
+  nameCopy = name;
+  v10 = [[self alloc] initWithFileName:nameCopy fileURL:lCopy deleteOnAttach:attachCopy];
 
   return v10;
 }

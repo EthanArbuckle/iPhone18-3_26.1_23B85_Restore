@@ -1,39 +1,39 @@
 @interface TALocationOfInterest
-+ (unint64_t)convertRTToTALocationOfInterestType:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (unint64_t)convertRTToTALocationOfInterestType:(int64_t)type;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (TALocationOfInterest)initWithCoder:(id)a3;
-- (TALocationOfInterest)initWithType:(unint64_t)a3 latitude:(double)a4 longitude:(double)a5 horizontalAccuracy:(double)a6 referenceFrame:(unint64_t)a7 date:(id)a8;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TALocationOfInterest)initWithCoder:(id)coder;
+- (TALocationOfInterest)initWithType:(unint64_t)type latitude:(double)latitude longitude:(double)longitude horizontalAccuracy:(double)accuracy referenceFrame:(unint64_t)frame date:(id)date;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)descriptionDictionary;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithOSLogCoder:(id)a3 options:(unint64_t)a4 maxLength:(unint64_t)a5;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithOSLogCoder:(id)coder options:(unint64_t)options maxLength:(unint64_t)length;
 @end
 
 @implementation TALocationOfInterest
 
-- (TALocationOfInterest)initWithType:(unint64_t)a3 latitude:(double)a4 longitude:(double)a5 horizontalAccuracy:(double)a6 referenceFrame:(unint64_t)a7 date:(id)a8
+- (TALocationOfInterest)initWithType:(unint64_t)type latitude:(double)latitude longitude:(double)longitude horizontalAccuracy:(double)accuracy referenceFrame:(unint64_t)frame date:(id)date
 {
-  v14 = a8;
+  dateCopy = date;
   v21.receiver = self;
   v21.super_class = TALocationOfInterest;
   v15 = [(TALocationOfInterest *)&v21 init];
   v16 = v15;
   if (v15)
   {
-    if (!v14)
+    if (!dateCopy)
     {
       v19 = 0;
       goto LABEL_6;
     }
 
-    v15->_type = a3;
-    v15->_latitude = a4;
-    v15->_longitude = a5;
-    v15->_horizontalAccuracy = a6;
-    v15->_referenceFrame = a7;
-    v17 = [v14 copy];
+    v15->_type = type;
+    v15->_latitude = latitude;
+    v15->_longitude = longitude;
+    v15->_horizontalAccuracy = accuracy;
+    v15->_referenceFrame = frame;
+    v17 = [dateCopy copy];
     date = v16->_date;
     v16->_date = v17;
   }
@@ -44,11 +44,11 @@ LABEL_6:
   return v19;
 }
 
-+ (unint64_t)convertRTToTALocationOfInterestType:(int64_t)a3
++ (unint64_t)convertRTToTALocationOfInterestType:(int64_t)type
 {
-  if (a3)
+  if (type)
   {
-    return 2 * (a3 == 1);
+    return 2 * (type == 1);
   }
 
   else
@@ -71,10 +71,10 @@ LABEL_6:
   return v9 ^ v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v21 = 1;
   }
@@ -84,9 +84,9 @@ LABEL_6:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(TALocationOfInterest *)self type];
-      if (v6 != [(TALocationOfInterest *)v5 type])
+      v5 = equalCopy;
+      type = [(TALocationOfInterest *)self type];
+      if (type != [(TALocationOfInterest *)v5 type])
       {
         goto LABEL_12;
       }
@@ -104,18 +104,18 @@ LABEL_6:
       [(TALocationOfInterest *)v5 longitude];
       if (v11 == v12 && ([(TALocationOfInterest *)self horizontalAccuracy], v14 = v13, [(TALocationOfInterest *)v5 horizontalAccuracy], v14 == v15) && (v16 = [(TALocationOfInterest *)self referenceFrame], v16 == [(TALocationOfInterest *)v5 referenceFrame]))
       {
-        v17 = [(TALocationOfInterest *)self date];
-        v18 = [(TALocationOfInterest *)v5 date];
-        if (v17 == v18)
+        date = [(TALocationOfInterest *)self date];
+        date2 = [(TALocationOfInterest *)v5 date];
+        if (date == date2)
         {
           v21 = 1;
         }
 
         else
         {
-          v19 = [(TALocationOfInterest *)self date];
-          v20 = [(TALocationOfInterest *)v5 date];
-          v21 = [v19 isEqual:v20];
+          date3 = [(TALocationOfInterest *)self date];
+          date4 = [(TALocationOfInterest *)v5 date];
+          v21 = [date3 isEqual:date4];
         }
       }
 
@@ -168,9 +168,9 @@ LABEL_12:
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_referenceFrame];
   v17[5] = v10;
   v16[6] = @"Date";
-  v11 = [(TALocationOfInterest *)self date];
-  v12 = [v11 getDateString];
-  v17[6] = v12;
+  date = [(TALocationOfInterest *)self date];
+  getDateString = [date getDateString];
+  v17[6] = getDateString;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:7];
 
   v14 = *MEMORY[0x277D85DE8];
@@ -180,9 +180,9 @@ LABEL_12:
 
 - (NSString)description
 {
-  v3 = [(TALocationOfInterest *)self descriptionDictionary];
+  descriptionDictionary = [(TALocationOfInterest *)self descriptionDictionary];
   v10 = 0;
-  v4 = [MEMORY[0x277CCAAA0] JSONStringFromNSDictionary:v3 error:&v10];
+  v4 = [MEMORY[0x277CCAAA0] JSONStringFromNSDictionary:descriptionDictionary error:&v10];
   v5 = v10;
   if (v5)
   {
@@ -192,20 +192,20 @@ LABEL_12:
       [(TAOutgoingRequests *)v6 description];
     }
 
-    v7 = [MEMORY[0x277CCACA8] string];
+    string = [MEMORY[0x277CCACA8] string];
   }
 
   else
   {
-    v7 = v4;
+    string = v4;
   }
 
-  v8 = v7;
+  v8 = string;
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [TALocationOfInterest alloc];
   type = self->_type;
@@ -217,41 +217,41 @@ LABEL_12:
   return [(TALocationOfInterest *)v4 initWithType:type latitude:date longitude:latitude horizontalAccuracy:longitude date:horizontalAccuracy];
 }
 
-- (TALocationOfInterest)initWithCoder:(id)a3
+- (TALocationOfInterest)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"Type"];
-  [v4 decodeDoubleForKey:@"Latitude"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"Type"];
+  [coderCopy decodeDoubleForKey:@"Latitude"];
   v7 = v6;
-  [v4 decodeDoubleForKey:@"Longitude"];
+  [coderCopy decodeDoubleForKey:@"Longitude"];
   v9 = v8;
-  [v4 decodeDoubleForKey:@"HorizontalAccuracy"];
+  [coderCopy decodeDoubleForKey:@"HorizontalAccuracy"];
   v11 = v10;
-  v12 = [v4 decodeIntegerForKey:@"ReferenceFrame"];
-  v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Date"];
+  v12 = [coderCopy decodeIntegerForKey:@"ReferenceFrame"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Date"];
 
   v14 = [(TALocationOfInterest *)self initWithType:v5 latitude:v12 longitude:v13 horizontalAccuracy:v7 referenceFrame:v9 date:v11];
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v5 = a3;
-  [v5 encodeInteger:type forKey:@"Type"];
-  [v5 encodeDouble:@"Latitude" forKey:self->_latitude];
-  [v5 encodeDouble:@"Longitude" forKey:self->_longitude];
-  [v5 encodeDouble:@"HorizontalAccuracy" forKey:self->_horizontalAccuracy];
-  [v5 encodeInteger:self->_referenceFrame forKey:@"ReferenceFrame"];
-  [v5 encodeObject:self->_date forKey:@"Date"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:type forKey:@"Type"];
+  [coderCopy encodeDouble:@"Latitude" forKey:self->_latitude];
+  [coderCopy encodeDouble:@"Longitude" forKey:self->_longitude];
+  [coderCopy encodeDouble:@"HorizontalAccuracy" forKey:self->_horizontalAccuracy];
+  [coderCopy encodeInteger:self->_referenceFrame forKey:@"ReferenceFrame"];
+  [coderCopy encodeObject:self->_date forKey:@"Date"];
 }
 
-- (void)encodeWithOSLogCoder:(id)a3 options:(unint64_t)a4 maxLength:(unint64_t)a5
+- (void)encodeWithOSLogCoder:(id)coder options:(unint64_t)options maxLength:(unint64_t)length
 {
-  v8 = a3;
+  coderCopy = coder;
   v6 = objc_autoreleasePoolPush();
   v7 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:self requiringSecureCoding:1 error:0];
-  [v8 appendBytes:objc_msgSend(v7 length:{"bytes"), objc_msgSend(v7, "length")}];
+  [coderCopy appendBytes:objc_msgSend(v7 length:{"bytes"), objc_msgSend(v7, "length")}];
 
   objc_autoreleasePoolPop(v6);
 }

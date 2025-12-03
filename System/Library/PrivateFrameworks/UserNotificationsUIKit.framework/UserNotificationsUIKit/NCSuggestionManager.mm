@@ -1,52 +1,52 @@
 @interface NCSuggestionManager
-- (BOOL)_addSuggestionForNotificationRequest:(id)a3 managementContentProvider:(id)a4;
-- (BOOL)_createContactMatchingSuggestionIfNeededForRequest:(id)a3 sectionSettings:(id)a4;
-- (BOOL)_createDirectMessagesSuggestionIfNeededForNotificationRequest:(id)a3 sectionSettings:(id)a4;
-- (BOOL)_createNewStackSummarySuggestionForNotificationRequest:(id)a3 sectionSettings:(id)a4;
-- (BOOL)_createPriorityFeedbackSuggestionIfNeededForRequest:(id)a3 sectionSettings:(id)a4;
-- (BOOL)_createProvisionalAuthorizationSuggestionIfNeededForRequest:(id)a3 sectionSettings:(id)a4;
-- (BOOL)_createRemoteSuggestionIfNeededForRequest:(id)a3 remoteSuggestion:(id)a4;
-- (BOOL)_createStackSummarySuggestionIfNeededForRequest:(id)a3 sectionSettings:(id)a4;
-- (BOOL)_createTimeSensitiveSuggestionIfNeededForNotificationRequest:(id)a3 sectionSettings:(id)a4;
+- (BOOL)_addSuggestionForNotificationRequest:(id)request managementContentProvider:(id)provider;
+- (BOOL)_createContactMatchingSuggestionIfNeededForRequest:(id)request sectionSettings:(id)settings;
+- (BOOL)_createDirectMessagesSuggestionIfNeededForNotificationRequest:(id)request sectionSettings:(id)settings;
+- (BOOL)_createNewStackSummarySuggestionForNotificationRequest:(id)request sectionSettings:(id)settings;
+- (BOOL)_createPriorityFeedbackSuggestionIfNeededForRequest:(id)request sectionSettings:(id)settings;
+- (BOOL)_createProvisionalAuthorizationSuggestionIfNeededForRequest:(id)request sectionSettings:(id)settings;
+- (BOOL)_createRemoteSuggestionIfNeededForRequest:(id)request remoteSuggestion:(id)suggestion;
+- (BOOL)_createStackSummarySuggestionIfNeededForRequest:(id)request sectionSettings:(id)settings;
+- (BOOL)_createTimeSensitiveSuggestionIfNeededForNotificationRequest:(id)request sectionSettings:(id)settings;
 - (NCSuggestionManager)init;
 - (NCSuggestionManagerDelegate)delegate;
-- (id)_contentProviderForRequest:(id)a3 withDigestSuggestion:(id)a4;
-- (id)_contentProviderForRequest:(id)a3 withModeConfigurationTuningSuggestion:(id)a4;
-- (id)_contentProviderForRequest:(id)a3 withMutingSuggestion:(id)a4;
-- (id)_contentProviderForRequest:(id)a3 withRemoteSuggestion:(id)a4;
-- (id)_contentProviderForRequest:(id)a3 withSendMessagesToDigestSuggestion:(id)a4;
-- (id)_contentProviderForRequest:(id)a3 withTurnOffNotificationsForAppSuggestion:(id)a4;
-- (id)_contentProviderForRequest:(id)a3 withUrgencyTuningSuggestion:(id)a4;
-- (id)_sectionSettingsForSectionIdentifier:(id)a3;
-- (id)auxiliaryOptionsContentProviderForNotificationRequest:(id)a3 isLongLook:(BOOL)a4;
-- (id)requestMatchingRequest:(id)a3 inSet:(id)a4;
-- (void)_createNewCuratedContactMatchSuggestionForNotificationRequest:(id)a3 sectionSettings:(id)a4 contactName:(id)a5;
-- (void)_createNewDirectMessagesInDigestSuggestionForNotificationRequest:(id)a3 sectionSettings:(id)a4;
-- (void)_createNewPriorityFeedbackSuggestionForNotificationRequest:(id)a3 sectionSettings:(id)a4;
-- (void)_createNewPromotingSuggestionForNotificationRequest:(id)a3 sectionSettings:(id)a4;
-- (void)_createNewTimeSensitiveInDigestSuggestionForNotificationRequest:(id)a3 sectionSettings:(id)a4;
-- (void)_createNewTimeSensitiveSuggestionForNotificationRequest:(id)a3 sectionSettings:(id)a4;
-- (void)_reloadSuggestionForNotificationRequest:(id)a3 sectionSettings:(id)a4;
-- (void)_removeSuggestionIfNecessaryForNotificationRequest:(id)a3;
-- (void)_updateContentForNotificationRequest:(id)a3;
-- (void)checkSuggestionNeededForNotificationRequest:(id)a3 withHighlightsListCount:(unint64_t)a4;
-- (void)clearSuggestionForNotificationRequest:(id)a3;
-- (void)logResponseForNotificationRequest:(id)a3 allowsNotifications:(BOOL)a4;
-- (void)logResponseForNotificationRequest:(id)a3 allowsTimeSensitive:(BOOL)a4;
-- (void)logResponseForNotificationRequest:(id)a3 muted:(BOOL)a4;
-- (void)logResponseForNotificationRequest:(id)a3 scheduledDelivery:(BOOL)a4;
-- (void)notificationManagementContentProvider:(id)a3 requestsPresentingNotificationManagementViewType:(unint64_t)a4 forNotificationRequest:(id)a5 withPresentingView:(id)a6;
-- (void)notificationManagementContentProvider:(id)a3 setAllowsDirectMessages:(BOOL)a4 forSectionIdentifier:(id)a5;
-- (void)notificationManagementContentProvider:(id)a3 setAllowsTimeSensitive:(BOOL)a4 forSectionIdentifier:(id)a5;
-- (void)notificationManagementContentProvider:(id)a3 setCuratedContactSuggestionConfirmed:(BOOL)a4 request:(id)a5;
-- (void)notificationManagementContentProvider:(id)a3 setModeConfiguration:(id)a4;
-- (void)notificationManagementContentProvider:(id)a3 setMuted:(BOOL)a4 untilDate:(id)a5 forSectionIdentifier:(id)a6 threadIdentifier:(id)a7;
-- (void)notificationManagementContentProvider:(id)a3 setScheduledDelivery:(BOOL)a4 forSectionIdentifier:(id)a5;
+- (id)_contentProviderForRequest:(id)request withDigestSuggestion:(id)suggestion;
+- (id)_contentProviderForRequest:(id)request withModeConfigurationTuningSuggestion:(id)suggestion;
+- (id)_contentProviderForRequest:(id)request withMutingSuggestion:(id)suggestion;
+- (id)_contentProviderForRequest:(id)request withRemoteSuggestion:(id)suggestion;
+- (id)_contentProviderForRequest:(id)request withSendMessagesToDigestSuggestion:(id)suggestion;
+- (id)_contentProviderForRequest:(id)request withTurnOffNotificationsForAppSuggestion:(id)suggestion;
+- (id)_contentProviderForRequest:(id)request withUrgencyTuningSuggestion:(id)suggestion;
+- (id)_sectionSettingsForSectionIdentifier:(id)identifier;
+- (id)auxiliaryOptionsContentProviderForNotificationRequest:(id)request isLongLook:(BOOL)look;
+- (id)requestMatchingRequest:(id)request inSet:(id)set;
+- (void)_createNewCuratedContactMatchSuggestionForNotificationRequest:(id)request sectionSettings:(id)settings contactName:(id)name;
+- (void)_createNewDirectMessagesInDigestSuggestionForNotificationRequest:(id)request sectionSettings:(id)settings;
+- (void)_createNewPriorityFeedbackSuggestionForNotificationRequest:(id)request sectionSettings:(id)settings;
+- (void)_createNewPromotingSuggestionForNotificationRequest:(id)request sectionSettings:(id)settings;
+- (void)_createNewTimeSensitiveInDigestSuggestionForNotificationRequest:(id)request sectionSettings:(id)settings;
+- (void)_createNewTimeSensitiveSuggestionForNotificationRequest:(id)request sectionSettings:(id)settings;
+- (void)_reloadSuggestionForNotificationRequest:(id)request sectionSettings:(id)settings;
+- (void)_removeSuggestionIfNecessaryForNotificationRequest:(id)request;
+- (void)_updateContentForNotificationRequest:(id)request;
+- (void)checkSuggestionNeededForNotificationRequest:(id)request withHighlightsListCount:(unint64_t)count;
+- (void)clearSuggestionForNotificationRequest:(id)request;
+- (void)logResponseForNotificationRequest:(id)request allowsNotifications:(BOOL)notifications;
+- (void)logResponseForNotificationRequest:(id)request allowsTimeSensitive:(BOOL)sensitive;
+- (void)logResponseForNotificationRequest:(id)request muted:(BOOL)muted;
+- (void)logResponseForNotificationRequest:(id)request scheduledDelivery:(BOOL)delivery;
+- (void)notificationManagementContentProvider:(id)provider requestsPresentingNotificationManagementViewType:(unint64_t)type forNotificationRequest:(id)request withPresentingView:(id)view;
+- (void)notificationManagementContentProvider:(id)provider setAllowsDirectMessages:(BOOL)messages forSectionIdentifier:(id)identifier;
+- (void)notificationManagementContentProvider:(id)provider setAllowsTimeSensitive:(BOOL)sensitive forSectionIdentifier:(id)identifier;
+- (void)notificationManagementContentProvider:(id)provider setCuratedContactSuggestionConfirmed:(BOOL)confirmed request:(id)request;
+- (void)notificationManagementContentProvider:(id)provider setModeConfiguration:(id)configuration;
+- (void)notificationManagementContentProvider:(id)provider setMuted:(BOOL)muted untilDate:(id)date forSectionIdentifier:(id)identifier threadIdentifier:(id)threadIdentifier;
+- (void)notificationManagementContentProvider:(id)provider setScheduledDelivery:(BOOL)delivery forSectionIdentifier:(id)identifier;
 - (void)reloadContactSuggestions;
 - (void)reloadRemoteSuggestions;
-- (void)requestStackSummarySuggestionVisible:(BOOL)a3 forRequest:(id)a4;
-- (void)setDeviceAuthenticated:(BOOL)a3;
-- (void)updateNotificationSectionSettings:(id)a3 previousSectionSettings:(id)a4;
+- (void)requestStackSummarySuggestionVisible:(BOOL)visible forRequest:(id)request;
+- (void)setDeviceAuthenticated:(BOOL)authenticated;
+- (void)updateNotificationSectionSettings:(id)settings previousSectionSettings:(id)sectionSettings;
 @end
 
 @implementation NCSuggestionManager
@@ -101,16 +101,16 @@
     _os_log_impl(&dword_21E77E000, v3, OS_LOG_TYPE_DEFAULT, "Notification Suggestion Manager reloading remote suggestions", buf, 2u);
   }
 
-  v4 = [MEMORY[0x277CEB1B8] sharedInstance];
+  mEMORY[0x277CEB1B8] = [MEMORY[0x277CEB1B8] sharedInstance];
   objc_initWeak(buf, self);
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __46__NCSuggestionManager_reloadRemoteSuggestions__block_invoke;
   v6[3] = &unk_278371D88;
   objc_copyWeak(&v9, buf);
-  v5 = v4;
+  v5 = mEMORY[0x277CEB1B8];
   v7 = v5;
-  v8 = self;
+  selfCopy = self;
   [v5 activeSuggestionsWithReply:v6];
 
   objc_destroyWeak(&v9);
@@ -290,8 +290,8 @@ LABEL_40:
 - (void)reloadContactSuggestions
 {
   v22 = *MEMORY[0x277D85DE8];
-  v2 = [(NCSuggestionManager *)self requestsWithContactSuggestions];
-  v3 = [v2 copy];
+  requestsWithContactSuggestions = [(NCSuggestionManager *)self requestsWithContactSuggestions];
+  v3 = [requestsWithContactSuggestions copy];
 
   v19 = 0u;
   v20 = 0u;
@@ -313,15 +313,15 @@ LABEL_40:
         }
 
         v9 = *(*(&v17 + 1) + 8 * i);
-        v10 = [v9 content];
-        v11 = [v10 communicationContext];
+        content = [v9 content];
+        communicationContext = [content communicationContext];
 
-        v12 = [v11 sender];
-        if (v12)
+        sender = [communicationContext sender];
+        if (sender)
         {
-          v13 = [MEMORY[0x277D77F58] sharedInstance];
-          v14 = [v9 topLevelSectionIdentifier];
-          v15 = [v13 curatedContactMatchDetailsForContact:v12 bundleIdentifier:v14];
+          mEMORY[0x277D77F58] = [MEMORY[0x277D77F58] sharedInstance];
+          topLevelSectionIdentifier = [v9 topLevelSectionIdentifier];
+          v15 = [mEMORY[0x277D77F58] curatedContactMatchDetailsForContact:sender bundleIdentifier:topLevelSectionIdentifier];
 
           if (([v15 isSuggestedMatch] & 1) == 0)
           {
@@ -337,15 +337,15 @@ LABEL_40:
   }
 }
 
-- (void)requestStackSummarySuggestionVisible:(BOOL)a3 forRequest:(id)a4
+- (void)requestStackSummarySuggestionVisible:(BOOL)visible forRequest:(id)request
 {
-  v4 = a3;
-  v6 = a4;
-  v9 = v6;
-  if (v4)
+  visibleCopy = visible;
+  requestCopy = request;
+  v9 = requestCopy;
+  if (visibleCopy)
   {
-    v7 = [v6 sectionIdentifier];
-    v8 = [(NCSuggestionManager *)self _sectionSettingsForSectionIdentifier:v7];
+    sectionIdentifier = [requestCopy sectionIdentifier];
+    v8 = [(NCSuggestionManager *)self _sectionSettingsForSectionIdentifier:sectionIdentifier];
 
     if ([v8 isUserConfigurable])
     {
@@ -355,22 +355,22 @@ LABEL_40:
 
   else
   {
-    [(NCSuggestionManager *)self _removeSuggestionIfNecessaryForNotificationRequest:v6];
+    [(NCSuggestionManager *)self _removeSuggestionIfNecessaryForNotificationRequest:requestCopy];
   }
 }
 
-- (void)checkSuggestionNeededForNotificationRequest:(id)a3 withHighlightsListCount:(unint64_t)a4
+- (void)checkSuggestionNeededForNotificationRequest:(id)request withHighlightsListCount:(unint64_t)count
 {
-  v8 = a3;
-  v6 = [v8 sectionIdentifier];
-  v7 = [(NCSuggestionManager *)self _sectionSettingsForSectionIdentifier:v6];
+  requestCopy = request;
+  sectionIdentifier = [requestCopy sectionIdentifier];
+  v7 = [(NCSuggestionManager *)self _sectionSettingsForSectionIdentifier:sectionIdentifier];
 
-  [(NCSuggestionManager *)self setHighlightsListCount:a4];
+  [(NCSuggestionManager *)self setHighlightsListCount:count];
   if ([v7 isUserConfigurable])
   {
-    if (([v8 isHighlight] & 1) != 0 || !-[NCSuggestionManager _createTimeSensitiveSuggestionIfNeededForNotificationRequest:sectionSettings:](self, "_createTimeSensitiveSuggestionIfNeededForNotificationRequest:sectionSettings:", v8, v7) && !-[NCSuggestionManager _createDirectMessagesSuggestionIfNeededForNotificationRequest:sectionSettings:](self, "_createDirectMessagesSuggestionIfNeededForNotificationRequest:sectionSettings:", v8, v7) && !-[NCSuggestionManager _createProvisionalAuthorizationSuggestionIfNeededForRequest:sectionSettings:](self, "_createProvisionalAuthorizationSuggestionIfNeededForRequest:sectionSettings:", v8, v7) && !-[NCSuggestionManager _createContactMatchingSuggestionIfNeededForRequest:sectionSettings:](self, "_createContactMatchingSuggestionIfNeededForRequest:sectionSettings:", v8, v7))
+    if (([requestCopy isHighlight] & 1) != 0 || !-[NCSuggestionManager _createTimeSensitiveSuggestionIfNeededForNotificationRequest:sectionSettings:](self, "_createTimeSensitiveSuggestionIfNeededForNotificationRequest:sectionSettings:", requestCopy, v7) && !-[NCSuggestionManager _createDirectMessagesSuggestionIfNeededForNotificationRequest:sectionSettings:](self, "_createDirectMessagesSuggestionIfNeededForNotificationRequest:sectionSettings:", requestCopy, v7) && !-[NCSuggestionManager _createProvisionalAuthorizationSuggestionIfNeededForRequest:sectionSettings:](self, "_createProvisionalAuthorizationSuggestionIfNeededForRequest:sectionSettings:", requestCopy, v7) && !-[NCSuggestionManager _createContactMatchingSuggestionIfNeededForRequest:sectionSettings:](self, "_createContactMatchingSuggestionIfNeededForRequest:sectionSettings:", requestCopy, v7))
     {
-      [(NCSuggestionManager *)self _createPriorityFeedbackSuggestionIfNeededForRequest:v8 sectionSettings:v7];
+      [(NCSuggestionManager *)self _createPriorityFeedbackSuggestionIfNeededForRequest:requestCopy sectionSettings:v7];
     }
 
     if ([(NCSuggestionManager *)self highlightsListCount])
@@ -380,19 +380,19 @@ LABEL_40:
   }
 }
 
-- (void)updateNotificationSectionSettings:(id)a3 previousSectionSettings:(id)a4
+- (void)updateNotificationSectionSettings:(id)settings previousSectionSettings:(id)sectionSettings
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 sectionIdentifier];
-  if ([(NSMutableSet *)self->_sectionIdentifiersWithNotificationManagementSuggestions containsObject:v6])
+  settingsCopy = settings;
+  sectionIdentifier = [settingsCopy sectionIdentifier];
+  if ([(NSMutableSet *)self->_sectionIdentifiersWithNotificationManagementSuggestions containsObject:sectionIdentifier])
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v7 = [(NSMutableDictionary *)self->_suggestionContentProviders allKeys];
-    v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    allKeys = [(NSMutableDictionary *)self->_suggestionContentProviders allKeys];
+    v8 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v8)
     {
       v9 = v8;
@@ -403,20 +403,20 @@ LABEL_40:
         {
           if (*v16 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allKeys);
           }
 
           v12 = *(*(&v15 + 1) + 8 * i);
-          v13 = [v12 sectionIdentifier];
-          v14 = [v13 isEqualToString:v6];
+          sectionIdentifier2 = [v12 sectionIdentifier];
+          v14 = [sectionIdentifier2 isEqualToString:sectionIdentifier];
 
           if (v14)
           {
-            [(NCSuggestionManager *)self _reloadSuggestionForNotificationRequest:v12 sectionSettings:v5];
+            [(NCSuggestionManager *)self _reloadSuggestionForNotificationRequest:v12 sectionSettings:settingsCopy];
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v9 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v9);
@@ -424,146 +424,146 @@ LABEL_40:
   }
 }
 
-- (id)requestMatchingRequest:(id)a3 inSet:(id)a4
+- (id)requestMatchingRequest:(id)request inSet:(id)set
 {
-  v5 = a3;
+  requestCopy = request;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __52__NCSuggestionManager_requestMatchingRequest_inSet___block_invoke;
   v9[3] = &unk_27836FFD8;
-  v10 = v5;
-  v6 = v5;
-  v7 = [a4 bs_firstObjectPassingTest:v9];
+  v10 = requestCopy;
+  v6 = requestCopy;
+  v7 = [set bs_firstObjectPassingTest:v9];
 
   return v7;
 }
 
-- (void)_reloadSuggestionForNotificationRequest:(id)a3 sectionSettings:(id)a4
+- (void)_reloadSuggestionForNotificationRequest:(id)request sectionSettings:(id)settings
 {
-  v15 = a3;
-  v6 = a4;
-  [(NCSuggestionManager *)self _removeSuggestionIfNecessaryForNotificationRequest:v15];
-  if ([(NCNotificationRequest *)self->_requestWithProvisionalNotificationManagementSuggestion matchesRequest:v15])
+  requestCopy = request;
+  settingsCopy = settings;
+  [(NCSuggestionManager *)self _removeSuggestionIfNecessaryForNotificationRequest:requestCopy];
+  if ([(NCNotificationRequest *)self->_requestWithProvisionalNotificationManagementSuggestion matchesRequest:requestCopy])
   {
-    [(NCSuggestionManager *)self _createProvisionalAuthorizationSuggestionIfNeededForRequest:v15 sectionSettings:v6];
+    [(NCSuggestionManager *)self _createProvisionalAuthorizationSuggestionIfNeededForRequest:requestCopy sectionSettings:settingsCopy];
   }
 
-  else if ([(NSMutableSet *)self->_requestsWithTimeSensitiveManagementSuggestion containsObject:v15])
+  else if ([(NSMutableSet *)self->_requestsWithTimeSensitiveManagementSuggestion containsObject:requestCopy])
   {
-    [(NCSuggestionManager *)self _createTimeSensitiveSuggestionIfNeededForNotificationRequest:v15 sectionSettings:v6];
+    [(NCSuggestionManager *)self _createTimeSensitiveSuggestionIfNeededForNotificationRequest:requestCopy sectionSettings:settingsCopy];
   }
 
-  else if ([(NSMutableSet *)self->_requestsWithDirectMessagesManagementSuggestion containsObject:v15])
+  else if ([(NSMutableSet *)self->_requestsWithDirectMessagesManagementSuggestion containsObject:requestCopy])
   {
-    [(NCSuggestionManager *)self _createDirectMessagesSuggestionIfNeededForNotificationRequest:v15 sectionSettings:v6];
+    [(NCSuggestionManager *)self _createDirectMessagesSuggestionIfNeededForNotificationRequest:requestCopy sectionSettings:settingsCopy];
   }
 
   else
   {
-    v7 = [(NCSuggestionManager *)self requestMatchingRequest:v15 inSet:self->_requestsWithStackSummarySuggestions];
+    v7 = [(NCSuggestionManager *)self requestMatchingRequest:requestCopy inSet:self->_requestsWithStackSummarySuggestions];
 
     if (v7)
     {
-      [(NCSuggestionManager *)self _createStackSummarySuggestionIfNeededForRequest:v15 sectionSettings:v6];
+      [(NCSuggestionManager *)self _createStackSummarySuggestionIfNeededForRequest:requestCopy sectionSettings:settingsCopy];
     }
 
-    else if ([(NCNotificationRequest *)self->_requestWithPriorityFeedbackSuggestion matchesRequest:v15])
+    else if ([(NCNotificationRequest *)self->_requestWithPriorityFeedbackSuggestion matchesRequest:requestCopy])
     {
-      [(NCSuggestionManager *)self _createPriorityFeedbackSuggestionIfNeededForRequest:v15 sectionSettings:v6];
+      [(NCSuggestionManager *)self _createPriorityFeedbackSuggestionIfNeededForRequest:requestCopy sectionSettings:settingsCopy];
     }
 
-    else if ([(NSMutableSet *)self->_requestsWithRemoteSuggestions containsObject:v15])
+    else if ([(NSMutableSet *)self->_requestsWithRemoteSuggestions containsObject:requestCopy])
     {
       remoteSuggestions = self->_remoteSuggestions;
-      v9 = [v15 uuid];
-      v10 = [(NSMutableDictionary *)remoteSuggestions objectForKey:v9];
+      uuid = [requestCopy uuid];
+      v10 = [(NSMutableDictionary *)remoteSuggestions objectForKey:uuid];
 
-      if (v10 && ![(NCSuggestionManager *)self _createRemoteSuggestionIfNeededForRequest:v15 remoteSuggestion:v10])
+      if (v10 && ![(NCSuggestionManager *)self _createRemoteSuggestionIfNeededForRequest:requestCopy remoteSuggestion:v10])
       {
-        v11 = [MEMORY[0x277CEB1B8] sharedInstance];
-        v12 = [v10 subtype];
-        v13 = [v10 uuid];
+        mEMORY[0x277CEB1B8] = [MEMORY[0x277CEB1B8] sharedInstance];
+        subtype = [v10 subtype];
+        uuid2 = [v10 uuid];
         v14 = [MEMORY[0x277CBEAA8] now];
-        [v11 logSuggestionEvent:5 suggestionType:v12 suggestionIdentifier:v13 timestamp:v14];
+        [mEMORY[0x277CEB1B8] logSuggestionEvent:5 suggestionType:subtype suggestionIdentifier:uuid2 timestamp:v14];
       }
     }
   }
 }
 
-- (void)clearSuggestionForNotificationRequest:(id)a3
+- (void)clearSuggestionForNotificationRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   remoteSuggestions = self->_remoteSuggestions;
-  v12 = v4;
-  v6 = [v4 uuid];
-  v7 = [(NSMutableDictionary *)remoteSuggestions objectForKey:v6];
+  v12 = requestCopy;
+  uuid = [requestCopy uuid];
+  v7 = [(NSMutableDictionary *)remoteSuggestions objectForKey:uuid];
 
   if (v7)
   {
-    v8 = [MEMORY[0x277CEB1B8] sharedInstance];
-    v9 = [v7 subtype];
-    v10 = [v7 uuid];
+    mEMORY[0x277CEB1B8] = [MEMORY[0x277CEB1B8] sharedInstance];
+    subtype = [v7 subtype];
+    uuid2 = [v7 uuid];
     v11 = [MEMORY[0x277CBEAA8] now];
-    [v8 logSuggestionEvent:4 suggestionType:v9 suggestionIdentifier:v10 timestamp:v11];
+    [mEMORY[0x277CEB1B8] logSuggestionEvent:4 suggestionType:subtype suggestionIdentifier:uuid2 timestamp:v11];
   }
 
   [(NCSuggestionManager *)self _removeSuggestionIfNecessaryForNotificationRequest:v12];
 }
 
-- (BOOL)_createTimeSensitiveSuggestionIfNeededForNotificationRequest:(id)a3 sectionSettings:(id)a4
+- (BOOL)_createTimeSensitiveSuggestionIfNeededForNotificationRequest:(id)request sectionSettings:(id)settings
 {
   v42 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 alertOptions];
-  v9 = [v8 suppression];
+  requestCopy = request;
+  settingsCopy = settings;
+  alertOptions = [requestCopy alertOptions];
+  suppression = [alertOptions suppression];
 
-  if (!v9 && [v6 interruptionLevel] == 2 && objc_msgSend(v7, "isTimeSensitiveEnabled") && (objc_msgSend(v7, "hasUserConfiguredTimeSensitiveSetting") & 1) == 0)
+  if (!suppression && [requestCopy interruptionLevel] == 2 && objc_msgSend(settingsCopy, "isTimeSensitiveEnabled") && (objc_msgSend(settingsCopy, "hasUserConfiguredTimeSensitiveSetting") & 1) == 0)
   {
     requestsWithTimeSensitiveManagementSuggestion = self->_requestsWithTimeSensitiveManagementSuggestion;
     v36[0] = MEMORY[0x277D85DD0];
     v36[1] = 3221225472;
     v36[2] = __100__NCSuggestionManager__createTimeSensitiveSuggestionIfNeededForNotificationRequest_sectionSettings___block_invoke;
     v36[3] = &unk_2783708B8;
-    v13 = v6;
+    v13 = requestCopy;
     v37 = v13;
     v14 = [(NSMutableSet *)requestsWithTimeSensitiveManagementSuggestion objectsPassingTest:v36];
-    v15 = [v14 anyObject];
+    anyObject = [v14 anyObject];
 
-    if (v15)
+    if (anyObject)
     {
-      v16 = [v13 timestamp];
-      v17 = [v15 timestamp];
-      v18 = [v16 compare:v17];
+      timestamp = [v13 timestamp];
+      timestamp2 = [anyObject timestamp];
+      v18 = [timestamp compare:timestamp2];
 
       if (v18 != 1)
       {
         goto LABEL_22;
       }
 
-      [(NCSuggestionManager *)self _removeSuggestionIfNecessaryForNotificationRequest:v15];
+      [(NCSuggestionManager *)self _removeSuggestionIfNecessaryForNotificationRequest:anyObject];
     }
 
-    v19 = [v13 alertOptions];
-    v20 = [v19 reason];
+    alertOptions2 = [v13 alertOptions];
+    reason = [alertOptions2 reason];
 
-    if (v20 == 4)
+    if (reason == 4)
     {
       v21 = *MEMORY[0x277D77DD8];
       if (os_log_type_enabled(*MEMORY[0x277D77DD8], OS_LOG_TYPE_DEFAULT))
       {
         v22 = v21;
-        v23 = [v13 notificationIdentifier];
-        v24 = [v23 un_logDigest];
-        v25 = [v13 sectionIdentifier];
+        notificationIdentifier = [v13 notificationIdentifier];
+        un_logDigest = [notificationIdentifier un_logDigest];
+        sectionIdentifier = [v13 sectionIdentifier];
         *buf = 138543618;
-        v39 = v24;
+        v39 = un_logDigest;
         v40 = 2114;
-        v41 = v25;
+        v41 = sectionIdentifier;
         _os_log_impl(&dword_21E77E000, v22, OS_LOG_TYPE_DEFAULT, "Creating time sensitive suggestion for request %{public}@ from section %{public}@", buf, 0x16u);
       }
 
-      [(NCSuggestionManager *)self _createNewTimeSensitiveSuggestionForNotificationRequest:v13 sectionSettings:v7];
+      [(NCSuggestionManager *)self _createNewTimeSensitiveSuggestionForNotificationRequest:v13 sectionSettings:settingsCopy];
 LABEL_14:
       v26 = self->_requestsWithTimeSensitiveManagementSuggestion;
       if (!v26)
@@ -580,28 +580,28 @@ LABEL_14:
       goto LABEL_23;
     }
 
-    if ([v7 isScheduledDeliveryEnabled])
+    if ([settingsCopy isScheduledDeliveryEnabled])
     {
-      v29 = [v13 alertOptions];
-      v30 = [v29 reason];
+      alertOptions3 = [v13 alertOptions];
+      reason2 = [alertOptions3 reason];
 
-      if (v30 == 1)
+      if (reason2 == 1)
       {
         v31 = *MEMORY[0x277D77DD8];
         if (os_log_type_enabled(*MEMORY[0x277D77DD8], OS_LOG_TYPE_DEFAULT))
         {
           v32 = v31;
-          v33 = [v13 notificationIdentifier];
-          v34 = [v33 un_logDigest];
-          v35 = [v13 sectionIdentifier];
+          notificationIdentifier2 = [v13 notificationIdentifier];
+          un_logDigest2 = [notificationIdentifier2 un_logDigest];
+          sectionIdentifier2 = [v13 sectionIdentifier];
           *buf = 138543618;
-          v39 = v34;
+          v39 = un_logDigest2;
           v40 = 2114;
-          v41 = v35;
+          v41 = sectionIdentifier2;
           _os_log_impl(&dword_21E77E000, v32, OS_LOG_TYPE_DEFAULT, "Creating time sensitive digest suggestion for request %{public}@ from section %{public}@", buf, 0x16u);
         }
 
-        [(NCSuggestionManager *)self _createNewTimeSensitiveInDigestSuggestionForNotificationRequest:v13 sectionSettings:v7];
+        [(NCSuggestionManager *)self _createNewTimeSensitiveInDigestSuggestionForNotificationRequest:v13 sectionSettings:settingsCopy];
         goto LABEL_14;
       }
     }
@@ -628,32 +628,32 @@ uint64_t __100__NCSuggestionManager__createTimeSensitiveSuggestionIfNeededForNot
   return v5;
 }
 
-- (BOOL)_createDirectMessagesSuggestionIfNeededForNotificationRequest:(id)a3 sectionSettings:(id)a4
+- (BOOL)_createDirectMessagesSuggestionIfNeededForNotificationRequest:(id)request sectionSettings:(id)settings
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 content];
-  v9 = [v8 contentType];
-  v10 = [v9 isEqualToString:*MEMORY[0x277CE2158]];
+  requestCopy = request;
+  settingsCopy = settings;
+  content = [requestCopy content];
+  contentType = [content contentType];
+  v10 = [contentType isEqualToString:*MEMORY[0x277CE2158]];
 
-  if (v10 && [v7 isDirectMessagesEnabled] && (objc_msgSend(v7, "hasUserConfiguredDirectMessagesSetting") & 1) == 0 && objc_msgSend(v7, "isScheduledDeliveryEnabled"))
+  if (v10 && [settingsCopy isDirectMessagesEnabled] && (objc_msgSend(settingsCopy, "hasUserConfiguredDirectMessagesSetting") & 1) == 0 && objc_msgSend(settingsCopy, "isScheduledDeliveryEnabled"))
   {
     requestsWithDirectMessagesManagementSuggestion = self->_requestsWithDirectMessagesManagementSuggestion;
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __101__NCSuggestionManager__createDirectMessagesSuggestionIfNeededForNotificationRequest_sectionSettings___block_invoke;
     v28[3] = &unk_2783708B8;
-    v12 = v6;
+    v12 = requestCopy;
     v29 = v12;
     v13 = [(NSMutableSet *)requestsWithDirectMessagesManagementSuggestion objectsPassingTest:v28];
-    v14 = [v13 anyObject];
+    anyObject = [v13 anyObject];
 
-    if (v14)
+    if (anyObject)
     {
-      v15 = [v12 timestamp];
-      v16 = [v14 timestamp];
-      v17 = [v15 compare:v16];
+      timestamp = [v12 timestamp];
+      timestamp2 = [anyObject timestamp];
+      v17 = [timestamp compare:timestamp2];
 
       if (v17 != 1)
       {
@@ -663,24 +663,24 @@ LABEL_16:
         goto LABEL_14;
       }
 
-      [(NCSuggestionManager *)self _removeSuggestionIfNecessaryForNotificationRequest:v14];
+      [(NCSuggestionManager *)self _removeSuggestionIfNecessaryForNotificationRequest:anyObject];
     }
 
     v18 = *MEMORY[0x277D77DD8];
     if (os_log_type_enabled(*MEMORY[0x277D77DD8], OS_LOG_TYPE_DEFAULT))
     {
       v19 = v18;
-      v20 = [v12 notificationIdentifier];
-      v21 = [v20 un_logDigest];
-      v22 = [v12 sectionIdentifier];
+      notificationIdentifier = [v12 notificationIdentifier];
+      un_logDigest = [notificationIdentifier un_logDigest];
+      sectionIdentifier = [v12 sectionIdentifier];
       *buf = 138543618;
-      v31 = v21;
+      v31 = un_logDigest;
       v32 = 2114;
-      v33 = v22;
+      v33 = sectionIdentifier;
       _os_log_impl(&dword_21E77E000, v19, OS_LOG_TYPE_DEFAULT, "Creating direct messages digest suggestion for request %{public}@ from section %{public}@", buf, 0x16u);
     }
 
-    [(NCSuggestionManager *)self _createNewDirectMessagesInDigestSuggestionForNotificationRequest:v12 sectionSettings:v7];
+    [(NCSuggestionManager *)self _createNewDirectMessagesInDigestSuggestionForNotificationRequest:v12 sectionSettings:settingsCopy];
     v23 = self->_requestsWithDirectMessagesManagementSuggestion;
     if (!v23)
     {
@@ -711,12 +711,12 @@ uint64_t __101__NCSuggestionManager__createDirectMessagesSuggestionIfNeededForNo
   return v5;
 }
 
-- (BOOL)_createProvisionalAuthorizationSuggestionIfNeededForRequest:(id)a3 sectionSettings:(id)a4
+- (BOOL)_createProvisionalAuthorizationSuggestionIfNeededForRequest:(id)request sectionSettings:(id)settings
 {
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (![v8 hasProvisionalAuthorization])
+  requestCopy = request;
+  settingsCopy = settings;
+  if (![settingsCopy hasProvisionalAuthorization])
   {
     goto LABEL_11;
   }
@@ -724,13 +724,13 @@ uint64_t __101__NCSuggestionManager__createDirectMessagesSuggestionIfNeededForNo
   p_requestWithProvisionalNotificationManagementSuggestion = &self->_requestWithProvisionalNotificationManagementSuggestion;
   if (self->_requestWithProvisionalNotificationManagementSuggestion)
   {
-    v10 = [v7 sectionIdentifier];
-    v11 = [(NCNotificationRequest *)*p_requestWithProvisionalNotificationManagementSuggestion sectionIdentifier];
-    if ([v10 isEqualToString:v11])
+    sectionIdentifier = [requestCopy sectionIdentifier];
+    sectionIdentifier2 = [(NCNotificationRequest *)*p_requestWithProvisionalNotificationManagementSuggestion sectionIdentifier];
+    if ([sectionIdentifier isEqualToString:sectionIdentifier2])
     {
-      v12 = [v7 timestamp];
-      v13 = [(NCNotificationRequest *)*p_requestWithProvisionalNotificationManagementSuggestion timestamp];
-      v14 = [v12 compare:v13];
+      timestamp = [requestCopy timestamp];
+      timestamp2 = [(NCNotificationRequest *)*p_requestWithProvisionalNotificationManagementSuggestion timestamp];
+      v14 = [timestamp compare:timestamp2];
 
       if (v14 == 1)
       {
@@ -757,45 +757,45 @@ LABEL_7:
   if (os_log_type_enabled(*MEMORY[0x277D77DD8], OS_LOG_TYPE_DEFAULT))
   {
     v16 = v15;
-    v17 = [v7 notificationIdentifier];
-    v18 = [v17 un_logDigest];
-    v19 = [v7 sectionIdentifier];
+    notificationIdentifier = [requestCopy notificationIdentifier];
+    un_logDigest = [notificationIdentifier un_logDigest];
+    sectionIdentifier3 = [requestCopy sectionIdentifier];
     v22 = 138543618;
-    v23 = v18;
+    v23 = un_logDigest;
     v24 = 2114;
-    v25 = v19;
+    v25 = sectionIdentifier3;
     _os_log_impl(&dword_21E77E000, v16, OS_LOG_TYPE_DEFAULT, "Creating promoting suggestion for provisional request %{public}@ from section %{public}@", &v22, 0x16u);
   }
 
-  [(NCSuggestionManager *)self _createNewPromotingSuggestionForNotificationRequest:v7 sectionSettings:v8];
-  objc_storeStrong(&self->_requestWithProvisionalNotificationManagementSuggestion, a3);
+  [(NCSuggestionManager *)self _createNewPromotingSuggestionForNotificationRequest:requestCopy sectionSettings:settingsCopy];
+  objc_storeStrong(&self->_requestWithProvisionalNotificationManagementSuggestion, request);
   v20 = 1;
 LABEL_12:
 
   return v20;
 }
 
-- (BOOL)_createContactMatchingSuggestionIfNeededForRequest:(id)a3 sectionSettings:(id)a4
+- (BOOL)_createContactMatchingSuggestionIfNeededForRequest:(id)request sectionSettings:(id)settings
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 content];
-  v9 = [v8 communicationContext];
+  requestCopy = request;
+  settingsCopy = settings;
+  content = [requestCopy content];
+  communicationContext = [content communicationContext];
 
-  v10 = [v9 sender];
+  sender = [communicationContext sender];
   v11 = 0;
-  if ([v9 isDirect] && v10)
+  if ([communicationContext isDirect] && sender)
   {
-    v12 = [MEMORY[0x277D77F58] sharedInstance];
-    v13 = [v6 topLevelSectionIdentifier];
-    v14 = [v12 curatedContactMatchDetailsForContact:v10 bundleIdentifier:v13];
+    mEMORY[0x277D77F58] = [MEMORY[0x277D77F58] sharedInstance];
+    topLevelSectionIdentifier = [requestCopy topLevelSectionIdentifier];
+    v14 = [mEMORY[0x277D77F58] curatedContactMatchDetailsForContact:sender bundleIdentifier:topLevelSectionIdentifier];
 
     if (v14 && [v14 isSuggestedMatch])
     {
-      v15 = [v14 cnContactFullname];
-      [(NCSuggestionManager *)self _createNewCuratedContactMatchSuggestionForNotificationRequest:v6 sectionSettings:v7 contactName:v15];
+      cnContactFullname = [v14 cnContactFullname];
+      [(NCSuggestionManager *)self _createNewCuratedContactMatchSuggestionForNotificationRequest:requestCopy sectionSettings:settingsCopy contactName:cnContactFullname];
 
-      [(NSMutableSet *)self->_requestsWithContactSuggestions addObject:v6];
+      [(NSMutableSet *)self->_requestsWithContactSuggestions addObject:requestCopy];
       v11 = 1;
     }
 
@@ -808,14 +808,14 @@ LABEL_12:
   return v11;
 }
 
-- (BOOL)_createStackSummarySuggestionIfNeededForRequest:(id)a3 sectionSettings:(id)a4
+- (BOOL)_createStackSummarySuggestionIfNeededForRequest:(id)request sectionSettings:(id)settings
 {
   v58 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  settingsCopy = settings;
   summarizationSuggestionManager = self->_summarizationSuggestionManager;
-  v9 = [v6 sectionIdentifier];
-  LODWORD(summarizationSuggestionManager) = [(NCSummarizationChinSuggestionManager *)summarizationSuggestionManager shouldShowChinSuggestionAfterStackSummaryShownForBundleId:v9];
+  sectionIdentifier = [requestCopy sectionIdentifier];
+  LODWORD(summarizationSuggestionManager) = [(NCSummarizationChinSuggestionManager *)summarizationSuggestionManager shouldShowChinSuggestionAfterStackSummaryShownForBundleId:sectionIdentifier];
 
   if (summarizationSuggestionManager)
   {
@@ -824,45 +824,45 @@ LABEL_12:
     v50[1] = 3221225472;
     v50[2] = __87__NCSuggestionManager__createStackSummarySuggestionIfNeededForRequest_sectionSettings___block_invoke;
     v50[3] = &unk_2783708B8;
-    v11 = v6;
+    v11 = requestCopy;
     v51 = v11;
     v12 = [(NSMutableSet *)requestsWithStackSummarySuggestions objectsPassingTest:v50];
-    v13 = [v12 anyObject];
+    anyObject = [v12 anyObject];
 
-    if (v13)
+    if (anyObject)
     {
-      v14 = [(NSMutableSet *)v11 timestamp];
-      v15 = [v13 timestamp];
-      v16 = [v14 compare:v15];
+      timestamp = [(NSMutableSet *)v11 timestamp];
+      timestamp2 = [anyObject timestamp];
+      v16 = [timestamp compare:timestamp2];
 
       if (v16 != 1)
       {
         goto LABEL_29;
       }
 
-      [(NCSuggestionManager *)self _removeSuggestionIfNecessaryForNotificationRequest:v13];
+      [(NCSuggestionManager *)self _removeSuggestionIfNecessaryForNotificationRequest:anyObject];
     }
 
     v17 = *MEMORY[0x277D77DD8];
     if (os_log_type_enabled(*MEMORY[0x277D77DD8], OS_LOG_TYPE_DEFAULT))
     {
       v18 = v17;
-      v19 = [(NSMutableSet *)v11 notificationIdentifier];
-      v20 = [v19 un_logDigest];
-      v21 = [(NSMutableSet *)v11 sectionIdentifier];
+      notificationIdentifier = [(NSMutableSet *)v11 notificationIdentifier];
+      un_logDigest = [notificationIdentifier un_logDigest];
+      sectionIdentifier2 = [(NSMutableSet *)v11 sectionIdentifier];
       *buf = 138543618;
-      v55 = v20;
+      v55 = un_logDigest;
       v56 = 2114;
-      v57 = v21;
+      v57 = sectionIdentifier2;
       _os_log_impl(&dword_21E77E000, v18, OS_LOG_TYPE_DEFAULT, "Creating stack summary for request %{public}@ from section %{public}@", buf, 0x16u);
     }
 
-    if (![(NSMutableSet *)self->_requestsWithStackSummarySuggestions count]&& [(NCSuggestionManager *)self _createNewStackSummarySuggestionForNotificationRequest:v11 sectionSettings:v7])
+    if (![(NSMutableSet *)self->_requestsWithStackSummarySuggestions count]&& [(NCSuggestionManager *)self _createNewStackSummarySuggestionForNotificationRequest:v11 sectionSettings:settingsCopy])
     {
       [(NSMutableSet *)self->_requestsWithStackSummarySuggestions addObject:v11];
       v22 = self->_summarizationSuggestionManager;
-      v23 = [(NSMutableSet *)v11 sectionIdentifier];
-      [(NCSummarizationChinSuggestionManager *)v22 recordEvent:0 bundleId:v23];
+      sectionIdentifier3 = [(NSMutableSet *)v11 sectionIdentifier];
+      [(NCSummarizationChinSuggestionManager *)v22 recordEvent:0 bundleId:sectionIdentifier3];
 
       v48 = 0u;
       v49 = 0u;
@@ -917,7 +917,7 @@ LABEL_30:
   if (v32)
   {
     v33 = v32;
-    v41 = v7;
+    v41 = settingsCopy;
     v34 = *v43;
     do
     {
@@ -929,9 +929,9 @@ LABEL_30:
         }
 
         v36 = *(*(&v42 + 1) + 8 * j);
-        v37 = [v36 sectionIdentifier];
-        v38 = [v6 sectionIdentifier];
-        v39 = [v37 isEqualToString:v38];
+        sectionIdentifier4 = [v36 sectionIdentifier];
+        sectionIdentifier5 = [requestCopy sectionIdentifier];
+        v39 = [sectionIdentifier4 isEqualToString:sectionIdentifier5];
 
         if (v39)
         {
@@ -944,7 +944,7 @@ LABEL_30:
 
     while (v33);
     v30 = 0;
-    v7 = v41;
+    settingsCopy = v41;
   }
 
   else
@@ -966,12 +966,12 @@ uint64_t __87__NCSuggestionManager__createStackSummarySuggestionIfNeededForReque
   return v5;
 }
 
-- (BOOL)_createPriorityFeedbackSuggestionIfNeededForRequest:(id)a3 sectionSettings:(id)a4
+- (BOOL)_createPriorityFeedbackSuggestionIfNeededForRequest:(id)request sectionSettings:(id)settings
 {
   v24 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (self->_requestWithPriorityFeedbackSuggestion || !os_variant_has_internal_content() || ![v7 isHighlight] || -[NCSuggestionManager highlightsListCount](self, "highlightsListCount") || arc4random_uniform(0x14u))
+  requestCopy = request;
+  settingsCopy = settings;
+  if (self->_requestWithPriorityFeedbackSuggestion || !os_variant_has_internal_content() || ![requestCopy isHighlight] || -[NCSuggestionManager highlightsListCount](self, "highlightsListCount") || arc4random_uniform(0x14u))
   {
     goto LABEL_12;
   }
@@ -997,19 +997,19 @@ LABEL_12:
   if (os_log_type_enabled(*MEMORY[0x277D77DD8], OS_LOG_TYPE_DEFAULT))
   {
     v13 = v12;
-    v14 = [v7 notificationIdentifier];
-    v15 = [v14 un_logDigest];
-    v16 = [v7 sectionIdentifier];
+    notificationIdentifier = [requestCopy notificationIdentifier];
+    un_logDigest = [notificationIdentifier un_logDigest];
+    sectionIdentifier = [requestCopy sectionIdentifier];
     v20 = 138543618;
-    v21 = v15;
+    v21 = un_logDigest;
     v22 = 2114;
-    v23 = v16;
+    v23 = sectionIdentifier;
     _os_log_impl(&dword_21E77E000, v13, OS_LOG_TYPE_DEFAULT, "Creating priority feedback suggestion for request %{public}@ from section %{public}@", &v20, 0x16u);
   }
 
-  [(NCSuggestionManager *)self _createNewPriorityFeedbackSuggestionForNotificationRequest:v7 sectionSettings:v8];
-  objc_storeStrong(&self->_requestWithPriorityFeedbackSuggestion, a3);
-  v17 = [[NCSummarizationFeedbackManager alloc] initWithRequest:v7 isShowingStackSummary:0];
+  [(NCSuggestionManager *)self _createNewPriorityFeedbackSuggestionForNotificationRequest:requestCopy sectionSettings:settingsCopy];
+  objc_storeStrong(&self->_requestWithPriorityFeedbackSuggestion, request);
+  v17 = [[NCSummarizationFeedbackManager alloc] initWithRequest:requestCopy isShowingStackSummary:0];
   [(NCSummarizationFeedbackManager *)v17 recordInternalPriorityFeedbackEvent:0];
 
   v18 = 1;
@@ -1018,20 +1018,20 @@ LABEL_13:
   return v18;
 }
 
-- (BOOL)_createRemoteSuggestionIfNeededForRequest:(id)a3 remoteSuggestion:(id)a4
+- (BOOL)_createRemoteSuggestionIfNeededForRequest:(id)request remoteSuggestion:(id)suggestion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NCSuggestionManager *)self remoteSuggestions];
-  v9 = [v6 uuid];
-  [v8 setObject:v7 forKey:v9];
+  requestCopy = request;
+  suggestionCopy = suggestion;
+  remoteSuggestions = [(NCSuggestionManager *)self remoteSuggestions];
+  uuid = [requestCopy uuid];
+  [remoteSuggestions setObject:suggestionCopy forKey:uuid];
 
-  v10 = [(NCSuggestionManager *)self _contentProviderForRequest:v6 withRemoteSuggestion:v7];
+  v10 = [(NCSuggestionManager *)self _contentProviderForRequest:requestCopy withRemoteSuggestion:suggestionCopy];
 
-  if (v10 && (-[NCSuggestionManager suggestionContentProviders](self, "suggestionContentProviders"), v11 = objc_claimAutoreleasedReturnValue(), [v11 objectForKey:v6], v12 = objc_claimAutoreleasedReturnValue(), v12, v11, !v12) && -[NCSuggestionManager _addSuggestionForNotificationRequest:managementContentProvider:](self, "_addSuggestionForNotificationRequest:managementContentProvider:", v6, v10))
+  if (v10 && (-[NCSuggestionManager suggestionContentProviders](self, "suggestionContentProviders"), v11 = objc_claimAutoreleasedReturnValue(), [v11 objectForKey:requestCopy], v12 = objc_claimAutoreleasedReturnValue(), v12, v11, !v12) && -[NCSuggestionManager _addSuggestionForNotificationRequest:managementContentProvider:](self, "_addSuggestionForNotificationRequest:managementContentProvider:", requestCopy, v10))
   {
-    v13 = [(NCSuggestionManager *)self requestsWithRemoteSuggestions];
-    [v13 addObject:v6];
+    requestsWithRemoteSuggestions = [(NCSuggestionManager *)self requestsWithRemoteSuggestions];
+    [requestsWithRemoteSuggestions addObject:requestCopy];
 
     v14 = 1;
   }
@@ -1044,17 +1044,17 @@ LABEL_13:
   return v14;
 }
 
-- (id)auxiliaryOptionsContentProviderForNotificationRequest:(id)a3 isLongLook:(BOOL)a4
+- (id)auxiliaryOptionsContentProviderForNotificationRequest:(id)request isLongLook:(BOOL)look
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  lookCopy = look;
+  requestCopy = request;
+  v7 = requestCopy;
+  if (requestCopy)
   {
-    if (v4)
+    if (lookCopy)
     {
-      v8 = [v6 sectionIdentifier];
-      v9 = [(NCSuggestionManager *)self _sectionSettingsForSectionIdentifier:v8];
+      sectionIdentifier = [requestCopy sectionIdentifier];
+      v9 = [(NCSuggestionManager *)self _sectionSettingsForSectionIdentifier:sectionIdentifier];
       if ([v9 isUserConfigurable])
       {
         v10 = [(NCNotificationManagementContentProvider *)[NCNotificationManagementLongLookContentProvider alloc] initWithNotificationRequest:v7 managementDelegate:self];
@@ -1068,7 +1068,7 @@ LABEL_13:
 
     else
     {
-      v10 = [(NSMutableDictionary *)self->_suggestionContentProviders objectForKey:v6];
+      v10 = [(NSMutableDictionary *)self->_suggestionContentProviders objectForKey:requestCopy];
     }
   }
 
@@ -1080,20 +1080,20 @@ LABEL_13:
   return v10;
 }
 
-- (void)setDeviceAuthenticated:(BOOL)a3
+- (void)setDeviceAuthenticated:(BOOL)authenticated
 {
-  if (self->_deviceAuthenticated != a3)
+  if (self->_deviceAuthenticated != authenticated)
   {
     v7[7] = v3;
     v7[8] = v4;
-    self->_deviceAuthenticated = a3;
-    v6 = [(NCSuggestionManager *)self suggestionContentProviders];
+    self->_deviceAuthenticated = authenticated;
+    suggestionContentProviders = [(NCSuggestionManager *)self suggestionContentProviders];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __46__NCSuggestionManager_setDeviceAuthenticated___block_invoke;
     v7[3] = &unk_278371DB0;
     v7[4] = self;
-    [v6 enumerateKeysAndObjectsUsingBlock:v7];
+    [suggestionContentProviders enumerateKeysAndObjectsUsingBlock:v7];
   }
 }
 
@@ -1117,355 +1117,355 @@ void __46__NCSuggestionManager_setDeviceAuthenticated___block_invoke(uint64_t a1
   [v9 setAuxiliaryOptionsVisible:v8];
 }
 
-- (void)logResponseForNotificationRequest:(id)a3 allowsNotifications:(BOOL)a4
+- (void)logResponseForNotificationRequest:(id)request allowsNotifications:(BOOL)notifications
 {
-  v6 = a3;
-  v9 = v6;
-  if (!a4)
+  requestCopy = request;
+  v9 = requestCopy;
+  if (!notifications)
   {
-    v7 = [(NCSuggestionManager *)self suggestionContentProviders];
-    v8 = [v7 objectForKey:v9];
+    suggestionContentProviders = [(NCSuggestionManager *)self suggestionContentProviders];
+    v8 = [suggestionContentProviders objectForKey:v9];
 
     if (v8 && (objc_opt_respondsToSelector() & 1) != 0)
     {
       [v8 logSuggestionEvent:2];
     }
 
-    v6 = v9;
+    requestCopy = v9;
   }
 
-  [(NCSuggestionManager *)self _removeSuggestionIfNecessaryForNotificationRequest:v6];
+  [(NCSuggestionManager *)self _removeSuggestionIfNecessaryForNotificationRequest:requestCopy];
 }
 
-- (void)logResponseForNotificationRequest:(id)a3 allowsTimeSensitive:(BOOL)a4
+- (void)logResponseForNotificationRequest:(id)request allowsTimeSensitive:(BOOL)sensitive
 {
-  v6 = a3;
-  v9 = v6;
-  if (!a4)
+  requestCopy = request;
+  v9 = requestCopy;
+  if (!sensitive)
   {
-    v7 = [(NCSuggestionManager *)self suggestionContentProviders];
-    v8 = [v7 objectForKey:v9];
+    suggestionContentProviders = [(NCSuggestionManager *)self suggestionContentProviders];
+    v8 = [suggestionContentProviders objectForKey:v9];
 
     if (v8 && (objc_opt_respondsToSelector() & 1) != 0)
     {
       [v8 logSuggestionEvent:2];
     }
 
-    v6 = v9;
+    requestCopy = v9;
   }
 
-  [(NCSuggestionManager *)self _removeSuggestionIfNecessaryForNotificationRequest:v6];
+  [(NCSuggestionManager *)self _removeSuggestionIfNecessaryForNotificationRequest:requestCopy];
 }
 
-- (void)logResponseForNotificationRequest:(id)a3 muted:(BOOL)a4
+- (void)logResponseForNotificationRequest:(id)request muted:(BOOL)muted
 {
-  v4 = a4;
-  v6 = a3;
-  v9 = v6;
-  if (v4)
+  mutedCopy = muted;
+  requestCopy = request;
+  v9 = requestCopy;
+  if (mutedCopy)
   {
-    v7 = [(NCSuggestionManager *)self suggestionContentProviders];
-    v8 = [v7 objectForKey:v9];
+    suggestionContentProviders = [(NCSuggestionManager *)self suggestionContentProviders];
+    v8 = [suggestionContentProviders objectForKey:v9];
 
     if (v8 && (objc_opt_respondsToSelector() & 1) != 0)
     {
       [v8 logSuggestionEvent:2];
     }
 
-    v6 = v9;
+    requestCopy = v9;
   }
 
-  [(NCSuggestionManager *)self _removeSuggestionIfNecessaryForNotificationRequest:v6];
+  [(NCSuggestionManager *)self _removeSuggestionIfNecessaryForNotificationRequest:requestCopy];
 }
 
-- (void)logResponseForNotificationRequest:(id)a3 scheduledDelivery:(BOOL)a4
+- (void)logResponseForNotificationRequest:(id)request scheduledDelivery:(BOOL)delivery
 {
-  v7 = a3;
-  v5 = [(NCSuggestionManager *)self suggestionContentProviders];
-  v6 = [v5 objectForKey:v7];
+  requestCopy = request;
+  suggestionContentProviders = [(NCSuggestionManager *)self suggestionContentProviders];
+  v6 = [suggestionContentProviders objectForKey:requestCopy];
 
   if (v6 && (objc_opt_respondsToSelector() & 1) != 0)
   {
     [v6 logSuggestionEvent:2];
   }
 
-  [(NCSuggestionManager *)self _removeSuggestionIfNecessaryForNotificationRequest:v7];
+  [(NCSuggestionManager *)self _removeSuggestionIfNecessaryForNotificationRequest:requestCopy];
 }
 
-- (void)notificationManagementContentProvider:(id)a3 requestsPresentingNotificationManagementViewType:(unint64_t)a4 forNotificationRequest:(id)a5 withPresentingView:(id)a6
+- (void)notificationManagementContentProvider:(id)provider requestsPresentingNotificationManagementViewType:(unint64_t)type forNotificationRequest:(id)request withPresentingView:(id)view
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = [(NCSuggestionManager *)self delegate];
-  [v11 suggestionManager:self requestsPresentingNotificationManagementViewType:a4 forNotificationRequest:v10 withPresentingView:v9];
+  viewCopy = view;
+  requestCopy = request;
+  delegate = [(NCSuggestionManager *)self delegate];
+  [delegate suggestionManager:self requestsPresentingNotificationManagementViewType:type forNotificationRequest:requestCopy withPresentingView:viewCopy];
 }
 
-- (void)notificationManagementContentProvider:(id)a3 setCuratedContactSuggestionConfirmed:(BOOL)a4 request:(id)a5
+- (void)notificationManagementContentProvider:(id)provider setCuratedContactSuggestionConfirmed:(BOOL)confirmed request:(id)request
 {
-  v5 = a4;
-  v12 = a5;
-  v7 = [v12 content];
-  v8 = [v7 communicationContext];
-  v9 = [v8 sender];
+  confirmedCopy = confirmed;
+  requestCopy = request;
+  content = [requestCopy content];
+  communicationContext = [content communicationContext];
+  sender = [communicationContext sender];
 
-  if (v9)
+  if (sender)
   {
-    v10 = [MEMORY[0x277D77F58] sharedInstance];
-    v11 = [v12 topLevelSectionIdentifier];
-    [v10 confirmCuratedContactSuggestion:v5 forContact:v9 bundleIdentifier:v11];
+    mEMORY[0x277D77F58] = [MEMORY[0x277D77F58] sharedInstance];
+    topLevelSectionIdentifier = [requestCopy topLevelSectionIdentifier];
+    [mEMORY[0x277D77F58] confirmCuratedContactSuggestion:confirmedCopy forContact:sender bundleIdentifier:topLevelSectionIdentifier];
   }
 
   [(NCSuggestionManager *)self reloadContactSuggestions];
 }
 
-- (void)notificationManagementContentProvider:(id)a3 setMuted:(BOOL)a4 untilDate:(id)a5 forSectionIdentifier:(id)a6 threadIdentifier:(id)a7
+- (void)notificationManagementContentProvider:(id)provider setMuted:(BOOL)muted untilDate:(id)date forSectionIdentifier:(id)identifier threadIdentifier:(id)threadIdentifier
 {
-  v9 = a4;
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = [(NCSuggestionManager *)self delegate];
-  [v14 suggestionManager:self setMuted:v9 untilDate:v13 forSectionIdentifier:v12 threadIdentifier:v11];
+  mutedCopy = muted;
+  threadIdentifierCopy = threadIdentifier;
+  identifierCopy = identifier;
+  dateCopy = date;
+  delegate = [(NCSuggestionManager *)self delegate];
+  [delegate suggestionManager:self setMuted:mutedCopy untilDate:dateCopy forSectionIdentifier:identifierCopy threadIdentifier:threadIdentifierCopy];
 }
 
-- (void)notificationManagementContentProvider:(id)a3 setScheduledDelivery:(BOOL)a4 forSectionIdentifier:(id)a5
+- (void)notificationManagementContentProvider:(id)provider setScheduledDelivery:(BOOL)delivery forSectionIdentifier:(id)identifier
 {
-  v5 = a4;
-  v7 = a5;
-  v8 = [(NCSuggestionManager *)self delegate];
-  [v8 suggestionManager:self setScheduledDelivery:v5 forSectionIdentifier:v7];
+  deliveryCopy = delivery;
+  identifierCopy = identifier;
+  delegate = [(NCSuggestionManager *)self delegate];
+  [delegate suggestionManager:self setScheduledDelivery:deliveryCopy forSectionIdentifier:identifierCopy];
 }
 
-- (void)notificationManagementContentProvider:(id)a3 setAllowsTimeSensitive:(BOOL)a4 forSectionIdentifier:(id)a5
+- (void)notificationManagementContentProvider:(id)provider setAllowsTimeSensitive:(BOOL)sensitive forSectionIdentifier:(id)identifier
 {
-  v5 = a4;
-  v7 = a5;
-  v8 = [(NCSuggestionManager *)self delegate];
-  [v8 suggestionManager:self setAllowsTimeSensitive:v5 forSectionIdentifier:v7];
+  sensitiveCopy = sensitive;
+  identifierCopy = identifier;
+  delegate = [(NCSuggestionManager *)self delegate];
+  [delegate suggestionManager:self setAllowsTimeSensitive:sensitiveCopy forSectionIdentifier:identifierCopy];
 }
 
-- (void)notificationManagementContentProvider:(id)a3 setAllowsDirectMessages:(BOOL)a4 forSectionIdentifier:(id)a5
+- (void)notificationManagementContentProvider:(id)provider setAllowsDirectMessages:(BOOL)messages forSectionIdentifier:(id)identifier
 {
-  v5 = a4;
-  v7 = a5;
-  v8 = [(NCSuggestionManager *)self delegate];
-  [v8 suggestionManager:self setAllowsDirectMessages:v5 forSectionIdentifier:v7];
+  messagesCopy = messages;
+  identifierCopy = identifier;
+  delegate = [(NCSuggestionManager *)self delegate];
+  [delegate suggestionManager:self setAllowsDirectMessages:messagesCopy forSectionIdentifier:identifierCopy];
 }
 
-- (void)notificationManagementContentProvider:(id)a3 setModeConfiguration:(id)a4
+- (void)notificationManagementContentProvider:(id)provider setModeConfiguration:(id)configuration
 {
-  v5 = a4;
-  v6 = [(NCSuggestionManager *)self delegate];
-  [v6 suggestionManager:self setModeConfiguration:v5];
+  configurationCopy = configuration;
+  delegate = [(NCSuggestionManager *)self delegate];
+  [delegate suggestionManager:self setModeConfiguration:configurationCopy];
 }
 
-- (void)_updateContentForNotificationRequest:(id)a3
+- (void)_updateContentForNotificationRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(NCSuggestionManager *)self delegate];
-  [v5 suggestionManager:self requestsUpdatingContentForNotificationRequest:v4];
+  requestCopy = request;
+  delegate = [(NCSuggestionManager *)self delegate];
+  [delegate suggestionManager:self requestsUpdatingContentForNotificationRequest:requestCopy];
 }
 
-- (id)_sectionSettingsForSectionIdentifier:(id)a3
+- (id)_sectionSettingsForSectionIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(NCSuggestionManager *)self delegate];
-  v6 = [v5 suggestionManager:self requestsSectionSettingsForSectionIdentifier:v4];
+  identifierCopy = identifier;
+  delegate = [(NCSuggestionManager *)self delegate];
+  v6 = [delegate suggestionManager:self requestsSectionSettingsForSectionIdentifier:identifierCopy];
 
   return v6;
 }
 
-- (BOOL)_addSuggestionForNotificationRequest:(id)a3 managementContentProvider:(id)a4
+- (BOOL)_addSuggestionForNotificationRequest:(id)request managementContentProvider:(id)provider
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  providerCopy = provider;
   sectionIdentifiersWithNotificationManagementSuggestions = self->_sectionIdentifiersWithNotificationManagementSuggestions;
-  v9 = [v6 sectionIdentifier];
-  LOBYTE(sectionIdentifiersWithNotificationManagementSuggestions) = [(NSMutableSet *)sectionIdentifiersWithNotificationManagementSuggestions containsObject:v9];
+  sectionIdentifier = [requestCopy sectionIdentifier];
+  LOBYTE(sectionIdentifiersWithNotificationManagementSuggestions) = [(NSMutableSet *)sectionIdentifiersWithNotificationManagementSuggestions containsObject:sectionIdentifier];
 
   if (sectionIdentifiersWithNotificationManagementSuggestions)
   {
     v10 = *MEMORY[0x277D77DD8];
     if (os_log_type_enabled(*MEMORY[0x277D77DD8], OS_LOG_TYPE_ERROR))
     {
-      [NCSuggestionManager _addSuggestionForNotificationRequest:v10 managementContentProvider:v6];
+      [NCSuggestionManager _addSuggestionForNotificationRequest:v10 managementContentProvider:requestCopy];
     }
 
-    LOBYTE(v11) = 0;
+    LOBYTE(isUserConfigurable) = 0;
   }
 
   else
   {
-    v12 = [v6 sectionIdentifier];
-    v13 = [(NCSuggestionManager *)self _sectionSettingsForSectionIdentifier:v12];
+    sectionIdentifier2 = [requestCopy sectionIdentifier];
+    v13 = [(NCSuggestionManager *)self _sectionSettingsForSectionIdentifier:sectionIdentifier2];
 
-    v11 = [v13 isUserConfigurable];
+    isUserConfigurable = [v13 isUserConfigurable];
     v14 = *MEMORY[0x277D77DD8];
-    if (v11)
+    if (isUserConfigurable)
     {
       if (os_log_type_enabled(*MEMORY[0x277D77DD8], OS_LOG_TYPE_DEFAULT))
       {
         v15 = v14;
-        v16 = [v6 notificationIdentifier];
-        v17 = [v16 un_logDigest];
-        v18 = [v6 sectionIdentifier];
+        notificationIdentifier = [requestCopy notificationIdentifier];
+        un_logDigest = [notificationIdentifier un_logDigest];
+        sectionIdentifier3 = [requestCopy sectionIdentifier];
         *buf = 138543618;
-        v26 = v17;
+        v26 = un_logDigest;
         v27 = 2114;
-        v28 = v18;
+        v28 = sectionIdentifier3;
         _os_log_impl(&dword_21E77E000, v15, OS_LOG_TYPE_DEFAULT, "Adding suggestion for request %{public}@ from section %{public}@", buf, 0x16u);
       }
 
-      [(NSMutableDictionary *)self->_suggestionContentProviders setObject:v7 forKey:v6];
+      [(NSMutableDictionary *)self->_suggestionContentProviders setObject:providerCopy forKey:requestCopy];
       v19 = self->_sectionIdentifiersWithNotificationManagementSuggestions;
-      v20 = [v6 sectionIdentifier];
-      [(NSMutableSet *)v19 addObject:v20];
+      sectionIdentifier4 = [requestCopy sectionIdentifier];
+      [(NSMutableSet *)v19 addObject:sectionIdentifier4];
 
       if ([v13 contentPreviewSetting])
       {
-        v21 = [(NCSuggestionManager *)self isDeviceAuthenticated];
+        isDeviceAuthenticated = [(NCSuggestionManager *)self isDeviceAuthenticated];
       }
 
       else
       {
-        v21 = 1;
+        isDeviceAuthenticated = 1;
       }
 
-      [v7 setAuxiliaryOptionsVisible:v21];
+      [providerCopy setAuxiliaryOptionsVisible:isDeviceAuthenticated];
       v23[0] = MEMORY[0x277D85DD0];
       v23[1] = 3221225472;
       v23[2] = __86__NCSuggestionManager__addSuggestionForNotificationRequest_managementContentProvider___block_invoke;
       v23[3] = &unk_27836F560;
       v23[4] = self;
-      v24 = v6;
+      v24 = requestCopy;
       dispatch_async(MEMORY[0x277D85CD0], v23);
     }
 
     else if (os_log_type_enabled(*MEMORY[0x277D77DD8], OS_LOG_TYPE_ERROR))
     {
-      [NCSuggestionManager _addSuggestionForNotificationRequest:v14 managementContentProvider:v6];
+      [NCSuggestionManager _addSuggestionForNotificationRequest:v14 managementContentProvider:requestCopy];
     }
   }
 
-  return v11;
+  return isUserConfigurable;
 }
 
-- (void)_createNewPromotingSuggestionForNotificationRequest:(id)a3 sectionSettings:(id)a4
+- (void)_createNewPromotingSuggestionForNotificationRequest:(id)request sectionSettings:(id)settings
 {
-  v6 = a4;
-  v7 = a3;
+  settingsCopy = settings;
+  requestCopy = request;
   v8 = [NCNotificationManagementPromotingSuggestionContentProvider alloc];
-  v9 = [v6 displayName];
+  displayName = [settingsCopy displayName];
 
-  v10 = [(NCNotificationManagementPromotingSuggestionContentProvider *)v8 initWithNotificationRequest:v7 bundleDisplayName:v9 managementDelegate:self suggestionDelegate:self];
-  [(NCSuggestionManager *)self _addSuggestionForNotificationRequest:v7 managementContentProvider:v10];
+  v10 = [(NCNotificationManagementPromotingSuggestionContentProvider *)v8 initWithNotificationRequest:requestCopy bundleDisplayName:displayName managementDelegate:self suggestionDelegate:self];
+  [(NCSuggestionManager *)self _addSuggestionForNotificationRequest:requestCopy managementContentProvider:v10];
 }
 
-- (void)_createNewTimeSensitiveSuggestionForNotificationRequest:(id)a3 sectionSettings:(id)a4
+- (void)_createNewTimeSensitiveSuggestionForNotificationRequest:(id)request sectionSettings:(id)settings
 {
-  v6 = a4;
-  v7 = a3;
+  settingsCopy = settings;
+  requestCopy = request;
   v8 = [NCNotificationManagementTimeSensitiveSuggestionContentProvider alloc];
-  v9 = [v6 displayName];
+  displayName = [settingsCopy displayName];
 
-  v10 = [(NCNotificationManagementTimeSensitiveSuggestionContentProvider *)v8 initWithNotificationRequest:v7 bundleDisplayName:v9 managementDelegate:self suggestionDelegate:self];
-  [(NCSuggestionManager *)self _addSuggestionForNotificationRequest:v7 managementContentProvider:v10];
+  v10 = [(NCNotificationManagementTimeSensitiveSuggestionContentProvider *)v8 initWithNotificationRequest:requestCopy bundleDisplayName:displayName managementDelegate:self suggestionDelegate:self];
+  [(NCSuggestionManager *)self _addSuggestionForNotificationRequest:requestCopy managementContentProvider:v10];
 }
 
-- (void)_createNewTimeSensitiveInDigestSuggestionForNotificationRequest:(id)a3 sectionSettings:(id)a4
+- (void)_createNewTimeSensitiveInDigestSuggestionForNotificationRequest:(id)request sectionSettings:(id)settings
 {
-  v6 = a4;
-  v7 = a3;
+  settingsCopy = settings;
+  requestCopy = request;
   v8 = [NCNotificationManagementTimeSensitiveInDigestSuggestionContentProvider alloc];
-  v9 = [v6 displayName];
+  displayName = [settingsCopy displayName];
 
-  v10 = [(NCNotificationManagementTimeSensitiveInDigestSuggestionContentProvider *)v8 initWithNotificationRequest:v7 bundleDisplayName:v9 managementDelegate:self suggestionDelegate:self];
-  [(NCSuggestionManager *)self _addSuggestionForNotificationRequest:v7 managementContentProvider:v10];
+  v10 = [(NCNotificationManagementTimeSensitiveInDigestSuggestionContentProvider *)v8 initWithNotificationRequest:requestCopy bundleDisplayName:displayName managementDelegate:self suggestionDelegate:self];
+  [(NCSuggestionManager *)self _addSuggestionForNotificationRequest:requestCopy managementContentProvider:v10];
 }
 
-- (void)_createNewDirectMessagesInDigestSuggestionForNotificationRequest:(id)a3 sectionSettings:(id)a4
+- (void)_createNewDirectMessagesInDigestSuggestionForNotificationRequest:(id)request sectionSettings:(id)settings
 {
-  v6 = a4;
-  v7 = a3;
+  settingsCopy = settings;
+  requestCopy = request;
   v8 = [NCNotificationManagementDirectMessagesInDigestSuggestionContentProvider alloc];
-  v9 = [v6 displayName];
+  displayName = [settingsCopy displayName];
 
-  v10 = [(NCNotificationManagementDirectMessagesInDigestSuggestionContentProvider *)v8 initWithNotificationRequest:v7 bundleDisplayName:v9 managementDelegate:self suggestionDelegate:self];
-  [(NCSuggestionManager *)self _addSuggestionForNotificationRequest:v7 managementContentProvider:v10];
+  v10 = [(NCNotificationManagementDirectMessagesInDigestSuggestionContentProvider *)v8 initWithNotificationRequest:requestCopy bundleDisplayName:displayName managementDelegate:self suggestionDelegate:self];
+  [(NCSuggestionManager *)self _addSuggestionForNotificationRequest:requestCopy managementContentProvider:v10];
 }
 
-- (void)_createNewCuratedContactMatchSuggestionForNotificationRequest:(id)a3 sectionSettings:(id)a4 contactName:(id)a5
+- (void)_createNewCuratedContactMatchSuggestionForNotificationRequest:(id)request sectionSettings:(id)settings contactName:(id)name
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  nameCopy = name;
+  settingsCopy = settings;
+  requestCopy = request;
   v11 = [NCNotificationManagementCuratedContactMatchSuggestionContentProvider alloc];
-  v12 = [v9 displayName];
+  displayName = [settingsCopy displayName];
 
-  v13 = [(NCNotificationManagementCuratedContactMatchSuggestionContentProvider *)v11 initWithNotificationRequest:v10 bundleDisplayName:v12 managementDelegate:self suggestionDelegate:self contactName:v8];
-  [(NCSuggestionManager *)self _addSuggestionForNotificationRequest:v10 managementContentProvider:v13];
+  v13 = [(NCNotificationManagementCuratedContactMatchSuggestionContentProvider *)v11 initWithNotificationRequest:requestCopy bundleDisplayName:displayName managementDelegate:self suggestionDelegate:self contactName:nameCopy];
+  [(NCSuggestionManager *)self _addSuggestionForNotificationRequest:requestCopy managementContentProvider:v13];
 }
 
-- (BOOL)_createNewStackSummarySuggestionForNotificationRequest:(id)a3 sectionSettings:(id)a4
+- (BOOL)_createNewStackSummarySuggestionForNotificationRequest:(id)request sectionSettings:(id)settings
 {
-  v6 = a4;
-  v7 = a3;
+  settingsCopy = settings;
+  requestCopy = request;
   v8 = [NCNotificationManagementStackSummarySuggestionContentProvider alloc];
-  v9 = [v6 displayName];
+  displayName = [settingsCopy displayName];
 
-  v10 = [(NCNotificationManagementStackSummarySuggestionContentProvider *)v8 initWithNotificationRequest:v7 bundleDisplayName:v9 managementDelegate:self suggestionDelegate:self summarizationSuggestionManager:self->_summarizationSuggestionManager];
-  LOBYTE(self) = [(NCSuggestionManager *)self _addSuggestionForNotificationRequest:v7 managementContentProvider:v10];
+  v10 = [(NCNotificationManagementStackSummarySuggestionContentProvider *)v8 initWithNotificationRequest:requestCopy bundleDisplayName:displayName managementDelegate:self suggestionDelegate:self summarizationSuggestionManager:self->_summarizationSuggestionManager];
+  LOBYTE(self) = [(NCSuggestionManager *)self _addSuggestionForNotificationRequest:requestCopy managementContentProvider:v10];
 
   return self;
 }
 
-- (void)_createNewPriorityFeedbackSuggestionForNotificationRequest:(id)a3 sectionSettings:(id)a4
+- (void)_createNewPriorityFeedbackSuggestionForNotificationRequest:(id)request sectionSettings:(id)settings
 {
-  v6 = a4;
-  v7 = a3;
+  settingsCopy = settings;
+  requestCopy = request;
   v8 = [NCNotificationManagementPriorityFeedbackSuggestionContentProvider alloc];
-  v9 = [v6 displayName];
+  displayName = [settingsCopy displayName];
 
-  v10 = [(NCNotificationManagementPriorityFeedbackSuggestionContentProvider *)v8 initWithNotificationRequest:v7 bundleDisplayName:v9 managementDelegate:self suggestionDelegate:self];
-  [(NCSuggestionManager *)self _addSuggestionForNotificationRequest:v7 managementContentProvider:v10];
+  v10 = [(NCNotificationManagementPriorityFeedbackSuggestionContentProvider *)v8 initWithNotificationRequest:requestCopy bundleDisplayName:displayName managementDelegate:self suggestionDelegate:self];
+  [(NCSuggestionManager *)self _addSuggestionForNotificationRequest:requestCopy managementContentProvider:v10];
 }
 
-- (void)_removeSuggestionIfNecessaryForNotificationRequest:(id)a3
+- (void)_removeSuggestionIfNecessaryForNotificationRequest:(id)request
 {
   v66 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   v5 = MEMORY[0x277D77DD8];
   v6 = *MEMORY[0x277D77DD8];
   if (os_log_type_enabled(*MEMORY[0x277D77DD8], OS_LOG_TYPE_DEFAULT))
   {
     v7 = v6;
-    v8 = [v4 notificationIdentifier];
-    v9 = [v8 un_logDigest];
-    v10 = [v4 sectionIdentifier];
+    notificationIdentifier = [requestCopy notificationIdentifier];
+    un_logDigest = [notificationIdentifier un_logDigest];
+    sectionIdentifier = [requestCopy sectionIdentifier];
     *buf = 138543618;
-    v63 = v9;
+    v63 = un_logDigest;
     v64 = 2114;
-    v65 = v10;
+    v65 = sectionIdentifier;
     _os_log_impl(&dword_21E77E000, v7, OS_LOG_TYPE_DEFAULT, "Attempt to remove suggestion for request %{public}@ from section %{public}@", buf, 0x16u);
   }
 
-  if (v4)
+  if (requestCopy)
   {
-    if ([(NCNotificationRequest *)self->_requestWithProvisionalNotificationManagementSuggestion matchesRequest:v4])
+    if ([(NCNotificationRequest *)self->_requestWithProvisionalNotificationManagementSuggestion matchesRequest:requestCopy])
     {
       v11 = *v5;
       if (os_log_type_enabled(*v5, OS_LOG_TYPE_DEFAULT))
       {
         requestWithProvisionalNotificationManagementSuggestion = self->_requestWithProvisionalNotificationManagementSuggestion;
         v13 = v11;
-        v14 = [(NCNotificationRequest *)requestWithProvisionalNotificationManagementSuggestion notificationIdentifier];
-        v15 = [v14 un_logDigest];
-        v16 = [(NCNotificationRequest *)self->_requestWithProvisionalNotificationManagementSuggestion sectionIdentifier];
+        notificationIdentifier2 = [(NCNotificationRequest *)requestWithProvisionalNotificationManagementSuggestion notificationIdentifier];
+        un_logDigest2 = [notificationIdentifier2 un_logDigest];
+        sectionIdentifier2 = [(NCNotificationRequest *)self->_requestWithProvisionalNotificationManagementSuggestion sectionIdentifier];
         *buf = 138543618;
-        v63 = v15;
+        v63 = un_logDigest2;
         v64 = 2114;
-        v65 = v16;
+        v65 = sectionIdentifier2;
         _os_log_impl(&dword_21E77E000, v13, OS_LOG_TYPE_DEFAULT, "Removing suggestion for provisional request %{public}@ from section %{public}@", buf, 0x16u);
       }
 
@@ -1473,23 +1473,23 @@ void __46__NCSuggestionManager_setDeviceAuthenticated___block_invoke(uint64_t a1
       self->_requestWithProvisionalNotificationManagementSuggestion = 0;
     }
 
-    else if ([(NSMutableSet *)self->_requestsWithTimeSensitiveManagementSuggestion containsObject:v4])
+    else if ([(NSMutableSet *)self->_requestsWithTimeSensitiveManagementSuggestion containsObject:requestCopy])
     {
       v20 = *v5;
       if (os_log_type_enabled(*v5, OS_LOG_TYPE_DEFAULT))
       {
         v21 = v20;
-        v22 = [v4 notificationIdentifier];
-        v23 = [v22 un_logDigest];
-        v24 = [v4 sectionIdentifier];
+        notificationIdentifier3 = [requestCopy notificationIdentifier];
+        un_logDigest3 = [notificationIdentifier3 un_logDigest];
+        sectionIdentifier3 = [requestCopy sectionIdentifier];
         *buf = 138543618;
-        v63 = v23;
+        v63 = un_logDigest3;
         v64 = 2114;
-        v65 = v24;
+        v65 = sectionIdentifier3;
         _os_log_impl(&dword_21E77E000, v21, OS_LOG_TYPE_DEFAULT, "Removing suggestion for time sensitive request %{public}@ from section %{public}@", buf, 0x16u);
       }
 
-      [(NSMutableSet *)self->_requestsWithTimeSensitiveManagementSuggestion removeObject:v4];
+      [(NSMutableSet *)self->_requestsWithTimeSensitiveManagementSuggestion removeObject:requestCopy];
       if ([(NSMutableSet *)self->_requestsWithTimeSensitiveManagementSuggestion count])
       {
         goto LABEL_9;
@@ -1501,21 +1501,21 @@ void __46__NCSuggestionManager_setDeviceAuthenticated___block_invoke(uint64_t a1
 
     else
     {
-      if (![(NSMutableSet *)self->_requestsWithDirectMessagesManagementSuggestion containsObject:v4])
+      if (![(NSMutableSet *)self->_requestsWithDirectMessagesManagementSuggestion containsObject:requestCopy])
       {
-        if ([(NSMutableSet *)self->_requestsWithContactSuggestions containsObject:v4])
+        if ([(NSMutableSet *)self->_requestsWithContactSuggestions containsObject:requestCopy])
         {
           v30 = *v5;
           if (os_log_type_enabled(*v5, OS_LOG_TYPE_DEFAULT))
           {
             v31 = v30;
-            v32 = [v4 notificationIdentifier];
-            v33 = [v32 un_logDigest];
-            v34 = [v4 sectionIdentifier];
+            notificationIdentifier4 = [requestCopy notificationIdentifier];
+            un_logDigest4 = [notificationIdentifier4 un_logDigest];
+            sectionIdentifier4 = [requestCopy sectionIdentifier];
             *buf = 138543618;
-            v63 = v33;
+            v63 = un_logDigest4;
             v64 = 2114;
-            v65 = v34;
+            v65 = sectionIdentifier4;
             _os_log_impl(&dword_21E77E000, v31, OS_LOG_TYPE_DEFAULT, "Removing contact suggestion for request %{public}@ from section %{public}@", buf, 0x16u);
           }
 
@@ -1524,9 +1524,9 @@ void __46__NCSuggestionManager_setDeviceAuthenticated___block_invoke(uint64_t a1
 
         else
         {
-          if (![(NSMutableSet *)self->_requestsWithStackSummarySuggestions containsObject:v4])
+          if (![(NSMutableSet *)self->_requestsWithStackSummarySuggestions containsObject:requestCopy])
           {
-            v41 = [(NCNotificationRequest *)self->_requestWithPriorityFeedbackSuggestion matchesRequest:v4];
+            v41 = [(NCNotificationRequest *)self->_requestWithPriorityFeedbackSuggestion matchesRequest:requestCopy];
             v42 = *v5;
             v43 = os_log_type_enabled(*v5, OS_LOG_TYPE_DEFAULT);
             if (v41)
@@ -1534,13 +1534,13 @@ void __46__NCSuggestionManager_setDeviceAuthenticated___block_invoke(uint64_t a1
               if (v43)
               {
                 v44 = v42;
-                v45 = [v4 notificationIdentifier];
-                v46 = [v45 un_logDigest];
-                v47 = [v4 sectionIdentifier];
+                notificationIdentifier5 = [requestCopy notificationIdentifier];
+                un_logDigest5 = [notificationIdentifier5 un_logDigest];
+                sectionIdentifier5 = [requestCopy sectionIdentifier];
                 *buf = 138543618;
-                v63 = v46;
+                v63 = un_logDigest5;
                 v64 = 2114;
-                v65 = v47;
+                v65 = sectionIdentifier5;
                 _os_log_impl(&dword_21E77E000, v44, OS_LOG_TYPE_DEFAULT, "Removing priority feedback suggestion for request %{public}@ from section %{public}@", buf, 0x16u);
               }
 
@@ -1555,7 +1555,7 @@ void __46__NCSuggestionManager_setDeviceAuthenticated___block_invoke(uint64_t a1
                 v51 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.proactive.PersonalizationPortrait"];
                 [v51 setInteger:v50 + 1 forKey:@"PriorityFeedbackSuggestionIgnoreCount"];
 
-                v52 = [[NCSummarizationFeedbackManager alloc] initWithRequest:v4 isShowingStackSummary:0];
+                v52 = [[NCSummarizationFeedbackManager alloc] initWithRequest:requestCopy isShowingStackSummary:0];
                 [(NCSummarizationFeedbackManager *)v52 recordInternalPriorityFeedbackEvent:3];
               }
             }
@@ -1565,24 +1565,24 @@ void __46__NCSuggestionManager_setDeviceAuthenticated___block_invoke(uint64_t a1
               if (v43)
               {
                 v53 = v42;
-                v54 = [v4 notificationIdentifier];
-                v55 = [v54 un_logDigest];
-                v56 = [v4 sectionIdentifier];
+                notificationIdentifier6 = [requestCopy notificationIdentifier];
+                un_logDigest6 = [notificationIdentifier6 un_logDigest];
+                sectionIdentifier6 = [requestCopy sectionIdentifier];
                 *buf = 138543618;
-                v63 = v55;
+                v63 = un_logDigest6;
                 v64 = 2114;
-                v65 = v56;
+                v65 = sectionIdentifier6;
                 _os_log_impl(&dword_21E77E000, v53, OS_LOG_TYPE_DEFAULT, "Removing remote suggestion for request %{public}@ from section %{public}@", buf, 0x16u);
               }
 
-              [(NSMutableSet *)self->_requestsWithRemoteSuggestions removeObject:v4];
-              v57 = [v4 uuid];
+              [(NSMutableSet *)self->_requestsWithRemoteSuggestions removeObject:requestCopy];
+              uuid = [requestCopy uuid];
 
-              if (v57)
+              if (uuid)
               {
                 remoteSuggestions = self->_remoteSuggestions;
-                v59 = [v4 uuid];
-                [(NSMutableDictionary *)remoteSuggestions removeObjectForKey:v59];
+                uuid2 = [requestCopy uuid];
+                [(NSMutableDictionary *)remoteSuggestions removeObjectForKey:uuid2];
               }
             }
 
@@ -1593,32 +1593,32 @@ void __46__NCSuggestionManager_setDeviceAuthenticated___block_invoke(uint64_t a1
           if (os_log_type_enabled(*v5, OS_LOG_TYPE_DEFAULT))
           {
             v37 = v36;
-            v38 = [v4 notificationIdentifier];
-            v39 = [v38 un_logDigest];
-            v40 = [v4 sectionIdentifier];
+            notificationIdentifier7 = [requestCopy notificationIdentifier];
+            un_logDigest7 = [notificationIdentifier7 un_logDigest];
+            sectionIdentifier7 = [requestCopy sectionIdentifier];
             *buf = 138543618;
-            v63 = v39;
+            v63 = un_logDigest7;
             v64 = 2114;
-            v65 = v40;
+            v65 = sectionIdentifier7;
             _os_log_impl(&dword_21E77E000, v37, OS_LOG_TYPE_DEFAULT, "Removing stack summary suggestion for request %{public}@ from section %{public}@", buf, 0x16u);
           }
 
           requestsWithContactSuggestions = self->_requestsWithStackSummarySuggestions;
         }
 
-        [(NSMutableSet *)requestsWithContactSuggestions removeObject:v4];
+        [(NSMutableSet *)requestsWithContactSuggestions removeObject:requestCopy];
 LABEL_9:
-        [(NSMutableDictionary *)self->_suggestionContentProviders removeObjectForKey:v4];
+        [(NSMutableDictionary *)self->_suggestionContentProviders removeObjectForKey:requestCopy];
         sectionIdentifiersWithNotificationManagementSuggestions = self->_sectionIdentifiersWithNotificationManagementSuggestions;
-        v19 = [v4 sectionIdentifier];
-        [(NSMutableSet *)sectionIdentifiersWithNotificationManagementSuggestions removeObject:v19];
+        sectionIdentifier8 = [requestCopy sectionIdentifier];
+        [(NSMutableSet *)sectionIdentifiersWithNotificationManagementSuggestions removeObject:sectionIdentifier8];
 
         v60[0] = MEMORY[0x277D85DD0];
         v60[1] = 3221225472;
         v60[2] = __74__NCSuggestionManager__removeSuggestionIfNecessaryForNotificationRequest___block_invoke;
         v60[3] = &unk_27836F560;
         v60[4] = self;
-        v61 = v4;
+        v61 = requestCopy;
         dispatch_async(MEMORY[0x277D85CD0], v60);
 
         goto LABEL_10;
@@ -1628,17 +1628,17 @@ LABEL_9:
       if (os_log_type_enabled(*v5, OS_LOG_TYPE_DEFAULT))
       {
         v26 = v25;
-        v27 = [v4 notificationIdentifier];
-        v28 = [v27 un_logDigest];
-        v29 = [v4 sectionIdentifier];
+        notificationIdentifier8 = [requestCopy notificationIdentifier];
+        un_logDigest8 = [notificationIdentifier8 un_logDigest];
+        sectionIdentifier9 = [requestCopy sectionIdentifier];
         *buf = 138543618;
-        v63 = v28;
+        v63 = un_logDigest8;
         v64 = 2114;
-        v65 = v29;
+        v65 = sectionIdentifier9;
         _os_log_impl(&dword_21E77E000, v26, OS_LOG_TYPE_DEFAULT, "Removing suggestion for direct messages request %{public}@ from section %{public}@", buf, 0x16u);
       }
 
-      [(NSMutableSet *)self->_requestsWithDirectMessagesManagementSuggestion removeObject:v4];
+      [(NSMutableSet *)self->_requestsWithDirectMessagesManagementSuggestion removeObject:requestCopy];
       if ([(NSMutableSet *)self->_requestsWithDirectMessagesManagementSuggestion count])
       {
         goto LABEL_9;
@@ -1654,24 +1654,24 @@ LABEL_9:
 LABEL_10:
 }
 
-- (id)_contentProviderForRequest:(id)a3 withRemoteSuggestion:(id)a4
+- (id)_contentProviderForRequest:(id)request withRemoteSuggestion:(id)suggestion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 subtype];
+  requestCopy = request;
+  suggestionCopy = suggestion;
+  subtype = [suggestionCopy subtype];
   v9 = 0;
-  if (v8 > 6)
+  if (subtype > 6)
   {
-    switch(v8)
+    switch(subtype)
     {
       case 7:
-        v10 = [(NCSuggestionManager *)self _contentProviderForRequest:v6 withUrgencyTuningSuggestion:v7];
+        v10 = [(NCSuggestionManager *)self _contentProviderForRequest:requestCopy withUrgencyTuningSuggestion:suggestionCopy];
         break;
       case 8:
-        v10 = [(NCSuggestionManager *)self _contentProviderForRequest:v6 withSendMessagesToDigestSuggestion:v7];
+        v10 = [(NCSuggestionManager *)self _contentProviderForRequest:requestCopy withSendMessagesToDigestSuggestion:suggestionCopy];
         break;
       case 9:
-        v10 = [(NCSuggestionManager *)self _contentProviderForRequest:v6 withTurnOffNotificationsForAppSuggestion:v7];
+        v10 = [(NCSuggestionManager *)self _contentProviderForRequest:requestCopy withTurnOffNotificationsForAppSuggestion:suggestionCopy];
         break;
       default:
         goto LABEL_15;
@@ -1680,16 +1680,16 @@ LABEL_10:
 
   else
   {
-    switch(v8)
+    switch(subtype)
     {
       case 4:
-        v10 = [(NCSuggestionManager *)self _contentProviderForRequest:v6 withMutingSuggestion:v7];
+        v10 = [(NCSuggestionManager *)self _contentProviderForRequest:requestCopy withMutingSuggestion:suggestionCopy];
         break;
       case 5:
-        v10 = [(NCSuggestionManager *)self _contentProviderForRequest:v6 withModeConfigurationTuningSuggestion:v7];
+        v10 = [(NCSuggestionManager *)self _contentProviderForRequest:requestCopy withModeConfigurationTuningSuggestion:suggestionCopy];
         break;
       case 6:
-        v10 = [(NCSuggestionManager *)self _contentProviderForRequest:v6 withDigestSuggestion:v7];
+        v10 = [(NCSuggestionManager *)self _contentProviderForRequest:requestCopy withDigestSuggestion:suggestionCopy];
         break;
       default:
         goto LABEL_15;
@@ -1702,35 +1702,35 @@ LABEL_15:
   return v9;
 }
 
-- (id)_contentProviderForRequest:(id)a3 withModeConfigurationTuningSuggestion:(id)a4
+- (id)_contentProviderForRequest:(id)request withModeConfigurationTuningSuggestion:(id)suggestion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 sectionIdentifier];
-  v9 = [(NCSuggestionManager *)self _sectionSettingsForSectionIdentifier:v8];
+  requestCopy = request;
+  suggestionCopy = suggestion;
+  sectionIdentifier = [requestCopy sectionIdentifier];
+  v9 = [(NCSuggestionManager *)self _sectionSettingsForSectionIdentifier:sectionIdentifier];
 
-  v10 = [v7 subObject];
+  subObject = [suggestionCopy subObject];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v12 = [WeakRetained suggestionManagerRequestsCurrentModeConfiguration:self];
 
-  v13 = [v12 configuration];
+  configuration = [v12 configuration];
   if (!v12)
   {
     goto LABEL_9;
   }
 
-  v14 = [v7 scope];
-  if (v14 == 3)
+  scope = [suggestionCopy scope];
+  if (scope == 3)
   {
-    v20 = DNDContactHandleFromNotificationRequest(v6);
-    v21 = [v13 senderConfigurationType];
+    v20 = DNDContactHandleFromNotificationRequest(requestCopy);
+    senderConfigurationType = [configuration senderConfigurationType];
     v32 = v20;
-    v22 = [v13 exceptionForContactHandle:v20];
-    v23 = [v10 tuningSuggestionType];
-    if (v23 == 3)
+    v22 = [configuration exceptionForContactHandle:v20];
+    tuningSuggestionType = [subObject tuningSuggestionType];
+    if (tuningSuggestionType == 3)
     {
       v19 = 0;
-      if (v22 == 1 || v21 != 1)
+      if (v22 == 1 || senderConfigurationType != 1)
       {
         goto LABEL_23;
       }
@@ -1738,7 +1738,7 @@ LABEL_15:
 
     else
     {
-      if (v23 != 1)
+      if (tuningSuggestionType != 1)
       {
         v19 = 0;
 LABEL_23:
@@ -1747,37 +1747,37 @@ LABEL_23:
       }
 
       v19 = 0;
-      if (!v22 || v21)
+      if (!v22 || senderConfigurationType)
       {
         goto LABEL_23;
       }
     }
 
     v29 = [NCModeConfigurationRemoteSuggestionContentProvider alloc];
-    v26 = [v9 displayName];
-    v30 = [v7 uuid];
-    v19 = [(NCModeConfigurationRemoteSuggestionContentProvider *)v29 initWithNotificationRequest:v6 bundleDisplayName:v26 managementDelegate:self suggestionDelegate:self uuid:v30 suggestionType:0 scope:2 modeConfiguration:v12];
+    displayName = [v9 displayName];
+    uuid = [suggestionCopy uuid];
+    v19 = [(NCModeConfigurationRemoteSuggestionContentProvider *)v29 initWithNotificationRequest:requestCopy bundleDisplayName:displayName managementDelegate:self suggestionDelegate:self uuid:uuid suggestionType:0 scope:2 modeConfiguration:v12];
 
     v28 = v32;
     goto LABEL_21;
   }
 
-  if (v14 != 1)
+  if (scope != 1)
   {
     goto LABEL_9;
   }
 
-  v15 = [v13 applicationConfigurationType];
-  v16 = [v6 sectionIdentifier];
-  v17 = [v13 exceptionForApplication:v16];
+  applicationConfigurationType = [configuration applicationConfigurationType];
+  sectionIdentifier2 = [requestCopy sectionIdentifier];
+  v17 = [configuration exceptionForApplication:sectionIdentifier2];
 
-  v18 = [v10 tuningSuggestionType];
-  if (v18 != 3)
+  tuningSuggestionType2 = [subObject tuningSuggestionType];
+  if (tuningSuggestionType2 != 3)
   {
-    if (v18 == 1)
+    if (tuningSuggestionType2 == 1)
     {
       v19 = 0;
-      if (!v17 || v15)
+      if (!v17 || applicationConfigurationType)
       {
         goto LABEL_25;
       }
@@ -1791,15 +1791,15 @@ LABEL_9:
   }
 
   v19 = 0;
-  if (v17 != 1 && v15 == 1)
+  if (v17 != 1 && applicationConfigurationType == 1)
   {
 LABEL_17:
     v24 = [NCModeConfigurationRemoteSuggestionContentProvider alloc];
-    v25 = [v9 displayName];
-    v26 = [v7 uuid];
+    displayName2 = [v9 displayName];
+    displayName = [suggestionCopy uuid];
     v27 = v24;
-    v28 = v25;
-    v19 = [(NCModeConfigurationRemoteSuggestionContentProvider *)v27 initWithNotificationRequest:v6 bundleDisplayName:v25 managementDelegate:self suggestionDelegate:self uuid:v26 suggestionType:0 scope:0 modeConfiguration:v12];
+    v28 = displayName2;
+    v19 = [(NCModeConfigurationRemoteSuggestionContentProvider *)v27 initWithNotificationRequest:requestCopy bundleDisplayName:displayName2 managementDelegate:self suggestionDelegate:self uuid:displayName suggestionType:0 scope:0 modeConfiguration:v12];
 LABEL_21:
 
 LABEL_24:
@@ -1810,21 +1810,21 @@ LABEL_25:
   return v19;
 }
 
-- (id)_contentProviderForRequest:(id)a3 withMutingSuggestion:(id)a4
+- (id)_contentProviderForRequest:(id)request withMutingSuggestion:(id)suggestion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 sectionIdentifier];
-  v9 = [(NCSuggestionManager *)self _sectionSettingsForSectionIdentifier:v8];
+  requestCopy = request;
+  suggestionCopy = suggestion;
+  sectionIdentifier = [requestCopy sectionIdentifier];
+  v9 = [(NCSuggestionManager *)self _sectionSettingsForSectionIdentifier:sectionIdentifier];
 
-  v10 = [v9 muteAssertion];
-  v11 = [v6 uniqueThreadIdentifier];
-  v12 = [v10 activeMuteAssertionLevelForThreadIdentifier:v11];
+  muteAssertion = [v9 muteAssertion];
+  uniqueThreadIdentifier = [requestCopy uniqueThreadIdentifier];
+  v12 = [muteAssertion activeMuteAssertionLevelForThreadIdentifier:uniqueThreadIdentifier];
 
-  v13 = [v7 scope];
-  if (v13 != 2)
+  scope = [suggestionCopy scope];
+  if (scope != 2)
   {
-    if (v13 != 1 || (v14 = 0, v12 == 2))
+    if (scope != 1 || (v14 = 0, v12 == 2))
     {
       v15 = 0;
       goto LABEL_9;
@@ -1833,19 +1833,19 @@ LABEL_25:
     goto LABEL_8;
   }
 
-  v16 = [v6 content];
-  v17 = [v16 communicationContext];
-  v18 = [v17 identifier];
+  content = [requestCopy content];
+  communicationContext = [content communicationContext];
+  identifier = [communicationContext identifier];
 
   v15 = 0;
-  if (v18 && v12 != 1)
+  if (identifier && v12 != 1)
   {
     v14 = 1;
 LABEL_8:
     v19 = [NCMutingRemoteSuggestionContentProvider alloc];
-    v20 = [v9 displayName];
-    v21 = [v7 uuid];
-    v15 = [(NCMutingRemoteSuggestionContentProvider *)v19 initWithNotificationRequest:v6 bundleDisplayName:v20 managementDelegate:self suggestionDelegate:self uuid:v21 scope:v14];
+    displayName = [v9 displayName];
+    uuid = [suggestionCopy uuid];
+    v15 = [(NCMutingRemoteSuggestionContentProvider *)v19 initWithNotificationRequest:requestCopy bundleDisplayName:displayName managementDelegate:self suggestionDelegate:self uuid:uuid scope:v14];
   }
 
 LABEL_9:
@@ -1853,12 +1853,12 @@ LABEL_9:
   return v15;
 }
 
-- (id)_contentProviderForRequest:(id)a3 withDigestSuggestion:(id)a4
+- (id)_contentProviderForRequest:(id)request withDigestSuggestion:(id)suggestion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 sectionIdentifier];
-  v9 = [(NCSuggestionManager *)self _sectionSettingsForSectionIdentifier:v8];
+  requestCopy = request;
+  suggestionCopy = suggestion;
+  sectionIdentifier = [requestCopy sectionIdentifier];
+  v9 = [(NCSuggestionManager *)self _sectionSettingsForSectionIdentifier:sectionIdentifier];
 
   if ([v9 isScheduledDeliveryEnabled])
   {
@@ -1868,27 +1868,27 @@ LABEL_9:
   else
   {
     v11 = [NCDigestRemoteSuggestionContentProvider alloc];
-    v12 = [v9 displayName];
-    v13 = [v7 uuid];
-    v10 = [(NCDigestRemoteSuggestionContentProvider *)v11 initWithNotificationRequest:v6 bundleDisplayName:v12 managementDelegate:self suggestionDelegate:self uuid:v13];
+    displayName = [v9 displayName];
+    uuid = [suggestionCopy uuid];
+    v10 = [(NCDigestRemoteSuggestionContentProvider *)v11 initWithNotificationRequest:requestCopy bundleDisplayName:displayName managementDelegate:self suggestionDelegate:self uuid:uuid];
   }
 
   return v10;
 }
 
-- (id)_contentProviderForRequest:(id)a3 withUrgencyTuningSuggestion:(id)a4
+- (id)_contentProviderForRequest:(id)request withUrgencyTuningSuggestion:(id)suggestion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 sectionIdentifier];
-  v9 = [(NCSuggestionManager *)self _sectionSettingsForSectionIdentifier:v8];
+  requestCopy = request;
+  suggestionCopy = suggestion;
+  sectionIdentifier = [requestCopy sectionIdentifier];
+  v9 = [(NCSuggestionManager *)self _sectionSettingsForSectionIdentifier:sectionIdentifier];
 
   if ([v9 isTimeSensitiveEnabled])
   {
     v10 = [NCTimeSensitiveRemoteSuggestionContentProvider alloc];
-    v11 = [v9 displayName];
-    v12 = [v7 uuid];
-    v13 = [(NCTimeSensitiveRemoteSuggestionContentProvider *)v10 initWithNotificationRequest:v6 bundleDisplayName:v11 managementDelegate:self suggestionDelegate:self uuid:v12];
+    displayName = [v9 displayName];
+    uuid = [suggestionCopy uuid];
+    v13 = [(NCTimeSensitiveRemoteSuggestionContentProvider *)v10 initWithNotificationRequest:requestCopy bundleDisplayName:displayName managementDelegate:self suggestionDelegate:self uuid:uuid];
   }
 
   else
@@ -1899,19 +1899,19 @@ LABEL_9:
   return v13;
 }
 
-- (id)_contentProviderForRequest:(id)a3 withSendMessagesToDigestSuggestion:(id)a4
+- (id)_contentProviderForRequest:(id)request withSendMessagesToDigestSuggestion:(id)suggestion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 sectionIdentifier];
-  v9 = [(NCSuggestionManager *)self _sectionSettingsForSectionIdentifier:v8];
+  requestCopy = request;
+  suggestionCopy = suggestion;
+  sectionIdentifier = [requestCopy sectionIdentifier];
+  v9 = [(NCSuggestionManager *)self _sectionSettingsForSectionIdentifier:sectionIdentifier];
 
   if ([v9 isScheduledDeliveryEnabled] && objc_msgSend(v9, "isDirectMessagesEnabled"))
   {
     v10 = [NCMessagesInDigestRemoteSuggestionContentProvider alloc];
-    v11 = [v9 displayName];
-    v12 = [v7 uuid];
-    v13 = [(NCMessagesInDigestRemoteSuggestionContentProvider *)v10 initWithNotificationRequest:v6 bundleDisplayName:v11 managementDelegate:self suggestionDelegate:self uuid:v12];
+    displayName = [v9 displayName];
+    uuid = [suggestionCopy uuid];
+    v13 = [(NCMessagesInDigestRemoteSuggestionContentProvider *)v10 initWithNotificationRequest:requestCopy bundleDisplayName:displayName managementDelegate:self suggestionDelegate:self uuid:uuid];
   }
 
   else
@@ -1922,18 +1922,18 @@ LABEL_9:
   return v13;
 }
 
-- (id)_contentProviderForRequest:(id)a3 withTurnOffNotificationsForAppSuggestion:(id)a4
+- (id)_contentProviderForRequest:(id)request withTurnOffNotificationsForAppSuggestion:(id)suggestion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 sectionIdentifier];
-  v9 = [(NCSuggestionManager *)self _sectionSettingsForSectionIdentifier:v8];
+  suggestionCopy = suggestion;
+  requestCopy = request;
+  sectionIdentifier = [requestCopy sectionIdentifier];
+  v9 = [(NCSuggestionManager *)self _sectionSettingsForSectionIdentifier:sectionIdentifier];
 
   v10 = [NCTurnOffNotificationsForAppRemoteSuggestionContentProvider alloc];
-  v11 = [v9 displayName];
-  v12 = [v6 uuid];
+  displayName = [v9 displayName];
+  uuid = [suggestionCopy uuid];
 
-  v13 = [(NCTurnOffNotificationsForAppRemoteSuggestionContentProvider *)v10 initWithNotificationRequest:v7 bundleDisplayName:v11 managementDelegate:self suggestionDelegate:self uuid:v12];
+  v13 = [(NCTurnOffNotificationsForAppRemoteSuggestionContentProvider *)v10 initWithNotificationRequest:requestCopy bundleDisplayName:displayName managementDelegate:self suggestionDelegate:self uuid:uuid];
 
   return v13;
 }

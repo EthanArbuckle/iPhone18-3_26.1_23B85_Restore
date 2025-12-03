@@ -1,35 +1,35 @@
 @interface EDSearchableIndexDataSample
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation EDSearchableIndexDataSample
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [(EDSearchableIndexDataSample *)self subject];
-  [v4 setSubject:v5];
+  subject = [(EDSearchableIndexDataSample *)self subject];
+  [v4 setSubject:subject];
 
-  v6 = [(EDSearchableIndexDataSample *)self toEmailAddresses];
-  [v4 setToEmailAddresses:v6];
+  toEmailAddresses = [(EDSearchableIndexDataSample *)self toEmailAddresses];
+  [v4 setToEmailAddresses:toEmailAddresses];
 
-  v7 = [(EDSearchableIndexDataSample *)self deleted];
-  [v4 setDeleted:v7];
+  deleted = [(EDSearchableIndexDataSample *)self deleted];
+  [v4 setDeleted:deleted];
 
-  v8 = [(EDSearchableIndexDataSample *)self transactionID];
-  [v4 setTransactionID:v8];
+  transactionID = [(EDSearchableIndexDataSample *)self transactionID];
+  [v4 setTransactionID:transactionID];
 
-  v9 = [(EDSearchableIndexDataSample *)self flags];
-  [v4 setFlags:v9];
+  flags = [(EDSearchableIndexDataSample *)self flags];
+  [v4 setFlags:flags];
 
-  v10 = [(EDSearchableIndexDataSample *)self indexedAsEmptySubject];
-  [v4 setIndexedAsEmptySubject:v10];
+  indexedAsEmptySubject = [(EDSearchableIndexDataSample *)self indexedAsEmptySubject];
+  [v4 setIndexedAsEmptySubject:indexedAsEmptySubject];
 
-  v11 = [(EDSearchableIndexDataSample *)self dateReceived];
-  [v4 setDateReceived:v11];
+  dateReceived = [(EDSearchableIndexDataSample *)self dateReceived];
+  [v4 setDateReceived:dateReceived];
 
-  v12 = [(EDSearchableIndexDataSample *)self userInfo];
-  [v4 setUserInfo:v12];
+  userInfo = [(EDSearchableIndexDataSample *)self userInfo];
+  [v4 setUserInfo:userInfo];
 
   return v4;
 }

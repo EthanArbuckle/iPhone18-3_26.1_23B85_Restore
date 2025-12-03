@@ -1,119 +1,119 @@
 @interface ASAgent
-- (ASAgent)initWithAccount:(id)a3;
-- (BOOL)_abBestEffortApplyNewFolders:(id)a3 oldFolders:(id)a4 shouldCreateFoldersMissingInDB:(BOOL)a5;
-- (BOOL)_calBestEffortApplyNewFolders:(id)a3 oldFolders:(id)a4 shouldCreateFoldersMissingInDB:(BOOL)a5;
-- (BOOL)_clearChangeHistoriesWithChangeIdContext:(id)a3 dataclass:(int64_t)a4 inFolderWithId:(id)a5 pushedActions:(id)a6;
+- (ASAgent)initWithAccount:(id)account;
+- (BOOL)_abBestEffortApplyNewFolders:(id)folders oldFolders:(id)oldFolders shouldCreateFoldersMissingInDB:(BOOL)b;
+- (BOOL)_calBestEffortApplyNewFolders:(id)folders oldFolders:(id)oldFolders shouldCreateFoldersMissingInDB:(BOOL)b;
+- (BOOL)_clearChangeHistoriesWithChangeIdContext:(id)context dataclass:(int64_t)dataclass inFolderWithId:(id)id pushedActions:(id)actions;
 - (BOOL)_closeLocalDBConnectionsWithoutSaving;
-- (BOOL)_detectDuplicatedEventFromExchangeEvent:(id)a3 inFolderWithId:(id)a4 isInitialSync:(BOOL)a5 eventServerIDsToDrop:(id)a6 eventServerIDSWithDroppedDeletes:(id)a7 resultingChangeActionsForServer:(id)a8 outEvent:(id *)a9 outLocalItem:(const void *)a10 outDidTouchDB:(BOOL *)a11;
-- (BOOL)_finishWithInvitationEvent:(void *)a3 eventUID:(id)a4 expectedResponse:(int)a5 wasMyInvite:(BOOL)a6 isStillInvite:(BOOL)a7;
-- (BOOL)_getHierarchyChangeForDataclass:(int64_t)a3 changedItemId:(int *)a4 changeType:(unint64_t *)a5 externalId:(id *)a6 changeTableIndices:(__CFArray *)a7;
-- (BOOL)_handleReminderChangedFolder:(id)a3 changeType:(unint64_t)a4;
-- (BOOL)_handleToDoAction:(id)a3 inFolderWithId:(id)a4 isInitialSync:(BOOL)a5 resultingChangeActionsForServer:(id)a6 eventServerIDsToDrop:(id)a7 eventServerIDSWithDroppedDeletes:(id)a8;
-- (BOOL)_isOrganizerSelfWithEmail:(id)a3;
-- (BOOL)_isOrganizerSelfWithLocalEvent:(void *)a3;
-- (BOOL)_markEventWithLocalIDAsNeedingInvitationEmail:(int)a3 parentId:(int)a4;
-- (BOOL)_notesBestEffortApplyNewFolders:(id)a3 oldFolders:(id)a4 shouldCreateFoldersMissingInDB:(BOOL)a5;
-- (BOOL)_syncResultForToDoFolder:(id)a3 newTag:(id)a4 previousTag:(id)a5 actions:(id)a6 results:(id)a7 changeIdContext:(id)a8 isInitialSync:(BOOL)a9 moreAvailable:(BOOL)a10 resultingChangeActionsForServer:(id)a11 pushedActions:(id)a12 rejectedServerIds:(id)a13 eventsWithPendingInvitationEmails:(id)a14;
-- (BOOL)predicateShouldContinue:(id)a3 afterFindingRecord:(void *)a4;
-- (id)_copyABActionsInContainer:(void *)a3 existingActions:(id)a4 dataHandler:(id)a5 wantPreserveActions:(BOOL)a6 changeContext:(id)a7;
-- (id)_copyCalendarItemMoveActionsInCalendar:(void *)a3 dataHandler:(id)a4 deleteActionsByFolderId:(id)a5;
-- (id)_copyNotesActionsInNoteStore:(id)a3 existingActions:(id)a4 dataHandler:(id)a5 wantPreserveActions:(BOOL)a6 changeSet:(id)a7;
-- (id)_exchangeIdForLocalId:(id)a3 inContainer:(void *)a4 dataclass:(int64_t)a5 redirectToParent:(BOOL)a6;
-- (id)_instanceIdFromIdWithExceptionDate:(id)a3;
-- (id)_localIdForExchangeId:(id)a3 inContainer:(void *)a4 dataclass:(int64_t)a5;
-- (id)_newNoteSourceForDAFolder:(id)a3;
-- (id)_noteAccountObject:(BOOL)a3;
-- (id)_parentIdFromEventId:(id)a3;
+- (BOOL)_detectDuplicatedEventFromExchangeEvent:(id)event inFolderWithId:(id)id isInitialSync:(BOOL)sync eventServerIDsToDrop:(id)drop eventServerIDSWithDroppedDeletes:(id)deletes resultingChangeActionsForServer:(id)server outEvent:(id *)outEvent outLocalItem:(const void *)self0 outDidTouchDB:(BOOL *)self1;
+- (BOOL)_finishWithInvitationEvent:(void *)event eventUID:(id)d expectedResponse:(int)response wasMyInvite:(BOOL)invite isStillInvite:(BOOL)stillInvite;
+- (BOOL)_getHierarchyChangeForDataclass:(int64_t)dataclass changedItemId:(int *)id changeType:(unint64_t *)type externalId:(id *)externalId changeTableIndices:(__CFArray *)indices;
+- (BOOL)_handleReminderChangedFolder:(id)folder changeType:(unint64_t)type;
+- (BOOL)_handleToDoAction:(id)action inFolderWithId:(id)id isInitialSync:(BOOL)sync resultingChangeActionsForServer:(id)server eventServerIDsToDrop:(id)drop eventServerIDSWithDroppedDeletes:(id)deletes;
+- (BOOL)_isOrganizerSelfWithEmail:(id)email;
+- (BOOL)_isOrganizerSelfWithLocalEvent:(void *)event;
+- (BOOL)_markEventWithLocalIDAsNeedingInvitationEmail:(int)email parentId:(int)id;
+- (BOOL)_notesBestEffortApplyNewFolders:(id)folders oldFolders:(id)oldFolders shouldCreateFoldersMissingInDB:(BOOL)b;
+- (BOOL)_syncResultForToDoFolder:(id)folder newTag:(id)tag previousTag:(id)previousTag actions:(id)actions results:(id)results changeIdContext:(id)context isInitialSync:(BOOL)sync moreAvailable:(BOOL)self0 resultingChangeActionsForServer:(id)self1 pushedActions:(id)self2 rejectedServerIds:(id)self3 eventsWithPendingInvitationEmails:(id)self4;
+- (BOOL)predicateShouldContinue:(id)continue afterFindingRecord:(void *)record;
+- (id)_copyABActionsInContainer:(void *)container existingActions:(id)actions dataHandler:(id)handler wantPreserveActions:(BOOL)preserveActions changeContext:(id)context;
+- (id)_copyCalendarItemMoveActionsInCalendar:(void *)calendar dataHandler:(id)handler deleteActionsByFolderId:(id)id;
+- (id)_copyNotesActionsInNoteStore:(id)store existingActions:(id)actions dataHandler:(id)handler wantPreserveActions:(BOOL)preserveActions changeSet:(id)set;
+- (id)_exchangeIdForLocalId:(id)id inContainer:(void *)container dataclass:(int64_t)dataclass redirectToParent:(BOOL)parent;
+- (id)_instanceIdFromIdWithExceptionDate:(id)date;
+- (id)_localIdForExchangeId:(id)id inContainer:(void *)container dataclass:(int64_t)dataclass;
+- (id)_newNoteSourceForDAFolder:(id)folder;
+- (id)_noteAccountObject:(BOOL)object;
+- (id)_parentIdFromEventId:(id)id;
 - (id)_powerLogInfoDictionary;
-- (id)_syncKeyForFolderWithId:(id)a3;
-- (id)_syncKeyForFolderWithId:(id)a3 dataclass:(int64_t)a4;
-- (id)foldersForFolderIDs:(id)a3 andDataclasses:(int64_t)a4;
+- (id)_syncKeyForFolderWithId:(id)id;
+- (id)_syncKeyForFolderWithId:(id)id dataclass:(int64_t)dataclass;
+- (id)foldersForFolderIDs:(id)ds andDataclasses:(int64_t)dataclasses;
 - (id)waiterID;
-- (void)_addChangeForType:(unint64_t)a3 changedItemId:(id)a4 changeId:(id)a5 addedIdsToChangeId:(id)a6 modifiedIdsToChangeId:(id)a7 deletedIdsToChangeId:(id)a8 pseudoDeletedIdsToChangeId:(id)a9 changeIdsToClear:(id)a10;
-- (void)_addSimpleChangeForType:(unint64_t)a3 changedItemId:(id)a4 addedIds:(id)a5 modifiedIds:(id)a6 deletedIds:(id)a7 collapsedIds:(id)a8;
-- (void)_appendFolderHierarchyChangesForFoldersOfDataclasses:(int64_t)a3;
-- (void)_appendSyncRequest:(id)a3 atBeginning:(BOOL)a4;
-- (void)_attendeeChangesDueToMeetingForwardingInCalendar:(void *)a3 eventIdToAttendeeEmails:(id)a4 eventIdToAttendeeUUIDs:(id)a5 dataHandler:(id)a6;
-- (void)_cacheFoldersForDataclasses:(int64_t)a3;
-- (void)_containerForFolderWithId:(id)a3 dataclass:(int64_t)a4;
-- (void)_copyExistingABRecordForContact:(id)a3 matchOnAttributes:(BOOL)a4 inStore:(void *)a5;
-- (void)_copyExistingCalRecordForEvent:(id)a3 matchOnAttributes:(BOOL)a4 inCalendar:(void *)a5;
-- (void)_exceptionDateChangesInCalendar:(void *)a3 exceptionDateToChangeId:(id)a4 outHighestSequenceNumber:(int *)a5 dataHandler:(id)a6;
-- (void)_faultInCalendarSubentitiesInCalendar:(void *)a3 addedIdsToEventChangeId:(id)a4 modifiedIdsToEventChangeId:(id)a5 deletedIdsToEventChangeId:(id)a6 pseudoDeletedIdsToEventChangeId:(id)a7 localToExchangeIdMap:(id)a8 eventChangeIdsToClear:(id)a9 allAddedDetachmentIds:(id)a10 outRecurrenceId:(int *)a11 outAlarmId:(int *)a12 outAttendeeId:(int *)a13 outAttachmentId:(int *)a14 outHighestSequenceNumber:(int *)a15 dataHandler:(id)a16;
-- (void)_finishInitialSyncForFolder:(id)a3 dataclass:(int64_t)a4;
-- (void)_finishInitialSyncForToDoFolder:(id)a3;
+- (void)_addChangeForType:(unint64_t)type changedItemId:(id)id changeId:(id)changeId addedIdsToChangeId:(id)toChangeId modifiedIdsToChangeId:(id)idsToChangeId deletedIdsToChangeId:(id)deletedIdsToChangeId pseudoDeletedIdsToChangeId:(id)pseudoDeletedIdsToChangeId changeIdsToClear:(id)self0;
+- (void)_addSimpleChangeForType:(unint64_t)type changedItemId:(id)id addedIds:(id)ids modifiedIds:(id)modifiedIds deletedIds:(id)deletedIds collapsedIds:(id)collapsedIds;
+- (void)_appendFolderHierarchyChangesForFoldersOfDataclasses:(int64_t)dataclasses;
+- (void)_appendSyncRequest:(id)request atBeginning:(BOOL)beginning;
+- (void)_attendeeChangesDueToMeetingForwardingInCalendar:(void *)calendar eventIdToAttendeeEmails:(id)emails eventIdToAttendeeUUIDs:(id)ds dataHandler:(id)handler;
+- (void)_cacheFoldersForDataclasses:(int64_t)dataclasses;
+- (void)_containerForFolderWithId:(id)id dataclass:(int64_t)dataclass;
+- (void)_copyExistingABRecordForContact:(id)contact matchOnAttributes:(BOOL)attributes inStore:(void *)store;
+- (void)_copyExistingCalRecordForEvent:(id)event matchOnAttributes:(BOOL)attributes inCalendar:(void *)calendar;
+- (void)_exceptionDateChangesInCalendar:(void *)calendar exceptionDateToChangeId:(id)id outHighestSequenceNumber:(int *)number dataHandler:(id)handler;
+- (void)_faultInCalendarSubentitiesInCalendar:(void *)calendar addedIdsToEventChangeId:(id)id modifiedIdsToEventChangeId:(id)changeId deletedIdsToEventChangeId:(id)eventChangeId pseudoDeletedIdsToEventChangeId:(id)toEventChangeId localToExchangeIdMap:(id)map eventChangeIdsToClear:(id)clear allAddedDetachmentIds:(id)self0 outRecurrenceId:(int *)self1 outAlarmId:(int *)self2 outAttendeeId:(int *)self3 outAttachmentId:(int *)self4 outHighestSequenceNumber:(int *)self5 dataHandler:(id)self6;
+- (void)_finishInitialSyncForFolder:(id)folder dataclass:(int64_t)dataclass;
+- (void)_finishInitialSyncForToDoFolder:(id)folder;
 - (void)_fireWaitingFolderItemSyncRequests;
-- (void)_folderItemsSyncTask:(id)a3 failedWithErrorCode:(int64_t)a4;
-- (void)_handleChangeOnEventWithExchangeId:(id)a3 localId:(int)a4 changeType:(unint64_t)a5 eventChangeId:(id)a6 hasSignificantAttributeChanges:(BOOL)a7 container:(void *)a8 dataHandler:(id)a9 addedIdsToEventChangeId:(id)a10 modifiedIdsToEventChangeId:(id)a11 deletedIdsToEventChangeId:(id)a12 pseudoDeletedIdsToEventChangeId:(id)a13 eventChangeIdsToClear:(id)a14 allAddedDetachmentIds:(id)a15 localToExchangeIdMap:(id)a16 outShouldSaveDB:(BOOL *)a17;
-- (void)_handleDaemonBackedLocalFolderChangeWithDBChangeIndices:(__CFArray *)a3 oldFolders:(id)a4 status:(int64_t)a5 error:(id)a6;
-- (void)_handleLocalReminderFolderChangeWithFolder:(id)a3 oldFolders:(id)a4 status:(int64_t)a5 error:(id)a6;
-- (void)_moveItemsTask:(id)a3 failedWithErrorCode:(int64_t)a4;
-- (void)_newABSourceForDAFolder:(id)a3;
-- (void)_newCalCalendarForDAFolder:(id)a3;
-- (void)_nilOutContainersForDataclasses:(int64_t)a3;
-- (void)_noteSyncForFolderWithId:(id)a3 andTitle:(id)a4 finishedWithSuccess:(BOOL)a5;
+- (void)_folderItemsSyncTask:(id)task failedWithErrorCode:(int64_t)code;
+- (void)_handleChangeOnEventWithExchangeId:(id)id localId:(int)localId changeType:(unint64_t)type eventChangeId:(id)changeId hasSignificantAttributeChanges:(BOOL)changes container:(void *)container dataHandler:(id)handler addedIdsToEventChangeId:(id)self0 modifiedIdsToEventChangeId:(id)self1 deletedIdsToEventChangeId:(id)self2 pseudoDeletedIdsToEventChangeId:(id)self3 eventChangeIdsToClear:(id)self4 allAddedDetachmentIds:(id)self5 localToExchangeIdMap:(id)self6 outShouldSaveDB:(BOOL *)self7;
+- (void)_handleDaemonBackedLocalFolderChangeWithDBChangeIndices:(__CFArray *)indices oldFolders:(id)folders status:(int64_t)status error:(id)error;
+- (void)_handleLocalReminderFolderChangeWithFolder:(id)folder oldFolders:(id)folders status:(int64_t)status error:(id)error;
+- (void)_moveItemsTask:(id)task failedWithErrorCode:(int64_t)code;
+- (void)_newABSourceForDAFolder:(id)folder;
+- (void)_newCalCalendarForDAFolder:(id)folder;
+- (void)_nilOutContainersForDataclasses:(int64_t)dataclasses;
+- (void)_noteSyncForFolderWithId:(id)id andTitle:(id)title finishedWithSuccess:(BOOL)success;
 - (void)_openLocalDBConnections;
-- (void)_reallyApplyMessageDidSendWithContext:(id)a3;
-- (void)_reallyFinishInvitationBatch:(id)a3;
-- (void)_reallyPrepareFetchAttachmentTask:(id)a3;
-- (void)_reallySendMoves:(id)a3;
-- (void)_reallySyncRequest:(id)a3;
+- (void)_reallyApplyMessageDidSendWithContext:(id)context;
+- (void)_reallyFinishInvitationBatch:(id)batch;
+- (void)_reallyPrepareFetchAttachmentTask:(id)task;
+- (void)_reallySendMoves:(id)moves;
+- (void)_reallySyncRequest:(id)request;
 - (void)_refirePendingCalendarInvitations;
-- (void)_removeABSourceForDAFolder:(id)a3;
-- (void)_removeCalCalendarForDAFolder:(id)a3;
-- (void)_removeNoteSourceForDAFolder:(id)a3;
-- (void)_removePostponedRequestForFolderWithId:(id)a3;
-- (void)_saveAttachmentDataToDatabaseForTask:(id)a3;
-- (void)_setSyncKey:(id)a3 forFolderWithId:(id)a4;
+- (void)_removeABSourceForDAFolder:(id)folder;
+- (void)_removeCalCalendarForDAFolder:(id)folder;
+- (void)_removeNoteSourceForDAFolder:(id)folder;
+- (void)_removePostponedRequestForFolderWithId:(id)id;
+- (void)_saveAttachmentDataToDatabaseForTask:(id)task;
+- (void)_setSyncKey:(id)key forFolderWithId:(id)id;
 - (void)_setUpABNotifications;
 - (void)_setUpCalNotifications;
 - (void)_setUpNotesNotifications;
 - (void)_setUpReminderNotifications;
-- (void)_smartMailTask:(id)a3 failedWithErrorCode:(int64_t)a4 error:(id)a5;
+- (void)_smartMailTask:(id)task failedWithErrorCode:(int64_t)code error:(id)error;
 - (void)_syncAllContactsEventsToDosAndNotesFolders;
-- (void)_syncEndedWithError:(id)a3;
-- (void)_syncRequest:(id)a3;
-- (void)_syncResultForFolder:(id)a3 newTag:(id)a4 previousTag:(id)a5 actions:(id)a6 results:(id)a7 changeIdContext:(id)a8 isInitialSync:(BOOL)a9 moreAvailable:(BOOL)a10 dataclass:(int64_t)a11 resultingChangeActionsForServer:(id)a12 pushedActions:(id)a13 rejectedServerIds:(id)a14 eventsWithPendingInvitationEmails:(id)a15;
+- (void)_syncEndedWithError:(id)error;
+- (void)_syncRequest:(id)request;
+- (void)_syncResultForFolder:(id)folder newTag:(id)tag previousTag:(id)previousTag actions:(id)actions results:(id)results changeIdContext:(id)context isInitialSync:(BOOL)sync moreAvailable:(BOOL)self0 dataclass:(int64_t)self1 resultingChangeActionsForServer:(id)self2 pushedActions:(id)self3 rejectedServerIds:(id)self4 eventsWithPendingInvitationEmails:(id)self5;
 - (void)_syncStarted;
 - (void)_tearDownABNotifications;
 - (void)_tearDownCalNotifications;
 - (void)_tearDownNotesNotifications;
 - (void)_tearDownReminderNotifications;
-- (void)_updateSyncKey:(id)a3 forToDoFolderWithId:(id)a4;
+- (void)_updateSyncKey:(id)key forToDoFolderWithId:(id)id;
 - (void)_verifySearchStore;
-- (void)_wrapperSyncResultForFolder:(id)a3 dataclass:(int64_t)a4 newTag:(id)a5 previousTag:(id)a6 actions:(id)a7 results:(id)a8 changeIdContext:(id)a9 isInitialSync:(BOOL)a10 moreAvailable:(BOOL)a11 moreLocalChangesAvailable:(BOOL)a12 pushedActions:(id)a13 rejectedServerIds:(id)a14;
-- (void)actionFailed:(int64_t)a3 forTask:(id)a4 error:(id)a5;
+- (void)_wrapperSyncResultForFolder:(id)folder dataclass:(int64_t)dataclass newTag:(id)tag previousTag:(id)previousTag actions:(id)actions results:(id)results changeIdContext:(id)context isInitialSync:(BOOL)self0 moreAvailable:(BOOL)self1 moreLocalChangesAvailable:(BOOL)self2 pushedActions:(id)self3 rejectedServerIds:(id)self4;
+- (void)actionFailed:(int64_t)failed forTask:(id)task error:(id)error;
 - (void)dealloc;
-- (void)fetchAttachmentTask:(id)a3 completedWithStatus:(int64_t)a4 dataWasBase64:(BOOL)a5 error:(id)a6;
-- (void)finishWithInvitationBatch:(id)a3;
-- (void)folderContentsUpdate:(id)a3;
-- (void)folderHierarchyFailedToUpdate:(id)a3 withStatus:(int64_t)a4 andError:(id)a5;
-- (void)folderHierarchySuccessfullyUpdated:(id)a3 withNumChangedFolders:(unint64_t)a4;
-- (void)localChangeForFolder:(id)a3 finishedWithStatus:(int64_t)a4 andError:(id)a5 completionBlock:(id)a6;
-- (void)meetingResponseFinishedWithStatus:(int64_t)a3 error:(id)a4 successfulResponses:(id)a5 failedResponses:(id)a6;
-- (void)messageDidSendWithContext:(id)a3;
+- (void)fetchAttachmentTask:(id)task completedWithStatus:(int64_t)status dataWasBase64:(BOOL)base64 error:(id)error;
+- (void)finishWithInvitationBatch:(id)batch;
+- (void)folderContentsUpdate:(id)update;
+- (void)folderHierarchyFailedToUpdate:(id)update withStatus:(int64_t)status andError:(id)error;
+- (void)folderHierarchySuccessfullyUpdated:(id)updated withNumChangedFolders:(unint64_t)folders;
+- (void)localChangeForFolder:(id)folder finishedWithStatus:(int64_t)status andError:(id)error completionBlock:(id)block;
+- (void)meetingResponseFinishedWithStatus:(int64_t)status error:(id)error successfulResponses:(id)responses failedResponses:(id)failedResponses;
+- (void)messageDidSendWithContext:(id)context;
 - (void)preferredDaysToSyncDidChange;
-- (void)prepareFetchAttachmentTask:(id)a3;
-- (void)processDAFolderChange:(id)a3 withCompletionBlock:(id)a4;
-- (void)processMeetingRequestDatas:(id)a3 deliveryIdsToClear:(id)a4 deliveryIdsToSoftClear:(id)a5 inFolderWithId:(id)a6 callback:(id)a7;
-- (void)requestAgentStopMonitoringWithCompletionBlock:(id)a3;
-- (void)resultsForMessageMove:(id)a3;
-- (void)setMatchedRecord:(void *)a3;
+- (void)prepareFetchAttachmentTask:(id)task;
+- (void)processDAFolderChange:(id)change withCompletionBlock:(id)block;
+- (void)processMeetingRequestDatas:(id)datas deliveryIdsToClear:(id)clear deliveryIdsToSoftClear:(id)softClear inFolderWithId:(id)id callback:(id)callback;
+- (void)requestAgentStopMonitoringWithCompletionBlock:(id)block;
+- (void)resultsForMessageMove:(id)move;
+- (void)setMatchedRecord:(void *)record;
 - (void)startMonitoring;
-- (void)syncFolderIDs:(id)a3 forDataclasses:(int64_t)a4 isUserRequested:(BOOL)a5;
-- (void)syncResultForContactsFolder:(id)a3 newTag:(id)a4 previousTag:(id)a5 newSyncToken:(id)a6 actions:(id)a7 results:(id)a8 changeIdContext:(id)a9 isInitialSync:(BOOL)a10 moreAvailable:(BOOL)a11 moreLocalChangesAvailable:(BOOL)a12 pushedActions:(id)a13;
-- (void)syncResultForEventsFolder:(id)a3 newTag:(id)a4 previousTag:(id)a5 actions:(id)a6 results:(id)a7 changeIdContext:(id)a8 isInitialSync:(BOOL)a9 moreAvailable:(BOOL)a10 moreLocalChangesAvailable:(BOOL)a11 pushedActions:(id)a12 rejectedServerIds:(id)a13;
-- (void)syncResultForNotesFolder:(id)a3 noteContext:(id)a4 newTag:(id)a5 previousTag:(id)a6 actions:(id)a7 results:(id)a8 changeSet:(id)a9 notesToDeleteAfterSync:(id)a10 isInitialSync:(BOOL)a11 moreAvailable:(BOOL)a12 moreLocalChangesAvailable:(BOOL)a13;
-- (void)syncResultForToDosFolder:(id)a3 newTag:(id)a4 previousTag:(id)a5 actions:(id)a6 results:(id)a7 changeIdContext:(id)a8 isInitialSync:(BOOL)a9 moreAvailable:(BOOL)a10 moreLocalChangesAvailable:(BOOL)a11 pushedActions:(id)a12 rejectedServerIds:(id)a13;
+- (void)syncFolderIDs:(id)ds forDataclasses:(int64_t)dataclasses isUserRequested:(BOOL)requested;
+- (void)syncResultForContactsFolder:(id)folder newTag:(id)tag previousTag:(id)previousTag newSyncToken:(id)token actions:(id)actions results:(id)results changeIdContext:(id)context isInitialSync:(BOOL)self0 moreAvailable:(BOOL)self1 moreLocalChangesAvailable:(BOOL)self2 pushedActions:(id)self3;
+- (void)syncResultForEventsFolder:(id)folder newTag:(id)tag previousTag:(id)previousTag actions:(id)actions results:(id)results changeIdContext:(id)context isInitialSync:(BOOL)sync moreAvailable:(BOOL)self0 moreLocalChangesAvailable:(BOOL)self1 pushedActions:(id)self2 rejectedServerIds:(id)self3;
+- (void)syncResultForNotesFolder:(id)folder noteContext:(id)context newTag:(id)tag previousTag:(id)previousTag actions:(id)actions results:(id)results changeSet:(id)set notesToDeleteAfterSync:(id)self0 isInitialSync:(BOOL)self1 moreAvailable:(BOOL)self2 moreLocalChangesAvailable:(BOOL)self3;
+- (void)syncResultForToDosFolder:(id)folder newTag:(id)tag previousTag:(id)previousTag actions:(id)actions results:(id)results changeIdContext:(id)context isInitialSync:(BOOL)sync moreAvailable:(BOOL)self0 moreLocalChangesAvailable:(BOOL)self1 pushedActions:(id)self2 rejectedServerIds:(id)self3;
 @end
 
 @implementation ASAgent
 
-- (ASAgent)initWithAccount:(id)a3
+- (ASAgent)initWithAccount:(id)account
 {
   v12.receiver = self;
   v12.super_class = ASAgent;
-  v3 = [(ASAgent *)&v12 initWithAccount:a3];
+  v3 = [(ASAgent *)&v12 initWithAccount:account];
   if (v3)
   {
     v4 = objc_opt_new();
@@ -141,113 +141,113 @@
   [(ASAgent *)self _tearDownABNotifications];
   [(ASAgent *)self _tearDownCalNotifications];
   [(ASAgent *)self _tearDownNotesNotifications];
-  v4 = [(ASAgent *)self account];
-  v5 = [v4 existingTaskManager];
-  [v5 shutdown];
+  account = [(ASAgent *)self account];
+  existingTaskManager = [account existingTaskManager];
+  [existingTaskManager shutdown];
 
   v6.receiver = self;
   v6.super_class = ASAgent;
   [(ASAgent *)&v6 dealloc];
 }
 
-- (void)setMatchedRecord:(void *)a3
+- (void)setMatchedRecord:(void *)record
 {
   matchedRecord = self->_matchedRecord;
-  if (matchedRecord != a3)
+  if (matchedRecord != record)
   {
     if (matchedRecord)
     {
       CFRelease(matchedRecord);
     }
 
-    self->_matchedRecord = a3;
-    if (a3)
+    self->_matchedRecord = record;
+    if (record)
     {
 
-      CFRetain(a3);
+      CFRetain(record);
     }
   }
 }
 
-- (void)_containerForFolderWithId:(id)a3 dataclass:(int64_t)a4
+- (void)_containerForFolderWithId:(id)id dataclass:(int64_t)dataclass
 {
-  v6 = a3;
-  switch(a4)
+  idCopy = id;
+  switch(dataclass)
   {
     case 2:
-      v7 = [(ASAgent *)self contactStoresByFolderId];
+      contactStoresByFolderId = [(ASAgent *)self contactStoresByFolderId];
 
-      if (v7)
+      if (contactStoresByFolderId)
       {
-        v8 = [(ASAgent *)self contactStoresByFolderId];
+        contactStoresByFolderId2 = [(ASAgent *)self contactStoresByFolderId];
         goto LABEL_10;
       }
 
       break;
     case 32:
-      v9 = [(NSMutableDictionary *)self->_noteStoreObjectIdsByFolderId objectForKeyedSubscript:v6];
+      v9 = [(NSMutableDictionary *)self->_noteStoreObjectIdsByFolderId objectForKeyedSubscript:idCopy];
       if (!v9)
       {
-        v7 = 0;
+        contactStoresByFolderId = 0;
         goto LABEL_12;
       }
 
       v10 = +[ASLocalDBHelper sharedInstance];
-      v11 = [v10 noteDB];
-      v7 = [v11 storeForObjectID:v9];
+      noteDB = [v10 noteDB];
+      contactStoresByFolderId = [noteDB storeForObjectID:v9];
 
 LABEL_11:
 LABEL_12:
 
       break;
     case 4:
-      v7 = [(ASAgent *)self eventCalendarsByFolderId];
+      contactStoresByFolderId = [(ASAgent *)self eventCalendarsByFolderId];
 
-      if (v7)
+      if (contactStoresByFolderId)
       {
-        v8 = [(ASAgent *)self eventCalendarsByFolderId];
+        contactStoresByFolderId2 = [(ASAgent *)self eventCalendarsByFolderId];
 LABEL_10:
-        v9 = v8;
-        v10 = [v8 objectForKeyedSubscript:v6];
-        v7 = v10;
+        v9 = contactStoresByFolderId2;
+        v10 = [contactStoresByFolderId2 objectForKeyedSubscript:idCopy];
+        contactStoresByFolderId = v10;
         goto LABEL_11;
       }
 
       break;
     default:
-      v7 = 0;
+      contactStoresByFolderId = 0;
       break;
   }
 
-  return v7;
+  return contactStoresByFolderId;
 }
 
-- (void)_newABSourceForDAFolder:(id)a3
+- (void)_newABSourceForDAFolder:(id)folder
 {
-  v4 = a3;
+  folderCopy = folder;
   v5 = DALoggingwithCategory();
   v6 = _CPLog_to_os_log_type[6];
   if (os_log_type_enabled(v5, v6))
   {
     v14 = 138412290;
-    v15 = v4;
+    v15 = folderCopy;
     _os_log_impl(&dword_0, v5, v6, "Creating AB store for DAFolder %@", &v14, 0xCu);
   }
 
   v7 = +[ASLocalDBHelper sharedInstance];
-  v8 = [(ASAgent *)self account];
-  v9 = [v8 _copyABAccount:1];
+  account = [(ASAgent *)self account];
+  v9 = [account _copyABAccount:1];
 
   v10 = ABSourceCreate();
   ABRecordSetValue(v10, kABSourceTypeProperty, &off_6E438, 0);
-  ABRecordSetValue(v10, kABSourceExternalIdentifierProperty, [v4 folderID], 0);
+  ABRecordSetValue(v10, kABSourceExternalIdentifierProperty, [folderCopy folderID], 0);
   [v7 abDB];
   ABAddressBookSetAccountForSource();
-  ABRecordSetValue(v10, kABSourceNameProperty, [v4 folderName], 0);
-  v11 = [(ASAgent *)self account];
-  v12 = [v11 addressBookConstraintsPath];
+  ABRecordSetValue(v10, kABSourceNameProperty, [folderCopy folderName], 0);
+  account2 = [(ASAgent *)self account];
+  addressBookConstraintsPath = [account2 addressBookConstraintsPath];
 
-  ABRecordSetValue(v10, kABSourceConstraintsPathProperty, v12, 0);
+  ABRecordSetValue(v10, kABSourceConstraintsPathProperty, addressBookConstraintsPath, 0);
   ABAddressBookAddRecord([v7 abDB], v10, 0);
   [v7 abProcessAddedRecords];
   [v7 changeTrackingID];
@@ -258,29 +258,29 @@ LABEL_10:
   return v10;
 }
 
-- (void)_newCalCalendarForDAFolder:(id)a3
+- (void)_newCalCalendarForDAFolder:(id)folder
 {
-  v4 = a3;
+  folderCopy = folder;
   v5 = DALoggingwithCategory();
   v6 = _CPLog_to_os_log_type[6];
   if (os_log_type_enabled(v5, v6))
   {
     LODWORD(buf[0]) = 138412290;
-    *(buf + 4) = v4;
+    *(buf + 4) = folderCopy;
     _os_log_impl(&dword_0, v5, v6, "Creating cal calendar for DAFolder %@", buf, 0xCu);
   }
 
-  v7 = [(ASAgent *)self account];
-  v8 = [v7 _copyExchangeCalendarStore:1];
+  account = [(ASAgent *)self account];
+  v8 = [account _copyExchangeCalendarStore:1];
 
-  v9 = [v4 folderID];
+  folderID = [folderCopy folderID];
   theArray = 0;
   buf[0] = 0;
   v25 = 0;
   v10 = +[ASLocalDBHelper sharedInstance];
-  v11 = [(ASAgent *)self account];
-  v12 = [v11 accountID];
-  [v10 calDatabaseForAccountID:v12];
+  account2 = [(ASAgent *)self account];
+  accountID = [account2 accountID];
+  [v10 calDatabaseForAccountID:accountID];
   CalDatabaseCopyCalendarChangesWithIndicesInStore();
 
   if (buf[0])
@@ -289,29 +289,29 @@ LABEL_10:
     buf[0] = 0;
   }
 
-  if ([v4 dataclass] != &dword_4)
+  if ([folderCopy dataclass] != &dword_4)
   {
-    [v4 dataclass];
+    [folderCopy dataclass];
   }
 
   v13 = +[ASLocalDBHelper sharedInstance];
-  v14 = [(ASAgent *)self account];
-  v15 = [v14 accountID];
-  [v13 calDatabaseForAccountID:v15];
+  account3 = [(ASAgent *)self account];
+  accountID2 = [account3 accountID];
+  [v13 calDatabaseForAccountID:accountID2];
   CalendarForEntityType = CalDatabaseCreateCalendarForEntityType();
 
-  [v4 folderName];
+  [folderCopy folderName];
   CalCalendarSetTitle();
-  [v4 folderID];
+  [folderCopy folderID];
   CalCalendarSetExternalID();
   CalStoreAddCalendar();
-  v17 = [(ASAgent *)self account];
-  [v17 usernameWithoutDomain];
+  account4 = [(ASAgent *)self account];
+  [account4 usernameWithoutDomain];
   CalCalendarSetOwnerIdentityDisplayName();
 
-  v18 = [(ASAgent *)self account];
-  v19 = [v18 emailAddress];
-  v20 = [NSString stringWithFormat:@"mailto:%@", v19];
+  account5 = [(ASAgent *)self account];
+  emailAddress = [account5 emailAddress];
+  v20 = [NSString stringWithFormat:@"mailto:%@", emailAddress];
   v21 = [NSURL URLWithString:v20];
 
   if (v21)
@@ -319,32 +319,32 @@ LABEL_10:
     CalCalendarSetOwnerIdentityAddress();
   }
 
-  v22 = [(ASAgent *)self account];
-  v23 = [v22 emailAddress];
+  account6 = [(ASAgent *)self account];
+  emailAddress2 = [account6 emailAddress];
   CalCalendarSetOwnerIdentityEmail();
 
   CFRelease(v8);
   return CalendarForEntityType;
 }
 
-- (id)_noteAccountObject:(BOOL)a3
+- (id)_noteAccountObject:(BOOL)object
 {
-  v3 = a3;
+  objectCopy = object;
   v5 = +[ASLocalDBHelper sharedInstance];
-  v6 = [v5 noteDB];
+  noteDB = [v5 noteDB];
 
-  v7 = [(ASAgent *)self account];
-  v8 = [v7 syncStoreIdentifier];
-  v9 = [v6 accountForAccountId:v8];
+  account = [(ASAgent *)self account];
+  syncStoreIdentifier = [account syncStoreIdentifier];
+  newlyAddedAccount = [noteDB accountForAccountId:syncStoreIdentifier];
 
-  if (v9)
+  if (newlyAddedAccount)
   {
     v10 = 1;
   }
 
   else
   {
-    v10 = !v3;
+    v10 = !objectCopy;
   }
 
   if (!v10)
@@ -353,27 +353,27 @@ LABEL_10:
     v12 = _CPLog_to_os_log_type[6];
     if (os_log_type_enabled(v11, v12))
     {
-      v13 = [(ASAgent *)self account];
-      v14 = [v13 syncStoreIdentifier];
+      account2 = [(ASAgent *)self account];
+      syncStoreIdentifier2 = [account2 syncStoreIdentifier];
       v28 = 138412290;
-      v29 = v14;
+      v29 = syncStoreIdentifier2;
       _os_log_impl(&dword_0, v11, v12, "Creating Exchange Notes account in db for account id %@", &v28, 0xCu);
     }
 
-    v9 = [v6 newlyAddedAccount];
-    v15 = [(ASAgent *)self account];
-    v16 = [v15 syncStoreIdentifier];
-    [v9 setAccountIdentifier:v16];
+    newlyAddedAccount = [noteDB newlyAddedAccount];
+    account3 = [(ASAgent *)self account];
+    syncStoreIdentifier3 = [account3 syncStoreIdentifier];
+    [newlyAddedAccount setAccountIdentifier:syncStoreIdentifier3];
 
-    [v9 setAccountType:2];
-    v17 = [(ASAgent *)self account];
-    v18 = [v17 backingAccountInfo];
-    v19 = [v18 displayAccount];
-    v20 = [v19 accountDescription];
-    [v9 setName:v20];
+    [newlyAddedAccount setAccountType:2];
+    account4 = [(ASAgent *)self account];
+    backingAccountInfo = [account4 backingAccountInfo];
+    displayAccount = [backingAccountInfo displayAccount];
+    accountDescription = [displayAccount accountDescription];
+    [newlyAddedAccount setName:accountDescription];
 
-    v21 = [v9 stores];
-    v22 = [v21 count];
+    stores = [newlyAddedAccount stores];
+    v22 = [stores count];
 
     if (v22)
     {
@@ -387,69 +387,69 @@ LABEL_10:
       v24 = _CPLog_to_os_log_type[4];
       if (os_log_type_enabled(v23, _CPLog_to_os_log_type[4]))
       {
-        v25 = [(ASAgent *)self account];
-        v26 = [v25 syncStoreIdentifier];
+        account5 = [(ASAgent *)self account];
+        syncStoreIdentifier4 = [account5 syncStoreIdentifier];
         v28 = 138412290;
-        v29 = v26;
+        v29 = syncStoreIdentifier4;
         _os_log_impl(&dword_0, v23, v24, "Not saving Exchange Notes account for account id %@, because it doesn't have any stores.", &v28, 0xCu);
       }
     }
   }
 
-  return v9;
+  return newlyAddedAccount;
 }
 
-- (id)_newNoteSourceForDAFolder:(id)a3
+- (id)_newNoteSourceForDAFolder:(id)folder
 {
-  v4 = a3;
+  folderCopy = folder;
   v5 = DALoggingwithCategory();
   v6 = _CPLog_to_os_log_type[6];
   if (os_log_type_enabled(v5, v6))
   {
     v15 = 138412290;
-    v16 = v4;
+    v16 = folderCopy;
     _os_log_impl(&dword_0, v5, v6, "Creating Exchange Notes store for DAFolder %@", &v15, 0xCu);
   }
 
   v7 = +[ASLocalDBHelper sharedInstance];
-  v8 = [v7 noteDB];
+  noteDB = [v7 noteDB];
 
   v9 = [(ASAgent *)self _noteAccountObject:1];
-  v10 = [v8 newlyAddedStore];
-  [v10 setAccount:v9];
-  v11 = [v4 folderID];
-  [v10 setExternalIdentifier:v11];
+  newlyAddedStore = [noteDB newlyAddedStore];
+  [newlyAddedStore setAccount:v9];
+  folderID = [folderCopy folderID];
+  [newlyAddedStore setExternalIdentifier:folderID];
 
-  v12 = [v4 folderName];
-  [v10 setName:v12];
+  folderName = [folderCopy folderName];
+  [newlyAddedStore setName:folderName];
 
-  v13 = [v9 defaultStore];
+  defaultStore = [v9 defaultStore];
 
-  if (!v13)
+  if (!defaultStore)
   {
-    [v9 setDefaultStore:v10];
+    [v9 setDefaultStore:newlyAddedStore];
   }
 
-  return v10;
+  return newlyAddedStore;
 }
 
-- (void)_removeABSourceForDAFolder:(id)a3
+- (void)_removeABSourceForDAFolder:(id)folder
 {
-  v4 = a3;
+  folderCopy = folder;
   v5 = DALoggingwithCategory();
   v6 = _CPLog_to_os_log_type[6];
   if (os_log_type_enabled(v5, v6))
   {
     v17 = 138412290;
-    v18 = v4;
+    v18 = folderCopy;
     _os_log_impl(&dword_0, v5, v6, "Deleting AB store for DAFolder %@", &v17, 0xCu);
   }
 
   v7 = +[ASLocalDBHelper sharedInstance];
   [v7 abDB];
-  v8 = [(ASAgent *)self account];
-  v9 = [v8 syncStoreIdentifier];
-  v10 = [v4 folderID];
+  account = [(ASAgent *)self account];
+  syncStoreIdentifier = [account syncStoreIdentifier];
+  folderID = [folderCopy folderID];
   v11 = ABAddressBookCopySourceWithAccountAndExternalIdentifiers();
 
   if (v11)
@@ -467,32 +467,32 @@ LABEL_10:
     v13 = _CPLog_to_os_log_type[3];
     if (os_log_type_enabled(v12, v13))
     {
-      v14 = [(ASAgent *)self account];
-      v15 = [v14 syncStoreIdentifier];
-      v16 = [v4 folderID];
+      account2 = [(ASAgent *)self account];
+      syncStoreIdentifier2 = [account2 syncStoreIdentifier];
+      folderID2 = [folderCopy folderID];
       v17 = 138412546;
-      v18 = v15;
+      v18 = syncStoreIdentifier2;
       v19 = 2112;
-      v20 = v16;
+      v20 = folderID2;
       _os_log_impl(&dword_0, v12, v13, "Asked to delete source with syncStoreIdentifier %@ folderId %@.  But that doesn't exist in the db", &v17, 0x16u);
     }
   }
 }
 
-- (void)_removeCalCalendarForDAFolder:(id)a3
+- (void)_removeCalCalendarForDAFolder:(id)folder
 {
-  v4 = a3;
+  folderCopy = folder;
   v5 = DALoggingwithCategory();
   v6 = _CPLog_to_os_log_type[6];
   if (os_log_type_enabled(v5, v6))
   {
     v15 = 138412290;
-    v16 = v4;
+    v16 = folderCopy;
     _os_log_impl(&dword_0, v5, v6, "Deleting cal calendar for DAFolder %@", &v15, 0xCu);
   }
 
-  v7 = [(ASAgent *)self account];
-  v8 = [v7 _copyExchangeCalendarStore:0];
+  account = [(ASAgent *)self account];
+  v8 = [account _copyExchangeCalendarStore:0];
 
   if (v8)
   {
@@ -507,8 +507,8 @@ LABEL_10:
         v12 = CalCalendarCopyExternalID();
         if (v12)
         {
-          v13 = [v4 folderID];
-          v14 = [v13 isEqualToString:v12];
+          folderID = [folderCopy folderID];
+          v14 = [folderID isEqualToString:v12];
 
           if (v14)
           {
@@ -533,28 +533,28 @@ LABEL_12:
   }
 }
 
-- (void)_removeNoteSourceForDAFolder:(id)a3
+- (void)_removeNoteSourceForDAFolder:(id)folder
 {
-  v4 = a3;
+  folderCopy = folder;
   v5 = DALoggingwithCategory();
   v6 = _CPLog_to_os_log_type[6];
   if (os_log_type_enabled(v5, v6))
   {
     v17 = 138412290;
-    v18 = v4;
+    v18 = folderCopy;
     _os_log_impl(&dword_0, v5, v6, "Deleting Note store for DAFolder %@", &v17, 0xCu);
   }
 
   v7 = +[ASLocalDBHelper sharedInstance];
-  v8 = [v7 noteDB];
+  noteDB = [v7 noteDB];
 
   v9 = [(ASAgent *)self _noteAccountObject:0];
-  v10 = [v4 folderID];
-  v11 = [v9 storeForExternalId:v10];
+  folderID = [folderCopy folderID];
+  v11 = [v9 storeForExternalId:folderID];
 
   if (v11)
   {
-    [v8 deleteStore:v11];
+    [noteDB deleteStore:v11];
   }
 
   else
@@ -563,35 +563,35 @@ LABEL_12:
     v13 = _CPLog_to_os_log_type[3];
     if (os_log_type_enabled(v12, v13))
     {
-      v14 = [(ASAgent *)self account];
-      v15 = [v14 syncStoreIdentifier];
-      v16 = [v4 folderID];
+      account = [(ASAgent *)self account];
+      syncStoreIdentifier = [account syncStoreIdentifier];
+      folderID2 = [folderCopy folderID];
       v17 = 138412546;
-      v18 = v15;
+      v18 = syncStoreIdentifier;
       v19 = 2112;
-      v20 = v16;
+      v20 = folderID2;
       _os_log_impl(&dword_0, v12, v13, "Asked to delete source with syncStoreIdentifier %@ folderId %@.  But that doesn't exist in the db", &v17, 0x16u);
     }
   }
 }
 
-- (void)_cacheFoldersForDataclasses:(int64_t)a3
+- (void)_cacheFoldersForDataclasses:(int64_t)dataclasses
 {
   v5 = DALoggingwithCategory();
   v6 = _CPLog_to_os_log_type[6];
   if (os_log_type_enabled(v5, v6))
   {
     *buf = 134217984;
-    v255 = a3;
+    dataclassesCopy = dataclasses;
     _os_log_impl(&dword_0, v5, v6, "Caching folders for dataclasses %lx", buf, 0xCu);
   }
 
-  v7 = [(ASAgent *)self account];
-  v8 = [v7 enabledForDADataclass:2];
+  account = [(ASAgent *)self account];
+  v8 = [account enabledForDADataclass:2];
 
-  v223 = self;
-  v210 = a3;
-  if ((a3 & 2) != 0 && v8)
+  selfCopy = self;
+  dataclassesCopy2 = dataclasses;
+  if ((dataclasses & 2) != 0 && v8)
   {
     v9 = objc_opt_new();
     [(ASAgent *)self setContactStoresByFolderId:v9];
@@ -599,8 +599,8 @@ LABEL_12:
     v10 = +[ASLocalDBHelper sharedInstance];
     [v10 abDB];
 
-    v11 = [(ASAgent *)self account];
-    v12 = [v11 _copyABAccount:1];
+    account2 = [(ASAgent *)self account];
+    v12 = [account2 _copyABAccount:1];
 
     v215 = v12;
     v13 = ABAddressBookCopyArrayOfAllSourcesInAccount();
@@ -621,20 +621,20 @@ LABEL_12:
           if (os_log_type_enabled(v19, v16))
           {
             *buf = 138412290;
-            v255 = v18;
+            dataclassesCopy = v18;
             _os_log_impl(&dword_0, v19, v16, "Found an exchange contact store, with storeId %@", buf, 0xCu);
           }
 
-          v20 = [(ASAgent *)v223 account];
-          v21 = [v20 folderWithId:v18];
+          account3 = [(ASAgent *)selfCopy account];
+          v21 = [account3 folderWithId:v18];
 
           if (v21)
           {
-            v22 = [v21 folderID];
-            if (v22)
+            folderID = [v21 folderID];
+            if (folderID)
             {
-              v23 = [(ASAgent *)v223 contactStoresByFolderId];
-              [v23 setObject:v17 forKeyedSubscript:v22];
+              contactStoresByFolderId = [(ASAgent *)selfCopy contactStoresByFolderId];
+              [contactStoresByFolderId setObject:v17 forKeyedSubscript:folderID];
 
               v24 = +[ASLocalDBHelper sharedInstance];
               [v24 changeTrackingID];
@@ -650,19 +650,19 @@ LABEL_12:
             v25 = DALoggingwithCategory();
             if (os_log_type_enabled(v25, v16))
             {
-              v26 = [(ASAgent *)v223 account];
-              v27 = [v26 folderHierarchy];
+              account4 = [(ASAgent *)selfCopy account];
+              folderHierarchy = [account4 folderHierarchy];
               *buf = 138412546;
-              v255 = v18;
+              dataclassesCopy = v18;
               v256 = 2112;
-              v257 = v27;
+              v257 = folderHierarchy;
               _os_log_impl(&dword_0, v25, v16, "No known contact folder with id %@. folderHierarchy is %@", buf, 0x16u);
 
               v13 = v220;
             }
 
-            v22 = [(ASAgent *)v223 account];
-            [v22 stopMonitoringFolderWithID:v18];
+            folderID = [(ASAgent *)selfCopy account];
+            [folderID stopMonitoringFolderWithID:v18];
           }
         }
 
@@ -672,28 +672,28 @@ LABEL_12:
       while (v14 < [v13 count]);
     }
 
-    self = v223;
-    v28 = [(ASAgent *)v223 account];
-    v29 = [v28 contactsFolders];
+    self = selfCopy;
+    account5 = [(ASAgent *)selfCopy account];
+    contactsFolders = [account5 contactsFolders];
 
     v246 = 0u;
     v247 = 0u;
     v244 = 0u;
     v245 = 0u;
-    v30 = v29;
+    v30 = contactsFolders;
     v31 = [v30 countByEnumeratingWithState:&v244 objects:v253 count:16];
     if (v31)
     {
       v32 = v31;
       v33 = 0;
-      v34 = 0;
+      folderID2 = 0;
       v35 = 0;
       v36 = 0;
       v37 = *v245;
       do
       {
         v38 = 0;
-        v39 = v34;
+        v39 = folderID2;
         v40 = v35;
         do
         {
@@ -704,16 +704,16 @@ LABEL_12:
 
           v35 = *(*(&v244 + 1) + 8 * v38);
 
-          v34 = [v35 folderID];
+          folderID2 = [v35 folderID];
 
-          v41 = [(ASAgent *)v223 contactStoresByFolderId];
-          v42 = [v41 objectForKeyedSubscript:v34];
+          contactStoresByFolderId2 = [(ASAgent *)selfCopy contactStoresByFolderId];
+          v42 = [contactStoresByFolderId2 objectForKeyedSubscript:folderID2];
 
           if (!v42)
           {
-            v43 = [(ASAgent *)v223 _newABSourceForDAFolder:v35];
-            v44 = [(ASAgent *)v223 contactStoresByFolderId];
-            [v44 setObject:v43 forKeyedSubscript:v34];
+            v43 = [(ASAgent *)selfCopy _newABSourceForDAFolder:v35];
+            contactStoresByFolderId3 = [(ASAgent *)selfCopy contactStoresByFolderId];
+            [contactStoresByFolderId3 setObject:v43 forKeyedSubscript:folderID2];
 
             CFRelease(v43);
             v33 = 1;
@@ -721,7 +721,7 @@ LABEL_12:
           }
 
           v38 = v38 + 1;
-          v39 = v34;
+          v39 = folderID2;
           v40 = v35;
         }
 
@@ -731,7 +731,7 @@ LABEL_12:
 
       while (v32);
 
-      self = v223;
+      self = selfCopy;
     }
 
     else
@@ -744,22 +744,22 @@ LABEL_12:
     v46 = _CPLog_to_os_log_type[7];
     if (os_log_type_enabled(v45, v46))
     {
-      v47 = [(ASAgent *)self contactStoresByFolderId];
+      contactStoresByFolderId4 = [(ASAgent *)self contactStoresByFolderId];
       *buf = 138412290;
-      v255 = v47;
+      dataclassesCopy = contactStoresByFolderId4;
       _os_log_impl(&dword_0, v45, v46, "We ended up with a _contactStoresByFolderId of %@", buf, 0xCu);
     }
 
-    LOBYTE(a3) = v210;
+    LOBYTE(dataclasses) = dataclassesCopy2;
     if (v33)
     {
-      v48 = [(ASAgent *)self account];
-      v49 = [v48 defaultContactsFolder];
-      v50 = [v49 folderID];
+      account6 = [(ASAgent *)self account];
+      defaultContactsFolder = [account6 defaultContactsFolder];
+      folderID3 = [defaultContactsFolder folderID];
 
-      if (v50)
+      if (folderID3)
       {
-        v51 = [(ASAgent *)self _containerForFolderWithId:v50 dataclass:2];
+        v51 = [(ASAgent *)self _containerForFolderWithId:folderID3 dataclass:2];
         if (v51)
         {
           if (v51 != ABAddressBookGetDefaultSourceForAccount())
@@ -799,10 +799,10 @@ LABEL_39:
   }
 
 LABEL_41:
-  v55 = [(ASAgent *)self account];
-  v56 = [v55 enabledForDADataclass:4];
+  account7 = [(ASAgent *)self account];
+  v56 = [account7 enabledForDADataclass:4];
 
-  if ((a3 & 4) == 0 || !v56)
+  if ((dataclasses & 4) == 0 || !v56)
   {
     goto LABEL_119;
   }
@@ -814,8 +814,8 @@ LABEL_41:
   v59 = 10;
   while (!v58)
   {
-    v60 = [(ASAgent *)self account];
-    v58 = [v60 _copyExchangeCalendarStore:1];
+    account8 = [(ASAgent *)self account];
+    v58 = [account8 _copyExchangeCalendarStore:1];
 
     if (!--v59)
     {
@@ -872,12 +872,12 @@ LABEL_61:
     if (os_log_type_enabled(v66, v63))
     {
       *buf = 138412290;
-      v255 = v65;
+      dataclassesCopy = v65;
       _os_log_impl(&dword_0, v66, v63, "Found an exchange calendar with externalId %@", buf, 0xCu);
     }
 
-    v67 = [(ASAgent *)v223 account];
-    v68 = [v67 folderWithId:v65];
+    account9 = [(ASAgent *)selfCopy account];
+    v68 = [account9 folderWithId:v65];
 
     if (v68)
     {
@@ -885,15 +885,15 @@ LABEL_61:
       {
 LABEL_60:
 
-        self = v223;
+        self = selfCopy;
         goto LABEL_61;
       }
 
-      v69 = [v68 folderID];
-      if (v69)
+      folderID4 = [v68 folderID];
+      if (folderID4)
       {
-        v70 = [(ASAgent *)v223 eventCalendarsByFolderId];
-        [v70 setObject:v64 forKeyedSubscript:v69];
+        eventCalendarsByFolderId = [(ASAgent *)selfCopy eventCalendarsByFolderId];
+        [eventCalendarsByFolderId setObject:v64 forKeyedSubscript:folderID4];
       }
     }
 
@@ -902,17 +902,17 @@ LABEL_60:
       v71 = DALoggingwithCategory();
       if (os_log_type_enabled(v71, v63))
       {
-        v72 = [(ASAgent *)v223 account];
-        v73 = [v72 folderHierarchy];
+        account10 = [(ASAgent *)selfCopy account];
+        folderHierarchy2 = [account10 folderHierarchy];
         *buf = 138412546;
-        v255 = v65;
+        dataclassesCopy = v65;
         v256 = 2112;
-        v257 = v73;
+        v257 = folderHierarchy2;
         _os_log_impl(&dword_0, v71, v63, "No known calendar folder with id %@. folderHierarchy is %@", buf, 0x16u);
       }
 
-      v69 = [(ASAgent *)v223 account];
-      [v69 stopMonitoringFolderWithID:v65];
+      folderID4 = [(ASAgent *)selfCopy account];
+      [folderID4 stopMonitoringFolderWithID:v65];
     }
 
     goto LABEL_60;
@@ -920,20 +920,20 @@ LABEL_60:
 
 LABEL_62:
   CFRelease(v58);
-  v74 = [(ASAgent *)self account];
-  v75 = [v74 eventsFolders];
+  account11 = [(ASAgent *)self account];
+  eventsFolders = [account11 eventsFolders];
 
   v242 = 0u;
   v243 = 0u;
   v240 = 0u;
   v241 = 0u;
-  obj = v75;
+  obj = eventsFolders;
   v76 = [obj countByEnumeratingWithState:&v240 objects:v252 count:16];
   if (v76)
   {
     v77 = v76;
     v221 = 0;
-    a3 = 0;
+    dataclasses = 0;
     v78 = 0;
     v79 = *v241;
     do
@@ -941,7 +941,7 @@ LABEL_62:
       for (i = 0; i != v77; i = i + 1)
       {
         v81 = v78;
-        v82 = a3;
+        dataclassesCopy3 = dataclasses;
         if (*v241 != v79)
         {
           objc_enumerationMutation(obj);
@@ -949,19 +949,19 @@ LABEL_62:
 
         v78 = *(*(&v240 + 1) + 8 * i);
 
-        a3 = [v78 folderID];
+        dataclasses = [v78 folderID];
 
-        v83 = [(ASAgent *)v223 eventCalendarsByFolderId];
-        v84 = [v83 objectForKeyedSubscript:a3];
+        eventCalendarsByFolderId2 = [(ASAgent *)selfCopy eventCalendarsByFolderId];
+        v84 = [eventCalendarsByFolderId2 objectForKeyedSubscript:dataclasses];
 
         if (!v84)
         {
-          v85 = [(ASAgent *)v223 _newCalCalendarForDAFolder:v78];
+          v85 = [(ASAgent *)selfCopy _newCalCalendarForDAFolder:v78];
           if (v85)
           {
             v86 = v85;
-            v87 = [(ASAgent *)v223 eventCalendarsByFolderId];
-            [v87 setObject:v86 forKeyedSubscript:a3];
+            eventCalendarsByFolderId3 = [(ASAgent *)selfCopy eventCalendarsByFolderId];
+            [eventCalendarsByFolderId3 setObject:v86 forKeyedSubscript:dataclasses];
 
             CFRelease(v86);
             v221 = 1;
@@ -974,36 +974,36 @@ LABEL_62:
 
     while (v77);
 
-    self = v223;
+    self = selfCopy;
   }
 
   else
   {
     v221 = 0;
-    a3 = 0;
+    dataclasses = 0;
   }
 
   v88 = +[ASLocalDBHelper sharedInstance];
-  v89 = [(ASAgent *)self account];
-  v90 = [v89 accountID];
-  [v88 calDatabaseForAccountID:v90];
+  account12 = [(ASAgent *)self account];
+  accountID = [account12 accountID];
+  [v88 calDatabaseForAccountID:accountID];
 
   v91 = DALoggingwithCategory();
   v92 = _CPLog_to_os_log_type[7];
   if (os_log_type_enabled(v91, v92))
   {
-    v93 = [(ASAgent *)self eventCalendarsByFolderId];
+    eventCalendarsByFolderId4 = [(ASAgent *)self eventCalendarsByFolderId];
     *buf = 138412290;
-    v255 = v93;
+    dataclassesCopy = eventCalendarsByFolderId4;
     _os_log_impl(&dword_0, v91, v92, "We ended up with a _eventCalendarsByFolderId of %@", buf, 0xCu);
   }
 
-  v94 = [(ASAgent *)self account];
-  v95 = [v94 defaultEventsFolder];
-  v96 = [v95 folderID];
+  account13 = [(ASAgent *)self account];
+  defaultEventsFolder = [account13 defaultEventsFolder];
+  folderID5 = [defaultEventsFolder folderID];
 
-  v209 = v96;
-  if (!v96)
+  v209 = folderID5;
+  if (!folderID5)
   {
 LABEL_108:
     if (v221)
@@ -1014,9 +1014,9 @@ LABEL_108:
     goto LABEL_117;
   }
 
-  v97 = [(ASAgent *)self _containerForFolderWithId:v96 dataclass:4];
-  v98 = [(ASAgent *)self eventCalendarsByFolderId];
-  v99 = [v98 count];
+  v97 = [(ASAgent *)self _containerForFolderWithId:folderID5 dataclass:4];
+  eventCalendarsByFolderId5 = [(ASAgent *)self eventCalendarsByFolderId];
+  v99 = [eventCalendarsByFolderId5 count];
 
   if (!v99)
   {
@@ -1027,11 +1027,11 @@ LABEL_108:
   v239 = 0u;
   v236 = 0u;
   v237 = 0u;
-  v100 = [(ASAgent *)self eventCalendarsByFolderId];
-  v101 = [v100 allKeys];
+  eventCalendarsByFolderId6 = [(ASAgent *)self eventCalendarsByFolderId];
+  allKeys = [eventCalendarsByFolderId6 allKeys];
 
-  v213 = v101;
-  v217 = [v101 countByEnumeratingWithState:&v236 objects:v251 count:16];
+  v213 = allKeys;
+  v217 = [allKeys countByEnumeratingWithState:&v236 objects:v251 count:16];
   if (!v217)
   {
     goto LABEL_101;
@@ -1043,7 +1043,7 @@ LABEL_108:
   do
   {
     v102 = 0;
-    v103 = a3;
+    dataclassesCopy5 = dataclasses;
     do
     {
       if (*v237 != v216)
@@ -1051,10 +1051,10 @@ LABEL_108:
         objc_enumerationMutation(v213);
       }
 
-      a3 = *(*(&v236 + 1) + 8 * v102);
+      dataclasses = *(*(&v236 + 1) + 8 * v102);
 
-      v104 = [(ASAgent *)self eventCalendarsByFolderId];
-      v105 = [v104 objectForKeyedSubscript:a3];
+      eventCalendarsByFolderId7 = [(ASAgent *)self eventCalendarsByFolderId];
+      v105 = [eventCalendarsByFolderId7 objectForKeyedSubscript:dataclasses];
 
       IsDefaultCalendarForStore = CalCalendarIsDefaultCalendarForStore();
       if (v105 != v97)
@@ -1081,33 +1081,33 @@ LABEL_86:
       v109 = CalCalendarCopyOwnerIdentityAddress();
       if (!v107)
       {
-        v110 = [(ASAgent *)self account];
-        [v110 usernameWithoutDomain];
+        account14 = [(ASAgent *)self account];
+        [account14 usernameWithoutDomain];
         CalCalendarSetOwnerIdentityDisplayName();
 
         v221 = 1;
       }
 
-      v111 = [(ASAgent *)self account];
-      v112 = [v111 emailAddress];
-      v113 = [v108 isEqualToString:v112];
+      account15 = [(ASAgent *)self account];
+      emailAddress = [account15 emailAddress];
+      v113 = [v108 isEqualToString:emailAddress];
 
       if ((v113 & 1) == 0)
       {
         v114 = DALoggingwithCategory();
         if (os_log_type_enabled(v114, type))
         {
-          v115 = [(ASAgent *)v223 account];
-          v116 = [v115 emailAddress];
+          account16 = [(ASAgent *)selfCopy account];
+          emailAddress2 = [account16 emailAddress];
           *buf = 138412546;
-          v255 = v108;
+          dataclassesCopy = v108;
           v256 = 2112;
-          v257 = v116;
+          v257 = emailAddress2;
           _os_log_impl(&dword_0, v114, type, "Changing email address from %@ to %@", buf, 0x16u);
         }
 
-        v117 = [(ASAgent *)v223 account];
-        v118 = [v117 emailAddress];
+        account17 = [(ASAgent *)selfCopy account];
+        emailAddress3 = [account17 emailAddress];
         CalCalendarSetOwnerIdentityEmail();
 
         v221 = 1;
@@ -1115,15 +1115,15 @@ LABEL_86:
 
       if (v109)
       {
-        self = v223;
+        self = selfCopy;
       }
 
       else
       {
-        v119 = [(ASAgent *)v223 account];
-        v120 = [v119 emailAddress];
-        v121 = [NSString stringWithFormat:@"mailto:%@", v120];
-        v122 = [NSURL URLWithString:v121];
+        account18 = [(ASAgent *)selfCopy account];
+        emailAddress4 = [account18 emailAddress];
+        v120 = [NSString stringWithFormat:@"mailto:%@", emailAddress4];
+        v122 = [NSURL URLWithString:v120];
 
         if (v122)
         {
@@ -1131,12 +1131,12 @@ LABEL_86:
           v221 = 1;
         }
 
-        self = v223;
+        self = selfCopy;
         v97 = v212;
       }
 
       v102 = v102 + 1;
-      v103 = a3;
+      dataclassesCopy5 = dataclasses;
     }
 
     while (v217 != v102);
@@ -1146,7 +1146,7 @@ LABEL_86:
   while (v217);
 LABEL_101:
 
-  a3 = 0;
+  dataclasses = 0;
 LABEL_102:
   if (!v97)
   {
@@ -1177,24 +1177,24 @@ LABEL_102:
 
 LABEL_116:
   v127 = +[ASLocalDBHelper sharedInstance];
-  v128 = [(ASAgent *)self account];
-  v129 = [v128 accountID];
-  [v127 calSaveDatabaseForAccountID:v129];
+  account19 = [(ASAgent *)self account];
+  accountID2 = [account19 accountID];
+  [v127 calSaveDatabaseForAccountID:accountID2];
 
 LABEL_117:
-  LOBYTE(a3) = v210;
+  LOBYTE(dataclasses) = dataclassesCopy2;
   v126 = v211;
 LABEL_118:
 
 LABEL_119:
-  v130 = [(ASAgent *)self account];
-  v131 = [v130 enabledForDADataclass:16];
+  account20 = [(ASAgent *)self account];
+  v131 = [account20 enabledForDADataclass:16];
 
-  if ((a3 & 0x10) != 0 && v131)
+  if ((dataclasses & 0x10) != 0 && v131)
   {
-    v132 = [(ASAgent *)self sharedReminderKitHelper];
-    v133 = [(ASAgent *)self account];
-    v134 = [v132 getFolderIdsForAccount:v133];
+    sharedReminderKitHelper = [(ASAgent *)self sharedReminderKitHelper];
+    account21 = [(ASAgent *)self account];
+    v134 = [sharedReminderKitHelper getFolderIdsForAccount:account21];
 
     v234 = 0u;
     v235 = 0u;
@@ -1221,31 +1221,31 @@ LABEL_119:
           if (os_log_type_enabled(v141, v138))
           {
             *buf = 138412290;
-            v255 = v140;
+            dataclassesCopy = v140;
             _os_log_impl(&dword_0, v141, v138, "Found an exchange reminder list with externalId %@", buf, 0xCu);
           }
 
-          v142 = [(ASAgent *)self account];
-          v143 = [v142 folderWithId:v140];
+          account22 = [(ASAgent *)self account];
+          v143 = [account22 folderWithId:v140];
 
           if (!v143)
           {
             v144 = DALoggingwithCategory();
             if (os_log_type_enabled(v144, v138))
             {
-              v145 = [(ASAgent *)self account];
-              v146 = [v145 folderHierarchy];
+              account23 = [(ASAgent *)self account];
+              folderHierarchy3 = [account23 folderHierarchy];
               *buf = 138412546;
-              v255 = v140;
+              dataclassesCopy = v140;
               v256 = 2112;
-              v257 = v146;
+              v257 = folderHierarchy3;
               _os_log_impl(&dword_0, v144, v138, "No known reminder folder with id %@. folderHierarchy is %@", buf, 0x16u);
 
-              self = v223;
+              self = selfCopy;
             }
 
-            v147 = [(ASAgent *)self account];
-            [v147 stopMonitoringFolderWithID:v140];
+            account24 = [(ASAgent *)self account];
+            [account24 stopMonitoringFolderWithID:v140];
           }
         }
 
@@ -1255,23 +1255,23 @@ LABEL_119:
       while (v136);
     }
 
-    v148 = [(ASAgent *)self account];
-    v149 = [v148 toDosFolders];
+    account25 = [(ASAgent *)self account];
+    toDosFolders = [account25 toDosFolders];
 
-    v150 = [(ASAgent *)self sharedReminderKitHelper];
-    v151 = [(ASAgent *)self account];
-    v152 = [v150 bestEffortApplyNewFolders:v149 oldFolders:0 forAccount:v151 shouldCreateFoldersMissingInDB:1];
+    sharedReminderKitHelper2 = [(ASAgent *)self sharedReminderKitHelper];
+    account26 = [(ASAgent *)self account];
+    v152 = [sharedReminderKitHelper2 bestEffortApplyNewFolders:toDosFolders oldFolders:0 forAccount:account26 shouldCreateFoldersMissingInDB:1];
 
-    v153 = [(ASAgent *)self account];
-    [v153 defaultToDosFolder];
+    account27 = [(ASAgent *)self account];
+    [account27 defaultToDosFolder];
     v155 = v154 = self;
-    a3 = [v155 folderID];
+    dataclasses = [v155 folderID];
 
-    if (a3)
+    if (dataclasses)
     {
-      v156 = [(ASAgent *)v154 sharedReminderKitHelper];
-      v157 = [(ASAgent *)v154 account];
-      v158 = [v156 verifyDefaultFolderId:a3 forAccount:v157];
+      sharedReminderKitHelper3 = [(ASAgent *)v154 sharedReminderKitHelper];
+      account28 = [(ASAgent *)v154 account];
+      v158 = [sharedReminderKitHelper3 verifyDefaultFolderId:dataclasses forAccount:account28];
     }
 
     else
@@ -1279,39 +1279,39 @@ LABEL_119:
       v158 = 0;
     }
 
-    self = v223;
+    self = selfCopy;
     if ((v152 | v158))
     {
-      v159 = [(ASAgent *)v223 sharedReminderKitHelper];
-      [v159 commitChangesToStore];
+      sharedReminderKitHelper4 = [(ASAgent *)selfCopy sharedReminderKitHelper];
+      [sharedReminderKitHelper4 commitChangesToStore];
     }
 
-    LOBYTE(a3) = v210;
+    LOBYTE(dataclasses) = dataclassesCopy2;
   }
 
-  v160 = [(ASAgent *)self account];
-  v161 = [v160 enabledForDADataclass:32];
+  account29 = [(ASAgent *)self account];
+  v161 = [account29 enabledForDADataclass:32];
 
-  if ((a3 & 0x20) != 0 && v161)
+  if ((dataclasses & 0x20) != 0 && v161)
   {
-    v162 = [(ASAgent *)self noteStoreObjectIdsByFolderId];
+    noteStoreObjectIdsByFolderId = [(ASAgent *)self noteStoreObjectIdsByFolderId];
 
-    if (!v162)
+    if (!noteStoreObjectIdsByFolderId)
     {
       v163 = objc_opt_new();
       [(ASAgent *)self setNoteStoreObjectIdsByFolderId:v163];
     }
 
-    v164 = [(ASAgent *)self noteStoreObjectIdsByFolderId];
-    [v164 removeAllObjects];
+    noteStoreObjectIdsByFolderId2 = [(ASAgent *)self noteStoreObjectIdsByFolderId];
+    [noteStoreObjectIdsByFolderId2 removeAllObjects];
 
     [(ASAgent *)self _noteAccountObject:0];
     v228 = 0u;
     v229 = 0u;
     v230 = 0u;
     v218 = v231 = 0u;
-    v165 = [v218 stores];
-    v166 = [v165 countByEnumeratingWithState:&v228 objects:v249 count:16];
+    stores = [v218 stores];
+    v166 = [stores countByEnumeratingWithState:&v228 objects:v249 count:16];
     if (v166)
     {
       v167 = v166;
@@ -1323,31 +1323,31 @@ LABEL_119:
         {
           if (*v229 != v168)
           {
-            objc_enumerationMutation(v165);
+            objc_enumerationMutation(stores);
           }
 
           v171 = *(*(&v228 + 1) + 8 * k);
-          v172 = [v171 externalIdentifier];
-          if (v172)
+          externalIdentifier = [v171 externalIdentifier];
+          if (externalIdentifier)
           {
             v173 = DALoggingwithCategory();
             if (os_log_type_enabled(v173, v169))
             {
               *buf = 138412290;
-              v255 = v172;
+              dataclassesCopy = externalIdentifier;
               _os_log_impl(&dword_0, v173, v169, "Found an exchange note store with external id %@", buf, 0xCu);
             }
 
-            v174 = [(ASAgent *)self account];
-            v175 = [v174 folderWithId:v172];
+            account30 = [(ASAgent *)self account];
+            v175 = [account30 folderWithId:externalIdentifier];
 
             if (v175)
             {
               if ([v175 dataclass] == &stru_20)
               {
-                v176 = [v171 objectID];
-                v177 = [(ASAgent *)self noteStoreObjectIdsByFolderId];
-                [v177 setObject:v176 forKeyedSubscript:v172];
+                objectID = [v171 objectID];
+                noteStoreObjectIdsByFolderId3 = [(ASAgent *)self noteStoreObjectIdsByFolderId];
+                [noteStoreObjectIdsByFolderId3 setObject:objectID forKeyedSubscript:externalIdentifier];
 
                 goto LABEL_158;
               }
@@ -1358,51 +1358,51 @@ LABEL_119:
               v178 = DALoggingwithCategory();
               if (os_log_type_enabled(v178, v169))
               {
-                v179 = [(ASAgent *)self account];
-                v180 = [v179 folderHierarchy];
+                account31 = [(ASAgent *)self account];
+                folderHierarchy4 = [account31 folderHierarchy];
                 *buf = 138412546;
-                v255 = v172;
+                dataclassesCopy = externalIdentifier;
                 v256 = 2112;
-                v257 = v180;
+                v257 = folderHierarchy4;
                 _os_log_impl(&dword_0, v178, v169, "No known note folder with id %@. folderHierarchy is %@", buf, 0x16u);
 
-                self = v223;
+                self = selfCopy;
               }
 
-              v176 = [(ASAgent *)self account];
-              [v176 stopMonitoringFolderWithID:v172];
+              objectID = [(ASAgent *)self account];
+              [objectID stopMonitoringFolderWithID:externalIdentifier];
 LABEL_158:
             }
           }
         }
 
-        v167 = [v165 countByEnumeratingWithState:&v228 objects:v249 count:16];
+        v167 = [stores countByEnumeratingWithState:&v228 objects:v249 count:16];
       }
 
       while (v167);
     }
 
-    v181 = [(ASAgent *)self account];
-    v182 = [v181 notesFolders];
+    account32 = [(ASAgent *)self account];
+    notesFolders = [account32 notesFolders];
 
     v226 = 0u;
     v227 = 0u;
     v224 = 0u;
     v225 = 0u;
-    v183 = v182;
+    v183 = notesFolders;
     v184 = [v183 countByEnumeratingWithState:&v224 objects:v248 count:16];
     if (v184)
     {
       v185 = v184;
       v186 = 0;
-      v187 = 0;
+      folderID6 = 0;
       v188 = 0;
       v189 = *v225;
       do
       {
         v190 = 0;
         v191 = v186;
-        v192 = v187;
+        v192 = folderID6;
         do
         {
           if (*v225 != v189)
@@ -1412,20 +1412,20 @@ LABEL_158:
 
           v186 = *(*(&v224 + 1) + 8 * v190);
 
-          v187 = [v186 folderID];
+          folderID6 = [v186 folderID];
 
-          v193 = [(ASAgent *)v223 noteStoreObjectIdsByFolderId];
-          v194 = [v193 objectForKeyedSubscript:v187];
+          noteStoreObjectIdsByFolderId4 = [(ASAgent *)selfCopy noteStoreObjectIdsByFolderId];
+          v194 = [noteStoreObjectIdsByFolderId4 objectForKeyedSubscript:folderID6];
 
           if (!v194)
           {
-            v195 = [(ASAgent *)v223 _newNoteSourceForDAFolder:v186];
+            v195 = [(ASAgent *)selfCopy _newNoteSourceForDAFolder:v186];
             v196 = v195;
             if (v195)
             {
-              v197 = [v195 objectID];
-              v198 = [(ASAgent *)v223 noteStoreObjectIdsByFolderId];
-              [v198 setObject:v197 forKeyedSubscript:v187];
+              objectID2 = [v195 objectID];
+              noteStoreObjectIdsByFolderId5 = [(ASAgent *)selfCopy noteStoreObjectIdsByFolderId];
+              [noteStoreObjectIdsByFolderId5 setObject:objectID2 forKeyedSubscript:folderID6];
 
               v188 = 1;
             }
@@ -1433,7 +1433,7 @@ LABEL_158:
 
           v190 = v190 + 1;
           v191 = v186;
-          v192 = v187;
+          v192 = folderID6;
         }
 
         while (v185 != v190);
@@ -1442,7 +1442,7 @@ LABEL_158:
 
       while (v185);
 
-      self = v223;
+      self = selfCopy;
     }
 
     else
@@ -1454,25 +1454,25 @@ LABEL_158:
     v200 = _CPLog_to_os_log_type[7];
     if (os_log_type_enabled(v199, v200))
     {
-      v201 = [(ASAgent *)self noteStoreObjectIdsByFolderId];
+      noteStoreObjectIdsByFolderId6 = [(ASAgent *)self noteStoreObjectIdsByFolderId];
       *buf = 138412290;
-      v255 = v201;
+      dataclassesCopy = noteStoreObjectIdsByFolderId6;
       _os_log_impl(&dword_0, v199, v200, "We ended up with a _noteStoreObjectIdsByFolderId of %@", buf, 0xCu);
     }
 
-    v202 = [(ASAgent *)self account];
-    v203 = [v202 defaultNotesFolder];
-    v204 = [v203 folderID];
+    account33 = [(ASAgent *)self account];
+    defaultNotesFolder = [account33 defaultNotesFolder];
+    folderID7 = [defaultNotesFolder folderID];
 
-    if (v204)
+    if (folderID7)
     {
-      v205 = [(ASAgent *)self _containerForFolderWithId:v204 dataclass:32];
+      v205 = [(ASAgent *)self _containerForFolderWithId:folderID7 dataclass:32];
       v206 = v218;
       if (v205)
       {
-        v207 = [v218 defaultStore];
+        defaultStore = [v218 defaultStore];
 
-        if (v205 != v207)
+        if (v205 != defaultStore)
         {
           [v218 setDefaultStore:v205];
 
@@ -1501,32 +1501,32 @@ LABEL_182:
 
 - (void)_openLocalDBConnections
 {
-  v3 = [(ASAgent *)self account];
-  v4 = [v3 enabledForDADataclass:4];
+  account = [(ASAgent *)self account];
+  v4 = [account enabledForDADataclass:4];
 
   if (v4)
   {
     v5 = +[ASLocalDBHelper sharedInstance];
-    v6 = [(ASAgent *)self account];
-    v7 = [v6 accountID];
-    v8 = [(ASAgent *)self account];
-    v9 = [v8 changeTrackingID];
-    [v5 calOpenDatabaseForAccountID:v7 clientID:v9];
+    account2 = [(ASAgent *)self account];
+    accountID = [account2 accountID];
+    account3 = [(ASAgent *)self account];
+    changeTrackingID = [account3 changeTrackingID];
+    [v5 calOpenDatabaseForAccountID:accountID clientID:changeTrackingID];
   }
 
-  v10 = [(ASAgent *)self account];
-  v11 = [v10 enabledForDADataclass:2];
+  account4 = [(ASAgent *)self account];
+  v11 = [account4 enabledForDADataclass:2];
 
   if (v11)
   {
     v12 = +[ASLocalDBHelper sharedInstance];
-    v13 = [(ASAgent *)self account];
-    v14 = [v13 changeTrackingID];
-    [v12 abOpenDBWithClientIdentifier:v14];
+    account5 = [(ASAgent *)self account];
+    changeTrackingID2 = [account5 changeTrackingID];
+    [v12 abOpenDBWithClientIdentifier:changeTrackingID2];
   }
 
-  v15 = [(ASAgent *)self account];
-  v16 = [v15 enabledForDADataclass:32];
+  account6 = [(ASAgent *)self account];
+  v16 = [account6 enabledForDADataclass:32];
 
   if (v16)
   {
@@ -1537,15 +1537,15 @@ LABEL_182:
 
 - (BOOL)_closeLocalDBConnectionsWithoutSaving
 {
-  v3 = [(ASAgent *)self account];
-  v4 = [v3 enabledForDADataclass:4];
+  account = [(ASAgent *)self account];
+  v4 = [account enabledForDADataclass:4];
 
   if (v4)
   {
     v5 = +[ASLocalDBHelper sharedInstance];
-    v6 = [(ASAgent *)self account];
-    v7 = [v6 accountID];
-    v8 = [v5 calCloseDatabaseForAccountID:v7 save:0];
+    account2 = [(ASAgent *)self account];
+    accountID = [account2 accountID];
+    v8 = [v5 calCloseDatabaseForAccountID:accountID save:0];
 
     if (!v8)
     {
@@ -1553,8 +1553,8 @@ LABEL_182:
     }
   }
 
-  v9 = [(ASAgent *)self account];
-  v10 = [v9 enabledForDADataclass:2];
+  account3 = [(ASAgent *)self account];
+  v10 = [account3 enabledForDADataclass:2];
 
   if (v10)
   {
@@ -1567,8 +1567,8 @@ LABEL_182:
     }
   }
 
-  v13 = [(ASAgent *)self account];
-  v14 = [v13 enabledForDADataclass:32];
+  account4 = [(ASAgent *)self account];
+  v14 = [account4 enabledForDADataclass:32];
 
   if (!v14)
   {
@@ -1581,9 +1581,9 @@ LABEL_182:
   return v16 != 0;
 }
 
-- (BOOL)_abBestEffortApplyNewFolders:(id)a3 oldFolders:(id)a4 shouldCreateFoldersMissingInDB:(BOOL)a5
+- (BOOL)_abBestEffortApplyNewFolders:(id)folders oldFolders:(id)oldFolders shouldCreateFoldersMissingInDB:(BOOL)b
 {
-  v7 = a3;
+  foldersCopy = folders;
   v8 = DALoggingwithCategory();
   v9 = _CPLog_to_os_log_type[7];
   if (os_log_type_enabled(v8, v9))
@@ -1593,13 +1593,13 @@ LABEL_182:
   }
 
   v10 = +[ASLocalDBHelper sharedInstance];
-  v11 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v7, "count")}];
-  v12 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v7, "count")}];
+  v11 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(foldersCopy, "count")}];
+  v12 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(foldersCopy, "count")}];
   v78 = 0u;
   v79 = 0u;
   v80 = 0u;
   v81 = 0u;
-  v13 = v7;
+  v13 = foldersCopy;
   v14 = [v13 countByEnumeratingWithState:&v78 objects:v84 count:16];
   v65 = v10;
   if (v14)
@@ -1622,11 +1622,11 @@ LABEL_182:
 
         if ([v16 dataclass] == &dword_0 + 2)
         {
-          v20 = [v16 folderName];
-          [v11 setObject:v16 forKeyedSubscript:v20];
+          folderName = [v16 folderName];
+          [v11 setObject:v16 forKeyedSubscript:folderName];
 
-          v21 = [v16 folderID];
-          [v12 setObject:v16 forKeyedSubscript:v21];
+          folderID = [v16 folderID];
+          [v12 setObject:v16 forKeyedSubscript:folderID];
         }
 
         v18 = v18 + 1;
@@ -1642,15 +1642,15 @@ LABEL_182:
     v10 = v65;
   }
 
-  v22 = [(ASAgent *)self account];
-  v23 = [v22 _copyABAccount:1];
+  account = [(ASAgent *)self account];
+  v23 = [account _copyABAccount:1];
 
   [v10 abDB];
   v24 = ABAddressBookCopyArrayOfAllSourcesInAccount();
   if (v24)
   {
     cf = v23;
-    v62 = a5;
+    bCopy = b;
     v70 = objc_opt_new();
     v69 = v24;
     v25 = 0;
@@ -1713,14 +1713,14 @@ LABEL_32:
       {
         v34 = v25;
         v35 = v33;
-        v36 = [v33 folderID];
+        folderID2 = [v33 folderID];
         v68 = v35;
         v37 = v35;
         v38 = v34;
-        v39 = v36;
-        v66 = [v37 folderName];
+        v39 = folderID2;
+        folderName2 = [v37 folderName];
         [v70 addObject:v39];
-        if (![v72 isEqualToString:v39] || (objc_msgSend(v29, "isEqualToString:", v66) & 1) == 0)
+        if (![v72 isEqualToString:v39] || (objc_msgSend(v29, "isEqualToString:", folderName2) & 1) == 0)
         {
           ABRecordSetValue(v27, v71, [v68 folderID], 0);
           ABRecordSetValue(v27, kABSourceNameProperty, [v68 folderName], 0);
@@ -1733,12 +1733,12 @@ LABEL_32:
         v67 = ABRecordCopyValue(v27, v63);
         [(ASAgent *)self account];
         v41 = v40 = v38;
-        v42 = [v41 addressBookConstraintsPath];
+        addressBookConstraintsPath = [v41 addressBookConstraintsPath];
 
         v25 = v40;
-        if (([v67 isEqualToString:v42] & 1) == 0)
+        if (([v67 isEqualToString:addressBookConstraintsPath] & 1) == 0)
         {
-          ABRecordSetValue(v27, v63, v42, 0);
+          ABRecordSetValue(v27, v63, addressBookConstraintsPath, 0);
           v25 = 1;
         }
 
@@ -1761,14 +1761,14 @@ LABEL_31:
 
 LABEL_34:
     v73 = v25;
-    if (v62)
+    if (bCopy)
     {
       v76 = 0u;
       v77 = 0u;
       v74 = 0u;
       v75 = 0u;
-      v43 = [v11 allKeys];
-      v44 = [v43 countByEnumeratingWithState:&v74 objects:v83 count:16];
+      allKeys = [v11 allKeys];
+      v44 = [allKeys countByEnumeratingWithState:&v74 objects:v83 count:16];
       if (v44)
       {
         v45 = v44;
@@ -1782,7 +1782,7 @@ LABEL_34:
           {
             if (*v75 != v47)
             {
-              objc_enumerationMutation(v43);
+              objc_enumerationMutation(allKeys);
             }
 
             v46 = [v11 objectForKeyedSubscript:*(*(&v74 + 1) + 8 * v48)];
@@ -1793,7 +1793,7 @@ LABEL_34:
           }
 
           while (v45 != v48);
-          v45 = [v43 countByEnumeratingWithState:&v74 objects:v83 count:16];
+          v45 = [allKeys countByEnumeratingWithState:&v74 objects:v83 count:16];
         }
 
         while (v45);
@@ -1804,8 +1804,8 @@ LABEL_34:
       }
     }
 
-    v50 = [(ASAgent *)self account];
-    v51 = [v50 defaultContainerIdentifierForDADataclass:2];
+    account2 = [(ASAgent *)self account];
+    v51 = [account2 defaultContainerIdentifierForDADataclass:2];
 
     v52 = &PLLogRegisteredEvent_ptr;
     if (!v51)
@@ -1816,7 +1816,7 @@ LABEL_34:
     [v10 abDB];
     [(ASAgent *)self account];
     v54 = v53 = v24;
-    v55 = [v54 accountID];
+    accountID = [v54 accountID];
     v56 = ABAddressBookCopySourceWithAccountAndExternalIdentifiers();
 
     v52 = &PLLogRegisteredEvent_ptr;
@@ -1853,8 +1853,8 @@ LABEL_48:
     }
 
 LABEL_50:
-    v58 = [v52[390] sharedInstance];
-    [v58 abSaveDB];
+    sharedInstance = [v52[390] sharedInstance];
+    [sharedInstance abSaveDB];
 
     v59 = 1;
 LABEL_53:
@@ -1869,19 +1869,19 @@ LABEL_54:
   return v59;
 }
 
-- (BOOL)_calBestEffortApplyNewFolders:(id)a3 oldFolders:(id)a4 shouldCreateFoldersMissingInDB:(BOOL)a5
+- (BOOL)_calBestEffortApplyNewFolders:(id)folders oldFolders:(id)oldFolders shouldCreateFoldersMissingInDB:(BOOL)b
 {
-  v70 = a5;
-  v7 = a3;
-  v8 = a4;
-  v81 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v7, "count")}];
-  v9 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v7, "count")}];
-  v75 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v8, "count")}];
+  bCopy = b;
+  foldersCopy = folders;
+  oldFoldersCopy = oldFolders;
+  v81 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(foldersCopy, "count")}];
+  v9 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(foldersCopy, "count")}];
+  v75 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(oldFoldersCopy, "count")}];
   v95 = 0u;
   v96 = 0u;
   v97 = 0u;
   v98 = 0u;
-  v10 = v7;
+  v10 = foldersCopy;
   v11 = [v10 countByEnumeratingWithState:&v95 objects:v105 count:16];
   if (v11)
   {
@@ -1897,24 +1897,24 @@ LABEL_54:
         }
 
         v15 = *(*(&v95 + 1) + 8 * i);
-        v16 = [(ASAgent *)self account];
-        if ([v16 enabledForDADataclass:4])
+        account = [(ASAgent *)self account];
+        if ([account enabledForDADataclass:4])
         {
-          v17 = [v15 dataclass];
+          dataclass = [v15 dataclass];
 
-          if (v17 != &dword_4)
+          if (dataclass != &dword_4)
           {
             continue;
           }
 
           if ([v15 dataclass] == &dword_4)
           {
-            v18 = [v15 folderName];
-            [v81 setObject:v15 forKeyedSubscript:v18];
+            folderName = [v15 folderName];
+            [v81 setObject:v15 forKeyedSubscript:folderName];
           }
 
-          v16 = [v15 folderID];
-          [v9 setObject:v15 forKeyedSubscript:v16];
+          account = [v15 folderID];
+          [v9 setObject:v15 forKeyedSubscript:account];
         }
       }
 
@@ -1928,7 +1928,7 @@ LABEL_54:
   v94 = 0u;
   v91 = 0u;
   v92 = 0u;
-  obj = v8;
+  obj = oldFoldersCopy;
   v19 = [obj countByEnumeratingWithState:&v91 objects:v104 count:16];
   if (!v19)
   {
@@ -1947,18 +1947,18 @@ LABEL_54:
       }
 
       v23 = *(*(&v91 + 1) + 8 * j);
-      v24 = [(ASAgent *)self account];
-      if ([v24 enabledForDADataclass:4])
+      account2 = [(ASAgent *)self account];
+      if ([account2 enabledForDADataclass:4])
       {
-        v25 = [v23 dataclass];
+        dataclass2 = [v23 dataclass];
 
-        if (v25 != &dword_4)
+        if (dataclass2 != &dword_4)
         {
           continue;
         }
 
-        v24 = [v23 folderID];
-        [v75 setObject:v23 forKeyedSubscript:v24];
+        account2 = [v23 folderID];
+        [v75 setObject:v23 forKeyedSubscript:account2];
       }
     }
 
@@ -1968,8 +1968,8 @@ LABEL_54:
   while (v20);
 LABEL_25:
 
-  v26 = [(ASAgent *)self account];
-  v27 = [v26 _copyExchangeCalendarStore:1];
+  account3 = [(ASAgent *)self account];
+  v27 = [account3 _copyExchangeCalendarStore:1];
 
   v79 = CalStoreCopyCalendars();
   v77 = objc_opt_new();
@@ -1979,9 +1979,9 @@ LABEL_25:
   v90 = 0;
   v88 = 0;
   v28 = +[ASLocalDBHelper sharedInstance];
-  v29 = [(ASAgent *)self account];
-  v30 = [v29 accountID];
-  [v28 calDatabaseForAccountID:v30];
+  account4 = [(ASAgent *)self account];
+  accountID = [account4 accountID];
+  [v28 calDatabaseForAccountID:accountID];
   cf = v27;
   CalDatabaseCopyCalendarChangesWithIndicesInStore();
 
@@ -2077,17 +2077,17 @@ LABEL_42:
         goto LABEL_42;
       }
 
-      v44 = [v42 folderID];
-      v45 = [v43 folderName];
-      [v77 addObject:v44];
-      if (![v36 isEqualToString:v44])
+      folderID = [v42 folderID];
+      folderName2 = [v43 folderName];
+      [v77 addObject:folderID];
+      if (![v36 isEqualToString:folderID])
       {
         goto LABEL_38;
       }
 
       v73 = [v75 objectForKeyedSubscript:v36];
-      v46 = [v73 folderName];
-      v72 = [v46 isEqualToString:v45];
+      folderName3 = [v73 folderName];
+      v72 = [folderName3 isEqualToString:folderName2];
 
       v31 = v81;
       if ((v72 & 1) == 0)
@@ -2119,7 +2119,7 @@ LABEL_50:
   }
 
   v52 = v71;
-  if (!v70)
+  if (!bCopy)
   {
     v63 = v74;
     if ((v33 & 1) == 0)
@@ -2134,8 +2134,8 @@ LABEL_50:
   v87 = 0u;
   v84 = 0u;
   v85 = 0u;
-  v53 = [v31 allKeys];
-  v54 = [v53 countByEnumeratingWithState:&v84 objects:v99 count:16];
+  allKeys = [v31 allKeys];
+  v54 = [allKeys countByEnumeratingWithState:&v84 objects:v99 count:16];
   if (v54)
   {
     v55 = v54;
@@ -2147,18 +2147,18 @@ LABEL_50:
       {
         if (*v85 != v56)
         {
-          objc_enumerationMutation(v53);
+          objc_enumerationMutation(allKeys);
         }
 
         v59 = [v31 objectForKeyedSubscript:*(*(&v84 + 1) + 8 * k)];
-        v60 = [v59 folderID];
-        if (v60 && [v82 containsObject:v60])
+        folderID2 = [v59 folderID];
+        if (folderID2 && [v82 containsObject:folderID2])
         {
           v61 = DALoggingwithCategory();
           if (os_log_type_enabled(v61, v57))
           {
             *buf = 138412290;
-            *v101 = v60;
+            *v101 = folderID2;
             _os_log_impl(&dword_0, v61, v57, "Not adding event calendar with external id %@, as it has a pending delete", buf, 0xCu);
           }
 
@@ -2177,7 +2177,7 @@ LABEL_50:
         }
       }
 
-      v55 = [v53 countByEnumeratingWithState:&v84 objects:v99 count:16];
+      v55 = [allKeys countByEnumeratingWithState:&v84 objects:v99 count:16];
     }
 
     while (v55);
@@ -2189,9 +2189,9 @@ LABEL_50:
   {
 LABEL_72:
     v65 = +[ASLocalDBHelper sharedInstance];
-    v66 = [(ASAgent *)self account];
-    v67 = [v66 accountID];
-    [v65 calSaveDatabaseForAccountID:v67];
+    account5 = [(ASAgent *)self account];
+    accountID2 = [account5 accountID];
+    [v65 calSaveDatabaseForAccountID:accountID2];
 
     v64 = 1;
     goto LABEL_73;
@@ -2204,17 +2204,17 @@ LABEL_73:
   return v64;
 }
 
-- (BOOL)_notesBestEffortApplyNewFolders:(id)a3 oldFolders:(id)a4 shouldCreateFoldersMissingInDB:(BOOL)a5
+- (BOOL)_notesBestEffortApplyNewFolders:(id)folders oldFolders:(id)oldFolders shouldCreateFoldersMissingInDB:(BOOL)b
 {
-  v53 = a5;
-  v6 = a3;
-  v7 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v6, "count")}];
-  v8 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v6, "count")}];
+  bCopy = b;
+  foldersCopy = folders;
+  v7 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(foldersCopy, "count")}];
+  v8 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(foldersCopy, "count")}];
   v67 = 0u;
   v68 = 0u;
   v69 = 0u;
   v70 = 0u;
-  v9 = v6;
+  v9 = foldersCopy;
   v10 = [v9 countByEnumeratingWithState:&v67 objects:v73 count:16];
   if (v10)
   {
@@ -2232,11 +2232,11 @@ LABEL_73:
         v14 = *(*(&v67 + 1) + 8 * i);
         if ([v14 dataclass] == &stru_20)
         {
-          v15 = [v14 folderName];
-          [v7 setObject:v14 forKeyedSubscript:v15];
+          folderName = [v14 folderName];
+          [v7 setObject:v14 forKeyedSubscript:folderName];
 
-          v16 = [v14 folderID];
-          [v8 setObject:v14 forKeyedSubscript:v16];
+          folderID = [v14 folderID];
+          [v8 setObject:v14 forKeyedSubscript:folderID];
         }
       }
 
@@ -2247,22 +2247,22 @@ LABEL_73:
   }
 
   v17 = +[ASLocalDBHelper sharedInstance];
-  v57 = [v17 noteDB];
+  noteDB = [v17 noteDB];
 
   v18 = -[ASAgent _noteAccountObject:](self, "_noteAccountObject:", [v9 count] != 0);
-  v19 = [v18 stores];
+  stores = [v18 stores];
   v58 = objc_opt_new();
   v63 = 0u;
   v64 = 0u;
   v65 = 0u;
   v66 = 0u;
-  v52 = v19;
-  v20 = [v19 copy];
+  v52 = stores;
+  v20 = [stores copy];
   v21 = [v20 countByEnumeratingWithState:&v63 objects:v72 count:16];
   if (v21)
   {
     v22 = v21;
-    v49 = self;
+    selfCopy = self;
     v50 = v18;
     v51 = v9;
     v54 = v8;
@@ -2281,28 +2281,28 @@ LABEL_73:
         }
 
         v26 = *(*(&v63 + 1) + 8 * v25);
-        v27 = [v26 name];
-        v28 = [v26 externalIdentifier];
-        if (v28)
+        name = [v26 name];
+        externalIdentifier = [v26 externalIdentifier];
+        if (externalIdentifier)
         {
-          if ([v58 containsObject:v28])
+          if ([v58 containsObject:externalIdentifier])
           {
             goto LABEL_25;
           }
 
           v29 = v54;
-          v30 = v28;
+          v30 = externalIdentifier;
         }
 
         else
         {
-          if (!v27)
+          if (!name)
           {
             goto LABEL_25;
           }
 
           v29 = v56;
-          v30 = v27;
+          v30 = name;
         }
 
         v31 = [v29 objectForKeyedSubscript:v30];
@@ -2310,28 +2310,28 @@ LABEL_73:
         if (!v31)
         {
 LABEL_25:
-          [v57 deleteStore:v26];
+          [noteDB deleteStore:v26];
           v23 = 1;
           goto LABEL_26;
         }
 
         v33 = v24;
         v34 = v20;
-        v35 = [v31 folderID];
-        v36 = [v32 folderName];
-        [v58 addObject:v35];
-        if (![v28 isEqualToString:v35] || (objc_msgSend(v27, "isEqualToString:", v36) & 1) == 0)
+        folderID2 = [v31 folderID];
+        folderName2 = [v32 folderName];
+        [v58 addObject:folderID2];
+        if (![externalIdentifier isEqualToString:folderID2] || (objc_msgSend(name, "isEqualToString:", folderName2) & 1) == 0)
         {
-          v37 = [v32 folderName];
-          [v26 setName:v37];
+          folderName3 = [v32 folderName];
+          [v26 setName:folderName3];
 
-          v38 = [v32 folderID];
-          [v26 setExternalIdentifier:v38];
+          folderID3 = [v32 folderID];
+          [v26 setExternalIdentifier:folderID3];
 
           v23 = 1;
         }
 
-        [v56 removeObjectForKey:v27];
+        [v56 removeObjectForKey:name];
 
         v20 = v34;
         v24 = v33;
@@ -2346,13 +2346,13 @@ LABEL_26:
       if (!v22)
       {
 
-        if (v53)
+        if (bCopy)
         {
           v7 = v56;
           v8 = v54;
           v18 = v50;
           v9 = v51;
-          self = v49;
+          self = selfCopy;
           goto LABEL_31;
         }
 
@@ -2379,15 +2379,15 @@ LABEL_42:
 
   v23 = 0;
   v39 = 0;
-  if (v53)
+  if (bCopy)
   {
 LABEL_31:
     v61 = 0u;
     v62 = 0u;
     v59 = 0u;
     v60 = 0u;
-    v40 = [v7 allKeys];
-    v41 = [v40 countByEnumeratingWithState:&v59 objects:v71 count:16];
+    allKeys = [v7 allKeys];
+    v41 = [allKeys countByEnumeratingWithState:&v59 objects:v71 count:16];
     if (v41)
     {
       v42 = v41;
@@ -2399,13 +2399,13 @@ LABEL_31:
         {
           if (*v60 != v44)
           {
-            objc_enumerationMutation(v40);
+            objc_enumerationMutation(allKeys);
           }
 
           v46 = [v7 objectForKeyedSubscript:*(*(&v59 + 1) + 8 * j)];
         }
 
-        v42 = [v40 countByEnumeratingWithState:&v59 objects:v71 count:16];
+        v42 = [allKeys countByEnumeratingWithState:&v59 objects:v71 count:16];
       }
 
       while (v42);
@@ -2439,21 +2439,21 @@ LABEL_43:
 
 - (void)preferredDaysToSyncDidChange
 {
-  v3 = [(ASAgent *)self account];
-  [v3 setEventsNumberOfPastDaysToSync:{-[ASAgent preferredEventDaysToSync](self, "preferredEventDaysToSync")}];
+  account = [(ASAgent *)self account];
+  [account setEventsNumberOfPastDaysToSync:{-[ASAgent preferredEventDaysToSync](self, "preferredEventDaysToSync")}];
 
   [(ASAgent *)self _syncAllEventsFoldersWithRemoteChanges:1];
 }
 
-- (id)foldersForFolderIDs:(id)a3 andDataclasses:(int64_t)a4
+- (id)foldersForFolderIDs:(id)ds andDataclasses:(int64_t)dataclasses
 {
-  v6 = a3;
+  dsCopy = ds;
   v20 = +[NSMutableArray array];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v7 = v6;
+  v7 = dsCopy;
   v8 = [v7 countByEnumeratingWithState:&v21 objects:v27 count:16];
   if (v8)
   {
@@ -2472,12 +2472,12 @@ LABEL_43:
         }
 
         v14 = *(*(&v21 + 1) + 8 * i);
-        v15 = [(ASAgent *)self account];
-        v16 = [v15 folderWithId:v14];
+        account = [(ASAgent *)self account];
+        v16 = [account folderWithId:v14];
 
         if (v16)
         {
-          if (([v16 dataclass] & a4) != 0)
+          if (([v16 dataclass] & dataclasses) != 0)
           {
             [v20 addObject:v16];
           }
@@ -2504,20 +2504,20 @@ LABEL_43:
   return v20;
 }
 
-- (void)syncFolderIDs:(id)a3 forDataclasses:(int64_t)a4 isUserRequested:(BOOL)a5
+- (void)syncFolderIDs:(id)ds forDataclasses:(int64_t)dataclasses isUserRequested:(BOOL)requested
 {
-  v5 = a5;
-  v8 = a3;
-  if (v5)
+  requestedCopy = requested;
+  dsCopy = ds;
+  if (requestedCopy)
   {
-    v9 = [(ASAgent *)self account];
-    [v9 setShouldUseOpportunisticSockets:0];
+    account = [(ASAgent *)self account];
+    [account setShouldUseOpportunisticSockets:0];
 
-    v10 = [(ASAgent *)self account];
-    [v10 setWasUserInitiated:1];
+    account2 = [(ASAgent *)self account];
+    [account2 setWasUserInitiated:1];
   }
 
-  if (a4)
+  if (dataclasses)
   {
     v11 = DALoggingwithCategory();
     v12 = _CPLog_to_os_log_type[4];
@@ -2527,11 +2527,11 @@ LABEL_43:
       _os_log_impl(&dword_0, v11, v12, "syncing email accounts isn't supported via DataAccess framework", &v21, 2u);
     }
 
-    a4 &= ~1uLL;
-    if ((a4 & 4) == 0)
+    dataclasses &= ~1uLL;
+    if ((dataclasses & 4) == 0)
     {
 LABEL_5:
-      if ((a4 & 2) == 0)
+      if ((dataclasses & 2) == 0)
       {
         goto LABEL_6;
       }
@@ -2540,14 +2540,14 @@ LABEL_5:
     }
   }
 
-  else if ((a4 & 4) == 0)
+  else if ((dataclasses & 4) == 0)
   {
     goto LABEL_5;
   }
 
-  if (v8)
+  if (dsCopy)
   {
-    v13 = [(ASAgent *)self foldersForFolderIDs:v8 andDataclasses:4];
+    v13 = [(ASAgent *)self foldersForFolderIDs:dsCopy andDataclasses:4];
     [(ASAgent *)self _appendSyncRequestForFolders:v13 remoteChanges:1];
   }
 
@@ -2556,11 +2556,11 @@ LABEL_5:
     [(ASAgent *)self _appendSyncRequestForFoldersOfDataclasses:4 remoteChanges:1];
   }
 
-  a4 &= ~4uLL;
-  if ((a4 & 2) == 0)
+  dataclasses &= ~4uLL;
+  if ((dataclasses & 2) == 0)
   {
 LABEL_6:
-    if ((a4 & 0x10) == 0)
+    if ((dataclasses & 0x10) == 0)
     {
       goto LABEL_7;
     }
@@ -2569,9 +2569,9 @@ LABEL_6:
   }
 
 LABEL_18:
-  if (v8)
+  if (dsCopy)
   {
-    v14 = [(ASAgent *)self foldersForFolderIDs:v8 andDataclasses:2];
+    v14 = [(ASAgent *)self foldersForFolderIDs:dsCopy andDataclasses:2];
     [(ASAgent *)self _appendSyncRequestForFolders:v14 remoteChanges:1];
   }
 
@@ -2580,11 +2580,11 @@ LABEL_18:
     [(ASAgent *)self _appendSyncRequestForFoldersOfDataclasses:2 remoteChanges:1];
   }
 
-  a4 &= ~2uLL;
-  if ((a4 & 0x10) == 0)
+  dataclasses &= ~2uLL;
+  if ((dataclasses & 0x10) == 0)
   {
 LABEL_7:
-    if ((a4 & 0x20) == 0)
+    if ((dataclasses & 0x20) == 0)
     {
       goto LABEL_8;
     }
@@ -2593,9 +2593,9 @@ LABEL_7:
   }
 
 LABEL_22:
-  if (v8)
+  if (dsCopy)
   {
-    v15 = [(ASAgent *)self foldersForFolderIDs:v8 andDataclasses:16];
+    v15 = [(ASAgent *)self foldersForFolderIDs:dsCopy andDataclasses:16];
     [(ASAgent *)self _appendSyncRequestForFolders:v15 remoteChanges:1];
   }
 
@@ -2604,11 +2604,11 @@ LABEL_22:
     [(ASAgent *)self _appendSyncRequestForFoldersOfDataclasses:16 remoteChanges:1];
   }
 
-  a4 &= ~0x10uLL;
-  if ((a4 & 0x20) == 0)
+  dataclasses &= ~0x10uLL;
+  if ((dataclasses & 0x20) == 0)
   {
 LABEL_8:
-    if ((a4 & 8) == 0)
+    if ((dataclasses & 8) == 0)
     {
       goto LABEL_9;
     }
@@ -2617,9 +2617,9 @@ LABEL_8:
   }
 
 LABEL_26:
-  if (v8)
+  if (dsCopy)
   {
-    v16 = [(ASAgent *)self foldersForFolderIDs:v8 andDataclasses:32];
+    v16 = [(ASAgent *)self foldersForFolderIDs:dsCopy andDataclasses:32];
     [(ASAgent *)self _appendSyncRequestForFolders:v16 remoteChanges:1];
   }
 
@@ -2628,11 +2628,11 @@ LABEL_26:
     [(ASAgent *)self _appendSyncRequestForFoldersOfDataclasses:32 remoteChanges:1];
   }
 
-  a4 &= ~0x20uLL;
-  if ((a4 & 8) == 0)
+  dataclasses &= ~0x20uLL;
+  if ((dataclasses & 8) == 0)
   {
 LABEL_9:
-    if (!a4)
+    if (!dataclasses)
     {
       goto LABEL_36;
     }
@@ -2649,8 +2649,8 @@ LABEL_30:
     _os_log_impl(&dword_0, v17, v18, "GAL searching has no folders to sync", &v21, 2u);
   }
 
-  a4 &= ~8uLL;
-  if (a4)
+  dataclasses &= ~8uLL;
+  if (dataclasses)
   {
 LABEL_33:
     v19 = DALoggingwithCategory();
@@ -2658,7 +2658,7 @@ LABEL_33:
     if (os_log_type_enabled(v19, v20))
     {
       v21 = 134217984;
-      v22 = a4;
+      dataclassesCopy = dataclasses;
       _os_log_impl(&dword_0, v19, v20, "discarding unknown bits set in sync request: %lx", &v21, 0xCu);
     }
   }
@@ -2666,9 +2666,9 @@ LABEL_33:
 LABEL_36:
 }
 
-- (void)folderHierarchyFailedToUpdate:(id)a3 withStatus:(int64_t)a4 andError:(id)a5
+- (void)folderHierarchyFailedToUpdate:(id)update withStatus:(int64_t)status andError:(id)error
 {
-  v6 = a5;
+  errorCopy = error;
   if (statusAndErrorIndicateWeShouldTurnOnReachability())
   {
     v7 = DALoggingwithCategory();
@@ -2687,90 +2687,90 @@ LABEL_36:
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterPostNotification(DarwinNotifyCenter, @"ASAccountFolderHierarchyExternallyChangedNotification", 0, 0, 1u);
     [(ASAgent *)self _syncAllContactsEventsToDosAndNotesFolders];
-    v10 = [(ASAgent *)self account];
-    [v10 setSafeToPing:1];
+    account = [(ASAgent *)self account];
+    [account setSafeToPing:1];
   }
 
-  [(ASAgent *)self _syncEndedWithError:v6];
+  [(ASAgent *)self _syncEndedWithError:errorCopy];
 }
 
-- (void)folderHierarchySuccessfullyUpdated:(id)a3 withNumChangedFolders:(unint64_t)a4
+- (void)folderHierarchySuccessfullyUpdated:(id)updated withNumChangedFolders:(unint64_t)folders
 {
-  v5 = a3;
+  updatedCopy = updated;
   [(ASAgent *)self _openLocalDBConnections];
   [(ASAgent *)self setSyncWhenReachable:0];
-  if (v5)
+  if (updatedCopy)
   {
-    v6 = [v5 isFirstSync];
-    v7 = [v5 oldFolders];
+    isFirstSync = [updatedCopy isFirstSync];
+    oldFolders = [updatedCopy oldFolders];
   }
 
   else
   {
-    v7 = 0;
-    v6 = 1;
+    oldFolders = 0;
+    isFirstSync = 1;
   }
 
-  v8 = [(ASAgent *)self account];
-  v9 = [v8 visibleFolders];
+  account = [(ASAgent *)self account];
+  visibleFolders = [account visibleFolders];
 
   v10 = DALoggingwithCategory();
   type = _CPLog_to_os_log_type[6];
   if (os_log_type_enabled(v10, type))
   {
     *buf = 138412802;
-    v121 = v7;
+    v121 = oldFolders;
     v122 = 2112;
-    v123 = v9;
+    v123 = visibleFolders;
     v124 = 1024;
-    LODWORD(v125) = v6;
+    LODWORD(v125) = isFirstSync;
     _os_log_impl(&dword_0, v10, type, "ASAgent folderHierarchySuccessfullyUpdated: oldFolders is %@, currentFolders is %@ isFirstSync %d", buf, 0x1Cu);
   }
 
-  if (v6)
+  if (isFirstSync)
   {
-    v11 = [(ASAgent *)self account];
-    v12 = [v11 enabledForDADataclass:2];
+    account2 = [(ASAgent *)self account];
+    v12 = [account2 enabledForDADataclass:2];
 
     if (v12)
     {
-      [(ASAgent *)self _abBestEffortApplyNewFolders:v9 oldFolders:v7 shouldCreateFoldersMissingInDB:1];
+      [(ASAgent *)self _abBestEffortApplyNewFolders:visibleFolders oldFolders:oldFolders shouldCreateFoldersMissingInDB:1];
     }
 
-    v13 = [(ASAgent *)self account];
-    v14 = [v13 enabledForDADataclass:4];
+    account3 = [(ASAgent *)self account];
+    v14 = [account3 enabledForDADataclass:4];
 
     if (v14)
     {
-      [(ASAgent *)self _calBestEffortApplyNewFolders:v9 oldFolders:v7 shouldCreateFoldersMissingInDB:1];
+      [(ASAgent *)self _calBestEffortApplyNewFolders:visibleFolders oldFolders:oldFolders shouldCreateFoldersMissingInDB:1];
     }
 
-    v15 = [(ASAgent *)self account];
-    v16 = [v15 enabledForDADataclass:16];
+    account4 = [(ASAgent *)self account];
+    v16 = [account4 enabledForDADataclass:16];
 
     if (v16)
     {
-      [(ASAgent *)self _reminderBestEffortApplyNewFolders:v9 oldFolders:v7 shouldCreateFoldersMissingInDB:1];
+      [(ASAgent *)self _reminderBestEffortApplyNewFolders:visibleFolders oldFolders:oldFolders shouldCreateFoldersMissingInDB:1];
     }
 
-    v17 = [(ASAgent *)self account];
-    v18 = [v17 enabledForDADataclass:32];
+    account5 = [(ASAgent *)self account];
+    v18 = [account5 enabledForDADataclass:32];
 
     if (v18)
     {
-      [(ASAgent *)self _notesBestEffortApplyNewFolders:v9 oldFolders:v7 shouldCreateFoldersMissingInDB:1];
+      [(ASAgent *)self _notesBestEffortApplyNewFolders:visibleFolders oldFolders:oldFolders shouldCreateFoldersMissingInDB:1];
     }
 
     goto LABEL_103;
   }
 
-  v96 = v5;
-  v19 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v7, "count")}];
+  v96 = updatedCopy;
+  v19 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(oldFolders, "count")}];
   v116 = 0u;
   v117 = 0u;
   v118 = 0u;
   v119 = 0u;
-  obj = v7;
+  obj = oldFolders;
   v20 = [obj countByEnumeratingWithState:&v116 objects:v129 count:16];
   if (v20)
   {
@@ -2790,8 +2790,8 @@ LABEL_36:
 
         v22 = *(*(&v116 + 1) + 8 * v24);
 
-        v26 = [v22 folderID];
-        [v19 setObject:v22 forKeyedSubscript:v26];
+        folderID = [v22 folderID];
+        [v19 setObject:v22 forKeyedSubscript:folderID];
 
         v24 = v24 + 1;
         v25 = v22;
@@ -2804,20 +2804,20 @@ LABEL_36:
     while (v21);
   }
 
-  v95 = v7;
+  v95 = oldFolders;
 
-  v27 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v9, "count")}];
+  v27 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(visibleFolders, "count")}];
   v112 = 0u;
   v113 = 0u;
   v114 = 0u;
   v115 = 0u;
-  v93 = v9;
-  v28 = v9;
+  v93 = visibleFolders;
+  v28 = visibleFolders;
   v29 = [v28 countByEnumeratingWithState:&v112 objects:v128 count:16];
   if (v29)
   {
     v30 = v29;
-    v31 = self;
+    selfCopy = self;
     v32 = 0;
     v33 = *v113;
     do
@@ -2833,8 +2833,8 @@ LABEL_36:
 
         v32 = *(*(&v112 + 1) + 8 * v34);
 
-        v36 = [v32 folderID];
-        [v27 setObject:v32 forKeyedSubscript:v36];
+        folderID2 = [v32 folderID];
+        [v27 setObject:v32 forKeyedSubscript:folderID2];
 
         v34 = v34 + 1;
         v35 = v32;
@@ -2846,7 +2846,7 @@ LABEL_36:
 
     while (v30);
 
-    self = v31;
+    self = selfCopy;
   }
 
   [(ASAgent *)self _cacheFoldersForDataclasses:127];
@@ -2860,18 +2860,18 @@ LABEL_36:
   if (v37)
   {
     v38 = v37;
-    v39 = 0;
+    folderID3 = 0;
     v40 = 0;
     v99 = 0;
     v41 = *v109;
-    v97 = self;
+    selfCopy2 = self;
     while (1)
     {
       v42 = 0;
       do
       {
         v43 = v40;
-        v44 = v39;
+        v44 = folderID3;
         if (*v109 != v41)
         {
           objc_enumerationMutation(v102);
@@ -2879,64 +2879,64 @@ LABEL_36:
 
         v40 = *(*(&v108 + 1) + 8 * v42);
 
-        v39 = [v40 folderID];
+        folderID3 = [v40 folderID];
 
-        v45 = [v19 objectForKeyedSubscript:v39];
+        v45 = [v19 objectForKeyedSubscript:folderID3];
 
         if (!v45)
         {
-          v46 = [v40 dataclass];
-          if (v46 > 15)
+          dataclass = [v40 dataclass];
+          if (dataclass > 15)
           {
-            if (v46 == &dword_10)
+            if (dataclass == &dword_10)
             {
-              v47 = [(ASAgent *)self account];
-              if (([v47 enabledForDADataclass:16] & 1) == 0)
+              account6 = [(ASAgent *)self account];
+              if (([account6 enabledForDADataclass:16] & 1) == 0)
               {
                 goto LABEL_58;
               }
 
-              v53 = [(ASAgent *)self sharedReminderKitHelper];
-              v54 = [(ASAgent *)self account];
-              v55 = [v53 isFolderExistsWithId:v39 forAccount:v54];
+              sharedReminderKitHelper = [(ASAgent *)self sharedReminderKitHelper];
+              account7 = [(ASAgent *)self account];
+              v55 = [sharedReminderKitHelper isFolderExistsWithId:folderID3 forAccount:account7];
 
               if (v55)
               {
-                self = v97;
+                self = selfCopy2;
                 v19 = v98;
               }
 
               else
               {
-                v56 = [(ASAgent *)v97 sharedReminderKitHelper];
-                v57 = [(ASAgent *)v97 account];
-                v58 = [v56 addFolder:v40 forAccount:v57];
+                sharedReminderKitHelper2 = [(ASAgent *)selfCopy2 sharedReminderKitHelper];
+                account8 = [(ASAgent *)selfCopy2 account];
+                v58 = [sharedReminderKitHelper2 addFolder:v40 forAccount:account8];
 
                 if (v58)
                 {
-                  v59 = [(ASAgent *)v97 sharedReminderKitHelper];
-                  [v59 commitChangesToStore];
+                  sharedReminderKitHelper3 = [(ASAgent *)selfCopy2 sharedReminderKitHelper];
+                  [sharedReminderKitHelper3 commitChangesToStore];
                 }
 
-                self = v97;
+                self = selfCopy2;
                 v19 = v98;
               }
             }
 
             else
             {
-              if (v46 != &stru_20)
+              if (dataclass != &stru_20)
               {
                 goto LABEL_37;
               }
 
-              v47 = [(ASAgent *)self account];
-              if (![v47 enabledForDADataclass:32])
+              account6 = [(ASAgent *)self account];
+              if (![account6 enabledForDADataclass:32])
               {
                 goto LABEL_58;
               }
 
-              v50 = [(ASAgent *)self _containerForFolderWithId:v39 dataclass:32];
+              v50 = [(ASAgent *)self _containerForFolderWithId:folderID3 dataclass:32];
 
               if (!v50)
               {
@@ -2948,12 +2948,12 @@ LABEL_36:
 
           else
           {
-            if (v46 == (&dword_0 + 2))
+            if (dataclass == (&dword_0 + 2))
             {
-              v47 = [(ASAgent *)self account];
-              if ([v47 enabledForDADataclass:2])
+              account6 = [(ASAgent *)self account];
+              if ([account6 enabledForDADataclass:2])
               {
-                v52 = [(ASAgent *)self _containerForFolderWithId:v39 dataclass:2];
+                v52 = [(ASAgent *)self _containerForFolderWithId:folderID3 dataclass:2];
 
                 if (v52)
                 {
@@ -2972,18 +2972,18 @@ LABEL_58:
               goto LABEL_37;
             }
 
-            if (v46 != &dword_4)
+            if (dataclass != &dword_4)
             {
               goto LABEL_37;
             }
 
-            v47 = [(ASAgent *)self account];
-            if (![v47 enabledForDADataclass:4])
+            account6 = [(ASAgent *)self account];
+            if (![account6 enabledForDADataclass:4])
             {
               goto LABEL_58;
             }
 
-            v48 = [(ASAgent *)self _containerForFolderWithId:v39 dataclass:4];
+            v48 = [(ASAgent *)self _containerForFolderWithId:folderID3 dataclass:4];
 
             if (!v48)
             {
@@ -3011,7 +3011,7 @@ LABEL_37:
     }
   }
 
-  v39 = 0;
+  folderID3 = 0;
   v99 = 0;
 LABEL_65:
 
@@ -3035,7 +3035,7 @@ LABEL_65:
     do
     {
       v66 = v63;
-      v67 = v39;
+      v67 = folderID3;
       if (*v105 != v64)
       {
         objc_enumerationMutation(obja);
@@ -3043,9 +3043,9 @@ LABEL_65:
 
       v63 = *(*(&v104 + 1) + 8 * v65);
 
-      v39 = [v63 folderID];
+      folderID3 = [v63 folderID];
 
-      v68 = [v27 objectForKeyedSubscript:v39];
+      v68 = [v27 objectForKeyedSubscript:folderID3];
 
       if (!v68)
       {
@@ -3055,36 +3055,36 @@ LABEL_65:
           *buf = 138412802;
           v121 = v63;
           v122 = 2112;
-          v123 = v39;
+          v123 = folderID3;
           v124 = 2112;
           v125 = v27;
           _os_log_impl(&dword_0, v69, type, "ASAgent folderHierarchySuccessfullyUpdated: deleting folder %@, because its id %@ wasn't in my map of %@", buf, 0x20u);
         }
 
-        v70 = [v63 dataclass];
-        if (v70 > 15)
+        dataclass2 = [v63 dataclass];
+        if (dataclass2 > 15)
         {
-          if (v70 == &dword_10)
+          if (dataclass2 == &dword_10)
           {
-            v77 = [(ASAgent *)self sharedReminderKitHelper];
-            v78 = [(ASAgent *)self account];
-            v79 = self;
-            v80 = [v77 deleteFolder:v63 forAccount:v78];
+            sharedReminderKitHelper4 = [(ASAgent *)self sharedReminderKitHelper];
+            account9 = [(ASAgent *)self account];
+            selfCopy3 = self;
+            v80 = [sharedReminderKitHelper4 deleteFolder:v63 forAccount:account9];
 
             if (v80)
             {
-              v81 = [(ASAgent *)v79 sharedReminderKitHelper];
-              [v81 commitChangesToStore];
+              sharedReminderKitHelper5 = [(ASAgent *)selfCopy3 sharedReminderKitHelper];
+              [sharedReminderKitHelper5 commitChangesToStore];
             }
 
-            self = v79;
+            self = selfCopy3;
             v19 = v98;
           }
 
-          else if (v70 == &stru_20)
+          else if (dataclass2 == &stru_20)
           {
-            v73 = [(ASAgent *)self account];
-            v74 = [v73 enabledForDADataclass:32];
+            account10 = [(ASAgent *)self account];
+            v74 = [account10 enabledForDADataclass:32];
 
             if (v74)
             {
@@ -3096,10 +3096,10 @@ LABEL_65:
 
         else
         {
-          if (v70 == (&dword_0 + 2))
+          if (dataclass2 == (&dword_0 + 2))
           {
-            v75 = [(ASAgent *)self account];
-            v76 = [v75 enabledForDADataclass:2];
+            account11 = [(ASAgent *)self account];
+            v76 = [account11 enabledForDADataclass:2];
 
             if (!v76)
             {
@@ -3110,10 +3110,10 @@ LABEL_65:
             goto LABEL_86;
           }
 
-          if (v70 == &dword_4)
+          if (dataclass2 == &dword_4)
           {
-            v71 = [(ASAgent *)self account];
-            v72 = [v71 enabledForDADataclass:4];
+            account12 = [(ASAgent *)self account];
+            v72 = [account12 enabledForDADataclass:4];
 
             if (v72)
             {
@@ -3137,33 +3137,33 @@ LABEL_71:
   while (v82);
 
 LABEL_92:
-  v83 = [(ASAgent *)self account];
-  v84 = [v83 enabledForDADataclass:2];
+  account13 = [(ASAgent *)self account];
+  v84 = [account13 enabledForDADataclass:2];
 
-  v5 = v96;
+  updatedCopy = v96;
   if (v84)
   {
     [(ASAgent *)self _abBestEffortApplyNewFolders:v102 oldFolders:obja shouldCreateFoldersMissingInDB:0];
   }
 
-  v85 = [(ASAgent *)self account];
-  v86 = [v85 enabledForDADataclass:4];
+  account14 = [(ASAgent *)self account];
+  v86 = [account14 enabledForDADataclass:4];
 
   if (v86)
   {
     [(ASAgent *)self _calBestEffortApplyNewFolders:v102 oldFolders:obja shouldCreateFoldersMissingInDB:0];
   }
 
-  v87 = [(ASAgent *)self account];
-  v88 = [v87 enabledForDADataclass:16];
+  account15 = [(ASAgent *)self account];
+  v88 = [account15 enabledForDADataclass:16];
 
   if (v88)
   {
     [(ASAgent *)self _reminderBestEffortApplyNewFolders:v102 oldFolders:obja shouldCreateFoldersMissingInDB:0];
   }
 
-  v89 = [(ASAgent *)self account];
-  v90 = [v89 enabledForDADataclass:32];
+  account16 = [(ASAgent *)self account];
+  v90 = [account16 enabledForDADataclass:32];
 
   if (v90)
   {
@@ -3175,8 +3175,8 @@ LABEL_92:
     [(ASAgent *)self _updateFolderHierarchyRequireChangedFolders:0];
   }
 
-  v9 = v94;
-  v7 = v95;
+  visibleFolders = v94;
+  oldFolders = v95;
 LABEL_103:
   [(ASAgent *)self _cacheFoldersForDataclasses:127];
   [(ASAgent *)self _nilOutContainersForDataclasses:127];
@@ -3189,79 +3189,79 @@ LABEL_103:
   if (!self->_numLocalFolderUpdatesInFlight)
   {
     [(ASAgent *)self _syncAllContactsEventsToDosAndNotesFolders];
-    v92 = [(ASAgent *)self account];
-    [v92 setSafeToPing:1];
+    account17 = [(ASAgent *)self account];
+    [account17 setSafeToPing:1];
   }
 
   [(ASAgent *)self _syncEndedWithError:0];
 }
 
-- (void)_handleDaemonBackedLocalFolderChangeWithDBChangeIndices:(__CFArray *)a3 oldFolders:(id)a4 status:(int64_t)a5 error:(id)a6
+- (void)_handleDaemonBackedLocalFolderChangeWithDBChangeIndices:(__CFArray *)indices oldFolders:(id)folders status:(int64_t)status error:(id)error
 {
-  v10 = a4;
-  v11 = a6;
-  if ((a5 + 1) <= 0xB && ((1 << (a5 + 1)) & 0xBC3) != 0)
+  foldersCopy = folders;
+  errorCopy = error;
+  if ((status + 1) <= 0xB && ((1 << (status + 1)) & 0xBC3) != 0)
   {
-    v12 = DALoggingwithCategory();
+    visibleFolders = DALoggingwithCategory();
     v13 = _CPLog_to_os_log_type[3];
-    if (os_log_type_enabled(v12, v13))
+    if (os_log_type_enabled(visibleFolders, v13))
     {
       v30 = 134218242;
-      v31 = a5;
+      statusCopy = status;
       v32 = 2112;
-      v33 = v11;
-      _os_log_impl(&dword_0, v12, v13, "Failed to send folder change to server with status %ld error %@", &v30, 0x16u);
+      v33 = errorCopy;
+      _os_log_impl(&dword_0, visibleFolders, v13, "Failed to send folder change to server with status %ld error %@", &v30, 0x16u);
     }
   }
 
   else
   {
     [(ASAgent *)self _openLocalDBConnections];
-    if (a3 && CFArrayGetCount(a3))
+    if (indices && CFArrayGetCount(indices))
     {
       v14 = +[ASLocalDBHelper sharedInstance];
-      v15 = [(ASAgent *)self account];
-      v16 = [v15 accountID];
-      [v14 calDatabaseForAccountID:v16];
+      account = [(ASAgent *)self account];
+      accountID = [account accountID];
+      [v14 calDatabaseForAccountID:accountID];
 
-      v17 = [(ASAgent *)self account];
-      v18 = [v17 _copyExchangeCalendarStore:1];
+      account2 = [(ASAgent *)self account];
+      v18 = [account2 _copyExchangeCalendarStore:1];
 
-      v19 = [(ASAgent *)self account];
-      v20 = [v19 changeTrackingID];
+      account3 = [(ASAgent *)self account];
+      changeTrackingID = [account3 changeTrackingID];
       CalDatabaseClearIndividualChangeRowIDsForClient();
 
       CFRelease(v18);
-      v21 = [(ASAgent *)self account];
-      v22 = [v21 accountID];
-      [v14 calSaveDatabaseForAccountID:v22];
+      account4 = [(ASAgent *)self account];
+      accountID2 = [account4 accountID];
+      [v14 calSaveDatabaseForAccountID:accountID2];
     }
 
-    v23 = [(ASAgent *)self account];
-    v12 = [v23 visibleFolders];
+    account5 = [(ASAgent *)self account];
+    visibleFolders = [account5 visibleFolders];
 
-    v24 = [(ASAgent *)self account];
-    v25 = [v24 enabledForDADataclass:2];
+    account6 = [(ASAgent *)self account];
+    v25 = [account6 enabledForDADataclass:2];
 
     if (v25)
     {
-      [(ASAgent *)self _abBestEffortApplyNewFolders:v12 oldFolders:v10 shouldCreateFoldersMissingInDB:0];
+      [(ASAgent *)self _abBestEffortApplyNewFolders:visibleFolders oldFolders:foldersCopy shouldCreateFoldersMissingInDB:0];
     }
 
-    v26 = [(ASAgent *)self account];
-    v27 = [v26 enabledForDADataclass:4];
+    account7 = [(ASAgent *)self account];
+    v27 = [account7 enabledForDADataclass:4];
 
     if (v27)
     {
-      [(ASAgent *)self _calBestEffortApplyNewFolders:v12 oldFolders:v10 shouldCreateFoldersMissingInDB:0];
+      [(ASAgent *)self _calBestEffortApplyNewFolders:visibleFolders oldFolders:foldersCopy shouldCreateFoldersMissingInDB:0];
     }
 
-    v28 = [(ASAgent *)self account];
-    v29 = [v28 enabledForDADataclass:32];
+    account8 = [(ASAgent *)self account];
+    v29 = [account8 enabledForDADataclass:32];
 
     if (v29)
     {
-      [(ASAgent *)self _notesBestEffortApplyNewFolders:v12 oldFolders:v10 shouldCreateFoldersMissingInDB:0];
+      [(ASAgent *)self _notesBestEffortApplyNewFolders:visibleFolders oldFolders:foldersCopy shouldCreateFoldersMissingInDB:0];
     }
 
     [(ASAgent *)self _closeLocalDBConnectionsWithoutSaving];
@@ -3276,53 +3276,53 @@ LABEL_103:
   }
 }
 
-- (void)_handleLocalReminderFolderChangeWithFolder:(id)a3 oldFolders:(id)a4 status:(int64_t)a5 error:(id)a6
+- (void)_handleLocalReminderFolderChangeWithFolder:(id)folder oldFolders:(id)folders status:(int64_t)status error:(id)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if ((a5 + 1) <= 0xB && ((1 << (a5 + 1)) & 0xBC3) != 0)
+  folderCopy = folder;
+  foldersCopy = folders;
+  errorCopy = error;
+  if ((status + 1) <= 0xB && ((1 << (status + 1)) & 0xBC3) != 0)
   {
     v13 = DALoggingwithCategory();
     v14 = _CPLog_to_os_log_type[3];
     if (os_log_type_enabled(v13, v14))
     {
       v24 = 134218242;
-      v25 = a5;
+      statusCopy = status;
       v26 = 2112;
-      v27 = v12;
+      v27 = errorCopy;
       _os_log_impl(&dword_0, v13, v14, "Failed to send folder change to server with status %ld error %@", &v24, 0x16u);
     }
   }
 
   else
   {
-    v15 = [v10 changeType];
-    v16 = [(ASAgent *)self sharedReminderKitHelper];
-    if (v15)
+    changeType = [folderCopy changeType];
+    sharedReminderKitHelper = [(ASAgent *)self sharedReminderKitHelper];
+    if (changeType)
     {
-      v17 = [v10 serverID];
-      v18 = [(ASAgent *)self account];
-      [v16 clearFolderChangeForFolderID:v17 forAccount:v18];
+      serverID = [folderCopy serverID];
+      account = [(ASAgent *)self account];
+      [sharedReminderKitHelper clearFolderChangeForFolderID:serverID forAccount:account];
     }
 
     else
     {
-      v17 = [v10 localUUID];
-      v18 = [v10 serverID];
-      v19 = [(ASAgent *)self account];
-      [v16 clearFolderAdditionForFolderUUID:v17 folderID:v18 forAccount:v19];
+      serverID = [folderCopy localUUID];
+      account = [folderCopy serverID];
+      account2 = [(ASAgent *)self account];
+      [sharedReminderKitHelper clearFolderAdditionForFolderUUID:serverID folderID:account forAccount:account2];
     }
 
-    v20 = [(ASAgent *)self account];
-    v21 = [v20 visibleFolders];
+    account3 = [(ASAgent *)self account];
+    visibleFolders = [account3 visibleFolders];
 
-    v22 = [(ASAgent *)self account];
-    v23 = [v22 enabledForDADataclass:16];
+    account4 = [(ASAgent *)self account];
+    v23 = [account4 enabledForDADataclass:16];
 
     if (v23)
     {
-      [(ASAgent *)self _reminderBestEffortApplyNewFolders:v21 oldFolders:v11 shouldCreateFoldersMissingInDB:0];
+      [(ASAgent *)self _reminderBestEffortApplyNewFolders:visibleFolders oldFolders:foldersCopy shouldCreateFoldersMissingInDB:0];
     }
   }
 
@@ -3332,83 +3332,83 @@ LABEL_103:
   }
 }
 
-- (void)localChangeForFolder:(id)a3 finishedWithStatus:(int64_t)a4 andError:(id)a5 completionBlock:(id)a6
+- (void)localChangeForFolder:(id)folder finishedWithStatus:(int64_t)status andError:(id)error completionBlock:(id)block
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if (a4 == 2)
+  folderCopy = folder;
+  errorCopy = error;
+  blockCopy = block;
+  if (status == 2)
   {
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterPostNotification(DarwinNotifyCenter, @"ASAccountFolderHierarchyExternallyChangedNotification", 0, 0, 1u);
   }
 
   --self->_numLocalFolderUpdatesInFlight;
-  if (v12)
+  if (blockCopy)
   {
-    v14 = [v10 serverID];
-    v15 = [v10 displayName];
-    v12[2](v12, v14, v15, a4, v11);
+    serverID = [folderCopy serverID];
+    displayName = [folderCopy displayName];
+    blockCopy[2](blockCopy, serverID, displayName, status, errorCopy);
   }
 
   else
   {
-    v14 = DALoggingwithCategory();
+    serverID = DALoggingwithCategory();
     v16 = _CPLog_to_os_log_type[3];
-    if (os_log_type_enabled(v14, v16))
+    if (os_log_type_enabled(serverID, v16))
     {
       v18 = 138412802;
-      v19 = v10;
+      v19 = folderCopy;
       v20 = 2048;
-      v21 = a4;
+      statusCopy = status;
       v22 = 2112;
-      v23 = v11;
-      _os_log_impl(&dword_0, v14, v16, "changed folder %@ finished with status %ld and error %@, but I can't find the completion block for it!", &v18, 0x20u);
+      v23 = errorCopy;
+      _os_log_impl(&dword_0, serverID, v16, "changed folder %@ finished with status %ld and error %@, but I can't find the completion block for it!", &v18, 0x20u);
     }
   }
 
   if (!self->_numLocalFolderUpdatesInFlight)
   {
-    v17 = [(ASAgent *)self account];
-    [v17 setSafeToPing:1];
+    account = [(ASAgent *)self account];
+    [account setSafeToPing:1];
   }
 }
 
-- (void)processDAFolderChange:(id)a3 withCompletionBlock:(id)a4
+- (void)processDAFolderChange:(id)change withCompletionBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
+  blockCopy = block;
+  changeCopy = change;
   v8 = [ASFolder alloc];
-  [v7 dataclass];
+  [changeCopy dataclass];
   v9 = _UserASFolderTypeForDataclass();
-  v10 = [v7 folderId];
-  v11 = [v7 parentFolderId];
-  v12 = [v7 displayName];
-  v15 = [v8 initWithFolderType:v9 serverID:v10 parentID:v11 displayName:v12 localID:0];
+  folderId = [changeCopy folderId];
+  parentFolderId = [changeCopy parentFolderId];
+  displayName = [changeCopy displayName];
+  v15 = [v8 initWithFolderType:v9 serverID:folderId parentID:parentFolderId displayName:displayName localID:0];
 
-  [v15 setChangeType:{objc_msgSend(v7, "changeType")}];
-  v13 = [v7 renameOnCollision];
+  [v15 setChangeType:{objc_msgSend(changeCopy, "changeType")}];
+  renameOnCollision = [changeCopy renameOnCollision];
 
-  [v15 setRenameOnCollision:v13];
+  [v15 setRenameOnCollision:renameOnCollision];
   ++self->_numLocalFolderUpdatesInFlight;
-  v14 = [(ASAgent *)self account];
-  [v14 syncLocallyChangedFolder:v15 consumer:self completionBlock:v6];
+  account = [(ASAgent *)self account];
+  [account syncLocallyChangedFolder:v15 consumer:self completionBlock:blockCopy];
 }
 
-- (void)processMeetingRequestDatas:(id)a3 deliveryIdsToClear:(id)a4 deliveryIdsToSoftClear:(id)a5 inFolderWithId:(id)a6 callback:(id)a7
+- (void)processMeetingRequestDatas:(id)datas deliveryIdsToClear:(id)clear deliveryIdsToSoftClear:(id)softClear inFolderWithId:(id)id callback:(id)callback
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [(ASAgent *)self account];
-  v18 = [v17 enabledForDADataclass:4];
+  datasCopy = datas;
+  clearCopy = clear;
+  softClearCopy = softClear;
+  idCopy = id;
+  callbackCopy = callback;
+  account = [(ASAgent *)self account];
+  v18 = [account enabledForDADataclass:4];
 
   if (v18)
   {
-    v19 = [(ASAgent *)self account];
-    [v19 attemptInvitationLinkageForMetaDatas:v12 deliveryIdsToClear:v13 deliveryIdsToSoftClear:v14 inFolderWithId:v15 callback:v16];
+    account2 = [(ASAgent *)self account];
+    [account2 attemptInvitationLinkageForMetaDatas:datasCopy deliveryIdsToClear:clearCopy deliveryIdsToSoftClear:softClearCopy inFolderWithId:idCopy callback:callbackCopy];
   }
 
   else
@@ -3421,51 +3421,51 @@ LABEL_103:
       _os_log_impl(&dword_0, v20, v21, "ProcessMeetingRequests: account not enabled for event class", v22, 2u);
     }
 
-    (*(v16 + 2))(v16, 0);
+    (*(callbackCopy + 2))(callbackCopy, 0);
   }
 }
 
 - (void)_setUpCalNotifications
 {
   v3 = +[ESLocalDBWatcher sharedDBWatcher];
-  v4 = [(ASAgent *)self account];
-  v5 = [v4 accountID];
+  account = [(ASAgent *)self account];
+  accountID = [account accountID];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_7F00;
   v7[3] = &unk_6CE80;
   v7[4] = self;
-  [v3 registerConcernedCalParty:self forAccountID:v5 withChangedBlock:v7];
+  [v3 registerConcernedCalParty:self forAccountID:accountID withChangedBlock:v7];
 
-  v6 = [(ASAgent *)self account];
-  [v6 setEventsNumberOfPastDaysToSync:{-[ASAgent preferredEventDaysToSync](self, "preferredEventDaysToSync")}];
+  account2 = [(ASAgent *)self account];
+  [account2 setEventsNumberOfPastDaysToSync:{-[ASAgent preferredEventDaysToSync](self, "preferredEventDaysToSync")}];
 }
 
 - (void)_tearDownCalNotifications
 {
   v5 = +[ESLocalDBWatcher sharedDBWatcher];
-  v3 = [(ASAgent *)self account];
-  v4 = [v3 accountID];
-  [v5 removeConcernedCalParty:self forAccountID:v4];
+  account = [(ASAgent *)self account];
+  accountID = [account accountID];
+  [v5 removeConcernedCalParty:self forAccountID:accountID];
 }
 
 - (void)_setUpReminderNotifications
 {
-  v3 = [(ASAgent *)self sharedReminderKitHelper];
-  v4 = [(ASAgent *)self account];
+  sharedReminderKitHelper = [(ASAgent *)self sharedReminderKitHelper];
+  account = [(ASAgent *)self account];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_8114;
   v5[3] = &unk_6CE80;
   v5[4] = self;
-  [v3 registerReminderChangeNotificationsForAccount:v4 withChangedBlock:v5];
+  [sharedReminderKitHelper registerReminderChangeNotificationsForAccount:account withChangedBlock:v5];
 }
 
 - (void)_tearDownReminderNotifications
 {
-  v4 = [(ASAgent *)self sharedReminderKitHelper];
-  v3 = [(ASAgent *)self account];
-  [v4 removeReminderChangeNotificationsForAccount:v3];
+  sharedReminderKitHelper = [(ASAgent *)self sharedReminderKitHelper];
+  account = [(ASAgent *)self account];
+  [sharedReminderKitHelper removeReminderChangeNotificationsForAccount:account];
 }
 
 - (void)_setUpABNotifications
@@ -3504,8 +3504,8 @@ LABEL_103:
 
 - (void)_verifySearchStore
 {
-  v3 = [(ASAgent *)self account];
-  v4 = [v3 enabledForDADataclass:8];
+  account = [(ASAgent *)self account];
+  v4 = [account enabledForDADataclass:8];
 
   v5 = DALoggingwithCategory();
   v6 = _CPLog_to_os_log_type[6];
@@ -3518,8 +3518,8 @@ LABEL_103:
       _os_log_impl(&dword_0, v5, v6, "Verifying search store is present", buf, 2u);
     }
 
-    v8 = [(ASAgent *)self account];
-    v9 = [v8 enabledForDADataclass:2];
+    account2 = [(ASAgent *)self account];
+    v9 = [account2 enabledForDADataclass:2];
 
     if (v9)
     {
@@ -3551,16 +3551,16 @@ LABEL_10:
 LABEL_12:
   v12 = &PLLogRegisteredEvent_ptr;
   v13 = +[ASLocalDBHelper sharedInstance];
-  v14 = [(ASAgent *)self account];
-  v15 = [v14 changeTrackingID];
-  [v13 abOpenDBWithClientIdentifier:v15];
+  account3 = [(ASAgent *)self account];
+  changeTrackingID = [account3 changeTrackingID];
+  [v13 abOpenDBWithClientIdentifier:changeTrackingID];
 
   v16 = +[ASLocalDBHelper sharedInstance];
-  v17 = [v16 abDB];
+  abDB = [v16 abDB];
 
-  v18 = [(ASAgent *)self account];
+  account4 = [(ASAgent *)self account];
   v19 = 1;
-  v20 = [v18 _copyABAccount:1];
+  v20 = [account4 _copyABAccount:1];
 
   v21 = ABAddressBookCopyArrayOfAllSourcesInAccount();
   if ([v21 count])
@@ -3585,7 +3585,7 @@ LABEL_12:
             _os_log_impl(&dword_0, v27, v6, "Found an extra search store.  Toss it", v35, 2u);
           }
 
-          ABAddressBookRemoveRecord(v17, v25, 0);
+          ABAddressBookRemoveRecord(abDB, v25, 0);
           v22 = 1;
         }
 
@@ -3612,7 +3612,7 @@ LABEL_12:
 
     if ((v28 & 1) == 0)
     {
-      ABAddressBookRemoveRecord(v17, v23, 0);
+      ABAddressBookRemoveRecord(abDB, v23, 0);
       v22 = 1;
       v12 = &PLLogRegisteredEvent_ptr;
       v20 = v33;
@@ -3635,7 +3635,7 @@ LABEL_12:
     ABRecordSetValue(v23, kABSourceTypeProperty, &off_6E450, 0);
     ABAddressBookSetAccountForSource();
     ABRecordSetValue(v23, kABSourceEnabledProperty, [NSNumber numberWithBool:v34], 0);
-    ABAddressBookAddRecord(v17, v23, 0);
+    ABAddressBookAddRecord(abDB, v23, 0);
     v22 = 1;
     goto LABEL_30;
   }
@@ -3685,14 +3685,14 @@ LABEL_32:
   }
 
 LABEL_33:
-  v29 = [v12[390] sharedInstance];
-  [v29 abCloseDBAndSave:v22 & 1];
+  sharedInstance = [v12[390] sharedInstance];
+  [sharedInstance abCloseDBAndSave:v22 & 1];
 }
 
 - (void)startMonitoring
 {
   [(ASAgent *)self setIsMonitoring:1];
-  v36 = self;
+  selfCopy = self;
   objc_initWeak(&location, self);
   v41[0] = _NSConcreteStackBlock;
   v41[1] = 3221225472;
@@ -3703,63 +3703,63 @@ LABEL_33:
   [(ASAgent *)self _verifySearchStore];
   [(ASAgent *)self refreshFolderListRequireChangedFolders:0 isUserRequested:0];
   v3 = +[NSNotificationCenter defaultCenter];
-  v4 = [(ASAgent *)self account];
-  [v3 addObserver:self selector:"folderHierarchyUpdateNotification:" name:DAAccountFolderHierarchyNeedsUpdateNotification object:v4];
+  account = [(ASAgent *)self account];
+  [v3 addObserver:self selector:"folderHierarchyUpdateNotification:" name:DAAccountFolderHierarchyNeedsUpdateNotification object:account];
 
   v5 = +[NSNotificationCenter defaultCenter];
-  v6 = [(ASAgent *)self account];
-  [v5 addObserver:self selector:"folderHierarchyUpdateRequireChangedFoldersNotification:" name:DAAccountFolderHierarchyNeedsUpdateRequireChangedFoldersNotification object:v6];
+  account2 = [(ASAgent *)self account];
+  [v5 addObserver:self selector:"folderHierarchyUpdateRequireChangedFoldersNotification:" name:DAAccountFolderHierarchyNeedsUpdateRequireChangedFoldersNotification object:account2];
 
   v7 = +[NSNotificationCenter defaultCenter];
-  v8 = [(ASAgent *)self account];
-  [v7 addObserver:self selector:"folderContentsUpdate:" name:DAAccountFolderContentsChangedNotification object:v8];
+  account3 = [(ASAgent *)self account];
+  [v7 addObserver:self selector:"folderContentsUpdate:" name:DAAccountFolderContentsChangedNotification object:account3];
 
-  v9 = [(ASAgent *)self account];
-  LODWORD(v8) = [v9 enabledForDADataclass:2];
+  account4 = [(ASAgent *)self account];
+  LODWORD(account3) = [account4 enabledForDADataclass:2];
 
-  if (v8)
+  if (account3)
   {
     [(ASAgent *)self _setUpABNotifications];
   }
 
-  v10 = [(ASAgent *)self account];
-  v11 = [v10 enabledForDADataclass:4];
+  account5 = [(ASAgent *)self account];
+  v11 = [account5 enabledForDADataclass:4];
 
   if (v11)
   {
     [(ASAgent *)self _setUpCalNotifications];
   }
 
-  v12 = [(ASAgent *)self account];
-  v13 = [v12 enabledForDADataclass:16];
+  account6 = [(ASAgent *)self account];
+  v13 = [account6 enabledForDADataclass:16];
 
   if (v13)
   {
     [(ASAgent *)self _setUpReminderNotifications];
   }
 
-  v14 = [(ASAgent *)self account];
-  v15 = [v14 enabledForDADataclass:32];
+  account7 = [(ASAgent *)self account];
+  v15 = [account7 enabledForDADataclass:32];
 
   if (v15)
   {
     [(ASAgent *)self _setUpNotesNotifications];
   }
 
-  v16 = [(ASAgent *)self account];
-  v34 = [v16 folderIdsForPersistentPush];
+  account8 = [(ASAgent *)self account];
+  folderIdsForPersistentPush = [account8 folderIdsForPersistentPush];
 
   v39 = 0u;
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v17 = [v34 allKeys];
-  v18 = [v17 countByEnumeratingWithState:&v37 objects:v48 count:16];
+  allKeys = [folderIdsForPersistentPush allKeys];
+  v18 = [allKeys countByEnumeratingWithState:&v37 objects:v48 count:16];
   if (v18)
   {
     v19 = *v38;
     v20 = _CPLog_to_os_log_type[6];
-    obj = v17;
+    obj = allKeys;
     do
     {
       for (i = 0; i != v18; i = i + 1)
@@ -3770,8 +3770,8 @@ LABEL_33:
         }
 
         v22 = *(*(&v37 + 1) + 8 * i);
-        v23 = [(ASAgent *)v36 account];
-        v24 = [v23 folderIdsForPersistentPushForDataclasses:1 clientID:v22];
+        account9 = [(ASAgent *)selfCopy account];
+        v24 = [account9 folderIdsForPersistentPushForDataclasses:1 clientID:v22];
 
         if (![v24 count])
         {
@@ -3797,23 +3797,23 @@ LABEL_33:
           _os_log_impl(&dword_0, v25, v20, "Start monitoring %lu mail folders for client: %@", buf, 0x16u);
         }
 
-        v27 = [(ASAgent *)v36 account];
-        v28 = [v24 allObjects];
-        v29 = [v27 monitorFoldersWithIDs:v28];
+        account10 = [(ASAgent *)selfCopy account];
+        allObjects = [v24 allObjects];
+        v29 = [account10 monitorFoldersWithIDs:allObjects];
 
         if (v29)
         {
           v30 = +[ESDAccessManager sharedManager];
-          v31 = [(ASAgent *)v36 account];
-          v32 = [v31 accountID];
-          v33 = [v24 allObjects];
-          [v30 addPersistentClientWithAccountID:v32 clientID:v22 watchedIDs:v33];
+          account11 = [(ASAgent *)selfCopy account];
+          accountID = [account11 accountID];
+          allObjects2 = [v24 allObjects];
+          [v30 addPersistentClientWithAccountID:accountID clientID:v22 watchedIDs:allObjects2];
 
 LABEL_21:
         }
       }
 
-      v17 = obj;
+      allKeys = obj;
       v18 = [obj countByEnumeratingWithState:&v37 objects:v48 count:16];
     }
 
@@ -3824,10 +3824,10 @@ LABEL_21:
   objc_destroyWeak(&location);
 }
 
-- (void)requestAgentStopMonitoringWithCompletionBlock:(id)a3
+- (void)requestAgentStopMonitoringWithCompletionBlock:(id)block
 {
   self->_isShuttingDown = 1;
-  v10 = a3;
+  blockCopy = block;
   [(ASAgent *)self setIsMonitoring:0];
   [(ASAgent *)self stopObservingReachability];
   v4 = +[NSNotificationCenter defaultCenter];
@@ -3840,32 +3840,32 @@ LABEL_21:
   [(NSLock *)self->_folderItemSyncRequestLock lock];
   [(NSMutableArray *)self->_outstandingFolderRequests removeAllObjects];
   [(NSLock *)self->_folderItemSyncRequestLock unlock];
-  v5 = [(ASAgent *)self account];
-  v6 = [v5 existingTaskManager];
-  [v6 shutdown];
+  account = [(ASAgent *)self account];
+  existingTaskManager = [account existingTaskManager];
+  [existingTaskManager shutdown];
 
   v7 = +[DALocalDBGateKeeper sharedGateKeeper];
-  v8 = [(ASAgent *)self account];
-  [v7 unregisterWaiterForDataclassLocks:v8];
+  account2 = [(ASAgent *)self account];
+  [v7 unregisterWaiterForDataclassLocks:account2];
 
   v9 = +[DALocalDBGateKeeper sharedGateKeeper];
   [v9 unregisterWaiterForDataclassLocks:self];
 
-  v10[2](v10, self);
+  blockCopy[2](blockCopy, self);
 }
 
-- (id)_parentIdFromEventId:(id)a3
+- (id)_parentIdFromEventId:(id)id
 {
-  v3 = a3;
-  v4 = [v3 rangeOfString:@"<!ExceptionDate!>"];
+  idCopy = id;
+  v4 = [idCopy rangeOfString:@"<!ExceptionDate!>"];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = v3;
+    v5 = idCopy;
   }
 
   else
   {
-    v5 = [v3 substringToIndex:v4];
+    v5 = [idCopy substringToIndex:v4];
   }
 
   v6 = v5;
@@ -3873,25 +3873,25 @@ LABEL_21:
   return v6;
 }
 
-- (id)_exchangeIdForLocalId:(id)a3 inContainer:(void *)a4 dataclass:(int64_t)a5 redirectToParent:(BOOL)a6
+- (id)_exchangeIdForLocalId:(id)id inContainer:(void *)container dataclass:(int64_t)dataclass redirectToParent:(BOOL)parent
 {
-  v6 = a6;
-  v9 = a3;
-  v10 = 0;
-  if (a5 > 15)
+  parentCopy = parent;
+  idCopy = id;
+  serverId = 0;
+  if (dataclass > 15)
   {
-    if (a5 == 16)
+    if (dataclass == 16)
     {
       v25 = +[ASLocalDBHelper sharedInstance];
-      v26 = [(ASAgent *)self account];
-      v27 = [v26 accountID];
-      [v25 calDatabaseForAccountID:v27];
-      [v9 intValue];
+      account = [(ASAgent *)self account];
+      accountID = [account accountID];
+      [v25 calDatabaseForAccountID:accountID];
+      [idCopy intValue];
       v28 = CalDatabaseCopyCalendarItemWithRowID();
 
       if (v28)
       {
-        v10 = CalCalendarItemCopyExternalID();
+        serverId = CalCalendarItemCopyExternalID();
         CFRelease(v28);
         goto LABEL_19;
       }
@@ -3899,23 +3899,23 @@ LABEL_21:
 
     else
     {
-      if (a5 != 32)
+      if (dataclass != 32)
       {
         goto LABEL_19;
       }
 
       v16 = [NSSet alloc];
-      v17 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v9 intValue]);
+      v17 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [idCopy intValue]);
       v18 = [v16 initWithObjects:{v17, 0}];
 
       v19 = +[ASLocalDBHelper sharedInstance];
-      v20 = [v19 noteDB];
-      v21 = [v20 notesForIntegerIds:v18];
+      noteDB = [v19 noteDB];
+      v21 = [noteDB notesForIntegerIds:v18];
 
       if ([v21 count])
       {
         v22 = [v21 objectAtIndexedSubscript:0];
-        v10 = [v22 serverId];
+        serverId = [v22 serverId];
 
         goto LABEL_19;
       }
@@ -3924,36 +3924,36 @@ LABEL_21:
     goto LABEL_16;
   }
 
-  if (a5 == 2)
+  if (dataclass == 2)
   {
     v23 = +[ASLocalDBHelper sharedInstance];
-    PersonWithRecordID = ABAddressBookGetPersonWithRecordID([v23 abDB], objc_msgSend(v9, "intValue"));
+    PersonWithRecordID = ABAddressBookGetPersonWithRecordID([v23 abDB], objc_msgSend(idCopy, "intValue"));
 
     if (PersonWithRecordID)
     {
-      v10 = ABRecordCopyValue(PersonWithRecordID, kABPersonExternalIdentifierProperty);
+      serverId = ABRecordCopyValue(PersonWithRecordID, kABPersonExternalIdentifierProperty);
       goto LABEL_19;
     }
 
 LABEL_16:
-    v10 = 0;
+    serverId = 0;
     goto LABEL_19;
   }
 
-  if (a5 == 4)
+  if (dataclass == 4)
   {
     v11 = +[ASLocalDBHelper sharedInstance];
-    v12 = [(ASAgent *)self account];
-    v13 = [v12 accountID];
-    [v11 calDatabaseForAccountID:v13];
-    [v9 intValue];
-    v10 = CalDatabaseCopyCalendarItemWithRowID();
+    account2 = [(ASAgent *)self account];
+    accountID2 = [account2 accountID];
+    [v11 calDatabaseForAccountID:accountID2];
+    [idCopy intValue];
+    serverId = CalDatabaseCopyCalendarItemWithRowID();
 
-    if (v10)
+    if (serverId)
     {
       v14 = CalCalendarItemCopyExternalID();
-      CFRelease(v10);
-      if (v6)
+      CFRelease(serverId);
+      if (parentCopy)
       {
         v15 = [(ASAgent *)self _parentIdFromEventId:v14];
       }
@@ -3963,28 +3963,28 @@ LABEL_16:
         v15 = v14;
       }
 
-      v10 = v15;
+      serverId = v15;
     }
   }
 
 LABEL_19:
 
-  return v10;
+  return serverId;
 }
 
-- (id)_localIdForExchangeId:(id)a3 inContainer:(void *)a4 dataclass:(int64_t)a5
+- (id)_localIdForExchangeId:(id)id inContainer:(void *)container dataclass:(int64_t)dataclass
 {
-  v8 = a3;
-  switch(a5)
+  idCopy = id;
+  switch(dataclass)
   {
     case 32:
-      v17 = [[NSSet alloc] initWithObjects:{v8, 0}];
-      v18 = [a4 notesForServerIds:v17];
+      v17 = [[NSSet alloc] initWithObjects:{idCopy, 0}];
+      v18 = [container notesForServerIds:v17];
       if ([v18 count])
       {
         v19 = [v18 objectAtIndexedSubscript:0];
-        v20 = [v19 integerId];
-        v12 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%d", [v20 intValue]);
+        integerId = [v19 integerId];
+        v12 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%d", [integerId intValue]);
       }
 
       else
@@ -3995,9 +3995,9 @@ LABEL_19:
       goto LABEL_15;
     case 4:
       v13 = +[ASLocalDBHelper sharedInstance];
-      v14 = [(ASAgent *)self account];
-      v15 = [v14 accountID];
-      [v13 calDatabaseForAccountID:v15];
+      account = [(ASAgent *)self account];
+      accountID = [account accountID];
+      [v13 calDatabaseForAccountID:accountID];
       v16 = CalDatabaseCopyEventWithExternalIDInCalendar();
 
       if (v16)
@@ -4034,15 +4034,15 @@ LABEL_15:
   return v12;
 }
 
-- (id)_syncKeyForFolderWithId:(id)a3
+- (id)_syncKeyForFolderWithId:(id)id
 {
-  v4 = a3;
-  v5 = [(ASAgent *)self account];
-  v6 = [v5 folderWithId:v4];
+  idCopy = id;
+  account = [(ASAgent *)self account];
+  v6 = [account folderWithId:idCopy];
 
   if (v6)
   {
-    v7 = -[ASAgent _syncKeyForFolderWithId:dataclass:](self, "_syncKeyForFolderWithId:dataclass:", v4, [v6 dataclass]);
+    v7 = -[ASAgent _syncKeyForFolderWithId:dataclass:](self, "_syncKeyForFolderWithId:dataclass:", idCopy, [v6 dataclass]);
   }
 
   else
@@ -4053,83 +4053,83 @@ LABEL_15:
   return v7;
 }
 
-- (id)_syncKeyForFolderWithId:(id)a3 dataclass:(int64_t)a4
+- (id)_syncKeyForFolderWithId:(id)id dataclass:(int64_t)dataclass
 {
-  v6 = a3;
-  v7 = 0;
-  if (a4 > 15)
+  idCopy = id;
+  syncAnchor = 0;
+  if (dataclass > 15)
   {
-    if (a4 == 16)
+    if (dataclass == 16)
     {
-      v12 = [(ASAgent *)self sharedReminderKitHelper];
-      v13 = [(ASAgent *)self account];
-      v7 = [v12 syncKeyForFolderWithId:v6 forAccount:v13];
+      sharedReminderKitHelper = [(ASAgent *)self sharedReminderKitHelper];
+      account = [(ASAgent *)self account];
+      syncAnchor = [sharedReminderKitHelper syncKeyForFolderWithId:idCopy forAccount:account];
 
       goto LABEL_20;
     }
 
-    if (a4 != 32)
+    if (dataclass != 32)
     {
       goto LABEL_20;
     }
 
-    v10 = [(ASAgent *)self _containerForFolderWithId:v6 dataclass:32];
+    v10 = [(ASAgent *)self _containerForFolderWithId:idCopy dataclass:32];
     v8 = v10;
     if (v10)
     {
-      v7 = [v10 syncAnchor];
+      syncAnchor = [v10 syncAnchor];
     }
 
     else
     {
-      v7 = 0;
+      syncAnchor = 0;
     }
 
     goto LABEL_19;
   }
 
-  if (a4 == 2)
+  if (dataclass == 2)
   {
-    v11 = [(ASAgent *)self _containerForFolderWithId:v6 dataclass:2];
+    v11 = [(ASAgent *)self _containerForFolderWithId:idCopy dataclass:2];
     if (v11)
     {
-      v7 = ABRecordCopyValue(v11, kABSourceExternalModificationTagProperty);
+      syncAnchor = ABRecordCopyValue(v11, kABSourceExternalModificationTagProperty);
       goto LABEL_20;
     }
 
     goto LABEL_17;
   }
 
-  if (a4 != 4)
+  if (dataclass != 4)
   {
     goto LABEL_20;
   }
 
-  if (![(ASAgent *)self _containerForFolderWithId:v6 dataclass:4])
+  if (![(ASAgent *)self _containerForFolderWithId:idCopy dataclass:4])
   {
     v14 = DALoggingwithCategory();
     v15 = _CPLog_to_os_log_type[7];
     if (os_log_type_enabled(v14, v15))
     {
       v17 = 138412290;
-      v18 = v6;
+      v18 = idCopy;
       _os_log_impl(&dword_0, v14, v15, "_syncKeyForFolderWithId Calendar containing folder with folder ID %@ not found", &v17, 0xCu);
     }
 
 LABEL_17:
-    v7 = 0;
+    syncAnchor = 0;
     goto LABEL_20;
   }
 
-  v7 = CalCalendarCopyExternalModificationTag();
+  syncAnchor = CalCalendarCopyExternalModificationTag();
   v8 = DALoggingwithCategory();
   v9 = _CPLog_to_os_log_type[7];
   if (os_log_type_enabled(v8, v9))
   {
     v17 = 138412546;
-    v18 = v7;
+    v18 = syncAnchor;
     v19 = 2112;
-    v20 = v6;
+    v20 = idCopy;
     _os_log_impl(&dword_0, v8, v9, "_syncKeyForFolderWithId Calendar external tag %@ for folder ID %@", &v17, 0x16u);
   }
 
@@ -4137,15 +4137,15 @@ LABEL_19:
 
 LABEL_20:
 
-  return v7;
+  return syncAnchor;
 }
 
-- (void)_setSyncKey:(id)a3 forFolderWithId:(id)a4
+- (void)_setSyncKey:(id)key forFolderWithId:(id)id
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(ASAgent *)self account];
-  v10 = [v9 folderWithId:v8];
+  keyCopy = key;
+  idCopy = id;
+  account = [(ASAgent *)self account];
+  v10 = [account folderWithId:idCopy];
 
   if (v10)
   {
@@ -4156,7 +4156,7 @@ LABEL_20:
 
     if ([v10 dataclass] == &dword_4)
     {
-      if ([(ASAgent *)self _containerForFolderWithId:v8 dataclass:4])
+      if ([(ASAgent *)self _containerForFolderWithId:idCopy dataclass:4])
       {
         CalCalendarSetExternalModificationTag();
         v11 = DALoggingwithCategory();
@@ -4164,9 +4164,9 @@ LABEL_20:
         if (os_log_type_enabled(v11, v12))
         {
           v18 = 138412546;
-          v19 = v7;
+          v19 = keyCopy;
           v20 = 2112;
-          v21 = v8;
+          v21 = idCopy;
           v13 = "_setSyncKey Calendar external tag %@ for folder ID %@";
 LABEL_18:
           _os_log_impl(&dword_0, v11, v12, v13, &v18, 0x16u);
@@ -4180,9 +4180,9 @@ LABEL_18:
         if (os_log_type_enabled(v11, v12))
         {
           v18 = 138412546;
-          v19 = v7;
+          v19 = keyCopy;
           v20 = 2112;
-          v21 = v8;
+          v21 = idCopy;
           v13 = "Attempted to set sync key %@ for folder with id %@.  But that events folder doesn't have a corresponding calendar";
           goto LABEL_18;
         }
@@ -4195,7 +4195,7 @@ LABEL_19:
 
     if ([v10 dataclass] == &dword_0 + 2)
     {
-      v14 = [(ASAgent *)self _containerForFolderWithId:v8 dataclass:2];
+      v14 = [(ASAgent *)self _containerForFolderWithId:idCopy dataclass:2];
       if (!v14)
       {
         v11 = DALoggingwithCategory();
@@ -4203,9 +4203,9 @@ LABEL_19:
         if (os_log_type_enabled(v11, v12))
         {
           v18 = 138412546;
-          v19 = v7;
+          v19 = keyCopy;
           v20 = 2112;
-          v21 = v8;
+          v21 = idCopy;
           v13 = "Attempted to set sync key %@ for folder with id %@.  But that contacts folder doesn't have a corresponding store";
           goto LABEL_18;
         }
@@ -4213,16 +4213,16 @@ LABEL_19:
         goto LABEL_19;
       }
 
-      ABRecordSetValue(v14, kABSourceExternalModificationTagProperty, v7, 0);
+      ABRecordSetValue(v14, kABSourceExternalModificationTagProperty, keyCopy, 0);
     }
 
     else if ([v10 dataclass] == &stru_20)
     {
-      v15 = [(ASAgent *)self _containerForFolderWithId:v8 dataclass:32];
+      v15 = [(ASAgent *)self _containerForFolderWithId:idCopy dataclass:32];
       v11 = v15;
       if (v15)
       {
-        [v15 setSyncAnchor:v7];
+        [v15 setSyncAnchor:keyCopy];
       }
 
       else
@@ -4232,9 +4232,9 @@ LABEL_19:
         if (os_log_type_enabled(v16, v17))
         {
           v18 = 138412546;
-          v19 = v7;
+          v19 = keyCopy;
           v20 = 2112;
-          v21 = v8;
+          v21 = idCopy;
           _os_log_impl(&dword_0, v16, v17, "Attempted to set sync key %@ for folder with id %@.  But that notes folder doesn't have a corresponding store", &v18, 0x16u);
         }
       }
@@ -4246,94 +4246,94 @@ LABEL_19:
 LABEL_20:
 }
 
-- (void)_updateSyncKey:(id)a3 forToDoFolderWithId:(id)a4
+- (void)_updateSyncKey:(id)key forToDoFolderWithId:(id)id
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ASAgent *)self sharedReminderKitHelper];
-  v9 = [(ASAgent *)self account];
-  v10 = [v8 updateSyncKey:v7 forFolderWithId:v6 forAccount:v9];
+  idCopy = id;
+  keyCopy = key;
+  sharedReminderKitHelper = [(ASAgent *)self sharedReminderKitHelper];
+  account = [(ASAgent *)self account];
+  v10 = [sharedReminderKitHelper updateSyncKey:keyCopy forFolderWithId:idCopy forAccount:account];
 
   if (v10)
   {
-    v11 = [(ASAgent *)self sharedReminderKitHelper];
-    [v11 commitChangesToStore];
+    sharedReminderKitHelper2 = [(ASAgent *)self sharedReminderKitHelper];
+    [sharedReminderKitHelper2 commitChangesToStore];
   }
 }
 
 - (void)_syncStarted
 {
-  v3 = [(ASAgent *)self account];
-  v2 = [v3 accountID];
-  [DAStoreSyncStatusUpdater syncStartedForStoreWithExternalID:v2];
+  account = [(ASAgent *)self account];
+  accountID = [account accountID];
+  [DAStoreSyncStatusUpdater syncStartedForStoreWithExternalID:accountID];
 }
 
-- (void)_syncEndedWithError:(id)a3
+- (void)_syncEndedWithError:(id)error
 {
-  v4 = a3;
-  v6 = [(ASAgent *)self account];
-  v5 = [v6 accountID];
-  [DAStoreSyncStatusUpdater syncEndedForStoreWithExternalID:v5 withError:v4];
+  errorCopy = error;
+  account = [(ASAgent *)self account];
+  accountID = [account accountID];
+  [DAStoreSyncStatusUpdater syncEndedForStoreWithExternalID:accountID withError:errorCopy];
 }
 
-- (BOOL)predicateShouldContinue:(id)a3 afterFindingRecord:(void *)a4
+- (BOOL)predicateShouldContinue:(id)continue afterFindingRecord:(void *)record
 {
-  if (a4)
+  if (record)
   {
-    [(ASAgent *)self setMatchedRecord:a4];
+    [(ASAgent *)self setMatchedRecord:record];
   }
 
-  return a4 == 0;
+  return record == 0;
 }
 
-- (void)_copyExistingABRecordForContact:(id)a3 matchOnAttributes:(BOOL)a4 inStore:(void *)a5
+- (void)_copyExistingABRecordForContact:(id)contact matchOnAttributes:(BOOL)attributes inStore:(void *)store
 {
-  v6 = a4;
-  v8 = a3;
-  if (v6)
+  attributesCopy = attributes;
+  contactCopy = contact;
+  if (attributesCopy)
   {
     v9 = +[ASLocalDBHelper sharedInstance];
-    v10 = [v9 abDB];
+    abDB = [v9 abDB];
 
     v11 = objc_opt_new();
-    v12 = [ABPredicate personPredicateWithGroup:0 source:a5 account:0];
+    v12 = [ABPredicate personPredicateWithGroup:0 source:store account:0];
     [v11 addObject:v12];
-    v13 = [v8 firstName];
+    firstName = [contactCopy firstName];
 
-    if (v13)
+    if (firstName)
     {
-      v14 = [v8 firstName];
-      v15 = [ABPredicate personPredicateWithValue:v14 comparison:0 forProperty:kABPersonFirstNameProperty];
+      firstName2 = [contactCopy firstName];
+      v15 = [ABPredicate personPredicateWithValue:firstName2 comparison:0 forProperty:kABPersonFirstNameProperty];
 
       [v11 addObject:v15];
     }
 
-    v16 = [v8 lastName];
+    lastName = [contactCopy lastName];
 
-    if (v16)
+    if (lastName)
     {
-      v17 = [v8 lastName];
-      v18 = [ABPredicate personPredicateWithValue:v17 comparison:0 forProperty:kABPersonLastNameProperty];
+      lastName2 = [contactCopy lastName];
+      v18 = [ABPredicate personPredicateWithValue:lastName2 comparison:0 forProperty:kABPersonLastNameProperty];
 
       [v11 addObject:v18];
     }
 
-    v19 = [v8 middleName];
+    middleName = [contactCopy middleName];
 
-    if (v19)
+    if (middleName)
     {
-      v20 = [v8 middleName];
-      v21 = [ABPredicate personPredicateWithValue:v20 comparison:0 forProperty:kABPersonMiddleNameProperty];
+      middleName2 = [contactCopy middleName];
+      v21 = [ABPredicate personPredicateWithValue:middleName2 comparison:0 forProperty:kABPersonMiddleNameProperty];
 
       [v11 addObject:v21];
     }
 
-    v22 = [v8 companyName];
+    companyName = [contactCopy companyName];
 
-    if (v22)
+    if (companyName)
     {
-      v23 = [v8 companyName];
-      v24 = [ABPredicate personPredicateWithValue:v23 comparison:0 forProperty:kABPersonOrganizationProperty];
+      companyName2 = [contactCopy companyName];
+      v24 = [ABPredicate personPredicateWithValue:companyName2 comparison:0 forProperty:kABPersonOrganizationProperty];
 
       [v11 addObject:v24];
     }
@@ -4341,12 +4341,12 @@ LABEL_20:
     if ([v11 count] >= 2 && (+[NSCompoundPredicate andPredicateWithSubpredicates:](NSCompoundPredicate, "andPredicateWithSubpredicates:", v11), (v25 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v26 = v25;
-      [ABPredicate searchPeopleWithPredicate:v25 sortOrder:1 inAddressBook:v10 withDelegate:self];
-      v27 = [(ASAgent *)self matchedRecord];
-      v28 = v27;
-      if (v27)
+      [ABPredicate searchPeopleWithPredicate:v25 sortOrder:1 inAddressBook:abDB withDelegate:self];
+      matchedRecord = [(ASAgent *)self matchedRecord];
+      v28 = matchedRecord;
+      if (matchedRecord)
       {
-        CFRetain(v27);
+        CFRetain(matchedRecord);
       }
 
       [(ASAgent *)self setMatchedRecord:0];
@@ -4366,29 +4366,29 @@ LABEL_20:
   return v28;
 }
 
-- (void)_copyExistingCalRecordForEvent:(id)a3 matchOnAttributes:(BOOL)a4 inCalendar:(void *)a5
+- (void)_copyExistingCalRecordForEvent:(id)event matchOnAttributes:(BOOL)attributes inCalendar:(void *)calendar
 {
-  v5 = a4;
-  v7 = a3;
+  attributesCopy = attributes;
+  eventCopy = event;
   v8 = +[ASLocalDBHelper sharedInstance];
-  v9 = [(ASAgent *)self account];
-  v10 = [v9 accountID];
-  [v8 calDatabaseForAccountID:v10];
+  account = [(ASAgent *)self account];
+  accountID = [account accountID];
+  [v8 calDatabaseForAccountID:accountID];
 
-  v11 = [v7 serverID];
+  serverID = [eventCopy serverID];
   v12 = DALoggingwithCategory();
   v13 = _CPLog_to_os_log_type[7];
   if (os_log_type_enabled(v12, v13))
   {
     *buf = 138412290;
-    v41 = v11;
+    v41 = serverID;
     _os_log_impl(&dword_0, v12, v13, "Invoking CalDatabaseCopyEventWithExternalIDInCalendar with serverID: %@, instead of using UID", buf, 0xCu);
   }
 
   started = CalDatabaseCopyEventWithExternalIDInCalendar();
-  v15 = [v7 uidForCalFramework];
-  v16 = v15;
-  if (!started && v15)
+  uidForCalFramework = [eventCopy uidForCalFramework];
+  v16 = uidForCalFramework;
+  if (!started && uidForCalFramework)
   {
     started = CalDatabaseCopyEventWithExternalIDInCalendar();
   }
@@ -4398,12 +4398,12 @@ LABEL_20:
     goto LABEL_40;
   }
 
-  v39 = v5;
+  v39 = attributesCopy;
   v17 = DALoggingwithCategory();
   if (os_log_type_enabled(v17, v13))
   {
     *buf = 138412546;
-    v41 = v11;
+    v41 = serverID;
     v42 = 2112;
     v43 = v16;
     _os_log_impl(&dword_0, v17, v13, "Did not find an event with serverID %@. Try searching with UID %@", buf, 0x16u);
@@ -4500,13 +4500,13 @@ LABEL_28:
 LABEL_29:
   if (!started && v39)
   {
-    v31 = [v7 subject];
-    v32 = [v7 startDateForCalFramework];
-    [v32 timeIntervalSinceReferenceDate];
+    subject = [eventCopy subject];
+    startDateForCalFramework = [eventCopy startDateForCalFramework];
+    [startDateForCalFramework timeIntervalSinceReferenceDate];
 
-    if (!v31)
+    if (!subject)
     {
-      v31 = &stru_6D4A8;
+      subject = &stru_6D4A8;
     }
 
     started = CalDatabaseCopyEventWithSummaryAndStartDateInCalendar();
@@ -4515,12 +4515,12 @@ LABEL_29:
       v33 = CalCalendarItemCopyExternalID();
       if (v33)
       {
-        v34 = [v7 serverID];
-        if (v34)
+        serverID2 = [eventCopy serverID];
+        if (serverID2)
         {
-          v35 = v34;
-          v36 = [v7 serverID];
-          v37 = [v33 isEqualToString:v36];
+          v35 = serverID2;
+          serverID3 = [eventCopy serverID];
+          v37 = [v33 isEqualToString:serverID3];
 
           if ((v37 & 1) == 0)
           {
@@ -4537,61 +4537,61 @@ LABEL_40:
   return started;
 }
 
-- (void)_noteSyncForFolderWithId:(id)a3 andTitle:(id)a4 finishedWithSuccess:(BOOL)a5
+- (void)_noteSyncForFolderWithId:(id)id andTitle:(id)title finishedWithSuccess:(BOOL)success
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  successCopy = success;
+  idCopy = id;
+  titleCopy = title;
+  if (idCopy)
   {
-    v10 = [(ASAgent *)self folderIdToSequentialFailureCount];
-    v11 = v10;
-    if (v5)
+    folderIdToSequentialFailureCount = [(ASAgent *)self folderIdToSequentialFailureCount];
+    v11 = folderIdToSequentialFailureCount;
+    if (successCopy)
     {
-      [v10 removeObjectForKey:v8];
+      [folderIdToSequentialFailureCount removeObjectForKey:idCopy];
 
-      v12 = [(ASAgent *)self folderIdToSequentialServerErrorCount];
-      [v12 removeObjectForKey:v8];
+      folderIdToSequentialServerErrorCount = [(ASAgent *)self folderIdToSequentialServerErrorCount];
+      [folderIdToSequentialServerErrorCount removeObjectForKey:idCopy];
     }
 
     else
     {
-      v13 = [v10 objectForKeyedSubscript:v8];
+      v13 = [folderIdToSequentialFailureCount objectForKeyedSubscript:idCopy];
       v14 = [v13 intValue] + 1;
 
       v15 = [NSNumber numberWithInt:v14];
-      v16 = [(ASAgent *)self folderIdToSequentialFailureCount];
-      [v16 setObject:v15 forKeyedSubscript:v8];
+      folderIdToSequentialFailureCount2 = [(ASAgent *)self folderIdToSequentialFailureCount];
+      [folderIdToSequentialFailureCount2 setObject:v15 forKeyedSubscript:idCopy];
 
-      v12 = DALoggingwithCategory();
+      folderIdToSequentialServerErrorCount = DALoggingwithCategory();
       v17 = _CPLog_to_os_log_type[3];
-      if (os_log_type_enabled(v12, v17))
+      if (os_log_type_enabled(folderIdToSequentialServerErrorCount, v17))
       {
         v18 = 138412802;
-        v19 = v8;
+        v19 = idCopy;
         v20 = 2112;
-        v21 = v9;
+        v21 = titleCopy;
         v22 = 1024;
         v23 = v14;
-        _os_log_impl(&dword_0, v12, v17, "Folder with id %@ and title %@ has failed to sync %d time(s) in a row", &v18, 0x1Cu);
+        _os_log_impl(&dword_0, folderIdToSequentialServerErrorCount, v17, "Folder with id %@ and title %@ has failed to sync %d time(s) in a row", &v18, 0x1Cu);
       }
     }
   }
 }
 
-- (void)_removePostponedRequestForFolderWithId:(id)a3
+- (void)_removePostponedRequestForFolderWithId:(id)id
 {
-  v4 = a3;
-  v5 = [(ASAgent *)self folderItemSyncRequestLock];
-  [v5 lock];
+  idCopy = id;
+  folderItemSyncRequestLock = [(ASAgent *)self folderItemSyncRequestLock];
+  [folderItemSyncRequestLock lock];
 
-  v6 = [(ASAgent *)self outstandingFolderRequests];
+  outstandingFolderRequests = [(ASAgent *)self outstandingFolderRequests];
 
-  if (v6)
+  if (outstandingFolderRequests)
   {
-    v23 = self;
-    v7 = [(ASAgent *)self outstandingFolderRequests];
-    v8 = [v7 copy];
+    selfCopy = self;
+    outstandingFolderRequests2 = [(ASAgent *)self outstandingFolderRequests];
+    v8 = [outstandingFolderRequests2 copy];
 
     v26 = 0u;
     v27 = 0u;
@@ -4619,13 +4619,13 @@ LABEL_40:
         }
 
         v16 = *(*(&v24 + 1) + 8 * i);
-        v17 = [v16 folder];
-        v18 = [v17 folderID];
-        if ([v18 isEqual:v4])
+        folder = [v16 folder];
+        folderID = [folder folderID];
+        if ([folderID isEqual:idCopy])
         {
-          v19 = [v16 containsPostponedActions];
+          containsPostponedActions = [v16 containsPostponedActions];
 
-          if (!v19)
+          if (!containsPostponedActions)
           {
             continue;
           }
@@ -4638,8 +4638,8 @@ LABEL_40:
             _os_log_impl(&dword_0, v20, v14, "Remove a pending request since it contains postponded actions for a failed request. Removing request %@", buf, 0xCu);
           }
 
-          v17 = [(ASAgent *)v23 outstandingFolderRequests];
-          [v17 removeObject:v16];
+          folder = [(ASAgent *)selfCopy outstandingFolderRequests];
+          [folder removeObject:v16];
         }
 
         else
@@ -4652,53 +4652,53 @@ LABEL_40:
       {
 LABEL_16:
 
-        self = v23;
+        self = selfCopy;
         break;
       }
     }
   }
 
-  v21 = [(ASAgent *)self folderItemSyncRequestLock];
-  [v21 unlock];
+  folderItemSyncRequestLock2 = [(ASAgent *)self folderItemSyncRequestLock];
+  [folderItemSyncRequestLock2 unlock];
 }
 
-- (void)_folderItemsSyncTask:(id)a3 failedWithErrorCode:(int64_t)a4
+- (void)_folderItemsSyncTask:(id)task failedWithErrorCode:(int64_t)code
 {
-  v6 = a3;
-  v7 = [v6 dataclass];
-  v8 = [v6 folderID];
-  if (!v8)
+  taskCopy = task;
+  dataclass = [taskCopy dataclass];
+  folderID = [taskCopy folderID];
+  if (!folderID)
   {
     sub_47DE8();
   }
 
-  v9 = [(ASAgent *)self account];
-  v10 = [v9 folderWithId:v8];
+  account = [(ASAgent *)self account];
+  v10 = [account folderWithId:folderID];
 
-  v11 = [v10 folderName];
-  [(ASAgent *)self _noteSyncForFolderWithId:v8 andTitle:v11 finishedWithSuccess:0];
+  folderName = [v10 folderName];
+  [(ASAgent *)self _noteSyncForFolderWithId:folderID andTitle:folderName finishedWithSuccess:0];
 
-  v12 = [(ASAgent *)self currentlySyncingFolderIds];
-  [v12 removeObject:v8];
+  currentlySyncingFolderIds = [(ASAgent *)self currentlySyncingFolderIds];
+  [currentlySyncingFolderIds removeObject:folderID];
 
-  [(ASAgent *)self _removePostponedRequestForFolderWithId:v8];
-  if (a4 > 11)
+  [(ASAgent *)self _removePostponedRequestForFolderWithId:folderID];
+  if (code > 11)
   {
-    if (a4 > 32)
+    if (code > 32)
     {
-      switch(a4)
+      switch(code)
       {
         case '!':
-          v18 = DALoggingwithCategory();
+          folderIdToSequentialServerErrorCount3 = DALoggingwithCategory();
           v37 = _CPLog_to_os_log_type[3];
-          if (!os_log_type_enabled(v18, v37))
+          if (!os_log_type_enabled(folderIdToSequentialServerErrorCount3, v37))
           {
             goto LABEL_41;
           }
 
           *v45 = 0;
           v22 = "User is out of disk space on the Exchange server.  We should probably put up a warning for this case";
-          v23 = v18;
+          v23 = folderIdToSequentialServerErrorCount3;
           v24 = v37;
           v25 = 2;
 LABEL_36:
@@ -4709,14 +4709,14 @@ LABEL_36:
         case 'C':
           [(ASAgent *)self refreshFolderListRequireChangedFolders:1 isUserRequested:1];
 LABEL_33:
-          -[ASAgent _queueServerFailureResyncForFolderWithId:isInitialSync:](self, "_queueServerFailureResyncForFolderWithId:isInitialSync:", v8, [v6 isInitialSync]);
+          -[ASAgent _queueServerFailureResyncForFolderWithId:isInitialSync:](self, "_queueServerFailureResyncForFolderWithId:isInitialSync:", folderID, [taskCopy isInitialSync]);
           goto LABEL_45;
       }
     }
 
     else
     {
-      if (a4 == 12)
+      if (code == 12)
       {
         v30 = DALoggingwithCategory();
         v31 = _CPLog_to_os_log_type[6];
@@ -4730,7 +4730,7 @@ LABEL_33:
         goto LABEL_45;
       }
 
-      if (a4 == 21 || a4 == 30)
+      if (code == 21 || code == 30)
       {
         goto LABEL_27;
       }
@@ -4739,36 +4739,36 @@ LABEL_33:
     goto LABEL_42;
   }
 
-  if (a4 > 7)
+  if (code > 7)
   {
-    if ((a4 - 8) < 2)
+    if ((code - 8) < 2)
     {
-      if (v7 == &dword_10)
+      if (dataclass == &dword_10)
       {
         [(ASAgent *)self _cacheFoldersForDataclasses:16];
-        [(ASAgent *)self _updateSyncKey:@"0" forToDoFolderWithId:v8];
+        [(ASAgent *)self _updateSyncKey:@"0" forToDoFolderWithId:folderID];
         [(ASAgent *)self _nilOutContainersForDataclasses:16];
       }
 
       else
       {
-        v32 = [(ASAgent *)self account];
-        v33 = [v32 changeTrackingID];
-        v34 = [(ASAgent *)self account];
-        v35 = [v34 accountID];
-        v36 = [ASDataHandler newDataHandlerForDataclass:v7 container:0 changeTrackingID:v33 accountID:v35];
+        account2 = [(ASAgent *)self account];
+        changeTrackingID = [account2 changeTrackingID];
+        account3 = [(ASAgent *)self account];
+        accountID = [account3 accountID];
+        v36 = [ASDataHandler newDataHandlerForDataclass:dataclass container:0 changeTrackingID:changeTrackingID accountID:accountID];
 
         [v36 openDB];
-        [(ASAgent *)self _cacheFoldersForDataclasses:v7];
-        [(ASAgent *)self _setSyncKey:@"0" forFolderWithId:v8];
-        [(ASAgent *)self _nilOutContainersForDataclasses:v7];
+        [(ASAgent *)self _cacheFoldersForDataclasses:dataclass];
+        [(ASAgent *)self _setSyncKey:@"0" forFolderWithId:folderID];
+        [(ASAgent *)self _nilOutContainersForDataclasses:dataclass];
         [v36 closeDBAndSave:1];
       }
 
       goto LABEL_33;
     }
 
-    if (a4 == 10)
+    if (code == 10)
     {
 LABEL_27:
       v26 = DALoggingwithCategory();
@@ -4780,7 +4780,7 @@ LABEL_27:
         *v45 = 138412546;
         *&v45[4] = v29;
         *&v45[12] = 2048;
-        *&v45[14] = a4;
+        *&v45[14] = code;
         _os_log_impl(&dword_0, v26, v27, "%@ Unrecoverable error %ld", v45, 0x16u);
       }
 
@@ -4793,7 +4793,7 @@ LABEL_42:
     if (os_log_type_enabled(v26, v41))
     {
       *v45 = 134217984;
-      *&v45[4] = a4;
+      *&v45[4] = code;
       _os_log_impl(&dword_0, v26, v41, "Unhandled error (%ld) from Folder Items Sync Task", v45, 0xCu);
     }
 
@@ -4802,24 +4802,24 @@ LABEL_44:
     goto LABEL_45;
   }
 
-  if (a4 != -1)
+  if (code != -1)
   {
-    if (a4)
+    if (code)
     {
-      if (a4 == 5)
+      if (code == 5)
       {
-        v13 = [(ASAgent *)self folderIdToSequentialServerErrorCount];
-        v14 = [v13 objectForKeyedSubscript:v8];
-        v15 = [v14 intValue];
+        folderIdToSequentialServerErrorCount = [(ASAgent *)self folderIdToSequentialServerErrorCount];
+        v14 = [folderIdToSequentialServerErrorCount objectForKeyedSubscript:folderID];
+        intValue = [v14 intValue];
 
-        v16 = [NSNumber numberWithInt:(v15 + 1)];
-        v17 = [(ASAgent *)self folderIdToSequentialServerErrorCount];
-        [v17 setObject:v16 forKeyedSubscript:v8];
+        v16 = [NSNumber numberWithInt:(intValue + 1)];
+        folderIdToSequentialServerErrorCount2 = [(ASAgent *)self folderIdToSequentialServerErrorCount];
+        [folderIdToSequentialServerErrorCount2 setObject:v16 forKeyedSubscript:folderID];
 
-        if (v15 > 0)
+        if (intValue > 0)
         {
-          v18 = [(ASAgent *)self folderIdToSequentialServerErrorCount];
-          [v18 setObject:&off_6E468 forKeyedSubscript:v8];
+          folderIdToSequentialServerErrorCount3 = [(ASAgent *)self folderIdToSequentialServerErrorCount];
+          [folderIdToSequentialServerErrorCount3 setObject:&off_6E468 forKeyedSubscript:folderID];
 LABEL_41:
 
           goto LABEL_45;
@@ -4835,25 +4835,25 @@ LABEL_41:
 
         if (v10)
         {
-          v18 = [[ESFolderSyncRequest alloc] initWithFolder:v10 hasRemoteChanges:0 isInitialUberSync:{objc_msgSend(v6, "isInitialSync")}];
-          [v18 setIsResyncAfterServerError:1];
+          folderIdToSequentialServerErrorCount3 = [[ESFolderSyncRequest alloc] initWithFolder:v10 hasRemoteChanges:0 isInitialUberSync:{objc_msgSend(taskCopy, "isInitialSync")}];
+          [folderIdToSequentialServerErrorCount3 setIsResyncAfterServerError:1];
 LABEL_40:
-          [(ASAgent *)self _appendSyncRequest:v18];
+          [(ASAgent *)self _appendSyncRequest:folderIdToSequentialServerErrorCount3];
           goto LABEL_41;
         }
 
-        v18 = DALoggingwithCategory();
+        folderIdToSequentialServerErrorCount3 = DALoggingwithCategory();
         v20 = _CPLog_to_os_log_type[3];
-        if (!os_log_type_enabled(v18, v20))
+        if (!os_log_type_enabled(folderIdToSequentialServerErrorCount3, v20))
         {
           goto LABEL_41;
         }
 
         *v45 = 138412290;
-        *&v45[4] = v8;
+        *&v45[4] = folderID;
         v22 = "Can't queue a retry sync, as we no longer have a folder with id %@";
 LABEL_25:
-        v23 = v18;
+        v23 = folderIdToSequentialServerErrorCount3;
         v24 = v20;
         v25 = 12;
         goto LABEL_36;
@@ -4863,25 +4863,25 @@ LABEL_25:
     }
 
 LABEL_22:
-    v19 = [v6 isResyncAfterConnectionFailed];
-    v18 = DALoggingwithCategory();
+    isResyncAfterConnectionFailed = [taskCopy isResyncAfterConnectionFailed];
+    folderIdToSequentialServerErrorCount3 = DALoggingwithCategory();
     v20 = _CPLog_to_os_log_type[6];
-    v21 = os_log_type_enabled(v18, v20);
-    if (!v19)
+    v21 = os_log_type_enabled(folderIdToSequentialServerErrorCount3, v20);
+    if (!isResyncAfterConnectionFailed)
     {
       if (v21)
       {
         *v45 = 138412290;
-        *&v45[4] = v6;
-        _os_log_impl(&dword_0, v18, v20, "Connection error, but this is the first failure for this task, so trying again.  Task = %@", v45, 0xCu);
+        *&v45[4] = taskCopy;
+        _os_log_impl(&dword_0, folderIdToSequentialServerErrorCount3, v20, "Connection error, but this is the first failure for this task, so trying again.  Task = %@", v45, 0xCu);
       }
 
       v38 = [ESFolderSyncRequest alloc];
-      v39 = [(ASAgent *)self account];
-      v40 = [v39 folderWithId:v8];
-      v18 = [v38 initWithFolder:v40 hasRemoteChanges:0 isInitialUberSync:{objc_msgSend(v6, "isInitialSync")}];
+      account4 = [(ASAgent *)self account];
+      v40 = [account4 folderWithId:folderID];
+      folderIdToSequentialServerErrorCount3 = [v38 initWithFolder:v40 hasRemoteChanges:0 isInitialUberSync:{objc_msgSend(taskCopy, "isInitialSync")}];
 
-      [v18 setIsResyncAfterConnectionFailed:1];
+      [folderIdToSequentialServerErrorCount3 setIsResyncAfterConnectionFailed:1];
       goto LABEL_40;
     }
 
@@ -4891,7 +4891,7 @@ LABEL_22:
     }
 
     *v45 = 138412290;
-    *&v45[4] = v6;
+    *&v45[4] = taskCopy;
     v22 = "Well, we tried twice, but couldn't connect to the server for this request.  Dropping this on the floor.  Task = %@";
     goto LABEL_25;
   }
@@ -4899,17 +4899,17 @@ LABEL_22:
 LABEL_45:
   [(ASAgent *)self _fireWaitingFolderItemSyncRequests];
   v42 = +[DALocalDBGateKeeper sharedGateKeeper];
-  [v42 relinquishLocksForWaiter:self dataclasses:v7 moreComing:0];
+  [v42 relinquishLocksForWaiter:self dataclasses:dataclass moreComing:0];
 }
 
-- (void)actionFailed:(int64_t)a3 forTask:(id)a4 error:(id)a5
+- (void)actionFailed:(int64_t)failed forTask:(id)task error:(id)error
 {
-  v8 = a4;
-  v9 = a5;
+  taskCopy = task;
+  errorCopy = error;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(ASAgent *)self _folderItemsSyncTask:v8 failedWithErrorCode:a3];
+    [(ASAgent *)self _folderItemsSyncTask:taskCopy failedWithErrorCode:failed];
   }
 
   else
@@ -4917,7 +4917,7 @@ LABEL_45:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(ASAgent *)self _moveItemsTask:v8 failedWithErrorCode:a3];
+      [(ASAgent *)self _moveItemsTask:taskCopy failedWithErrorCode:failed];
     }
 
     else
@@ -4925,7 +4925,7 @@ LABEL_45:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [(ASAgent *)self _smartMailTask:v8 failedWithErrorCode:a3 error:v9];
+        [(ASAgent *)self _smartMailTask:taskCopy failedWithErrorCode:failed error:errorCopy];
       }
     }
   }
@@ -4935,30 +4935,30 @@ LABEL_45:
   if (os_log_type_enabled(v10, v11))
   {
     v12 = 134218242;
-    v13 = a3;
+    failedCopy = failed;
     v14 = 2112;
-    v15 = v9;
+    v15 = errorCopy;
     _os_log_impl(&dword_0, v10, v11, "Failed: %ld, %@", &v12, 0x16u);
   }
 }
 
-- (BOOL)_detectDuplicatedEventFromExchangeEvent:(id)a3 inFolderWithId:(id)a4 isInitialSync:(BOOL)a5 eventServerIDsToDrop:(id)a6 eventServerIDSWithDroppedDeletes:(id)a7 resultingChangeActionsForServer:(id)a8 outEvent:(id *)a9 outLocalItem:(const void *)a10 outDidTouchDB:(BOOL *)a11
+- (BOOL)_detectDuplicatedEventFromExchangeEvent:(id)event inFolderWithId:(id)id isInitialSync:(BOOL)sync eventServerIDsToDrop:(id)drop eventServerIDSWithDroppedDeletes:(id)deletes resultingChangeActionsForServer:(id)server outEvent:(id *)outEvent outLocalItem:(const void *)self0 outDidTouchDB:(BOOL *)self1
 {
-  v14 = a5;
-  v17 = a3;
-  v18 = a4;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = [v17 serverID];
-  if (v22 && ([v20 containsObject:v22] & 1) != 0)
+  syncCopy = sync;
+  eventCopy = event;
+  idCopy = id;
+  dropCopy = drop;
+  deletesCopy = deletes;
+  serverCopy = server;
+  serverID = [eventCopy serverID];
+  if (serverID && ([deletesCopy containsObject:serverID] & 1) != 0)
   {
     v23 = DALoggingwithCategory();
     v24 = _CPLog_to_os_log_type[6];
     if (os_log_type_enabled(v23, v24))
     {
       *buf = 138412290;
-      v66 = v17;
+      v66 = eventCopy;
       _os_log_impl(&dword_0, v23, v24, "Not considering event %@ for duplicates, since it's paired with a delete for an event with an identical serverid", buf, 0xCu);
     }
 
@@ -4968,22 +4968,22 @@ LABEL_32:
     goto LABEL_33;
   }
 
-  v61 = v22;
-  v62 = v20;
-  v63 = v19;
-  v64 = v18;
-  v26 = [(ASAgent *)self _copyExistingLocalItemForExchangeItem:v17 matchOnAttributes:0 inContainer:[(ASAgent *)self _containerForFolderWithId:v18 dataclass:4]];
-  *a10 = v26;
+  v61 = serverID;
+  v62 = deletesCopy;
+  v63 = dropCopy;
+  v64 = idCopy;
+  v26 = [(ASAgent *)self _copyExistingLocalItemForExchangeItem:eventCopy matchOnAttributes:0 inContainer:[(ASAgent *)self _containerForFolderWithId:idCopy dataclass:4]];
+  *item = v26;
   if (v26)
   {
     v27 = v26;
     v23 = CalCalendarItemCopyExternalID();
     if (v23)
     {
-      v59 = v14;
-      v28 = [v17 serverID];
+      v59 = syncCopy;
+      serverID2 = [eventCopy serverID];
       v60 = v23;
-      v29 = [v23 isEqualToString:v28];
+      v29 = [v23 isEqualToString:serverID2];
 
       if (v29)
       {
@@ -4997,20 +4997,20 @@ LABEL_32:
         if (os_log_type_enabled(v30, v31))
         {
           *buf = 138412290;
-          v66 = v17;
+          v66 = eventCopy;
           _os_log_impl(&dword_0, v30, v31, "Received an add from Exchange for an event that we already knew about!  We're going to merge these events, and ignore the incoming event %@", buf, 0xCu);
         }
 
         v32 = [ASEvent alloc];
-        v33 = [(ASAgent *)self account];
-        v34 = [v32 initWithCalEvent:v27 serverID:v23 account:v33];
+        account = [(ASAgent *)self account];
+        v34 = [v32 initWithCalEvent:v27 serverID:v23 account:account];
 
-        v35 = [(ASAgent *)self account];
-        v36 = [v34 eventByMergingInEvent:v17 account:v35];
+        account2 = [(ASAgent *)self account];
+        v36 = [v34 eventByMergingInEvent:eventCopy account:account2];
 
-        v37 = [v36 serverID];
-        v38 = [v34 serverID];
-        v39 = [v37 isEqualToString:v38];
+        serverID3 = [v36 serverID];
+        serverID4 = [v34 serverID];
+        v39 = [serverID3 isEqualToString:serverID4];
 
         if (v39)
         {
@@ -5019,40 +5019,40 @@ LABEL_32:
 
         else
         {
-          v40 = v17;
+          v40 = eventCopy;
         }
 
         v58 = v40;
         if (([v58 isEqualToEvent:v36] & 1) == 0)
         {
           v41 = [[ASAction alloc] initWithItemChangeType:1 changedItem:v36 serverId:0];
-          [v21 addObject:v41];
+          [serverCopy addObject:v41];
         }
 
-        v42 = [v36 serverID];
-        v43 = [v34 serverID];
-        v44 = [v42 isEqualToString:v43];
+        serverID5 = [v36 serverID];
+        serverID6 = [v34 serverID];
+        v44 = [serverID5 isEqualToString:serverID6];
 
         if (v44)
         {
-          v45 = [v21 count];
+          v45 = [serverCopy count];
           v46 = v36;
           if (v45 >= 1)
           {
             v47 = (v45 & 0x7FFFFFFF) + 1;
             do
             {
-              v48 = [v21 objectAtIndexedSubscript:v47 - 2];
+              v48 = [serverCopy objectAtIndexedSubscript:v47 - 2];
               if (![v48 itemChangeType] || objc_msgSend(v48, "itemChangeType") == &dword_0 + 1)
               {
-                v49 = [v48 changedItem];
-                v50 = [v49 uidForCalFramework];
-                v51 = [v46 uidForCalFramework];
-                v52 = [v50 isEqualToString:v51];
+                changedItem = [v48 changedItem];
+                uidForCalFramework = [changedItem uidForCalFramework];
+                uidForCalFramework2 = [v46 uidForCalFramework];
+                v52 = [uidForCalFramework isEqualToString:uidForCalFramework2];
 
                 if (v52)
                 {
-                  [v21 removeObjectAtIndex:v47 - 2];
+                  [serverCopy removeObjectAtIndex:v47 - 2];
                 }
               }
 
@@ -5066,30 +5066,30 @@ LABEL_32:
         else
         {
           v53 = [ASAction alloc];
-          v54 = [v34 serverID];
-          v55 = [v53 initWithItemChangeType:2 changedItem:0 serverId:v54];
+          serverID7 = [v34 serverID];
+          v55 = [v53 initWithItemChangeType:2 changedItem:0 serverId:serverID7];
 
-          *a11 |= [(ASAgent *)self _handleAction:v55 inFolderWithId:v64 dataclass:4 isInitialSync:v59 resultingChangeActionsForServer:v21 eventServerIDsToDrop:v63 eventServerIDSWithDroppedDeletes:v20];
+          *b |= [(ASAgent *)self _handleAction:v55 inFolderWithId:v64 dataclass:4 isInitialSync:v59 resultingChangeActionsForServer:serverCopy eventServerIDsToDrop:v63 eventServerIDSWithDroppedDeletes:deletesCopy];
           v46 = v36;
         }
 
         v56 = v46;
-        *a9 = v46;
+        *outEvent = v46;
 
         v25 = 1;
       }
 
-      v19 = v63;
-      v18 = v64;
-      v22 = v61;
-      v20 = v62;
+      dropCopy = v63;
+      idCopy = v64;
+      serverID = v61;
+      deletesCopy = v62;
       v23 = v60;
     }
 
     else
     {
       v25 = 0;
-      v22 = v61;
+      serverID = v61;
     }
 
     goto LABEL_32;
@@ -5101,61 +5101,61 @@ LABEL_33:
   return v25;
 }
 
-- (BOOL)_handleToDoAction:(id)a3 inFolderWithId:(id)a4 isInitialSync:(BOOL)a5 resultingChangeActionsForServer:(id)a6 eventServerIDsToDrop:(id)a7 eventServerIDSWithDroppedDeletes:(id)a8
+- (BOOL)_handleToDoAction:(id)action inFolderWithId:(id)id isInitialSync:(BOOL)sync resultingChangeActionsForServer:(id)server eventServerIDsToDrop:(id)drop eventServerIDSWithDroppedDeletes:(id)deletes
 {
-  v9 = a5;
-  v12 = a4;
-  v13 = a6;
-  v14 = a3;
-  v15 = [v14 changedItem];
-  v16 = [v14 itemChangeType];
+  syncCopy = sync;
+  idCopy = id;
+  serverCopy = server;
+  actionCopy = action;
+  changedItem = [actionCopy changedItem];
+  itemChangeType = [actionCopy itemChangeType];
 
-  if (v16 >= 2)
+  if (itemChangeType >= 2)
   {
-    if (v16 != &dword_0 + 2)
+    if (itemChangeType != &dword_0 + 2)
     {
       v19 = 0;
       goto LABEL_11;
     }
 
-    v17 = [(ASAgent *)self sharedReminderKitHelper];
-    v21 = [(ASAgent *)self account];
-    v19 = [v17 deleteReminder:v15 forFolderWithId:v12 forAccount:v21];
+    sharedReminderKitHelper = [(ASAgent *)self sharedReminderKitHelper];
+    account = [(ASAgent *)self account];
+    v19 = [sharedReminderKitHelper deleteReminder:changedItem forFolderWithId:idCopy forAccount:account];
 
 LABEL_10:
     goto LABEL_11;
   }
 
-  v17 = [(ASAgent *)self sharedReminderKitHelper];
-  v18 = [(ASAgent *)self account];
-  if (!v9)
+  sharedReminderKitHelper = [(ASAgent *)self sharedReminderKitHelper];
+  account2 = [(ASAgent *)self account];
+  if (!syncCopy)
   {
-    v19 = [v17 addOrModifyReminder:v15 forFolderWithId:v12 forAccount:v18];
+    v19 = [sharedReminderKitHelper addOrModifyReminder:changedItem forFolderWithId:idCopy forAccount:account2];
 
     goto LABEL_10;
   }
 
   v23 = 0;
-  v19 = [v17 initialSyncReminder:v15 forFolderWithId:v12 forAccount:v18 resultingAction:&v23];
+  v19 = [sharedReminderKitHelper initialSyncReminder:changedItem forFolderWithId:idCopy forAccount:account2 resultingAction:&v23];
   v20 = v23;
 
   if (v20)
   {
-    [v13 addObject:v20];
+    [serverCopy addObject:v20];
   }
 
 LABEL_11:
   return v19;
 }
 
-- (BOOL)_clearChangeHistoriesWithChangeIdContext:(id)a3 dataclass:(int64_t)a4 inFolderWithId:(id)a5 pushedActions:(id)a6
+- (BOOL)_clearChangeHistoriesWithChangeIdContext:(id)context dataclass:(int64_t)dataclass inFolderWithId:(id)id pushedActions:(id)actions
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if (v11)
+  contextCopy = context;
+  idCopy = id;
+  actionsCopy = actions;
+  if (idCopy)
   {
-    v13 = [(ASAgent *)self _containerForFolderWithId:v11 dataclass:a4];
+    v13 = [(ASAgent *)self _containerForFolderWithId:idCopy dataclass:dataclass];
   }
 
   else
@@ -5164,29 +5164,29 @@ LABEL_11:
   }
 
   v14 = 0;
-  if (a4 > 15)
+  if (dataclass > 15)
   {
-    if (a4 == 16)
+    if (dataclass == 16)
     {
-      v49 = [(ASAgent *)self sharedReminderKitHelper];
-      v50 = [(ASAgent *)self account];
-      [v49 clearReminderChangesForFolderID:v11 forAccount:v50];
+      sharedReminderKitHelper = [(ASAgent *)self sharedReminderKitHelper];
+      account = [(ASAgent *)self account];
+      [sharedReminderKitHelper clearReminderChangesForFolderID:idCopy forAccount:account];
 
       v14 = 0;
     }
 
-    else if (a4 == 32)
+    else if (dataclass == 32)
     {
-      v106 = v12;
-      v108 = v11;
-      v110 = v10;
-      v25 = v10;
+      v106 = actionsCopy;
+      v108 = idCopy;
+      v110 = contextCopy;
+      v25 = contextCopy;
       v26 = +[ASLocalDBHelper sharedInstance];
-      v116 = [v26 noteDB];
+      noteDB = [v26 noteDB];
 
       v27 = v13;
-      v28 = [v27 changes];
-      v29 = [v28 copy];
+      changes = [v27 changes];
+      v29 = [changes copy];
 
       v30 = objc_opt_new();
       v117 = 0u;
@@ -5209,10 +5209,10 @@ LABEL_11:
             }
 
             v36 = *(*(&v117 + 1) + 8 * i);
-            v37 = [v36 objectID];
-            v38 = [v37 URIRepresentation];
+            objectID = [v36 objectID];
+            uRIRepresentation = [objectID URIRepresentation];
 
-            if (v38 && [v25 containsObject:v38])
+            if (uRIRepresentation && [v25 containsObject:uRIRepresentation])
             {
               [v30 addObject:v36];
             }
@@ -5239,84 +5239,84 @@ LABEL_11:
       v14 = v41 != 0;
       if (v41)
       {
-        [v116 deleteChanges:v30];
+        [noteDB deleteChanges:v30];
       }
 
-      v11 = v108;
-      v10 = v110;
-      v12 = v106;
+      idCopy = v108;
+      contextCopy = v110;
+      actionsCopy = v106;
     }
   }
 
-  else if (a4 == 2)
+  else if (dataclass == 2)
   {
     v42 = +[ASLocalDBHelper sharedInstance];
-    v105 = [v42 abDB];
+    abDB = [v42 abDB];
 
-    v43 = v10;
+    v43 = contextCopy;
     v44 = v43;
     v14 = 0;
     v101 = v43;
     if (v43 && v13)
     {
-      v45 = [v43 abPersonChangeId];
-      if (v45 == -1)
+      abPersonChangeId = [v43 abPersonChangeId];
+      if (abPersonChangeId == -1)
       {
         v14 = 0;
       }
 
       else
       {
-        v46 = v45;
-        v47 = [(ASAgent *)self account];
-        v48 = [v47 changeTrackingID];
+        v46 = abPersonChangeId;
+        account2 = [(ASAgent *)self account];
+        changeTrackingID = [account2 changeTrackingID];
         *buf = _NSConcreteStackBlock;
         *&buf[8] = 3221225472;
         *&buf[16] = sub_19E5C;
         v133 = &unk_6CF68;
-        v134 = v105;
-        v135 = v48;
+        v134 = abDB;
+        v135 = changeTrackingID;
         v136 = v13;
-        LOBYTE(v46) = sub_19BD0(v105, v13, v46, 0, v48, buf);
+        LOBYTE(v46) = sub_19BD0(abDB, v13, v46, 0, changeTrackingID, buf);
 
         v44 = v101;
         v14 = v46;
       }
 
-      v82 = [v44 abGroupChangeId];
-      if (v82 != -1)
+      abGroupChangeId = [v44 abGroupChangeId];
+      if (abGroupChangeId != -1)
       {
-        v83 = v82;
-        v84 = [(ASAgent *)self account];
-        [v84 changeTrackingID];
+        v83 = abGroupChangeId;
+        account3 = [(ASAgent *)self account];
+        [account3 changeTrackingID];
         v86 = v85 = v44;
         *buf = _NSConcreteStackBlock;
         *&buf[8] = 3221225472;
         *&buf[16] = sub_19F24;
         v133 = &unk_6CF68;
-        v134 = v105;
+        v134 = abDB;
         v135 = v86;
         v136 = v13;
-        LOBYTE(v83) = sub_19BD0(v105, v13, v83, 1, v86, buf);
+        LOBYTE(v83) = sub_19BD0(abDB, v13, v83, 1, v86, buf);
 
         v44 = v85;
         v14 = v83;
       }
     }
 
-    if ([v12 count])
+    if ([actionsCopy count])
     {
       v115 = v14;
       v100 = v13;
-      v104 = self;
-      v112 = v10;
+      selfCopy = self;
+      v112 = contextCopy;
       Mutable = CFArrayCreateMutable(0, 0, 0);
       v125 = 0u;
       v126 = 0u;
       v127 = 0u;
       v128 = 0u;
-      v107 = v12;
-      v88 = v12;
+      v107 = actionsCopy;
+      v88 = actionsCopy;
       v89 = [v88 countByEnumeratingWithState:&v125 objects:v131 count:16];
       if (v89)
       {
@@ -5338,9 +5338,9 @@ LABEL_11:
               v95 = DALoggingwithCategory();
               if (os_log_type_enabled(v95, v92))
               {
-                v96 = [v94 changeId];
+                changeId = [v94 changeId];
                 *buf = 67109120;
-                *&buf[4] = v96;
+                *&buf[4] = changeId;
                 _os_log_impl(&dword_0, v95, v92, "Clearing change index %d", buf, 8u);
               }
 
@@ -5357,85 +5357,85 @@ LABEL_11:
       v14 = v115;
       if (CFArrayGetCount(Mutable))
       {
-        v97 = [(ASAgent *)v104 account];
-        v98 = [v97 changeTrackingID];
+        account4 = [(ASAgent *)selfCopy account];
+        changeTrackingID2 = [account4 changeTrackingID];
         ABChangeHistoryClearEntityChangeTableRowIDsForClient();
 
         v14 = 1;
       }
 
       CFRelease(Mutable);
-      v10 = v112;
-      v12 = v107;
+      contextCopy = v112;
+      actionsCopy = v107;
       v44 = v101;
     }
   }
 
-  else if (a4 == 4)
+  else if (dataclass == 4)
   {
     v15 = +[ASLocalDBHelper sharedInstance];
-    v16 = [(ASAgent *)self account];
-    v17 = [v16 accountID];
-    v18 = [v15 calDatabaseForAccountID:v17];
+    account5 = [(ASAgent *)self account];
+    accountID = [account5 accountID];
+    v18 = [v15 calDatabaseForAccountID:accountID];
 
-    v19 = v10;
+    v19 = contextCopy;
     v20 = v19;
     v14 = 0;
     if (v19 && v13)
     {
-      v21 = [v19 calEventChangeId];
-      if (v21 == -1)
+      calEventChangeId = [v19 calEventChangeId];
+      if (calEventChangeId == -1)
       {
         v113 = 0;
       }
 
       else
       {
-        v22 = v21;
-        v23 = [(ASAgent *)self account];
-        v24 = [v23 changeTrackingID];
-        v113 = sub_19FEC(v18, v13, v22, 2, v24, &stru_6CFA8);
+        v22 = calEventChangeId;
+        account6 = [(ASAgent *)self account];
+        changeTrackingID3 = [account6 changeTrackingID];
+        v113 = sub_19FEC(v18, v13, v22, 2, changeTrackingID3, &stru_6CFA8);
       }
 
-      v51 = [v20 calRecurrenceChangeId];
-      if (v51 != -1)
+      calRecurrenceChangeId = [v20 calRecurrenceChangeId];
+      if (calRecurrenceChangeId != -1)
       {
-        v52 = v51;
-        v53 = [(ASAgent *)self account];
-        v54 = [v53 changeTrackingID];
-        v113 = sub_19FEC(v18, v13, v52, 5, v54, &stru_6CFC8);
+        v52 = calRecurrenceChangeId;
+        account7 = [(ASAgent *)self account];
+        changeTrackingID4 = [account7 changeTrackingID];
+        v113 = sub_19FEC(v18, v13, v52, 5, changeTrackingID4, &stru_6CFC8);
       }
 
-      v55 = [v20 calAlarmChangeId];
-      if (v55 != -1)
+      calAlarmChangeId = [v20 calAlarmChangeId];
+      if (calAlarmChangeId != -1)
       {
-        v56 = v55;
-        v57 = [(ASAgent *)self account];
-        v58 = [v57 changeTrackingID];
-        v113 = sub_19FEC(v18, v13, v56, 5, v58, &stru_6CFE8);
+        v56 = calAlarmChangeId;
+        account8 = [(ASAgent *)self account];
+        changeTrackingID5 = [account8 changeTrackingID];
+        v113 = sub_19FEC(v18, v13, v56, 5, changeTrackingID5, &stru_6CFE8);
       }
 
-      v59 = [v20 calAttendeeChangeId];
-      if (v59 != -1)
+      calAttendeeChangeId = [v20 calAttendeeChangeId];
+      if (calAttendeeChangeId != -1)
       {
-        v60 = v59;
-        v61 = [(ASAgent *)self account];
-        v62 = [v61 changeTrackingID];
-        v113 = sub_19FEC(v18, v13, v60, 5, v62, &stru_6D008);
+        v60 = calAttendeeChangeId;
+        account9 = [(ASAgent *)self account];
+        changeTrackingID6 = [account9 changeTrackingID];
+        v113 = sub_19FEC(v18, v13, v60, 5, changeTrackingID6, &stru_6D008);
       }
 
-      v63 = [v20 calAttachmentChangeId];
-      if (v63 != -1)
+      calAttachmentChangeId = [v20 calAttachmentChangeId];
+      if (calAttachmentChangeId != -1)
       {
-        v64 = v63;
-        v65 = [(ASAgent *)self account];
-        v66 = [v65 changeTrackingID];
-        v113 = sub_19FEC(v18, v13, v64, 11, v66, &stru_6D028);
+        v64 = calAttachmentChangeId;
+        account10 = [(ASAgent *)self account];
+        changeTrackingID7 = [account10 changeTrackingID];
+        v113 = sub_19FEC(v18, v13, v64, 11, changeTrackingID7, &stru_6D028);
       }
 
       v67 = CalCalendarCopyStore();
-      v68 = [(ASAgent *)self account];
-      v69 = [v68 changeTrackingID];
+      account11 = [(ASAgent *)self account];
+      changeTrackingID8 = [account11 changeTrackingID];
       [v20 highestSequenceNumber];
       CalDatabaseClearChangedObjectIDsUpToSequenceNumberForClient();
 
@@ -5447,19 +5447,19 @@ LABEL_11:
       v14 = v113;
     }
 
-    if ([v12 count])
+    if ([actionsCopy count])
     {
       v102 = v20;
-      v103 = self;
+      selfCopy2 = self;
       v114 = v14;
-      v109 = v11;
-      v111 = v10;
+      v109 = idCopy;
+      v111 = contextCopy;
       v70 = CFArrayCreateMutable(0, 0, 0);
       v121 = 0u;
       v122 = 0u;
       v123 = 0u;
       v124 = 0u;
-      v71 = v12;
+      v71 = actionsCopy;
       v72 = [v71 countByEnumeratingWithState:&v121 objects:v130 count:16];
       if (v72)
       {
@@ -5481,9 +5481,9 @@ LABEL_11:
               v78 = DALoggingwithCategory();
               if (os_log_type_enabled(v78, v75))
               {
-                v79 = [v77 changeId];
+                changeId2 = [v77 changeId];
                 *buf = 67109120;
-                *&buf[4] = v79;
+                *&buf[4] = changeId2;
                 _os_log_impl(&dword_0, v78, v75, "Clearing change index %d", buf, 8u);
               }
 
@@ -5500,16 +5500,16 @@ LABEL_11:
       v14 = v114;
       if (CFArrayGetCount(v70))
       {
-        v80 = [(ASAgent *)v103 account];
-        v81 = [v80 changeTrackingID];
+        account12 = [(ASAgent *)selfCopy2 account];
+        changeTrackingID9 = [account12 changeTrackingID];
         CalDatabaseClearIndividualChangeRowIDsForClient();
 
         v14 = 1;
       }
 
       CFRelease(v70);
-      v11 = v109;
-      v10 = v111;
+      idCopy = v109;
+      contextCopy = v111;
       v20 = v102;
     }
   }
@@ -5520,32 +5520,32 @@ LABEL_11:
 - (id)_powerLogInfoDictionary
 {
   v3 = objc_opt_new();
-  v4 = [(ASAgent *)self account];
-  v5 = [v4 accountID];
+  account = [(ASAgent *)self account];
+  accountID = [account accountID];
 
-  if (v5)
+  if (accountID)
   {
-    v6 = [(ASAgent *)self account];
-    v7 = [v6 accountID];
-    [v3 setObject:v7 forKeyedSubscript:kDAPowerLogSyncAccountID];
+    account2 = [(ASAgent *)self account];
+    accountID2 = [account2 accountID];
+    [v3 setObject:accountID2 forKeyedSubscript:kDAPowerLogSyncAccountID];
   }
 
-  v8 = [(ASAgent *)self account];
-  v9 = [v8 accountDescription];
+  account3 = [(ASAgent *)self account];
+  accountDescription = [account3 accountDescription];
 
-  if (v9)
+  if (accountDescription)
   {
-    v10 = [(ASAgent *)self account];
-    v11 = [v10 accountDescription];
-    [v3 setObject:v11 forKeyedSubscript:kDAPowerLogSyncAccountName];
+    account4 = [(ASAgent *)self account];
+    accountDescription2 = [account4 accountDescription];
+    [v3 setObject:accountDescription2 forKeyedSubscript:kDAPowerLogSyncAccountName];
   }
 
-  v12 = [(ASAgent *)self account];
+  account5 = [(ASAgent *)self account];
   v13 = objc_opt_class();
 
   if (v13)
   {
-    v14 = [(ASAgent *)self account];
+    account6 = [(ASAgent *)self account];
     v15 = objc_opt_class();
     v16 = NSStringFromClass(v15);
     [v3 setObject:v16 forKeyedSubscript:kDAPowerLogSyncAccountClass];
@@ -5554,42 +5554,42 @@ LABEL_11:
   return v3;
 }
 
-- (void)_syncResultForFolder:(id)a3 newTag:(id)a4 previousTag:(id)a5 actions:(id)a6 results:(id)a7 changeIdContext:(id)a8 isInitialSync:(BOOL)a9 moreAvailable:(BOOL)a10 dataclass:(int64_t)a11 resultingChangeActionsForServer:(id)a12 pushedActions:(id)a13 rejectedServerIds:(id)a14 eventsWithPendingInvitationEmails:(id)a15
+- (void)_syncResultForFolder:(id)folder newTag:(id)tag previousTag:(id)previousTag actions:(id)actions results:(id)results changeIdContext:(id)context isInitialSync:(BOOL)sync moreAvailable:(BOOL)self0 dataclass:(int64_t)self1 resultingChangeActionsForServer:(id)self2 pushedActions:(id)self3 rejectedServerIds:(id)self4 eventsWithPendingInvitationEmails:(id)self5
 {
-  v198 = a3;
-  v196 = a4;
-  v194 = a5;
-  v203 = a6;
-  v21 = a7;
-  v195 = a8;
-  v214 = a12;
-  v22 = self;
-  v197 = a13;
-  v193 = a14;
-  v206 = a15;
-  if (a11 == 16)
+  folderCopy = folder;
+  tagCopy = tag;
+  previousTagCopy = previousTag;
+  actionsCopy = actions;
+  resultsCopy = results;
+  contextCopy = context;
+  serverCopy = server;
+  selfCopy = self;
+  pushedActionsCopy = pushedActions;
+  idsCopy = ids;
+  emailsCopy = emails;
+  if (dataclass == 16)
   {
     sub_47EC0();
   }
 
-  v23 = [(ASAgent *)self account];
-  v24 = [v23 changeTrackingID];
-  v25 = [(ASAgent *)self account];
-  v26 = [v25 accountID];
-  v27 = [ASDataHandler newDataHandlerForDataclass:a11 container:0 changeTrackingID:v24 accountID:v26];
+  account = [(ASAgent *)self account];
+  changeTrackingID = [account changeTrackingID];
+  account2 = [(ASAgent *)self account];
+  accountID = [account2 accountID];
+  v27 = [ASDataHandler newDataHandlerForDataclass:dataclass container:0 changeTrackingID:changeTrackingID accountID:accountID];
 
   [v27 openDB];
-  [(ASAgent *)self _cacheFoldersForDataclasses:a11];
-  v28 = v198;
-  [v27 setContainer:{-[ASAgent _containerForFolderWithId:dataclass:](self, "_containerForFolderWithId:dataclass:", v198, a11)}];
-  v210 = self;
+  [(ASAgent *)self _cacheFoldersForDataclasses:dataclass];
+  v28 = folderCopy;
+  [v27 setContainer:{-[ASAgent _containerForFolderWithId:dataclass:](self, "_containerForFolderWithId:dataclass:", folderCopy, dataclass)}];
+  selfCopy2 = self;
   v213 = v27;
-  if (a9 && (!v194 || [v194 isEqualToString:@"0"]))
+  if (sync && (!previousTagCopy || [previousTagCopy isEqualToString:@"0"]))
   {
     [v27 drainContainer];
-    [(ASAgent *)self _nilOutContainersForDataclasses:a11];
-    [(ASAgent *)self _cacheFoldersForDataclasses:a11];
-    v29 = [(ASAgent *)self _containerForFolderWithId:v198 dataclass:a11];
+    [(ASAgent *)self _nilOutContainersForDataclasses:dataclass];
+    [(ASAgent *)self _cacheFoldersForDataclasses:dataclass];
+    v29 = [(ASAgent *)self _containerForFolderWithId:folderCopy dataclass:dataclass];
     if (v29)
     {
       [v27 setContainer:v29];
@@ -5602,9 +5602,9 @@ LABEL_11:
       if (os_log_type_enabled(v31, v32))
       {
         *buf = 138412546;
-        v278 = v198;
+        dataclassCopy3 = folderCopy;
         v279 = 2048;
-        v280 = a11;
+        dataclassCopy = dataclass;
         _os_log_impl(&dword_0, v31, v32, "After draining the container with id %@ and dataclass %lx, that container disappeared", buf, 0x16u);
       }
     }
@@ -5613,7 +5613,7 @@ LABEL_11:
     v262 = 0u;
     v259 = 0u;
     v260 = 0u;
-    v33 = v203;
+    v33 = actionsCopy;
     v34 = [v33 countByEnumeratingWithState:&v259 objects:v276 count:16];
     if (v34)
     {
@@ -5632,10 +5632,10 @@ LABEL_11:
           v39 = *(*(&v259 + 1) + 8 * i);
           if ([v39 itemChangeType] == &dword_4)
           {
-            v40 = [v39 changedItem];
-            v41 = [(ASAgent *)v210 account];
+            changedItem = [v39 changedItem];
+            account3 = [(ASAgent *)selfCopy2 account];
             v36 = 1;
-            [v40 saveWithLocalObject:0 toContainer:v29 shouldMergeProperties:1 outMergeDidChooseLocalProperties:0 account:v41];
+            [changedItem saveWithLocalObject:0 toContainer:v29 shouldMergeProperties:1 outMergeDidChooseLocalProperties:0 account:account3];
           }
         }
 
@@ -5650,7 +5650,7 @@ LABEL_11:
       }
 
       v30 = 1;
-      v22 = v210;
+      selfCopy = selfCopy2;
     }
 
     else
@@ -5669,7 +5669,7 @@ LABEL_11:
   v258 = 0u;
   v255 = 0u;
   v256 = 0u;
-  obj = v21;
+  obj = resultsCopy;
   v42 = [obj countByEnumeratingWithState:&v255 objects:v275 count:16];
   if (v42)
   {
@@ -5685,28 +5685,28 @@ LABEL_11:
         }
 
         v46 = *(*(&v255 + 1) + 8 * j);
-        v47 = [v46 changedItem];
-        v48 = [v46 itemChangeType];
-        if (v48 == &dword_0 + 1)
+        changedItem2 = [v46 changedItem];
+        itemChangeType = [v46 itemChangeType];
+        if (itemChangeType == &dword_0 + 1)
         {
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v51 = [(ASAgent *)v22 account];
-            v52 = [v51 accountID];
-            [v47 updateAttachmentsForAccountID:v52];
+            account4 = [(ASAgent *)selfCopy account];
+            accountID2 = [account4 accountID];
+            [changedItem2 updateAttachmentsForAccountID:accountID2];
           }
         }
 
-        else if (!v48)
+        else if (!itemChangeType)
         {
-          v49 = [v47 clientID];
-          v50 = [v213 copyLocalObjectFromId:{objc_msgSend(v49, "intValue")}];
+          clientID = [changedItem2 clientID];
+          v50 = [v213 copyLocalObjectFromId:{objc_msgSend(clientID, "intValue")}];
 
           if (v50)
           {
-            [v47 setLocalItem:v50];
-            [v47 saveServerIDToExistingItem];
+            [changedItem2 setLocalItem:v50];
+            [changedItem2 saveServerIDToExistingItem];
             CFRelease(v50);
             v30 = 1;
           }
@@ -5725,15 +5725,15 @@ LABEL_11:
   }
 
   v53 = &PLLogRegisteredEvent_ptr;
-  v54 = a11;
-  v55 = a9;
-  if (a11 == 4)
+  dataclassCopy2 = dataclass;
+  syncCopy2 = sync;
+  if (dataclass == 4)
   {
-    v56 = [(ASAgent *)v22 account];
-    v57 = [v56 protocol];
-    v58 = [v57 sendEmailForMeetingInvitationAndResponse];
+    account5 = [(ASAgent *)selfCopy account];
+    protocol = [account5 protocol];
+    sendEmailForMeetingInvitationAndResponse = [protocol sendEmailForMeetingInvitationAndResponse];
 
-    if (!v58)
+    if (!sendEmailForMeetingInvitationAndResponse)
     {
       goto LABEL_59;
     }
@@ -5742,7 +5742,7 @@ LABEL_11:
     v254 = 0u;
     v251 = 0u;
     v252 = 0u;
-    v59 = v197;
+    v59 = pushedActionsCopy;
     v60 = [v59 countByEnumeratingWithState:&v251 objects:v274 count:16];
     if (!v60)
     {
@@ -5761,29 +5761,29 @@ LABEL_11:
         }
 
         v64 = *(*(&v251 + 1) + 8 * k);
-        v65 = [v64 itemChangeType];
-        if (v65 >= 2)
+        itemChangeType2 = [v64 itemChangeType];
+        if (itemChangeType2 >= 2)
         {
-          if (v65 != &dword_8)
+          if (itemChangeType2 != &dword_8)
           {
             continue;
           }
 
-          v66 = [v64 changedItem];
+          changedItem3 = [v64 changedItem];
         }
 
         else
         {
-          v66 = [v64 changedItem];
-          v67 = [(ASAgent *)v22 account];
-          if (([v66 cachedOrganizerIsSelfWithAccount:v67] & 1) == 0)
+          changedItem3 = [v64 changedItem];
+          account6 = [(ASAgent *)selfCopy account];
+          if (([changedItem3 cachedOrganizerIsSelfWithAccount:account6] & 1) == 0)
           {
 
             goto LABEL_55;
           }
 
-          v68 = [v66 attendees];
-          v69 = [v68 count];
+          attendees = [changedItem3 attendees];
+          v69 = [attendees count];
 
           if (!v69)
           {
@@ -5791,7 +5791,7 @@ LABEL_11:
           }
         }
 
-        [v206 addObject:v66];
+        [emailsCopy addObject:changedItem3];
 LABEL_55:
       }
 
@@ -5801,7 +5801,7 @@ LABEL_55:
 LABEL_58:
 
 LABEL_59:
-        v70 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v203, "count")}];
+        v70 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(actionsCopy, "count")}];
         v71 = objc_opt_new();
         v199 = objc_opt_new();
         v247 = 0u;
@@ -5809,7 +5809,7 @@ LABEL_59:
         v249 = 0u;
         v250 = 0u;
         v72 = v71;
-        v73 = v203;
+        v73 = actionsCopy;
         v74 = [v73 countByEnumeratingWithState:&v247 objects:v273 count:16];
         v211 = v70;
         v200 = v71;
@@ -5839,77 +5839,77 @@ LABEL_62:
 
         else
         {
-          v79 = [v78 changedItem];
-          v80 = [v79 serverID];
-          if (v80)
+          changedItem4 = [v78 changedItem];
+          serverID = [changedItem4 serverID];
+          if (serverID)
           {
-            v81 = [v70 objectForKeyedSubscript:v80];
+            v81 = [v70 objectForKeyedSubscript:serverID];
             v82 = v81;
             if (v81)
             {
-              v83 = [v81 changedItem];
+              changedItem5 = [v81 changedItem];
               if (![v82 itemChangeType] && objc_msgSend(v78, "itemChangeType") == &dword_0 + 1)
               {
-                v84 = v79;
-                v85 = [(ASAgent *)v210 account];
+                v84 = changedItem4;
+                account7 = [(ASAgent *)selfCopy2 account];
                 v86 = v84;
-                v87 = v83;
+                v87 = changedItem5;
                 goto LABEL_81;
               }
 
               if ([v82 itemChangeType] == &dword_0 + 1 && !objc_msgSend(v78, "itemChangeType"))
               {
-                v84 = v83;
-                v85 = [(ASAgent *)v210 account];
+                v84 = changedItem5;
+                account7 = [(ASAgent *)selfCopy2 account];
                 v86 = v84;
-                v87 = v79;
+                v87 = changedItem4;
 LABEL_81:
-                v89 = [v86 eventByMergingInLosingEvent:v87 account:v85];
+                v89 = [v86 eventByMergingInLosingEvent:v87 account:account7];
 
-                v94 = &dword_0 + 1;
+                itemChangeType3 = &dword_0 + 1;
               }
 
               else
               {
-                v88 = [(ASAgent *)v210 account];
-                v89 = [v83 eventByMergingInEvent:v79 account:v88];
+                account8 = [(ASAgent *)selfCopy2 account];
+                v89 = [changedItem5 eventByMergingInEvent:changedItem4 account:account8];
 
-                v90 = [v89 serverID];
-                v91 = [v83 serverID];
-                v92 = [v90 isEqualToString:v91];
+                serverID2 = [v89 serverID];
+                serverID3 = [changedItem5 serverID];
+                v92 = [serverID2 isEqualToString:serverID3];
 
                 if (v92)
                 {
-                  v84 = v83;
+                  v84 = changedItem5;
                   v93 = v82;
                 }
 
                 else
                 {
-                  v84 = v79;
+                  v84 = changedItem4;
                   v93 = v78;
                 }
 
-                v94 = [v93 itemChangeType];
+                itemChangeType3 = [v93 itemChangeType];
                 v70 = v211;
                 v72 = v200;
               }
 
-              v95 = [[ASAction alloc] initWithItemChangeType:v94 changedItem:v89 serverId:0];
-              [v70 setObject:v95 forKeyedSubscript:v80];
+              v95 = [[ASAction alloc] initWithItemChangeType:itemChangeType3 changedItem:v89 serverId:0];
+              [v70 setObject:v95 forKeyedSubscript:serverID];
               if (([v84 isEqualToEvent:v89] & 1) == 0)
               {
-                [v199 addObject:v80];
+                [v199 addObject:serverID];
               }
 
-              v22 = v210;
+              selfCopy = selfCopy2;
               v73 = v204;
               v76 = v201;
             }
 
             else
             {
-              [v70 setObject:v78 forKeyedSubscript:v80];
+              [v70 setObject:v78 forKeyedSubscript:serverID];
             }
 
             v75 = v208;
@@ -5932,19 +5932,19 @@ LABEL_89:
             v97 = _CPLog_to_os_log_type[7];
             if (os_log_type_enabled(v96, v97))
             {
-              v98 = [v70 allValues];
+              allValues = [v70 allValues];
               *buf = 138412546;
-              v278 = v73;
+              dataclassCopy3 = v73;
               v279 = 2112;
-              v280 = v98;
+              dataclassCopy = allValues;
               _os_log_impl(&dword_0, v96, v97, "Actions were %@, are now %@", buf, 0x16u);
 
               v72 = v200;
             }
 
-            v99 = [v70 allValues];
+            allValues2 = [v70 allValues];
 
-            v203 = [v99 arrayByAddingObjectsFromArray:v72];
+            actionsCopy = [allValues2 arrayByAddingObjectsFromArray:v72];
 
             v245 = 0u;
             v246 = 0u;
@@ -5952,7 +5952,7 @@ LABEL_89:
             v244 = 0u;
             v100 = v199;
             v101 = [v100 countByEnumeratingWithState:&v243 objects:v272 count:16];
-            v28 = v198;
+            v28 = folderCopy;
             if (v101)
             {
               v102 = v101;
@@ -5969,11 +5969,11 @@ LABEL_89:
                   v105 = *(*(&v243 + 1) + 8 * m);
                   v106 = [ASAction alloc];
                   v107 = [v70 objectForKeyedSubscript:v105];
-                  v108 = [v107 changedItem];
-                  v109 = [v106 initWithItemChangeType:1 changedItem:v108 serverId:v105];
+                  changedItem6 = [v107 changedItem];
+                  v109 = [v106 initWithItemChangeType:1 changedItem:changedItem6 serverId:v105];
 
                   v70 = v211;
-                  [v214 addObject:v109];
+                  [serverCopy addObject:v109];
                 }
 
                 v102 = [v100 countByEnumeratingWithState:&v243 objects:v272 count:16];
@@ -5982,8 +5982,8 @@ LABEL_89:
               while (v102);
             }
 
-            v54 = 4;
-            v55 = a9;
+            dataclassCopy2 = 4;
+            syncCopy2 = sync;
             v53 = &PLLogRegisteredEvent_ptr;
             break;
           }
@@ -6000,13 +6000,13 @@ LABEL_89:
   v212 = objc_opt_new();
   v111 = v53[359];
   v209 = objc_opt_new();
-  if (v54 == 4)
+  if (dataclassCopy2 == 4)
   {
     v241 = 0u;
     v242 = 0u;
     v239 = 0u;
     v240 = 0u;
-    v112 = v203;
+    v112 = actionsCopy;
     v113 = [v112 countByEnumeratingWithState:&v239 objects:v271 count:16];
     if (v113)
     {
@@ -6024,11 +6024,11 @@ LABEL_89:
           v117 = *(*(&v239 + 1) + 8 * n);
           if (![v117 itemChangeType] || objc_msgSend(v117, "itemChangeType") == &dword_0 + 1)
           {
-            v118 = [v117 changedItem];
-            v119 = [v118 serverID];
-            if (v119)
+            changedItem7 = [v117 changedItem];
+            serverID4 = [changedItem7 serverID];
+            if (serverID4)
             {
-              [v212 addObject:v119];
+              [v212 addObject:serverID4];
             }
           }
         }
@@ -6044,7 +6044,7 @@ LABEL_89:
   v238 = 0u;
   v235 = 0u;
   v236 = 0u;
-  v120 = v203;
+  v120 = actionsCopy;
   v121 = [v120 countByEnumeratingWithState:&v235 objects:v270 count:16];
   if (v121)
   {
@@ -6063,7 +6063,7 @@ LABEL_89:
         v126 = *(*(&v235 + 1) + 8 * ii);
         if ([v126 itemChangeType] == &dword_0 + 2)
         {
-          v123 |= [(ASAgent *)v22 _handleAction:v126 inFolderWithId:v28 dataclass:v54 isInitialSync:v55 resultingChangeActionsForServer:v214 eventServerIDsToDrop:v212 eventServerIDSWithDroppedDeletes:v209, v193];
+          v123 |= [(ASAgent *)selfCopy _handleAction:v126 inFolderWithId:v28 dataclass:dataclassCopy2 isInitialSync:syncCopy2 resultingChangeActionsForServer:serverCopy eventServerIDsToDrop:v212 eventServerIDSWithDroppedDeletes:v209, idsCopy];
         }
       }
 
@@ -6107,7 +6107,7 @@ LABEL_89:
           }
 
           v123 = 0;
-          v130 |= [(ASAgent *)v22 _handleAction:v133 inFolderWithId:v28 dataclass:v54 isInitialSync:a9 resultingChangeActionsForServer:v214 eventServerIDsToDrop:v212 eventServerIDSWithDroppedDeletes:v209];
+          v130 |= [(ASAgent *)selfCopy _handleAction:v133 inFolderWithId:v28 dataclass:dataclassCopy2 isInitialSync:sync resultingChangeActionsForServer:serverCopy eventServerIDsToDrop:v212 eventServerIDSWithDroppedDeletes:v209];
         }
       }
 
@@ -6152,7 +6152,7 @@ LABEL_89:
 
           v130 = 0;
           v123 = 0;
-          v136 |= [(ASAgent *)v22 _handleAction:v139 inFolderWithId:v28 dataclass:v54 isInitialSync:a9 resultingChangeActionsForServer:v214 eventServerIDsToDrop:v212 eventServerIDSWithDroppedDeletes:v209];
+          v136 |= [(ASAgent *)selfCopy _handleAction:v139 inFolderWithId:v28 dataclass:dataclassCopy2 isInitialSync:sync resultingChangeActionsForServer:serverCopy eventServerIDsToDrop:v212 eventServerIDSWithDroppedDeletes:v209];
         }
       }
 
@@ -6167,7 +6167,7 @@ LABEL_89:
     LOBYTE(v136) = 0;
   }
 
-  v140 = v54;
+  v140 = dataclassCopy2;
   v141 = v123 | v130 | v136;
   if (v140 == 4)
   {
@@ -6175,7 +6175,7 @@ LABEL_89:
     v226 = 0u;
     v223 = 0u;
     v224 = 0u;
-    v142 = v197;
+    v142 = pushedActionsCopy;
     v143 = [v142 countByEnumeratingWithState:&v223 objects:v267 count:16];
     v144 = v213;
     if (v143)
@@ -6194,10 +6194,10 @@ LABEL_89:
           v148 = *(*(&v223 + 1) + 8 * mm);
           if (![v148 itemChangeType] || objc_msgSend(v148, "itemChangeType") == &dword_0 + 1)
           {
-            v149 = [v148 changedItem];
-            v150 = [(ASAgent *)v210 account];
-            v151 = [v150 accountID];
-            v152 = [v149 fillOutMissingExternalIdsForAccountID:v151];
+            changedItem8 = [v148 changedItem];
+            account9 = [(ASAgent *)selfCopy2 account];
+            accountID3 = [account9 accountID];
+            v152 = [changedItem8 fillOutMissingExternalIdsForAccountID:accountID3];
 
             v144 = v213;
             v141 |= v152;
@@ -6210,7 +6210,7 @@ LABEL_89:
       while (v145);
     }
 
-    v22 = v210;
+    selfCopy = selfCopy2;
   }
 
   else
@@ -6218,14 +6218,14 @@ LABEL_89:
     v144 = v213;
   }
 
-  v153 = v206;
-  if ([v206 count])
+  v153 = emailsCopy;
+  if ([emailsCopy count])
   {
     v219 = 0u;
     v220 = 0u;
     v221 = 0u;
     v222 = 0u;
-    v154 = [v206 copy];
+    v154 = [emailsCopy copy];
     v155 = [v154 countByEnumeratingWithState:&v219 objects:v266 count:16];
     if (!v155)
     {
@@ -6247,8 +6247,8 @@ LABEL_89:
         }
 
         v160 = *(*(&v219 + 1) + 8 * v159);
-        v161 = [(ASAgent *)v22 account];
-        if (([v160 cachedOrganizerIsSelfWithAccount:v161] & 1) == 0)
+        account10 = [(ASAgent *)selfCopy account];
+        if (([v160 cachedOrganizerIsSelfWithAccount:account10] & 1) == 0)
         {
 
 LABEL_177:
@@ -6264,14 +6264,14 @@ LABEL_177:
           }
 
 LABEL_180:
-          v22 = v210;
+          selfCopy = selfCopy2;
 
-          [v206 removeObject:v160];
+          [emailsCopy removeObject:v160];
           goto LABEL_181;
         }
 
-        v162 = [v160 attendees];
-        v163 = [v162 count];
+        attendees2 = [v160 attendees];
+        v163 = [attendees2 count];
 
         v144 = v213;
         if (!v163)
@@ -6279,14 +6279,14 @@ LABEL_180:
           goto LABEL_177;
         }
 
-        v164 = [v160 clientID];
-        if (!v164)
+        clientID2 = [v160 clientID];
+        if (!clientID2)
         {
           v165 = DALoggingwithCategory();
           if (os_log_type_enabled(v165, type))
           {
             *buf = 138412290;
-            v278 = v160;
+            dataclassCopy3 = v160;
             v169 = v165;
             v170 = type;
             v171 = "Do not send invitation email because event no longer exist in local DB %@";
@@ -6298,8 +6298,8 @@ LABEL_179:
           goto LABEL_180;
         }
 
-        v165 = v164;
-        v166 = [v213 copyLocalObjectFromId:{-[NSObject intValue](v164, "intValue")}];
+        v165 = clientID2;
+        v166 = [v213 copyLocalObjectFromId:{-[NSObject intValue](clientID2, "intValue")}];
         if (v166)
         {
           v167 = v166;
@@ -6314,7 +6314,7 @@ LABEL_179:
           CFRelease(v167);
         }
 
-        v22 = v210;
+        selfCopy = selfCopy2;
 LABEL_181:
         v159 = v159 + 1;
       }
@@ -6326,8 +6326,8 @@ LABEL_181:
       {
 LABEL_188:
 
-        v28 = v198;
-        v153 = v206;
+        v28 = folderCopy;
+        v153 = emailsCopy;
         break;
       }
     }
@@ -6339,7 +6339,7 @@ LABEL_188:
     v218 = 0u;
     v215 = 0u;
     v216 = 0u;
-    v174 = v206;
+    v174 = emailsCopy;
     v175 = [v174 countByEnumeratingWithState:&v215 objects:v265 count:16];
     if (v175)
     {
@@ -6372,19 +6372,19 @@ LABEL_188:
       while (v176);
     }
 
-    v22 = v210;
+    selfCopy = selfCopy2;
   }
 
-  v182 = [(ASAgent *)v22 _syncKeyForFolderWithId:v28 dataclass:a11];
-  if (([v182 isEqualToString:v196] & 1) == 0)
+  v182 = [(ASAgent *)selfCopy _syncKeyForFolderWithId:v28 dataclass:dataclass];
+  if (([v182 isEqualToString:tagCopy] & 1) == 0)
   {
-    [(ASAgent *)v22 _setSyncKey:v196 forFolderWithId:v28];
+    [(ASAgent *)selfCopy _setSyncKey:tagCopy forFolderWithId:v28];
     v141 = 1;
   }
 
-  v183 = [(ASAgent *)v22 _clearChangeHistoriesWithChangeIdContext:v195 dataclass:a11 inFolderWithId:v28 pushedActions:v197];
-  v184 = [(ASAgent *)v22 currentlySyncingFolderIds];
-  [v184 removeObject:v28];
+  v183 = [(ASAgent *)selfCopy _clearChangeHistoriesWithChangeIdContext:contextCopy dataclass:dataclass inFolderWithId:v28 pushedActions:pushedActionsCopy];
+  currentlySyncingFolderIds = [(ASAgent *)selfCopy currentlySyncingFolderIds];
+  [currentlySyncingFolderIds removeObject:v28];
 
   if (v183 & 1) != 0 || (v141)
   {
@@ -6400,24 +6400,24 @@ LABEL_188:
       if (os_log_type_enabled(v185, v186))
       {
         *buf = 134217984;
-        v278 = a11;
+        dataclassCopy3 = dataclass;
         _os_log_impl(&dword_0, v185, v186, "Could not save local container, dataclass is %lx", buf, 0xCu);
       }
     }
   }
 
-  if (a11 == 16 || a11 == 4)
+  if (dataclass == 16 || dataclass == 4)
   {
     if (PLShouldLogRegisteredEvent())
     {
-      v187 = [(ASAgent *)v210 _powerLogInfoDictionary];
+      _powerLogInfoDictionary = [(ASAgent *)selfCopy2 _powerLogInfoDictionary];
       v188 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v205 count]);
       v189 = kDAPowerLogNumberOfItemsChanged;
-      [v187 setObject:v188 forKeyedSubscript:kDAPowerLogNumberOfItemsChanged];
+      [_powerLogInfoDictionary setObject:v188 forKeyedSubscript:kDAPowerLogNumberOfItemsChanged];
 
-      if (v198)
+      if (folderCopy)
       {
-        [v187 setObject:v198 forKeyedSubscript:kDAPowerLogContainerID];
+        [_powerLogInfoDictionary setObject:folderCopy forKeyedSubscript:kDAPowerLogContainerID];
       }
 
       v264[0] = kDAPowerLogSyncAccountName;
@@ -6432,14 +6432,14 @@ LABEL_188:
 
     if (PLShouldLogRegisteredEvent())
     {
-      v190 = [(ASAgent *)v210 _powerLogInfoDictionary];
-      v191 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v197 count]);
+      _powerLogInfoDictionary2 = [(ASAgent *)selfCopy2 _powerLogInfoDictionary];
+      v191 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [pushedActionsCopy count]);
       v192 = kDAPowerLogNumberOfItemsChanged;
-      [v190 setObject:v191 forKeyedSubscript:kDAPowerLogNumberOfItemsChanged];
+      [_powerLogInfoDictionary2 setObject:v191 forKeyedSubscript:kDAPowerLogNumberOfItemsChanged];
 
-      if (v198)
+      if (folderCopy)
       {
-        [v190 setObject:v198 forKeyedSubscript:kDAPowerLogContainerID];
+        [_powerLogInfoDictionary2 setObject:folderCopy forKeyedSubscript:kDAPowerLogContainerID];
       }
 
       v263[0] = kDAPowerLogSyncAccountName;
@@ -6453,24 +6453,24 @@ LABEL_188:
     }
   }
 
-  [(ASAgent *)v210 _nilOutContainersForDataclasses:a11];
+  [(ASAgent *)selfCopy2 _nilOutContainersForDataclasses:dataclass];
   [v144 closeDBAndSave:0];
 }
 
-- (BOOL)_syncResultForToDoFolder:(id)a3 newTag:(id)a4 previousTag:(id)a5 actions:(id)a6 results:(id)a7 changeIdContext:(id)a8 isInitialSync:(BOOL)a9 moreAvailable:(BOOL)a10 resultingChangeActionsForServer:(id)a11 pushedActions:(id)a12 rejectedServerIds:(id)a13 eventsWithPendingInvitationEmails:(id)a14
+- (BOOL)_syncResultForToDoFolder:(id)folder newTag:(id)tag previousTag:(id)previousTag actions:(id)actions results:(id)results changeIdContext:(id)context isInitialSync:(BOOL)sync moreAvailable:(BOOL)self0 resultingChangeActionsForServer:(id)self1 pushedActions:(id)self2 rejectedServerIds:(id)self3 eventsWithPendingInvitationEmails:(id)self4
 {
-  v83 = a3;
-  v80 = a4;
-  v77 = a5;
-  obj = a6;
-  v20 = a7;
-  v79 = a8;
-  v89 = a11;
-  v82 = a12;
+  folderCopy = folder;
+  tagCopy = tag;
+  previousTagCopy = previousTag;
+  obj = actions;
+  resultsCopy = results;
+  contextCopy = context;
+  serverCopy = server;
+  pushedActionsCopy = pushedActions;
   [(ASAgent *)self _cacheFoldersForDataclasses:16];
-  if (a9 && (!v77 || [v77 isEqualToString:@"0"]))
+  if (sync && (!previousTagCopy || [previousTagCopy isEqualToString:@"0"]))
   {
-    [(ASAgent *)self _nilOutContainersForDataclasses:16, v77];
+    [(ASAgent *)self _nilOutContainersForDataclasses:16, previousTagCopy];
     [(ASAgent *)self _cacheFoldersForDataclasses:16];
   }
 
@@ -6478,14 +6478,14 @@ LABEL_188:
   v106 = 0u;
   v103 = 0u;
   v104 = 0u;
-  v21 = v20;
+  v21 = resultsCopy;
   v22 = [v21 countByEnumeratingWithState:&v103 objects:v114 count:16];
   if (v22)
   {
     v23 = v22;
     v86 = 0;
     v24 = *v104;
-    v25 = v83;
+    v25 = folderCopy;
     do
     {
       for (i = 0; i != v23; i = i + 1)
@@ -6496,12 +6496,12 @@ LABEL_188:
         }
 
         v27 = *(*(&v103 + 1) + 8 * i);
-        v28 = [v27 changedItem];
+        changedItem = [v27 changedItem];
         if (![v27 itemChangeType])
         {
-          v29 = [(ASAgent *)self sharedReminderKitHelper];
-          v30 = [(ASAgent *)self account];
-          v31 = [v29 updateExtenalIDForReminder:v28 forFolderWithId:v83 forAccount:v30];
+          sharedReminderKitHelper = [(ASAgent *)self sharedReminderKitHelper];
+          account = [(ASAgent *)self account];
+          v31 = [sharedReminderKitHelper updateExtenalIDForReminder:changedItem forFolderWithId:folderCopy forAccount:account];
 
           v86 |= v31;
         }
@@ -6516,7 +6516,7 @@ LABEL_188:
   else
   {
     v86 = 0;
-    v25 = v83;
+    v25 = folderCopy;
   }
 
   v81 = v21;
@@ -6546,7 +6546,7 @@ LABEL_188:
         v38 = *(*(&v99 + 1) + 8 * j);
         if ([v38 itemChangeType] == &dword_0 + 2)
         {
-          v35 |= [(ASAgent *)self _handleToDoAction:v38 inFolderWithId:v25 isInitialSync:a9 resultingChangeActionsForServer:v89 eventServerIDsToDrop:v88 eventServerIDSWithDroppedDeletes:v87];
+          v35 |= [(ASAgent *)self _handleToDoAction:v38 inFolderWithId:v25 isInitialSync:sync resultingChangeActionsForServer:serverCopy eventServerIDsToDrop:v88 eventServerIDSWithDroppedDeletes:v87];
         }
       }
 
@@ -6587,13 +6587,13 @@ LABEL_188:
         {
           if (v35)
           {
-            v47 = [(ASAgent *)self sharedReminderKitHelper];
-            [v47 commitChangesToStore];
+            sharedReminderKitHelper2 = [(ASAgent *)self sharedReminderKitHelper];
+            [sharedReminderKitHelper2 commitChangesToStore];
           }
 
-          v48 = [(ASAgent *)self _handleToDoAction:v46 inFolderWithId:v83 isInitialSync:a9 resultingChangeActionsForServer:v89 eventServerIDsToDrop:v88 eventServerIDSWithDroppedDeletes:v87];
+          v48 = [(ASAgent *)self _handleToDoAction:v46 inFolderWithId:folderCopy isInitialSync:sync resultingChangeActionsForServer:serverCopy eventServerIDsToDrop:v88 eventServerIDSWithDroppedDeletes:v87];
           v35 = 0;
-          v44 &= v48 | !a9;
+          v44 &= v48 | !sync;
           v42 |= v48;
         }
       }
@@ -6620,7 +6620,7 @@ LABEL_188:
   {
     v50 = v49;
     v51 = *v92;
-    v52 = v83;
+    v52 = folderCopy;
     do
     {
       for (m = 0; m != v50; m = m + 1)
@@ -6635,14 +6635,14 @@ LABEL_188:
         {
           if ((v35 | v42))
           {
-            v55 = [(ASAgent *)self sharedReminderKitHelper];
-            [v55 commitChangesToStore];
+            sharedReminderKitHelper3 = [(ASAgent *)self sharedReminderKitHelper];
+            [sharedReminderKitHelper3 commitChangesToStore];
           }
 
-          v56 = [(ASAgent *)self _handleToDoAction:v54 inFolderWithId:v83 isInitialSync:a9 resultingChangeActionsForServer:v89 eventServerIDsToDrop:v88 eventServerIDSWithDroppedDeletes:v87];
+          v56 = [(ASAgent *)self _handleToDoAction:v54 inFolderWithId:folderCopy isInitialSync:sync resultingChangeActionsForServer:serverCopy eventServerIDsToDrop:v88 eventServerIDSWithDroppedDeletes:v87];
           v42 = 0;
           v35 = 0;
-          v44 &= v56 | !a9;
+          v44 &= v56 | !sync;
           v86 |= v56;
         }
       }
@@ -6655,40 +6655,40 @@ LABEL_188:
 
   else
   {
-    v52 = v83;
+    v52 = folderCopy;
   }
 
   v57 = v35 | v42 | v86;
   v58 = v52;
   v90 = [(ASAgent *)self _syncKeyForFolderWithId:v52 dataclass:16];
-  if ([v90 isEqualToString:v80])
+  if ([v90 isEqualToString:tagCopy])
   {
     v59 = 1;
   }
 
   else
   {
-    v60 = [(ASAgent *)self sharedReminderKitHelper];
-    v61 = [(ASAgent *)self account];
-    v59 = [v60 updateSyncKey:v80 forFolderWithId:v52 forAccount:v61];
+    sharedReminderKitHelper4 = [(ASAgent *)self sharedReminderKitHelper];
+    account2 = [(ASAgent *)self account];
+    v59 = [sharedReminderKitHelper4 updateSyncKey:tagCopy forFolderWithId:v52 forAccount:account2];
 
     v57 |= v59;
   }
 
   v62 = v81;
-  v63 = [(ASAgent *)self _clearChangeHistoriesWithChangeIdContext:v79 dataclass:16 inFolderWithId:v52 pushedActions:v82, v77];
-  v64 = [(ASAgent *)self currentlySyncingFolderIds];
-  [v64 removeObject:v52];
+  previousTagCopy = [(ASAgent *)self _clearChangeHistoriesWithChangeIdContext:contextCopy dataclass:16 inFolderWithId:v52 pushedActions:pushedActionsCopy, previousTagCopy];
+  currentlySyncingFolderIds = [(ASAgent *)self currentlySyncingFolderIds];
+  [currentlySyncingFolderIds removeObject:v52];
 
-  if (v63 & 1) != 0 || (v57)
+  if (previousTagCopy & 1) != 0 || (v57)
   {
-    v66 = [(ASAgent *)self sharedReminderKitHelper];
-    v65 = [v66 commitChangesToStore];
+    sharedReminderKitHelper5 = [(ASAgent *)self sharedReminderKitHelper];
+    commitChangesToStore = [sharedReminderKitHelper5 commitChangesToStore];
   }
 
   else
   {
-    v65 = 0;
+    commitChangesToStore = 0;
   }
 
   if ((v44 & v59 & 1) == 0)
@@ -6702,20 +6702,20 @@ LABEL_188:
       _os_log_impl(&dword_0, v67, v68, "Fail to save initial sync results or save sync key. Stop monitoring Reminder folder %@.", buf, 0xCu);
     }
 
-    v69 = [(ASAgent *)self account];
-    [v69 stopMonitoringFolderWithID:v58];
+    account3 = [(ASAgent *)self account];
+    [account3 stopMonitoringFolderWithID:v58];
   }
 
   if (PLShouldLogRegisteredEvent())
   {
-    v70 = [(ASAgent *)self _powerLogInfoDictionary];
+    _powerLogInfoDictionary = [(ASAgent *)self _powerLogInfoDictionary];
     v71 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [obja count]);
     v72 = kDAPowerLogNumberOfItemsChanged;
-    [v70 setObject:v71 forKeyedSubscript:kDAPowerLogNumberOfItemsChanged];
+    [_powerLogInfoDictionary setObject:v71 forKeyedSubscript:kDAPowerLogNumberOfItemsChanged];
 
-    if (v83)
+    if (folderCopy)
     {
-      [v70 setObject:v83 forKeyedSubscript:kDAPowerLogContainerID];
+      [_powerLogInfoDictionary setObject:folderCopy forKeyedSubscript:kDAPowerLogContainerID];
     }
 
     v108[0] = kDAPowerLogSyncAccountName;
@@ -6730,14 +6730,14 @@ LABEL_188:
 
   if (PLShouldLogRegisteredEvent())
   {
-    v73 = [(ASAgent *)self _powerLogInfoDictionary];
-    v74 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v82 count]);
+    _powerLogInfoDictionary2 = [(ASAgent *)self _powerLogInfoDictionary];
+    v74 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [pushedActionsCopy count]);
     v75 = kDAPowerLogNumberOfItemsChanged;
-    [v73 setObject:v74 forKeyedSubscript:kDAPowerLogNumberOfItemsChanged];
+    [_powerLogInfoDictionary2 setObject:v74 forKeyedSubscript:kDAPowerLogNumberOfItemsChanged];
 
-    if (v83)
+    if (folderCopy)
     {
-      [v73 setObject:v83 forKeyedSubscript:kDAPowerLogContainerID];
+      [_powerLogInfoDictionary2 setObject:folderCopy forKeyedSubscript:kDAPowerLogContainerID];
     }
 
     v107[0] = kDAPowerLogSyncAccountName;
@@ -6752,51 +6752,51 @@ LABEL_188:
 
   [(ASAgent *)self _nilOutContainersForDataclasses:16];
 
-  return v65;
+  return commitChangesToStore;
 }
 
-- (void)_finishInitialSyncForFolder:(id)a3 dataclass:(int64_t)a4
+- (void)_finishInitialSyncForFolder:(id)folder dataclass:(int64_t)dataclass
 {
-  v32 = a3;
-  if (a4 == 16)
+  folderCopy = folder;
+  if (dataclass == 16)
   {
     sub_47F2C();
   }
 
-  v6 = [(ASAgent *)self account];
-  v7 = [v6 changeTrackingID];
-  v8 = [(ASAgent *)self account];
-  v9 = [v8 accountID];
-  v10 = [ASDataHandler newDataHandlerForDataclass:a4 container:0 changeTrackingID:v7 accountID:v9];
+  account = [(ASAgent *)self account];
+  changeTrackingID = [account changeTrackingID];
+  account2 = [(ASAgent *)self account];
+  accountID = [account2 accountID];
+  v10 = [ASDataHandler newDataHandlerForDataclass:dataclass container:0 changeTrackingID:changeTrackingID accountID:accountID];
 
   [v10 openDB];
-  [(ASAgent *)self _cacheFoldersForDataclasses:a4];
-  v11 = [(ASAgent *)self _containerForFolderWithId:v32 dataclass:a4];
+  [(ASAgent *)self _cacheFoldersForDataclasses:dataclass];
+  v11 = [(ASAgent *)self _containerForFolderWithId:folderCopy dataclass:dataclass];
   [v10 setContainer:v11];
   v34 = v10;
-  v12 = [v10 copyOfAllLocalObjectsInContainer];
-  v33 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v12, "count")}];
-  v31 = v12;
-  v13 = [v12 objectEnumerator];
-  v14 = [v13 nextObject];
-  if (v14)
+  copyOfAllLocalObjectsInContainer = [v10 copyOfAllLocalObjectsInContainer];
+  v33 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(copyOfAllLocalObjectsInContainer, "count")}];
+  v31 = copyOfAllLocalObjectsInContainer;
+  objectEnumerator = [copyOfAllLocalObjectsInContainer objectEnumerator];
+  nextObject = [objectEnumerator nextObject];
+  if (nextObject)
   {
-    v15 = v14;
+    nextObject2 = nextObject;
     v16 = &PLLogRegisteredEvent_ptr;
     v17 = @"%d";
     do
     {
-      v18 = [objc_alloc(v16[423]) initWithFormat:v17, objc_msgSend(v34, "getIdFromLocalObject:", v15)];
-      v19 = [(ASAgent *)self _exchangeIdForLocalId:v18 inContainer:v11 dataclass:a4 redirectToParent:1];
+      v18 = [objc_alloc(v16[423]) initWithFormat:v17, objc_msgSend(v34, "getIdFromLocalObject:", nextObject2)];
+      v19 = [(ASAgent *)self _exchangeIdForLocalId:v18 inContainer:v11 dataclass:dataclass redirectToParent:1];
       if (!v19)
       {
         [(ASAgent *)self account];
-        v20 = self;
-        v21 = v13;
-        v22 = a4;
+        selfCopy = self;
+        v21 = objectEnumerator;
+        dataclassCopy = dataclass;
         v23 = v17;
         v25 = v24 = v16;
-        v26 = [v34 getDAObjectWithLocalItem:v15 serverId:0 account:v25];
+        v26 = [v34 getDAObjectWithLocalItem:nextObject2 serverId:0 account:v25];
 
         [v26 setLocalItem:0];
         v27 = [[ASAction alloc] initWithItemChangeType:0 changedItem:v26 serverId:0];
@@ -6804,43 +6804,43 @@ LABEL_188:
 
         v16 = v24;
         v17 = v23;
-        a4 = v22;
-        v13 = v21;
-        self = v20;
+        dataclass = dataclassCopy;
+        objectEnumerator = v21;
+        self = selfCopy;
       }
 
-      v15 = [v13 nextObject];
+      nextObject2 = [objectEnumerator nextObject];
     }
 
-    while (v15);
+    while (nextObject2);
   }
 
   if ([v33 count])
   {
-    v28 = [(ASAgent *)self account];
-    v29 = [v28 folderWithId:v32];
+    account3 = [(ASAgent *)self account];
+    v29 = [account3 folderWithId:folderCopy];
 
     v30 = [[ESFolderSyncRequest alloc] initWithFolder:v29 hasRemoteChanges:1 isInitialUberSync:0];
     [v30 setActions:v33];
     [(ASAgent *)self _appendSyncRequest:v30];
   }
 
-  [(ASAgent *)self _nilOutContainersForDataclasses:a4];
+  [(ASAgent *)self _nilOutContainersForDataclasses:dataclass];
   [v34 closeDBAndSave:0];
 }
 
-- (void)_finishInitialSyncForToDoFolder:(id)a3
+- (void)_finishInitialSyncForToDoFolder:(id)folder
 {
-  v10 = a3;
+  folderCopy = folder;
   [(ASAgent *)self _cacheFoldersForDataclasses:16];
-  v4 = [(ASAgent *)self sharedReminderKitHelper];
-  v5 = [(ASAgent *)self account];
-  v6 = [v4 localUnsyncedReminderActionsForFolderId:v10 forAccount:v5];
+  sharedReminderKitHelper = [(ASAgent *)self sharedReminderKitHelper];
+  account = [(ASAgent *)self account];
+  v6 = [sharedReminderKitHelper localUnsyncedReminderActionsForFolderId:folderCopy forAccount:account];
 
   if ([v6 count])
   {
-    v7 = [(ASAgent *)self account];
-    v8 = [v7 folderWithId:v10];
+    account2 = [(ASAgent *)self account];
+    v8 = [account2 folderWithId:folderCopy];
 
     v9 = [[ESFolderSyncRequest alloc] initWithFolder:v8 hasRemoteChanges:1 isInitialUberSync:0];
     [v9 setActions:v6];
@@ -6850,27 +6850,27 @@ LABEL_188:
   [(ASAgent *)self _nilOutContainersForDataclasses:16];
 }
 
-- (void)_wrapperSyncResultForFolder:(id)a3 dataclass:(int64_t)a4 newTag:(id)a5 previousTag:(id)a6 actions:(id)a7 results:(id)a8 changeIdContext:(id)a9 isInitialSync:(BOOL)a10 moreAvailable:(BOOL)a11 moreLocalChangesAvailable:(BOOL)a12 pushedActions:(id)a13 rejectedServerIds:(id)a14
+- (void)_wrapperSyncResultForFolder:(id)folder dataclass:(int64_t)dataclass newTag:(id)tag previousTag:(id)previousTag actions:(id)actions results:(id)results changeIdContext:(id)context isInitialSync:(BOOL)self0 moreAvailable:(BOOL)self1 moreLocalChangesAvailable:(BOOL)self2 pushedActions:(id)self3 rejectedServerIds:(id)self4
 {
-  v18 = a3;
-  v97 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = v18;
-  v22 = v20;
-  v96 = a8;
-  v95 = a9;
-  v23 = a13;
-  v94 = a14;
-  if (v19 && ([v19 isEqualToString:@"0"] & 1) == 0 && !a11)
+  folderCopy = folder;
+  tagCopy = tag;
+  previousTagCopy = previousTag;
+  actionsCopy = actions;
+  v21 = folderCopy;
+  allObjects = actionsCopy;
+  resultsCopy = results;
+  contextCopy = context;
+  pushedActionsCopy = pushedActions;
+  idsCopy = ids;
+  if (previousTagCopy && ([previousTagCopy isEqualToString:@"0"] & 1) == 0 && !available)
   {
-    [(ASAgent *)self _noteSyncForFolderWithId:v18 andTitle:0 finishedWithSuccess:1];
+    [(ASAgent *)self _noteSyncForFolderWithId:folderCopy andTitle:0 finishedWithSuccess:1];
   }
 
-  v92 = v19;
-  v93 = v18;
-  v98 = v23;
-  if (v23)
+  v92 = previousTagCopy;
+  v93 = folderCopy;
+  v98 = pushedActionsCopy;
+  if (pushedActionsCopy)
   {
     v24 = objc_opt_new();
     v101 = objc_opt_new();
@@ -6878,7 +6878,7 @@ LABEL_188:
     v120 = 0u;
     v121 = 0u;
     v122 = 0u;
-    obj = v22;
+    obj = allObjects;
     v25 = [obj countByEnumeratingWithState:&v119 objects:v128 count:16];
     if (v25)
     {
@@ -6902,23 +6902,23 @@ LABEL_188:
 
           else
           {
-            v31 = [v30 changedItem];
-            v32 = [v31 serverID];
+            changedItem = [v30 changedItem];
+            serverID = [changedItem serverID];
 
-            if (v32)
+            if (serverID)
             {
-              v33 = [v31 serverID];
-              [v24 setObject:v30 forKeyedSubscript:v33];
+              serverID2 = [changedItem serverID];
+              [v24 setObject:v30 forKeyedSubscript:serverID2];
             }
 
             else
             {
-              v33 = DALoggingwithCategory();
-              if (os_log_type_enabled(v33, v28))
+              serverID2 = DALoggingwithCategory();
+              if (os_log_type_enabled(serverID2, v28))
               {
                 *buf = 138412290;
                 v127 = v30;
-                _os_log_impl(&dword_0, v33, v28, "Dropping a server action without server ID %@", buf, 0xCu);
+                _os_log_impl(&dword_0, serverID2, v28, "Dropping a server action without server ID %@", buf, 0xCu);
               }
             }
           }
@@ -6934,7 +6934,7 @@ LABEL_188:
     v118 = 0u;
     v115 = 0u;
     v116 = 0u;
-    v34 = v23;
+    v34 = pushedActionsCopy;
     v35 = [v34 countByEnumeratingWithState:&v115 objects:v125 count:16];
     if (v35)
     {
@@ -6956,32 +6956,32 @@ LABEL_188:
           v42 = *(*(&v115 + 1) + 8 * j);
           if ([v42 itemChangeType] == &dword_4 + 2)
           {
-            v43 = [v42 serverId];
-            v44 = [v24 objectForKeyedSubscript:v43];
+            serverId = [v42 serverId];
+            v44 = [v24 objectForKeyedSubscript:serverId];
 
             v45 = DALoggingwithCategory();
-            v46 = v45;
+            serverId2 = v45;
             if (v44)
             {
               if (os_log_type_enabled(v45, v39))
               {
                 *buf = 138412290;
                 v127 = v44;
-                _os_log_impl(&dword_0, v46, v39, "Dropping server action, because it had a belay-that-modify action associated with it.  Server action %@", buf, 0xCu);
+                _os_log_impl(&dword_0, serverId2, v39, "Dropping server action, because it had a belay-that-modify action associated with it.  Server action %@", buf, 0xCu);
               }
 
-              v46 = [v42 serverId];
-              [v24 removeObjectForKey:v46];
+              serverId2 = [v42 serverId];
+              [v24 removeObjectForKey:serverId2];
             }
 
             else
             {
               if (os_log_type_enabled(v45, v40))
               {
-                v47 = [v42 serverId];
+                serverId3 = [v42 serverId];
                 *buf = 138412290;
-                v127 = v47;
-                _os_log_impl(&dword_0, v46, v40, "Had a belay-that-action daaction, but no corresponding server action for id %@", buf, 0xCu);
+                v127 = serverId3;
+                _os_log_impl(&dword_0, serverId2, v40, "Had a belay-that-action daaction, but no corresponding server action for id %@", buf, 0xCu);
               }
 
               v38 = v99;
@@ -7004,14 +7004,14 @@ LABEL_188:
 
     v100 = v37;
 
-    v48 = [v24 allValues];
-    [v101 addObjectsFromArray:v48];
+    allValues = [v24 allValues];
+    [v101 addObjectsFromArray:allValues];
 
-    v22 = [v101 allObjects];
+    allObjects = [v101 allObjects];
 
-    v19 = v92;
+    previousTagCopy = v92;
     v21 = v93;
-    v23 = v98;
+    pushedActionsCopy = v98;
   }
 
   else
@@ -7021,18 +7021,18 @@ LABEL_188:
 
   v49 = objc_opt_new();
   v50 = objc_opt_new();
-  LOWORD(v91) = __PAIR16__(a11, a10);
-  obja = v22;
-  [(ASAgent *)self _syncResultForFolder:v21 newTag:v97 previousTag:v19 actions:v22 results:v96 changeIdContext:v95 isInitialSync:v91 moreAvailable:a4 dataclass:v49 resultingChangeActionsForServer:v23 pushedActions:v94 rejectedServerIds:v50 eventsWithPendingInvitationEmails:?];
-  v51 = [(ASAgent *)self account];
-  v52 = [v51 changeTrackingID];
-  v53 = [(ASAgent *)self account];
-  v54 = [v53 accountID];
-  v55 = [ASDataHandler newDataHandlerForDataclass:a4 container:0 changeTrackingID:v52 accountID:v54];
+  LOWORD(v91) = __PAIR16__(available, sync);
+  obja = allObjects;
+  [(ASAgent *)self _syncResultForFolder:v21 newTag:tagCopy previousTag:previousTagCopy actions:allObjects results:resultsCopy changeIdContext:contextCopy isInitialSync:v91 moreAvailable:dataclass dataclass:v49 resultingChangeActionsForServer:pushedActionsCopy pushedActions:idsCopy rejectedServerIds:v50 eventsWithPendingInvitationEmails:?];
+  account = [(ASAgent *)self account];
+  changeTrackingID = [account changeTrackingID];
+  account2 = [(ASAgent *)self account];
+  accountID = [account2 accountID];
+  v55 = [ASDataHandler newDataHandlerForDataclass:dataclass container:0 changeTrackingID:changeTrackingID accountID:accountID];
 
   [v55 openDB];
-  [(ASAgent *)self _cacheFoldersForDataclasses:a4];
-  v56 = [(ASAgent *)self _containerForFolderWithId:v21 dataclass:a4];
+  [(ASAgent *)self _cacheFoldersForDataclasses:dataclass];
+  v56 = [(ASAgent *)self _containerForFolderWithId:v21 dataclass:dataclass];
   v102 = v55;
   [v55 setContainer:v56];
   v113 = 0u;
@@ -7057,21 +7057,21 @@ LABEL_188:
         v62 = *(*(&v111 + 1) + 8 * k);
         if ([v62 itemChangeType] != &dword_0 + 2)
         {
-          v63 = [v62 changedItem];
-          v64 = [v63 clientID];
-          if (v64)
+          changedItem2 = [v62 changedItem];
+          clientID = [changedItem2 clientID];
+          if (clientID)
           {
             goto LABEL_50;
           }
 
-          v65 = [v63 serverID];
+          serverID3 = [changedItem2 serverID];
 
-          if (v65)
+          if (serverID3)
           {
-            v66 = [v63 serverID];
-            v64 = [(ASAgent *)self _localIdForExchangeId:v66 inContainer:v56 dataclass:a4];
+            serverID4 = [changedItem2 serverID];
+            clientID = [(ASAgent *)self _localIdForExchangeId:serverID4 inContainer:v56 dataclass:dataclass];
 
-            [v63 setClientID:v64];
+            [changedItem2 setClientID:clientID];
 LABEL_50:
           }
 
@@ -7105,26 +7105,26 @@ LABEL_50:
         }
 
         v72 = *(*(&v107 + 1) + 8 * m);
-        v73 = [v72 clientID];
-        if (!v73)
+        clientID2 = [v72 clientID];
+        if (!clientID2)
         {
-          v74 = [v72 serverID];
+          serverID5 = [v72 serverID];
 
-          if (!v74)
+          if (!serverID5)
           {
             goto LABEL_63;
           }
 
-          v75 = [v72 serverID];
-          v73 = [(ASAgent *)self _localIdForExchangeId:v75 inContainer:v56 dataclass:a4];
+          serverID6 = [v72 serverID];
+          clientID2 = [(ASAgent *)self _localIdForExchangeId:serverID6 inContainer:v56 dataclass:dataclass];
 
-          [v72 setClientID:v73];
+          [v72 setClientID:clientID2];
         }
 
 LABEL_63:
         [v72 setLocalItem:0];
-        v76 = [(ASAgent *)self account];
-        [v72 loadLocalItemWithAccount:v76];
+        account3 = [(ASAgent *)self account];
+        [v72 loadLocalItemWithAccount:account3];
       }
 
       v69 = [v67 countByEnumeratingWithState:&v107 objects:v123 count:16];
@@ -7133,18 +7133,18 @@ LABEL_63:
     while (v69);
   }
 
-  v77 = [(ASAgent *)self account];
-  v78 = [v77 sendEmailsForCalEvents:v67 consumer:self];
+  account4 = [(ASAgent *)self account];
+  v78 = [account4 sendEmailsForCalEvents:v67 consumer:self];
 
-  [(ASAgent *)self _nilOutContainersForDataclasses:a4];
+  [(ASAgent *)self _nilOutContainersForDataclasses:dataclass];
   [v102 closeDBAndSave:v78];
-  if (a11 || ([v57 count] != 0) | v100 & 1)
+  if (available || ([v57 count] != 0) | v100 & 1)
   {
-    v79 = [(ASAgent *)self account];
-    v80 = [v79 folderWithId:v93];
+    account5 = [(ASAgent *)self account];
+    v80 = [account5 folderWithId:v93];
 
     v81 = 1;
-    v82 = [[ESFolderSyncRequest alloc] initWithFolder:v80 hasRemoteChanges:1 isInitialUberSync:a10];
+    v82 = [[ESFolderSyncRequest alloc] initWithFolder:v80 hasRemoteChanges:1 isInitialUberSync:sync];
     [v82 setActions:v57];
     [(ASAgent *)self _appendSyncRequest:v82];
 
@@ -7156,7 +7156,7 @@ LABEL_63:
   {
     v83 = v98;
     v84 = obja;
-    if (a12)
+    if (changesAvailable)
     {
       v86 = DALoggingwithCategory();
       v87 = _CPLog_to_os_log_type[7];
@@ -7166,10 +7166,10 @@ LABEL_63:
         _os_log_impl(&dword_0, v86, v87, "More local changes are available. Will issue another sync request.", buf, 2u);
       }
 
-      v88 = [(ASAgent *)self account];
-      v89 = [v88 folderWithId:v93];
+      account6 = [(ASAgent *)self account];
+      v89 = [account6 folderWithId:v93];
 
-      v90 = [[ESFolderSyncRequest alloc] initWithFolder:v89 hasRemoteChanges:0 isInitialUberSync:a10];
+      v90 = [[ESFolderSyncRequest alloc] initWithFolder:v89 hasRemoteChanges:0 isInitialUberSync:sync];
       [(ASAgent *)self _appendSyncRequest:v90];
 
       v81 = 1;
@@ -7177,9 +7177,9 @@ LABEL_63:
 
     else
     {
-      if (a10)
+      if (sync)
       {
-        [(ASAgent *)self _finishInitialSyncForFolder:v93 dataclass:a4];
+        [(ASAgent *)self _finishInitialSyncForFolder:v93 dataclass:dataclass];
       }
 
       v81 = 0;
@@ -7187,53 +7187,53 @@ LABEL_63:
   }
 
   v85 = +[DALocalDBGateKeeper sharedGateKeeper];
-  [v85 relinquishLocksForWaiter:self dataclasses:a4 moreComing:v81];
+  [v85 relinquishLocksForWaiter:self dataclasses:dataclass moreComing:v81];
 
   [(ASAgent *)self _fireWaitingFolderItemSyncRequests];
 }
 
-- (void)syncResultForContactsFolder:(id)a3 newTag:(id)a4 previousTag:(id)a5 newSyncToken:(id)a6 actions:(id)a7 results:(id)a8 changeIdContext:(id)a9 isInitialSync:(BOOL)a10 moreAvailable:(BOOL)a11 moreLocalChangesAvailable:(BOOL)a12 pushedActions:(id)a13
+- (void)syncResultForContactsFolder:(id)folder newTag:(id)tag previousTag:(id)previousTag newSyncToken:(id)token actions:(id)actions results:(id)results changeIdContext:(id)context isInitialSync:(BOOL)self0 moreAvailable:(BOOL)self1 moreLocalChangesAvailable:(BOOL)self2 pushedActions:(id)self3
 {
-  *(&v13 + 1) = __PAIR16__(a12, a11);
-  LOBYTE(v13) = a10;
-  [ASAgent _wrapperSyncResultForFolder:"_wrapperSyncResultForFolder:dataclass:newTag:previousTag:actions:results:changeIdContext:isInitialSync:moreAvailable:moreLocalChangesAvailable:pushedActions:rejectedServerIds:" dataclass:a3 newTag:2 previousTag:a4 actions:a5 results:a7 changeIdContext:a8 isInitialSync:a9 moreAvailable:v13 moreLocalChangesAvailable:a13 pushedActions:0 rejectedServerIds:?];
+  *(&v13 + 1) = __PAIR16__(changesAvailable, available);
+  LOBYTE(v13) = sync;
+  [ASAgent _wrapperSyncResultForFolder:"_wrapperSyncResultForFolder:dataclass:newTag:previousTag:actions:results:changeIdContext:isInitialSync:moreAvailable:moreLocalChangesAvailable:pushedActions:rejectedServerIds:" dataclass:folder newTag:2 previousTag:tag actions:previousTag results:actions changeIdContext:results isInitialSync:context moreAvailable:v13 moreLocalChangesAvailable:pushedActions pushedActions:0 rejectedServerIds:?];
 }
 
-- (void)syncResultForEventsFolder:(id)a3 newTag:(id)a4 previousTag:(id)a5 actions:(id)a6 results:(id)a7 changeIdContext:(id)a8 isInitialSync:(BOOL)a9 moreAvailable:(BOOL)a10 moreLocalChangesAvailable:(BOOL)a11 pushedActions:(id)a12 rejectedServerIds:(id)a13
+- (void)syncResultForEventsFolder:(id)folder newTag:(id)tag previousTag:(id)previousTag actions:(id)actions results:(id)results changeIdContext:(id)context isInitialSync:(BOOL)sync moreAvailable:(BOOL)self0 moreLocalChangesAvailable:(BOOL)self1 pushedActions:(id)self2 rejectedServerIds:(id)self3
 {
-  *(&v13 + 1) = __PAIR16__(a11, a10);
-  LOBYTE(v13) = a9;
-  [ASAgent _wrapperSyncResultForFolder:"_wrapperSyncResultForFolder:dataclass:newTag:previousTag:actions:results:changeIdContext:isInitialSync:moreAvailable:moreLocalChangesAvailable:pushedActions:rejectedServerIds:" dataclass:a3 newTag:4 previousTag:a4 actions:a5 results:a6 changeIdContext:a7 isInitialSync:a8 moreAvailable:v13 moreLocalChangesAvailable:a12 pushedActions:a13 rejectedServerIds:?];
+  *(&v13 + 1) = __PAIR16__(changesAvailable, available);
+  LOBYTE(v13) = sync;
+  [ASAgent _wrapperSyncResultForFolder:"_wrapperSyncResultForFolder:dataclass:newTag:previousTag:actions:results:changeIdContext:isInitialSync:moreAvailable:moreLocalChangesAvailable:pushedActions:rejectedServerIds:" dataclass:folder newTag:4 previousTag:tag actions:previousTag results:actions changeIdContext:results isInitialSync:context moreAvailable:v13 moreLocalChangesAvailable:pushedActions pushedActions:ids rejectedServerIds:?];
 }
 
-- (void)syncResultForToDosFolder:(id)a3 newTag:(id)a4 previousTag:(id)a5 actions:(id)a6 results:(id)a7 changeIdContext:(id)a8 isInitialSync:(BOOL)a9 moreAvailable:(BOOL)a10 moreLocalChangesAvailable:(BOOL)a11 pushedActions:(id)a12 rejectedServerIds:(id)a13
+- (void)syncResultForToDosFolder:(id)folder newTag:(id)tag previousTag:(id)previousTag actions:(id)actions results:(id)results changeIdContext:(id)context isInitialSync:(BOOL)sync moreAvailable:(BOOL)self0 moreLocalChangesAvailable:(BOOL)self1 pushedActions:(id)self2 rejectedServerIds:(id)self3
 {
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
-  v21 = a6;
-  v72 = a7;
-  v71 = a8;
-  v22 = a12;
-  v23 = v20;
-  v70 = a13;
-  if (v20 && ([v20 isEqualToString:@"0"] & 1) == 0 && !a10)
+  folderCopy = folder;
+  tagCopy = tag;
+  previousTagCopy = previousTag;
+  actionsCopy = actions;
+  resultsCopy = results;
+  contextCopy = context;
+  pushedActionsCopy = pushedActions;
+  v23 = previousTagCopy;
+  idsCopy = ids;
+  if (previousTagCopy && ([previousTagCopy isEqualToString:@"0"] & 1) == 0 && !available)
   {
-    [(ASAgent *)self _noteSyncForFolderWithId:v18 andTitle:0 finishedWithSuccess:1];
+    [(ASAgent *)self _noteSyncForFolderWithId:folderCopy andTitle:0 finishedWithSuccess:1];
   }
 
-  v73 = v22;
-  if (v22)
+  v73 = pushedActionsCopy;
+  if (pushedActionsCopy)
   {
-    v67 = v20;
-    v69 = v18;
+    v67 = previousTagCopy;
+    v69 = folderCopy;
     v24 = objc_opt_new();
     v25 = objc_opt_new();
     v81 = 0u;
     v82 = 0u;
     v83 = 0u;
     v84 = 0u;
-    v26 = v21;
+    v26 = actionsCopy;
     v27 = v25;
     obj = v26;
     v28 = [v26 countByEnumeratingWithState:&v81 objects:v88 count:16];
@@ -7258,9 +7258,9 @@ LABEL_63:
 
           else
           {
-            v33 = [v32 changedItem];
-            v34 = [v33 serverID];
-            [v24 setObject:v32 forKeyedSubscript:v34];
+            changedItem = [v32 changedItem];
+            serverID = [changedItem serverID];
+            [v24 setObject:v32 forKeyedSubscript:serverID];
           }
         }
 
@@ -7271,7 +7271,7 @@ LABEL_63:
     }
 
     v66 = v27;
-    v68 = v19;
+    v68 = tagCopy;
 
     v79 = 0u;
     v80 = 0u;
@@ -7299,32 +7299,32 @@ LABEL_63:
           v43 = *(*(&v77 + 1) + 8 * j);
           if ([v43 itemChangeType] == &dword_4 + 2)
           {
-            v44 = [v43 serverId];
-            v45 = [v24 objectForKeyedSubscript:v44];
+            serverId = [v43 serverId];
+            v45 = [v24 objectForKeyedSubscript:serverId];
 
             v46 = DALoggingwithCategory();
-            v47 = v46;
+            serverId2 = v46;
             if (v45)
             {
               if (os_log_type_enabled(v46, v40))
               {
                 *buf = 138412290;
                 v86 = v45;
-                _os_log_impl(&dword_0, v47, v40, "Dropping server action, because it had a belay-that-modify action associated with it.  Server action %@", buf, 0xCu);
+                _os_log_impl(&dword_0, serverId2, v40, "Dropping server action, because it had a belay-that-modify action associated with it.  Server action %@", buf, 0xCu);
               }
 
-              v47 = [v43 serverId];
-              [v24 removeObjectForKey:v47];
+              serverId2 = [v43 serverId];
+              [v24 removeObjectForKey:serverId2];
             }
 
             else
             {
               if (os_log_type_enabled(v46, v41))
               {
-                v48 = [v43 serverId];
+                serverId3 = [v43 serverId];
                 *buf = 138412290;
-                v86 = v48;
-                _os_log_impl(&dword_0, v47, v41, "Had a belay-that-action daaction, but no corresponding server action for id %@", buf, 0xCu);
+                v86 = serverId3;
+                _os_log_impl(&dword_0, serverId2, v41, "Had a belay-that-action daaction, but no corresponding server action for id %@", buf, 0xCu);
               }
 
               v39 = v75;
@@ -7345,15 +7345,15 @@ LABEL_63:
       v38 = 0;
     }
 
-    v49 = [v24 allValues];
-    [v66 addObjectsFromArray:v49];
+    allValues = [v24 allValues];
+    [v66 addObjectsFromArray:allValues];
 
-    v21 = [v66 allObjects];
+    actionsCopy = [v66 allObjects];
 
-    v19 = v68;
-    v18 = v69;
+    tagCopy = v68;
+    folderCopy = v69;
     v23 = v67;
-    v22 = v73;
+    pushedActionsCopy = v73;
   }
 
   else
@@ -7363,36 +7363,36 @@ LABEL_63:
 
   v50 = objc_opt_new();
   v51 = objc_opt_new();
-  LOWORD(v65) = __PAIR16__(a10, a9);
-  if ([(ASAgent *)self _syncResultForToDoFolder:v18 newTag:v19 previousTag:v23 actions:v21 results:v72 changeIdContext:v71 isInitialSync:v65 moreAvailable:v50 resultingChangeActionsForServer:v22 pushedActions:v70 rejectedServerIds:v51 eventsWithPendingInvitationEmails:?])
+  LOWORD(v65) = __PAIR16__(available, sync);
+  if ([(ASAgent *)self _syncResultForToDoFolder:folderCopy newTag:tagCopy previousTag:v23 actions:actionsCopy results:resultsCopy changeIdContext:contextCopy isInitialSync:v65 moreAvailable:v50 resultingChangeActionsForServer:pushedActionsCopy pushedActions:idsCopy rejectedServerIds:v51 eventsWithPendingInvitationEmails:?])
   {
-    if (a10 || ([v50 count] != 0) | v38 & 1)
+    if (available || ([v50 count] != 0) | v38 & 1)
     {
-      v52 = self;
-      v53 = [(ASAgent *)self account];
-      v54 = [v53 folderWithId:v18];
+      selfCopy4 = self;
+      account = [(ASAgent *)self account];
+      v54 = [account folderWithId:folderCopy];
 
       v55 = 1;
-      v56 = [[ESFolderSyncRequest alloc] initWithFolder:v54 hasRemoteChanges:1 isInitialUberSync:a9];
+      v56 = [[ESFolderSyncRequest alloc] initWithFolder:v54 hasRemoteChanges:1 isInitialUberSync:sync];
       [v56 setActions:v50];
       [(ASAgent *)self _appendSyncRequest:v56];
     }
 
-    else if (a11)
+    else if (changesAvailable)
     {
       v60 = DALoggingwithCategory();
       v61 = _CPLog_to_os_log_type[7];
-      v52 = self;
+      selfCopy4 = self;
       if (os_log_type_enabled(v60, v61))
       {
         *buf = 0;
         _os_log_impl(&dword_0, v60, v61, "More local changes are available. Will issue another sync request.", buf, 2u);
       }
 
-      v62 = [(ASAgent *)self account];
-      v63 = [v62 folderWithId:v18];
+      account2 = [(ASAgent *)self account];
+      v63 = [account2 folderWithId:folderCopy];
 
-      v64 = [[ESFolderSyncRequest alloc] initWithFolder:v63 hasRemoteChanges:0 isInitialUberSync:a9];
+      v64 = [[ESFolderSyncRequest alloc] initWithFolder:v63 hasRemoteChanges:0 isInitialUberSync:sync];
       [(ASAgent *)self _appendSyncRequest:v64];
 
       v55 = 1;
@@ -7400,10 +7400,10 @@ LABEL_63:
 
     else
     {
-      v52 = self;
-      if (a9)
+      selfCopy4 = self;
+      if (sync)
       {
-        [(ASAgent *)self _finishInitialSyncForToDoFolder:v18];
+        [(ASAgent *)self _finishInitialSyncForToDoFolder:folderCopy];
       }
 
       v55 = 0;
@@ -7421,43 +7421,43 @@ LABEL_63:
     }
 
     v55 = 0;
-    v52 = self;
+    selfCopy4 = self;
   }
 
   v59 = +[DALocalDBGateKeeper sharedGateKeeper];
-  [v59 relinquishLocksForWaiter:v52 dataclasses:16 moreComing:v55];
+  [v59 relinquishLocksForWaiter:selfCopy4 dataclasses:16 moreComing:v55];
 
-  [(ASAgent *)v52 _fireWaitingFolderItemSyncRequests];
+  [(ASAgent *)selfCopy4 _fireWaitingFolderItemSyncRequests];
 }
 
-- (void)syncResultForNotesFolder:(id)a3 noteContext:(id)a4 newTag:(id)a5 previousTag:(id)a6 actions:(id)a7 results:(id)a8 changeSet:(id)a9 notesToDeleteAfterSync:(id)a10 isInitialSync:(BOOL)a11 moreAvailable:(BOOL)a12 moreLocalChangesAvailable:(BOOL)a13
+- (void)syncResultForNotesFolder:(id)folder noteContext:(id)context newTag:(id)tag previousTag:(id)previousTag actions:(id)actions results:(id)results changeSet:(id)set notesToDeleteAfterSync:(id)self0 isInitialSync:(BOOL)self1 moreAvailable:(BOOL)self2 moreLocalChangesAvailable:(BOOL)self3
 {
-  *(&v13 + 1) = __PAIR16__(a13, a12);
-  LOBYTE(v13) = a11;
-  [ASAgent _wrapperSyncResultForFolder:"_wrapperSyncResultForFolder:dataclass:newTag:previousTag:actions:results:changeIdContext:isInitialSync:moreAvailable:moreLocalChangesAvailable:pushedActions:rejectedServerIds:" dataclass:a3 newTag:32 previousTag:a5 actions:a6 results:a7 changeIdContext:a8 isInitialSync:a9 moreAvailable:v13 moreLocalChangesAvailable:0 pushedActions:0 rejectedServerIds:?];
+  *(&v13 + 1) = __PAIR16__(changesAvailable, available);
+  LOBYTE(v13) = initialSync;
+  [ASAgent _wrapperSyncResultForFolder:"_wrapperSyncResultForFolder:dataclass:newTag:previousTag:actions:results:changeIdContext:isInitialSync:moreAvailable:moreLocalChangesAvailable:pushedActions:rejectedServerIds:" dataclass:folder newTag:32 previousTag:tag actions:previousTag results:actions changeIdContext:results isInitialSync:set moreAvailable:v13 moreLocalChangesAvailable:0 pushedActions:0 rejectedServerIds:?];
 }
 
-- (BOOL)_finishWithInvitationEvent:(void *)a3 eventUID:(id)a4 expectedResponse:(int)a5 wasMyInvite:(BOOL)a6 isStillInvite:(BOOL)a7
+- (BOOL)_finishWithInvitationEvent:(void *)event eventUID:(id)d expectedResponse:(int)response wasMyInvite:(BOOL)invite isStillInvite:(BOOL)stillInvite
 {
-  v7 = a7;
-  v8 = a6;
-  v12 = a4;
+  stillInviteCopy = stillInvite;
+  inviteCopy = invite;
+  dCopy = d;
   v13 = DALoggingwithCategory();
   v14 = _CPLog_to_os_log_type[6];
   if (os_log_type_enabled(v13, v14))
   {
     *buf = 138413058;
-    v47 = v12;
+    v47 = dCopy;
     v48 = 1024;
-    v49 = a5;
+    responseCopy = response;
     v50 = 1024;
-    v51 = v8;
+    v51 = inviteCopy;
     v52 = 1024;
-    v53 = v7;
+    v53 = stillInviteCopy;
     _os_log_impl(&dword_0, v13, v14, "_finishWithInvitationEvent, for event with UID %@ expectedResponse of %d, was my invite %d is still invite %d", buf, 0x1Eu);
   }
 
-  if (!v7)
+  if (!stillInviteCopy)
   {
     if ((CalEventGetExternalTrackingStatus() & 7) == 0)
     {
@@ -7469,17 +7469,17 @@ LABEL_63:
     goto LABEL_9;
   }
 
-  if (!v8)
+  if (!inviteCopy)
   {
     v16 = 7;
-    if (a5 > 1)
+    if (response > 1)
     {
-      if (a5 == 2)
+      if (response == 2)
       {
         v16 = 3;
       }
 
-      else if (a5 == 3)
+      else if (response == 3)
       {
         v16 = 2;
       }
@@ -7487,12 +7487,12 @@ LABEL_63:
 
     else
     {
-      if (a5 == -1)
+      if (response == -1)
       {
         goto LABEL_36;
       }
 
-      if (a5 == 1)
+      if (response == 1)
       {
         v16 = 1;
       }
@@ -7525,8 +7525,8 @@ LABEL_63:
           v32 = CalCalendarCopyExternalID();
           if (v32)
           {
-            v33 = [(ASAgent *)self account];
-            v34 = [v33 folderWithId:v32];
+            account = [(ASAgent *)self account];
+            v34 = [account folderWithId:v32];
 
             if (v34)
             {
@@ -7534,8 +7534,8 @@ LABEL_63:
               v44 = v32;
               v35 = CalCalendarItemCopyExternalID();
               v36 = [ASEvent alloc];
-              v37 = [(ASAgent *)self account];
-              v38 = [v36 initWithCalEvent:a3 serverID:v35 account:v37];
+              account2 = [(ASAgent *)self account];
+              v38 = [v36 initWithCalEvent:event serverID:v35 account:account2];
 
               [v38 setCalEvent:0];
               v39 = [[ASAction alloc] initWithItemChangeType:1 changedItem:v38 serverId:0];
@@ -7559,8 +7559,8 @@ LABEL_63:
 LABEL_36:
     v15 = 0;
 LABEL_44:
-    v41 = [(ASAgent *)self account];
-    [v41 consumerFinishedInvitationActionsForEventWithUID:v12];
+    account3 = [(ASAgent *)self account];
+    [account3 consumerFinishedInvitationActionsForEventWithUID:dCopy];
 
     goto LABEL_45;
   }
@@ -7581,12 +7581,12 @@ LABEL_9:
 
   v18 = CalCalendarItemCopyExternalID();
   v19 = [ASEvent alloc];
-  v20 = [(ASAgent *)self account];
-  v21 = [v19 initWithCalEvent:a3 serverID:v18 account:v20];
+  account4 = [(ASAgent *)self account];
+  v21 = [v19 initWithCalEvent:event serverID:v18 account:account4];
 
-  v22 = [(ASAgent *)self account];
-  v23 = [v22 accountID];
-  v24 = [v21 purgeAttendeesPendingDeletionForAccountID:v23];
+  account5 = [(ASAgent *)self account];
+  accountID = [account5 accountID];
+  v24 = [v21 purgeAttendeesPendingDeletionForAccountID:accountID];
 
   if (v17)
   {
@@ -7602,42 +7602,42 @@ LABEL_45:
   return v15;
 }
 
-- (void)_smartMailTask:(id)a3 failedWithErrorCode:(int64_t)a4 error:(id)a5
+- (void)_smartMailTask:(id)task failedWithErrorCode:(int64_t)code error:(id)error
 {
-  v8 = a3;
-  if ([a5 code] == &stru_68.size + 6)
+  taskCopy = task;
+  if ([error code] == &stru_68.size + 6)
   {
-    v7 = [v8 context];
-    [(ASAgent *)self messageDidSendWithContext:v7];
+    context = [taskCopy context];
+    [(ASAgent *)self messageDidSendWithContext:context];
   }
 }
 
-- (void)_reallyApplyMessageDidSendWithContext:(id)a3
+- (void)_reallyApplyMessageDidSendWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = +[ASLocalDBHelper sharedInstance];
-  v6 = [(ASAgent *)self account];
-  v7 = [v6 accountID];
-  v8 = [(ASAgent *)self account];
-  v9 = [v8 changeTrackingID];
-  [v5 calOpenDatabaseForAccountID:v7 clientID:v9];
+  account = [(ASAgent *)self account];
+  accountID = [account accountID];
+  account2 = [(ASAgent *)self account];
+  changeTrackingID = [account2 changeTrackingID];
+  [v5 calOpenDatabaseForAccountID:accountID clientID:changeTrackingID];
 
   v10 = +[ASLocalDBHelper sharedInstance];
-  v11 = [(ASAgent *)self account];
-  v12 = [v11 accountID];
-  [v10 calDatabaseForAccountID:v12];
+  account3 = [(ASAgent *)self account];
+  accountID2 = [account3 accountID];
+  [v10 calDatabaseForAccountID:accountID2];
 
-  v13 = [(ASAgent *)self account];
-  v14 = [v13 _copyExchangeCalendarStore:0];
+  account4 = [(ASAgent *)self account];
+  v14 = [account4 _copyExchangeCalendarStore:0];
 
-  v15 = v4;
-  v16 = [v15 eventUID];
-  v17 = [v15 serverID];
-  v18 = [v15 isMyInvite];
-  v19 = [v15 emailResponse];
-  if (v16)
+  v15 = contextCopy;
+  eventUID = [v15 eventUID];
+  serverID = [v15 serverID];
+  isMyInvite = [v15 isMyInvite];
+  emailResponse = [v15 emailResponse];
+  if (eventUID)
   {
-    v52 = v19;
+    v52 = emailResponse;
     v20 = v14;
     v21 = CalDatabaseCopyAllEventsWithUniqueIdentifierInStore();
     Count = CFArrayGetCount(v21);
@@ -7654,7 +7654,7 @@ LABEL_45:
       if (os_log_type_enabled(v24, v25))
       {
         *buf = 138412290;
-        v60 = v16;
+        v60 = eventUID;
         _os_log_impl(&dword_0, v24, v25, "Found one event with UID %@.", buf, 0xCu);
       }
 
@@ -7690,22 +7690,22 @@ LABEL_45:
         *buf = 134218242;
         v60 = Count;
         v61 = 2112;
-        v62 = v16;
+        v62 = eventUID;
         _os_log_impl(&dword_0, v39, type, "Found %ld events with the same UID %@. Pick one using server ID.", buf, 0x16u);
       }
 
-      if (v17 && (v28 = v20, (v40 = CalDatabaseCopyEventWithExternalIDInStore()) != 0))
+      if (serverID && (v28 = v20, (v40 = CalDatabaseCopyEventWithExternalIDInStore()) != 0))
       {
         v29 = v40;
         v41 = DALoggingwithCategory();
         if (os_log_type_enabled(v41, type))
         {
           *buf = 138412290;
-          v60 = v17;
+          v60 = serverID;
           _os_log_impl(&dword_0, v41, type, "Found local event using server ID %@.", buf, 0xCu);
         }
 
-        v18 = v18;
+        isMyInvite = isMyInvite;
       }
 
       else
@@ -7720,12 +7720,12 @@ LABEL_45:
 
         v28 = v20;
         v44 = CalDatabaseCopyEventWithUniqueIdentifierInStore();
-        v18 = v18;
+        isMyInvite = isMyInvite;
         if (!v44)
         {
 LABEL_41:
-          v49 = [(ASAgent *)self account];
-          [v49 consumerFinishedInvitationActionsForEventWithUID:v16];
+          account5 = [(ASAgent *)self account];
+          [account5 consumerFinishedInvitationActionsForEventWithUID:eventUID];
 
           v33 = 0;
           if (!v28)
@@ -7741,13 +7741,13 @@ LABEL_41:
         if (os_log_type_enabled(v41, type))
         {
           *buf = 138412290;
-          v60 = v16;
+          v60 = eventUID;
           _os_log_impl(&dword_0, v41, type, "Found local event using event UID %@.", buf, 0xCu);
         }
       }
     }
 
-    v33 = [(ASAgent *)self _finishWithInvitationEvent:v29 eventUID:v16 expectedResponse:v52 wasMyInvite:v18 isStillInvite:1];
+    v33 = [(ASAgent *)self _finishWithInvitationEvent:v29 eventUID:eventUID expectedResponse:v52 wasMyInvite:isMyInvite isStillInvite:1];
     CFRelease(v29);
     if (v28)
     {
@@ -7759,13 +7759,13 @@ LABEL_39:
   else
   {
     v53 = v14;
-    v30 = [v15 attendeeUUIDs];
+    attendeeUUIDs = [v15 attendeeUUIDs];
     v54 = 0u;
     v55 = 0u;
     v56 = 0u;
     v57 = 0u;
-    v31 = [v30 countByEnumeratingWithState:&v54 objects:v58 count:16];
-    v51 = v17;
+    v31 = [attendeeUUIDs countByEnumeratingWithState:&v54 objects:v58 count:16];
+    v51 = serverID;
     if (v31)
     {
       v32 = v31;
@@ -7777,7 +7777,7 @@ LABEL_39:
         {
           if (*v55 != v34)
           {
-            objc_enumerationMutation(v30);
+            objc_enumerationMutation(attendeeUUIDs);
           }
 
           v36 = *(*(&v54 + 1) + 8 * i);
@@ -7791,7 +7791,7 @@ LABEL_39:
           }
         }
 
-        v32 = [v30 countByEnumeratingWithState:&v54 objects:v58 count:16];
+        v32 = [attendeeUUIDs countByEnumeratingWithState:&v54 objects:v58 count:16];
       }
 
       while (v32);
@@ -7803,7 +7803,7 @@ LABEL_39:
     }
 
     v23 = &PLLogRegisteredEvent_ptr;
-    v17 = v51;
+    serverID = v51;
     v28 = v53;
     if (v53)
     {
@@ -7812,53 +7812,53 @@ LABEL_39:
   }
 
 LABEL_40:
-  v45 = [v23[390] sharedInstance];
-  v46 = [(ASAgent *)self account];
-  v47 = [v46 accountID];
-  [v45 calCloseDatabaseForAccountID:v47 save:v33 & 1];
+  sharedInstance = [v23[390] sharedInstance];
+  account6 = [(ASAgent *)self account];
+  accountID3 = [account6 accountID];
+  [sharedInstance calCloseDatabaseForAccountID:accountID3 save:v33 & 1];
 
   v48 = +[DALocalDBGateKeeper sharedGateKeeper];
   [v48 relinquishLocksForWaiter:self dataclasses:4 moreComing:0];
 }
 
-- (void)messageDidSendWithContext:(id)a3
+- (void)messageDidSendWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = +[DALocalDBGateKeeper sharedGateKeeper];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_11680;
   v7[3] = &unk_6CED0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = contextCopy;
+  v6 = contextCopy;
   [v5 registerWaiter:self forDataclassLocks:4 completionHandler:v7];
 }
 
-- (void)_reallyFinishInvitationBatch:(id)a3
+- (void)_reallyFinishInvitationBatch:(id)batch
 {
-  v4 = a3;
+  batchCopy = batch;
   v5 = +[ASLocalDBHelper sharedInstance];
-  v6 = [(ASAgent *)self account];
-  v7 = [v6 accountID];
-  v8 = [(ASAgent *)self account];
-  v9 = [v8 changeTrackingID];
-  [v5 calOpenDatabaseForAccountID:v7 clientID:v9];
+  account = [(ASAgent *)self account];
+  accountID = [account accountID];
+  account2 = [(ASAgent *)self account];
+  changeTrackingID = [account2 changeTrackingID];
+  [v5 calOpenDatabaseForAccountID:accountID clientID:changeTrackingID];
 
   v10 = +[ASLocalDBHelper sharedInstance];
-  v11 = [(ASAgent *)self account];
-  v12 = [v11 accountID];
-  [v10 calDatabaseForAccountID:v12];
+  account3 = [(ASAgent *)self account];
+  accountID2 = [account3 accountID];
+  [v10 calDatabaseForAccountID:accountID2];
 
-  v13 = self;
-  v14 = [(ASAgent *)self account];
-  v15 = [v14 _copyExchangeCalendarStore:0];
+  selfCopy = self;
+  account4 = [(ASAgent *)self account];
+  v15 = [account4 _copyExchangeCalendarStore:0];
 
   v47 = 0u;
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  obj = v4;
+  obj = batchCopy;
   v16 = [obj countByEnumeratingWithState:&v45 objects:v49 count:16];
   if (v16)
   {
@@ -7878,10 +7878,10 @@ LABEL_40:
         }
 
         v20 = *(*(&v45 + 1) + 8 * v19);
-        v21 = [v20 eventUID];
-        v22 = [v21 uidForCalFramework];
+        eventUID = [v20 eventUID];
+        uidForCalFramework = [eventUID uidForCalFramework];
 
-        if (v22)
+        if (uidForCalFramework)
         {
           v23 = DALoggingwithCategory();
           if (os_log_type_enabled(v23, type))
@@ -7892,28 +7892,28 @@ LABEL_40:
 
           v24 = CalDatabaseCopyEventWithUniqueIdentifierInStore();
           [v20 setLocalItem:v24];
-          v25 = [v20 organizerEmail];
-          if ([v25 length])
+          organizerEmail = [v20 organizerEmail];
+          if ([organizerEmail length])
           {
             v43 = 1;
           }
 
           else
           {
-            v26 = [v20 attendees];
-            v43 = [v26 count] != 0;
+            attendees = [v20 attendees];
+            v43 = [attendees count] != 0;
           }
 
-          v27 = [(ASAgent *)v13 account];
-          if ([v20 cachedOrganizerIsSelfWithAccount:v27])
+          account5 = [(ASAgent *)selfCopy account];
+          if ([v20 cachedOrganizerIsSelfWithAccount:account5])
           {
             [v20 attendees];
             v28 = v18;
             v29 = v15;
-            v31 = v30 = v13;
+            v31 = v30 = selfCopy;
             v32 = [v31 count] != 0;
 
-            v13 = v30;
+            selfCopy = v30;
             v15 = v29;
             v18 = v28;
             v17 = v39;
@@ -7926,14 +7926,14 @@ LABEL_40:
 
           if (v24)
           {
-            v40 = -[ASAgent _finishWithInvitationEvent:eventUID:expectedResponse:wasMyInvite:isStillInvite:](v13, "_finishWithInvitationEvent:eventUID:expectedResponse:wasMyInvite:isStillInvite:", v24, v22, [v20 meetingResponseForEmail], v32, v43);
+            v40 = -[ASAgent _finishWithInvitationEvent:eventUID:expectedResponse:wasMyInvite:isStillInvite:](selfCopy, "_finishWithInvitationEvent:eventUID:expectedResponse:wasMyInvite:isStillInvite:", v24, uidForCalFramework, [v20 meetingResponseForEmail], v32, v43);
             CFRelease(v24);
           }
 
           else
           {
-            v33 = [(ASAgent *)v13 account];
-            [v33 consumerFinishedInvitationActionsForEventWithUID:v22];
+            account6 = [(ASAgent *)selfCopy account];
+            [account6 consumerFinishedInvitationActionsForEventWithUID:uidForCalFramework];
           }
         }
 
@@ -7958,23 +7958,23 @@ LABEL_40:
   }
 
   v34 = +[ASLocalDBHelper sharedInstance];
-  v35 = [(ASAgent *)v13 account];
-  [v35 accountID];
-  v37 = v36 = v13;
+  account7 = [(ASAgent *)selfCopy account];
+  [account7 accountID];
+  v37 = v36 = selfCopy;
   [v34 calCloseDatabaseForAccountID:v37 save:v40 & 1];
 
   v38 = +[DALocalDBGateKeeper sharedGateKeeper];
   [v38 relinquishLocksForWaiter:v36 dataclasses:4 moreComing:0];
 }
 
-- (void)finishWithInvitationBatch:(id)a3
+- (void)finishWithInvitationBatch:(id)batch
 {
-  v4 = a3;
+  batchCopy = batch;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [batchCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -7986,7 +7986,7 @@ LABEL_40:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(batchCopy);
         }
 
         [*(*(&v13 + 1) + 8 * v8) setLocalItem:0];
@@ -7994,7 +7994,7 @@ LABEL_40:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [batchCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -8006,40 +8006,40 @@ LABEL_40:
   v11[2] = sub_11C30;
   v11[3] = &unk_6CED0;
   v11[4] = self;
-  v12 = v4;
-  v10 = v4;
+  v12 = batchCopy;
+  v10 = batchCopy;
   [v9 registerWaiter:self forDataclassLocks:4 completionHandler:v11];
 }
 
-- (void)meetingResponseFinishedWithStatus:(int64_t)a3 error:(id)a4 successfulResponses:(id)a5 failedResponses:(id)a6
+- (void)meetingResponseFinishedWithStatus:(int64_t)status error:(id)error successfulResponses:(id)responses failedResponses:(id)failedResponses
 {
-  v125 = a4;
-  v9 = a5;
-  v10 = a6;
-  v148 = self;
-  v11 = [(ASAgent *)self account];
-  v12 = [v11 changeTrackingID];
-  v13 = [(ASAgent *)v148 account];
-  v14 = [v13 accountID];
-  v15 = [ASDataHandler newDataHandlerForDataclass:4 container:0 changeTrackingID:v12 accountID:v14];
+  errorCopy = error;
+  responsesCopy = responses;
+  failedResponsesCopy = failedResponses;
+  selfCopy = self;
+  account = [(ASAgent *)self account];
+  changeTrackingID = [account changeTrackingID];
+  account2 = [(ASAgent *)selfCopy account];
+  accountID = [account2 accountID];
+  v15 = [ASDataHandler newDataHandlerForDataclass:4 container:0 changeTrackingID:changeTrackingID accountID:accountID];
 
   v132 = v15;
   [v15 openDB];
-  [(ASAgent *)v148 _cacheFoldersForDataclasses:4];
+  [(ASAgent *)selfCopy _cacheFoldersForDataclasses:4];
   v16 = +[ASLocalDBHelper sharedInstance];
-  v17 = [(ASAgent *)v148 account];
-  v18 = [v17 accountID];
-  [v16 calDatabaseForAccountID:v18];
+  account3 = [(ASAgent *)selfCopy account];
+  accountID2 = [account3 accountID];
+  [v16 calDatabaseForAccountID:accountID2];
 
-  v19 = [(ASAgent *)v148 account];
-  cf = [v19 _copyExchangeCalendarStore:0];
+  account4 = [(ASAgent *)selfCopy account];
+  cf = [account4 _copyExchangeCalendarStore:0];
 
   v152 = objc_opt_new();
   v168 = 0u;
   v169 = 0u;
   v170 = 0u;
   v171 = 0u;
-  obj = v10;
+  obj = failedResponsesCopy;
   v20 = [obj countByEnumeratingWithState:&v168 objects:v181 count:16];
   if (v20)
   {
@@ -8053,8 +8053,8 @@ LABEL_40:
           objc_enumerationMutation(obj);
         }
 
-        v23 = [*(*(&v168 + 1) + 8 * i) context];
-        [v152 addObject:v23];
+        context = [*(*(&v168 + 1) + 8 * i) context];
+        [v152 addObject:context];
       }
 
       v20 = [obj countByEnumeratingWithState:&v168 objects:v181 count:16];
@@ -8067,7 +8067,7 @@ LABEL_40:
   v167 = 0u;
   v164 = 0u;
   v165 = 0u;
-  v137 = v9;
+  v137 = responsesCopy;
   v24 = [v137 countByEnumeratingWithState:&v164 objects:v180 count:16];
   if (v24)
   {
@@ -8081,8 +8081,8 @@ LABEL_40:
           objc_enumerationMutation(v137);
         }
 
-        v27 = [*(*(&v164 + 1) + 8 * j) context];
-        [v152 addObject:v27];
+        context2 = [*(*(&v164 + 1) + 8 * j) context];
+        [v152 addObject:context2];
       }
 
       v24 = [v137 countByEnumeratingWithState:&v164 objects:v180 count:16];
@@ -8091,12 +8091,12 @@ LABEL_40:
     while (v24);
   }
 
-  v28 = a3;
-  if (a3 == 9 || a3 == 2)
+  statusCopy2 = status;
+  if (status == 9 || status == 2)
   {
-    [(ASAgent *)v148 _clearChangeHistoriesWithChangeIdContext:0 dataclass:4 inFolderWithId:0 pushedActions:v152, v125];
+    [(ASAgent *)selfCopy _clearChangeHistoriesWithChangeIdContext:0 dataclass:4 inFolderWithId:0 pushedActions:v152, errorCopy];
     v149 = 1;
-    v28 = a3;
+    statusCopy2 = status;
   }
 
   else
@@ -8104,7 +8104,7 @@ LABEL_40:
     v149 = 0;
   }
 
-  if (v28 == 9)
+  if (statusCopy2 == 9)
   {
     v29 = cf;
     goto LABEL_68;
@@ -8114,8 +8114,8 @@ LABEL_40:
   v163 = 0u;
   v160 = 0u;
   v161 = 0u;
-  v140 = obj;
-  v144 = [v140 countByEnumeratingWithState:&v160 objects:v179 count:16];
+  account8 = obj;
+  v144 = [account8 countByEnumeratingWithState:&v160 objects:v179 count:16];
   if (!v144)
   {
     v127 = v132;
@@ -8132,32 +8132,32 @@ LABEL_40:
     {
       if (*v161 != v142)
       {
-        objc_enumerationMutation(v140);
+        objc_enumerationMutation(account8);
       }
 
       v33 = *(*(&v160 + 1) + 8 * k);
       v34 = DALoggingwithCategory();
       if (os_log_type_enabled(v34, v31))
       {
-        v35 = [v33 eventUID];
-        v36 = [v35 uidForCalFramework];
-        v37 = [v33 deliveryItemServerId];
-        v38 = [v33 status];
+        eventUID = [v33 eventUID];
+        uidForCalFramework = [eventUID uidForCalFramework];
+        deliveryItemServerId = [v33 deliveryItemServerId];
+        status = [v33 status];
         *buf = 138412802;
-        v174 = v36;
+        v174 = uidForCalFramework;
         v175 = 2112;
-        v176 = v37;
+        v176 = deliveryItemServerId;
         v177 = 2048;
-        v178 = v38;
+        v178 = status;
         _os_log_impl(&dword_0, v34, v31, "Meeting response for event %@ with UID %@ failed with error %ld", buf, 0x20u);
       }
 
       if ([v33 status] == &dword_8 + 1 || objc_msgSend(v33, "status") == &dword_C)
       {
-        v39 = [v33 eventUID];
-        v40 = [v39 uidForCalFramework];
+        eventUID2 = [v33 eventUID];
+        uidForCalFramework2 = [eventUID2 uidForCalFramework];
 
-        if (v40)
+        if (uidForCalFramework2)
         {
           v41 = DALoggingwithCategory();
           if (os_log_type_enabled(v41, type))
@@ -8238,13 +8238,13 @@ LABEL_55:
               v53 = DALoggingwithCategory();
               if (os_log_type_enabled(v53, type))
               {
-                v54 = [v33 eventUID];
-                v55 = [v54 uidForCalFramework];
-                v56 = [v33 deliveryItemServerId];
+                eventUID3 = [v33 eventUID];
+                uidForCalFramework3 = [eventUID3 uidForCalFramework];
+                deliveryItemServerId2 = [v33 deliveryItemServerId];
                 *buf = 138412546;
-                v174 = v55;
+                v174 = uidForCalFramework3;
                 v175 = 2112;
-                v176 = v56;
+                v176 = deliveryItemServerId2;
                 _os_log_impl(&dword_0, v53, type, "Setting kEventNotFound for the event %@ with UID %@", buf, 0x16u);
               }
 
@@ -8285,7 +8285,7 @@ LABEL_64:
           if (os_log_type_enabled(v44, v31))
           {
             *buf = 138412290;
-            v174 = v40;
+            v174 = uidForCalFramework2;
             _os_log_impl(&dword_0, v44, v31, "localEvent for responseItem with UID %@ not found.", buf, 0xCu);
           }
         }
@@ -8295,7 +8295,7 @@ LABEL_64:
       }
     }
 
-    v144 = [v140 countByEnumeratingWithState:&v160 objects:v179 count:16];
+    v144 = [account8 countByEnumeratingWithState:&v160 objects:v179 count:16];
   }
 
   while (v144);
@@ -8309,7 +8309,7 @@ LABEL_68:
       CFRelease(v29);
     }
 
-    [(ASAgent *)v148 _nilOutContainersForDataclasses:4, v125];
+    [(ASAgent *)selfCopy _nilOutContainersForDataclasses:4, errorCopy];
     [v132 closeDBAndSave:v149 & 1];
     v59 = [NSBundle bundleForClass:objc_opt_class()];
     v60 = [v59 localizedStringForKey:@"MEETING_RESPONSE_FAILURE_TITLE" value:&stru_6D4A8 table:@"DataAccess"];
@@ -8318,21 +8318,21 @@ LABEL_68:
     v63 = [NSBundle bundleForClass:objc_opt_class()];
     CFUserNotificationDisplayNotice(0.0, 3uLL, 0, 0, 0, v60, v62, [v63 localizedStringForKey:@"OK" value:&stru_6D4A8 table:@"DataAccess"]);
 
-    v64 = [(ASAgent *)v148 account];
-    v65 = [v64 changeTrackingID];
-    v66 = [(ASAgent *)v148 account];
-    v67 = [v66 accountID];
-    v127 = [ASDataHandler newDataHandlerForDataclass:4 container:0 changeTrackingID:v65 accountID:v67];
+    account5 = [(ASAgent *)selfCopy account];
+    changeTrackingID2 = [account5 changeTrackingID];
+    account6 = [(ASAgent *)selfCopy account];
+    accountID3 = [account6 accountID];
+    v127 = [ASDataHandler newDataHandlerForDataclass:4 container:0 changeTrackingID:changeTrackingID2 accountID:accountID3];
 
     [v127 openDB];
-    [(ASAgent *)v148 _cacheFoldersForDataclasses:4];
+    [(ASAgent *)selfCopy _cacheFoldersForDataclasses:4];
     v68 = +[ASLocalDBHelper sharedInstance];
-    v69 = [(ASAgent *)v148 account];
-    v70 = [v69 accountID];
-    [v68 calDatabaseForAccountID:v70];
+    account7 = [(ASAgent *)selfCopy account];
+    accountID4 = [account7 accountID];
+    [v68 calDatabaseForAccountID:accountID4];
 
-    v140 = [(ASAgent *)v148 account];
-    cf = [v140 _copyExchangeCalendarStore:0];
+    account8 = [(ASAgent *)selfCopy account];
+    cf = [account8 _copyExchangeCalendarStore:0];
     v149 = 0;
 LABEL_72:
 
@@ -8344,7 +8344,7 @@ LABEL_72:
     v127 = v132;
   }
 
-  if (a3 != 2)
+  if (status != 2)
   {
     goto LABEL_157;
   }
@@ -8381,14 +8381,14 @@ LABEL_72:
 
       v143 = v71;
       v73 = *(*(&v155 + 1) + 8 * v71);
-      v74 = [v73 eventUID];
-      v75 = [v74 uidForCalFramework];
+      eventUID4 = [v73 eventUID];
+      uidForCalFramework4 = [eventUID4 uidForCalFramework];
 
       v76 = DALoggingwithCategory();
       if (os_log_type_enabled(v76, v145))
       {
         *buf = 138412290;
-        v174 = v75;
+        v174 = uidForCalFramework4;
         _os_log_impl(&dword_0, v76, v145, "Meeting response was successful for event with UID %@", buf, 0xCu);
       }
 
@@ -8401,7 +8401,7 @@ LABEL_72:
         if (os_log_type_enabled(v79, v141))
         {
           *buf = 138412290;
-          v174 = v75;
+          v174 = uidForCalFramework4;
           _os_log_impl(&dword_0, v79, v141, "Found one event with UID %@.", buf, 0xCu);
         }
 
@@ -8419,16 +8419,16 @@ LABEL_72:
         }
 
 LABEL_100:
-        v92 = [(ASAgent *)v148 account];
-        v93 = [v92 deletedItemsFolder];
-        v94 = [v93 folderID];
+        account9 = [(ASAgent *)selfCopy account];
+        deletedItemsFolder = [account9 deletedItemsFolder];
+        folderID = [deletedItemsFolder folderID];
 
-        v95 = [v73 deliveryItemFolderId];
-        v96 = [v94 isEqualToString:v95];
+        deliveryItemFolderId = [v73 deliveryItemFolderId];
+        v96 = [folderID isEqualToString:deliveryItemFolderId];
 
-        v139 = [v73 calEventServerId];
+        calEventServerId = [v73 calEventServerId];
 
-        if (v139)
+        if (calEventServerId)
         {
           if ((v96 & 1) == 0)
           {
@@ -8462,10 +8462,10 @@ LABEL_100:
           }
         }
 
-        if ([v75 rangeOfString:@"<!ExceptionDate!>"] == 0x7FFFFFFFFFFFFFFFLL)
+        if ([uidForCalFramework4 rangeOfString:@"<!ExceptionDate!>"] == 0x7FFFFFFFFFFFFFFFLL)
         {
-          v100 = [v73 calEventServerId];
-          if (v100)
+          calEventServerId2 = [v73 calEventServerId];
+          if (calEventServerId2)
           {
             [v73 calEventServerId];
           }
@@ -8476,15 +8476,15 @@ LABEL_100:
           }
           v110 = ;
 
-          v101 = [(ASAgent *)v148 account];
-          v109 = [ASEvent eventWithCalEvent:v81 serverID:v110 account:v101];
+          account10 = [(ASAgent *)selfCopy account];
+          v109 = [ASEvent eventWithCalEvent:v81 serverID:v110 account:account10];
         }
 
         else
         {
-          v101 = [[ASEventUID alloc] initWithCalFrameworkString:v75];
-          v102 = [v101 uidWithoutExceptionDate];
-          if (v102)
+          account10 = [[ASEventUID alloc] initWithCalFrameworkString:uidForCalFramework4];
+          uidWithoutExceptionDate = [account10 uidWithoutExceptionDate];
+          if (uidWithoutExceptionDate)
           {
             v103 = DALoggingwithCategory();
             if (os_log_type_enabled(v103, v136))
@@ -8494,13 +8494,13 @@ LABEL_100:
             }
 
             v129 = CalDatabaseCopyEventWithUniqueIdentifierInStore();
-            v104 = [v73 calEventServerId];
-            v105 = [(ASAgent *)v148 account];
-            v106 = [ASEvent eventWithCalEvent:v129 serverID:v104 account:v105];
+            calEventServerId3 = [v73 calEventServerId];
+            account11 = [(ASAgent *)selfCopy account];
+            v106 = [ASEvent eventWithCalEvent:v129 serverID:calEventServerId3 account:account11];
 
             v107 = [ASEventException alloc];
-            v108 = [(ASAgent *)v148 account];
-            v109 = [v107 initWithCalEvent:v81 originalEvent:v106 account:v108];
+            account12 = [(ASAgent *)selfCopy account];
+            v109 = [v107 initWithCalEvent:v81 originalEvent:v106 account:account12];
 
             v110 = [v109 serverIdForCalFrameworkWithParentEvent:v106];
             v111 = DALoggingwithCategory();
@@ -8526,19 +8526,19 @@ LABEL_100:
           }
         }
 
-        v116 = [v109 responseRequested];
-        if ([v116 intValue])
+        responseRequested = [v109 responseRequested];
+        if ([responseRequested intValue])
         {
-          v117 = [(ASAgent *)v148 account];
-          v118 = [v117 protocol];
-          v119 = [v118 sendEmailForMeetingInvitationAndResponse];
+          account13 = [(ASAgent *)selfCopy account];
+          protocol = [account13 protocol];
+          sendEmailForMeetingInvitationAndResponse = [protocol sendEmailForMeetingInvitationAndResponse];
 
-          if (v119)
+          if (sendEmailForMeetingInvitationAndResponse)
           {
             [v109 setMeetingResponseForEmail:{objc_msgSend(v73, "meetingResponse")}];
             [v128 addObject:v109];
 LABEL_145:
-            if (v139 && v110)
+            if (calEventServerId && v110)
             {
               CalCalendarItemSetExternalID();
               v149 = 1;
@@ -8553,13 +8553,13 @@ LABEL_149:
           v120 = DALoggingwithCategory();
           if (os_log_type_enabled(v120, v145))
           {
-            v151 = [(ASAgent *)v148 account];
-            v121 = [v151 protocol];
-            v122 = [v121 protocolVersion];
+            account14 = [(ASAgent *)selfCopy account];
+            protocol2 = [account14 protocol];
+            protocolVersion = [protocol2 protocolVersion];
             *buf = 138412546;
             v174 = v109;
             v175 = 2112;
-            v176 = v122;
+            v176 = protocolVersion;
             _os_log_impl(&dword_0, v120, v145, "Not sending meeting response email about event %@. Protocol version %@", buf, 0x16u);
           }
         }
@@ -8575,7 +8575,7 @@ LABEL_149:
           }
         }
 
-        v149 = -[ASAgent _finishWithInvitationEvent:eventUID:expectedResponse:wasMyInvite:isStillInvite:](v148, "_finishWithInvitationEvent:eventUID:expectedResponse:wasMyInvite:isStillInvite:", v81, v75, [v73 meetingResponse], 0, 1);
+        v149 = -[ASAgent _finishWithInvitationEvent:eventUID:expectedResponse:wasMyInvite:isStillInvite:](selfCopy, "_finishWithInvitationEvent:eventUID:expectedResponse:wasMyInvite:isStillInvite:", v81, uidForCalFramework4, [v73 meetingResponse], 0, 1);
         goto LABEL_145;
       }
 
@@ -8590,16 +8590,16 @@ LABEL_149:
         *buf = 134218242;
         v174 = v78;
         v175 = 2112;
-        v176 = v75;
+        v176 = uidForCalFramework4;
         _os_log_impl(&dword_0, v82, v141, "Found %ld events with the same UID %@. Pick one using server ID.", buf, 0x16u);
       }
 
-      v83 = [v73 calEventServerId];
-      v84 = v83 == 0;
+      calEventServerId4 = [v73 calEventServerId];
+      v84 = calEventServerId4 == 0;
 
       if (!v84)
       {
-        v85 = [v73 calEventServerId];
+        calEventServerId5 = [v73 calEventServerId];
         v81 = CalDatabaseCopyEventWithExternalIDInStore();
 
         if (v81)
@@ -8607,9 +8607,9 @@ LABEL_149:
           v86 = DALoggingwithCategory();
           if (os_log_type_enabled(v86, v141))
           {
-            v87 = [v73 calEventServerId];
+            calEventServerId6 = [v73 calEventServerId];
             *buf = 138412290;
-            v174 = v87;
+            v174 = calEventServerId6;
             _os_log_impl(&dword_0, v86, v141, "Found local event using cal event ID %@.", buf, 0xCu);
           }
 
@@ -8619,12 +8619,12 @@ LABEL_99:
         }
       }
 
-      v88 = [v73 deliveryItemServerId];
-      v89 = v88 == 0;
+      deliveryItemServerId3 = [v73 deliveryItemServerId];
+      v89 = deliveryItemServerId3 == 0;
 
       if (!v89)
       {
-        v90 = [v73 deliveryItemServerId];
+        deliveryItemServerId4 = [v73 deliveryItemServerId];
         v81 = CalDatabaseCopyEventWithExternalIDInStore();
 
         if (v81)
@@ -8632,9 +8632,9 @@ LABEL_99:
           v86 = DALoggingwithCategory();
           if (os_log_type_enabled(v86, v141))
           {
-            v91 = [v73 deliveryItemServerId];
+            deliveryItemServerId5 = [v73 deliveryItemServerId];
             *buf = 138412290;
-            v174 = v91;
+            v174 = deliveryItemServerId5;
             _os_log_impl(&dword_0, v86, v141, "Found local event using delivery item server ID %@.", buf, 0xCu);
           }
 
@@ -8648,19 +8648,19 @@ LABEL_99:
         *buf = 134218242;
         v174 = v78;
         v175 = 2112;
-        v176 = v75;
+        v176 = uidForCalFramework4;
         _os_log_impl(&dword_0, v112, v136, "Found %ld events with the same UID, unable to distinguish them. UID %@.", buf, 0x16u);
       }
 
       if (!typea)
       {
 LABEL_130:
-        v94 = DALoggingwithCategory();
-        if (os_log_type_enabled(v94, v130))
+        folderID = DALoggingwithCategory();
+        if (os_log_type_enabled(folderID, v130))
         {
           *buf = 138412290;
-          v174 = v75;
-          _os_log_impl(&dword_0, v94, v130, "MeetingResponse was successful, but I can no longer find an event with uid %@", buf, 0xCu);
+          v174 = uidForCalFramework4;
+          _os_log_impl(&dword_0, folderID, v130, "MeetingResponse was successful, but I can no longer find an event with uid %@", buf, 0xCu);
         }
 
         goto LABEL_149;
@@ -8679,7 +8679,7 @@ LABEL_130:
         ValueAtIndex = CFArrayGetValueAtIndex(typea, v114);
         if (ValueAtIndex)
         {
-          v149 |= -[ASAgent _finishWithInvitationEvent:eventUID:expectedResponse:wasMyInvite:isStillInvite:](v148, "_finishWithInvitationEvent:eventUID:expectedResponse:wasMyInvite:isStillInvite:", ValueAtIndex, v75, [v73 meetingResponse], 0, 1);
+          v149 |= -[ASAgent _finishWithInvitationEvent:eventUID:expectedResponse:wasMyInvite:isStillInvite:](selfCopy, "_finishWithInvitationEvent:eventUID:expectedResponse:wasMyInvite:isStillInvite:", ValueAtIndex, uidForCalFramework4, [v73 meetingResponse], 0, 1);
         }
 
         ++v114;
@@ -8714,8 +8714,8 @@ LABEL_154:
 
   if ([v128 count])
   {
-    v123 = [(ASAgent *)v148 account];
-    v124 = [v123 sendEmailsForCalEvents:v128 consumer:v148];
+    account15 = [(ASAgent *)selfCopy account];
+    v124 = [account15 sendEmailsForCalEvents:v128 consumer:selfCopy];
 
     LOBYTE(v149) = v149 | v124;
   }
@@ -8727,36 +8727,36 @@ LABEL_157:
     CFRelease(v29);
   }
 
-  [(ASAgent *)v148 _nilOutContainersForDataclasses:4, v125];
+  [(ASAgent *)selfCopy _nilOutContainersForDataclasses:4, errorCopy];
   [v127 closeDBAndSave:v149 & 1];
 }
 
-- (BOOL)_markEventWithLocalIDAsNeedingInvitationEmail:(int)a3 parentId:(int)a4
+- (BOOL)_markEventWithLocalIDAsNeedingInvitationEmail:(int)email parentId:(int)id
 {
   v5 = +[ASLocalDBHelper sharedInstance];
-  v6 = [(ASAgent *)self account];
-  v7 = [v6 accountID];
-  [v5 calDatabaseForAccountID:v7];
+  account = [(ASAgent *)self account];
+  accountID = [account accountID];
+  [v5 calDatabaseForAccountID:accountID];
   v8 = CalDatabaseCopyCalendarItemWithRowID();
 
   if (v8)
   {
     v9 = [ASEvent alloc];
-    v10 = [(ASAgent *)self account];
-    v11 = [v9 initWithCalEvent:v8 serverID:0 account:v10];
+    account2 = [(ASAgent *)self account];
+    v11 = [v9 initWithCalEvent:v8 serverID:0 account:account2];
 
-    v12 = [(ASAgent *)self account];
-    if ([v11 cachedOrganizerIsSelfWithAccount:v12])
+    account3 = [(ASAgent *)self account];
+    if ([v11 cachedOrganizerIsSelfWithAccount:account3])
     {
-      v13 = [v11 attendees];
-      v14 = [v13 count];
+      attendees = [v11 attendees];
+      v14 = [attendees count];
 
       if (v14)
       {
         v15 = +[ASLocalDBHelper sharedInstance];
-        v16 = [(ASAgent *)self account];
-        v17 = [v16 accountID];
-        [v15 calDatabaseForAccountID:v17];
+        account4 = [(ASAgent *)self account];
+        accountID2 = [account4 accountID];
+        [v15 calDatabaseForAccountID:accountID2];
         v18 = CalDatabaseCopyCalendarItemWithRowID();
 
         ExternalTrackingStatus = CalEventGetExternalTrackingStatus();
@@ -8804,31 +8804,31 @@ LABEL_18:
   return 0;
 }
 
-- (void)_moveItemsTask:(id)a3 failedWithErrorCode:(int64_t)a4
+- (void)_moveItemsTask:(id)task failedWithErrorCode:(int64_t)code
 {
-  v6 = a3;
-  if (a4 > 0x22)
+  taskCopy = task;
+  if (code > 0x22)
   {
     goto LABEL_6;
   }
 
-  if (((1 << a4) & 0x440240421) != 0)
+  if (((1 << code) & 0x440240421) != 0)
   {
     v7 = 1;
     goto LABEL_13;
   }
 
-  if (((1 << a4) & 0x18000) != 0)
+  if (((1 << code) & 0x18000) != 0)
   {
 LABEL_8:
     [(ASAgent *)self refreshFolderListRequireChangedFolders:1 isUserRequested:1];
     goto LABEL_30;
   }
 
-  if (((1 << a4) & 0x20008) == 0)
+  if (((1 << code) & 0x20008) == 0)
   {
 LABEL_6:
-    if (a4 == -1)
+    if (code == -1)
     {
 LABEL_27:
       v27 = DALoggingwithCategory();
@@ -8836,25 +8836,25 @@ LABEL_27:
       if (os_log_type_enabled(v27, v28))
       {
         *buf = 134218242;
-        v38 = a4;
+        codeCopy3 = code;
         v39 = 2112;
-        v40 = v6;
+        v40 = taskCopy;
         _os_log_impl(&dword_0, v27, v28, "Draining pending sync requests because move items task had error %ld.  task %@", buf, 0x16u);
       }
 
-      v29 = [(ASAgent *)self folderItemSyncRequestLock];
-      [v29 lock];
+      folderItemSyncRequestLock = [(ASAgent *)self folderItemSyncRequestLock];
+      [folderItemSyncRequestLock lock];
 
-      v30 = [(ASAgent *)self outstandingFolderRequests];
-      [v30 removeAllObjects];
+      outstandingFolderRequests = [(ASAgent *)self outstandingFolderRequests];
+      [outstandingFolderRequests removeAllObjects];
 
-      v31 = [(ASAgent *)self folderItemSyncRequestLock];
-      [v31 unlock];
+      folderItemSyncRequestLock2 = [(ASAgent *)self folderItemSyncRequestLock];
+      [folderItemSyncRequestLock2 unlock];
 
       goto LABEL_30;
     }
 
-    if (a4 == 67)
+    if (code == 67)
     {
       goto LABEL_8;
     }
@@ -8864,7 +8864,7 @@ LABEL_27:
     if (os_log_type_enabled(v8, v9))
     {
       *buf = 134217984;
-      v38 = a4;
+      codeCopy3 = code;
       _os_log_impl(&dword_0, v8, v9, "Unhandled error (%ld) from Move Items Task", buf, 0xCu);
     }
   }
@@ -8876,8 +8876,8 @@ LABEL_13:
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v11 = [v6 pushedMoveRequests];
-  v12 = [v11 countByEnumeratingWithState:&v33 objects:v41 count:16];
+  pushedMoveRequests = [taskCopy pushedMoveRequests];
+  v12 = [pushedMoveRequests countByEnumeratingWithState:&v33 objects:v41 count:16];
   if (v12)
   {
     v13 = v12;
@@ -8888,17 +8888,17 @@ LABEL_13:
       {
         if (*v34 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(pushedMoveRequests);
         }
 
-        v16 = [*(*(&v33 + 1) + 8 * i) context];
-        if (v16)
+        context = [*(*(&v33 + 1) + 8 * i) context];
+        if (context)
         {
-          [v10 addObject:v16];
+          [v10 addObject:context];
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v33 objects:v41 count:16];
+      v13 = [pushedMoveRequests countByEnumeratingWithState:&v33 objects:v41 count:16];
     }
 
     while (v13);
@@ -8911,24 +8911,24 @@ LABEL_13:
     if (os_log_type_enabled(v17, v18))
     {
       *buf = 134218242;
-      v38 = a4;
+      codeCopy3 = code;
       v39 = 2112;
-      v40 = v6;
+      v40 = taskCopy;
       _os_log_impl(&dword_0, v17, v18, "Draining changes because move items task had error %ld.  task %@", buf, 0x16u);
     }
 
     v19 = +[ASLocalDBHelper sharedInstance];
-    v20 = [(ASAgent *)self account];
-    v21 = [v20 accountID];
-    v22 = [(ASAgent *)self account];
-    v23 = [v22 changeTrackingID];
-    [v19 calOpenDatabaseForAccountID:v21 clientID:v23];
+    account = [(ASAgent *)self account];
+    accountID = [account accountID];
+    account2 = [(ASAgent *)self account];
+    changeTrackingID = [account2 changeTrackingID];
+    [v19 calOpenDatabaseForAccountID:accountID clientID:changeTrackingID];
 
     [(ASAgent *)self _clearChangeHistoriesWithChangeIdContext:0 dataclass:4 inFolderWithId:0 pushedActions:v10];
     v24 = +[ASLocalDBHelper sharedInstance];
-    v25 = [(ASAgent *)self account];
-    v26 = [v25 accountID];
-    [v24 calCloseDatabaseForAccountID:v26 save:1];
+    account3 = [(ASAgent *)self account];
+    accountID2 = [account3 accountID];
+    [v24 calCloseDatabaseForAccountID:accountID2 save:1];
   }
 
   if (v7)
@@ -8938,25 +8938,25 @@ LABEL_13:
 
 LABEL_30:
   v32 = +[DALocalDBGateKeeper sharedGateKeeper];
-  [v32 relinquishLocksForWaiter:self dataclasses:objc_msgSend(v6 moreComing:{"dataclass"), 0}];
+  [v32 relinquishLocksForWaiter:self dataclasses:objc_msgSend(taskCopy moreComing:{"dataclass"), 0}];
 }
 
-- (void)resultsForMessageMove:(id)a3
+- (void)resultsForMessageMove:(id)move
 {
-  v4 = a3;
+  moveCopy = move;
   v5 = +[ASLocalDBHelper sharedInstance];
-  v6 = [(ASAgent *)self account];
-  v7 = [v6 accountID];
-  v8 = [(ASAgent *)self account];
-  v9 = [v8 changeTrackingID];
-  [v5 calOpenDatabaseForAccountID:v7 clientID:v9];
+  account = [(ASAgent *)self account];
+  accountID = [account accountID];
+  account2 = [(ASAgent *)self account];
+  changeTrackingID = [account2 changeTrackingID];
+  [v5 calOpenDatabaseForAccountID:accountID clientID:changeTrackingID];
 
-  v10 = [(ASAgent *)self account];
-  v11 = [v10 _copyExchangeCalendarStore:0];
+  account3 = [(ASAgent *)self account];
+  v11 = [account3 _copyExchangeCalendarStore:0];
 
   v76 = objc_opt_new();
   cf = v11;
-  v63 = v4;
+  v63 = moveCopy;
   if (v11)
   {
     Mutable = CFArrayCreateMutable(0, 0, 0);
@@ -8964,7 +8964,7 @@ LABEL_30:
     v82 = 0u;
     v83 = 0u;
     v84 = 0u;
-    obj = v4;
+    obj = moveCopy;
     v73 = [obj countByEnumeratingWithState:&v81 objects:v88 count:16];
     if (v73)
     {
@@ -8985,51 +8985,51 @@ LABEL_30:
           }
 
           v15 = *(*(&v81 + 1) + 8 * i);
-          v16 = [v15 origRequest];
-          v17 = [v16 context];
-          if ([v17 changeId] != -1)
+          origRequest = [v15 origRequest];
+          context = [origRequest context];
+          if ([context changeId] != -1)
           {
             v18 = DALoggingwithCategory();
             if (os_log_type_enabled(v18, type))
             {
-              v19 = [v17 changeId];
+              changeId = [context changeId];
               *buf = 67109120;
-              v87 = v19;
+              v87 = changeId;
               _os_log_impl(&dword_0, v18, type, "Clearing change index %d", buf, 8u);
             }
 
-            CFArrayAppendValue(Mutable, [v17 changeId]);
+            CFArrayAppendValue(Mutable, [context changeId]);
           }
 
-          v20 = [v15 destID];
+          destID = [v15 destID];
 
-          if (v20)
+          if (destID)
           {
-            v75 = v16;
-            v21 = [v17 destinationContainerId];
-            v22 = [v76 objectForKeyedSubscript:v21];
+            v75 = origRequest;
+            destinationContainerId = [context destinationContainerId];
+            v22 = [v76 objectForKeyedSubscript:destinationContainerId];
 
             if (!v22)
             {
               v22 = objc_opt_new();
-              v23 = [v17 destinationContainerId];
-              [v76 setObject:v22 forKeyedSubscript:v23];
+              destinationContainerId2 = [context destinationContainerId];
+              [v76 setObject:v22 forKeyedSubscript:destinationContainerId2];
             }
 
             v24 = [ASAction alloc];
-            v25 = [v15 destID];
-            v26 = [v24 initWithItemChangeType:6 changedItem:0 serverId:v25];
+            destID2 = [v15 destID];
+            v26 = [v24 initWithItemChangeType:6 changedItem:0 serverId:destID2];
 
             v74 = v26;
             [v22 addObject:v26];
-            v27 = [v17 changedItem];
-            v28 = [v27 dataclass];
+            changedItem = [context changedItem];
+            dataclass = [changedItem dataclass];
 
-            v29 = [v17 changedItem];
-            v30 = v29;
-            if (v28 == &dword_4)
+            changedItem2 = [context changedItem];
+            v30 = changedItem2;
+            if (dataclass == &dword_4)
             {
-              v71 = [v29 uidForCalFramework];
+              uidForCalFramework = [changedItem2 uidForCalFramework];
               v31 = DALoggingwithCategory();
               if (os_log_type_enabled(v31, v68))
               {
@@ -9038,21 +9038,21 @@ LABEL_30:
               }
 
               v32 = +[ASLocalDBHelper sharedInstance];
-              v33 = [(ASAgent *)self account];
-              v34 = [v33 accountID];
-              [v32 calDatabaseForAccountID:v34];
+              account4 = [(ASAgent *)self account];
+              accountID2 = [account4 accountID];
+              [v32 calDatabaseForAccountID:accountID2];
               v35 = CalDatabaseCopyEventWithUniqueIdentifierInStore();
 
               if (v35)
               {
                 [v30 setLocalItem:v35];
                 CFRelease(v35);
-                v36 = [v15 destID];
-                [v30 setServerID:v36];
+                destID3 = [v15 destID];
+                [v30 setServerID:destID3];
 
-                v37 = [(ASAgent *)self account];
-                v38 = [v37 accountID];
-                [v30 verifyExternalIdsForAccountID:v38];
+                account5 = [(ASAgent *)self account];
+                accountID3 = [account5 accountID];
+                [v30 verifyExternalIdsForAccountID:accountID3];
 
                 v64 = 1;
               }
@@ -9065,10 +9065,10 @@ LABEL_30:
 
             else
             {
-              [v29 dataclass];
+              [changedItem2 dataclass];
             }
 
-            v16 = v75;
+            origRequest = v75;
           }
         }
 
@@ -9088,11 +9088,11 @@ LABEL_30:
     if (CFArrayGetCount(Mutable))
     {
       v40 = +[ASLocalDBHelper sharedInstance];
-      v41 = [(ASAgent *)self account];
-      v42 = [v41 accountID];
-      [v40 calDatabaseForAccountID:v42];
-      v43 = [(ASAgent *)self account];
-      v44 = [v43 changeTrackingID];
+      account6 = [(ASAgent *)self account];
+      accountID4 = [account6 accountID];
+      [v40 calDatabaseForAccountID:accountID4];
+      account7 = [(ASAgent *)self account];
+      changeTrackingID2 = [account7 changeTrackingID];
       CalDatabaseClearIndividualChangeRowIDsForClient();
 
       v39 = 1;
@@ -9113,16 +9113,16 @@ LABEL_30:
   }
 
   v45 = +[ASLocalDBHelper sharedInstance];
-  v46 = [(ASAgent *)self account];
-  v47 = [v46 accountID];
-  [v45 calCloseDatabaseForAccountID:v47 save:v39 & 1];
+  account8 = [(ASAgent *)self account];
+  accountID5 = [account8 accountID];
+  [v45 calCloseDatabaseForAccountID:accountID5 save:v39 & 1];
 
   v79 = 0u;
   v80 = 0u;
   v77 = 0u;
   v78 = 0u;
-  v48 = [v76 allKeys];
-  v49 = [v48 countByEnumeratingWithState:&v77 objects:v85 count:16];
+  allKeys = [v76 allKeys];
+  v49 = [allKeys countByEnumeratingWithState:&v77 objects:v85 count:16];
   if (v49)
   {
     v50 = v49;
@@ -9133,25 +9133,25 @@ LABEL_30:
       {
         if (*v78 != v51)
         {
-          objc_enumerationMutation(v48);
+          objc_enumerationMutation(allKeys);
         }
 
         v53 = *(*(&v77 + 1) + 8 * j);
-        v54 = [(ASAgent *)self account];
-        v55 = [v54 folderWithId:v53];
+        account9 = [(ASAgent *)self account];
+        v55 = [account9 folderWithId:v53];
 
         if (v55)
         {
           v56 = [[ESFolderSyncRequest alloc] initWithFolder:v55 hasRemoteChanges:0 isInitialUberSync:0];
           v57 = [v76 objectForKeyedSubscript:v53];
-          v58 = [v57 allObjects];
-          [v56 setActions:v58];
+          allObjects = [v57 allObjects];
+          [v56 setActions:allObjects];
 
           [(ASAgent *)self _appendSyncRequest:v56];
         }
       }
 
-      v50 = [v48 countByEnumeratingWithState:&v77 objects:v85 count:16];
+      v50 = [allKeys countByEnumeratingWithState:&v77 objects:v85 count:16];
     }
 
     while (v50);
@@ -9175,15 +9175,15 @@ LABEL_30:
   [v62 relinquishLocksForWaiter:self dataclasses:v59 moreComing:1];
 }
 
-- (void)_reallySendMoves:(id)a3
+- (void)_reallySendMoves:(id)moves
 {
-  v3 = a3;
-  v4 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v3, "count")}];
+  movesCopy = moves;
+  v4 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(movesCopy, "count")}];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  obj = v3;
+  obj = movesCopy;
   v5 = [obj countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
@@ -9201,10 +9201,10 @@ LABEL_30:
 
         v9 = *(*(&v18 + 1) + 8 * v8);
         v10 = [DAMessageMoveRequest alloc];
-        v11 = [v9 sourceServerId];
-        v12 = [v9 sourceContainerId];
-        v13 = [v9 destinationContainerId];
-        v14 = [v10 initMoveRequestWithMessage:v11 fromFolder:v12 toFolder:v13];
+        sourceServerId = [v9 sourceServerId];
+        sourceContainerId = [v9 sourceContainerId];
+        destinationContainerId = [v9 destinationContainerId];
+        v14 = [v10 initMoveRequestWithMessage:sourceServerId fromFolder:sourceContainerId toFolder:destinationContainerId];
 
         [v14 setContext:v9];
         [v4 addObject:v14];
@@ -9219,34 +9219,34 @@ LABEL_30:
     while (v6);
   }
 
-  v15 = [(ASAgent *)self account];
-  [v15 performMoveRequests:v4 consumer:self];
+  account = [(ASAgent *)self account];
+  [account performMoveRequests:v4 consumer:self];
 }
 
-- (void)_reallySyncRequest:(id)a3
+- (void)_reallySyncRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = DALoggingwithCategory();
   v6 = _CPLog_to_os_log_type[6];
   if (os_log_type_enabled(v5, v6))
   {
     *buf = 138412290;
-    v253 = v4;
+    v253 = requestCopy;
     _os_log_impl(&dword_0, v5, v6, "really syncing request %@", buf, 0xCu);
   }
 
   type = v6;
 
-  v7 = [(ASAgent *)self folderItemSyncRequestLock];
-  [v7 lock];
+  folderItemSyncRequestLock = [(ASAgent *)self folderItemSyncRequestLock];
+  [folderItemSyncRequestLock lock];
 
   v244 = 0u;
   v245 = 0u;
   v242 = 0u;
   v243 = 0u;
-  v209 = self;
-  v8 = [(ASAgent *)self outstandingFolderRequests];
-  v9 = [v8 copy];
+  selfCopy = self;
+  outstandingFolderRequests = [(ASAgent *)self outstandingFolderRequests];
+  v9 = [outstandingFolderRequests copy];
 
   v10 = [v9 countByEnumeratingWithState:&v242 objects:v258 count:16];
   if (v10)
@@ -9263,9 +9263,9 @@ LABEL_30:
         }
 
         v14 = *(*(&v242 + 1) + 8 * i);
-        v15 = [v14 folder];
-        v16 = [v4 folder];
-        v17 = [v15 isEqual:v16];
+        folder = [v14 folder];
+        folder2 = [requestCopy folder];
+        v17 = [folder isEqual:folder2];
 
         if (v17)
         {
@@ -9277,36 +9277,36 @@ LABEL_30:
             _os_log_impl(&dword_0, v18, type, "Found a sync request for the same folder.  Merging in %@", buf, 0xCu);
           }
 
-          v19 = [(ASAgent *)v209 calUnitTestMergedRequestsBlock];
+          calUnitTestMergedRequestsBlock = [(ASAgent *)selfCopy calUnitTestMergedRequestsBlock];
 
-          if (v19)
+          if (calUnitTestMergedRequestsBlock)
           {
-            v20 = [(ASAgent *)v209 calUnitTestMergedRequestsBlock];
-            v20[2]();
+            calUnitTestMergedRequestsBlock2 = [(ASAgent *)selfCopy calUnitTestMergedRequestsBlock];
+            calUnitTestMergedRequestsBlock2[2]();
           }
 
           if ([v14 hasRemoteChanges])
           {
-            [v4 setHasRemoteChanges:1];
+            [requestCopy setHasRemoteChanges:1];
           }
 
           if ([v14 isResyncAfterServerError])
           {
-            [v4 setIsResyncAfterServerError:1];
+            [requestCopy setIsResyncAfterServerError:1];
           }
 
           v21 = objc_opt_new();
-          v22 = [v14 actions];
-          [v21 addObjectsFromArray:v22];
+          actions = [v14 actions];
+          [v21 addObjectsFromArray:actions];
 
-          v23 = [v4 actions];
-          [v21 addObjectsFromArray:v23];
+          actions2 = [requestCopy actions];
+          [v21 addObjectsFromArray:actions2];
 
-          v24 = [v21 allObjects];
-          [v4 setActions:v24];
+          allObjects = [v21 allObjects];
+          [requestCopy setActions:allObjects];
 
-          v25 = [(ASAgent *)v209 outstandingFolderRequests];
-          [v25 removeObject:v14];
+          outstandingFolderRequests2 = [(ASAgent *)selfCopy outstandingFolderRequests];
+          [outstandingFolderRequests2 removeObject:v14];
         }
       }
 
@@ -9316,14 +9316,14 @@ LABEL_30:
     while (v11);
   }
 
-  v26 = v209;
-  v27 = [(ASAgent *)v209 folderItemSyncRequestLock];
-  [v27 unlock];
+  v26 = selfCopy;
+  folderItemSyncRequestLock2 = [(ASAgent *)selfCopy folderItemSyncRequestLock];
+  [folderItemSyncRequestLock2 unlock];
 
-  v207 = [v4 folder];
-  v28 = [v207 dataclass];
+  folder3 = [requestCopy folder];
+  dataclass = [folder3 dataclass];
   v29 = 0;
-  if (v28 > 0x20)
+  if (dataclass > 0x20)
   {
     v30 = 0;
     v31 = 0;
@@ -9333,64 +9333,64 @@ LABEL_30:
   {
     v30 = 0;
     v31 = 0;
-    if (((1 << v28) & 0x100010014) != 0)
+    if (((1 << dataclass) & 0x100010014) != 0)
     {
-      v32 = [v207 dataclass];
-      if (v32)
+      dataclass2 = [folder3 dataclass];
+      if (dataclass2)
       {
-        if (v32 == &dword_10)
+        if (dataclass2 == &dword_10)
         {
-          v33 = [v207 folderID];
-          if ([v4 isResyncAfterServerError])
+          folderID = [folder3 folderID];
+          if ([requestCopy isResyncAfterServerError])
           {
             v204 = @"0";
           }
 
           else
           {
-            v204 = [(ASAgent *)v209 _syncKeyForFolderWithId:v33 dataclass:16];
+            v204 = [(ASAgent *)selfCopy _syncKeyForFolderWithId:folderID dataclass:16];
           }
 
-          v40 = [(ASAgent *)v209 sharedReminderKitHelper];
-          v41 = [(ASAgent *)v209 account];
-          v42 = [v40 localMovedReminderActionsForFolderWithId:v33 forAccount:v41];
+          sharedReminderKitHelper = [(ASAgent *)selfCopy sharedReminderKitHelper];
+          account = [(ASAgent *)selfCopy account];
+          v42 = [sharedReminderKitHelper localMovedReminderActionsForFolderWithId:folderID forAccount:account];
 
           v43 = v42;
           if ([(__CFString *)v42 count])
           {
             v30 = 1;
-            [(ASAgent *)v209 _appendSyncRequest:v4 atBeginning:1];
-            [(ASAgent *)v209 _reallySendMoves:v43];
-            v44 = [(ASAgent *)v209 currentlySyncingFolderIds];
-            [v44 removeObject:v33];
+            [(ASAgent *)selfCopy _appendSyncRequest:requestCopy atBeginning:1];
+            [(ASAgent *)selfCopy _reallySendMoves:v43];
+            currentlySyncingFolderIds = [(ASAgent *)selfCopy currentlySyncingFolderIds];
+            [currentlySyncingFolderIds removeObject:folderID];
             v29 = 0;
             v31 = 0;
-            v38 = v204;
+            folderID3 = v204;
           }
 
           else
           {
             v192 = v42;
-            v44 = objc_opt_new();
+            currentlySyncingFolderIds = objc_opt_new();
             v70 = objc_opt_new();
-            v71 = [(ASAgent *)v209 sharedReminderKitHelper];
-            v72 = [v207 folderID];
-            v73 = [(ASAgent *)v209 account];
-            v74 = [v71 localChangedReminderActionsForFolderId:v72 forAccount:v73];
+            sharedReminderKitHelper2 = [(ASAgent *)selfCopy sharedReminderKitHelper];
+            folderID2 = [folder3 folderID];
+            account2 = [(ASAgent *)selfCopy account];
+            v74 = [sharedReminderKitHelper2 localChangedReminderActionsForFolderId:folderID2 forAccount:account2];
 
             v75 = [v74 count];
-            v76 = [v4 actions];
-            v77 = [v76 count];
+            actions3 = [requestCopy actions];
+            v77 = [actions3 count];
 
-            if (!v204 || (-[__CFString isEqualToString:](v204, "isEqualToString:", @"0") & 1) != 0 || v75 != -v77 || ([v4 hasRemoteChanges] & 1) != 0 || (objc_msgSend(v4, "isInitialUberSync") & 1) != 0)
+            if (!v204 || (-[__CFString isEqualToString:](v204, "isEqualToString:", @"0") & 1) != 0 || v75 != -v77 || ([requestCopy hasRemoteChanges] & 1) != 0 || (objc_msgSend(requestCopy, "isInitialUberSync") & 1) != 0)
             {
-              v195 = v33;
+              v195 = folderID;
               v240 = 0u;
               v241 = 0u;
               v238 = 0u;
               v239 = 0u;
-              v78 = [v4 actions];
-              v79 = [v78 countByEnumeratingWithState:&v238 objects:v257 count:16];
+              actions4 = [requestCopy actions];
+              v79 = [actions4 countByEnumeratingWithState:&v238 objects:v257 count:16];
               if (v79)
               {
                 v80 = v79;
@@ -9403,7 +9403,7 @@ LABEL_30:
                   {
                     if (*v239 != v82)
                     {
-                      objc_enumerationMutation(v78);
+                      objc_enumerationMutation(actions4);
                     }
 
                     v85 = v83 < 1;
@@ -9414,7 +9414,7 @@ LABEL_30:
 
                     else
                     {
-                      v86 = v44;
+                      v86 = currentlySyncingFolderIds;
                     }
 
                     v83 -= v83 > 0;
@@ -9422,7 +9422,7 @@ LABEL_30:
                     [v86 addObject:*(*(&v238 + 1) + 8 * j)];
                   }
 
-                  v80 = [v78 countByEnumeratingWithState:&v238 objects:v257 count:16];
+                  v80 = [actions4 countByEnumeratingWithState:&v238 objects:v257 count:16];
                 }
 
                 while (v80);
@@ -9444,7 +9444,7 @@ LABEL_30:
               {
                 v91 = v90;
                 v92 = *v235;
-                v33 = v195;
+                folderID = v195;
                 do
                 {
                   for (k = 0; k != v91; k = k + 1)
@@ -9462,7 +9462,7 @@ LABEL_30:
 
                     else
                     {
-                      v95 = v44;
+                      v95 = currentlySyncingFolderIds;
                     }
 
                     v83 -= v83 > 0;
@@ -9478,7 +9478,7 @@ LABEL_30:
 
               else
               {
-                v33 = v195;
+                folderID = v195;
               }
 
               if ((v81 & 1) != 0 && [v70 count])
@@ -9490,18 +9490,18 @@ LABEL_30:
                   _os_log_impl(&dword_0, v96, type, "Couldn't fit all db actions in one request, will batch", buf, 2u);
                 }
 
-                v97 = [[ESFolderSyncRequest alloc] initWithFolder:v207 hasRemoteChanges:0 isInitialUberSync:{objc_msgSend(v4, "isInitialUberSync")}];
+                v97 = [[ESFolderSyncRequest alloc] initWithFolder:folder3 hasRemoteChanges:0 isInitialUberSync:{objc_msgSend(requestCopy, "isInitialUberSync")}];
                 [v97 setActions:v70];
                 [v97 setContainsPostponedActions:1];
-                [(ASAgent *)v209 _appendSyncRequest:v97];
+                [(ASAgent *)selfCopy _appendSyncRequest:v97];
               }
 
               DAGreenTeaLog();
-              v98 = [(ASAgent *)v209 account];
+              account3 = [(ASAgent *)selfCopy account];
               LOBYTE(v186) = v81 & 1;
-              [v98 synchronizeToDosFolder:v33 previousTag:v204 actions:v44 highestIdContext:0 isInitialUberSync:objc_msgSend(v4 isResyncAfterConnectionFailed:"isInitialUberSync") moreLocalChangesAvailable:objc_msgSend(v4 consumer:{"isResyncAfterConnectionFailed"), v186, v209}];
+              [account3 synchronizeToDosFolder:folderID previousTag:v204 actions:currentlySyncingFolderIds highestIdContext:0 isInitialUberSync:objc_msgSend(requestCopy isResyncAfterConnectionFailed:"isInitialUberSync") moreLocalChangesAvailable:objc_msgSend(requestCopy consumer:{"isResyncAfterConnectionFailed"), v186, selfCopy}];
 
-              v38 = v204;
+              folderID3 = v204;
               v29 = 0;
               v30 = 0;
               v31 = 1;
@@ -9517,15 +9517,15 @@ LABEL_30:
                 _os_log_impl(&dword_0, v125, v126, "Returning early, no reminder changes to sync to server", buf, 2u);
               }
 
-              v127 = [(ASAgent *)v209 currentlySyncingFolderIds];
-              [v127 removeObject:v33];
+              currentlySyncingFolderIds2 = [(ASAgent *)selfCopy currentlySyncingFolderIds];
+              [currentlySyncingFolderIds2 removeObject:folderID];
 
-              v44 = +[DALocalDBGateKeeper sharedGateKeeper];
-              [v44 relinquishLocksForWaiter:v209 dataclasses:16 moreComing:0];
+              currentlySyncingFolderIds = +[DALocalDBGateKeeper sharedGateKeeper];
+              [currentlySyncingFolderIds relinquishLocksForWaiter:selfCopy dataclasses:16 moreComing:0];
               v29 = 0;
               v30 = 0;
               v31 = 0;
-              v38 = v204;
+              folderID3 = v204;
             }
 
             v43 = v192;
@@ -9534,27 +9534,27 @@ LABEL_30:
           goto LABEL_218;
         }
 
-        v193 = v32;
-        v34 = [(ASAgent *)v209 account];
-        v35 = [v34 changeTrackingID];
-        v36 = [(ASAgent *)v209 account];
-        v37 = [v36 accountID];
-        v33 = [ASDataHandler newDataHandlerForDataclass:v193 container:0 changeTrackingID:v35 accountID:v37];
+        v193 = dataclass2;
+        account4 = [(ASAgent *)selfCopy account];
+        changeTrackingID = [account4 changeTrackingID];
+        account5 = [(ASAgent *)selfCopy account];
+        accountID = [account5 accountID];
+        folderID = [ASDataHandler newDataHandlerForDataclass:v193 container:0 changeTrackingID:changeTrackingID accountID:accountID];
 
-        [v33 openDB];
-        [(ASAgent *)v209 _cacheFoldersForDataclasses:v193];
-        v38 = [v207 folderID];
-        if ([v4 isResyncAfterServerError])
+        [folderID openDB];
+        [(ASAgent *)selfCopy _cacheFoldersForDataclasses:v193];
+        folderID3 = [folder3 folderID];
+        if ([requestCopy isResyncAfterServerError])
         {
           v39 = @"0";
         }
 
         else
         {
-          v39 = [(ASAgent *)v209 _syncKeyForFolderWithId:v38 dataclass:v193];
+          v39 = [(ASAgent *)selfCopy _syncKeyForFolderWithId:folderID3 dataclass:v193];
         }
 
-        v45 = [(ASAgent *)v209 _containerForFolderWithId:v38 dataclass:v193];
+        v45 = [(ASAgent *)selfCopy _containerForFolderWithId:folderID3 dataclass:v193];
         v191 = v39;
         if (!v45)
         {
@@ -9564,7 +9564,7 @@ LABEL_30:
           if (os_log_type_enabled(v87, v88))
           {
             *buf = 138412546;
-            v253 = v38;
+            v253 = folderID3;
             v254 = 2048;
             v255 = v193;
             _os_log_impl(&dword_0, v87, v88, "Asked to sync folder with id %@ and dataclass %lx, but I have no matching container", buf, 0x16u);
@@ -9577,14 +9577,14 @@ LABEL_30:
         }
 
         v46 = v45;
-        [v33 setContainer:v45];
-        v194 = v33;
-        v205 = v38;
+        [folderID setContainer:v45];
+        v194 = folderID;
+        v205 = folderID3;
         if (v193 == &dword_4)
         {
           v47 = objc_opt_new();
           v196 = v46;
-          v199 = [(ASAgent *)v209 _copyCalendarItemMoveActionsInCalendar:v46 dataHandler:v33 deleteActionsByFolderId:v47];
+          v199 = [(ASAgent *)selfCopy _copyCalendarItemMoveActionsInCalendar:v46 dataHandler:folderID deleteActionsByFolderId:v47];
           v230 = 0u;
           v231 = 0u;
           v232 = 0u;
@@ -9607,38 +9607,38 @@ LABEL_30:
                 }
 
                 v54 = *(*(&v230 + 1) + 8 * m);
-                v55 = [v207 folderID];
-                v56 = [v55 isEqualToString:v54];
+                folderID4 = [folder3 folderID];
+                v56 = [folderID4 isEqualToString:v54];
 
                 if (v56)
                 {
-                  v57 = [v4 actions];
+                  actions5 = [requestCopy actions];
                   v58 = [v48 objectForKeyedSubscript:v54];
                   v59 = [v58 mutableCopy];
 
-                  if (v57)
+                  if (actions5)
                   {
-                    [v59 addObjectsFromArray:v57];
+                    [v59 addObjectsFromArray:actions5];
                   }
 
-                  v60 = [v59 allObjects];
-                  [v4 setActions:v60];
+                  allObjects2 = [v59 allObjects];
+                  [requestCopy setActions:allObjects2];
                 }
 
                 else
                 {
-                  v61 = [(ASAgent *)v209 account];
-                  v57 = [v61 folderWithId:v54];
+                  account6 = [(ASAgent *)selfCopy account];
+                  actions5 = [account6 folderWithId:v54];
 
-                  if (v57)
+                  if (actions5)
                   {
-                    v62 = [[ESFolderSyncRequest alloc] initWithFolder:v57 hasRemoteChanges:0 isInitialUberSync:0];
+                    v62 = [[ESFolderSyncRequest alloc] initWithFolder:actions5 hasRemoteChanges:0 isInitialUberSync:0];
                     v63 = [v48 objectForKeyedSubscript:v54];
-                    v64 = [v63 allObjects];
-                    [v62 setActions:v64];
+                    allObjects3 = [v63 allObjects];
+                    [v62 setActions:allObjects3];
 
                     v48 = v206;
-                    [(ASAgent *)v209 _appendSyncRequest:v62];
+                    [(ASAgent *)selfCopy _appendSyncRequest:v62];
                   }
 
                   else
@@ -9652,8 +9652,8 @@ LABEL_30:
                     }
 
                     v66 = [v48 objectForKeyedSubscript:v54];
-                    v67 = [v66 allObjects];
-                    v68 = [(ASAgent *)v209 _clearChangeHistoriesWithChangeIdContext:0 dataclass:4 inFolderWithId:v54 pushedActions:v67];
+                    allObjects4 = [v66 allObjects];
+                    v68 = [(ASAgent *)selfCopy _clearChangeHistoriesWithChangeIdContext:0 dataclass:4 inFolderWithId:v54 pushedActions:allObjects4];
 
                     if (v68)
                     {
@@ -9674,28 +9674,28 @@ LABEL_30:
           if ([v199 count])
           {
             v30 = 1;
-            v26 = v209;
-            [(ASAgent *)v209 _appendSyncRequest:v4 atBeginning:1];
-            v69 = [v199 allObjects];
-            [(ASAgent *)v209 _reallySendMoves:v69];
+            v26 = selfCopy;
+            [(ASAgent *)selfCopy _appendSyncRequest:requestCopy atBeginning:1];
+            allObjects5 = [v199 allObjects];
+            [(ASAgent *)selfCopy _reallySendMoves:allObjects5];
 
             v29 = 0;
             v31 = 0;
-            v33 = v194;
-            v38 = v205;
+            folderID = v194;
+            folderID3 = v205;
 LABEL_74:
             v43 = v191;
 LABEL_215:
 
             [(ASAgent *)v26 _nilOutContainersForDataclasses:v193];
-            [v33 closeDBAndSave:0];
+            [folderID closeDBAndSave:0];
             if (v31)
             {
               goto LABEL_219;
             }
 
-            v174 = [(ASAgent *)v26 currentlySyncingFolderIds];
-            [v174 removeObject:v38];
+            currentlySyncingFolderIds3 = [(ASAgent *)v26 currentlySyncingFolderIds];
+            [currentlySyncingFolderIds3 removeObject:folderID3];
 
             if (v30)
             {
@@ -9704,20 +9704,20 @@ LABEL_215:
 
             v175 = +[DALocalDBGateKeeper sharedGateKeeper];
             v176 = v26;
-            v44 = v175;
+            currentlySyncingFolderIds = v175;
             [v175 relinquishLocksForWaiter:v176 dataclasses:v193 moreComing:0];
 LABEL_218:
 
-            v26 = v209;
+            v26 = selfCopy;
 LABEL_219:
 
             goto LABEL_220;
           }
 
-          v26 = v209;
-          v33 = v194;
+          v26 = selfCopy;
+          folderID = v194;
           v46 = v196;
-          v38 = v205;
+          folderID3 = v205;
         }
 
         v99 = objc_opt_new();
@@ -9729,7 +9729,7 @@ LABEL_111:
           if (os_log_type_enabled(v104, v105))
           {
             *buf = 138412546;
-            v253 = v207;
+            v253 = folder3;
             v254 = 2048;
             v255 = v193;
             _os_log_impl(&dword_0, v104, v105, "external change, folder %@, dataclass %lx", buf, 0x16u);
@@ -9741,10 +9741,10 @@ LABEL_111:
           {
             v106 = objc_opt_new();
             v189 = objc_opt_new();
-            v107 = [v4 actions];
-            v108 = [NSSet setWithArray:v107];
+            actions6 = [requestCopy actions];
+            v108 = [NSSet setWithArray:actions6];
             v190 = v106;
-            v109 = [(ASAgent *)v26 _copyABActionsInContainer:v46 existingActions:v108 dataHandler:v33 wantPreserveActions:0 changeContext:v106];
+            v109 = [(ASAgent *)v26 _copyABActionsInContainer:v46 existingActions:v108 dataHandler:folderID wantPreserveActions:0 changeContext:v106];
           }
 
           else
@@ -9753,18 +9753,18 @@ LABEL_111:
             {
               v190 = objc_opt_new();
               v110 = objc_opt_new();
-              v111 = [v4 actions];
-              [v4 setActions:0];
-              if (!v111 || ![v111 count])
+              actions7 = [requestCopy actions];
+              [requestCopy setActions:0];
+              if (!actions7 || ![actions7 count])
               {
-                v112 = [v4 skippedActions];
+                skippedActions = [requestCopy skippedActions];
 
-                [v4 setSkippedActions:0];
-                v111 = v112;
+                [requestCopy setSkippedActions:0];
+                actions7 = skippedActions;
               }
 
-              v187 = v111;
-              v109 = [(ASAgent *)v26 _copyCalendarItemActionsInContainer:v46 existingActions:v111 dataHandler:v33 wantPreserveActions:0 skippedDetachments:v110 changeContext:v190];
+              v187 = actions7;
+              v109 = [(ASAgent *)v26 _copyCalendarItemActionsInContainer:v46 existingActions:actions7 dataHandler:folderID wantPreserveActions:0 skippedDetachments:v110 changeContext:v190];
               v189 = v110;
               if ([v109 count])
               {
@@ -9794,13 +9794,13 @@ LABEL_111:
                       v117 = *(*(&v226 + 1) + 8 * v116);
                       if ([v117 itemChangeType] == &dword_8 + 1)
                       {
-                        v118 = [v117 changedItem];
-                        v119 = [(ASAgent *)v209 account];
-                        v120 = [v117 serverId];
-                        v121 = [v117 instanceId];
-                        v122 = [v117 forwardedAttendees];
-                        v123 = [v117 forwardedAttendeeUUIDs];
-                        [v119 forwardMeeting:v118 withServerId:v120 withInstanceId:v121 withFolderId:v205 toEmailAddresses:v122 withAttendeeUUIDs:v123 consumer:v209];
+                        changedItem = [v117 changedItem];
+                        account7 = [(ASAgent *)selfCopy account];
+                        serverId = [v117 serverId];
+                        instanceId = [v117 instanceId];
+                        forwardedAttendees = [v117 forwardedAttendees];
+                        forwardedAttendeeUUIDs = [v117 forwardedAttendeeUUIDs];
+                        [account7 forwardMeeting:changedItem withServerId:serverId withInstanceId:instanceId withFolderId:v205 toEmailAddresses:forwardedAttendees withAttendeeUUIDs:forwardedAttendeeUUIDs consumer:selfCopy];
 
                         v114 = v200;
                         v29 = 1;
@@ -9827,7 +9827,7 @@ LABEL_111:
                 }
 
                 v109 = v197;
-                v26 = v209;
+                v26 = selfCopy;
               }
 
               else
@@ -9846,10 +9846,10 @@ LABEL_143:
               }
 
               v201 = v109;
-              if (v191 && (-[__CFString isEqualToString:](v191, "isEqualToString:", @"0") & 1) == 0 && !v128 && ([v4 hasRemoteChanges] & 1) == 0 && (objc_msgSend(v4, "isInitialUberSync") & 1) == 0)
+              if (v191 && (-[__CFString isEqualToString:](v191, "isEqualToString:", @"0") & 1) == 0 && !v128 && ([requestCopy hasRemoteChanges] & 1) == 0 && (objc_msgSend(requestCopy, "isInitialUberSync") & 1) == 0)
               {
                 v130 = DALoggingwithCategory();
-                v38 = v205;
+                folderID3 = v205;
                 if (os_log_type_enabled(v130, v188))
                 {
                   *buf = 0;
@@ -9861,17 +9861,17 @@ LABEL_143:
                 goto LABEL_205;
               }
 
-              [v207 setHasRemoteChanges:0];
+              [folder3 setHasRemoteChanges:0];
               v130 = objc_opt_new();
               v131 = objc_opt_new();
-              v132 = [v4 skippedActions];
+              skippedActions2 = [requestCopy skippedActions];
 
-              v133 = v132 != 0;
-              v38 = v205;
-              if (v132)
+              v133 = skippedActions2 != 0;
+              folderID3 = v205;
+              if (skippedActions2)
               {
-                v134 = [v4 skippedActions];
-                [v131 addObjectsFromArray:v134];
+                skippedActions3 = [requestCopy skippedActions];
+                [v131 addObjectsFromArray:skippedActions3];
               }
 
               obja = v131;
@@ -9897,7 +9897,7 @@ LABEL_157:
                       _os_log_impl(&dword_0, v136, type, "Couldn't fit all db actions in one request, will batch", buf, 2u);
                     }
 
-                    v137 = [[ESFolderSyncRequest alloc] initWithFolder:v207 hasRemoteChanges:0 isInitialUberSync:{objc_msgSend(v4, "isInitialUberSync")}];
+                    v137 = [[ESFolderSyncRequest alloc] initWithFolder:folder3 hasRemoteChanges:0 isInitialUberSync:{objc_msgSend(requestCopy, "isInitialUberSync")}];
                     if (v130 && [v130 count])
                     {
                       [v137 setActions:v130];
@@ -9932,10 +9932,10 @@ LABEL_197:
                   DAGreenTeaLog();
                   [(ASAgent *)v26 account];
                   v160 = v159 = v43;
-                  v161 = [v4 isInitialUberSync];
+                  isInitialUberSync = [requestCopy isInitialUberSync];
                   BYTE2(v186) = v138;
-                  LOWORD(v186) = [v4 isResyncAfterConnectionFailed];
-                  [v160 synchronizeContactsFolder:v38 previousTag:v159 previousSyncToken:0 actions:v206 highestIdContext:v190 isInitialUberSync:v161 isResyncAfterConnectionFailed:v186 previousTagIsSuspect:v26 moreLocalChangesAvailable:? consumer:?];
+                  LOWORD(v186) = [requestCopy isResyncAfterConnectionFailed];
+                  [v160 synchronizeContactsFolder:folderID3 previousTag:v159 previousSyncToken:0 actions:v206 highestIdContext:v190 isInitialUberSync:isInitialUberSync isResyncAfterConnectionFailed:v186 previousTagIsSuspect:v26 moreLocalChangesAvailable:? consumer:?];
 LABEL_203:
 
                   v43 = v191;
@@ -9948,7 +9948,7 @@ LABEL_203:
                   [(ASAgent *)v26 account];
                   v160 = v162 = v43;
                   LOBYTE(v186) = v138;
-                  [v160 synchronizeEventsFolder:v38 previousTag:v162 actions:v206 highestIdContext:v190 isInitialUberSync:objc_msgSend(v4 isResyncAfterConnectionFailed:"isInitialUberSync") moreLocalChangesAvailable:objc_msgSend(v4 consumer:{"isResyncAfterConnectionFailed"), v186, v26}];
+                  [v160 synchronizeEventsFolder:folderID3 previousTag:v162 actions:v206 highestIdContext:v190 isInitialUberSync:objc_msgSend(requestCopy isResyncAfterConnectionFailed:"isInitialUberSync") moreLocalChangesAvailable:objc_msgSend(requestCopy consumer:{"isResyncAfterConnectionFailed"), v186, v26}];
                   goto LABEL_203;
                 }
 
@@ -9959,7 +9959,7 @@ LABEL_204:
                   v31 = 1;
 LABEL_205:
 
-                  v33 = v194;
+                  folderID = v194;
                   if (v193 == &dword_4)
                   {
                     v212 = 0u;
@@ -9981,8 +9981,8 @@ LABEL_205:
                             objc_enumerationMutation(v168);
                           }
 
-                          v173 = [*(*(&v210 + 1) + 8 * n) event];
-                          [v173 setCalEvent:0];
+                          event = [*(*(&v210 + 1) + 8 * n) event];
+                          [event setCalEvent:0];
                         }
 
                         v170 = [v168 countByEnumeratingWithState:&v210 objects:v246 count:16];
@@ -9991,7 +9991,7 @@ LABEL_205:
                       while (v170);
                     }
 
-                    v38 = v205;
+                    folderID3 = v205;
                     v43 = v191;
                   }
 
@@ -10003,23 +10003,23 @@ LABEL_202:
                 [(ASAgent *)v26 account];
                 v160 = v163 = v43;
                 v164 = +[ASLocalDBHelper sharedInstance];
-                v165 = [v164 noteDB];
-                v166 = [v4 isInitialUberSync];
+                noteDB = [v164 noteDB];
+                isInitialUberSync2 = [requestCopy isInitialUberSync];
                 BYTE2(v186) = v138;
-                BYTE1(v186) = [v4 isResyncAfterConnectionFailed];
-                LOBYTE(v186) = v166;
+                BYTE1(v186) = [requestCopy isResyncAfterConnectionFailed];
+                LOBYTE(v186) = isInitialUberSync2;
                 v167 = v163;
                 v135 = obja;
-                [v160 synchronizeNotesFolder:v205 noteContext:v165 previousTag:v167 actions:v206 changeSet:v190 notesToDeleteAfterSync:0 isInitialUberSync:v186 isResyncAfterConnectionFailed:v26 moreLocalChangesAvailable:? consumer:?];
+                [v160 synchronizeNotesFolder:v205 noteContext:noteDB previousTag:v167 actions:v206 changeSet:v190 notesToDeleteAfterSync:0 isInitialUberSync:v186 isResyncAfterConnectionFailed:v26 moreLocalChangesAvailable:? consumer:?];
 
-                v38 = v205;
+                folderID3 = v205;
                 goto LABEL_203;
               }
 
               if (v193 == &stru_20)
               {
-                v139 = [v109 allObjects];
-                [v206 addObjectsFromArray:v139];
+                allObjects6 = [v109 allObjects];
+                [v206 addObjectsFromArray:allObjects6];
 
                 if ((v133 & 1) == 0)
                 {
@@ -10072,10 +10072,10 @@ LABEL_174:
 
                   if ([v206 count])
                   {
-                    v177 = [v140 allObjects];
-                    [v130 addObjectsFromArray:v177];
+                    allObjects7 = [v140 allObjects];
+                    [v130 addObjectsFromArray:allObjects7];
 
-                    v38 = v205;
+                    folderID3 = v205;
                     v43 = v191;
                     goto LABEL_157;
                   }
@@ -10117,8 +10117,8 @@ LABEL_174:
 
                         else
                         {
-                          v185 = [v183 isSkippedDetachment];
-                          if (v185)
+                          isSkippedDetachment = [v183 isSkippedDetachment];
+                          if (isSkippedDetachment)
                           {
                             v184 = v206;
                           }
@@ -10128,7 +10128,7 @@ LABEL_174:
                             v184 = v130;
                           }
 
-                          LOBYTE(v133) = v185 ^ 1 | v133;
+                          LOBYTE(v133) = isSkippedDetachment ^ 1 | v133;
                         }
 
                         [v184 addObject:v183];
@@ -10145,8 +10145,8 @@ LABEL_174:
 
 LABEL_195:
 
-                  v26 = v209;
-                  v38 = v205;
+                  v26 = selfCopy;
+                  folderID3 = v205;
                   v43 = v191;
                   if (v133)
                   {
@@ -10217,7 +10217,7 @@ LABEL_181:
               v124 = objc_opt_new();
               v189 = objc_opt_new();
               v190 = v124;
-              v109 = [(ASAgent *)v26 _copyNotesActionsInNoteStore:v46 existingActions:0 dataHandler:v33 wantPreserveActions:0 changeSet:v124];
+              v109 = [(ASAgent *)v26 _copyNotesActionsInNoteStore:v46 existingActions:0 dataHandler:folderID wantPreserveActions:0 changeSet:v124];
             }
 
             else
@@ -10232,21 +10232,21 @@ LABEL_181:
           goto LABEL_143;
         }
 
-        if ([v33 wipeServerIds])
+        if ([folderID wipeServerIds])
         {
-          [v33 saveContainer];
+          [folderID saveContainer];
         }
 
         if (v193 == (&dword_0 + 2))
         {
           v100 = objc_opt_new();
-          v101 = [(ASAgent *)v26 _copyABActionsInContainer:v46 existingActions:0 dataHandler:v33 wantPreserveActions:1 changeContext:v100];
+          v101 = [(ASAgent *)v26 _copyABActionsInContainer:v46 existingActions:0 dataHandler:folderID wantPreserveActions:1 changeContext:v100];
         }
 
         else if (v193 == &dword_4)
         {
           v100 = objc_opt_new();
-          v101 = [(ASAgent *)v26 _copyCalendarItemActionsInContainer:v46 existingActions:0 dataHandler:v33 wantPreserveActions:1 skippedDetachments:0 changeContext:v100];
+          v101 = [(ASAgent *)v26 _copyCalendarItemActionsInContainer:v46 existingActions:0 dataHandler:folderID wantPreserveActions:1 skippedDetachments:0 changeContext:v100];
         }
 
         else
@@ -10255,23 +10255,23 @@ LABEL_181:
           {
             v100 = 0;
 LABEL_110:
-            [(ASAgent *)v26 _clearChangeHistoriesWithChangeIdContext:v100 dataclass:v193 inFolderWithId:v38 pushedActions:0];
+            [(ASAgent *)v26 _clearChangeHistoriesWithChangeIdContext:v100 dataclass:v193 inFolderWithId:folderID3 pushedActions:0];
 
             goto LABEL_111;
           }
 
           v100 = objc_opt_new();
-          v101 = [(ASAgent *)v26 _copyNotesActionsInNoteStore:v46 existingActions:0 dataHandler:v33 wantPreserveActions:1 changeSet:v100];
+          v101 = [(ASAgent *)v26 _copyNotesActionsInNoteStore:v46 existingActions:0 dataHandler:folderID wantPreserveActions:1 changeSet:v100];
         }
 
         v102 = v101;
         if (v101)
         {
-          v103 = [v101 allObjects];
-          [v99 addObjectsFromArray:v103];
+          allObjects8 = [v101 allObjects];
+          [v99 addObjectsFromArray:allObjects8];
         }
 
-        v38 = v205;
+        folderID3 = v205;
         goto LABEL_110;
       }
 
@@ -10288,42 +10288,42 @@ LABEL_220:
   }
 }
 
-- (void)_syncRequest:(id)a3
+- (void)_syncRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = DALoggingwithCategory();
   v6 = _CPLog_to_os_log_type[6];
   if (os_log_type_enabled(v5, v6))
   {
     *buf = 138412290;
-    v14 = v4;
+    v14 = requestCopy;
     _os_log_impl(&dword_0, v5, v6, "putting request %@ in for the gate", buf, 0xCu);
   }
 
-  v7 = [v4 folder];
-  v8 = [v7 dataclass];
-  if (v8 <= 0x20 && ((1 << v8) & 0x100010014) != 0)
+  folder = [requestCopy folder];
+  dataclass = [folder dataclass];
+  if (dataclass <= 0x20 && ((1 << dataclass) & 0x100010014) != 0)
   {
     v9 = +[DALocalDBGateKeeper sharedGateKeeper];
-    v10 = [v7 dataclass];
+    dataclass2 = [folder dataclass];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_15FFC;
     v11[3] = &unk_6CED0;
     v11[4] = self;
-    v12 = v4;
-    [v9 registerWaiter:self forDataclassLocks:v10 completionHandler:v11];
+    v12 = requestCopy;
+    [v9 registerWaiter:self forDataclassLocks:dataclass2 completionHandler:v11];
   }
 }
 
-- (void)folderContentsUpdate:(id)a3
+- (void)folderContentsUpdate:(id)update
 {
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:DAChangedFolderIDs];
+  userInfo = [update userInfo];
+  v5 = [userInfo objectForKeyedSubscript:DAChangedFolderIDs];
 
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
@@ -10342,8 +10342,8 @@ LABEL_220:
 
         v10 = *(*(&v15 + 1) + 8 * v9);
         v11 = [ESFolderSyncRequest alloc];
-        v12 = [(ASAgent *)self account];
-        v13 = [v12 folderWithId:v10];
+        account = [(ASAgent *)self account];
+        v13 = [account folderWithId:v10];
         v14 = [v11 initWithFolder:v13 hasRemoteChanges:1 isInitialUberSync:0];
 
         [(ASAgent *)self _appendSyncRequest:v14];
@@ -10360,12 +10360,12 @@ LABEL_220:
 
 - (void)_fireWaitingFolderItemSyncRequests
 {
-  v3 = [(ASAgent *)self folderItemSyncRequestLock];
-  [v3 lock];
+  folderItemSyncRequestLock = [(ASAgent *)self folderItemSyncRequestLock];
+  [folderItemSyncRequestLock lock];
 
-  v4 = [(ASAgent *)self currentlySyncingFolderIds];
+  currentlySyncingFolderIds = [(ASAgent *)self currentlySyncingFolderIds];
 
-  if (!v4)
+  if (!currentlySyncingFolderIds)
   {
     v5 = [[NSMutableSet alloc] initWithCapacity:1];
     [(ASAgent *)self setCurrentlySyncingFolderIds:v5];
@@ -10377,8 +10377,8 @@ LABEL_220:
     goto LABEL_24;
   }
 
-  v7 = [(ASAgent *)self outstandingFolderRequests];
-  v8 = [v7 copy];
+  outstandingFolderRequests = [(ASAgent *)self outstandingFolderRequests];
+  v8 = [outstandingFolderRequests copy];
 
   v42 = 0u;
   v43 = 0u;
@@ -10412,13 +10412,13 @@ LABEL_220:
 
       v13 = *(*(&v40 + 1) + 8 * v16);
 
-      v18 = [v13 folder];
-      v19 = [v18 folderID];
+      folder = [v13 folder];
+      folderID = [folder folderID];
 
-      if (v19)
+      if (folderID)
       {
-        v20 = [(ASAgent *)self currentlySyncingFolderIds];
-        v21 = [v20 containsObject:v19];
+        currentlySyncingFolderIds2 = [(ASAgent *)self currentlySyncingFolderIds];
+        v21 = [currentlySyncingFolderIds2 containsObject:folderID];
 
         if (v21)
         {
@@ -10427,19 +10427,19 @@ LABEL_220:
 
         if ([v13 containsPostponedActions])
         {
-          v22 = DALoggingwithCategory();
-          if (os_log_type_enabled(v22, type))
+          outstandingFolderRequests2 = DALoggingwithCategory();
+          if (os_log_type_enabled(outstandingFolderRequests2, type))
           {
             *buf = v33;
             v46 = v13;
-            _os_log_impl(&dword_0, v22, type, "A request containing postponed actions will not be synced. Request: %@", buf, 0xCu);
+            _os_log_impl(&dword_0, outstandingFolderRequests2, type, "A request containing postponed actions will not be synced. Request: %@", buf, 0xCu);
           }
 
           goto LABEL_19;
         }
 
-        v24 = [(ASAgent *)self currentlySyncingFolderIds];
-        [v24 addObject:v19];
+        currentlySyncingFolderIds3 = [(ASAgent *)self currentlySyncingFolderIds];
+        [currentlySyncingFolderIds3 addObject:folderID];
 
         [v35 addObject:v13];
       }
@@ -10457,8 +10457,8 @@ LABEL_220:
         }
       }
 
-      v22 = [(ASAgent *)self outstandingFolderRequests];
-      [v22 removeObject:v13];
+      outstandingFolderRequests2 = [(ASAgent *)self outstandingFolderRequests];
+      [outstandingFolderRequests2 removeObject:v13];
 LABEL_19:
 
 LABEL_20:
@@ -10476,8 +10476,8 @@ LABEL_20:
 LABEL_23:
 
 LABEL_24:
-  v25 = [(ASAgent *)self folderItemSyncRequestLock];
-  [v25 unlock];
+  folderItemSyncRequestLock2 = [(ASAgent *)self folderItemSyncRequestLock];
+  [folderItemSyncRequestLock2 unlock];
 
   v38 = 0u;
   v39 = 0u;
@@ -10516,25 +10516,25 @@ LABEL_24:
   }
 }
 
-- (void)_appendSyncRequest:(id)a3 atBeginning:(BOOL)a4
+- (void)_appendSyncRequest:(id)request atBeginning:(BOOL)beginning
 {
-  v4 = a4;
-  v6 = a3;
+  beginningCopy = beginning;
+  requestCopy = request;
   v7 = DALoggingwithCategory();
   v8 = _CPLog_to_os_log_type[7];
   if (os_log_type_enabled(v7, v8))
   {
     *buf = 138412290;
-    v38 = v6;
+    v38 = requestCopy;
     _os_log_impl(&dword_0, v7, v8, "Appending sync request %@", buf, 0xCu);
   }
 
-  v9 = [(ASAgent *)self folderItemSyncRequestLock];
-  [v9 lock];
+  folderItemSyncRequestLock = [(ASAgent *)self folderItemSyncRequestLock];
+  [folderItemSyncRequestLock lock];
 
-  v10 = [(ASAgent *)self outstandingFolderRequests];
+  outstandingFolderRequests = [(ASAgent *)self outstandingFolderRequests];
 
-  if (!v10)
+  if (!outstandingFolderRequests)
   {
     v11 = [[NSMutableArray alloc] initWithCapacity:1];
     [(ASAgent *)self setOutstandingFolderRequests:v11];
@@ -10544,12 +10544,12 @@ LABEL_24:
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v12 = [(ASAgent *)self outstandingFolderRequests];
-  v13 = [v12 countByEnumeratingWithState:&v33 objects:v45 count:16];
+  outstandingFolderRequests2 = [(ASAgent *)self outstandingFolderRequests];
+  v13 = [outstandingFolderRequests2 countByEnumeratingWithState:&v33 objects:v45 count:16];
   if (v13)
   {
     v14 = v13;
-    v31 = v4;
+    v31 = beginningCopy;
     v32 = v8;
     v15 = 0;
     v16 = *v34;
@@ -10561,62 +10561,62 @@ LABEL_24:
       {
         if (*v34 != v16)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(outstandingFolderRequests2);
         }
 
         v15 = *(*(&v33 + 1) + 8 * v17);
 
-        v19 = [v15 folder];
-        v20 = [v6 folder];
-        v21 = [v19 isEqual:v20];
+        folder = [v15 folder];
+        folder2 = [requestCopy folder];
+        v21 = [folder isEqual:folder2];
 
         if (v21)
         {
-          if ([v6 hasRemoteChanges])
+          if ([requestCopy hasRemoteChanges])
           {
             [v15 setHasRemoteChanges:1];
           }
 
-          if ([v6 isResyncAfterConnectionFailed])
+          if ([requestCopy isResyncAfterConnectionFailed])
           {
             [v15 setIsResyncAfterConnectionFailed:1];
           }
 
-          if ([v6 isResyncAfterServerError])
+          if ([requestCopy isResyncAfterServerError])
           {
             [v15 setIsResyncAfterServerError:1];
           }
 
-          if (([v6 containsPostponedActions] & 1) == 0)
+          if (([requestCopy containsPostponedActions] & 1) == 0)
           {
             [v15 setContainsPostponedActions:0];
           }
 
           v23 = objc_opt_new();
-          v24 = [v15 actions];
-          [v23 addObjectsFromArray:v24];
+          actions = [v15 actions];
+          [v23 addObjectsFromArray:actions];
 
-          v25 = [v6 actions];
-          [v23 addObjectsFromArray:v25];
+          actions2 = [requestCopy actions];
+          [v23 addObjectsFromArray:actions2];
 
           v26 = DALoggingwithCategory();
           if (os_log_type_enabled(v26, v32))
           {
-            v27 = [v6 actions];
-            v28 = [v15 actions];
+            actions3 = [requestCopy actions];
+            actions4 = [v15 actions];
             *buf = 138413058;
             v38 = v15;
             v39 = 2112;
-            v40 = v27;
+            v40 = actions3;
             v41 = 2112;
-            v42 = v28;
+            v42 = actions4;
             v43 = 2112;
             v44 = v23;
             _os_log_impl(&dword_0, v26, v32, "sync request %@ had old actions %@, new actions %@, combined actions %@", buf, 0x2Au);
           }
 
-          v29 = [v23 allObjects];
-          [v15 setActions:v29];
+          allObjects = [v23 allObjects];
+          [v15 setActions:allObjects];
 
           goto LABEL_28;
         }
@@ -10626,7 +10626,7 @@ LABEL_24:
       }
 
       while (v14 != v17);
-      v14 = [v12 countByEnumeratingWithState:&v33 objects:v45 count:16];
+      v14 = [outstandingFolderRequests2 countByEnumeratingWithState:&v33 objects:v45 count:16];
       if (v14)
       {
         continue;
@@ -10635,32 +10635,32 @@ LABEL_24:
       break;
     }
 
-    v4 = v31;
+    beginningCopy = v31;
   }
 
-  v22 = [(ASAgent *)self outstandingFolderRequests];
-  v15 = v22;
-  if (v4)
+  outstandingFolderRequests3 = [(ASAgent *)self outstandingFolderRequests];
+  v15 = outstandingFolderRequests3;
+  if (beginningCopy)
   {
-    [v22 insertObject:v6 atIndex:0];
+    [outstandingFolderRequests3 insertObject:requestCopy atIndex:0];
   }
 
   else
   {
-    [v22 addObject:v6];
+    [outstandingFolderRequests3 addObject:requestCopy];
   }
 
 LABEL_28:
 
-  v30 = [(ASAgent *)self folderItemSyncRequestLock];
-  [v30 unlock];
+  folderItemSyncRequestLock2 = [(ASAgent *)self folderItemSyncRequestLock];
+  [folderItemSyncRequestLock2 unlock];
 
   [(ASAgent *)self _fireWaitingFolderItemSyncRequests];
 }
 
-- (BOOL)_getHierarchyChangeForDataclass:(int64_t)a3 changedItemId:(int *)a4 changeType:(unint64_t *)a5 externalId:(id *)a6 changeTableIndices:(__CFArray *)a7
+- (BOOL)_getHierarchyChangeForDataclass:(int64_t)dataclass changedItemId:(int *)id changeType:(unint64_t *)type externalId:(id *)externalId changeTableIndices:(__CFArray *)indices
 {
-  if (a3 == 4)
+  if (dataclass == 4)
   {
     v117 = 0;
     theArray = 0;
@@ -10672,17 +10672,17 @@ LABEL_28:
     v89 = objc_opt_new();
     v92 = objc_opt_new();
     v100 = objc_opt_new();
-    v9 = [(ASAgent *)self account];
-    v10 = [v9 _copyExchangeCalendarStore:0];
+    account = [(ASAgent *)self account];
+    v10 = [account _copyExchangeCalendarStore:0];
 
     v11 = &PLLogRegisteredEvent_ptr;
-    v97 = self;
+    selfCopy = self;
     if (v10)
     {
       v12 = +[ASLocalDBHelper sharedInstance];
-      v13 = [(ASAgent *)self account];
-      v7 = [v13 accountID];
-      [v12 calDatabaseForAccountID:v7];
+      account2 = [(ASAgent *)self account];
+      accountID = [account2 accountID];
+      [v12 calDatabaseForAccountID:accountID];
       CalDatabaseCopyCalendarChangesWithIndicesInStore();
 
       CFRelease(v10);
@@ -10703,7 +10703,7 @@ LABEL_28:
         v14 = 0;
         do
         {
-          v101 = v7;
+          v101 = accountID;
           if (*v112 != allocator)
           {
             objc_enumerationMutation(obj);
@@ -10711,14 +10711,14 @@ LABEL_28:
 
           v15 = *(*(&v111 + 1) + 8 * v14);
           v16 = [v100 objectForKeyedSubscript:v15];
-          v17 = [(ASAgent *)self account];
+          account3 = [(ASAgent *)self account];
           v98 = v16;
-          v18 = [v17 folderWithId:v16];
+          v18 = [account3 folderWithId:v16];
 
-          v19 = [v11[390] sharedInstance];
-          v20 = [(ASAgent *)self account];
-          v21 = [v20 accountID];
-          [v19 calDatabaseForAccountID:v21];
+          sharedInstance = [v11[390] sharedInstance];
+          account4 = [(ASAgent *)self account];
+          accountID2 = [account4 accountID];
+          [sharedInstance calDatabaseForAccountID:accountID2];
           [v15 intValue];
           v22 = CalDatabaseCopyCalendarWithUID();
 
@@ -10729,18 +10729,18 @@ LABEL_28:
             v25 = [v23 length];
             if (!v25)
             {
-              v90 = [v18 folderName];
-              if (![v90 length])
+              folderName = [v18 folderName];
+              if (![folderName length])
               {
                 v26 = 0;
                 goto LABEL_18;
               }
             }
 
-            v7 = [v18 folderName];
-            if ([v23 isEqualToString:v7])
+            accountID = [v18 folderName];
+            if ([v23 isEqualToString:accountID])
             {
-              v101 = v7;
+              v101 = accountID;
               v26 = 1;
 LABEL_18:
               v27 = [v24 length];
@@ -10749,8 +10749,8 @@ LABEL_18:
               {
                 v28 = v24;
                 v29 = v26;
-                v30 = [v18 folderID];
-                v31 = [v28 isEqualToString:v30];
+                folderID = [v18 folderID];
+                v31 = [v28 isEqualToString:folderID];
 
                 if (v27)
                 {
@@ -10810,8 +10810,8 @@ LABEL_23:
               [v92 addObject:v15];
               [v85 removeObject:v15];
 LABEL_30:
-              self = v97;
-              v7 = v101;
+              self = selfCopy;
+              accountID = v101;
             }
 
             else
@@ -10858,8 +10858,8 @@ LABEL_30:
 
           v39 = *(*(&v107 + 1) + 8 * i);
           v40 = [v100 objectForKeyedSubscript:v39];
-          v41 = [(ASAgent *)v97 account];
-          v42 = [v41 folderWithId:v40];
+          account5 = [(ASAgent *)selfCopy account];
+          v42 = [account5 folderWithId:v40];
 
           if (!v42)
           {
@@ -10887,7 +10887,7 @@ LABEL_30:
     v44 = v84;
     v45 = v85;
     v46 = theDict;
-    v47 = v97;
+    v47 = selfCopy;
     if ([v92 count])
     {
       v48 = DALoggingwithCategory();
@@ -10929,15 +10929,15 @@ LABEL_30:
           {
             +[ASLocalDBHelper sharedInstance];
             v57 = v56 = v53;
-            v58 = [(ASAgent *)v47 account];
-            v59 = [v58 accountID];
-            [v57 calDatabaseForAccountID:v59];
-            v60 = [(ASAgent *)v47 account];
-            v61 = [v60 changeTrackingID];
+            account6 = [(ASAgent *)v47 account];
+            accountID3 = [account6 accountID];
+            [v57 calDatabaseForAccountID:accountID3];
+            account7 = [(ASAgent *)v47 account];
+            changeTrackingID = [account7 changeTrackingID];
             v96 = 1;
             CalDatabaseClearIndividualChangeRowIDsForClient();
 
-            v47 = v97;
+            v47 = selfCopy;
             v46 = theDict;
 
             v53 = v56;
@@ -10958,9 +10958,9 @@ LABEL_30:
       if (v96)
       {
         v50 = +[ASLocalDBHelper sharedInstance];
-        v62 = [(ASAgent *)v47 account];
-        v63 = [v62 accountID];
-        [v50 calSaveDatabaseForAccountID:v63];
+        account8 = [(ASAgent *)v47 account];
+        accountID4 = [account8 accountID];
+        [v50 calSaveDatabaseForAccountID:accountID4];
 
 LABEL_65:
       }
@@ -10988,16 +10988,16 @@ LABEL_65:
         v65 = 2;
         v66 = v89;
 LABEL_76:
-        v68 = [v66 anyObject];
-        v67 = v68;
-        if (v68)
+        anyObject = [v66 anyObject];
+        v67 = anyObject;
+        if (anyObject)
         {
-          v69 = [v68 intValue];
-          *a4 = v69;
-          *a5 = v65;
+          intValue = [anyObject intValue];
+          *id = intValue;
+          *type = v65;
           v70 = [v100 objectForKeyedSubscript:v67];
-          *a6 = v70;
-          v71 = CFDictionaryGetValue(v46, v69);
+          *externalId = v70;
+          v71 = CFDictionaryGetValue(v46, intValue);
           if (v71)
           {
             v72 = v71;
@@ -11005,20 +11005,20 @@ LABEL_76:
             {
               v128.length = CFArrayGetCount(v72);
               v128.location = 0;
-              CFArrayAppendArray(a7, v72, v128);
+              CFArrayAppendArray(indices, v72, v128);
             }
           }
 
           if (shouldDALogAtLevel())
           {
-            v73 = CFCopyDescription(a7);
+            v73 = CFCopyDescription(indices);
             v74 = DALoggingwithCategory();
             v75 = _CPLog_to_os_log_type[6];
             if (os_log_type_enabled(v74, v75))
             {
-              v76 = *a5;
-              v77 = *a4;
-              v78 = *a6;
+              v76 = *type;
+              v77 = *id;
+              v78 = *externalId;
               *buf = 134218754;
               v120 = v76;
               v121 = 1024;
@@ -11054,53 +11054,53 @@ LABEL_85:
   return v67;
 }
 
-- (BOOL)_handleReminderChangedFolder:(id)a3 changeType:(unint64_t)a4
+- (BOOL)_handleReminderChangedFolder:(id)folder changeType:(unint64_t)type
 {
-  v5 = a3;
-  v6 = [(ASAgent *)self account];
-  v7 = [v6 visibleFolders];
+  folderCopy = folder;
+  account = [(ASAgent *)self account];
+  visibleFolders = [account visibleFolders];
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_18320;
   v13[3] = &unk_6CF20;
   v13[4] = self;
-  v14 = v5;
-  v15 = v7;
-  v8 = v7;
-  v9 = v5;
+  v14 = folderCopy;
+  v15 = visibleFolders;
+  v8 = visibleFolders;
+  v9 = folderCopy;
   v10 = objc_retainBlock(v13);
   [(ASAgent *)self setNumLocalFolderUpdatesInFlight:[(ASAgent *)self numLocalFolderUpdatesInFlight]+ 1];
-  v11 = [(ASAgent *)self account];
-  [v11 syncLocallyChangedFolder:v9 consumer:self completionBlock:v10];
+  account2 = [(ASAgent *)self account];
+  [account2 syncLocallyChangedFolder:v9 consumer:self completionBlock:v10];
 
   return 1;
 }
 
-- (void)_appendFolderHierarchyChangesForFoldersOfDataclasses:(int64_t)a3
+- (void)_appendFolderHierarchyChangesForFoldersOfDataclasses:(int64_t)dataclasses
 {
-  v3 = a3;
+  dataclassesCopy = dataclasses;
   if (![(ASAgent *)self numLocalFolderUpdatesInFlight])
   {
-    v5 = [(ASAgent *)self account];
-    v6 = [v5 enabledDataclassesBitmask] & v3;
+    account = [(ASAgent *)self account];
+    v6 = [account enabledDataclassesBitmask] & dataclassesCopy;
 
     if ((v6 & 4) != 0)
     {
       v10 = +[ASLocalDBHelper sharedInstance];
-      v31 = [(ASAgent *)self account];
-      v32 = [v31 accountID];
-      v33 = [(ASAgent *)self account];
-      v34 = [v33 changeTrackingID];
-      [v10 calOpenDatabaseForAccountID:v32 clientID:v34];
+      account2 = [(ASAgent *)self account];
+      accountID = [account2 accountID];
+      account3 = [(ASAgent *)self account];
+      changeTrackingID = [account3 changeTrackingID];
+      [v10 calOpenDatabaseForAccountID:accountID clientID:changeTrackingID];
 
       v52 = 0;
       v51 = 0;
       Mutable = CFArrayCreateMutable(kCFAllocatorDefault, 0, 0);
       v50 = 0;
-      LODWORD(v33) = [(ASAgent *)self _getHierarchyChangeForDataclass:4 changedItemId:&v52 changeType:&v51 externalId:&v50 changeTableIndices:Mutable];
+      LODWORD(account3) = [(ASAgent *)self _getHierarchyChangeForDataclass:4 changedItemId:&v52 changeType:&v51 externalId:&v50 changeTableIndices:Mutable];
       v18 = v50;
-      if (v33)
+      if (account3)
       {
         [(ASAgent *)self _handleLocallyChangedFolderWithChangedItemId:v52 changeType:v51 externalId:v18 changeTableIndices:Mutable dataclass:4];
       }
@@ -11110,9 +11110,9 @@ LABEL_85:
         CFRelease(Mutable);
       }
 
-      v36 = [(ASAgent *)self account];
-      v37 = [v36 accountID];
-      [v10 calCloseDatabaseForAccountID:v37 save:0];
+      account4 = [(ASAgent *)self account];
+      accountID2 = [account4 accountID];
+      [v10 calCloseDatabaseForAccountID:accountID2 save:0];
     }
 
     else
@@ -11122,9 +11122,9 @@ LABEL_85:
         return;
       }
 
-      v7 = [(ASAgent *)self sharedReminderKitHelper];
-      v8 = [(ASAgent *)self account];
-      v9 = [v7 localAddedFoldersForAccount:v8];
+      sharedReminderKitHelper = [(ASAgent *)self sharedReminderKitHelper];
+      account5 = [(ASAgent *)self account];
+      v9 = [sharedReminderKitHelper localAddedFoldersForAccount:account5];
 
       v48 = 0u;
       v49 = 0u;
@@ -11157,9 +11157,9 @@ LABEL_85:
         while (v12);
       }
 
-      v15 = [(ASAgent *)self sharedReminderKitHelper];
-      v16 = [(ASAgent *)self account];
-      v17 = [v15 localModifiedFoldersForAccount:v16];
+      sharedReminderKitHelper2 = [(ASAgent *)self sharedReminderKitHelper];
+      account6 = [(ASAgent *)self account];
+      v17 = [sharedReminderKitHelper2 localModifiedFoldersForAccount:account6];
 
       v44 = 0u;
       v45 = 0u;
@@ -11192,9 +11192,9 @@ LABEL_85:
         while (v20);
       }
 
-      v23 = [(ASAgent *)self sharedReminderKitHelper];
-      v24 = [(ASAgent *)self account];
-      v25 = [v23 localDeletedFoldersForAccount:v24];
+      sharedReminderKitHelper3 = [(ASAgent *)self sharedReminderKitHelper];
+      account7 = [(ASAgent *)self account];
+      v25 = [sharedReminderKitHelper3 localDeletedFoldersForAccount:account7];
 
       v40 = 0u;
       v41 = 0u;
@@ -11230,19 +11230,19 @@ LABEL_85:
   }
 }
 
-- (void)_nilOutContainersForDataclasses:(int64_t)a3
+- (void)_nilOutContainersForDataclasses:(int64_t)dataclasses
 {
-  v3 = a3;
-  if ((a3 & 2) == 0)
+  dataclassesCopy = dataclasses;
+  if ((dataclasses & 2) == 0)
   {
-    if ((a3 & 4) == 0)
+    if ((dataclasses & 4) == 0)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
     [(ASAgent *)self setEventCalendarsByFolderId:0];
-    if ((v3 & 0x20) == 0)
+    if ((dataclassesCopy & 0x20) == 0)
     {
       return;
     }
@@ -11251,56 +11251,56 @@ LABEL_6:
   }
 
   [(ASAgent *)self setContactStoresByFolderId:0];
-  if ((v3 & 4) != 0)
+  if ((dataclassesCopy & 4) != 0)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
-  if ((v3 & 0x20) == 0)
+  if ((dataclassesCopy & 0x20) == 0)
   {
     return;
   }
 
 LABEL_7:
-  v5 = [(ASAgent *)self noteStoreObjectIdsByFolderId];
-  [v5 removeAllObjects];
+  noteStoreObjectIdsByFolderId = [(ASAgent *)self noteStoreObjectIdsByFolderId];
+  [noteStoreObjectIdsByFolderId removeAllObjects];
 }
 
 - (void)_refirePendingCalendarInvitations
 {
-  v3 = [(ASAgent *)self account];
-  v4 = [v3 enabledForDADataclass:4];
+  account = [(ASAgent *)self account];
+  v4 = [account enabledForDADataclass:4];
 
   if (v4)
   {
-    v5 = [(ASAgent *)self account];
-    v6 = [v5 changeTrackingID];
-    v7 = [(ASAgent *)self account];
-    v8 = [v7 accountID];
-    v9 = [ASDataHandler newDataHandlerForDataclass:4 container:0 changeTrackingID:v6 accountID:v8];
+    account2 = [(ASAgent *)self account];
+    changeTrackingID = [account2 changeTrackingID];
+    account3 = [(ASAgent *)self account];
+    accountID = [account3 accountID];
+    v9 = [ASDataHandler newDataHandlerForDataclass:4 container:0 changeTrackingID:changeTrackingID accountID:accountID];
 
     v50 = v9;
     [v9 openDB];
     [(ASAgent *)self _cacheFoldersForDataclasses:4];
-    v10 = [(ASAgent *)self account];
-    v11 = [v10 eventsFolders];
+    account4 = [(ASAgent *)self account];
+    eventsFolders = [account4 eventsFolders];
 
-    if (v11)
+    if (eventsFolders)
     {
       v51 = objc_opt_new();
       v62 = 0u;
       v63 = 0u;
       v64 = 0u;
       v65 = 0u;
-      obj = v11;
+      obj = eventsFolders;
       v56 = [obj countByEnumeratingWithState:&v62 objects:v67 count:16];
       if (v56)
       {
         v54 = 0;
         v55 = *v63;
         v12 = &PLLogRegisteredEvent_ptr;
-        v53 = v11;
+        v53 = eventsFolders;
         do
         {
           for (i = 0; i != v56; i = i + 1)
@@ -11311,15 +11311,15 @@ LABEL_7:
             }
 
             v14 = *(*(&v62 + 1) + 8 * i);
-            v15 = [v14 folderID];
+            folderID = [v14 folderID];
 
-            if (!v15)
+            if (!folderID)
             {
               sub_480CC();
             }
 
-            v16 = [v14 folderID];
-            v17 = [(ASAgent *)self _containerForFolderWithId:v16 dataclass:4];
+            folderID2 = [v14 folderID];
+            v17 = [(ASAgent *)self _containerForFolderWithId:folderID2 dataclass:4];
 
             if (v17)
             {
@@ -11337,8 +11337,8 @@ LABEL_7:
 
                     v22 = CalCalendarItemCopyExternalID();
                     v23 = objc_alloc(v12[380]);
-                    v24 = [(ASAgent *)self account];
-                    v25 = [v23 initWithCalEvent:v21 serverID:v22 account:v24];
+                    account5 = [(ASAgent *)self account];
+                    v25 = [v23 initWithCalEvent:v21 serverID:v22 account:account5];
 
                     v12 = &PLLogRegisteredEvent_ptr;
                     [v25 setCalEvent:0];
@@ -11377,8 +11377,8 @@ LABEL_7:
                       v34 = v33;
                       v35 = CalCalendarItemCopyExternalID();
                       v36 = objc_alloc(v12[380]);
-                      v37 = [(ASAgent *)self account];
-                      v38 = [v36 initWithCalEvent:v34 serverID:v35 account:v37];
+                      account6 = [(ASAgent *)self account];
+                      v38 = [v36 initWithCalEvent:v34 serverID:v35 account:account6];
 
                       CFRelease(v34);
                     }
@@ -11387,15 +11387,15 @@ LABEL_7:
                     {
                       v35 = CalCalendarItemCopyExternalID();
                       v39 = objc_alloc(v12[380]);
-                      v40 = [(ASAgent *)self account];
-                      v38 = [v39 initWithCalEvent:v32 serverID:v35 account:v40];
+                      account7 = [(ASAgent *)self account];
+                      v38 = [v39 initWithCalEvent:v32 serverID:v35 account:account7];
                     }
 
-                    v41 = [v38 serverID];
-                    if (v41 && ([v29 containsObject:v41] & 1) == 0)
+                    serverID = [v38 serverID];
+                    if (serverID && ([v29 containsObject:serverID] & 1) == 0)
                     {
                       [v30 addObject:v38];
-                      [v29 addObject:v41];
+                      [v29 addObject:serverID];
                     }
 
                     ++v31;
@@ -11408,14 +11408,14 @@ LABEL_7:
                 v42 = v54;
                 if ([v30 count])
                 {
-                  v43 = [(ASAgent *)self account];
-                  v42 = v54 | [v43 sendEmailsForCalEvents:v30 consumer:self];
+                  account8 = [(ASAgent *)self account];
+                  v42 = v54 | [account8 sendEmailsForCalEvents:v30 consumer:self];
                 }
 
                 v54 = v42;
               }
 
-              v11 = v53;
+              eventsFolders = v53;
               i = v57;
             }
           }
@@ -11474,35 +11474,35 @@ LABEL_7:
 
 - (id)waiterID
 {
-  v2 = [(ASAgent *)self account];
-  v3 = [v2 accountID];
+  account = [(ASAgent *)self account];
+  accountID = [account accountID];
 
-  return v3;
+  return accountID;
 }
 
-- (void)fetchAttachmentTask:(id)a3 completedWithStatus:(int64_t)a4 dataWasBase64:(BOOL)a5 error:(id)a6
+- (void)fetchAttachmentTask:(id)task completedWithStatus:(int64_t)status dataWasBase64:(BOOL)base64 error:(id)error
 {
-  v9 = a3;
-  v10 = a6;
-  if (v10)
+  taskCopy = task;
+  errorCopy = error;
+  if (errorCopy)
   {
     v11 = DALoggingwithCategory();
     v12 = _CPLog_to_os_log_type[6];
     if (os_log_type_enabled(v11, v12))
     {
-      v13 = [v10 userInfo];
-      v14 = [v9 attachmentUUID];
+      userInfo = [errorCopy userInfo];
+      attachmentUUID = [taskCopy attachmentUUID];
       *buf = 138412546;
-      v23 = v13;
+      v23 = userInfo;
       v24 = 2112;
-      v25 = v14;
+      v25 = attachmentUUID;
       _os_log_impl(&dword_0, v11, v12, "An error (%@) occurred while downloading the attachment. %@ is not saved.", buf, 0x16u);
     }
 
-    v15 = [(ASAgent *)self account];
-    v16 = [v15 consumerForTask:v9];
+    account = [(ASAgent *)self account];
+    v16 = [account consumerForTask:taskCopy];
 
-    [v16 downloadFinishedError:v10];
+    [v16 downloadFinishedError:errorCopy];
   }
 
   else
@@ -11512,46 +11512,46 @@ LABEL_7:
     v18[1] = 3221225472;
     v18[2] = sub_19024;
     v18[3] = &unk_6CF48;
-    v21 = a5;
-    v19 = v9;
-    v20 = self;
+    base64Copy = base64;
+    v19 = taskCopy;
+    selfCopy = self;
     [v17 registerWaiter:self forDataclassLocks:20 completionHandler:v18];
 
     v16 = v19;
   }
 }
 
-- (void)_saveAttachmentDataToDatabaseForTask:(id)a3
+- (void)_saveAttachmentDataToDatabaseForTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   v5 = DALoggingwithCategory();
   v6 = _CPLog_to_os_log_type[6];
   if (os_log_type_enabled(v5, v6))
   {
-    v7 = [v4 attachmentUUID];
+    attachmentUUID = [taskCopy attachmentUUID];
     *buf = 138412290;
-    v33 = v7;
+    v33 = attachmentUUID;
     _os_log_impl(&dword_0, v5, v6, "The gatekeeper lock has been granted. Beginning save of attachment %@", buf, 0xCu);
   }
 
   v8 = +[ASLocalDBHelper sharedInstance];
-  v9 = [(ASAgent *)self account];
-  v10 = [v9 accountID];
-  v11 = [(ASAgent *)self account];
-  v12 = [v11 changeTrackingID];
-  [v8 calOpenDatabaseForAccountID:v10 clientID:v12];
+  account = [(ASAgent *)self account];
+  accountID = [account accountID];
+  account2 = [(ASAgent *)self account];
+  changeTrackingID = [account2 changeTrackingID];
+  [v8 calOpenDatabaseForAccountID:accountID clientID:changeTrackingID];
 
   v13 = +[ASLocalDBHelper sharedInstance];
-  v14 = [(ASAgent *)self account];
-  v15 = [v14 accountID];
-  [v13 calDatabaseForAccountID:v15];
+  account3 = [(ASAgent *)self account];
+  accountID2 = [account3 accountID];
+  [v13 calDatabaseForAccountID:accountID2];
 
-  [v4 attachmentUUID];
+  [taskCopy attachmentUUID];
   v16 = CalDatabaseCopyAttachmentWithUUID();
   if (v16)
   {
     v17 = v16;
-    [v4 localFileName];
+    [taskCopy localFileName];
     v18 = CalAttachmentSetFileData();
     if ((v18 & 1) == 0)
     {
@@ -11559,14 +11559,14 @@ LABEL_7:
       v20 = _CPLog_to_os_log_type[3];
       if (os_log_type_enabled(v19, v20))
       {
-        v21 = [v4 attachmentUUID];
+        attachmentUUID2 = [taskCopy attachmentUUID];
         *buf = 138412290;
-        v33 = v21;
+        v33 = attachmentUUID2;
         _os_log_impl(&dword_0, v19, v20, "Couldn't save attachment file in the database for attachment %@", buf, 0xCu);
       }
     }
 
-    [v4 attachmentContentType];
+    [taskCopy attachmentContentType];
     CalAttachmentSetFormat();
     CalAttachmentSetURL();
     +[NSDate timeIntervalSinceReferenceDate];
@@ -11574,16 +11574,16 @@ LABEL_7:
     CalAttachmentSetExternalModTag();
     CFRelease(v17);
     v24 = +[ASLocalDBHelper sharedInstance];
-    v25 = [(ASAgent *)self account];
-    v26 = [v25 accountID];
-    [v24 calCloseDatabaseForAccountID:v26 save:v18];
+    account4 = [(ASAgent *)self account];
+    accountID3 = [account4 accountID];
+    [v24 calCloseDatabaseForAccountID:accountID3 save:v18];
 
-    v27 = DALoggingwithCategory();
+    account5 = DALoggingwithCategory();
     v28 = _CPLog_to_os_log_type[7];
-    if (os_log_type_enabled(v27, v28))
+    if (os_log_type_enabled(account5, v28))
     {
       *buf = 0;
-      _os_log_impl(&dword_0, v27, v28, "Attachment has been saved. Releasing gatekeeper lock", buf, 2u);
+      _os_log_impl(&dword_0, account5, v28, "Attachment has been saved. Releasing gatekeeper lock", buf, 2u);
     }
   }
 
@@ -11598,51 +11598,51 @@ LABEL_7:
     }
 
     v23 = +[ASLocalDBHelper sharedInstance];
-    v27 = [(ASAgent *)self account];
-    v31 = [v27 accountID];
-    [v23 calCloseDatabaseForAccountID:v31 save:0];
+    account5 = [(ASAgent *)self account];
+    accountID4 = [account5 accountID];
+    [v23 calCloseDatabaseForAccountID:accountID4 save:0];
   }
 }
 
-- (void)prepareFetchAttachmentTask:(id)a3
+- (void)prepareFetchAttachmentTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   v5 = +[DALocalDBGateKeeper sharedGateKeeper];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1989C;
   v7[3] = &unk_6CED0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = taskCopy;
+  v6 = taskCopy;
   [v5 registerWaiter:self forDataclassLocks:20 completionHandler:v7];
 }
 
-- (void)_reallyPrepareFetchAttachmentTask:(id)a3
+- (void)_reallyPrepareFetchAttachmentTask:(id)task
 {
-  v23 = a3;
-  v4 = [v23 attachmentUUID];
+  taskCopy = task;
+  attachmentUUID = [taskCopy attachmentUUID];
 
-  if (!v4)
+  if (!attachmentUUID)
   {
     sub_48138();
   }
 
   v5 = +[ASLocalDBHelper sharedInstance];
-  v6 = [(ASAgent *)self account];
-  v7 = [v6 accountID];
-  v8 = [(ASAgent *)self account];
-  v9 = [v8 changeTrackingID];
-  [v5 calOpenDatabaseForAccountID:v7 clientID:v9];
+  account = [(ASAgent *)self account];
+  accountID = [account accountID];
+  account2 = [(ASAgent *)self account];
+  changeTrackingID = [account2 changeTrackingID];
+  [v5 calOpenDatabaseForAccountID:accountID clientID:changeTrackingID];
 
   v10 = +[ASLocalDBHelper sharedInstance];
-  v11 = [(ASAgent *)self account];
-  v12 = [v11 accountID];
-  v13 = [v10 calDatabaseForAccountID:v12];
+  account3 = [(ASAgent *)self account];
+  accountID2 = [account3 accountID];
+  v13 = [v10 calDatabaseForAccountID:accountID2];
 
   if (v13)
   {
-    [v23 attachmentUUID];
+    [taskCopy attachmentUUID];
     v14 = CalDatabaseCopyAttachmentWithUUID();
     if (v14)
     {
@@ -11653,8 +11653,8 @@ LABEL_7:
         v17 = v16;
         v18 = CalCalendarItemCopyExternalID();
         v19 = CalAttachmentCopyExternalID();
-        [v23 setAttachmentName:v19];
-        [v23 setMessageID:v18];
+        [taskCopy setAttachmentName:v19];
+        [taskCopy setMessageID:v18];
         CFRelease(v17);
       }
 
@@ -11662,147 +11662,147 @@ LABEL_7:
     }
 
     v20 = +[ASLocalDBHelper sharedInstance];
-    v21 = [(ASAgent *)self account];
-    v22 = [v21 accountID];
-    [v20 calCloseDatabaseForAccountID:v22 save:0];
+    account4 = [(ASAgent *)self account];
+    accountID3 = [account4 accountID];
+    [v20 calCloseDatabaseForAccountID:accountID3 save:0];
   }
 }
 
-- (void)_addChangeForType:(unint64_t)a3 changedItemId:(id)a4 changeId:(id)a5 addedIdsToChangeId:(id)a6 modifiedIdsToChangeId:(id)a7 deletedIdsToChangeId:(id)a8 pseudoDeletedIdsToChangeId:(id)a9 changeIdsToClear:(id)a10
+- (void)_addChangeForType:(unint64_t)type changedItemId:(id)id changeId:(id)changeId addedIdsToChangeId:(id)toChangeId modifiedIdsToChangeId:(id)idsToChangeId deletedIdsToChangeId:(id)deletedIdsToChangeId pseudoDeletedIdsToChangeId:(id)pseudoDeletedIdsToChangeId changeIdsToClear:(id)self0
 {
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
-  v21 = a10;
+  idCopy = id;
+  changeIdCopy = changeId;
+  toChangeIdCopy = toChangeId;
+  idsToChangeIdCopy = idsToChangeId;
+  deletedIdsToChangeIdCopy = deletedIdsToChangeId;
+  pseudoDeletedIdsToChangeIdCopy = pseudoDeletedIdsToChangeId;
+  clearCopy = clear;
   v22 = DALoggingwithCategory();
   v23 = _CPLog_to_os_log_type[7];
   if (os_log_type_enabled(v22, v23))
   {
     v38 = 134219778;
-    v39 = a3;
+    typeCopy = type;
     v40 = 2112;
-    v41 = v15;
+    v41 = idCopy;
     v42 = 2112;
-    v43 = v16;
+    v43 = changeIdCopy;
     v44 = 2112;
-    v45 = v17;
+    v45 = toChangeIdCopy;
     v46 = 2112;
-    v47 = v18;
+    v47 = idsToChangeIdCopy;
     v48 = 2112;
-    v49 = v19;
+    v49 = deletedIdsToChangeIdCopy;
     v50 = 2112;
-    v51 = v20;
+    v51 = pseudoDeletedIdsToChangeIdCopy;
     v52 = 2112;
-    v53 = v21;
+    v53 = clearCopy;
     _os_log_impl(&dword_0, v22, v23, "_addChange for type %lu, changedItemId %@ changeId %@ addedIds %@ modifiedIds %@ deletedIds %@ pseudoDeletedIds %@, changeIdsToClear %@", &v38, 0x52u);
   }
 
-  if (!v16)
+  if (!changeIdCopy)
   {
-    v16 = &off_6E600;
+    changeIdCopy = &off_6E600;
   }
 
-  if (a3 > 1)
+  if (type > 1)
   {
-    if (a3 == 2)
+    if (type == 2)
     {
-      v34 = [v17 objectForKeyedSubscript:v15];
+      v34 = [toChangeIdCopy objectForKeyedSubscript:idCopy];
 
       if (!v34)
       {
-        v36 = [v18 objectForKeyedSubscript:v15];
+        v36 = [idsToChangeIdCopy objectForKeyedSubscript:idCopy];
 
         if (v36)
         {
-          v37 = [v18 objectForKeyedSubscript:v15];
-          [v21 addObject:v37];
+          v37 = [idsToChangeIdCopy objectForKeyedSubscript:idCopy];
+          [clearCopy addObject:v37];
 
-          [v18 removeObjectForKey:v15];
+          [idsToChangeIdCopy removeObjectForKey:idCopy];
         }
 
-        v32 = v19;
+        v32 = deletedIdsToChangeIdCopy;
         goto LABEL_31;
       }
     }
 
     else
     {
-      if (a3 != 8)
+      if (type != 8)
       {
         goto LABEL_35;
       }
 
-      v29 = [v17 objectForKeyedSubscript:v15];
+      v29 = [toChangeIdCopy objectForKeyedSubscript:idCopy];
 
       if (!v29)
       {
-        v30 = [v18 objectForKeyedSubscript:v15];
+        v30 = [idsToChangeIdCopy objectForKeyedSubscript:idCopy];
 
         if (v30)
         {
-          v31 = [v18 objectForKeyedSubscript:v15];
-          [v21 addObject:v31];
+          v31 = [idsToChangeIdCopy objectForKeyedSubscript:idCopy];
+          [clearCopy addObject:v31];
 
-          [v18 removeObjectForKey:v15];
+          [idsToChangeIdCopy removeObjectForKey:idCopy];
         }
 
-        v32 = v20;
+        v32 = pseudoDeletedIdsToChangeIdCopy;
 LABEL_31:
-        [v32 setObject:v16 forKeyedSubscript:v15];
+        [v32 setObject:changeIdCopy forKeyedSubscript:idCopy];
         goto LABEL_35;
       }
     }
 
-    v35 = [v17 objectForKeyedSubscript:v15];
-    [v21 addObject:v35];
+    v35 = [toChangeIdCopy objectForKeyedSubscript:idCopy];
+    [clearCopy addObject:v35];
 
-    [v17 removeObjectForKey:v15];
+    [toChangeIdCopy removeObjectForKey:idCopy];
 LABEL_25:
-    [v21 addObject:v16];
+    [clearCopy addObject:changeIdCopy];
     goto LABEL_35;
   }
 
-  if (!a3)
+  if (!type)
   {
-    v26 = [v18 objectForKeyedSubscript:v15];
+    v26 = [idsToChangeIdCopy objectForKeyedSubscript:idCopy];
     if (v26)
     {
-      [v21 addObject:v26];
-      [v18 removeObjectForKey:v15];
+      [clearCopy addObject:v26];
+      [idsToChangeIdCopy removeObjectForKey:idCopy];
     }
 
-    v33 = [v17 objectForKeyedSubscript:v15];
+    v33 = [toChangeIdCopy objectForKeyedSubscript:idCopy];
     if (v33)
     {
-      [v21 addObject:v16];
+      [clearCopy addObject:changeIdCopy];
     }
 
     else
     {
-      [v17 setObject:v16 forKeyedSubscript:v15];
+      [toChangeIdCopy setObject:changeIdCopy forKeyedSubscript:idCopy];
     }
 
     goto LABEL_34;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
-    v24 = [v17 objectForKeyedSubscript:v15];
+    v24 = [toChangeIdCopy objectForKeyedSubscript:idCopy];
 
     if (!v24)
     {
-      v25 = [v18 objectForKeyedSubscript:v15];
+      v25 = [idsToChangeIdCopy objectForKeyedSubscript:idCopy];
       v26 = v25;
       if (v25)
       {
-        v27 = [v25 intValue];
-        v28 = [v16 intValue];
-        if (v27 == -1 || v28 == -1)
+        intValue = [v25 intValue];
+        intValue2 = [changeIdCopy intValue];
+        if (intValue == -1 || intValue2 == -1)
         {
-          if (v28 == -1)
+          if (intValue2 == -1)
           {
 LABEL_34:
 
@@ -11812,11 +11812,11 @@ LABEL_34:
 
         else
         {
-          [v21 addObject:v26];
+          [clearCopy addObject:v26];
         }
       }
 
-      [v18 setObject:v16 forKeyedSubscript:v15];
+      [idsToChangeIdCopy setObject:changeIdCopy forKeyedSubscript:idCopy];
       goto LABEL_34;
     }
 
@@ -11826,12 +11826,12 @@ LABEL_34:
 LABEL_35:
 }
 
-- (id)_copyABActionsInContainer:(void *)a3 existingActions:(id)a4 dataHandler:(id)a5 wantPreserveActions:(BOOL)a6 changeContext:(id)a7
+- (id)_copyABActionsInContainer:(void *)container existingActions:(id)actions dataHandler:(id)handler wantPreserveActions:(BOOL)preserveActions changeContext:(id)context
 {
-  v140 = a6;
-  v142 = a4;
-  v9 = a5;
-  v144 = a7;
+  preserveActionsCopy = preserveActions;
+  actionsCopy = actions;
+  handlerCopy = handler;
+  contextCopy = context;
   v159 = objc_opt_new();
   v10 = +[ASLocalDBHelper sharedInstance];
   v11 = kABChangeHistoryRecordIDsKey;
@@ -11848,11 +11848,11 @@ LABEL_35:
   v143 = v10;
   [v10 abDB];
   EntityChangesSinceSequenceNumberForClient = ABChangeHistoryGetEntityChangesSinceSequenceNumberForClient();
-  v157 = v9;
+  v157 = handlerCopy;
   if (!EntityChangesSinceSequenceNumberForClient || (v16 = EntityChangesSinceSequenceNumberForClient, CFDictionaryGetCount(EntityChangesSinceSequenceNumberForClient) < 1))
   {
     v24 = objc_opt_new();
-    v21 = v144;
+    v21 = contextCopy;
     goto LABEL_136;
   }
 
@@ -11867,7 +11867,7 @@ LABEL_35:
 
   theArray = Value;
   v20 = cf;
-  v21 = v144;
+  v21 = contextCopy;
   if (cf)
   {
     CFRetain(cf);
@@ -11908,7 +11908,7 @@ LABEL_35:
   v185 = 0u;
   v186 = 0u;
   v187 = 0u;
-  obj = v142;
+  obj = actionsCopy;
   v26 = [obj countByEnumeratingWithState:&v184 objects:v196 count:16];
   if (!v26)
   {
@@ -11928,44 +11928,44 @@ LABEL_35:
       }
 
       v31 = *(*(&v184 + 1) + 8 * i);
-      v32 = [v31 itemChangeType];
-      v33 = v32;
-      if (v32 <= 1)
+      itemChangeType = [v31 itemChangeType];
+      v33 = itemChangeType;
+      if (itemChangeType <= 1)
       {
-        v34 = [v31 changedItem];
-        [v34 loadClientIDs];
-        [v34 setLocalItem:0];
-        v35 = [v34 clientID];
-        v36 = [v35 intValue];
+        changedItem = [v31 changedItem];
+        [changedItem loadClientIDs];
+        [changedItem setLocalItem:0];
+        clientID = [changedItem clientID];
+        intValue = [clientID intValue];
 
-        if (v36)
+        if (intValue)
         {
-          v37 = [(ASAgent *)self account];
-          v38 = [v34 loadLocalItemWithAccount:v37];
+          account = [(ASAgent *)self account];
+          v38 = [changedItem loadLocalItemWithAccount:account];
 
           if (v38)
           {
-            v39 = [v34 serverID];
-            v40 = v39;
-            if (v33 != 1 || v39)
+            serverID = [changedItem serverID];
+            v40 = serverID;
+            if (v33 != 1 || serverID)
             {
-              v42 = [NSNumber numberWithInt:v36];
-              v49 = [v31 itemChangeType];
+              v42 = [NSNumber numberWithInt:intValue];
+              itemChangeType2 = [v31 itemChangeType];
               v50 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v31 changeId]);
-              [(ASAgent *)self _addChangeForType:v49 changedItemId:v42 changeId:v50 addedIdsToChangeId:v151 modifiedIdsToChangeId:v150 deletedIdsToChangeId:v149 pseudoDeletedIdsToChangeId:0 changeIdsToClear:v154];
+              [(ASAgent *)self _addChangeForType:itemChangeType2 changedItemId:v42 changeId:v50 addedIdsToChangeId:v151 modifiedIdsToChangeId:v150 deletedIdsToChangeId:v149 pseudoDeletedIdsToChangeId:0 changeIdsToClear:v154];
 
               if (v40)
               {
                 [v156 setObject:v40 forKeyedSubscript:v42];
               }
 
-              v9 = v157;
+              handlerCopy = v157;
             }
 
             else
             {
               v41 = DALoggingwithCategory();
-              v9 = v157;
+              handlerCopy = v157;
               if (os_log_type_enabled(v41, v29))
               {
                 *buf = 138412290;
@@ -11981,7 +11981,7 @@ LABEL_35:
           }
 
           v45 = DALoggingwithCategory();
-          v9 = v157;
+          handlerCopy = v157;
           if (os_log_type_enabled(v45, v29))
           {
             *buf = 138412290;
@@ -12015,7 +12015,7 @@ LABEL_43:
         continue;
       }
 
-      if ((v32 & 0xFFFFFFFFFFFFFFFBLL) == 2)
+      if ((itemChangeType & 0xFFFFFFFFFFFFFFFBLL) == 2)
       {
         [v159 addObject:v31];
       }
@@ -12161,19 +12161,19 @@ LABEL_46:
 
     while (v53 != v54);
 
-    v9 = v157;
+    handlerCopy = v157;
   }
 
-  v21 = v144;
-  if (v140)
+  v21 = contextCopy;
+  if (preserveActionsCopy)
   {
-    [v144 setAbPersonChangeId:v139];
+    [contextCopy setAbPersonChangeId:v139];
     v182 = 0u;
     v183 = 0u;
     v180 = 0u;
     v181 = 0u;
-    v71 = [v151 allKeys];
-    v72 = [v71 countByEnumeratingWithState:&v180 objects:v193 count:16];
+    allKeys = [v151 allKeys];
+    v72 = [allKeys countByEnumeratingWithState:&v180 objects:v193 count:16];
     if (v72)
     {
       v73 = v72;
@@ -12186,24 +12186,24 @@ LABEL_46:
         {
           if (*v181 != v74)
           {
-            objc_enumerationMutation(v71);
+            objc_enumerationMutation(allKeys);
           }
 
           v55 = *(*(&v180 + 1) + 8 * v75);
 
-          v77 = [v9 copyLocalObjectFromId:{objc_msgSend(v55, "intValue")}];
+          v77 = [handlerCopy copyLocalObjectFromId:{objc_msgSend(v55, "intValue")}];
           if (v77)
           {
             v78 = v77;
-            v79 = [(ASAgent *)self account];
-            v80 = [v9 getDAObjectWithLocalItem:v78 serverId:0 account:v79];
+            account2 = [(ASAgent *)self account];
+            v80 = [handlerCopy getDAObjectWithLocalItem:v78 serverId:0 account:account2];
 
             [v80 setServerID:0];
             v81 = [[ASAction alloc] initWithItemChangeType:4 changedItem:v80 serverId:0];
             [v159 addObject:v81];
             CFRelease(v78);
 
-            v9 = v157;
+            handlerCopy = v157;
           }
 
           v75 = v75 + 1;
@@ -12211,7 +12211,7 @@ LABEL_46:
         }
 
         while (v73 != v75);
-        v73 = [v71 countByEnumeratingWithState:&v180 objects:v193 count:16];
+        v73 = [allKeys countByEnumeratingWithState:&v180 objects:v193 count:16];
       }
 
       while (v73);
@@ -12221,8 +12221,8 @@ LABEL_46:
     v179 = 0u;
     v176 = 0u;
     v177 = 0u;
-    v82 = [v150 allKeys];
-    v83 = [v82 countByEnumeratingWithState:&v176 objects:v192 count:16];
+    allKeys2 = [v150 allKeys];
+    v83 = [allKeys2 countByEnumeratingWithState:&v176 objects:v192 count:16];
     if (v83)
     {
       v84 = v83;
@@ -12236,24 +12236,24 @@ LABEL_46:
         {
           if (*v177 != v86)
           {
-            objc_enumerationMutation(v82);
+            objc_enumerationMutation(allKeys2);
           }
 
           v85 = *(*(&v176 + 1) + 8 * v87);
 
-          v89 = [v9 copyLocalObjectFromId:{objc_msgSend(v85, "intValue")}];
+          v89 = [handlerCopy copyLocalObjectFromId:{objc_msgSend(v85, "intValue")}];
           if (v89)
           {
             v90 = v89;
-            v91 = [(ASAgent *)self account];
-            v92 = [v9 getDAObjectWithLocalItem:v90 serverId:0 account:v91];
+            account3 = [(ASAgent *)self account];
+            v92 = [handlerCopy getDAObjectWithLocalItem:v90 serverId:0 account:account3];
 
             [v92 setServerID:0];
             v93 = [[ASAction alloc] initWithItemChangeType:4 changedItem:v92 serverId:0];
             [v159 addObject:v93];
             CFRelease(v90);
 
-            v9 = v157;
+            handlerCopy = v157;
           }
 
           v87 = v87 + 1;
@@ -12261,7 +12261,7 @@ LABEL_46:
         }
 
         while (v84 != v87);
-        v84 = [v82 countByEnumeratingWithState:&v176 objects:v192 count:16];
+        v84 = [allKeys2 countByEnumeratingWithState:&v176 objects:v192 count:16];
       }
 
       while (v84);
@@ -12274,13 +12274,13 @@ LABEL_128:
 
   else
   {
-    [v144 setAbPersonChangeId:0xFFFFFFFFLL];
+    [contextCopy setAbPersonChangeId:0xFFFFFFFFLL];
     v174 = 0u;
     v175 = 0u;
     v172 = 0u;
     v173 = 0u;
-    v94 = [v151 allKeys];
-    v95 = [v94 countByEnumeratingWithState:&v172 objects:v191 count:16];
+    allKeys3 = [v151 allKeys];
+    v95 = [allKeys3 countByEnumeratingWithState:&v172 objects:v191 count:16];
     if (v95)
     {
       v96 = v95;
@@ -12293,23 +12293,23 @@ LABEL_128:
         {
           if (*v173 != v97)
           {
-            objc_enumerationMutation(v94);
+            objc_enumerationMutation(allKeys3);
           }
 
           v55 = *(*(&v172 + 1) + 8 * v98);
 
-          v100 = [v9 copyLocalObjectFromId:{objc_msgSend(v55, "intValue")}];
+          v100 = [handlerCopy copyLocalObjectFromId:{objc_msgSend(v55, "intValue")}];
           if (v100)
           {
             v101 = v100;
-            v102 = [(ASAgent *)self account];
-            v103 = [v9 getDAObjectWithLocalItem:v101 serverId:0 account:v102];
+            account4 = [(ASAgent *)self account];
+            v103 = [handlerCopy getDAObjectWithLocalItem:v101 serverId:0 account:account4];
 
             v104 = [[ASAction alloc] initWithItemChangeType:0 changedItem:v103 serverId:0];
             v105 = [v151 objectForKeyedSubscript:v55];
             [v104 setChangeId:{objc_msgSend(v105, "intValue")}];
 
-            v9 = v157;
+            handlerCopy = v157;
             [v159 addObject:v104];
             CFRelease(v101);
           }
@@ -12319,7 +12319,7 @@ LABEL_128:
         }
 
         while (v96 != v98);
-        v96 = [v94 countByEnumeratingWithState:&v172 objects:v191 count:16];
+        v96 = [allKeys3 countByEnumeratingWithState:&v172 objects:v191 count:16];
       }
 
       while (v96);
@@ -12329,8 +12329,8 @@ LABEL_128:
     v171 = 0u;
     v168 = 0u;
     v169 = 0u;
-    v106 = [v150 allKeys];
-    v107 = [v106 countByEnumeratingWithState:&v168 objects:v190 count:16];
+    allKeys4 = [v150 allKeys];
+    v107 = [allKeys4 countByEnumeratingWithState:&v168 objects:v190 count:16];
     if (v107)
     {
       v108 = v107;
@@ -12344,24 +12344,24 @@ LABEL_128:
         {
           if (*v169 != v110)
           {
-            objc_enumerationMutation(v106);
+            objc_enumerationMutation(allKeys4);
           }
 
           v109 = *(*(&v168 + 1) + 8 * v111);
 
-          v113 = [v9 copyLocalObjectFromId:{objc_msgSend(v109, "intValue")}];
+          v113 = [handlerCopy copyLocalObjectFromId:{objc_msgSend(v109, "intValue")}];
           if (v113)
           {
             v114 = v113;
             v115 = [v156 objectForKeyedSubscript:v109];
-            v116 = [(ASAgent *)self account];
-            v117 = [v9 getDAObjectWithLocalItem:v114 serverId:v115 account:v116];
+            account5 = [(ASAgent *)self account];
+            v117 = [handlerCopy getDAObjectWithLocalItem:v114 serverId:v115 account:account5];
 
             v118 = [[ASAction alloc] initWithItemChangeType:1 changedItem:v117 serverId:0];
             v119 = [v150 objectForKeyedSubscript:v109];
             [v118 setChangeId:{objc_msgSend(v119, "intValue")}];
 
-            v9 = v157;
+            handlerCopy = v157;
             [v159 addObject:v118];
             CFRelease(v114);
           }
@@ -12371,23 +12371,23 @@ LABEL_128:
         }
 
         while (v108 != v111);
-        v108 = [v106 countByEnumeratingWithState:&v168 objects:v190 count:16];
+        v108 = [allKeys4 countByEnumeratingWithState:&v168 objects:v190 count:16];
       }
 
       while (v108);
 
-      v21 = v144;
+      v21 = contextCopy;
     }
 
     v166 = 0u;
     v167 = 0u;
     v164 = 0u;
     v165 = 0u;
-    v82 = [v149 allKeys];
-    v120 = [v82 countByEnumeratingWithState:&v164 objects:v189 count:16];
+    allKeys2 = [v149 allKeys];
+    v120 = [allKeys2 countByEnumeratingWithState:&v164 objects:v189 count:16];
     if (!v120)
     {
-      v9 = v157;
+      handlerCopy = v157;
       goto LABEL_128;
     }
 
@@ -12402,7 +12402,7 @@ LABEL_128:
       {
         if (*v165 != v122)
         {
-          objc_enumerationMutation(v82);
+          objc_enumerationMutation(allKeys2);
         }
 
         v85 = *(*(&v164 + 1) + 8 * v123);
@@ -12422,11 +12422,11 @@ LABEL_128:
       }
 
       while (v121 != v123);
-      v121 = [v82 countByEnumeratingWithState:&v164 objects:v189 count:16];
+      v121 = [allKeys2 countByEnumeratingWithState:&v164 objects:v189 count:16];
     }
 
     while (v121);
-    v9 = v157;
+    handlerCopy = v157;
 LABEL_126:
     v24 = v154;
   }
@@ -12477,10 +12477,10 @@ LABEL_136:
             objc_enumerationMutation(v129);
           }
 
-          v135 = [*(*(&v160 + 1) + 8 * j) intValue];
-          if (v135 != -1)
+          intValue2 = [*(*(&v160 + 1) + 8 * j) intValue];
+          if (intValue2 != -1)
           {
-            v136 = v135;
+            v136 = intValue2;
             v137 = DALoggingwithCategory();
             if (os_log_type_enabled(v137, v133))
             {
@@ -12499,7 +12499,7 @@ LABEL_136:
       while (v131);
     }
 
-    v9 = v157;
+    handlerCopy = v157;
     if (CFArrayGetCount(Mutable))
     {
       [v143 abDB];
@@ -12508,53 +12508,53 @@ LABEL_136:
     }
 
     CFRelease(Mutable);
-    v21 = v144;
+    v21 = contextCopy;
     v24 = v155;
   }
 
   return v159;
 }
 
-- (void)_handleChangeOnEventWithExchangeId:(id)a3 localId:(int)a4 changeType:(unint64_t)a5 eventChangeId:(id)a6 hasSignificantAttributeChanges:(BOOL)a7 container:(void *)a8 dataHandler:(id)a9 addedIdsToEventChangeId:(id)a10 modifiedIdsToEventChangeId:(id)a11 deletedIdsToEventChangeId:(id)a12 pseudoDeletedIdsToEventChangeId:(id)a13 eventChangeIdsToClear:(id)a14 allAddedDetachmentIds:(id)a15 localToExchangeIdMap:(id)a16 outShouldSaveDB:(BOOL *)a17
+- (void)_handleChangeOnEventWithExchangeId:(id)id localId:(int)localId changeType:(unint64_t)type eventChangeId:(id)changeId hasSignificantAttributeChanges:(BOOL)changes container:(void *)container dataHandler:(id)handler addedIdsToEventChangeId:(id)self0 modifiedIdsToEventChangeId:(id)self1 deletedIdsToEventChangeId:(id)self2 pseudoDeletedIdsToEventChangeId:(id)self3 eventChangeIdsToClear:(id)self4 allAddedDetachmentIds:(id)self5 localToExchangeIdMap:(id)self6 outShouldSaveDB:(BOOL *)self7
 {
-  v82 = a7;
-  v18 = a3;
-  v19 = a6;
-  v86 = a10;
-  v83 = a11;
-  v20 = a12;
-  v21 = a13;
-  v22 = a14;
-  v23 = a15;
-  v85 = a16;
-  v88 = v18;
-  v89 = v21;
-  v90 = v20;
-  if ([a9 dataclass] != &dword_4)
+  changesCopy = changes;
+  idCopy = id;
+  changeIdCopy = changeId;
+  eventChangeIdCopy = eventChangeId;
+  toEventChangeIdCopy = toEventChangeId;
+  idsToEventChangeIdCopy = idsToEventChangeId;
+  deletedIdsToEventChangeIdCopy = deletedIdsToEventChangeId;
+  clearCopy = clear;
+  idsCopy = ids;
+  mapCopy = map;
+  v88 = idCopy;
+  v89 = deletedIdsToEventChangeIdCopy;
+  v90 = idsToEventChangeIdCopy;
+  if ([handler dataclass] != &dword_4)
   {
-    v27 = v86;
-    v28 = v83;
-    v24 = self;
-    v29 = v22;
-    v30 = v23;
-    v31 = v19;
+    v27 = eventChangeIdCopy;
+    v28 = toEventChangeIdCopy;
+    selfCopy10 = self;
+    v29 = clearCopy;
+    v30 = idsCopy;
+    v31 = changeIdCopy;
     goto LABEL_50;
   }
 
-  v80 = v19;
-  if (v18)
+  v80 = changeIdCopy;
+  if (idCopy)
   {
-    v24 = self;
-    v25 = [(ASAgent *)self _parentIdFromEventId:v18];
+    selfCopy10 = self;
+    v25 = [(ASAgent *)self _parentIdFromEventId:idCopy];
 LABEL_4:
     RowID = 0xFFFFFFFFLL;
     goto LABEL_18;
   }
 
   v32 = +[ASLocalDBHelper sharedInstance];
-  v33 = [(ASAgent *)self account];
-  v34 = [v33 accountID];
-  [v32 calDatabaseForAccountID:v34];
+  account = [(ASAgent *)self account];
+  accountID = [account accountID];
+  [v32 calDatabaseForAccountID:accountID];
   v35 = CalDatabaseCopyCalendarItemWithRowID();
 
   if (!v35)
@@ -12564,16 +12564,16 @@ LABEL_4:
     if (os_log_type_enabled(v39, v40))
     {
       *buf = 134218242;
-      *v94 = a5;
+      *v94 = type;
       *&v94[8] = 2112;
       *&v94[10] = v80;
       _os_log_impl(&dword_0, v39, v40, "Had a change of type %lu for an event that no longer exists.  Clearing that change (change id %@)", buf, 0x16u);
     }
 
-    v24 = self;
+    selfCopy10 = self;
     if (v80)
     {
-      [v22 addObject:?];
+      [clearCopy addObject:?];
     }
 
     v25 = 0;
@@ -12602,50 +12602,50 @@ LABEL_16:
 
 LABEL_17:
   CFRelease(v35);
-  v24 = self;
+  selfCopy10 = self;
 LABEL_18:
-  if (v82)
+  if (changesCopy)
   {
-    *a17 |= [(ASAgent *)v24 _markEventWithLocalIDAsNeedingInvitationEmail:a4 parentId:RowID];
+    *b |= [(ASAgent *)selfCopy10 _markEventWithLocalIDAsNeedingInvitationEmail:localId parentId:RowID];
     v41 = 1;
-    v27 = v86;
-    v28 = v83;
-    v29 = v22;
-    v30 = v23;
+    v27 = eventChangeIdCopy;
+    v28 = toEventChangeIdCopy;
+    v29 = clearCopy;
+    v30 = idsCopy;
     v31 = v80;
     goto LABEL_34;
   }
 
-  v42 = [(ASAgent *)v24 account];
-  v27 = v86;
+  account2 = [(ASAgent *)selfCopy10 account];
+  v27 = eventChangeIdCopy;
   if (!v25)
   {
     v41 = 1;
-    v28 = v83;
+    v28 = toEventChangeIdCopy;
     goto LABEL_26;
   }
 
   v43 = [v88 isEqualToString:v25];
   v41 = 1;
-  v28 = v83;
-  if (a5 != 1)
+  v28 = toEventChangeIdCopy;
+  if (type != 1)
   {
 LABEL_26:
-    v29 = v22;
-    v30 = v23;
+    v29 = clearCopy;
+    v30 = idsCopy;
     v31 = v80;
     goto LABEL_33;
   }
 
-  v29 = v22;
-  v30 = v23;
+  v29 = clearCopy;
+  v30 = idsCopy;
   v31 = v80;
   if (v43)
   {
-    v44 = [v42 protocol];
-    v45 = [v44 includeExceptionsInParent];
+    protocol = [account2 protocol];
+    includeExceptionsInParent = [protocol includeExceptionsInParent];
 
-    if (v45)
+    if (includeExceptionsInParent)
     {
       v41 = 1;
     }
@@ -12662,17 +12662,17 @@ LABEL_26:
       if (os_log_type_enabled(v46, v47))
       {
         *buf = 67109378;
-        *v94 = a4;
+        *v94 = localId;
         *&v94[4] = 2112;
         *&v94[6] = v88;
         _os_log_impl(&dword_0, v46, v47, "Discarding non-significant modifications to event with local ID: %d, Exchange ID:%@", buf, 0x12u);
       }
 
       v41 = 0;
-      v24 = self;
+      selfCopy10 = self;
     }
 
-    v27 = v86;
+    v27 = eventChangeIdCopy;
   }
 
 LABEL_33:
@@ -12695,10 +12695,10 @@ LABEL_36:
     goto LABEL_50;
   }
 
-  v48 = [(ASAgent *)v24 _localIdForExchangeId:v25 inContainer:a8 dataclass:4];
+  v48 = [(ASAgent *)selfCopy10 _localIdForExchangeId:v25 inContainer:container dataclass:4];
   if (!v48)
   {
-    v27 = v86;
+    v27 = eventChangeIdCopy;
     if (v31)
     {
       [v29 addObject:v31];
@@ -12708,57 +12708,57 @@ LABEL_36:
   }
 
   v49 = v48;
-  if (!a5)
+  if (!type)
   {
-    v50 = [NSNumber numberWithInt:a4];
+    v50 = [NSNumber numberWithInt:localId];
     [v30 addObject:v50];
   }
 
-  v51 = [(ASAgent *)v24 account];
-  v52 = [v51 protocol];
-  v53 = [v52 includeExceptionsInParent];
+  account3 = [(ASAgent *)selfCopy10 account];
+  protocol2 = [account3 protocol];
+  includeExceptionsInParent2 = [protocol2 includeExceptionsInParent];
 
-  if (v53)
+  if (includeExceptionsInParent2)
   {
-    if (a5 == 2)
+    if (type == 2)
     {
-      v24 = self;
+      selfCopy10 = self;
     }
 
     else
     {
-      v54 = [NSNumber numberWithInt:a4];
-      v24 = self;
-      [(ASAgent *)self _addChangeForType:a5 changedItemId:v54 changeId:v31 addedIdsToChangeId:v86 modifiedIdsToChangeId:v28 deletedIdsToChangeId:v90 pseudoDeletedIdsToChangeId:v89 changeIdsToClear:v29];
+      v54 = [NSNumber numberWithInt:localId];
+      selfCopy10 = self;
+      [(ASAgent *)self _addChangeForType:type changedItemId:v54 changeId:v31 addedIdsToChangeId:eventChangeIdCopy modifiedIdsToChangeId:v28 deletedIdsToChangeId:v90 pseudoDeletedIdsToChangeId:v89 changeIdsToClear:v29];
 
       v31 = 0;
     }
 
-    a4 = [v49 intValue];
+    localId = [v49 intValue];
     v55 = [NSNumber numberWithInt:?];
-    [v85 setObject:v25 forKeyedSubscript:v55];
+    [mapCopy setObject:v25 forKeyedSubscript:v55];
 
-    a5 = 1;
+    type = 1;
   }
 
   else
   {
-    v24 = self;
+    selfCopy10 = self;
   }
 
-  v27 = v86;
+  v27 = eventChangeIdCopy;
 LABEL_50:
   v56 = v30;
   v57 = v27;
   v58 = +[ASLocalDBHelper sharedInstance];
-  v59 = [(ASAgent *)v24 account];
-  v60 = [v59 accountID];
-  [v58 calDatabaseForAccountID:v60];
+  account4 = [(ASAgent *)selfCopy10 account];
+  accountID2 = [account4 accountID];
+  [v58 calDatabaseForAccountID:accountID2];
   v61 = CalDatabaseCopyCalendarItemWithRowID();
 
   if (!v61)
   {
-    v66 = a5;
+    typeCopy3 = type;
     goto LABEL_93;
   }
 
@@ -12794,17 +12794,17 @@ LABEL_50:
     }
 
     *buf = 67109120;
-    *v94 = a4;
+    *v94 = localId;
     v77 = "No syncing changes with event id %d because the self attendee status is pending";
     goto LABEL_80;
   }
 
-  if (a5 != 1)
+  if (type != 1)
   {
     v72 = v63 != 0;
     v71 = 1;
-    v66 = a5;
-    if (a5 || !v63)
+    typeCopy3 = type;
+    if (type || !v63)
     {
 LABEL_74:
       if (!v72)
@@ -12820,29 +12820,29 @@ LABEL_74:
     if (os_log_type_enabled(v73, v74))
     {
       *buf = 67109120;
-      *v94 = a4;
+      *v94 = localId;
       _os_log_impl(&dword_0, v73, v74, "Resetting change with id %d and type add to type modify", buf, 8u);
     }
 
     v72 = 1;
     v71 = 1;
 LABEL_73:
-    v66 = 1;
+    typeCopy3 = 1;
     goto LABEL_74;
   }
 
-  if (ModifiedProperties != 512 || ![(ASAgent *)v24 _isOrganizerSelfWithLocalEvent:v61])
+  if (ModifiedProperties != 512 || ![(ASAgent *)selfCopy10 _isOrganizerSelfWithLocalEvent:v61])
   {
     v72 = v63 != 0;
     v71 = 1;
     goto LABEL_73;
   }
 
-  v68 = [(ASAgent *)v24 account];
-  v69 = [v68 protocol];
-  v70 = [v69 includeExceptionsInParent];
+  account5 = [(ASAgent *)selfCopy10 account];
+  protocol3 = [account5 protocol];
+  includeExceptionsInParent3 = [protocol3 includeExceptionsInParent];
 
-  if (v70)
+  if (includeExceptionsInParent3)
   {
     v71 = 1;
     goto LABEL_82;
@@ -12858,7 +12858,7 @@ LABEL_73:
   if (os_log_type_enabled(v75, v76))
   {
     *buf = 67109120;
-    *v94 = a4;
+    *v94 = localId;
     v77 = "No syncing changes with event id %d because the changes are by changing invitation status only";
 LABEL_80:
     _os_log_impl(&dword_0, v75, v76, v77, buf, 8u);
@@ -12868,7 +12868,7 @@ LABEL_81:
 
   v71 = 0;
 LABEL_82:
-  v66 = a5;
+  typeCopy3 = type;
   v72 = v63 != 0;
   if (!v63)
   {
@@ -12883,25 +12883,25 @@ LABEL_83:
     if (os_log_type_enabled(v78, v79))
     {
       *buf = 67109120;
-      *v94 = a4;
+      *v94 = localId;
       _os_log_impl(&dword_0, v78, v79, "Resetting modify invitation change on event with id %d to EAS delete", buf, 8u);
     }
 
     if (v84 == 7)
     {
-      v66 = 8;
+      typeCopy3 = 8;
     }
 
     else
     {
-      v66 = 2;
+      typeCopy3 = 2;
     }
   }
 
 LABEL_89:
   if (!v72)
   {
-    v24 = self;
+    selfCopy10 = self;
     if (!v71)
     {
       goto LABEL_91;
@@ -12911,13 +12911,13 @@ LABEL_89:
   }
 
   CFRelease(v63);
-  v24 = self;
+  selfCopy10 = self;
   if (v71)
   {
 LABEL_93:
-    v25 = [NSNumber numberWithInt:a4];
+    v25 = [NSNumber numberWithInt:localId];
     v27 = v57;
-    [(ASAgent *)v24 _addChangeForType:v66 changedItemId:v25 changeId:v31 addedIdsToChangeId:v57 modifiedIdsToChangeId:v28 deletedIdsToChangeId:v90 pseudoDeletedIdsToChangeId:v89 changeIdsToClear:v29];
+    [(ASAgent *)selfCopy10 _addChangeForType:typeCopy3 changedItemId:v25 changeId:v31 addedIdsToChangeId:v57 modifiedIdsToChangeId:v28 deletedIdsToChangeId:v90 pseudoDeletedIdsToChangeId:v89 changeIdsToClear:v29];
     v30 = v56;
 LABEL_94:
 
@@ -12930,24 +12930,24 @@ LABEL_91:
 LABEL_95:
 }
 
-- (void)_faultInCalendarSubentitiesInCalendar:(void *)a3 addedIdsToEventChangeId:(id)a4 modifiedIdsToEventChangeId:(id)a5 deletedIdsToEventChangeId:(id)a6 pseudoDeletedIdsToEventChangeId:(id)a7 localToExchangeIdMap:(id)a8 eventChangeIdsToClear:(id)a9 allAddedDetachmentIds:(id)a10 outRecurrenceId:(int *)a11 outAlarmId:(int *)a12 outAttendeeId:(int *)a13 outAttachmentId:(int *)a14 outHighestSequenceNumber:(int *)a15 dataHandler:(id)a16
+- (void)_faultInCalendarSubentitiesInCalendar:(void *)calendar addedIdsToEventChangeId:(id)id modifiedIdsToEventChangeId:(id)changeId deletedIdsToEventChangeId:(id)eventChangeId pseudoDeletedIdsToEventChangeId:(id)toEventChangeId localToExchangeIdMap:(id)map eventChangeIdsToClear:(id)clear allAddedDetachmentIds:(id)self0 outRecurrenceId:(int *)self1 outAlarmId:(int *)self2 outAttendeeId:(int *)self3 outAttachmentId:(int *)self4 outHighestSequenceNumber:(int *)self5 dataHandler:(id)self6
 {
-  v20 = a4;
-  v40 = a5;
-  v42 = a6;
-  v45 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
-  v24 = a16;
+  idCopy = id;
+  changeIdCopy = changeId;
+  eventChangeIdCopy = eventChangeId;
+  toEventChangeIdCopy = toEventChangeId;
+  mapCopy = map;
+  clearCopy = clear;
+  idsCopy = ids;
+  handlerCopy = handler;
   v66 = 0;
   v67 = &v66;
   v68 = 0x2020000000;
   v69 = 0;
   v25 = +[ASLocalDBHelper sharedInstance];
-  v26 = [(ASAgent *)self account];
-  v27 = [v26 accountID];
-  v28 = [v25 calDatabaseForAccountID:v27];
+  account = [(ASAgent *)self account];
+  accountID = [account accountID];
+  v28 = [v25 calDatabaseForAccountID:accountID];
 
   v62 = 0;
   v63 = &v62;
@@ -12958,57 +12958,57 @@ LABEL_95:
   v48[2] = sub_3ACB4;
   v48[3] = &unk_6D3A8;
   v60 = v28;
-  v38 = v21;
+  v38 = mapCopy;
   v49 = v38;
-  v50 = self;
-  v61 = a3;
-  v44 = v24;
+  selfCopy = self;
+  calendarCopy = calendar;
+  v44 = handlerCopy;
   v51 = v44;
-  v39 = v20;
+  v39 = idCopy;
   v52 = v39;
-  v41 = v40;
+  v41 = changeIdCopy;
   v53 = v41;
-  v43 = v42;
+  v43 = eventChangeIdCopy;
   v54 = v43;
-  v37 = v45;
+  v37 = toEventChangeIdCopy;
   v55 = v37;
-  v36 = v22;
+  v36 = clearCopy;
   v56 = v36;
-  v34 = v23;
+  v34 = idsCopy;
   v57 = v34;
   v58 = &v66;
   v59 = &v62;
   v29 = objc_retainBlock(v48);
   v30 = CalDatabaseCopyAlarmChangesInCalendar();
-  if (a12)
+  if (alarmId)
   {
-    *a12 = v30;
+    *alarmId = v30;
   }
 
   v31 = CalDatabaseCopyRecurrenceChangesInCalendar();
-  if (a11)
+  if (recurrenceId)
   {
-    *a11 = v31;
+    *recurrenceId = v31;
   }
 
   if ([v44 dataclass] == &dword_4)
   {
     v32 = CalDatabaseCopyAttendeeChangesInCalendar();
-    if (a13)
+    if (attendeeId)
     {
-      *a13 = v32;
+      *attendeeId = v32;
     }
   }
 
   v33 = CalDatabaseCopyAttachmentChangesInCalendar();
-  if (a14)
+  if (attachmentId)
   {
-    *a14 = v33;
+    *attachmentId = v33;
   }
 
-  if (a15)
+  if (number)
   {
-    *a15 = *(v63 + 6);
+    *number = *(v63 + 6);
   }
 
   if (*(v67 + 24) == 1)
@@ -13020,14 +13020,14 @@ LABEL_95:
   _Block_object_dispose(&v66, 8);
 }
 
-- (BOOL)_isOrganizerSelfWithEmail:(id)a3
+- (BOOL)_isOrganizerSelfWithEmail:(id)email
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 length])
+  emailCopy = email;
+  v5 = emailCopy;
+  if (emailCopy && [emailCopy length])
   {
-    v6 = [(ASAgent *)self account];
-    v7 = [v6 accountContainsEmailAddress:v5];
+    account = [(ASAgent *)self account];
+    v7 = [account accountContainsEmailAddress:v5];
   }
 
   else
@@ -13038,43 +13038,43 @@ LABEL_95:
   return v7;
 }
 
-- (void)_exceptionDateChangesInCalendar:(void *)a3 exceptionDateToChangeId:(id)a4 outHighestSequenceNumber:(int *)a5 dataHandler:(id)a6
+- (void)_exceptionDateChangesInCalendar:(void *)calendar exceptionDateToChangeId:(id)id outHighestSequenceNumber:(int *)number dataHandler:(id)handler
 {
-  v9 = a4;
-  v10 = a6;
+  idCopy = id;
+  handlerCopy = handler;
   v11 = +[ASLocalDBHelper sharedInstance];
-  v12 = [(ASAgent *)self account];
-  v13 = [v12 accountID];
-  [v11 calDatabaseForAccountID:v13];
+  account = [(ASAgent *)self account];
+  accountID = [account accountID];
+  [v11 calDatabaseForAccountID:accountID];
 
-  if ([v10 dataclass] == &dword_4)
+  if ([handlerCopy dataclass] == &dword_4)
   {
     CalDatabaseCopyExceptionDateChangesInCalendar();
   }
 
-  *a5 = -1;
+  *number = -1;
 }
 
-- (void)_attendeeChangesDueToMeetingForwardingInCalendar:(void *)a3 eventIdToAttendeeEmails:(id)a4 eventIdToAttendeeUUIDs:(id)a5 dataHandler:(id)a6
+- (void)_attendeeChangesDueToMeetingForwardingInCalendar:(void *)calendar eventIdToAttendeeEmails:(id)emails eventIdToAttendeeUUIDs:(id)ds dataHandler:(id)handler
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  emailsCopy = emails;
+  dsCopy = ds;
+  handlerCopy = handler;
   v12 = +[ASLocalDBHelper sharedInstance];
-  v13 = [(ASAgent *)self account];
-  v14 = [v13 accountID];
-  [v12 calDatabaseForAccountID:v14];
+  account = [(ASAgent *)self account];
+  accountID = [account accountID];
+  [v12 calDatabaseForAccountID:accountID];
 
-  if ([v11 dataclass] == &dword_4)
+  if ([handlerCopy dataclass] == &dword_4)
   {
     CalDatabaseCopyAttendeeChangesInCalendar();
   }
 }
 
-- (id)_instanceIdFromIdWithExceptionDate:(id)a3
+- (id)_instanceIdFromIdWithExceptionDate:(id)date
 {
-  v3 = a3;
-  v4 = [v3 rangeOfString:@"<!ExceptionDate!>"];
+  dateCopy = date;
+  v4 = [dateCopy rangeOfString:@"<!ExceptionDate!>"];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = 0;
@@ -13082,13 +13082,13 @@ LABEL_95:
 
   else
   {
-    v6 = [v3 substringFromIndex:&v4[v5]];
+    v6 = [dateCopy substringFromIndex:&v4[v5]];
   }
 
   return v6;
 }
 
-- (BOOL)_isOrganizerSelfWithLocalEvent:(void *)a3
+- (BOOL)_isOrganizerSelfWithLocalEvent:(void *)event
 {
   v4 = CalCalendarItemCopyOrganizer();
   if (!v4)
@@ -13100,8 +13100,8 @@ LABEL_95:
   v6 = CalOrganizerCopyEmailAddress();
   if ([v6 length])
   {
-    v7 = [(ASAgent *)self account];
-    v8 = [v7 accountContainsEmailAddress:v6];
+    account = [(ASAgent *)self account];
+    v8 = [account accountContainsEmailAddress:v6];
   }
 
   else
@@ -13114,21 +13114,21 @@ LABEL_95:
   return v8;
 }
 
-- (id)_copyCalendarItemMoveActionsInCalendar:(void *)a3 dataHandler:(id)a4 deleteActionsByFolderId:(id)a5
+- (id)_copyCalendarItemMoveActionsInCalendar:(void *)calendar dataHandler:(id)handler deleteActionsByFolderId:(id)id
 {
-  v114 = a4;
-  v111 = a5;
+  handlerCopy = handler;
+  idCopy = id;
   v7 = CalCalendarCopyStore();
   v8 = objc_opt_new();
   v125 = objc_opt_new();
-  v9 = [v114 dataclass];
+  dataclass = [handlerCopy dataclass];
   v10 = +[ASLocalDBHelper sharedInstance];
-  v126 = self;
-  v11 = [(ASAgent *)self account];
-  v12 = [v11 accountID];
-  [v10 calDatabaseForAccountID:v12];
+  selfCopy = self;
+  account = [(ASAgent *)self account];
+  accountID = [account accountID];
+  [v10 calDatabaseForAccountID:accountID];
   v108 = v7;
-  if (v9 == &dword_4)
+  if (dataclass == &dword_4)
   {
     v13 = CalDatabaseCopyEventMovesInStore();
   }
@@ -13191,17 +13191,17 @@ LABEL_95:
                 v26 = 0;
               }
 
-              if ([v114 dataclass] != &dword_4)
+              if ([handlerCopy dataclass] != &dword_4)
               {
                 goto LABEL_26;
               }
 
               +[ASLocalDBHelper sharedInstance];
               v28 = v27 = v24;
-              [(ASAgent *)v126 account];
+              [(ASAgent *)selfCopy account];
               v30 = v29 = v16;
-              v31 = [v30 accountID];
-              [v28 calDatabaseForAccountID:v31];
+              accountID2 = [v30 accountID];
+              [v28 calDatabaseForAccountID:accountID2];
               v32 = CalDatabaseCopyCalendarItemWithRowID();
 
               v8 = v118;
@@ -13304,15 +13304,15 @@ LABEL_36:
           v136 = 0u;
           v137 = 0u;
           v138 = 0u;
-          v122 = [v8 allKeys];
-          v43 = [(__CFArray *)v122 countByEnumeratingWithState:&v135 objects:v140 count:16];
+          allKeys = [v8 allKeys];
+          v43 = [(__CFArray *)allKeys countByEnumeratingWithState:&v135 objects:v140 count:16];
           if (v43)
           {
             v44 = v43;
             v113 = 0;
             v128 = *v136;
             typea = _CPLog_to_os_log_type[3];
-            v45 = v114;
+            v45 = handlerCopy;
             v46 = v125;
             do
             {
@@ -13322,7 +13322,7 @@ LABEL_36:
               {
                 if (*v136 != v128)
                 {
-                  objc_enumerationMutation(v122);
+                  objc_enumerationMutation(allKeys);
                 }
 
                 v48 = *(*(&v135 + 1) + 8 * v47);
@@ -13361,9 +13361,9 @@ LABEL_36:
                     else
                     {
                       v66 = +[ASLocalDBHelper sharedInstance];
-                      v67 = [(ASAgent *)v126 account];
-                      v68 = [v67 accountID];
-                      [v66 calDatabaseForAccountID:v68];
+                      account2 = [(ASAgent *)selfCopy account];
+                      accountID3 = [account2 accountID];
+                      [v66 calDatabaseForAccountID:accountID3];
                       [v50 intValue];
                       v69 = CalDatabaseCopyCalendarWithUID();
 
@@ -13374,31 +13374,31 @@ LABEL_36:
                         if (theArraya)
                         {
                           v70 = +[ASLocalDBHelper sharedInstance];
-                          v71 = [(ASAgent *)v126 account];
-                          v72 = [v71 accountID];
-                          [v70 calDatabaseForAccountID:v72];
+                          account3 = [(ASAgent *)selfCopy account];
+                          accountID4 = [account3 accountID];
+                          [v70 calDatabaseForAccountID:accountID4];
                           v73 = CalDatabaseCopyCalendarWithUID();
 
                           if (v73 && (v74 = CalCalendarCopyExternalID(), CFRelease(v73), v74))
                           {
-                            v75 = [(ASAgent *)v126 account];
-                            v45 = v114;
-                            v76 = [v114 getDAObjectWithLocalItem:v53 serverId:0 account:v75];
+                            account4 = [(ASAgent *)selfCopy account];
+                            v45 = handlerCopy;
+                            v76 = [handlerCopy getDAObjectWithLocalItem:v53 serverId:0 account:account4];
 
                             [v76 setLocalItem:0];
                             v77 = [[DAMoveAction alloc] initWithItemChangeType:5 changedItem:v76 sourceContainerId:theArraya sourceServerId:v51 destinationContainerId:v74];
                             v44 = v120;
                             if (v130)
                             {
-                              v78 = [v130 intValue];
+                              intValue = [v130 intValue];
                             }
 
                             else
                             {
-                              v78 = 0xFFFFFFFFLL;
+                              intValue = 0xFFFFFFFFLL;
                             }
 
-                            [v77 setChangeId:v78];
+                            [v77 setChangeId:intValue];
                             [v110 addObject:v77];
 
                             v8 = v118;
@@ -13409,7 +13409,7 @@ LABEL_36:
                           else
                           {
                             v83 = DALoggingwithCategory();
-                            v45 = v114;
+                            v45 = handlerCopy;
                             v44 = v120;
                             if (os_log_type_enabled(v83, typea))
                             {
@@ -13430,16 +13430,16 @@ LABEL_36:
                           v84 = DALoggingwithCategory();
                           if (os_log_type_enabled(v84, typea))
                           {
-                            v85 = [v50 intValue];
+                            intValue2 = [v50 intValue];
                             *buf = 67109120;
-                            LODWORD(v146) = v85;
+                            LODWORD(v146) = intValue2;
                             _os_log_impl(&dword_0, v84, typea, "Looking at a move command, I couldn't come up with the old calendar external id.  old calendar id %d", buf, 8u);
                           }
 
                           v46 = v125;
                           v65 = v130;
                           [v125 addObject:v130];
-                          v45 = v114;
+                          v45 = handlerCopy;
                           v8 = v118;
                           v44 = v120;
                         }
@@ -13450,14 +13450,14 @@ LABEL_36:
                       else
                       {
                         v79 = DALoggingwithCategory();
-                        v45 = v114;
+                        v45 = handlerCopy;
                         v8 = v118;
                         v44 = v120;
                         if (os_log_type_enabled(v79, typea))
                         {
-                          v80 = [v50 intValue];
+                          intValue3 = [v50 intValue];
                           *buf = 67109120;
-                          LODWORD(v146) = v80;
+                          LODWORD(v146) = intValue3;
                           _os_log_impl(&dword_0, v79, typea, "Looking at a move command, I couldn't come up with the old calendar.  old calendar id %d", buf, 8u);
                         }
 
@@ -13479,9 +13479,9 @@ LABEL_36:
                 else if (v51)
                 {
                   v57 = +[ASLocalDBHelper sharedInstance];
-                  v58 = [(ASAgent *)v126 account];
-                  v59 = [v58 accountID];
-                  [v57 calDatabaseForAccountID:v59];
+                  account5 = [(ASAgent *)selfCopy account];
+                  accountID5 = [account5 accountID];
+                  [v57 calDatabaseForAccountID:accountID5];
                   [v50 intValue];
                   v60 = CalDatabaseCopyCalendarWithUID();
 
@@ -13490,25 +13490,25 @@ LABEL_36:
                     v61 = CalCalendarCopyExternalID();
                     if (v61)
                     {
-                      v62 = [v111 objectForKeyedSubscript:v61];
+                      v62 = [idCopy objectForKeyedSubscript:v61];
                       if (!v62)
                       {
                         v62 = objc_opt_new();
-                        [v111 setObject:v62 forKeyedSubscript:v61];
+                        [idCopy setObject:v62 forKeyedSubscript:v61];
                       }
 
                       v63 = [[ASAction alloc] initWithItemChangeType:2 changedItem:0 serverId:v51];
                       if (v130)
                       {
-                        v64 = [v130 intValue];
+                        intValue4 = [v130 intValue];
                       }
 
                       else
                       {
-                        v64 = 0xFFFFFFFFLL;
+                        intValue4 = 0xFFFFFFFFLL;
                       }
 
-                      [v63 setChangeId:v64];
+                      [v63 setChangeId:intValue4];
                       [v62 addObject:v63];
 
                       v8 = v118;
@@ -13521,9 +13521,9 @@ LABEL_36:
                       v8 = v118;
                       if (os_log_type_enabled(v86, typea))
                       {
-                        v87 = [v50 intValue];
+                        intValue5 = [v50 intValue];
                         *buf = 67109120;
-                        LODWORD(v146) = v87;
+                        LODWORD(v146) = intValue5;
                         _os_log_impl(&dword_0, v86, typea, "Looking at a move command, I couldn't come up with the old calendar external id.  old calendar id %d", buf, 8u);
                       }
 
@@ -13542,9 +13542,9 @@ LABEL_36:
                     v44 = v120;
                     if (os_log_type_enabled(v81, typea))
                     {
-                      v82 = [v50 intValue];
+                      intValue6 = [v50 intValue];
                       *buf = 67109120;
-                      LODWORD(v146) = v82;
+                      LODWORD(v146) = intValue6;
                       _os_log_impl(&dword_0, v81, typea, "Looking at a move command, I couldn't come up with the old calendar.  old calendar id %d", buf, 8u);
                     }
 
@@ -13565,7 +13565,7 @@ LABEL_36:
               }
 
               while (v44 != v47);
-              v44 = [(__CFArray *)v122 countByEnumeratingWithState:&v135 objects:v140 count:16];
+              v44 = [(__CFArray *)allKeys countByEnumeratingWithState:&v135 objects:v140 count:16];
             }
 
             while (v44);
@@ -13574,7 +13574,7 @@ LABEL_36:
           else
           {
             v113 = 0;
-            v45 = v114;
+            v45 = handlerCopy;
             v46 = v125;
           }
 
@@ -13606,10 +13606,10 @@ LABEL_36:
                     objc_enumerationMutation(v91);
                   }
 
-                  v97 = [*(*(&v131 + 1) + 8 * i) intValue];
-                  if (v97 != -1)
+                  intValue7 = [*(*(&v131 + 1) + 8 * i) intValue];
+                  if (intValue7 != -1)
                   {
-                    v98 = v97;
+                    v98 = intValue7;
                     v99 = DALoggingwithCategory();
                     if (os_log_type_enabled(v99, v95))
                     {
@@ -13631,22 +13631,22 @@ LABEL_36:
             if (CFArrayGetCount(Mutable))
             {
               v100 = +[ASLocalDBHelper sharedInstance];
-              v101 = [(ASAgent *)v126 account];
-              v102 = [v101 accountID];
-              [v100 calDatabaseForAccountID:v102];
-              v103 = [(ASAgent *)v126 account];
-              v104 = [v103 changeTrackingID];
+              account6 = [(ASAgent *)selfCopy account];
+              accountID6 = [account6 accountID];
+              [v100 calDatabaseForAccountID:accountID6];
+              account7 = [(ASAgent *)selfCopy account];
+              changeTrackingID = [account7 changeTrackingID];
               CalDatabaseClearIndividualChangeRowIDsForClient();
 
               CFRelease(Mutable);
-              v45 = v114;
+              v45 = handlerCopy;
               v8 = v118;
               v46 = v125;
               goto LABEL_114;
             }
 
             CFRelease(Mutable);
-            v45 = v114;
+            v45 = handlerCopy;
             v8 = v118;
             v46 = v125;
           }
@@ -13660,7 +13660,7 @@ LABEL_115:
             if (os_log_type_enabled(v105, v106))
             {
               *buf = 138412290;
-              v146 = v111;
+              v146 = idCopy;
               _os_log_impl(&dword_0, v105, v106, "consed deletes are %@", buf, 0xCu);
             }
 
@@ -13684,7 +13684,7 @@ LABEL_114:
   }
 
   CFRelease(v13);
-  v45 = v114;
+  v45 = handlerCopy;
   v46 = v125;
   if (v108)
   {
@@ -13697,42 +13697,42 @@ LABEL_118:
   return v110;
 }
 
-- (void)_addSimpleChangeForType:(unint64_t)a3 changedItemId:(id)a4 addedIds:(id)a5 modifiedIds:(id)a6 deletedIds:(id)a7 collapsedIds:(id)a8
+- (void)_addSimpleChangeForType:(unint64_t)type changedItemId:(id)id addedIds:(id)ids modifiedIds:(id)modifiedIds deletedIds:(id)deletedIds collapsedIds:(id)collapsedIds
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  idCopy = id;
+  idsCopy = ids;
+  modifiedIdsCopy = modifiedIds;
+  deletedIdsCopy = deletedIds;
+  collapsedIdsCopy = collapsedIds;
   v18 = DALoggingwithCategory();
   v19 = _CPLog_to_os_log_type[7];
   if (os_log_type_enabled(v18, v19))
   {
     v21 = 134219010;
-    v22 = a3;
+    typeCopy = type;
     v23 = 2112;
-    v24 = v13;
+    v24 = idCopy;
     v25 = 2112;
-    v26 = v14;
+    v26 = idsCopy;
     v27 = 2112;
-    v28 = v15;
+    v28 = modifiedIdsCopy;
     v29 = 2112;
-    v30 = v16;
+    v30 = deletedIdsCopy;
     _os_log_impl(&dword_0, v18, v19, "_addChange for type %lu, changeId %@ addedIds %@ modifiedIds %@ deletedIds %@", &v21, 0x34u);
   }
 
-  switch(a3)
+  switch(type)
   {
     case 2uLL:
-      if ([v14 containsObject:v13])
+      if ([idsCopy containsObject:idCopy])
       {
-        [v17 addObject:v13];
-        [v14 removeObject:v13];
+        [collapsedIdsCopy addObject:idCopy];
+        [idsCopy removeObject:idCopy];
         goto LABEL_12;
       }
 
-      v20 = [v15 containsObject:v13];
-      [v16 addObject:v13];
+      v20 = [modifiedIdsCopy containsObject:idCopy];
+      [deletedIdsCopy addObject:idCopy];
       if (v20)
       {
         goto LABEL_12;
@@ -13740,27 +13740,27 @@ LABEL_118:
 
       break;
     case 1uLL:
-      if (([v14 containsObject:v13] & 1) == 0)
+      if (([idsCopy containsObject:idCopy] & 1) == 0)
       {
-        [v15 addObject:v13];
+        [modifiedIdsCopy addObject:idCopy];
       }
 
       break;
     case 0uLL:
-      [v14 addObject:v13];
+      [idsCopy addObject:idCopy];
 LABEL_12:
-      [v15 removeObject:v13];
+      [modifiedIdsCopy removeObject:idCopy];
       break;
   }
 }
 
-- (id)_copyNotesActionsInNoteStore:(id)a3 existingActions:(id)a4 dataHandler:(id)a5 wantPreserveActions:(BOOL)a6 changeSet:(id)a7
+- (id)_copyNotesActionsInNoteStore:(id)store existingActions:(id)actions dataHandler:(id)handler wantPreserveActions:(BOOL)preserveActions changeSet:(id)set
 {
-  v120 = a6;
-  v121 = a3;
-  v10 = a4;
-  v11 = a5;
-  v128 = a7;
+  preserveActionsCopy = preserveActions;
+  storeCopy = store;
+  actionsCopy = actions;
+  handlerCopy = handler;
+  setCopy = set;
   v12 = objc_opt_new();
   v137 = objc_opt_new();
   v136 = objc_opt_new();
@@ -13770,9 +13770,9 @@ LABEL_12:
   v176 = 0u;
   v177 = 0u;
   v178 = 0u;
-  obj = v10;
+  obj = actionsCopy;
   v13 = [obj countByEnumeratingWithState:&v175 objects:v190 count:16];
-  v130 = v11;
+  v130 = handlerCopy;
   if (v13)
   {
     v14 = v13;
@@ -13788,11 +13788,11 @@ LABEL_12:
         }
 
         v17 = *(*(&v175 + 1) + 8 * i);
-        v18 = [v17 itemChangeType];
-        v19 = v18;
-        if (v18 > 1)
+        itemChangeType = [v17 itemChangeType];
+        v19 = itemChangeType;
+        if (itemChangeType > 1)
         {
-          if ((v18 & 0xFFFFFFFFFFFFFFFBLL) == 2)
+          if ((itemChangeType & 0xFFFFFFFFFFFFFFFBLL) == 2)
           {
             [v12 addObject:v17];
           }
@@ -13814,38 +13814,38 @@ LABEL_12:
           v20 = v12;
           v21 = v14;
           v22 = v15;
-          v23 = [v17 changedItem];
-          [v23 loadClientIDs];
-          [v23 setLocalItem:0];
-          v24 = [v23 clientID];
-          v25 = [v24 intValue];
+          changedItem = [v17 changedItem];
+          [changedItem loadClientIDs];
+          [changedItem setLocalItem:0];
+          clientID = [changedItem clientID];
+          intValue = [clientID intValue];
 
-          if (v25)
+          if (intValue)
           {
-            v26 = [(ASAgent *)self account];
-            v27 = [v23 loadLocalItemWithAccount:v26];
+            account = [(ASAgent *)self account];
+            v27 = [changedItem loadLocalItemWithAccount:account];
 
             if (v27)
             {
-              v28 = [v23 serverID];
-              v29 = v28;
+              serverID = [changedItem serverID];
+              v29 = serverID;
               v15 = v22;
-              if (v19 != 1 || v28)
+              if (v19 != 1 || serverID)
               {
-                v30 = [NSNumber numberWithInt:v25];
+                v30 = [NSNumber numberWithInt:intValue];
                 -[ASAgent _addSimpleChangeForType:changedItemId:addedIds:modifiedIds:deletedIds:collapsedIds:](self, "_addSimpleChangeForType:changedItemId:addedIds:modifiedIds:deletedIds:collapsedIds:", [v17 itemChangeType], v30, v137, v136, v135, 0);
                 if (v29)
                 {
                   [v131 setObject:v29 forKeyedSubscript:v30];
                 }
 
-                v11 = v130;
+                handlerCopy = v130;
               }
 
               else
               {
                 v30 = DALoggingwithCategory();
-                v11 = v130;
+                handlerCopy = v130;
                 if (os_log_type_enabled(v30, type))
                 {
                   *buf = 138412290;
@@ -13866,7 +13866,7 @@ LABEL_12:
                 _os_log_impl(&dword_0, v29, type, "A preset action for a sync request couldn't load the associated local event in the db action %@", buf, 0xCu);
               }
 
-              v11 = v130;
+              handlerCopy = v130;
             }
           }
 
@@ -13880,7 +13880,7 @@ LABEL_12:
               _os_log_impl(&dword_0, v29, type, "A preset action for a sync request didn't have an associated local event in the db action %@", buf, 0xCu);
             }
 
-            v11 = v130;
+            handlerCopy = v130;
             v15 = v22;
           }
 
@@ -13895,8 +13895,8 @@ LABEL_12:
     while (v14);
   }
 
-  v32 = [v121 changes];
-  v33 = [v32 copy];
+  changes = [storeCopy changes];
+  v33 = [changes copy];
 
   v173 = 0u;
   v174 = 0u;
@@ -13925,10 +13925,10 @@ LABEL_12:
         }
 
         v40 = *(*(&v171 + 1) + 8 * v39);
-        v41 = [v40 changeType];
-        v42 = [v41 intValue];
+        changeType = [v40 changeType];
+        intValue2 = [changeType intValue];
 
-        switch(v42)
+        switch(intValue2)
         {
           case 0u:
             v129 = v39;
@@ -13940,8 +13940,8 @@ LABEL_12:
             v166 = 0u;
             v163 = 0u;
             v164 = 0u;
-            v45 = [v40 noteServerIds];
-            v46 = [v45 countByEnumeratingWithState:&v163 objects:v185 count:16];
+            noteServerIds = [v40 noteServerIds];
+            v46 = [noteServerIds countByEnumeratingWithState:&v163 objects:v185 count:16];
             if (v46)
             {
               v47 = v46;
@@ -13952,13 +13952,13 @@ LABEL_12:
                 {
                   if (*v164 != v48)
                   {
-                    objc_enumerationMutation(v45);
+                    objc_enumerationMutation(noteServerIds);
                   }
 
                   [(ASAgent *)self _addSimpleChangeForType:2 changedItemId:*(*(&v163 + 1) + 8 * j) addedIds:v137 modifiedIds:v136 deletedIds:v135 collapsedIds:0];
                 }
 
-                v47 = [v45 countByEnumeratingWithState:&v163 objects:v185 count:16];
+                v47 = [noteServerIds countByEnumeratingWithState:&v163 objects:v185 count:16];
               }
 
               while (v47);
@@ -13991,13 +13991,13 @@ LABEL_49:
                   }
 
                   v54 = *(*(&v167 + 1) + 8 * k);
-                  v55 = [v54 intValue];
-                  v56 = [(ASAgent *)self _dbExternalIdForLocalId:v55 dataclass:32];
+                  intValue3 = [v54 intValue];
+                  v56 = [(ASAgent *)self _dbExternalIdForLocalId:intValue3 dataclass:32];
                   v57 = DALoggingwithCategory();
                   if (os_log_type_enabled(v57, v37))
                   {
                     *buf = 67109634;
-                    *v187 = v55;
+                    *v187 = intValue3;
                     *&v187[4] = 2048;
                     *&v187[6] = v44;
                     *&v187[14] = 2112;
@@ -14035,7 +14035,7 @@ LABEL_49:
                     v60 = 1;
                   }
 
-                  if (v55)
+                  if (intValue3)
                   {
                     v61 = v56 == 0;
                   }
@@ -14058,7 +14058,7 @@ LABEL_49:
 
               while (v51);
               v12 = v124;
-              v11 = v130;
+              handlerCopy = v130;
               v36 = v122;
               v38 = v123;
             }
@@ -14070,21 +14070,21 @@ LABEL_49:
 
             v35 = v125;
             v39 = v129;
-            v45 = typea;
+            noteServerIds = typea;
             break;
           default:
             v62 = DALoggingwithCategory();
             if (os_log_type_enabled(v62, v38))
             {
-              v63 = [v40 changeType];
+              changeType2 = [v40 changeType];
               *buf = 138412546;
-              *v187 = v63;
+              *v187 = changeType2;
               *&v187[8] = 2112;
               *&v187[10] = v40;
               _os_log_impl(&dword_0, v62, v38, "Unknown change type %@ from change object %@", buf, 0x16u);
             }
 
-            v45 = v62;
+            noteServerIds = v62;
             break;
         }
 
@@ -14117,12 +14117,12 @@ LABEL_49:
           objc_enumerationMutation(v64);
         }
 
-        v69 = [*(*(&v159 + 1) + 8 * m) objectID];
-        v70 = [v69 URIRepresentation];
+        objectID = [*(*(&v159 + 1) + 8 * m) objectID];
+        uRIRepresentation = [objectID URIRepresentation];
 
-        if (v70)
+        if (uRIRepresentation)
         {
-          [v128 addObject:v70];
+          [setCopy addObject:uRIRepresentation];
         }
       }
 
@@ -14134,7 +14134,7 @@ LABEL_49:
 
   *typeb = v64;
 
-  if (v120)
+  if (preserveActionsCopy)
   {
     v157 = 0u;
     v158 = 0u;
@@ -14155,12 +14155,12 @@ LABEL_49:
             objc_enumerationMutation(v71);
           }
 
-          v76 = [v11 copyLocalObjectFromId:{objc_msgSend(*(*(&v155 + 1) + 8 * n), "intValue")}];
+          v76 = [handlerCopy copyLocalObjectFromId:{objc_msgSend(*(*(&v155 + 1) + 8 * n), "intValue")}];
           if (v76)
           {
             v77 = v76;
-            v78 = [(ASAgent *)self account];
-            v79 = [v11 getDAObjectWithLocalItem:v77 serverId:0 account:v78];
+            account2 = [(ASAgent *)self account];
+            v79 = [handlerCopy getDAObjectWithLocalItem:v77 serverId:0 account:account2];
 
             [v79 setServerID:0];
             v80 = [[ASAction alloc] initWithItemChangeType:4 changedItem:v79 serverId:0];
@@ -14194,12 +14194,12 @@ LABEL_49:
             objc_enumerationMutation(v81);
           }
 
-          v86 = [v11 copyLocalObjectFromId:{objc_msgSend(*(*(&v151 + 1) + 8 * ii), "intValue")}];
+          v86 = [handlerCopy copyLocalObjectFromId:{objc_msgSend(*(*(&v151 + 1) + 8 * ii), "intValue")}];
           if (v86)
           {
             v87 = v86;
-            v88 = [(ASAgent *)self account];
-            v89 = [v11 getDAObjectWithLocalItem:v87 serverId:0 account:v88];
+            account3 = [(ASAgent *)self account];
+            v89 = [handlerCopy getDAObjectWithLocalItem:v87 serverId:0 account:account3];
 
             [v89 setServerID:0];
             v90 = [[ASAction alloc] initWithItemChangeType:4 changedItem:v89 serverId:0];
@@ -14238,12 +14238,12 @@ LABEL_49:
             objc_enumerationMutation(v92);
           }
 
-          v97 = [v11 copyLocalObjectFromId:{objc_msgSend(*(*(&v147 + 1) + 8 * jj), "intValue")}];
+          v97 = [handlerCopy copyLocalObjectFromId:{objc_msgSend(*(*(&v147 + 1) + 8 * jj), "intValue")}];
           if (v97)
           {
             v98 = v97;
-            v99 = [(ASAgent *)self account];
-            v100 = [v11 getDAObjectWithLocalItem:v98 serverId:0 account:v99];
+            account4 = [(ASAgent *)self account];
+            v100 = [handlerCopy getDAObjectWithLocalItem:v98 serverId:0 account:account4];
 
             v101 = [[ASAction alloc] initWithItemChangeType:0 changedItem:v100 serverId:0];
             [v12 addObject:v101];
@@ -14277,19 +14277,19 @@ LABEL_49:
           }
 
           v107 = *(*(&v143 + 1) + 8 * kk);
-          v108 = [v11 copyLocalObjectFromId:{objc_msgSend(v107, "intValue")}];
+          v108 = [handlerCopy copyLocalObjectFromId:{objc_msgSend(v107, "intValue")}];
           if (v108)
           {
             v109 = v108;
             v110 = [v131 objectForKeyedSubscript:v107];
-            v111 = [(ASAgent *)self account];
-            v112 = [v11 getDAObjectWithLocalItem:v109 serverId:v110 account:v111];
+            account5 = [(ASAgent *)self account];
+            v112 = [handlerCopy getDAObjectWithLocalItem:v109 serverId:v110 account:account5];
 
             v113 = [[ASAction alloc] initWithItemChangeType:1 changedItem:v112 serverId:0];
             [v12 addObject:v113];
             CFRelease(v109);
 
-            v11 = v130;
+            handlerCopy = v130;
           }
         }
 

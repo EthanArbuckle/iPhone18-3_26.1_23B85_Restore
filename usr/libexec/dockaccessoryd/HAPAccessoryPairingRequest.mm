@@ -1,19 +1,19 @@
 @interface HAPAccessoryPairingRequest
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)attributeDescriptions;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation HAPAccessoryPairingRequest
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -27,8 +27,8 @@
     goto LABEL_12;
   }
 
-  v7 = [(HAPAccessoryPairingRequest *)self pairingIdentity];
-  v8 = [v6 pairingIdentity];
+  pairingIdentity = [(HAPAccessoryPairingRequest *)self pairingIdentity];
+  pairingIdentity2 = [v6 pairingIdentity];
   v9 = HMFEqualObjects();
 
   if (!v9)
@@ -36,14 +36,14 @@
     goto LABEL_12;
   }
 
-  v10 = [(HAPAccessoryPairingRequest *)self requiresUserConsent];
-  if (v10 != [v6 requiresUserConsent])
+  requiresUserConsent = [(HAPAccessoryPairingRequest *)self requiresUserConsent];
+  if (requiresUserConsent != [v6 requiresUserConsent])
   {
     goto LABEL_12;
   }
 
-  v11 = [(HAPAccessoryPairingRequest *)self ownershipToken];
-  v12 = [v6 ownershipToken];
+  ownershipToken = [(HAPAccessoryPairingRequest *)self ownershipToken];
+  ownershipToken2 = [v6 ownershipToken];
   v13 = HMFEqualObjects();
 
   if (!v13)
@@ -51,8 +51,8 @@
     goto LABEL_12;
   }
 
-  v14 = [(HAPAccessoryPairingRequest *)self ssid];
-  v15 = [v6 ssid];
+  ssid = [(HAPAccessoryPairingRequest *)self ssid];
+  ssid2 = [v6 ssid];
   v16 = HMFEqualObjects();
 
   if (!v16)
@@ -69,14 +69,14 @@
     goto LABEL_12;
   }
 
-  v20 = [(HAPAccessoryPairingRequest *)self isoCountryCode];
-  v21 = [v6 isoCountryCode];
+  isoCountryCode = [(HAPAccessoryPairingRequest *)self isoCountryCode];
+  isoCountryCode2 = [v6 isoCountryCode];
   v22 = HMFEqualObjects();
 
   if (v22)
   {
-    v23 = [(HAPAccessoryPairingRequest *)self chipFabricIndex];
-    v24 = [v6 chipFabricIndex];
+    chipFabricIndex = [(HAPAccessoryPairingRequest *)self chipFabricIndex];
+    chipFabricIndex2 = [v6 chipFabricIndex];
     v25 = HMFEqualObjects();
   }
 
@@ -91,49 +91,49 @@ LABEL_12:
 
 - (unint64_t)hash
 {
-  v3 = [(HAPAccessoryPairingRequest *)self pairingIdentity];
-  v4 = [v3 hash];
+  pairingIdentity = [(HAPAccessoryPairingRequest *)self pairingIdentity];
+  v4 = [pairingIdentity hash];
 
-  v5 = [(HAPAccessoryPairingRequest *)self requiresUserConsent];
-  v6 = [(HAPAccessoryPairingRequest *)self ownershipToken];
-  v7 = v4 ^ [v6 hash] ^ v5;
+  requiresUserConsent = [(HAPAccessoryPairingRequest *)self requiresUserConsent];
+  ownershipToken = [(HAPAccessoryPairingRequest *)self ownershipToken];
+  v7 = v4 ^ [ownershipToken hash] ^ requiresUserConsent;
 
-  v8 = [(HAPAccessoryPairingRequest *)self ssid];
-  v9 = [v8 hash];
+  ssid = [(HAPAccessoryPairingRequest *)self ssid];
+  v9 = [ssid hash];
 
   v10 = [(HAPAccessoryPairingRequest *)self psk];
   v11 = v9 ^ [v10 hash];
 
-  v12 = [(HAPAccessoryPairingRequest *)self isoCountryCode];
-  v13 = v7 ^ v11 ^ [v12 hash];
+  isoCountryCode = [(HAPAccessoryPairingRequest *)self isoCountryCode];
+  v13 = v7 ^ v11 ^ [isoCountryCode hash];
 
-  v14 = [(HAPAccessoryPairingRequest *)self chipFabricIndex];
-  v15 = [v14 hash];
+  chipFabricIndex = [(HAPAccessoryPairingRequest *)self chipFabricIndex];
+  v15 = [chipFabricIndex hash];
 
   return v13 ^ v15;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[HAPAccessoryPairingRequest allocWithZone:?]];
-  v5 = [(HAPAccessoryPairingRequest *)self pairingIdentity];
-  [(HAPAccessoryPairingRequest *)v4 setPairingIdentity:v5];
+  pairingIdentity = [(HAPAccessoryPairingRequest *)self pairingIdentity];
+  [(HAPAccessoryPairingRequest *)v4 setPairingIdentity:pairingIdentity];
 
   [(HAPAccessoryPairingRequest *)v4 setRequiresUserConsent:[(HAPAccessoryPairingRequest *)self requiresUserConsent]];
-  v6 = [(HAPAccessoryPairingRequest *)self ownershipToken];
-  [(HAPAccessoryPairingRequest *)v4 setOwnershipToken:v6];
+  ownershipToken = [(HAPAccessoryPairingRequest *)self ownershipToken];
+  [(HAPAccessoryPairingRequest *)v4 setOwnershipToken:ownershipToken];
 
-  v7 = [(HAPAccessoryPairingRequest *)self ssid];
-  [(HAPAccessoryPairingRequest *)v4 setSsid:v7];
+  ssid = [(HAPAccessoryPairingRequest *)self ssid];
+  [(HAPAccessoryPairingRequest *)v4 setSsid:ssid];
 
   v8 = [(HAPAccessoryPairingRequest *)self psk];
   [(HAPAccessoryPairingRequest *)v4 setPsk:v8];
 
-  v9 = [(HAPAccessoryPairingRequest *)self isoCountryCode];
-  [(HAPAccessoryPairingRequest *)v4 setIsoCountryCode:v9];
+  isoCountryCode = [(HAPAccessoryPairingRequest *)self isoCountryCode];
+  [(HAPAccessoryPairingRequest *)v4 setIsoCountryCode:isoCountryCode];
 
-  v10 = [(HAPAccessoryPairingRequest *)self chipFabricIndex];
-  [(HAPAccessoryPairingRequest *)v4 setChipFabricIndex:v10];
+  chipFabricIndex = [(HAPAccessoryPairingRequest *)self chipFabricIndex];
+  [(HAPAccessoryPairingRequest *)v4 setChipFabricIndex:chipFabricIndex];
 
   return v4;
 }
@@ -141,13 +141,13 @@ LABEL_12:
 - (id)attributeDescriptions
 {
   v3 = +[NSMutableArray array];
-  v4 = [(HAPAccessoryPairingRequest *)self pairingIdentity];
+  pairingIdentity = [(HAPAccessoryPairingRequest *)self pairingIdentity];
 
-  if (v4)
+  if (pairingIdentity)
   {
     v5 = [HMFAttributeDescription alloc];
-    v6 = [(HAPAccessoryPairingRequest *)self pairingIdentity];
-    v7 = [v5 initWithName:@"Pairing Identity" value:v6];
+    pairingIdentity2 = [(HAPAccessoryPairingRequest *)self pairingIdentity];
+    v7 = [v5 initWithName:@"Pairing Identity" value:pairingIdentity2];
     [v3 addObject:v7];
   }
 
@@ -160,23 +160,23 @@ LABEL_12:
     [v3 addObject:v10];
   }
 
-  v11 = [(HAPAccessoryPairingRequest *)self ownershipToken];
+  ownershipToken = [(HAPAccessoryPairingRequest *)self ownershipToken];
 
-  if (v11)
+  if (ownershipToken)
   {
     v12 = [HMFAttributeDescription alloc];
-    v13 = [(HAPAccessoryPairingRequest *)self ownershipToken];
-    v14 = [v12 initWithName:@"Ownership Token" value:v13];
+    ownershipToken2 = [(HAPAccessoryPairingRequest *)self ownershipToken];
+    v14 = [v12 initWithName:@"Ownership Token" value:ownershipToken2];
     [v3 addObject:v14];
   }
 
-  v15 = [(HAPAccessoryPairingRequest *)self ssid];
+  ssid = [(HAPAccessoryPairingRequest *)self ssid];
 
-  if (v15)
+  if (ssid)
   {
     v16 = [HMFAttributeDescription alloc];
-    v17 = [(HAPAccessoryPairingRequest *)self ssid];
-    v18 = [v16 initWithName:@"SSID" value:v17];
+    ssid2 = [(HAPAccessoryPairingRequest *)self ssid];
+    v18 = [v16 initWithName:@"SSID" value:ssid2];
     [v3 addObject:v18];
   }
 
@@ -190,23 +190,23 @@ LABEL_12:
     [v3 addObject:v22];
   }
 
-  v23 = [(HAPAccessoryPairingRequest *)self isoCountryCode];
+  isoCountryCode = [(HAPAccessoryPairingRequest *)self isoCountryCode];
 
-  if (v23)
+  if (isoCountryCode)
   {
     v24 = [HMFAttributeDescription alloc];
-    v25 = [(HAPAccessoryPairingRequest *)self isoCountryCode];
-    v26 = [v24 initWithName:@"ISO Country Code" value:v25];
+    isoCountryCode2 = [(HAPAccessoryPairingRequest *)self isoCountryCode];
+    v26 = [v24 initWithName:@"ISO Country Code" value:isoCountryCode2];
     [v3 addObject:v26];
   }
 
-  v27 = [(HAPAccessoryPairingRequest *)self chipFabricIndex];
+  chipFabricIndex = [(HAPAccessoryPairingRequest *)self chipFabricIndex];
 
-  if (v27)
+  if (chipFabricIndex)
   {
     v28 = [HMFAttributeDescription alloc];
-    v29 = [(HAPAccessoryPairingRequest *)self chipFabricIndex];
-    v30 = [v28 initWithName:@"CHIP Fabric Index" value:v29];
+    chipFabricIndex2 = [(HAPAccessoryPairingRequest *)self chipFabricIndex];
+    v30 = [v28 initWithName:@"CHIP Fabric Index" value:chipFabricIndex2];
     [v3 addObject:v30];
   }
 

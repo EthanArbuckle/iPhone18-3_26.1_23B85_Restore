@@ -1,5 +1,5 @@
 @interface THModelLink
-+ (id)modelLinkWithChapterGUID:(id)a3 context:(id)a4;
++ (id)modelLinkWithChapterGUID:(id)d context:(id)context;
 - (BOOL)isChapterGuidLink;
 - (BOOL)isChapterLink;
 - (BOOL)isCustom;
@@ -7,12 +7,12 @@
 - (BOOL)isOrdinary;
 - (BOOL)isPageLink;
 - (BOOL)isRelative;
-- (BOOL)p_fragmentIsFunction:(id)a3;
+- (BOOL)p_fragmentIsFunction:(id)function;
 - (BOOL)p_isCustomApplePubPageLink;
 - (BOOL)targetIsApplePub;
 - (BOOL)targetIsiBooks;
-- (THModelLink)initWithPath:(id)a3 fragment:(id)a4 context:(id)a5;
-- (THModelLink)initWithTarget:(id)a3 context:(id)a4;
+- (THModelLink)initWithPath:(id)path fragment:(id)fragment context:(id)context;
+- (THModelLink)initWithTarget:(id)target context:(id)context;
 - (id)chapterGuidString;
 - (id)chapterString;
 - (id)description;
@@ -20,7 +20,7 @@
 - (id)docPath;
 - (id)docRelativePath;
 - (id)fragment;
-- (id)p_parameterValueFromFragmentWithFunction:(id)a3;
+- (id)p_parameterValueFromFragmentWithFunction:(id)function;
 - (id)pageNumberString;
 - (int64_t)customPageIndex;
 - (void)dealloc;
@@ -28,35 +28,35 @@
 
 @implementation THModelLink
 
-- (THModelLink)initWithTarget:(id)a3 context:(id)a4
+- (THModelLink)initWithTarget:(id)target context:(id)context
 {
   v8.receiver = self;
   v8.super_class = THModelLink;
-  v5 = [(THModelLink *)&v8 initWithContext:a4];
+  v5 = [(THModelLink *)&v8 initWithContext:context];
   v6 = v5;
   if (v5)
   {
-    [(THModelLink *)v5 setTarget:a3];
-    [(THModelLink *)v6 setUrl:[NSURL URLWithString:a3]];
+    [(THModelLink *)v5 setTarget:target];
+    [(THModelLink *)v6 setUrl:[NSURL URLWithString:target]];
     [(THModelLink *)v6 setCachedAbsolutePageIndex:0x7FFFFFFFFFFFFFFFLL];
   }
 
   return v6;
 }
 
-- (THModelLink)initWithPath:(id)a3 fragment:(id)a4 context:(id)a5
+- (THModelLink)initWithPath:(id)path fragment:(id)fragment context:(id)context
 {
   v9 = objc_alloc_init(NSURLComponents);
   [v9 setScheme:@"apub"];
-  [v9 setPath:a3];
+  [v9 setPath:path];
   v10 = [objc_msgSend(v9 "URL")];
-  v11 = v10;
-  if (a4)
+  fragment = v10;
+  if (fragment)
   {
-    v11 = [v10 stringByAppendingFormat:@"#%@", a4];
+    fragment = [v10 stringByAppendingFormat:@"#%@", fragment];
   }
 
-  return [(THModelLink *)self initWithTarget:v11 context:a5];
+  return [(THModelLink *)self initWithTarget:fragment context:context];
 }
 
 - (void)dealloc
@@ -68,34 +68,34 @@
   [(THModelLink *)&v3 dealloc];
 }
 
-+ (id)modelLinkWithChapterGUID:(id)a3 context:(id)a4
++ (id)modelLinkWithChapterGUID:(id)d context:(id)context
 {
-  if (!a3)
+  if (!d)
   {
     return 0;
   }
 
-  v4 = [[THModelLink alloc] initWithTarget:[NSString context:"stringWithFormat:" stringWithFormat:a3], a4];
+  context = [[THModelLink alloc] initWithTarget:[NSString context:"stringWithFormat:" stringWithFormat:d], context];
 
-  return v4;
+  return context;
 }
 
 - (BOOL)targetIsApplePub
 {
-  v2 = [(NSString *)[(NSURL *)[(THModelLink *)self url] scheme] lowercaseString];
-  if (![(NSString *)v2 length])
+  lowercaseString = [(NSString *)[(NSURL *)[(THModelLink *)self url] scheme] lowercaseString];
+  if (![(NSString *)lowercaseString length])
   {
     return 1;
   }
 
-  return [(NSString *)v2 isEqualToString:@"apub"];
+  return [(NSString *)lowercaseString isEqualToString:@"apub"];
 }
 
 - (BOOL)targetIsiBooks
 {
-  v2 = [(NSString *)[(NSURL *)[(THModelLink *)self url] scheme] lowercaseString];
+  lowercaseString = [(NSString *)[(NSURL *)[(THModelLink *)self url] scheme] lowercaseString];
 
-  return [(NSString *)v2 isEqualToString:@"ibooks"];
+  return [(NSString *)lowercaseString isEqualToString:@"ibooks"];
 }
 
 - (id)docPath
@@ -117,18 +117,18 @@
     return 0;
   }
 
-  v3 = [(NSURL *)[(THModelLink *)self url] pathComponents];
-  if ([(NSArray *)v3 count]<= 3)
+  pathComponents = [(NSURL *)[(THModelLink *)self url] pathComponents];
+  if ([(NSArray *)pathComponents count]<= 3)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  if ([(NSArray *)v3 count]< 4)
+  if ([(NSArray *)pathComponents count]< 4)
   {
     return 0;
   }
 
-  v4 = [(NSArray *)v3 subarrayWithRange:1, 3];
+  v4 = [(NSArray *)pathComponents subarrayWithRange:1, 3];
 
   return [(NSArray *)v4 componentsJoinedByString:@"/"];
 }
@@ -144,15 +144,15 @@
   v4 = [(THModelLink *)self url];
   if (v3)
   {
-    v5 = [(NSURL *)v4 pathComponents];
-    if ([(NSArray *)v5 count]<= 3)
+    pathComponents = [(NSURL *)v4 pathComponents];
+    if ([(NSArray *)pathComponents count]<= 3)
     {
       [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
     }
 
-    if ([(NSArray *)v5 count]>= 4)
+    if ([(NSArray *)pathComponents count]>= 4)
     {
-      v6 = [(NSArray *)v5 subarrayWithRange:4, [(NSArray *)v5 count]- 4];
+      v6 = [(NSArray *)pathComponents subarrayWithRange:4, [(NSArray *)pathComponents count]- 4];
 
       return [(NSArray *)v6 componentsJoinedByString:@"/"];
     }
@@ -188,10 +188,10 @@
   }
 }
 
-- (id)p_parameterValueFromFragmentWithFunction:(id)a3
+- (id)p_parameterValueFromFragmentWithFunction:(id)function
 {
   v4 = [(NSString *)[(NSURL *)[(THModelLink *)self url] fragment] stringByTrimmingCharactersInSet:+[NSCharacterSet whitespaceCharacterSet]];
-  v5 = [a3 length];
+  v5 = [function length];
   if (v5 + 2 >= [(NSString *)v4 length])
   {
     return 0;
@@ -202,10 +202,10 @@
   return [(NSString *)v4 substringWithRange:v5 + 1, v6];
 }
 
-- (BOOL)p_fragmentIsFunction:(id)a3
+- (BOOL)p_fragmentIsFunction:(id)function
 {
   v4 = [(NSString *)[(NSURL *)[(THModelLink *)self url] fragment] stringByTrimmingCharactersInSet:+[NSCharacterSet whitespaceCharacterSet]];
-  v5 = -[NSString hasPrefix:](v4, "hasPrefix:", [a3 stringByAppendingString:@"("];
+  v5 = -[NSString hasPrefix:](v4, "hasPrefix:", [function stringByAppendingString:@"("];
   if (v5)
   {
 
@@ -228,26 +228,26 @@
 
 - (BOOL)isChapterLink
 {
-  v3 = [(THModelLink *)self targetIsiBooks];
-  if (v3)
+  targetIsiBooks = [(THModelLink *)self targetIsiBooks];
+  if (targetIsiBooks)
   {
 
-    LOBYTE(v3) = [(THModelLink *)self p_fragmentIsFunction:@"chapter"];
+    LOBYTE(targetIsiBooks) = [(THModelLink *)self p_fragmentIsFunction:@"chapter"];
   }
 
-  return v3;
+  return targetIsiBooks;
 }
 
 - (BOOL)isChapterGuidLink
 {
-  v3 = [(THModelLink *)self targetIsiBooks];
-  if (v3)
+  targetIsiBooks = [(THModelLink *)self targetIsiBooks];
+  if (targetIsiBooks)
   {
 
-    LOBYTE(v3) = [(THModelLink *)self p_fragmentIsFunction:@"chapterguid"];
+    LOBYTE(targetIsiBooks) = [(THModelLink *)self p_fragmentIsFunction:@"chapterguid"];
   }
 
-  return v3;
+  return targetIsiBooks;
 }
 
 - (id)pageNumberString
@@ -290,28 +290,28 @@
 
 - (BOOL)p_isCustomApplePubPageLink
 {
-  v3 = [(THModelLink *)self targetIsApplePub];
-  if (v3)
+  targetIsApplePub = [(THModelLink *)self targetIsApplePub];
+  if (targetIsApplePub)
   {
-    v4 = [(THModelLink *)self fragment];
+    fragment = [(THModelLink *)self fragment];
 
-    LOBYTE(v3) = [v4 hasPrefix:@"x-apple-internal-absolutepageindex-"];
+    LOBYTE(targetIsApplePub) = [fragment hasPrefix:@"x-apple-internal-absolutepageindex-"];
   }
 
-  return v3;
+  return targetIsApplePub;
 }
 
 - (BOOL)isCustom
 {
-  v3 = [(THModelLink *)self targetIsApplePub];
-  if (v3)
+  targetIsApplePub = [(THModelLink *)self targetIsApplePub];
+  if (targetIsApplePub)
   {
-    v4 = [(THModelLink *)self fragment];
+    fragment = [(THModelLink *)self fragment];
 
-    LOBYTE(v3) = [v4 hasPrefix:@"x-apple-"];
+    LOBYTE(targetIsApplePub) = [fragment hasPrefix:@"x-apple-"];
   }
 
-  return v3;
+  return targetIsApplePub;
 }
 
 - (int64_t)customPageIndex
@@ -328,15 +328,15 @@
 
 - (BOOL)isDynamic
 {
-  v3 = [(THModelLink *)self targetIsApplePub];
-  if (v3)
+  targetIsApplePub = [(THModelLink *)self targetIsApplePub];
+  if (targetIsApplePub)
   {
-    v4 = [(THModelLink *)self fragment];
+    fragment = [(THModelLink *)self fragment];
 
-    LOBYTE(v3) = [v4 hasPrefix:@"xpointer"];
+    LOBYTE(targetIsApplePub) = [fragment hasPrefix:@"xpointer"];
   }
 
-  return v3;
+  return targetIsApplePub;
 }
 
 - (BOOL)isOrdinary
@@ -354,7 +354,7 @@
 
 - (id)description
 {
-  v3 = [(THModelLink *)self target];
+  target = [(THModelLink *)self target];
   if ([(THModelLink *)self cachedAbsolutePageIndex]== 0x7FFFFFFFFFFFFFFFLL)
   {
     v4 = &stru_471858;
@@ -365,7 +365,7 @@
     v4 = [NSString stringWithFormat:@" @p%ud", [(THModelLink *)self cachedAbsolutePageIndex]];
   }
 
-  return [NSString stringWithFormat:@"<link:%@%@>", v3, v4];
+  return [NSString stringWithFormat:@"<link:%@%@>", target, v4];
 }
 
 @end

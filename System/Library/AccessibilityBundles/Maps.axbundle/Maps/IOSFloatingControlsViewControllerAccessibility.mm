@@ -1,5 +1,5 @@
 @interface IOSFloatingControlsViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axAnnotateButtons;
 - (void)viewDidLoad;
@@ -7,11 +7,11 @@
 
 @implementation IOSFloatingControlsViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"FloatingControlsViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"IOSFloatingControlsViewController" hasInstanceVariable:@"_mode2DButton" withType:"UIButton"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"FloatingControlsViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"IOSFloatingControlsViewController" hasInstanceVariable:@"_mode2DButton" withType:"UIButton"];
 }
 
 - (void)_axAnnotateButtons

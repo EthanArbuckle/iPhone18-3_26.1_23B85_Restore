@@ -1,17 +1,17 @@
 @interface RPAudioMixUtility
-+ (id)exportPresetForAVAsset:(id)a3;
++ (id)exportPresetForAVAsset:(id)asset;
 + (id)tempFileURL;
-+ (id)videoCodecTypeForAVAsset:(id)a3;
-+ (void)mixAudioForMovie:(id)a3 finalMovieURL:(id)a4 outputFileType:(id)a5 withCompletionHandler:(id)a6;
-+ (void)mixAudioForMovie:(id)a3 withCompletionHandler:(id)a4;
++ (id)videoCodecTypeForAVAsset:(id)asset;
++ (void)mixAudioForMovie:(id)movie finalMovieURL:(id)l outputFileType:(id)type withCompletionHandler:(id)handler;
++ (void)mixAudioForMovie:(id)movie withCompletionHandler:(id)handler;
 @end
 
 @implementation RPAudioMixUtility
 
-+ (void)mixAudioForMovie:(id)a3 withCompletionHandler:(id)a4
++ (void)mixAudioForMovie:(id)movie withCompletionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  movieCopy = movie;
   v7 = +[RPAudioMixUtility tempFileURL];
   v8 = *MEMORY[0x277CE5D98];
   v11[0] = MEMORY[0x277D85DD0];
@@ -19,10 +19,10 @@
   v11[2] = __60__RPAudioMixUtility_mixAudioForMovie_withCompletionHandler___block_invoke;
   v11[3] = &unk_278B62378;
   v12 = v7;
-  v13 = v5;
+  v13 = handlerCopy;
   v9 = v7;
-  v10 = v5;
-  [RPAudioMixUtility mixAudioForMovie:v6 finalMovieURL:v9 outputFileType:v8 withCompletionHandler:v11];
+  v10 = handlerCopy;
+  [RPAudioMixUtility mixAudioForMovie:movieCopy finalMovieURL:v9 outputFileType:v8 withCompletionHandler:v11];
 }
 
 uint64_t __60__RPAudioMixUtility_mixAudioForMovie_withCompletionHandler___block_invoke(uint64_t a1, uint64_t a2)
@@ -39,14 +39,14 @@ uint64_t __60__RPAudioMixUtility_mixAudioForMovie_withCompletionHandler___block_
   }
 }
 
-+ (void)mixAudioForMovie:(id)a3 finalMovieURL:(id)a4 outputFileType:(id)a5 withCompletionHandler:(id)a6
++ (void)mixAudioForMovie:(id)movie finalMovieURL:(id)l outputFileType:(id)type withCompletionHandler:(id)handler
 {
   v45 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (v9)
+  movieCopy = movie;
+  lCopy = l;
+  typeCopy = type;
+  handlerCopy = handler;
+  if (movieCopy)
   {
     if (__RPLogLevel <= 1)
     {
@@ -57,7 +57,7 @@ uint64_t __60__RPAudioMixUtility_mixAudioForMovie_withCompletionHandler___block_
         v41 = 1024;
         v42 = 33;
         v43 = 2112;
-        v44 = v9;
+        v44 = movieCopy;
         _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d movieURL  %@", buf, 0x1Cu);
       }
 
@@ -68,21 +68,21 @@ uint64_t __60__RPAudioMixUtility_mixAudioForMovie_withCompletionHandler___block_
         v41 = 1024;
         v42 = 34;
         v43 = 2112;
-        v44 = v10;
+        v44 = lCopy;
         _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d finalMovieURL %@", buf, 0x1Cu);
       }
     }
 
-    v30 = v9;
-    v13 = [MEMORY[0x277CE63D8] assetWithURL:v9];
+    v30 = movieCopy;
+    v13 = [MEMORY[0x277CE63D8] assetWithURL:movieCopy];
     v27 = [RPAudioMixUtility exportPresetForAVAsset:v13];
     v14 = [objc_alloc(MEMORY[0x277CE6400]) initWithAsset:v13 presetName:v27];
-    v29 = v10;
-    [v14 setOutputURL:v10];
-    v28 = v11;
-    [v14 setOutputFileType:v11];
+    v29 = lCopy;
+    [v14 setOutputURL:lCopy];
+    v28 = typeCopy;
+    [v14 setOutputFileType:typeCopy];
     v15 = [v13 tracksWithMediaType:*MEMORY[0x277CE5E48]];
-    v16 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
@@ -103,9 +103,9 @@ uint64_t __60__RPAudioMixUtility_mixAudioForMovie_withCompletionHandler___block_
           }
 
           v22 = *(*(&v34 + 1) + 8 * i);
-          v23 = [MEMORY[0x277CE6540] audioMixInputParameters];
-          [v23 setTrackID:{objc_msgSend(v22, "trackID")}];
-          [v16 addObject:v23];
+          audioMixInputParameters = [MEMORY[0x277CE6540] audioMixInputParameters];
+          [audioMixInputParameters setTrackID:{objc_msgSend(v22, "trackID")}];
+          [array addObject:audioMixInputParameters];
         }
 
         v19 = [v17 countByEnumeratingWithState:&v34 objects:v38 count:16];
@@ -114,9 +114,9 @@ uint64_t __60__RPAudioMixUtility_mixAudioForMovie_withCompletionHandler___block_
       while (v19);
     }
 
-    v24 = [MEMORY[0x277CE6538] audioMix];
-    [v24 setInputParameters:v16];
-    [v14 setAudioMix:v24];
+    audioMix = [MEMORY[0x277CE6538] audioMix];
+    [audioMix setInputParameters:array];
+    [v14 setAudioMix:audioMix];
     if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136446466;
@@ -131,13 +131,13 @@ uint64_t __60__RPAudioMixUtility_mixAudioForMovie_withCompletionHandler___block_
     v31[2] = __89__RPAudioMixUtility_mixAudioForMovie_finalMovieURL_outputFileType_withCompletionHandler___block_invoke;
     v31[3] = &unk_278B61D70;
     v32 = v14;
-    v33 = v12;
+    v33 = handlerCopy;
     v25 = v14;
     [v25 exportAsynchronouslyWithCompletionHandler:v31];
 
-    v10 = v29;
-    v9 = v30;
-    v11 = v28;
+    lCopy = v29;
+    movieCopy = v30;
+    typeCopy = v28;
   }
 
   else
@@ -148,7 +148,7 @@ uint64_t __60__RPAudioMixUtility_mixAudioForMovie_withCompletionHandler___block_
     }
 
     v13 = [MEMORY[0x277CCA9B8] _rpUserErrorForCode:-5818 userInfo:0];
-    (*(v12 + 2))(v12, v13);
+    (*(handlerCopy + 2))(handlerCopy, v13);
   }
 
   v26 = *MEMORY[0x277D85DE8];
@@ -214,13 +214,13 @@ LABEL_15:
 + (id)tempFileURL
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [v3 _srTempPath];
-  v5 = [v2 stringWithFormat:@"%@/RPReplay_Final", v4];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  _srTempPath = [defaultManager _srTempPath];
+  v5 = [v2 stringWithFormat:@"%@/RPReplay_Final", _srTempPath];
 
   v6 = MEMORY[0x277CCACA8];
-  v7 = [MEMORY[0x277CBEAA8] date];
-  [v7 timeIntervalSince1970];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSince1970];
   v9 = [v6 stringWithFormat:@"%ld", v8];
 
   v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@%@", v5, v9, @".mp4"];
@@ -229,10 +229,10 @@ LABEL_15:
   return v11;
 }
 
-+ (id)videoCodecTypeForAVAsset:(id)a3
++ (id)videoCodecTypeForAVAsset:(id)asset
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [a3 tracksWithMediaType:*MEMORY[0x277CE5EA8]];
+  v3 = [asset tracksWithMediaType:*MEMORY[0x277CE5EA8]];
   if ([v3 count] != 1)
   {
     if (__RPLogLevel <= 2 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -240,14 +240,14 @@ LABEL_15:
       +[RPAudioMixUtility videoCodecTypeForAVAsset:];
     }
 
-    v5 = 0;
+    formatDescriptions = 0;
     v4 = 0;
     goto LABEL_14;
   }
 
   v4 = [v3 objectAtIndexedSubscript:0];
-  v5 = [v4 formatDescriptions];
-  if ([v5 count] != 1)
+  formatDescriptions = [v4 formatDescriptions];
+  if ([formatDescriptions count] != 1)
   {
     if (__RPLogLevel <= 2 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
@@ -259,7 +259,7 @@ LABEL_14:
     goto LABEL_6;
   }
 
-  v6 = [v5 objectAtIndexedSubscript:0];
+  v6 = [formatDescriptions objectAtIndexedSubscript:0];
   MediaSubType = CMFormatDescriptionGetMediaSubType(v6);
 
   v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:RPStringUtility_FourccToCStr(MediaSubType)];
@@ -281,11 +281,11 @@ LABEL_6:
   return v8;
 }
 
-+ (id)exportPresetForAVAsset:(id)a3
++ (id)exportPresetForAVAsset:(id)asset
 {
   v18 = *MEMORY[0x277D85DE8];
   v4 = *MEMORY[0x277CE5C00];
-  v5 = [RPAudioMixUtility videoCodecTypeForAVAsset:a3];
+  v5 = [RPAudioMixUtility videoCodecTypeForAVAsset:asset];
   v6 = v5;
   if (!v5)
   {

@@ -1,7 +1,7 @@
 @interface SDBundleTrackingInfo
 + (id)_trackingInfoDir;
-- (BOOL)shouldContinueIndexingAfterTransitioToState:(int)a3;
-- (SDBundleTrackingInfo)initWithCompositeIdentifier:(id)a3;
+- (BOOL)shouldContinueIndexingAfterTransitioToState:(int)state;
+- (SDBundleTrackingInfo)initWithCompositeIdentifier:(id)identifier;
 - (void)_loadFromPlist;
 - (void)_saveToPlist;
 - (void)save;
@@ -27,11 +27,11 @@
 
 - (void)_saveToPlist
 {
-  v3 = [(SDBundleTrackingInfo *)self _dictionaryRepresentation];
-  if (v3)
+  _dictionaryRepresentation = [(SDBundleTrackingInfo *)self _dictionaryRepresentation];
+  if (_dictionaryRepresentation)
   {
     v12 = 0;
-    v4 = [NSPropertyListSerialization dataWithPropertyList:v3 format:200 options:0 error:&v12];
+    v4 = [NSPropertyListSerialization dataWithPropertyList:_dictionaryRepresentation format:200 options:0 error:&v12];
     v5 = v12;
     if (v4)
     {
@@ -45,8 +45,8 @@
         [v9 createDirectoryAtPath:v6 withIntermediateDirectories:1 attributes:0 error:0];
       }
 
-      v10 = [(SDBundleTrackingInfo *)self _filename];
-      v11 = [v6 stringByAppendingPathComponent:v10];
+      _filename = [(SDBundleTrackingInfo *)self _filename];
+      v11 = [v6 stringByAppendingPathComponent:_filename];
 
       [v4 writeToFile:v11 atomically:0];
     }
@@ -65,8 +65,8 @@
 - (void)_loadFromPlist
 {
   v3 = +[SDBundleTrackingInfo _trackingInfoDir];
-  v4 = [(SDBundleTrackingInfo *)self _filename];
-  v5 = [v3 stringByAppendingPathComponent:v4];
+  _filename = [(SDBundleTrackingInfo *)self _filename];
+  v5 = [v3 stringByAppendingPathComponent:_filename];
 
   v6 = +[NSFileManager defaultManager];
   v7 = [v6 fileExistsAtPath:v5];
@@ -110,16 +110,16 @@ LABEL_10:
 LABEL_11:
 }
 
-- (SDBundleTrackingInfo)initWithCompositeIdentifier:(id)a3
+- (SDBundleTrackingInfo)initWithCompositeIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = SDBundleTrackingInfo;
   v6 = [(SDBundleTrackingInfo *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_compositeIdentifier, a3);
+    objc_storeStrong(&v6->_compositeIdentifier, identifier);
     [(SDBundleTrackingInfo *)v7 _loadFromPlist];
   }
 
@@ -134,7 +134,7 @@ LABEL_11:
   }
 }
 
-- (BOOL)shouldContinueIndexingAfterTransitioToState:(int)a3
+- (BOOL)shouldContinueIndexingAfterTransitioToState:(int)state
 {
   state = self->_state;
   if (state > 2)
@@ -143,7 +143,7 @@ LABEL_11:
     {
       if (state != 4)
       {
-        if (state != 5 || a3 != 6)
+        if (state != 5 || state != 6)
         {
           goto LABEL_22;
         }
@@ -154,7 +154,7 @@ LABEL_11:
       goto LABEL_20;
     }
 
-    if (a3 == 4)
+    if (state == 4)
     {
       goto LABEL_21;
     }
@@ -166,23 +166,23 @@ LABEL_11:
     {
       if (state != 1)
       {
-        if (state != 2 || (a3 - 3) >= 2)
+        if (state != 2 || (state - 3) >= 2)
         {
           goto LABEL_22;
         }
 
 LABEL_21:
-        self->_state = a3;
+        self->_state = state;
         return 1;
       }
 
-      if (a3 == 2)
+      if (state == 2)
       {
         goto LABEL_21;
       }
 
 LABEL_20:
-      if (a3 == 5)
+      if (state == 5)
       {
         goto LABEL_21;
       }
@@ -190,7 +190,7 @@ LABEL_20:
       goto LABEL_22;
     }
 
-    if (a3 == 1)
+    if (state == 1)
     {
       goto LABEL_21;
     }

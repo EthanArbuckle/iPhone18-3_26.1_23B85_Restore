@@ -1,20 +1,20 @@
 @interface NMSItemGroupEnumerator
-- (NMSItemGroupEnumerator)initWithItemGroup:(id)a3;
+- (NMSItemGroupEnumerator)initWithItemGroup:(id)group;
 - (id)nextItem;
 @end
 
 @implementation NMSItemGroupEnumerator
 
-- (NMSItemGroupEnumerator)initWithItemGroup:(id)a3
+- (NMSItemGroupEnumerator)initWithItemGroup:(id)group
 {
-  v5 = a3;
+  groupCopy = group;
   v9.receiver = self;
   v9.super_class = NMSItemGroupEnumerator;
   v6 = [(NMSItemGroupEnumerator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_itemGroup, a3);
+    objc_storeStrong(&v6->_itemGroup, group);
   }
 
   return v7;
@@ -31,9 +31,9 @@
       return [(NSArray *)itemList objectAtIndex:self->_itemIndex++];
     }
 
-    v7 = [(NMSMediaItemGroup *)self->_itemGroup itemList];
+    itemList = [(NMSMediaItemGroup *)self->_itemGroup itemList];
     v8 = self->_itemList;
-    self->_itemList = v7;
+    self->_itemList = itemList;
 
     itemList = self->_itemList;
     if (!itemList)

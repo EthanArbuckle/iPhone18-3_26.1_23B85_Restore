@@ -1,5 +1,5 @@
 @interface PUPhotosZoomingSharingGridCell
-- (PUPhotosZoomingSharingGridCell)initWithFrame:(CGRect)a3 selectionView:(id)a4 optionView:(id)a5 layoutAnchor:(unint64_t)a6;
+- (PUPhotosZoomingSharingGridCell)initWithFrame:(CGRect)frame selectionView:(id)view optionView:(id)optionView layoutAnchor:(unint64_t)anchor;
 - (void)layoutSubviews;
 @end
 
@@ -130,39 +130,39 @@ LABEL_14:
   [(UIView *)self->_optionView setCenter:v38, v39];
 }
 
-- (PUPhotosZoomingSharingGridCell)initWithFrame:(CGRect)a3 selectionView:(id)a4 optionView:(id)a5 layoutAnchor:(unint64_t)a6
+- (PUPhotosZoomingSharingGridCell)initWithFrame:(CGRect)frame selectionView:(id)view optionView:(id)optionView layoutAnchor:(unint64_t)anchor
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v14 = a4;
-  v15 = a5;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  viewCopy = view;
+  optionViewCopy = optionView;
   v24.receiver = self;
   v24.super_class = PUPhotosZoomingSharingGridCell;
-  v16 = [(PUPhotosSharingGridCell *)&v24 initWithFrame:x, y, width, height];
-  v17 = v16;
-  if (v16)
+  height = [(PUPhotosSharingGridCell *)&v24 initWithFrame:x, y, width, height];
+  v17 = height;
+  if (height)
   {
-    *(v16 + 45) = *MEMORY[0x1E695EFF8];
-    *(v16 + 92) = width;
-    *(v16 + 93) = height;
-    v18 = v16 + 768;
-    [v14 center];
+    *(height + 45) = *MEMORY[0x1E695EFF8];
+    *(height + 92) = width;
+    *(height + 93) = height;
+    v18 = height + 768;
+    [viewCopy center];
     *v18 = v19;
     v17->_selectionViewDefaultCenter.y = v20;
-    objc_storeStrong(&v17->_selectionView, a4);
+    objc_storeStrong(&v17->_selectionView, view);
     [(PUPhotosZoomingSharingGridCell *)v17 addSubview:v17->_selectionView];
-    [v15 center];
+    [optionViewCopy center];
     v17->_optionViewDefaultCenter.x = v21;
     v17->_optionViewDefaultCenter.y = v22;
-    objc_storeStrong(&v17->_optionView, a5);
+    objc_storeStrong(&v17->_optionView, optionView);
     if (v17->_optionView)
     {
       [(PUPhotosZoomingSharingGridCell *)v17 addSubview:?];
     }
 
-    v17->_badgesLayoutAnchor = a6;
+    v17->_badgesLayoutAnchor = anchor;
     [(PUPhotosZoomingSharingGridCell *)v17 setUserInteractionEnabled:0];
   }
 

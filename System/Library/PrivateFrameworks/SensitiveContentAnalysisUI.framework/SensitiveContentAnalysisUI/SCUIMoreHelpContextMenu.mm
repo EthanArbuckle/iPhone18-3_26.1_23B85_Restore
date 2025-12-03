@@ -1,73 +1,73 @@
 @interface SCUIMoreHelpContextMenu
 + (id)controllerToPresentFrom;
-+ (id)menuActionsFromModel:(id)a3 menuInfo:(id)a4 menuDelegate:(id)a5;
-+ (id)menuWithAnalysis:(id)a3 delegate:(id)a4 additionalOptions:(int64_t)a5 error:(id *)a6;
-+ (id)menuWithDelegate:(id)a3 additionalOptions:(int64_t)a4;
-+ (id)menuWithDelegate:(id)a3 contextDictionary:(id)a4 additionalOptions:(int64_t)a5;
-+ (id)menuWithDelegate:(id)a3 contextDictionary:(id)a4 additionalOptions:(int64_t)a5 interventionType:(int64_t)a6;
++ (id)menuActionsFromModel:(id)model menuInfo:(id)info menuDelegate:(id)delegate;
++ (id)menuWithAnalysis:(id)analysis delegate:(id)delegate additionalOptions:(int64_t)options error:(id *)error;
++ (id)menuWithDelegate:(id)delegate additionalOptions:(int64_t)options;
++ (id)menuWithDelegate:(id)delegate contextDictionary:(id)dictionary additionalOptions:(int64_t)options;
++ (id)menuWithDelegate:(id)delegate contextDictionary:(id)dictionary additionalOptions:(int64_t)options interventionType:(int64_t)type;
 + (void)controllerToPresentFrom;
-+ (void)reportToAuthoritiesPressedForModel:(id)a3 delegate:(id)a4;
-+ (void)setAnalyticsContextWithModel:(id)a3 identifier:(id)a4;
++ (void)reportToAuthoritiesPressedForModel:(id)model delegate:(id)delegate;
++ (void)setAnalyticsContextWithModel:(id)model identifier:(id)identifier;
 @end
 
 @implementation SCUIMoreHelpContextMenu
 
-+ (id)menuWithDelegate:(id)a3 additionalOptions:(int64_t)a4
++ (id)menuWithDelegate:(id)delegate additionalOptions:(int64_t)options
 {
-  v5 = a3;
-  v6 = [SCUIMoreHelpContextMenu menuWithDelegate:v5 additionalOptions:a4 interventionType:SCUICurrentInterventionType()];
+  delegateCopy = delegate;
+  v6 = [SCUIMoreHelpContextMenu menuWithDelegate:delegateCopy additionalOptions:options interventionType:SCUICurrentInterventionType()];
 
   return v6;
 }
 
-+ (id)menuWithDelegate:(id)a3 contextDictionary:(id)a4 additionalOptions:(int64_t)a5
++ (id)menuWithDelegate:(id)delegate contextDictionary:(id)dictionary additionalOptions:(int64_t)options
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [SCUIMoreHelpContextMenu menuWithDelegate:v8 contextDictionary:v7 additionalOptions:a5 interventionType:SCUICurrentInterventionType()];
+  dictionaryCopy = dictionary;
+  delegateCopy = delegate;
+  v9 = [SCUIMoreHelpContextMenu menuWithDelegate:delegateCopy contextDictionary:dictionaryCopy additionalOptions:options interventionType:SCUICurrentInterventionType()];
 
   return v9;
 }
 
-+ (id)menuWithDelegate:(id)a3 contextDictionary:(id)a4 additionalOptions:(int64_t)a5 interventionType:(int64_t)a6
++ (id)menuWithDelegate:(id)delegate contextDictionary:(id)dictionary additionalOptions:(int64_t)options interventionType:(int64_t)type
 {
-  v9 = a4;
+  dictionaryCopy = dictionary;
   v10 = MEMORY[0x1E695DF58];
-  v11 = a3;
-  v12 = [v10 currentLocale];
-  v13 = [SCUIMoreHelpMenuModel modelWithOptions:a5 contextDictionary:v9 interventionType:a6 locale:v12 menuType:1];
+  delegateCopy = delegate;
+  currentLocale = [v10 currentLocale];
+  v13 = [SCUIMoreHelpMenuModel modelWithOptions:options contextDictionary:dictionaryCopy interventionType:type locale:currentLocale menuType:1];
 
-  v14 = [[SCUIMoreHelpContextMenuContainer alloc] initWithOptions:a5 contextDictionary:v9 interventionType:a6];
-  v15 = [SCUIMoreHelpContextMenu menuActionsFromModel:v13 menuInfo:v14 menuDelegate:v11];
+  v14 = [[SCUIMoreHelpContextMenuContainer alloc] initWithOptions:options contextDictionary:dictionaryCopy interventionType:type];
+  v15 = [SCUIMoreHelpContextMenu menuActionsFromModel:v13 menuInfo:v14 menuDelegate:delegateCopy];
 
-  if (a6 == 2)
+  if (type == 2)
   {
-    v16 = &stru_1F3B30210;
+    title2 = &stru_1F3B30210;
   }
 
   else
   {
-    v17 = [v13 title];
-    if (v17)
+    title = [v13 title];
+    if (title)
     {
-      v16 = [v13 title];
+      title2 = [v13 title];
     }
 
     else
     {
-      v16 = &stru_1F3B30210;
+      title2 = &stru_1F3B30210;
     }
   }
 
-  v18 = [MEMORY[0x1E69DCC60] menuWithTitle:v16 children:v15];
+  v18 = [MEMORY[0x1E69DCC60] menuWithTitle:title2 children:v15];
   v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%p", v18];
   [(SCUIMoreHelpContextMenuContainer *)v14 setMenuIdentifier:v19];
 
-  v20 = [v9 objectForKeyedSubscript:@"SCUIAnalyticsContextKeyForContextDictionary"];
+  v20 = [dictionaryCopy objectForKeyedSubscript:@"SCUIAnalyticsContextKeyForContextDictionary"];
 
   if (v20)
   {
-    [v9 objectForKeyedSubscript:@"SCUIAnalyticsContextKeyForContextDictionary"];
+    [dictionaryCopy objectForKeyedSubscript:@"SCUIAnalyticsContextKeyForContextDictionary"];
   }
 
   else
@@ -81,28 +81,28 @@
   return v18;
 }
 
-+ (id)menuActionsFromModel:(id)a3 menuInfo:(id)a4 menuDelegate:(id)a5
++ (id)menuActionsFromModel:(id)model menuInfo:(id)info menuDelegate:(id)delegate
 {
   v54 = *MEMORY[0x1E69E9840];
-  v35 = a3;
-  v7 = a4;
-  v30 = a5;
-  objc_initWeak(&location, v30);
+  modelCopy = model;
+  infoCopy = info;
+  delegateCopy = delegate;
+  objc_initWeak(&location, delegateCopy);
   v50[0] = 0;
   v50[1] = v50;
   v50[2] = 0x3032000000;
   v50[3] = __Block_byref_object_copy_;
   v50[4] = __Block_byref_object_dispose_;
-  v8 = v7;
+  v8 = infoCopy;
   v51 = v8;
   v9 = [MEMORY[0x1E695E0F0] mutableCopy];
   v48 = 0u;
   v49 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v10 = [v35 actions];
-  v11 = [v10 countByEnumeratingWithState:&v46 objects:v53 count:16];
-  obj = v10;
+  actions = [modelCopy actions];
+  v11 = [actions countByEnumeratingWithState:&v46 objects:v53 count:16];
+  obj = actions;
   v34 = v9;
   if (v11)
   {
@@ -120,11 +120,11 @@
         v42 = 0;
         v43 = &v42;
         v44 = 0x2020000000;
-        v45 = [v13 actionID];
+        actionID = [v13 actionID];
         if (v43[3] == 9)
         {
-          v14 = [v8 contextDictionary];
-          v15 = [v14 objectForKeyedSubscript:@"SCUIMoreHelpContextMenuShowContentNameKey"];
+          contextDictionary = [v8 contextDictionary];
+          v15 = [contextDictionary objectForKeyedSubscript:@"SCUIMoreHelpContextMenuShowContentNameKey"];
 
           if (v15)
           {
@@ -135,12 +135,12 @@
           }
         }
 
-        v19 = [v13 iconSystemName];
-        if (v19)
+        iconSystemName = [v13 iconSystemName];
+        if (iconSystemName)
         {
           v20 = MEMORY[0x1E69DCAB8];
-          v21 = [v13 iconSystemName];
-          v22 = [v20 systemImageNamed:v21];
+          iconSystemName2 = [v13 iconSystemName];
+          v22 = [v20 systemImageNamed:iconSystemName2];
         }
 
         else
@@ -149,18 +149,18 @@
         }
 
         v23 = MEMORY[0x1E69DC628];
-        v24 = [v13 title];
+        title = [v13 title];
         v36[0] = MEMORY[0x1E69E9820];
         v36[1] = 3221225472;
         v36[2] = __70__SCUIMoreHelpContextMenu_menuActionsFromModel_menuInfo_menuDelegate___block_invoke;
         v36[3] = &unk_1E7FF2538;
         v37 = v8;
-        v38 = v35;
+        v38 = modelCopy;
         v39 = &v42;
         objc_copyWeak(v41, &location);
         v40 = v50;
-        v41[1] = a1;
-        v25 = [v23 actionWithTitle:v24 image:v22 identifier:0 handler:v36];
+        v41[1] = self;
+        v25 = [v23 actionWithTitle:title image:v22 identifier:0 handler:v36];
 
         if ([v13 destructive])
         {
@@ -373,72 +373,72 @@ LABEL_36:
 
 + (id)controllerToPresentFrom
 {
-  v2 = [MEMORY[0x1E697B660] clientUI];
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_DEBUG))
+  clientUI = [MEMORY[0x1E697B660] clientUI];
+  if (os_log_type_enabled(clientUI, OS_LOG_TYPE_DEBUG))
   {
-    +[(SCUIMoreHelpContextMenu *)v2];
+    +[(SCUIMoreHelpContextMenu *)clientUI];
   }
 
-  v3 = [MEMORY[0x1E69DC668] sharedApplication];
-  v4 = [v3 connectedScenes];
-  v5 = [v4 allObjects];
-  v6 = [v5 firstObject];
-  v7 = [v6 windows];
-  v8 = [v7 firstObject];
-  v9 = [v8 rootViewController];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  connectedScenes = [mEMORY[0x1E69DC668] connectedScenes];
+  allObjects = [connectedScenes allObjects];
+  firstObject = [allObjects firstObject];
+  windows = [firstObject windows];
+  firstObject2 = [windows firstObject];
+  rootViewController = [firstObject2 rootViewController];
 
-  v10 = [v9 presentedViewController];
+  presentedViewController = [rootViewController presentedViewController];
 
-  if (v10)
+  if (presentedViewController)
   {
-    LODWORD(v10) = 0;
-    v11 = v9;
+    LODWORD(presentedViewController) = 0;
+    v11 = rootViewController;
     do
     {
-      v9 = [v11 presentedViewController];
+      rootViewController = [v11 presentedViewController];
 
-      LODWORD(v10) = v10 + 1;
-      v12 = [v9 presentedViewController];
+      LODWORD(presentedViewController) = presentedViewController + 1;
+      presentedViewController2 = [rootViewController presentedViewController];
 
-      v11 = v9;
+      v11 = rootViewController;
     }
 
-    while (v12);
+    while (presentedViewController2);
   }
 
-  v13 = [MEMORY[0x1E697B660] clientUI];
-  if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
+  clientUI2 = [MEMORY[0x1E697B660] clientUI];
+  if (os_log_type_enabled(clientUI2, OS_LOG_TYPE_DEBUG))
   {
-    +[(SCUIMoreHelpContextMenu *)v10];
+    +[(SCUIMoreHelpContextMenu *)presentedViewController];
   }
 
-  return v9;
+  return rootViewController;
 }
 
-+ (void)reportToAuthoritiesPressedForModel:(id)a3 delegate:(id)a4
++ (void)reportToAuthoritiesPressedForModel:(id)model delegate:(id)delegate
 {
-  v11 = a3;
-  v6 = a4;
-  if ([v6 conformsToProtocol:&unk_1F3B49920])
+  modelCopy = model;
+  delegateCopy = delegate;
+  if ([delegateCopy conformsToProtocol:&unk_1F3B49920])
   {
-    v7 = [a1 controllerToPresentFrom];
-    v8 = [v11 authority];
-    v9 = [v11 interventionType];
-    v10 = [v11 contextDictionary];
-    [SCUIReportToAuthorities presentFlowFromController:v7 authority:v8 interventionType:v9 delegate:v6 contextDictionary:v10];
+    controllerToPresentFrom = [self controllerToPresentFrom];
+    authority = [modelCopy authority];
+    interventionType = [modelCopy interventionType];
+    contextDictionary = [modelCopy contextDictionary];
+    [SCUIReportToAuthorities presentFlowFromController:controllerToPresentFrom authority:authority interventionType:interventionType delegate:delegateCopy contextDictionary:contextDictionary];
   }
 }
 
-+ (void)setAnalyticsContextWithModel:(id)a3 identifier:(id)a4
++ (void)setAnalyticsContextWithModel:(id)model identifier:(id)identifier
 {
-  v9 = a3;
-  v5 = a4;
-  v6 = [v9 contextDictionary];
-  v7 = [SCUIAnalytics getAnalyticsUIContextWith:v6];
+  modelCopy = model;
+  identifierCopy = identifier;
+  contextDictionary = [modelCopy contextDictionary];
+  v7 = [SCUIAnalytics getAnalyticsUIContextWith:contextDictionary];
 
   if (!v7)
   {
-    v8 = [SCUIAnalytics getAnalyticsUIContextByIdentifierWithIdentifier:v5];
+    v8 = [SCUIAnalytics getAnalyticsUIContextByIdentifierWithIdentifier:identifierCopy];
     if (!v8)
     {
       goto LABEL_5;
@@ -447,16 +447,16 @@ LABEL_36:
     v7 = v8;
   }
 
-  [v9 setAnalyticsContext:v7];
+  [modelCopy setAnalyticsContext:v7];
 
 LABEL_5:
 }
 
-+ (id)menuWithAnalysis:(id)a3 delegate:(id)a4 additionalOptions:(int64_t)a5 error:(id *)a6
++ (id)menuWithAnalysis:(id)analysis delegate:(id)delegate additionalOptions:(int64_t)options error:(id *)error
 {
-  v8 = a3;
+  analysisCopy = analysis;
   swift_unknownObjectRetain();
-  v9 = sub_1BC67F10C(v8, a4, a5);
+  v9 = sub_1BC67F10C(analysisCopy, delegate, options);
   swift_unknownObjectRelease();
 
   return v9;
@@ -466,7 +466,7 @@ LABEL_5:
 {
   v4 = *MEMORY[0x1E69E9840];
   v3[0] = 67109120;
-  v3[1] = a1;
+  v3[1] = self;
   _os_log_debug_impl(&dword_1BC630000, a2, OS_LOG_TYPE_DEBUG, "Found a valid controller %d from rootViewController's presented controllers", v3, 8u);
   v2 = *MEMORY[0x1E69E9840];
 }

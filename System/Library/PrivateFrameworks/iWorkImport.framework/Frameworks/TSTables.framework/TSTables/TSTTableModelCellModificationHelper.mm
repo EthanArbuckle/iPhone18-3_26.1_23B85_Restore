@@ -1,17 +1,17 @@
 @interface TSTTableModelCellModificationHelper
-+ (id)perChunkHelperWithSourceRect:(TSUCellRect)a3 columnRowUIDMap:(id)a4;
-- (TSTTableModelCellModificationHelper)initWithSourceRect:(TSUCellRect)a3 columnRowUIDMap:(id)a4;
++ (id)perChunkHelperWithSourceRect:(TSUCellRect)rect columnRowUIDMap:(id)map;
+- (TSTTableModelCellModificationHelper)initWithSourceRect:(TSUCellRect)rect columnRowUIDMap:(id)map;
 - (TSUCellRect)sourceRect;
 - (void)prepareToAddCells;
 @end
 
 @implementation TSTTableModelCellModificationHelper
 
-- (TSTTableModelCellModificationHelper)initWithSourceRect:(TSUCellRect)a3 columnRowUIDMap:(id)a4
+- (TSTTableModelCellModificationHelper)initWithSourceRect:(TSUCellRect)rect columnRowUIDMap:(id)map
 {
-  size = a3.size;
-  origin = a3.origin;
-  v8 = a4;
+  size = rect.size;
+  origin = rect.origin;
+  mapCopy = map;
   v12.receiver = self;
   v12.super_class = TSTTableModelCellModificationHelper;
   v9 = [(TSTTableModelCellModificationHelper *)&v12 init];
@@ -20,20 +20,20 @@
   {
     v9->_sourceRect.origin = origin;
     v9->_sourceRect.size = size;
-    objc_storeStrong(&v9->_columnRowUIDMap, a4);
+    objc_storeStrong(&v9->_columnRowUIDMap, map);
     v10->_emptyCellCount = 0;
   }
 
   return v10;
 }
 
-+ (id)perChunkHelperWithSourceRect:(TSUCellRect)a3 columnRowUIDMap:(id)a4
++ (id)perChunkHelperWithSourceRect:(TSUCellRect)rect columnRowUIDMap:(id)map
 {
-  size = a3.size;
-  origin = a3.origin;
-  v6 = a4;
+  size = rect.size;
+  origin = rect.origin;
+  mapCopy = map;
   v7 = [TSTTableModelCellModificationHelper alloc];
-  v9 = objc_msgSend_initWithSourceRect_columnRowUIDMap_(v7, v8, origin, size, v6);
+  v9 = objc_msgSend_initWithSourceRect_columnRowUIDMap_(v7, v8, origin, size, mapCopy);
 
   return v9;
 }

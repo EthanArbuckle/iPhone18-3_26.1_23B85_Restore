@@ -1,31 +1,31 @@
 @interface HMDRapportOverBLEMessageTransport
-- (BOOL)canSendMessage:(id)a3;
-- (HMDRapportOverBLEMessageTransport)initWithAccountRegistry:(id)a3;
-- (HMDRapportOverBLEMessageTransport)initWithAccountRegistry:(id)a3 rapportMessaging:(id)a4 discoClientFactory:(id)a5 deviceWrapperFactory:(id)a6;
-- (id)_IDSIdentifierForDestination:(id)a3;
-- (id)_createBLEClientForDevice:(id)a3;
-- (id)_rpOptions:(id)a3 stringForKey:(id)a4;
+- (BOOL)canSendMessage:(id)message;
+- (HMDRapportOverBLEMessageTransport)initWithAccountRegistry:(id)registry;
+- (HMDRapportOverBLEMessageTransport)initWithAccountRegistry:(id)registry rapportMessaging:(id)messaging discoClientFactory:(id)factory deviceWrapperFactory:(id)wrapperFactory;
+- (id)_IDSIdentifierForDestination:(id)destination;
+- (id)_createBLEClientForDevice:(id)device;
+- (id)_rpOptions:(id)options stringForKey:(id)key;
 - (id)start;
-- (void)_createOrKickContext:(id)a3;
+- (void)_createOrKickContext:(id)context;
 - (void)_deactivateDiscoveryClient;
 - (void)_newDiscoveryClient;
-- (void)_sendMessage:(id)a3 completionHandler:(id)a4;
-- (void)_sendMessagesToDevice:(id)a3 messages:(id)a4;
-- (void)didReceiveRequest:(id)a3 options:(id)a4 responseHandler:(id)a5;
-- (void)foundDevice:(id)a3;
-- (void)sendMessage:(id)a3 completionHandler:(id)a4;
-- (void)timerDidFire:(id)a3;
+- (void)_sendMessage:(id)message completionHandler:(id)handler;
+- (void)_sendMessagesToDevice:(id)device messages:(id)messages;
+- (void)didReceiveRequest:(id)request options:(id)options responseHandler:(id)handler;
+- (void)foundDevice:(id)device;
+- (void)sendMessage:(id)message completionHandler:(id)handler;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMDRapportOverBLEMessageTransport
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDRapportOverBLEMessageTransport *)self discoveryIdleTimer];
+  fireCopy = fire;
+  discoveryIdleTimer = [(HMDRapportOverBLEMessageTransport *)self discoveryIdleTimer];
 
-  if (v5 == v4)
+  if (discoveryIdleTimer == fireCopy)
   {
     [(HMDRapportOverBLEMessageTransport *)self _deactivateDiscoveryClient];
   }
@@ -36,16 +36,16 @@
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v6 = [(HMDRapportOverBLEMessageTransport *)self deviceContextCache];
-    v7 = [v6 countByEnumeratingWithState:&v31 objects:v39 count:16];
+    deviceContextCache = [(HMDRapportOverBLEMessageTransport *)self deviceContextCache];
+    v7 = [deviceContextCache countByEnumeratingWithState:&v31 objects:v39 count:16];
     if (v7)
     {
       v9 = v7;
       v10 = *v32;
       *&v8 = 138543618;
       v26 = v8;
-      v28 = self;
-      v29 = v4;
+      selfCopy = self;
+      v29 = fireCopy;
       v27 = *v32;
       do
       {
@@ -55,42 +55,42 @@
         {
           if (*v32 != v10)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(deviceContextCache);
           }
 
           v12 = *(*(&v31 + 1) + 8 * v11);
-          v13 = [(HMDRapportOverBLEMessageTransport *)self deviceContextCache];
-          v14 = [v13 objectForKeyedSubscript:v12];
-          v15 = [v14 idleTimer];
+          deviceContextCache2 = [(HMDRapportOverBLEMessageTransport *)self deviceContextCache];
+          v14 = [deviceContextCache2 objectForKeyedSubscript:v12];
+          idleTimer = [v14 idleTimer];
 
-          if (v15 == v4)
+          if (idleTimer == fireCopy)
           {
             v16 = objc_autoreleasePoolPush();
-            v17 = self;
+            selfCopy2 = self;
             v18 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
             {
               v19 = HMFGetLogIdentifier();
-              v20 = [(HMDRapportOverBLEMessageTransport *)v17 deviceContextCache];
-              [v20 objectForKeyedSubscript:v12];
-              v22 = v21 = v6;
-              v23 = [v22 device];
+              deviceContextCache3 = [(HMDRapportOverBLEMessageTransport *)selfCopy2 deviceContextCache];
+              [deviceContextCache3 objectForKeyedSubscript:v12];
+              v22 = v21 = deviceContextCache;
+              device = [v22 device];
               *buf = v26;
               v36 = v19;
               v37 = 2112;
-              v38 = v23;
+              v38 = device;
               _os_log_impl(&dword_229538000, v18, OS_LOG_TYPE_DEFAULT, "%{public}@RapportOverBLE Client %@ idle timer fired, removing from cache", buf, 0x16u);
 
-              v6 = v21;
+              deviceContextCache = v21;
               v10 = v27;
 
-              self = v28;
-              v4 = v29;
+              self = selfCopy;
+              fireCopy = v29;
             }
 
             objc_autoreleasePoolPop(v16);
-            v24 = [(HMDRapportOverBLEMessageTransport *)v17 deviceContextCache];
-            [v24 removeObjectForKey:v12];
+            deviceContextCache4 = [(HMDRapportOverBLEMessageTransport *)selfCopy2 deviceContextCache];
+            [deviceContextCache4 removeObjectForKey:v12];
 
             v9 = v30;
           }
@@ -99,7 +99,7 @@
         }
 
         while (v9 != v11);
-        v9 = [v6 countByEnumeratingWithState:&v31 objects:v39 count:16];
+        v9 = [deviceContextCache countByEnumeratingWithState:&v31 objects:v39 count:16];
       }
 
       while (v9);
@@ -109,12 +109,12 @@
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_createBLEClientForDevice:(id)a3
+- (id)_createBLEClientForDevice:(id)device
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  deviceCopy = device;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -122,26 +122,26 @@
     *buf = 138543618;
     v27 = v8;
     v28 = 2112;
-    v29 = v4;
+    v29 = deviceCopy;
     _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@RapportOverBLE Creating BLE client for device: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
   v9 = objc_alloc_init(MEMORY[0x277D44160]);
-  [v9 setDestinationDevice:v4];
+  [v9 setDestinationDevice:deviceCopy];
   [v9 setControlFlags:6324480];
   [v9 setServiceType:@"com.apple.home.messaging"];
-  v10 = [(HMDRapportOverBLEMessageTransport *)v6 workQueue];
-  [v9 setDispatchQueue:v10];
+  workQueue = [(HMDRapportOverBLEMessageTransport *)selfCopy workQueue];
+  [v9 setDispatchQueue:workQueue];
 
-  v11 = [v4 idsDeviceIdentifier];
-  objc_initWeak(buf, v6);
+  idsDeviceIdentifier = [deviceCopy idsDeviceIdentifier];
+  objc_initWeak(buf, selfCopy);
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __63__HMDRapportOverBLEMessageTransport__createBLEClientForDevice___block_invoke;
   v23[3] = &unk_278686B48;
   objc_copyWeak(&v25, buf);
-  v12 = v11;
+  v12 = idsDeviceIdentifier;
   v24 = v12;
   [v9 setDisconnectHandler:v23];
   v20[0] = MEMORY[0x277D85DD0];
@@ -157,7 +157,7 @@
   v17[2] = __63__HMDRapportOverBLEMessageTransport__createBLEClientForDevice___block_invoke_138;
   v17[3] = &unk_278686B48;
   objc_copyWeak(&v19, buf);
-  v14 = v4;
+  v14 = deviceCopy;
   v18 = v14;
   [v9 setInvalidationHandler:v17];
 
@@ -238,16 +238,16 @@ void __63__HMDRapportOverBLEMessageTransport__createBLEClientForDevice___block_i
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_IDSIdentifierForDestination:(id)a3
+- (id)_IDSIdentifierForDestination:(id)destination
 {
-  v3 = a3;
-  if (v3)
+  destinationCopy = destination;
+  if (destinationCopy)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     if (isKindOfClass)
     {
-      v5 = v3;
+      v5 = destinationCopy;
     }
 
     else
@@ -256,36 +256,36 @@ void __63__HMDRapportOverBLEMessageTransport__createBLEClientForDevice___block_i
     }
 
     v6 = v5;
-    v7 = 0;
+    sharedUserIDSIdentifier = 0;
     if (isKindOfClass)
     {
-      v8 = [v3 device];
-      v9 = [v8 idsIdentifier];
-      v10 = v9;
-      if (v9)
+      device = [destinationCopy device];
+      idsIdentifier = [device idsIdentifier];
+      v10 = idsIdentifier;
+      if (idsIdentifier)
       {
-        v7 = v9;
+        sharedUserIDSIdentifier = idsIdentifier;
       }
 
       else
       {
-        v11 = [v3 device];
-        v7 = [v11 sharedUserIDSIdentifier];
+        device2 = [destinationCopy device];
+        sharedUserIDSIdentifier = [device2 sharedUserIDSIdentifier];
       }
     }
   }
 
   else
   {
-    v7 = 0;
+    sharedUserIDSIdentifier = 0;
   }
 
-  return v7;
+  return sharedUserIDSIdentifier;
 }
 
-- (id)_rpOptions:(id)a3 stringForKey:(id)a4
+- (id)_rpOptions:(id)options stringForKey:(id)key
 {
-  v4 = [a3 hmf_stringForKey:a4];
+  v4 = [options hmf_stringForKey:key];
   if ([v4 length])
   {
     v5 = v4;
@@ -301,17 +301,17 @@ void __63__HMDRapportOverBLEMessageTransport__createBLEClientForDevice___block_i
   return v5;
 }
 
-- (void)didReceiveRequest:(id)a3 options:(id)a4 responseHandler:(id)a5
+- (void)didReceiveRequest:(id)request options:(id)options responseHandler:(id)handler
 {
   v123 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  optionsCopy = options;
+  handlerCopy = handler;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __79__HMDRapportOverBLEMessageTransport_didReceiveRequest_options_responseHandler___block_invoke;
   aBlock[3] = &unk_278688DD0;
-  v11 = v10;
+  v11 = handlerCopy;
   v112 = v11;
   v12 = _Block_copy(aBlock);
   v109[0] = MEMORY[0x277D85DD0];
@@ -321,10 +321,10 @@ void __63__HMDRapportOverBLEMessageTransport__createBLEClientForDevice___block_i
   v13 = v12;
   v110 = v13;
   v14 = _Block_copy(v109);
-  v15 = [(HMDRapportOverBLEMessageTransport *)self _rpOptions:v9 stringForKey:*MEMORY[0x277D442D0]];
+  v15 = [(HMDRapportOverBLEMessageTransport *)self _rpOptions:optionsCopy stringForKey:*MEMORY[0x277D442D0]];
   v107 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v15];
   v16 = objc_autoreleasePoolPush();
-  v17 = self;
+  selfCopy = self;
   v18 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
@@ -332,19 +332,19 @@ void __63__HMDRapportOverBLEMessageTransport__createBLEClientForDevice___block_i
     *buf = 138544386;
     v114 = v19;
     v115 = 2112;
-    v116 = v8;
+    v116 = requestCopy;
     v117 = 2160;
     v118 = 1752392040;
     v119 = 2112;
     v120 = v107;
     v121 = 2112;
-    v122 = v9;
+    v122 = optionsCopy;
     _os_log_impl(&dword_229538000, v18, OS_LOG_TYPE_DEFAULT, "%{public}@RapportOverBLE Received BLE message: %@, from: %{mask.hash}@, with options: %@", buf, 0x34u);
   }
 
   objc_autoreleasePoolPop(v16);
   v108 = 0;
-  v20 = [HMDRemoteMessageSerialization remoteMessageWithDictionary:v8 isHH2Payload:1 error:&v108];
+  v20 = [HMDRemoteMessageSerialization remoteMessageWithDictionary:requestCopy isHH2Payload:1 error:&v108];
   v106 = v108;
   if (v20)
   {
@@ -352,38 +352,38 @@ void __63__HMDRapportOverBLEMessageTransport__createBLEClientForDevice___block_i
     {
       if (v107)
       {
-        v105 = [(HMDRapportOverBLEMessageTransport *)v17 _rpOptions:v9 stringForKey:*MEMORY[0x277D442A0]];
+        v105 = [(HMDRapportOverBLEMessageTransport *)selfCopy _rpOptions:optionsCopy stringForKey:*MEMORY[0x277D442A0]];
         if (v105)
         {
-          v21 = [(HMDRemoteMessageTransport *)v17 accountRegistry];
-          v22 = [v21 deviceForIDSIdentifier:v107];
+          accountRegistry = [(HMDRemoteMessageTransport *)selfCopy accountRegistry];
+          v22 = [accountRegistry deviceForIDSIdentifier:v107];
 
           if (v22)
           {
-            v98 = [v22 remoteDestinationString];
+            remoteDestinationString = [v22 remoteDestinationString];
             v99 = v22;
-            if (v98)
+            if (remoteDestinationString)
             {
               (*(v13 + 2))(v13, 0);
-              v23 = [v20 userInfo];
-              v24 = [v23 mutableCopy];
+              userInfo = [v20 userInfo];
+              v24 = [userInfo mutableCopy];
 
-              [v24 setObject:v98 forKeyedSubscript:@"kIDSMessageSourceIDKey"];
-              v25 = [MEMORY[0x277CCABB0] numberWithInt:{-[HMDRapportOverBLEMessageTransport transportType](v17, "transportType")}];
+              [v24 setObject:remoteDestinationString forKeyedSubscript:@"kIDSMessageSourceIDKey"];
+              v25 = [MEMORY[0x277CCABB0] numberWithInt:{-[HMDRapportOverBLEMessageTransport transportType](selfCopy, "transportType")}];
               [v24 setObject:v25 forKeyedSubscript:@"kRemoteMessageTransportAttributionKey"];
 
-              [v8 hmf_dataForKey:@"kIDSMessageResponseErrorDataKey"];
+              [requestCopy hmf_dataForKey:@"kIDSMessageResponseErrorDataKey"];
               v26 = contexta = v11;
               v97 = v24;
               [v24 setObject:v26 forKeyedSubscript:@"kIDSMessageResponseErrorDataKey"];
 
-              v27 = [v20 internal];
-              [v27 setUserInfo:v24];
+              internal = [v20 internal];
+              [internal setUserInfo:v24];
 
               v28 = [HMDRemoteDeviceMessageDestination alloc];
-              v29 = [v20 destination];
-              v30 = [v29 target];
-              v96 = [(HMDRemoteDeviceMessageDestination *)v28 initWithTarget:v30 device:v99];
+              destination = [v20 destination];
+              target = [destination target];
+              v96 = [(HMDRemoteDeviceMessageDestination *)v28 initWithTarget:target device:v99];
 
               [v20 setDestination:v96];
               [v20 setSecure:1];
@@ -392,31 +392,31 @@ void __63__HMDRapportOverBLEMessageTransport__createBLEClientForDevice___block_i
               [v20 setSenderContext:v31];
 
               v32 = +[HMDMetricsManager sharedLogEventSubmitter];
-              v33 = [HMDRemoteMessageLogEvent receivedRemoteMessage:v20 transportType:[(HMDRapportOverBLEMessageTransport *)v17 transportType]];
+              v33 = [HMDRemoteMessageLogEvent receivedRemoteMessage:v20 transportType:[(HMDRapportOverBLEMessageTransport *)selfCopy transportType]];
               [v32 submitLogEvent:v33];
 
-              v34 = [(HMDRapportOverBLEMessageTransport *)v17 remoteMessageListener];
-              v35 = [(HMDRapportOverBLEMessageTransport *)v17 transportType];
-              v36 = [v20 senderContext];
-              v37 = v35;
+              remoteMessageListener = [(HMDRapportOverBLEMessageTransport *)selfCopy remoteMessageListener];
+              transportType = [(HMDRapportOverBLEMessageTransport *)selfCopy transportType];
+              senderContext = [v20 senderContext];
+              v37 = transportType;
               v11 = contexta;
-              [v34 receivedRemoteMessageOverTransportType:v37 remoteMessageSenderContext:v36];
+              [remoteMessageListener receivedRemoteMessageOverTransportType:v37 remoteMessageSenderContext:senderContext];
 
-              v38 = [(HMFMessageTransport *)v17 delegate];
-              [v38 messageTransport:v17 didReceiveMessage:v20];
+              delegate = [(HMFMessageTransport *)selfCopy delegate];
+              [delegate messageTransport:selfCopy didReceiveMessage:v20];
             }
 
             else
             {
               v85 = objc_autoreleasePoolPush();
-              v86 = v17;
+              v86 = selfCopy;
               v87 = HMFGetOSLogHandle();
               if (os_log_type_enabled(v87, OS_LOG_TYPE_ERROR))
               {
                 HMFGetLogIdentifier();
                 contextd = v15;
-                v88 = v9;
-                v89 = v8;
+                v88 = optionsCopy;
+                v89 = requestCopy;
                 v90 = v14;
                 v91 = v13;
                 v93 = v92 = v11;
@@ -429,8 +429,8 @@ void __63__HMDRapportOverBLEMessageTransport__createBLEClientForDevice___block_i
                 v11 = v92;
                 v13 = v91;
                 v14 = v90;
-                v8 = v89;
-                v9 = v88;
+                requestCopy = v89;
+                optionsCopy = v88;
                 v15 = contextd;
               }
 
@@ -444,15 +444,15 @@ void __63__HMDRapportOverBLEMessageTransport__createBLEClientForDevice___block_i
           else
           {
             context = objc_autoreleasePoolPush();
-            v75 = v17;
+            v75 = selfCopy;
             v76 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v76, OS_LOG_TYPE_ERROR))
             {
               HMFGetLogIdentifier();
               v77 = v20;
               v78 = v15;
-              v79 = v9;
-              v80 = v8;
+              v79 = optionsCopy;
+              v80 = requestCopy;
               v81 = v14;
               v82 = v13;
               v84 = v83 = v11;
@@ -469,8 +469,8 @@ void __63__HMDRapportOverBLEMessageTransport__createBLEClientForDevice___block_i
               v11 = v83;
               v13 = v82;
               v14 = v81;
-              v8 = v80;
-              v9 = v79;
+              requestCopy = v80;
+              optionsCopy = v79;
               v15 = v78;
               v20 = v77;
               v22 = 0;
@@ -484,14 +484,14 @@ void __63__HMDRapportOverBLEMessageTransport__createBLEClientForDevice___block_i
         else
         {
           v66 = objc_autoreleasePoolPush();
-          v67 = v17;
+          v67 = selfCopy;
           v68 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v68, OS_LOG_TYPE_ERROR))
           {
             HMFGetLogIdentifier();
             contextc = v15;
-            v69 = v9;
-            v70 = v8;
+            v69 = optionsCopy;
+            v70 = requestCopy;
             v71 = v14;
             v72 = v13;
             v74 = v73 = v11;
@@ -506,8 +506,8 @@ void __63__HMDRapportOverBLEMessageTransport__createBLEClientForDevice___block_i
             v11 = v73;
             v13 = v72;
             v14 = v71;
-            v8 = v70;
-            v9 = v69;
+            requestCopy = v70;
+            optionsCopy = v69;
             v15 = contextc;
           }
 
@@ -519,14 +519,14 @@ void __63__HMDRapportOverBLEMessageTransport__createBLEClientForDevice___block_i
       else
       {
         v57 = objc_autoreleasePoolPush();
-        v58 = v17;
+        v58 = selfCopy;
         v59 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v59, OS_LOG_TYPE_ERROR))
         {
           HMFGetLogIdentifier();
           contextb = v15;
-          v60 = v9;
-          v61 = v8;
+          v60 = optionsCopy;
+          v61 = requestCopy;
           v62 = v14;
           v63 = v13;
           v65 = v64 = v11;
@@ -541,8 +541,8 @@ void __63__HMDRapportOverBLEMessageTransport__createBLEClientForDevice___block_i
           v11 = v64;
           v13 = v63;
           v14 = v62;
-          v8 = v61;
-          v9 = v60;
+          requestCopy = v61;
+          optionsCopy = v60;
           v15 = contextb;
         }
 
@@ -554,13 +554,13 @@ void __63__HMDRapportOverBLEMessageTransport__createBLEClientForDevice___block_i
     else
     {
       v48 = objc_autoreleasePoolPush();
-      v49 = v17;
+      v49 = selfCopy;
       v50 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
       {
         HMFGetLogIdentifier();
-        v51 = v9;
-        v52 = v8;
+        v51 = optionsCopy;
+        v52 = requestCopy;
         v53 = v14;
         v54 = v13;
         v56 = v55 = v11;
@@ -575,8 +575,8 @@ void __63__HMDRapportOverBLEMessageTransport__createBLEClientForDevice___block_i
         v11 = v55;
         v13 = v54;
         v14 = v53;
-        v8 = v52;
-        v9 = v51;
+        requestCopy = v52;
+        optionsCopy = v51;
         v15 = 0;
       }
 
@@ -588,20 +588,20 @@ void __63__HMDRapportOverBLEMessageTransport__createBLEClientForDevice___block_i
   else
   {
     v39 = objc_autoreleasePoolPush();
-    v40 = v17;
+    v40 = selfCopy;
     v41 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
     {
       HMFGetLogIdentifier();
       v42 = v15;
-      v43 = v9;
+      v43 = optionsCopy;
       v44 = v14;
       v45 = v13;
       v47 = v46 = v11;
       *buf = 138544386;
       v114 = v47;
       v115 = 2112;
-      v116 = v8;
+      v116 = requestCopy;
       v117 = 2160;
       v118 = 1752392040;
       v119 = 2112;
@@ -613,7 +613,7 @@ void __63__HMDRapportOverBLEMessageTransport__createBLEClientForDevice___block_i
       v11 = v46;
       v13 = v45;
       v14 = v44;
-      v9 = v43;
+      optionsCopy = v43;
       v15 = v42;
       v20 = 0;
     }
@@ -636,22 +636,22 @@ void __79__HMDRapportOverBLEMessageTransport_didReceiveRequest_options_responseH
 - (void)_newDiscoveryClient
 {
   [(HMDRapportOverBLEMessageTransport *)self _deactivateDiscoveryClient];
-  v3 = [(HMDRapportOverBLEMessageTransport *)self discoveryIdleTimer];
-  [v3 resume];
+  discoveryIdleTimer = [(HMDRapportOverBLEMessageTransport *)self discoveryIdleTimer];
+  [discoveryIdleTimer resume];
 
-  v4 = [(HMDRapportOverBLEMessageTransport *)self discoClientFactory];
-  v5 = [v4 makeDiscoveryClient];
-  [(HMDRapportOverBLEMessageTransport *)self setDiscoveryClient:v5];
+  discoClientFactory = [(HMDRapportOverBLEMessageTransport *)self discoClientFactory];
+  makeDiscoveryClient = [discoClientFactory makeDiscoveryClient];
+  [(HMDRapportOverBLEMessageTransport *)self setDiscoveryClient:makeDiscoveryClient];
 
-  v6 = [(HMDRapportOverBLEMessageTransport *)self discoveryClient];
-  [v6 setControlFlags:6293506];
+  discoveryClient = [(HMDRapportOverBLEMessageTransport *)self discoveryClient];
+  [discoveryClient setControlFlags:6293506];
 
-  v7 = [(HMDRapportOverBLEMessageTransport *)self discoveryClient];
-  [v7 setServiceType:@"com.apple.home.messaging"];
+  discoveryClient2 = [(HMDRapportOverBLEMessageTransport *)self discoveryClient];
+  [discoveryClient2 setServiceType:@"com.apple.home.messaging"];
 
-  v8 = [(HMDRapportOverBLEMessageTransport *)self workQueue];
-  v9 = [(HMDRapportOverBLEMessageTransport *)self discoveryClient];
-  [v9 setDispatchQueue:v8];
+  workQueue = [(HMDRapportOverBLEMessageTransport *)self workQueue];
+  discoveryClient3 = [(HMDRapportOverBLEMessageTransport *)self discoveryClient];
+  [discoveryClient3 setDispatchQueue:workQueue];
 
   objc_initWeak(&location, self);
   v17[0] = MEMORY[0x277D85DD0];
@@ -659,24 +659,24 @@ void __79__HMDRapportOverBLEMessageTransport_didReceiveRequest_options_responseH
   v17[2] = __56__HMDRapportOverBLEMessageTransport__newDiscoveryClient__block_invoke;
   v17[3] = &unk_278686B80;
   objc_copyWeak(&v18, &location);
-  v10 = [(HMDRapportOverBLEMessageTransport *)self discoveryClient];
-  [v10 setInterruptionHandler:v17];
+  discoveryClient4 = [(HMDRapportOverBLEMessageTransport *)self discoveryClient];
+  [discoveryClient4 setInterruptionHandler:v17];
 
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __56__HMDRapportOverBLEMessageTransport__newDiscoveryClient__block_invoke_130;
   v15[3] = &unk_27867CA08;
   objc_copyWeak(&v16, &location);
-  v11 = [(HMDRapportOverBLEMessageTransport *)self discoveryClient];
-  [v11 setDeviceFoundHandler:v15];
+  discoveryClient5 = [(HMDRapportOverBLEMessageTransport *)self discoveryClient];
+  [discoveryClient5 setDeviceFoundHandler:v15];
 
-  v12 = [(HMDRapportOverBLEMessageTransport *)self discoveryClient];
+  discoveryClient6 = [(HMDRapportOverBLEMessageTransport *)self discoveryClient];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __56__HMDRapportOverBLEMessageTransport__newDiscoveryClient__block_invoke_132;
   v13[3] = &unk_278688A18;
   objc_copyWeak(&v14, &location);
-  [v12 activateWithCompletion:v13];
+  [discoveryClient6 activateWithCompletion:v13];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&v16);
@@ -771,12 +771,12 @@ void __56__HMDRapportOverBLEMessageTransport__newDiscoveryClient__block_invoke_1
 - (void)_deactivateDiscoveryClient
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDRapportOverBLEMessageTransport *)self discoveryClient];
+  discoveryClient = [(HMDRapportOverBLEMessageTransport *)self discoveryClient];
 
-  if (v3)
+  if (discoveryClient)
   {
     v4 = objc_autoreleasePoolPush();
-    v5 = self;
+    selfCopy = self;
     v6 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
@@ -787,29 +787,29 @@ void __56__HMDRapportOverBLEMessageTransport__newDiscoveryClient__block_invoke_1
     }
 
     objc_autoreleasePoolPop(v4);
-    [(RPCompanionLinkClient *)v5->_discoveryClient invalidate];
-    discoveryClient = v5->_discoveryClient;
-    v5->_discoveryClient = 0;
+    [(RPCompanionLinkClient *)selfCopy->_discoveryClient invalidate];
+    discoveryClient = selfCopy->_discoveryClient;
+    selfCopy->_discoveryClient = 0;
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendMessagesToDevice:(id)a3 messages:(id)a4
+- (void)_sendMessagesToDevice:(id)device messages:(id)messages
 {
   v43 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDRapportOverBLEMessageTransport *)self deviceWrapperFactory];
-  v9 = [(HMDRapportOverBLEMessageTransport *)self _createBLEClientForDevice:v6];
-  v10 = [v8 makeWrapperWithClient:v9];
+  deviceCopy = device;
+  messagesCopy = messages;
+  deviceWrapperFactory = [(HMDRapportOverBLEMessageTransport *)self deviceWrapperFactory];
+  v9 = [(HMDRapportOverBLEMessageTransport *)self _createBLEClientForDevice:deviceCopy];
+  v10 = [deviceWrapperFactory makeWrapperWithClient:v9];
 
   v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v12 = v7;
+  v12 = messagesCopy;
   v13 = [v12 countByEnumeratingWithState:&v32 objects:v42 count:16];
   if (v13)
   {
@@ -825,9 +825,9 @@ void __56__HMDRapportOverBLEMessageTransport__newDiscoveryClient__block_invoke_1
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v32 + 1) + 8 * v16) message];
-        v18 = [v17 identifier];
-        [v11 addObject:v18];
+        message = [*(*(&v32 + 1) + 8 * v16) message];
+        identifier = [message identifier];
+        [v11 addObject:identifier];
 
         ++v16;
       }
@@ -840,16 +840,16 @@ void __56__HMDRapportOverBLEMessageTransport__newDiscoveryClient__block_invoke_1
   }
 
   v19 = objc_autoreleasePoolPush();
-  v20 = self;
+  selfCopy = self;
   v21 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
     v22 = HMFGetLogIdentifier();
-    v23 = [v6 identifier];
+    identifier2 = [deviceCopy identifier];
     *buf = 138543874;
     v37 = v22;
     v38 = 2112;
-    v39 = v23;
+    v39 = identifier2;
     v40 = 2112;
     v41 = v11;
     _os_log_impl(&dword_229538000, v21, OS_LOG_TYPE_DEFAULT, "%{public}@RapportOverBLE Trying to activate client for device: %@ for messages %@", buf, 0x20u);
@@ -860,13 +860,13 @@ void __56__HMDRapportOverBLEMessageTransport__newDiscoveryClient__block_invoke_1
   v28[1] = 3221225472;
   v28[2] = __68__HMDRapportOverBLEMessageTransport__sendMessagesToDevice_messages___block_invoke;
   v28[3] = &unk_278683340;
-  v28[4] = v20;
-  v29 = v6;
+  v28[4] = selfCopy;
+  v29 = deviceCopy;
   v30 = v10;
   v31 = v12;
   v24 = v12;
   v25 = v10;
-  v26 = v6;
+  v26 = deviceCopy;
   [v25 activateWithCompletion:v28];
 
   v27 = *MEMORY[0x277D85DE8];
@@ -1123,40 +1123,40 @@ void __68__HMDRapportOverBLEMessageTransport__sendMessagesToDevice_messages___bl
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)foundDevice:(id)a3
+- (void)foundDevice:(id)device
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAB58] indexSet];
+  deviceCopy = device;
+  indexSet = [MEMORY[0x277CCAB58] indexSet];
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v7 = [(HMDRapportOverBLEMessageTransport *)self messageQueue];
-  v8 = [v7 count];
+  messageQueue = [(HMDRapportOverBLEMessageTransport *)self messageQueue];
+  v8 = [messageQueue count];
 
   if (v8)
   {
     v9 = 0;
     do
     {
-      v10 = [(HMDRapportOverBLEMessageTransport *)self messageQueue];
-      v11 = [v10 objectAtIndexedSubscript:v9];
+      messageQueue2 = [(HMDRapportOverBLEMessageTransport *)self messageQueue];
+      v11 = [messageQueue2 objectAtIndexedSubscript:v9];
 
-      v12 = [v11 message];
-      v13 = [v12 destination];
-      v14 = [(HMDRapportOverBLEMessageTransport *)self _IDSIdentifierForDestination:v13];
+      message = [v11 message];
+      destination = [message destination];
+      v14 = [(HMDRapportOverBLEMessageTransport *)self _IDSIdentifierForDestination:destination];
 
-      v15 = [v4 idsDeviceIdentifier];
-      LODWORD(v13) = [v14 hmf_isEqualToUUIDString:v15];
+      idsDeviceIdentifier = [deviceCopy idsDeviceIdentifier];
+      LODWORD(destination) = [v14 hmf_isEqualToUUIDString:idsDeviceIdentifier];
 
-      if (v13)
+      if (destination)
       {
-        [v5 addIndex:v9];
+        [indexSet addIndex:v9];
         [v6 addObject:v11];
-        [(HMDRapportOverBLEMessageTransport *)self _createOrKickContext:v4];
+        [(HMDRapportOverBLEMessageTransport *)self _createOrKickContext:deviceCopy];
       }
 
       ++v9;
-      v16 = [(HMDRapportOverBLEMessageTransport *)self messageQueue];
-      v17 = [v16 count];
+      messageQueue3 = [(HMDRapportOverBLEMessageTransport *)self messageQueue];
+      v17 = [messageQueue3 count];
     }
 
     while (v9 < v17);
@@ -1165,7 +1165,7 @@ void __68__HMDRapportOverBLEMessageTransport__sendMessagesToDevice_messages___bl
   if ([v6 count])
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
@@ -1178,18 +1178,18 @@ void __68__HMDRapportOverBLEMessageTransport__sendMessagesToDevice_messages___bl
     }
 
     objc_autoreleasePoolPop(v18);
-    [(HMDRapportOverBLEMessageTransport *)v19 _sendMessagesToDevice:v4 messages:v6];
-    v22 = [(HMDRapportOverBLEMessageTransport *)v19 messageQueue];
-    [v22 removeObjectsAtIndexes:v5];
+    [(HMDRapportOverBLEMessageTransport *)selfCopy _sendMessagesToDevice:deviceCopy messages:v6];
+    messageQueue4 = [(HMDRapportOverBLEMessageTransport *)selfCopy messageQueue];
+    [messageQueue4 removeObjectsAtIndexes:indexSet];
   }
 
-  v23 = [(HMDRapportOverBLEMessageTransport *)self messageQueue];
-  v24 = [v23 count];
+  messageQueue5 = [(HMDRapportOverBLEMessageTransport *)self messageQueue];
+  v24 = [messageQueue5 count];
 
   if (v24)
   {
-    v25 = [(HMDRapportOverBLEMessageTransport *)self discoveryIdleTimer];
-    [v25 kick];
+    discoveryIdleTimer = [(HMDRapportOverBLEMessageTransport *)self discoveryIdleTimer];
+    [discoveryIdleTimer kick];
   }
 
   else
@@ -1200,74 +1200,74 @@ void __68__HMDRapportOverBLEMessageTransport__sendMessagesToDevice_messages___bl
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_createOrKickContext:(id)a3
+- (void)_createOrKickContext:(id)context
 {
-  v14 = a3;
+  contextCopy = context;
   v4 = objc_alloc(MEMORY[0x277CCAD78]);
-  v5 = [v14 idsDeviceIdentifier];
-  v6 = [v4 initWithUUIDString:v5];
+  idsDeviceIdentifier = [contextCopy idsDeviceIdentifier];
+  v6 = [v4 initWithUUIDString:idsDeviceIdentifier];
 
-  v7 = [(HMDRapportOverBLEMessageTransport *)self deviceContextCache];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  deviceContextCache = [(HMDRapportOverBLEMessageTransport *)self deviceContextCache];
+  v8 = [deviceContextCache objectForKeyedSubscript:v6];
 
   if (v8)
   {
-    v9 = [(HMDRapportOverBLEMessageTransport *)self deviceContextCache];
-    v10 = [v9 objectForKeyedSubscript:v6];
-    v11 = [v10 idleTimer];
-    [v11 kick];
+    deviceContextCache2 = [(HMDRapportOverBLEMessageTransport *)self deviceContextCache];
+    v10 = [deviceContextCache2 objectForKeyedSubscript:v6];
+    idleTimer = [v10 idleTimer];
+    [idleTimer kick];
   }
 
   else
   {
-    v12 = [[RapportOverBLEDeviceContext alloc] initWithDevice:v14];
-    v13 = [(HMDRapportOverBLEMessageTransport *)self deviceContextCache];
-    [v13 setObject:v12 forKeyedSubscript:v6];
+    v12 = [[RapportOverBLEDeviceContext alloc] initWithDevice:contextCopy];
+    deviceContextCache3 = [(HMDRapportOverBLEMessageTransport *)self deviceContextCache];
+    [deviceContextCache3 setObject:v12 forKeyedSubscript:v6];
 
-    v9 = [(HMDRapportOverBLEMessageTransport *)self deviceContextCache];
-    v10 = [v9 objectForKeyedSubscript:v6];
-    v11 = [v10 idleTimer];
-    [v11 setDelegate:self];
+    deviceContextCache2 = [(HMDRapportOverBLEMessageTransport *)self deviceContextCache];
+    v10 = [deviceContextCache2 objectForKeyedSubscript:v6];
+    idleTimer = [v10 idleTimer];
+    [idleTimer setDelegate:self];
   }
 }
 
-- (void)_sendMessage:(id)a3 completionHandler:(id)a4
+- (void)_sendMessage:(id)message completionHandler:(id)handler
 {
   v43 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDRemoteMessageTransport *)self remoteMessageFromMessage:v6];
+  messageCopy = message;
+  handlerCopy = handler;
+  v8 = [(HMDRemoteMessageTransport *)self remoteMessageFromMessage:messageCopy];
   v9 = v8;
-  if (v6 && v8)
+  if (messageCopy && v8)
   {
-    v10 = [v8 destination];
-    v11 = [(HMDRapportOverBLEMessageTransport *)self _IDSIdentifierForDestination:v10];
+    destination = [v8 destination];
+    v11 = [(HMDRapportOverBLEMessageTransport *)self _IDSIdentifierForDestination:destination];
 
-    v12 = [(HMDRapportOverBLEMessageTransport *)self deviceContextCache];
-    v13 = [v12 objectForKeyedSubscript:v11];
+    deviceContextCache = [(HMDRapportOverBLEMessageTransport *)self deviceContextCache];
+    v13 = [deviceContextCache objectForKeyedSubscript:v11];
 
-    v14 = [v13 device];
-    v15 = [[RapportOverBLEQueuedMessage alloc] initWithMessage:v9 withCompletion:v7];
-    if (v13 && v14)
+    device = [v13 device];
+    v15 = [[RapportOverBLEQueuedMessage alloc] initWithMessage:v9 withCompletion:handlerCopy];
+    if (v13 && device)
     {
       v34 = v11;
-      v16 = [v13 idleTimer];
-      [v16 kick];
+      idleTimer = [v13 idleTimer];
+      [idleTimer kick];
 
       v17 = objc_autoreleasePoolPush();
-      v18 = self;
+      selfCopy = self;
       v19 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
         HMFGetLogIdentifier();
         v20 = v32 = v17;
-        v21 = [v9 identifier];
+        identifier = [v9 identifier];
         *buf = 138543874;
         v38 = v20;
         v39 = 2112;
-        v40 = v14;
+        v40 = device;
         v41 = 2112;
-        v42 = v21;
+        v42 = identifier;
         _os_log_impl(&dword_229538000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@RapportOverBLE Device %@ is in the cache, sending message %@ now", buf, 0x20u);
 
         v17 = v32;
@@ -1276,7 +1276,7 @@ void __68__HMDRapportOverBLEMessageTransport__sendMessagesToDevice_messages___bl
       objc_autoreleasePoolPop(v17);
       v36 = v15;
       v22 = [MEMORY[0x277CBEA60] arrayWithObjects:&v36 count:1];
-      [(HMDRapportOverBLEMessageTransport *)v18 _sendMessagesToDevice:v14 messages:v22];
+      [(HMDRapportOverBLEMessageTransport *)selfCopy _sendMessagesToDevice:device messages:v22];
 
       v11 = v34;
     }
@@ -1284,7 +1284,7 @@ void __68__HMDRapportOverBLEMessageTransport__sendMessagesToDevice_messages___bl
     else
     {
       v25 = objc_autoreleasePoolPush();
-      v26 = self;
+      selfCopy2 = self;
       v27 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
       {
@@ -1303,16 +1303,16 @@ void __68__HMDRapportOverBLEMessageTransport__sendMessagesToDevice_messages___bl
       }
 
       objc_autoreleasePoolPop(v25);
-      v30 = [(HMDRapportOverBLEMessageTransport *)v26 messageQueue];
-      [v30 addObject:v15];
+      messageQueue = [(HMDRapportOverBLEMessageTransport *)selfCopy2 messageQueue];
+      [messageQueue addObject:v15];
 
-      [(HMDRapportOverBLEMessageTransport *)v26 _newDiscoveryClient];
+      [(HMDRapportOverBLEMessageTransport *)selfCopy2 _newDiscoveryClient];
     }
   }
 
   else
   {
-    v23 = _Block_copy(v7);
+    v23 = _Block_copy(handlerCopy);
     if (v23)
     {
       v24 = [MEMORY[0x277CCA9B8] hmErrorWithCode:20 description:@"remoteMessage is nil!" reason:0 suggestion:0 underlyingError:0];
@@ -1323,57 +1323,57 @@ void __68__HMDRapportOverBLEMessageTransport__sendMessagesToDevice_messages___bl
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendMessage:(id)a3 completionHandler:(id)a4
+- (void)sendMessage:(id)message completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDRapportOverBLEMessageTransport *)self workQueue];
+  messageCopy = message;
+  handlerCopy = handler;
+  workQueue = [(HMDRapportOverBLEMessageTransport *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __67__HMDRapportOverBLEMessageTransport_sendMessage_completionHandler___block_invoke;
   block[3] = &unk_278689F98;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = messageCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = messageCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (BOOL)canSendMessage:(id)a3
+- (BOOL)canSendMessage:(id)message
 {
-  v3 = a3;
-  v4 = ([v3 restriction] & 0x20) != 0 && objc_msgSend(v3, "restriction") != -1;
+  messageCopy = message;
+  v4 = ([messageCopy restriction] & 0x20) != 0 && objc_msgSend(messageCopy, "restriction") != -1;
 
   return v4;
 }
 
 - (id)start
 {
-  v3 = [(HMDRemoteMessageTransport *)self startPromise];
-  [v3 fulfillWithValue:0];
+  startPromise = [(HMDRemoteMessageTransport *)self startPromise];
+  [startPromise fulfillWithValue:0];
 
   return [(HMDRemoteMessageTransport *)self startFuture];
 }
 
-- (HMDRapportOverBLEMessageTransport)initWithAccountRegistry:(id)a3 rapportMessaging:(id)a4 discoClientFactory:(id)a5 deviceWrapperFactory:(id)a6
+- (HMDRapportOverBLEMessageTransport)initWithAccountRegistry:(id)registry rapportMessaging:(id)messaging discoClientFactory:(id)factory deviceWrapperFactory:(id)wrapperFactory
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  registryCopy = registry;
+  messagingCopy = messaging;
+  factoryCopy = factory;
+  wrapperFactoryCopy = wrapperFactory;
   v33.receiver = self;
   v33.super_class = HMDRapportOverBLEMessageTransport;
-  v14 = [(HMDRemoteMessageTransport *)&v33 initWithAccountRegistry:v10];
+  v14 = [(HMDRemoteMessageTransport *)&v33 initWithAccountRegistry:registryCopy];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_discoClientFactory, a5);
-    objc_storeStrong(&v15->_deviceWrapperFactory, a6);
+    objc_storeStrong(&v14->_discoClientFactory, factory);
+    objc_storeStrong(&v15->_deviceWrapperFactory, wrapperFactory);
     v16 = HMDispatchQueueNameString();
-    v17 = [v16 UTF8String];
+    uTF8String = [v16 UTF8String];
     v18 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v19 = dispatch_queue_create(v17, v18);
+    v19 = dispatch_queue_create(uTF8String, v18);
     workQueue = v15->_workQueue;
     v15->_workQueue = v19;
 
@@ -1393,7 +1393,7 @@ void __68__HMDRapportOverBLEMessageTransport__sendMessagesToDevice_messages___bl
     v30 = &unk_27867EB78;
     objc_copyWeak(&v31, &location);
     v25 = _Block_copy(&v27);
-    [v11 registerRequestHandlerForRequestID:@"com.apple.home.hh2.messaging.ble" withRequestHandler:{v25, v27, v28, v29, v30}];
+    [messagingCopy registerRequestHandlerForRequestID:@"com.apple.home.hh2.messaging.ble" withRequestHandler:{v25, v27, v28, v29, v30}];
 
     objc_destroyWeak(&v31);
     objc_destroyWeak(&location);
@@ -1411,13 +1411,13 @@ void __118__HMDRapportOverBLEMessageTransport_initWithAccountRegistry_rapportMes
   [WeakRetained didReceiveRequest:v9 options:v8 responseHandler:v7];
 }
 
-- (HMDRapportOverBLEMessageTransport)initWithAccountRegistry:(id)a3
+- (HMDRapportOverBLEMessageTransport)initWithAccountRegistry:(id)registry
 {
-  v4 = a3;
+  registryCopy = registry;
   v5 = +[HMDRapportMessaging sharedInstance];
   v6 = [HMDRapportOverBLEDiscoveryClientDefaultFactory alloc];
   v7 = [HMDRapportOverBLEDeviceWrapperDefaultFactory alloc];
-  v8 = [(HMDRapportOverBLEMessageTransport *)self initWithAccountRegistry:v4 rapportMessaging:v5 discoClientFactory:v6 deviceWrapperFactory:v7];
+  v8 = [(HMDRapportOverBLEMessageTransport *)self initWithAccountRegistry:registryCopy rapportMessaging:v5 discoClientFactory:v6 deviceWrapperFactory:v7];
 
   return v8;
 }

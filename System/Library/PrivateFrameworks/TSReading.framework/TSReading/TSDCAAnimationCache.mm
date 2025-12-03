@@ -1,41 +1,41 @@
 @interface TSDCAAnimationCache
-- (BOOL)doubleSidedCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5;
-- (BOOL)hiddenCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5;
-- (BOOL)p_setupAndCacheAnimationValues:(BOOL)a3 verifyOnly:(BOOL)a4;
-- (CATransform3D)transformCachedValueAtTime:(SEL)a3 layer:(double)a4 animation:(id)a5;
+- (BOOL)doubleSidedCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation;
+- (BOOL)hiddenCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation;
+- (BOOL)p_setupAndCacheAnimationValues:(BOOL)values verifyOnly:(BOOL)only;
+- (CATransform3D)transformCachedValueAtTime:(SEL)time layer:(double)layer animation:(id)animation;
 - (CATransform3D)transformInitialValue;
-- (CGPoint)anchorPointCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5;
+- (CGPoint)anchorPointCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation;
 - (CGPoint)anchorPointInitialValue;
-- (CGPoint)positionCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5;
+- (CGPoint)positionCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation;
 - (CGPoint)positionInitialValue;
-- (CGPoint)transformTranslationCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5;
+- (CGPoint)transformTranslationCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation;
 - (CGPoint)transformTranslationInitialValue;
-- (CGRect)boundsCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5;
+- (CGRect)boundsCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation;
 - (CGRect)boundsInitialValue;
-- (TSDCAAnimationCache)initWithLayer:(id)a3 animation:(id)a4 overrideInitialValues:(id)a5 cacheAnimationValues:(BOOL)a6;
-- (double)anchorPointZCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5;
-- (double)borderWidthCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5;
-- (double)opacityCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5;
-- (double)transformRotationCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5;
-- (double)transformRotationXCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5;
-- (double)transformRotationYCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5;
-- (double)transformRotationZCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5;
-- (double)transformScaleXCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5;
-- (double)transformScaleXYCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5;
-- (double)transformScaleYCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5;
-- (double)transformTranslationXCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5;
-- (double)transformTranslationYCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5;
-- (double)transformTranslationZCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5;
-- (double)zPositionCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5;
+- (TSDCAAnimationCache)initWithLayer:(id)layer animation:(id)animation overrideInitialValues:(id)values cacheAnimationValues:(BOOL)animationValues;
+- (double)anchorPointZCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation;
+- (double)borderWidthCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation;
+- (double)opacityCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation;
+- (double)transformRotationCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation;
+- (double)transformRotationXCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation;
+- (double)transformRotationYCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation;
+- (double)transformRotationZCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation;
+- (double)transformScaleXCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation;
+- (double)transformScaleXYCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation;
+- (double)transformScaleYCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation;
+- (double)transformTranslationXCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation;
+- (double)transformTranslationYCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation;
+- (double)transformTranslationZCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation;
+- (double)zPositionCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation;
 - (void)dealloc;
 @end
 
 @implementation TSDCAAnimationCache
 
-- (BOOL)p_setupAndCacheAnimationValues:(BOOL)a3 verifyOnly:(BOOL)a4
+- (BOOL)p_setupAndCacheAnimationValues:(BOOL)values verifyOnly:(BOOL)only
 {
-  v4 = a4;
-  v5 = a3;
+  onlyCopy = only;
+  valuesCopy = values;
   v227[1] = *MEMORY[0x277D85DE8];
   v7 = objc_alloc_init(MEMORY[0x277CBEB40]);
   if ([(TSDCAAnimationCache *)self animation])
@@ -43,19 +43,19 @@
     [(TSDCAAnimationCache *)self animation];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    v9 = [(TSDCAAnimationCache *)self animation];
+    animation = [(TSDCAAnimationCache *)self animation];
     if (isKindOfClass)
     {
-      v10 = [(CAAnimation *)v9 animations];
+      animations = [(CAAnimation *)animation animations];
     }
 
     else
     {
-      v227[0] = v9;
-      v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v227 count:1];
+      v227[0] = animation;
+      animations = [MEMORY[0x277CBEA60] arrayWithObjects:v227 count:1];
     }
 
-    v11 = v10;
+    v11 = animations;
   }
 
   else
@@ -90,19 +90,19 @@
     while (v13);
   }
 
-  v206 = v5;
+  v206 = valuesCopy;
   v207 = v7;
   v16 = objc_opt_new();
   v217 = 0u;
   v218 = 0u;
   v219 = 0u;
   v220 = 0u;
-  v17 = [MEMORY[0x277CD9DF8] TSD_supportedKeyPaths];
-  v18 = [v17 countByEnumeratingWithState:&v217 objects:v225 count:16];
+  tSD_supportedKeyPaths = [MEMORY[0x277CD9DF8] TSD_supportedKeyPaths];
+  v18 = [tSD_supportedKeyPaths countByEnumeratingWithState:&v217 objects:v225 count:16];
   if (!v18)
   {
     v20 = 1;
-    if (!v4)
+    if (!onlyCopy)
     {
       goto LABEL_31;
     }
@@ -122,7 +122,7 @@ LABEL_29:
     {
       if (*v218 != v21)
       {
-        objc_enumerationMutation(v17);
+        objc_enumerationMutation(tSD_supportedKeyPaths);
       }
 
       v23 = *(*(&v217 + 1) + 8 * j);
@@ -142,38 +142,38 @@ LABEL_22:
       }
 
 LABEL_23:
-      if (v4)
+      if (onlyCopy)
       {
         v26 = [(NSDictionary *)[(TSDCAAnimationCache *)self initialValues] objectForKeyedSubscript:v23];
         if (([v25 isEqual:v26] & 1) == 0)
         {
-          v208 = [MEMORY[0x277D6C290] currentHandler];
+          currentHandler = [MEMORY[0x277D6C290] currentHandler];
           v27 = v19;
           v28 = v21;
           v29 = v16;
-          v30 = v4;
-          v31 = v17;
-          v32 = self;
+          v30 = onlyCopy;
+          v31 = tSD_supportedKeyPaths;
+          selfCopy = self;
           v33 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDCAAnimationCache p_setupAndCacheAnimationValues:verifyOnly:]"];
           v34 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/CAAnimationAdditions.m"];
           v35 = v33;
-          self = v32;
-          v17 = v31;
-          v4 = v30;
+          self = selfCopy;
+          tSD_supportedKeyPaths = v31;
+          onlyCopy = v30;
           v16 = v29;
           v21 = v28;
           v19 = v27;
-          [v208 handleFailureInFunction:v35 file:v34 lineNumber:645 description:{@"Initial value not equal! Current:%@, Cached:%@", v25, v26}];
+          [currentHandler handleFailureInFunction:v35 file:v34 lineNumber:645 description:{@"Initial value not equal! Current:%@, Cached:%@", v25, v26}];
           v20 = 0;
         }
       }
     }
 
-    v19 = [v17 countByEnumeratingWithState:&v217 objects:v225 count:16];
+    v19 = [tSD_supportedKeyPaths countByEnumeratingWithState:&v217 objects:v225 count:16];
   }
 
   while (v19);
-  if (v4)
+  if (onlyCopy)
   {
     goto LABEL_29;
   }
@@ -1089,21 +1089,21 @@ LABEL_254:
   return v20 & 1;
 }
 
-- (TSDCAAnimationCache)initWithLayer:(id)a3 animation:(id)a4 overrideInitialValues:(id)a5 cacheAnimationValues:(BOOL)a6
+- (TSDCAAnimationCache)initWithLayer:(id)layer animation:(id)animation overrideInitialValues:(id)values cacheAnimationValues:(BOOL)animationValues
 {
-  v6 = a6;
+  animationValuesCopy = animationValues;
   v14.receiver = self;
   v14.super_class = TSDCAAnimationCache;
   v10 = [(TSDCAAnimationCache *)&v14 init];
   v11 = v10;
   if (v10)
   {
-    v10->_layer = a3;
-    v10->_animation = a4;
-    [a4 duration];
+    v10->_layer = layer;
+    v10->_animation = animation;
+    [animation duration];
     v11->_animationDuration = v12;
-    v11->_overrideInitialValuesDict = [a5 copy];
-    [(TSDCAAnimationCache *)v11 p_setupAndCacheAnimationValues:v6 verifyOnly:0];
+    v11->_overrideInitialValuesDict = [values copy];
+    [(TSDCAAnimationCache *)v11 p_setupAndCacheAnimationValues:animationValuesCopy verifyOnly:0];
   }
 
   return v11;
@@ -1137,10 +1137,10 @@ LABEL_254:
   [(TSDCAAnimationCache *)&v3 dealloc];
 }
 
-- (CGPoint)anchorPointCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5
+- (CGPoint)anchorPointCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation
 {
   cacheValuesCount = self->_cacheValuesCount;
-  v6 = a3 / self->_animationDuration * cacheValuesCount;
+  v6 = time / self->_animationDuration * cacheValuesCount;
   if (v6 > (cacheValuesCount - 1))
   {
     v6 = (cacheValuesCount - 1);
@@ -1159,10 +1159,10 @@ LABEL_254:
   return result;
 }
 
-- (double)anchorPointZCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5
+- (double)anchorPointZCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation
 {
   cacheValuesCount = self->_cacheValuesCount;
-  v6 = a3 / self->_animationDuration * cacheValuesCount;
+  v6 = time / self->_animationDuration * cacheValuesCount;
   if (v6 > (cacheValuesCount - 1))
   {
     v6 = (cacheValuesCount - 1);
@@ -1176,10 +1176,10 @@ LABEL_254:
   return self->_anchorPointZCache[v6];
 }
 
-- (double)borderWidthCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5
+- (double)borderWidthCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation
 {
   cacheValuesCount = self->_cacheValuesCount;
-  v6 = a3 / self->_animationDuration * cacheValuesCount;
+  v6 = time / self->_animationDuration * cacheValuesCount;
   if (v6 > (cacheValuesCount - 1))
   {
     v6 = (cacheValuesCount - 1);
@@ -1193,10 +1193,10 @@ LABEL_254:
   return self->_borderWidthCache[v6];
 }
 
-- (CGRect)boundsCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5
+- (CGRect)boundsCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation
 {
   cacheValuesCount = self->_cacheValuesCount;
-  v6 = a3 / self->_animationDuration * cacheValuesCount;
+  v6 = time / self->_animationDuration * cacheValuesCount;
   if (v6 > (cacheValuesCount - 1))
   {
     v6 = (cacheValuesCount - 1);
@@ -1219,10 +1219,10 @@ LABEL_254:
   return result;
 }
 
-- (BOOL)doubleSidedCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5
+- (BOOL)doubleSidedCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation
 {
   cacheValuesCount = self->_cacheValuesCount;
-  v6 = a3 / self->_animationDuration * cacheValuesCount;
+  v6 = time / self->_animationDuration * cacheValuesCount;
   if (v6 > (cacheValuesCount - 1))
   {
     v6 = (cacheValuesCount - 1);
@@ -1236,10 +1236,10 @@ LABEL_254:
   return self->_doubleSidedCache[v6];
 }
 
-- (BOOL)hiddenCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5
+- (BOOL)hiddenCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation
 {
   cacheValuesCount = self->_cacheValuesCount;
-  v6 = a3 / self->_animationDuration * cacheValuesCount;
+  v6 = time / self->_animationDuration * cacheValuesCount;
   if (v6 > (cacheValuesCount - 1))
   {
     v6 = (cacheValuesCount - 1);
@@ -1253,10 +1253,10 @@ LABEL_254:
   return self->_hiddenCache[v6];
 }
 
-- (double)opacityCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5
+- (double)opacityCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation
 {
   cacheValuesCount = self->_cacheValuesCount;
-  v6 = a3 / self->_animationDuration * cacheValuesCount;
+  v6 = time / self->_animationDuration * cacheValuesCount;
   if (v6 > (cacheValuesCount - 1))
   {
     v6 = (cacheValuesCount - 1);
@@ -1270,10 +1270,10 @@ LABEL_254:
   return self->_opacityCache[v6];
 }
 
-- (CGPoint)positionCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5
+- (CGPoint)positionCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation
 {
   cacheValuesCount = self->_cacheValuesCount;
-  v6 = a3 / self->_animationDuration * cacheValuesCount;
+  v6 = time / self->_animationDuration * cacheValuesCount;
   if (v6 > (cacheValuesCount - 1))
   {
     v6 = (cacheValuesCount - 1);
@@ -1292,10 +1292,10 @@ LABEL_254:
   return result;
 }
 
-- (CATransform3D)transformCachedValueAtTime:(SEL)a3 layer:(double)a4 animation:(id)a5
+- (CATransform3D)transformCachedValueAtTime:(SEL)time layer:(double)layer animation:(id)animation
 {
   m14 = self->m14;
-  v7 = a4 / self->m13 * *&m14;
+  v7 = layer / self->m13 * *&m14;
   if (v7 > (*&m14 - 1))
   {
     v7 = (*&m14 - 1);
@@ -1322,10 +1322,10 @@ LABEL_254:
   return self;
 }
 
-- (double)transformRotationCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5
+- (double)transformRotationCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation
 {
   cacheValuesCount = self->_cacheValuesCount;
-  v6 = a3 / self->_animationDuration * cacheValuesCount;
+  v6 = time / self->_animationDuration * cacheValuesCount;
   if (v6 > (cacheValuesCount - 1))
   {
     v6 = (cacheValuesCount - 1);
@@ -1339,10 +1339,10 @@ LABEL_254:
   return self->_transformRotationCache[v6];
 }
 
-- (double)transformRotationXCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5
+- (double)transformRotationXCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation
 {
   cacheValuesCount = self->_cacheValuesCount;
-  v6 = a3 / self->_animationDuration * cacheValuesCount;
+  v6 = time / self->_animationDuration * cacheValuesCount;
   if (v6 > (cacheValuesCount - 1))
   {
     v6 = (cacheValuesCount - 1);
@@ -1356,10 +1356,10 @@ LABEL_254:
   return self->_transformRotationXCache[v6];
 }
 
-- (double)transformRotationYCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5
+- (double)transformRotationYCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation
 {
   cacheValuesCount = self->_cacheValuesCount;
-  v6 = a3 / self->_animationDuration * cacheValuesCount;
+  v6 = time / self->_animationDuration * cacheValuesCount;
   if (v6 > (cacheValuesCount - 1))
   {
     v6 = (cacheValuesCount - 1);
@@ -1373,10 +1373,10 @@ LABEL_254:
   return self->_transformRotationYCache[v6];
 }
 
-- (double)transformRotationZCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5
+- (double)transformRotationZCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation
 {
   cacheValuesCount = self->_cacheValuesCount;
-  v6 = a3 / self->_animationDuration * cacheValuesCount;
+  v6 = time / self->_animationDuration * cacheValuesCount;
   if (v6 > (cacheValuesCount - 1))
   {
     v6 = (cacheValuesCount - 1);
@@ -1390,10 +1390,10 @@ LABEL_254:
   return self->_transformRotationZCache[v6];
 }
 
-- (double)transformScaleXCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5
+- (double)transformScaleXCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation
 {
   cacheValuesCount = self->_cacheValuesCount;
-  v6 = a3 / self->_animationDuration * cacheValuesCount;
+  v6 = time / self->_animationDuration * cacheValuesCount;
   if (v6 > (cacheValuesCount - 1))
   {
     v6 = (cacheValuesCount - 1);
@@ -1407,10 +1407,10 @@ LABEL_254:
   return self->_transformScaleXCache[v6];
 }
 
-- (double)transformScaleYCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5
+- (double)transformScaleYCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation
 {
   cacheValuesCount = self->_cacheValuesCount;
-  v6 = a3 / self->_animationDuration * cacheValuesCount;
+  v6 = time / self->_animationDuration * cacheValuesCount;
   if (v6 > (cacheValuesCount - 1))
   {
     v6 = (cacheValuesCount - 1);
@@ -1424,10 +1424,10 @@ LABEL_254:
   return self->_transformScaleYCache[v6];
 }
 
-- (double)transformScaleXYCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5
+- (double)transformScaleXYCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation
 {
   cacheValuesCount = self->_cacheValuesCount;
-  v6 = a3 / self->_animationDuration * cacheValuesCount;
+  v6 = time / self->_animationDuration * cacheValuesCount;
   if (v6 > (cacheValuesCount - 1))
   {
     v6 = (cacheValuesCount - 1);
@@ -1441,10 +1441,10 @@ LABEL_254:
   return self->_transformScaleXYCache[v6];
 }
 
-- (CGPoint)transformTranslationCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5
+- (CGPoint)transformTranslationCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation
 {
   cacheValuesCount = self->_cacheValuesCount;
-  v6 = a3 / self->_animationDuration * cacheValuesCount;
+  v6 = time / self->_animationDuration * cacheValuesCount;
   if (v6 > (cacheValuesCount - 1))
   {
     v6 = (cacheValuesCount - 1);
@@ -1463,10 +1463,10 @@ LABEL_254:
   return result;
 }
 
-- (double)transformTranslationXCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5
+- (double)transformTranslationXCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation
 {
   cacheValuesCount = self->_cacheValuesCount;
-  v6 = a3 / self->_animationDuration * cacheValuesCount;
+  v6 = time / self->_animationDuration * cacheValuesCount;
   if (v6 > (cacheValuesCount - 1))
   {
     v6 = (cacheValuesCount - 1);
@@ -1480,10 +1480,10 @@ LABEL_254:
   return self->_transformTranslationXCache[v6];
 }
 
-- (double)transformTranslationYCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5
+- (double)transformTranslationYCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation
 {
   cacheValuesCount = self->_cacheValuesCount;
-  v6 = a3 / self->_animationDuration * cacheValuesCount;
+  v6 = time / self->_animationDuration * cacheValuesCount;
   if (v6 > (cacheValuesCount - 1))
   {
     v6 = (cacheValuesCount - 1);
@@ -1497,10 +1497,10 @@ LABEL_254:
   return self->_transformTranslationYCache[v6];
 }
 
-- (double)transformTranslationZCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5
+- (double)transformTranslationZCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation
 {
   cacheValuesCount = self->_cacheValuesCount;
-  v6 = a3 / self->_animationDuration * cacheValuesCount;
+  v6 = time / self->_animationDuration * cacheValuesCount;
   if (v6 > (cacheValuesCount - 1))
   {
     v6 = (cacheValuesCount - 1);
@@ -1514,10 +1514,10 @@ LABEL_254:
   return self->_transformTranslationZCache[v6];
 }
 
-- (double)zPositionCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5
+- (double)zPositionCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation
 {
   cacheValuesCount = self->_cacheValuesCount;
-  v6 = a3 / self->_animationDuration * cacheValuesCount;
+  v6 = time / self->_animationDuration * cacheValuesCount;
   if (v6 > (cacheValuesCount - 1))
   {
     v6 = (cacheValuesCount - 1);

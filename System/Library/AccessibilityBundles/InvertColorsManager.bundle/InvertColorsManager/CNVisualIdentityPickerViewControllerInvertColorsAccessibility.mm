@@ -1,33 +1,33 @@
 @interface CNVisualIdentityPickerViewControllerInvertColorsAccessibility
-- (BOOL)_axIsAddItem:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
+- (BOOL)_axIsAddItem:(id)item;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 @end
 
 @implementation CNVisualIdentityPickerViewControllerInvertColorsAccessibility
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v5 = self;
+  selfCopy = self;
   v9.receiver = self;
   v9.super_class = CNVisualIdentityPickerViewControllerInvertColorsAccessibility;
-  v6 = a4;
-  v7 = [(CNVisualIdentityPickerViewControllerInvertColorsAccessibility *)&v9 collectionView:a3 cellForItemAtIndexPath:v6];
-  LODWORD(v5) = [(CNVisualIdentityPickerViewControllerInvertColorsAccessibility *)v5 _axIsAddItem:v6, v9.receiver, v9.super_class];
+  pathCopy = path;
+  v7 = [(CNVisualIdentityPickerViewControllerInvertColorsAccessibility *)&v9 collectionView:view cellForItemAtIndexPath:pathCopy];
+  LODWORD(selfCopy) = [(CNVisualIdentityPickerViewControllerInvertColorsAccessibility *)selfCopy _axIsAddItem:pathCopy, v9.receiver, v9.super_class];
 
-  [v7 setAccessibilityIgnoresInvertColors:v5 ^ 1];
+  [v7 setAccessibilityIgnoresInvertColors:selfCopy ^ 1];
 
   return v7;
 }
 
-- (BOOL)_axIsAddItem:(id)a3
+- (BOOL)_axIsAddItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   [(CNVisualIdentityPickerViewControllerInvertColorsAccessibility *)self safeValueForKey:@"dataSource"];
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v7 = v12 = 0;
-  v8 = v4;
+  v8 = itemCopy;
   AXPerformSafeBlock();
   v5 = *(v10 + 24);
 

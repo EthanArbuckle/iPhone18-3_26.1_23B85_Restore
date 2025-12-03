@@ -1,38 +1,38 @@
 @interface PUReviewFileManager
 + (id)defaultManager;
-- (BOOL)_allowedToDeleteItemAtURL:(id)a3;
-- (BOOL)_removeItemAtURL:(id)a3 error:(id *)a4 stackshot:(id)a5;
-- (BOOL)removeItemAtURL:(id)a3 error:(id *)a4;
-- (PUReviewFileManager)initWithFileManager:(id)a3;
-- (void)removeItemAtURL:(id)a3 completion:(id)a4;
+- (BOOL)_allowedToDeleteItemAtURL:(id)l;
+- (BOOL)_removeItemAtURL:(id)l error:(id *)error stackshot:(id)stackshot;
+- (BOOL)removeItemAtURL:(id)l error:(id *)error;
+- (PUReviewFileManager)initWithFileManager:(id)manager;
+- (void)removeItemAtURL:(id)l completion:(id)completion;
 @end
 
 @implementation PUReviewFileManager
 
-- (BOOL)_removeItemAtURL:(id)a3 error:(id *)a4 stackshot:(id)a5
+- (BOOL)_removeItemAtURL:(id)l error:(id *)error stackshot:(id)stackshot
 {
-  v9 = a3;
-  v10 = a5;
-  if ([(PUReviewFileManager *)self _allowedToDeleteItemAtURL:v9])
+  lCopy = l;
+  stackshotCopy = stackshot;
+  if ([(PUReviewFileManager *)self _allowedToDeleteItemAtURL:lCopy])
   {
-    v11 = [(PUReviewFileManager *)self _fileManager];
-    v12 = [v11 removeItemAtURL:v9 error:a4];
+    _fileManager = [(PUReviewFileManager *)self _fileManager];
+    v12 = [_fileManager removeItemAtURL:lCopy error:error];
   }
 
   else
   {
-    v11 = [MEMORY[0x1E696AD60] stringWithFormat:@"Attempt to remove item %@. ", v9];
-    v13 = [(PUReviewFileManager *)self _safePathURL];
-    [v11 appendFormat:@"The item is outside the specified safe area %@. ", v13];
+    _fileManager = [MEMORY[0x1E696AD60] stringWithFormat:@"Attempt to remove item %@. ", lCopy];
+    _safePathURL = [(PUReviewFileManager *)self _safePathURL];
+    [_fileManager appendFormat:@"The item is outside the specified safe area %@. ", _safePathURL];
 
-    if (v10)
+    if (stackshotCopy)
     {
-      v14 = [v10 componentsJoinedByString:@"\n"];
-      [v11 appendFormat:@"The deletion was attempted via\n%@", v14];
+      v14 = [stackshotCopy componentsJoinedByString:@"\n"];
+      [_fileManager appendFormat:@"The deletion was attempted via\n%@", v14];
     }
 
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PUReviewFileManager.m" lineNumber:99 description:v11];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUReviewFileManager.m" lineNumber:99 description:_fileManager];
 
     v12 = 0;
   }
@@ -40,25 +40,25 @@
   return v12;
 }
 
-- (BOOL)_allowedToDeleteItemAtURL:(id)a3
+- (BOOL)_allowedToDeleteItemAtURL:(id)l
 {
-  v4 = [a3 pathComponents];
-  v5 = [(PUReviewFileManager *)self _safePathURL];
-  v6 = [v5 pathComponents];
+  pathComponents = [l pathComponents];
+  _safePathURL = [(PUReviewFileManager *)self _safePathURL];
+  pathComponents2 = [_safePathURL pathComponents];
 
-  v7 = [v4 count];
-  if (v7 <= [v6 count])
+  v7 = [pathComponents count];
+  if (v7 <= [pathComponents2 count])
   {
     v11 = 0;
   }
 
-  else if ([v6 count])
+  else if ([pathComponents2 count])
   {
     v8 = 0;
     do
     {
-      v9 = [v4 objectAtIndexedSubscript:v8];
-      v10 = [v6 objectAtIndexedSubscript:v8];
+      v9 = [pathComponents objectAtIndexedSubscript:v8];
+      v10 = [pathComponents2 objectAtIndexedSubscript:v8];
       v11 = [v9 isEqualToString:v10];
 
       if ((v11 & 1) == 0)
@@ -69,7 +69,7 @@
       ++v8;
     }
 
-    while ([v6 count] > v8);
+    while ([pathComponents2 count] > v8);
   }
 
   else
@@ -80,19 +80,19 @@
   return v11;
 }
 
-- (void)removeItemAtURL:(id)a3 completion:(id)a4
+- (void)removeItemAtURL:(id)l completion:(id)completion
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PUReviewFileManager *)self _fileManagementQueue];
-  v9 = [MEMORY[0x1E696AF00] callStackSymbols];
+  lCopy = l;
+  completionCopy = completion;
+  _fileManagementQueue = [(PUReviewFileManager *)self _fileManagementQueue];
+  callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
   objc_initWeak(&location, self);
   v10 = PLUIGetLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v21 = v6;
+    v21 = lCopy;
     _os_log_impl(&dword_1B36F3000, v10, OS_LOG_TYPE_DEFAULT, "Attempting to delete file at URL: %@", buf, 0xCu);
   }
 
@@ -101,13 +101,13 @@
   block[2] = __50__PUReviewFileManager_removeItemAtURL_completion___block_invoke;
   block[3] = &unk_1E7B7D858;
   objc_copyWeak(&v18, &location);
-  v15 = v6;
-  v16 = v9;
-  v17 = v7;
-  v11 = v7;
-  v12 = v9;
-  v13 = v6;
-  dispatch_async(v8, block);
+  v15 = lCopy;
+  v16 = callStackSymbols;
+  v17 = completionCopy;
+  v11 = completionCopy;
+  v12 = callStackSymbols;
+  v13 = lCopy;
+  dispatch_async(_fileManagementQueue, block);
 
   objc_destroyWeak(&v18);
   objc_destroyWeak(&location);
@@ -127,29 +127,29 @@ void __50__PUReviewFileManager_removeItemAtURL_completion___block_invoke(uint64_
   }
 }
 
-- (BOOL)removeItemAtURL:(id)a3 error:(id *)a4
+- (BOOL)removeItemAtURL:(id)l error:(id *)error
 {
   v12 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  lCopy = l;
   v7 = PLUIGetLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v6;
+    v11 = lCopy;
     _os_log_impl(&dword_1B36F3000, v7, OS_LOG_TYPE_DEFAULT, "Attempting to delete file at URL: %@", &v10, 0xCu);
   }
 
-  v8 = [(PUReviewFileManager *)self _removeItemAtURL:v6 error:a4 stackshot:0];
+  v8 = [(PUReviewFileManager *)self _removeItemAtURL:lCopy error:error stackshot:0];
   return v8;
 }
 
-- (PUReviewFileManager)initWithFileManager:(id)a3
+- (PUReviewFileManager)initWithFileManager:(id)manager
 {
-  v6 = a3;
-  if (!v6)
+  managerCopy = manager;
+  if (!managerCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PUReviewFileManager.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"fileManager"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUReviewFileManager.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"fileManager"}];
   }
 
   v17.receiver = self;
@@ -158,7 +158,7 @@ void __50__PUReviewFileManager_removeItemAtURL_completion___block_invoke(uint64_
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->__fileManager, a3);
+    objc_storeStrong(&v7->__fileManager, manager);
     v9 = dispatch_queue_create("com.apple.ax-review.filemanagement", 0);
     fileManagementQueue = v8->__fileManagementQueue;
     v8->__fileManagementQueue = v9;
@@ -179,7 +179,7 @@ void __50__PUReviewFileManager_removeItemAtURL_completion___block_invoke(uint64_
   block[1] = 3221225472;
   block[2] = __37__PUReviewFileManager_defaultManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (defaultManager_onceToken_73583 != -1)
   {
     dispatch_once(&defaultManager_onceToken_73583, block);

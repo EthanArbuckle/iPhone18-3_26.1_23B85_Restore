@@ -1,16 +1,16 @@
 @interface NTKDigitalTimeAccuracyOption
-+ (id)_nameLocalizationKeyForValue:(unint64_t)a3 forDevice:(id)a4;
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4;
-+ (int64_t)indexForAccuracy:(unint64_t)a3 forDevice:(id)a4;
++ (id)_nameLocalizationKeyForValue:(unint64_t)value forDevice:(id)device;
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device;
++ (int64_t)indexForAccuracy:(unint64_t)accuracy forDevice:(id)device;
 - (id)_valueToFaceBundleStringDict;
 @end
 
 @implementation NTKDigitalTimeAccuracyOption
 
-+ (int64_t)indexForAccuracy:(unint64_t)a3 forDevice:(id)a4
++ (int64_t)indexForAccuracy:(unint64_t)accuracy forDevice:(id)device
 {
-  v5 = [a1 _orderedValuesForDevice:a4];
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v5 = [self _orderedValuesForDevice:device];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:accuracy];
   v7 = [v5 indexOfObject:v6];
 
   return v7;
@@ -45,15 +45,15 @@ id __56__NTKDigitalTimeAccuracyOption__orderedValuesForDevice___block_invoke(uin
   return v7;
 }
 
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device
 {
   v4 = @"minutes";
-  if (a3 != 1)
+  if (value != 1)
   {
     v4 = 0;
   }
 
-  if (a3)
+  if (value)
   {
     return v4;
   }
@@ -64,15 +64,15 @@ id __56__NTKDigitalTimeAccuracyOption__orderedValuesForDevice___block_invoke(uin
   }
 }
 
-+ (id)_nameLocalizationKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_nameLocalizationKeyForValue:(unint64_t)value forDevice:(id)device
 {
   v4 = @"EDIT_OPTION_LABEL_DIGITAL_TIME_ACCURACY_MINUTES";
-  if (a3 != 1)
+  if (value != 1)
   {
     v4 = 0;
   }
 
-  if (a3)
+  if (value)
   {
     return v4;
   }

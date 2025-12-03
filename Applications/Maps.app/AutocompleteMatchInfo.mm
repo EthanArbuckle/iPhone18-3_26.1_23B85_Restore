@@ -1,20 +1,20 @@
 @interface AutocompleteMatchInfo
-+ (AutocompleteMatchInfo)matchInfoWithType:(unint64_t)a3;
-- (AutocompleteMatchInfo)initWithType:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (AutocompleteMatchInfo)matchInfoWithType:(unint64_t)type;
+- (AutocompleteMatchInfo)initWithType:(unint64_t)type;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)notifyObserversOfChange;
-- (void)setAgeInSeconds:(int)a3;
-- (void)setClientRankingDebug:(double)a3;
-- (void)setFirstPrefixToken:(id)a3;
-- (void)setFractionOfMatch:(double)a3;
-- (void)setPeopleSuggesterRank:(double)a3;
-- (void)setPrefixLastTokenMatchCover:(id)a3;
-- (void)setPrefixMatchCover:(id)a3;
-- (void)setPrefixMatchPosition:(id)a3;
-- (void)setPrefixMatchesWordBoundary:(BOOL)a3;
-- (void)setSecondPrefixToken:(id)a3;
-- (void)setShownToUser:(BOOL)a3;
-- (void)setSortPriorityDebug:(int64_t)a3;
+- (void)setAgeInSeconds:(int)seconds;
+- (void)setClientRankingDebug:(double)debug;
+- (void)setFirstPrefixToken:(id)token;
+- (void)setFractionOfMatch:(double)match;
+- (void)setPeopleSuggesterRank:(double)rank;
+- (void)setPrefixLastTokenMatchCover:(id)cover;
+- (void)setPrefixMatchCover:(id)cover;
+- (void)setPrefixMatchPosition:(id)position;
+- (void)setPrefixMatchesWordBoundary:(BOOL)boundary;
+- (void)setSecondPrefixToken:(id)token;
+- (void)setShownToUser:(BOOL)user;
+- (void)setSortPriorityDebug:(int64_t)debug;
 @end
 
 @implementation AutocompleteMatchInfo
@@ -54,126 +54,126 @@
   }
 }
 
-- (void)setSecondPrefixToken:(id)a3
+- (void)setSecondPrefixToken:(id)token
 {
-  v5 = a3;
-  if (self->_secondPrefixToken != v5)
+  tokenCopy = token;
+  if (self->_secondPrefixToken != tokenCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_secondPrefixToken, a3);
+    v6 = tokenCopy;
+    objc_storeStrong(&self->_secondPrefixToken, token);
     [(AutocompleteMatchInfo *)self notifyObserversOfChange];
-    v5 = v6;
+    tokenCopy = v6;
   }
 }
 
-- (void)setFirstPrefixToken:(id)a3
+- (void)setFirstPrefixToken:(id)token
 {
-  v5 = a3;
-  if (self->_firstPrefixToken != v5)
+  tokenCopy = token;
+  if (self->_firstPrefixToken != tokenCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_firstPrefixToken, a3);
+    v6 = tokenCopy;
+    objc_storeStrong(&self->_firstPrefixToken, token);
     [(AutocompleteMatchInfo *)self notifyObserversOfChange];
-    v5 = v6;
+    tokenCopy = v6;
   }
 }
 
-- (void)setPrefixMatchesWordBoundary:(BOOL)a3
+- (void)setPrefixMatchesWordBoundary:(BOOL)boundary
 {
-  if (self->_prefixMatchesWordBoundary != a3)
+  if (self->_prefixMatchesWordBoundary != boundary)
   {
-    self->_prefixMatchesWordBoundary = a3;
+    self->_prefixMatchesWordBoundary = boundary;
     [(AutocompleteMatchInfo *)self notifyObserversOfChange];
   }
 }
 
-- (void)setPrefixMatchPosition:(id)a3
+- (void)setPrefixMatchPosition:(id)position
 {
-  v5 = a3;
+  positionCopy = position;
   if (![(NSNumber *)self->_prefixMatchPosition isEqualToNumber:?])
   {
-    objc_storeStrong(&self->_prefixMatchPosition, a3);
+    objc_storeStrong(&self->_prefixMatchPosition, position);
     [(AutocompleteMatchInfo *)self notifyObserversOfChange];
   }
 }
 
-- (void)setPrefixMatchCover:(id)a3
+- (void)setPrefixMatchCover:(id)cover
 {
-  v5 = a3;
+  coverCopy = cover;
   if (![(NSNumber *)self->_prefixMatchCover isEqualToNumber:?])
   {
-    objc_storeStrong(&self->_prefixMatchCover, a3);
+    objc_storeStrong(&self->_prefixMatchCover, cover);
     [(AutocompleteMatchInfo *)self notifyObserversOfChange];
   }
 }
 
-- (void)setPrefixLastTokenMatchCover:(id)a3
+- (void)setPrefixLastTokenMatchCover:(id)cover
 {
-  v5 = a3;
+  coverCopy = cover;
   if (![(NSNumber *)self->_prefixLastTokenMatchCover isEqualToNumber:?])
   {
-    objc_storeStrong(&self->_prefixLastTokenMatchCover, a3);
+    objc_storeStrong(&self->_prefixLastTokenMatchCover, cover);
     [(AutocompleteMatchInfo *)self notifyObserversOfChange];
   }
 }
 
-- (void)setSortPriorityDebug:(int64_t)a3
+- (void)setSortPriorityDebug:(int64_t)debug
 {
-  if (!self->_hasSortPriorityDebug || self->_sortPriorityDebug != a3)
+  if (!self->_hasSortPriorityDebug || self->_sortPriorityDebug != debug)
   {
     self->_hasSortPriorityDebug = 1;
-    self->_sortPriorityDebug = a3;
+    self->_sortPriorityDebug = debug;
     [(AutocompleteMatchInfo *)self notifyObserversOfChange];
   }
 }
 
-- (void)setClientRankingDebug:(double)a3
+- (void)setClientRankingDebug:(double)debug
 {
-  if (!self->_hasClientRankingDebug || self->_clientRankingDebug != a3)
+  if (!self->_hasClientRankingDebug || self->_clientRankingDebug != debug)
   {
     self->_hasClientRankingDebug = 1;
-    self->_clientRankingDebug = a3;
+    self->_clientRankingDebug = debug;
     [(AutocompleteMatchInfo *)self notifyObserversOfChange];
   }
 }
 
-- (void)setFractionOfMatch:(double)a3
+- (void)setFractionOfMatch:(double)match
 {
-  if (self->_fractionOfMatch != a3)
+  if (self->_fractionOfMatch != match)
   {
-    self->_fractionOfMatch = a3;
+    self->_fractionOfMatch = match;
     [(AutocompleteMatchInfo *)self notifyObserversOfChange];
   }
 }
 
-- (void)setShownToUser:(BOOL)a3
+- (void)setShownToUser:(BOOL)user
 {
-  if (self->_shownToUser != a3)
+  if (self->_shownToUser != user)
   {
-    self->_shownToUser = a3;
+    self->_shownToUser = user;
     [(AutocompleteMatchInfo *)self notifyObserversOfChange];
   }
 }
 
-- (void)setAgeInSeconds:(int)a3
+- (void)setAgeInSeconds:(int)seconds
 {
-  if (self->_ageInSeconds != a3)
+  if (self->_ageInSeconds != seconds)
   {
-    self->_ageInSeconds = a3;
+    self->_ageInSeconds = seconds;
     [(AutocompleteMatchInfo *)self notifyObserversOfChange];
   }
 }
 
-- (void)setPeopleSuggesterRank:(double)a3
+- (void)setPeopleSuggesterRank:(double)rank
 {
-  if (self->_peopleSuggesterRank != a3)
+  if (self->_peopleSuggesterRank != rank)
   {
-    self->_peopleSuggesterRank = a3;
+    self->_peopleSuggesterRank = rank;
     [(AutocompleteMatchInfo *)self notifyObserversOfChange];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[AutocompleteMatchInfo alloc] initWithType:[(AutocompleteMatchInfo *)self matchType]];
   [(AutocompleteMatchInfo *)self peopleSuggesterRank];
@@ -193,26 +193,26 @@
     [(AutocompleteMatchInfo *)v4 setSortPriorityDebug:[(AutocompleteMatchInfo *)self sortPriorityDebug]];
   }
 
-  v5 = [(AutocompleteMatchInfo *)self prefixLastTokenMatchCover];
-  [(AutocompleteMatchInfo *)v4 setPrefixLastTokenMatchCover:v5];
+  prefixLastTokenMatchCover = [(AutocompleteMatchInfo *)self prefixLastTokenMatchCover];
+  [(AutocompleteMatchInfo *)v4 setPrefixLastTokenMatchCover:prefixLastTokenMatchCover];
 
-  v6 = [(AutocompleteMatchInfo *)self prefixMatchCover];
-  [(AutocompleteMatchInfo *)v4 setPrefixMatchCover:v6];
+  prefixMatchCover = [(AutocompleteMatchInfo *)self prefixMatchCover];
+  [(AutocompleteMatchInfo *)v4 setPrefixMatchCover:prefixMatchCover];
 
-  v7 = [(AutocompleteMatchInfo *)self prefixMatchPosition];
-  [(AutocompleteMatchInfo *)v4 setPrefixMatchPosition:v7];
+  prefixMatchPosition = [(AutocompleteMatchInfo *)self prefixMatchPosition];
+  [(AutocompleteMatchInfo *)v4 setPrefixMatchPosition:prefixMatchPosition];
 
   [(AutocompleteMatchInfo *)v4 setPrefixMatchesWordBoundary:[(AutocompleteMatchInfo *)self prefixMatchesWordBoundary]];
-  v8 = [(AutocompleteMatchInfo *)self firstPrefixToken];
-  [(AutocompleteMatchInfo *)v4 setFirstPrefixToken:v8];
+  firstPrefixToken = [(AutocompleteMatchInfo *)self firstPrefixToken];
+  [(AutocompleteMatchInfo *)v4 setFirstPrefixToken:firstPrefixToken];
 
-  v9 = [(AutocompleteMatchInfo *)self secondPrefixToken];
-  [(AutocompleteMatchInfo *)v4 setSecondPrefixToken:v9];
+  secondPrefixToken = [(AutocompleteMatchInfo *)self secondPrefixToken];
+  [(AutocompleteMatchInfo *)v4 setSecondPrefixToken:secondPrefixToken];
 
   return v4;
 }
 
-- (AutocompleteMatchInfo)initWithType:(unint64_t)a3
+- (AutocompleteMatchInfo)initWithType:(unint64_t)type
 {
   v9.receiver = self;
   v9.super_class = AutocompleteMatchInfo;
@@ -223,7 +223,7 @@
     v4->_ageInSeconds = -1;
     v4->_peopleSuggesterRank = 0.0;
     v4->_fractionOfMatch = 0.0;
-    v4->_matchType = a3;
+    v4->_matchType = type;
     v6 = [[NSHashTable alloc] initWithOptions:517 capacity:5];
     observers = v5->_observers;
     v5->_observers = v6;
@@ -232,9 +232,9 @@
   return v5;
 }
 
-+ (AutocompleteMatchInfo)matchInfoWithType:(unint64_t)a3
++ (AutocompleteMatchInfo)matchInfoWithType:(unint64_t)type
 {
-  v3 = [[a1 alloc] initWithType:a3];
+  v3 = [[self alloc] initWithType:type];
 
   return v3;
 }

@@ -1,14 +1,14 @@
 @interface TypistKeyboardFarsi
-- (id)init:(id)a3 options:(id)a4;
+- (id)init:(id)init options:(id)options;
 @end
 
 @implementation TypistKeyboardFarsi
 
-- (id)init:(id)a3 options:(id)a4
+- (id)init:(id)init options:(id)options
 {
   v5.receiver = self;
   v5.super_class = TypistKeyboardFarsi;
-  return [(TypistKeyboard *)&v5 init:a3 options:a4 locale:@"fa"];
+  return [(TypistKeyboard *)&v5 init:init options:options locale:@"fa"];
 }
 
 @end

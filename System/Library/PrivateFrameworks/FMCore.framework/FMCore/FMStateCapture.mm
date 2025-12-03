@@ -1,7 +1,7 @@
 @interface FMStateCapture
 - (FMStateCapture)init;
 - (os_state_data_s)_stateCapture;
-- (os_state_data_s)stateDataForDictionary:(id)a3 title:(id)a4;
+- (os_state_data_s)stateDataForDictionary:(id)dictionary title:(id)title;
 - (void)dealloc;
 - (void)registerHandlerforStateCapture;
 - (void)unregisterHandlerforStateCapture;
@@ -17,15 +17,15 @@
     v7.receiver = self;
     v7.super_class = FMStateCapture;
     self = [(FMStateCapture *)&v7 init];
-    v4 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v4 = 0;
+    selfCopy = 0;
   }
 
-  v5 = v4;
+  v5 = selfCopy;
 
   if (v5)
   {
@@ -76,7 +76,7 @@ uint64_t __48__FMStateCapture_registerHandlerforStateCapture__block_invoke(uint6
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 134217984;
-    v6 = [(FMStateCapture *)self handle];
+    handle = [(FMStateCapture *)self handle];
     _os_log_impl(&dword_24A2EE000, v3, OS_LOG_TYPE_DEFAULT, "FMStateCapture: Removing State Capture Handler %llu.", &v5, 0xCu);
   }
 
@@ -99,9 +99,9 @@ uint64_t __48__FMStateCapture_registerHandlerforStateCapture__block_invoke(uint6
   }
 
   v4 = [&unk_285D75DF0 mutableCopy];
-  v5 = [(FMStateCapture *)self stateCaptureBlock];
+  stateCaptureBlock = [(FMStateCapture *)self stateCaptureBlock];
 
-  if (v5)
+  if (stateCaptureBlock)
   {
     v6 = LogCategory_Unspecified();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -109,8 +109,8 @@ uint64_t __48__FMStateCapture_registerHandlerforStateCapture__block_invoke(uint6
       [(FMStateCapture *)v6 _stateCapture];
     }
 
-    v7 = [(FMStateCapture *)self stateCaptureBlock];
-    v8 = v7[2]();
+    stateCaptureBlock2 = [(FMStateCapture *)self stateCaptureBlock];
+    v8 = stateCaptureBlock2[2]();
     [v4 setValuesForKeysWithDictionary:v8];
   }
 
@@ -122,29 +122,29 @@ uint64_t __48__FMStateCapture_registerHandlerforStateCapture__block_invoke(uint6
   }
 
   v10 = MEMORY[0x277CCACA8];
-  v11 = [MEMORY[0x277CCA8D8] mainBundle];
-  v12 = [v11 bundleIdentifier];
-  v13 = [v10 stringWithFormat:@"[%@] state", v12];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v13 = [v10 stringWithFormat:@"[%@] state", bundleIdentifier];
   v14 = [(FMStateCapture *)self stateDataForDictionary:v4 title:v13];
 
   return v14;
 }
 
-- (os_state_data_s)stateDataForDictionary:(id)a3 title:(id)a4
+- (os_state_data_s)stateDataForDictionary:(id)dictionary title:(id)title
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  dictionaryCopy = dictionary;
+  titleCopy = title;
   v7 = LogCategory_Unspecified();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    [(FMStateCapture *)v6 stateDataForDictionary:v5 title:v7];
+    [(FMStateCapture *)titleCopy stateDataForDictionary:dictionaryCopy title:v7];
   }
 
-  if (v5)
+  if (dictionaryCopy)
   {
     v20 = 0;
-    v8 = [MEMORY[0x277CCAC58] dataWithPropertyList:v5 format:200 options:0 error:&v20];
+    v8 = [MEMORY[0x277CCAC58] dataWithPropertyList:dictionaryCopy format:200 options:0 error:&v20];
     v9 = v20;
     if (v9)
     {
@@ -173,11 +173,11 @@ LABEL_17:
 
       v13->var0 = 1;
       v13->var1.var1 = v12;
-      v14 = [v6 dataUsingEncoding:4];
+      v14 = [titleCopy dataUsingEncoding:4];
       v10 = v14;
       if (v14)
       {
-        v15 = [v14 bytes];
+        bytes = [v14 bytes];
         v16 = [v10 length];
         if (v16 >= 0x3F)
         {
@@ -189,7 +189,7 @@ LABEL_17:
           v17 = v16;
         }
 
-        memcpy(v11->var3, v15, v17);
+        memcpy(v11->var3, bytes, v17);
       }
 
       memcpy(v11->var4, [v8 bytes], v12);

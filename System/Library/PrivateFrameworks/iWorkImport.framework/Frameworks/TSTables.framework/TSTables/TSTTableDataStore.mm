@@ -1,98 +1,98 @@
 @interface TSTTableDataStore
 - (BOOL)_needToUpgradeCellStorage;
-- (BOOL)auditColumnRowCellCountsReturningResult:(id *)a3 hasUndercounts:(BOOL *)a4;
-- (BOOL)auditDatalistDuplicationReturningResult:(id *)a3;
-- (BOOL)confirmRefCountsReturningResult:(id *)a3;
+- (BOOL)auditColumnRowCellCountsReturningResult:(id *)result hasUndercounts:(BOOL *)undercounts;
+- (BOOL)auditDatalistDuplicationReturningResult:(id *)result;
+- (BOOL)confirmRefCountsReturningResult:(id *)result;
 - (BOOL)containsControlCellSpecs;
 - (BOOL)containsFormulas;
 - (BOOL)containsImportWarnings;
 - (BOOL)containsRatingFormats;
-- (BOOL)getCell:(id)a3 atCellID:(TSUCellCoord)a4;
+- (BOOL)getCell:(id)cell atCellID:(TSUCellCoord)d;
 - (BOOL)hasCellOrTextStyles;
-- (BOOL)hasFormulaAtCellID:(TSUCellCoord)a3;
-- (BOOL)hasFormulaSyntaxErrorAtCellID:(TSUCellCoord)a3;
+- (BOOL)hasFormulaAtCellID:(TSUCellCoord)d;
+- (BOOL)hasFormulaSyntaxErrorAtCellID:(TSUCellCoord)d;
 - (BOOL)hasMigratableStylesInCells;
 - (BOOL)mightHaveCustomFormats;
 - (BOOL)repairStyleDatalistStylesheetIfNecessary;
 - (TSDContainerInfo)richTextParentInfo;
-- (TSTCellStorage)cellStorageRefAtCellID:(TSUCellCoord)a3;
-- (TSTTableDataStore)initWithArchive:(const void *)a3 unarchiver:(id)a4 owner:(id)a5;
-- (TSTTableDataStore)initWithOwner:(id)a3;
+- (TSTCellStorage)cellStorageRefAtCellID:(TSUCellCoord)d;
+- (TSTTableDataStore)initWithArchive:(const void *)archive unarchiver:(id)unarchiver owner:(id)owner;
+- (TSTTableDataStore)initWithOwner:(id)owner;
 - (id).cxx_construct;
-- (id)_loadDatalist:(id *)a3 forLazyReference:(id)a4 completionBlock:(id)a5;
+- (id)_loadDatalist:(id *)datalist forLazyReference:(id)reference completionBlock:(id)block;
 - (id)addPasteboardCustomFormatsToDocumentAndTableReturningBadIDs;
 - (id)allRichTextStorages;
-- (id)cellMapForRepairingPasteboardCustomFormats:(id)a3;
-- (id)cellStyleAtCellID:(TSUCellCoord)a3;
-- (id)commentStorageAtCellID:(TSUCellCoord)a3;
-- (id)conditionalStyleSetAtCellID:(TSUCellCoord)a3;
-- (id)copyWithOwner:(id)a3;
-- (id)formatForCalcEngineAtCellID:(TSUCellCoord)a3 formatIsExplicitOut:(BOOL *)a4 refIfAvailable:(TSTCellStorage *)a5;
-- (id)formulaAtCellID:(TSUCellCoord)a3;
-- (id)formulaSpecAtCellID:(TSUCellCoord)a3;
-- (id)formulaSpecForStorageRef:(TSTCellStorage *)a3;
-- (id)formulaSyntaxErrorAtCellID:(TSUCellCoord)a3;
-- (id)i_cellStyleHandleForDataListKey:(unsigned int)a3;
-- (id)i_formatForDataListKey:(unsigned int)a3;
-- (id)i_stringForDataListKey:(unsigned int)a3 outShouldWrap:(BOOL *)a4 outIsShared:(BOOL *)a5;
-- (id)i_textStyleHandleForDataListKey:(unsigned int)a3;
-- (id)mapReassigningPasteboardCustomFormatKeys:(id)a3;
+- (id)cellMapForRepairingPasteboardCustomFormats:(id)formats;
+- (id)cellStyleAtCellID:(TSUCellCoord)d;
+- (id)commentStorageAtCellID:(TSUCellCoord)d;
+- (id)conditionalStyleSetAtCellID:(TSUCellCoord)d;
+- (id)copyWithOwner:(id)owner;
+- (id)formatForCalcEngineAtCellID:(TSUCellCoord)d formatIsExplicitOut:(BOOL *)out refIfAvailable:(TSTCellStorage *)available;
+- (id)formulaAtCellID:(TSUCellCoord)d;
+- (id)formulaSpecAtCellID:(TSUCellCoord)d;
+- (id)formulaSpecForStorageRef:(TSTCellStorage *)ref;
+- (id)formulaSyntaxErrorAtCellID:(TSUCellCoord)d;
+- (id)i_cellStyleHandleForDataListKey:(unsigned int)key;
+- (id)i_formatForDataListKey:(unsigned int)key;
+- (id)i_stringForDataListKey:(unsigned int)key outShouldWrap:(BOOL *)wrap outIsShared:(BOOL *)shared;
+- (id)i_textStyleHandleForDataListKey:(unsigned int)key;
+- (id)mapReassigningPasteboardCustomFormatKeys:(id)keys;
 - (id)p_cellMapForUpgradingToBraveNewCell;
-- (id)p_makeALazyDatalistOfType:(int)a3 isNewForBNC:(BOOL)a4;
-- (id)p_populatedMultipleChoiceListFormat:(id)a3;
-- (id)p_preBNCpopulatedCustomFormat:(id)a3 value:(double)a4;
-- (id)richTextStorageForCalcEngineAtCellID:(TSUCellCoord)a3 refIfAvailable:(TSTCellStorage *)a4;
-- (id)stringAtCellID:(TSUCellCoord)a3;
-- (id)stringForCalcEngineAtCellID:(TSUCellCoord)a3 refIfAvailable:(TSTCellStorage *)a4;
-- (id)textStyleAtCellID:(TSUCellCoord)a3;
-- (id)tsceValueFromCell:(id)a3 atCellID:(TSUCellCoord)a4 tableUID:(const TSKUIDStruct *)a5;
+- (id)p_makeALazyDatalistOfType:(int)type isNewForBNC:(BOOL)c;
+- (id)p_populatedMultipleChoiceListFormat:(id)format;
+- (id)p_preBNCpopulatedCustomFormat:(id)format value:(double)value;
+- (id)richTextStorageForCalcEngineAtCellID:(TSUCellCoord)d refIfAvailable:(TSTCellStorage *)available;
+- (id)stringAtCellID:(TSUCellCoord)d;
+- (id)stringForCalcEngineAtCellID:(TSUCellCoord)d refIfAvailable:(TSTCellStorage *)available;
+- (id)textStyleAtCellID:(TSUCellCoord)d;
+- (id)tsceValueFromCell:(id)cell atCellID:(TSUCellCoord)d tableUID:(const TSKUIDStruct *)iD;
 - (unint64_t)archivingCompatibilityVersion;
 - (unint64_t)numberOfComments;
 - (unsigned)numberOfConditionalStyles;
-- (unsigned)valueTypeAtCellID:(TSUCellCoord)a3;
-- (vector<TSTCell)accumulateCurrentCellsConcurrentlyInRow:(TSTTableDataStore *)self rowInfo:(SEL)a3 atColumns:(TSUModelRowIndex)a4 usingCellCreationBlock:(id)a5;
+- (unsigned)valueTypeAtCellID:(TSUCellCoord)d;
+- (vector<TSTCell)accumulateCurrentCellsConcurrentlyInRow:(TSTTableDataStore *)self rowInfo:(SEL)info atColumns:(TSUModelRowIndex)columns usingCellCreationBlock:(id)block;
 - (vector<TSUCellRect,)mergedRects;
-- (void)_setCell:(id)a3 atCellID:(TSUCellCoord)a4 tableUID:(const TSKUIDStruct *)a5 calculationEngine:(id)a6 conditionalStyleOwner:(id)a7 ignoreFormula:(BOOL)a8 clearImportWarnings:(BOOL)a9 richTextDOLCHint:(BOOL *)a10;
-- (void)decrementCellCountsAtCellID:(TSUCellCoord)a3;
-- (void)decrementColumnCellCount:(unsigned __int16)a3 byAmount:(unint64_t)a4;
-- (void)didApplyConcurrentCellMap:(id)a3;
+- (void)_setCell:(id)cell atCellID:(TSUCellCoord)d tableUID:(const TSKUIDStruct *)iD calculationEngine:(id)engine conditionalStyleOwner:(id)owner ignoreFormula:(BOOL)formula clearImportWarnings:(BOOL)warnings richTextDOLCHint:(BOOL *)self0;
+- (void)decrementCellCountsAtCellID:(TSUCellCoord)d;
+- (void)decrementColumnCellCount:(unsigned __int16)count byAmount:(unint64_t)amount;
+- (void)didApplyConcurrentCellMap:(id)map;
 - (void)embiggenTableForUpgrade;
-- (void)enumerateCellStoragesInRange:(TSUCellRect)a3 withBlock:(id)a4;
-- (void)incrementCellCountsAtCellID:(TSUCellCoord)a3;
-- (void)insertColumns:(_NSRange)a3;
-- (void)insertRows:(_NSRange)a3;
+- (void)enumerateCellStoragesInRange:(TSUCellRect)range withBlock:(id)block;
+- (void)incrementCellCountsAtCellID:(TSUCellCoord)d;
+- (void)insertColumns:(_NSRange)columns;
+- (void)insertRows:(_NSRange)rows;
 - (void)loadAllLazyReferences;
-- (void)moveColumnIndexRange:(_NSRange)a3 toIndex:(unsigned __int16)a4;
-- (void)moveRowIndexRange:(_NSRange)a3 toIndex:(unsigned int)a4;
-- (void)p_clearDataListEntriesForStorageRef:(TSTCellStorage *)a3 cellID:(TSUCellCoord)a4;
-- (void)p_clearDataListEntriesInRange:(TSUCellRect)a3;
-- (void)p_enumerateCellStoragesRowByRowToMaxID:(TSUCellCoord)a3 getPreBNC:(BOOL)a4 withBlock:(id)a5;
+- (void)moveColumnIndexRange:(_NSRange)range toIndex:(unsigned __int16)index;
+- (void)moveRowIndexRange:(_NSRange)range toIndex:(unsigned int)index;
+- (void)p_clearDataListEntriesForStorageRef:(TSTCellStorage *)ref cellID:(TSUCellCoord)d;
+- (void)p_clearDataListEntriesInRange:(TSUCellRect)range;
+- (void)p_enumerateCellStoragesRowByRowToMaxID:(TSUCellCoord)d getPreBNC:(BOOL)c withBlock:(id)block;
 - (void)p_forceLoadHeaderStorages;
 - (void)p_loadLazyDatalists;
-- (void)p_stashBadKey:(unint64_t)a3 forList:(id)a4;
+- (void)p_stashBadKey:(unint64_t)key forList:(id)list;
 - (void)p_updateNumberOfPopulatedCells;
 - (void)purgePreBNCDatalists;
-- (void)removeColumns:(_NSRange)a3;
-- (void)removeRows:(_NSRange)a3;
-- (void)replaceCommentStoragesUsingBlock:(id)a3;
-- (void)replaceConditionalStyleSetsUsingBlock:(id)a3;
-- (void)replaceFormulasUsingBlock:(id)a3;
-- (void)replaceStylesUsingBlock:(id)a3;
+- (void)removeColumns:(_NSRange)columns;
+- (void)removeRows:(_NSRange)rows;
+- (void)replaceCommentStoragesUsingBlock:(id)block;
+- (void)replaceConditionalStyleSetsUsingBlock:(id)block;
+- (void)replaceFormulasUsingBlock:(id)block;
+- (void)replaceStylesUsingBlock:(id)block;
 - (void)resetAllColumnRowSizes;
 - (void)resetAlmostEverything;
-- (void)resolveDataListKeysForCell:(id)a3 cache:(id)a4 suppressTransmutation:(BOOL)a5 sourceStorageVersion:(unsigned __int8)a6;
-- (void)resolveDataListKeysForPreBNCCell:(id)a3 suppressTransmutation:(BOOL)a4 sourceStorageVersion:(unsigned __int8)a5;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4 isInTheDocument:(BOOL)a5;
-- (void)setCellMap:(id)a3 tableUID:(const TSKUIDStruct *)a4 calculationEngine:(id)a5 conditionalStyleOwner:(id)a6 ignoreFormulas:(BOOL)a7 skipDirtyingNonFormulaCells:(BOOL)a8 doRichTextDOLC:(BOOL)a9;
-- (void)setCellsConcurrently:(id)a3 tableUID:(const TSKUIDStruct *)a4 calculationEngine:(id)a5 conditionalStyleOwner:(id)a6 ignoreFormula:(BOOL)a7 clearImportWarnings:(BOOL)a8;
-- (void)swapRowAtIndex:(unsigned int)a3 withRowAtIndex:(unsigned int)a4;
-- (void)tsceValueForCellStorageRef:(TSTCellStorage *)a3 cellCoord:(const TSUCellCoord *)a4 hostTableUID:(const TSKUIDStruct *)a5 outValue:(id *)a6;
-- (void)updateCustomFormatsAtKey:(id)a3;
-- (void)updateDataListsConcurrentlyWithConcurrentCellMap:(id)a3 clearImportWarnings:(BOOL)a4;
-- (void)updateHeaderStorageStylesWithBlock:(id)a3;
+- (void)resolveDataListKeysForCell:(id)cell cache:(id)cache suppressTransmutation:(BOOL)transmutation sourceStorageVersion:(unsigned __int8)version;
+- (void)resolveDataListKeysForPreBNCCell:(id)cell suppressTransmutation:(BOOL)transmutation sourceStorageVersion:(unsigned __int8)version;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver isInTheDocument:(BOOL)document;
+- (void)setCellMap:(id)map tableUID:(const TSKUIDStruct *)d calculationEngine:(id)engine conditionalStyleOwner:(id)owner ignoreFormulas:(BOOL)formulas skipDirtyingNonFormulaCells:(BOOL)cells doRichTextDOLC:(BOOL)c;
+- (void)setCellsConcurrently:(id)concurrently tableUID:(const TSKUIDStruct *)d calculationEngine:(id)engine conditionalStyleOwner:(id)owner ignoreFormula:(BOOL)formula clearImportWarnings:(BOOL)warnings;
+- (void)swapRowAtIndex:(unsigned int)index withRowAtIndex:(unsigned int)atIndex;
+- (void)tsceValueForCellStorageRef:(TSTCellStorage *)ref cellCoord:(const TSUCellCoord *)coord hostTableUID:(const TSKUIDStruct *)d outValue:(id *)value;
+- (void)updateCustomFormatsAtKey:(id)key;
+- (void)updateDataListsConcurrentlyWithConcurrentCellMap:(id)map clearImportWarnings:(BOOL)warnings;
+- (void)updateHeaderStorageStylesWithBlock:(id)block;
 - (void)upgradeCellFormatsU2_0;
-- (void)upgradeConditionalStylesToLinkedRefWithTableUID:(const TSKUIDStruct *)a3;
-- (void)upgradeDataStoreCellStorageIfNeededWithTableUID:(const TSKUIDStruct *)a3 conditionalStyleOwner:(id)a4 fileFormatVersion:(unint64_t)a5;
+- (void)upgradeConditionalStylesToLinkedRefWithTableUID:(const TSKUIDStruct *)d;
+- (void)upgradeDataStoreCellStorageIfNeededWithTableUID:(const TSKUIDStruct *)d conditionalStyleOwner:(id)owner fileFormatVersion:(unint64_t)version;
 @end
 
 @implementation TSTTableDataStore
@@ -116,11 +116,11 @@
   objc_msgSend_forceLoadHeaders(columnHeaderStorage, v6, v7, v8, v9);
 }
 
-- (void)updateHeaderStorageStylesWithBlock:(id)a3
+- (void)updateHeaderStorageStylesWithBlock:(id)block
 {
-  v10 = a3;
-  objc_msgSend_updateStylesWithBlock_(self->_rowHeaderStorage, v4, v10, v5, v6);
-  objc_msgSend_updateStylesWithBlock_(self->_columnHeaderStorage, v7, v10, v8, v9);
+  blockCopy = block;
+  objc_msgSend_updateStylesWithBlock_(self->_rowHeaderStorage, v4, blockCopy, v5, v6);
+  objc_msgSend_updateStylesWithBlock_(self->_columnHeaderStorage, v7, blockCopy, v8, v9);
 }
 
 - (BOOL)hasMigratableStylesInCells
@@ -219,9 +219,9 @@ LABEL_16:
   return v7 != 0;
 }
 
-- (void)replaceStylesUsingBlock:(id)a3
+- (void)replaceStylesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   styleDataList = self->_styleDataList;
   v6 = styleDataList;
   if (!styleDataList)
@@ -233,7 +233,7 @@ LABEL_16:
   v11[1] = 3221225472;
   v11[2] = sub_22169D7B8;
   v11[3] = &unk_27845E4E0;
-  v7 = v4;
+  v7 = blockCopy;
   v12 = v7;
   objc_msgSend_replaceStylesUsingBlock_(v6, v8, v11, v9, v10);
   if (!styleDataList)
@@ -241,13 +241,13 @@ LABEL_16:
   }
 }
 
-- (void)decrementColumnCellCount:(unsigned __int16)a3 byAmount:(unint64_t)a4
+- (void)decrementColumnCellCount:(unsigned __int16)count byAmount:(unint64_t)amount
 {
-  objc_msgSend_decrementCellCountAtIndex_byAmount_(self->_columnHeaderStorage, a2, a3, a4, v4);
+  objc_msgSend_decrementCellCountAtIndex_byAmount_(self->_columnHeaderStorage, a2, count, amount, v4);
   if (self->_cellCountValid)
   {
     cellCount = self->_cellCount;
-    if (cellCount < a4)
+    if (cellCount < amount)
     {
       v11 = MEMORY[0x277D81150];
       v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "[TSTTableDataStore decrementColumnCellCount:byAmount:]", v8, v9);
@@ -258,22 +258,22 @@ LABEL_16:
       LODWORD(cellCount) = self->_cellCount;
     }
 
-    self->_cellCount = cellCount - a4;
+    self->_cellCount = cellCount - amount;
   }
 }
 
-- (void)decrementCellCountsAtCellID:(TSUCellCoord)a3
+- (void)decrementCellCountsAtCellID:(TSUCellCoord)d
 {
-  column = a3.column;
-  objc_msgSend_decrementCellCountAtIndex_byAmount_(self->_rowHeaderStorage, a2, *&a3, 1, v3);
+  column = d.column;
+  objc_msgSend_decrementCellCountAtIndex_byAmount_(self->_rowHeaderStorage, a2, *&d, 1, v3);
 
   MEMORY[0x2821F9670](self, sel_decrementColumnCellCount_byAmount_, column, 1, v6);
 }
 
-- (void)incrementCellCountsAtCellID:(TSUCellCoord)a3
+- (void)incrementCellCountsAtCellID:(TSUCellCoord)d
 {
-  column = a3.column;
-  objc_msgSend_incrementCellCountAtIndex_byAmount_(self->_rowHeaderStorage, a2, *&a3, 1, v3);
+  column = d.column;
+  objc_msgSend_incrementCellCountAtIndex_byAmount_(self->_rowHeaderStorage, a2, *&d, 1, v3);
   objc_msgSend_incrementCellCountAtIndex_byAmount_(self->_columnHeaderStorage, v6, column, 1, v7);
   if (self->_cellCountValid)
   {
@@ -324,9 +324,9 @@ LABEL_16:
   return v7;
 }
 
-- (id)commentStorageAtCellID:(TSUCellCoord)a3
+- (id)commentStorageAtCellID:(TSUCellCoord)d
 {
-  v6 = objc_msgSend_cellStorageRefAtCellID_(self, a2, *&a3, v3, v4);
+  v6 = objc_msgSend_cellStorageRefAtCellID_(self, a2, *&d, v3, v4);
   v10 = sub_221145078(v6, 0x80000, v7, v8, v9);
   if (v10)
   {
@@ -352,7 +352,7 @@ LABEL_16:
   return v17;
 }
 
-- (void)upgradeConditionalStylesToLinkedRefWithTableUID:(const TSKUIDStruct *)a3
+- (void)upgradeConditionalStylesToLinkedRefWithTableUID:(const TSKUIDStruct *)d
 {
   conditionalStyleSetDataList = self->_conditionalStyleSetDataList;
   v7 = conditionalStyleSetDataList;
@@ -362,25 +362,25 @@ LABEL_16:
   }
 
   v8 = v7;
-  objc_msgSend_upgradeConditionalStylesToLinkedRefWithTableUID_(v7, v7, a3, v3, v4);
+  objc_msgSend_upgradeConditionalStylesToLinkedRefWithTableUID_(v7, v7, d, v3, v4);
   if (!conditionalStyleSetDataList)
   {
   }
 }
 
-- (TSTCellStorage)cellStorageRefAtCellID:(TSUCellCoord)a3
+- (TSTCellStorage)cellStorageRefAtCellID:(TSUCellCoord)d
 {
-  column = a3.column;
-  v6 = objc_msgSend_rowInfoAtIndex_(self->_tileStorage, a2, *&a3, v3, v4);
+  column = d.column;
+  v6 = objc_msgSend_rowInfoAtIndex_(self->_tileStorage, a2, *&d, v3, v4);
   v10 = objc_msgSend_cellStorageRefAtIndex_(v6, v7, column, v8, v9);
 
   return v10;
 }
 
-- (BOOL)getCell:(id)a3 atCellID:(TSUCellCoord)a4
+- (BOOL)getCell:(id)cell atCellID:(TSUCellCoord)d
 {
-  v9 = a3;
-  if (!v9)
+  cellCopy = cell;
+  if (!cellCopy)
   {
     v10 = MEMORY[0x277D81150];
     v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "[TSTTableDataStore getCell:atCellID:]", v7, v8);
@@ -390,7 +390,7 @@ LABEL_16:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v17, v18, v19, v20);
   }
 
-  v21 = objc_msgSend_cellStorageRefAtCellID_(self, v6, *&a4, v7, v8);
+  v21 = objc_msgSend_cellStorageRefAtCellID_(self, v6, *&d, v7, v8);
   v26 = v21;
   if (!v21)
   {
@@ -411,16 +411,16 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  objc_msgSend_inflateFromStorageRef_dataStore_(v9, v27, v26, self, v29);
+  objc_msgSend_inflateFromStorageRef_dataStore_(cellCopy, v27, v26, self, v29);
   v30 = 1;
 LABEL_8:
 
   return v30;
 }
 
-- (id)stringAtCellID:(TSUCellCoord)a3
+- (id)stringAtCellID:(TSUCellCoord)d
 {
-  v6 = objc_msgSend_cellStorageRefAtCellID_(self, a2, *&a3, v3, v4);
+  v6 = objc_msgSend_cellStorageRefAtCellID_(self, a2, *&d, v3, v4);
   if (!v6)
   {
     goto LABEL_14;
@@ -493,11 +493,11 @@ LABEL_17:
   return v23;
 }
 
-- (void)enumerateCellStoragesInRange:(TSUCellRect)a3 withBlock:(id)a4
+- (void)enumerateCellStoragesInRange:(TSUCellRect)range withBlock:(id)block
 {
-  size = a3.size;
-  origin = a3.origin;
-  v7 = a4;
+  size = range.size;
+  origin = range.origin;
+  blockCopy = block;
   tileStorage = self->_tileStorage;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -506,30 +506,30 @@ LABEL_17:
   v9 = HIDWORD(*&size);
   column = origin.column;
   numberOfColumns = size.numberOfColumns;
-  v13 = v7;
-  v10 = v7;
+  v13 = blockCopy;
+  v10 = blockCopy;
   objc_msgSend_enumerateRowsInRange_withBlock_(tileStorage, v11, origin.row, v9, v12);
 }
 
-- (void)p_enumerateCellStoragesRowByRowToMaxID:(TSUCellCoord)a3 getPreBNC:(BOOL)a4 withBlock:(id)a5
+- (void)p_enumerateCellStoragesRowByRowToMaxID:(TSUCellCoord)d getPreBNC:(BOOL)c withBlock:(id)block
 {
-  v8 = a5;
+  blockCopy = block;
   tileStorage = self->_tileStorage;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = sub_22169E4AC;
   v12[3] = &unk_2784684E0;
   v14 = 0;
-  v15 = a3.column + 1;
-  v16 = a4;
-  v13 = v8;
-  v10 = v8;
-  objc_msgSend_enumerateRowByRowInRange_withBlock_(tileStorage, v11, 0, a3.row + 1, v12);
+  v15 = d.column + 1;
+  cCopy = c;
+  v13 = blockCopy;
+  v10 = blockCopy;
+  objc_msgSend_enumerateRowByRowInRange_withBlock_(tileStorage, v11, 0, d.row + 1, v12);
 }
 
-- (id)cellStyleAtCellID:(TSUCellCoord)a3
+- (id)cellStyleAtCellID:(TSUCellCoord)d
 {
-  v6 = objc_msgSend_cellStorageRefAtCellID_(self, a2, *&a3, v3, v4);
+  v6 = objc_msgSend_cellStorageRefAtCellID_(self, a2, *&d, v3, v4);
   if (v6 && (v10 = sub_221145078(v6, 0x20, v7, v8, v9), v10))
   {
     v11 = v10;
@@ -557,9 +557,9 @@ LABEL_17:
   return v18;
 }
 
-- (id)conditionalStyleSetAtCellID:(TSUCellCoord)a3
+- (id)conditionalStyleSetAtCellID:(TSUCellCoord)d
 {
-  v6 = objc_msgSend_cellStorageRefAtCellID_(self, a2, *&a3, v3, v4);
+  v6 = objc_msgSend_cellStorageRefAtCellID_(self, a2, *&d, v3, v4);
   if (v6 && (v10 = sub_221145078(v6, 0x80, v7, v8, v9), v10))
   {
     v11 = v10;
@@ -587,9 +587,9 @@ LABEL_17:
   return v18;
 }
 
-- (id)textStyleAtCellID:(TSUCellCoord)a3
+- (id)textStyleAtCellID:(TSUCellCoord)d
 {
-  v6 = objc_msgSend_cellStorageRefAtCellID_(self, a2, *&a3, v3, v4);
+  v6 = objc_msgSend_cellStorageRefAtCellID_(self, a2, *&d, v3, v4);
   if (v6 && (v10 = sub_221145078(v6, 0x40, v7, v8, v9), v10))
   {
     v11 = v10;
@@ -617,14 +617,14 @@ LABEL_17:
   return v18;
 }
 
-- (id)formatForCalcEngineAtCellID:(TSUCellCoord)a3 formatIsExplicitOut:(BOOL *)a4 refIfAvailable:(TSTCellStorage *)a5
+- (id)formatForCalcEngineAtCellID:(TSUCellCoord)d formatIsExplicitOut:(BOOL *)out refIfAvailable:(TSTCellStorage *)available
 {
-  v5 = a5;
-  if (a5 || (v8 = objc_msgSend_cellStorageRefAtCellID_(self, a2, *&a3, a4, 0), (v5 = v8) != 0))
+  availableCopy = available;
+  if (available || (v8 = objc_msgSend_cellStorageRefAtCellID_(self, a2, *&d, out, 0), (availableCopy = v8) != 0))
   {
-    v9 = sub_221145078(v5, 0x1000, *&a3, a4, a5);
+    v9 = sub_221145078(availableCopy, 0x1000, *&d, out, available);
     v10 = sub_221143624(v9);
-    v14 = sub_221145078(v5, v10, v11, v12, v13);
+    v14 = sub_221145078(availableCopy, v10, v11, v12, v13);
     if (v14)
     {
       v18 = v14;
@@ -641,12 +641,12 @@ LABEL_17:
         v20 = 0;
       }
 
-      if (a4)
+      if (out)
       {
         if (v20)
         {
-          v32 = sub_221145078(v5, 0x1000, v29, v30, v31);
-          v33 = (*(&v5->var0 + 3) & (sub_22121E814(v32) | 0x8000)) != 0;
+          v32 = sub_221145078(availableCopy, 0x1000, v29, v30, v31);
+          v33 = (*(&availableCopy->var0 + 3) & (sub_22121E814(v32) | 0x8000)) != 0;
         }
 
         else
@@ -654,7 +654,7 @@ LABEL_17:
           v33 = 0;
         }
 
-        *a4 = v33;
+        *out = v33;
       }
 
       v8 = v20;
@@ -669,9 +669,9 @@ LABEL_17:
   return v8;
 }
 
-- (id)stringForCalcEngineAtCellID:(TSUCellCoord)a3 refIfAvailable:(TSTCellStorage *)a4
+- (id)stringForCalcEngineAtCellID:(TSUCellCoord)d refIfAvailable:(TSTCellStorage *)available
 {
-  if ((a4 || (a4 = objc_msgSend_cellStorageRefAtCellID_(self, a2, *&a3, 0, v4)) != 0) && (v6 = sub_221145078(a4, 8, *&a3, a4, v4), v6))
+  if ((available || (available = objc_msgSend_cellStorageRefAtCellID_(self, a2, *&d, 0, v4)) != 0) && (v6 = sub_221145078(available, 8, *&d, available, v4), v6))
   {
     v10 = v6;
     stringDataList = self->_stringDataList;
@@ -695,9 +695,9 @@ LABEL_17:
   return v13;
 }
 
-- (id)richTextStorageForCalcEngineAtCellID:(TSUCellCoord)a3 refIfAvailable:(TSTCellStorage *)a4
+- (id)richTextStorageForCalcEngineAtCellID:(TSUCellCoord)d refIfAvailable:(TSTCellStorage *)available
 {
-  if ((a4 || (a4 = objc_msgSend_cellStorageRefAtCellID_(self, a2, *&a3, 0, v4)) != 0) && (v6 = sub_221145078(a4, 0x10, *&a3, a4, v4), v6))
+  if ((available || (available = objc_msgSend_cellStorageRefAtCellID_(self, a2, *&d, 0, v4)) != 0) && (v6 = sub_221145078(available, 0x10, *&d, available, v4), v6))
   {
     v10 = v6;
     richTextDataList = self->_richTextDataList;
@@ -721,9 +721,9 @@ LABEL_17:
   return v13;
 }
 
-- (unsigned)valueTypeAtCellID:(TSUCellCoord)a3
+- (unsigned)valueTypeAtCellID:(TSUCellCoord)d
 {
-  v5 = objc_msgSend_cellStorageRefAtCellID_(self, a2, *&a3, v3, v4);
+  v5 = objc_msgSend_cellStorageRefAtCellID_(self, a2, *&d, v3, v4);
   if (!v5 || (v10 = v5, sub_22169DEF8(v5, v6, v7, v8, v9), v11 = v10[1], (objc_msgSend_cellValueTypeIsExpected_(TSTCell, v12, v11, v13, v14) & 1) == 0))
   {
     LOBYTE(v11) = 0;
@@ -732,24 +732,24 @@ LABEL_17:
   return v11;
 }
 
-- (BOOL)hasFormulaSyntaxErrorAtCellID:(TSUCellCoord)a3
+- (BOOL)hasFormulaSyntaxErrorAtCellID:(TSUCellCoord)d
 {
   result = 0;
-  if (a3.row != 0x7FFFFFFF && (*&a3 & 0xFFFF00000000) != 0x7FFF00000000)
+  if (d.row != 0x7FFFFFFF && (*&d & 0xFFFF00000000) != 0x7FFF00000000)
   {
-    v7 = objc_msgSend_cellStorageRefAtCellID_(self, a2, *&a3, v3, v4);
+    v7 = objc_msgSend_cellStorageRefAtCellID_(self, a2, *&d, v3, v4);
     return sub_221145078(v7, 0x800, v8, v9, v10) != 0;
   }
 
   return result;
 }
 
-- (BOOL)hasFormulaAtCellID:(TSUCellCoord)a3
+- (BOOL)hasFormulaAtCellID:(TSUCellCoord)d
 {
   result = 0;
-  if (a3.row != 0x7FFFFFFF && (*&a3 & 0xFFFF00000000) != 0x7FFF00000000)
+  if (d.row != 0x7FFFFFFF && (*&d & 0xFFFF00000000) != 0x7FFF00000000)
   {
-    v7 = objc_msgSend_cellStorageRefAtCellID_(self, a2, *&a3, v3, v4);
+    v7 = objc_msgSend_cellStorageRefAtCellID_(self, a2, *&d, v3, v4);
     return sub_221145078(v7, 0x200, v8, v9, v10) != 0;
   }
 
@@ -841,20 +841,20 @@ LABEL_17:
   return v7;
 }
 
-- (void)_setCell:(id)a3 atCellID:(TSUCellCoord)a4 tableUID:(const TSKUIDStruct *)a5 calculationEngine:(id)a6 conditionalStyleOwner:(id)a7 ignoreFormula:(BOOL)a8 clearImportWarnings:(BOOL)a9 richTextDOLCHint:(BOOL *)a10
+- (void)_setCell:(id)cell atCellID:(TSUCellCoord)d tableUID:(const TSKUIDStruct *)iD calculationEngine:(id)engine conditionalStyleOwner:(id)owner ignoreFormula:(BOOL)formula clearImportWarnings:(BOOL)warnings richTextDOLCHint:(BOOL *)self0
 {
-  v14 = a3;
-  v187 = a6;
-  v186 = a7;
+  cellCopy = cell;
+  engineCopy = engine;
+  ownerCopy = owner;
   objc_msgSend_assertIsNotIterating(self, v15, v16, v17, v18);
-  objc_msgSend_validateAndRepair(v14, v19, v20, v21, v22);
-  if (objc_msgSend_isEmptyForDataStore(v14, v23, v24, v25, v26))
+  objc_msgSend_validateAndRepair(cellCopy, v19, v20, v21, v22);
+  if (objc_msgSend_isEmptyForDataStore(cellCopy, v23, v24, v25, v26))
   {
   }
 
-  else if (v14)
+  else if (cellCopy)
   {
-    v29 = objc_msgSend_tileForWritingAtRowIndex_outTileRange_(self->_tileStorage, v27, *&a4, v190, v28);
+    v29 = objc_msgSend_tileForWritingAtRowIndex_outTileRange_(self->_tileStorage, v27, *&d, v190, v28);
 
     if (!v29)
     {
@@ -866,13 +866,13 @@ LABEL_17:
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v40, v41, v42, v43);
     }
 
-    v182 = a4.row - LODWORD(v190[0]);
-    v48 = objc_msgSend_cellStorageRefAtColumnIndex_tileRowIndex_(v29, v30, a4.column, a4.row - LODWORD(v190[0]), v32);
+    v182 = d.row - LODWORD(v190[0]);
+    v48 = objc_msgSend_cellStorageRefAtColumnIndex_tileRowIndex_(v29, v30, d.column, d.row - LODWORD(v190[0]), v32);
     v181 = 1;
 LABEL_12:
     shouldUseWideRows = objc_msgSend_shouldUseWideRows(v29, v44, v45, v46, v47);
     v183 = objc_msgSend_shouldUseWideRows(self->_tileStorage, v52, v53, v54, v55);
-    if (HIWORD(a4.row) || a4.column >= 0x100u)
+    if (HIWORD(d.row) || d.column >= 0x100u)
     {
       if ((shouldUseWideRows & 1) == 0)
       {
@@ -883,36 +883,36 @@ LABEL_12:
       {
 LABEL_22:
         v180 = sub_221145078(v48, 0x80, v57, v58, v59);
-        if (objc_msgSend_hasFormula(v14, v61, v62, v63, v64))
+        if (objc_msgSend_hasFormula(cellCopy, v61, v62, v63, v64))
         {
-          v69 = objc_msgSend_formulaObject(v14, v65, v66, v67, v68);
+          v69 = objc_msgSend_formulaObject(cellCopy, v65, v66, v67, v68);
           v74 = v69;
           if (v69 && objc_msgSend_containsUidReferences(v69, v70, v71, v72, v73))
           {
-            v79 = objc_msgSend_calcEngine(v187, v75, v76, v77, v78);
-            v188.coordinate = a4;
-            v188._tableUID = *a5;
+            v79 = objc_msgSend_calcEngine(engineCopy, v75, v76, v77, v78);
+            v188.coordinate = d;
+            v188._tableUID = *iD;
             TSCEFormulaRewriteContext::TSCEFormulaRewriteContext(&v189, v79, &v188);
 
             v83 = objc_msgSend_copyByRewritingReferencesToGeometricForm_(v74, v80, &v189, v81, v82);
-            objc_msgSend_setFormulaObject_(v14, v84, v83, v85, v86);
+            objc_msgSend_setFormulaObject_(cellCopy, v84, v83, v85, v86);
           }
         }
 
-        if (objc_msgSend_hasFormulaSyntaxError(v14, v65, v66, v67, v68))
+        if (objc_msgSend_hasFormulaSyntaxError(cellCopy, v65, v66, v67, v68))
         {
-          objc_msgSend_formulaDefinitionPrecedentForTableUID_(TSCEHauntedOwner, v87, a5, v89, v90);
-          objc_msgSend_markCellRefAsDirty_(v187, v91, &v189, v92, v93);
+          objc_msgSend_formulaDefinitionPrecedentForTableUID_(TSCEHauntedOwner, v87, iD, v89, v90);
+          objc_msgSend_markCellRefAsDirty_(engineCopy, v91, &v189, v92, v93);
         }
 
-        if (objc_msgSend_hasConditionalStyle(v14, v87, v88, v89, v90))
+        if (objc_msgSend_hasConditionalStyle(cellCopy, v87, v88, v89, v90))
         {
-          v98 = objc_msgSend_conditionalStyle(v14, v94, v95, v96, v97);
+          v98 = objc_msgSend_conditionalStyle(cellCopy, v94, v95, v96, v97);
           if (objc_msgSend_containsUidReferences(v98, v99, v100, v101, v102))
           {
-            v107 = objc_msgSend_calcEngine(v187, v103, v104, v105, v106);
-            v112 = objc_msgSend_ownerUID(v186, v108, v109, v110, v111);
-            v188.coordinate = a4;
+            v107 = objc_msgSend_calcEngine(engineCopy, v103, v104, v105, v106);
+            v112 = objc_msgSend_ownerUID(ownerCopy, v108, v109, v110, v111);
+            v188.coordinate = d;
             v188._tableUID._lower = v112;
             v188._tableUID._upper = v113;
             TSCEFormulaRewriteContext::TSCEFormulaRewriteContext(&v189, v107, &v188);
@@ -920,7 +920,7 @@ LABEL_22:
             TSCEFormulaRewriteContext::setHostCellOverridesTableID(&v189, 0);
             v117 = objc_msgSend_copyToGeometricFormWithRewriteContext_(v98, v114, &v189, v115, v116);
 
-            objc_msgSend_setConditionalStyle_(v14, v118, v117, v119, v120);
+            objc_msgSend_setConditionalStyle_(cellCopy, v118, v117, v119, v120);
           }
 
           else
@@ -928,24 +928,24 @@ LABEL_22:
             v117 = v98;
           }
 
-          if (a8)
+          if (formula)
           {
             v121 = v117;
           }
 
           else
           {
-            v122 = objc_msgSend_calcEngine(v187, v103, v104, v105, v106);
-            v188.coordinate = a4;
-            v188._tableUID = *a5;
+            v122 = objc_msgSend_calcEngine(engineCopy, v103, v104, v105, v106);
+            v188.coordinate = d;
+            v188._tableUID = *iD;
             TSCEFormulaRewriteContext::TSCEFormulaRewriteContext(&v189, v122, &v188);
 
             v121 = objc_msgSend_copyByConvertingToRelativeAncestorsWithRewriteContext_(v117, v123, &v189, v124, v125);
-            objc_msgSend_setConditionalStyle_(v14, v126, v121, v127, v128);
+            objc_msgSend_setConditionalStyle_(cellCopy, v126, v121, v127, v128);
           }
         }
 
-        v129 = objc_msgSend_richTextValue(v14, v94, v95, v96, v97);
+        v129 = objc_msgSend_richTextValue(cellCopy, v94, v95, v96, v97);
         if (v129)
         {
         }
@@ -959,9 +959,9 @@ LABEL_22:
           }
         }
 
-        if (a10)
+        if (hint)
         {
-          if (!*a10)
+          if (!*hint)
           {
             goto LABEL_45;
           }
@@ -975,19 +975,19 @@ LABEL_22:
         if (v143)
         {
 LABEL_44:
-          sub_22169EEEC(self, v14, v48);
+          sub_22169EEEC(self, cellCopy, v48);
         }
 
 LABEL_45:
-        sub_22169F148(v133, v14, v48);
-        sub_22169F450(self, v14, v48, v144, v145, a9);
+        sub_22169F148(v133, cellCopy, v48);
+        sub_22169F450(self, cellCopy, v48, v144, v145, warnings);
         v153 = sub_221145078(v48, 0x200, v146, v147, v148);
-        if (a9 && objc_msgSend_hasImportWarningSet(v14, v149, v150, v151, v152))
+        if (warnings && objc_msgSend_hasImportWarningSet(cellCopy, v149, v150, v151, v152))
         {
-          v157 = objc_msgSend_importWarningSet(v14, v149, v154, v155, v156);
-          v162 = objc_msgSend_importWarningSetID(v14, v158, v159, v160, v161);
+          v157 = objc_msgSend_importWarningSet(cellCopy, v149, v154, v155, v156);
+          v162 = objc_msgSend_importWarningSetID(cellCopy, v158, v159, v160, v161);
           v163 = v157;
-          objc_msgSend_setImportWarningSet_(v14, v164, 0, v165, v166);
+          objc_msgSend_setImportWarningSet_(cellCopy, v164, 0, v165, v166);
         }
 
         else
@@ -996,10 +996,10 @@ LABEL_45:
           v162 = 0;
         }
 
-        objc_msgSend_setCell_atColumnIndex_tileRowIndex_(v29, v149, v14, a4.column, v182);
+        objc_msgSend_setCell_atColumnIndex_tileRowIndex_(v29, v149, cellCopy, d.column, v182);
         if (v162)
         {
-          objc_msgSend_setImportWarningSet_(v14, v167, v163, v169, v170);
+          objc_msgSend_setImportWarningSet_(cellCopy, v167, v163, v169, v170);
         }
 
         if ((v183 & 1) == 0 && objc_msgSend_shouldUseWideRows(v29, v167, v168, v169, v170))
@@ -1007,22 +1007,22 @@ LABEL_45:
           objc_msgSend_setShouldUseWideRows_(self->_tileStorage, v167, 1, v169, v170);
         }
 
-        if (!v14)
+        if (!cellCopy)
         {
-          objc_msgSend_pruneTileForRowIndex_(self->_tileStorage, v167, *&a4, v169, v170);
+          objc_msgSend_pruneTileForRowIndex_(self->_tileStorage, v167, *&d, v169, v170);
         }
 
-        if (v187)
+        if (engineCopy)
         {
-          if (!a8)
+          if (!formula)
           {
-            sub_2216A0654(v14, v153, *&a4, a5, v187, self, 0);
-            if (v186)
+            sub_2216A0654(cellCopy, v153, *&d, iD, engineCopy, self, 0);
+            if (ownerCopy)
             {
-              if (v180 != objc_msgSend_conditionalStyleID(v14, v171, v174, v172, v173))
+              if (v180 != objc_msgSend_conditionalStyleID(cellCopy, v171, v174, v172, v173))
               {
-                v176 = objc_msgSend_conditionalStyle(v14, v171, v175, v172, v173);
-                objc_msgSend_replaceFormulaForConditionalStyle_atCellID_(v186, v177, v176, *&a4, v178);
+                v176 = objc_msgSend_conditionalStyle(cellCopy, v171, v175, v172, v173);
+                objc_msgSend_replaceFormulaForConditionalStyle_atCellID_(ownerCopy, v177, v176, *&d, v178);
               }
             }
           }
@@ -1040,13 +1040,13 @@ LABEL_45:
 
         if (v179 == 1)
         {
-          objc_msgSend_incrementCellCountsAtCellID_(self, v171, *&a4, v172, v173);
+          objc_msgSend_incrementCellCountsAtCellID_(self, v171, *&d, v172, v173);
           goto LABEL_70;
         }
 
-        if (!v14 && v48)
+        if (!cellCopy && v48)
         {
-          objc_msgSend_decrementCellCountsAtCellID_(self, v171, *&a4, v172, v173);
+          objc_msgSend_decrementCellCountsAtCellID_(self, v171, *&d, v172, v173);
           goto LABEL_69;
         }
 
@@ -1071,21 +1071,21 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  v29 = objc_msgSend_tileStartingAtOrBeforeRowIndex_outTileRange_(self->_tileStorage, v27, *&a4, v190, v28);
+  v29 = objc_msgSend_tileStartingAtOrBeforeRowIndex_outTileRange_(self->_tileStorage, v27, *&d, v190, v28);
 
   if (!v29)
   {
 LABEL_69:
-    v14 = 0;
+    cellCopy = 0;
     goto LABEL_70;
   }
 
-  v14 = 0;
-  if (a4.row >= v190[0] && a4.row - v190[0] < v190[1])
+  cellCopy = 0;
+  if (d.row >= v190[0] && d.row - v190[0] < v190[1])
   {
-    v182 = a4.row - LODWORD(v190[0]);
-    v48 = objc_msgSend_cellStorageRefAtColumnIndex_tileRowIndex_(v29, v49, a4.column, a4.row - LODWORD(v190[0]), v50);
-    v14 = 0;
+    v182 = d.row - LODWORD(v190[0]);
+    v48 = objc_msgSend_cellStorageRefAtColumnIndex_tileRowIndex_(v29, v49, d.column, d.row - LODWORD(v190[0]), v50);
+    cellCopy = 0;
     if (v48)
     {
       v181 = 0;
@@ -1096,11 +1096,11 @@ LABEL_69:
 LABEL_70:
 }
 
-- (void)setCellMap:(id)a3 tableUID:(const TSKUIDStruct *)a4 calculationEngine:(id)a5 conditionalStyleOwner:(id)a6 ignoreFormulas:(BOOL)a7 skipDirtyingNonFormulaCells:(BOOL)a8 doRichTextDOLC:(BOOL)a9
+- (void)setCellMap:(id)map tableUID:(const TSKUIDStruct *)d calculationEngine:(id)engine conditionalStyleOwner:(id)owner ignoreFormulas:(BOOL)formulas skipDirtyingNonFormulaCells:(BOOL)cells doRichTextDOLC:(BOOL)c
 {
-  v15 = a3;
-  v16 = a5;
-  v17 = a6;
+  mapCopy = map;
+  engineCopy = engine;
+  ownerCopy = owner;
   v18 = MEMORY[0x277D86228];
   v83[0] = 0;
   v83[1] = v83;
@@ -1120,14 +1120,14 @@ LABEL_70:
   v76 = sub_2216A140C;
   v77 = sub_2216A141C;
   v78 = objc_msgSend_indexSet(MEMORY[0x277CCAB58], v19, v20, v21, v22);
-  if (a7)
+  if (formulas)
   {
     mayModifyFormulasInCells = 0;
   }
 
   else
   {
-    mayModifyFormulasInCells = objc_msgSend_mayModifyFormulasInCells(v15, v23, v24, v25, v26);
+    mayModifyFormulasInCells = objc_msgSend_mayModifyFormulasInCells(mapCopy, v23, v24, v25, v26);
   }
 
   v71[0] = 0;
@@ -1136,9 +1136,9 @@ LABEL_70:
   v71[3] = sub_2216A1424;
   v71[4] = nullsub_86;
   v71[5] = TSTCategoryAggregateFormulaOwner__ivarLayout;
-  v28 = objc_msgSend_calcEngine(v16, v23, v24, v25, v26);
+  v28 = objc_msgSend_calcEngine(engineCopy, v23, v24, v25, v26);
   v66.coordinate = 0;
-  v66._tableUID = *a4;
+  v66._tableUID = *d;
   TSCEFormulaRewriteContext::TSCEFormulaRewriteContext(&v72, v28, &v66);
 
   v66.coordinate = 0;
@@ -1147,9 +1147,9 @@ LABEL_70:
   v67 = sub_2216A1424;
   v68 = nullsub_86;
   v69 = TSTCategoryAggregateFormulaOwner__ivarLayout;
-  v33 = objc_msgSend_calcEngine(v16, v29, v30, v31, v32);
+  v33 = objc_msgSend_calcEngine(engineCopy, v29, v30, v31, v32);
   v64.coordinate = 0;
-  v64._tableUID._lower = objc_msgSend_ownerUID(v17, v34, v35, v36, v37);
+  v64._tableUID._lower = objc_msgSend_ownerUID(ownerCopy, v34, v35, v36, v37);
   v64._tableUID._upper = v38;
   TSCEFormulaRewriteContext::TSCEFormulaRewriteContext(&v70, v33, &v64);
 
@@ -1169,17 +1169,17 @@ LABEL_70:
   v55 = &v73;
   v56 = v71;
   v57 = &v64;
-  v39 = v16;
+  v39 = engineCopy;
   v49 = v39;
   v58 = &v66;
-  v59 = a4;
-  v60 = a7;
-  v61 = a9;
+  dCopy = d;
+  formulasCopy = formulas;
+  cCopy = c;
   v62 = mayModifyFormulasInCells;
-  v63 = a8;
-  v40 = v17;
+  cellsCopy = cells;
+  v40 = ownerCopy;
   v50 = v40;
-  v41 = v15;
+  v41 = mapCopy;
   v51 = v41;
   objc_msgSend_enumerateCellsWithIDsUsingBlock_(v41, v42, v48, v43, v44);
   objc_msgSend_pruneTilesForRows_(self->_tileStorage, v45, v74[5], v46, v47);
@@ -1203,17 +1203,17 @@ LABEL_70:
   objc_msgSend_upgradeCellFormatsU2_0(v13, v8, v9, v10, v11);
 }
 
-- (void)updateCustomFormatsAtKey:(id)a3
+- (void)updateCustomFormatsAtKey:(id)key
 {
-  v9 = a3;
+  keyCopy = key;
   v5 = sub_22170A948(self, v4);
-  objc_msgSend_updateCustomFormatsAtKey_(v5, v6, v9, v7, v8);
+  objc_msgSend_updateCustomFormatsAtKey_(v5, v6, keyCopy, v7, v8);
 }
 
-- (id)p_preBNCpopulatedCustomFormat:(id)a3 value:(double)a4
+- (id)p_preBNCpopulatedCustomFormat:(id)format value:(double)value
 {
-  v5 = a3;
-  v10 = objc_msgSend_asCustomFormatWrapper(v5, v6, v7, v8, v9);
+  formatCopy = format;
+  v10 = objc_msgSend_asCustomFormatWrapper(formatCopy, v6, v7, v8, v9);
   v15 = v10;
   if (v10)
   {
@@ -1262,15 +1262,15 @@ LABEL_70:
 
   else
   {
-    v40 = v5;
+    v40 = formatCopy;
   }
 
   return v40;
 }
 
-- (id)p_populatedMultipleChoiceListFormat:(id)a3
+- (id)p_populatedMultipleChoiceListFormat:(id)format
 {
-  v4 = a3;
+  formatCopy = format;
   objc_opt_class();
   v5 = TSUDynamicCast();
   v10 = v5;
@@ -1293,13 +1293,13 @@ LABEL_70:
 
   else
   {
-    v36 = v4;
+    v36 = formatCopy;
   }
 
   return v36;
 }
 
-- (void)p_stashBadKey:(unint64_t)a3 forList:(id)a4
+- (void)p_stashBadKey:(unint64_t)key forList:(id)list
 {
   if (!self->_foundABadDatalistKey)
   {
@@ -1318,14 +1318,14 @@ LABEL_70:
   }
 }
 
-- (void)resolveDataListKeysForPreBNCCell:(id)a3 suppressTransmutation:(BOOL)a4 sourceStorageVersion:(unsigned __int8)a5
+- (void)resolveDataListKeysForPreBNCCell:(id)cell suppressTransmutation:(BOOL)transmutation sourceStorageVersion:(unsigned __int8)version
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
-  if (objc_msgSend_valueType(v8, v9, v10, v11, v12) == 3)
+  versionCopy = version;
+  transmutationCopy = transmutation;
+  cellCopy = cell;
+  if (objc_msgSend_valueType(cellCopy, v9, v10, v11, v12) == 3)
   {
-    v21 = objc_msgSend_stringID(v8, v13, v14, v15, v16);
+    v21 = objc_msgSend_stringID(cellCopy, v13, v14, v15, v16);
     if (v21)
     {
       v328 = 0;
@@ -1356,7 +1356,7 @@ LABEL_12:
         }
       }
 
-      objc_msgSend_setStringValue_clearingID_shouldWrap_(v8, v25, v27, 0, v328);
+      objc_msgSend_setStringValue_clearingID_shouldWrap_(cellCopy, v25, v27, 0, v328);
 
       goto LABEL_14;
     }
@@ -1371,16 +1371,16 @@ LABEL_12:
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v38, v39, v40, v41);
     }
 
-    objc_msgSend_setValueType_(v8, v28, 0, v29, v30);
+    objc_msgSend_setValueType_(cellCopy, v28, 0, v29, v30);
   }
 
 LABEL_14:
-  if (!objc_msgSend_hasCellSpec(v8, v13, v14, v15, v16))
+  if (!objc_msgSend_hasCellSpec(cellCopy, v13, v14, v15, v16))
   {
     goto LABEL_32;
   }
 
-  v46 = objc_msgSend_formulaID(v8, v42, v43, v44, v45);
+  v46 = objc_msgSend_formulaID(cellCopy, v42, v43, v44, v45);
   v51 = objc_msgSend_upgrading(self, v47, v48, v49, v50);
   if (v46)
   {
@@ -1442,15 +1442,15 @@ LABEL_28:
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v89, v90, v91, v92);
     }
 
-    objc_msgSend_setFormulaID_(v8, v79, 0, v80, v81);
+    objc_msgSend_setFormulaID_(cellCopy, v79, 0, v80, v81);
     goto LABEL_31;
   }
 
-  objc_msgSend_setCellSpec_clearingID_(v8, v75, v74, 0, v78);
+  objc_msgSend_setCellSpec_clearingID_(cellCopy, v75, v74, 0, v78);
 LABEL_31:
 
 LABEL_32:
-  v97 = objc_msgSend_formulaSyntaxErrorID(v8, v42, v43, v44, v45);
+  v97 = objc_msgSend_formulaSyntaxErrorID(cellCopy, v42, v43, v44, v45);
   if (!v97)
   {
     goto LABEL_41;
@@ -1483,10 +1483,10 @@ LABEL_39:
     }
   }
 
-  objc_msgSend_setFormulaSyntaxError_clearingID_(v8, v101, v103, 0, v102);
+  objc_msgSend_setFormulaSyntaxError_clearingID_(cellCopy, v101, v103, 0, v102);
 
 LABEL_41:
-  v108 = objc_msgSend_richTextID(v8, v93, v94, v95, v96);
+  v108 = objc_msgSend_richTextID(cellCopy, v93, v94, v95, v96);
   if (!v108)
   {
     goto LABEL_53;
@@ -1519,18 +1519,18 @@ LABEL_48:
     }
   }
 
-  if (v5 > 4)
+  if (versionCopy > 4)
   {
-    objc_msgSend_setRichTextValue_clearingID_convertToPlaintextIfPossible_(v8, v112, v114, 0, !v6);
+    objc_msgSend_setRichTextValue_clearingID_convertToPlaintextIfPossible_(cellCopy, v112, v114, 0, !transmutationCopy);
   }
 
   else
   {
-    objc_msgSend_setRichTextValue_clearingID_convertToPlaintextIfPossible_(v8, v112, v114, 0, 0);
+    objc_msgSend_setRichTextValue_clearingID_convertToPlaintextIfPossible_(cellCopy, v112, v114, 0, 0);
   }
 
 LABEL_53:
-  v119 = objc_msgSend_commentStorageID(v8, v104, v105, v106, v107);
+  v119 = objc_msgSend_commentStorageID(cellCopy, v104, v105, v106, v107);
   if (!v119)
   {
     goto LABEL_62;
@@ -1563,10 +1563,10 @@ LABEL_60:
     }
   }
 
-  objc_msgSend_setCommentStorage_clearingID_(v8, v123, v125, 0, v124);
+  objc_msgSend_setCommentStorage_clearingID_(cellCopy, v123, v125, 0, v124);
 
 LABEL_62:
-  v130 = objc_msgSend_importWarningSetID(v8, v115, v116, v117, v118);
+  v130 = objc_msgSend_importWarningSetID(cellCopy, v115, v116, v117, v118);
   if (!v130)
   {
     goto LABEL_71;
@@ -1599,10 +1599,10 @@ LABEL_69:
     }
   }
 
-  objc_msgSend_setImportWarningSet_clearingID_(v8, v134, v136, 0, v135);
+  objc_msgSend_setImportWarningSet_clearingID_(cellCopy, v134, v136, 0, v135);
 
 LABEL_71:
-  v141 = objc_msgSend_cellStyleID(v8, v126, v127, v128, v129);
+  v141 = objc_msgSend_cellStyleID(cellCopy, v126, v127, v128, v129);
   if (!v141)
   {
     goto LABEL_80;
@@ -1635,10 +1635,10 @@ LABEL_78:
     }
   }
 
-  objc_msgSend_setCellStyle_clearingID_(v8, v145, v147, 0, v146);
+  objc_msgSend_setCellStyle_clearingID_(cellCopy, v145, v147, 0, v146);
 
 LABEL_80:
-  v152 = objc_msgSend_textStyleID(v8, v137, v138, v139, v140);
+  v152 = objc_msgSend_textStyleID(cellCopy, v137, v138, v139, v140);
   if (!v152)
   {
     goto LABEL_89;
@@ -1671,10 +1671,10 @@ LABEL_87:
     }
   }
 
-  objc_msgSend_setTextStyle_clearingID_(v8, v156, v158, 0, v157);
+  objc_msgSend_setTextStyle_clearingID_(cellCopy, v156, v158, 0, v157);
 
 LABEL_89:
-  v163 = objc_msgSend_conditionalStyleID(v8, v148, v149, v150, v151);
+  v163 = objc_msgSend_conditionalStyleID(cellCopy, v148, v149, v150, v151);
   if (!v163)
   {
     goto LABEL_98;
@@ -1707,10 +1707,10 @@ LABEL_96:
     }
   }
 
-  objc_msgSend_setConditionalStyle_clearingID_(v8, v167, v169, 0, v168);
+  objc_msgSend_setConditionalStyle_clearingID_(cellCopy, v167, v169, 0, v168);
 
 LABEL_98:
-  v174 = objc_msgSend_currentFormatID(v8, v159, v160, v161, v162);
+  v174 = objc_msgSend_currentFormatID(cellCopy, v159, v160, v161, v162);
   if (!v174)
   {
     goto LABEL_123;
@@ -1748,9 +1748,9 @@ LABEL_106:
   if (v187)
   {
     v192 = 0.0;
-    if (objc_msgSend_valueType(v8, v183, v184, v185, v186) == 2 && objc_msgSend_formatType(v182, v188, v189, v190, v191) == 270)
+    if (objc_msgSend_valueType(cellCopy, v183, v184, v185, v186) == 2 && objc_msgSend_formatType(v182, v188, v189, v190, v191) == 270)
     {
-      objc_msgSend_doubleValue(v8, v188, v193, v190, v191);
+      objc_msgSend_doubleValue(cellCopy, v188, v193, v190, v191);
       v192 = v194;
     }
 
@@ -1758,16 +1758,16 @@ LABEL_106:
 
     v200 = objc_msgSend_asCustomFormatWrapper(v195, v196, v197, v198, v199);
     v209 = objc_msgSend_customFormat(v200, v201, v202, v203, v204);
-    if (v209 || !objc_msgSend_hasFormula(v8, v205, v206, v207, v208) || (objc_msgSend_currentFormatIsExplicit(v8, v210, v211, v212, v213) & 1) != 0)
+    if (v209 || !objc_msgSend_hasFormula(cellCopy, v205, v206, v207, v208) || (objc_msgSend_currentFormatIsExplicit(cellCopy, v210, v211, v212, v213) & 1) != 0)
     {
     }
 
     else
     {
 
-      if (v5 >= 2)
+      if (versionCopy >= 2)
       {
-        objc_msgSend_setDefaultFormatForValue(v8, v324, v325, v326, v327);
+        objc_msgSend_setDefaultFormatForValue(cellCopy, v324, v325, v326, v327);
         v214 = 0;
         goto LABEL_116;
       }
@@ -1794,17 +1794,17 @@ LABEL_116:
 
   if (v214)
   {
-    objc_msgSend_setFormat_shouldSetExplFlags_isExplicit_makeCurrent_clearingID_(v8, v215, v195, 0, 1, 1, 0);
+    objc_msgSend_setFormat_shouldSetExplFlags_isExplicit_makeCurrent_clearingID_(cellCopy, v215, v195, 0, 1, 1, 0);
   }
 
-  if (v5 <= 1)
+  if (versionCopy <= 1)
   {
-    v221 = objc_msgSend_currentFormat(v8, v215, v216, v217, v218);
-    objc_msgSend_setFormat_shouldSetExplFlags_isExplicit_makeCurrent_clearingID_(v8, v222, v221, 1, 1, 1, 0);
+    v221 = objc_msgSend_currentFormat(cellCopy, v215, v216, v217, v218);
+    objc_msgSend_setFormat_shouldSetExplFlags_isExplicit_makeCurrent_clearingID_(cellCopy, v222, v221, 1, 1, 1, 0);
   }
 
 LABEL_123:
-  v227 = objc_msgSend_numberFormatID(v8, v170, v171, v172, v173);
+  v227 = objc_msgSend_numberFormatID(cellCopy, v170, v171, v172, v173);
   if (!v227)
   {
     goto LABEL_132;
@@ -1837,10 +1837,10 @@ LABEL_130:
     }
   }
 
-  objc_msgSend_setFormat_shouldSetExplFlags_isExplicit_makeCurrent_clearingID_(v8, v231, v233, 0, 1, 0, 0);
+  objc_msgSend_setFormat_shouldSetExplFlags_isExplicit_makeCurrent_clearingID_(cellCopy, v231, v233, 0, 1, 0, 0);
 
 LABEL_132:
-  v238 = objc_msgSend_currencyFormatID(v8, v223, v224, v225, v226);
+  v238 = objc_msgSend_currencyFormatID(cellCopy, v223, v224, v225, v226);
   if (!v238)
   {
     goto LABEL_141;
@@ -1873,10 +1873,10 @@ LABEL_139:
     }
   }
 
-  objc_msgSend_setFormat_shouldSetExplFlags_isExplicit_makeCurrent_clearingID_(v8, v242, v244, 0, 1, 0, 0);
+  objc_msgSend_setFormat_shouldSetExplFlags_isExplicit_makeCurrent_clearingID_(cellCopy, v242, v244, 0, 1, 0, 0);
 
 LABEL_141:
-  v249 = objc_msgSend_dateFormatID(v8, v234, v235, v236, v237);
+  v249 = objc_msgSend_dateFormatID(cellCopy, v234, v235, v236, v237);
   if (!v249)
   {
     goto LABEL_150;
@@ -1909,10 +1909,10 @@ LABEL_148:
     }
   }
 
-  objc_msgSend_setFormat_shouldSetExplFlags_isExplicit_makeCurrent_clearingID_(v8, v253, v255, 0, 1, 0, 0);
+  objc_msgSend_setFormat_shouldSetExplFlags_isExplicit_makeCurrent_clearingID_(cellCopy, v253, v255, 0, 1, 0, 0);
 
 LABEL_150:
-  v260 = objc_msgSend_durationFormatID(v8, v245, v246, v247, v248);
+  v260 = objc_msgSend_durationFormatID(cellCopy, v245, v246, v247, v248);
   if (!v260)
   {
     goto LABEL_159;
@@ -1945,10 +1945,10 @@ LABEL_157:
     }
   }
 
-  objc_msgSend_setFormat_shouldSetExplFlags_isExplicit_makeCurrent_clearingID_(v8, v264, v266, 0, 1, 0, 0);
+  objc_msgSend_setFormat_shouldSetExplFlags_isExplicit_makeCurrent_clearingID_(cellCopy, v264, v266, 0, 1, 0, 0);
 
 LABEL_159:
-  v271 = objc_msgSend_controlFormatID(v8, v256, v257, v258, v259);
+  v271 = objc_msgSend_controlFormatID(cellCopy, v256, v257, v258, v259);
   if (!v271)
   {
     goto LABEL_168;
@@ -1981,10 +1981,10 @@ LABEL_166:
     }
   }
 
-  objc_msgSend_setFormat_shouldSetExplFlags_isExplicit_makeCurrent_clearingID_(v8, v275, v277, 0, 1, 0, 0);
+  objc_msgSend_setFormat_shouldSetExplFlags_isExplicit_makeCurrent_clearingID_(cellCopy, v275, v277, 0, 1, 0, 0);
 
 LABEL_168:
-  v282 = objc_msgSend_customFormatID(v8, v267, v268, v269, v270);
+  v282 = objc_msgSend_customFormatID(cellCopy, v267, v268, v269, v270);
   if (!v282)
   {
     goto LABEL_180;
@@ -2019,17 +2019,17 @@ LABEL_168:
   objc_msgSend_p_stashBadKey_forList_(self, v286, v282, @"preBNCFormatTable", v289);
 LABEL_176:
   v295 = 0.0;
-  if (objc_msgSend_valueType(v8, v286, v287, v288, v289) == 2 && objc_msgSend_formatType(v290, v291, v292, v293, v294) == 270)
+  if (objc_msgSend_valueType(cellCopy, v286, v287, v288, v289) == 2 && objc_msgSend_formatType(v290, v291, v292, v293, v294) == 270)
   {
-    objc_msgSend_doubleValue(v8, v291, v296, v293, v294);
+    objc_msgSend_doubleValue(cellCopy, v291, v296, v293, v294);
     v295 = v297;
   }
 
   v298 = objc_msgSend_p_preBNCpopulatedCustomFormat_value_(self, v291, v290, v293, v294, v295);
 
-  objc_msgSend_setFormat_shouldSetExplFlags_isExplicit_makeCurrent_clearingID_(v8, v299, v298, 0, 1, 0, 0);
+  objc_msgSend_setFormat_shouldSetExplFlags_isExplicit_makeCurrent_clearingID_(cellCopy, v299, v298, 0, 1, 0, 0);
 LABEL_180:
-  v304 = objc_msgSend_baseFormatID(v8, v278, v279, v280, v281);
+  v304 = objc_msgSend_baseFormatID(cellCopy, v278, v279, v280, v281);
   if (!v304)
   {
     goto LABEL_189;
@@ -2062,10 +2062,10 @@ LABEL_187:
     }
   }
 
-  objc_msgSend_setFormat_shouldSetExplFlags_isExplicit_makeCurrent_clearingID_(v8, v308, v310, 0, 1, 0, 0);
+  objc_msgSend_setFormat_shouldSetExplFlags_isExplicit_makeCurrent_clearingID_(cellCopy, v308, v310, 0, 1, 0, 0);
 
 LABEL_189:
-  v314 = objc_msgSend_multipleChoiceListFormatID(v8, v300, v301, v302, v303);
+  v314 = objc_msgSend_multipleChoiceListFormatID(cellCopy, v300, v301, v302, v303);
   if (v314)
   {
     v315 = self->_preBNCFormatDataList;
@@ -2096,15 +2096,15 @@ LABEL_196:
     }
 
     v322 = objc_msgSend_p_populatedMultipleChoiceListFormat_(self, v318, v321, v319, v320);
-    objc_msgSend_setFormat_shouldSetExplFlags_isExplicit_makeCurrent_clearingID_(v8, v323, v322, 0, 1, 0, 0);
+    objc_msgSend_setFormat_shouldSetExplFlags_isExplicit_makeCurrent_clearingID_(cellCopy, v323, v322, 0, 1, 0, 0);
   }
 }
 
-- (void)resolveDataListKeysForCell:(id)a3 cache:(id)a4 suppressTransmutation:(BOOL)a5 sourceStorageVersion:(unsigned __int8)a6
+- (void)resolveDataListKeysForCell:(id)cell cache:(id)cache suppressTransmutation:(BOOL)transmutation sourceStorageVersion:(unsigned __int8)version
 {
-  v6 = a6;
-  v7 = a5;
-  v11 = objc_msgSend_stringID(a3, a2, a3, a4, a5);
+  versionCopy = version;
+  transmutationCopy = transmutation;
+  v11 = objc_msgSend_stringID(cell, a2, cell, cache, transmutation);
   if (!v11)
   {
     goto LABEL_11;
@@ -2112,9 +2112,9 @@ LABEL_196:
 
   v16 = v11;
   v244 = 0;
-  if (a4)
+  if (cache)
   {
-    v17 = objc_msgSend_stringForKey_shouldWrap_(a4, v12, v11, &v244, v15);
+    v17 = objc_msgSend_stringForKey_shouldWrap_(cache, v12, v11, &v244, v15);
     v18 = v17;
   }
 
@@ -2146,12 +2146,12 @@ LABEL_8:
     objc_msgSend_p_stashBadKey_forList_(self, v19, v16, @"StringTable", v20);
   }
 
-  objc_msgSend_setStringValue_clearingID_shouldWrap_(a3, v19, v18, 0, v244);
+  objc_msgSend_setStringValue_clearingID_shouldWrap_(cell, v19, v18, 0, v244);
 LABEL_11:
-  v22 = objc_msgSend_formulaID(a3, v12, v13, v14, v15);
+  v22 = objc_msgSend_formulaID(cell, v12, v13, v14, v15);
   if (!v22)
   {
-    v53 = objc_msgSend_controlCellSpecID(a3, v23, v24, v25, v26);
+    v53 = objc_msgSend_controlCellSpecID(cell, v23, v24, v25, v26);
     if (!v53)
     {
       goto LABEL_24;
@@ -2172,7 +2172,7 @@ LABEL_11:
       if (v57)
       {
 LABEL_23:
-        objc_msgSend_setCellSpec_clearingID_(a3, v58, v60, 0, v59);
+        objc_msgSend_setCellSpec_clearingID_(cell, v58, v60, 0, v59);
         goto LABEL_24;
       }
     }
@@ -2219,8 +2219,8 @@ LABEL_23:
 
   objc_msgSend_p_stashBadKey_forList_(self, v31, v27, @"FormulaTable", v32);
 LABEL_16:
-  objc_msgSend_setCellSpec_clearingID_(a3, v31, v33, 0, v32);
-  if (objc_msgSend_controlCellSpecID(a3, v34, v35, v36, v37))
+  objc_msgSend_setCellSpec_clearingID_(cell, v31, v33, 0, v32);
+  if (objc_msgSend_controlCellSpecID(cell, v34, v35, v36, v37))
   {
     v42 = MEMORY[0x277D81150];
     v43 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v38, "[TSTTableDataStore resolveDataListKeysForCell:cache:suppressTransmutation:sourceStorageVersion:]", v40, v41);
@@ -2231,7 +2231,7 @@ LABEL_16:
   }
 
 LABEL_24:
-  v61 = objc_msgSend_formulaSyntaxErrorID(a3, v38, v39, v40, v41);
+  v61 = objc_msgSend_formulaSyntaxErrorID(cell, v38, v39, v40, v41);
   if (!v61)
   {
     goto LABEL_30;
@@ -2266,9 +2266,9 @@ LABEL_57:
   }
 
 LABEL_29:
-  objc_msgSend_setFormulaSyntaxError_clearingID_(a3, v70, v72, 0, v71);
+  objc_msgSend_setFormulaSyntaxError_clearingID_(cell, v70, v72, 0, v71);
 LABEL_30:
-  v73 = objc_msgSend_richTextID(a3, v62, v63, v64, v65);
+  v73 = objc_msgSend_richTextID(cell, v62, v63, v64, v65);
   if (!v73)
   {
     goto LABEL_38;
@@ -2303,18 +2303,18 @@ LABEL_30:
 
   objc_msgSend_p_stashBadKey_forList_(self, v82, v78, @"RichTextTable", v83);
 LABEL_35:
-  if (v6 > 4)
+  if (versionCopy > 4)
   {
-    objc_msgSend_setRichTextValue_clearingID_convertToPlaintextIfPossible_(a3, v82, v84, 0, !v7);
+    objc_msgSend_setRichTextValue_clearingID_convertToPlaintextIfPossible_(cell, v82, v84, 0, !transmutationCopy);
   }
 
   else
   {
-    objc_msgSend_setRichTextValue_clearingID_convertToPlaintextIfPossible_(a3, v82, v84, 0, 0);
+    objc_msgSend_setRichTextValue_clearingID_convertToPlaintextIfPossible_(cell, v82, v84, 0, 0);
   }
 
 LABEL_38:
-  v85 = objc_msgSend_commentStorageID(a3, v74, v75, v76, v77);
+  v85 = objc_msgSend_commentStorageID(cell, v74, v75, v76, v77);
   if (!v85)
   {
     goto LABEL_44;
@@ -2349,9 +2349,9 @@ LABEL_61:
   }
 
 LABEL_43:
-  objc_msgSend_setCommentStorage_clearingID_(a3, v94, v96, 0, v95);
+  objc_msgSend_setCommentStorage_clearingID_(cell, v94, v96, 0, v95);
 LABEL_44:
-  v97 = objc_msgSend_importWarningSetID(a3, v86, v87, v88, v89);
+  v97 = objc_msgSend_importWarningSetID(cell, v86, v87, v88, v89);
   if (!v97)
   {
     goto LABEL_50;
@@ -2386,16 +2386,16 @@ LABEL_91:
   }
 
 LABEL_49:
-  objc_msgSend_setImportWarningSet_clearingID_(a3, v106, v108, 0, v107);
+  objc_msgSend_setImportWarningSet_clearingID_(cell, v106, v108, 0, v107);
 LABEL_50:
-  v109 = objc_msgSend_cellStyleID(a3, v98, v99, v100, v101);
+  v109 = objc_msgSend_cellStyleID(cell, v98, v99, v100, v101);
   if (!v109)
   {
     goto LABEL_69;
   }
 
   v114 = v109;
-  if (!a4)
+  if (!cache)
   {
     objc_opt_class();
     styleDataList = self->_styleDataList;
@@ -2422,7 +2422,7 @@ LABEL_50:
     goto LABEL_67;
   }
 
-  v117 = objc_msgSend_cellStyleHandleForKey_(a4, v110, v109, v112, v113);
+  v117 = objc_msgSend_cellStyleHandleForKey_(cache, v110, v109, v112, v113);
   if (!v117)
   {
 LABEL_67:
@@ -2430,17 +2430,17 @@ LABEL_67:
   }
 
 LABEL_68:
-  objc_msgSend_setCellStyleHandle_clearingID_(a3, v115, v117, 0, v116);
+  objc_msgSend_setCellStyleHandle_clearingID_(cell, v115, v117, 0, v116);
 
 LABEL_69:
-  v128 = objc_msgSend_textStyleID(a3, v110, v111, v112, v113);
+  v128 = objc_msgSend_textStyleID(cell, v110, v111, v112, v113);
   if (!v128)
   {
     goto LABEL_74;
   }
 
   v133 = v128;
-  if (!a4)
+  if (!cache)
   {
     objc_opt_class();
     v233 = sub_22170A75C(self);
@@ -2457,7 +2457,7 @@ LABEL_69:
     goto LABEL_72;
   }
 
-  v136 = objc_msgSend_textStyleHandleForKey_(a4, v129, v128, v131, v132);
+  v136 = objc_msgSend_textStyleHandleForKey_(cache, v129, v128, v131, v132);
   if (!v136)
   {
 LABEL_72:
@@ -2465,10 +2465,10 @@ LABEL_72:
   }
 
 LABEL_73:
-  objc_msgSend_setTextStyleHandle_clearingID_(a3, v134, v136, 0, v135);
+  objc_msgSend_setTextStyleHandle_clearingID_(cell, v134, v136, 0, v135);
 
 LABEL_74:
-  v137 = objc_msgSend_conditionalStyleID(a3, v129, v130, v131, v132);
+  v137 = objc_msgSend_conditionalStyleID(cell, v129, v130, v131, v132);
   if (v137)
   {
     v142 = v137;
@@ -2486,7 +2486,7 @@ LABEL_74:
       if (v145)
       {
 LABEL_79:
-        objc_msgSend_setConditionalStyle_clearingID_(a3, v146, v148, 0, v147);
+        objc_msgSend_setConditionalStyle_clearingID_(cell, v146, v148, 0, v147);
         goto LABEL_80;
       }
     }
@@ -2505,12 +2505,12 @@ LABEL_79:
   }
 
 LABEL_80:
-  v149 = objc_msgSend_numberFormatID(a3, v138, v139, v140, v141);
-  v154 = objc_msgSend_currencyFormatID(a3, v150, v151, v152, v153);
-  v159 = objc_msgSend_dateFormatID(a3, v155, v156, v157, v158);
-  v164 = objc_msgSend_durationFormatID(a3, v160, v161, v162, v163);
-  v169 = objc_msgSend_textFormatID(a3, v165, v166, v167, v168);
-  v174 = objc_msgSend_BOOLeanFormatID(a3, v170, v171, v172, v173);
+  v149 = objc_msgSend_numberFormatID(cell, v138, v139, v140, v141);
+  v154 = objc_msgSend_currencyFormatID(cell, v150, v151, v152, v153);
+  v159 = objc_msgSend_dateFormatID(cell, v155, v156, v157, v158);
+  v164 = objc_msgSend_durationFormatID(cell, v160, v161, v162, v163);
+  v169 = objc_msgSend_textFormatID(cell, v165, v166, v167, v168);
+  v174 = objc_msgSend_BOOLeanFormatID(cell, v170, v171, v172, v173);
   v178 = v174;
   if (!v149 && !v154 && !v159 && !v164 && !v169 && !v174)
   {
@@ -2536,9 +2536,9 @@ LABEL_80:
     }
   }
 
-  if (a4)
+  if (cache)
   {
-    objc_msgSend_formatForKey_(a4, v175, v149, v176, v177);
+    objc_msgSend_formatForKey_(cache, v175, v149, v176, v177);
   }
 
   else
@@ -2555,12 +2555,12 @@ LABEL_80:
   v184 = objc_msgSend_formatType(v179, v180, v181, v182, v183, formatDataList);
   if (sub_22121E75C(v184))
   {
-    objc_msgSend_setFormat_shouldSetExplFlags_isExplicit_makeCurrent_clearingID_(a3, v185, v179, 0, 1, 0, 0);
+    objc_msgSend_setFormat_shouldSetExplFlags_isExplicit_makeCurrent_clearingID_(cell, v185, v179, 0, 1, 0, 0);
   }
 
   else
   {
-    objc_msgSend_clearFormatOfType_(a3, v185, 256, v186, v187);
+    objc_msgSend_clearFormatOfType_(cell, v185, 256, v186, v187);
   }
 
 LABEL_100:
@@ -2569,9 +2569,9 @@ LABEL_100:
     goto LABEL_108;
   }
 
-  if (a4)
+  if (cache)
   {
-    objc_msgSend_formatForKey_(a4, v175, v154, v176, v177);
+    objc_msgSend_formatForKey_(cache, v175, v154, v176, v177);
   }
 
   else
@@ -2588,7 +2588,7 @@ LABEL_100:
   v193 = objc_msgSend_formatType(v188, v189, v190, v191, v192, formatDataList);
   if (sub_22121E75C(v193))
   {
-    objc_msgSend_setFormat_shouldSetExplFlags_isExplicit_makeCurrent_clearingID_(a3, v194, v188, 0, 1, 0, 0);
+    objc_msgSend_setFormat_shouldSetExplFlags_isExplicit_makeCurrent_clearingID_(cell, v194, v188, 0, 1, 0, 0);
 LABEL_108:
     if (!v159)
     {
@@ -2598,7 +2598,7 @@ LABEL_108:
     goto LABEL_109;
   }
 
-  objc_msgSend_clearFormatOfType_(a3, v194, 257, v195, v196);
+  objc_msgSend_clearFormatOfType_(cell, v194, 257, v195, v196);
   if (!v159)
   {
 LABEL_118:
@@ -2611,9 +2611,9 @@ LABEL_118:
   }
 
 LABEL_109:
-  if (a4)
+  if (cache)
   {
-    objc_msgSend_formatForKey_(a4, v175, v159, v176, v177);
+    objc_msgSend_formatForKey_(cache, v175, v159, v176, v177);
   }
 
   else
@@ -2630,11 +2630,11 @@ LABEL_109:
   v202 = objc_msgSend_formatType(v197, v198, v199, v200, v201, formatDataList);
   if (sub_22121E75C(v202))
   {
-    objc_msgSend_setFormat_shouldSetExplFlags_isExplicit_makeCurrent_clearingID_(a3, v203, v197, 0, 1, 0, 0);
+    objc_msgSend_setFormat_shouldSetExplFlags_isExplicit_makeCurrent_clearingID_(cell, v203, v197, 0, 1, 0, 0);
     goto LABEL_118;
   }
 
-  objc_msgSend_clearFormatOfType_(a3, v203, 261, v204, v205);
+  objc_msgSend_clearFormatOfType_(cell, v203, 261, v204, v205);
   if (!v164)
   {
 LABEL_128:
@@ -2647,9 +2647,9 @@ LABEL_128:
   }
 
 LABEL_119:
-  if (a4)
+  if (cache)
   {
-    objc_msgSend_formatForKey_(a4, v175, v164, v176, v177);
+    objc_msgSend_formatForKey_(cache, v175, v164, v176, v177);
   }
 
   else
@@ -2666,11 +2666,11 @@ LABEL_119:
   v211 = objc_msgSend_formatType(v206, v207, v208, v209, v210, formatDataList);
   if (sub_22121E75C(v211))
   {
-    objc_msgSend_setFormat_shouldSetExplFlags_isExplicit_makeCurrent_clearingID_(a3, v212, v206, 0, 1, 0, 0);
+    objc_msgSend_setFormat_shouldSetExplFlags_isExplicit_makeCurrent_clearingID_(cell, v212, v206, 0, 1, 0, 0);
     goto LABEL_128;
   }
 
-  objc_msgSend_clearFormatOfType_(a3, v212, 268, v213, v214);
+  objc_msgSend_clearFormatOfType_(cell, v212, 268, v213, v214);
   if (!v169)
   {
 LABEL_138:
@@ -2683,9 +2683,9 @@ LABEL_138:
   }
 
 LABEL_129:
-  if (a4)
+  if (cache)
   {
-    objc_msgSend_formatForKey_(a4, v175, v169, v176, v177);
+    objc_msgSend_formatForKey_(cache, v175, v169, v176, v177);
   }
 
   else
@@ -2702,20 +2702,20 @@ LABEL_129:
   v220 = objc_msgSend_formatType(v215, v216, v217, v218, v219, formatDataList);
   if (sub_22121E75C(v220))
   {
-    objc_msgSend_setFormat_shouldSetExplFlags_isExplicit_makeCurrent_clearingID_(a3, v221, v215, 0, 1, 0, 0);
+    objc_msgSend_setFormat_shouldSetExplFlags_isExplicit_makeCurrent_clearingID_(cell, v221, v215, 0, 1, 0, 0);
     goto LABEL_138;
   }
 
-  objc_msgSend_clearFormatOfType_(a3, v221, 260, v222, v223);
+  objc_msgSend_clearFormatOfType_(cell, v221, 260, v222, v223);
   if (!v178)
   {
     return;
   }
 
 LABEL_139:
-  if (a4)
+  if (cache)
   {
-    objc_msgSend_formatForKey_(a4, v175, v178, v176, v177);
+    objc_msgSend_formatForKey_(cache, v175, v178, v176, v177);
   }
 
   else
@@ -2732,28 +2732,28 @@ LABEL_139:
   v229 = objc_msgSend_formatType(v224, v225, v226, v227, v228, formatDataList);
   if (sub_22121E75C(v229))
   {
-    objc_msgSend_setFormat_shouldSetExplFlags_isExplicit_makeCurrent_clearingID_(a3, v230, v224, 0, 1, 0, 0);
+    objc_msgSend_setFormat_shouldSetExplFlags_isExplicit_makeCurrent_clearingID_(cell, v230, v224, 0, 1, 0, 0);
   }
 
   else
   {
-    objc_msgSend_clearFormatOfType_(a3, v230, 1, v231, v232);
+    objc_msgSend_clearFormatOfType_(cell, v230, 1, v231, v232);
   }
 }
 
-- (void)p_clearDataListEntriesInRange:(TSUCellRect)a3
+- (void)p_clearDataListEntriesInRange:(TSUCellRect)range
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = sub_2216A3A28;
   v3[3] = &unk_278468530;
   v3[4] = self;
-  objc_msgSend_enumerateCellStoragesInRange_withBlock_(self, a2, *&a3.origin, *&a3.size, v3);
+  objc_msgSend_enumerateCellStoragesInRange_withBlock_(self, a2, *&range.origin, *&range.size, v3);
 }
 
-- (void)p_clearDataListEntriesForStorageRef:(TSTCellStorage *)a3 cellID:(TSUCellCoord)a4
+- (void)p_clearDataListEntriesForStorageRef:(TSTCellStorage *)ref cellID:(TSUCellCoord)d
 {
-  v8 = sub_221145078(a3, 8, a3, *&a4, v4);
+  v8 = sub_221145078(ref, 8, ref, *&d, v4);
   if (v8)
   {
     v13 = v8;
@@ -2770,7 +2770,7 @@ LABEL_139:
     }
   }
 
-  v15 = sub_221145078(a3, 0x200, v10, v11, v12);
+  v15 = sub_221145078(ref, 0x200, v10, v11, v12);
   if (v15)
   {
     v20 = v15;
@@ -2787,7 +2787,7 @@ LABEL_139:
     }
   }
 
-  v22 = sub_221145078(a3, 0x400, v17, v18, v19);
+  v22 = sub_221145078(ref, 0x400, v17, v18, v19);
   if (v22)
   {
     v27 = v22;
@@ -2804,7 +2804,7 @@ LABEL_139:
     }
   }
 
-  v29 = sub_221145078(a3, 0x800, v24, v25, v26);
+  v29 = sub_221145078(ref, 0x800, v24, v25, v26);
   if (v29)
   {
     v34 = v29;
@@ -2821,7 +2821,7 @@ LABEL_139:
     }
   }
 
-  v36 = sub_221145078(a3, 0x10, v31, v32, v33);
+  v36 = sub_221145078(ref, 0x10, v31, v32, v33);
   if (v36)
   {
     v41 = v36;
@@ -2838,7 +2838,7 @@ LABEL_139:
     }
   }
 
-  v43 = sub_221145078(a3, 0x80000, v38, v39, v40);
+  v43 = sub_221145078(ref, 0x80000, v38, v39, v40);
   if (v43)
   {
     v48 = v43;
@@ -2855,7 +2855,7 @@ LABEL_139:
     }
   }
 
-  v50 = sub_221145078(a3, 0x100000, v45, v46, v47);
+  v50 = sub_221145078(ref, 0x100000, v45, v46, v47);
   if (v50)
   {
     v55 = v50;
@@ -2872,7 +2872,7 @@ LABEL_139:
     }
   }
 
-  v57 = sub_221145078(a3, 0x20, v52, v53, v54);
+  v57 = sub_221145078(ref, 0x20, v52, v53, v54);
   if (v57)
   {
     v62 = v57;
@@ -2889,7 +2889,7 @@ LABEL_139:
     }
   }
 
-  v64 = sub_221145078(a3, 0x40, v59, v60, v61);
+  v64 = sub_221145078(ref, 0x40, v59, v60, v61);
   if (v64)
   {
     v69 = v64;
@@ -2906,7 +2906,7 @@ LABEL_139:
     }
   }
 
-  v71 = sub_221145078(a3, 0x80, v66, v67, v68);
+  v71 = sub_221145078(ref, 0x80, v66, v67, v68);
   if (v71)
   {
     v76 = v71;
@@ -2923,13 +2923,13 @@ LABEL_139:
     }
   }
 
-  v81 = sub_221143644(&a3->var0.var0, v72, v73, v74, v75);
+  v81 = sub_221143644(&ref->var0.var0, v72, v73, v74, v75);
   for (i = 0; i != 6; ++i)
   {
     v83 = dword_2218038DC[i];
     if ((v83 & v81) != 0)
     {
-      v86 = sub_221145078(a3, v83, v78, v79, v80);
+      v86 = sub_221145078(ref, v83, v78, v79, v80);
       formatDataList = self->_formatDataList;
       v88 = formatDataList;
       if (!formatDataList)
@@ -2946,33 +2946,33 @@ LABEL_139:
   }
 }
 
-- (void)insertRows:(_NSRange)a3
+- (void)insertRows:(_NSRange)rows
 {
-  length = a3.length;
-  location = a3.location;
-  objc_msgSend_willModify(self, a2, a3.location, a3.length, v3);
+  length = rows.length;
+  location = rows.location;
+  objc_msgSend_willModify(self, a2, rows.location, rows.length, v3);
   objc_msgSend_insertRowsAtIndex_count_(self->_tileStorage, v7, location, length, v8);
   rowHeaderStorage = self->_rowHeaderStorage;
 
   objc_msgSend_shiftIndexesForwardAtIndex_count_(rowHeaderStorage, v9, location, length, v10);
 }
 
-- (void)insertColumns:(_NSRange)a3
+- (void)insertColumns:(_NSRange)columns
 {
-  length = a3.length;
-  location = a3.location;
-  objc_msgSend_willModify(self, a2, a3.location, a3.length, v3);
+  length = columns.length;
+  location = columns.location;
+  objc_msgSend_willModify(self, a2, columns.location, columns.length, v3);
   objc_msgSend_insertColumnsAtIndex_count_(self->_tileStorage, v7, location, length, v8);
   columnHeaderStorage = self->_columnHeaderStorage;
 
   objc_msgSend_shiftIndexesForwardAtIndex_count_(columnHeaderStorage, v9, location, length, v10);
 }
 
-- (void)removeRows:(_NSRange)a3
+- (void)removeRows:(_NSRange)rows
 {
-  length = a3.length;
-  location = a3.location;
-  objc_msgSend_willModify(self, a2, a3.location, a3.length, v3);
+  length = rows.length;
+  location = rows.location;
+  objc_msgSend_willModify(self, a2, rows.location, rows.length, v3);
   if (location >= 0xF4240)
   {
     v10 = MEMORY[0x277D81150];
@@ -3008,11 +3008,11 @@ LABEL_139:
   objc_msgSend_p_updateNumberOfPopulatedCells(self, v44, v45, v46, v47);
 }
 
-- (void)removeColumns:(_NSRange)a3
+- (void)removeColumns:(_NSRange)columns
 {
-  length = a3.length;
-  location = a3.location;
-  objc_msgSend_willModify(self, a2, a3.location, a3.length, v3);
+  length = columns.length;
+  location = columns.location;
+  objc_msgSend_willModify(self, a2, columns.location, columns.length, v3);
   if (location != 0x7FFFFFFFFFFFFFFFLL && location + length)
   {
     if (location >= 0x3E8)
@@ -3050,43 +3050,43 @@ LABEL_139:
   objc_msgSend_p_updateNumberOfPopulatedCells(self, v42, v43, v44, v45);
 }
 
-- (void)moveRowIndexRange:(_NSRange)a3 toIndex:(unsigned int)a4
+- (void)moveRowIndexRange:(_NSRange)range toIndex:(unsigned int)index
 {
-  v4 = *&a4;
-  length = a3.length;
-  location = a3.location;
-  objc_msgSend_willModify(self, a2, a3.location, a3.length, *&a4);
+  v4 = *&index;
+  length = range.length;
+  location = range.location;
+  objc_msgSend_willModify(self, a2, range.location, range.length, *&index);
   objc_msgSend_moveIndexRange_toIndex_(self->_rowHeaderStorage, v8, location, length, v4);
   tileStorage = self->_tileStorage;
 
   objc_msgSend_moveRowIndexRange_toIndex_(tileStorage, v9, location, length, v4);
 }
 
-- (void)moveColumnIndexRange:(_NSRange)a3 toIndex:(unsigned __int16)a4
+- (void)moveColumnIndexRange:(_NSRange)range toIndex:(unsigned __int16)index
 {
-  v4 = a4;
-  length = a3.length;
-  location = a3.location;
-  objc_msgSend_willModify(self, a2, a3.location, a3.length, a4);
-  objc_msgSend_moveIndexRange_toIndex_(self->_columnHeaderStorage, v8, location, length, v4);
+  indexCopy = index;
+  length = range.length;
+  location = range.location;
+  objc_msgSend_willModify(self, a2, range.location, range.length, index);
+  objc_msgSend_moveIndexRange_toIndex_(self->_columnHeaderStorage, v8, location, length, indexCopy);
   tileStorage = self->_tileStorage;
 
-  objc_msgSend_moveColumnIndexRange_toIndex_(tileStorage, v9, location, length, v4);
+  objc_msgSend_moveColumnIndexRange_toIndex_(tileStorage, v9, location, length, indexCopy);
 }
 
-- (void)swapRowAtIndex:(unsigned int)a3 withRowAtIndex:(unsigned int)a4
+- (void)swapRowAtIndex:(unsigned int)index withRowAtIndex:(unsigned int)atIndex
 {
-  v5 = *&a4;
-  v6 = *&a3;
-  objc_msgSend_swapRowAtIndex_withRowAtIndex_(self->_tileStorage, a2, *&a3, *&a4, v4);
+  v5 = *&atIndex;
+  v6 = *&index;
+  objc_msgSend_swapRowAtIndex_withRowAtIndex_(self->_tileStorage, a2, *&index, *&atIndex, v4);
   rowHeaderStorage = self->_rowHeaderStorage;
 
   MEMORY[0x2821F9670](rowHeaderStorage, sel_swapIndex_withIndex_, v6, v5, v8);
 }
 
-- (id)formulaSyntaxErrorAtCellID:(TSUCellCoord)a3
+- (id)formulaSyntaxErrorAtCellID:(TSUCellCoord)d
 {
-  v6 = objc_msgSend_cellStorageRefAtCellID_(self, a2, *&a3, v3, v4);
+  v6 = objc_msgSend_cellStorageRefAtCellID_(self, a2, *&d, v3, v4);
   if (v6 && (v10 = sub_221145078(v6, 0x800, v7, v8, v9), v10))
   {
     v14 = v10;
@@ -3111,17 +3111,17 @@ LABEL_139:
   return v17;
 }
 
-- (id)formulaAtCellID:(TSUCellCoord)a3
+- (id)formulaAtCellID:(TSUCellCoord)d
 {
-  v5 = objc_msgSend_formulaSpecAtCellID_(self, a2, *&a3, v3, v4);
+  v5 = objc_msgSend_formulaSpecAtCellID_(self, a2, *&d, v3, v4);
   v10 = objc_msgSend_formulaObject(v5, v6, v7, v8, v9);
 
   return v10;
 }
 
-- (id)formulaSpecAtCellID:(TSUCellCoord)a3
+- (id)formulaSpecAtCellID:(TSUCellCoord)d
 {
-  v6 = objc_msgSend_cellStorageRefAtCellID_(self, a2, *&a3, v3, v4);
+  v6 = objc_msgSend_cellStorageRefAtCellID_(self, a2, *&d, v3, v4);
   if (v6 && (v10 = sub_221145078(v6, 0x200, v7, v8, v9), v10))
   {
     v14 = v10;
@@ -3148,9 +3148,9 @@ LABEL_139:
   return v22;
 }
 
-- (id)formulaSpecForStorageRef:(TSTCellStorage *)a3
+- (id)formulaSpecForStorageRef:(TSTCellStorage *)ref
 {
-  if (a3 && (v6 = sub_221145078(a3, 0x200, a3, v3, v4), v6))
+  if (ref && (v6 = sub_221145078(ref, 0x200, ref, v3, v4), v6))
   {
     v10 = v6;
     formulaDataList = self->_formulaDataList;
@@ -3192,16 +3192,16 @@ LABEL_139:
   return result;
 }
 
-- (id)_loadDatalist:(id *)a3 forLazyReference:(id)a4 completionBlock:(id)a5
+- (id)_loadDatalist:(id *)datalist forLazyReference:(id)reference completionBlock:(id)block
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = *a3;
-  if (!*a3)
+  referenceCopy = reference;
+  blockCopy = block;
+  v10 = *datalist;
+  if (!*datalist)
   {
-    v11 = v8;
+    v11 = referenceCopy;
     objc_sync_enter(v11);
-    if (!*a3)
+    if (!*datalist)
     {
       if (v11)
       {
@@ -3212,13 +3212,13 @@ LABEL_139:
         if (v15 && !v16)
         {
           v22 = v15;
-          if (v9)
+          if (blockCopy)
           {
-            v9[2](v9, v22);
+            blockCopy[2](blockCopy, v22);
           }
 
-          v23 = *a3;
-          *a3 = v22;
+          v23 = *datalist;
+          *datalist = v22;
 
           goto LABEL_9;
         }
@@ -3292,7 +3292,7 @@ LABEL_139:
 LABEL_9:
     objc_sync_exit(v11);
 
-    v10 = *a3;
+    v10 = *datalist;
   }
 
   v24 = v10;
@@ -3308,16 +3308,16 @@ LABEL_9:
   return v7;
 }
 
-- (id)p_makeALazyDatalistOfType:(int)a3 isNewForBNC:(BOOL)a4
+- (id)p_makeALazyDatalistOfType:(int)type isNewForBNC:(BOOL)c
 {
-  v4 = a4;
-  v5 = *&a3;
+  cCopy = c;
+  v5 = *&type;
   v7 = [TSTTableDataList alloc];
   v12 = objc_msgSend_owner(self, v8, v9, v10, v11);
   v17 = objc_msgSend_context(v12, v13, v14, v15, v16);
   v20 = objc_msgSend_initWithType_context_(v7, v18, v5, v17, v19);
 
-  objc_msgSend_setIsNewForBraveNewCell_(v20, v21, v4, v22, v23);
+  objc_msgSend_setIsNewForBraveNewCell_(v20, v21, cCopy, v22, v23);
   v24 = objc_alloc(MEMORY[0x277D80868]);
   v28 = objc_msgSend_initWithObject_(v24, v25, v20, v26, v27);
   objc_msgSend_setKeepObjectInMemory_(v28, v29, 1, v30, v31);
@@ -3325,9 +3325,9 @@ LABEL_9:
   return v28;
 }
 
-- (id)i_formatForDataListKey:(unsigned int)a3
+- (id)i_formatForDataListKey:(unsigned int)key
 {
-  v5 = *&a3;
+  v5 = *&key;
   formatDataList = self->_formatDataList;
   if (!formatDataList)
   {
@@ -3337,9 +3337,9 @@ LABEL_9:
   return objc_msgSend_cellFormatForKey_(formatDataList, a2, v5, v3, v4);
 }
 
-- (id)i_textStyleHandleForDataListKey:(unsigned int)a3
+- (id)i_textStyleHandleForDataListKey:(unsigned int)key
 {
-  v3 = *&a3;
+  v3 = *&key;
   objc_opt_class();
   styleDataList = self->_styleDataList;
   v9 = styleDataList;
@@ -3359,9 +3359,9 @@ LABEL_9:
   return v15;
 }
 
-- (id)i_cellStyleHandleForDataListKey:(unsigned int)a3
+- (id)i_cellStyleHandleForDataListKey:(unsigned int)key
 {
-  v3 = *&a3;
+  v3 = *&key;
   objc_opt_class();
   styleDataList = self->_styleDataList;
   v9 = styleDataList;
@@ -3381,16 +3381,16 @@ LABEL_9:
   return v15;
 }
 
-- (id)i_stringForDataListKey:(unsigned int)a3 outShouldWrap:(BOOL *)a4 outIsShared:(BOOL *)a5
+- (id)i_stringForDataListKey:(unsigned int)key outShouldWrap:(BOOL *)wrap outIsShared:(BOOL *)shared
 {
-  v7 = *&a3;
+  v7 = *&key;
   stringDataList = self->_stringDataList;
   if (!stringDataList)
   {
     stringDataList = sub_22170A8F4(self);
   }
 
-  return objc_msgSend_stringForKey_outShouldWrap_outIsShared_(stringDataList, a2, v7, a4, a5);
+  return objc_msgSend_stringForKey_outShouldWrap_outIsShared_(stringDataList, a2, v7, wrap, shared);
 }
 
 - (void)resetAllColumnRowSizes
@@ -3595,9 +3595,9 @@ LABEL_9:
   return v25;
 }
 
-- (id)cellMapForRepairingPasteboardCustomFormats:(id)a3
+- (id)cellMapForRepairingPasteboardCustomFormats:(id)formats
 {
-  v4 = a3;
+  formatsCopy = formats;
   if (objc_msgSend_mightHaveCustomFormats(self, v5, v6, v7, v8))
   {
     v13 = objc_msgSend_owner(self, v9, v10, v11, v12);
@@ -3615,8 +3615,8 @@ LABEL_9:
     v49 = &unk_2784685F0;
     v38 = v37;
     v50 = v38;
-    v51 = self;
-    v52 = v4;
+    selfCopy = self;
+    v52 = formatsCopy;
     v39 = v22;
     v53 = v39;
     objc_msgSend_enumerateCellStoragesInRange_withBlock_(self, v40, 0, 0xF4240000003E8, &v46);
@@ -3652,69 +3652,69 @@ LABEL_9:
   return HaveCustomFormats;
 }
 
-- (id)mapReassigningPasteboardCustomFormatKeys:(id)a3
+- (id)mapReassigningPasteboardCustomFormatKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   if (objc_msgSend_mightHaveCustomFormats(self, v5, v6, v7, v8))
   {
     v10 = sub_22170A948(self, v9);
-    v14 = objc_msgSend_reassignCustomFormatUIDForPaste_(v10, v11, v4, v12, v13);
+    v14 = objc_msgSend_reassignCustomFormatUIDForPaste_(v10, v11, keysCopy, v12, v13);
 
-    v4 = v14;
+    keysCopy = v14;
   }
 
-  return v4;
+  return keysCopy;
 }
 
-- (void)replaceFormulasUsingBlock:(id)a3
+- (void)replaceFormulasUsingBlock:(id)block
 {
-  v5 = a3;
+  blockCopy = block;
   formulaDataList = self->_formulaDataList;
   v9 = formulaDataList;
-  v10 = v5;
+  v10 = blockCopy;
   if (!formulaDataList)
   {
     v9 = sub_22170A990(self);
-    v5 = v10;
+    blockCopy = v10;
   }
 
-  objc_msgSend_replaceFormulasUsingBlock_(v9, v4, v5, v6, v7);
+  objc_msgSend_replaceFormulasUsingBlock_(v9, v4, blockCopy, v6, v7);
   if (!formulaDataList)
   {
   }
 }
 
-- (void)replaceConditionalStyleSetsUsingBlock:(id)a3
+- (void)replaceConditionalStyleSetsUsingBlock:(id)block
 {
-  v5 = a3;
+  blockCopy = block;
   conditionalStyleSetDataList = self->_conditionalStyleSetDataList;
   v9 = conditionalStyleSetDataList;
-  v10 = v5;
+  v10 = blockCopy;
   if (!conditionalStyleSetDataList)
   {
     v9 = sub_22170A84C(self);
-    v5 = v10;
+    blockCopy = v10;
   }
 
-  objc_msgSend_replaceConditionalStyleSetsUsingBlock_(v9, v4, v5, v6, v7);
+  objc_msgSend_replaceConditionalStyleSetsUsingBlock_(v9, v4, blockCopy, v6, v7);
   if (!conditionalStyleSetDataList)
   {
   }
 }
 
-- (void)replaceCommentStoragesUsingBlock:(id)a3
+- (void)replaceCommentStoragesUsingBlock:(id)block
 {
-  v8 = a3;
+  blockCopy = block;
   v4 = sub_22170A8A0(self);
-  objc_msgSend_replaceCommentStoragesUsingBlock_(v4, v5, v8, v6, v7);
+  objc_msgSend_replaceCommentStoragesUsingBlock_(v4, v5, blockCopy, v6, v7);
 }
 
-- (TSTTableDataStore)initWithOwner:(id)a3
+- (TSTTableDataStore)initWithOwner:(id)owner
 {
-  v4 = a3;
+  ownerCopy = owner;
   v94.receiver = self;
   v94.super_class = TSTTableDataStore;
-  v5 = [(TSTTableDataStore *)&v94 initWithOwner:v4];
+  v5 = [(TSTTableDataStore *)&v94 initWithOwner:ownerCopy];
   v6 = v5;
   if (v5)
   {
@@ -3722,17 +3722,17 @@ LABEL_9:
     v5->_cellCount = 0;
     v5->_cellCountValid = 1;
     v7 = [TSTTableHeaderStorage alloc];
-    v11 = objc_msgSend_initWithOwner_(v7, v8, v4, v9, v10);
+    v11 = objc_msgSend_initWithOwner_(v7, v8, ownerCopy, v9, v10);
     rowHeaderStorage = v6->_rowHeaderStorage;
     v6->_rowHeaderStorage = v11;
 
     v13 = [TSTTableHeaderStorage alloc];
-    v17 = objc_msgSend_initWithOwner_(v13, v14, v4, v15, v16);
+    v17 = objc_msgSend_initWithOwner_(v13, v14, ownerCopy, v15, v16);
     columnHeaderStorage = v6->_columnHeaderStorage;
     v6->_columnHeaderStorage = v17;
 
     v19 = [TSTTableTileStorage alloc];
-    v23 = objc_msgSend_initWithOwner_(v19, v20, v4, v21, v22);
+    v23 = objc_msgSend_initWithOwner_(v19, v20, ownerCopy, v21, v22);
     tileStorage = v6->_tileStorage;
     v6->_tileStorage = v23;
 
@@ -3791,26 +3791,26 @@ LABEL_9:
   return v6;
 }
 
-- (TSTTableDataStore)initWithArchive:(const void *)a3 unarchiver:(id)a4 owner:(id)a5
+- (TSTTableDataStore)initWithArchive:(const void *)archive unarchiver:(id)unarchiver owner:(id)owner
 {
-  v8 = a4;
-  v9 = a5;
+  unarchiverCopy = unarchiver;
+  ownerCopy = owner;
   v244.receiver = self;
   v244.super_class = TSTTableDataStore;
-  v14 = [(TSTTableDataStore *)&v244 initWithOwner:v9];
+  v14 = [(TSTTableDataStore *)&v244 initWithOwner:ownerCopy];
   if (v14)
   {
-    v15 = objc_msgSend_fileFormatVersion(v8, v10, v11, v12, v13);
-    v16 = *(a3 + 4);
+    v15 = objc_msgSend_fileFormatVersion(unarchiverCopy, v10, v11, v12, v13);
+    v16 = *(archive + 4);
     v241[0] = MEMORY[0x277D85DD0];
     v241[1] = 3221225472;
     v241[2] = sub_2216A754C;
     v241[3] = &unk_278468618;
     v17 = v14;
     v242 = v17;
-    v18 = v9;
+    v18 = ownerCopy;
     v243 = v18;
-    v19 = v8;
+    v19 = unarchiverCopy;
     v21 = objc_opt_class();
     if (v16)
     {
@@ -3823,9 +3823,9 @@ LABEL_9:
     }
 
     v22 = [TSTTableHeaderStorage alloc];
-    if (*(a3 + 3))
+    if (*(archive + 3))
     {
-      v24 = objc_msgSend_initFromArchive_unarchiver_owner_(v22, v23, *(a3 + 3), v19, v18);
+      v24 = objc_msgSend_initFromArchive_unarchiver_owner_(v22, v23, *(archive + 3), v19, v18);
     }
 
     else
@@ -3836,12 +3836,12 @@ LABEL_9:
     rowHeaderStorage = v17->_rowHeaderStorage;
     v17->_rowHeaderStorage = v24;
 
-    if ((*(a3 + 16) & 4) != 0)
+    if ((*(archive + 16) & 4) != 0)
     {
       v31 = [TSTTableTileStorage alloc];
-      if (*(a3 + 5))
+      if (*(archive + 5))
       {
-        v33 = *(a3 + 5);
+        v33 = *(archive + 5);
       }
 
       else
@@ -3849,14 +3849,14 @@ LABEL_9:
         v33 = &TST::_TileStorage_default_instance_;
       }
 
-      if (*(a3 + 9))
+      if (*(archive + 9))
       {
-        TileID_unarchiver_owner = objc_msgSend_initWithStorageArchive_treeArchive_nextTileID_unarchiver_owner_(v31, v32, v33, *(a3 + 9), *(a3 + 44), v19, v18);
+        TileID_unarchiver_owner = objc_msgSend_initWithStorageArchive_treeArchive_nextTileID_unarchiver_owner_(v31, v32, v33, *(archive + 9), *(archive + 44), v19, v18);
       }
 
       else
       {
-        TileID_unarchiver_owner = objc_msgSend_initWithStorageArchive_treeArchive_nextTileID_unarchiver_owner_(v31, v32, v33, &TST::_TableRBTree_default_instance_, *(a3 + 44), v19, v18);
+        TileID_unarchiver_owner = objc_msgSend_initWithStorageArchive_treeArchive_nextTileID_unarchiver_owner_(v31, v32, v33, &TST::_TableRBTree_default_instance_, *(archive + 44), v19, v18);
       }
     }
 
@@ -3872,7 +3872,7 @@ LABEL_9:
     v17->_tileStorage = TileID_unarchiver_owner;
 
     v207 = objc_msgSend_archivingCompatibilityVersion(v17->_tileStorage, v35, v36, v37, v38);
-    v39 = *(a3 + 6);
+    v39 = *(archive + 6);
     v239[0] = MEMORY[0x277D85DD0];
     v239[1] = 3221225472;
     v239[2] = sub_2216A75D4;
@@ -3891,9 +3891,9 @@ LABEL_9:
       objc_msgSend_readLazyReferenceMessage_class_protocol_completion_(v41, v42, MEMORY[0x277D80A18], v43, 0, v239);
     }
 
-    if ((*(a3 + 16) & 0x10) != 0)
+    if ((*(archive + 16) & 0x10) != 0)
     {
-      v53 = *(a3 + 7);
+      v53 = *(archive + 7);
       v237[0] = MEMORY[0x277D85DD0];
       v237[1] = 3221225472;
       v237[2] = sub_2216A7638;
@@ -3914,9 +3914,9 @@ LABEL_9:
       v40->_styleTableReference = v51;
     }
 
-    if ((*(a3 + 18) & 4) != 0)
+    if ((*(archive + 18) & 4) != 0)
     {
-      v61 = *(a3 + 21);
+      v61 = *(archive + 21);
       v235[0] = MEMORY[0x277D85DD0];
       v235[1] = 3221225472;
       v235[2] = sub_2216A769C;
@@ -3937,7 +3937,7 @@ LABEL_9:
       v40->_formatTableReference = v59;
     }
 
-    v65 = *(a3 + 8);
+    v65 = *(archive + 8);
     v233[0] = MEMORY[0x277D85DD0];
     v233[1] = 3221225472;
     v233[2] = sub_2216A7700;
@@ -3956,9 +3956,9 @@ LABEL_9:
       objc_msgSend_readLazyReferenceMessage_class_protocol_completion_(v67, v68, MEMORY[0x277D80A18], v69, 0, v233);
     }
 
-    if ((*(a3 + 18) & 2) != 0)
+    if ((*(archive + 18) & 2) != 0)
     {
-      v74 = *(a3 + 20);
+      v74 = *(archive + 20);
       v231[0] = MEMORY[0x277D85DD0];
       v231[1] = 3221225472;
       v231[2] = sub_2216A7764;
@@ -3979,10 +3979,10 @@ LABEL_9:
       v66->_controlCellSpecTableReference = v72;
     }
 
-    v82 = *(a3 + 4);
+    v82 = *(archive + 4);
     if ((v82 & 0x400) != 0)
     {
-      v83 = *(a3 + 13);
+      v83 = *(archive + 13);
       v229[0] = MEMORY[0x277D85DD0];
       v229[1] = 3221225472;
       v229[2] = sub_2216A77C8;
@@ -3992,12 +3992,12 @@ LABEL_9:
       v85 = objc_opt_class();
       objc_msgSend_readReferenceMessage_class_protocol_completion_(v84, v86, v83, v85, 0, v229);
 
-      v82 = *(a3 + 4);
+      v82 = *(archive + 4);
     }
 
     if ((v82 & 0x200) != 0)
     {
-      v92 = *(a3 + 12);
+      v92 = *(archive + 12);
       v227[0] = MEMORY[0x277D85DD0];
       v227[1] = 3221225472;
       v227[2] = sub_2216A7854;
@@ -4018,9 +4018,9 @@ LABEL_9:
       v66->_formulaErrorTableReference = v90;
     }
 
-    if ((*(a3 + 17) & 0x20) != 0)
+    if ((*(archive + 17) & 0x20) != 0)
     {
-      v105 = *(a3 + 16);
+      v105 = *(archive + 16);
       v225[0] = MEMORY[0x277D85DD0];
       v225[1] = 3221225472;
       v225[2] = sub_2216A78B8;
@@ -4041,9 +4041,9 @@ LABEL_9:
       v66->_richTextTableReference = v103;
     }
 
-    if ((*(a3 + 17) & 0x80) != 0)
+    if ((*(archive + 17) & 0x80) != 0)
     {
-      v118 = *(a3 + 18);
+      v118 = *(archive + 18);
       v223[0] = MEMORY[0x277D85DD0];
       v223[1] = 3221225472;
       v223[2] = sub_2216A791C;
@@ -4064,9 +4064,9 @@ LABEL_9:
       v66->_commentStorageTableReference = v116;
     }
 
-    if (*(a3 + 18))
+    if (*(archive + 18))
     {
-      v131 = *(a3 + 19);
+      v131 = *(archive + 19);
       v221[0] = MEMORY[0x277D85DD0];
       v221[1] = 3221225472;
       v221[2] = sub_2216A7980;
@@ -4087,9 +4087,9 @@ LABEL_9:
       v66->_importWarningSetTableReference = v129;
     }
 
-    if ((*(a3 + 17) & 0x40) != 0)
+    if ((*(archive + 17) & 0x40) != 0)
     {
-      v144 = *(a3 + 17);
+      v144 = *(archive + 17);
       v219[0] = MEMORY[0x277D85DD0];
       v219[1] = 3221225472;
       v219[2] = sub_2216A79E4;
@@ -4112,8 +4112,8 @@ LABEL_9:
 
     if (v207 <= 0xA000000000002)
     {
-      v209 = v8;
-      v157 = *(a3 + 11);
+      v209 = unarchiverCopy;
+      v157 = *(archive + 11);
       v217[0] = MEMORY[0x277D85DD0];
       v217[1] = 3221225472;
       v217[2] = sub_2216A7A48;
@@ -4132,16 +4132,16 @@ LABEL_9:
         objc_msgSend_readLazyReferenceMessage_class_protocol_completion_(v159, v160, MEMORY[0x277D80A18], v161, 0, v217);
       }
 
-      if ((*(a3 + 17) & 0x10) != 0)
+      if ((*(archive + 17) & 0x10) != 0)
       {
-        v196 = *(a3 + 15);
+        v196 = *(archive + 15);
         v215[0] = MEMORY[0x277D85DD0];
         v215[1] = 3221225472;
         v215[2] = sub_2216A7A5C;
         v215[3] = &unk_2784685A0;
         v216 = v158;
         v197 = v159;
-        v8 = v209;
+        unarchiverCopy = v209;
         v198 = objc_opt_class();
         objc_msgSend_readReferenceMessage_class_protocol_completion_(v197, v199, v196, v198, 0, v215);
 
@@ -4150,7 +4150,7 @@ LABEL_9:
 
       else
       {
-        v8 = v209;
+        unarchiverCopy = v209;
         objc_msgSend_willModifyForUpgrade(v18, v162, v163, v164, v165);
         v166 = [TSTTableDataList alloc];
         v171 = objc_msgSend_context(v18, v167, v168, v169, v170);
@@ -4162,7 +4162,7 @@ LABEL_9:
       v156 = v218;
     }
 
-    else if ((*(a3 + 17) & 0x10) != 0)
+    else if ((*(archive + 17) & 0x10) != 0)
     {
       objc_msgSend_willModifyForUpgrade(v18, v148, v149, v150, v151);
       preBNCFormatDataList = v66->_preBNCFormatDataList;
@@ -4182,8 +4182,8 @@ LABEL_9:
 
     else
     {
-      v208 = v8;
-      v152 = *(a3 + 11);
+      v208 = unarchiverCopy;
+      v152 = *(archive + 11);
       v213[0] = MEMORY[0x277D85DD0];
       v213[1] = 3221225472;
       v213[2] = sub_2216A7A70;
@@ -4202,14 +4202,14 @@ LABEL_9:
       }
 
       v156 = v214;
-      v8 = v208;
+      unarchiverCopy = v208;
     }
 
     v66->_cellCount = 0;
     v66->_cellCountValid = 0;
-    if ((*(a3 + 4) & 0x200000) != 0)
+    if ((*(archive + 4) & 0x200000) != 0)
     {
-      v200 = *(a3 + 184);
+      v200 = *(archive + 184);
     }
 
     else
@@ -4245,9 +4245,9 @@ LABEL_9:
   }
 }
 
-- (void)upgradeDataStoreCellStorageIfNeededWithTableUID:(const TSKUIDStruct *)a3 conditionalStyleOwner:(id)a4 fileFormatVersion:(unint64_t)a5
+- (void)upgradeDataStoreCellStorageIfNeededWithTableUID:(const TSKUIDStruct *)d conditionalStyleOwner:(id)owner fileFormatVersion:(unint64_t)version
 {
-  v8 = a4;
+  ownerCopy = owner;
   if (objc_msgSend__needToUpgradeCellStorage(self, v9, v10, v11, v12))
   {
     objc_msgSend_willModifyForUpgrade(self, v13, v14, v15, v16);
@@ -4271,20 +4271,20 @@ LABEL_9:
     v43 = objc_msgSend_upgradeRepairedTiles(self->_tileStorage, v35, v36, v37, v38);
     if (v43)
     {
-      objc_msgSend_removeAllFormulasFromOwner_(v34, v39, a3, v41, v42);
-      v57[0] = objc_msgSend_ownerUID(v8, v44, v45, v46, v47);
+      objc_msgSend_removeAllFormulasFromOwner_(v34, v39, d, v41, v42);
+      v57[0] = objc_msgSend_ownerUID(ownerCopy, v44, v45, v46, v47);
       v57[1] = v48;
       objc_msgSend_removeAllFormulasFromOwner_(v34, v48, v57, v49, v50);
     }
 
     v51 = objc_msgSend_p_cellMapForUpgradingToBraveNewCell(self, v39, v40, v41, v42);
     objc_msgSend_resetAlmostEverything(self, v52, v53, v54, v55);
-    objc_msgSend_setCellMap_tableUID_calculationEngine_conditionalStyleOwner_ignoreFormulas_skipDirtyingNonFormulaCells_doRichTextDOLC_(self, v56, v51, a3, v34, v8, v43 ^ 1u, 1, 1);
+    objc_msgSend_setCellMap_tableUID_calculationEngine_conditionalStyleOwner_ignoreFormulas_skipDirtyingNonFormulaCells_doRichTextDOLC_(self, v56, v51, d, v34, ownerCopy, v43 ^ 1u, 1, 1);
     self->_storageVersionPreBNC = 4;
     self->_missingPostBNCDatalists = 0;
   }
 
-  else if (a5 <= 0x3000200000009)
+  else if (version <= 0x3000200000009)
   {
     objc_msgSend_purgePreBNCData(self->_tileStorage, v13, v14, v15, v16);
   }
@@ -4322,7 +4322,7 @@ LABEL_9:
   v42[3] = &unk_2784686B8;
   v36 = v21;
   v43 = v36;
-  v44 = self;
+  selfCopy = self;
   v46 = v48;
   v37 = v35;
   v45 = v37;
@@ -4359,293 +4359,293 @@ LABEL_9:
   self->_multipleChoiceListFormatDataList = v21;
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4 isInTheDocument:(BOOL)a5
+- (void)saveToArchive:(void *)archive archiver:(id)archiver isInTheDocument:(BOOL)document
 {
-  v100 = a4;
+  archiverCopy = archiver;
   TileID = objc_msgSend_nextTileID(self->_tileStorage, v7, v8, v9, v10);
-  v13 = *(a3 + 4);
-  *(a3 + 4) = v13 | 0x80000;
-  *(a3 + 44) = TileID;
+  v13 = *(archive + 4);
+  *(archive + 4) = v13 | 0x80000;
+  *(archive + 44) = TileID;
   tileStorage = self->_tileStorage;
   v15 = v13 | 0x80004;
-  *(a3 + 4) = v15;
-  v16 = *(a3 + 5);
+  *(archive + 4) = v15;
+  v16 = *(archive + 5);
   if (!v16)
   {
-    v17 = *(a3 + 1);
+    v17 = *(archive + 1);
     if (v17)
     {
       v17 = *(v17 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v16 = google::protobuf::Arena::CreateMaybeMessage<TST::TileStorage>(v17);
-    *(a3 + 5) = v16;
-    v15 = *(a3 + 4);
+    *(archive + 5) = v16;
+    v15 = *(archive + 4);
   }
 
-  *(a3 + 4) = v15 | 0x40;
-  v18 = *(a3 + 9);
+  *(archive + 4) = v15 | 0x40;
+  v18 = *(archive + 9);
   if (!v18)
   {
-    v19 = *(a3 + 1);
+    v19 = *(archive + 1);
     if (v19)
     {
       v19 = *(v19 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v18 = google::protobuf::Arena::CreateMaybeMessage<TST::TableRBTree>(v19);
-    *(a3 + 9) = v18;
+    *(archive + 9) = v18;
   }
 
-  objc_msgSend_saveToStorageArchive_treeArchive_archiver_(tileStorage, v12, v16, v18, v100);
+  objc_msgSend_saveToStorageArchive_treeArchive_archiver_(tileStorage, v12, v16, v18, archiverCopy);
   v26 = objc_msgSend_firstBucketForArchiving(self->_columnHeaderStorage, v20, v21, v22, v23);
-  *(a3 + 4) |= 2u;
-  v27 = *(a3 + 4);
+  *(archive + 4) |= 2u;
+  v27 = *(archive + 4);
   if (!v27)
   {
-    v28 = *(a3 + 1);
+    v28 = *(archive + 1);
     if (v28)
     {
       v28 = *(v28 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v27 = MEMORY[0x223DA0390](v28);
-    *(a3 + 4) = v27;
+    *(archive + 4) = v27;
   }
 
-  objc_msgSend_setStrongReference_message_(v100, v24, v26, v27, v25);
+  objc_msgSend_setStrongReference_message_(archiverCopy, v24, v26, v27, v25);
 
   rowHeaderStorage = self->_rowHeaderStorage;
-  *(a3 + 4) |= 1u;
-  v32 = *(a3 + 3);
+  *(archive + 4) |= 1u;
+  v32 = *(archive + 3);
   if (!v32)
   {
-    v33 = *(a3 + 1);
+    v33 = *(archive + 1);
     if (v33)
     {
       v33 = *(v33 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v32 = google::protobuf::Arena::CreateMaybeMessage<TST::HeaderStorage>(v33);
-    *(a3 + 3) = v32;
+    *(archive + 3) = v32;
   }
 
-  objc_msgSend_encodeToArchive_archiver_(rowHeaderStorage, v29, v32, v100, v30);
+  objc_msgSend_encodeToArchive_archiver_(rowHeaderStorage, v29, v32, archiverCopy, v30);
   stringTableReference = self->_stringTableReference;
-  *(a3 + 4) |= 8u;
-  v37 = *(a3 + 6);
+  *(archive + 4) |= 8u;
+  v37 = *(archive + 6);
   if (!v37)
   {
-    v38 = *(a3 + 1);
+    v38 = *(archive + 1);
     if (v38)
     {
       v38 = *(v38 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v37 = MEMORY[0x223DA0390](v38);
-    *(a3 + 6) = v37;
+    *(archive + 6) = v37;
   }
 
-  objc_msgSend_setStrongLazyReference_message_(v100, v34, stringTableReference, v37, v35);
+  objc_msgSend_setStrongLazyReference_message_(archiverCopy, v34, stringTableReference, v37, v35);
   styleTableReference = self->_styleTableReference;
-  *(a3 + 4) |= 0x10u;
-  v42 = *(a3 + 7);
+  *(archive + 4) |= 0x10u;
+  v42 = *(archive + 7);
   if (!v42)
   {
-    v43 = *(a3 + 1);
+    v43 = *(archive + 1);
     if (v43)
     {
       v43 = *(v43 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v42 = MEMORY[0x223DA0390](v43);
-    *(a3 + 7) = v42;
+    *(archive + 7) = v42;
   }
 
-  objc_msgSend_setStrongLazyReference_message_(v100, v39, styleTableReference, v42, v40);
+  objc_msgSend_setStrongLazyReference_message_(archiverCopy, v39, styleTableReference, v42, v40);
   formulaTableReference = self->_formulaTableReference;
-  *(a3 + 4) |= 0x20u;
-  v47 = *(a3 + 8);
+  *(archive + 4) |= 0x20u;
+  v47 = *(archive + 8);
   if (!v47)
   {
-    v48 = *(a3 + 1);
+    v48 = *(archive + 1);
     if (v48)
     {
       v48 = *(v48 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v47 = MEMORY[0x223DA0390](v48);
-    *(a3 + 8) = v47;
+    *(archive + 8) = v47;
   }
 
-  objc_msgSend_setStrongLazyReference_message_(v100, v44, formulaTableReference, v47, v45);
+  objc_msgSend_setStrongLazyReference_message_(archiverCopy, v44, formulaTableReference, v47, v45);
   formulaErrorTableReference = self->_formulaErrorTableReference;
-  *(a3 + 4) |= 0x200u;
-  v52 = *(a3 + 12);
+  *(archive + 4) |= 0x200u;
+  v52 = *(archive + 12);
   if (!v52)
   {
-    v53 = *(a3 + 1);
+    v53 = *(archive + 1);
     if (v53)
     {
       v53 = *(v53 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v52 = MEMORY[0x223DA0390](v53);
-    *(a3 + 12) = v52;
+    *(archive + 12) = v52;
   }
 
-  objc_msgSend_setStrongLazyReference_message_(v100, v49, formulaErrorTableReference, v52, v50);
+  objc_msgSend_setStrongLazyReference_message_(archiverCopy, v49, formulaErrorTableReference, v52, v50);
   richTextTableReference = self->_richTextTableReference;
-  *(a3 + 4) |= 0x2000u;
-  v57 = *(a3 + 16);
+  *(archive + 4) |= 0x2000u;
+  v57 = *(archive + 16);
   if (!v57)
   {
-    v58 = *(a3 + 1);
+    v58 = *(archive + 1);
     if (v58)
     {
       v58 = *(v58 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v57 = MEMORY[0x223DA0390](v58);
-    *(a3 + 16) = v57;
+    *(archive + 16) = v57;
   }
 
-  objc_msgSend_setStrongLazyReference_message_(v100, v54, richTextTableReference, v57, v55);
+  objc_msgSend_setStrongLazyReference_message_(archiverCopy, v54, richTextTableReference, v57, v55);
   commentStorageTableReference = self->_commentStorageTableReference;
-  *(a3 + 4) |= 0x8000u;
-  v62 = *(a3 + 18);
+  *(archive + 4) |= 0x8000u;
+  v62 = *(archive + 18);
   if (!v62)
   {
-    v63 = *(a3 + 1);
+    v63 = *(archive + 1);
     if (v63)
     {
       v63 = *(v63 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v62 = MEMORY[0x223DA0390](v63);
-    *(a3 + 18) = v62;
+    *(archive + 18) = v62;
   }
 
-  objc_msgSend_setStrongLazyReference_message_(v100, v59, commentStorageTableReference, v62, v60);
+  objc_msgSend_setStrongLazyReference_message_(archiverCopy, v59, commentStorageTableReference, v62, v60);
   importWarningSetTableReference = self->_importWarningSetTableReference;
-  *(a3 + 4) |= 0x10000u;
-  v67 = *(a3 + 19);
+  *(archive + 4) |= 0x10000u;
+  v67 = *(archive + 19);
   if (!v67)
   {
-    v68 = *(a3 + 1);
+    v68 = *(archive + 1);
     if (v68)
     {
       v68 = *(v68 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v67 = MEMORY[0x223DA0390](v68);
-    *(a3 + 19) = v67;
+    *(archive + 19) = v67;
   }
 
-  objc_msgSend_setStrongLazyReference_message_(v100, v64, importWarningSetTableReference, v67, v65);
+  objc_msgSend_setStrongLazyReference_message_(archiverCopy, v64, importWarningSetTableReference, v67, v65);
   conditionalStyleSetTableReference = self->_conditionalStyleSetTableReference;
-  *(a3 + 4) |= 0x4000u;
-  v72 = *(a3 + 17);
+  *(archive + 4) |= 0x4000u;
+  v72 = *(archive + 17);
   if (!v72)
   {
-    v73 = *(a3 + 1);
+    v73 = *(archive + 1);
     if (v73)
     {
       v73 = *(v73 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v72 = MEMORY[0x223DA0390](v73);
-    *(a3 + 17) = v72;
+    *(archive + 17) = v72;
   }
 
-  objc_msgSend_setStrongLazyReference_message_(v100, v69, conditionalStyleSetTableReference, v72, v70);
-  v78 = *(a3 + 4);
-  *(a3 + 46) = self->_storageVersionPreBNC;
+  objc_msgSend_setStrongLazyReference_message_(archiverCopy, v69, conditionalStyleSetTableReference, v72, v70);
+  v78 = *(archive + 4);
+  *(archive + 46) = self->_storageVersionPreBNC;
   v79 = v78 | 0x200080;
-  *(a3 + 4) = v78 | 0x200080;
-  if (!*(a3 + 10))
+  *(archive + 4) = v78 | 0x200080;
+  if (!*(archive + 10))
   {
-    v80 = *(a3 + 1);
+    v80 = *(archive + 1);
     if (v80)
     {
       v80 = *(v80 & 0xFFFFFFFFFFFFFFFELL);
     }
 
-    *(a3 + 10) = google::protobuf::Arena::CreateMaybeMessage<TST::TableRBTree>(v80);
-    v79 = *(a3 + 4);
+    *(archive + 10) = google::protobuf::Arena::CreateMaybeMessage<TST::TableRBTree>(v80);
+    v79 = *(archive + 4);
   }
 
-  *(a3 + 4) = v79 | 0x100000;
-  *(a3 + 45) = 0;
+  *(archive + 4) = v79 | 0x100000;
+  *(archive + 45) = 0;
   v83 = objc_msgSend_archivingCompatibilityVersion(self->_tileStorage, v74, v75, v76, v77);
   preBNCFormatTableReference = self->_preBNCFormatTableReference;
-  *(a3 + 4) |= 0x100u;
-  v85 = *(a3 + 11);
+  *(archive + 4) |= 0x100u;
+  v85 = *(archive + 11);
   if (!v85)
   {
-    v86 = *(a3 + 1);
+    v86 = *(archive + 1);
     if (v86)
     {
       v86 = *(v86 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v85 = MEMORY[0x223DA0390](v86);
-    *(a3 + 11) = v85;
+    *(archive + 11) = v85;
   }
 
-  objc_msgSend_setStrongLazyReference_message_(v100, v81, preBNCFormatTableReference, v85, v82);
+  objc_msgSend_setStrongLazyReference_message_(archiverCopy, v81, preBNCFormatTableReference, v85, v82);
   if (v83 <= 0xA000000000002)
   {
     multipleChoiceListFormatDataList = self->_multipleChoiceListFormatDataList;
-    *(a3 + 4) |= 0x1000u;
-    v90 = *(a3 + 15);
+    *(archive + 4) |= 0x1000u;
+    v90 = *(archive + 15);
     if (!v90)
     {
-      v91 = *(a3 + 1);
+      v91 = *(archive + 1);
       if (v91)
       {
         v91 = *(v91 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v90 = MEMORY[0x223DA0390](v91);
-      *(a3 + 15) = v90;
+      *(archive + 15) = v90;
     }
 
-    objc_msgSend_setStrongReference_message_(v100, v87, multipleChoiceListFormatDataList, v90, v88);
+    objc_msgSend_setStrongReference_message_(archiverCopy, v87, multipleChoiceListFormatDataList, v90, v88);
   }
 
   controlCellSpecTableReference = self->_controlCellSpecTableReference;
-  *(a3 + 4) |= 0x20000u;
-  v93 = *(a3 + 20);
+  *(archive + 4) |= 0x20000u;
+  v93 = *(archive + 20);
   if (!v93)
   {
-    v94 = *(a3 + 1);
+    v94 = *(archive + 1);
     if (v94)
     {
       v94 = *(v94 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v93 = MEMORY[0x223DA0390](v94);
-    *(a3 + 20) = v93;
+    *(archive + 20) = v93;
   }
 
-  objc_msgSend_setStrongLazyReference_message_(v100, v87, controlCellSpecTableReference, v93, v88);
+  objc_msgSend_setStrongLazyReference_message_(archiverCopy, v87, controlCellSpecTableReference, v93, v88);
   formatTableReference = self->_formatTableReference;
-  *(a3 + 4) |= 0x40000u;
-  v98 = *(a3 + 21);
+  *(archive + 4) |= 0x40000u;
+  v98 = *(archive + 21);
   if (!v98)
   {
-    v99 = *(a3 + 1);
+    v99 = *(archive + 1);
     if (v99)
     {
       v99 = *(v99 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v98 = MEMORY[0x223DA0390](v99);
-    *(a3 + 21) = v98;
+    *(archive + 21) = v98;
   }
 
-  objc_msgSend_setStrongLazyReference_message_(v100, v95, formatTableReference, v98, v96);
+  objc_msgSend_setStrongLazyReference_message_(archiverCopy, v95, formatTableReference, v98, v96);
 }
 
 - (unint64_t)archivingCompatibilityVersion
@@ -4701,21 +4701,21 @@ LABEL_3:
   return v11;
 }
 
-- (id)copyWithOwner:(id)a3
+- (id)copyWithOwner:(id)owner
 {
-  v3 = a3;
+  ownerCopy = owner;
   v4 = objc_alloc(objc_opt_class());
-  v8 = objc_msgSend_initWithOwner_(v4, v5, v3, v6, v7);
+  v8 = objc_msgSend_initWithOwner_(v4, v5, ownerCopy, v6, v7);
 
   return v8;
 }
 
-- (BOOL)confirmRefCountsReturningResult:(id *)a3
+- (BOOL)confirmRefCountsReturningResult:(id *)result
 {
   tileStorage = self->_tileStorage;
   if (tileStorage)
   {
-    objc_msgSend_makeStorageMap(tileStorage, a2, a3, v3, v4);
+    objc_msgSend_makeStorageMap(tileStorage, a2, result, v3, v4);
     v8 = v138;
   }
 
@@ -4752,7 +4752,7 @@ LABEL_3:
     do
     {
       v9 = v8[7];
-      v10 = sub_221145078(v9, 0x80, a3, v3, v4);
+      v10 = sub_221145078(v9, 0x80, result, v3, v4);
       sub_2216A926C(v136, v10);
       v14 = sub_221145078(v9, 8, v11, v12, v13);
       sub_2216A926C(v134, v14);
@@ -4887,9 +4887,9 @@ LABEL_3:
   v92 = sub_22170A9E4(self);
   (v79)[2](v79, v92, v118, @"imp warns");
 
-  if (a3)
+  if (result)
   {
-    *a3 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v93, @"DataList RefCount Audit good:%d bad:%d dead:%d\n%@", v94, v95, *(v115 + 6), *(v111 + 6), *(v107 + 6), v78, v98, v99, v100, v101);
+    *result = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v93, @"DataList RefCount Audit good:%d bad:%d dead:%d\n%@", v94, v95, *(v115 + 6), *(v111 + 6), *(v107 + 6), v78, v98, v99, v100, v101);
   }
 
   v96 = *(v111 + 6) == 0;
@@ -4911,7 +4911,7 @@ LABEL_3:
   return v96;
 }
 
-- (BOOL)auditDatalistDuplicationReturningResult:(id *)a3
+- (BOOL)auditDatalistDuplicationReturningResult:(id *)result
 {
   v7 = objc_msgSend_stringWithString_(MEMORY[0x277CCAB68], a2, @"Datalist Duplication Audit\n", v3, v4);
   v8 = sub_22170A84C(self);
@@ -4970,16 +4970,16 @@ LABEL_3:
     objc_msgSend_appendString_(v7, v68, @"Import Warnings List has dupes.\n", v69, v70);
   }
 
-  if (a3)
+  if (result)
   {
     v71 = v7;
-    *a3 = v7;
+    *result = v7;
   }
 
   return 1;
 }
 
-- (BOOL)auditColumnRowCellCountsReturningResult:(id *)a3 hasUndercounts:(BOOL *)a4
+- (BOOL)auditColumnRowCellCountsReturningResult:(id *)result hasUndercounts:(BOOL *)undercounts
 {
   v35 = 0;
   v36 = &v35;
@@ -4994,7 +4994,7 @@ LABEL_3:
   v27 = 0x3032000000;
   v28 = sub_2216A140C;
   v29 = sub_2216A141C;
-  v30 = objc_msgSend_stringWithString_(MEMORY[0x277CCAB68], a2, @"ColumnRowCellCount Audit\n", a4, v4);
+  v30 = objc_msgSend_stringWithString_(MEMORY[0x277CCAB68], a2, @"ColumnRowCellCount Audit\n", undercounts, v4);
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -5026,14 +5026,14 @@ LABEL_3:
   }
 
   free(v22[3]);
-  if (a3)
+  if (result)
   {
-    *a3 = v26[5];
+    *result = v26[5];
   }
 
-  if (a4)
+  if (undercounts)
   {
-    *a4 = *(v32 + 24);
+    *undercounts = *(v32 + 24);
   }
 
   v18 = *(v36 + 24);
@@ -5045,15 +5045,15 @@ LABEL_3:
   return v18;
 }
 
-- (void)updateDataListsConcurrentlyWithConcurrentCellMap:(id)a3 clearImportWarnings:(BOOL)a4
+- (void)updateDataListsConcurrentlyWithConcurrentCellMap:(id)map clearImportWarnings:(BOOL)warnings
 {
-  v6 = a3;
+  mapCopy = map;
   v98 = 0;
   v99 = &v98;
   v100 = 0x2020000000;
   v101 = 0;
   commentStorageDataList = self->_commentStorageDataList;
-  v56 = v6;
+  v56 = mapCopy;
   if (commentStorageDataList)
   {
     v8 = commentStorageDataList;
@@ -5068,7 +5068,7 @@ LABEL_3:
   v94[1] = 3221225472;
   v94[2] = sub_2216AA400;
   v94[3] = &unk_278468758;
-  v96 = self;
+  selfCopy = self;
   v97 = &v98;
   v95 = v8;
   v9 = v8;
@@ -5094,7 +5094,7 @@ LABEL_3:
   v90[1] = 3221225472;
   v90[2] = sub_2216AA5F8;
   v90[3] = &unk_278468758;
-  v92 = self;
+  selfCopy2 = self;
   v93 = &v98;
   v91 = v11;
   v12 = v11;
@@ -5120,7 +5120,7 @@ LABEL_3:
   v86[1] = 3221225472;
   v86[2] = sub_2216AA7F0;
   v86[3] = &unk_278468758;
-  v88 = self;
+  selfCopy3 = self;
   v89 = &v98;
   v87 = v16;
   v17 = v16;
@@ -5146,7 +5146,7 @@ LABEL_3:
   v82[1] = 3221225472;
   v82[2] = sub_2216AAA70;
   v82[3] = &unk_278468758;
-  v84 = self;
+  selfCopy4 = self;
   v85 = &v98;
   v83 = v20;
   v21 = v20;
@@ -5172,7 +5172,7 @@ LABEL_3:
   v78[1] = 3221225472;
   v78[2] = sub_2216AACFC;
   v78[3] = &unk_278468758;
-  v80 = self;
+  selfCopy5 = self;
   v81 = &v98;
   v79 = v24;
   v25 = v24;
@@ -5198,9 +5198,9 @@ LABEL_3:
   v73[1] = 3221225472;
   v73[2] = sub_2216AAEF4;
   v73[3] = &unk_278468780;
-  v75 = self;
+  selfCopy6 = self;
   v76 = &v98;
-  v77 = a4;
+  warningsCopy = warnings;
   v74 = v28;
   v29 = v28;
   v30 = MEMORY[0x223DA1C10](v73);
@@ -5230,7 +5230,7 @@ LABEL_3:
   v69[1] = 3221225472;
   v69[2] = sub_2216AB0F4;
   v69[3] = &unk_278468758;
-  v71 = self;
+  selfCopy7 = self;
   v72 = &v98;
   v70 = v35;
   v36 = v35;
@@ -5259,7 +5259,7 @@ LABEL_3:
   v65[1] = 3221225472;
   v65[2] = sub_2216AB2EC;
   v65[3] = &unk_278468758;
-  v67 = self;
+  selfCopy8 = self;
   v68 = &v98;
   v66 = v41;
   v42 = v41;
@@ -5285,7 +5285,7 @@ LABEL_3:
   v61[1] = 3221225472;
   v61[2] = sub_2216AB590;
   v61[3] = &unk_278468758;
-  v63 = self;
+  selfCopy9 = self;
   v64 = &v98;
   v62 = v45;
   v46 = v45;
@@ -5322,27 +5322,27 @@ LABEL_3:
   objc_msgSend_updateDataListsConcurrentlyUsingCommentStorageBlock_conditionalStyleSetBlock_controlCellSpecBlock_formulaBlock_formulaErrorBlock_importWarningSetBlock_richTextBlock_stringBlock_styleBlock_customFormatBlock_formatBlock_(v56, v54, v51, v40, v39, v55, v34, v33, v37, v43, v47, &unk_2834B9FC8, v53);
 }
 
-- (void)setCellsConcurrently:(id)a3 tableUID:(const TSKUIDStruct *)a4 calculationEngine:(id)a5 conditionalStyleOwner:(id)a6 ignoreFormula:(BOOL)a7 clearImportWarnings:(BOOL)a8
+- (void)setCellsConcurrently:(id)concurrently tableUID:(const TSKUIDStruct *)d calculationEngine:(id)engine conditionalStyleOwner:(id)owner ignoreFormula:(BOOL)formula clearImportWarnings:(BOOL)warnings
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
+  concurrentlyCopy = concurrently;
+  engineCopy = engine;
+  ownerCopy = owner;
   v63[0] = MEMORY[0x277D85DD0];
   v63[1] = 3221225472;
   v63[2] = sub_2216ABF74;
   v63[3] = &unk_2784687E8;
-  v64 = a8;
-  objc_msgSend_enumerateRowsOfCellsConcurrentlyUsingBlock_(v13, v16, v63, v17, v18);
-  if (v14 && !a7)
+  warningsCopy = warnings;
+  objc_msgSend_enumerateRowsOfCellsConcurrentlyUsingBlock_(concurrentlyCopy, v16, v63, v17, v18);
+  if (engineCopy && !formula)
   {
     v60[0] = MEMORY[0x277D85DD0];
     v60[1] = 3221225472;
     v60[2] = sub_2216AC290;
     v60[3] = &unk_278468810;
-    v19 = v14;
+    v19 = engineCopy;
     v61 = v19;
-    v62 = a4;
-    objc_msgSend_enumerateCellsAddedAndRemovedOfType_withOptions_usingBlock_(v13, v20, 2, 0, v60);
+    dCopy = d;
+    objc_msgSend_enumerateCellsAddedAndRemovedOfType_withOptions_usingBlock_(concurrentlyCopy, v20, 2, 0, v60);
     v58[0] = 0;
     v58[1] = v58;
     v58[2] = 0x2020000000;
@@ -5354,21 +5354,21 @@ LABEL_3:
     v56 = v58;
     v21 = v19;
     v55 = v21;
-    v57 = a4;
-    objc_msgSend_enumerateCellsAddedAndRemovedOfType_withOptions_usingBlock_(v13, v22, 4, 0, v54);
-    if (v15)
+    dCopy2 = d;
+    objc_msgSend_enumerateCellsAddedAndRemovedOfType_withOptions_usingBlock_(concurrentlyCopy, v22, 4, 0, v54);
+    if (ownerCopy)
     {
       v52[0] = MEMORY[0x277D85DD0];
       v52[1] = 3221225472;
       v52[2] = sub_2216AC540;
       v52[3] = &unk_27845E670;
-      v53 = v15;
-      objc_msgSend_enumerateCellsAddedAndRemovedOfType_withOptions_usingBlock_(v13, v27, 6, 0, v52);
+      v53 = ownerCopy;
+      objc_msgSend_enumerateCellsAddedAndRemovedOfType_withOptions_usingBlock_(concurrentlyCopy, v27, 6, 0, v52);
     }
 
-    if ((objc_msgSend_skipDirtyingRanges(v13, v23, v24, v25, v26) & 1) == 0)
+    if ((objc_msgSend_skipDirtyingRanges(concurrentlyCopy, v23, v24, v25, v26) & 1) == 0)
     {
-      v32 = objc_msgSend_affectedBaseColumnAndRowIndexes(v13, v28, v29, v30, v31);
+      v32 = objc_msgSend_affectedBaseColumnAndRowIndexes(concurrentlyCopy, v28, v29, v30, v31);
       v37 = objc_msgSend_first(v32, v33, v34, v35, v36);
       v42 = objc_msgSend_second(v32, v38, v39, v40, v41);
       v45 = objc_msgSend_regionFromColumnIndexes_rowIndexes_(TSTCellRegion, v43, v37, v42, v44);
@@ -5376,7 +5376,7 @@ LABEL_3:
       v49[1] = 3221225472;
       v49[2] = sub_2216AC5E0;
       v49[3] = &unk_278468860;
-      v51 = a4;
+      dCopy3 = d;
       v50 = v21;
       objc_msgSend_enumerateCellRangesUsingBlock_(v45, v46, v49, v47, v48);
     }
@@ -5385,15 +5385,15 @@ LABEL_3:
   }
 }
 
-- (void)didApplyConcurrentCellMap:(id)a3
+- (void)didApplyConcurrentCellMap:(id)map
 {
-  v4 = a3;
+  mapCopy = map;
   v42[0] = MEMORY[0x277D85DD0];
   v42[1] = 3221225472;
   v42[2] = sub_2216AC850;
   v42[3] = &unk_278468888;
   v42[4] = self;
-  objc_msgSend_enumerateColumnCellCountDiffUsingBlock_(v4, v5, v42, v6, v7);
+  objc_msgSend_enumerateColumnCellCountDiffUsingBlock_(mapCopy, v5, v42, v6, v7);
   v38 = 0;
   v39 = &v38;
   v40 = 0x2020000000;
@@ -5404,31 +5404,31 @@ LABEL_3:
   v32 = 3221225472;
   v33 = sub_2216AC898;
   v34 = &unk_2784688B0;
-  v35 = self;
+  selfCopy = self;
   v37 = &v38;
   v11 = v10;
   v36 = v11;
-  objc_msgSend_enumerateRowCellCountDiffUsingBlock_(v4, v12, &v31, v13, v14);
+  objc_msgSend_enumerateRowCellCountDiffUsingBlock_(mapCopy, v12, &v31, v13, v14);
   if (self->_cellCountValid)
   {
     self->_cellCount += *(v39 + 6);
   }
 
-  objc_msgSend_tsu_enumerateKeysAndObjectsUsingBlock_(v11, v15, &unk_2834B9FE8, v16, v17, v31, v32, v33, v34, v35);
-  v22 = objc_msgSend_affectedBaseColumnAndRowIndexes(v4, v18, v19, v20, v21);
+  objc_msgSend_tsu_enumerateKeysAndObjectsUsingBlock_(v11, v15, &unk_2834B9FE8, v16, v17, v31, v32, v33, v34, selfCopy);
+  v22 = objc_msgSend_affectedBaseColumnAndRowIndexes(mapCopy, v18, v19, v20, v21);
   v27 = objc_msgSend_second(v22, v23, v24, v25, v26);
 
   objc_msgSend_pruneTilesForRows_(self->_tileStorage, v28, v27, v29, v30);
   _Block_object_dispose(&v38, 8);
 }
 
-- (vector<TSTCell)accumulateCurrentCellsConcurrentlyInRow:(TSTTableDataStore *)self rowInfo:(SEL)a3 atColumns:(TSUModelRowIndex)a4 usingCellCreationBlock:(id)a5
+- (vector<TSTCell)accumulateCurrentCellsConcurrentlyInRow:(TSTTableDataStore *)self rowInfo:(SEL)info atColumns:(TSUModelRowIndex)columns usingCellCreationBlock:(id)block
 {
-  v26 = a5;
+  blockCopy = block;
   v13 = a7;
-  if (v26)
+  if (blockCopy)
   {
-    objc_msgSend_accumulateCurrentCellsConcurrentlyAtColumns_usingCellCreationBlock_(v26, v10, a6, v13, v12);
+    objc_msgSend_accumulateCurrentCellsConcurrentlyAtColumns_usingCellCreationBlock_(blockCopy, v10, a6, v13, v12);
   }
 
   else
@@ -5447,35 +5447,35 @@ LABEL_3:
   return result;
 }
 
-- (id)tsceValueFromCell:(id)a3 atCellID:(TSUCellCoord)a4 tableUID:(const TSKUIDStruct *)a5
+- (id)tsceValueFromCell:(id)cell atCellID:(TSUCellCoord)d tableUID:(const TSKUIDStruct *)iD
 {
-  v7 = a3;
-  v12 = objc_msgSend_valueType(v7, v8, v9, v10, v11);
+  cellCopy = cell;
+  v12 = objc_msgSend_valueType(cellCopy, v8, v9, v10, v11);
   if (v12 > 5)
   {
     if (v12 <= 7)
     {
       if (v12 == 6)
       {
-        IsExplicitForCalcEngine = objc_msgSend_currentFormatIsExplicitForCalcEngine(v7, v13, v14, v15, v16);
-        v127 = objc_msgSend_BOOLValue(v7, v123, v124, v125, v126);
-        v62 = objc_msgSend_currentFormat(v7, v128, v129, v130, v131);
+        IsExplicitForCalcEngine = objc_msgSend_currentFormatIsExplicitForCalcEngine(cellCopy, v13, v14, v15, v16);
+        v127 = objc_msgSend_BOOLValue(cellCopy, v123, v124, v125, v126);
+        v62 = objc_msgSend_currentFormat(cellCopy, v128, v129, v130, v131);
         TSCEFormat::TSCEFormat(&v188, v62, IsExplicitForCalcEngine);
         v96 = objc_msgSend_BOOLValue_format_(TSCEBooleanValue, v132, v127, &v188, v133);
       }
 
       else
       {
-        v71 = objc_msgSend_currentFormat(v7, v13, v14, v15, v16);
+        v71 = objc_msgSend_currentFormat(cellCopy, v13, v14, v15, v16);
         v62 = objc_msgSend_asDurationFormat(v71, v72, v73, v74, v75);
 
-        objc_msgSend_durationTimeIntervalValue(v7, v76, v77, v78, v79);
+        objc_msgSend_durationTimeIntervalValue(cellCopy, v76, v77, v78, v79);
         if (v62)
         {
           v84 = objc_msgSend_durationUnitLargestWithTimeInterval_(v62, v80, v81, v82, v83);
           v85 = sub_221387C78(v84);
-          v90 = objc_msgSend_currentFormatIsExplicitForCalcEngine(v7, v86, v87, v88, v89);
-          objc_msgSend_durationTimeIntervalValue(v7, v91, v92, v93, v94);
+          v90 = objc_msgSend_currentFormatIsExplicitForCalcEngine(cellCopy, v86, v87, v88, v89);
+          objc_msgSend_durationTimeIntervalValue(cellCopy, v91, v92, v93, v94);
           TSUDecimal::operator=();
           TSCEFormat::TSCEFormat(&v188, v62, v90);
           v96 = objc_msgSend_numberWithDecimal_format_baseUnit_(TSCENumberValue, v95, &v186, &v188, v85);
@@ -5494,23 +5494,23 @@ LABEL_3:
     switch(v12)
     {
       case 8:
-        v188._tskFormat = a4;
-        *&v188._formatType = a4;
-        *&v188._durationFormat = *a5;
-        v62 = objc_msgSend_indirectErrorForRangeReference_hostTableUID_(TSCEError, v13, &v188, a5, v16);
+        v188._tskFormat = d;
+        *&v188._formatType = d;
+        *&v188._durationFormat = *iD;
+        v62 = objc_msgSend_indirectErrorForRangeReference_hostTableUID_(TSCEError, v13, &v188, iD, v16);
         v96 = objc_msgSend_errorValue_(TSCEErrorValue, v119, v62, v120, v121);
 LABEL_37:
         v70 = v96;
         goto LABEL_38;
       case 9:
-        v62 = objc_msgSend_richTextValue(v7, v13, v14, v15, v16);
+        v62 = objc_msgSend_richTextValue(cellCopy, v13, v14, v15, v16);
         v185 = 0;
         v136 = objc_msgSend_errorForRichTextStorage_outValue_(TSCEError, v134, v62, &v185, v135);
         v70 = v185;
         if ((v136 & 1) == 0)
         {
-          v141 = objc_msgSend_currentFormatIsExplicitForCalcEngine(v7, v137, v138, v139, v140);
-          v146 = objc_msgSend_currentFormat(v7, v142, v143, v144, v145);
+          v141 = objc_msgSend_currentFormatIsExplicitForCalcEngine(cellCopy, v137, v138, v139, v140);
+          v146 = objc_msgSend_currentFormat(cellCopy, v142, v143, v144, v145);
           TSCEFormat::TSCEFormat(&v188, v146, v141);
           v149 = objc_msgSend_richTextValue_format_(TSCERichTextValue, v147, v62, &v188, v148);
 
@@ -5519,10 +5519,10 @@ LABEL_37:
 
         goto LABEL_38;
       case 10:
-        objc_msgSend_currencyDoubleValue(v7, v13, v14, v15, v16);
+        objc_msgSend_currencyDoubleValue(cellCopy, v13, v14, v15, v16);
         v18 = v17;
-        v23 = objc_msgSend_currentFormatIsExplicitForCalcEngine(v7, v19, v20, v21, v22);
-        v28 = objc_msgSend_currentFormat(v7, v24, v25, v26, v27);
+        v23 = objc_msgSend_currentFormatIsExplicitForCalcEngine(cellCopy, v19, v20, v21, v22);
+        v28 = objc_msgSend_currentFormat(cellCopy, v24, v25, v26, v27);
         if (objc_msgSend_formatType(v28, v29, v30, v31, v32) == 257)
         {
           v37 = objc_msgSend_asCurrencyFormat(v28, v33, v34, v35, v36);
@@ -5548,7 +5548,7 @@ LABEL_37:
           v176 = objc_msgSend_unitForCurrencyCode_(TSCEUnitRegistry, v173, v62, v174, v175);
 LABEL_36:
           TSCEFormat::TSCEFormat(&v188, v28, v23);
-          v186 = objc_msgSend_currencyDecimalValue(v7, v179, v180, v181, v182);
+          v186 = objc_msgSend_currencyDecimalValue(cellCopy, v179, v180, v181, v182);
           v187 = v183;
           v96 = objc_msgSend_numberWithDecimal_format_baseUnit_(TSCENumberValue, v183, &v186, &v188, v176);
           goto LABEL_37;
@@ -5566,8 +5566,8 @@ LABEL_35:
   {
     if (!v12)
     {
-      v97 = objc_msgSend_currentFormat(v7, v13, v14, v15, v16);
-      v102 = objc_msgSend_currentFormatIsExplicitForCalcEngine(v7, v98, v99, v100, v101);
+      v97 = objc_msgSend_currentFormat(cellCopy, v13, v14, v15, v16);
+      v102 = objc_msgSend_currentFormatIsExplicitForCalcEngine(cellCopy, v98, v99, v100, v101);
       TSCEFormat::TSCEFormat(&v188, v97, v102);
       v56 = objc_msgSend_emptyCellValueWithFormat_(TSCEEmptyCellValue, v103, &v188, v104, v105);
       goto LABEL_28;
@@ -5575,11 +5575,11 @@ LABEL_35:
 
     if (v12 == 2)
     {
-      v43 = objc_msgSend_currentFormatIsExplicitForCalcEngine(v7, v13, v14, v15, v16);
-      v48 = objc_msgSend_currentFormat(v7, v44, v45, v46, v47);
+      v43 = objc_msgSend_currentFormatIsExplicitForCalcEngine(cellCopy, v13, v14, v15, v16);
+      v48 = objc_msgSend_currentFormat(cellCopy, v44, v45, v46, v47);
       TSCEFormat::TSCEFormat(&v188, v48, v43);
       v49 = [TSCENumberValue alloc];
-      v186 = objc_msgSend_numberDecimalValue(v7, v50, v51, v52, v53);
+      v186 = objc_msgSend_numberDecimalValue(cellCopy, v50, v51, v52, v53);
       v187 = v54;
       v56 = objc_msgSend_initWithDecimal_format_(v49, v54, &v186, &v188, v55);
 LABEL_28:
@@ -5600,7 +5600,7 @@ LABEL_27:
 
   if (v12 == 3)
   {
-    v106 = objc_msgSend_stringValue(v7, v13, v14, v15, v16);
+    v106 = objc_msgSend_stringValue(cellCopy, v13, v14, v15, v16);
     if (v106)
     {
       v62 = v106;
@@ -5611,8 +5611,8 @@ LABEL_27:
       v62 = &stru_2834BADA0;
     }
 
-    v111 = objc_msgSend_currentFormat(v7, v107, v108, v109, v110);
-    v116 = objc_msgSend_currentFormatIsExplicitForCalcEngine(v7, v112, v113, v114, v115);
+    v111 = objc_msgSend_currentFormat(cellCopy, v107, v108, v109, v110);
+    v116 = objc_msgSend_currentFormatIsExplicitForCalcEngine(cellCopy, v112, v113, v114, v115);
     TSCEFormat::TSCEFormat(&v188, v111, v116);
     v96 = objc_msgSend_stringValue_format_(TSCEStringValue, v117, v62, &v188, v118);
     goto LABEL_37;
@@ -5623,9 +5623,9 @@ LABEL_27:
     goto LABEL_27;
   }
 
-  v57 = objc_msgSend_currentFormatIsExplicitForCalcEngine(v7, v13, v14, v15, v16);
-  v62 = objc_msgSend_dateValue(v7, v58, v59, v60, v61);
-  v67 = objc_msgSend_currentFormat(v7, v63, v64, v65, v66);
+  v57 = objc_msgSend_currentFormatIsExplicitForCalcEngine(cellCopy, v13, v14, v15, v16);
+  v62 = objc_msgSend_dateValue(cellCopy, v58, v59, v60, v61);
+  v67 = objc_msgSend_currentFormat(cellCopy, v63, v64, v65, v66);
   TSCEFormat::TSCEFormat(&v188, v67, v57);
   v70 = objc_msgSend_dateValue_format_(TSCEDateValue, v68, v62, &v188, v69);
 
@@ -5635,12 +5635,12 @@ LABEL_39:
   return v70;
 }
 
-- (void)tsceValueForCellStorageRef:(TSTCellStorage *)a3 cellCoord:(const TSUCellCoord *)a4 hostTableUID:(const TSKUIDStruct *)a5 outValue:(id *)a6
+- (void)tsceValueForCellStorageRef:(TSTCellStorage *)ref cellCoord:(const TSUCellCoord *)coord hostTableUID:(const TSKUIDStruct *)d outValue:(id *)value
 {
-  if (!a3)
+  if (!ref)
   {
     v35 = MEMORY[0x277D81150];
-    v36 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTTableDataStore tsceValueForCellStorageRef:cellCoord:hostTableUID:outValue:]", a4, a5);
+    v36 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTTableDataStore tsceValueForCellStorageRef:cellCoord:hostTableUID:outValue:]", coord, d);
     v40 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v37, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/tables/TSTTableDataStore.mm", v38, v39);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v35, v41, v36, v40, 4020, 0, "Can't get a value from a null cell reference!");
 
@@ -5648,18 +5648,18 @@ LABEL_39:
     goto LABEL_10;
   }
 
-  sub_22169DEF8(&a3->var0.var0, a2, a3, a4, a5);
-  v15 = *(&a3->var0 + 1);
+  sub_22169DEF8(&ref->var0.var0, a2, ref, coord, d);
+  v15 = *(&ref->var0 + 1);
   if (v15 <= 5)
   {
-    if (*(&a3->var0 + 1) <= 2u)
+    if (*(&ref->var0 + 1) <= 2u)
     {
       if (v15 == 2)
       {
-        v172._decimal.w[0] = sub_2216AD93C(&a3->var0.var0, v11, v12, v13, v14);
+        v172._decimal.w[0] = sub_2216AD93C(&ref->var0.var0, v11, v12, v13, v14);
         v172._decimal.w[1] = v51;
         v171 = 0;
-        v52 = objc_msgSend_formatForCalcEngineAtCellID_formatIsExplicitOut_refIfAvailable_(self, v51, *a4, &v171, a3);
+        v52 = objc_msgSend_formatForCalcEngineAtCellID_formatIsExplicitOut_refIfAvailable_(self, v51, *coord, &v171, ref);
         TSCEFormat::TSCEFormat(&v173, v52, v171);
         v50 = objc_msgSend_numberWithDecimal_format_(TSCENumberValue, v53, &v172, &v173, v54);
         goto LABEL_11;
@@ -5667,19 +5667,19 @@ LABEL_39:
 
 LABEL_10:
       LOBYTE(v172._decimal.w[0]) = 0;
-      v46 = objc_msgSend_formatForCalcEngineAtCellID_formatIsExplicitOut_refIfAvailable_(self, v11, *a4, &v172, a3);
+      v46 = objc_msgSend_formatForCalcEngineAtCellID_formatIsExplicitOut_refIfAvailable_(self, v11, *coord, &v172, ref);
       TSCEFormat::TSCEFormat(&v173, v46, v172._decimal.w[0]);
       v50 = objc_msgSend_emptyCellValueWithFormat_(TSCEEmptyCellValue, v47, &v173, v48, v49);
 LABEL_11:
-      *a6 = v50;
+      *value = v50;
       return;
     }
 
     if (v15 == 3)
     {
-      v112 = objc_msgSend_stringForCalcEngineAtCellID_refIfAvailable_(self, v11, *a4, a3, v14);
+      v112 = objc_msgSend_stringForCalcEngineAtCellID_refIfAvailable_(self, v11, *coord, ref, v14);
       LOBYTE(v172._decimal.w[0]) = 0;
-      v114 = objc_msgSend_formatForCalcEngineAtCellID_formatIsExplicitOut_refIfAvailable_(self, v113, *a4, &v172, a3);
+      v114 = objc_msgSend_formatForCalcEngineAtCellID_formatIsExplicitOut_refIfAvailable_(self, v113, *coord, &v172, ref);
       TSCEFormat::TSCEFormat(&v173, v114, v172._decimal.w[0]);
       v117 = objc_msgSend_stringValue_format_(TSCEStringValue, v115, v112, &v173, v116);
       goto LABEL_34;
@@ -5691,11 +5691,11 @@ LABEL_11:
     }
 
     LOBYTE(v172._decimal.w[0]) = 0;
-    v55 = objc_msgSend_formatForCalcEngineAtCellID_formatIsExplicitOut_refIfAvailable_(self, v11, *a4, &v172, a3);
+    v55 = objc_msgSend_formatForCalcEngineAtCellID_formatIsExplicitOut_refIfAvailable_(self, v11, *coord, &v172, ref);
     v56 = MEMORY[0x277CBEAA8];
-    sub_22169DEF8(&a3->var0.var0, v57, v58, v59, v60);
-    sub_22169DEF8(&a3->var0.var0, v61, v62, v63, v64);
-    if (*(&a3->var0 + 1) != 5)
+    sub_22169DEF8(&ref->var0.var0, v57, v58, v59, v60);
+    sub_22169DEF8(&ref->var0.var0, v61, v62, v63, v64);
+    if (*(&ref->var0 + 1) != 5)
     {
       v69 = MEMORY[0x277D81150];
       v70 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v65, "double TSTCellStorageRawDateValue(TSTCellStorage *)", v67, v68);
@@ -5705,26 +5705,26 @@ LABEL_11:
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v76, v77, v78, v79);
     }
 
-    v80 = sub_2211450B8(a3, 4, v66, v67, v68);
+    v80 = sub_2211450B8(ref, 4, v66, v67, v68);
     v85 = objc_msgSend_dateWithTimeIntervalSinceReferenceDate_(v56, v81, v82, v83, v84, v80);
     TSCEFormat::TSCEFormat(&v173, v55, v172._decimal.w[0]);
     v88 = objc_msgSend_dateValue_format_(TSCEDateValue, v86, v85, &v173, v87);
 LABEL_27:
-    *a6 = v88;
+    *value = v88;
 
     return;
   }
 
-  if (*(&a3->var0 + 1) <= 7u)
+  if (*(&ref->var0 + 1) <= 7u)
   {
     if (v15 == 6)
     {
       LOBYTE(v172._decimal.w[0]) = 0;
-      v121 = objc_msgSend_formatForCalcEngineAtCellID_formatIsExplicitOut_refIfAvailable_(self, v11, *a4, &v172, a3);
+      v121 = objc_msgSend_formatForCalcEngineAtCellID_formatIsExplicitOut_refIfAvailable_(self, v11, *coord, &v172, ref);
       TSCEFormat::TSCEFormat(&v173, v121, v172._decimal.w[0]);
-      sub_22169DEF8(&a3->var0.var0, v122, v123, v124, v125);
-      sub_22169DEF8(&a3->var0.var0, v126, v127, v128, v129);
-      if (*(&a3->var0 + 1) != 6)
+      sub_22169DEF8(&ref->var0.var0, v122, v123, v124, v125);
+      sub_22169DEF8(&ref->var0.var0, v126, v127, v128, v129);
+      if (*(&ref->var0 + 1) != 6)
       {
         v134 = MEMORY[0x277D81150];
         v135 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v130, "BOOL TSTCellStorageBoolValue(TSTCellStorage *)", v132, v133);
@@ -5734,9 +5734,9 @@ LABEL_27:
         objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v141, v142, v143, v144);
       }
 
-      if ((*(&a3->var0 + 8) & 2) != 0)
+      if ((*(&ref->var0 + 8) & 2) != 0)
       {
-        v151 = sub_2211450B8(a3, 2, v131, v132, v133) != 0.0;
+        v151 = sub_2211450B8(ref, 2, v131, v132, v133) != 0.0;
         objc_msgSend_BOOLValue_format_(TSCEBooleanValue, v152, v151, &v173, v153);
       }
 
@@ -5751,16 +5751,16 @@ LABEL_27:
     if (v15 == 7)
     {
       v171 = 0;
-      v89 = objc_msgSend_formatForCalcEngineAtCellID_formatIsExplicitOut_refIfAvailable_(self, v11, *a4, &v171, a3);
+      v89 = objc_msgSend_formatForCalcEngineAtCellID_formatIsExplicitOut_refIfAvailable_(self, v11, *coord, &v171, ref);
       if (v89)
       {
         v94 = v89;
         v95 = objc_msgSend_asDurationFormat(v89, v90, v91, v92, v93);
-        v100 = sub_2216ADA3C(&a3->var0.var0, v96, v97, v98, v99);
+        v100 = sub_2216ADA3C(&ref->var0.var0, v96, v97, v98, v99);
         v105 = objc_msgSend_durationUnitLargestWithTimeInterval_(v95, v101, v102, v103, v104, v100);
         v106 = sub_221387C78(v105);
 
-        sub_2216ADA3C(&a3->var0.var0, v107, v108, v109, v110);
+        sub_2216ADA3C(&ref->var0.var0, v107, v108, v109, v110);
         TSUDecimal::operator=();
         TSCEFormat::TSCEFormat(&v173, v94, v171);
         objc_msgSend_numberWithDecimal_format_baseUnit_(TSCENumberValue, v111, &v172, &v173, v106);
@@ -5768,7 +5768,7 @@ LABEL_27:
 
       else
       {
-        sub_2216ADA3C(&a3->var0.var0, v90, v91, v92, v93);
+        sub_2216ADA3C(&ref->var0.var0, v90, v91, v92, v93);
         TSUDecimal::operator=();
         objc_msgSend_numberWithDecimal_baseUnit_(TSCENumberValue, v169, &v173, 6, v170);
       }
@@ -5781,18 +5781,18 @@ LABEL_27:
 
   if (v15 == 8)
   {
-    v173._tskFormat = *a4;
+    v173._tskFormat = *coord;
     *&v173._formatType = v173._tskFormat;
-    *&v173._durationFormat = *a5;
-    v85 = objc_msgSend_indirectErrorForRangeReference_hostTableUID_(TSCEError, v11, &v173, a5, v14);
+    *&v173._durationFormat = *d;
+    v85 = objc_msgSend_indirectErrorForRangeReference_hostTableUID_(TSCEError, v11, &v173, d, v14);
     v88 = objc_msgSend_errorValue_(TSCEErrorValue, v118, v85, v119, v120);
     goto LABEL_27;
   }
 
   if (v15 == 9)
   {
-    v112 = objc_msgSend_richTextStorageForCalcEngineAtCellID_refIfAvailable_(self, v11, *a4, a3, v14);
-    if (objc_msgSend_errorForRichTextStorage_outValue_(TSCEError, v145, v112, a6, v146))
+    v112 = objc_msgSend_richTextStorageForCalcEngineAtCellID_refIfAvailable_(self, v11, *coord, ref, v14);
+    if (objc_msgSend_errorForRichTextStorage_outValue_(TSCEError, v145, v112, value, v146))
     {
 LABEL_35:
 
@@ -5800,11 +5800,11 @@ LABEL_35:
     }
 
     LOBYTE(v172._decimal.w[0]) = 0;
-    v148 = objc_msgSend_formatForCalcEngineAtCellID_formatIsExplicitOut_refIfAvailable_(self, v147, *a4, &v172, a3);
+    v148 = objc_msgSend_formatForCalcEngineAtCellID_formatIsExplicitOut_refIfAvailable_(self, v147, *coord, &v172, ref);
     TSCEFormat::TSCEFormat(&v173, v148, v172._decimal.w[0]);
     v117 = objc_msgSend_richTextValue_format_(TSCERichTextValue, v149, v112, &v173, v150);
 LABEL_34:
-    *a6 = v117;
+    *value = v117;
     goto LABEL_35;
   }
 
@@ -5813,12 +5813,12 @@ LABEL_34:
     goto LABEL_10;
   }
 
-  v172._decimal.w[0] = sub_2216AD93C(&a3->var0.var0, v11, v12, v13, v14);
+  v172._decimal.w[0] = sub_2216AD93C(&ref->var0.var0, v11, v12, v13, v14);
   v172._decimal.w[1] = v16;
   TSUDecimal::doubleValue(&v172);
   v18 = v17;
   v171 = 0;
-  v20 = objc_msgSend_formatForCalcEngineAtCellID_formatIsExplicitOut_refIfAvailable_(self, v19, *a4, &v171, a3);
+  v20 = objc_msgSend_formatForCalcEngineAtCellID_formatIsExplicitOut_refIfAvailable_(self, v19, *coord, &v171, ref);
   if (objc_msgSend_formatType(v20, v21, v22, v23, v24) == 257)
   {
     v29 = objc_msgSend_asCurrencyFormat(v20, v25, v26, v27, v28);
@@ -5850,7 +5850,7 @@ LABEL_42:
   v167 = v162;
 LABEL_43:
   TSCEFormat::TSCEFormat(&v173, v20, v171);
-  *a6 = objc_msgSend_numberWithDecimal_format_baseUnit_(TSCENumberValue, v168, &v172, &v173, v166);
+  *value = objc_msgSend_numberWithDecimal_format_baseUnit_(TSCENumberValue, v168, &v172, &v173, v166);
 }
 
 - (TSDContainerInfo)richTextParentInfo

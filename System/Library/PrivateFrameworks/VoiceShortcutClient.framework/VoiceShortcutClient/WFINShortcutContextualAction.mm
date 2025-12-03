@@ -1,35 +1,35 @@
 @interface WFINShortcutContextualAction
-- (BOOL)isEqual:(id)a3;
-- (WFINShortcutContextualAction)initWithCoder:(id)a3;
-- (WFINShortcutContextualAction)initWithINShortcut:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (WFINShortcutContextualAction)initWithCoder:(id)coder;
+- (WFINShortcutContextualAction)initWithINShortcut:(id)shortcut;
 - (id)icon;
-- (id)runDescriptorForSurface:(unint64_t)a3;
-- (id)runRequestForSurface:(unint64_t)a3;
+- (id)runDescriptorForSurface:(unint64_t)surface;
+- (id)runRequestForSurface:(unint64_t)surface;
 - (id)uniqueIdentifier;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFINShortcutContextualAction
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = WFINShortcutContextualAction;
-  v4 = a3;
-  [(WFContextualAction *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_shortcut forKey:{@"shortcut", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(WFContextualAction *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_shortcut forKey:{@"shortcut", v5.receiver, v5.super_class}];
 }
 
-- (WFINShortcutContextualAction)initWithCoder:(id)a3
+- (WFINShortcutContextualAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = WFINShortcutContextualAction;
-  v5 = [(WFContextualAction *)&v9 initWithCoder:v4];
+  v5 = [(WFContextualAction *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shortcut"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shortcut"];
     if (v6)
     {
       objc_storeStrong(&v5->_shortcut, v6);
@@ -50,20 +50,20 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v13.receiver = self;
   v13.super_class = WFINShortcutContextualAction;
-  if ([(WFContextualAction *)&v13 isEqual:v4])
+  if ([(WFContextualAction *)&v13 isEqual:equalCopy])
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v6 = [v5 shortcut];
-      v7 = [(WFINShortcutContextualAction *)self shortcut];
-      v8 = v6;
-      v9 = v7;
+      shortcut = [v5 shortcut];
+      shortcut2 = [(WFINShortcutContextualAction *)self shortcut];
+      v8 = shortcut;
+      v9 = shortcut2;
       v10 = v9;
       if (v8 == v9)
       {
@@ -100,12 +100,12 @@
   v10.receiver = self;
   v10.super_class = WFINShortcutContextualAction;
   v4 = [v3 combineInteger:{-[WFContextualAction hash](&v10, sel_hash)}];
-  v5 = [(WFINShortcutContextualAction *)self shortcut];
+  shortcut = [(WFINShortcutContextualAction *)self shortcut];
 
-  if (v5)
+  if (shortcut)
   {
-    v6 = [(WFINShortcutContextualAction *)self shortcut];
-    v7 = [v3 combine:v6];
+    shortcut2 = [(WFINShortcutContextualAction *)self shortcut];
+    v7 = [v3 combine:shortcut2];
   }
 
   v8 = [v3 finalize];
@@ -117,18 +117,18 @@
 {
   v14[1] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E695DF70]);
-  v4 = [(WFContextualAction *)self identifier];
-  v14[0] = v4;
+  identifier = [(WFContextualAction *)self identifier];
+  v14[0] = identifier;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
   v6 = [v3 initWithArray:v5];
 
-  v7 = [(INShortcut *)self->_shortcut intent];
+  intent = [(INShortcut *)self->_shortcut intent];
 
-  if (v7)
+  if (intent)
   {
     v8 = MEMORY[0x1E696AEC0];
-    v9 = [(INShortcut *)self->_shortcut intent];
-    v10 = [v8 stringWithFormat:@"%lld", objc_msgSend(v9, "_indexingHash")];
+    intent2 = [(INShortcut *)self->_shortcut intent];
+    v10 = [v8 stringWithFormat:@"%lld", objc_msgSend(intent2, "_indexingHash")];
     [v6 addObject:v10];
   }
 
@@ -141,14 +141,14 @@
 
 - (id)icon
 {
-  v2 = [(WFINShortcutContextualAction *)self shortcut];
-  v3 = [v2 intent];
-  v4 = [v3 keyImage];
-  v5 = [v4 _imageData];
+  shortcut = [(WFINShortcutContextualAction *)self shortcut];
+  intent = [shortcut intent];
+  keyImage = [intent keyImage];
+  _imageData = [keyImage _imageData];
 
-  if (v5)
+  if (_imageData)
   {
-    v6 = [WFContextualActionIcon iconWithImageData:v5 scale:0 displayStyle:0.0];
+    v6 = [WFContextualActionIcon iconWithImageData:_imageData scale:0 displayStyle:0.0];
   }
 
   else
@@ -159,74 +159,74 @@
   return v6;
 }
 
-- (WFINShortcutContextualAction)initWithINShortcut:(id)a3
+- (WFINShortcutContextualAction)initWithINShortcut:(id)shortcut
 {
   v31[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  shortcutCopy = shortcut;
   v6 = objc_alloc(MEMORY[0x1E695DF70]);
   v31[0] = @"com.apple.shortcuts.contextual-actions.inshortcut";
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:1];
   v8 = [v6 initWithArray:v7];
 
-  v9 = [(INShortcut *)self->_shortcut intent];
+  intent = [(INShortcut *)self->_shortcut intent];
 
   shortcut = self->_shortcut;
-  if (v9)
+  if (intent)
   {
-    v11 = [(INShortcut *)shortcut intent];
-    v12 = [v11 _intents_bundleIdForDisplay];
+    intent2 = [(INShortcut *)shortcut intent];
+    _intents_bundleIdForDisplay = [intent2 _intents_bundleIdForDisplay];
 
-    if (v12)
+    if (_intents_bundleIdForDisplay)
     {
-      [v8 addObject:v12];
+      [v8 addObject:_intents_bundleIdForDisplay];
     }
 
-    v13 = [(INShortcut *)self->_shortcut intent];
-    v14 = [v13 _className];
-    [v8 addObject:v14];
+    intent3 = [(INShortcut *)self->_shortcut intent];
+    _className = [intent3 _className];
+    [v8 addObject:_className];
   }
 
   else
   {
-    v15 = [(INShortcut *)shortcut userActivity];
-    v16 = [v15 _uniqueIdentifier];
-    v12 = [v16 UUIDString];
+    userActivity = [(INShortcut *)shortcut userActivity];
+    _uniqueIdentifier = [userActivity _uniqueIdentifier];
+    _intents_bundleIdForDisplay = [_uniqueIdentifier UUIDString];
 
-    if (v12)
+    if (_intents_bundleIdForDisplay)
     {
-      [v8 addObject:v12];
+      [v8 addObject:_intents_bundleIdForDisplay];
     }
   }
 
   v17 = [v8 componentsJoinedByString:@"."];
-  v18 = [(INShortcut *)self->_shortcut intent];
-  v19 = [v18 _title];
-  v20 = v19;
-  if (v19)
+  intent4 = [(INShortcut *)self->_shortcut intent];
+  _title = [intent4 _title];
+  v20 = _title;
+  if (_title)
   {
-    v21 = v19;
+    title = _title;
   }
 
   else
   {
-    v22 = [(INShortcut *)self->_shortcut userActivity];
-    v21 = [v22 title];
+    userActivity2 = [(INShortcut *)self->_shortcut userActivity];
+    title = [userActivity2 title];
   }
 
-  v23 = [(INShortcut *)self->_shortcut intent];
-  v24 = [v23 _intents_bundleIdForDisplay];
+  intent5 = [(INShortcut *)self->_shortcut intent];
+  _intents_bundleIdForDisplay2 = [intent5 _intents_bundleIdForDisplay];
 
-  if (!v24)
+  if (!_intents_bundleIdForDisplay2)
   {
-    v25 = [(INShortcut *)self->_shortcut userActivity];
-    v24 = [v25 _determineMatchingApplicationBundleIdentifierWithOptions:MEMORY[0x1E695E0F8]];
+    userActivity3 = [(INShortcut *)self->_shortcut userActivity];
+    _intents_bundleIdForDisplay2 = [userActivity3 _determineMatchingApplicationBundleIdentifierWithOptions:MEMORY[0x1E695E0F8]];
   }
 
-  v26 = [(WFContextualAction *)self initWithIdentifier:v17 wfActionIdentifier:0 associatedAppBundleIdentifier:v24 parameters:MEMORY[0x1E695E0F0] displayString:v21 title:v21 subtitle:0 icon:0];
+  v26 = [(WFContextualAction *)self initWithIdentifier:v17 wfActionIdentifier:0 associatedAppBundleIdentifier:_intents_bundleIdForDisplay2 parameters:MEMORY[0x1E695E0F0] displayString:title title:title subtitle:0 icon:0];
   v27 = v26;
   if (v26)
   {
-    objc_storeStrong(&v26->_shortcut, a3);
+    objc_storeStrong(&v26->_shortcut, shortcut);
     v28 = v27;
   }
 
@@ -234,16 +234,16 @@
   return v27;
 }
 
-- (id)runRequestForSurface:(unint64_t)a3
+- (id)runRequestForSurface:(unint64_t)surface
 {
-  if (a3 - 1 > 3)
+  if (surface - 1 > 3)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = qword_1B1F36A00[a3 - 1];
+    v3 = qword_1B1F36A00[surface - 1];
   }
 
   v4 = [[WFWorkflowRunRequest alloc] initWithInput:0 presentationMode:1];
@@ -255,15 +255,15 @@
   return v4;
 }
 
-- (id)runDescriptorForSurface:(unint64_t)a3
+- (id)runDescriptorForSurface:(unint64_t)surface
 {
-  v3 = self;
-  if (v3)
+  selfCopy = self;
+  if (selfCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = v3;
+      v4 = selfCopy;
     }
 
     else
@@ -279,9 +279,9 @@
 
   v5 = v4;
 
-  v6 = [(WFINShortcutContextualAction *)v5 shortcut];
+  shortcut = [(WFINShortcutContextualAction *)v5 shortcut];
 
-  v7 = WFWorkflowRunDescriptorForINShortcut(v6);
+  v7 = WFWorkflowRunDescriptorForINShortcut(shortcut);
 
   return v7;
 }

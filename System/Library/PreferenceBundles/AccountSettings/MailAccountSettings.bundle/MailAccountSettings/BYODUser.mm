@@ -1,6 +1,6 @@
 @interface BYODUser
 + (id)log;
-- (BYODUser)initWithDictionary:(id)a3;
+- (BYODUser)initWithDictionary:(id)dictionary;
 - (id)emailAddress;
 - (id)fullName;
 - (id)invitationHandle;
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = sub_6833C;
   block[3] = &unk_B8D78;
-  block[4] = a1;
+  block[4] = self;
   if (qword_D65D0 != -1)
   {
     dispatch_once(&qword_D65D0, block);
@@ -27,46 +27,46 @@
   return v2;
 }
 
-- (BYODUser)initWithDictionary:(id)a3
+- (BYODUser)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v37.receiver = self;
   v37.super_class = BYODUser;
   v5 = [(BYODUser *)&v37 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"dsid"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"dsid"];
     dsid = v5->_dsid;
     v5->_dsid = v6;
 
-    v8 = [v4 objectForKeyedSubscript:@"firstName"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"firstName"];
     firstName = v5->_firstName;
     v5->_firstName = v8;
 
-    v10 = [v4 objectForKeyedSubscript:@"lastName"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"lastName"];
     lastName = v5->_lastName;
     v5->_lastName = v10;
 
-    v12 = [v4 objectForKeyedSubscript:@"primaryEmail"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"primaryEmail"];
     primaryEmail = v5->_primaryEmail;
     v5->_primaryEmail = v12;
 
-    v14 = [v4 objectForKeyedSubscript:@"isFamilyMember"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"isFamilyMember"];
     v5->_isFamilyMember = [v14 BOOLValue];
 
-    v15 = [v4 objectForKeyedSubscript:@"invitedEmail"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"invitedEmail"];
     invitedEmail = v5->_invitedEmail;
     v5->_invitedEmail = v15;
 
-    v17 = [v4 objectForKeyedSubscript:@"invitedPhoneNumber"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"invitedPhoneNumber"];
     invitedPhoneNumber = v5->_invitedPhoneNumber;
     v5->_invitedPhoneNumber = v17;
 
-    v19 = [v4 objectForKeyedSubscript:@"invitedOnDate"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"invitedOnDate"];
     invitedOnDate = v5->_invitedOnDate;
     v5->_invitedOnDate = v19;
 
-    v21 = [v4 objectForKeyedSubscript:@"emails"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"emails"];
     v22 = objc_alloc_init(NSMutableArray);
     v35 = 0u;
     v36 = 0u;
@@ -103,7 +103,7 @@
     }
 
     objc_storeStrong(&v5->_emails, v22);
-    v30 = [v4 objectForKeyedSubscript:@"invitationStatus"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"invitationStatus"];
     invitationStatus = v5->_invitationStatus;
     v5->_invitationStatus = v30;
   }
@@ -116,7 +116,7 @@
   if ([(NSString *)self->_firstName length]|| [(NSString *)self->_lastName length])
   {
     v3 = +[BYODContactsManager sharedInstance];
-    v4 = [v3 fullNameWithFirstName:self->_firstName lastName:self->_lastName];
+    invitationHandle = [v3 fullNameWithFirstName:self->_firstName lastName:self->_lastName];
   }
 
   else
@@ -126,17 +126,17 @@
 
     if ([v3 length])
     {
-      v4 = v3;
-      v3 = v4;
+      invitationHandle = v3;
+      v3 = invitationHandle;
     }
 
     else
     {
-      v4 = [(BYODUser *)self invitationHandle];
+      invitationHandle = [(BYODUser *)self invitationHandle];
     }
   }
 
-  v5 = v4;
+  v5 = invitationHandle;
 
   return v5;
 }
@@ -182,47 +182,47 @@ LABEL_5:
 
 - (id)invitationHandle
 {
-  v3 = [(BYODUser *)self emailAddress];
-  if ([v3 length])
+  emailAddress = [(BYODUser *)self emailAddress];
+  if ([emailAddress length])
   {
-    v4 = [(BYODUser *)self emailAddress];
+    emailAddress2 = [(BYODUser *)self emailAddress];
   }
 
   else
   {
-    v5 = [(BYODUser *)self phoneNumber];
-    if ([v5 length])
+    phoneNumber = [(BYODUser *)self phoneNumber];
+    if ([phoneNumber length])
     {
-      v4 = [(BYODUser *)self phoneNumber];
+      emailAddress2 = [(BYODUser *)self phoneNumber];
     }
 
     else
     {
-      v4 = &stru_B9FC8;
+      emailAddress2 = &stru_B9FC8;
     }
   }
 
-  return v4;
+  return emailAddress2;
 }
 
 - (id)memberIdentifier
 {
-  v3 = [(BYODUser *)self dsid];
-  v4 = [v3 length];
+  dsid = [(BYODUser *)self dsid];
+  v4 = [dsid length];
 
   if (v4)
   {
-    v5 = [(BYODUser *)self dsid];
+    dsid2 = [(BYODUser *)self dsid];
   }
 
   else
   {
-    v6 = [(BYODUser *)self invitationHandle];
-    v7 = [v6 length];
+    invitationHandle = [(BYODUser *)self invitationHandle];
+    v7 = [invitationHandle length];
 
     if (v7)
     {
-      v5 = [(BYODUser *)self invitationHandle];
+      dsid2 = [(BYODUser *)self invitationHandle];
     }
 
     else
@@ -234,11 +234,11 @@ LABEL_5:
         _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "returning nil as member identifier.", v10, 2u);
       }
 
-      v5 = 0;
+      dsid2 = 0;
     }
   }
 
-  return v5;
+  return dsid2;
 }
 
 @end

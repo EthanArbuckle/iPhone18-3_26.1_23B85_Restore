@@ -1,13 +1,13 @@
 @interface RTPAccessPointMapping
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (unint64_t)muidAtIndex:(unint64_t)a3;
-- (void)copyTo:(id)a3;
+- (unint64_t)muidAtIndex:(unint64_t)index;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation RTPAccessPointMapping
@@ -20,18 +20,18 @@
   [(RTPAccessPointMapping *)&v3 dealloc];
 }
 
-- (unint64_t)muidAtIndex:(unint64_t)a3
+- (unint64_t)muidAtIndex:(unint64_t)index
 {
   p_muids = &self->_muids;
   count = self->_muids.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_muids->list[a3];
+  return p_muids->list[index];
 }
 
 - (id)description
@@ -39,8 +39,8 @@
   v7.receiver = self;
   v7.super_class = RTPAccessPointMapping;
   v3 = [(RTPAccessPointMapping *)&v7 description];
-  v4 = [(RTPAccessPointMapping *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(RTPAccessPointMapping *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -61,14 +61,14 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_accessPoint)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   p_muids = &self->_muids;
@@ -79,7 +79,7 @@
     {
       v7 = p_muids->list[v6];
       PBDataWriterWriteUint64Field();
-      v4 = v8;
+      toCopy = v8;
       ++v6;
     }
 
@@ -87,33 +87,33 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   if (self->_accessPoint)
   {
-    [v7 setAccessPoint:?];
+    [toCopy setAccessPoint:?];
   }
 
   if ([(RTPAccessPointMapping *)self muidsCount])
   {
-    [v7 clearMuids];
-    v4 = [(RTPAccessPointMapping *)self muidsCount];
-    if (v4)
+    [toCopy clearMuids];
+    muidsCount = [(RTPAccessPointMapping *)self muidsCount];
+    if (muidsCount)
     {
-      v5 = v4;
+      v5 = muidsCount;
       for (i = 0; i != v5; ++i)
       {
-        [v7 addMuid:{-[RTPAccessPointMapping muidAtIndex:](self, "muidAtIndex:", i)}];
+        [toCopy addMuid:{-[RTPAccessPointMapping muidAtIndex:](self, "muidAtIndex:", i)}];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_accessPoint copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_accessPoint copyWithZone:zone];
   v7 = v5[4];
   v5[4] = v6;
 
@@ -121,10 +121,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((accessPoint = self->_accessPoint, !(accessPoint | v4[4])) || -[NSString isEqual:](accessPoint, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((accessPoint = self->_accessPoint, !(accessPoint | equalCopy[4])) || -[NSString isEqual:](accessPoint, "isEqual:")))
   {
     IsEqual = PBRepeatedUInt64IsEqual();
   }
@@ -137,20 +137,20 @@
   return IsEqual;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v8 = v4;
-  if (v4[4])
+  fromCopy = from;
+  v8 = fromCopy;
+  if (fromCopy[4])
   {
     [(RTPAccessPointMapping *)self setAccessPoint:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  v5 = [v4 muidsCount];
-  if (v5)
+  muidsCount = [fromCopy muidsCount];
+  if (muidsCount)
   {
-    v6 = v5;
+    v6 = muidsCount;
     for (i = 0; i != v6; ++i)
     {
       -[RTPAccessPointMapping addMuid:](self, "addMuid:", [v8 muidAtIndex:i]);

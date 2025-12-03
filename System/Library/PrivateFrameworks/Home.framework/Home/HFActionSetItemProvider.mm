@@ -1,58 +1,58 @@
 @interface HFActionSetItemProvider
-- (HFActionSetItemProvider)initWithHome:(id)a3 actionSetItemStyle:(unint64_t)a4;
+- (HFActionSetItemProvider)initWithHome:(id)home actionSetItemStyle:(unint64_t)style;
 - (HFCharacteristicValueSource)valueSource;
 - (id)_favoriteFilter;
 - (id)_roomFilter;
 - (id)_showInHomeDashboardFilter;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)invalidationReasons;
 - (id)reloadItems;
-- (void)setServiceLikeItem:(id)a3;
+- (void)setServiceLikeItem:(id)item;
 @end
 
 @implementation HFActionSetItemProvider
 
-- (HFActionSetItemProvider)initWithHome:(id)a3 actionSetItemStyle:(unint64_t)a4
+- (HFActionSetItemProvider)initWithHome:(id)home actionSetItemStyle:(unint64_t)style
 {
-  v7 = a3;
+  homeCopy = home;
   v13.receiver = self;
   v13.super_class = HFActionSetItemProvider;
   v8 = [(HFItemProvider *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_home, a3);
+    objc_storeStrong(&v8->_home, home);
     v10 = [MEMORY[0x277CBEB58] set];
     actionSetItems = v9->_actionSetItems;
     v9->_actionSetItems = v10;
 
-    v9->_actionSetItemStyle = a4;
+    v9->_actionSetItemStyle = style;
   }
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(HFActionSetItemProvider *)self home];
-  v6 = [v4 initWithHome:v5 actionSetItemStyle:{-[HFActionSetItemProvider actionSetItemStyle](self, "actionSetItemStyle")}];
+  home = [(HFActionSetItemProvider *)self home];
+  v6 = [v4 initWithHome:home actionSetItemStyle:{-[HFActionSetItemProvider actionSetItemStyle](self, "actionSetItemStyle")}];
 
   return v6;
 }
 
-- (void)setServiceLikeItem:(id)a3
+- (void)setServiceLikeItem:(id)item
 {
-  v5 = a3;
-  objc_storeStrong(&self->_serviceLikeItem, a3);
-  v6 = [(HFActionSetItemProvider *)self actionSetItems];
+  itemCopy = item;
+  objc_storeStrong(&self->_serviceLikeItem, item);
+  actionSetItems = [(HFActionSetItemProvider *)self actionSetItems];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __46__HFActionSetItemProvider_setServiceLikeItem___block_invoke;
   v8[3] = &unk_277DF5B98;
-  v9 = v5;
-  v7 = v5;
-  [v6 na_each:v8];
+  v9 = itemCopy;
+  v7 = itemCopy;
+  [actionSetItems na_each:v8];
 }
 
 - (id)reloadItems
@@ -64,17 +64,17 @@
   aBlock[3] = &unk_277DF5228;
   objc_copyWeak(&v15, &location);
   v3 = _Block_copy(aBlock);
-  v4 = [(HFActionSetItemProvider *)self home];
-  v5 = [v4 actionSets];
+  home = [(HFActionSetItemProvider *)self home];
+  actionSets = [home actionSets];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __38__HFActionSetItemProvider_reloadItems__block_invoke_2;
   v13[3] = &unk_277DF4280;
   v13[4] = self;
-  v6 = [v5 na_filter:v13];
+  v6 = [actionSets na_filter:v13];
 
-  v7 = [(HFActionSetItemProvider *)self filter];
-  v8 = [(HFItemProvider *)self reloadItemsWithHomeKitObjects:v6 filter:v7 itemMap:v3];
+  filter = [(HFActionSetItemProvider *)self filter];
+  v8 = [(HFItemProvider *)self reloadItemsWithHomeKitObjects:v6 filter:filter itemMap:v3];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __38__HFActionSetItemProvider_reloadItems__block_invoke_3;
@@ -151,41 +151,41 @@ id __38__HFActionSetItemProvider_reloadItems__block_invoke_3(uint64_t a1, void *
 {
   v5.receiver = self;
   v5.super_class = HFActionSetItemProvider;
-  v2 = [(HFItemProvider *)&v5 invalidationReasons];
-  v3 = [v2 setByAddingObject:@"actionSet"];
+  invalidationReasons = [(HFItemProvider *)&v5 invalidationReasons];
+  v3 = [invalidationReasons setByAddingObject:@"actionSet"];
 
   return v3;
 }
 
 - (HFCharacteristicValueSource)valueSource
 {
-  v3 = [(HFActionSetItemProvider *)self overrideValueSource];
+  overrideValueSource = [(HFActionSetItemProvider *)self overrideValueSource];
 
-  if (v3)
+  if (overrideValueSource)
   {
-    v4 = [(HFActionSetItemProvider *)self overrideValueSource];
+    overrideValueSource2 = [(HFActionSetItemProvider *)self overrideValueSource];
   }
 
   else
   {
-    v5 = [(HFActionSetItemProvider *)self home];
-    v4 = [v5 hf_characteristicValueManager];
+    home = [(HFActionSetItemProvider *)self home];
+    overrideValueSource2 = [home hf_characteristicValueManager];
   }
 
-  return v4;
+  return overrideValueSource2;
 }
 
 - (id)_roomFilter
 {
-  v2 = [(HFActionSetItemProvider *)self room];
-  v3 = [v2 uniqueIdentifier];
+  room = [(HFActionSetItemProvider *)self room];
+  uniqueIdentifier = [room uniqueIdentifier];
 
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __38__HFActionSetItemProvider__roomFilter__block_invoke;
   aBlock[3] = &unk_277DF4280;
-  v9 = v3;
-  v4 = v3;
+  v9 = uniqueIdentifier;
+  v4 = uniqueIdentifier;
   v5 = _Block_copy(aBlock);
   v6 = [v5 copy];
 

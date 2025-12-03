@@ -1,28 +1,28 @@
 @interface CRLUSDRenderingExtension.APIEndpointCoordinator.APIEndpoint
-- (void)didTeardownCoreRERendererForUUID:(id)a3;
-- (void)getExtensionProcessIDWithResponse:(id)a3;
-- (void)makeCoreRERendererProxyForUUID:(id)a3 delegateProxy:(id)a4 flags:(unint64_t)a5 response:(id)a6;
+- (void)didTeardownCoreRERendererForUUID:(id)d;
+- (void)getExtensionProcessIDWithResponse:(id)response;
+- (void)makeCoreRERendererProxyForUUID:(id)d delegateProxy:(id)proxy flags:(unint64_t)flags response:(id)response;
 @end
 
 @implementation CRLUSDRenderingExtension.APIEndpointCoordinator.APIEndpoint
 
-- (void)getExtensionProcessIDWithResponse:(id)a3
+- (void)getExtensionProcessIDWithResponse:(id)response
 {
-  v3 = _Block_copy(a3);
-  v4 = [objc_opt_self() processInfo];
-  v5 = [v4 processIdentifier];
+  v3 = _Block_copy(response);
+  processInfo = [objc_opt_self() processInfo];
+  processIdentifier = [processInfo processIdentifier];
 
-  v3[2](v3, v5);
+  v3[2](v3, processIdentifier);
 
   _Block_release(v3);
 }
 
-- (void)makeCoreRERendererProxyForUUID:(id)a3 delegateProxy:(id)a4 flags:(unint64_t)a5 response:(id)a6
+- (void)makeCoreRERendererProxyForUUID:(id)d delegateProxy:(id)proxy flags:(unint64_t)flags response:(id)response
 {
   v10 = sub_10002A958(&qword_1000D6780);
   __chkstk_darwin(v10 - 8);
   v12 = &v21 - v11;
-  v13 = _Block_copy(a6);
+  v13 = _Block_copy(response);
   v14 = sub_10008AB38();
   v16 = v15;
   v17 = swift_allocObject();
@@ -40,8 +40,8 @@
   v20[4] = self;
   v20[5] = v14;
   v20[6] = v16;
-  v20[7] = a4;
-  v20[8] = a5;
+  v20[7] = proxy;
+  v20[8] = flags;
   v20[9] = sub_1000802FC;
   v20[10] = v17;
   sub_10004BA04(0, 0, v12, &unk_1000AB120, v20);
@@ -49,7 +49,7 @@
   swift_unknownObjectRelease();
 }
 
-- (void)didTeardownCoreRERendererForUUID:(id)a3
+- (void)didTeardownCoreRERendererForUUID:(id)d
 {
   v3 = sub_10002A958(&qword_1000D6780);
   __chkstk_darwin(v3 - 8);

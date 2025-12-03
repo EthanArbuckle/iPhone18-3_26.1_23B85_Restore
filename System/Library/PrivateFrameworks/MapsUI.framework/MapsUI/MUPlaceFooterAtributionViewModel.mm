@@ -1,9 +1,9 @@
 @interface MUPlaceFooterAtributionViewModel
-+ (id)_attributionViewModelForProviderName:(id)a3 attributionURLs:(id)a4;
-+ (id)viewModelForGeoMapItemAttribution:(id)a3;
-+ (id)viewModelForMapItem:(id)a3 transitLine:(id)a4;
-+ (id)viewModelForMapItemAttribution:(id)a3;
-- (MUPlaceFooterAtributionViewModel)initWithFormatString:(id)a3 providerNames:(id)a4 isInteractable:(BOOL)a5;
++ (id)_attributionViewModelForProviderName:(id)name attributionURLs:(id)ls;
++ (id)viewModelForGeoMapItemAttribution:(id)attribution;
++ (id)viewModelForMapItem:(id)item transitLine:(id)line;
++ (id)viewModelForMapItemAttribution:(id)attribution;
+- (MUPlaceFooterAtributionViewModel)initWithFormatString:(id)string providerNames:(id)names isInteractable:(BOOL)interactable;
 - (id)attributedText;
 @end
 
@@ -19,8 +19,8 @@
     v4 = v24;
     v5 = MEMORY[0x1E69DC888];
     v6 = formatString;
-    v7 = [v5 secondaryLabelColor];
-    v26[0] = v7;
+    secondaryLabelColor = [v5 secondaryLabelColor];
+    v26[0] = secondaryLabelColor;
     v25 = *MEMORY[0x1E69DB648];
     v8 = v25;
     v9 = *MEMORY[0x1E69DDD28];
@@ -64,50 +64,50 @@
   return v19;
 }
 
-- (MUPlaceFooterAtributionViewModel)initWithFormatString:(id)a3 providerNames:(id)a4 isInteractable:(BOOL)a5
+- (MUPlaceFooterAtributionViewModel)initWithFormatString:(id)string providerNames:(id)names isInteractable:(BOOL)interactable
 {
-  v9 = a3;
-  v10 = a4;
+  stringCopy = string;
+  namesCopy = names;
   v14.receiver = self;
   v14.super_class = MUPlaceFooterAtributionViewModel;
   v11 = [(MUPlaceFooterAtributionViewModel *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_formatString, a3);
-    objc_storeStrong(&v12->_providerNames, a4);
-    v12->_interactable = a5;
+    objc_storeStrong(&v11->_formatString, string);
+    objc_storeStrong(&v12->_providerNames, names);
+    v12->_interactable = interactable;
   }
 
   return v12;
 }
 
-+ (id)viewModelForMapItem:(id)a3 transitLine:(id)a4
++ (id)viewModelForMapItem:(id)item transitLine:(id)line
 {
-  v5 = a4;
-  v6 = [a3 _transitAttribution];
-  v7 = v6;
-  if (v6)
+  lineCopy = line;
+  _transitAttribution = [item _transitAttribution];
+  v7 = _transitAttribution;
+  if (_transitAttribution)
   {
-    v8 = v6;
+    attribution = _transitAttribution;
   }
 
   else
   {
-    v8 = [v5 attribution];
+    attribution = [lineCopy attribution];
   }
 
-  v9 = v8;
+  v9 = attribution;
 
-  v10 = [v9 _providerNames];
-  v11 = [v10 count];
+  _providerNames = [v9 _providerNames];
+  v11 = [_providerNames count];
 
   if (v11)
   {
     v12 = [MUPlaceFooterAtributionViewModel alloc];
     v13 = +[MUPlaceFooterAtributionViewModel transitAttributionFormatString];
-    v14 = [v9 _providerNames];
-    v15 = [(MUPlaceFooterAtributionViewModel *)v12 initWithFormatString:v13 providerNames:v14 isInteractable:1];
+    _providerNames2 = [v9 _providerNames];
+    v15 = [(MUPlaceFooterAtributionViewModel *)v12 initWithFormatString:v13 providerNames:_providerNames2 isInteractable:1];
   }
 
   else
@@ -118,14 +118,14 @@
   return v15;
 }
 
-+ (id)_attributionViewModelForProviderName:(id)a3 attributionURLs:(id)a4
++ (id)_attributionViewModelForProviderName:(id)name attributionURLs:(id)ls
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 length])
+  nameCopy = name;
+  lsCopy = ls;
+  if ([nameCopy length])
   {
-    v7 = [v6 count];
+    v7 = [lsCopy count];
     if (v7)
     {
       +[MUPlaceFooterAtributionViewModel interactableVendorAttributionFormatString];
@@ -137,7 +137,7 @@
     }
     v9 = ;
     v10 = [MUPlaceFooterAtributionViewModel alloc];
-    v14[0] = v5;
+    v14[0] = nameCopy;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
     v8 = [(MUPlaceFooterAtributionViewModel *)v10 initWithFormatString:v9 providerNames:v11 isInteractable:v7 != 0];
   }
@@ -152,24 +152,24 @@
   return v8;
 }
 
-+ (id)viewModelForGeoMapItemAttribution:(id)a3
++ (id)viewModelForGeoMapItemAttribution:(id)attribution
 {
-  v4 = a3;
-  v5 = [v4 providerName];
-  v6 = [v4 attributionURLs];
+  attributionCopy = attribution;
+  providerName = [attributionCopy providerName];
+  attributionURLs = [attributionCopy attributionURLs];
 
-  v7 = [a1 _attributionViewModelForProviderName:v5 attributionURLs:v6];
+  v7 = [self _attributionViewModelForProviderName:providerName attributionURLs:attributionURLs];
 
   return v7;
 }
 
-+ (id)viewModelForMapItemAttribution:(id)a3
++ (id)viewModelForMapItemAttribution:(id)attribution
 {
-  v4 = a3;
-  v5 = [v4 providerName];
-  v6 = [v4 attributionURLs];
+  attributionCopy = attribution;
+  providerName = [attributionCopy providerName];
+  attributionURLs = [attributionCopy attributionURLs];
 
-  v7 = [a1 _attributionViewModelForProviderName:v5 attributionURLs:v6];
+  v7 = [self _attributionViewModelForProviderName:providerName attributionURLs:attributionURLs];
 
   return v7;
 }

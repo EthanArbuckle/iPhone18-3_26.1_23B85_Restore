@@ -10,19 +10,19 @@
   v51 = *MEMORY[0x277D85DE8];
   v2 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v3 = +[PEAnalyticsUtility adjustmentValueBucketizerFormatter];
-  v4 = [a1 adjustment];
-  if (v4)
+  adjustment = [self adjustment];
+  if (adjustment)
   {
-    v5 = v4;
-    v6 = [a1 enabled];
+    v5 = adjustment;
+    enabled = [self enabled];
 
-    if (v6)
+    if (enabled)
     {
-      v43 = [a1 colorType];
-      [a1 visualInputKeys];
+      colorType = [self colorType];
+      [self visualInputKeys];
       v7 = v42 = v3;
-      v44 = a1;
-      v8 = [a1 analyticsKeysBlocklist];
+      selfCopy = self;
+      analyticsKeysBlocklist = [self analyticsKeysBlocklist];
       v46 = 0u;
       v47 = 0u;
       v48 = 0u;
@@ -48,35 +48,35 @@
           }
 
           v14 = *(*(&v46 + 1) + 8 * i);
-          if (([v8 containsObject:v14] & 1) == 0)
+          if (([analyticsKeysBlocklist containsObject:v14] & 1) == 0)
           {
-            v15 = [MEMORY[0x277D3A9B0] colorTypeKey];
-            v16 = [v14 isEqualToString:v15];
+            colorTypeKey = [MEMORY[0x277D3A9B0] colorTypeKey];
+            v16 = [v14 isEqualToString:colorTypeKey];
 
             if (v16)
             {
-              v17 = [MEMORY[0x277D3A9B0] stringForColorType:v43];
+              v17 = [MEMORY[0x277D3A9B0] stringForColorType:colorType];
               [v2 setObject:v17 forKeyedSubscript:@"whiteBalanceType"];
 LABEL_36:
 
               continue;
             }
 
-            v18 = [MEMORY[0x277D3A9B0] warmTintKey];
-            if ([v14 isEqualToString:v18])
+            warmTintKey = [MEMORY[0x277D3A9B0] warmTintKey];
+            if ([v14 isEqualToString:warmTintKey])
             {
-              [v44 warmTint];
+              [selfCopy warmTint];
               v20 = v19;
 
               if (v20 != 0.0)
               {
-                if (v43 != 3)
+                if (colorType != 3)
                 {
                   continue;
                 }
 
                 v21 = MEMORY[0x277CCABB0];
-                [v44 warmTint];
+                [selfCopy warmTint];
                 v17 = [v21 numberWithDouble:?];
                 v22 = [v3 stringFromNumber:v17];
                 v23 = v2;
@@ -94,21 +94,21 @@ LABEL_35:
             {
             }
 
-            v26 = [MEMORY[0x277D3A9B0] warmTempKey];
-            if ([v14 isEqualToString:v26])
+            warmTempKey = [MEMORY[0x277D3A9B0] warmTempKey];
+            if ([v14 isEqualToString:warmTempKey])
             {
-              [v44 warmTemp];
+              [selfCopy warmTemp];
               v28 = v27;
 
               if (v28 != 0.0)
               {
-                if (v43 != 3)
+                if (colorType != 3)
                 {
                   continue;
                 }
 
                 v29 = MEMORY[0x277CCABB0];
-                [v44 warmTemp];
+                [selfCopy warmTemp];
 LABEL_30:
                 v17 = [v29 numberWithDouble:?];
                 v22 = [v3 stringFromNumber:v17];
@@ -123,21 +123,21 @@ LABEL_30:
             {
             }
 
-            v30 = [MEMORY[0x277D3A9B0] faceWarmthKey];
-            if ([v14 isEqualToString:v30])
+            faceWarmthKey = [MEMORY[0x277D3A9B0] faceWarmthKey];
+            if ([v14 isEqualToString:faceWarmthKey])
             {
-              [v44 faceWarmth];
+              [selfCopy faceWarmth];
               v32 = v31;
 
               if (v32 != 0.0)
               {
-                if (v43 != 1)
+                if (colorType != 1)
                 {
                   continue;
                 }
 
                 v29 = MEMORY[0x277CCABB0];
-                [v44 faceWarmth];
+                [selfCopy faceWarmth];
                 goto LABEL_30;
               }
             }
@@ -146,21 +146,21 @@ LABEL_30:
             {
             }
 
-            v33 = [MEMORY[0x277D3A9B0] grayWarmthKey];
-            if ([v14 isEqualToString:v33])
+            grayWarmthKey = [MEMORY[0x277D3A9B0] grayWarmthKey];
+            if ([v14 isEqualToString:grayWarmthKey])
             {
-              [v44 faceWarmth];
+              [selfCopy faceWarmth];
               v35 = v34;
 
               if (v35 != 0.0)
               {
-                if ((v43 & 0xFFFFFFFFFFFFFFFDLL) != 0)
+                if ((colorType & 0xFFFFFFFFFFFFFFFDLL) != 0)
                 {
                   continue;
                 }
 
                 v29 = MEMORY[0x277CCABB0];
-                [v44 grayWarmth];
+                [selfCopy grayWarmth];
                 goto LABEL_30;
               }
             }
@@ -169,7 +169,7 @@ LABEL_30:
             {
             }
 
-            v17 = [v44 valueForKey:v14];
+            v17 = [selfCopy valueForKey:v14];
             [v17 doubleValue];
             if (v36 == 0.0)
             {
@@ -210,19 +210,19 @@ LABEL_41:
 - (id)analyticsKeysBlocklist
 {
   v11 = MEMORY[0x277CBEB98];
-  v14 = [MEMORY[0x277D3A9B0] faceIKey];
-  v13 = [MEMORY[0x277D3A9B0] temperatureKey];
-  v0 = [MEMORY[0x277D3A9B0] grayIKey];
-  v10 = [MEMORY[0x277D3A9B0] grayYKey];
-  v1 = [MEMORY[0x277D3A9B0] tintKey];
-  v2 = [MEMORY[0x277D3A9B0] warmFaceKey];
-  v3 = [MEMORY[0x277D3A9B0] faceQKey];
-  v4 = [MEMORY[0x277D3A9B0] autoKey];
-  v5 = [MEMORY[0x277D3A9B0] enabledKey];
-  v6 = [MEMORY[0x277D3A9B0] grayQKey];
-  v7 = [MEMORY[0x277D3A9B0] faceStrengthKey];
-  v8 = [MEMORY[0x277D3A9B0] grayStrengthKey];
-  v12 = [v11 setWithObjects:{v14, v13, v0, v10, v1, v2, v3, v4, v5, v6, v7, v8, 0}];
+  faceIKey = [MEMORY[0x277D3A9B0] faceIKey];
+  temperatureKey = [MEMORY[0x277D3A9B0] temperatureKey];
+  grayIKey = [MEMORY[0x277D3A9B0] grayIKey];
+  grayYKey = [MEMORY[0x277D3A9B0] grayYKey];
+  tintKey = [MEMORY[0x277D3A9B0] tintKey];
+  warmFaceKey = [MEMORY[0x277D3A9B0] warmFaceKey];
+  faceQKey = [MEMORY[0x277D3A9B0] faceQKey];
+  autoKey = [MEMORY[0x277D3A9B0] autoKey];
+  enabledKey = [MEMORY[0x277D3A9B0] enabledKey];
+  grayQKey = [MEMORY[0x277D3A9B0] grayQKey];
+  faceStrengthKey = [MEMORY[0x277D3A9B0] faceStrengthKey];
+  grayStrengthKey = [MEMORY[0x277D3A9B0] grayStrengthKey];
+  v12 = [v11 setWithObjects:{faceIKey, temperatureKey, grayIKey, grayYKey, tintKey, warmFaceKey, faceQKey, autoKey, enabledKey, grayQKey, faceStrengthKey, grayStrengthKey, 0}];
 
   return v12;
 }

@@ -1,13 +1,13 @@
 @interface WirelessInsightsSettings
-- (WirelessInsightsSettings)initWithCoder:(id)a3;
-- (WirelessInsightsSettings)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)confidence:(id)a3;
-- (id)getPredictionSimulationMode:(id)a3;
-- (id)impact:(id)a3;
+- (WirelessInsightsSettings)initWithCoder:(id)coder;
+- (WirelessInsightsSettings)initWithNibName:(id)name bundle:(id)bundle;
+- (id)confidence:(id)confidence;
+- (id)getPredictionSimulationMode:(id)mode;
+- (id)impact:(id)impact;
 - (id)specifiers;
-- (id)startTime:(id)a3;
-- (id)startTimeString:(id)a3;
-- (void)setStartTimeWithValue:(id)a3 forSpecifier:(id)a4;
+- (id)startTime:(id)time;
+- (id)startTimeString:(id)string;
+- (void)setStartTimeWithValue:(id)value forSpecifier:(id)specifier;
 @end
 
 @implementation WirelessInsightsSettings
@@ -22,7 +22,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   v4 = sub_31D0();
 
   if (v4)
@@ -39,7 +39,7 @@
   return v5.super.isa;
 }
 
-- (void)setStartTimeWithValue:(id)a3 forSpecifier:(id)a4
+- (void)setStartTimeWithValue:(id)value forSpecifier:(id)specifier
 {
   sub_BC60();
   sub_BC50();
@@ -49,13 +49,13 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  sub_3730(v7, v8);
+  valueCopy = value;
+  specifierCopy = specifier;
+  selfCopy = self;
+  sub_3730(valueCopy, specifierCopy);
 }
 
-- (id)startTimeString:(id)a3
+- (id)startTimeString:(id)string
 {
   sub_BC60();
   sub_BC50();
@@ -65,16 +65,16 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = a3;
-  v6 = self;
-  sub_3A80(v5);
+  stringCopy = string;
+  selfCopy = self;
+  sub_3A80(stringCopy);
 
   v7 = sub_BB30();
 
   return v7;
 }
 
-- (id)startTime:(id)a3
+- (id)startTime:(id)time
 {
   sub_BC60();
   sub_BC50();
@@ -84,9 +84,9 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = a3;
-  v6 = self;
-  v7 = sub_A904(v5);
+  timeCopy = time;
+  selfCopy = self;
+  v7 = sub_A904(timeCopy);
   if ((v8 & 1) == 0)
   {
     v10 = v7;
@@ -99,7 +99,7 @@
 
     else
     {
-      v13 = *&v6->PSListController_opaque[v11];
+      v13 = *&selfCopy->PSListController_opaque[v11];
       if (v10 < *(v13 + 16))
       {
         v14 = (v13 + 48 * v10);
@@ -126,7 +126,7 @@ LABEL_8:
   return v9.super.super.isa;
 }
 
-- (id)impact:(id)a3
+- (id)impact:(id)impact
 {
   sub_BC60();
   sub_BC50();
@@ -136,9 +136,9 @@ LABEL_8:
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = a3;
-  v6 = self;
-  v7 = sub_A904(v5);
+  impactCopy = impact;
+  selfCopy = self;
+  v7 = sub_A904(impactCopy);
   if ((v8 & 1) == 0)
   {
     v9 = v7;
@@ -151,7 +151,7 @@ LABEL_8:
 
     else
     {
-      v12 = *&v6->PSListController_opaque[v10];
+      v12 = *&selfCopy->PSListController_opaque[v10];
       if (v9 < *(v12 + 16))
       {
         v13 = (v12 + 48 * v9);
@@ -173,7 +173,7 @@ LABEL_8:
   return v17;
 }
 
-- (id)confidence:(id)a3
+- (id)confidence:(id)confidence
 {
   sub_BC60();
   sub_BC50();
@@ -183,9 +183,9 @@ LABEL_8:
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = a3;
-  v6 = self;
-  v7 = sub_A904(v5);
+  confidenceCopy = confidence;
+  selfCopy = self;
+  v7 = sub_A904(confidenceCopy);
   if ((v8 & 1) == 0)
   {
     v9 = v7;
@@ -198,7 +198,7 @@ LABEL_8:
 
     else
     {
-      v12 = *&v6->PSListController_opaque[v10];
+      v12 = *&selfCopy->PSListController_opaque[v10];
       if (v9 < *(v12 + 16))
       {
         v13 = v12 + 48 * v9;
@@ -219,7 +219,7 @@ LABEL_8:
   return v16;
 }
 
-- (id)getPredictionSimulationMode:(id)a3
+- (id)getPredictionSimulationMode:(id)mode
 {
   sub_BC60();
   sub_BC50();
@@ -229,8 +229,8 @@ LABEL_8:
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = a3;
-  v6 = self;
+  modeCopy = mode;
+  selfCopy = self;
   sub_AA64();
 
   v7 = sub_BB30();
@@ -238,7 +238,7 @@ LABEL_8:
   return v7;
 }
 
-- (WirelessInsightsSettings)initWithNibName:(id)a3 bundle:(id)a4
+- (WirelessInsightsSettings)initWithNibName:(id)name bundle:(id)bundle
 {
   sub_BC60();
   sub_BC50();
@@ -248,10 +248,10 @@ LABEL_8:
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a3)
+  if (name)
   {
     v6 = sub_BB40();
-    a3 = v7;
+    name = v7;
   }
 
   else
@@ -259,13 +259,13 @@ LABEL_8:
     v6 = 0;
   }
 
-  v8 = a4;
-  v9 = sub_74AC(v6, a3, a4);
+  bundleCopy = bundle;
+  v9 = sub_74AC(v6, name, bundle);
 
   return v9;
 }
 
-- (WirelessInsightsSettings)initWithCoder:(id)a3
+- (WirelessInsightsSettings)initWithCoder:(id)coder
 {
   sub_BC60();
   sub_BC50();
@@ -275,7 +275,7 @@ LABEL_8:
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = sub_7680(a3);
+  v4 = sub_7680(coder);
 
   return v4;
 }

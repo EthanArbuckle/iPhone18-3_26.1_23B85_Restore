@@ -1,19 +1,19 @@
 @interface AMSMediaTokenServicePATFetcher
-+ (id)challengeDictFor:(id)a3;
-+ (id)fetchToken:(id)a3 dispatchQueue:(id)a4;
-+ (id)fetchTokenWithChallenge:(id)a3 dispatchQueue:(id)a4;
-+ (id)fetcherWithChallenge:(id)a3 tokenKey:(id)a4;
-+ (id)tokenChallengeWith:(id)a3 redemptionNonce:(id)a4 originName:(id)a5;
++ (id)challengeDictFor:(id)for;
++ (id)fetchToken:(id)token dispatchQueue:(id)queue;
++ (id)fetchTokenWithChallenge:(id)challenge dispatchQueue:(id)queue;
++ (id)fetcherWithChallenge:(id)challenge tokenKey:(id)key;
++ (id)tokenChallengeWith:(id)with redemptionNonce:(id)nonce originName:(id)name;
 @end
 
 @implementation AMSMediaTokenServicePATFetcher
 
-+ (id)challengeDictFor:(id)a3
++ (id)challengeDictFor:(id)for
 {
   v38 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  forCopy = for;
   v32 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = v3;
+  v4 = forCopy;
   v5 = [v4 rangeOfString:@"PrivateToken " options:1];
   v7 = v4;
   if (v5 != 0x7FFFFFFFFFFFFFFFLL)
@@ -49,8 +49,8 @@
         }
 
         v15 = *(*(&v33 + 1) + 8 * i);
-        v16 = [*(v13 + 2824) whitespaceAndNewlineCharacterSet];
-        v17 = [v15 stringByTrimmingCharactersInSet:v16];
+        whitespaceAndNewlineCharacterSet = [*(v13 + 2824) whitespaceAndNewlineCharacterSet];
+        v17 = [v15 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
         v18 = [v17 rangeOfString:@"="];
         if (v18 != 0x7FFFFFFFFFFFFFFFLL)
@@ -85,28 +85,28 @@
   return v28;
 }
 
-+ (id)tokenChallengeWith:(id)a3 redemptionNonce:(id)a4 originName:(id)a5
++ (id)tokenChallengeWith:(id)with redemptionNonce:(id)nonce originName:(id)name
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (a5)
+  withCopy = with;
+  nonceCopy = nonce;
+  if (name)
   {
-    v13[0] = a5;
+    v13[0] = name;
     v9 = MEMORY[0x1E695DEC8];
-    v10 = a5;
-    a5 = [v9 arrayWithObjects:v13 count:1];
+    nameCopy = name;
+    name = [v9 arrayWithObjects:v13 count:1];
   }
 
-  v11 = [objc_alloc(getNSPPrivateAccessTokenChallengeClass()) initRSABlindSignatureChallengeWithIssuerName:v7 redemptionNonce:v8 originNames:a5];
+  v11 = [objc_alloc(getNSPPrivateAccessTokenChallengeClass()) initRSABlindSignatureChallengeWithIssuerName:withCopy redemptionNonce:nonceCopy originNames:name];
 
   return v11;
 }
 
-+ (id)fetcherWithChallenge:(id)a3 tokenKey:(id)a4
++ (id)fetcherWithChallenge:(id)challenge tokenKey:(id)key
 {
-  v5 = a3;
-  v6 = a4;
+  challengeCopy = challenge;
+  keyCopy = key;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2050000000;
@@ -126,31 +126,31 @@
   v8 = v7;
   _Block_object_dispose(&v14, 8);
   v9 = [v7 alloc];
-  v10 = [v5 challengeData];
-  v11 = [v9 initWithChallenge:v10 tokenKey:v6 originNameKey:0];
+  challengeData = [challengeCopy challengeData];
+  v11 = [v9 initWithChallenge:challengeData tokenKey:keyCopy originNameKey:0];
 
   [v11 setSystemClient:1];
 
   return v11;
 }
 
-+ (id)fetchTokenWithChallenge:(id)a3 dispatchQueue:(id)a4
++ (id)fetchTokenWithChallenge:(id)challenge dispatchQueue:(id)queue
 {
-  v5 = a4;
-  v6 = [AMSMediaTokenServicePATChallenge challengeWith:a3];
+  queueCopy = queue;
+  v6 = [AMSMediaTokenServicePATChallenge challengeWith:challenge];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 issuerName];
-    v9 = [v7 redemptionNonce];
-    v10 = [v7 originName];
-    v11 = [AMSMediaTokenServicePATFetcher tokenChallengeWith:v8 redemptionNonce:v9 originName:v10];
+    issuerName = [v6 issuerName];
+    redemptionNonce = [v7 redemptionNonce];
+    originName = [v7 originName];
+    v11 = [AMSMediaTokenServicePATFetcher tokenChallengeWith:issuerName redemptionNonce:redemptionNonce originName:originName];
 
-    v12 = [v7 tokenKey];
-    v13 = [AMSMediaTokenServicePATFetcher fetcherWithChallenge:v11 tokenKey:v12];
+    tokenKey = [v7 tokenKey];
+    v13 = [AMSMediaTokenServicePATFetcher fetcherWithChallenge:v11 tokenKey:tokenKey];
 
     [v13 setSystemClient:1];
-    v14 = [AMSMediaTokenServicePATFetcher fetchToken:v13 dispatchQueue:v5];
+    v14 = [AMSMediaTokenServicePATFetcher fetchToken:v13 dispatchQueue:queueCopy];
   }
 
   else
@@ -162,10 +162,10 @@
   return v14;
 }
 
-+ (id)fetchToken:(id)a3 dispatchQueue:(id)a4
++ (id)fetchToken:(id)token dispatchQueue:(id)queue
 {
-  v5 = a4;
-  v6 = a3;
+  queueCopy = queue;
+  tokenCopy = token;
   v7 = objc_alloc_init(AMSMutablePromise);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -173,7 +173,7 @@
   v10[3] = &unk_1E73B90E0;
   v8 = v7;
   v11 = v8;
-  [v6 fetchTokenWithQueue:v5 completionHandler:v10];
+  [tokenCopy fetchTokenWithQueue:queueCopy completionHandler:v10];
 
   return v8;
 }

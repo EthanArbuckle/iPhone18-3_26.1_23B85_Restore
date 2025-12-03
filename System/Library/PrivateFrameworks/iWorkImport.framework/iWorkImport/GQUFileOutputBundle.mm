@@ -1,24 +1,24 @@
 @interface GQUFileOutputBundle
-- (BOOL)setData:(__CFData *)a3 mimeType:(__CFString *)a4 forNamedResource:(__CFString *)a5;
-- (GQUFileOutputBundle)initWithOutputPath:(__CFString *)a3;
+- (BOOL)setData:(__CFData *)data mimeType:(__CFString *)type forNamedResource:(__CFString *)resource;
+- (GQUFileOutputBundle)initWithOutputPath:(__CFString *)path;
 - (void)dealloc;
 @end
 
 @implementation GQUFileOutputBundle
 
-- (GQUFileOutputBundle)initWithOutputPath:(__CFString *)a3
+- (GQUFileOutputBundle)initWithOutputPath:(__CFString *)path
 {
-  if (a3)
+  if (path)
   {
     v8.receiver = self;
     v8.super_class = GQUFileOutputBundle;
     v4 = [(GQUFileOutputBundle *)&v8 init];
     if (v4)
     {
-      v4->mOutputUrl = CFURLCreateWithFileSystemPath(0, a3, kCFURLPOSIXPathStyle, 1u);
-      MaximumSizeOfFileSystemRepresentation = CFStringGetMaximumSizeOfFileSystemRepresentation(a3);
+      v4->mOutputUrl = CFURLCreateWithFileSystemPath(0, path, kCFURLPOSIXPathStyle, 1u);
+      MaximumSizeOfFileSystemRepresentation = CFStringGetMaximumSizeOfFileSystemRepresentation(path);
       v6 = malloc_type_malloc(MaximumSizeOfFileSystemRepresentation + 1, 0x100004077774924uLL);
-      CFStringGetFileSystemRepresentation(a3, v6, MaximumSizeOfFileSystemRepresentation);
+      CFStringGetFileSystemRepresentation(path, v6, MaximumSizeOfFileSystemRepresentation);
       mkdir(v6, 0x1E4u);
       free(v6);
     }
@@ -46,18 +46,18 @@
   [(GQUFileOutputBundle *)&v4 dealloc];
 }
 
-- (BOOL)setData:(__CFData *)a3 mimeType:(__CFString *)a4 forNamedResource:(__CFString *)a5
+- (BOOL)setData:(__CFData *)data mimeType:(__CFString *)type forNamedResource:(__CFString *)resource
 {
-  v6 = CFURLCreateCopyAppendingPathComponent(0, self->mOutputUrl, a5, 0);
+  v6 = CFURLCreateCopyAppendingPathComponent(0, self->mOutputUrl, resource, 0);
   v7 = CFURLCopyFileSystemPath(v6, kCFURLPOSIXPathStyle);
   MaximumSizeOfFileSystemRepresentation = CFStringGetMaximumSizeOfFileSystemRepresentation(v7);
   v9 = malloc_type_malloc(MaximumSizeOfFileSystemRepresentation + 1, 0x100004077774924uLL);
   CFStringGetFileSystemRepresentation(v7, v9, MaximumSizeOfFileSystemRepresentation);
   CFRelease(v7);
-  Length = CFDataGetLength(a3);
+  Length = CFDataGetLength(data);
   if (Length)
   {
-    BytePtr = CFDataGetBytePtr(a3);
+    BytePtr = CFDataGetBytePtr(data);
     if (v9)
     {
       goto LABEL_3;

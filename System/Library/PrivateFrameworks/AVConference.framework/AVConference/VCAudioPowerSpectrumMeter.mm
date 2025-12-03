@@ -1,15 +1,15 @@
 @interface VCAudioPowerSpectrumMeter
-- (VCAudioPowerSpectrumMeter)initWithBinCount:(unsigned __int16)a3 refreshRate:(double)a4 delegate:(id)a5;
+- (VCAudioPowerSpectrumMeter)initWithBinCount:(unsigned __int16)count refreshRate:(double)rate delegate:(id)delegate;
 - (void)cleanUpEventQueue;
 - (void)dealloc;
-- (void)registerNewAudioPowerSpectrumForStreamToken:(id)a3 powerSpectrumKey:(id)a4 spectrumSource:(id)a5;
-- (void)releaseAudioPowerSpectrumForStreamToken:(id)a3;
+- (void)registerNewAudioPowerSpectrumForStreamToken:(id)token powerSpectrumKey:(id)key spectrumSource:(id)source;
+- (void)releaseAudioPowerSpectrumForStreamToken:(id)token;
 - (void)unregisterAllStreams;
 @end
 
 @implementation VCAudioPowerSpectrumMeter
 
-- (VCAudioPowerSpectrumMeter)initWithBinCount:(unsigned __int16)a3 refreshRate:(double)a4 delegate:(id)a5
+- (VCAudioPowerSpectrumMeter)initWithBinCount:(unsigned __int16)count refreshRate:(double)rate delegate:(id)delegate
 {
   v13 = *MEMORY[0x1E69E9840];
   v12.receiver = self;
@@ -18,11 +18,11 @@
   v9 = v8;
   if (v8)
   {
-    v8->_audioSpectrumBinCount = a3;
-    objc_storeWeak(&v8->_realtimeContext.powerSpectrumMeterDelegate, a5);
+    v8->_audioSpectrumBinCount = count;
+    objc_storeWeak(&v8->_realtimeContext.powerSpectrumMeterDelegate, delegate);
     v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v9->_realtimeContext.var0 = v9;
-    v9->_realtimeContext.audioSpectrumRefreshRate = a4;
+    v9->_realtimeContext.audioSpectrumRefreshRate = rate;
     v9->_realtimeContext.nextDeliveryTime = NAN;
     v9->_realtimeContext.nextHeatlhPrintTime = NAN;
     v9->_realtimeContext.outputPowerSpectrums = v10;
@@ -92,7 +92,7 @@ LABEL_11:
         v19 = 2112;
         v20 = v3;
         v21 = 2048;
-        v22 = self;
+        selfCopy = self;
         v6 = " [%s] %s:%d %@(%p) ";
         v7 = v10;
         v8 = 48;
@@ -131,7 +131,7 @@ LABEL_11:
   [(VCObject *)&v13 dealloc];
 }
 
-- (void)registerNewAudioPowerSpectrumForStreamToken:(id)a3 powerSpectrumKey:(id)a4 spectrumSource:(id)a5
+- (void)registerNewAudioPowerSpectrumForStreamToken:(id)token powerSpectrumKey:(id)key spectrumSource:(id)source
 {
   v35 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -147,9 +147,9 @@ LABEL_11:
       v23 = 1024;
       v24 = 71;
       v25 = 2112;
-      v26 = a3;
+      tokenCopy = token;
       v27 = 2112;
-      v28 = a5;
+      tokenCopy2 = source;
       _os_log_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d streamToken=%@, powerSpectrumSource=%@", buf, 0x30u);
     }
   }
@@ -157,12 +157,12 @@ LABEL_11:
   v11 = malloc_type_calloc(1uLL, 0x50uLL, 0x10E004070F165FEuLL);
   v18 = v11;
   *(v11 + 19) = 1;
-  v11[1] = a3;
-  v11[2] = a4;
-  v11[5] = a5;
-  v11[3] = [a5 realtimeContext];
+  v11[1] = token;
+  v11[2] = key;
+  v11[5] = source;
+  v11[3] = [source realtimeContext];
   v11[4] = VCAudioPowerSpectrumSource_ProcessAudioSamples;
-  v12 = -[VCAudioPowerSpectrum initWithBinCount:streamToken:sinkContext:sinkCallback:]([VCAudioPowerSpectrum alloc], "initWithBinCount:streamToken:sinkContext:sinkCallback:", self->_audioSpectrumBinCount, [a3 longValue], &self->_realtimeContext, VCAudioPowerSpectrumMeter_ProcessOutput);
+  v12 = -[VCAudioPowerSpectrum initWithBinCount:streamToken:sinkContext:sinkCallback:]([VCAudioPowerSpectrum alloc], "initWithBinCount:streamToken:sinkContext:sinkCallback:", self->_audioSpectrumBinCount, [token longValue], &self->_realtimeContext, VCAudioPowerSpectrumMeter_ProcessOutput);
   v11[7] = v12;
   v11[6] = [(VCAudioPowerSpectrum *)v12 realtimeContext];
   v11[8] = objc_alloc_init(AVCAudioPowerSpectrum);
@@ -184,11 +184,11 @@ LABEL_11:
         v23 = 1024;
         v24 = 87;
         v25 = 2048;
-        v26 = v11;
+        tokenCopy = v11;
         v27 = 2112;
-        v28 = a3;
+        tokenCopy2 = token;
         v29 = 2112;
-        v30 = a5;
+        sourceCopy2 = source;
         v31 = 2048;
         v32 = eventQueue;
         v33 = 1024;
@@ -200,16 +200,16 @@ LABEL_11:
     _VCAudioPowerSpectrumMeter_FreeStream(&v18);
   }
 
-  VCAudioPowerSpectrumSource_RegisterAudioPowerSpectrumSink([a5 realtimeContext], &self->_realtimeContext, self, self, VCAudioPowerSpectrumMeter_ProcessOutput);
+  VCAudioPowerSpectrumSource_RegisterAudioPowerSpectrumSink([source realtimeContext], &self->_realtimeContext, self, self, VCAudioPowerSpectrumMeter_ProcessOutput);
 }
 
-- (void)releaseAudioPowerSpectrumForStreamToken:(id)a3
+- (void)releaseAudioPowerSpectrumForStreamToken:(id)token
 {
   v27 = *MEMORY[0x1E69E9840];
   v5 = malloc_type_calloc(1uLL, 0x50uLL, 0x10E004070F165FEuLL);
   v12 = v5;
   *(v5 + 19) = 2;
-  v5[1] = a3;
+  v5[1] = token;
   p_realtimeContext = &self->_realtimeContext;
   v7 = CMSimpleQueueEnqueue(self->_realtimeContext.eventQueue, v5);
   if (v7)
@@ -231,7 +231,7 @@ LABEL_11:
         v19 = 2048;
         v20 = v5;
         v21 = 2112;
-        v22 = a3;
+        tokenCopy = token;
         v23 = 2048;
         v24 = eventQueue;
         v25 = 1024;

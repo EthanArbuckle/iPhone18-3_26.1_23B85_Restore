@@ -1,22 +1,22 @@
 @interface CRLMutableGradientFill
-- (void)setFraction:(double)a3 ofStopAtIndex:(unint64_t)a4;
-- (void)setLastColor:(id)a3;
+- (void)setFraction:(double)fraction ofStopAtIndex:(unint64_t)index;
+- (void)setLastColor:(id)color;
 @end
 
 @implementation CRLMutableGradientFill
 
-- (void)setLastColor:(id)a3
+- (void)setLastColor:(id)color
 {
   v5 = [(NSArray *)[(CRLGradientFill *)self gradientStops] count]- 1;
 
-  [(CRLMutableGradientFill *)self setColorOfStopAtIndex:v5 toColor:a3];
+  [(CRLMutableGradientFill *)self setColorOfStopAtIndex:v5 toColor:color];
 }
 
-- (void)setFraction:(double)a3 ofStopAtIndex:(unint64_t)a4
+- (void)setFraction:(double)fraction ofStopAtIndex:(unint64_t)index
 {
-  v5 = [(NSArray *)[(CRLGradientFill *)self gradientStops] objectAtIndexedSubscript:a4];
+  v5 = [(NSArray *)[(CRLGradientFill *)self gradientStops] objectAtIndexedSubscript:index];
 
-  [v5 p_setFraction:a3];
+  [v5 p_setFraction:fraction];
 }
 
 @end

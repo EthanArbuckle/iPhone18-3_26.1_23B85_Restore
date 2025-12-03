@@ -1,32 +1,32 @@
 @interface ADDeviceProximityManager
 + (id)sharedManager;
-- (id)_initWithQueue:(id)a3 donationService:(id)a4 deviceCircleManager:(id)a5;
+- (id)_initWithQueue:(id)queue donationService:(id)service deviceCircleManager:(id)manager;
 - (id)_messageLink;
 - (id)_proximityDiscoveryLink;
 - (id)_rapportLinkMessageOptions;
 - (void)_clearProximityDiscoveryLink;
-- (void)_fetchProximityObservationsFromCollectorsWithCompletion:(id)a3;
-- (void)_getAggregatedProximityObservationsWithCompletion:(id)a3;
-- (void)_insertProximityForRemoteDeviceID:(id)a3 rpProximity:(int)a4;
-- (void)_pushProximityObservationToCollector:(id)a3;
-- (void)_recordProximityObservation:(id)a3;
-- (void)_resetMessageLinkAndReconnectNow:(BOOL)a3;
+- (void)_fetchProximityObservationsFromCollectorsWithCompletion:(id)completion;
+- (void)_getAggregatedProximityObservationsWithCompletion:(id)completion;
+- (void)_insertProximityForRemoteDeviceID:(id)d rpProximity:(int)proximity;
+- (void)_pushProximityObservationToCollector:(id)collector;
+- (void)_recordProximityObservation:(id)observation;
+- (void)_resetMessageLinkAndReconnectNow:(BOOL)now;
 - (void)_stopScanning;
-- (void)_updateProximityForDevice:(id)a3;
-- (void)contextCollectorChangedToDevicesWithIdentifiers:(id)a3 localDeviceIsCollector:(BOOL)a4;
-- (void)getDeviceProximityRelativeToLocalDeviceWithCompletion:(id)a3;
-- (void)getDeviceProximityRelativeToLocalDeviceWithDeviceContexts:(id)a3 includesAllReachableDevices:(BOOL)a4 completion:(id)a5;
-- (void)notifyObserver:(id)a3 didReceiveNotificationWithToken:(int)a4;
+- (void)_updateProximityForDevice:(id)device;
+- (void)contextCollectorChangedToDevicesWithIdentifiers:(id)identifiers localDeviceIsCollector:(BOOL)collector;
+- (void)getDeviceProximityRelativeToLocalDeviceWithCompletion:(id)completion;
+- (void)getDeviceProximityRelativeToLocalDeviceWithDeviceContexts:(id)contexts includesAllReachableDevices:(BOOL)devices completion:(id)completion;
+- (void)notifyObserver:(id)observer didReceiveNotificationWithToken:(int)token;
 - (void)performProximityScan;
-- (void)rapportLink:(id)a3 didFindDevice:(id)a4;
-- (void)rapportLink:(id)a3 didLoseDevice:(id)a4;
-- (void)rapportLink:(id)a3 didReceiveMessage:(id)a4 ofType:(id)a5 fromPeer:(id)a6 completion:(id)a7;
-- (void)rapportLink:(id)a3 didUpdateDevice:(id)a4 changes:(unsigned int)a5;
-- (void)rapportLink:(id)a3 didUpdateLocalDevice:(id)a4;
-- (void)rapportLinkDidInterrupt:(id)a3;
-- (void)rapportLinkDidInvalidate:(id)a3;
-- (void)requestLifecycleObserver:(id)a3 requestDidEndWithInfo:(id)a4 origin:(int64_t)a5 client:(id)a6;
-- (void)requestLifecycleObserver:(id)a3 requestWillBeginWithInfo:(id)a4 origin:(int64_t)a5 client:(id)a6;
+- (void)rapportLink:(id)link didFindDevice:(id)device;
+- (void)rapportLink:(id)link didLoseDevice:(id)device;
+- (void)rapportLink:(id)link didReceiveMessage:(id)message ofType:(id)type fromPeer:(id)peer completion:(id)completion;
+- (void)rapportLink:(id)link didUpdateDevice:(id)device changes:(unsigned int)changes;
+- (void)rapportLink:(id)link didUpdateLocalDevice:(id)device;
+- (void)rapportLinkDidInterrupt:(id)interrupt;
+- (void)rapportLinkDidInvalidate:(id)invalidate;
+- (void)requestLifecycleObserver:(id)observer requestDidEndWithInfo:(id)info origin:(int64_t)origin client:(id)client;
+- (void)requestLifecycleObserver:(id)observer requestWillBeginWithInfo:(id)info origin:(int64_t)origin client:(id)client;
 @end
 
 @implementation ADDeviceProximityManager
@@ -40,11 +40,11 @@
   return v2;
 }
 
-- (void)notifyObserver:(id)a3 didReceiveNotificationWithToken:(int)a4
+- (void)notifyObserver:(id)observer didReceiveNotificationWithToken:(int)token
 {
-  v5 = a3;
+  observerCopy = observer;
   v6 = +[NSDate date];
-  if (self->_heardVoiceTriggerObserver == v5)
+  if (self->_heardVoiceTriggerObserver == observerCopy)
   {
     v16 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
@@ -73,7 +73,7 @@
     goto LABEL_9;
   }
 
-  if (self->_voiceTriggerFirstPassObserver == v5)
+  if (self->_voiceTriggerFirstPassObserver == observerCopy)
   {
     v7 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
@@ -104,7 +104,7 @@ LABEL_9:
   }
 }
 
-- (void)requestLifecycleObserver:(id)a3 requestDidEndWithInfo:(id)a4 origin:(int64_t)a5 client:(id)a6
+- (void)requestLifecycleObserver:(id)observer requestDidEndWithInfo:(id)info origin:(int64_t)origin client:(id)client
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -115,21 +115,21 @@ LABEL_9:
   dispatch_async(queue, block);
 }
 
-- (void)requestLifecycleObserver:(id)a3 requestWillBeginWithInfo:(id)a4 origin:(int64_t)a5 client:(id)a6
+- (void)requestLifecycleObserver:(id)observer requestWillBeginWithInfo:(id)info origin:(int64_t)origin client:(id)client
 {
-  v7 = a4;
+  infoCopy = info;
   queue = self->_queue;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1001C2EA4;
   v10[3] = &unk_10051E010;
   v10[4] = self;
-  v11 = v7;
-  v9 = v7;
+  v11 = infoCopy;
+  v9 = infoCopy;
   dispatch_async(queue, v10);
 }
 
-- (void)contextCollectorChangedToDevicesWithIdentifiers:(id)a3 localDeviceIsCollector:(BOOL)a4
+- (void)contextCollectorChangedToDevicesWithIdentifiers:(id)identifiers localDeviceIsCollector:(BOOL)collector
 {
   queue = self->_queue;
   v5[0] = _NSConcreteStackBlock;
@@ -137,17 +137,17 @@ LABEL_9:
   v5[2] = sub_1001C2F64;
   v5[3] = &unk_10051CBD8;
   v5[4] = self;
-  v6 = a4;
+  collectorCopy = collector;
   dispatch_async(queue, v5);
 }
 
-- (void)rapportLink:(id)a3 didReceiveMessage:(id)a4 ofType:(id)a5 fromPeer:(id)a6 completion:(id)a7
+- (void)rapportLink:(id)link didReceiveMessage:(id)message ofType:(id)type fromPeer:(id)peer completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  linkCopy = link;
+  messageCopy = message;
+  typeCopy = type;
+  peerCopy = peer;
+  completionCopy = completion;
   v17 = AFSiriLogContextDaemon;
   if (!self->_localIsCollector)
   {
@@ -156,12 +156,12 @@ LABEL_9:
       *buf = 136315394;
       v26 = "[ADDeviceProximityManager rapportLink:didReceiveMessage:ofType:fromPeer:completion:]";
       v27 = 2112;
-      v28 = v13;
+      v28 = messageCopy;
       _os_log_error_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "%s #hal Local device is not collector for message %@", buf, 0x16u);
     }
 
     v19 = [AFError errorWithCode:1014];
-    v16[2](v16, 0, v19);
+    completionCopy[2](completionCopy, 0, v19);
     goto LABEL_11;
   }
 
@@ -170,18 +170,18 @@ LABEL_9:
     *buf = 136315906;
     v26 = "[ADDeviceProximityManager rapportLink:didReceiveMessage:ofType:fromPeer:completion:]";
     v27 = 2112;
-    v28 = v14;
+    v28 = typeCopy;
     v29 = 2112;
-    v30 = v15;
+    v30 = peerCopy;
     v31 = 2112;
-    v32 = v13;
+    v32 = messageCopy;
     _os_log_debug_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "%s #hal Received %@ from %@: %@", buf, 0x2Au);
   }
 
-  if ([v14 isEqualToString:@"device_proximity_fetch"])
+  if ([typeCopy isEqualToString:@"device_proximity_fetch"])
   {
-    v18 = [(NSMutableDictionary *)self->_proximityObservations allValues];
-    v19 = [v18 af_lenientMappedArray:&stru_100515750];
+    allValues = [(NSMutableDictionary *)self->_proximityObservations allValues];
+    v19 = [allValues af_lenientMappedArray:&stru_100515750];
 
     v20 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
@@ -196,48 +196,48 @@ LABEL_9:
     v23 = @"proximity_observations";
     v24 = v19;
     v21 = [NSDictionary dictionaryWithObjects:&v24 forKeys:&v23 count:1];
-    (v16)[2](v16, v21, 0);
+    (completionCopy)[2](completionCopy, v21, 0);
 
 LABEL_11:
     goto LABEL_12;
   }
 
-  if ([v14 isEqualToString:@"device_proximity_push"])
+  if ([typeCopy isEqualToString:@"device_proximity_push"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v22 = [[ADRapportProximityObservation alloc] initWithDictionaryRepresentation:v13];
+      v22 = [[ADRapportProximityObservation alloc] initWithDictionaryRepresentation:messageCopy];
       [(ADDeviceProximityManager *)self _recordProximityObservation:v22];
     }
 
-    v16[2](v16, 0, 0);
+    completionCopy[2](completionCopy, 0, 0);
   }
 
 LABEL_12:
 }
 
-- (void)rapportLink:(id)a3 didLoseDevice:(id)a4
+- (void)rapportLink:(id)link didLoseDevice:(id)device
 {
-  v6 = a3;
-  v7 = a4;
+  linkCopy = link;
+  deviceCopy = device;
   v8 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315394;
     v15 = "[ADDeviceProximityManager rapportLink:didLoseDevice:]";
     v16 = 2112;
-    v17 = v7;
+    v17 = deviceCopy;
     _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "%s #hal %@", buf, 0x16u);
   }
 
-  v9 = [v7 idsDeviceIdentifier];
-  if (v9 && self->_localDeviceIDSIdentifier)
+  idsDeviceIdentifier = [deviceCopy idsDeviceIdentifier];
+  if (idsDeviceIdentifier && self->_localDeviceIDSIdentifier)
   {
-    v10 = [NSSet setWithObjects:v9, 0];
-    v11 = [v10 adpm_sortedKeyString];
+    v10 = [NSSet setWithObjects:idsDeviceIdentifier, 0];
+    adpm_sortedKeyString = [v10 adpm_sortedKeyString];
 
-    v12 = [(NSMutableDictionary *)self->_proximityObservations objectForKeyedSubscript:v11];
+    v12 = [(NSMutableDictionary *)self->_proximityObservations objectForKeyedSubscript:adpm_sortedKeyString];
 
     if (v12)
     {
@@ -247,20 +247,20 @@ LABEL_12:
         *buf = 136315394;
         v15 = "[ADDeviceProximityManager rapportLink:didLoseDevice:]";
         v16 = 2112;
-        v17 = v9;
+        v17 = idsDeviceIdentifier;
         _os_log_debug_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "%s #hal removing observations for lost device: %@", buf, 0x16u);
       }
 
-      [(NSMutableDictionary *)self->_proximityObservations setObject:0 forKeyedSubscript:v11];
+      [(NSMutableDictionary *)self->_proximityObservations setObject:0 forKeyedSubscript:adpm_sortedKeyString];
     }
   }
 }
 
-- (void)rapportLink:(id)a3 didUpdateDevice:(id)a4 changes:(unsigned int)a5
+- (void)rapportLink:(id)link didUpdateDevice:(id)device changes:(unsigned int)changes
 {
-  v7 = a3;
-  v8 = a4;
-  if (self->_proximityDiscoveryLink == v7)
+  linkCopy = link;
+  deviceCopy = device;
+  if (self->_proximityDiscoveryLink == linkCopy)
   {
     v9 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
@@ -270,15 +270,15 @@ LABEL_12:
       _os_log_debug_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "%s #hal", &v10, 0xCu);
     }
 
-    [(ADDeviceProximityManager *)self _updateProximityForDevice:v8];
+    [(ADDeviceProximityManager *)self _updateProximityForDevice:deviceCopy];
   }
 }
 
-- (void)rapportLink:(id)a3 didFindDevice:(id)a4
+- (void)rapportLink:(id)link didFindDevice:(id)device
 {
-  v6 = a3;
-  v7 = a4;
-  if (self->_proximityDiscoveryLink == v6)
+  linkCopy = link;
+  deviceCopy = device;
+  if (self->_proximityDiscoveryLink == linkCopy)
   {
     v8 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
@@ -288,24 +288,24 @@ LABEL_12:
       _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "%s #hal", &v9, 0xCu);
     }
 
-    [(ADDeviceProximityManager *)self _updateProximityForDevice:v7];
+    [(ADDeviceProximityManager *)self _updateProximityForDevice:deviceCopy];
   }
 }
 
-- (void)rapportLink:(id)a3 didUpdateLocalDevice:(id)a4
+- (void)rapportLink:(id)link didUpdateLocalDevice:(id)device
 {
-  v5 = [a4 idsDeviceIdentifier];
+  idsDeviceIdentifier = [device idsDeviceIdentifier];
   localDeviceIDSIdentifier = self->_localDeviceIDSIdentifier;
-  self->_localDeviceIDSIdentifier = v5;
+  self->_localDeviceIDSIdentifier = idsDeviceIdentifier;
 
-  _objc_release_x1(v5, localDeviceIDSIdentifier);
+  _objc_release_x1(idsDeviceIdentifier, localDeviceIDSIdentifier);
 }
 
-- (void)rapportLinkDidInvalidate:(id)a3
+- (void)rapportLinkDidInvalidate:(id)invalidate
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_messageLink == v4)
+  invalidateCopy = invalidate;
+  v5 = invalidateCopy;
+  if (self->_messageLink == invalidateCopy)
   {
     v7 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -318,7 +318,7 @@ LABEL_12:
     [(ADDeviceProximityManager *)self _resetMessageLinkAndReconnectNow:0];
   }
 
-  else if (self->_proximityDiscoveryLink == v4)
+  else if (self->_proximityDiscoveryLink == invalidateCopy)
   {
     v6 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -332,11 +332,11 @@ LABEL_12:
   }
 }
 
-- (void)rapportLinkDidInterrupt:(id)a3
+- (void)rapportLinkDidInterrupt:(id)interrupt
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_messageLink == v4)
+  interruptCopy = interrupt;
+  v5 = interruptCopy;
+  if (self->_messageLink == interruptCopy)
   {
     v7 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_ERROR))
@@ -349,7 +349,7 @@ LABEL_12:
     [(ADDeviceProximityManager *)self _resetMessageLinkAndReconnectNow:1];
   }
 
-  else if (self->_proximityDiscoveryLink == v4)
+  else if (self->_proximityDiscoveryLink == interruptCopy)
   {
     v6 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_ERROR))
@@ -363,10 +363,10 @@ LABEL_12:
   }
 }
 
-- (void)_fetchProximityObservationsFromCollectorsWithCompletion:(id)a3
+- (void)_fetchProximityObservationsFromCollectorsWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v5 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
@@ -382,18 +382,18 @@ LABEL_12:
     v7[2] = sub_1001C40B4;
     v7[3] = &unk_100515730;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     [(ADDeviceCircleManager *)deviceCircleManager getContextCollectorDeviceIdentifiersWithCompletion:v7];
   }
 }
 
-- (void)_pushProximityObservationToCollector:(id)a3
+- (void)_pushProximityObservationToCollector:(id)collector
 {
-  v4 = a3;
+  collectorCopy = collector;
   v5 = +[AFPreferences sharedPreferences];
-  v6 = [v5 assistantIsEnabled];
+  assistantIsEnabled = [v5 assistantIsEnabled];
 
-  if (v6)
+  if (assistantIsEnabled)
   {
     deviceCircleManager = self->_deviceCircleManager;
     v9[0] = _NSConcreteStackBlock;
@@ -401,7 +401,7 @@ LABEL_12:
     v9[2] = sub_1001C4A88;
     v9[3] = &unk_1005156A0;
     v9[4] = self;
-    v10 = v4;
+    v10 = collectorCopy;
     [(ADDeviceCircleManager *)deviceCircleManager getContextCollectorDeviceIdentifiersWithCompletion:v9];
   }
 
@@ -417,16 +417,16 @@ LABEL_12:
   }
 }
 
-- (void)_recordProximityObservation:(id)a3
+- (void)_recordProximityObservation:(id)observation
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  observationCopy = observation;
+  v5 = observationCopy;
+  if (observationCopy)
   {
-    v6 = [v4 deviceIDPair];
-    v7 = [v6 adpm_sortedKeyString];
+    deviceIDPair = [observationCopy deviceIDPair];
+    adpm_sortedKeyString = [deviceIDPair adpm_sortedKeyString];
 
-    v8 = [(NSMutableDictionary *)self->_proximityObservations objectForKeyedSubscript:v7];
+    v8 = [(NSMutableDictionary *)self->_proximityObservations objectForKeyedSubscript:adpm_sortedKeyString];
     v9 = [v8 mutableCopy];
     v10 = v9;
     if (v9)
@@ -462,8 +462,8 @@ LABEL_12:
     }
 
     [v12 sortUsingComparator:&stru_100515678];
-    v15 = [v12 lastObject];
-    v16 = [v15 isEqual:v5];
+    lastObject = [v12 lastObject];
+    v16 = [lastObject isEqual:v5];
 
     v17 = AFSiriLogContextDaemon;
     v18 = os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG);
@@ -492,18 +492,18 @@ LABEL_16:
     }
 
     v20 = [v12 copy];
-    [(NSMutableDictionary *)self->_proximityObservations setObject:v20 forKeyedSubscript:v7];
+    [(NSMutableDictionary *)self->_proximityObservations setObject:v20 forKeyedSubscript:adpm_sortedKeyString];
   }
 }
 
-- (void)_insertProximityForRemoteDeviceID:(id)a3 rpProximity:(int)a4
+- (void)_insertProximityForRemoteDeviceID:(id)d rpProximity:(int)proximity
 {
-  v4 = *&a4;
-  v6 = a3;
+  v4 = *&proximity;
+  dCopy = d;
   localDeviceIDSIdentifier = self->_localDeviceIDSIdentifier;
-  if (v6 && localDeviceIDSIdentifier)
+  if (dCopy && localDeviceIDSIdentifier)
   {
-    v8 = [NSSet setWithObjects:localDeviceIDSIdentifier, v6, 0];
+    v8 = [NSSet setWithObjects:localDeviceIDSIdentifier, dCopy, 0];
     v9 = [ADRapportProximityObservation alloc];
     v10 = +[NSDate date];
     v11 = [(ADRapportProximityObservation *)v9 initWithDeviceIDPair:v8 proximity:v4 observationDate:v10];
@@ -525,47 +525,47 @@ LABEL_16:
       v15 = 2112;
       v16 = localDeviceIDSIdentifier;
       v17 = 2112;
-      v18 = v6;
+      v18 = dCopy;
       _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "%s #hal Invalid proximity observation for identifier(s): local %@, remote %@", buf, 0x20u);
     }
   }
 }
 
-- (void)_updateProximityForDevice:(id)a3
+- (void)_updateProximityForDevice:(id)device
 {
-  v4 = a3;
-  v5 = [v4 idsDeviceIdentifier];
-  v6 = [v4 proximity];
+  deviceCopy = device;
+  idsDeviceIdentifier = [deviceCopy idsDeviceIdentifier];
+  proximity = [deviceCopy proximity];
   v7 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
     v8 = v7;
-    v9 = [v4 model];
+    model = [deviceCopy model];
     v10 = 136315906;
     v11 = "[ADDeviceProximityManager _updateProximityForDevice:]";
     v12 = 2112;
-    v13 = v5;
+    v13 = idsDeviceIdentifier;
     v14 = 2112;
-    v15 = v9;
+    v15 = model;
     v16 = 1024;
-    v17 = v6;
+    v17 = proximity;
     _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "%s #hal device: %@ (%@) proximity: %d", &v10, 0x26u);
   }
 
-  [(ADDeviceProximityManager *)self _insertProximityForRemoteDeviceID:v5 rpProximity:v6];
+  [(ADDeviceProximityManager *)self _insertProximityForRemoteDeviceID:idsDeviceIdentifier rpProximity:proximity];
 }
 
-- (void)_resetMessageLinkAndReconnectNow:(BOOL)a3
+- (void)_resetMessageLinkAndReconnectNow:(BOOL)now
 {
-  v3 = a3;
+  nowCopy = now;
   [(ADRapportLink *)self->_messageLink removeListener:self];
   [(ADRapportLink *)self->_messageLink invalidate];
   messageLink = self->_messageLink;
   self->_messageLink = 0;
 
-  if (v3)
+  if (nowCopy)
   {
-    v6 = [(ADDeviceProximityManager *)self _messageLink];
+    _messageLink = [(ADDeviceProximityManager *)self _messageLink];
   }
 
   else
@@ -630,8 +630,8 @@ LABEL_16:
 
     [(ADRapportLink *)self->_messageLink addListener:self];
     v11 = self->_messageLink;
-    v12 = [(ADDeviceProximityManager *)self _rapportLinkMessageOptions];
-    [(ADRapportLink *)v11 registerRequestID:@"com.apple.siri.rapport-link.request.device-proximity-manager" options:v12];
+    _rapportLinkMessageOptions = [(ADDeviceProximityManager *)self _rapportLinkMessageOptions];
+    [(ADRapportLink *)v11 registerRequestID:@"com.apple.siri.rapport-link.request.device-proximity-manager" options:_rapportLinkMessageOptions];
 
     [(ADRapportLink *)self->_messageLink setRequestHandler:self forRequestID:@"com.apple.siri.rapport-link.request.device-proximity-manager" messageType:@"device_proximity_fetch"];
     [(ADRapportLink *)self->_messageLink setRequestHandler:self forRequestID:@"com.apple.siri.rapport-link.request.device-proximity-manager" messageType:@"device_proximity_push"];
@@ -643,16 +643,16 @@ LABEL_16:
   return messageLink;
 }
 
-- (void)_getAggregatedProximityObservationsWithCompletion:(id)a3
+- (void)_getAggregatedProximityObservationsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [(NSMutableDictionary *)self->_proximityObservations af_lenientMappedDictionary:&stru_1005154B0];
   v6 = v5;
   if (self->_localIsCollector)
   {
-    v7 = [v5 allValues];
-    v8 = sub_100015BD4(v7);
-    v4[2](v4, v8);
+    allValues = [v5 allValues];
+    v8 = sub_100015BD4(allValues);
+    completionCopy[2](completionCopy, v8);
   }
 
   else
@@ -662,32 +662,32 @@ LABEL_16:
     v9[2] = sub_1001C5B4C;
     v9[3] = &unk_10051DD70;
     v10 = v5;
-    v11 = v4;
+    v11 = completionCopy;
     [(ADDeviceProximityManager *)self _fetchProximityObservationsFromCollectorsWithCompletion:v9];
   }
 }
 
-- (void)getDeviceProximityRelativeToLocalDeviceWithDeviceContexts:(id)a3 includesAllReachableDevices:(BOOL)a4 completion:(id)a5
+- (void)getDeviceProximityRelativeToLocalDeviceWithDeviceContexts:(id)contexts includesAllReachableDevices:(BOOL)devices completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  contextsCopy = contexts;
+  completionCopy = completion;
   queue = self->_queue;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1001C5EF8;
   v13[3] = &unk_10051C6C8;
   v13[4] = self;
-  v14 = v8;
-  v16 = a4;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = contextsCopy;
+  devicesCopy = devices;
+  v15 = completionCopy;
+  v11 = completionCopy;
+  v12 = contextsCopy;
   dispatch_async(queue, v13);
 }
 
-- (void)getDeviceProximityRelativeToLocalDeviceWithCompletion:(id)a3
+- (void)getDeviceProximityRelativeToLocalDeviceWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (AFSupportsHALProximityScanning())
   {
     queue = self->_queue;
@@ -696,13 +696,13 @@ LABEL_16:
     v6[2] = sub_1001C73E0;
     v6[3] = &unk_10051E038;
     v6[4] = self;
-    v7 = v4;
+    v7 = completionCopy;
     dispatch_async(queue, v6);
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -750,19 +750,19 @@ LABEL_16:
   }
 }
 
-- (id)_initWithQueue:(id)a3 donationService:(id)a4 deviceCircleManager:(id)a5
+- (id)_initWithQueue:(id)queue donationService:(id)service deviceCircleManager:(id)manager
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  queueCopy = queue;
+  serviceCopy = service;
+  managerCopy = manager;
   v35.receiver = self;
   v35.super_class = ADDeviceProximityManager;
   v12 = [(ADDeviceProximityManager *)&v35 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_queue, a3);
-    objc_storeStrong(&v13->_deviceCircleManager, a5);
+    objc_storeStrong(&v12->_queue, queue);
+    objc_storeStrong(&v13->_deviceCircleManager, manager);
     v14 = objc_alloc_init(NSMutableDictionary);
     proximityObservations = v13->_proximityObservations;
     v13->_proximityObservations = v14;
@@ -794,11 +794,11 @@ LABEL_16:
     v29 = v19[13];
     v19[13] = v28;
 
-    v30 = [v19 _messageLink];
+    _messageLink = [v19 _messageLink];
     v31 = +[ADRequestLifecycleObserver sharedObserver];
     [v31 addListener:v19];
 
-    objc_storeStrong(v19 + 6, a4);
+    objc_storeStrong(v19 + 6, service);
     [v19[6] registerContextTransformer:v19 forType:AFDeviceContextKeyHeardVoiceTrigger];
   }
 

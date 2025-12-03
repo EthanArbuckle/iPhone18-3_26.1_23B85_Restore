@@ -1,22 +1,22 @@
 @interface CNAutocompletePredictionSearchStrategy
-+ (id)coreDuetStrategyWithContactStore:(id)a3;
-+ (id)peopleSuggesterStrategyWithContactStore:(id)a3;
++ (id)coreDuetStrategyWithContactStore:(id)store;
++ (id)peopleSuggesterStrategyWithContactStore:(id)store;
 @end
 
 @implementation CNAutocompletePredictionSearchStrategy
 
-+ (id)peopleSuggesterStrategyWithContactStore:(id)a3
++ (id)peopleSuggesterStrategyWithContactStore:(id)store
 {
-  v3 = a3;
-  v4 = [[_CNAutocompletePeopleSuggesterPredictionSearchStrategy alloc] initWithContactStore:v3];
+  storeCopy = store;
+  v4 = [[_CNAutocompletePeopleSuggesterPredictionSearchStrategy alloc] initWithContactStore:storeCopy];
 
   return v4;
 }
 
-+ (id)coreDuetStrategyWithContactStore:(id)a3
++ (id)coreDuetStrategyWithContactStore:(id)store
 {
-  v3 = a3;
-  v4 = [[_CNAutocompleteCoreDuetPredictionSearchStrategy alloc] initWithContactStore:v3];
+  storeCopy = store;
+  v4 = [[_CNAutocompleteCoreDuetPredictionSearchStrategy alloc] initWithContactStore:storeCopy];
 
   return v4;
 }

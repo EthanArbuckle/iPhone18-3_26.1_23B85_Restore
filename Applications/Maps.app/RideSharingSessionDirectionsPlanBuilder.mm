@@ -1,42 +1,42 @@
 @interface RideSharingSessionDirectionsPlanBuilder
-- (RideSharingSessionDirectionsPlanBuilder)initWithRideBookingPlanningSession:(id)a3;
+- (RideSharingSessionDirectionsPlanBuilder)initWithRideBookingPlanningSession:(id)session;
 - (id)buildDirectionsPlan;
-- (void)_addOriginDestinationToPlan:(id)a3;
+- (void)_addOriginDestinationToPlan:(id)plan;
 @end
 
 @implementation RideSharingSessionDirectionsPlanBuilder
 
-- (void)_addOriginDestinationToPlan:(id)a3
+- (void)_addOriginDestinationToPlan:(id)plan
 {
-  v4 = a3;
-  v5 = [(RideSharingSessionDirectionsPlanBuilder *)self session];
-  v16 = [v5 resolvedWaypoints];
+  planCopy = plan;
+  session = [(RideSharingSessionDirectionsPlanBuilder *)self session];
+  resolvedWaypoints = [session resolvedWaypoints];
 
-  if (v16)
+  if (resolvedWaypoints)
   {
-    v6 = [v4 routeRequestStorage];
-    v7 = [v16 origin];
-    [v6 addWaypoints:v7];
+    routeRequestStorage = [planCopy routeRequestStorage];
+    origin = [resolvedWaypoints origin];
+    [routeRequestStorage addWaypoints:origin];
 
-    v8 = [v4 routeRequestStorage];
+    routeRequestStorage2 = [planCopy routeRequestStorage];
 
-    v9 = [v16 destination];
-    [v8 addWaypoints:v9];
+    destination = [resolvedWaypoints destination];
+    [routeRequestStorage2 addWaypoints:destination];
   }
 
   else
   {
-    v10 = [(RideSharingSessionDirectionsPlanBuilder *)self session];
-    v11 = [v10 originRequest];
-    v12 = [v11 waypointPlaceholder];
-    v13 = [v12 name];
-    [v4 setOriginString:v13];
+    session2 = [(RideSharingSessionDirectionsPlanBuilder *)self session];
+    originRequest = [session2 originRequest];
+    waypointPlaceholder = [originRequest waypointPlaceholder];
+    name = [waypointPlaceholder name];
+    [planCopy setOriginString:name];
 
-    v8 = [(RideSharingSessionDirectionsPlanBuilder *)self session];
-    v9 = [v8 destinationRequest];
-    v14 = [v9 waypointPlaceholder];
-    v15 = [v14 name];
-    [v4 setDestinationString:v15];
+    routeRequestStorage2 = [(RideSharingSessionDirectionsPlanBuilder *)self session];
+    destination = [routeRequestStorage2 destinationRequest];
+    waypointPlaceholder2 = [destination waypointPlaceholder];
+    name2 = [waypointPlaceholder2 name];
+    [planCopy setDestinationString:name2];
   }
 }
 
@@ -45,8 +45,8 @@
   v3 = objc_alloc_init(DirectionsPlan);
   v4 = objc_alloc_init(GEOStorageRouteRequestStorage);
   [(DirectionsPlan *)v3 setRouteRequestStorage:v4];
-  v5 = [(DirectionsPlan *)v3 routeRequestStorage];
-  [v5 setTransportType:6];
+  routeRequestStorage = [(DirectionsPlan *)v3 routeRequestStorage];
+  [routeRequestStorage setTransportType:6];
 
   [(DirectionsPlan *)v3 setDisplayMethod:1];
   v6 = [DirectionsPlan _maps_expiryDateForRoute:0];
@@ -57,10 +57,10 @@
   v7 = sub_100028730();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    v8 = self;
-    if (!v8)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v13 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_10;
     }
 
@@ -68,34 +68,34 @@
     v10 = NSStringFromClass(v9);
     if (objc_opt_respondsToSelector())
     {
-      v11 = [(RideSharingSessionDirectionsPlanBuilder *)v8 performSelector:"accessibilityIdentifier"];
+      v11 = [(RideSharingSessionDirectionsPlanBuilder *)selfCopy performSelector:"accessibilityIdentifier"];
       v12 = v11;
       if (v11 && ![v11 isEqualToString:v10])
       {
-        v13 = [NSString stringWithFormat:@"%@<%p, %@>", v10, v8, v12];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v10, selfCopy, v12];
 
         goto LABEL_8;
       }
     }
 
-    v13 = [NSString stringWithFormat:@"%@<%p>", v10, v8];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v10, selfCopy];
 LABEL_8:
 
 LABEL_10:
-    v14 = v13;
-    v15 = [(DirectionsPlan *)v3 displayMethod];
-    if (v15 >= 3)
+    v14 = selfCopy;
+    displayMethod = [(DirectionsPlan *)v3 displayMethod];
+    if (displayMethod >= 3)
     {
-      v16 = [NSString stringWithFormat:@"(unknown: %i)", v15];
+      v16 = [NSString stringWithFormat:@"(unknown: %i)", displayMethod];
     }
 
     else
     {
-      v16 = off_101631CF0[v15];
+      v16 = off_101631CF0[displayMethod];
     }
 
     v17 = v16;
-    v18 = [v4 waypointsCount];
+    waypointsCount = [v4 waypointsCount];
     [(DirectionsPlan *)v3 expiryTime];
     v19 = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
 
@@ -104,7 +104,7 @@ LABEL_10:
     v23 = 2114;
     v24 = v16;
     v25 = 2048;
-    v26 = v18;
+    v26 = waypointsCount;
     v27 = 2112;
     v28 = v19;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[%{public}@] Prepared directions plan (%{public}@, %lu waypoints, expires: %@)", buf, 0x2Au);
@@ -113,16 +113,16 @@ LABEL_10:
   return v3;
 }
 
-- (RideSharingSessionDirectionsPlanBuilder)initWithRideBookingPlanningSession:(id)a3
+- (RideSharingSessionDirectionsPlanBuilder)initWithRideBookingPlanningSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   v9.receiver = self;
   v9.super_class = RideSharingSessionDirectionsPlanBuilder;
   v6 = [(RideSharingSessionDirectionsPlanBuilder *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_session, a3);
+    objc_storeStrong(&v6->_session, session);
   }
 
   return v7;

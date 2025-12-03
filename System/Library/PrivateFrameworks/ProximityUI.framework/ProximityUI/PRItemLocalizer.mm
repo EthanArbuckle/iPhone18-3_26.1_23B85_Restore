@@ -1,48 +1,48 @@
 @interface PRItemLocalizer
 + (BOOL)isInternalBuild;
-- (BOOL)commonConfigure:(id)a3;
-- (BOOL)configureForDeviceWithId:(id)a3;
-- (BOOL)configureForItem:(id)a3;
-- (BOOL)startWithDevicePoseProvider:(id)a3 error:(id *)a4;
-- (BOOL)stop:(id *)a3;
+- (BOOL)commonConfigure:(id)configure;
+- (BOOL)configureForDeviceWithId:(id)id;
+- (BOOL)configureForItem:(id)item;
+- (BOOL)startWithDevicePoseProvider:(id)provider error:(id *)error;
+- (BOOL)stop:(id *)stop;
 - (BatchSolution)lastSolution;
-- (BatchSolution)performLocationFiltering:(SEL)a3;
-- (PRItemLocalizer)initWithDelegate:(id)a3 queue:(id)a4;
+- (BatchSolution)performLocationFiltering:(SEL)filtering;
+- (PRItemLocalizer)initWithDelegate:(id)delegate queue:(id)queue;
 - (PRItemLocalizerDelegate)delegate;
 - (id).cxx_construct;
-- (id)estimatorInputForProximity:(id)a3;
-- (id)performRangeFilteringWithVIO:(id)a3;
-- (id)performRangeFilteringWithoutVIO:(id)a3 targetMoving:(BOOL)a4 deviceMoving:(BOOL)a5;
-- (id)produceBlendedRangeEstimateForPose:(id)a3;
+- (id)estimatorInputForProximity:(id)proximity;
+- (id)performRangeFilteringWithVIO:(id)o;
+- (id)performRangeFilteringWithoutVIO:(id)o targetMoving:(BOOL)moving deviceMoving:(BOOL)deviceMoving;
+- (id)produceBlendedRangeEstimateForPose:(id)pose;
 - (id)saveData;
-- (unint64_t)trajectoryIndexForTime:(double)a3;
+- (unint64_t)trajectoryIndexForTime:(double)time;
 - (void)analyticsLogTorchButtonPresented;
 - (void)dealloc;
-- (void)deleteTrajectoryWaypointsBeforeTime:(double)a3;
-- (void)devicePoseUpdated:(id)a3;
-- (void)didFailWithError:(id)a3;
-- (void)didReceiveNewSolutions:(id)a3;
+- (void)deleteTrajectoryWaypointsBeforeTime:(double)time;
+- (void)devicePoseUpdated:(id)updated;
+- (void)didFailWithError:(id)error;
+- (void)didReceiveNewSolutions:(id)solutions;
 - (void)discardData;
 - (void)invalidPoseDetected;
-- (void)logAndPresentSolution:(BatchSolution *)a3 withTimeStamp:(double)a4;
-- (void)logEstimatorInput:(id)a3;
-- (void)logRangeEstimate:(id)a3;
-- (void)logTargetEstimates:(id)a3;
-- (void)presentRangeEstimate:(id)a3;
-- (void)presentTargetEstimate:(id)a3;
-- (void)rangingRequestDidUpdateStatus:(unint64_t)a3;
-- (void)rangingServiceDidUpdateState:(unint64_t)a3 cause:(int64_t)a4;
+- (void)logAndPresentSolution:(BatchSolution *)solution withTimeStamp:(double)stamp;
+- (void)logEstimatorInput:(id)input;
+- (void)logRangeEstimate:(id)estimate;
+- (void)logTargetEstimates:(id)estimates;
+- (void)presentRangeEstimate:(id)estimate;
+- (void)presentTargetEstimate:(id)estimate;
+- (void)rangingRequestDidUpdateStatus:(unint64_t)status;
+- (void)rangingServiceDidUpdateState:(unint64_t)state cause:(int64_t)cause;
 - (void)recordUsage;
-- (void)remoteDevice:(id)a3 didChangeState:(int64_t)a4;
+- (void)remoteDevice:(id)device didChangeState:(int64_t)state;
 - (void)remoteDeviceDidMove;
 - (void)reset;
-- (void)revokeTargetEstimate:(unint64_t)a3;
-- (void)revokeTargetEstimateWithLastSolution:(BatchSolution *)a3;
-- (void)sendItemLocalizerChangedActivity:(unint64_t)a3;
-- (void)sendItemLocalizerChangedState:(unint64_t)a3;
-- (void)sendPRItemState:(unint64_t)a3;
-- (void)setLastSolution:(BatchSolution *)a3;
-- (void)updateDelegateWithSelector:(SEL)a3 object:(id)a4;
+- (void)revokeTargetEstimate:(unint64_t)estimate;
+- (void)revokeTargetEstimateWithLastSolution:(BatchSolution *)solution;
+- (void)sendItemLocalizerChangedActivity:(unint64_t)activity;
+- (void)sendItemLocalizerChangedState:(unint64_t)state;
+- (void)sendPRItemState:(unint64_t)state;
+- (void)setLastSolution:(BatchSolution *)solution;
+- (void)updateDelegateWithSelector:(SEL)selector object:(id)object;
 @end
 
 @implementation PRItemLocalizer
@@ -64,14 +64,14 @@ uint64_t __34__PRItemLocalizer_isInternalBuild__block_invoke()
   return result;
 }
 
-- (PRItemLocalizer)initWithDelegate:(id)a3 queue:(id)a4
+- (PRItemLocalizer)initWithDelegate:(id)delegate queue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  delegateCopy = delegate;
+  queueCopy = queue;
+  v9 = queueCopy;
+  if (delegateCopy)
   {
-    if (v8)
+    if (queueCopy)
     {
       goto LABEL_3;
     }
@@ -79,8 +79,8 @@ uint64_t __34__PRItemLocalizer_isInternalBuild__block_invoke()
 
   else
   {
-    v19 = [MEMORY[0x277CCA890] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"PRItemLocalizer.mm" lineNumber:175 description:{@"Invalid parameter not satisfying: %@", @"delegate"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PRItemLocalizer.mm" lineNumber:175 description:{@"Invalid parameter not satisfying: %@", @"delegate"}];
 
     if (v9)
     {
@@ -88,8 +88,8 @@ uint64_t __34__PRItemLocalizer_isInternalBuild__block_invoke()
     }
   }
 
-  v20 = [MEMORY[0x277CCA890] currentHandler];
-  [v20 handleFailureInMethod:a2 object:self file:@"PRItemLocalizer.mm" lineNumber:176 description:{@"Invalid parameter not satisfying: %@", @"queue"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PRItemLocalizer.mm" lineNumber:176 description:{@"Invalid parameter not satisfying: %@", @"queue"}];
 
 LABEL_3:
   v21.receiver = self;
@@ -98,7 +98,7 @@ LABEL_3:
   v11 = v10;
   if (v10)
   {
-    [(PRItemLocalizer *)v10 setDelegate:v7];
+    [(PRItemLocalizer *)v10 setDelegate:delegateCopy];
     [(PRItemLocalizer *)v11 setDelegateQueue:v9];
     v12 = dispatch_queue_create("com.apple.findmy.ranging", 0);
     [(PRItemLocalizer *)v11 setProximityQueue:v12];
@@ -106,8 +106,8 @@ LABEL_3:
     *&v11->_clientState = 1;
     v11->_lastSuccessfulCompanionCommunicationOrInitMachContinuousTimeSeconds = PRCommonGetMachContinuousTimeSeconds();
     v13 = objc_alloc(MEMORY[0x277D43390]);
-    v14 = [(PRItemLocalizer *)v11 proximityQueue];
-    v15 = [v13 initWithDelegate:v11 queue:v14];
+    proximityQueue = [(PRItemLocalizer *)v11 proximityQueue];
+    v15 = [v13 initWithDelegate:v11 queue:proximityQueue];
     [(PRItemLocalizer *)v11 setSession:v15];
 
     v16 = dispatch_queue_create("com.apple.findmy.itemlocalizer", 0);
@@ -122,29 +122,29 @@ LABEL_3:
   return 0;
 }
 
-- (BOOL)configureForDeviceWithId:(id)a3
+- (BOOL)configureForDeviceWithId:(id)id
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 UUIDString];
+  idCopy = id;
+  uUIDString = [idCopy UUIDString];
   logger = self->_logger;
   if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v16 = v5;
+    v16 = uUIDString;
     _os_log_impl(&dword_2613DF000, logger, OS_LOG_TYPE_DEFAULT, "ItemLocalizer configuring for item %@", buf, 0xCu);
   }
 
   if ([objc_opt_class() isInternalBuild])
   {
     v13 = @"deviceId";
-    v14 = v5;
+    v14 = uUIDString;
     v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v14 forKeys:&v13 count:1];
-    v8 = [(PRItemLocalizer *)self analytics];
-    [v8 setCustomData:v7];
+    analytics = [(PRItemLocalizer *)self analytics];
+    [analytics setCustomData:v7];
   }
 
-  v9 = [objc_alloc(MEMORY[0x277D433A0]) initWithCompanionUUID:v4];
+  v9 = [objc_alloc(MEMORY[0x277D433A0]) initWithCompanionUUID:idCopy];
   [(PRItemLocalizer *)self setRemoteDevice:v9];
 
   v10 = [(PRItemLocalizer *)self commonConfigure:0];
@@ -152,41 +152,41 @@ LABEL_3:
   return v10;
 }
 
-- (BOOL)configureForItem:(id)a3
+- (BOOL)configureForItem:(id)item
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 uuid];
-  v6 = [v4 productUUID];
-  [(PRItemLocalizer *)self setProductUUID:v6];
+  itemCopy = item;
+  uuid = [itemCopy uuid];
+  productUUID = [itemCopy productUUID];
+  [(PRItemLocalizer *)self setProductUUID:productUUID];
 
-  v7 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v4, "isOwned")}];
+  v7 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(itemCopy, "isOwned")}];
   [(PRItemLocalizer *)self setIsOwner:v7];
 
-  -[PRItemLocalizer setRequiresLowerRangingFrequency:](self, "setRequiresLowerRangingFrequency:", [v4 requiresLowerRangingFrequency]);
-  v8 = [v4 isOwned];
-  v9 = [(PRItemLocalizer *)self productUUID];
+  -[PRItemLocalizer setRequiresLowerRangingFrequency:](self, "setRequiresLowerRangingFrequency:", [itemCopy requiresLowerRangingFrequency]);
+  isOwned = [itemCopy isOwned];
+  productUUID2 = [(PRItemLocalizer *)self productUUID];
 
   v10 = self->_logger;
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
-  if (v9)
+  if (productUUID2)
   {
     if (v11)
     {
-      v12 = [v5 UUIDString];
-      v13 = [(PRItemLocalizer *)self productUUID];
-      v14 = [v13 UUIDString];
-      v15 = v14;
+      uUIDString = [uuid UUIDString];
+      productUUID3 = [(PRItemLocalizer *)self productUUID];
+      uUIDString2 = [productUUID3 UUIDString];
+      v15 = uUIDString2;
       v16 = "true";
       v23 = 138412802;
-      v24 = v12;
-      if (v8)
+      v24 = uUIDString;
+      if (isOwned)
       {
         v16 = "false";
       }
 
       v25 = 2112;
-      v26 = v14;
+      v26 = uUIDString2;
       v27 = 2080;
       v28 = v16;
       _os_log_impl(&dword_2613DF000, v10, OS_LOG_TYPE_DEFAULT, "ItemLocalizer configuring for item %@ with productUUID %@, isUT: %s", &v23, 0x20u);
@@ -195,30 +195,30 @@ LABEL_3:
 
   else if (v11)
   {
-    v17 = [v5 UUIDString];
-    v18 = v17;
+    uUIDString3 = [uuid UUIDString];
+    v18 = uUIDString3;
     v19 = "true";
-    if (v8)
+    if (isOwned)
     {
       v19 = "false";
     }
 
     v23 = 138412546;
-    v24 = v17;
+    v24 = uUIDString3;
     v25 = 2080;
     v26 = v19;
     _os_log_impl(&dword_2613DF000, v10, OS_LOG_TYPE_DEFAULT, "ItemLocalizer configuring for item %@ with no productUUID, isUT: %s", &v23, 0x16u);
   }
 
-  v20 = [(PRItemLocalizer *)self configureForDeviceWithId:v5];
+  v20 = [(PRItemLocalizer *)self configureForDeviceWithId:uuid];
   v21 = *MEMORY[0x277D85DE8];
   return v20;
 }
 
-- (BOOL)commonConfigure:(id)a3
+- (BOOL)commonConfigure:(id)configure
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  configureCopy = configure;
   if (self->_clientState == 1)
   {
     self->_clientState = 2;
@@ -229,10 +229,10 @@ LABEL_3:
       _os_log_impl(&dword_2613DF000, logger, OS_LOG_TYPE_DEFAULT, "#companion-retry Setting _clientState to LOCALIZER_CLIENT_CONFIGURING commonConfigure", buf, 2u);
     }
 
-    v6 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     *buf = 0;
     v32 = 0;
-    [v6 getUUIDBytes:buf];
+    [uUID getUUIDBytes:buf];
     v7 = vceqz_s8(*buf);
     if (v7.i8[0])
     {
@@ -275,23 +275,23 @@ LABEL_3:
     }
 
     v8 = [MEMORY[0x277CBEA90] dataWithBytes:buf length:8];
-    v9 = [(PRItemLocalizer *)self remoteDevice];
-    [v9 setRoseMACAddress:v8];
+    remoteDevice = [(PRItemLocalizer *)self remoteDevice];
+    [remoteDevice setRoseMACAddress:v8];
 
-    [(PRItemLocalizer *)self setConfigurationParameters:v4];
-    v10 = [(PRItemLocalizer *)self configurationParameters];
-    LOBYTE(v9) = v10 == 0;
+    [(PRItemLocalizer *)self setConfigurationParameters:configureCopy];
+    configurationParameters = [(PRItemLocalizer *)self configurationParameters];
+    LOBYTE(remoteDevice) = configurationParameters == 0;
 
-    if (v9 & 1) != 0 || ([(PRItemLocalizer *)self configurationParameters], v11 = objc_claimAutoreleasedReturnValue(), v12 = PRSetRoseGlobalConfigParams(), v11, (v12))
+    if (remoteDevice & 1) != 0 || ([(PRItemLocalizer *)self configurationParameters], v11 = objc_claimAutoreleasedReturnValue(), v12 = PRSetRoseGlobalConfigParams(), v11, (v12))
     {
       v13 = MEMORY[0x277CBEB38];
-      v14 = [(PRItemLocalizer *)self configurationParameters];
-      v15 = [v13 dictionaryWithDictionary:v14];
+      configurationParameters2 = [(PRItemLocalizer *)self configurationParameters];
+      v15 = [v13 dictionaryWithDictionary:configurationParameters2];
 
-      v16 = [(PRItemLocalizer *)self requiresLowerRangingFrequency];
+      requiresLowerRangingFrequency = [(PRItemLocalizer *)self requiresLowerRangingFrequency];
       v17 = self->_logger;
       v18 = os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT);
-      if (v16)
+      if (requiresLowerRangingFrequency)
       {
         if (v18)
         {
@@ -317,15 +317,15 @@ LABEL_3:
 
       [(PRItemLocalizer *)self setConfigurationParameters:v15];
       self->_rangingState = 2;
-      v22 = [(PRItemLocalizer *)self session];
-      v23 = [(PRItemLocalizer *)self remoteDevice];
-      v24 = [(PRItemLocalizer *)self configurationParameters];
-      [v22 configureForCompanionRanging:v23 options:v24];
+      session = [(PRItemLocalizer *)self session];
+      remoteDevice2 = [(PRItemLocalizer *)self remoteDevice];
+      configurationParameters3 = [(PRItemLocalizer *)self configurationParameters];
+      [session configureForCompanionRanging:remoteDevice2 options:configurationParameters3];
 
-      v25 = [(PRItemLocalizer *)self analytics];
-      v26 = [(PRItemLocalizer *)self productUUID];
-      v27 = [(PRItemLocalizer *)self isOwner];
-      [v25 configureSessionWithProductUUID:v26 withOwner:v27];
+      analytics = [(PRItemLocalizer *)self analytics];
+      productUUID = [(PRItemLocalizer *)self productUUID];
+      isOwner = [(PRItemLocalizer *)self isOwner];
+      [analytics configureSessionWithProductUUID:productUUID withOwner:isOwner];
 
       v21 = 1;
     }
@@ -352,15 +352,15 @@ LABEL_3:
   return v21;
 }
 
-- (BOOL)startWithDevicePoseProvider:(id)a3 error:(id *)a4
+- (BOOL)startWithDevicePoseProvider:(id)provider error:(id *)error
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  providerCopy = provider;
   logger = self->_logger;
   if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v31 = v6;
+    v31 = providerCopy;
     _os_log_impl(&dword_2613DF000, logger, OS_LOG_TYPE_DEFAULT, "ItemLocalizer start with pose provider %@", buf, 0xCu);
   }
 
@@ -374,32 +374,32 @@ LABEL_3:
       _os_log_impl(&dword_2613DF000, v8, OS_LOG_TYPE_DEFAULT, "#companion-retry Setting _clientState to LOCALIZER_CLIENT_RANGING startWithDevicePoseProvider", buf, 2u);
     }
 
-    [(PRItemLocalizer *)self setPoseProvider:v6];
-    v9 = [(PRItemLocalizer *)self poseProvider];
-    [v9 setDelegate:self];
+    [(PRItemLocalizer *)self setPoseProvider:providerCopy];
+    poseProvider = [(PRItemLocalizer *)self poseProvider];
+    [poseProvider setDelegate:self];
 
     [(PRItemLocalizer *)self reset];
     [(PRItemLocalizer *)self setFirstRangeArrow:0];
     [(PRItemLocalizer *)self setFirstAoAArrow:0];
     [(PRItemLocalizer *)self setPreviousVIOPoseTime:0.0];
     objc_initWeak(buf, self);
-    v10 = [(PRItemLocalizer *)self estimatorQueue];
+    estimatorQueue = [(PRItemLocalizer *)self estimatorQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __53__PRItemLocalizer_startWithDevicePoseProvider_error___block_invoke;
     block[3] = &unk_279AD60B0;
     objc_copyWeak(&v29, buf);
-    dispatch_async(v10, block);
+    dispatch_async(estimatorQueue, block);
 
     [(PRItemLocalizer *)self setDeviceIsMoving:1];
-    v11 = [(PRItemLocalizer *)self deviceActivityManager];
-    v12 = [(PRItemLocalizer *)self activityQueue];
+    deviceActivityManager = [(PRItemLocalizer *)self deviceActivityManager];
+    activityQueue = [(PRItemLocalizer *)self activityQueue];
     v23 = MEMORY[0x277D85DD0];
     v24 = 3221225472;
     v25 = __53__PRItemLocalizer_startWithDevicePoseProvider_error___block_invoke_2;
     v26 = &unk_279AD61A0;
     objc_copyWeak(&v27, buf);
-    [v11 startActivityUpdatesToQueue:v12 withHandler:&v23];
+    [deviceActivityManager startActivityUpdatesToQueue:activityQueue withHandler:&v23];
 
     v13 = [(PRItemLocalizer *)self analytics:v23];
     [v13 start];
@@ -411,19 +411,19 @@ LABEL_3:
     [(PRItemLocalizer *)self sendItemLocalizerChangedActivity:1];
     if (self->_rangingState == 3)
     {
-      v15 = [(PRItemLocalizer *)self session];
-      v16 = [(PRItemLocalizer *)self remoteDevice];
-      v17 = [v15 startCompanionRanging:v16 options:0 error:a4];
+      session = [(PRItemLocalizer *)self session];
+      remoteDevice = [(PRItemLocalizer *)self remoteDevice];
+      v17 = [session startCompanionRanging:remoteDevice options:0 error:error];
 
       if (!v17)
       {
-        [(PRItemLocalizer *)self didFailWithError:*a4];
+        [(PRItemLocalizer *)self didFailWithError:*error];
         v19 = 0;
         goto LABEL_13;
       }
 
-      v18 = [(PRItemLocalizer *)self dataRecorder];
-      [v18 start];
+      dataRecorder = [(PRItemLocalizer *)self dataRecorder];
+      [dataRecorder start];
 
       self->_rangingState = 4;
     }
@@ -492,7 +492,7 @@ LABEL_7:
   }
 }
 
-- (BOOL)stop:(id *)a3
+- (BOOL)stop:(id *)stop
 {
   logger = self->_logger;
   if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
@@ -503,11 +503,11 @@ LABEL_7:
 
   if (self->_clientState == 4)
   {
-    v6 = [(PRItemLocalizer *)self poseProvider];
-    [v6 setDelegate:0];
+    poseProvider = [(PRItemLocalizer *)self poseProvider];
+    [poseProvider setDelegate:0];
 
-    v7 = [(PRItemLocalizer *)self analytics];
-    [v7 stop];
+    analytics = [(PRItemLocalizer *)self analytics];
+    [analytics stop];
 
     [(PRItemLocalizer *)self recordUsage];
     v8 = self->_logger;
@@ -520,23 +520,23 @@ LABEL_7:
     self->_clientState = 3;
     [(PRItemLocalizer *)self reset];
     objc_initWeak(buf, self);
-    v9 = [(PRItemLocalizer *)self estimatorQueue];
+    estimatorQueue = [(PRItemLocalizer *)self estimatorQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __24__PRItemLocalizer_stop___block_invoke;
     block[3] = &unk_279AD60B0;
     objc_copyWeak(&v20, buf);
-    dispatch_async(v9, block);
+    dispatch_async(estimatorQueue, block);
 
-    v10 = [(PRItemLocalizer *)self deviceActivityManager];
-    [v10 stopActivityUpdates];
+    deviceActivityManager = [(PRItemLocalizer *)self deviceActivityManager];
+    [deviceActivityManager stopActivityUpdates];
 
     [(PRItemLocalizer *)self sendItemLocalizerChangedActivity:2];
     if (self->_rangingState == 4)
     {
-      v11 = [(PRItemLocalizer *)self session];
-      v12 = [(PRItemLocalizer *)self remoteDevice];
-      v13 = [v11 stopCompanionRanging:v12 error:a3];
+      session = [(PRItemLocalizer *)self session];
+      remoteDevice = [(PRItemLocalizer *)self remoteDevice];
+      v13 = [session stopCompanionRanging:remoteDevice error:stop];
 
       if (!v13)
       {
@@ -547,7 +547,7 @@ LABEL_7:
           _os_log_impl(&dword_2613DF000, v16, OS_LOG_TYPE_DEFAULT, "#companion-retry Failed to stop - triggering retry", v18, 2u);
         }
 
-        [(PRItemLocalizer *)self didFailWithError:*a3];
+        [(PRItemLocalizer *)self didFailWithError:*stop];
         v14 = 0;
         goto LABEL_15;
       }
@@ -582,24 +582,24 @@ void __24__PRItemLocalizer_stop___block_invoke(uint64_t a1)
   }
 }
 
-- (void)presentTargetEstimate:(id)a3
+- (void)presentTargetEstimate:(id)estimate
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  estimateCopy = estimate;
   v5 = self->_logger;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    [v4 vector];
+    [estimateCopy vector];
     v19 = v6;
-    [v4 vector];
+    [estimateCopy vector];
     v18 = v7;
-    [v4 vector];
+    [estimateCopy vector];
     v17 = v8;
-    [v4 uncertainty];
+    [estimateCopy uncertainty];
     v11 = v10;
-    [v4 weight];
+    [estimateCopy weight];
     v13 = v12;
-    [v4 timestamp];
+    [estimateCopy timestamp];
     *buf = 134219264;
     v21 = v19;
     v22 = 2048;
@@ -615,17 +615,17 @@ void __24__PRItemLocalizer_stop___block_invoke(uint64_t a1)
     _os_log_impl(&dword_2613DF000, v5, OS_LOG_TYPE_DEFAULT, "Sending target to delegate: (%f, %f, %f), uncertainty = %f, weight = %f, time %f", buf, 0x3Eu);
   }
 
-  [(PRItemLocalizer *)self updateDelegateWithSelector:sel_didUpdateItemPosition_ object:v4];
-  v15 = [(PRItemLocalizer *)self analytics];
-  [v15 targetComputed:v4];
+  [(PRItemLocalizer *)self updateDelegateWithSelector:sel_didUpdateItemPosition_ object:estimateCopy];
+  analytics = [(PRItemLocalizer *)self analytics];
+  [analytics targetComputed:estimateCopy];
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)revokeTargetEstimateWithLastSolution:(BatchSolution *)a3
+- (void)revokeTargetEstimateWithLastSolution:(BatchSolution *)solution
 {
-  begin = a3->BatchSolutionList.__begin_;
-  if (begin == a3->BatchSolutionList.__end_)
+  begin = solution->BatchSolutionList.__begin_;
+  if (begin == solution->BatchSolutionList.__end_)
   {
 
     [(PRItemLocalizer *)self revokeTargetEstimate:2];
@@ -638,7 +638,7 @@ void __24__PRItemLocalizer_stop___block_invoke(uint64_t a1)
     {
       if (v5 == 2)
       {
-        if (a3->solutionStatus == 5)
+        if (solution->solutionStatus == 5)
         {
           logger = self->_logger;
           if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
@@ -648,7 +648,7 @@ void __24__PRItemLocalizer_stop___block_invoke(uint64_t a1)
           }
         }
 
-        v7 = self;
+        selfCopy3 = self;
         v8 = 4;
       }
 
@@ -659,7 +659,7 @@ void __24__PRItemLocalizer_stop___block_invoke(uint64_t a1)
           return;
         }
 
-        if (a3->solutionStatus == 5)
+        if (solution->solutionStatus == 5)
         {
           v6 = self->_logger;
           if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -669,14 +669,14 @@ void __24__PRItemLocalizer_stop___block_invoke(uint64_t a1)
           }
         }
 
-        v7 = self;
+        selfCopy3 = self;
         v8 = 2;
       }
     }
 
     else
     {
-      if (a3->solutionStatus == 5)
+      if (solution->solutionStatus == 5)
       {
         v10 = self->_logger;
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -686,15 +686,15 @@ void __24__PRItemLocalizer_stop___block_invoke(uint64_t a1)
         }
       }
 
-      v7 = self;
+      selfCopy3 = self;
       v8 = 3;
     }
 
-    [(PRItemLocalizer *)v7 revokeTargetEstimate:v8];
+    [(PRItemLocalizer *)selfCopy3 revokeTargetEstimate:v8];
   }
 }
 
-- (void)revokeTargetEstimate:(unint64_t)a3
+- (void)revokeTargetEstimate:(unint64_t)estimate
 {
   logger = self->_logger;
   if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
@@ -704,8 +704,8 @@ void __24__PRItemLocalizer_stop___block_invoke(uint64_t a1)
   }
 
   [(PRItemLocalizer *)self updateDelegateWithSelector:sel_didUpdateItemPosition_ object:0];
-  v6 = [(PRItemLocalizer *)self analytics];
-  [v6 targetRevokedWithReason:a3];
+  analytics = [(PRItemLocalizer *)self analytics];
+  [analytics targetRevokedWithReason:estimate];
 
   *__p = 0u;
   v9 = 0u;
@@ -718,22 +718,22 @@ void __24__PRItemLocalizer_stop___block_invoke(uint64_t a1)
   }
 }
 
-- (void)presentRangeEstimate:(id)a3
+- (void)presentRangeEstimate:(id)estimate
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  estimateCopy = estimate;
   MachTimeSeconds = PRCommonGetMachTimeSeconds();
-  [v4 timestamp];
+  [estimateCopy timestamp];
   if (MachTimeSeconds - v6 <= 2.0)
   {
-    v9 = v4;
-    [v9 range];
+    analytics = estimateCopy;
+    [analytics range];
     if (v10 >= 0.0)
     {
       v20 = self->_logger;
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
-        [v9 range];
+        [analytics range];
         v26 = 134217984;
         v27 = v24;
         _os_log_impl(&dword_2613DF000, v20, OS_LOG_TYPE_DEFAULT, "Sending range to delegate: %f", &v26, 0xCu);
@@ -743,11 +743,11 @@ void __24__PRItemLocalizer_stop___block_invoke(uint64_t a1)
     else
     {
       v11 = [PRProximity alloc];
-      [v9 timestamp];
+      [analytics timestamp];
       v13 = v12;
-      [v9 azimuth];
+      [analytics azimuth];
       v15 = v14;
-      [v9 elevation];
+      [analytics elevation];
       LODWORD(v17) = v16;
       LODWORD(v18) = v15;
       v19 = [(PRProximity *)v11 initWithTime:v13 range:0.0 azimuth:v18 elevation:v17];
@@ -755,7 +755,7 @@ void __24__PRItemLocalizer_stop___block_invoke(uint64_t a1)
       v20 = self->_logger;
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
-        [v9 range];
+        [analytics range];
         v22 = v21;
         [(PRProximity *)v19 range];
         v26 = 134218240;
@@ -765,10 +765,10 @@ void __24__PRItemLocalizer_stop___block_invoke(uint64_t a1)
         _os_log_impl(&dword_2613DF000, v20, OS_LOG_TYPE_DEFAULT, "PresentRangeEstimate overriding negative range = %f. Sending range = %f to delegate", &v26, 0x16u);
       }
 
-      v9 = v19;
+      analytics = v19;
     }
 
-    [(PRItemLocalizer *)self updateDelegateWithSelector:sel_didUpdateRangeEstimate_ object:v9];
+    [(PRItemLocalizer *)self updateDelegateWithSelector:sel_didUpdateRangeEstimate_ object:analytics];
   }
 
   else
@@ -776,7 +776,7 @@ void __24__PRItemLocalizer_stop___block_invoke(uint64_t a1)
     v7 = self->_logger;
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      [v4 timestamp];
+      [estimateCopy timestamp];
       v26 = 134218240;
       v27 = MachTimeSeconds;
       v28 = 2048;
@@ -784,8 +784,8 @@ void __24__PRItemLocalizer_stop___block_invoke(uint64_t a1)
       _os_log_impl(&dword_2613DF000, v7, OS_LOG_TYPE_DEFAULT, "Not presenting too stale range estimate to the delegate, current time = %f, range estimate time = %f", &v26, 0x16u);
     }
 
-    v9 = [(PRItemLocalizer *)self analytics];
-    [v9 revokeRangeEstimate];
+    analytics = [(PRItemLocalizer *)self analytics];
+    [analytics revokeRangeEstimate];
   }
 
   v25 = *MEMORY[0x277D85DE8];
@@ -793,34 +793,34 @@ void __24__PRItemLocalizer_stop___block_invoke(uint64_t a1)
 
 - (id)saveData
 {
-  v2 = [(PRItemLocalizer *)self dataRecorder];
-  v3 = [v2 stopAndSave];
+  dataRecorder = [(PRItemLocalizer *)self dataRecorder];
+  stopAndSave = [dataRecorder stopAndSave];
 
-  return v3;
+  return stopAndSave;
 }
 
 - (void)discardData
 {
-  v2 = [(PRItemLocalizer *)self dataRecorder];
-  [v2 stopAndDiscard];
+  dataRecorder = [(PRItemLocalizer *)self dataRecorder];
+  [dataRecorder stopAndDiscard];
 }
 
 - (void)recordUsage
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = [(PRItemLocalizer *)self usageFirstRange];
-  if (v4 && ([(PRItemLocalizer *)self usageStartTimestamp], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
+  usageFirstRange = [(PRItemLocalizer *)self usageFirstRange];
+  if (usageFirstRange && ([(PRItemLocalizer *)self usageStartTimestamp], v5 = objc_claimAutoreleasedReturnValue(), v5, usageFirstRange, v5))
   {
     v6 = [MEMORY[0x277CBEAA8] now];
-    v7 = [(PRItemLocalizer *)self usageStartTimestamp];
-    [v6 timeIntervalSinceDate:v7];
+    usageStartTimestamp = [(PRItemLocalizer *)self usageStartTimestamp];
+    [v6 timeIntervalSinceDate:usageStartTimestamp];
     v9 = v8;
 
     v10 = self->_logger;
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(PRItemLocalizer *)self usageFirstRange];
-      [v11 doubleValue];
+      usageFirstRange2 = [(PRItemLocalizer *)self usageFirstRange];
+      [usageFirstRange2 doubleValue];
       *buf = 134218240;
       v25 = v12;
       v26 = 2048;
@@ -828,33 +828,33 @@ void __24__PRItemLocalizer_stop___block_invoke(uint64_t a1)
       _os_log_impl(&dword_2613DF000, v10, OS_LOG_TYPE_DEFAULT, "Record usage: first range %0.1f m, session duration %0.1f s", buf, 0x16u);
     }
 
-    v13 = [(PRItemLocalizer *)self usageFirstRange];
-    v23[0] = v13;
+    usageFirstRange3 = [(PRItemLocalizer *)self usageFirstRange];
+    v23[0] = usageFirstRange3;
     v22[1] = @"SessionDuration";
     v14 = [MEMORY[0x277CCABB0] numberWithDouble:v9];
     v23[1] = v14;
     v22[2] = @"ProductUUID";
-    v15 = [(PRItemLocalizer *)self productUUID];
-    if (v15)
+    productUUID = [(PRItemLocalizer *)self productUUID];
+    if (productUUID)
     {
-      v2 = [(PRItemLocalizer *)self productUUID];
-      v16 = [v2 UUIDString];
+      productUUID2 = [(PRItemLocalizer *)self productUUID];
+      uUIDString = [productUUID2 UUIDString];
     }
 
     else
     {
-      v16 = @"UNKNOWN";
+      uUIDString = @"UNKNOWN";
     }
 
-    v23[2] = v16;
+    v23[2] = uUIDString;
     v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:v22 count:3];
-    if (v15)
+    if (productUUID)
     {
     }
 
     session = self->_session;
-    v20 = [(PRItemLocalizer *)self remoteDevice];
-    [(PRCompanionRangingSession *)session recordUsageOfCompanionRanging:v20 usageParameters:v18];
+    remoteDevice = [(PRItemLocalizer *)self remoteDevice];
+    [(PRCompanionRangingSession *)session recordUsageOfCompanionRanging:remoteDevice usageParameters:v18];
   }
 
   else
@@ -872,14 +872,14 @@ void __24__PRItemLocalizer_stop___block_invoke(uint64_t a1)
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)trajectoryIndexForTime:(double)a3
+- (unint64_t)trajectoryIndexForTime:(double)time
 {
-  v5 = [(PRItemLocalizer *)self trajectory];
-  v6 = [v5 count];
+  trajectory = [(PRItemLocalizer *)self trajectory];
+  v6 = [trajectory count];
 
-  v7 = [PRPose poseWithTime:a3 pose:?];
-  v8 = [(PRItemLocalizer *)self trajectory];
-  v9 = [v8 indexOfObject:v7 inSortedRange:0 options:v6 usingComparator:{1024, &__block_literal_global_59}];
+  v7 = [PRPose poseWithTime:time pose:?];
+  trajectory2 = [(PRItemLocalizer *)self trajectory];
+  v9 = [trajectory2 indexOfObject:v7 inSortedRange:0 options:v6 usingComparator:{1024, &__block_literal_global_59}];
 
   return v9;
 }
@@ -901,42 +901,42 @@ uint64_t __42__PRItemLocalizer_trajectoryIndexForTime___block_invoke(uint64_t a1
   return v12;
 }
 
-- (void)deleteTrajectoryWaypointsBeforeTime:(double)a3
+- (void)deleteTrajectoryWaypointsBeforeTime:(double)time
 {
-  v8 = [(PRItemLocalizer *)self estimatorQueue];
-  dispatch_assert_queue_V2(v8);
+  estimatorQueue = [(PRItemLocalizer *)self estimatorQueue];
+  dispatch_assert_queue_V2(estimatorQueue);
 
-  v9 = [(PRItemLocalizer *)self trajectory];
-  v5 = [v9 count];
+  trajectory = [(PRItemLocalizer *)self trajectory];
+  v5 = [trajectory count];
 
   if (v5)
   {
-    v6 = [(PRItemLocalizer *)self trajectoryIndexForTime:a3];
+    v6 = [(PRItemLocalizer *)self trajectoryIndexForTime:time];
     if (v6)
     {
       v7 = v6 - 1;
-      v10 = [(PRItemLocalizer *)self trajectory];
-      [v10 removeObjectsInRange:{0, v7}];
+      trajectory2 = [(PRItemLocalizer *)self trajectory];
+      [trajectory2 removeObjectsInRange:{0, v7}];
     }
   }
 }
 
-- (id)estimatorInputForProximity:(id)a3
+- (id)estimatorInputForProximity:(id)proximity
 {
   v113 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  proximityCopy = proximity;
+  v5 = proximityCopy;
+  if (!proximityCopy)
   {
     goto LABEL_4;
   }
 
-  [v4 mach_absolute_time_sec];
+  [proximityCopy mach_absolute_time_sec];
   v6 = [(PRItemLocalizer *)self trajectoryIndexForTime:?];
   if (v6)
   {
-    v7 = [(PRItemLocalizer *)self trajectory];
-    v8 = [v7 count];
+    trajectory = [(PRItemLocalizer *)self trajectory];
+    v8 = [trajectory count];
 
     if (v6 == v8)
     {
@@ -945,31 +945,31 @@ LABEL_4:
       goto LABEL_16;
     }
 
-    v23 = [(PRItemLocalizer *)self trajectory];
-    v11 = [v23 objectAtIndex:v6 - 1];
+    trajectory2 = [(PRItemLocalizer *)self trajectory];
+    firstObject = [trajectory2 objectAtIndex:v6 - 1];
 
-    v24 = [(PRItemLocalizer *)self trajectory];
-    v13 = [v24 objectAtIndex:v6];
+    trajectory3 = [(PRItemLocalizer *)self trajectory];
+    lastObject = [trajectory3 objectAtIndex:v6];
 
-    [v11 timestamp];
+    [firstObject timestamp];
     v26 = v25;
     [v5 mach_absolute_time_sec];
     if (v26 != v27)
     {
-      [v13 timestamp];
+      [lastObject timestamp];
       v29 = v28;
       [v5 mach_absolute_time_sec];
       if (v29 != v30)
       {
-        [v13 timestamp];
+        [lastObject timestamp];
         v35 = v34;
-        [v11 timestamp];
+        [firstObject timestamp];
         if (v35 == v36)
         {
           v105[0] = @"prior";
           v105[1] = @"subsequent";
-          v106[0] = v11;
-          v106[1] = v13;
+          v106[0] = firstObject;
+          v106[1] = lastObject;
           [MEMORY[0x277CBEAC0] dictionaryWithObjects:v106 forKeys:v105 count:2];
           v86 = [MEMORY[0x277CBEAD8] exceptionWithName:@"TimingErrorException" reason:@"Invalid timestamp found on device pose waypoint" userInfo:objc_claimAutoreleasedReturnValue()];
           v87 = v86;
@@ -978,18 +978,18 @@ LABEL_4:
 
         [v5 mach_absolute_time_sec];
         v38 = v37;
-        [v11 timestamp];
+        [firstObject timestamp];
         v40 = v39;
-        [v13 timestamp];
+        [lastObject timestamp];
         v42 = v41;
-        [v11 timestamp];
+        [firstObject timestamp];
         v44 = v43;
-        [v11 pose];
+        [firstObject pose];
         v98 = v46;
         v101 = v45;
         v92 = v48;
         v94 = v47;
-        [v13 pose];
+        [lastObject pose];
         v90 = v50;
         v91 = v49;
         v88 = v52;
@@ -1074,16 +1074,16 @@ LABEL_4:
         }
 
         v103 = *&v80;
-        [v11 pose];
+        [firstObject pose];
         v100 = v84;
-        [v13 pose];
+        [lastObject pose];
         v97 = v85;
         v9 = objc_alloc_init(PREstimatorInput);
         [v5 mach_absolute_time_sec];
         [(PREstimatorInput *)v9 setTimestamp:?];
-        [v11 timestamp];
+        [firstObject timestamp];
         [(PREstimatorInput *)v9 setPriorTimestamp:?];
-        [v13 timestamp];
+        [lastObject timestamp];
         [(PREstimatorInput *)v9 setSubsequentTimestamp:?];
         [(PREstimatorInput *)v9 setRotation:v103];
         [(PREstimatorInput *)v9 setTranslation:*vmlaq_n_f32(v100, vsubq_f32(v97, v100), v104).i64];
@@ -1107,14 +1107,14 @@ LABEL_4:
     goto LABEL_13;
   }
 
-  v10 = [(PRItemLocalizer *)self trajectory];
-  v11 = [v10 firstObject];
+  trajectory4 = [(PRItemLocalizer *)self trajectory];
+  firstObject = [trajectory4 firstObject];
 
-  v12 = [(PRItemLocalizer *)self trajectory];
-  v13 = [v12 lastObject];
+  trajectory5 = [(PRItemLocalizer *)self trajectory];
+  lastObject = [trajectory5 lastObject];
 
   v9 = 0;
-  if (!v11 || !v13)
+  if (!firstObject || !lastObject)
   {
     goto LABEL_15;
   }
@@ -1124,9 +1124,9 @@ LABEL_4:
   {
     [v5 mach_absolute_time_sec];
     v16 = v15;
-    [v11 timestamp];
+    [firstObject timestamp];
     v18 = v17;
-    [v13 timestamp];
+    [lastObject timestamp];
     *buf = 134218496;
     v108 = v16;
     v109 = 2048;
@@ -1151,11 +1151,11 @@ LABEL_16:
   return v9;
 }
 
-- (BatchSolution)performLocationFiltering:(SEL)a3
+- (BatchSolution)performLocationFiltering:(SEL)filtering
 {
   v6 = a4;
-  v7 = [(PRItemLocalizer *)self estimatorQueue];
-  dispatch_assert_queue_V2(v7);
+  estimatorQueue = [(PRItemLocalizer *)self estimatorQueue];
+  dispatch_assert_queue_V2(estimatorQueue);
 
   [(PRItemLocalizer *)self logEstimatorInput:v6];
   [v6 translation];
@@ -1172,11 +1172,11 @@ LABEL_16:
   v51 = v13;
   [v6 rotation];
   v49 = v14;
-  v15 = [v6 proximity];
-  v16 = [v15 antenna_type];
-  if ((v16 - 1) < 4)
+  proximity = [v6 proximity];
+  antenna_type = [proximity antenna_type];
+  if ((antenna_type - 1) < 4)
   {
-    v17 = v16;
+    v17 = antenna_type;
   }
 
   else
@@ -1194,27 +1194,27 @@ LABEL_16:
   v77 = 0u;
   v78 = 0u;
   v79 = 0.0;
-  v18 = [v6 proximity];
+  proximity2 = [v6 proximity];
   v60 = v59;
   v19 = v54;
   v20 = v53;
-  if (([v18 az_valid] & 1) == 0)
+  if (([proximity2 az_valid] & 1) == 0)
   {
 
     goto LABEL_9;
   }
 
-  v21 = [v6 proximity];
-  v22 = [v21 el_valid];
+  proximity3 = [v6 proximity];
+  el_valid = [proximity3 el_valid];
 
-  if (!v22)
+  if (!el_valid)
   {
 LABEL_9:
-    v27 = [v6 proximity];
-    [v27 mach_absolute_time_sec];
+    proximity4 = [v6 proximity];
+    [proximity4 mach_absolute_time_sec];
     v29 = v28;
-    v30 = [v6 proximity];
-    [v30 range_m];
+    proximity5 = [v6 proximity];
+    [proximity5 range_m];
     v64 = v29;
     v65 = v31;
     v66 = 0x3FB999999999999ALL;
@@ -1231,13 +1231,13 @@ LABEL_9:
     goto LABEL_12;
   }
 
-  v23 = [v6 proximity];
-  v24 = [v23 multipath_probability_valid];
+  proximity6 = [v6 proximity];
+  multipath_probability_valid = [proximity6 multipath_probability_valid];
 
-  if (v24)
+  if (multipath_probability_valid)
   {
-    v25 = [v6 proximity];
-    [v25 multipath_probability];
+    proximity7 = [v6 proximity];
+    [proximity7 multipath_probability];
     v56 = v26;
 
     v55 = 1;
@@ -1249,23 +1249,23 @@ LABEL_9:
     v56 = 0;
   }
 
-  v27 = [v6 proximity];
-  [v27 mach_absolute_time_sec];
+  proximity4 = [v6 proximity];
+  [proximity4 mach_absolute_time_sec];
   v52 = v32;
-  v30 = [v6 proximity];
-  [v30 range_m];
+  proximity5 = [v6 proximity];
+  [proximity5 range_m];
   v50 = v33;
-  v34 = [v6 proximity];
-  [v34 el_deg];
+  proximity8 = [v6 proximity];
+  [proximity8 el_deg];
   v36 = v35;
-  v37 = [v6 proximity];
-  [v37 az_deg];
+  proximity9 = [v6 proximity];
+  [proximity9 az_deg];
   v39 = v38;
-  v40 = [v6 proximity];
-  [v40 sweep_angle_deg];
+  proximity10 = [v6 proximity];
+  [proximity10 sweep_angle_deg];
   v42 = v41;
-  v43 = [v6 proximity];
-  [v43 track_score];
+  proximity11 = [v6 proximity];
+  [proximity11 track_score];
   v64 = v52;
   v65 = v50;
   v66 = 0x3FB999999999999ALL;
@@ -1307,27 +1307,27 @@ LABEL_12:
   return result;
 }
 
-- (id)produceBlendedRangeEstimateForPose:(id)a3
+- (id)produceBlendedRangeEstimateForPose:(id)pose
 {
-  v4 = a3;
+  poseCopy = pose;
   ptr = self->_rangeFilter.__ptr_;
   if (*ptr == 1)
   {
     CurrentState = RoseSyntheticApertureFiltering::PRRoseRangeFilter::getCurrentState(ptr, v23);
     v7 = self->_itemLocationFilter.__ptr_;
-    [v4 timestamp];
+    [poseCopy timestamp];
     v9 = v8;
-    [v4 pose];
+    [poseCopy pose];
     RoseSyntheticApertureFiltering::PRRoseSyntheticApertureBatchFilter::updateCurrentBatchSolution(v7, v9, v10, v20);
     if (v20[0] == 5)
     {
       v11 = *__p;
       v12 = *(__p + 1);
       v13 = *(__p + 2);
-      [v4 pose];
-      [v4 timestamp];
+      [poseCopy pose];
+      [poseCopy timestamp];
       v17 = [PRProximity alloc];
-      [v4 timestamp];
+      [poseCopy timestamp];
       v18 = [PRProximity initWithTime:v17 range:"initWithTime:range:"];
     }
 
@@ -1355,62 +1355,62 @@ LABEL_12:
   return v14;
 }
 
-- (void)logEstimatorInput:(id)a3
+- (void)logEstimatorInput:(id)input
 {
   v110 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 proximity];
-  if ([v5 az_valid])
+  inputCopy = input;
+  proximity = [inputCopy proximity];
+  if ([proximity az_valid])
   {
-    v6 = [v4 proximity];
-    v7 = [v6 el_valid];
+    proximity2 = [inputCopy proximity];
+    el_valid = [proximity2 el_valid];
 
-    if (v7)
+    if (el_valid)
     {
       v8 = self->_logger;
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        [v4 rotation];
+        [inputCopy rotation];
         v74 = v9;
-        [v4 rotation];
+        [inputCopy rotation];
         v70 = v10;
-        [v4 rotation];
+        [inputCopy rotation];
         v69 = v11;
-        [v4 rotation];
+        [inputCopy rotation];
         v67 = v12;
-        [v4 translation];
+        [inputCopy translation];
         v63 = v13;
-        [v4 translation];
+        [inputCopy translation];
         v62 = v14;
-        [v4 translation];
+        [inputCopy translation];
         v61 = v15;
-        v76 = [v4 proximity];
-        [v76 range_m];
+        proximity3 = [inputCopy proximity];
+        [proximity3 range_m];
         v18 = v17;
-        v72 = [v4 proximity];
-        [v72 range_unc_m];
+        proximity4 = [inputCopy proximity];
+        [proximity4 range_unc_m];
         v20 = v19;
-        v64 = [v4 proximity];
-        [v64 az_deg];
+        proximity5 = [inputCopy proximity];
+        [proximity5 az_deg];
         v22 = v21;
-        v23 = [v4 proximity];
-        [v23 az_unc_deg];
+        proximity6 = [inputCopy proximity];
+        [proximity6 az_unc_deg];
         v25 = v24;
-        v26 = [v4 proximity];
-        [v26 el_deg];
+        proximity7 = [inputCopy proximity];
+        [proximity7 el_deg];
         v28 = v27;
-        v29 = [v4 proximity];
-        [v29 el_unc_deg];
+        proximity8 = [inputCopy proximity];
+        [proximity8 el_unc_deg];
         v31 = v30;
-        v32 = [v4 proximity];
-        v33 = [v32 antenna_type];
-        [v4 timestamp];
+        proximity9 = [inputCopy proximity];
+        antenna_type = [proximity9 antenna_type];
+        [inputCopy timestamp];
         v35 = v34;
-        v36 = [v4 proximity];
-        [v36 track_score];
+        proximity10 = [inputCopy proximity];
+        [proximity10 track_score];
         v38 = v37;
-        v39 = [v4 proximity];
-        [v39 sweep_angle_deg];
+        proximity11 = [inputCopy proximity];
+        [proximity11 sweep_angle_deg];
         *buf = 134222080;
         v79 = v74;
         v80 = 2048;
@@ -1438,7 +1438,7 @@ LABEL_12:
         v100 = 2048;
         v101 = v31;
         v102 = 1024;
-        v103 = v33;
+        v103 = antenna_type;
         v104 = 2048;
         v105 = v35;
         v106 = 2048;
@@ -1459,29 +1459,29 @@ LABEL_12:
   v8 = self->_logger;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    [v4 rotation];
+    [inputCopy rotation];
     v77 = v41;
-    [v4 rotation];
+    [inputCopy rotation];
     v75 = v42;
-    [v4 rotation];
+    [inputCopy rotation];
     v73 = v43;
-    [v4 rotation];
+    [inputCopy rotation];
     v71 = v44;
-    [v4 translation];
+    [inputCopy translation];
     v68 = v45;
-    [v4 translation];
+    [inputCopy translation];
     v66 = v46;
-    [v4 translation];
+    [inputCopy translation];
     v65 = v47;
-    v48 = [v4 proximity];
-    [v48 range_m];
+    proximity12 = [inputCopy proximity];
+    [proximity12 range_m];
     v50 = v49;
-    v51 = [v4 proximity];
-    [v51 range_unc_m];
+    proximity13 = [inputCopy proximity];
+    [proximity13 range_unc_m];
     v53 = v52;
-    v54 = [v4 proximity];
-    v55 = [v54 antenna_type];
-    [v4 timestamp];
+    proximity14 = [inputCopy proximity];
+    antenna_type2 = [proximity14 antenna_type];
+    [inputCopy timestamp];
     *buf = 134220544;
     v79 = v77;
     v80 = 2048;
@@ -1501,7 +1501,7 @@ LABEL_12:
     v94 = 2048;
     v95 = v53;
     v96 = 1024;
-    *v97 = v55;
+    *v97 = antenna_type2;
     *&v97[4] = 2048;
     *&v97[6] = v56;
     _os_log_impl(&dword_2613DF000, v8, OS_LOG_TYPE_DEFAULT, "Estimator input: quat = (%f, %f, %f, %f), trans = (%f, %f, %f), range_m = %f, range_unc_m = %f, antenna = %d, time = %f", buf, 0x6Cu);
@@ -1509,30 +1509,30 @@ LABEL_12:
 
 LABEL_8:
 
-  v57 = [(PRItemLocalizer *)self dataRecorder];
-  v58 = v57 == 0;
+  dataRecorder = [(PRItemLocalizer *)self dataRecorder];
+  v58 = dataRecorder == 0;
 
   if (!v58)
   {
-    v59 = [(PRItemLocalizer *)self dataRecorder];
-    [v59 recordEstimatorInput:v4];
+    dataRecorder2 = [(PRItemLocalizer *)self dataRecorder];
+    [dataRecorder2 recordEstimatorInput:inputCopy];
   }
 
   v60 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logAndPresentSolution:(BatchSolution *)a3 withTimeStamp:(double)a4
+- (void)logAndPresentSolution:(BatchSolution *)solution withTimeStamp:(double)stamp
 {
-  v17 = [MEMORY[0x277CBEB18] array];
-  begin = a3->BatchSolutionList.__begin_;
-  for (i = a3->BatchSolutionList.__end_; begin != i; begin = (begin + 168))
+  array = [MEMORY[0x277CBEB18] array];
+  begin = solution->BatchSolutionList.__begin_;
+  for (i = solution->BatchSolutionList.__end_; begin != i; begin = (begin + 168))
   {
     v9 = *(begin + 1);
     v10 = *(begin + 2);
     *&v12 = *begin;
     v11 = v9;
     *(&v12 + 1) = v11;
-    verticalState = a3->verticalState;
+    verticalState = solution->verticalState;
     if (verticalState == 2)
     {
       v14 = 2;
@@ -1545,24 +1545,24 @@ LABEL_8:
 
     *&v9 = *(begin + 9);
     *&v10 = *(begin + 10);
-    v15 = [PRTargetEstimate targetEstimateWithTime:a3->isVerticalResolved vector:v14 uncertainty:a4 weight:v12 isResolved:v9 verticalState:v10];
-    [v17 addObject:v15];
+    v15 = [PRTargetEstimate targetEstimateWithTime:solution->isVerticalResolved vector:v14 uncertainty:stamp weight:v12 isResolved:v9 verticalState:v10];
+    [array addObject:v15];
   }
 
-  [(PRItemLocalizer *)self logTargetEstimates:v17];
-  v16 = [v17 objectAtIndex:0];
+  [(PRItemLocalizer *)self logTargetEstimates:array];
+  v16 = [array objectAtIndex:0];
   [(PRItemLocalizer *)self presentTargetEstimate:v16];
 }
 
-- (void)logTargetEstimates:(id)a3
+- (void)logTargetEstimates:(id)estimates
 {
   v46 = *MEMORY[0x277D85DE8];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v27 objects:v45 count:16];
+  estimatesCopy = estimates;
+  v5 = [estimatesCopy countByEnumeratingWithState:&v27 objects:v45 count:16];
   if (v5)
   {
     v6 = *v28;
@@ -1572,7 +1572,7 @@ LABEL_8:
       {
         if (*v28 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(estimatesCopy);
         }
 
         v8 = *(*(&v27 + 1) + 8 * i);
@@ -1591,7 +1591,7 @@ LABEL_8:
           v16 = v15;
           [v8 timestamp];
           v18 = v17;
-          v19 = [v8 verticalState];
+          verticalState = [v8 verticalState];
           *buf = 134219520;
           v32 = v26;
           v33 = 2048;
@@ -1605,39 +1605,39 @@ LABEL_8:
           v41 = 2048;
           v42 = v18;
           v43 = 2048;
-          v44 = v19;
+          v44 = verticalState;
           _os_log_impl(&dword_2613DF000, v9, OS_LOG_TYPE_DEFAULT, "Target: estimate = (%f, %f, %f), uncertainty = %f, weight = %f, time %f, verticalState %lu", buf, 0x48u);
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v27 objects:v45 count:16];
+      v5 = [estimatesCopy countByEnumeratingWithState:&v27 objects:v45 count:16];
     }
 
     while (v5);
   }
 
-  v20 = [(PRItemLocalizer *)self dataRecorder];
-  v21 = v20 == 0;
+  dataRecorder = [(PRItemLocalizer *)self dataRecorder];
+  v21 = dataRecorder == 0;
 
   if (!v21)
   {
-    v22 = [(PRItemLocalizer *)self dataRecorder];
-    [v22 recordTargetEstimates:v4];
+    dataRecorder2 = [(PRItemLocalizer *)self dataRecorder];
+    [dataRecorder2 recordTargetEstimates:estimatesCopy];
   }
 
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logRangeEstimate:(id)a3
+- (void)logRangeEstimate:(id)estimate
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  estimateCopy = estimate;
   v5 = self->_logger;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    [v4 range];
+    [estimateCopy range];
     v7 = v6;
-    [v4 timestamp];
+    [estimateCopy timestamp];
     v13 = 134218240;
     v14 = v7;
     v15 = 2048;
@@ -1645,61 +1645,61 @@ LABEL_8:
     _os_log_impl(&dword_2613DF000, v5, OS_LOG_TYPE_DEFAULT, "RangeEstimator output: range = %f, time %f", &v13, 0x16u);
   }
 
-  v9 = [(PRItemLocalizer *)self dataRecorder];
-  v10 = v9 == 0;
+  dataRecorder = [(PRItemLocalizer *)self dataRecorder];
+  v10 = dataRecorder == 0;
 
   if (!v10)
   {
-    v11 = [(PRItemLocalizer *)self dataRecorder];
-    [v11 recordRangeEstimate:v4];
+    dataRecorder2 = [(PRItemLocalizer *)self dataRecorder];
+    [dataRecorder2 recordRangeEstimate:estimateCopy];
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateDelegateWithSelector:(SEL)a3 object:(id)a4
+- (void)updateDelegateWithSelector:(SEL)selector object:(id)object
 {
-  v6 = a4;
-  v7 = [(PRItemLocalizer *)self delegate];
+  objectCopy = object;
+  delegate = [(PRItemLocalizer *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v8 = [(PRItemLocalizer *)self delegateQueue];
+    delegateQueue = [(PRItemLocalizer *)self delegateQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __53__PRItemLocalizer_updateDelegateWithSelector_object___block_invoke;
     block[3] = &unk_279AD6128;
-    v10 = v7;
-    v12 = a3;
-    v11 = v6;
-    dispatch_async(v8, block);
+    v10 = delegate;
+    selectorCopy = selector;
+    v11 = objectCopy;
+    dispatch_async(delegateQueue, block);
   }
 }
 
-- (void)devicePoseUpdated:(id)a3
+- (void)devicePoseUpdated:(id)updated
 {
-  v4 = a3;
-  [(PRItemLocalizer *)self updateDelegateWithSelector:sel_willIntegrateDevicePose_ object:v4];
-  v5 = [(PRItemLocalizer *)self analytics];
-  [v5 updateTravelDistanceWithPose:v4];
+  updatedCopy = updated;
+  [(PRItemLocalizer *)self updateDelegateWithSelector:sel_willIntegrateDevicePose_ object:updatedCopy];
+  analytics = [(PRItemLocalizer *)self analytics];
+  [analytics updateTravelDistanceWithPose:updatedCopy];
 
-  v6 = [(PRItemLocalizer *)self dataRecorder];
-  [v6 recordPoseMeasurement:v4];
+  dataRecorder = [(PRItemLocalizer *)self dataRecorder];
+  [dataRecorder recordPoseMeasurement:updatedCopy];
 
-  LOBYTE(v6) = [(PRItemLocalizer *)self targetIsMoving];
-  v7 = [(PRItemLocalizer *)self deviceIsMoving];
+  LOBYTE(dataRecorder) = [(PRItemLocalizer *)self targetIsMoving];
+  deviceIsMoving = [(PRItemLocalizer *)self deviceIsMoving];
   objc_initWeak(&location, self);
-  v8 = [(PRItemLocalizer *)self estimatorQueue];
+  estimatorQueue = [(PRItemLocalizer *)self estimatorQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __37__PRItemLocalizer_devicePoseUpdated___block_invoke;
   block[3] = &unk_279AD61E8;
   objc_copyWeak(&v13, &location);
-  v14 = v6;
-  v15 = v7;
-  v11 = v4;
-  v12 = self;
-  v9 = v4;
-  dispatch_async(v8, block);
+  v14 = dataRecorder;
+  v15 = deviceIsMoving;
+  v11 = updatedCopy;
+  selfCopy = self;
+  v9 = updatedCopy;
+  dispatch_async(estimatorQueue, block);
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);
@@ -1843,13 +1843,13 @@ LABEL_23:
 - (void)reset
 {
   objc_initWeak(&location, self);
-  v3 = [(PRItemLocalizer *)self estimatorQueue];
+  estimatorQueue = [(PRItemLocalizer *)self estimatorQueue];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __24__PRItemLocalizer_reset__block_invoke;
   v4[3] = &unk_279AD60B0;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(estimatorQueue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -1893,27 +1893,27 @@ void __24__PRItemLocalizer_reset__block_invoke(uint64_t a1)
 
   [(PRItemLocalizer *)self reset];
   [(PRItemLocalizer *)self revokeTargetEstimate:0];
-  v7 = [(PRItemLocalizer *)self analytics];
-  [v7 invalidPoseDetected];
+  analytics = [(PRItemLocalizer *)self analytics];
+  [analytics invalidPoseDetected];
 }
 
-- (void)didReceiveNewSolutions:(id)a3
+- (void)didReceiveNewSolutions:(id)solutions
 {
   v75 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  solutionsCopy = solutions;
   v5 = self->_logger;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    LODWORD(v62) = [v4 count];
+    LODWORD(v62) = [solutionsCopy count];
     _os_log_impl(&dword_2613DF000, v5, OS_LOG_TYPE_DEFAULT, "Received %d solutions from Proximity", buf, 8u);
   }
 
   self->_lastSuccessfulCompanionCommunicationOrInitMachContinuousTimeSeconds = PRCommonGetMachContinuousTimeSeconds();
-  v6 = [v4 indexOfObjectPassingTest:&__block_literal_global_83];
+  v6 = [solutionsCopy indexOfObjectPassingTest:&__block_literal_global_83];
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = [v4 objectAtIndex:v6];
+    v7 = [solutionsCopy objectAtIndex:v6];
     if ([v7 az_valid] && objc_msgSend(v7, "el_valid"))
     {
       v8 = self->_logger;
@@ -1929,7 +1929,7 @@ void __24__PRItemLocalizer_reset__block_invoke(uint64_t a1)
         v16 = v15;
         [v7 track_score];
         v18 = v17;
-        v19 = [v7 previous_solution_is_bad];
+        previous_solution_is_bad = [v7 previous_solution_is_bad];
         [v7 sweep_angle_deg];
         *buf = 134219520;
         v62 = v10;
@@ -1942,7 +1942,7 @@ void __24__PRItemLocalizer_reset__block_invoke(uint64_t a1)
         v69 = 2048;
         v70 = v18;
         v71 = 1024;
-        v72 = v19;
+        v72 = previous_solution_is_bad;
         v73 = 2048;
         v74 = v20;
         v21 = "Found raw measurement with range_m %f m, az_deg %f deg, el_deg %f deg for time %f, track score %f, prev_solution_is_bad %d, sweep_angle_deg %f";
@@ -2012,13 +2012,13 @@ LABEL_10:
 
       v46 = v39;
       [(PRItemLocalizer *)self updateDelegateWithSelector:sel_willIntegrateProximity_ object:v39];
-      v47 = [(PRItemLocalizer *)self analytics];
-      [v47 updateWithRangeEstimate:v46];
+      analytics = [(PRItemLocalizer *)self analytics];
+      [analytics updateWithRangeEstimate:v46];
 
-      v48 = [(PRItemLocalizer *)self usageFirstRange];
-      LODWORD(v47) = v48 == 0;
+      usageFirstRange = [(PRItemLocalizer *)self usageFirstRange];
+      LODWORD(analytics) = usageFirstRange == 0;
 
-      if (v47)
+      if (analytics)
       {
         v49 = MEMORY[0x277CCABB0];
         [v7 range_m];
@@ -2028,27 +2028,27 @@ LABEL_10:
 
       if ([v7 soi_rssi_valid])
       {
-        v51 = [(PRItemLocalizer *)self analytics];
+        analytics2 = [(PRItemLocalizer *)self analytics];
         [v7 soi_rssi_dbm];
-        [v51 updateSOIRSSI:?];
+        [analytics2 updateSOIRSSI:?];
       }
 
-      v52 = [(PRItemLocalizer *)self dataRecorder];
-      [v52 recordProximityMeasurement:v7];
+      dataRecorder = [(PRItemLocalizer *)self dataRecorder];
+      [dataRecorder recordProximityMeasurement:v7];
 
-      LOBYTE(v52) = [(PRItemLocalizer *)self targetIsMoving];
-      v53 = [(PRItemLocalizer *)self deviceIsMoving];
+      LOBYTE(dataRecorder) = [(PRItemLocalizer *)self targetIsMoving];
+      deviceIsMoving = [(PRItemLocalizer *)self deviceIsMoving];
       objc_initWeak(buf, self);
-      v54 = [(PRItemLocalizer *)self estimatorQueue];
+      estimatorQueue = [(PRItemLocalizer *)self estimatorQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __42__PRItemLocalizer_didReceiveNewSolutions___block_invoke_86;
       block[3] = &unk_279AD6230;
       objc_copyWeak(&v58, buf);
       v57 = v7;
-      v59 = v52;
-      v60 = v53;
-      dispatch_async(v54, block);
+      v59 = dataRecorder;
+      v60 = deviceIsMoving;
+      dispatch_async(estimatorQueue, block);
 
       objc_destroyWeak(&v58);
       objc_destroyWeak(buf);
@@ -2122,12 +2122,12 @@ void __42__PRItemLocalizer_didReceiveNewSolutions___block_invoke_86(uint64_t a1)
   }
 }
 
-- (id)performRangeFilteringWithoutVIO:(id)a3 targetMoving:(BOOL)a4 deviceMoving:(BOOL)a5
+- (id)performRangeFilteringWithoutVIO:(id)o targetMoving:(BOOL)moving deviceMoving:(BOOL)deviceMoving
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
-  v9 = [v8 antenna_type] - 1;
+  deviceMovingCopy = deviceMoving;
+  movingCopy = moving;
+  oCopy = o;
+  v9 = [oCopy antenna_type] - 1;
   if (v9 < 4)
   {
     v10 = v9 + 1;
@@ -2138,42 +2138,42 @@ void __42__PRItemLocalizer_didReceiveNewSolutions___block_invoke_86(uint64_t a1)
     v10 = 0;
   }
 
-  [v8 mach_absolute_time_sec];
+  [oCopy mach_absolute_time_sec];
   v12 = v11;
-  [v8 range_m];
+  [oCopy range_m];
   v18[0] = v12;
   v18[1] = v13;
   v18[2] = 0.1;
   v19 = v10;
-  RoseSyntheticApertureFiltering::PRRoseRangeFilter::addMeasurementWithoutVIO(self->_rangeFilter.__ptr_, v18, v6, v5, &v17);
+  RoseSyntheticApertureFiltering::PRRoseRangeFilter::addMeasurementWithoutVIO(self->_rangeFilter.__ptr_, v18, movingCopy, deviceMovingCopy, &v17);
   v14 = [PRProximity alloc];
-  [v8 mach_absolute_time_sec];
+  [oCopy mach_absolute_time_sec];
   v15 = [PRProximity initWithTime:v14 range:"initWithTime:range:"];
 
   return v15;
 }
 
-- (id)performRangeFilteringWithVIO:(id)a3
+- (id)performRangeFilteringWithVIO:(id)o
 {
-  v4 = a3;
-  [v4 translation];
+  oCopy = o;
+  [oCopy translation];
   v31 = v5;
-  [v4 translation];
+  [oCopy translation];
   v30 = v6;
-  [v4 translation];
+  [oCopy translation];
   v29 = v7;
-  [v4 rotation];
+  [oCopy rotation];
   v28 = v8;
-  [v4 rotation];
+  [oCopy rotation];
   v27 = v9;
-  [v4 rotation];
+  [oCopy rotation];
   v26 = v10;
-  [v4 rotation];
-  v13 = [v4 proximity];
-  v14 = [v13 antenna_type];
-  if ((v14 - 1) < 4)
+  [oCopy rotation];
+  proximity = [oCopy proximity];
+  antenna_type = [proximity antenna_type];
+  if ((antenna_type - 1) < 4)
   {
-    v15 = v14;
+    v15 = antenna_type;
   }
 
   else
@@ -2181,11 +2181,11 @@ void __42__PRItemLocalizer_didReceiveNewSolutions___block_invoke_86(uint64_t a1)
     v15 = 0;
   }
 
-  v16 = [v4 proximity];
-  [v16 mach_absolute_time_sec];
+  proximity2 = [oCopy proximity];
+  [proximity2 mach_absolute_time_sec];
   v18 = v17;
-  v19 = [v4 proximity];
-  [v19 range_m];
+  proximity3 = [oCopy proximity];
+  [proximity3 range_m];
   v33[0] = v18;
   v33[1] = v20;
   v33[2] = 0x3FB999999999999ALL;
@@ -2202,22 +2202,22 @@ void __42__PRItemLocalizer_didReceiveNewSolutions___block_invoke_86(uint64_t a1)
 
   RoseSyntheticApertureFiltering::PRRoseRangeFilter::addMeasurementWithVIO(self->_rangeFilter.__ptr_, v33, v32);
   v21 = [PRProximity alloc];
-  v22 = [v4 proximity];
-  [v22 mach_absolute_time_sec];
+  proximity4 = [oCopy proximity];
+  [proximity4 mach_absolute_time_sec];
   v23 = [PRProximity initWithTime:v21 range:"initWithTime:range:"];
 
   return v23;
 }
 
-- (void)rangingServiceDidUpdateState:(unint64_t)a3 cause:(int64_t)a4
+- (void)rangingServiceDidUpdateState:(unint64_t)state cause:(int64_t)cause
 {
   v5 = 0;
   v33 = *MEMORY[0x277D85DE8];
-  if (a3 <= 1)
+  if (state <= 1)
   {
-    if (a3)
+    if (state)
     {
-      if (a3 == 1)
+      if (state == 1)
       {
         logger = self->_logger;
         if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
@@ -2245,7 +2245,7 @@ void __42__PRItemLocalizer_didReceiveNewSolutions___block_invoke_86(uint64_t a1)
 
   else
   {
-    switch(a3)
+    switch(state)
     {
       case 2uLL:
         v13 = self->_logger;
@@ -2278,10 +2278,10 @@ void __42__PRItemLocalizer_didReceiveNewSolutions___block_invoke_86(uint64_t a1)
             _os_log_impl(&dword_2613DF000, v16, OS_LOG_TYPE_DEFAULT, "#companion-retry Configuring due to client state", buf, 2u);
           }
 
-          v17 = [(PRItemLocalizer *)self session];
-          v18 = [(PRItemLocalizer *)self remoteDevice];
-          v19 = [(PRItemLocalizer *)self configurationParameters];
-          [v17 configureForCompanionRanging:v18 options:v19];
+          session = [(PRItemLocalizer *)self session];
+          remoteDevice = [(PRItemLocalizer *)self remoteDevice];
+          configurationParameters = [(PRItemLocalizer *)self configurationParameters];
+          [session configureForCompanionRanging:remoteDevice options:configurationParameters];
 
           self->_rangingState = 2;
         }
@@ -2354,17 +2354,17 @@ void __42__PRItemLocalizer_didReceiveNewSolutions___block_invoke_86(uint64_t a1)
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendPRItemState:(unint64_t)a3
+- (void)sendPRItemState:(unint64_t)state
 {
-  v5 = [(PRItemLocalizer *)self delegateQueue];
-  if (v5)
+  delegateQueue = [(PRItemLocalizer *)self delegateQueue];
+  if (delegateQueue)
   {
-    v6 = [(PRItemLocalizer *)self delegateQueue];
+    delegateQueue2 = [(PRItemLocalizer *)self delegateQueue];
   }
 
   else
   {
-    v6 = MEMORY[0x277D85CD0];
+    delegateQueue2 = MEMORY[0x277D85CD0];
     v7 = MEMORY[0x277D85CD0];
   }
 
@@ -2377,9 +2377,9 @@ void __42__PRItemLocalizer_didReceiveNewSolutions___block_invoke_86(uint64_t a1)
     v9[2] = __35__PRItemLocalizer_sendPRItemState___block_invoke;
     v9[3] = &unk_279AD6100;
     objc_copyWeak(v11, &location);
-    v11[1] = a3;
+    v11[1] = state;
     v10 = WeakRetained;
-    dispatch_async(v6, v9);
+    dispatch_async(delegateQueue2, v9);
 
     objc_destroyWeak(v11);
     objc_destroyWeak(&location);
@@ -2408,17 +2408,17 @@ void __35__PRItemLocalizer_sendPRItemState___block_invoke(uint64_t a1)
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendItemLocalizerChangedActivity:(unint64_t)a3
+- (void)sendItemLocalizerChangedActivity:(unint64_t)activity
 {
-  v5 = [(PRItemLocalizer *)self delegateQueue];
-  if (v5)
+  delegateQueue = [(PRItemLocalizer *)self delegateQueue];
+  if (delegateQueue)
   {
-    v6 = [(PRItemLocalizer *)self delegateQueue];
+    delegateQueue2 = [(PRItemLocalizer *)self delegateQueue];
   }
 
   else
   {
-    v6 = MEMORY[0x277D85CD0];
+    delegateQueue2 = MEMORY[0x277D85CD0];
     v7 = MEMORY[0x277D85CD0];
   }
 
@@ -2431,9 +2431,9 @@ void __35__PRItemLocalizer_sendPRItemState___block_invoke(uint64_t a1)
     v9[2] = __52__PRItemLocalizer_sendItemLocalizerChangedActivity___block_invoke;
     v9[3] = &unk_279AD6100;
     objc_copyWeak(v11, &location);
-    v11[1] = a3;
+    v11[1] = activity;
     v10 = WeakRetained;
-    dispatch_async(v6, v9);
+    dispatch_async(delegateQueue2, v9);
 
     objc_destroyWeak(v11);
     objc_destroyWeak(&location);
@@ -2462,17 +2462,17 @@ void __52__PRItemLocalizer_sendItemLocalizerChangedActivity___block_invoke(uint6
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendItemLocalizerChangedState:(unint64_t)a3
+- (void)sendItemLocalizerChangedState:(unint64_t)state
 {
-  v5 = [(PRItemLocalizer *)self delegateQueue];
-  if (v5)
+  delegateQueue = [(PRItemLocalizer *)self delegateQueue];
+  if (delegateQueue)
   {
-    v6 = [(PRItemLocalizer *)self delegateQueue];
+    delegateQueue2 = [(PRItemLocalizer *)self delegateQueue];
   }
 
   else
   {
-    v6 = MEMORY[0x277D85CD0];
+    delegateQueue2 = MEMORY[0x277D85CD0];
     v7 = MEMORY[0x277D85CD0];
   }
 
@@ -2485,9 +2485,9 @@ void __52__PRItemLocalizer_sendItemLocalizerChangedActivity___block_invoke(uint6
     v9[2] = __49__PRItemLocalizer_sendItemLocalizerChangedState___block_invoke;
     v9[3] = &unk_279AD6100;
     objc_copyWeak(v11, &location);
-    v11[1] = a3;
+    v11[1] = state;
     v10 = WeakRetained;
-    dispatch_async(v6, v9);
+    dispatch_async(delegateQueue2, v9);
 
     objc_destroyWeak(v11);
     objc_destroyWeak(&location);
@@ -2516,11 +2516,11 @@ void __49__PRItemLocalizer_sendItemLocalizerChangedState___block_invoke(uint64_t
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)rangingRequestDidUpdateStatus:(unint64_t)a3
+- (void)rangingRequestDidUpdateStatus:(unint64_t)status
 {
-  if (a3 <= 1)
+  if (status <= 1)
   {
-    if (!a3)
+    if (!status)
     {
       logger = self->_logger;
       if (!os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
@@ -2534,7 +2534,7 @@ void __49__PRItemLocalizer_sendItemLocalizerChangedState___block_invoke(uint64_t
       goto LABEL_17;
     }
 
-    if (a3 == 1)
+    if (status == 1)
     {
       logger = self->_logger;
       if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
@@ -2549,7 +2549,7 @@ void __49__PRItemLocalizer_sendItemLocalizerChangedState___block_invoke(uint64_t
 
   else
   {
-    switch(a3)
+    switch(status)
     {
       case 2uLL:
         logger = self->_logger;
@@ -2589,25 +2589,25 @@ LABEL_17:
   }
 }
 
-- (void)remoteDevice:(id)a3 didChangeState:(int64_t)a4
+- (void)remoteDevice:(id)device didChangeState:(int64_t)state
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(PRItemLocalizer *)self remoteDevice];
-  v8 = [v7 UUID];
-  v9 = [v6 UUID];
-  v10 = [v8 isEqual:v9];
+  deviceCopy = device;
+  remoteDevice = [(PRItemLocalizer *)self remoteDevice];
+  uUID = [remoteDevice UUID];
+  uUID2 = [deviceCopy UUID];
+  v10 = [uUID isEqual:uUID2];
 
   if (v10)
   {
-    if (a4 > 1)
+    if (state > 1)
     {
-      if (a4 == 2)
+      if (state == 2)
       {
         [(PRItemLocalizer *)self remoteDeviceDidMove];
       }
 
-      else if (a4 == 3)
+      else if (state == 3)
       {
         [(PRItemLocalizer *)self sendPRItemState:6];
       }
@@ -2615,13 +2615,13 @@ LABEL_17:
 
     else
     {
-      if (!a4)
+      if (!state)
       {
         logger = self->_logger;
         if (!os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
         {
 LABEL_23:
-          [(PRItemLocalizer *)self sendPRItemState:a4];
+          [(PRItemLocalizer *)self sendPRItemState:state];
           goto LABEL_35;
         }
 
@@ -2632,7 +2632,7 @@ LABEL_22:
         goto LABEL_23;
       }
 
-      if (a4 == 1)
+      if (state == 1)
       {
         v11 = self->_logger;
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -2645,8 +2645,8 @@ LABEL_22:
         {
           self->_rangingState = 3;
           self->_lastSuccessfulCompanionCommunicationOrInitMachContinuousTimeSeconds = PRCommonGetMachContinuousTimeSeconds();
-          v12 = [(PRItemLocalizer *)self analytics];
-          [v12 configureComplete];
+          analytics = [(PRItemLocalizer *)self analytics];
+          [analytics configureComplete];
         }
 
         v13 = self->_logger;
@@ -2668,10 +2668,10 @@ LABEL_22:
             _os_log_impl(&dword_2613DF000, v19, OS_LOG_TYPE_DEFAULT, "#companion-retry Restarting ranging on PRRemoteDeviceStateReady.", buf, 2u);
           }
 
-          v20 = [(PRItemLocalizer *)self session];
-          v21 = [(PRItemLocalizer *)self remoteDevice];
+          session = [(PRItemLocalizer *)self session];
+          remoteDevice2 = [(PRItemLocalizer *)self remoteDevice];
           v28 = 0;
-          v22 = [v20 startCompanionRanging:v21 options:0 error:&v28];
+          v22 = [session startCompanionRanging:remoteDevice2 options:0 error:&v28];
           v23 = v28;
 
           if (v22)
@@ -2763,8 +2763,8 @@ LABEL_35:
   [(PRItemLocalizer *)self revokeTargetEstimate:1];
   [(PRItemLocalizer *)self reset];
   [(PRItemLocalizer *)self logTargetIsMovingChange:[(PRItemLocalizer *)self targetIsMoving]];
-  v7 = [(PRItemLocalizer *)self movementTimer];
-  [v7 invalidate];
+  movementTimer = [(PRItemLocalizer *)self movementTimer];
+  [movementTimer invalidate];
 
   objc_initWeak(buf, self);
   block[0] = MEMORY[0x277D85DD0];
@@ -2807,24 +2807,24 @@ void __38__PRItemLocalizer_remoteDeviceDidMove__block_invoke_2(uint64_t a1, void
   [*(a1 + 32) sendPRItemState:5];
 }
 
-- (void)didFailWithError:(id)a3
+- (void)didFailWithError:(id)error
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PRItemLocalizer *)self analytics];
-  [v5 rangingFailedWithError:v4];
+  errorCopy = error;
+  analytics = [(PRItemLocalizer *)self analytics];
+  [analytics rangingFailedWithError:errorCopy];
 
   logger = self->_logger;
   if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v24 = *&v4;
+    v24 = *&errorCopy;
     _os_log_impl(&dword_2613DF000, logger, OS_LOG_TYPE_DEFAULT, "#companion-retry received didFailWithError error:%@", buf, 0xCu);
   }
 
-  if ([v4 code] == 300)
+  if ([errorCopy code] == 300)
   {
-    [(PRItemLocalizer *)self updateDelegateWithSelector:sel_didFailWithError_ object:v4];
+    [(PRItemLocalizer *)self updateDelegateWithSelector:sel_didFailWithError_ object:errorCopy];
   }
 
   else
@@ -2832,13 +2832,13 @@ void __38__PRItemLocalizer_remoteDeviceDidMove__block_invoke_2(uint64_t a1, void
     v7 = self->_logger;
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 code];
+      code = [errorCopy code];
       *buf = 134217984;
-      v24 = *&v8;
+      v24 = *&code;
       _os_log_impl(&dword_2613DF000, v7, OS_LOG_TYPE_DEFAULT, "#companion-retry ItemLocalizer received error code %lld", buf, 0xCu);
     }
 
-    if ([v4 code] == 302)
+    if ([errorCopy code] == 302)
     {
       v9 = self->_logger;
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -2850,8 +2850,8 @@ void __38__PRItemLocalizer_remoteDeviceDidMove__block_invoke_2(uint64_t a1, void
       [(PRItemLocalizer *)self sendPRItemState:2];
     }
 
-    v10 = [(PRItemLocalizer *)self session];
-    v11 = v10 == 0;
+    session = [(PRItemLocalizer *)self session];
+    v11 = session == 0;
 
     if (v11)
     {
@@ -2865,8 +2865,8 @@ void __38__PRItemLocalizer_remoteDeviceDidMove__block_invoke_2(uint64_t a1, void
 
     else
     {
-      v12 = [(PRItemLocalizer *)self session];
-      [v12 invalidate];
+      session2 = [(PRItemLocalizer *)self session];
+      [session2 invalidate];
 
       [(PRItemLocalizer *)self setSession:0];
       self->_rangingState = 0;
@@ -2886,14 +2886,14 @@ void __38__PRItemLocalizer_remoteDeviceDidMove__block_invoke_2(uint64_t a1, void
       }
 
       v16 = dispatch_time(0, 1000000 * v13);
-      v17 = [(PRItemLocalizer *)self proximityQueue];
+      proximityQueue = [(PRItemLocalizer *)self proximityQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __36__PRItemLocalizer_didFailWithError___block_invoke;
       block[3] = &unk_279AD6258;
       block[4] = self;
       objc_copyWeak(&v21, &location);
-      dispatch_after(v16, v17, block);
+      dispatch_after(v16, proximityQueue, block);
 
       objc_destroyWeak(&v21);
       objc_destroyWeak(&location);
@@ -2930,14 +2930,14 @@ void __36__PRItemLocalizer_didFailWithError___block_invoke(uint64_t a1)
   }
 
   [(PRItemLocalizer *)self recordUsage];
-  v4 = [(PRItemLocalizer *)self session];
-  [v4 invalidate];
+  session = [(PRItemLocalizer *)self session];
+  [session invalidate];
 
-  v5 = [(PRItemLocalizer *)self movementTimer];
-  [v5 invalidate];
+  movementTimer = [(PRItemLocalizer *)self movementTimer];
+  [movementTimer invalidate];
 
-  v6 = [(PRItemLocalizer *)self analytics];
-  [v6 deinit];
+  analytics = [(PRItemLocalizer *)self analytics];
+  [analytics deinit];
 
   v7.receiver = self;
   v7.super_class = PRItemLocalizer;
@@ -2953,8 +2953,8 @@ void __36__PRItemLocalizer_didFailWithError___block_invoke(uint64_t a1)
     _os_log_impl(&dword_2613DF000, logger, OS_LOG_TYPE_DEFAULT, "PRItemLocalizer logging external TorchButtonPresented event", v5, 2u);
   }
 
-  v4 = [(PRItemLocalizer *)self analytics];
-  [v4 torchButtonPresented];
+  analytics = [(PRItemLocalizer *)self analytics];
+  [analytics torchButtonPresented];
 }
 
 - (PRItemLocalizerDelegate)delegate
@@ -2976,17 +2976,17 @@ void __36__PRItemLocalizer_didFailWithError___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setLastSolution:(BatchSolution *)a3
+- (void)setLastSolution:(BatchSolution *)solution
 {
-  v5 = *(&a3->isVerticalResolved + 1);
-  *&self->_lastSolution.solutionStatus = *&a3->solutionStatus;
+  v5 = *(&solution->isVerticalResolved + 1);
+  *&self->_lastSolution.solutionStatus = *&solution->solutionStatus;
   *(&self->_lastSolution.isVerticalResolved + 1) = v5;
-  if (&self->_lastSolution != a3)
+  if (&self->_lastSolution != solution)
   {
-    std::vector<RoseSyntheticApertureFiltering::BatchSolutionParticle>::__assign_with_size[abi:ne200100]<RoseSyntheticApertureFiltering::BatchSolutionParticle*,RoseSyntheticApertureFiltering::BatchSolutionParticle*>(&self->_lastSolution.BatchSolutionList.__begin_, a3->BatchSolutionList.__begin_, a3->BatchSolutionList.__end_, 0xCF3CF3CF3CF3CF3DLL * ((a3->BatchSolutionList.__end_ - a3->BatchSolutionList.__begin_) >> 3));
+    std::vector<RoseSyntheticApertureFiltering::BatchSolutionParticle>::__assign_with_size[abi:ne200100]<RoseSyntheticApertureFiltering::BatchSolutionParticle*,RoseSyntheticApertureFiltering::BatchSolutionParticle*>(&self->_lastSolution.BatchSolutionList.__begin_, solution->BatchSolutionList.__begin_, solution->BatchSolutionList.__end_, 0xCF3CF3CF3CF3CF3DLL * ((solution->BatchSolutionList.__end_ - solution->BatchSolutionList.__begin_) >> 3));
   }
 
-  self->_lastSolution.lastTestStatisticValue = a3->lastTestStatisticValue;
+  self->_lastSolution.lastTestStatisticValue = solution->lastTestStatisticValue;
 }
 
 - (id).cxx_construct

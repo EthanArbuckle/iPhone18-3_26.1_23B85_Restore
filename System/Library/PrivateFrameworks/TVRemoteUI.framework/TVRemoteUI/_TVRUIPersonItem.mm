@@ -1,50 +1,50 @@
 @interface _TVRUIPersonItem
-+ (id)itemWithFactoidItem:(id)a3;
-+ (id)itemWithMediaInfo:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)itemWithFactoidItem:(id)item;
++ (id)itemWithMediaInfo:(id)info;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isExpandable;
 - (BOOL)isFactoid;
 - (BOOL)isMediaInfo;
-- (_TVRUIPersonItem)initWithFactoidItem:(id)a3 mediaInfo:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_TVRUIPersonItem)initWithFactoidItem:(id)item mediaInfo:(id)info;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation _TVRUIPersonItem
 
-- (_TVRUIPersonItem)initWithFactoidItem:(id)a3 mediaInfo:(id)a4
+- (_TVRUIPersonItem)initWithFactoidItem:(id)item mediaInfo:(id)info
 {
-  v7 = a3;
-  v8 = a4;
+  itemCopy = item;
+  infoCopy = info;
   v14.receiver = self;
   v14.super_class = _TVRUIPersonItem;
   v9 = [(_TVRUIPersonItem *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_factoidItem, a3);
-    objc_storeStrong(&v10->_mediaInfo, a4);
-    v11 = [MEMORY[0x277CCAD78] UUID];
+    objc_storeStrong(&v9->_factoidItem, item);
+    objc_storeStrong(&v10->_mediaInfo, info);
+    uUID = [MEMORY[0x277CCAD78] UUID];
     identifier = v10->_identifier;
-    v10->_identifier = v11;
+    v10->_identifier = uUID;
   }
 
   return v10;
 }
 
-+ (id)itemWithFactoidItem:(id)a3
++ (id)itemWithFactoidItem:(id)item
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithFactoidItem:v4 mediaInfo:0];
+  itemCopy = item;
+  v5 = [[self alloc] initWithFactoidItem:itemCopy mediaInfo:0];
 
   return v5;
 }
 
-+ (id)itemWithMediaInfo:(id)a3
++ (id)itemWithMediaInfo:(id)info
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithFactoidItem:0 mediaInfo:v4];
+  infoCopy = info;
+  v5 = [[self alloc] initWithFactoidItem:0 mediaInfo:infoCopy];
 
   return v5;
 }
@@ -55,22 +55,22 @@
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
   v6 = [MEMORY[0x277CCABB0] numberWithBool:{-[_TVRUIPersonItem isFactoid](self, "isFactoid")}];
-  v7 = [(_TVRUIPersonItem *)self factoidItem];
-  v8 = [(_TVRUIPersonItem *)self mediaInfo];
-  v9 = [v8 title];
-  v10 = [v3 stringWithFormat:@"<%@ %p: isFactoid=%@ factoidItem=%@; name=%@>", v5, self, v6, v7, v9];;
+  factoidItem = [(_TVRUIPersonItem *)self factoidItem];
+  mediaInfo = [(_TVRUIPersonItem *)self mediaInfo];
+  title = [mediaInfo title];
+  v10 = [v3 stringWithFormat:@"<%@ %p: isFactoid=%@ factoidItem=%@; name=%@>", v5, self, v6, factoidItem, title];;
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = [(_TVRUIPersonItem *)self identifier];
-    v6 = [v4 identifier];
-    v7 = [v5 isEqual:v6];
+    identifier = [(_TVRUIPersonItem *)self identifier];
+    identifier2 = [equalCopy identifier];
+    v7 = [identifier isEqual:identifier2];
   }
 
   else
@@ -83,42 +83,42 @@
 
 - (unint64_t)hash
 {
-  v2 = [(_TVRUIPersonItem *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(_TVRUIPersonItem *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
 - (BOOL)isFactoid
 {
-  v2 = [(_TVRUIPersonItem *)self factoidItem];
-  v3 = v2 != 0;
+  factoidItem = [(_TVRUIPersonItem *)self factoidItem];
+  v3 = factoidItem != 0;
 
   return v3;
 }
 
 - (BOOL)isMediaInfo
 {
-  v2 = [(_TVRUIPersonItem *)self mediaInfo];
-  v3 = v2 != 0;
+  mediaInfo = [(_TVRUIPersonItem *)self mediaInfo];
+  v3 = mediaInfo != 0;
 
   return v3;
 }
 
 - (BOOL)isExpandable
 {
-  v2 = [(_TVRUIPersonItem *)self factoidItem];
-  v3 = ([v2 factoidOptions] >> 2) & 1;
+  factoidItem = [(_TVRUIPersonItem *)self factoidItem];
+  v3 = ([factoidItem factoidOptions] >> 2) & 1;
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(_TVRUIPersonItem *)self factoidItem];
-  v6 = [(_TVRUIPersonItem *)self mediaInfo];
-  v7 = [v4 initWithFactoidItem:v5 mediaInfo:v6];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  factoidItem = [(_TVRUIPersonItem *)self factoidItem];
+  mediaInfo = [(_TVRUIPersonItem *)self mediaInfo];
+  v7 = [v4 initWithFactoidItem:factoidItem mediaInfo:mediaInfo];
 
   return v7;
 }

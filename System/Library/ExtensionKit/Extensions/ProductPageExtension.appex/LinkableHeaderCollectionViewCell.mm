@@ -1,11 +1,11 @@
 @interface LinkableHeaderCollectionViewCell
-- (_TtC20ProductPageExtension32LinkableHeaderCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC20ProductPageExtension32LinkableHeaderCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation LinkableHeaderCollectionViewCell
 
-- (_TtC20ProductPageExtension32LinkableHeaderCollectionViewCell)initWithCoder:(id)a3
+- (_TtC20ProductPageExtension32LinkableHeaderCollectionViewCell)initWithCoder:(id)coder
 {
   result = sub_10077156C();
   __break(1u);
@@ -18,7 +18,7 @@
   v12.super_class = type metadata accessor for LinkableHeaderCollectionViewCell();
   v2 = v12.receiver;
   [(LinkableHeaderCollectionViewCell *)&v12 layoutSubviews];
-  v3 = [v2 contentView];
+  contentView = [v2 contentView];
   sub_100016F40(0, &qword_1009441F0);
   sub_10076422C();
   v5 = v4;

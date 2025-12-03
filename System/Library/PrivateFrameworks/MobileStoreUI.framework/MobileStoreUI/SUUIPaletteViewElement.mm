@@ -1,20 +1,20 @@
 @interface SUUIPaletteViewElement
-- (void)enumerateChildrenUsingBlock:(id)a3;
+- (void)enumerateChildrenUsingBlock:(id)block;
 @end
 
 @implementation SUUIPaletteViewElement
 
-- (void)enumerateChildrenUsingBlock:(id)a3
+- (void)enumerateChildrenUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__SUUIPaletteViewElement_enumerateChildrenUsingBlock___block_invoke;
   v7[3] = &unk_2798F6008;
-  v8 = v4;
+  v8 = blockCopy;
   v6.receiver = self;
   v6.super_class = SUUIPaletteViewElement;
-  v5 = v4;
+  v5 = blockCopy;
   [(SUUIViewElement *)&v6 enumerateChildrenUsingBlock:v7];
 }
 

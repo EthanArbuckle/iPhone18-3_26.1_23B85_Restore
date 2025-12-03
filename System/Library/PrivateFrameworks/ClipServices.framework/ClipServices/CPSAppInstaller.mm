@@ -1,42 +1,42 @@
 @interface CPSAppInstaller
-- (CPSAppInstaller)initWithAppInfoFetcher:(id)a3;
-- (void)installDownloadedAppWithBundleID:(id)a3 localFilePath:(id)a4 completionHandler:(id)a5;
+- (CPSAppInstaller)initWithAppInfoFetcher:(id)fetcher;
+- (void)installDownloadedAppWithBundleID:(id)d localFilePath:(id)path completionHandler:(id)handler;
 @end
 
 @implementation CPSAppInstaller
 
-- (CPSAppInstaller)initWithAppInfoFetcher:(id)a3
+- (CPSAppInstaller)initWithAppInfoFetcher:(id)fetcher
 {
-  v5 = a3;
+  fetcherCopy = fetcher;
   v10.receiver = self;
   v10.super_class = CPSAppInstaller;
   v6 = [(CPSAppInstaller *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_appInfoFetcher, a3);
+    objc_storeStrong(&v6->_appInfoFetcher, fetcher);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (void)installDownloadedAppWithBundleID:(id)a3 localFilePath:(id)a4 completionHandler:(id)a5
+- (void)installDownloadedAppWithBundleID:(id)d localFilePath:(id)path completionHandler:(id)handler
 {
   v45 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x277CC1E60] applicationProxyForIdentifier:v8];
-  v12 = [v11 appState];
-  v13 = [v12 isInstalled];
+  dCopy = d;
+  pathCopy = path;
+  handlerCopy = handler;
+  v11 = [MEMORY[0x277CC1E60] applicationProxyForIdentifier:dCopy];
+  appState = [v11 appState];
+  isInstalled = [appState isInstalled];
 
-  if (v13)
+  if (isInstalled)
   {
-    v10[2](v10, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
-  else if (-[CPSAppBundleInstaller inactive](self->_appBundleInstaller, "inactive") || (-[CPSAppBundleInstaller bundleIdentifier](self->_appBundleInstaller, "bundleIdentifier"), v14 = objc_claimAutoreleasedReturnValue(), v15 = [v14 isEqualToString:v8], v14, !v15))
+  else if (-[CPSAppBundleInstaller inactive](self->_appBundleInstaller, "inactive") || (-[CPSAppBundleInstaller bundleIdentifier](self->_appBundleInstaller, "bundleIdentifier"), v14 = objc_claimAutoreleasedReturnValue(), v15 = [v14 isEqualToString:dCopy], v14, !v15))
   {
     if (!self->_archiveService)
     {
@@ -65,21 +65,21 @@
 
     v21 = MEMORY[0x277CBEBC0];
     v22 = NSTemporaryDirectory();
-    v23 = [MEMORY[0x277CCAD78] UUID];
-    v24 = [v23 UUIDString];
-    v25 = [v22 stringByAppendingPathComponent:v24];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    v25 = [v22 stringByAppendingPathComponent:uUIDString];
     v26 = [v21 fileURLWithPath:v25];
 
     v27 = self->_archiveService;
-    v28 = [MEMORY[0x277CBEBC0] fileURLWithPath:v9];
+    v28 = [MEMORY[0x277CBEBC0] fileURLWithPath:pathCopy];
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
     v32[2] = __84__CPSAppInstaller_installDownloadedAppWithBundleID_localFilePath_completionHandler___block_invoke;
     v32[3] = &unk_278DCDBD8;
-    v36 = v10;
+    v36 = handlerCopy;
     v33 = v26;
-    v34 = self;
-    v35 = v8;
+    selfCopy = self;
+    v35 = dCopy;
     v29 = v26;
     v30 = [(DSArchiveService *)v27 unarchiveItemAtURL:v28 passphrases:0 destinationFolderURL:v29 completionHandler:v32];
   }
@@ -90,11 +90,11 @@
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
       LODWORD(buf) = 138477827;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = dCopy;
       _os_log_impl(&dword_2436ED000, v16, OS_LOG_TYPE_INFO, "An installation for bundle ID %{private}@ is already in flight", &buf, 0xCu);
     }
 
-    v10[2](v10, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   v31 = *MEMORY[0x277D85DE8];

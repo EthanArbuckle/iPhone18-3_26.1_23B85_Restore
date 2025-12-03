@@ -1,53 +1,53 @@
 @interface SBFullScreenToHomeIconZoomSwitcherModifier
 - (BOOL)_isEffectivelyHome;
-- (BOOL)_isIndexZoomAppLayout:(unint64_t)a3;
+- (BOOL)_isIndexZoomAppLayout:(unint64_t)layout;
 - (BOOL)shouldAcceleratedHomeButtonPressBegin;
-- (BOOL)shouldAsyncRenderUntilDelay:(double *)a3;
-- (BOOL)shouldPinLayoutRolesToSpace:(unint64_t)a3;
-- (BOOL)shouldScaleOverlayToFillBoundsAtIndex:(unint64_t)a3;
-- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)a3;
-- (CGPoint)adjustedSpaceAccessoryViewAnchorPoint:(CGPoint)a3 forAppLayout:(id)a4;
-- (CGPoint)adjustedSpaceAccessoryViewPerspectiveAngle:(CGPoint)a3 forAppLayout:(id)a4;
-- (CGPoint)anchorPointForIndex:(unint64_t)a3;
-- (CGPoint)frameForIndexOffsetToCounteractSwitcherWindowMatchMoveForIndex:(unint64_t)a3;
-- (CGPoint)perspectiveAngleForIndex:(unint64_t)a3;
-- (CGPoint)perspectiveAngleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withPerspectiveAngle:(CGPoint)a5;
-- (CGRect)_homeScreenFrameForZoomingIndex:(unint64_t)a3 ignoringGenie:(BOOL)a4;
-- (CGRect)adjustedSpaceAccessoryViewFrame:(CGRect)a3 forAppLayout:(id)a4;
-- (CGRect)frameForIndex:(unint64_t)a3;
-- (CGRect)frameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withBounds:(CGRect)a5;
-- (CGRect)fullyPresentedFrameForIndex:(unint64_t)a3 frame:(CGRect)a4;
-- (SBFullScreenToHomeIconZoomSwitcherModifier)initWithTransitionID:(id)a3 appLayout:(id)a4 direction:(unint64_t)a5;
-- (SBFullScreenToHomeIconZoomSwitcherModifier)initWithTransitionID:(id)a3 targetFrame:(CGRect)a4 appLayout:(id)a5 direction:(unint64_t)a6;
-- (SBSwitcherShelfPresentationAttributes)presentationAttributesForShelf:(SEL)a3;
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3;
+- (BOOL)shouldAsyncRenderUntilDelay:(double *)delay;
+- (BOOL)shouldPinLayoutRolesToSpace:(unint64_t)space;
+- (BOOL)shouldScaleOverlayToFillBoundsAtIndex:(unint64_t)index;
+- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)space;
+- (CGPoint)adjustedSpaceAccessoryViewAnchorPoint:(CGPoint)point forAppLayout:(id)layout;
+- (CGPoint)adjustedSpaceAccessoryViewPerspectiveAngle:(CGPoint)angle forAppLayout:(id)layout;
+- (CGPoint)anchorPointForIndex:(unint64_t)index;
+- (CGPoint)frameForIndexOffsetToCounteractSwitcherWindowMatchMoveForIndex:(unint64_t)index;
+- (CGPoint)perspectiveAngleForIndex:(unint64_t)index;
+- (CGPoint)perspectiveAngleForLayoutRole:(int64_t)role inAppLayout:(id)layout withPerspectiveAngle:(CGPoint)angle;
+- (CGRect)_homeScreenFrameForZoomingIndex:(unint64_t)index ignoringGenie:(BOOL)genie;
+- (CGRect)adjustedSpaceAccessoryViewFrame:(CGRect)frame forAppLayout:(id)layout;
+- (CGRect)frameForIndex:(unint64_t)index;
+- (CGRect)frameForLayoutRole:(int64_t)role inAppLayout:(id)layout withBounds:(CGRect)bounds;
+- (CGRect)fullyPresentedFrameForIndex:(unint64_t)index frame:(CGRect)frame;
+- (SBFullScreenToHomeIconZoomSwitcherModifier)initWithTransitionID:(id)d appLayout:(id)layout direction:(unint64_t)direction;
+- (SBFullScreenToHomeIconZoomSwitcherModifier)initWithTransitionID:(id)d targetFrame:(CGRect)frame appLayout:(id)layout direction:(unint64_t)direction;
+- (SBSwitcherShelfPresentationAttributes)presentationAttributesForShelf:(SEL)shelf;
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index;
 - (double)_genieCounterScaleIfNeeded;
-- (double)_normalizedHomeScreenIconZoomPercentBetweenTopAndBottom:(CGPoint)a3;
-- (double)adjustedSpaceAccessoryViewScale:(double)a3 forAppLayout:(id)a4;
+- (double)_normalizedHomeScreenIconZoomPercentBetweenTopAndBottom:(CGPoint)bottom;
+- (double)adjustedSpaceAccessoryViewScale:(double)scale forAppLayout:(id)layout;
 - (double)fadeInDelayForSplitViewHandles;
 - (double)homeScreenAlpha;
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5;
-- (double)scaleForIndex:(unint64_t)a3;
-- (double)shadowOpacityForLayoutRole:(int64_t)a3 atIndex:(unint64_t)a4;
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index;
+- (double)scaleForIndex:(unint64_t)index;
+- (double)shadowOpacityForLayoutRole:(int64_t)role atIndex:(unint64_t)index;
 - (double)wallpaperScale;
 - (id)_flexibleAutoLayoutSpaceForZoomingAppLayout;
 - (id)_layoutSettings;
-- (id)_settingsByInterpolatingBetween:(id)a3 and:(id)a4 progress:(double)a5;
-- (id)animationAttributesForLayoutElement:(id)a3;
-- (id)appLayoutsForContinuousExposeIdentifier:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)genieAttributesForAppLayout:(id)a3;
-- (id)handleTimerEvent:(id)a3;
-- (id)handleTransitionEvent:(id)a3;
-- (id)layoutSettingsForTargetCenter:(CGPoint)a3;
+- (id)_settingsByInterpolatingBetween:(id)between and:(id)and progress:(double)progress;
+- (id)animationAttributesForLayoutElement:(id)element;
+- (id)appLayoutsForContinuousExposeIdentifier:(id)identifier;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)genieAttributesForAppLayout:(id)layout;
+- (id)handleTimerEvent:(id)event;
+- (id)handleTransitionEvent:(id)event;
+- (id)layoutSettingsForTargetCenter:(CGPoint)center;
 - (id)topMostLayoutElements;
 - (id)transitionDidEnd;
 - (id)transitionWillBegin;
 - (id)transitionWillUpdate;
 - (id)visibleAppLayouts;
-- (int64_t)_numberOfPeekingItemsAboveDisplayItem:(id)a3 zOrderedItems:(id)a4;
+- (int64_t)_numberOfPeekingItemsAboveDisplayItem:(id)item zOrderedItems:(id)items;
 - (int64_t)homeScreenBackdropBlurType;
-- (void)didMoveToParentModifier:(id)a3;
+- (void)didMoveToParentModifier:(id)modifier;
 @end
 
 @implementation SBFullScreenToHomeIconZoomSwitcherModifier
@@ -56,9 +56,9 @@
 {
   v96.receiver = self;
   v96.super_class = SBFullScreenToHomeIconZoomSwitcherModifier;
-  v3 = [(SBTransitionSwitcherModifier *)&v96 transitionWillBegin];
+  transitionWillBegin = [(SBTransitionSwitcherModifier *)&v96 transitionWillBegin];
   v4 = objc_alloc_init(SBSwitcherModifierEventResponse);
-  v5 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self homeScreenBackdropBlurType];
+  homeScreenBackdropBlurType = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self homeScreenBackdropBlurType];
   if (([(SBFullScreenToHomeIconZoomSwitcherModifier *)self homeScreenHasOpenFolder]& 1) != 0)
   {
     LOBYTE(v6) = 0;
@@ -71,7 +71,7 @@
 
   if (self->_direction)
   {
-    if ((v5 == 3) | v6 & 1 && !self->_isMinimizing)
+    if ((homeScreenBackdropBlurType == 3) | v6 & 1 && !self->_isMinimizing)
     {
       v7 = [SBUpdateLayoutSwitcherEventResponse alloc];
       v8 = 2;
@@ -103,36 +103,36 @@
   v15 = v13 || !homeScreenIconLocationIsFloatingDock;
   if (direction != 1 || !homeScreenIconLocationIsFloatingDock)
   {
-    v16 = 0;
+    isFloatingDockFullyPresented = 0;
     v82 = v13 && homeScreenIconLocationIsFloatingDock;
   }
 
   else
   {
-    v16 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self isFloatingDockFullyPresented];
+    isFloatingDockFullyPresented = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self isFloatingDockFullyPresented];
     v82 = 0;
   }
 
-  v17 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self switcherSettings];
-  v18 = [v17 animationSettings];
+  switcherSettings = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
 
-  if (v16)
+  if (isFloatingDockFullyPresented)
   {
-    v19 = [v18 floatingDockIconFadeSettings];
+    floatingDockIconFadeSettings = [animationSettings floatingDockIconFadeSettings];
   }
 
   else
   {
-    v19 = 0;
+    floatingDockIconFadeSettings = 0;
     if (direction != 1 && self->_homeScreenIconLocationIsFloatingDock)
     {
       v20 = [SBTimerEventSwitcherEventResponse alloc];
-      v21 = [v18 floatingDockIconFadeSettings];
-      [v21 response];
+      floatingDockIconFadeSettings2 = [animationSettings floatingDockIconFadeSettings];
+      [floatingDockIconFadeSettings2 response];
       v22 = [(SBTimerEventSwitcherEventResponse *)v20 initWithDelay:0 validator:@"kSBHomeToStageIconFadeInDelay" reason:?];
       [(SBChainableModifierEventResponse *)v4 addChildResponse:v22];
 
-      v19 = 0;
+      floatingDockIconFadeSettings = 0;
     }
   }
 
@@ -141,12 +141,12 @@
     v23 = [[SBIconOverlayVisibilitySwitcherEventResponse alloc] initWithAppLayout:self->_appLayout visible:1];
     [(SBChainableModifierEventResponse *)v4 addChildResponse:v23];
 
-    v24 = [[SBIconViewVisibilitySwitcherEventResponse alloc] initWithAppLayout:self->_appLayout visible:0 animationSettings:v19 excludedIconLocations:0];
+    v24 = [[SBIconViewVisibilitySwitcherEventResponse alloc] initWithAppLayout:self->_appLayout visible:0 animationSettings:floatingDockIconFadeSettings excludedIconLocations:0];
     self->_isHidingDockIcon = 1;
-    if (v16)
+    if (isFloatingDockFullyPresented)
     {
       objc_initWeak(&location, self);
-      [v18 iconZoomFloatingDockFadeDelay];
+      [animationSettings iconZoomFloatingDockFadeDelay];
       v26 = v25;
       v93[0] = MEMORY[0x277D85DD0];
       v93[1] = 3221225472;
@@ -176,10 +176,10 @@
   if (self->_shouldAcceleratedHomeButtonPressBegin)
   {
     objc_initWeak(&location, self);
-    v29 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self _layoutSettings];
-    [v29 settlingDuration];
+    _layoutSettings = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self _layoutSettings];
+    [_layoutSettings settlingDuration];
     v31 = v30;
-    [v18 disallowAcceleratedHomeButtonPressTransitionPercentage];
+    [animationSettings disallowAcceleratedHomeButtonPressTransitionPercentage];
     v33 = v32;
 
     v34 = [SBTimerEventSwitcherEventResponse alloc];
@@ -197,12 +197,12 @@
 
   if (!v15 && self->_itemContainerOverlapsDock)
   {
-    v36 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self switcherSettings];
-    v37 = [v36 animationSettings];
+    switcherSettings2 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self switcherSettings];
+    animationSettings2 = [switcherSettings2 animationSettings];
 
     if (self->_canAddVelocityKickToHurdleDock)
     {
-      [v37 dockHurdlingIconZoomInitialVelocity];
+      [animationSettings2 dockHurdlingIconZoomInitialVelocity];
       v39 = v38;
       v40 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self currentVelocityValueForVisibleAppLayout:self->_appLayout key:@"position"];
       [v40 CGPointValue];
@@ -218,16 +218,16 @@
       [MEMORY[0x277CCAE60] valueWithCGPoint:{v42, v39}];
       v46 = direction;
       v47 = v4;
-      v49 = v48 = v19;
+      v49 = v48 = floatingDockIconFadeSettings;
       v50 = [(SBInjectVelocitySwitcherEventResponse *)v45 initWithVelocity:v49 forKey:@"position" appLayout:self->_appLayout];
 
-      v19 = v48;
+      floatingDockIconFadeSettings = v48;
       v4 = v47;
       direction = v46;
       [(SBChainableModifierEventResponse *)v4 addChildResponse:v50];
     }
 
-    [v37 dockHurdlingIconZoomDockToBackTiming];
+    [animationSettings2 dockHurdlingIconZoomDockToBackTiming];
     v52 = v51;
     UIAnimationDragCoefficient();
     v54 = v53;
@@ -246,10 +246,10 @@
 
   if (v82 && self->_shouldDockOrderFrontDuringTransition)
   {
-    v58 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self switcherSettings];
-    v37 = [v58 animationSettings];
+    switcherSettings3 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self switcherSettings];
+    animationSettings2 = [switcherSettings3 animationSettings];
 
-    [v37 dockHurdlingIconZoomDockToFrontTiming];
+    [animationSettings2 dockHurdlingIconZoomDockToFrontTiming];
     v60 = v59;
     UIAnimationDragCoefficient();
     v62 = v61;
@@ -270,22 +270,22 @@ LABEL_41:
   }
 
   coplanarModifier = self->_coplanarModifier;
-  v65 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self peekingAppLayout];
-  [(SBCoplanarSwitcherModifier *)coplanarModifier setIgnoredAppLayout:v65];
+  peekingAppLayout = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self peekingAppLayout];
+  [(SBCoplanarSwitcherModifier *)coplanarModifier setIgnoredAppLayout:peekingAppLayout];
 
   if (self->_genieEnabled && ([(SBFullScreenToHomeIconZoomSwitcherModifier *)self isDevicePad]& 1) == 0)
   {
-    v66 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self switcherSettings];
-    v67 = [v66 animationSettings];
+    switcherSettings4 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self switcherSettings];
+    animationSettings3 = [switcherSettings4 animationSettings];
 
     if (direction == 1)
     {
-      [v67 genieCornerRadiusToHomeResetDelay];
+      [animationSettings3 genieCornerRadiusToHomeResetDelay];
     }
 
     else
     {
-      [v67 genieCornerRadiusToAppResetDelay];
+      [animationSettings3 genieCornerRadiusToAppResetDelay];
     }
 
     v69 = v68;
@@ -299,12 +299,12 @@ LABEL_41:
     v85[3] = &unk_2783AD4A0;
     objc_copyWeak(&v86, &location);
     v73 = [(SBTimerEventSwitcherEventResponse *)v70 initWithDelay:v85 validator:@"kSBFullScreenToHomeCornerRadiusDelayReason" reason:v72];
-    v74 = SBAppendSwitcherModifierResponse(v73, v3);
+    v74 = SBAppendSwitcherModifierResponse(v73, transitionWillBegin);
 
     objc_destroyWeak(&v86);
     objc_destroyWeak(&location);
 
-    v3 = v74;
+    transitionWillBegin = v74;
   }
 
   if (self->_isWaitingForGlassHighlightDelay)
@@ -319,14 +319,14 @@ LABEL_41:
     v83[3] = &unk_2783AD4A0;
     objc_copyWeak(&v84, &location);
     v78 = [(SBTimerEventSwitcherEventResponse *)v75 initWithDelay:v83 validator:@"kSBFullScreenToHomeGlassHighlightDelayReason" reason:v77];
-    v79 = SBAppendSwitcherModifierResponse(v78, v3);
+    v79 = SBAppendSwitcherModifierResponse(v78, transitionWillBegin);
 
     objc_destroyWeak(&v84);
     objc_destroyWeak(&location);
-    v3 = v79;
+    transitionWillBegin = v79;
   }
 
-  v80 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v4 toResponse:v3];
+  v80 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v4 toResponse:transitionWillBegin];
 
   return v80;
 }
@@ -360,13 +360,13 @@ LABEL_41:
 {
   v9.receiver = self;
   v9.super_class = SBFullScreenToHomeIconZoomSwitcherModifier;
-  v3 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)&v9 visibleAppLayouts];
-  v4 = [v3 setByAddingObject:self->_appLayout];
+  visibleAppLayouts = [(SBFullScreenToHomeIconZoomSwitcherModifier *)&v9 visibleAppLayouts];
+  v4 = [visibleAppLayouts setByAddingObject:self->_appLayout];
 
-  v5 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self peekingAppLayout];
-  if (v5)
+  peekingAppLayout = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self peekingAppLayout];
+  if (peekingAppLayout)
   {
-    v6 = [v4 setByAddingObject:v5];
+    v6 = [v4 setByAddingObject:peekingAppLayout];
 
     v4 = v6;
   }
@@ -406,15 +406,15 @@ LABEL_41:
   appLayout = self->_appLayout;
   v7.receiver = self;
   v7.super_class = SBFullScreenToHomeIconZoomSwitcherModifier;
-  v4 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)&v7 topMostLayoutElements];
-  v5 = [(SBSwitcherModifier *)self topMostLayoutElementsByAddingAppLayoutAndAccessories:appLayout toTopMostLayoutElements:v4 orderFront:1];
+  topMostLayoutElements = [(SBFullScreenToHomeIconZoomSwitcherModifier *)&v7 topMostLayoutElements];
+  v5 = [(SBSwitcherModifier *)self topMostLayoutElementsByAddingAppLayoutAndAccessories:appLayout toTopMostLayoutElements:topMostLayoutElements orderFront:1];
 
   return v5;
 }
 
 - (double)homeScreenAlpha
 {
-  v3 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self homeScreenBackdropBlurType];
+  homeScreenBackdropBlurType = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self homeScreenBackdropBlurType];
   if (([(SBFullScreenToHomeIconZoomSwitcherModifier *)self homeScreenHasOpenFolder]& 1) != 0)
   {
     v5 = 0;
@@ -425,7 +425,7 @@ LABEL_41:
     v5 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self homeScreenHasWidgetCenterOrLibraryOpen]^ 1;
   }
 
-  if (v3 == 3 || (result = 1.0, v5))
+  if (homeScreenBackdropBlurType == 3 || (result = 1.0, v5))
   {
     v6.receiver = self;
     v6.super_class = SBFullScreenToHomeIconZoomSwitcherModifier;
@@ -448,7 +448,7 @@ BOOL __65__SBFullScreenToHomeIconZoomSwitcherModifier_transitionWillBegin__block
 {
   v14.receiver = self;
   v14.super_class = SBFullScreenToHomeIconZoomSwitcherModifier;
-  v3 = [(SBTransitionSwitcherModifier *)&v14 transitionDidEnd];
+  transitionDidEnd = [(SBTransitionSwitcherModifier *)&v14 transitionDidEnd];
   if (self->_direction)
   {
     if (!self->_shouldUpdateIconViewVisibility)
@@ -467,17 +467,17 @@ LABEL_6:
       self->_isHidingDockIcon = 0;
       if (self->_homeScreenIconLocationIsFloatingDock && !self->_direction)
       {
-        v12 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self switcherSettings];
-        v13 = [v12 animationSettings];
-        v7 = [v13 floatingDockIconFadeSettings];
+        switcherSettings = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self switcherSettings];
+        animationSettings = [switcherSettings animationSettings];
+        floatingDockIconFadeSettings = [animationSettings floatingDockIconFadeSettings];
       }
 
       else
       {
-        v7 = 0;
+        floatingDockIconFadeSettings = 0;
       }
 
-      v8 = [[SBIconViewVisibilitySwitcherEventResponse alloc] initWithAppLayout:self->_appLayout visible:1 animationSettings:v7 excludedIconLocations:0];
+      v8 = [[SBIconViewVisibilitySwitcherEventResponse alloc] initWithAppLayout:self->_appLayout visible:1 animationSettings:floatingDockIconFadeSettings excludedIconLocations:0];
       [(SBChainableModifierEventResponse *)v4 addChildResponse:v8];
     }
 
@@ -504,23 +504,23 @@ LABEL_6:
 LABEL_12:
   if (v4)
   {
-    v10 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v4 toResponse:v3];
+    v10 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v4 toResponse:transitionDidEnd];
 
-    v3 = v10;
+    transitionDidEnd = v10;
   }
 
 LABEL_14:
 
-  return v3;
+  return transitionDidEnd;
 }
 
-- (SBFullScreenToHomeIconZoomSwitcherModifier)initWithTransitionID:(id)a3 targetFrame:(CGRect)a4 appLayout:(id)a5 direction:(unint64_t)a6
+- (SBFullScreenToHomeIconZoomSwitcherModifier)initWithTransitionID:(id)d targetFrame:(CGRect)frame appLayout:(id)layout direction:(unint64_t)direction
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  result = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self initWithTransitionID:a3 appLayout:a5 direction:a6];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  result = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self initWithTransitionID:d appLayout:layout direction:direction];
   if (result)
   {
     result->_homeScreenIconFrame.origin.x = x;
@@ -532,18 +532,18 @@ LABEL_14:
   return result;
 }
 
-- (SBFullScreenToHomeIconZoomSwitcherModifier)initWithTransitionID:(id)a3 appLayout:(id)a4 direction:(unint64_t)a5
+- (SBFullScreenToHomeIconZoomSwitcherModifier)initWithTransitionID:(id)d appLayout:(id)layout direction:(unint64_t)direction
 {
-  v9 = a4;
+  layoutCopy = layout;
   v13.receiver = self;
   v13.super_class = SBFullScreenToHomeIconZoomSwitcherModifier;
-  v10 = [(SBTransitionSwitcherModifier *)&v13 initWithTransitionID:a3];
+  v10 = [(SBTransitionSwitcherModifier *)&v13 initWithTransitionID:d];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_appLayout, a4);
-    v11->_direction = a5;
-    v11->_shouldAcceleratedHomeButtonPressBegin = a5 == 0;
+    objc_storeStrong(&v10->_appLayout, layout);
+    v11->_direction = direction;
+    v11->_shouldAcceleratedHomeButtonPressBegin = direction == 0;
     v11->_shouldUpdateIconViewVisibility = 1;
     v11->_shouldMatchMoveToIconView = 1;
     v11->_shouldDisableAsyncRendering = 0;
@@ -554,11 +554,11 @@ LABEL_14:
   return v11;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v12.receiver = self;
   v12.super_class = SBFullScreenToHomeIconZoomSwitcherModifier;
-  v4 = [(SBTransitionSwitcherModifier *)&v12 descriptionBuilderWithMultilinePrefix:a3];
+  v4 = [(SBTransitionSwitcherModifier *)&v12 descriptionBuilderWithMultilinePrefix:prefix];
   v5 = v4;
   if (self->_direction == 1)
   {
@@ -578,12 +578,12 @@ LABEL_14:
   return v5;
 }
 
-- (void)didMoveToParentModifier:(id)a3
+- (void)didMoveToParentModifier:(id)modifier
 {
   v17.receiver = self;
   v17.super_class = SBFullScreenToHomeIconZoomSwitcherModifier;
   [(SBChainableModifier *)&v17 didMoveToParentModifier:?];
-  if (a3 && ![(SBChainableModifier *)self containsChildModifier:self->_coplanarModifier])
+  if (modifier && ![(SBChainableModifier *)self containsChildModifier:self->_coplanarModifier])
   {
     self->_genieEnabled = !self->_genieDisabled;
     self->_hasResetCornerRadius = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self isDevicePad];
@@ -624,18 +624,18 @@ LABEL_14:
   }
 }
 
-- (id)handleTransitionEvent:(id)a3
+- (id)handleTransitionEvent:(id)event
 {
-  v4 = a3;
-  if ([v4 phase] == 1)
+  eventCopy = event;
+  if ([eventCopy phase] == 1)
   {
-    v5 = [v4 fromAppLayout];
+    fromAppLayout = [eventCopy fromAppLayout];
     fromAppLayout = self->_fromAppLayout;
-    self->_fromAppLayout = v5;
+    self->_fromAppLayout = fromAppLayout;
 
-    v7 = [v4 toAppLayout];
+    toAppLayout = [eventCopy toAppLayout];
     toAppLayout = self->_toAppLayout;
-    self->_toAppLayout = v7;
+    self->_toAppLayout = toAppLayout;
 
     v9 = self->_fromAppLayout;
     if (v9)
@@ -644,24 +644,24 @@ LABEL_14:
     }
 
     self->_isAddingToStage = v9;
-    v10 = [v4 minimizingDisplayItem];
-    v11 = v10;
-    if (v10)
+    minimizingDisplayItem = [eventCopy minimizingDisplayItem];
+    v11 = minimizingDisplayItem;
+    if (minimizingDisplayItem)
     {
-      LOBYTE(v10) = [(SBAppLayout *)self->_fromAppLayout containsItem:v10];
+      LOBYTE(minimizingDisplayItem) = [(SBAppLayout *)self->_fromAppLayout containsItem:minimizingDisplayItem];
     }
 
-    self->_isMinimizing = v10;
+    self->_isMinimizing = minimizingDisplayItem;
   }
 
   v14.receiver = self;
   v14.super_class = SBFullScreenToHomeIconZoomSwitcherModifier;
-  v12 = [(SBTransitionSwitcherModifier *)&v14 handleTransitionEvent:v4];
+  v12 = [(SBTransitionSwitcherModifier *)&v14 handleTransitionEvent:eventCopy];
 
   return v12;
 }
 
-- (BOOL)shouldAsyncRenderUntilDelay:(double *)a3
+- (BOOL)shouldAsyncRenderUntilDelay:(double *)delay
 {
   if (self->_direction)
   {
@@ -673,16 +673,16 @@ LABEL_14:
     return 0;
   }
 
-  v6 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self switcherSettings];
-  v7 = [v6 animationSettings];
-  [v7 disableAsyncRenderingTransitionPercentage];
+  switcherSettings = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
+  [animationSettings disableAsyncRenderingTransitionPercentage];
   v9 = v8;
 
-  v10 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self _layoutSettings];
-  [v10 settlingDuration];
+  _layoutSettings = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self _layoutSettings];
+  [_layoutSettings settlingDuration];
   v12 = v9 * v11;
   UIAnimationDragCoefficient();
-  *a3 = v12 * v13;
+  *delay = v12 * v13;
 
   return 1;
 }
@@ -736,10 +736,10 @@ BOOL __65__SBFullScreenToHomeIconZoomSwitcherModifier_transitionWillBegin__block
 {
   v13.receiver = self;
   v13.super_class = SBFullScreenToHomeIconZoomSwitcherModifier;
-  v3 = [(SBTransitionSwitcherModifier *)&v13 transitionWillUpdate];
+  transitionWillUpdate = [(SBTransitionSwitcherModifier *)&v13 transitionWillUpdate];
   coplanarModifier = self->_coplanarModifier;
-  v5 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self peekingAppLayout];
-  [(SBCoplanarSwitcherModifier *)coplanarModifier setIgnoredAppLayout:v5];
+  peekingAppLayout = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self peekingAppLayout];
+  [(SBCoplanarSwitcherModifier *)coplanarModifier setIgnoredAppLayout:peekingAppLayout];
 
   if (!self->_canAddVelocityKickToHurdleDock && self->_shouldMatchMoveToIconView && self->_direction == 1)
   {
@@ -749,22 +749,22 @@ BOOL __65__SBFullScreenToHomeIconZoomSwitcherModifier_transitionWillBegin__block
     self->_homeScreenIconFrame.size.width = v8;
     self->_homeScreenIconFrame.size.height = v9;
     v10 = [[SBMatchMoveToIconViewSwitcherEventResponse alloc] initWithActivatingAppLayout:self->_appLayout iconFrame:self->_homeScreenIconFrame.origin.x, self->_homeScreenIconFrame.origin.y, self->_homeScreenIconFrame.size.width, self->_homeScreenIconFrame.size.height];
-    v11 = SBAppendSwitcherModifierResponse(v10, v3);
+    v11 = SBAppendSwitcherModifierResponse(v10, transitionWillUpdate);
 
-    v3 = v11;
+    transitionWillUpdate = v11;
   }
 
-  return v3;
+  return transitionWillUpdate;
 }
 
-- (id)handleTimerEvent:(id)a3
+- (id)handleTimerEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v28.receiver = self;
   v28.super_class = SBFullScreenToHomeIconZoomSwitcherModifier;
-  v5 = [(SBTransitionSwitcherModifier *)&v28 handleTimerEvent:v4];
-  v6 = [v4 reason];
-  v7 = [v6 isEqualToString:@"kSBIconZoomDisallowAcceleratedHomeButtonPressReason"];
+  v5 = [(SBTransitionSwitcherModifier *)&v28 handleTimerEvent:eventCopy];
+  reason = [eventCopy reason];
+  v7 = [reason isEqualToString:@"kSBIconZoomDisallowAcceleratedHomeButtonPressReason"];
 
   if (v7)
   {
@@ -774,8 +774,8 @@ LABEL_3:
     goto LABEL_17;
   }
 
-  v9 = [v4 reason];
-  v10 = [v9 isEqualToString:@"kSBIconZoomSwitcherModifierTakeDockWindowLevelAssertionReason"];
+  reason2 = [eventCopy reason];
+  v10 = [reason2 isEqualToString:@"kSBIconZoomSwitcherModifierTakeDockWindowLevelAssertionReason"];
 
   if (v10)
   {
@@ -783,8 +783,8 @@ LABEL_3:
     goto LABEL_17;
   }
 
-  v11 = [v4 reason];
-  v12 = [v11 isEqualToString:@"kSBIconZoomSwitcherModifierRelinquishDockWindowLevelAssertionReason"];
+  reason3 = [eventCopy reason];
+  v12 = [reason3 isEqualToString:@"kSBIconZoomSwitcherModifierRelinquishDockWindowLevelAssertionReason"];
 
   if (v12)
   {
@@ -792,8 +792,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v13 = [v4 reason];
-  v14 = [v13 isEqualToString:@"kSBHomeToStageIconFadeInDelay"];
+  reason4 = [eventCopy reason];
+  v14 = [reason4 isEqualToString:@"kSBHomeToStageIconFadeInDelay"];
 
   if (v14)
   {
@@ -803,18 +803,18 @@ LABEL_3:
     }
 
     self->_isHidingDockIcon = 0;
-    v15 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self switcherSettings];
-    v16 = [v15 animationSettings];
-    v17 = [v16 floatingDockIconFadeSettings];
+    switcherSettings = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self switcherSettings];
+    animationSettings = [switcherSettings animationSettings];
+    floatingDockIconFadeSettings = [animationSettings floatingDockIconFadeSettings];
 
-    v18 = [[SBIconViewVisibilitySwitcherEventResponse alloc] initWithAppLayout:self->_appLayout visible:1 animationSettings:v17 excludedIconLocations:0];
+    v18 = [[SBIconViewVisibilitySwitcherEventResponse alloc] initWithAppLayout:self->_appLayout visible:1 animationSettings:floatingDockIconFadeSettings excludedIconLocations:0];
     v19 = SBAppendSwitcherModifierResponse(v18, v5);
   }
 
   else
   {
-    v20 = [v4 reason];
-    v21 = [v20 isEqualToString:@"kSBFullScreenToHomeCornerRadiusDelayReason"];
+    reason5 = [eventCopy reason];
+    v21 = [reason5 isEqualToString:@"kSBFullScreenToHomeCornerRadiusDelayReason"];
 
     if (v21)
     {
@@ -825,8 +825,8 @@ LABEL_3:
 
     else
     {
-      v24 = [v4 reason];
-      v25 = [v24 isEqualToString:@"kSBFullScreenToHomeGlassHighlightDelayReason"];
+      reason6 = [eventCopy reason];
+      v25 = [reason6 isEqualToString:@"kSBFullScreenToHomeGlassHighlightDelayReason"];
 
       if (!v25)
       {
@@ -848,16 +848,16 @@ LABEL_17:
   return v5;
 }
 
-- (id)appLayoutsForContinuousExposeIdentifier:(id)a3
+- (id)appLayoutsForContinuousExposeIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = SBFullScreenToHomeIconZoomSwitcherModifier;
-  v5 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)&v13 appLayoutsForContinuousExposeIdentifier:v4];
-  v6 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self windowManagementContext];
-  if ([v6 isChamoisOrFlexibleWindowing])
+  v5 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)&v13 appLayoutsForContinuousExposeIdentifier:identifierCopy];
+  windowManagementContext = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self windowManagementContext];
+  if ([windowManagementContext isChamoisOrFlexibleWindowing])
   {
-    v7 = [(SBAppLayout *)self->_appLayout continuousExposeIdentifier];
+    continuousExposeIdentifier = [(SBAppLayout *)self->_appLayout continuousExposeIdentifier];
     v8 = BSEqualStrings();
 
     if (v8)
@@ -899,9 +899,9 @@ uint64_t __86__SBFullScreenToHomeIconZoomSwitcherModifier_appLayoutsForContinuou
   return v4;
 }
 
-- (CGPoint)frameForIndexOffsetToCounteractSwitcherWindowMatchMoveForIndex:(unint64_t)a3
+- (CGPoint)frameForIndexOffsetToCounteractSwitcherWindowMatchMoveForIndex:(unint64_t)index
 {
-  if ([(SBFullScreenToHomeIconZoomSwitcherModifier *)self _isEffectivelyHome]&& ![(SBFullScreenToHomeIconZoomSwitcherModifier *)self _isIndexZoomAppLayout:a3]&& self->_shouldMatchMoveToIconView && self->_direction == 1)
+  if ([(SBFullScreenToHomeIconZoomSwitcherModifier *)self _isEffectivelyHome]&& ![(SBFullScreenToHomeIconZoomSwitcherModifier *)self _isIndexZoomAppLayout:index]&& self->_shouldMatchMoveToIconView && self->_direction == 1)
   {
     [(SBFullScreenToHomeIconZoomSwitcherModifier *)self homeScreenIconFrameForAppLayout:self->_appLayout];
     v6 = self->_homeScreenIconFrame.origin.x - v5;
@@ -919,7 +919,7 @@ uint64_t __86__SBFullScreenToHomeIconZoomSwitcherModifier_appLayoutsForContinuou
   return result;
 }
 
-- (CGRect)frameForIndex:(unint64_t)a3
+- (CGRect)frameForIndex:(unint64_t)index
 {
   v35.receiver = self;
   v35.super_class = SBFullScreenToHomeIconZoomSwitcherModifier;
@@ -930,9 +930,9 @@ uint64_t __86__SBFullScreenToHomeIconZoomSwitcherModifier_appLayoutsForContinuou
   v12 = v11;
   if ([(SBFullScreenToHomeIconZoomSwitcherModifier *)self _isEffectivelyHome])
   {
-    if ([(SBFullScreenToHomeIconZoomSwitcherModifier *)self _isIndexZoomAppLayout:a3])
+    if ([(SBFullScreenToHomeIconZoomSwitcherModifier *)self _isIndexZoomAppLayout:index])
     {
-      [(SBFullScreenToHomeIconZoomSwitcherModifier *)self _homeScreenFrameForZoomingIndex:a3 ignoringGenie:0];
+      [(SBFullScreenToHomeIconZoomSwitcherModifier *)self _homeScreenFrameForZoomingIndex:index ignoringGenie:0];
       v6 = v13;
       v8 = v14;
       v10 = v15;
@@ -949,8 +949,8 @@ uint64_t __86__SBFullScreenToHomeIconZoomSwitcherModifier_appLayoutsForContinuou
 
   else
   {
-    v17 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self windowManagementContext];
-    if ([v17 isFlexibleWindowingEnabled] && -[SBFullScreenToHomeIconZoomSwitcherModifier _isIndexZoomAppLayout:](self, "_isIndexZoomAppLayout:", a3))
+    windowManagementContext = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self windowManagementContext];
+    if ([windowManagementContext isFlexibleWindowingEnabled] && -[SBFullScreenToHomeIconZoomSwitcherModifier _isIndexZoomAppLayout:](self, "_isIndexZoomAppLayout:", index))
     {
       isAddingToStage = self->_isAddingToStage;
 
@@ -963,7 +963,7 @@ uint64_t __86__SBFullScreenToHomeIconZoomSwitcherModifier_appLayoutsForContinuou
         v22 = self->_toAppLayout;
         v34.receiver = self;
         v34.super_class = SBFullScreenToHomeIconZoomSwitcherModifier;
-        [(SBFullScreenToHomeIconZoomSwitcherModifier *)&v34 frameForIndex:a3];
+        [(SBFullScreenToHomeIconZoomSwitcherModifier *)&v34 frameForIndex:index];
         SBRectWithSize();
         v33.receiver = self;
         v33.super_class = SBFullScreenToHomeIconZoomSwitcherModifier;
@@ -991,19 +991,19 @@ uint64_t __86__SBFullScreenToHomeIconZoomSwitcherModifier_appLayoutsForContinuou
   return result;
 }
 
-- (CGRect)_homeScreenFrameForZoomingIndex:(unint64_t)a3 ignoringGenie:(BOOL)a4
+- (CGRect)_homeScreenFrameForZoomingIndex:(unint64_t)index ignoringGenie:(BOOL)genie
 {
-  if (self->_genieEnabled && (-[SBFullScreenToHomeIconZoomSwitcherModifier windowManagementContext](self, "windowManagementContext", a3, a4), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 isFlexibleWindowingEnabled], v6, v7))
+  if (self->_genieEnabled && (-[SBFullScreenToHomeIconZoomSwitcherModifier windowManagementContext](self, "windowManagementContext", index, genie), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 isFlexibleWindowingEnabled], v6, v7))
   {
-    v8 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self _flexibleAutoLayoutSpaceForZoomingAppLayout];
-    [v8 boundingBox];
+    _flexibleAutoLayoutSpaceForZoomingAppLayout = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self _flexibleAutoLayoutSpaceForZoomingAppLayout];
+    [_flexibleAutoLayoutSpaceForZoomingAppLayout boundingBox];
   }
 
   else
   {
     v13.receiver = self;
     v13.super_class = SBFullScreenToHomeIconZoomSwitcherModifier;
-    [(SBFullScreenToHomeIconZoomSwitcherModifier *)&v13 frameForIndex:a3];
+    [(SBFullScreenToHomeIconZoomSwitcherModifier *)&v13 frameForIndex:index];
   }
 
   BSFloatGreaterThanFloat();
@@ -1017,13 +1017,13 @@ uint64_t __86__SBFullScreenToHomeIconZoomSwitcherModifier_appLayoutsForContinuou
   return result;
 }
 
-- (CGPoint)anchorPointForIndex:(unint64_t)a3
+- (CGPoint)anchorPointForIndex:(unint64_t)index
 {
-  if (!self->_shouldForceDefaultAnchorPointForTransition || (v7 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self _isIndexZoomAppLayout:a3], v3 = 0.5, v4 = 0.5, !v7))
+  if (!self->_shouldForceDefaultAnchorPointForTransition || (v7 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self _isIndexZoomAppLayout:index], v3 = 0.5, v4 = 0.5, !v7))
   {
     v8.receiver = self;
     v8.super_class = SBFullScreenToHomeIconZoomSwitcherModifier;
-    [(SBFullScreenToHomeIconZoomSwitcherModifier *)&v8 anchorPointForIndex:a3, v3, v4];
+    [(SBFullScreenToHomeIconZoomSwitcherModifier *)&v8 anchorPointForIndex:index, v3, v4];
   }
 
   result.y = v4;
@@ -1031,34 +1031,34 @@ uint64_t __86__SBFullScreenToHomeIconZoomSwitcherModifier_appLayoutsForContinuou
   return result;
 }
 
-- (BOOL)shouldPinLayoutRolesToSpace:(unint64_t)a3
+- (BOOL)shouldPinLayoutRolesToSpace:(unint64_t)space
 {
-  if (self->_shouldForceDefaultAnchorPointForTransition && [(SBFullScreenToHomeIconZoomSwitcherModifier *)self _isIndexZoomAppLayout:a3])
+  if (self->_shouldForceDefaultAnchorPointForTransition && [(SBFullScreenToHomeIconZoomSwitcherModifier *)self _isIndexZoomAppLayout:space])
   {
     return 1;
   }
 
   v6.receiver = self;
   v6.super_class = SBFullScreenToHomeIconZoomSwitcherModifier;
-  return [(SBFullScreenToHomeIconZoomSwitcherModifier *)&v6 shouldPinLayoutRolesToSpace:a3];
+  return [(SBFullScreenToHomeIconZoomSwitcherModifier *)&v6 shouldPinLayoutRolesToSpace:space];
 }
 
-- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)a3
+- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)space
 {
-  if (self->_shouldForceDefaultAnchorPointForTransition && [(SBFullScreenToHomeIconZoomSwitcherModifier *)self _isIndexZoomAppLayout:a3])
+  if (self->_shouldForceDefaultAnchorPointForTransition && [(SBFullScreenToHomeIconZoomSwitcherModifier *)self _isIndexZoomAppLayout:space])
   {
     return 1;
   }
 
   v6.receiver = self;
   v6.super_class = SBFullScreenToHomeIconZoomSwitcherModifier;
-  return [(SBFullScreenToHomeIconZoomSwitcherModifier *)&v6 shouldUseAnchorPointToPinLayoutRolesToSpace:a3];
+  return [(SBFullScreenToHomeIconZoomSwitcherModifier *)&v6 shouldUseAnchorPointToPinLayoutRolesToSpace:space];
 }
 
-- (CGPoint)perspectiveAngleForIndex:(unint64_t)a3
+- (CGPoint)perspectiveAngleForIndex:(unint64_t)index
 {
-  v5 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   if (self->_shouldForceDefaultAnchorPointForTransition && [v6 isEqual:self->_appLayout])
   {
@@ -1070,7 +1070,7 @@ uint64_t __86__SBFullScreenToHomeIconZoomSwitcherModifier_appLayoutsForContinuou
   {
     v13.receiver = self;
     v13.super_class = SBFullScreenToHomeIconZoomSwitcherModifier;
-    [(SBFullScreenToHomeIconZoomSwitcherModifier *)&v13 perspectiveAngleForIndex:a3];
+    [(SBFullScreenToHomeIconZoomSwitcherModifier *)&v13 perspectiveAngleForIndex:index];
     v7 = v9;
     v8 = v10;
   }
@@ -1082,13 +1082,13 @@ uint64_t __86__SBFullScreenToHomeIconZoomSwitcherModifier_appLayoutsForContinuou
   return result;
 }
 
-- (CGPoint)perspectiveAngleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withPerspectiveAngle:(CGPoint)a5
+- (CGPoint)perspectiveAngleForLayoutRole:(int64_t)role inAppLayout:(id)layout withPerspectiveAngle:(CGPoint)angle
 {
-  y = a5.y;
-  x = a5.x;
-  v9 = a4;
-  v10 = [v9 itemForLayoutRole:a3];
-  v11 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self displayItemInSlideOver];
+  y = angle.y;
+  x = angle.x;
+  layoutCopy = layout;
+  v10 = [layoutCopy itemForLayoutRole:role];
+  displayItemInSlideOver = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self displayItemInSlideOver];
   if (BSEqualObjects())
   {
     if (self->_direction != 1)
@@ -1114,7 +1114,7 @@ LABEL_8:
 
   v19.receiver = self;
   v19.super_class = SBFullScreenToHomeIconZoomSwitcherModifier;
-  [(SBFullScreenToHomeIconZoomSwitcherModifier *)&v19 perspectiveAngleForLayoutRole:a3 inAppLayout:v9 withPerspectiveAngle:x, y];
+  [(SBFullScreenToHomeIconZoomSwitcherModifier *)&v19 perspectiveAngleForLayoutRole:role inAppLayout:layoutCopy withPerspectiveAngle:x, y];
   v14 = v13;
   v16 = v15;
 LABEL_9:
@@ -1126,18 +1126,18 @@ LABEL_9:
   return result;
 }
 
-- (CGRect)adjustedSpaceAccessoryViewFrame:(CGRect)a3 forAppLayout:(id)a4
+- (CGRect)adjustedSpaceAccessoryViewFrame:(CGRect)frame forAppLayout:(id)layout
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  v10 = v9;
-  if (self->_shouldForceDefaultAnchorPointForTransition && [v9 isEqual:self->_appLayout])
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  layoutCopy = layout;
+  v10 = layoutCopy;
+  if (self->_shouldForceDefaultAnchorPointForTransition && [layoutCopy isEqual:self->_appLayout])
   {
-    v11 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self appLayouts];
-    -[SBFullScreenToHomeIconZoomSwitcherModifier frameForIndex:](self, "frameForIndex:", [v11 indexOfObject:self->_appLayout]);
+    appLayouts = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self appLayouts];
+    -[SBFullScreenToHomeIconZoomSwitcherModifier frameForIndex:](self, "frameForIndex:", [appLayouts indexOfObject:self->_appLayout]);
     v13 = v12;
     v15 = v14;
     v17 = v16;
@@ -1166,28 +1166,28 @@ LABEL_9:
   return result;
 }
 
-- (double)adjustedSpaceAccessoryViewScale:(double)a3 forAppLayout:(id)a4
+- (double)adjustedSpaceAccessoryViewScale:(double)scale forAppLayout:(id)layout
 {
-  v6 = a4;
-  v7 = v6;
-  if (!self->_genieEnabled || ([v6 isEqual:self->_appLayout] & 1) == 0)
+  layoutCopy = layout;
+  v7 = layoutCopy;
+  if (!self->_genieEnabled || ([layoutCopy isEqual:self->_appLayout] & 1) == 0)
   {
     v10.receiver = self;
     v10.super_class = SBFullScreenToHomeIconZoomSwitcherModifier;
-    [(SBFullScreenToHomeIconZoomSwitcherModifier *)&v10 adjustedSpaceAccessoryViewScale:v7 forAppLayout:a3];
-    a3 = v8;
+    [(SBFullScreenToHomeIconZoomSwitcherModifier *)&v10 adjustedSpaceAccessoryViewScale:v7 forAppLayout:scale];
+    scale = v8;
   }
 
-  return a3;
+  return scale;
 }
 
-- (CGPoint)adjustedSpaceAccessoryViewAnchorPoint:(CGPoint)a3 forAppLayout:(id)a4
+- (CGPoint)adjustedSpaceAccessoryViewAnchorPoint:(CGPoint)point forAppLayout:(id)layout
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = v7;
-  if (!self->_shouldForceDefaultAnchorPointForTransition || (v9 = 0.5, v10 = 0.5, ([v7 isEqual:self->_appLayout] & 1) == 0))
+  y = point.y;
+  x = point.x;
+  layoutCopy = layout;
+  v8 = layoutCopy;
+  if (!self->_shouldForceDefaultAnchorPointForTransition || (v9 = 0.5, v10 = 0.5, ([layoutCopy isEqual:self->_appLayout] & 1) == 0))
   {
     v15.receiver = self;
     v15.super_class = SBFullScreenToHomeIconZoomSwitcherModifier;
@@ -1203,13 +1203,13 @@ LABEL_9:
   return result;
 }
 
-- (CGPoint)adjustedSpaceAccessoryViewPerspectiveAngle:(CGPoint)a3 forAppLayout:(id)a4
+- (CGPoint)adjustedSpaceAccessoryViewPerspectiveAngle:(CGPoint)angle forAppLayout:(id)layout
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = v7;
-  if (self->_genieEnabled && [v7 isEqual:self->_appLayout])
+  y = angle.y;
+  x = angle.x;
+  layoutCopy = layout;
+  v8 = layoutCopy;
+  if (self->_genieEnabled && [layoutCopy isEqual:self->_appLayout])
   {
     v9 = *MEMORY[0x277CBF348];
     v10 = *(MEMORY[0x277CBF348] + 8);
@@ -1231,12 +1231,12 @@ LABEL_9:
   return result;
 }
 
-- (CGRect)fullyPresentedFrameForIndex:(unint64_t)a3 frame:(CGRect)a4
+- (CGRect)fullyPresentedFrameForIndex:(unint64_t)index frame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v10 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self _isIndexZoomAppLayout:?];
   if (!self->_genieEnabled || !v10)
   {
@@ -1244,23 +1244,23 @@ LABEL_9:
     {
       v70.receiver = self;
       v70.super_class = SBFullScreenToHomeIconZoomSwitcherModifier;
-      [(SBFullScreenToHomeIconZoomSwitcherModifier *)&v70 frameForIndex:a3];
+      [(SBFullScreenToHomeIconZoomSwitcherModifier *)&v70 frameForIndex:index];
     }
 
     else
     {
       v69.receiver = self;
       v69.super_class = SBFullScreenToHomeIconZoomSwitcherModifier;
-      [(SBFullScreenToHomeIconZoomSwitcherModifier *)&v69 fullyPresentedFrameForIndex:a3 frame:x, y, width, height];
+      [(SBFullScreenToHomeIconZoomSwitcherModifier *)&v69 fullyPresentedFrameForIndex:index frame:x, y, width, height];
     }
 
     goto LABEL_14;
   }
 
-  v16 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self windowManagementContext];
-  v17 = [v16 isFlexibleWindowingEnabled];
+  windowManagementContext = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self windowManagementContext];
+  isFlexibleWindowingEnabled = [windowManagementContext isFlexibleWindowingEnabled];
 
-  if (!v17)
+  if (!isFlexibleWindowingEnabled)
   {
     [(SBFullScreenToHomeIconZoomSwitcherModifier *)self containerViewBounds];
 LABEL_14:
@@ -1277,29 +1277,29 @@ LABEL_14:
     v19 = [(SBAppLayout *)self->_appLayout itemForLayoutRole:1];
     v20 = [(SBAppLayout *)toAppLayout layoutRoleForItem:v19];
 
-    v21 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self displayItemLayoutAttributesCalculator];
+    displayItemLayoutAttributesCalculator = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self displayItemLayoutAttributesCalculator];
     v22 = self->_toAppLayout;
     [(SBFullScreenToHomeIconZoomSwitcherModifier *)self containerViewBounds];
     v67 = v24;
     v68 = v23;
     v26 = v25;
     v28 = v27;
-    v29 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self switcherInterfaceOrientation];
+    switcherInterfaceOrientation = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self switcherInterfaceOrientation];
     [(SBFullScreenToHomeIconZoomSwitcherModifier *)self floatingDockHeight];
     v31 = v30;
     [(SBFullScreenToHomeIconZoomSwitcherModifier *)self screenScale];
     v33 = v32;
-    v34 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self isDisplayEmbedded];
-    v35 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self prefersStripHidden];
-    v36 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self prefersDockHidden];
+    isDisplayEmbedded = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self isDisplayEmbedded];
+    prefersStripHidden = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self prefersStripHidden];
+    prefersDockHidden = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self prefersDockHidden];
     [(SBFullScreenToHomeIconZoomSwitcherModifier *)self leftStatusBarPartIntersectionRegion];
     v38 = v37;
     v40 = v39;
     v42 = v41;
     v44 = v43;
     [(SBFullScreenToHomeIconZoomSwitcherModifier *)self rightStatusBarPartIntersectionRegion];
-    LOBYTE(v66) = v36;
-    [v21 frameForLayoutRole:v20 inAppLayout:v22 containerBounds:v29 containerOrientation:1 floatingDockHeight:v34 screenScale:v35 isChamoisWindowingUIEnabled:v68 isEmbeddedDisplay:v67 prefersStripHidden:v26 prefersDockHidden:v28 leftStatusBarPartIntersectionRegion:v31 rightStatusBarPartIntersectionRegion:{v33, v66, v38, v40, v42, v44, v45, v46, v47, v48}];
+    LOBYTE(v66) = prefersDockHidden;
+    [displayItemLayoutAttributesCalculator frameForLayoutRole:v20 inAppLayout:v22 containerBounds:switcherInterfaceOrientation containerOrientation:1 floatingDockHeight:isDisplayEmbedded screenScale:prefersStripHidden isChamoisWindowingUIEnabled:v68 isEmbeddedDisplay:v67 prefersStripHidden:v26 prefersDockHidden:v28 leftStatusBarPartIntersectionRegion:v31 rightStatusBarPartIntersectionRegion:{v33, v66, v38, v40, v42, v44, v45, v46, v47, v48}];
     v50 = v49;
     v52 = v51;
     v54 = v53;
@@ -1308,8 +1308,8 @@ LABEL_14:
 
   else
   {
-    v61 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self _flexibleAutoLayoutSpaceForZoomingAppLayout];
-    [v61 boundingBox];
+    _flexibleAutoLayoutSpaceForZoomingAppLayout = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self _flexibleAutoLayoutSpaceForZoomingAppLayout];
+    [_flexibleAutoLayoutSpaceForZoomingAppLayout boundingBox];
     v50 = v62;
     v52 = v63;
     v54 = v64;
@@ -1328,7 +1328,7 @@ LABEL_15:
   return result;
 }
 
-- (SBSwitcherShelfPresentationAttributes)presentationAttributesForShelf:(SEL)a3
+- (SBSwitcherShelfPresentationAttributes)presentationAttributesForShelf:(SEL)shelf
 {
   retstr->var3 = 0;
   *&retstr->var1.origin.y = 0u;
@@ -1341,18 +1341,18 @@ LABEL_15:
   return result;
 }
 
-- (double)scaleForIndex:(unint64_t)a3
+- (double)scaleForIndex:(unint64_t)index
 {
-  if ([(SBFullScreenToHomeIconZoomSwitcherModifier *)self _isEffectivelyHome]&& [(SBFullScreenToHomeIconZoomSwitcherModifier *)self _isIndexZoomAppLayout:a3])
+  if ([(SBFullScreenToHomeIconZoomSwitcherModifier *)self _isEffectivelyHome]&& [(SBFullScreenToHomeIconZoomSwitcherModifier *)self _isIndexZoomAppLayout:index])
   {
-    v5 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self displayItemInSlideOver];
-    if (v5 && [(SBAppLayout *)self->_fromAppLayout containsItem:v5])
+    displayItemInSlideOver = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self displayItemInSlideOver];
+    if (displayItemInSlideOver && [(SBAppLayout *)self->_fromAppLayout containsItem:displayItemInSlideOver])
     {
-      v6 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self appLayouts];
-      v7 = [v6 objectAtIndex:a3];
+      appLayouts = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self appLayouts];
+      v7 = [appLayouts objectAtIndex:index];
 
-      v8 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self displayItemLayoutAttributesCalculator];
-      v9 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self switcherInterfaceOrientation];
+      displayItemLayoutAttributesCalculator = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self displayItemLayoutAttributesCalculator];
+      switcherInterfaceOrientation = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self switcherInterfaceOrientation];
       [(SBFullScreenToHomeIconZoomSwitcherModifier *)self floatingDockHeight];
       v50 = v10;
       [(SBFullScreenToHomeIconZoomSwitcherModifier *)self screenScale];
@@ -1362,16 +1362,16 @@ LABEL_15:
       v15 = v14;
       v17 = v16;
       v19 = v18;
-      v20 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self isDisplayEmbedded];
-      v21 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self prefersStripHidden];
-      v22 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self prefersDockHidden];
+      isDisplayEmbedded = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self isDisplayEmbedded];
+      prefersStripHidden = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self prefersStripHidden];
+      prefersDockHidden = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self prefersDockHidden];
       [(SBFullScreenToHomeIconZoomSwitcherModifier *)self leftStatusBarPartIntersectionRegion];
       v24 = v23;
       v26 = v25;
       v28 = v27;
       v30 = v29;
       [(SBFullScreenToHomeIconZoomSwitcherModifier *)self rightStatusBarPartIntersectionRegion];
-      v35 = [v8 flexibleWindowingAutoLayoutSpaceForAppLayout:v7 containerOrientation:v9 floatingDockHeight:v20 screenScale:v21 bounds:v22 isEmbeddedDisplay:v50 prefersStripHidden:v49 prefersDockHidden:v13 leftStatusBarPartIntersectionRegion:v15 rightStatusBarPartIntersectionRegion:{v17, v19, v24, v26, v28, v30, v31, v32, v33, v34}];
+      v35 = [displayItemLayoutAttributesCalculator flexibleWindowingAutoLayoutSpaceForAppLayout:v7 containerOrientation:switcherInterfaceOrientation floatingDockHeight:isDisplayEmbedded screenScale:prefersStripHidden bounds:prefersDockHidden isEmbeddedDisplay:v50 prefersStripHidden:v49 prefersDockHidden:v13 leftStatusBarPartIntersectionRegion:v15 rightStatusBarPartIntersectionRegion:{v17, v19, v24, v26, v28, v30, v31, v32, v33, v34}];
 
       [v35 boundingBox];
       v37 = v36;
@@ -1382,7 +1382,7 @@ LABEL_15:
     {
       v52.receiver = self;
       v52.super_class = SBFullScreenToHomeIconZoomSwitcherModifier;
-      [(SBFullScreenToHomeIconZoomSwitcherModifier *)&v52 frameForIndex:a3];
+      [(SBFullScreenToHomeIconZoomSwitcherModifier *)&v52 frameForIndex:index];
       v37 = v42;
       v39 = v43;
     }
@@ -1417,77 +1417,77 @@ LABEL_15:
   {
     v51.receiver = self;
     v51.super_class = SBFullScreenToHomeIconZoomSwitcherModifier;
-    [(SBFullScreenToHomeIconZoomSwitcherModifier *)&v51 scaleForIndex:a3];
+    [(SBFullScreenToHomeIconZoomSwitcherModifier *)&v51 scaleForIndex:index];
     return v40;
   }
 
   return v41;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v18.receiver = self;
   v18.super_class = SBFullScreenToHomeIconZoomSwitcherModifier;
-  v5 = [(SBTransitionSwitcherModifier *)&v18 animationAttributesForLayoutElement:v4];
+  v5 = [(SBTransitionSwitcherModifier *)&v18 animationAttributesForLayoutElement:elementCopy];
   v6 = [v5 mutableCopy];
 
-  v7 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self windowManagementContext];
-  if (![v7 isFlexibleWindowingEnabled] || (objc_msgSend(v4, "isAppLayout") & 1) == 0)
+  windowManagementContext = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self windowManagementContext];
+  if (![windowManagementContext isFlexibleWindowingEnabled] || (objc_msgSend(elementCopy, "isAppLayout") & 1) == 0)
   {
 
     goto LABEL_6;
   }
 
-  v8 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self peekingAppLayout];
-  v9 = [v4 appLayout];
-  v10 = [v8 isOrContainsAppLayout:v9];
+  peekingAppLayout = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self peekingAppLayout];
+  appLayout = [elementCopy appLayout];
+  v10 = [peekingAppLayout isOrContainsAppLayout:appLayout];
 
   if (!v10)
   {
 LABEL_6:
-    v11 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self _layoutSettings];
-    [v6 setLayoutSettings:v11];
+    _layoutSettings = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self _layoutSettings];
+    [v6 setLayoutSettings:_layoutSettings];
     goto LABEL_7;
   }
 
-  v11 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self switcherSettings];
-  v12 = [v11 windowingSettings];
-  v13 = [v12 appToPeekLayoutSettings];
-  [v6 setLayoutSettings:v13];
+  _layoutSettings = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self switcherSettings];
+  windowingSettings = [_layoutSettings windowingSettings];
+  appToPeekLayoutSettings = [windowingSettings appToPeekLayoutSettings];
+  [v6 setLayoutSettings:appToPeekLayoutSettings];
 
 LABEL_7:
   if (self->_genieEnabled)
   {
-    v14 = [v4 appLayout];
-    v15 = [v14 isEqual:self->_appLayout];
+    appLayout2 = [elementCopy appLayout];
+    v15 = [appLayout2 isEqual:self->_appLayout];
 
     if (v15)
     {
       [v6 setCornerRadiusUpdateMode:3];
-      v16 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self _layoutSettings];
-      [v6 setCornerRadiusSettings:v16];
+      _layoutSettings2 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self _layoutSettings];
+      [v6 setCornerRadiusSettings:_layoutSettings2];
     }
   }
 
   return v6;
 }
 
-- (id)layoutSettingsForTargetCenter:(CGPoint)a3
+- (id)layoutSettingsForTargetCenter:(CGPoint)center
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self switcherSettings];
-  v7 = [v6 animationSettings];
+  y = center.y;
+  x = center.x;
+  switcherSettings = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
 
   if (self->_direction)
   {
-    v8 = [v7 iconZoomDownSettings];
+    iconZoomDownSettings = [animationSettings iconZoomDownSettings];
   }
 
   else if (([(SBFullScreenToHomeIconZoomSwitcherModifier *)self hasHomeButton]& 1) != 0)
   {
-    v8 = [v7 zoomUpSettings];
+    iconZoomDownSettings = [animationSettings zoomUpSettings];
   }
 
   else
@@ -1496,22 +1496,22 @@ LABEL_7:
     {
       if (self->_genieEnabled)
       {
-        [v7 genieFullScreenCenterRowZoomUpSettings];
+        [animationSettings genieFullScreenCenterRowZoomUpSettings];
       }
 
       else
       {
-        [v7 homeGestureCenterRowZoomUpSettings];
+        [animationSettings homeGestureCenterRowZoomUpSettings];
       }
       v16 = ;
       if (self->_genieEnabled)
       {
-        [v7 genieFullScreenEdgeRowZoomUpSettings];
+        [animationSettings genieFullScreenEdgeRowZoomUpSettings];
       }
 
       else
       {
-        [v7 homeGestureEdgeRowZoomUpSettings];
+        [animationSettings homeGestureEdgeRowZoomUpSettings];
       }
       v17 = ;
       [(SBFullScreenToHomeIconZoomSwitcherModifier *)self _normalizedHomeScreenTargetZoomPercentBetweenCenterAndEdge:x, y];
@@ -1520,37 +1520,37 @@ LABEL_7:
       goto LABEL_6;
     }
 
-    v8 = [v7 genieWindowedZoomUpSettings];
+    iconZoomDownSettings = [animationSettings genieWindowedZoomUpSettings];
   }
 
-  v9 = v8;
+  v9 = iconZoomDownSettings;
 LABEL_6:
 
   return v9;
 }
 
-- (CGRect)frameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withBounds:(CGRect)a5
+- (CGRect)frameForLayoutRole:(int64_t)role inAppLayout:(id)layout withBounds:(CGRect)bounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a4;
-  v12 = [v11 itemForLayoutRole:a3];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  layoutCopy = layout;
+  v12 = [layoutCopy itemForLayoutRole:role];
   v40.receiver = self;
   v40.super_class = SBFullScreenToHomeIconZoomSwitcherModifier;
-  [(SBFullScreenToHomeIconZoomSwitcherModifier *)&v40 frameForLayoutRole:a3 inAppLayout:v11 withBounds:x, y, width, height];
+  [(SBFullScreenToHomeIconZoomSwitcherModifier *)&v40 frameForLayoutRole:role inAppLayout:layoutCopy withBounds:x, y, width, height];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  if ([v11 isEqual:self->_appLayout])
+  if ([layoutCopy isEqual:self->_appLayout])
   {
-    v21 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self _isEffectivelyHome];
-    v22 = [(SBAppLayout *)self->_appLayout allItems];
-    v23 = [v22 count];
+    _isEffectivelyHome = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self _isEffectivelyHome];
+    allItems = [(SBAppLayout *)self->_appLayout allItems];
+    v23 = [allItems count];
 
-    if (v21)
+    if (_isEffectivelyHome)
     {
       if (v23 == 1)
       {
@@ -1578,22 +1578,22 @@ LABEL_6:
 
   else
   {
-    v24 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self peekingAppLayout];
-    v25 = [v24 containsItem:v12];
+    peekingAppLayout = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self peekingAppLayout];
+    v25 = [peekingAppLayout containsItem:v12];
 
     if (v25)
     {
-      v26 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self switcherSettings];
-      [v26 peekInsetWidth];
+      switcherSettings = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self switcherSettings];
+      [switcherSettings peekInsetWidth];
       v28 = v27 + -10.0;
-      v29 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self zOrderedItemsInAppLayout:v11];
+      v29 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self zOrderedItemsInAppLayout:layoutCopy];
       v30 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self _numberOfPeekingItemsAboveDisplayItem:v12 zOrderedItems:v29];
-      [v26 peekCascadingOffset];
+      [switcherSettings peekCascadingOffset];
       v32 = v31 * v30;
 
       v33 = v28 - fmax(v32, 0.0);
-      v34 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self switcherSettings];
-      [v34 peekingAbsolutePerspectiveAngle];
+      switcherSettings2 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self switcherSettings];
+      [switcherSettings2 peekingAbsolutePerspectiveAngle];
 
       BSDegreesToRadians();
       v16 = v16 + v33 - cos(v35) * v33;
@@ -1611,11 +1611,11 @@ LABEL_6:
   return result;
 }
 
-- (int64_t)_numberOfPeekingItemsAboveDisplayItem:(id)a3 zOrderedItems:(id)a4
+- (int64_t)_numberOfPeekingItemsAboveDisplayItem:(id)item zOrderedItems:(id)items
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 indexOfObject:v5];
+  itemCopy = item;
+  itemsCopy = items;
+  v7 = [itemsCopy indexOfObject:itemCopy];
   if (v7 > 0x7FFFFFFFFFFFFFFELL)
   {
     v9 = 0;
@@ -1627,8 +1627,8 @@ LABEL_6:
     v9 = 0;
     do
     {
-      v10 = [v6 objectAtIndex:v8];
-      v9 += [(SBDisplayItem *)v10 isEqualToItem:v5]^ 1;
+      v10 = [itemsCopy objectAtIndex:v8];
+      v9 += [(SBDisplayItem *)v10 isEqualToItem:itemCopy]^ 1;
 
       --v8;
     }
@@ -1639,21 +1639,21 @@ LABEL_6:
   return v9;
 }
 
-- (id)genieAttributesForAppLayout:(id)a3
+- (id)genieAttributesForAppLayout:(id)layout
 {
-  v4 = a3;
-  if ([(SBAppLayout *)self->_appLayout isEqual:v4]&& self->_genieEnabled)
+  layoutCopy = layout;
+  if ([(SBAppLayout *)self->_appLayout isEqual:layoutCopy]&& self->_genieEnabled)
   {
     v70 = 0;
     v68 = 0u;
     v69 = 0u;
-    v5 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self windowManagementContext];
-    v6 = [v5 isFlexibleWindowingEnabled];
+    windowManagementContext = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self windowManagementContext];
+    isFlexibleWindowingEnabled = [windowManagementContext isFlexibleWindowingEnabled];
 
-    if (v6)
+    if (isFlexibleWindowingEnabled)
     {
-      v7 = [(SBAppLayout *)self->_appLayout allItems];
-      v8 = [v7 count] == 1;
+      allItems = [(SBAppLayout *)self->_appLayout allItems];
+      v8 = [allItems count] == 1;
     }
 
     else
@@ -1662,13 +1662,13 @@ LABEL_6:
     }
 
     v10 = [(SBAppLayout *)self->_appLayout itemForLayoutRole:1];
-    if (v6)
+    if (isFlexibleWindowingEnabled)
     {
-      v11 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self _flexibleAutoLayoutSpaceForZoomingAppLayout];
-      [v11 boundingBox];
+      _flexibleAutoLayoutSpaceForZoomingAppLayout = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self _flexibleAutoLayoutSpaceForZoomingAppLayout];
+      [_flexibleAutoLayoutSpaceForZoomingAppLayout boundingBox];
       v13 = v12;
       v15 = v14;
-      v16 = [v11 flexibleAutoLayoutItemForDisplayItem:v10];
+      v16 = [_flexibleAutoLayoutSpaceForZoomingAppLayout flexibleAutoLayoutItemForDisplayItem:v10];
     }
 
     else
@@ -1677,7 +1677,7 @@ LABEL_6:
       v13 = v17;
       v15 = v18;
       v16 = 0;
-      v11 = 0;
+      _flexibleAutoLayoutSpaceForZoomingAppLayout = 0;
     }
 
     width = self->_homeScreenIconFrame.size.width;
@@ -1703,8 +1703,8 @@ LABEL_6:
       v61 = *MEMORY[0x277CBF348];
     }
 
-    v27 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self appLayouts];
-    -[SBFullScreenToHomeIconZoomSwitcherModifier _homeScreenFrameForZoomingIndex:ignoringGenie:](self, "_homeScreenFrameForZoomingIndex:ignoringGenie:", [v27 indexOfObject:v4], 1);
+    appLayouts = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self appLayouts];
+    -[SBFullScreenToHomeIconZoomSwitcherModifier _homeScreenFrameForZoomingIndex:ignoringGenie:](self, "_homeScreenFrameForZoomingIndex:ignoringGenie:", [appLayouts indexOfObject:layoutCopy], 1);
     v29 = v28;
     v59 = v30;
 
@@ -1723,10 +1723,10 @@ LABEL_6:
 
     [(SBFullScreenToHomeIconZoomSwitcherModifier *)self _genieCounterScaleIfNeeded];
     v35 = v34;
-    v36 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self isDevicePad];
+    isDevicePad = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self isDevicePad];
     UIRectGetCenter();
     v39 = v38;
-    if ((v36 & 1) == 0)
+    if ((isDevicePad & 1) == 0)
     {
       [(SBFullScreenToHomeIconZoomSwitcherModifier *)self screenScale];
       UIPointRoundToScale();
@@ -1766,7 +1766,7 @@ LABEL_6:
     }
 
     v51 = v33 / v41;
-    v52 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self _isEffectivelyHome];
+    _isEffectivelyHome = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self _isEffectivelyHome];
     if (self->_direction && self->_supportsGlassHighlight && !self->_isWaitingForGlassHighlightDelay)
     {
       if (self->_homeScreenIconIsWidget)
@@ -1785,24 +1785,24 @@ LABEL_6:
       v53 = SBSwitcherGenieGlassHighlightNone(&v68);
     }
 
-    v54 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self _layoutSettings];
+    _layoutSettings = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self _layoutSettings];
     v66[0] = v68;
     v66[1] = v69;
     v67 = v70;
-    v9 = [SBSwitcherGenieAttributes genieAttributesForIconPosition:v52 windowPosition:v66 initialVelocity:v54 windowSize:v39 minimizedSize:v56 minimizedScale:v64 containerSize:v63 minimumOutsetSize:v61 genieScale:v60 multiplier:v62 active:v15 glassHighlight:v29 layoutSettings:v59, *&v41, v58, v57, *&v44, *&v45, *&v51, *&v50, *&v50];
+    v9 = [SBSwitcherGenieAttributes genieAttributesForIconPosition:_isEffectivelyHome windowPosition:v66 initialVelocity:_layoutSettings windowSize:v39 minimizedSize:v56 minimizedScale:v64 containerSize:v63 minimumOutsetSize:v61 genieScale:v60 multiplier:v62 active:v15 glassHighlight:v29 layoutSettings:v59, *&v41, v58, v57, *&v44, *&v45, *&v51, *&v50, *&v50];
   }
 
   else
   {
     v65.receiver = self;
     v65.super_class = SBFullScreenToHomeIconZoomSwitcherModifier;
-    v9 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)&v65 genieAttributesForAppLayout:v4];
+    v9 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)&v65 genieAttributesForAppLayout:layoutCopy];
   }
 
   return v9;
 }
 
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index
 {
   if ([(SBFullScreenToHomeIconZoomSwitcherModifier *)self _isIndexZoomAppLayout:?])
   {
@@ -1810,14 +1810,14 @@ LABEL_6:
     {
       if ([(SBFullScreenToHomeIconZoomSwitcherModifier *)self _isEffectivelyHome])
       {
-        [(SBFullScreenToHomeIconZoomSwitcherModifier *)self scaleForIndex:a3];
+        [(SBFullScreenToHomeIconZoomSwitcherModifier *)self scaleForIndex:index];
 
         SBRectCornerRadiiForRadius();
       }
 
       else
       {
-        [(SBFullScreenToHomeIconZoomSwitcherModifier *)&v19 cornerRadiiForIndex:a3, v18.receiver, v18.super_class, self, SBFullScreenToHomeIconZoomSwitcherModifier];
+        [(SBFullScreenToHomeIconZoomSwitcherModifier *)&v19 cornerRadiiForIndex:index, v18.receiver, v18.super_class, self, SBFullScreenToHomeIconZoomSwitcherModifier];
       }
     }
 
@@ -1841,7 +1841,7 @@ LABEL_6:
 
   else
   {
-    [(SBFullScreenToHomeIconZoomSwitcherModifier *)&v18 cornerRadiiForIndex:a3, self, SBFullScreenToHomeIconZoomSwitcherModifier, v19.receiver, v19.super_class];
+    [(SBFullScreenToHomeIconZoomSwitcherModifier *)&v18 cornerRadiiForIndex:index, self, SBFullScreenToHomeIconZoomSwitcherModifier, v19.receiver, v19.super_class];
   }
 
   result.topRight = v17;
@@ -1851,14 +1851,14 @@ LABEL_6:
   return result;
 }
 
-- (BOOL)shouldScaleOverlayToFillBoundsAtIndex:(unint64_t)a3
+- (BOOL)shouldScaleOverlayToFillBoundsAtIndex:(unint64_t)index
 {
   result = 0;
   if ([(SBFullScreenToHomeIconZoomSwitcherModifier *)self isDevicePad])
   {
     v6.receiver = self;
     v6.super_class = SBFullScreenToHomeIconZoomSwitcherModifier;
-    [(SBFullScreenToHomeIconZoomSwitcherModifier *)&v6 frameForIndex:a3];
+    [(SBFullScreenToHomeIconZoomSwitcherModifier *)&v6 frameForIndex:index];
     SBRectWithSize();
     if (BSFloatLessThanFloat())
     {
@@ -1869,25 +1869,25 @@ LABEL_6:
   return result;
 }
 
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index
 {
-  v8 = a4;
-  v9 = [v8 itemForLayoutRole:a3];
+  layoutCopy = layout;
+  v9 = [layoutCopy itemForLayoutRole:role];
   v10 = 1.0;
-  if (![(SBFullScreenToHomeIconZoomSwitcherModifier *)self _isIndexZoomAppLayout:a5])
+  if (![(SBFullScreenToHomeIconZoomSwitcherModifier *)self _isIndexZoomAppLayout:index])
   {
     if (self->_direction == 1)
     {
-      v11 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self desktopSpaceDisplayItems];
-      if ([v11 containsObject:v9])
+      desktopSpaceDisplayItems = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self desktopSpaceDisplayItems];
+      if ([desktopSpaceDisplayItems containsObject:v9])
       {
 LABEL_6:
 
         goto LABEL_14;
       }
 
-      v12 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self appLayoutOnStage];
-      if ([v12 containsItem:v9])
+      appLayoutOnStage = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self appLayoutOnStage];
+      if ([appLayoutOnStage containsItem:v9])
       {
 
         goto LABEL_6;
@@ -1903,11 +1903,11 @@ LABEL_6:
 
     if (self->_isMinimizing)
     {
-      v14 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self windowManagementContext];
-      if (([v14 isAutomaticStageCreationEnabled] & 1) == 0)
+      windowManagementContext = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self windowManagementContext];
+      if (([windowManagementContext isAutomaticStageCreationEnabled] & 1) == 0)
       {
-        v15 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self peekingAppLayout];
-        if (![v15 containsItem:v9])
+        peekingAppLayout = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self peekingAppLayout];
+        if (![peekingAppLayout containsItem:v9])
         {
           v18 = [(SBAppLayout *)self->_toAppLayout containsItem:v9];
 
@@ -1925,7 +1925,7 @@ LABEL_6:
 LABEL_13:
     v19.receiver = self;
     v19.super_class = SBFullScreenToHomeIconZoomSwitcherModifier;
-    [(SBFullScreenToHomeIconZoomSwitcherModifier *)&v19 opacityForLayoutRole:a3 inAppLayout:v8 atIndex:a5];
+    [(SBFullScreenToHomeIconZoomSwitcherModifier *)&v19 opacityForLayoutRole:role inAppLayout:layoutCopy atIndex:index];
     v10 = v16;
   }
 
@@ -1934,13 +1934,13 @@ LABEL_14:
   return v10;
 }
 
-- (double)shadowOpacityForLayoutRole:(int64_t)a3 atIndex:(unint64_t)a4
+- (double)shadowOpacityForLayoutRole:(int64_t)role atIndex:(unint64_t)index
 {
-  if (![(SBFullScreenToHomeIconZoomSwitcherModifier *)self _isIndexZoomAppLayout:a4]|| ![(SBFullScreenToHomeIconZoomSwitcherModifier *)self _isEffectivelyHome]|| !self->_shouldDockOrderFrontDuringTransition || self->_direction || (result = 0.0, !self->_homeScreenIconLocationIsFloatingDock))
+  if (![(SBFullScreenToHomeIconZoomSwitcherModifier *)self _isIndexZoomAppLayout:index]|| ![(SBFullScreenToHomeIconZoomSwitcherModifier *)self _isEffectivelyHome]|| !self->_shouldDockOrderFrontDuringTransition || self->_direction || (result = 0.0, !self->_homeScreenIconLocationIsFloatingDock))
   {
     v8.receiver = self;
     v8.super_class = SBFullScreenToHomeIconZoomSwitcherModifier;
-    [(SBFullScreenToHomeIconZoomSwitcherModifier *)&v8 shadowOpacityForLayoutRole:a3 atIndex:a4, result];
+    [(SBFullScreenToHomeIconZoomSwitcherModifier *)&v8 shadowOpacityForLayoutRole:role atIndex:index, result];
   }
 
   return result;
@@ -1961,13 +1961,13 @@ LABEL_14:
 
 - (double)fadeInDelayForSplitViewHandles
 {
-  v2 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self switcherSettings];
-  v3 = [v2 windowingSettings];
-  [v3 percentageOfTransitionForSplitViewHandleFadeInDelay];
+  switcherSettings = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self switcherSettings];
+  windowingSettings = [switcherSettings windowingSettings];
+  [windowingSettings percentageOfTransitionForSplitViewHandleFadeInDelay];
   v5 = v4;
-  v6 = [v2 animationSettings];
-  v7 = [v6 layoutSettings];
-  [v7 settlingDuration];
+  animationSettings = [switcherSettings animationSettings];
+  layoutSettings = [animationSettings layoutSettings];
+  [layoutSettings settlingDuration];
   v9 = v5 * v8;
 
   return v9;
@@ -1989,9 +1989,9 @@ LABEL_14:
 
 - (id)_flexibleAutoLayoutSpaceForZoomingAppLayout
 {
-  v3 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self displayItemLayoutAttributesCalculator];
+  displayItemLayoutAttributesCalculator = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self displayItemLayoutAttributesCalculator];
   appLayout = self->_appLayout;
-  v5 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self switcherInterfaceOrientation];
+  switcherInterfaceOrientation = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self switcherInterfaceOrientation];
   [(SBFullScreenToHomeIconZoomSwitcherModifier *)self floatingDockHeight];
   v34 = v6;
   [(SBFullScreenToHomeIconZoomSwitcherModifier *)self screenScale];
@@ -2001,16 +2001,16 @@ LABEL_14:
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self isDisplayEmbedded];
-  v17 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self prefersStripHidden];
-  v18 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self prefersDockHidden];
+  isDisplayEmbedded = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self isDisplayEmbedded];
+  prefersStripHidden = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self prefersStripHidden];
+  prefersDockHidden = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self prefersDockHidden];
   [(SBFullScreenToHomeIconZoomSwitcherModifier *)self leftStatusBarPartIntersectionRegion];
   v20 = v19;
   v22 = v21;
   v24 = v23;
   v26 = v25;
   [(SBFullScreenToHomeIconZoomSwitcherModifier *)self rightStatusBarPartIntersectionRegion];
-  v31 = [v3 flexibleWindowingAutoLayoutSpaceForAppLayout:appLayout containerOrientation:v5 floatingDockHeight:v16 screenScale:v17 bounds:v18 isEmbeddedDisplay:v34 prefersStripHidden:v33 prefersDockHidden:v9 leftStatusBarPartIntersectionRegion:v11 rightStatusBarPartIntersectionRegion:{v13, v15, v20, v22, v24, v26, v27, v28, v29, v30}];
+  v31 = [displayItemLayoutAttributesCalculator flexibleWindowingAutoLayoutSpaceForAppLayout:appLayout containerOrientation:switcherInterfaceOrientation floatingDockHeight:isDisplayEmbedded screenScale:prefersStripHidden bounds:prefersDockHidden isEmbeddedDisplay:v34 prefersStripHidden:v33 prefersDockHidden:v9 leftStatusBarPartIntersectionRegion:v11 rightStatusBarPartIntersectionRegion:{v13, v15, v20, v22, v24, v26, v27, v28, v29, v30}];
 
   return v31;
 }
@@ -2020,9 +2020,9 @@ LABEL_14:
   result = 1.0;
   if (self->_genieEnabled)
   {
-    v4 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self isDevicePad];
+    isDevicePad = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self isDevicePad];
     result = 2.0;
-    if ((v4 & 1) == 0)
+    if ((isDevicePad & 1) == 0)
     {
       result = 1.75;
       if (!self->_homeScreenIconIsSmallWidget)
@@ -2039,34 +2039,34 @@ LABEL_14:
   return result;
 }
 
-- (BOOL)_isIndexZoomAppLayout:(unint64_t)a3
+- (BOOL)_isIndexZoomAppLayout:(unint64_t)layout
 {
-  v4 = self;
-  v5 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  selfCopy = self;
+  appLayouts = [(SBFullScreenToHomeIconZoomSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:layout];
 
-  LOBYTE(v4) = [v6 isEqual:v4->_appLayout];
-  return v4;
+  LOBYTE(selfCopy) = [v6 isEqual:selfCopy->_appLayout];
+  return selfCopy;
 }
 
-- (id)_settingsByInterpolatingBetween:(id)a3 and:(id)a4 progress:(double)a5
+- (id)_settingsByInterpolatingBetween:(id)between and:(id)and progress:(double)progress
 {
   v6 = MEMORY[0x277D65E60];
-  v7 = a4;
-  v8 = a3;
+  andCopy = and;
+  betweenCopy = between;
   v9 = objc_alloc_init(v6);
   [v9 setDefaultValues];
-  [v8 dampingRatio];
-  [v7 dampingRatio];
+  [betweenCopy dampingRatio];
+  [andCopy dampingRatio];
   BSFloatByLinearlyInterpolatingFloats();
   [v9 setDampingRatio:?];
-  [v8 response];
-  [v7 response];
+  [betweenCopy response];
+  [andCopy response];
   BSFloatByLinearlyInterpolatingFloats();
   [v9 setResponse:?];
-  [v8 retargetImpulse];
+  [betweenCopy retargetImpulse];
 
-  [v7 retargetImpulse];
+  [andCopy retargetImpulse];
   BSFloatByLinearlyInterpolatingFloats();
   [v9 setRetargetImpulse:?];
   v12 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
@@ -2075,9 +2075,9 @@ LABEL_14:
   return v9;
 }
 
-- (double)_normalizedHomeScreenIconZoomPercentBetweenTopAndBottom:(CGPoint)a3
+- (double)_normalizedHomeScreenIconZoomPercentBetweenTopAndBottom:(CGPoint)bottom
 {
-  y = a3.y;
+  y = bottom.y;
   if (([(SBFullScreenToHomeIconZoomSwitcherModifier *)self switcherInterfaceOrientation]- 1) >= 2)
   {
     v5 = 0.0;

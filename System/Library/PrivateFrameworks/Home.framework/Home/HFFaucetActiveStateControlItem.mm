@@ -1,71 +1,71 @@
 @interface HFFaucetActiveStateControlItem
 + (id)na_identity;
-- (HFFaucetActiveStateControlItem)initWithValueSource:(id)a3 auxiliaryTargetValueTuples:(id)a4 additionalCharacteristicOptions:(id)a5 displayResults:(id)a6;
-- (HFFaucetActiveStateControlItem)initWithValueSource:(id)a3 valveControlMode:(unint64_t)a4 displayResults:(id)a5;
-- (id)copyWithCharacteristicOptions:(id)a3 valueSource:(id)a4;
-- (id)resultsForBatchReadResponse:(id)a3;
-- (id)servicePredicateForCharacteristicType:(id)a3 withUsage:(unint64_t)a4;
+- (HFFaucetActiveStateControlItem)initWithValueSource:(id)source auxiliaryTargetValueTuples:(id)tuples additionalCharacteristicOptions:(id)options displayResults:(id)results;
+- (HFFaucetActiveStateControlItem)initWithValueSource:(id)source valveControlMode:(unint64_t)mode displayResults:(id)results;
+- (id)copyWithCharacteristicOptions:(id)options valueSource:(id)source;
+- (id)resultsForBatchReadResponse:(id)response;
+- (id)servicePredicateForCharacteristicType:(id)type withUsage:(unint64_t)usage;
 @end
 
 @implementation HFFaucetActiveStateControlItem
 
-- (HFFaucetActiveStateControlItem)initWithValueSource:(id)a3 valveControlMode:(unint64_t)a4 displayResults:(id)a5
+- (HFFaucetActiveStateControlItem)initWithValueSource:(id)source valveControlMode:(unint64_t)mode displayResults:(id)results
 {
   v23[2] = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a3;
-  v10 = [v9 primaryServiceDescriptor];
-  v11 = [HFServiceState stateClassForServiceDescriptor:v10];
+  resultsCopy = results;
+  sourceCopy = source;
+  primaryServiceDescriptor = [sourceCopy primaryServiceDescriptor];
+  v11 = [HFServiceState stateClassForServiceDescriptor:primaryServiceDescriptor];
 
-  v12 = [(objc_class *)v11 requiredCharacteristicTypes];
-  v13 = [(objc_class *)v11 optionalCharacteristicTypes];
+  requiredCharacteristicTypes = [(objc_class *)v11 requiredCharacteristicTypes];
+  optionalCharacteristicTypes = [(objc_class *)v11 optionalCharacteristicTypes];
   v14 = [HFControlItemCharacteristicOptions alloc];
   v22[0] = &unk_282524810;
   v22[1] = &unk_282524828;
-  v23[0] = v12;
-  v23[1] = v13;
+  v23[0] = requiredCharacteristicTypes;
+  v23[1] = optionalCharacteristicTypes;
   v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:v22 count:2];
   v16 = [(HFControlItemCharacteristicOptions *)v14 initWithCharacteristicTypesByUsage:v15];
 
   v17 = [MEMORY[0x277CBEB98] set];
   v21.receiver = self;
   v21.super_class = HFFaucetActiveStateControlItem;
-  v18 = [(HFPowerStateControlItem *)&v21 initWithValueSource:v9 auxiliaryTargetValueTuples:v17 additionalCharacteristicOptions:v16 displayResults:v8];
+  v18 = [(HFPowerStateControlItem *)&v21 initWithValueSource:sourceCopy auxiliaryTargetValueTuples:v17 additionalCharacteristicOptions:v16 displayResults:resultsCopy];
 
   if (v18)
   {
-    v18->_valveControlMode = a4;
+    v18->_valveControlMode = mode;
   }
 
   v19 = *MEMORY[0x277D85DE8];
   return v18;
 }
 
-- (HFFaucetActiveStateControlItem)initWithValueSource:(id)a3 auxiliaryTargetValueTuples:(id)a4 additionalCharacteristicOptions:(id)a5 displayResults:(id)a6
+- (HFFaucetActiveStateControlItem)initWithValueSource:(id)source auxiliaryTargetValueTuples:(id)tuples additionalCharacteristicOptions:(id)options displayResults:(id)results
 {
-  v8 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v9 = NSStringFromSelector(sel_initWithValueSource_valveControlMode_displayResults_);
-  [v8 handleFailureInMethod:a2 object:self file:@"HFFaucetActiveStateControlItem.m" lineNumber:39 description:{@"%s is unavailable; use %@ instead", "-[HFFaucetActiveStateControlItem initWithValueSource:auxiliaryTargetValueTuples:additionalCharacteristicOptions:displayResults:]", v9}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFFaucetActiveStateControlItem.m" lineNumber:39 description:{@"%s is unavailable; use %@ instead", "-[HFFaucetActiveStateControlItem initWithValueSource:auxiliaryTargetValueTuples:additionalCharacteristicOptions:displayResults:]", v9}];
 
   return 0;
 }
 
-- (id)copyWithCharacteristicOptions:(id)a3 valueSource:(id)a4
+- (id)copyWithCharacteristicOptions:(id)options valueSource:(id)source
 {
-  v5 = a4;
+  sourceCopy = source;
   v6 = objc_alloc(objc_opt_class());
-  v7 = [(HFFaucetActiveStateControlItem *)self valveControlMode];
-  v8 = [(HFControlItem *)self displayResults];
-  v9 = [v6 initWithValueSource:v5 valveControlMode:v7 displayResults:v8];
+  valveControlMode = [(HFFaucetActiveStateControlItem *)self valveControlMode];
+  displayResults = [(HFControlItem *)self displayResults];
+  v9 = [v6 initWithValueSource:sourceCopy valveControlMode:valveControlMode displayResults:displayResults];
 
   [v9 copyLatestResultsFromItem:self];
   return v9;
 }
 
-- (id)servicePredicateForCharacteristicType:(id)a3 withUsage:(unint64_t)a4
+- (id)servicePredicateForCharacteristicType:(id)type withUsage:(unint64_t)usage
 {
-  v6 = a3;
-  if ([v6 isEqualToString:*MEMORY[0x277CCF748]])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:*MEMORY[0x277CCF748]])
   {
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
@@ -82,7 +82,7 @@
   {
     v12.receiver = self;
     v12.super_class = HFFaucetActiveStateControlItem;
-    v10 = [(HFControlItem *)&v12 servicePredicateForCharacteristicType:v6 withUsage:a4];
+    v10 = [(HFControlItem *)&v12 servicePredicateForCharacteristicType:typeCopy withUsage:usage];
   }
 
   return v10;
@@ -111,17 +111,17 @@ id __82__HFFaucetActiveStateControlItem_servicePredicateForCharacteristicType_wi
   return v3;
 }
 
-- (id)resultsForBatchReadResponse:(id)a3
+- (id)resultsForBatchReadResponse:(id)response
 {
   v13.receiver = self;
   v13.super_class = HFFaucetActiveStateControlItem;
-  v4 = a3;
-  v5 = [(HFControlItem *)&v13 resultsForBatchReadResponse:v4];
+  responseCopy = response;
+  v5 = [(HFControlItem *)&v13 resultsForBatchReadResponse:responseCopy];
   v6 = [v5 mutableCopy];
 
-  v7 = [(HFControlItem *)self valueSource];
-  v8 = [v7 primaryServiceDescriptor];
-  v9 = [HFServiceState stateForServiceDescriptor:v8 withBatchReadResponse:v4];
+  valueSource = [(HFControlItem *)self valueSource];
+  primaryServiceDescriptor = [valueSource primaryServiceDescriptor];
+  v9 = [HFServiceState stateForServiceDescriptor:primaryServiceDescriptor withBatchReadResponse:responseCopy];
 
   if (v9)
   {
@@ -140,7 +140,7 @@ id __82__HFFaucetActiveStateControlItem_servicePredicateForCharacteristicType_wi
   v4[1] = 3221225472;
   v4[2] = __45__HFFaucetActiveStateControlItem_na_identity__block_invoke;
   v4[3] = &__block_descriptor_40_e5__8__0l;
-  v4[4] = a1;
+  v4[4] = self;
   v2 = __45__HFFaucetActiveStateControlItem_na_identity__block_invoke(v4);
 
   return v2;

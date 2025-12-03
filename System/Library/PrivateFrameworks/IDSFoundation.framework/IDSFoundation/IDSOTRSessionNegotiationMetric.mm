@@ -1,5 +1,5 @@
 @interface IDSOTRSessionNegotiationMetric
-- (IDSOTRSessionNegotiationMetric)initWithService:(id)a3 priority:(unint64_t)a4 duration:(unint64_t)a5 result:(unsigned int)a6;
+- (IDSOTRSessionNegotiationMetric)initWithService:(id)service priority:(unint64_t)priority duration:(unint64_t)duration result:(unsigned int)result;
 - (NSDictionary)dictionaryRepresentation;
 @end
 
@@ -36,19 +36,19 @@
   return v4;
 }
 
-- (IDSOTRSessionNegotiationMetric)initWithService:(id)a3 priority:(unint64_t)a4 duration:(unint64_t)a5 result:(unsigned int)a6
+- (IDSOTRSessionNegotiationMetric)initWithService:(id)service priority:(unint64_t)priority duration:(unint64_t)duration result:(unsigned int)result
 {
-  v11 = a3;
+  serviceCopy = service;
   v15.receiver = self;
   v15.super_class = IDSOTRSessionNegotiationMetric;
   v12 = [(IDSOTRSessionNegotiationMetric *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_service, a3);
-    v13->_priority = a4;
-    v13->_duration = a5;
-    v13->_result = a6;
+    objc_storeStrong(&v12->_service, service);
+    v13->_priority = priority;
+    v13->_duration = duration;
+    v13->_result = result;
   }
 
   return v13;

@@ -1,5 +1,5 @@
 @interface SBKeyboardFocusArbitrationReason
-+ (id)accessibility:(id)a3;
++ (id)accessibility:(id)accessibility;
 + (id)appFocusRedirections;
 + (id)assistantControllerVisibility;
 + (id)backlightControllerDidAnimate;
@@ -34,12 +34,12 @@
 + (id)transientOverlayDismissWorkspaceTransactionDidBegin;
 + (id)willPresentTransientOverlayScene;
 + (id)workspaceDidFinishInitialization;
-- (BOOL)isEqual:(id)a3;
-- (id)_initForKeyboardArbiterWithLabel:(id)a3;
-- (id)_initWithLabel:(id)a3;
-- (id)_initWithName:(id)a3 source:(id)a4;
-- (id)annotatedWithSourceName:(id)a3;
-- (void)appendDescriptionToStream:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)_initForKeyboardArbiterWithLabel:(id)label;
+- (id)_initWithLabel:(id)label;
+- (id)_initWithName:(id)name source:(id)source;
+- (id)annotatedWithSourceName:(id)name;
+- (void)appendDescriptionToStream:(id)stream;
 @end
 
 @implementation SBKeyboardFocusArbitrationReason
@@ -86,15 +86,15 @@
   return v2;
 }
 
-- (id)_initWithLabel:(id)a3
+- (id)_initWithLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   v9.receiver = self;
   v9.super_class = SBKeyboardFocusArbitrationReason;
   v5 = [(SBKeyboardFocusArbitrationReason *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [labelCopy copy];
     label = v5->_label;
     v5->_label = v6;
   }
@@ -102,20 +102,20 @@
   return v5;
 }
 
-- (id)_initWithName:(id)a3 source:(id)a4
+- (id)_initWithName:(id)name source:(id)source
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  sourceCopy = source;
   v14.receiver = self;
   v14.super_class = SBKeyboardFocusArbitrationReason;
   v8 = [(SBKeyboardFocusArbitrationReason *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [nameCopy copy];
     label = v8->_label;
     v8->_label = v9;
 
-    v11 = [v7 copy];
+    v11 = [sourceCopy copy];
     sourceName = v8->_sourceName;
     v8->_sourceName = v11;
   }
@@ -123,15 +123,15 @@
   return v8;
 }
 
-- (id)_initForKeyboardArbiterWithLabel:(id)a3
+- (id)_initForKeyboardArbiterWithLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   v9.receiver = self;
   v9.super_class = SBKeyboardFocusArbitrationReason;
   v5 = [(SBKeyboardFocusArbitrationReason *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [labelCopy copy];
     label = v5->_label;
     v5->_label = v6;
 
@@ -141,13 +141,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(NSString *)self->_label isEqual:v4[3]];
+    v5 = [(NSString *)self->_label isEqual:equalCopy[3]];
   }
 
   else
@@ -319,20 +319,20 @@
   return v2;
 }
 
-+ (id)accessibility:(id)a3
++ (id)accessibility:(id)accessibility
 {
-  v5 = a3;
+  accessibilityCopy = accessibility;
   v6 = MEMORY[0x277CCACA8];
   objc_opt_class();
   v7 = objc_opt_class();
-  if (!v5)
+  if (!accessibilityCopy)
   {
     v12 = NSStringFromClass(v7);
     v13 = [v6 stringWithFormat:@"Value for '%@' was unexpectedly nil. Expected %@.", @"subreason", v12];
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
-      [(SBKeyboardFocusArbitrationReason *)a2 accessibility:a1, v13];
+      [(SBKeyboardFocusArbitrationReason *)a2 accessibility:self, v13];
     }
 
     [v13 UTF8String];
@@ -343,11 +343,11 @@
 
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    [(SBKeyboardFocusArbitrationReason *)v5 accessibility:a2, a1];
+    [(SBKeyboardFocusArbitrationReason *)accessibilityCopy accessibility:a2, self];
   }
 
   v8 = [SBKeyboardFocusArbitrationReason alloc];
-  v9 = [@"accessibility-" stringByAppendingString:v5];
+  v9 = [@"accessibility-" stringByAppendingString:accessibilityCopy];
   v10 = [(SBKeyboardFocusArbitrationReason *)v8 _initWithLabel:v9];
 
   return v10;
@@ -388,24 +388,24 @@
   return v2;
 }
 
-- (id)annotatedWithSourceName:(id)a3
+- (id)annotatedWithSourceName:(id)name
 {
-  v4 = a3;
-  v5 = [[SBKeyboardFocusArbitrationReason alloc] _initWithName:self->_label source:v4];
+  nameCopy = name;
+  v5 = [[SBKeyboardFocusArbitrationReason alloc] _initWithName:self->_label source:nameCopy];
 
   return v5;
 }
 
-- (void)appendDescriptionToStream:(id)a3
+- (void)appendDescriptionToStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __62__SBKeyboardFocusArbitrationReason_appendDescriptionToStream___block_invoke;
   v6[3] = &unk_2783A92D8;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = streamCopy;
+  selfCopy = self;
+  v5 = streamCopy;
   [v5 appendProem:0 block:v6];
 }
 

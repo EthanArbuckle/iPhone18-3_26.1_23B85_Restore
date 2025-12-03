@@ -1,8 +1,8 @@
 @interface MLCActivationDescriptor
-+ (double)defaultParametersForType:(int)a3;
-- (BOOL)isEqual:(id)a3;
-- (MLCActivationDescriptor)initWithType:(int)a3 a:(float)a4 b:(float)a5 c:(float)a6;
-- (id)copyWithZone:(_NSZone *)a3;
++ (double)defaultParametersForType:(int)type;
+- (BOOL)isEqual:(id)equal;
+- (MLCActivationDescriptor)initWithType:(int)type a:(float)a b:(float)b c:(float)c;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -14,26 +14,26 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(MLCActivationDescriptor *)self activationType];
+  activationType = [(MLCActivationDescriptor *)self activationType];
   [(MLCActivationDescriptor *)self a];
   v8 = v7;
   [(MLCActivationDescriptor *)self b];
   v10 = v9;
   [(MLCActivationDescriptor *)self c];
-  v12 = [v3 stringWithFormat:@"%@: { activationType=%d : a=%f : b=%f : c=%f}", v5, v6, *&v8, *&v10, v11];
+  v12 = [v3 stringWithFormat:@"%@: { activationType=%d : a=%f : b=%f : c=%f}", v5, activationType, *&v8, *&v10, v11];
 
   return v12;
 }
 
-+ (double)defaultParametersForType:(int)a3
++ (double)defaultParametersForType:(int)type
 {
   __asm { FMOV            V0.4S, #1.0 }
 
-  if (a3 <= 2)
+  if (type <= 2)
   {
-    if (a3)
+    if (type)
     {
-      if (a3 == 1)
+      if (type == 1)
       {
         *&_Q0 = 0x3F80000000000000;
       }
@@ -47,17 +47,17 @@
 
   else
   {
-    if (a3 > 0x14)
+    if (type > 0x14)
     {
       goto LABEL_11;
     }
 
-    if (((1 << a3) & 0x1F3FE0) != 0)
+    if (((1 << type) & 0x1F3FE0) != 0)
     {
       return *&_Q0;
     }
 
-    if (a3 == 14 || a3 == 15)
+    if (type == 14 || type == 15)
     {
       *&_Q0 = 0x3F8000003F000000;
     }
@@ -65,7 +65,7 @@
     else
     {
 LABEL_11:
-      if (a3 != 3)
+      if (type != 3)
       {
         *&_Q0 = 0x3F0000003E4CCCCDLL;
       }
@@ -75,10 +75,10 @@ LABEL_11:
   return *&_Q0;
 }
 
-- (MLCActivationDescriptor)initWithType:(int)a3 a:(float)a4 b:(float)a5 c:(float)a6
+- (MLCActivationDescriptor)initWithType:(int)type a:(float)a b:(float)b c:(float)c
 {
-  v6 = self;
-  if (a3 == 21)
+  selfCopy = self;
+  if (type == 21)
   {
     v8 = +[MLCLog framework];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -96,28 +96,28 @@ LABEL_11:
     v14 = [(MLCActivationDescriptor *)&v16 init];
     if (v14)
     {
-      v14->_activationType = a3;
-      v14->_a = a4;
-      v14->_b = a5;
-      v14->_c = a6;
+      v14->_activationType = type;
+      v14->_a = a;
+      v14->_b = b;
+      v14->_c = c;
     }
 
-    v6 = v14;
-    v9 = v6;
+    selfCopy = v14;
+    v9 = selfCopy;
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 activationType];
-    if (v6 == -[MLCActivationDescriptor activationType](self, "activationType") && ([v5 a], v8 = v7, -[MLCActivationDescriptor a](self, "a"), v8 == v9) && (objc_msgSend(v5, "b"), v11 = v10, -[MLCActivationDescriptor b](self, "b"), v11 == v12))
+    v5 = equalCopy;
+    activationType = [v5 activationType];
+    if (activationType == -[MLCActivationDescriptor activationType](self, "activationType") && ([v5 a], v8 = v7, -[MLCActivationDescriptor a](self, "a"), v8 == v9) && (objc_msgSend(v5, "b"), v11 = v10, -[MLCActivationDescriptor b](self, "b"), v11 == v12))
     {
       [v5 c];
       v14 = v13;
@@ -161,10 +161,10 @@ LABEL_11:
   return v19;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(MLCActivationDescriptor *)self activationType];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  activationType = [(MLCActivationDescriptor *)self activationType];
   [(MLCActivationDescriptor *)self a];
   v7 = v6;
   [(MLCActivationDescriptor *)self b];
@@ -174,7 +174,7 @@ LABEL_11:
   LODWORD(v11) = v7;
   LODWORD(v12) = v9;
 
-  return [v4 initWithType:v5 a:v11 b:v12 c:v10];
+  return [v4 initWithType:activationType a:v11 b:v12 c:v10];
 }
 
 - (void)initWithType:(const char *)a1 a:(NSObject *)a2 b:c:.cold.1(const char *a1, NSObject *a2)

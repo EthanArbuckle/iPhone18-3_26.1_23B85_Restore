@@ -1,12 +1,12 @@
 @interface RAPTextViewCollectionViewCell
 + (NSString)reuseIdentifier;
 - (CGSize)intrinsicContentSize;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3;
-- (_TtC4Maps29RAPTextViewCollectionViewCell)initWithCoder:(id)a3;
-- (_TtC4Maps29RAPTextViewCollectionViewCell)initWithFrame:(CGRect)a3;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size;
+- (_TtC4Maps29RAPTextViewCollectionViewCell)initWithCoder:(id)coder;
+- (_TtC4Maps29RAPTextViewCollectionViewCell)initWithFrame:(CGRect)frame;
 - (_TtP4Maps37RAPTextViewCollectionViewCellDelegate_)delegate;
 - (double)preferredHeight;
-- (void)textViewDidChange:(id)a3;
+- (void)textViewDidChange:(id)change;
 @end
 
 @implementation RAPTextViewCollectionViewCell
@@ -28,25 +28,25 @@
   return Strong;
 }
 
-- (_TtC4Maps29RAPTextViewCollectionViewCell)initWithFrame:(CGRect)a3
+- (_TtC4Maps29RAPTextViewCollectionViewCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = OBJC_IVAR____TtC4Maps29RAPTextViewCollectionViewCell_textView;
   *(self + v8) = [objc_allocWithZone(TextViewWithPlaceholderText) init];
   swift_unknownObjectWeakInit();
   v11.receiver = self;
   v11.super_class = type metadata accessor for RAPTextViewCollectionViewCell();
-  v9 = [(RAPTextViewCollectionViewCell *)&v11 initWithFrame:x, y, width, height];
+  height = [(RAPTextViewCollectionViewCell *)&v11 initWithFrame:x, y, width, height];
   sub_100118A8C();
   sub_100118C18();
 
-  return v9;
+  return height;
 }
 
-- (_TtC4Maps29RAPTextViewCollectionViewCell)initWithCoder:(id)a3
+- (_TtC4Maps29RAPTextViewCollectionViewCell)initWithCoder:(id)coder
 {
   v3 = OBJC_IVAR____TtC4Maps29RAPTextViewCollectionViewCell_textView;
   *(self + v3) = [objc_allocWithZone(TextViewWithPlaceholderText) init];
@@ -59,12 +59,12 @@
 - (double)preferredHeight
 {
   v2 = *(self + OBJC_IVAR____TtC4Maps29RAPTextViewCollectionViewCell_textView);
-  v3 = self;
-  v4 = [v2 font];
-  if (v4)
+  selfCopy = self;
+  font = [v2 font];
+  if (font)
   {
-    v5 = v4;
-    [v4 _mapkit_scaledValueForValue:100.0];
+    v5 = font;
+    [font _mapkit_scaledValueForValue:100.0];
     v7 = v6;
   }
 
@@ -78,9 +78,9 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
-  v3 = [(RAPTextViewCollectionViewCell *)v2 contentView];
-  [v3 frame];
+  selfCopy = self;
+  contentView = [(RAPTextViewCollectionViewCell *)selfCopy contentView];
+  [contentView frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -91,7 +91,7 @@
   v18.size.width = v9;
   v18.size.height = v11;
   Width = CGRectGetWidth(v18);
-  [(RAPTextViewCollectionViewCell *)v2 preferredHeight];
+  [(RAPTextViewCollectionViewCell *)selfCopy preferredHeight];
   v14 = v13;
 
   v15 = Width;
@@ -101,21 +101,21 @@
   return result;
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size
 {
-  width = a3.width;
-  [(RAPTextViewCollectionViewCell *)self intrinsicContentSize:a3.width];
+  width = size.width;
+  [(RAPTextViewCollectionViewCell *)self intrinsicContentSize:size.width];
   v5 = width;
   result.height = v4;
   result.width = v5;
   return result;
 }
 
-- (void)textViewDidChange:(id)a3
+- (void)textViewDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  sub_10011928C(v4);
+  changeCopy = change;
+  selfCopy = self;
+  sub_10011928C(changeCopy);
 }
 
 @end

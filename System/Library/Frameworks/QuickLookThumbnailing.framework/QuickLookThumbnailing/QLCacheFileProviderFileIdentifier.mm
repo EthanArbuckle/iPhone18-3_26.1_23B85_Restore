@@ -1,9 +1,9 @@
 @interface QLCacheFileProviderFileIdentifier
 + (NSMutableSet)knownFileProviderIdentifiersSoFar;
-- (BOOL)isEqual:(id)a3;
-- (QLCacheFileProviderFileIdentifier)initWithCoder:(id)a3;
-- (QLCacheFileProviderFileIdentifier)initWithItemID:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (QLCacheFileProviderFileIdentifier)initWithCoder:(id)coder;
+- (QLCacheFileProviderFileIdentifier)initWithItemID:(id)d;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation QLCacheFileProviderFileIdentifier
@@ -20,22 +20,22 @@
   return v3;
 }
 
-- (QLCacheFileProviderFileIdentifier)initWithItemID:(id)a3
+- (QLCacheFileProviderFileIdentifier)initWithItemID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = QLCacheFileProviderFileIdentifier;
   v6 = [(QLCacheFileProviderFileIdentifier *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_itemID, a3);
+    objc_storeStrong(&v6->_itemID, d);
   }
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   itemID = self->_itemID;
@@ -50,13 +50,13 @@ uint64_t __70__QLCacheFileProviderFileIdentifier_knownFileProviderIdentifiersSoF
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(FPItemID *)self->_itemID isEqual:v4[1]];
+    v5 = [(FPItemID *)self->_itemID isEqual:equalCopy[1]];
   }
 
   else
@@ -67,9 +67,9 @@ uint64_t __70__QLCacheFileProviderFileIdentifier_knownFileProviderIdentifiersSoF
   return v5;
 }
 
-- (QLCacheFileProviderFileIdentifier)initWithCoder:(id)a3
+- (QLCacheFileProviderFileIdentifier)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2050000000;
@@ -88,7 +88,7 @@ uint64_t __70__QLCacheFileProviderFileIdentifier_knownFileProviderIdentifiersSoF
 
   v6 = v5;
   _Block_object_dispose(&v11, 8);
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ii"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ii"];
   v8 = [(QLCacheFileProviderFileIdentifier *)self initWithItemID:v7];
 
   return v8;

@@ -1,45 +1,45 @@
 @interface TUIEmojiSearchResultCollectionViewCell
 + (id)_createDraggableEmojiLabel;
 + (id)_createEmojiLabel;
-- (TUIEmojiSearchResultCollectionViewCell)initWithFrame:(CGRect)a3;
+- (TUIEmojiSearchResultCollectionViewCell)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setDisplayedEmojiString:(id)a3 animated:(BOOL)a4 withAnimationOffset:(unint64_t)a5;
-- (void)setDragEnabled:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setDisplayedEmojiString:(id)string animated:(BOOL)animated withAnimationOffset:(unint64_t)offset;
+- (void)setDragEnabled:(BOOL)enabled;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation TUIEmojiSearchResultCollectionViewCell
 
-- (void)setDragEnabled:(BOOL)a3
+- (void)setDragEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   if (objc_opt_respondsToSelector())
   {
     emojiLabel = self->_emojiLabel;
 
-    [(_TUIKeyboardEmojiDraggableView *)emojiLabel setDragEnabled:v3];
+    [(_TUIKeyboardEmojiDraggableView *)emojiLabel setDragEnabled:enabledCopy];
   }
 }
 
-- (void)setDisplayedEmojiString:(id)a3 animated:(BOOL)a4 withAnimationOffset:(unint64_t)a5
+- (void)setDisplayedEmojiString:(id)string animated:(BOOL)animated withAnimationOffset:(unint64_t)offset
 {
-  v6 = a4;
-  v9 = a3;
-  if (![(NSAttributedString *)self->_displayedEmojiString isEqualToAttributedString:v9])
+  animatedCopy = animated;
+  stringCopy = string;
+  if (![(NSAttributedString *)self->_displayedEmojiString isEqualToAttributedString:stringCopy])
   {
     v10 = self->_displayedEmojiString;
-    objc_storeStrong(&self->_displayedEmojiString, a3);
+    objc_storeStrong(&self->_displayedEmojiString, string);
     [(_TUIKeyboardEmojiDraggableView *)self->_emojiLabel setAttributedText:self->_displayedEmojiString];
-    if (v6)
+    if (animatedCopy)
     {
-      v11 = a5 * 0.03;
+      v11 = offset * 0.03;
       ++self->_nestedAnimationCount;
       [(_TUIKeyboardEmojiDraggableView *)self->_emojiLabel setHidden:1];
       if (!self->_animationFromLabel)
       {
-        v12 = [objc_opt_class() _createEmojiLabel];
+        _createEmojiLabel = [objc_opt_class() _createEmojiLabel];
         animationFromLabel = self->_animationFromLabel;
-        self->_animationFromLabel = v12;
+        self->_animationFromLabel = _createEmojiLabel;
 
         [(UILabel *)self->_animationFromLabel setAttributedText:v10];
         [(_TUIKeyboardEmojiDraggableView *)self->_emojiLabel frame];
@@ -77,9 +77,9 @@
         [v16 animateWithDuration:4 delay:v32 options:v30 animations:0.2 completion:0.0];
       }
 
-      v18 = [objc_opt_class() _createEmojiLabel];
+      _createEmojiLabel2 = [objc_opt_class() _createEmojiLabel];
       v19 = self->_animationToLabel;
-      self->_animationToLabel = v18;
+      self->_animationToLabel = _createEmojiLabel2;
 
       [(UILabel *)self->_animationToLabel setAttributedText:self->_displayedEmojiString];
       [(_TUIKeyboardEmojiDraggableView *)self->_emojiLabel frame];
@@ -101,7 +101,7 @@
       v23[2] = __95__TUIEmojiSearchResultCollectionViewCell_setDisplayedEmojiString_animated_withAnimationOffset___block_invoke_6;
       v23[3] = &unk_1E72D7F60;
       v24 = v27;
-      v25 = self;
+      selfCopy = self;
       v22 = v27;
       [v21 animateWithDuration:4 delay:v26 usingSpringWithDamping:v23 initialSpringVelocity:0.4 options:v11 animations:1.0 completion:1.0];
     }
@@ -172,22 +172,22 @@ uint64_t __95__TUIEmojiSearchResultCollectionViewCell_setDisplayedEmojiString_an
   return result;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v8.receiver = self;
   v8.super_class = TUIEmojiSearchResultCollectionViewCell;
   [(TUIEmojiSearchResultCollectionViewCell *)&v8 setHighlighted:?];
-  v5 = [MEMORY[0x1E69DC888] clearColor];
-  if (v3)
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  if (highlightedCopy)
   {
-    v6 = [MEMORY[0x1E69DC888] systemFillColor];
+    systemFillColor = [MEMORY[0x1E69DC888] systemFillColor];
 
-    v5 = v6;
+    clearColor = systemFillColor;
   }
 
-  v7 = [(TUIEmojiSearchResultCollectionViewCell *)self backgroundView];
-  [v7 setBackgroundColor:v5];
+  backgroundView = [(TUIEmojiSearchResultCollectionViewCell *)self backgroundView];
+  [backgroundView setBackgroundColor:clearColor];
 }
 
 - (void)layoutSubviews
@@ -200,11 +200,11 @@ uint64_t __95__TUIEmojiSearchResultCollectionViewCell_setDisplayedEmojiString_an
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(TUIEmojiSearchResultCollectionViewCell *)self backgroundView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  backgroundView = [(TUIEmojiSearchResultCollectionViewCell *)self backgroundView];
+  [backgroundView setFrame:{v4, v6, v8, v10}];
 
-  v12 = [(TUIEmojiSearchResultCollectionViewCell *)self contentView];
-  [v12 bounds];
+  contentView = [(TUIEmojiSearchResultCollectionViewCell *)self contentView];
+  [contentView bounds];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -215,34 +215,34 @@ uint64_t __95__TUIEmojiSearchResultCollectionViewCell_setDisplayedEmojiString_an
   [(_TUIKeyboardEmojiDraggableView *)self->_emojiLabel setBounds:v14, v16, v18, v20];
 }
 
-- (TUIEmojiSearchResultCollectionViewCell)initWithFrame:(CGRect)a3
+- (TUIEmojiSearchResultCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v15.receiver = self;
   v15.super_class = TUIEmojiSearchResultCollectionViewCell;
-  v3 = [(TUIEmojiSearchResultCollectionViewCell *)&v15 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TUIEmojiSearchResultCollectionViewCell *)&v15 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [objc_opt_class() _createDraggableEmojiLabel];
+    _createDraggableEmojiLabel = [objc_opt_class() _createDraggableEmojiLabel];
     emojiLabel = v3->_emojiLabel;
-    v3->_emojiLabel = v4;
+    v3->_emojiLabel = _createDraggableEmojiLabel;
 
-    v6 = [(TUIEmojiSearchResultCollectionViewCell *)v3 contentView];
-    [v6 addSubview:v3->_emojiLabel];
+    contentView = [(TUIEmojiSearchResultCollectionViewCell *)v3 contentView];
+    [contentView addSubview:v3->_emojiLabel];
 
-    v7 = [MEMORY[0x1E69DC888] clearColor];
-    [(TUIEmojiSearchResultCollectionViewCell *)v3 setBackgroundColor:v7];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(TUIEmojiSearchResultCollectionViewCell *)v3 setBackgroundColor:clearColor];
 
     v8 = objc_alloc(MEMORY[0x1E69DD250]);
     v9 = [v8 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
     [(TUIEmojiSearchResultCollectionViewCell *)v3 setBackgroundView:v9];
 
-    v10 = [(TUIEmojiSearchResultCollectionViewCell *)v3 backgroundView];
-    v11 = [v10 layer];
-    [v11 setCornerRadius:5.0];
+    backgroundView = [(TUIEmojiSearchResultCollectionViewCell *)v3 backgroundView];
+    layer = [backgroundView layer];
+    [layer setCornerRadius:5.0];
 
-    v12 = [(TUIEmojiSearchResultCollectionViewCell *)v3 backgroundView];
-    v13 = [v12 layer];
-    [v13 setMasksToBounds:1];
+    backgroundView2 = [(TUIEmojiSearchResultCollectionViewCell *)v3 backgroundView];
+    layer2 = [backgroundView2 layer];
+    [layer2 setMasksToBounds:1];
   }
 
   return v3;
@@ -264,15 +264,15 @@ uint64_t __95__TUIEmojiSearchResultCollectionViewCell_setDisplayedEmojiString_an
   v3 = [objc_alloc(NSClassFromString(&cfstr_Uikeyboardemoj.isa)) initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
   if (objc_opt_respondsToSelector())
   {
-    v4 = v3;
+    _createEmojiLabel = v3;
   }
 
   else
   {
-    v4 = [a1 _createEmojiLabel];
+    _createEmojiLabel = [self _createEmojiLabel];
   }
 
-  v5 = v4;
+  v5 = _createEmojiLabel;
 
   return v5;
 }

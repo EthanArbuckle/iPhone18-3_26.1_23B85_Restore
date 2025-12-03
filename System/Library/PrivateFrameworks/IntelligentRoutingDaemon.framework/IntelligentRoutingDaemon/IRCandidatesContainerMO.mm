@@ -1,38 +1,38 @@
 @interface IRCandidatesContainerMO
-+ (id)candidatesContainerMOFromCandidatesContainerDO:(id)a3 withReplayEventMO:(id)a4 managedObjectContext:(id)a5;
-+ (void)setPropertiesOfCandidatesContainerMO:(id)a3 withCandidatesContainerDO:(id)a4 inManagedObjectContext:(id)a5;
++ (id)candidatesContainerMOFromCandidatesContainerDO:(id)o withReplayEventMO:(id)mO managedObjectContext:(id)context;
++ (void)setPropertiesOfCandidatesContainerMO:(id)o withCandidatesContainerDO:(id)dO inManagedObjectContext:(id)context;
 - (id)convert;
 @end
 
 @implementation IRCandidatesContainerMO
 
-+ (id)candidatesContainerMOFromCandidatesContainerDO:(id)a3 withReplayEventMO:(id)a4 managedObjectContext:(id)a5
++ (id)candidatesContainerMOFromCandidatesContainerDO:(id)o withReplayEventMO:(id)mO managedObjectContext:(id)context
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[IRCandidatesContainerMO alloc] initWithContext:v7];
-  [(IRCandidatesContainerMO *)v10 setReplayEvent:v8];
+  contextCopy = context;
+  mOCopy = mO;
+  oCopy = o;
+  v10 = [[IRCandidatesContainerMO alloc] initWithContext:contextCopy];
+  [(IRCandidatesContainerMO *)v10 setReplayEvent:mOCopy];
 
-  [IRCandidatesContainerMO setPropertiesOfCandidatesContainerMO:v10 withCandidatesContainerDO:v9 inManagedObjectContext:v7];
+  [IRCandidatesContainerMO setPropertiesOfCandidatesContainerMO:v10 withCandidatesContainerDO:oCopy inManagedObjectContext:contextCopy];
 
   return v10;
 }
 
-+ (void)setPropertiesOfCandidatesContainerMO:(id)a3 withCandidatesContainerDO:(id)a4 inManagedObjectContext:(id)a5
++ (void)setPropertiesOfCandidatesContainerMO:(id)o withCandidatesContainerDO:(id)dO inManagedObjectContext:(id)context
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [a4 candidates];
+  oCopy = o;
+  contextCopy = context;
+  candidates = [dO candidates];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __113__IRCandidatesContainerMO_setPropertiesOfCandidatesContainerMO_withCandidatesContainerDO_inManagedObjectContext___block_invoke;
   v12[3] = &unk_2797E13F8;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
-  [v9 enumerateObjectsUsingBlock:v12];
+  v13 = oCopy;
+  v14 = contextCopy;
+  v10 = contextCopy;
+  v11 = oCopy;
+  [candidates enumerateObjectsUsingBlock:v12];
 }
 
 void __113__IRCandidatesContainerMO_setPropertiesOfCandidatesContainerMO_withCandidatesContainerDO_inManagedObjectContext___block_invoke(uint64_t a1, uint64_t a2)
@@ -45,14 +45,14 @@ void __113__IRCandidatesContainerMO_setPropertiesOfCandidatesContainerMO_withCan
 - (id)convert
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v4 = [(IRCandidatesContainerMO *)self candidates];
+  candidates = [(IRCandidatesContainerMO *)self candidates];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __34__IRCandidatesContainerMO_convert__block_invoke;
   v8[3] = &unk_2797E1420;
   v9 = v3;
   v5 = v3;
-  [v4 enumerateObjectsUsingBlock:v8];
+  [candidates enumerateObjectsUsingBlock:v8];
 
   v6 = [[IRCandidatesContainerDO alloc] initWithCandidates:v5];
 

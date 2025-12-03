@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = __34__PRPreferences_sharedPreferences__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedPreferences_once != -1)
   {
     dispatch_once(&sharedPreferences_once, block);
@@ -33,9 +33,9 @@ uint64_t __34__PRPreferences_sharedPreferences__block_invoke(uint64_t a1)
 
 - (BOOL)isAlternateCalendarEnabled
 {
-  v2 = [MEMORY[0x1E6993468] sharedPreferences];
-  v3 = [v2 overlayCalendarID];
-  v4 = [v3 length] != 0;
+  mEMORY[0x1E6993468] = [MEMORY[0x1E6993468] sharedPreferences];
+  overlayCalendarID = [mEMORY[0x1E6993468] overlayCalendarID];
+  v4 = [overlayCalendarID length] != 0;
 
   return v4;
 }

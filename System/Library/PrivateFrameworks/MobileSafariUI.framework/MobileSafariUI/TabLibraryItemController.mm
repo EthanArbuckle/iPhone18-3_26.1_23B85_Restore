@@ -1,5 +1,5 @@
 @interface TabLibraryItemController
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isSelected;
 - (NSArray)accessories;
 - (NSString)accessibilityIdentifier;
@@ -7,35 +7,35 @@
 - (NSString)title;
 - (NSUUID)UUID;
 - (NSUUID)tabUUID;
-- (TabLibraryItemController)initWithConfiguration:(id)a3;
-- (TabLibraryItemController)initWithConfiguration:(id)a3 tabGroup:(id)a4 tab:(id)a5;
+- (TabLibraryItemController)initWithConfiguration:(id)configuration;
+- (TabLibraryItemController)initWithConfiguration:(id)configuration tabGroup:(id)group tab:(id)tab;
 - (UIDragItem)dragItem;
 - (UISwipeActionsConfiguration)swipeActionsConfiguration;
 - (id)closeHandler;
-- (int64_t)dropIntentForSession:(id)a3;
+- (int64_t)dropIntentForSession:(id)session;
 - (int64_t)hash;
-- (unint64_t)dropOperationForSession:(id)a3;
+- (unint64_t)dropOperationForSession:(id)session;
 - (void)didSelectItem;
-- (void)performDropWithProposal:(id)a3 session:(id)a4 inViewController:(id)a5;
-- (void)updateListContentConfiguration:(id)a3;
-- (void)willDisplayCell:(id)a3;
+- (void)performDropWithProposal:(id)proposal session:(id)session inViewController:(id)controller;
+- (void)updateListContentConfiguration:(id)configuration;
+- (void)willDisplayCell:(id)cell;
 @end
 
 @implementation TabLibraryItemController
 
-- (TabLibraryItemController)initWithConfiguration:(id)a3 tabGroup:(id)a4 tab:(id)a5
+- (TabLibraryItemController)initWithConfiguration:(id)configuration tabGroup:(id)group tab:(id)tab
 {
-  v7 = a3;
-  v8 = sub_21583EA48(v7, a4, a5);
+  configurationCopy = configuration;
+  v8 = sub_21583EA48(configurationCopy, group, tab);
 
   return v8;
 }
 
 - (int64_t)hash
 {
-  v2 = self;
-  v3 = [(TabLibraryItemController *)v2 tab];
-  v4 = [(WBTab *)v3 uuid];
+  selfCopy = self;
+  v3 = [(TabLibraryItemController *)selfCopy tab];
+  uuid = [(WBTab *)v3 uuid];
 
   v5 = sub_215A70540();
   v7 = v6;
@@ -45,11 +45,11 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_215A70B70();
     swift_unknownObjectRelease();
@@ -58,7 +58,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = TabLibraryItemController.isEqual(_:)(v8);
@@ -76,22 +76,22 @@
 
 - (UISwipeActionsConfiguration)swipeActionsConfiguration
 {
-  v2 = self;
+  selfCopy = self;
   v3 = TabLibraryItemController.swipeActionsConfiguration.getter();
 
   return v3;
 }
 
-- (void)updateListContentConfiguration:(id)a3
+- (void)updateListContentConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = self;
-  TabLibraryItemController.updateListContentConfiguration(_:)(v4);
+  configurationCopy = configuration;
+  selfCopy = self;
+  TabLibraryItemController.updateListContentConfiguration(_:)(configurationCopy);
 }
 
 - (NSArray)accessories
 {
-  v2 = self;
+  selfCopy = self;
   TabLibraryItemController.accessories.getter();
 
   sub_2159F7DA8(0, &qword_27CA7E310);
@@ -105,9 +105,9 @@
   v3 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27CA7DF80);
   MEMORY[0x28223BE20](v3 - 8);
   v5 = &v15 - v4;
-  v6 = self;
-  v7 = [(TabLibraryItemController *)v6 tab];
-  v8 = [(WBTab *)v7 uuid];
+  selfCopy = self;
+  v7 = [(TabLibraryItemController *)selfCopy tab];
+  uuid = [(WBTab *)v7 uuid];
 
   sub_215A70540();
   sub_215A6F920();
@@ -128,68 +128,68 @@
 
 - (void)didSelectItem
 {
-  v2 = self;
+  selfCopy = self;
   TabLibraryItemController.didSelectItem()();
 }
 
 - (BOOL)isSelected
 {
-  v2 = self;
+  selfCopy = self;
   v3 = TabLibraryItemController.isSelected.getter();
 
   return v3 & 1;
 }
 
-- (void)willDisplayCell:(id)a3
+- (void)willDisplayCell:(id)cell
 {
-  v4 = a3;
-  v5 = self;
-  TabLibraryItemController.willDisplay(_:)(v4);
+  cellCopy = cell;
+  selfCopy = self;
+  TabLibraryItemController.willDisplay(_:)(cellCopy);
 }
 
 - (UIDragItem)dragItem
 {
-  v2 = self;
+  selfCopy = self;
   v3 = TabLibraryItemController.dragItem.getter();
 
   return v3;
 }
 
-- (unint64_t)dropOperationForSession:(id)a3
+- (unint64_t)dropOperationForSession:(id)session
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  TabLibraryItemController.dropOperation(for:)(a3);
+  selfCopy = self;
+  TabLibraryItemController.dropOperation(for:)(session);
   v7 = v6;
   swift_unknownObjectRelease();
 
   return v7;
 }
 
-- (int64_t)dropIntentForSession:(id)a3
+- (int64_t)dropIntentForSession:(id)session
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  v6 = _sSo24TabLibraryItemControllerC14MobileSafariUIE10dropIntent3forSo020UICollectionViewDropI0VSo13UIDropSession_p_tF_0(a3);
+  selfCopy = self;
+  v6 = _sSo24TabLibraryItemControllerC14MobileSafariUIE10dropIntent3forSo020UICollectionViewDropI0VSo13UIDropSession_p_tF_0(session);
   swift_unknownObjectRelease();
 
   return v6;
 }
 
-- (void)performDropWithProposal:(id)a3 session:(id)a4 inViewController:(id)a5
+- (void)performDropWithProposal:(id)proposal session:(id)session inViewController:(id)controller
 {
-  v8 = a3;
+  proposalCopy = proposal;
   swift_unknownObjectRetain();
-  v9 = a5;
-  v10 = self;
-  sub_215A15C28(a4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_215A15C28(session);
 
   swift_unknownObjectRelease();
 }
 
 - (id)closeHandler
 {
-  v2 = self;
+  selfCopy = self;
   v3 = TabLibraryItemController.closeHandler.getter();
   v5 = v4;
 
@@ -209,7 +209,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   TabLibraryItemController.description.getter();
 
   v3 = sub_215A70500();
@@ -217,7 +217,7 @@
   return v3;
 }
 
-- (TabLibraryItemController)initWithConfiguration:(id)a3
+- (TabLibraryItemController)initWithConfiguration:(id)configuration
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -231,11 +231,11 @@
   v6 = &v18 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
   MEMORY[0x28223BE20](v4);
   v8 = &v18 - v7;
-  v9 = self;
-  v10 = [(TabLibraryItemController *)v9 tabUUID];
-  if (v10)
+  selfCopy = self;
+  tabUUID = [(TabLibraryItemController *)selfCopy tabUUID];
+  if (tabUUID)
   {
-    v11 = v10;
+    v11 = tabUUID;
     sub_215A6F950();
 
     v12 = sub_215A6F960();
@@ -266,11 +266,11 @@
 
 - (NSString)title
 {
-  v2 = self;
-  v3 = [(TabLibraryItemController *)v2 tab];
-  v4 = [(WBTab *)v3 title];
+  selfCopy = self;
+  v3 = [(TabLibraryItemController *)selfCopy tab];
+  title = [(WBTab *)v3 title];
 
-  if (v4)
+  if (title)
   {
     sub_215A70540();
 

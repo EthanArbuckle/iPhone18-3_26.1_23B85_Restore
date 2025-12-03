@@ -1,12 +1,12 @@
 @interface PKDateComponentsRange
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToDateComponentsRange:(id)a3;
-- (PKDateComponentsRange)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToDateComponentsRange:(id)range;
+- (PKDateComponentsRange)initWithCoder:(id)coder;
 - (PKDateComponentsRange)initWithStartDateComponents:(NSDateComponents *)startDateComponents endDateComponents:(NSDateComponents *)endDateComponents;
 - (id)dateInterval;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKDateComponentsRange
@@ -16,7 +16,7 @@
   v6 = startDateComponents;
   v7 = endDateComponents;
   v8 = v7;
-  v9 = 0;
+  selfCopy = 0;
   if (v6 && v7)
   {
     if ([(NSDateComponents *)v6 isValidDate]&& [(NSDateComponents *)v8 isValidDate])
@@ -36,26 +36,26 @@
       }
 
       self = v10;
-      v9 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v9 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (id)dateInterval
 {
-  v3 = [(NSDateComponents *)self->_startDateComponents date];
-  v4 = [(NSDateComponents *)self->_endDateComponents date];
-  v5 = v4;
-  if (v3)
+  date = [(NSDateComponents *)self->_startDateComponents date];
+  date2 = [(NSDateComponents *)self->_endDateComponents date];
+  v5 = date2;
+  if (date)
   {
-    v6 = v4 == 0;
+    v6 = date2 == 0;
   }
 
   else
@@ -63,14 +63,14 @@
     v6 = 1;
   }
 
-  if (v6 || [v3 compare:v4] == 1)
+  if (v6 || [date compare:date2] == 1)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:v3 endDate:v5];
+    v7 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:date endDate:v5];
   }
 
   return v7;
@@ -88,28 +88,28 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKDateComponentsRange *)self isEqualToDateComponentsRange:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKDateComponentsRange *)self isEqualToDateComponentsRange:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToDateComponentsRange:(id)a3
+- (BOOL)isEqualToDateComponentsRange:(id)range
 {
-  v4 = a3;
+  rangeCopy = range;
   startDateComponents = self->_startDateComponents;
-  v6 = v4[1];
+  v6 = rangeCopy[1];
   if (startDateComponents)
   {
     v7 = v6 == 0;
@@ -139,7 +139,7 @@ LABEL_7:
 
 LABEL_9:
   endDateComponents = self->_endDateComponents;
-  v10 = v4[2];
+  v10 = rangeCopy[2];
   if (endDateComponents && v10)
   {
     v8 = [(NSDateComponents *)endDateComponents isEqual:?];
@@ -155,19 +155,19 @@ LABEL_13:
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   startDateComponents = self->_startDateComponents;
-  v5 = a3;
-  [v5 encodeObject:startDateComponents forKey:@"startDateComponents"];
-  [v5 encodeObject:self->_endDateComponents forKey:@"endDateComponents"];
+  coderCopy = coder;
+  [coderCopy encodeObject:startDateComponents forKey:@"startDateComponents"];
+  [coderCopy encodeObject:self->_endDateComponents forKey:@"endDateComponents"];
 }
 
-- (PKDateComponentsRange)initWithCoder:(id)a3
+- (PKDateComponentsRange)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startDateComponents"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endDateComponents"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startDateComponents"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endDateComponents"];
 
   v7 = [(PKDateComponentsRange *)self initWithStartDateComponents:v5 endDateComponents:v6];
   return v7;

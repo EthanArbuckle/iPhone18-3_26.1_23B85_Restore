@@ -1,9 +1,9 @@
 @interface _UIWindowOrientationUpdate
 - (uint64_t)invalidateFences;
-- (void)initWithOrientation:(void *)a3 transitionAnimationSettings:(void *)a4 updateBlock:;
-- (void)synchronizeDrawingWithFencesOnScene:(uint64_t)a1;
-- (void)trackFence:(uint64_t)a1;
-- (void)transferFencesToUpdate:(uint64_t)a1;
+- (void)initWithOrientation:(void *)orientation transitionAnimationSettings:(void *)settings updateBlock:;
+- (void)synchronizeDrawingWithFencesOnScene:(uint64_t)scene;
+- (void)trackFence:(uint64_t)fence;
+- (void)transferFencesToUpdate:(uint64_t)update;
 @end
 
 @implementation _UIWindowOrientationUpdate
@@ -50,47 +50,47 @@
   return result;
 }
 
-- (void)initWithOrientation:(void *)a3 transitionAnimationSettings:(void *)a4 updateBlock:
+- (void)initWithOrientation:(void *)orientation transitionAnimationSettings:(void *)settings updateBlock:
 {
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  orientationCopy = orientation;
+  settingsCopy = settings;
+  if (self)
   {
-    v15.receiver = a1;
+    v15.receiver = self;
     v15.super_class = _UIWindowOrientationUpdate;
     v10 = objc_msgSendSuper2(&v15, sel_init);
-    a1 = v10;
+    self = v10;
     if (v10)
     {
       *(v10 + 2) = a2;
-      objc_storeStrong(v10 + 3, a3);
-      v11 = _Block_copy(v9);
-      v12 = a1[4];
-      a1[4] = v11;
+      objc_storeStrong(v10 + 3, orientation);
+      v11 = _Block_copy(settingsCopy);
+      v12 = self[4];
+      self[4] = v11;
 
-      v13 = a1[1];
-      a1[1] = 0;
+      v13 = self[1];
+      self[1] = 0;
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (void)trackFence:(uint64_t)a1
+- (void)trackFence:(uint64_t)fence
 {
   v3 = a2;
   v4 = v3;
-  if (a1 && v3)
+  if (fence && v3)
   {
-    v5 = *(a1 + 8);
+    v5 = *(fence + 8);
     v8 = v4;
     if (!v5)
     {
       v6 = [MEMORY[0x1E695DFA8] set];
-      v7 = *(a1 + 8);
-      *(a1 + 8) = v6;
+      v7 = *(fence + 8);
+      *(fence + 8) = v6;
 
-      v5 = *(a1 + 8);
+      v5 = *(fence + 8);
     }
 
     [v5 addObject:v8];
@@ -98,17 +98,17 @@
   }
 }
 
-- (void)transferFencesToUpdate:(uint64_t)a1
+- (void)transferFencesToUpdate:(uint64_t)update
 {
   v14 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (update)
   {
     v11 = 0u;
     v12 = 0u;
     v9 = 0u;
     v10 = 0u;
-    v4 = *(a1 + 8);
+    v4 = *(update + 8);
     v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v5)
     {
@@ -134,21 +134,21 @@
       while (v6);
     }
 
-    [*(a1 + 8) removeAllObjects];
+    [*(update + 8) removeAllObjects];
   }
 }
 
-- (void)synchronizeDrawingWithFencesOnScene:(uint64_t)a1
+- (void)synchronizeDrawingWithFencesOnScene:(uint64_t)scene
 {
   v14 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (scene)
   {
     v11 = 0u;
     v12 = 0u;
     v9 = 0u;
     v10 = 0u;
-    v4 = *(a1 + 8);
+    v4 = *(scene + 8);
     v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v5)
     {
@@ -174,7 +174,7 @@
       while (v6);
     }
 
-    [(_UIWindowOrientationUpdate *)a1 invalidateFences];
+    [(_UIWindowOrientationUpdate *)scene invalidateFences];
   }
 }
 

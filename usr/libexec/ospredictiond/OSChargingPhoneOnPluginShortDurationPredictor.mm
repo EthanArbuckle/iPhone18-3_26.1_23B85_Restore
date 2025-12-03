@@ -1,14 +1,14 @@
 @interface OSChargingPhoneOnPluginShortDurationPredictor
-- (OSChargingTwoStagePredictorQueryResult)chargingDecision:(SEL)a3 withPluginDate:(unint64_t)a4 withPluginBatteryLevel:(id)a5 forDate:(double)a6 withLog:(id)a7;
+- (OSChargingTwoStagePredictorQueryResult)chargingDecision:(SEL)decision withPluginDate:(unint64_t)date withPluginBatteryLevel:(id)level forDate:(double)forDate withLog:(id)log;
 @end
 
 @implementation OSChargingPhoneOnPluginShortDurationPredictor
 
-- (OSChargingTwoStagePredictorQueryResult)chargingDecision:(SEL)a3 withPluginDate:(unint64_t)a4 withPluginBatteryLevel:(id)a5 forDate:(double)a6 withLog:(id)a7
+- (OSChargingTwoStagePredictorQueryResult)chargingDecision:(SEL)decision withPluginDate:(unint64_t)date withPluginBatteryLevel:(id)level forDate:(double)forDate withLog:(id)log
 {
   v13 = a8;
-  v14 = a7;
-  v15 = a5;
+  logCopy = log;
+  levelCopy = level;
   v16 = os_transaction_create();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
@@ -16,27 +16,27 @@
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Getting predictions for short duration or not, with on plugin model", &v30, 2u);
   }
 
-  v17 = [(OSChargingTwoStagePredictor *)self getInputFeaturesWithPluginDate:v15 withPluginBatteryLevel:v14 forDate:v13 withLog:a6];
+  v17 = [(OSChargingTwoStagePredictor *)self getInputFeaturesWithPluginDate:levelCopy withPluginBatteryLevel:logCopy forDate:v13 withLog:forDate];
 
   *&retstr->var0 = 0;
   retstr->var1 = -99999.0;
   retstr->var2 = 0.0;
-  v18 = [(OSChargingPhoneOnPluginPredictor *)self engageOnPluginModel];
-  v19 = [v18 predictionFromFeatures:v17 error:0];
+  engageOnPluginModel = [(OSChargingPhoneOnPluginPredictor *)self engageOnPluginModel];
+  v19 = [engageOnPluginModel predictionFromFeatures:v17 error:0];
 
   v20 = [v19 featureValueForName:@"classProbability"];
-  v21 = [v20 dictionaryValue];
+  dictionaryValue = [v20 dictionaryValue];
 
   v22 = v13;
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
-    v23 = [v21 description];
+    v23 = [dictionaryValue description];
     v30 = 138412290;
     v31 = v23;
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "On plugin engagement model raw output %@", &v30, 0xCu);
   }
 
-  v24 = [v21 objectForKeyedSubscript:&off_10009B520];
+  v24 = [dictionaryValue objectForKeyedSubscript:&off_10009B520];
   [v24 doubleValue];
   v26 = v25;
 

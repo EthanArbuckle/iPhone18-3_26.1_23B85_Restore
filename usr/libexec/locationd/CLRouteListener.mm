@@ -1,16 +1,16 @@
 @interface CLRouteListener
-- (id)initInUniverse:(id)a3 withDelegate:(INotifier *)a4;
+- (id)initInUniverse:(id)universe withDelegate:(INotifier *)delegate;
 - (void)dealloc;
 - (void)disable;
 - (void)enable;
-- (void)logRoute:(id)a3;
-- (void)logState:(id)a3;
-- (void)logTransitRoute:(id)a3;
-- (void)navigationListener:(id)a3 didUpdateGuidanceState:(id)a4;
-- (void)navigationListener:(id)a3 didUpdateRouteSummary:(id)a4;
-- (void)navigationListener:(id)a3 didUpdateTransitSummary:(id)a4;
+- (void)logRoute:(id)route;
+- (void)logState:(id)state;
+- (void)logTransitRoute:(id)route;
+- (void)navigationListener:(id)listener didUpdateGuidanceState:(id)state;
+- (void)navigationListener:(id)listener didUpdateRouteSummary:(id)summary;
+- (void)navigationListener:(id)listener didUpdateTransitSummary:(id)summary;
 - (void)notifyFromLastInfo;
-- (void)onDarwinNotification:(int)a3 data:(id)a4;
+- (void)onDarwinNotification:(int)notification data:(id)data;
 @end
 
 @implementation CLRouteListener
@@ -126,7 +126,7 @@
   v7();
 }
 
-- (id)initInUniverse:(id)a3 withDelegate:(INotifier *)a4
+- (id)initInUniverse:(id)universe withDelegate:(INotifier *)delegate
 {
   v9.receiver = self;
   v9.super_class = CLRouteListener;
@@ -134,9 +134,9 @@
   v7 = v6;
   if (v6)
   {
-    v6->_parentNotifier = a4;
-    v6->_universe = a3;
-    v6->_silo = [a3 silo];
+    v6->_parentNotifier = delegate;
+    v6->_universe = universe;
+    v6->_silo = [universe silo];
     v7->_enabled = 0;
     *&v7->_lastEtaInSeconds = xmmword_101C75BF0;
     v7->_lastCoordinate = xmmword_101C8C320;
@@ -203,7 +203,7 @@
   }
 }
 
-- (void)navigationListener:(id)a3 didUpdateRouteSummary:(id)a4
+- (void)navigationListener:(id)listener didUpdateRouteSummary:(id)summary
 {
   [(CLDispatchSilo *)self->_silo assertInside];
   if (qword_1025D4600 != -1)
@@ -215,15 +215,15 @@
   if (os_log_type_enabled(qword_1025D4608, OS_LOG_TYPE_DEFAULT))
   {
     enabled = self->_enabled;
-    v8 = [a4 transportType] == 1;
-    v9 = [a4 hasDestination];
+    v8 = [summary transportType] == 1;
+    hasDestination = [summary hasDestination];
     v10 = self->_lastEtaInSeconds == -1.0;
     v18[0] = 67240960;
     v18[1] = enabled;
     v19 = 1026;
     v20 = v8;
     v21 = 1026;
-    v22 = v9;
+    v22 = hasDestination;
     v23 = 1026;
     v24 = v10;
     _os_log_impl(dword_100000000, v6, OS_LOG_TYPE_DEFAULT, "CLC: Received a route, %{public}d,%{public}d,%{public}d,%{public}d", v18, 0x1Au);
@@ -236,22 +236,22 @@
 
   if (self->_enabled)
   {
-    [(CLRouteListener *)self logRoute:a4];
-    if ([a4 transportType] == 1)
+    [(CLRouteListener *)self logRoute:summary];
+    if ([summary transportType] == 1)
     {
-      [a4 travelTime];
+      [summary travelTime];
       self->_lastEtaInSeconds = v11;
       self->_lastEtaAbsTime = CFAbsoluteTimeGetCurrent();
-      if ([a4 hasDestination])
+      if ([summary hasDestination])
       {
-        [objc_msgSend(objc_msgSend(a4 "destination")];
+        [objc_msgSend(objc_msgSend(summary "destination")];
         self->_lastCoordinate.latitude = v12;
-        v13 = [a4 destination];
+        destination = [summary destination];
       }
 
       else
       {
-        if (![a4 hasOrigin])
+        if (![summary hasOrigin])
         {
           if (qword_1025D4600 != -1)
           {
@@ -273,16 +273,16 @@
           goto LABEL_22;
         }
 
-        [objc_msgSend(objc_msgSend(a4 "origin")];
+        [objc_msgSend(objc_msgSend(summary "origin")];
         self->_lastCoordinate.latitude = v14;
-        v13 = [a4 origin];
+        destination = [summary origin];
       }
 
-      [objc_msgSend(v13 "latLng")];
+      [objc_msgSend(destination "latLng")];
       self->_lastCoordinate.longitude = v15;
 LABEL_22:
       parentNotifier = self->_parentNotifier;
-      [a4 travelTime];
+      [summary travelTime];
       (*(parentNotifier->var0 + 2))(parentNotifier, &self->_lastCoordinate);
       return;
     }
@@ -295,7 +295,7 @@ LABEL_22:
   }
 }
 
-- (void)navigationListener:(id)a3 didUpdateTransitSummary:(id)a4
+- (void)navigationListener:(id)listener didUpdateTransitSummary:(id)summary
 {
   [(CLDispatchSilo *)self->_silo assertInside];
   if (qword_1025D4600 != -1)
@@ -317,11 +317,11 @@ LABEL_22:
 
   if (self->_enabled)
   {
-    [(CLRouteListener *)self logTransitRoute:a4];
+    [(CLRouteListener *)self logTransitRoute:summary];
   }
 }
 
-- (void)navigationListener:(id)a3 didUpdateGuidanceState:(id)a4
+- (void)navigationListener:(id)listener didUpdateGuidanceState:(id)state
 {
   [(CLDispatchSilo *)self->_silo assertInside];
   if (qword_1025D4600 != -1)
@@ -333,15 +333,15 @@ LABEL_22:
   if (os_log_type_enabled(qword_1025D4608, OS_LOG_TYPE_DEFAULT))
   {
     enabled = self->_enabled;
-    v8 = [a4 guidanceLevel] != 2;
-    v9 = [a4 hasGuidanceLevel];
+    v8 = [state guidanceLevel] != 2;
+    hasGuidanceLevel = [state hasGuidanceLevel];
     v10 = self->_lastEtaInSeconds == -1.0;
     v17 = 67240960;
     v18 = enabled;
     v19 = 1026;
     v20 = v8;
     v21 = 1026;
-    v22 = v9;
+    v22 = hasGuidanceLevel;
     v23 = 1026;
     v24 = v10;
     _os_log_impl(dword_100000000, v6, OS_LOG_TYPE_DEFAULT, "CLC: Received a state change, %{public}d,%{public}d,%{public}d,%{public}d", &v17, 0x1Au);
@@ -354,19 +354,19 @@ LABEL_22:
 
   if (self->_enabled)
   {
-    [(CLRouteListener *)self logState:a4];
-    if (self->_lastEtaInSeconds != -1.0 && [a4 hasGuidanceLevel] && objc_msgSend(a4, "guidanceLevel") != 2)
+    [(CLRouteListener *)self logState:state];
+    if (self->_lastEtaInSeconds != -1.0 && [state hasGuidanceLevel] && objc_msgSend(state, "guidanceLevel") != 2)
     {
       self->_lastEtaInSeconds = -1.0;
       (*(self->_parentNotifier->var0 + 3))(self->_parentNotifier);
     }
 
-    if ([a4 hasNavigationState])
+    if ([state hasNavigationState])
     {
       parentNotifier = self->_parentNotifier;
-      v12 = [a4 navigationState];
-      v13 = v12;
-      if (v12 >= 9)
+      navigationState = [state navigationState];
+      v13 = navigationState;
+      if (navigationState >= 9)
       {
         if (qword_1025D4600 != -1)
         {
@@ -392,7 +392,7 @@ LABEL_22:
 
       else
       {
-        v14 = v12;
+        v14 = navigationState;
       }
 
       (*(parentNotifier->var0 + 4))(parentNotifier, v14);
@@ -400,9 +400,9 @@ LABEL_22:
   }
 }
 
-- (void)logRoute:(id)a3
+- (void)logRoute:(id)route
 {
-  if ([a3 hasTransportType])
+  if ([route hasTransportType])
   {
     if (qword_1025D4600 != -1)
     {
@@ -412,20 +412,20 @@ LABEL_22:
     v4 = qword_1025D4608;
     if (os_log_type_enabled(qword_1025D4608, OS_LOG_TYPE_DEBUG))
     {
-      v5 = [a3 transportType];
-      v6 = [a3 transportType];
-      if (v6 >= 7)
+      transportType = [route transportType];
+      transportType2 = [route transportType];
+      if (transportType2 >= 7)
       {
-        v7 = [NSString stringWithFormat:@"(unknown: %i)", v6];
+        v7 = [NSString stringWithFormat:@"(unknown: %i)", transportType2];
       }
 
       else
       {
-        v7 = off_10246E570[v6];
+        v7 = off_10246E570[transportType2];
       }
 
       *buf = 67174915;
-      LODWORD(v15[0]) = v5;
+      LODWORD(v15[0]) = transportType;
       WORD2(v15[0]) = 2113;
       *(v15 + 6) = v7;
       _os_log_impl(dword_100000000, v4, OS_LOG_TYPE_DEBUG, "CLC: Route type        : %{private}d, %{private}@", buf, 0x12u);
@@ -433,11 +433,11 @@ LABEL_22:
 
     if (sub_10000A100(121, 2))
     {
-      sub_101926218(a3);
+      sub_101926218(route);
     }
   }
 
-  if ([a3 hasOrigin])
+  if ([route hasOrigin])
   {
     if (qword_1025D4600 != -1)
     {
@@ -458,7 +458,7 @@ LABEL_22:
     }
   }
 
-  if ([a3 hasDestination])
+  if ([route hasDestination])
   {
     if (qword_1025D4600 != -1)
     {
@@ -479,7 +479,7 @@ LABEL_22:
     }
   }
 
-  if ([a3 hasDestinationName])
+  if ([route hasDestinationName])
   {
     if (qword_1025D4600 != -1)
     {
@@ -489,19 +489,19 @@ LABEL_22:
     v10 = qword_1025D4608;
     if (os_log_type_enabled(qword_1025D4608, OS_LOG_TYPE_DEBUG))
     {
-      v11 = [a3 destinationName];
+      destinationName = [route destinationName];
       *buf = 138477827;
-      v15[0] = v11;
+      v15[0] = destinationName;
       _os_log_impl(dword_100000000, v10, OS_LOG_TYPE_DEBUG, "CLC: Route dest name   : %{private}@", buf, 0xCu);
     }
 
     if (sub_10000A100(121, 2))
     {
-      sub_101926568(a3);
+      sub_101926568(route);
     }
   }
 
-  if ([a3 hasTravelTime])
+  if ([route hasTravelTime])
   {
     if (qword_1025D4600 != -1)
     {
@@ -511,7 +511,7 @@ LABEL_22:
     v12 = qword_1025D4608;
     if (os_log_type_enabled(qword_1025D4608, OS_LOG_TYPE_DEBUG))
     {
-      [a3 travelTime];
+      [route travelTime];
       *buf = 134283521;
       v15[0] = v13;
       _os_log_impl(dword_100000000, v12, OS_LOG_TYPE_DEBUG, "CLC: Route travel time : %{private}.01lf", buf, 0xCu);
@@ -519,19 +519,19 @@ LABEL_22:
 
     if (sub_10000A100(121, 2))
     {
-      sub_101926664(a3);
+      sub_101926664(route);
     }
   }
 }
 
-- (void)logTransitRoute:(id)a3
+- (void)logTransitRoute:(id)route
 {
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v3 = [a3 possibleStops];
-  v4 = [v3 countByEnumeratingWithState:&v52 objects:v59 count:16];
+  possibleStops = [route possibleStops];
+  v4 = [possibleStops countByEnumeratingWithState:&v52 objects:v59 count:16];
   if (v4)
   {
     v5 = v4;
@@ -543,7 +543,7 @@ LABEL_22:
       {
         if (*v53 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(possibleStops);
         }
 
         v8 = *(*(&v52 + 1) + 8 * v7);
@@ -574,9 +574,9 @@ LABEL_22:
           v10 = qword_1025D4608;
           if (os_log_type_enabled(qword_1025D4608, OS_LOG_TYPE_DEBUG))
           {
-            v11 = [v8 stopID];
+            stopID = [v8 stopID];
             *buf = 134283521;
-            v58 = v11;
+            v58 = stopID;
             _os_log_impl(dword_100000000, v10, OS_LOG_TYPE_DEBUG, "CLC:     ID  : %{private}llu", buf, 0xCu);
           }
 
@@ -588,7 +588,7 @@ LABEL_22:
 
         if ([v8 hasCoordinate])
         {
-          v12 = [v8 coordinate];
+          coordinate = [v8 coordinate];
           if (qword_1025D4600 != -1)
           {
             sub_101925AEC();
@@ -597,7 +597,7 @@ LABEL_22:
           v13 = qword_1025D4608;
           if (os_log_type_enabled(qword_1025D4608, OS_LOG_TYPE_DEBUG))
           {
-            [v12 lat];
+            [coordinate lat];
             *buf = 134545665;
             v58 = v14;
             _os_log_impl(dword_100000000, v13, OS_LOG_TYPE_DEBUG, "CLC:     LAT : %{sensitive}lf", buf, 0xCu);
@@ -616,7 +616,7 @@ LABEL_22:
           v15 = qword_1025D4608;
           if (os_log_type_enabled(qword_1025D4608, OS_LOG_TYPE_DEBUG))
           {
-            [v12 lng];
+            [coordinate lng];
             *buf = 134545665;
             v58 = v16;
             _os_log_impl(dword_100000000, v15, OS_LOG_TYPE_DEBUG, "CLC:     LON : %{sensitive}lf", buf, 0xCu);
@@ -632,7 +632,7 @@ LABEL_22:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v52 objects:v59 count:16];
+      v5 = [possibleStops countByEnumeratingWithState:&v52 objects:v59 count:16];
     }
 
     while (v5);
@@ -642,7 +642,7 @@ LABEL_22:
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  obj = [a3 scheduledLinks];
+  obj = [route scheduledLinks];
   v17 = [obj countByEnumeratingWithState:&v48 objects:v56 count:16];
   if (v17)
   {
@@ -687,9 +687,9 @@ LABEL_22:
           v23 = qword_1025D4608;
           if (os_log_type_enabled(qword_1025D4608, OS_LOG_TYPE_DEBUG))
           {
-            v24 = [v21 lineID];
+            lineID = [v21 lineID];
             *buf = 134283521;
-            v58 = v24;
+            v58 = lineID;
             _os_log_impl(dword_100000000, v23, OS_LOG_TYPE_DEBUG, "CLC:     ID  : %{private}llu", buf, 0xCu);
           }
 
@@ -922,9 +922,9 @@ LABEL_22:
   }
 }
 
-- (void)logState:(id)a3
+- (void)logState:(id)state
 {
-  if ([a3 hasGuidanceLevel])
+  if ([state hasGuidanceLevel])
   {
     if (qword_1025D4600 != -1)
     {
@@ -934,15 +934,15 @@ LABEL_22:
     v4 = qword_1025D4608;
     if (os_log_type_enabled(qword_1025D4608, OS_LOG_TYPE_DEBUG))
     {
-      v5 = [a3 guidanceLevel];
-      if (v5 >= 4)
+      guidanceLevel = [state guidanceLevel];
+      if (guidanceLevel >= 4)
       {
-        v6 = [NSString stringWithFormat:@"(unknown: %i)", v5];
+        v6 = [NSString stringWithFormat:@"(unknown: %i)", guidanceLevel];
       }
 
       else
       {
-        v6 = off_10246E508[v5];
+        v6 = off_10246E508[guidanceLevel];
       }
 
       *buf = 138543362;
@@ -952,11 +952,11 @@ LABEL_22:
 
     if (sub_10000A100(121, 2))
     {
-      sub_101927488(a3);
+      sub_101927488(state);
     }
   }
 
-  if ([a3 hasNavigationState])
+  if ([state hasNavigationState])
   {
     if (qword_1025D4600 != -1)
     {
@@ -966,15 +966,15 @@ LABEL_22:
     v7 = qword_1025D4608;
     if (os_log_type_enabled(qword_1025D4608, OS_LOG_TYPE_DEBUG))
     {
-      v8 = [a3 navigationState];
-      if (v8 >= 9)
+      navigationState = [state navigationState];
+      if (navigationState >= 9)
       {
-        v9 = [NSString stringWithFormat:@"(unknown: %i)", v8];
+        v9 = [NSString stringWithFormat:@"(unknown: %i)", navigationState];
       }
 
       else
       {
-        v9 = off_10246E528[v8];
+        v9 = off_10246E528[navigationState];
       }
 
       *buf = 138543362;
@@ -984,11 +984,11 @@ LABEL_22:
 
     if (sub_10000A100(121, 2))
     {
-      sub_1019275AC(a3);
+      sub_1019275AC(state);
     }
   }
 
-  if ([a3 hasTrackedTransportType])
+  if ([state hasTrackedTransportType])
   {
     if (qword_1025D4600 != -1)
     {
@@ -998,15 +998,15 @@ LABEL_22:
     v10 = qword_1025D4608;
     if (os_log_type_enabled(qword_1025D4608, OS_LOG_TYPE_DEBUG))
     {
-      v11 = [a3 trackedTransportType];
-      if (v11 >= 7)
+      trackedTransportType = [state trackedTransportType];
+      if (trackedTransportType >= 7)
       {
-        v12 = [NSString stringWithFormat:@"(unknown: %i)", v11];
+        v12 = [NSString stringWithFormat:@"(unknown: %i)", trackedTransportType];
       }
 
       else
       {
-        v12 = off_10246E570[v11];
+        v12 = off_10246E570[trackedTransportType];
       }
 
       *buf = 138477827;
@@ -1016,14 +1016,14 @@ LABEL_22:
 
     if (sub_10000A100(121, 2))
     {
-      sub_1019276D0(a3);
+      sub_1019276D0(state);
     }
   }
 }
 
-- (void)onDarwinNotification:(int)a3 data:(id)a4
+- (void)onDarwinNotification:(int)notification data:(id)data
 {
-  if (a3 == 8)
+  if (notification == 8)
   {
     v9 = v4;
     v10 = v5;

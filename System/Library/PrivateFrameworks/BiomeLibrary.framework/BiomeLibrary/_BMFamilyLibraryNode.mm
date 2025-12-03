@@ -2,7 +2,7 @@
 + (id)AskToBuy;
 + (id)configurationForAskToBuy;
 + (id)storeConfigurationForAskToBuy;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)sublibraries;
 + (id)validKeyPaths;
 @end
@@ -12,8 +12,8 @@
 + (id)sublibraries
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v2 = [a1 ScreenTime];
-  v6[0] = v2;
+  screenTime = [self ScreenTime];
+  v6[0] = screenTime;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
 
   v4 = *MEMORY[0x1E69E9840];
@@ -24,7 +24,7 @@
 + (id)AskToBuy
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForAskToBuy];
+  configurationForAskToBuy = [self configurationForAskToBuy];
   v3 = +[BMFamilyAskToBuy columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -36,7 +36,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Family.AskToBuy" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Family.AskToBuy" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Family.AskToBuy" schema:v9 configuration:configurationForAskToBuy];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -45,13 +45,13 @@
 
 + (id)configurationForAskToBuy
 {
-  v3 = [a1 storeConfigurationForAskToBuy];
-  v4 = [a1 syncPolicyForAskToBuy];
+  storeConfigurationForAskToBuy = [self storeConfigurationForAskToBuy];
+  syncPolicyForAskToBuy = [self syncPolicyForAskToBuy];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"77728FAD-64C7-4AA5-B987-B7D59846D3DA"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Family.AskToBuy" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:&unk_1EF3E8F88 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Family.AskToBuy" eventClass:objc_opt_class() storeConfig:storeConfigurationForAskToBuy syncPolicy:syncPolicyForAskToBuy legacyNames:&unk_1EF3E8F88 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -64,19 +64,19 @@
   return v3;
 }
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  if ([a3 isEqualToString:@"AskToBuy"])
+  if ([name isEqualToString:@"AskToBuy"])
   {
-    v4 = [a1 AskToBuy];
+    askToBuy = [self AskToBuy];
   }
 
   else
   {
-    v4 = 0;
+    askToBuy = 0;
   }
 
-  return v4;
+  return askToBuy;
 }
 
 + (id)validKeyPaths

@@ -1,16 +1,16 @@
 @interface SFTouchUpGestureRecognizer
-- (SFTouchUpGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (SFTouchUpGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation SFTouchUpGestureRecognizer
 
-- (SFTouchUpGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (SFTouchUpGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v8.receiver = self;
   v8.super_class = SFTouchUpGestureRecognizer;
-  v4 = [(SFTouchUpGestureRecognizer *)&v8 initWithTarget:a3 action:a4];
+  v4 = [(SFTouchUpGestureRecognizer *)&v8 initWithTarget:target action:action];
   v5 = v4;
   if (v4)
   {
@@ -22,19 +22,19 @@
   return v5;
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = SFTouchUpGestureRecognizer;
-  [(SFTouchUpGestureRecognizer *)&v5 touchesEnded:a3 withEvent:a4];
+  [(SFTouchUpGestureRecognizer *)&v5 touchesEnded:ended withEvent:event];
   [(SFTouchUpGestureRecognizer *)self setState:3];
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = SFTouchUpGestureRecognizer;
-  [(SFTouchUpGestureRecognizer *)&v5 touchesCancelled:a3 withEvent:a4];
+  [(SFTouchUpGestureRecognizer *)&v5 touchesCancelled:cancelled withEvent:event];
   [(SFTouchUpGestureRecognizer *)self setState:3];
 }
 

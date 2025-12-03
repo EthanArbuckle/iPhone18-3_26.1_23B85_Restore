@@ -1,9 +1,9 @@
 @interface _WKContentWorldConfiguration
 - (NSString)name;
-- (_WKContentWorldConfiguration)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setName:(id)a3;
+- (_WKContentWorldConfiguration)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)setName:(id)name;
 @end
 
 @implementation _WKContentWorldConfiguration
@@ -44,9 +44,9 @@ LABEL_7:
   return &v4->isa;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  MEMORY[0x19EB02040](&v8, a3);
+  MEMORY[0x19EB02040](&v8, name);
   v5 = v8;
   v8 = 0;
   m_ptr = self->_name.m_impl.m_ptr;
@@ -70,9 +70,9 @@ LABEL_7:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setName:{-[_WKContentWorldConfiguration name](self, "name")}];
   [v4 setAllowAccessToClosedShadowRoots:{-[_WKContentWorldConfiguration allowAccessToClosedShadowRoots](self, "allowAccessToClosedShadowRoots")}];
   [v4 setAllowAutofill:{-[_WKContentWorldConfiguration allowAutofill](self, "allowAutofill")}];
@@ -81,27 +81,27 @@ LABEL_7:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:-[_WKContentWorldConfiguration name](self forKey:{"name"), @"name"}];
-  [a3 encodeBool:-[_WKContentWorldConfiguration allowAccessToClosedShadowRoots](self forKey:{"allowAccessToClosedShadowRoots"), @"allowAccessToClosedShadowRoots"}];
-  [a3 encodeBool:-[_WKContentWorldConfiguration allowAutofill](self forKey:{"allowAutofill"), @"allowAutofill"}];
-  [a3 encodeBool:-[_WKContentWorldConfiguration allowElementUserInfo](self forKey:{"allowElementUserInfo"), @"allowElementUserInfo"}];
-  v5 = [(_WKContentWorldConfiguration *)self disableLegacyBuiltinOverrides];
+  [coder encodeObject:-[_WKContentWorldConfiguration name](self forKey:{"name"), @"name"}];
+  [coder encodeBool:-[_WKContentWorldConfiguration allowAccessToClosedShadowRoots](self forKey:{"allowAccessToClosedShadowRoots"), @"allowAccessToClosedShadowRoots"}];
+  [coder encodeBool:-[_WKContentWorldConfiguration allowAutofill](self forKey:{"allowAutofill"), @"allowAutofill"}];
+  [coder encodeBool:-[_WKContentWorldConfiguration allowElementUserInfo](self forKey:{"allowElementUserInfo"), @"allowElementUserInfo"}];
+  disableLegacyBuiltinOverrides = [(_WKContentWorldConfiguration *)self disableLegacyBuiltinOverrides];
 
-  [a3 encodeBool:v5 forKey:@"disableLegacyBuiltinOverrides"];
+  [coder encodeBool:disableLegacyBuiltinOverrides forKey:@"disableLegacyBuiltinOverrides"];
 }
 
-- (_WKContentWorldConfiguration)initWithCoder:(id)a3
+- (_WKContentWorldConfiguration)initWithCoder:(id)coder
 {
   v4 = [(_WKContentWorldConfiguration *)self init];
   if (v4)
   {
-    -[_WKContentWorldConfiguration setName:](v4, "setName:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"name"]);
-    -[_WKContentWorldConfiguration setAllowAccessToClosedShadowRoots:](v4, "setAllowAccessToClosedShadowRoots:", [a3 decodeBoolForKey:@"allowAccessToClosedShadowRoots"]);
-    -[_WKContentWorldConfiguration setAllowAutofill:](v4, "setAllowAutofill:", [a3 decodeBoolForKey:@"allowAutofill"]);
-    -[_WKContentWorldConfiguration setAllowElementUserInfo:](v4, "setAllowElementUserInfo:", [a3 decodeBoolForKey:@"allowElementUserInfo"]);
-    -[_WKContentWorldConfiguration setDisableLegacyBuiltinOverrides:](v4, "setDisableLegacyBuiltinOverrides:", [a3 decodeBoolForKey:@"disableLegacyBuiltinOverrides"]);
+    -[_WKContentWorldConfiguration setName:](v4, "setName:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"name"]);
+    -[_WKContentWorldConfiguration setAllowAccessToClosedShadowRoots:](v4, "setAllowAccessToClosedShadowRoots:", [coder decodeBoolForKey:@"allowAccessToClosedShadowRoots"]);
+    -[_WKContentWorldConfiguration setAllowAutofill:](v4, "setAllowAutofill:", [coder decodeBoolForKey:@"allowAutofill"]);
+    -[_WKContentWorldConfiguration setAllowElementUserInfo:](v4, "setAllowElementUserInfo:", [coder decodeBoolForKey:@"allowElementUserInfo"]);
+    -[_WKContentWorldConfiguration setDisableLegacyBuiltinOverrides:](v4, "setDisableLegacyBuiltinOverrides:", [coder decodeBoolForKey:@"disableLegacyBuiltinOverrides"]);
   }
 
   return v4;

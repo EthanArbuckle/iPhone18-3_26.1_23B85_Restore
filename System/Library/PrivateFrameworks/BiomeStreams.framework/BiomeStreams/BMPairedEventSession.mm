@@ -1,42 +1,42 @@
 @interface BMPairedEventSession
-+ (id)openSessionsFromBookmark:(id)a3;
-+ (id)sessionPublisherWithStreamPublisher:(id)a3 startingBlock:(id)a4 sessionKeyBlock:(id)a5 options:(unint64_t)a6;
-- (BMPairedEventSession)initWithKey:(id)a3 startEvent:(id)a4 endEvent:(id)a5;
++ (id)openSessionsFromBookmark:(id)bookmark;
++ (id)sessionPublisherWithStreamPublisher:(id)publisher startingBlock:(id)block sessionKeyBlock:(id)keyBlock options:(unint64_t)options;
+- (BMPairedEventSession)initWithKey:(id)key startEvent:(id)event endEvent:(id)endEvent;
 - (BMStoreEvent)endEvent;
 - (BMStoreEvent)startEvent;
 @end
 
 @implementation BMPairedEventSession
 
-- (BMPairedEventSession)initWithKey:(id)a3 startEvent:(id)a4 endEvent:(id)a5
+- (BMPairedEventSession)initWithKey:(id)key startEvent:(id)event endEvent:(id)endEvent
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v9;
-  if (!v9)
+  keyCopy = key;
+  eventCopy = event;
+  endEventCopy = endEvent;
+  null = eventCopy;
+  if (!eventCopy)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[0] = v11;
-  v12 = v10;
-  if (!v10)
+  v18[0] = null;
+  null2 = endEventCopy;
+  if (!endEventCopy)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[1] = v12;
+  v18[1] = null2;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:2];
   v17.receiver = self;
   v17.super_class = BMPairedEventSession;
-  v14 = [(BMEventSession *)&v17 initWithKey:v8 events:v13];
+  v14 = [(BMEventSession *)&v17 initWithKey:keyCopy events:v13];
 
-  if (!v10)
+  if (!endEventCopy)
   {
 
-    if (v9)
+    if (eventCopy)
     {
       goto LABEL_7;
     }
@@ -46,7 +46,7 @@ LABEL_9:
     goto LABEL_7;
   }
 
-  if (!v9)
+  if (!eventCopy)
   {
     goto LABEL_9;
   }
@@ -60,8 +60,8 @@ LABEL_7:
 - (BMStoreEvent)startEvent
 {
   v3 = [(NSArray *)self->super._events objectAtIndexedSubscript:0];
-  v4 = [MEMORY[0x1E695DFB0] null];
-  if (v3 == v4)
+  null = [MEMORY[0x1E695DFB0] null];
+  if (v3 == null)
   {
     v5 = 0;
   }
@@ -77,8 +77,8 @@ LABEL_7:
 - (BMStoreEvent)endEvent
 {
   v3 = [(NSArray *)self->super._events objectAtIndexedSubscript:1];
-  v4 = [MEMORY[0x1E695DFB0] null];
-  if (v3 == v4)
+  null = [MEMORY[0x1E695DFB0] null];
+  if (v3 == null)
   {
     v5 = 0;
   }
@@ -91,23 +91,23 @@ LABEL_7:
   return v5;
 }
 
-+ (id)sessionPublisherWithStreamPublisher:(id)a3 startingBlock:(id)a4 sessionKeyBlock:(id)a5 options:(unint64_t)a6
++ (id)sessionPublisherWithStreamPublisher:(id)publisher startingBlock:(id)block sessionKeyBlock:(id)keyBlock options:(unint64_t)options
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if ((a6 & 2) != 0)
+  publisherCopy = publisher;
+  blockCopy = block;
+  keyBlockCopy = keyBlock;
+  if ((options & 2) != 0)
   {
-    [BMPairedEventSession sessionPublisherWithStreamPublisher:a2 startingBlock:a1 sessionKeyBlock:? options:?];
+    [BMPairedEventSession sessionPublisherWithStreamPublisher:a2 startingBlock:self sessionKeyBlock:? options:?];
   }
 
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __98__BMPairedEventSession_sessionPublisherWithStreamPublisher_startingBlock_sessionKeyBlock_options___block_invoke;
   v21[3] = &unk_1E6E54278;
-  v14 = v12;
+  v14 = blockCopy;
   v22 = v14;
-  v15 = [BMEventSession sessionPublisherWithStreamPublisher:v11 startingBlock:v14 endingBlock:v21 sessionKeyBlock:v13 options:a6];
+  v15 = [BMEventSession sessionPublisherWithStreamPublisher:publisherCopy startingBlock:v14 endingBlock:v21 sessionKeyBlock:keyBlockCopy options:options];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __98__BMPairedEventSession_sessionPublisherWithStreamPublisher_startingBlock_sessionKeyBlock_options___block_invoke_2;
@@ -165,10 +165,10 @@ BMPairedEventSession *__98__BMPairedEventSession_sessionPublisherWithStreamPubli
   return v12;
 }
 
-+ (id)openSessionsFromBookmark:(id)a3
++ (id)openSessionsFromBookmark:(id)bookmark
 {
-  v3 = [a3 upstreams];
-  v4 = [v3 objectAtIndexedSubscript:0];
+  upstreams = [bookmark upstreams];
+  v4 = [upstreams objectAtIndexedSubscript:0];
   v5 = [BMEventSession openSessionsFromBookmark:v4];
 
   v6 = [v5 _pas_mappedArrayWithTransform:&__block_literal_global_69_0];

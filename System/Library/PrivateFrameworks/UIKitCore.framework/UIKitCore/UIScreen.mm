@@ -1,31 +1,31 @@
 @interface UIScreen
 + (BOOL)_isProbablyBeingRecorded;
 + (BOOL)_shouldDisableJail;
-+ (CGAffineTransform)transformForScreenOriginRotation:(SEL)a3;
-+ (CGAffineTransform)transformToRotateScreen:(SEL)a3;
-+ (CGPoint)convertPoint:(CGPoint)a3 fromView:(id)a4;
-+ (CGPoint)convertPoint:(CGPoint)a3 toView:(id)a4;
-+ (CGRect)convertRect:(CGRect)a3 fromView:(id)a4;
-+ (CGRect)convertRect:(CGRect)a3 toView:(id)a4;
++ (CGAffineTransform)transformForScreenOriginRotation:(SEL)rotation;
++ (CGAffineTransform)transformToRotateScreen:(SEL)screen;
++ (CGPoint)convertPoint:(CGPoint)point fromView:(id)view;
++ (CGPoint)convertPoint:(CGPoint)point toView:(id)view;
++ (CGRect)convertRect:(CGRect)rect fromView:(id)view;
++ (CGRect)convertRect:(CGRect)rect toView:(id)view;
 + (UIScreen)mainScreen;
 + (id)__displayConfigurationsForViewService;
 + (id)_carScreen;
 + (id)_embeddedScreen;
 + (id)_mainScreenThreadSafeTraitCollection;
-+ (id)_screenForScene:(id)a3;
-+ (id)_screenWithDisplayName:(id)a3;
-+ (id)_screenWithEventDisplay:(id)a3;
-+ (id)_screenWithFBSDisplayIdentity:(id)a3;
-+ (id)_screenWithIntegerDisplayID:(unsigned int)a3;
++ (id)_screenForScene:(id)scene;
++ (id)_screenWithDisplayName:(id)name;
++ (id)_screenWithEventDisplay:(id)display;
++ (id)_screenWithFBSDisplayIdentity:(id)identity;
++ (id)_screenWithIntegerDisplayID:(unsigned int)d;
 + (id)_screens;
 + (id)_shortScreensDescription;
 + (uint64_t)_mainScreen;
-+ (void)_FBSDisplayConfigurationConnected:(id)a3 forInitialDisplayContext:(id)a4 andNotify:(BOOL)a5 forceMain:(BOOL)a6;
-+ (void)_FBSDisplayDidPossiblyConnect:(id)a3 withScene:(id)a4 andPost:(BOOL)a5;
-+ (void)_FBSDisplayDidPossiblyDisconnect:(id)a3;
-+ (void)_FBSDisplayDidPossiblyDisconnect:(id)a3 forSceneDestruction:(id)a4;
-+ (void)_FBSDisplayIdentityDisconnected:(id)a3;
-+ (void)_enumerateScreensWithBlock:(id)a3;
++ (void)_FBSDisplayConfigurationConnected:(id)connected forInitialDisplayContext:(id)context andNotify:(BOOL)notify forceMain:(BOOL)main;
++ (void)_FBSDisplayDidPossiblyConnect:(id)connect withScene:(id)scene andPost:(BOOL)post;
++ (void)_FBSDisplayDidPossiblyDisconnect:(id)disconnect;
++ (void)_FBSDisplayDidPossiblyDisconnect:(id)disconnect forSceneDestruction:(id)destruction;
++ (void)_FBSDisplayIdentityDisconnected:(id)disconnected;
++ (void)_enumerateScreensWithBlock:(id)block;
 + (void)_prepareScreensForAppResume;
 + (void)initialize;
 - (BOOL)_expectsSecureRendering;
@@ -40,7 +40,7 @@
 - (BOOL)_isMainScreen;
 - (BOOL)_isOverscanned;
 - (BOOL)_isRightHandDrive;
-- (BOOL)_isUserInterfaceLimited:(unint64_t)a3;
+- (BOOL)_isUserInterfaceLimited:(unint64_t)limited;
 - (BOOL)_isWorkspaceCapable;
 - (BOOL)_supportsDragging;
 - (BOOL)_wantsWideContentMargins;
@@ -52,28 +52,28 @@
 - (CGFloat)nativeScale;
 - (CGFloat)potentialEDRHeadroom;
 - (CGFloat)scale;
-- (CGPoint)convertPoint:(CGPoint)a3 fromCoordinateSpace:(id)a4;
-- (CGPoint)convertPoint:(CGPoint)a3 toCoordinateSpace:(id)a4;
+- (CGPoint)convertPoint:(CGPoint)point fromCoordinateSpace:(id)space;
+- (CGPoint)convertPoint:(CGPoint)point toCoordinateSpace:(id)space;
 - (CGRect)_applicationFrame;
-- (CGRect)_applicationFrameForInterfaceOrientation:(int64_t)a3;
-- (CGRect)_applicationFrameForInterfaceOrientation:(int64_t)a3 usingStatusbarHeight:(double)a4;
-- (CGRect)_applicationFrameForInterfaceOrientation:(int64_t)a3 usingStatusbarHeight:(double)a4 ignoreStatusBar:(BOOL)a5;
-- (CGRect)_applicationFrameWithoutOverscanForInterfaceOrientation:(int64_t)a3 usingStatusbarHeight:(double)a4 ignoreStatusBar:(BOOL)a5;
-- (CGRect)_boundsForInterfaceOrientation:(int64_t)a3;
+- (CGRect)_applicationFrameForInterfaceOrientation:(int64_t)orientation;
+- (CGRect)_applicationFrameForInterfaceOrientation:(int64_t)orientation usingStatusbarHeight:(double)height;
+- (CGRect)_applicationFrameForInterfaceOrientation:(int64_t)orientation usingStatusbarHeight:(double)height ignoreStatusBar:(BOOL)bar;
+- (CGRect)_applicationFrameWithoutOverscanForInterfaceOrientation:(int64_t)orientation usingStatusbarHeight:(double)height ignoreStatusBar:(BOOL)bar;
+- (CGRect)_boundsForInterfaceOrientation:(int64_t)orientation;
 - (CGRect)_interfaceOrientedMainSceneBounds;
-- (CGRect)_mainSceneBoundsForInterfaceOrientation:(int64_t)a3;
+- (CGRect)_mainSceneBoundsForInterfaceOrientation:(int64_t)orientation;
 - (CGRect)_mainSceneFrame;
 - (CGRect)_mainSceneReferenceBounds;
 - (CGRect)_nativeDisplayBounds;
 - (CGRect)_referenceBounds;
 - (CGRect)_unjailedReferenceBounds;
-- (CGRect)_unjailedReferenceBoundsForInterfaceOrientation:(int64_t)a3;
+- (CGRect)_unjailedReferenceBoundsForInterfaceOrientation:(int64_t)orientation;
 - (CGRect)_unjailedReferenceBoundsInPixels;
 - (CGRect)bounds;
-- (CGRect)convertRect:(CGRect)a3 fromCoordinateSpace:(id)a4;
-- (CGRect)convertRect:(CGRect)a3 fromMaskingCoordinateSpace:(id)a4;
-- (CGRect)convertRect:(CGRect)a3 toCoordinateSpace:(id)a4;
-- (CGRect)convertRect:(CGRect)a3 toMaskingCoordinateSpace:(id)a4;
+- (CGRect)convertRect:(CGRect)rect fromCoordinateSpace:(id)space;
+- (CGRect)convertRect:(CGRect)rect fromMaskingCoordinateSpace:(id)space;
+- (CGRect)convertRect:(CGRect)rect toCoordinateSpace:(id)space;
+- (CGRect)convertRect:(CGRect)rect toMaskingCoordinateSpace:(id)space;
 - (FBSDisplayConfiguration)displayConfiguration;
 - (NSArray)availableModes;
 - (NSArray)preferredFocusEnvironments;
@@ -83,8 +83,8 @@
 - (UIEdgeInsets)overscanCompensationInsets;
 - (UIFocusItemContainer)focusItemContainer;
 - (UIFocusSystem)_focusSystem;
-- (UIScreen)initWithDisplayConfiguration:(id)a3;
-- (UIScreen)initWithDisplayConfiguration:(id)a3 forceMainScreen:(BOOL)a4;
+- (UIScreen)initWithDisplayConfiguration:(id)configuration;
+- (UIScreen)initWithDisplayConfiguration:(id)configuration forceMainScreen:(BOOL)screen;
 - (UIScreen)mirroredScreen;
 - (UIScreenMode)currentMode;
 - (UIScreenMode)preferredMode;
@@ -98,17 +98,17 @@
 - (_UITypedStorage)_typedStorage;
 - (double)_displayCornerRadius;
 - (double)_displayCornerRadiusIgnoringZoom;
-- (double)_nativeScaleWithLevel:(unint64_t)a3;
+- (double)_nativeScaleWithLevel:(unint64_t)level;
 - (double)_refreshRate;
 - (double)_rotation;
 - (double)_touchRadiusScaleFactor;
-- (double)resolvedCornerRadiusForDescedant:(id)a3 context:(id)a4 corner:(unint64_t)a5;
-- (float)rawBrightnessForBacklightLevel:(float)a3;
-- (id)_appendSnapshotDisplaySystemIdentifierToOptionsIfNeeded:(void *)a1;
+- (double)resolvedCornerRadiusForDescedant:(id)descedant context:(id)context corner:(unint64_t)corner;
+- (float)rawBrightnessForBacklightLevel:(float)level;
+- (id)_appendSnapshotDisplaySystemIdentifierToOptionsIfNeeded:(void *)needed;
 - (id)_capabilities;
-- (id)_capabilityForKey:(id)a3;
-- (id)_defaultTraitCollectionForInterfaceOrientation:(int64_t)a3;
-- (id)_defaultTraitCollectionForInterfaceOrientation:(int64_t)a3 inBounds:(CGRect)a4;
+- (id)_capabilityForKey:(id)key;
+- (id)_defaultTraitCollectionForInterfaceOrientation:(int64_t)orientation;
+- (id)_defaultTraitCollectionForInterfaceOrientation:(int64_t)orientation inBounds:(CGRect)bounds;
 - (id)_display;
 - (id)_displayID;
 - (id)_displayInfoProvider;
@@ -116,21 +116,21 @@
 - (id)_exclusionArea;
 - (id)_lazySoftwareDimmingWindow;
 - (id)_name;
-- (id)_orientationDebugDescriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)_orientationDebugDescriptionWithMultilinePrefix:(id)a3;
+- (id)_orientationDebugDescriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)_orientationDebugDescriptionWithMultilinePrefix:(id)prefix;
 - (id)_preferredFocusedWindowScene;
-- (id)_preventDisconnectionForReason:(uint64_t)a1;
+- (id)_preventDisconnectionForReason:(uint64_t)reason;
 - (id)_snapshotDisplaySystemIdentifier;
-- (id)_snapshotExcludingWindows:(id)a3 withRect:(CGRect)a4;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)_snapshotExcludingWindows:(id)windows withRect:(CGRect)rect;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)displayIdentity;
 - (id)fbsDisplay;
 - (id)fixedCoordinateSpace;
-- (id)focusItemsInRect:(CGRect)a3;
+- (id)focusItemsInRect:(CGRect)rect;
 - (id)focusedItem;
-- (id)registerDescendant:(id)a3 forGeometryOrMaskingConfigurationChanges:(id)a4;
+- (id)registerDescendant:(id)descendant forGeometryOrMaskingConfigurationChanges:(id)changes;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (int64_t)_effectiveUserInterfaceStyle;
@@ -140,45 +140,45 @@
 - (int64_t)_screenType;
 - (unsigned)_integerDisplayID;
 - (unsigned)_seed;
-- (void)_applyDefaultViewMaskingTraits:(id)a3;
+- (void)_applyDefaultViewMaskingTraits:(id)traits;
 - (void)_beginObservingBacklightLevelNotifications;
-- (void)_computeMetrics:(BOOL)a3;
+- (void)_computeMetrics:(BOOL)metrics;
 - (void)_connectScreen;
 - (void)_disconnectScreen;
 - (void)_endObservingBacklightLevelNotifications;
 - (void)_ensureComputedMainScreenDPI;
-- (void)_evaluateCapturedStateForReason:(void *)a1;
-- (void)_externalDeviceNightModeDidChange:(id)a3;
+- (void)_evaluateCapturedStateForReason:(void *)reason;
+- (void)_externalDeviceNightModeDidChange:(id)change;
 - (void)_fetchInitialCarPlayHumanPresenceStatusIfNeeded;
 - (void)_invalidate;
-- (void)_limitedUIDidChange:(id)a3;
+- (void)_limitedUIDidChange:(id)change;
 - (void)_notifyTraitsChangedAndPropagate;
 - (void)_postBrightnessDidChangeNotificationIfAppropriate;
 - (void)_prepareForWindow;
 - (void)_resetUserInterfaceIdiom;
-- (void)_setCapability:(id)a3 forKey:(id)a4;
-- (void)_setCarPlayHumanPresenceInRange:(BOOL)a3;
-- (void)_setDefaultTraitCollection:(id)a3;
-- (void)_setExternalDeviceShouldInputText:(BOOL)a3;
-- (void)_setInterfaceOrientation:(int64_t)a3 andNotify:(BOOL)a4;
+- (void)_setCapability:(id)capability forKey:(id)key;
+- (void)_setCarPlayHumanPresenceInRange:(BOOL)range;
+- (void)_setDefaultTraitCollection:(id)collection;
+- (void)_setExternalDeviceShouldInputText:(BOOL)text;
+- (void)_setInterfaceOrientation:(int64_t)orientation andNotify:(BOOL)notify;
 - (void)_setNeedsNonDeferredFocusUpdate;
-- (void)_setOverrideTraitCollection:(id)a3;
-- (void)_setReferenceDisplayModeStatus:(int64_t)a3;
-- (void)_setUserInterfaceIdiom:(int64_t)a3;
-- (void)_setUserInterfaceStyleIfNecessary:(int64_t)a3 firstTimeOnly:(BOOL)a4;
+- (void)_setOverrideTraitCollection:(id)collection;
+- (void)_setReferenceDisplayModeStatus:(int64_t)status;
+- (void)_setUserInterfaceIdiom:(int64_t)idiom;
+- (void)_setUserInterfaceStyleIfNecessary:(int64_t)necessary firstTimeOnly:(BOOL)only;
 - (void)_updateAvailableDisplayModes;
 - (void)_updateCapabilities;
-- (void)_updateCarPlayCapabilitiesWithInteractionModels:(unint64_t)a3 primaryInteractionModel:(unint64_t)a4 touchLevel:(int64_t)a5;
-- (void)_updateCornerProviderWithTraitCollection:(id)a3;
-- (void)_updateDisplayConfiguration:(id)a3;
+- (void)_updateCarPlayCapabilitiesWithInteractionModels:(unint64_t)models primaryInteractionModel:(unint64_t)model touchLevel:(int64_t)level;
+- (void)_updateCornerProviderWithTraitCollection:(id)collection;
+- (void)_updateDisplayConfiguration:(id)configuration;
 - (void)_updateTraits;
-- (void)_updateTraitsForWindowScenesCallingParentWillTransition:(BOOL)a3;
+- (void)_updateTraitsForWindowScenesCallingParentWillTransition:(BOOL)transition;
 - (void)_updateUserInterfaceIdiom;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)setBrightness:(CGFloat)brightness;
 - (void)setCurrentMode:(UIScreenMode *)currentMode;
-- (void)setFocusEnabled:(BOOL)a3;
+- (void)setFocusEnabled:(BOOL)enabled;
 - (void)setNeedsFocusUpdate;
 - (void)setOverscanCompensation:(UIScreenOverscanCompensation)overscanCompensation;
 - (void)updateFocusIfNeeded;
@@ -191,9 +191,9 @@
   os_unfair_lock_lock(&unk_1ED49AAE8);
   v3 = self->__displayConfiguration;
   os_unfair_lock_unlock(&unk_1ED49AAE8);
-  v4 = [(FBSDisplayConfiguration *)v3 identity];
+  identity = [(FBSDisplayConfiguration *)v3 identity];
 
-  return v4;
+  return identity;
 }
 
 - (FBSDisplayConfiguration)displayConfiguration
@@ -246,15 +246,15 @@ void __22__UIScreen_mainScreen__block_invoke(uint64_t a1)
     os_unfair_lock_unlock(&__UIScreenMutableScreensArrayAccessLock);
     if (!v14[5])
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v7 handleFailureInMethod:a2 object:a1 file:@"UIScreen.m" lineNumber:763 description:@"returning nil screen from mainScreen is not allowed!"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UIScreen.m" lineNumber:763 description:@"returning nil screen from mainScreen is not allowed!"];
     }
 
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:a2 object:a1 file:@"UIScreen.m" lineNumber:764 description:{@"firstObject in screens array (%@) is not a UIScreen object", v14[5]}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"UIScreen.m" lineNumber:764 description:{@"firstObject in screens array (%@) is not a UIScreen object", v14[5]}];
     }
 
     v2 = v14[5];
@@ -318,12 +318,12 @@ void __22__UIScreen_mainScreen__block_invoke(uint64_t a1)
   os_unfair_lock_unlock(&unk_1ED49AAE8);
   if (v3)
   {
-    v4 = [(FBSDisplayConfiguration *)v3 identity];
-    v5 = v4;
+    identity = [(FBSDisplayConfiguration *)v3 identity];
+    v5 = identity;
     if (self->_mainScreen)
     {
-      v6 = [v4 rootIdentity];
-      v7 = v6 == v5;
+      rootIdentity = [identity rootIdentity];
+      v7 = rootIdentity == v5;
     }
 
     else
@@ -385,22 +385,22 @@ void __22__UIScreen_mainScreen__block_invoke(uint64_t a1)
   os_unfair_lock_unlock(&unk_1ED49AAE8);
   if (v3)
   {
-    v4 = [(FBSDisplayConfiguration *)v3 isExternal];
+    isExternal = [(FBSDisplayConfiguration *)v3 isExternal];
   }
 
   else
   {
-    v4 = 1;
+    isExternal = 1;
   }
 
-  return v4;
+  return isExternal;
 }
 
 - (BOOL)_wantsWideContentMargins
 {
-  v3 = [objc_opt_self() mainScreen];
-  v4 = v3;
-  if (v3 != self)
+  mainScreen = [objc_opt_self() mainScreen];
+  v4 = mainScreen;
+  if (mainScreen != self)
   {
 
 LABEL_7:
@@ -478,8 +478,8 @@ LABEL_7:
 
 - (double)_displayCornerRadiusIgnoringZoom
 {
-  v3 = [(UIScreen *)self _screenType];
-  if (v3 == -1)
+  _screenType = [(UIScreen *)self _screenType];
+  if (_screenType == -1)
   {
 
     [(UIScreen *)self _displayCornerRadius];
@@ -488,7 +488,7 @@ LABEL_7:
   else
   {
 
-    return _UIScreenCornerRadiusForTypeIgnoringZoom(v3);
+    return _UIScreenCornerRadiusForTypeIgnoringZoom(_screenType);
   }
 
   return result;
@@ -496,10 +496,10 @@ LABEL_7:
 
 - (id)_exclusionArea
 {
-  v2 = [(UIScreen *)self _displayInfoProvider];
-  v3 = [v2 exclusionArea];
+  _displayInfoProvider = [(UIScreen *)self _displayInfoProvider];
+  exclusionArea = [_displayInfoProvider exclusionArea];
 
-  return v3;
+  return exclusionArea;
 }
 
 - (id)_displayInfoProvider
@@ -513,19 +513,19 @@ LABEL_7:
       if (![(UIScreen *)self _UIIBAlwaysProvidePeripheryInsets]&& ((_UIInternalPreferenceUsesDefault(&_UIInternalPreference_ForceIOSDeviceInsets, @"ForceIOSDeviceInsets", _UIInternalPreferenceUpdateBool) & 1) != 0 || !byte_1ED48A8BC))
       {
         v8 = +[_UIScreenInitialDisplayConfigurationLoader sharedLoader];
-        v9 = [v8 initialDisplayContext];
+        initialDisplayContext = [v8 initialDisplayContext];
 
-        v4 = [v9 displayEdgeInfo];
-        v5 = [v9 exclusionArea];
+        displayEdgeInfo = [initialDisplayContext displayEdgeInfo];
+        exclusionArea = [initialDisplayContext exclusionArea];
 
-        if (v4)
+        if (displayEdgeInfo)
         {
           goto LABEL_16;
         }
 
 LABEL_10:
         v6 = _UIDisplayInfoNullProvider();
-        v4 = self->_displayInfoProvider;
+        displayEdgeInfo = self->_displayInfoProvider;
         self->_displayInfoProvider = v6;
 LABEL_11:
 
@@ -535,9 +535,9 @@ LABEL_11:
 
       if ([(UIScreen *)self _isEmbeddedScreen])
       {
-        v4 = [MEMORY[0x1E69DEBC0] defaultDisplayEdgeInfoForceInsets:{(byte_1ED48A8BC != 0) & ~_UIInternalPreferenceUsesDefault(&_UIInternalPreference_ForceIOSDeviceInsets, @"ForceIOSDeviceInsets", _UIInternalPreferenceUpdateBool)}];
-        v5 = 0;
-        if (!v4)
+        displayEdgeInfo = [MEMORY[0x1E69DEBC0] defaultDisplayEdgeInfoForceInsets:{(byte_1ED48A8BC != 0) & ~_UIInternalPreferenceUsesDefault(&_UIInternalPreference_ForceIOSDeviceInsets, @"ForceIOSDeviceInsets", _UIInternalPreferenceUpdateBool)}];
+        exclusionArea = 0;
+        if (!displayEdgeInfo)
         {
           goto LABEL_10;
         }
@@ -547,7 +547,7 @@ LABEL_16:
         os_unfair_lock_lock(&unk_1ED49AAE8);
         v11 = self->__displayConfiguration;
         os_unfair_lock_unlock(&unk_1ED49AAE8);
-        v12 = [v10 initWithDisplayConfiguration:v11 displayEdgeInfo:v4 exclusionArea:v5];
+        v12 = [v10 initWithDisplayConfiguration:v11 displayEdgeInfo:displayEdgeInfo exclusionArea:exclusionArea];
         v13 = self->_displayInfoProvider;
         self->_displayInfoProvider = v12;
 
@@ -555,7 +555,7 @@ LABEL_16:
       }
     }
 
-    v5 = 0;
+    exclusionArea = 0;
     goto LABEL_10;
   }
 
@@ -594,9 +594,9 @@ LABEL_12:
   os_unfair_lock_lock(&unk_1ED49AAE8);
   v3 = self->__displayConfiguration;
   os_unfair_lock_unlock(&unk_1ED49AAE8);
-  v4 = [(FBSDisplayConfiguration *)v3 isCarDisplay];
+  isCarDisplay = [(FBSDisplayConfiguration *)v3 isCarDisplay];
 
-  return v4;
+  return isCarDisplay;
 }
 
 - (UIScreenOverscanCompensation)overscanCompensation
@@ -631,12 +631,12 @@ LABEL_27:
     os_unfair_lock_lock(&unk_1ED49AAE8);
     v19 = self->__displayConfiguration;
     os_unfair_lock_unlock(&unk_1ED49AAE8);
-    v20 = [(FBSDisplayConfiguration *)v19 overscanCompensation];
+    overscanCompensation = [(FBSDisplayConfiguration *)v19 overscanCompensation];
 
     v6 = 0;
-    if (v20)
+    if (overscanCompensation)
     {
-      v9 = (v20 == 2);
+      v9 = (overscanCompensation == 2);
     }
 
     else
@@ -664,15 +664,15 @@ LABEL_27:
       if ([v15 _hostsWindows])
       {
         v16 = v15;
-        v17 = [v16 _screen];
-        if (v17 == self && [v16 _isConnecting])
+        _screen = [v16 _screen];
+        if (_screen == self && [v16 _isConnecting])
         {
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
 
           if (isKindOfClass)
           {
-            v17 = v6;
+            _screen = v6;
             v6 = v16;
             goto LABEL_20;
           }
@@ -699,14 +699,14 @@ LABEL_20:
   }
 
 LABEL_4:
-  v7 = [(UIScreen *)v6 _screenRequestedOverscanCompensation];
-  v8 = v7 == 2;
-  if (!v7)
+  _screenRequestedOverscanCompensation = [(UIScreen *)v6 _screenRequestedOverscanCompensation];
+  v8 = _screenRequestedOverscanCompensation == 2;
+  if (!_screenRequestedOverscanCompensation)
   {
     v8 = 2;
   }
 
-  if (v7 == -1)
+  if (_screenRequestedOverscanCompensation == -1)
   {
     v9 = UIScreenOverscanCompensationNone;
   }
@@ -726,9 +726,9 @@ LABEL_30:
   os_unfair_lock_lock(&unk_1ED49AAE8);
   v3 = self->__displayConfiguration;
   os_unfair_lock_unlock(&unk_1ED49AAE8);
-  v4 = [(FBSDisplayConfiguration *)v3 isOverscanned];
+  isOverscanned = [(FBSDisplayConfiguration *)v3 isOverscanned];
 
-  return v4;
+  return isOverscanned;
 }
 
 - (UIEdgeInsets)overscanCompensationInsets
@@ -736,9 +736,9 @@ LABEL_30:
   v3 = 0.0;
   if ([(UIScreen *)self overscanCompensation])
   {
-    v4 = [(UIScreen *)self _isOverscanned];
+    _isOverscanned = [(UIScreen *)self _isOverscanned];
     v5 = 0.0;
-    if (v4)
+    if (_isOverscanned)
     {
       [(UIScreen *)self _applicationFrameWithoutOverscanForInterfaceOrientation:[(UIScreen *)self _interfaceOrientation] usingStatusbarHeight:0 ignoreStatusBar:0.0];
       v7 = v6;
@@ -824,12 +824,12 @@ LABEL_30:
 
 + (id)_mainScreenThreadSafeTraitCollection
 {
-  v2 = [objc_opt_self() mainScreen];
+  mainScreen = [objc_opt_self() mainScreen];
   os_unfair_lock_lock(&_UIMainScreenTraitCollectionLock);
-  v3 = v2[29];
+  v3 = mainScreen[29];
   if (!v3)
   {
-    v3 = v2[28];
+    v3 = mainScreen[28];
   }
 
   v4 = v3;
@@ -871,9 +871,9 @@ LABEL_30:
   os_unfair_lock_lock(&unk_1ED49AAE8);
   v4 = self->__displayConfiguration;
   os_unfair_lock_unlock(&unk_1ED49AAE8);
-  v5 = [(FBSDisplayConfiguration *)v4 isUIKitMainLike];
+  isUIKitMainLike = [(FBSDisplayConfiguration *)v4 isUIKitMainLike];
 
-  return v5;
+  return isUIKitMainLike;
 }
 
 - (void)_connectScreen
@@ -898,25 +898,25 @@ LABEL_30:
   if ([(UIScreen *)self _isMainLikeScreen])
   {
     v3 = +[UIDevice currentDevice];
-    v4 = [v3 userInterfaceIdiom];
+    userInterfaceIdiom = [v3 userInterfaceIdiom];
   }
 
   else if ([(UIScreen *)self _isCarScreen]|| [(UIScreen *)self _isCarInstrumentsScreen])
   {
-    v4 = 3;
+    userInterfaceIdiom = 3;
   }
 
   else
   {
-    v4 = -1;
+    userInterfaceIdiom = -1;
   }
 
-  [(UIScreen *)self _setUserInterfaceIdiom:v4];
+  [(UIScreen *)self _setUserInterfaceIdiom:userInterfaceIdiom];
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (qword_1ED49AB90 != -1)
     {
@@ -931,14 +931,14 @@ LABEL_30:
 
     v3 = byte_1ED49AAE3;
     v4 = +[_UIScreenInitialDisplayConfigurationLoader sharedLoader];
-    v7 = [v4 initialDisplayContext];
+    initialDisplayContext = [v4 initialDisplayContext];
 
-    if (v7)
+    if (initialDisplayContext)
     {
       if ((v2 & 1) == 0)
       {
-        v5 = [v7 displayConfiguration];
-        [UIScreen _FBSDisplayConfigurationConnected:v5 forInitialDisplayContext:v7 andNotify:0 forceMain:1];
+        displayConfiguration = [initialDisplayContext displayConfiguration];
+        [UIScreen _FBSDisplayConfigurationConnected:displayConfiguration forInitialDisplayContext:initialDisplayContext andNotify:0 forceMain:1];
 
         dispatch_async(MEMORY[0x1E69E96A0], &__block_literal_global_164);
       }
@@ -971,9 +971,9 @@ LABEL_30:
   os_unfair_lock_lock(&unk_1ED49AAE8);
   v3 = self->__displayConfiguration;
   os_unfair_lock_unlock(&unk_1ED49AAE8);
-  v4 = [(FBSDisplayConfiguration *)v3 isCarInstrumentsDisplay];
+  isCarInstrumentsDisplay = [(FBSDisplayConfiguration *)v3 isCarInstrumentsDisplay];
 
-  return v4;
+  return isCarInstrumentsDisplay;
 }
 
 void __32__UIScreen__displayCornerRadius__block_invoke()
@@ -1042,12 +1042,12 @@ LABEL_16:
           }
         }
 
-        v4 = [(CARSession *)self->_carSession configuration];
-        v5 = [v4 userInterfaceStyle];
+        configuration = [(CARSession *)self->_carSession configuration];
+        userInterfaceStyle = [configuration userInterfaceStyle];
 
-        if (v5 != 1)
+        if (userInterfaceStyle != 1)
         {
-          if (v5)
+          if (userInterfaceStyle)
           {
             return 2;
           }
@@ -1102,9 +1102,9 @@ LABEL_16:
         if (v7)
         {
           v8 = v7;
-          v9 = [v7 currentStyle];
+          currentStyle = [v7 currentStyle];
 
-          return v9;
+          return currentStyle;
         }
       }
 
@@ -1128,9 +1128,9 @@ LABEL_16:
     else
     {
       v21 = +[UIDevice currentDevice];
-      v22 = [v21 userInterfaceIdiom];
+      userInterfaceIdiom = [v21 userInterfaceIdiom];
 
-      if (v22 != 8)
+      if (userInterfaceIdiom != 8)
       {
         v51[0] = @"UIScreenCapabilityInteractionModelsKey";
         v51[1] = @"UIScreenCapabilityTouchLevelsKey";
@@ -1157,13 +1157,13 @@ LABEL_23:
 
   if ([(UIScreen *)self _isCarScreen]|| [(UIScreen *)self _isCarInstrumentsScreen])
   {
-    v4 = [(CARSession *)self->_carSession configuration];
+    configuration = [(CARSession *)self->_carSession configuration];
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v5 = [v4 screens];
-    v6 = [v5 countByEnumeratingWithState:&v40 objects:v50 count:16];
+    screens = [configuration screens];
+    v6 = [screens countByEnumeratingWithState:&v40 objects:v50 count:16];
     if (v6)
     {
       v7 = v6;
@@ -1174,19 +1174,19 @@ LABEL_23:
         {
           if (*v41 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(screens);
           }
 
           v10 = *(*(&v40 + 1) + 8 * i);
-          v11 = [v10 identifier];
-          v12 = [(UIScreen *)self _displayID];
-          v13 = [v11 isEqualToString:v12];
+          identifier = [v10 identifier];
+          _displayID = [(UIScreen *)self _displayID];
+          v13 = [identifier isEqualToString:_displayID];
 
           if (v13)
           {
-            v26 = [v10 availableInteractionModels];
-            v18 = (v26 >> 1) & 2 | v26 & 8;
-            if ((v26 & 2) != 0)
+            availableInteractionModels = [v10 availableInteractionModels];
+            v18 = (availableInteractionModels >> 1) & 2 | availableInteractionModels & 8;
+            if ((availableInteractionModels & 2) != 0)
             {
               v18 |= 1uLL;
               v20 = [v10 supportsHighFidelityTouch] ^ 1;
@@ -1197,14 +1197,14 @@ LABEL_23:
               v20 = 2;
             }
 
-            v28 = [v10 primaryInteractionModel];
+            primaryInteractionModel = [v10 primaryInteractionModel];
             v29 = 8;
-            if ((v28 & 8) == 0)
+            if ((primaryInteractionModel & 8) == 0)
             {
-              v29 = (v28 >> 1) & 1;
+              v29 = (primaryInteractionModel >> 1) & 1;
             }
 
-            if ((v28 & 4) != 0)
+            if ((primaryInteractionModel & 4) != 0)
             {
               v19 = 2;
             }
@@ -1218,7 +1218,7 @@ LABEL_23:
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v40 objects:v50 count:16];
+        v7 = [screens countByEnumeratingWithState:&v40 objects:v50 count:16];
         if (v7)
         {
           continue;
@@ -1232,12 +1232,12 @@ LABEL_23:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       v15 = v14;
-      v16 = [(UIScreen *)self _displayID];
-      v17 = [v4 screenIDs];
+      _displayID2 = [(UIScreen *)self _displayID];
+      screenIDs = [configuration screenIDs];
       *buf = 138543618;
-      v47 = v16;
+      v47 = _displayID2;
       v48 = 2114;
-      v49 = v17;
+      v49 = screenIDs;
       _os_log_impl(&dword_188A29000, v15, OS_LOG_TYPE_DEFAULT, "Failed to find matching car screen. Expected: %{public}@; Found: %{public}@", buf, 0x16u);
     }
 
@@ -1273,7 +1273,7 @@ LABEL_31:
     v45[2] = v35;
     v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v45 forKeys:v44 count:3];
 
-    if ([v4 rightHandDrive])
+    if ([configuration rightHandDrive])
     {
       v36 = 0x2000;
     }
@@ -1284,8 +1284,8 @@ LABEL_31:
     }
 
     self->_screenFlags = (*&self->_screenFlags & 0xFFFFDFFF | v36);
-    v37 = [(CARSession *)self->_carSession nightMode];
-    if ([v37 BOOLValue])
+    nightMode = [(CARSession *)self->_carSession nightMode];
+    if ([nightMode BOOLValue])
     {
       v38 = 0x4000;
     }
@@ -1338,16 +1338,16 @@ LABEL_43:
 
 - (BOOL)_isForceTouchCapable
 {
-  v2 = [(UIScreen *)self _isEmbeddedScreen];
-  if (v2)
+  _isEmbeddedScreen = [(UIScreen *)self _isEmbeddedScreen];
+  if (_isEmbeddedScreen)
   {
     v3 = +[UIDevice currentDevice];
-    v4 = [v3 _supportsForceTouch];
+    _supportsForceTouch = [v3 _supportsForceTouch];
 
-    LOBYTE(v2) = v4;
+    LOBYTE(_isEmbeddedScreen) = _supportsForceTouch;
   }
 
-  return v2;
+  return _isEmbeddedScreen;
 }
 
 - (double)_displayCornerRadius
@@ -1364,11 +1364,11 @@ LABEL_43:
 
   else
   {
-    v4 = [(UIScreen *)self displayIdentity];
-    v5 = [v4 isUIKitMainLike];
+    displayIdentity = [(UIScreen *)self displayIdentity];
+    isUIKitMainLike = [displayIdentity isUIKitMainLike];
 
     result = 0.0;
-    if (v5)
+    if (isUIKitMainLike)
     {
       return self->_sceneProvidedCornerRadius;
     }
@@ -1377,21 +1377,21 @@ LABEL_43:
   return result;
 }
 
-- (void)_applyDefaultViewMaskingTraits:(id)a3
+- (void)_applyDefaultViewMaskingTraits:(id)traits
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_188AC50F4();
   swift_unknownObjectRelease();
 }
 
 - (CGFloat)potentialEDRHeadroom
 {
-  v2 = [(UIScreen *)self displayIdentity];
-  v3 = v2;
-  if (v2)
+  displayIdentity = [(UIScreen *)self displayIdentity];
+  v3 = displayIdentity;
+  if (displayIdentity)
   {
-    [v2 displayID];
+    [displayIdentity displayID];
     CADisplayGetPotentialHeadroom();
     v5 = v4;
   }
@@ -1408,9 +1408,9 @@ LABEL_43:
 {
   v24 = *MEMORY[0x1E69E9840];
   v3 = self->_lastNotifiedTraitCollection;
-  v4 = [(UIScreen *)self traitCollection];
-  v5 = v4;
-  if (v3 != v4 && ![(UITraitCollection *)v4 isEqual:v3])
+  traitCollection = [(UIScreen *)self traitCollection];
+  v5 = traitCollection;
+  if (v3 != traitCollection && ![(UITraitCollection *)traitCollection isEqual:v3])
   {
     if ([(UIScreen *)self _isMainScreen])
     {
@@ -1432,7 +1432,7 @@ LABEL_43:
         v14 = 138413314;
         v15 = v12;
         v16 = 2112;
-        v17 = self;
+        selfCopy = self;
         v18 = 2112;
         v19 = v13;
         v20 = 2112;
@@ -1445,19 +1445,19 @@ LABEL_43:
 
     [(UIScreen *)self traitCollectionDidChange:v3];
     [(UIScreen *)self _updateTraitsForWindowScenesCallingParentWillTransition:1];
-    v8 = [(UITraitCollection *)v3 userInterfaceStyle];
-    if (v8 != [(UITraitCollection *)v5 userInterfaceStyle])
+    userInterfaceStyle = [(UITraitCollection *)v3 userInterfaceStyle];
+    if (userInterfaceStyle != [(UITraitCollection *)v5 userInterfaceStyle])
     {
-      v9 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v9 postNotificationName:@"_UIScreenUserInterfaceStyleDidChangeForSmartInvertNotification" object:self];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter postNotificationName:@"_UIScreenUserInterfaceStyleDidChangeForSmartInvertNotification" object:self];
     }
   }
 }
 
 - (UIEdgeInsets)_displayPeripheryInsets
 {
-  v2 = [(UIScreen *)self _displayInfoProvider];
-  [v2 peripheryInsets];
+  _displayInfoProvider = [(UIScreen *)self _displayInfoProvider];
+  [_displayInfoProvider peripheryInsets];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -1625,8 +1625,8 @@ void __22__UIScreen_initialize__block_invoke()
 
   else
   {
-    v7 = [UIApp _findUISceneForLegacyInterfaceOrientation];
-    [v7 _referenceBounds];
+    _findUISceneForLegacyInterfaceOrientation = [UIApp _findUISceneForLegacyInterfaceOrientation];
+    [_findUISceneForLegacyInterfaceOrientation _referenceBounds];
     x = v8;
     y = v9;
     width = v10;
@@ -1649,27 +1649,27 @@ void __22__UIScreen_initialize__block_invoke()
   os_unfair_lock_lock(&unk_1ED49AAE8);
   v3 = self->__displayConfiguration;
   os_unfair_lock_unlock(&unk_1ED49AAE8);
-  v4 = [(FBSDisplayConfiguration *)v3 isCloningSupported];
+  isCloningSupported = [(FBSDisplayConfiguration *)v3 isCloningSupported];
 
-  if (v4 && ![(UIScreen *)self _hasWindows])
+  if (isCloningSupported && ![(UIScreen *)self _hasWindows])
   {
-    v5 = [objc_opt_self() mainScreen];
+    mainScreen = [objc_opt_self() mainScreen];
   }
 
   else
   {
-    v5 = 0;
+    mainScreen = 0;
   }
 
-  return v5;
+  return mainScreen;
 }
 
-- (double)resolvedCornerRadiusForDescedant:(id)a3 context:(id)a4 corner:(unint64_t)a5
+- (double)resolvedCornerRadiusForDescedant:(id)descedant context:(id)context corner:(unint64_t)corner
 {
   swift_unknownObjectRetain();
-  v8 = self;
-  [(UIScreen *)v8 _displayCornerRadius];
-  sub_188BE1190(v8, a3, a5, v9);
+  selfCopy = self;
+  [(UIScreen *)selfCopy _displayCornerRadius];
+  sub_188BE1190(selfCopy, descedant, corner, v9);
   v11 = v10;
   swift_unknownObjectRelease();
 
@@ -1680,9 +1680,9 @@ void __22__UIScreen_initialize__block_invoke()
 {
   if ([(UIScreen *)self _isMainScreen]&& !+[UIApplication _isClassic])
   {
-    v7 = [UIApp _mainScene];
-    v8 = [v7 settings];
-    [v8 frame];
+    _mainScene = [UIApp _mainScene];
+    settings = [_mainScene settings];
+    [settings frame];
     v10 = v9;
     v12 = v11;
     v14 = v13;
@@ -1716,15 +1716,15 @@ void __22__UIScreen_initialize__block_invoke()
   os_unfair_lock_unlock(&unk_1ED49AAE8);
   if (v3)
   {
-    v4 = [(FBSDisplayConfiguration *)v3 name];
+    name = [(FBSDisplayConfiguration *)v3 name];
   }
 
   else
   {
-    v4 = @"LCD";
+    name = @"LCD";
   }
 
-  return v4;
+  return name;
 }
 
 - (UIEdgeInsets)_peripheryInsets
@@ -1778,7 +1778,7 @@ LABEL_10:
   return result;
 }
 
-- (id)registerDescendant:(id)a3 forGeometryOrMaskingConfigurationChanges:(id)a4
+- (id)registerDescendant:(id)descendant forGeometryOrMaskingConfigurationChanges:(id)changes
 {
   v6[4] = signpost_c2_entryLock_start;
   v6[5] = 0;
@@ -1798,8 +1798,8 @@ LABEL_10:
   os_unfair_lock_unlock(&unk_1ED49AAE8);
   if (v3)
   {
-    v4 = [(FBSDisplayConfiguration *)v3 currentMode];
-    v5 = [UIScreenMode _screenModeForDisplayMode:v4 mainScreen:[(UIScreen *)self _isMainScreen] actualDisplayScale:self->_scale];
+    currentMode = [(FBSDisplayConfiguration *)v3 currentMode];
+    v5 = [UIScreenMode _screenModeForDisplayMode:currentMode mainScreen:[(UIScreen *)self _isMainScreen] actualDisplayScale:self->_scale];
   }
 
   else
@@ -1911,8 +1911,8 @@ void __22__UIScreen__carScreen__block_invoke(uint64_t a1, void *a2, uint64_t a3,
 {
   if ([UIApp _isSpringBoard])
   {
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 postNotificationName:@"UIScreenBrightnessDidChangeNotification" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"UIScreenBrightnessDidChangeNotification" object:self];
   }
 
   else
@@ -1924,8 +1924,8 @@ void __22__UIScreen__carScreen__block_invoke(uint64_t a1, void *a2, uint64_t a3,
     [(UIScreen *)self _lastNotifiedBacklightLevel];
     if (*&v6 != v5)
     {
-      v7 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v7 postNotificationName:@"UIScreenBrightnessDidChangeNotification" object:self];
+      defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter2 postNotificationName:@"UIScreenBrightnessDidChangeNotification" object:self];
     }
 
     *&v6 = v5;
@@ -1940,21 +1940,21 @@ void __22__UIScreen__carScreen__block_invoke(uint64_t a1, void *a2, uint64_t a3,
   os_unfair_lock_lock(&unk_1ED49AAE8);
   v3 = self->__displayConfiguration;
   os_unfair_lock_unlock(&unk_1ED49AAE8);
-  v4 = [(FBSDisplayConfiguration *)v3 hardwareIdentifier];
-  if (!v4)
+  hardwareIdentifier = [(FBSDisplayConfiguration *)v3 hardwareIdentifier];
+  if (!hardwareIdentifier)
   {
     if (![(FBSDisplayConfiguration *)v3 isExternal])
     {
 LABEL_8:
-      v4 = 0;
+      hardwareIdentifier = 0;
       goto LABEL_9;
     }
 
-    v5 = [(FBSDisplayConfiguration *)v3 CADisplay];
-    [v5 update];
+    cADisplay = [(FBSDisplayConfiguration *)v3 CADisplay];
+    [cADisplay update];
 
-    v6 = [(FBSDisplayConfiguration *)v3 CADisplay];
-    v4 = [v6 uniqueId];
+    cADisplay2 = [(FBSDisplayConfiguration *)v3 CADisplay];
+    hardwareIdentifier = [cADisplay2 uniqueId];
 
     if (!v3)
     {
@@ -1963,7 +1963,7 @@ LABEL_8:
 
     if (!os_variant_has_internal_diagnostics())
     {
-      if (v4)
+      if (hardwareIdentifier)
       {
         goto LABEL_9;
       }
@@ -1972,20 +1972,20 @@ LABEL_8:
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
         v10 = 138412290;
-        v11 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_188A29000, v7, OS_LOG_TYPE_ERROR, "Could not obtain unique identifier for attached screen %@", &v10, 0xCu);
       }
 
       goto LABEL_8;
     }
 
-    if (!v4)
+    if (!hardwareIdentifier)
     {
       v9 = __UIFaultDebugAssertLog();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
       {
         v10 = 138412290;
-        v11 = self;
+        selfCopy2 = self;
         _os_log_fault_impl(&dword_188A29000, v9, OS_LOG_TYPE_FAULT, "Could not obtain unique identifier for attached screen %@", &v10, 0xCu);
       }
 
@@ -1995,7 +1995,7 @@ LABEL_8:
 
 LABEL_9:
 
-  return v4;
+  return hardwareIdentifier;
 }
 
 - (void)_prepareForWindow
@@ -2041,7 +2041,7 @@ LABEL_9:
       os_unfair_lock_lock(&unk_1ED49AAE8);
       v3 = self->__displayConfiguration;
       os_unfair_lock_unlock(&unk_1ED49AAE8);
-      v4 = [(FBSDisplayConfiguration *)v3 hardwareIdentifier];
+      hardwareIdentifier = [(FBSDisplayConfiguration *)v3 hardwareIdentifier];
 
       HIBYTE(v5) = 0;
       LODWORD(v5) = 0;
@@ -2085,14 +2085,14 @@ LABEL_9:
         v27.width = v13;
         v27.height = v14;
         v15 = NSStringFromCGSize(v27);
-        v16 = [v11 _isMainLikeScreen];
+        _isMainLikeScreen = [v11 _isMainLikeScreen];
         v17 = @"NO";
-        if (v16)
+        if (_isMainLikeScreen)
         {
           v17 = @"YES";
         }
 
-        [v6 appendFormat:@"<%@: %p; bounds = %@; mainLike=%@> ", v12, a1, v15, v17];
+        [v6 appendFormat:@"<%@: %p; bounds = %@; mainLike=%@> ", v12, self, v15, v17];
       }
 
       v8 = [obj countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -2119,17 +2119,17 @@ LABEL_9:
   return v3;
 }
 
-- (void)_updateCornerProviderWithTraitCollection:(id)a3
+- (void)_updateCornerProviderWithTraitCollection:(id)collection
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_188F0E438(a3);
+  selfCopy = self;
+  sub_188F0E438(collection);
   swift_unknownObjectRelease();
 }
 
-- (CGRect)convertRect:(CGRect)a3 toMaskingCoordinateSpace:(id)a4
+- (CGRect)convertRect:(CGRect)rect toMaskingCoordinateSpace:(id)space
 {
-  v4 = sub_189170CD8(self, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height, a2, a4, &selRef_convertRect_toCoordinateSpace_);
+  v4 = sub_189170CD8(self, rect.origin.x, rect.origin.y, rect.size.width, rect.size.height, a2, space, &selRef_convertRect_toCoordinateSpace_);
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -2137,9 +2137,9 @@ LABEL_9:
   return result;
 }
 
-- (CGRect)convertRect:(CGRect)a3 fromMaskingCoordinateSpace:(id)a4
+- (CGRect)convertRect:(CGRect)rect fromMaskingCoordinateSpace:(id)space
 {
-  v4 = sub_189170CD8(self, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height, a2, a4, &selRef_convertRect_fromCoordinateSpace_);
+  v4 = sub_189170CD8(self, rect.origin.x, rect.origin.y, rect.size.width, rect.size.height, a2, space, &selRef_convertRect_fromCoordinateSpace_);
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -2154,10 +2154,10 @@ LABEL_9:
   return [v0 mainScreen];
 }
 
-+ (CGAffineTransform)transformForScreenOriginRotation:(SEL)a3
++ (CGAffineTransform)transformForScreenOriginRotation:(SEL)rotation
 {
-  v6 = [objc_opt_self() mainScreen];
-  [v6 _referenceBounds];
+  mainScreen = [objc_opt_self() mainScreen];
+  [mainScreen _referenceBounds];
   v8 = v7;
   v10 = v9;
 
@@ -2168,12 +2168,12 @@ LABEL_9:
   return CGAffineTransformTranslate(retstr, &v12, v8 * -0.5, v10 * -0.5);
 }
 
-+ (CGAffineTransform)transformToRotateScreen:(SEL)a3
++ (CGAffineTransform)transformToRotateScreen:(SEL)screen
 {
   memset(&v11, 0, sizeof(v11));
   CGAffineTransformMakeRotation(&v11, -a4);
-  v5 = [objc_opt_self() mainScreen];
-  [v5 _referenceBounds];
+  mainScreen = [objc_opt_self() mainScreen];
+  [mainScreen _referenceBounds];
   t2 = v11;
   v13 = CGRectApplyAffineTransform(v12, &t2);
   x = v13.origin.x;
@@ -2184,10 +2184,10 @@ LABEL_9:
   return CGAffineTransformConcat(retstr, &v9, &t2);
 }
 
-+ (void)_enumerateScreensWithBlock:(id)a3
++ (void)_enumerateScreensWithBlock:(id)block
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  blockCopy = block;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -2226,7 +2226,7 @@ LABEL_3:
 
       v9 = *(*(&v10 + 1) + 8 * v8);
       LOBYTE(v18) = 0;
-      v3[2](v3, v9, &v18);
+      blockCopy[2](blockCopy, v9, &v18);
       if (v18)
       {
         break;
@@ -2246,10 +2246,10 @@ LABEL_3:
   }
 }
 
-+ (id)_screenWithFBSDisplayIdentity:(id)a3
++ (id)_screenWithFBSDisplayIdentity:(id)identity
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  identityCopy = identity;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -2287,8 +2287,8 @@ LABEL_3:
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 displayIdentity];
-        if ([v10 isEqual:v3])
+        displayIdentity = [v9 displayIdentity];
+        if ([displayIdentity isEqual:identityCopy])
         {
 
 LABEL_15:
@@ -2296,9 +2296,9 @@ LABEL_15:
           goto LABEL_16;
         }
 
-        v11 = v3 == 0;
-        v12 = [v9 displayIdentity];
-        if (v12)
+        v11 = identityCopy == 0;
+        displayIdentity2 = [v9 displayIdentity];
+        if (displayIdentity2)
         {
           v11 = 0;
         }
@@ -2330,10 +2330,10 @@ LABEL_16:
   return v13;
 }
 
-+ (id)_screenWithDisplayName:(id)a3
++ (id)_screenWithDisplayName:(id)name
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  nameCopy = name;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -2374,9 +2374,9 @@ LABEL_16:
         os_unfair_lock_lock(&unk_1ED49AAE8);
         v10 = v9[20];
         os_unfair_lock_unlock(&unk_1ED49AAE8);
-        v11 = [v10 name];
+        name = [v10 name];
 
-        LOBYTE(v10) = [v11 isEqualToString:v3];
+        LOBYTE(v10) = [name isEqualToString:nameCopy];
         if (v10)
         {
           v12 = v9;
@@ -2400,11 +2400,11 @@ LABEL_11:
   return v12;
 }
 
-+ (id)_screenWithEventDisplay:(id)a3
++ (id)_screenWithEventDisplay:(id)display
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  displayCopy = display;
+  if (displayCopy)
   {
     v16 = 0u;
     v17 = 0u;
@@ -2443,11 +2443,11 @@ LABEL_11:
           }
 
           v9 = *(*(&v14 + 1) + 8 * i);
-          v10 = [v9 _eventDisplay];
-          v11 = v10;
-          if (v10 == v3 || ([v10 isEqual:v3] & 1) != 0)
+          _eventDisplay = [v9 _eventDisplay];
+          v11 = _eventDisplay;
+          if (_eventDisplay == displayCopy || ([_eventDisplay isEqual:displayCopy] & 1) != 0)
           {
-            v12 = v9;
+            mainScreen = v9;
 
             goto LABEL_14;
           }
@@ -2463,20 +2463,20 @@ LABEL_11:
       }
     }
 
-    v12 = 0;
+    mainScreen = 0;
   }
 
   else
   {
-    v12 = [objc_opt_self() mainScreen];
+    mainScreen = [objc_opt_self() mainScreen];
   }
 
 LABEL_14:
 
-  return v12;
+  return mainScreen;
 }
 
-+ (id)_screenWithIntegerDisplayID:(unsigned int)a3
++ (id)_screenWithIntegerDisplayID:(unsigned int)d
 {
   v29 = *MEMORY[0x1E69E9840];
   v14 = 0u;
@@ -2516,8 +2516,8 @@ LABEL_14:
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 displayIdentity];
-        v11 = [v10 displayID] == a3;
+        displayIdentity = [v9 displayIdentity];
+        v11 = [displayIdentity displayID] == d;
 
         if (v11)
         {
@@ -2638,49 +2638,49 @@ LABEL_11:
   }
 }
 
-+ (id)_screenForScene:(id)a3
++ (id)_screenForScene:(id)scene
 {
-  v4 = [a3 settings];
-  v5 = [v4 displayIdentity];
-  v6 = [a1 _screenWithFBSDisplayIdentity:v5];
+  settings = [scene settings];
+  displayIdentity = [settings displayIdentity];
+  v6 = [self _screenWithFBSDisplayIdentity:displayIdentity];
 
   return v6;
 }
 
-+ (void)_FBSDisplayDidPossiblyConnect:(id)a3 withScene:(id)a4 andPost:(BOOL)a5
++ (void)_FBSDisplayDidPossiblyConnect:(id)connect withScene:(id)scene andPost:(BOOL)post
 {
-  v5 = a5;
-  v8 = [a4 settings];
-  v7 = [v8 displayConfiguration];
-  [a1 _FBSDisplayConfigurationConnected:v7 andNotify:v5];
+  postCopy = post;
+  settings = [scene settings];
+  displayConfiguration = [settings displayConfiguration];
+  [self _FBSDisplayConfigurationConnected:displayConfiguration andNotify:postCopy];
 }
 
-+ (void)_FBSDisplayConfigurationConnected:(id)a3 forInitialDisplayContext:(id)a4 andNotify:(BOOL)a5 forceMain:(BOOL)a6
++ (void)_FBSDisplayConfigurationConnected:(id)connected forInitialDisplayContext:(id)context andNotify:(BOOL)notify forceMain:(BOOL)main
 {
-  v6 = a6;
-  v7 = a5;
+  mainCopy = main;
+  notifyCopy = notify;
   v32 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = [v10 identity];
-  v13 = [a1 _screenWithFBSDisplayIdentity:v12];
+  connectedCopy = connected;
+  contextCopy = context;
+  identity = [connectedCopy identity];
+  v13 = [self _screenWithFBSDisplayIdentity:identity];
 
   if (v13)
   {
-    [v13 _updateDisplayConfiguration:v10];
-    _UIScreenAddScreen(v13, v11 != 0);
+    [v13 _updateDisplayConfiguration:connectedCopy];
+    _UIScreenAddScreen(v13, contextCopy != 0);
   }
 
   else
   {
-    v14 = [[UIScreen alloc] initWithDisplayConfiguration:v10 forceMainScreen:v6];
+    v14 = [[UIScreen alloc] initWithDisplayConfiguration:connectedCopy forceMainScreen:mainCopy];
     v13 = v14;
-    if (v11)
+    if (contextCopy)
     {
-      [(UIScreen *)v14 _setInitialDisplayContext:v11];
+      [(UIScreen *)v14 _setInitialDisplayContext:contextCopy];
     }
 
-    _UIScreenAddScreen(v13, v11 != 0);
+    _UIScreenAddScreen(v13, contextCopy != 0);
     [v13 _connectScreen];
     if ((_UIInternalPreferenceUsesDefault(&_UIInternalPreference_FakeMainScreen, @"FakeMainScreen", _UIInternalPreferenceUpdateBool) & 1) == 0 && byte_1ED48B1EC)
     {
@@ -2711,11 +2711,11 @@ LABEL_11:
           v16 = qword_1ED48B220;
         }
 
-        v17 = [v10 currentMode];
-        v18 = [v17 _copyWithOverrideSize:{v15, v16}];
+        currentMode = [connectedCopy currentMode];
+        v18 = [currentMode _copyWithOverrideSize:{v15, v16}];
 
-        v19 = [v10 copyWithOverrideMode:v18];
-        v20 = [[UIScreen alloc] initWithDisplayConfiguration:v19 forceMainScreen:v6];
+        v19 = [connectedCopy copyWithOverrideMode:v18];
+        v20 = [[UIScreen alloc] initWithDisplayConfiguration:v19 forceMainScreen:mainCopy];
         v20->_isFakeScreen = 1;
         [(UIScreen *)v20 _connectScreen];
         objc_storeStrong(&qword_1ED49AB00, v20);
@@ -2741,32 +2741,32 @@ LABEL_11:
       }
     }
 
-    if (v7)
+    if (notifyCopy)
     {
-      v25 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v25 postNotificationName:@"_UIScreenDidConnectNotification" object:v13 userInfo:0];
-      [v25 postNotificationName:@"UIScreenDidConnectNotification" object:v13 userInfo:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter postNotificationName:@"_UIScreenDidConnectNotification" object:v13 userInfo:0];
+      [defaultCenter postNotificationName:@"UIScreenDidConnectNotification" object:v13 userInfo:0];
     }
   }
 }
 
-+ (void)_FBSDisplayDidPossiblyDisconnect:(id)a3
++ (void)_FBSDisplayDidPossiblyDisconnect:(id)disconnect
 {
-  v3 = a3;
-  [objc_opt_class() _FBSDisplayDidPossiblyDisconnect:v3 forSceneDestruction:0];
+  disconnectCopy = disconnect;
+  [objc_opt_class() _FBSDisplayDidPossiblyDisconnect:disconnectCopy forSceneDestruction:0];
 }
 
-+ (void)_FBSDisplayDidPossiblyDisconnect:(id)a3 forSceneDestruction:(id)a4
++ (void)_FBSDisplayDidPossiblyDisconnect:(id)disconnect forSceneDestruction:(id)destruction
 {
-  v5 = [a3 identity];
-  [a1 _FBSDisplayIdentityDisconnected:v5];
+  identity = [disconnect identity];
+  [self _FBSDisplayIdentityDisconnected:identity];
 }
 
-+ (void)_FBSDisplayIdentityDisconnected:(id)a3
++ (void)_FBSDisplayIdentityDisconnected:(id)disconnected
 {
   v33 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [UIScreen _screenWithFBSDisplayIdentity:v3];
+  disconnectedCopy = disconnected;
+  v4 = [UIScreen _screenWithFBSDisplayIdentity:disconnectedCopy];
   v5 = v4;
   if (v4)
   {
@@ -2832,35 +2832,35 @@ LABEL_11:
   }
 }
 
-- (UIScreen)initWithDisplayConfiguration:(id)a3
+- (UIScreen)initWithDisplayConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = -[UIScreen initWithDisplayConfiguration:forceMainScreen:](self, "initWithDisplayConfiguration:forceMainScreen:", v4, [v4 isMainDisplay]);
+  configurationCopy = configuration;
+  v5 = -[UIScreen initWithDisplayConfiguration:forceMainScreen:](self, "initWithDisplayConfiguration:forceMainScreen:", configurationCopy, [configurationCopy isMainDisplay]);
 
   return v5;
 }
 
-- (UIScreen)initWithDisplayConfiguration:(id)a3 forceMainScreen:(BOOL)a4
+- (UIScreen)initWithDisplayConfiguration:(id)configuration forceMainScreen:(BOOL)screen
 {
   v41 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  configurationCopy = configuration;
   v32.receiver = self;
   v32.super_class = UIScreen;
   v7 = [(UIScreen *)&v32 init];
   if (v7)
   {
-    if (a4)
+    if (screen)
     {
-      v8 = 1;
+      isMainDisplay = 1;
     }
 
     else
     {
-      v8 = [v6 isMainDisplay];
+      isMainDisplay = [configurationCopy isMainDisplay];
     }
 
-    v7->_mainScreen = v8;
-    _UIScreenWriteDisplayConfiguration(v7, v6);
+    v7->_mainScreen = isMainDisplay;
+    _UIScreenWriteDisplayConfiguration(v7, configurationCopy);
     v7->_userInterfaceIdiom = -1;
     v7->_screenType = -1;
     if (dyld_program_sdk_at_least())
@@ -2875,23 +2875,23 @@ LABEL_11:
     [(UIScreen *)v7 _computeMetrics];
     v7->_screenFlags = (*&v7->_screenFlags & 0xFFFFFFF0 | 8);
     [(UIScreen *)v7 _beginObservingBacklightLevelNotifications];
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v11 addObserver:v7 selector:sel__accessibilityForceTouchEnabledChanged_ name:@"UIAccessibilityForceTouchStatusChangedNotification" object:0];
-    [v11 addObserver:v7 selector:sel__accessibilityBoldTextChanged_ name:@"UIAccessibilityBoldTextStatusDidChangeNotification" object:0];
-    [v11 addObserver:v7 selector:sel__accessibilityBoldTextChanged_ name:@"UIAccessibilityCarPlayBoldTextStatusDidChangeNotification" object:0];
-    [v11 addObserver:v7 selector:sel__handleEffectiveUserInterfaceStyleChanged_ name:0x1EFB8EF50 object:0];
-    [v11 addObserver:v7 selector:sel__accessibilityTraitFlagsChanged_ name:@"UIAccessibilityDarkerSystemColorsStatusDidChangeNotification" object:0];
-    [v11 addObserver:v7 selector:sel__handleForcedUserInterfaceLayoutDirectionChanged_ name:0x1EFB8EF70 object:0];
-    v12 = [(UIScreen *)v7 _isCarScreen];
-    if (!v12 && ![(UIScreen *)v7 _isCarInstrumentsScreen])
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__accessibilityForceTouchEnabledChanged_ name:@"UIAccessibilityForceTouchStatusChangedNotification" object:0];
+    [defaultCenter addObserver:v7 selector:sel__accessibilityBoldTextChanged_ name:@"UIAccessibilityBoldTextStatusDidChangeNotification" object:0];
+    [defaultCenter addObserver:v7 selector:sel__accessibilityBoldTextChanged_ name:@"UIAccessibilityCarPlayBoldTextStatusDidChangeNotification" object:0];
+    [defaultCenter addObserver:v7 selector:sel__handleEffectiveUserInterfaceStyleChanged_ name:0x1EFB8EF50 object:0];
+    [defaultCenter addObserver:v7 selector:sel__accessibilityTraitFlagsChanged_ name:@"UIAccessibilityDarkerSystemColorsStatusDidChangeNotification" object:0];
+    [defaultCenter addObserver:v7 selector:sel__handleForcedUserInterfaceLayoutDirectionChanged_ name:0x1EFB8EF70 object:0];
+    _isCarScreen = [(UIScreen *)v7 _isCarScreen];
+    if (!_isCarScreen && ![(UIScreen *)v7 _isCarInstrumentsScreen])
     {
       goto LABEL_24;
     }
 
     v13 = +[_UICarPlaySession sharedInstance];
-    v14 = [(_UICarPlaySession *)v13 currentSession];
+    currentSession = [(_UICarPlaySession *)v13 currentSession];
     carSession = v7->_carSession;
-    v7->_carSession = v14;
+    v7->_carSession = currentSession;
 
     if (!v7->_carSession)
     {
@@ -2899,20 +2899,20 @@ LABEL_11:
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         v17 = v16;
-        v18 = [(UIScreen *)v7 _displayID];
+        _displayID = [(UIScreen *)v7 _displayID];
         LODWORD(buf) = 138543362;
-        *(&buf + 4) = v18;
+        *(&buf + 4) = _displayID;
         _os_log_impl(&dword_188A29000, v17, OS_LOG_TYPE_DEFAULT, "Failed to load car session on display: %{public}@", &buf, 0xCu);
       }
     }
 
-    if (!v12)
+    if (!_isCarScreen)
     {
       goto LABEL_24;
     }
 
-    [v11 addObserver:v7 selector:sel__clearCarPlayHumanPresenceState name:@"UIApplicationWillResignActiveNotification" object:0];
-    [v11 addObserver:v7 selector:sel__fetchInitialCarPlayHumanPresenceStatusIfNeeded name:@"UIApplicationWillEnterForegroundNotification" object:0];
+    [defaultCenter addObserver:v7 selector:sel__clearCarPlayHumanPresenceState name:@"UIApplicationWillResignActiveNotification" object:0];
+    [defaultCenter addObserver:v7 selector:sel__fetchInitialCarPlayHumanPresenceStatusIfNeeded name:@"UIApplicationWillEnterForegroundNotification" object:0];
     v33 = 0;
     v34 = &v33;
     v35 = 0x2020000000;
@@ -2935,7 +2935,7 @@ LABEL_11:
     _Block_object_dispose(&v33, 8);
     if (v19)
     {
-      [v11 addObserver:v7 selector:sel__limitedUIDidChange_ name:*v19 object:0];
+      [defaultCenter addObserver:v7 selector:sel__limitedUIDidChange_ name:*v19 object:0];
       v22 = _UIInternalPreferenceUsesDefault(&dword_1ED48B200, @"ApplySceneUserInterfaceStyleToCarScreen", _UIInternalPreferenceUpdateBool);
       if (byte_1ED48B204)
       {
@@ -2974,22 +2974,22 @@ LABEL_11:
       _Block_object_dispose(&v33, 8);
       if (v24)
       {
-        [v11 addObserver:v7 selector:sel__externalDeviceNightModeDidChange_ name:*v24 object:0];
+        [defaultCenter addObserver:v7 selector:sel__externalDeviceNightModeDidChange_ name:*v24 object:0];
 LABEL_24:
 
         goto LABEL_25;
       }
 
-      v30 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v31 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getCARSessionNightModeChangedNotification(void)"];
-      [v30 handleFailureInFunction:v31 file:@"UIScreen.m" lineNumber:109 description:{@"%s", dlerror()}];
+      [currentHandler handleFailureInFunction:v31 file:@"UIScreen.m" lineNumber:109 description:{@"%s", dlerror()}];
     }
 
     else
     {
-      v28 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
       v29 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getCARSessionLimitUserInterfacesChangedNotification(void)"];
-      [v28 handleFailureInFunction:v29 file:@"UIScreen.m" lineNumber:108 description:{@"%s", dlerror()}];
+      [currentHandler2 handleFailureInFunction:v29 file:@"UIScreen.m" lineNumber:108 description:{@"%s", dlerror()}];
     }
 
     __break(1u);
@@ -3002,14 +3002,14 @@ LABEL_25:
 
 - (_UITypedStorage)_typedStorage
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 248);
+    v2 = *(self + 248);
     if (!v2)
     {
       v2 = objc_alloc_init(_UITypedStorage);
-      v3 = *(a1 + 248);
-      *(a1 + 248) = v2;
+      v3 = *(self + 248);
+      *(self + 248) = v2;
     }
   }
 
@@ -3024,8 +3024,8 @@ LABEL_25:
 - (void)_invalidate
 {
   *&self->_screenFlags &= 0xFFFFFFCF;
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(UIScreen *)self _endObservingBacklightLevelNotifications];
   [(UIScreen *)self _setSoftwareDimmingWindow:0];
@@ -3043,12 +3043,12 @@ LABEL_25:
   [(UIScreen *)&v3 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (a6 == &__UIScreenCapturedKey)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (context == &__UIScreenCapturedKey)
   {
     objc_initWeak(&location, self);
     v14 = MEMORY[0x1E69E9820];
@@ -3065,7 +3065,7 @@ LABEL_25:
   {
     v13.receiver = self;
     v13.super_class = UIScreen;
-    [(UIScreen *)&v13 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(UIScreen *)&v13 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
@@ -3075,11 +3075,11 @@ void __59__UIScreen_observeValueForKeyPath_ofObject_change_context___block_invok
   [(UIScreen *)WeakRetained _evaluateCapturedStateForReason:?];
 }
 
-- (void)_evaluateCapturedStateForReason:(void *)a1
+- (void)_evaluateCapturedStateForReason:(void *)reason
 {
   v42 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (reason)
   {
     if (qword_1ED49ABE0 != -1)
     {
@@ -3090,18 +3090,18 @@ void __59__UIScreen_observeValueForKeyPath_ofObject_change_context___block_invok
     v5 = v4;
     if (v4)
     {
-      v6 = [v4 BOOLValue];
+      bOOLValue = [v4 BOOLValue];
     }
 
     else
     {
-      v7 = [a1 displayConfiguration];
-      v8 = [v7 CADisplay];
-      v9 = [v8 isCloned];
+      displayConfiguration = [reason displayConfiguration];
+      cADisplay = [displayConfiguration CADisplay];
+      isCloned = [cADisplay isCloned];
 
-      if (v9)
+      if (isCloned)
       {
-        v6 = 1;
+        bOOLValue = 1;
       }
 
       else
@@ -3134,12 +3134,12 @@ void __59__UIScreen_observeValueForKeyPath_ofObject_change_context___block_invok
               {
                 if (([v17 _hasSettingsScene] & 1) == 0)
                 {
-                  v18 = [v17 _screen];
+                  _screen = [v17 _screen];
 
-                  if (v18 == a1)
+                  if (_screen == reason)
                   {
-                    v19 = [v17 renderingEnvironment];
-                    v20 = [v19 isCapturingContentForAdditionalRenderingDestination];
+                    renderingEnvironment = [v17 renderingEnvironment];
+                    isCapturingContentForAdditionalRenderingDestination = [renderingEnvironment isCapturingContentForAdditionalRenderingDestination];
 
                     if (v17 && (![v17 activationState] || objc_msgSend(v17, "activationState") == 1))
                     {
@@ -3151,8 +3151,8 @@ void __59__UIScreen_observeValueForKeyPath_ofObject_change_context___block_invok
                       v21 = [v17 _hasLifecycle] ^ 1;
                     }
 
-                    v31 |= v21 & v20;
-                    v14 |= (v21 ^ 1) & v20;
+                    v31 |= v21 & isCapturingContentForAdditionalRenderingDestination;
+                    v14 |= (v21 ^ 1) & isCapturingContentForAdditionalRenderingDestination;
                     v13 |= v21;
                   }
                 }
@@ -3166,12 +3166,12 @@ void __59__UIScreen_observeValueForKeyPath_ofObject_change_context___block_invok
 
           if (v13 & 1 | ((v14 & 1) == 0))
           {
-            v6 = v13 & v31;
+            bOOLValue = v13 & v31;
           }
 
           else
           {
-            v6 = [a1 isCaptured];
+            bOOLValue = [reason isCaptured];
           }
 
           v5 = 0;
@@ -3181,7 +3181,7 @@ void __59__UIScreen_observeValueForKeyPath_ofObject_change_context___block_invok
         else
         {
 
-          v6 = 0;
+          bOOLValue = 0;
         }
       }
     }
@@ -3190,35 +3190,35 @@ void __59__UIScreen_observeValueForKeyPath_ofObject_change_context___block_invok
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       v23 = MEMORY[0x1E696AEC0];
-      v24 = a1;
+      reasonCopy = reason;
       v25 = v22;
       v26 = objc_opt_class();
       v27 = NSStringFromClass(v26);
-      v28 = [v23 stringWithFormat:@"<%@: %p>", v27, v24];
+      reasonCopy = [v23 stringWithFormat:@"<%@: %p>", v27, reasonCopy];
 
       *buf = 67240706;
-      v37 = v6 & 1;
+      v37 = bOOLValue & 1;
       v38 = 2114;
-      v39 = v28;
+      v39 = reasonCopy;
       v40 = 2114;
       v41 = v3;
       _os_log_impl(&dword_188A29000, v25, OS_LOG_TYPE_DEFAULT, "Evaluated capturing state as %{public}d on %{public}@ for %{public}@", buf, 0x1Cu);
     }
 
-    if ((v6 & 1) != [a1 isCaptured])
+    if ((bOOLValue & 1) != [reason isCaptured])
     {
-      [a1 _setCaptured:?];
-      v29 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v29 postNotificationName:@"UIScreenCapturedDidChangeNotification" object:a1 userInfo:0];
+      [reason _setCaptured:?];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter postNotificationName:@"UIScreenCapturedDidChangeNotification" object:reason userInfo:0];
 
-      [a1 _updateTraitsForWindowScenesCallingParentWillTransition:0];
+      [reason _updateTraitsForWindowScenesCallingParentWillTransition:0];
     }
   }
 }
 
-- (void)_updateTraitsForWindowScenesCallingParentWillTransition:(BOOL)a3
+- (void)_updateTraitsForWindowScenesCallingParentWillTransition:(BOOL)transition
 {
-  v3 = a3;
+  transitionCopy = transition;
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
@@ -3242,11 +3242,11 @@ void __59__UIScreen_observeValueForKeyPath_ofObject_change_context___block_invok
         v10 = *(*(&v12 + 1) + 8 * i);
         if ([v10 _hostsWindows])
         {
-          v11 = [v10 _screen];
+          _screen = [v10 _screen];
 
-          if (v11 == self)
+          if (_screen == self)
           {
-            [v10 _updateSceneTraitsAndPushTraitsToScreen:0 callParentWillTransitionToTraitCollection:v3];
+            [v10 _updateSceneTraitsAndPushTraitsToScreen:0 callParentWillTransitionToTraitCollection:transitionCopy];
           }
         }
       }
@@ -3262,17 +3262,17 @@ void __59__UIScreen_observeValueForKeyPath_ofObject_change_context___block_invok
 {
   v27 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&unk_1ED49AAE8);
-  v20 = self;
+  selfCopy = self;
   v3 = self->__displayConfiguration;
   os_unfair_lock_unlock(&unk_1ED49AAE8);
-  v4 = [(FBSDisplayConfiguration *)v3 availableModes];
+  availableModes = [(FBSDisplayConfiguration *)v3 availableModes];
 
-  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(availableModes, "count")}];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v6 = v4;
+  v6 = availableModes;
   v7 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v7)
   {
@@ -3300,9 +3300,9 @@ LABEL_12:
           goto LABEL_13;
         }
 
-        v12 = [v11 hdrMode];
+        hdrMode = [v11 hdrMode];
         [v11 pixelSize];
-        if (v12 == 2 || v13 > 1920.0)
+        if (hdrMode == 2 || v13 > 1920.0)
         {
           goto LABEL_12;
         }
@@ -3318,7 +3318,7 @@ LABEL_13:
 
         if (![v16 count])
         {
-          v17 = [UIScreenMode _screenModeForDisplayMode:v11 mainScreen:[(UIScreen *)v20 _isMainScreen] actualDisplayScale:v20->_scale];
+          v17 = [UIScreenMode _screenModeForDisplayMode:v11 mainScreen:[(UIScreen *)selfCopy _isMainScreen] actualDisplayScale:selfCopy->_scale];
           [v5 addObject:v17];
         }
       }
@@ -3330,8 +3330,8 @@ LABEL_13:
   }
 
   v18 = [v5 sortedArrayUsingComparator:&__block_literal_global_215_1];
-  availableDisplayModes = v20->_availableDisplayModes;
-  v20->_availableDisplayModes = v18;
+  availableDisplayModes = selfCopy->_availableDisplayModes;
+  selfCopy->_availableDisplayModes = v18;
 }
 
 BOOL __40__UIScreen__updateAvailableDisplayModes__block_invoke(uint64_t a1, void *a2)
@@ -3381,24 +3381,24 @@ uint64_t __40__UIScreen__updateAvailableDisplayModes__block_invoke_2(uint64_t a1
   }
 }
 
-- (void)_updateDisplayConfiguration:(id)a3
+- (void)_updateDisplayConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   os_unfair_lock_lock(&unk_1ED49AAE8);
   v5 = self->__displayConfiguration;
   os_unfair_lock_unlock(&unk_1ED49AAE8);
-  if (([(FBSDisplayConfiguration *)v5 isEqual:v4]& 1) != 0)
+  if (([(FBSDisplayConfiguration *)v5 isEqual:configurationCopy]& 1) != 0)
   {
     goto LABEL_33;
   }
 
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  v7 = [(FBSDisplayConfiguration *)v5 hardwareIdentifier];
-  v8 = [v4 hardwareIdentifier];
-  v49 = v7;
-  v50 = v6;
-  v48 = v8;
-  if (v7 == v8 || (v9 = v8, ([v7 isEqualToString:v8] & 1) != 0))
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  hardwareIdentifier = [(FBSDisplayConfiguration *)v5 hardwareIdentifier];
+  hardwareIdentifier2 = [configurationCopy hardwareIdentifier];
+  v49 = hardwareIdentifier;
+  v50 = defaultCenter;
+  v48 = hardwareIdentifier2;
+  if (hardwareIdentifier == hardwareIdentifier2 || (v9 = hardwareIdentifier2, ([hardwareIdentifier isEqualToString:hardwareIdentifier2] & 1) != 0))
   {
     v46 = 0;
     v47 = 0;
@@ -3408,9 +3408,9 @@ uint64_t __40__UIScreen__updateAvailableDisplayModes__block_invoke_2(uint64_t a1
   {
     v10 = objc_opt_new();
     v11 = v10;
-    if (v7)
+    if (hardwareIdentifier)
     {
-      [v10 setObject:v7 forKey:@"_UIScreenOldUniqueIdUserInfoKey"];
+      [v10 setObject:hardwareIdentifier forKey:@"_UIScreenOldUniqueIdUserInfoKey"];
     }
 
     if (v9)
@@ -3419,32 +3419,32 @@ uint64_t __40__UIScreen__updateAvailableDisplayModes__block_invoke_2(uint64_t a1
     }
 
     v47 = v11;
-    [v6 postNotificationName:@"_UIScreenUniqueIdWillChangeNotification" object:self userInfo:v11];
-    objc_storeStrong(&self->_previousHardwareIdentifier, v7);
+    [defaultCenter postNotificationName:@"_UIScreenUniqueIdWillChangeNotification" object:self userInfo:v11];
+    objc_storeStrong(&self->_previousHardwareIdentifier, hardwareIdentifier);
     v46 = 1;
   }
 
-  _UIScreenWriteDisplayConfiguration(self, v4);
-  v12 = [(FBSDisplayConfiguration *)v5 availableModes];
-  v13 = [v4 availableModes];
-  v14 = [v12 isEqualToSet:v13];
+  _UIScreenWriteDisplayConfiguration(self, configurationCopy);
+  availableModes = [(FBSDisplayConfiguration *)v5 availableModes];
+  availableModes2 = [configurationCopy availableModes];
+  v14 = [availableModes isEqualToSet:availableModes2];
 
-  v15 = [(FBSDisplayConfiguration *)v5 currentMode];
-  v16 = [v4 currentMode];
-  v45 = [v15 isEqual:v16];
+  currentMode = [(FBSDisplayConfiguration *)v5 currentMode];
+  currentMode2 = [configurationCopy currentMode];
+  v45 = [currentMode isEqual:currentMode2];
 
-  LODWORD(v15) = [(FBSDisplayConfiguration *)v5 isOverscanned];
-  v17 = v15 ^ [v4 isOverscanned];
-  v18 = [(FBSDisplayConfiguration *)v5 overscanCompensation];
-  v19 = [v4 overscanCompensation];
-  v44 = [(FBSDisplayConfiguration *)v5 isCloningSupported];
-  v43 = [v4 isCloningSupported];
+  LODWORD(currentMode) = [(FBSDisplayConfiguration *)v5 isOverscanned];
+  v17 = currentMode ^ [configurationCopy isOverscanned];
+  overscanCompensation = [(FBSDisplayConfiguration *)v5 overscanCompensation];
+  overscanCompensation2 = [configurationCopy overscanCompensation];
+  isCloningSupported = [(FBSDisplayConfiguration *)v5 isCloningSupported];
+  isCloningSupported2 = [configurationCopy isCloningSupported];
   [(FBSDisplayConfiguration *)v5 bounds];
   v21 = v20;
   v23 = v22;
   v25 = v24;
   v27 = v26;
-  [v4 bounds];
+  [configurationCopy bounds];
   v53.origin.x = v28;
   v53.origin.y = v29;
   v53.size.width = v30;
@@ -3456,10 +3456,10 @@ uint64_t __40__UIScreen__updateAvailableDisplayModes__block_invoke_2(uint64_t a1
   v32 = CGRectEqualToRect(v52, v53);
   [(FBSDisplayConfiguration *)v5 scale];
   v34 = v33;
-  [v4 scale];
+  [configurationCopy scale];
   v36 = v35;
   v37 = [(FBSDisplayConfiguration *)v5 colorGamut]!= 0;
-  v38 = [v4 colorGamut] == 0;
+  v38 = [configurationCopy colorGamut] == 0;
   if ((v14 & 1) == 0)
   {
     [(UIScreen *)self _updateAvailableDisplayModes];
@@ -3467,7 +3467,7 @@ uint64_t __40__UIScreen__updateAvailableDisplayModes__block_invoke_2(uint64_t a1
 
   v39 = v37 ^ v38;
   v40 = vabdd_f64(v34, v36);
-  if (v18 == v19)
+  if (overscanCompensation == overscanCompensation2)
   {
     v41 = v17;
   }
@@ -3502,12 +3502,12 @@ uint64_t __40__UIScreen__updateAvailableDisplayModes__block_invoke_2(uint64_t a1
 
   [(UIScreen *)self _updateTraits];
 LABEL_24:
-  if (v17 & 1 | ((v45 & 1) == 0) || v18 != v19)
+  if (v17 & 1 | ((v45 & 1) == 0) || overscanCompensation != overscanCompensation2)
   {
     [v50 postNotificationName:@"UIScreenModeDidChangeNotification" object:self userInfo:0];
   }
 
-  if (v44 != v43 && ![(UIScreen *)self _hasWindows])
+  if (isCloningSupported != isCloningSupported2 && ![(UIScreen *)self _hasWindows])
   {
     [v50 postNotificationName:@"UIScreenMirroredScreenDidChangeNotification" object:self];
   }
@@ -3558,9 +3558,9 @@ void __40__UIScreen__updateDisplayConfiguration___block_invoke(uint64_t a1, void
           objc_enumerationMutation(v3);
         }
 
-        v8 = [*(*(&v11 + 1) + 8 * i) screen];
+        screen = [*(*(&v11 + 1) + 8 * i) screen];
 
-        if (v8 == self)
+        if (screen == self)
         {
           v9 = 1;
           goto LABEL_11;
@@ -3594,10 +3594,10 @@ LABEL_11:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
 LABEL_9:
 
-    return v4;
+    return bOOLValue;
   }
 
   v10 = 0;
@@ -3619,13 +3619,13 @@ LABEL_9:
   _Block_object_dispose(&v10, 8);
   if (v5)
   {
-    v4 = v5() != 0;
+    bOOLValue = v5() != 0;
     goto LABEL_9;
   }
 
-  v7 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"Boolean __FigOutputMonitorIsScreenProbablyBeingRecorded(void)"];
-  [v7 handleFailureInFunction:v8 file:@"UIScreen.m" lineNumber:132 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v8 file:@"UIScreen.m" lineNumber:132 description:{@"%s", dlerror()}];
 
   __break(1u);
   return result;
@@ -3639,10 +3639,10 @@ void __30__UIScreen__shouldDisableJail__block_invoke()
   _MergedGlobals_53_0 = [v1 BOOLValue];
 }
 
-- (void)_setInterfaceOrientation:(int64_t)a3 andNotify:(BOOL)a4
+- (void)_setInterfaceOrientation:(int64_t)orientation andNotify:(BOOL)notify
 {
   interfaceOrientation = self->_interfaceOrientation;
-  if (interfaceOrientation != a3)
+  if (interfaceOrientation != orientation)
   {
     screenFlags = self->_screenFlags;
     if ((*&screenFlags & 0x8000) != 0)
@@ -3670,21 +3670,21 @@ void __30__UIScreen__shouldDisableJail__block_invoke()
 
     else
     {
-      v7 = a4;
+      notifyCopy = notify;
       self->_screenFlags = (*&screenFlags | 0x8000);
-      self->_interfaceOrientation = a3;
+      self->_interfaceOrientation = orientation;
       [(UIScreen *)self _updateTraits];
       [(UIScreen *)self _computeMetrics];
-      if (v7)
+      if (notifyCopy)
       {
-        v8 = [MEMORY[0x1E696AD88] defaultCenter];
-        [v8 postNotificationName:@"_UIScreenInterfaceOrientationDidChangeNotification" object:self];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+        [defaultCenter postNotificationName:@"_UIScreenInterfaceOrientationDidChangeNotification" object:self];
         if ((interfaceOrientation - 1) < 2 != (self->_interfaceOrientation - 1) < 2)
         {
           [(UIScreen *)self _displayPeripheryInsets];
           if (v12 != 0.0 || v9 != 0.0 || v11 != 0.0 || v10 != 0.0)
           {
-            [v8 postNotificationName:@"_UIScreenDidChangePeripheryInsetsNotification" object:self];
+            [defaultCenter postNotificationName:@"_UIScreenDidChangePeripheryInsetsNotification" object:self];
           }
         }
       }
@@ -3694,9 +3694,9 @@ void __30__UIScreen__shouldDisableJail__block_invoke()
   }
 }
 
-- (CGRect)_applicationFrameForInterfaceOrientation:(int64_t)a3 usingStatusbarHeight:(double)a4 ignoreStatusBar:(BOOL)a5
+- (CGRect)_applicationFrameForInterfaceOrientation:(int64_t)orientation usingStatusbarHeight:(double)height ignoreStatusBar:(BOOL)bar
 {
-  [(UIScreen *)self _applicationFrameWithoutOverscanForInterfaceOrientation:a3 usingStatusbarHeight:a5 ignoreStatusBar:a4];
+  [(UIScreen *)self _applicationFrameWithoutOverscanForInterfaceOrientation:orientation usingStatusbarHeight:bar ignoreStatusBar:height];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -3721,12 +3721,12 @@ void __30__UIScreen__shouldDisableJail__block_invoke()
   return result;
 }
 
-- (CGRect)_applicationFrameWithoutOverscanForInterfaceOrientation:(int64_t)a3 usingStatusbarHeight:(double)a4 ignoreStatusBar:(BOOL)a5
+- (CGRect)_applicationFrameWithoutOverscanForInterfaceOrientation:(int64_t)orientation usingStatusbarHeight:(double)height ignoreStatusBar:(BOOL)bar
 {
-  v5 = a5;
+  barCopy = bar;
   if (_UIAppUseModernRotationAndPresentationBehaviors())
   {
-    [(UIScreen *)self _mainSceneBoundsForInterfaceOrientation:a3];
+    [(UIScreen *)self _mainSceneBoundsForInterfaceOrientation:orientation];
   }
 
   else
@@ -3738,27 +3738,27 @@ void __30__UIScreen__shouldDisableJail__block_invoke()
   v14 = v10;
   v15 = v11;
   v16 = v12;
-  if (v5)
+  if (barCopy)
   {
-    a4 = 0.0;
+    height = 0.0;
   }
 
   if ([(UIScreen *)self _userInterfaceIdiom]== 3 && +[UIScreen _shouldDisableJail])
   {
     [(UIStatusBar_Base *)UIStatusBar heightForStyle:400 orientation:1 inWindow:0];
     v16 = v16 - v17;
-    a4 = 0.0;
+    height = 0.0;
   }
 
   v18 = __UIStatusBarManagerForWindow(0);
-  v19 = [v18 isStatusBarHidden];
+  isStatusBarHidden = [v18 isStatusBarHidden];
 
-  if ((v19 & 1) == 0 && [(UIScreen *)self _isMainLikeScreen])
+  if ((isStatusBarHidden & 1) == 0 && [(UIScreen *)self _isMainLikeScreen])
   {
-    if (a4 <= 0.0 && !v5)
+    if (height <= 0.0 && !barCopy)
     {
-      [UIApp statusBarHeightForOrientation:a3];
-      a4 = v20;
+      [UIApp statusBarHeightForOrientation:orientation];
+      height = v20;
     }
 
     if (_UIAppUseModernRotationAndPresentationBehaviors())
@@ -3766,34 +3766,34 @@ void __30__UIScreen__shouldDisableJail__block_invoke()
       goto LABEL_15;
     }
 
-    if (a3 > 2)
+    if (orientation > 2)
     {
-      if (a3 != 3)
+      if (orientation != 3)
       {
-        if (a3 != 4)
+        if (orientation != 4)
         {
           goto LABEL_25;
         }
 
-        v13 = v13 + a4;
+        v13 = v13 + height;
       }
 
-      v15 = v15 - a4;
+      v15 = v15 - height;
       goto LABEL_25;
     }
 
-    if (a3 == 1)
+    if (orientation == 1)
     {
 LABEL_15:
-      v14 = v14 + a4;
+      v14 = v14 + height;
     }
 
-    else if (a3 != 2)
+    else if (orientation != 2)
     {
       goto LABEL_25;
     }
 
-    v16 = v16 - a4;
+    v16 = v16 - height;
   }
 
 LABEL_25:
@@ -3808,9 +3808,9 @@ LABEL_25:
   return result;
 }
 
-- (CGRect)_applicationFrameForInterfaceOrientation:(int64_t)a3 usingStatusbarHeight:(double)a4
+- (CGRect)_applicationFrameForInterfaceOrientation:(int64_t)orientation usingStatusbarHeight:(double)height
 {
-  [(UIScreen *)self _applicationFrameForInterfaceOrientation:a3 usingStatusbarHeight:0 ignoreStatusBar:a4];
+  [(UIScreen *)self _applicationFrameForInterfaceOrientation:orientation usingStatusbarHeight:0 ignoreStatusBar:height];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -3818,9 +3818,9 @@ LABEL_25:
   return result;
 }
 
-- (CGRect)_applicationFrameForInterfaceOrientation:(int64_t)a3
+- (CGRect)_applicationFrameForInterfaceOrientation:(int64_t)orientation
 {
-  [(UIScreen *)self _applicationFrameForInterfaceOrientation:a3 usingStatusbarHeight:0.0];
+  [(UIScreen *)self _applicationFrameForInterfaceOrientation:orientation usingStatusbarHeight:0.0];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -3828,7 +3828,7 @@ LABEL_25:
   return result;
 }
 
-- (void)_computeMetrics:(BOOL)a3
+- (void)_computeMetrics:(BOOL)metrics
 {
   os_unfair_lock_lock(&unk_1ED49AAE8);
   v10 = self->__displayConfiguration;
@@ -3876,7 +3876,7 @@ LABEL_25:
   return result;
 }
 
-- (CGRect)_unjailedReferenceBoundsForInterfaceOrientation:(int64_t)a3
+- (CGRect)_unjailedReferenceBoundsForInterfaceOrientation:(int64_t)orientation
 {
   x = self->_unjailedReferenceBounds.origin.x;
   y = self->_unjailedReferenceBounds.origin.y;
@@ -3884,7 +3884,7 @@ LABEL_25:
   height = self->_unjailedReferenceBounds.size.height;
   if (![(UIScreen *)self _isExternal]|| ![(UIScreen *)self _isMainLikeScreen])
   {
-    if ((a3 - 3) > 1)
+    if ((orientation - 3) > 1)
     {
       goto LABEL_8;
     }
@@ -3904,7 +3904,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if ((a3 - 3) <= 1 && (*&self->_screenFlags & 0x10000) != 0)
+  if ((orientation - 3) <= 1 && (*&self->_screenFlags & 0x10000) != 0)
   {
     goto LABEL_7;
   }
@@ -3921,7 +3921,7 @@ LABEL_8:
   return result;
 }
 
-- (CGRect)_boundsForInterfaceOrientation:(int64_t)a3
+- (CGRect)_boundsForInterfaceOrientation:(int64_t)orientation
 {
   x = self->_referenceBounds.origin.x;
   y = self->_referenceBounds.origin.y;
@@ -3929,7 +3929,7 @@ LABEL_8:
   height = self->_referenceBounds.size.height;
   if (![(UIScreen *)self _isExternal]|| ![(UIScreen *)self _isMainLikeScreen])
   {
-    if ((a3 - 3) > 1)
+    if ((orientation - 3) > 1)
     {
       goto LABEL_8;
     }
@@ -3949,7 +3949,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if ((a3 - 3) <= 1 && (*&self->_screenFlags & 0x10000) != 0)
+  if ((orientation - 3) <= 1 && (*&self->_screenFlags & 0x10000) != 0)
   {
     goto LABEL_7;
   }
@@ -3966,7 +3966,7 @@ LABEL_8:
   return result;
 }
 
-- (CGRect)_mainSceneBoundsForInterfaceOrientation:(int64_t)a3
+- (CGRect)_mainSceneBoundsForInterfaceOrientation:(int64_t)orientation
 {
   [(UIScreen *)self _mainSceneReferenceBounds];
   v6 = v5;
@@ -3975,7 +3975,7 @@ LABEL_8:
   v12 = v11;
   if (!self || ![(UIScreen *)self _isExternal]|| ![(UIScreen *)self _isMainLikeScreen])
   {
-    if ((a3 - 3) > 1)
+    if ((orientation - 3) > 1)
     {
       goto LABEL_9;
     }
@@ -3995,7 +3995,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if ((a3 - 3) <= 1 && (*&self->_screenFlags & 0x10000) != 0)
+  if ((orientation - 3) <= 1 && (*&self->_screenFlags & 0x10000) != 0)
   {
     goto LABEL_8;
   }
@@ -4014,9 +4014,9 @@ LABEL_9:
 
 - (CGRect)_interfaceOrientedMainSceneBounds
 {
-  v3 = [(UIScreen *)self _interfaceOrientation];
+  _interfaceOrientation = [(UIScreen *)self _interfaceOrientation];
 
-  [(UIScreen *)self _mainSceneBoundsForInterfaceOrientation:v3];
+  [(UIScreen *)self _mainSceneBoundsForInterfaceOrientation:_interfaceOrientation];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -4026,9 +4026,9 @@ LABEL_9:
 
 - (CGRect)_applicationFrame
 {
-  v3 = [(UIScreen *)self _interfaceOrientation];
+  _interfaceOrientation = [(UIScreen *)self _interfaceOrientation];
 
-  [(UIScreen *)self _applicationFrameForInterfaceOrientation:v3];
+  [(UIScreen *)self _applicationFrameForInterfaceOrientation:_interfaceOrientation];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -4100,8 +4100,8 @@ LABEL_9:
   os_unfair_lock_unlock(&unk_1ED49AAE8);
   if (v3)
   {
-    v4 = [(FBSDisplayConfiguration *)v3 preferredMode];
-    v5 = [UIScreenMode _screenModeForDisplayMode:v4 mainScreen:[(UIScreen *)self _isMainScreen] actualDisplayScale:self->_scale];
+    preferredMode = [(FBSDisplayConfiguration *)v3 preferredMode];
+    v5 = [UIScreenMode _screenModeForDisplayMode:preferredMode mainScreen:[(UIScreen *)self _isMainScreen] actualDisplayScale:self->_scale];
   }
 
   else
@@ -4160,15 +4160,15 @@ LABEL_9:
       if ([v12 _hostsWindows])
       {
         v13 = v12;
-        v14 = [v13 _screen];
-        if (v14 == self && [v13 _isConnecting])
+        _screen = [v13 _screen];
+        if (_screen == self && [v13 _isConnecting])
         {
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
 
           if (isKindOfClass)
           {
-            v14 = v6;
+            _screen = v6;
             v6 = v13;
             goto LABEL_14;
           }
@@ -4191,8 +4191,8 @@ LABEL_20:
 
   v4 = v17;
 LABEL_21:
-  v16 = [(UIScreenMode *)v4 _displayMode];
-  [v16 nativePixelSize];
+  _displayMode = [(UIScreenMode *)v4 _displayMode];
+  [_displayMode nativePixelSize];
   [(UIScreen *)v6 _setScreenRequestedDisplayNativePixelSize:?];
 
 LABEL_22:
@@ -4212,15 +4212,15 @@ LABEL_22:
       availableDisplayModes = self->_availableDisplayModes;
     }
 
-    v5 = [(NSArray *)availableDisplayModes copy];
+    array = [(NSArray *)availableDisplayModes copy];
   }
 
   else
   {
-    v5 = [MEMORY[0x1E695DEC8] array];
+    array = [MEMORY[0x1E695DEC8] array];
   }
 
-  return v5;
+  return array;
 }
 
 - (void)setOverscanCompensation:(UIScreenOverscanCompensation)overscanCompensation
@@ -4282,15 +4282,15 @@ LABEL_3:
       if ([v14 _hostsWindows])
       {
         v15 = v14;
-        v16 = [v15 _screen];
-        if (v16 == self && [v15 _isConnecting])
+        _screen = [v15 _screen];
+        if (_screen == self && [v15 _isConnecting])
         {
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
 
           if (isKindOfClass)
           {
-            v16 = v6;
+            _screen = v6;
             v6 = v15;
             goto LABEL_19;
           }
@@ -4330,10 +4330,10 @@ LABEL_29:
 
 - (unsigned)_integerDisplayID
 {
-  v2 = [(UIScreen *)self displayIdentity];
-  v3 = [v2 displayID];
+  displayIdentity = [(UIScreen *)self displayIdentity];
+  displayID = [displayIdentity displayID];
 
-  return v3;
+  return displayID;
 }
 
 - (unsigned)_seed
@@ -4341,13 +4341,13 @@ LABEL_29:
   os_unfair_lock_lock(&unk_1ED49AAE8);
   v3 = self->__displayConfiguration;
   os_unfair_lock_unlock(&unk_1ED49AAE8);
-  v4 = [(FBSDisplayConfiguration *)v3 CADisplay];
+  cADisplay = [(FBSDisplayConfiguration *)v3 CADisplay];
 
-  LODWORD(v3) = [v4 seed];
+  LODWORD(v3) = [cADisplay seed];
   return v3;
 }
 
-- (void)_limitedUIDidChange:(id)a3
+- (void)_limitedUIDidChange:(id)change
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -4363,28 +4363,28 @@ void __32__UIScreen__limitedUIDidChange___block_invoke(uint64_t a1)
   [v2 postNotificationName:@"UIScreenCarScreenLimitedUIDidChangeNotification" object:*(a1 + 32) userInfo:0];
 }
 
-- (void)_externalDeviceNightModeDidChange:(id)a3
+- (void)_externalDeviceNightModeDidChange:(id)change
 {
-  v4 = [(CARSession *)self->_carSession nightMode];
-  v5 = [v4 BOOLValue];
+  nightMode = [(CARSession *)self->_carSession nightMode];
+  bOOLValue = [nightMode BOOLValue];
 
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __46__UIScreen__externalDeviceNightModeDidChange___block_invoke;
   v6[3] = &unk_1E70F35E0;
   v6[4] = self;
-  v7 = v5;
+  v7 = bOOLValue;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
-- (void)_setCarPlayHumanPresenceInRange:(BOOL)a3
+- (void)_setCarPlayHumanPresenceInRange:(BOOL)range
 {
   v11[1] = *MEMORY[0x1E69E9840];
   carPlayHumanPresenceStatus = self->_carPlayHumanPresenceStatus;
-  if (((((carPlayHumanPresenceStatus & 4) == 0) ^ a3) & 1) == 0)
+  if (((((carPlayHumanPresenceStatus & 4) == 0) ^ range) & 1) == 0)
   {
-    v4 = a3;
-    if (a3)
+    rangeCopy = range;
+    if (range)
     {
       v6 = 4;
     }
@@ -4395,28 +4395,28 @@ void __32__UIScreen__limitedUIDidChange___block_invoke(uint64_t a1)
     }
 
     *&self->_carPlayHumanPresenceStatus = carPlayHumanPresenceStatus & 0xFB | v6;
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v10 = @"IsCarPlayHumanPresenceInRange";
-    v8 = [MEMORY[0x1E696AD98] numberWithBool:v4];
+    v8 = [MEMORY[0x1E696AD98] numberWithBool:rangeCopy];
     v11[0] = v8;
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-    [v7 postNotificationName:@"UIScreenCarPlayHumanPresenceDidChangeNotification" object:self userInfo:v9];
+    [defaultCenter postNotificationName:@"UIScreenCarPlayHumanPresenceDidChangeNotification" object:self userInfo:v9];
   }
 }
 
-- (void)_updateCarPlayCapabilitiesWithInteractionModels:(unint64_t)a3 primaryInteractionModel:(unint64_t)a4 touchLevel:(int64_t)a5
+- (void)_updateCarPlayCapabilitiesWithInteractionModels:(unint64_t)models primaryInteractionModel:(unint64_t)model touchLevel:(int64_t)level
 {
   v15[3] = *MEMORY[0x1E69E9840];
   if ([(UIScreen *)self _isCarScreen]|| [(UIScreen *)self _isCarInstrumentsScreen])
   {
     v14[0] = @"UIScreenCapabilityInteractionModelsKey";
-    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:models];
     v15[0] = v9;
     v14[1] = @"UIScreenCapabilityPrimaryInteractionModelKey";
-    v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+    v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:model];
     v15[1] = v10;
     v14[2] = @"UIScreenCapabilityTouchLevelsKey";
-    v11 = [MEMORY[0x1E696AD98] numberWithInteger:a5];
+    v11 = [MEMORY[0x1E696AD98] numberWithInteger:level];
     v15[2] = v11;
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:3];
 
@@ -4430,9 +4430,9 @@ void __32__UIScreen__limitedUIDidChange___block_invoke(uint64_t a1)
   os_unfair_lock_lock(&unk_1ED49AAE8);
   v3 = self->__displayConfiguration;
   os_unfair_lock_unlock(&unk_1ED49AAE8);
-  v4 = [(FBSDisplayConfiguration *)v3 expectsSecureRendering];
+  expectsSecureRendering = [(FBSDisplayConfiguration *)v3 expectsSecureRendering];
 
-  return v4;
+  return expectsSecureRendering;
 }
 
 - (CADisplayLink)displayLinkWithTarget:(id)target selector:(SEL)sel
@@ -4444,8 +4444,8 @@ void __32__UIScreen__limitedUIDidChange___block_invoke(uint64_t a1)
   if (v7)
   {
     v8 = MEMORY[0x1E6979330];
-    v9 = [(FBSDisplayConfiguration *)v7 CADisplay];
-    v10 = [v8 displayLinkWithDisplay:v9 target:v6 selector:sel];
+    cADisplay = [(FBSDisplayConfiguration *)v7 CADisplay];
+    v10 = [v8 displayLinkWithDisplay:cADisplay target:v6 selector:sel];
   }
 
   else
@@ -4456,18 +4456,18 @@ void __32__UIScreen__limitedUIDidChange___block_invoke(uint64_t a1)
   return v10;
 }
 
-- (void)_setReferenceDisplayModeStatus:(int64_t)a3
+- (void)_setReferenceDisplayModeStatus:(int64_t)status
 {
   if ([(UIScreen *)self _isEmbeddedScreen])
   {
     referenceDisplayModeStatus = self->_referenceDisplayModeStatus;
-    if (a3 || !referenceDisplayModeStatus)
+    if (status || !referenceDisplayModeStatus)
     {
-      self->_referenceDisplayModeStatus = a3;
-      if (referenceDisplayModeStatus != a3)
+      self->_referenceDisplayModeStatus = status;
+      if (referenceDisplayModeStatus != status)
       {
-        v6 = [MEMORY[0x1E696AD88] defaultCenter];
-        [v6 postNotificationName:@"UIScreenReferenceDisplayModeStatusDidChangeNotification" object:self userInfo:0];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+        [defaultCenter postNotificationName:@"UIScreenReferenceDisplayModeStatusDidChangeNotification" object:self userInfo:0];
       }
     }
   }
@@ -4475,11 +4475,11 @@ void __32__UIScreen__limitedUIDidChange___block_invoke(uint64_t a1)
 
 - (CGFloat)currentEDRHeadroom
 {
-  v2 = [(UIScreen *)self displayIdentity];
-  v3 = v2;
-  if (v2)
+  displayIdentity = [(UIScreen *)self displayIdentity];
+  v3 = displayIdentity;
+  if (displayIdentity)
   {
-    [v2 displayID];
+    [displayIdentity displayID];
     CADisplayGetCurrentHeadroom();
     v5 = v4;
   }
@@ -4500,60 +4500,60 @@ void __32__UIScreen__limitedUIDidChange___block_invoke(uint64_t a1)
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = MEMORY[0x1E696AEC0];
-    v5 = self;
+    selfCopy = self;
     v6 = v3;
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
-    v9 = [v4 stringWithFormat:@"<%@: %p>", v8, v5];
+    selfCopy = [v4 stringWithFormat:@"<%@: %p>", v8, selfCopy];
 
     *buf = 138543362;
-    v12 = v9;
+    v12 = selfCopy;
     _os_log_impl(&dword_188A29000, v6, OS_LOG_TYPE_DEFAULT, "Disconnecting screen: %{public}@", buf, 0xCu);
   }
 
-  v10 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v10 postNotificationName:@"_UIScreenDidDisconnectNotification" object:self userInfo:0];
-  [v10 postNotificationName:@"UIScreenDidDisconnectNotification" object:self userInfo:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"_UIScreenDidDisconnectNotification" object:self userInfo:0];
+  [defaultCenter postNotificationName:@"UIScreenDidDisconnectNotification" object:self userInfo:0];
   [(UIScreen *)self _invalidate];
 }
 
-- (id)_preventDisconnectionForReason:(uint64_t)a1
+- (id)_preventDisconnectionForReason:(uint64_t)reason
 {
   v27 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1 && (*(a1 + 200) & 0x60) == 0x20)
+  if (reason && (*(reason + 200) & 0x60) == 0x20)
   {
-    if (!*(a1 + 264))
+    if (!*(reason + 264))
     {
       v4 = objc_opt_new();
-      v5 = *(a1 + 264);
-      *(a1 + 264) = v4;
+      v5 = *(reason + 264);
+      *(reason + 264) = v4;
     }
 
-    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"UIScreen-%p-%lu", a1, ++qword_1ED49AB38];
+    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"UIScreen-%p-%lu", reason, ++qword_1ED49AB38];
     v7 = objc_alloc(MEMORY[0x1E698E778]);
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __43__UIScreen__preventDisconnectionForReason___block_invoke;
     v20[3] = &unk_1E710CDE0;
-    v20[4] = a1;
+    v20[4] = reason;
     v8 = [v7 initWithIdentifier:v6 forReason:v3 queue:MEMORY[0x1E69E96A0] invalidationBlock:v20];
-    [*(a1 + 264) addObject:v8];
+    [*(reason + 264) addObject:v8];
     v9 = *(__UILogGetCategoryCachedImpl("UIScreen", &qword_1ED49AB40) + 8);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v10 = MEMORY[0x1E696AEC0];
-      v11 = a1;
+      reasonCopy = reason;
       v12 = v9;
       v13 = objc_opt_class();
       v14 = NSStringFromClass(v13);
-      v15 = [v10 stringWithFormat:@"<%@: %p>", v14, v11];
+      reasonCopy = [v10 stringWithFormat:@"<%@: %p>", v14, reasonCopy];
 
-      v16 = *(a1 + 264);
-      v17 = v15;
+      v16 = *(reason + 264);
+      v17 = reasonCopy;
       v18 = [v16 count];
       *buf = 138543874;
-      v22 = v15;
+      v22 = reasonCopy;
       v23 = 2048;
       v24 = v18;
       v25 = 2114;
@@ -4645,46 +4645,46 @@ void __43__UIScreen__preventDisconnectionForReason___block_invoke(uint64_t a1, v
   [(UIScreen *)self _updateTraits];
 }
 
-- (void)_setUserInterfaceIdiom:(int64_t)a3
+- (void)_setUserInterfaceIdiom:(int64_t)idiom
 {
-  if ((a3 - 11) <= 0xFFFFFFFFFFFFFFF3)
+  if ((idiom - 11) <= 0xFFFFFFFFFFFFFFF3)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"UIScreen.m" lineNumber:2488 description:{@"Invalid parameter not satisfying: %@", @"UIUserInterfaceIdiomFirst <= idiom && idiom <= UIUserInterfaceIdiomLast"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIScreen.m" lineNumber:2488 description:{@"Invalid parameter not satisfying: %@", @"UIUserInterfaceIdiomFirst <= idiom && idiom <= UIUserInterfaceIdiomLast"}];
   }
 
-  self->_userInterfaceIdiom = a3;
-  [UIView _performInitializationForIdiomIfNeccessary:a3];
+  self->_userInterfaceIdiom = idiom;
+  [UIView _performInitializationForIdiomIfNeccessary:idiom];
 
   [(UIScreen *)self _computeMetrics];
 }
 
-- (CGPoint)convertPoint:(CGPoint)a3 toCoordinateSpace:(id)a4
+- (CGPoint)convertPoint:(CGPoint)point toCoordinateSpace:(id)space
 {
-  [(UIScreen *)self convertRect:a4 toCoordinateSpace:a3.x, a3.y, *MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
+  [(UIScreen *)self convertRect:space toCoordinateSpace:point.x, point.y, *MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-- (CGPoint)convertPoint:(CGPoint)a3 fromCoordinateSpace:(id)a4
+- (CGPoint)convertPoint:(CGPoint)point fromCoordinateSpace:(id)space
 {
-  [(UIScreen *)self convertRect:a4 fromCoordinateSpace:a3.x, a3.y, *MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
+  [(UIScreen *)self convertRect:space fromCoordinateSpace:point.x, point.y, *MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-- (CGRect)convertRect:(CGRect)a3 toCoordinateSpace:(id)a4
+- (CGRect)convertRect:(CGRect)rect toCoordinateSpace:(id)space
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v38 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = v9;
-  if (v9 && v9 != self)
+  spaceCopy = space;
+  v10 = spaceCopy;
+  if (spaceCopy && spaceCopy != self)
   {
     v11 = objc_opt_self();
     if (objc_opt_isKindOfClass())
@@ -4696,9 +4696,9 @@ void __43__UIScreen__preventDisconnectionForReason___block_invoke(uint64_t a1, v
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = [(UIScreen *)v10 _screen];
+      _screen = [(UIScreen *)v10 _screen];
 
-      if (v12 != self)
+      if (_screen != self)
       {
 LABEL_7:
         if (os_variant_has_internal_diagnostics())
@@ -4802,15 +4802,15 @@ LABEL_17:
   return result;
 }
 
-- (CGRect)convertRect:(CGRect)a3 fromCoordinateSpace:(id)a4
+- (CGRect)convertRect:(CGRect)rect fromCoordinateSpace:(id)space
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  v10 = v9;
-  if (v9 && v9 != self)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  spaceCopy = space;
+  v10 = spaceCopy;
+  if (spaceCopy && spaceCopy != self)
   {
     v11 = objc_opt_self();
     if (objc_opt_isKindOfClass())
@@ -4827,9 +4827,9 @@ LABEL_7:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = [(UIScreen *)v10 _screen];
+      _screen = [(UIScreen *)v10 _screen];
 
-      if (v12 != self)
+      if (_screen != self)
       {
         goto LABEL_7;
       }
@@ -4859,19 +4859,19 @@ LABEL_10:
   return result;
 }
 
-- (id)_defaultTraitCollectionForInterfaceOrientation:(int64_t)a3
+- (id)_defaultTraitCollectionForInterfaceOrientation:(int64_t)orientation
 {
   [(UIScreen *)self _boundsForInterfaceOrientation:?];
 
-  return [(UIScreen *)self _defaultTraitCollectionForInterfaceOrientation:a3 inBounds:?];
+  return [(UIScreen *)self _defaultTraitCollectionForInterfaceOrientation:orientation inBounds:?];
 }
 
-- (id)_defaultTraitCollectionForInterfaceOrientation:(int64_t)a3 inBounds:(CGRect)a4
+- (id)_defaultTraitCollectionForInterfaceOrientation:(int64_t)orientation inBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v10 = +[UIDevice currentDevice];
   v11 = +[UIView _defaultInteractionTintColorForIdiom:](UIView, "_defaultInteractionTintColorForIdiom:", [v10 userInterfaceIdiom]);
 
@@ -4881,7 +4881,7 @@ LABEL_10:
   v15[2] = __68__UIScreen__defaultTraitCollectionForInterfaceOrientation_inBounds___block_invoke;
   v15[3] = &unk_1E710CE08;
   v15[4] = self;
-  v15[5] = a3;
+  v15[5] = orientation;
   *&v15[6] = x;
   *&v15[7] = y;
   *&v15[8] = width;
@@ -4988,10 +4988,10 @@ LABEL_6:
   [v19 _setNSIntegerValue:0 forTraitToken:0x1EFE325D8];
 }
 
-- (void)_setUserInterfaceStyleIfNecessary:(int64_t)a3 firstTimeOnly:(BOOL)a4
+- (void)_setUserInterfaceStyleIfNecessary:(int64_t)necessary firstTimeOnly:(BOOL)only
 {
-  v4 = a4;
-  if (![(UIScreen *)self _isMainLikeScreen]|| ((v7 = _UIInternalPreferenceUsesDefault(&dword_1ED48B1F8, @"ApplySceneUserInterfaceStyleToScreen", _UIInternalPreferenceUpdateBool), byte_1ED48B1FC) ? (v8 = 1) : (v8 = v7), !a3 || !v8))
+  onlyCopy = only;
+  if (![(UIScreen *)self _isMainLikeScreen]|| ((v7 = _UIInternalPreferenceUsesDefault(&dword_1ED48B1F8, @"ApplySceneUserInterfaceStyleToScreen", _UIInternalPreferenceUpdateBool), byte_1ED48B1FC) ? (v8 = 1) : (v8 = v7), !necessary || !v8))
   {
     if ((_UIInternalPreferenceUsesDefault(&dword_1ED48B200, @"ApplySceneUserInterfaceStyleToCarScreen", _UIInternalPreferenceUpdateBool) & 1) != 0 || !byte_1ED48B204)
     {
@@ -5000,7 +5000,7 @@ LABEL_6:
 
     if ([(UIScreen *)self _isCarScreen])
     {
-      if (!a3)
+      if (!necessary)
       {
         return;
       }
@@ -5008,31 +5008,31 @@ LABEL_6:
 
     else
     {
-      v9 = [(UIScreen *)self _isCarInstrumentsScreen];
-      if (!a3 || !v9)
+      _isCarInstrumentsScreen = [(UIScreen *)self _isCarInstrumentsScreen];
+      if (!necessary || !_isCarInstrumentsScreen)
       {
         return;
       }
     }
   }
 
-  if (!v4 || !self->_lastUpdatedSceneUserInterfaceStyle)
+  if (!onlyCopy || !self->_lastUpdatedSceneUserInterfaceStyle)
   {
-    self->_lastUpdatedSceneUserInterfaceStyle = a3;
+    self->_lastUpdatedSceneUserInterfaceStyle = necessary;
 
     [(UIScreen *)self _updateTraits];
   }
 }
 
-- (void)_setDefaultTraitCollection:(id)a3
+- (void)_setDefaultTraitCollection:(id)collection
 {
-  v5 = a3;
+  collectionCopy = collection;
   defaultTraitCollection = self->_defaultTraitCollection;
-  if (defaultTraitCollection != v5)
+  if (defaultTraitCollection != collectionCopy)
   {
-    v11 = v5;
-    v7 = [(UITraitCollection *)defaultTraitCollection isEqual:v5];
-    v5 = v11;
+    v11 = collectionCopy;
+    v7 = [(UITraitCollection *)defaultTraitCollection isEqual:collectionCopy];
+    collectionCopy = v11;
     if (!v7)
     {
       overrideTraitCollection = self->_overrideTraitCollection;
@@ -5045,33 +5045,33 @@ LABEL_6:
       if ([(UIScreen *)self _isMainScreen])
       {
         os_unfair_lock_lock(&_UIMainScreenTraitCollectionLock);
-        objc_storeStrong(&self->_defaultTraitCollection, a3);
+        objc_storeStrong(&self->_defaultTraitCollection, collection);
         os_unfair_lock_unlock(&_UIMainScreenTraitCollectionLock);
       }
 
       else
       {
-        objc_storeStrong(&self->_defaultTraitCollection, a3);
+        objc_storeStrong(&self->_defaultTraitCollection, collection);
       }
 
-      v10 = [MEMORY[0x1E696AD88] defaultCenter];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
 
-      [v10 postNotificationName:@"_UIScreenDefaultTraitCollectionDidChangeNotification" object:self userInfo:0];
+      [defaultCenter postNotificationName:@"_UIScreenDefaultTraitCollectionDidChangeNotification" object:self userInfo:0];
       [(UIScreen *)self _notifyTraitsChangedAndPropagate];
-      v5 = v11;
+      collectionCopy = v11;
     }
   }
 }
 
-- (void)_setOverrideTraitCollection:(id)a3
+- (void)_setOverrideTraitCollection:(id)collection
 {
-  v5 = a3;
+  collectionCopy = collection;
   overrideTraitCollection = self->_overrideTraitCollection;
-  if (overrideTraitCollection != v5)
+  if (overrideTraitCollection != collectionCopy)
   {
-    v10 = v5;
-    v7 = [(UITraitCollection *)overrideTraitCollection isEqual:v5];
-    v5 = v10;
+    v10 = collectionCopy;
+    v7 = [(UITraitCollection *)overrideTraitCollection isEqual:collectionCopy];
+    collectionCopy = v10;
     if (!v7)
     {
       defaultTraitCollection = v10;
@@ -5084,29 +5084,29 @@ LABEL_6:
       if ([(UIScreen *)self _isMainScreen])
       {
         os_unfair_lock_lock(&_UIMainScreenTraitCollectionLock);
-        objc_storeStrong(&self->_overrideTraitCollection, a3);
+        objc_storeStrong(&self->_overrideTraitCollection, collection);
         os_unfair_lock_unlock(&_UIMainScreenTraitCollectionLock);
       }
 
       else
       {
-        objc_storeStrong(&self->_overrideTraitCollection, a3);
+        objc_storeStrong(&self->_overrideTraitCollection, collection);
       }
 
       [(UIScreen *)self _notifyTraitsChangedAndPropagate];
 
-      v5 = v10;
+      collectionCopy = v10;
     }
   }
 }
 
-- (id)_capabilityForKey:(id)a3
+- (id)_capabilityForKey:(id)key
 {
-  if (a3)
+  if (key)
   {
-    v4 = a3;
-    v5 = [(UIScreen *)self _capabilities];
-    v6 = [v5 objectForKey:v4];
+    keyCopy = key;
+    _capabilities = [(UIScreen *)self _capabilities];
+    v6 = [_capabilities objectForKey:keyCopy];
   }
 
   else
@@ -5117,17 +5117,17 @@ LABEL_6:
   return v6;
 }
 
-- (void)_setCapability:(id)a3 forKey:(id)a4
+- (void)_setCapability:(id)capability forKey:(id)key
 {
-  if (a3 && a4)
+  if (capability && key)
   {
-    v6 = a4;
-    v7 = a3;
-    v8 = [(UIScreen *)self _capabilities];
-    v12 = v8;
-    if (v8)
+    keyCopy = key;
+    capabilityCopy = capability;
+    _capabilities = [(UIScreen *)self _capabilities];
+    v12 = _capabilities;
+    if (_capabilities)
     {
-      v9 = [v8 mutableCopy];
+      v9 = [_capabilities mutableCopy];
     }
 
     else
@@ -5136,7 +5136,7 @@ LABEL_6:
     }
 
     v10 = v9;
-    [(NSDictionary *)v9 setObject:v7 forKey:v6];
+    [(NSDictionary *)v9 setObject:capabilityCopy forKey:keyCopy];
 
     capabilities = self->_capabilities;
     self->_capabilities = v10;
@@ -5145,24 +5145,24 @@ LABEL_6:
   }
 }
 
-- (void)_setExternalDeviceShouldInputText:(BOOL)a3
+- (void)_setExternalDeviceShouldInputText:(BOOL)text
 {
-  v3 = a3;
+  textCopy = text;
   v18 = *MEMORY[0x1E69E9840];
   if ([(UIScreen *)self _userInterfaceIdiom]== 3)
   {
-    v5 = [(UIScreen *)self traitCollection];
-    v6 = [v5 primaryInteractionModel];
+    traitCollection = [(UIScreen *)self traitCollection];
+    primaryInteractionModel = [traitCollection primaryInteractionModel];
 
-    if (v6 != 8)
+    if (primaryInteractionModel != 8)
     {
-      v7 = [(CARSession *)self->_carSession inputDeviceManager];
+      inputDeviceManager = [(CARSession *)self->_carSession inputDeviceManager];
       v13 = 0u;
       v14 = 0u;
       v15 = 0u;
       v16 = 0u;
-      v8 = [v7 inputDevices];
-      v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      inputDevices = [inputDeviceManager inputDevices];
+      v9 = [inputDevices countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v9)
       {
         v10 = v9;
@@ -5174,14 +5174,14 @@ LABEL_6:
           {
             if (*v14 != v11)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(inputDevices);
             }
 
-            [(CARSession *)self->_carSession setInputMode:v3 forInputDevice:*(*(&v13 + 1) + 8 * v12++)];
+            [(CARSession *)self->_carSession setInputMode:textCopy forInputDevice:*(*(&v13 + 1) + 8 * v12++)];
           }
 
           while (v10 != v12);
-          v10 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+          v10 = [inputDevices countByEnumeratingWithState:&v13 objects:v17 count:16];
         }
 
         while (v10);
@@ -5193,7 +5193,7 @@ LABEL_6:
 + (id)__displayConfigurationsForViewService
 {
   v17 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -5216,8 +5216,8 @@ LABEL_6:
         v8 = *(*(&v12 + 1) + 8 * i);
         if (([v8 _isMainScreen] & 1) == 0 && (!objc_msgSend(UIApp, "_isSpringBoard") || (objc_msgSend(v8, "_isCarScreen") & 1) == 0))
         {
-          v9 = [v8 displayConfiguration];
-          [v2 addObject:v9];
+          displayConfiguration = [v8 displayConfiguration];
+          [array addObject:displayConfiguration];
         }
       }
 
@@ -5227,7 +5227,7 @@ LABEL_6:
     while (v5);
   }
 
-  v10 = [v2 copy];
+  v10 = [array copy];
 
   return v10;
 }
@@ -5246,10 +5246,10 @@ LABEL_6:
   eventDisplay = self->__eventDisplay;
   if (!eventDisplay)
   {
-    v4 = [(UIScreen *)self _displayID];
-    if (v4)
+    _displayID = [(UIScreen *)self _displayID];
+    if (_displayID)
     {
-      [MEMORY[0x1E698E3C8] displayWithHardwareIdentifier:v4];
+      [MEMORY[0x1E698E3C8] displayWithHardwareIdentifier:_displayID];
     }
 
     else
@@ -5276,30 +5276,30 @@ LABEL_6:
   os_unfair_lock_lock(&unk_1ED49AAE8);
   v4 = self->__displayConfiguration;
   os_unfair_lock_unlock(&unk_1ED49AAE8);
-  v5 = [(FBSDisplayConfiguration *)v4 isCarDisplay];
+  isCarDisplay = [(FBSDisplayConfiguration *)v4 isCarDisplay];
 
-  return v5;
+  return isCarDisplay;
 }
 
-- (BOOL)_isUserInterfaceLimited:(unint64_t)a3
+- (BOOL)_isUserInterfaceLimited:(unint64_t)limited
 {
   if ([(UIScreen *)self _userInterfaceIdiom]!= 3)
   {
     return 0;
   }
 
-  v5 = [(CARSession *)self->_carSession limitUserInterfaces];
-  v6 = [v5 BOOLValue];
+  limitUserInterfaces = [(CARSession *)self->_carSession limitUserInterfaces];
+  bOOLValue = [limitUserInterfaces BOOLValue];
 
-  if (!v6)
+  if (!bOOLValue)
   {
     return 0;
   }
 
-  v7 = [(CARSession *)self->_carSession configuration];
-  v8 = [v7 limitableUserInterfaces];
+  configuration = [(CARSession *)self->_carSession configuration];
+  limitableUserInterfaces = [configuration limitableUserInterfaces];
 
-  return (v8 & a3) != 0;
+  return (limitableUserInterfaces & limited) != 0;
 }
 
 - (BOOL)_isCarPlayNightModeEnabled
@@ -5322,33 +5322,33 @@ LABEL_6:
   os_unfair_lock_lock(&unk_1ED49AAE8);
   v3 = self->__displayConfiguration;
   os_unfair_lock_unlock(&unk_1ED49AAE8);
-  v4 = [(FBSDisplayConfiguration *)v3 CADisplay];
+  cADisplay = [(FBSDisplayConfiguration *)v3 CADisplay];
 
-  return v4;
+  return cADisplay;
 }
 
 - (id)_lazySoftwareDimmingWindow
 {
-  v3 = [(UIScreen *)self _softwareDimmingWindow];
-  if (!v3)
+  _softwareDimmingWindow = [(UIScreen *)self _softwareDimmingWindow];
+  if (!_softwareDimmingWindow)
   {
     v4 = [UISoftwareDimmingWindow alloc];
-    v5 = [objc_opt_self() mainScreen];
-    [v5 bounds];
-    v3 = [(UISoftwareDimmingWindow *)v4 initWithFrame:?];
+    mainScreen = [objc_opt_self() mainScreen];
+    [mainScreen bounds];
+    _softwareDimmingWindow = [(UISoftwareDimmingWindow *)v4 initWithFrame:?];
 
-    [(UIScreen *)self _setSoftwareDimmingWindow:v3];
-    [(UIWindow *)v3 setHidden:0];
+    [(UIScreen *)self _setSoftwareDimmingWindow:_softwareDimmingWindow];
+    [(UIWindow *)_softwareDimmingWindow setHidden:0];
   }
 
-  return v3;
+  return _softwareDimmingWindow;
 }
 
-- (float)rawBrightnessForBacklightLevel:(float)a3
+- (float)rawBrightnessForBacklightLevel:(float)level
 {
-  v4 = [(UIScreen *)self _softwareDimmingWindow];
-  [v4 overlayLevel];
-  v6 = v5 + a3;
+  _softwareDimmingWindow = [(UIScreen *)self _softwareDimmingWindow];
+  [_softwareDimmingWindow overlayLevel];
+  v6 = v5 + level;
 
   return v6;
 }
@@ -5436,8 +5436,8 @@ LABEL_6:
         v25 = [MEMORY[0x1E696AD98] numberWithFloat:v24];
         v36[1] = v25;
         v35[2] = @"Timestamp";
-        v26 = [MEMORY[0x1E695DF00] date];
-        v36[2] = v26;
+        date = [MEMORY[0x1E695DF00] date];
+        v36[2] = date;
         v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v36 forKeys:v35 count:3];
 
         PLLogRegisteredEvent();
@@ -5445,23 +5445,23 @@ LABEL_6:
 
       if (v19 < 0.0)
       {
-        v28 = [(UIScreen *)self _lazySoftwareDimmingWindow];
+        _lazySoftwareDimmingWindow = [(UIScreen *)self _lazySoftwareDimmingWindow];
         *&v29 = v19;
-        [v28 setOverlayLevel:v29];
+        [_lazySoftwareDimmingWindow setOverlayLevel:v29];
 
-        v30 = [(UIScreen *)self _lazySoftwareDimmingWindow];
-        [v30 setHidden:0];
+        _lazySoftwareDimmingWindow2 = [(UIScreen *)self _lazySoftwareDimmingWindow];
+        [_lazySoftwareDimmingWindow2 setHidden:0];
 LABEL_17:
 
         return;
       }
 
-      v32 = [(UIScreen *)self _softwareDimmingWindow];
+      _softwareDimmingWindow = [(UIScreen *)self _softwareDimmingWindow];
 
-      if (v32)
+      if (_softwareDimmingWindow)
       {
-        v33 = [(UIScreen *)self _softwareDimmingWindow];
-        [v33 setHidden:1];
+        _softwareDimmingWindow2 = [(UIScreen *)self _softwareDimmingWindow];
+        [_softwareDimmingWindow2 setHidden:1];
 
         [(UIScreen *)self _setSoftwareDimmingWindow:0];
       }
@@ -5472,11 +5472,11 @@ LABEL_17:
   {
     if (os_variant_has_internal_diagnostics())
     {
-      v30 = __UIFaultDebugAssertLog();
-      if (os_log_type_enabled(v30, OS_LOG_TYPE_FAULT))
+      _lazySoftwareDimmingWindow2 = __UIFaultDebugAssertLog();
+      if (os_log_type_enabled(_lazySoftwareDimmingWindow2, OS_LOG_TYPE_FAULT))
       {
         *v34 = 0;
-        _os_log_fault_impl(&dword_188A29000, v30, OS_LOG_TYPE_FAULT, "The brightness property is only supported by the main screen.", v34, 2u);
+        _os_log_fault_impl(&dword_188A29000, _lazySoftwareDimmingWindow2, OS_LOG_TYPE_FAULT, "The brightness property is only supported by the main screen.", v34, 2u);
       }
 
       goto LABEL_17;
@@ -5542,10 +5542,10 @@ LABEL_17:
 
 - (id)succinctDescription
 {
-  v2 = [(UIScreen *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(UIScreen *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -5553,10 +5553,10 @@ LABEL_17:
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
   [(UIScreen *)self bounds];
   v4 = [v3 appendRect:@"bounds" withName:?];
-  v5 = [(UIScreen *)self currentMode];
-  if (v5)
+  currentMode = [(UIScreen *)self currentMode];
+  if (currentMode)
   {
-    v6 = [v3 appendObject:v5 withName:@"mode"];
+    v6 = [v3 appendObject:currentMode withName:@"mode"];
   }
 
   if ((_UIInternalPreferenceUsesDefault(&_UIInternalPreference_FakeMainScreen, @"FakeMainScreen", _UIInternalPreferenceUpdateBool) & 1) == 0 && byte_1ED48B1EC)
@@ -5568,35 +5568,35 @@ LABEL_17:
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(UIScreen *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(UIScreen *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(UIScreen *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(UIScreen *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
+  prefixCopy = prefix;
   has_internal_diagnostics = os_variant_has_internal_diagnostics();
   v6 = [MEMORY[0x1E698E680] builderWithObject:self];
-  [v6 setActiveMultilinePrefix:v4];
+  [v6 setActiveMultilinePrefix:prefixCopy];
 
   [(UIScreen *)self bounds];
   v7 = [v6 appendRect:@"bounds" withName:?];
-  v8 = [(UIScreen *)self currentMode];
-  if (v8)
+  currentMode = [(UIScreen *)self currentMode];
+  if (currentMode)
   {
-    v9 = [v6 appendObject:v8 withName:@"mode"];
+    v9 = [v6 appendObject:currentMode withName:@"mode"];
   }
 
   if (has_internal_diagnostics)
@@ -5606,7 +5606,7 @@ LABEL_17:
     v12[2] = __50__UIScreen_descriptionBuilderWithMultilinePrefix___block_invoke;
     v12[3] = &unk_1E70F35B8;
     v13 = v6;
-    v14 = self;
+    selfCopy = self;
     v10 = [v13 modifyBody:v12];
   }
 
@@ -5704,25 +5704,25 @@ void __50__UIScreen_descriptionBuilderWithMultilinePrefix___block_invoke_3(uint6
   }
 }
 
-+ (CGPoint)convertPoint:(CGPoint)a3 toView:(id)a4
++ (CGPoint)convertPoint:(CGPoint)point toView:(id)view
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = a4;
+  y = point.y;
+  x = point.x;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    window = viewCopy;
   }
 
   else
   {
-    v7 = [v6 window];
+    window = [viewCopy window];
   }
 
-  v8 = v7;
-  [v7 convertPoint:0 fromWindow:{x, y}];
-  [v6 convertPoint:0 fromView:?];
+  v8 = window;
+  [window convertPoint:0 fromWindow:{x, y}];
+  [viewCopy convertPoint:0 fromView:?];
   v10 = v9;
   v12 = v11;
 
@@ -5733,24 +5733,24 @@ void __50__UIScreen_descriptionBuilderWithMultilinePrefix___block_invoke_3(uint6
   return result;
 }
 
-+ (CGPoint)convertPoint:(CGPoint)a3 fromView:(id)a4
++ (CGPoint)convertPoint:(CGPoint)point fromView:(id)view
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = a4;
+  y = point.y;
+  x = point.x;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    window = viewCopy;
   }
 
   else
   {
-    v7 = [v6 window];
+    window = [viewCopy window];
   }
 
-  v8 = v7;
-  [v6 convertPoint:0 toView:{x, y}];
+  v8 = window;
+  [viewCopy convertPoint:0 toView:{x, y}];
   [v8 convertPoint:0 toWindow:?];
   v10 = v9;
   v12 = v11;
@@ -5762,27 +5762,27 @@ void __50__UIScreen_descriptionBuilderWithMultilinePrefix___block_invoke_3(uint6
   return result;
 }
 
-+ (CGRect)convertRect:(CGRect)a3 toView:(id)a4
++ (CGRect)convertRect:(CGRect)rect toView:(id)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v8;
+    window = viewCopy;
   }
 
   else
   {
-    v9 = [v8 window];
+    window = [viewCopy window];
   }
 
-  v10 = v9;
-  [v9 convertRect:0 fromWindow:{x, y, width, height}];
-  [v8 convertRect:0 fromView:?];
+  v10 = window;
+  [window convertRect:0 fromWindow:{x, y, width, height}];
+  [viewCopy convertRect:0 fromView:?];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -5799,26 +5799,26 @@ void __50__UIScreen_descriptionBuilderWithMultilinePrefix___block_invoke_3(uint6
   return result;
 }
 
-+ (CGRect)convertRect:(CGRect)a3 fromView:(id)a4
++ (CGRect)convertRect:(CGRect)rect fromView:(id)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v8;
+    window = viewCopy;
   }
 
   else
   {
-    v9 = [v8 window];
+    window = [viewCopy window];
   }
 
-  v10 = v9;
-  [v8 convertRect:0 toView:{x, y, width, height}];
+  v10 = window;
+  [viewCopy convertRect:0 toView:{x, y, width, height}];
   [v10 convertRect:0 toWindow:?];
   v12 = v11;
   v14 = v13;
@@ -5836,20 +5836,20 @@ void __50__UIScreen_descriptionBuilderWithMultilinePrefix___block_invoke_3(uint6
   return result;
 }
 
-- (id)_snapshotExcludingWindows:(id)a3 withRect:(CGRect)a4
+- (id)_snapshotExcludingWindows:(id)windows withRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  windowsCopy = windows;
   v10 = MEMORY[0x1E695DF70];
   v11 = [UIWindow allWindowsIncludingInternalWindows:1 onlyVisibleWindows:1 forScreen:self];
   v12 = [v10 arrayWithArray:v11];
 
-  if (v9 && [v9 count])
+  if (windowsCopy && [windowsCopy count])
   {
-    [v12 removeObjectsInArray:v9];
+    [v12 removeObjectsInArray:windowsCopy];
   }
 
   v13 = _UISnapshotWindowsCompatibilityRect(v12, self, x, y, width, height);
@@ -5857,7 +5857,7 @@ void __50__UIScreen_descriptionBuilderWithMultilinePrefix___block_invoke_3(uint6
   return v13;
 }
 
-- (double)_nativeScaleWithLevel:(unint64_t)a3
+- (double)_nativeScaleWithLevel:(unint64_t)level
 {
   if ([(UIScreen *)self _isMainScreen]|| self && (*(&self->_screenFlags + 2) & 1) != 0)
   {
@@ -5876,82 +5876,82 @@ void __50__UIScreen_descriptionBuilderWithMultilinePrefix___block_invoke_3(uint6
 
 - (id)_preferredFocusedWindowScene
 {
-  v2 = [(UIScreen *)self _preferredFocusedWindow];
-  v3 = [v2 windowScene];
+  _preferredFocusedWindow = [(UIScreen *)self _preferredFocusedWindow];
+  windowScene = [_preferredFocusedWindow windowScene];
 
-  return v3;
+  return windowScene;
 }
 
 - (UIFocusSystem)_focusSystem
 {
-  v2 = self;
+  selfCopy = self;
   if (_screenBasedFocusUnsupported())
   {
-    v3 = 0;
+    focusSystem = 0;
   }
 
   else
   {
-    v4 = [(UIScreen *)v2 _preferredFocusedWindowScene];
-    v3 = [v4 focusSystem];
+    _preferredFocusedWindowScene = [(UIScreen *)selfCopy _preferredFocusedWindowScene];
+    focusSystem = [_preferredFocusedWindowScene focusSystem];
   }
 
-  return v3;
+  return focusSystem;
 }
 
-- (void)setFocusEnabled:(BOOL)a3
+- (void)setFocusEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = self;
+  enabledCopy = enabled;
+  selfCopy = self;
   if (_screenBasedFocusUnsupported())
   {
-    v6 = 0;
+    focusSystem = 0;
   }
 
   else
   {
-    v5 = [(UIScreen *)v4 _preferredFocusedWindowScene];
-    v6 = [v5 focusSystem];
+    _preferredFocusedWindowScene = [(UIScreen *)selfCopy _preferredFocusedWindowScene];
+    focusSystem = [_preferredFocusedWindowScene focusSystem];
   }
 
-  [v6 _setEnabled:v3];
+  [focusSystem _setEnabled:enabledCopy];
 }
 
 - (id)focusedItem
 {
-  v2 = self;
+  selfCopy = self;
   if (_screenBasedFocusUnsupported())
   {
-    v3 = 0;
+    focusSystem = 0;
   }
 
   else
   {
-    v4 = [(UIScreen *)v2 _preferredFocusedWindowScene];
-    v3 = [v4 focusSystem];
+    _preferredFocusedWindowScene = [(UIScreen *)selfCopy _preferredFocusedWindowScene];
+    focusSystem = [_preferredFocusedWindowScene focusSystem];
   }
 
-  v5 = [v3 focusedItem];
+  focusedItem = [focusSystem focusedItem];
 
-  return v5;
+  return focusedItem;
 }
 
 - (UIView)focusedView
 {
-  v2 = self;
+  selfCopy = self;
   if (_screenBasedFocusUnsupported())
   {
-    v3 = 0;
+    focusSystem = 0;
   }
 
   else
   {
-    v4 = [(UIScreen *)v2 _preferredFocusedWindowScene];
-    v3 = [v4 focusSystem];
+    _preferredFocusedWindowScene = [(UIScreen *)selfCopy _preferredFocusedWindowScene];
+    focusSystem = [_preferredFocusedWindowScene focusSystem];
   }
 
-  v5 = [v3 focusedItem];
-  v6 = _UIFocusEnvironmentContainingView(v5);
+  focusedItem = [focusSystem focusedItem];
+  v6 = _UIFocusEnvironmentContainingView(focusedItem);
 
   return v6;
 }
@@ -5963,14 +5963,14 @@ void __50__UIScreen_descriptionBuilderWithMultilinePrefix___block_invoke_3(uint6
     return 0;
   }
 
-  v4 = [(UIScreen *)self _preferredFocusedWindowScene];
-  if (!v4)
+  _preferredFocusedWindowScene = [(UIScreen *)self _preferredFocusedWindowScene];
+  if (!_preferredFocusedWindowScene)
   {
-    v4 = [_UISceneLifecycleMultiplexer mostActiveWindowSceneOnScreen:self];
+    _preferredFocusedWindowScene = [_UISceneLifecycleMultiplexer mostActiveWindowSceneOnScreen:self];
   }
 
-  v5 = _UIFocusBehaviorForScene(v4);
-  v6 = [v5 wantsFocusSystemForScene:v4];
+  v5 = _UIFocusBehaviorForScene(_preferredFocusedWindowScene);
+  v6 = [v5 wantsFocusSystemForScene:_preferredFocusedWindowScene];
 
   return v6;
 }
@@ -5998,62 +5998,62 @@ void __50__UIScreen_descriptionBuilderWithMultilinePrefix___block_invoke_3(uint6
 {
   if (_screenBasedFocusUnsupported())
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (void)setNeedsFocusUpdate
 {
   v4 = [[_UIFocusUpdateRequest alloc] initWithEnvironment:self];
-  v3 = [(UIScreen *)self _focusSystem];
-  [v3 _requestFocusUpdate:v4];
+  _focusSystem = [(UIScreen *)self _focusSystem];
+  [_focusSystem _requestFocusUpdate:v4];
 }
 
 - (void)updateFocusIfNeeded
 {
-  v2 = [(UIScreen *)self _focusSystem];
-  [v2 updateFocusIfNeeded];
+  _focusSystem = [(UIScreen *)self _focusSystem];
+  [_focusSystem updateFocusIfNeeded];
 }
 
 - (void)_setNeedsNonDeferredFocusUpdate
 {
   v3 = [_UIFocusUpdateRequest alloc];
-  v4 = [(UIScreen *)self _focusSystem];
-  v6 = [(_UIFocusUpdateRequest *)v3 initWithEnvironment:v4];
+  _focusSystem = [(UIScreen *)self _focusSystem];
+  v6 = [(_UIFocusUpdateRequest *)v3 initWithEnvironment:_focusSystem];
 
   [(_UIFocusUpdateRequest *)v6 setAllowsDeferral:0];
-  v5 = [(UIScreen *)self _focusSystem];
-  [v5 _requestFocusUpdate:v6];
+  _focusSystem2 = [(UIScreen *)self _focusSystem];
+  [_focusSystem2 _requestFocusUpdate:v6];
 }
 
-- (id)focusItemsInRect:(CGRect)a3
+- (id)focusItemsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v28 = *MEMORY[0x1E69E9840];
   if (_screenBasedFocusUnsupported())
   {
-    v8 = MEMORY[0x1E695E0F0];
+    array = MEMORY[0x1E695E0F0];
   }
 
   else
   {
-    v8 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     if ([(UIScreen *)self _userInterfaceIdiom]== 3)
     {
-      v9 = [(UIScreen *)self _preferredFocusedWindow];
-      if (v9)
+      _preferredFocusedWindow = [(UIScreen *)self _preferredFocusedWindow];
+      if (_preferredFocusedWindow)
       {
-        [v8 addObject:v9];
+        [array addObject:_preferredFocusedWindow];
       }
     }
 
@@ -6079,18 +6079,18 @@ void __50__UIScreen_descriptionBuilderWithMultilinePrefix___block_invoke_3(uint6
             }
 
             v15 = *(*(&v23 + 1) + 8 * i);
-            v16 = [v15 screen];
+            screen = [v15 screen];
 
-            if (v16 == self)
+            if (screen == self)
             {
-              v17 = [v15 _focusSystemSceneComponent];
-              v18 = v17;
-              if (v17)
+              _focusSystemSceneComponent = [v15 _focusSystemSceneComponent];
+              v18 = _focusSystemSceneComponent;
+              if (_focusSystemSceneComponent)
               {
-                v19 = [v17 focusSystem];
-                v20 = [v19 focusItemContainer];
-                v21 = [v20 focusItemsInRect:{x, y, width, height}];
-                [v8 addObjectsFromArray:v21];
+                focusSystem = [_focusSystemSceneComponent focusSystem];
+                focusItemContainer = [focusSystem focusItemContainer];
+                v21 = [focusItemContainer focusItemsInRect:{x, y, width, height}];
+                [array addObjectsFromArray:v21];
               }
             }
           }
@@ -6103,7 +6103,7 @@ void __50__UIScreen_descriptionBuilderWithMultilinePrefix___block_invoke_3(uint6
     }
   }
 
-  return v8;
+  return array;
 }
 
 - (_UIDragManager)_dragManager
@@ -6122,13 +6122,13 @@ void __50__UIScreen_descriptionBuilderWithMultilinePrefix___block_invoke_3(uint6
 
 - (BOOL)_supportsDragging
 {
-  v3 = [(UIScreen *)self _userInterfaceIdiom];
-  if (v3 - 5 < 2)
+  _userInterfaceIdiom = [(UIScreen *)self _userInterfaceIdiom];
+  if (_userInterfaceIdiom - 5 < 2)
   {
     return 1;
   }
 
-  if (v3 > 1)
+  if (_userInterfaceIdiom > 1)
   {
     return 0;
   }
@@ -6151,12 +6151,12 @@ void __50__UIScreen_descriptionBuilderWithMultilinePrefix___block_invoke_3(uint6
   return interactiveHighlightEnvironment;
 }
 
-- (id)_orientationDebugDescriptionBuilderWithMultilinePrefix:(id)a3
+- (id)_orientationDebugDescriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = MEMORY[0x1E698E680];
-  v5 = a3;
+  prefixCopy = prefix;
   v6 = [v4 builderWithObject:self];
-  [v6 setActiveMultilinePrefix:v5];
+  [v6 setActiveMultilinePrefix:prefixCopy];
 
   v7 = [v6 ui_appendInterfaceOrientation:-[UIScreen _interfaceOrientation](self withName:{"_interfaceOrientation"), @"orientation"}];
   [(UIScreen *)self applicationFrame];
@@ -6165,22 +6165,22 @@ void __50__UIScreen_descriptionBuilderWithMultilinePrefix___block_invoke_3(uint6
   return v6;
 }
 
-- (id)_orientationDebugDescriptionWithMultilinePrefix:(id)a3
+- (id)_orientationDebugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(UIScreen *)self _orientationDebugDescriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(UIScreen *)self _orientationDebugDescriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)_appendSnapshotDisplaySystemIdentifierToOptionsIfNeeded:(void *)a1
+- (id)_appendSnapshotDisplaySystemIdentifierToOptionsIfNeeded:(void *)needed
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (needed)
   {
-    v4 = [(UIScreen *)a1 _snapshotDisplaySystemIdentifier];
-    if (v4)
+    _snapshotDisplaySystemIdentifier = [(UIScreen *)needed _snapshotDisplaySystemIdentifier];
+    if (_snapshotDisplaySystemIdentifier)
     {
       v5 = *MEMORY[0x1E6979F70];
       v6 = [v3 objectForKeyedSubscript:*MEMORY[0x1E6979F70]];
@@ -6188,7 +6188,7 @@ void __50__UIScreen_descriptionBuilderWithMultilinePrefix___block_invoke_3(uint6
       if (!v6)
       {
         v10 = v5;
-        v11[0] = v4;
+        v11[0] = _snapshotDisplaySystemIdentifier;
         v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
         v8 = [v3 bs_dictionaryByAddingEntriesFromDictionary:v7];
 
@@ -6198,32 +6198,32 @@ void __50__UIScreen_descriptionBuilderWithMultilinePrefix___block_invoke_3(uint6
 
     v3 = v3;
 
-    a1 = v3;
+    needed = v3;
   }
 
-  return a1;
+  return needed;
 }
 
 - (id)_snapshotDisplaySystemIdentifier
 {
-  if (a1)
+  if (self)
   {
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __65__UIScreen_SnapshottingSupport___snapshotDisplaySystemIdentifier__block_invoke;
     v5[3] = &unk_1E70F44A8;
-    v5[4] = a1;
+    v5[4] = self;
     v1 = [_UISceneLifecycleMultiplexer mostActiveSceneIncludingInternal:1 withTest:v5];
-    v2 = [v1 renderingEnvironment];
-    v3 = [v2 systemDisplayIdentifier];
+    renderingEnvironment = [v1 renderingEnvironment];
+    systemDisplayIdentifier = [renderingEnvironment systemDisplayIdentifier];
   }
 
   else
   {
-    v3 = 0;
+    systemDisplayIdentifier = 0;
   }
 
-  return v3;
+  return systemDisplayIdentifier;
 }
 
 BOOL __65__UIScreen_SnapshottingSupport___snapshotDisplaySystemIdentifier__block_invoke(uint64_t a1, void *a2)

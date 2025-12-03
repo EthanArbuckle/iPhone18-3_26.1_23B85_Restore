@@ -15,8 +15,8 @@
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v4 = [a1 buttonActions];
-  v5 = [v4 countByEnumeratingWithState:&v35 objects:v40 count:16];
+  buttonActions = [self buttonActions];
+  v5 = [buttonActions countByEnumeratingWithState:&v35 objects:v40 count:16];
   if (v5)
   {
     v6 = v5;
@@ -27,14 +27,14 @@
       {
         if (*v36 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(buttonActions);
         }
 
-        v9 = [a1 _resultFromDialogAction:*(*(&v35 + 1) + 8 * i)];
+        v9 = [self _resultFromDialogAction:*(*(&v35 + 1) + 8 * i)];
         [v3 addObject:v9];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v35 objects:v40 count:16];
+      v6 = [buttonActions countByEnumeratingWithState:&v35 objects:v40 count:16];
     }
 
     while (v6);
@@ -46,8 +46,8 @@
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v11 = [a1 textFields];
-  v12 = [v11 countByEnumeratingWithState:&v31 objects:v39 count:16];
+  textFields = [self textFields];
+  v12 = [textFields countByEnumeratingWithState:&v31 objects:v39 count:16];
   if (v12)
   {
     v13 = v12;
@@ -58,49 +58,49 @@
       {
         if (*v32 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(textFields);
         }
 
-        v16 = [a1 _resultFromDialogTextField:*(*(&v31 + 1) + 8 * j)];
+        v16 = [self _resultFromDialogTextField:*(*(&v31 + 1) + 8 * j)];
         [v10 addObject:v16];
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v31 objects:v39 count:16];
+      v13 = [textFields countByEnumeratingWithState:&v31 objects:v39 count:16];
     }
 
     while (v13);
   }
 
   [v2 setObject:v10 forKeyedSubscript:@"textFields"];
-  v17 = [a1 appearanceInfo];
-  [v2 setObject:v17 forKeyedSubscript:@"appearanceInfo"];
+  appearanceInfo = [self appearanceInfo];
+  [v2 setObject:appearanceInfo forKeyedSubscript:@"appearanceInfo"];
 
-  v18 = [a1 defaultAction];
-  v19 = [a1 _resultFromDialogAction:v18];
+  defaultAction = [self defaultAction];
+  v19 = [self _resultFromDialogAction:defaultAction];
   [v2 setObject:v19 forKeyedSubscript:@"defaultAction"];
 
-  v20 = [a1 iconURL];
-  v21 = [v20 absoluteString];
-  [v2 setObject:v21 forKeyedSubscript:@"iconURL"];
+  iconURL = [self iconURL];
+  absoluteString = [iconURL absoluteString];
+  [v2 setObject:absoluteString forKeyedSubscript:@"iconURL"];
 
-  v22 = [a1 identifier];
-  [v2 setObject:v22 forKeyedSubscript:@"identifier"];
+  identifier = [self identifier];
+  [v2 setObject:identifier forKeyedSubscript:@"identifier"];
 
-  v23 = [a1 message];
-  [v2 setObject:v23 forKeyedSubscript:@"message"];
+  message = [self message];
+  [v2 setObject:message forKeyedSubscript:@"message"];
 
-  v24 = [a1 metricsEvent];
-  v25 = [v24 underlyingDictionary];
-  [v2 setObject:v25 forKeyedSubscript:@"metrics"];
+  metricsEvent = [self metricsEvent];
+  underlyingDictionary = [metricsEvent underlyingDictionary];
+  [v2 setObject:underlyingDictionary forKeyedSubscript:@"metrics"];
 
-  v26 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(a1, "style")}];
+  v26 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(self, "style")}];
   [v2 setObject:v26 forKeyedSubscript:@"style"];
 
-  v27 = [a1 title];
-  [v2 setObject:v27 forKeyedSubscript:@"title"];
+  title = [self title];
+  [v2 setObject:title forKeyedSubscript:@"title"];
 
-  v28 = [a1 userInfo];
-  [v2 setObject:v28 forKeyedSubscript:@"userInfo"];
+  userInfo = [self userInfo];
+  [v2 setObject:userInfo forKeyedSubscript:@"userInfo"];
 
   v29 = *MEMORY[0x1E69E9840];
 
@@ -114,51 +114,51 @@
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v5 = [v3 deepLink];
-    v6 = [v5 absoluteString];
-    [v4 setObject:v6 forKeyedSubscript:@"deepLink"];
+    deepLink = [v3 deepLink];
+    absoluteString = [deepLink absoluteString];
+    [v4 setObject:absoluteString forKeyedSubscript:@"deepLink"];
 
-    v7 = [v3 identifier];
-    [v4 setObject:v7 forKeyedSubscript:@"identifier"];
+    identifier = [v3 identifier];
+    [v4 setObject:identifier forKeyedSubscript:@"identifier"];
 
-    v8 = [v3 metricsEvent];
-    v9 = [v8 underlyingDictionary];
-    [v4 setObject:v9 forKeyedSubscript:@"metrics"];
+    metricsEvent = [v3 metricsEvent];
+    underlyingDictionary = [metricsEvent underlyingDictionary];
+    [v4 setObject:underlyingDictionary forKeyedSubscript:@"metrics"];
 
-    v10 = [v3 request];
-    if (v10)
+    request = [v3 request];
+    if (request)
     {
       v38[0] = @"url";
-      v37 = [v3 request];
-      v36 = [v37 URL];
-      v11 = [v36 absoluteString];
-      v12 = v11;
+      request2 = [v3 request];
+      v36 = [request2 URL];
+      absoluteString2 = [v36 absoluteString];
+      v12 = absoluteString2;
       v13 = &stru_1F3921360;
-      if (v11)
+      if (absoluteString2)
       {
-        v13 = v11;
+        v13 = absoluteString2;
       }
 
       v39[0] = v13;
       v38[1] = @"headers";
-      v35 = [v3 request];
-      v14 = [v35 allHTTPHeaderFields];
-      v15 = v14;
+      request3 = [v3 request];
+      allHTTPHeaderFields = [request3 allHTTPHeaderFields];
+      v15 = allHTTPHeaderFields;
       v16 = MEMORY[0x1E695E0F8];
-      if (v14)
+      if (allHTTPHeaderFields)
       {
-        v16 = v14;
+        v16 = allHTTPHeaderFields;
       }
 
       v39[1] = v16;
       v38[2] = @"body";
-      v34 = [v3 request];
-      v17 = [v34 HTTPBody];
-      if (v17)
+      request4 = [v3 request];
+      hTTPBody = [request4 HTTPBody];
+      if (hTTPBody)
       {
         v18 = objc_alloc(MEMORY[0x1E696AEC0]);
-        v33 = [v3 request];
-        v32 = [v33 HTTPBody];
+        request5 = [v3 request];
+        hTTPBody2 = [request5 HTTPBody];
         v19 = [v18 initWithData:? encoding:?];
       }
 
@@ -169,20 +169,20 @@
 
       v39[2] = v19;
       v38[3] = @"method";
-      v20 = [v3 request];
-      v21 = [v20 HTTPMethod];
-      v22 = v21;
+      request6 = [v3 request];
+      hTTPMethod = [request6 HTTPMethod];
+      v22 = hTTPMethod;
       v23 = @"GET";
-      if (v21)
+      if (hTTPMethod)
       {
-        v23 = v21;
+        v23 = hTTPMethod;
       }
 
       v39[3] = v23;
       v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v39 forKeys:v38 count:4];
       [v4 setObject:v24 forKeyedSubscript:@"request"];
 
-      if (v17)
+      if (hTTPBody)
       {
       }
     }
@@ -195,15 +195,15 @@
     v25 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v3, "style")}];
     [v4 setObject:v25 forKeyedSubscript:@"style"];
 
-    v26 = [v3 title];
-    [v4 setObject:v26 forKeyedSubscript:@"title"];
+    title = [v3 title];
+    [v4 setObject:title forKeyedSubscript:@"title"];
 
-    v27 = [v3 iconURL];
-    v28 = [v27 absoluteString];
-    [v4 setObject:v28 forKeyedSubscript:@"iconURL"];
+    iconURL = [v3 iconURL];
+    absoluteString3 = [iconURL absoluteString];
+    [v4 setObject:absoluteString3 forKeyedSubscript:@"iconURL"];
 
-    v29 = [v3 userInfo];
-    [v4 setObject:v29 forKeyedSubscript:@"userInfo"];
+    userInfo = [v3 userInfo];
+    [v4 setObject:userInfo forKeyedSubscript:@"userInfo"];
   }
 
   else
@@ -226,12 +226,12 @@
     v6 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v4, "keyboardType")}];
     [v5 setObject:v6 forKeyedSubscript:@"keyboardType"];
 
-    v7 = [v4 text];
-    [v5 setObject:v7 forKeyedSubscript:@"text"];
+    text = [v4 text];
+    [v5 setObject:text forKeyedSubscript:@"text"];
 
-    v8 = [v4 placeholder];
+    placeholder = [v4 placeholder];
 
-    [v5 setObject:v8 forKeyedSubscript:@"placeholder"];
+    [v5 setObject:placeholder forKeyedSubscript:@"placeholder"];
   }
 
   else

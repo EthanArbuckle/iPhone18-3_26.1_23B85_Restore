@@ -1,22 +1,22 @@
 @interface PhotosTCCNotificationExtensionViewController
 + (id)_log;
-- (void)configureWithCompletion:(id)a3;
+- (void)configureWithCompletion:(id)completion;
 - (void)viewDidLoad;
 @end
 
 @implementation PhotosTCCNotificationExtensionViewController
 
-- (void)configureWithCompletion:(id)a3
+- (void)configureWithCompletion:(id)completion
 {
-  v72 = a3;
-  v4 = [objc_opt_class() _log];
-  v5 = [(PhotosTCCNotificationExtensionViewController *)self extensionContext];
-  v6 = [v5 inputItems];
-  v7 = [v6 firstObject];
+  completionCopy = completion;
+  _log = [objc_opt_class() _log];
+  extensionContext = [(PhotosTCCNotificationExtensionViewController *)self extensionContext];
+  inputItems = [extensionContext inputItems];
+  firstObject = [inputItems firstObject];
 
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v8 = v7;
+    v8 = firstObject;
   }
 
   else
@@ -24,17 +24,17 @@
     v8 = 0;
   }
 
-  v9 = [v8 userInfo];
+  userInfo = [v8 userInfo];
   v10 = kTCCNotificationExtensionDaemonDataKey;
   v11 = kTCCNotificationExtensionDaemonDataInitialPromptKey;
   v12 = kTCCNotificationExtensionDaemonDataSetPromptKey;
-  v13 = [v9 objectForKeyedSubscript:v10];
+  v13 = [userInfo objectForKeyedSubscript:v10];
   v67 = v12;
   v14 = [v13 objectForKeyedSubscript:v12];
 
   v69 = v10;
-  v70 = v9;
-  v15 = [v9 objectForKeyedSubscript:v10];
+  v70 = userInfo;
+  v15 = [userInfo objectForKeyedSubscript:v10];
   v68 = v11;
   v16 = [v15 objectForKeyedSubscript:v11];
 
@@ -51,8 +51,8 @@
   }
 
   v65 = v16;
-  v17 = os_signpost_id_generate(v4);
-  v18 = v4;
+  v17 = os_signpost_id_generate(_log);
+  v18 = _log;
   v19 = v18;
   if (v17 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v18))
   {
@@ -61,32 +61,32 @@
   }
 
   v20 = PXTCCPromptCountTitle();
-  v21 = [(PhotosTCCNotificationExtensionViewController *)self countsLabel];
-  [v21 setText:v20];
+  countsLabel = [(PhotosTCCNotificationExtensionViewController *)self countsLabel];
+  [countsLabel setText:v20];
 
-  v22 = [(PhotosTCCNotificationExtensionViewController *)self countsLabel];
-  v23 = [v22 text];
-  v24 = [v23 length];
+  countsLabel2 = [(PhotosTCCNotificationExtensionViewController *)self countsLabel];
+  text = [countsLabel2 text];
+  v24 = [text length];
 
-  v25 = [(PhotosTCCNotificationExtensionViewController *)self countsLabel];
-  v26 = [v25 topAnchor];
-  v27 = [(PhotosTCCNotificationExtensionViewController *)self labelContainer];
-  v28 = [v27 topAnchor];
+  countsLabel3 = [(PhotosTCCNotificationExtensionViewController *)self countsLabel];
+  topAnchor = [countsLabel3 topAnchor];
+  labelContainer = [(PhotosTCCNotificationExtensionViewController *)self labelContainer];
+  topAnchor2 = [labelContainer topAnchor];
   if (v24)
   {
-    [v26 constraintEqualToSystemSpacingBelowAnchor:v28 multiplier:1.5];
+    [topAnchor constraintEqualToSystemSpacingBelowAnchor:topAnchor2 multiplier:1.5];
   }
 
   else
   {
-    [v26 constraintEqualToAnchor:v28 constant:0.0];
+    [topAnchor constraintEqualToAnchor:topAnchor2 constant:0.0];
   }
   v29 = ;
   [v29 setActive:1];
 
   v30 = PXTCCPromptCountSubtitle();
-  v31 = [(PhotosTCCNotificationExtensionViewController *)self accessLabel];
-  [v31 setText:v30];
+  accessLabel = [(PhotosTCCNotificationExtensionViewController *)self accessLabel];
+  [accessLabel setText:v30];
 
   v32 = v19;
   v33 = v32;
@@ -118,24 +118,24 @@
   if (v37)
   {
     [v37 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v40 = [(PhotosTCCNotificationExtensionViewController *)self photoContainer];
-    [v40 addSubview:v37];
+    photoContainer = [(PhotosTCCNotificationExtensionViewController *)self photoContainer];
+    [photoContainer addSubview:v37];
 
-    v62 = [v37 topAnchor];
-    v63 = [(PhotosTCCNotificationExtensionViewController *)self photoContainer];
-    v61 = [v63 topAnchor];
-    v60 = [v62 constraintEqualToAnchor:v61];
+    topAnchor3 = [v37 topAnchor];
+    photoContainer2 = [(PhotosTCCNotificationExtensionViewController *)self photoContainer];
+    topAnchor4 = [photoContainer2 topAnchor];
+    v60 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v74[0] = v60;
-    v59 = [v37 leadingAnchor];
+    leadingAnchor = [v37 leadingAnchor];
     [(PhotosTCCNotificationExtensionViewController *)self photoContainer];
     v41 = v64 = v39;
-    v42 = [v41 leadingAnchor];
-    v43 = [v59 constraintEqualToAnchor:v42];
+    leadingAnchor2 = [v41 leadingAnchor];
+    v43 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v74[1] = v43;
-    v44 = [v37 trailingAnchor];
-    v45 = [(PhotosTCCNotificationExtensionViewController *)self photoContainer];
-    v46 = [v45 trailingAnchor];
-    v47 = [v44 constraintEqualToAnchor:v46];
+    trailingAnchor = [v37 trailingAnchor];
+    photoContainer3 = [(PhotosTCCNotificationExtensionViewController *)self photoContainer];
+    trailingAnchor2 = [photoContainer3 trailingAnchor];
+    v47 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v74[2] = v47;
     v48 = [NSArray arrayWithObjects:v74 count:3];
     [NSLayoutConstraint activateConstraints:v48];
@@ -143,19 +143,19 @@
     v39 = v64;
   }
 
-  v49 = [(PhotosTCCNotificationExtensionViewController *)self countsLabel];
-  [v49 sizeToFit];
+  countsLabel4 = [(PhotosTCCNotificationExtensionViewController *)self countsLabel];
+  [countsLabel4 sizeToFit];
 
-  v50 = [(PhotosTCCNotificationExtensionViewController *)self accessLabel];
-  [v50 sizeToFit];
+  accessLabel2 = [(PhotosTCCNotificationExtensionViewController *)self accessLabel];
+  [accessLabel2 sizeToFit];
 
-  v51 = [(PhotosTCCNotificationExtensionViewController *)self labelContainer];
-  [v51 layoutIfNeeded];
+  labelContainer2 = [(PhotosTCCNotificationExtensionViewController *)self labelContainer];
+  [labelContainer2 layoutIfNeeded];
 
   [v37 frame];
   v53 = v52;
-  v54 = [(PhotosTCCNotificationExtensionViewController *)self labelContainer];
-  [v54 frame];
+  labelContainer3 = [(PhotosTCCNotificationExtensionViewController *)self labelContainer];
+  [labelContainer3 frame];
   v56 = v53 + v55;
   v57 = PXSolariumEnabled();
   v58 = 0.0;
@@ -166,7 +166,7 @@
 
   [(PhotosTCCNotificationExtensionViewController *)self setPreferredContentSize:270.0, v58 + v56];
 
-  v72[2](v72);
+  completionCopy[2](completionCopy);
 }
 
 - (void)viewDidLoad
@@ -180,14 +180,14 @@
   if (PXSolariumEnabled())
   {
     v4 = SBSUIUserNotificationContentCornerRadius;
-    v5 = [(UIView *)v3 layer];
-    [v5 setCornerRadius:v4];
+    layer = [(UIView *)v3 layer];
+    [layer setCornerRadius:v4];
 
-    v6 = [(UIView *)v3 layer];
-    [v6 setMasksToBounds:1];
+    layer2 = [(UIView *)v3 layer];
+    [layer2 setMasksToBounds:1];
 
-    v7 = [(UIView *)v3 layer];
-    [v7 setMaskedCorners:15];
+    layer3 = [(UIView *)v3 layer];
+    [layer3 setMaskedCorners:15];
   }
 
   photoContainer = self->_photoContainer;
@@ -244,72 +244,72 @@
   self->_accessLabel = v17;
   v21 = v17;
 
-  v22 = [(PhotosTCCNotificationExtensionViewController *)self view];
-  [v22 addSubview:v73];
+  view = [(PhotosTCCNotificationExtensionViewController *)self view];
+  [view addSubview:v73];
 
-  v23 = [(PhotosTCCNotificationExtensionViewController *)self view];
-  [v23 addSubview:v11];
+  view2 = [(PhotosTCCNotificationExtensionViewController *)self view];
+  [view2 addSubview:v11];
 
   [(UIView *)v11 addSubview:v16];
   [(UIView *)v11 addSubview:v21];
-  v69 = [(UIView *)v73 topAnchor];
-  v70 = [(PhotosTCCNotificationExtensionViewController *)self view];
-  v68 = [v70 topAnchor];
-  v67 = [v69 constraintEqualToAnchor:v68];
+  topAnchor = [(UIView *)v73 topAnchor];
+  view3 = [(PhotosTCCNotificationExtensionViewController *)self view];
+  topAnchor2 = [view3 topAnchor];
+  v67 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v75[0] = v67;
-  v65 = [(UIView *)v73 leadingAnchor];
-  v66 = [(PhotosTCCNotificationExtensionViewController *)self view];
-  v64 = [v66 leadingAnchor];
-  v63 = [v65 constraintEqualToAnchor:v64];
+  leadingAnchor = [(UIView *)v73 leadingAnchor];
+  view4 = [(PhotosTCCNotificationExtensionViewController *)self view];
+  leadingAnchor2 = [view4 leadingAnchor];
+  v63 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v75[1] = v63;
-  v61 = [(UIView *)v73 widthAnchor];
-  v62 = [(PhotosTCCNotificationExtensionViewController *)self view];
-  v60 = [v62 widthAnchor];
-  v59 = [v61 constraintEqualToAnchor:v60];
+  widthAnchor = [(UIView *)v73 widthAnchor];
+  view5 = [(PhotosTCCNotificationExtensionViewController *)self view];
+  widthAnchor2 = [view5 widthAnchor];
+  v59 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   v75[2] = v59;
-  v58 = [(UIView *)v11 topAnchor];
-  v57 = [(UIView *)v73 bottomAnchor];
-  v56 = [v58 constraintEqualToAnchor:v57];
+  topAnchor3 = [(UIView *)v11 topAnchor];
+  bottomAnchor = [(UIView *)v73 bottomAnchor];
+  v56 = [topAnchor3 constraintEqualToAnchor:bottomAnchor];
   v75[3] = v56;
-  v54 = [(UIView *)v11 leadingAnchor];
-  v55 = [(PhotosTCCNotificationExtensionViewController *)self view];
-  v53 = [v55 leadingAnchor];
-  v52 = [v54 constraintEqualToAnchor:v53];
+  leadingAnchor3 = [(UIView *)v11 leadingAnchor];
+  view6 = [(PhotosTCCNotificationExtensionViewController *)self view];
+  leadingAnchor4 = [view6 leadingAnchor];
+  v52 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v75[4] = v52;
-  v50 = [(UIView *)v11 trailingAnchor];
-  v51 = [(PhotosTCCNotificationExtensionViewController *)self view];
-  v49 = [v51 trailingAnchor];
-  v48 = [v50 constraintEqualToAnchor:v49 constant:-8.0];
+  trailingAnchor = [(UIView *)v11 trailingAnchor];
+  view7 = [(PhotosTCCNotificationExtensionViewController *)self view];
+  trailingAnchor2 = [view7 trailingAnchor];
+  v48 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-8.0];
   v75[5] = v48;
-  v46 = [(UIView *)v11 bottomAnchor];
-  v47 = [(PhotosTCCNotificationExtensionViewController *)self view];
-  v45 = [v47 bottomAnchor];
-  v44 = [v46 constraintEqualToAnchor:v45];
+  bottomAnchor2 = [(UIView *)v11 bottomAnchor];
+  view8 = [(PhotosTCCNotificationExtensionViewController *)self view];
+  bottomAnchor3 = [view8 bottomAnchor];
+  v44 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   v75[6] = v44;
-  v43 = [(UILabel *)v16 leadingAnchor];
-  v42 = [(UIView *)v11 leadingAnchor];
-  v41 = [v43 constraintEqualToAnchor:v42 constant:8.0];
+  leadingAnchor5 = [(UILabel *)v16 leadingAnchor];
+  leadingAnchor6 = [(UIView *)v11 leadingAnchor];
+  v41 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6 constant:8.0];
   v75[7] = v41;
   v32 = v16;
-  v40 = [(UILabel *)v16 trailingAnchor];
-  v39 = [(UIView *)v11 trailingAnchor];
-  v38 = [v40 constraintEqualToAnchor:v39];
+  trailingAnchor3 = [(UILabel *)v16 trailingAnchor];
+  trailingAnchor4 = [(UIView *)v11 trailingAnchor];
+  v38 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v75[8] = v38;
-  v37 = [(UILabel *)v21 topAnchor];
-  v36 = [(UILabel *)v16 bottomAnchor];
-  v35 = [v37 constraintEqualToSystemSpacingBelowAnchor:v36 multiplier:1.0];
+  topAnchor4 = [(UILabel *)v21 topAnchor];
+  bottomAnchor4 = [(UILabel *)v16 bottomAnchor];
+  v35 = [topAnchor4 constraintEqualToSystemSpacingBelowAnchor:bottomAnchor4 multiplier:1.0];
   v75[9] = v35;
-  v34 = [(UILabel *)v21 leadingAnchor];
-  v33 = [(UIView *)v11 leadingAnchor];
-  v24 = [v34 constraintEqualToAnchor:v33 constant:8.0];
+  leadingAnchor7 = [(UILabel *)v21 leadingAnchor];
+  leadingAnchor8 = [(UIView *)v11 leadingAnchor];
+  v24 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8 constant:8.0];
   v75[10] = v24;
-  v25 = [(UILabel *)v21 trailingAnchor];
-  v26 = [(UIView *)v11 trailingAnchor];
-  v27 = [v25 constraintEqualToAnchor:v26];
+  trailingAnchor5 = [(UILabel *)v21 trailingAnchor];
+  trailingAnchor6 = [(UIView *)v11 trailingAnchor];
+  v27 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   v75[11] = v27;
-  v28 = [(UIView *)v11 bottomAnchor];
-  v29 = [(UILabel *)v21 bottomAnchor];
-  v30 = [v28 constraintEqualToSystemSpacingBelowAnchor:v29 multiplier:2.5];
+  bottomAnchor5 = [(UIView *)v11 bottomAnchor];
+  bottomAnchor6 = [(UILabel *)v21 bottomAnchor];
+  v30 = [bottomAnchor5 constraintEqualToSystemSpacingBelowAnchor:bottomAnchor6 multiplier:2.5];
   v75[12] = v30;
   v31 = [NSArray arrayWithObjects:v75 count:13];
   [NSLayoutConstraint activateConstraints:v31];

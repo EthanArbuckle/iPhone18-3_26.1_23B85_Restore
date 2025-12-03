@@ -1,9 +1,9 @@
 @interface PLProcessPortMap
 + (id)sharedInstance;
 - (PLProcessPortMap)init;
-- (id)dictFromNetPortInfo:(net_port_info *)a3;
-- (id)getLookupKeys:(id)a3;
-- (id)pidAndProcessNameForDestAddress:(id)a3 withDestPort:(id)a4 withSourceAddress:(id)a5 withSourcePort:(id)a6 withProtocol:(id)a7;
+- (id)dictFromNetPortInfo:(net_port_info *)info;
+- (id)getLookupKeys:(id)keys;
+- (id)pidAndProcessNameForDestAddress:(id)address withDestPort:(id)port withSourceAddress:(id)sourceAddress withSourcePort:(id)sourcePort withProtocol:(id)protocol;
 - (void)clearPortMap;
 - (void)clearPortMapInternal;
 - (void)dealloc;
@@ -19,7 +19,7 @@
   block[1] = 3221225472;
   block[2] = __34__PLProcessPortMap_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -76,57 +76,57 @@ uint64_t __34__PLProcessPortMap_sharedInstance__block_invoke(uint64_t a1)
 
 - (void)reconstructPortMap
 {
-  v3 = [(PLProcessPortMap *)self workQueue];
+  workQueue = [(PLProcessPortMap *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __38__PLProcessPortMap_reconstructPortMap__block_invoke;
   block[3] = &unk_279A5BDC0;
   block[4] = self;
-  dispatch_async_and_wait(v3, block);
+  dispatch_async_and_wait(workQueue, block);
 }
 
 - (void)clearPortMap
 {
-  v3 = [(PLProcessPortMap *)self workQueue];
+  workQueue = [(PLProcessPortMap *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __32__PLProcessPortMap_clearPortMap__block_invoke;
   block[3] = &unk_279A5BDC0;
   block[4] = self;
-  dispatch_async_and_wait(v3, block);
+  dispatch_async_and_wait(workQueue, block);
 }
 
-- (id)pidAndProcessNameForDestAddress:(id)a3 withDestPort:(id)a4 withSourceAddress:(id)a5 withSourcePort:(id)a6 withProtocol:(id)a7
+- (id)pidAndProcessNameForDestAddress:(id)address withDestPort:(id)port withSourceAddress:(id)sourceAddress withSourcePort:(id)sourcePort withProtocol:(id)protocol
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  addressCopy = address;
+  portCopy = port;
+  sourceAddressCopy = sourceAddress;
+  sourcePortCopy = sourcePort;
+  protocolCopy = protocol;
   v32 = 0;
   v33 = &v32;
   v34 = 0x3032000000;
   v35 = __Block_byref_object_copy_;
   v36 = __Block_byref_object_dispose_;
   v37 = 0;
-  v17 = [(PLProcessPortMap *)self workQueue];
+  workQueue = [(PLProcessPortMap *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __111__PLProcessPortMap_pidAndProcessNameForDestAddress_withDestPort_withSourceAddress_withSourcePort_withProtocol___block_invoke;
   block[3] = &unk_279A5BE08;
   block[4] = self;
-  v26 = v16;
-  v27 = v12;
-  v28 = v14;
-  v30 = v15;
+  v26 = protocolCopy;
+  v27 = addressCopy;
+  v28 = sourceAddressCopy;
+  v30 = sourcePortCopy;
   v31 = &v32;
-  v29 = v13;
-  v18 = v15;
-  v19 = v13;
-  v20 = v14;
-  v21 = v12;
-  v22 = v16;
-  dispatch_async_and_wait(v17, block);
+  v29 = portCopy;
+  v18 = sourcePortCopy;
+  v19 = portCopy;
+  v20 = sourceAddressCopy;
+  v21 = addressCopy;
+  v22 = protocolCopy;
+  dispatch_async_and_wait(workQueue, block);
 
   v23 = v33[5];
   _Block_object_dispose(&v32, 8);
@@ -719,14 +719,14 @@ uint64_t __111__PLProcessPortMap_pidAndProcessNameForDestAddress_withDestPort_wi
   return result;
 }
 
-- (id)dictFromNetPortInfo:(net_port_info *)a3
+- (id)dictFromNetPortInfo:(net_port_info *)info
 {
   v20 = *MEMORY[0x277D85DE8];
-  var1 = a3->var1;
+  var1 = info->var1;
   if (var1)
   {
-    inet_ntop(2, &a3->var6, v19, 0x2Eu);
-    p_var7 = &a3->var7;
+    inet_ntop(2, &info->var6, v19, 0x2Eu);
+    p_var7 = &info->var7;
     v6 = 2;
   }
 
@@ -739,8 +739,8 @@ uint64_t __111__PLProcessPortMap_pidAndProcessNameForDestAddress_withDestPort_wi
       goto LABEL_7;
     }
 
-    inet_ntop(30, &a3->var6, v19, 0x2Eu);
-    p_var7 = &a3->var7;
+    inet_ntop(30, &info->var6, v19, 0x2Eu);
+    p_var7 = &info->var7;
     v6 = 30;
   }
 
@@ -748,9 +748,9 @@ uint64_t __111__PLProcessPortMap_pidAndProcessNameForDestAddress_withDestPort_wi
 LABEL_7:
   v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:v19];
   v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:v18];
-  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:bswap32(a3->var4) >> 16];
-  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:bswap32(a3->var5) >> 16];
-  if ((a3->var1 & 4) != 0)
+  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:bswap32(info->var4) >> 16];
+  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:bswap32(info->var5) >> 16];
+  if ((info->var1 & 4) != 0)
   {
     v11 = @"TCP";
   }
@@ -776,15 +776,15 @@ LABEL_7:
   return v13;
 }
 
-- (id)getLookupKeys:(id)a3
+- (id)getLookupKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   v5 = objc_opt_new();
-  v6 = [v4 objectForKeyedSubscript:@"destIP"];
-  v7 = [v4 objectForKeyedSubscript:@"sourceIP"];
-  v8 = [v4 objectForKeyedSubscript:@"destPort"];
-  v9 = [v4 objectForKeyedSubscript:@"sourcePort"];
-  v10 = [v4 objectForKeyedSubscript:@"protocol"];
+  v6 = [keysCopy objectForKeyedSubscript:@"destIP"];
+  v7 = [keysCopy objectForKeyedSubscript:@"sourceIP"];
+  v8 = [keysCopy objectForKeyedSubscript:@"destPort"];
+  v9 = [keysCopy objectForKeyedSubscript:@"sourcePort"];
+  v10 = [keysCopy objectForKeyedSubscript:@"protocol"];
 
   v11 = [(PLProcessPortMap *)self keyFromAddress:v6 withPort:v8 withSourceAddress:v7 withSourcePort:v9 withProtocol:v10];
   v12 = [(PLProcessPortMap *)self keyForlenientLookup:v6 withPort:v8 withProtocol:v10];
@@ -818,9 +818,9 @@ LABEL_7:
       v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Clearing Pid:ProcPID map, old one: %@", self->_strictLookupMap, block, v15, v16, v17, v18];
       v5 = MEMORY[0x277D3F178];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/PLProcessPortMap.m"];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent = [v6 lastPathComponent];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLProcessPortMap clearPortMapInternal]"];
-      [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:253];
+      [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:253];
 
       v9 = PLLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -871,9 +871,9 @@ uint64_t __40__PLProcessPortMap_clearPortMapInternal__block_invoke(uint64_t a1)
       v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Starting rebuilding of Port Map"];
       v5 = MEMORY[0x277D3F178];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/PLProcessPortMap.m"];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent = [v6 lastPathComponent];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLProcessPortMap reconstructPortMapInternal]"];
-      [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:262];
+      [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:262];
 
       v9 = PLLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -905,9 +905,9 @@ uint64_t __40__PLProcessPortMap_clearPortMapInternal__block_invoke(uint64_t a1)
         v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to read buffer size, errno: %d", *__error()];
         v12 = MEMORY[0x277D3F178];
         v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/PLProcessPortMap.m"];
-        v14 = [v13 lastPathComponent];
+        lastPathComponent2 = [v13 lastPathComponent];
         v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLProcessPortMap reconstructPortMapInternal]"];
-        [v12 logMessage:v11 fromFile:v14 fromFunction:v15 fromLineNumber:269];
+        [v12 logMessage:v11 fromFile:lastPathComponent2 fromFunction:v15 fromLineNumber:269];
 
         v16 = PLLogCommon();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -945,9 +945,9 @@ LABEL_15:
         v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to allocate buffer"];
         v27 = MEMORY[0x277D3F178];
         v28 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/PLProcessPortMap.m"];
-        v29 = [v28 lastPathComponent];
+        lastPathComponent3 = [v28 lastPathComponent];
         v30 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLProcessPortMap reconstructPortMapInternal]"];
-        [v27 logMessage:v11 fromFile:v29 fromFunction:v30 fromLineNumber:275];
+        [v27 logMessage:v11 fromFile:lastPathComponent3 fromFunction:v30 fromLineNumber:275];
 
         v16 = PLLogCommon();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -990,9 +990,9 @@ LABEL_15:
     v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to populate buffer, errno: %d", *__error()];
     v21 = MEMORY[0x277D3F178];
     v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/PLProcessPortMap.m"];
-    v23 = [v22 lastPathComponent];
+    lastPathComponent4 = [v22 lastPathComponent];
     v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLProcessPortMap reconstructPortMapInternal]"];
-    [v21 logMessage:v20 fromFile:v23 fromFunction:v24 fromLineNumber:281];
+    [v21 logMessage:v20 fromFile:lastPathComponent4 fromFunction:v24 fromLineNumber:281];
 
     v25 = PLLogCommon();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
@@ -1049,9 +1049,9 @@ LABEL_54:
     v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"Port map is empty!"];
     v62 = MEMORY[0x277D3F178];
     v63 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/PLProcessPortMap.m"];
-    v64 = [v63 lastPathComponent];
+    lastPathComponent5 = [v63 lastPathComponent];
     v65 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLProcessPortMap reconstructPortMapInternal]"];
-    [v62 logMessage:v20 fromFile:v64 fromFunction:v65 fromLineNumber:296];
+    [v62 logMessage:v20 fromFile:lastPathComponent5 fromFunction:v65 fromLineNumber:296];
 
     v25 = PLLogCommon();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
@@ -1086,21 +1086,21 @@ LABEL_54:
       v46 = [(PLProcessPortMap *)self getLookupKeys:v45];
       if (v46)
       {
-        v47 = [(PLProcessPortMap *)self strictLookupMap];
+        strictLookupMap = [(PLProcessPortMap *)self strictLookupMap];
         v48 = [v46 objectForKeyedSubscript:@"strictLookupKey"];
-        [v47 setObject:v43 forKeyedSubscript:v48];
+        [strictLookupMap setObject:v43 forKeyedSubscript:v48];
 
-        v49 = [(PLProcessPortMap *)self lenientLookupMap];
+        lenientLookupMap = [(PLProcessPortMap *)self lenientLookupMap];
         v50 = [v46 objectForKeyedSubscript:@"lenientLookupKey"];
-        [v49 setObject:v43 forKeyedSubscript:v50];
+        [lenientLookupMap setObject:v43 forKeyedSubscript:v50];
 
-        v51 = [(PLProcessPortMap *)self localPortOnlyLookupMap];
+        localPortOnlyLookupMap = [(PLProcessPortMap *)self localPortOnlyLookupMap];
         v52 = [v46 objectForKeyedSubscript:@"localPortLookupKey"];
-        [v51 setObject:v43 forKeyedSubscript:v52];
+        [localPortOnlyLookupMap setObject:v43 forKeyedSubscript:v52];
 
-        v53 = [(PLProcessPortMap *)self ipAddrLookupMap];
+        ipAddrLookupMap = [(PLProcessPortMap *)self ipAddrLookupMap];
         v54 = [v46 objectForKeyedSubscript:@"ipAddrLookupKey"];
-        [v53 setObject:v43 forKeyedSubscript:v54];
+        [ipAddrLookupMap setObject:v43 forKeyedSubscript:v54];
       }
 
       if (v39 >= v18[2])
@@ -1135,9 +1135,9 @@ LABEL_54:
       v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Completed rebuilding Port Map"];
       v57 = MEMORY[0x277D3F178];
       v58 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/PLProcessPortMap.m"];
-      v59 = [v58 lastPathComponent];
+      lastPathComponent6 = [v58 lastPathComponent];
       v60 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLProcessPortMap reconstructPortMapInternal]"];
-      [v57 logMessage:v11 fromFile:v59 fromFunction:v60 fromLineNumber:340];
+      [v57 logMessage:v11 fromFile:lastPathComponent6 fromFunction:v60 fromLineNumber:340];
 
       v16 = PLLogCommon();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))

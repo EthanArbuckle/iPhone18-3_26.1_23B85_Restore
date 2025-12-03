@@ -1,41 +1,41 @@
 @interface VUIImage
-+ (id)imageWithCGImageRef:(CGImage *)a3 imageOrientation:(int64_t)a4 preserveAlpha:(BOOL)a5;
-+ (id)imageWithCGImageRef:(CGImage *)a3 preserveAlpha:(BOOL)a4;
-+ (id)imageWithData:(id)a3;
-+ (id)imageWithPath:(id)a3 cacheImmediately:(BOOL)a4;
-+ (id)imageWithRotationFromPath:(id)a3;
-+ (id)imageWithRotationFromURL:(id)a3;
-+ (id)imageWithURL:(id)a3 cacheImmediately:(BOOL)a4;
-+ (int)exifOrientationForImageOrientation:(int64_t)a3;
-+ (int64_t)imageOrientationForExifOrientation:(int)a3;
++ (id)imageWithCGImageRef:(CGImage *)ref imageOrientation:(int64_t)orientation preserveAlpha:(BOOL)alpha;
++ (id)imageWithCGImageRef:(CGImage *)ref preserveAlpha:(BOOL)alpha;
++ (id)imageWithData:(id)data;
++ (id)imageWithPath:(id)path cacheImmediately:(BOOL)immediately;
++ (id)imageWithRotationFromPath:(id)path;
++ (id)imageWithRotationFromURL:(id)l;
++ (id)imageWithURL:(id)l cacheImmediately:(BOOL)immediately;
++ (int)exifOrientationForImageOrientation:(int64_t)orientation;
++ (int64_t)imageOrientationForExifOrientation:(int)orientation;
 - (BOOL)hasAlpha;
 - (CGImage)image;
 - (CGRect)largestSquareRect;
 - (CGSize)pixelBounds;
-- (VUIImage)initWithCGImageRef:(CGImage *)a3 exifOrientation:(int)a4 preserveAlpha:(BOOL)a5;
-- (VUIImage)initWithCGImageRef:(CGImage *)a3 imageOrientation:(int64_t)a4 preserveAlpha:(BOOL)a5;
-- (VUIImage)initWithData:(id)a3;
-- (VUIImage)initWithURL:(id)a3 cacheImmediately:(BOOL)a4;
+- (VUIImage)initWithCGImageRef:(CGImage *)ref exifOrientation:(int)orientation preserveAlpha:(BOOL)alpha;
+- (VUIImage)initWithCGImageRef:(CGImage *)ref imageOrientation:(int64_t)orientation preserveAlpha:(BOOL)alpha;
+- (VUIImage)initWithData:(id)data;
+- (VUIImage)initWithURL:(id)l cacheImmediately:(BOOL)immediately;
 - (float)aspectRatio;
-- (id)_initWithCGImageSourceRotationEnabled:(CGImageSource *)a3;
-- (id)squareImageFromNearSquareImageWithAspectRatioLimit:(float)a3;
+- (id)_initWithCGImageSourceRotationEnabled:(CGImageSource *)enabled;
+- (id)squareImageFromNearSquareImageWithAspectRatioLimit:(float)limit;
 - (id)uiImage;
 - (int64_t)_uiImageOrientation;
 - (void)_initializeCGImageWithRotation;
 - (void)dealloc;
-- (void)drawImageInContext:(CGContext *)a3 rect:(CGRect)a4;
-- (void)setEnableCache:(BOOL)a3;
+- (void)drawImageInContext:(CGContext *)context rect:(CGRect)rect;
+- (void)setEnableCache:(BOOL)cache;
 @end
 
 @implementation VUIImage
 
-+ (id)imageWithURL:(id)a3 cacheImmediately:(BOOL)a4
++ (id)imageWithURL:(id)l cacheImmediately:(BOOL)immediately
 {
-  if (a3)
+  if (l)
   {
-    v4 = a4;
-    v6 = a3;
-    v7 = [[a1 alloc] initWithURL:v6 cacheImmediately:v4];
+    immediatelyCopy = immediately;
+    lCopy = l;
+    v7 = [[self alloc] initWithURL:lCopy cacheImmediately:immediatelyCopy];
   }
 
   else
@@ -46,16 +46,16 @@
   return v7;
 }
 
-+ (id)imageWithPath:(id)a3 cacheImmediately:(BOOL)a4
++ (id)imageWithPath:(id)path cacheImmediately:(BOOL)immediately
 {
-  if (a3)
+  if (path)
   {
-    v4 = a4;
+    immediatelyCopy = immediately;
     v6 = MEMORY[0x277CBEBC0];
-    v7 = a3;
-    v8 = [[v6 alloc] initFileURLWithPath:v7];
+    pathCopy = path;
+    v8 = [[v6 alloc] initFileURLWithPath:pathCopy];
 
-    v9 = [a1 imageWithURL:v8 cacheImmediately:v4];
+    v9 = [self imageWithURL:v8 cacheImmediately:immediatelyCopy];
   }
 
   else
@@ -66,12 +66,12 @@
   return v9;
 }
 
-+ (id)imageWithData:(id)a3
++ (id)imageWithData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[a1 alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[self alloc] initWithData:dataCopy];
   }
 
   else
@@ -82,18 +82,18 @@
   return v5;
 }
 
-+ (id)imageWithCGImageRef:(CGImage *)a3 preserveAlpha:(BOOL)a4
++ (id)imageWithCGImageRef:(CGImage *)ref preserveAlpha:(BOOL)alpha
 {
-  v4 = [[a1 alloc] initWithCGImageRef:a3 imageOrientation:0 preserveAlpha:a4];
+  v4 = [[self alloc] initWithCGImageRef:ref imageOrientation:0 preserveAlpha:alpha];
 
   return v4;
 }
 
-+ (id)imageWithCGImageRef:(CGImage *)a3 imageOrientation:(int64_t)a4 preserveAlpha:(BOOL)a5
++ (id)imageWithCGImageRef:(CGImage *)ref imageOrientation:(int64_t)orientation preserveAlpha:(BOOL)alpha
 {
-  if (a3)
+  if (ref)
   {
-    v6 = [[a1 alloc] initWithCGImageRef:a3 imageOrientation:a4 preserveAlpha:a5];
+    v6 = [[self alloc] initWithCGImageRef:ref imageOrientation:orientation preserveAlpha:alpha];
   }
 
   else
@@ -104,14 +104,14 @@
   return v6;
 }
 
-+ (id)imageWithRotationFromURL:(id)a3
++ (id)imageWithRotationFromURL:(id)l
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && (v6 = CGImageSourceCreateWithURL(v4, 0)) != 0)
+  lCopy = l;
+  v5 = lCopy;
+  if (lCopy && (v6 = CGImageSourceCreateWithURL(lCopy, 0)) != 0)
   {
     v7 = v6;
-    v8 = [[a1 alloc] _initWithCGImageSourceRotationEnabled:v6];
+    v8 = [[self alloc] _initWithCGImageSourceRotationEnabled:v6];
     CFRelease(v7);
   }
 
@@ -123,12 +123,12 @@
   return v8;
 }
 
-+ (id)imageWithRotationFromPath:(id)a3
++ (id)imageWithRotationFromPath:(id)path
 {
-  if (a3)
+  if (path)
   {
     v4 = [MEMORY[0x277CBEBC0] fileURLWithPath:?];
-    v5 = [a1 imageWithRotationFromURL:v4];
+    v5 = [self imageWithRotationFromURL:v4];
   }
 
   else
@@ -139,24 +139,24 @@
   return v5;
 }
 
-- (VUIImage)initWithCGImageRef:(CGImage *)a3 imageOrientation:(int64_t)a4 preserveAlpha:(BOOL)a5
+- (VUIImage)initWithCGImageRef:(CGImage *)ref imageOrientation:(int64_t)orientation preserveAlpha:(BOOL)alpha
 {
-  if (a3)
+  if (ref)
   {
-    v5 = a5;
+    alphaCopy = alpha;
     v13.receiver = self;
     v13.super_class = VUIImage;
     self = [(VUIImage *)&v13 init];
-    v8 = self;
+    selfCopy2 = self;
     if (self)
     {
-      self->_image = a3;
-      CFRetain(a3);
-      v8->_imageWidth = CGImageGetWidth(v8->_image);
-      v8->_imageHeight = CGImageGetHeight(v8->_image);
-      v8->_imageOrientation = [objc_opt_class() exifOrientationForImageOrientation:a4];
-      v8->_enableCache = 0;
-      if (v5 && [VUIImage cgImageHasAlpha:a3])
+      self->_image = ref;
+      CFRetain(ref);
+      selfCopy2->_imageWidth = CGImageGetWidth(selfCopy2->_image);
+      selfCopy2->_imageHeight = CGImageGetHeight(selfCopy2->_image);
+      selfCopy2->_imageOrientation = [objc_opt_class() exifOrientationForImageOrientation:orientation];
+      selfCopy2->_enableCache = 0;
+      if (alphaCopy && [VUIImage cgImageHasAlpha:ref])
       {
         v9 = MEMORY[0x277CC2120];
       }
@@ -167,41 +167,41 @@
       }
 
       v10 = [*v9 copy];
-      imageType = v8->_imageType;
-      v8->_imageType = v10;
+      imageType = selfCopy2->_imageType;
+      selfCopy2->_imageType = v10;
 
-      v8->_imageBufferInMemory = 1;
-      self = v8;
-      v8 = self;
+      selfCopy2->_imageBufferInMemory = 1;
+      self = selfCopy2;
+      selfCopy2 = self;
     }
   }
 
   else
   {
-    v8 = 0;
+    selfCopy2 = 0;
   }
 
-  return v8;
+  return selfCopy2;
 }
 
-- (VUIImage)initWithCGImageRef:(CGImage *)a3 exifOrientation:(int)a4 preserveAlpha:(BOOL)a5
+- (VUIImage)initWithCGImageRef:(CGImage *)ref exifOrientation:(int)orientation preserveAlpha:(BOOL)alpha
 {
-  if (a3)
+  if (ref)
   {
-    v5 = a5;
+    alphaCopy = alpha;
     v13.receiver = self;
     v13.super_class = VUIImage;
     self = [(VUIImage *)&v13 init];
-    v8 = self;
+    selfCopy2 = self;
     if (self)
     {
-      self->_image = a3;
-      CFRetain(a3);
-      v8->_imageWidth = CGImageGetWidth(v8->_image);
-      v8->_imageHeight = CGImageGetHeight(v8->_image);
-      v8->_imageOrientation = a4;
-      v8->_enableCache = 0;
-      if (v5 && [VUIImage cgImageHasAlpha:a3])
+      self->_image = ref;
+      CFRetain(ref);
+      selfCopy2->_imageWidth = CGImageGetWidth(selfCopy2->_image);
+      selfCopy2->_imageHeight = CGImageGetHeight(selfCopy2->_image);
+      selfCopy2->_imageOrientation = orientation;
+      selfCopy2->_enableCache = 0;
+      if (alphaCopy && [VUIImage cgImageHasAlpha:ref])
       {
         v9 = MEMORY[0x277CC2120];
       }
@@ -212,36 +212,36 @@
       }
 
       v10 = [*v9 copy];
-      imageType = v8->_imageType;
-      v8->_imageType = v10;
+      imageType = selfCopy2->_imageType;
+      selfCopy2->_imageType = v10;
 
-      v8->_imageBufferInMemory = 1;
-      self = v8;
-      v8 = self;
+      selfCopy2->_imageBufferInMemory = 1;
+      self = selfCopy2;
+      selfCopy2 = self;
     }
   }
 
   else
   {
-    v8 = 0;
+    selfCopy2 = 0;
   }
 
-  return v8;
+  return selfCopy2;
 }
 
-- (VUIImage)initWithURL:(id)a3 cacheImmediately:(BOOL)a4
+- (VUIImage)initWithURL:(id)l cacheImmediately:(BOOL)immediately
 {
-  v4 = a4;
+  immediatelyCopy = immediately;
   v27[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (v7 && (v23.receiver = self, v23.super_class = VUIImage, (self = [(VUIImage *)&v23 init]) != 0))
+  lCopy = l;
+  if (lCopy && (v23.receiver = self, v23.super_class = VUIImage, (self = [(VUIImage *)&v23 init]) != 0))
   {
     v26 = *MEMORY[0x277CD3618];
     v8 = MEMORY[0x277CBEC38];
     v27[0] = MEMORY[0x277CBEC38];
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:&v26 count:1];
-    self->_cacheImmediately = v4;
-    if (v4)
+    self->_cacheImmediately = immediatelyCopy;
+    if (immediatelyCopy)
     {
       v24 = *MEMORY[0x277CD3620];
       v25 = v8;
@@ -255,7 +255,7 @@
       v10 = 0;
     }
 
-    v12 = CGImageSourceCreateWithURL(v7, v10);
+    v12 = CGImageSourceCreateWithURL(lCopy, v10);
     self->_imageSource = v12;
     if (v12)
     {
@@ -285,34 +285,34 @@
         CFRelease(v13);
       }
 
-      objc_storeStrong(&self->_imageURL, a3);
-      v11 = self;
+      objc_storeStrong(&self->_imageURL, l);
+      selfCopy = self;
     }
 
     else
     {
-      v11 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (VUIImage)initWithData:(id)a3
+- (VUIImage)initWithData:(id)data
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5 && (v19.receiver = self, v19.super_class = VUIImage, (self = [(VUIImage *)&v19 init]) != 0))
+  dataCopy = data;
+  if (dataCopy && (v19.receiver = self, v19.super_class = VUIImage, (self = [(VUIImage *)&v19 init]) != 0))
   {
     v20 = *MEMORY[0x277CD3620];
     v21[0] = MEMORY[0x277CBEC38];
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:&v20 count:1];
-    v7 = CGImageSourceCreateWithData(v5, v6);
+    v7 = CGImageSourceCreateWithData(dataCopy, v6);
     self->_imageSource = v7;
     if (v7)
     {
@@ -344,22 +344,22 @@
         CFRelease(v8);
       }
 
-      objc_storeStrong(&self->_imageData, a3);
-      v17 = self;
+      objc_storeStrong(&self->_imageData, data);
+      selfCopy = self;
     }
 
     else
     {
-      v17 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v17 = 0;
+    selfCopy = 0;
   }
 
-  return v17;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -390,44 +390,44 @@
   [(VUIImage *)&v8 dealloc];
 }
 
-- (void)drawImageInContext:(CGContext *)a3 rect:(CGRect)a4
+- (void)drawImageInContext:(CGContext *)context rect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = [(VUIImage *)self image];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  image = [(VUIImage *)self image];
   v10 = x;
   v11 = y;
   v12 = width;
   v13 = height;
 
-  CGContextDrawImage(a3, *&v10, v9);
+  CGContextDrawImage(context, *&v10, image);
 }
 
 - (id)uiImage
 {
   v3 = MEMORY[0x277D755B8];
-  v4 = [(VUIImage *)self image];
-  v5 = [MEMORY[0x277D759A0] mainScreen];
-  [v5 scale];
-  v7 = [v3 imageWithCGImage:v4 scale:-[VUIImage _uiImageOrientation](self orientation:{"_uiImageOrientation"), v6}];
+  image = [(VUIImage *)self image];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
+  v7 = [v3 imageWithCGImage:image scale:-[VUIImage _uiImageOrientation](self orientation:{"_uiImageOrientation"), v6}];
 
   return v7;
 }
 
 - (CGImage)image
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  image = v2->_image;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  image = selfCopy->_image;
   if (!image)
   {
-    [(VUIImage *)v2 _initializeCGImageWithRotation];
-    image = v2->_image;
+    [(VUIImage *)selfCopy _initializeCGImageWithRotation];
+    image = selfCopy->_image;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return image;
 }
@@ -435,8 +435,8 @@
 - (BOOL)hasAlpha
 {
   imageType = self->_imageType;
-  v4 = [*MEMORY[0x277CE1D90] identifier];
-  LODWORD(imageType) = [(NSString *)imageType isEqualToString:v4];
+  identifier = [*MEMORY[0x277CE1D90] identifier];
+  LODWORD(imageType) = [(NSString *)imageType isEqualToString:identifier];
 
   if (imageType)
   {
@@ -484,10 +484,10 @@
   }
 }
 
-- (void)setEnableCache:(BOOL)a3
+- (void)setEnableCache:(BOOL)cache
 {
-  self->_enableCache = a3;
-  if (a3 && !self->_imageBufferInMemory)
+  self->_enableCache = cache;
+  if (cache && !self->_imageBufferInMemory)
   {
     self->_imageBufferInMemory = 1;
   }
@@ -530,10 +530,10 @@
   return result;
 }
 
-- (id)squareImageFromNearSquareImageWithAspectRatioLimit:(float)a3
+- (id)squareImageFromNearSquareImageWithAspectRatioLimit:(float)limit
 {
-  v5 = [(VUIImage *)self image];
-  if (!v5)
+  image = [(VUIImage *)self image];
+  if (!image)
   {
     goto LABEL_10;
   }
@@ -559,109 +559,109 @@
   }
 
   v12 = v11;
-  if (v12 < a3)
+  if (v12 < limit)
   {
 LABEL_10:
-    v13 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v15 = v5;
+    v15 = image;
     [(VUIImage *)self largestSquareRect];
     v16 = CGImageCreateWithImageInRect(v15, v18);
-    v13 = [VUIImage imageWithCGImageRef:v16 preserveAlpha:0];
+    selfCopy = [VUIImage imageWithCGImageRef:v16 preserveAlpha:0];
     CGImageRelease(v16);
   }
 
-  return v13;
+  return selfCopy;
 }
 
 - (int64_t)_uiImageOrientation
 {
   v3 = objc_opt_class();
-  v4 = [(VUIImage *)self orientation];
+  orientation = [(VUIImage *)self orientation];
 
-  return [v3 imageOrientationForExifOrientation:v4];
+  return [v3 imageOrientationForExifOrientation:orientation];
 }
 
-+ (int)exifOrientationForImageOrientation:(int64_t)a3
++ (int)exifOrientationForImageOrientation:(int64_t)orientation
 {
-  if ((a3 - 1) > 6)
+  if ((orientation - 1) > 6)
   {
     return 1;
   }
 
   else
   {
-    return dword_270EA2CD8[a3 - 1];
+    return dword_270EA2CD8[orientation - 1];
   }
 }
 
-+ (int64_t)imageOrientationForExifOrientation:(int)a3
++ (int64_t)imageOrientationForExifOrientation:(int)orientation
 {
-  if ((a3 - 2) > 6)
+  if ((orientation - 2) > 6)
   {
     return 0;
   }
 
   else
   {
-    return qword_270EA2CF8[a3 - 2];
+    return qword_270EA2CF8[orientation - 2];
   }
 }
 
-- (id)_initWithCGImageSourceRotationEnabled:(CGImageSource *)a3
+- (id)_initWithCGImageSourceRotationEnabled:(CGImageSource *)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v15.receiver = self;
     v15.super_class = VUIImage;
     self = [(VUIImage *)&v15 init];
-    v4 = self;
+    selfCopy2 = self;
     if (self)
     {
-      self->_imageSource = a3;
-      CFRetain(a3);
-      Type = CGImageSourceGetType(v4->_imageSource);
+      self->_imageSource = enabled;
+      CFRetain(enabled);
+      Type = CGImageSourceGetType(selfCopy2->_imageSource);
       if (Type)
       {
         v6 = [(__CFString *)Type copy];
-        imageType = v4->_imageType;
-        v4->_imageType = v6;
+        imageType = selfCopy2->_imageType;
+        selfCopy2->_imageType = v6;
       }
 
-      v8 = CGImageSourceCopyPropertiesAtIndex(v4->_imageSource, 0, 0);
+      v8 = CGImageSourceCopyPropertiesAtIndex(selfCopy2->_imageSource, 0, 0);
       v9 = [(__CFDictionary *)v8 objectForKey:*MEMORY[0x277CD3450]];
       [v9 floatValue];
-      v4->_imageWidth = v10;
+      selfCopy2->_imageWidth = v10;
 
       v11 = [(__CFDictionary *)v8 objectForKey:*MEMORY[0x277CD3448]];
       [v11 floatValue];
-      v4->_imageHeight = v12;
+      selfCopy2->_imageHeight = v12;
 
       v13 = [(__CFDictionary *)v8 objectForKey:*MEMORY[0x277CD3410]];
-      v4->_imageOrientation = [v13 intValue];
+      selfCopy2->_imageOrientation = [v13 intValue];
 
-      v4->_rotationEnabled = 1;
-      v4->_enableCache = 0;
+      selfCopy2->_rotationEnabled = 1;
+      selfCopy2->_enableCache = 0;
       if (v8)
       {
         CFRelease(v8);
       }
 
-      [(VUIImage *)v4 _initializeCGImageWithRotation];
-      self = v4;
-      v4 = self;
+      [(VUIImage *)selfCopy2 _initializeCGImageWithRotation];
+      self = selfCopy2;
+      selfCopy2 = self;
     }
   }
 
   else
   {
-    v4 = 0;
+    selfCopy2 = 0;
   }
 
-  return v4;
+  return selfCopy2;
 }
 
 - (void)_initializeCGImageWithRotation
@@ -686,12 +686,12 @@ LABEL_10:
   v7 = VUICImageLogObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [MEMORY[0x277CCACC8] isMainThread];
+    isMainThread = [MEMORY[0x277CCACC8] isMainThread];
     cacheImmediately = self->_cacheImmediately;
     *buf = 134218496;
     *&buf[4] = self;
     *&buf[12] = 1024;
-    *&buf[14] = v8;
+    *&buf[14] = isMainThread;
     *&buf[18] = 1024;
     *&buf[20] = cacheImmediately;
     _os_log_impl(&dword_270E6E000, v7, OS_LOG_TYPE_DEFAULT, "VUIImage::InitCGImage (%p), isMainThread: %d, cacheImmediately: %d", buf, 0x18u);
@@ -864,14 +864,14 @@ LABEL_16:
       if ([(VUIImage *)self usePrepareImageForDisplay])
       {
         v15 = [MEMORY[0x277D755B8] imageWithCGImage:self->_image];
-        v16 = [v15 imageByPreparingForDisplay];
+        imageByPreparingForDisplay = [v15 imageByPreparingForDisplay];
 
-        if (v16)
+        if (imageByPreparingForDisplay)
         {
           CGImageRelease(self->_image);
-          v17 = [v16 CGImage];
-          self->_image = v17;
-          CGImageRetain(v17);
+          cGImage = [imageByPreparingForDisplay CGImage];
+          self->_image = cGImage;
+          CGImageRetain(cGImage);
         }
       }
 
@@ -879,20 +879,20 @@ LABEL_16:
       {
         Width = CGImageGetWidth(self->_image);
         Height = CGImageGetHeight(self->_image);
-        v16 = [VUIGraphicsImageRenderer formatWithCGImage:self->_image];
-        [v16 setScale:1.0];
+        imageByPreparingForDisplay = [VUIGraphicsImageRenderer formatWithCGImage:self->_image];
+        [imageByPreparingForDisplay setScale:1.0];
         v45[0] = MEMORY[0x277D85DD0];
         v45[1] = 3221225472;
         v45[2] = __42__VUIImage__initializeCGImageWithRotation__block_invoke;
         v45[3] = &unk_279E21F88;
         v45[4] = self;
-        v28 = [VUIGraphicsImageRenderer imageWithSize:v16 format:v45 cgContextActions:Width, Height];
-        if (v28)
+        height = [VUIGraphicsImageRenderer imageWithSize:imageByPreparingForDisplay format:v45 cgContextActions:Width, Height];
+        if (height)
         {
           CGImageRelease(self->_image);
-          v29 = [v28 CGImage];
-          self->_image = v29;
-          CGImageRetain(v29);
+          cGImage2 = [height CGImage];
+          self->_image = cGImage2;
+          CGImageRetain(cGImage2);
         }
       }
     }

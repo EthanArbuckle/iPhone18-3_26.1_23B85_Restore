@@ -1,8 +1,8 @@
 @interface ML3SpotlightNameCache
-+ (id)copyFromLibrary:(id)a3 cancelHandler:(id)a4;
++ (id)copyFromLibrary:(id)library cancelHandler:(id)handler;
 + (void)initialize;
 - (id).cxx_construct;
-- (id)_initWithLibrary:(id)a3 cancelHandler:(id)a4;
+- (id)_initWithLibrary:(id)library cancelHandler:(id)handler;
 - (void)dealloc;
 @end
 
@@ -23,17 +23,17 @@
   [(ML3SpotlightNameCache *)&v2 dealloc];
 }
 
-- (id)_initWithLibrary:(id)a3 cancelHandler:(id)a4
+- (id)_initWithLibrary:(id)library cancelHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  libraryCopy = library;
+  handlerCopy = handler;
   v18.receiver = self;
   v18.super_class = ML3SpotlightNameCache;
   v9 = [(ML3SpotlightNameCache *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_library, a3);
+    objc_storeStrong(&v9->_library, library);
     library = v10->_library;
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
@@ -41,11 +41,11 @@
     v14[3] = &unk_2787640A0;
     v15 = @"SELECT name, name_order FROM sort_map";
     v16 = v10;
-    v17 = v8;
+    v17 = handlerCopy;
     [(ML3MusicLibrary *)library databaseConnectionAllowingWrites:0 withBlock:v14];
   }
 
-  if (v8 && (v8[2](v8) & 1) != 0)
+  if (handlerCopy && (handlerCopy[2](handlerCopy) & 1) != 0)
   {
     v12 = 0;
   }
@@ -159,10 +159,10 @@ LABEL_17:
   }
 }
 
-+ (id)copyFromLibrary:(id)a3 cancelHandler:(id)a4
++ (id)copyFromLibrary:(id)library cancelHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  libraryCopy = library;
+  handlerCopy = handler;
   if (__nameCacheOnce != -1)
   {
     dispatch_once(&__nameCacheOnce, &__block_literal_global_19744);
@@ -179,11 +179,11 @@ LABEL_17:
   block[1] = 3221225472;
   block[2] = __55__ML3SpotlightNameCache_copyFromLibrary_cancelHandler___block_invoke;
   block[3] = &unk_278764050;
-  v13 = v5;
-  v14 = v6;
+  v13 = libraryCopy;
+  v14 = handlerCopy;
   v15 = &v16;
-  v8 = v6;
-  v9 = v5;
+  v8 = handlerCopy;
+  v9 = libraryCopy;
   dispatch_sync(v7, block);
   v10 = v17[5];
 
@@ -237,7 +237,7 @@ void __55__ML3SpotlightNameCache_copyFromLibrary_cancelHandler___block_invoke_2(
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1 && __nameCacheOnce != -1)
+  if (objc_opt_class() == self && __nameCacheOnce != -1)
   {
 
     dispatch_once(&__nameCacheOnce, &__block_literal_global_19744);

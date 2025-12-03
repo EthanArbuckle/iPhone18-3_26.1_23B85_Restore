@@ -1,13 +1,13 @@
 @interface UserIdentifyIntent
-- (UserIdentifyIntent)initWithDomain:(id)a3 verb:(id)a4 parametersByName:(id)a5;
-- (UserIdentifyIntent)initWithIdentifier:(id)a3 backingStore:(id)a4;
+- (UserIdentifyIntent)initWithDomain:(id)domain verb:(id)verb parametersByName:(id)name;
+- (UserIdentifyIntent)initWithIdentifier:(id)identifier backingStore:(id)store;
 @end
 
 @implementation UserIdentifyIntent
 
-- (UserIdentifyIntent)initWithIdentifier:(id)a3 backingStore:(id)a4
+- (UserIdentifyIntent)initWithIdentifier:(id)identifier backingStore:(id)store
 {
-  if (a3)
+  if (identifier)
   {
     v5 = sub_266E9D024();
     v7 = v6;
@@ -19,15 +19,15 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return UserIdentifyIntent.init(identifier:backingStore:)(v5, v7, a4);
+  storeCopy = store;
+  return UserIdentifyIntent.init(identifier:backingStore:)(v5, v7, store);
 }
 
-- (UserIdentifyIntent)initWithDomain:(id)a3 verb:(id)a4 parametersByName:(id)a5
+- (UserIdentifyIntent)initWithDomain:(id)domain verb:(id)verb parametersByName:(id)name
 {
   sub_266E9D024();
   sub_266E9D024();
-  if (a5)
+  if (name)
   {
     sub_266E9CFC4();
   }

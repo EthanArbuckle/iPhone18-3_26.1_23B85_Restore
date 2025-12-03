@@ -1,36 +1,36 @@
 @interface CCPhotosPetRelationshipContent
-+ (id)descriptionForTypeIdentifier:(unsigned __int16)a3;
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCPhotosPetRelationshipContent)initWithIsUsersPet:(id)a3 type:(unsigned int)a4 error:(id *)a5;
-- (CCPhotosPetRelationshipContent)initWithJSONDictionary:(id)a3 error:(id *)a4;
++ (id)descriptionForTypeIdentifier:(unsigned __int16)identifier;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCPhotosPetRelationshipContent)initWithIsUsersPet:(id)pet type:(unsigned int)type error:(id *)error;
+- (CCPhotosPetRelationshipContent)initWithJSONDictionary:(id)dictionary error:(id *)error;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCPhotosPetRelationshipContent
 
-- (CCPhotosPetRelationshipContent)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCPhotosPetRelationshipContent)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"isUsersPet"];
-    v10 = [v6 objectForKeyedSubscript:@"type"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"isUsersPet"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"type"];
     v11 = v10;
     if (v10)
     {
-      v12 = [v10 unsignedIntegerValue];
+      unsignedIntegerValue = [v10 unsignedIntegerValue];
     }
 
     else
     {
-      v12 = 0;
+      unsignedIntegerValue = 0;
     }
 
-    v13 = [[CCPhotosPetRelationshipContent alloc] initWithIsUsersPet:v9 type:v12 error:a4];
+    v13 = [[CCPhotosPetRelationshipContent alloc] initWithIsUsersPet:v9 type:unsignedIntegerValue error:error];
   }
 
   else
@@ -59,23 +59,23 @@
   return v6;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v7 = a3;
+  blockCopy = block;
   if (self->_hasIsUsersPet)
   {
     v5 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:59689 BOOLValue:self->_isUsersPet];
-    v7[2](v7, v5);
+    blockCopy[2](blockCopy, v5);
   }
 
   v6 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:59690 enumValue:self->_type];
-  v7[2](v7, v6);
+  blockCopy[2](blockCopy, v6);
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v6];
+  dataCopy = data;
+  v7 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v8 = MEMORY[0x1E6993AB8];
   v9 = MEMORY[0x1E6993AB0];
   v10 = MEMORY[0x1E6993AA8];
@@ -86,7 +86,7 @@
 
   v11 = 0;
   v12 = MEMORY[0x1E6993AA0];
-  v47 = self;
+  selfCopy = self;
   do
   {
     if (*&v7[*v10])
@@ -250,14 +250,14 @@ LABEL_42:
     {
       v37 = objc_opt_class();
       NSStringFromClass(v37);
-      v38 = a4;
-      v40 = v39 = v6;
+      errorCopy = error;
+      v40 = v39 = dataCopy;
       v41 = *&v7[*v10];
       v11 = CCSkipFieldErrorForMessage();
 
-      v6 = v39;
-      a4 = v38;
-      self = v47;
+      dataCopy = v39;
+      error = errorCopy;
+      self = selfCopy;
     }
   }
 
@@ -290,14 +290,14 @@ LABEL_59:
   return v45;
 }
 
-- (CCPhotosPetRelationshipContent)initWithIsUsersPet:(id)a3 type:(unsigned int)a4 error:(id *)a5
+- (CCPhotosPetRelationshipContent)initWithIsUsersPet:(id)pet type:(unsigned int)type error:(id *)error
 {
-  v8 = a3;
+  petCopy = pet;
   v9 = objc_opt_new();
-  if (!v8)
+  if (!petCopy)
   {
     v11 = 0;
-    if (!a4)
+    if (!type)
     {
       goto LABEL_8;
     }
@@ -310,7 +310,7 @@ LABEL_6:
     if (!v12)
     {
       CCSetError();
-      v15 = 0;
+      selfCopy = 0;
       v11 = v13;
       goto LABEL_11;
     }
@@ -326,37 +326,37 @@ LABEL_6:
   if (!IsInstanceOfExpectedClass)
   {
     CCSetError();
-    v15 = 0;
+    selfCopy = 0;
     goto LABEL_11;
   }
 
-  [v8 BOOLValue];
+  [petCopy BOOLValue];
   CCPBDataWriterWriteBOOLField();
-  if (a4)
+  if (type)
   {
     goto LABEL_6;
   }
 
 LABEL_8:
-  v14 = [v9 immutableData];
-  self = [(CCItemMessage *)self initWithData:v14 error:a5];
+  immutableData = [v9 immutableData];
+  self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-  v15 = self;
+  selfCopy = self;
 LABEL_11:
 
-  return v15;
+  return selfCopy;
 }
 
-+ (id)descriptionForTypeIdentifier:(unsigned __int16)a3
++ (id)descriptionForTypeIdentifier:(unsigned __int16)identifier
 {
-  if ((a3 + 5848) > 2u)
+  if ((identifier + 5848) > 2u)
   {
     return 0;
   }
 
   else
   {
-    return off_1E73E78B0[(a3 + 5848)];
+    return off_1E73E78B0[(identifier + 5848)];
   }
 }
 

@@ -1,11 +1,11 @@
 @interface HKTabBarController
 - (HKTabBarController)init;
-- (HKTabBarController)initWithNibName:(id)a3 bundle:(id)a4;
+- (HKTabBarController)initWithNibName:(id)name bundle:(id)bundle;
 - (UIViewController)previousViewController;
-- (unint64_t)tabBarControllerSupportedInterfaceOrientations:(id)a3;
-- (void)setTabBarControlsHidden:(BOOL)a3 animated:(BOOL)a4;
-- (void)tabBarController:(id)a3 didSelectViewController:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (unint64_t)tabBarControllerSupportedInterfaceOrientations:(id)orientations;
+- (void)setTabBarControlsHidden:(BOOL)hidden animated:(BOOL)animated;
+- (void)tabBarController:(id)controller didSelectViewController:(id)viewController;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation HKTabBarController
@@ -24,11 +24,11 @@
   return v3;
 }
 
-- (HKTabBarController)initWithNibName:(id)a3 bundle:(id)a4
+- (HKTabBarController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = HKTabBarController;
-  v4 = [(HKTabBarController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(HKTabBarController *)&v7 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -38,34 +38,34 @@
   return v5;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = HKTabBarController;
-  [(HKTabBarController *)&v5 viewDidAppear:a3];
-  v4 = [(HKTabBarController *)self selectedViewController];
-  [(HKTabBarController *)self setPreviousViewController:v4];
+  [(HKTabBarController *)&v5 viewDidAppear:appear];
+  selectedViewController = [(HKTabBarController *)self selectedViewController];
+  [(HKTabBarController *)self setPreviousViewController:selectedViewController];
 }
 
-- (void)setTabBarControlsHidden:(BOOL)a3 animated:(BOOL)a4
+- (void)setTabBarControlsHidden:(BOOL)hidden animated:(BOOL)animated
 {
-  v4 = a3;
-  v6 = [(HKTabBarController *)self tabBar:a3];
-  v7 = [(HKTabBarController *)self view];
+  hiddenCopy = hidden;
+  v6 = [(HKTabBarController *)self tabBar:hidden];
+  view = [(HKTabBarController *)self view];
   [v6 frame];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  [v7 frame];
-  if ((((v11 < v19) ^ v4) & 1) == 0)
+  [view frame];
+  if ((((v11 < v19) ^ hiddenCopy) & 1) == 0)
   {
     v20 = v16;
     v21 = v17;
     v22 = v18;
     v23 = v19;
     v24 = -v15;
-    if (v4)
+    if (hiddenCopy)
     {
       v24 = v15;
     }
@@ -82,7 +82,7 @@
     v32 = v13;
     v33 = v15;
     v34 = v26;
-    v29 = v7;
+    v29 = view;
     v35 = v20;
     v36 = v21;
     v37 = v22;
@@ -105,53 +105,53 @@ uint64_t __55__HKTabBarController_setTabBarControlsHidden_animated___block_invok
   return [v3 setFrame:{v6, v4, v5, v7}];
 }
 
-- (unint64_t)tabBarControllerSupportedInterfaceOrientations:(id)a3
+- (unint64_t)tabBarControllerSupportedInterfaceOrientations:(id)orientations
 {
-  v3 = [(HKTabBarController *)self selectedViewController];
-  v4 = v3;
-  if (v3)
+  selectedViewController = [(HKTabBarController *)self selectedViewController];
+  v4 = selectedViewController;
+  if (selectedViewController)
   {
-    v5 = [v3 supportedInterfaceOrientations];
+    supportedInterfaceOrientations = [selectedViewController supportedInterfaceOrientations];
   }
 
   else
   {
-    v5 = 2;
+    supportedInterfaceOrientations = 2;
   }
 
-  return v5;
+  return supportedInterfaceOrientations;
 }
 
-- (void)tabBarController:(id)a3 didSelectViewController:(id)a4
+- (void)tabBarController:(id)controller didSelectViewController:(id)viewController
 {
-  v12 = a4;
-  v5 = [(HKTabBarController *)self previousViewController];
-  v6 = [v5 conformsToProtocol:&unk_1F4479638];
+  viewControllerCopy = viewController;
+  previousViewController = [(HKTabBarController *)self previousViewController];
+  v6 = [previousViewController conformsToProtocol:&unk_1F4479638];
 
   if (v6)
   {
-    v7 = [(HKTabBarController *)self previousViewController];
-    if (v7 == v12)
+    previousViewController2 = [(HKTabBarController *)self previousViewController];
+    if (previousViewController2 == viewControllerCopy)
     {
     }
 
     else
     {
-      v8 = [(HKTabBarController *)self previousViewController];
+      previousViewController3 = [(HKTabBarController *)self previousViewController];
       v9 = objc_opt_respondsToSelector();
 
       if (v9)
       {
-        v10 = [(HKTabBarController *)self previousViewController];
-        [v10 didChangeToAnotherTab];
+        previousViewController4 = [(HKTabBarController *)self previousViewController];
+        [previousViewController4 didChangeToAnotherTab];
 LABEL_7:
 
         goto LABEL_8;
       }
     }
 
-    v10 = [(HKTabBarController *)self previousViewController];
-    if (v10 != v12)
+    previousViewController4 = [(HKTabBarController *)self previousViewController];
+    if (previousViewController4 != viewControllerCopy)
     {
       goto LABEL_7;
     }
@@ -160,12 +160,12 @@ LABEL_7:
 
     if (v11)
     {
-      [v12 didTapTabBarIcon];
+      [viewControllerCopy didTapTabBarIcon];
     }
   }
 
 LABEL_8:
-  [(HKTabBarController *)self setPreviousViewController:v12];
+  [(HKTabBarController *)self setPreviousViewController:viewControllerCopy];
 }
 
 - (UIViewController)previousViewController

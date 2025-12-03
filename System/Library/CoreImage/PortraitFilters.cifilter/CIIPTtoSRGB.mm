@@ -53,16 +53,16 @@
 
   if ([(NSNumber *)self->inputIsHueChroma BOOLValue])
   {
-    v4 = [(CIIPTtoSRGB *)self _hueChromaToRect];
+    _hueChromaToRect = [(CIIPTtoSRGB *)self _hueChromaToRect];
     [(CIImage *)self->inputImage extent];
     v16 = inputImage;
-    inputImage = [v4 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", &v16, 1), v5, v6, v7, v8}];
+    inputImage = [_hueChromaToRect applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", &v16, 1), v5, v6, v7, v8}];
   }
 
-  v9 = [(CIIPTtoSRGB *)self _iptToSRGB];
+  _iptToSRGB = [(CIIPTtoSRGB *)self _iptToSRGB];
   [(CIImage *)self->inputImage extent];
   v15 = inputImage;
-  return [v9 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", &v15, 1), v10, v11, v12, v13}];
+  return [_iptToSRGB applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", &v15, 1), v10, v11, v12, v13}];
 }
 
 @end

@@ -1,16 +1,16 @@
 @interface LEAudioTestXPCListener
 + (id)instance;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (LEAudioTestXPCListener)init;
-- (void)deregisterDelegateForPeripheralWithUUID:(id)a3 forService:(id)a4;
-- (void)receiveMsg:(id)a3 content:(id)a4;
-- (void)receiveMsg:(id)a3 content:(id)a4 forPeripheral:(id)a5 service:(id)a6;
-- (void)receiveMsg:(id)a3 content:(id)a4 withReply:(id)a5;
+- (void)deregisterDelegateForPeripheralWithUUID:(id)d forService:(id)service;
+- (void)receiveMsg:(id)msg content:(id)content;
+- (void)receiveMsg:(id)msg content:(id)content forPeripheral:(id)peripheral service:(id)service;
+- (void)receiveMsg:(id)msg content:(id)content withReply:(id)reply;
 - (void)registerClient;
-- (void)registerDelegate:(id)a3 forPeripheralWithUUID:(id)a4 forService:(id)a5;
-- (void)sendMsg:(id)a3 content:(id)a4;
-- (void)sendMsg:(id)a3 content:(id)a4 forPeripheralWithUUID:(id)a5 service:(id)a6;
-- (void)sendMsg:(id)a3 content:(id)a4 withReply:(id)a5;
+- (void)registerDelegate:(id)delegate forPeripheralWithUUID:(id)d forService:(id)service;
+- (void)sendMsg:(id)msg content:(id)content;
+- (void)sendMsg:(id)msg content:(id)content forPeripheralWithUUID:(id)d service:(id)service;
+- (void)sendMsg:(id)msg content:(id)content withReply:(id)reply;
 @end
 
 @implementation LEAudioTestXPCListener
@@ -37,11 +37,11 @@
     v3 = [[NSXPCListener alloc] initWithMachServiceName:@"com.apple.bluetoothaudiodtest"];
     [(LEAudioTestXPCListener *)v2 setListener:v3];
 
-    v4 = [(LEAudioTestXPCListener *)v2 listener];
-    [v4 setDelegate:v2];
+    listener = [(LEAudioTestXPCListener *)v2 listener];
+    [listener setDelegate:v2];
 
-    v5 = [(LEAudioTestXPCListener *)v2 listener];
-    [v5 resume];
+    listener2 = [(LEAudioTestXPCListener *)v2 listener];
+    [listener2 resume];
 
     v6 = +[NSMutableArray array];
     xpcListenerEndpoints = v2->_xpcListenerEndpoints;
@@ -51,19 +51,19 @@
   return v2;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___LEAudioAppInterface];
-  [v5 setRemoteObjectInterface:v6];
+  [connectionCopy setRemoteObjectInterface:v6];
 
-  [v5 setExportedObject:self];
+  [connectionCopy setExportedObject:self];
   v7 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___BluetoothAudiodTestInterface];
-  [v5 setExportedInterface:v7];
+  [connectionCopy setExportedInterface:v7];
 
-  [v5 setInvalidationHandler:&stru_100095B78];
-  [v5 resume];
-  [(LEAudioTestXPCListener *)self setConnection:v5];
+  [connectionCopy setInvalidationHandler:&stru_100095B78];
+  [connectionCopy resume];
+  [(LEAudioTestXPCListener *)self setConnection:connectionCopy];
 
   v8 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
@@ -75,21 +75,21 @@
   return 1;
 }
 
-- (void)registerDelegate:(id)a3 forPeripheralWithUUID:(id)a4 forService:(id)a5
+- (void)registerDelegate:(id)delegate forPeripheralWithUUID:(id)d forService:(id)service
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(LEAudioTestXPCListener *)self xpcListenerEndpoints];
+  delegateCopy = delegate;
+  dCopy = d;
+  serviceCopy = service;
+  xpcListenerEndpoints = [(LEAudioTestXPCListener *)self xpcListenerEndpoints];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_10004E4E8;
   v17[3] = &unk_100095BA0;
-  v12 = v9;
+  v12 = dCopy;
   v18 = v12;
-  v13 = v10;
+  v13 = serviceCopy;
   v19 = v13;
-  v14 = [v11 indexOfObjectPassingTest:v17];
+  v14 = [xpcListenerEndpoints indexOfObjectPassingTest:v17];
 
   if (v14 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -98,39 +98,39 @@
     v21[0] = v12;
     v21[1] = v13;
     v20[2] = @"kDelegate";
-    v21[2] = v8;
+    v21[2] = delegateCopy;
     v15 = [NSDictionary dictionaryWithObjects:v21 forKeys:v20 count:3];
-    v16 = [(LEAudioTestXPCListener *)self xpcListenerEndpoints];
-    [v16 addObject:v15];
+    xpcListenerEndpoints2 = [(LEAudioTestXPCListener *)self xpcListenerEndpoints];
+    [xpcListenerEndpoints2 addObject:v15];
   }
 }
 
-- (void)deregisterDelegateForPeripheralWithUUID:(id)a3 forService:(id)a4
+- (void)deregisterDelegateForPeripheralWithUUID:(id)d forService:(id)service
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  serviceCopy = service;
   v8 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [v6 UUIDString];
+    uUIDString = [dCopy UUIDString];
     *buf = 138412546;
-    v23 = v10;
+    v23 = uUIDString;
     v24 = 2112;
-    v25 = v7;
+    v25 = serviceCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "LEAudioTestXPCListener deregistering delegate for peripheral with UUID: %@ and service: %@", buf, 0x16u);
   }
 
-  v11 = [(LEAudioTestXPCListener *)self xpcListenerEndpoints];
+  xpcListenerEndpoints = [(LEAudioTestXPCListener *)self xpcListenerEndpoints];
   v16 = _NSConcreteStackBlock;
   v17 = 3221225472;
   v18 = sub_10004E76C;
   v19 = &unk_100095BA0;
-  v20 = v6;
-  v21 = v7;
-  v12 = v7;
-  v13 = v6;
-  v14 = [v11 indexOfObjectPassingTest:&v16];
+  v20 = dCopy;
+  v21 = serviceCopy;
+  v12 = serviceCopy;
+  v13 = dCopy;
+  v14 = [xpcListenerEndpoints indexOfObjectPassingTest:&v16];
 
   if (v14 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -139,152 +139,152 @@
   }
 }
 
-- (void)sendMsg:(id)a3 content:(id)a4 forPeripheralWithUUID:(id)a5 service:(id)a6
+- (void)sendMsg:(id)msg content:(id)content forPeripheralWithUUID:(id)d service:(id)service
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v15 = [(LEAudioTestXPCListener *)self connection];
-  v14 = [v15 remoteObjectProxy];
-  [v14 receiveMsg:v13 content:v12 forPeripheral:v11 service:v10];
+  serviceCopy = service;
+  dCopy = d;
+  contentCopy = content;
+  msgCopy = msg;
+  connection = [(LEAudioTestXPCListener *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  [remoteObjectProxy receiveMsg:msgCopy content:contentCopy forPeripheral:dCopy service:serviceCopy];
 }
 
-- (void)sendMsg:(id)a3 content:(id)a4 withReply:(id)a5
+- (void)sendMsg:(id)msg content:(id)content withReply:(id)reply
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v12 = [(LEAudioTestXPCListener *)self connection];
-  v11 = [v12 remoteObjectProxy];
-  [v11 receiveMsg:v10 content:v9 withReply:v8];
+  replyCopy = reply;
+  contentCopy = content;
+  msgCopy = msg;
+  connection = [(LEAudioTestXPCListener *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  [remoteObjectProxy receiveMsg:msgCopy content:contentCopy withReply:replyCopy];
 }
 
-- (void)sendMsg:(id)a3 content:(id)a4
+- (void)sendMsg:(id)msg content:(id)content
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(LEAudioTestXPCListener *)self connection];
-  v8 = [v9 remoteObjectProxy];
-  [v8 receiveMsg:v7 content:v6];
+  contentCopy = content;
+  msgCopy = msg;
+  connection = [(LEAudioTestXPCListener *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  [remoteObjectProxy receiveMsg:msgCopy content:contentCopy];
 }
 
-- (void)receiveMsg:(id)a3 content:(id)a4 forPeripheral:(id)a5 service:(id)a6
+- (void)receiveMsg:(id)msg content:(id)content forPeripheral:(id)peripheral service:(id)service
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  NSLog(@"XPC listener receive msg with name with msg %@ with options: %@", v10, v11);
-  v14 = [(LEAudioTestXPCListener *)self xpcListenerEndpoints];
+  msgCopy = msg;
+  contentCopy = content;
+  peripheralCopy = peripheral;
+  serviceCopy = service;
+  NSLog(@"XPC listener receive msg with name with msg %@ with options: %@", msgCopy, contentCopy);
+  xpcListenerEndpoints = [(LEAudioTestXPCListener *)self xpcListenerEndpoints];
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_10004EBA4;
   v22[3] = &unk_100095BA0;
-  v23 = v12;
-  v24 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = [v14 indexOfObjectPassingTest:v22];
+  v23 = peripheralCopy;
+  v24 = serviceCopy;
+  v15 = serviceCopy;
+  v16 = peripheralCopy;
+  v17 = [xpcListenerEndpoints indexOfObjectPassingTest:v22];
 
   if (v17 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v18 = [(LEAudioTestXPCListener *)self xpcListenerEndpoints];
-    v19 = [v18 objectAtIndexedSubscript:v17];
+    xpcListenerEndpoints2 = [(LEAudioTestXPCListener *)self xpcListenerEndpoints];
+    v19 = [xpcListenerEndpoints2 objectAtIndexedSubscript:v17];
 
     v20 = [v19 objectForKey:@"kDelegate"];
     v21 = v20;
     if (v20)
     {
-      [v20 handleMsg:v10 content:v11];
+      [v20 handleMsg:msgCopy content:contentCopy];
     }
   }
 }
 
-- (void)receiveMsg:(id)a3 content:(id)a4 withReply:(id)a5
+- (void)receiveMsg:(id)msg content:(id)content withReply:(id)reply
 {
-  v12 = a3;
-  v7 = a4;
-  v8 = a5;
-  NSLog(@"XPC listener receive msg with name with msg %@ with options: %@", v12, v7);
-  if ([v12 isEqualToString:@"bapCmdRequest"])
+  msgCopy = msg;
+  contentCopy = content;
+  replyCopy = reply;
+  NSLog(@"XPC listener receive msg with name with msg %@ with options: %@", msgCopy, contentCopy);
+  if ([msgCopy isEqualToString:@"bapCmdRequest"])
   {
     v9 = +[ConnectionManager instance];
-    v10 = [v9 handleBapUnicastRequest:v7];
+    retrieveCapSessionsAndPeripherals = [v9 handleBapUnicastRequest:contentCopy];
 LABEL_19:
-    v11 = v10;
+    v11 = retrieveCapSessionsAndPeripherals;
 
     goto LABEL_20;
   }
 
-  if ([v12 isEqualToString:@"retrieveConnectedDevices"])
+  if ([msgCopy isEqualToString:@"retrieveConnectedDevices"])
   {
     v9 = +[ConnectionManager instance];
-    v10 = [v9 retrieveCapSessionsAndPeripherals];
+    retrieveCapSessionsAndPeripherals = [v9 retrieveCapSessionsAndPeripherals];
     goto LABEL_19;
   }
 
-  if ([v12 isEqualToString:@"CAPUnicastProcedure"])
+  if ([msgCopy isEqualToString:@"CAPUnicastProcedure"])
   {
     v9 = +[ConnectionManager instance];
-    v10 = [v9 handleCapUnicastRequest:v7];
+    retrieveCapSessionsAndPeripherals = [v9 handleCapUnicastRequest:contentCopy];
     goto LABEL_19;
   }
 
-  if ([v12 isEqualToString:@"CAPCommanderProcedure"])
+  if ([msgCopy isEqualToString:@"CAPCommanderProcedure"])
   {
     v9 = +[ConnectionManager instance];
-    v10 = [v9 handleCapCommanderRequest:v7];
+    retrieveCapSessionsAndPeripherals = [v9 handleCapCommanderRequest:contentCopy];
     goto LABEL_19;
   }
 
-  if ([v12 isEqualToString:@"captureRenderingControl"])
+  if ([msgCopy isEqualToString:@"captureRenderingControl"])
   {
     v9 = +[ConnectionManager instance];
-    v10 = [v9 handleCaptureRenderingControl:v7];
+    retrieveCapSessionsAndPeripherals = [v9 handleCaptureRenderingControl:contentCopy];
     goto LABEL_19;
   }
 
-  if ([v12 isEqualToString:@"hapUnicastRequest"])
+  if ([msgCopy isEqualToString:@"hapUnicastRequest"])
   {
     v9 = +[ConnectionManager instance];
-    v10 = [v9 handleHapUnicastRequest:v7];
+    retrieveCapSessionsAndPeripherals = [v9 handleHapUnicastRequest:contentCopy];
     goto LABEL_19;
   }
 
-  if ([v12 isEqualToString:@"mediaControlRequest"])
+  if ([msgCopy isEqualToString:@"mediaControlRequest"])
   {
     v9 = +[ConnectionManager instance];
-    v10 = [v9 handleMediaControlCommands:v7];
+    retrieveCapSessionsAndPeripherals = [v9 handleMediaControlCommands:contentCopy];
     goto LABEL_19;
   }
 
-  if ([v12 isEqualToString:@"telephonyControlRequest"])
+  if ([msgCopy isEqualToString:@"telephonyControlRequest"])
   {
     v9 = +[ConnectionManager instance];
-    v10 = [v9 handleTelephonyControlCommands:v7];
+    retrieveCapSessionsAndPeripherals = [v9 handleTelephonyControlCommands:contentCopy];
     goto LABEL_19;
   }
 
-  if ([v12 isEqualToString:@"acceptorInterfaceRequest"])
+  if ([msgCopy isEqualToString:@"acceptorInterfaceRequest"])
   {
     v9 = +[ConnectionManager instance];
-    v10 = [v9 handleAcceptorInterfaceRequest:v7];
+    retrieveCapSessionsAndPeripherals = [v9 handleAcceptorInterfaceRequest:contentCopy];
     goto LABEL_19;
   }
 
   v11 = 0;
 LABEL_20:
-  v8[2](v8, v11);
+  replyCopy[2](replyCopy, v11);
 }
 
-- (void)receiveMsg:(id)a3 content:(id)a4
+- (void)receiveMsg:(id)msg content:(id)content
 {
-  v6 = a4;
-  if ([a3 isEqualToString:@"AudioConfig"])
+  contentCopy = content;
+  if ([msg isEqualToString:@"AudioConfig"])
   {
     v5 = +[ConnectionManager instance];
-    [v5 setAudioConfiguration:v6 forSession:0];
+    [v5 setAudioConfiguration:contentCopy forSession:0];
   }
 }
 

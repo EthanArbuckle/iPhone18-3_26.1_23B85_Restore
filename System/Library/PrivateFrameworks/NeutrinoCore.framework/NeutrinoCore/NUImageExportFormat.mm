@@ -1,17 +1,17 @@
 @interface NUImageExportFormat
-+ (id)defaultFormatForURL:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)defaultFormatForURL:(id)l;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)fileType;
 - (id)pixelFormat;
-- (void)addImageDestinationOptionsToImageProperties:(id)a3;
+- (void)addImageDestinationOptionsToImageProperties:(id)properties;
 @end
 
 @implementation NUImageExportFormat
 
-- (void)addImageDestinationOptionsToImageProperties:(id)a3
+- (void)addImageDestinationOptionsToImageProperties:(id)properties
 {
   v33 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  propertiesCopy = properties;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_7168);
@@ -54,8 +54,8 @@ LABEL_8:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v12 callStackSymbols];
+      v15 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v15;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -71,8 +71,8 @@ LABEL_8:
     v18 = MEMORY[0x1E696AF00];
     v19 = specific;
     v20 = v16;
-    v21 = [v18 callStackSymbols];
-    v22 = [v21 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v18 callStackSymbols];
+    v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v30 = specific;
     v31 = 2114;
@@ -131,8 +131,8 @@ LABEL_8:
     {
       v10 = MEMORY[0x1E696AF00];
       v11 = v9;
-      v12 = [v10 callStackSymbols];
-      v13 = [v12 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v10 callStackSymbols];
+      v13 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v28 = v13;
       _os_log_error_impl(&dword_1C0184000, v11, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -148,8 +148,8 @@ LABEL_8:
     v16 = MEMORY[0x1E696AF00];
     v17 = specific;
     v18 = v14;
-    v19 = [v16 callStackSymbols];
-    v20 = [v19 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v16 callStackSymbols];
+    v20 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v28 = specific;
     v29 = 2114;
@@ -208,8 +208,8 @@ LABEL_8:
     {
       v10 = MEMORY[0x1E696AF00];
       v11 = v9;
-      v12 = [v10 callStackSymbols];
-      v13 = [v12 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v10 callStackSymbols];
+      v13 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v28 = v13;
       _os_log_error_impl(&dword_1C0184000, v11, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -225,8 +225,8 @@ LABEL_8:
     v16 = MEMORY[0x1E696AF00];
     v17 = specific;
     v18 = v14;
-    v19 = [v16 callStackSymbols];
-    v20 = [v19 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v16 callStackSymbols];
+    v20 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v28 = specific;
     v29 = 2114;
@@ -240,7 +240,7 @@ LABEL_14:
   _NUAssertFailHandler("[NUImageExportFormat fileType]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NUImageExportFormat.m", 48, @"This is an abstract method! Subclass '%@' should provide concrete implementation", v23, v24, v25, v26, v22);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v32 = *MEMORY[0x1E69E9840];
   if (_NULogOnceToken != -1)
@@ -285,8 +285,8 @@ LABEL_8:
     {
       v11 = MEMORY[0x1E696AF00];
       v12 = v10;
-      v13 = [v11 callStackSymbols];
-      v14 = [v13 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v11 callStackSymbols];
+      v14 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v29 = v14;
       _os_log_error_impl(&dword_1C0184000, v12, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -302,8 +302,8 @@ LABEL_8:
     v17 = MEMORY[0x1E696AF00];
     v18 = specific;
     v19 = v15;
-    v20 = [v17 callStackSymbols];
-    v21 = [v20 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v17 callStackSymbols];
+    v21 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v29 = specific;
     v30 = 2114;
@@ -317,11 +317,11 @@ LABEL_14:
   _NUAssertFailHandler("[NUImageExportFormat copyWithZone:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NUImageExportFormat.m", 43, @"This is an abstract method! Subclass '%@' should provide concrete implementation", v24, v25, v26, v27, v23);
 }
 
-+ (id)defaultFormatForURL:(id)a3
++ (id)defaultFormatForURL:(id)l
 {
   v39 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (!v3)
+  lCopy = l;
+  if (!lCopy)
   {
     v19 = NUAssertLogger_7209();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -342,8 +342,8 @@ LABEL_14:
         v26 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v27 = MEMORY[0x1E696AF00];
         v28 = v26;
-        v29 = [v27 callStackSymbols];
-        v30 = [v29 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v27 callStackSymbols];
+        v30 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v36 = v26;
         v37 = 2114;
@@ -354,8 +354,8 @@ LABEL_14:
 
     else if (v23)
     {
-      v24 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v25 = [v24 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v25 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v36 = v25;
       _os_log_error_impl(&dword_1C0184000, v22, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -364,17 +364,17 @@ LABEL_14:
     _NUAssertFailHandler("+[NUImageExportFormat defaultFormatForURL:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NUImageExportFormat.m", 20, @"Invalid parameter not satisfying: %s", v31, v32, v33, v34, "fileURL != nil");
   }
 
-  v4 = v3;
-  v5 = [v3 pathExtension];
-  if (![v5 length])
+  v4 = lCopy;
+  pathExtension = [lCopy pathExtension];
+  if (![pathExtension length])
   {
     v10 = 0;
     goto LABEL_14;
   }
 
-  v6 = NUFileTypeFromExtension(v5);
-  v7 = [*MEMORY[0x1E6982E58] identifier];
-  v8 = [v6 isEqualToString:v7];
+  v6 = NUFileTypeFromExtension(pathExtension);
+  identifier = [*MEMORY[0x1E6982E58] identifier];
+  v8 = [v6 isEqualToString:identifier];
 
   if (v8)
   {
@@ -383,8 +383,8 @@ LABEL_14:
 
   else
   {
-    v11 = [*MEMORY[0x1E6983008] identifier];
-    v12 = [v6 isEqualToString:v11];
+    identifier2 = [*MEMORY[0x1E6983008] identifier];
+    v12 = [v6 isEqualToString:identifier2];
 
     if (v12)
     {
@@ -393,8 +393,8 @@ LABEL_14:
 
     else
     {
-      v13 = [*MEMORY[0x1E6982F28] identifier];
-      v14 = [v6 isEqualToString:v13];
+      identifier3 = [*MEMORY[0x1E6982F28] identifier];
+      v14 = [v6 isEqualToString:identifier3];
 
       if (v14)
       {
@@ -403,8 +403,8 @@ LABEL_14:
 
       else
       {
-        v15 = [*MEMORY[0x1E6982E00] identifier];
-        v16 = [v6 isEqualToString:v15];
+        identifier4 = [*MEMORY[0x1E6982E00] identifier];
+        v16 = [v6 isEqualToString:identifier4];
 
         if (!v16)
         {

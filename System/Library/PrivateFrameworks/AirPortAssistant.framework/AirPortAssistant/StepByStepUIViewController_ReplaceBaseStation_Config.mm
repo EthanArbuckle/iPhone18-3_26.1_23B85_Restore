@@ -1,15 +1,15 @@
 @interface StepByStepUIViewController_ReplaceBaseStation_Config
-- (BOOL)shouldChangeTextField:(id)a3 atIndexPath:(id)a4 forTextIndex:(unint64_t)a5 toString:(id)a6;
+- (BOOL)shouldChangeTextField:(id)field atIndexPath:(id)path forTextIndex:(unint64_t)index toString:(id)string;
 - (void)dealloc;
 - (void)loadView;
 - (void)prepareParams;
-- (void)primaryActionSelected:(BOOL)a3;
+- (void)primaryActionSelected:(BOOL)selected;
 - (void)selectedDeviceUpdated;
 - (void)setupDevices;
 - (void)setupEditableBaseStationName;
 - (void)setupHeaderAndFooter;
 - (void)validateAndUpdateNextButton;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation StepByStepUIViewController_ReplaceBaseStation_Config
@@ -34,15 +34,15 @@
   [(StepByStepUIViewController *)&v3 dealloc];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
-  v5 = objc_msgSend_tableFooterContainerView(self, a2, a3);
+  appearCopy = appear;
+  v5 = objc_msgSend_tableFooterContainerView(self, a2, appear);
   v8 = objc_msgSend_tableView(self, v6, v7);
   objc_msgSend_setTableFooterView_(v8, v9, v5);
   v10.receiver = self;
   v10.super_class = StepByStepUIViewController_ReplaceBaseStation_Config;
-  [(StepByStepUIViewController_DevicePicker *)&v10 viewWillAppear:v3];
+  [(StepByStepUIViewController_DevicePicker *)&v10 viewWillAppear:appearCopy];
 }
 
 - (void)setupEditableBaseStationName
@@ -204,19 +204,19 @@ LABEL_9:
   }
 }
 
-- (BOOL)shouldChangeTextField:(id)a3 atIndexPath:(id)a4 forTextIndex:(unint64_t)a5 toString:(id)a6
+- (BOOL)shouldChangeTextField:(id)field atIndexPath:(id)path forTextIndex:(unint64_t)index toString:(id)string
 {
-  v8 = objc_msgSend_outResultsDict(self, a2, a3, a4, a5);
-  objc_msgSend_setValue_forKey_(v8, v9, a6, @"kSBSKey_BaseName");
+  v8 = objc_msgSend_outResultsDict(self, a2, field, path, index);
+  objc_msgSend_setValue_forKey_(v8, v9, string, @"kSBSKey_BaseName");
   objc_msgSend_validateAndUpdateNextButton(self, v10, v11);
   return 1;
 }
 
-- (void)primaryActionSelected:(BOOL)a3
+- (void)primaryActionSelected:(BOOL)selected
 {
-  v3 = a3;
-  v5 = objc_msgSend_tableManager(self, a2, a3);
-  if (v3)
+  selectedCopy = selected;
+  v5 = objc_msgSend_tableManager(self, a2, selected);
+  if (selectedCopy)
   {
     if (objc_msgSend_indexOfSectionWithIdentifier_(v5, v6, @"WiFiName") == 0x7FFFFFFFFFFFFFFFLL)
     {

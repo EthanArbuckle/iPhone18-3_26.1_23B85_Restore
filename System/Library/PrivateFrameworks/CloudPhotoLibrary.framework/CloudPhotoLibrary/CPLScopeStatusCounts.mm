@@ -1,6 +1,6 @@
 @interface CPLScopeStatusCounts
-- (CPLScopeStatusCounts)initWithCoder:(id)a3;
-- (CPLScopeStatusCounts)initWithFlagsCounts:(id)a3;
+- (CPLScopeStatusCounts)initWithCoder:(id)coder;
+- (CPLScopeStatusCounts)initWithFlagsCounts:(id)counts;
 - (id)description;
 - (void)_computeSummariesIfNecessary;
 @end
@@ -62,16 +62,16 @@ LABEL_6:
   return MEMORY[0x1EEE66BB8](v5, v6);
 }
 
-- (CPLScopeStatusCounts)initWithCoder:(id)a3
+- (CPLScopeStatusCounts)initWithCoder:(id)coder
 {
   v4 = initWithCoder__onceToken_24881;
-  v5 = a3;
+  coderCopy = coder;
   if (v4 != -1)
   {
     dispatch_once(&initWithCoder__onceToken_24881, &__block_literal_global_24882);
   }
 
-  v6 = [v5 decodeObjectOfClasses:initWithCoder__countPerFlagsClasses forKey:@"counts"];
+  v6 = [coderCopy decodeObjectOfClasses:initWithCoder__countPerFlagsClasses forKey:@"counts"];
 
   v7 = [(CPLScopeStatusCounts *)self initWithFlagsCounts:v6];
   return v7;
@@ -88,15 +88,15 @@ uint64_t __38__CPLScopeStatusCounts_initWithCoder___block_invoke()
   return MEMORY[0x1EEE66BB8](v2, v3);
 }
 
-- (CPLScopeStatusCounts)initWithFlagsCounts:(id)a3
+- (CPLScopeStatusCounts)initWithFlagsCounts:(id)counts
 {
-  v4 = a3;
+  countsCopy = counts;
   v9.receiver = self;
   v9.super_class = CPLScopeStatusCounts;
   v5 = [(CPLScopeStatusCounts *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [countsCopy copy];
     countPerFlags = v5->_countPerFlags;
     v5->_countPerFlags = v6;
   }

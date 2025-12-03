@@ -3,7 +3,7 @@
 - (PGMemoryElectorConfiguration)init;
 - (id)futureMemoryCollisionUniversalDateInterval;
 - (id)pastMemoryCollisionUniversalDateInterval;
-- (unint64_t)targetNumberOfMemoriesWithMemoryContext:(id)a3 totalNumberOfMemoryNodes:(unint64_t)a4 referenceNumberOfDays:(unint64_t)a5;
+- (unint64_t)targetNumberOfMemoriesWithMemoryContext:(id)context totalNumberOfMemoryNodes:(unint64_t)nodes referenceNumberOfDays:(unint64_t)days;
 @end
 
 @implementation PGMemoryElectorConfiguration
@@ -12,11 +12,11 @@
 {
   v12[21] = *MEMORY[0x277D85DE8];
   v11[0] = @"localDate";
-  v2 = [MEMORY[0x277D27690] currentLocalDate];
-  v12[0] = v2;
+  currentLocalDate = [MEMORY[0x277D27690] currentLocalDate];
+  v12[0] = currentLocalDate;
   v11[1] = @"timeZone";
-  v3 = [MEMORY[0x277CBEBB0] systemTimeZone];
-  v12[1] = v3;
+  systemTimeZone = [MEMORY[0x277CBEBB0] systemTimeZone];
+  v12[1] = systemTimeZone;
   v12[2] = MEMORY[0x277CBEC38];
   v11[2] = @"shouldPersist";
   v11[3] = @"pendingState";
@@ -66,14 +66,14 @@
   return v8;
 }
 
-- (unint64_t)targetNumberOfMemoriesWithMemoryContext:(id)a3 totalNumberOfMemoryNodes:(unint64_t)a4 referenceNumberOfDays:(unint64_t)a5
+- (unint64_t)targetNumberOfMemoriesWithMemoryContext:(id)context totalNumberOfMemoryNodes:(unint64_t)nodes referenceNumberOfDays:(unint64_t)days
 {
-  v8 = a3;
-  v9 = v8;
+  contextCopy = context;
+  v9 = contextCopy;
   maximumTargetNumberOfMemories = self->_maximumTargetNumberOfMemories;
   if (!self->_useMaximumTargetNumberOfMemories)
   {
-    v11 = vcvtpd_u64_f64(a4 / a5);
+    v11 = vcvtpd_u64_f64(nodes / days);
     if (maximumTargetNumberOfMemories >= v11)
     {
       v12 = v11;
@@ -86,16 +86,16 @@
 
     if (maximumTargetNumberOfMemories > v11)
     {
-      v13 = [v8 creationDateOfLastMemory];
-      if (v13)
+      creationDateOfLastMemory = [contextCopy creationDateOfLastMemory];
+      if (creationDateOfLastMemory)
       {
         v14 = [PGMemoryDate alloc];
-        v15 = [v9 localDate];
-        v16 = [(PGMemoryDate *)v14 initWithLocalDate:v15];
+        localDate = [v9 localDate];
+        v16 = [(PGMemoryDate *)v14 initWithLocalDate:localDate];
 
-        v17 = [v9 timeZone];
-        v18 = [(PGMemoryDate *)v16 universalDateInTimeZone:v17];
-        [v18 timeIntervalSinceDate:v13];
+        timeZone = [v9 timeZone];
+        v18 = [(PGMemoryDate *)v16 universalDateInTimeZone:timeZone];
+        [v18 timeIntervalSinceDate:creationDateOfLastMemory];
         v20 = v19;
 
         v21 = (v20 / 86400.0);
@@ -158,8 +158,8 @@
 - (PGMemoryElectorConfiguration)init
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v3 = [objc_opt_class() defaultConfigurationDictionarySource];
-  v8[0] = v3;
+  defaultConfigurationDictionarySource = [objc_opt_class() defaultConfigurationDictionarySource];
+  v8[0] = defaultConfigurationDictionarySource;
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
   v5 = [(PGConfiguration *)self initWithSources:v4 version:1.0];
 

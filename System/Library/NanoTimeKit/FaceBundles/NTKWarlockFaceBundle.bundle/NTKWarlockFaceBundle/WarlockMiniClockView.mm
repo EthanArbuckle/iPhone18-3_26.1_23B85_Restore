@@ -1,23 +1,23 @@
 @interface WarlockMiniClockView
 - (CLKUITimeViewConfiguration)configuration;
 - (NSDate)overrideDate;
-- (_TtC20NTKWarlockFaceBundle20WarlockMiniClockView)initWithCoder:(id)a3;
-- (_TtC20NTKWarlockFaceBundle20WarlockMiniClockView)initWithFrame:(CGRect)a3;
+- (_TtC20NTKWarlockFaceBundle20WarlockMiniClockView)initWithCoder:(id)coder;
+- (_TtC20NTKWarlockFaceBundle20WarlockMiniClockView)initWithFrame:(CGRect)frame;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setConfiguration:(id)a3;
-- (void)setOverrideDate:(id)a3;
-- (void)timeFormatterTextDidChange:(id)a3;
+- (void)setConfiguration:(id)configuration;
+- (void)setOverrideDate:(id)date;
+- (void)timeFormatterTextDidChange:(id)change;
 @end
 
 @implementation WarlockMiniClockView
 
-- (_TtC20NTKWarlockFaceBundle20WarlockMiniClockView)initWithFrame:(CGRect)a3
+- (_TtC20NTKWarlockFaceBundle20WarlockMiniClockView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *&self->CLKUITimeView_opaque[OBJC_IVAR____TtC20NTKWarlockFaceBundle20WarlockMiniClockView_digitalTimeView] = 0;
   v8 = &self->CLKUITimeView_opaque[OBJC_IVAR____TtC20NTKWarlockFaceBundle20WarlockMiniClockView____lazy_storage___metrics];
   *v8 = 0u;
@@ -38,7 +38,7 @@
   return [(WarlockMiniClockView *)&v14 initWithFrame:x, y, width, height];
 }
 
-- (_TtC20NTKWarlockFaceBundle20WarlockMiniClockView)initWithCoder:(id)a3
+- (_TtC20NTKWarlockFaceBundle20WarlockMiniClockView)initWithCoder:(id)coder
 {
   *&self->CLKUITimeView_opaque[OBJC_IVAR____TtC20NTKWarlockFaceBundle20WarlockMiniClockView_digitalTimeView] = 0;
   v4 = &self->CLKUITimeView_opaque[OBJC_IVAR____TtC20NTKWarlockFaceBundle20WarlockMiniClockView____lazy_storage___metrics];
@@ -70,7 +70,7 @@
 
   else
   {
-    v4 = self;
+    selfCopy = self;
   }
 
   v5.receiver = self;
@@ -97,18 +97,18 @@
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for WarlockMiniClockView();
-  v2 = [(WarlockMiniClockView *)&v4 configuration];
+  configuration = [(WarlockMiniClockView *)&v4 configuration];
 
-  return v2;
+  return configuration;
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
   v6.receiver = self;
   v6.super_class = type metadata accessor for WarlockMiniClockView();
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = v6.receiver;
-  [(WarlockMiniClockView *)&v6 setConfiguration:v4];
+  [(WarlockMiniClockView *)&v6 setConfiguration:configurationCopy];
   sub_15FA8();
 }
 
@@ -122,11 +122,11 @@
   v9 = type metadata accessor for WarlockMiniClockView();
   v20.receiver = self;
   v20.super_class = v9;
-  v10 = self;
-  v11 = [(WarlockMiniClockView *)&v20 overrideDate];
-  if (v11)
+  selfCopy = self;
+  overrideDate = [(WarlockMiniClockView *)&v20 overrideDate];
+  if (overrideDate)
   {
-    v12 = v11;
+    v12 = overrideDate;
     sub_36CA0();
 
     v13 = 0;
@@ -153,14 +153,14 @@
   return v17;
 }
 
-- (void)setOverrideDate:(id)a3
+- (void)setOverrideDate:(id)date
 {
   v5 = sub_815C(qword_59170);
   v6 = __chkstk_darwin(v5 - 8);
   v8 = &v17 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   __chkstk_darwin(v6);
   v10 = &v17 - v9;
-  if (a3)
+  if (date)
   {
     sub_36CA0();
     v11 = sub_36CB0();
@@ -177,7 +177,7 @@
   sub_36CB0();
   v12 = *(v11 - 8);
   v13 = (*(v12 + 48))(v8, 1, v11);
-  v14 = self;
+  selfCopy = self;
   isa = 0;
   if (v13 != 1)
   {
@@ -186,7 +186,7 @@
   }
 
   v16 = type metadata accessor for WarlockMiniClockView();
-  v17.receiver = v14;
+  v17.receiver = selfCopy;
   v17.super_class = v16;
   [(WarlockMiniClockView *)&v17 setOverrideDate:isa];
 
@@ -194,9 +194,9 @@
   sub_16C04(v10, qword_59170);
 }
 
-- (void)timeFormatterTextDidChange:(id)a3
+- (void)timeFormatterTextDidChange:(id)change
 {
-  v3 = self;
+  selfCopy = self;
   sub_15FA8();
 }
 

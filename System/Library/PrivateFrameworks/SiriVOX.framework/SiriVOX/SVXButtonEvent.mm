@@ -1,45 +1,45 @@
 @interface SVXButtonEvent
-+ (id)newWithBuilder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (SVXButtonEvent)initWithCoder:(id)a3;
-- (SVXButtonEvent)initWithType:(int64_t)a3 timestamp:(unint64_t)a4;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)mutatedCopyWithMutator:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (BOOL)isEqual:(id)equal;
+- (SVXButtonEvent)initWithCoder:(id)coder;
+- (SVXButtonEvent)initWithType:(int64_t)type timestamp:(unint64_t)timestamp;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SVXButtonEvent
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CCABB0];
   type = self->_type;
-  v6 = a3;
+  coderCopy = coder;
   v7 = [v4 numberWithInteger:type];
-  [v6 encodeObject:v7 forKey:@"SVXButtonEvent::type"];
+  [coderCopy encodeObject:v7 forKey:@"SVXButtonEvent::type"];
 
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timestamp];
-  [v6 encodeObject:v8 forKey:@"SVXButtonEvent::timestamp"];
+  [coderCopy encodeObject:v8 forKey:@"SVXButtonEvent::timestamp"];
 }
 
-- (SVXButtonEvent)initWithCoder:(id)a3
+- (SVXButtonEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SVXButtonEvent::type"];
-  v6 = [v5 integerValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVXButtonEvent::type"];
+  integerValue = [v5 integerValue];
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SVXButtonEvent::timestamp"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVXButtonEvent::timestamp"];
 
-  v8 = [v7 unsignedLongLongValue];
+  unsignedLongLongValue = [v7 unsignedLongLongValue];
 
-  return [(SVXButtonEvent *)self initWithType:v6 timestamp:v8];
+  return [(SVXButtonEvent *)self initWithType:integerValue timestamp:unsignedLongLongValue];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -49,7 +49,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       type = self->_type;
       if (type == [(SVXButtonEvent *)v5 type])
       {
@@ -82,7 +82,7 @@
   return v6 ^ v4;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x277CCACA8]);
   v11.receiver = self;
@@ -105,50 +105,50 @@
   return v9;
 }
 
-- (SVXButtonEvent)initWithType:(int64_t)a3 timestamp:(unint64_t)a4
+- (SVXButtonEvent)initWithType:(int64_t)type timestamp:(unint64_t)timestamp
 {
   v7.receiver = self;
   v7.super_class = SVXButtonEvent;
   result = [(SVXButtonEvent *)&v7 init];
   if (result)
   {
-    result->_type = a3;
-    result->_timestamp = a4;
+    result->_type = type;
+    result->_timestamp = timestamp;
   }
 
   return result;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_SVXButtonEventMutation alloc] initWithBaseModel:self];
-    v4[2](v4, v5);
-    v6 = [(_SVXButtonEventMutation *)v5 generate];
+    mutatorCopy[2](mutatorCopy, v5);
+    generate = [(_SVXButtonEventMutation *)v5 generate];
   }
 
   else
   {
-    v6 = [(SVXButtonEvent *)self copy];
+    generate = [(SVXButtonEvent *)self copy];
   }
 
-  return v6;
+  return generate;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
+  builderCopy = builder;
   v4 = objc_alloc_init(_SVXButtonEventMutation);
-  if (v3)
+  if (builderCopy)
   {
-    v3[2](v3, v4);
+    builderCopy[2](builderCopy, v4);
   }
 
-  v5 = [(_SVXButtonEventMutation *)v4 generate];
+  generate = [(_SVXButtonEventMutation *)v4 generate];
 
-  return v5;
+  return generate;
 }
 
 @end

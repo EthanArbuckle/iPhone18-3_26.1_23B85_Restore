@@ -1,14 +1,14 @@
 @interface UIProgressHUDAccessibility
 - (BOOL)_accessibilityBlocksInteraction;
 - (id)accessibilityLabel;
-- (void)showInView:(id)a3;
+- (void)showInView:(id)view;
 @end
 
 @implementation UIProgressHUDAccessibility
 
 - (BOOL)_accessibilityBlocksInteraction
 {
-  v11 = self;
+  selfCopy = self;
   v10 = a2;
   v3 = [(UIProgressHUDAccessibility *)self safeValueForKey:@"superview"];
   v5 = 0;
@@ -35,29 +35,29 @@
   return v12 & 1;
 }
 
-- (void)showInView:(id)a3
+- (void)showInView:(id)view
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5.receiver = v7;
+  objc_storeStrong(location, view);
+  v5.receiver = selfCopy;
   v5.super_class = UIProgressHUDAccessibility;
   [(UIProgressHUDAccessibility *)&v5 showInView:location[0]];
   notification = *MEMORY[0x29EDC7380];
-  v4 = [(UIProgressHUDAccessibility *)v7 accessibilityLabel];
-  UIAccessibilityPostNotification(notification, v4);
-  MEMORY[0x29EDC9740](v4);
+  accessibilityLabel = [(UIProgressHUDAccessibility *)selfCopy accessibilityLabel];
+  UIAccessibilityPostNotification(notification, accessibilityLabel);
+  MEMORY[0x29EDC9740](accessibilityLabel);
   objc_storeStrong(location, 0);
 }
 
 - (id)accessibilityLabel
 {
   v3 = [(UIProgressHUDAccessibility *)self safeValueForKey:@"_progressMessage"];
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
   MEMORY[0x29EDC9740](v3);
 
-  return v4;
+  return accessibilityLabel;
 }
 
 @end

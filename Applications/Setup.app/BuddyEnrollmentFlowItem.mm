@@ -1,20 +1,20 @@
 @interface BuddyEnrollmentFlowItem
 - (BFFFlowItemDelegate)delegate;
 - (BOOL)shouldAllowStartOver;
-- (void)performExtendedInitializationWithCompletion:(id)a3;
+- (void)performExtendedInitializationWithCompletion:(id)completion;
 - (void)startOver;
 @end
 
 @implementation BuddyEnrollmentFlowItem
 
-- (void)performExtendedInitializationWithCompletion:(id)a3
+- (void)performExtendedInitializationWithCompletion:(id)completion
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyEnrollmentFlowItem *)v16 featureFlags];
-  v4 = [(BuddyFeatureFlags *)v3 isMDMEnrollmentFlowControllerAdoptionEnabled]^ 1;
+  objc_storeStrong(location, completion);
+  featureFlags = [(BuddyEnrollmentFlowItem *)selfCopy featureFlags];
+  v4 = [(BuddyFeatureFlags *)featureFlags isMDMEnrollmentFlowControllerAdoptionEnabled]^ 1;
 
   if (v4)
   {
@@ -24,17 +24,17 @@
 
   else
   {
-    v5 = [(BuddyEnrollmentFlowItem *)v16 enrollmentCoordinator];
-    v6 = v16;
+    enrollmentCoordinator = [(BuddyEnrollmentFlowItem *)selfCopy enrollmentCoordinator];
+    v6 = selfCopy;
     v8 = _NSConcreteStackBlock;
     v9 = 3221225472;
     v10 = sub_1000FE830;
     v11 = &unk_10032CD78;
-    v12 = v16;
+    v12 = selfCopy;
     v13 = location[0];
-    [(BuddyEnrollmentCoordinator *)v5 shouldShowFlowItem:v6 resultBlock:&v8];
+    [(BuddyEnrollmentCoordinator *)enrollmentCoordinator shouldShowFlowItem:v6 resultBlock:&v8];
 
-    v7 = [(BuddyEnrollmentFlowItem *)v16 enrollmentCoordinator:v8];
+    v7 = [(BuddyEnrollmentFlowItem *)selfCopy enrollmentCoordinator:v8];
     [(BuddyEnrollmentCoordinator *)v7 startEnrollmentFlow];
 
     objc_storeStrong(&v13, 0);
@@ -54,9 +54,9 @@
 - (BOOL)shouldAllowStartOver
 {
   v2 = [(BuddyEnrollmentFlowItem *)self enrollmentCoordinator:a2];
-  v3 = [(BuddyEnrollmentCoordinator *)v2 shouldAllowStartOver];
+  shouldAllowStartOver = [(BuddyEnrollmentCoordinator *)v2 shouldAllowStartOver];
 
-  return v3 & 1;
+  return shouldAllowStartOver & 1;
 }
 
 - (BFFFlowItemDelegate)delegate

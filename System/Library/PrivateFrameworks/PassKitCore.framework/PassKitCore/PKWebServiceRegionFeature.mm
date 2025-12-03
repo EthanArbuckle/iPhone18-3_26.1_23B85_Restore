@@ -1,20 +1,20 @@
 @interface PKWebServiceRegionFeature
-+ (id)regionFeatureWithType:(int64_t)a3 dictionary:(id)a4 region:(id)a5;
-- (PKWebServiceRegionFeature)initWithFeatureType:(int64_t)a3 dictionary:(id)a4 region:(id)a5;
++ (id)regionFeatureWithType:(int64_t)type dictionary:(id)dictionary region:(id)region;
+- (PKWebServiceRegionFeature)initWithFeatureType:(int64_t)type dictionary:(id)dictionary region:(id)region;
 @end
 
 @implementation PKWebServiceRegionFeature
 
-+ (id)regionFeatureWithType:(int64_t)a3 dictionary:(id)a4 region:(id)a5
++ (id)regionFeatureWithType:(int64_t)type dictionary:(id)dictionary region:(id)region
 {
-  v7 = a4;
-  v8 = a5;
+  dictionaryCopy = dictionary;
+  regionCopy = region;
   v9 = 0;
-  switch(a3)
+  switch(type)
   {
     case 1:
       v10 = [PKWebServiceRegionFeature alloc];
-      v11 = 1;
+      typeCopy = 1;
       goto LABEL_11;
     case 2:
       v12 = PKWebServiceCarAccessFeature;
@@ -34,9 +34,9 @@
     case 7:
     case 8:
       v10 = [PKWebServiceVirtualCardFeature alloc];
-      v11 = a3;
+      typeCopy = type;
 LABEL_11:
-      v13 = [(PKWebServiceVirtualCardFeature *)v10 initWithFeatureType:v11 dictionary:v7 region:v8];
+      v13 = [(PKWebServiceVirtualCardFeature *)v10 initWithFeatureType:typeCopy dictionary:dictionaryCopy region:regionCopy];
       goto LABEL_20;
     case 9:
       v12 = PKWebServiceDisbursementFeature;
@@ -66,7 +66,7 @@ LABEL_11:
     case 19:
       v12 = PKWebServiceProvisioningCardReaderFeature;
 LABEL_19:
-      v13 = [[v12 alloc] initWithDictionary:v7 region:v8];
+      v13 = [[v12 alloc] initWithDictionary:dictionaryCopy region:regionCopy];
 LABEL_20:
       v9 = v13;
       break;
@@ -77,12 +77,12 @@ LABEL_20:
   return v9;
 }
 
-- (PKWebServiceRegionFeature)initWithFeatureType:(int64_t)a3 dictionary:(id)a4 region:(id)a5
+- (PKWebServiceRegionFeature)initWithFeatureType:(int64_t)type dictionary:(id)dictionary region:(id)region
 {
   v36 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  if (!v8)
+  dictionaryCopy = dictionary;
+  regionCopy = region;
+  if (!dictionaryCopy)
   {
     v12 = PKLogFacilityTypeGetObject(7uLL);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -101,22 +101,22 @@ LABEL_20:
     goto LABEL_26;
   }
 
-  v10->_featureType = a3;
-  objc_storeStrong(&v10->_region, a5);
-  v11 = [v8 PKNumberForKey:@"automaticRegister"];
+  v10->_featureType = type;
+  objc_storeStrong(&v10->_region, region);
+  v11 = [dictionaryCopy PKNumberForKey:@"automaticRegister"];
   v12 = v11;
   if (v11)
   {
-    v13 = [v11 BOOLValue];
+    bOOLValue = [v11 BOOLValue];
   }
 
   else
   {
-    v13 = 1;
+    bOOLValue = 1;
   }
 
-  self->_automaticRegister = v13;
-  v14 = [v8 PKStringForKey:@"registrationType"];
+  self->_automaticRegister = bOOLValue;
+  v14 = [dictionaryCopy PKStringForKey:@"registrationType"];
   v15 = v14;
   if (v14)
   {
@@ -162,7 +162,7 @@ LABEL_20:
 
   self->_registrationType = v17;
 LABEL_16:
-  v18 = [v8 PKNumberForKey:@"enablementThreshold"];
+  v18 = [dictionaryCopy PKNumberForKey:@"enablementThreshold"];
   v19 = v18;
   if (v18)
   {
@@ -175,7 +175,7 @@ LABEL_16:
   }
 
   self->_enablementThreshold = v20;
-  v21 = [v8 objectForKey:@"versionRange"];
+  v21 = [dictionaryCopy objectForKey:@"versionRange"];
   v22 = [PKOSVersionRequirementRange alloc];
   if (v21)
   {
@@ -194,7 +194,7 @@ LABEL_16:
       }
 
 LABEL_31:
-      v28 = 0;
+      selfCopy = 0;
       goto LABEL_32;
     }
   }
@@ -208,10 +208,10 @@ LABEL_31:
 
 LABEL_26:
   self = self;
-  v28 = self;
+  selfCopy = self;
 LABEL_32:
 
-  return v28;
+  return selfCopy;
 }
 
 @end

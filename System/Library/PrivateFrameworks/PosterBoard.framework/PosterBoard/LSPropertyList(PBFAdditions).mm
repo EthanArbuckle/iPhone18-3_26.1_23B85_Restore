@@ -24,19 +24,19 @@
 {
   v2 = *MEMORY[0x277D3EC30];
   v3 = objc_opt_self();
-  v4 = [a1 objectForKey:v2 ofClass:v3];
+  v4 = [self objectForKey:v2 ofClass:v3];
 
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v5 = 1;
+    bOOLValue = 1;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
 - (uint64_t)pbf_supportsDynamicDescriptors
@@ -47,8 +47,8 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [a1 pf_supportedRoles];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  pf_supportedRoles = [self pf_supportedRoles];
+  v4 = [pf_supportedRoles countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -60,7 +60,7 @@
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(pf_supportedRoles);
         }
 
         v8 = *(*(&v13 + 1) + 8 * v7);
@@ -69,16 +69,16 @@
 
           v10 = *MEMORY[0x277D3EBF8];
           v11 = objc_opt_self();
-          v3 = [a1 objectForKey:v10 ofClass:v11];
+          pf_supportedRoles = [self objectForKey:v10 ofClass:v11];
 
           if (objc_opt_respondsToSelector())
           {
-            v9 = [v3 BOOLValue];
+            bOOLValue = [pf_supportedRoles BOOLValue];
           }
 
           else
           {
-            v9 = 1;
+            bOOLValue = 1;
           }
 
           goto LABEL_14;
@@ -88,7 +88,7 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [pf_supportedRoles countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v5)
       {
         continue;
@@ -98,22 +98,22 @@
     }
   }
 
-  v9 = 0;
+  bOOLValue = 0;
 LABEL_14:
 
-  return v9;
+  return bOOLValue;
 }
 
 - (BOOL)pbf_refreshDescriptorsFrequency
 {
-  if (([MEMORY[0x277CBEBD0] pbf_keynoteModeEnabled] & 1) != 0 || !objc_msgSend(a1, "pbf_supportsDynamicDescriptors"))
+  if (([MEMORY[0x277CBEBD0] pbf_keynoteModeEnabled] & 1) != 0 || !objc_msgSend(self, "pbf_supportsDynamicDescriptors"))
   {
     return 0;
   }
 
   v2 = *MEMORY[0x277D3EBF0];
   v3 = objc_opt_self();
-  v4 = [a1 objectForKey:v2 ofClass:v3];
+  v4 = [self objectForKey:v2 ofClass:v3];
 
   v5 = ![v4 length] || objc_msgSend(v4, "caseInsensitiveCompare:", @"NEVER");
   return v5;
@@ -123,7 +123,7 @@ LABEL_14:
 {
   v2 = *MEMORY[0x277D3EC28];
   v3 = objc_opt_self();
-  v4 = [a1 objectForKey:v2 ofClass:v3];
+  v4 = [self objectForKey:v2 ofClass:v3];
 
   return v4;
 }
@@ -131,22 +131,22 @@ LABEL_14:
 - (id)pbf_staticDescriptorIdentifiers
 {
   v20 = *MEMORY[0x277D85DE8];
-  v1 = [a1 pbf_staticDescriptorsDictionary];
-  v2 = [v1 allKeys];
-  v3 = v2;
-  if (!v2)
+  pbf_staticDescriptorsDictionary = [self pbf_staticDescriptorsDictionary];
+  allKeys = [pbf_staticDescriptorsDictionary allKeys];
+  v3 = allKeys;
+  if (!allKeys)
   {
-    v2 = MEMORY[0x277CBEBF8];
+    allKeys = MEMORY[0x277CBEBF8];
   }
 
-  v4 = [v2 sortedArrayUsingComparator:&__block_literal_global_131];
+  v4 = [allKeys sortedArrayUsingComparator:&__block_literal_global_131];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v1 objectEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  objectEnumerator = [pbf_staticDescriptorsDictionary objectEnumerator];
+  v6 = [objectEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -157,7 +157,7 @@ LABEL_14:
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v10 = [*(*(&v15 + 1) + 8 * i) objectForKey:@"sort_relative_index"];
@@ -169,16 +169,16 @@ LABEL_14:
           v12[1] = 3221225472;
           v12[2] = __63__LSPropertyList_PBFAdditions__pbf_staticDescriptorIdentifiers__block_invoke_2;
           v12[3] = &unk_2782C8D50;
-          v13 = v1;
+          v13 = pbf_staticDescriptorsDictionary;
           v14 = v4;
-          v5 = v4;
-          v4 = [v5 sortedArrayUsingComparator:v12];
+          objectEnumerator = v4;
+          v4 = [objectEnumerator sortedArrayUsingComparator:v12];
 
           goto LABEL_13;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [objectEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v7)
       {
         continue;
@@ -195,7 +195,7 @@ LABEL_13:
 
 - (id)pbf_displayNameLocalizationKeyForStaticDescriptorIdentifier:()PBFAdditions
 {
-  v1 = [a1 _infoForStaticDescriptorIdentifier:?];
+  v1 = [self _infoForStaticDescriptorIdentifier:?];
   v2 = [v1 bs_safeStringForKey:*MEMORY[0x277D3EC00]];
 
   return v2;
@@ -204,7 +204,7 @@ LABEL_13:
 - (id)pbf_proactivePosterDescriptorGalleryOptionsForStaticDescriptorIdentifier:()PBFAdditions
 {
   v4 = a3;
-  v5 = [a1 _infoForStaticDescriptorIdentifier:v4];
+  v5 = [self _infoForStaticDescriptorIdentifier:v4];
   v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D3EC10]];
   v11 = 0;
   v7 = [MEMORY[0x277CEB7B0] galleryOptionsFromDictionaryRepresentation:v6 error:&v11];
@@ -223,7 +223,7 @@ LABEL_13:
 
 - (id)pbf_posterBoardPosterDescriptorRenderingConfigurationForStaticDescriptorIdentifier:()PBFAdditions
 {
-  v1 = [a1 _infoForStaticDescriptorIdentifier:?];
+  v1 = [self _infoForStaticDescriptorIdentifier:?];
   v2 = [v1 objectForKeyedSubscript:*MEMORY[0x277D3EC18]];
   if (v2)
   {
@@ -240,7 +240,7 @@ LABEL_13:
 
 - (id)pbf_posterBoardPosterDescriptorGalleryOptionsForStaticDescriptorIdentifier:()PBFAdditions
 {
-  v1 = [a1 _infoForStaticDescriptorIdentifier:?];
+  v1 = [self _infoForStaticDescriptorIdentifier:?];
   v2 = [v1 objectForKeyedSubscript:*MEMORY[0x277D3EC10]];
   v3 = [MEMORY[0x277D3ED90] galleryOptionsFromDictionaryRepresentation:v2];
 
@@ -249,7 +249,7 @@ LABEL_13:
 
 - (uint64_t)pbf_posterBoardPosterDescriptorGalleryDisplayBehaviorForStaticDescriptorIdentifier:()PBFAdditions
 {
-  v1 = [a1 _infoForStaticDescriptorIdentifier:?];
+  v1 = [self _infoForStaticDescriptorIdentifier:?];
   v2 = [v1 objectForKeyedSubscript:*MEMORY[0x277D3EC08]];
   v3 = objc_opt_class();
   v4 = v2;
@@ -279,7 +279,7 @@ LABEL_13:
 
 - (id)pbf_posterBoardPosterDescriptorHeroGalleryOptionsForStaticDescriptorIdentifier:()PBFAdditions
 {
-  v1 = [a1 _infoForStaticDescriptorIdentifier:?];
+  v1 = [self _infoForStaticDescriptorIdentifier:?];
   v2 = [v1 objectForKeyedSubscript:@"PRStaticDescriptorSnapshot"];
   v3 = [v2 objectForKey:@"Hero"];
 
@@ -323,7 +323,7 @@ LABEL_13:
 
 - (id)pbf_userInfoForStaticDescriptorIdentifier:()PBFAdditions
 {
-  v1 = [a1 _infoForStaticDescriptorIdentifier:?];
+  v1 = [self _infoForStaticDescriptorIdentifier:?];
   v2 = [v1 bs_safeDictionaryForKey:*MEMORY[0x277D3EC20]];
 
   return v2;
@@ -332,53 +332,53 @@ LABEL_13:
 - (id)pbf_roleForStaticDescriptorIdentifier:()PBFAdditions
 {
   v4 = a3;
-  v5 = [a1 pf_supportedRoles];
-  if ([v5 count] == 1)
+  pf_supportedRoles = [self pf_supportedRoles];
+  if ([pf_supportedRoles count] == 1)
   {
-    v6 = [v5 anyObject];
+    anyObject = [pf_supportedRoles anyObject];
   }
 
   else
   {
-    v7 = [a1 _infoForStaticDescriptorIdentifier:v4];
+    v7 = [self _infoForStaticDescriptorIdentifier:v4];
     v8 = [v7 objectForKeyedSubscript:@"PRStaticDescriptorRole"];
-    if (PFPosterRoleIsValid() && [v5 containsObject:v8])
+    if (PFPosterRoleIsValid() && [pf_supportedRoles containsObject:v8])
     {
-      v6 = v8;
+      anyObject = v8;
     }
 
     else
     {
       v9 = *MEMORY[0x277CBED38];
       v10 = objc_opt_self();
-      v11 = [a1 objectForKey:v9 ofClass:v10];
+      v11 = [self objectForKey:v9 ofClass:v10];
 
-      v6 = PRPosterRoleLookupForExtensionBundleIdentifier(v11, v4);
+      anyObject = PRPosterRoleLookupForExtensionBundleIdentifier(v11, v4);
     }
   }
 
-  return v6;
+  return anyObject;
 }
 
 - (id)pbf_roleForDynamicDescriptorIdentifier:()PBFAdditions
 {
   v4 = a3;
-  v5 = [a1 pf_supportedRoles];
-  if ([v5 count] == 1)
+  pf_supportedRoles = [self pf_supportedRoles];
+  if ([pf_supportedRoles count] == 1)
   {
-    v6 = [v5 anyObject];
+    anyObject = [pf_supportedRoles anyObject];
   }
 
   else
   {
     v7 = *MEMORY[0x277CBED38];
     v8 = objc_opt_self();
-    v9 = [a1 objectForKey:v7 ofClass:v8];
+    v9 = [self objectForKey:v7 ofClass:v8];
 
-    v6 = PRPosterRoleLookupForExtensionBundleIdentifier(v9, v4);
+    anyObject = PRPosterRoleLookupForExtensionBundleIdentifier(v9, v4);
   }
 
-  return v6;
+  return anyObject;
 }
 
 - (id)_infoForStaticDescriptorIdentifier:()PBFAdditions
@@ -386,7 +386,7 @@ LABEL_13:
   v4 = *MEMORY[0x277D3EC28];
   v5 = a3;
   v6 = objc_opt_self();
-  v7 = [a1 objectForKey:v4 ofClass:v6];
+  v7 = [self objectForKey:v4 ofClass:v6];
   v8 = [v7 objectForKey:v5];
 
   return v8;
@@ -399,8 +399,8 @@ LABEL_13:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v2 = [a1 pbf_staticDescriptorIdentifiers];
-  v3 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  pbf_staticDescriptorIdentifiers = [self pbf_staticDescriptorIdentifiers];
+  v3 = [pbf_staticDescriptorIdentifiers countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v3)
   {
     v4 = v3;
@@ -412,12 +412,12 @@ LABEL_13:
       {
         if (*v14 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(pbf_staticDescriptorIdentifiers);
         }
 
         v7 = *(*(&v13 + 1) + 8 * v6);
-        v8 = [a1 pbf_staticDescriptorsDictionary];
-        v9 = [v8 objectForKey:v7];
+        pbf_staticDescriptorsDictionary = [self pbf_staticDescriptorsDictionary];
+        v9 = [pbf_staticDescriptorsDictionary objectForKey:v7];
 
         v10 = [v9 objectForKey:@"PRStaticDescriptorSnapshot"];
 
@@ -431,7 +431,7 @@ LABEL_13:
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v4 = [pbf_staticDescriptorIdentifiers countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v4)
       {
         continue;
@@ -451,16 +451,16 @@ LABEL_11:
 {
   v6 = a3;
   v7 = a4;
-  if ([a1 pbf_hasStaticSnapshotMapping])
+  if ([self pbf_hasStaticSnapshotMapping])
   {
-    v8 = [a1 pbf_staticDescriptorsDictionary];
-    v9 = [v8 objectForKey:v6];
+    pbf_staticDescriptorsDictionary = [self pbf_staticDescriptorsDictionary];
+    v9 = [pbf_staticDescriptorsDictionary objectForKey:v6];
 
     v10 = [v9 objectForKey:@"PRStaticDescriptorSnapshot"];
     if (v10)
     {
-      v11 = [v7 uniqueIdentifier];
-      v12 = PBFPlistKeyForSnapshotDefinitionIdentifier(v11);
+      uniqueIdentifier = [v7 uniqueIdentifier];
+      v12 = PBFPlistKeyForSnapshotDefinitionIdentifier(uniqueIdentifier);
 
       v13 = [v10 objectForKey:v12];
       v14 = objc_opt_class();

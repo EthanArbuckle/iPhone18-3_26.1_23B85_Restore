@@ -1,46 +1,46 @@
 @interface HSFigCaptureDevice
-+ (id)statusDescription:(int)a3;
-- (BOOL)invalidate:(id *)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToDevice:(id)a3;
-- (BOOL)relinquishControlOfStreams:(id)a3 error:(id *)a4;
-- (BOOL)requestControlOfStreams:(id)a3 error:(id *)a4;
-- (BOOL)setValue:(id)a3 forProperty:(__CFString *)a4 error:(id *)a5;
-- (HSFigCaptureDevice)initWithCaptureDevice:(OpaqueFigCaptureDevice *)a3;
++ (id)statusDescription:(int)description;
+- (BOOL)invalidate:(id *)invalidate;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToDevice:(id)device;
+- (BOOL)relinquishControlOfStreams:(id)streams error:(id *)error;
+- (BOOL)requestControlOfStreams:(id)streams error:(id *)error;
+- (BOOL)setValue:(id)value forProperty:(__CFString *)property error:(id *)error;
+- (HSFigCaptureDevice)initWithCaptureDevice:(OpaqueFigCaptureDevice *)device;
 - (id)description;
-- (id)valueForKey:(id)a3;
-- (id)valueForProperty:(__CFString *)a3 error:(id *)a4;
+- (id)valueForKey:(id)key;
+- (id)valueForProperty:(__CFString *)property error:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation HSFigCaptureDevice
 
-+ (id)statusDescription:(int)a3
++ (id)statusDescription:(int)description
 {
-  if ((a3 + 12683) > 3)
+  if ((description + 12683) > 3)
   {
     v8 = v3;
     v9 = v4;
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___HSFigCaptureDevice;
     v5 = objc_msgSendSuper2(&v7, sel_statusDescription_);
   }
 
   else
   {
-    v5 = off_2796AB608[a3 + 12683];
+    v5 = off_2796AB608[description + 12683];
   }
 
   return v5;
 }
 
-- (HSFigCaptureDevice)initWithCaptureDevice:(OpaqueFigCaptureDevice *)a3
+- (HSFigCaptureDevice)initWithCaptureDevice:(OpaqueFigCaptureDevice *)device
 {
   FigBaseObject = FigCaptureDeviceGetFigBaseObject();
   v7.receiver = self;
   v7.super_class = HSFigCaptureDevice;
   result = [(HSCMBaseObject *)&v7 initWithBaseObject:FigBaseObject];
-  result->_underlyingDevice = a3;
+  result->_underlyingDevice = device;
   return result;
 }
 
@@ -57,10 +57,10 @@
   [(HSFigCaptureDevice *)&v4 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -68,17 +68,17 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(HSFigCaptureDevice *)self isEqualToDevice:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(HSFigCaptureDevice *)self isEqualToDevice:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToDevice:(id)a3
+- (BOOL)isEqualToDevice:(id)device
 {
-  v5 = a3;
-  v6 = [a3 underlyingDevice];
-  return v6 == [(HSFigCaptureDevice *)self underlyingDevice];
+  deviceCopy = device;
+  underlyingDevice = [device underlyingDevice];
+  return underlyingDevice == [(HSFigCaptureDevice *)self underlyingDevice];
 }
 
 - (id)description
@@ -92,7 +92,7 @@
   return v5;
 }
 
-- (BOOL)invalidate:(id *)a3
+- (BOOL)invalidate:(id *)invalidate
 {
   v24[1] = *MEMORY[0x277D85DE8];
   underlyingDevice = self->_underlyingDevice;
@@ -130,7 +130,7 @@
     [(HSFigCaptureDevice *)self invalidate:v11];
   }
 
-  if (a3)
+  if (invalidate)
   {
     v14 = MEMORY[0x277CCACA8];
     v15 = [objc_opt_class() statusDescription:v11];
@@ -144,7 +144,7 @@
     v20 = [v17 errorWithDomain:v18 code:v11 userInfo:v19];
 
     v21 = v20;
-    *a3 = v20;
+    *invalidate = v20;
   }
 
   result = 0;
@@ -153,11 +153,11 @@ LABEL_12:
   return result;
 }
 
-- (id)valueForKey:(id)a3
+- (id)valueForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = NSStringFromSelector(sel_underlyingDevice);
-  v6 = [v4 isEqualToString:v5];
+  v6 = [keyCopy isEqualToString:v5];
 
   if (v6)
   {
@@ -168,7 +168,7 @@ LABEL_12:
   {
     v10.receiver = self;
     v10.super_class = HSFigCaptureDevice;
-    v7 = [(HSFigCaptureDevice *)&v10 valueForKey:v4];
+    v7 = [(HSFigCaptureDevice *)&v10 valueForKey:keyCopy];
   }
 
   v8 = v7;
@@ -176,30 +176,30 @@ LABEL_12:
   return v8;
 }
 
-- (BOOL)setValue:(id)a3 forProperty:(__CFString *)a4 error:(id *)a5
+- (BOOL)setValue:(id)value forProperty:(__CFString *)property error:(id *)error
 {
-  v8 = _unwrapFigCaptureValue(a3);
+  v8 = _unwrapFigCaptureValue(value);
   v10.receiver = self;
   v10.super_class = HSFigCaptureDevice;
-  LOBYTE(a5) = [(HSCMBaseObject *)&v10 setValue:v8 forProperty:a4 error:a5];
+  LOBYTE(error) = [(HSCMBaseObject *)&v10 setValue:v8 forProperty:property error:error];
 
-  return a5;
+  return error;
 }
 
-- (id)valueForProperty:(__CFString *)a3 error:(id *)a4
+- (id)valueForProperty:(__CFString *)property error:(id *)error
 {
   v8.receiver = self;
   v8.super_class = HSFigCaptureDevice;
-  v5 = [(HSCMBaseObject *)&v8 valueForProperty:a3 error:a4];
+  v5 = [(HSCMBaseObject *)&v8 valueForProperty:property error:error];
   v6 = _wrapFigCaptureValue(v5, self);
 
   return v6;
 }
 
-- (BOOL)requestControlOfStreams:(id)a3 error:(id *)a4
+- (BOOL)requestControlOfStreams:(id)streams error:(id *)error
 {
   v49 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  streamsCopy = streams;
   v6 = HSLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -211,7 +211,7 @@ LABEL_12:
   v16 = [v14 stringWithFormat:@"self.%@", v15];
 
   v38 = v16;
-  v39 = [v5 valueForKeyPath:v16];
+  v39 = [streamsCopy valueForKeyPath:v16];
   v17 = 0;
   do
   {
@@ -223,7 +223,7 @@ LABEL_12:
       v22 = v20(underlyingDevice, v39, 0);
       if (!v22)
       {
-        v33 = 1;
+        errorCopy = 1;
         goto LABEL_16;
       }
     }
@@ -238,7 +238,7 @@ LABEL_12:
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v43 = v5;
+      v43 = streamsCopy;
       v44 = 1024;
       *v45 = v17;
       *&v45[4] = 1024;
@@ -255,7 +255,7 @@ LABEL_12:
   {
     v36 = [objc_opt_class() statusDescription:v22];
     *buf = 138413058;
-    v43 = v5;
+    v43 = streamsCopy;
     v44 = 2112;
     *v45 = self;
     *&v45[8] = 1024;
@@ -265,12 +265,12 @@ LABEL_12:
     _os_log_error_impl(&dword_2510E6000, v24, OS_LOG_TYPE_ERROR, "Failed to request control of streams %@ from device %@ after %d attempts! %@", buf, 0x26u);
   }
 
-  v33 = a4;
-  if (a4)
+  errorCopy = error;
+  if (error)
   {
     v25 = MEMORY[0x277CCACA8];
     v26 = [objc_opt_class() statusDescription:v22];
-    v27 = [v25 stringWithFormat:@"Failed to request control of streams %@ from device %@ after %d attempts! %@", v5, self, 6, v26];
+    v27 = [v25 stringWithFormat:@"Failed to request control of streams %@ from device %@ after %d attempts! %@", streamsCopy, self, 6, v26];
 
     v28 = MEMORY[0x277CCA9B8];
     v29 = *MEMORY[0x277CCA590];
@@ -280,21 +280,21 @@ LABEL_12:
     v31 = [v28 errorWithDomain:v29 code:v22 userInfo:v30];
 
     v32 = v31;
-    *a4 = v31;
+    *error = v31;
 
-    v33 = 0;
+    errorCopy = 0;
   }
 
 LABEL_16:
 
   v34 = *MEMORY[0x277D85DE8];
-  return v33;
+  return errorCopy;
 }
 
-- (BOOL)relinquishControlOfStreams:(id)a3 error:(id *)a4
+- (BOOL)relinquishControlOfStreams:(id)streams error:(id *)error
 {
   v44 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  streamsCopy = streams;
   v7 = HSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -305,7 +305,7 @@ LABEL_16:
   v16 = NSStringFromSelector(sel_underlyingStream);
   v17 = [v15 stringWithFormat:@"self.%@", v16];
 
-  v18 = [v6 valueForKeyPath:v17];
+  v18 = [streamsCopy valueForKeyPath:v17];
   underlyingDevice = self->_underlyingDevice;
   v20 = *(CMBaseObjectGetVTable() + 16);
   if (*v20 >= 2uLL && (v21 = v20[3]) != 0)
@@ -314,7 +314,7 @@ LABEL_16:
     v23 = v21(underlyingDevice, v18, 0);
     if (!v23)
     {
-      LOBYTE(a4) = 1;
+      LOBYTE(error) = 1;
       goto LABEL_12;
     }
   }
@@ -329,19 +329,19 @@ LABEL_16:
   {
     v35 = [objc_opt_class() statusDescription:v23];
     *buf = 138412802;
-    v39 = v6;
+    v39 = streamsCopy;
     v40 = 2112;
-    v41 = self;
+    selfCopy = self;
     v42 = 2112;
     v43 = v35;
     _os_log_error_impl(&dword_2510E6000, v24, OS_LOG_TYPE_ERROR, "Failed to relinquish control of streams %@ from device %@! %@", buf, 0x20u);
   }
 
-  if (a4)
+  if (error)
   {
     v25 = MEMORY[0x277CCACA8];
     v26 = [objc_opt_class() statusDescription:v23];
-    v27 = [v25 stringWithFormat:@"Failed to relinquish control of streams %@ from device %@! %@", v6, self, v26];
+    v27 = [v25 stringWithFormat:@"Failed to relinquish control of streams %@ from device %@! %@", streamsCopy, self, v26];
 
     v28 = MEMORY[0x277CCA9B8];
     v29 = *MEMORY[0x277CCA590];
@@ -351,15 +351,15 @@ LABEL_16:
     v31 = [v28 errorWithDomain:v29 code:v23 userInfo:v30];
 
     v32 = v31;
-    *a4 = v31;
+    *error = v31;
 
-    LOBYTE(a4) = 0;
+    LOBYTE(error) = 0;
   }
 
 LABEL_12:
 
   v33 = *MEMORY[0x277D85DE8];
-  return a4;
+  return error;
 }
 
 - (void)invalidate:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)

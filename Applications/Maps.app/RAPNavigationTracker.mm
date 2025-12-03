@@ -1,15 +1,15 @@
 @interface RAPNavigationTracker
 - (BOOL)canPresentRapFeedbackView;
-- (RAPNavigationTracker)initWithPlatformController:(id)a3;
-- (void)_createRapAppStateWithCompletion:(id)a3;
+- (RAPNavigationTracker)initWithPlatformController:(id)controller;
+- (void)_createRapAppStateWithCompletion:(id)completion;
 - (void)_reset;
-- (void)_updateWithRunningNavigation:(BOOL)a3;
-- (void)navigationService:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5;
+- (void)_updateWithRunningNavigation:(BOOL)navigation;
+- (void)navigationService:(id)service didChangeFromState:(unint64_t)state toState:(unint64_t)toState;
 @end
 
 @implementation RAPNavigationTracker
 
-- (void)navigationService:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5
+- (void)navigationService:(id)service didChangeFromState:(unint64_t)state toState:(unint64_t)toState
 {
   v6 = sub_100798874();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -26,9 +26,9 @@
 - (BOOL)canPresentRapFeedbackView
 {
   v3 = +[MapsOfflineUIHelper sharedHelper];
-  v4 = [v3 isUsingOfflineMaps];
+  isUsingOfflineMaps = [v3 isUsingOfflineMaps];
 
-  if ((v4 & 1) == 0)
+  if ((isUsingOfflineMaps & 1) == 0)
   {
     if (!_MKRAPIsAvailable() || sub_1007413D0())
     {
@@ -94,14 +94,14 @@ LABEL_16:
     v21 = [v19 objectForKeyedSubscript:v20];
 
     v22 = +[GEOCountryConfiguration sharedConfiguration];
-    v23 = [v22 countryCode];
-    v24 = [v21 objectForKey:v23];
+    countryCode = [v22 countryCode];
+    v24 = [v21 objectForKey:countryCode];
 
     if (v24)
     {
-      v25 = [v24 BOOLValue];
+      bOOLValue = [v24 BOOLValue];
 
-      if ((v25 & 1) == 0)
+      if ((bOOLValue & 1) == 0)
       {
         goto LABEL_16;
       }
@@ -268,18 +268,18 @@ LABEL_17:
   self->_appState = 0;
 }
 
-- (void)_createRapAppStateWithCompletion:(id)a3
+- (void)_createRapAppStateWithCompletion:(id)completion
 {
   v52[0] = _NSConcreteStackBlock;
   v52[1] = 3221225472;
   v52[2] = sub_100661074;
   v52[3] = &unk_101624E78;
-  v28 = a3;
-  v53 = v28;
+  completionCopy = completion;
+  v53 = completionCopy;
   v31 = objc_retainBlock(v52);
   WeakRetained = objc_loadWeakRetained(&self->_platformController);
-  v30 = [WeakRetained chromeViewController];
-  if (!WeakRetained || !v30)
+  chromeViewController = [WeakRetained chromeViewController];
+  if (!WeakRetained || !chromeViewController)
   {
     v14 = sub_100798874();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -296,8 +296,8 @@ LABEL_17:
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v3 = [WeakRetained sessionStack];
-  v4 = [v3 countByEnumeratingWithState:&v48 objects:v54 count:16];
+  sessionStack = [WeakRetained sessionStack];
+  v4 = [sessionStack countByEnumeratingWithState:&v48 objects:v54 count:16];
   if (!v4)
   {
 
@@ -315,7 +315,7 @@ LABEL_17:
     {
       if (*v49 != v6)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(sessionStack);
       }
 
       v8 = *(*(&v48 + 1) + 8 * i);
@@ -343,7 +343,7 @@ LABEL_17:
       v5 = v10;
     }
 
-    v4 = [v3 countByEnumeratingWithState:&v48 objects:v54 count:16];
+    v4 = [sessionStack countByEnumeratingWithState:&v48 objects:v54 count:16];
   }
 
   while (v4);
@@ -361,8 +361,8 @@ LABEL_25:
     goto LABEL_27;
   }
 
-  v12 = [v5 currentTransportType];
-  if (v12 <= 4 && ((1 << v12) & 0x19) != 0)
+  currentTransportType = [v5 currentTransportType];
+  if (currentTransportType <= 4 && ((1 << currentTransportType) & 0x19) != 0)
   {
     v13 = sub_100798874();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
@@ -375,11 +375,11 @@ LABEL_25:
     goto LABEL_28;
   }
 
-  v16 = [v5 currentRouteCollection];
-  if (!v16)
+  currentRouteCollection = [v5 currentRouteCollection];
+  if (!currentRouteCollection)
   {
-    v16 = [v33 currentRouteCollection];
-    if (!v16)
+    currentRouteCollection = [v33 currentRouteCollection];
+    if (!currentRouteCollection)
     {
       v15 = sub_100798874();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
@@ -395,8 +395,8 @@ LABEL_27:
     }
   }
 
-  v17 = [v33 reportAProblemRecorder];
-  v18 = v17 == 0;
+  reportAProblemRecorder = [v33 reportAProblemRecorder];
+  v18 = reportAProblemRecorder == 0;
 
   if (v18)
   {
@@ -415,37 +415,37 @@ LABEL_27:
     *buf = 0;
     v47 = 0;
     v19 = +[GEOUserSession sharedInstance];
-    v44 = [v19 navSessionID];
+    navSessionID = [v19 navSessionID];
     v45 = v20;
 
     if ((GEOSessionIDEquals() & 1) == 0)
     {
-      v21 = [v33 reportAProblemRecorder];
-      [v21 recordNewSessionID:{v44, v45}];
+      reportAProblemRecorder2 = [v33 reportAProblemRecorder];
+      [reportAProblemRecorder2 recordNewSessionID:{navSessionID, v45}];
     }
 
-    v22 = [v16 currentRoute];
-    v23 = [v22 geoWaypointRoute];
-    v24 = [v23 identifier];
+    currentRoute = [currentRouteCollection currentRoute];
+    geoWaypointRoute = [currentRoute geoWaypointRoute];
+    identifier = [geoWaypointRoute identifier];
 
     objc_initWeak(&location, self);
-    v25 = [v33 reportAProblemRecorder];
+    reportAProblemRecorder3 = [v33 reportAProblemRecorder];
     v34[0] = _NSConcreteStackBlock;
     v34[1] = 3221225472;
     v34[2] = sub_100661180;
     v34[3] = &unk_101624EC8;
     objc_copyWeak(&v41, &location);
-    v39 = v28;
-    v42 = v24;
+    v39 = completionCopy;
+    v42 = identifier;
     v40 = v31;
-    v26 = v16;
+    v26 = currentRouteCollection;
     v35 = v26;
     v5 = v5;
     v36 = v5;
     v33 = v33;
     v37 = v33;
-    v38 = v30;
-    [v25 savePartialRecordingWithCompletion:v34];
+    v38 = chromeViewController;
+    [reportAProblemRecorder3 savePartialRecordingWithCompletion:v34];
 
     objc_destroyWeak(&v41);
     objc_destroyWeak(&location);
@@ -456,15 +456,15 @@ LABEL_28:
 LABEL_29:
 }
 
-- (void)_updateWithRunningNavigation:(BOOL)a3
+- (void)_updateWithRunningNavigation:(BOOL)navigation
 {
-  if (self->_isShowingDirections != a3)
+  if (self->_isShowingDirections != navigation)
   {
-    v3 = a3;
+    navigationCopy = navigation;
     v5 = sub_100798874();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      if (v3)
+      if (navigationCopy)
       {
         v6 = @"YES";
       }
@@ -494,8 +494,8 @@ LABEL_29:
     }
 
     [(RAPNavigationTracker *)self _reset];
-    self->_isShowingDirections = v3;
-    if (v3)
+    self->_isShowingDirections = navigationCopy;
+    if (navigationCopy)
     {
       v10 = sub_100798874();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
@@ -513,16 +513,16 @@ LABEL_29:
   }
 }
 
-- (RAPNavigationTracker)initWithPlatformController:(id)a3
+- (RAPNavigationTracker)initWithPlatformController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = RAPNavigationTracker;
   v5 = [(RAPNavigationTracker *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_platformController, v4);
+    objc_storeWeak(&v5->_platformController, controllerCopy);
     v7 = +[MNNavigationService sharedService];
     [v7 registerObserver:v6];
 

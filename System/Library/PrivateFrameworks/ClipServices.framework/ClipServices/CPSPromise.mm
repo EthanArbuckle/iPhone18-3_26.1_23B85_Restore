@@ -1,9 +1,9 @@
 @interface CPSPromise
 + (id)promise;
 - (CPSPromise)init;
-- (void)_finishWithResult:(id)a3 error:(id)a4;
+- (void)_finishWithResult:(id)result error:(id)error;
 - (void)_flushCompletionBlocks;
-- (void)addCompletionBlock:(id)a3;
+- (void)addCompletionBlock:(id)block;
 @end
 
 @implementation CPSPromise
@@ -34,30 +34,30 @@
   return v2;
 }
 
-- (void)addCompletionBlock:(id)a3
+- (void)addCompletionBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   [(NSConditionLock *)self->_stateLock lock];
   if ([(CPSPromise *)self _isFinished])
   {
     [(NSConditionLock *)self->_stateLock unlock];
-    v6[2](v6, self->_result, self->_error);
+    blockCopy[2](blockCopy, self->_result, self->_error);
   }
 
   else
   {
     completionBlocks = self->_completionBlocks;
-    v5 = MEMORY[0x245D3D5F0](v6);
+    v5 = MEMORY[0x245D3D5F0](blockCopy);
     [(NSMutableArray *)completionBlocks addObject:v5];
 
     [(NSConditionLock *)self->_stateLock unlock];
   }
 }
 
-- (void)_finishWithResult:(id)a3 error:(id)a4
+- (void)_finishWithResult:(id)result error:(id)error
 {
-  v8 = a3;
-  v7 = a4;
+  resultCopy = result;
+  errorCopy = error;
   [(NSConditionLock *)self->_stateLock lock];
   if ([(CPSPromise *)self _isFinished])
   {
@@ -66,8 +66,8 @@
 
   else
   {
-    objc_storeStrong(&self->_result, a3);
-    objc_storeStrong(&self->_error, a4);
+    objc_storeStrong(&self->_result, result);
+    objc_storeStrong(&self->_error, error);
     [(NSConditionLock *)self->_stateLock unlockWithCondition:1];
     [(CPSPromise *)self _flushCompletionBlocks];
   }

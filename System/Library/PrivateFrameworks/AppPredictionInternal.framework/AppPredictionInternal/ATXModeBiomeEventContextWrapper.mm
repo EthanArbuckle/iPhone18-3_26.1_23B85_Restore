@@ -1,68 +1,68 @@
 @interface ATXModeBiomeEventContextWrapper
-+ (id)wrapEventStream:(id)a3 modeTransitionStream:(id)a4 startingContext:(id)a5;
-+ (id)wrapEventStreams:(id)a3 modeTransitionStream:(id)a4 startingContext:(id)a5;
++ (id)wrapEventStream:(id)stream modeTransitionStream:(id)transitionStream startingContext:(id)context;
++ (id)wrapEventStreams:(id)streams modeTransitionStream:(id)stream startingContext:(id)context;
 - (ATXModeBiomeEventContextWrapper)init;
-- (ATXModeBiomeEventContextWrapper)initWithCoder:(id)a3;
-- (ATXModeBiomeEventContextWrapper)initWithData:(id)a3;
-- (ATXModeBiomeEventContextWrapper)initWithPath:(id)a3;
-- (ATXModeBiomeEventContextWrapper)initWithPreviousContext:(id)a3 nextEvent:(id)a4;
-- (ATXModeBiomeEventContextWrapper)initWithTransitionEvent:(id)a3 eventToWrap:(id)a4;
-- (BOOL)_fileExistsAtPath:(id)a3;
-- (id)_dataFromPath:(id)a3;
+- (ATXModeBiomeEventContextWrapper)initWithCoder:(id)coder;
+- (ATXModeBiomeEventContextWrapper)initWithData:(id)data;
+- (ATXModeBiomeEventContextWrapper)initWithPath:(id)path;
+- (ATXModeBiomeEventContextWrapper)initWithPreviousContext:(id)context nextEvent:(id)event;
+- (ATXModeBiomeEventContextWrapper)initWithTransitionEvent:(id)event eventToWrap:(id)wrap;
+- (BOOL)_fileExistsAtPath:(id)path;
+- (id)_dataFromPath:(id)path;
 - (id)eventTime;
-- (id)serialize:(id *)a3;
+- (id)serialize:(id *)serialize;
 - (unint64_t)currentActivityType;
-- (void)encodeWithCoder:(id)a3;
-- (void)persistToPath:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)persistToPath:(id)path;
 @end
 
 @implementation ATXModeBiomeEventContextWrapper
 
-- (ATXModeBiomeEventContextWrapper)initWithPreviousContext:(id)a3 nextEvent:(id)a4
+- (ATXModeBiomeEventContextWrapper)initWithPreviousContext:(id)context nextEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  eventCopy = event;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v8 = [v6 mostRecentModeTransition];
-    v15 = [(ATXModeBiomeEventContextWrapper *)self initWithTransitionEvent:v8 eventToWrap:v7];
+    mostRecentModeTransition = [contextCopy mostRecentModeTransition];
+    v15 = [(ATXModeBiomeEventContextWrapper *)self initWithTransitionEvent:mostRecentModeTransition eventToWrap:eventCopy];
 LABEL_6:
     v14 = v15;
     goto LABEL_7;
   }
 
-  v8 = v7;
-  v9 = [v6 wrappedEvent];
-  v10 = [v9 eventTime];
-  v11 = [v8 eventTime];
-  v12 = [v10 compare:v11];
+  mostRecentModeTransition = eventCopy;
+  wrappedEvent = [contextCopy wrappedEvent];
+  eventTime = [wrappedEvent eventTime];
+  eventTime2 = [mostRecentModeTransition eventTime];
+  v12 = [eventTime compare:eventTime2];
 
   if (v12 == -1)
   {
-    v15 = [(ATXModeBiomeEventContextWrapper *)self initWithTransitionEvent:v8 eventToWrap:0];
+    v15 = [(ATXModeBiomeEventContextWrapper *)self initWithTransitionEvent:mostRecentModeTransition eventToWrap:0];
     goto LABEL_6;
   }
 
-  v13 = [v6 wrappedEvent];
-  v14 = [(ATXModeBiomeEventContextWrapper *)self initWithTransitionEvent:v8 eventToWrap:v13];
+  wrappedEvent2 = [contextCopy wrappedEvent];
+  v14 = [(ATXModeBiomeEventContextWrapper *)self initWithTransitionEvent:mostRecentModeTransition eventToWrap:wrappedEvent2];
 
 LABEL_7:
   return v14;
 }
 
-- (ATXModeBiomeEventContextWrapper)initWithTransitionEvent:(id)a3 eventToWrap:(id)a4
+- (ATXModeBiomeEventContextWrapper)initWithTransitionEvent:(id)event eventToWrap:(id)wrap
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  wrapCopy = wrap;
   v11.receiver = self;
   v11.super_class = ATXModeBiomeEventContextWrapper;
   v8 = [(ATXModeBiomeEventContextWrapper *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(ATXModeBiomeEventContextWrapper *)v8 setMostRecentModeTransition:v6];
-    [(ATXModeBiomeEventContextWrapper *)v9 setWrappedEvent:v7];
+    [(ATXModeBiomeEventContextWrapper *)v8 setMostRecentModeTransition:eventCopy];
+    [(ATXModeBiomeEventContextWrapper *)v9 setWrappedEvent:wrapCopy];
   }
 
   return v9;
@@ -78,52 +78,52 @@ LABEL_7:
 
 - (unint64_t)currentActivityType
 {
-  v3 = [(ATXModeBiomeEventContextWrapper *)self mostRecentModeTransition];
+  mostRecentModeTransition = [(ATXModeBiomeEventContextWrapper *)self mostRecentModeTransition];
 
-  if (!v3)
+  if (!mostRecentModeTransition)
   {
     return 14;
   }
 
-  v4 = [(ATXModeBiomeEventContextWrapper *)self mostRecentModeTransition];
-  if ([v4 isEntryEvent])
+  mostRecentModeTransition2 = [(ATXModeBiomeEventContextWrapper *)self mostRecentModeTransition];
+  if ([mostRecentModeTransition2 isEntryEvent])
   {
-    v5 = [(ATXModeBiomeEventContextWrapper *)self mostRecentModeTransition];
-    v6 = [v5 inferredActivityType];
+    mostRecentModeTransition3 = [(ATXModeBiomeEventContextWrapper *)self mostRecentModeTransition];
+    inferredActivityType = [mostRecentModeTransition3 inferredActivityType];
   }
 
   else
   {
-    v6 = 14;
+    inferredActivityType = 14;
   }
 
-  return v6;
+  return inferredActivityType;
 }
 
 - (id)eventTime
 {
-  v3 = [(ATXModeBiomeEventContextWrapper *)self wrappedEvent];
-  v4 = [v3 eventTime];
+  wrappedEvent = [(ATXModeBiomeEventContextWrapper *)self wrappedEvent];
+  eventTime = [wrappedEvent eventTime];
 
-  v5 = [(ATXModeBiomeEventContextWrapper *)self mostRecentModeTransition];
-  v6 = [v5 eventTime];
+  mostRecentModeTransition = [(ATXModeBiomeEventContextWrapper *)self mostRecentModeTransition];
+  eventTime2 = [mostRecentModeTransition eventTime];
 
-  if (v4)
+  if (eventTime)
   {
-    if (v6)
+    if (eventTime2)
     {
-      v7 = [v4 laterDate:v6];
+      v7 = [eventTime laterDate:eventTime2];
     }
 
     else
     {
-      v7 = v4;
+      v7 = eventTime;
     }
   }
 
   else
   {
-    v7 = v6;
+    v7 = eventTime2;
   }
 
   v8 = v7;
@@ -131,44 +131,44 @@ LABEL_7:
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ATXModeBiomeEventContextWrapper *)self mostRecentModeTransition];
-  [v4 encodeObject:v5 forKey:@"transition"];
+  coderCopy = coder;
+  mostRecentModeTransition = [(ATXModeBiomeEventContextWrapper *)self mostRecentModeTransition];
+  [coderCopy encodeObject:mostRecentModeTransition forKey:@"transition"];
 }
 
-- (ATXModeBiomeEventContextWrapper)initWithCoder:(id)a3
+- (ATXModeBiomeEventContextWrapper)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x277D42620];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = __atxlog_handle_default();
-  v8 = [v4 robustDecodeObjectOfClass:v6 forKey:@"transition" withCoder:v5 expectNonNull:0 errorDomain:@"com.apple.proactive.ATXModeBiomeEventContextWrapper" errorCode:-1 logHandle:v7];
+  v8 = [v4 robustDecodeObjectOfClass:v6 forKey:@"transition" withCoder:coderCopy expectNonNull:0 errorDomain:@"com.apple.proactive.ATXModeBiomeEventContextWrapper" errorCode:-1 logHandle:v7];
 
   v9 = [(ATXModeBiomeEventContextWrapper *)self initWithTransitionEvent:v8 eventToWrap:0];
   return v9;
 }
 
-- (BOOL)_fileExistsAtPath:(id)a3
+- (BOOL)_fileExistsAtPath:(id)path
 {
   v3 = MEMORY[0x277CCAA00];
-  v4 = a3;
-  v5 = [v3 defaultManager];
-  v6 = [v5 fileExistsAtPath:v4];
+  pathCopy = path;
+  defaultManager = [v3 defaultManager];
+  v6 = [defaultManager fileExistsAtPath:pathCopy];
 
   return v6;
 }
 
-- (id)_dataFromPath:(id)a3
+- (id)_dataFromPath:(id)path
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  pathCopy = path;
+  if (pathCopy)
   {
-    if ([(ATXModeBiomeEventContextWrapper *)self _fileExistsAtPath:v4])
+    if ([(ATXModeBiomeEventContextWrapper *)self _fileExistsAtPath:pathCopy])
     {
-      v5 = [MEMORY[0x277CCA9F8] fileHandleForReadingAtPath:v4];
+      v5 = [MEMORY[0x277CCA9F8] fileHandleForReadingAtPath:pathCopy];
       v6 = v5;
       if (v5)
       {
@@ -215,7 +215,7 @@ LABEL_7:
         *buf = 138412546;
         v18 = v12;
         v19 = 2112;
-        v20 = v4;
+        v20 = pathCopy;
         _os_log_impl(&dword_2263AA000, v6, OS_LOG_TYPE_INFO, "%@ - file doesn't exist at path %@", buf, 0x16u);
       }
 
@@ -233,14 +233,14 @@ LABEL_7:
   return v10;
 }
 
-- (ATXModeBiomeEventContextWrapper)initWithData:(id)a3
+- (ATXModeBiomeEventContextWrapper)initWithData:(id)data
 {
-  v4 = a3;
-  if (v4)
+  dataCopy = data;
+  if (dataCopy)
   {
     v5 = objc_autoreleasePoolPush();
     v12 = 0;
-    v6 = [objc_alloc(MEMORY[0x277CCAAC8]) initForReadingFromData:v4 error:&v12];
+    v6 = [objc_alloc(MEMORY[0x277CCAAC8]) initForReadingFromData:dataCopy error:&v12];
     v7 = v12;
     if (v7)
     {
@@ -271,18 +271,18 @@ LABEL_7:
   return v10;
 }
 
-- (ATXModeBiomeEventContextWrapper)initWithPath:(id)a3
+- (ATXModeBiomeEventContextWrapper)initWithPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(ATXModeBiomeEventContextWrapper *)self _dataFromPath:v4];
+  v6 = [(ATXModeBiomeEventContextWrapper *)self _dataFromPath:pathCopy];
   objc_autoreleasePoolPop(v5);
   v7 = [(ATXModeBiomeEventContextWrapper *)self initWithData:v6];
 
   return v7;
 }
 
-- (id)serialize:(id *)a3
+- (id)serialize:(id *)serialize
 {
   v5 = objc_autoreleasePoolPush();
   v13 = 0;
@@ -312,11 +312,11 @@ LABEL_7:
       [ATXModeBiomeEventContextWrapper serialize:];
     }
 
-    if (a3)
+    if (serialize)
     {
       v10 = v7;
       v11 = 0;
-      *a3 = v7;
+      *serialize = v7;
     }
 
     else
@@ -328,10 +328,10 @@ LABEL_7:
   return v11;
 }
 
-- (void)persistToPath:(id)a3
+- (void)persistToPath:(id)path
 {
-  v4 = a3;
-  if (!v4)
+  pathCopy = path;
+  if (!pathCopy)
   {
     v5 = __atxlog_handle_default();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -362,8 +362,8 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v13 = [MEMORY[0x277CCAA00] defaultManager];
-  v14 = [v13 createFileAtPath:v4 contents:v10 attributes:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v14 = [defaultManager createFileAtPath:pathCopy contents:v10 attributes:0];
 
   if ((v14 & 1) == 0)
   {
@@ -379,13 +379,13 @@ LABEL_11:
 LABEL_12:
 }
 
-+ (id)wrapEventStreams:(id)a3 modeTransitionStream:(id)a4 startingContext:(id)a5
++ (id)wrapEventStreams:(id)streams modeTransitionStream:(id)stream startingContext:(id)context
 {
-  v7 = a5;
-  v8 = [a4 orderedMergeWithOthers:a3 comparator:&__block_literal_global_103];
-  if (v7)
+  contextCopy = context;
+  v8 = [stream orderedMergeWithOthers:streams comparator:&__block_literal_global_103];
+  if (contextCopy)
   {
-    v9 = v7;
+    v9 = contextCopy;
   }
 
   else
@@ -418,17 +418,17 @@ ATXModeBiomeEventContextWrapper *__89__ATXModeBiomeEventContextWrapper_wrapEvent
   return v6;
 }
 
-+ (id)wrapEventStream:(id)a3 modeTransitionStream:(id)a4 startingContext:(id)a5
++ (id)wrapEventStream:(id)stream modeTransitionStream:(id)transitionStream startingContext:(id)context
 {
   v17 = *MEMORY[0x277D85DE8];
-  v16 = a3;
+  streamCopy = stream;
   v8 = MEMORY[0x277CBEA60];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 arrayWithObjects:&v16 count:1];
+  contextCopy = context;
+  transitionStreamCopy = transitionStream;
+  streamCopy2 = stream;
+  v12 = [v8 arrayWithObjects:&streamCopy count:1];
 
-  v13 = [a1 wrapEventStreams:v12 modeTransitionStream:v10 startingContext:{v9, v16, v17}];
+  v13 = [self wrapEventStreams:v12 modeTransitionStream:transitionStreamCopy startingContext:{contextCopy, streamCopy, v17}];
 
   v14 = *MEMORY[0x277D85DE8];
 

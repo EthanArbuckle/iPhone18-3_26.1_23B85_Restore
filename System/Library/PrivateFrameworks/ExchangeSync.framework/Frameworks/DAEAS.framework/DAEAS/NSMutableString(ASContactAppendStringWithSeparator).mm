@@ -10,12 +10,12 @@
   v6 = a4;
   if ([v7 length])
   {
-    if ([v6 length] && objc_msgSend(a1, "length"))
+    if ([v6 length] && objc_msgSend(self, "length"))
     {
-      [a1 appendString:v6];
+      [self appendString:v6];
     }
 
-    [a1 appendString:v7];
+    [self appendString:v7];
   }
 }
 

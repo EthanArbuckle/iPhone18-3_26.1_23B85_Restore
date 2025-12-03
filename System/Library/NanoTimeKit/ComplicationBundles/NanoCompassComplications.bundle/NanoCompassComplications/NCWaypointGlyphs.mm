@@ -1,11 +1,11 @@
 @interface NCWaypointGlyphs
-+ (id)convertedSymbolFrom:(id)a3;
++ (id)convertedSymbolFrom:(id)from;
 - (_TtC24NanoCompassComplications16NCWaypointGlyphs)init;
 @end
 
 @implementation NCWaypointGlyphs
 
-+ (id)convertedSymbolFrom:(id)a3
++ (id)convertedSymbolFrom:(id)from
 {
   v3 = sub_23BD67CE4();
   v5 = v4;

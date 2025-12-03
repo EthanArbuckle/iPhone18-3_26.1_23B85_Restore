@@ -1,48 +1,48 @@
 @interface PPTopicStorage
-- (BOOL)decayFeedbackCountsWithDecayRate:(double)a3 shouldContinueBlock:(id)a4;
-- (BOOL)deleteAllTopicFeedbackCountRecordsOlderThanDate:(id)a3;
-- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)a3 algorithm:(unint64_t)a4 atLeastOneTopicRemoved:(BOOL *)a5 deletedCount:(unint64_t *)a6 error:(id *)a7;
-- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)a3 atLeastOneTopicRemoved:(BOOL *)a4 deletedCount:(unint64_t *)a5 error:(id *)a6;
-- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)a3 documentIds:(id)a4 algorithm:(unint64_t)a5 atLeastOneTopicRemoved:(BOOL *)a6 deletedCount:(unint64_t *)a7 error:(id *)a8;
-- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)a3 documentIds:(id)a4 atLeastOneTopicRemoved:(BOOL *)a5 deletedCount:(unint64_t *)a6 error:(id *)a7;
-- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)a3 groupId:(id)a4 olderThanDate:(id)a5 algorithm:(unint64_t)a6 atLeastOneTopicRemoved:(BOOL *)a7 deletedCount:(unint64_t *)a8 error:(id *)a9;
-- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)a3 groupId:(id)a4 olderThanDate:(id)a5 atLeastOneTopicRemoved:(BOOL *)a6 deletedCount:(unint64_t *)a7 error:(id *)a8;
-- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)a3 groupIds:(id)a4 algorithm:(unint64_t)a5 atLeastOneTopicRemoved:(BOOL *)a6 deletedCount:(unint64_t *)a7 error:(id *)a8;
-- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)a3 groupIds:(id)a4 atLeastOneTopicRemoved:(BOOL *)a5 deletedCount:(unint64_t *)a6 error:(id *)a7;
-- (BOOL)deleteAllTopicsOlderThanDate:(id)a3 atLeastOneTopicRemoved:(BOOL *)a4 deletedCount:(unint64_t *)a5 error:(id *)a6;
-- (BOOL)deleteAllTopicsWithTopicId:(id)a3 algorithm:(unint64_t)a4 atLeastOneTopicRemoved:(BOOL *)a5 deletedCount:(unint64_t *)a6 error:(id *)a7;
-- (BOOL)deleteAllTopicsWithTopicId:(id)a3 atLeastOneTopicRemoved:(BOOL *)a4 deletedCount:(unint64_t *)a5 error:(id *)a6;
-- (BOOL)donateTopics:(id)a3 source:(id)a4 algorithm:(unint64_t)a5 cloudSync:(BOOL)a6 decayRate:(double)a7 sentimentScore:(double)a8 exactMatchesInSourceText:(id)a9 error:(id *)a10;
-- (BOOL)iterTopicRecordsWithQuery:(id)a3 error:(id *)a4 block:(id)a5;
-- (BOOL)pruneOrphanedTopicFeedbackCountRecordsWithLimit:(int64_t)a3 rowOffset:(unint64_t)a4 deletedCount:(unint64_t *)a5 isComplete:(BOOL *)a6;
-- (PPTopicStorage)initWithDatabase:(id)a3;
-- (id)_createRecordWithStatement:(void *)a3 txnWitness:;
+- (BOOL)decayFeedbackCountsWithDecayRate:(double)rate shouldContinueBlock:(id)block;
+- (BOOL)deleteAllTopicFeedbackCountRecordsOlderThanDate:(id)date;
+- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)id algorithm:(unint64_t)algorithm atLeastOneTopicRemoved:(BOOL *)removed deletedCount:(unint64_t *)count error:(id *)error;
+- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)id atLeastOneTopicRemoved:(BOOL *)removed deletedCount:(unint64_t *)count error:(id *)error;
+- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)id documentIds:(id)ids algorithm:(unint64_t)algorithm atLeastOneTopicRemoved:(BOOL *)removed deletedCount:(unint64_t *)count error:(id *)error;
+- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)id documentIds:(id)ids atLeastOneTopicRemoved:(BOOL *)removed deletedCount:(unint64_t *)count error:(id *)error;
+- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)id groupId:(id)groupId olderThanDate:(id)date algorithm:(unint64_t)algorithm atLeastOneTopicRemoved:(BOOL *)removed deletedCount:(unint64_t *)count error:(id *)error;
+- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)id groupId:(id)groupId olderThanDate:(id)date atLeastOneTopicRemoved:(BOOL *)removed deletedCount:(unint64_t *)count error:(id *)error;
+- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)id groupIds:(id)ids algorithm:(unint64_t)algorithm atLeastOneTopicRemoved:(BOOL *)removed deletedCount:(unint64_t *)count error:(id *)error;
+- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)id groupIds:(id)ids atLeastOneTopicRemoved:(BOOL *)removed deletedCount:(unint64_t *)count error:(id *)error;
+- (BOOL)deleteAllTopicsOlderThanDate:(id)date atLeastOneTopicRemoved:(BOOL *)removed deletedCount:(unint64_t *)count error:(id *)error;
+- (BOOL)deleteAllTopicsWithTopicId:(id)id algorithm:(unint64_t)algorithm atLeastOneTopicRemoved:(BOOL *)removed deletedCount:(unint64_t *)count error:(id *)error;
+- (BOOL)deleteAllTopicsWithTopicId:(id)id atLeastOneTopicRemoved:(BOOL *)removed deletedCount:(unint64_t *)count error:(id *)error;
+- (BOOL)donateTopics:(id)topics source:(id)source algorithm:(unint64_t)algorithm cloudSync:(BOOL)sync decayRate:(double)rate sentimentScore:(double)score exactMatchesInSourceText:(id)text error:(id *)self0;
+- (BOOL)iterTopicRecordsWithQuery:(id)query error:(id *)error block:(id)block;
+- (BOOL)pruneOrphanedTopicFeedbackCountRecordsWithLimit:(int64_t)limit rowOffset:(unint64_t)offset deletedCount:(unint64_t *)count isComplete:(BOOL *)complete;
+- (PPTopicStorage)initWithDatabase:(id)database;
+- (id)_createRecordWithStatement:(void *)statement txnWitness:;
 - (id)_deletionQueue;
-- (id)sourceStats:(unint64_t)a3 withExcludedAlgorithms:(id)a4;
-- (id)tempViewForSourceIdsExcludedAlgorithms:(id)a3 txnWitness:(id)a4;
-- (uint64_t)_importDKEventsWithShouldContinueBlock:(uint64_t)a3 remoteEventsOnly:(uint64_t)a4 isComplete:(uint64_t)a5 shouldContinueBlock:;
+- (id)sourceStats:(unint64_t)stats withExcludedAlgorithms:(id)algorithms;
+- (id)tempViewForSourceIdsExcludedAlgorithms:(id)algorithms txnWitness:(id)witness;
+- (uint64_t)_importDKEventsWithShouldContinueBlock:(uint64_t)block remoteEventsOnly:(uint64_t)only isComplete:(uint64_t)complete shouldContinueBlock:;
 - (void)_asyncProcessNewDKEventDeletions;
 - (void)dealloc;
-- (void)disableSyncForBundleIds:(id)a3;
-- (void)exportRecordsToDKWithShouldContinueBlock:(id)a3;
-- (void)fixupDKEventsWithShouldContinueBlock:(id)a3;
+- (void)disableSyncForBundleIds:(id)ids;
+- (void)exportRecordsToDKWithShouldContinueBlock:(id)block;
+- (void)fixupDKEventsWithShouldContinueBlock:(id)block;
 - (void)processNewDKEventDeletions;
 @end
 
 @implementation PPTopicStorage
 
-- (id)tempViewForSourceIdsExcludedAlgorithms:(id)a3 txnWitness:(id)a4
+- (id)tempViewForSourceIdsExcludedAlgorithms:(id)algorithms txnWitness:(id)witness
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  algorithmsCopy = algorithms;
+  witnessCopy = witness;
+  if ([algorithmsCopy count])
   {
     v7 = objc_alloc(MEMORY[0x277CCACA8]);
-    v8 = [v5 allObjects];
-    v9 = [v8 _pas_componentsJoinedByString:{@", "}];
+    allObjects = [algorithmsCopy allObjects];
+    v9 = [allObjects _pas_componentsJoinedByString:{@", "}];
     v10 = [v7 initWithFormat:@"SELECT source_id FROM tp_records WHERE algorithm NOT IN (%@)", v9];
 
-    v11 = [PPSQLDatabase createTempViewContainingRowsFromQuery:v10 descriptiveTableName:@"topic_sourceids" txnWitness:v6];
+    v11 = [PPSQLDatabase createTempViewContainingRowsFromQuery:v10 descriptiveTableName:@"topic_sourceids" txnWitness:witnessCopy];
   }
 
   else
@@ -53,9 +53,9 @@
   return v11;
 }
 
-- (id)sourceStats:(unint64_t)a3 withExcludedAlgorithms:(id)a4
+- (id)sourceStats:(unint64_t)stats withExcludedAlgorithms:(id)algorithms
 {
-  v6 = a4;
+  algorithmsCopy = algorithms;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -68,10 +68,10 @@
   v11[2] = __53__PPTopicStorage_sourceStats_withExcludedAlgorithms___block_invoke;
   v11[3] = &unk_278978F38;
   v11[4] = self;
-  v8 = v6;
+  v8 = algorithmsCopy;
   v12 = v8;
   v13 = &v15;
-  v14 = a3;
+  statsCopy = stats;
   [(PPSQLDatabase *)db writeTransactionWithClient:2 block:v11];
   v9 = v16[5];
 
@@ -105,10 +105,10 @@ void __53__PPTopicStorage_sourceStats_withExcludedAlgorithms___block_invoke(uint
   }
 }
 
-- (void)disableSyncForBundleIds:(id)a3
+- (void)disableSyncForBundleIds:(id)ids
 {
-  v4 = a3;
-  if ([v4 count])
+  idsCopy = ids;
+  if ([idsCopy count])
   {
     db = self->_db;
     v6[0] = MEMORY[0x277D85DD0];
@@ -116,26 +116,26 @@ void __53__PPTopicStorage_sourceStats_withExcludedAlgorithms___block_invoke(uint
     v6[2] = __42__PPTopicStorage_disableSyncForBundleIds___block_invoke;
     v6[3] = &unk_278977CD8;
     v6[4] = self;
-    v7 = v4;
+    v7 = idsCopy;
     [(PPSQLDatabase *)db writeTransactionWithClient:2 block:v6];
   }
 }
 
-- (void)fixupDKEventsWithShouldContinueBlock:(id)a3
+- (void)fixupDKEventsWithShouldContinueBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if (self->_dkStorage)
   {
     do
     {
-      if (!v4[2](v4))
+      if (!blockCopy[2](blockCopy))
       {
         break;
       }
 
       storageHelper = self->_storageHelper;
       db = self->_db;
-      v7 = [(PPDKStorage *)self->_dkStorage topicWriteBatchSize];
+      topicWriteBatchSize = [(PPDKStorage *)self->_dkStorage topicWriteBatchSize];
       v8[4] = self;
       v9[0] = MEMORY[0x277D85DD0];
       v9[1] = 3221225472;
@@ -148,16 +148,16 @@ void __53__PPTopicStorage_sourceStats_withExcludedAlgorithms___block_invoke(uint
       v8[3] = &unk_278977CB0;
     }
 
-    while (![(PPRecordStorageHelper *)storageHelper fixupDKEventsWithDatabase:db fixup49995922Table:@"tp_dk_fixup_49995922" batchSize:v7 shouldContinueBlock:v4 createRecordWithStatement:v9 eventForRecord:v8]);
+    while (![(PPRecordStorageHelper *)storageHelper fixupDKEventsWithDatabase:db fixup49995922Table:@"tp_dk_fixup_49995922" batchSize:topicWriteBatchSize shouldContinueBlock:blockCopy createRecordWithStatement:v9 eventForRecord:v8]);
   }
 }
 
-- (id)_createRecordWithStatement:(void *)a3 txnWitness:
+- (id)_createRecordWithStatement:(void *)statement txnWitness:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    v6 = a3;
+    statementCopy = statement;
     v7 = [v5 nonnullNSStringForColumnName:"topic_id" table:"tp_records"];
     v8 = [v5 getInt64ForColumnName:"algorithm" table:"tp_records"];
     [v5 getDoubleForColumnName:"initial_score" table:"tp_records"];
@@ -188,19 +188,19 @@ void __53__PPTopicStorage_sourceStats_withExcludedAlgorithms___block_invoke(uint
     v16 = v15;
     if (v15)
     {
-      v17 = [v15 unsignedLongValue];
+      unsignedLongValue = [v15 unsignedLongValue];
     }
 
     else
     {
-      v17 = 0xFFFFFFFFLL;
+      unsignedLongValue = 0xFFFFFFFFLL;
     }
 
     [v5 getDoubleForColumnName:"sentiment_score" table:"tp_records"];
     v19 = v18;
     v20 = [v5 getInt64ForColumnName:"is_remote" table:"tp_records"];
     v21 = [objc_alloc(MEMORY[0x277D3A530]) initWithTopicIdentifier:v7];
-    v22 = [*(a1 + 40) createSourceWithStatement:v5 txnWitness:v6];
+    v22 = [*(self + 40) createSourceWithStatement:v5 txnWitness:statementCopy];
 
     if (v22)
     {
@@ -216,7 +216,7 @@ void __53__PPTopicStorage_sourceStats_withExcludedAlgorithms___block_invoke(uint
       [v23 setInitialScore:v10];
       [v23 setDecayRate:v13];
       [v23 setExtractionOsBuild:v14];
-      [v23 setExtractionAssetVersion:v17];
+      [v23 setExtractionAssetVersion:unsignedLongValue];
       [v23 setIsLocal:v20 == 0];
       [v23 setSentimentScore:v19];
       v38 = objc_alloc(MEMORY[0x277D3A538]);
@@ -263,9 +263,9 @@ void __53__PPTopicStorage_sourceStats_withExcludedAlgorithms___block_invoke(uint
   return v23;
 }
 
-- (void)exportRecordsToDKWithShouldContinueBlock:(id)a3
+- (void)exportRecordsToDKWithShouldContinueBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if (self->_dkStorage)
   {
     v30 = 0;
@@ -277,7 +277,7 @@ void __53__PPTopicStorage_sourceStats_withExcludedAlgorithms___block_invoke(uint
     v5 = 0x277CBE000uLL;
     do
     {
-      if (!v4[2](v4))
+      if (!blockCopy[2](blockCopy))
       {
         break;
       }
@@ -365,14 +365,14 @@ void __53__PPTopicStorage_sourceStats_withExcludedAlgorithms___block_invoke(uint
       v32[0] = __59__PPTopicStorage_exportRecordsToDKWithShouldContinueBlock___block_invoke;
       v32[1] = &unk_278977BC0;
       v33 = v17;
-      v34 = self;
+      selfCopy = self;
       v35 = v19;
       v21 = v19;
       v22 = v17;
       [(PPSQLDatabase *)v20 writeTransactionWithClient:2 timeoutInSeconds:v31 block:2.5];
       dkStorage = self->_dkStorage;
-      v24 = [(PPDKStorage *)dkStorage topicStream];
-      [(PPDKStorage *)dkStorage saveEvents:v21 stream:v24 maxRetries:-1 retryInterval:v4 shouldContinueBlock:5.0];
+      topicStream = [(PPDKStorage *)dkStorage topicStream];
+      [(PPDKStorage *)dkStorage saveEvents:v21 stream:topicStream maxRetries:-1 retryInterval:blockCopy shouldContinueBlock:5.0];
     }
 
     while ((v30 & 1) == 0);
@@ -563,7 +563,7 @@ uint64_t __64__PPTopicStorage__generateExportRowIdsWithBatchSize_isComplete___bl
   return *v9;
 }
 
-- (uint64_t)_importDKEventsWithShouldContinueBlock:(uint64_t)a3 remoteEventsOnly:(uint64_t)a4 isComplete:(uint64_t)a5 shouldContinueBlock:
+- (uint64_t)_importDKEventsWithShouldContinueBlock:(uint64_t)block remoteEventsOnly:(uint64_t)only isComplete:(uint64_t)complete shouldContinueBlock:
 {
   if (result)
   {
@@ -574,7 +574,7 @@ uint64_t __64__PPTopicStorage__generateExportRowIdsWithBatchSize_isComplete___bl
     v8[2] = __105__PPTopicStorage__importDKEventsWithShouldContinueBlock_remoteEventsOnly_isComplete_shouldContinueBlock___block_invoke;
     v8[3] = &unk_278977B48;
     v8[4] = result;
-    return [v6 importDuetEventsWithLimit:a2 database:v7 client:2 remoteEventsOnly:a3 isComplete:a4 shouldContinueBlock:a5 eventImportBlock:v8];
+    return [v6 importDuetEventsWithLimit:a2 database:v7 client:2 remoteEventsOnly:block isComplete:only shouldContinueBlock:complete eventImportBlock:v8];
   }
 
   return result;
@@ -665,34 +665,34 @@ void __77__PPTopicStorage__dkEventImportToDatabaseWithEvent_eventUUIDBlob_txnWit
 - (void)processNewDKEventDeletions
 {
   [(PPTopicStorage *)self _asyncProcessNewDKEventDeletions];
-  v3 = [(PPTopicStorage *)self _deletionQueue];
-  dispatch_sync(v3, &__block_literal_global_317_21729);
+  _deletionQueue = [(PPTopicStorage *)self _deletionQueue];
+  dispatch_sync(_deletionQueue, &__block_literal_global_317_21729);
 }
 
 - (void)_asyncProcessNewDKEventDeletions
 {
-  if (a1 && *(a1 + 16))
+  if (self && *(self + 16))
   {
-    queue = [(PPTopicStorage *)a1 _deletionQueue];
-    v2 = [*(a1 + 32) duetEventDeletionProcessingBlockWithDatabase:*(a1 + 8) client:2];
+    queue = [(PPTopicStorage *)self _deletionQueue];
+    v2 = [*(self + 32) duetEventDeletionProcessingBlockWithDatabase:*(self + 8) client:2];
     dispatch_async(queue, v2);
   }
 }
 
 - (id)_deletionQueue
 {
-  if (a1)
+  if (self)
   {
     if (_deletionQueue__pasOnceToken14 != -1)
     {
       dispatch_once(&_deletionQueue__pasOnceToken14, &__block_literal_global_314);
     }
 
-    a1 = _deletionQueue__pasExprOnceResult_21731;
+    self = _deletionQueue__pasExprOnceResult_21731;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 void __32__PPTopicStorage__deletionQueue__block_invoke()
@@ -708,7 +708,7 @@ void __32__PPTopicStorage__deletionQueue__block_invoke()
   objc_autoreleasePoolPop(v0);
 }
 
-- (BOOL)pruneOrphanedTopicFeedbackCountRecordsWithLimit:(int64_t)a3 rowOffset:(unint64_t)a4 deletedCount:(unint64_t *)a5 isComplete:(BOOL *)a6
+- (BOOL)pruneOrphanedTopicFeedbackCountRecordsWithLimit:(int64_t)limit rowOffset:(unint64_t)offset deletedCount:(unint64_t *)count isComplete:(BOOL *)complete
 {
   v10 = 0;
   v11 = &v10;
@@ -721,10 +721,10 @@ void __32__PPTopicStorage__deletionQueue__block_invoke()
   v9[3] = &unk_278978F88;
   v9[4] = self;
   v9[5] = &v10;
-  v9[6] = a3;
-  v9[7] = a4;
-  v9[8] = a5;
-  v9[9] = a6;
+  v9[6] = limit;
+  v9[7] = offset;
+  v9[8] = count;
+  v9[9] = complete;
   [(PPSQLDatabase *)db writeTransactionWithClient:2 block:v9];
   v7 = *(v11 + 24);
   _Block_object_dispose(&v10, 8);
@@ -738,9 +738,9 @@ uint64_t __100__PPTopicStorage_pruneOrphanedTopicFeedbackCountRecordsWithLimit_r
   return result;
 }
 
-- (BOOL)deleteAllTopicFeedbackCountRecordsOlderThanDate:(id)a3
+- (BOOL)deleteAllTopicFeedbackCountRecordsOlderThanDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -752,7 +752,7 @@ uint64_t __100__PPTopicStorage_pruneOrphanedTopicFeedbackCountRecordsWithLimit_r
   v8[3] = &unk_278978F60;
   v10 = &v11;
   v8[4] = self;
-  v6 = v4;
+  v6 = dateCopy;
   v9 = v6;
   [(PPSQLDatabase *)db writeTransactionWithClient:2 block:v8];
   LOBYTE(db) = *(v12 + 24);
@@ -768,11 +768,11 @@ uint64_t __66__PPTopicStorage_deleteAllTopicFeedbackCountRecordsOlderThanDate___
   return result;
 }
 
-- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)a3 groupId:(id)a4 olderThanDate:(id)a5 algorithm:(unint64_t)a6 atLeastOneTopicRemoved:(BOOL *)a7 deletedCount:(unint64_t *)a8 error:(id *)a9
+- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)id groupId:(id)groupId olderThanDate:(id)date algorithm:(unint64_t)algorithm atLeastOneTopicRemoved:(BOOL *)removed deletedCount:(unint64_t *)count error:(id *)error
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
+  idCopy = id;
+  groupIdCopy = groupId;
+  dateCopy = date;
   v40 = 0;
   v41 = &v40;
   v42 = 0x2020000000;
@@ -790,23 +790,23 @@ uint64_t __66__PPTopicStorage_deleteAllTopicFeedbackCountRecordsOlderThanDate___
   v25[3] = &unk_278977AF8;
   v29 = &v40;
   v25[4] = self;
-  v19 = v15;
+  v19 = idCopy;
   v26 = v19;
-  v20 = v16;
+  v20 = groupIdCopy;
   v27 = v20;
-  v21 = v17;
-  v31 = a6;
-  v32 = a7;
-  v33 = a8;
+  v21 = dateCopy;
+  algorithmCopy = algorithm;
+  removedCopy = removed;
+  countCopy = count;
   v28 = v21;
   v30 = &v34;
   [(PPSQLDatabase *)db writeTransactionWithClient:2 block:v25];
-  if (a9)
+  if (error)
   {
     v22 = v35[5];
     if (v22)
     {
-      *a9 = v22;
+      *error = v22;
     }
   }
 
@@ -834,11 +834,11 @@ void __131__PPTopicStorage_deleteAllTopicsFromSourcesWithBundleId_groupId_olderT
   *(*(*(a1 + 64) + 8) + 24) = v11;
 }
 
-- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)a3 groupId:(id)a4 olderThanDate:(id)a5 atLeastOneTopicRemoved:(BOOL *)a6 deletedCount:(unint64_t *)a7 error:(id *)a8
+- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)id groupId:(id)groupId olderThanDate:(id)date atLeastOneTopicRemoved:(BOOL *)removed deletedCount:(unint64_t *)count error:(id *)error
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
+  idCopy = id;
+  groupIdCopy = groupId;
+  dateCopy = date;
   v38 = 0;
   v39 = &v38;
   v40 = 0x2020000000;
@@ -856,22 +856,22 @@ void __131__PPTopicStorage_deleteAllTopicsFromSourcesWithBundleId_groupId_olderT
   v24[3] = &unk_278977AD0;
   v28 = &v38;
   v24[4] = self;
-  v18 = v14;
+  v18 = idCopy;
   v25 = v18;
-  v19 = v15;
+  v19 = groupIdCopy;
   v26 = v19;
-  v20 = v16;
-  v30 = a6;
-  v31 = a7;
+  v20 = dateCopy;
+  removedCopy = removed;
+  countCopy = count;
   v27 = v20;
   v29 = &v32;
   [(PPSQLDatabase *)db writeTransactionWithClient:2 block:v24];
-  if (a8)
+  if (error)
   {
     v21 = v33[5];
     if (v21)
     {
-      *a8 = v21;
+      *error = v21;
     }
   }
 
@@ -898,9 +898,9 @@ void __121__PPTopicStorage_deleteAllTopicsFromSourcesWithBundleId_groupId_olderT
   *(*(a1[8] + 8) + 24) = v10;
 }
 
-- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)a3 algorithm:(unint64_t)a4 atLeastOneTopicRemoved:(BOOL *)a5 deletedCount:(unint64_t *)a6 error:(id *)a7
+- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)id algorithm:(unint64_t)algorithm atLeastOneTopicRemoved:(BOOL *)removed deletedCount:(unint64_t *)count error:(id *)error
 {
-  v12 = a3;
+  idCopy = id;
   v31 = 0;
   v32 = &v31;
   v33 = 0x2020000000;
@@ -918,19 +918,19 @@ void __121__PPTopicStorage_deleteAllTopicsFromSourcesWithBundleId_groupId_olderT
   v18[3] = &unk_278977A58;
   v20 = &v31;
   v18[4] = self;
-  v14 = v12;
-  v22 = a4;
-  v23 = a5;
-  v24 = a6;
+  v14 = idCopy;
+  algorithmCopy = algorithm;
+  removedCopy = removed;
+  countCopy = count;
   v19 = v14;
   v21 = &v25;
   [(PPSQLDatabase *)db writeTransactionWithClient:2 block:v18];
-  if (a7)
+  if (error)
   {
     v15 = v26[5];
     if (v15)
     {
-      *a7 = v15;
+      *error = v15;
     }
   }
 
@@ -956,9 +956,9 @@ void __109__PPTopicStorage_deleteAllTopicsFromSourcesWithBundleId_algorithm_atLe
   *(*(*(a1 + 48) + 8) + 24) = v9;
 }
 
-- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)a3 atLeastOneTopicRemoved:(BOOL *)a4 deletedCount:(unint64_t *)a5 error:(id *)a6
+- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)id atLeastOneTopicRemoved:(BOOL *)removed deletedCount:(unint64_t *)count error:(id *)error
 {
-  v10 = a3;
+  idCopy = id;
   v28 = 0;
   v29 = &v28;
   v30 = 0x2020000000;
@@ -976,18 +976,18 @@ void __109__PPTopicStorage_deleteAllTopicsFromSourcesWithBundleId_algorithm_atLe
   v16[3] = &unk_278977A30;
   v18 = &v28;
   v16[4] = self;
-  v12 = v10;
-  v20 = a4;
-  v21 = a5;
+  v12 = idCopy;
+  removedCopy = removed;
+  countCopy = count;
   v17 = v12;
   v19 = &v22;
   [(PPSQLDatabase *)db writeTransactionWithClient:2 block:v16];
-  if (a6)
+  if (error)
   {
     v13 = v23[5];
     if (v13)
     {
-      *a6 = v13;
+      *error = v13;
     }
   }
 
@@ -1012,10 +1012,10 @@ void __99__PPTopicStorage_deleteAllTopicsFromSourcesWithBundleId_atLeastOneTopic
   *(*(a1[6] + 8) + 24) = v8;
 }
 
-- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)a3 groupIds:(id)a4 algorithm:(unint64_t)a5 atLeastOneTopicRemoved:(BOOL *)a6 deletedCount:(unint64_t *)a7 error:(id *)a8
+- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)id groupIds:(id)ids algorithm:(unint64_t)algorithm atLeastOneTopicRemoved:(BOOL *)removed deletedCount:(unint64_t *)count error:(id *)error
 {
-  v14 = a3;
-  v15 = a4;
+  idCopy = id;
+  idsCopy = ids;
   v36 = 0;
   v37 = &v36;
   v38 = 0x2020000000;
@@ -1033,21 +1033,21 @@ void __99__PPTopicStorage_deleteAllTopicsFromSourcesWithBundleId_atLeastOneTopic
   v22[3] = &unk_278977AA8;
   v25 = &v36;
   v22[4] = self;
-  v17 = v14;
+  v17 = idCopy;
   v23 = v17;
-  v18 = v15;
-  v27 = a5;
-  v28 = a6;
-  v29 = a7;
+  v18 = idsCopy;
+  algorithmCopy = algorithm;
+  removedCopy = removed;
+  countCopy = count;
   v24 = v18;
   v26 = &v30;
   [(PPSQLDatabase *)db writeTransactionWithClient:2 block:v22];
-  if (a8)
+  if (error)
   {
     v19 = v31[5];
     if (v19)
     {
-      *a8 = v19;
+      *error = v19;
     }
   }
 
@@ -1074,10 +1074,10 @@ void __118__PPTopicStorage_deleteAllTopicsFromSourcesWithBundleId_groupIds_algor
   *(*(*(a1 + 56) + 8) + 24) = v10;
 }
 
-- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)a3 groupIds:(id)a4 atLeastOneTopicRemoved:(BOOL *)a5 deletedCount:(unint64_t *)a6 error:(id *)a7
+- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)id groupIds:(id)ids atLeastOneTopicRemoved:(BOOL *)removed deletedCount:(unint64_t *)count error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
+  idCopy = id;
+  idsCopy = ids;
   v33 = 0;
   v34 = &v33;
   v35 = 0x2020000000;
@@ -1095,20 +1095,20 @@ void __118__PPTopicStorage_deleteAllTopicsFromSourcesWithBundleId_groupIds_algor
   v20[3] = &unk_278977A80;
   v23 = &v33;
   v20[4] = self;
-  v15 = v12;
+  v15 = idCopy;
   v21 = v15;
-  v16 = v13;
-  v25 = a5;
-  v26 = a6;
+  v16 = idsCopy;
+  removedCopy = removed;
+  countCopy = count;
   v22 = v16;
   v24 = &v27;
   [(PPSQLDatabase *)db writeTransactionWithClient:2 block:v20];
-  if (a7)
+  if (error)
   {
     v17 = v28[5];
     if (v17)
     {
-      *a7 = v17;
+      *error = v17;
     }
   }
 
@@ -1134,10 +1134,10 @@ void __108__PPTopicStorage_deleteAllTopicsFromSourcesWithBundleId_groupIds_atLea
   *(*(a1[7] + 8) + 24) = v9;
 }
 
-- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)a3 documentIds:(id)a4 algorithm:(unint64_t)a5 atLeastOneTopicRemoved:(BOOL *)a6 deletedCount:(unint64_t *)a7 error:(id *)a8
+- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)id documentIds:(id)ids algorithm:(unint64_t)algorithm atLeastOneTopicRemoved:(BOOL *)removed deletedCount:(unint64_t *)count error:(id *)error
 {
-  v14 = a3;
-  v15 = a4;
+  idCopy = id;
+  idsCopy = ids;
   v36 = 0;
   v37 = &v36;
   v38 = 0x2020000000;
@@ -1155,21 +1155,21 @@ void __108__PPTopicStorage_deleteAllTopicsFromSourcesWithBundleId_groupIds_atLea
   v22[3] = &unk_278977AA8;
   v25 = &v36;
   v22[4] = self;
-  v17 = v14;
+  v17 = idCopy;
   v23 = v17;
-  v18 = v15;
-  v27 = a5;
-  v28 = a6;
-  v29 = a7;
+  v18 = idsCopy;
+  algorithmCopy = algorithm;
+  removedCopy = removed;
+  countCopy = count;
   v24 = v18;
   v26 = &v30;
   [(PPSQLDatabase *)db writeTransactionWithClient:2 block:v22];
-  if (a8)
+  if (error)
   {
     v19 = v31[5];
     if (v19)
     {
-      *a8 = v19;
+      *error = v19;
     }
   }
 
@@ -1196,10 +1196,10 @@ void __121__PPTopicStorage_deleteAllTopicsFromSourcesWithBundleId_documentIds_al
   *(*(*(a1 + 56) + 8) + 24) = v10;
 }
 
-- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)a3 documentIds:(id)a4 atLeastOneTopicRemoved:(BOOL *)a5 deletedCount:(unint64_t *)a6 error:(id *)a7
+- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)id documentIds:(id)ids atLeastOneTopicRemoved:(BOOL *)removed deletedCount:(unint64_t *)count error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
+  idCopy = id;
+  idsCopy = ids;
   v33 = 0;
   v34 = &v33;
   v35 = 0x2020000000;
@@ -1217,20 +1217,20 @@ void __121__PPTopicStorage_deleteAllTopicsFromSourcesWithBundleId_documentIds_al
   v20[3] = &unk_278977A80;
   v23 = &v33;
   v20[4] = self;
-  v15 = v12;
+  v15 = idCopy;
   v21 = v15;
-  v16 = v13;
-  v25 = a5;
-  v26 = a6;
+  v16 = idsCopy;
+  removedCopy = removed;
+  countCopy = count;
   v22 = v16;
   v24 = &v27;
   [(PPSQLDatabase *)db writeTransactionWithClient:2 block:v20];
-  if (a7)
+  if (error)
   {
     v17 = v28[5];
     if (v17)
     {
-      *a7 = v17;
+      *error = v17;
     }
   }
 
@@ -1256,9 +1256,9 @@ void __111__PPTopicStorage_deleteAllTopicsFromSourcesWithBundleId_documentIds_at
   *(*(a1[7] + 8) + 24) = v9;
 }
 
-- (BOOL)deleteAllTopicsWithTopicId:(id)a3 algorithm:(unint64_t)a4 atLeastOneTopicRemoved:(BOOL *)a5 deletedCount:(unint64_t *)a6 error:(id *)a7
+- (BOOL)deleteAllTopicsWithTopicId:(id)id algorithm:(unint64_t)algorithm atLeastOneTopicRemoved:(BOOL *)removed deletedCount:(unint64_t *)count error:(id *)error
 {
-  v12 = a3;
+  idCopy = id;
   v31 = 0;
   v32 = &v31;
   v33 = 0x2020000000;
@@ -1276,19 +1276,19 @@ void __111__PPTopicStorage_deleteAllTopicsFromSourcesWithBundleId_documentIds_at
   v18[3] = &unk_278977A58;
   v20 = &v31;
   v18[4] = self;
-  v14 = v12;
-  v22 = a4;
-  v23 = a5;
-  v24 = a6;
+  v14 = idCopy;
+  algorithmCopy = algorithm;
+  removedCopy = removed;
+  countCopy = count;
   v19 = v14;
   v21 = &v25;
   [(PPSQLDatabase *)db writeTransactionWithClient:2 block:v18];
-  if (a7)
+  if (error)
   {
     v15 = v26[5];
     if (v15)
     {
-      *a7 = v15;
+      *error = v15;
     }
   }
 
@@ -1314,9 +1314,9 @@ void __97__PPTopicStorage_deleteAllTopicsWithTopicId_algorithm_atLeastOneTopicRe
   *(*(*(a1 + 48) + 8) + 24) = v9;
 }
 
-- (BOOL)deleteAllTopicsWithTopicId:(id)a3 atLeastOneTopicRemoved:(BOOL *)a4 deletedCount:(unint64_t *)a5 error:(id *)a6
+- (BOOL)deleteAllTopicsWithTopicId:(id)id atLeastOneTopicRemoved:(BOOL *)removed deletedCount:(unint64_t *)count error:(id *)error
 {
-  v10 = a3;
+  idCopy = id;
   v28 = 0;
   v29 = &v28;
   v30 = 0x2020000000;
@@ -1334,18 +1334,18 @@ void __97__PPTopicStorage_deleteAllTopicsWithTopicId_algorithm_atLeastOneTopicRe
   v16[3] = &unk_278977A30;
   v18 = &v28;
   v16[4] = self;
-  v12 = v10;
-  v20 = a4;
-  v21 = a5;
+  v12 = idCopy;
+  removedCopy = removed;
+  countCopy = count;
   v17 = v12;
   v19 = &v22;
   [(PPSQLDatabase *)db writeTransactionWithClient:2 block:v16];
-  if (a6)
+  if (error)
   {
     v13 = v23[5];
     if (v13)
     {
-      *a6 = v13;
+      *error = v13;
     }
   }
 
@@ -1370,19 +1370,19 @@ void __87__PPTopicStorage_deleteAllTopicsWithTopicId_atLeastOneTopicRemoved_dele
   *(*(a1[6] + 8) + 24) = v8;
 }
 
-- (BOOL)deleteAllTopicsOlderThanDate:(id)a3 atLeastOneTopicRemoved:(BOOL *)a4 deletedCount:(unint64_t *)a5 error:(id *)a6
+- (BOOL)deleteAllTopicsOlderThanDate:(id)date atLeastOneTopicRemoved:(BOOL *)removed deletedCount:(unint64_t *)count error:(id *)error
 {
-  v9 = a3;
+  dateCopy = date;
   db = self->_db;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __89__PPTopicStorage_deleteAllTopicsOlderThanDate_atLeastOneTopicRemoved_deletedCount_error___block_invoke;
   v13[3] = &unk_278978EC0;
   v13[4] = self;
-  v14 = v9;
-  v15 = a4;
-  v16 = a5;
-  v11 = v9;
+  v14 = dateCopy;
+  removedCopy = removed;
+  countCopy = count;
+  v11 = dateCopy;
   [(PPSQLDatabase *)db writeTransactionWithClient:2 block:v13];
 
   return 1;
@@ -1397,25 +1397,25 @@ void __89__PPTopicStorage_deleteAllTopicsOlderThanDate_atLeastOneTopicRemoved_de
   [*(a1[4] + 32) deleteRecordsForRowIds:v6 txnWitness:v5 atLeastOneClusterRemoved:a1[6] deletedCount:a1[7]];
 }
 
-- (BOOL)decayFeedbackCountsWithDecayRate:(double)a3 shouldContinueBlock:(id)a4
+- (BOOL)decayFeedbackCountsWithDecayRate:(double)rate shouldContinueBlock:(id)block
 {
   do
   {
-    v7 = (*(a4 + 2))(a4, a2);
+    v7 = (*(block + 2))(block, a2);
   }
 
-  while (v7 && ![(PPRecordStorageHelper *)self->_storageHelper decayFeedbackWithDatabase:self->_db client:2 decayRate:a3]);
+  while (v7 && ![(PPRecordStorageHelper *)self->_storageHelper decayFeedbackWithDatabase:self->_db client:2 decayRate:rate]);
   return v7;
 }
 
-- (BOOL)donateTopics:(id)a3 source:(id)a4 algorithm:(unint64_t)a5 cloudSync:(BOOL)a6 decayRate:(double)a7 sentimentScore:(double)a8 exactMatchesInSourceText:(id)a9 error:(id *)a10
+- (BOOL)donateTopics:(id)topics source:(id)source algorithm:(unint64_t)algorithm cloudSync:(BOOL)sync decayRate:(double)rate sentimentScore:(double)score exactMatchesInSourceText:(id)text error:(id *)self0
 {
   v45[1] = *MEMORY[0x277D85DE8];
-  v18 = a3;
-  v19 = a4;
-  v20 = a9;
+  topicsCopy = topics;
+  sourceCopy = source;
+  textCopy = text;
   v21 = 1;
-  if ([v18 count])
+  if ([topicsCopy count])
   {
     v40 = 0;
     v41 = &v40;
@@ -1427,23 +1427,23 @@ void __89__PPTopicStorage_deleteAllTopicsOlderThanDate_atLeastOneTopicRemoved_de
     v29 = __114__PPTopicStorage_donateTopics_source_algorithm_cloudSync_decayRate_sentimentScore_exactMatchesInSourceText_error___block_invoke;
     v30 = &unk_278977990;
     v35 = &v40;
-    v31 = self;
-    v32 = v18;
-    v33 = v19;
-    v36 = a5;
-    v39 = a6;
-    v37 = a7;
-    v38 = a8;
-    v34 = v20;
+    selfCopy = self;
+    v32 = topicsCopy;
+    v33 = sourceCopy;
+    algorithmCopy = algorithm;
+    syncCopy = sync;
+    rateCopy = rate;
+    scoreCopy = score;
+    v34 = textCopy;
     [(PPSQLDatabase *)db writeTransactionWithClient:2 block:&v27];
     v21 = *(v41 + 24);
-    if (a10 && (v41[3] & 1) == 0)
+    if (error && (v41[3] & 1) == 0)
     {
       v23 = objc_alloc(MEMORY[0x277CCA9B8]);
       v44 = *MEMORY[0x277CCA450];
       v45[0] = @"The donated data is invalid.";
-      v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v45 forKeys:&v44 count:{1, v27, v28, v29, v30, v31, v32, v33}];
-      *a10 = [v23 initWithDomain:*MEMORY[0x277D3A580] code:9 userInfo:v24];
+      v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v45 forKeys:&v44 count:{1, v27, v28, v29, v30, selfCopy, v32, v33}];
+      *error = [v23 initWithDomain:*MEMORY[0x277D3A580] code:9 userInfo:v24];
 
       v21 = *(v41 + 24);
     }
@@ -2043,31 +2043,31 @@ void __53__PPTopicStorage__shouldSuppressRepeatedImpressions___block_invoke()
   objc_autoreleasePoolPop(v0);
 }
 
-- (BOOL)iterTopicRecordsWithQuery:(id)a3 error:(id *)a4 block:(id)a5
+- (BOOL)iterTopicRecordsWithQuery:(id)query error:(id *)error block:(id)block
 {
   v134 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v86 = a5;
+  queryCopy = query;
+  blockCopy = block;
   context = objc_autoreleasePoolPush();
-  if ([v7 limit])
+  if ([queryCopy limit])
   {
     v8 = @"INNER JOIN";
     v9 = @"ORDER BY topic_id ASC, src.seconds_from_1970 DESC";
-    if ([v7 orderByIdentifier])
+    if ([queryCopy orderByIdentifier])
     {
       v84 = @"ORDER BY topic_id ASC, src.seconds_from_1970 DESC";
     }
 
     else
     {
-      v11 = [v7 removeNearDuplicates];
-      if (!v11)
+      removeNearDuplicates = [queryCopy removeNearDuplicates];
+      if (!removeNearDuplicates)
       {
         v9 = @"ORDER BY src.seconds_from_1970 DESC";
       }
 
       v84 = v9;
-      if (!v11)
+      if (!removeNearDuplicates)
       {
         v8 = @"CROSS JOIN";
       }
@@ -2075,12 +2075,12 @@ void __53__PPTopicStorage__shouldSuppressRepeatedImpressions___block_invoke()
 
     v12 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"SELECT tp.id, src.id FROM sources AS src %@ tp_records AS tp ON tp.source_id = src.id WHERE 1 ", v8];
     v13 = objc_opt_new();
-    v14 = [v7 fromDate];
+    fromDate = [queryCopy fromDate];
 
-    if (v14)
+    if (fromDate)
     {
       v15 = objc_autoreleasePoolPush();
-      if ([v7 filterByRelevanceDate])
+      if ([queryCopy filterByRelevanceDate])
       {
         v16 = @"AND COALESCE(src.relevance_seconds_from_1970, src.seconds_from_1970) >= :fromDateEpoch ";
       }
@@ -2096,7 +2096,7 @@ void __53__PPTopicStorage__shouldSuppressRepeatedImpressions___block_invoke()
       aBlock[1] = 3221225472;
       aBlock[2] = __56__PPTopicStorage_iterTopicRecordsWithQuery_error_block___block_invoke;
       aBlock[3] = &unk_278978CF8;
-      v131 = v7;
+      v131 = queryCopy;
       v18 = _Block_copy(aBlock);
       [v13 addObject:v18];
 
@@ -2104,12 +2104,12 @@ void __53__PPTopicStorage__shouldSuppressRepeatedImpressions___block_invoke()
       v12 = v17;
     }
 
-    v19 = [v7 toDate];
+    toDate = [queryCopy toDate];
 
-    if (v19)
+    if (toDate)
     {
       v20 = objc_autoreleasePoolPush();
-      if ([v7 filterByRelevanceDate])
+      if ([queryCopy filterByRelevanceDate])
       {
         v21 = @"AND COALESCE(src.relevance_seconds_from_1970, src.seconds_from_1970) <= :toDateEpoch ";
       }
@@ -2125,7 +2125,7 @@ void __53__PPTopicStorage__shouldSuppressRepeatedImpressions___block_invoke()
       v128[1] = 3221225472;
       v128[2] = __56__PPTopicStorage_iterTopicRecordsWithQuery_error_block___block_invoke_2;
       v128[3] = &unk_278978CF8;
-      v129 = v7;
+      v129 = queryCopy;
       v23 = _Block_copy(v128);
       [v13 addObject:v23];
 
@@ -2133,17 +2133,17 @@ void __53__PPTopicStorage__shouldSuppressRepeatedImpressions___block_invoke()
       v12 = v22;
     }
 
-    if ([v7 deviceFilter])
+    if ([queryCopy deviceFilter])
     {
       v24 = objc_autoreleasePoolPush();
-      v25 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"AND tp.is_remote = %u ", objc_msgSend(v7, "deviceFilter") == 2];
+      v25 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"AND tp.is_remote = %u ", objc_msgSend(queryCopy, "deviceFilter") == 2];
       v26 = [v12 stringByAppendingString:v25];
 
       objc_autoreleasePoolPop(v24);
       v12 = v26;
     }
 
-    if ([v7 excludeWithoutSentiment])
+    if ([queryCopy excludeWithoutSentiment])
     {
       v27 = objc_autoreleasePoolPush();
       v28 = [v12 stringByAppendingString:@"AND tp.sentiment_score != 0 "];
@@ -2153,8 +2153,8 @@ void __53__PPTopicStorage__shouldSuppressRepeatedImpressions___block_invoke()
     }
 
     v29 = objc_autoreleasePoolPush();
-    v30 = [v7 matchingDocumentIds];
-    if ([v30 count])
+    matchingDocumentIds = [queryCopy matchingDocumentIds];
+    if ([matchingDocumentIds count])
     {
       v31 = [v12 stringByAppendingString:@"AND src.doc_id IN _pas_nsset(:matchingDocumentIds) "];
 
@@ -2162,7 +2162,7 @@ void __53__PPTopicStorage__shouldSuppressRepeatedImpressions___block_invoke()
       v126[1] = 3221225472;
       v126[2] = __56__PPTopicStorage_iterTopicRecordsWithQuery_error_block___block_invoke_3;
       v126[3] = &unk_278978CF8;
-      v127 = v30;
+      v127 = matchingDocumentIds;
       v32 = _Block_copy(v126);
       [v13 addObject:v32];
 
@@ -2171,8 +2171,8 @@ void __53__PPTopicStorage__shouldSuppressRepeatedImpressions___block_invoke()
 
     objc_autoreleasePoolPop(v29);
     v33 = objc_autoreleasePoolPush();
-    v34 = [v7 matchingSourceBundleIds];
-    if ([v34 count])
+    matchingSourceBundleIds = [queryCopy matchingSourceBundleIds];
+    if ([matchingSourceBundleIds count])
     {
       v35 = [v12 stringByAppendingString:@"AND src.bundle_id IN _pas_nsset(:matchingSourceBundleIds) "];
 
@@ -2180,7 +2180,7 @@ void __53__PPTopicStorage__shouldSuppressRepeatedImpressions___block_invoke()
       v124[1] = 3221225472;
       v124[2] = __56__PPTopicStorage_iterTopicRecordsWithQuery_error_block___block_invoke_4;
       v124[3] = &unk_278978CF8;
-      v125 = v34;
+      v125 = matchingSourceBundleIds;
       v36 = _Block_copy(v124);
       [v13 addObject:v36];
 
@@ -2189,8 +2189,8 @@ void __53__PPTopicStorage__shouldSuppressRepeatedImpressions___block_invoke()
 
     objc_autoreleasePoolPop(v33);
     v37 = objc_autoreleasePoolPush();
-    v38 = [v7 excludingSourceBundleIds];
-    if ([v38 count])
+    excludingSourceBundleIds = [queryCopy excludingSourceBundleIds];
+    if ([excludingSourceBundleIds count])
     {
       v39 = [v12 stringByAppendingString:@"AND src.bundle_id NOT IN _pas_nsset(:excludingSourceBundleIds) "];
 
@@ -2198,7 +2198,7 @@ void __53__PPTopicStorage__shouldSuppressRepeatedImpressions___block_invoke()
       v122[1] = 3221225472;
       v122[2] = __56__PPTopicStorage_iterTopicRecordsWithQuery_error_block___block_invoke_5;
       v122[3] = &unk_278978CF8;
-      v123 = v38;
+      v123 = excludingSourceBundleIds;
       v40 = _Block_copy(v122);
       [v13 addObject:v40];
 
@@ -2207,14 +2207,14 @@ void __53__PPTopicStorage__shouldSuppressRepeatedImpressions___block_invoke()
 
     objc_autoreleasePoolPop(v37);
     v41 = objc_autoreleasePoolPush();
-    v42 = [v7 matchingContactHandle];
-    v43 = [v42 length] == 0;
+    matchingContactHandle = [queryCopy matchingContactHandle];
+    v43 = [matchingContactHandle length] == 0;
 
     if (!v43)
     {
       v44 = [[PPContactStorage alloc] initWithDatabase:self->_db foundInAppsHarvestStoreGetter:&__block_literal_global_21806];
-      v45 = [v7 matchingContactHandle];
-      v46 = [(PPContactStorage *)v44 sourcesForContactHandle:v45];
+      matchingContactHandle2 = [queryCopy matchingContactHandle];
+      v46 = [(PPContactStorage *)v44 sourcesForContactHandle:matchingContactHandle2];
 
       v47 = [(PPSourceStorage *)self->_sourceStorage whereSourceIdInSubclauseWithSourceIds:v46 tableNameAlias:@"src" binders:v13];
       v48 = [v12 stringByAppendingString:v47];
@@ -2224,8 +2224,8 @@ void __53__PPTopicStorage__shouldSuppressRepeatedImpressions___block_invoke()
 
     objc_autoreleasePoolPop(v41);
     v49 = objc_autoreleasePoolPush();
-    v50 = [v7 matchingGroupIds];
-    if ([v50 count])
+    matchingGroupIds = [queryCopy matchingGroupIds];
+    if ([matchingGroupIds count])
     {
       v51 = [v12 stringByAppendingString:@"AND src.group_id IN _pas_nsset(:matchingGroupIds) "];
 
@@ -2233,7 +2233,7 @@ void __53__PPTopicStorage__shouldSuppressRepeatedImpressions___block_invoke()
       v120[1] = 3221225472;
       v120[2] = __56__PPTopicStorage_iterTopicRecordsWithQuery_error_block___block_invoke_7;
       v120[3] = &unk_278978CF8;
-      v121 = v50;
+      v121 = matchingGroupIds;
       v52 = _Block_copy(v120);
       [v13 addObject:v52];
 
@@ -2242,8 +2242,8 @@ void __53__PPTopicStorage__shouldSuppressRepeatedImpressions___block_invoke()
 
     objc_autoreleasePoolPop(v49);
     v53 = objc_autoreleasePoolPush();
-    v54 = [v7 matchingAlgorithms];
-    if ([v54 count])
+    matchingAlgorithms = [queryCopy matchingAlgorithms];
+    if ([matchingAlgorithms count])
     {
       v55 = [v12 stringByAppendingString:@"AND tp.algorithm IN _pas_nsset(:matchingAlgorithms) "];
 
@@ -2251,7 +2251,7 @@ void __53__PPTopicStorage__shouldSuppressRepeatedImpressions___block_invoke()
       v118[1] = 3221225472;
       v118[2] = __56__PPTopicStorage_iterTopicRecordsWithQuery_error_block___block_invoke_8;
       v118[3] = &unk_278978CF8;
-      v119 = v54;
+      v119 = matchingAlgorithms;
       v56 = _Block_copy(v118);
       [v13 addObject:v56];
 
@@ -2260,8 +2260,8 @@ void __53__PPTopicStorage__shouldSuppressRepeatedImpressions___block_invoke()
 
     objc_autoreleasePoolPop(v53);
     v57 = objc_autoreleasePoolPush();
-    v58 = [v7 excludingAlgorithms];
-    if ([v58 count])
+    excludingAlgorithms = [queryCopy excludingAlgorithms];
+    if ([excludingAlgorithms count])
     {
       v59 = [v12 stringByAppendingString:@"AND tp.algorithm NOT IN _pas_nsset(:excludingAlgorithms) "];
 
@@ -2269,7 +2269,7 @@ void __53__PPTopicStorage__shouldSuppressRepeatedImpressions___block_invoke()
       v116[1] = 3221225472;
       v116[2] = __56__PPTopicStorage_iterTopicRecordsWithQuery_error_block___block_invoke_9;
       v116[3] = &unk_278978CF8;
-      v117 = v58;
+      v117 = excludingAlgorithms;
       v60 = _Block_copy(v116);
       [v13 addObject:v60];
 
@@ -2278,8 +2278,8 @@ void __53__PPTopicStorage__shouldSuppressRepeatedImpressions___block_invoke()
 
     objc_autoreleasePoolPop(v57);
     v61 = objc_autoreleasePoolPush();
-    v62 = [v7 matchingTopicIds];
-    if ([v62 count])
+    matchingTopicIds = [queryCopy matchingTopicIds];
+    if ([matchingTopicIds count])
     {
       v63 = [v12 stringByAppendingString:@"AND tp.topic_id IN _pas_nsset(:matchingTopicIds) "];
 
@@ -2287,7 +2287,7 @@ void __53__PPTopicStorage__shouldSuppressRepeatedImpressions___block_invoke()
       v114[1] = 3221225472;
       v114[2] = __56__PPTopicStorage_iterTopicRecordsWithQuery_error_block___block_invoke_10;
       v114[3] = &unk_278978CF8;
-      v115 = v62;
+      v115 = matchingTopicIds;
       v64 = _Block_copy(v114);
       [v13 addObject:v64];
 
@@ -2296,13 +2296,13 @@ void __53__PPTopicStorage__shouldSuppressRepeatedImpressions___block_invoke()
 
     objc_autoreleasePoolPop(v61);
     v65 = objc_autoreleasePoolPush();
-    v66 = [v7 matchingTopicTrie];
+    matchingTopicTrie = [queryCopy matchingTopicTrie];
 
-    if (v66)
+    if (matchingTopicTrie)
     {
       trialWrapper = self->_trialWrapper;
-      v68 = [v7 matchingTopicTrie];
-      v69 = [(PPTrialWrapper *)trialWrapper trieForFactorName:v68 namespaceName:@"PERSONALIZATION_PORTRAIT_TOPICS"];
+      matchingTopicTrie2 = [queryCopy matchingTopicTrie];
+      v69 = [(PPTrialWrapper *)trialWrapper trieForFactorName:matchingTopicTrie2 namespaceName:@"PERSONALIZATION_PORTRAIT_TOPICS"];
 
       if (!v69)
       {
@@ -2368,13 +2368,13 @@ void __53__PPTopicStorage__shouldSuppressRepeatedImpressions___block_invoke()
     v89 = v12;
     v90 = v13;
     v95 = v104;
-    v91 = v7;
-    v92 = self;
+    v91 = queryCopy;
+    selfCopy = self;
     v96 = &v98;
     v77 = v75;
     v93 = v77;
     v97 = v106;
-    v94 = v86;
+    v94 = blockCopy;
     [(PPSQLDatabase *)db readTransactionWithClient:2 block:v88];
     if (v99[5])
     {
@@ -2713,16 +2713,16 @@ id __56__PPTopicStorage_iterTopicRecordsWithQuery_error_block___block_invoke_2_2
   [(PPTopicStorage *)&v3 dealloc];
 }
 
-- (PPTopicStorage)initWithDatabase:(id)a3
+- (PPTopicStorage)initWithDatabase:(id)database
 {
-  v4 = a3;
+  databaseCopy = database;
   v5 = [PPTrialWrapper alloc];
   v6 = objc_opt_new();
   v7 = +[PPTrialWrapper sharedTrialClient];
-  v8 = [(PPTrialWrapper *)v5 initWithSettings:v6 database:v4 trialClient:v7];
+  v8 = [(PPTrialWrapper *)v5 initWithSettings:v6 database:databaseCopy trialClient:v7];
 
   v9 = +[PPDKStorage sharedInstance];
-  v10 = [(PPTopicStorage *)self initWithDatabase:v4 maxRecords:15000 dkStorage:v9 loadEmptyDatabaseFromDK:1 trialWrapper:v8];
+  v10 = [(PPTopicStorage *)self initWithDatabase:databaseCopy maxRecords:15000 dkStorage:v9 loadEmptyDatabaseFromDK:1 trialWrapper:v8];
 
   return v10;
 }

@@ -1,22 +1,22 @@
 @interface RCPEventStreamRecorder
-+ (id)recorderWithConfiguration:(id)a3;
++ (id)recorderWithConfiguration:(id)configuration;
 - (void)_finalizePointerEvents;
 - (void)dealloc;
-- (void)enqueueEvent:(id)a3;
-- (void)setStartLocationEvent:(__IOHIDEvent *)a3;
+- (void)enqueueEvent:(id)event;
+- (void)setStartLocationEvent:(__IOHIDEvent *)event;
 - (void)startRecording;
 - (void)stopRecording;
 @end
 
 @implementation RCPEventStreamRecorder
 
-+ (id)recorderWithConfiguration:(id)a3
++ (id)recorderWithConfiguration:(id)configuration
 {
-  v3 = a3;
+  configurationCopy = configuration;
   v4 = objc_opt_new();
   v5 = v4[4];
-  v4[4] = v3;
-  v6 = v3;
+  v4[4] = configurationCopy;
+  v6 = configurationCopy;
 
   v7 = objc_alloc_init(RCPCoreAnalyticsBackedAnalyticsEventSender);
   [v4 setAnalyticsEventSender:v7];
@@ -37,7 +37,7 @@
   [(RCPEventStreamRecorder *)&v4 dealloc];
 }
 
-- (void)setStartLocationEvent:(__IOHIDEvent *)a3
+- (void)setStartLocationEvent:(__IOHIDEvent *)event
 {
   startLocationEvent = self->_startLocationEvent;
   if (startLocationEvent)
@@ -66,40 +66,40 @@
 {
   [(RCPEventStreamRecorder *)self finalizeEvents];
   [(RCPEventStreamRecorder *)self setState:2];
-  v3 = [(RCPEventStreamRecorder *)self analyticsEventSender];
-  [v3 sendEvent:0];
+  analyticsEventSender = [(RCPEventStreamRecorder *)self analyticsEventSender];
+  [analyticsEventSender sendEvent:0];
 
   [RCPRecorder unregisterEventStreamRecorder:self];
 }
 
-- (void)enqueueEvent:(id)a3
+- (void)enqueueEvent:(id)event
 {
-  v21 = a3;
-  v4 = [(RCPEventStream *)self rawEvents];
-  [v4 addObject:v21];
+  eventCopy = event;
+  rawEvents = [(RCPEventStream *)self rawEvents];
+  [rawEvents addObject:eventCopy];
 
-  v5 = [(RCPEventStreamRecorder *)self config];
-  [v5 maxStreamDuration];
+  config = [(RCPEventStreamRecorder *)self config];
+  [config maxStreamDuration];
   v7 = v6;
 
-  v8 = v21;
+  v8 = eventCopy;
   if (v7 > 0.0)
   {
-    v9 = [v21 timestamp];
-    v10 = [(RCPEventStream *)self rawEvents];
-    v11 = [v10 count];
+    timestamp = [eventCopy timestamp];
+    rawEvents2 = [(RCPEventStream *)self rawEvents];
+    v11 = [rawEvents2 count];
 
-    v12 = [(RCPEventStream *)self rawEvents];
-    v13 = [v12 count];
+    rawEvents3 = [(RCPEventStream *)self rawEvents];
+    v13 = [rawEvents3 count];
 
     if (v13)
     {
       v14 = 0;
       while (1)
       {
-        v15 = [(RCPEventStream *)self rawEvents];
-        v16 = [v15 objectAtIndexedSubscript:v14];
-        v17 = RCPTimeIntervalFromMachTimestamp(v9 - [v16 timestamp]);
+        rawEvents4 = [(RCPEventStream *)self rawEvents];
+        v16 = [rawEvents4 objectAtIndexedSubscript:v14];
+        v17 = RCPTimeIntervalFromMachTimestamp(timestamp - [v16 timestamp]);
 
         if (v17 < v7)
         {
@@ -107,8 +107,8 @@
         }
 
         ++v14;
-        v18 = [(RCPEventStream *)self rawEvents];
-        v19 = [v18 count];
+        rawEvents5 = [(RCPEventStream *)self rawEvents];
+        v19 = [rawEvents5 count];
 
         if (v14 >= v19)
         {
@@ -120,10 +120,10 @@
     }
 
 LABEL_8:
-    v20 = [(RCPEventStream *)self rawEvents];
-    [v20 removeObjectsInRange:{0, v11}];
+    rawEvents6 = [(RCPEventStream *)self rawEvents];
+    [rawEvents6 removeObjectsInRange:{0, v11}];
 
-    v8 = v21;
+    v8 = eventCopy;
   }
 }
 
@@ -136,8 +136,8 @@ LABEL_8:
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v3 = [(RCPEventStream *)self rawEvents];
-    v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    rawEvents = [(RCPEventStream *)self rawEvents];
+    v4 = [rawEvents countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v4)
     {
       v5 = v4;
@@ -148,7 +148,7 @@ LABEL_4:
       {
         if (*v16 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(rawEvents);
         }
 
         v8 = *(*(&v15 + 1) + 8 * v7);
@@ -160,7 +160,7 @@ LABEL_4:
 
         if (v5 == ++v7)
         {
-          v5 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+          v5 = [rawEvents countByEnumeratingWithState:&v15 objects:v19 count:16];
           if (v5)
           {
             goto LABEL_4;
@@ -183,14 +183,14 @@ LABEL_4:
       IOHIDEventGetTimeStamp();
       IOHIDEventSetTimeStamp();
       startLocationEvent = self->_startLocationEvent;
-      v11 = [v9 deliveryTimestamp];
-      v12 = [v9 senderProperties];
-      v13 = [RCPEvent eventWithHIDEvent:startLocationEvent deliveryTimeStamp:v11 senderProperties:v12 preActions:0];
+      deliveryTimestamp = [v9 deliveryTimestamp];
+      senderProperties = [v9 senderProperties];
+      v13 = [RCPEvent eventWithHIDEvent:startLocationEvent deliveryTimeStamp:deliveryTimestamp senderProperties:senderProperties preActions:0];
 
-      v14 = [(RCPEventStream *)self rawEvents];
-      [v14 insertObject:v13 atIndex:0];
+      rawEvents2 = [(RCPEventStream *)self rawEvents];
+      [rawEvents2 insertObject:v13 atIndex:0];
 
-      v3 = v9;
+      rawEvents = v9;
     }
 
 LABEL_13:

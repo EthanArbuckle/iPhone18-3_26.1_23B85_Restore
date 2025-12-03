@@ -1,15 +1,15 @@
 @interface SafariSearchHelper
 - (SafariSearchHelper)init;
-- (id)_fetcherForSuggestionsURLTemplate:(id)a3;
-- (void)cancelExistingSuggestionsRequestOfFetcherWithSuggestionsURLTemplate:(id)a3;
-- (void)checkForModelUpdatesIfNeededWithCompletionHandler:(id)a3;
-- (void)clearAllSearchModelsWithCompletionHandler:(id)a3;
-- (void)fetchOfflineSearchSuggestionsStatus:(id)a3;
-- (void)fetchOfflineSuggestionsForQueryString:(id)a3 completionHandler:(id)a4;
-- (void)fetchOpenSearchDescriptionWithURL:(id)a3 completionHandler:(id)a4;
-- (void)onDeviceSearchSuggestionProvider:(id)a3 didFinishWithSuggestions:(id)a4 forQueryString:(id)a5;
-- (void)setMaximumNumberOfOfflineSuggestionsToFetch:(unint64_t)a3;
-- (void)updateSuggestionsRequestWithSearchTerms:(id)a3 suggestionsURLTemplate:(id)a4 userAgentString:(id)a5 completionHandler:(id)a6;
+- (id)_fetcherForSuggestionsURLTemplate:(id)template;
+- (void)cancelExistingSuggestionsRequestOfFetcherWithSuggestionsURLTemplate:(id)template;
+- (void)checkForModelUpdatesIfNeededWithCompletionHandler:(id)handler;
+- (void)clearAllSearchModelsWithCompletionHandler:(id)handler;
+- (void)fetchOfflineSearchSuggestionsStatus:(id)status;
+- (void)fetchOfflineSuggestionsForQueryString:(id)string completionHandler:(id)handler;
+- (void)fetchOpenSearchDescriptionWithURL:(id)l completionHandler:(id)handler;
+- (void)onDeviceSearchSuggestionProvider:(id)provider didFinishWithSuggestions:(id)suggestions forQueryString:(id)string;
+- (void)setMaximumNumberOfOfflineSuggestionsToFetch:(unint64_t)fetch;
+- (void)updateSuggestionsRequestWithSearchTerms:(id)terms suggestionsURLTemplate:(id)template userAgentString:(id)string completionHandler:(id)handler;
 @end
 
 @implementation SafariSearchHelper
@@ -29,49 +29,49 @@
   return v2;
 }
 
-- (void)fetchOpenSearchDescriptionWithURL:(id)a3 completionHandler:(id)a4
+- (void)fetchOpenSearchDescriptionWithURL:(id)l completionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[OpenSearchDescriptionParser alloc] initWithURL:v6];
+  handlerCopy = handler;
+  lCopy = l;
+  v7 = [[OpenSearchDescriptionParser alloc] initWithURL:lCopy];
 
-  [(OpenSearchDescriptionParser *)v7 parseWithCompletionHandler:v5];
+  [(OpenSearchDescriptionParser *)v7 parseWithCompletionHandler:handlerCopy];
 }
 
-- (void)updateSuggestionsRequestWithSearchTerms:(id)a3 suggestionsURLTemplate:(id)a4 userAgentString:(id)a5 completionHandler:(id)a6
+- (void)updateSuggestionsRequestWithSearchTerms:(id)terms suggestionsURLTemplate:(id)template userAgentString:(id)string completionHandler:(id)handler
 {
-  v10 = a3;
+  termsCopy = terms;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000205C;
   block[3] = &unk_100008410;
   block[4] = self;
-  v16 = a4;
-  v17 = v10;
-  v18 = a5;
-  v19 = a6;
-  v11 = v19;
-  v12 = v18;
-  v13 = v10;
-  v14 = v16;
+  templateCopy = template;
+  v17 = termsCopy;
+  stringCopy = string;
+  handlerCopy = handler;
+  v11 = handlerCopy;
+  v12 = stringCopy;
+  v13 = termsCopy;
+  v14 = templateCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)cancelExistingSuggestionsRequestOfFetcherWithSuggestionsURLTemplate:(id)a3
+- (void)cancelExistingSuggestionsRequestOfFetcherWithSuggestionsURLTemplate:(id)template
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100002150;
   v4[3] = &unk_1000083C0;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  templateCopy = template;
+  v3 = templateCopy;
   dispatch_async(&_dispatch_main_q, v4);
 }
 
-- (id)_fetcherForSuggestionsURLTemplate:(id)a3
+- (id)_fetcherForSuggestionsURLTemplate:(id)template
 {
-  v4 = a3;
+  templateCopy = template;
   fetchersBySuggestionsURLTemplate = self->_fetchersBySuggestionsURLTemplate;
   if (!fetchersBySuggestionsURLTemplate)
   {
@@ -82,53 +82,53 @@
     fetchersBySuggestionsURLTemplate = self->_fetchersBySuggestionsURLTemplate;
   }
 
-  v8 = [(NSMutableDictionary *)fetchersBySuggestionsURLTemplate objectForKeyedSubscript:v4];
+  v8 = [(NSMutableDictionary *)fetchersBySuggestionsURLTemplate objectForKeyedSubscript:templateCopy];
 
   if (!v8)
   {
-    v9 = [[SearchSuggestionsFetcher alloc] initWithSuggestionsURLTemplate:v4];
-    [(NSMutableDictionary *)self->_fetchersBySuggestionsURLTemplate setObject:v9 forKeyedSubscript:v4];
+    v9 = [[SearchSuggestionsFetcher alloc] initWithSuggestionsURLTemplate:templateCopy];
+    [(NSMutableDictionary *)self->_fetchersBySuggestionsURLTemplate setObject:v9 forKeyedSubscript:templateCopy];
   }
 
-  v10 = [(NSMutableDictionary *)self->_fetchersBySuggestionsURLTemplate objectForKeyedSubscript:v4];
+  v10 = [(NSMutableDictionary *)self->_fetchersBySuggestionsURLTemplate objectForKeyedSubscript:templateCopy];
 
   return v10;
 }
 
-- (void)fetchOfflineSuggestionsForQueryString:(id)a3 completionHandler:(id)a4
+- (void)fetchOfflineSuggestionsForQueryString:(id)string completionHandler:(id)handler
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100002324;
   block[3] = &unk_100008438;
-  v9 = a3;
-  v10 = a4;
+  stringCopy = string;
+  handlerCopy = handler;
   block[4] = self;
-  v6 = v9;
-  v7 = v10;
+  v6 = stringCopy;
+  v7 = handlerCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)setMaximumNumberOfOfflineSuggestionsToFetch:(unint64_t)a3
+- (void)setMaximumNumberOfOfflineSuggestionsToFetch:(unint64_t)fetch
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100002438;
   v3[3] = &unk_100008460;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = fetch;
   dispatch_async(&_dispatch_main_q, v3);
 }
 
-- (void)fetchOfflineSearchSuggestionsStatus:(id)a3
+- (void)fetchOfflineSearchSuggestionsStatus:(id)status
 {
-  v9 = a3;
+  statusCopy = status;
   v3 = +[WBSOnDeviceSearchSuggestionsModelManager sharedManager];
-  v4 = [v3 needsSupportedLocaleUpdate];
+  needsSupportedLocaleUpdate = [v3 needsSupportedLocaleUpdate];
 
-  if (v4)
+  if (needsSupportedLocaleUpdate)
   {
-    v9[2](v9, 4);
+    statusCopy[2](statusCopy, 4);
   }
 
   else
@@ -143,42 +143,42 @@
       [v8 haveModelForLocale:v5];
     }
 
-    (v9[2])();
+    (statusCopy[2])();
   }
 }
 
-- (void)checkForModelUpdatesIfNeededWithCompletionHandler:(id)a3
+- (void)checkForModelUpdatesIfNeededWithCompletionHandler:(id)handler
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000025F0;
   v4[3] = &unk_1000084D8;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  handlerCopy = handler;
+  v3 = handlerCopy;
   dispatch_async(&_dispatch_main_q, v4);
 }
 
-- (void)clearAllSearchModelsWithCompletionHandler:(id)a3
+- (void)clearAllSearchModelsWithCompletionHandler:(id)handler
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100002824;
   block[3] = &unk_100008500;
-  v5 = a3;
-  v3 = v5;
+  handlerCopy = handler;
+  v3 = handlerCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)onDeviceSearchSuggestionProvider:(id)a3 didFinishWithSuggestions:(id)a4 forQueryString:(id)a5
+- (void)onDeviceSearchSuggestionProvider:(id)provider didFinishWithSuggestions:(id)suggestions forQueryString:(id)string
 {
-  v8 = a4;
-  if ([(NSString *)self->_currentQueryString isEqualToString:a5])
+  suggestionsCopy = suggestions;
+  if ([(NSString *)self->_currentQueryString isEqualToString:string])
   {
     offlineSuggestionsCompletionHandler = self->_offlineSuggestionsCompletionHandler;
     if (offlineSuggestionsCompletionHandler)
     {
-      offlineSuggestionsCompletionHandler[2](offlineSuggestionsCompletionHandler, v8);
+      offlineSuggestionsCompletionHandler[2](offlineSuggestionsCompletionHandler, suggestionsCopy);
     }
   }
 }

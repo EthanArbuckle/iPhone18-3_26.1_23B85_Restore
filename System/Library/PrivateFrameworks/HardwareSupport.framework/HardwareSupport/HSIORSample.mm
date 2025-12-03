@@ -1,21 +1,21 @@
 @interface HSIORSample
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSample:(id)a3;
-- (HSIORSample)initWithIOReportSampleRef:(__CFDictionary *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSample:(id)sample;
+- (HSIORSample)initWithIOReportSampleRef:(__CFDictionary *)ref;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation HSIORSample
 
-- (HSIORSample)initWithIOReportSampleRef:(__CFDictionary *)a3
+- (HSIORSample)initWithIOReportSampleRef:(__CFDictionary *)ref
 {
   v11.receiver = self;
   v11.super_class = HSIORSample;
   v4 = [(HSIORSample *)&v11 init];
   if (v4)
   {
-    v5 = [[HSIORChannelDescription alloc] initWithIOReportChannelRef:a3];
+    v5 = [[HSIORChannelDescription alloc] initWithIOReportChannelRef:ref];
     channelDescription = v4->_channelDescription;
     v4->_channelDescription = v5;
 
@@ -36,11 +36,11 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(HSIORSample *)self channelDescription];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  channelDescription = [(HSIORSample *)self channelDescription];
+  v6 = [channelDescription copy];
   [v4 setChannelDescription:v6];
 
   v7 = [(HSIORSample *)self count];
@@ -52,18 +52,18 @@
 
 - (unint64_t)hash
 {
-  v3 = [(HSIORSample *)self channelDescription];
-  v4 = [v3 hash];
+  channelDescription = [(HSIORSample *)self channelDescription];
+  v4 = [channelDescription hash];
   v5 = [(HSIORSample *)self count];
   v6 = [v5 hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -71,24 +71,24 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(HSIORSample *)self isEqualToSample:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(HSIORSample *)self isEqualToSample:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToSample:(id)a3
+- (BOOL)isEqualToSample:(id)sample
 {
-  v4 = a3;
-  v5 = [v4 channelDescription];
-  v6 = [(HSIORSample *)self channelDescription];
-  v7 = [v5 isEqualToChannelDescription:v6];
+  sampleCopy = sample;
+  channelDescription = [sampleCopy channelDescription];
+  channelDescription2 = [(HSIORSample *)self channelDescription];
+  v7 = [channelDescription isEqualToChannelDescription:channelDescription2];
 
-  v8 = [v4 count];
+  v8 = [sampleCopy count];
   if (!v8)
   {
-    v6 = [(HSIORSample *)self count];
-    if (!v6)
+    channelDescription2 = [(HSIORSample *)self count];
+    if (!channelDescription2)
     {
       v11 = 1;
 LABEL_6:
@@ -97,7 +97,7 @@ LABEL_6:
     }
   }
 
-  v9 = [v4 count];
+  v9 = [sampleCopy count];
   v10 = [(HSIORSample *)self count];
   v11 = [v9 isEqual:v10];
 

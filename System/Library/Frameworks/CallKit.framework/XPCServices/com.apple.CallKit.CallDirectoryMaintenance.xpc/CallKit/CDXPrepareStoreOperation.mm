@@ -1,35 +1,35 @@
 @interface CDXPrepareStoreOperation
-- (BOOL)checkForExtensionsStuckLoading:(id *)a3;
-- (BOOL)disableAllExtensionsWithError:(id *)a3;
-- (BOOL)performWithError:(id *)a3;
-- (BOOL)synchronizeExtensionsWithError:(id *)a3;
-- (CDXPrepareStoreOperation)initWithFirstUnlockStatus:(BOOL)a3;
+- (BOOL)checkForExtensionsStuckLoading:(id *)loading;
+- (BOOL)disableAllExtensionsWithError:(id *)error;
+- (BOOL)performWithError:(id *)error;
+- (BOOL)synchronizeExtensionsWithError:(id *)error;
+- (CDXPrepareStoreOperation)initWithFirstUnlockStatus:(BOOL)status;
 @end
 
 @implementation CDXPrepareStoreOperation
 
-- (CDXPrepareStoreOperation)initWithFirstUnlockStatus:(BOOL)a3
+- (CDXPrepareStoreOperation)initWithFirstUnlockStatus:(BOOL)status
 {
   v5.receiver = self;
   v5.super_class = CDXPrepareStoreOperation;
   result = [(CDXPrepareStoreOperation *)&v5 init];
   if (result)
   {
-    result->_afterFirstUnlock = a3;
+    result->_afterFirstUnlock = status;
   }
 
   return result;
 }
 
-- (BOOL)performWithError:(id *)a3
+- (BOOL)performWithError:(id *)error
 {
   v40 = 0;
   v5 = [[CXCallDirectoryStore alloc] initForReadingAndWritingWithError:&v40];
   v6 = v40;
-  v7 = [v5 isCorrupt];
+  isCorrupt = [v5 isCorrupt];
   v8 = [v5 url];
 
-  if (!v7)
+  if (!isCorrupt)
   {
     v14 = objc_alloc_init(CXCallDirectoryStoreMigrator);
     v36 = v6;
@@ -210,22 +210,22 @@ LABEL_44:
 
 LABEL_46:
 
-  if (a3 && v12)
+  if (error && v12)
   {
     v31 = v12;
-    *a3 = v12;
+    *error = v12;
   }
 
   return v12 == 0;
 }
 
-- (BOOL)disableAllExtensionsWithError:(id *)a3
+- (BOOL)disableAllExtensionsWithError:(id *)error
 {
-  v4 = [[CXCallDirectoryStore alloc] initForReadingAndWritingWithError:a3];
+  v4 = [[CXCallDirectoryStore alloc] initForReadingAndWritingWithError:error];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 setStateForAllExtensions:1 error:a3];
+    v6 = [v4 setStateForAllExtensions:1 error:error];
   }
 
   else
@@ -236,7 +236,7 @@ LABEL_46:
   return v6;
 }
 
-- (BOOL)synchronizeExtensionsWithError:(id *)a3
+- (BOOL)synchronizeExtensionsWithError:(id *)error
 {
   v25 = 0;
   v26[0] = &v25;
@@ -277,9 +277,9 @@ LABEL_46:
   }
 
   v18 = *(v26[0] + 40);
-  if (a3 && v18)
+  if (error && v18)
   {
-    *a3 = v18;
+    *error = v18;
     v18 = *(v26[0] + 40);
   }
 
@@ -289,7 +289,7 @@ LABEL_46:
   return v19;
 }
 
-- (BOOL)checkForExtensionsStuckLoading:(id *)a3
+- (BOOL)checkForExtensionsStuckLoading:(id *)loading
 {
   v39 = 0;
   v4 = [[CXCallDirectoryStore alloc] initForReadingAndWritingWithError:&v39];
@@ -304,7 +304,7 @@ LABEL_46:
     if (v7)
     {
       v29 = v7;
-      v30 = a3;
+      loadingCopy = loading;
       v36 = 0u;
       v37 = 0u;
       v34 = 0u;
@@ -328,11 +328,11 @@ LABEL_46:
             }
 
             v15 = *(*(&v34 + 1) + 8 * i);
-            v16 = [v13[287] date];
-            v17 = [v15 stateLastModified];
-            [v16 timeIntervalSinceDate:v17];
+            date = [v13[287] date];
+            stateLastModified = [v15 stateLastModified];
+            [date timeIntervalSinceDate:stateLastModified];
             v19 = v18;
-            if ([v15 state] == 3 && objc_msgSend(v17, "compare:", v16) != 1 && v19 > 3600.0)
+            if ([v15 state] == 3 && objc_msgSend(stateLastModified, "compare:", date) != 1 && v19 > 3600.0)
             {
               v20 = v13;
               v21 = v8;
@@ -346,10 +346,10 @@ LABEL_46:
                 _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Store extension %@ has Loading state but time interval since state last modified is %f. Assuming state is stuck and resetting to Enabled", buf, 0x16u);
               }
 
-              v23 = [v15 primaryKey];
+              primaryKey = [v15 primaryKey];
               v33 = v21;
               v24 = v4;
-              v25 = [v4 setState:4 forExtensionWithID:v23 error:&v33];
+              v25 = [v4 setState:4 forExtensionWithID:primaryKey error:&v33];
               v8 = v33;
 
               if ((v25 & 1) == 0)
@@ -385,16 +385,16 @@ LABEL_46:
 LABEL_21:
 
       v7 = v29;
-      a3 = v30;
+      loading = loadingCopy;
     }
 
     v6 = v8;
   }
 
-  if (a3 && v6)
+  if (loading && v6)
   {
     v27 = v6;
-    *a3 = v6;
+    *loading = v6;
   }
 
   return v6 == 0;

@@ -1,45 +1,45 @@
 @interface UnexpectedTouchInputs
-- (BOOL)validateAndInitializeParameters:(id)a3;
+- (BOOL)validateAndInitializeParameters:(id)parameters;
 @end
 
 @implementation UnexpectedTouchInputs
 
-- (BOOL)validateAndInitializeParameters:(id)a3
+- (BOOL)validateAndInitializeParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
   v27[0] = 0;
-  -[UnexpectedTouchInputs setConnectedToPowerRequired:](self, "setConnectedToPowerRequired:", [v4 dk_BOOLFromKey:@"connectedToPowerRequired" defaultValue:0 failed:v27]);
-  v5 = [v4 dk_stringFromRequiredKey:@"fadeColor" maxLength:7 failed:v25 + 3];
+  -[UnexpectedTouchInputs setConnectedToPowerRequired:](self, "setConnectedToPowerRequired:", [parametersCopy dk_BOOLFromKey:@"connectedToPowerRequired" defaultValue:0 failed:v27]);
+  v5 = [parametersCopy dk_stringFromRequiredKey:@"fadeColor" maxLength:7 failed:v25 + 3];
   v6 = [UIColor colorWithHexValue:v5 error:0];
   [(UnexpectedTouchInputs *)self setFadeColor:v6];
 
-  v7 = [(UnexpectedTouchInputs *)self fadeColor];
+  fadeColor = [(UnexpectedTouchInputs *)self fadeColor];
 
   v8 = v25;
-  if (!v7)
+  if (!fadeColor)
   {
     *(v25 + 24) = 1;
   }
 
-  v9 = [v4 dk_stringFromRequiredKey:@"touchColor" maxLength:7 failed:v8 + 3];
+  v9 = [parametersCopy dk_stringFromRequiredKey:@"touchColor" maxLength:7 failed:v8 + 3];
   v10 = [UIColor colorWithHexValue:v9 error:0];
   [(UnexpectedTouchInputs *)self setTouchColor:v10];
 
-  v11 = [(UnexpectedTouchInputs *)self touchColor];
+  touchColor = [(UnexpectedTouchInputs *)self touchColor];
 
   v12 = v25;
-  if (!v11)
+  if (!touchColor)
   {
     *(v25 + 24) = 1;
   }
 
-  v13 = [v4 dk_numberFromRequiredKey:@"minutesToRun" lowerBound:&off_100008770 upperBound:&off_100008788 failed:v12 + 3];
+  v13 = [parametersCopy dk_numberFromRequiredKey:@"minutesToRun" lowerBound:&off_100008770 upperBound:&off_100008788 failed:v12 + 3];
   -[UnexpectedTouchInputs setMinutesToRun:](self, "setMinutesToRun:", [v13 intValue]);
 
-  v14 = [v4 dk_dictionaryFromRequiredKey:@"touchMap" failed:v25 + 3];
+  v14 = [parametersCopy dk_dictionaryFromRequiredKey:@"touchMap" failed:v25 + 3];
   +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v14 count]);
   v18 = _NSConcreteStackBlock;
   v19 = 3221225472;

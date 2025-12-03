@@ -1,26 +1,26 @@
 @interface SBWindowScenePIPManager
-- (BOOL)isPointWithinAnyPictureInPictureContent:(CGPoint)a3;
+- (BOOL)isPointWithinAnyPictureInPictureContent:(CGPoint)content;
 - (NSDictionary)_sourceToEdgeInsets;
 - (SBWindowScene)windowScene;
-- (SBWindowScenePIPManager)initWithGlobalCoordinator:(id)a3;
+- (SBWindowScenePIPManager)initWithGlobalCoordinator:(id)coordinator;
 - (UIEdgeInsets)_minimumStashedPadding;
-- (id)_mutableWindowLevelOverrideAssertionsForContentType:(int)a3 createIfNeeded:;
-- (id)_windowLevelOverrideAssertionsForContentType:(int64_t)a3;
-- (id)acquireStashAssertionForReason:(int64_t)a3 identifier:(id)a4;
-- (id)acquireWindowLevelOverrideAssertionForControllerWithContentType:(int64_t)a3 toWindowLevel:(unint64_t)a4 withReason:(int64_t)a5 identifier:(id)a6;
-- (void)_floatingDockHeightWillChange:(id)a3;
-- (void)_shelfHeightDidChange:(id)a3;
-- (void)_systemApertureInsetsDidChange:(id)a3;
+- (id)_mutableWindowLevelOverrideAssertionsForContentType:(int)type createIfNeeded:;
+- (id)_windowLevelOverrideAssertionsForContentType:(int64_t)type;
+- (id)acquireStashAssertionForReason:(int64_t)reason identifier:(id)identifier;
+- (id)acquireWindowLevelOverrideAssertionForControllerWithContentType:(int64_t)type toWindowLevel:(unint64_t)level withReason:(int64_t)reason identifier:(id)identifier;
+- (void)_floatingDockHeightWillChange:(id)change;
+- (void)_shelfHeightDidChange:(id)change;
+- (void)_systemApertureInsetsDidChange:(id)change;
 - (void)_updateFloatingDockInsetsWithoutNotifyingControllers;
-- (void)_windowManagementStyleDidChange:(id)a3;
-- (void)applyPictureInPictureInsets:(UIEdgeInsets)a3 forSource:(int64_t)a4;
-- (void)applyStashedPictureInPicturePadding:(UIEdgeInsets)a3 forPIPSource:(int64_t)a4;
-- (void)configureInsetsForHomeScreenController:(id)a3;
-- (void)setNeedsUpdateZStackParticipantPreferencesWithReason:(id)a3;
+- (void)_windowManagementStyleDidChange:(id)change;
+- (void)applyPictureInPictureInsets:(UIEdgeInsets)insets forSource:(int64_t)source;
+- (void)applyStashedPictureInPicturePadding:(UIEdgeInsets)padding forPIPSource:(int64_t)source;
+- (void)configureInsetsForHomeScreenController:(id)controller;
+- (void)setNeedsUpdateZStackParticipantPreferencesWithReason:(id)reason;
 - (void)updatePictureInPictureWindowLevels;
-- (void)windowSceneDidConnect:(id)a3;
-- (void)windowSceneDidDisconnect:(id)a3;
-- (void)zStackParticipant:(id)a3 updatePreferences:(id)a4;
+- (void)windowSceneDidConnect:(id)connect;
+- (void)windowSceneDidDisconnect:(id)disconnect;
+- (void)zStackParticipant:(id)participant updatePreferences:(id)preferences;
 @end
 
 @implementation SBWindowScenePIPManager
@@ -44,16 +44,16 @@
   return v4;
 }
 
-- (SBWindowScenePIPManager)initWithGlobalCoordinator:(id)a3
+- (SBWindowScenePIPManager)initWithGlobalCoordinator:(id)coordinator
 {
-  v5 = a3;
+  coordinatorCopy = coordinator;
   v14.receiver = self;
   v14.super_class = SBWindowScenePIPManager;
   v6 = [(SBWindowScenePIPManager *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_globalCoordinator, a3);
+    objc_storeStrong(&v6->_globalCoordinator, coordinator);
     v8 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:2];
     contentTypeToWindowMargins = v7->_contentTypeToWindowMargins;
     v7->_contentTypeToWindowMargins = v8;
@@ -62,21 +62,21 @@
     sourceToEdgeInsets = v7->_sourceToEdgeInsets;
     v7->_sourceToEdgeInsets = v10;
 
-    v12 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v12 addObserver:v7 selector:sel__shelfHeightDidChange_ name:@"SBSwitcherShelfHeightDidChangeNotification" object:0];
-    [v12 addObserver:v7 selector:sel__systemApertureInsetsDidChange_ name:@"SBSystemApertureLayoutDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__shelfHeightDidChange_ name:@"SBSwitcherShelfHeightDidChangeNotification" object:0];
+    [defaultCenter addObserver:v7 selector:sel__systemApertureInsetsDidChange_ name:@"SBSystemApertureLayoutDidChangeNotification" object:0];
     if (+[SBFloatingDockController isFloatingDockSupported])
     {
-      [v12 addObserver:v7 selector:sel__floatingDockHeightWillChange_ name:@"SBFloatingDockControllerHeightWillChangeNotification" object:0];
+      [defaultCenter addObserver:v7 selector:sel__floatingDockHeightWillChange_ name:@"SBFloatingDockControllerHeightWillChangeNotification" object:0];
     }
   }
 
   return v7;
 }
 
-- (void)windowSceneDidConnect:(id)a3
+- (void)windowSceneDidConnect:(id)connect
 {
-  v4 = a3;
+  connectCopy = connect;
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
 
   if (WeakRetained)
@@ -84,33 +84,33 @@
     [SBWindowScenePIPManager windowSceneDidConnect:];
   }
 
-  objc_storeWeak(&self->_windowScene, v4);
+  objc_storeWeak(&self->_windowScene, connectCopy);
   v6 = [_SBPIPEndStashTabSuppressionGestureManager alloc];
-  v7 = [v4 systemGestureManager];
-  v8 = [(_SBPIPEndStashTabSuppressionGestureManager *)v6 initWithSystemGestureManager:v7];
+  systemGestureManager = [connectCopy systemGestureManager];
+  v8 = [(_SBPIPEndStashTabSuppressionGestureManager *)v6 initWithSystemGestureManager:systemGestureManager];
   endStashTabSuppressionGestureManager = self->_endStashTabSuppressionGestureManager;
   self->_endStashTabSuppressionGestureManager = v8;
 
-  v10 = [MEMORY[0x277CCAB98] defaultCenter];
-  v11 = [v4 switcherController];
-  [v10 addObserver:self selector:sel__windowManagementStyleDidChange_ name:@"SBSwitcherControllerWindowManagementStyleDidChangeNotification" object:v11];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  switcherController = [connectCopy switcherController];
+  [defaultCenter addObserver:self selector:sel__windowManagementStyleDidChange_ name:@"SBSwitcherControllerWindowManagementStyleDidChangeNotification" object:switcherController];
 
   globalCoordinator = self->_globalCoordinator;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __49__SBWindowScenePIPManager_windowSceneDidConnect___block_invoke;
   v14[3] = &unk_2783A9020;
-  v15 = v4;
-  v13 = v4;
+  v15 = connectCopy;
+  v13 = connectCopy;
   [(SBPIPControllerCoordinator *)globalCoordinator _enumerateControllersByDescendingPriority:v14];
 }
 
-- (void)windowSceneDidDisconnect:(id)a3
+- (void)windowSceneDidDisconnect:(id)disconnect
 {
-  v4 = a3;
+  disconnectCopy = disconnect;
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != disconnectCopy)
   {
     [SBWindowScenePIPManager windowSceneDidDisconnect:];
   }
@@ -124,22 +124,22 @@
   v9[1] = 3221225472;
   v9[2] = __52__SBWindowScenePIPManager_windowSceneDidDisconnect___block_invoke;
   v9[3] = &unk_2783A9020;
-  v10 = v4;
-  v8 = v4;
+  v10 = disconnectCopy;
+  v8 = disconnectCopy;
   [(SBPIPControllerCoordinator *)globalCoordinator _enumerateControllersByDescendingPriority:v9];
 }
 
-- (void)applyPictureInPictureInsets:(UIEdgeInsets)a3 forSource:(int64_t)a4
+- (void)applyPictureInPictureInsets:(UIEdgeInsets)insets forSource:(int64_t)source
 {
-  v14 = a3;
-  v6 = [MEMORY[0x277CCAE60] valueWithBytes:&v14 objCType:"{UIEdgeInsets=dddd}"];
+  insetsCopy = insets;
+  v6 = [MEMORY[0x277CCAE60] valueWithBytes:&insetsCopy objCType:"{UIEdgeInsets=dddd}"];
   sourceToEdgeInsets = self->_sourceToEdgeInsets;
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:source];
   [(NSMutableDictionary *)sourceToEdgeInsets setObject:v6 forKeyedSubscript:v8];
 
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
   v10 = WeakRetained;
-  if (a4 != 5)
+  if (source != 5)
   {
     globalCoordinator = self->_globalCoordinator;
     v12[0] = MEMORY[0x277D85DD0];
@@ -151,13 +151,13 @@
   }
 }
 
-- (void)configureInsetsForHomeScreenController:(id)a3
+- (void)configureInsetsForHomeScreenController:(id)controller
 {
-  v7 = a3;
+  controllerCopy = controller;
   if (!+[SBFloatingDockController isFloatingDockSupported])
   {
-    v4 = [v7 _rootFolderController];
-    [v4 dockHeight];
+    _rootFolderController = [controllerCopy _rootFolderController];
+    [_rootFolderController dockHeight];
     v6 = v5;
 
     [(SBWindowScenePIPManager *)self applyPictureInPictureInsets:1 forSource:0.0, 0.0, v6, 0.0];
@@ -166,15 +166,15 @@
 
 - (void)_updateFloatingDockInsetsWithoutNotifyingControllers
 {
-  v3 = [(SBWindowScenePIPManager *)self windowScene];
-  if ([v3 isMainDisplayWindowScene])
+  windowScene = [(SBWindowScenePIPManager *)self windowScene];
+  if ([windowScene isMainDisplayWindowScene])
   {
-    v4 = [v3 floatingDockController];
-    v5 = [v4 isFloatingDockPresented];
+    floatingDockController = [windowScene floatingDockController];
+    isFloatingDockPresented = [floatingDockController isFloatingDockPresented];
     v6 = 0;
-    if (v5)
+    if (isFloatingDockPresented)
     {
-      [v4 floatingDockHeight];
+      [floatingDockController floatingDockHeight];
     }
 
     v8[0] = 0;
@@ -186,18 +186,18 @@
   }
 }
 
-- (void)_floatingDockHeightWillChange:(id)a3
+- (void)_floatingDockHeightWillChange:(id)change
 {
-  v11 = a3;
+  changeCopy = change;
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v5 = [WeakRetained floatingDockController];
+  floatingDockController = [WeakRetained floatingDockController];
 
-  v6 = [v11 object];
+  object = [changeCopy object];
 
-  if (v6 == v5)
+  if (object == floatingDockController)
   {
-    v7 = [v11 userInfo];
-    v8 = [v7 objectForKey:@"SBFloatingDockControllerHeight"];
+    userInfo = [changeCopy userInfo];
+    v8 = [userInfo objectForKey:@"SBFloatingDockControllerHeight"];
     [v8 doubleValue];
     v10 = v9;
 
@@ -205,20 +205,20 @@
   }
 }
 
-- (void)_shelfHeightDidChange:(id)a3
+- (void)_shelfHeightDidChange:(id)change
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:@"SBSwitcherShelfHeight"];
+  userInfo = [change userInfo];
+  v5 = [userInfo objectForKey:@"SBSwitcherShelfHeight"];
   [v5 floatValue];
   v7 = v6;
 
   [(SBWindowScenePIPManager *)self applyPictureInPictureInsets:9 forSource:0.0, 0.0, v7, 0.0];
 }
 
-- (void)_systemApertureInsetsDidChange:(id)a3
+- (void)_systemApertureInsetsDidChange:(id)change
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:@"SBSystemApertureEdgeInsets"];
+  userInfo = [change userInfo];
+  v5 = [userInfo objectForKey:@"SBSystemApertureEdgeInsets"];
   [v5 UIEdgeInsetsValue];
   v7 = v6;
   v9 = v8;
@@ -228,10 +228,10 @@
   [(SBWindowScenePIPManager *)self applyPictureInPictureInsets:10 forSource:v7, v9, v11, v13];
 }
 
-- (BOOL)isPointWithinAnyPictureInPictureContent:(CGPoint)a3
+- (BOOL)isPointWithinAnyPictureInPictureContent:(CGPoint)content
 {
-  y = a3.y;
-  x = a3.x;
+  y = content.y;
+  x = content.x;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -266,21 +266,21 @@ uint64_t __67__SBWindowScenePIPManager_isPointWithinAnyPictureInPictureContent__
   return result;
 }
 
-- (id)acquireStashAssertionForReason:(int64_t)a3 identifier:(id)a4
+- (id)acquireStashAssertionForReason:(int64_t)reason identifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   objc_initWeak(&location, self);
   v7 = objc_alloc(MEMORY[0x277CF0CE8]);
-  v8 = SBStringForPIPBehaviorOverrideReason(a3);
+  v8 = SBStringForPIPBehaviorOverrideReason(reason);
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __69__SBWindowScenePIPManager_acquireStashAssertionForReason_identifier___block_invoke;
   v25[3] = &unk_2783A9070;
   objc_copyWeak(&v26, &location);
-  v9 = [v7 initWithIdentifier:v6 forReason:v8 invalidationBlock:v25];
+  v9 = [v7 initWithIdentifier:identifierCopy forReason:v8 invalidationBlock:v25];
 
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v11 = [[SBPIPCompoundAssertion alloc] initWithIdentifier:v6 reason:a3];
+  v11 = [[SBPIPCompoundAssertion alloc] initWithIdentifier:identifierCopy reason:reason];
   globalCoordinator = self->_globalCoordinator;
   v19 = MEMORY[0x277D85DD0];
   v20 = 3221225472;
@@ -294,9 +294,9 @@ uint64_t __67__SBWindowScenePIPManager_isPointWithinAnyPictureInPictureContent__
   stashAssertionsToCompoundAssertionMap = self->_stashAssertionsToCompoundAssertionMap;
   if (!stashAssertionsToCompoundAssertionMap)
   {
-    v16 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     v17 = self->_stashAssertionsToCompoundAssertionMap;
-    self->_stashAssertionsToCompoundAssertionMap = v16;
+    self->_stashAssertionsToCompoundAssertionMap = weakToStrongObjectsMapTable;
 
     stashAssertionsToCompoundAssertionMap = self->_stashAssertionsToCompoundAssertionMap;
   }
@@ -322,12 +322,12 @@ void __69__SBWindowScenePIPManager_acquireStashAssertionForReason_identifier___b
   }
 }
 
-- (void)applyStashedPictureInPicturePadding:(UIEdgeInsets)a3 forPIPSource:(int64_t)a4
+- (void)applyStashedPictureInPicturePadding:(UIEdgeInsets)padding forPIPSource:(int64_t)source
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = padding.right;
+  bottom = padding.bottom;
+  left = padding.left;
+  top = padding.top;
   if (!self->_contentTypeToStashedPadding)
   {
     v10 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:2];
@@ -341,7 +341,7 @@ void __69__SBWindowScenePIPManager_acquireStashAssertionForReason_identifier___b
   *&v20[3] = right;
   v12 = [MEMORY[0x277CCAE60] valueWithBytes:v20 objCType:"{UIEdgeInsets=dddd}"];
   v13 = self->_contentTypeToStashedPadding;
-  v14 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+  v14 = [MEMORY[0x277CCABB0] numberWithInteger:source];
   [(NSMutableDictionary *)v13 setObject:v12 forKeyedSubscript:v14];
 
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
@@ -411,11 +411,11 @@ void __69__SBWindowScenePIPManager_acquireStashAssertionForReason_identifier___b
   return result;
 }
 
-- (id)acquireWindowLevelOverrideAssertionForControllerWithContentType:(int64_t)a3 toWindowLevel:(unint64_t)a4 withReason:(int64_t)a5 identifier:(id)a6
+- (id)acquireWindowLevelOverrideAssertionForControllerWithContentType:(int64_t)type toWindowLevel:(unint64_t)level withReason:(int64_t)reason identifier:(id)identifier
 {
   v23 = *MEMORY[0x277D85DE8];
-  v10 = a6;
-  if (!a5)
+  identifierCopy = identifier;
+  if (!reason)
   {
     [SBWindowScenePIPManager acquireWindowLevelOverrideAssertionForControllerWithContentType:toWindowLevel:withReason:identifier:];
   }
@@ -427,8 +427,8 @@ void __69__SBWindowScenePIPManager_acquireStashAssertionForReason_identifier___b
   v18[2] = __127__SBWindowScenePIPManager_acquireWindowLevelOverrideAssertionForControllerWithContentType_toWindowLevel_withReason_identifier___block_invoke;
   v18[3] = &unk_2783A90C0;
   objc_copyWeak(v19, &location);
-  v19[1] = a3;
-  v12 = [(SBPIPWindowLevelOverrideAssertion *)v11 initWithWindowLevel:a4 reason:a5 identifier:v10 invalidationBlock:v18];
+  v19[1] = type;
+  v12 = [(SBPIPWindowLevelOverrideAssertion *)v11 initWithWindowLevel:level reason:reason identifier:identifierCopy invalidationBlock:v18];
   if (v12)
   {
     v13 = SBLogPIP();
@@ -439,10 +439,10 @@ void __69__SBWindowScenePIPManager_acquireStashAssertionForReason_identifier___b
       _os_log_impl(&dword_21ED4E000, v13, OS_LOG_TYPE_DEFAULT, "[Assertions] Window level assertion was acquired: %{public}@", buf, 0xCu);
     }
 
-    v14 = [(SBWindowScenePIPManager *)self _mutableWindowLevelOverrideAssertionsForContentType:a3 createIfNeeded:1];
+    v14 = [(SBWindowScenePIPManager *)self _mutableWindowLevelOverrideAssertionsForContentType:type createIfNeeded:1];
     [v14 addObject:v12];
 
-    v15 = [(SBPIPControllerCoordinator *)self->_globalCoordinator controllerForType:a3];
+    v15 = [(SBPIPControllerCoordinator *)self->_globalCoordinator controllerForType:type];
     WeakRetained = objc_loadWeakRetained(&self->_windowScene);
     [v15 updatePictureInPictureWindowLevelForWindowScene:WeakRetained];
   }
@@ -491,49 +491,49 @@ void __127__SBWindowScenePIPManager_acquireWindowLevelOverrideAssertionForContro
   [(SBPIPControllerCoordinator *)globalCoordinator _enumerateControllersByDescendingPriority:v6];
 }
 
-- (void)setNeedsUpdateZStackParticipantPreferencesWithReason:(id)a3
+- (void)setNeedsUpdateZStackParticipantPreferencesWithReason:(id)reason
 {
-  [(SBFZStackParticipant *)self->_zStackParticipant setNeedsUpdatePreferencesWithReason:a3];
+  [(SBFZStackParticipant *)self->_zStackParticipant setNeedsUpdatePreferencesWithReason:reason];
   if (!self->_zStackParticipant)
   {
-    v4 = [(SBWindowScenePIPManager *)self windowScene];
-    v7 = [v4 zStackResolver];
+    windowScene = [(SBWindowScenePIPManager *)self windowScene];
+    zStackResolver = [windowScene zStackResolver];
 
-    v5 = [v7 acquireParticipantWithIdentifier:16 delegate:self];
+    v5 = [zStackResolver acquireParticipantWithIdentifier:16 delegate:self];
     zStackParticipant = self->_zStackParticipant;
     self->_zStackParticipant = v5;
   }
 }
 
-- (void)zStackParticipant:(id)a3 updatePreferences:(id)a4
+- (void)zStackParticipant:(id)participant updatePreferences:(id)preferences
 {
-  v5 = a4;
-  v6 = [(SBWindowScenePIPManager *)self windowScene];
+  preferencesCopy = preferences;
+  windowScene = [(SBWindowScenePIPManager *)self windowScene];
   globalCoordinator = self->_globalCoordinator;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __63__SBWindowScenePIPManager_zStackParticipant_updatePreferences___block_invoke;
   v10[3] = &unk_2783A90E8;
-  v11 = v5;
-  v12 = v6;
-  v8 = v6;
-  v9 = v5;
+  v11 = preferencesCopy;
+  v12 = windowScene;
+  v8 = windowScene;
+  v9 = preferencesCopy;
   [(SBPIPControllerCoordinator *)globalCoordinator _enumerateControllersByDescendingPriority:v10];
 }
 
-- (void)_windowManagementStyleDidChange:(id)a3
+- (void)_windowManagementStyleDidChange:(id)change
 {
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v5 = [WeakRetained switcherController];
-  v6 = [v5 windowManagementContext];
-  v7 = [v6 isChamoisOrFlexibleWindowing];
+  switcherController = [WeakRetained switcherController];
+  windowManagementContext = [switcherController windowManagementContext];
+  isChamoisOrFlexibleWindowing = [windowManagementContext isChamoisOrFlexibleWindowing];
 
   globalCoordinator = self->_globalCoordinator;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __59__SBWindowScenePIPManager__windowManagementStyleDidChange___block_invoke;
   v9[3] = &unk_2783A9110;
-  v10 = v7;
+  v10 = isChamoisOrFlexibleWindowing;
   v9[4] = self;
   [(SBPIPControllerCoordinator *)globalCoordinator _enumerateControllersByDescendingPriority:v9];
 }
@@ -554,13 +554,13 @@ void __59__SBWindowScenePIPManager__windowManagementStyleDidChange___block_invok
   return WeakRetained;
 }
 
-- (id)_mutableWindowLevelOverrideAssertionsForContentType:(int)a3 createIfNeeded:
+- (id)_mutableWindowLevelOverrideAssertionsForContentType:(int)type createIfNeeded:
 {
-  if (a1)
+  if (self)
   {
     OUTLINED_FUNCTION_1_2();
     v7 = *(v6 + 24);
-    if (!v7 && a3)
+    if (!v7 && type)
     {
       v8 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:2];
       v9 = *(v4 + 24);
@@ -572,7 +572,7 @@ void __59__SBWindowScenePIPManager__windowManagementStyleDidChange___block_invok
     v10 = [MEMORY[0x277CCABB0] numberWithInteger:v3];
     v11 = [v7 objectForKeyedSubscript:v10];
 
-    if (!v11 && a3)
+    if (!v11 && type)
     {
       v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:1];
       v12 = *(v4 + 24);
@@ -589,9 +589,9 @@ void __59__SBWindowScenePIPManager__windowManagementStyleDidChange___block_invok
   return v11;
 }
 
-- (id)_windowLevelOverrideAssertionsForContentType:(int64_t)a3
+- (id)_windowLevelOverrideAssertionsForContentType:(int64_t)type
 {
-  v3 = [(SBWindowScenePIPManager *)self _mutableWindowLevelOverrideAssertionsForContentType:a3 createIfNeeded:0];
+  v3 = [(SBWindowScenePIPManager *)self _mutableWindowLevelOverrideAssertionsForContentType:type createIfNeeded:0];
   v4 = v3;
   if (v3)
   {

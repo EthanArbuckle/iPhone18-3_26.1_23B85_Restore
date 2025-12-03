@@ -1,34 +1,34 @@
 @interface HAPCharacteristicValueLinearDerivedTransition
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)parsedFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HAPCharacteristicValueLinearDerivedTransition)init;
-- (HAPCharacteristicValueLinearDerivedTransition)initWithTransitionPoints:(id)a3 sourceHAPInstanceID:(id)a4 sourceValueRange:(id)a5;
+- (HAPCharacteristicValueLinearDerivedTransition)initWithTransitionPoints:(id)points sourceHAPInstanceID:(id)d sourceValueRange:(id)range;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
 @end
 
 @implementation HAPCharacteristicValueLinearDerivedTransition
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HAPCharacteristicValueLinearDerivedTransition);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HAPCharacteristicValueLinearDerivedTransition *)v6 parseFromData:v5 error:&v11];
+    [(HAPCharacteristicValueLinearDerivedTransition *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else
@@ -48,39 +48,39 @@
   return [(HAPCharacteristicValueLinearDerivedTransition *)&v3 init];
 }
 
-- (HAPCharacteristicValueLinearDerivedTransition)initWithTransitionPoints:(id)a3 sourceHAPInstanceID:(id)a4 sourceValueRange:(id)a5
+- (HAPCharacteristicValueLinearDerivedTransition)initWithTransitionPoints:(id)points sourceHAPInstanceID:(id)d sourceValueRange:(id)range
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  pointsCopy = points;
+  dCopy = d;
+  rangeCopy = range;
   v15.receiver = self;
   v15.super_class = HAPCharacteristicValueLinearDerivedTransition;
   v11 = [(HAPCharacteristicValueLinearDerivedTransition *)&v15 init];
   if (v11)
   {
-    v12 = [v8 mutableCopy];
+    v12 = [pointsCopy mutableCopy];
     transitionPoints = v11->_transitionPoints;
     v11->_transitionPoints = v12;
 
-    objc_storeStrong(&v11->_sourceHAPInstanceID, a4);
-    objc_storeStrong(&v11->_sourceValueRange, a5);
+    objc_storeStrong(&v11->_sourceHAPInstanceID, d);
+    objc_storeStrong(&v11->_sourceValueRange, range);
   }
 
   return v11;
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 bytes];
-  v7 = [v5 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v7 = [dataCopy length];
   v25 = +[NSMutableArray array];
   if (v7 >= 1)
   {
     v8 = 0;
     v9 = 0;
     v10 = 0;
-    v11 = v6 + v7;
+    v11 = bytes + v7;
     while (1)
     {
       v33 = 0;
@@ -90,10 +90,10 @@
       Next = TLV8GetNext();
       if (Next)
       {
-        if (a4)
+        if (error)
         {
           sub_100041618(Next);
-          *a4 = v20 = 0;
+          *error = v20 = 0;
         }
 
         else
@@ -139,7 +139,7 @@
       if (v33 == 1)
       {
         v30 = v8;
-        v13 = sub_100021B74(1, v6, v11, v31, &v30);
+        v13 = sub_100021B74(1, bytes, v11, v31, &v30);
         v14 = v30;
 
         if (!v14)
@@ -164,7 +164,7 @@ LABEL_13:
       }
 
 LABEL_17:
-      v6 = v31[0];
+      bytes = v31[0];
       if (v31[0] >= v11)
       {
         if (!v8)
@@ -174,11 +174,11 @@ LABEL_17:
 
 LABEL_25:
         v19 = v25;
-        if (a4)
+        if (error)
         {
           v22 = v8;
           v20 = 0;
-          *a4 = v8;
+          *error = v8;
         }
 
         else
@@ -191,7 +191,7 @@ LABEL_25:
     }
 
     v27 = v8;
-    v13 = sub_100021B74(3, v6, v11, v31, &v27);
+    v13 = sub_100021B74(3, bytes, v11, v31, &v27);
     v14 = v27;
 
     if (!v14)
@@ -221,7 +221,7 @@ LABEL_30:
   return v20;
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
   v65 = 0u;
   v66 = 0u;
@@ -249,22 +249,22 @@ LABEL_30:
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v37 = self;
-  v5 = [(HAPCharacteristicValueLinearDerivedTransition *)self transitionPoints];
-  v6 = [v5 countByEnumeratingWithState:&v41 objects:v45 count:16];
+  selfCopy = self;
+  transitionPoints = [(HAPCharacteristicValueLinearDerivedTransition *)self transitionPoints];
+  v6 = [transitionPoints countByEnumeratingWithState:&v41 objects:v45 count:16];
   if (v6)
   {
     v7 = v6;
     v8 = *v42;
     v9 = 1;
-    v36 = a3;
+    errorCopy = error;
     while (1)
     {
       v10 = 0;
 LABEL_4:
       if (*v42 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(transitionPoints);
       }
 
       v11 = *(*(&v41 + 1) + 8 * v10);
@@ -288,18 +288,18 @@ LABEL_4:
         goto LABEL_44;
       }
 
-      v15 = [v13 bytes];
-      v16 = [v13 length] + v15;
+      bytes = [v13 bytes];
+      v16 = [v13 length] + bytes;
       do
       {
-        if (v16 - v15 >= 255)
+        if (v16 - bytes >= 255)
         {
           v17 = 255;
         }
 
         else
         {
-          v17 = v16 - v15;
+          v17 = v16 - bytes;
         }
 
         v18 = TLV8BufferAppend();
@@ -307,14 +307,14 @@ LABEL_4:
         {
           v23 = v18;
 
-          a3 = v36;
+          error = errorCopy;
           goto LABEL_22;
         }
 
-        v15 += v17;
+        bytes += v17;
       }
 
-      while (v15 < v16);
+      while (bytes < v16);
 
       v9 = 0;
       if (++v10 != v7)
@@ -322,9 +322,9 @@ LABEL_4:
         goto LABEL_4;
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v41 objects:v45 count:16];
+      v7 = [transitionPoints countByEnumeratingWithState:&v41 objects:v45 count:16];
       v9 = 0;
-      a3 = v36;
+      error = errorCopy;
       if (!v7)
       {
         goto LABEL_17;
@@ -334,44 +334,44 @@ LABEL_4:
     v23 = v12;
     v21 = 0;
 LABEL_44:
-    a3 = v36;
+    error = errorCopy;
     goto LABEL_45;
   }
 
 LABEL_17:
 
-  v19 = [(HAPCharacteristicValueLinearDerivedTransition *)v37 sourceHAPInstanceID];
+  sourceHAPInstanceID = [(HAPCharacteristicValueLinearDerivedTransition *)selfCopy sourceHAPInstanceID];
 
-  if (!v19)
+  if (!sourceHAPInstanceID)
   {
 LABEL_27:
-    v25 = [(HAPCharacteristicValueLinearDerivedTransition *)v37 sourceValueRange];
+    sourceValueRange = [(HAPCharacteristicValueLinearDerivedTransition *)selfCopy sourceValueRange];
 
-    if (!v25)
+    if (!sourceValueRange)
     {
       goto LABEL_50;
     }
 
-    v26 = [(HAPCharacteristicValueLinearDerivedTransition *)v37 sourceValueRange];
+    sourceValueRange2 = [(HAPCharacteristicValueLinearDerivedTransition *)selfCopy sourceValueRange];
     v38 = 0;
-    v5 = [v26 serializeWithError:&v38];
+    transitionPoints = [sourceValueRange2 serializeWithError:&v38];
     v21 = v38;
 
     if (!v21)
     {
-      v27 = a3;
-      v28 = [v5 bytes];
-      v29 = [v5 length] + v28;
+      errorCopy2 = error;
+      bytes2 = [transitionPoints bytes];
+      v29 = [transitionPoints length] + bytes2;
       do
       {
-        if (v29 - v28 >= 255)
+        if (v29 - bytes2 >= 255)
         {
           v30 = 255;
         }
 
         else
         {
-          v30 = v29 - v28;
+          v30 = v29 - bytes2;
         }
 
         v31 = TLV8BufferAppend();
@@ -385,7 +385,7 @@ LABEL_27:
           v32 = v30;
         }
 
-        v28 += v32;
+        bytes2 += v32;
         if (v31)
         {
           v33 = 1;
@@ -393,22 +393,22 @@ LABEL_27:
 
         else
         {
-          v33 = v28 >= v29;
+          v33 = bytes2 >= v29;
         }
       }
 
       while (!v33);
       v23 = v31;
-      a3 = v27;
+      error = errorCopy2;
       goto LABEL_45;
     }
 
     goto LABEL_29;
   }
 
-  v20 = [(HAPCharacteristicValueLinearDerivedTransition *)v37 sourceHAPInstanceID];
+  sourceHAPInstanceID2 = [(HAPCharacteristicValueLinearDerivedTransition *)selfCopy sourceHAPInstanceID];
   v39 = 0;
-  v5 = [v20 serializeWithError:&v39];
+  transitionPoints = [sourceHAPInstanceID2 serializeWithError:&v39];
   v21 = v39;
 
   if (v21)
@@ -418,8 +418,8 @@ LABEL_29:
     goto LABEL_45;
   }
 
-  [v5 bytes];
-  [v5 length];
+  [transitionPoints bytes];
+  [transitionPoints length];
   v22 = TLV8BufferAppend();
   if (!v22)
   {
@@ -432,11 +432,11 @@ LABEL_45:
 
   if (v21)
   {
-    if (a3)
+    if (error)
     {
       v34 = v21;
       v24 = 0;
-      *a3 = v21;
+      *error = v21;
       goto LABEL_51;
     }
 
@@ -446,11 +446,11 @@ LABEL_45:
   if (v23)
   {
 LABEL_22:
-    if (a3)
+    if (error)
     {
       sub_100041618(v23);
       v21 = 0;
-      *a3 = v24 = 0;
+      *error = v24 = 0;
       goto LABEL_51;
     }
 
@@ -469,21 +469,21 @@ LABEL_51:
   return v24;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HAPCharacteristicValueLinearDerivedTransition allocWithZone:a3];
-  v5 = [(HAPCharacteristicValueLinearDerivedTransition *)self transitionPoints];
-  v6 = [(HAPCharacteristicValueLinearDerivedTransition *)self sourceHAPInstanceID];
-  v7 = [(HAPCharacteristicValueLinearDerivedTransition *)self sourceValueRange];
-  v8 = [(HAPCharacteristicValueLinearDerivedTransition *)v4 initWithTransitionPoints:v5 sourceHAPInstanceID:v6 sourceValueRange:v7];
+  v4 = [HAPCharacteristicValueLinearDerivedTransition allocWithZone:zone];
+  transitionPoints = [(HAPCharacteristicValueLinearDerivedTransition *)self transitionPoints];
+  sourceHAPInstanceID = [(HAPCharacteristicValueLinearDerivedTransition *)self sourceHAPInstanceID];
+  sourceValueRange = [(HAPCharacteristicValueLinearDerivedTransition *)self sourceValueRange];
+  v8 = [(HAPCharacteristicValueLinearDerivedTransition *)v4 initWithTransitionPoints:transitionPoints sourceHAPInstanceID:sourceHAPInstanceID sourceValueRange:sourceValueRange];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (self == v6)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -493,46 +493,46 @@ LABEL_51:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
-      v8 = [(HAPCharacteristicValueLinearDerivedTransition *)self transitionPoints];
-      v9 = [(HAPCharacteristicValueLinearDerivedTransition *)v7 transitionPoints];
-      if (v8 != v9)
+      v7 = equalCopy;
+      transitionPoints = [(HAPCharacteristicValueLinearDerivedTransition *)self transitionPoints];
+      transitionPoints2 = [(HAPCharacteristicValueLinearDerivedTransition *)v7 transitionPoints];
+      if (transitionPoints != transitionPoints2)
       {
-        v3 = [(HAPCharacteristicValueLinearDerivedTransition *)self transitionPoints];
-        v4 = [(HAPCharacteristicValueLinearDerivedTransition *)v7 transitionPoints];
-        if (![v3 isEqual:v4])
+        transitionPoints3 = [(HAPCharacteristicValueLinearDerivedTransition *)self transitionPoints];
+        transitionPoints4 = [(HAPCharacteristicValueLinearDerivedTransition *)v7 transitionPoints];
+        if (![transitionPoints3 isEqual:transitionPoints4])
         {
           v10 = 0;
           goto LABEL_19;
         }
       }
 
-      v11 = [(HAPCharacteristicValueLinearDerivedTransition *)self sourceHAPInstanceID];
-      v12 = [(HAPCharacteristicValueLinearDerivedTransition *)v7 sourceHAPInstanceID];
-      v13 = v12;
-      if (v11 == v12)
+      sourceHAPInstanceID = [(HAPCharacteristicValueLinearDerivedTransition *)self sourceHAPInstanceID];
+      sourceHAPInstanceID2 = [(HAPCharacteristicValueLinearDerivedTransition *)v7 sourceHAPInstanceID];
+      v13 = sourceHAPInstanceID2;
+      if (sourceHAPInstanceID == sourceHAPInstanceID2)
       {
-        v28 = v12;
+        v28 = sourceHAPInstanceID2;
       }
 
       else
       {
-        v14 = [(HAPCharacteristicValueLinearDerivedTransition *)self sourceHAPInstanceID];
-        v27 = [(HAPCharacteristicValueLinearDerivedTransition *)v7 sourceHAPInstanceID];
-        if (![v14 isEqual:?])
+        sourceHAPInstanceID3 = [(HAPCharacteristicValueLinearDerivedTransition *)self sourceHAPInstanceID];
+        sourceHAPInstanceID4 = [(HAPCharacteristicValueLinearDerivedTransition *)v7 sourceHAPInstanceID];
+        if (![sourceHAPInstanceID3 isEqual:?])
         {
           v10 = 0;
           goto LABEL_17;
         }
 
-        v26 = v14;
+        v26 = sourceHAPInstanceID3;
         v28 = v13;
       }
 
-      v15 = [(HAPCharacteristicValueLinearDerivedTransition *)self sourceValueRange];
-      v16 = [(HAPCharacteristicValueLinearDerivedTransition *)v7 sourceValueRange];
-      v17 = v16;
-      if (v15 == v16)
+      sourceValueRange = [(HAPCharacteristicValueLinearDerivedTransition *)self sourceValueRange];
+      sourceValueRange2 = [(HAPCharacteristicValueLinearDerivedTransition *)v7 sourceValueRange];
+      v17 = sourceValueRange2;
+      if (sourceValueRange == sourceValueRange2)
       {
 
         v10 = 1;
@@ -541,29 +541,29 @@ LABEL_51:
       else
       {
         [(HAPCharacteristicValueLinearDerivedTransition *)self sourceValueRange];
-        v18 = v25 = v3;
+        v18 = v25 = transitionPoints3;
         [(HAPCharacteristicValueLinearDerivedTransition *)v7 sourceValueRange];
-        v24 = v11;
-        v19 = v4;
-        v20 = v9;
-        v22 = v21 = v8;
+        v24 = sourceHAPInstanceID;
+        v19 = transitionPoints4;
+        v20 = transitionPoints2;
+        v22 = v21 = transitionPoints;
         v10 = [v18 isEqual:v22];
 
-        v8 = v21;
-        v9 = v20;
-        v4 = v19;
-        v11 = v24;
+        transitionPoints = v21;
+        transitionPoints2 = v20;
+        transitionPoints4 = v19;
+        sourceHAPInstanceID = v24;
 
-        v3 = v25;
+        transitionPoints3 = v25;
       }
 
       v13 = v28;
-      v14 = v26;
-      if (v11 == v28)
+      sourceHAPInstanceID3 = v26;
+      if (sourceHAPInstanceID == v28)
       {
 LABEL_18:
 
-        if (v8 == v9)
+        if (transitionPoints == transitionPoints2)
         {
 LABEL_20:
 
@@ -590,10 +590,10 @@ LABEL_21:
 
 - (NSString)description
 {
-  v3 = [(HAPCharacteristicValueLinearDerivedTransition *)self transitionPoints];
-  v4 = [(HAPCharacteristicValueLinearDerivedTransition *)self sourceHAPInstanceID];
-  v5 = [(HAPCharacteristicValueLinearDerivedTransition *)self sourceValueRange];
-  v6 = [NSString stringWithFormat:@"<HAPCharacteristicValueLinearDerivedTransition transitionPoints=%@, sourceHAPInstanceID=%@, sourceValueRange=%@>", v3, v4, v5];
+  transitionPoints = [(HAPCharacteristicValueLinearDerivedTransition *)self transitionPoints];
+  sourceHAPInstanceID = [(HAPCharacteristicValueLinearDerivedTransition *)self sourceHAPInstanceID];
+  sourceValueRange = [(HAPCharacteristicValueLinearDerivedTransition *)self sourceValueRange];
+  v6 = [NSString stringWithFormat:@"<HAPCharacteristicValueLinearDerivedTransition transitionPoints=%@, sourceHAPInstanceID=%@, sourceValueRange=%@>", transitionPoints, sourceHAPInstanceID, sourceValueRange];
 
   return v6;
 }

@@ -1,7 +1,7 @@
 @interface PLProgressView
-- (PLProgressView)initWithFrame:(CGRect)a3;
+- (PLProgressView)initWithFrame:(CGRect)frame;
 - (float)percentComplete;
-- (void)_cancel:(id)a3;
+- (void)_cancel:(id)_cancel;
 - (void)_installBackgroundBlurredView;
 - (void)_installBackgroundTintedView;
 - (void)_installBackgroundView;
@@ -10,20 +10,20 @@
 - (void)_syncToBackgroundType;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setBackgroundType:(int64_t)a3;
-- (void)setLabelText:(id)a3;
-- (void)setShowsCancelButton:(BOOL)a3;
-- (void)updateUIForPublishingAgent:(id)a3;
+- (void)setBackgroundType:(int64_t)type;
+- (void)setLabelText:(id)text;
+- (void)setShowsCancelButton:(BOOL)button;
+- (void)updateUIForPublishingAgent:(id)agent;
 @end
 
 @implementation PLProgressView
 
-- (void)setShowsCancelButton:(BOOL)a3
+- (void)setShowsCancelButton:(BOOL)button
 {
-  if (self->_showsCancelButton != a3)
+  if (self->_showsCancelButton != button)
   {
-    self->_showsCancelButton = a3;
-    if (a3)
+    self->_showsCancelButton = button;
+    if (button)
     {
       cancelButton = self->_cancelButton;
       if (!cancelButton)
@@ -52,7 +52,7 @@
   }
 }
 
-- (void)_cancel:(id)a3
+- (void)_cancel:(id)_cancel
 {
   [(UIButton *)self->_cancelButton setEnabled:0];
   cancelationHandler = self->_cancelationHandler;
@@ -76,7 +76,7 @@
   return result;
 }
 
-- (void)setLabelText:(id)a3
+- (void)setLabelText:(id)text
 {
   labelView = self->_labelView;
   if (!labelView)
@@ -93,30 +93,30 @@
     labelView = self->_labelView;
   }
 
-  [(UILabel *)labelView setText:a3];
+  [(UILabel *)labelView setText:text];
 
   [(PLProgressView *)self setNeedsLayout];
 }
 
-- (void)updateUIForPublishingAgent:(id)a3
+- (void)updateUIForPublishingAgent:(id)agent
 {
-  if ([a3 isRemaking])
+  if ([agent isRemaking])
   {
-    [a3 remakingPercentComplete];
+    [agent remakingPercentComplete];
     [(PLProgressView *)self setPercentComplete:?];
     if ((*(self + 440) & 2) == 0)
     {
-      -[PLProgressView setLabelText:](self, "setLabelText:", [a3 progressViewMessageDuringRemake]);
+      -[PLProgressView setLabelText:](self, "setLabelText:", [agent progressViewMessageDuringRemake]);
       *(self + 440) |= 2u;
     }
   }
 
   else
   {
-    [a3 snapshot];
-    [a3 estimatedTimeRemaining];
+    [agent snapshot];
+    [agent estimatedTimeRemaining];
     v6 = v5;
-    [a3 percentComplete];
+    [agent percentComplete];
     v8 = v7;
     [(PLProgressView *)self setNeedsLayout];
     LODWORD(v9) = v8;
@@ -125,7 +125,7 @@
     {
       PLLocalizedFrameworkString();
       labelView = self->_labelView;
-      [a3 serviceName];
+      [agent serviceName];
       v13 = PFStringWithValidatedFormat();
       v14 = labelView;
     }
@@ -155,7 +155,7 @@
       }
 
       PLLocalizedFrameworkString();
-      [a3 serviceName];
+      [agent serviceName];
       v13 = PFStringWithValidatedFormat();
       v14 = self->_labelView;
     }
@@ -178,15 +178,15 @@
 {
   if (![(PLProgressView *)self backgroundTintedView])
   {
-    v3 = [(PLProgressView *)self backgroundView];
+    backgroundView = [(PLProgressView *)self backgroundView];
     v4 = objc_alloc(MEMORY[0x277D75D18]);
-    [(UIView *)v3 bounds];
+    [(UIView *)backgroundView bounds];
     v5 = [v4 initWithFrame:?];
     [(PLProgressView *)self setBackgroundTintedView:v5];
     [v5 setOpaque:0];
     [v5 setBackgroundColor:{objc_msgSend(MEMORY[0x277D75348], "colorWithWhite:alpha:", 0.101960786, 0.75)}];
-    [(UIView *)v3 addSubview:v5];
-    [(UIView *)v3 sendSubviewToBack:v5];
+    [(UIView *)backgroundView addSubview:v5];
+    [(UIView *)backgroundView sendSubviewToBack:v5];
 
     [v5 setAutoresizingMask:18];
   }
@@ -206,12 +206,12 @@
 {
   if (![(PLProgressView *)self backgroundBlurredView])
   {
-    v3 = [(PLProgressView *)self backgroundView];
+    backgroundView = [(PLProgressView *)self backgroundView];
     v4 = [objc_alloc(MEMORY[0x277D75DE8]) initWithPrivateStyle:2010];
     [(PLProgressView *)self setBackgroundBlurredView:v4];
-    [(UIView *)v3 addSubview:v4];
+    [(UIView *)backgroundView addSubview:v4];
 
-    [(UIView *)v3 sendSubviewToBack:v4];
+    [(UIView *)backgroundView sendSubviewToBack:v4];
   }
 }
 
@@ -234,12 +234,12 @@
 
 - (void)_syncToBackgroundType
 {
-  v3 = [(PLProgressView *)self backgroundType];
-  if (v3 > 1)
+  backgroundType = [(PLProgressView *)self backgroundType];
+  if (backgroundType > 1)
   {
-    if (v3 != 2)
+    if (backgroundType != 2)
     {
-      if (v3 != 3)
+      if (backgroundType != 3)
       {
         return;
       }
@@ -253,18 +253,18 @@
     [(PLProgressView *)self _installBackgroundBlurredView];
 LABEL_12:
     labelView = self->_labelView;
-    v5 = [MEMORY[0x277D75348] blackColor];
+    blackColor = [MEMORY[0x277D75348] blackColor];
     goto LABEL_13;
   }
 
-  if (!v3)
+  if (!backgroundType)
   {
     [(PLProgressView *)self _removeBackgroundTintedView];
     [(PLProgressView *)self _removeBackgroundBlurredView];
     goto LABEL_12;
   }
 
-  if (v3 != 1)
+  if (backgroundType != 1)
   {
     return;
   }
@@ -273,17 +273,17 @@ LABEL_12:
   [(PLProgressView *)self _removeBackgroundBlurredView];
 LABEL_8:
   labelView = self->_labelView;
-  v5 = [MEMORY[0x277D75348] whiteColor];
+  blackColor = [MEMORY[0x277D75348] whiteColor];
 LABEL_13:
 
-  [(UILabel *)labelView setTextColor:v5];
+  [(UILabel *)labelView setTextColor:blackColor];
 }
 
-- (void)setBackgroundType:(int64_t)a3
+- (void)setBackgroundType:(int64_t)type
 {
-  if (self->_backgroundType != a3)
+  if (self->_backgroundType != type)
   {
-    self->_backgroundType = a3;
+    self->_backgroundType = type;
     [(PLProgressView *)self _syncToBackgroundType];
   }
 }
@@ -398,11 +398,11 @@ LABEL_13:
   [(PLProgressView *)&v3 dealloc];
 }
 
-- (PLProgressView)initWithFrame:(CGRect)a3
+- (PLProgressView)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = PLProgressView;
-  result = [(PLProgressView *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(PLProgressView *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
     result->_backgroundType = 2;

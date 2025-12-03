@@ -1,18 +1,18 @@
 @interface CKLStreamTrafficObserver
-- (CKLStreamTrafficObserver)initWithLogTypes:(unint64_t)a3;
-- (id)parserFromConfigurationMessage:(id)a3;
-- (void)eventMatched:(id)a3;
+- (CKLStreamTrafficObserver)initWithLogTypes:(unint64_t)types;
+- (id)parserFromConfigurationMessage:(id)message;
+- (void)eventMatched:(id)matched;
 - (void)finish;
-- (void)parseRequestArrayAndPrint:(id)a3;
+- (void)parseRequestArrayAndPrint:(id)print;
 @end
 
 @implementation CKLStreamTrafficObserver
 
-- (CKLStreamTrafficObserver)initWithLogTypes:(unint64_t)a3
+- (CKLStreamTrafficObserver)initWithLogTypes:(unint64_t)types
 {
   v12.receiver = self;
   v12.super_class = CKLStreamTrafficObserver;
-  v3 = [(CKLStreamObserver *)&v12 initWithLogTypes:a3];
+  v3 = [(CKLStreamObserver *)&v12 initWithLogTypes:types];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -32,12 +32,12 @@
   return v3;
 }
 
-- (void)eventMatched:(id)a3
+- (void)eventMatched:(id)matched
 {
   v120[1] = *MEMORY[0x277D85DE8];
-  v103 = a3;
-  v102 = objc_msgSend_category(v103, v4, v5);
-  v8 = objc_msgSend_composedMessage(v103, v6, v7);
+  matchedCopy = matched;
+  v102 = objc_msgSend_category(matchedCopy, v4, v5);
+  v8 = objc_msgSend_composedMessage(matchedCopy, v6, v7);
   if ((objc_msgSend_isEqualToString_(v102, v9, @"LogFacilityTraffic") & 1) != 0 || objc_msgSend_isEqualToString_(v102, v10, @"Traffic"))
   {
     if (objc_msgSend_hasPrefix_(v8, v10, @"SIM: "))
@@ -80,7 +80,7 @@
   if ((objc_msgSend_isEqualToString_(v102, v10, @"LogFacilityTrafficBinary") & 1) != 0 || objc_msgSend_isEqualToString_(v102, v20, @"TrafficBinary"))
   {
     v22 = [CKLTrafficLogMessageFragment alloc];
-    v25 = objc_msgSend_composedMessage(v103, v23, v24);
+    v25 = objc_msgSend_composedMessage(matchedCopy, v23, v24);
     v18 = objc_msgSend_initWithMessage_(v22, v26, v25);
 
     if (v18)
@@ -98,9 +98,9 @@
           v115[2] = 0x3032000000;
           v115[3] = sub_225073FC0;
           v115[4] = sub_22507356C;
-          v37 = self;
-          v116 = v37;
-          v40 = objc_msgSend_printQueue(v37, v38, v39);
+          selfCopy = self;
+          v116 = selfCopy;
+          v40 = objc_msgSend_printQueue(selfCopy, v38, v39);
           v112[0] = MEMORY[0x277D85DD0];
           v112[1] = 3221225472;
           v112[2] = sub_22519F3A4;
@@ -109,7 +109,7 @@
           v113 = v34;
           dispatch_async(v40, v112);
 
-          v43 = objc_msgSend_requestDictionary(v37, v41, v42);
+          v43 = objc_msgSend_requestDictionary(selfCopy, v41, v42);
           v46 = objc_msgSend_uuid(v18, v44, v45);
           objc_msgSend_removeObjectForKey_(v43, v47, v46);
 
@@ -249,15 +249,15 @@ LABEL_10:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)parseRequestArrayAndPrint:(id)a3
+- (void)parseRequestArrayAndPrint:(id)print
 {
   v202 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v176 = self;
+  printCopy = print;
+  selfCopy = self;
   v7 = objc_msgSend_printQueue(self, v5, v6);
   dispatch_assert_queue_V2(v7);
 
-  v10 = objc_msgSend_firstObject(v4, v8, v9);
+  v10 = objc_msgSend_firstObject(printCopy, v8, v9);
   v173 = objc_msgSend_uuid(v10, v11, v12);
 
   v13 = objc_alloc_init(MEMORY[0x277CCAB68]);
@@ -282,7 +282,7 @@ LABEL_10:
   v196 = 0u;
   v197 = 0u;
   v198 = 0u;
-  obj = v4;
+  obj = printCopy;
   v22 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v21, &v195, v201, 16);
   if (v22)
   {
@@ -329,7 +329,7 @@ LABEL_10:
             case 4:
               objc_msgSend_setString_(v14, v54, &stru_28385ED00);
               v117 = objc_msgSend_dataString(v29, v115, v116);
-              v119 = objc_msgSend_parserFromConfigurationMessage_(v176, v118, v117);
+              v119 = objc_msgSend_parserFromConfigurationMessage_(selfCopy, v118, v117);
 
               v191[0] = MEMORY[0x277D85DD0];
               v191[1] = 3221225472;
@@ -531,16 +531,16 @@ LABEL_49:
     NSLog(&cfstr_WroteRawRespon.isa, v155);
   }
 
-  v157 = objc_msgSend_requestParsedBlock(v176, v127, v128);
+  v157 = objc_msgSend_requestParsedBlock(selfCopy, v127, v128);
 
   if (v157)
   {
     v158 = [CKLTrafficLogMessage alloc];
     v160 = objc_msgSend_initWithUuid_requestMetadata_requestObjects_bodyStreamResetCount_responseMetadata_responseObjects_(v158, v159, v173, v181, v180, v179, v182, v177);
-    v163 = objc_msgSend_logMessageFilter(v176, v161, v162);
-    if (!v163 || (v166 = v163, objc_msgSend_logMessageFilter(v176, v164, v165), v167 = objc_claimAutoreleasedReturnValue(), v169 = objc_msgSend_evaluateWithObject_(v167, v168, v160), v167, v129 = v180, v166, v169))
+    v163 = objc_msgSend_logMessageFilter(selfCopy, v161, v162);
+    if (!v163 || (v166 = v163, objc_msgSend_logMessageFilter(selfCopy, v164, v165), v167 = objc_claimAutoreleasedReturnValue(), v169 = objc_msgSend_evaluateWithObject_(v167, v168, v160), v167, v129 = v180, v166, v169))
     {
-      v170 = objc_msgSend_requestParsedBlock(v176, v164, v165);
+      v170 = objc_msgSend_requestParsedBlock(selfCopy, v164, v165);
       (v170)[2](v170, v160);
     }
 
@@ -556,11 +556,11 @@ LABEL_49:
   dispatch_sync(v3, &unk_28385D320);
 }
 
-- (id)parserFromConfigurationMessage:(id)a3
+- (id)parserFromConfigurationMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = objc_alloc(MEMORY[0x277CBEA90]);
-  v6 = objc_msgSend_initWithBase64EncodedString_options_(v4, v5, v3, 0);
+  v6 = objc_msgSend_initWithBase64EncodedString_options_(v4, v5, messageCopy, 0);
   v7 = MEMORY[0x277CCAAC8];
   v8 = objc_opt_class();
   v10 = objc_msgSend_unarchivedObjectOfClass_fromData_error_(v7, v9, v8, v6, 0);

@@ -8,11 +8,11 @@
 {
   v12.receiver = self;
   v12.super_class = SUReviewsButtonAccessibility;
-  v3 = [(SUReviewsButtonAccessibility *)&v12 accessibilityLabel];
+  accessibilityLabel = [(SUReviewsButtonAccessibility *)&v12 accessibilityLabel];
   v4 = [(SUReviewsButtonAccessibility *)self safeValueForKey:@"_userRatingCount"];
-  v5 = [v4 integerValue];
+  integerValue = [v4 integerValue];
 
-  if (v5 < 1)
+  if (integerValue < 1)
   {
     v9 = 0;
   }

@@ -3,9 +3,9 @@
 - (RideBookingApplicationFinderDelegate)delegate;
 - (void)_setupExtensionManager;
 - (void)dealloc;
-- (void)didChangeProtectionStatusForBundleId:(id)a3;
-- (void)extensionManager:(id)a3 didFailWithError:(id)a4;
-- (void)extensionManager:(id)a3 didUpdateAvailableExtensions:(id)a4;
+- (void)didChangeProtectionStatusForBundleId:(id)id;
+- (void)extensionManager:(id)manager didFailWithError:(id)error;
+- (void)extensionManager:(id)manager didUpdateAvailableExtensions:(id)extensions;
 @end
 
 @implementation RideBookingApplicationFinder
@@ -24,9 +24,9 @@
 
     [(RideBookingApplicationFinder *)v2 _setupExtensionManager];
     v6 = MapsSuggestionsResourceDepotForMapsProcess();
-    v7 = [v6 oneAppGuardian];
+    oneAppGuardian = [v6 oneAppGuardian];
     appGuardian = v2->_appGuardian;
-    v2->_appGuardian = v7;
+    v2->_appGuardian = oneAppGuardian;
   }
 
   return v2;
@@ -56,7 +56,7 @@
   [(RideBookingApplicationFinder *)&v3 dealloc];
 }
 
-- (void)didChangeProtectionStatusForBundleId:(id)a3
+- (void)didChangeProtectionStatusForBundleId:(id)id
 {
   extensionManager = self->_extensionManager;
   self->_extensionManager = 0;
@@ -64,40 +64,40 @@
   [(RideBookingApplicationFinder *)self _setupExtensionManager];
 }
 
-- (void)extensionManager:(id)a3 didFailWithError:(id)a4
+- (void)extensionManager:(id)manager didFailWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   queue = self->_queue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100E6210C;
   v8[3] = &unk_101661A90;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = errorCopy;
+  selfCopy = self;
+  v7 = errorCopy;
   dispatch_async(queue, v8);
 }
 
-- (void)extensionManager:(id)a3 didUpdateAvailableExtensions:(id)a4
+- (void)extensionManager:(id)manager didUpdateAvailableExtensions:(id)extensions
 {
-  v5 = a4;
+  extensionsCopy = extensions;
   v6 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v7 = basename("/Library/Caches/com.apple.xbs/Sources/Maps/iOS/Ride Booking/RideBookingApplication/RideBookingApplicationFinder.m");
-    v8 = [[NSString alloc] initWithFormat:@"Updated extensions: %@", v5];
+    extensionsCopy = [[NSString alloc] initWithFormat:@"Updated extensions: %@", extensionsCopy];
     *buf = 136315394;
     v17 = v7;
     v18 = 2112;
-    v19 = v8;
+    v19 = extensionsCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "{RBInfo}{%s}: %@", buf, 0x16u);
   }
 
-  v9 = [(RideBookingApplicationFinder *)self delegate];
-  if (v9)
+  delegate = [(RideBookingApplicationFinder *)self delegate];
+  if (delegate)
   {
-    v10 = v9;
-    v11 = [(RideBookingApplicationFinder *)self delegate];
+    v10 = delegate;
+    delegate2 = [(RideBookingApplicationFinder *)self delegate];
     v12 = objc_opt_respondsToSelector();
 
     if (v12)
@@ -108,7 +108,7 @@
       block[2] = sub_100E623D4;
       block[3] = &unk_101661A90;
       block[4] = self;
-      v15 = v5;
+      v15 = extensionsCopy;
       dispatch_async(queue, block);
     }
   }

@@ -1,24 +1,24 @@
 @interface NIServerDevicePresenceSession
-- (BOOL)airPodsProxCardSampleTooOld:(id)a3;
-- (BOOL)isInteresetedInSample:(id)a3;
-- (BOOL)isInterestedInSamplesForDevice:(id)a3;
-- (NIServerDevicePresenceSession)initWithResourcesManager:(id)a3 configuration:(id)a4 error:(id *)a5;
+- (BOOL)airPodsProxCardSampleTooOld:(id)old;
+- (BOOL)isInteresetedInSample:(id)sample;
+- (BOOL)isInterestedInSamplesForDevice:(id)device;
+- (NIServerDevicePresenceSession)initWithResourcesManager:(id)manager configuration:(id)configuration error:(id *)error;
 - (id).cxx_construct;
 - (id)configure;
 - (id)description;
 - (id)disableAllServices;
-- (id)discoveryTokenFromIdentifier:(unint64_t)a3;
-- (id)objectFromIdentifier:(unint64_t)a3;
-- (id)pauseWithSource:(int64_t)a3;
+- (id)discoveryTokenFromIdentifier:(unint64_t)identifier;
+- (id)objectFromIdentifier:(unint64_t)identifier;
+- (id)pauseWithSource:(int64_t)source;
 - (id)run;
-- (int)_niPlacementToAlgoPlacement:(int64_t)a3;
-- (int64_t)_roseMotionStateToNIMotionActivityState:(int)a3;
-- (optional<unsigned)identifierFromDiscoveryToken:(id)a3;
-- (void)consumeBluetoothSample:(id)a3;
+- (int)_niPlacementToAlgoPlacement:(int64_t)placement;
+- (int64_t)_roseMotionStateToNIMotionActivityState:(int)state;
+- (optional<unsigned)identifierFromDiscoveryToken:(id)token;
+- (void)consumeBluetoothSample:(id)sample;
 - (void)invalidate;
-- (void)processVisionInput:(id)a3;
-- (void)updatesEngine:(id)a3 didUpdateNearbyObjects:(id)a4;
-- (void)updatesEngine:(id)a3 object:(id)a4 didUpdateRegion:(id)a5 previousRegion:(id)a6 regionTransitionSuppressed:(BOOL)a7;
+- (void)processVisionInput:(id)input;
+- (void)updatesEngine:(id)engine didUpdateNearbyObjects:(id)objects;
+- (void)updatesEngine:(id)engine object:(id)object didUpdateRegion:(id)region previousRegion:(id)previousRegion regionTransitionSuppressed:(BOOL)suppressed;
 @end
 
 @implementation NIServerDevicePresenceSession
@@ -41,10 +41,10 @@
   return v3;
 }
 
-- (NIServerDevicePresenceSession)initWithResourcesManager:(id)a3 configuration:(id)a4 error:(id *)a5
+- (NIServerDevicePresenceSession)initWithResourcesManager:(id)manager configuration:(id)configuration error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
+  managerCopy = manager;
+  configurationCopy = configuration;
   v11 = objc_opt_class();
   if (v11 != objc_opt_class())
   {
@@ -52,9 +52,9 @@
     [v33 handleFailureInMethod:a2 object:self file:@"NIServerDevicePresenceSession.mm" lineNumber:93 description:@"NIServerDevicePresenceSession given invalid configuration."];
   }
 
-  v12 = [v9 serverSessionIdentifier];
+  serverSessionIdentifier = [managerCopy serverSessionIdentifier];
 
-  if (!v12)
+  if (!serverSessionIdentifier)
   {
     v34 = +[NSAssertionHandler currentHandler];
     [v34 handleFailureInMethod:a2 object:self file:@"NIServerDevicePresenceSession.mm" lineNumber:94 description:{@"Invalid parameter not satisfying: %@", @"resourcesManager.serverSessionIdentifier"}];
@@ -62,19 +62,19 @@
 
   v37.receiver = self;
   v37.super_class = NIServerDevicePresenceSession;
-  v13 = [(NIServerBaseSession *)&v37 initWithResourcesManager:v9 configuration:v10 error:a5];
+  v13 = [(NIServerBaseSession *)&v37 initWithResourcesManager:managerCopy configuration:configurationCopy error:error];
   v14 = v13;
   if (v13)
   {
-    v15 = [v10 copy];
+    v15 = [configurationCopy copy];
     v16 = *(v13 + 44);
     *(v13 + 44) = v15;
 
     if (([*(v13 + 44) monitoringOption] & 2) == 0)
     {
-      if (v9)
+      if (managerCopy)
       {
-        [v9 protobufLogger];
+        [managerCopy protobufLogger];
         v17 = *location;
       }
 
@@ -97,14 +97,14 @@
         sub_10000AD84(location[1]);
       }
 
-      v20 = [v9 clientConnectionQueue];
+      clientConnectionQueue = [managerCopy clientConnectionQueue];
       v21 = *(v13 + 10);
-      *(v13 + 10) = v20;
+      *(v13 + 10) = clientConnectionQueue;
 
-      v22 = [v9 serverSessionIdentifier];
-      v23 = [v22 UUIDString];
+      serverSessionIdentifier2 = [managerCopy serverSessionIdentifier];
+      uUIDString = [serverSessionIdentifier2 UUIDString];
       v24 = *(v13 + 11);
-      *(v13 + 11) = v23;
+      *(v13 + 11) = uUIDString;
 
       *(v13 + 40) = 0;
       v25 = objc_alloc_init(SFDeviceDiscovery);
@@ -113,15 +113,15 @@
 
       if ([*(v13 + 44) allowedDevices] == 2)
       {
-        v27 = [*(v13 + 44) innerBoundary];
-        if ([v27 devicePresencePreset] == 3)
+        innerBoundary = [*(v13 + 44) innerBoundary];
+        if ([innerBoundary devicePresencePreset] == 3)
         {
         }
 
         else
         {
-          v28 = [*(v13 + 44) innerBoundary];
-          v29 = [v28 devicePresencePreset] == 2;
+          innerBoundary2 = [*(v13 + 44) innerBoundary];
+          v29 = [innerBoundary2 devicePresencePreset] == 2;
 
           if (!v29)
           {
@@ -146,66 +146,66 @@ LABEL_22:
       operator new();
     }
 
-    if (a5)
+    if (error)
     {
       v38[0] = NSLocalizedFailureReasonErrorKey;
       v38[1] = NSLocalizedRecoverySuggestionErrorKey;
       v39[0] = @"Invalid monitoring option.";
       v39[1] = @"AlwaysOn is not currently supported, remove from configuration.";
       v18 = [NSDictionary dictionaryWithObjects:v39 forKeys:v38 count:2];
-      *a5 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5888 userInfo:v18];
+      *error = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5888 userInfo:v18];
     }
   }
 
   return 0;
 }
 
-- (int64_t)_roseMotionStateToNIMotionActivityState:(int)a3
+- (int64_t)_roseMotionStateToNIMotionActivityState:(int)state
 {
   dispatch_assert_queue_V2(*(self + 10));
-  if (a3 == 1)
+  if (state == 1)
   {
     return 2;
   }
 
   else
   {
-    return a3 == 2;
+    return state == 2;
   }
 }
 
-- (void)consumeBluetoothSample:(id)a3
+- (void)consumeBluetoothSample:(id)sample
 {
-  v4 = a3;
+  sampleCopy = sample;
   dispatch_assert_queue_V2(*(self + 10));
-  v5 = [v4 identifier];
+  identifier = [sampleCopy identifier];
 
-  if (v5)
+  if (identifier)
   {
-    v6 = [v4 model];
+    model = [sampleCopy model];
 
-    if (v6)
+    if (model)
     {
       if (([*(self + 44) allowedDevices] & 8) != 0 && +[NIPlatformInfo isInternalBuild](NIPlatformInfo, "isInternalBuild") && os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEBUG))
       {
         sub_1004A5170();
       }
 
-      v7 = [*(self + 44) token];
-      v8 = v7 == 0;
+      token = [*(self + 44) token];
+      v8 = token == 0;
 
       if (v8)
       {
         v12 = [NIDiscoveryToken alloc];
-        v13 = [v4 identifier];
-        v14 = [v13 dataUsingEncoding:4];
-        v15 = [(NIDiscoveryToken *)v12 initWithBytes:v14];
+        identifier2 = [sampleCopy identifier];
+        v14 = [identifier2 dataUsingEncoding:4];
+        token2 = [(NIDiscoveryToken *)v12 initWithBytes:v14];
       }
 
       else
       {
-        v9 = [v4 model];
-        v10 = [v9 isEqualToString:@"NONE"];
+        model2 = [sampleCopy model];
+        v10 = [model2 isEqualToString:@"NONE"];
 
         if (v10)
         {
@@ -213,20 +213,20 @@ LABEL_22:
           if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            *&buf[4] = v4;
+            *&buf[4] = sampleCopy;
             _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "#ses-devicepresence,No model information while bt finding for sample: %@", buf, 0xCu);
           }
 
           goto LABEL_63;
         }
 
-        v15 = [*(self + 44) token];
+        token2 = [*(self + 44) token];
       }
 
-      v16 = [*(self + 44) innerBoundary];
-      if ([v16 devicePresencePreset] == 3)
+      innerBoundary = [*(self + 44) innerBoundary];
+      if ([innerBoundary devicePresencePreset] == 3)
       {
-        [v4 rssi];
+        [sampleCopy rssi];
         v18 = v17 < -61.0;
 
         if (v18)
@@ -234,18 +234,18 @@ LABEL_22:
           v19 = qword_1009F9820;
           if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
           {
-            [v4 rssi];
+            [sampleCopy rssi];
             v61 = v60;
-            v62 = [v4 channel];
-            v63 = [v4 identifier];
+            channel = [sampleCopy channel];
+            identifier3 = [sampleCopy identifier];
             *buf = 134218754;
             *&buf[4] = v61;
             v78 = 1024;
-            v79 = v62;
+            v79 = channel;
             v80 = 2112;
-            *v81 = v63;
+            *v81 = identifier3;
             *&v81[8] = 2048;
-            *&v81[10] = [(NIDiscoveryToken *)v15 hash];
+            *&v81[10] = [(NIDiscoveryToken *)token2 hash];
             _os_log_debug_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEBUG, "#ses-devicepresence,Ignoring weak RSSI %f on channel %d for device: %@ (device hash: 0x%lx) because we cannot trust weak RSSI due to a BT FW bug", buf, 0x26u);
           }
 
@@ -260,8 +260,8 @@ LABEL_22:
       v73 = 0;
       v74 = 0;
       v75 = 0;
-      v20 = [v4 identifier];
-      v21 = [v20 dataUsingEncoding:4];
+      identifier4 = [sampleCopy identifier];
+      v21 = [identifier4 dataUsingEncoding:4];
 
       v22 = [v21 length];
       v23 = 0;
@@ -278,17 +278,17 @@ LABEL_22:
 
       [v21 getBytes:v23 length:{objc_msgSend(v21, "length")}];
       std::mutex::lock((self + 216));
-      *buf = [(NIDiscoveryToken *)v15 hash];
+      *buf = [(NIDiscoveryToken *)token2 hash];
       if (!sub_100009978(self + 22, buf))
       {
-        v24 = [[NINearbyObject alloc] initWithToken:v15];
-        v25 = [v4 identifier];
-        [(NINearbyObject *)v24 setDeviceIdentifier:v25];
+        v24 = [[NINearbyObject alloc] initWithToken:token2];
+        identifier5 = [sampleCopy identifier];
+        [(NINearbyObject *)v24 setDeviceIdentifier:identifier5];
 
-        v26 = [v4 name];
-        [(NINearbyObject *)v24 setName:v26];
+        name = [sampleCopy name];
+        [(NINearbyObject *)v24 setName:name];
 
-        v76 = [(NIDiscoveryToken *)v15 hash];
+        v76 = [(NIDiscoveryToken *)token2 hash];
         *buf = &v76;
         v27 = sub_1001C346C(self + 22, &v76);
         v28 = v27[3];
@@ -296,16 +296,16 @@ LABEL_22:
       }
 
       std::mutex::unlock((self + 216));
-      v29 = [v4 partIdentifier];
-      if ([v29 isEqualToString:&stru_1009B1428])
+      partIdentifier = [sampleCopy partIdentifier];
+      if ([partIdentifier isEqualToString:&stru_1009B1428])
       {
-        v30 = [(NIDiscoveryToken *)v15 hash];
+        v30 = [(NIDiscoveryToken *)token2 hash];
       }
 
       else
       {
-        v31 = [v4 partIdentifier];
-        v30 = [v31 hash];
+        partIdentifier2 = [sampleCopy partIdentifier];
+        v30 = [partIdentifier2 hash];
       }
 
       if (!v30 && +[NIPlatformInfo isInternalBuild]&& os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEBUG))
@@ -313,29 +313,29 @@ LABEL_22:
         sub_1004A51E4();
       }
 
-      if (![(NIServerDevicePresenceSession *)self airPodsProxCardSampleTooOld:v4])
+      if (![(NIServerDevicePresenceSession *)self airPodsProxCardSampleTooOld:sampleCopy])
       {
-        [v4 machContinuousTimeSeconds];
+        [sampleCopy machContinuousTimeSeconds];
         v33 = v32;
-        [v4 rssi];
+        [sampleCopy rssi];
         v35 = v34;
-        v36 = [v4 channel];
-        v37 = [v4 model];
-        v38 = v37;
-        sub_100004A08(__p, [v37 UTF8String]);
-        sub_100009B14(buf, v36, __p, &v73, [(NIDiscoveryToken *)v15 hash], v30, v33, v35);
+        channel2 = [sampleCopy channel];
+        model3 = [sampleCopy model];
+        v38 = model3;
+        sub_100004A08(__p, [model3 UTF8String]);
+        sub_100009B14(buf, channel2, __p, &v73, [(NIDiscoveryToken *)token2 hash], v30, v33, v35);
         if (v72 < 0)
         {
           operator delete(__p[0]);
         }
 
-        v85 = -[NIServerDevicePresenceSession _niPlacementToAlgoPlacement:](self, "_niPlacementToAlgoPlacement:", [v4 devicePlacement]);
+        v85 = -[NIServerDevicePresenceSession _niPlacementToAlgoPlacement:](self, "_niPlacementToAlgoPlacement:", [sampleCopy devicePlacement]);
         v86 = 1;
         [*(self + 8) acceptBluetoothSample:buf coarseEstimation:0 regionCategory:0];
         sub_100013474(*(self + 16), buf);
         v39 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, *(self + 10));
-        v40 = [*(self + 44) innerBoundary];
-        v41 = [v40 devicePresencePreset] == 3;
+        innerBoundary2 = [*(self + 44) innerBoundary];
+        v41 = [innerBoundary2 devicePresencePreset] == 3;
 
         if (v41)
         {
@@ -347,16 +347,16 @@ LABEL_22:
           v42 = 60.0;
         }
 
-        v43 = [*(self + 44) token];
-        v44 = v43 == 0;
+        token3 = [*(self + 44) token];
+        v44 = token3 == 0;
 
         v45 = 10.0;
         if (v44)
         {
-          v46 = [*(self + 44) innerBoundary];
-          if ([v46 devicePresencePreset] == 1)
+          innerBoundary3 = [*(self + 44) innerBoundary];
+          if ([innerBoundary3 devicePresencePreset] == 1)
           {
-            v47 = [v4 model];
+            model4 = [sampleCopy model];
             v48 = [(NIServerDevicePresenceSession *)self isAirPods:CBProductIDFromNSString()];
 
             if (v48)
@@ -398,11 +398,11 @@ LABEL_22:
         handler[3] = &unk_10099C278;
         objc_copyWeak(v69, &location);
         v69[1] = *&v52;
-        v54 = v15;
+        v54 = token2;
         v66 = v54;
         v55 = v39;
         v67 = v55;
-        v68 = self;
+        selfCopy = self;
         dispatch_source_set_event_handler(v55, handler);
         v76 = [(NIDiscoveryToken *)v54 hash];
         v56 = sub_100009978(self + 35, &v76);
@@ -455,17 +455,17 @@ LABEL_22:
 LABEL_63:
 }
 
-- (BOOL)isInteresetedInSample:(id)a3
+- (BOOL)isInteresetedInSample:(id)sample
 {
-  v4 = a3;
-  v5 = [*(self + 44) allowedDevices];
-  if (v5 < 6 && ((0x33u >> v5) & 1) != 0)
+  sampleCopy = sample;
+  allowedDevices = [*(self + 44) allowedDevices];
+  if (allowedDevices < 6 && ((0x33u >> allowedDevices) & 1) != 0)
   {
     goto LABEL_9;
   }
 
-  v6 = [v4 model];
-  if ([v6 isEqualToString:&stru_1009B1428])
+  model = [sampleCopy model];
+  if ([model isEqualToString:&stru_1009B1428])
   {
 
 LABEL_9:
@@ -473,21 +473,21 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v7 = [v4 model];
+  model2 = [sampleCopy model];
 
-  if (!v7)
+  if (!model2)
   {
     goto LABEL_9;
   }
 
-  v8 = [v4 model];
+  model3 = [sampleCopy model];
   v9 = CBProductIDFromNSString();
 
   if ([*(self + 44) allowedDevices] == 8)
   {
     if (*(self + 120) == 1)
     {
-      LOBYTE(self) = [v4 devicePlacement] == 1;
+      LOBYTE(self) = [sampleCopy devicePlacement] == 1;
     }
 
     else
@@ -524,28 +524,28 @@ LABEL_10:
   return self;
 }
 
-- (BOOL)isInterestedInSamplesForDevice:(id)a3
+- (BOOL)isInterestedInSamplesForDevice:(id)device
 {
-  v4 = a3;
-  v5 = [*(self + 44) allowedDevices];
-  if (v5 < 6 && ((0x33u >> v5) & 1) != 0)
+  deviceCopy = device;
+  allowedDevices = [*(self + 44) allowedDevices];
+  if (allowedDevices < 6 && ((0x33u >> allowedDevices) & 1) != 0)
   {
     goto LABEL_7;
   }
 
-  if (([v4 rssi] & 0x80000000) == 0)
+  if (([deviceCopy rssi] & 0x80000000) == 0)
   {
     v6 = qword_1009F9820;
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v4 idsDeviceID];
-      v8 = [v4 model];
+      idsDeviceID = [deviceCopy idsDeviceID];
+      model = [deviceCopy model];
       v23 = 138412802;
-      v24 = v7;
+      v24 = idsDeviceID;
       v25 = 2112;
-      v26 = v8;
+      v26 = model;
       v27 = 1024;
-      v28 = [v4 rssi];
+      rssi = [deviceCopy rssi];
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "#ses-devicepresence,Dropping BT RSSI sample for device: %@ which is of model: %@ because reported RSSI is %d", &v23, 0x1Cu);
     }
 
@@ -556,12 +556,12 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v11 = [*(self + 44) token];
+  token = [*(self + 44) token];
 
-  if (v11)
+  if (token)
   {
-    v12 = [*(self + 44) token];
-    v13 = [v12 objectInRawTokenOPACKDictForKey:&off_1009C3E30];
+    token2 = [*(self + 44) token];
+    v13 = [token2 objectInRawTokenOPACKDictForKey:&off_1009C3E30];
 
     v14 = [v13 length];
     if (v14 != 6)
@@ -582,14 +582,14 @@ LABEL_7:
       v13 = v15;
     }
 
-    v16 = [v4 btAddressData];
-    v9 = [v13 isEqualToData:v16];
+    btAddressData = [deviceCopy btAddressData];
+    v9 = [v13 isEqualToData:btAddressData];
 
 LABEL_24:
     goto LABEL_8;
   }
 
-  if (*(self + 120) == 1 && [v4 primaryPlacement] == 1)
+  if (*(self + 120) == 1 && [deviceCopy primaryPlacement] == 1)
   {
     v9 = 1;
     goto LABEL_8;
@@ -597,39 +597,39 @@ LABEL_24:
 
   if (([*(self + 44) allowedDevices] & 8) == 0)
   {
-    v17 = [v4 idsDeviceID];
+    idsDeviceID2 = [deviceCopy idsDeviceID];
 
-    if (!v17)
+    if (!idsDeviceID2)
     {
       goto LABEL_7;
     }
 
-    v18 = [v4 model];
+    model2 = [deviceCopy model];
 
-    if (!v18)
+    if (!model2)
     {
       v6 = qword_1009F9820;
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
-        v22 = [v4 idsDeviceID];
+        idsDeviceID3 = [deviceCopy idsDeviceID];
         v23 = 138412290;
-        v24 = v22;
+        v24 = idsDeviceID3;
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "#ses-devicepresence,Dropping BT RSSI sample for device: %@ which does not have model info", &v23, 0xCu);
       }
 
       goto LABEL_6;
     }
 
-    v19 = ([v4 deviceFlags] & 0x380) == 0;
+    v19 = ([deviceCopy deviceFlags] & 0x380) == 0;
     goto LABEL_30;
   }
 
   v9 = 0;
-  v20 = [v4 productID] - 8194;
+  v20 = [deviceCopy productID] - 8194;
   if (v20 <= 0x26 && ((1 << v20) & 0x6472863101) != 0)
   {
-    v21 = [v4 productID];
-    v19 = v21 == 8223 || v21 == 8202;
+    productID = [deviceCopy productID];
+    v19 = productID == 8223 || productID == 8202;
 LABEL_30:
     v9 = !v19;
   }
@@ -658,7 +658,7 @@ LABEL_8:
 
   v18.receiver = self;
   v18.super_class = NIServerDevicePresenceSession;
-  v5 = [(NIServerBaseSession *)&v18 resourcesManager];
+  resourcesManager = [(NIServerBaseSession *)&v18 resourcesManager];
   if (*(self + 8))
   {
     goto LABEL_11;
@@ -667,7 +667,7 @@ LABEL_8:
   v6 = [NINearbyUpdatesEngine alloc];
   v7 = *(self + 44);
   v8 = *(self + 10);
-  v9 = [v5 analytics];
+  analytics = [resourcesManager analytics];
   v10 = *(self + 7);
   v16 = *(self + 6);
   v17 = v10;
@@ -677,7 +677,7 @@ LABEL_8:
   }
 
   v15 = 0;
-  v11 = [(NINearbyUpdatesEngine *)v6 initWithConfiguration:v7 queue:v8 delegate:self dataSource:self analyticsManager:v9 protobufLogger:&v16 error:&v15];
+  v11 = [(NINearbyUpdatesEngine *)v6 initWithConfiguration:v7 queue:v8 delegate:self dataSource:self analyticsManager:analytics protobufLogger:&v16 error:&v15];
   v12 = v15;
   v13 = *(self + 8);
   *(self + 8) = v11;
@@ -702,34 +702,34 @@ LABEL_11:
   dispatch_assert_queue_V2(*(self + 10));
   v15.receiver = self;
   v15.super_class = NIServerDevicePresenceSession;
-  v3 = [(NIServerBaseSession *)&v15 resourcesManager];
-  v4 = [*(self + 44) allowedDevices];
-  if ((v4 - 6) < 0xA || (v4 - 2) < 2)
+  resourcesManager = [(NIServerBaseSession *)&v15 resourcesManager];
+  allowedDevices = [*(self + 44) allowedDevices];
+  if ((allowedDevices - 6) < 0xA || (allowedDevices - 2) < 2)
   {
-    v5 = [*(self + 44) token];
+    token = [*(self + 44) token];
 
-    [v3 devicePresenceResource];
-    if (v5)
+    [resourcesManager devicePresenceResource];
+    if (token)
       v6 = {;
-      v7 = [v6 internalObserver];
-      v8 = [*(self + 44) token];
-      [v7 startHighPriorityScanningForToken:v8 forConsumer:self];
+      internalObserver = [v6 internalObserver];
+      token2 = [*(self + 44) token];
+      [internalObserver startHighPriorityScanningForToken:token2 forConsumer:self];
     }
 
     else
       v6 = {;
-      v7 = [v6 internalObserver];
-      [v7 startLeechingForConsumer:self];
+      internalObserver = [v6 internalObserver];
+      [internalObserver startLeechingForConsumer:self];
     }
   }
 
-  v9 = [v3 lifecycleSupervisor];
-  [v9 runWithConfigurationCalled];
+  lifecycleSupervisor = [resourcesManager lifecycleSupervisor];
+  [lifecycleSupervisor runWithConfigurationCalled];
 
   v10 = *(self + 16);
   v11 = sub_100005288();
-  v12 = [v3 clientProcessNameBestGuess];
-  sub_100004A08(&__p, [v12 UTF8String]);
+  clientProcessNameBestGuess = [resourcesManager clientProcessNameBestGuess];
+  sub_100004A08(&__p, [clientProcessNameBestGuess UTF8String]);
   sub_100282780(v10, &__p, v11);
   if (SHIBYTE(__p.__r_.__value_.__r.__words[2]) < 0)
   {
@@ -740,7 +740,7 @@ LABEL_11:
   return 0;
 }
 
-- (id)pauseWithSource:(int64_t)a3
+- (id)pauseWithSource:(int64_t)source
 {
   dispatch_assert_queue_V2(*(self + 10));
   *(self + 72) = 0;
@@ -748,26 +748,26 @@ LABEL_11:
   v4 = [(NIServerDevicePresenceSession *)self _disableAllServicesAndSendHangupSignal:0];
   v16.receiver = self;
   v16.super_class = NIServerDevicePresenceSession;
-  v5 = [(NIServerBaseSession *)&v16 resourcesManager];
-  v6 = [v5 lifecycleSupervisor];
-  [v6 pauseCalled];
+  resourcesManager = [(NIServerBaseSession *)&v16 resourcesManager];
+  lifecycleSupervisor = [resourcesManager lifecycleSupervisor];
+  [lifecycleSupervisor pauseCalled];
 
-  v7 = [v5 devicePresenceResource];
-  v8 = [v7 internalObserver];
-  [v8 stopLeechingForConsumer:self];
+  devicePresenceResource = [resourcesManager devicePresenceResource];
+  internalObserver = [devicePresenceResource internalObserver];
+  [internalObserver stopLeechingForConsumer:self];
 
-  v9 = [*(self + 44) token];
+  token = [*(self + 44) token];
 
-  if (v9)
+  if (token)
   {
-    v10 = [v5 devicePresenceResource];
-    v11 = [v10 internalObserver];
-    [v11 stopHighPriorityScanning];
+    devicePresenceResource2 = [resourcesManager devicePresenceResource];
+    internalObserver2 = [devicePresenceResource2 internalObserver];
+    [internalObserver2 stopHighPriorityScanning];
   }
 
-  v12 = [*(self + 44) token];
+  token2 = [*(self + 44) token];
 
-  if (v12)
+  if (token2)
   {
     v13 = *(self + 16);
     v14 = sub_100005288();
@@ -781,10 +781,10 @@ LABEL_11:
 {
   v8.receiver = self;
   v8.super_class = NIServerDevicePresenceSession;
-  v3 = [(NIServerBaseSession *)&v8 resourcesManager];
-  v4 = [v3 devicePresenceResource];
-  v5 = [v4 internalObserver];
-  [v5 stopLeechingForConsumer:self];
+  resourcesManager = [(NIServerBaseSession *)&v8 resourcesManager];
+  devicePresenceResource = [resourcesManager devicePresenceResource];
+  internalObserver = [devicePresenceResource internalObserver];
+  [internalObserver stopLeechingForConsumer:self];
 
   v6 = [(NIServerDevicePresenceSession *)self _disableAllServicesAndSendHangupSignal:1];
 
@@ -798,10 +798,10 @@ LABEL_11:
   sub_1001C1ED8(self + 136);
   [*(self + 12) invalidate];
   sub_1002D26E0(*(self + 13));
-  v3 = [(NIServerDevicePresenceSession *)self disableAllServices];
-  v4 = [*(self + 44) token];
+  disableAllServices = [(NIServerDevicePresenceSession *)self disableAllServices];
+  token = [*(self + 44) token];
 
-  if (v4)
+  if (token)
   {
     v5 = *(self + 16);
     v6 = sub_100005288();
@@ -813,11 +813,11 @@ LABEL_11:
   [(NIServerBaseSession *)&v7 invalidate];
 }
 
-- (int)_niPlacementToAlgoPlacement:(int64_t)a3
+- (int)_niPlacementToAlgoPlacement:(int64_t)placement
 {
-  if ((a3 - 1) < 7)
+  if ((placement - 1) < 7)
   {
-    return a3;
+    return placement;
   }
 
   else
@@ -826,28 +826,28 @@ LABEL_11:
   }
 }
 
-- (id)discoveryTokenFromIdentifier:(unint64_t)a3
+- (id)discoveryTokenFromIdentifier:(unint64_t)identifier
 {
-  v3 = [(NIServerDevicePresenceSession *)self objectFromIdentifier:a3];
-  v4 = [v3 discoveryToken];
+  v3 = [(NIServerDevicePresenceSession *)self objectFromIdentifier:identifier];
+  discoveryToken = [v3 discoveryToken];
 
-  return v4;
+  return discoveryToken;
 }
 
-- (optional<unsigned)identifierFromDiscoveryToken:(id)a3
+- (optional<unsigned)identifierFromDiscoveryToken:(id)token
 {
-  v3 = [a3 hash];
+  v3 = [token hash];
   v4 = 1;
   result.__engaged_ = v4;
   result.var0 = v3;
   return result;
 }
 
-- (id)objectFromIdentifier:(unint64_t)a3
+- (id)objectFromIdentifier:(unint64_t)identifier
 {
-  v14 = a3;
+  identifierCopy = identifier;
   std::mutex::lock((self + 216));
-  v4 = sub_100009978(self + 22, &v14);
+  v4 = sub_100009978(self + 22, &identifierCopy);
   if (v4)
   {
     v5 = v4[3];
@@ -858,7 +858,7 @@ LABEL_11:
     v6 = qword_1009F9820;
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
     {
-      sub_1004A53BC(&v14, v6, v7, v8, v9, v10, v11, v12);
+      sub_1004A53BC(&identifierCopy, v6, v7, v8, v9, v10, v11, v12);
     }
 
     v5 = 0;
@@ -869,26 +869,26 @@ LABEL_11:
   return v5;
 }
 
-- (void)processVisionInput:(id)a3
+- (void)processVisionInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   dispatch_assert_queue_V2(*(self + 10));
-  [*(self + 8) acceptVisionInput:v4];
+  [*(self + 8) acceptVisionInput:inputCopy];
 }
 
-- (void)updatesEngine:(id)a3 object:(id)a4 didUpdateRegion:(id)a5 previousRegion:(id)a6 regionTransitionSuppressed:(BOOL)a7
+- (void)updatesEngine:(id)engine object:(id)object didUpdateRegion:(id)region previousRegion:(id)previousRegion regionTransitionSuppressed:(BOOL)suppressed
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = v15;
-  if (*(self + 8) != v12)
+  engineCopy = engine;
+  objectCopy = object;
+  regionCopy = region;
+  previousRegionCopy = previousRegion;
+  v16 = previousRegionCopy;
+  if (*(self + 8) != engineCopy)
   {
     __assert_rtn("[NIServerDevicePresenceSession updatesEngine:object:didUpdateRegion:previousRegion:regionTransitionSuppressed:]", "NIServerDevicePresenceSession.mm", 767, "engine == _updatesEngine");
   }
 
-  if (v14 | v15 && !a7)
+  if (regionCopy | previousRegionCopy && !suppressed)
   {
     v17 = *(self + 10);
     v18[0] = _NSConcreteStackBlock;
@@ -896,19 +896,19 @@ LABEL_11:
     v18[2] = sub_1001C24A4;
     v18[3] = &unk_10099C2A0;
     v18[4] = self;
-    v19 = v14;
+    v19 = regionCopy;
     v20 = v16;
-    v21 = v13;
+    v21 = objectCopy;
     dispatch_async(v17, v18);
   }
 }
 
-- (void)updatesEngine:(id)a3 didUpdateNearbyObjects:(id)a4
+- (void)updatesEngine:(id)engine didUpdateNearbyObjects:(id)objects
 {
-  v5 = a4;
-  v6 = [*(self + 44) token];
+  objectsCopy = objects;
+  token = [*(self + 44) token];
 
-  if (v6)
+  if (token)
   {
     v7 = *(self + 10);
     v8[0] = _NSConcreteStackBlock;
@@ -916,18 +916,18 @@ LABEL_11:
     v8[2] = sub_1001C26BC;
     v8[3] = &unk_10098A2E8;
     v8[4] = self;
-    v9 = v5;
+    v9 = objectsCopy;
     dispatch_async(v7, v8);
   }
 }
 
-- (BOOL)airPodsProxCardSampleTooOld:(id)a3
+- (BOOL)airPodsProxCardSampleTooOld:(id)old
 {
-  v4 = a3;
-  v5 = [*(self + 44) innerBoundary];
-  if ([v5 devicePresencePreset] == 1)
+  oldCopy = old;
+  innerBoundary = [*(self + 44) innerBoundary];
+  if ([innerBoundary devicePresencePreset] == 1)
   {
-    v6 = [v4 model];
+    model = [oldCopy model];
     v7 = [(NIServerDevicePresenceSession *)self isAirPods:CBProductIDFromNSString()];
 
     if (v7)
@@ -945,7 +945,7 @@ LABEL_11:
       }
 
       v12 = sub_100005288();
-      [v4 machContinuousTimeSeconds];
+      [oldCopy machContinuousTimeSeconds];
       v14 = v13;
       LOBYTE(v7) = v13 < v12 - v11;
       if (v13 < v12 - v11)

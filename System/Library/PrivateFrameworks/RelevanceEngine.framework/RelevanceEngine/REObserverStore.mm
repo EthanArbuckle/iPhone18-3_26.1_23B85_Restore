@@ -1,15 +1,15 @@
 @interface REObserverStore
 - (NSArray)allObservers;
-- (REObserverStore)initWithFunctionsOptions:(unint64_t)a3;
+- (REObserverStore)initWithFunctionsOptions:(unint64_t)options;
 - (unint64_t)count;
-- (void)addObserver:(id)a3;
-- (void)enumerateObserversWithBlock:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)enumerateObserversWithBlock:(id)block;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation REObserverStore
 
-- (REObserverStore)initWithFunctionsOptions:(unint64_t)a3
+- (REObserverStore)initWithFunctionsOptions:(unint64_t)options
 {
   v9.receiver = self;
   v9.super_class = REObserverStore;
@@ -18,7 +18,7 @@
   if (v4)
   {
     v4->_lock._os_unfair_lock_opaque = 0;
-    v6 = [MEMORY[0x277CCAA50] hashTableWithOptions:a3];
+    v6 = [MEMORY[0x277CCAA50] hashTableWithOptions:options];
     observers = v5->_observers;
     v5->_observers = v6;
   }
@@ -37,43 +37,43 @@
 - (NSArray)allObservers
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(NSHashTable *)self->_observers allObjects];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return allObjects;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_observers addObject:v4];
+  [(NSHashTable *)self->_observers addObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_observers removeObject:v4];
+  [(NSHashTable *)self->_observers removeObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)enumerateObserversWithBlock:(id)a3
+- (void)enumerateObserversWithBlock:(id)block
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
     v17 = 0;
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = [(REObserverStore *)self allObservers];
-    v6 = [v5 countByEnumeratingWithState:&v13 objects:v18 count:16];
+    allObservers = [(REObserverStore *)self allObservers];
+    v6 = [allObservers countByEnumeratingWithState:&v13 objects:v18 count:16];
     if (v6)
     {
       v7 = v6;
@@ -84,12 +84,12 @@ LABEL_4:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allObservers);
         }
 
         v10 = *(*(&v13 + 1) + 8 * v9);
         v11 = objc_autoreleasePoolPush();
-        v4[2](v4, v10, &v17);
+        blockCopy[2](blockCopy, v10, &v17);
         objc_autoreleasePoolPop(v11);
         if (v17)
         {
@@ -98,7 +98,7 @@ LABEL_4:
 
         if (v7 == ++v9)
         {
-          v7 = [v5 countByEnumeratingWithState:&v13 objects:v18 count:16];
+          v7 = [allObservers countByEnumeratingWithState:&v13 objects:v18 count:16];
           if (v7)
           {
             goto LABEL_4;

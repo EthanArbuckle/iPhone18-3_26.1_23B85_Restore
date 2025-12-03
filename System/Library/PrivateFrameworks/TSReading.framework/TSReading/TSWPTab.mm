@@ -1,17 +1,17 @@
 @interface TSWPTab
-+ (id)displayStringFromTabLeader:(id)a3;
-+ (id)stringFromTabAlignment:(int)a3 isRTL:(BOOL)a4;
++ (id)displayStringFromTabLeader:(id)leader;
++ (id)stringFromTabAlignment:(int)alignment isRTL:(BOOL)l;
 + (id)tab;
-+ (id)tabLeaderFromDisplayString:(id)a3;
-+ (int)tabAlignmentFromString:(id)a3 isRTL:(BOOL)a4;
++ (id)tabLeaderFromDisplayString:(id)string;
++ (int)tabAlignmentFromString:(id)string isRTL:(BOOL)l;
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)leader;
-- (TSWPTab)initWithPosition:(double)a3 alignment:(int)a4 leader:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TSWPTab)initWithPosition:(double)position alignment:(int)alignment leader:(id)leader;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (int64_t)compare:(id)a3;
-- (int64_t)compareToPosition:(double)a3;
+- (int64_t)compare:(id)compare;
+- (int64_t)compareToPosition:(double)position;
 - (void)dealloc;
 @end
 
@@ -19,7 +19,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     _kTabStopAlignmentStringLeft = [TSWPBundle() localizedStringForKey:@"Left" value:&stru_287D36338 table:@"TSText"];
     _kTabStopAlignmentStringCenter = [TSWPBundle() localizedStringForKey:@"Center" value:&stru_287D36338 table:@"TSText"];
@@ -38,24 +38,24 @@
   }
 }
 
-+ (id)tabLeaderFromDisplayString:(id)a3
++ (id)tabLeaderFromDisplayString:(id)string
 {
-  if ([a3 isEqualToString:_kTabStopDisplayStringPoint])
+  if ([string isEqualToString:_kTabStopDisplayStringPoint])
   {
     return _kTabStopLeaderStringPoint;
   }
 
-  if ([a3 isEqualToString:_kTabStopDisplayStringDash])
+  if ([string isEqualToString:_kTabStopDisplayStringDash])
   {
     return _kTabStopLeaderStringDash;
   }
 
-  if ([a3 isEqualToString:_kTabStopDisplayStringUnderscore])
+  if ([string isEqualToString:_kTabStopDisplayStringUnderscore])
   {
     return _kTabStopLeaderStringUnderscore;
   }
 
-  if ([a3 isEqualToString:_kTabStopDisplayStringArrow])
+  if ([string isEqualToString:_kTabStopDisplayStringArrow])
   {
     return _kTabStopLeaderStringArrow;
   }
@@ -63,12 +63,12 @@
   return 0;
 }
 
-+ (int)tabAlignmentFromString:(id)a3 isRTL:(BOOL)a4
++ (int)tabAlignmentFromString:(id)string isRTL:(BOOL)l
 {
-  v4 = a4;
-  if ([a3 isEqualToString:_kTabStopAlignmentStringLeft])
+  lCopy = l;
+  if ([string isEqualToString:_kTabStopAlignmentStringLeft])
   {
-    if (v4)
+    if (lCopy)
     {
       return 2;
     }
@@ -79,14 +79,14 @@
     }
   }
 
-  else if ([a3 isEqualToString:_kTabStopAlignmentStringCenter])
+  else if ([string isEqualToString:_kTabStopAlignmentStringCenter])
   {
     return 1;
   }
 
-  else if ([a3 isEqualToString:_kTabStopAlignmentStringRight])
+  else if ([string isEqualToString:_kTabStopAlignmentStringRight])
   {
-    if (v4)
+    if (lCopy)
     {
       return 0;
     }
@@ -97,28 +97,28 @@
     }
   }
 
-  else if ([a3 isEqualToString:_kTabStopAlignmentStringDecimal])
+  else if ([string isEqualToString:_kTabStopAlignmentStringDecimal])
   {
     return 3;
   }
 
   else
   {
-    v7 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSWPTab tabAlignmentFromString:isRTL:]"];
-    [v7 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPTabs.mm"), 207, @"Unrecognized tab alignment string. Returning kTabAlignmentLeft by default."}];
+    [currentHandler handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPTabs.mm"), 207, @"Unrecognized tab alignment string. Returning kTabAlignmentLeft by default."}];
     return 0;
   }
 }
 
-+ (id)stringFromTabAlignment:(int)a3 isRTL:(BOOL)a4
++ (id)stringFromTabAlignment:(int)alignment isRTL:(BOOL)l
 {
   result = &stru_287D36338;
-  if (a3 <= 1)
+  if (alignment <= 1)
   {
-    if (a3)
+    if (alignment)
     {
-      if (a3 == 1)
+      if (alignment == 1)
       {
         return _kTabStopAlignmentStringCenter;
       }
@@ -131,12 +131,12 @@
     goto LABEL_11;
   }
 
-  if (a3 == 2)
+  if (alignment == 2)
   {
     v5 = &_kTabStopAlignmentStringLeft;
     v6 = &_kTabStopAlignmentStringRight;
 LABEL_11:
-    if (!a4)
+    if (!l)
     {
       v5 = v6;
     }
@@ -144,7 +144,7 @@ LABEL_11:
     return *v5;
   }
 
-  if (a3 == 3)
+  if (alignment == 3)
   {
     return _kTabStopAlignmentStringDecimal;
   }
@@ -152,25 +152,25 @@ LABEL_11:
   return result;
 }
 
-+ (id)displayStringFromTabLeader:(id)a3
++ (id)displayStringFromTabLeader:(id)leader
 {
   v4 = _kTabStopDisplayStringNone;
-  if ([a3 isEqualToString:_kTabStopLeaderStringPoint])
+  if ([leader isEqualToString:_kTabStopLeaderStringPoint])
   {
     return _kTabStopDisplayStringPoint;
   }
 
-  if ([a3 isEqualToString:_kTabStopLeaderStringDash])
+  if ([leader isEqualToString:_kTabStopLeaderStringDash])
   {
     return _kTabStopDisplayStringDash;
   }
 
-  if ([a3 isEqualToString:_kTabStopLeaderStringUnderscore])
+  if ([leader isEqualToString:_kTabStopLeaderStringUnderscore])
   {
     return _kTabStopDisplayStringUnderscore;
   }
 
-  if ([a3 isEqualToString:_kTabStopLeaderStringArrow])
+  if ([leader isEqualToString:_kTabStopLeaderStringArrow])
   {
     return _kTabStopDisplayStringArrow;
   }
@@ -192,7 +192,7 @@ LABEL_11:
   [(TSWPTab *)&v3 dealloc];
 }
 
-- (TSWPTab)initWithPosition:(double)a3 alignment:(int)a4 leader:(id)a5
+- (TSWPTab)initWithPosition:(double)position alignment:(int)alignment leader:(id)leader
 {
   v11.receiver = self;
   v11.super_class = TSWPTab;
@@ -200,15 +200,15 @@ LABEL_11:
   v9 = v8;
   if (v8)
   {
-    v8->_position = a3;
-    v8->_alignment = a4;
-    v8->_leader = [a5 copy];
+    v8->_position = position;
+    v8->_alignment = alignment;
+    v8->_leader = [leader copy];
   }
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   position = self->_position;
@@ -231,33 +231,33 @@ LABEL_11:
   }
 }
 
-- (int64_t)compareToPosition:(double)a3
+- (int64_t)compareToPosition:(double)position
 {
   position = self->_position;
-  if (position < a3)
+  if (position < position)
   {
     return -1;
   }
 
   else
   {
-    return position > a3;
+    return position > position;
   }
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  if (!a3)
+  if (!compare)
   {
     return -1;
   }
 
-  [a3 position];
+  [compare position];
 
   return [(TSWPTab *)self compareToPosition:?];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   v4 = TSUDynamicCast();
@@ -281,7 +281,7 @@ LABEL_11:
   }
 
   leader = self->_leader;
-  v10 = [v5 leader];
+  leader = [v5 leader];
   if (leader)
   {
     v11 = leader;
@@ -292,9 +292,9 @@ LABEL_11:
     v11 = @" ";
   }
 
-  if (v10)
+  if (leader)
   {
-    v12 = v10;
+    v12 = leader;
   }
 
   else

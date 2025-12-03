@@ -1,27 +1,27 @@
 @interface RoutingAppSelectionController
 - (BOOL)_updateSuggestions;
-- (RoutingAppSelectionController)initWithTransportType:(int64_t)a3;
+- (RoutingAppSelectionController)initWithTransportType:(int64_t)type;
 - (RoutingAppSelectionControllerDelegate)delegate;
-- (id)_appDataForStoreRow:(unint64_t)a3;
-- (id)_sanitizedMapItemFromWaypoint:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (unint64_t)_sectionAtIndex:(int64_t)a3;
+- (id)_appDataForStoreRow:(unint64_t)row;
+- (id)_sanitizedMapItemFromWaypoint:(id)waypoint;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (unint64_t)_sectionAtIndex:(int64_t)index;
 - (void)_cancelRoutingSelection;
-- (void)_handleSearchResultError:(BOOL)a3 error:(id)a4;
-- (void)_reloadSection:(unint64_t)a3;
-- (void)_updateSortedAppStoreAppsForTransportType:(int64_t)a3;
-- (void)_updateSortedInstalledAppsForTransportType:(int64_t)a3;
-- (void)_useInstalledApp:(id)a3 toRouteFromSource:(id)a4 toDestination:(id)a5;
+- (void)_handleSearchResultError:(BOOL)error error:(id)a4;
+- (void)_reloadSection:(unint64_t)section;
+- (void)_updateSortedAppStoreAppsForTransportType:(int64_t)type;
+- (void)_updateSortedInstalledAppsForTransportType:(int64_t)type;
+- (void)_useInstalledApp:(id)app toRouteFromSource:(id)source toDestination:(id)destination;
 - (void)didReceiveMemoryWarning;
 - (void)reset;
-- (void)routingAppSelectionCellRoutePressed:(id)a3;
-- (void)routingAppSuggestionProvider:(id)a3 didFailToSuggestStoreApps:(id)a4;
-- (void)routingAppSuggestionProvider:(id)a3 didSuggestInstalledApps:(id)a4;
-- (void)routingAppSuggestionProvider:(id)a3 didSuggestStoreApps:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateForWaypointSet:(id)a3;
+- (void)routingAppSelectionCellRoutePressed:(id)pressed;
+- (void)routingAppSuggestionProvider:(id)provider didFailToSuggestStoreApps:(id)apps;
+- (void)routingAppSuggestionProvider:(id)provider didSuggestInstalledApps:(id)apps;
+- (void)routingAppSuggestionProvider:(id)provider didSuggestStoreApps:(id)apps;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateForWaypointSet:(id)set;
 - (void)viewDidLoad;
 @end
 
@@ -34,121 +34,121 @@
   return WeakRetained;
 }
 
-- (void)routingAppSelectionCellRoutePressed:(id)a3
+- (void)routingAppSelectionCellRoutePressed:(id)pressed
 {
-  v4 = [a3 appProxy];
-  [(RoutingAppSelectionController *)self _useInstalledApp:v4 toRouteFromSource:self->_source toDestination:self->_destination];
+  appProxy = [pressed appProxy];
+  [(RoutingAppSelectionController *)self _useInstalledApp:appProxy toRouteFromSource:self->_source toDestination:self->_destination];
 }
 
-- (void)_updateSortedAppStoreAppsForTransportType:(int64_t)a3
+- (void)_updateSortedAppStoreAppsForTransportType:(int64_t)type
 {
   v5 = [RoutingAppSelectionCell _preferredModesForTransportType:?];
   v6 = [NSSet setWithArray:v5];
 
   v7 = [v6 count];
-  if (a3 && v7)
+  if (type && v7)
   {
     v8 = [NSMutableArray alloc];
-    v9 = [(RoutingAppSelectionController *)self suggestedStoreApps];
-    v10 = [v8 initWithArray:v9];
+    suggestedStoreApps = [(RoutingAppSelectionController *)self suggestedStoreApps];
+    suggestedStoreApps2 = [v8 initWithArray:suggestedStoreApps];
 
     v12 = _NSConcreteStackBlock;
     v13 = 3221225472;
     v14 = sub_100B0AD20;
     v15 = &unk_101638210;
     v16 = v6;
-    v17 = self;
-    [v10 sortUsingComparator:&v12];
-    v11 = [v10 copy];
+    selfCopy = self;
+    [suggestedStoreApps2 sortUsingComparator:&v12];
+    v11 = [suggestedStoreApps2 copy];
     [(RoutingAppSelectionController *)self setSortedStoreApps:v11];
   }
 
   else
   {
-    v10 = [(RoutingAppSelectionController *)self suggestedStoreApps];
-    [(RoutingAppSelectionController *)self setSortedStoreApps:v10];
+    suggestedStoreApps2 = [(RoutingAppSelectionController *)self suggestedStoreApps];
+    [(RoutingAppSelectionController *)self setSortedStoreApps:suggestedStoreApps2];
   }
 }
 
-- (void)_updateSortedInstalledAppsForTransportType:(int64_t)a3
+- (void)_updateSortedInstalledAppsForTransportType:(int64_t)type
 {
   v5 = [RoutingAppSelectionCell _preferredModesForTransportType:?];
   v6 = [NSSet setWithArray:v5];
 
   v7 = [v6 count];
-  if (a3 && v7)
+  if (type && v7)
   {
     v8 = [NSMutableArray alloc];
-    v9 = [(RoutingAppSelectionController *)self suggestedInstalledApps];
-    v10 = [v8 initWithArray:v9];
+    suggestedInstalledApps = [(RoutingAppSelectionController *)self suggestedInstalledApps];
+    suggestedInstalledApps2 = [v8 initWithArray:suggestedInstalledApps];
 
     v12 = _NSConcreteStackBlock;
     v13 = 3221225472;
     v14 = sub_100B0AFF8;
     v15 = &unk_1016381E8;
     v16 = v6;
-    v17 = self;
-    [v10 sortUsingComparator:&v12];
-    v11 = [v10 copy];
+    selfCopy = self;
+    [suggestedInstalledApps2 sortUsingComparator:&v12];
+    v11 = [suggestedInstalledApps2 copy];
     [(RoutingAppSelectionController *)self setSortedInstalledApps:v11];
   }
 
   else
   {
-    v10 = [(RoutingAppSelectionController *)self suggestedInstalledApps];
-    [(RoutingAppSelectionController *)self setSortedInstalledApps:v10];
+    suggestedInstalledApps2 = [(RoutingAppSelectionController *)self suggestedInstalledApps];
+    [(RoutingAppSelectionController *)self setSortedInstalledApps:suggestedInstalledApps2];
   }
 }
 
-- (void)_useInstalledApp:(id)a3 toRouteFromSource:(id)a4 toDestination:(id)a5
+- (void)_useInstalledApp:(id)app toRouteFromSource:(id)source toDestination:(id)destination
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 geoMapItem];
+  appCopy = app;
+  sourceCopy = source;
+  destinationCopy = destination;
+  geoMapItem = [sourceCopy geoMapItem];
   v12 = -180.0;
   v13 = -180.0;
   v14 = -180.0;
-  if (v11)
+  if (geoMapItem)
   {
-    v15 = [v9 geoMapItem];
-    [v15 coordinate];
+    geoMapItem2 = [sourceCopy geoMapItem];
+    [geoMapItem2 coordinate];
     v13 = v16;
     v14 = v17;
   }
 
-  v18 = [v10 geoMapItem];
+  geoMapItem3 = [destinationCopy geoMapItem];
   v19 = -180.0;
-  if (v18)
+  if (geoMapItem3)
   {
-    v20 = [v10 geoMapItem];
-    [v20 coordinate];
+    geoMapItem4 = [destinationCopy geoMapItem];
+    [geoMapItem4 coordinate];
     v12 = v21;
     v19 = v22;
   }
 
-  v23 = [v8 bundleIdentifier];
-  [GEOAPPortal captureTransitAppLaunchSource:v23 destination:v13 bundleIdentifier:v14, v12, v19];
+  bundleIdentifier = [appCopy bundleIdentifier];
+  [GEOAPPortal captureTransitAppLaunchSource:bundleIdentifier destination:v13 bundleIdentifier:v14, v12, v19];
 
   v24 = objc_alloc_init(MKDirectionsRequest);
-  v25 = [(RoutingAppSelectionController *)self _sanitizedMapItemFromWaypoint:v9];
+  v25 = [(RoutingAppSelectionController *)self _sanitizedMapItemFromWaypoint:sourceCopy];
   [v24 setSource:v25];
 
-  v26 = [(RoutingAppSelectionController *)self _sanitizedMapItemFromWaypoint:v10];
+  v26 = [(RoutingAppSelectionController *)self _sanitizedMapItemFromWaypoint:destinationCopy];
   [v24 setDestination:v26];
 
-  v27 = [(RoutingAppSelectionController *)self transportType];
-  if (v27 > 5)
+  transportType = [(RoutingAppSelectionController *)self transportType];
+  if (transportType > 5)
   {
     v28 = 1;
   }
 
   else
   {
-    v28 = qword_101215D00[v27];
+    v28 = qword_101215D00[transportType];
   }
 
-  [v24 setTransportType:{v28, v9}];
+  [v24 setTransportType:{v28, sourceCopy}];
   v29 = NSTemporaryDirectory();
   v30 = [v29 stringByAppendingPathComponent:@"request"];
   v31 = [v30 stringByAppendingPathExtension:MKDirectionsRequestFileExtension];
@@ -171,72 +171,72 @@
   }
 
   v36 = +[LSApplicationWorkspace defaultWorkspace];
-  v37 = [v8 bundleIdentifier];
-  v38 = [v36 operationToOpenResource:v32 usingApplication:v37 uniqueDocumentIdentifier:0 userInfo:0 delegate:0];
+  bundleIdentifier2 = [appCopy bundleIdentifier];
+  v38 = [v36 operationToOpenResource:v32 usingApplication:bundleIdentifier2 uniqueDocumentIdentifier:0 userInfo:0 delegate:0];
 
   [v38 start];
   v39 = +[RoutingAppsManager defaultManager];
-  v40 = [v8 bundleIdentifier];
-  [v39 recordAppLaunch:v40];
+  bundleIdentifier3 = [appCopy bundleIdentifier];
+  [v39 recordAppLaunch:bundleIdentifier3];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained routingAppSelectionControllerDidSelectApp:self];
 }
 
-- (id)_sanitizedMapItemFromWaypoint:(id)a3
+- (id)_sanitizedMapItemFromWaypoint:(id)waypoint
 {
-  v3 = a3;
-  if ([v3 isCurrentLocation])
+  waypointCopy = waypoint;
+  if ([waypointCopy isCurrentLocation])
   {
     v4 = +[MKMapItem mapItemForCurrentLocation];
     goto LABEL_12;
   }
 
-  v5 = [v3 geoMapItem];
-  v6 = [v5 _clientAttributes];
-  v7 = [v6 addressBookAttributes];
+  geoMapItem = [waypointCopy geoMapItem];
+  _clientAttributes = [geoMapItem _clientAttributes];
+  addressBookAttributes = [_clientAttributes addressBookAttributes];
 
-  if (v7)
+  if (addressBookAttributes)
   {
-    v8 = [v3 geoMapItem];
-    [v8 coordinate];
+    geoMapItem2 = [waypointCopy geoMapItem];
+    [geoMapItem2 coordinate];
     v10 = v9;
     v12 = v11;
 
-    v13 = [[MKPlacemark alloc] initWithCoordinate:0 addressDictionary:{v10, v12}];
-    v4 = [[MKMapItem alloc] initWithPlacemark:v13];
-    v14 = [v3 geoMapItem];
-    v15 = [v14 contactName];
-    if (v15)
+    absoluteString = [[MKPlacemark alloc] initWithCoordinate:0 addressDictionary:{v10, v12}];
+    v4 = [[MKMapItem alloc] initWithPlacemark:absoluteString];
+    geoMapItem3 = [waypointCopy geoMapItem];
+    contactName = [geoMapItem3 contactName];
+    if (contactName)
     {
-      [v4 setName:v15];
+      [v4 setName:contactName];
     }
 
     else
     {
-      v21 = [v3 geoMapItem];
-      v22 = [v21 name];
-      [v4 setName:v22];
+      geoMapItem4 = [waypointCopy geoMapItem];
+      name = [geoMapItem4 name];
+      [v4 setName:name];
     }
 
     goto LABEL_10;
   }
 
   v16 = [MKMapItem alloc];
-  v17 = [v3 geoMapItem];
-  v4 = [v16 initWithGeoMapItem:v17 isPlaceHolderPlace:0];
+  geoMapItem5 = [waypointCopy geoMapItem];
+  v4 = [v16 initWithGeoMapItem:geoMapItem5 isPlaceHolderPlace:0];
 
-  v18 = [v3 geoMapItem];
-  v19 = [v18 name];
-  [v4 setName:v19];
+  geoMapItem6 = [waypointCopy geoMapItem];
+  name2 = [geoMapItem6 name];
+  [v4 setName:name2];
 
-  v20 = [v4 _fullSharingURL];
-  v13 = [v20 absoluteString];
+  _fullSharingURL = [v4 _fullSharingURL];
+  absoluteString = [_fullSharingURL absoluteString];
 
-  if (v13)
+  if (absoluteString)
   {
-    v14 = [NSURL URLWithString:v13];
-    [v4 setUrl:v14];
+    geoMapItem3 = [NSURL URLWithString:absoluteString];
+    [v4 setUrl:geoMapItem3];
 LABEL_10:
   }
 
@@ -245,29 +245,29 @@ LABEL_12:
   return v4;
 }
 
-- (void)routingAppSuggestionProvider:(id)a3 didSuggestInstalledApps:(id)a4
+- (void)routingAppSuggestionProvider:(id)provider didSuggestInstalledApps:(id)apps
 {
-  v5 = a4;
+  appsCopy = apps;
   v6 = sub_100B0B518();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v7 = 134217984;
-    v8 = [v5 count];
+    v8 = [appsCopy count];
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Received %lu Installed App suggestions", &v7, 0xCu);
   }
 
-  [(RoutingAppSelectionController *)self setSuggestedInstalledApps:v5];
+  [(RoutingAppSelectionController *)self setSuggestedInstalledApps:appsCopy];
   [(RoutingAppSelectionController *)self _updateSortedInstalledAppsForTransportType:self->_transportType];
   [(RoutingAppSelectionController *)self _reloadSection:0];
 }
 
-- (void)routingAppSuggestionProvider:(id)a3 didFailToSuggestStoreApps:(id)a4
+- (void)routingAppSuggestionProvider:(id)provider didFailToSuggestStoreApps:(id)apps
 {
-  v5 = a4;
+  appsCopy = apps;
   v6 = sub_100B0B518();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    v7 = [v5 description];
+    v7 = [appsCopy description];
     v8 = 138412290;
     v9 = v7;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "Error fetching store suggestions: %@.", &v8, 0xCu);
@@ -277,35 +277,35 @@ LABEL_12:
   [(RoutingAppSelectionController *)self _reloadSection:1];
 }
 
-- (void)routingAppSuggestionProvider:(id)a3 didSuggestStoreApps:(id)a4
+- (void)routingAppSuggestionProvider:(id)provider didSuggestStoreApps:(id)apps
 {
-  v5 = a4;
+  appsCopy = apps;
   v6 = sub_100B0B518();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v7 = 134217984;
-    v8 = [v5 count];
+    v8 = [appsCopy count];
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Received %lu App Store suggestions", &v7, 0xCu);
   }
 
-  [(RoutingAppSelectionController *)self setSuggestedStoreApps:v5];
+  [(RoutingAppSelectionController *)self setSuggestedStoreApps:appsCopy];
   [(RoutingAppSelectionController *)self _updateSortedAppStoreAppsForTransportType:self->_transportType];
   [(RoutingAppSelectionController *)self _reloadSection:1];
 }
 
-- (void)_reloadSection:(unint64_t)a3
+- (void)_reloadSection:(unint64_t)section
 {
   if (-[RoutingAppSelectionController isViewLoaded](self, "isViewLoaded") && (-[RoutingAppSelectionController view](self, "view"), v5 = objc_claimAutoreleasedReturnValue(), [v5 window], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v6))
   {
-    v8 = [[NSIndexSet alloc] initWithIndex:a3];
-    v7 = [(RoutingAppSelectionController *)self tableView];
-    [v7 reloadSections:v8 withRowAnimation:100];
+    tableView2 = [[NSIndexSet alloc] initWithIndex:section];
+    tableView = [(RoutingAppSelectionController *)self tableView];
+    [tableView reloadSections:tableView2 withRowAnimation:100];
   }
 
   else
   {
-    v8 = [(RoutingAppSelectionController *)self tableView];
-    [v8 reloadData];
+    tableView2 = [(RoutingAppSelectionController *)self tableView];
+    [tableView2 reloadData];
   }
 }
 
@@ -315,52 +315,52 @@ LABEL_12:
   [WeakRetained routingAppSelectionControllerDidCancel:self];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v8 = a4;
-  if ([v8 section] == 1)
+  pathCopy = path;
+  if ([pathCopy section] == 1)
   {
-    v5 = [(RoutingAppSelectionController *)self tableView];
-    [v5 deselectRowAtIndexPath:v8 animated:1];
+    tableView = [(RoutingAppSelectionController *)self tableView];
+    [tableView deselectRowAtIndexPath:pathCopy animated:1];
 
-    v6 = -[RoutingAppSelectionController _appDataForStoreRow:](self, "_appDataForStoreRow:", [v8 row]);
-    v7 = [v6 iOSBundleIdentifier];
-    [GEOAPPortal captureUserAction:45 target:733 value:v7];
+    v6 = -[RoutingAppSelectionController _appDataForStoreRow:](self, "_appDataForStoreRow:", [pathCopy row]);
+    iOSBundleIdentifier = [v6 iOSBundleIdentifier];
+    [GEOAPPortal captureUserAction:45 target:733 value:iOSBundleIdentifier];
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 row];
-  v9 = -[RoutingAppSelectionController _sectionAtIndex:](self, "_sectionAtIndex:", [v7 section]);
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [pathCopy row];
+  v9 = -[RoutingAppSelectionController _sectionAtIndex:](self, "_sectionAtIndex:", [pathCopy section]);
   if (v9)
   {
     if (v9 == 1 && ![(NSArray *)self->_sortedStoreApps count])
     {
-      v10 = [v6 dequeueReusableCellWithIdentifier:@"LoadingCell" forIndexPath:v7];
-      v11 = [(RoutingAppSelectionController *)self suggestedStoreApps];
+      v10 = [viewCopy dequeueReusableCellWithIdentifier:@"LoadingCell" forIndexPath:pathCopy];
+      suggestedStoreApps = [(RoutingAppSelectionController *)self suggestedStoreApps];
 LABEL_11:
-      v12 = v11;
-      [v10 setMode:v11 != 0];
+      v12 = suggestedStoreApps;
+      [v10 setMode:suggestedStoreApps != 0];
       goto LABEL_12;
     }
   }
 
   else if (![(NSArray *)self->_sortedInstalledApps count])
   {
-    v10 = [v6 dequeueReusableCellWithIdentifier:@"LoadingCell" forIndexPath:v7];
-    v11 = [(RoutingAppSelectionController *)self suggestedInstalledApps];
+    v10 = [viewCopy dequeueReusableCellWithIdentifier:@"LoadingCell" forIndexPath:pathCopy];
+    suggestedStoreApps = [(RoutingAppSelectionController *)self suggestedInstalledApps];
     goto LABEL_11;
   }
 
-  v10 = [v6 dequeueReusableCellWithIdentifier:@"AppCell" forIndexPath:v7];
+  v10 = [viewCopy dequeueReusableCellWithIdentifier:@"AppCell" forIndexPath:pathCopy];
   [v10 setDelegate:self];
   [v10 setIntendedTransportType:self->_transportType];
-  if ([v7 section])
+  if ([pathCopy section])
   {
-    if ([v7 section] != 1)
+    if ([pathCopy section] != 1)
     {
       goto LABEL_13;
     }
@@ -382,10 +382,10 @@ LABEL_13:
   return v10;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(RoutingAppSelectionController *)self _sectionAtIndex:a4];
+  viewCopy = view;
+  v7 = [(RoutingAppSelectionController *)self _sectionAtIndex:section];
   if (v7)
   {
     if (v7 != 1)
@@ -394,7 +394,7 @@ LABEL_13:
       goto LABEL_9;
     }
 
-    v8 = [v6 dequeueReusableHeaderFooterViewWithIdentifier:@"Header"];
+    v8 = [viewCopy dequeueReusableHeaderFooterViewWithIdentifier:@"Header"];
     v9 = +[NSBundle mainBundle];
     v10 = v9;
     v11 = @"From the App Store";
@@ -402,7 +402,7 @@ LABEL_13:
 
   else
   {
-    v8 = [v6 dequeueReusableHeaderFooterViewWithIdentifier:@"Header"];
+    v8 = [viewCopy dequeueReusableHeaderFooterViewWithIdentifier:@"Header"];
     v12 = MGGetSInt32Answer();
     v9 = +[NSBundle mainBundle];
     v10 = v9;
@@ -426,9 +426,9 @@ LABEL_9:
   return v8;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(RoutingAppSelectionController *)self _sectionAtIndex:a4];
+  v5 = [(RoutingAppSelectionController *)self _sectionAtIndex:section];
   if (v5)
   {
     if (v5 != 1)
@@ -453,23 +453,23 @@ LABEL_9:
   return result;
 }
 
-- (unint64_t)_sectionAtIndex:(int64_t)a3
+- (unint64_t)_sectionAtIndex:(int64_t)index
 {
-  if ([(NSArray *)self->_sections count]<= a3)
+  if ([(NSArray *)self->_sections count]<= index)
   {
     return -1;
   }
 
-  v5 = [(NSArray *)self->_sections objectAtIndexedSubscript:a3];
-  v6 = [v5 unsignedIntegerValue];
+  v5 = [(NSArray *)self->_sections objectAtIndexedSubscript:index];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-  return v6;
+  return unsignedIntegerValue;
 }
 
-- (id)_appDataForStoreRow:(unint64_t)a3
+- (id)_appDataForStoreRow:(unint64_t)row
 {
-  v4 = [(RoutingAppSelectionController *)self sortedStoreApps];
-  v5 = [v4 objectAtIndexedSubscript:a3];
+  sortedStoreApps = [(RoutingAppSelectionController *)self sortedStoreApps];
+  v5 = [sortedStoreApps objectAtIndexedSubscript:row];
 
   return v5;
 }
@@ -489,15 +489,15 @@ LABEL_9:
   [(RoutingAppSuggestionProvider *)suggestionProvider reset];
 }
 
-- (void)_handleSearchResultError:(BOOL)a3 error:(id)a4
+- (void)_handleSearchResultError:(BOOL)error error:(id)a4
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = a4;
   v6 = sub_100B0B518();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
     v7 = @"Destination";
-    if (v4)
+    if (errorCopy)
     {
       v7 = @"Source";
     }
@@ -527,11 +527,11 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v5 = [(GEOComposedWaypoint *)self->_source latLng];
-  [v5 lat];
+  latLng = [(GEOComposedWaypoint *)self->_source latLng];
+  [latLng lat];
   v7 = v6;
-  v8 = [(GEOComposedWaypoint *)self->_source latLng];
-  [v8 lng];
+  latLng2 = [(GEOComposedWaypoint *)self->_source latLng];
+  [latLng2 lng];
   v10 = v9;
 
   if (!self->_source || fabs(v10) > 180.0 || v7 < -90.0 || v7 > 90.0)
@@ -549,11 +549,11 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  v11 = [(GEOComposedWaypoint *)self->_destination latLng];
-  [v11 lat];
+  latLng3 = [(GEOComposedWaypoint *)self->_destination latLng];
+  [latLng3 lat];
   v13 = v12;
-  v14 = [(GEOComposedWaypoint *)self->_destination latLng];
-  [v14 lng];
+  latLng4 = [(GEOComposedWaypoint *)self->_destination latLng];
+  [latLng4 lng];
   v16 = v15;
 
   if (!self->_destination || fabs(v16) > 180.0 || v13 < -90.0 || v13 > 90.0)
@@ -600,27 +600,27 @@ LABEL_22:
   return v21;
 }
 
-- (void)updateForWaypointSet:(id)a3
+- (void)updateForWaypointSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   [(RoutingAppSelectionController *)self setResolvedEndpoints:0];
   [(RoutingAppSelectionController *)self setSortedStoreApps:0];
   [(RoutingAppSelectionController *)self setSortedInstalledApps:0];
   [(RoutingAppSelectionController *)self setSuggestedStoreApps:0];
   [(RoutingAppSelectionController *)self setSuggestedInstalledApps:0];
-  v5 = [(RoutingAppSelectionController *)self suggestionProvider];
-  [v5 reset];
+  suggestionProvider = [(RoutingAppSelectionController *)self suggestionProvider];
+  [suggestionProvider reset];
 
-  v6 = [(RoutingAppSelectionController *)self tableView];
-  [v6 reloadData];
+  tableView = [(RoutingAppSelectionController *)self tableView];
+  [tableView reloadData];
 
-  v7 = [v4 origin];
-  v8 = [v7 copy];
+  origin = [setCopy origin];
+  v8 = [origin copy];
   [(RoutingAppSelectionController *)self setSource:v8];
 
-  v9 = [v4 destination];
+  destination = [setCopy destination];
 
-  v10 = [v9 copy];
+  v10 = [destination copy];
   [(RoutingAppSelectionController *)self setDestination:v10];
 
   p_source = &self->_source;
@@ -658,28 +658,28 @@ LABEL_22:
   v7.receiver = self;
   v7.super_class = RoutingAppSelectionController;
   [(RoutingAppSelectionController *)&v7 viewDidLoad];
-  v3 = [(RoutingAppSelectionController *)self tableView];
-  [v3 setSeparatorStyle:1];
-  [v3 _setMarginWidth:15.0];
-  [v3 setSectionHeaderTopPadding:0.0];
+  tableView = [(RoutingAppSelectionController *)self tableView];
+  [tableView setSeparatorStyle:1];
+  [tableView _setMarginWidth:15.0];
+  [tableView setSectionHeaderTopPadding:0.0];
   v4 = +[UIColor clearColor];
-  [v3 setBackgroundColor:v4];
+  [tableView setBackgroundColor:v4];
 
-  [v3 setBackgroundView:0];
-  v5 = [(RoutingAppSelectionController *)self theme];
-  v6 = [v5 hairlineColor];
-  [v3 setSeparatorColor:v6];
+  [tableView setBackgroundView:0];
+  theme = [(RoutingAppSelectionController *)self theme];
+  hairlineColor = [theme hairlineColor];
+  [tableView setSeparatorColor:hairlineColor];
 
-  [v3 setRowHeight:UITableViewAutomaticDimension];
-  [v3 setEstimatedRowHeight:84.0];
-  [v3 setSectionHeaderHeight:UITableViewAutomaticDimension];
-  [v3 _setHeaderAndFooterViewsFloat:0];
-  [v3 registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:@"Header"];
-  [v3 registerClass:objc_opt_class() forCellReuseIdentifier:@"AppCell"];
-  [v3 registerClass:objc_opt_class() forCellReuseIdentifier:@"LoadingCell"];
+  [tableView setRowHeight:UITableViewAutomaticDimension];
+  [tableView setEstimatedRowHeight:84.0];
+  [tableView setSectionHeaderHeight:UITableViewAutomaticDimension];
+  [tableView _setHeaderAndFooterViewsFloat:0];
+  [tableView registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:@"Header"];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"AppCell"];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"LoadingCell"];
 }
 
-- (RoutingAppSelectionController)initWithTransportType:(int64_t)a3
+- (RoutingAppSelectionController)initWithTransportType:(int64_t)type
 {
   v14.receiver = self;
   v14.super_class = RoutingAppSelectionController;
@@ -687,14 +687,14 @@ LABEL_22:
   v5 = v4;
   if (v4)
   {
-    v4->_transportType = a3;
-    v6 = [(RoutingAppSelectionController *)v4 navigationItem];
+    v4->_transportType = type;
+    navigationItem = [(RoutingAppSelectionController *)v4 navigationItem];
     v7 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:v5 action:"_cancelRoutingSelection"];
     v8 = +[NSBundle mainBundle];
     v9 = [v8 localizedStringForKey:@"Routing Apps" value:@"localized string not found" table:0];
-    [v6 setTitle:v9];
+    [navigationItem setTitle:v9];
 
-    [v6 setLeftBarButtonItem:v7];
+    [navigationItem setLeftBarButtonItem:v7];
     v10 = objc_alloc_init(RoutingAppSuggestionProvider);
     suggestionProvider = v5->_suggestionProvider;
     v5->_suggestionProvider = v10;

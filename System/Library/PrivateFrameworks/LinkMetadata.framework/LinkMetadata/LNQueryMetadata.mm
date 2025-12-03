@@ -1,66 +1,66 @@
 @interface LNQueryMetadata
-- (BOOL)isEqual:(id)a3;
-- (BOOL)visibleForUse:(int64_t)a3;
-- (LNQueryMetadata)initWithCoder:(id)a3;
-- (LNQueryMetadata)initWithIdentifier:(id)a3 entityType:(id)a4 mangledTypeName:(id)a5 mangledTypeNameByBundleIdentifier:(id)a6 effectiveBundleIdentifiers:(id)a7 parameters:(id)a8 sortingOptions:(id)a9 availabilityAnnotations:(id)a10 capabilities:(unint64_t)a11 descriptionMetadata:(id)a12;
-- (LNQueryMetadata)initWithIdentifier:(id)a3 entityType:(id)a4 mangledTypeName:(id)a5 mangledTypeNameByBundleIdentifier:(id)a6 effectiveBundleIdentifiers:(id)a7 parameters:(id)a8 sortingOptions:(id)a9 availabilityAnnotations:(id)a10 capabilities:(unint64_t)a11 descriptionMetadata:(id)a12 visibilityMetadata:(id)a13 defaultQueryForEntity:(BOOL)a14 fullyQualifiedIdentifier:(id)a15;
-- (LNQueryMetadata)initWithIdentifier:(id)a3 inputValueType:(id)a4 resultValueType:(id)a5 mangledTypeName:(id)a6 mangledTypeNameByBundleIdentifier:(id)a7 effectiveBundleIdentifiers:(id)a8 parameters:(id)a9 sortingOptions:(id)a10 availabilityAnnotations:(id)a11 capabilities:(unint64_t)a12 descriptionMetadata:(id)a13 visibilityMetadata:(id)a14 defaultQueryForEntity:(BOOL)a15 fullyQualifiedIdentifier:(id)a16 allowedTargets:(id)a17;
-- (LNQueryMetadata)initWithIdentifier:(id)a3 queryType:(id)a4 entityType:(id)a5 parameters:(id)a6 sortingOptions:(id)a7;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)visibleForUse:(int64_t)use;
+- (LNQueryMetadata)initWithCoder:(id)coder;
+- (LNQueryMetadata)initWithIdentifier:(id)identifier entityType:(id)type mangledTypeName:(id)name mangledTypeNameByBundleIdentifier:(id)bundleIdentifier effectiveBundleIdentifiers:(id)identifiers parameters:(id)parameters sortingOptions:(id)options availabilityAnnotations:(id)self0 capabilities:(unint64_t)self1 descriptionMetadata:(id)self2;
+- (LNQueryMetadata)initWithIdentifier:(id)identifier entityType:(id)type mangledTypeName:(id)name mangledTypeNameByBundleIdentifier:(id)bundleIdentifier effectiveBundleIdentifiers:(id)identifiers parameters:(id)parameters sortingOptions:(id)options availabilityAnnotations:(id)self0 capabilities:(unint64_t)self1 descriptionMetadata:(id)self2 visibilityMetadata:(id)self3 defaultQueryForEntity:(BOOL)self4 fullyQualifiedIdentifier:(id)self5;
+- (LNQueryMetadata)initWithIdentifier:(id)identifier inputValueType:(id)type resultValueType:(id)valueType mangledTypeName:(id)name mangledTypeNameByBundleIdentifier:(id)bundleIdentifier effectiveBundleIdentifiers:(id)identifiers parameters:(id)parameters sortingOptions:(id)self0 availabilityAnnotations:(id)self1 capabilities:(unint64_t)self2 descriptionMetadata:(id)self3 visibilityMetadata:(id)self4 defaultQueryForEntity:(BOOL)self5 fullyQualifiedIdentifier:(id)self6 allowedTargets:(id)self7;
+- (LNQueryMetadata)initWithIdentifier:(id)identifier queryType:(id)type entityType:(id)entityType parameters:(id)parameters sortingOptions:(id)options;
 - (NSString)description;
 - (NSString)entityType;
 - (NSString)queryType;
-- (id)mangledTypeNameForBundleIdentifier:(id)a3;
-- (id)metadataByAddingEffectiveBundleIdentifiers:(id)a3 mangledTypeNameByBundleIdentifier:(id)a4;
+- (id)mangledTypeNameForBundleIdentifier:(id)identifier;
+- (id)metadataByAddingEffectiveBundleIdentifiers:(id)identifiers mangledTypeNameByBundleIdentifier:(id)identifier;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNQueryMetadata
 
-- (id)metadataByAddingEffectiveBundleIdentifiers:(id)a3 mangledTypeNameByBundleIdentifier:(id)a4
+- (id)metadataByAddingEffectiveBundleIdentifiers:(id)identifiers mangledTypeNameByBundleIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  identifiersCopy = identifiers;
+  identifierCopy = identifier;
+  if (!identifiersCopy)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"LNQueryMetadata.m" lineNumber:218 description:{@"Invalid parameter not satisfying: %@", @"effectiveBundleIdentifiers"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNQueryMetadata.m" lineNumber:218 description:{@"Invalid parameter not satisfying: %@", @"effectiveBundleIdentifiers"}];
   }
 
   v9 = [(LNQueryMetadata *)self copy];
-  v10 = [v9 effectiveBundleIdentifiers];
-  v11 = [v7 array];
-  v12 = [v10 if_orderedSetByAddingObjectsFromArray:v11];
+  effectiveBundleIdentifiers = [v9 effectiveBundleIdentifiers];
+  array = [identifiersCopy array];
+  v12 = [effectiveBundleIdentifiers if_orderedSetByAddingObjectsFromArray:array];
   v13 = v9[10];
   v9[10] = v12;
 
-  v14 = [v9 mangledTypeNameByBundleIdentifier];
-  v15 = [v14 if_dictionaryByAddingEntriesFromDictionary:v8];
+  mangledTypeNameByBundleIdentifier = [v9 mangledTypeNameByBundleIdentifier];
+  v15 = [mangledTypeNameByBundleIdentifier if_dictionaryByAddingEntriesFromDictionary:identifierCopy];
   v16 = v9[9];
   v9[9] = v15;
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
-      LOBYTE(v12) = 0;
+      LOBYTE(parameters3) = 0;
 LABEL_82:
 
       goto LABEL_83;
     }
 
-    v7 = [(LNQueryMetadata *)self identifier];
-    v8 = [(LNQueryMetadata *)v6 identifier];
-    v9 = v7;
-    v10 = v8;
+    identifier = [(LNQueryMetadata *)self identifier];
+    identifier2 = [(LNQueryMetadata *)v6 identifier];
+    v9 = identifier;
+    v10 = identifier2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -68,7 +68,7 @@ LABEL_82:
 
     else
     {
-      LOBYTE(v12) = 0;
+      LOBYTE(parameters3) = 0;
       v13 = v10;
       v14 = v9;
       if (!v9 || !v10)
@@ -80,17 +80,17 @@ LABEL_82:
 
       if (!v15)
       {
-        LOBYTE(v12) = 0;
+        LOBYTE(parameters3) = 0;
 LABEL_81:
 
         goto LABEL_82;
       }
     }
 
-    v16 = [(LNQueryMetadata *)self inputValueType];
-    v17 = [(LNQueryMetadata *)v6 inputValueType];
-    v14 = v16;
-    v18 = v17;
+    inputValueType = [(LNQueryMetadata *)self inputValueType];
+    inputValueType2 = [(LNQueryMetadata *)v6 inputValueType];
+    v14 = inputValueType;
+    v18 = inputValueType2;
     v13 = v18;
     if (v14 == v18)
     {
@@ -98,7 +98,7 @@ LABEL_81:
 
     else
     {
-      LOBYTE(v12) = 0;
+      LOBYTE(parameters3) = 0;
       v19 = v18;
       v20 = v14;
       if (!v14 || !v18)
@@ -110,17 +110,17 @@ LABEL_81:
 
       if (!v21)
       {
-        LOBYTE(v12) = 0;
+        LOBYTE(parameters3) = 0;
 LABEL_80:
 
         goto LABEL_81;
       }
     }
 
-    v22 = [(LNQueryMetadata *)self resultValueType];
-    v23 = [(LNQueryMetadata *)v6 resultValueType];
-    v20 = v22;
-    v24 = v23;
+    resultValueType = [(LNQueryMetadata *)self resultValueType];
+    resultValueType2 = [(LNQueryMetadata *)v6 resultValueType];
+    v20 = resultValueType;
+    v24 = resultValueType2;
     v19 = v24;
     if (v20 == v24)
     {
@@ -128,7 +128,7 @@ LABEL_80:
 
     else
     {
-      LOBYTE(v12) = 0;
+      LOBYTE(parameters3) = 0;
       v95 = v20;
       v25 = v24;
       if (!v20 || !v24)
@@ -136,85 +136,85 @@ LABEL_80:
         goto LABEL_78;
       }
 
-      LODWORD(v12) = [v20 isEqual:v24];
+      LODWORD(parameters3) = [v20 isEqual:v24];
 
-      if (!v12)
+      if (!parameters3)
       {
         goto LABEL_79;
       }
     }
 
     v94 = v19;
-    v26 = [(LNQueryMetadata *)self parameters];
-    v27 = [(LNQueryMetadata *)v6 parameters];
+    parameters = [(LNQueryMetadata *)self parameters];
+    parameters2 = [(LNQueryMetadata *)v6 parameters];
 
-    if (v26 != v27)
+    if (parameters != parameters2)
     {
-      v12 = [(LNQueryMetadata *)self parameters];
-      if (!v12)
+      parameters3 = [(LNQueryMetadata *)self parameters];
+      if (!parameters3)
       {
         goto LABEL_38;
       }
 
-      v28 = [(LNQueryMetadata *)v6 parameters];
+      parameters4 = [(LNQueryMetadata *)v6 parameters];
 
-      if (!v28)
+      if (!parameters4)
       {
         goto LABEL_37;
       }
 
       v29 = MEMORY[0x1E695DFD8];
-      v91 = [(LNQueryMetadata *)self parameters];
-      v30 = [v29 setWithArray:v91];
+      parameters5 = [(LNQueryMetadata *)self parameters];
+      v30 = [v29 setWithArray:parameters5];
       v31 = MEMORY[0x1E695DFD8];
-      v85 = [(LNQueryMetadata *)v6 parameters];
-      v32 = [v31 setWithArray:v85];
+      parameters6 = [(LNQueryMetadata *)v6 parameters];
+      v32 = [v31 setWithArray:parameters6];
       v88 = [v30 isEqualToSet:v32];
 
       if (!v88)
       {
 LABEL_37:
-        LOBYTE(v12) = 0;
+        LOBYTE(parameters3) = 0;
         goto LABEL_38;
       }
     }
 
-    v33 = [(LNQueryMetadata *)self sortingOptions];
-    v34 = [(LNQueryMetadata *)v6 sortingOptions];
+    sortingOptions = [(LNQueryMetadata *)self sortingOptions];
+    sortingOptions2 = [(LNQueryMetadata *)v6 sortingOptions];
 
-    if (v33 == v34)
+    if (sortingOptions == sortingOptions2)
     {
       goto LABEL_32;
     }
 
-    v12 = [(LNQueryMetadata *)self sortingOptions];
-    if (v12)
+    parameters3 = [(LNQueryMetadata *)self sortingOptions];
+    if (parameters3)
     {
-      v35 = [(LNQueryMetadata *)v6 sortingOptions];
+      sortingOptions3 = [(LNQueryMetadata *)v6 sortingOptions];
 
-      if (v35)
+      if (sortingOptions3)
       {
         v36 = MEMORY[0x1E695DFD8];
-        v92 = [(LNQueryMetadata *)self sortingOptions];
-        v37 = [v36 setWithArray:v92];
+        sortingOptions4 = [(LNQueryMetadata *)self sortingOptions];
+        v37 = [v36 setWithArray:sortingOptions4];
         v38 = MEMORY[0x1E695DFD8];
-        v86 = [(LNQueryMetadata *)v6 sortingOptions];
-        v39 = [v38 setWithArray:v86];
+        sortingOptions5 = [(LNQueryMetadata *)v6 sortingOptions];
+        v39 = [v38 setWithArray:sortingOptions5];
         v89 = [v37 isEqualToSet:v39];
 
         if (v89)
         {
 LABEL_32:
-          v40 = [(LNQueryMetadata *)self availabilityAnnotations];
-          v41 = [(LNQueryMetadata *)v6 availabilityAnnotations];
-          v42 = v40;
-          v43 = v41;
+          availabilityAnnotations = [(LNQueryMetadata *)self availabilityAnnotations];
+          availabilityAnnotations2 = [(LNQueryMetadata *)v6 availabilityAnnotations];
+          v42 = availabilityAnnotations;
+          v43 = availabilityAnnotations2;
           v90 = v43;
           v93 = v42;
           v95 = v20;
           if (v42 != v43)
           {
-            LOBYTE(v12) = 0;
+            LOBYTE(parameters3) = 0;
             if (v42)
             {
               v44 = v43;
@@ -226,7 +226,7 @@ LABEL_32:
 
                 if (!v46)
                 {
-                  LOBYTE(v12) = 0;
+                  LOBYTE(parameters3) = 0;
                   v19 = v94;
 LABEL_77:
                   v25 = v90;
@@ -238,15 +238,15 @@ LABEL_78:
                 }
 
 LABEL_40:
-                v47 = [(LNQueryMetadata *)self descriptionMetadata];
-                v48 = [(LNQueryMetadata *)v6 descriptionMetadata];
-                v49 = v47;
-                v50 = v48;
+                descriptionMetadata = [(LNQueryMetadata *)self descriptionMetadata];
+                descriptionMetadata2 = [(LNQueryMetadata *)v6 descriptionMetadata];
+                v49 = descriptionMetadata;
+                v50 = descriptionMetadata2;
                 v84 = v50;
                 v87 = v49;
                 if (v49 != v50)
                 {
-                  LOBYTE(v12) = 0;
+                  LOBYTE(parameters3) = 0;
                   if (v49)
                   {
                     v51 = v50;
@@ -258,7 +258,7 @@ LABEL_40:
 
                       if (!v82)
                       {
-                        LOBYTE(v12) = 0;
+                        LOBYTE(parameters3) = 0;
                         v19 = v94;
 LABEL_75:
                         v44 = v84;
@@ -267,15 +267,15 @@ LABEL_75:
                       }
 
 LABEL_46:
-                      v53 = [(LNQueryMetadata *)self visibilityMetadata];
-                      v54 = [(LNQueryMetadata *)v6 visibilityMetadata];
-                      v55 = v53;
-                      v56 = v54;
+                      visibilityMetadata = [(LNQueryMetadata *)self visibilityMetadata];
+                      visibilityMetadata2 = [(LNQueryMetadata *)v6 visibilityMetadata];
+                      v55 = visibilityMetadata;
+                      v56 = visibilityMetadata2;
                       v81 = v56;
                       v83 = v55;
                       if (v55 != v56)
                       {
-                        LOBYTE(v12) = 0;
+                        LOBYTE(parameters3) = 0;
                         if (v55)
                         {
                           v57 = v56;
@@ -292,11 +292,11 @@ LABEL_46:
                             }
 
 LABEL_53:
-                            v60 = [(LNQueryMetadata *)self defaultQueryForEntity];
-                            if (v60 != [(LNQueryMetadata *)v6 defaultQueryForEntity])
+                            defaultQueryForEntity = [(LNQueryMetadata *)self defaultQueryForEntity];
+                            if (defaultQueryForEntity != [(LNQueryMetadata *)v6 defaultQueryForEntity])
                             {
 LABEL_54:
-                              LOBYTE(v12) = 0;
+                              LOBYTE(parameters3) = 0;
                               v19 = v94;
 LABEL_73:
                               v51 = v81;
@@ -304,15 +304,15 @@ LABEL_73:
                               goto LABEL_74;
                             }
 
-                            v61 = [(LNQueryMetadata *)self fullyQualifiedIdentifier];
-                            v62 = [(LNQueryMetadata *)v6 fullyQualifiedIdentifier];
-                            v63 = v61;
-                            v64 = v62;
+                            fullyQualifiedIdentifier = [(LNQueryMetadata *)self fullyQualifiedIdentifier];
+                            fullyQualifiedIdentifier2 = [(LNQueryMetadata *)v6 fullyQualifiedIdentifier];
+                            v63 = fullyQualifiedIdentifier;
+                            v64 = fullyQualifiedIdentifier2;
                             v78 = v64;
                             v80 = v63;
                             if (v63 != v64)
                             {
-                              LOBYTE(v12) = 0;
+                              LOBYTE(parameters3) = 0;
                               if (v63)
                               {
                                 v65 = v64;
@@ -324,7 +324,7 @@ LABEL_73:
 
                                   if (!v76)
                                   {
-                                    LOBYTE(v12) = 0;
+                                    LOBYTE(parameters3) = 0;
                                     v19 = v94;
 LABEL_71:
                                     v57 = v78;
@@ -350,25 +350,25 @@ LABEL_70:
                             }
 
 LABEL_63:
-                            v67 = [(LNQueryMetadata *)self allowedTargets];
-                            v68 = [(LNQueryMetadata *)v6 allowedTargets];
-                            v69 = v67;
-                            v70 = v68;
+                            allowedTargets = [(LNQueryMetadata *)self allowedTargets];
+                            allowedTargets2 = [(LNQueryMetadata *)v6 allowedTargets];
+                            v69 = allowedTargets;
+                            v70 = allowedTargets2;
                             v71 = v69;
                             v77 = v70;
                             if (v69 == v70)
                             {
-                              LOBYTE(v12) = 1;
+                              LOBYTE(parameters3) = 1;
                               v19 = v94;
                             }
 
                             else
                             {
-                              LOBYTE(v12) = 0;
+                              LOBYTE(parameters3) = 0;
                               v19 = v94;
                               if (v71 && v70)
                               {
-                                LOBYTE(v12) = [v71 isEqualToArray:v70];
+                                LOBYTE(parameters3) = [v71 isEqualToArray:v70];
                               }
                             }
 
@@ -438,37 +438,37 @@ LABEL_79:
     goto LABEL_80;
   }
 
-  LOBYTE(v12) = 1;
+  LOBYTE(parameters3) = 1;
 LABEL_83:
 
-  return v12;
+  return parameters3;
 }
 
 - (unint64_t)hash
 {
-  v26 = [(LNQueryMetadata *)self identifier];
-  v3 = [v26 hash];
-  v25 = [(LNQueryMetadata *)self inputValueType];
-  v4 = [v25 hash] ^ v3;
-  v24 = [(LNQueryMetadata *)self resultValueType];
-  v5 = [v24 hash];
-  v6 = [(LNQueryMetadata *)self parameters];
-  v7 = v4 ^ v5 ^ [v6 hash];
-  v8 = [(LNQueryMetadata *)self sortingOptions];
-  v9 = [v8 hash];
-  v10 = [(LNQueryMetadata *)self availabilityAnnotations];
-  v11 = v9 ^ [v10 hash];
-  v12 = [(LNQueryMetadata *)self descriptionMetadata];
-  v13 = v7 ^ v11 ^ [v12 hash];
-  v14 = [(LNQueryMetadata *)self visibilityMetadata];
-  v15 = [v14 hash];
+  identifier = [(LNQueryMetadata *)self identifier];
+  v3 = [identifier hash];
+  inputValueType = [(LNQueryMetadata *)self inputValueType];
+  v4 = [inputValueType hash] ^ v3;
+  resultValueType = [(LNQueryMetadata *)self resultValueType];
+  v5 = [resultValueType hash];
+  parameters = [(LNQueryMetadata *)self parameters];
+  v7 = v4 ^ v5 ^ [parameters hash];
+  sortingOptions = [(LNQueryMetadata *)self sortingOptions];
+  v9 = [sortingOptions hash];
+  availabilityAnnotations = [(LNQueryMetadata *)self availabilityAnnotations];
+  v11 = v9 ^ [availabilityAnnotations hash];
+  descriptionMetadata = [(LNQueryMetadata *)self descriptionMetadata];
+  v13 = v7 ^ v11 ^ [descriptionMetadata hash];
+  visibilityMetadata = [(LNQueryMetadata *)self visibilityMetadata];
+  v15 = [visibilityMetadata hash];
   v16 = v15 ^ [(LNQueryMetadata *)self defaultQueryForEntity];
-  v17 = [(LNQueryMetadata *)self fullyQualifiedIdentifier];
-  v18 = v13 ^ v16 ^ [v17 hash];
-  v19 = [(LNQueryMetadata *)self effectiveBundleIdentifiers];
-  v20 = [v19 hash];
-  v21 = [(LNQueryMetadata *)self allowedTargets];
-  v22 = v20 ^ [v21 hash];
+  fullyQualifiedIdentifier = [(LNQueryMetadata *)self fullyQualifiedIdentifier];
+  v18 = v13 ^ v16 ^ [fullyQualifiedIdentifier hash];
+  effectiveBundleIdentifiers = [(LNQueryMetadata *)self effectiveBundleIdentifiers];
+  v20 = [effectiveBundleIdentifiers hash];
+  allowedTargets = [(LNQueryMetadata *)self allowedTargets];
+  v22 = v20 ^ [allowedTargets hash];
 
   return v18 ^ v22;
 }
@@ -478,74 +478,74 @@ LABEL_83:
   v24 = MEMORY[0x1E696AEC0];
   v3 = objc_opt_class();
   v30 = NSStringFromClass(v3);
-  v27 = [(LNQueryMetadata *)self fullyQualifiedIdentifier];
-  v28 = v27;
-  if (!v27)
+  fullyQualifiedIdentifier = [(LNQueryMetadata *)self fullyQualifiedIdentifier];
+  identifier = fullyQualifiedIdentifier;
+  if (!fullyQualifiedIdentifier)
   {
-    v28 = [(LNQueryMetadata *)self identifier];
+    identifier = [(LNQueryMetadata *)self identifier];
   }
 
-  v20 = [(LNQueryMetadata *)self inputValueType];
-  v29 = [(LNQueryMetadata *)self resultValueType];
-  v26 = [(LNQueryMetadata *)self effectiveBundleIdentifiers];
-  v25 = [v26 array];
-  v23 = [v25 valueForKeyPath:@"description"];
+  inputValueType = [(LNQueryMetadata *)self inputValueType];
+  resultValueType = [(LNQueryMetadata *)self resultValueType];
+  effectiveBundleIdentifiers = [(LNQueryMetadata *)self effectiveBundleIdentifiers];
+  array = [effectiveBundleIdentifiers array];
+  v23 = [array valueForKeyPath:@"description"];
   v17 = [v23 componentsJoinedByString:{@", "}];
-  v22 = [(LNQueryMetadata *)self allowedTargets];
-  v21 = [v22 valueForKeyPath:@"description"];
+  allowedTargets = [(LNQueryMetadata *)self allowedTargets];
+  v21 = [allowedTargets valueForKeyPath:@"description"];
   v4 = [v21 componentsJoinedByString:{@", "}];
-  v5 = [(LNQueryMetadata *)self mangledTypeNameByBundleIdentifier];
-  v19 = [(LNQueryMetadata *)self parameters];
-  v18 = [v19 valueForKeyPath:@"description"];
+  mangledTypeNameByBundleIdentifier = [(LNQueryMetadata *)self mangledTypeNameByBundleIdentifier];
+  parameters = [(LNQueryMetadata *)self parameters];
+  v18 = [parameters valueForKeyPath:@"description"];
   v6 = [v18 componentsJoinedByString:{@", "}];
-  v7 = [(LNQueryMetadata *)self sortingOptions];
-  v8 = [v7 valueForKeyPath:@"description"];
+  sortingOptions = [(LNQueryMetadata *)self sortingOptions];
+  v8 = [sortingOptions valueForKeyPath:@"description"];
   v9 = [v8 componentsJoinedByString:{@", "}];
-  v10 = [(LNQueryMetadata *)self availabilityAnnotations];
-  v11 = [(LNQueryMetadata *)self descriptionMetadata];
-  v12 = [(LNQueryMetadata *)self visibilityMetadata];
-  v13 = [(LNQueryMetadata *)self defaultQueryForEntity];
+  availabilityAnnotations = [(LNQueryMetadata *)self availabilityAnnotations];
+  descriptionMetadata = [(LNQueryMetadata *)self descriptionMetadata];
+  visibilityMetadata = [(LNQueryMetadata *)self visibilityMetadata];
+  defaultQueryForEntity = [(LNQueryMetadata *)self defaultQueryForEntity];
   v14 = @"NO";
-  if (v13)
+  if (defaultQueryForEntity)
   {
     v14 = @"YES";
   }
 
-  v15 = [v24 stringWithFormat:@"<%@: %p, identifier: %@, inputValueType: %@, resultValueType: %@, effectiveBundleIdentifiers: [%@], allowedTargets: [%@], mangledTypeNameByBundleIdentifier: %@, parameters: [%@], sortingOptions: [%@], availabilityAnnotations: %@, descriptionMetadata: %@, visibility: %@, defaultEntityQuery: %@>", v30, self, v28, v20, v29, v17, v4, v5, v6, v9, v10, v11, v12, v14];
+  v15 = [v24 stringWithFormat:@"<%@: %p, identifier: %@, inputValueType: %@, resultValueType: %@, effectiveBundleIdentifiers: [%@], allowedTargets: [%@], mangledTypeNameByBundleIdentifier: %@, parameters: [%@], sortingOptions: [%@], availabilityAnnotations: %@, descriptionMetadata: %@, visibility: %@, defaultEntityQuery: %@>", v30, self, identifier, inputValueType, resultValueType, v17, v4, mangledTypeNameByBundleIdentifier, v6, v9, availabilityAnnotations, descriptionMetadata, visibilityMetadata, v14];
 
-  if (!v27)
+  if (!fullyQualifiedIdentifier)
   {
   }
 
   return v15;
 }
 
-- (LNQueryMetadata)initWithCoder:(id)a3
+- (LNQueryMetadata)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v56 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"inputValueType"];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"resultValueType"];
+  coderCopy = coder;
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v56 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"inputValueType"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"resultValueType"];
   v6 = MEMORY[0x1E695DFD8];
   v7 = objc_opt_class();
   v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-  v55 = [v3 decodeObjectOfClasses:v8 forKey:@"parameters"];
+  v55 = [coderCopy decodeObjectOfClasses:v8 forKey:@"parameters"];
 
   v9 = MEMORY[0x1E695DFD8];
   v10 = objc_opt_class();
   v11 = [v9 setWithObjects:{v10, objc_opt_class(), 0}];
-  v12 = [v3 decodeObjectOfClasses:v11 forKey:@"sortingOptions"];
+  v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"sortingOptions"];
 
-  v13 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"mangledTypeName"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mangledTypeName"];
   v14 = MEMORY[0x1E695DFD8];
   v15 = objc_opt_class();
   v16 = [v14 setWithObjects:{v15, objc_opt_class(), 0}];
-  v54 = [v3 decodeObjectOfClasses:v16 forKey:@"effectiveBundleIdentifiers"];
+  v54 = [coderCopy decodeObjectOfClasses:v16 forKey:@"effectiveBundleIdentifiers"];
 
   v17 = MEMORY[0x1E695DFD8];
   v18 = objc_opt_class();
   v19 = [v17 setWithObjects:{v18, objc_opt_class(), 0}];
-  v53 = [v3 decodeObjectOfClasses:v19 forKey:@"mangledTypeNameByBundleIdentifier"];
+  v53 = [coderCopy decodeObjectOfClasses:v19 forKey:@"mangledTypeNameByBundleIdentifier"];
 
   v20 = 0;
   v57 = v4;
@@ -566,11 +566,11 @@ LABEL_83:
         v28 = objc_opt_class();
         v29 = objc_opt_class();
         v30 = [v27 setWithObjects:{v28, v29, objc_opt_class(), 0}];
-        v31 = [v3 decodeObjectOfClasses:v30 forKey:@"availabilityAnnotations"];
+        v31 = [coderCopy decodeObjectOfClasses:v30 forKey:@"availabilityAnnotations"];
 
-        v32 = [v3 decodeIntForKey:@"capabilities"];
-        v33 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"descriptionMetadata"];
-        v34 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"visibilityMetadata"];
+        v32 = [coderCopy decodeIntForKey:@"capabilities"];
+        v33 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"descriptionMetadata"];
+        v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"visibilityMetadata"];
         if (!v34)
         {
           v34 = [[LNVisibilityMetadata alloc] initWithIsDiscoverable:1 assistantOnly:0];
@@ -578,21 +578,21 @@ LABEL_83:
 
         v35 = v34;
         v49 = v34;
-        v36 = [v3 decodeBoolForKey:@"defaultQueryForEntity"];
-        v48 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"fullyQualifiedIdentifier"];
+        v36 = [coderCopy decodeBoolForKey:@"defaultQueryForEntity"];
+        v48 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fullyQualifiedIdentifier"];
         v37 = MEMORY[0x1E695DFD8];
         v38 = objc_opt_class();
         v39 = [v37 setWithObjects:{v38, objc_opt_class(), 0}];
-        v40 = [v3 decodeObjectOfClasses:v39 forKey:@"allowedTargets"];
+        v40 = [coderCopy decodeObjectOfClasses:v39 forKey:@"allowedTargets"];
 
         LOBYTE(v47) = v36;
         v46 = v32;
         v12 = v26;
         v45 = v26;
         v25 = v55;
-        v41 = self;
+        selfCopy = self;
         v52 = v31;
-        v42 = [(LNQueryMetadata *)v41 initWithIdentifier:v57 inputValueType:v56 resultValueType:v50 mangledTypeName:v13 mangledTypeNameByBundleIdentifier:v53 effectiveBundleIdentifiers:v54 parameters:v55 sortingOptions:v45 availabilityAnnotations:v31 capabilities:v46 descriptionMetadata:v33 visibilityMetadata:v35 defaultQueryForEntity:v47 fullyQualifiedIdentifier:v48 allowedTargets:v40];
+        selfCopy4 = [(LNQueryMetadata *)selfCopy initWithIdentifier:v57 inputValueType:v56 resultValueType:v50 mangledTypeName:v13 mangledTypeNameByBundleIdentifier:v53 effectiveBundleIdentifiers:v54 parameters:v55 sortingOptions:v45 availabilityAnnotations:v31 capabilities:v46 descriptionMetadata:v33 visibilityMetadata:v35 defaultQueryForEntity:v47 fullyQualifiedIdentifier:v48 allowedTargets:v40];
 
         v22 = v50;
         v23 = v54;
@@ -600,19 +600,19 @@ LABEL_83:
         v21 = v56;
         v24 = v53;
         v43 = v57;
-        v20 = v42;
+        v20 = selfCopy4;
       }
 
       else
       {
-        v42 = self;
+        selfCopy4 = self;
         v43 = v57;
       }
     }
 
     else
     {
-      v42 = self;
+      selfCopy4 = self;
       v43 = v57;
       v25 = v55;
     }
@@ -620,7 +620,7 @@ LABEL_83:
 
   else
   {
-    v42 = self;
+    selfCopy4 = self;
     v24 = v53;
     v21 = v56;
     v43 = 0;
@@ -632,84 +632,84 @@ LABEL_83:
   return v20;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNQueryMetadata *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(LNQueryMetadata *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v6 = [(LNQueryMetadata *)self inputValueType];
-  [v4 encodeObject:v6 forKey:@"inputValueType"];
+  inputValueType = [(LNQueryMetadata *)self inputValueType];
+  [coderCopy encodeObject:inputValueType forKey:@"inputValueType"];
 
-  v7 = [(LNQueryMetadata *)self resultValueType];
-  [v4 encodeObject:v7 forKey:@"resultValueType"];
+  resultValueType = [(LNQueryMetadata *)self resultValueType];
+  [coderCopy encodeObject:resultValueType forKey:@"resultValueType"];
 
-  v8 = [(LNQueryMetadata *)self parameters];
-  [v4 encodeObject:v8 forKey:@"parameters"];
+  parameters = [(LNQueryMetadata *)self parameters];
+  [coderCopy encodeObject:parameters forKey:@"parameters"];
 
-  v9 = [(LNQueryMetadata *)self sortingOptions];
-  [v4 encodeObject:v9 forKey:@"sortingOptions"];
+  sortingOptions = [(LNQueryMetadata *)self sortingOptions];
+  [coderCopy encodeObject:sortingOptions forKey:@"sortingOptions"];
 
-  v10 = [(LNQueryMetadata *)self mangledTypeName];
-  [v4 encodeObject:v10 forKey:@"mangledTypeName"];
+  mangledTypeName = [(LNQueryMetadata *)self mangledTypeName];
+  [coderCopy encodeObject:mangledTypeName forKey:@"mangledTypeName"];
 
-  v11 = [(LNQueryMetadata *)self mangledTypeNameByBundleIdentifier];
-  [v4 encodeObject:v11 forKey:@"mangledTypeNameByBundleIdentifier"];
+  mangledTypeNameByBundleIdentifier = [(LNQueryMetadata *)self mangledTypeNameByBundleIdentifier];
+  [coderCopy encodeObject:mangledTypeNameByBundleIdentifier forKey:@"mangledTypeNameByBundleIdentifier"];
 
-  v12 = [(LNQueryMetadata *)self effectiveBundleIdentifiers];
-  [v4 encodeObject:v12 forKey:@"effectiveBundleIdentifiers"];
+  effectiveBundleIdentifiers = [(LNQueryMetadata *)self effectiveBundleIdentifiers];
+  [coderCopy encodeObject:effectiveBundleIdentifiers forKey:@"effectiveBundleIdentifiers"];
 
-  v13 = [(LNQueryMetadata *)self availabilityAnnotations];
-  [v4 encodeObject:v13 forKey:@"availabilityAnnotations"];
+  availabilityAnnotations = [(LNQueryMetadata *)self availabilityAnnotations];
+  [coderCopy encodeObject:availabilityAnnotations forKey:@"availabilityAnnotations"];
 
-  [v4 encodeInteger:-[LNQueryMetadata capabilities](self forKey:{"capabilities"), @"capabilities"}];
-  v14 = [(LNQueryMetadata *)self descriptionMetadata];
-  [v4 encodeObject:v14 forKey:@"descriptionMetadata"];
+  [coderCopy encodeInteger:-[LNQueryMetadata capabilities](self forKey:{"capabilities"), @"capabilities"}];
+  descriptionMetadata = [(LNQueryMetadata *)self descriptionMetadata];
+  [coderCopy encodeObject:descriptionMetadata forKey:@"descriptionMetadata"];
 
-  v15 = [(LNQueryMetadata *)self visibilityMetadata];
-  [v4 encodeObject:v15 forKey:@"visibilityMetadata"];
+  visibilityMetadata = [(LNQueryMetadata *)self visibilityMetadata];
+  [coderCopy encodeObject:visibilityMetadata forKey:@"visibilityMetadata"];
 
-  [v4 encodeBool:-[LNQueryMetadata defaultQueryForEntity](self forKey:{"defaultQueryForEntity"), @"defaultQueryForEntity"}];
-  v16 = [(LNQueryMetadata *)self fullyQualifiedIdentifier];
-  [v4 encodeObject:v16 forKey:@"fullyQualifiedIdentifier"];
+  [coderCopy encodeBool:-[LNQueryMetadata defaultQueryForEntity](self forKey:{"defaultQueryForEntity"), @"defaultQueryForEntity"}];
+  fullyQualifiedIdentifier = [(LNQueryMetadata *)self fullyQualifiedIdentifier];
+  [coderCopy encodeObject:fullyQualifiedIdentifier forKey:@"fullyQualifiedIdentifier"];
 
-  v17 = [(LNQueryMetadata *)self allowedTargets];
-  [v4 encodeObject:v17 forKey:@"allowedTargets"];
+  allowedTargets = [(LNQueryMetadata *)self allowedTargets];
+  [coderCopy encodeObject:allowedTargets forKey:@"allowedTargets"];
 }
 
-- (BOOL)visibleForUse:(int64_t)a3
+- (BOOL)visibleForUse:(int64_t)use
 {
-  v4 = [(LNQueryMetadata *)self visibilityMetadata];
-  LOBYTE(a3) = [v4 visibleForUse:a3];
+  visibilityMetadata = [(LNQueryMetadata *)self visibilityMetadata];
+  LOBYTE(use) = [visibilityMetadata visibleForUse:use];
 
-  return a3;
+  return use;
 }
 
-- (LNQueryMetadata)initWithIdentifier:(id)a3 inputValueType:(id)a4 resultValueType:(id)a5 mangledTypeName:(id)a6 mangledTypeNameByBundleIdentifier:(id)a7 effectiveBundleIdentifiers:(id)a8 parameters:(id)a9 sortingOptions:(id)a10 availabilityAnnotations:(id)a11 capabilities:(unint64_t)a12 descriptionMetadata:(id)a13 visibilityMetadata:(id)a14 defaultQueryForEntity:(BOOL)a15 fullyQualifiedIdentifier:(id)a16 allowedTargets:(id)a17
+- (LNQueryMetadata)initWithIdentifier:(id)identifier inputValueType:(id)type resultValueType:(id)valueType mangledTypeName:(id)name mangledTypeNameByBundleIdentifier:(id)bundleIdentifier effectiveBundleIdentifiers:(id)identifiers parameters:(id)parameters sortingOptions:(id)self0 availabilityAnnotations:(id)self1 capabilities:(unint64_t)self2 descriptionMetadata:(id)self3 visibilityMetadata:(id)self4 defaultQueryForEntity:(BOOL)self5 fullyQualifiedIdentifier:(id)self6 allowedTargets:(id)self7
 {
-  v22 = a3;
-  v23 = a4;
-  v24 = a5;
-  v25 = a6;
-  v72 = a7;
-  v76 = a8;
-  v26 = a9;
-  v77 = a10;
-  v27 = a11;
-  v70 = a13;
-  v28 = a14;
-  v74 = a16;
-  v71 = a17;
-  v75 = v22;
-  if (!v22)
+  identifierCopy = identifier;
+  typeCopy = type;
+  valueTypeCopy = valueType;
+  nameCopy = name;
+  bundleIdentifierCopy = bundleIdentifier;
+  identifiersCopy = identifiers;
+  parametersCopy = parameters;
+  optionsCopy = options;
+  annotationsCopy = annotations;
+  metadataCopy = metadata;
+  visibilityMetadataCopy = visibilityMetadata;
+  qualifiedIdentifierCopy = qualifiedIdentifier;
+  targetsCopy = targets;
+  v75 = identifierCopy;
+  if (!identifierCopy)
   {
-    v63 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v63 handleFailureInMethod:a2 object:self file:@"LNQueryMetadata.m" lineNumber:47 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNQueryMetadata.m" lineNumber:47 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
   }
 
-  if (v24)
+  if (valueTypeCopy)
   {
-    if (v26)
+    if (parametersCopy)
     {
       goto LABEL_5;
     }
@@ -717,40 +717,40 @@ LABEL_83:
 
   else
   {
-    v64 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v64 handleFailureInMethod:a2 object:self file:@"LNQueryMetadata.m" lineNumber:48 description:{@"Invalid parameter not satisfying: %@", @"resultValueType"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNQueryMetadata.m" lineNumber:48 description:{@"Invalid parameter not satisfying: %@", @"resultValueType"}];
 
-    if (v26)
+    if (parametersCopy)
     {
       goto LABEL_5;
     }
   }
 
-  v65 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v65 handleFailureInMethod:a2 object:self file:@"LNQueryMetadata.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"parameters"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"LNQueryMetadata.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"parameters"}];
 
 LABEL_5:
-  if (!v77)
+  if (!optionsCopy)
   {
-    v66 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v66 handleFailureInMethod:a2 object:self file:@"LNQueryMetadata.m" lineNumber:50 description:{@"Invalid parameter not satisfying: %@", @"sortingOptions"}];
+    currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler4 handleFailureInMethod:a2 object:self file:@"LNQueryMetadata.m" lineNumber:50 description:{@"Invalid parameter not satisfying: %@", @"sortingOptions"}];
   }
 
-  v29 = v27;
-  v30 = v74;
-  v31 = v25;
-  if (!v25)
+  v29 = annotationsCopy;
+  v30 = qualifiedIdentifierCopy;
+  v31 = nameCopy;
+  if (!nameCopy)
   {
-    v67 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v67 handleFailureInMethod:a2 object:self file:@"LNQueryMetadata.m" lineNumber:51 description:{@"Invalid parameter not satisfying: %@", @"mangledTypeName"}];
+    currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler5 handleFailureInMethod:a2 object:self file:@"LNQueryMetadata.m" lineNumber:51 description:{@"Invalid parameter not satisfying: %@", @"mangledTypeName"}];
   }
 
-  v32 = v26;
-  v33 = v28;
-  if (!v28)
+  v32 = parametersCopy;
+  v33 = visibilityMetadataCopy;
+  if (!visibilityMetadataCopy)
   {
-    v68 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v68 handleFailureInMethod:a2 object:self file:@"LNQueryMetadata.m" lineNumber:52 description:{@"Invalid parameter not satisfying: %@", @"visibilityMetadata"}];
+    currentHandler6 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler6 handleFailureInMethod:a2 object:self file:@"LNQueryMetadata.m" lineNumber:52 description:{@"Invalid parameter not satisfying: %@", @"visibilityMetadata"}];
   }
 
   v78.receiver = self;
@@ -762,11 +762,11 @@ LABEL_5:
     identifier = v34->_identifier;
     v34->_identifier = v35;
 
-    v37 = [v23 copy];
+    v37 = [typeCopy copy];
     inputValueType = v34->_inputValueType;
     v34->_inputValueType = v37;
 
-    v39 = [v24 copy];
+    v39 = [valueTypeCopy copy];
     resultValueType = v34->_resultValueType;
     v34->_resultValueType = v39;
 
@@ -774,7 +774,7 @@ LABEL_5:
     parameters = v34->_parameters;
     v34->_parameters = v41;
 
-    v43 = [v77 copy];
+    v43 = [optionsCopy copy];
     sortingOptions = v34->_sortingOptions;
     v34->_sortingOptions = v43;
 
@@ -782,11 +782,11 @@ LABEL_5:
     mangledTypeName = v34->_mangledTypeName;
     v34->_mangledTypeName = v45;
 
-    v47 = [v72 copy];
+    v47 = [bundleIdentifierCopy copy];
     mangledTypeNameByBundleIdentifier = v34->_mangledTypeNameByBundleIdentifier;
     v34->_mangledTypeNameByBundleIdentifier = v47;
 
-    v49 = [v76 copy];
+    v49 = [identifiersCopy copy];
     effectiveBundleIdentifiers = v34->_effectiveBundleIdentifiers;
     v34->_effectiveBundleIdentifiers = v49;
 
@@ -794,9 +794,9 @@ LABEL_5:
     availabilityAnnotations = v34->_availabilityAnnotations;
     v34->_availabilityAnnotations = v51;
 
-    v34->_capabilities = a12;
-    v30 = v74;
-    v53 = [v70 copy];
+    v34->_capabilities = capabilities;
+    v30 = qualifiedIdentifierCopy;
+    v53 = [metadataCopy copy];
     descriptionMetadata = v34->_descriptionMetadata;
     v34->_descriptionMetadata = v53;
 
@@ -804,12 +804,12 @@ LABEL_5:
     visibilityMetadata = v34->_visibilityMetadata;
     v34->_visibilityMetadata = v55;
 
-    v34->_defaultQueryForEntity = a15;
-    v57 = [v74 copy];
+    v34->_defaultQueryForEntity = entity;
+    v57 = [qualifiedIdentifierCopy copy];
     fullyQualifiedIdentifier = v34->_fullyQualifiedIdentifier;
     v34->_fullyQualifiedIdentifier = v57;
 
-    v59 = [v71 copy];
+    v59 = [targetsCopy copy];
     allowedTargets = v34->_allowedTargets;
     v34->_allowedTargets = v59;
 
@@ -819,94 +819,94 @@ LABEL_5:
   return v34;
 }
 
-- (id)mangledTypeNameForBundleIdentifier:(id)a3
+- (id)mangledTypeNameForBundleIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (!v5)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"LNQueryMetadata.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNQueryMetadata.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier"}];
   }
 
-  v6 = [(LNQueryMetadata *)self mangledTypeNameByBundleIdentifier];
-  v7 = [v6 objectForKeyedSubscript:v5];
+  mangledTypeNameByBundleIdentifier = [(LNQueryMetadata *)self mangledTypeNameByBundleIdentifier];
+  v7 = [mangledTypeNameByBundleIdentifier objectForKeyedSubscript:identifierCopy];
   v8 = v7;
   if (v7)
   {
-    v9 = v7;
+    mangledTypeName = v7;
   }
 
   else
   {
-    v9 = [(LNQueryMetadata *)self mangledTypeName];
+    mangledTypeName = [(LNQueryMetadata *)self mangledTypeName];
   }
 
-  v10 = v9;
+  v10 = mangledTypeName;
 
   return v10;
 }
 
-- (LNQueryMetadata)initWithIdentifier:(id)a3 queryType:(id)a4 entityType:(id)a5 parameters:(id)a6 sortingOptions:(id)a7
+- (LNQueryMetadata)initWithIdentifier:(id)identifier queryType:(id)type entityType:(id)entityType parameters:(id)parameters sortingOptions:(id)options
 {
   v12 = MEMORY[0x1E695DFB8];
-  v13 = a7;
-  v14 = a6;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
-  v18 = [v12 orderedSet];
-  v19 = [(LNQueryMetadata *)self initWithIdentifier:v17 queryType:v16 entityType:v15 mangledTypeName:v16 mangledTypeNameByBundleIdentifier:MEMORY[0x1E695E0F8] effectiveBundleIdentifiers:v18 parameters:v14 sortingOptions:v13];
+  optionsCopy = options;
+  parametersCopy = parameters;
+  entityTypeCopy = entityType;
+  typeCopy = type;
+  identifierCopy = identifier;
+  orderedSet = [v12 orderedSet];
+  v19 = [(LNQueryMetadata *)self initWithIdentifier:identifierCopy queryType:typeCopy entityType:entityTypeCopy mangledTypeName:typeCopy mangledTypeNameByBundleIdentifier:MEMORY[0x1E695E0F8] effectiveBundleIdentifiers:orderedSet parameters:parametersCopy sortingOptions:optionsCopy];
 
   return v19;
 }
 
-- (LNQueryMetadata)initWithIdentifier:(id)a3 entityType:(id)a4 mangledTypeName:(id)a5 mangledTypeNameByBundleIdentifier:(id)a6 effectiveBundleIdentifiers:(id)a7 parameters:(id)a8 sortingOptions:(id)a9 availabilityAnnotations:(id)a10 capabilities:(unint64_t)a11 descriptionMetadata:(id)a12
+- (LNQueryMetadata)initWithIdentifier:(id)identifier entityType:(id)type mangledTypeName:(id)name mangledTypeNameByBundleIdentifier:(id)bundleIdentifier effectiveBundleIdentifiers:(id)identifiers parameters:(id)parameters sortingOptions:(id)options availabilityAnnotations:(id)self0 capabilities:(unint64_t)self1 descriptionMetadata:(id)self2
 {
-  v18 = a12;
-  v19 = a10;
-  v20 = a9;
-  v21 = a8;
-  v22 = a7;
-  v23 = a6;
-  v24 = a5;
-  v25 = a4;
-  v26 = a3;
+  metadataCopy = metadata;
+  annotationsCopy = annotations;
+  optionsCopy = options;
+  parametersCopy = parameters;
+  identifiersCopy = identifiers;
+  bundleIdentifierCopy = bundleIdentifier;
+  nameCopy = name;
+  typeCopy = type;
+  identifierCopy = identifier;
   v27 = [[LNVisibilityMetadata alloc] initWithIsDiscoverable:1 assistantOnly:0];
-  v30 = [(LNQueryMetadata *)self initWithIdentifier:v26 entityType:v25 mangledTypeName:v24 mangledTypeNameByBundleIdentifier:v23 effectiveBundleIdentifiers:v22 parameters:v21 sortingOptions:v20 availabilityAnnotations:v19 capabilities:a11 descriptionMetadata:v18 visibilityMetadata:v27];
+  v30 = [(LNQueryMetadata *)self initWithIdentifier:identifierCopy entityType:typeCopy mangledTypeName:nameCopy mangledTypeNameByBundleIdentifier:bundleIdentifierCopy effectiveBundleIdentifiers:identifiersCopy parameters:parametersCopy sortingOptions:optionsCopy availabilityAnnotations:annotationsCopy capabilities:capabilities descriptionMetadata:metadataCopy visibilityMetadata:v27];
 
   return v30;
 }
 
-- (LNQueryMetadata)initWithIdentifier:(id)a3 entityType:(id)a4 mangledTypeName:(id)a5 mangledTypeNameByBundleIdentifier:(id)a6 effectiveBundleIdentifiers:(id)a7 parameters:(id)a8 sortingOptions:(id)a9 availabilityAnnotations:(id)a10 capabilities:(unint64_t)a11 descriptionMetadata:(id)a12 visibilityMetadata:(id)a13 defaultQueryForEntity:(BOOL)a14 fullyQualifiedIdentifier:(id)a15
+- (LNQueryMetadata)initWithIdentifier:(id)identifier entityType:(id)type mangledTypeName:(id)name mangledTypeNameByBundleIdentifier:(id)bundleIdentifier effectiveBundleIdentifiers:(id)identifiers parameters:(id)parameters sortingOptions:(id)options availabilityAnnotations:(id)self0 capabilities:(unint64_t)self1 descriptionMetadata:(id)self2 visibilityMetadata:(id)self3 defaultQueryForEntity:(BOOL)self4 fullyQualifiedIdentifier:(id)self5
 {
-  v34 = a15;
-  v19 = a13;
-  v31 = a12;
-  v29 = a10;
-  v28 = a9;
-  v26 = a8;
-  v27 = a7;
-  v25 = a6;
-  v20 = a5;
-  v21 = a4;
-  v33 = a3;
-  v22 = [[LNEntityValueType alloc] initWithIdentifier:v21];
+  qualifiedIdentifierCopy = qualifiedIdentifier;
+  visibilityMetadataCopy = visibilityMetadata;
+  metadataCopy = metadata;
+  annotationsCopy = annotations;
+  optionsCopy = options;
+  parametersCopy = parameters;
+  identifiersCopy = identifiers;
+  bundleIdentifierCopy = bundleIdentifier;
+  nameCopy = name;
+  typeCopy = type;
+  identifierCopy = identifier;
+  v22 = [[LNEntityValueType alloc] initWithIdentifier:typeCopy];
 
-  LOBYTE(v24) = a14;
-  v36 = [(LNQueryMetadata *)self initWithIdentifier:v33 inputValueType:0 resultValueType:v22 mangledTypeName:v20 mangledTypeNameByBundleIdentifier:v25 effectiveBundleIdentifiers:v27 parameters:v26 sortingOptions:v28 availabilityAnnotations:v29 capabilities:a11 descriptionMetadata:v31 visibilityMetadata:v19 defaultQueryForEntity:v24 fullyQualifiedIdentifier:v34];
+  LOBYTE(v24) = entity;
+  v36 = [(LNQueryMetadata *)self initWithIdentifier:identifierCopy inputValueType:0 resultValueType:v22 mangledTypeName:nameCopy mangledTypeNameByBundleIdentifier:bundleIdentifierCopy effectiveBundleIdentifiers:identifiersCopy parameters:parametersCopy sortingOptions:optionsCopy availabilityAnnotations:annotationsCopy capabilities:capabilities descriptionMetadata:metadataCopy visibilityMetadata:visibilityMetadataCopy defaultQueryForEntity:v24 fullyQualifiedIdentifier:qualifiedIdentifierCopy];
 
   return v36;
 }
 
 - (NSString)entityType
 {
-  v2 = [(LNQueryMetadata *)self resultValueType];
-  if (v2)
+  resultValueType = [(LNQueryMetadata *)self resultValueType];
+  if (resultValueType)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v3 = v2;
+      v3 = resultValueType;
     }
 
     else
@@ -922,11 +922,11 @@ LABEL_5:
 
   v4 = v3;
 
-  v5 = [v4 identifier];
+  identifier = [v4 identifier];
 
-  if (v5)
+  if (identifier)
   {
-    v6 = v5;
+    v6 = identifier;
   }
 
   else
@@ -941,8 +941,8 @@ LABEL_5:
 
 - (NSString)queryType
 {
-  v2 = [(LNQueryMetadata *)self identifier];
-  v3 = [v2 stringByReplacingOccurrencesOfString:@"-" withString:@"."];
+  identifier = [(LNQueryMetadata *)self identifier];
+  v3 = [identifier stringByReplacingOccurrencesOfString:@"-" withString:@"."];
 
   return v3;
 }

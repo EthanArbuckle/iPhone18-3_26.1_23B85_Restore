@@ -2,43 +2,43 @@
 - (COSPasscodeChangeComplexViewControllerDelegate)passcodeChangeDelegate;
 - (id)detailText;
 - (id)titleText;
-- (void)setIsViewVisible:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)setIsViewVisible:(BOOL)visible;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation COSPasscodeChangeComplexViewController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = COSPasscodeChangeComplexViewController;
-  [(COSPasscodeChangeComplexViewController *)&v4 viewWillAppear:a3];
+  [(COSPasscodeChangeComplexViewController *)&v4 viewWillAppear:appear];
   if (![(COSPasscodeChangeComplexViewController *)self isViewVisible])
   {
     [(COSPasscodeChangeComplexViewController *)self setIsViewVisible:1];
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = COSPasscodeChangeComplexViewController;
-  [(COSPasscodeChangeComplexViewController *)&v4 viewDidDisappear:a3];
+  [(COSPasscodeChangeComplexViewController *)&v4 viewDidDisappear:disappear];
   if ([(COSPasscodeChangeComplexViewController *)self isViewVisible])
   {
     [(COSPasscodeChangeComplexViewController *)self setIsViewVisible:0];
   }
 }
 
-- (void)setIsViewVisible:(BOOL)a3
+- (void)setIsViewVisible:(BOOL)visible
 {
-  if (self->_isViewVisible != a3)
+  if (self->_isViewVisible != visible)
   {
-    v4 = a3;
-    self->_isViewVisible = a3;
-    v6 = [(COSPasscodeChangeComplexViewController *)self passcodeChangeDelegate];
-    [v6 passcodeChangeComplexViewController:self didChangeVisibilityWithIsVisible:v4];
+    visibleCopy = visible;
+    self->_isViewVisible = visible;
+    passcodeChangeDelegate = [(COSPasscodeChangeComplexViewController *)self passcodeChangeDelegate];
+    [passcodeChangeDelegate passcodeChangeComplexViewController:self didChangeVisibilityWithIsVisible:visibleCopy];
   }
 }
 

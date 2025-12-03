@@ -1,32 +1,32 @@
 @interface SOConfiguration
-+ (id)stringWithHandleResult:(int64_t)a3;
-- (BOOL)_matchHost:(id)a3 inCredentialProfile:(id)a4;
-- (BOOL)willHandleURL:(id)a3 responseCode:(int64_t)a4 callerBundleIdentifier:(id)a5;
-- (SOConfiguration)initWithCoder:(id)a3;
-- (SOConfiguration)initWithProfiles:(id)a3;
-- (id)_profileForURLWithHostScheme:(id)a3;
-- (id)_profileForURLWithRealmScheme:(id)a3;
-- (id)_profileForURLWithSSOIDScheme:(id)a3;
-- (id)_profileForURLWithStandardScheme:(id)a3 isCredential:(BOOL)a4;
-- (id)profileForURL:(id)a3 responseCode:(int64_t)a4;
++ (id)stringWithHandleResult:(int64_t)result;
+- (BOOL)_matchHost:(id)host inCredentialProfile:(id)profile;
+- (BOOL)willHandleURL:(id)l responseCode:(int64_t)code callerBundleIdentifier:(id)identifier;
+- (SOConfiguration)initWithCoder:(id)coder;
+- (SOConfiguration)initWithProfiles:(id)profiles;
+- (id)_profileForURLWithHostScheme:(id)scheme;
+- (id)_profileForURLWithRealmScheme:(id)scheme;
+- (id)_profileForURLWithSSOIDScheme:(id)scheme;
+- (id)_profileForURLWithStandardScheme:(id)scheme isCredential:(BOOL)credential;
+- (id)profileForURL:(id)l responseCode:(int64_t)code;
 - (id)realms;
-- (int64_t)willHandleURL:(id)a3 responseCode:(int64_t)a4 callerBundleIdentifier:(id)a5 profile:(id *)a6;
-- (void)encodeWithCoder:(id)a3;
+- (int64_t)willHandleURL:(id)l responseCode:(int64_t)code callerBundleIdentifier:(id)identifier profile:(id *)profile;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SOConfiguration
 
-- (SOConfiguration)initWithProfiles:(id)a3
+- (SOConfiguration)initWithProfiles:(id)profiles
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  profilesCopy = profiles;
   v6 = SO_LOG_SOConfiguration();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v23 = "[SOConfiguration initWithProfiles:]";
     v24 = 2112;
-    v25 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1CA238000, v6, OS_LOG_TYPE_DEFAULT, "%s  on %@", buf, 0x16u);
   }
 
@@ -36,7 +36,7 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_profiles, a3);
+    objc_storeStrong(&v7->_profiles, profiles);
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
@@ -72,11 +72,11 @@
   return v8;
 }
 
-- (BOOL)willHandleURL:(id)a3 responseCode:(int64_t)a4 callerBundleIdentifier:(id)a5
+- (BOOL)willHandleURL:(id)l responseCode:(int64_t)code callerBundleIdentifier:(id)identifier
 {
-  v8 = a3;
+  lCopy = l;
   v21 = 0;
-  v9 = [(SOConfiguration *)self willHandleURL:v8 responseCode:a4 callerBundleIdentifier:a5 profile:&v21];
+  v9 = [(SOConfiguration *)self willHandleURL:lCopy responseCode:code callerBundleIdentifier:identifier profile:&v21];
   v10 = v21;
   v11 = v10;
   if (v9)
@@ -91,11 +91,11 @@
   }
 
   v12 = 1;
-  if (a4 != 401 && a4 != 407)
+  if (code != 401 && code != 407)
   {
-    v13 = [v8 scheme];
-    v14 = [v13 lowercaseString];
-    if ([v14 isEqualToString:@"host"])
+    scheme = [lCopy scheme];
+    lowercaseString = [scheme lowercaseString];
+    if ([lowercaseString isEqualToString:@"host"])
     {
 LABEL_9:
 
@@ -105,24 +105,24 @@ LABEL_10:
       goto LABEL_13;
     }
 
-    v15 = [v8 scheme];
-    v16 = [v15 lowercaseString];
-    if ([v16 isEqualToString:@"realm"])
+    scheme2 = [lCopy scheme];
+    lowercaseString2 = [scheme2 lowercaseString];
+    if ([lowercaseString2 isEqualToString:@"realm"])
     {
 
       goto LABEL_9;
     }
 
-    v17 = [v8 scheme];
-    v18 = [v17 lowercaseString];
-    v19 = [v18 isEqualToString:@"ssoid"];
+    scheme3 = [lCopy scheme];
+    lowercaseString3 = [scheme3 lowercaseString];
+    v19 = [lowercaseString3 isEqualToString:@"ssoid"];
 
     if ((v19 & 1) == 0)
     {
-      v13 = SO_LOG_SOConfiguration();
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+      scheme = SO_LOG_SOConfiguration();
+      if (os_log_type_enabled(scheme, OS_LOG_TYPE_ERROR))
       {
-        [SOConfiguration willHandleURL:a4 responseCode:v13 callerBundleIdentifier:?];
+        [SOConfiguration willHandleURL:code responseCode:scheme callerBundleIdentifier:?];
       }
 
       v12 = 0;
@@ -138,11 +138,11 @@ LABEL_13:
   return v12;
 }
 
-- (int64_t)willHandleURL:(id)a3 responseCode:(int64_t)a4 callerBundleIdentifier:(id)a5 profile:(id *)a6
+- (int64_t)willHandleURL:(id)l responseCode:(int64_t)code callerBundleIdentifier:(id)identifier profile:(id *)profile
 {
   v25 = *MEMORY[0x1E69E9840];
-  v10 = a5;
-  v11 = [(SOConfiguration *)self profileForURL:a3 responseCode:a4];
+  identifierCopy = identifier;
+  v11 = [(SOConfiguration *)self profileForURL:l responseCode:code];
   v12 = v11;
   if (!v11)
   {
@@ -150,23 +150,23 @@ LABEL_13:
     goto LABEL_17;
   }
 
-  if (!v10)
+  if (!identifierCopy)
   {
     goto LABEL_14;
   }
 
-  v13 = [v11 extensionBundleIdentifier];
-  if ([v13 isEqualToString:v10])
+  extensionBundleIdentifier = [v11 extensionBundleIdentifier];
+  if ([extensionBundleIdentifier isEqualToString:identifierCopy])
   {
-    v14 = [v12 type];
+    type = [v12 type];
 
-    if (v14 != 2)
+    if (type != 2)
     {
       v15 = SO_LOG_SOConfiguration();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
       {
         v23 = 138543362;
-        v24 = v10;
+        v24 = identifierCopy;
         _os_log_impl(&dword_1CA238000, v15, OS_LOG_TYPE_INFO, "breaking calling recursion for caller with bundleIdentifier: %{public}@", &v23, 0xCu);
       }
 
@@ -179,17 +179,17 @@ LABEL_13:
   {
   }
 
-  v17 = [v12 deniedBundleIdentifiers];
-  v18 = [v17 containsObject:v10];
+  deniedBundleIdentifiers = [v12 deniedBundleIdentifiers];
+  v18 = [deniedBundleIdentifiers containsObject:identifierCopy];
 
   if (!v18)
   {
 LABEL_14:
-    if (a6)
+    if (profile)
     {
       v20 = v12;
       v16 = 0;
-      *a6 = v12;
+      *profile = v12;
     }
 
     else
@@ -204,7 +204,7 @@ LABEL_14:
   if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
   {
     v23 = 138543362;
-    v24 = v10;
+    v24 = identifierCopy;
     _os_log_impl(&dword_1CA238000, v19, OS_LOG_TYPE_INFO, "denied caller with bundleIdentifier: %{public}@", &v23, 0xCu);
   }
 
@@ -215,41 +215,41 @@ LABEL_17:
   return v16;
 }
 
-- (id)profileForURL:(id)a3 responseCode:(int64_t)a4
+- (id)profileForURL:(id)l responseCode:(int64_t)code
 {
-  v6 = a3;
-  v7 = [v6 scheme];
-  v8 = [v7 isEqualToString:@"ssoid"];
+  lCopy = l;
+  scheme = [lCopy scheme];
+  v8 = [scheme isEqualToString:@"ssoid"];
 
   if (v8)
   {
-    v9 = [(SOConfiguration *)self _profileForURLWithSSOIDScheme:v6];
+    v9 = [(SOConfiguration *)self _profileForURLWithSSOIDScheme:lCopy];
   }
 
   else
   {
-    v10 = [v6 scheme];
-    v11 = [v10 isEqualToString:@"host"];
+    scheme2 = [lCopy scheme];
+    v11 = [scheme2 isEqualToString:@"host"];
 
     if (v11)
     {
-      v9 = [(SOConfiguration *)self _profileForURLWithHostScheme:v6];
+      v9 = [(SOConfiguration *)self _profileForURLWithHostScheme:lCopy];
     }
 
     else
     {
-      v12 = [v6 scheme];
-      v13 = [v12 isEqualToString:@"realm"];
+      scheme3 = [lCopy scheme];
+      v13 = [scheme3 isEqualToString:@"realm"];
 
       if (v13)
       {
-        v9 = [(SOConfiguration *)self _profileForURLWithRealmScheme:v6];
+        v9 = [(SOConfiguration *)self _profileForURLWithRealmScheme:lCopy];
       }
 
       else
       {
-        v15 = a4 == 401 || a4 == 407;
-        v9 = [(SOConfiguration *)self _profileForURLWithStandardScheme:v6 isCredential:v15];
+        v15 = code == 401 || code == 407;
+        v9 = [(SOConfiguration *)self _profileForURLWithStandardScheme:lCopy isCredential:v15];
       }
     }
   }
@@ -268,11 +268,11 @@ LABEL_17:
     *buf = 136315394;
     v21 = "[SOConfiguration realms]";
     v22 = 2112;
-    v23 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1CA238000, v3, OS_LOG_TYPE_DEFAULT, "%s  on %@", buf, 0x16u);
   }
 
-  v4 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -295,12 +295,12 @@ LABEL_17:
         v10 = *(*(&v15 + 1) + 8 * i);
         if ([v10 type] == 2)
         {
-          v11 = [v10 realm];
+          realm = [v10 realm];
 
-          if (v11)
+          if (realm)
           {
-            v12 = [v10 realm];
-            [v4 addObject:v12];
+            realm2 = [v10 realm];
+            [array addObject:realm2];
           }
         }
       }
@@ -313,14 +313,14 @@ LABEL_17:
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v4;
+  return array;
 }
 
-- (id)_profileForURLWithStandardScheme:(id)a3 isCredential:(BOOL)a4
+- (id)_profileForURLWithStandardScheme:(id)scheme isCredential:(BOOL)credential
 {
-  v4 = a4;
+  credentialCopy = credential;
   v46 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  schemeCopy = scheme;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
@@ -332,10 +332,10 @@ LABEL_17:
     v9 = v8;
     v10 = *v41;
     v34 = v7;
-    v35 = v6;
-    v32 = v4;
+    v35 = schemeCopy;
+    v32 = credentialCopy;
     v30 = *v41;
-    v31 = self;
+    selfCopy = self;
     while (2)
     {
       v11 = 0;
@@ -348,8 +348,8 @@ LABEL_17:
         }
 
         v12 = *(*(&v40 + 1) + 8 * v11);
-        v13 = [v6 absoluteString];
-        if ([v12 type] == 1 && !v4 && objc_msgSend(v12, "matchesURL:", v13))
+        absoluteString = [schemeCopy absoluteString];
+        if ([v12 type] == 1 && !credentialCopy && objc_msgSend(v12, "matchesURL:", absoluteString))
         {
 LABEL_32:
           v29 = v12;
@@ -358,10 +358,10 @@ LABEL_27:
           goto LABEL_29;
         }
 
-        if ([v12 type] == 2 && v4)
+        if ([v12 type] == 2 && credentialCopy)
         {
-          v15 = [v6 host];
-          v16 = [(SOConfiguration *)self _matchHost:v15 inCredentialProfile:v12];
+          host = [schemeCopy host];
+          v16 = [(SOConfiguration *)self _matchHost:host inCredentialProfile:v12];
 
           if (v16)
           {
@@ -372,8 +372,8 @@ LABEL_27:
           v39 = 0u;
           v36 = 0u;
           v37 = 0u;
-          v17 = [v12 URLPrefix];
-          v18 = [v17 countByEnumeratingWithState:&v36 objects:v44 count:16];
+          uRLPrefix = [v12 URLPrefix];
+          v18 = [uRLPrefix countByEnumeratingWithState:&v36 objects:v44 count:16];
           if (v18)
           {
             v19 = v18;
@@ -384,25 +384,25 @@ LABEL_27:
               {
                 if (*v37 != v20)
                 {
-                  objc_enumerationMutation(v17);
+                  objc_enumerationMutation(uRLPrefix);
                 }
 
                 v22 = *(*(&v36 + 1) + 8 * i);
-                v23 = [v13 lowercaseString];
-                v24 = [v22 lowercaseString];
-                v25 = [v23 hasPrefix:v24];
+                lowercaseString = [absoluteString lowercaseString];
+                lowercaseString2 = [v22 lowercaseString];
+                v25 = [lowercaseString hasPrefix:lowercaseString2];
 
                 if (v25)
                 {
                   v26 = v12;
 
                   v7 = v34;
-                  v6 = v35;
+                  schemeCopy = v35;
                   goto LABEL_27;
                 }
               }
 
-              v19 = [v17 countByEnumeratingWithState:&v36 objects:v44 count:16];
+              v19 = [uRLPrefix countByEnumeratingWithState:&v36 objects:v44 count:16];
               if (v19)
               {
                 continue;
@@ -413,10 +413,10 @@ LABEL_27:
           }
 
           v7 = v34;
-          v6 = v35;
-          v4 = v32;
+          schemeCopy = v35;
+          credentialCopy = v32;
           v10 = v30;
-          self = v31;
+          self = selfCopy;
           v9 = v33;
         }
 
@@ -447,10 +447,10 @@ LABEL_29:
   return v12;
 }
 
-- (id)_profileForURLWithHostScheme:(id)a3
+- (id)_profileForURLWithHostScheme:(id)scheme
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  schemeCopy = scheme;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -473,8 +473,8 @@ LABEL_29:
         v10 = *(*(&v16 + 1) + 8 * i);
         if ([v10 type] == 2)
         {
-          v11 = [v4 host];
-          v12 = [(SOConfiguration *)self _matchHost:v11 inCredentialProfile:v10];
+          host = [schemeCopy host];
+          v12 = [(SOConfiguration *)self _matchHost:host inCredentialProfile:v10];
 
           if (v12)
           {
@@ -502,15 +502,15 @@ LABEL_12:
   return v13;
 }
 
-- (BOOL)_matchHost:(id)a3 inCredentialProfile:(id)a4
+- (BOOL)_matchHost:(id)host inCredentialProfile:(id)profile
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  hostCopy = host;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = [a4 hosts];
+  obj = [profile hosts];
   v6 = [obj countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v6)
   {
@@ -527,15 +527,15 @@ LABEL_12:
 
         v10 = *(*(&v22 + 1) + 8 * i);
         v11 = [v10 hasPrefix:@"."];
-        v12 = [v5 lowercaseString];
-        v13 = [v10 lowercaseString];
+        lowercaseString = [hostCopy lowercaseString];
+        lowercaseString2 = [v10 lowercaseString];
         if (v11)
         {
-          if ([v12 hasSuffix:v13])
+          if ([lowercaseString hasSuffix:lowercaseString2])
           {
-            v14 = [v5 lowercaseString];
-            v15 = [v10 lowercaseString];
-            v16 = [v14 isEqualToString:v15];
+            lowercaseString3 = [hostCopy lowercaseString];
+            lowercaseString4 = [v10 lowercaseString];
+            v16 = [lowercaseString3 isEqualToString:lowercaseString4];
 
             if ((v16 & 1) == 0)
             {
@@ -550,7 +550,7 @@ LABEL_12:
 
         else
         {
-          v17 = [v12 isEqualToString:v13];
+          v17 = [lowercaseString isEqualToString:lowercaseString2];
 
           if (v17)
           {
@@ -578,10 +578,10 @@ LABEL_17:
   return v18;
 }
 
-- (id)_profileForURLWithRealmScheme:(id)a3
+- (id)_profileForURLWithRealmScheme:(id)scheme
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = [a3 host];
+  host = [scheme host];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -604,12 +604,12 @@ LABEL_17:
         v9 = *(*(&v19 + 1) + 8 * i);
         if ([v9 type] == 2)
         {
-          v10 = [v9 realm];
-          v11 = [v10 lowercaseString];
-          v12 = [v4 lowercaseString];
-          v13 = [v11 isEqualToString:v12];
+          realm = [v9 realm];
+          lowercaseString = [realm lowercaseString];
+          lowercaseString2 = [host lowercaseString];
+          v13 = [lowercaseString isEqualToString:lowercaseString2];
 
-          if (v13 & 1) != 0 || ([MEMORY[0x1E696AEC0] stringWithFormat:@"%d", v6], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "isEqualToString:", v4), v14, (v15))
+          if (v13 & 1) != 0 || ([MEMORY[0x1E696AEC0] stringWithFormat:@"%d", v6], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "isEqualToString:", host), v14, (v15))
           {
             v5 = v9;
             goto LABEL_14;
@@ -636,10 +636,10 @@ LABEL_14:
   return v5;
 }
 
-- (id)_profileForURLWithSSOIDScheme:(id)a3
+- (id)_profileForURLWithSSOIDScheme:(id)scheme
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  schemeCopy = scheme;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -659,9 +659,9 @@ LABEL_14:
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 extensionBundleIdentifier];
-        v11 = [v4 host];
-        v12 = [v10 isEqualToString:v11];
+        extensionBundleIdentifier = [v9 extensionBundleIdentifier];
+        host = [schemeCopy host];
+        v12 = [extensionBundleIdentifier isEqualToString:host];
 
         if (v12)
         {
@@ -687,10 +687,10 @@ LABEL_11:
   return v6;
 }
 
-- (SOConfiguration)initWithCoder:(id)a3
+- (SOConfiguration)initWithCoder:(id)coder
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v24.receiver = self;
   v24.super_class = SOConfiguration;
   v5 = [(SOConfiguration *)&v24 init];
@@ -700,7 +700,7 @@ LABEL_11:
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
     v9 = NSStringFromSelector(sel_profiles);
-    v10 = [v4 decodeObjectOfClasses:v8 forKey:v9];
+    v10 = [coderCopy decodeObjectOfClasses:v8 forKey:v9];
     v11 = [v10 copy];
     profiles = v5->_profiles;
     v5->_profiles = v11;
@@ -740,27 +740,27 @@ LABEL_11:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   profiles = self->_profiles;
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_profiles);
-  [v4 encodeObject:profiles forKey:v5];
+  [coderCopy encodeObject:profiles forKey:v5];
 }
 
-+ (id)stringWithHandleResult:(int64_t)a3
++ (id)stringWithHandleResult:(int64_t)result
 {
-  if (a3 >= 4)
+  if (result >= 4)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"unknown, code: %u", a3];
+    result = [MEMORY[0x1E696AEC0] stringWithFormat:@"unknown, code: %u", result];
   }
 
   else
   {
-    v4 = off_1E836D068[a3];
+    result = off_1E836D068[result];
   }
 
-  return v4;
+  return result;
 }
 
 - (void)willHandleURL:(int)a1 responseCode:(NSObject *)a2 callerBundleIdentifier:.cold.1(int a1, NSObject *a2)

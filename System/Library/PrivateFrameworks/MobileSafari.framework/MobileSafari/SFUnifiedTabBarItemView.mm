@@ -2,59 +2,59 @@
 - (BOOL)_canUpdateLayoutDirectionImmediately;
 - (BOOL)_commandPressed;
 - (BOOL)_hasRoomForIconAndCloseButton;
-- (BOOL)_scribbleInteraction:(id)a3 shouldBeginAtLocation:(CGPoint)a4;
+- (BOOL)_scribbleInteraction:(id)interaction shouldBeginAtLocation:(CGPoint)location;
 - (BOOL)_shouldUseActiveTheme;
-- (BOOL)_showsAccessoryButtonOfType:(int64_t)a3;
+- (BOOL)_showsAccessoryButtonOfType:(int64_t)type;
 - (BOOL)_showsCloseButtonOnHover;
 - (BOOL)canBecomeFocused;
 - (BOOL)showsStopReloadButton;
 - (CGRect)squishedGlassFrame;
 - (SFMenuConfiguring)formatMenuButtonConfigurator;
 - (SFUnifiedTabBarItemTitleContainerView)squishedTitleContainer;
-- (SFUnifiedTabBarItemView)initWithFrame:(CGRect)a3;
+- (SFUnifiedTabBarItemView)initWithFrame:(CGRect)frame;
 - (SFUnifiedTabBarItemViewDelegate)delegate;
 - (UIButton)firstExtensionButton;
 - (UIButton)secondExtensionButton;
 - (UIView)menuPopoverSourceView;
 - (double)_closeButtonAlphaForSquishedInset;
-- (double)_heightForAccessoryButtonOfType:(int64_t)a3 withWidth:(double)a4 defaultHeight:(double)a5;
-- (double)_insetForAccessoryButtonOfType:(int64_t)a3;
-- (double)_layOutIndexes:(id)a3 ofAccessoryButtonTypes:(id)a4 alongEdge:(int64_t)a5 usingPresentationSize:(BOOL)a6;
-- (double)_scaleForTransitioningAccessoryButtonOfType:(int64_t)a3;
-- (double)_spacingBetweenAccessoryButtonOfType:(int64_t)a3 andButtonOfType:(int64_t)a4;
+- (double)_heightForAccessoryButtonOfType:(int64_t)type withWidth:(double)width defaultHeight:(double)height;
+- (double)_insetForAccessoryButtonOfType:(int64_t)type;
+- (double)_layOutIndexes:(id)indexes ofAccessoryButtonTypes:(id)types alongEdge:(int64_t)edge usingPresentationSize:(BOOL)size;
+- (double)_scaleForTransitioningAccessoryButtonOfType:(int64_t)type;
+- (double)_spacingBetweenAccessoryButtonOfType:(int64_t)type andButtonOfType:(int64_t)ofType;
 - (double)_squishedInsetToHideCloseButton;
 - (double)_squishedInsetToHideTrailingButtons;
-- (double)_widthForAccessoryButtonOfType:(int64_t)a3;
+- (double)_widthForAccessoryButtonOfType:(int64_t)type;
 - (double)accessoryButtonAlpha;
-- (id)_accessoryButtonConfigurationWithImage:(id)a3 scale:(int64_t)a4;
+- (id)_accessoryButtonConfigurationWithImage:(id)image scale:(int64_t)scale;
 - (id)_accessoryButtonTintColor;
 - (id)_closeButtonConfiguration;
 - (id)_controlsTintColor;
-- (id)_makeAccessoryButtonWithImage:(id)a3 scale:(int64_t)a4 action:(SEL)a5;
+- (id)_makeAccessoryButtonWithImage:(id)image scale:(int64_t)scale action:(SEL)action;
 - (id)_makeMediaStateMuteButton;
 - (id)_progressBarTintColor;
 - (id)_searchFieldTintColor;
 - (id)_secondaryAccessoryButtonTintColor;
 - (id)_titleTheme;
 - (id)_tooltipTextForMediaStateMuteButton;
-- (id)_viewForAccessoryButtonOfType:(int64_t)a3;
-- (id)availabilityDisplayController:(id)a3 determineBestLabelsForPresentation:(id)a4;
+- (id)_viewForAccessoryButtonOfType:(int64_t)type;
+- (id)availabilityDisplayController:(id)controller determineBestLabelsForPresentation:(id)presentation;
 - (id)makeReaderAvailabilityAction;
 - (id)makeTranslationAvailabilityAction;
-- (id)pointerRegionIdentifierForInteractionLocation:(CGPoint)a3;
+- (id)pointerRegionIdentifierForInteractionLocation:(CGPoint)location;
 - (int64_t)_iconVisibility;
 - (unint64_t)_individualExtensionButtonLimit;
 - (unint64_t)_mediaStateIconToDisplay;
 - (void)_closeButtonTapped;
 - (void)_configureFirstExtensionButton;
 - (void)_configureSecondExtensionButton;
-- (void)_extensionButtonTapped:(id)a3;
-- (void)_hover:(id)a3;
+- (void)_extensionButtonTapped:(id)tapped;
+- (void)_hover:(id)_hover;
 - (void)_layOutAccessoryButtons;
 - (void)_layOutProgressView;
 - (void)_layOutTitleContainer;
 - (void)_layOutTitleContainerMask;
-- (void)_makeViewForAccessoryButtonOfType:(int64_t)a3;
+- (void)_makeViewForAccessoryButtonOfType:(int64_t)type;
 - (void)_mediaStateMuteButtonTapped;
 - (void)_menuButtonClicked;
 - (void)_menuButtonReceivedTouchDown;
@@ -63,15 +63,15 @@
 - (void)_refreshTooltip;
 - (void)_refreshTooltipIfNeeded;
 - (void)_reloadButtonTapped;
-- (void)_scribbleInteraction:(id)a3 didFinishWritingInElement:(id)a4;
-- (void)_scribbleInteraction:(id)a3 focusElement:(id)a4 initialFocusSelectionReferencePoint:(CGPoint)a5 completion:(id)a6;
-- (void)_scribbleInteraction:(id)a3 requestElementsInRect:(CGRect)a4 completion:(id)a5;
-- (void)_scribbleInteraction:(id)a3 willBeginWritingInElement:(id)a4;
-- (void)_searchFieldDidChange:(id)a3;
-- (void)_setIndexes:(id)a3 ofAccessoryButtonTypes:(id)a4 visible:(BOOL)a5 animated:(BOOL)a6;
+- (void)_scribbleInteraction:(id)interaction didFinishWritingInElement:(id)element;
+- (void)_scribbleInteraction:(id)interaction focusElement:(id)element initialFocusSelectionReferencePoint:(CGPoint)point completion:(id)completion;
+- (void)_scribbleInteraction:(id)interaction requestElementsInRect:(CGRect)rect completion:(id)completion;
+- (void)_scribbleInteraction:(id)interaction willBeginWritingInElement:(id)element;
+- (void)_searchFieldDidChange:(id)change;
+- (void)_setIndexes:(id)indexes ofAccessoryButtonTypes:(id)types visible:(BOOL)visible animated:(BOOL)animated;
 - (void)_setNeedsAnimatedAccessoryButtonUpdate;
-- (void)_setTitleContainerMasked:(BOOL)a3;
-- (void)_setTrailingButtonsHidden:(BOOL)a3;
+- (void)_setTitleContainerMasked:(BOOL)masked;
+- (void)_setTrailingButtonsHidden:(BOOL)hidden;
 - (void)_startReloadButtonExpirationTimer;
 - (void)_stopAccessoryButtonUpdateTimer;
 - (void)_stopButtonTapped;
@@ -79,27 +79,27 @@
 - (void)_temporarilyCoalesceAccessoryButtonUpdates;
 - (void)_translationButtonTapped;
 - (void)_updateAccessoryButtons;
-- (void)_updateAccessoryButtonsAnimated:(BOOL)a3 completion:(id)a4;
+- (void)_updateAccessoryButtonsAnimated:(BOOL)animated completion:(id)completion;
 - (void)_updateBadges;
 - (void)_updateCloseButtonForHover;
 - (void)_updateCloseButtonForHoverPosition;
-- (void)_updateExtensionButtonConfigurationShowingOverflow:(BOOL)a3 activeExtensionCount:(unint64_t)a4;
+- (void)_updateExtensionButtonConfigurationShowingOverflow:(BOOL)overflow activeExtensionCount:(unint64_t)count;
 - (void)_updateFormatMenuButtonAccessories;
 - (void)_updateFormatMenuButtonImage;
 - (void)_updateFormatMenuButtonStyle;
-- (void)_updateKeyboardInputMode:(id)a3;
+- (void)_updateKeyboardInputMode:(id)mode;
 - (void)_updateLayoutDirectionIfNeeded;
 - (void)_updateMediaStateMuteButton;
 - (void)_updateMenuButtonColor;
 - (void)_updateProgressViewColor;
 - (void)_updateTooltipProvider;
-- (void)_voiceSearchAvailabilityDidChange:(id)a3;
+- (void)_voiceSearchAvailabilityDidChange:(id)change;
 - (void)_voiceSearchButtonTapped;
 - (void)applyTheme;
-- (void)availabilityDisplayController:(id)a3 didUpdateWithState:(int64_t)a4;
+- (void)availabilityDisplayController:(id)controller didUpdateWithState:(int64_t)state;
 - (void)dealloc;
 - (void)didMoveToWindow;
-- (void)dismissAvailabilityLabelAnimated:(BOOL)a3 completionHandler:(id)a4;
+- (void)dismissAvailabilityLabelAnimated:(BOOL)animated completionHandler:(id)handler;
 - (void)layoutSubviews;
 - (void)makeCloseButton;
 - (void)makeCloseButtonForHover;
@@ -118,50 +118,50 @@
 - (void)makeUnreadIndicator;
 - (void)makeVoiceSearchButton;
 - (void)prepareForReuse;
-- (void)presentAvailabilityLabelWithText:(id)a3;
-- (void)setAccessoryButtonLayout:(int64_t)a3;
-- (void)setActive:(BOOL)a3;
-- (void)setContentAlignment:(int64_t)a3;
-- (void)setContentOptions:(unint64_t)a3 resetDisplay:(BOOL)a4;
-- (void)setCurrentTooltipProvider:(id)a3;
-- (void)setDownloadProgress:(double)a3 animated:(BOOL)a4;
-- (void)setExtensionButtonConfiguration:(id)a3;
-- (void)setFluidProgressController:(id)a3 withCurrentState:(id)a4;
-- (void)setFollowsKeyboardLayoutDirection:(BOOL)a3;
-- (void)setFormatMenuButtonConfigurator:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setGlobalMediaStateIcon:(unint64_t)a3;
-- (void)setHasFocusedSensitiveInputField:(BOOL)a3;
-- (void)setHasHiddenElements:(BOOL)a3;
-- (void)setHovering:(BOOL)a3;
-- (void)setLastReloadDate:(id)a3;
-- (void)setMediaStateIcon:(unint64_t)a3;
-- (void)setMenuButtonBadges:(unint64_t)a3;
-- (void)setMenuButtonSelected:(BOOL)a3;
-- (void)setOverlayConfiguration:(id)a3;
-- (void)setPlatterStyle:(int64_t)a3;
-- (void)setSearchField:(id)a3;
-- (void)setSearchFieldIcon:(id)a3;
-- (void)setSecurityAnnotation:(int64_t)a3;
-- (void)setShareParticipants:(id)a3;
-- (void)setShowsBadgeOnExtensionsButton:(BOOL)a3;
-- (void)setShowsCloseButton:(BOOL)a3;
-- (void)setShowsPinnedIndicator:(BOOL)a3;
-- (void)setShowsReaderIcon:(BOOL)a3;
-- (void)setShowsSearchField:(BOOL)a3;
-- (void)setShowsSearchIcon:(BOOL)a3;
-- (void)setShowsSiriReaderPlayingIcon:(BOOL)a3;
-- (void)setShowsSquishedAccessoryViews:(BOOL)a3;
-- (void)setShowsStopReloadButton:(BOOL)a3;
-- (void)setShowsTranslationIcon:(BOOL)a3;
-- (void)setShowsVoiceSearchButton:(BOOL)a3;
-- (void)setSquishedInset:(double)a3;
-- (void)setSquishedTitleContainer:(id)a3;
-- (void)setStopReloadButtonShowsStop:(BOOL)a3;
-- (void)setTitle:(id)a3;
-- (void)setTitleWhenActive:(id)a3;
-- (void)setTitleWhenCollapsed:(id)a3;
-- (void)setUnread:(BOOL)a3;
+- (void)presentAvailabilityLabelWithText:(id)text;
+- (void)setAccessoryButtonLayout:(int64_t)layout;
+- (void)setActive:(BOOL)active;
+- (void)setContentAlignment:(int64_t)alignment;
+- (void)setContentOptions:(unint64_t)options resetDisplay:(BOOL)display;
+- (void)setCurrentTooltipProvider:(id)provider;
+- (void)setDownloadProgress:(double)progress animated:(BOOL)animated;
+- (void)setExtensionButtonConfiguration:(id)configuration;
+- (void)setFluidProgressController:(id)controller withCurrentState:(id)state;
+- (void)setFollowsKeyboardLayoutDirection:(BOOL)direction;
+- (void)setFormatMenuButtonConfigurator:(id)configurator;
+- (void)setFrame:(CGRect)frame;
+- (void)setGlobalMediaStateIcon:(unint64_t)icon;
+- (void)setHasFocusedSensitiveInputField:(BOOL)field;
+- (void)setHasHiddenElements:(BOOL)elements;
+- (void)setHovering:(BOOL)hovering;
+- (void)setLastReloadDate:(id)date;
+- (void)setMediaStateIcon:(unint64_t)icon;
+- (void)setMenuButtonBadges:(unint64_t)badges;
+- (void)setMenuButtonSelected:(BOOL)selected;
+- (void)setOverlayConfiguration:(id)configuration;
+- (void)setPlatterStyle:(int64_t)style;
+- (void)setSearchField:(id)field;
+- (void)setSearchFieldIcon:(id)icon;
+- (void)setSecurityAnnotation:(int64_t)annotation;
+- (void)setShareParticipants:(id)participants;
+- (void)setShowsBadgeOnExtensionsButton:(BOOL)button;
+- (void)setShowsCloseButton:(BOOL)button;
+- (void)setShowsPinnedIndicator:(BOOL)indicator;
+- (void)setShowsReaderIcon:(BOOL)icon;
+- (void)setShowsSearchField:(BOOL)field;
+- (void)setShowsSearchIcon:(BOOL)icon;
+- (void)setShowsSiriReaderPlayingIcon:(BOOL)icon;
+- (void)setShowsSquishedAccessoryViews:(BOOL)views;
+- (void)setShowsStopReloadButton:(BOOL)button;
+- (void)setShowsTranslationIcon:(BOOL)icon;
+- (void)setShowsVoiceSearchButton:(BOOL)button;
+- (void)setSquishedInset:(double)inset;
+- (void)setSquishedTitleContainer:(id)container;
+- (void)setStopReloadButtonShowsStop:(BOOL)stop;
+- (void)setTitle:(id)title;
+- (void)setTitleWhenActive:(id)active;
+- (void)setTitleWhenCollapsed:(id)collapsed;
+- (void)setUnread:(BOOL)unread;
 - (void)tintColorDidChange;
 - (void)updateAccessibilityIdentifier;
 - (void)updateCornerRadius;
@@ -170,25 +170,25 @@
 
 @implementation SFUnifiedTabBarItemView
 
-- (SFUnifiedTabBarItemView)initWithFrame:(CGRect)a3
+- (SFUnifiedTabBarItemView)initWithFrame:(CGRect)frame
 {
   v25.receiver = self;
   v25.super_class = SFUnifiedTabBarItemView;
-  v3 = [(SFUnifiedBarItemView *)&v25 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SFUnifiedBarItemView *)&v25 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(SFUnifiedTabBarItemView *)v3 setPlatterStyle:1];
     [(SFUnifiedTabBarItemView *)v4 setFocusGroupIdentifier:0];
     v4->_downloadProgress = -2.0;
-    v5 = [(SFUnifiedBarItemView *)v4 contentView];
+    contentView = [(SFUnifiedBarItemView *)v4 contentView];
     v6 = [[SFUnifiedTabBarItemTitleContainerView alloc] initWithAlignment:0];
     titleContainer = v4->_titleContainer;
     v4->_titleContainer = v6;
 
     [(SFUnifiedTabBarItemTitleContainerView *)v4->_titleContainer setShowsIcon:1];
     [(SFUnifiedTabBarItemTitleContainerView *)v4->_titleContainer setTitleTextStyle:*MEMORY[0x1E69DDD80]];
-    [v5 addSubview:v4->_titleContainer];
+    [contentView addSubview:v4->_titleContainer];
     v8 = objc_alloc_init(_SFFluidProgressView);
     progressView = v4->_progressView;
     v4->_progressView = v8;
@@ -196,8 +196,8 @@
     [(_SFFluidProgressView *)v4->_progressView setDelegate:v4];
     [(SFUnifiedTabBarItemView *)v4 _updateProgressViewColor];
     [(SFUnifiedTabBarItemView *)v4 _updateShowsProgressView];
-    v10 = [(SFUnifiedBarItemView *)v4 contentView];
-    [v10 addSubview:v4->_progressView];
+    contentView2 = [(SFUnifiedBarItemView *)v4 contentView];
+    [contentView2 addSubview:v4->_progressView];
 
     v11 = objc_alloc_init(MEMORY[0x1E69784C8]);
     [v11 setDelegate:v4];
@@ -211,8 +211,8 @@
     availabilityDisplayController = v4->_availabilityDisplayController;
     v4->_availabilityDisplayController = v14;
 
-    v16 = [MEMORY[0x1E695E000] safari_browserDefaults];
-    v17 = [v16 safari_numberForKey:@"DebugReaderGlyphDisplayDuration"];
+    safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+    v17 = [safari_browserDefaults safari_numberForKey:@"DebugReaderGlyphDisplayDuration"];
 
     if (v17)
     {
@@ -234,8 +234,8 @@
 
     [(SFUnifiedTabBarItemView *)v4 addGestureRecognizer:v4->_hoverRecognizer];
     [(SFUnifiedTabBarItemView *)v4 applyTheme];
-    v22 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v22 addObserver:v4 selector:sel__setNeedsAnimatedAccessoryButtonUpdate name:*MEMORY[0x1E69DDA58] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel__setNeedsAnimatedAccessoryButtonUpdate name:*MEMORY[0x1E69DDA58] object:0];
 
     v23 = v4;
   }
@@ -243,14 +243,14 @@
   return v4;
 }
 
-- (void)_updateKeyboardInputMode:(id)a3
+- (void)_updateKeyboardInputMode:(id)mode
 {
-  v4 = [MEMORY[0x1E69DC668] sharedApplication];
-  v5 = [v4 safari_currentKeyboardInputIsRTL];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  safari_currentKeyboardInputIsRTL = [mEMORY[0x1E69DC668] safari_currentKeyboardInputIsRTL];
 
-  if (self->_keyboardInputModeIsRTL != v5)
+  if (self->_keyboardInputModeIsRTL != safari_currentKeyboardInputIsRTL)
   {
-    self->_keyboardInputModeIsRTL = v5;
+    self->_keyboardInputModeIsRTL = safari_currentKeyboardInputIsRTL;
     if ([(SFUnifiedTabBarItemView *)self _canUpdateLayoutDirectionImmediately])
     {
 
@@ -293,44 +293,44 @@
 
 - (BOOL)_canUpdateLayoutDirectionImmediately
 {
-  v3 = [(SFUnifiedTabBarItemView *)self searchField];
-  v4 = [v3 text];
-  if ([v4 length])
+  searchField = [(SFUnifiedTabBarItemView *)self searchField];
+  text = [searchField text];
+  if ([text length])
   {
     LOBYTE(v5) = 0;
   }
 
   else
   {
-    v6 = [(SFUnifiedTabBarItemView *)self searchField];
-    v7 = [v6 _fieldEditor];
-    v5 = [v7 isHidden] ^ 1;
+    searchField2 = [(SFUnifiedTabBarItemView *)self searchField];
+    _fieldEditor = [searchField2 _fieldEditor];
+    v5 = [_fieldEditor isHidden] ^ 1;
   }
 
   return v5;
 }
 
-- (void)setFollowsKeyboardLayoutDirection:(BOOL)a3
+- (void)setFollowsKeyboardLayoutDirection:(BOOL)direction
 {
-  if (self->_followsKeyboardLayoutDirection != a3)
+  if (self->_followsKeyboardLayoutDirection != direction)
   {
-    v4 = a3;
-    self->_followsKeyboardLayoutDirection = a3;
+    directionCopy = direction;
+    self->_followsKeyboardLayoutDirection = direction;
     [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer setFollowsKeyboardLayoutDirection:?];
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    if (v4)
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    if (directionCopy)
     {
-      v6 = [MEMORY[0x1E69DC668] sharedApplication];
-      self->_keyboardInputModeIsRTL = [v6 safari_currentKeyboardInputIsRTL];
+      mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+      self->_keyboardInputModeIsRTL = [mEMORY[0x1E69DC668] safari_currentKeyboardInputIsRTL];
 
-      [v7 addObserver:self selector:sel__updateKeyboardInputMode_ name:*MEMORY[0x1E69DE6B8] object:0];
-      [v7 addObserver:self selector:sel__updateLayoutDirectionIfNeeded name:@"UpdateSmartSearchFieldLayoutImmediately" object:0];
+      [defaultCenter addObserver:self selector:sel__updateKeyboardInputMode_ name:*MEMORY[0x1E69DE6B8] object:0];
+      [defaultCenter addObserver:self selector:sel__updateLayoutDirectionIfNeeded name:@"UpdateSmartSearchFieldLayoutImmediately" object:0];
     }
 
     else
     {
-      [v7 removeObserver:self name:*MEMORY[0x1E69DE6B8] object:0];
-      [v7 removeObserver:self name:@"UpdateSmartSearchFieldLayoutImmediately" object:0];
+      [defaultCenter removeObserver:self name:*MEMORY[0x1E69DE6B8] object:0];
+      [defaultCenter removeObserver:self name:@"UpdateSmartSearchFieldLayoutImmediately" object:0];
     }
 
     [(SFUnifiedTabBarItemView *)self _updateLayoutDirectionIfNeeded];
@@ -339,8 +339,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = SFUnifiedTabBarItemView;
@@ -369,18 +369,18 @@
     v5 = 1.0;
   }
 
-  v6 = [(UIButton *)self->_firstExtensionButton layer];
-  [v6 setFilters:v4];
+  layer = [(UIButton *)self->_firstExtensionButton layer];
+  [layer setFilters:v4];
 
-  v7 = [(UIButton *)self->_secondExtensionButton layer];
-  [v7 setFilters:v4];
+  layer2 = [(UIButton *)self->_secondExtensionButton layer];
+  [layer2 setFilters:v4];
 
   [(UIButton *)self->_firstExtensionButton setAlpha:v5];
   [(UIButton *)self->_secondExtensionButton setAlpha:v5];
-  v8 = [(SFUnifiedTabBarItemView *)self tintColor];
-  [(SFBadgeContainerView *)self->_firstExtensionButtonContainer setBadgeTintColor:v8];
-  [(SFBadgeContainerView *)self->_secondExtensionButtonContainer setBadgeTintColor:v8];
-  [(SFBadgeContainerView *)self->_multipleExtensionsButtonContainer setBadgeTintColor:v8];
+  tintColor = [(SFUnifiedTabBarItemView *)self tintColor];
+  [(SFBadgeContainerView *)self->_firstExtensionButtonContainer setBadgeTintColor:tintColor];
+  [(SFBadgeContainerView *)self->_secondExtensionButtonContainer setBadgeTintColor:tintColor];
+  [(SFBadgeContainerView *)self->_multipleExtensionsButtonContainer setBadgeTintColor:tintColor];
 }
 
 - (void)layoutSubviews
@@ -388,8 +388,8 @@
   v10.receiver = self;
   v10.super_class = SFUnifiedTabBarItemView;
   [(SFUnifiedBarItemView *)&v10 layoutSubviews];
-  v3 = [(SFUnifiedBarItemView *)self barMetrics];
-  [v3 itemCornerRadius];
+  barMetrics = [(SFUnifiedBarItemView *)self barMetrics];
+  [barMetrics itemCornerRadius];
   [(SFURLFieldOverlayView *)self->_overlayView _setContinuousCornerRadius:?];
 
   [(SFUnifiedBarItemView *)self squishedInset];
@@ -450,15 +450,15 @@ uint64_t __41__SFUnifiedTabBarItemView_layoutSubviews__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setTitleWhenCollapsed:(id)a3
+- (void)setTitleWhenCollapsed:(id)collapsed
 {
-  v6 = a3;
-  v4 = [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer titleWhenCollapsed];
+  collapsedCopy = collapsed;
+  titleWhenCollapsed = [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer titleWhenCollapsed];
   v5 = WBSIsEqual();
 
   if ((v5 & 1) == 0)
   {
-    [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer setTitleWhenCollapsed:v6];
+    [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer setTitleWhenCollapsed:collapsedCopy];
   }
 }
 
@@ -466,10 +466,10 @@ uint64_t __41__SFUnifiedTabBarItemView_layoutSubviews__block_invoke(uint64_t a1)
 {
   leadingButtonsWidth = self->_leadingButtonsWidth;
   trailingButtonsWidth = self->_trailingButtonsWidth;
-  v74 = [(SFUnifiedBarItemView *)self glassView];
-  if ([MEMORY[0x1E69C8880] isSolariumEnabled] && objc_msgSend(v74, "isDescendantOfView:", self))
+  glassView = [(SFUnifiedBarItemView *)self glassView];
+  if ([MEMORY[0x1E69C8880] isSolariumEnabled] && objc_msgSend(glassView, "isDescendantOfView:", self))
   {
-    [v74 frame];
+    [glassView frame];
     v70 = v6;
     v72 = v5;
     v8 = v7;
@@ -490,7 +490,7 @@ uint64_t __41__SFUnifiedTabBarItemView_layoutSubviews__block_invoke(uint64_t a1)
     trailingButtonsWidth = trailingButtonsWidth - fmin(trailingButtonsWidth, MaxX - CGRectGetMaxX(v78));
   }
 
-  v20 = [(SFUnifiedTabBarItemView *)self _iconVisibility];
+  _iconVisibility = [(SFUnifiedTabBarItemView *)self _iconVisibility];
   [(SFUnifiedBarItemView *)self squishedInset];
   v22 = v21;
   [(SFUnifiedTabBarItemView *)self _squishedInsetToHideCloseButton];
@@ -499,13 +499,13 @@ uint64_t __41__SFUnifiedTabBarItemView_layoutSubviews__block_invoke(uint64_t a1)
   v26 = fmin(v22, v24);
   v27 = leadingButtonsWidth - v26;
   v28 = trailingButtonsWidth + v26;
-  if (v20)
+  if (_iconVisibility)
   {
     v28 = trailingButtonsWidth;
     v27 = leadingButtonsWidth;
   }
 
-  if (v20 == 2)
+  if (_iconVisibility == 2)
   {
     v28 = trailingButtonsWidth;
   }
@@ -539,12 +539,12 @@ uint64_t __41__SFUnifiedTabBarItemView_layoutSubviews__block_invoke(uint64_t a1)
   if (v31)
   {
     active = self->_active;
-    v33 = [(SFUnifiedTabBarItemView *)self contentAlignment];
+    contentAlignment = [(SFUnifiedTabBarItemView *)self contentAlignment];
     v34 = 0;
-    if (!active && v33 == 1)
+    if (!active && contentAlignment == 1)
     {
-      v35 = [(SFUnifiedBarItemView *)self barMetrics];
-      [v35 tabCloseButtonWidth];
+      barMetrics = [(SFUnifiedBarItemView *)self barMetrics];
+      [barMetrics tabCloseButtonWidth];
       v37 = v36;
 
       v30 = fmax(v30, v37);
@@ -559,10 +559,10 @@ uint64_t __41__SFUnifiedTabBarItemView_layoutSubviews__block_invoke(uint64_t a1)
     v34 = 0;
   }
 
-  v38 = [(SFUnifiedTabBarItemView *)self showsSearchField];
+  showsSearchField = [(SFUnifiedTabBarItemView *)self showsSearchField];
   [(SFUnifiedTabBarItemView *)self layoutMargins];
   v71 = v39;
-  if (v38)
+  if (showsSearchField)
   {
     v40 = v39;
     if (![MEMORY[0x1E69C8880] isSolariumEnabled])
@@ -571,8 +571,8 @@ uint64_t __41__SFUnifiedTabBarItemView_layoutSubviews__block_invoke(uint64_t a1)
     }
   }
 
-  v41 = [(SFUnifiedBarItemView *)self contentView];
-  [v41 bounds];
+  contentView = [(SFUnifiedBarItemView *)self contentView];
+  [contentView bounds];
   v43 = v42;
   v45 = v44;
   v47 = v46;
@@ -590,19 +590,19 @@ uint64_t __41__SFUnifiedTabBarItemView_layoutSubviews__block_invoke(uint64_t a1)
   v80.size.width = v47;
   v80.size.height = v49;
   v51 = CGRectGetHeight(v80);
-  v52 = [(SFUnifiedBarItemView *)self barMetrics];
-  v53 = v52;
+  barMetrics2 = [(SFUnifiedBarItemView *)self barMetrics];
+  v53 = barMetrics2;
   v54 = 0.0;
-  if (!((v34 | v38) & 1 | (self->_leadingButtonsWidth != 0.0)))
+  if (!((v34 | showsSearchField) & 1 | (self->_leadingButtonsWidth != 0.0)))
   {
-    [v52 leadingTabIconInset];
+    [barMetrics2 leadingTabIconInset];
     v56 = v55;
     [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer leadingIconOffset];
     v54 = v56 + v57;
   }
 
-  v58 = [(SFUnifiedTabBarItemView *)self contentAlignment];
-  if (v58 == 1)
+  contentAlignment2 = [(SFUnifiedTabBarItemView *)self contentAlignment];
+  if (contentAlignment2 == 1)
   {
     p_titleContainer = &self->_titleContainer;
     [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer setFrame:v43, v45, v47, v49];
@@ -626,7 +626,7 @@ LABEL_30:
     goto LABEL_31;
   }
 
-  if (v58)
+  if (contentAlignment2)
   {
     goto LABEL_32;
   }
@@ -634,7 +634,7 @@ LABEL_30:
   p_titleContainer = &self->_titleContainer;
   [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer setFrame:_SFFlipRectInCoordinateSpace(![(UIView *)self _sf_usesLeftToRightLayout], v30, 0.0, v50, v51, v43, v45, v47, v49)];
   [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer setDirectionalLayoutMargins:0.0, v54, 0.0, 3.0];
-  if (!self->_showsCloseButton || !v38)
+  if (!self->_showsCloseButton || !showsSearchField)
   {
     goto LABEL_30;
   }
@@ -644,7 +644,7 @@ LABEL_30:
 LABEL_31:
   [(SFUnifiedTabBarItemTitleContainerView *)*p_titleContainer setContentOffset:v61];
 LABEL_32:
-  if (v20 == 2)
+  if (_iconVisibility == 2)
   {
     v65 = &self->_titleContainer;
     [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer setShowsIcon:1];
@@ -656,7 +656,7 @@ LABEL_32:
   else
   {
     v64 = v73;
-    if (v20 == 1)
+    if (_iconVisibility == 1)
     {
       v65 = &self->_titleContainer;
       titleContainer = self->_titleContainer;
@@ -665,7 +665,7 @@ LABEL_32:
 
     else
     {
-      if (v20)
+      if (_iconVisibility)
       {
         goto LABEL_40;
       }
@@ -689,23 +689,23 @@ LABEL_40:
 
 - (void)_layOutProgressView
 {
-  v3 = [(SFUnifiedBarItemView *)self glassView];
-  v4 = v3;
-  if (v3)
+  glassView = [(SFUnifiedBarItemView *)self glassView];
+  v4 = glassView;
+  if (glassView)
   {
-    v5 = v3;
+    contentView = glassView;
   }
 
   else
   {
-    v5 = [(SFUnifiedBarItemView *)self contentView];
+    contentView = [(SFUnifiedBarItemView *)self contentView];
   }
 
-  v7 = v5;
+  v7 = contentView;
 
-  v6 = [(_SFFluidProgressView *)self->_progressView superview];
+  superview = [(_SFFluidProgressView *)self->_progressView superview];
 
-  if (v6 != v7)
+  if (superview != v7)
   {
     [v7 addSubview:self->_progressView];
   }
@@ -716,12 +716,12 @@ LABEL_40:
   [(_SFFluidProgressView *)self->_progressView setFrame:?];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(SFUnifiedTabBarItemView *)self frame];
   if (width != v9 || height != v8)
   {
@@ -738,8 +738,8 @@ LABEL_40:
   v4.receiver = self;
   v4.super_class = SFUnifiedTabBarItemView;
   [(SFUnifiedBarItemView *)&v4 updateCornerRadius];
-  v3 = [(SFUnifiedBarItemView *)self barMetrics];
-  [v3 itemCornerRadius];
+  barMetrics = [(SFUnifiedBarItemView *)self barMetrics];
+  [barMetrics itemCornerRadius];
   [(SFNavigationBarToggleButton *)self->_formatMenuButton setResizableBackgroundCornerRadius:?];
 }
 
@@ -757,13 +757,13 @@ LABEL_40:
   self->_lastReloadDate = 0;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v6 = a3;
+  titleCopy = title;
   if ((WBSIsEqual() & 1) == 0)
   {
-    objc_storeStrong(&self->_title, a3);
-    [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer setTitleWhenCollapsed:v6];
+    objc_storeStrong(&self->_title, title);
+    [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer setTitleWhenCollapsed:titleCopy];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (objc_opt_respondsToSelector())
     {
@@ -779,13 +779,13 @@ LABEL_40:
     return 1;
   }
 
-  v4 = [(SFUnifiedTabBarItemView *)self contentAlignment];
-  if (v4 == 1)
+  contentAlignment = [(SFUnifiedTabBarItemView *)self contentAlignment];
+  if (contentAlignment == 1)
   {
     return self->_showsCloseButton && ![(SFUnifiedTabBarItemView *)self _hasRoomForIconAndCloseButton];
   }
 
-  if (v4)
+  if (contentAlignment)
   {
     return 1;
   }
@@ -806,51 +806,51 @@ LABEL_40:
   }
 }
 
-- (void)setTitleWhenActive:(id)a3
+- (void)setTitleWhenActive:(id)active
 {
   titleContainer = self->_titleContainer;
-  v5 = a3;
-  [(SFUnifiedTabBarItemTitleContainerView *)titleContainer setTitle:v5];
+  activeCopy = active;
+  [(SFUnifiedTabBarItemTitleContainerView *)titleContainer setTitle:activeCopy];
   WeakRetained = objc_loadWeakRetained(&self->_squishedTitleContainer);
-  [WeakRetained setTitle:v5];
+  [WeakRetained setTitle:activeCopy];
 
   [(SFUnifiedTabBarItemView *)self applyTheme];
 
   [(SFUnifiedTabBarItemView *)self setNeedsLayout];
 }
 
-- (void)setSearchFieldIcon:(id)a3
+- (void)setSearchFieldIcon:(id)icon
 {
-  v4 = a3;
+  iconCopy = icon;
   searchFieldIconContainer = self->_searchFieldIconContainer;
-  v7 = v4;
+  v7 = iconCopy;
   if (!searchFieldIconContainer)
   {
     v6 = [(SFUnifiedTabBarItemView *)self _viewForAccessoryButtonOfType:16];
-    v4 = v7;
+    iconCopy = v7;
     searchFieldIconContainer = self->_searchFieldIconContainer;
   }
 
-  [(SFSearchFieldIconContainerView *)searchFieldIconContainer setIcon:v4];
+  [(SFSearchFieldIconContainerView *)searchFieldIconContainer setIcon:iconCopy];
 }
 
-- (void)setShowsSearchIcon:(BOOL)a3
+- (void)setShowsSearchIcon:(BOOL)icon
 {
-  v3 = a3;
-  if ([(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer showsSearchIcon]!= a3)
+  iconCopy = icon;
+  if ([(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer showsSearchIcon]!= icon)
   {
-    [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer setShowsSearchIcon:v3];
+    [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer setShowsSearchIcon:iconCopy];
     WeakRetained = objc_loadWeakRetained(&self->_squishedTitleContainer);
-    [WeakRetained setShowsSearchIcon:v3];
+    [WeakRetained setShowsSearchIcon:iconCopy];
 
     [(SFUnifiedTabBarItemView *)self setNeedsLayout];
-    v6 = [(SFUnifiedTabBarItemView *)self superview];
-    if (v6)
+    superview = [(SFUnifiedTabBarItemView *)self superview];
+    if (superview)
     {
-      v7 = v6;
-      v8 = [(SFUnifiedTabBarItemView *)self isHidden];
+      v7 = superview;
+      isHidden = [(SFUnifiedTabBarItemView *)self isHidden];
 
-      if ((v8 & 1) == 0)
+      if ((isHidden & 1) == 0)
       {
         v9[0] = MEMORY[0x1E69E9820];
         v9[1] = 3221225472;
@@ -863,50 +863,50 @@ LABEL_40:
   }
 }
 
-- (void)setShowsVoiceSearchButton:(BOOL)a3
+- (void)setShowsVoiceSearchButton:(BOOL)button
 {
-  if (self->_showsVoiceSearchButton != a3)
+  if (self->_showsVoiceSearchButton != button)
   {
-    self->_showsVoiceSearchButton = a3;
+    self->_showsVoiceSearchButton = button;
     [(SFUnifiedTabBarItemView *)self setNeedsLayout];
   }
 }
 
-- (void)setSecurityAnnotation:(int64_t)a3
+- (void)setSecurityAnnotation:(int64_t)annotation
 {
   [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer setSecurityAnnotation:?];
   WeakRetained = objc_loadWeakRetained(&self->_squishedTitleContainer);
-  [WeakRetained setSecurityAnnotation:a3];
+  [WeakRetained setSecurityAnnotation:annotation];
 }
 
-- (void)setHasFocusedSensitiveInputField:(BOOL)a3
+- (void)setHasFocusedSensitiveInputField:(BOOL)field
 {
-  v3 = a3;
+  fieldCopy = field;
   [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer setHasFocusedSensitiveInputField:?];
   WeakRetained = objc_loadWeakRetained(&self->_squishedTitleContainer);
-  [WeakRetained setHasFocusedSensitiveInputField:v3];
+  [WeakRetained setHasFocusedSensitiveInputField:fieldCopy];
 }
 
 - (UIView)menuPopoverSourceView
 {
   if ([(SFUnifiedTabBarItemAccessoryButtonArrangement *)self->_accessoryButtonArrangement containsButtonType:1])
   {
-    v3 = self->_moreMenuButton;
+    tiplessPopoverSourceView = self->_moreMenuButton;
   }
 
   else
   {
-    v3 = [(SFNavigationBarToggleButton *)self->_formatMenuButton tiplessPopoverSourceView];
+    tiplessPopoverSourceView = [(SFNavigationBarToggleButton *)self->_formatMenuButton tiplessPopoverSourceView];
   }
 
-  return v3;
+  return tiplessPopoverSourceView;
 }
 
-- (void)setMenuButtonSelected:(BOOL)a3
+- (void)setMenuButtonSelected:(BOOL)selected
 {
-  if (self->_menuButtonSelected != a3)
+  if (self->_menuButtonSelected != selected)
   {
-    self->_menuButtonSelected = a3;
+    self->_menuButtonSelected = selected;
     [(SFUnifiedTabBarItemView *)self updateMenuButtonForSelection];
   }
 }
@@ -916,49 +916,49 @@ LABEL_40:
   [(SFMoreMenuButton *)self->_moreMenuButton setSelected:self->_menuButtonSelected];
   [(SFNavigationBarToggleButton *)self->_formatMenuButton setSelected:self->_menuButtonSelected];
   menuButtonSelected = self->_menuButtonSelected;
-  v4 = [(SFNavigationBarToggleButton *)self->_formatMenuButton pointerInteraction];
-  [v4 setEnabled:menuButtonSelected];
+  pointerInteraction = [(SFNavigationBarToggleButton *)self->_formatMenuButton pointerInteraction];
+  [pointerInteraction setEnabled:menuButtonSelected];
 
   [(SFUnifiedTabBarItemView *)self _updateFormatMenuButtonAccessories];
 
   [(SFUnifiedTabBarItemView *)self _updateMenuButtonColor];
 }
 
-- (void)setShowsReaderIcon:(BOOL)a3
+- (void)setShowsReaderIcon:(BOOL)icon
 {
-  if (self->_showsReaderIcon != a3)
+  if (self->_showsReaderIcon != icon)
   {
-    self->_showsReaderIcon = a3;
+    self->_showsReaderIcon = icon;
     [(SFUnifiedTabBarItemView *)self _updateFormatMenuButtonImage];
   }
 }
 
-- (void)setShowsTranslationIcon:(BOOL)a3
+- (void)setShowsTranslationIcon:(BOOL)icon
 {
-  if (self->_showsTranslationIcon != a3)
+  if (self->_showsTranslationIcon != icon)
   {
-    self->_showsTranslationIcon = a3;
+    self->_showsTranslationIcon = icon;
     [(SFUnifiedTabBarItemView *)self _updateFormatMenuButtonImage];
   }
 }
 
-- (void)setShowsSiriReaderPlayingIcon:(BOOL)a3
+- (void)setShowsSiriReaderPlayingIcon:(BOOL)icon
 {
-  if (self->_showsSiriReaderPlayingIcon != a3)
+  if (self->_showsSiriReaderPlayingIcon != icon)
   {
-    self->_showsSiriReaderPlayingIcon = a3;
+    self->_showsSiriReaderPlayingIcon = icon;
     [(SFUnifiedTabBarItemView *)self _updateFormatMenuButtonImage];
   }
 }
 
-- (void)setContentOptions:(unint64_t)a3 resetDisplay:(BOOL)a4
+- (void)setContentOptions:(unint64_t)options resetDisplay:(BOOL)display
 {
-  if (a4)
+  if (display)
   {
     [(WBSContentAvailabilityDisplayController *)self->_availabilityDisplayController resetDisplay];
   }
 
-  [(WBSContentAvailabilityDisplayController *)self->_availabilityDisplayController updateToContentOptions:a3];
+  [(WBSContentAvailabilityDisplayController *)self->_availabilityDisplayController updateToContentOptions:options];
 
   [(SFUnifiedTabBarItemView *)self _updateFormatMenuButtonImage];
 }
@@ -1015,7 +1015,7 @@ void __60__SFUnifiedTabBarItemView_makeTranslationAvailabilityAction__block_invo
 
 - (BOOL)showsStopReloadButton
 {
-  v3 = [(SFUnifiedTabBarItemView *)self showsPersistentStopReloadButton];
+  showsPersistentStopReloadButton = [(SFUnifiedTabBarItemView *)self showsPersistentStopReloadButton];
   lastReloadDate = self->_lastReloadDate;
   if (lastReloadDate)
   {
@@ -1029,7 +1029,7 @@ void __60__SFUnifiedTabBarItemView_makeTranslationAvailabilityAction__block_invo
   }
 
   result = self->_showsStopReloadButton;
-  if (!v3 && result && !v6)
+  if (!showsPersistentStopReloadButton && result && !v6)
   {
 
     return [(SFUnifiedBarItemView *)self isHovering];
@@ -1038,11 +1038,11 @@ void __60__SFUnifiedTabBarItemView_makeTranslationAvailabilityAction__block_invo
   return result;
 }
 
-- (void)setShowsStopReloadButton:(BOOL)a3
+- (void)setShowsStopReloadButton:(BOOL)button
 {
-  if (self->_showsStopReloadButton != a3)
+  if (self->_showsStopReloadButton != button)
   {
-    self->_showsStopReloadButton = a3;
+    self->_showsStopReloadButton = button;
     if ([(SFUnifiedBarItemView *)self isHovering])
     {
 
@@ -1051,11 +1051,11 @@ void __60__SFUnifiedTabBarItemView_makeTranslationAvailabilityAction__block_invo
   }
 }
 
-- (void)setStopReloadButtonShowsStop:(BOOL)a3
+- (void)setStopReloadButtonShowsStop:(BOOL)stop
 {
-  if (self->_stopReloadButtonShowsStop != a3)
+  if (self->_stopReloadButtonShowsStop != stop)
   {
-    self->_stopReloadButtonShowsStop = a3;
+    self->_stopReloadButtonShowsStop = stop;
     if ([(SFUnifiedTabBarItemView *)self showsStopReloadButton])
     {
 
@@ -1064,19 +1064,19 @@ void __60__SFUnifiedTabBarItemView_makeTranslationAvailabilityAction__block_invo
   }
 }
 
-- (void)setLastReloadDate:(id)a3
+- (void)setLastReloadDate:(id)date
 {
-  v6 = a3;
+  dateCopy = date;
   if ((WBSIsEqual() & 1) == 0)
   {
-    v5 = [(SFUnifiedTabBarItemView *)self showsStopReloadButton];
-    objc_storeStrong(&self->_lastReloadDate, a3);
-    if (v5 != [(SFUnifiedTabBarItemView *)self showsStopReloadButton])
+    showsStopReloadButton = [(SFUnifiedTabBarItemView *)self showsStopReloadButton];
+    objc_storeStrong(&self->_lastReloadDate, date);
+    if (showsStopReloadButton != [(SFUnifiedTabBarItemView *)self showsStopReloadButton])
     {
       [(SFUnifiedTabBarItemView *)self _setNeedsAnimatedAccessoryButtonUpdate];
     }
 
-    if (v6)
+    if (dateCopy)
     {
       [(SFUnifiedTabBarItemView *)self _startReloadButtonExpirationTimer];
     }
@@ -1099,11 +1099,11 @@ void __60__SFUnifiedTabBarItemView_makeTranslationAvailabilityAction__block_invo
   return mediaStateIcon;
 }
 
-- (void)setMediaStateIcon:(unint64_t)a3
+- (void)setMediaStateIcon:(unint64_t)icon
 {
-  if (self->_mediaStateIcon != a3)
+  if (self->_mediaStateIcon != icon)
   {
-    self->_mediaStateIcon = a3;
+    self->_mediaStateIcon = icon;
     [(SFUnifiedTabBarItemView *)self _updateMediaStateMuteButton];
     [(SFUnifiedTabBarItemView *)self _setNeedsAnimatedAccessoryButtonUpdate];
     [(SFUnifiedTabBarItemView *)self _updateFormatMenuButtonAccessories];
@@ -1112,11 +1112,11 @@ void __60__SFUnifiedTabBarItemView_makeTranslationAvailabilityAction__block_invo
   }
 }
 
-- (void)setGlobalMediaStateIcon:(unint64_t)a3
+- (void)setGlobalMediaStateIcon:(unint64_t)icon
 {
-  if (self->_globalMediaStateIcon != a3)
+  if (self->_globalMediaStateIcon != icon)
   {
-    self->_globalMediaStateIcon = a3;
+    self->_globalMediaStateIcon = icon;
     [(SFUnifiedTabBarItemView *)self _updateMediaStateMuteButton];
     [(SFUnifiedTabBarItemView *)self _setNeedsAnimatedAccessoryButtonUpdate];
 
@@ -1124,10 +1124,10 @@ void __60__SFUnifiedTabBarItemView_makeTranslationAvailabilityAction__block_invo
   }
 }
 
-- (void)setFluidProgressController:(id)a3 withCurrentState:(id)a4
+- (void)setFluidProgressController:(id)controller withCurrentState:(id)state
 {
-  obj = a3;
-  v6 = a4;
+  obj = controller;
+  stateCopy = state;
   WeakRetained = objc_loadWeakRetained(&self->_fluidProgressController);
   if (WeakRetained != obj)
   {
@@ -1135,18 +1135,18 @@ void __60__SFUnifiedTabBarItemView_makeTranslationAvailabilityAction__block_invo
     v8 = objc_storeWeak(&self->_fluidProgressController, obj);
 
     [obj registerObserver:self->_progressView];
-    [(_SFFluidProgressView *)self->_progressView setProgressToCurrentPositionForState:v6];
+    [(_SFFluidProgressView *)self->_progressView setProgressToCurrentPositionForState:stateCopy];
     [(SFUnifiedTabBarItemView *)self _updateShowsProgressView];
     WeakRetained = obj;
   }
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    self->_active = a3;
-    [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer setCollapsed:!a3];
+    self->_active = active;
+    [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer setCollapsed:!active];
     [(SFUnifiedTabBarItemView *)self _updateShowsProgressView];
     [(SFUnifiedTabBarItemView *)self _updateMediaStateMuteButton];
     [(SFUnifiedTabBarItemView *)self setNeedsLayout];
@@ -1158,11 +1158,11 @@ void __60__SFUnifiedTabBarItemView_makeTranslationAvailabilityAction__block_invo
   }
 }
 
-- (void)setShowsCloseButton:(BOOL)a3
+- (void)setShowsCloseButton:(BOOL)button
 {
-  if (self->_showsCloseButton != a3)
+  if (self->_showsCloseButton != button)
   {
-    self->_showsCloseButton = a3;
+    self->_showsCloseButton = button;
     [(SFUnifiedTabBarItemView *)self setNeedsLayout];
   }
 }
@@ -1187,9 +1187,9 @@ void __60__SFUnifiedTabBarItemView_makeTranslationAvailabilityAction__block_invo
   return Width > v6 + v7 * 2.0;
 }
 
-- (void)setFormatMenuButtonConfigurator:(id)a3
+- (void)setFormatMenuButtonConfigurator:(id)configurator
 {
-  obj = a3;
+  obj = configurator;
   WeakRetained = objc_loadWeakRetained(&self->_formatMenuButtonConfigurator);
 
   if (WeakRetained != obj)
@@ -1199,39 +1199,39 @@ void __60__SFUnifiedTabBarItemView_makeTranslationAvailabilityAction__block_invo
   }
 }
 
-- (void)setSearchField:(id)a3
+- (void)setSearchField:(id)field
 {
-  v6 = a3;
-  v4 = [(SFUnifiedTabBarItemView *)self searchField];
-  if (v4 != v6)
+  fieldCopy = field;
+  searchField = [(SFUnifiedTabBarItemView *)self searchField];
+  if (searchField != fieldCopy)
   {
     [(SFUnifiedTabBarItemView *)self _updateLayoutDirectionIfNeeded];
-    [v4 removeTarget:self action:sel__searchFieldDidChange_ forControlEvents:0x20000];
-    [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer setSearchField:v6];
+    [searchField removeTarget:self action:sel__searchFieldDidChange_ forControlEvents:0x20000];
+    [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer setSearchField:fieldCopy];
     [(SFUnifiedTabBarItemView *)self setNeedsLayout];
-    [v6 addTarget:self action:sel__searchFieldDidChange_ forControlEvents:0x20000];
-    v5 = [(SFUnifiedTabBarItemView *)self _searchFieldTintColor];
-    [v6 setTintColor:v5];
+    [fieldCopy addTarget:self action:sel__searchFieldDidChange_ forControlEvents:0x20000];
+    _searchFieldTintColor = [(SFUnifiedTabBarItemView *)self _searchFieldTintColor];
+    [fieldCopy setTintColor:_searchFieldTintColor];
   }
 }
 
-- (void)setShowsSearchField:(BOOL)a3
+- (void)setShowsSearchField:(BOOL)field
 {
-  v3 = a3;
-  if ([(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer showsSearchField]!= a3)
+  fieldCopy = field;
+  if ([(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer showsSearchField]!= field)
   {
-    [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer setShowsSearchField:v3];
+    [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer setShowsSearchField:fieldCopy];
     [(SFUnifiedTabBarItemView *)self applyTheme];
 
     [(SFUnifiedTabBarItemView *)self setNeedsLayout];
   }
 }
 
-- (void)setAccessoryButtonLayout:(int64_t)a3
+- (void)setAccessoryButtonLayout:(int64_t)layout
 {
-  if (self->_accessoryButtonLayout != a3)
+  if (self->_accessoryButtonLayout != layout)
   {
-    self->_accessoryButtonLayout = a3;
+    self->_accessoryButtonLayout = layout;
     if ([(SFUnifiedTabBarItemView *)self _showsFormatMenuButtonAccessories])
     {
       v5 = objc_alloc_init(SFMoreMenuButton);
@@ -1256,31 +1256,31 @@ void __60__SFUnifiedTabBarItemView_makeTranslationAvailabilityAction__block_invo
   }
 }
 
-- (void)setContentAlignment:(int64_t)a3
+- (void)setContentAlignment:(int64_t)alignment
 {
-  if ([(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer alignment]!= a3)
+  if ([(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer alignment]!= alignment)
   {
-    [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer setAlignment:a3];
+    [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer setAlignment:alignment];
 
     [(SFUnifiedTabBarItemView *)self setNeedsLayout];
   }
 }
 
-- (void)setDownloadProgress:(double)a3 animated:(BOOL)a4
+- (void)setDownloadProgress:(double)progress animated:(BOOL)animated
 {
-  v4 = a4;
-  self->_downloadProgress = a3;
+  animatedCopy = animated;
+  self->_downloadProgress = progress;
   [SFMoreMenuButton setDownloadProgress:"setDownloadProgress:animated:" animated:?];
-  [(SFMoreMenuButton *)self->_downloadProgressView setDownloadProgress:v4 animated:a3];
+  [(SFMoreMenuButton *)self->_downloadProgressView setDownloadProgress:animatedCopy animated:progress];
 
   [(SFUnifiedTabBarItemView *)self _updateFormatMenuButtonAccessories];
 }
 
-- (void)_updateExtensionButtonConfigurationShowingOverflow:(BOOL)a3 activeExtensionCount:(unint64_t)a4
+- (void)_updateExtensionButtonConfigurationShowingOverflow:(BOOL)overflow activeExtensionCount:(unint64_t)count
 {
-  v5 = a3;
-  v16 = [MEMORY[0x1E69DC740] borderlessButtonConfiguration];
-  if (v5)
+  overflowCopy = overflow;
+  borderlessButtonConfiguration = [MEMORY[0x1E69DC740] borderlessButtonConfiguration];
+  if (overflowCopy)
   {
     v7 = @"puzzlepiece.extension.fill";
   }
@@ -1291,59 +1291,59 @@ void __60__SFUnifiedTabBarItemView_makeTranslationAvailabilityAction__block_invo
   }
 
   v8 = [MEMORY[0x1E69DCAB8] systemImageNamed:v7];
-  [v16 setImage:v8];
-  if (v5)
+  [borderlessButtonConfiguration setImage:v8];
+  if (overflowCopy)
   {
     v9 = MEMORY[0x1E696ADA0];
-    v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+    v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:count];
     v11 = [v9 localizedStringFromNumber:v10 numberStyle:1];
-    [v16 setTitle:v11];
+    [borderlessButtonConfiguration setTitle:v11];
   }
 
   else
   {
-    [v16 setTitle:0];
+    [borderlessButtonConfiguration setTitle:0];
   }
 
-  v12 = [MEMORY[0x1E69DCAD8] safari_URLFieldButtonConfiguration];
-  [v16 setPreferredSymbolConfigurationForImage:v12];
+  safari_URLFieldButtonConfiguration = [MEMORY[0x1E69DCAD8] safari_URLFieldButtonConfiguration];
+  [borderlessButtonConfiguration setPreferredSymbolConfigurationForImage:safari_URLFieldButtonConfiguration];
 
-  [v16 setImagePadding:2.0];
-  [v16 setContentInsets:{6.0, 6.0, 6.0, 6.0}];
-  v13 = [MEMORY[0x1E69DC888] clearColor];
-  v14 = [v16 background];
-  [v14 setBackgroundColor:v13];
+  [borderlessButtonConfiguration setImagePadding:2.0];
+  [borderlessButtonConfiguration setContentInsets:{6.0, 6.0, 6.0, 6.0}];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  background = [borderlessButtonConfiguration background];
+  [background setBackgroundColor:clearColor];
 
-  [(UIButton *)self->_multipleExtensionsButton setConfiguration:v16];
+  [(UIButton *)self->_multipleExtensionsButton setConfiguration:borderlessButtonConfiguration];
   v15 = _WBSLocalizedString();
   [(UIButton *)self->_multipleExtensionsButton setLargeContentTitle:v15];
 
   [(UIButton *)self->_multipleExtensionsButton setLargeContentImage:v8];
-  [(SFBadgeContainerView *)self->_multipleExtensionsButtonContainer setPositionsBadgeRelativeToLayoutMargins:!v5];
+  [(SFBadgeContainerView *)self->_multipleExtensionsButtonContainer setPositionsBadgeRelativeToLayoutMargins:!overflowCopy];
 }
 
-- (void)setExtensionButtonConfiguration:(id)a3
+- (void)setExtensionButtonConfiguration:(id)configuration
 {
-  v12 = a3;
-  v5 = [(SFWebExtensionButtonConfiguration *)self->_extensionButtonConfiguration buttons];
-  v6 = [v12 buttons];
-  v7 = [v5 isEqualToArray:v6];
+  configurationCopy = configuration;
+  buttons = [(SFWebExtensionButtonConfiguration *)self->_extensionButtonConfiguration buttons];
+  buttons2 = [configurationCopy buttons];
+  v7 = [buttons isEqualToArray:buttons2];
 
   if ((WBSIsEqual() & 1) == 0)
   {
-    objc_storeStrong(&self->_extensionButtonConfiguration, a3);
-    v8 = [v12 buttons];
+    objc_storeStrong(&self->_extensionButtonConfiguration, configuration);
+    buttons3 = [configurationCopy buttons];
     [(SFUnifiedTabBarItemView *)self _configureFirstExtensionButton];
     [(SFUnifiedTabBarItemView *)self _configureSecondExtensionButton];
-    v9 = [v12 alwaysShowMultipleExtensionsButton];
-    v10 = [v12 activeExtensionCount];
-    v11 = [(SFUnifiedTabBarItemView *)self _individualExtensionButtonLimit];
-    if ((v9 & 1) != 0 || v10 > v11)
+    alwaysShowMultipleExtensionsButton = [configurationCopy alwaysShowMultipleExtensionsButton];
+    activeExtensionCount = [configurationCopy activeExtensionCount];
+    _individualExtensionButtonLimit = [(SFUnifiedTabBarItemView *)self _individualExtensionButtonLimit];
+    if ((alwaysShowMultipleExtensionsButton & 1) != 0 || activeExtensionCount > _individualExtensionButtonLimit)
     {
-      [(SFUnifiedTabBarItemView *)self _updateExtensionButtonConfigurationShowingOverflow:v10 > v11 activeExtensionCount:v10];
+      [(SFUnifiedTabBarItemView *)self _updateExtensionButtonConfigurationShowingOverflow:activeExtensionCount > _individualExtensionButtonLimit activeExtensionCount:activeExtensionCount];
     }
 
-    if ([v8 count])
+    if ([buttons3 count])
     {
       [(SFUnifiedTabBarItemView *)self _setNeedsAnimatedAccessoryButtonUpdate];
     }
@@ -1360,18 +1360,18 @@ void __60__SFUnifiedTabBarItemView_makeTranslationAvailabilityAction__block_invo
 
 - (void)_configureFirstExtensionButton
 {
-  v3 = [(SFWebExtensionButtonConfiguration *)self->_extensionButtonConfiguration buttons];
-  v9 = [v3 firstObject];
+  buttons = [(SFWebExtensionButtonConfiguration *)self->_extensionButtonConfiguration buttons];
+  firstObject = [buttons firstObject];
 
   firstExtensionButton = self->_firstExtensionButton;
-  v5 = [v9 image];
-  [(UIButton *)firstExtensionButton setImage:v5 forState:0];
+  image = [firstObject image];
+  [(UIButton *)firstExtensionButton setImage:image forState:0];
 
-  v6 = [v9 extension];
-  v7 = [v6 displayShortName];
-  if (v7)
+  extension = [firstObject extension];
+  displayShortName = [extension displayShortName];
+  if (displayShortName)
   {
-    [(UIButton *)self->_firstExtensionButton setLargeContentTitle:v7];
+    [(UIButton *)self->_firstExtensionButton setLargeContentTitle:displayShortName];
   }
 
   else
@@ -1381,31 +1381,31 @@ void __60__SFUnifiedTabBarItemView_makeTranslationAvailabilityAction__block_invo
   }
 
   [(SFBadgeContainerView *)self->_firstExtensionButtonContainer setNeedsLayout];
-  -[SFBadgeContainerView setShowsBadge:](self->_firstExtensionButtonContainer, "setShowsBadge:", [v9 badged]);
+  -[SFBadgeContainerView setShowsBadge:](self->_firstExtensionButtonContainer, "setShowsBadge:", [firstObject badged]);
 }
 
 - (void)_configureSecondExtensionButton
 {
-  v9 = [(SFWebExtensionButtonConfiguration *)self->_extensionButtonConfiguration buttons];
-  if ([v9 count] < 2)
+  buttons = [(SFWebExtensionButtonConfiguration *)self->_extensionButtonConfiguration buttons];
+  if ([buttons count] < 2)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = [v9 objectAtIndexedSubscript:1];
+    v3 = [buttons objectAtIndexedSubscript:1];
   }
 
   secondExtensionButton = self->_secondExtensionButton;
-  v5 = [v3 image];
-  [(UIButton *)secondExtensionButton setImage:v5 forState:0];
+  image = [v3 image];
+  [(UIButton *)secondExtensionButton setImage:image forState:0];
 
-  v6 = [v3 extension];
-  v7 = [v6 displayShortName];
-  if (v7)
+  extension = [v3 extension];
+  displayShortName = [extension displayShortName];
+  if (displayShortName)
   {
-    [(UIButton *)self->_secondExtensionButton setLargeContentTitle:v7];
+    [(UIButton *)self->_secondExtensionButton setLargeContentTitle:displayShortName];
   }
 
   else
@@ -1418,41 +1418,41 @@ void __60__SFUnifiedTabBarItemView_makeTranslationAvailabilityAction__block_invo
   -[SFBadgeContainerView setShowsBadge:](self->_secondExtensionButtonContainer, "setShowsBadge:", [v3 badged]);
 }
 
-- (void)setMenuButtonBadges:(unint64_t)a3
+- (void)setMenuButtonBadges:(unint64_t)badges
 {
-  if (self->_menuButtonBadges != a3)
+  if (self->_menuButtonBadges != badges)
   {
-    self->_menuButtonBadges = a3;
+    self->_menuButtonBadges = badges;
     [(SFUnifiedTabBarItemView *)self _updateBadges];
 
     [(SFUnifiedTabBarItemView *)self _updateFormatMenuButtonAccessories];
   }
 }
 
-- (void)setShowsBadgeOnExtensionsButton:(BOOL)a3
+- (void)setShowsBadgeOnExtensionsButton:(BOOL)button
 {
-  if (self->_showsBadgeOnExtensionsButton != a3)
+  if (self->_showsBadgeOnExtensionsButton != button)
   {
-    self->_showsBadgeOnExtensionsButton = a3;
+    self->_showsBadgeOnExtensionsButton = button;
     [(SFUnifiedTabBarItemView *)self _updateBadges];
   }
 }
 
-- (void)setUnread:(BOOL)a3
+- (void)setUnread:(BOOL)unread
 {
-  if (self->_unread != a3)
+  if (self->_unread != unread)
   {
-    self->_unread = a3;
+    self->_unread = unread;
     [(SFUnifiedTabBarItemView *)self _setNeedsAnimatedAccessoryButtonUpdate];
   }
 }
 
-- (void)setShareParticipants:(id)a3
+- (void)setShareParticipants:(id)participants
 {
-  v6 = a3;
+  participantsCopy = participants;
   if (![(NSArray *)self->_shareParticipants isEqualToArray:?])
   {
-    v4 = [v6 copy];
+    v4 = [participantsCopy copy];
     shareParticipants = self->_shareParticipants;
     self->_shareParticipants = v4;
 
@@ -1461,58 +1461,58 @@ void __60__SFUnifiedTabBarItemView_makeTranslationAvailabilityAction__block_invo
   }
 }
 
-- (void)setShowsPinnedIndicator:(BOOL)a3
+- (void)setShowsPinnedIndicator:(BOOL)indicator
 {
-  if (self->_showsPinnedIndicator != a3)
+  if (self->_showsPinnedIndicator != indicator)
   {
-    self->_showsPinnedIndicator = a3;
+    self->_showsPinnedIndicator = indicator;
     [(SFUnifiedTabBarItemView *)self _setNeedsAnimatedAccessoryButtonUpdate];
   }
 }
 
-- (void)setHasHiddenElements:(BOOL)a3
+- (void)setHasHiddenElements:(BOOL)elements
 {
-  if (self->_hasHiddenElements != a3)
+  if (self->_hasHiddenElements != elements)
   {
-    self->_hasHiddenElements = a3;
+    self->_hasHiddenElements = elements;
     [(SFUnifiedTabBarItemView *)self _updateFormatMenuButtonAccessories];
   }
 }
 
-- (void)setOverlayConfiguration:(id)a3
+- (void)setOverlayConfiguration:(id)configuration
 {
-  v32 = a3;
+  configurationCopy = configuration;
   v5 = self->_overlayConfiguration;
-  objc_storeStrong(&self->_overlayConfiguration, a3);
+  objc_storeStrong(&self->_overlayConfiguration, configuration);
   [(SFUnifiedTabBarItemView *)self updateAccessibilityIdentifier];
-  v6 = [(SFURLFieldOverlayConfiguration *)v5 identifier];
-  v7 = [v32 identifier];
+  identifier = [(SFURLFieldOverlayConfiguration *)v5 identifier];
+  identifier2 = [configurationCopy identifier];
   v8 = WBSIsEqual();
 
   overlayView = self->_overlayView;
   if (v8)
   {
-    [(SFURLFieldOverlayView *)overlayView setConfiguration:v32];
+    [(SFURLFieldOverlayView *)overlayView setConfiguration:configurationCopy];
   }
 
   else
   {
     [(SFURLFieldOverlayView *)overlayView dismissAndRemove];
-    if (v32)
+    if (configurationCopy)
     {
-      v10 = [(SFUnifiedBarItemView *)self contentView];
-      v11 = [v10 layer];
+      contentView = [(SFUnifiedBarItemView *)self contentView];
+      layer = [contentView layer];
 
-      v12 = [v11 presentationLayer];
-      v13 = v12;
-      if (v12)
+      presentationLayer = [layer presentationLayer];
+      v13 = presentationLayer;
+      if (presentationLayer)
       {
-        v14 = v12;
+        v14 = presentationLayer;
       }
 
       else
       {
-        v14 = v11;
+        v14 = layer;
       }
 
       v15 = v14;
@@ -1524,21 +1524,21 @@ void __60__SFUnifiedTabBarItemView_makeTranslationAvailabilityAction__block_invo
       v22 = v21;
       v24 = v23;
 
-      v25 = [(SFURLFieldOverlayView *)v16 initWithFrame:v32 configuration:v18, v20, v22, v24];
+      v25 = [(SFURLFieldOverlayView *)v16 initWithFrame:configurationCopy configuration:v18, v20, v22, v24];
       v26 = self->_overlayView;
       self->_overlayView = v25;
 
       [(SFURLFieldOverlayView *)self->_overlayView setAutoresizingMask:18];
-      v27 = [(SFUnifiedBarItemView *)self barMetrics];
-      [v27 itemCornerRadius];
+      barMetrics = [(SFUnifiedBarItemView *)self barMetrics];
+      [barMetrics itemCornerRadius];
       [(SFURLFieldOverlayView *)self->_overlayView _setContinuousCornerRadius:?];
 
-      v28 = [(SFUnifiedBarItemView *)self contentView];
-      v29 = [(SFURLFieldOverlayView *)self->_overlayView eraserView];
-      [v28 addSubview:v29];
+      contentView2 = [(SFUnifiedBarItemView *)self contentView];
+      eraserView = [(SFURLFieldOverlayView *)self->_overlayView eraserView];
+      [contentView2 addSubview:eraserView];
 
-      v30 = [(SFUnifiedBarItemView *)self contentView];
-      [v30 addSubview:self->_overlayView];
+      contentView3 = [(SFUnifiedBarItemView *)self contentView];
+      [contentView3 addSubview:self->_overlayView];
 
       [(SFURLFieldOverlayView *)self->_overlayView present];
     }
@@ -1553,42 +1553,42 @@ void __60__SFUnifiedTabBarItemView_makeTranslationAvailabilityAction__block_invo
 
 - (void)applyTheme
 {
-  v3 = [(SFUnifiedBarItemView *)self platterStyle];
-  v12 = [(SFUnifiedTabBarItemView *)self _controlsTintColor];
-  v4 = [(SFUnifiedBarItemView *)self contentView];
-  [v4 setTintColor:v12];
+  platterStyle = [(SFUnifiedBarItemView *)self platterStyle];
+  _controlsTintColor = [(SFUnifiedTabBarItemView *)self _controlsTintColor];
+  contentView = [(SFUnifiedBarItemView *)self contentView];
+  [contentView setTintColor:_controlsTintColor];
 
-  [(SFMoreMenuButton *)self->_moreMenuButton setProgressTintColor:v12];
-  v5 = [(SFUnifiedTabBarItemView *)self _titleTheme];
-  [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer setTheme:v5];
+  [(SFMoreMenuButton *)self->_moreMenuButton setProgressTintColor:_controlsTintColor];
+  _titleTheme = [(SFUnifiedTabBarItemView *)self _titleTheme];
+  [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer setTheme:_titleTheme];
 
-  [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer setDimsText:v3 == 1];
-  v6 = [(SFUnifiedTabBarItemView *)self _titleTheme];
-  [(SFSearchFieldIconContainerView *)self->_searchFieldIconContainer setTheme:v6];
+  [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer setDimsText:platterStyle == 1];
+  _titleTheme2 = [(SFUnifiedTabBarItemView *)self _titleTheme];
+  [(SFSearchFieldIconContainerView *)self->_searchFieldIconContainer setTheme:_titleTheme2];
 
-  v7 = [(SFUnifiedTabBarItemView *)self _accessoryButtonTintColor];
-  v8 = [(SFUnifiedTabBarItemView *)self _secondaryAccessoryButtonTintColor];
-  [(SFUnifiedTabBarItemViewCloseButton *)self->_closeButton setTintColor:v7];
-  [(SFUnifiedTabBarItemViewCloseButton *)self->_closeButtonForHover setTintColor:v7];
+  _accessoryButtonTintColor = [(SFUnifiedTabBarItemView *)self _accessoryButtonTintColor];
+  _secondaryAccessoryButtonTintColor = [(SFUnifiedTabBarItemView *)self _secondaryAccessoryButtonTintColor];
+  [(SFUnifiedTabBarItemViewCloseButton *)self->_closeButton setTintColor:_accessoryButtonTintColor];
+  [(SFUnifiedTabBarItemViewCloseButton *)self->_closeButtonForHover setTintColor:_accessoryButtonTintColor];
   if ([(UIButton *)self->_voiceSearchButton isEnabled])
   {
-    [(UIButton *)self->_voiceSearchButton setTintColor:v8];
+    [(UIButton *)self->_voiceSearchButton setTintColor:_secondaryAccessoryButtonTintColor];
   }
 
   else
   {
-    v9 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
-    [(UIButton *)self->_voiceSearchButton setTintColor:v9];
+    tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+    [(UIButton *)self->_voiceSearchButton setTintColor:tertiaryLabelColor];
   }
 
-  [(UIButton *)self->_reloadButton setTintColor:v7];
-  [(UIButton *)self->_stopButton setTintColor:v7];
-  [(SFBadgeContainerView *)self->_firstExtensionButtonContainer setTintColor:v8];
-  [(SFBadgeContainerView *)self->_secondExtensionButtonContainer setTintColor:v8];
-  [(SFBadgeContainerView *)self->_multipleExtensionsButtonContainer setTintColor:v8];
-  v10 = [(SFUnifiedTabBarItemView *)self _searchFieldTintColor];
-  v11 = [(SFUnifiedTabBarItemView *)self searchField];
-  [v11 setTintColor:v10];
+  [(UIButton *)self->_reloadButton setTintColor:_accessoryButtonTintColor];
+  [(UIButton *)self->_stopButton setTintColor:_accessoryButtonTintColor];
+  [(SFBadgeContainerView *)self->_firstExtensionButtonContainer setTintColor:_secondaryAccessoryButtonTintColor];
+  [(SFBadgeContainerView *)self->_secondExtensionButtonContainer setTintColor:_secondaryAccessoryButtonTintColor];
+  [(SFBadgeContainerView *)self->_multipleExtensionsButtonContainer setTintColor:_secondaryAccessoryButtonTintColor];
+  _searchFieldTintColor = [(SFUnifiedTabBarItemView *)self _searchFieldTintColor];
+  searchField = [(SFUnifiedTabBarItemView *)self searchField];
+  [searchField setTintColor:_searchFieldTintColor];
 
   [(SFUnifiedTabBarItemView *)self _updateProgressViewColor];
   [(SFUnifiedTabBarItemView *)self _updateMenuButtonColor];
@@ -1597,30 +1597,30 @@ void __60__SFUnifiedTabBarItemView_makeTranslationAvailabilityAction__block_invo
   [(SFUnifiedTabBarItemView *)self _updateFormatMenuButtonStyle];
 }
 
-- (void)setPlatterStyle:(int64_t)a3
+- (void)setPlatterStyle:(int64_t)style
 {
-  if ([(SFUnifiedBarItemView *)self platterStyle]!= a3)
+  if ([(SFUnifiedBarItemView *)self platterStyle]!= style)
   {
     v5.receiver = self;
     v5.super_class = SFUnifiedTabBarItemView;
-    [(SFUnifiedBarItemView *)&v5 setPlatterStyle:a3];
+    [(SFUnifiedBarItemView *)&v5 setPlatterStyle:style];
     [(SFUnifiedTabBarItemView *)self applyTheme];
   }
 }
 
 - (id)_titleTheme
 {
-  v3 = [(SFUnifiedTabBarItemView *)self _shouldUseActiveTheme];
-  v4 = [(SFUnifiedBarItemView *)self barTheme];
-  v5 = v4;
-  if (v3)
+  _shouldUseActiveTheme = [(SFUnifiedTabBarItemView *)self _shouldUseActiveTheme];
+  barTheme = [(SFUnifiedBarItemView *)self barTheme];
+  v5 = barTheme;
+  if (_shouldUseActiveTheme)
   {
-    [v4 activeTabTitleTheme];
+    [barTheme activeTabTitleTheme];
   }
 
   else
   {
-    [v4 tabTitleTheme];
+    [barTheme tabTitleTheme];
   }
   v6 = ;
 
@@ -1629,32 +1629,32 @@ void __60__SFUnifiedTabBarItemView_makeTranslationAvailabilityAction__block_invo
 
 - (id)_accessoryButtonTintColor
 {
-  v4 = [(SFUnifiedTabBarItemView *)self accessoryButtonLayout];
-  if ((v4 - 1) < 2)
+  accessoryButtonLayout = [(SFUnifiedTabBarItemView *)self accessoryButtonLayout];
+  if ((accessoryButtonLayout - 1) < 2)
   {
-    v5 = [(SFUnifiedBarItemView *)self barTheme];
-    v6 = [v5 inputFieldAccessoryButtonTintColor];
+    barTheme = [(SFUnifiedBarItemView *)self barTheme];
+    inputFieldAccessoryButtonTintColor = [barTheme inputFieldAccessoryButtonTintColor];
 LABEL_3:
-    v2 = v6;
+    v2 = inputFieldAccessoryButtonTintColor;
 
     goto LABEL_8;
   }
 
-  if (!v4)
+  if (!accessoryButtonLayout)
   {
-    v7 = [(SFUnifiedTabBarItemView *)self _shouldUseActiveTheme];
-    v8 = [(SFUnifiedBarItemView *)self barTheme];
-    v5 = v8;
-    if (v7)
+    _shouldUseActiveTheme = [(SFUnifiedTabBarItemView *)self _shouldUseActiveTheme];
+    barTheme2 = [(SFUnifiedBarItemView *)self barTheme];
+    barTheme = barTheme2;
+    if (_shouldUseActiveTheme)
     {
-      [v8 activeTabAccessoryButtonTintColor];
+      [barTheme2 activeTabAccessoryButtonTintColor];
     }
 
     else
     {
-      [v8 tabAccessoryButtonTintColor];
+      [barTheme2 tabAccessoryButtonTintColor];
     }
-    v6 = ;
+    inputFieldAccessoryButtonTintColor = ;
     goto LABEL_3;
   }
 
@@ -1665,11 +1665,11 @@ LABEL_8:
 
 - (id)_secondaryAccessoryButtonTintColor
 {
-  v4 = [(SFUnifiedBarItemView *)self platterStyle];
-  if (v4 != 5 || !(v5 = -[SFUnifiedTabBarItemView showsSearchField](self, "showsSearchField")) && (-[SFUnifiedTabBarItemView titleWhenActive](self, "titleWhenActive"), v2 = objc_claimAutoreleasedReturnValue(), [v2 length]))
+  platterStyle = [(SFUnifiedBarItemView *)self platterStyle];
+  if (platterStyle != 5 || !(v5 = -[SFUnifiedTabBarItemView showsSearchField](self, "showsSearchField")) && (-[SFUnifiedTabBarItemView titleWhenActive](self, "titleWhenActive"), v2 = objc_claimAutoreleasedReturnValue(), [v2 length]))
   {
-    v6 = [(SFUnifiedTabBarItemView *)self _accessoryButtonTintColor];
-    if (v4 != 5)
+    _accessoryButtonTintColor = [(SFUnifiedTabBarItemView *)self _accessoryButtonTintColor];
+    if (platterStyle != 5)
     {
       goto LABEL_6;
     }
@@ -1677,8 +1677,8 @@ LABEL_8:
     goto LABEL_5;
   }
 
-  v8 = [(SFUnifiedBarItemView *)self barTheme];
-  v6 = [v8 inputFieldSecondaryAccessoryButtonTintColor];
+  barTheme = [(SFUnifiedBarItemView *)self barTheme];
+  _accessoryButtonTintColor = [barTheme inputFieldSecondaryAccessoryButtonTintColor];
 
   if (!v5)
   {
@@ -1687,22 +1687,22 @@ LABEL_5:
 
 LABEL_6:
 
-  return v6;
+  return _accessoryButtonTintColor;
 }
 
 - (id)_controlsTintColor
 {
-  v3 = [(SFUnifiedTabBarItemView *)self _shouldUseActiveTheme];
-  v4 = [(SFUnifiedBarItemView *)self barTheme];
-  v5 = v4;
-  if (v3)
+  _shouldUseActiveTheme = [(SFUnifiedTabBarItemView *)self _shouldUseActiveTheme];
+  barTheme = [(SFUnifiedBarItemView *)self barTheme];
+  v5 = barTheme;
+  if (_shouldUseActiveTheme)
   {
-    [v4 activeTabControlsTintColor];
+    [barTheme activeTabControlsTintColor];
   }
 
   else
   {
-    [v4 tabControlsTintColor];
+    [barTheme tabControlsTintColor];
   }
   v6 = ;
 
@@ -1711,17 +1711,17 @@ LABEL_6:
 
 - (id)_progressBarTintColor
 {
-  v3 = [(SFUnifiedTabBarItemView *)self _shouldUseActiveTheme];
-  v4 = [(SFUnifiedBarItemView *)self barTheme];
-  v5 = v4;
-  if (v3)
+  _shouldUseActiveTheme = [(SFUnifiedTabBarItemView *)self _shouldUseActiveTheme];
+  barTheme = [(SFUnifiedBarItemView *)self barTheme];
+  v5 = barTheme;
+  if (_shouldUseActiveTheme)
   {
-    [v4 activeTabProgressBarTintColor];
+    [barTheme activeTabProgressBarTintColor];
   }
 
   else
   {
-    [v4 tabProgressBarTintColor];
+    [barTheme tabProgressBarTintColor];
   }
   v6 = ;
 
@@ -1732,44 +1732,44 @@ LABEL_6:
 {
   if ([(SFUnifiedBarItemView *)self platterStyle]== 2)
   {
-    v3 = [(SFUnifiedBarItemView *)self barTheme];
-    v4 = [v3 activeTabFieldTintColor];
+    barTheme = [(SFUnifiedBarItemView *)self barTheme];
+    activeTabFieldTintColor = [barTheme activeTabFieldTintColor];
   }
 
   else
   {
-    v4 = 0;
+    activeTabFieldTintColor = 0;
   }
 
-  return v4;
+  return activeTabFieldTintColor;
 }
 
 - (BOOL)_shouldUseActiveTheme
 {
-  v3 = [(SFUnifiedBarItemView *)self platterStyle];
+  platterStyle = [(SFUnifiedBarItemView *)self platterStyle];
   result = 1;
-  if (v3 <= 0xD)
+  if (platterStyle <= 0xD)
   {
-    if (((1 << v3) & 0x2DD3) != 0)
+    if (((1 << platterStyle) & 0x2DD3) != 0)
     {
       return 0;
     }
 
-    else if (((1 << v3) & 0x102C) != 0)
+    else if (((1 << platterStyle) & 0x102C) != 0)
     {
-      v5 = [(SFUnifiedBarItemView *)self barTheme];
-      v6 = [v5 isPrivate];
+      barTheme = [(SFUnifiedBarItemView *)self barTheme];
+      isPrivate = [barTheme isPrivate];
 
-      return v6;
+      return isPrivate;
     }
   }
 
   return result;
 }
 
-- (void)setSquishedTitleContainer:(id)a3
+- (void)setSquishedTitleContainer:(id)container
 {
-  obj = a3;
+  obj = container;
   WeakRetained = objc_loadWeakRetained(&self->_squishedTitleContainer);
   if (WeakRetained != obj)
   {
@@ -1780,17 +1780,17 @@ LABEL_6:
       [obj setShowsSearchIcon:{-[SFUnifiedTabBarItemTitleContainerView showsSearchIcon](self->_titleContainer, "showsSearchIcon")}];
       [obj setSecurityAnnotation:{-[SFUnifiedTabBarItemTitleContainerView securityAnnotation](self->_titleContainer, "securityAnnotation")}];
       [obj setHasFocusedSensitiveInputField:{-[SFUnifiedTabBarItemTitleContainerView hasFocusedSensitiveInputField](self->_titleContainer, "hasFocusedSensitiveInputField")}];
-      v5 = [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer title];
-      [obj setTitle:v5];
+      title = [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer title];
+      [obj setTitle:title];
     }
   }
 }
 
-- (void)setShowsSquishedAccessoryViews:(BOOL)a3
+- (void)setShowsSquishedAccessoryViews:(BOOL)views
 {
-  if (self->_showsSquishedAccessoryViews != a3)
+  if (self->_showsSquishedAccessoryViews != views)
   {
-    self->_showsSquishedAccessoryViews = a3;
+    self->_showsSquishedAccessoryViews = views;
     [(SFUnifiedTabBarItemView *)self _updateProgressViewColor];
     [(SFUnifiedTabBarItemView *)self _updateShowsProgressView];
 
@@ -1840,8 +1840,8 @@ LABEL_6:
 
 - (void)_menuButtonTapped
 {
-  v3 = [(SFUnifiedTabBarAvailabilityItem *)self->_currentAvailabilityItem action];
-  if (v3 && (v4 = v3, v5 = [(SFUnifiedTabBarItemView *)self _availabilityButtonsReplaceFormatMenuButton], v4, v5))
+  action = [(SFUnifiedTabBarAvailabilityItem *)self->_currentAvailabilityItem action];
+  if (action && (v4 = action, v5 = [(SFUnifiedTabBarItemView *)self _availabilityButtonsReplaceFormatMenuButton], v4, v5))
   {
     currentAvailabilityItem = self->_currentAvailabilityItem;
 
@@ -1930,38 +1930,38 @@ LABEL_6:
   }
 }
 
-- (void)_extensionButtonTapped:(id)a3
+- (void)_extensionButtonTapped:(id)tapped
 {
-  v8 = a3;
+  tappedCopy = tapped;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  if (self->_multipleExtensionsButton == v8)
+  if (self->_multipleExtensionsButton == tappedCopy)
   {
     if (objc_opt_respondsToSelector())
     {
-      [WeakRetained tabBarItemView:self multipleExtensionButtonTapped:v8];
+      [WeakRetained tabBarItemView:self multipleExtensionButtonTapped:tappedCopy];
     }
   }
 
   else
   {
-    v5 = [(SFWebExtensionButtonConfiguration *)self->_extensionButtonConfiguration buttons];
-    v6 = [v5 objectAtIndexedSubscript:self->_firstExtensionButton != v8];
-    v7 = [v6 extension];
+    buttons = [(SFWebExtensionButtonConfiguration *)self->_extensionButtonConfiguration buttons];
+    tappedCopy = [buttons objectAtIndexedSubscript:self->_firstExtensionButton != tappedCopy];
+    extension = [tappedCopy extension];
 
     if (objc_opt_respondsToSelector())
     {
-      [WeakRetained tabBarItemView:self extensionButtonTapped:v8 extension:v7];
+      [WeakRetained tabBarItemView:self extensionButtonTapped:tappedCopy extension:extension];
     }
   }
 }
 
 - (void)_updateProgressViewColor
 {
-  v3 = [(SFUnifiedBarItemView *)self barTheme];
-  v8 = v3;
+  barTheme = [(SFUnifiedBarItemView *)self barTheme];
+  v8 = barTheme;
   if (self->_showsSquishedAccessoryViews)
   {
-    [v3 progressBarTintColor];
+    [barTheme progressBarTintColor];
   }
 
   else
@@ -1983,8 +1983,8 @@ LABEL_6:
     v6 = 1;
   }
 
-  v7 = [(_SFFluidProgressView *)self->_progressView layer];
-  [v7 setCompositingFilter:v5];
+  layer = [(_SFFluidProgressView *)self->_progressView layer];
+  [layer setCompositingFilter:v5];
 
   if (v6)
   {
@@ -1995,23 +1995,23 @@ LABEL_6:
 {
   if ([(SFUnifiedTabBarItemView *)self menuButtonSelected])
   {
-    v3 = [(SFUnifiedBarItemView *)self barTheme];
-    v4 = [v3 selectedMenuButtonTintColor];
-    [(SFMoreMenuButton *)self->_moreMenuButton setTintColor:v4];
+    barTheme = [(SFUnifiedBarItemView *)self barTheme];
+    selectedMenuButtonTintColor = [barTheme selectedMenuButtonTintColor];
+    [(SFMoreMenuButton *)self->_moreMenuButton setTintColor:selectedMenuButtonTintColor];
 
-    v5 = [(SFUnifiedTabBarItemView *)self _titleTheme];
-    v9 = [v5 primaryTextColor];
+    _titleTheme = [(SFUnifiedTabBarItemView *)self _titleTheme];
+    primaryTextColor = [_titleTheme primaryTextColor];
 
     if ([MEMORY[0x1E69C8880] isSolariumEnabled])
     {
-      v6 = [(SFUnifiedTabBarItemView *)self _accessoryButtonTintColor];
+      _accessoryButtonTintColor = [(SFUnifiedTabBarItemView *)self _accessoryButtonTintColor];
 
-      v9 = v6;
+      primaryTextColor = _accessoryButtonTintColor;
     }
 
     if ([(SFUnifiedBarItemView *)self platterStyle]!= 5)
     {
-      v7 = [v9 colorWithAlphaComponent:0.85];
+      v7 = [primaryTextColor colorWithAlphaComponent:0.85];
 
       v8 = v7;
       goto LABEL_8;
@@ -2020,11 +2020,11 @@ LABEL_6:
 
   else
   {
-    v9 = [(SFUnifiedTabBarItemView *)self _accessoryButtonTintColor];
-    [(SFMoreMenuButton *)self->_moreMenuButton setTintColor:v9];
+    primaryTextColor = [(SFUnifiedTabBarItemView *)self _accessoryButtonTintColor];
+    [(SFMoreMenuButton *)self->_moreMenuButton setTintColor:primaryTextColor];
   }
 
-  v8 = v9;
+  v8 = primaryTextColor;
 LABEL_8:
   v10 = v8;
   [(SFNavigationBarToggleButton *)self->_formatMenuButton setGlyphTintColor:v8];
@@ -2032,50 +2032,50 @@ LABEL_8:
 
 - (void)_updateMediaStateMuteButton
 {
-  v3 = [(SFUnifiedTabBarItemView *)self _mediaStateIconToDisplay];
-  v4 = [(UIButton *)self->_mediaStateMuteButton configuration];
+  _mediaStateIconToDisplay = [(SFUnifiedTabBarItemView *)self _mediaStateIconToDisplay];
+  configuration = [(UIButton *)self->_mediaStateMuteButton configuration];
   if ([MEMORY[0x1E69C8880] isSolariumEnabled] && (objc_opt_respondsToSelector() & 1) != 0)
   {
     v5 = MEMORY[0x1E69DCFD8];
-    v6 = [MEMORY[0x1E6982240] transition];
-    v7 = [v5 transitionWithContentTransition:v6];
-    [v4 setSymbolContentTransition:v7];
+    transition = [MEMORY[0x1E6982240] transition];
+    v7 = [v5 transitionWithContentTransition:transition];
+    [configuration setSymbolContentTransition:v7];
   }
 
-  v8 = _SFImageForMediaStateIcon(v3);
+  v8 = _SFImageForMediaStateIcon(_mediaStateIconToDisplay);
   v9 = [v8 imageWithRenderingMode:2];
-  [v4 setImage:v9];
+  [configuration setImage:v9];
 
-  [(UIButton *)self->_mediaStateMuteButton setConfiguration:v4];
+  [(UIButton *)self->_mediaStateMuteButton setConfiguration:configuration];
   if (!self->_active)
   {
-    v11 = [(SFUnifiedTabBarItemView *)self _accessoryButtonTintColor];
+    _accessoryButtonTintColor = [(SFUnifiedTabBarItemView *)self _accessoryButtonTintColor];
     goto LABEL_9;
   }
 
-  v10 = [(SFUnifiedTabBarItemView *)self _titleTheme];
-  v11 = [v10 overrideTintColor];
+  _titleTheme = [(SFUnifiedTabBarItemView *)self _titleTheme];
+  _accessoryButtonTintColor = [_titleTheme overrideTintColor];
 
-  if (v11)
+  if (_accessoryButtonTintColor)
   {
 LABEL_9:
-    [(UIButton *)self->_mediaStateMuteButton setTintColor:v11];
+    [(UIButton *)self->_mediaStateMuteButton setTintColor:_accessoryButtonTintColor];
     goto LABEL_10;
   }
 
-  if (SFMediaStateIconIsCaptureDevice(v3))
+  if (SFMediaStateIconIsCaptureDevice(_mediaStateIconToDisplay))
   {
-    v12 = [MEMORY[0x1E69DC888] systemRedColor];
+    systemRedColor = [MEMORY[0x1E69DC888] systemRedColor];
   }
 
-  else if (v3 == 6)
+  else if (_mediaStateIconToDisplay == 6)
   {
-    v12 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    systemRedColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
   }
 
   else
   {
-    if (v3 == 5)
+    if (_mediaStateIconToDisplay == 5)
     {
       [MEMORY[0x1E69DC888] systemBlueColor];
     }
@@ -2084,11 +2084,11 @@ LABEL_9:
     {
       [(SFUnifiedTabBarItemView *)self _accessoryButtonTintColor];
     }
-    v12 = ;
+    systemRedColor = ;
   }
 
-  v16 = v12;
-  [(UIButton *)self->_mediaStateMuteButton setTintColor:v12];
+  v16 = systemRedColor;
+  [(UIButton *)self->_mediaStateMuteButton setTintColor:systemRedColor];
 
 LABEL_10:
   if (self->_active)
@@ -2098,10 +2098,10 @@ LABEL_10:
 
   else
   {
-    v14 = [(SFUnifiedTabBarItemView *)self isSelected];
-    if (v3 == 4)
+    isSelected = [(SFUnifiedTabBarItemView *)self isSelected];
+    if (_mediaStateIconToDisplay == 4)
     {
-      v13 = v14;
+      v13 = isSelected;
     }
 
     else
@@ -2117,15 +2117,15 @@ LABEL_10:
 
 - (void)_updateFormatMenuButtonImage
 {
-  v3 = [(SFUnifiedTabBarAvailabilityItem *)self->_currentAvailabilityItem image];
-  if (v3)
+  image = [(SFUnifiedTabBarAvailabilityItem *)self->_currentAvailabilityItem image];
+  if (image)
   {
-    v4 = v3;
-    v5 = [(SFUnifiedTabBarItemView *)self _availabilityButtonsReplaceFormatMenuButton];
+    v4 = image;
+    _availabilityButtonsReplaceFormatMenuButton = [(SFUnifiedTabBarItemView *)self _availabilityButtonsReplaceFormatMenuButton];
 
-    if (v5)
+    if (_availabilityButtonsReplaceFormatMenuButton)
     {
-      v16 = [(SFUnifiedTabBarAvailabilityItem *)self->_currentAvailabilityItem image];
+      image2 = [(SFUnifiedTabBarAvailabilityItem *)self->_currentAvailabilityItem image];
       if ([(SFUnifiedTabBarAvailabilityItem *)self->_currentAvailabilityItem buttonType]!= 10)
       {
 LABEL_13:
@@ -2143,7 +2143,7 @@ LABEL_7:
 
   if (self->_showsSiriReaderPlayingIcon)
   {
-    v16 = +[SFNavigationBarToggleButton siriReaderPlayingImage];
+    image2 = +[SFNavigationBarToggleButton siriReaderPlayingImage];
     formatMenuButton = self->_formatMenuButton;
     v7 = @"SiriReaderButton";
     goto LABEL_7;
@@ -2153,7 +2153,7 @@ LABEL_7:
   {
     v8 = [SFNavigationBarToggleButton readerImageWithSummary:[(WBSContentAvailabilityDisplayController *)self->_availabilityDisplayController cumulativeOptions]& 1];
 LABEL_12:
-    v16 = v8;
+    image2 = v8;
     goto LABEL_13;
   }
 
@@ -2163,14 +2163,14 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v16 = [SFNavigationBarToggleButton pageMenuImageWithIntelligence:([(WBSContentAvailabilityDisplayController *)self->_availabilityDisplayController cumulativeOptions]& 0x1F) != 0];
+  image2 = [SFNavigationBarToggleButton pageMenuImageWithIntelligence:([(WBSContentAvailabilityDisplayController *)self->_availabilityDisplayController cumulativeOptions]& 0x1F) != 0];
   [(SFNavigationBarToggleButton *)self->_formatMenuButton setAccessibilityIdentifier:@"PageFormatMenuButton"];
   v9 = 1;
 LABEL_14:
-  v10 = [(SFNavigationBarToggleButton *)self->_formatMenuButton accessoryItems];
-  v11 = [v10 count];
-  v12 = [(SFNavigationBarToggleButton *)self->_formatMenuButton accessoryView];
-  if (v12)
+  accessoryItems = [(SFNavigationBarToggleButton *)self->_formatMenuButton accessoryItems];
+  v11 = [accessoryItems count];
+  accessoryView = [(SFNavigationBarToggleButton *)self->_formatMenuButton accessoryView];
+  if (accessoryView)
   {
     ++v11;
   }
@@ -2179,15 +2179,15 @@ LABEL_14:
   {
     v13 = +[SFNavigationBarToggleButton formatMenuBottomOnlyImage];
 
-    v16 = v13;
+    image2 = v13;
   }
 
-  [(SFNavigationBarToggleButton *)self->_formatMenuButton setImage:v16];
+  [(SFNavigationBarToggleButton *)self->_formatMenuButton setImage:image2];
   v14 = self->_formatMenuButton;
   if (v9)
   {
-    v15 = [(SFNavigationBarToggleButton *)v14 image];
-    [(SFNavigationBarToggleButton *)self->_formatMenuButton setLargeContentImage:v15];
+    image3 = [(SFNavigationBarToggleButton *)v14 image];
+    [(SFNavigationBarToggleButton *)self->_formatMenuButton setLargeContentImage:image3];
   }
 
   else
@@ -2198,12 +2198,12 @@ LABEL_14:
 
 - (void)_updateFormatMenuButtonAccessories
 {
-  v3 = [(SFUnifiedTabBarItemView *)self _showsFormatMenuButtonAccessories];
-  v4 = [(SFWebExtensionButtonConfiguration *)self->_extensionButtonConfiguration activeExtensionCount];
-  v14 = [MEMORY[0x1E695DF70] array];
+  _showsFormatMenuButtonAccessories = [(SFUnifiedTabBarItemView *)self _showsFormatMenuButtonAccessories];
+  activeExtensionCount = [(SFWebExtensionButtonConfiguration *)self->_extensionButtonConfiguration activeExtensionCount];
+  array = [MEMORY[0x1E695DF70] array];
   if (self->_mediaStateIcon)
   {
-    v5 = !v3;
+    v5 = !_showsFormatMenuButtonAccessories;
   }
 
   else
@@ -2213,39 +2213,39 @@ LABEL_14:
 
   if (!v5)
   {
-    [v14 addObject:&unk_1EFF73E38];
+    [array addObject:&unk_1EFF73E38];
     formatMenuButton = self->_formatMenuButton;
-    v7 = [(SFUnifiedTabBarItemView *)self _titleTheme];
-    v8 = [v7 overrideTintColor];
-    [(SFNavigationBarToggleButton *)formatMenuButton setOverrideColor:v8 forAccessory:3];
+    _titleTheme = [(SFUnifiedTabBarItemView *)self _titleTheme];
+    overrideTintColor = [_titleTheme overrideTintColor];
+    [(SFNavigationBarToggleButton *)formatMenuButton setOverrideColor:overrideTintColor forAccessory:3];
 
     [(SFNavigationBarToggleButton *)self->_formatMenuButton setMediaStateIcon:self->_mediaStateIcon];
   }
 
-  if (v4 != 0 && v3)
+  if (activeExtensionCount != 0 && _showsFormatMenuButtonAccessories)
   {
-    [v14 addObject:&unk_1EFF73E50];
+    [array addObject:&unk_1EFF73E50];
     v9 = self->_formatMenuButton;
-    v10 = [(SFUnifiedBarItemView *)self barTheme];
-    v11 = [v10 inputFieldSecondaryAccessoryButtonTintColor];
-    [(SFNavigationBarToggleButton *)v9 setOverrideColor:v11 forAccessory:2];
+    barTheme = [(SFUnifiedBarItemView *)self barTheme];
+    inputFieldSecondaryAccessoryButtonTintColor = [barTheme inputFieldSecondaryAccessoryButtonTintColor];
+    [(SFNavigationBarToggleButton *)v9 setOverrideColor:inputFieldSecondaryAccessoryButtonTintColor forAccessory:2];
   }
 
   if (self->_hasHiddenElements)
   {
-    [v14 addObject:&unk_1EFF73E68];
+    [array addObject:&unk_1EFF73E68];
   }
 
   [(SFMoreMenuButton *)self->_downloadProgressView downloadProgress];
   if (v12 == -2.0)
   {
-    if (self->_menuButtonBadges & v3)
+    if (self->_menuButtonBadges & _showsFormatMenuButtonAccessories)
     {
       goto LABEL_12;
     }
   }
 
-  else if (v3)
+  else if (_showsFormatMenuButtonAccessories)
   {
 LABEL_12:
     downloadProgressView = self->_downloadProgressView;
@@ -2255,7 +2255,7 @@ LABEL_12:
   downloadProgressView = 0;
 LABEL_15:
   [(SFNavigationBarToggleButton *)self->_formatMenuButton setAccessoryView:downloadProgressView];
-  [(SFNavigationBarToggleButton *)self->_formatMenuButton setAccessoryItems:v14];
+  [(SFNavigationBarToggleButton *)self->_formatMenuButton setAccessoryItems:array];
   [(SFUnifiedTabBarItemView *)self _updateFormatMenuButtonImage];
   [(SFUnifiedTabBarItemView *)self setNeedsLayout];
 }
@@ -2263,7 +2263,7 @@ LABEL_15:
 - (void)_updateFormatMenuButtonStyle
 {
   accessoryButtonLayout = self->_accessoryButtonLayout;
-  v4 = [MEMORY[0x1E69C8880] isSolariumEnabled];
+  isSolariumEnabled = [MEMORY[0x1E69C8880] isSolariumEnabled];
   if ((accessoryButtonLayout - 3) < 0xFFFFFFFFFFFFFFFELL)
   {
     v5 = 1;
@@ -2271,7 +2271,7 @@ LABEL_15:
 
   else
   {
-    v5 = v4;
+    v5 = isSolariumEnabled;
   }
 
   [(SFNavigationBarToggleButton *)self->_formatMenuButton setCornerRoundingMode:v5 ^ 1u];
@@ -2282,22 +2282,22 @@ LABEL_15:
   }
 
   [(SFNavigationBarToggleButton *)self->_formatMenuButton setInsetFromBackground:v6];
-  v7 = [(SFUnifiedBarItemView *)self barTheme];
-  v8 = [v7 tintStyle];
-  v9 = [v7 themeColor];
-  if (_SFIsPrivateTintStyle(v8))
+  barTheme = [(SFUnifiedBarItemView *)self barTheme];
+  tintStyle = [barTheme tintStyle];
+  themeColor = [barTheme themeColor];
+  if (_SFIsPrivateTintStyle(tintStyle))
   {
-    if (v9)
+    if (themeColor)
     {
-      v10 = [v9 safari_meetsThresholdForDarkAppearance];
+      safari_meetsThresholdForDarkAppearance = [themeColor safari_meetsThresholdForDarkAppearance];
     }
 
     else
     {
-      v10 = _SFIsDarkTintStyle(v8);
+      safari_meetsThresholdForDarkAppearance = _SFIsDarkTintStyle(tintStyle);
     }
 
-    v11 = v10 ^ 1;
+    v11 = safari_meetsThresholdForDarkAppearance ^ 1;
   }
 
   else
@@ -2343,13 +2343,13 @@ LABEL_15:
   }
 
   [(SFNavigationBarToggleButton *)self->_formatMenuButton setShowsBadge:(v7 & menuButtonBadges) != 0];
-  v8 = [(SFWebExtensionButtonConfiguration *)self->_extensionButtonConfiguration buttons];
-  v9 = [v8 safari_containsObjectPassingTest:&__block_literal_global_14];
+  buttons = [(SFWebExtensionButtonConfiguration *)self->_extensionButtonConfiguration buttons];
+  v9 = [buttons safari_containsObjectPassingTest:&__block_literal_global_14];
 
   if (v9)
   {
-    v10 = [(SFWebExtensionButtonConfiguration *)self->_extensionButtonConfiguration activeExtensionCount];
-    v11 = v10 > [(SFUnifiedTabBarItemView *)self _individualExtensionButtonLimit];
+    activeExtensionCount = [(SFWebExtensionButtonConfiguration *)self->_extensionButtonConfiguration activeExtensionCount];
+    v11 = activeExtensionCount > [(SFUnifiedTabBarItemView *)self _individualExtensionButtonLimit];
   }
 
   else
@@ -2363,7 +2363,7 @@ LABEL_15:
   [(SFBadgeContainerView *)multipleExtensionsButtonContainer setShowsBadge:v13];
 }
 
-- (void)_searchFieldDidChange:(id)a3
+- (void)_searchFieldDidChange:(id)change
 {
   if ([(SFUnifiedTabBarItemView *)self _canUpdateLayoutDirectionImmediately])
   {
@@ -2373,7 +2373,7 @@ LABEL_15:
   [(SFUnifiedTabBarItemView *)self setNeedsLayout];
 }
 
-- (void)_voiceSearchAvailabilityDidChange:(id)a3
+- (void)_voiceSearchAvailabilityDidChange:(id)change
 {
   v4 = +[SFVoiceSearchManager sharedManager];
   -[UIButton setEnabled:](self->_voiceSearchButton, "setEnabled:", [v4 availability] == 1);
@@ -2384,7 +2384,7 @@ LABEL_15:
 - (void)updateAccessibilityIdentifier
 {
   v16[4] = *MEMORY[0x1E69E9840];
-  v3 = [(SFUnifiedBarItemView *)self item];
+  item = [(SFUnifiedBarItemView *)self item];
   if ((self->_accessoryButtonLayout - 1) >= 2)
   {
     v4 = @"TabBarTab";
@@ -2397,13 +2397,13 @@ LABEL_15:
 
   v15[0] = @"UUID";
   v5 = v4;
-  v6 = [v3 UUID];
-  v7 = [v6 UUIDString];
-  v8 = v7;
+  uUID = [item UUID];
+  uUIDString = [uUID UUIDString];
+  v8 = uUIDString;
   v9 = &stru_1EFF36230;
-  if (v7)
+  if (uUIDString)
   {
-    v9 = v7;
+    v9 = uUIDString;
   }
 
   v16[0] = v9;
@@ -2420,7 +2420,7 @@ LABEL_15:
 
   v16[1] = v10;
   v15[2] = @"isPinned";
-  if ([v3 isPinned])
+  if ([item isPinned])
   {
     v11 = @"true";
   }
@@ -2455,15 +2455,15 @@ LABEL_15:
   {
     if (self->_needsAnimatedAccessoryButtonUpdate)
     {
-      v3 = 1;
+      areAnimationsEnabled = 1;
     }
 
     else
     {
-      v3 = [MEMORY[0x1E69DD250] areAnimationsEnabled];
+      areAnimationsEnabled = [MEMORY[0x1E69DD250] areAnimationsEnabled];
     }
 
-    self->_needsAnimatedAccessoryButtonUpdate = v3;
+    self->_needsAnimatedAccessoryButtonUpdate = areAnimationsEnabled;
 
     [(SFUnifiedTabBarItemView *)self setNeedsLayout];
   }
@@ -2485,15 +2485,15 @@ LABEL_15:
   [(SFUnifiedTabBarItemView *)self _updateAccessoryButtonsAnimated:v3 completion:0];
 }
 
-- (void)_updateAccessoryButtonsAnimated:(BOOL)a3 completion:(id)a4
+- (void)_updateAccessoryButtonsAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   if ([(SFUnifiedTabBarItemView *)self _coalescingAccessoryButtonUpdates])
   {
-    if (v6)
+    if (completionCopy)
     {
-      v6[2](v6);
+      completionCopy[2](completionCopy);
     }
   }
 
@@ -2510,9 +2510,9 @@ LABEL_15:
     if (self->_trailingButtonsHidden)
     {
       v10 = [SFUnifiedTabBarItemAccessoryButtonArrangement alloc];
-      v11 = [v9 leadingButtonTypes];
-      v12 = [(SFUnifiedTabBarItemAccessoryButtonArrangement *)self->_accessoryButtonArrangement trailingButtonTypes];
-      v13 = [(SFUnifiedTabBarItemAccessoryButtonArrangement *)v10 initWithLeadingButtonTypes:v11 trailingButtonTypes:v12];
+      leadingButtonTypes = [v9 leadingButtonTypes];
+      trailingButtonTypes = [(SFUnifiedTabBarItemAccessoryButtonArrangement *)self->_accessoryButtonArrangement trailingButtonTypes];
+      v13 = [(SFUnifiedTabBarItemAccessoryButtonArrangement *)v10 initWithLeadingButtonTypes:leadingButtonTypes trailingButtonTypes:trailingButtonTypes];
 
       v9 = v13;
     }
@@ -2529,8 +2529,8 @@ LABEL_15:
       v61[1] = 3221225472;
       v61[2] = __70__SFUnifiedTabBarItemView__updateAccessoryButtonsAnimated_completion___block_invoke_3;
       v61[3] = &unk_1E721BA70;
-      v62 = v6;
-      [v14 sf_animate:v4 usingDefaultTimingWithOptions:2 animations:v63 completion:v61];
+      v62 = completionCopy;
+      [v14 sf_animate:animatedCopy usingDefaultTimingWithOptions:2 animations:v63 completion:v61];
       v15 = v62;
     }
 
@@ -2542,22 +2542,22 @@ LABEL_15:
       aBlock[3] = &unk_1E721B360;
       aBlock[4] = self;
       v15 = _Block_copy(aBlock);
-      v16 = [(SFUnifiedTabBarItemAccessoryButtonArrangement *)self->_accessoryButtonArrangement leadingButtonTypes];
-      v17 = [v9 leadingButtonTypes];
-      v18 = [(SFUnifiedTabBarItemAccessoryButtonArrangement *)self->_accessoryButtonArrangement trailingButtonTypes];
-      v19 = [v9 trailingButtonTypes];
+      leadingButtonTypes2 = [(SFUnifiedTabBarItemAccessoryButtonArrangement *)self->_accessoryButtonArrangement leadingButtonTypes];
+      leadingButtonTypes3 = [v9 leadingButtonTypes];
+      trailingButtonTypes2 = [(SFUnifiedTabBarItemAccessoryButtonArrangement *)self->_accessoryButtonArrangement trailingButtonTypes];
+      trailingButtonTypes3 = [v9 trailingButtonTypes];
       v39 = v9;
       objc_storeStrong(&self->_accessoryButtonArrangement, v9);
-      v41 = v16;
-      v20 = [v17 differenceFromArray:v16 withOptions:4];
-      v21 = [v20 safari_insertionIndexes];
-      v42 = [v20 safari_removalIndexes];
-      v44 = v18;
-      v22 = [v19 differenceFromArray:v18 withOptions:4];
-      v23 = [v22 safari_insertionIndexes];
-      v43 = [v22 safari_removalIndexes];
-      v40 = v23;
-      if (v4)
+      v41 = leadingButtonTypes2;
+      v20 = [leadingButtonTypes3 differenceFromArray:leadingButtonTypes2 withOptions:4];
+      safari_insertionIndexes = [v20 safari_insertionIndexes];
+      safari_removalIndexes = [v20 safari_removalIndexes];
+      v44 = trailingButtonTypes2;
+      v22 = [trailingButtonTypes3 differenceFromArray:trailingButtonTypes2 withOptions:4];
+      safari_insertionIndexes2 = [v22 safari_insertionIndexes];
+      safari_removalIndexes2 = [v22 safari_removalIndexes];
+      v40 = safari_insertionIndexes2;
+      if (animatedCopy)
       {
         v34 = v22;
         v35 = v20;
@@ -2567,15 +2567,15 @@ LABEL_15:
         v54[2] = __70__SFUnifiedTabBarItemView__updateAccessoryButtonsAnimated_completion___block_invoke_5;
         v54[3] = &unk_1E721C750;
         v54[4] = self;
-        v25 = v21;
+        v25 = safari_insertionIndexes;
         v55 = v25;
-        v38 = v17;
-        v26 = v17;
+        v38 = leadingButtonTypes3;
+        v26 = leadingButtonTypes3;
         v56 = v26;
-        v27 = v23;
+        v27 = safari_insertionIndexes2;
         v57 = v27;
-        v36 = v19;
-        v28 = v19;
+        v36 = trailingButtonTypes3;
+        v28 = trailingButtonTypes3;
         v58 = v28;
         v37 = v15;
         v59 = v15;
@@ -2596,45 +2596,45 @@ LABEL_15:
         v45[2] = __70__SFUnifiedTabBarItemView__updateAccessoryButtonsAnimated_completion___block_invoke_6;
         v45[3] = &unk_1E721C778;
         v45[4] = self;
-        v46 = v42;
+        v46 = safari_removalIndexes;
         v31 = v41;
         v47 = v41;
-        v48 = v43;
+        v48 = safari_removalIndexes2;
         v49 = v44;
         v50 = v25;
         v51 = v26;
         v52 = v27;
         v53 = v28;
         [v30 sf_animate:1 usingDefaultMotionWithOptions:v29 animations:v45 completion:0];
-        if (v6)
+        if (completionCopy)
         {
           v32 = dispatch_time(0, 200000000);
-          dispatch_after(v32, MEMORY[0x1E69E96A0], v6);
+          dispatch_after(v32, MEMORY[0x1E69E96A0], completionCopy);
         }
 
         v15 = v37;
-        v17 = v38;
+        leadingButtonTypes3 = v38;
         v20 = v35;
-        v19 = v36;
+        trailingButtonTypes3 = v36;
         v22 = v34;
-        v33 = v42;
+        v33 = safari_removalIndexes;
         v9 = v39;
       }
 
       else
       {
-        v33 = v42;
-        [(SFUnifiedTabBarItemView *)self _setIndexes:v42 ofAccessoryButtonTypes:v41 visible:0 animated:0];
-        [(SFUnifiedTabBarItemView *)self _setIndexes:v43 ofAccessoryButtonTypes:v44 visible:0 animated:0];
-        [(SFUnifiedTabBarItemView *)self _setIndexes:v21 ofAccessoryButtonTypes:v17 visible:1 animated:0];
-        [(SFUnifiedTabBarItemView *)self _setIndexes:v23 ofAccessoryButtonTypes:v19 visible:!self->_trailingButtonsHidden animated:0];
+        v33 = safari_removalIndexes;
+        [(SFUnifiedTabBarItemView *)self _setIndexes:safari_removalIndexes ofAccessoryButtonTypes:v41 visible:0 animated:0];
+        [(SFUnifiedTabBarItemView *)self _setIndexes:safari_removalIndexes2 ofAccessoryButtonTypes:v44 visible:0 animated:0];
+        [(SFUnifiedTabBarItemView *)self _setIndexes:safari_insertionIndexes ofAccessoryButtonTypes:leadingButtonTypes3 visible:1 animated:0];
+        [(SFUnifiedTabBarItemView *)self _setIndexes:safari_insertionIndexes2 ofAccessoryButtonTypes:trailingButtonTypes3 visible:!self->_trailingButtonsHidden animated:0];
         v15[2](v15);
         [(SFUnifiedTabBarItemView *)self _layOutAccessoryButtons];
         v9 = v39;
         v31 = v41;
-        if (v6)
+        if (completionCopy)
         {
-          v6[2](v6);
+          completionCopy[2](completionCopy);
         }
       }
     }
@@ -2691,71 +2691,71 @@ uint64_t __70__SFUnifiedTabBarItemView__updateAccessoryButtonsAnimated_completio
 
 - (void)_layOutAccessoryButtons
 {
-  v3 = [(SFUnifiedTabBarItemAccessoryButtonArrangement *)self->_accessoryButtonArrangement leadingButtonTypes];
-  [(SFUnifiedTabBarItemView *)self _layOutIndexes:0 ofAccessoryButtonTypes:v3 alongEdge:0 usingPresentationSize:0];
+  leadingButtonTypes = [(SFUnifiedTabBarItemAccessoryButtonArrangement *)self->_accessoryButtonArrangement leadingButtonTypes];
+  [(SFUnifiedTabBarItemView *)self _layOutIndexes:0 ofAccessoryButtonTypes:leadingButtonTypes alongEdge:0 usingPresentationSize:0];
   self->_leadingButtonsWidth = v4;
 
-  v6 = [(SFUnifiedTabBarItemAccessoryButtonArrangement *)self->_accessoryButtonArrangement trailingButtonTypes];
-  [(SFUnifiedTabBarItemView *)self _layOutIndexes:0 ofAccessoryButtonTypes:v6 alongEdge:1 usingPresentationSize:0];
+  trailingButtonTypes = [(SFUnifiedTabBarItemAccessoryButtonArrangement *)self->_accessoryButtonArrangement trailingButtonTypes];
+  [(SFUnifiedTabBarItemView *)self _layOutIndexes:0 ofAccessoryButtonTypes:trailingButtonTypes alongEdge:1 usingPresentationSize:0];
   self->_trailingButtonsWidth = v5;
 }
 
-- (double)_layOutIndexes:(id)a3 ofAccessoryButtonTypes:(id)a4 alongEdge:(int64_t)a5 usingPresentationSize:(BOOL)a6
+- (double)_layOutIndexes:(id)indexes ofAccessoryButtonTypes:(id)types alongEdge:(int64_t)edge usingPresentationSize:(BOOL)size
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
-  if ([v11 count])
+  sizeCopy = size;
+  indexesCopy = indexes;
+  typesCopy = types;
+  if ([typesCopy count])
   {
-    v12 = [(SFUnifiedBarItemView *)self contentView];
-    v13 = [v12 layer];
+    contentView = [(SFUnifiedBarItemView *)self contentView];
+    layer = [contentView layer];
 
-    if (v6)
+    if (sizeCopy)
     {
-      v14 = [v13 presentationLayer];
-      v15 = v14;
-      if (v14)
+      presentationLayer = [layer presentationLayer];
+      v15 = presentationLayer;
+      if (presentationLayer)
       {
-        v16 = v14;
+        v16 = presentationLayer;
       }
 
       else
       {
-        v16 = v13;
+        v16 = layer;
       }
 
       v17 = v16;
 
-      v13 = v17;
+      layer = v17;
     }
 
-    [v13 bounds];
+    [layer bounds];
     x = v59.origin.x;
     y = v59.origin.y;
     width = v59.size.width;
     height = v59.size.height;
     v41 = CGRectGetHeight(v59);
-    v22 = [(UIView *)self _sf_usesLeftToRightLayout];
-    if (a5 == 1)
+    _sf_usesLeftToRightLayout = [(UIView *)self _sf_usesLeftToRightLayout];
+    if (edge == 1)
     {
-      [v11 lastObject];
+      [typesCopy lastObject];
     }
 
     else
     {
-      [v11 firstObject];
+      [typesCopy firstObject];
     }
     v24 = ;
-    v25 = [v24 integerValue];
+    integerValue = [v24 integerValue];
 
     v58[0] = 0;
     v58[1] = v58;
     v58[2] = 0x2020000000;
-    v58[3] = v25;
+    v58[3] = integerValue;
     v54 = 0;
     v55 = &v54;
     v56 = 0x2020000000;
-    [(SFUnifiedTabBarItemView *)self _insetForAccessoryButtonOfType:v25];
+    [(SFUnifiedTabBarItemView *)self _insetForAccessoryButtonOfType:integerValue];
     v57 = v26;
     [(SFUnifiedTabBarItemView *)self squishedGlassFrame];
     v28 = v27;
@@ -2770,7 +2770,7 @@ uint64_t __70__SFUnifiedTabBarItemView__updateAccessoryButtonsAnimated_completio
       v60.size.height = v34;
       if (!CGRectIsNull(v60))
       {
-        if (v22 == a5)
+        if (_sf_usesLeftToRightLayout == edge)
         {
           [(SFUnifiedTabBarItemView *)self bounds];
           MaxX = CGRectGetMaxX(v61);
@@ -2803,7 +2803,7 @@ uint64_t __70__SFUnifiedTabBarItemView__updateAccessoryButtonsAnimated_completio
     v42[2] = __97__SFUnifiedTabBarItemView__layOutIndexes_ofAccessoryButtonTypes_alongEdge_usingPresentationSize___block_invoke;
     v42[3] = &unk_1E721C7A0;
     v46 = v41;
-    v47 = v25;
+    v47 = integerValue;
     v42[4] = self;
     v44 = &v54;
     v45 = v58;
@@ -2811,10 +2811,10 @@ uint64_t __70__SFUnifiedTabBarItemView__updateAccessoryButtonsAnimated_completio
     v49 = y;
     v50 = width;
     v51 = height;
-    v52 = a5;
-    v43 = v10;
-    v53 = v22 == a5;
-    [v11 enumerateObjectsWithOptions:2 * (a5 == 1) usingBlock:v42];
+    edgeCopy = edge;
+    v43 = indexesCopy;
+    v53 = _sf_usesLeftToRightLayout == edge;
+    [typesCopy enumerateObjectsWithOptions:2 * (edge == 1) usingBlock:v42];
     v23 = v55[3];
 
     _Block_object_dispose(&v54, 8);
@@ -2873,16 +2873,16 @@ void __97__SFUnifiedTabBarItemView__layOutIndexes_ofAccessoryButtonTypes_alongEd
   }
 }
 
-- (void)_setIndexes:(id)a3 ofAccessoryButtonTypes:(id)a4 visible:(BOOL)a5 animated:(BOOL)a6
+- (void)_setIndexes:(id)indexes ofAccessoryButtonTypes:(id)types visible:(BOOL)visible animated:(BOOL)animated
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __79__SFUnifiedTabBarItemView__setIndexes_ofAccessoryButtonTypes_visible_animated___block_invoke;
   v6[3] = &unk_1E721C7F0;
   v6[4] = self;
-  v7 = a5;
-  v8 = a6;
-  [a4 enumerateObjectsAtIndexes:a3 options:0 usingBlock:v6];
+  visibleCopy = visible;
+  animatedCopy = animated;
+  [types enumerateObjectsAtIndexes:indexes options:0 usingBlock:v6];
 }
 
 void __79__SFUnifiedTabBarItemView__setIndexes_ofAccessoryButtonTypes_visible_animated___block_invoke(uint64_t a1, void *a2)
@@ -2981,65 +2981,65 @@ uint64_t __79__SFUnifiedTabBarItemView__setIndexes_ofAccessoryButtonTypes_visibl
   return _SFClampPercent(v3, 0.85, 1.0);
 }
 
-- (void)_setTrailingButtonsHidden:(BOOL)a3
+- (void)_setTrailingButtonsHidden:(BOOL)hidden
 {
-  if (self->_trailingButtonsHidden != a3)
+  if (self->_trailingButtonsHidden != hidden)
   {
-    v4 = a3;
-    self->_trailingButtonsHidden = a3;
-    v7 = [(SFUnifiedTabBarItemAccessoryButtonArrangement *)self->_accessoryButtonArrangement trailingButtonTypes];
-    v6 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{0, objc_msgSend(v7, "count")}];
-    [(SFUnifiedTabBarItemView *)self _setIndexes:v6 ofAccessoryButtonTypes:v7 visible:!v4 animated:1];
+    hiddenCopy = hidden;
+    self->_trailingButtonsHidden = hidden;
+    trailingButtonTypes = [(SFUnifiedTabBarItemAccessoryButtonArrangement *)self->_accessoryButtonArrangement trailingButtonTypes];
+    v6 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{0, objc_msgSend(trailingButtonTypes, "count")}];
+    [(SFUnifiedTabBarItemView *)self _setIndexes:v6 ofAccessoryButtonTypes:trailingButtonTypes visible:!hiddenCopy animated:1];
   }
 }
 
-- (BOOL)_showsAccessoryButtonOfType:(int64_t)a3
+- (BOOL)_showsAccessoryButtonOfType:(int64_t)type
 {
-  v5 = [(SFUnifiedTabBarItemView *)self showsSearchField];
+  showsSearchField = [(SFUnifiedTabBarItemView *)self showsSearchField];
   v37[0] = MEMORY[0x1E69E9820];
   v37[1] = 3221225472;
   v37[2] = __55__SFUnifiedTabBarItemView__showsAccessoryButtonOfType___block_invoke;
   v37[3] = &unk_1E721C818;
   v37[4] = self;
-  v38 = v5;
+  v38 = showsSearchField;
   v6 = _Block_copy(v37);
   v7 = v6;
-  switch(a3)
+  switch(type)
   {
     case 0:
       v25 = 1361;
       goto LABEL_26;
     case 1:
-      v26 = [(SFWebExtensionButtonConfiguration *)self->_extensionButtonConfiguration webExtensionsController];
-      v27 = [v26 extensions];
-      v28 = [v27 count];
+      webExtensionsController = [(SFWebExtensionButtonConfiguration *)self->_extensionButtonConfiguration webExtensionsController];
+      extensions = [webExtensionsController extensions];
+      v28 = [extensions count];
 
-      showsPinnedIndicator = self->_active && !v5;
-      if (self->_active && !v5 && !v28)
+      showsPinnedIndicator = self->_active && !showsSearchField;
+      if (self->_active && !showsSearchField && !v28)
       {
         goto LABEL_29;
       }
 
       goto LABEL_49;
     case 2:
-      if (v5 || !self->_active)
+      if (showsSearchField || !self->_active)
       {
         goto LABEL_48;
       }
 
 LABEL_29:
-      v29 = [(SFUnifiedTabBarItemView *)self titleWhenActive];
-      showsPinnedIndicator = [v29 length] != 0;
+      titleWhenActive = [(SFUnifiedTabBarItemView *)self titleWhenActive];
+      showsPinnedIndicator = [titleWhenActive length] != 0;
 
       goto LABEL_49;
     case 3:
-      if ([(SFUnifiedTabBarItemView *)self _mediaStateIconToDisplay]== 0 || v5)
+      if ([(SFUnifiedTabBarItemView *)self _mediaStateIconToDisplay]== 0 || showsSearchField)
       {
         goto LABEL_48;
       }
 
-      v18 = [(SFUnifiedBarItemView *)self contentView];
-      [v18 bounds];
+      contentView = [(SFUnifiedBarItemView *)self contentView];
+      [contentView bounds];
       Width = CGRectGetWidth(v39);
       [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer minimumWidthToShowTitle];
       v21 = v20;
@@ -3047,7 +3047,7 @@ LABEL_29:
       showsPinnedIndicator = Width >= v21 + v22;
       goto LABEL_56;
     case 4:
-      v10 = (*(v6 + 2))(v6);
+      isSolariumEnabled = (*(v6 + 2))(v6);
       goto LABEL_9;
     case 5:
       if (!self->_active || ((*(v6 + 2))(v6) & 1) != 0 || ![(SFUnifiedTabBarItemView *)self showsStopReloadButton])
@@ -3055,7 +3055,7 @@ LABEL_29:
         goto LABEL_48;
       }
 
-      showsPinnedIndicator = !self->_stopReloadButtonShowsStop && !v5;
+      showsPinnedIndicator = !self->_stopReloadButtonShowsStop && !showsSearchField;
       goto LABEL_49;
     case 6:
       if (!self->_active || ((*(v6 + 2))(v6) & 1) != 0 || ![(SFUnifiedTabBarItemView *)self showsStopReloadButton])
@@ -3065,30 +3065,30 @@ LABEL_29:
 
       v25 = 1359;
 LABEL_26:
-      showsPinnedIndicator = *(&self->super.super.super.super.super.super.isa + v25) & !v5;
+      showsPinnedIndicator = *(&self->super.super.super.super.super.super.isa + v25) & !showsSearchField;
       goto LABEL_49;
     case 7:
-      v23 = [(SFWebExtensionButtonConfiguration *)self->_extensionButtonConfiguration activeExtensionCount];
+      activeExtensionCount = [(SFWebExtensionButtonConfiguration *)self->_extensionButtonConfiguration activeExtensionCount];
       showsPinnedIndicator = 0;
-      if (v5 || !self->_active)
+      if (showsSearchField || !self->_active)
       {
         goto LABEL_49;
       }
 
-      v24 = v23;
-      if (!v23)
+      v24 = activeExtensionCount;
+      if (!activeExtensionCount)
       {
         goto LABEL_49;
       }
 
       goto LABEL_46;
     case 8:
-      v30 = [(SFWebExtensionButtonConfiguration *)self->_extensionButtonConfiguration activeExtensionCount];
+      activeExtensionCount2 = [(SFWebExtensionButtonConfiguration *)self->_extensionButtonConfiguration activeExtensionCount];
       showsPinnedIndicator = 0;
-      if (!v5 && self->_active)
+      if (!showsSearchField && self->_active)
       {
-        v24 = v30;
-        if (v30 >= 2)
+        v24 = activeExtensionCount2;
+        if (activeExtensionCount2 >= 2)
         {
 LABEL_46:
           showsPinnedIndicator = v24 <= [(SFUnifiedTabBarItemView *)self _individualExtensionButtonLimit];
@@ -3097,7 +3097,7 @@ LABEL_46:
 
       goto LABEL_49;
     case 9:
-      if (v5 || !self->_active)
+      if (showsSearchField || !self->_active)
       {
         goto LABEL_48;
       }
@@ -3109,23 +3109,23 @@ LABEL_46:
 
       else
       {
-        v35 = [(SFWebExtensionButtonConfiguration *)self->_extensionButtonConfiguration activeExtensionCount];
-        showsPinnedIndicator = v35 > [(SFUnifiedTabBarItemView *)self _individualExtensionButtonLimit];
+        activeExtensionCount3 = [(SFWebExtensionButtonConfiguration *)self->_extensionButtonConfiguration activeExtensionCount];
+        showsPinnedIndicator = activeExtensionCount3 > [(SFUnifiedTabBarItemView *)self _individualExtensionButtonLimit];
       }
 
       goto LABEL_49;
     case 10:
     case 11:
-      v8 = [(SFUnifiedTabBarAvailabilityItem *)self->_currentAvailabilityItem buttonType];
+      buttonType = [(SFUnifiedTabBarAvailabilityItem *)self->_currentAvailabilityItem buttonType];
       if (!self->_active)
       {
         goto LABEL_48;
       }
 
-      showsPinnedIndicator = (v8 == a3) & ~v5;
+      showsPinnedIndicator = (buttonType == type) & ~showsSearchField;
       goto LABEL_49;
     case 12:
-      if (v5 || !self->_unread)
+      if (showsSearchField || !self->_unread)
       {
         goto LABEL_48;
       }
@@ -3150,7 +3150,7 @@ LABEL_46:
       [(SFUnifiedTabBarItemView *)self _spacingBetweenAccessoryButtonOfType:13 andButtonOfType:12];
       break;
     case 13:
-      if ([(NSArray *)self->_shareParticipants count]== 0 || v5)
+      if ([(NSArray *)self->_shareParticipants count]== 0 || showsSearchField)
       {
         goto LABEL_48;
       }
@@ -3175,13 +3175,13 @@ LABEL_46:
       showsPinnedIndicator = self->_showsPinnedIndicator;
       goto LABEL_49;
     case 15:
-      if (v5 || !self->_active)
+      if (showsSearchField || !self->_active)
       {
         goto LABEL_48;
       }
 
-      v18 = [(SFUnifiedTabBarItemView *)self titleWhenActive];
-      if ([v18 length])
+      contentView = [(SFUnifiedTabBarItemView *)self titleWhenActive];
+      if ([contentView length])
       {
         if ([(SFUnifiedBarItemView *)self isHovering]|| [(SFOneStepBookmarkingButton *)self->_oneStepBookmarkingButton isShowingContextMenu]|| UIAccessibilityIsVoiceOverRunning())
         {
@@ -3190,8 +3190,8 @@ LABEL_46:
 
         else
         {
-          v36 = [MEMORY[0x1E695E000] safari_browserDefaults];
-          showsPinnedIndicator = [v36 BOOLForKey:@"DebugAlwaysShowAddToReadingListAddressBarButton"];
+          safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+          showsPinnedIndicator = [safari_browserDefaults BOOLForKey:@"DebugAlwaysShowAddToReadingListAddressBarButton"];
         }
       }
 
@@ -3204,14 +3204,14 @@ LABEL_56:
 
       goto LABEL_49;
     case 16:
-      if (!self->_active || !v5)
+      if (!self->_active || !showsSearchField)
       {
         goto LABEL_48;
       }
 
-      v10 = [MEMORY[0x1E69C8880] isSolariumEnabled];
+      isSolariumEnabled = [MEMORY[0x1E69C8880] isSolariumEnabled];
 LABEL_9:
-      showsPinnedIndicator = v10;
+      showsPinnedIndicator = isSolariumEnabled;
       goto LABEL_49;
     default:
 LABEL_48:
@@ -3261,23 +3261,23 @@ uint64_t __55__SFUnifiedTabBarItemView__showsAccessoryButtonOfType___block_invok
   return v3 & 1;
 }
 
-- (id)_viewForAccessoryButtonOfType:(int64_t)a3
+- (id)_viewForAccessoryButtonOfType:(int64_t)type
 {
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __57__SFUnifiedTabBarItemView__viewForAccessoryButtonOfType___block_invoke;
   v10[3] = &unk_1E721C840;
   v10[4] = self;
-  v10[5] = a3;
+  v10[5] = type;
   v5 = _Block_copy(v10);
   v6 = v5[2]();
   if (!v6)
   {
-    [(SFUnifiedTabBarItemView *)self _makeViewForAccessoryButtonOfType:a3];
+    [(SFUnifiedTabBarItemView *)self _makeViewForAccessoryButtonOfType:type];
     [(SFUnifiedTabBarItemView *)self applyTheme];
     v6 = (v5[2])(v5);
     [v6 setHidden:1];
-    v7 = SFAccessibilityIdentifierForUnifiedTabBarItemAccessoryButtonType(a3);
+    v7 = SFAccessibilityIdentifierForUnifiedTabBarItemAccessoryButtonType(type);
     [v6 setAccessibilityIdentifier:v7];
   }
 
@@ -3302,9 +3302,9 @@ id __57__SFUnifiedTabBarItemView__viewForAccessoryButtonOfType___block_invoke(ui
   return v3;
 }
 
-- (void)_makeViewForAccessoryButtonOfType:(int64_t)a3
+- (void)_makeViewForAccessoryButtonOfType:(int64_t)type
 {
-  switch(a3)
+  switch(type)
   {
     case 0:
       [(SFUnifiedTabBarItemView *)self makeCloseButton];
@@ -3358,24 +3358,24 @@ id __57__SFUnifiedTabBarItemView__viewForAccessoryButtonOfType___block_invoke(ui
 
 - (void)makeCloseButton
 {
-  v11 = [(SFUnifiedTabBarItemView *)self _closeButtonConfiguration];
-  v3 = [SFUnifiedTabBarItemViewCloseButton buttonWithConfiguration:v11 primaryAction:0];
+  _closeButtonConfiguration = [(SFUnifiedTabBarItemView *)self _closeButtonConfiguration];
+  v3 = [SFUnifiedTabBarItemViewCloseButton buttonWithConfiguration:_closeButtonConfiguration primaryAction:0];
   closeButton = self->_closeButton;
   self->_closeButton = v3;
 
   [(SFUnifiedTabBarItemViewCloseButton *)self->_closeButton addTarget:self action:sel__closeButtonTapped forControlEvents:0x2000];
   [(UIView *)self->_closeButton sf_applyContentSizeCategoryLimitsForToolbarButton];
   v5 = self->_closeButton;
-  v6 = [v11 image];
+  image = [_closeButtonConfiguration image];
   v7 = _WBSLocalizedString();
-  [(UIView *)v5 sf_configureLargeContentViewerWithImage:v6 title:v7];
+  [(UIView *)v5 sf_configureLargeContentViewerWithImage:image title:v7];
 
   v8 = self->_closeButton;
   v9 = objc_alloc_init(MEMORY[0x1E69DCC18]);
   [(SFUnifiedTabBarItemViewCloseButton *)v8 addInteraction:v9];
 
-  v10 = [(SFUnifiedBarItemView *)self contentView];
-  [v10 insertSubview:self->_closeButton aboveSubview:self->_titleContainer];
+  contentView = [(SFUnifiedBarItemView *)self contentView];
+  [contentView insertSubview:self->_closeButton aboveSubview:self->_titleContainer];
 }
 
 - (void)makeCloseButtonForHover
@@ -3394,8 +3394,8 @@ id __57__SFUnifiedTabBarItemView__viewForAccessoryButtonOfType___block_invoke(ui
   v8[3] = &unk_1E721B360;
   v8[4] = self;
   [MEMORY[0x1E69DD250] performWithoutAnimation:v8];
-  v7 = [(SFUnifiedBarItemView *)self contentView];
-  [v7 insertSubview:self->_closeButtonForHover aboveSubview:self->_titleContainer];
+  contentView = [(SFUnifiedBarItemView *)self contentView];
+  [contentView insertSubview:self->_closeButtonForHover aboveSubview:self->_titleContainer];
 }
 
 uint64_t __50__SFUnifiedTabBarItemView_makeCloseButtonForHover__block_invoke(uint64_t a1)
@@ -3427,8 +3427,8 @@ uint64_t __50__SFUnifiedTabBarItemView_makeCloseButtonForHover__block_invoke(uin
 
   [(SFBadgeContainerView *)self->_firstExtensionButtonContainer setPositionsBadgeRelativeToLayoutMargins:1];
   [(SFBadgeContainerView *)self->_firstExtensionButtonContainer setContentView:self->_firstExtensionButton];
-  v9 = [(SFUnifiedBarItemView *)self contentView];
-  [v9 insertSubview:self->_firstExtensionButtonContainer aboveSubview:self->_titleContainer];
+  contentView = [(SFUnifiedBarItemView *)self contentView];
+  [contentView insertSubview:self->_firstExtensionButtonContainer aboveSubview:self->_titleContainer];
 
   [(SFUnifiedTabBarItemView *)self _configureFirstExtensionButton];
 
@@ -3443,20 +3443,20 @@ uint64_t __50__SFUnifiedTabBarItemView_makeCloseButtonForHover__block_invoke(uin
   formatMenuButton = self->_formatMenuButton;
   self->_formatMenuButton = v5;
 
-  v7 = [MEMORY[0x1E69C8880] isSolariumEnabled];
+  isSolariumEnabled = [MEMORY[0x1E69C8880] isSolariumEnabled];
   v8 = 6.0;
-  if (v7)
+  if (isSolariumEnabled)
   {
     v8 = 4.0;
   }
 
   [(SFNavigationBarToggleButton *)self->_formatMenuButton setMinimumSideMargin:v8];
-  v9 = [MEMORY[0x1E69DCAD8] safari_URLFieldButtonConfiguration];
-  [(SFNavigationBarToggleButton *)self->_formatMenuButton setPreferredSymbolConfiguration:v9];
+  safari_URLFieldButtonConfiguration = [MEMORY[0x1E69DCAD8] safari_URLFieldButtonConfiguration];
+  [(SFNavigationBarToggleButton *)self->_formatMenuButton setPreferredSymbolConfiguration:safari_URLFieldButtonConfiguration];
 
   [(SFClickableButton *)self->_formatMenuButton setClickEnabled:1];
-  v10 = [(SFNavigationBarToggleButton *)self->_formatMenuButton pointerInteraction];
-  [v10 setEnabled:0];
+  pointerInteraction = [(SFNavigationBarToggleButton *)self->_formatMenuButton pointerInteraction];
+  [pointerInteraction setEnabled:0];
 
   [(SFNavigationBarToggleButton *)self->_formatMenuButton setPointerPreviewContainer:self];
   [(UIView *)self->_formatMenuButton sf_applyContentSizeCategoryLimitsForToolbarButton];
@@ -3468,8 +3468,8 @@ uint64_t __50__SFUnifiedTabBarItemView_makeCloseButtonForHover__block_invoke(uin
   [(SFNavigationBarToggleButton *)self->_formatMenuButton addTarget:self action:sel__menuButtonTapped forControlEvents:0x2000];
   [(SFNavigationBarToggleButton *)self->_formatMenuButton addTarget:self action:sel__menuButtonReceivedTouchDown forControlEvents:1];
   [(SFNavigationBarToggleButton *)self->_formatMenuButton addTarget:self action:sel__menuButtonClicked forControlEvents:0x1000000];
-  v13 = [(SFUnifiedBarItemView *)self contentView];
-  [v13 insertSubview:self->_formatMenuButton aboveSubview:self->_titleContainer];
+  contentView = [(SFUnifiedBarItemView *)self contentView];
+  [contentView insertSubview:self->_formatMenuButton aboveSubview:self->_titleContainer];
 
   WeakRetained = objc_loadWeakRetained(&self->_formatMenuButtonConfigurator);
   [WeakRetained configureMenuAndAdoptButton:self->_formatMenuButton];
@@ -3482,9 +3482,9 @@ uint64_t __50__SFUnifiedTabBarItemView_makeCloseButtonForHover__block_invoke(uin
 
 - (void)makeMediaStateMuteButton
 {
-  v3 = [(SFUnifiedTabBarItemView *)self _makeMediaStateMuteButton];
+  _makeMediaStateMuteButton = [(SFUnifiedTabBarItemView *)self _makeMediaStateMuteButton];
   mediaStateMuteButton = self->_mediaStateMuteButton;
-  self->_mediaStateMuteButton = v3;
+  self->_mediaStateMuteButton = _makeMediaStateMuteButton;
 }
 
 - (void)makeMoreMenuButton
@@ -3511,8 +3511,8 @@ uint64_t __50__SFUnifiedTabBarItemView_makeCloseButtonForHover__block_invoke(uin
 
   [(SFBadgeContainerView *)self->_moreMenuButtonContainer setPositionsBadgeRelativeToLayoutMargins:1];
   [(SFBadgeContainerView *)self->_moreMenuButtonContainer setContentView:self->_moreMenuButton];
-  v9 = [(SFUnifiedBarItemView *)self contentView];
-  [v9 insertSubview:self->_moreMenuButtonContainer aboveSubview:self->_titleContainer];
+  contentView = [(SFUnifiedBarItemView *)self contentView];
+  [contentView insertSubview:self->_moreMenuButtonContainer aboveSubview:self->_titleContainer];
 
   [(SFUnifiedTabBarItemView *)self updateMenuButtonForSelection];
 }
@@ -3539,8 +3539,8 @@ uint64_t __50__SFUnifiedTabBarItemView_makeCloseButtonForHover__block_invoke(uin
 
   [(SFBadgeContainerView *)self->_multipleExtensionsButtonContainer setPositionsBadgeRelativeToLayoutMargins:1];
   [(SFBadgeContainerView *)self->_multipleExtensionsButtonContainer setContentView:self->_multipleExtensionsButton];
-  v11 = [(SFUnifiedBarItemView *)self contentView];
-  [v11 insertSubview:self->_multipleExtensionsButtonContainer aboveSubview:self->_titleContainer];
+  contentView = [(SFUnifiedBarItemView *)self contentView];
+  [contentView insertSubview:self->_multipleExtensionsButtonContainer aboveSubview:self->_titleContainer];
 }
 
 - (void)makeOneStepBookmarkingButton
@@ -3582,8 +3582,8 @@ void __55__SFUnifiedTabBarItemView_makeOneStepBookmarkingButton__block_invoke(ui
   self->_participantsView = v3;
 
   [(SFAvatarStackView *)self->_participantsView setShareParticipants:self->_shareParticipants];
-  v5 = [(SFUnifiedBarItemView *)self contentView];
-  [v5 insertSubview:self->_participantsView aboveSubview:self->_titleContainer];
+  contentView = [(SFUnifiedBarItemView *)self contentView];
+  [contentView insertSubview:self->_participantsView aboveSubview:self->_titleContainer];
 }
 
 - (void)makePinnedIndicator
@@ -3593,8 +3593,8 @@ void __55__SFUnifiedTabBarItemView_makeOneStepBookmarkingButton__block_invoke(ui
   pinnedIndicator = self->_pinnedIndicator;
   self->_pinnedIndicator = v4;
 
-  v6 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
-  [(UIButton *)self->_pinnedIndicator setTintColor:v6];
+  tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+  [(UIButton *)self->_pinnedIndicator setTintColor:tertiaryLabelColor];
 
   v7 = self->_pinnedIndicator;
 
@@ -3615,10 +3615,10 @@ void __55__SFUnifiedTabBarItemView_makeOneStepBookmarkingButton__block_invoke(ui
 
   v8 = _SFOnePixel();
   v9 = self->_reloadButton;
-  v11 = [(UIButton *)v9 configuration];
-  [v11 contentInsets];
-  [v11 setContentInsets:v8 + v10];
-  [(UIButton *)v9 setConfiguration:v11];
+  configuration = [(UIButton *)v9 configuration];
+  [configuration contentInsets];
+  [configuration setContentInsets:v8 + v10];
+  [(UIButton *)v9 setConfiguration:configuration];
 }
 
 - (void)makeSecondExtensionButton
@@ -3641,8 +3641,8 @@ void __55__SFUnifiedTabBarItemView_makeOneStepBookmarkingButton__block_invoke(ui
 
   [(SFBadgeContainerView *)self->_secondExtensionButtonContainer setPositionsBadgeRelativeToLayoutMargins:1];
   [(SFBadgeContainerView *)self->_secondExtensionButtonContainer setContentView:self->_secondExtensionButton];
-  v9 = [(SFUnifiedBarItemView *)self contentView];
-  [v9 insertSubview:self->_secondExtensionButtonContainer aboveSubview:self->_titleContainer];
+  contentView = [(SFUnifiedBarItemView *)self contentView];
+  [contentView insertSubview:self->_secondExtensionButtonContainer aboveSubview:self->_titleContainer];
 
   [(SFUnifiedTabBarItemView *)self _configureSecondExtensionButton];
 
@@ -3671,8 +3671,8 @@ void __55__SFUnifiedTabBarItemView_makeOneStepBookmarkingButton__block_invoke(ui
   unreadIndicator = self->_unreadIndicator;
   self->_unreadIndicator = v3;
 
-  v5 = [(SFUnifiedBarItemView *)self contentView];
-  [v5 insertSubview:self->_unreadIndicator aboveSubview:self->_titleContainer];
+  contentView = [(SFUnifiedBarItemView *)self contentView];
+  [contentView insertSubview:self->_unreadIndicator aboveSubview:self->_titleContainer];
 }
 
 - (void)makeVoiceSearchButton
@@ -3694,12 +3694,12 @@ void __55__SFUnifiedTabBarItemView_makeOneStepBookmarkingButton__block_invoke(ui
   self->_voiceSearchButton = v6;
 
   [(UIButton *)self->_voiceSearchButton _setDisableDictationTouchCancellation:1];
-  v8 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v8 addObserver:self selector:sel__voiceSearchAvailabilityDidChange_ name:@"SFVoiceSearchAvailabilityDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__voiceSearchAvailabilityDidChange_ name:@"SFVoiceSearchAvailabilityDidChangeNotification" object:0];
 
-  v9 = [(SFUnifiedTabBarItemView *)self window];
+  window = [(SFUnifiedTabBarItemView *)self window];
 
-  if (v9)
+  if (window)
   {
 
     [(SFUnifiedTabBarItemView *)self _voiceSearchAvailabilityDidChange:0];
@@ -3717,23 +3717,23 @@ void __55__SFUnifiedTabBarItemView_makeOneStepBookmarkingButton__block_invoke(ui
   searchFieldIconContainer = self->_searchFieldIconContainer;
   self->_searchFieldIconContainer = v3;
 
-  v5 = [(SFUnifiedTabBarItemView *)self _titleTheme];
-  [(SFSearchFieldIconContainerView *)self->_searchFieldIconContainer setTheme:v5];
+  _titleTheme = [(SFUnifiedTabBarItemView *)self _titleTheme];
+  [(SFSearchFieldIconContainerView *)self->_searchFieldIconContainer setTheme:_titleTheme];
 
-  v6 = [(SFUnifiedBarItemView *)self contentView];
-  [v6 insertSubview:self->_searchFieldIconContainer aboveSubview:self->_titleContainer];
+  contentView = [(SFUnifiedBarItemView *)self contentView];
+  [contentView insertSubview:self->_searchFieldIconContainer aboveSubview:self->_titleContainer];
 }
 
-- (double)_widthForAccessoryButtonOfType:(int64_t)a3
+- (double)_widthForAccessoryButtonOfType:(int64_t)type
 {
-  if (a3 > 6)
+  if (type > 6)
   {
-    if ((a3 - 7) < 2)
+    if ((type - 7) < 2)
     {
       return 19.0 + 6.0 + 6.0;
     }
 
-    if (a3 == 16)
+    if (type == 16)
     {
       [(SFUnifiedTabBarItemView *)self bounds];
       Height = CGRectGetHeight(v20);
@@ -3744,16 +3744,16 @@ void __55__SFUnifiedTabBarItemView_makeOneStepBookmarkingButton__block_invoke(ui
     goto LABEL_11;
   }
 
-  if ((a3 - 4) >= 3)
+  if ((type - 4) >= 3)
   {
-    if (!a3)
+    if (!type)
     {
-      v17 = [(SFUnifiedBarItemView *)self barMetrics];
-      [v17 tabCloseButtonWidth];
+      barMetrics = [(SFUnifiedBarItemView *)self barMetrics];
+      [barMetrics tabCloseButtonWidth];
       goto LABEL_13;
     }
 
-    if (a3 == 2)
+    if (type == 2)
     {
       [(SFUnifiedTabBarItemView *)self bounds];
       v10 = CGRectGetHeight(v19);
@@ -3764,8 +3764,8 @@ void __55__SFUnifiedTabBarItemView_makeOneStepBookmarkingButton__block_invoke(ui
     }
 
 LABEL_11:
-    v17 = [(SFUnifiedTabBarItemView *)self _viewForAccessoryButtonOfType:?];
-    [v17 intrinsicContentSize];
+    barMetrics = [(SFUnifiedTabBarItemView *)self _viewForAccessoryButtonOfType:?];
+    [barMetrics intrinsicContentSize];
 LABEL_13:
     v9 = v18;
 
@@ -3782,23 +3782,23 @@ LABEL_13:
   return v9;
 }
 
-- (double)_heightForAccessoryButtonOfType:(int64_t)a3 withWidth:(double)a4 defaultHeight:(double)a5
+- (double)_heightForAccessoryButtonOfType:(int64_t)type withWidth:(double)width defaultHeight:(double)height
 {
-  if (a3 != 16 && a3 != 2)
+  if (type != 16 && type != 2)
   {
-    return a5;
+    return height;
   }
 
-  [(SFUnifiedTabBarItemView *)self _insetForAccessoryButtonOfType:a4];
-  return a5 + v6 * -2.0;
+  [(SFUnifiedTabBarItemView *)self _insetForAccessoryButtonOfType:width];
+  return height + v6 * -2.0;
 }
 
-- (double)_insetForAccessoryButtonOfType:(int64_t)a3
+- (double)_insetForAccessoryButtonOfType:(int64_t)type
 {
   result = 0.0;
-  if (a3 && a3 != 16)
+  if (type && type != 16)
   {
-    if (a3 == 2)
+    if (type == 2)
     {
       v6 = [MEMORY[0x1E69C8880] isSolariumEnabled] == 0;
       result = 0.0;
@@ -3821,21 +3821,21 @@ LABEL_13:
   return result;
 }
 
-- (double)_scaleForTransitioningAccessoryButtonOfType:(int64_t)a3
+- (double)_scaleForTransitioningAccessoryButtonOfType:(int64_t)type
 {
   result = 1.0;
-  if (a3 > 12)
+  if (type > 12)
   {
-    if (a3 != 13 && a3 != 15)
+    if (type != 13 && type != 15)
     {
 LABEL_8:
       +[SFUnifiedBarMetrics transitioningItemScale];
     }
   }
 
-  else if (a3)
+  else if (type)
   {
-    if (a3 == 12)
+    if (type == 12)
     {
       return 0.5;
     }
@@ -3846,9 +3846,9 @@ LABEL_8:
   return result;
 }
 
-- (double)_spacingBetweenAccessoryButtonOfType:(int64_t)a3 andButtonOfType:(int64_t)a4
+- (double)_spacingBetweenAccessoryButtonOfType:(int64_t)type andButtonOfType:(int64_t)ofType
 {
-  v4 = a4 == 12 && a3 == 13;
+  v4 = ofType == 12 && type == 13;
   result = 0.0;
   if (v4)
   {
@@ -3858,40 +3858,40 @@ LABEL_8:
   return result;
 }
 
-- (id)_makeAccessoryButtonWithImage:(id)a3 scale:(int64_t)a4 action:(SEL)a5
+- (id)_makeAccessoryButtonWithImage:(id)image scale:(int64_t)scale action:(SEL)action
 {
-  v7 = [(SFUnifiedTabBarItemView *)self _accessoryButtonConfigurationWithImage:a3 scale:a4];
+  v7 = [(SFUnifiedTabBarItemView *)self _accessoryButtonConfigurationWithImage:image scale:scale];
   v8 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v7 primaryAction:0];
   [v8 sf_applyContentSizeCategoryLimitsForToolbarButton];
-  if (a5)
+  if (action)
   {
-    [v8 addTarget:self action:a5 forControlEvents:0x2000];
+    [v8 addTarget:self action:action forControlEvents:0x2000];
   }
 
-  v9 = [(SFUnifiedBarItemView *)self contentView];
-  [v9 insertSubview:v8 aboveSubview:self->_titleContainer];
+  contentView = [(SFUnifiedBarItemView *)self contentView];
+  [contentView insertSubview:v8 aboveSubview:self->_titleContainer];
 
   return v8;
 }
 
-- (id)_accessoryButtonConfigurationWithImage:(id)a3 scale:(int64_t)a4
+- (id)_accessoryButtonConfigurationWithImage:(id)image scale:(int64_t)scale
 {
   v5 = MEMORY[0x1E69DC740];
-  v6 = a3;
-  v7 = [v5 plainButtonConfiguration];
-  v8 = [MEMORY[0x1E69DC888] clearColor];
-  v9 = [v7 background];
-  [v9 setBackgroundColor:v8];
+  imageCopy = image;
+  plainButtonConfiguration = [v5 plainButtonConfiguration];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  background = [plainButtonConfiguration background];
+  [background setBackgroundColor:clearColor];
 
-  [v7 setImage:v6];
-  v10 = [MEMORY[0x1E69DCAD8] configurationWithTextStyle:*MEMORY[0x1E69DDCF8] scale:a4];
+  [plainButtonConfiguration setImage:imageCopy];
+  v10 = [MEMORY[0x1E69DCAD8] configurationWithTextStyle:*MEMORY[0x1E69DDCF8] scale:scale];
   v11 = [MEMORY[0x1E69DCAD8] configurationWithWeight:5];
   v12 = [v10 configurationByApplyingConfiguration:v11];
 
-  [v7 setPreferredSymbolConfigurationForImage:v12];
-  [v7 setContentInsets:{6.0, 6.0, 6.0, 6.0}];
+  [plainButtonConfiguration setPreferredSymbolConfigurationForImage:v12];
+  [plainButtonConfiguration setContentInsets:{6.0, 6.0, 6.0, 6.0}];
 
-  return v7;
+  return plainButtonConfiguration;
 }
 
 - (id)_makeMediaStateMuteButton
@@ -3917,8 +3917,8 @@ LABEL_8:
   objc_copyWeak(&v10, &location);
   [v4 setTooltipTextProvider:v9];
   [v4 setShowsMenuFromSource:0];
-  v7 = [(SFUnifiedBarItemView *)self contentView];
-  [v7 insertSubview:v4 aboveSubview:self->_titleContainer];
+  contentView = [(SFUnifiedBarItemView *)self contentView];
+  [contentView insertSubview:v4 aboveSubview:self->_titleContainer];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&v12);
@@ -3986,8 +3986,8 @@ id __52__SFUnifiedTabBarItemView__makeMediaStateMuteButton__block_invoke_2(uint6
     accessoryButtonUpdateTimer = self->_accessoryButtonUpdateTimer;
     self->_accessoryButtonUpdateTimer = v4;
 
-    v6 = [MEMORY[0x1E695DFD0] mainRunLoop];
-    [v6 addTimer:self->_accessoryButtonUpdateTimer forMode:*MEMORY[0x1E695DA28]];
+    mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+    [mainRunLoop addTimer:self->_accessoryButtonUpdateTimer forMode:*MEMORY[0x1E695DA28]];
 
     objc_destroyWeak(&v11);
     objc_destroyWeak(&location);
@@ -4032,8 +4032,8 @@ void __69__SFUnifiedTabBarItemView__temporarilyCoalesceAccessoryButtonUpdates__b
     reloadButtonExpirationTimer = self->_reloadButtonExpirationTimer;
     self->_reloadButtonExpirationTimer = v7;
 
-    v9 = [MEMORY[0x1E695DFD0] mainRunLoop];
-    [v9 addTimer:self->_reloadButtonExpirationTimer forMode:*MEMORY[0x1E695DA28]];
+    mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+    [mainRunLoop addTimer:self->_reloadButtonExpirationTimer forMode:*MEMORY[0x1E695DA28]];
 
     objc_destroyWeak(&v14);
     objc_destroyWeak(&location);
@@ -4105,27 +4105,27 @@ void __60__SFUnifiedTabBarItemView__startReloadButtonExpirationTimer__block_invo
   return v3;
 }
 
-- (void)setCurrentTooltipProvider:(id)a3
+- (void)setCurrentTooltipProvider:(id)provider
 {
-  v5 = a3;
-  if (self->_currentTooltipProvider != v5)
+  providerCopy = provider;
+  if (self->_currentTooltipProvider != providerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_currentTooltipProvider, a3);
+    v6 = providerCopy;
+    objc_storeStrong(&self->_currentTooltipProvider, provider);
     [(SFUnifiedTabBarItemView *)self _setNeedsRefreshTooltip];
-    v5 = v6;
+    providerCopy = v6;
   }
 }
 
 - (void)_refreshTooltip
 {
   self->_needsRefreshTooltip = 0;
-  v3 = [(SFTooltipProviding *)self->_currentTooltipProvider tooltip];
-  v5 = v3;
-  if (v3)
+  tooltip = [(SFTooltipProviding *)self->_currentTooltipProvider tooltip];
+  v5 = tooltip;
+  if (tooltip)
   {
-    v4 = [v3 text];
-    [(SFUnifiedTabBarItemView *)self presentAvailabilityLabelWithText:v4];
+    text = [tooltip text];
+    [(SFUnifiedTabBarItemView *)self presentAvailabilityLabelWithText:text];
   }
 
   else
@@ -4176,9 +4176,9 @@ LABEL_8:
   return globalMediaStateIcon;
 }
 
-- (void)presentAvailabilityLabelWithText:(id)a3
+- (void)presentAvailabilityLabelWithText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   WeakRetained = objc_loadWeakRetained(&self->_squishedTitleContainer);
   [(SFUnifiedTabBarItemTitleContainerView *)WeakRetained alpha];
   titleContainer = WeakRetained;
@@ -4188,22 +4188,22 @@ LABEL_8:
   }
 
   v8 = titleContainer;
-  v9 = [(SFUnifiedTabBarItemTitleContainerView *)v8 prepareForAvailabilityPresentation];
+  prepareForAvailabilityPresentation = [(SFUnifiedTabBarItemTitleContainerView *)v8 prepareForAvailabilityPresentation];
   [(SFUnifiedTabBarItemView *)self setNeedsLayout];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __60__SFUnifiedTabBarItemView_presentAvailabilityLabelWithText___block_invoke;
   v10[3] = &unk_1E721BD58;
   v10[4] = self;
-  [v9 addAnimations:v10];
-  [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer presentAvailabilityLabelWithText:v4];
-  [(SFUnifiedTabBarItemTitleContainerView *)WeakRetained presentAvailabilityLabelWithText:v4];
+  [prepareForAvailabilityPresentation addAnimations:v10];
+  [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer presentAvailabilityLabelWithText:textCopy];
+  [(SFUnifiedTabBarItemTitleContainerView *)WeakRetained presentAvailabilityLabelWithText:textCopy];
 }
 
-- (void)dismissAvailabilityLabelAnimated:(BOOL)a3 completionHandler:(id)a4
+- (void)dismissAvailabilityLabelAnimated:(BOOL)animated completionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_squishedTitleContainer);
   [(SFUnifiedTabBarItemTitleContainerView *)WeakRetained alpha];
   titleContainer = WeakRetained;
@@ -4215,51 +4215,51 @@ LABEL_8:
   v10 = titleContainer;
   if ([(SFUnifiedTabBarItemTitleContainerView *)v10 isPresentingAvailabilityLabel])
   {
-    v11 = [(SFUnifiedTabBarItemTitleContainerView *)v10 prepareForAvailabilityPresentation];
+    prepareForAvailabilityPresentation = [(SFUnifiedTabBarItemTitleContainerView *)v10 prepareForAvailabilityPresentation];
     [(SFUnifiedTabBarItemView *)self setNeedsLayout];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __78__SFUnifiedTabBarItemView_dismissAvailabilityLabelAnimated_completionHandler___block_invoke;
     v12[3] = &unk_1E721BD58;
     v12[4] = self;
-    [v11 addAnimations:v12];
-    if (v6)
+    [prepareForAvailabilityPresentation addAnimations:v12];
+    if (handlerCopy)
     {
-      [v11 addCompletion:v6];
+      [prepareForAvailabilityPresentation addCompletion:handlerCopy];
     }
 
-    [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer dismissAvailabilityLabelAnimated:v4];
-    [(SFUnifiedTabBarItemTitleContainerView *)WeakRetained dismissAvailabilityLabelAnimated:v4];
+    [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer dismissAvailabilityLabelAnimated:animatedCopy];
+    [(SFUnifiedTabBarItemTitleContainerView *)WeakRetained dismissAvailabilityLabelAnimated:animatedCopy];
   }
 
-  else if (v6)
+  else if (handlerCopy)
   {
-    v6[2](v6);
+    handlerCopy[2](handlerCopy);
   }
 }
 
-- (void)setSquishedInset:(double)a3
+- (void)setSquishedInset:(double)inset
 {
   [(SFUnifiedBarItemView *)self squishedInset];
-  if (v5 != a3)
+  if (v5 != inset)
   {
     v6.receiver = self;
     v6.super_class = SFUnifiedTabBarItemView;
-    [(SFUnifiedBarItemView *)&v6 setSquishedInset:a3];
+    [(SFUnifiedBarItemView *)&v6 setSquishedInset:inset];
     [(SFUnifiedTabBarItemView *)self setNeedsLayout];
   }
 }
 
-- (void)_setTitleContainerMasked:(BOOL)a3
+- (void)_setTitleContainerMasked:(BOOL)masked
 {
-  if (self->_titleContainerMasked != a3)
+  if (self->_titleContainerMasked != masked)
   {
     v19 = v6;
     v20 = v5;
     v21 = v3;
     v22 = v4;
-    self->_titleContainerMasked = a3;
-    if (a3)
+    self->_titleContainerMasked = masked;
+    if (masked)
     {
       v9 = SFFadeOutImage([(UIView *)self _sf_usesLeftToRightLayout], 9.5);
       v10 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v9];
@@ -4270,7 +4270,7 @@ LABEL_8:
       v16[2] = __52__SFUnifiedTabBarItemView__setTitleContainerMasked___block_invoke;
       v16[3] = &unk_1E721B400;
       v17 = v10;
-      v18 = self;
+      selfCopy = self;
       v12 = v10;
       [v11 performWithoutAnimation:v16];
     }
@@ -4280,7 +4280,7 @@ LABEL_8:
     v14[2] = __52__SFUnifiedTabBarItemView__setTitleContainerMasked___block_invoke_2;
     v14[3] = &unk_1E721BFA8;
     v14[4] = self;
-    v15 = a3;
+    maskedCopy = masked;
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __52__SFUnifiedTabBarItemView__setTitleContainerMasked___block_invoke_3;
@@ -4334,10 +4334,10 @@ uint64_t __52__SFUnifiedTabBarItemView__setTitleContainerMasked___block_invoke_3
 
 - (void)_layOutTitleContainerMask
 {
-  v3 = [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer maskView];
-  if (v3)
+  maskView = [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer maskView];
+  if (maskView)
   {
-    v20 = v3;
+    v20 = maskView;
     [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer bounds];
     v5 = v4;
     v7 = v6;
@@ -4354,16 +4354,16 @@ uint64_t __52__SFUnifiedTabBarItemView__setTitleContainerMasked___block_invoke_3
 
     [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer bounds];
     [v20 setFrame:{_SFFlipRectInCoordinateSpace(!-[UIView _sf_usesLeftToRightLayout](self, "_sf_usesLeftToRightLayout"), v5, v7, v14, v11, v16, v17, v18, v19)}];
-    v3 = v20;
+    maskView = v20;
   }
 }
 
 - (double)_squishedInsetToHideCloseButton
 {
-  v2 = [(SFUnifiedBarItemView *)self barMetrics];
-  [v2 tabCloseButtonWidth];
+  barMetrics = [(SFUnifiedBarItemView *)self barMetrics];
+  [barMetrics tabCloseButtonWidth];
   v4 = v3;
-  [v2 leadingTabIconInset];
+  [barMetrics leadingTabIconInset];
   v6 = v4 - v5;
 
   return v6;
@@ -4379,9 +4379,9 @@ uint64_t __52__SFUnifiedTabBarItemView__setTitleContainerMasked___block_invoke_3
 
 - (double)_squishedInsetToHideTrailingButtons
 {
-  v3 = [(SFUnifiedTabBarItemView *)self _iconVisibility];
+  _iconVisibility = [(SFUnifiedTabBarItemView *)self _iconVisibility];
   result = 8.0;
-  if (!v3)
+  if (!_iconVisibility)
   {
     [(SFUnifiedTabBarItemView *)self _squishedInsetToHideCloseButton];
     return v5 + 8.0;
@@ -4390,10 +4390,10 @@ uint64_t __52__SFUnifiedTabBarItemView__setTitleContainerMasked___block_invoke_3
   return result;
 }
 
-- (BOOL)_scribbleInteraction:(id)a3 shouldBeginAtLocation:(CGPoint)a4
+- (BOOL)_scribbleInteraction:(id)interaction shouldBeginAtLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
+  y = location.y;
+  x = location.x;
   v7 = [(SFUnifiedBarItemView *)self hitTest:0 withEvent:?];
   v8 = WBS_LOG_CHANNEL_PREFIXPencilInput();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -4418,7 +4418,7 @@ uint64_t __52__SFUnifiedTabBarItemView__setTitleContainerMasked___block_invoke_3
   return v9 & 1;
 }
 
-- (void)_scribbleInteraction:(id)a3 willBeginWritingInElement:(id)a4
+- (void)_scribbleInteraction:(id)interaction willBeginWritingInElement:(id)element
 {
   v5 = WBS_LOG_CHANNEL_PREFIXPencilInput();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -4429,7 +4429,7 @@ uint64_t __52__SFUnifiedTabBarItemView__setTitleContainerMasked___block_invoke_3
   [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer setSuppressesText:1];
 }
 
-- (void)_scribbleInteraction:(id)a3 didFinishWritingInElement:(id)a4
+- (void)_scribbleInteraction:(id)interaction didFinishWritingInElement:(id)element
 {
   v5 = WBS_LOG_CHANNEL_PREFIXPencilInput();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -4440,18 +4440,18 @@ uint64_t __52__SFUnifiedTabBarItemView__setTitleContainerMasked___block_invoke_3
   [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer setSuppressesText:0];
 }
 
-- (void)_scribbleInteraction:(id)a3 requestElementsInRect:(CGRect)a4 completion:(id)a5
+- (void)_scribbleInteraction:(id)interaction requestElementsInRect:(CGRect)rect completion:(id)completion
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v6 = a5;
+  completionCopy = completion;
   v7 = WBS_LOG_CHANNEL_PREFIXPencilInput();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     [SFUnifiedTabBarItemView _scribbleInteraction:requestElementsInRect:completion:];
   }
 
-  v8 = [(SFUnifiedTabBarItemView *)self searchField];
-  if ([v8 isFirstResponder])
+  searchField = [(SFUnifiedTabBarItemView *)self searchField];
+  if ([searchField isFirstResponder])
   {
     v9 = 0;
   }
@@ -4463,13 +4463,13 @@ uint64_t __52__SFUnifiedTabBarItemView__setTitleContainerMasked___block_invoke_3
 
   v11[0] = @"pencilTextInputElementIdentifier";
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
-  v6[2](v6, v10, v9);
+  completionCopy[2](completionCopy, v10, v9);
 }
 
-- (void)_scribbleInteraction:(id)a3 focusElement:(id)a4 initialFocusSelectionReferencePoint:(CGPoint)a5 completion:(id)a6
+- (void)_scribbleInteraction:(id)interaction focusElement:(id)element initialFocusSelectionReferencePoint:(CGPoint)point completion:(id)completion
 {
-  v8 = a4;
-  v9 = a6;
+  elementCopy = element;
+  completionCopy = completion;
   v10 = WBS_LOG_CHANNEL_PREFIXPencilInput();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -4477,20 +4477,20 @@ uint64_t __52__SFUnifiedTabBarItemView__setTitleContainerMasked___block_invoke_3
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  if (objc_opt_respondsToSelector() & 1) != 0 && ([v8 isEqual:@"pencilTextInputElementIdentifier"])
+  if (objc_opt_respondsToSelector() & 1) != 0 && ([elementCopy isEqual:@"pencilTextInputElementIdentifier"])
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __108__SFUnifiedTabBarItemView__scribbleInteraction_focusElement_initialFocusSelectionReferencePoint_completion___block_invoke;
     v12[3] = &unk_1E721C1A8;
     v12[4] = self;
-    v13 = v9;
+    v13 = completionCopy;
     [WeakRetained tabBarItemViewDidRequestFocusForPencilInput:self completionHandler:v12];
   }
 
   else
   {
-    (*(v9 + 2))(v9, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -4507,10 +4507,10 @@ void __108__SFUnifiedTabBarItemView__scribbleInteraction_focusElement_initialFoc
   (*(v3 + 16))(v3, v4);
 }
 
-- (void)availabilityDisplayController:(id)a3 didUpdateWithState:(int64_t)a4
+- (void)availabilityDisplayController:(id)controller didUpdateWithState:(int64_t)state
 {
-  v18 = a3;
-  if (![v18 isDisplaying])
+  controllerCopy = controller;
+  if (![controllerCopy isDisplaying])
   {
     currentAvailabilityItem = self->_currentAvailabilityItem;
     self->_currentAvailabilityItem = 0;
@@ -4521,49 +4521,49 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v5 = [(SFTooltipProviding *)self->_currentTooltipProvider tooltip];
+  tooltip = [(SFTooltipProviding *)self->_currentTooltipProvider tooltip];
 
-  if (v5)
+  if (tooltip)
   {
     goto LABEL_8;
   }
 
-  v6 = [v18 currentOptions];
-  if ((v6 & 0x20) != 0)
+  currentOptions = [controllerCopy currentOptions];
+  if ((currentOptions & 0x20) != 0)
   {
-    v12 = [(SFUnifiedTabBarItemView *)self makeReaderAvailabilityAction];
+    makeReaderAvailabilityAction = [(SFUnifiedTabBarItemView *)self makeReaderAvailabilityAction];
 LABEL_13:
     v13 = self->_currentAvailabilityItem;
-    self->_currentAvailabilityItem = v12;
+    self->_currentAvailabilityItem = makeReaderAvailabilityAction;
 
-    v8 = [v18 currentLabel];
-    [(SFUnifiedTabBarAvailabilityItem *)self->_currentAvailabilityItem setTitle:v8];
+    currentLabel = [controllerCopy currentLabel];
+    [(SFUnifiedTabBarAvailabilityItem *)self->_currentAvailabilityItem setTitle:currentLabel];
     goto LABEL_14;
   }
 
-  if ((v6 & 0x40) != 0)
+  if ((currentOptions & 0x40) != 0)
   {
-    v12 = [(SFUnifiedTabBarItemView *)self makeTranslationAvailabilityAction];
+    makeReaderAvailabilityAction = [(SFUnifiedTabBarItemView *)self makeTranslationAvailabilityAction];
     goto LABEL_13;
   }
 
   v7 = [SFUnifiedTabBarAvailabilityItem alloc];
-  v8 = [v18 currentLabel];
-  v9 = [(SFUnifiedTabBarAvailabilityItem *)v7 initWithTitle:v8];
+  currentLabel = [controllerCopy currentLabel];
+  v9 = [(SFUnifiedTabBarAvailabilityItem *)v7 initWithTitle:currentLabel];
   v10 = self->_currentAvailabilityItem;
   self->_currentAvailabilityItem = v9;
 
 LABEL_14:
-  v14 = [(SFUnifiedTabBarAvailabilityItem *)self->_currentAvailabilityItem title];
-  [(SFUnifiedTabBarItemView *)self presentAvailabilityLabelWithText:v14];
+  title = [(SFUnifiedTabBarAvailabilityItem *)self->_currentAvailabilityItem title];
+  [(SFUnifiedTabBarItemView *)self presentAvailabilityLabelWithText:title];
 
-  v15 = [(SFUnifiedTabBarAvailabilityItem *)self->_currentAvailabilityItem image];
-  if (v15)
+  image = [(SFUnifiedTabBarAvailabilityItem *)self->_currentAvailabilityItem image];
+  if (image)
   {
-    v16 = v15;
-    v17 = [(SFUnifiedTabBarItemView *)self _availabilityButtonsReplaceFormatMenuButton];
+    v16 = image;
+    _availabilityButtonsReplaceFormatMenuButton = [(SFUnifiedTabBarItemView *)self _availabilityButtonsReplaceFormatMenuButton];
 
-    if (v17)
+    if (_availabilityButtonsReplaceFormatMenuButton)
     {
       goto LABEL_7;
     }
@@ -4572,21 +4572,21 @@ LABEL_14:
 LABEL_8:
 }
 
-- (id)availabilityDisplayController:(id)a3 determineBestLabelsForPresentation:(id)a4
+- (id)availabilityDisplayController:(id)controller determineBestLabelsForPresentation:(id)presentation
 {
-  v5 = a4;
+  presentationCopy = presentation;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __92__SFUnifiedTabBarItemView_availabilityDisplayController_determineBestLabelsForPresentation___block_invoke;
   v16[3] = &unk_1E721B360;
   v16[4] = self;
   [MEMORY[0x1E69DD250] performWithoutAnimation:v16];
-  v6 = [v5 count];
+  v6 = [presentationCopy count];
   v7 = v6 - 1;
   if (v6 == 1)
   {
 LABEL_9:
-    v9 = [v5 lastObject];
+    lastObject = [presentationCopy lastObject];
   }
 
   else
@@ -4594,8 +4594,8 @@ LABEL_9:
     v8 = 0;
     while (1)
     {
-      v9 = [v5 objectAtIndexedSubscript:v8];
-      v10 = [v9 count];
+      lastObject = [presentationCopy objectAtIndexedSubscript:v8];
+      v10 = [lastObject count];
       if (!v10)
       {
         break;
@@ -4605,7 +4605,7 @@ LABEL_9:
       v12 = 0;
       while (1)
       {
-        v13 = [v9 textForOptionsAtIndex:v12];
+        v13 = [lastObject textForOptionsAtIndex:v12];
         v14 = [(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer requiresTruncationToDisplayAvailabilityLabel:v13];
 
         if (v14)
@@ -4628,13 +4628,13 @@ LABEL_9:
 
 LABEL_10:
 
-  return v9;
+  return lastObject;
 }
 
-- (void)_hover:(id)a3
+- (void)_hover:(id)_hover
 {
-  v16 = a3;
-  if (([v16 state] - 1) >= 2)
+  _hoverCopy = _hover;
+  if (([_hoverCopy state] - 1) >= 2)
   {
     if (![(SFUnifiedBarItemView *)self isHovering])
     {
@@ -4653,7 +4653,7 @@ LABEL_9:
     v7 = v6;
     v9 = v8;
     v11 = v10;
-    [v16 locationInView:self];
+    [_hoverCopy locationInView:self];
     v18.x = v12;
     v18.y = v13;
     v19.origin.x = v5;
@@ -4685,9 +4685,9 @@ LABEL_10:
   v7[3] = &unk_1E721B360;
   v7[4] = self;
   [MEMORY[0x1E69DD250] performWithoutAnimation:v7];
-  v3 = [(SFUnifiedTabBarItemView *)self _showsCloseButtonOnHover];
-  v4 = v3;
-  if (v3 && !self->_closeButtonForHover)
+  _showsCloseButtonOnHover = [(SFUnifiedTabBarItemView *)self _showsCloseButtonOnHover];
+  v4 = _showsCloseButtonOnHover;
+  if (_showsCloseButtonOnHover && !self->_closeButtonForHover)
   {
     [(SFUnifiedTabBarItemView *)self makeCloseButtonForHover];
   }
@@ -4765,14 +4765,14 @@ uint64_t __53__SFUnifiedTabBarItemView__updateCloseButtonForHover__block_invoke_
   [(SFUnifiedTabBarItemView *)self setCurrentTooltipProvider:v6];
 }
 
-- (void)setHovering:(BOOL)a3
+- (void)setHovering:(BOOL)hovering
 {
-  v3 = a3;
-  if ([(SFUnifiedBarItemView *)self isHovering]!= a3)
+  hoveringCopy = hovering;
+  if ([(SFUnifiedBarItemView *)self isHovering]!= hovering)
   {
     v5.receiver = self;
     v5.super_class = SFUnifiedTabBarItemView;
-    [(SFUnifiedBarItemView *)&v5 setHovering:v3];
+    [(SFUnifiedBarItemView *)&v5 setHovering:hoveringCopy];
     [(SFUnifiedTabBarItemView *)self _setNeedsAnimatedAccessoryButtonUpdate];
     [(SFUnifiedTabBarItemView *)self _updateCloseButtonForHover];
     [(SFUnifiedTabBarItemView *)self _updateTooltipProvider];
@@ -4781,42 +4781,42 @@ uint64_t __53__SFUnifiedTabBarItemView__updateCloseButtonForHover__block_invoke_
 
 - (BOOL)_showsCloseButtonOnHover
 {
-  v3 = [(SFUnifiedBarItemView *)self isHovering];
-  if (v3)
+  isHovering = [(SFUnifiedBarItemView *)self isHovering];
+  if (isHovering)
   {
-    if (![(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer isNarrow]|| (v3 = [(SFUnifiedTabBarItemView *)self _commandPressed]) != 0)
+    if (![(SFUnifiedTabBarItemTitleContainerView *)self->_titleContainer isNarrow]|| (isHovering = [(SFUnifiedTabBarItemView *)self _commandPressed]) != 0)
     {
       if (self->_active && ([(SFUnifiedBarItemView *)self squishedInset], v5 = v4, [(SFUnifiedTabBarItemView *)self _squishedInsetToHideCloseButton], v5 <= v6) || [(SFUnifiedBarItemView *)self isOccluded])
       {
-        LOBYTE(v3) = 0;
+        LOBYTE(isHovering) = 0;
       }
 
       else
       {
-        LOBYTE(v3) = [(SFUnifiedTabBarItemView *)self isSelected]^ 1;
+        LOBYTE(isHovering) = [(SFUnifiedTabBarItemView *)self isSelected]^ 1;
       }
     }
   }
 
-  return v3;
+  return isHovering;
 }
 
 - (BOOL)_commandPressed
 {
-  v2 = [MEMORY[0x1E69DC668] sharedApplication];
-  v3 = ([v2 sf_currentKeyboardModifierFlags] >> 20) & 1;
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  v3 = ([mEMORY[0x1E69DC668] sf_currentKeyboardModifierFlags] >> 20) & 1;
 
   return v3;
 }
 
 - (void)_updateCloseButtonForHoverPosition
 {
-  v3 = [(SFUnifiedBarItemView *)self barMetrics];
-  [v3 tabCloseButtonWidth];
+  barMetrics = [(SFUnifiedBarItemView *)self barMetrics];
+  [barMetrics tabCloseButtonWidth];
   v5 = v4;
 
-  v6 = [(SFUnifiedBarItemView *)self contentView];
-  [v6 bounds];
+  contentView = [(SFUnifiedBarItemView *)self contentView];
+  [contentView bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -4833,10 +4833,10 @@ uint64_t __53__SFUnifiedTabBarItemView__updateCloseButtonForHover__block_invoke_
   [(SFUnifiedTabBarItemViewCloseButton *)closeButtonForHover setFrame:v16];
 }
 
-- (id)pointerRegionIdentifierForInteractionLocation:(CGPoint)a3
+- (id)pointerRegionIdentifierForInteractionLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   v6 = [(SFUnifiedBarItemView *)self hitTest:0 withEvent:?];
   closeButton = self->_closeButton;
   if (v6 == closeButton && ([(SFUnifiedTabBarItemViewCloseButton *)self->_closeButton convertPoint:self fromView:x, y], ![(SFUnifiedTabBarItemViewCloseButton *)closeButton pointInsideForPointer:?]) || (closeButtonForHover = self->_closeButtonForHover, v6 == closeButtonForHover) && ([(SFUnifiedTabBarItemViewCloseButton *)self->_closeButtonForHover convertPoint:self fromView:x, y], ![(SFUnifiedTabBarItemViewCloseButton *)closeButtonForHover pointInsideForPointer:?]))
@@ -4866,16 +4866,16 @@ LABEL_15:
   v10 = 0;
   if (v6 != self && (isKindOfClass & 1) != 0)
   {
-    v11 = [(SFUnifiedTabBarItemViewCloseButton *)v6 superview];
+    superview = [(SFUnifiedTabBarItemViewCloseButton *)v6 superview];
     objc_opt_class();
     v12 = objc_opt_isKindOfClass();
 
     if (v12)
     {
-      v13 = [(SFUnifiedTabBarItemViewCloseButton *)v6 superview];
+      superview2 = [(SFUnifiedTabBarItemViewCloseButton *)v6 superview];
 
       v14 = 0;
-      v6 = v13;
+      v6 = superview2;
     }
 
     else

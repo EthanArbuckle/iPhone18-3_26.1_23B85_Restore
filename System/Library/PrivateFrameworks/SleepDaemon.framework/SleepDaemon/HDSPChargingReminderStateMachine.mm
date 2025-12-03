@@ -1,26 +1,26 @@
 @interface HDSPChargingReminderStateMachine
 - (BOOL)isCharging;
 - (BOOL)sleepFeaturesEnabled;
-- (HDSPChargingReminderStateMachine)initWithIdentifier:(id)a3 persistence:(id)a4 delegate:(id)a5 infoProvider:(id)a6 currentDateProvider:(id)a7;
+- (HDSPChargingReminderStateMachine)initWithIdentifier:(id)identifier persistence:(id)persistence delegate:(id)delegate infoProvider:(id)provider currentDateProvider:(id)dateProvider;
 - (HKSPSleepScheduleModel)sleepScheduleModel;
 - (NSDate)currentDate;
 - (id)allStates;
-- (id)monitoringWindowAfterDate:(id)a3;
+- (id)monitoringWindowAfterDate:(id)date;
 - (unint64_t)sleepScheduleState;
-- (void)batteryLevelChanged:(float)a3;
+- (void)batteryLevelChanged:(float)changed;
 @end
 
 @implementation HDSPChargingReminderStateMachine
 
-- (HDSPChargingReminderStateMachine)initWithIdentifier:(id)a3 persistence:(id)a4 delegate:(id)a5 infoProvider:(id)a6 currentDateProvider:(id)a7
+- (HDSPChargingReminderStateMachine)initWithIdentifier:(id)identifier persistence:(id)persistence delegate:(id)delegate infoProvider:(id)provider currentDateProvider:(id)dateProvider
 {
   v35[4] = *MEMORY[0x277D85DE8];
   v12 = MEMORY[0x277CBEB98];
-  v13 = a7;
-  v14 = a6;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
+  dateProviderCopy = dateProvider;
+  providerCopy = provider;
+  delegateCopy = delegate;
+  persistenceCopy = persistence;
+  identifierCopy = identifier;
   v35[0] = objc_opt_class();
   v35[1] = objc_opt_class();
   v35[2] = objc_opt_class();
@@ -30,7 +30,7 @@
 
   v34.receiver = self;
   v34.super_class = HDSPChargingReminderStateMachine;
-  v20 = [(HKSPPersistentStateMachine *)&v34 initWithIdentifier:v17 allowedStates:v19 persistence:v16 delegate:v15 infoProvider:v14 currentDateProvider:v13];
+  v20 = [(HKSPPersistentStateMachine *)&v34 initWithIdentifier:identifierCopy allowedStates:v19 persistence:persistenceCopy delegate:delegateCopy infoProvider:providerCopy currentDateProvider:dateProviderCopy];
 
   if (v20)
   {
@@ -50,9 +50,9 @@
     notifiedState = v20->_notifiedState;
     v20->_notifiedState = v27;
 
-    v29 = [(HKSPPersistentStateMachine *)v20 persistedState];
-    v30 = v29;
-    if (!v29)
+    persistedState = [(HKSPPersistentStateMachine *)v20 persistedState];
+    v30 = persistedState;
+    if (!persistedState)
     {
       v30 = v20->_disabledState;
     }
@@ -81,60 +81,60 @@
   return v4;
 }
 
-- (void)batteryLevelChanged:(float)a3
+- (void)batteryLevelChanged:(float)changed
 {
-  v5 = [(HKSPStateMachine *)self currentState];
-  *&v4 = a3;
-  [v5 batteryLevelChanged:v4];
+  currentState = [(HKSPStateMachine *)self currentState];
+  *&v4 = changed;
+  [currentState batteryLevelChanged:v4];
 }
 
 - (NSDate)currentDate
 {
-  v2 = [(HKSPStateMachine *)self infoProvider];
-  v3 = [v2 currentDate];
+  infoProvider = [(HKSPStateMachine *)self infoProvider];
+  currentDate = [infoProvider currentDate];
 
-  return v3;
+  return currentDate;
 }
 
 - (BOOL)sleepFeaturesEnabled
 {
-  v2 = [(HKSPStateMachine *)self infoProvider];
-  v3 = [v2 sleepFeaturesEnabled];
+  infoProvider = [(HKSPStateMachine *)self infoProvider];
+  sleepFeaturesEnabled = [infoProvider sleepFeaturesEnabled];
 
-  return v3;
+  return sleepFeaturesEnabled;
 }
 
-- (id)monitoringWindowAfterDate:(id)a3
+- (id)monitoringWindowAfterDate:(id)date
 {
-  v4 = a3;
-  v5 = [(HKSPStateMachine *)self infoProvider];
-  v6 = [v5 monitoringWindowAfterDate:v4];
+  dateCopy = date;
+  infoProvider = [(HKSPStateMachine *)self infoProvider];
+  v6 = [infoProvider monitoringWindowAfterDate:dateCopy];
 
   return v6;
 }
 
 - (HKSPSleepScheduleModel)sleepScheduleModel
 {
-  v2 = [(HKSPStateMachine *)self infoProvider];
-  v3 = [v2 sleepScheduleModel];
+  infoProvider = [(HKSPStateMachine *)self infoProvider];
+  sleepScheduleModel = [infoProvider sleepScheduleModel];
 
-  return v3;
+  return sleepScheduleModel;
 }
 
 - (unint64_t)sleepScheduleState
 {
-  v2 = [(HKSPStateMachine *)self infoProvider];
-  v3 = [v2 sleepScheduleState];
+  infoProvider = [(HKSPStateMachine *)self infoProvider];
+  sleepScheduleState = [infoProvider sleepScheduleState];
 
-  return v3;
+  return sleepScheduleState;
 }
 
 - (BOOL)isCharging
 {
-  v2 = [(HKSPStateMachine *)self infoProvider];
-  v3 = [v2 isCharging];
+  infoProvider = [(HKSPStateMachine *)self infoProvider];
+  isCharging = [infoProvider isCharging];
 
-  return v3;
+  return isCharging;
 }
 
 @end

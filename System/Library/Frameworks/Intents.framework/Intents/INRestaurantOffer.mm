@@ -1,10 +1,10 @@
 @interface INRestaurantOffer
-- (BOOL)isEqual:(id)a3;
-- (INRestaurantOffer)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (INRestaurantOffer)initWithCoder:(id)coder;
 - (id)_dictionaryRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionAtIndent:(unint64_t)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionAtIndent:(unint64_t)indent;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INRestaurantOffer
@@ -14,31 +14,31 @@
   v13[3] = *MEMORY[0x1E69E9840];
   v12[0] = @"offerTitleText";
   offerTitleText = self->_offerTitleText;
-  v4 = offerTitleText;
+  null = offerTitleText;
   if (!offerTitleText)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[0] = v4;
+  v13[0] = null;
   v12[1] = @"offerDetailText";
   offerDetailText = self->_offerDetailText;
-  v6 = offerDetailText;
+  null2 = offerDetailText;
   if (!offerDetailText)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[1] = v6;
+  v13[1] = null2;
   v12[2] = @"offerIdentifier";
   offerIdentifier = self->_offerIdentifier;
-  v8 = offerIdentifier;
+  null3 = offerIdentifier;
   if (!offerIdentifier)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[2] = v8;
+  v13[2] = null3;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:3];
   if (offerIdentifier)
   {
@@ -76,23 +76,23 @@ LABEL_10:
   return v9;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INRestaurantOffer;
   v6 = [(INRestaurantOffer *)&v11 description];
-  v7 = [(INRestaurantOffer *)self _dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  _dictionaryRepresentation = [(INRestaurantOffer *)self _dictionaryRepresentation];
+  v8 = [_dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -102,20 +102,20 @@ LABEL_10:
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     v6 = 0;
-    if (v4 && (isKindOfClass & 1) != 0)
+    if (equalCopy && (isKindOfClass & 1) != 0)
     {
-      v7 = v4;
-      v8 = [(INRestaurantOffer *)self offerTitleText];
-      v9 = [(INRestaurantOffer *)v7 offerTitleText];
-      if ([v8 isEqualToString:v9])
+      v7 = equalCopy;
+      offerTitleText = [(INRestaurantOffer *)self offerTitleText];
+      offerTitleText2 = [(INRestaurantOffer *)v7 offerTitleText];
+      if ([offerTitleText isEqualToString:offerTitleText2])
       {
-        v10 = [(INRestaurantOffer *)self offerDetailText];
-        v11 = [(INRestaurantOffer *)v7 offerDetailText];
-        if ([v10 isEqualToString:v11])
+        offerDetailText = [(INRestaurantOffer *)self offerDetailText];
+        offerDetailText2 = [(INRestaurantOffer *)v7 offerDetailText];
+        if ([offerDetailText isEqualToString:offerDetailText2])
         {
-          v12 = [(INRestaurantOffer *)self offerIdentifier];
-          v13 = [(INRestaurantOffer *)v7 offerIdentifier];
-          v6 = [v12 isEqualToString:v13];
+          offerIdentifier = [(INRestaurantOffer *)self offerIdentifier];
+          offerIdentifier2 = [(INRestaurantOffer *)v7 offerIdentifier];
+          v6 = [offerIdentifier isEqualToString:offerIdentifier2];
         }
 
         else
@@ -134,41 +134,41 @@ LABEL_10:
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   offerTitleText = self->_offerTitleText;
-  v5 = a3;
-  [v5 encodeObject:offerTitleText forKey:@"offerTitleText"];
-  [v5 encodeObject:self->_offerDetailText forKey:@"offerDetailText"];
-  [v5 encodeObject:self->_offerIdentifier forKey:@"offerIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:offerTitleText forKey:@"offerTitleText"];
+  [coderCopy encodeObject:self->_offerDetailText forKey:@"offerDetailText"];
+  [coderCopy encodeObject:self->_offerIdentifier forKey:@"offerIdentifier"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
-  v5 = [(INRestaurantOffer *)self offerTitleText];
-  [v4 setOfferTitleText:v5];
+  offerTitleText = [(INRestaurantOffer *)self offerTitleText];
+  [v4 setOfferTitleText:offerTitleText];
 
-  v6 = [(INRestaurantOffer *)self offerDetailText];
-  [v4 setOfferDetailText:v6];
+  offerDetailText = [(INRestaurantOffer *)self offerDetailText];
+  [v4 setOfferDetailText:offerDetailText];
 
-  v7 = [(INRestaurantOffer *)self offerIdentifier];
-  [v4 setOfferIdentifier:v7];
+  offerIdentifier = [(INRestaurantOffer *)self offerIdentifier];
+  [v4 setOfferIdentifier:offerIdentifier];
 
   return v4;
 }
 
-- (INRestaurantOffer)initWithCoder:(id)a3
+- (INRestaurantOffer)initWithCoder:(id)coder
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(INRestaurantOffer *)self init];
   if (!v5)
   {
     goto LABEL_6;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"offerTitleText"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"offerTitleText"];
   if (!v6)
   {
     v13 = INSiriLogContextIntents;
@@ -189,7 +189,7 @@ LABEL_13:
   offerTitleText = v5->_offerTitleText;
   v5->_offerTitleText = v6;
 
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"offerDetailText"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"offerDetailText"];
   if (!v8)
   {
     v13 = INSiriLogContextIntents;
@@ -208,7 +208,7 @@ LABEL_13:
   offerDetailText = v5->_offerDetailText;
   v5->_offerDetailText = v8;
 
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"offerIdentifier"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"offerIdentifier"];
   if (!v10)
   {
     v13 = INSiriLogContextIntents;

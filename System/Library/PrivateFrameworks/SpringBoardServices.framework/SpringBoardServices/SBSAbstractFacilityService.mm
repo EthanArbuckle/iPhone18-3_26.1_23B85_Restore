@@ -32,16 +32,16 @@
 
 - (OS_dispatch_queue)callbackQueue
 {
-  v2 = [(SBSAbstractFacilityService *)self client];
-  v3 = [v2 calloutQueue];
+  client = [(SBSAbstractFacilityService *)self client];
+  calloutQueue = [client calloutQueue];
 
-  return v3;
+  return calloutQueue;
 }
 
 + (Class)serviceFacilityClientClass
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"SBSAbstractFacilityService.m" lineNumber:42 description:@"A service identifier must be provided."];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBSAbstractFacilityService.m" lineNumber:42 description:@"A service identifier must be provided."];
 
   return 0;
 }

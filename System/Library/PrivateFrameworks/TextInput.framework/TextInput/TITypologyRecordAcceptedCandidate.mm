@@ -1,42 +1,42 @@
 @interface TITypologyRecordAcceptedCandidate
-- (TITypologyRecordAcceptedCandidate)initWithCoder:(id)a3;
+- (TITypologyRecordAcceptedCandidate)initWithCoder:(id)coder;
 - (id)changedText;
 - (id)shortDescription;
 - (id)textSummary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)removeContextFromKeyboardState;
-- (void)replaceDocumentState:(id)a3;
+- (void)replaceDocumentState:(id)state;
 @end
 
 @implementation TITypologyRecordAcceptedCandidate
 
-- (void)replaceDocumentState:(id)a3
+- (void)replaceDocumentState:(id)state
 {
-  v4 = a3;
-  v5 = [(TITypologyRecordAcceptedCandidate *)self keyboardState];
-  [v5 setDocumentState:v4];
+  stateCopy = state;
+  keyboardState = [(TITypologyRecordAcceptedCandidate *)self keyboardState];
+  [keyboardState setDocumentState:stateCopy];
 }
 
 - (id)changedText
 {
-  v3 = [(TITypologyRecordAcceptedCandidate *)self candidate];
-  v4 = [v3 input];
-  if ([v4 length])
+  candidate = [(TITypologyRecordAcceptedCandidate *)self candidate];
+  input = [candidate input];
+  if ([input length])
   {
-    v5 = [(TITypologyRecordAcceptedCandidate *)self candidate];
-    v6 = [v5 input];
-    v7 = [(TITypologyRecordAcceptedCandidate *)self candidate];
-    v8 = [v7 candidate];
-    v9 = [v6 isEqualToString:v8];
+    candidate2 = [(TITypologyRecordAcceptedCandidate *)self candidate];
+    input2 = [candidate2 input];
+    candidate3 = [(TITypologyRecordAcceptedCandidate *)self candidate];
+    v7Candidate = [candidate3 candidate];
+    v9 = [input2 isEqualToString:v7Candidate];
 
     if ((v9 & 1) == 0)
     {
       v10 = MEMORY[0x1E696AEC0];
-      v11 = [(TITypologyRecordAcceptedCandidate *)self candidate];
-      v12 = [v11 input];
-      v13 = [(TITypologyRecordAcceptedCandidate *)self candidate];
-      v14 = [v13 candidate];
-      v15 = [v10 stringWithFormat:@"%@->%@", v12, v14];
+      candidate4 = [(TITypologyRecordAcceptedCandidate *)self candidate];
+      input3 = [candidate4 input];
+      candidate5 = [(TITypologyRecordAcceptedCandidate *)self candidate];
+      v13Candidate = [candidate5 candidate];
+      v11Candidate = [v10 stringWithFormat:@"%@->%@", input3, v13Candidate];
 
 LABEL_7:
       goto LABEL_9;
@@ -47,45 +47,45 @@ LABEL_7:
   {
   }
 
-  v16 = [(TITypologyRecordAcceptedCandidate *)self candidate];
-  v17 = [v16 candidate];
+  candidate6 = [(TITypologyRecordAcceptedCandidate *)self candidate];
+  v16Candidate = [candidate6 candidate];
 
-  if (v17)
+  if (v16Candidate)
   {
-    v11 = [(TITypologyRecordAcceptedCandidate *)self candidate];
-    v15 = [v11 candidate];
+    candidate4 = [(TITypologyRecordAcceptedCandidate *)self candidate];
+    v11Candidate = [candidate4 candidate];
     goto LABEL_7;
   }
 
-  v15 = 0;
+  v11Candidate = 0;
 LABEL_9:
 
-  return v15;
+  return v11Candidate;
 }
 
 - (id)shortDescription
 {
   v3 = MEMORY[0x1E696AD60];
-  v4 = [(TITypologyRecordAcceptedCandidate *)self candidate];
-  v5 = [v4 candidate];
-  v6 = [v3 stringWithFormat:@"ACCEPTED %@", v5];
+  candidate = [(TITypologyRecordAcceptedCandidate *)self candidate];
+  v4Candidate = [candidate candidate];
+  v6 = [v3 stringWithFormat:@"ACCEPTED %@", v4Candidate];
 
-  v7 = [(TITypologyRecordAcceptedCandidate *)self textToCommit];
+  textToCommit = [(TITypologyRecordAcceptedCandidate *)self textToCommit];
 
-  if (v7)
+  if (textToCommit)
   {
-    v8 = [(TITypologyRecordAcceptedCandidate *)self textToCommit];
-    [v6 appendFormat:@"; COMMIT %@", v8];
+    textToCommit2 = [(TITypologyRecordAcceptedCandidate *)self textToCommit];
+    [v6 appendFormat:@"; COMMIT %@", textToCommit2];
   }
 
-  v9 = [(TITypologyRecordAcceptedCandidate *)self keyboardConfig];
-  v10 = [v9 intermediateText];
+  keyboardConfig = [(TITypologyRecordAcceptedCandidate *)self keyboardConfig];
+  intermediateText = [keyboardConfig intermediateText];
 
-  if (v10)
+  if (intermediateText)
   {
-    v11 = [(TITypologyRecordAcceptedCandidate *)self keyboardConfig];
-    v12 = [v11 intermediateText];
-    [v6 appendFormat:@"; %@", v12];
+    keyboardConfig2 = [(TITypologyRecordAcceptedCandidate *)self keyboardConfig];
+    intermediateText2 = [keyboardConfig2 intermediateText];
+    [v6 appendFormat:@"; %@", intermediateText2];
   }
 
   return v6;
@@ -93,12 +93,12 @@ LABEL_9:
 
 - (id)textSummary
 {
-  v2 = [(TITypologyRecordAcceptedCandidate *)self candidate];
-  v3 = [v2 candidate];
-  v4 = v3;
-  if (v3)
+  candidate = [(TITypologyRecordAcceptedCandidate *)self candidate];
+  v2Candidate = [candidate candidate];
+  v4 = v2Candidate;
+  if (v2Candidate)
   {
-    v5 = v3;
+    v5 = v2Candidate;
   }
 
   else
@@ -113,46 +113,46 @@ LABEL_9:
 
 - (void)removeContextFromKeyboardState
 {
-  v3 = [(TITypologyRecordAcceptedCandidate *)self keyboardState];
-  v4 = [v3 copy];
+  keyboardState = [(TITypologyRecordAcceptedCandidate *)self keyboardState];
+  v4 = [keyboardState copy];
 
   [v4 setInputContextHistory:0];
   [(TITypologyRecordAcceptedCandidate *)self setKeyboardState:v4];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = TITypologyRecordAcceptedCandidate;
-  v4 = a3;
-  [(TITypologyRecord *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_candidate forKey:{@"candidate", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_keyboardState forKey:@"keyboardState"];
-  [v4 encodeObject:self->_keyboardConfig forKey:@"keyboardConfig"];
-  [v4 encodeObject:self->_textToCommit forKey:@"textToCommit"];
+  coderCopy = coder;
+  [(TITypologyRecord *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_candidate forKey:{@"candidate", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_keyboardState forKey:@"keyboardState"];
+  [coderCopy encodeObject:self->_keyboardConfig forKey:@"keyboardConfig"];
+  [coderCopy encodeObject:self->_textToCommit forKey:@"textToCommit"];
 }
 
-- (TITypologyRecordAcceptedCandidate)initWithCoder:(id)a3
+- (TITypologyRecordAcceptedCandidate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = TITypologyRecordAcceptedCandidate;
-  v5 = [(TITypologyRecord *)&v16 initWithCoder:v4];
+  v5 = [(TITypologyRecord *)&v16 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"candidate"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"candidate"];
     candidate = v5->_candidate;
     v5->_candidate = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"keyboardState"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"keyboardState"];
     keyboardState = v5->_keyboardState;
     v5->_keyboardState = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"keyboardConfig"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"keyboardConfig"];
     keyboardConfig = v5->_keyboardConfig;
     v5->_keyboardConfig = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"textToCommit"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"textToCommit"];
     v13 = [v12 copy];
     textToCommit = v5->_textToCommit;
     v5->_textToCommit = v13;

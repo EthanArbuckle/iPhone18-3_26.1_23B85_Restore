@@ -1,18 +1,18 @@
 @interface FlowUpscale
 - (BOOL)createModules;
 - (BOOL)setupMetal;
-- (FlowUpscale)initWithDevice:(id)a3 commandQueue:(id)a4;
+- (FlowUpscale)initWithDevice:(id)device commandQueue:(id)queue;
 - (FlowUpscale)initWithMode;
-- (id)createOutputBufferWidth:(unint64_t)a3 height:(unint64_t)a4 channels:(unint64_t)a5;
-- (int64_t)allocateInternalBuffersWithLrWidth:(unint64_t)a3 lrHeight:(unint64_t)a4 hrWidth:(unint64_t)a5 hrHeight:(unint64_t)a6 interleaveFactor:(unint64_t)a7;
-- (int64_t)encodeComputeRGBandFlowEdgeToCommandBuffer:(id)a3 rgb:(id)a4 flow:(id)a5 destination:(id)a6 edgeThresh:(float)a7;
-- (int64_t)encodeDeblockToCommandBuffer:(id)a3 flow:(id)a4 output:(id)a5 upscaleFactor:(int)a6;
-- (int64_t)encodeDilateEdgeMapToCommandBuffer:(id)a3 input:(id)a4 destination:(id)a5;
-- (int64_t)encodeDownscaleImageToCommandBuffer:(id)a3 input:(id)a4 output:(id)a5;
-- (int64_t)encodeHighUpscaleToCommandBuffer:(id)a3 lrFlow:(id)a4 rgbFlowEdge:(id)a5 hrImage:(id)a6 flow1:(id)a7 flow2:(id)a8 rgb1:(id)a9 rgb2:(id)a10 internalResult:(id)a11 hrFlow:(id)a12;
-- (int64_t)encodeLowResClusterToCommandBuffer:(id)a3 lrFlow:(id)a4 lrImage:(id)a5 rgbFlowEdge:(id)a6 flow1:(id)a7 flow2:(id)a8 rgb1:(id)a9 rgb2:(id)a10 internalResult:(id)a11;
-- (int64_t)flowUpscalingFromImage:(id)a3 inputFlow:(id)a4 outputFlow:(id)a5 interleave_factor:(unint64_t)a6;
-- (int64_t)upscaleRefinedFloV2WithRGB:(id)a3 lrFlow:(id)a4 commandBuffer:(id)a5 interleaveFactor:(unint64_t)a6 output:(id)a7;
+- (id)createOutputBufferWidth:(unint64_t)width height:(unint64_t)height channels:(unint64_t)channels;
+- (int64_t)allocateInternalBuffersWithLrWidth:(unint64_t)width lrHeight:(unint64_t)height hrWidth:(unint64_t)hrWidth hrHeight:(unint64_t)hrHeight interleaveFactor:(unint64_t)factor;
+- (int64_t)encodeComputeRGBandFlowEdgeToCommandBuffer:(id)buffer rgb:(id)rgb flow:(id)flow destination:(id)destination edgeThresh:(float)thresh;
+- (int64_t)encodeDeblockToCommandBuffer:(id)buffer flow:(id)flow output:(id)output upscaleFactor:(int)factor;
+- (int64_t)encodeDilateEdgeMapToCommandBuffer:(id)buffer input:(id)input destination:(id)destination;
+- (int64_t)encodeDownscaleImageToCommandBuffer:(id)buffer input:(id)input output:(id)output;
+- (int64_t)encodeHighUpscaleToCommandBuffer:(id)buffer lrFlow:(id)flow rgbFlowEdge:(id)edge hrImage:(id)image flow1:(id)flow1 flow2:(id)flow2 rgb1:(id)rgb1 rgb2:(id)self0 internalResult:(id)self1 hrFlow:(id)self2;
+- (int64_t)encodeLowResClusterToCommandBuffer:(id)buffer lrFlow:(id)flow lrImage:(id)image rgbFlowEdge:(id)edge flow1:(id)flow1 flow2:(id)flow2 rgb1:(id)rgb1 rgb2:(id)self0 internalResult:(id)self1;
+- (int64_t)flowUpscalingFromImage:(id)image inputFlow:(id)flow outputFlow:(id)outputFlow interleave_factor:(unint64_t)interleave_factor;
+- (int64_t)upscaleRefinedFloV2WithRGB:(id)b lrFlow:(id)flow commandBuffer:(id)buffer interleaveFactor:(unint64_t)factor output:(id)output;
 - (void)dealloc;
 - (void)releaseBufferAndTexture;
 @end
@@ -52,9 +52,9 @@
   return result;
 }
 
-- (id)createOutputBufferWidth:(unint64_t)a3 height:(unint64_t)a4 channels:(unint64_t)a5
+- (id)createOutputBufferWidth:(unint64_t)width height:(unint64_t)height channels:(unint64_t)channels
 {
-  v5 = [(MTLDevice *)self->super._device newBufferWithLength:(4 * (a3 * ((a4 + 15) & 0x3FFFFFFFFFFFFFF0) + a3 * ((a4 + 15) & 0x3FFFFFFFFFFFFFF0) * a5) + 4095) & 0xFFFFFFFFFFFFF000 options:0];
+  v5 = [(MTLDevice *)self->super._device newBufferWithLength:(4 * (width * ((height + 15) & 0x3FFFFFFFFFFFFFF0) + width * ((height + 15) & 0x3FFFFFFFFFFFFFF0) * channels) + 4095) & 0xFFFFFFFFFFFFF000 options:0];
 
   return v5;
 }
@@ -152,11 +152,11 @@
   }
 }
 
-- (int64_t)allocateInternalBuffersWithLrWidth:(unint64_t)a3 lrHeight:(unint64_t)a4 hrWidth:(unint64_t)a5 hrHeight:(unint64_t)a6 interleaveFactor:(unint64_t)a7
+- (int64_t)allocateInternalBuffersWithLrWidth:(unint64_t)width lrHeight:(unint64_t)height hrWidth:(unint64_t)hrWidth hrHeight:(unint64_t)hrHeight interleaveFactor:(unint64_t)factor
 {
-  PixelBuffer = CreatePixelBuffer(a3, a4, 1380411457);
+  PixelBuffer = CreatePixelBuffer(width, height, 1380411457);
   self->_lrRgb = PixelBuffer;
-  if (PixelBuffer && (OUTLINED_FUNCTION_2_8(), createTexturesFromCVPixelBuffer(v11, v12, v13, v14), v15 = objc_claimAutoreleasedReturnValue(), OUTLINED_FUNCTION_18(v15), self->_lrRgbTexture) && (v16 = OUTLINED_FUNCTION_1_13(), (self->_combinedRGBFlowEdge = v16) != 0) && (OUTLINED_FUNCTION_0_12(), createTexturesFromCVPixelBuffer(v17, v18, v19, v20), v21 = objc_claimAutoreleasedReturnValue(), OUTLINED_FUNCTION_18(v21), self->_combinedRGBFlowEdgeTexture) && (v22 = OUTLINED_FUNCTION_1_13(), (self->_dilateEdgeMap = v22) != 0) && (OUTLINED_FUNCTION_0_12(), createTexturesFromCVPixelBuffer(v23, v24, v25, v26), v27 = objc_claimAutoreleasedReturnValue(), OUTLINED_FUNCTION_18(v27), self->_dilateEdgeMapTexture) && (v28 = OUTLINED_FUNCTION_4_3(), (self->_rgb1 = v28) != 0) && (OUTLINED_FUNCTION_2_8(), createTexturesFromCVPixelBuffer(v29, v30, v31, v32), v33 = objc_claimAutoreleasedReturnValue(), OUTLINED_FUNCTION_18(v33), self->_rgb1Texture) && (v34 = OUTLINED_FUNCTION_4_3(), (self->_rgb2 = v34) != 0) && (OUTLINED_FUNCTION_2_8(), createTexturesFromCVPixelBuffer(v35, v36, v37, v38), v39 = objc_claimAutoreleasedReturnValue(), OUTLINED_FUNCTION_18(v39), self->_rgb2Texture) && (v40 = OUTLINED_FUNCTION_1_13(), (self->_flow1 = v40) != 0) && (OUTLINED_FUNCTION_0_12(), createTexturesFromCVPixelBuffer(v41, v42, v43, v44), v45 = objc_claimAutoreleasedReturnValue(), OUTLINED_FUNCTION_18(v45), self->_flow1Texture) && (v46 = OUTLINED_FUNCTION_1_13(), (self->_flow2 = v46) != 0) && (OUTLINED_FUNCTION_0_12(), createTexturesFromCVPixelBuffer(v47, v48, v49, v50), v51 = objc_claimAutoreleasedReturnValue(), OUTLINED_FUNCTION_18(v51), self->_flow2Texture) && (v52 = OUTLINED_FUNCTION_4_3(), (self->_internalResult = v52) != 0) && (OUTLINED_FUNCTION_2_8(), createTexturesFromCVPixelBuffer(v53, v54, v55, v56), v57 = objc_claimAutoreleasedReturnValue(), OUTLINED_FUNCTION_11_2(v57), self->_internalResultTexture) && (v58 = CreatePixelBuffer(a5, a6, 843264104), (self->_internalHrFlow = v58) != 0) && (OUTLINED_FUNCTION_0_12(), createTexturesFromCVPixelBuffer(v59, v60, v61, v62), v63 = objc_claimAutoreleasedReturnValue(), internalHrFlowTexture = self->_internalHrFlowTexture, self->_internalHrFlowTexture = v63, internalHrFlowTexture, self->_internalHrFlowTexture))
+  if (PixelBuffer && (OUTLINED_FUNCTION_2_8(), createTexturesFromCVPixelBuffer(v11, v12, v13, v14), v15 = objc_claimAutoreleasedReturnValue(), OUTLINED_FUNCTION_18(v15), self->_lrRgbTexture) && (v16 = OUTLINED_FUNCTION_1_13(), (self->_combinedRGBFlowEdge = v16) != 0) && (OUTLINED_FUNCTION_0_12(), createTexturesFromCVPixelBuffer(v17, v18, v19, v20), v21 = objc_claimAutoreleasedReturnValue(), OUTLINED_FUNCTION_18(v21), self->_combinedRGBFlowEdgeTexture) && (v22 = OUTLINED_FUNCTION_1_13(), (self->_dilateEdgeMap = v22) != 0) && (OUTLINED_FUNCTION_0_12(), createTexturesFromCVPixelBuffer(v23, v24, v25, v26), v27 = objc_claimAutoreleasedReturnValue(), OUTLINED_FUNCTION_18(v27), self->_dilateEdgeMapTexture) && (v28 = OUTLINED_FUNCTION_4_3(), (self->_rgb1 = v28) != 0) && (OUTLINED_FUNCTION_2_8(), createTexturesFromCVPixelBuffer(v29, v30, v31, v32), v33 = objc_claimAutoreleasedReturnValue(), OUTLINED_FUNCTION_18(v33), self->_rgb1Texture) && (v34 = OUTLINED_FUNCTION_4_3(), (self->_rgb2 = v34) != 0) && (OUTLINED_FUNCTION_2_8(), createTexturesFromCVPixelBuffer(v35, v36, v37, v38), v39 = objc_claimAutoreleasedReturnValue(), OUTLINED_FUNCTION_18(v39), self->_rgb2Texture) && (v40 = OUTLINED_FUNCTION_1_13(), (self->_flow1 = v40) != 0) && (OUTLINED_FUNCTION_0_12(), createTexturesFromCVPixelBuffer(v41, v42, v43, v44), v45 = objc_claimAutoreleasedReturnValue(), OUTLINED_FUNCTION_18(v45), self->_flow1Texture) && (v46 = OUTLINED_FUNCTION_1_13(), (self->_flow2 = v46) != 0) && (OUTLINED_FUNCTION_0_12(), createTexturesFromCVPixelBuffer(v47, v48, v49, v50), v51 = objc_claimAutoreleasedReturnValue(), OUTLINED_FUNCTION_18(v51), self->_flow2Texture) && (v52 = OUTLINED_FUNCTION_4_3(), (self->_internalResult = v52) != 0) && (OUTLINED_FUNCTION_2_8(), createTexturesFromCVPixelBuffer(v53, v54, v55, v56), v57 = objc_claimAutoreleasedReturnValue(), OUTLINED_FUNCTION_11_2(v57), self->_internalResultTexture) && (v58 = CreatePixelBuffer(hrWidth, hrHeight, 843264104), (self->_internalHrFlow = v58) != 0) && (OUTLINED_FUNCTION_0_12(), createTexturesFromCVPixelBuffer(v59, v60, v61, v62), v63 = objc_claimAutoreleasedReturnValue(), internalHrFlowTexture = self->_internalHrFlowTexture, self->_internalHrFlowTexture = v63, internalHrFlowTexture, self->_internalHrFlowTexture))
   {
     return 0;
   }
@@ -186,11 +186,11 @@
   return v4;
 }
 
-- (FlowUpscale)initWithDevice:(id)a3 commandQueue:(id)a4
+- (FlowUpscale)initWithDevice:(id)device commandQueue:(id)queue
 {
   v8.receiver = self;
   v8.super_class = FlowUpscale;
-  v4 = [(VEMetalBase *)&v8 initWithDevice:a3 commmandQueue:a4];
+  v4 = [(VEMetalBase *)&v8 initWithDevice:device commmandQueue:queue];
   v5 = v4;
   if (v4 && [(FlowUpscale *)v4 createModules]&& [(FlowUpscale *)v5 setupMetal])
   {
@@ -270,27 +270,27 @@
   return v22;
 }
 
-- (int64_t)flowUpscalingFromImage:(id)a3 inputFlow:(id)a4 outputFlow:(id)a5 interleave_factor:(unint64_t)a6
+- (int64_t)flowUpscalingFromImage:(id)image inputFlow:(id)flow outputFlow:(id)outputFlow interleave_factor:(unint64_t)interleave_factor
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v12;
+  imageCopy = image;
+  flowCopy = flow;
+  outputFlowCopy = outputFlow;
+  v13 = outputFlowCopy;
   v14 = 12;
-  if (v10 && v11 && v12)
+  if (imageCopy && flowCopy && outputFlowCopy)
   {
-    v15 = [(MTLCommandQueue *)self->super._commandQueue commandBuffer];
-    v16 = v15;
-    if (!v15)
+    commandBuffer = [(MTLCommandQueue *)self->super._commandQueue commandBuffer];
+    v16 = commandBuffer;
+    if (!commandBuffer)
     {
       v14 = 9;
       goto LABEL_10;
     }
 
-    [v15 enqueue];
+    [commandBuffer enqueue];
     if (self->_imageGuideUpscale)
     {
-      v17 = [(FlowUpscale *)self upscaleRefinedFloV2WithRGB:v10 lrFlow:v11 commandBuffer:v16 interleaveFactor:a6 output:v13];
+      v17 = [(FlowUpscale *)self upscaleRefinedFloV2WithRGB:imageCopy lrFlow:flowCopy commandBuffer:v16 interleaveFactor:interleave_factor output:v13];
       if (v17)
       {
 LABEL_7:
@@ -303,7 +303,7 @@ LABEL_10:
 
     else
     {
-      v17 = [(Backwarp_Ext *)self->_backwarp encodeUpscaleFlowToCommandBuffer:v16 source:v11 destination:v13];
+      v17 = [(Backwarp_Ext *)self->_backwarp encodeUpscaleFlowToCommandBuffer:v16 source:flowCopy destination:v13];
       if (v17)
       {
         goto LABEL_7;
@@ -323,18 +323,18 @@ LABEL_11:
   return v14;
 }
 
-- (int64_t)upscaleRefinedFloV2WithRGB:(id)a3 lrFlow:(id)a4 commandBuffer:(id)a5 interleaveFactor:(unint64_t)a6 output:(id)a7
+- (int64_t)upscaleRefinedFloV2WithRGB:(id)b lrFlow:(id)flow commandBuffer:(id)buffer interleaveFactor:(unint64_t)factor output:(id)output
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
-  v15 = v14;
+  bCopy = b;
+  flowCopy = flow;
+  bufferCopy = buffer;
+  outputCopy = output;
+  v15 = outputCopy;
   v16 = 12;
-  if (v11 && v12 && v14)
+  if (bCopy && flowCopy && outputCopy)
   {
-    [v11 width];
-    [v11 height];
+    [bCopy width];
+    [bCopy height];
     v17 = [OUTLINED_FUNCTION_22() encodeDownscaleImageToCommandBuffer:? input:? output:?];
     if (!v17)
     {
@@ -359,7 +359,7 @@ LABEL_11:
           }
 
           [v15 width];
-          [v12 width];
+          [flowCopy width];
           v17 = [OUTLINED_FUNCTION_22() encodeDeblockToCommandBuffer:? flow:? output:? upscaleFactor:?];
         }
       }
@@ -373,28 +373,28 @@ LABEL_11:
   return v16;
 }
 
-- (int64_t)encodeDownscaleImageToCommandBuffer:(id)a3 input:(id)a4 output:(id)a5
+- (int64_t)encodeDownscaleImageToCommandBuffer:(id)buffer input:(id)input output:(id)output
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
+  inputCopy = input;
+  outputCopy = output;
+  v10 = outputCopy;
   v11 = 12;
-  if (v8 && v9)
+  if (inputCopy && outputCopy)
   {
-    v12 = [a3 computeCommandEncoder];
-    if (v12)
+    computeCommandEncoder = [buffer computeCommandEncoder];
+    if (computeCommandEncoder)
     {
-      v13 = [v8 arrayLength];
+      arrayLength = [inputCopy arrayLength];
       v14 = &OBJC_IVAR___FlowUpscale__downscalePackedImageKernel;
-      if (v13 > 1)
+      if (arrayLength > 1)
       {
         v14 = &OBJC_IVAR___FlowUpscale__downscaleImageKernel;
       }
 
-      [v12 setComputePipelineState:*(&self->super.super.isa + *v14)];
+      [computeCommandEncoder setComputePipelineState:*(&self->super.super.isa + *v14)];
       OUTLINED_FUNCTION_3_2();
       OUTLINED_FUNCTION_5();
-      [v8 width];
+      [inputCopy width];
       v15 = OUTLINED_FUNCTION_13([v10 width]);
       v23 = v15;
       v16 = (v15 * 0.5);
@@ -409,8 +409,8 @@ LABEL_11:
       }
 
       v22 = v16;
-      [v12 setBytes:&v23 length:4 atIndex:0];
-      [v12 setBytes:&v22 length:2 atIndex:1];
+      [computeCommandEncoder setBytes:&v23 length:4 atIndex:0];
+      [computeCommandEncoder setBytes:&v22 length:2 atIndex:1];
       v17 = ([v10 width] + 15) >> 4;
       [v10 height];
       OUTLINED_FUNCTION_8_0();
@@ -418,8 +418,8 @@ LABEL_11:
       v21[1] = v18;
       v21[2] = 1;
       v20[2] = 1;
-      [v12 dispatchThreadgroups:v21 threadsPerThreadgroup:{v20, *OUTLINED_FUNCTION_0_7().i64}];
-      [v12 endEncoding];
+      [computeCommandEncoder dispatchThreadgroups:v21 threadsPerThreadgroup:{v20, *OUTLINED_FUNCTION_0_7().i64}];
+      [computeCommandEncoder endEncoding];
       v11 = 0;
     }
 
@@ -432,32 +432,32 @@ LABEL_11:
   return v11;
 }
 
-- (int64_t)encodeComputeRGBandFlowEdgeToCommandBuffer:(id)a3 rgb:(id)a4 flow:(id)a5 destination:(id)a6 edgeThresh:(float)a7
+- (int64_t)encodeComputeRGBandFlowEdgeToCommandBuffer:(id)buffer rgb:(id)rgb flow:(id)flow destination:(id)destination edgeThresh:(float)thresh
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = v14;
-  v26 = a7;
+  rgbCopy = rgb;
+  flowCopy = flow;
+  destinationCopy = destination;
+  v15 = destinationCopy;
+  threshCopy = thresh;
   v16 = 12;
-  if (v12 && v13 && v14)
+  if (rgbCopy && flowCopy && destinationCopy)
   {
-    v17 = [a3 computeCommandEncoder];
-    if (v17)
+    computeCommandEncoder = [buffer computeCommandEncoder];
+    if (computeCommandEncoder)
     {
       v18 = [(MTLDevice *)self->super._device newBufferWithLength:4 options:0];
-      *[v18 contents] = a7;
-      [v12 width];
+      *[v18 contents] = thresh;
+      [rgbCopy width];
       v25 = OUTLINED_FUNCTION_13([v15 width]);
-      [v13 width];
+      [flowCopy width];
       v24 = OUTLINED_FUNCTION_13([v15 width]);
-      [v17 setComputePipelineState:self->_computeRgbFlowEdgeKernel];
-      [v17 setTexture:v12 atIndex:0];
-      [v17 setTexture:v13 atIndex:1];
-      [v17 setTexture:v15 atIndex:2];
-      [v17 setBytes:&v26 length:4 atIndex:0];
-      [v17 setBytes:&v25 length:4 atIndex:1];
-      [v17 setBytes:&v24 length:4 atIndex:2];
+      [computeCommandEncoder setComputePipelineState:self->_computeRgbFlowEdgeKernel];
+      [computeCommandEncoder setTexture:rgbCopy atIndex:0];
+      [computeCommandEncoder setTexture:flowCopy atIndex:1];
+      [computeCommandEncoder setTexture:v15 atIndex:2];
+      [computeCommandEncoder setBytes:&threshCopy length:4 atIndex:0];
+      [computeCommandEncoder setBytes:&v25 length:4 atIndex:1];
+      [computeCommandEncoder setBytes:&v24 length:4 atIndex:2];
       v19 = ([v15 width] + 15) >> 4;
       [v15 height];
       OUTLINED_FUNCTION_8_0();
@@ -465,8 +465,8 @@ LABEL_11:
       v23[1] = v20;
       v23[2] = 1;
       v22[2] = 1;
-      [v17 dispatchThreadgroups:v23 threadsPerThreadgroup:{v22, *OUTLINED_FUNCTION_0_7().i64}];
-      [v17 endEncoding];
+      [computeCommandEncoder dispatchThreadgroups:v23 threadsPerThreadgroup:{v22, *OUTLINED_FUNCTION_0_7().i64}];
+      [computeCommandEncoder endEncoding];
 
       v16 = 0;
     }
@@ -480,19 +480,19 @@ LABEL_11:
   return v16;
 }
 
-- (int64_t)encodeDilateEdgeMapToCommandBuffer:(id)a3 input:(id)a4 destination:(id)a5
+- (int64_t)encodeDilateEdgeMapToCommandBuffer:(id)buffer input:(id)input destination:(id)destination
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
+  inputCopy = input;
+  destinationCopy = destination;
+  v10 = destinationCopy;
   v11 = 12;
-  if (v8 && v9)
+  if (inputCopy && destinationCopy)
   {
-    v12 = [a3 computeCommandEncoder];
-    v13 = v12;
-    if (v12)
+    computeCommandEncoder = [buffer computeCommandEncoder];
+    v13 = computeCommandEncoder;
+    if (computeCommandEncoder)
     {
-      [v12 setComputePipelineState:self->_dilateEdgeMapKernel];
+      [computeCommandEncoder setComputePipelineState:self->_dilateEdgeMapKernel];
       OUTLINED_FUNCTION_3_2();
       OUTLINED_FUNCTION_5();
       v14 = ([v10 width] + 15) >> 4;
@@ -516,35 +516,35 @@ LABEL_11:
   return v11;
 }
 
-- (int64_t)encodeLowResClusterToCommandBuffer:(id)a3 lrFlow:(id)a4 lrImage:(id)a5 rgbFlowEdge:(id)a6 flow1:(id)a7 flow2:(id)a8 rgb1:(id)a9 rgb2:(id)a10 internalResult:(id)a11
+- (int64_t)encodeLowResClusterToCommandBuffer:(id)buffer lrFlow:(id)flow lrImage:(id)image rgbFlowEdge:(id)edge flow1:(id)flow1 flow2:(id)flow2 rgb1:(id)rgb1 rgb2:(id)self0 internalResult:(id)self1
 {
-  v17 = a4;
-  v18 = a5;
-  v31 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
-  v23 = a11;
-  v24 = v23;
+  flowCopy = flow;
+  imageCopy = image;
+  edgeCopy = edge;
+  flow1Copy = flow1;
+  flow2Copy = flow2;
+  rgb1Copy = rgb1;
+  rgb2Copy = rgb2;
+  resultCopy = result;
+  v24 = resultCopy;
   v25 = 12;
-  if (v17 && v18 && v31 && v19 && v20 && v21 && v22 && v23)
+  if (flowCopy && imageCopy && edgeCopy && flow1Copy && flow2Copy && rgb1Copy && rgb2Copy && resultCopy)
   {
-    v26 = [a3 computeCommandEncoder];
-    v27 = v26;
-    if (v26)
+    computeCommandEncoder = [buffer computeCommandEncoder];
+    v27 = computeCommandEncoder;
+    if (computeCommandEncoder)
     {
-      [v26 setComputePipelineState:self->_flowUpscaleLowresClusterKernel];
-      [v27 setTexture:v17 atIndex:0];
-      [v27 setTexture:v18 atIndex:1];
-      [v27 setTexture:v31 atIndex:2];
-      [v27 setTexture:v19 atIndex:3];
-      [v27 setTexture:v20 atIndex:4];
-      [v27 setTexture:v21 atIndex:5];
-      [v27 setTexture:v22 atIndex:6];
+      [computeCommandEncoder setComputePipelineState:self->_flowUpscaleLowresClusterKernel];
+      [v27 setTexture:flowCopy atIndex:0];
+      [v27 setTexture:imageCopy atIndex:1];
+      [v27 setTexture:edgeCopy atIndex:2];
+      [v27 setTexture:flow1Copy atIndex:3];
+      [v27 setTexture:flow2Copy atIndex:4];
+      [v27 setTexture:rgb1Copy atIndex:5];
+      [v27 setTexture:rgb2Copy atIndex:6];
       [v27 setTexture:v24 atIndex:7];
-      v28 = ([v17 width] + 15) >> 4;
-      [v17 height];
+      v28 = ([flowCopy width] + 15) >> 4;
+      [flowCopy height];
       OUTLINED_FUNCTION_8_0();
       v34[0] = v28;
       v34[1] = v29;
@@ -565,43 +565,43 @@ LABEL_11:
   return v25;
 }
 
-- (int64_t)encodeHighUpscaleToCommandBuffer:(id)a3 lrFlow:(id)a4 rgbFlowEdge:(id)a5 hrImage:(id)a6 flow1:(id)a7 flow2:(id)a8 rgb1:(id)a9 rgb2:(id)a10 internalResult:(id)a11 hrFlow:(id)a12
+- (int64_t)encodeHighUpscaleToCommandBuffer:(id)buffer lrFlow:(id)flow rgbFlowEdge:(id)edge hrImage:(id)image flow1:(id)flow1 flow2:(id)flow2 rgb1:(id)rgb1 rgb2:(id)self0 internalResult:(id)self1 hrFlow:(id)self2
 {
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v33 = a7;
-  v32 = a8;
-  v20 = a9;
-  v21 = a10;
-  v22 = a11;
-  v23 = a12;
-  v24 = v23;
+  flowCopy = flow;
+  edgeCopy = edge;
+  imageCopy = image;
+  flow1Copy = flow1;
+  flow2Copy = flow2;
+  rgb1Copy = rgb1;
+  rgb2Copy = rgb2;
+  resultCopy = result;
+  hrFlowCopy = hrFlow;
+  v24 = hrFlowCopy;
   v25 = 12;
-  if (v17)
+  if (flowCopy)
   {
-    v26 = v18;
-    if (v18 && v19 && v33 && v32 && v20 && v21 && v22 && v23)
+    v26 = edgeCopy;
+    if (edgeCopy && imageCopy && flow1Copy && flow2Copy && rgb1Copy && rgb2Copy && resultCopy && hrFlowCopy)
     {
-      v27 = [a3 computeCommandEncoder];
-      if (v27)
+      computeCommandEncoder = [buffer computeCommandEncoder];
+      if (computeCommandEncoder)
       {
-        [v19 width];
-        v38 = OUTLINED_FUNCTION_13([v17 width]);
-        [v17 width];
-        v37 = OUTLINED_FUNCTION_13([v19 width]);
-        [v27 setComputePipelineState:self->_flowUpscaleHighresUpscaleKernel];
-        [v27 setTexture:v19 atIndex:0];
-        [v27 setTexture:v18 atIndex:1];
-        [v27 setTexture:v33 atIndex:2];
-        [v27 setTexture:v32 atIndex:3];
-        [v27 setTexture:v20 atIndex:4];
-        [v27 setTexture:v21 atIndex:5];
-        [v27 setTexture:v22 atIndex:6];
-        [v27 setTexture:v17 atIndex:7];
-        [v27 setTexture:v24 atIndex:8];
-        [v27 setBytes:&v38 length:4 atIndex:0];
-        [v27 setBytes:&v37 length:4 atIndex:1];
+        [imageCopy width];
+        v38 = OUTLINED_FUNCTION_13([flowCopy width]);
+        [flowCopy width];
+        v37 = OUTLINED_FUNCTION_13([imageCopy width]);
+        [computeCommandEncoder setComputePipelineState:self->_flowUpscaleHighresUpscaleKernel];
+        [computeCommandEncoder setTexture:imageCopy atIndex:0];
+        [computeCommandEncoder setTexture:edgeCopy atIndex:1];
+        [computeCommandEncoder setTexture:flow1Copy atIndex:2];
+        [computeCommandEncoder setTexture:flow2Copy atIndex:3];
+        [computeCommandEncoder setTexture:rgb1Copy atIndex:4];
+        [computeCommandEncoder setTexture:rgb2Copy atIndex:5];
+        [computeCommandEncoder setTexture:resultCopy atIndex:6];
+        [computeCommandEncoder setTexture:flowCopy atIndex:7];
+        [computeCommandEncoder setTexture:v24 atIndex:8];
+        [computeCommandEncoder setBytes:&v38 length:4 atIndex:0];
+        [computeCommandEncoder setBytes:&v37 length:4 atIndex:1];
         v28 = ([v24 width] + 15) >> 4;
         [v24 height];
         OUTLINED_FUNCTION_8_0();
@@ -610,8 +610,8 @@ LABEL_11:
         v36[2] = 1;
         v34 = vdupq_n_s64(0x10uLL);
         v35 = 1;
-        [v27 dispatchThreadgroups:v36 threadsPerThreadgroup:&v34];
-        [v27 endEncoding];
+        [computeCommandEncoder dispatchThreadgroups:v36 threadsPerThreadgroup:&v34];
+        [computeCommandEncoder endEncoding];
         v25 = 0;
       }
 
@@ -624,29 +624,29 @@ LABEL_11:
 
   else
   {
-    v26 = v18;
+    v26 = edgeCopy;
   }
 
   return v25;
 }
 
-- (int64_t)encodeDeblockToCommandBuffer:(id)a3 flow:(id)a4 output:(id)a5 upscaleFactor:(int)a6
+- (int64_t)encodeDeblockToCommandBuffer:(id)buffer flow:(id)flow output:(id)output upscaleFactor:(int)factor
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
+  flowCopy = flow;
+  outputCopy = output;
+  v12 = outputCopy;
   v13 = 12;
-  if (v10 && v11)
+  if (flowCopy && outputCopy)
   {
-    v14 = [a3 computeCommandEncoder];
-    if (v14)
+    computeCommandEncoder = [buffer computeCommandEncoder];
+    if (computeCommandEncoder)
     {
       v15 = [(MTLDevice *)self->super._device newBufferWithLength:4 options:0];
-      *[v15 contents] = a6;
-      [v14 setComputePipelineState:self->_deblockKernel];
+      *[v15 contents] = factor;
+      [computeCommandEncoder setComputePipelineState:self->_deblockKernel];
       OUTLINED_FUNCTION_3_2();
       OUTLINED_FUNCTION_5();
-      [v14 setBuffer:v15 offset:0 atIndex:0];
+      [computeCommandEncoder setBuffer:v15 offset:0 atIndex:0];
       v16 = ([v12 width] + 15) >> 4;
       [v12 height];
       OUTLINED_FUNCTION_8_0();
@@ -654,8 +654,8 @@ LABEL_11:
       v20[1] = v17;
       v20[2] = 1;
       v19[2] = 1;
-      [v14 dispatchThreadgroups:v20 threadsPerThreadgroup:{v19, *OUTLINED_FUNCTION_0_7().i64}];
-      [v14 endEncoding];
+      [computeCommandEncoder dispatchThreadgroups:v20 threadsPerThreadgroup:{v19, *OUTLINED_FUNCTION_0_7().i64}];
+      [computeCommandEncoder endEncoding];
 
       v13 = 0;
     }

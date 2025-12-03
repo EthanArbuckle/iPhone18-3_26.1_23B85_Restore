@@ -7,13 +7,13 @@
 - (BOOL)tsu_isCJKString
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  if (![a1 length])
+  if (![self length])
   {
     return 0;
   }
 
-  v2 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v3 = [a1 stringByTrimmingCharactersInSet:v2];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v3 = [self stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   v4 = [v3 length];
   if (!v4)

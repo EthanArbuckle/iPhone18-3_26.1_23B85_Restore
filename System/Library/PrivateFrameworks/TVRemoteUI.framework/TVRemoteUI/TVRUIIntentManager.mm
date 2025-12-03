@@ -1,15 +1,15 @@
 @interface TVRUIIntentManager
-+ (void)_donateInteractionforIntent:(id)a3 launchID:(id)a4;
-+ (void)donateIntentsForDeviceWithID:(id)a3 name:(id)a4;
++ (void)_donateInteractionforIntent:(id)intent launchID:(id)d;
++ (void)donateIntentsForDeviceWithID:(id)d name:(id)name;
 @end
 
 @implementation TVRUIIntentManager
 
-+ (void)donateIntentsForDeviceWithID:(id)a3 name:(id)a4
++ (void)donateIntentsForDeviceWithID:(id)d name:(id)name
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  nameCopy = name;
   v8 = _TVRUIIntentManagerLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -18,16 +18,16 @@
     _os_log_impl(&dword_26CFEB000, v8, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  if ([v6 length] && objc_msgSend(v7, "length"))
+  if ([dCopy length] && objc_msgSend(nameCopy, "length"))
   {
     v9 = dispatch_get_global_queue(17, 0);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __56__TVRUIIntentManager_donateIntentsForDeviceWithID_name___block_invoke;
     block[3] = &unk_279D889D0;
-    v12 = v6;
-    v13 = v7;
-    v14 = a1;
+    v12 = dCopy;
+    v13 = nameCopy;
+    selfCopy = self;
     dispatch_async(v9, block);
 
     v10 = v12;
@@ -38,7 +38,7 @@
     v10 = _TVRUIIntentManagerLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [(TVRUIIntentManager *)v6 donateIntentsForDeviceWithID:v7 name:v10];
+      [(TVRUIIntentManager *)dCopy donateIntentsForDeviceWithID:nameCopy name:v10];
     }
   }
 }
@@ -57,19 +57,19 @@ void __56__TVRUIIntentManager_donateIntentsForDeviceWithID_name___block_invoke(u
   [*(a1 + 48) _donateInteractionforIntent:v4 launchID:@"com.apple.TVRemoteUIService"];
 }
 
-+ (void)_donateInteractionforIntent:(id)a3 launchID:(id)a4
++ (void)_donateInteractionforIntent:(id)intent launchID:(id)d
 {
-  v4 = a3;
-  [v4 _setLaunchId:@"com.apple.TVRemoteUIService"];
-  v5 = [objc_alloc(MEMORY[0x277CD3D58]) initWithIntent:v4 response:0];
+  intentCopy = intent;
+  [intentCopy _setLaunchId:@"com.apple.TVRemoteUIService"];
+  v5 = [objc_alloc(MEMORY[0x277CD3D58]) initWithIntent:intentCopy response:0];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __59__TVRUIIntentManager__donateInteractionforIntent_launchID___block_invoke;
   v8[3] = &unk_279D889F8;
-  v9 = v4;
+  v9 = intentCopy;
   v10 = v5;
   v6 = v5;
-  v7 = v4;
+  v7 = intentCopy;
   [v6 donateInteractionWithCompletion:v8];
 }
 

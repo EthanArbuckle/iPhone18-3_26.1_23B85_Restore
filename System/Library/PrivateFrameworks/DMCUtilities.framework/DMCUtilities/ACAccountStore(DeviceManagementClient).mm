@@ -30,20 +30,20 @@
 
 - (id)dmc_visibleSecondaryRemoteManagementAccounts
 {
-  v1 = [a1 dmc_visibleRemoteManagementAccounts];
+  dmc_visibleRemoteManagementAccounts = [self dmc_visibleRemoteManagementAccounts];
   v2 = [MEMORY[0x1E696AE18] predicateWithBlock:&__block_literal_global_2];
-  v3 = [v1 filteredArrayUsingPredicate:v2];
+  v3 = [dmc_visibleRemoteManagementAccounts filteredArrayUsingPredicate:v2];
 
   return v3;
 }
 
 - (id)dmc_visibleRemoteManagementAccounts
 {
-  v1 = [a1 dmc_RemoteManagementAccounts];
-  if (v1)
+  dmc_RemoteManagementAccounts = [self dmc_RemoteManagementAccounts];
+  if (dmc_RemoteManagementAccounts)
   {
     v2 = [MEMORY[0x1E696AE18] predicateWithBlock:&__block_literal_global];
-    v3 = [v1 filteredArrayUsingPredicate:v2];
+    v3 = [dmc_RemoteManagementAccounts filteredArrayUsingPredicate:v2];
   }
 
   else
@@ -56,8 +56,8 @@
 
 - (id)dmc_RemoteManagementAccounts
 {
-  v2 = [a1 dmc_RemoteManagementAccountType];
-  v3 = [a1 accountsWithAccountType:v2];
+  dmc_RemoteManagementAccountType = [self dmc_RemoteManagementAccountType];
+  v3 = [self accountsWithAccountType:dmc_RemoteManagementAccountType];
 
   return v3;
 }
@@ -65,13 +65,13 @@
 - (id)_dmc_AccountAssociatedWithRemoteManagementWithAccountTypeIdentifier:()DeviceManagementClient
 {
   v4 = a3;
-  v5 = [a1 dmc_RemoteManagementAccounts];
-  v6 = [v5 firstObject];
+  dmc_RemoteManagementAccounts = [self dmc_RemoteManagementAccounts];
+  firstObject = [dmc_RemoteManagementAccounts firstObject];
 
-  if (v6)
+  if (firstObject)
   {
-    v7 = [v6 dmc_altDSID];
-    v8 = [a1 _dmc_AccountAssociatedWithRemoteManagementWithAccountTypeIdentifier:v4 altDSID:v7];
+    dmc_altDSID = [firstObject dmc_altDSID];
+    v8 = [self _dmc_AccountAssociatedWithRemoteManagementWithAccountTypeIdentifier:v4 altDSID:dmc_altDSID];
   }
 
   else
@@ -90,7 +90,7 @@
   v26[0] = v6;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
   v24 = 0;
-  v9 = [a1 accountsWithAccountTypeIdentifiers:v8 preloadedProperties:0 error:&v24];
+  v9 = [self accountsWithAccountTypeIdentifiers:v8 preloadedProperties:0 error:&v24];
   v10 = v24;
 
   v22 = 0u;
@@ -112,8 +112,8 @@
         }
 
         v15 = *(*(&v20 + 1) + 8 * i);
-        v16 = [v15 dmc_altDSID];
-        v17 = [v16 isEqualToString:v7];
+        dmc_altDSID = [v15 dmc_altDSID];
+        v17 = [dmc_altDSID isEqualToString:v7];
 
         if (v17)
         {
@@ -143,7 +143,7 @@ LABEL_11:
 {
   v19 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  [a1 dmc_RemoteManagementAccounts];
+  [self dmc_RemoteManagementAccounts];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -162,8 +162,8 @@ LABEL_11:
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 dmc_altDSID];
-        v11 = [v10 isEqualToString:v4];
+        dmc_altDSID = [v9 dmc_altDSID];
+        v11 = [dmc_altDSID isEqualToString:v4];
 
         if (v11)
         {
@@ -193,7 +193,7 @@ LABEL_11:
 {
   v19 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  [a1 dmc_RemoteManagementAccounts];
+  [self dmc_RemoteManagementAccounts];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -212,8 +212,8 @@ LABEL_11:
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 dmc_DSID];
-        v11 = [v10 isEqualToNumber:v4];
+        dmc_DSID = [v9 dmc_DSID];
+        v11 = [dmc_DSID isEqualToNumber:v4];
 
         if (v11)
         {
@@ -243,7 +243,7 @@ LABEL_11:
 {
   v19 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  [a1 dmc_RemoteManagementAccounts];
+  [self dmc_RemoteManagementAccounts];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -262,8 +262,8 @@ LABEL_11:
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 identifier];
-        v11 = [v10 isEqualToString:v4];
+        identifier = [v9 identifier];
+        v11 = [identifier isEqualToString:v4];
 
         if (v11)
         {
@@ -293,7 +293,7 @@ LABEL_11:
 {
   v19 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  [a1 dmc_RemoteManagementAccounts];
+  [self dmc_RemoteManagementAccounts];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -312,8 +312,8 @@ LABEL_11:
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 dmc_enrollmentURL];
-        v11 = [v10 isEqualToString:v4];
+        dmc_enrollmentURL = [v9 dmc_enrollmentURL];
+        v11 = [dmc_enrollmentURL isEqualToString:v4];
 
         if (v11)
         {
@@ -343,7 +343,7 @@ LABEL_11:
 {
   v19 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  [a1 dmc_RemoteManagementAccounts];
+  [self dmc_RemoteManagementAccounts];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -362,8 +362,8 @@ LABEL_11:
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 dmc_managementProfileIdentifier];
-        v11 = [v10 isEqualToString:v4];
+        dmc_managementProfileIdentifier = [v9 dmc_managementProfileIdentifier];
+        v11 = [dmc_managementProfileIdentifier isEqualToString:v4];
 
         if (v11)
         {
@@ -397,7 +397,7 @@ LABEL_11:
   v29[0] = *MEMORY[0x1E69597F8];
   v29[1] = v6;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:2];
-  v8 = [a1 accountsWithAccountTypeIdentifiers:v7 error:a3];
+  v8 = [self accountsWithAccountTypeIdentifiers:v7 error:a3];
 
   v26 = 0u;
   v27 = 0u;
@@ -419,13 +419,13 @@ LABEL_11:
         }
 
         v14 = *(*(&v24 + 1) + 8 * i);
-        v15 = [v14 accountType];
-        v16 = [v15 identifier];
-        if ([v16 isEqualToString:v5])
+        accountType = [v14 accountType];
+        identifier = [accountType identifier];
+        if ([identifier isEqualToString:v5])
         {
-          v17 = [v14 dmc_isPrimaryAccount];
+          dmc_isPrimaryAccount = [v14 dmc_isPrimaryAccount];
 
-          if (v17)
+          if (dmc_isPrimaryAccount)
           {
             goto LABEL_17;
           }
@@ -435,13 +435,13 @@ LABEL_11:
         {
         }
 
-        v18 = [v14 accountType];
-        v19 = [v18 identifier];
-        if ([v19 isEqualToString:v6])
+        accountType2 = [v14 accountType];
+        identifier2 = [accountType2 identifier];
+        if ([identifier2 isEqualToString:v6])
         {
-          v20 = [v14 isActive];
+          isActive = [v14 isActive];
 
-          if (v20)
+          if (isActive)
           {
 LABEL_17:
             v21 = 1;
@@ -482,7 +482,7 @@ LABEL_18:
   v23[3] = &unk_1E7ADC258;
   v9 = v7;
   v24 = v9;
-  v10 = [a1 _dmc_accountWithType:v8 error:a4 criteria:v23];
+  v10 = [self _dmc_accountWithType:v8 error:a4 criteria:v23];
   v11 = v10;
   if (!v10)
   {
@@ -493,7 +493,7 @@ LABEL_18:
     v21[3] = &unk_1E7ADC258;
     v4 = &v22;
     v22 = v9;
-    v11 = [a1 _dmc_accountWithType:v12 error:a4 criteria:v21];
+    v11 = [self _dmc_accountWithType:v12 error:a4 criteria:v21];
     if (!v11)
     {
       v18 = 0;
@@ -507,15 +507,15 @@ LABEL_8:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v14 = v13;
-    v15 = [v11 identifier];
-    v16 = [v11 accountType];
-    v17 = [v16 accountTypeDescription];
+    identifier = [v11 identifier];
+    accountType = [v11 accountType];
+    accountTypeDescription = [accountType accountTypeDescription];
     *buf = 138543874;
     v26 = v9;
     v27 = 2112;
-    v28 = v15;
+    v28 = identifier;
     v29 = 2114;
-    v30 = v17;
+    v30 = accountTypeDescription;
     _os_log_impl(&dword_1B1630000, v14, OS_LOG_TYPE_DEFAULT, "Conflicting account with username (%{public}@) exists. Identifier: %@, type: %{public}@", buf, 0x20u);
   }
 
@@ -542,7 +542,7 @@ LABEL_9:
   v23[3] = &unk_1E7ADC258;
   v9 = v7;
   v24 = v9;
-  v10 = [a1 _dmc_accountWithType:v8 error:a4 criteria:v23];
+  v10 = [self _dmc_accountWithType:v8 error:a4 criteria:v23];
   v11 = v10;
   if (!v10)
   {
@@ -553,7 +553,7 @@ LABEL_9:
     v21[3] = &unk_1E7ADC258;
     v4 = &v22;
     v22 = v9;
-    v11 = [a1 _dmc_accountWithType:v12 error:a4 criteria:v21];
+    v11 = [self _dmc_accountWithType:v12 error:a4 criteria:v21];
     if (!v11)
     {
       v18 = 0;
@@ -567,15 +567,15 @@ LABEL_8:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v14 = v13;
-    v15 = [v11 identifier];
-    v16 = [v11 accountType];
-    v17 = [v16 accountTypeDescription];
+    identifier = [v11 identifier];
+    accountType = [v11 accountType];
+    accountTypeDescription = [accountType accountTypeDescription];
     *buf = 138543874;
     v26 = v9;
     v27 = 2112;
-    v28 = v15;
+    v28 = identifier;
     v29 = 2114;
-    v30 = v17;
+    v30 = accountTypeDescription;
     _os_log_impl(&dword_1B1630000, v14, OS_LOG_TYPE_DEFAULT, "Conflicting account with altDSID (%{public}@) exists. Identifier: %@, type: %{public}@", buf, 0x20u);
   }
 
@@ -601,7 +601,7 @@ LABEL_9:
   v9[3] = &unk_1E7ADC258;
   v10 = v4;
   v6 = v4;
-  v7 = [a1 _dmc_accountWithType:v5 error:0 criteria:v9];
+  v7 = [self _dmc_accountWithType:v5 error:0 criteria:v9];
 
   return v7;
 }
@@ -614,7 +614,7 @@ LABEL_9:
   v32[0] = v8;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:1];
   v28 = 0;
-  v11 = [a1 accountsWithAccountTypeIdentifiers:v10 error:&v28];
+  v11 = [self accountsWithAccountTypeIdentifiers:v10 error:&v28];
   v12 = v28;
 
   if (v12)
@@ -691,10 +691,10 @@ LABEL_17:
   v10 = a3;
   v11 = a4;
   v12 = a6;
-  v13 = [a1 _dmc_AccountAssociatedWithRemoteManagementWithAccountTypeIdentifier:v10 altDSID:v11];
+  v13 = [self _dmc_AccountAssociatedWithRemoteManagementWithAccountTypeIdentifier:v10 altDSID:v11];
   if (v13)
   {
-    v14 = [a1 _dmc_updateAccount:v13 error:a5 updateBlock:v12];
+    v14 = [self _dmc_updateAccount:v13 error:a5 updateBlock:v12];
   }
 
   else
@@ -711,7 +711,7 @@ LABEL_17:
 
     if (a5)
     {
-      [a1 _dmc_missingAccountError];
+      [self _dmc_missingAccountError];
       *a5 = v14 = 0;
     }
 
@@ -730,10 +730,10 @@ LABEL_17:
   v17 = *MEMORY[0x1E69E9840];
   v8 = a3;
   v9 = a5;
-  v10 = [a1 dmc_remoteManagementAccountForIdentifier:v8];
+  v10 = [self dmc_remoteManagementAccountForIdentifier:v8];
   if (v10)
   {
-    v11 = [a1 _dmc_updateAccount:v10 error:a4 updateBlock:v9];
+    v11 = [self _dmc_updateAccount:v10 error:a4 updateBlock:v9];
   }
 
   else
@@ -748,7 +748,7 @@ LABEL_17:
 
     if (a4)
     {
-      [a1 _dmc_missingAccountError];
+      [self _dmc_missingAccountError];
       *a4 = v11 = 0;
     }
 
@@ -774,10 +774,10 @@ LABEL_17:
   v17[3] = &unk_1E7ADC258;
   v11 = v8;
   v18 = v11;
-  v12 = [a1 _dmc_accountWithType:v10 error:a4 criteria:v17];
+  v12 = [self _dmc_accountWithType:v10 error:a4 criteria:v17];
   if (v12)
   {
-    v13 = [a1 _dmc_updateAccount:v12 error:a4 updateBlock:v9];
+    v13 = [self _dmc_updateAccount:v12 error:a4 updateBlock:v9];
   }
 
   else
@@ -806,13 +806,13 @@ LABEL_17:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = v10;
-    v12 = [v8 accountType];
-    v13 = [v12 accountTypeDescription];
-    v14 = [v8 dmc_altDSID];
+    accountType = [v8 accountType];
+    accountTypeDescription = [accountType accountTypeDescription];
+    dmc_altDSID = [v8 dmc_altDSID];
     *buf = 138543618;
-    *&buf[4] = v13;
+    *&buf[4] = accountTypeDescription;
     *&buf[12] = 2114;
-    *&buf[14] = v14;
+    *&buf[14] = dmc_altDSID;
     _os_log_impl(&dword_1B1630000, v11, OS_LOG_TYPE_DEFAULT, "Will update account with type: %{public}@, altDSID: %{public}@.", buf, 0x16u);
   }
 
@@ -827,20 +827,20 @@ LABEL_17:
   v34 = __Block_byref_object_copy__0;
   v35 = __Block_byref_object_dispose__0;
   v36 = 0;
-  v15 = [a1 _dmc_workerQueue];
+  _dmc_workerQueue = [self _dmc_workerQueue];
   v21 = MEMORY[0x1E69E9820];
   v22 = 3221225472;
   v23 = __79__ACAccountStore_DeviceManagementClient___dmc_updateAccount_error_updateBlock___block_invoke;
   v24 = &unk_1E7ADC2A8;
-  v25 = a1;
+  selfCopy = self;
   v16 = v8;
   v26 = v16;
   v27 = &v29;
   v28 = buf;
-  [v15 queueBlock:&v21];
+  [_dmc_workerQueue queueBlock:&v21];
 
-  v17 = [a1 _dmc_workerQueue];
-  [v17 waitUntilAllBlocksAreFinished];
+  _dmc_workerQueue2 = [self _dmc_workerQueue];
+  [_dmc_workerQueue2 waitUntilAllBlocksAreFinished];
 
   if (a4)
   {
@@ -874,8 +874,8 @@ LABEL_17:
   v11[3] = &unk_1E7ADC2D0;
   v12 = v6;
   v8 = v6;
-  v9 = [a1 dmc_accountsWithPredicateBlock:v11];
-  [a1 dmc_removeAccounts:v9 asynchronous:a4];
+  v9 = [self dmc_accountsWithPredicateBlock:v11];
+  [self dmc_removeAccounts:v9 asynchronous:a4];
 
   v10 = *MEMORY[0x1E69E9840];
 }
@@ -898,8 +898,8 @@ LABEL_17:
   v11[3] = &unk_1E7ADC2D0;
   v12 = v6;
   v8 = v6;
-  v9 = [a1 dmc_accountsWithPredicateBlock:v11];
-  [a1 dmc_removeAccounts:v9 asynchronous:a4];
+  v9 = [self dmc_accountsWithPredicateBlock:v11];
+  [self dmc_removeAccounts:v9 asynchronous:a4];
 
   v10 = *MEMORY[0x1E69E9840];
 }
@@ -907,13 +907,13 @@ LABEL_17:
 - (void)dmc_removeAccountWithIdentifier:()DeviceManagementClient asynchronous:
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v6 = [a1 accountWithIdentifier:?];
+  v6 = [self accountWithIdentifier:?];
   v7 = v6;
   if (v6)
   {
     v10[0] = v6;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
-    [a1 dmc_removeAccounts:v8 asynchronous:a4];
+    [self dmc_removeAccounts:v8 asynchronous:a4];
   }
 
   v9 = *MEMORY[0x1E69E9840];
@@ -935,7 +935,7 @@ LABEL_17:
   v22[6] = *MEMORY[0x1E6959860];
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:7];
   v19 = 0;
-  v9 = [a1 accountsWithAccountTypeIdentifiers:v8 preloadedProperties:0 error:&v19];
+  v9 = [self accountsWithAccountTypeIdentifiers:v8 preloadedProperties:0 error:&v19];
   v10 = v19;
   if (v10)
   {
@@ -1012,19 +1012,19 @@ LABEL_17:
         }
 
         v17 = *(*(&v24 + 1) + 8 * v16);
-        v18 = [a1 _dmc_workerQueue];
+        _dmc_workerQueue = [self _dmc_workerQueue];
         v23[0] = MEMORY[0x1E69E9820];
         v23[1] = 3221225472;
         v23[2] = __74__ACAccountStore_DeviceManagementClient__dmc_removeAccounts_asynchronous___block_invoke_2;
         v23[3] = &unk_1E7ADC348;
         v23[4] = v17;
-        v23[5] = a1;
-        [v18 queueBlock:v23];
+        v23[5] = self;
+        [_dmc_workerQueue queueBlock:v23];
 
         if ((a4 & 1) == 0)
         {
-          v19 = [a1 _dmc_workerQueue];
-          [v19 waitUntilAllBlocksAreFinished];
+          _dmc_workerQueue2 = [self _dmc_workerQueue];
+          [_dmc_workerQueue2 waitUntilAllBlocksAreFinished];
         }
 
         ++v16;
@@ -1042,11 +1042,11 @@ LABEL_17:
 
 - (DMCHangDetectionQueue)_dmc_workerQueue
 {
-  v4 = objc_getAssociatedObject(a1, a2);
+  v4 = objc_getAssociatedObject(self, a2);
   if (!v4)
   {
     v4 = [[DMCHangDetectionQueue alloc] initWithQoS:-1 hangThreshold:@"ACAccountStore+DMC" owner:65.0];
-    objc_setAssociatedObject(a1, a2, v4, 1);
+    objc_setAssociatedObject(self, a2, v4, 1);
   }
 
   return v4;

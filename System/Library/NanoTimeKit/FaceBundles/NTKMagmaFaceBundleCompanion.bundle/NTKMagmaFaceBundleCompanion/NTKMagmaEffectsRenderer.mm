@@ -1,59 +1,59 @@
 @interface NTKMagmaEffectsRenderer
-- (BOOL)prepareForTime:(double)a3;
-- (NTKMagmaEffectsRenderer)initWithDevice:(id)a3 library:(id)a4 width:(int)a5 height:(int)a6 screenScale:(float)a7 colorPixelFormat:(unint64_t)a8;
+- (BOOL)prepareForTime:(double)time;
+- (NTKMagmaEffectsRenderer)initWithDevice:(id)device library:(id)library width:(int)width height:(int)height screenScale:(float)scale colorPixelFormat:(unint64_t)format;
 - (NTKMagmaEffectsRendererDelegate)delegate;
 - (id)_binaryArchives;
-- (id)_setupBackgroundRenderPipelineWithBinaryArchives:(id)a3;
-- (id)_setupForegroundRenderPipelineWithBinaryArchives:(id)a3;
-- (id)_setupPhysicsPipelineWithBinaryArchives:(id)a3;
+- (id)_setupBackgroundRenderPipelineWithBinaryArchives:(id)archives;
+- (id)_setupForegroundRenderPipelineWithBinaryArchives:(id)archives;
+- (id)_setupPhysicsPipelineWithBinaryArchives:(id)archives;
 - (id)dequeueAndPreparePhysicsInputBuffer;
-- (id)meshForRect:(CGRect)a3 maxPitch:(double)a4;
+- (id)meshForRect:(CGRect)rect maxPitch:(double)pitch;
 - (void)_createBackgroundQuad;
 - (void)_createMesh;
 - (void)_createMeshBackgroundIndices;
-- (void)_createMeshIndicesWithBounds:(id)a3 into:;
+- (void)_createMeshIndicesWithBounds:(id)bounds into:;
 - (void)_createMeshVertices;
 - (void)_createPhysicsBuffers;
 - (void)_loadCollisionTexture;
 - (void)_unsafe_updateSimInput;
-- (void)applySpringImpulseWithBlock:(id)a3;
-- (void)performOffscreenPassesWithCommandBuffer:(id)a3;
-- (void)renderForDisplayWithEncoder:(id)a3;
+- (void)applySpringImpulseWithBlock:(id)block;
+- (void)performOffscreenPassesWithCommandBuffer:(id)buffer;
+- (void)renderForDisplayWithEncoder:(id)encoder;
 - (void)resetSprings;
-- (void)setScreenBoundRect:(CGRect)a3;
-- (void)updateBackgroundTextureWithImage:(id)a3;
-- (void)updateLogoTextureWithImage:(id)a3 origin:(CGPoint)a4;
-- (void)updateTimeTextureWithImage:(id)a3 tritiumImage:(id)a4 origin:(CGPoint)a5;
+- (void)setScreenBoundRect:(CGRect)rect;
+- (void)updateBackgroundTextureWithImage:(id)image;
+- (void)updateLogoTextureWithImage:(id)image origin:(CGPoint)origin;
+- (void)updateTimeTextureWithImage:(id)image tritiumImage:(id)tritiumImage origin:(CGPoint)origin;
 @end
 
 @implementation NTKMagmaEffectsRenderer
 
-- (NTKMagmaEffectsRenderer)initWithDevice:(id)a3 library:(id)a4 width:(int)a5 height:(int)a6 screenScale:(float)a7 colorPixelFormat:(unint64_t)a8
+- (NTKMagmaEffectsRenderer)initWithDevice:(id)device library:(id)library width:(int)width height:(int)height screenScale:(float)scale colorPixelFormat:(unint64_t)format
 {
-  v15 = a3;
-  v16 = a4;
+  deviceCopy = device;
+  libraryCopy = library;
   v27.receiver = self;
   v27.super_class = NTKMagmaEffectsRenderer;
   v17 = [(NTKMagmaEffectsRenderer *)&v27 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_device, a3);
-    objc_storeStrong(&v18->_library, a4);
-    v18->_width = a5;
-    v18->_height = a6;
-    v18->_screenScale = a7;
-    v18->_pixelFormat = a8;
-    v19 = [(NTKMagmaEffectsRenderer *)v18 _binaryArchives];
-    v20 = [(NTKMagmaEffectsRenderer *)v18 _setupBackgroundRenderPipelineWithBinaryArchives:v19];
+    objc_storeStrong(&v17->_device, device);
+    objc_storeStrong(&v18->_library, library);
+    v18->_width = width;
+    v18->_height = height;
+    v18->_screenScale = scale;
+    v18->_pixelFormat = format;
+    _binaryArchives = [(NTKMagmaEffectsRenderer *)v18 _binaryArchives];
+    v20 = [(NTKMagmaEffectsRenderer *)v18 _setupBackgroundRenderPipelineWithBinaryArchives:_binaryArchives];
     backgroundRenderPipelineState = v18->_backgroundRenderPipelineState;
     v18->_backgroundRenderPipelineState = v20;
 
-    v22 = [(NTKMagmaEffectsRenderer *)v18 _setupForegroundRenderPipelineWithBinaryArchives:v19];
+    v22 = [(NTKMagmaEffectsRenderer *)v18 _setupForegroundRenderPipelineWithBinaryArchives:_binaryArchives];
     foregroundRenderPipelineState = v18->_foregroundRenderPipelineState;
     v18->_foregroundRenderPipelineState = v22;
 
-    v24 = [(NTKMagmaEffectsRenderer *)v18 _setupPhysicsPipelineWithBinaryArchives:v19];
+    v24 = [(NTKMagmaEffectsRenderer *)v18 _setupPhysicsPipelineWithBinaryArchives:_binaryArchives];
     computePipelineState = v18->_computePipelineState;
     v18->_computePipelineState = v24;
 
@@ -71,7 +71,7 @@
   return v18;
 }
 
-- (BOOL)prepareForTime:(double)a3
+- (BOOL)prepareForTime:(double)time
 {
   bufferIndex = self->_bufferIndex;
   v5 = __OFADD__(bufferIndex++, 1);
@@ -83,19 +83,19 @@
   }
 
   self->_bufferIndex = v7;
-  v8 = [(NTKMagmaEffectsRenderer *)self delegate];
-  [v8 magmaRendererPrepareForFrameWithTime:a3];
+  delegate = [(NTKMagmaEffectsRenderer *)self delegate];
+  [delegate magmaRendererPrepareForFrameWithTime:time];
 
   return 1;
 }
 
-- (void)performOffscreenPassesWithCommandBuffer:(id)a3
+- (void)performOffscreenPassesWithCommandBuffer:(id)buffer
 {
-  v4 = a3;
+  bufferCopy = buffer;
   timeTextureBlock = self->_timeTextureBlock;
   if (timeTextureBlock)
   {
-    v6 = timeTextureBlock[2](timeTextureBlock, v4);
+    v6 = timeTextureBlock[2](timeTextureBlock, bufferCopy);
     primaryTexture = self->_primaryTexture;
     self->_primaryTexture = v6;
 
@@ -106,7 +106,7 @@
   tritiumTimeTextureBlock = self->_tritiumTimeTextureBlock;
   if (tritiumTimeTextureBlock)
   {
-    v10 = tritiumTimeTextureBlock[2](tritiumTimeTextureBlock, v4);
+    v10 = tritiumTimeTextureBlock[2](tritiumTimeTextureBlock, bufferCopy);
     tritiumTimeTexture = self->_tritiumTimeTexture;
     self->_tritiumTimeTexture = v10;
 
@@ -117,7 +117,7 @@
   logoTextureBlock = self->_logoTextureBlock;
   if (logoTextureBlock)
   {
-    v14 = logoTextureBlock[2](logoTextureBlock, v4);
+    v14 = logoTextureBlock[2](logoTextureBlock, bufferCopy);
     swooshTexture = self->_swooshTexture;
     self->_swooshTexture = v14;
 
@@ -128,7 +128,7 @@
   backgroundTextureBlock = self->_backgroundTextureBlock;
   if (backgroundTextureBlock)
   {
-    v18 = backgroundTextureBlock[2](backgroundTextureBlock, v4);
+    v18 = backgroundTextureBlock[2](backgroundTextureBlock, bufferCopy);
     backgroundTexture = self->_backgroundTexture;
     self->_backgroundTexture = v18;
 
@@ -136,17 +136,17 @@
     self->_backgroundTextureBlock = 0;
   }
 
-  v21 = [(CLKUIMetalResourcePool *)self->_springOffsetTexturePool dequeueReusableResourceForUseOnCommandBuffer:v4];
+  v21 = [(CLKUIMetalResourcePool *)self->_springOffsetTexturePool dequeueReusableResourceForUseOnCommandBuffer:bufferCopy];
   springOffsetTexture = self->_springOffsetTexture;
   self->_springOffsetTexture = v21;
 
-  v23 = [(CLKUIMetalResourcePool *)self->_meshOffsetTexturePool dequeueReusableResourceForUseOnCommandBuffer:v4];
+  v23 = [(CLKUIMetalResourcePool *)self->_meshOffsetTexturePool dequeueReusableResourceForUseOnCommandBuffer:bufferCopy];
   meshOffsetTexture = self->_meshOffsetTexture;
   self->_meshOffsetTexture = v23;
 
   if (LOBYTE(self->_springStiffness) == 1)
   {
-    v25 = [v4 computeCommandEncoder];
+    computeCommandEncoder = [bufferCopy computeCommandEncoder];
     os_unfair_lock_lock(&self->_inputLock);
     bufferIndex = self->_bufferIndex;
     if (bufferIndex >= -1)
@@ -160,15 +160,15 @@
     }
 
     [(NTKMagmaEffectsRenderer *)self _unsafe_updateSimInput];
-    [v25 setComputePipelineState:self->_computePipelineState];
-    [v25 setBuffer:self->_springBuffers[v27] offset:0 atIndex:0];
-    [v25 setBuffer:self->_springBuffers[bufferIndex] offset:0 atIndex:1];
-    [v25 setBuffer:self->_simUniforms offset:0 atIndex:3];
-    [v25 setBuffer:self->_simInput offset:0 atIndex:2];
-    [v25 setTexture:self->_correctionTexture atIndex:4];
-    [v25 setTexture:self->_springOffsetTexture atIndex:5];
-    v28 = [(MTLComputePipelineState *)self->_computePipelineState threadExecutionWidth];
-    v29 = [(MTLComputePipelineState *)self->_computePipelineState maxTotalThreadsPerThreadgroup]/ v28 * v28;
+    [computeCommandEncoder setComputePipelineState:self->_computePipelineState];
+    [computeCommandEncoder setBuffer:self->_springBuffers[v27] offset:0 atIndex:0];
+    [computeCommandEncoder setBuffer:self->_springBuffers[bufferIndex] offset:0 atIndex:1];
+    [computeCommandEncoder setBuffer:self->_simUniforms offset:0 atIndex:3];
+    [computeCommandEncoder setBuffer:self->_simInput offset:0 atIndex:2];
+    [computeCommandEncoder setTexture:self->_correctionTexture atIndex:4];
+    [computeCommandEncoder setTexture:self->_springOffsetTexture atIndex:5];
+    threadExecutionWidth = [(MTLComputePipelineState *)self->_computePipelineState threadExecutionWidth];
+    v29 = [(MTLComputePipelineState *)self->_computePipelineState maxTotalThreadsPerThreadgroup]/ threadExecutionWidth * threadExecutionWidth;
     if (v29 >= 0x140)
     {
       v29 = 320;
@@ -178,7 +178,7 @@
     v43 = vdupq_n_s64(1uLL);
     v40 = v29;
     v41 = v43;
-    [v25 dispatchThreadgroups:&location threadsPerThreadgroup:&v40];
+    [computeCommandEncoder dispatchThreadgroups:&location threadsPerThreadgroup:&v40];
     v30 = self->_simInput;
     objc_initWeak(&location, self);
     v34 = _NSConcreteStackBlock;
@@ -188,7 +188,7 @@
     objc_copyWeak(&v39, &location);
     v31 = v30;
     v38 = v31;
-    [v4 addCompletedHandler:&v34];
+    [bufferCopy addCompletedHandler:&v34];
     v32 = [(NTKMagmaEffectsRenderer *)self dequeueAndPreparePhysicsInputBuffer:v34];
     simInput = self->_simInput;
     self->_simInput = v32;
@@ -197,22 +197,22 @@
     objc_destroyWeak(&location);
 
     os_unfair_lock_unlock(&self->_inputLock);
-    [v25 endEncoding];
+    [computeCommandEncoder endEncoding];
   }
 }
 
-- (void)renderForDisplayWithEncoder:(id)a3
+- (void)renderForDisplayWithEncoder:(id)encoder
 {
-  v4 = a3;
-  [v4 setLabel:@"Magma Encoder"];
+  encoderCopy = encoder;
+  [encoderCopy setLabel:@"Magma Encoder"];
   v34 = 0uLL;
   v5 = *&self->_width;
   v6.i64[0] = v5;
   v6.i64[1] = SHIDWORD(v5);
   v35 = vcvtq_f64_s64(v6);
   v36 = xmmword_12230;
-  [v4 setViewport:&v34];
-  [v4 setCullMode:0];
+  [encoderCopy setViewport:&v34];
+  [encoderCopy setCullMode:0];
   if (LOBYTE(self->_springStiffness) == 1)
   {
     NTKMagmaGetTuningWithDefault(@"MagmaBackgroundFactor", 0.7);
@@ -223,18 +223,18 @@
   v34 = *&self->_backgroundTopColor[8];
   v35 = v7;
   *&v36 = self->_tritiumFraction;
-  [v4 setRenderPipelineState:self->_backgroundRenderPipelineState];
-  [v4 setFragmentBytes:&v34 length:48 atIndex:0];
-  [v4 setFragmentTexture:self->_backgroundTexture atIndex:1];
-  v8 = [(NTKMagmaMesh *)self->_backgroundMesh vertices];
-  v9 = [v8 vertices];
-  [v4 setVertexBuffer:v9 offset:0 atIndex:0];
+  [encoderCopy setRenderPipelineState:self->_backgroundRenderPipelineState];
+  [encoderCopy setFragmentBytes:&v34 length:48 atIndex:0];
+  [encoderCopy setFragmentTexture:self->_backgroundTexture atIndex:1];
+  vertices = [(NTKMagmaMesh *)self->_backgroundMesh vertices];
+  v8Vertices = [vertices vertices];
+  [encoderCopy setVertexBuffer:v8Vertices offset:0 atIndex:0];
 
-  v10 = [(NTKMagmaMesh *)self->_backgroundMesh indices];
-  v11 = [v10 indexCt];
-  v12 = [(NTKMagmaMesh *)self->_backgroundMesh indices];
-  v13 = [v12 indices];
-  [v4 drawIndexedPrimitives:4 indexCount:v11 indexType:0 indexBuffer:v13 indexBufferOffset:0];
+  indices = [(NTKMagmaMesh *)self->_backgroundMesh indices];
+  indexCt = [indices indexCt];
+  indices2 = [(NTKMagmaMesh *)self->_backgroundMesh indices];
+  v12Indices = [indices2 indices];
+  [encoderCopy drawIndexedPrimitives:4 indexCount:indexCt indexType:0 indexBuffer:v12Indices indexBufferOffset:0];
 
   if (self->_timeMesh)
   {
@@ -252,22 +252,22 @@
     v34 = *&self->_timeFillColor[8];
     v35 = v16;
     *(&v36 + 1) = self->_springsWidth;
-    [v4 setRenderPipelineState:self->_foregroundRenderPipelineState];
-    [v4 setVertexBytes:&v32 length:8 atIndex:1];
-    v17 = [(NTKMagmaMesh *)self->_timeMesh vertices];
-    v18 = [v17 vertices];
-    [v4 setVertexBuffer:v18 offset:0 atIndex:0];
+    [encoderCopy setRenderPipelineState:self->_foregroundRenderPipelineState];
+    [encoderCopy setVertexBytes:&v32 length:8 atIndex:1];
+    vertices2 = [(NTKMagmaMesh *)self->_timeMesh vertices];
+    v17Vertices = [vertices2 vertices];
+    [encoderCopy setVertexBuffer:v17Vertices offset:0 atIndex:0];
 
-    [v4 setVertexTexture:self->_springOffsetTexture atIndex:2];
-    [v4 setFragmentTexture:self->_primaryTexture atIndex:0];
-    [v4 setFragmentTexture:self->_tritiumTimeTexture atIndex:1];
-    [v4 setFragmentTexture:self->_backgroundTexture atIndex:2];
-    [v4 setFragmentBytes:&v34 length:48 atIndex:0];
-    v19 = [(NTKMagmaMesh *)self->_timeMesh indices];
-    v20 = [v19 indexCt];
-    v21 = [(NTKMagmaMesh *)self->_timeMesh indices];
-    v22 = [v21 indices];
-    [v4 drawIndexedPrimitives:3 indexCount:v20 indexType:0 indexBuffer:v22 indexBufferOffset:0];
+    [encoderCopy setVertexTexture:self->_springOffsetTexture atIndex:2];
+    [encoderCopy setFragmentTexture:self->_primaryTexture atIndex:0];
+    [encoderCopy setFragmentTexture:self->_tritiumTimeTexture atIndex:1];
+    [encoderCopy setFragmentTexture:self->_backgroundTexture atIndex:2];
+    [encoderCopy setFragmentBytes:&v34 length:48 atIndex:0];
+    indices3 = [(NTKMagmaMesh *)self->_timeMesh indices];
+    indexCt2 = [indices3 indexCt];
+    indices4 = [(NTKMagmaMesh *)self->_timeMesh indices];
+    v21Indices = [indices4 indices];
+    [encoderCopy drawIndexedPrimitives:3 indexCount:indexCt2 indexType:0 indexBuffer:v21Indices indexBufferOffset:0];
   }
 
   if (self->_logoMesh)
@@ -285,21 +285,21 @@
     v36 = 0uLL;
     v34 = *&self->_logoColor[8];
     v35 = 0uLL;
-    [v4 setRenderPipelineState:self->_foregroundRenderPipelineState];
-    [v4 setVertexBytes:&v32 length:8 atIndex:1];
-    v26 = [(NTKMagmaMesh *)self->_logoMesh vertices];
-    v27 = [v26 vertices];
-    [v4 setVertexBuffer:v27 offset:0 atIndex:0];
+    [encoderCopy setRenderPipelineState:self->_foregroundRenderPipelineState];
+    [encoderCopy setVertexBytes:&v32 length:8 atIndex:1];
+    vertices3 = [(NTKMagmaMesh *)self->_logoMesh vertices];
+    v26Vertices = [vertices3 vertices];
+    [encoderCopy setVertexBuffer:v26Vertices offset:0 atIndex:0];
 
-    [v4 setVertexTexture:self->_springOffsetTexture atIndex:2];
-    [v4 setFragmentTexture:self->_swooshTexture atIndex:0];
-    [v4 setFragmentBytes:&v34 length:48 atIndex:0];
-    [v4 setFragmentTexture:self->_backgroundTexture atIndex:2];
-    v28 = [(NTKMagmaMesh *)self->_logoMesh indices];
-    v29 = [v28 indexCt];
-    v30 = [(NTKMagmaMesh *)self->_logoMesh indices];
-    v31 = [v30 indices];
-    [v4 drawIndexedPrimitives:3 indexCount:v29 indexType:0 indexBuffer:v31 indexBufferOffset:0];
+    [encoderCopy setVertexTexture:self->_springOffsetTexture atIndex:2];
+    [encoderCopy setFragmentTexture:self->_swooshTexture atIndex:0];
+    [encoderCopy setFragmentBytes:&v34 length:48 atIndex:0];
+    [encoderCopy setFragmentTexture:self->_backgroundTexture atIndex:2];
+    indices5 = [(NTKMagmaMesh *)self->_logoMesh indices];
+    indexCt3 = [indices5 indexCt];
+    indices6 = [(NTKMagmaMesh *)self->_logoMesh indices];
+    v30Indices = [indices6 indices];
+    [encoderCopy drawIndexedPrimitives:3 indexCount:indexCt3 indexType:0 indexBuffer:v30Indices indexBufferOffset:0];
   }
 }
 
@@ -336,20 +336,20 @@
   return v9;
 }
 
-- (id)_setupBackgroundRenderPipelineWithBinaryArchives:(id)a3
+- (id)_setupBackgroundRenderPipelineWithBinaryArchives:(id)archives
 {
   library = self->_library;
-  v5 = a3;
+  archivesCopy = archives;
   v6 = [(MTLLibrary *)library newFunctionWithName:@"magmaBackgroundVertexShader"];
   v7 = [(MTLLibrary *)self->_library newFunctionWithName:@"magmaBackgroundFragmentShader"];
   v8 = objc_alloc_init(MTLRenderPipelineDescriptor);
   [v8 setLabel:@"Magma Background Pipeline"];
   [v8 setVertexFunction:v6];
   [v8 setFragmentFunction:v7];
-  [v8 setBinaryArchives:v5];
+  [v8 setBinaryArchives:archivesCopy];
 
-  v9 = [v8 colorAttachments];
-  v10 = [v9 objectAtIndexedSubscript:0];
+  colorAttachments = [v8 colorAttachments];
+  v10 = [colorAttachments objectAtIndexedSubscript:0];
 
   [v10 setPixelFormat:self->_pixelFormat];
   [v10 setBlendingEnabled:1];
@@ -401,20 +401,20 @@
   return v16;
 }
 
-- (id)_setupForegroundRenderPipelineWithBinaryArchives:(id)a3
+- (id)_setupForegroundRenderPipelineWithBinaryArchives:(id)archives
 {
   library = self->_library;
-  v5 = a3;
+  archivesCopy = archives;
   v6 = [(MTLLibrary *)library newFunctionWithName:@"magmaVertexShader"];
   v7 = [(MTLLibrary *)self->_library newFunctionWithName:@"magmaForegroundFragmentShader"];
   v8 = objc_alloc_init(MTLRenderPipelineDescriptor);
   [v8 setLabel:@"Magma Foreground Pipeline"];
   [v8 setVertexFunction:v6];
   [v8 setFragmentFunction:v7];
-  [v8 setBinaryArchives:v5];
+  [v8 setBinaryArchives:archivesCopy];
 
-  v9 = [v8 colorAttachments];
-  v10 = [v9 objectAtIndexedSubscript:0];
+  colorAttachments = [v8 colorAttachments];
+  v10 = [colorAttachments objectAtIndexedSubscript:0];
 
   [v10 setPixelFormat:self->_pixelFormat];
   [v10 setBlendingEnabled:1];
@@ -466,14 +466,14 @@
   return v16;
 }
 
-- (id)_setupPhysicsPipelineWithBinaryArchives:(id)a3
+- (id)_setupPhysicsPipelineWithBinaryArchives:(id)archives
 {
   library = self->_library;
-  v5 = a3;
+  archivesCopy = archives;
   v6 = [(MTLLibrary *)library newFunctionWithName:@"computeSpringPhysics"];
   v7 = objc_opt_new();
   [v7 setComputeFunction:v6];
-  [v7 setBinaryArchives:v5];
+  [v7 setBinaryArchives:archivesCopy];
 
   device = self->_device;
   v20 = 0;
@@ -639,10 +639,10 @@
   self->_meshOffsetTexturePool = v9;
 }
 
-- (void)_createMeshIndicesWithBounds:(id)a3 into:
+- (void)_createMeshIndicesWithBounds:(id)bounds into:
 {
   v25 = v3;
-  v27 = a3;
+  boundsCopy = bounds;
   v24 = *&self->_meshDim[7];
   v5 = vcvt_f32_s32(vadd_s32(*&self->_meshDim[7], -1));
   v6 = vrndm_f32(vmul_f32(*v25.i8, v5));
@@ -653,10 +653,10 @@
   v10 = v9.u32[0];
   v11 = v9.i32[1];
   v12 = (6 * v9.i32[0] * v9.i32[1]);
-  v13 = [v27 indices];
-  v14 = [v13 contents];
+  indices = [boundsCopy indices];
+  contents = [indices contents];
 
-  [v27 setIndexCt:v12];
+  [boundsCopy setIndexCt:v12];
   v15 = vceq_s32(v8, v26);
   if ((v15.i8[4] & 1) == 0)
   {
@@ -672,10 +672,10 @@
         v21 = v19;
         do
         {
-          v22 = &v14[v21 - 1];
+          v22 = &contents[v21 - 1];
           *v22 = v17 + v20;
           v23 = v17 + v20 + 1;
-          v14[v21] = v23;
+          contents[v21] = v23;
           v22[2] = v18 + v20;
           v22[3] = v18 + v20;
           v22[4] = v23;
@@ -709,18 +709,18 @@
   [(NTKMagmaMesh *)v3 setIndices:v5];
 
   v6 = [(MTLDevice *)self->_device newBufferWithBytes:v14 length:32 options:1];
-  v7 = [(NTKMagmaMesh *)v3 vertices];
-  [v7 setVertices:v6];
+  vertices = [(NTKMagmaMesh *)v3 vertices];
+  [vertices setVertices:v6];
 
-  v8 = [(NTKMagmaMesh *)v3 vertices];
-  [v8 setVertexCount:4];
+  vertices2 = [(NTKMagmaMesh *)v3 vertices];
+  [vertices2 setVertexCount:4];
 
   v9 = [(MTLDevice *)self->_device newBufferWithBytes:&v13 length:8 options:1];
-  v10 = [(NTKMagmaMesh *)v3 indices];
-  [v10 setIndices:v9];
+  indices = [(NTKMagmaMesh *)v3 indices];
+  [indices setIndices:v9];
 
-  v11 = [(NTKMagmaMesh *)v3 indices];
-  [v11 setIndexCt:4];
+  indices2 = [(NTKMagmaMesh *)v3 indices];
+  [indices2 setIndexCt:4];
 
   backgroundMesh = self->_backgroundMesh;
   self->_backgroundMesh = v3;
@@ -783,7 +783,7 @@
         v23.i64[1] = SHIDWORD(v22);
         v28 = v23;
         v29 = 1;
-        v14 = [v6 bytes];
+        bytes = [v6 bytes];
         v15 = 8 * self->_width;
         v13 = v21;
         goto LABEL_10;
@@ -832,10 +832,10 @@
   v13 = self->_correctionTexture;
   v28 = vdupq_n_s64(1uLL);
   v29 = 1;
-  v14 = &v26;
+  bytes = &v26;
   v15 = 8;
 LABEL_10:
-  [(MTLTexture *)v13 replaceRegion:buf mipmapLevel:0 withBytes:v14 bytesPerRow:v15];
+  [(MTLTexture *)v13 replaceRegion:buf mipmapLevel:0 withBytes:bytes bytesPerRow:v15];
 }
 
 - (void)_createPhysicsBuffers
@@ -850,9 +850,9 @@ LABEL_10:
     v8 = springBuffers[v3];
     springBuffers[v3] = v7;
 
-    v9 = [(MTLBuffer *)springBuffers[v3] contents];
+    contents = [(MTLBuffer *)springBuffers[v3] contents];
     v10 = 0;
-    v11 = v9 + 1;
+    v11 = contents + 1;
     do
     {
       v12.i32[0] = v10 & 0xF;
@@ -894,35 +894,35 @@ LABEL_10:
   inputBufferPool = self->_inputBufferPool;
   self->_inputBufferPool = v22;
 
-  v24 = [(NTKMagmaEffectsRenderer *)self dequeueAndPreparePhysicsInputBuffer];
+  dequeueAndPreparePhysicsInputBuffer = [(NTKMagmaEffectsRenderer *)self dequeueAndPreparePhysicsInputBuffer];
   simInput = self->_simInput;
-  self->_simInput = v24;
+  self->_simInput = dequeueAndPreparePhysicsInputBuffer;
 }
 
 - (id)dequeueAndPreparePhysicsInputBuffer
 {
-  v2 = [(CLKUIMetalResourcePool *)self->_inputBufferPool dequeueReusableResource];
-  v3 = [v2 contents];
-  v3[2560] = 0;
-  bzero(v3, 0xA00uLL);
+  dequeueReusableResource = [(CLKUIMetalResourcePool *)self->_inputBufferPool dequeueReusableResource];
+  contents = [dequeueReusableResource contents];
+  contents[2560] = 0;
+  bzero(contents, 0xA00uLL);
 
-  return v2;
+  return dequeueReusableResource;
 }
 
-- (void)updateTimeTextureWithImage:(id)a3 tritiumImage:(id)a4 origin:(CGPoint)a5
+- (void)updateTimeTextureWithImage:(id)image tritiumImage:(id)tritiumImage origin:(CGPoint)origin
 {
-  y = a5.y;
-  x = a5.x;
-  v9 = a3;
-  v10 = a4;
+  y = origin.y;
+  x = origin.x;
+  imageCopy = image;
+  tritiumImageCopy = tritiumImage;
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_58A8;
   v14[3] = &unk_14608;
   v14[4] = self;
-  v11 = v9;
+  v11 = imageCopy;
   v15 = v11;
-  v12 = v10;
+  v12 = tritiumImageCopy;
   v16 = v12;
   v17 = x;
   v18 = y;
@@ -938,17 +938,17 @@ LABEL_10:
   }
 }
 
-- (void)updateLogoTextureWithImage:(id)a3 origin:(CGPoint)a4
+- (void)updateLogoTextureWithImage:(id)image origin:(CGPoint)origin
 {
-  y = a4.y;
-  x = a4.x;
+  y = origin.y;
+  x = origin.x;
   v8 = _NSConcreteStackBlock;
   v9 = 3221225472;
   v10 = sub_5A3C;
   v11 = &unk_14630;
-  v12 = self;
-  v6 = a3;
-  v13 = v6;
+  selfCopy = self;
+  imageCopy = image;
+  v13 = imageCopy;
   v14 = x;
   v15 = y;
   v7 = objc_retainBlock(&v8);
@@ -963,15 +963,15 @@ LABEL_10:
   }
 }
 
-- (void)updateBackgroundTextureWithImage:(id)a3
+- (void)updateBackgroundTextureWithImage:(id)image
 {
   v5 = _NSConcreteStackBlock;
   v6 = 3221225472;
   v7 = sub_5B9C;
   v8 = &unk_14658;
-  v9 = self;
-  v3 = a3;
-  v10 = v3;
+  selfCopy = self;
+  imageCopy = image;
+  v10 = imageCopy;
   v4 = objc_retainBlock(&v5);
   if ([NSThread isMainThread:v5])
   {
@@ -984,14 +984,14 @@ LABEL_10:
   }
 }
 
-- (id)meshForRect:(CGRect)a3 maxPitch:(double)a4
+- (id)meshForRect:(CGRect)rect maxPitch:(double)pitch
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = (ceil(a3.size.width / a4) + 1.0);
-  v10 = (ceil(a3.size.height / a4) + 1.0);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v9 = (ceil(rect.size.width / pitch) + 1.0);
+  v10 = (ceil(rect.size.height / pitch) + 1.0);
   v11 = v9 * v10;
   v12 = malloc_type_malloc(24 * v11, 0x10000402C707793uLL);
   v13 = v12;
@@ -1087,21 +1087,21 @@ LABEL_10:
   [v40 setVertices:v41];
 
   v42 = [(MTLDevice *)self->_device newBufferWithBytes:v13 length:24 * v11 options:1];
-  v43 = [v40 vertices];
-  [v43 setVertices:v42];
+  vertices = [v40 vertices];
+  [vertices setVertices:v42];
 
-  v44 = [v40 vertices];
-  [v44 setVertexCount:v11];
+  vertices2 = [v40 vertices];
+  [vertices2 setVertexCount:v11];
 
   v45 = objc_opt_new();
   [v40 setIndices:v45];
 
   v46 = [(MTLDevice *)self->_device newBufferWithBytes:v32 length:2 * v30 options:1];
-  v47 = [v40 indices];
-  [v47 setIndices:v46];
+  indices = [v40 indices];
+  [indices setIndices:v46];
 
-  v48 = [v40 indices];
-  [v48 setIndexCt:v30];
+  indices2 = [v40 indices];
+  [indices2 setIndexCt:v30];
 
   free(v13);
   free(v32);
@@ -1112,18 +1112,18 @@ LABEL_10:
 - (void)resetSprings
 {
   os_unfair_lock_lock(&self->_inputLock);
-  v3 = [(MTLBuffer *)self->_simInput contents];
-  v3[2560] = 1;
-  bzero(v3, 0xA00uLL);
+  contents = [(MTLBuffer *)self->_simInput contents];
+  contents[2560] = 1;
+  bzero(contents, 0xA00uLL);
 
   os_unfair_lock_unlock(&self->_inputLock);
 }
 
-- (void)applySpringImpulseWithBlock:(id)a3
+- (void)applySpringImpulseWithBlock:(id)block
 {
-  v11 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->_inputLock);
-  v4 = [(MTLBuffer *)self->_simInput contents];
+  contents = [(MTLBuffer *)self->_simInput contents];
   for (i = 0; i != 320; ++i)
   {
     v7.f32[0] = (i & 0xF);
@@ -1133,7 +1133,7 @@ LABEL_10:
     v8 = vdiv_f32(v7, 0x4198000041700000);
     p_screenScale = &self->_screenScale;
     v10 = vld1_dup_f32(p_screenScale);
-    v4[i] = vadd_f32(COERCE_FLOAT32X2_T(v11[2](v5, *&v8, COERCE_DOUBLE(vdiv_f32(vmul_f32(v8, vcvt_f32_s32(*&self->_width)), v10)))), v4[i]);
+    contents[i] = vadd_f32(COERCE_FLOAT32X2_T(blockCopy[2](v5, *&v8, COERCE_DOUBLE(vdiv_f32(vmul_f32(v8, vcvt_f32_s32(*&self->_width)), v10)))), contents[i]);
   }
 
   os_unfair_lock_unlock(&self->_inputLock);
@@ -1141,23 +1141,23 @@ LABEL_10:
 
 - (void)_unsafe_updateSimInput
 {
-  v3 = [(MTLBuffer *)self->_simInput contents];
+  contents = [(MTLBuffer *)self->_simInput contents];
   TuningWithDefault = NTKMagmaGetTuningWithDefault(@"MagmaStiffness", 50.0);
-  v3[641] = TuningWithDefault;
-  v3[642] = sqrtf(TuningWithDefault);
+  contents[641] = TuningWithDefault;
+  contents[642] = sqrtf(TuningWithDefault);
   v5 = NTKMagmaGetTuningWithDefault(@"MagmaDamping", 0.283);
-  v3[643] = v5;
+  contents[643] = v5;
   v6 = NTKMagmaGetTuningWithDefault(@"MagmaRestorative", 10.0);
-  v3[644] = v6;
-  *(v3 + 162) = *self->_fixedBounds;
+  contents[644] = v6;
+  *(contents + 162) = *self->_fixedBounds;
 }
 
-- (void)setScreenBoundRect:(CGRect)a3
+- (void)setScreenBoundRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  x = a3.origin.x;
-  y = a3.origin.y;
+  height = rect.size.height;
+  width = rect.size.width;
+  x = rect.origin.x;
+  y = rect.origin.y;
   os_unfair_lock_lock(&self->_inputLock);
   v6.f64[0] = x;
   v7.f64[0] = width + x;

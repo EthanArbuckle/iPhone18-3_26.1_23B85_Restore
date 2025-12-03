@@ -1,19 +1,19 @@
 @interface MFCenteredTextAttachment
-- (CGRect)attachmentBoundsForTextContainer:(id)a3 proposedLineFragment:(CGRect)a4 glyphPosition:(CGPoint)a5 characterIndex:(unint64_t)a6;
+- (CGRect)attachmentBoundsForTextContainer:(id)container proposedLineFragment:(CGRect)fragment glyphPosition:(CGPoint)position characterIndex:(unint64_t)index;
 @end
 
 @implementation MFCenteredTextAttachment
 
-- (CGRect)attachmentBoundsForTextContainer:(id)a3 proposedLineFragment:(CGRect)a4 glyphPosition:(CGPoint)a5 characterIndex:(unint64_t)a6
+- (CGRect)attachmentBoundsForTextContainer:(id)container proposedLineFragment:(CGRect)fragment glyphPosition:(CGPoint)position characterIndex:(unint64_t)index
 {
-  [(MFCenteredTextAttachment *)self height:a3];
+  [(MFCenteredTextAttachment *)self height:container];
   v8 = v7;
-  v9 = [(MFCenteredTextAttachment *)self image];
-  [v9 size];
+  image = [(MFCenteredTextAttachment *)self image];
+  [image size];
   v11 = v10;
 
-  v12 = [(MFCenteredTextAttachment *)self image];
-  [v12 size];
+  image2 = [(MFCenteredTextAttachment *)self image];
+  [image2 size];
   v14 = v13;
   v16 = v15;
 

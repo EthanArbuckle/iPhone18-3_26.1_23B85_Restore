@@ -1,27 +1,27 @@
 @interface SubviewToAncestorResizingView
-- (_TtC18ASMessagesProviderP33_969995FABB6CC72FFF21E8E69346997329SubviewToAncestorResizingView)initWithCoder:(id)a3;
-- (_TtC18ASMessagesProviderP33_969995FABB6CC72FFF21E8E69346997329SubviewToAncestorResizingView)initWithFrame:(CGRect)a3;
+- (_TtC18ASMessagesProviderP33_969995FABB6CC72FFF21E8E69346997329SubviewToAncestorResizingView)initWithCoder:(id)coder;
+- (_TtC18ASMessagesProviderP33_969995FABB6CC72FFF21E8E69346997329SubviewToAncestorResizingView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation SubviewToAncestorResizingView
 
-- (_TtC18ASMessagesProviderP33_969995FABB6CC72FFF21E8E69346997329SubviewToAncestorResizingView)initWithFrame:(CGRect)a3
+- (_TtC18ASMessagesProviderP33_969995FABB6CC72FFF21E8E69346997329SubviewToAncestorResizingView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   swift_unknownObjectWeakInit();
   swift_unknownObjectWeakInit();
   v10.receiver = self;
   v10.super_class = type metadata accessor for SubviewToAncestorResizingView();
-  v8 = [(SubviewToAncestorResizingView *)&v10 initWithFrame:x, y, width, height];
-  [(SubviewToAncestorResizingView *)v8 setUserInteractionEnabled:0];
-  return v8;
+  height = [(SubviewToAncestorResizingView *)&v10 initWithFrame:x, y, width, height];
+  [(SubviewToAncestorResizingView *)height setUserInteractionEnabled:0];
+  return height;
 }
 
-- (_TtC18ASMessagesProviderP33_969995FABB6CC72FFF21E8E69346997329SubviewToAncestorResizingView)initWithCoder:(id)a3
+- (_TtC18ASMessagesProviderP33_969995FABB6CC72FFF21E8E69346997329SubviewToAncestorResizingView)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   swift_unknownObjectWeakInit();
@@ -32,7 +32,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1DC17C();
 }
 

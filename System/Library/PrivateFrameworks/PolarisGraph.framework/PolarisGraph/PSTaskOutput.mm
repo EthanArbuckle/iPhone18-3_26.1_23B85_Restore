@@ -1,72 +1,72 @@
 @interface PSTaskOutput
-+ (id)outputWithKey:(id)a3;
-+ (id)outputWithKey:(id)a3 retainsInputs:(id)a4;
-+ (id)outputWithKey:(id)a3 withCapacity:(unint64_t)a4;
-- (PSTaskOutput)initWithKey:(char *)a3;
-- (PSTaskOutput)initWithResourceKey:(id)a3 retainsInputs:(id)a4 withCapacity:(unint64_t)a5;
++ (id)outputWithKey:(id)key;
++ (id)outputWithKey:(id)key retainsInputs:(id)inputs;
++ (id)outputWithKey:(id)key withCapacity:(unint64_t)capacity;
+- (PSTaskOutput)initWithKey:(char *)key;
+- (PSTaskOutput)initWithResourceKey:(id)key retainsInputs:(id)inputs withCapacity:(unint64_t)capacity;
 @end
 
 @implementation PSTaskOutput
 
-+ (id)outputWithKey:(id)a3
++ (id)outputWithKey:(id)key
 {
-  v3 = a3;
-  v4 = [[PSTaskOutput alloc] initWithResourceKey:v3 retainsInputs:0 withCapacity:1];
+  keyCopy = key;
+  v4 = [[PSTaskOutput alloc] initWithResourceKey:keyCopy retainsInputs:0 withCapacity:1];
 
   return v4;
 }
 
-+ (id)outputWithKey:(id)a3 retainsInputs:(id)a4
++ (id)outputWithKey:(id)key retainsInputs:(id)inputs
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[PSTaskOutput alloc] initWithResourceKey:v6 retainsInputs:v5 withCapacity:1];
+  inputsCopy = inputs;
+  keyCopy = key;
+  v7 = [[PSTaskOutput alloc] initWithResourceKey:keyCopy retainsInputs:inputsCopy withCapacity:1];
 
   return v7;
 }
 
-+ (id)outputWithKey:(id)a3 withCapacity:(unint64_t)a4
++ (id)outputWithKey:(id)key withCapacity:(unint64_t)capacity
 {
-  v5 = a3;
-  v6 = [[PSTaskOutput alloc] initWithResourceKey:v5 retainsInputs:0 withCapacity:a4];
+  keyCopy = key;
+  v6 = [[PSTaskOutput alloc] initWithResourceKey:keyCopy retainsInputs:0 withCapacity:capacity];
 
   return v6;
 }
 
-- (PSTaskOutput)initWithKey:(char *)a3
+- (PSTaskOutput)initWithKey:(char *)key
 {
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", a3];
+  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", key];
   v5 = [(PSTaskOutput *)self initWithResourceKey:v4 retainsInputs:0 withCapacity:1];
 
   return v5;
 }
 
-- (PSTaskOutput)initWithResourceKey:(id)a3 retainsInputs:(id)a4 withCapacity:(unint64_t)a5
+- (PSTaskOutput)initWithResourceKey:(id)key retainsInputs:(id)inputs withCapacity:(unint64_t)capacity
 {
-  v9 = a3;
-  v10 = a4;
+  keyCopy = key;
+  inputsCopy = inputs;
   v17.receiver = self;
   v17.super_class = PSTaskOutput;
   v11 = [(PSTaskOutput *)&v17 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_resourceKey, a3);
-    v13 = [v9 UTF8String];
-    v12->_capacity = a5;
-    v12->_key = v13;
-    if (v10)
+    objc_storeStrong(&v11->_resourceKey, key);
+    uTF8String = [keyCopy UTF8String];
+    v12->_capacity = capacity;
+    v12->_key = uTF8String;
+    if (inputsCopy)
     {
-      v14 = [v10 copy];
+      array = [inputsCopy copy];
     }
 
     else
     {
-      v14 = [MEMORY[0x277CBEA60] array];
+      array = [MEMORY[0x277CBEA60] array];
     }
 
     retainedInputs = v12->_retainedInputs;
-    v12->_retainedInputs = v14;
+    v12->_retainedInputs = array;
   }
 
   return v12;

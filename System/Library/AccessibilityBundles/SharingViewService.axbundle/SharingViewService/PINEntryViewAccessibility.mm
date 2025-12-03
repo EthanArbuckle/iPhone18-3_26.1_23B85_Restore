@@ -1,5 +1,5 @@
 @interface PINEntryViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (_NSRange)_accessibilitySelectedTextRange;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
@@ -8,11 +8,11 @@
 
 @implementation PINEntryViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PINEntryView" hasInstanceVariable:@"_text" withType:"NSMutableString"];
-  [v3 validateClass:@"PINEntryView" hasInstanceVariable:@"_digits" withType:"NSArray"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PINEntryView" hasInstanceVariable:@"_text" withType:"NSMutableString"];
+  [validationsCopy validateClass:@"PINEntryView" hasInstanceVariable:@"_digits" withType:"NSArray"];
 }
 
 - (_NSRange)_accessibilitySelectedTextRange

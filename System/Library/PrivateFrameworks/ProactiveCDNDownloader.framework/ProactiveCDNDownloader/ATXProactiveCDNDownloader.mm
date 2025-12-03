@@ -1,10 +1,10 @@
 @interface ATXProactiveCDNDownloader
 - (ATXProactiveCDNDownloader)init;
-- (ATXProactiveCDNDownloader)initWithTileLoader:(id)a3 tileDataReader:(id)a4;
-- (id)sha256HashForText:(id)a3;
-- (void)_heroDatasForLocation:(id)a3 completion:(id)a4;
-- (void)heroDatasForLocation:(id)a3 completion:(id)a4;
-- (void)highConfidenceHeroDatasForCurrentLocationWithCompletion:(id)a3;
+- (ATXProactiveCDNDownloader)initWithTileLoader:(id)loader tileDataReader:(id)reader;
+- (id)sha256HashForText:(id)text;
+- (void)_heroDatasForLocation:(id)location completion:(id)completion;
+- (void)heroDatasForLocation:(id)location completion:(id)completion;
+- (void)highConfidenceHeroDatasForCurrentLocationWithCompletion:(id)completion;
 @end
 
 @implementation ATXProactiveCDNDownloader
@@ -18,10 +18,10 @@
   return v5;
 }
 
-- (ATXProactiveCDNDownloader)initWithTileLoader:(id)a3 tileDataReader:(id)a4
+- (ATXProactiveCDNDownloader)initWithTileLoader:(id)loader tileDataReader:(id)reader
 {
-  v7 = a3;
-  v8 = a4;
+  loaderCopy = loader;
+  readerCopy = reader;
   v23.receiver = self;
   v23.super_class = ATXProactiveCDNDownloader;
   v9 = [(ATXProactiveCDNDownloader *)&v23 init];
@@ -29,14 +29,14 @@
   {
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
-    v12 = [v11 UTF8String];
+    uTF8String = [v11 UTF8String];
     v13 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v14 = dispatch_queue_create(v12, v13);
+    v14 = dispatch_queue_create(uTF8String, v13);
     queue = v9->_queue;
     v9->_queue = v14;
 
-    objc_storeStrong(&v9->_tileLoader, a3);
-    objc_storeStrong(&v9->_tileDataReader, a4);
+    objc_storeStrong(&v9->_tileLoader, loader);
+    objc_storeStrong(&v9->_tileDataReader, reader);
     v16 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v17 = dispatch_queue_create("_clCallbackQueue", v16);
     clQueue = v9->_clQueue;
@@ -64,34 +64,34 @@ uint64_t __63__ATXProactiveCDNDownloader_initWithTileLoader_tileDataReader___blo
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)heroDatasForLocation:(id)a3 completion:(id)a4
+- (void)heroDatasForLocation:(id)location completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ATXProactiveCDNDownloader *)self queue];
+  locationCopy = location;
+  completionCopy = completion;
+  queue = [(ATXProactiveCDNDownloader *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __61__ATXProactiveCDNDownloader_heroDatasForLocation_completion___block_invoke;
   block[3] = &unk_279AB6D90;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = locationCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = locationCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)highConfidenceHeroDatasForCurrentLocationWithCompletion:(id)a3
+- (void)highConfidenceHeroDatasForCurrentLocationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   clQueue = self->_clQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __85__ATXProactiveCDNDownloader_highConfidenceHeroDatasForCurrentLocationWithCompletion___block_invoke;
   v7[3] = &unk_279AB6E78;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(clQueue, v7);
 }
 
@@ -359,31 +359,31 @@ uint64_t __85__ATXProactiveCDNDownloader_highConfidenceHeroDatasForCurrentLocati
   return v3();
 }
 
-- (void)_heroDatasForLocation:(id)a3 completion:(id)a4
+- (void)_heroDatasForLocation:(id)location completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ATXProactiveCDNDownloader *)self queue];
-  dispatch_assert_queue_V2(v8);
+  locationCopy = location;
+  completionCopy = completion;
+  queue = [(ATXProactiveCDNDownloader *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v9 = objc_alloc(MEMORY[0x277D425F8]);
   v10 = objc_opt_new();
   v11 = [v9 initWithGuardedData:v10];
 
   objc_initWeak(&location, self);
-  v12 = [(ATXProactiveCDNDownloader *)self tileLoader];
+  tileLoader = [(ATXProactiveCDNDownloader *)self tileLoader];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __62__ATXProactiveCDNDownloader__heroDatasForLocation_completion___block_invoke;
   v19[3] = &unk_279AB6EF0;
-  v13 = v7;
+  v13 = completionCopy;
   v22 = v13;
   objc_copyWeak(&v23, &location);
-  v14 = v6;
+  v14 = locationCopy;
   v20 = v14;
   v15 = v11;
   v21 = v15;
-  [v12 requestGEOTileDataForLocation:v14 tileDataHandler:v19];
+  [tileLoader requestGEOTileDataForLocation:v14 tileDataHandler:v19];
 
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
@@ -449,12 +449,12 @@ void __62__ATXProactiveCDNDownloader__heroDatasForLocation_completion___block_in
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)sha256HashForText:(id)a3
+- (id)sha256HashForText:(id)text
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = [a3 UTF8String];
-  v4 = strlen(v3);
-  CC_SHA256(v3, v4, md);
+  uTF8String = [text UTF8String];
+  v4 = strlen(uTF8String);
+  CC_SHA256(uTF8String, v4, md);
   v5 = [MEMORY[0x277CCAB68] stringWithCapacity:64];
   for (i = 0; i != 32; ++i)
   {

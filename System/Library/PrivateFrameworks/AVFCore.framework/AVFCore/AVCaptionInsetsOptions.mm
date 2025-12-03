@@ -1,7 +1,7 @@
 @interface AVCaptionInsetsOptions
 - (AVCaptionInsetsOptions)init;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation AVCaptionInsetsOptions
@@ -19,7 +19,7 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[AVCaptionInsetsOptions allocWithZone:?]];
   [(AVCaptionInsetsOptions *)v4 setAllowsHorizontalTextWrap:[(AVCaptionInsetsOptions *)self allowsHorizontalTextWrap]];
@@ -29,7 +29,7 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -37,26 +37,26 @@
     return 0;
   }
 
-  v5 = [(AVCaptionInsetsOptions *)self allowsHorizontalTextWrap];
-  if (v5 != [a3 allowsHorizontalTextWrap])
+  allowsHorizontalTextWrap = [(AVCaptionInsetsOptions *)self allowsHorizontalTextWrap];
+  if (allowsHorizontalTextWrap != [equal allowsHorizontalTextWrap])
   {
     return 0;
   }
 
-  v6 = [(AVCaptionInsetsOptions *)self allowsHorizontalTextRepositioning];
-  if (v6 != [a3 allowsHorizontalTextRepositioning])
+  allowsHorizontalTextRepositioning = [(AVCaptionInsetsOptions *)self allowsHorizontalTextRepositioning];
+  if (allowsHorizontalTextRepositioning != [equal allowsHorizontalTextRepositioning])
   {
     return 0;
   }
 
-  v7 = [(AVCaptionInsetsOptions *)self allowsVerticalTextWrap];
-  if (v7 != [a3 allowsVerticalTextWrap])
+  allowsVerticalTextWrap = [(AVCaptionInsetsOptions *)self allowsVerticalTextWrap];
+  if (allowsVerticalTextWrap != [equal allowsVerticalTextWrap])
   {
     return 0;
   }
 
-  v9 = [(AVCaptionInsetsOptions *)self allowsVerticalTextRepositioning];
-  return v9 ^ [a3 allowsVerticalTextRepositioning] ^ 1;
+  allowsVerticalTextRepositioning = [(AVCaptionInsetsOptions *)self allowsVerticalTextRepositioning];
+  return allowsVerticalTextRepositioning ^ [equal allowsVerticalTextRepositioning] ^ 1;
 }
 
 @end

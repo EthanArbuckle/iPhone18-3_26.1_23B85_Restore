@@ -1,33 +1,33 @@
 @interface UIScenePresentationManager
-- (BOOL)_hasPresenterWithIdentifier:(id)a3;
+- (BOOL)_hasPresenterWithIdentifier:(id)identifier;
 - (BOOL)isInvalidated;
 - (FBScene)scene;
 - (UIScenePresentationManager)init;
 - (UIScenePresentationManagerDelegate)delegate;
-- (_UISceneSnapshotPresentationView)_snapshotPresentationViewWithConfigurator:(_UISceneSnapshotPresentationView *)a1;
-- (id)_initWithScene:(id)a3;
-- (id)_initWithScene:(id)a3 keyboardProxyLayerManager:(id)a4 keyboardProxyPresentationEnvironment:(id)a5;
-- (id)_presenterWithIdentifier:(id)a3;
+- (_UISceneSnapshotPresentationView)_snapshotPresentationViewWithConfigurator:(_UISceneSnapshotPresentationView *)configurator;
+- (id)_initWithScene:(id)scene;
+- (id)_initWithScene:(id)scene keyboardProxyLayerManager:(id)manager keyboardProxyPresentationEnvironment:(id)environment;
+- (id)_presenterWithIdentifier:(id)identifier;
 - (id)captureSnapshotPresentationView;
-- (id)createPresenterForLayerTarget:(id)a3 identifier:(id)a4;
-- (id)createPresenterForLayerTarget:(id)a3 identifier:(id)a4 priority:(int64_t)a5;
-- (id)createPresenterWithIdentifier:(id)a3;
-- (id)createPresenterWithIdentifier:(id)a3 priority:(int64_t)a4;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)createPresenterForLayerTarget:(id)target identifier:(id)identifier;
+- (id)createPresenterForLayerTarget:(id)target identifier:(id)identifier priority:(int64_t)priority;
+- (id)createPresenterWithIdentifier:(id)identifier;
+- (id)createPresenterWithIdentifier:(id)identifier priority:(int64_t)priority;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)snapshotContext;
-- (id)snapshotPresentationForSnapshot:(id)a3;
+- (id)snapshotPresentationForSnapshot:(id)snapshot;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (int64_t)_defaultPresentationPriority;
-- (void)_addPrioritizedPresenterObserver:(id)a3;
-- (void)_modifySnapshotConfiguration:(id *)a1;
+- (void)_addPrioritizedPresenterObserver:(id)observer;
+- (void)_modifySnapshotConfiguration:(id *)configuration;
 - (void)dealloc;
-- (void)modifyDefaultPresentationContext:(id)a3;
-- (void)owner:(id)a3 willPrioritizePresenter:(id)a4 deactivatePresenter:(id)a5;
-- (void)ownerDidInvalidateLastPresenter:(id)a3;
-- (void)sceneContentStateDidChange:(id)a3;
-- (void)setDelegate:(id)a3;
+- (void)modifyDefaultPresentationContext:(id)context;
+- (void)owner:(id)owner willPrioritizePresenter:(id)presenter deactivatePresenter:(id)deactivatePresenter;
+- (void)ownerDidInvalidateLastPresenter:(id)presenter;
+- (void)sceneContentStateDidChange:(id)change;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation UIScenePresentationManager
@@ -84,8 +84,8 @@
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [(NSMapTable *)self->_mapLayersToPresenterOwners objectEnumerator];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  objectEnumerator = [(NSMapTable *)self->_mapLayersToPresenterOwners objectEnumerator];
+  v7 = [objectEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -96,7 +96,7 @@
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v11 = *(*(&v13 + 1) + 8 * i);
@@ -104,7 +104,7 @@
         [v11 invalidate];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [objectEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
@@ -117,33 +117,33 @@
 
 - (UIScenePresentationManager)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"UIScenePresentationManager.m" lineNumber:54 description:@"[UIScenePresentationManager init] is unavailable for use."];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UIScenePresentationManager.m" lineNumber:54 description:@"[UIScenePresentationManager init] is unavailable for use."];
 
   v6.receiver = self;
   v6.super_class = UIScenePresentationManager;
   return [(UIScenePresentationManager *)&v6 init];
 }
 
-- (id)_initWithScene:(id)a3
+- (id)_initWithScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v5 = +[_UISceneKeyboardProxyLayerForwardingManager sharedInstance];
-  v6 = [[_UISceneKeyboardProxyLayerForwardingPresentationScene alloc] initWithScene:v4];
-  v7 = [(UIScenePresentationManager *)self _initWithScene:v4 keyboardProxyLayerManager:v5 keyboardProxyPresentationEnvironment:v6];
+  v6 = [[_UISceneKeyboardProxyLayerForwardingPresentationScene alloc] initWithScene:sceneCopy];
+  v7 = [(UIScenePresentationManager *)self _initWithScene:sceneCopy keyboardProxyLayerManager:v5 keyboardProxyPresentationEnvironment:v6];
 
   return v7;
 }
 
-- (id)_initWithScene:(id)a3 keyboardProxyLayerManager:(id)a4 keyboardProxyPresentationEnvironment:(id)a5
+- (id)_initWithScene:(id)scene keyboardProxyLayerManager:(id)manager keyboardProxyPresentationEnvironment:(id)environment
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  sceneCopy = scene;
+  managerCopy = manager;
+  environmentCopy = environment;
+  if (!sceneCopy)
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"UIScenePresentationManager.m" lineNumber:63 description:{@"Invalid parameter not satisfying: %@", @"scene"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIScenePresentationManager.m" lineNumber:63 description:{@"Invalid parameter not satisfying: %@", @"scene"}];
   }
 
   v24.receiver = self;
@@ -152,39 +152,39 @@
   v13 = v12;
   if (v12)
   {
-    v14 = objc_storeWeak(&v12->_scene, v9);
-    [v9 addObserver:v13];
+    v14 = objc_storeWeak(&v12->_scene, sceneCopy);
+    [sceneCopy addObserver:v13];
 
-    v15 = [v9 _relationshipManagementHostComponent];
-    [(UIScenePresentationManager *)v13 _addPrioritizedPresenterObserver:v15];
+    _relationshipManagementHostComponent = [sceneCopy _relationshipManagementHostComponent];
+    [(UIScenePresentationManager *)v13 _addPrioritizedPresenterObserver:_relationshipManagementHostComponent];
     v16 = [[_UIScenePresenterOwner alloc] initWithScenePresentationManager:v13 layerTarget:0];
     scenePresenterOwner = v13->_scenePresenterOwner;
     v13->_scenePresenterOwner = v16;
 
     [(_UIScenePresenterOwner *)v13->_scenePresenterOwner setDelegate:v13];
-    v18 = [[UIScenePresentationContext alloc] _initWithDefaultValues];
+    _initWithDefaultValues = [[UIScenePresentationContext alloc] _initWithDefaultValues];
     defaultScenePresentationContext = v13->_defaultScenePresentationContext;
-    v13->_defaultScenePresentationContext = v18;
+    v13->_defaultScenePresentationContext = _initWithDefaultValues;
 
     v20 = [MEMORY[0x1E696AD18] mapTableWithKeyOptions:0 valueOptions:0];
     mapLayersToPresenterOwners = v13->_mapLayersToPresenterOwners;
     v13->_mapLayersToPresenterOwners = v20;
 
-    objc_storeStrong(&v13->_keyboardProxyPresentationEnvironment, a5);
-    [v10 trackPresentationEnvironment:v13->_keyboardProxyPresentationEnvironment];
+    objc_storeStrong(&v13->_keyboardProxyPresentationEnvironment, environment);
+    [managerCopy trackPresentationEnvironment:v13->_keyboardProxyPresentationEnvironment];
     [(UIScenePresentationManager *)v13 _addPrioritizedPresenterObserver:v13->_keyboardProxyPresentationEnvironment];
   }
 
   return v13;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   if (obj && [(UIScenePresentationManager *)self isInvalidated])
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"UIScenePresentationManager.m" lineNumber:106 description:@"Cannot set a new delegate if the presentation manager is already invalidated"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIScenePresentationManager.m" lineNumber:106 description:@"Cannot set a new delegate if the presentation manager is already invalidated"];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -199,18 +199,18 @@
   }
 }
 
-- (void)modifyDefaultPresentationContext:(id)a3
+- (void)modifyDefaultPresentationContext:(id)context
 {
   v48 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  contextCopy = context;
+  if (!contextCopy)
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"UIScenePresentationManager.m" lineNumber:118 description:{@"Invalid parameter not satisfying: %@", @"modifyBlock"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIScenePresentationManager.m" lineNumber:118 description:{@"Invalid parameter not satisfying: %@", @"modifyBlock"}];
   }
 
   v6 = [(UIScenePresentationContext *)self->_defaultScenePresentationContext mutableCopy];
-  v5[2](v5, v6);
+  contextCopy[2](contextCopy, v6);
   v7 = UIScenePresentationLog();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG);
 
@@ -220,11 +220,11 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
       WeakRetained = objc_loadWeakRetained(&self->_scene);
-      v22 = [WeakRetained identifier];
+      identifier = [WeakRetained identifier];
       v23 = [MEMORY[0x1E696AD98] numberWithBool:BSEqualObjects()];
       defaultScenePresentationContext = self->_defaultScenePresentationContext;
       *buf = 138413058;
-      v41 = v22;
+      v41 = identifier;
       v42 = 2112;
       v43 = v23;
       v44 = 2112;
@@ -263,8 +263,8 @@
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v15 = [(NSMapTable *)self->_mapLayersToPresenterOwners objectEnumerator];
-    v16 = [v15 countByEnumeratingWithState:&v32 objects:v39 count:16];
+    objectEnumerator = [(NSMapTable *)self->_mapLayersToPresenterOwners objectEnumerator];
+    v16 = [objectEnumerator countByEnumeratingWithState:&v32 objects:v39 count:16];
     if (v16)
     {
       v17 = v16;
@@ -275,7 +275,7 @@
         {
           if (*v33 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(objectEnumerator);
           }
 
           v20 = *(*(&v32 + 1) + 8 * i);
@@ -287,7 +287,7 @@
           [v20 enumeratePresentersUsingBlock:v30];
         }
 
-        v17 = [v15 countByEnumeratingWithState:&v32 objects:v39 count:16];
+        v17 = [objectEnumerator countByEnumeratingWithState:&v32 objects:v39 count:16];
       }
 
       while (v17);
@@ -295,8 +295,8 @@
 
     if ([(UIScenePresentationContext *)self->_defaultScenePresentationContext _isVisibilityPropagationEnabled])
     {
-      v26 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v26 handleFailureInMethod:v27 object:self file:@"UIScenePresentationManager.m" lineNumber:153 description:@"Toggling visibility propagation on the default scene presentation context is not supported."];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:v27 object:self file:@"UIScenePresentationManager.m" lineNumber:153 description:@"Toggling visibility propagation on the default scene presentation context is not supported."];
     }
 
     v6 = v29;
@@ -323,40 +323,40 @@ void __63__UIScenePresentationManager_modifyDefaultPresentationContext___block_i
   [a2 modifyPresentationContext:v3];
 }
 
-- (id)createPresenterWithIdentifier:(id)a3
+- (id)createPresenterWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(UIScenePresentationManager *)self createPresenterWithIdentifier:v4 priority:[(UIScenePresentationManager *)self _defaultPresentationPriority]];
+  identifierCopy = identifier;
+  v5 = [(UIScenePresentationManager *)self createPresenterWithIdentifier:identifierCopy priority:[(UIScenePresentationManager *)self _defaultPresentationPriority]];
 
   return v5;
 }
 
-- (id)createPresenterWithIdentifier:(id)a3 priority:(int64_t)a4
+- (id)createPresenterWithIdentifier:(id)identifier priority:(int64_t)priority
 {
   v38 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (!v7)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"UIScenePresentationManager.m" lineNumber:171 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIScenePresentationManager.m" lineNumber:171 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
   }
 
   if ([(UIScenePresentationManager *)self isInvalidated])
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"UIScenePresentationManager.m" lineNumber:172 description:@"Cannot create a presenter on a presentation manager that's been invalidated."];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"UIScenePresentationManager.m" lineNumber:172 description:@"Cannot create a presenter on a presentation manager that's been invalidated."];
   }
 
-  if ([(UIScenePresentationManager *)self _hasPresenterWithIdentifier:v7])
+  if ([(UIScenePresentationManager *)self _hasPresenterWithIdentifier:identifierCopy])
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"UIScenePresentationManager.m" lineNumber:173 description:@"Cannot create a presenter with this identifier as it's already in use."];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"UIScenePresentationManager.m" lineNumber:173 description:@"Cannot create a presenter with this identifier as it's already in use."];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_scene);
   if (!WeakRetained)
   {
-    v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"attempt to create a presenter after the scene has been dealloced : manager=%@ identifier=%@", self, v7];
+    identifierCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"attempt to create a presenter after the scene has been dealloced : manager=%@ identifier=%@", self, identifierCopy];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       v21 = NSStringFromSelector(a2);
@@ -367,17 +367,17 @@ void __63__UIScenePresentationManager_modifyDefaultPresentationContext___block_i
       v28 = 2114;
       v29 = v23;
       v30 = 2048;
-      v31 = self;
+      selfCopy = self;
       v32 = 2114;
       v33 = @"UIScenePresentationManager.m";
       v34 = 1024;
       v35 = 176;
       v36 = 2114;
-      v37 = v20;
+      v37 = identifierCopy;
       _os_log_error_impl(&dword_188A29000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "failure in %{public}@ of <%{public}@:%p> (%{public}@:%i) : %{public}@", buf, 0x3Au);
     }
 
-    [v20 UTF8String];
+    [identifierCopy UTF8String];
     _bs_set_crash_log_message();
     __break(0);
     JUMPOUT(0x1898EB6E8);
@@ -386,12 +386,12 @@ void __63__UIScenePresentationManager_modifyDefaultPresentationContext___block_i
   v9 = WeakRetained;
   v10 = [_UIScenePresenter alloc];
   scenePresenterOwner = self->_scenePresenterOwner;
-  v12 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-  v13 = [(_UIScenePresenter *)v10 initWithManager:self scene:v9 owner:scenePresenterOwner identifier:v7 sortContext:v12];
+  v12 = [MEMORY[0x1E696AD98] numberWithInteger:priority];
+  v13 = [(_UIScenePresenter *)v10 initWithManager:self scene:v9 owner:scenePresenterOwner identifier:identifierCopy sortContext:v12];
 
-  v14 = [v9 contentState];
-  v15 = [(_UIScenePresenter *)v13 presentationContext];
-  [v15 _isVisibilityPropagationEnabled];
+  contentState = [v9 contentState];
+  presentationContext = [(_UIScenePresenter *)v13 presentationContext];
+  [presentationContext _isVisibilityPropagationEnabled];
   LOBYTE(scenePresenterOwner) = BSEqualBools();
 
   if ((scenePresenterOwner & 1) == 0)
@@ -400,7 +400,7 @@ void __63__UIScenePresentationManager_modifyDefaultPresentationContext___block_i
     v24[1] = 3221225472;
     v24[2] = __69__UIScenePresentationManager_createPresenterWithIdentifier_priority___block_invoke;
     v24[3] = &__block_descriptor_33_e43_v16__0__UIMutableScenePresentationContext_8l;
-    v25 = v14 != 0;
+    v25 = contentState != 0;
     [(_UIScenePresenter *)v13 modifyPresentationContext:v24];
   }
 
@@ -409,24 +409,24 @@ void __63__UIScenePresentationManager_modifyDefaultPresentationContext___block_i
   return v13;
 }
 
-- (id)createPresenterForLayerTarget:(id)a3 identifier:(id)a4
+- (id)createPresenterForLayerTarget:(id)target identifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(UIScenePresentationManager *)self createPresenterForLayerTarget:v7 identifier:v6 priority:[(UIScenePresentationManager *)self _defaultPresentationPriority]];
+  identifierCopy = identifier;
+  targetCopy = target;
+  v8 = [(UIScenePresentationManager *)self createPresenterForLayerTarget:targetCopy identifier:identifierCopy priority:[(UIScenePresentationManager *)self _defaultPresentationPriority]];
 
   return v8;
 }
 
-- (id)createPresenterForLayerTarget:(id)a3 identifier:(id)a4 priority:(int64_t)a5
+- (id)createPresenterForLayerTarget:(id)target identifier:(id)identifier priority:(int64_t)priority
 {
   v47 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (v9)
+  targetCopy = target;
+  identifierCopy = identifier;
+  v11 = identifierCopy;
+  if (targetCopy)
   {
-    if (v10)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
@@ -434,8 +434,8 @@ void __63__UIScenePresentationManager_modifyDefaultPresentationContext___block_i
 
   else
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"UIScenePresentationManager.m" lineNumber:200 description:{@"Invalid parameter not satisfying: %@", @"layerTarget"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIScenePresentationManager.m" lineNumber:200 description:{@"Invalid parameter not satisfying: %@", @"layerTarget"}];
 
     if (v11)
     {
@@ -443,26 +443,26 @@ void __63__UIScenePresentationManager_modifyDefaultPresentationContext___block_i
     }
   }
 
-  v24 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v24 handleFailureInMethod:a2 object:self file:@"UIScenePresentationManager.m" lineNumber:201 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"UIScenePresentationManager.m" lineNumber:201 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
 
 LABEL_3:
   if ([(UIScenePresentationManager *)self isInvalidated])
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"UIScenePresentationManager.m" lineNumber:202 description:@"Cannot create a presenter on a presentation manager that's been invalidated."];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"UIScenePresentationManager.m" lineNumber:202 description:@"Cannot create a presenter on a presentation manager that's been invalidated."];
   }
 
   if ([(UIScenePresentationManager *)self _hasPresenterWithIdentifier:v11])
   {
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"UIScenePresentationManager.m" lineNumber:203 description:@"Cannot create a presenter with this identifier as it's already in use."];
+    currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler4 handleFailureInMethod:a2 object:self file:@"UIScenePresentationManager.m" lineNumber:203 description:@"Cannot create a presenter with this identifier as it's already in use."];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_scene);
   if (!WeakRetained)
   {
-    v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"attempt to create a presenterForLayerTarget after the scene has been dealloced : manager=%@ layerTarget=%@ identifier=%@", self, v9, v11];
+    v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"attempt to create a presenterForLayerTarget after the scene has been dealloced : manager=%@ layerTarget=%@ identifier=%@", self, targetCopy, v11];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       v28 = NSStringFromSelector(a2);
@@ -473,7 +473,7 @@ LABEL_3:
       v37 = 2114;
       v38 = v30;
       v39 = 2048;
-      v40 = self;
+      selfCopy = self;
       v41 = 2114;
       v42 = @"UIScenePresentationManager.m";
       v43 = 1024;
@@ -490,16 +490,16 @@ LABEL_3:
   }
 
   v13 = WeakRetained;
-  v14 = [(NSMapTable *)self->_mapLayersToPresenterOwners objectForKey:v9];
+  v14 = [(NSMapTable *)self->_mapLayersToPresenterOwners objectForKey:targetCopy];
   if (!v14)
   {
-    v14 = [[_UIScenePresenterOwner alloc] initWithScenePresentationManager:self layerTarget:v9];
+    v14 = [[_UIScenePresenterOwner alloc] initWithScenePresentationManager:self layerTarget:targetCopy];
     [(_UIScenePresenterOwner *)v14 setDelegate:self];
-    [(NSMapTable *)self->_mapLayersToPresenterOwners setObject:v14 forKey:v9];
+    [(NSMapTable *)self->_mapLayersToPresenterOwners setObject:v14 forKey:targetCopy];
   }
 
   v15 = [_UIScenePresenter alloc];
-  v16 = [MEMORY[0x1E696AD98] numberWithInteger:a5];
+  v16 = [MEMORY[0x1E696AD98] numberWithInteger:priority];
   v17 = [(_UIScenePresenter *)v15 initWithManager:self scene:v13 owner:v14 identifier:v11 sortContext:v16];
 
   v18 = [(UIScenePresentationContext *)self->_defaultScenePresentationContext mutableCopy];
@@ -508,12 +508,12 @@ LABEL_3:
   v31[1] = 3221225472;
   v31[2] = __80__UIScenePresentationManager_createPresenterForLayerTarget_identifier_priority___block_invoke;
   v31[3] = &unk_1E710A1F8;
-  v32 = v9;
+  v32 = targetCopy;
   v33 = v13;
   v34 = v18;
   v19 = v18;
   v20 = v13;
-  v21 = v9;
+  v21 = targetCopy;
   [(_UIScenePresenter *)v17 modifyPresentationContext:v31];
   [(_UIScenePresenterOwner *)v14 addPresenter:v17];
 
@@ -532,23 +532,23 @@ void __80__UIScenePresentationManager_createPresenterForLayerTarget_identifier_p
   [v6 _setDefaultPresentationContext:*(a1 + 48)];
 }
 
-- (void)_modifySnapshotConfiguration:(id *)a1
+- (void)_modifySnapshotConfiguration:(id *)configuration
 {
   v19 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (configuration)
   {
     v4 = [MEMORY[0x1E695DFA8] set];
-    [a1[6] presentedLayerTypes];
+    [configuration[6] presentedLayerTypes];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v5 = [a1 scene];
-    v6 = [v5 layerManager];
-    v7 = [v6 layers];
+    scene = [configuration scene];
+    layerManager = [scene layerManager];
+    layers = [layerManager layers];
 
-    v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    v8 = [layers countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v8)
     {
       v9 = v8;
@@ -559,7 +559,7 @@ void __80__UIScenePresentationManager_createPresenterForLayerTarget_identifier_p
         {
           if (*v15 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(layers);
           }
 
           v12 = *(*(&v14 + 1) + 8 * i);
@@ -570,48 +570,48 @@ void __80__UIScenePresentationManager_createPresenterForLayerTarget_identifier_p
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v9 = [layers countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v9);
     }
 
     [v3 setLayersToExclude:v4];
-    v13 = [a1[6] backgroundColorWhileHosting];
-    [v13 alphaComponent];
+    backgroundColorWhileHosting = [configuration[6] backgroundColorWhileHosting];
+    [backgroundColorWhileHosting alphaComponent];
     [v3 setOpaque:BSFloatGreaterThanOrEqualToFloat()];
   }
 }
 
 - (id)snapshotContext
 {
-  v3 = [(UIScenePresentationManager *)self scene];
-  v4 = [v3 snapshotContext];
-  [(UIScenePresentationManager *)&self->super.isa _modifySnapshotConfiguration:v4];
+  scene = [(UIScenePresentationManager *)self scene];
+  snapshotContext = [scene snapshotContext];
+  [(UIScenePresentationManager *)&self->super.isa _modifySnapshotConfiguration:snapshotContext];
 
-  return v4;
+  return snapshotContext;
 }
 
-- (id)snapshotPresentationForSnapshot:(id)a3
+- (id)snapshotPresentationForSnapshot:(id)snapshot
 {
-  v3 = a3;
-  v4 = [[_UISceneSnapshotPresentationView alloc] initWithSnapshot:v3];
+  snapshotCopy = snapshot;
+  v4 = [[_UISceneSnapshotPresentationView alloc] initWithSnapshot:snapshotCopy];
 
   [(_UISceneSnapshotPresentationView *)v4 capture];
 
   return v4;
 }
 
-- (_UISceneSnapshotPresentationView)_snapshotPresentationViewWithConfigurator:(_UISceneSnapshotPresentationView *)a1
+- (_UISceneSnapshotPresentationView)_snapshotPresentationViewWithConfigurator:(_UISceneSnapshotPresentationView *)configurator
 {
   v26 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (configurator)
   {
-    v4 = [(_UISceneSnapshotPresentationView *)a1 scene];
-    if (!v4)
+    scene = [(_UISceneSnapshotPresentationView *)configurator scene];
+    if (!scene)
     {
-      v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"attempt to create a snapshot after the scene has dealloced : manager=%@", a1];
+      configurator = [MEMORY[0x1E696AEC0] stringWithFormat:@"attempt to create a snapshot after the scene has dealloced : manager=%@", configurator];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
         v9 = NSStringFromSelector(sel__snapshotPresentationViewWithConfigurator_);
@@ -622,34 +622,34 @@ void __80__UIScenePresentationManager_createPresenterForLayerTarget_identifier_p
         v16 = 2114;
         v17 = v11;
         v18 = 2048;
-        v19 = a1;
+        configuratorCopy = configurator;
         v20 = 2114;
         v21 = @"UIScenePresentationManager.m";
         v22 = 1024;
         v23 = 263;
         v24 = 2114;
-        v25 = v8;
+        v25 = configurator;
         _os_log_error_impl(&dword_188A29000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "failure in %{public}@ of <%{public}@:%p> (%{public}@:%i) : %{public}@", buf, 0x3Au);
       }
 
-      [v8 UTF8String];
+      [configurator UTF8String];
       _bs_set_crash_log_message();
       __break(0);
       JUMPOUT(0x1898EC0BCLL);
     }
 
-    v5 = v4;
+    v5 = scene;
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __72__UIScenePresentationManager__snapshotPresentationViewWithConfigurator___block_invoke;
     v12[3] = &unk_1E7109D98;
-    v12[4] = a1;
+    v12[4] = configurator;
     v13 = v3;
     v6 = [v5 prepareSnapshotWithConfigurator:v12];
-    a1 = [[_UISceneSnapshotPresentationView alloc] initWithSnapshot:v6];
+    configurator = [[_UISceneSnapshotPresentationView alloc] initWithSnapshot:v6];
   }
 
-  return a1;
+  return configurator;
 }
 
 void __72__UIScenePresentationManager__snapshotPresentationViewWithConfigurator___block_invoke(uint64_t a1, void *a2)
@@ -673,18 +673,18 @@ void __72__UIScenePresentationManager__snapshotPresentationViewWithConfigurator_
 
 - (id)succinctDescription
 {
-  v2 = [(UIScenePresentationManager *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(UIScenePresentationManager *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
   WeakRetained = objc_loadWeakRetained(&self->_scene);
-  v5 = [WeakRetained identifier];
-  [v3 appendString:v5 withName:@"sceneID"];
+  identifier = [WeakRetained identifier];
+  [v3 appendString:identifier withName:@"sceneID"];
 
   if ([(UIScenePresentationManager *)self isInvalidated])
   {
@@ -694,26 +694,26 @@ void __72__UIScenePresentationManager__snapshotPresentationViewWithConfigurator_
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(UIScenePresentationManager *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(UIScenePresentationManager *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(UIScenePresentationManager *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(UIScenePresentationManager *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __68__UIScenePresentationManager_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_1E70F35B8;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;
@@ -726,12 +726,12 @@ id __68__UIScenePresentationManager_descriptionBuilderWithMultilinePrefix___bloc
   return [*(a1 + 32) appendObject:*(*(a1 + 40) + 48) withName:@"defaultPresentationContext" skipIfNil:1];
 }
 
-- (void)owner:(id)a3 willPrioritizePresenter:(id)a4 deactivatePresenter:(id)a5
+- (void)owner:(id)owner willPrioritizePresenter:(id)presenter deactivatePresenter:(id)deactivatePresenter
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (self->_scenePresenterOwner == v7)
+  ownerCopy = owner;
+  presenterCopy = presenter;
+  if (self->_scenePresenterOwner == ownerCopy)
   {
     v21 = 0u;
     v22 = 0u;
@@ -752,7 +752,7 @@ id __68__UIScenePresentationManager_descriptionBuilderWithMultilinePrefix___bloc
             objc_enumerationMutation(v12);
           }
 
-          [*(*(&v19 + 1) + 8 * i) _presentationManager:self willPrioritizePresenter:v8];
+          [*(*(&v19 + 1) + 8 * i) _presentationManager:self willPrioritizePresenter:presenterCopy];
         }
 
         v14 = [(NSHashTable *)v12 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -764,23 +764,23 @@ id __68__UIScenePresentationManager_descriptionBuilderWithMultilinePrefix___bloc
 
   else
   {
-    v9 = [(UIScenePresentationContext *)self->_defaultScenePresentationContext _layerTargetsToExclude];
-    v10 = [v9 mutableCopy];
+    _layerTargetsToExclude = [(UIScenePresentationContext *)self->_defaultScenePresentationContext _layerTargetsToExclude];
+    v10 = [_layerTargetsToExclude mutableCopy];
 
     if (!v10)
     {
       v10 = [MEMORY[0x1E695DFA8] set];
     }
 
-    v11 = [(_UIScenePresenterOwner *)v7 layerTarget];
-    if (v8)
+    layerTarget = [(_UIScenePresenterOwner *)ownerCopy layerTarget];
+    if (presenterCopy)
     {
-      [v10 addObject:v11];
+      [v10 addObject:layerTarget];
     }
 
     else
     {
-      [v10 removeObject:v11];
+      [v10 removeObject:layerTarget];
     }
 
     v17[0] = MEMORY[0x1E69E9820];
@@ -793,20 +793,20 @@ id __68__UIScenePresentationManager_descriptionBuilderWithMultilinePrefix___bloc
   }
 }
 
-- (void)ownerDidInvalidateLastPresenter:(id)a3
+- (void)ownerDidInvalidateLastPresenter:(id)presenter
 {
-  v5 = a3;
-  v4 = [v5 layerTarget];
-  if (v4)
+  presenterCopy = presenter;
+  layerTarget = [presenterCopy layerTarget];
+  if (layerTarget)
   {
-    [(UIScenePresentationManager *)self owner:v5 willPrioritizePresenter:0 deactivatePresenter:0];
-    [(NSMapTable *)self->_mapLayersToPresenterOwners removeObjectForKey:v4];
-    [v5 setDelegate:0];
-    [v5 invalidate];
+    [(UIScenePresentationManager *)self owner:presenterCopy willPrioritizePresenter:0 deactivatePresenter:0];
+    [(NSMapTable *)self->_mapLayersToPresenterOwners removeObjectForKey:layerTarget];
+    [presenterCopy setDelegate:0];
+    [presenterCopy invalidate];
   }
 }
 
-- (void)sceneContentStateDidChange:(id)a3
+- (void)sceneContentStateDidChange:(id)change
 {
   WeakRetained = objc_loadWeakRetained(&self->_scene);
   v5 = [WeakRetained contentState] != 0;
@@ -838,19 +838,19 @@ void __57__UIScenePresentationManager_sceneContentStateDidChange___block_invoke(
   }
 }
 
-- (id)_presenterWithIdentifier:(id)a3
+- (id)_presenterWithIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_UIScenePresenterOwner *)self->_scenePresenterOwner presenterWithIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [(_UIScenePresenterOwner *)self->_scenePresenterOwner presenterWithIdentifier:identifierCopy];
   if (!v5)
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = [(NSMapTable *)self->_mapLayersToPresenterOwners objectEnumerator];
-    v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    objectEnumerator = [(NSMapTable *)self->_mapLayersToPresenterOwners objectEnumerator];
+    v7 = [objectEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
       v8 = v7;
@@ -861,10 +861,10 @@ void __57__UIScenePresentationManager_sceneContentStateDidChange___block_invoke(
         {
           if (*v14 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(objectEnumerator);
           }
 
-          v11 = [*(*(&v13 + 1) + 8 * i) presenterWithIdentifier:v4];
+          v11 = [*(*(&v13 + 1) + 8 * i) presenterWithIdentifier:identifierCopy];
           if (v11)
           {
             v5 = v11;
@@ -872,7 +872,7 @@ void __57__UIScenePresentationManager_sceneContentStateDidChange___block_invoke(
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v8 = [objectEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v8)
         {
           continue;
@@ -889,11 +889,11 @@ LABEL_12:
   return v5;
 }
 
-- (BOOL)_hasPresenterWithIdentifier:(id)a3
+- (BOOL)_hasPresenterWithIdentifier:(id)identifier
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_UIScenePresenterOwner *)self->_scenePresenterOwner presenterWithIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [(_UIScenePresenterOwner *)self->_scenePresenterOwner presenterWithIdentifier:identifierCopy];
 
   if (v5)
   {
@@ -906,8 +906,8 @@ LABEL_12:
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v7 = [(NSMapTable *)self->_mapLayersToPresenterOwners objectEnumerator];
-    v6 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    objectEnumerator = [(NSMapTable *)self->_mapLayersToPresenterOwners objectEnumerator];
+    v6 = [objectEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v6)
     {
       v8 = *v13;
@@ -917,10 +917,10 @@ LABEL_12:
         {
           if (*v13 != v8)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(objectEnumerator);
           }
 
-          v10 = [*(*(&v12 + 1) + 8 * i) presenterWithIdentifier:v4];
+          v10 = [*(*(&v12 + 1) + 8 * i) presenterWithIdentifier:identifierCopy];
 
           if (v10)
           {
@@ -929,7 +929,7 @@ LABEL_12:
           }
         }
 
-        v6 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v6 = [objectEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
         if (v6)
         {
           continue;
@@ -945,22 +945,22 @@ LABEL_13:
   return v6;
 }
 
-- (void)_addPrioritizedPresenterObserver:(id)a3
+- (void)_addPrioritizedPresenterObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   prioritizedPresenterObservers = self->_prioritizedPresenterObservers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!prioritizedPresenterObservers)
   {
-    v6 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v7 = self->_prioritizedPresenterObservers;
-    self->_prioritizedPresenterObservers = v6;
+    self->_prioritizedPresenterObservers = weakObjectsHashTable;
 
-    v4 = v8;
+    observerCopy = v8;
     prioritizedPresenterObservers = self->_prioritizedPresenterObservers;
   }
 
-  [(NSHashTable *)prioritizedPresenterObservers addObject:v4];
+  [(NSHashTable *)prioritizedPresenterObservers addObject:observerCopy];
 }
 
 - (UIScenePresentationManagerDelegate)delegate

@@ -1,33 +1,33 @@
 @interface SFSearchResult_SpotlightExtras
 + (void)initialize;
-- (BOOL)isSafariTopHitForQuery:(id)a3;
+- (BOOL)isSafariTopHitForQuery:(id)query;
 - (SFSearchResult_SpotlightExtras)init;
-- (SFSearchResult_SpotlightExtras)initWithCoder:(id)a3;
-- (SFSearchResult_SpotlightExtras)initWithIdentifier:(id)a3 bundleIdentifier:(id)a4 protectionClass:(id)a5 attributeKeys:(id)a6 attributeValues:(id)a7 type:(int)a8 completion:(id)a9;
-- (SFSearchResult_SpotlightExtras)initWithResult:(id)a3;
-- (SFSearchResult_SpotlightExtras)initWithResult:(id)a3 groupId:(id)a4;
+- (SFSearchResult_SpotlightExtras)initWithCoder:(id)coder;
+- (SFSearchResult_SpotlightExtras)initWithIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier protectionClass:(id)class attributeKeys:(id)keys attributeValues:(id)values type:(int)type completion:(id)completion;
+- (SFSearchResult_SpotlightExtras)initWithResult:(id)result;
+- (SFSearchResult_SpotlightExtras)initWithResult:(id)result groupId:(id)id;
 - (UTType)uniformContentType;
 - (id)debugDescription;
 - (id)fullAttributeSet;
 - (id)getStableServerResultIdentifier;
 - (id)punchout;
 - (id)ttrDescription;
-- (id)urlValueForAttribute:(id)a3;
-- (id)valueForAttribute:(id)a3 withType:(Class)a4;
+- (id)urlValueForAttribute:(id)attribute;
+- (id)valueForAttribute:(id)attribute withType:(Class)type;
 - (uint64_t)score;
 - (void)clearBackendData;
-- (void)encodeWithCoder:(id)a3;
-- (void)setContentType:(id)a3;
-- (void)setFeedbackPropertiesOnResultCopy:(id)a3;
-- (void)setUniformContentType:(id)a3;
-- (void)setUrl:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setContentType:(id)type;
+- (void)setFeedbackPropertiesOnResultCopy:(id)copy;
+- (void)setUniformContentType:(id)type;
+- (void)setUrl:(id)url;
 @end
 
 @implementation SFSearchResult_SpotlightExtras
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     userDefaults_0 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"com.apple.searchd"];
 
@@ -42,237 +42,237 @@
   [(SFSearchResult_SpotlightExtras *)self setAttributeData:0];
 }
 
-- (SFSearchResult_SpotlightExtras)initWithResult:(id)a3 groupId:(id)a4
+- (SFSearchResult_SpotlightExtras)initWithResult:(id)result groupId:(id)id
 {
-  v5 = a3;
+  resultCopy = result;
   v6 = [(SFSearchResult_SpotlightExtras *)self init];
   if (v6)
   {
-    v7 = [v5 contentType];
-    [(SFSearchResult_SpotlightExtras *)v6 setContentType:v7];
+    contentType = [resultCopy contentType];
+    [(SFSearchResult_SpotlightExtras *)v6 setContentType:contentType];
 
-    [v5 setFeedbackPropertiesOnResultCopy:v6];
-    v8 = [v5 thumbnail];
-    [(SFSearchResult_SpotlightExtras *)v6 setThumbnail:v8];
+    [resultCopy setFeedbackPropertiesOnResultCopy:v6];
+    thumbnail = [resultCopy thumbnail];
+    [(SFSearchResult_SpotlightExtras *)v6 setThumbnail:thumbnail];
 
-    -[SFSearchResult_SpotlightExtras setPreventThumbnailImageScaling:](v6, "setPreventThumbnailImageScaling:", [v5 preventThumbnailImageScaling]);
-    v9 = [v5 secondaryTitleImage];
-    [(SFSearchResult_SpotlightExtras *)v6 setSecondaryTitleImage:v9];
+    -[SFSearchResult_SpotlightExtras setPreventThumbnailImageScaling:](v6, "setPreventThumbnailImageScaling:", [resultCopy preventThumbnailImageScaling]);
+    secondaryTitleImage = [resultCopy secondaryTitleImage];
+    [(SFSearchResult_SpotlightExtras *)v6 setSecondaryTitleImage:secondaryTitleImage];
 
-    -[SFSearchResult_SpotlightExtras setIsSecondaryTitleDetached:](v6, "setIsSecondaryTitleDetached:", [v5 isSecondaryTitleDetached]);
-    -[SFSearchResult_SpotlightExtras setIsCentered:](v6, "setIsCentered:", [v5 isCentered]);
-    v10 = [v5 publishDate];
-    [(SFSearchResult_SpotlightExtras *)v6 setPublishDate:v10];
+    -[SFSearchResult_SpotlightExtras setIsSecondaryTitleDetached:](v6, "setIsSecondaryTitleDetached:", [resultCopy isSecondaryTitleDetached]);
+    -[SFSearchResult_SpotlightExtras setIsCentered:](v6, "setIsCentered:", [resultCopy isCentered]);
+    publishDate = [resultCopy publishDate];
+    [(SFSearchResult_SpotlightExtras *)v6 setPublishDate:publishDate];
 
-    v11 = [v5 sourceName];
-    [(SFSearchResult_SpotlightExtras *)v6 setSourceName:v11];
+    sourceName = [resultCopy sourceName];
+    [(SFSearchResult_SpotlightExtras *)v6 setSourceName:sourceName];
 
-    v12 = [v5 completion];
-    [(SFSearchResult_SpotlightExtras *)v6 setCompletion:v12];
+    completion = [resultCopy completion];
+    [(SFSearchResult_SpotlightExtras *)v6 setCompletion:completion];
 
-    v13 = [v5 completionImage];
-    [(SFSearchResult_SpotlightExtras *)v6 setCompletionImage:v13];
+    completionImage = [resultCopy completionImage];
+    [(SFSearchResult_SpotlightExtras *)v6 setCompletionImage:completionImage];
 
-    v14 = [v5 url];
+    v14 = [resultCopy url];
     [(SFSearchResult_SpotlightExtras *)v6 setUrl:v14];
 
-    v15 = [v5 auxiliaryTopText];
-    [(SFSearchResult_SpotlightExtras *)v6 setAuxiliaryTopText:v15];
+    auxiliaryTopText = [resultCopy auxiliaryTopText];
+    [(SFSearchResult_SpotlightExtras *)v6 setAuxiliaryTopText:auxiliaryTopText];
 
-    v16 = [v5 auxiliaryMiddleText];
-    [(SFSearchResult_SpotlightExtras *)v6 setAuxiliaryMiddleText:v16];
+    auxiliaryMiddleText = [resultCopy auxiliaryMiddleText];
+    [(SFSearchResult_SpotlightExtras *)v6 setAuxiliaryMiddleText:auxiliaryMiddleText];
 
-    v17 = [v5 auxiliaryBottomText];
-    [(SFSearchResult_SpotlightExtras *)v6 setAuxiliaryBottomText:v17];
+    auxiliaryBottomText = [resultCopy auxiliaryBottomText];
+    [(SFSearchResult_SpotlightExtras *)v6 setAuxiliaryBottomText:auxiliaryBottomText];
 
-    -[SFSearchResult_SpotlightExtras setAuxiliaryBottomTextColor:](v6, "setAuxiliaryBottomTextColor:", [v5 auxiliaryBottomTextColor]);
-    v18 = [v5 punchout];
-    [(SFSearchResult_SpotlightExtras *)v6 setPunchout:v18];
+    -[SFSearchResult_SpotlightExtras setAuxiliaryBottomTextColor:](v6, "setAuxiliaryBottomTextColor:", [resultCopy auxiliaryBottomTextColor]);
+    punchout = [resultCopy punchout];
+    [(SFSearchResult_SpotlightExtras *)v6 setPunchout:punchout];
 
-    v19 = [v5 storeIdentifier];
-    [(SFSearchResult_SpotlightExtras *)v6 setStoreIdentifier:v19];
+    storeIdentifier = [resultCopy storeIdentifier];
+    [(SFSearchResult_SpotlightExtras *)v6 setStoreIdentifier:storeIdentifier];
 
-    v20 = [v5 calendarIdentifier];
-    [(SFSearchResult_SpotlightExtras *)v6 setCalendarIdentifier:v20];
+    calendarIdentifier = [resultCopy calendarIdentifier];
+    [(SFSearchResult_SpotlightExtras *)v6 setCalendarIdentifier:calendarIdentifier];
 
-    v21 = [v5 mapsData];
-    [(SFSearchResult_SpotlightExtras *)v6 setMapsData:v21];
+    mapsData = [resultCopy mapsData];
+    [(SFSearchResult_SpotlightExtras *)v6 setMapsData:mapsData];
 
-    v22 = [v5 mapsResultType];
-    [(SFSearchResult_SpotlightExtras *)v6 setMapsResultType:v22];
+    mapsResultType = [resultCopy mapsResultType];
+    [(SFSearchResult_SpotlightExtras *)v6 setMapsResultType:mapsResultType];
 
-    v23 = [v5 mapsMoreURL];
-    [(SFSearchResult_SpotlightExtras *)v6 setMapsMoreURL:v23];
+    mapsMoreURL = [resultCopy mapsMoreURL];
+    [(SFSearchResult_SpotlightExtras *)v6 setMapsMoreURL:mapsMoreURL];
 
-    v24 = [v5 mapsMoreString];
-    [(SFSearchResult_SpotlightExtras *)v6 setMapsMoreString:v24];
+    mapsMoreString = [resultCopy mapsMoreString];
+    [(SFSearchResult_SpotlightExtras *)v6 setMapsMoreString:mapsMoreString];
 
-    v25 = [v5 mapsMoreIcon];
-    [(SFSearchResult_SpotlightExtras *)v6 setMapsMoreIcon:v25];
+    mapsMoreIcon = [resultCopy mapsMoreIcon];
+    [(SFSearchResult_SpotlightExtras *)v6 setMapsMoreIcon:mapsMoreIcon];
 
-    v26 = [v5 nearbyBusinessesString];
-    [(SFSearchResult_SpotlightExtras *)v6 setNearbyBusinessesString:v26];
+    nearbyBusinessesString = [resultCopy nearbyBusinessesString];
+    [(SFSearchResult_SpotlightExtras *)v6 setNearbyBusinessesString:nearbyBusinessesString];
 
-    v27 = [v5 appleReferrer];
-    [(SFSearchResult_SpotlightExtras *)v6 setAppleReferrer:v27];
+    appleReferrer = [resultCopy appleReferrer];
+    [(SFSearchResult_SpotlightExtras *)v6 setAppleReferrer:appleReferrer];
 
-    v28 = [v5 card];
-    [(SFSearchResult_SpotlightExtras *)v6 setCard:v28];
+    card = [resultCopy card];
+    [(SFSearchResult_SpotlightExtras *)v6 setCard:card];
 
-    v29 = [v5 moreResults];
-    [(SFSearchResult_SpotlightExtras *)v6 setMoreResults:v29];
+    moreResults = [resultCopy moreResults];
+    [(SFSearchResult_SpotlightExtras *)v6 setMoreResults:moreResults];
 
-    v30 = [v5 moreResultsPunchout];
-    [(SFSearchResult_SpotlightExtras *)v6 setMoreResultsPunchout:v30];
+    moreResultsPunchout = [resultCopy moreResultsPunchout];
+    [(SFSearchResult_SpotlightExtras *)v6 setMoreResultsPunchout:moreResultsPunchout];
 
-    v31 = [v5 userActivityRequiredString];
-    [(SFSearchResult_SpotlightExtras *)v6 setUserActivityRequiredString:v31];
+    userActivityRequiredString = [resultCopy userActivityRequiredString];
+    [(SFSearchResult_SpotlightExtras *)v6 setUserActivityRequiredString:userActivityRequiredString];
 
-    v32 = [v5 sectionHeader];
-    [(SFSearchResult_SpotlightExtras *)v6 setSectionHeader:v32];
+    sectionHeader = [resultCopy sectionHeader];
+    [(SFSearchResult_SpotlightExtras *)v6 setSectionHeader:sectionHeader];
 
-    v33 = [v5 sectionHeaderMore];
-    [(SFSearchResult_SpotlightExtras *)v6 setSectionHeaderMore:v33];
+    sectionHeaderMore = [resultCopy sectionHeaderMore];
+    [(SFSearchResult_SpotlightExtras *)v6 setSectionHeaderMore:sectionHeaderMore];
 
-    v34 = [v5 sectionHeaderMoreURL];
-    [(SFSearchResult_SpotlightExtras *)v6 setSectionHeaderMoreURL:v34];
+    sectionHeaderMoreURL = [resultCopy sectionHeaderMoreURL];
+    [(SFSearchResult_SpotlightExtras *)v6 setSectionHeaderMoreURL:sectionHeaderMoreURL];
 
-    -[SFSearchResult_SpotlightExtras setRenderHorizontallyWithOtherResultsInCategory:](v6, "setRenderHorizontallyWithOtherResultsInCategory:", [v5 renderHorizontallyWithOtherResultsInCategory]);
-    -[SFSearchResult_SpotlightExtras setPlacement:](v6, "setPlacement:", [v5 placement]);
-    -[SFSearchResult_SpotlightExtras setMinimumRankOfTopHitToSuppressResult:](v6, "setMinimumRankOfTopHitToSuppressResult:", [v5 minimumRankOfTopHitToSuppressResult]);
-    v35 = [v5 resultTemplate];
-    [(SFSearchResult_SpotlightExtras *)v6 setResultTemplate:v35];
+    -[SFSearchResult_SpotlightExtras setRenderHorizontallyWithOtherResultsInCategory:](v6, "setRenderHorizontallyWithOtherResultsInCategory:", [resultCopy renderHorizontallyWithOtherResultsInCategory]);
+    -[SFSearchResult_SpotlightExtras setPlacement:](v6, "setPlacement:", [resultCopy placement]);
+    -[SFSearchResult_SpotlightExtras setMinimumRankOfTopHitToSuppressResult:](v6, "setMinimumRankOfTopHitToSuppressResult:", [resultCopy minimumRankOfTopHitToSuppressResult]);
+    resultTemplate = [resultCopy resultTemplate];
+    [(SFSearchResult_SpotlightExtras *)v6 setResultTemplate:resultTemplate];
 
-    -[SFSearchResult_SpotlightExtras setIsQuickGlance:](v6, "setIsQuickGlance:", [v5 isQuickGlance]);
-    -[SFSearchResult_SpotlightExtras setIsStreaming:](v6, "setIsStreaming:", [v5 isStreaming]);
-    v36 = [v5 engagementScore];
-    [(SFSearchResult_SpotlightExtras *)v6 setEngagementScore:v36];
+    -[SFSearchResult_SpotlightExtras setIsQuickGlance:](v6, "setIsQuickGlance:", [resultCopy isQuickGlance]);
+    -[SFSearchResult_SpotlightExtras setIsStreaming:](v6, "setIsStreaming:", [resultCopy isStreaming]);
+    engagementScore = [resultCopy engagementScore];
+    [(SFSearchResult_SpotlightExtras *)v6 setEngagementScore:engagementScore];
 
-    v37 = [v5 queryIndependentScore];
-    [(SFSearchResult_SpotlightExtras *)v6 setQueryIndependentScore:v37];
+    queryIndependentScore = [resultCopy queryIndependentScore];
+    [(SFSearchResult_SpotlightExtras *)v6 setQueryIndependentScore:queryIndependentScore];
 
-    v38 = [v5 maxAge];
-    [(SFSearchResult_SpotlightExtras *)v6 setMaxAge:v38];
+    maxAge = [resultCopy maxAge];
+    [(SFSearchResult_SpotlightExtras *)v6 setMaxAge:maxAge];
 
-    v39 = [v5 titleNote];
-    [(SFSearchResult_SpotlightExtras *)v6 setTitleNote:v39];
+    titleNote = [resultCopy titleNote];
+    [(SFSearchResult_SpotlightExtras *)v6 setTitleNote:titleNote];
 
-    v40 = [v5 titleNoteSize];
-    [(SFSearchResult_SpotlightExtras *)v6 setTitleNoteSize:v40];
+    titleNoteSize = [resultCopy titleNoteSize];
+    [(SFSearchResult_SpotlightExtras *)v6 setTitleNoteSize:titleNoteSize];
 
-    v41 = [v5 icon];
-    [(SFSearchResult_SpotlightExtras *)v6 setIcon:v41];
+    icon = [resultCopy icon];
+    [(SFSearchResult_SpotlightExtras *)v6 setIcon:icon];
 
-    v42 = [v5 itemProviderDataTypes];
-    [(SFSearchResult_SpotlightExtras *)v6 setItemProviderDataTypes:v42];
+    itemProviderDataTypes = [resultCopy itemProviderDataTypes];
+    [(SFSearchResult_SpotlightExtras *)v6 setItemProviderDataTypes:itemProviderDataTypes];
 
-    v43 = [v5 itemProviderFileTypes];
-    [(SFSearchResult_SpotlightExtras *)v6 setItemProviderFileTypes:v43];
+    itemProviderFileTypes = [resultCopy itemProviderFileTypes];
+    [(SFSearchResult_SpotlightExtras *)v6 setItemProviderFileTypes:itemProviderFileTypes];
 
-    v44 = [v5 contentTypeTree];
-    [(SFSearchResult_SpotlightExtras *)v6 setContentTypeTree:v44];
+    contentTypeTree = [resultCopy contentTypeTree];
+    [(SFSearchResult_SpotlightExtras *)v6 setContentTypeTree:contentTypeTree];
 
-    -[SFSearchResult_SpotlightExtras setDataOwnerType:](v6, "setDataOwnerType:", [v5 dataOwnerType]);
-    v45 = [v5 fileProviderIdentifier];
-    [(SFSearchResult_SpotlightExtras *)v6 setFileProviderIdentifier:v45];
+    -[SFSearchResult_SpotlightExtras setDataOwnerType:](v6, "setDataOwnerType:", [resultCopy dataOwnerType]);
+    fileProviderIdentifier = [resultCopy fileProviderIdentifier];
+    [(SFSearchResult_SpotlightExtras *)v6 setFileProviderIdentifier:fileProviderIdentifier];
 
-    v46 = [v5 fileProviderDomainIdentifier];
-    [(SFSearchResult_SpotlightExtras *)v6 setFileProviderDomainIdentifier:v46];
+    fileProviderDomainIdentifier = [resultCopy fileProviderDomainIdentifier];
+    [(SFSearchResult_SpotlightExtras *)v6 setFileProviderDomainIdentifier:fileProviderDomainIdentifier];
 
-    v47 = [v5 srf];
+    v47 = [resultCopy srf];
     [(SFSearchResult_SpotlightExtras *)v6 setSrf:v47];
 
-    -[SFSearchResult_SpotlightExtras setDoNotFold:](v6, "setDoNotFold:", [v5 doNotFold]);
-    v48 = [v5 localFeatures];
-    [(SFSearchResult_SpotlightExtras *)v6 setLocalFeatures:v48];
+    -[SFSearchResult_SpotlightExtras setDoNotFold:](v6, "setDoNotFold:", [resultCopy doNotFold]);
+    localFeatures = [resultCopy localFeatures];
+    [(SFSearchResult_SpotlightExtras *)v6 setLocalFeatures:localFeatures];
 
-    v49 = [v5 entityData];
-    [(SFSearchResult_SpotlightExtras *)v6 setEntityData:v49];
+    entityData = [resultCopy entityData];
+    [(SFSearchResult_SpotlightExtras *)v6 setEntityData:entityData];
 
-    v50 = [v5 entityIdentifier];
-    [(SFSearchResult_SpotlightExtras *)v6 setEntityIdentifier:v50];
+    entityIdentifier = [resultCopy entityIdentifier];
+    [(SFSearchResult_SpotlightExtras *)v6 setEntityIdentifier:entityIdentifier];
 
-    v51 = [v5 mapsData];
-    [(SFSearchResult_SpotlightExtras *)v6 setMapsData:v51];
+    mapsData2 = [resultCopy mapsData];
+    [(SFSearchResult_SpotlightExtras *)v6 setMapsData:mapsData2];
 
-    v52 = [v5 normalizedTopic];
-    [(SFSearchResult_SpotlightExtras *)v6 setNormalizedTopic:v52];
+    normalizedTopic = [resultCopy normalizedTopic];
+    [(SFSearchResult_SpotlightExtras *)v6 setNormalizedTopic:normalizedTopic];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v53 = v5;
+      v53 = resultCopy;
       -[SFSearchResult_SpotlightExtras setHasTextContentMatch:](v6, "setHasTextContentMatch:", [v53 hasTextContentMatch]);
-      v54 = [v53 mapsPersonalizationResult];
-      [(SFSearchResult_SpotlightExtras *)v6 setMapsPersonalizationResult:v54];
+      mapsPersonalizationResult = [v53 mapsPersonalizationResult];
+      [(SFSearchResult_SpotlightExtras *)v6 setMapsPersonalizationResult:mapsPersonalizationResult];
 
-      v55 = [v53 backendData];
-      v56 = [v55 mutableCopy];
+      backendData = [v53 backendData];
+      v56 = [backendData mutableCopy];
       [(SFSearchResult_SpotlightExtras *)v6 setBackendData:v56];
 
-      v57 = [v53 rankingItem];
-      [(SFSearchResult_SpotlightExtras *)v6 setRankingItem:v57];
+      rankingItem = [v53 rankingItem];
+      [(SFSearchResult_SpotlightExtras *)v6 setRankingItem:rankingItem];
 
-      v58 = [v53 answerAttributes];
-      v59 = [v58 copy];
+      answerAttributes = [v53 answerAttributes];
+      v59 = [answerAttributes copy];
       [(SFSearchResult_SpotlightExtras *)v6 setAnswerAttributes:v59];
 
-      v60 = [v53 textMatches];
-      v61 = [v60 copy];
+      textMatches = [v53 textMatches];
+      v61 = [textMatches copy];
       [(SFSearchResult_SpotlightExtras *)v6 setTextMatches:v61];
 
       objc_storeStrong(&v6->_uniformContentType, *(v53 + 99));
       v6->_uniformContentTypeUnavailable = *(v53 + 800);
-      v62 = [v53 contentURL];
+      contentURL = [v53 contentURL];
 
-      [(SFSearchResult_SpotlightExtras *)v6 setContentURL:v62];
+      [(SFSearchResult_SpotlightExtras *)v6 setContentURL:contentURL];
     }
   }
 
   return v6;
 }
 
-- (SFSearchResult_SpotlightExtras)initWithResult:(id)a3
+- (SFSearchResult_SpotlightExtras)initWithResult:(id)result
 {
-  v4 = a3;
-  v5 = [(SFSearchResult_SpotlightExtras *)self initWithResult:v4 groupId:0];
+  resultCopy = result;
+  v5 = [(SFSearchResult_SpotlightExtras *)self initWithResult:resultCopy groupId:0];
   if (v5)
   {
-    v6 = [v4 lastUsedDate];
+    lastUsedDate = [resultCopy lastUsedDate];
     lastUsedDate = v5->_lastUsedDate;
-    v5->_lastUsedDate = v6;
+    v5->_lastUsedDate = lastUsedDate;
 
-    v8 = [v4 contentCreationDate];
+    contentCreationDate = [resultCopy contentCreationDate];
     contentCreationDate = v5->_contentCreationDate;
-    v5->_contentCreationDate = v8;
+    v5->_contentCreationDate = contentCreationDate;
 
-    [v4 l2score];
+    [resultCopy l2score];
     v5->_l2score = v10;
-    v5->_feedbackBlockId = [v4 feedbackBlockId];
-    objc_storeStrong(&v5->_uniformContentType, *(v4 + 99));
-    v5->_uniformContentTypeUnavailable = *(v4 + 800);
+    v5->_feedbackBlockId = [resultCopy feedbackBlockId];
+    objc_storeStrong(&v5->_uniformContentType, *(resultCopy + 99));
+    v5->_uniformContentTypeUnavailable = *(resultCopy + 800);
   }
 
   return v5;
 }
 
-- (SFSearchResult_SpotlightExtras)initWithIdentifier:(id)a3 bundleIdentifier:(id)a4 protectionClass:(id)a5 attributeKeys:(id)a6 attributeValues:(id)a7 type:(int)a8 completion:(id)a9
+- (SFSearchResult_SpotlightExtras)initWithIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier protectionClass:(id)class attributeKeys:(id)keys attributeValues:(id)values type:(int)type completion:(id)completion
 {
-  v24 = self;
-  v27 = a3;
-  v26 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = a9;
+  selfCopy = self;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  classCopy = class;
+  keysCopy = keys;
+  valuesCopy = values;
+  completionCopy = completion;
   v17 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v18 = [v14 count];
-  if (v18 == [v15 count] && v18)
+  v18 = [keysCopy count];
+  if (v18 == [valuesCopy count] && v18)
   {
     for (i = 0; i != v18; ++i)
     {
-      v20 = [v14 objectAtIndexedSubscript:{i, v24}];
-      v21 = [v15 objectAtIndexedSubscript:i];
+      v20 = [keysCopy objectAtIndexedSubscript:{i, selfCopy}];
+      v21 = [valuesCopy objectAtIndexedSubscript:i];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
@@ -281,79 +281,79 @@
     }
   }
 
-  v22 = [(SFSearchResult_SpotlightExtras *)v24 initWithIdentifier:v27 bundleIdentifier:v26 protectionClass:v13 attributes:v17 type:a8 completion:v16, v24];
+  selfCopy = [(SFSearchResult_SpotlightExtras *)selfCopy initWithIdentifier:identifierCopy bundleIdentifier:bundleIdentifierCopy protectionClass:classCopy attributes:v17 type:type completion:completionCopy, selfCopy];
 
-  return v22;
+  return selfCopy;
 }
 
 - (id)debugDescription
 {
-  v3 = [(SFSearchResult_SpotlightExtras *)self title];
-  v4 = [v3 text];
+  title = [(SFSearchResult_SpotlightExtras *)self title];
+  text = [title text];
 
-  if (!v4)
+  if (!text)
   {
-    v5 = [(SFSearchResult_SpotlightExtras *)self compactCard];
-    v6 = v5;
-    if (v5)
+    compactCard = [(SFSearchResult_SpotlightExtras *)self compactCard];
+    v6 = compactCard;
+    if (compactCard)
     {
-      v7 = v5;
+      inlineCard = compactCard;
     }
 
     else
     {
-      v7 = [(SFSearchResult_SpotlightExtras *)self inlineCard];
+      inlineCard = [(SFSearchResult_SpotlightExtras *)self inlineCard];
     }
 
-    v8 = v7;
+    v8 = inlineCard;
 
-    v9 = [v8 cardSections];
-    v10 = [v9 firstObject];
+    cardSections = [v8 cardSections];
+    firstObject = [cardSections firstObject];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = [v10 title];
-      v4 = [v11 text];
+      title2 = [firstObject title];
+      text = [title2 text];
     }
 
     else
     {
-      v4 = 0;
+      text = 0;
     }
   }
 
   v12 = MEMORY[0x1E696AD60];
   v13 = objc_opt_class();
   v14 = NSStringFromClass(v13);
-  v15 = [(SFSearchResult_SpotlightExtras *)self sectionBundleIdentifier];
-  v16 = [v12 stringWithFormat:@"<%@ %p> %@ (%@)", v14, self, v4, v15];
+  sectionBundleIdentifier = [(SFSearchResult_SpotlightExtras *)self sectionBundleIdentifier];
+  v16 = [v12 stringWithFormat:@"<%@ %p> %@ (%@)", v14, self, text, sectionBundleIdentifier];
 
-  v17 = [(SFSearchResult_SpotlightExtras *)self sectionBundleIdentifier];
-  LODWORD(v15) = SSSectionIsSyndicatedPhotos(v17);
+  sectionBundleIdentifier2 = [(SFSearchResult_SpotlightExtras *)self sectionBundleIdentifier];
+  LODWORD(sectionBundleIdentifier) = SSSectionIsSyndicatedPhotos(sectionBundleIdentifier2);
 
-  if (v15)
+  if (sectionBundleIdentifier)
   {
-    v18 = [(SFSearchResult_SpotlightExtras *)self inlineCard];
-    v19 = [v18 cardSections];
-    v20 = [v19 firstObject];
+    inlineCard2 = [(SFSearchResult_SpotlightExtras *)self inlineCard];
+    cardSections2 = [inlineCard2 cardSections];
+    firstObject2 = [cardSections2 firstObject];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v21 = [v20 cardSections];
-      v22 = [v21 firstObject];
+      cardSections3 = [firstObject2 cardSections];
+      firstObject3 = [cardSections3 firstObject];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v23 = [v22 thumbnail];
+        thumbnail = [firstObject3 thumbnail];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v24 = [v23 photoIdentifier];
-          v25 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v23, "isSyndicated")}];
-          [v16 appendFormat:@" PhotoId: %@ isSyndicated: %@", v24, v25];
+          photoIdentifier = [thumbnail photoIdentifier];
+          v25 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(thumbnail, "isSyndicated")}];
+          [v16 appendFormat:@" PhotoId: %@ isSyndicated: %@", photoIdentifier, v25];
         }
       }
     }
@@ -368,50 +368,50 @@
   v4 = [(SFSearchResult_SpotlightExtras *)self debugDescription];
   v5 = [v3 stringWithString:v4];
 
-  v6 = [(SFSearchResult_SpotlightExtras *)self rankingItem];
-  v7 = [v6 hasShortCut];
-  v8 = [v6 L2FeatureVector];
-  v9 = [(SFSearchResult_SpotlightExtras *)self applicationBundleIdentifier];
-  v10 = v9;
-  if (v9)
+  rankingItem = [(SFSearchResult_SpotlightExtras *)self rankingItem];
+  hasShortCut = [rankingItem hasShortCut];
+  l2FeatureVector = [rankingItem L2FeatureVector];
+  applicationBundleIdentifier = [(SFSearchResult_SpotlightExtras *)self applicationBundleIdentifier];
+  v10 = applicationBundleIdentifier;
+  if (applicationBundleIdentifier)
   {
-    [v5 appendFormat:@"\n\t\tselfBundle:%@", v9];
+    [v5 appendFormat:@"\n\t\tselfBundle:%@", applicationBundleIdentifier];
   }
 
   else
   {
-    v11 = [(SFSearchResult_SpotlightExtras *)self resultBundleId];
-    [v5 appendFormat:@"\n\t\tselfBundle:%@", v11];
+    resultBundleId = [(SFSearchResult_SpotlightExtras *)self resultBundleId];
+    [v5 appendFormat:@"\n\t\tselfBundle:%@", resultBundleId];
   }
 
-  [v8 originalL2Score];
+  [l2FeatureVector originalL2Score];
   [v5 appendFormat:@"\toriginalL2:%.3f", v12];
-  [v8 experimentalScore];
+  [l2FeatureVector experimentalScore];
   [v5 appendFormat:@"\texperimentalScore:%.3f", v13];
-  [v6 rawScore];
+  [rankingItem rawScore];
   [v5 appendFormat:@"\n\t\trawScore:%.3f", v14];
-  [v6 score];
+  [rankingItem score];
   [v5 appendFormat:@"\tscore:%.3f", v15];
   [(SFSearchResult_SpotlightExtras *)self l2score];
   [v5 appendFormat:@"\tL2Score:%.3f", v16];
-  [v8 scoreForFeature:386];
+  [l2FeatureVector scoreForFeature:386];
   [v5 appendFormat:@"\n\t\tparsecEnumScore:%.3f", v17];
-  [v8 withinBundleScore];
+  [l2FeatureVector withinBundleScore];
   [v5 appendFormat:@"\tL2VectorWithinBundleScore:%.3f", v18];
-  [v6 withinBundleScore];
+  [rankingItem withinBundleScore];
   [v5 appendFormat:@"\twithinBundleScore:%.3f", v19];
-  [v8 scoreForFeature:366];
+  [l2FeatureVector scoreForFeature:366];
   [v5 appendFormat:@"\n\t\tcep:%.6f", v20];
   [v5 appendFormat:@"\ttopHit:%d", -[SFSearchResult_SpotlightExtras topHit](self, "topHit")];
   [v5 appendFormat:@"\tblockId:%llu", -[SFSearchResult_SpotlightExtras blockId](self, "blockId")];
   [v5 appendFormat:@"\n\t\tsafariTophit:%d", -[SFSearchResult_SpotlightExtras isSafariTopHit](self, "isSafariTopHit")];
-  [v5 appendFormat:@"\thasShortcut:%d", v7];
+  [v5 appendFormat:@"\thasShortcut:%d", hasShortCut];
   [v5 appendFormat:@"\tisFuzzyMatch:%d", -[SFSearchResult_SpotlightExtras isFuzzyMatch](self, "isFuzzyMatch")];
   [v5 appendFormat:@"\n\t\tshouldUseCompactDisplay:%d", -[SFSearchResult_SpotlightExtras shouldUseCompactDisplay](self, "shouldUseCompactDisplay")];
   [v5 appendFormat:@"\tusesCompactDisplay:%d", -[SFSearchResult_SpotlightExtras usesCompactDisplay](self, "usesCompactDisplay")];
   [v5 appendFormat:@"\tusesTopHitDisplay:%d", -[SFSearchResult_SpotlightExtras usesTopHitDisplay](self, "usesTopHitDisplay")];
-  [v5 appendFormat:@"\tshouldHideUnderShowMore:%d", objc_msgSend(v6, "shouldHideUnderShowMore")];
-  [v5 appendFormat:@"\n\t\tphotosMatch:%d", objc_msgSend(v6, "photosMatch")];
+  [v5 appendFormat:@"\tshouldHideUnderShowMore:%d", objc_msgSend(rankingItem, "shouldHideUnderShowMore")];
+  [v5 appendFormat:@"\n\t\tphotosMatch:%d", objc_msgSend(rankingItem, "photosMatch")];
   if (SSResultTypeIsLocalSuggestion([(SFSearchResult_SpotlightExtras *)self type]))
   {
     [v5 appendFormat:@"\ttype:%d", -[SFSearchResult_SpotlightExtras type](self, "type")];
@@ -424,27 +424,27 @@
 
 - (id)getStableServerResultIdentifier
 {
-  v3 = [(SFSearchResult_SpotlightExtras *)self sectionBundleIdentifier];
-  if (![v3 isEqualToString:@"com.apple.parsec.stocks"])
+  sectionBundleIdentifier = [(SFSearchResult_SpotlightExtras *)self sectionBundleIdentifier];
+  if (![sectionBundleIdentifier isEqualToString:@"com.apple.parsec.stocks"])
   {
 LABEL_5:
 
     goto LABEL_6;
   }
 
-  v4 = [(SFSearchResult_SpotlightExtras *)self identifier];
-  v5 = [v4 hasSuffix:@"high_low"];
+  identifier = [(SFSearchResult_SpotlightExtras *)self identifier];
+  v5 = [identifier hasSuffix:@"high_low"];
 
   if (v5)
   {
-    v6 = [(SFSearchResult_SpotlightExtras *)self identifier];
-    v3 = [v6 componentsSeparatedByString:@"-"];
+    identifier2 = [(SFSearchResult_SpotlightExtras *)self identifier];
+    sectionBundleIdentifier = [identifier2 componentsSeparatedByString:@"-"];
 
-    if ([v3 count] == 3)
+    if ([sectionBundleIdentifier count] == 3)
     {
       v7 = MEMORY[0x1E696AEC0];
-      v8 = [v3 objectAtIndexedSubscript:1];
-      v9 = [v7 stringWithFormat:@"st:%@", v8];
+      v8 = [sectionBundleIdentifier objectAtIndexedSubscript:1];
+      identifier3 = [v7 stringWithFormat:@"st:%@", v8];
 
       goto LABEL_7;
     }
@@ -453,20 +453,20 @@ LABEL_5:
   }
 
 LABEL_6:
-  v9 = [(SFSearchResult_SpotlightExtras *)self identifier];
+  identifier3 = [(SFSearchResult_SpotlightExtras *)self identifier];
 LABEL_7:
 
-  return v9;
+  return identifier3;
 }
 
-- (id)urlValueForAttribute:(id)a3
+- (id)urlValueForAttribute:(id)attribute
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SFSearchResult_SpotlightExtras *)self valueForAttribute:v4 withType:objc_opt_class()];
+  attributeCopy = attribute;
+  v5 = [(SFSearchResult_SpotlightExtras *)self valueForAttribute:attributeCopy withType:objc_opt_class()];
   if (!v5)
   {
-    v6 = [(SFSearchResult_SpotlightExtras *)self valueForAttribute:v4 withType:objc_opt_class()];
+    v6 = [(SFSearchResult_SpotlightExtras *)self valueForAttribute:attributeCopy withType:objc_opt_class()];
     if ([v6 length])
     {
       v5 = [MEMORY[0x1E695DFF8] URLWithString:v6];
@@ -474,7 +474,7 @@ LABEL_7:
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
         v10 = 138412290;
-        v11 = v4;
+        v11 = attributeCopy;
         _os_log_impl(&dword_1D9F69000, v7, OS_LOG_TYPE_INFO, "%@ found to be NSString instead of NSURL. Converting to NSURL.", &v10, 0xCu);
       }
     }
@@ -493,39 +493,39 @@ LABEL_7:
 - (id)fullAttributeSet
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = [(SFSearchResult_SpotlightExtras *)self backendData];
-  if (!v3)
+  backendData = [(SFSearchResult_SpotlightExtras *)self backendData];
+  if (!backendData)
   {
-    v4 = [(SFSearchResult_SpotlightExtras *)self attributeData];
+    attributeData = [(SFSearchResult_SpotlightExtras *)self attributeData];
 
-    if (!v4)
+    if (!attributeData)
     {
       goto LABEL_5;
     }
 
     v5 = objc_alloc(MEMORY[0x1E6964E08]);
-    v3 = [(SFSearchResult_SpotlightExtras *)self attributeData];
-    v6 = [v5 initWithData:v3];
-    v7 = [v6 decode];
-    v8 = [v7 mutableCopy];
+    backendData = [(SFSearchResult_SpotlightExtras *)self attributeData];
+    v6 = [v5 initWithData:backendData];
+    decode = [v6 decode];
+    v8 = [decode mutableCopy];
     [(SFSearchResult_SpotlightExtras *)self setBackendData:v8];
   }
 
 LABEL_5:
-  v9 = [(SFSearchResult_SpotlightExtras *)self backendData];
+  backendData2 = [(SFSearchResult_SpotlightExtras *)self backendData];
 
-  if (v9)
+  if (backendData2)
   {
     v10 = objc_opt_new();
-    v11 = [(SFSearchResult_SpotlightExtras *)self contentType];
-    v9 = [v10 initWithItemContentType:v11];
+    contentType = [(SFSearchResult_SpotlightExtras *)self contentType];
+    backendData2 = [v10 initWithItemContentType:contentType];
 
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v12 = [(SFSearchResult_SpotlightExtras *)self backendData];
-    v13 = [v12 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    backendData3 = [(SFSearchResult_SpotlightExtras *)self backendData];
+    v13 = [backendData3 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v13)
     {
       v14 = v13;
@@ -536,17 +536,17 @@ LABEL_5:
         {
           if (*v23 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(backendData3);
           }
 
           v17 = *(*(&v22 + 1) + 8 * i);
-          v18 = [(SFSearchResult_SpotlightExtras *)self backendData];
-          v19 = [v18 objectForKey:v17];
+          backendData4 = [(SFSearchResult_SpotlightExtras *)self backendData];
+          v19 = [backendData4 objectForKey:v17];
 
-          [v9 setAttribute:v19 forKey:v17];
+          [backendData2 setAttribute:v19 forKey:v17];
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v14 = [backendData3 countByEnumeratingWithState:&v22 objects:v26 count:16];
       }
 
       while (v14);
@@ -555,14 +555,14 @@ LABEL_5:
 
   v20 = *MEMORY[0x1E69E9840];
 
-  return v9;
+  return backendData2;
 }
 
-- (void)setContentType:(id)a3
+- (void)setContentType:(id)type
 {
   v5.receiver = self;
   v5.super_class = SFSearchResult_SpotlightExtras;
-  [(SFSearchResult_SpotlightExtras *)&v5 setContentType:a3];
+  [(SFSearchResult_SpotlightExtras *)&v5 setContentType:type];
   uniformContentType = self->_uniformContentType;
   self->_uniformContentType = 0;
 
@@ -580,18 +580,18 @@ LABEL_5:
       goto LABEL_9;
     }
 
-    v4 = [(SFSearchResult_SpotlightExtras *)self contentType];
-    if (v4)
+    contentType = [(SFSearchResult_SpotlightExtras *)self contentType];
+    if (contentType)
     {
-      v5 = v4;
+      lastObject = contentType;
     }
 
     else
     {
-      v6 = [(SFSearchResult_SpotlightExtras *)self contentTypeTree];
-      v5 = [v6 lastObject];
+      contentTypeTree = [(SFSearchResult_SpotlightExtras *)self contentTypeTree];
+      lastObject = [contentTypeTree lastObject];
 
-      if (!v5)
+      if (!lastObject)
       {
 LABEL_8:
         self->_uniformContentTypeUnavailable = self->_uniformContentType == 0;
@@ -600,7 +600,7 @@ LABEL_8:
       }
     }
 
-    v7 = [MEMORY[0x1E6982C40] typeWithIdentifier:v5];
+    v7 = [MEMORY[0x1E6982C40] typeWithIdentifier:lastObject];
     v8 = self->_uniformContentType;
     self->_uniformContentType = v7;
 
@@ -612,24 +612,24 @@ LABEL_9:
   return uniformContentType;
 }
 
-- (void)setUniformContentType:(id)a3
+- (void)setUniformContentType:(id)type
 {
-  v4 = a3;
-  v5 = [(UTType *)v4 identifier];
-  [(SFSearchResult_SpotlightExtras *)self setContentType:v5];
+  typeCopy = type;
+  identifier = [(UTType *)typeCopy identifier];
+  [(SFSearchResult_SpotlightExtras *)self setContentType:identifier];
 
   uniformContentType = self->_uniformContentType;
-  self->_uniformContentType = v4;
+  self->_uniformContentType = typeCopy;
 
   self->_uniformContentTypeUnavailable = 0;
 }
 
-- (SFSearchResult_SpotlightExtras)initWithCoder:(id)a3
+- (SFSearchResult_SpotlightExtras)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v63.receiver = self;
   v63.super_class = SFSearchResult_SpotlightExtras;
-  v5 = [(SFSearchResult_SpotlightExtras *)&v63 initWithCoder:v4];
+  v5 = [(SFSearchResult_SpotlightExtras *)&v63 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {
@@ -645,99 +645,99 @@ LABEL_9:
       }
     }
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_protectionClass"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_protectionClass"];
     protectionClass = v6->_protectionClass;
     v6->_protectionClass = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_launchString"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_launchString"];
     launchString = v6->_launchString;
     v6->_launchString = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_filename"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_filename"];
     filename = v6->_filename;
     v6->_filename = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_fileIdentifier"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_fileIdentifier"];
     fileIdentifier = v6->_fileIdentifier;
     v6->_fileIdentifier = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_parentFileIdentifier"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_parentFileIdentifier"];
     parentFileIdentifier = v6->_parentFileIdentifier;
     v6->_parentFileIdentifier = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_documentIdentifier"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_documentIdentifier"];
     documentIdentifier = v6->_documentIdentifier;
     v6->_documentIdentifier = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_userActivityType"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_userActivityType"];
     userActivityType = v6->_userActivityType;
     v6->_userActivityType = v21;
 
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_contentURL"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_contentURL"];
     contentURL = v6->_contentURL;
     v6->_contentURL = v23;
 
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_personIdentifier"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_personIdentifier"];
     personIdentifier = v6->_personIdentifier;
     v6->_personIdentifier = v25;
 
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_personQueryIdentifier"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_personQueryIdentifier"];
     personQueryIdentifier = v6->_personQueryIdentifier;
     v6->_personQueryIdentifier = v27;
 
-    v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_relatedAppIdentifier"];
+    v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_relatedAppIdentifier"];
     relatedAppIdentifier = v6->_relatedAppIdentifier;
     v6->_relatedAppIdentifier = v29;
 
-    v31 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_formattedSnippet"];
+    v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_formattedSnippet"];
     formattedSnippet = v6->_formattedSnippet;
     v6->_formattedSnippet = v31;
 
-    v33 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_displayOrder"];
+    v33 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_displayOrder"];
     displayOrder = v6->_displayOrder;
     v6->_displayOrder = v33;
 
-    v35 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_suggestionsFeedbackData"];
+    v35 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_suggestionsFeedbackData"];
     suggestionsFeedbackData = v6->_suggestionsFeedbackData;
     v6->_suggestionsFeedbackData = v35;
 
-    v6->_hasCommunicationContent = [v4 decodeBoolForKey:@"_hasCommunicationContent"];
-    v6->_hasTextContent = [v4 decodeBoolForKey:@"_hasTextContent"];
-    v6->_hasTextContentMatch = [v4 decodeBoolForKey:@"_hasTextContentMatch"];
-    v6->_predictionsFeedbackActionType = [v4 decodeIntegerForKey:@"_predictionsFeedbackActionType"];
-    [v4 decodeFloatForKey:@"_l2score"];
+    v6->_hasCommunicationContent = [coderCopy decodeBoolForKey:@"_hasCommunicationContent"];
+    v6->_hasTextContent = [coderCopy decodeBoolForKey:@"_hasTextContent"];
+    v6->_hasTextContentMatch = [coderCopy decodeBoolForKey:@"_hasTextContentMatch"];
+    v6->_predictionsFeedbackActionType = [coderCopy decodeIntegerForKey:@"_predictionsFeedbackActionType"];
+    [coderCopy decodeFloatForKey:@"_l2score"];
     v6->_l2score = v37;
     v38 = MEMORY[0x1E695DFD8];
     v39 = objc_opt_class();
     v40 = [v38 setWithObjects:{v39, objc_opt_class(), 0}];
-    v41 = [v4 decodeObjectOfClasses:v40 forKey:@"_duplicatedItems"];
+    v41 = [coderCopy decodeObjectOfClasses:v40 forKey:@"_duplicatedItems"];
     duplicatedItems = v6->_duplicatedItems;
     v6->_duplicatedItems = v41;
 
-    v43 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_attributeData"];
+    v43 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_attributeData"];
     attributeData = v6->_attributeData;
     v6->_attributeData = v43;
 
-    v45 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_lastUsedDate"];
+    v45 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_lastUsedDate"];
     lastUsedDate = v6->_lastUsedDate;
     v6->_lastUsedDate = v45;
 
-    v47 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_contentCreationDate"];
+    v47 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_contentCreationDate"];
     contentCreationDate = v6->_contentCreationDate;
     v6->_contentCreationDate = v47;
 
-    v49 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_isAppClip"];
+    v49 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_isAppClip"];
     v6->_isAppClip = [v49 BOOLValue];
 
-    v50 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_isWebClip"];
+    v50 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_isWebClip"];
     v6->_isWebClip = [v50 BOOLValue];
 
-    v51 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_uniformContentType"];
+    v51 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_uniformContentType"];
     uniformContentType = v6->_uniformContentType;
     v6->_uniformContentType = v51;
 
-    v6->_uniformContentTypeUnavailable = [v4 decodeBoolForKey:@"_uniformContentTypeUnavailable"];
-    v53 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_rankingItem"];
+    v6->_uniformContentTypeUnavailable = [coderCopy decodeBoolForKey:@"_uniformContentTypeUnavailable"];
+    v53 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_rankingItem"];
     rankingItem = v6->_rankingItem;
     v6->_rankingItem = v53;
 
@@ -748,14 +748,14 @@ LABEL_9:
       v6->_rankingItem = v55;
     }
 
-    v57 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_l2Signals"];
+    v57 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_l2Signals"];
     [(PRSRankingItem *)v6->_rankingItem setL2Signals:v57];
 
-    v58 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_mapsPersonalizationResult"];
+    v58 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_mapsPersonalizationResult"];
     mapsPersonalizationResult = v6->_mapsPersonalizationResult;
     v6->_mapsPersonalizationResult = v58;
 
-    v60 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"_answerAttributes"];
+    v60 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"_answerAttributes"];
     answerAttributes = v6->_answerAttributes;
     v6->_answerAttributes = v60;
   }
@@ -763,12 +763,12 @@ LABEL_9:
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v37.receiver = self;
   v37.super_class = SFSearchResult_SpotlightExtras;
-  [(SFSearchResult_SpotlightExtras *)&v37 encodeWithCoder:v4];
+  [(SFSearchResult_SpotlightExtras *)&v37 encodeWithCoder:coderCopy];
   v5 = [(SFSearchResult_SpotlightExtras *)self url];
 
   if (v5)
@@ -783,161 +783,161 @@ LABEL_9:
 
   v36.receiver = self;
   v36.super_class = SFSearchResult_SpotlightExtras;
-  [(SFSearchResult_SpotlightExtras *)&v36 encodeWithCoder:v4];
+  [(SFSearchResult_SpotlightExtras *)&v36 encodeWithCoder:coderCopy];
   protectionClass = self->_protectionClass;
   if (protectionClass)
   {
-    [v4 encodeObject:protectionClass forKey:@"_protectionClass"];
+    [coderCopy encodeObject:protectionClass forKey:@"_protectionClass"];
   }
 
   launchString = self->_launchString;
   if (launchString)
   {
-    [v4 encodeObject:launchString forKey:@"_launchString"];
+    [coderCopy encodeObject:launchString forKey:@"_launchString"];
   }
 
   filename = self->_filename;
   if (filename)
   {
-    [v4 encodeObject:filename forKey:@"_filename"];
+    [coderCopy encodeObject:filename forKey:@"_filename"];
   }
 
   fileIdentifier = self->_fileIdentifier;
   if (fileIdentifier)
   {
-    [v4 encodeObject:fileIdentifier forKey:@"_fileIdentifier"];
+    [coderCopy encodeObject:fileIdentifier forKey:@"_fileIdentifier"];
   }
 
   parentFileIdentifier = self->_parentFileIdentifier;
   if (parentFileIdentifier)
   {
-    [v4 encodeObject:parentFileIdentifier forKey:@"_parentFileIdentifier"];
+    [coderCopy encodeObject:parentFileIdentifier forKey:@"_parentFileIdentifier"];
   }
 
   documentIdentifier = self->_documentIdentifier;
   if (documentIdentifier)
   {
-    [v4 encodeObject:documentIdentifier forKey:@"_documentIdentifier"];
+    [coderCopy encodeObject:documentIdentifier forKey:@"_documentIdentifier"];
   }
 
   userActivityType = self->_userActivityType;
   if (userActivityType)
   {
-    [v4 encodeObject:userActivityType forKey:@"_userActivityType"];
+    [coderCopy encodeObject:userActivityType forKey:@"_userActivityType"];
   }
 
   contentURL = self->_contentURL;
   if (contentURL)
   {
-    [v4 encodeObject:contentURL forKey:@"_contentURL"];
+    [coderCopy encodeObject:contentURL forKey:@"_contentURL"];
   }
 
   personIdentifier = self->_personIdentifier;
   if (personIdentifier)
   {
-    [v4 encodeObject:personIdentifier forKey:@"_personIdentifier"];
+    [coderCopy encodeObject:personIdentifier forKey:@"_personIdentifier"];
   }
 
   personQueryIdentifier = self->_personQueryIdentifier;
   if (personQueryIdentifier)
   {
-    [v4 encodeObject:personQueryIdentifier forKey:@"_personQueryIdentifier"];
+    [coderCopy encodeObject:personQueryIdentifier forKey:@"_personQueryIdentifier"];
   }
 
   relatedAppIdentifier = self->_relatedAppIdentifier;
   if (relatedAppIdentifier)
   {
-    [v4 encodeObject:relatedAppIdentifier forKey:@"_relatedAppIdentifier"];
+    [coderCopy encodeObject:relatedAppIdentifier forKey:@"_relatedAppIdentifier"];
   }
 
   formattedSnippet = self->_formattedSnippet;
   if (formattedSnippet)
   {
-    [v4 encodeObject:formattedSnippet forKey:@"_formattedSnippet"];
+    [coderCopy encodeObject:formattedSnippet forKey:@"_formattedSnippet"];
   }
 
   displayOrder = self->_displayOrder;
   if (displayOrder)
   {
-    [v4 encodeObject:displayOrder forKey:@"_displayOrder"];
+    [coderCopy encodeObject:displayOrder forKey:@"_displayOrder"];
   }
 
   suggestionsFeedbackData = self->_suggestionsFeedbackData;
   if (suggestionsFeedbackData)
   {
-    [v4 encodeObject:suggestionsFeedbackData forKey:@"_suggestionsFeedbackData"];
+    [coderCopy encodeObject:suggestionsFeedbackData forKey:@"_suggestionsFeedbackData"];
   }
 
   if (self->_hasCommunicationContent)
   {
-    [v4 encodeBool:1 forKey:@"_hasCommunicationContent"];
+    [coderCopy encodeBool:1 forKey:@"_hasCommunicationContent"];
   }
 
   if (self->_hasTextContent)
   {
-    [v4 encodeBool:1 forKey:@"_hasTextContent"];
+    [coderCopy encodeBool:1 forKey:@"_hasTextContent"];
   }
 
   if (self->_hasTextContentMatch)
   {
-    [v4 encodeBool:1 forKey:@"_hasTextContentMatch"];
+    [coderCopy encodeBool:1 forKey:@"_hasTextContentMatch"];
   }
 
   predictionsFeedbackActionType = self->_predictionsFeedbackActionType;
   if (predictionsFeedbackActionType)
   {
-    [v4 encodeInteger:predictionsFeedbackActionType forKey:@"_predictionsFeedbackActionType"];
+    [coderCopy encodeInteger:predictionsFeedbackActionType forKey:@"_predictionsFeedbackActionType"];
   }
 
   *&v7 = self->_l2score;
-  [v4 encodeFloat:@"_l2score" forKey:v7];
+  [coderCopy encodeFloat:@"_l2score" forKey:v7];
   duplicatedItems = self->_duplicatedItems;
   if (duplicatedItems)
   {
-    [v4 encodeObject:duplicatedItems forKey:@"_duplicatedItems"];
+    [coderCopy encodeObject:duplicatedItems forKey:@"_duplicatedItems"];
   }
 
   attributeData = self->_attributeData;
   if (attributeData)
   {
-    [v4 encodeObject:attributeData forKey:@"_attributeData"];
+    [coderCopy encodeObject:attributeData forKey:@"_attributeData"];
   }
 
   lastUsedDate = self->_lastUsedDate;
   if (lastUsedDate)
   {
-    [v4 encodeObject:lastUsedDate forKey:@"_lastUsedDate"];
+    [coderCopy encodeObject:lastUsedDate forKey:@"_lastUsedDate"];
   }
 
   contentCreationDate = self->_contentCreationDate;
   if (contentCreationDate)
   {
-    [v4 encodeObject:contentCreationDate forKey:@"_contentCreationDate"];
+    [coderCopy encodeObject:contentCreationDate forKey:@"_contentCreationDate"];
   }
 
   if (self->_isAppClip)
   {
     v27 = [MEMORY[0x1E696AD98] numberWithBool:1];
-    [v4 encodeObject:v27 forKey:@"_isAppClip"];
+    [coderCopy encodeObject:v27 forKey:@"_isAppClip"];
   }
 
   if (self->_isWebClip)
   {
     v28 = [MEMORY[0x1E696AD98] numberWithBool:1];
-    [v4 encodeObject:v28 forKey:@"_isWebClip"];
+    [coderCopy encodeObject:v28 forKey:@"_isWebClip"];
   }
 
   uniformContentType = self->_uniformContentType;
   if (uniformContentType)
   {
-    [v4 encodeObject:uniformContentType forKey:@"_uniformContentType"];
+    [coderCopy encodeObject:uniformContentType forKey:@"_uniformContentType"];
   }
 
-  [v4 encodeBool:self->_uniformContentTypeUnavailable forKey:@"_uniformContentTypeUnavailable"];
+  [coderCopy encodeBool:self->_uniformContentTypeUnavailable forKey:@"_uniformContentTypeUnavailable"];
   rankingItem = self->_rankingItem;
   if (rankingItem)
   {
-    [v4 encodeObject:rankingItem forKey:@"_rankingItem"];
+    [coderCopy encodeObject:rankingItem forKey:@"_rankingItem"];
     v31 = self->_rankingItem;
   }
 
@@ -946,96 +946,96 @@ LABEL_9:
     v31 = 0;
   }
 
-  v32 = [(PRSRankingItem *)v31 l2Signals];
+  l2Signals = [(PRSRankingItem *)v31 l2Signals];
 
-  if (v32)
+  if (l2Signals)
   {
-    v33 = [(PRSRankingItem *)self->_rankingItem l2Signals];
-    [v4 encodeObject:v33 forKey:@"_l2Signals"];
+    l2Signals2 = [(PRSRankingItem *)self->_rankingItem l2Signals];
+    [coderCopy encodeObject:l2Signals2 forKey:@"_l2Signals"];
   }
 
   mapsPersonalizationResult = self->_mapsPersonalizationResult;
   if (mapsPersonalizationResult)
   {
-    [v4 encodeObject:mapsPersonalizationResult forKey:@"_mapsPersonalizationResult"];
+    [coderCopy encodeObject:mapsPersonalizationResult forKey:@"_mapsPersonalizationResult"];
   }
 
   answerAttributes = self->_answerAttributes;
   if (answerAttributes)
   {
-    [v4 encodeObject:answerAttributes forKey:@"_answerAttributes"];
+    [coderCopy encodeObject:answerAttributes forKey:@"_answerAttributes"];
   }
 }
 
-- (void)setFeedbackPropertiesOnResultCopy:(id)a3
+- (void)setFeedbackPropertiesOnResultCopy:(id)copy
 {
-  v4 = a3;
+  copyCopy = copy;
   v25.receiver = self;
   v25.super_class = SFSearchResult_SpotlightExtras;
-  [(SFSearchResult *)&v25 setFeedbackPropertiesOnResultCopy:v4];
+  [(SFSearchResult *)&v25 setFeedbackPropertiesOnResultCopy:copyCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(SFSearchResult_SpotlightExtras *)self duplicatedItems];
-    [v4 setDuplicatedItems:v5];
+    duplicatedItems = [(SFSearchResult_SpotlightExtras *)self duplicatedItems];
+    [copyCopy setDuplicatedItems:duplicatedItems];
 
-    v6 = [(SFSearchResult_SpotlightExtras *)self attributeData];
-    [v4 setAttributeData:v6];
+    attributeData = [(SFSearchResult_SpotlightExtras *)self attributeData];
+    [copyCopy setAttributeData:attributeData];
 
-    v7 = [(SFSearchResult_SpotlightExtras *)self personIdentifier];
-    [v4 setPersonIdentifier:v7];
+    personIdentifier = [(SFSearchResult_SpotlightExtras *)self personIdentifier];
+    [copyCopy setPersonIdentifier:personIdentifier];
 
-    v8 = [(SFSearchResult_SpotlightExtras *)self personQueryIdentifier];
-    [v4 setPersonQueryIdentifier:v8];
+    personQueryIdentifier = [(SFSearchResult_SpotlightExtras *)self personQueryIdentifier];
+    [copyCopy setPersonQueryIdentifier:personQueryIdentifier];
 
-    v9 = [(SFSearchResult_SpotlightExtras *)self relatedAppIdentifier];
-    [v4 setRelatedAppIdentifier:v9];
+    relatedAppIdentifier = [(SFSearchResult_SpotlightExtras *)self relatedAppIdentifier];
+    [copyCopy setRelatedAppIdentifier:relatedAppIdentifier];
 
-    v10 = [(SFSearchResult_SpotlightExtras *)self formattedSnippet];
-    [v4 setFormattedSnippet:v10];
+    formattedSnippet = [(SFSearchResult_SpotlightExtras *)self formattedSnippet];
+    [copyCopy setFormattedSnippet:formattedSnippet];
 
-    v11 = [(SFSearchResult_SpotlightExtras *)self displayOrder];
-    [v4 setDisplayOrder:v11];
+    displayOrder = [(SFSearchResult_SpotlightExtras *)self displayOrder];
+    [copyCopy setDisplayOrder:displayOrder];
 
-    [v4 setIsAppClip:{-[SFSearchResult_SpotlightExtras isAppClip](self, "isAppClip")}];
-    [v4 setIsWebClip:{-[SFSearchResult_SpotlightExtras isWebClip](self, "isWebClip")}];
-    v12 = [(SFSearchResult_SpotlightExtras *)self userActivityType];
-    [v4 setUserActivityType:v12];
+    [copyCopy setIsAppClip:{-[SFSearchResult_SpotlightExtras isAppClip](self, "isAppClip")}];
+    [copyCopy setIsWebClip:{-[SFSearchResult_SpotlightExtras isWebClip](self, "isWebClip")}];
+    userActivityType = [(SFSearchResult_SpotlightExtras *)self userActivityType];
+    [copyCopy setUserActivityType:userActivityType];
 
-    v13 = [(SFSearchResult_SpotlightExtras *)self userActivityRequiredString];
-    [v4 setUserActivityRequiredString:v13];
+    userActivityRequiredString = [(SFSearchResult_SpotlightExtras *)self userActivityRequiredString];
+    [copyCopy setUserActivityRequiredString:userActivityRequiredString];
 
-    v14 = [(SFSearchResult_SpotlightExtras *)self userActivityType];
-    v15 = [v14 isEqualToString:@"/app/intents"];
+    userActivityType2 = [(SFSearchResult_SpotlightExtras *)self userActivityType];
+    v15 = [userActivityType2 isEqualToString:@"/app/intents"];
 
     if (v15)
     {
       v16 = 3;
 LABEL_9:
-      [v4 setPredictionsFeedbackActionType:v16];
-      v20 = [(SFSearchResult_SpotlightExtras *)self protectionClass];
-      [v4 setProtectionClass:v20];
+      [copyCopy setPredictionsFeedbackActionType:v16];
+      protectionClass = [(SFSearchResult_SpotlightExtras *)self protectionClass];
+      [copyCopy setProtectionClass:protectionClass];
 
-      v21 = [(SFSearchResult_SpotlightExtras *)self launchString];
-      [v4 setLaunchString:v21];
+      launchString = [(SFSearchResult_SpotlightExtras *)self launchString];
+      [copyCopy setLaunchString:launchString];
 
-      v22 = [(SFSearchResult_SpotlightExtras *)self suggestionsFeedbackData];
-      [v4 setSuggestionsFeedbackData:v22];
+      suggestionsFeedbackData = [(SFSearchResult_SpotlightExtras *)self suggestionsFeedbackData];
+      [copyCopy setSuggestionsFeedbackData:suggestionsFeedbackData];
 
-      v23 = [(SFSearchResult_SpotlightExtras *)self mapsPersonalizationResult];
-      [v4 setMapsPersonalizationResult:v23];
+      mapsPersonalizationResult = [(SFSearchResult_SpotlightExtras *)self mapsPersonalizationResult];
+      [copyCopy setMapsPersonalizationResult:mapsPersonalizationResult];
 
-      v24 = [(SFSearchResult_SpotlightExtras *)self answerAttributes];
-      [v4 setAnswerAttributes:v24];
+      answerAttributes = [(SFSearchResult_SpotlightExtras *)self answerAttributes];
+      [copyCopy setAnswerAttributes:answerAttributes];
 
       goto LABEL_10;
     }
 
-    v17 = [(SFSearchResult_SpotlightExtras *)self userActivityRequiredString];
-    if ([v17 length])
+    userActivityRequiredString2 = [(SFSearchResult_SpotlightExtras *)self userActivityRequiredString];
+    if ([userActivityRequiredString2 length])
     {
-      v18 = [(SFSearchResult_SpotlightExtras *)self userActivityType];
-      v19 = [v18 length];
+      userActivityType3 = [(SFSearchResult_SpotlightExtras *)self userActivityType];
+      v19 = [userActivityType3 length];
 
       if (v19)
       {
@@ -1062,10 +1062,10 @@ LABEL_10:
   return [(SFSearchResult_SpotlightExtras *)&v3 init];
 }
 
-- (void)setUrl:(id)a3
+- (void)setUrl:(id)url
 {
-  v4 = a3;
-  if (v4)
+  urlCopy = url;
+  if (urlCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1076,18 +1076,18 @@ LABEL_10:
 
   v5.receiver = self;
   v5.super_class = SFSearchResult_SpotlightExtras;
-  [(SFSearchResult_SpotlightExtras *)&v5 setUrl:v4];
+  [(SFSearchResult_SpotlightExtras *)&v5 setUrl:urlCopy];
 }
 
 - (id)punchout
 {
   v19.receiver = self;
   v19.super_class = SFSearchResult_SpotlightExtras;
-  v3 = [(SFSearchResult_SpotlightExtras *)&v19 punchout];
-  v4 = v3;
-  if (v3)
+  punchout = [(SFSearchResult_SpotlightExtras *)&v19 punchout];
+  v4 = punchout;
+  if (punchout)
   {
-    v5 = v3;
+    v5 = punchout;
 LABEL_5:
     v7 = v5;
     goto LABEL_6;
@@ -1100,19 +1100,19 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v9 = [(SFSearchResult_SpotlightExtras *)self resultBundleId];
-  if ([v9 isEqualToString:@"com.apple.DocumentsApp"])
+  resultBundleId = [(SFSearchResult_SpotlightExtras *)self resultBundleId];
+  if ([resultBundleId isEqualToString:@"com.apple.DocumentsApp"])
   {
-    v10 = [(SFSearchResult_SpotlightExtras *)self documentIdentifier];
+    documentIdentifier = [(SFSearchResult_SpotlightExtras *)self documentIdentifier];
 
-    if (v10)
+    if (documentIdentifier)
     {
       v11 = MEMORY[0x1E695DFF8];
-      v12 = [(SFSearchResult_SpotlightExtras *)self fileIdentifier];
-      v13 = [(SFSearchResult_SpotlightExtras *)self filename];
-      v14 = [(SFSearchResult_SpotlightExtras *)self parentFileIdentifier];
-      v15 = [(SFSearchResult_SpotlightExtras *)self documentIdentifier];
-      v16 = [v11 sp_URLFromFileID:v12 filename:v13 parentFileID:v14 documentID:v15];
+      fileIdentifier = [(SFSearchResult_SpotlightExtras *)self fileIdentifier];
+      filename = [(SFSearchResult_SpotlightExtras *)self filename];
+      parentFileIdentifier = [(SFSearchResult_SpotlightExtras *)self parentFileIdentifier];
+      documentIdentifier2 = [(SFSearchResult_SpotlightExtras *)self documentIdentifier];
+      v16 = [v11 sp_URLFromFileID:fileIdentifier filename:filename parentFileID:parentFileIdentifier documentID:documentIdentifier2];
 
       if (v16)
       {
@@ -1136,20 +1136,20 @@ LABEL_6:
   return v7;
 }
 
-- (BOOL)isSafariTopHitForQuery:(id)a3
+- (BOOL)isSafariTopHitForQuery:(id)query
 {
-  v4 = a3;
-  if (v4)
+  queryCopy = query;
+  if (queryCopy)
   {
-    v5 = [(SFSearchResult_SpotlightExtras *)self contentURL];
-    v6 = v5;
-    if (!v5)
+    contentURL = [(SFSearchResult_SpotlightExtras *)self contentURL];
+    v6 = contentURL;
+    if (!contentURL)
     {
       NSLog(&cfstr_DidnTFindMdite.isa, self);
       goto LABEL_13;
     }
 
-    if ([v5 hasPrefix:@"https://"])
+    if ([contentURL hasPrefix:@"https://"])
     {
       v7 = 8;
     }
@@ -1175,7 +1175,7 @@ LABEL_10:
       v6 = v10;
     }
 
-    if ([v6 rangeOfString:v4 options:9] != 0x7FFFFFFFFFFFFFFFLL)
+    if ([v6 rangeOfString:queryCopy options:9] != 0x7FFFFFFFFFFFFFFFLL)
     {
       v8 = 1;
       goto LABEL_15;
@@ -1194,30 +1194,30 @@ LABEL_16:
   return v8;
 }
 
-- (id)valueForAttribute:(id)a3 withType:(Class)a4
+- (id)valueForAttribute:(id)attribute withType:(Class)type
 {
-  v5 = a3;
-  v6 = [(SFSearchResult_SpotlightExtras *)self backendData];
-  if (!v6)
+  attributeCopy = attribute;
+  backendData = [(SFSearchResult_SpotlightExtras *)self backendData];
+  if (!backendData)
   {
-    v7 = [(SFSearchResult_SpotlightExtras *)self attributeData];
+    attributeData = [(SFSearchResult_SpotlightExtras *)self attributeData];
 
-    if (!v7)
+    if (!attributeData)
     {
       goto LABEL_5;
     }
 
     v8 = objc_alloc(MEMORY[0x1E6964E08]);
-    v6 = [(SFSearchResult_SpotlightExtras *)self attributeData];
-    v9 = [v8 initWithData:v6];
-    v10 = [v9 decode];
-    v11 = [v10 mutableCopy];
+    backendData = [(SFSearchResult_SpotlightExtras *)self attributeData];
+    v9 = [v8 initWithData:backendData];
+    decode = [v9 decode];
+    v11 = [decode mutableCopy];
     [(SFSearchResult_SpotlightExtras *)self setBackendData:v11];
   }
 
 LABEL_5:
-  v12 = [(SFSearchResult_SpotlightExtras *)self backendData];
-  v13 = [v12 objectForKey:v5];
+  backendData2 = [(SFSearchResult_SpotlightExtras *)self backendData];
+  v13 = [backendData2 objectForKey:attributeCopy];
 
   if (objc_opt_isKindOfClass())
   {
@@ -1236,8 +1236,8 @@ LABEL_5:
 
 - (uint64_t)score
 {
-  v1 = a1 + 1040;
-  result = *(a1 + 1040);
+  v1 = self + 1040;
+  result = *(self + 1040);
   v3 = *(v1 + 8);
   return result;
 }

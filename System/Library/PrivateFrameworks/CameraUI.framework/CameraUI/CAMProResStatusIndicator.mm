@@ -3,19 +3,19 @@
 - (id)_imageNameForProResVideoModeOff;
 - (id)_imageNameForProResVideoModeOn;
 - (id)imageNameForAXHUD;
-- (void)setOrientation:(int64_t)a3 animated:(BOOL)a4;
-- (void)setProResVideoMode:(int64_t)a3 colorSpace:(int64_t)a4 animated:(BOOL)a5;
+- (void)setOrientation:(int64_t)orientation animated:(BOOL)animated;
+- (void)setProResVideoMode:(int64_t)mode colorSpace:(int64_t)space animated:(BOOL)animated;
 @end
 
 @implementation CAMProResStatusIndicator
 
-- (void)setProResVideoMode:(int64_t)a3 colorSpace:(int64_t)a4 animated:(BOOL)a5
+- (void)setProResVideoMode:(int64_t)mode colorSpace:(int64_t)space animated:(BOOL)animated
 {
-  if (self->_proResVideoMode != a3 || self->_colorSpace != a4)
+  if (self->_proResVideoMode != mode || self->_colorSpace != space)
   {
-    self->_proResVideoMode = a3;
-    self->_colorSpace = a4;
-    [(CAMControlStatusIndicator *)self updateImageAnimated:a5];
+    self->_proResVideoMode = mode;
+    self->_colorSpace = space;
+    [(CAMControlStatusIndicator *)self updateImageAnimated:animated];
   }
 }
 
@@ -26,9 +26,9 @@
   [(CAMControlStatusIndicator *)&v13 intrinsicContentSize];
   v4 = v3;
   v5 = MEMORY[0x1E69DCAB8];
-  v6 = [(CAMProResStatusIndicator *)self imageNameForCurrentState];
+  imageNameForCurrentState = [(CAMProResStatusIndicator *)self imageNameForCurrentState];
   v7 = CAMCameraUIFrameworkBundle();
-  v8 = [v5 imageNamed:v6 inBundle:v7];
+  v8 = [v5 imageNamed:imageNameForCurrentState inBundle:v7];
 
   [v8 size];
   v10 = v9 + 20.0;
@@ -40,7 +40,7 @@
   return result;
 }
 
-- (void)setOrientation:(int64_t)a3 animated:(BOOL)a4
+- (void)setOrientation:(int64_t)orientation animated:(BOOL)animated
 {
   v4.receiver = self;
   v4.super_class = CAMProResStatusIndicator;
@@ -49,30 +49,30 @@
 
 - (id)imageNameForAXHUD
 {
-  v3 = [(CAMProResStatusIndicator *)self proResVideoMode];
-  if (v3 == 1)
+  proResVideoMode = [(CAMProResStatusIndicator *)self proResVideoMode];
+  if (proResVideoMode == 1)
   {
-    v3 = [(CAMProResStatusIndicator *)self _imageNameForProResVideoModeOn];
+    proResVideoMode = [(CAMProResStatusIndicator *)self _imageNameForProResVideoModeOn];
   }
 
-  else if (!v3)
+  else if (!proResVideoMode)
   {
-    v3 = [(CAMProResStatusIndicator *)self _imageNameForProResVideoModeOff];
+    proResVideoMode = [(CAMProResStatusIndicator *)self _imageNameForProResVideoModeOff];
   }
 
-  return v3;
+  return proResVideoMode;
 }
 
 - (id)_imageNameForProResVideoModeOn
 {
-  v2 = [(CAMProResStatusIndicator *)self colorSpace];
+  colorSpace = [(CAMProResStatusIndicator *)self colorSpace];
   v3 = @"CAMProResSDRIndicator";
-  if (v2 == 2)
+  if (colorSpace == 2)
   {
     v3 = @"CAMProResHDRIndicator";
   }
 
-  if (v2 == 3)
+  if (colorSpace == 3)
   {
     return @"CAMProResLOGIndicator";
   }
@@ -85,14 +85,14 @@
 
 - (id)_imageNameForProResVideoModeOff
 {
-  v2 = [(CAMProResStatusIndicator *)self colorSpace];
+  colorSpace = [(CAMProResStatusIndicator *)self colorSpace];
   v3 = @"CAMProResSDROff-AXHUD";
-  if (v2 == 2)
+  if (colorSpace == 2)
   {
     v3 = @"CAMProResHDROff-AXHUD";
   }
 
-  if (v2 == 3)
+  if (colorSpace == 3)
   {
     return @"CAMProResLOGOff-AXHUD";
   }

@@ -1,39 +1,39 @@
 @interface MKSearchFoundationBusinessReviewRichText
-- (void)resolveReviewStringWithProviderNameByMapItem:(id)a3 lines:(id)a4 temporaryReviewString:(id)a5;
-- (void)resolveReviewStringWithProviderNameNotFoundByMapItem:(id)a3 lines:(id)a4 temporaryReviewString:(id)a5;
+- (void)resolveReviewStringWithProviderNameByMapItem:(id)item lines:(id)lines temporaryReviewString:(id)string;
+- (void)resolveReviewStringWithProviderNameNotFoundByMapItem:(id)item lines:(id)lines temporaryReviewString:(id)string;
 @end
 
 @implementation MKSearchFoundationBusinessReviewRichText
 
-- (void)resolveReviewStringWithProviderNameNotFoundByMapItem:(id)a3 lines:(id)a4 temporaryReviewString:(id)a5
+- (void)resolveReviewStringWithProviderNameNotFoundByMapItem:(id)item lines:(id)lines temporaryReviewString:(id)string
 {
-  v8 = a4;
-  if (a5)
+  linesCopy = lines;
+  if (string)
   {
-    [v8 removeObject:a5];
+    [linesCopy removeObject:string];
   }
 
   [(MKSearchFoundationBusinessReviewRichText *)self setReviewResolved:1];
-  v7 = [MKSearchFoundationResult styledStringFromStringArray:v8];
+  v7 = [MKSearchFoundationResult styledStringFromStringArray:linesCopy];
   [(MKSearchFoundationRichText *)self setText:v7];
 }
 
-- (void)resolveReviewStringWithProviderNameByMapItem:(id)a3 lines:(id)a4 temporaryReviewString:(id)a5
+- (void)resolveReviewStringWithProviderNameByMapItem:(id)item lines:(id)lines temporaryReviewString:(id)string
 {
-  v16 = a4;
-  v8 = a5;
+  linesCopy = lines;
+  stringCopy = string;
   v9 = MEMORY[0x1E696AEC0];
-  v10 = a3;
+  itemCopy = item;
   v11 = _MKLocalizedStringFromThisBundle(@"Place_Reviews_On_Provider");
-  v12 = [v10 _sampleSizeForUserRatingScore];
-  v13 = [v10 _reviewsDisplayName];
+  _sampleSizeForUserRatingScore = [itemCopy _sampleSizeForUserRatingScore];
+  _reviewsDisplayName = [itemCopy _reviewsDisplayName];
 
-  v14 = [v9 localizedStringWithFormat:v11, v12, v13];
+  v14 = [v9 localizedStringWithFormat:v11, _sampleSizeForUserRatingScore, _reviewsDisplayName];
 
-  if ([v16 count])
+  if ([linesCopy count])
   {
-    [v16 insertObject:v14 atIndex:0];
-    if (!v8)
+    [linesCopy insertObject:v14 atIndex:0];
+    if (!stringCopy)
     {
       goto LABEL_4;
     }
@@ -41,16 +41,16 @@
     goto LABEL_3;
   }
 
-  [v16 addObject:v14];
-  if (v8)
+  [linesCopy addObject:v14];
+  if (stringCopy)
   {
 LABEL_3:
-    [v16 removeObject:v8];
+    [linesCopy removeObject:stringCopy];
   }
 
 LABEL_4:
   [(MKSearchFoundationBusinessReviewRichText *)self setReviewResolved:1];
-  v15 = [MKSearchFoundationResult styledStringFromStringArray:v16];
+  v15 = [MKSearchFoundationResult styledStringFromStringArray:linesCopy];
   [(MKSearchFoundationRichText *)self setText:v15];
 }
 

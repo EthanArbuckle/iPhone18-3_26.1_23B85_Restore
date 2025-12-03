@@ -1,5 +1,5 @@
 @interface HUTileCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (id)automationElements;
 - (unint64_t)accessibilityTraits;
@@ -7,12 +7,12 @@
 
 @implementation HUTileCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HUTileCell" isKindOfClass:@"UICollectionViewCell"];
-  [v3 validateClass:@"HomeUI.TileCellContentView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"HomeUI.TileCellContentView" hasInstanceMethod:@"standardLabels" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HUTileCell" isKindOfClass:@"UICollectionViewCell"];
+  [validationsCopy validateClass:@"HomeUI.TileCellContentView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"HomeUI.TileCellContentView" hasInstanceMethod:@"standardLabels" withFullSignature:{"@", 0}];
 }
 
 - (unint64_t)accessibilityTraits
@@ -26,8 +26,8 @@
 {
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
-  v3 = [v2 contentView];
-  v4 = [v3 safeArrayForKey:@"standardLabels"];
+  contentView = [v2 contentView];
+  v4 = [contentView safeArrayForKey:@"standardLabels"];
 
   v5 = [v4 ax_filteredArrayUsingBlock:&__block_literal_global_0];
 
@@ -40,10 +40,10 @@
 {
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
-  v3 = [v2 contentView];
-  v4 = [v3 subviews];
+  contentView = [v2 contentView];
+  subviews = [contentView subviews];
 
-  return v4;
+  return subviews;
 }
 
 @end

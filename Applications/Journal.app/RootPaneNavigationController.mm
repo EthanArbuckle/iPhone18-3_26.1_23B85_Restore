@@ -1,10 +1,10 @@
 @interface RootPaneNavigationController
 - (BOOL)accessibilityPerformMagicTap;
 - (_TtC7JournalP33_0B5A9489AD304442B8967D815815566E28RootPaneNavigationController)init;
-- (_TtC7JournalP33_0B5A9489AD304442B8967D815815566E28RootPaneNavigationController)initWithCoder:(id)a3;
-- (_TtC7JournalP33_0B5A9489AD304442B8967D815815566E28RootPaneNavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4;
-- (_TtC7JournalP33_0B5A9489AD304442B8967D815815566E28RootPaneNavigationController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC7JournalP33_0B5A9489AD304442B8967D815815566E28RootPaneNavigationController)initWithRootViewController:(id)a3;
+- (_TtC7JournalP33_0B5A9489AD304442B8967D815815566E28RootPaneNavigationController)initWithCoder:(id)coder;
+- (_TtC7JournalP33_0B5A9489AD304442B8967D815815566E28RootPaneNavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass;
+- (_TtC7JournalP33_0B5A9489AD304442B8967D815815566E28RootPaneNavigationController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC7JournalP33_0B5A9489AD304442B8967D815815566E28RootPaneNavigationController)initWithRootViewController:(id)controller;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -15,22 +15,22 @@
   v6.receiver = self;
   v6.super_class = type metadata accessor for RootPaneNavigationController();
   v2 = [(RootPaneNavigationController *)&v6 initWithNibName:0 bundle:0];
-  v3 = [(RootPaneNavigationController *)v2 navigationBar];
-  [v3 setPrefersLargeTitles:1];
+  navigationBar = [(RootPaneNavigationController *)v2 navigationBar];
+  [navigationBar setPrefersLargeTitles:1];
 
-  v4 = [(RootPaneNavigationController *)v2 navigationBar];
-  [v4 setMaximumContentSizeCategory:UIContentSizeCategoryLarge];
+  navigationBar2 = [(RootPaneNavigationController *)v2 navigationBar];
+  [navigationBar2 setMaximumContentSizeCategory:UIContentSizeCategoryLarge];
 
   return v2;
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10002DBE0();
 }
 
-- (_TtC7JournalP33_0B5A9489AD304442B8967D815815566E28RootPaneNavigationController)initWithCoder:(id)a3
+- (_TtC7JournalP33_0B5A9489AD304442B8967D815815566E28RootPaneNavigationController)initWithCoder:(id)coder
 {
   type metadata accessor for RootPaneNavigationController();
   swift_deallocPartialClassInstance();
@@ -39,37 +39,37 @@
 
 - (BOOL)accessibilityPerformMagicTap
 {
-  v2 = self;
-  v3 = [(RootPaneNavigationController *)v2 topViewController];
-  if (v3)
+  selfCopy = self;
+  topViewController = [(RootPaneNavigationController *)selfCopy topViewController];
+  if (topViewController)
   {
-    v4 = v3;
-    v5 = [v3 accessibilityPerformMagicTap];
+    v4 = topViewController;
+    accessibilityPerformMagicTap = [topViewController accessibilityPerformMagicTap];
   }
 
   else
   {
-    v5 = 0;
+    accessibilityPerformMagicTap = 0;
   }
 
-  return v5;
+  return accessibilityPerformMagicTap;
 }
 
-- (_TtC7JournalP33_0B5A9489AD304442B8967D815815566E28RootPaneNavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4
+- (_TtC7JournalP33_0B5A9489AD304442B8967D815815566E28RootPaneNavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC7JournalP33_0B5A9489AD304442B8967D815815566E28RootPaneNavigationController)initWithRootViewController:(id)a3
+- (_TtC7JournalP33_0B5A9489AD304442B8967D815815566E28RootPaneNavigationController)initWithRootViewController:(id)controller
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC7JournalP33_0B5A9489AD304442B8967D815815566E28RootPaneNavigationController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7JournalP33_0B5A9489AD304442B8967D815815566E28RootPaneNavigationController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

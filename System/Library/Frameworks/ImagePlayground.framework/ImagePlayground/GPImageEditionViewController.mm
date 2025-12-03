@@ -5,11 +5,11 @@
 - (GPRecipe)recipe;
 - (NSString)localizedCreateButtonTitle;
 - (UIImage)sourceImage;
-- (void)imageEditionViewController:(id)a3 didCreate:(id)a4;
-- (void)imageGenerationViewControllerWantsToShowGrid:(id)a3;
-- (void)imagePlaygroundViewControllerDidCancel:(id)a3;
-- (void)setRecipe:(id)a3;
-- (void)setSourceImage:(id)a3;
+- (void)imageEditionViewController:(id)controller didCreate:(id)create;
+- (void)imageGenerationViewControllerWantsToShowGrid:(id)grid;
+- (void)imagePlaygroundViewControllerDidCancel:(id)cancel;
+- (void)setRecipe:(id)recipe;
+- (void)setSourceImage:(id)image;
 @end
 
 @implementation GPImageEditionViewController
@@ -22,74 +22,74 @@
   v3 = objc_alloc_init(_TtC15ImagePlayground29ImagePlaygroundViewController);
   [(GPImageEditionViewController *)v2 setGenerationViewController:v3];
 
-  v4 = [(GPImageEditionViewController *)v2 generationViewController];
-  [v4 setDelegate:v2];
+  generationViewController = [(GPImageEditionViewController *)v2 generationViewController];
+  [generationViewController setDelegate:v2];
 
-  v5 = [(GPImageEditionViewController *)v2 generationViewController];
-  [v5 setPrivateDelegate:v2];
+  generationViewController2 = [(GPImageEditionViewController *)v2 generationViewController];
+  [generationViewController2 setPrivateDelegate:v2];
 
-  v6 = [(GPImageEditionViewController *)v2 generationViewController];
-  [(UIViewController *)v2 gp_addChildViewController:v6];
+  generationViewController3 = [(GPImageEditionViewController *)v2 generationViewController];
+  [(UIViewController *)v2 gp_addChildViewController:generationViewController3];
 
   return v2;
 }
 
 - (GPRecipe)recipe
 {
-  v2 = [(GPImageEditionViewController *)self generationViewController];
-  v3 = [v2 recipe];
+  generationViewController = [(GPImageEditionViewController *)self generationViewController];
+  recipe = [generationViewController recipe];
 
-  return v3;
+  return recipe;
 }
 
-- (void)setRecipe:(id)a3
+- (void)setRecipe:(id)recipe
 {
-  v4 = a3;
-  v5 = [(GPImageEditionViewController *)self generationViewController];
-  [v5 setRecipe:v4];
+  recipeCopy = recipe;
+  generationViewController = [(GPImageEditionViewController *)self generationViewController];
+  [generationViewController setRecipe:recipeCopy];
 }
 
 - (UIImage)sourceImage
 {
-  v2 = [(GPImageEditionViewController *)self generationViewController];
-  v3 = [v2 sourceImage];
+  generationViewController = [(GPImageEditionViewController *)self generationViewController];
+  sourceImage = [generationViewController sourceImage];
 
-  return v3;
+  return sourceImage;
 }
 
-- (void)setSourceImage:(id)a3
+- (void)setSourceImage:(id)image
 {
-  v4 = a3;
-  v5 = [(GPImageEditionViewController *)self generationViewController];
-  [v5 setSourceImage:v4];
+  imageCopy = image;
+  generationViewController = [(GPImageEditionViewController *)self generationViewController];
+  [generationViewController setSourceImage:imageCopy];
 }
 
 - (BOOL)sourceImageIsSketch
 {
-  v2 = [(GPImageEditionViewController *)self generationViewController];
-  v3 = [v2 sourceImageIsSketch];
+  generationViewController = [(GPImageEditionViewController *)self generationViewController];
+  sourceImageIsSketch = [generationViewController sourceImageIsSketch];
 
-  return v3;
+  return sourceImageIsSketch;
 }
 
 - (NSString)localizedCreateButtonTitle
 {
-  v2 = [(GPImageEditionViewController *)self generationViewController];
-  v3 = [v2 localizedCreateButtonTitle];
+  generationViewController = [(GPImageEditionViewController *)self generationViewController];
+  localizedCreateButtonTitle = [generationViewController localizedCreateButtonTitle];
 
-  return v3;
+  return localizedCreateButtonTitle;
 }
 
-- (void)imagePlaygroundViewControllerDidCancel:(id)a3
+- (void)imagePlaygroundViewControllerDidCancel:(id)cancel
 {
-  v4 = [(GPImageEditionViewController *)self delegate];
+  delegate = [(GPImageEditionViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
-  v6 = [(GPImageEditionViewController *)self delegate];
-  v8 = v6;
+  delegate2 = [(GPImageEditionViewController *)self delegate];
+  delegate3 = delegate2;
   if (v5)
   {
-    [v6 imageEditionViewControllerDidCancel:self];
+    [delegate2 imageEditionViewControllerDidCancel:self];
   }
 
   else
@@ -101,34 +101,34 @@
       return;
     }
 
-    v8 = [(GPImageEditionViewController *)self delegate];
-    [v8 imageEditionViewControllerDidCancel:self requiresShowingGrid:0];
+    delegate3 = [(GPImageEditionViewController *)self delegate];
+    [delegate3 imageEditionViewControllerDidCancel:self requiresShowingGrid:0];
   }
 }
 
-- (void)imageGenerationViewControllerWantsToShowGrid:(id)a3
+- (void)imageGenerationViewControllerWantsToShowGrid:(id)grid
 {
-  v4 = [(GPImageEditionViewController *)self delegate];
+  delegate = [(GPImageEditionViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(GPImageEditionViewController *)self delegate];
-    [v6 imageEditionViewControllerDidCancel:self requiresShowingGrid:1];
+    delegate2 = [(GPImageEditionViewController *)self delegate];
+    [delegate2 imageEditionViewControllerDidCancel:self requiresShowingGrid:1];
   }
 }
 
-- (void)imageEditionViewController:(id)a3 didCreate:(id)a4
+- (void)imageEditionViewController:(id)controller didCreate:(id)create
 {
   v11 = *MEMORY[0x1E69E9840];
-  v10 = a4;
+  createCopy = create;
   v5 = MEMORY[0x1E695DEC8];
-  v6 = a4;
-  v7 = [v5 arrayWithObjects:&v10 count:1];
+  createCopy2 = create;
+  v7 = [v5 arrayWithObjects:&createCopy count:1];
 
-  [(GPImageEditionViewController *)self setGeneratedAssets:v7, v10, v11];
-  v8 = [(GPImageEditionViewController *)self delegate];
-  [v8 imageEditionViewControllerDidFinishEditing:self error:0];
+  [(GPImageEditionViewController *)self setGeneratedAssets:v7, createCopy, v11];
+  delegate = [(GPImageEditionViewController *)self delegate];
+  [delegate imageEditionViewControllerDidFinishEditing:self error:0];
 
   v9 = *MEMORY[0x1E69E9840];
 }

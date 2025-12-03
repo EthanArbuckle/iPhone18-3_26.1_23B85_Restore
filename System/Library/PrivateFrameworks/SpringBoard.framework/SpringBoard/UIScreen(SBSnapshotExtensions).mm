@@ -7,7 +7,7 @@
 - (id)sb_snapshotViewImmediatelyFramedForPortrait
 {
   [SBApp pushTransientActiveInterfaceOrientation:1 forReason:@"SBPortraitFramedSnapshot"];
-  v2 = [a1 snapshotViewAfterScreenUpdates:0];
+  v2 = [self snapshotViewAfterScreenUpdates:0];
   [SBApp popTransientActiveInterfaceOrientationForReason:@"SBPortraitFramedSnapshot"];
 
   return v2;

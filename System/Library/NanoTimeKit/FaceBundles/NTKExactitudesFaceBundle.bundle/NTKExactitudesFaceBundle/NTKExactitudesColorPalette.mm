@@ -20,16 +20,16 @@
 - (float)_seasonalDarkColorLuminance;
 - (float)_seasonalLightColorLuminance;
 - (float)_seasonalPrimaryColorLuminance;
-- (id)_brightenUIColor:(id)a3 withLuminance:(float)a4;
+- (id)_brightenUIColor:(id)color withLuminance:(float)luminance;
 - (id)_exactitudesSeasonalDarkColor;
 - (id)_exactitudesSeasonalLightColor;
 - (id)_seasonalPrimaryColor;
 - (id)_standardColorLightest;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)identifier;
-- (id)swatchImageForSize:(CGSize)a3;
-- (void)configurationDidChange:(id)a3;
-- (void)setBackgroundStyle:(unint64_t)a3;
+- (id)swatchImageForSize:(CGSize)size;
+- (void)configurationDidChange:(id)change;
+- (void)setBackgroundStyle:(unint64_t)style;
 @end
 
 @implementation NTKExactitudesColorPalette
@@ -42,11 +42,11 @@
   return [(NTKExactitudesColorPalette *)&v5 initWithFaceClass:v3];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = NTKExactitudesColorPalette;
-  v4 = [(NTKExactitudesColorPalette *)&v6 copyWithZone:a3];
+  v4 = [(NTKExactitudesColorPalette *)&v6 copyWithZone:zone];
   [v4 setBackgroundStyle:{-[NTKExactitudesColorPalette backgroundStyle](self, "backgroundStyle")}];
   return v4;
 }
@@ -58,8 +58,8 @@
   {
     v8.receiver = self;
     v8.super_class = NTKExactitudesColorPalette;
-    v4 = [(NTKExactitudesColorPalette *)&v8 identifier];
-    v5 = [NSString stringWithFormat:@"%@-%lu", v4, self->_backgroundStyle];
+    identifier = [(NTKExactitudesColorPalette *)&v8 identifier];
+    v5 = [NSString stringWithFormat:@"%@-%lu", identifier, self->_backgroundStyle];
     v6 = self->_cachedIdentifier;
     self->_cachedIdentifier = v5;
 
@@ -69,18 +69,18 @@
   return cachedIdentifier;
 }
 
-- (void)configurationDidChange:(id)a3
+- (void)configurationDidChange:(id)change
 {
   v5.receiver = self;
   v5.super_class = NTKExactitudesColorPalette;
-  [(NTKExactitudesColorPalette *)&v5 configurationDidChange:a3];
+  [(NTKExactitudesColorPalette *)&v5 configurationDidChange:change];
   cachedIdentifier = self->_cachedIdentifier;
   self->_cachedIdentifier = 0;
 }
 
-- (void)setBackgroundStyle:(unint64_t)a3
+- (void)setBackgroundStyle:(unint64_t)style
 {
-  self->_backgroundStyle = a3;
+  self->_backgroundStyle = style;
   cachedIdentifier = self->_cachedIdentifier;
   self->_cachedIdentifier = 0;
   _objc_release_x1();
@@ -93,9 +93,9 @@
     return 1;
   }
 
-  v4 = [(NTKExactitudesColorPalette *)self pigmentEditOption];
-  v5 = [v4 fullname];
-  v6 = [v5 isEqualToString:ntk_zeus_orange];
+  pigmentEditOption = [(NTKExactitudesColorPalette *)self pigmentEditOption];
+  fullname = [pigmentEditOption fullname];
+  v6 = [fullname isEqualToString:ntk_zeus_orange];
 
   return v6;
 }
@@ -108,7 +108,7 @@
     goto LABEL_7;
   }
 
-  v3 = self;
+  selfCopy = self;
   if (backgroundStyle)
   {
     goto LABEL_8;
@@ -120,7 +120,7 @@
     goto LABEL_8;
   }
 
-  if (![(NTKExactitudesColorPalette *)v3 _hasDarkLightVariants])
+  if (![(NTKExactitudesColorPalette *)selfCopy _hasDarkLightVariants])
   {
 LABEL_7:
     self = +[UIColor blackColor];
@@ -128,7 +128,7 @@ LABEL_7:
 
   else
   {
-    self = [(NTKExactitudesColorPalette *)v3 _exactitudesSeasonalDarkColor];
+    self = [(NTKExactitudesColorPalette *)selfCopy _exactitudesSeasonalDarkColor];
   }
 
 LABEL_8:
@@ -169,12 +169,12 @@ LABEL_6:
 {
   if ([(NTKExactitudesColorPalette *)self isHeroColor]|| [(NTKExactitudesColorPalette *)self isHardwareColor])
   {
-    v3 = [(NTKExactitudesColorPalette *)self colorA];
+    colorA = [(NTKExactitudesColorPalette *)self colorA];
   }
 
   else if ([(NTKExactitudesColorPalette *)self isStandardColor])
   {
-    v3 = [(NTKExactitudesColorPalette *)self _standardColorLightest];
+    colorA = [(NTKExactitudesColorPalette *)self _standardColorLightest];
   }
 
   else
@@ -188,22 +188,22 @@ LABEL_6:
     {
       +[UIColor whiteColor];
     }
-    v3 = ;
+    colorA = ;
   }
 
-  return v3;
+  return colorA;
 }
 
 - (UIColor)minuteColor
 {
   if ([(NTKExactitudesColorPalette *)self isHeroColor]|| [(NTKExactitudesColorPalette *)self isHardwareColor])
   {
-    v3 = [(NTKExactitudesColorPalette *)self colorB];
+    colorB = [(NTKExactitudesColorPalette *)self colorB];
   }
 
   else if ([(NTKExactitudesColorPalette *)self isStandardColor])
   {
-    v3 = [(NTKExactitudesColorPalette *)self primaryColor];
+    colorB = [(NTKExactitudesColorPalette *)self primaryColor];
   }
 
   else
@@ -217,10 +217,10 @@ LABEL_6:
     {
       +[UIColor whiteColor];
     }
-    v3 = ;
+    colorB = ;
   }
 
-  return v3;
+  return colorB;
 }
 
 - (UIColor)secondColor
@@ -243,20 +243,20 @@ LABEL_6:
 {
   if ([(NTKExactitudesColorPalette *)self isHeroColor]|| [(NTKExactitudesColorPalette *)self isHardwareColor])
   {
-    v3 = [(NTKExactitudesColorPalette *)self colorB];
+    colorB = [(NTKExactitudesColorPalette *)self colorB];
     goto LABEL_4;
   }
 
   if ([(NTKExactitudesColorPalette *)self isStandardColor])
   {
-    v3 = [(NTKExactitudesColorPalette *)self primaryColor];
+    colorB = [(NTKExactitudesColorPalette *)self primaryColor];
     goto LABEL_4;
   }
 
   if (![(NTKExactitudesColorPalette *)self _hasDarkLightVariants])
   {
 LABEL_13:
-    v3 = +[UIColor whiteColor];
+    colorB = +[UIColor whiteColor];
     goto LABEL_4;
   }
 
@@ -265,17 +265,17 @@ LABEL_13:
   {
     if (!backgroundStyle)
     {
-      v3 = [(NTKExactitudesColorPalette *)self _exactitudesSeasonalLightColor];
+      colorB = [(NTKExactitudesColorPalette *)self _exactitudesSeasonalLightColor];
       goto LABEL_4;
     }
 
     goto LABEL_13;
   }
 
-  v3 = [(NTKExactitudesColorPalette *)self _seasonalPrimaryColor];
+  colorB = [(NTKExactitudesColorPalette *)self _seasonalPrimaryColor];
 LABEL_4:
 
-  return v3;
+  return colorB;
 }
 
 - (UIColor)secondaryComplicationColor
@@ -344,7 +344,7 @@ LABEL_6:
   backgroundStyle = self->_backgroundStyle;
   if (backgroundStyle == 1)
   {
-    v3 = [(NTKExactitudesColorPalette *)self hourColor];
+    hourColor = [(NTKExactitudesColorPalette *)self hourColor];
   }
 
   else
@@ -354,10 +354,10 @@ LABEL_6:
       goto LABEL_6;
     }
 
-    v3 = [(NTKExactitudesColorPalette *)self hourMinute];
+    hourColor = [(NTKExactitudesColorPalette *)self hourMinute];
   }
 
-  a2 = v3;
+  a2 = hourColor;
 LABEL_6:
 
   return a2;
@@ -368,7 +368,7 @@ LABEL_6:
   backgroundStyle = self->_backgroundStyle;
   if (backgroundStyle == 1)
   {
-    v3 = [(NTKExactitudesColorPalette *)self minuteColor];
+    minuteColor = [(NTKExactitudesColorPalette *)self minuteColor];
   }
 
   else
@@ -378,10 +378,10 @@ LABEL_6:
       goto LABEL_6;
     }
 
-    v3 = [(NTKExactitudesColorPalette *)self hourMinute];
+    minuteColor = [(NTKExactitudesColorPalette *)self hourMinute];
   }
 
-  a2 = v3;
+  a2 = minuteColor;
 LABEL_6:
 
   return a2;
@@ -397,17 +397,17 @@ LABEL_6:
 
   else
   {
-    v3 = self;
+    selfCopy = self;
     if (!backgroundStyle)
     {
       if ([(NTKExactitudesColorPalette *)self isHardwareColor])
       {
-        [(NTKExactitudesColorPalette *)v3 hardwareSecond];
+        [(NTKExactitudesColorPalette *)selfCopy hardwareSecond];
       }
 
       else
       {
-        [(NTKExactitudesColorPalette *)v3 second];
+        [(NTKExactitudesColorPalette *)selfCopy second];
       }
       self = ;
     }
@@ -447,20 +447,20 @@ LABEL_6:
 
 - (BOOL)isHeroColor
 {
-  v3 = [(NTKExactitudesColorPalette *)self configuration];
-  v4 = [v3 collectionName];
-  v5 = [(NTKExactitudesColorPalette *)self exactitudesCollectionName];
-  v6 = [v4 isEqualToString:v5];
+  configuration = [(NTKExactitudesColorPalette *)self configuration];
+  collectionName = [configuration collectionName];
+  exactitudesCollectionName = [(NTKExactitudesColorPalette *)self exactitudesCollectionName];
+  v6 = [collectionName isEqualToString:exactitudesCollectionName];
 
   return v6;
 }
 
 - (BOOL)isHardwareColor
 {
-  v3 = [(NTKExactitudesColorPalette *)self configuration];
-  v4 = [v3 collectionName];
-  v5 = [(NTKExactitudesColorPalette *)self exactitudesHardwareCollectionName];
-  v6 = [v4 isEqualToString:v5];
+  configuration = [(NTKExactitudesColorPalette *)self configuration];
+  collectionName = [configuration collectionName];
+  exactitudesHardwareCollectionName = [(NTKExactitudesColorPalette *)self exactitudesHardwareCollectionName];
+  v6 = [collectionName isEqualToString:exactitudesHardwareCollectionName];
 
   return v6;
 }
@@ -485,9 +485,9 @@ LABEL_6:
 {
   if ([(NTKExactitudesColorPalette *)self _hasDarkLightVariants])
   {
-    v3 = [(NTKExactitudesColorPalette *)self primaryColor];
+    primaryColor = [(NTKExactitudesColorPalette *)self primaryColor];
     [(NTKExactitudesColorPalette *)self _seasonalPrimaryColorLuminance];
-    v4 = [(NTKExactitudesColorPalette *)self _brightenUIColor:v3 withLuminance:?];
+    v4 = [(NTKExactitudesColorPalette *)self _brightenUIColor:primaryColor withLuminance:?];
   }
 
   else
@@ -502,9 +502,9 @@ LABEL_6:
 {
   if ([(NTKExactitudesColorPalette *)self _hasDarkLightVariants])
   {
-    v3 = [(NTKExactitudesColorPalette *)self seasonalLightColor];
+    seasonalLightColor = [(NTKExactitudesColorPalette *)self seasonalLightColor];
     [(NTKExactitudesColorPalette *)self _seasonalLightColorLuminance];
-    v4 = [(NTKExactitudesColorPalette *)self _brightenUIColor:v3 withLuminance:?];
+    v4 = [(NTKExactitudesColorPalette *)self _brightenUIColor:seasonalLightColor withLuminance:?];
   }
 
   else
@@ -519,9 +519,9 @@ LABEL_6:
 {
   if ([(NTKExactitudesColorPalette *)self _hasDarkLightVariants])
   {
-    v3 = [(NTKExactitudesColorPalette *)self seasonalDarkColor];
+    seasonalDarkColor = [(NTKExactitudesColorPalette *)self seasonalDarkColor];
     [(NTKExactitudesColorPalette *)self _seasonalDarkColorLuminance];
-    v4 = [(NTKExactitudesColorPalette *)self _brightenUIColor:v3 withLuminance:?];
+    v4 = [(NTKExactitudesColorPalette *)self _brightenUIColor:seasonalDarkColor withLuminance:?];
   }
 
   else
@@ -534,12 +534,12 @@ LABEL_6:
 
 - (float)_seasonalDarkColorLuminance
 {
-  v3 = [(NTKExactitudesColorPalette *)self _hasDarkLightVariants];
+  _hasDarkLightVariants = [(NTKExactitudesColorPalette *)self _hasDarkLightVariants];
   result = 0.0;
-  if (v3)
+  if (_hasDarkLightVariants)
   {
-    v5 = [(NTKExactitudesColorPalette *)self seasonalDarkColor];
-    Components = CGColorGetComponents([v5 CGColor]);
+    seasonalDarkColor = [(NTKExactitudesColorPalette *)self seasonalDarkColor];
+    Components = CGColorGetComponents([seasonalDarkColor CGColor]);
     v7 = *(Components + 1);
     v8 = vcvt_f32_f64(*Components);
     CLKUIConvertRGBtoLAB();
@@ -557,15 +557,15 @@ LABEL_6:
 
 - (float)_seasonalPrimaryColorLuminance
 {
-  v3 = [(NTKExactitudesColorPalette *)self _hasDarkLightVariants];
+  _hasDarkLightVariants = [(NTKExactitudesColorPalette *)self _hasDarkLightVariants];
   result = 0.0;
-  if (!v3)
+  if (!_hasDarkLightVariants)
   {
     return result;
   }
 
-  v5 = [(NTKExactitudesColorPalette *)self primaryColor];
-  Components = CGColorGetComponents([v5 CGColor]);
+  primaryColor = [(NTKExactitudesColorPalette *)self primaryColor];
+  Components = CGColorGetComponents([primaryColor CGColor]);
   v7 = *(Components + 1);
   v8 = vcvt_f32_f64(*Components);
   CLKUIConvertRGBtoLAB();
@@ -611,12 +611,12 @@ LABEL_7:
 
 - (float)_seasonalLightColorLuminance
 {
-  v3 = [(NTKExactitudesColorPalette *)self _hasDarkLightVariants];
+  _hasDarkLightVariants = [(NTKExactitudesColorPalette *)self _hasDarkLightVariants];
   result = 0.0;
-  if (v3)
+  if (_hasDarkLightVariants)
   {
-    v5 = [(NTKExactitudesColorPalette *)self seasonalLightColor];
-    Components = CGColorGetComponents([v5 CGColor]);
+    seasonalLightColor = [(NTKExactitudesColorPalette *)self seasonalLightColor];
+    Components = CGColorGetComponents([seasonalLightColor CGColor]);
     v7 = *(Components + 1);
     v8 = vcvt_f32_f64(*Components);
     CLKUIConvertRGBtoLAB();
@@ -640,40 +640,40 @@ LABEL_7:
   return result;
 }
 
-- (id)_brightenUIColor:(id)a3 withLuminance:(float)a4
+- (id)_brightenUIColor:(id)color withLuminance:(float)luminance
 {
-  Components = CGColorGetComponents([a3 CGColor]);
+  Components = CGColorGetComponents([color CGColor]);
   v5 = *(Components + 1);
   v6 = vcvt_f32_f64(*Components);
   CLKUIConvertRGBtoLAB();
   CLKUIConvertLABtoRGB();
   v11 = [UIColor colorWithRed:v10 green:v7 blue:v8 alpha:v9];
-  v12 = [v11 CGColor];
+  cGColor = [v11 CGColor];
 
-  return [UIColor colorWithCGColor:v12];
+  return [UIColor colorWithCGColor:cGColor];
 }
 
 - (UIColor)swatch
 {
   if ([(NTKExactitudesColorPalette *)self isHardwareColor])
   {
-    v3 = [(NTKExactitudesColorPalette *)self colorB];
+    colorB = [(NTKExactitudesColorPalette *)self colorB];
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = NTKExactitudesColorPalette;
-    v3 = [(NTKExactitudesColorPalette *)&v5 swatch];
+    colorB = [(NTKExactitudesColorPalette *)&v5 swatch];
   }
 
-  return v3;
+  return colorB;
 }
 
-- (id)swatchImageForSize:(CGSize)a3
+- (id)swatchImageForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if ([(NTKExactitudesColorPalette *)self isHeroColor])
   {
     if (width == CGSizeZero.width && height == CGSizeZero.height)
@@ -691,17 +691,17 @@ LABEL_7:
     *&v12[5] = width;
     *&v12[6] = height;
     v12[4] = self;
-    v10 = [v9 imageWithActions:v12];
+    height = [v9 imageWithActions:v12];
   }
 
   else
   {
     v13.receiver = self;
     v13.super_class = NTKExactitudesColorPalette;
-    v10 = [(NTKExactitudesColorPalette *)&v13 swatchImageForSize:width, height];
+    height = [(NTKExactitudesColorPalette *)&v13 swatchImageForSize:width, height];
   }
 
-  return v10;
+  return height;
 }
 
 @end

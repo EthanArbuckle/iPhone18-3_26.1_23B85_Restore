@@ -1,14 +1,14 @@
 @interface SSRSpeakerAnalyzerSAT
-- (SSRSpeakerAnalyzerSAT)initWithVoiceRecognitionContext:(id)a3 delegate:(id)a4;
+- (SSRSpeakerAnalyzerSAT)initWithVoiceRecognitionContext:(id)context delegate:(id)delegate;
 - (SSRSpeakerAnalyzerSATDelegate)delegate;
 - (id)_getAnalyzedResult;
-- (id)_getSuperVectorWithEndPoint:(unint64_t)a3;
-- (id)_processSuperVector:(id)a3 withSize:(unint64_t)a4 processedAudioDurationMs:(unint64_t)a5 isFinal:(BOOL)a6;
+- (id)_getSuperVectorWithEndPoint:(unint64_t)point;
+- (id)_processSuperVector:(id)vector withSize:(unint64_t)size processedAudioDurationMs:(unint64_t)ms isFinal:(BOOL)final;
 - (id)getVoiceRecognizerResults;
 - (id)resetForNewRequest;
 - (void)dealloc;
 - (void)endAudio;
-- (void)processAudioData:(id)a3 numSamples:(unint64_t)a4;
+- (void)processAudioData:(id)data numSamples:(unint64_t)samples;
 @end
 
 @implementation SSRSpeakerAnalyzerSAT
@@ -20,15 +20,15 @@
   return WeakRetained;
 }
 
-- (id)_processSuperVector:(id)a3 withSize:(unint64_t)a4 processedAudioDurationMs:(unint64_t)a5 isFinal:(BOOL)a6
+- (id)_processSuperVector:(id)vector withSize:(unint64_t)size processedAudioDurationMs:(unint64_t)ms isFinal:(BOOL)final
 {
-  v40 = a6;
+  finalCopy = final;
   v53 = *MEMORY[0x277D85DE8];
-  v43 = a3;
+  vectorCopy = vector;
   v42 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{-[NSArray count](self->_satScorers, "count")}];
   v38 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{-[NSArray count](self->_satScorers, "count")}];
   v41 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{-[NSArray count](self->_satScorers, "count")}];
-  v37 = a5;
+  msCopy = ms;
   v9 = [(SSRSpeakerRecognitionContext *)self->_context recognitionStyle]== 1 && !self->_triggerPhraseDetectedOnTap;
   v46 = 0u;
   v47 = 0u;
@@ -50,41 +50,41 @@
         }
 
         v14 = *(*(&v44 + 1) + 8 * i);
-        [v14 analyzeSuperVector:v43 withDimensions:a4 withThresholdType:v9];
+        [v14 analyzeSuperVector:vectorCopy withDimensions:size withThresholdType:v9];
         v15 = [MEMORY[0x277CCABB0] numberWithFloat:?];
-        v16 = [v14 profileID];
-        [v42 setObject:v15 forKeyedSubscript:v16];
+        profileID = [v14 profileID];
+        [v42 setObject:v15 forKeyedSubscript:profileID];
 
         v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v14, "getSATVectorCount")}];
-        v18 = [v14 profileID];
-        [v41 setObject:v17 forKeyedSubscript:v18];
+        profileID2 = [v14 profileID];
+        [v41 setObject:v17 forKeyedSubscript:profileID2];
 
-        if (v40)
+        if (finalCopy)
         {
           voiceProfilesExpModelFilePaths = self->_voiceProfilesExpModelFilePaths;
           if (voiceProfilesExpModelFilePaths)
           {
-            v20 = [v14 profileID];
-            v21 = [(NSDictionary *)voiceProfilesExpModelFilePaths objectForKeyedSubscript:v20];
+            profileID3 = [v14 profileID];
+            v21 = [(NSDictionary *)voiceProfilesExpModelFilePaths objectForKeyedSubscript:profileID3];
 
             if (v21)
             {
               v22 = self->_voiceProfilesExpModelFilePaths;
-              v23 = [v14 profileID];
-              v24 = [(NSDictionary *)v22 objectForKeyedSubscript:v23];
+              profileID4 = [v14 profileID];
+              v24 = [(NSDictionary *)v22 objectForKeyedSubscript:profileID4];
               [v14 resetScorerWithModelFilePath:v24];
 
-              [v14 analyzeSuperVector:v43 withDimensions:a4 withThresholdType:v9];
+              [v14 analyzeSuperVector:vectorCopy withDimensions:size withThresholdType:v9];
               v25 = [MEMORY[0x277CCABB0] numberWithFloat:?];
-              v26 = [v14 profileID];
-              [v38 setObject:v25 forKeyedSubscript:v26];
+              profileID5 = [v14 profileID];
+              [v38 setObject:v25 forKeyedSubscript:profileID5];
             }
           }
         }
 
         voiceProfilesModelFilePaths = self->_voiceProfilesModelFilePaths;
-        v28 = [v14 profileID];
-        v29 = [(NSDictionary *)voiceProfilesModelFilePaths objectForKeyedSubscript:v28];
+        profileID6 = [v14 profileID];
+        v29 = [(NSDictionary *)voiceProfilesModelFilePaths objectForKeyedSubscript:profileID6];
         [v14 resetScorerWithModelFilePath:v29];
       }
 
@@ -95,9 +95,9 @@
   }
 
   v50[0] = @"configPath";
-  v30 = [(NSURL *)self->_configFilePath path];
+  path = [(NSURL *)self->_configFilePath path];
   v50[1] = @"numSpeakerVectors";
-  v51[0] = v30;
+  v51[0] = path;
   v51[1] = v41;
   v31 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v51 forKeys:v50 count:2];
 
@@ -109,7 +109,7 @@
   v32 = [MEMORY[0x277CCABB0] numberWithInt:0xFFFFFFFFLL];
   v49[2] = v32;
   v48[3] = @"spIdAudioProcessedDuration";
-  v33 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v37];
+  v33 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:msCopy];
   v48[4] = @"satContext";
   v49[3] = v33;
   v49[4] = v31;
@@ -120,7 +120,7 @@
   return v34;
 }
 
-- (id)_getSuperVectorWithEndPoint:(unint64_t)a3
+- (id)_getSuperVectorWithEndPoint:(unint64_t)point
 {
   novDetect = self->_novDetect;
   if (novDetect)
@@ -205,8 +205,8 @@
   if (v4)
   {
     v5 = v4;
-    v6 = [(SSRSpeakerRecognitionContext *)self->_context logAggregator];
-    [v6 setSpeakerRecognitionSATProcessingStatus:753];
+    logAggregator = [(SSRSpeakerRecognitionContext *)self->_context logAggregator];
+    [logAggregator setSpeakerRecognitionSATProcessingStatus:753];
 
     v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed with errorcode : %d", v5];
     v8 = *MEMORY[0x277D015C8];
@@ -279,18 +279,18 @@ void __33__SSRSpeakerAnalyzerSAT_endAudio__block_invoke(uint64_t a1)
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)processAudioData:(id)a3 numSamples:(unint64_t)a4
+- (void)processAudioData:(id)data numSamples:(unint64_t)samples
 {
-  v6 = a3;
+  dataCopy = data;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __53__SSRSpeakerAnalyzerSAT_processAudioData_numSamples___block_invoke;
   block[3] = &unk_278579780;
-  v10 = v6;
-  v11 = self;
-  v12 = a4;
-  v8 = v6;
+  v10 = dataCopy;
+  selfCopy = self;
+  samplesCopy = samples;
+  v8 = dataCopy;
   dispatch_async(queue, block);
 }
 
@@ -331,7 +331,7 @@ void __53__SSRSpeakerAnalyzerSAT_processAudioData_numSamples___block_invoke(uint
     *buf = 136315394;
     v7 = "[SSRSpeakerAnalyzerSAT dealloc]";
     v8 = 2112;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_225E12000, v3, OS_LOG_TYPE_DEFAULT, "%s %@: dealloc", buf, 0x16u);
   }
 
@@ -347,11 +347,11 @@ void __53__SSRSpeakerAnalyzerSAT_processAudioData_numSamples___block_invoke(uint
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (SSRSpeakerAnalyzerSAT)initWithVoiceRecognitionContext:(id)a3 delegate:(id)a4
+- (SSRSpeakerAnalyzerSAT)initWithVoiceRecognitionContext:(id)context delegate:(id)delegate
 {
   v56 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  delegateCopy = delegate;
   v49.receiver = self;
   v49.super_class = SSRSpeakerAnalyzerSAT;
   v9 = [(SSRSpeakerAnalyzerSAT *)&v49 init];
@@ -360,13 +360,13 @@ void __53__SSRSpeakerAnalyzerSAT_processAudioData_numSamples___block_invoke(uint
     goto LABEL_21;
   }
 
-  v10 = [v7 modelsContext];
+  modelsContext = [contextCopy modelsContext];
   v11 = [SSRUtils stringForSpeakerRecognizerType:2];
-  v12 = [v10 objectForKeyedSubscript:v11];
+  v12 = [modelsContext objectForKeyedSubscript:v11];
 
-  v13 = [v7 expModelsContext];
+  expModelsContext = [contextCopy expModelsContext];
   v14 = [SSRUtils stringForSpeakerRecognizerType:2];
-  v15 = [v13 objectForKeyedSubscript:v14];
+  v15 = [expModelsContext objectForKeyedSubscript:v14];
 
   if (!v12)
   {
@@ -381,32 +381,32 @@ void __53__SSRSpeakerAnalyzerSAT_processAudioData_numSamples___block_invoke(uint
     goto LABEL_16;
   }
 
-  objc_storeWeak(&v9->_delegate, v8);
-  v16 = [v12 configFilePath];
+  objc_storeWeak(&v9->_delegate, delegateCopy);
+  configFilePath = [v12 configFilePath];
   configFilePath = v9->_configFilePath;
-  v9->_configFilePath = v16;
+  v9->_configFilePath = configFilePath;
 
-  v18 = [v7 resourceFilePath];
+  resourceFilePath = [contextCopy resourceFilePath];
   resourceFilePath = v9->_resourceFilePath;
-  v9->_resourceFilePath = v18;
+  v9->_resourceFilePath = resourceFilePath;
 
-  v20 = [v12 voiceProfilesModelFilePaths];
+  voiceProfilesModelFilePaths = [v12 voiceProfilesModelFilePaths];
   voiceProfilesModelFilePaths = v9->_voiceProfilesModelFilePaths;
-  v9->_voiceProfilesModelFilePaths = v20;
+  v9->_voiceProfilesModelFilePaths = voiceProfilesModelFilePaths;
 
-  v22 = [v15 voiceProfilesModelFilePaths];
+  voiceProfilesModelFilePaths2 = [v15 voiceProfilesModelFilePaths];
   voiceProfilesExpModelFilePaths = v9->_voiceProfilesExpModelFilePaths;
-  v9->_voiceProfilesExpModelFilePaths = v22;
+  v9->_voiceProfilesExpModelFilePaths = voiceProfilesModelFilePaths2;
 
-  objc_storeStrong(&v9->_context, a3);
+  objc_storeStrong(&v9->_context, context);
   v24 = [MEMORY[0x277D018F8] getSerialQueueWithQOS:33 name:@"com.apple.ssr.satq" fixedPriority:*MEMORY[0x277D019B0]];
   queue = v9->_queue;
   v9->_queue = v24;
 
   v26 = v9->_voiceProfilesModelFilePaths;
   v27 = v9->_configFilePath;
-  v28 = [v7 resourceFilePath];
-  v29 = [SSRSpeakerRecognitionScorer createVoiceScorersWithVoiceProfiles:v26 withConfigFile:v27 withResourceFile:v28 withOffsetsType:0 forRetraining:0];
+  resourceFilePath2 = [contextCopy resourceFilePath];
+  v29 = [SSRSpeakerRecognitionScorer createVoiceScorersWithVoiceProfiles:v26 withConfigFile:v27 withResourceFile:resourceFilePath2 withOffsetsType:0 forRetraining:0];
   satScorers = v9->_satScorers;
   v9->_satScorers = v29;
 
@@ -421,8 +421,8 @@ void __53__SSRSpeakerAnalyzerSAT_processAudioData_numSamples___block_invoke(uint
       _os_log_impl(&dword_225E12000, v43, OS_LOG_TYPE_DEFAULT, "%s ERR: Cannot create Voice Scorers", buf, 0xCu);
     }
 
-    v40 = [v7 logAggregator];
-    v41 = v40;
+    logAggregator = [contextCopy logAggregator];
+    v41 = logAggregator;
     v42 = 106;
     goto LABEL_13;
   }
@@ -440,16 +440,16 @@ void __53__SSRSpeakerAnalyzerSAT_processAudioData_numSamples___block_invoke(uint
       _os_log_impl(&dword_225E12000, v46, OS_LOG_TYPE_DEFAULT, "%s ERR: Failed to create NovDetect", buf, 0xCu);
     }
 
-    v40 = [v7 logAggregator];
-    v41 = v40;
+    logAggregator = [contextCopy logAggregator];
+    v41 = logAggregator;
     v42 = 105;
     goto LABEL_13;
   }
 
-  v33 = [(NSURL *)v9->_configFilePath path];
-  [v33 UTF8String];
-  v34 = [(NSURL *)v9->_resourceFilePath path];
-  [v34 UTF8String];
+  path = [(NSURL *)v9->_configFilePath path];
+  [path UTF8String];
+  path2 = [(NSURL *)v9->_resourceFilePath path];
+  [path2 UTF8String];
   v35 = nd_initialize();
 
   if (!v35)
@@ -475,11 +475,11 @@ LABEL_21:
     _os_log_impl(&dword_225E12000, v38, OS_LOG_TYPE_DEFAULT, "%s ERR: Failed to initialize _novDetect: err=[%{public}d]:%{public}s", buf, 0x1Cu);
   }
 
-  v40 = [v7 logAggregator];
-  v41 = v40;
+  logAggregator = [contextCopy logAggregator];
+  v41 = logAggregator;
   v42 = 104;
 LABEL_13:
-  [v40 setSpeakerRecognitionSATProcessingStatus:v42];
+  [logAggregator setSpeakerRecognitionSATProcessingStatus:v42];
 
 LABEL_16:
   v45 = 0;

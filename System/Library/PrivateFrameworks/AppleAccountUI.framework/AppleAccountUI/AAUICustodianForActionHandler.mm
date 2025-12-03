@@ -1,41 +1,41 @@
 @interface AAUICustodianForActionHandler
-- (AAUICustodianForActionHandler)initWithLocalContact:(id)a3;
+- (AAUICustodianForActionHandler)initWithLocalContact:(id)contact;
 - (void)_dismissRecoveryViewController;
-- (void)_showHelpNowUnavailableAlertWithMessage:(id)a3 viewController:(id)a4;
-- (void)_showHelpNowViewWithRecoveryCode:(id)a3 presentingViewController:(id)a4;
-- (void)doDestructiveAction:(id)a3 specifier:(id)a4;
-- (void)doPrimaryAction:(id)a3 specifier:(id)a4;
+- (void)_showHelpNowUnavailableAlertWithMessage:(id)message viewController:(id)controller;
+- (void)_showHelpNowViewWithRecoveryCode:(id)code presentingViewController:(id)controller;
+- (void)doDestructiveAction:(id)action specifier:(id)specifier;
+- (void)doPrimaryAction:(id)action specifier:(id)specifier;
 @end
 
 @implementation AAUICustodianForActionHandler
 
-- (AAUICustodianForActionHandler)initWithLocalContact:(id)a3
+- (AAUICustodianForActionHandler)initWithLocalContact:(id)contact
 {
-  v5 = a3;
+  contactCopy = contact;
   v9.receiver = self;
   v9.super_class = AAUICustodianForActionHandler;
   v6 = [(AAUICustodianForActionHandler *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contact, a3);
+    objc_storeStrong(&v6->_contact, contact);
   }
 
   return v7;
 }
 
-- (void)doDestructiveAction:(id)a3 specifier:(id)a4
+- (void)doDestructiveAction:(id)action specifier:(id)specifier
 {
-  v5 = a3;
+  actionCopy = action;
   v6 = objc_opt_new();
-  v7 = [(AALocalContactInfo *)self->_contact custodianID];
+  custodianID = [(AALocalContactInfo *)self->_contact custodianID];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __63__AAUICustodianForActionHandler_doDestructiveAction_specifier___block_invoke;
   v9[3] = &unk_1E820BF30;
-  v10 = v5;
-  v8 = v5;
-  [v6 stopBeingCustodian:v7 completion:v9];
+  v10 = actionCopy;
+  v8 = actionCopy;
+  [v6 stopBeingCustodian:custodianID completion:v9];
 }
 
 void __63__AAUICustodianForActionHandler_doDestructiveAction_specifier___block_invoke(uint64_t a1, void *a2)
@@ -68,24 +68,24 @@ void __63__AAUICustodianForActionHandler_doDestructiveAction_specifier___block_i
   [v1 aaui_removeLastViewControllerAnimated:1];
 }
 
-- (void)doPrimaryAction:(id)a3 specifier:(id)a4
+- (void)doPrimaryAction:(id)action specifier:(id)specifier
 {
-  v5 = a3;
+  actionCopy = action;
   v6 = objc_opt_new();
   v7 = objc_opt_new();
-  v8 = [(AALocalContactInfo *)self->_contact custodianID];
-  [v7 setCustodianUUID:v8];
+  custodianID = [(AALocalContactInfo *)self->_contact custodianID];
+  [v7 setCustodianUUID:custodianID];
 
-  v9 = [(AAUICustodianForActionHandler *)self telemetryFlowID];
-  [v7 setTelemetryFlowID:v9];
+  telemetryFlowID = [(AAUICustodianForActionHandler *)self telemetryFlowID];
+  [v7 setTelemetryFlowID:telemetryFlowID];
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __59__AAUICustodianForActionHandler_doPrimaryAction_specifier___block_invoke;
   v11[3] = &unk_1E820BF80;
   v11[4] = self;
-  v12 = v5;
-  v10 = v5;
+  v12 = actionCopy;
+  v10 = actionCopy;
   [v6 generateCustodianRecoveryCodeWithContext:v7 completion:v11];
 }
 
@@ -123,52 +123,52 @@ void __59__AAUICustodianForActionHandler_doPrimaryAction_specifier___block_invok
   }
 }
 
-- (void)_showHelpNowViewWithRecoveryCode:(id)a3 presentingViewController:(id)a4
+- (void)_showHelpNowViewWithRecoveryCode:(id)code presentingViewController:(id)controller
 {
   v6 = MEMORY[0x1E698B920];
-  v7 = a4;
-  v8 = a3;
+  controllerCopy = controller;
+  codeCopy = code;
   v9 = [v6 alloc];
-  v10 = [(AALocalContactInfo *)self->_contact firstNameOrHandleForDisplay];
-  v19 = [v9 initWithRecoveryCode:v8 ownerName:v10];
+  firstNameOrHandleForDisplay = [(AALocalContactInfo *)self->_contact firstNameOrHandleForDisplay];
+  v19 = [v9 initWithRecoveryCode:codeCopy ownerName:firstNameOrHandleForDisplay];
 
   v11 = [[AAUIOBCustodianHelpNowViewModel alloc] initWithModel:v19];
   v12 = [[AAUIOBWelcomeController alloc] initWithViewModel:v11];
   recoveryViewController = self->_recoveryViewController;
   self->_recoveryViewController = v12;
 
-  v14 = [(AAUIOBWelcomeController *)self->_recoveryViewController primaryButton];
-  [v14 addTarget:self action:sel__dismissRecoveryViewController forControlEvents:64];
+  primaryButton = [(AAUIOBWelcomeController *)self->_recoveryViewController primaryButton];
+  [primaryButton addTarget:self action:sel__dismissRecoveryViewController forControlEvents:64];
 
   v15 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:self->_recoveryViewController];
   v16 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:self action:sel__dismissRecoveryViewController];
-  v17 = [(OBBaseWelcomeController *)self->_recoveryViewController navigationItem];
-  [v17 setLeftBarButtonItem:v16];
+  navigationItem = [(OBBaseWelcomeController *)self->_recoveryViewController navigationItem];
+  [navigationItem setLeftBarButtonItem:v16];
 
-  v18 = [v7 navigationController];
+  navigationController = [controllerCopy navigationController];
 
-  [v18 presentViewController:v15 animated:1 completion:0];
+  [navigationController presentViewController:v15 animated:1 completion:0];
 }
 
 - (void)_dismissRecoveryViewController
 {
-  v2 = [(AAUIOBWelcomeController *)self->_recoveryViewController navigationController];
-  [v2 dismissViewControllerAnimated:1 completion:0];
+  navigationController = [(AAUIOBWelcomeController *)self->_recoveryViewController navigationController];
+  [navigationController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)_showHelpNowUnavailableAlertWithMessage:(id)a3 viewController:(id)a4
+- (void)_showHelpNowUnavailableAlertWithMessage:(id)message viewController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  controllerCopy = controller;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __88__AAUICustodianForActionHandler__showHelpNowUnavailableAlertWithMessage_viewController___block_invoke;
   block[3] = &unk_1E820BF58;
-  v11 = v6;
-  v12 = self;
-  v13 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = messageCopy;
+  selfCopy = self;
+  v13 = controllerCopy;
+  v8 = controllerCopy;
+  v9 = messageCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 

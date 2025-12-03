@@ -1,244 +1,244 @@
 @interface MSASAlbum
-+ (MSASAlbum)albumWithAlbum:(id)a3;
++ (MSASAlbum)albumWithAlbum:(id)album;
 + (id)album;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)useForeignCtag;
-- (MSASAlbum)initWithCoder:(id)a3;
+- (MSASAlbum)initWithCoder:(id)coder;
 - (NSString)ownerEmail;
 - (NSString)ownerFirstName;
 - (NSString)ownerFullName;
 - (NSString)ownerLastName;
 - (id)description;
-- (id)metadataValueForKey:(id)a3;
+- (id)metadataValueForKey:(id)key;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setMetadataValue:(id)a3 forKey:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)setMetadataValue:(id)value forKey:(id)key;
 @end
 
 @implementation MSASAlbum
 
 - (id)description
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v7.receiver = v2;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v7.receiver = selfCopy;
   v7.super_class = MSASAlbum;
   v3 = [(MSASAlbum *)&v7 description];
   v4 = [v3 mutableCopy];
 
-  if (v2->_GUID)
+  if (selfCopy->_GUID)
   {
-    [v4 appendFormat:@" GUID: %@", v2->_GUID];
+    [v4 appendFormat:@" GUID: %@", selfCopy->_GUID];
   }
 
   if (_thePlatform && [_thePlatform shouldLogAtLevel:7])
   {
-    if (v2->_ownerFullName && (os_trace_get_mode() & 0x1000000) != 0)
+    if (selfCopy->_ownerFullName && (os_trace_get_mode() & 0x1000000) != 0)
     {
-      ownerEmail = v2->_ownerEmail;
-      [v4 appendFormat:@" owner: %@ (%@ %@)", v2->_ownerFullName, ownerEmail, v2->_ownerPersonID];
+      ownerEmail = selfCopy->_ownerEmail;
+      [v4 appendFormat:@" owner: %@ (%@ %@)", selfCopy->_ownerFullName, ownerEmail, selfCopy->_ownerPersonID];
     }
 
-    [v4 appendFormat:@" owner is whitelisted: %d", v2->_ownerIsWhitelisted];
-    if (v2->_subscriptionDate)
+    [v4 appendFormat:@" owner is whitelisted: %d", selfCopy->_ownerIsWhitelisted];
+    if (selfCopy->_subscriptionDate)
     {
-      [v4 appendFormat:@" subscription date: %@", v2->_subscriptionDate];
+      [v4 appendFormat:@" subscription date: %@", selfCopy->_subscriptionDate];
     }
 
-    if (v2->_ctag)
+    if (selfCopy->_ctag)
     {
-      [v4 appendFormat:@" ctag: %@", v2->_ctag];
+      [v4 appendFormat:@" ctag: %@", selfCopy->_ctag];
     }
 
-    [v4 appendFormat:@" Relationship: %d", v2->_relationshipState];
-    if (v2->_foreignCtag)
+    [v4 appendFormat:@" Relationship: %d", selfCopy->_relationshipState];
+    if (selfCopy->_foreignCtag)
     {
-      [v4 appendFormat:@" foreign ctag: %@", v2->_foreignCtag];
+      [v4 appendFormat:@" foreign ctag: %@", selfCopy->_foreignCtag];
     }
 
-    if (v2->_URLString)
+    if (selfCopy->_URLString)
     {
-      [v4 appendFormat:@" URL: %@", v2->_URLString];
+      [v4 appendFormat:@" URL: %@", selfCopy->_URLString];
     }
 
-    if ([(NSDictionary *)v2->_metadata count]&& (os_trace_get_mode() & 0x1000000) != 0)
+    if ([(NSDictionary *)selfCopy->_metadata count]&& (os_trace_get_mode() & 0x1000000) != 0)
     {
-      [v4 appendFormat:@" metadata: %@", v2->_metadata];
+      [v4 appendFormat:@" metadata: %@", selfCopy->_metadata];
     }
 
-    if (v2->_publicURLString)
+    if (selfCopy->_publicURLString)
     {
-      [v4 appendFormat:@" Public URL: %@", v2->_publicURLString];
+      [v4 appendFormat:@" Public URL: %@", selfCopy->_publicURLString];
     }
 
-    if (v2->_isFamilySharedAlbum)
+    if (selfCopy->_isFamilySharedAlbum)
     {
       [v4 appendString:@" Family shared album"];
     }
 
-    if (v2->_clientOrgKey)
+    if (selfCopy->_clientOrgKey)
     {
-      [v4 appendFormat:@" client org key: %@", v2->_clientOrgKey];
+      [v4 appendFormat:@" client org key: %@", selfCopy->_clientOrgKey];
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v24 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  ownerPersonID = v4->_ownerPersonID;
+  coderCopy = coder;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  ownerPersonID = selfCopy->_ownerPersonID;
   if (ownerPersonID)
   {
-    [v24 encodeObject:ownerPersonID forKey:@"ownerPersonID"];
+    [coderCopy encodeObject:ownerPersonID forKey:@"ownerPersonID"];
   }
 
-  v6 = [(MSASAlbum *)v4 ownerFirstName];
+  ownerFirstName = [(MSASAlbum *)selfCopy ownerFirstName];
 
-  if (v6)
+  if (ownerFirstName)
   {
-    v7 = [(MSASAlbum *)v4 ownerFirstName];
-    [v24 encodeObject:v7 forKey:@"ownerFirstName"];
+    ownerFirstName2 = [(MSASAlbum *)selfCopy ownerFirstName];
+    [coderCopy encodeObject:ownerFirstName2 forKey:@"ownerFirstName"];
   }
 
-  v8 = [(MSASAlbum *)v4 ownerLastName];
+  ownerLastName = [(MSASAlbum *)selfCopy ownerLastName];
 
-  if (v8)
+  if (ownerLastName)
   {
-    v9 = [(MSASAlbum *)v4 ownerLastName];
-    [v24 encodeObject:v9 forKey:@"ownerLastName"];
+    ownerLastName2 = [(MSASAlbum *)selfCopy ownerLastName];
+    [coderCopy encodeObject:ownerLastName2 forKey:@"ownerLastName"];
   }
 
-  v10 = [(MSASAlbum *)v4 ownerFullName];
+  ownerFullName = [(MSASAlbum *)selfCopy ownerFullName];
 
-  if (v10)
+  if (ownerFullName)
   {
-    v11 = [(MSASAlbum *)v4 ownerFullName];
-    [v24 encodeObject:v11 forKey:@"ownerFullName"];
+    ownerFullName2 = [(MSASAlbum *)selfCopy ownerFullName];
+    [coderCopy encodeObject:ownerFullName2 forKey:@"ownerFullName"];
   }
 
-  v12 = [(MSASAlbum *)v4 ownerEmail];
+  ownerEmail = [(MSASAlbum *)selfCopy ownerEmail];
 
-  if (v12)
+  if (ownerEmail)
   {
-    v13 = [(MSASAlbum *)v4 ownerEmail];
-    [v24 encodeObject:v13 forKey:@"ownerEmail"];
+    ownerEmail2 = [(MSASAlbum *)selfCopy ownerEmail];
+    [coderCopy encodeObject:ownerEmail2 forKey:@"ownerEmail"];
   }
 
-  v14 = [(MSASAlbum *)v4 subscriptionDate];
+  subscriptionDate = [(MSASAlbum *)selfCopy subscriptionDate];
 
-  if (v14)
+  if (subscriptionDate)
   {
-    v15 = [(MSASAlbum *)v4 subscriptionDate];
-    [v24 encodeObject:v15 forKey:@"subscriptionDate"];
+    subscriptionDate2 = [(MSASAlbum *)selfCopy subscriptionDate];
+    [coderCopy encodeObject:subscriptionDate2 forKey:@"subscriptionDate"];
   }
 
-  [v24 encodeBool:v4->_ownerIsWhitelisted forKey:@"ownerIsWhitelisted"];
-  GUID = v4->_GUID;
+  [coderCopy encodeBool:selfCopy->_ownerIsWhitelisted forKey:@"ownerIsWhitelisted"];
+  GUID = selfCopy->_GUID;
   if (GUID)
   {
-    [v24 encodeObject:GUID forKey:@"GUID"];
+    [coderCopy encodeObject:GUID forKey:@"GUID"];
   }
 
-  ctag = v4->_ctag;
+  ctag = selfCopy->_ctag;
   if (ctag)
   {
-    [v24 encodeObject:ctag forKey:@"ctag"];
+    [coderCopy encodeObject:ctag forKey:@"ctag"];
   }
 
-  [v24 encodeInt:v4->_relationshipState forKey:@"relationshipState"];
-  foreignCtag = v4->_foreignCtag;
+  [coderCopy encodeInt:selfCopy->_relationshipState forKey:@"relationshipState"];
+  foreignCtag = selfCopy->_foreignCtag;
   if (foreignCtag)
   {
-    [v24 encodeObject:foreignCtag forKey:@"foreignCtag"];
+    [coderCopy encodeObject:foreignCtag forKey:@"foreignCtag"];
   }
 
-  URLString = v4->_URLString;
+  URLString = selfCopy->_URLString;
   if (URLString)
   {
-    [v24 encodeObject:URLString forKey:@"urlString"];
+    [coderCopy encodeObject:URLString forKey:@"urlString"];
   }
 
-  metadata = v4->_metadata;
+  metadata = selfCopy->_metadata;
   if (metadata)
   {
-    [v24 encodeObject:metadata forKey:@"metadata"];
+    [coderCopy encodeObject:metadata forKey:@"metadata"];
   }
 
-  context = v4->_context;
+  context = selfCopy->_context;
   if (context)
   {
-    [v24 encodeObject:context forKey:@"context"];
+    [coderCopy encodeObject:context forKey:@"context"];
   }
 
-  publicURLString = v4->_publicURLString;
+  publicURLString = selfCopy->_publicURLString;
   if (publicURLString)
   {
-    [v24 encodeObject:publicURLString forKey:@"publicURLString"];
+    [coderCopy encodeObject:publicURLString forKey:@"publicURLString"];
   }
 
-  [v24 encodeBool:v4->_isFamilySharedAlbum forKey:@"familySharedAlbum"];
-  clientOrgKey = v4->_clientOrgKey;
+  [coderCopy encodeBool:selfCopy->_isFamilySharedAlbum forKey:@"familySharedAlbum"];
+  clientOrgKey = selfCopy->_clientOrgKey;
   if (clientOrgKey)
   {
-    [v24 encodeObject:clientOrgKey forKey:@"clientOrgKey"];
+    [coderCopy encodeObject:clientOrgKey forKey:@"clientOrgKey"];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (MSASAlbum)initWithCoder:(id)a3
+- (MSASAlbum)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v46.receiver = self;
   v46.super_class = MSASAlbum;
   v5 = [(MSASAlbum *)&v46 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ownerEmail"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ownerEmail"];
     ownerEmail = v5->_ownerEmail;
     v5->_ownerEmail = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ownerPersonID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ownerPersonID"];
     ownerPersonID = v5->_ownerPersonID;
     v5->_ownerPersonID = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ownerFullName"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ownerFullName"];
     ownerFullName = v5->_ownerFullName;
     v5->_ownerFullName = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ownerFirstName"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ownerFirstName"];
     ownerFirstName = v5->_ownerFirstName;
     v5->_ownerFirstName = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ownerLastName"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ownerLastName"];
     ownerLastName = v5->_ownerLastName;
     v5->_ownerLastName = v14;
 
-    v5->_ownerIsWhitelisted = [v4 decodeBoolForKey:@"ownerIsWhitelisted"];
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subscriptionDate"];
+    v5->_ownerIsWhitelisted = [coderCopy decodeBoolForKey:@"ownerIsWhitelisted"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subscriptionDate"];
     subscriptionDate = v5->_subscriptionDate;
     v5->_subscriptionDate = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"GUID"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"GUID"];
     GUID = v5->_GUID;
     v5->_GUID = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ctag"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ctag"];
     ctag = v5->_ctag;
     v5->_ctag = v20;
 
-    v5->_relationshipState = [v4 decodeIntForKey:@"relationshipState"];
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"foreignCtag"];
+    v5->_relationshipState = [coderCopy decodeIntForKey:@"relationshipState"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"foreignCtag"];
     foreignCtag = v5->_foreignCtag;
     v5->_foreignCtag = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"urlString"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"urlString"];
     URLString = v5->_URLString;
     v5->_URLString = v24;
 
@@ -250,23 +250,23 @@
     v31 = objc_opt_class();
     v32 = objc_opt_class();
     v33 = [v26 setWithObjects:{v27, v28, v29, v30, v31, v32, objc_opt_class(), 0}];
-    v34 = [v4 decodeObjectOfClasses:v33 forKey:@"metadata"];
+    v34 = [coderCopy decodeObjectOfClasses:v33 forKey:@"metadata"];
     metadata = v5->_metadata;
     v5->_metadata = v34;
 
     v36 = MEMORY[0x277CBEB98];
     v37 = objc_opt_class();
     v38 = [v36 setWithObjects:{v37, objc_opt_class(), 0}];
-    v39 = [v4 decodeObjectOfClasses:v38 forKey:@"context"];
+    v39 = [coderCopy decodeObjectOfClasses:v38 forKey:@"context"];
     context = v5->_context;
     v5->_context = v39;
 
-    v41 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"publicURLString"];
+    v41 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"publicURLString"];
     publicURLString = v5->_publicURLString;
     v5->_publicURLString = v41;
 
-    v5->_isFamilySharedAlbum = [v4 decodeBoolForKey:@"familySharedAlbum"];
-    v43 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientOrgKey"];
+    v5->_isFamilySharedAlbum = [coderCopy decodeBoolForKey:@"familySharedAlbum"];
+    v43 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientOrgKey"];
     clientOrgKey = v5->_clientOrgKey;
     v5->_clientOrgKey = v43;
   }
@@ -274,239 +274,239 @@
   return v5;
 }
 
-- (id)metadataValueForKey:(id)a3
+- (id)metadataValueForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(MSASAlbum *)v5 metadata];
-  v7 = [v6 objectForKey:v4];
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  metadata = [(MSASAlbum *)selfCopy metadata];
+  v7 = [metadata objectForKey:keyCopy];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
-- (void)setMetadataValue:(id)a3 forKey:(id)a4
+- (void)setMetadataValue:(id)value forKey:(id)key
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = [(MSASAlbum *)v7 metadata];
-  if (v8)
+  valueCopy = value;
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  metadata = [(MSASAlbum *)selfCopy metadata];
+  if (metadata)
   {
-    v9 = [(MSASAlbum *)v7 metadata];
-    v10 = [v9 mutableCopy];
+    metadata2 = [(MSASAlbum *)selfCopy metadata];
+    dictionary = [metadata2 mutableCopy];
   }
 
   else
   {
-    v10 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
   }
 
-  if (v11)
+  if (valueCopy)
   {
-    [v10 setObject:v11 forKey:v6];
+    [dictionary setObject:valueCopy forKey:keyCopy];
   }
 
   else
   {
-    [v10 removeObjectForKey:v6];
+    [dictionary removeObjectForKey:keyCopy];
   }
 
-  [(MSASAlbum *)v7 setMetadata:v10];
+  [(MSASAlbum *)selfCopy setMetadata:dictionary];
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
 - (BOOL)useForeignCtag
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(MSASAlbum *)v2 relationshipState]!= 0;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(MSASAlbum *)selfCopy relationshipState]!= 0;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (unint64_t)hash
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSString *)v2->_GUID hash];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSString *)selfCopy->_GUID hash];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  equalCopy = equal;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    GUID = v5->_GUID;
-    v7 = [v4 GUID];
-    v8 = [(NSString *)GUID isEqualToString:v7];
+    GUID = selfCopy->_GUID;
+    gUID = [equalCopy GUID];
+    v8 = [(NSString *)GUID isEqualToString:gUID];
   }
 
   else
   {
-    v10.receiver = v5;
+    v10.receiver = selfCopy;
     v10.super_class = MSASAlbum;
-    v8 = [(MSASAlbum *)&v10 isEqual:v4];
+    v8 = [(MSASAlbum *)&v10 isEqual:equalCopy];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v8;
 }
 
 - (NSString)ownerEmail
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (_thePlatform && !v2->_ownerEmail)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (_thePlatform && !selfCopy->_ownerEmail)
   {
     v3 = +[MSASPersonInfoManager sharedManager];
     v4 = v3;
     if (v3)
     {
-      v5 = [v3 emailForPersonID:v2->_ownerPersonID];
+      v5 = [v3 emailForPersonID:selfCopy->_ownerPersonID];
       if (v5)
       {
-        objc_storeStrong(&v2->_ownerEmail, v5);
+        objc_storeStrong(&selfCopy->_ownerEmail, v5);
       }
     }
   }
 
-  v6 = v2->_ownerEmail;
-  objc_sync_exit(v2);
+  v6 = selfCopy->_ownerEmail;
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
 - (NSString)ownerLastName
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (_thePlatform && !v2->_ownerLastName)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (_thePlatform && !selfCopy->_ownerLastName)
   {
     v3 = +[MSASPersonInfoManager sharedManager];
     v4 = v3;
     if (v3)
     {
-      v5 = [v3 lastNameForPersonID:v2->_ownerPersonID];
+      v5 = [v3 lastNameForPersonID:selfCopy->_ownerPersonID];
       if (v5)
       {
-        objc_storeStrong(&v2->_ownerLastName, v5);
+        objc_storeStrong(&selfCopy->_ownerLastName, v5);
       }
     }
   }
 
-  v6 = v2->_ownerLastName;
-  objc_sync_exit(v2);
+  v6 = selfCopy->_ownerLastName;
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
 - (NSString)ownerFirstName
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (_thePlatform && !v2->_ownerFirstName)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (_thePlatform && !selfCopy->_ownerFirstName)
   {
     v3 = +[MSASPersonInfoManager sharedManager];
     v4 = v3;
     if (v3)
     {
-      v5 = [v3 firstNameForPersonID:v2->_ownerPersonID];
+      v5 = [v3 firstNameForPersonID:selfCopy->_ownerPersonID];
       if (v5)
       {
-        objc_storeStrong(&v2->_ownerFirstName, v5);
+        objc_storeStrong(&selfCopy->_ownerFirstName, v5);
       }
     }
   }
 
-  v6 = v2->_ownerFirstName;
-  objc_sync_exit(v2);
+  v6 = selfCopy->_ownerFirstName;
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
 - (NSString)ownerFullName
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (_thePlatform && !v2->_ownerFullName)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (_thePlatform && !selfCopy->_ownerFullName)
   {
     v3 = +[MSASPersonInfoManager sharedManager];
     v4 = v3;
     if (v3)
     {
-      v5 = [v3 fullNameForPersonID:v2->_ownerPersonID];
+      v5 = [v3 fullNameForPersonID:selfCopy->_ownerPersonID];
       if (v5)
       {
-        objc_storeStrong(&v2->_ownerFullName, v5);
+        objc_storeStrong(&selfCopy->_ownerFullName, v5);
       }
     }
   }
 
-  v6 = v2->_ownerFullName;
-  objc_sync_exit(v2);
+  v6 = selfCopy->_ownerFullName;
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-+ (MSASAlbum)albumWithAlbum:(id)a3
++ (MSASAlbum)albumWithAlbum:(id)album
 {
-  v3 = a3;
+  albumCopy = album;
   v4 = objc_alloc_init(MSASAlbum);
-  v5 = [v3 ownerEmail];
-  [(MSASAlbum *)v4 setOwnerEmail:v5];
+  ownerEmail = [albumCopy ownerEmail];
+  [(MSASAlbum *)v4 setOwnerEmail:ownerEmail];
 
-  v6 = [v3 ownerPersonID];
-  [(MSASAlbum *)v4 setOwnerPersonID:v6];
+  ownerPersonID = [albumCopy ownerPersonID];
+  [(MSASAlbum *)v4 setOwnerPersonID:ownerPersonID];
 
-  v7 = [v3 ownerFullName];
-  [(MSASAlbum *)v4 setOwnerFullName:v7];
+  ownerFullName = [albumCopy ownerFullName];
+  [(MSASAlbum *)v4 setOwnerFullName:ownerFullName];
 
-  v8 = [v3 ownerFirstName];
-  [(MSASAlbum *)v4 setOwnerFirstName:v8];
+  ownerFirstName = [albumCopy ownerFirstName];
+  [(MSASAlbum *)v4 setOwnerFirstName:ownerFirstName];
 
-  v9 = [v3 ownerLastName];
-  [(MSASAlbum *)v4 setOwnerLastName:v9];
+  ownerLastName = [albumCopy ownerLastName];
+  [(MSASAlbum *)v4 setOwnerLastName:ownerLastName];
 
-  -[MSASAlbum setOwnerIsWhitelisted:](v4, "setOwnerIsWhitelisted:", [v3 ownerIsWhitelisted]);
-  v10 = [v3 subscriptionDate];
-  [(MSASAlbum *)v4 setSubscriptionDate:v10];
+  -[MSASAlbum setOwnerIsWhitelisted:](v4, "setOwnerIsWhitelisted:", [albumCopy ownerIsWhitelisted]);
+  subscriptionDate = [albumCopy subscriptionDate];
+  [(MSASAlbum *)v4 setSubscriptionDate:subscriptionDate];
 
-  v11 = [v3 GUID];
-  [(MSASAlbum *)v4 setGUID:v11];
+  gUID = [albumCopy GUID];
+  [(MSASAlbum *)v4 setGUID:gUID];
 
-  v12 = [v3 ctag];
-  [(MSASAlbum *)v4 setCtag:v12];
+  ctag = [albumCopy ctag];
+  [(MSASAlbum *)v4 setCtag:ctag];
 
-  -[MSASAlbum setRelationshipState:](v4, "setRelationshipState:", [v3 relationshipState]);
-  v13 = [v3 foreignCtag];
-  [(MSASAlbum *)v4 setForeignCtag:v13];
+  -[MSASAlbum setRelationshipState:](v4, "setRelationshipState:", [albumCopy relationshipState]);
+  foreignCtag = [albumCopy foreignCtag];
+  [(MSASAlbum *)v4 setForeignCtag:foreignCtag];
 
-  v14 = [v3 URLString];
-  [(MSASAlbum *)v4 setURLString:v14];
+  uRLString = [albumCopy URLString];
+  [(MSASAlbum *)v4 setURLString:uRLString];
 
-  v15 = [v3 metadata];
-  [(MSASAlbum *)v4 setMetadata:v15];
+  metadata = [albumCopy metadata];
+  [(MSASAlbum *)v4 setMetadata:metadata];
 
-  v16 = [v3 context];
-  [(MSASAlbum *)v4 setContext:v16];
+  context = [albumCopy context];
+  [(MSASAlbum *)v4 setContext:context];
 
-  -[MSASAlbum setIsFamilySharedAlbum:](v4, "setIsFamilySharedAlbum:", [v3 isFamilySharedAlbum]);
-  v17 = [v3 clientOrgKey];
+  -[MSASAlbum setIsFamilySharedAlbum:](v4, "setIsFamilySharedAlbum:", [albumCopy isFamilySharedAlbum]);
+  clientOrgKey = [albumCopy clientOrgKey];
 
-  [(MSASAlbum *)v4 setClientOrgKey:v17];
+  [(MSASAlbum *)v4 setClientOrgKey:clientOrgKey];
 
   return v4;
 }

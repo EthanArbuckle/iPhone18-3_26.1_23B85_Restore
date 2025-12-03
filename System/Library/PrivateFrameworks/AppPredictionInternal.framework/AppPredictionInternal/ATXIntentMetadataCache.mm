@@ -1,21 +1,21 @@
 @interface ATXIntentMetadataCache
 + (id)sharedInstance;
-- (ATXIntentMetadataCache)initWithDataStore:(id)a3 cacheInvalidationCriteria:(id)a4 startMonitoring:(BOOL)a5;
-- (BOOL)isEligibleForWidgetsForIntent:(id)a3;
-- (BOOL)supportsBackgroundExecutionForIntent:(id)a3;
-- (id)_getCachedEligibleForWidgetsForIntent:(id)a3;
-- (id)_getCachedSubtitleForCacheKey:(id)a3;
-- (id)_getCachedSupportsBackgroundExecutionForIntent:(id)a3;
-- (id)_getCachedTitleForCacheKey:(id)a3;
+- (ATXIntentMetadataCache)initWithDataStore:(id)store cacheInvalidationCriteria:(id)criteria startMonitoring:(BOOL)monitoring;
+- (BOOL)isEligibleForWidgetsForIntent:(id)intent;
+- (BOOL)supportsBackgroundExecutionForIntent:(id)intent;
+- (id)_getCachedEligibleForWidgetsForIntent:(id)intent;
+- (id)_getCachedSubtitleForCacheKey:(id)key;
+- (id)_getCachedSupportsBackgroundExecutionForIntent:(id)intent;
+- (id)_getCachedTitleForCacheKey:(id)key;
 - (id)initInternal;
-- (id)subtitleForIntent:(id)a3 localeIdentifier:(id)a4;
-- (id)titleForIntent:(id)a3 localeIdentifier:(id)a4;
-- (id)validParameterCombinationsWithSchemaForIntent:(id)a3;
-- (void)_setSubtitle:(id)a3 cacheKey:(id)a4;
-- (void)_setTitle:(id)a3 cacheKey:(id)a4;
-- (void)applicationsDidUninstall:(id)a3;
-- (void)applicationsDidUpdate:(id)a3;
-- (void)setValidParameterCombinationsWithSchema:(id)a3 intent:(id)a4;
+- (id)subtitleForIntent:(id)intent localeIdentifier:(id)identifier;
+- (id)titleForIntent:(id)intent localeIdentifier:(id)identifier;
+- (id)validParameterCombinationsWithSchemaForIntent:(id)intent;
+- (void)_setSubtitle:(id)subtitle cacheKey:(id)key;
+- (void)_setTitle:(id)title cacheKey:(id)key;
+- (void)applicationsDidUninstall:(id)uninstall;
+- (void)applicationsDidUpdate:(id)update;
+- (void)setValidParameterCombinationsWithSchema:(id)schema intent:(id)intent;
 - (void)systemDidUpdate;
 @end
 
@@ -27,7 +27,7 @@
   block[1] = 3221225472;
   block[2] = __40__ATXIntentMetadataCache_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance__pasOnceToken7_29 != -1)
   {
     dispatch_once(&sharedInstance__pasOnceToken7_29, block);
@@ -57,20 +57,20 @@ void __40__ATXIntentMetadataCache_sharedInstance__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (ATXIntentMetadataCache)initWithDataStore:(id)a3 cacheInvalidationCriteria:(id)a4 startMonitoring:(BOOL)a5
+- (ATXIntentMetadataCache)initWithDataStore:(id)store cacheInvalidationCriteria:(id)criteria startMonitoring:(BOOL)monitoring
 {
-  v5 = a5;
-  v9 = a3;
-  v10 = a4;
+  monitoringCopy = monitoring;
+  storeCopy = store;
+  criteriaCopy = criteria;
   v14.receiver = self;
   v14.super_class = ATXIntentMetadataCache;
   v11 = [(ATXIntentMetadataCache *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_dataStore, a3);
-    objc_storeStrong(&v12->_invalidationCriteria, a4);
-    if (v5)
+    objc_storeStrong(&v11->_dataStore, store);
+    objc_storeStrong(&v12->_invalidationCriteria, criteria);
+    if (monitoringCopy)
     {
       [(ATXIntentMetadataCacheInvalidationMonitor *)v12->_invalidationCriteria setDelegateAndStartMonitoring:v12];
     }
@@ -79,24 +79,24 @@ void __40__ATXIntentMetadataCache_sharedInstance__block_invoke(uint64_t a1)
   return v12;
 }
 
-- (void)setValidParameterCombinationsWithSchema:(id)a3 intent:(id)a4
+- (void)setValidParameterCombinationsWithSchema:(id)schema intent:(id)intent
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [[ATXIntentMetadataCacheKey alloc] initWithIntent:v7 includingParameters:1];
-  if (v8 && [v6 count])
+  schemaCopy = schema;
+  intentCopy = intent;
+  v8 = [[ATXIntentMetadataCacheKey alloc] initWithIntent:intentCopy includingParameters:1];
+  if (v8 && [schemaCopy count])
   {
     v9 = __atxlog_handle_default();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(ATXIntentMetadataCacheKey *)v8 stringRepresentationForSerialization];
+      stringRepresentationForSerialization = [(ATXIntentMetadataCacheKey *)v8 stringRepresentationForSerialization];
       v14 = 138412290;
-      v15 = v10;
+      v15 = stringRepresentationForSerialization;
       _os_log_impl(&dword_2263AA000, v9, OS_LOG_TYPE_DEFAULT, "ATXIntentMetadataCache saving parameter combinations for cacheKey: %@", &v14, 0xCu);
     }
 
-    [(_ATXDataStore *)self->_dataStore writeValidParameterCombinationsWithSchema:v6 cacheKey:v8];
+    [(_ATXDataStore *)self->_dataStore writeValidParameterCombinationsWithSchema:schemaCopy cacheKey:v8];
   }
 
   else
@@ -104,9 +104,9 @@ void __40__ATXIntentMetadataCache_sharedInstance__block_invoke(uint64_t a1)
     v11 = __atxlog_handle_default();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v7 _className];
+      _className = [intentCopy _className];
       v14 = 138412290;
-      v15 = v12;
+      v15 = _className;
       _os_log_impl(&dword_2263AA000, v11, OS_LOG_TYPE_DEFAULT, "ATXIntentMetadataCache couldn't save parameter combinations for intent: %@", &v14, 0xCu);
     }
   }
@@ -114,20 +114,20 @@ void __40__ATXIntentMetadataCache_sharedInstance__block_invoke(uint64_t a1)
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)validParameterCombinationsWithSchemaForIntent:(id)a3
+- (id)validParameterCombinationsWithSchemaForIntent:(id)intent
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [[ATXIntentMetadataCacheKey alloc] initWithIntent:v4 includingParameters:1];
+  intentCopy = intent;
+  v5 = [[ATXIntentMetadataCacheKey alloc] initWithIntent:intentCopy includingParameters:1];
 
   if (v5)
   {
     v6 = __atxlog_handle_default();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
-      v7 = [(ATXIntentMetadataCacheKey *)v5 stringRepresentationForSerialization];
+      stringRepresentationForSerialization = [(ATXIntentMetadataCacheKey *)v5 stringRepresentationForSerialization];
       v11 = 138412290;
-      v12 = v7;
+      v12 = stringRepresentationForSerialization;
       _os_log_impl(&dword_2263AA000, v6, OS_LOG_TYPE_INFO, "ATXIntentMetadataCache fetching cached parameter combinations for cacheKey: %@", &v11, 0xCu);
     }
 
@@ -144,39 +144,39 @@ void __40__ATXIntentMetadataCache_sharedInstance__block_invoke(uint64_t a1)
   return v8;
 }
 
-- (BOOL)supportsBackgroundExecutionForIntent:(id)a3
+- (BOOL)supportsBackgroundExecutionForIntent:(id)intent
 {
-  v4 = a3;
-  v5 = [(ATXIntentMetadataCache *)self _getCachedSupportsBackgroundExecutionForIntent:v4];
+  intentCopy = intent;
+  v5 = [(ATXIntentMetadataCache *)self _getCachedSupportsBackgroundExecutionForIntent:intentCopy];
   v6 = v5;
   if (v5)
   {
-    LOBYTE(v7) = [v5 BOOLValue];
+    LOBYTE(atx_supportsBackgroundExecution) = [v5 BOOLValue];
   }
 
   else
   {
-    v7 = [v4 atx_supportsBackgroundExecution];
-    [(ATXIntentMetadataCache *)self _setSupportsBackgroundExecution:v7 intent:v4];
+    atx_supportsBackgroundExecution = [intentCopy atx_supportsBackgroundExecution];
+    [(ATXIntentMetadataCache *)self _setSupportsBackgroundExecution:atx_supportsBackgroundExecution intent:intentCopy];
   }
 
-  return v7;
+  return atx_supportsBackgroundExecution;
 }
 
-- (id)_getCachedSupportsBackgroundExecutionForIntent:(id)a3
+- (id)_getCachedSupportsBackgroundExecutionForIntent:(id)intent
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [[ATXIntentMetadataCacheKey alloc] initWithIntent:v4 includingParameters:1];
+  intentCopy = intent;
+  v5 = [[ATXIntentMetadataCacheKey alloc] initWithIntent:intentCopy includingParameters:1];
 
   if (v5)
   {
     v6 = __atxlog_handle_default();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
-      v7 = [(ATXIntentMetadataCacheKey *)v5 stringRepresentationForSerialization];
+      stringRepresentationForSerialization = [(ATXIntentMetadataCacheKey *)v5 stringRepresentationForSerialization];
       v11 = 138412290;
-      v12 = v7;
+      v12 = stringRepresentationForSerialization;
       _os_log_impl(&dword_2263AA000, v6, OS_LOG_TYPE_INFO, "ATXIntentMetadataCache fetching cached supportsBackgroundExecution for cacheKey: %@", &v11, 0xCu);
     }
 
@@ -193,46 +193,46 @@ void __40__ATXIntentMetadataCache_sharedInstance__block_invoke(uint64_t a1)
   return v8;
 }
 
-- (id)titleForIntent:(id)a3 localeIdentifier:(id)a4
+- (id)titleForIntent:(id)intent localeIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[ATXIntentMetadataCacheKey alloc] initWithIntent:v6 includingParameterValues:1 localeIdentifier:v7];
+  intentCopy = intent;
+  identifierCopy = identifier;
+  v8 = [[ATXIntentMetadataCacheKey alloc] initWithIntent:intentCopy includingParameterValues:1 localeIdentifier:identifierCopy];
 
   v9 = [(ATXIntentMetadataCache *)self _getCachedTitleForCacheKey:v8];
   v10 = v9;
   if (v9)
   {
-    v11 = v9;
+    atx_titleWithEfficientLocalization = v9;
   }
 
   else
   {
-    v11 = [v6 atx_titleWithEfficientLocalization];
-    [(ATXIntentMetadataCache *)self _setTitle:v11 cacheKey:v8];
+    atx_titleWithEfficientLocalization = [intentCopy atx_titleWithEfficientLocalization];
+    [(ATXIntentMetadataCache *)self _setTitle:atx_titleWithEfficientLocalization cacheKey:v8];
   }
 
-  return v11;
+  return atx_titleWithEfficientLocalization;
 }
 
-- (void)_setTitle:(id)a3 cacheKey:(id)a4
+- (void)_setTitle:(id)title cacheKey:(id)key
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  keyCopy = key;
   v8 = __atxlog_handle_default();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-  if (v7)
+  if (keyCopy)
   {
     if (v9)
     {
-      v10 = [v7 stringRepresentationForSerialization];
+      stringRepresentationForSerialization = [keyCopy stringRepresentationForSerialization];
       v12 = 138412290;
-      v13 = v10;
+      v13 = stringRepresentationForSerialization;
       _os_log_impl(&dword_2263AA000, v8, OS_LOG_TYPE_DEFAULT, "ATXIntentMetadataCache saving title for cacheKey: %@", &v12, 0xCu);
     }
 
-    [(_ATXDataStore *)self->_dataStore writeTitle:v6 cacheKey:v7];
+    [(_ATXDataStore *)self->_dataStore writeTitle:titleCopy cacheKey:keyCopy];
   }
 
   else
@@ -247,22 +247,22 @@ void __40__ATXIntentMetadataCache_sharedInstance__block_invoke(uint64_t a1)
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_getCachedTitleForCacheKey:(id)a3
+- (id)_getCachedTitleForCacheKey:(id)key
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  keyCopy = key;
+  if (keyCopy)
   {
     v5 = __atxlog_handle_default();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v6 = [v4 stringRepresentationForSerialization];
+      stringRepresentationForSerialization = [keyCopy stringRepresentationForSerialization];
       v10 = 138412290;
-      v11 = v6;
+      v11 = stringRepresentationForSerialization;
       _os_log_impl(&dword_2263AA000, v5, OS_LOG_TYPE_INFO, "ATXIntentMetadataCache fetching cached title for cacheKey: %@", &v10, 0xCu);
     }
 
-    v7 = [(_ATXDataStore *)self->_dataStore titleForCacheKey:v4];
+    v7 = [(_ATXDataStore *)self->_dataStore titleForCacheKey:keyCopy];
   }
 
   else
@@ -275,11 +275,11 @@ void __40__ATXIntentMetadataCache_sharedInstance__block_invoke(uint64_t a1)
   return v7;
 }
 
-- (id)subtitleForIntent:(id)a3 localeIdentifier:(id)a4
+- (id)subtitleForIntent:(id)intent localeIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[ATXIntentMetadataCacheKey alloc] initWithIntent:v6 includingParameterValues:1 localeIdentifier:v7];
+  intentCopy = intent;
+  identifierCopy = identifier;
+  v8 = [[ATXIntentMetadataCacheKey alloc] initWithIntent:intentCopy includingParameterValues:1 localeIdentifier:identifierCopy];
 
   v9 = [(ATXIntentMetadataCache *)self _getCachedSubtitleForCacheKey:v8];
   v10 = v9;
@@ -290,12 +290,12 @@ void __40__ATXIntentMetadataCache_sharedInstance__block_invoke(uint64_t a1)
 
   else
   {
-    v12 = [v6 atx_subtitleWithEfficientLocalization];
-    v13 = v12;
+    atx_subtitleWithEfficientLocalization = [intentCopy atx_subtitleWithEfficientLocalization];
+    v13 = atx_subtitleWithEfficientLocalization;
     v14 = &stru_2839A6058;
-    if (v12)
+    if (atx_subtitleWithEfficientLocalization)
     {
-      v14 = v12;
+      v14 = atx_subtitleWithEfficientLocalization;
     }
 
     v11 = v14;
@@ -306,24 +306,24 @@ void __40__ATXIntentMetadataCache_sharedInstance__block_invoke(uint64_t a1)
   return v11;
 }
 
-- (void)_setSubtitle:(id)a3 cacheKey:(id)a4
+- (void)_setSubtitle:(id)subtitle cacheKey:(id)key
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  subtitleCopy = subtitle;
+  keyCopy = key;
   v8 = __atxlog_handle_default();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-  if (v7)
+  if (keyCopy)
   {
     if (v9)
     {
-      v10 = [v7 stringRepresentationForSerialization];
+      stringRepresentationForSerialization = [keyCopy stringRepresentationForSerialization];
       v12 = 138412290;
-      v13 = v10;
+      v13 = stringRepresentationForSerialization;
       _os_log_impl(&dword_2263AA000, v8, OS_LOG_TYPE_DEFAULT, "ATXIntentMetadataCache saving subtitle for cacheKey: %@", &v12, 0xCu);
     }
 
-    [(_ATXDataStore *)self->_dataStore writeSubtitle:v6 cacheKey:v7];
+    [(_ATXDataStore *)self->_dataStore writeSubtitle:subtitleCopy cacheKey:keyCopy];
   }
 
   else
@@ -338,22 +338,22 @@ void __40__ATXIntentMetadataCache_sharedInstance__block_invoke(uint64_t a1)
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_getCachedSubtitleForCacheKey:(id)a3
+- (id)_getCachedSubtitleForCacheKey:(id)key
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  keyCopy = key;
+  if (keyCopy)
   {
     v5 = __atxlog_handle_default();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v6 = [v4 stringRepresentationForSerialization];
+      stringRepresentationForSerialization = [keyCopy stringRepresentationForSerialization];
       v10 = 138412290;
-      v11 = v6;
+      v11 = stringRepresentationForSerialization;
       _os_log_impl(&dword_2263AA000, v5, OS_LOG_TYPE_INFO, "ATXIntentMetadataCache fetching cached subtitle for cacheKey: %@", &v10, 0xCu);
     }
 
-    v7 = [(_ATXDataStore *)self->_dataStore subtitleForCacheKey:v4];
+    v7 = [(_ATXDataStore *)self->_dataStore subtitleForCacheKey:keyCopy];
   }
 
   else
@@ -366,39 +366,39 @@ void __40__ATXIntentMetadataCache_sharedInstance__block_invoke(uint64_t a1)
   return v7;
 }
 
-- (BOOL)isEligibleForWidgetsForIntent:(id)a3
+- (BOOL)isEligibleForWidgetsForIntent:(id)intent
 {
-  v4 = a3;
-  v5 = [(ATXIntentMetadataCache *)self _getCachedEligibleForWidgetsForIntent:v4];
+  intentCopy = intent;
+  v5 = [(ATXIntentMetadataCache *)self _getCachedEligibleForWidgetsForIntent:intentCopy];
   v6 = v5;
   if (v5)
   {
-    LOBYTE(v7) = [v5 BOOLValue];
+    LOBYTE(atx_isEligibleForWidgets) = [v5 BOOLValue];
   }
 
   else
   {
-    v7 = [v4 atx_isEligibleForWidgets];
-    [(ATXIntentMetadataCache *)self _setEligibleForWidgets:v7 intent:v4];
+    atx_isEligibleForWidgets = [intentCopy atx_isEligibleForWidgets];
+    [(ATXIntentMetadataCache *)self _setEligibleForWidgets:atx_isEligibleForWidgets intent:intentCopy];
   }
 
-  return v7;
+  return atx_isEligibleForWidgets;
 }
 
-- (id)_getCachedEligibleForWidgetsForIntent:(id)a3
+- (id)_getCachedEligibleForWidgetsForIntent:(id)intent
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [[ATXIntentMetadataCacheKey alloc] initWithIntent:v4 includingParameters:0];
+  intentCopy = intent;
+  v5 = [[ATXIntentMetadataCacheKey alloc] initWithIntent:intentCopy includingParameters:0];
 
   if (v5)
   {
     v6 = __atxlog_handle_default();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
-      v7 = [(ATXIntentMetadataCacheKey *)v5 stringRepresentationForSerialization];
+      stringRepresentationForSerialization = [(ATXIntentMetadataCacheKey *)v5 stringRepresentationForSerialization];
       v11 = 138412290;
-      v12 = v7;
+      v12 = stringRepresentationForSerialization;
       _os_log_impl(&dword_2263AA000, v6, OS_LOG_TYPE_INFO, "ATXIntentMetadataCache fetching cached isEligibleForWidgets for cacheKey: %@", &v11, 0xCu);
     }
 
@@ -415,15 +415,15 @@ void __40__ATXIntentMetadataCache_sharedInstance__block_invoke(uint64_t a1)
   return v8;
 }
 
-- (void)applicationsDidUpdate:(id)a3
+- (void)applicationsDidUpdate:(id)update
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updateCopy = update;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v18 count:16];
+  v5 = [updateCopy countByEnumeratingWithState:&v12 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -434,7 +434,7 @@ void __40__ATXIntentMetadataCache_sharedInstance__block_invoke(uint64_t a1)
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(updateCopy);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -449,7 +449,7 @@ void __40__ATXIntentMetadataCache_sharedInstance__block_invoke(uint64_t a1)
         [(_ATXDataStore *)self->_dataStore removeCachedIntentsWithBundleId:v9];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v18 count:16];
+      v6 = [updateCopy countByEnumeratingWithState:&v12 objects:v18 count:16];
     }
 
     while (v6);
@@ -458,15 +458,15 @@ void __40__ATXIntentMetadataCache_sharedInstance__block_invoke(uint64_t a1)
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)applicationsDidUninstall:(id)a3
+- (void)applicationsDidUninstall:(id)uninstall
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  uninstallCopy = uninstall;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v18 count:16];
+  v5 = [uninstallCopy countByEnumeratingWithState:&v12 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -477,7 +477,7 @@ void __40__ATXIntentMetadataCache_sharedInstance__block_invoke(uint64_t a1)
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(uninstallCopy);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -492,7 +492,7 @@ void __40__ATXIntentMetadataCache_sharedInstance__block_invoke(uint64_t a1)
         [(_ATXDataStore *)self->_dataStore removeCachedIntentsWithBundleId:v9];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v18 count:16];
+      v6 = [uninstallCopy countByEnumeratingWithState:&v12 objects:v18 count:16];
     }
 
     while (v6);

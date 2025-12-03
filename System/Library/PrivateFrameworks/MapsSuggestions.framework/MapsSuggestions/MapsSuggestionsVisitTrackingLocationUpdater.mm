@@ -1,23 +1,23 @@
 @interface MapsSuggestionsVisitTrackingLocationUpdater
-+ (BOOL)_isDefinitelyOutsideOfVisit:(id)a3 location:(id)a4 allowingBuffer:(double)a5;
++ (BOOL)_isDefinitelyOutsideOfVisit:(id)visit location:(id)location allowingBuffer:(double)buffer;
 - (NSString)uniqueName;
 - (id).cxx_construct;
-- (id)initDecoratingLocationUpdater:(id)a3;
-- (id)restartLocationUpdatesForDelegate:(id)a3;
-- (id)startLocationUpdatesForDelegate:(id)a3;
+- (id)initDecoratingLocationUpdater:(id)updater;
+- (id)restartLocationUpdatesForDelegate:(id)delegate;
+- (id)startLocationUpdatesForDelegate:(id)delegate;
 - (void)dealloc;
-- (void)didEnterVisit:(id)a3;
-- (void)didLeaveVisit:(id)a3;
+- (void)didEnterVisit:(id)visit;
+- (void)didLeaveVisit:(id)visit;
 - (void)didLoseLocationPermission;
-- (void)didUpdateLocation:(id)a3;
-- (void)stopLocationUpdatesForDelegate:(id)a3;
+- (void)didUpdateLocation:(id)location;
+- (void)stopLocationUpdatesForDelegate:(id)delegate;
 @end
 
 @implementation MapsSuggestionsVisitTrackingLocationUpdater
 
-- (id)initDecoratingLocationUpdater:(id)a3
+- (id)initDecoratingLocationUpdater:(id)updater
 {
-  v5 = a3;
+  updaterCopy = updater;
   v25.receiver = self;
   v25.super_class = MapsSuggestionsVisitTrackingLocationUpdater;
   v6 = [(MapsSuggestionsVisitTrackingLocationUpdater *)&v25 init];
@@ -35,7 +35,7 @@
     name = v6->_queue._name;
     v6->_queue._name = v10;
 
-    objc_storeStrong(&v6->_wrappedLocationUpdater, a3);
+    objc_storeStrong(&v6->_wrappedLocationUpdater, updater);
     currentVisit = v6->_currentVisit;
     v6->_currentVisit = 0;
 
@@ -84,27 +84,27 @@
   return [v2 description];
 }
 
-- (id)restartLocationUpdatesForDelegate:(id)a3
+- (id)restartLocationUpdatesForDelegate:(id)delegate
 {
-  v4 = a3;
-  [(MapsSuggestionsVisitTrackingLocationUpdater *)self stopLocationUpdatesForDelegate:v4];
-  v5 = [(MapsSuggestionsVisitTrackingLocationUpdater *)self startLocationUpdatesForDelegate:v4];
+  delegateCopy = delegate;
+  [(MapsSuggestionsVisitTrackingLocationUpdater *)self stopLocationUpdatesForDelegate:delegateCopy];
+  v5 = [(MapsSuggestionsVisitTrackingLocationUpdater *)self startLocationUpdatesForDelegate:delegateCopy];
 
   return v5;
 }
 
-- (id)startLocationUpdatesForDelegate:(id)a3
+- (id)startLocationUpdatesForDelegate:(id)delegate
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  delegateCopy = delegate;
+  if (delegateCopy)
   {
     v5 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      v6 = [v4 uniqueName];
+      uniqueName = [delegateCopy uniqueName];
       *buf = 138412290;
-      v14 = v6;
+      v14 = uniqueName;
       _os_log_impl(&dword_1C5126000, v5, OS_LOG_TYPE_DEBUG, "VisitTrackingLocationUpdater startLocationUpdatesForDelegate:%@", buf, 0xCu);
     }
 
@@ -114,7 +114,7 @@
     v10[2] = __79__MapsSuggestionsVisitTrackingLocationUpdater_startLocationUpdatesForDelegate___block_invoke;
     v10[3] = &unk_1E81F7D58;
     v10[4] = self;
-    v11 = v4;
+    v11 = delegateCopy;
     objc_copyWeak(&v12, buf);
     v7 = MSg::Queue::sync<CLLocation * {__strong}>(&self->_queue, v10);
     objc_destroyWeak(&v12);
@@ -196,16 +196,16 @@ void __79__MapsSuggestionsVisitTrackingLocationUpdater_startLocationUpdatesForDe
   }
 }
 
-- (void)stopLocationUpdatesForDelegate:(id)a3
+- (void)stopLocationUpdatesForDelegate:(id)delegate
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [v4 uniqueName];
+    uniqueName = [delegateCopy uniqueName];
     *buf = 138412290;
-    v13 = v6;
+    v13 = uniqueName;
     _os_log_impl(&dword_1C5126000, v5, OS_LOG_TYPE_DEBUG, "VisitTrackingLocationUpdater stopLocationUpdatesForDelegate:%@", buf, 0xCu);
   }
 
@@ -215,9 +215,9 @@ void __79__MapsSuggestionsVisitTrackingLocationUpdater_startLocationUpdatesForDe
   v9[2] = __78__MapsSuggestionsVisitTrackingLocationUpdater_stopLocationUpdatesForDelegate___block_invoke;
   v9[3] = &unk_1E81F5970;
   objc_copyWeak(&v11, buf);
-  v10 = v4;
+  v10 = delegateCopy;
   innerQueue = self->_queue._innerQueue;
-  v8 = v4;
+  v8 = delegateCopy;
   dispatch_async(innerQueue, v9);
 
   objc_destroyWeak(&v11);
@@ -292,18 +292,18 @@ void __78__MapsSuggestionsVisitTrackingLocationUpdater_stopLocationUpdatesForDel
   }
 }
 
-- (void)didUpdateLocation:(id)a3
+- (void)didUpdateLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __65__MapsSuggestionsVisitTrackingLocationUpdater_didUpdateLocation___block_invoke;
   block[3] = &unk_1E81F5970;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
+  v8 = locationCopy;
   innerQueue = self->_queue._innerQueue;
-  v6 = v4;
+  v6 = locationCopy;
   dispatch_async(innerQueue, block);
 
   objc_destroyWeak(&v9);
@@ -450,18 +450,18 @@ void __72__MapsSuggestionsVisitTrackingLocationUpdater_didLoseLocationPermission
   [v2 didLoseLocationPermission];
 }
 
-- (void)didEnterVisit:(id)a3
+- (void)didEnterVisit:(id)visit
 {
-  v4 = a3;
+  visitCopy = visit;
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __61__MapsSuggestionsVisitTrackingLocationUpdater_didEnterVisit___block_invoke;
   block[3] = &unk_1E81F5970;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
+  v8 = visitCopy;
   innerQueue = self->_queue._innerQueue;
-  v6 = v4;
+  v6 = visitCopy;
   dispatch_async(innerQueue, block);
 
   objc_destroyWeak(&v9);
@@ -544,18 +544,18 @@ void __61__MapsSuggestionsVisitTrackingLocationUpdater_didEnterVisit___block_inv
   [v3 didEnterVisit:*(a1 + 32)];
 }
 
-- (void)didLeaveVisit:(id)a3
+- (void)didLeaveVisit:(id)visit
 {
-  v4 = a3;
+  visitCopy = visit;
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __61__MapsSuggestionsVisitTrackingLocationUpdater_didLeaveVisit___block_invoke;
   block[3] = &unk_1E81F5970;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
+  v8 = visitCopy;
   innerQueue = self->_queue._innerQueue;
-  v6 = v4;
+  v6 = visitCopy;
   dispatch_async(innerQueue, block);
 
   objc_destroyWeak(&v9);
@@ -632,31 +632,31 @@ void __61__MapsSuggestionsVisitTrackingLocationUpdater_didLeaveVisit___block_inv
   [v3 didLeaveVisit:*(a1 + 32)];
 }
 
-+ (BOOL)_isDefinitelyOutsideOfVisit:(id)a3 location:(id)a4 allowingBuffer:(double)a5
++ (BOOL)_isDefinitelyOutsideOfVisit:(id)visit location:(id)location allowingBuffer:(double)buffer
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!MapsSuggestionsIsValidVisit(v7))
+  visitCopy = visit;
+  locationCopy = location;
+  if (!MapsSuggestionsIsValidVisit(visitCopy))
   {
     v19 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v7;
+      *(&buf + 4) = visitCopy;
       _os_log_impl(&dword_1C5126000, v19, OS_LOG_TYPE_ERROR, "Cannot use invalid visit: %@", &buf, 0xCu);
     }
 
     goto LABEL_9;
   }
 
-  if (!MapsSuggestionsIsValidLocation(v8))
+  if (!MapsSuggestionsIsValidLocation(locationCopy))
   {
     v19 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = locationCopy;
       _os_log_impl(&dword_1C5126000, v19, OS_LOG_TYPE_ERROR, "Cannot use invalid location: %@", &buf, 0xCu);
     }
 
@@ -666,18 +666,18 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  [v7 coordinate];
+  [visitCopy coordinate];
   *&buf = v9;
   *(&buf + 1) = v10;
-  [v8 coordinate];
+  [locationCopy coordinate];
   v21 = v11;
   v22 = v12;
   CLLocationCoordinate2DGetDistanceFrom();
   v14 = v13;
-  [v8 horizontalAccuracy];
+  [locationCopy horizontalAccuracy];
   v16 = v15;
-  [v7 horizontalAccuracy];
-  v18 = v14 > v16 + v17 + a5;
+  [visitCopy horizontalAccuracy];
+  v18 = v14 > v16 + v17 + buffer;
 LABEL_10:
 
   return v18;

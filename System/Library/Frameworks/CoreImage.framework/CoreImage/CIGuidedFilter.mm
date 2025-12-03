@@ -1,15 +1,15 @@
 @interface CIGuidedFilter
 + (id)customAttributes;
-- (id)_boxFilter:(id)a3 fullFloat:(BOOL)a4;
-- (id)_downsampledColorImage:(id)a3;
-- (id)_swizzleImageXXX1:(id)a3;
-- (id)_swizzleImageYYZ1:(id)a3;
-- (id)_swizzleImageYZZ1:(id)a3;
-- (id)_upsampleImage:(id)a3 targetImageSize:(CGSize)a4;
-- (id)computeAB:(id)a3;
-- (id)multiplyImages:(id)a3 imageB:(id)a4;
+- (id)_boxFilter:(id)filter fullFloat:(BOOL)float;
+- (id)_downsampledColorImage:(id)image;
+- (id)_swizzleImageXXX1:(id)x1;
+- (id)_swizzleImageYYZ1:(id)z1;
+- (id)_swizzleImageYZZ1:(id)z1;
+- (id)_upsampleImage:(id)image targetImageSize:(CGSize)size;
+- (id)computeAB:(id)b;
+- (id)multiplyImages:(id)images imageB:(id)b;
 - (id)outputImage;
-- (id)subtract:(id)a3 minus:(id)a4;
+- (id)subtract:(id)subtract minus:(id)minus;
 @end
 
 @implementation CIGuidedFilter
@@ -50,10 +50,10 @@
   return [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:v8 count:5];
 }
 
-- (id)_downsampledColorImage:(id)a3
+- (id)_downsampledColorImage:(id)image
 {
-  v3 = a3;
-  [a3 extent];
+  imageCopy = image;
+  [image extent];
   v6 = v5;
   v8 = v7;
   [(CIImage *)self->inputImage extent];
@@ -63,71 +63,71 @@
   if (!CGAffineTransformIsIdentity(&v12))
   {
     v12 = v13;
-    return [v3 imageByApplyingTransform:&v12 highQualityDownsample:1];
+    return [imageCopy imageByApplyingTransform:&v12 highQualityDownsample:1];
   }
 
-  return v3;
+  return imageCopy;
 }
 
-- (id)_upsampleImage:(id)a3 targetImageSize:(CGSize)a4
+- (id)_upsampleImage:(id)image targetImageSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = a3;
+  height = size.height;
+  width = size.width;
+  imageCopy = image;
   memset(&v12, 0, sizeof(v12));
-  [a3 extent];
+  [image extent];
   v8 = width / v7;
-  [v6 extent];
+  [imageCopy extent];
   CGAffineTransformMakeScale(&v12, v8, height / v9);
   v11 = v12;
   if (!CGAffineTransformIsIdentity(&v11))
   {
     v11 = v12;
-    return [v6 imageByApplyingTransform:&v11 highQualityDownsample:0];
+    return [imageCopy imageByApplyingTransform:&v11 highQualityDownsample:0];
   }
 
-  return v6;
+  return imageCopy;
 }
 
-- (id)_boxFilter:(id)a3 fullFloat:(BOOL)a4
+- (id)_boxFilter:(id)filter fullFloat:(BOOL)float
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  [a3 extent];
+  [filter extent];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  if (a4)
+  if (float)
   {
     v22 = @"wrap_mode";
     v23 = @"clamp";
-    v15 = +[CISampler samplerWithImage:options:](CISampler, "samplerWithImage:options:", a3, [MEMORY[0x1E695DF20] dictionaryWithObjects:&v23 forKeys:&v22 count:1]);
-    v16 = [(CIGuidedFilter *)self _fullFloatBoxFilter];
+    v15 = +[CISampler samplerWithImage:options:](CISampler, "samplerWithImage:options:", filter, [MEMORY[0x1E695DF20] dictionaryWithObjects:&v23 forKeys:&v22 count:1]);
+    _fullFloatBoxFilter = [(CIGuidedFilter *)self _fullFloatBoxFilter];
     v21 = v15;
-    return [v16 applyWithExtent:&__block_literal_global_38 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", &v21, 1), v8, v10, v12, v14}];
+    return [_fullFloatBoxFilter applyWithExtent:&__block_literal_global_38 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", &v21, 1), v8, v10, v12, v14}];
   }
 
   else
   {
-    v18 = [a3 imageByClampingToExtent];
+    imageByClampingToExtent = [filter imageByClampingToExtent];
     v19 = MEMORY[0x1E696AD98];
     [(NSNumber *)self->inputRadius floatValue];
     v24 = @"inputRadius";
     v25[0] = [v19 numberWithDouble:v20 * 2.0 + 1.0];
-    return [objc_msgSend(v18 imageByApplyingFilter:@"CIBoxBlur" withInputParameters:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v25, &v24, 1)), "imageByCroppingToRect:", v8, v10, v12, v14}];
+    return [objc_msgSend(imageByClampingToExtent imageByApplyingFilter:@"CIBoxBlur" withInputParameters:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v25, &v24, 1)), "imageByCroppingToRect:", v8, v10, v12, v14}];
   }
 }
 
-- (id)multiplyImages:(id)a3 imageB:(id)a4
+- (id)multiplyImages:(id)images imageB:(id)b
 {
   v20[2] = *MEMORY[0x1E69E9840];
-  v6 = [(CIGuidedFilter *)self _multiplyImagesKernel];
-  [a3 extent];
+  _multiplyImagesKernel = [(CIGuidedFilter *)self _multiplyImagesKernel];
+  [images extent];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  [a4 extent];
+  [b extent];
   v23.origin.x = v15;
   v23.origin.y = v16;
   v23.size.width = v17;
@@ -137,21 +137,21 @@
   v21.size.width = v12;
   v21.size.height = v14;
   v22 = CGRectUnion(v21, v23);
-  v20[0] = a3;
-  v20[1] = a4;
-  return [v6 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v20, 2), v22.origin.x, v22.origin.y, v22.size.width, v22.size.height}];
+  v20[0] = images;
+  v20[1] = b;
+  return [_multiplyImagesKernel applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v20, 2), v22.origin.x, v22.origin.y, v22.size.width, v22.size.height}];
 }
 
-- (id)subtract:(id)a3 minus:(id)a4
+- (id)subtract:(id)subtract minus:(id)minus
 {
   v20[2] = *MEMORY[0x1E69E9840];
   v6 = [(CIKernel *)CIColorKernel kernelWithInternalRepresentation:&CI::_subtractImages];
-  [a3 extent];
+  [subtract extent];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  [a4 extent];
+  [minus extent];
   v23.origin.x = v15;
   v23.origin.y = v16;
   v23.size.width = v17;
@@ -161,46 +161,46 @@
   v21.size.width = v12;
   v21.size.height = v14;
   v22 = CGRectUnion(v21, v23);
-  v20[0] = a3;
-  v20[1] = a4;
+  v20[0] = subtract;
+  v20[1] = minus;
   return -[CIColorKernel applyWithExtent:arguments:](v6, "applyWithExtent:arguments:", [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:2], v22.origin.x, v22.origin.y, v22.size.width, v22.size.height);
 }
 
-- (id)_swizzleImageXXX1:(id)a3
+- (id)_swizzleImageXXX1:(id)x1
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v4 = [(CIKernel *)CIColorKernel kernelWithInternalRepresentation:&CI::_swizzleXXX1];
-  [a3 extent];
-  v10[0] = a3;
+  [x1 extent];
+  v10[0] = x1;
   return -[CIColorKernel applyWithExtent:arguments:](v4, "applyWithExtent:arguments:", [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1], v5, v6, v7, v8);
 }
 
-- (id)_swizzleImageYYZ1:(id)a3
+- (id)_swizzleImageYYZ1:(id)z1
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v4 = [(CIKernel *)CIColorKernel kernelWithInternalRepresentation:&CI::_swizzleYYZ1];
-  [a3 extent];
-  v10[0] = a3;
+  [z1 extent];
+  v10[0] = z1;
   return -[CIColorKernel applyWithExtent:arguments:](v4, "applyWithExtent:arguments:", [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1], v5, v6, v7, v8);
 }
 
-- (id)_swizzleImageYZZ1:(id)a3
+- (id)_swizzleImageYZZ1:(id)z1
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v4 = [(CIKernel *)CIColorKernel kernelWithInternalRepresentation:&CI::_swizzleYZZ1];
-  [a3 extent];
-  v10[0] = a3;
+  [z1 extent];
+  v10[0] = z1;
   return -[CIColorKernel applyWithExtent:arguments:](v4, "applyWithExtent:arguments:", [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1], v5, v6, v7, v8);
 }
 
-- (id)computeAB:(id)a3
+- (id)computeAB:(id)b
 {
   v43[5] = *MEMORY[0x1E69E9840];
-  v5 = [(CIGuidedFilter *)self _boxFilter:a3 fullFloat:1];
-  v6 = [(CIGuidedFilter *)self _swizzleImageXXX1:a3];
-  v7 = [(CIGuidedFilter *)self _swizzleImageYYZ1:a3];
-  v8 = [(CIGuidedFilter *)self _swizzleImageYZZ1:a3];
-  v9 = [(CIGuidedFilter *)self multiplyImages:v6 imageB:a3];
+  v5 = [(CIGuidedFilter *)self _boxFilter:b fullFloat:1];
+  v6 = [(CIGuidedFilter *)self _swizzleImageXXX1:b];
+  v7 = [(CIGuidedFilter *)self _swizzleImageYYZ1:b];
+  v8 = [(CIGuidedFilter *)self _swizzleImageYZZ1:b];
+  v9 = [(CIGuidedFilter *)self multiplyImages:v6 imageB:b];
   v10 = [(CIGuidedFilter *)self multiplyImages:v7 imageB:v8];
   v11 = [(CIGuidedFilter *)self _swizzleImageXXX1:v5];
   v12 = [(CIGuidedFilter *)self _swizzleImageYYZ1:v5];
@@ -211,8 +211,8 @@
   v17 = [(CIGuidedFilter *)self _boxFilter:v10 fullFloat:1];
   v18 = [(CIGuidedFilter *)self subtract:v16 minus:v14];
   v19 = [(CIGuidedFilter *)self subtract:v17 minus:v15];
-  v20 = -[CIGuidedFilter subtract:minus:](self, "subtract:minus:", -[CIGuidedFilter _boxFilter:fullFloat:](self, "_boxFilter:fullFloat:", [a3 imageByPremultiplyingAlpha], 1), objc_msgSend(v5, "imageByPremultiplyingAlpha"));
-  v21 = [(CIGuidedFilter *)self _computeABKernel];
+  v20 = -[CIGuidedFilter subtract:minus:](self, "subtract:minus:", -[CIGuidedFilter _boxFilter:fullFloat:](self, "_boxFilter:fullFloat:", [b imageByPremultiplyingAlpha], 1), objc_msgSend(v5, "imageByPremultiplyingAlpha"));
+  _computeABKernel = [(CIGuidedFilter *)self _computeABKernel];
   [v20 extent];
   v23 = v22;
   v25 = v24;
@@ -243,7 +243,7 @@
   v43[2] = v20;
   v43[3] = v5;
   v43[4] = self->inputEpsilon;
-  return -[CIGuidedFilter _boxFilter:fullFloat:](self, "_boxFilter:fullFloat:", [v21 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v43, 5), v46.origin.x, v46.origin.y, v46.size.width, v46.size.height}], 0);
+  return -[CIGuidedFilter _boxFilter:fullFloat:](self, "_boxFilter:fullFloat:", [_computeABKernel applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v43, 5), v46.origin.x, v46.origin.y, v46.size.width, v46.size.height}], 0);
 }
 
 - (id)outputImage
@@ -273,7 +273,7 @@
     else
     {
       v17 = [(CIGuidedFilter *)self _downsampledColorImage:self->inputGuideImage];
-      v18 = [(CIGuidedFilter *)self _combineRGB_and_A];
+      _combineRGB_and_A = [(CIGuidedFilter *)self _combineRGB_and_A];
       [v17 extent];
       v20 = v19;
       v22 = v21;
@@ -292,17 +292,17 @@
       inputImage = self->inputImage;
       v44[0] = v17;
       v44[1] = inputImage;
-      v32 = -[CIGuidedFilter computeAB:](self, "computeAB:", [v18 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v44, 2), v50.origin.x, v50.origin.y, v50.size.width, v50.size.height}]);
+      v32 = -[CIGuidedFilter computeAB:](self, "computeAB:", [_combineRGB_and_A applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v44, 2), v50.origin.x, v50.origin.y, v50.size.width, v50.size.height}]);
       [(CIImage *)self->inputImage extent];
       v33 = [v32 imageByCroppingToRect:?];
       [(CIImage *)self->inputGuideImage extent];
       v36 = [(CIGuidedFilter *)self _upsampleImage:v33 targetImageSize:v34, v35];
-      v37 = [(CIGuidedFilter *)self _finalResult];
+      _finalResult = [(CIGuidedFilter *)self _finalResult];
       [v36 extent];
       inputGuideImage = self->inputGuideImage;
       v43[0] = v36;
       v43[1] = inputGuideImage;
-      return [v37 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v43, 2), v39, v40, v41, v42}];
+      return [_finalResult applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v43, 2), v39, v40, v41, v42}];
     }
   }
 

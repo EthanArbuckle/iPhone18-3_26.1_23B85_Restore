@@ -1,21 +1,21 @@
 @interface AVMetadataItemFilterForSharing
-+ (void)addIdentifier:(id)a3 toAllowListDictionary:(id)a4;
-+ (void)addKeySpace:(id)a3 key:(id)a4 toAllowListDictionary:(id)a5;
++ (void)addIdentifier:(id)identifier toAllowListDictionary:(id)dictionary;
++ (void)addKeySpace:(id)space key:(id)key toAllowListDictionary:(id)dictionary;
 - (id)allowList;
 @end
 
 @implementation AVMetadataItemFilterForSharing
 
-+ (void)addKeySpace:(id)a3 key:(id)a4 toAllowListDictionary:(id)a5
++ (void)addKeySpace:(id)space key:(id)key toAllowListDictionary:(id)dictionary
 {
-  v8 = [a5 objectForKey:?];
-  if (!v8)
+  array = [dictionary objectForKey:?];
+  if (!array)
   {
-    v8 = [MEMORY[0x1E695DF70] array];
-    [a5 setObject:v8 forKey:a3];
+    array = [MEMORY[0x1E695DF70] array];
+    [dictionary setObject:array forKey:space];
   }
 
-  [v8 addObject:a4];
+  [array addObject:key];
 }
 
 - (id)allowList
@@ -114,14 +114,14 @@ uint64_t __43__AVMetadataItemFilterForSharing_allowList__block_invoke()
   return result;
 }
 
-+ (void)addIdentifier:(id)a3 toAllowListDictionary:(id)a4
++ (void)addIdentifier:(id)identifier toAllowListDictionary:(id)dictionary
 {
   v6 = [AVMetadataItem keySpaceForIdentifier:?];
-  v7 = [AVMetadataItem keyForIdentifier:a3];
+  v7 = [AVMetadataItem keyForIdentifier:identifier];
   if (v6 && v7)
   {
 
-    [AVMetadataItemFilterForSharing addKeySpace:v6 key:v7 toAllowListDictionary:a4];
+    [AVMetadataItemFilterForSharing addKeySpace:v6 key:v7 toAllowListDictionary:dictionary];
   }
 }
 

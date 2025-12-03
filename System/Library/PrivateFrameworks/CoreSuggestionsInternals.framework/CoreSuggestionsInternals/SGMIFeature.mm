@@ -1,15 +1,15 @@
 @interface SGMIFeature
 + (id)allFeaturePrettyNames;
-+ (id)prettyName:(int64_t)a3;
++ (id)prettyName:(int64_t)name;
 + (id)prettyNamesReverseMapping;
 + (id)submodeledFeatures;
-+ (int64_t)featureTypeForName:(int64_t)a3;
++ (int64_t)featureTypeForName:(int64_t)name;
 - (BOOL)BOOLValue;
-- (SGMIFeature)initWithFeatureName:(int64_t)a3;
-- (SGMIFeature)initWithFeatureName:(int64_t)a3 numberArrayValue:(id)a4;
-- (SGMIFeature)initWithFeatureName:(int64_t)a3 numberValue:(id)a4;
-- (SGMIFeature)initWithFeatureName:(int64_t)a3 stringArrayValue:(id)a4;
-- (SGMIFeature)initWithFeatureName:(int64_t)a3 stringValue:(id)a4;
+- (SGMIFeature)initWithFeatureName:(int64_t)name;
+- (SGMIFeature)initWithFeatureName:(int64_t)name numberArrayValue:(id)value;
+- (SGMIFeature)initWithFeatureName:(int64_t)name numberValue:(id)value;
+- (SGMIFeature)initWithFeatureName:(int64_t)name stringArrayValue:(id)value;
+- (SGMIFeature)initWithFeatureName:(int64_t)name stringValue:(id)value;
 - (double)doubleValue;
 - (float)floatValue;
 - (id)description;
@@ -22,9 +22,9 @@
 
 - (int64_t)integerValue
 {
-  v3 = [(SGMIFeature *)self numberValue];
+  numberValue = [(SGMIFeature *)self numberValue];
 
-  if (!v3)
+  if (!numberValue)
   {
     v4 = sgMailIntelligenceLogHandle();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
@@ -34,17 +34,17 @@
     }
   }
 
-  v5 = [(SGMIFeature *)self numberValue];
-  v6 = [v5 integerValue];
+  numberValue2 = [(SGMIFeature *)self numberValue];
+  integerValue = [numberValue2 integerValue];
 
-  return v6;
+  return integerValue;
 }
 
 - (int)intValue
 {
-  v3 = [(SGMIFeature *)self numberValue];
+  numberValue = [(SGMIFeature *)self numberValue];
 
-  if (!v3)
+  if (!numberValue)
   {
     v4 = sgMailIntelligenceLogHandle();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
@@ -54,17 +54,17 @@
     }
   }
 
-  v5 = [(SGMIFeature *)self numberValue];
-  v6 = [v5 intValue];
+  numberValue2 = [(SGMIFeature *)self numberValue];
+  intValue = [numberValue2 intValue];
 
-  return v6;
+  return intValue;
 }
 
 - (double)doubleValue
 {
-  v3 = [(SGMIFeature *)self numberValue];
+  numberValue = [(SGMIFeature *)self numberValue];
 
-  if (!v3)
+  if (!numberValue)
   {
     v4 = sgMailIntelligenceLogHandle();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
@@ -74,8 +74,8 @@
     }
   }
 
-  v5 = [(SGMIFeature *)self numberValue];
-  [v5 doubleValue];
+  numberValue2 = [(SGMIFeature *)self numberValue];
+  [numberValue2 doubleValue];
   v7 = v6;
 
   return v7;
@@ -83,9 +83,9 @@
 
 - (float)floatValue
 {
-  v3 = [(SGMIFeature *)self numberValue];
+  numberValue = [(SGMIFeature *)self numberValue];
 
-  if (!v3)
+  if (!numberValue)
   {
     v4 = sgMailIntelligenceLogHandle();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
@@ -95,8 +95,8 @@
     }
   }
 
-  v5 = [(SGMIFeature *)self numberValue];
-  [v5 floatValue];
+  numberValue2 = [(SGMIFeature *)self numberValue];
+  [numberValue2 floatValue];
   v7 = v6;
 
   return v7;
@@ -104,9 +104,9 @@
 
 - (BOOL)BOOLValue
 {
-  v3 = [(SGMIFeature *)self numberValue];
+  numberValue = [(SGMIFeature *)self numberValue];
 
-  if (!v3)
+  if (!numberValue)
   {
     v4 = sgMailIntelligenceLogHandle();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
@@ -116,47 +116,47 @@
     }
   }
 
-  v5 = [(SGMIFeature *)self numberValue];
-  v6 = [v5 BOOLValue];
+  numberValue2 = [(SGMIFeature *)self numberValue];
+  bOOLValue = [numberValue2 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
 - (id)description
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = [(SGMIFeature *)self featureType];
-  v4 = 0;
-  if (v3 <= 1)
+  featureType = [(SGMIFeature *)self featureType];
+  stringValue = 0;
+  if (featureType <= 1)
   {
-    if (!v3)
+    if (!featureType)
     {
-      v4 = @"None";
+      stringValue = @"None";
       goto LABEL_20;
     }
 
-    if (v3 != 1)
+    if (featureType != 1)
     {
       goto LABEL_20;
     }
 
-    v8 = [(SGMIFeature *)self numberValue];
-    v4 = [v8 stringValue];
+    numberValue = [(SGMIFeature *)self numberValue];
+    stringValue = [numberValue stringValue];
 LABEL_17:
 
     goto LABEL_20;
   }
 
-  switch(v3)
+  switch(featureType)
   {
     case 2:
-      v8 = objc_opt_new();
+      numberValue = objc_opt_new();
       v22 = 0u;
       v23 = 0u;
       v24 = 0u;
       v25 = 0u;
-      v9 = [(SGMIFeature *)self numberArrayValue];
-      v10 = [v9 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      numberArrayValue = [(SGMIFeature *)self numberArrayValue];
+      v10 = [numberArrayValue countByEnumeratingWithState:&v22 objects:v26 count:16];
       if (v10)
       {
         v11 = v10;
@@ -167,32 +167,32 @@ LABEL_17:
           {
             if (*v23 != v12)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(numberArrayValue);
             }
 
-            v14 = [*(*(&v22 + 1) + 8 * i) stringValue];
-            [v8 addObject:v14];
+            stringValue2 = [*(*(&v22 + 1) + 8 * i) stringValue];
+            [numberValue addObject:stringValue2];
           }
 
-          v11 = [v9 countByEnumeratingWithState:&v22 objects:v26 count:16];
+          v11 = [numberArrayValue countByEnumeratingWithState:&v22 objects:v26 count:16];
         }
 
         while (v11);
       }
 
       v15 = objc_alloc(MEMORY[0x277CCACA8]);
-      v16 = [v8 _pas_componentsJoinedByString:{@", "}];
-      v4 = [v15 initWithFormat:@"[%@]", v16];
+      v16 = [numberValue _pas_componentsJoinedByString:{@", "}];
+      stringValue = [v15 initWithFormat:@"[%@]", v16];
 
       goto LABEL_17;
     case 3:
-      v4 = [(SGMIFeature *)self stringValue];
+      stringValue = [(SGMIFeature *)self stringValue];
       break;
     case 4:
       v5 = objc_alloc(MEMORY[0x277CCACA8]);
-      v6 = [(SGMIFeature *)self stringArrayValue];
-      v7 = [v6 _pas_componentsJoinedByString:{@", "}];
-      v4 = [v5 initWithFormat:@"[%@]", v7];
+      stringArrayValue = [(SGMIFeature *)self stringArrayValue];
+      v7 = [stringArrayValue _pas_componentsJoinedByString:{@", "}];
+      stringValue = [v5 initWithFormat:@"[%@]", v7];
 
       break;
   }
@@ -200,7 +200,7 @@ LABEL_17:
 LABEL_20:
   v17 = objc_alloc(MEMORY[0x277CCACA8]);
   v18 = [SGMIFeature prettyName:[(SGMIFeature *)self featureName]];
-  v19 = [v17 initWithFormat:@"%@: %@", v18, v4];
+  v19 = [v17 initWithFormat:@"%@: %@", v18, stringValue];
 
   v20 = *MEMORY[0x277D85DE8];
 
@@ -210,107 +210,107 @@ LABEL_20:
 - (id)stringArrayRepresentation
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v3 = [(SGMIFeature *)self featureType];
-  v4 = MEMORY[0x277CBEBF8];
-  if (v3 <= 2)
+  featureType = [(SGMIFeature *)self featureType];
+  stringArrayValue = MEMORY[0x277CBEBF8];
+  if (featureType <= 2)
   {
-    if (v3 != 1)
+    if (featureType != 1)
     {
-      if (v3 == 2)
+      if (featureType == 2)
       {
-        v5 = [(SGMIFeature *)self numberArrayValue];
+        numberArrayValue = [(SGMIFeature *)self numberArrayValue];
         v10[0] = MEMORY[0x277D85DD0];
         v10[1] = 3221225472;
         v10[2] = __40__SGMIFeature_stringArrayRepresentation__block_invoke;
         v10[3] = &unk_27894EB88;
         v10[4] = self;
-        v4 = [v5 _pas_mappedArrayWithTransform:v10];
+        stringArrayValue = [numberArrayValue _pas_mappedArrayWithTransform:v10];
       }
 
       goto LABEL_11;
     }
 
-    v6 = [(SGMIFeature *)self numberValue];
-    v7 = [v6 stringValue];
-    v12[0] = v7;
-    v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
+    numberValue = [(SGMIFeature *)self numberValue];
+    stringValue = [numberValue stringValue];
+    v12[0] = stringValue;
+    stringArrayValue = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
 
 LABEL_10:
     goto LABEL_11;
   }
 
-  if (v3 == 3)
+  if (featureType == 3)
   {
-    v6 = [(SGMIFeature *)self stringValue];
-    v11 = v6;
-    v4 = [MEMORY[0x277CBEA60] arrayWithObjects:&v11 count:1];
+    numberValue = [(SGMIFeature *)self stringValue];
+    v11 = numberValue;
+    stringArrayValue = [MEMORY[0x277CBEA60] arrayWithObjects:&v11 count:1];
     goto LABEL_10;
   }
 
-  if (v3 == 4)
+  if (featureType == 4)
   {
-    v4 = [(SGMIFeature *)self stringArrayValue];
+    stringArrayValue = [(SGMIFeature *)self stringArrayValue];
   }
 
 LABEL_11:
   v8 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return stringArrayValue;
 }
 
-- (SGMIFeature)initWithFeatureName:(int64_t)a3 stringArrayValue:(id)a4
+- (SGMIFeature)initWithFeatureName:(int64_t)name stringArrayValue:(id)value
 {
-  v7 = a4;
-  v8 = [(SGMIFeature *)self initWithFeatureName:a3];
+  valueCopy = value;
+  v8 = [(SGMIFeature *)self initWithFeatureName:name];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_stringArrayValue, a4);
+    objc_storeStrong(&v8->_stringArrayValue, value);
   }
 
   return v9;
 }
 
-- (SGMIFeature)initWithFeatureName:(int64_t)a3 stringValue:(id)a4
+- (SGMIFeature)initWithFeatureName:(int64_t)name stringValue:(id)value
 {
-  v7 = a4;
-  v8 = [(SGMIFeature *)self initWithFeatureName:a3];
+  valueCopy = value;
+  v8 = [(SGMIFeature *)self initWithFeatureName:name];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_stringValue, a4);
+    objc_storeStrong(&v8->_stringValue, value);
   }
 
   return v9;
 }
 
-- (SGMIFeature)initWithFeatureName:(int64_t)a3 numberArrayValue:(id)a4
+- (SGMIFeature)initWithFeatureName:(int64_t)name numberArrayValue:(id)value
 {
-  v7 = a4;
-  v8 = [(SGMIFeature *)self initWithFeatureName:a3];
+  valueCopy = value;
+  v8 = [(SGMIFeature *)self initWithFeatureName:name];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_numberArrayValue, a4);
+    objc_storeStrong(&v8->_numberArrayValue, value);
   }
 
   return v9;
 }
 
-- (SGMIFeature)initWithFeatureName:(int64_t)a3 numberValue:(id)a4
+- (SGMIFeature)initWithFeatureName:(int64_t)name numberValue:(id)value
 {
-  v7 = a4;
-  v8 = [(SGMIFeature *)self initWithFeatureName:a3];
+  valueCopy = value;
+  v8 = [(SGMIFeature *)self initWithFeatureName:name];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_numberValue, a4);
+    objc_storeStrong(&v8->_numberValue, value);
   }
 
   return v9;
 }
 
-- (SGMIFeature)initWithFeatureName:(int64_t)a3
+- (SGMIFeature)initWithFeatureName:(int64_t)name
 {
   v7.receiver = self;
   v7.super_class = SGMIFeature;
@@ -318,8 +318,8 @@ LABEL_11:
   v5 = v4;
   if (v4)
   {
-    v4->_featureName = a3;
-    v4->_featureType = [SGMIFeature featureTypeForName:a3];
+    v4->_featureName = name;
+    v4->_featureType = [SGMIFeature featureTypeForName:name];
   }
 
   return v5;
@@ -380,49 +380,49 @@ id __36__SGMIFeature_allFeaturePrettyNames__block_invoke(uint64_t a1, void *a2)
   return [SGMIFeature prettyName:v2];
 }
 
-+ (id)prettyName:(int64_t)a3
++ (id)prettyName:(int64_t)name
 {
   v3 = @"None";
-  if (a3 <= 2006)
+  if (name <= 2006)
   {
-    if (a3 > 1003)
+    if (name > 1003)
     {
-      if (a3 > 1999)
+      if (name > 1999)
       {
         v4 = @"PrivateSortedToRecipients";
         v15 = @"PrivateToRecipientsPairs";
         v16 = @"PrivateSortedCCRecipients";
-        if (a3 != 2006)
+        if (name != 2006)
         {
           v16 = @"None";
         }
 
-        if (a3 != 2005)
+        if (name != 2005)
         {
           v15 = v16;
         }
 
-        if (a3 != 2004)
+        if (name != 2004)
         {
           v4 = v15;
         }
 
-        if (a3 == 2003)
+        if (name == 2003)
         {
           v3 = @"PrivateSenderFrom";
         }
 
-        if (a3 == 2001)
+        if (name == 2001)
         {
           v3 = @"PrivateTokenizedSubject";
         }
 
-        if (a3 == 2000)
+        if (name == 2000)
         {
           v3 = @"PrivateSubject";
         }
 
-        v7 = a3 <= 2003;
+        v7 = name <= 2003;
       }
 
       else
@@ -430,76 +430,76 @@ id __36__SGMIFeature_allFeaturePrettyNames__block_invoke(uint64_t a1, void *a2)
         v4 = @"ListIdProbability";
         v9 = @"ConversationIdProbability";
         v10 = @"PredictedAttachment";
-        if (a3 != 1100)
+        if (name != 1100)
         {
           v10 = @"None";
         }
 
-        if (a3 != 1008)
+        if (name != 1008)
         {
           v9 = v10;
         }
 
-        if (a3 != 1007)
+        if (name != 1007)
         {
           v4 = v9;
         }
 
-        if (a3 == 1006)
+        if (name == 1006)
         {
           v3 = @"AttachmentHistogramProbability";
         }
 
-        if (a3 == 1005)
+        if (name == 1005)
         {
           v3 = @"PersonFromSenderInDyadicConversationProbability";
         }
 
-        if (a3 == 1004)
+        if (name == 1004)
         {
           v3 = @"DomainFromSenderProbability";
         }
 
-        v7 = a3 <= 1006;
+        v7 = name <= 1006;
       }
     }
 
-    else if (a3 > 6)
+    else if (name > 6)
     {
       v4 = @"PersonToRecipientsProbability";
       v13 = @"PersonCCRecipientsProbability";
       v14 = @"SubjectContentProbability";
-      if (a3 != 1003)
+      if (name != 1003)
       {
         v14 = @"None";
       }
 
-      if (a3 != 1002)
+      if (name != 1002)
       {
         v13 = v14;
       }
 
-      if (a3 != 1001)
+      if (name != 1001)
       {
         v4 = v13;
       }
 
-      if (a3 == 1000)
+      if (name == 1000)
       {
         v3 = @"PersonFromSenderProbability";
       }
 
-      if (a3 == 8)
+      if (name == 8)
       {
         v3 = @"EmailAgeInDays";
       }
 
-      if (a3 == 7)
+      if (name == 7)
       {
         v3 = @"SenderConnectionScore";
       }
 
-      v7 = a3 <= 1000;
+      v7 = name <= 1000;
     }
 
     else
@@ -507,37 +507,37 @@ id __36__SGMIFeature_allFeaturePrettyNames__block_invoke(uint64_t a1, void *a2)
       v4 = @"AttachmentHistogramMedia";
       v5 = @"AttachmentHistogramApplication";
       v6 = @"AttachmentHistogramOthers";
-      if (a3 != 6)
+      if (name != 6)
       {
         v6 = @"None";
       }
 
-      if (a3 != 5)
+      if (name != 5)
       {
         v5 = v6;
       }
 
-      if (a3 != 4)
+      if (name != 4)
       {
         v4 = v5;
       }
 
-      if (a3 == 3)
+      if (name == 3)
       {
         v3 = @"SenderIsVIP";
       }
 
-      if (a3 == 2)
+      if (name == 2)
       {
         v3 = @"SubjectWordCount";
       }
 
-      if (a3 == 1)
+      if (name == 1)
       {
         v3 = @"SubjectLength";
       }
 
-      v7 = a3 <= 3;
+      v7 = name <= 3;
     }
 
 LABEL_73:
@@ -552,46 +552,46 @@ LABEL_73:
     }
   }
 
-  if (a3 <= 2100)
+  if (name <= 2100)
   {
     v4 = @"PrivateAttachmentHistogram";
     v11 = @"PrivateListId";
     v12 = @"PrivateConversationId";
-    if (a3 != 2016)
+    if (name != 2016)
     {
       v12 = @"None";
     }
 
-    if (a3 != 2015)
+    if (name != 2015)
     {
       v11 = v12;
     }
 
-    if (a3 != 2012)
+    if (name != 2012)
     {
       v4 = v11;
     }
 
-    if (a3 == 2011)
+    if (name == 2011)
     {
       v3 = @"PrivateSenderFromInDyadicConversation";
     }
 
-    if (a3 == 2010)
+    if (name == 2010)
     {
       v3 = @"SenderFullEmailDomain";
     }
 
-    if (a3 == 2007)
+    if (name == 2007)
     {
       v3 = @"PrivateCCRecipientsPairs";
     }
 
-    v7 = a3 <= 2011;
+    v7 = name <= 2011;
     goto LABEL_73;
   }
 
-  switch(a3)
+  switch(name)
   {
     case 3000:
       result = @"ScrolledToEnd";
@@ -642,12 +642,12 @@ LABEL_73:
       result = @"LinkClicked";
       break;
     default:
-      if (a3 == 2102)
+      if (name == 2102)
       {
         v3 = @"PrivateHTMLBodyTextContentLanguageIdentifier";
       }
 
-      if (a3 == 2101)
+      if (name == 2101)
       {
         result = @"PrivateHTMLBodyTextContent";
       }
@@ -704,26 +704,26 @@ void __33__SGMIFeature_submodeledFeatures__block_invoke()
   v12 = *MEMORY[0x277D85DE8];
 }
 
-+ (int64_t)featureTypeForName:(int64_t)a3
++ (int64_t)featureTypeForName:(int64_t)name
 {
-  if (a3 <= 2006)
+  if (name <= 2006)
   {
-    if (a3 > 1003)
+    if (name > 1003)
     {
       v3 = 4;
       v14 = 4;
       v15 = 4;
-      if (a3 != 2006)
+      if (name != 2006)
       {
         v15 = 0;
       }
 
-      if (a3 != 2005)
+      if (name != 2005)
       {
         v14 = v15;
       }
 
-      if (a3 != 2004)
+      if (name != 2004)
       {
         v3 = v14;
       }
@@ -731,85 +731,85 @@ void __33__SGMIFeature_submodeledFeatures__block_invoke()
       v16 = 3;
       v17 = 4;
       v18 = 3;
-      if (a3 != 2003)
+      if (name != 2003)
       {
         v18 = 0;
       }
 
-      if (a3 != 2001)
+      if (name != 2001)
       {
         v17 = v18;
       }
 
-      if (a3 != 2000)
+      if (name != 2000)
       {
         v16 = v17;
       }
 
-      if (a3 <= 2003)
+      if (name <= 2003)
       {
         v3 = v16;
       }
 
       v7 = 1;
       v19 = 1;
-      if (a3 != 1008)
+      if (name != 1008)
       {
-        v19 = a3 == 1100;
+        v19 = name == 1100;
       }
 
-      if (a3 != 1007)
+      if (name != 1007)
       {
         v7 = v19;
       }
 
       v20 = 1;
       v21 = 1;
-      if (a3 != 1005)
+      if (name != 1005)
       {
-        v21 = a3 == 1006;
+        v21 = name == 1006;
       }
 
-      if (a3 != 1004)
+      if (name != 1004)
       {
         v20 = v21;
       }
 
-      if (a3 <= 1006)
+      if (name <= 1006)
       {
         v7 = v20;
       }
 
-      v12 = a3 <= 1999;
+      v12 = name <= 1999;
     }
 
     else
     {
       v3 = 1;
       v4 = 1;
-      if (a3 != 1002)
+      if (name != 1002)
       {
-        v4 = a3 == 1003;
+        v4 = name == 1003;
       }
 
-      if (a3 != 1001)
+      if (name != 1001)
       {
         v3 = v4;
       }
 
       v5 = 1;
       v6 = 1;
-      if (a3 != 8)
+      if (name != 8)
       {
-        v6 = a3 == 1000;
+        v6 = name == 1000;
       }
 
-      if (a3 != 7)
+      if (name != 7)
       {
         v5 = v6;
       }
 
-      if (a3 <= 1000)
+      if (name <= 1000)
       {
         v3 = v5;
       }
@@ -817,39 +817,39 @@ void __33__SGMIFeature_submodeledFeatures__block_invoke()
       v7 = 2;
       v8 = 2;
       v9 = 2;
-      if (a3 != 6)
+      if (name != 6)
       {
         v9 = 0;
       }
 
-      if (a3 != 5)
+      if (name != 5)
       {
         v8 = v9;
       }
 
-      if (a3 != 4)
+      if (name != 4)
       {
         v7 = v8;
       }
 
       v10 = 1;
       v11 = 1;
-      if (a3 != 2)
+      if (name != 2)
       {
-        v11 = a3 == 3;
+        v11 = name == 3;
       }
 
-      if (a3 != 1)
+      if (name != 1)
       {
         v10 = v11;
       }
 
-      if (a3 <= 3)
+      if (name <= 3)
       {
         v7 = v10;
       }
 
-      v12 = a3 <= 6;
+      v12 = name <= 6;
     }
 
 LABEL_67:
@@ -864,22 +864,22 @@ LABEL_67:
     }
   }
 
-  if (a3 <= 2100)
+  if (name <= 2100)
   {
     v3 = 4;
     v22 = 3;
     v23 = 3;
-    if (a3 != 2016)
+    if (name != 2016)
     {
       v23 = 0;
     }
 
-    if (a3 != 2015)
+    if (name != 2015)
     {
       v22 = v23;
     }
 
-    if (a3 != 2012)
+    if (name != 2012)
     {
       v3 = v22;
     }
@@ -887,26 +887,26 @@ LABEL_67:
     v7 = 4;
     v24 = 3;
     v25 = 3;
-    if (a3 != 2011)
+    if (name != 2011)
     {
       v25 = 0;
     }
 
-    if (a3 != 2010)
+    if (name != 2010)
     {
       v24 = v25;
     }
 
-    if (a3 != 2007)
+    if (name != 2007)
     {
       v7 = v24;
     }
 
-    v12 = a3 <= 2011;
+    v12 = name <= 2011;
     goto LABEL_67;
   }
 
-  switch(a3)
+  switch(name)
   {
     case 3000:
     case 3001:
@@ -928,12 +928,12 @@ LABEL_67:
       break;
     default:
       v26 = 3;
-      if (a3 != 2102)
+      if (name != 2102)
       {
         v26 = 0;
       }
 
-      if (a3 == 2101)
+      if (name == 2101)
       {
         result = 3;
       }

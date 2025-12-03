@@ -3,11 +3,11 @@
 + (id)sharedInstance;
 - (_GCGameOverlayMonitor)init;
 - (void)_refreshState;
-- (void)addObserver:(id)a3;
-- (void)addObserver:(id)a3 notifyCurrent:(BOOL)a4;
+- (void)addObserver:(id)observer;
+- (void)addObserver:(id)observer notifyCurrent:(BOOL)current;
 - (void)dealloc;
 - (void)init;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation _GCGameOverlayMonitor
@@ -98,16 +98,16 @@
   [(_GCGameOverlayMonitor *)&v5 dealloc];
 }
 
-- (void)addObserver:(id)a3 notifyCurrent:(BOOL)a4
+- (void)addObserver:(id)observer notifyCurrent:(BOOL)current
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4)
+  currentCopy = current;
+  observerCopy = observer;
+  if (currentCopy)
   {
     if ([MEMORY[0x1E696AF00] isMainThread])
     {
-      [(_GCGameOverlayMonitor *)self addObserver:v6];
-      [v6 gameOverlayPresentationChanged:{-[_GCGameOverlayMonitor isOverlayPresented](self, "isOverlayPresented")}];
+      [(_GCGameOverlayMonitor *)self addObserver:observerCopy];
+      [observerCopy gameOverlayPresentationChanged:{-[_GCGameOverlayMonitor isOverlayPresented](self, "isOverlayPresented")}];
     }
 
     else
@@ -117,33 +117,33 @@
       v7[2] = __51___GCGameOverlayMonitor_addObserver_notifyCurrent___block_invoke;
       v7[3] = &unk_1E8418C50;
       v7[4] = self;
-      v8 = v6;
+      v8 = observerCopy;
       dispatch_async(MEMORY[0x1E69E96A0], v7);
     }
   }
 
   else
   {
-    [(_GCGameOverlayMonitor *)self addObserver:v6];
+    [(_GCGameOverlayMonitor *)self addObserver:observerCopy];
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSMutableSet *)v4->_observers addObject:v5];
-  objc_sync_exit(v4);
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableSet *)selfCopy->_observers addObject:observerCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSMutableSet *)v4->_observers removeObject:v5];
-  objc_sync_exit(v4);
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableSet *)selfCopy->_observers removeObject:observerCopy];
+  objc_sync_exit(selfCopy);
 }
 
 + (BOOL)currentProcessIsOverlayUI
@@ -159,9 +159,9 @@
 - (void)_refreshState
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v2 = a1[5];
+    v2 = self[5];
     if (v2)
     {
       state64 = 0;
@@ -183,7 +183,7 @@
 
       else
       {
-        [a1 setOverlayPresented:state64 != 0];
+        [self setOverlayPresented:state64 != 0];
       }
     }
   }
@@ -194,11 +194,11 @@
 - (void)init
 {
   v6 = *MEMORY[0x1E69E9840];
-  if (os_log_type_enabled(a1, OS_LOG_TYPE_ERROR))
+  if (os_log_type_enabled(self, OS_LOG_TYPE_ERROR))
   {
     v5[0] = 67109120;
     v5[1] = a2;
-    _os_log_error_impl(&dword_1D2CD5000, a1, OS_LOG_TYPE_ERROR, "Failed to register for 'dashboardVisibilityChanged' notification: %#x", v5, 8u);
+    _os_log_error_impl(&dword_1D2CD5000, self, OS_LOG_TYPE_ERROR, "Failed to register for 'dashboardVisibilityChanged' notification: %#x", v5, 8u);
   }
 
   v4 = *MEMORY[0x1E69E9840];

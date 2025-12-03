@@ -1,15 +1,15 @@
 @interface EKUIDividedGridViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)canBecomeFocused;
 @end
 
 @implementation EKUIDividedGridViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"EKUIDividedGridViewCell" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"UIView" hasInstanceMethod:@"canBecomeFocused" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"EKUIDividedGridViewCell" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"UIView" hasInstanceMethod:@"canBecomeFocused" withFullSignature:{"B", 0}];
 }
 
 - (BOOL)canBecomeFocused

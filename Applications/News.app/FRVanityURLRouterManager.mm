@@ -1,8 +1,8 @@
 @interface FRVanityURLRouterManager
-- (BOOL)handleOpenURL:(id)a3 options:(id)a4 analyticsReferral:(id)a5;
+- (BOOL)handleOpenURL:(id)l options:(id)options analyticsReferral:(id)referral;
 - (FRVanityURLRouterManager)init;
-- (FRVanityURLRouterManager)initWithAnalyticsReferralFactory:(id)a3 redirectService:(id)a4 routerManager:(id)a5;
-- (void)addRoutable:(id)a3;
+- (FRVanityURLRouterManager)initWithAnalyticsReferralFactory:(id)factory redirectService:(id)service routerManager:(id)manager;
+- (void)addRoutable:(id)routable;
 @end
 
 @implementation FRVanityURLRouterManager
@@ -30,21 +30,21 @@
   objc_exception_throw(v4);
 }
 
-- (FRVanityURLRouterManager)initWithAnalyticsReferralFactory:(id)a3 redirectService:(id)a4 routerManager:(id)a5
+- (FRVanityURLRouterManager)initWithAnalyticsReferralFactory:(id)factory redirectService:(id)service routerManager:(id)manager
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  factoryCopy = factory;
+  serviceCopy = service;
+  managerCopy = manager;
+  if (!factoryCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_10006F76C();
-    if (v10)
+    if (serviceCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v10)
+  else if (serviceCopy)
   {
     goto LABEL_6;
   }
@@ -55,7 +55,7 @@
   }
 
 LABEL_6:
-  if (!v11 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  if (!managerCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_10006F8F4();
   }
@@ -66,21 +66,21 @@ LABEL_6:
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_analyticsReferralFactory, a3);
-    objc_storeStrong(&v13->_redirectService, a4);
-    objc_storeStrong(&v13->_routerManager, a5);
+    objc_storeStrong(&v12->_analyticsReferralFactory, factory);
+    objc_storeStrong(&v13->_redirectService, service);
+    objc_storeStrong(&v13->_routerManager, manager);
   }
 
   return v13;
 }
 
-- (BOOL)handleOpenURL:(id)a3 options:(id)a4 analyticsReferral:(id)a5
+- (BOOL)handleOpenURL:(id)l options:(id)options analyticsReferral:(id)referral
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(FRVanityURLRouterManager *)self redirectService];
-  v12 = [v11 destinationURLForURL:v8];
+  lCopy = l;
+  optionsCopy = options;
+  referralCopy = referral;
+  redirectService = [(FRVanityURLRouterManager *)self redirectService];
+  v12 = [redirectService destinationURLForURL:lCopy];
 
   v13 = FRNavigationLog;
   if (os_log_type_enabled(FRNavigationLog, OS_LOG_TYPE_DEFAULT))
@@ -88,35 +88,35 @@ LABEL_6:
     v21 = 138543618;
     v22 = v12;
     v23 = 2114;
-    v24 = v8;
+    v24 = lCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "VanityURL manager has destination URL <%{public}@> for URL <%{public}@>", &v21, 0x16u);
   }
 
   if (v12)
   {
     v14 = v12;
-    v15 = [(FRVanityURLRouterManager *)self analyticsReferralFactory];
-    v16 = [v9 objectForKeyedSubscript:UIApplicationOpenURLOptionsSourceApplicationKey];
-    v17 = [v15 analyticsReferralForURL:v14 sourceApplication:v16];
+    analyticsReferralFactory = [(FRVanityURLRouterManager *)self analyticsReferralFactory];
+    v16 = [optionsCopy objectForKeyedSubscript:UIApplicationOpenURLOptionsSourceApplicationKey];
+    v17 = [analyticsReferralFactory analyticsReferralForURL:v14 sourceApplication:v16];
   }
 
   else
   {
-    v14 = v8;
-    v17 = v10;
+    v14 = lCopy;
+    v17 = referralCopy;
   }
 
-  v18 = [(FRVanityURLRouterManager *)self routerManager];
-  v19 = [v18 handleOpenURL:v14 options:v9 analyticsReferral:v17];
+  routerManager = [(FRVanityURLRouterManager *)self routerManager];
+  v19 = [routerManager handleOpenURL:v14 options:optionsCopy analyticsReferral:v17];
 
   return v19;
 }
 
-- (void)addRoutable:(id)a3
+- (void)addRoutable:(id)routable
 {
-  v4 = a3;
-  v5 = [(FRVanityURLRouterManager *)self routerManager];
-  [v5 addRoutable:v4];
+  routableCopy = routable;
+  routerManager = [(FRVanityURLRouterManager *)self routerManager];
+  [routerManager addRoutable:routableCopy];
 }
 
 @end

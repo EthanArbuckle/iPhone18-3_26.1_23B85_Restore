@@ -1,50 +1,50 @@
 @interface _PXStoryDummyDisplayAssetsFetchResult
-- (BOOL)containsObject:(id)a3;
+- (BOOL)containsObject:(id)object;
 - (PXDisplayAsset)firstObject;
 - (PXDisplayAsset)lastObject;
-- (_PXStoryDummyDisplayAssetsFetchResult)initWithResourcesDataSource:(id)a3;
-- (id)objectAtIndex:(unint64_t)a3;
-- (id)objectsAtIndexes:(id)a3;
-- (id)storyDisplayAssetAtIndex:(int64_t)a3;
-- (id)thumbnailAssetAtIndex:(unint64_t)a3;
-- (unint64_t)cachedCountOfAssetsWithMediaType:(int64_t)a3;
-- (unint64_t)countOfAssetsWithMediaType:(int64_t)a3;
-- (void)configureWithRange:(_NSRange)a3;
+- (_PXStoryDummyDisplayAssetsFetchResult)initWithResourcesDataSource:(id)source;
+- (id)objectAtIndex:(unint64_t)index;
+- (id)objectsAtIndexes:(id)indexes;
+- (id)storyDisplayAssetAtIndex:(int64_t)index;
+- (id)thumbnailAssetAtIndex:(unint64_t)index;
+- (unint64_t)cachedCountOfAssetsWithMediaType:(int64_t)type;
+- (unint64_t)countOfAssetsWithMediaType:(int64_t)type;
+- (void)configureWithRange:(_NSRange)range;
 - (void)dealloc;
-- (void)setCount:(int64_t)a3;
+- (void)setCount:(int64_t)count;
 @end
 
 @implementation _PXStoryDummyDisplayAssetsFetchResult
 
-- (id)thumbnailAssetAtIndex:(unint64_t)a3
+- (id)thumbnailAssetAtIndex:(unint64_t)index
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"PXStoryDummyTimelineProducer.m" lineNumber:198 description:{@"%s not implemented yet", "-[_PXStoryDummyDisplayAssetsFetchResult thumbnailAssetAtIndex:]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryDummyTimelineProducer.m" lineNumber:198 description:{@"%s not implemented yet", "-[_PXStoryDummyDisplayAssetsFetchResult thumbnailAssetAtIndex:]"}];
 
   abort();
 }
 
-- (unint64_t)cachedCountOfAssetsWithMediaType:(int64_t)a3
+- (unint64_t)cachedCountOfAssetsWithMediaType:(int64_t)type
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"PXStoryDummyTimelineProducer.m" lineNumber:194 description:{@"%s not implemented yet", "-[_PXStoryDummyDisplayAssetsFetchResult cachedCountOfAssetsWithMediaType:]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryDummyTimelineProducer.m" lineNumber:194 description:{@"%s not implemented yet", "-[_PXStoryDummyDisplayAssetsFetchResult cachedCountOfAssetsWithMediaType:]"}];
 
   abort();
 }
 
-- (unint64_t)countOfAssetsWithMediaType:(int64_t)a3
+- (unint64_t)countOfAssetsWithMediaType:(int64_t)type
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"PXStoryDummyTimelineProducer.m" lineNumber:190 description:{@"%s not implemented yet", "-[_PXStoryDummyDisplayAssetsFetchResult countOfAssetsWithMediaType:]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryDummyTimelineProducer.m" lineNumber:190 description:{@"%s not implemented yet", "-[_PXStoryDummyDisplayAssetsFetchResult countOfAssetsWithMediaType:]"}];
 
   abort();
 }
 
-- (BOOL)containsObject:(id)a3
+- (BOOL)containsObject:(id)object
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PXStoryDummyTimelineProducer.m" lineNumber:186 description:{@"%s not implemented yet", "-[_PXStoryDummyDisplayAssetsFetchResult containsObject:]"}];
+  objectCopy = object;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryDummyTimelineProducer.m" lineNumber:186 description:{@"%s not implemented yet", "-[_PXStoryDummyDisplayAssetsFetchResult containsObject:]"}];
 
   abort();
 }
@@ -80,24 +80,24 @@
   return v3;
 }
 
-- (id)objectsAtIndexes:(id)a3
+- (id)objectsAtIndexes:(id)indexes
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PXStoryDummyTimelineProducer.m" lineNumber:173 description:{@"%s not implemented yet", "-[_PXStoryDummyDisplayAssetsFetchResult objectsAtIndexes:]"}];
+  indexesCopy = indexes;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryDummyTimelineProducer.m" lineNumber:173 description:{@"%s not implemented yet", "-[_PXStoryDummyDisplayAssetsFetchResult objectsAtIndexes:]"}];
 
   abort();
 }
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
-  v3 = [(PXStoryResourcesDataSource *)self->_resourcesDataSource displayAssetResourceAtIndex:self->_resourceIndexes[a3]];
-  v4 = [v3 px_storyResourceDisplayAsset];
+  v3 = [(PXStoryResourcesDataSource *)self->_resourcesDataSource displayAssetResourceAtIndex:self->_resourceIndexes[index]];
+  px_storyResourceDisplayAsset = [v3 px_storyResourceDisplayAsset];
 
-  return v4;
+  return px_storyResourceDisplayAsset;
 }
 
-- (id)storyDisplayAssetAtIndex:(int64_t)a3
+- (id)storyDisplayAssetAtIndex:(int64_t)index
 {
   asset = self->_asset;
   if (!asset)
@@ -109,26 +109,26 @@
     asset = self->_asset;
   }
 
-  [(PXStoryReusableDisplayAsset *)asset configureWithDisplayResourceIndex:self->_resourceIndexes[a3] resourcesDataSource:self->_resourcesDataSource];
+  [(PXStoryReusableDisplayAsset *)asset configureWithDisplayResourceIndex:self->_resourceIndexes[index] resourcesDataSource:self->_resourcesDataSource];
   v8 = self->_asset;
 
   return v8;
 }
 
-- (void)setCount:(int64_t)a3
+- (void)setCount:(int64_t)count
 {
-  if (self->_count != a3)
+  if (self->_count != count)
   {
-    self->_count = a3;
+    self->_count = count;
     _PXGArrayCapacityResizeToCount();
   }
 }
 
-- (void)configureWithRange:(_NSRange)a3
+- (void)configureWithRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  [(_PXStoryDummyDisplayAssetsFetchResult *)self setCount:a3.length];
+  length = range.length;
+  location = range.location;
+  [(_PXStoryDummyDisplayAssetsFetchResult *)self setCount:range.length];
   if (length)
   {
     v6 = (length + 1) & 0xFFFFFFFFFFFFFFFELL;
@@ -167,16 +167,16 @@
   [(_PXStoryDummyDisplayAssetsFetchResult *)&v3 dealloc];
 }
 
-- (_PXStoryDummyDisplayAssetsFetchResult)initWithResourcesDataSource:(id)a3
+- (_PXStoryDummyDisplayAssetsFetchResult)initWithResourcesDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v9.receiver = self;
   v9.super_class = _PXStoryDummyDisplayAssetsFetchResult;
   v6 = [(_PXStoryDummyDisplayAssetsFetchResult *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_resourcesDataSource, a3);
+    objc_storeStrong(&v6->_resourcesDataSource, source);
   }
 
   return v7;

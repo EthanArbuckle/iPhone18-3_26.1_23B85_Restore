@@ -1,23 +1,23 @@
 @interface SFSearchBarWithSeparator
-- (SFSearchBarWithSeparator)initWithFrame:(CGRect)a3;
+- (SFSearchBarWithSeparator)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation SFSearchBarWithSeparator
 
-- (SFSearchBarWithSeparator)initWithFrame:(CGRect)a3
+- (SFSearchBarWithSeparator)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = SFSearchBarWithSeparator;
-  v3 = [(SFSearchBarWithSeparator *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SFSearchBarWithSeparator *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DD250]);
     separatorView = v3->_separatorView;
     v3->_separatorView = v4;
 
-    v6 = [MEMORY[0x1E69DC888] tableSeparatorDarkColor];
-    [(UIView *)v3->_separatorView setBackgroundColor:v6];
+    tableSeparatorDarkColor = [MEMORY[0x1E69DC888] tableSeparatorDarkColor];
+    [(UIView *)v3->_separatorView setBackgroundColor:tableSeparatorDarkColor];
 
     [(SFSearchBarWithSeparator *)v3 addSubview:v3->_separatorView];
     v7 = v3;

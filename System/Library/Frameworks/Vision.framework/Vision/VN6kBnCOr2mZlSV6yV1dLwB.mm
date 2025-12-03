@@ -1,65 +1,65 @@
 @interface VN6kBnCOr2mZlSV6yV1dLwB
-+ (BOOL)warmUpSession:(id)a3 error:(id *)a4;
++ (BOOL)warmUpSession:(id)session error:(id *)error;
 + (const)dependentRequestCompatibility;
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5;
-- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)a3;
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error;
+- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)configuration;
 - (VN6Ac6Cyl5O5oK19HboyMBR)inputSignatureprint;
-- (VN6kBnCOr2mZlSV6yV1dLwB)initWithImageSignatureprintType:(unint64_t)a3 imageSignatureHashType:(unint64_t)a4 completionHandler:(id)a5;
+- (VN6kBnCOr2mZlSV6yV1dLwB)initWithImageSignatureprintType:(unint64_t)type imageSignatureHashType:(unint64_t)hashType completionHandler:(id)handler;
 - (id)description;
-- (id)imageSignaturnprintByRunningNeuralHashprintRequest:(id)a3 error:(id *)a4;
-- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)a3 session:(id)a4;
+- (id)imageSignaturnprintByRunningNeuralHashprintRequest:(id)request error:(id *)error;
+- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)revision session:(id)session;
 - (unint64_t)imageSignatureHashType;
 - (unint64_t)imageSignatureprintType;
-- (void)applyConfigurationOfRequest:(id)a3;
-- (void)setImageSignatureHashType:(unint64_t)a3;
-- (void)setImageSignatureprintType:(unint64_t)a3;
-- (void)setInputSignatureprint:(id)a3;
+- (void)applyConfigurationOfRequest:(id)request;
+- (void)setImageSignatureHashType:(unint64_t)type;
+- (void)setImageSignatureprintType:(unint64_t)type;
+- (void)setInputSignatureprint:(id)signatureprint;
 @end
 
 @implementation VN6kBnCOr2mZlSV6yV1dLwB
 
-- (id)imageSignaturnprintByRunningNeuralHashprintRequest:(id)a3 error:(id *)a4
+- (id)imageSignaturnprintByRunningNeuralHashprintRequest:(id)request error:(id *)error
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  requestCopy = request;
   v7 = objc_alloc_init(VNCreateNeuralHashprintRequest);
   [(VNRequest *)v7 setRevision:1];
-  v8 = [v6 requestPerformerAndReturnError:a4];
-  if (!v8 || (v19[0] = v7, [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "performDependentRequests:onBehalfOfRequest:inContext:error:", v9, self, v6, a4), v9, (v10 & 1) == 0))
+  v8 = [requestCopy requestPerformerAndReturnError:error];
+  if (!v8 || (v19[0] = v7, [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "performDependentRequests:onBehalfOfRequest:inContext:error:", v9, self, requestCopy, error), v9, (v10 & 1) == 0))
   {
 LABEL_8:
     v16 = 0;
     goto LABEL_9;
   }
 
-  v11 = [(VNRequest *)v7 results];
-  v12 = [v11 count] == 1;
+  results = [(VNRequest *)v7 results];
+  v12 = [results count] == 1;
 
   if (!v12)
   {
-    if (a4)
+    if (error)
     {
       [VNError errorForInvalidArgumentWithLocalizedDescription:@"Internal error creating sceneprint"];
-      *a4 = v16 = 0;
+      *error = v16 = 0;
       goto LABEL_9;
     }
 
     goto LABEL_8;
   }
 
-  v13 = [(VNRequest *)v7 results];
-  v14 = [v13 firstObject];
+  results2 = [(VNRequest *)v7 results];
+  firstObject = [results2 firstObject];
 
-  v15 = [v14 imageNeuralHashprint];
-  v16 = v15;
-  if (v15)
+  imageNeuralHashprint = [firstObject imageNeuralHashprint];
+  v16 = imageNeuralHashprint;
+  if (imageNeuralHashprint)
   {
-    v17 = v15;
+    v17 = imageNeuralHashprint;
   }
 
-  else if (a4)
+  else if (error)
   {
-    *a4 = [VNError errorForInvalidArgumentWithLocalizedDescription:@"Internal error while creating image signature print"];
+    *error = [VNError errorForInvalidArgumentWithLocalizedDescription:@"Internal error while creating image signature print"];
   }
 
 LABEL_9:
@@ -67,16 +67,16 @@ LABEL_9:
   return v16;
 }
 
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = [v8 imageBufferAndReturnError:a5];
-  if (v9 && [(VNRequest *)self validateImageBuffer:v9 ofNonZeroWidth:0 andHeight:0 error:a5])
+  contextCopy = context;
+  v9 = [contextCopy imageBufferAndReturnError:error];
+  if (v9 && [(VNRequest *)self validateImageBuffer:v9 ofNonZeroWidth:0 andHeight:0 error:error])
   {
-    v10 = [v8 session];
+    session = [contextCopy session];
     v20 = 0;
-    v11 = [(VNRequest *)self applicableDetectorAndOptions:&v20 forRevision:a3 loadedInSession:v10 error:a5];
+    v11 = [(VNRequest *)self applicableDetectorAndOptions:&v20 forRevision:revision loadedInSession:session error:error];
     v12 = v20;
     if (!v11)
     {
@@ -86,29 +86,29 @@ LABEL_18:
       goto LABEL_19;
     }
 
-    v13 = [(VN6kBnCOr2mZlSV6yV1dLwB *)self inputSignatureprint];
-    if (!v13)
+    inputSignatureprint = [(VN6kBnCOr2mZlSV6yV1dLwB *)self inputSignatureprint];
+    if (!inputSignatureprint)
     {
       if ([(VN6kBnCOr2mZlSV6yV1dLwB *)self imageSignatureprintType]!= 3)
       {
-        v13 = 0;
+        inputSignatureprint = 0;
         goto LABEL_14;
       }
 
-      v13 = [(VN6kBnCOr2mZlSV6yV1dLwB *)self imageSignaturnprintByRunningNeuralHashprintRequest:v8 error:a5];
-      if (!v13)
+      inputSignatureprint = [(VN6kBnCOr2mZlSV6yV1dLwB *)self imageSignaturnprintByRunningNeuralHashprintRequest:contextCopy error:error];
+      if (!inputSignatureprint)
       {
         goto LABEL_12;
       }
     }
 
-    v14 = [v13 imageSignatureprintType];
-    if (v14 != [(VN6kBnCOr2mZlSV6yV1dLwB *)self imageSignatureprintType])
+    imageSignatureprintType = [inputSignatureprint imageSignatureprintType];
+    if (imageSignatureprintType != [(VN6kBnCOr2mZlSV6yV1dLwB *)self imageSignatureprintType])
     {
-      if (a5)
+      if (error)
       {
         [VNError errorForInvalidArgumentWithLocalizedDescription:@"Mismatch in signature print type"];
-        *a5 = v15 = 0;
+        *error = v15 = 0;
 LABEL_17:
 
         goto LABEL_18;
@@ -124,10 +124,10 @@ LABEL_14:
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1];
     [v12 setObject:v16 forKeyedSubscript:@"VNDetectorProcessOption_InputImageBuffers"];
 
-    [v12 setObject:v13 forKeyedSubscript:@"VNImageSignatureDetectorProcessOption_ImageSignatureprintInput"];
-    v17 = [v8 qosClass];
+    [v12 setObject:inputSignatureprint forKeyedSubscript:@"VNImageSignatureDetectorProcessOption_ImageSignatureprintInput"];
+    qosClass = [contextCopy qosClass];
     [(VNImageBasedRequest *)self regionOfInterest];
-    v18 = [v11 processUsingQualityOfServiceClass:v17 options:v12 regionOfInterest:self warningRecorder:a5 error:0 progressHandler:?];
+    v18 = [v11 processUsingQualityOfServiceClass:qosClass options:v12 regionOfInterest:self warningRecorder:error error:0 progressHandler:?];
     v15 = v18 != 0;
     if (v18)
     {
@@ -143,62 +143,62 @@ LABEL_19:
   return v15;
 }
 
-- (void)setImageSignatureHashType:(unint64_t)a3
+- (void)setImageSignatureHashType:(unint64_t)type
 {
-  v4 = [(VNRequest *)self configuration];
-  [v4 setImageSignatureHashType:a3];
+  configuration = [(VNRequest *)self configuration];
+  [configuration setImageSignatureHashType:type];
 }
 
 - (unint64_t)imageSignatureHashType
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 imageSignatureHashType];
+  configuration = [(VNRequest *)self configuration];
+  imageSignatureHashType = [configuration imageSignatureHashType];
 
-  return v3;
+  return imageSignatureHashType;
 }
 
-- (void)setImageSignatureprintType:(unint64_t)a3
+- (void)setImageSignatureprintType:(unint64_t)type
 {
-  v4 = [(VNRequest *)self configuration];
-  [v4 setImageSignatureprintType:a3];
+  configuration = [(VNRequest *)self configuration];
+  [configuration setImageSignatureprintType:type];
 }
 
 - (unint64_t)imageSignatureprintType
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 imageSignatureprintType];
+  configuration = [(VNRequest *)self configuration];
+  imageSignatureprintType = [configuration imageSignatureprintType];
 
-  return v3;
+  return imageSignatureprintType;
 }
 
-- (void)setInputSignatureprint:(id)a3
+- (void)setInputSignatureprint:(id)signatureprint
 {
-  v5 = a3;
-  v4 = [(VNRequest *)self configuration];
-  [v4 setInputSignatureprint:v5];
-  if (v5)
+  signatureprintCopy = signatureprint;
+  configuration = [(VNRequest *)self configuration];
+  [configuration setInputSignatureprint:signatureprintCopy];
+  if (signatureprintCopy)
   {
-    -[VN6kBnCOr2mZlSV6yV1dLwB setImageSignatureprintType:](self, "setImageSignatureprintType:", [v5 imageSignatureprintType]);
+    -[VN6kBnCOr2mZlSV6yV1dLwB setImageSignatureprintType:](self, "setImageSignatureprintType:", [signatureprintCopy imageSignatureprintType]);
   }
 }
 
 - (VN6Ac6Cyl5O5oK19HboyMBR)inputSignatureprint
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 inputSignatureprint];
+  configuration = [(VNRequest *)self configuration];
+  inputSignatureprint = [configuration inputSignatureprint];
 
-  return v3;
+  return inputSignatureprint;
 }
 
-- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)a3
+- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [v4 imageSignatureprintType];
-  if (v5 == -[VN6kBnCOr2mZlSV6yV1dLwB imageSignatureprintType](self, "imageSignatureprintType") && (v6 = [v4 imageSignatureHashType], v6 == -[VN6kBnCOr2mZlSV6yV1dLwB imageSignatureHashType](self, "imageSignatureHashType")) && (-[VN6kBnCOr2mZlSV6yV1dLwB inputSignatureprint](self, "inputSignatureprint"), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "inputSignatureprint"), v8 = objc_claimAutoreleasedReturnValue(), v9 = VisionCoreEqualOrNilObjects(), v8, v7, (v9 & 1) != 0))
+  configurationCopy = configuration;
+  imageSignatureprintType = [configurationCopy imageSignatureprintType];
+  if (imageSignatureprintType == -[VN6kBnCOr2mZlSV6yV1dLwB imageSignatureprintType](self, "imageSignatureprintType") && (v6 = [configurationCopy imageSignatureHashType], v6 == -[VN6kBnCOr2mZlSV6yV1dLwB imageSignatureHashType](self, "imageSignatureHashType")) && (-[VN6kBnCOr2mZlSV6yV1dLwB inputSignatureprint](self, "inputSignatureprint"), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(configurationCopy, "inputSignatureprint"), v8 = objc_claimAutoreleasedReturnValue(), v9 = VisionCoreEqualOrNilObjects(), v8, v7, (v9 & 1) != 0))
   {
     v12.receiver = self;
     v12.super_class = VN6kBnCOr2mZlSV6yV1dLwB;
-    v10 = [(VNImageBasedRequest *)&v12 willAcceptCachedResultsFromRequestWithConfiguration:v4];
+    v10 = [(VNImageBasedRequest *)&v12 willAcceptCachedResultsFromRequestWithConfiguration:configurationCopy];
   }
 
   else
@@ -209,39 +209,39 @@ LABEL_19:
   return v10;
 }
 
-- (VN6kBnCOr2mZlSV6yV1dLwB)initWithImageSignatureprintType:(unint64_t)a3 imageSignatureHashType:(unint64_t)a4 completionHandler:(id)a5
+- (VN6kBnCOr2mZlSV6yV1dLwB)initWithImageSignatureprintType:(unint64_t)type imageSignatureHashType:(unint64_t)hashType completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = 0;
-  if (a3 == 3 && a4 == 1)
+  handlerCopy = handler;
+  selfCopy = 0;
+  if (type == 3 && hashType == 1)
   {
     v12.receiver = self;
     v12.super_class = VN6kBnCOr2mZlSV6yV1dLwB;
-    v10 = [(VNRequest *)&v12 initWithCompletionHandler:v8];
+    v10 = [(VNRequest *)&v12 initWithCompletionHandler:handlerCopy];
     self = v10;
     if (v10)
     {
       [(VN6kBnCOr2mZlSV6yV1dLwB *)v10 setImageSignatureprintType:3];
       [(VN6kBnCOr2mZlSV6yV1dLwB *)self setImageSignatureHashType:1];
       self = self;
-      v9 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v9 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)a3 session:(id)a4
+- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)revision session:(id)session
 {
   v10.receiver = self;
   v10.super_class = VN6kBnCOr2mZlSV6yV1dLwB;
-  v6 = [(VNRequest *)&v10 newDefaultDetectorOptionsForRequestRevision:a3 session:a4];
-  if (a3 == 1)
+  v6 = [(VNRequest *)&v10 newDefaultDetectorOptionsForRequestRevision:revision session:session];
+  if (revision == 1)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[VN6kBnCOr2mZlSV6yV1dLwB imageSignatureprintType](self, "imageSignatureprintType")}];
     [v6 setObject:v7 forKeyedSubscript:@"VNImageSignatureDetectorInitOption_ImageSignatureprintType"];
@@ -253,33 +253,33 @@ LABEL_19:
   return v6;
 }
 
-- (void)applyConfigurationOfRequest:(id)a3
+- (void)applyConfigurationOfRequest:(id)request
 {
-  v4 = a3;
-  if (self != v4)
+  requestCopy = request;
+  if (self != requestCopy)
   {
     v6.receiver = self;
     v6.super_class = VN6kBnCOr2mZlSV6yV1dLwB;
-    [(VNImageBasedRequest *)&v6 applyConfigurationOfRequest:v4];
+    [(VNImageBasedRequest *)&v6 applyConfigurationOfRequest:requestCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = requestCopy;
       [(VN6kBnCOr2mZlSV6yV1dLwB *)self setImageSignatureprintType:[(VN6kBnCOr2mZlSV6yV1dLwB *)v5 imageSignatureprintType]];
       [(VN6kBnCOr2mZlSV6yV1dLwB *)self setImageSignatureHashType:[(VN6kBnCOr2mZlSV6yV1dLwB *)v5 imageSignatureHashType]];
     }
   }
 }
 
-+ (BOOL)warmUpSession:(id)a3 error:(id *)a4
++ (BOOL)warmUpSession:(id)session error:(id *)error
 {
-  v6 = a3;
-  v10.receiver = a1;
+  sessionCopy = session;
+  v10.receiver = self;
   v10.super_class = &OBJC_METACLASS___VN6kBnCOr2mZlSV6yV1dLwB;
-  if (objc_msgSendSuper2(&v10, sel_warmUpSession_error_, v6, a4))
+  if (objc_msgSendSuper2(&v10, sel_warmUpSession_error_, sessionCopy, error))
   {
     v7 = [[VN6kBnCOr2mZlSV6yV1dLwB alloc] initWithImageSignatureprintType:3 imageSignatureHashType:1];
-    v8 = [(VNRequest *)v7 warmUpSession:v6 error:a4];
+    v8 = [(VNRequest *)v7 warmUpSession:sessionCopy error:error];
   }
 
   else

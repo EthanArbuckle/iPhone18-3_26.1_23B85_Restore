@@ -1,27 +1,27 @@
 @interface StorageSettingsWrapper
 + (id)recommendationsShared;
-- (BOOL)applicationHasTips:(id)a3;
+- (BOOL)applicationHasTips:(id)tips;
 - (STDelegate)delegate;
 - (StorageSettingsWrapper)init;
-- (id)docPluginsForApp:(id)a3;
-- (id)docPluginsForAppIdentifier:(id)a3;
-- (id)externalDataPluginsForApp:(id)a3;
-- (id)externalDataPluginsForAppIdentifier:(id)a3;
-- (id)loadTipsOperation:(id)a3;
-- (id)tipsForApp:(id)a3;
-- (id)tipsWithIdentifier:(id)a3;
-- (id)usageBundleForIdentifier:(id)a3;
+- (id)docPluginsForApp:(id)app;
+- (id)docPluginsForAppIdentifier:(id)identifier;
+- (id)externalDataPluginsForApp:(id)app;
+- (id)externalDataPluginsForAppIdentifier:(id)identifier;
+- (id)loadTipsOperation:(id)operation;
+- (id)tipsForApp:(id)app;
+- (id)tipsWithIdentifier:(id)identifier;
+- (id)usageBundleForIdentifier:(id)identifier;
 - (void)_reloadAllTips;
 - (void)dealloc;
-- (void)enableTip:(id)a3;
+- (void)enableTip:(id)tip;
 - (void)loadPlugins;
 - (void)notifyTipsChanged;
 - (void)reloadAllTips;
-- (void)reloadTip:(id)a3;
-- (void)reloadTipsForPlugin:(id)a3;
+- (void)reloadTip:(id)tip;
+- (void)reloadTipsForPlugin:(id)plugin;
 - (void)startMonitor;
 - (void)stopMonitor;
-- (void)tipDidUpdate:(id)a3;
+- (void)tipDidUpdate:(id)update;
 @end
 
 @implementation StorageSettingsWrapper
@@ -130,7 +130,7 @@
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v38 = self;
+  selfCopy = self;
   obj = [(NSMutableDictionary *)self->_tipsByID allValues];
   v3 = [obj countByEnumeratingWithState:&v48 objects:v52 count:16];
   if (v3)
@@ -155,14 +155,14 @@
 
         v7 = *(*(&v48 + 1) + 8 * i);
         v8 = objc_alloc_init(STRecommendation);
-        v9 = [v7 title];
-        [(STRecommendation *)v8 setTitle:v9];
+        title = [v7 title];
+        [(STRecommendation *)v8 setTitle:title];
 
-        v10 = [v7 infoText];
-        [(STRecommendation *)v8 setExplanaition:v10];
+        infoText = [v7 infoText];
+        [(STRecommendation *)v8 setExplanaition:infoText];
 
-        v11 = [v7 representedApp];
-        [(STRecommendation *)v8 setBundleID:v11];
+        representedApp = [v7 representedApp];
+        [(STRecommendation *)v8 setBundleID:representedApp];
 
         v12 = [v7 propertyForKey:@"_stTipID"];
         [(STRecommendation *)v8 setIdentifier:v12];
@@ -170,52 +170,52 @@
         v13 = v7;
         if (v13 && (objc_opt_respondsToSelector() & 1) != 0)
         {
-          v14 = [v13 specifier];
-          v15 = [v14 propertyForKey:v39];
+          specifier = [v13 specifier];
+          v15 = [specifier propertyForKey:v39];
           [v15 floatValue];
           [(STRecommendation *)v8 setProgress:?];
         }
 
-        v16 = [v13 specifier];
-        v17 = [v16 propertyForKey:v45];
-        v18 = [v17 longLongValue];
+        specifier2 = [v13 specifier];
+        v17 = [specifier2 propertyForKey:v45];
+        longLongValue = [v17 longLongValue];
 
-        v19 = [v13 specifier];
-        v20 = [v19 propertyForKey:v44];
-        v21 = [v20 longLongValue];
+        specifier3 = [v13 specifier];
+        v20 = [specifier3 propertyForKey:v44];
+        longLongValue2 = [v20 longLongValue];
 
-        v22 = [v13 specifier];
-        v23 = [v22 propertyForKey:v43];
-        v24 = [v23 longLongValue];
+        specifier4 = [v13 specifier];
+        v23 = [specifier4 propertyForKey:v43];
+        longLongValue3 = [v23 longLongValue];
 
-        if (v18)
+        if (longLongValue)
         {
-          v25 = v18;
+          v25 = longLongValue;
         }
 
         else
         {
-          v25 = v21;
+          v25 = longLongValue2;
         }
 
-        if (v24 <= 1000)
+        if (longLongValue3 <= 1000)
         {
           v26 = 0;
         }
 
         else
         {
-          v26 = v24;
+          v26 = longLongValue3;
         }
 
         [(STRecommendation *)v8 setGain:&v25[v26]];
-        v27 = [v13 specifier];
-        v28 = [v27 propertyForKey:v42];
+        specifier5 = [v13 specifier];
+        v28 = [specifier5 propertyForKey:v42];
 
         if ([v28 isEqualToString:v5])
         {
-          v29 = [v13 specifier];
-          -[STRecommendation setDetailClass:](v8, "setDetailClass:", [v29 detailControllerClass]);
+          specifier6 = [v13 specifier];
+          -[STRecommendation setDetailClass:](v8, "setDetailClass:", [specifier6 detailControllerClass]);
 LABEL_22:
 
           goto LABEL_23;
@@ -223,9 +223,9 @@ LABEL_22:
 
         if ([v28 isEqualToString:v40])
         {
-          v30 = [v13 enableButtonTitle];
+          enableButtonTitle = [v13 enableButtonTitle];
 
-          if (v30)
+          if (enableButtonTitle)
           {
             [v13 enableButtonTitle];
           }
@@ -234,8 +234,8 @@ LABEL_22:
           {
             STLocalizedString(@"Enable");
           }
-          v29 = ;
-          [(STRecommendation *)v8 setEnableButtonTitle:v29];
+          specifier6 = ;
+          [(STRecommendation *)v8 setEnableButtonTitle:specifier6];
           goto LABEL_22;
         }
 
@@ -243,25 +243,25 @@ LABEL_23:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v31 = [v13 confirmationText];
-          v32 = [v31 length];
+          confirmationText = [v13 confirmationText];
+          v32 = [confirmationText length];
 
           if (v32)
           {
             -[STRecommendation setMayCauseDataLoss:](v8, "setMayCauseDataLoss:", [v13 mayCauseDataLoss]);
-            v33 = [v13 confirmationText];
-            [(STRecommendation *)v8 setConfirmationText:v33];
+            confirmationText2 = [v13 confirmationText];
+            [(STRecommendation *)v8 setConfirmationText:confirmationText2];
 
-            v34 = [v13 confirmationButtonTitle];
-            if (v34)
+            confirmationButtonTitle = [v13 confirmationButtonTitle];
+            if (confirmationButtonTitle)
             {
-              [(STRecommendation *)v8 setConfirmationButtonTitle:v34];
+              [(STRecommendation *)v8 setConfirmationButtonTitle:confirmationButtonTitle];
             }
 
             else
             {
-              v35 = [v13 title];
-              [(STRecommendation *)v8 setConfirmationButtonTitle:v35];
+              title2 = [v13 title];
+              [(STRecommendation *)v8 setConfirmationButtonTitle:title2];
             }
           }
         }
@@ -275,10 +275,10 @@ LABEL_23:
     while (v4);
   }
 
-  recommendations = v38->_recommendations;
-  v38->_recommendations = v47;
+  recommendations = selfCopy->_recommendations;
+  selfCopy->_recommendations = v47;
 
-  WeakRetained = objc_loadWeakRetained(&v38->_delegate);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
   [WeakRetained recommendationsDidUpdate];
 }
 
@@ -299,15 +299,15 @@ LABEL_23:
   [(NSOperationQueue *)self->_serialQueue addOperation:v3];
 }
 
-- (id)loadTipsOperation:(id)a3
+- (id)loadTipsOperation:(id)operation
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_36CC;
   v7[3] = &unk_AA650;
-  v8 = a3;
-  v9 = self;
-  v4 = v8;
+  operationCopy = operation;
+  selfCopy = self;
+  v4 = operationCopy;
   v5 = [NSBlockOperation blockOperationWithBlock:v7];
 
   return v5;
@@ -315,8 +315,8 @@ LABEL_23:
 
 - (void)reloadAllTips
 {
-  v3 = [(StorageSettingsWrapper *)self tipsReloadTimer];
-  [v3 invalidate];
+  tipsReloadTimer = [(StorageSettingsWrapper *)self tipsReloadTimer];
+  [tipsReloadTimer invalidate];
 
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
@@ -327,8 +327,8 @@ LABEL_23:
   [(StorageSettingsWrapper *)self setTipsReloadTimer:v4];
 
   v5 = +[NSRunLoop mainRunLoop];
-  v6 = [(StorageSettingsWrapper *)self tipsReloadTimer];
-  [v5 addTimer:v6 forMode:NSDefaultRunLoopMode];
+  tipsReloadTimer2 = [(StorageSettingsWrapper *)self tipsReloadTimer];
+  [v5 addTimer:tipsReloadTimer2 forMode:NSDefaultRunLoopMode];
 }
 
 - (void)_reloadAllTips
@@ -348,9 +348,9 @@ LABEL_23:
   [(NSOperationQueue *)self->_serialQueue addOperation:v3];
 }
 
-- (void)reloadTipsForPlugin:(id)a3
+- (void)reloadTipsForPlugin:(id)plugin
 {
-  if (a3)
+  if (plugin)
   {
     v4 = [(StorageSettingsWrapper *)self loadTipsOperation:?];
     v5[0] = _NSConcreteStackBlock;
@@ -369,11 +369,11 @@ LABEL_23:
   }
 }
 
-- (id)docPluginsForAppIdentifier:(id)a3
+- (id)docPluginsForAppIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(StorageSettingsWrapper *)self docPluginsByID];
-  v6 = [v5 objectForKey:v4];
+  identifierCopy = identifier;
+  docPluginsByID = [(StorageSettingsWrapper *)self docPluginsByID];
+  v6 = [docPluginsByID objectForKey:identifierCopy];
 
   if (v6)
   {
@@ -390,19 +390,19 @@ LABEL_23:
   return v7;
 }
 
-- (id)docPluginsForApp:(id)a3
+- (id)docPluginsForApp:(id)app
 {
-  v4 = [a3 appIdentifier];
-  v5 = [(StorageSettingsWrapper *)self docPluginsForAppIdentifier:v4];
+  appIdentifier = [app appIdentifier];
+  v5 = [(StorageSettingsWrapper *)self docPluginsForAppIdentifier:appIdentifier];
 
   return v5;
 }
 
-- (id)externalDataPluginsForAppIdentifier:(id)a3
+- (id)externalDataPluginsForAppIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(StorageSettingsWrapper *)self externDataPluginsByID];
-  v6 = [v5 objectForKey:v4];
+  identifierCopy = identifier;
+  externDataPluginsByID = [(StorageSettingsWrapper *)self externDataPluginsByID];
+  v6 = [externDataPluginsByID objectForKey:identifierCopy];
 
   if (v6)
   {
@@ -419,21 +419,21 @@ LABEL_23:
   return v7;
 }
 
-- (id)externalDataPluginsForApp:(id)a3
+- (id)externalDataPluginsForApp:(id)app
 {
-  v4 = [a3 appIdentifier];
-  v5 = [(StorageSettingsWrapper *)self externalDataPluginsForAppIdentifier:v4];
+  appIdentifier = [app appIdentifier];
+  v5 = [(StorageSettingsWrapper *)self externalDataPluginsForAppIdentifier:appIdentifier];
 
   return v5;
 }
 
-- (void)reloadTip:(id)a3
+- (void)reloadTip:(id)tip
 {
-  v4 = [a3 propertyForKey:@"_stPluginID"];
+  v4 = [tip propertyForKey:@"_stPluginID"];
   if ([v4 length])
   {
-    v5 = [(StorageSettingsWrapper *)self pluginsByID];
-    v6 = [v5 objectForKey:v4];
+    pluginsByID = [(StorageSettingsWrapper *)self pluginsByID];
+    v6 = [pluginsByID objectForKey:v4];
   }
 
   else
@@ -444,16 +444,16 @@ LABEL_23:
   [(StorageSettingsWrapper *)self reloadTipsForPlugin:v6];
 }
 
-- (id)tipsWithIdentifier:(id)a3
+- (id)tipsWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[NSMutableArray array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [(NSMutableDictionary *)self->_tipsByID allValues];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  allValues = [(NSMutableDictionary *)self->_tipsByID allValues];
+  v7 = [allValues countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -464,12 +464,12 @@ LABEL_23:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [v11 representedApp];
-        v13 = [v12 isEqualToString:v4];
+        representedApp = [v11 representedApp];
+        v13 = [representedApp isEqualToString:identifierCopy];
 
         if (v13)
         {
@@ -477,7 +477,7 @@ LABEL_23:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [allValues countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -486,25 +486,25 @@ LABEL_23:
   return v5;
 }
 
-- (id)tipsForApp:(id)a3
+- (id)tipsForApp:(id)app
 {
-  v4 = [a3 appIdentifier];
-  v5 = [(StorageSettingsWrapper *)self tipsWithIdentifier:v4];
+  appIdentifier = [app appIdentifier];
+  v5 = [(StorageSettingsWrapper *)self tipsWithIdentifier:appIdentifier];
 
   return v5;
 }
 
-- (BOOL)applicationHasTips:(id)a3
+- (BOOL)applicationHasTips:(id)tips
 {
-  v3 = [(StorageSettingsWrapper *)self tipsForApp:a3];
+  v3 = [(StorageSettingsWrapper *)self tipsForApp:tips];
   v4 = [v3 count] != 0;
 
   return v4;
 }
 
-- (void)enableTip:(id)a3
+- (void)enableTip:(id)tip
 {
-  [(NSMutableDictionary *)self->_tipsByID objectForKeyedSubscript:a3];
+  [(NSMutableDictionary *)self->_tipsByID objectForKeyedSubscript:tip];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_41AC;
@@ -513,25 +513,25 @@ LABEL_23:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)tipDidUpdate:(id)a3
+- (void)tipDidUpdate:(id)update
 {
   v6 = _NSConcreteStackBlock;
   v7 = 3221225472;
   v8 = sub_42D0;
   v9 = &unk_AA650;
-  v10 = self;
-  v11 = a3;
-  v4 = v11;
+  selfCopy = self;
+  updateCopy = update;
+  v4 = updateCopy;
   v5 = [NSBlockOperation blockOperationWithBlock:&v6];
-  [(NSOperationQueue *)self->_serialQueue addOperation:v5, v6, v7, v8, v9, v10];
+  [(NSOperationQueue *)self->_serialQueue addOperation:v5, v6, v7, v8, v9, selfCopy];
 }
 
-- (id)usageBundleForIdentifier:(id)a3
+- (id)usageBundleForIdentifier:(id)identifier
 {
   usageBundleRegistry = self->_usageBundleRegistry;
   if (usageBundleRegistry)
   {
-    usageBundleRegistry = [usageBundleRegistry usageBundleForIdentifier:a3];
+    usageBundleRegistry = [usageBundleRegistry usageBundleForIdentifier:identifier];
     v3 = vars8;
   }
 

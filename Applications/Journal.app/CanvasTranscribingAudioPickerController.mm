@@ -1,9 +1,9 @@
 @interface CanvasTranscribingAudioPickerController
-- (_TtC7Journal39CanvasTranscribingAudioPickerController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)viewDidDisappear:(BOOL)a3;
+- (_TtC7Journal39CanvasTranscribingAudioPickerController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -11,17 +11,17 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10050850C();
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v6.receiver = self;
   v6.super_class = type metadata accessor for CanvasTranscribingAudioPickerController();
   v4 = v6.receiver;
-  [(CanvasTranscribingAudioPickerController *)&v6 viewDidDisappear:v3];
+  [(CanvasTranscribingAudioPickerController *)&v6 viewDidDisappear:disappearCopy];
   v5 = OBJC_IVAR____TtC7Journal39CanvasTranscribingAudioPickerController_notificationsTask;
   if (*&v4[OBJC_IVAR____TtC7Journal39CanvasTranscribingAudioPickerController_notificationsTask])
   {
@@ -32,16 +32,16 @@
   *&v4[v5] = 0;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_100508764(a3);
+  selfCopy = self;
+  sub_100508764(appear);
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
-  v4 = self;
-  sub_100508918(a3);
+  selfCopy = self;
+  sub_100508918(appearing);
 }
 
 - (void)viewWillLayoutSubviews
@@ -53,7 +53,7 @@
   sub_100509C68();
 }
 
-- (_TtC7Journal39CanvasTranscribingAudioPickerController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7Journal39CanvasTranscribingAudioPickerController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

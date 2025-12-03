@@ -1,40 +1,40 @@
 @interface AKUndoController
 - (AKController)controller;
-- (AKUndoController)initWithController:(id)a3;
-- (void)_addAnnotationsFromModel:(id)a3;
-- (void)_annotationsWereAdded:(id)a3 onPageController:(id)a4;
-- (void)_annotationsWillBeRemoved:(id)a3 onPageController:(id)a4;
-- (void)_deleteAnnotationsFromModel:(id)a3;
-- (void)_endEditingOfTextIfAnnotationsDeleted:(id)a3;
-- (void)_registerUndoForSelectionOnPageModelController:(id)a3;
-- (void)_setAnnotationProperties:(id)a3;
-- (void)_startObservingAnnotations:(id)a3;
-- (void)_stopObservingAnnotations:(id)a3;
-- (void)_undoActionForSelectionState:(id)a3;
+- (AKUndoController)initWithController:(id)controller;
+- (void)_addAnnotationsFromModel:(id)model;
+- (void)_annotationsWereAdded:(id)added onPageController:(id)controller;
+- (void)_annotationsWillBeRemoved:(id)removed onPageController:(id)controller;
+- (void)_deleteAnnotationsFromModel:(id)model;
+- (void)_endEditingOfTextIfAnnotationsDeleted:(id)deleted;
+- (void)_registerUndoForSelectionOnPageModelController:(id)controller;
+- (void)_setAnnotationProperties:(id)properties;
+- (void)_startObservingAnnotations:(id)annotations;
+- (void)_stopObservingAnnotations:(id)annotations;
+- (void)_undoActionForSelectionState:(id)state;
 - (void)dealloc;
-- (void)observePageControllerRequestsDisableRegistration:(id)a3;
-- (void)observePageControllerRequestsEnableRegistration:(id)a3;
-- (void)observeUndoManagerCheckpoint:(id)a3;
-- (void)observeUndoManagerDetectedEdit:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)startObservingPageModelController:(id)a3;
-- (void)stopObservingPageModelController:(id)a3;
+- (void)observePageControllerRequestsDisableRegistration:(id)registration;
+- (void)observePageControllerRequestsEnableRegistration:(id)registration;
+- (void)observeUndoManagerCheckpoint:(id)checkpoint;
+- (void)observeUndoManagerDetectedEdit:(id)edit;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)startObservingPageModelController:(id)controller;
+- (void)stopObservingPageModelController:(id)controller;
 @end
 
 @implementation AKUndoController
 
-- (AKUndoController)initWithController:(id)a3
+- (AKUndoController)initWithController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v26.receiver = self;
   v26.super_class = AKUndoController;
   v5 = [(AKUndoController *)&v26 init];
   v6 = v5;
   if (v5)
   {
-    [(AKUndoController *)v5 setController:v4];
-    v7 = [v4 delegate];
-    v8 = [v7 undoManagerForAnnotationController:v4];
+    [(AKUndoController *)v5 setController:controllerCopy];
+    delegate = [controllerCopy delegate];
+    v8 = [delegate undoManagerForAnnotationController:controllerCopy];
     [(AKUndoController *)v6 setUndoManager:v8];
     v9 = [MEMORY[0x277CBEB58] set];
     [(AKUndoController *)v6 setObservedPageModelControllers:v9];
@@ -47,31 +47,31 @@
     [(AKUndoController *)v6 setUndoGroupOldPropertiesPerAnnotation:0];
     if (v8)
     {
-      v11 = [MEMORY[0x277CCAB98] defaultCenter];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
       v12 = *MEMORY[0x277CCA7F0];
-      v13 = [(AKUndoController *)v6 undoManager];
-      [v11 addObserver:v6 selector:sel_observeUndoManagerCheckpoint_ name:v12 object:v13];
+      undoManager = [(AKUndoController *)v6 undoManager];
+      [defaultCenter addObserver:v6 selector:sel_observeUndoManagerCheckpoint_ name:v12 object:undoManager];
 
-      v14 = [MEMORY[0x277CCAB98] defaultCenter];
+      defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
       v15 = *MEMORY[0x277CCA7F8];
-      v16 = [(AKUndoController *)v6 undoManager];
-      [v14 addObserver:v6 selector:sel_observeUndoManagerDetectedEdit_ name:v15 object:v16];
+      undoManager2 = [(AKUndoController *)v6 undoManager];
+      [defaultCenter2 addObserver:v6 selector:sel_observeUndoManagerDetectedEdit_ name:v15 object:undoManager2];
 
-      v17 = [MEMORY[0x277CCAB98] defaultCenter];
+      defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
       v18 = *MEMORY[0x277CCA810];
-      v19 = [(AKUndoController *)v6 undoManager];
-      [v17 addObserver:v6 selector:sel_observeUndoManagerDetectedEdit_ name:v18 object:v19];
+      undoManager3 = [(AKUndoController *)v6 undoManager];
+      [defaultCenter3 addObserver:v6 selector:sel_observeUndoManagerDetectedEdit_ name:v18 object:undoManager3];
 
-      v20 = [MEMORY[0x277CCAB98] defaultCenter];
+      defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
       v21 = *MEMORY[0x277CCA808];
-      v22 = [(AKUndoController *)v6 undoManager];
-      [v20 addObserver:v6 selector:sel_observeUndoManagerDetectedEdit_ name:v21 object:v22];
+      undoManager4 = [(AKUndoController *)v6 undoManager];
+      [defaultCenter4 addObserver:v6 selector:sel_observeUndoManagerDetectedEdit_ name:v21 object:undoManager4];
 
-      v23 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v23 addObserver:v6 selector:sel_observePageControllerRequestsDisableRegistration_ name:off_27E39A390[0] object:0];
+      defaultCenter5 = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter5 addObserver:v6 selector:sel_observePageControllerRequestsDisableRegistration_ name:off_27E39A390[0] object:0];
 
-      v24 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v24 addObserver:v6 selector:sel_observePageControllerRequestsEnableRegistration_ name:off_27E39A398 object:0];
+      defaultCenter6 = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter6 addObserver:v6 selector:sel_observePageControllerRequestsEnableRegistration_ name:off_27E39A398 object:0];
     }
   }
 
@@ -81,19 +81,19 @@
 - (void)dealloc
 {
   v37 = *MEMORY[0x277D85DE8];
-  v3 = [(AKUndoController *)self undoManager];
+  undoManager = [(AKUndoController *)self undoManager];
 
-  if (v3)
+  if (undoManager)
   {
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 removeObserver:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self];
 
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v5 = [(AKUndoController *)self observedAnnotations];
-    v6 = [v5 countByEnumeratingWithState:&v30 objects:v36 count:16];
+    observedAnnotations = [(AKUndoController *)self observedAnnotations];
+    v6 = [observedAnnotations countByEnumeratingWithState:&v30 objects:v36 count:16];
     if (v6)
     {
       v7 = v6;
@@ -104,16 +104,16 @@
         {
           if (*v31 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(observedAnnotations);
           }
 
           v10 = *(*(&v30 + 1) + 8 * i);
-          v11 = [v10 keysForValuesToObserveForUndo];
+          keysForValuesToObserveForUndo = [v10 keysForValuesToObserveForUndo];
           v26 = 0u;
           v27 = 0u;
           v28 = 0u;
           v29 = 0u;
-          v12 = [v11 countByEnumeratingWithState:&v26 objects:v35 count:16];
+          v12 = [keysForValuesToObserveForUndo countByEnumeratingWithState:&v26 objects:v35 count:16];
           if (v12)
           {
             v13 = v12;
@@ -124,20 +124,20 @@
               {
                 if (*v27 != v14)
                 {
-                  objc_enumerationMutation(v11);
+                  objc_enumerationMutation(keysForValuesToObserveForUndo);
                 }
 
                 [v10 removeObserver:self forKeyPath:*(*(&v26 + 1) + 8 * j)];
               }
 
-              v13 = [v11 countByEnumeratingWithState:&v26 objects:v35 count:16];
+              v13 = [keysForValuesToObserveForUndo countByEnumeratingWithState:&v26 objects:v35 count:16];
             }
 
             while (v13);
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v30 objects:v36 count:16];
+        v7 = [observedAnnotations countByEnumeratingWithState:&v30 objects:v36 count:16];
       }
 
       while (v7);
@@ -147,8 +147,8 @@
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v16 = [(AKUndoController *)self observedPageModelControllers];
-    v17 = [v16 countByEnumeratingWithState:&v22 objects:v34 count:16];
+    observedPageModelControllers = [(AKUndoController *)self observedPageModelControllers];
+    v17 = [observedPageModelControllers countByEnumeratingWithState:&v22 objects:v34 count:16];
     if (v17)
     {
       v18 = v17;
@@ -159,13 +159,13 @@
         {
           if (*v23 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(observedPageModelControllers);
           }
 
           [*(*(&v22 + 1) + 8 * k) removeObserver:self forKeyPath:@"annotations" context:@"AKUndoController.modelAnnotationsObservationContext"];
         }
 
-        v18 = [v16 countByEnumeratingWithState:&v22 objects:v34 count:16];
+        v18 = [observedPageModelControllers countByEnumeratingWithState:&v22 objects:v34 count:16];
       }
 
       while (v18);
@@ -182,82 +182,82 @@
   [(AKUndoController *)&v21 dealloc];
 }
 
-- (void)startObservingPageModelController:(id)a3
+- (void)startObservingPageModelController:(id)controller
 {
-  v9 = a3;
-  v4 = [(AKUndoController *)self undoManager];
+  controllerCopy = controller;
+  undoManager = [(AKUndoController *)self undoManager];
 
-  if (v4)
+  if (undoManager)
   {
-    v5 = [(AKUndoController *)self observedPageModelControllers];
-    v6 = [v5 containsObject:v9];
+    observedPageModelControllers = [(AKUndoController *)self observedPageModelControllers];
+    v6 = [observedPageModelControllers containsObject:controllerCopy];
 
     if ((v6 & 1) == 0)
     {
-      v7 = [v9 annotations];
-      [(AKUndoController *)self _startObservingAnnotations:v7];
+      annotations = [controllerCopy annotations];
+      [(AKUndoController *)self _startObservingAnnotations:annotations];
 
-      [v9 addObserver:self forKeyPath:@"annotations" options:11 context:@"AKUndoController.modelAnnotationsObservationContext"];
-      v8 = [(AKUndoController *)self observedPageModelControllers];
-      [v8 addObject:v9];
+      [controllerCopy addObserver:self forKeyPath:@"annotations" options:11 context:@"AKUndoController.modelAnnotationsObservationContext"];
+      observedPageModelControllers2 = [(AKUndoController *)self observedPageModelControllers];
+      [observedPageModelControllers2 addObject:controllerCopy];
     }
   }
 }
 
-- (void)stopObservingPageModelController:(id)a3
+- (void)stopObservingPageModelController:(id)controller
 {
-  v9 = a3;
-  v4 = [(AKUndoController *)self undoManager];
+  controllerCopy = controller;
+  undoManager = [(AKUndoController *)self undoManager];
 
-  if (v4)
+  if (undoManager)
   {
-    v5 = [(AKUndoController *)self observedPageModelControllers];
-    v6 = [v5 containsObject:v9];
+    observedPageModelControllers = [(AKUndoController *)self observedPageModelControllers];
+    v6 = [observedPageModelControllers containsObject:controllerCopy];
 
     if (v6)
     {
-      [v9 removeObserver:self forKeyPath:@"annotations" context:@"AKUndoController.modelAnnotationsObservationContext"];
-      v7 = [(AKUndoController *)self observedPageModelControllers];
-      [v7 removeObject:v9];
+      [controllerCopy removeObserver:self forKeyPath:@"annotations" context:@"AKUndoController.modelAnnotationsObservationContext"];
+      observedPageModelControllers2 = [(AKUndoController *)self observedPageModelControllers];
+      [observedPageModelControllers2 removeObject:controllerCopy];
 
-      v8 = [v9 annotations];
-      [(AKUndoController *)self _stopObservingAnnotations:v8];
+      annotations = [controllerCopy annotations];
+      [(AKUndoController *)self _stopObservingAnnotations:annotations];
     }
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v60[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (a6 == @"AKUndoController.annotationPropertyObservationContext")
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (context == @"AKUndoController.annotationPropertyObservationContext")
   {
-    v13 = [(AKUndoController *)self undoManager];
-    v14 = [(AKUndoController *)self controller];
-    if (![v13 isUndoRegistrationEnabled])
+    undoManager = [(AKUndoController *)self undoManager];
+    controller = [(AKUndoController *)self controller];
+    if (![undoManager isUndoRegistrationEnabled])
     {
 LABEL_46:
       v59 = AKAnnotationChangeObjectKey;
-      v60[0] = v11;
+      v60[0] = objectCopy;
       v47 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v60 forKeys:&v59 count:1];
-      v48 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v48 postNotificationName:AKAnnotationPropertiesChangedNotification object:v14 userInfo:v47];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter postNotificationName:AKAnnotationPropertiesChangedNotification object:controller userInfo:v47];
 
 LABEL_47:
       goto LABEL_48;
     }
 
-    v15 = [v12 objectForKey:*MEMORY[0x277CCA2F0]];
-    v16 = [v12 objectForKey:*MEMORY[0x277CCA300]];
-    v17 = [MEMORY[0x277CBEB68] null];
-    if (v16 == v17)
+    v15 = [changeCopy objectForKey:*MEMORY[0x277CCA2F0]];
+    v16 = [changeCopy objectForKey:*MEMORY[0x277CCA300]];
+    null = [MEMORY[0x277CBEB68] null];
+    if (v16 == null)
     {
-      v25 = [MEMORY[0x277CBEB68] null];
+      null2 = [MEMORY[0x277CBEB68] null];
       v26 = v15;
-      v27 = v25;
-      if (v26 == v25)
+      v27 = null2;
+      if (v26 == null2)
       {
         v52 = [v26 isEqual:v16];
 
@@ -288,53 +288,53 @@ LABEL_45:
     }
 
     v55 = v15;
-    v28 = [(AKUndoController *)self undoGroupOldPropertiesPerAnnotation];
-    if (!v28)
+    undoGroupOldPropertiesPerAnnotation = [(AKUndoController *)self undoGroupOldPropertiesPerAnnotation];
+    if (!undoGroupOldPropertiesPerAnnotation)
     {
-      v53 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+      strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
       [(AKUndoController *)self setUndoGroupOldPropertiesPerAnnotation:?];
-      v29 = [v14 modelController];
-      v30 = [v29 pageModelControllerForAnnotation:v11];
+      modelController = [controller modelController];
+      v30 = [modelController pageModelControllerForAnnotation:objectCopy];
 
       if (v30)
       {
         [(AKUndoController *)self _registerUndoForSelectionOnPageModelController:v30];
       }
 
-      v31 = [(AKUndoController *)self undoGroupOldPropertiesPerAnnotation];
-      [v13 registerUndoWithTarget:self selector:sel__setAnnotationProperties_ object:v31];
+      undoGroupOldPropertiesPerAnnotation2 = [(AKUndoController *)self undoGroupOldPropertiesPerAnnotation];
+      [undoManager registerUndoWithTarget:self selector:sel__setAnnotationProperties_ object:undoGroupOldPropertiesPerAnnotation2];
 
-      v28 = v53;
+      undoGroupOldPropertiesPerAnnotation = strongToStrongObjectsMapTable;
     }
 
-    v32 = [v28 objectForKey:v11];
+    v32 = [undoGroupOldPropertiesPerAnnotation objectForKey:objectCopy];
     if (!v32)
     {
       v32 = objc_alloc_init(MEMORY[0x277CBEB38]);
-      [v28 setObject:v32 forKey:v11];
+      [undoGroupOldPropertiesPerAnnotation setObject:v32 forKey:objectCopy];
     }
 
-    v33 = [v32 objectForKey:v10];
+    v33 = [v32 objectForKey:pathCopy];
 
     if (!v33)
     {
-      [v32 setObject:v16 forKey:v10];
+      [v32 setObject:v16 forKey:pathCopy];
     }
 
-    if ([v13 isUndoing] & 1) != 0 || (objc_msgSend(v13, "isRedoing"))
+    if ([undoManager isUndoing] & 1) != 0 || (objc_msgSend(undoManager, "isRedoing"))
     {
 LABEL_39:
-      if (([v10 isEqualToString:@"modificationDate"] & 1) == 0 && (objc_msgSend(v13, "isUndoing") & 1) == 0 && (objc_msgSend(v13, "isRedoing") & 1) == 0)
+      if (([pathCopy isEqualToString:@"modificationDate"] & 1) == 0 && (objc_msgSend(undoManager, "isUndoing") & 1) == 0 && (objc_msgSend(undoManager, "isRedoing") & 1) == 0)
       {
-        v44 = [MEMORY[0x277CBEAA8] date];
-        [v11 setModificationDate:v44];
+        date = [MEMORY[0x277CBEAA8] date];
+        [objectCopy setModificationDate:date];
 
-        v45 = [v14 author];
+        author = [controller author];
 
-        if (v45)
+        if (author)
         {
-          v46 = [v14 author];
-          [v11 setAuthor:v46];
+          author2 = [controller author];
+          [objectCopy setAuthor:author2];
         }
       }
 
@@ -342,18 +342,18 @@ LABEL_39:
       goto LABEL_45;
     }
 
-    v54 = v28;
-    v34 = [objc_opt_class() displayNameForUndoablePropertyChangeWithKey:v10];
+    v54 = undoGroupOldPropertiesPerAnnotation;
+    v34 = [objc_opt_class() displayNameForUndoablePropertyChangeWithKey:pathCopy];
     if ([v34 isEqualToString:&stru_28519E870])
     {
 LABEL_38:
 
-      v28 = v54;
+      undoGroupOldPropertiesPerAnnotation = v54;
       goto LABEL_39;
     }
 
-    v35 = [(AKUndoController *)self undoGroupPresentablePropertyName];
-    if (v35)
+    undoGroupPresentablePropertyName = [(AKUndoController *)self undoGroupPresentablePropertyName];
+    if (undoGroupPresentablePropertyName)
     {
     }
 
@@ -364,7 +364,7 @@ LABEL_38:
       [v49 localizedStringForKey:@"Change of %@" value:&stru_28519E870 table:@"AnnotationStrings"];
       v42 = v51 = v34;
       v43 = [v41 stringWithFormat:v42, v51];
-      [v13 setActionName:v43];
+      [undoManager setActionName:v43];
 
       v34 = v51;
       v40 = v51;
@@ -390,7 +390,7 @@ LABEL_37:
 
     v38 = +[AKController akBundle];
     v39 = [v38 localizedStringForKey:@"Change of Annotation Properties" value:&stru_28519E870 table:@"AnnotationStrings"];
-    [v13 setActionName:v39];
+    [undoManager setActionName:v39];
 
     v34 = v50;
     [(AKUndoController *)self setUndoGroupHasChangesToMultipleProperties:1];
@@ -398,21 +398,21 @@ LABEL_37:
     goto LABEL_37;
   }
 
-  if (a6 == @"AKUndoController.modelAnnotationsObservationContext")
+  if (context == @"AKUndoController.modelAnnotationsObservationContext")
   {
-    v13 = [(AKUndoController *)self controller];
-    v14 = [v12 objectForKey:*MEMORY[0x277CCA300]];
-    v19 = [v12 objectForKey:*MEMORY[0x277CCA2F0]];
-    v20 = [v12 objectForKey:*MEMORY[0x277CCA2F8]];
-    v21 = [v20 BOOLValue];
+    undoManager = [(AKUndoController *)self controller];
+    controller = [changeCopy objectForKey:*MEMORY[0x277CCA300]];
+    v19 = [changeCopy objectForKey:*MEMORY[0x277CCA2F0]];
+    v20 = [changeCopy objectForKey:*MEMORY[0x277CCA2F8]];
+    bOOLValue = [v20 BOOLValue];
 
-    v22 = v11;
-    if (v21)
+    v22 = objectCopy;
+    if (bOOLValue)
     {
       [(AKUndoController *)self _registerUndoForSelectionOnPageModelController:v22];
-      if (v14)
+      if (controller)
       {
-        [(AKUndoController *)self _annotationsWillBeRemoved:v14 onPageController:v22];
+        [(AKUndoController *)self _annotationsWillBeRemoved:controller onPageController:v22];
       }
     }
 
@@ -421,13 +421,13 @@ LABEL_37:
       [(AKUndoController *)self _annotationsWereAdded:v19 onPageController:v22];
     }
 
-    if ((v21 & 1) == 0)
+    if ((bOOLValue & 1) == 0)
     {
       v57 = AKAnnotationChangeObjectKey;
       v58 = v22;
       v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v58 forKeys:&v57 count:1];
-      v24 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v24 postNotificationName:AKAnnotationsAddedOrRemovedNotification object:v13 userInfo:v23];
+      defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter2 postNotificationName:AKAnnotationsAddedOrRemovedNotification object:undoManager userInfo:v23];
     }
 
     goto LABEL_47;
@@ -435,29 +435,29 @@ LABEL_37:
 
   v56.receiver = self;
   v56.super_class = AKUndoController;
-  [(AKUndoController *)&v56 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+  [(AKUndoController *)&v56 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
 LABEL_48:
 }
 
-- (void)observeUndoManagerDetectedEdit:(id)a3
+- (void)observeUndoManagerDetectedEdit:(id)edit
 {
-  v4 = [(AKUndoController *)self controller];
-  v3 = [v4 delegate];
+  controller = [(AKUndoController *)self controller];
+  delegate = [controller delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 editDetectedForAnnotationController:v4];
+    [delegate editDetectedForAnnotationController:controller];
   }
 }
 
-- (void)observeUndoManagerCheckpoint:(id)a3
+- (void)observeUndoManagerCheckpoint:(id)checkpoint
 {
-  v7 = [(AKUndoController *)self controller];
-  v4 = [v7 delegate];
-  v5 = [v7 mainEventHandler];
-  if (([v5 mainEventHandlerIsInTrackingLoop] & 1) == 0)
+  controller = [(AKUndoController *)self controller];
+  delegate = [controller delegate];
+  mainEventHandler = [controller mainEventHandler];
+  if (([mainEventHandler mainEventHandlerIsInTrackingLoop] & 1) == 0)
   {
-    v6 = [v5 annotationEventHandler];
-    if (v6 || [v5 mainEventHandlerIsInRotationLoop])
+    annotationEventHandler = [mainEventHandler annotationEventHandler];
+    if (annotationEventHandler || [mainEventHandler mainEventHandlerIsInRotationLoop])
     {
     }
 
@@ -468,110 +468,110 @@ LABEL_48:
       [(AKUndoController *)self setUndoGroupOldPropertiesPerAnnotation:0];
       if (objc_opt_respondsToSelector())
       {
-        [v4 editCheckpointReachedForAnnotationController:v7];
+        [delegate editCheckpointReachedForAnnotationController:controller];
       }
     }
   }
 }
 
-- (void)_annotationsWereAdded:(id)a3 onPageController:(id)a4
+- (void)_annotationsWereAdded:(id)added onPageController:(id)controller
 {
   v18[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  addedCopy = added;
+  controllerCopy = controller;
+  if ([addedCopy count])
   {
-    v8 = [(AKUndoController *)self undoManager];
-    if ([v8 isUndoRegistrationEnabled])
+    undoManager = [(AKUndoController *)self undoManager];
+    if ([undoManager isUndoRegistrationEnabled])
     {
       v17[0] = @"pageModelController";
       v17[1] = @"annotations";
-      v18[0] = v7;
-      v9 = [v6 copy];
+      v18[0] = controllerCopy;
+      v9 = [addedCopy copy];
       v18[1] = v9;
       v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:2];
 
-      [v8 registerUndoWithTarget:self selector:sel__deleteAnnotationsFromModel_ object:v10];
-      if (([v8 isUndoing] & 1) == 0 && (objc_msgSend(v8, "isRedoing") & 1) == 0)
+      [undoManager registerUndoWithTarget:self selector:sel__deleteAnnotationsFromModel_ object:v10];
+      if (([undoManager isUndoing] & 1) == 0 && (objc_msgSend(undoManager, "isRedoing") & 1) == 0)
       {
-        if ([v6 count] == 1)
+        if ([addedCopy count] == 1)
         {
-          v11 = [v6 firstObject];
-          v12 = [v11 displayName];
+          firstObject = [addedCopy firstObject];
+          displayName = [firstObject displayName];
 
           v13 = MEMORY[0x277CCACA8];
           v14 = +[AKController akBundle];
           v15 = [v14 localizedStringForKey:@"Add %@" value:&stru_28519E870 table:@"AnnotationStrings"];
-          v16 = [v13 stringWithFormat:v15, v12];
-          [v8 setActionName:v16];
+          v16 = [v13 stringWithFormat:v15, displayName];
+          [undoManager setActionName:v16];
         }
 
         else
         {
-          v12 = +[AKController akBundle];
-          v14 = [v12 localizedStringForKey:@"Add Annotations" value:&stru_28519E870 table:@"AnnotationStrings"];
-          [v8 setActionName:v14];
+          displayName = +[AKController akBundle];
+          v14 = [displayName localizedStringForKey:@"Add Annotations" value:&stru_28519E870 table:@"AnnotationStrings"];
+          [undoManager setActionName:v14];
         }
       }
     }
 
-    [(AKUndoController *)self _startObservingAnnotations:v6];
+    [(AKUndoController *)self _startObservingAnnotations:addedCopy];
   }
 }
 
-- (void)_annotationsWillBeRemoved:(id)a3 onPageController:(id)a4
+- (void)_annotationsWillBeRemoved:(id)removed onPageController:(id)controller
 {
   v18[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  removedCopy = removed;
+  controllerCopy = controller;
+  if ([removedCopy count])
   {
-    [(AKUndoController *)self _stopObservingAnnotations:v6];
-    [(AKUndoController *)self _endEditingOfTextIfAnnotationsDeleted:v6];
-    v8 = [(AKUndoController *)self undoManager];
-    if ([v8 isUndoRegistrationEnabled])
+    [(AKUndoController *)self _stopObservingAnnotations:removedCopy];
+    [(AKUndoController *)self _endEditingOfTextIfAnnotationsDeleted:removedCopy];
+    undoManager = [(AKUndoController *)self undoManager];
+    if ([undoManager isUndoRegistrationEnabled])
     {
       v17[0] = @"pageModelController";
       v17[1] = @"annotations";
-      v18[0] = v7;
-      v9 = [v6 copy];
+      v18[0] = controllerCopy;
+      v9 = [removedCopy copy];
       v18[1] = v9;
       v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:2];
 
-      [v8 registerUndoWithTarget:self selector:sel__addAnnotationsFromModel_ object:v10];
-      if (([v8 isUndoing] & 1) == 0 && (objc_msgSend(v8, "isRedoing") & 1) == 0)
+      [undoManager registerUndoWithTarget:self selector:sel__addAnnotationsFromModel_ object:v10];
+      if (([undoManager isUndoing] & 1) == 0 && (objc_msgSend(undoManager, "isRedoing") & 1) == 0)
       {
-        if ([v6 count] == 1)
+        if ([removedCopy count] == 1)
         {
-          v11 = [v6 firstObject];
-          v12 = [v11 displayName];
+          firstObject = [removedCopy firstObject];
+          displayName = [firstObject displayName];
 
           v13 = MEMORY[0x277CCACA8];
           v14 = +[AKController akBundle];
           v15 = [v14 localizedStringForKey:@"Remove %@" value:&stru_28519E870 table:@"AnnotationStrings"];
-          v16 = [v13 stringWithFormat:v15, v12];
-          [v8 setActionName:v16];
+          v16 = [v13 stringWithFormat:v15, displayName];
+          [undoManager setActionName:v16];
         }
 
         else
         {
-          v12 = +[AKController akBundle];
-          v14 = [v12 localizedStringForKey:@"Remove Annotations" value:&stru_28519E870 table:@"AnnotationStrings"];
-          [v8 setActionName:v14];
+          displayName = +[AKController akBundle];
+          v14 = [displayName localizedStringForKey:@"Remove Annotations" value:&stru_28519E870 table:@"AnnotationStrings"];
+          [undoManager setActionName:v14];
         }
       }
     }
   }
 }
 
-- (void)_startObservingAnnotations:(id)a3
+- (void)_startObservingAnnotations:(id)annotations
 {
   v28 = *MEMORY[0x277D85DE8];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = a3;
+  obj = annotations;
   v4 = [obj countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v4)
   {
@@ -588,17 +588,17 @@ LABEL_48:
         }
 
         v8 = *(*(&v22 + 1) + 8 * v7);
-        v9 = [(AKUndoController *)self observedAnnotations];
-        v10 = [v9 containsObject:v8];
+        observedAnnotations = [(AKUndoController *)self observedAnnotations];
+        v10 = [observedAnnotations containsObject:v8];
 
         if ((v10 & 1) == 0)
         {
-          v11 = [v8 keysForValuesToObserveForUndo];
+          keysForValuesToObserveForUndo = [v8 keysForValuesToObserveForUndo];
           v18 = 0u;
           v19 = 0u;
           v20 = 0u;
           v21 = 0u;
-          v12 = [v11 countByEnumeratingWithState:&v18 objects:v26 count:16];
+          v12 = [keysForValuesToObserveForUndo countByEnumeratingWithState:&v18 objects:v26 count:16];
           if (v12)
           {
             v13 = v12;
@@ -610,21 +610,21 @@ LABEL_48:
               {
                 if (*v19 != v14)
                 {
-                  objc_enumerationMutation(v11);
+                  objc_enumerationMutation(keysForValuesToObserveForUndo);
                 }
 
                 [v8 addObserver:self forKeyPath:*(*(&v18 + 1) + 8 * v15++) options:3 context:@"AKUndoController.annotationPropertyObservationContext"];
               }
 
               while (v13 != v15);
-              v13 = [v11 countByEnumeratingWithState:&v18 objects:v26 count:16];
+              v13 = [keysForValuesToObserveForUndo countByEnumeratingWithState:&v18 objects:v26 count:16];
             }
 
             while (v13);
           }
 
-          v16 = [(AKUndoController *)self observedAnnotations];
-          [v16 addObject:v8];
+          observedAnnotations2 = [(AKUndoController *)self observedAnnotations];
+          [observedAnnotations2 addObject:v8];
         }
 
         ++v7;
@@ -638,15 +638,15 @@ LABEL_48:
   }
 }
 
-- (void)_stopObservingAnnotations:(id)a3
+- (void)_stopObservingAnnotations:(id)annotations
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  annotationsCopy = annotations;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  v5 = [annotationsCopy countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v5)
   {
     v6 = v5;
@@ -658,21 +658,21 @@ LABEL_48:
       {
         if (*v23 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(annotationsCopy);
         }
 
         v9 = *(*(&v22 + 1) + 8 * v8);
-        v10 = [(AKUndoController *)self observedAnnotations];
-        v11 = [v10 containsObject:v9];
+        observedAnnotations = [(AKUndoController *)self observedAnnotations];
+        v11 = [observedAnnotations containsObject:v9];
 
         if (v11)
         {
-          v12 = [v9 keysForValuesToObserveForUndo];
+          keysForValuesToObserveForUndo = [v9 keysForValuesToObserveForUndo];
           v18 = 0u;
           v19 = 0u;
           v20 = 0u;
           v21 = 0u;
-          v13 = [v12 countByEnumeratingWithState:&v18 objects:v26 count:16];
+          v13 = [keysForValuesToObserveForUndo countByEnumeratingWithState:&v18 objects:v26 count:16];
           if (v13)
           {
             v14 = v13;
@@ -684,44 +684,44 @@ LABEL_48:
               {
                 if (*v19 != v15)
                 {
-                  objc_enumerationMutation(v12);
+                  objc_enumerationMutation(keysForValuesToObserveForUndo);
                 }
 
                 [v9 removeObserver:self forKeyPath:*(*(&v18 + 1) + 8 * v16++)];
               }
 
               while (v14 != v16);
-              v14 = [v12 countByEnumeratingWithState:&v18 objects:v26 count:16];
+              v14 = [keysForValuesToObserveForUndo countByEnumeratingWithState:&v18 objects:v26 count:16];
             }
 
             while (v14);
           }
 
-          v17 = [(AKUndoController *)self observedAnnotations];
-          [v17 removeObject:v9];
+          observedAnnotations2 = [(AKUndoController *)self observedAnnotations];
+          [observedAnnotations2 removeObject:v9];
         }
 
         ++v8;
       }
 
       while (v8 != v6);
-      v6 = [v4 countByEnumeratingWithState:&v22 objects:v27 count:16];
+      v6 = [annotationsCopy countByEnumeratingWithState:&v22 objects:v27 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)_setAnnotationProperties:(id)a3
+- (void)_setAnnotationProperties:(id)properties
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  propertiesCopy = properties;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [v3 keyEnumerator];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  keyEnumerator = [propertiesCopy keyEnumerator];
+  v5 = [keyEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -732,100 +732,100 @@ LABEL_48:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
-        v10 = [v3 objectForKey:v9];
+        v10 = [propertiesCopy objectForKey:v9];
         [v9 setValuesForKeysWithDictionary:v10];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [keyEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)_addAnnotationsFromModel:(id)a3
+- (void)_addAnnotationsFromModel:(id)model
 {
-  v3 = a3;
-  v11 = [v3 objectForKeyedSubscript:@"pageModelController"];
-  v4 = [v3 objectForKeyedSubscript:@"annotations"];
+  modelCopy = model;
+  v11 = [modelCopy objectForKeyedSubscript:@"pageModelController"];
+  v4 = [modelCopy objectForKeyedSubscript:@"annotations"];
 
   v5 = [MEMORY[0x277CBEB40] orderedSetWithArray:v4];
   v6 = MEMORY[0x277CBEB98];
-  v7 = [v11 annotations];
-  v8 = [v6 setWithArray:v7];
+  annotations = [v11 annotations];
+  v8 = [v6 setWithArray:annotations];
 
   [v5 minusSet:v8];
   v9 = [v11 mutableArrayValueForKey:@"annotations"];
-  v10 = [v5 array];
-  [v9 addObjectsFromArray:v10];
+  array = [v5 array];
+  [v9 addObjectsFromArray:array];
 }
 
-- (void)_deleteAnnotationsFromModel:(id)a3
+- (void)_deleteAnnotationsFromModel:(id)model
 {
-  v3 = a3;
-  v6 = [v3 objectForKeyedSubscript:@"pageModelController"];
-  v4 = [v3 objectForKeyedSubscript:@"annotations"];
+  modelCopy = model;
+  v6 = [modelCopy objectForKeyedSubscript:@"pageModelController"];
+  v4 = [modelCopy objectForKeyedSubscript:@"annotations"];
 
   v5 = [v6 mutableArrayValueForKey:@"annotations"];
   [v5 removeObjectsInArray:v4];
 }
 
-- (void)_registerUndoForSelectionOnPageModelController:(id)a3
+- (void)_registerUndoForSelectionOnPageModelController:(id)controller
 {
   v9[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(AKUndoController *)self undoManager];
-  if ([v5 isUndoRegistrationEnabled])
+  controllerCopy = controller;
+  undoManager = [(AKUndoController *)self undoManager];
+  if ([undoManager isUndoRegistrationEnabled])
   {
-    v6 = [v4 selectionStateForUndo];
+    selectionStateForUndo = [controllerCopy selectionStateForUndo];
     v8[0] = @"pageModelController";
     v8[1] = @"selectionState";
-    v9[0] = v4;
-    v9[1] = v6;
+    v9[0] = controllerCopy;
+    v9[1] = selectionStateForUndo;
     v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:v8 count:2];
-    [v5 registerUndoWithTarget:self selector:sel__undoActionForSelectionState_ object:v7];
+    [undoManager registerUndoWithTarget:self selector:sel__undoActionForSelectionState_ object:v7];
   }
 }
 
-- (void)_undoActionForSelectionState:(id)a3
+- (void)_undoActionForSelectionState:(id)state
 {
   v11[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(AKUndoController *)self undoManager];
-  v6 = [v4 objectForKey:@"pageModelController"];
-  v7 = [v4 objectForKey:@"selectionState"];
+  stateCopy = state;
+  undoManager = [(AKUndoController *)self undoManager];
+  v6 = [stateCopy objectForKey:@"pageModelController"];
+  v7 = [stateCopy objectForKey:@"selectionState"];
 
-  if ([v5 isUndoRegistrationEnabled])
+  if ([undoManager isUndoRegistrationEnabled])
   {
-    v8 = [v6 selectionStateForUndo];
+    selectionStateForUndo = [v6 selectionStateForUndo];
     v10[0] = @"pageModelController";
     v10[1] = @"selectionState";
     v11[0] = v6;
-    v11[1] = v8;
+    v11[1] = selectionStateForUndo;
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:v10 count:2];
-    [v5 registerUndoWithTarget:self selector:sel__undoActionForSelectionState_ object:v9];
+    [undoManager registerUndoWithTarget:self selector:sel__undoActionForSelectionState_ object:v9];
   }
 
   [v6 restoreSelectionStateForUndo:v7];
 }
 
-- (void)_endEditingOfTextIfAnnotationsDeleted:(id)a3
+- (void)_endEditingOfTextIfAnnotationsDeleted:(id)deleted
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(AKUndoController *)self controller];
-  v6 = [v5 textEditorController];
-  if ([v6 isEditing])
+  deletedCopy = deleted;
+  controller = [(AKUndoController *)self controller];
+  textEditorController = [controller textEditorController];
+  if ([textEditorController isEditing])
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v7 = v4;
+    v7 = deletedCopy;
     v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v8)
     {
@@ -842,11 +842,11 @@ LABEL_48:
           }
 
           v12 = *(*(&v14 + 1) + 8 * v11);
-          v13 = [v6 annotation];
+          annotation = [textEditorController annotation];
 
-          if (v12 == v13)
+          if (v12 == annotation)
           {
-            [v6 endEditing];
+            [textEditorController endEditing];
           }
 
           ++v11;
@@ -861,16 +861,16 @@ LABEL_48:
   }
 }
 
-- (void)observePageControllerRequestsDisableRegistration:(id)a3
+- (void)observePageControllerRequestsDisableRegistration:(id)registration
 {
-  v3 = [(AKUndoController *)self undoManager];
-  [v3 disableUndoRegistration];
+  undoManager = [(AKUndoController *)self undoManager];
+  [undoManager disableUndoRegistration];
 }
 
-- (void)observePageControllerRequestsEnableRegistration:(id)a3
+- (void)observePageControllerRequestsEnableRegistration:(id)registration
 {
-  v3 = [(AKUndoController *)self undoManager];
-  [v3 enableUndoRegistration];
+  undoManager = [(AKUndoController *)self undoManager];
+  [undoManager enableUndoRegistration];
 }
 
 - (AKController)controller

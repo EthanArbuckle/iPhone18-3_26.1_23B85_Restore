@@ -1,54 +1,54 @@
 @interface SGMEventInBanner
 - (SGMEventInBanner)init;
-- (void)trackEventWithScalar:(unint64_t)a3 app:(SGMBannerDisplayApp_)a4 category:(SGMEventCategory_)a5 extracted:(SGMEventExtractionType_)a6 state:(SGMEventState_)a7;
+- (void)trackEventWithScalar:(unint64_t)scalar app:(SGMBannerDisplayApp_)app category:(SGMEventCategory_)category extracted:(SGMEventExtractionType_)extracted state:(SGMEventState_)state;
 @end
 
 @implementation SGMEventInBanner
 
-- (void)trackEventWithScalar:(unint64_t)a3 app:(SGMBannerDisplayApp_)a4 category:(SGMEventCategory_)a5 extracted:(SGMEventExtractionType_)a6 state:(SGMEventState_)a7
+- (void)trackEventWithScalar:(unint64_t)scalar app:(SGMBannerDisplayApp_)app category:(SGMEventCategory_)category extracted:(SGMEventExtractionType_)extracted state:(SGMEventState_)state
 {
   v29[4] = *MEMORY[0x1E69E9840];
-  if (a4.var0 >= 3)
+  if (app.var0 >= 3)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString * _Nonnull SGMBannerDisplayApp_toString(SGMBannerDisplayApp)"];
-    [v14 handleFailureInFunction:v15 file:@"SGMetricsDefines.h" lineNumber:61 description:{@"unrecognized tag %lu on SGMBannerDisplayApp", a4.var0}];
+    [currentHandler handleFailureInFunction:v15 file:@"SGMetricsDefines.h" lineNumber:61 description:{@"unrecognized tag %lu on SGMBannerDisplayApp", app.var0}];
 
     v13 = @"ERR_UNMATCHED_TAG";
   }
 
   else
   {
-    v13 = off_1E7EFBFB0[a4.var0];
+    v13 = off_1E7EFBFB0[app.var0];
   }
 
-  if (a5.var0 >= 0xC)
+  if (category.var0 >= 0xC)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v18 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString * _Nonnull SGMEventCategory_toString(SGMEventCategory)"];
-    [v17 handleFailureInFunction:v18 file:@"SGMetricsDefines.h" lineNumber:224 description:{@"unrecognized tag %lu on SGMEventCategory", a5.var0}];
+    [currentHandler2 handleFailureInFunction:v18 file:@"SGMetricsDefines.h" lineNumber:224 description:{@"unrecognized tag %lu on SGMEventCategory", category.var0}];
 
     v16 = @"ERR_UNMATCHED_TAG";
   }
 
   else
   {
-    v16 = off_1E7EFBEE8[a5.var0];
+    v16 = off_1E7EFBEE8[category.var0];
   }
 
   v19 = v16;
-  if (a6.var0)
+  if (extracted.var0)
   {
-    if (a6.var0 == 1)
+    if (extracted.var0 == 1)
     {
       v20 = @"Template";
     }
 
     else
     {
-      v21 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
       v22 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString * _Nonnull SGMEventExtractionType_toString(SGMEventExtractionType)"];
-      [v21 handleFailureInFunction:v22 file:@"SGMetricsDefines.h" lineNumber:271 description:{@"unrecognized tag %lu on SGMEventExtractionType", a6.var0}];
+      [currentHandler3 handleFailureInFunction:v22 file:@"SGMetricsDefines.h" lineNumber:271 description:{@"unrecognized tag %lu on SGMEventExtractionType", extracted.var0}];
 
       v20 = @"ERR_UNMATCHED_TAG";
     }
@@ -59,18 +59,18 @@
     v20 = @"iCal";
   }
 
-  if (a7.var0 >= 3)
+  if (state.var0 >= 3)
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
     v25 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString * _Nonnull SGMEventState_toString(SGMEventState)"];
-    [v24 handleFailureInFunction:v25 file:@"SGMetricsDefines.h" lineNumber:258 description:{@"unrecognized tag %lu on SGMEventState", a7.var0}];
+    [currentHandler4 handleFailureInFunction:v25 file:@"SGMetricsDefines.h" lineNumber:258 description:{@"unrecognized tag %lu on SGMEventState", state.var0}];
 
     v23 = @"ERR_UNMATCHED_TAG";
   }
 
   else
   {
-    v23 = off_1E7EFBF48[a7.var0];
+    v23 = off_1E7EFBF48[state.var0];
   }
 
   tracker = self->_tracker;
@@ -79,7 +79,7 @@
   v29[2] = v20;
   v29[3] = v23;
   v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:4];
-  [(PETScalarEventTracker *)tracker trackEventWithPropertyValues:v27 value:a3];
+  [(PETScalarEventTracker *)tracker trackEventWithPropertyValues:v27 value:scalar];
 
   v28 = *MEMORY[0x1E69E9840];
 }

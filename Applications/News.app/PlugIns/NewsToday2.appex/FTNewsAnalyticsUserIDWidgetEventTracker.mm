@@ -1,6 +1,6 @@
 @interface FTNewsAnalyticsUserIDWidgetEventTracker
 - (FTNewsAnalyticsUserIDWidgetEventTracker)init;
-- (void)widgetPerformedUpdateWithTodayResults:(id)a3 fetchInfo:(id)a4 error:(id)a5 updateFetchDuration:(double)a6;
+- (void)widgetPerformedUpdateWithTodayResults:(id)results fetchInfo:(id)info error:(id)error updateFetchDuration:(double)duration;
 @end
 
 @implementation FTNewsAnalyticsUserIDWidgetEventTracker
@@ -12,10 +12,10 @@
   return [(FTNewsAnalyticsUserIDWidgetEventTracker *)&v3 init];
 }
 
-- (void)widgetPerformedUpdateWithTodayResults:(id)a3 fetchInfo:(id)a4 error:(id)a5 updateFetchDuration:(double)a6
+- (void)widgetPerformedUpdateWithTodayResults:(id)results fetchInfo:(id)info error:(id)error updateFetchDuration:(double)duration
 {
-  v7 = [a4 userID];
-  [(FTNewsAnalyticsUserIDWidgetEventTracker *)self setUserID:v7];
+  userID = [info userID];
+  [(FTNewsAnalyticsUserIDWidgetEventTracker *)self setUserID:userID];
 }
 
 @end

@@ -1,16 +1,16 @@
 @interface PLExpandedPlatterViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)layoutSubviews;
 @end
 
 @implementation PLExpandedPlatterViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateProtocol:@"PLExpandedPlatter" hasRequiredInstanceMethod:@"dismissControl"];
-  [v3 validateClass:@"PLExpandedPlatterView" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateProtocol:@"PLExpandedPlatter" hasRequiredInstanceMethod:@"dismissControl"];
+  [validationsCopy validateClass:@"PLExpandedPlatterView" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

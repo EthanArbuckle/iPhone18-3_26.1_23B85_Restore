@@ -1,21 +1,21 @@
 @interface TSCEFunction_POLYNOMIAL
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5;
-+ (id)evaluatePolynomial:(id)a3 functionSpec:(id)a4 xDecimal:(const TSUDecimal *)a5 coefficients:(id)a6 argumentIndex:(int)a7 outError:(id *)a8;
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments;
++ (id)evaluatePolynomial:(id)polynomial functionSpec:(id)spec xDecimal:(const TSUDecimal *)decimal coefficients:(id)coefficients argumentIndex:(int)index outError:(id *)error;
 @end
 
 @implementation TSCEFunction_POLYNOMIAL
 
-+ (id)evaluatePolynomial:(id)a3 functionSpec:(id)a4 xDecimal:(const TSUDecimal *)a5 coefficients:(id)a6 argumentIndex:(int)a7 outError:(id *)a8
++ (id)evaluatePolynomial:(id)polynomial functionSpec:(id)spec xDecimal:(const TSUDecimal *)decimal coefficients:(id)coefficients argumentIndex:(int)index outError:(id *)error
 {
-  v11 = a3;
-  v12 = a6;
+  polynomialCopy = polynomial;
+  coefficientsCopy = coefficients;
   TSUDecimal::operator=();
-  v17 = objc_msgSend_count(v12, v13, v14, v15, v16, v11);
-  v59 = v11;
+  v17 = objc_msgSend_count(coefficientsCopy, v13, v14, v15, v16, polynomialCopy);
+  v59 = polynomialCopy;
   v62[0] = v59;
-  v62[1] = a4;
+  v62[1] = spec;
   v63 = 0;
-  v64 = a7;
+  indexCopy = index;
   v65[0] = 0;
   *(v65 + 3) = 0;
   v66 = vdupq_n_s64(0x7FFF7FFFFFFFuLL);
@@ -33,7 +33,7 @@ LABEL_14:
   v22 = 0;
   while (1)
   {
-    v23 = objc_msgSend_valueAtIndex_accessContext_(v12, v18, v21, v62, v19);
+    v23 = objc_msgSend_valueAtIndex_accessContext_(coefficientsCopy, v18, v21, v62, v19);
     if ((objc_msgSend_isNil(v23, v24, v25, v26, v27) & 1) == 0)
     {
       break;
@@ -47,9 +47,9 @@ LABEL_13:
     }
   }
 
-  v29 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v23, v28, v59, a4, a7, a8);
+  v29 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v23, v28, v59, spec, index, error);
   v34 = v29;
-  if (*a8)
+  if (*error)
   {
     goto LABEL_16;
   }
@@ -64,15 +64,15 @@ LABEL_13:
   if (objc_msgSend_unit(v29, v30, v31, v32, v33) == v20 || v20 && objc_msgSend_unit(v34, v35, v36, v37, v38) && (v39 = objc_msgSend_dimensionForUnit_(TSCEUnitRegistry, v35, v20, v37, v38), v44 = objc_msgSend_unit(v34, v40, v41, v42, v43), v39 == objc_msgSend_dimensionForUnit_(TSCEUnitRegistry, v45, v44, v46, v47)))
   {
     v61 = *objc_msgSend_rawDecimalValue(v34, v35, v36, v37, v38);
-    TSUDecimal::fma(&v69, a5, &v61, &v69);
+    TSUDecimal::fma(&v69, decimal, &v61, &v69);
 LABEL_12:
 
     v22 = 1;
     goto LABEL_13;
   }
 
-  v53 = objc_msgSend_functionName(a4, v35, v36, v37, v38);
-  *a8 = objc_msgSend_mismatchedUnitsErrorForFunctionName_(TSCEError, v54, v53, v55, v56);
+  v53 = objc_msgSend_functionName(spec, v35, v36, v37, v38);
+  *error = objc_msgSend_mismatchedUnitsErrorForFunctionName_(TSCEError, v54, v53, v55, v56);
 
 LABEL_16:
   v52 = objc_msgSend_zero(TSCENumberValue, v30, v31, v32, v33);
@@ -82,28 +82,28 @@ LABEL_17:
   return v52;
 }
 
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments
 {
-  v8 = **a5;
-  v9 = *(*a5 + 8);
+  v8 = **arguments;
+  v9 = *(*arguments + 8);
   v39 = 0;
-  v11 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(v9, v10, a3, a4, 1, 1, &v39);
+  v11 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(v9, v10, context, spec, 1, 1, &v39);
   v12 = v39;
   if (v12)
   {
     v16 = v12;
-    v17 = objc_msgSend_raiseErrorOrConvert_(a3, v13, v12, v14, v15);
+    v17 = objc_msgSend_raiseErrorOrConvert_(context, v13, v12, v14, v15);
   }
 
   else
   {
     v38 = 0;
-    v18 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v8, v13, a3, a4, 0, &v38);
+    v18 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v8, v13, context, spec, 0, &v38);
     v19 = v38;
     if (v19)
     {
       v16 = v19;
-      v17 = objc_msgSend_raiseErrorOrConvert_(a3, v20, v19, v22, v23);
+      v17 = objc_msgSend_raiseErrorOrConvert_(context, v20, v19, v22, v23);
     }
 
     else
@@ -111,18 +111,18 @@ LABEL_17:
       v37[0] = objc_msgSend_decimalRepresentation(v18, v20, v21, v22, v23);
       v37[1] = v24;
       v36 = 0;
-      v25 = objc_msgSend_evaluatePolynomial_functionSpec_xDecimal_coefficients_argumentIndex_outError_(TSCEFunction_POLYNOMIAL, v24, a3, a4, v37, v11, 1, &v36);
+      v25 = objc_msgSend_evaluatePolynomial_functionSpec_xDecimal_coefficients_argumentIndex_outError_(TSCEFunction_POLYNOMIAL, v24, context, spec, v37, v11, 1, &v36);
       v16 = v36;
       if (v16)
       {
-        v29 = objc_msgSend_raiseErrorOrConvert_(a3, v26, v16, v27, v28);
+        v29 = objc_msgSend_raiseErrorOrConvert_(context, v26, v16, v27, v28);
       }
 
       else
       {
         if (v11)
         {
-          objc_msgSend_formatWithContext_(v11, v26, a3, v27, v28);
+          objc_msgSend_formatWithContext_(v11, v26, context, v27, v28);
         }
 
         else

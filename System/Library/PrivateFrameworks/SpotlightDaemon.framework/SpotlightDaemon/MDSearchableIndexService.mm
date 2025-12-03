@@ -1,76 +1,76 @@
 @interface MDSearchableIndexService
-- (BOOL)_canProcessIndexDataForBundle:(id)a3 itemsDecoder:(id)a4 deletesDecoder:(id)a5 clientState:(id)a6 clientStateName:(id)a7 outError:(id *)a8;
-- (BOOL)_deleteInteractions:(id)a3 forGroup:(BOOL)a4;
-- (BOOL)_handleAssetsCommand:(id)a3;
-- (BOOL)addInteraction:(id)a3;
-- (BOOL)changeState:(id)a3;
-- (BOOL)checkIn:(id)a3;
-- (BOOL)dataMigration:(id)a3;
-- (BOOL)deleteActionsBeforeTime:(id)a3;
-- (BOOL)deleteActionsWithIdentifiers:(id)a3;
-- (BOOL)deleteAllInteractions:(id)a3;
-- (BOOL)deleteAllUserActivities:(id)a3;
-- (BOOL)deleteBundle:(id)a3;
-- (BOOL)deleteDomains:(id)a3;
-- (BOOL)deleteSinceDate:(id)a3;
-- (BOOL)deleteUserActivitiesWithPersistentIdentifiers:(id)a3;
-- (BOOL)donateRelevantActions:(id)a3;
-- (BOOL)fetchAttributes:(id)a3;
-- (BOOL)fetchBundleIDs:(id)a3;
-- (BOOL)fetchCacheFileDescriptors:(id)a3;
-- (BOOL)fetchClientState:(id)a3;
-- (BOOL)finishIndexingLocked:(id)a3;
-- (BOOL)handleCommand:(const char *)a3 info:(id)a4;
-- (BOOL)issueCacheCommand:(id)a3;
-- (BOOL)issueCommand:(id)a3;
-- (BOOL)openJournalFile:(id)a3;
-- (BOOL)photosLibraryDeleted:(id)a3;
-- (BOOL)prepareIndexingLocked:(id)a3;
-- (BOOL)processActivities:(id)a3;
-- (BOOL)processIndexData:(id)a3;
-- (BOOL)transferDeleteJournals:(id)a3;
-- (BOOL)updateCorrections:(id)a3;
-- (BOOL)willModify:(id)a3;
+- (BOOL)_canProcessIndexDataForBundle:(id)bundle itemsDecoder:(id)decoder deletesDecoder:(id)deletesDecoder clientState:(id)state clientStateName:(id)name outError:(id *)error;
+- (BOOL)_deleteInteractions:(id)interactions forGroup:(BOOL)group;
+- (BOOL)_handleAssetsCommand:(id)command;
+- (BOOL)addInteraction:(id)interaction;
+- (BOOL)changeState:(id)state;
+- (BOOL)checkIn:(id)in;
+- (BOOL)dataMigration:(id)migration;
+- (BOOL)deleteActionsBeforeTime:(id)time;
+- (BOOL)deleteActionsWithIdentifiers:(id)identifiers;
+- (BOOL)deleteAllInteractions:(id)interactions;
+- (BOOL)deleteAllUserActivities:(id)activities;
+- (BOOL)deleteBundle:(id)bundle;
+- (BOOL)deleteDomains:(id)domains;
+- (BOOL)deleteSinceDate:(id)date;
+- (BOOL)deleteUserActivitiesWithPersistentIdentifiers:(id)identifiers;
+- (BOOL)donateRelevantActions:(id)actions;
+- (BOOL)fetchAttributes:(id)attributes;
+- (BOOL)fetchBundleIDs:(id)ds;
+- (BOOL)fetchCacheFileDescriptors:(id)descriptors;
+- (BOOL)fetchClientState:(id)state;
+- (BOOL)finishIndexingLocked:(id)locked;
+- (BOOL)handleCommand:(const char *)command info:(id)info;
+- (BOOL)issueCacheCommand:(id)command;
+- (BOOL)issueCommand:(id)command;
+- (BOOL)openJournalFile:(id)file;
+- (BOOL)photosLibraryDeleted:(id)deleted;
+- (BOOL)prepareIndexingLocked:(id)locked;
+- (BOOL)processActivities:(id)activities;
+- (BOOL)processIndexData:(id)data;
+- (BOOL)transferDeleteJournals:(id)journals;
+- (BOOL)updateCorrections:(id)corrections;
+- (BOOL)willModify:(id)modify;
 - (CSIndexingQueue)activityQueue;
 - (NSString)processDescription;
-- (id)_checkBundleIDHelper:(id)a3;
-- (id)_checkItems:(id)a3 identifiers:(id)a4 protectionClass:(id)a5 bundleID:(id)a6;
-- (id)_checkNonEmptyBundle:(id)a3 protectionClass:(id)a4;
-- (void)_deleteAllSearchableItemsWithBundleID:(id)a3 protectionClass:(id)a4 shouldGC:(BOOL)a5 options:(int64_t)a6 deleteAllReason:(int64_t)a7 completionHandler:(id)a8;
-- (void)_dispatchActivities:(id)a3;
-- (void)_dispatchActivities:(id)a3 bundleID:(id)a4;
-- (void)_dispatchToReceiversWithBundleID:(id)a3 protectionClass:(id)a4 options:(int64_t)a5 items:(id)a6 itemsText:(id)a7 itemsHTML:(id)a8 deletes:(id)a9;
-- (void)_forceAppWithBundleID:(id)a3 toPerformJob:(id)a4;
+- (id)_checkBundleIDHelper:(id)helper;
+- (id)_checkItems:(id)items identifiers:(id)identifiers protectionClass:(id)class bundleID:(id)d;
+- (id)_checkNonEmptyBundle:(id)bundle protectionClass:(id)class;
+- (void)_deleteAllSearchableItemsWithBundleID:(id)d protectionClass:(id)class shouldGC:(BOOL)c options:(int64_t)options deleteAllReason:(int64_t)reason completionHandler:(id)handler;
+- (void)_dispatchActivities:(id)activities;
+- (void)_dispatchActivities:(id)activities bundleID:(id)d;
+- (void)_dispatchToReceiversWithBundleID:(id)d protectionClass:(id)class options:(int64_t)options items:(id)items itemsText:(id)text itemsHTML:(id)l deletes:(id)deletes;
+- (void)_forceAppWithBundleID:(id)d toPerformJob:(id)job;
 - (void)_makeActivityQueueIfNecessary;
-- (void)_processIndexDataForBundle:(id)a3 protectionClass:(id)a4 personaID:(id)a5 options:(int64_t)a6 items:(id)a7 itemsText:(id)a8 itemsHTML:(id)a9 clientState:(id)a10 expectedClientState:(id)a11 clientStateName:(id)a12 deletes:(id)a13 completionHandler:(id)a14;
-- (void)_runLibraryDeletedCommand:(id)a3;
-- (void)addInteraction:(id)a3 intentClassName:(id)a4 bundleID:(id)a5 protectionClass:(id)a6 options:(int64_t)a7 completionHandler:(id)a8;
-- (void)changeStateOfSearchableItemsWithUIDs:(id)a3 toState:(int64_t)a4 protectionClass:(id)a5 forBundleID:(id)a6 forUTIType:(id)a7 options:(int64_t)a8;
-- (void)checkInWithProtectionClass:(id)a3 completionHandler:(id)a4;
-- (void)deleteActionsBeforeTime:(double)a3 options:(int64_t)a4 completionHandler:(id)a5;
-- (void)deleteActionsWithIdentifiers:(id)a3 options:(int64_t)a4 completionHandler:(id)a5;
-- (void)deleteAllInteractionsWithBundleID:(id)a3 protectionClass:(id)a4 options:(int64_t)a5 completionHandler:(id)a6;
-- (void)deleteAllUserActivities:(id)a3 fromClient:(id)a4 options:(int64_t)a5 completionHandler:(id)a6;
-- (void)deleteInteractionsWithGroupIdentifiers:(id)a3 bundleID:(id)a4 protectionClass:(id)a5 options:(int64_t)a6 completionHandler:(id)a7;
-- (void)deleteInteractionsWithIdentifiers:(id)a3 bundleID:(id)a4 protectionClass:(id)a5 options:(int64_t)a6 completionHandler:(id)a7;
-- (void)deleteSearchableItemsSinceDate:(id)a3 protectionClass:(id)a4 forBundleID:(id)a5 options:(int64_t)a6 completionHandler:(id)a7;
-- (void)deleteSearchableItemsWithDomainIdentifiers:(id)a3 protectionClass:(id)a4 forBundleID:(id)a5 fromClient:(id)a6 options:(int64_t)a7 completionHandler:(id)a8;
-- (void)deleteUserActivitiesWithPersistentIdentifiers:(id)a3 bundleID:(id)a4 options:(int64_t)a5 completionHandler:(id)a6;
-- (void)donateRelevantActions:(id)a3 bundleID:(id)a4 options:(int64_t)a5 completionHandler:(id)a6;
-- (void)fetchAttributes:(id)a3 protectionClass:(id)a4 bundleID:(id)a5 identifiers:(id)a6 userCtx:(id)a7 flags:(unsigned int)a8 qos:(unsigned int)a9 reply:(id)a10 completionHandler:(id)a11;
-- (void)fetchLastClientStateWithProtectionClass:(id)a3 forBundleID:(id)a4 clientStateName:(id)a5 options:(int64_t)a6 completionHandler:(id)a7;
-- (void)finishIndexingWhileLocked:(id)a3 protectionClass:(id)a4 completionHandler:(id)a5;
+- (void)_processIndexDataForBundle:(id)bundle protectionClass:(id)class personaID:(id)d options:(int64_t)options items:(id)items itemsText:(id)text itemsHTML:(id)l clientState:(id)self0 expectedClientState:(id)self1 clientStateName:(id)self2 deletes:(id)self3 completionHandler:(id)self4;
+- (void)_runLibraryDeletedCommand:(id)command;
+- (void)addInteraction:(id)interaction intentClassName:(id)name bundleID:(id)d protectionClass:(id)class options:(int64_t)options completionHandler:(id)handler;
+- (void)changeStateOfSearchableItemsWithUIDs:(id)ds toState:(int64_t)state protectionClass:(id)class forBundleID:(id)d forUTIType:(id)type options:(int64_t)options;
+- (void)checkInWithProtectionClass:(id)class completionHandler:(id)handler;
+- (void)deleteActionsBeforeTime:(double)time options:(int64_t)options completionHandler:(id)handler;
+- (void)deleteActionsWithIdentifiers:(id)identifiers options:(int64_t)options completionHandler:(id)handler;
+- (void)deleteAllInteractionsWithBundleID:(id)d protectionClass:(id)class options:(int64_t)options completionHandler:(id)handler;
+- (void)deleteAllUserActivities:(id)activities fromClient:(id)client options:(int64_t)options completionHandler:(id)handler;
+- (void)deleteInteractionsWithGroupIdentifiers:(id)identifiers bundleID:(id)d protectionClass:(id)class options:(int64_t)options completionHandler:(id)handler;
+- (void)deleteInteractionsWithIdentifiers:(id)identifiers bundleID:(id)d protectionClass:(id)class options:(int64_t)options completionHandler:(id)handler;
+- (void)deleteSearchableItemsSinceDate:(id)date protectionClass:(id)class forBundleID:(id)d options:(int64_t)options completionHandler:(id)handler;
+- (void)deleteSearchableItemsWithDomainIdentifiers:(id)identifiers protectionClass:(id)class forBundleID:(id)d fromClient:(id)client options:(int64_t)options completionHandler:(id)handler;
+- (void)deleteUserActivitiesWithPersistentIdentifiers:(id)identifiers bundleID:(id)d options:(int64_t)options completionHandler:(id)handler;
+- (void)donateRelevantActions:(id)actions bundleID:(id)d options:(int64_t)options completionHandler:(id)handler;
+- (void)fetchAttributes:(id)attributes protectionClass:(id)class bundleID:(id)d identifiers:(id)identifiers userCtx:(id)ctx flags:(unsigned int)flags qos:(unsigned int)qos reply:(id)self0 completionHandler:(id)self1;
+- (void)fetchLastClientStateWithProtectionClass:(id)class forBundleID:(id)d clientStateName:(id)name options:(int64_t)options completionHandler:(id)handler;
+- (void)finishIndexingWhileLocked:(id)locked protectionClass:(id)class completionHandler:(id)handler;
 - (void)flushUserActivities;
-- (void)indexFromBundle:(id)a3 protectionClass:(id)a4 options:(int64_t)a5 items:(id)a6 itemsText:(id)a7 itemsHTML:(id)a8 clientState:(id)a9 expectedClientState:(id)a10 clientStateName:(id)a11 deletes:(id)a12 userActivities:(BOOL)a13 completionHandler:(id)a14;
-- (void)indexSearchableItems:(id)a3 deleteSearchableItemsWithIdentifiers:(id)a4 clientState:(id)a5 clientStateName:(id)a6 protectionClass:(id)a7 forBundleID:(id)a8 options:(int64_t)a9 completionHandler:(id)a10;
-- (void)performDataMigrationWithTimeout:(id)a3 completionHandler:(id)a4;
-- (void)performIndexJob:(id)a3 protectionClass:(id)a4 acknowledgementHandler:(id)a5;
-- (void)prepareIndexingWhileLocked:(id)a3 protectionClass:(id)a4 holdAssertionFor:(double)a5 completionHandler:(id)a6;
-- (void)provideDataForBundle:(id)a3 identifier:(id)a4 type:(id)a5 completionHandler:(id)a6;
-- (void)provideFileURLForBundle:(id)a3 identifier:(id)a4 type:(id)a5 completionHandler:(id)a6;
-- (void)updateCorrectionsWithFilePath:(id)a3 options:(int64_t)a4 completionHandler:(id)a5;
-- (void)userPerformedAction:(id)a3 withItem:(id)a4 protectionClass:(id)a5;
-- (void)willModifySearchableItemsWithIdentifiers:(id)a3 protectionClass:(id)a4 forBundleID:(id)a5 options:(int64_t)a6 completionHandler:(id)a7;
+- (void)indexFromBundle:(id)bundle protectionClass:(id)class options:(int64_t)options items:(id)items itemsText:(id)text itemsHTML:(id)l clientState:(id)state expectedClientState:(id)self0 clientStateName:(id)self1 deletes:(id)self2 userActivities:(BOOL)self3 completionHandler:(id)self4;
+- (void)indexSearchableItems:(id)items deleteSearchableItemsWithIdentifiers:(id)identifiers clientState:(id)state clientStateName:(id)name protectionClass:(id)class forBundleID:(id)d options:(int64_t)options completionHandler:(id)self0;
+- (void)performDataMigrationWithTimeout:(id)timeout completionHandler:(id)handler;
+- (void)performIndexJob:(id)job protectionClass:(id)class acknowledgementHandler:(id)handler;
+- (void)prepareIndexingWhileLocked:(id)locked protectionClass:(id)class holdAssertionFor:(double)for completionHandler:(id)handler;
+- (void)provideDataForBundle:(id)bundle identifier:(id)identifier type:(id)type completionHandler:(id)handler;
+- (void)provideFileURLForBundle:(id)bundle identifier:(id)identifier type:(id)type completionHandler:(id)handler;
+- (void)updateCorrectionsWithFilePath:(id)path options:(int64_t)options completionHandler:(id)handler;
+- (void)userPerformedAction:(id)action withItem:(id)item protectionClass:(id)class;
+- (void)willModifySearchableItemsWithIdentifiers:(id)identifiers protectionClass:(id)class forBundleID:(id)d options:(int64_t)options completionHandler:(id)handler;
 @end
 
 @implementation MDSearchableIndexService
@@ -97,11 +97,11 @@ void __57__MDSearchableIndexService__makeActivityQueueIfNecessary__block_invoke(
 
 - (void)_makeActivityQueueIfNecessary
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_activityQueue && ([MEMORY[0x277CC3518] disabledUserActivities] & 1) == 0)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_activityQueue && ([MEMORY[0x277CC3518] disabledUserActivities] & 1) == 0)
   {
-    objc_initWeak(&location, v2);
+    objc_initWeak(&location, selfCopy);
     v7 = MEMORY[0x277D85DD0];
     v8 = 3221225472;
     v9 = __57__MDSearchableIndexService__makeActivityQueueIfNecessary__block_invoke;
@@ -110,39 +110,39 @@ void __57__MDSearchableIndexService__makeActivityQueueIfNecessary__block_invoke(
     v3 = [&v7 copy];
     v4 = objc_alloc(MEMORY[0x277CC3428]);
     v5 = [v4 initWithIdleTime:1 idleTimeLeeway:0 maximumBatchSize:v3 mode:1.0 notifyBlock:{0.25, v7, v8, v9, v10}];
-    activityQueue = v2->_activityQueue;
-    v2->_activityQueue = v5;
+    activityQueue = selfCopy->_activityQueue;
+    selfCopy->_activityQueue = v5;
 
     objc_destroyWeak(&v11);
     objc_destroyWeak(&location);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (CSIndexingQueue)activityQueue
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_activityQueue;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_activityQueue;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (void)flushUserActivities
 {
-  v2 = [(MDSearchableIndexService *)self activityQueue];
-  [v2 flush];
+  activityQueue = [(MDSearchableIndexService *)self activityQueue];
+  [activityQueue flush];
 }
 
 - (NSString)processDescription
 {
-  v2 = [(MDSearchableIndexService *)self clientConnection];
-  v3 = v2;
-  if (v2)
+  clientConnection = [(MDSearchableIndexService *)self clientConnection];
+  v3 = clientConnection;
+  if (clientConnection)
   {
-    v4 = [MEMORY[0x277CC3510] processNameForPID:xpc_connection_get_pid(v2)];
+    v4 = [MEMORY[0x277CC3510] processNameForPID:xpc_connection_get_pid(clientConnection)];
   }
 
   else
@@ -153,11 +153,11 @@ void __57__MDSearchableIndexService__makeActivityQueueIfNecessary__block_invoke(
   return v4;
 }
 
-- (id)_checkNonEmptyBundle:(id)a3 protectionClass:(id)a4
+- (id)_checkNonEmptyBundle:(id)bundle protectionClass:(id)class
 {
-  if (a3)
+  if (bundle)
   {
-    v5 = [(MDSearchableIndexService *)self _checkItems:0 identifiers:0 protectionClass:a4 bundleID:a3];
+    v5 = [(MDSearchableIndexService *)self _checkItems:0 identifiers:0 protectionClass:class bundleID:bundle];
   }
 
   else
@@ -174,21 +174,21 @@ void __57__MDSearchableIndexService__makeActivityQueueIfNecessary__block_invoke(
   return v5;
 }
 
-- (id)_checkItems:(id)a3 identifiers:(id)a4 protectionClass:(id)a5 bundleID:(id)a6
+- (id)_checkItems:(id)items identifiers:(id)identifiers protectionClass:(id)class bundleID:(id)d
 {
   v54 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  itemsCopy = items;
+  identifiersCopy = identifiers;
+  classCopy = class;
+  dCopy = d;
   if (self->_isInternal)
   {
     goto LABEL_2;
   }
 
-  v30 = [(MDSearchableIndexService *)self clientBundleID];
+  clientBundleID = [(MDSearchableIndexService *)self clientBundleID];
 
-  if (!v30)
+  if (!clientBundleID)
   {
     v34 = logForCSLogCategoryIndex();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
@@ -200,7 +200,7 @@ void __57__MDSearchableIndexService__makeActivityQueueIfNecessary__block_invoke(
     goto LABEL_44;
   }
 
-  v31 = [(MDSearchableIndexService *)self _checkBundleIDHelper:v13];
+  v31 = [(MDSearchableIndexService *)self _checkBundleIDHelper:dCopy];
   if (v31)
   {
     v32 = logForCSLogCategoryIndex();
@@ -230,12 +230,12 @@ LABEL_43:
   }
 
 LABEL_2:
-  v43 = v12;
+  v43 = classCopy;
   v50 = 0u;
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v14 = v10;
+  v14 = itemsCopy;
   v15 = [v14 countByEnumeratingWithState:&v48 objects:v53 count:16];
   if (!v15)
   {
@@ -244,11 +244,11 @@ LABEL_2:
 
   v16 = v15;
   v17 = *v49;
-  v42 = v10;
+  v42 = itemsCopy;
   while (2)
   {
-    v18 = v13;
-    v19 = v11;
+    v18 = dCopy;
+    v19 = identifiersCopy;
     for (i = 0; i != v16; ++i)
     {
       if (*v49 != v17)
@@ -269,8 +269,8 @@ LABEL_2:
         goto LABEL_34;
       }
 
-      v22 = [v21 bundleID];
-      v23 = [(MDSearchableIndexService *)self _checkBundleIDHelper:v22];
+      bundleID = [v21 bundleID];
+      v23 = [(MDSearchableIndexService *)self _checkBundleIDHelper:bundleID];
 
       if (v23)
       {
@@ -281,19 +281,19 @@ LABEL_2:
         }
 
 LABEL_34:
-        v12 = v43;
+        classCopy = v43;
 
-        v11 = v19;
-        v13 = v18;
-        v10 = v42;
+        identifiersCopy = v19;
+        dCopy = v18;
+        itemsCopy = v42;
         goto LABEL_44;
       }
     }
 
     v16 = [v14 countByEnumeratingWithState:&v48 objects:v53 count:16];
-    v11 = v19;
-    v13 = v18;
-    v10 = v42;
+    identifiersCopy = v19;
+    dCopy = v18;
+    itemsCopy = v42;
     if (v16)
     {
       continue;
@@ -308,7 +308,7 @@ LABEL_11:
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v24 = v11;
+  v24 = identifiersCopy;
   v25 = [v24 countByEnumeratingWithState:&v44 objects:v52 count:16];
   if (v25)
   {
@@ -351,7 +351,7 @@ LABEL_11:
 
   v23 = 0;
 LABEL_38:
-  v12 = v43;
+  classCopy = v43;
 LABEL_44:
 
   v40 = *MEMORY[0x277D85DE8];
@@ -359,10 +359,10 @@ LABEL_44:
   return v23;
 }
 
-- (id)_checkBundleIDHelper:(id)a3
+- (id)_checkBundleIDHelper:(id)helper
 {
-  v4 = a3;
-  if (!v4 || (-[MDSearchableIndexService clientBundleID](self, "clientBundleID"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v4 isEqualToString:v5], v5, (v6 & 1) != 0) || self->_isInternal)
+  helperCopy = helper;
+  if (!helperCopy || (-[MDSearchableIndexService clientBundleID](self, "clientBundleID"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [helperCopy isEqualToString:v5], v5, (v6 & 1) != 0) || self->_isInternal)
   {
     v7 = 0;
   }
@@ -375,25 +375,25 @@ LABEL_44:
   return v7;
 }
 
-- (BOOL)_canProcessIndexDataForBundle:(id)a3 itemsDecoder:(id)a4 deletesDecoder:(id)a5 clientState:(id)a6 clientStateName:(id)a7 outError:(id *)a8
+- (BOOL)_canProcessIndexDataForBundle:(id)bundle itemsDecoder:(id)decoder deletesDecoder:(id)deletesDecoder clientState:(id)state clientStateName:(id)name outError:(id *)error
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  if (!v14)
+  bundleCopy = bundle;
+  decoderCopy = decoder;
+  deletesDecoderCopy = deletesDecoder;
+  stateCopy = state;
+  nameCopy = name;
+  if (!bundleCopy)
   {
-    v14 = [(MDSearchableIndexService *)self clientBundleID];
+    bundleCopy = [(MDSearchableIndexService *)self clientBundleID];
   }
 
-  v19 = [(MDSearchableIndexService *)self _checkItems:0 identifiers:0 protectionClass:0 bundleID:v14];
+  v19 = [(MDSearchableIndexService *)self _checkItems:0 identifiers:0 protectionClass:0 bundleID:bundleCopy];
   if (v19)
   {
     goto LABEL_9;
   }
 
-  if (v17 && !v18)
+  if (stateCopy && !nameCopy)
   {
     v20 = logForCSLogCategoryIndex();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -407,7 +407,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (v17)
+  if (stateCopy)
   {
     v19 = 0;
     v21 = 1;
@@ -415,9 +415,9 @@ LABEL_9:
 
   else
   {
-    if (v15 && ([v15 obj], _MDPlistGetPlistObjectType() == 240))
+    if (decoderCopy && ([decoderCopy obj], _MDPlistGetPlistObjectType() == 240))
     {
-      [v15 obj];
+      [decoderCopy obj];
       v21 = _MDPlistArrayGetCount() != 0;
     }
 
@@ -426,9 +426,9 @@ LABEL_9:
       v21 = 0;
     }
 
-    if (v16 && ([v16 obj], _MDPlistGetPlistObjectType() == 240))
+    if (deletesDecoderCopy && ([deletesDecoderCopy obj], _MDPlistGetPlistObjectType() == 240))
     {
-      [v16 obj];
+      [deletesDecoderCopy obj];
       Count = _MDPlistArrayGetCount();
       v19 = 0;
       v21 |= Count != 0;
@@ -441,68 +441,68 @@ LABEL_9:
   }
 
 LABEL_10:
-  if (a8)
+  if (error)
   {
     v19 = v19;
-    *a8 = v19;
+    *error = v19;
   }
 
   return v21 & 1;
 }
 
-- (void)_processIndexDataForBundle:(id)a3 protectionClass:(id)a4 personaID:(id)a5 options:(int64_t)a6 items:(id)a7 itemsText:(id)a8 itemsHTML:(id)a9 clientState:(id)a10 expectedClientState:(id)a11 clientStateName:(id)a12 deletes:(id)a13 completionHandler:(id)a14
+- (void)_processIndexDataForBundle:(id)bundle protectionClass:(id)class personaID:(id)d options:(int64_t)options items:(id)items itemsText:(id)text itemsHTML:(id)l clientState:(id)self0 expectedClientState:(id)self1 clientStateName:(id)self2 deletes:(id)self3 completionHandler:(id)self4
 {
-  v35 = a3;
-  v19 = a4;
-  v20 = a5;
-  v34 = a7;
-  v33 = a8;
-  v21 = a9;
-  v22 = a10;
-  v23 = a11;
-  v24 = a12;
-  v25 = a13;
-  v26 = a14;
-  if ([(MDSearchableIndexService *)self _jobForIndex:a6]&& (v27 = self->_indexer, (objc_opt_respondsToSelector() & 1) != 0))
+  bundleCopy = bundle;
+  classCopy = class;
+  dCopy = d;
+  itemsCopy = items;
+  textCopy = text;
+  lCopy = l;
+  stateCopy = state;
+  clientStateCopy = clientState;
+  nameCopy = name;
+  deletesCopy = deletes;
+  handlerCopy = handler;
+  if ([(MDSearchableIndexService *)self _jobForIndex:options]&& (v27 = self->_indexer, (objc_opt_respondsToSelector() & 1) != 0))
   {
     indexer = self->_indexer;
     LOBYTE(v31) = 1;
-    v29 = v34;
-    v30 = v33;
-    [(MDIndexer *)indexer indexFromBundle:v35 protectionClass:v19 personaID:v20 options:a6 items:v34 itemsText:v33 itemsHTML:v21 clientState:v22 expectedClientState:v23 clientStateName:v24 deletes:v25 canCreateNewIndex:v31 completionHandler:v26];
+    v29 = itemsCopy;
+    v30 = textCopy;
+    [(MDIndexer *)indexer indexFromBundle:bundleCopy protectionClass:classCopy personaID:dCopy options:options items:itemsCopy itemsText:textCopy itemsHTML:lCopy clientState:stateCopy expectedClientState:clientStateCopy clientStateName:nameCopy deletes:deletesCopy canCreateNewIndex:v31 completionHandler:handlerCopy];
   }
 
   else
   {
-    v30 = v33;
-    v29 = v34;
-    if (!v26)
+    v30 = textCopy;
+    v29 = itemsCopy;
+    if (!handlerCopy)
     {
       goto LABEL_7;
     }
 
-    (*(v26 + 2))(v26, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 
 LABEL_7:
 }
 
-- (void)_dispatchToReceiversWithBundleID:(id)a3 protectionClass:(id)a4 options:(int64_t)a5 items:(id)a6 itemsText:(id)a7 itemsHTML:(id)a8 deletes:(id)a9
+- (void)_dispatchToReceiversWithBundleID:(id)d protectionClass:(id)class options:(int64_t)options items:(id)items itemsText:(id)text itemsHTML:(id)l deletes:(id)deletes
 {
   v51 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
+  dCopy = d;
+  classCopy = class;
+  itemsCopy = items;
+  textCopy = text;
+  lCopy = l;
+  deletesCopy = deletes;
   v20 = &off_231AED000;
-  if (v19)
+  if (deletesCopy)
   {
     v21 = logForCSLogCategoryDefault();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
-      if ([SpotlightSender jobForTest:a5])
+      if ([SpotlightSender jobForTest:options])
       {
         v22 = @"YES";
       }
@@ -513,8 +513,8 @@ LABEL_7:
       }
 
       v28 = v22;
-      v29 = v18;
-      if ([SpotlightSender jobForDuet:a5])
+      v29 = lCopy;
+      if ([SpotlightSender jobForDuet:options])
       {
         v23 = @"YES";
       }
@@ -524,7 +524,7 @@ LABEL_7:
         v23 = @"NO";
       }
 
-      if ([SpotlightSender jobForSuggestions:a5])
+      if ([SpotlightSender jobForSuggestions:options])
       {
         v24 = @"YES";
       }
@@ -535,7 +535,7 @@ LABEL_7:
       }
 
       *buf = 138413570;
-      if ([SpotlightSender jobForTextUnderstanding:a5])
+      if ([SpotlightSender jobForTextUnderstanding:options])
       {
         v25 = @"YES";
       }
@@ -545,14 +545,14 @@ LABEL_7:
         v25 = @"NO";
       }
 
-      v40 = v14;
+      v40 = dCopy;
       v41 = 2048;
-      v42 = a5;
+      optionsCopy = options;
       v43 = 2112;
       v44 = v28;
       v45 = 2112;
       v46 = v23;
-      v18 = v29;
+      lCopy = v29;
       v47 = 2112;
       v48 = v24;
       v20 = &off_231AED000;
@@ -565,12 +565,12 @@ LABEL_7:
     v36[1] = *(v20 + 179);
     v36[2] = __119__MDSearchableIndexService__dispatchToReceiversWithBundleID_protectionClass_options_items_itemsText_itemsHTML_deletes___block_invoke;
     v36[3] = &unk_278937758;
-    v37 = v19;
-    v38 = v14;
-    [SpotlightSender dispatchWithOptions:a5 block:v36];
+    v37 = deletesCopy;
+    v38 = dCopy;
+    [SpotlightSender dispatchWithOptions:options block:v36];
   }
 
-  if (v16)
+  if (itemsCopy)
   {
     v26 = logForCSLogCategoryDefault();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
@@ -582,12 +582,12 @@ LABEL_7:
     v30[1] = *(v20 + 179);
     v30[2] = __119__MDSearchableIndexService__dispatchToReceiversWithBundleID_protectionClass_options_items_itemsText_itemsHTML_deletes___block_invoke_52;
     v30[3] = &unk_278937780;
-    v31 = v18;
-    v32 = v17;
-    v33 = v16;
-    v34 = v14;
-    v35 = v15;
-    [SpotlightSender dispatchWithOptions:a5 block:v30];
+    v31 = lCopy;
+    v32 = textCopy;
+    v33 = itemsCopy;
+    v34 = dCopy;
+    v35 = classCopy;
+    [SpotlightSender dispatchWithOptions:options block:v30];
   }
 
   v27 = *MEMORY[0x277D85DE8];
@@ -614,17 +614,17 @@ void __119__MDSearchableIndexService__dispatchToReceiversWithBundleID_protection
   [SpotlightSender addOrUpdateSearchableItems:a1[6] itemsContent:v4 bundleID:a1[7] protectionClass:a1[8] client:a2];
 }
 
-- (void)willModifySearchableItemsWithIdentifiers:(id)a3 protectionClass:(id)a4 forBundleID:(id)a5 options:(int64_t)a6 completionHandler:(id)a7
+- (void)willModifySearchableItemsWithIdentifiers:(id)identifiers protectionClass:(id)class forBundleID:(id)d options:(int64_t)options completionHandler:(id)handler
 {
   v32 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  identifiersCopy = identifiers;
+  classCopy = class;
+  dCopy = d;
+  handlerCopy = handler;
   v16 = objc_autoreleasePoolPush();
-  if (v14)
+  if (dCopy)
   {
-    if (v13)
+    if (classCopy)
     {
       goto LABEL_3;
     }
@@ -632,42 +632,42 @@ void __119__MDSearchableIndexService__dispatchToReceiversWithBundleID_protection
 
   else
   {
-    v14 = [(MDSearchableIndexService *)self clientBundleID];
-    if (v13)
+    dCopy = [(MDSearchableIndexService *)self clientBundleID];
+    if (classCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v13 = [(MDSearchableIndexService *)self protectionClass];
+  classCopy = [(MDSearchableIndexService *)self protectionClass];
 LABEL_3:
   v17 = logForCSLogCategoryIndex();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138413058;
-    v25 = v14;
+    v25 = dCopy;
     v26 = 2048;
-    v27 = [v12 count];
+    v27 = [identifiersCopy count];
     v28 = 2112;
-    v29 = v12;
+    v29 = identifiersCopy;
     v30 = 2048;
-    v31 = a6;
+    optionsCopy = options;
     _os_log_debug_impl(&dword_231A35000, v17, OS_LOG_TYPE_DEBUG, "(%@) willModifySearchableItemsWithIdentifiers, identifiers/%ld:%@, options:0x%lx", buf, 0x2Au);
   }
 
-  v18 = [(MDSearchableIndexService *)self _checkItems:0 identifiers:v12 protectionClass:v13 bundleID:v14];
+  v18 = [(MDSearchableIndexService *)self _checkItems:0 identifiers:identifiersCopy protectionClass:classCopy bundleID:dCopy];
   if (v18)
   {
-    if (v15)
+    if (handlerCopy)
     {
-      v15[2](v15, v18);
+      handlerCopy[2](handlerCopy, v18);
 LABEL_15:
     }
   }
 
   else
   {
-    if ([(MDSearchableIndexService *)self _jobForIndex:a6])
+    if ([(MDSearchableIndexService *)self _jobForIndex:options])
     {
       indexer = self->_indexer;
       if (objc_opt_respondsToSelector())
@@ -677,16 +677,16 @@ LABEL_15:
         v22[1] = 3221225472;
         v22[2] = __123__MDSearchableIndexService_willModifySearchableItemsWithIdentifiers_protectionClass_forBundleID_options_completionHandler___block_invoke;
         v22[3] = &unk_278935048;
-        v23 = v15;
-        [(MDIndexer *)v20 willModifySearchableItemsWithIdentifiers:v12 protectionClass:v13 forBundleID:v14 options:a6 completionHandler:v22];
-        v15 = v23;
+        v23 = handlerCopy;
+        [(MDIndexer *)v20 willModifySearchableItemsWithIdentifiers:identifiersCopy protectionClass:classCopy forBundleID:dCopy options:options completionHandler:v22];
+        handlerCopy = v23;
         goto LABEL_15;
       }
     }
 
-    if (v15)
+    if (handlerCopy)
     {
-      v15[2](v15, 0);
+      handlerCopy[2](handlerCopy, 0);
       goto LABEL_15;
     }
   }
@@ -706,19 +706,19 @@ uint64_t __123__MDSearchableIndexService_willModifySearchableItemsWithIdentifier
   return result;
 }
 
-- (void)deleteSearchableItemsWithDomainIdentifiers:(id)a3 protectionClass:(id)a4 forBundleID:(id)a5 fromClient:(id)a6 options:(int64_t)a7 completionHandler:(id)a8
+- (void)deleteSearchableItemsWithDomainIdentifiers:(id)identifiers protectionClass:(id)class forBundleID:(id)d fromClient:(id)client options:(int64_t)options completionHandler:(id)handler
 {
   v44 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
+  identifiersCopy = identifiers;
+  classCopy = class;
+  dCopy = d;
+  clientCopy = client;
+  handlerCopy = handler;
   v19 = objc_autoreleasePoolPush();
   clientBundleID = self->_clientBundleID;
-  if (v16)
+  if (dCopy)
   {
-    if (clientBundleID && ![(NSString *)v16 isEqualToString:?])
+    if (clientBundleID && ![(NSString *)dCopy isEqualToString:?])
     {
       goto LABEL_8;
     }
@@ -726,13 +726,13 @@ uint64_t __123__MDSearchableIndexService_willModifySearchableItemsWithIdentifier
 
   else
   {
-    v16 = clientBundleID;
+    dCopy = clientBundleID;
   }
 
   if (!self->_protectionClass)
   {
 
-    v15 = 0;
+    classCopy = 0;
   }
 
 LABEL_8:
@@ -740,11 +740,11 @@ LABEL_8:
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v39 = v16;
+    v39 = dCopy;
     v40 = 2112;
-    v41 = v15;
+    v41 = classCopy;
     v42 = 2048;
-    v43 = [v14 count];
+    v43 = [identifiersCopy count];
     _os_log_impl(&dword_231A35000, v21, OS_LOG_TYPE_DEFAULT, "(%@) deleteSearchableItemsWithDomainIdentifiers, protectionClass:%@, domainIdentifier num:%ld", buf, 0x20u);
   }
 
@@ -754,12 +754,12 @@ LABEL_8:
     [MDSearchableIndexService deleteSearchableItemsWithDomainIdentifiers:protectionClass:forBundleID:fromClient:options:completionHandler:];
   }
 
-  v23 = [(MDSearchableIndexService *)self _checkItems:0 identifiers:v14 protectionClass:v15 bundleID:v16];
+  v23 = [(MDSearchableIndexService *)self _checkItems:0 identifiers:identifiersCopy protectionClass:classCopy bundleID:dCopy];
   if (v23)
   {
-    if (v18)
+    if (handlerCopy)
     {
-      v18[2](v18, v23);
+      handlerCopy[2](handlerCopy, v23);
 LABEL_23:
     }
   }
@@ -769,16 +769,16 @@ LABEL_23:
     if (!self->_isPrivate)
     {
       +[CSRecieverState sharedInstance];
-      v32 = v14;
-      v24 = v17;
+      v32 = identifiersCopy;
+      v24 = clientCopy;
       v25 = v19;
-      v27 = v26 = a7;
-      v28 = [v27 checkBundleIdentifier:v16];
+      v27 = v26 = options;
+      v28 = [v27 checkBundleIdentifier:dCopy];
 
-      a7 = v26;
+      options = v26;
       v19 = v25;
-      v17 = v24;
-      v14 = v32;
+      clientCopy = v24;
+      identifiersCopy = v32;
       if (v28)
       {
         v35[0] = MEMORY[0x277D85DD0];
@@ -786,12 +786,12 @@ LABEL_23:
         v35[2] = __136__MDSearchableIndexService_deleteSearchableItemsWithDomainIdentifiers_protectionClass_forBundleID_fromClient_options_completionHandler___block_invoke;
         v35[3] = &unk_278937758;
         v36 = v32;
-        v37 = v16;
-        [SpotlightSender dispatchWithOptions:a7 block:v35];
+        v37 = dCopy;
+        [SpotlightSender dispatchWithOptions:options block:v35];
       }
     }
 
-    if ([(MDSearchableIndexService *)self _jobForIndex:a7])
+    if ([(MDSearchableIndexService *)self _jobForIndex:options])
     {
       indexer = self->_indexer;
       if (objc_opt_respondsToSelector())
@@ -801,16 +801,16 @@ LABEL_23:
         v33[1] = 3221225472;
         v33[2] = __136__MDSearchableIndexService_deleteSearchableItemsWithDomainIdentifiers_protectionClass_forBundleID_fromClient_options_completionHandler___block_invoke_2;
         v33[3] = &unk_278935048;
-        v34 = v18;
-        [(MDIndexer *)v30 deleteSearchableItemsWithDomainIdentifiers:v14 protectionClass:v15 forBundleID:v16 fromClient:v17 options:a7 completionHandler:v33];
-        v18 = v34;
+        v34 = handlerCopy;
+        [(MDIndexer *)v30 deleteSearchableItemsWithDomainIdentifiers:identifiersCopy protectionClass:classCopy forBundleID:dCopy fromClient:clientCopy options:options completionHandler:v33];
+        handlerCopy = v34;
         goto LABEL_23;
       }
     }
 
-    if (v18)
+    if (handlerCopy)
     {
-      v18[2](v18, 0);
+      handlerCopy[2](handlerCopy, 0);
       goto LABEL_23;
     }
   }
@@ -830,17 +830,17 @@ uint64_t __136__MDSearchableIndexService_deleteSearchableItemsWithDomainIdentifi
   return result;
 }
 
-- (void)fetchLastClientStateWithProtectionClass:(id)a3 forBundleID:(id)a4 clientStateName:(id)a5 options:(int64_t)a6 completionHandler:(id)a7
+- (void)fetchLastClientStateWithProtectionClass:(id)class forBundleID:(id)d clientStateName:(id)name options:(int64_t)options completionHandler:(id)handler
 {
   v35 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  classCopy = class;
+  dCopy = d;
+  nameCopy = name;
+  handlerCopy = handler;
   v16 = objc_autoreleasePoolPush();
-  if (v13)
+  if (dCopy)
   {
-    if (v12)
+    if (classCopy)
     {
       goto LABEL_3;
     }
@@ -848,45 +848,45 @@ uint64_t __136__MDSearchableIndexService_deleteSearchableItemsWithDomainIdentifi
 
   else
   {
-    v13 = [(MDSearchableIndexService *)self clientBundleID];
-    if (v12)
+    dCopy = [(MDSearchableIndexService *)self clientBundleID];
+    if (classCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v12 = [(MDSearchableIndexService *)self protectionClass];
+  classCopy = [(MDSearchableIndexService *)self protectionClass];
 LABEL_3:
   v17 = logForCSLogCategoryIndex();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
-    v22 = [(MDSearchableIndexService *)self protectionClass];
+    protectionClass = [(MDSearchableIndexService *)self protectionClass];
     *buf = 138413314;
-    v26 = v13;
+    v26 = dCopy;
     v27 = 2112;
-    v28 = v14;
+    v28 = nameCopy;
     v29 = 2112;
-    v30 = v12;
+    v30 = classCopy;
     v31 = 2112;
-    v32 = v22;
+    v32 = protectionClass;
     v33 = 2048;
-    v34 = a6;
+    optionsCopy = options;
     _os_log_debug_impl(&dword_231A35000, v17, OS_LOG_TYPE_DEBUG, "(%@) fetchLastClientStateWithProtectionClass, clientStateName:%@, protectionClass:%@/%@, options:0x%lx", buf, 0x34u);
   }
 
-  v18 = [(MDSearchableIndexService *)self _checkItems:0 identifiers:0 protectionClass:v12 bundleID:v13];
+  v18 = [(MDSearchableIndexService *)self _checkItems:0 identifiers:0 protectionClass:classCopy bundleID:dCopy];
   if (v18)
   {
-    if (v15)
+    if (handlerCopy)
     {
-      v15[2](v15, 0, v18);
+      handlerCopy[2](handlerCopy, 0, v18);
 LABEL_15:
     }
   }
 
   else
   {
-    if ([(MDSearchableIndexService *)self _jobForIndex:a6])
+    if ([(MDSearchableIndexService *)self _jobForIndex:options])
     {
       indexer = self->_indexer;
       if (objc_opt_respondsToSelector())
@@ -896,16 +896,16 @@ LABEL_15:
         v23[1] = 3221225472;
         v23[2] = __122__MDSearchableIndexService_fetchLastClientStateWithProtectionClass_forBundleID_clientStateName_options_completionHandler___block_invoke;
         v23[3] = &unk_2789377A8;
-        v24 = v15;
-        [(MDIndexer *)v20 fetchLastClientStateWithProtectionClass:v12 forBundleID:v13 clientStateName:v14 options:a6 completionHandler:v23];
-        v15 = v24;
+        v24 = handlerCopy;
+        [(MDIndexer *)v20 fetchLastClientStateWithProtectionClass:classCopy forBundleID:dCopy clientStateName:nameCopy options:options completionHandler:v23];
+        handlerCopy = v24;
         goto LABEL_15;
       }
     }
 
-    if (v15)
+    if (handlerCopy)
     {
-      v15[2](v15, 0, 0);
+      handlerCopy[2](handlerCopy, 0, 0);
       goto LABEL_15;
     }
   }
@@ -925,10 +925,10 @@ uint64_t __122__MDSearchableIndexService_fetchLastClientStateWithProtectionClass
   return result;
 }
 
-- (void)updateCorrectionsWithFilePath:(id)a3 options:(int64_t)a4 completionHandler:(id)a5
+- (void)updateCorrectionsWithFilePath:(id)path options:(int64_t)options completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a5;
+  pathCopy = path;
+  handlerCopy = handler;
   v8 = objc_autoreleasePoolPush();
   v9 = logForCSLogCategoryIndex();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -937,30 +937,30 @@ uint64_t __122__MDSearchableIndexService_fetchLastClientStateWithProtectionClass
   }
 
   v10 = +[SPCorrectionHandler sharedHandler];
-  [v10 updateWithFilePath:v6];
+  [v10 updateWithFilePath:pathCopy];
 
-  if (v7)
+  if (handlerCopy)
   {
-    (*(v7 + 2))(v7, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 
   objc_autoreleasePoolPop(v8);
 }
 
-- (void)fetchAttributes:(id)a3 protectionClass:(id)a4 bundleID:(id)a5 identifiers:(id)a6 userCtx:(id)a7 flags:(unsigned int)a8 qos:(unsigned int)a9 reply:(id)a10 completionHandler:(id)a11
+- (void)fetchAttributes:(id)attributes protectionClass:(id)class bundleID:(id)d identifiers:(id)identifiers userCtx:(id)ctx flags:(unsigned int)flags qos:(unsigned int)qos reply:(id)self0 completionHandler:(id)self1
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a10;
-  v22 = a11;
+  attributesCopy = attributes;
+  classCopy = class;
+  dCopy = d;
+  identifiersCopy = identifiers;
+  ctxCopy = ctx;
+  replyCopy = reply;
+  handlerCopy = handler;
   v23 = objc_autoreleasePoolPush();
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v24 = v19;
+    v24 = identifiersCopy;
   }
 
   else
@@ -968,11 +968,11 @@ uint64_t __122__MDSearchableIndexService_fetchLastClientStateWithProtectionClass
     v24 = 0;
   }
 
-  v25 = [(MDSearchableIndexService *)self _checkItems:0 identifiers:v24 protectionClass:v17 bundleID:v18];
+  v25 = [(MDSearchableIndexService *)self _checkItems:0 identifiers:v24 protectionClass:classCopy bundleID:dCopy];
   if (v25)
   {
     v26 = v25;
-    v22[2](v22, v25);
+    handlerCopy[2](handlerCopy, v25);
   }
 
   else
@@ -982,12 +982,12 @@ uint64_t __122__MDSearchableIndexService_fetchLastClientStateWithProtectionClass
     v30[1] = 3221225472;
     v30[2] = __123__MDSearchableIndexService_fetchAttributes_protectionClass_bundleID_identifiers_userCtx_flags_qos_reply_completionHandler___block_invoke;
     v30[3] = &unk_2789377D0;
-    v31 = v21;
-    v32 = v22;
-    LODWORD(v28) = a9;
-    [(MDIndexer *)indexer fetchAttributes:v16 protectionClass:v17 bundleID:v18 identifiers:v19 userCtx:v20 flags:a8 qos:v28 completionHandler:v30];
+    v31 = replyCopy;
+    v32 = handlerCopy;
+    LODWORD(v28) = qos;
+    [(MDIndexer *)indexer fetchAttributes:attributesCopy protectionClass:classCopy bundleID:dCopy identifiers:identifiersCopy userCtx:ctxCopy flags:flags qos:v28 completionHandler:v30];
 
-    v22 = v31;
+    handlerCopy = v31;
   }
 
   objc_autoreleasePoolPop(v23);
@@ -1015,17 +1015,17 @@ void __135__MDSearchableIndexService_fetchCacheFileDescriptorsForProtectionClass
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)deleteSearchableItemsSinceDate:(id)a3 protectionClass:(id)a4 forBundleID:(id)a5 options:(int64_t)a6 completionHandler:(id)a7
+- (void)deleteSearchableItemsSinceDate:(id)date protectionClass:(id)class forBundleID:(id)d options:(int64_t)options completionHandler:(id)handler
 {
   v35 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  dateCopy = date;
+  classCopy = class;
+  dCopy = d;
+  handlerCopy = handler;
   v16 = objc_autoreleasePoolPush();
-  if (v14)
+  if (dCopy)
   {
-    if (v13)
+    if (classCopy)
     {
       goto LABEL_3;
     }
@@ -1033,33 +1033,33 @@ void __135__MDSearchableIndexService_fetchCacheFileDescriptorsForProtectionClass
 
   else
   {
-    v14 = [(MDSearchableIndexService *)self clientBundleID];
-    if (v13)
+    dCopy = [(MDSearchableIndexService *)self clientBundleID];
+    if (classCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v13 = [(MDSearchableIndexService *)self protectionClass];
+  classCopy = [(MDSearchableIndexService *)self protectionClass];
 LABEL_3:
   v17 = logForCSLogCategoryIndex();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412802;
-    v30 = v14;
+    v30 = dCopy;
     v31 = 2112;
-    v32 = v12;
+    v32 = dateCopy;
     v33 = 2048;
-    v34 = a6;
+    optionsCopy = options;
     _os_log_debug_impl(&dword_231A35000, v17, OS_LOG_TYPE_DEBUG, "(%@) deleteSearchableItemsSinceDate, startDate:%@, options:0x%lx", buf, 0x20u);
   }
 
-  v18 = [(MDSearchableIndexService *)self _checkItems:0 identifiers:0 protectionClass:v13 bundleID:v14];
+  v18 = [(MDSearchableIndexService *)self _checkItems:0 identifiers:0 protectionClass:classCopy bundleID:dCopy];
   if (v18)
   {
-    if (v15)
+    if (handlerCopy)
     {
-      v15[2](v15, v18);
+      handlerCopy[2](handlerCopy, v18);
 LABEL_18:
     }
   }
@@ -1069,7 +1069,7 @@ LABEL_18:
     if (!self->_isPrivate)
     {
       v19 = +[CSRecieverState sharedInstance];
-      v20 = [v19 checkBundleIdentifier:v14];
+      v20 = [v19 checkBundleIdentifier:dCopy];
 
       if (v20)
       {
@@ -1077,13 +1077,13 @@ LABEL_18:
         v26[1] = 3221225472;
         v26[2] = __113__MDSearchableIndexService_deleteSearchableItemsSinceDate_protectionClass_forBundleID_options_completionHandler___block_invoke;
         v26[3] = &unk_278937758;
-        v27 = v12;
-        v28 = v14;
-        [SpotlightSender dispatchWithOptions:a6 block:v26];
+        v27 = dateCopy;
+        v28 = dCopy;
+        [SpotlightSender dispatchWithOptions:options block:v26];
       }
     }
 
-    if ([(MDSearchableIndexService *)self _jobForIndex:a6])
+    if ([(MDSearchableIndexService *)self _jobForIndex:options])
     {
       indexer = self->_indexer;
       if (objc_opt_respondsToSelector())
@@ -1093,16 +1093,16 @@ LABEL_18:
         v24[1] = 3221225472;
         v24[2] = __113__MDSearchableIndexService_deleteSearchableItemsSinceDate_protectionClass_forBundleID_options_completionHandler___block_invoke_2;
         v24[3] = &unk_278935048;
-        v25 = v15;
-        [(MDIndexer *)v22 deleteSearchableItemsSinceDate:v12 protectionClass:v13 forBundleID:v14 options:a6 completionHandler:v24];
-        v15 = v25;
+        v25 = handlerCopy;
+        [(MDIndexer *)v22 deleteSearchableItemsSinceDate:dateCopy protectionClass:classCopy forBundleID:dCopy options:options completionHandler:v24];
+        handlerCopy = v25;
         goto LABEL_18;
       }
     }
 
-    if (v15)
+    if (handlerCopy)
     {
-      v15[2](v15, 0);
+      handlerCopy[2](handlerCopy, 0);
       goto LABEL_18;
     }
   }
@@ -1122,13 +1122,13 @@ uint64_t __113__MDSearchableIndexService_deleteSearchableItemsSinceDate_protecti
   return result;
 }
 
-- (void)provideDataForBundle:(id)a3 identifier:(id)a4 type:(id)a5 completionHandler:(id)a6
+- (void)provideDataForBundle:(id)bundle identifier:(id)identifier type:(id)type completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!-[MDSearchableIndexService searchInternal](self, "searchInternal") && (!-[MDSearchableIndexService allowMail](self, "allowMail") || ([v10 isEqualToString:@"com.apple.mobilemail"] & 1) == 0) && (!-[MDSearchableIndexService allowMessagesContent](self, "allowMessagesContent") || (objc_msgSend(v10, "isEqualToString:", @"com.apple.MobileSMS") & 1) == 0))
+  bundleCopy = bundle;
+  identifierCopy = identifier;
+  typeCopy = type;
+  handlerCopy = handler;
+  if (!-[MDSearchableIndexService searchInternal](self, "searchInternal") && (!-[MDSearchableIndexService allowMail](self, "allowMail") || ([bundleCopy isEqualToString:@"com.apple.mobilemail"] & 1) == 0) && (!-[MDSearchableIndexService allowMessagesContent](self, "allowMessagesContent") || (objc_msgSend(bundleCopy, "isEqualToString:", @"com.apple.MobileSMS") & 1) == 0))
   {
     v15 = logForCSLogCategoryIndex();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -1137,7 +1137,7 @@ uint64_t __113__MDSearchableIndexService_deleteSearchableItemsSinceDate_protecti
     }
 
     v16 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CC22E8] code:-1003 userInfo:0];
-    v13[2](v13, 0, v16);
+    handlerCopy[2](handlerCopy, 0, v16);
 
     goto LABEL_13;
   }
@@ -1145,27 +1145,27 @@ uint64_t __113__MDSearchableIndexService_deleteSearchableItemsSinceDate_protecti
   indexer = self->_indexer;
   if (objc_opt_respondsToSelector())
   {
-    [(MDIndexer *)self->_indexer provideDataForBundle:v10 identifier:v11 type:v12 completionHandler:v13];
+    [(MDIndexer *)self->_indexer provideDataForBundle:bundleCopy identifier:identifierCopy type:typeCopy completionHandler:handlerCopy];
 LABEL_13:
 
     goto LABEL_14;
   }
 
-  if (v13)
+  if (handlerCopy)
   {
-    v13[2](v13, 0, 0);
+    handlerCopy[2](handlerCopy, 0, 0);
     goto LABEL_13;
   }
 
 LABEL_14:
 }
 
-- (void)provideFileURLForBundle:(id)a3 identifier:(id)a4 type:(id)a5 completionHandler:(id)a6
+- (void)provideFileURLForBundle:(id)bundle identifier:(id)identifier type:(id)type completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  bundleCopy = bundle;
+  identifierCopy = identifier;
+  typeCopy = type;
+  handlerCopy = handler;
   if (![(MDSearchableIndexService *)self searchInternal])
   {
     v15 = logForCSLogCategoryIndex();
@@ -1175,7 +1175,7 @@ LABEL_14:
     }
 
     v16 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CC22E8] code:-1003 userInfo:0];
-    v13[2](v13, 0, v16);
+    handlerCopy[2](handlerCopy, 0, v16);
 
     goto LABEL_9;
   }
@@ -1183,82 +1183,82 @@ LABEL_14:
   indexer = self->_indexer;
   if (objc_opt_respondsToSelector())
   {
-    [(MDIndexer *)self->_indexer provideFileURLForBundle:v10 identifier:v11 type:v12 completionHandler:v13];
+    [(MDIndexer *)self->_indexer provideFileURLForBundle:bundleCopy identifier:identifierCopy type:typeCopy completionHandler:handlerCopy];
 LABEL_9:
 
     goto LABEL_10;
   }
 
-  if (v13)
+  if (handlerCopy)
   {
-    v13[2](v13, 0, 0);
+    handlerCopy[2](handlerCopy, 0, 0);
     goto LABEL_9;
   }
 
 LABEL_10:
 }
 
-- (void)prepareIndexingWhileLocked:(id)a3 protectionClass:(id)a4 holdAssertionFor:(double)a5 completionHandler:(id)a6
+- (void)prepareIndexingWhileLocked:(id)locked protectionClass:(id)class holdAssertionFor:(double)for completionHandler:(id)handler
 {
-  v14 = a3;
-  v10 = a4;
-  v11 = a6;
+  lockedCopy = locked;
+  classCopy = class;
+  handlerCopy = handler;
   indexer = self->_indexer;
   if (objc_opt_respondsToSelector())
   {
-    [(MDIndexer *)self->_indexer prepareIndexingWhileLocked:v14 protectionClass:v10 holdAssertionFor:v11 completionHandler:a5];
+    [(MDIndexer *)self->_indexer prepareIndexingWhileLocked:lockedCopy protectionClass:classCopy holdAssertionFor:handlerCopy completionHandler:for];
   }
 
   else
   {
-    if (!v11)
+    if (!handlerCopy)
     {
       goto LABEL_6;
     }
 
     v13 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CC22E8] code:-1 userInfo:0];
-    v11[2](v11, v13);
+    handlerCopy[2](handlerCopy, v13);
   }
 
 LABEL_6:
 }
 
-- (void)finishIndexingWhileLocked:(id)a3 protectionClass:(id)a4 completionHandler:(id)a5
+- (void)finishIndexingWhileLocked:(id)locked protectionClass:(id)class completionHandler:(id)handler
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
+  lockedCopy = locked;
+  classCopy = class;
+  handlerCopy = handler;
   indexer = self->_indexer;
   if (objc_opt_respondsToSelector())
   {
-    [(MDIndexer *)self->_indexer finishIndexingWhileLocked:v12 protectionClass:v8 completionHandler:v9];
+    [(MDIndexer *)self->_indexer finishIndexingWhileLocked:lockedCopy protectionClass:classCopy completionHandler:handlerCopy];
   }
 
   else
   {
-    if (!v9)
+    if (!handlerCopy)
     {
       goto LABEL_6;
     }
 
     v11 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CC22E8] code:-1 userInfo:0];
-    v9[2](v9, v11);
+    handlerCopy[2](handlerCopy, v11);
   }
 
 LABEL_6:
 }
 
-- (void)_deleteAllSearchableItemsWithBundleID:(id)a3 protectionClass:(id)a4 shouldGC:(BOOL)a5 options:(int64_t)a6 deleteAllReason:(int64_t)a7 completionHandler:(id)a8
+- (void)_deleteAllSearchableItemsWithBundleID:(id)d protectionClass:(id)class shouldGC:(BOOL)c options:(int64_t)options deleteAllReason:(int64_t)reason completionHandler:(id)handler
 {
-  v11 = a5;
+  cCopy = c;
   v62 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a8;
-  v17 = objc_autoreleasePoolPush();
-  if (v14)
+  dCopy = d;
+  classCopy = class;
+  handlerCopy = handler;
+  clientConnection4 = objc_autoreleasePoolPush();
+  if (dCopy)
   {
-    if (v15)
+    if (classCopy)
     {
       goto LABEL_3;
     }
@@ -1266,33 +1266,33 @@ LABEL_6:
 
   else
   {
-    v14 = [(MDSearchableIndexService *)self clientBundleID];
-    if (v15)
+    dCopy = [(MDSearchableIndexService *)self clientBundleID];
+    if (classCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v15 = [(MDSearchableIndexService *)self protectionClass];
+  classCopy = [(MDSearchableIndexService *)self protectionClass];
 LABEL_3:
   v18 = logForCSLogCategoryIndex();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
-    v41 = a6;
+    optionsCopy = options;
     v19 = "NO";
-    if (v11)
+    if (cCopy)
     {
       v19 = "YES";
     }
 
     v36 = v19;
     v37 = qos_class_self();
-    v20 = [(MDSearchableIndexService *)self clientConnection];
-    v38 = a7;
-    if (v20)
+    clientConnection = [(MDSearchableIndexService *)self clientConnection];
+    reasonCopy = reason;
+    if (clientConnection)
     {
-      v34 = [(MDSearchableIndexService *)self clientConnection];
-      name = xpc_connection_get_name(v34);
+      clientConnection2 = [(MDSearchableIndexService *)self clientConnection];
+      name = xpc_connection_get_name(clientConnection2);
     }
 
     else
@@ -1300,60 +1300,60 @@ LABEL_3:
       name = "";
     }
 
-    v39 = v17;
-    v22 = [(MDSearchableIndexService *)self clientConnection];
-    v23 = v22;
-    if (v22)
+    v39 = clientConnection4;
+    clientConnection3 = [(MDSearchableIndexService *)self clientConnection];
+    v23 = clientConnection3;
+    if (clientConnection3)
     {
-      v17 = [(MDSearchableIndexService *)self clientConnection];
-      LODWORD(v22) = xpc_connection_get_pid(v17);
+      clientConnection4 = [(MDSearchableIndexService *)self clientConnection];
+      LODWORD(clientConnection3) = xpc_connection_get_pid(clientConnection4);
     }
 
     *buf = 138413826;
-    v49 = v14;
+    v49 = dCopy;
     v50 = 2112;
-    v51 = v15;
+    v51 = classCopy;
     v52 = 2080;
     v53 = v36;
     v54 = 2048;
-    v55 = v41;
+    v55 = optionsCopy;
     v56 = 2048;
     v57 = v37;
     v58 = 2080;
     v59 = name;
     v60 = 1024;
-    v61 = v22;
+    v61 = clientConnection3;
     _os_log_impl(&dword_231A35000, v18, OS_LOG_TYPE_DEFAULT, "(%@) deleteAllSearchableItemsWithBundleID, protectionClass:%@, shouldGC:%s, options:0x%lx, qos:0x%lx conn:%s(%d)", buf, 0x44u);
     if (v23)
     {
     }
 
-    if (v20)
+    if (clientConnection)
     {
     }
 
-    a7 = v38;
-    v17 = v39;
-    a6 = v41;
+    reason = reasonCopy;
+    clientConnection4 = v39;
+    options = optionsCopy;
   }
 
-  v24 = [(MDSearchableIndexService *)self _checkNonEmptyBundle:v14 protectionClass:v15];
+  v24 = [(MDSearchableIndexService *)self _checkNonEmptyBundle:dCopy protectionClass:classCopy];
   if (v24)
   {
-    if (v16)
+    if (handlerCopy)
     {
-      v16[2](v16, v24);
+      handlerCopy[2](handlerCopy, v24);
 LABEL_31:
     }
   }
 
   else
   {
-    v40 = v11;
+    v40 = cCopy;
     if (!self->_isPrivate)
     {
       v25 = +[CSRecieverState sharedInstance];
-      v26 = [v25 checkBundleIdentifier:v14];
+      v26 = [v25 checkBundleIdentifier:dCopy];
 
       if (v26)
       {
@@ -1361,27 +1361,27 @@ LABEL_31:
         v46[1] = 3221225472;
         v46[2] = __133__MDSearchableIndexService__deleteAllSearchableItemsWithBundleID_protectionClass_shouldGC_options_deleteAllReason_completionHandler___block_invoke;
         v46[3] = &unk_2789377F8;
-        v47 = v14;
-        [SpotlightSender dispatchWithOptions:a6 block:v46];
+        v47 = dCopy;
+        [SpotlightSender dispatchWithOptions:options block:v46];
       }
     }
 
-    if ([(MDSearchableIndexService *)self _jobForIndex:a6])
+    if ([(MDSearchableIndexService *)self _jobForIndex:options])
     {
       indexer = self->_indexer;
       v28 = objc_opt_respondsToSelector();
       v29 = self->_indexer;
       if (v28)
       {
-        v30 = [(MDSearchableIndexService *)self clientBundleID];
+        clientBundleID = [(MDSearchableIndexService *)self clientBundleID];
         v44[0] = MEMORY[0x277D85DD0];
         v44[1] = 3221225472;
         v44[2] = __133__MDSearchableIndexService__deleteAllSearchableItemsWithBundleID_protectionClass_shouldGC_options_deleteAllReason_completionHandler___block_invoke_2;
         v44[3] = &unk_278935048;
-        v45 = v16;
-        [(MDIndexer *)v29 deleteAllSearchableItemsWithBundleID:v14 fromClient:v30 protectionClass:v15 shouldGC:v40 deleteAllReason:a7 completionHandler:v44];
+        v45 = handlerCopy;
+        [(MDIndexer *)v29 deleteAllSearchableItemsWithBundleID:dCopy fromClient:clientBundleID protectionClass:classCopy shouldGC:v40 deleteAllReason:reason completionHandler:v44];
 
-        v16 = v45;
+        handlerCopy = v45;
         goto LABEL_31;
       }
 
@@ -1393,21 +1393,21 @@ LABEL_31:
         v42[1] = 3221225472;
         v42[2] = __133__MDSearchableIndexService__deleteAllSearchableItemsWithBundleID_protectionClass_shouldGC_options_deleteAllReason_completionHandler___block_invoke_3;
         v42[3] = &unk_278935048;
-        v43 = v16;
-        [(MDIndexer *)v32 deleteAllSearchableItemsWithProtectionClass:v15 forBundleID:v14 options:a6 deleteAllReason:a7 completionHandler:v42];
-        v16 = v43;
+        v43 = handlerCopy;
+        [(MDIndexer *)v32 deleteAllSearchableItemsWithProtectionClass:classCopy forBundleID:dCopy options:options deleteAllReason:reason completionHandler:v42];
+        handlerCopy = v43;
         goto LABEL_31;
       }
     }
 
-    if (v16)
+    if (handlerCopy)
     {
-      v16[2](v16, 0);
+      handlerCopy[2](handlerCopy, 0);
       goto LABEL_31;
     }
   }
 
-  objc_autoreleasePoolPop(v17);
+  objc_autoreleasePoolPop(clientConnection4);
   v33 = *MEMORY[0x277D85DE8];
 }
 
@@ -1433,17 +1433,17 @@ uint64_t __133__MDSearchableIndexService__deleteAllSearchableItemsWithBundleID_p
   return result;
 }
 
-- (void)changeStateOfSearchableItemsWithUIDs:(id)a3 toState:(int64_t)a4 protectionClass:(id)a5 forBundleID:(id)a6 forUTIType:(id)a7 options:(int64_t)a8
+- (void)changeStateOfSearchableItemsWithUIDs:(id)ds toState:(int64_t)state protectionClass:(id)class forBundleID:(id)d forUTIType:(id)type options:(int64_t)options
 {
   v58 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  dsCopy = ds;
+  classCopy = class;
+  dCopy = d;
+  typeCopy = type;
   v18 = objc_autoreleasePoolPush();
-  if (v16)
+  if (dCopy)
   {
-    if (v15)
+    if (classCopy)
     {
       goto LABEL_3;
     }
@@ -1451,23 +1451,23 @@ uint64_t __133__MDSearchableIndexService__deleteAllSearchableItemsWithBundleID_p
 
   else
   {
-    v16 = [(MDSearchableIndexService *)self clientBundleID];
-    if (v15)
+    dCopy = [(MDSearchableIndexService *)self clientBundleID];
+    if (classCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v15 = [(MDSearchableIndexService *)self protectionClass];
+  classCopy = [(MDSearchableIndexService *)self protectionClass];
 LABEL_3:
-  v19 = [(MDSearchableIndexService *)self _checkItems:0 identifiers:v14 protectionClass:v15 bundleID:v16];
+  v19 = [(MDSearchableIndexService *)self _checkItems:0 identifiers:dsCopy protectionClass:classCopy bundleID:dCopy];
   if (!v19)
   {
     v32 = v18;
     v20 = logForCSLogCategoryIndex();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
-      if ([SpotlightSender jobForTest:a8])
+      if ([SpotlightSender jobForTest:options])
       {
         v21 = @"YES";
       }
@@ -1478,7 +1478,7 @@ LABEL_3:
       }
 
       v31 = v21;
-      if ([SpotlightSender jobForDuet:a8])
+      if ([SpotlightSender jobForDuet:options])
       {
         v22 = @"YES";
       }
@@ -1489,7 +1489,7 @@ LABEL_3:
       }
 
       v30 = v22;
-      if ([SpotlightSender jobForSuggestions:a8])
+      if ([SpotlightSender jobForSuggestions:options])
       {
         v23 = @"YES";
       }
@@ -1499,7 +1499,7 @@ LABEL_3:
         v23 = @"NO";
       }
 
-      if ([SpotlightSender jobForTextUnderstanding:a8, v23])
+      if ([SpotlightSender jobForTextUnderstanding:options, v23])
       {
         v24 = @"YES";
       }
@@ -1510,13 +1510,13 @@ LABEL_3:
       }
 
       *buf = 138414594;
-      v39 = v16;
+      v39 = dCopy;
       v40 = 2112;
-      v41 = v17;
+      v41 = typeCopy;
       v42 = 2048;
-      v43 = a4;
+      stateCopy = state;
       v44 = 2048;
-      v45 = a8;
+      optionsCopy = options;
       v46 = 2112;
       v47 = v31;
       v48 = 2112;
@@ -1526,16 +1526,16 @@ LABEL_3:
       v52 = 2112;
       v53 = v24;
       v54 = 2048;
-      v55 = [v14 count];
+      v55 = [dsCopy count];
       v56 = 2112;
-      v57 = v14;
+      v57 = dsCopy;
       _os_log_impl(&dword_231A35000, v20, OS_LOG_TYPE_DEFAULT, "(%@) changeStateOfSearchableItemsWithUIDs (delete or purge), uti:%@, state:%ld, options:0x%lx, test/duet/suggestions/textunderstanding:%@/%@/%@/%@, identifiers/%ld:%@", buf, 0x66u);
     }
 
     if (!self->_isPrivate)
     {
       v25 = +[CSRecieverState sharedInstance];
-      v26 = [v25 checkBundleIdentifier:v16];
+      v26 = [v25 checkBundleIdentifier:dCopy];
 
       if (v26)
       {
@@ -1543,21 +1543,21 @@ LABEL_3:
         v33[1] = 3221225472;
         v33[2] = __120__MDSearchableIndexService_changeStateOfSearchableItemsWithUIDs_toState_protectionClass_forBundleID_forUTIType_options___block_invoke;
         v33[3] = &unk_278937820;
-        v37 = a4;
-        v34 = v14;
-        v35 = v16;
-        v36 = v17;
-        [SpotlightSender dispatchWithOptions:a8 block:v33];
+        stateCopy2 = state;
+        v34 = dsCopy;
+        v35 = dCopy;
+        v36 = typeCopy;
+        [SpotlightSender dispatchWithOptions:options block:v33];
       }
     }
 
     v18 = v32;
-    if ([(MDSearchableIndexService *)self _jobForIndex:a8])
+    if ([(MDSearchableIndexService *)self _jobForIndex:options])
     {
       indexer = self->_indexer;
       if (objc_opt_respondsToSelector())
       {
-        [(MDIndexer *)self->_indexer changeStateOfSearchableItemsWithUIDs:v14 toState:a4 protectionClass:v15 forBundleID:v16 forUTIType:v17 options:a8];
+        [(MDIndexer *)self->_indexer changeStateOfSearchableItemsWithUIDs:dsCopy toState:state protectionClass:classCopy forBundleID:dCopy forUTIType:typeCopy options:options];
       }
     }
   }
@@ -1582,48 +1582,48 @@ void *__120__MDSearchableIndexService_changeStateOfSearchableItemsWithUIDs_toSta
   return result;
 }
 
-- (void)userPerformedAction:(id)a3 withItem:(id)a4 protectionClass:(id)a5
+- (void)userPerformedAction:(id)action withItem:(id)item protectionClass:(id)class
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  actionCopy = action;
+  itemCopy = item;
+  classCopy = class;
   v11 = objc_autoreleasePoolPush();
-  if (!v10)
+  if (!classCopy)
   {
-    v10 = [(MDSearchableIndexService *)self protectionClass];
+    classCopy = [(MDSearchableIndexService *)self protectionClass];
   }
 
   v12 = logForCSLogCategoryDefault();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
-    v19 = [(MDSearchableIndexService *)self clientBundleID];
+    clientBundleID = [(MDSearchableIndexService *)self clientBundleID];
     *buf = 138413058;
-    v23 = v19;
+    v23 = clientBundleID;
     v24 = 2112;
-    v25 = v8;
+    v25 = actionCopy;
     v26 = 2112;
-    v27 = v9;
+    v27 = itemCopy;
     v28 = 2112;
-    v29 = v10;
+    v29 = classCopy;
     _os_log_debug_impl(&dword_231A35000, v12, OS_LOG_TYPE_DEBUG, "(%@) userPerformedAction, action:%@, item:%@, protectionClass:%@", buf, 0x2Au);
   }
 
-  if (v8 && v9)
+  if (actionCopy && itemCopy)
   {
-    v21 = v9;
+    v21 = itemCopy;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:&v21 count:1];
-    v14 = [(MDSearchableIndexService *)self _checkItems:v13 identifiers:0 protectionClass:v10 bundleID:0];
+    v14 = [(MDSearchableIndexService *)self _checkItems:v13 identifiers:0 protectionClass:classCopy bundleID:0];
 
     if (!v14)
     {
-      v15 = [objc_alloc(MEMORY[0x277CC34F8]) initWithAction:v8 item:v9];
-      [v15 setProtectionClass:v10];
+      v15 = [objc_alloc(MEMORY[0x277CC34F8]) initWithAction:actionCopy item:itemCopy];
+      [v15 setProtectionClass:classCopy];
       [(MDSearchableIndexService *)self _makeActivityQueueIfNecessary];
-      v16 = [(MDSearchableIndexService *)self activityQueue];
+      activityQueue = [(MDSearchableIndexService *)self activityQueue];
       v20 = v15;
       v17 = [MEMORY[0x277CBEA60] arrayWithObjects:&v20 count:1];
-      [v16 queueItems:v17];
+      [activityQueue queueItems:v17];
     }
   }
 
@@ -1640,17 +1640,17 @@ void *__120__MDSearchableIndexService_changeStateOfSearchableItemsWithUIDs_toSta
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_dispatchActivities:(id)a3 bundleID:(id)a4
+- (void)_dispatchActivities:(id)activities bundleID:(id)d
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  activitiesCopy = activities;
+  dCopy = d;
   v7 = objc_opt_new();
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v8 = v5;
+  v8 = activitiesCopy;
   v9 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v9)
   {
@@ -1666,12 +1666,12 @@ void *__120__MDSearchableIndexService_changeStateOfSearchableItemsWithUIDs_toSta
         }
 
         v13 = *(*(&v22 + 1) + 8 * i);
-        v14 = [v13 protectionClass];
-        v15 = [v7 objectForKeyedSubscript:v14];
+        protectionClass = [v13 protectionClass];
+        v15 = [v7 objectForKeyedSubscript:protectionClass];
         if (!v15)
         {
           v15 = objc_alloc_init(MEMORY[0x277CBEB18]);
-          [v7 setObject:v15 forKeyedSubscript:v14];
+          [v7 setObject:v15 forKeyedSubscript:protectionClass];
         }
 
         [v15 addObject:v13];
@@ -1687,9 +1687,9 @@ void *__120__MDSearchableIndexService_changeStateOfSearchableItemsWithUIDs_toSta
   v19[1] = 3221225472;
   v19[2] = __57__MDSearchableIndexService__dispatchActivities_bundleID___block_invoke;
   v19[3] = &unk_278937870;
-  v20 = v6;
-  v21 = self;
-  v16 = v6;
+  v20 = dCopy;
+  selfCopy = self;
+  v16 = dCopy;
   [v7 enumerateKeysAndObjectsUsingBlock:v19];
 
   v17 = *MEMORY[0x277D85DE8];
@@ -1813,28 +1813,28 @@ void __57__MDSearchableIndexService__dispatchActivities_bundleID___block_invoke(
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_dispatchActivities:(id)a3
+- (void)_dispatchActivities:(id)activities
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MDSearchableIndexService *)self clientBundleID];
+  activitiesCopy = activities;
+  clientBundleID = [(MDSearchableIndexService *)self clientBundleID];
   if (self->_isInternal)
   {
-    v29 = self;
+    selfCopy = self;
     v37 = 0u;
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v6 = v4;
+    v6 = activitiesCopy;
     v7 = [v6 countByEnumeratingWithState:&v35 objects:v40 count:16];
     if (v7)
     {
       v8 = v7;
-      v9 = 0;
+      bundleID = 0;
       v10 = *v36;
 LABEL_4:
       v11 = 0;
-      v12 = v9;
+      v12 = bundleID;
       while (1)
       {
         if (*v36 != v10)
@@ -1842,19 +1842,19 @@ LABEL_4:
           objc_enumerationMutation(v6);
         }
 
-        v13 = [*(*(&v35 + 1) + 8 * v11) item];
-        v9 = [v13 bundleID];
+        item = [*(*(&v35 + 1) + 8 * v11) item];
+        bundleID = [item bundleID];
 
-        if ([v9 length])
+        if ([bundleID length])
         {
-          if (![v5 isEqualToString:v9])
+          if (![clientBundleID isEqualToString:bundleID])
           {
             break;
           }
         }
 
         ++v11;
-        v12 = v9;
+        v12 = bundleID;
         if (v8 == v11)
         {
           v8 = [v6 countByEnumeratingWithState:&v35 objects:v40 count:16];
@@ -1869,13 +1869,13 @@ LABEL_4:
 
       if ([v6 count] == 1)
       {
-        v14 = v29;
+        v14 = selfCopy;
         v15 = v6;
-        v16 = v9;
+        v16 = bundleID;
         goto LABEL_17;
       }
 
-      v28 = v4;
+      v28 = activitiesCopy;
       v17 = objc_opt_new();
       v31 = 0u;
       v32 = 0u;
@@ -1897,24 +1897,24 @@ LABEL_4:
             }
 
             v23 = *(*(&v31 + 1) + 8 * i);
-            v24 = [v23 item];
-            v25 = [v24 bundleID];
+            item2 = [v23 item];
+            bundleID2 = [item2 bundleID];
 
-            if ([v25 length])
+            if ([bundleID2 length])
             {
-              v9 = v25;
+              bundleID = bundleID2;
             }
 
             else
             {
-              v9 = v5;
+              bundleID = clientBundleID;
             }
 
-            v26 = [v17 objectForKeyedSubscript:v9];
+            v26 = [v17 objectForKeyedSubscript:bundleID];
             if (!v26)
             {
               v26 = objc_alloc_init(MEMORY[0x277CBEB18]);
-              [v17 setObject:v26 forKeyedSubscript:v9];
+              [v17 setObject:v26 forKeyedSubscript:bundleID];
             }
 
             [v26 addObject:v23];
@@ -1930,20 +1930,20 @@ LABEL_4:
       v30[1] = 3221225472;
       v30[2] = __48__MDSearchableIndexService__dispatchActivities___block_invoke;
       v30[3] = &unk_278937898;
-      v30[4] = v29;
+      v30[4] = selfCopy;
       [v17 enumerateKeysAndObjectsUsingBlock:v30];
 
-      v4 = v28;
+      activitiesCopy = v28;
     }
 
     else
     {
-      v9 = 0;
+      bundleID = 0;
 LABEL_16:
 
-      v14 = v29;
+      v14 = selfCopy;
       v15 = v6;
-      v16 = v5;
+      v16 = clientBundleID;
 LABEL_17:
       [(MDSearchableIndexService *)v14 _dispatchActivities:v15 bundleID:v16];
     }
@@ -1951,57 +1951,57 @@ LABEL_17:
 
   else
   {
-    [(MDSearchableIndexService *)self _dispatchActivities:v4 bundleID:v5];
+    [(MDSearchableIndexService *)self _dispatchActivities:activitiesCopy bundleID:clientBundleID];
   }
 
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)checkInWithProtectionClass:(id)a3 completionHandler:(id)a4
+- (void)checkInWithProtectionClass:(id)class completionHandler:(id)handler
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  classCopy = class;
+  handlerCopy = handler;
   v8 = objc_autoreleasePoolPush();
-  if (!v6)
+  if (!classCopy)
   {
-    v6 = [(MDSearchableIndexService *)self protectionClass];
+    classCopy = [(MDSearchableIndexService *)self protectionClass];
   }
 
-  v9 = [(MDSearchableIndexService *)self clientBundleID];
+  clientBundleID = [(MDSearchableIndexService *)self clientBundleID];
   v10 = logForCSLogCategoryIndex();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    v15 = [(MDSearchableIndexService *)self processDescription];
+    processDescription = [(MDSearchableIndexService *)self processDescription];
     v16 = 138412802;
-    v17 = v9;
+    v17 = clientBundleID;
     v18 = 2112;
-    v19 = v6;
+    v19 = classCopy;
     v20 = 2112;
-    v21 = v15;
+    v21 = processDescription;
     _os_log_debug_impl(&dword_231A35000, v10, OS_LOG_TYPE_DEBUG, "(%@) checkInWithProtectionClass, protectionClass:%@, process:%@", &v16, 0x20u);
   }
 
   v11 = [(MDSearchableIndexService *)self _checkItems:0 identifiers:0 protectionClass:0 bundleID:0];
   if (v11)
   {
-    if (v7)
+    if (handlerCopy)
     {
 LABEL_16:
-      v7[2](v7, 0, v11);
+      handlerCopy[2](handlerCopy, 0, v11);
     }
   }
 
-  else if (v9)
+  else if (clientBundleID)
   {
     indexer = self->_indexer;
-    if (v7 && !indexer)
+    if (handlerCopy && !indexer)
     {
-      v7[2](v7, 0, 0);
+      handlerCopy[2](handlerCopy, 0, 0);
       indexer = self->_indexer;
     }
 
-    [(MDIndexer *)indexer clientDidCheckin:v9 protectionClass:v6 service:self completionHandler:v7];
+    [(MDIndexer *)indexer clientDidCheckin:clientBundleID protectionClass:classCopy service:self completionHandler:handlerCopy];
     v11 = 0;
   }
 
@@ -2014,7 +2014,7 @@ LABEL_16:
     }
 
     v11 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CC22E8] code:-1 userInfo:0];
-    if (v7)
+    if (handlerCopy)
     {
       goto LABEL_16;
     }
@@ -2024,41 +2024,41 @@ LABEL_16:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)performIndexJob:(id)a3 protectionClass:(id)a4 acknowledgementHandler:(id)a5
+- (void)performIndexJob:(id)job protectionClass:(id)class acknowledgementHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  jobCopy = job;
+  classCopy = class;
+  handlerCopy = handler;
   v11 = objc_autoreleasePoolPush();
-  v12 = [(MDSearchableIndexService *)self clientConnection];
-  v13 = [(MDSearchableIndexService *)self clientQueue];
-  v14 = v13;
-  if (v12 && v13)
+  clientConnection = [(MDSearchableIndexService *)self clientConnection];
+  clientQueue = [(MDSearchableIndexService *)self clientQueue];
+  v14 = clientQueue;
+  if (clientConnection && clientQueue)
   {
     v15 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_string(v15, "command", "perform-job");
-    v16 = [v8 xpc_dictionary];
-    xpc_dictionary_set_value(v15, "j", v16);
+    xpc_dictionary = [jobCopy xpc_dictionary];
+    xpc_dictionary_set_value(v15, "j", xpc_dictionary);
 
-    if (v9)
+    if (classCopy)
     {
-      xpc_dictionary_set_string(v15, "pc", [v9 UTF8String]);
+      xpc_dictionary_set_string(v15, "pc", [classCopy UTF8String]);
     }
 
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;
     handler[2] = __83__MDSearchableIndexService_performIndexJob_protectionClass_acknowledgementHandler___block_invoke;
     handler[3] = &unk_2789378C0;
-    v18 = v10;
-    xpc_connection_send_message_with_reply(v12, v15, v14, handler);
+    v18 = handlerCopy;
+    xpc_connection_send_message_with_reply(clientConnection, v15, v14, handler);
 
     goto LABEL_8;
   }
 
-  if (v10)
+  if (handlerCopy)
   {
     v15 = [MEMORY[0x277CCA9B8] errorWithDomain:@"CSIndexErrorDomain" code:-1 userInfo:0];
-    (*(v10 + 2))(v10, v15);
+    (*(handlerCopy + 2))(handlerCopy, v15);
 LABEL_8:
   }
 
@@ -2085,15 +2085,15 @@ void __83__MDSearchableIndexService_performIndexJob_protectionClass_acknowledgem
   }
 }
 
-- (void)deleteAllUserActivities:(id)a3 fromClient:(id)a4 options:(int64_t)a5 completionHandler:(id)a6
+- (void)deleteAllUserActivities:(id)activities fromClient:(id)client options:(int64_t)options completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  activitiesCopy = activities;
+  clientCopy = client;
+  handlerCopy = handler;
   v13 = objc_autoreleasePoolPush();
-  if (!v10)
+  if (!activitiesCopy)
   {
-    v10 = [(MDSearchableIndexService *)self clientBundleID];
+    activitiesCopy = [(MDSearchableIndexService *)self clientBundleID];
   }
 
   v14 = logForCSLogCategoryDefault();
@@ -2102,12 +2102,12 @@ void __83__MDSearchableIndexService_performIndexJob_protectionClass_acknowledgem
     [MDSearchableIndexService deleteAllUserActivities:fromClient:options:completionHandler:];
   }
 
-  v15 = [(MDSearchableIndexService *)self _checkNonEmptyBundle:v10 protectionClass:0];
+  v15 = [(MDSearchableIndexService *)self _checkNonEmptyBundle:activitiesCopy protectionClass:0];
   if (v15)
   {
-    if (v12)
+    if (handlerCopy)
     {
-      v12[2](v12, v15);
+      handlerCopy[2](handlerCopy, v15);
 LABEL_16:
     }
   }
@@ -2117,7 +2117,7 @@ LABEL_16:
     if (!self->_isPrivate)
     {
       v16 = +[CSRecieverState sharedInstance];
-      v17 = [v16 checkBundleIdentifier:v10];
+      v17 = [v16 checkBundleIdentifier:activitiesCopy];
 
       if (v17)
       {
@@ -2125,33 +2125,33 @@ LABEL_16:
         v23[1] = 3221225472;
         v23[2] = __89__MDSearchableIndexService_deleteAllUserActivities_fromClient_options_completionHandler___block_invoke;
         v23[3] = &unk_2789377F8;
-        v24 = v10;
-        [SpotlightSender dispatchWithOptions:a5 block:v23];
+        v24 = activitiesCopy;
+        [SpotlightSender dispatchWithOptions:options block:v23];
       }
     }
 
-    if ([(MDSearchableIndexService *)self _jobForIndex:a5])
+    if ([(MDSearchableIndexService *)self _jobForIndex:options])
     {
       indexer = self->_indexer;
       if (objc_opt_respondsToSelector())
       {
         v19 = self->_indexer;
-        v20 = [(MDSearchableIndexService *)self clientBundleID];
+        clientBundleID = [(MDSearchableIndexService *)self clientBundleID];
         v21[0] = MEMORY[0x277D85DD0];
         v21[1] = 3221225472;
         v21[2] = __89__MDSearchableIndexService_deleteAllUserActivities_fromClient_options_completionHandler___block_invoke_2;
         v21[3] = &unk_278935048;
-        v22 = v12;
-        [(MDIndexer *)v19 deleteAllUserActivities:v10 fromClient:v20 completionHandler:v21];
+        v22 = handlerCopy;
+        [(MDIndexer *)v19 deleteAllUserActivities:activitiesCopy fromClient:clientBundleID completionHandler:v21];
 
-        v12 = v22;
+        handlerCopy = v22;
         goto LABEL_16;
       }
     }
 
-    if (v12)
+    if (handlerCopy)
     {
-      v12[2](v12, 0);
+      handlerCopy[2](handlerCopy, 0);
       goto LABEL_16;
     }
   }
@@ -2170,15 +2170,15 @@ uint64_t __89__MDSearchableIndexService_deleteAllUserActivities_fromClient_optio
   return result;
 }
 
-- (void)deleteUserActivitiesWithPersistentIdentifiers:(id)a3 bundleID:(id)a4 options:(int64_t)a5 completionHandler:(id)a6
+- (void)deleteUserActivitiesWithPersistentIdentifiers:(id)identifiers bundleID:(id)d options:(int64_t)options completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  identifiersCopy = identifiers;
+  dCopy = d;
+  handlerCopy = handler;
   v13 = objc_autoreleasePoolPush();
-  if (!v11)
+  if (!dCopy)
   {
-    v11 = [(MDSearchableIndexService *)self clientBundleID];
+    dCopy = [(MDSearchableIndexService *)self clientBundleID];
   }
 
   v14 = logForCSLogCategoryDefault();
@@ -2187,12 +2187,12 @@ uint64_t __89__MDSearchableIndexService_deleteAllUserActivities_fromClient_optio
     [MDSearchableIndexService deleteUserActivitiesWithPersistentIdentifiers:bundleID:options:completionHandler:];
   }
 
-  v15 = [(MDSearchableIndexService *)self _checkNonEmptyBundle:v11 protectionClass:0];
+  v15 = [(MDSearchableIndexService *)self _checkNonEmptyBundle:dCopy protectionClass:0];
   if (v15)
   {
-    if (v12)
+    if (handlerCopy)
     {
-      v12[2](v12, v15);
+      handlerCopy[2](handlerCopy, v15);
 LABEL_15:
     }
   }
@@ -2202,7 +2202,7 @@ LABEL_15:
     if (!self->_isPrivate)
     {
       v16 = +[CSRecieverState sharedInstance];
-      v17 = [v16 checkBundleIdentifier:v11];
+      v17 = [v16 checkBundleIdentifier:dCopy];
 
       if (v17)
       {
@@ -2210,30 +2210,30 @@ LABEL_15:
         v21[1] = 3221225472;
         v21[2] = __109__MDSearchableIndexService_deleteUserActivitiesWithPersistentIdentifiers_bundleID_options_completionHandler___block_invoke;
         v21[3] = &unk_2789378E8;
-        v22 = v10;
-        v23 = v11;
-        v24 = v12;
-        [SpotlightSender dispatchWithOptions:a5 block:v21];
+        v22 = identifiersCopy;
+        v23 = dCopy;
+        v24 = handlerCopy;
+        [SpotlightSender dispatchWithOptions:options block:v21];
       }
     }
 
-    if ([(MDSearchableIndexService *)self _jobForIndex:a5])
+    if ([(MDSearchableIndexService *)self _jobForIndex:options])
     {
-      v18 = [v10 data];
+      data = [identifiersCopy data];
       v19[0] = MEMORY[0x277D85DD0];
       v19[1] = 3221225472;
       v19[2] = __109__MDSearchableIndexService_deleteUserActivitiesWithPersistentIdentifiers_bundleID_options_completionHandler___block_invoke_2;
       v19[3] = &unk_278937910;
-      v20 = v12;
-      [(MDSearchableIndexService *)self _processIndexDataForBundle:v11 protectionClass:0 personaID:0 options:a5 items:0 itemsText:0 itemsHTML:0 clientState:0 expectedClientState:0 clientStateName:0 deletes:v18 completionHandler:v19];
+      v20 = handlerCopy;
+      [(MDSearchableIndexService *)self _processIndexDataForBundle:dCopy protectionClass:0 personaID:0 options:options items:0 itemsText:0 itemsHTML:0 clientState:0 expectedClientState:0 clientStateName:0 deletes:data completionHandler:v19];
 
-      v12 = v20;
+      handlerCopy = v20;
       goto LABEL_15;
     }
 
-    if (v12)
+    if (handlerCopy)
     {
-      v12[2](v12, 0);
+      handlerCopy[2](handlerCopy, 0);
       goto LABEL_15;
     }
   }
@@ -2259,24 +2259,24 @@ uint64_t __109__MDSearchableIndexService_deleteUserActivitiesWithPersistentIdent
   return result;
 }
 
-- (void)deleteActionsBeforeTime:(double)a3 options:(int64_t)a4 completionHandler:(id)a5
+- (void)deleteActionsBeforeTime:(double)time options:(int64_t)options completionHandler:(id)handler
 {
   v21 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  handlerCopy = handler;
   v9 = objc_autoreleasePoolPush();
   v10 = logForCSLogCategoryDefault();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     *buf = 134218240;
-    v18 = a3;
+    timeCopy = time;
     v19 = 2048;
-    v20 = a4;
+    optionsCopy = options;
     _os_log_impl(&dword_231A35000, v10, OS_LOG_TYPE_INFO, "deleteActionsBeforeTime:%lu options:0x%lx", buf, 0x16u);
   }
 
   if (self->_isInternal)
   {
-    if ([(MDSearchableIndexService *)self _jobForIndex:a4])
+    if ([(MDSearchableIndexService *)self _jobForIndex:options])
     {
       indexer = self->_indexer;
       if (objc_opt_respondsToSelector())
@@ -2286,26 +2286,26 @@ uint64_t __109__MDSearchableIndexService_deleteUserActivitiesWithPersistentIdent
         v15[1] = 3221225472;
         v15[2] = __78__MDSearchableIndexService_deleteActionsBeforeTime_options_completionHandler___block_invoke;
         v15[3] = &unk_278935048;
-        v16 = v8;
-        [(MDIndexer *)v12 deleteActionsBeforeTime:v15 completionHandler:a3];
-        v8 = v16;
+        v16 = handlerCopy;
+        [(MDIndexer *)v12 deleteActionsBeforeTime:v15 completionHandler:time];
+        handlerCopy = v16;
 LABEL_11:
 
         goto LABEL_12;
       }
     }
 
-    if (v8)
+    if (handlerCopy)
     {
-      (*(v8 + 2))(v8, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0);
       goto LABEL_11;
     }
   }
 
-  else if (v8)
+  else if (handlerCopy)
   {
     v13 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CC22E8] code:-1001 userInfo:0];
-    (*(v8 + 2))(v8, v13);
+    (*(handlerCopy + 2))(handlerCopy, v13);
 
     goto LABEL_11;
   }
@@ -2326,25 +2326,25 @@ uint64_t __78__MDSearchableIndexService_deleteActionsBeforeTime_options_completi
   return result;
 }
 
-- (void)deleteActionsWithIdentifiers:(id)a3 options:(int64_t)a4 completionHandler:(id)a5
+- (void)deleteActionsWithIdentifiers:(id)identifiers options:(int64_t)options completionHandler:(id)handler
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
   v10 = objc_autoreleasePoolPush();
   v11 = logForCSLogCategoryDefault();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     *buf = 134218240;
-    v19 = [v8 count];
+    v19 = [identifiersCopy count];
     v20 = 2048;
-    v21 = a4;
+    optionsCopy = options;
     _os_log_impl(&dword_231A35000, v11, OS_LOG_TYPE_INFO, "deleteActionsWithIdentifiers:%lu options:0x%lx", buf, 0x16u);
   }
 
   if (self->_isInternal)
   {
-    if ([(MDSearchableIndexService *)self _jobForIndex:a4])
+    if ([(MDSearchableIndexService *)self _jobForIndex:options])
     {
       indexer = self->_indexer;
       if (objc_opt_respondsToSelector())
@@ -2354,26 +2354,26 @@ uint64_t __78__MDSearchableIndexService_deleteActionsBeforeTime_options_completi
         v16[1] = 3221225472;
         v16[2] = __83__MDSearchableIndexService_deleteActionsWithIdentifiers_options_completionHandler___block_invoke;
         v16[3] = &unk_278935048;
-        v17 = v9;
-        [(MDIndexer *)v13 deleteActionsWithIdentifiers:v8 completionHandler:v16];
-        v9 = v17;
+        v17 = handlerCopy;
+        [(MDIndexer *)v13 deleteActionsWithIdentifiers:identifiersCopy completionHandler:v16];
+        handlerCopy = v17;
 LABEL_11:
 
         goto LABEL_12;
       }
     }
 
-    if (v9)
+    if (handlerCopy)
     {
-      (*(v9 + 2))(v9, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0);
       goto LABEL_11;
     }
   }
 
-  else if (v9)
+  else if (handlerCopy)
   {
     v14 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CC22E8] code:-1001 userInfo:0];
-    (*(v9 + 2))(v9, v14);
+    (*(handlerCopy + 2))(handlerCopy, v14);
 
     goto LABEL_11;
   }
@@ -2395,42 +2395,42 @@ uint64_t __83__MDSearchableIndexService_deleteActionsWithIdentifiers_options_com
   return result;
 }
 
-- (void)_forceAppWithBundleID:(id)a3 toPerformJob:(id)a4
+- (void)_forceAppWithBundleID:(id)d toPerformJob:(id)job
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  jobCopy = job;
   v8 = logForCSLogCategoryIndex();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v12 = [(MDSearchableIndexService *)self clientBundleID];
+    clientBundleID = [(MDSearchableIndexService *)self clientBundleID];
     v13 = 138412802;
-    v14 = v12;
+    v14 = clientBundleID;
     v15 = 2112;
-    v16 = v6;
+    v16 = dCopy;
     v17 = 2112;
-    v18 = v7;
+    v18 = jobCopy;
     _os_log_debug_impl(&dword_231A35000, v8, OS_LOG_TYPE_DEBUG, "(%@) _forceAppWithBundleID, bundleID:%@, job:%@", &v13, 0x20u);
   }
 
-  v9 = [(MDSearchableIndexService *)self _checkItems:0 identifiers:0 protectionClass:0 bundleID:v6];
+  v9 = [(MDSearchableIndexService *)self _checkItems:0 identifiers:0 protectionClass:0 bundleID:dCopy];
   if (!v9)
   {
-    v10 = [MEMORY[0x277CC3538] sharedManager];
-    [v10 indexRequestsPerformJob:v7 forBundle:v6 completionHandler:0];
+    mEMORY[0x277CC3538] = [MEMORY[0x277CC3538] sharedManager];
+    [mEMORY[0x277CC3538] indexRequestsPerformJob:jobCopy forBundle:dCopy completionHandler:0];
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)performDataMigrationWithTimeout:(id)a3 completionHandler:(id)a4
+- (void)performDataMigrationWithTimeout:(id)timeout completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  timeoutCopy = timeout;
+  handlerCopy = handler;
   v7 = dispatch_get_global_queue(9, 0);
-  v10 = v6;
-  v8 = v6;
-  v9 = v5;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = timeoutCopy;
   tracing_dispatch_async();
 }
 
@@ -2558,18 +2558,18 @@ uint64_t __103__MDSearchableIndexService_transferDeleteJournalsForProtectionClas
   return result;
 }
 
-- (void)addInteraction:(id)a3 intentClassName:(id)a4 bundleID:(id)a5 protectionClass:(id)a6 options:(int64_t)a7 completionHandler:(id)a8
+- (void)addInteraction:(id)interaction intentClassName:(id)name bundleID:(id)d protectionClass:(id)class options:(int64_t)options completionHandler:(id)handler
 {
   v45 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
+  interactionCopy = interaction;
+  nameCopy = name;
+  dCopy = d;
+  classCopy = class;
+  handlerCopy = handler;
   v19 = objc_autoreleasePoolPush();
-  if (v16)
+  if (dCopy)
   {
-    if (v17)
+    if (classCopy)
     {
       goto LABEL_3;
     }
@@ -2577,35 +2577,35 @@ uint64_t __103__MDSearchableIndexService_transferDeleteJournalsForProtectionClas
 
   else
   {
-    v16 = [(MDSearchableIndexService *)self clientBundleID];
-    if (v17)
+    dCopy = [(MDSearchableIndexService *)self clientBundleID];
+    if (classCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v17 = [(MDSearchableIndexService *)self protectionClass];
+  classCopy = [(MDSearchableIndexService *)self protectionClass];
 LABEL_3:
   v20 = logForCSLogCategoryDefault();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138413058;
-    v38 = v16;
+    v38 = dCopy;
     v39 = 2112;
-    v40 = v15;
+    v40 = nameCopy;
     v41 = 2112;
-    v42 = v17;
+    v42 = classCopy;
     v43 = 2048;
-    v44 = a7;
+    optionsCopy = options;
     _os_log_debug_impl(&dword_231A35000, v20, OS_LOG_TYPE_DEBUG, "(%@) addInteraction:%@, protectionClass:%@, options:0x%lx", buf, 0x2Au);
   }
 
-  v21 = [(MDSearchableIndexService *)self _checkItems:0 identifiers:0 protectionClass:v17 bundleID:v16];
+  v21 = [(MDSearchableIndexService *)self _checkItems:0 identifiers:0 protectionClass:classCopy bundleID:dCopy];
   if (v21)
   {
-    if (v18)
+    if (handlerCopy)
     {
-      v18[2](v18, v21);
+      handlerCopy[2](handlerCopy, v21);
     }
   }
 
@@ -2614,16 +2614,16 @@ LABEL_3:
     if (!self->_isPrivate)
     {
       +[CSRecieverState sharedInstance];
-      v31 = v14;
+      v31 = interactionCopy;
       v22 = v19;
-      v23 = v15;
-      v25 = v24 = a7;
-      v26 = [v25 checkBundleIdentifier:v16];
+      v23 = nameCopy;
+      v25 = v24 = options;
+      v26 = [v25 checkBundleIdentifier:dCopy];
 
       v27 = v24;
-      v15 = v23;
+      nameCopy = v23;
       v19 = v22;
-      v14 = v31;
+      interactionCopy = v31;
       if (v26)
       {
         v32[0] = MEMORY[0x277D85DD0];
@@ -2631,29 +2631,29 @@ LABEL_3:
         v32[2] = __110__MDSearchableIndexService_addInteraction_intentClassName_bundleID_protectionClass_options_completionHandler___block_invoke;
         v32[3] = &unk_278937988;
         v33 = v31;
-        v34 = v15;
-        v35 = v16;
-        v36 = v17;
+        v34 = nameCopy;
+        v35 = dCopy;
+        v36 = classCopy;
         [SpotlightSender dispatchWithOptions:v27 block:v32];
       }
     }
 
-    if (v14)
+    if (interactionCopy)
     {
-      v28 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v14 error:0];
+      v28 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:interactionCopy error:0];
       if (v28)
       {
         indexer = self->_indexer;
         if (objc_opt_respondsToSelector())
         {
-          [(MDIndexer *)self->_indexer addInteraction:v28 bundleID:v16 protectionClass:v17];
+          [(MDIndexer *)self->_indexer addInteraction:v28 bundleID:dCopy protectionClass:classCopy];
         }
       }
     }
 
-    if (v18)
+    if (handlerCopy)
     {
-      v18[2](v18, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
   }
 
@@ -2661,17 +2661,17 @@ LABEL_3:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteInteractionsWithIdentifiers:(id)a3 bundleID:(id)a4 protectionClass:(id)a5 options:(int64_t)a6 completionHandler:(id)a7
+- (void)deleteInteractionsWithIdentifiers:(id)identifiers bundleID:(id)d protectionClass:(id)class options:(int64_t)options completionHandler:(id)handler
 {
   v33 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  identifiersCopy = identifiers;
+  dCopy = d;
+  classCopy = class;
+  handlerCopy = handler;
   v16 = objc_autoreleasePoolPush();
-  if (v13)
+  if (dCopy)
   {
-    if (v14)
+    if (classCopy)
     {
       goto LABEL_3;
     }
@@ -2679,39 +2679,39 @@ LABEL_3:
 
   else
   {
-    v13 = [(MDSearchableIndexService *)self clientBundleID];
-    if (v14)
+    dCopy = [(MDSearchableIndexService *)self clientBundleID];
+    if (classCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v14 = [(MDSearchableIndexService *)self protectionClass];
+  classCopy = [(MDSearchableIndexService *)self protectionClass];
 LABEL_3:
   v17 = logForCSLogCategoryDefault();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v28 = v13;
+    v28 = dCopy;
     v29 = 2112;
-    v30 = v14;
+    v30 = classCopy;
     v31 = 2048;
-    v32 = [v12 count];
+    v32 = [identifiersCopy count];
     _os_log_impl(&dword_231A35000, v17, OS_LOG_TYPE_DEFAULT, "(%@) deleteInteractionsWithIdentifiers, protectionClass:%@, identifiers num:%lu", buf, 0x20u);
   }
 
   v18 = logForCSLogCategoryDefault();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
   {
-    [MDSearchableIndexService deleteInteractionsWithIdentifiers:v12 bundleID:a6 protectionClass:? options:? completionHandler:?];
+    [MDSearchableIndexService deleteInteractionsWithIdentifiers:identifiersCopy bundleID:options protectionClass:? options:? completionHandler:?];
   }
 
-  v19 = [(MDSearchableIndexService *)self _checkItems:0 identifiers:0 protectionClass:v14 bundleID:v13];
+  v19 = [(MDSearchableIndexService *)self _checkItems:0 identifiers:0 protectionClass:classCopy bundleID:dCopy];
   if (v19)
   {
-    if (v15)
+    if (handlerCopy)
     {
-      v15[2](v15, v19);
+      handlerCopy[2](handlerCopy, v19);
     }
   }
 
@@ -2720,7 +2720,7 @@ LABEL_3:
     if (!self->_isPrivate)
     {
       v20 = +[CSRecieverState sharedInstance];
-      v21 = [v20 checkBundleIdentifier:v13];
+      v21 = [v20 checkBundleIdentifier:dCopy];
 
       if (v21)
       {
@@ -2728,16 +2728,16 @@ LABEL_3:
         v23[1] = 3221225472;
         v23[2] = __113__MDSearchableIndexService_deleteInteractionsWithIdentifiers_bundleID_protectionClass_options_completionHandler___block_invoke;
         v23[3] = &unk_278937848;
-        v24 = v12;
-        v25 = v13;
-        v26 = v14;
-        [SpotlightSender dispatchWithOptions:a6 block:v23];
+        v24 = identifiersCopy;
+        v25 = dCopy;
+        v26 = classCopy;
+        [SpotlightSender dispatchWithOptions:options block:v23];
       }
     }
 
-    if (v15)
+    if (handlerCopy)
     {
-      v15[2](v15, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
   }
 
@@ -2745,17 +2745,17 @@ LABEL_3:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteInteractionsWithGroupIdentifiers:(id)a3 bundleID:(id)a4 protectionClass:(id)a5 options:(int64_t)a6 completionHandler:(id)a7
+- (void)deleteInteractionsWithGroupIdentifiers:(id)identifiers bundleID:(id)d protectionClass:(id)class options:(int64_t)options completionHandler:(id)handler
 {
   v33 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  identifiersCopy = identifiers;
+  dCopy = d;
+  classCopy = class;
+  handlerCopy = handler;
   v16 = objc_autoreleasePoolPush();
-  if (v13)
+  if (dCopy)
   {
-    if (v14)
+    if (classCopy)
     {
       goto LABEL_3;
     }
@@ -2763,39 +2763,39 @@ LABEL_3:
 
   else
   {
-    v13 = [(MDSearchableIndexService *)self clientBundleID];
-    if (v14)
+    dCopy = [(MDSearchableIndexService *)self clientBundleID];
+    if (classCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v14 = [(MDSearchableIndexService *)self protectionClass];
+  classCopy = [(MDSearchableIndexService *)self protectionClass];
 LABEL_3:
   v17 = logForCSLogCategoryDefault();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v28 = v13;
+    v28 = dCopy;
     v29 = 2112;
-    v30 = v14;
+    v30 = classCopy;
     v31 = 2048;
-    v32 = [v12 count];
+    v32 = [identifiersCopy count];
     _os_log_impl(&dword_231A35000, v17, OS_LOG_TYPE_DEFAULT, "(%@) deleteInteractionsWithGroupIdentifiers, protectionClass:%@, identifiers num:%lu", buf, 0x20u);
   }
 
   v18 = logForCSLogCategoryDefault();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
   {
-    [MDSearchableIndexService deleteInteractionsWithIdentifiers:v12 bundleID:a6 protectionClass:? options:? completionHandler:?];
+    [MDSearchableIndexService deleteInteractionsWithIdentifiers:identifiersCopy bundleID:options protectionClass:? options:? completionHandler:?];
   }
 
-  v19 = [(MDSearchableIndexService *)self _checkItems:0 identifiers:0 protectionClass:v14 bundleID:v13];
+  v19 = [(MDSearchableIndexService *)self _checkItems:0 identifiers:0 protectionClass:classCopy bundleID:dCopy];
   if (v19)
   {
-    if (v15)
+    if (handlerCopy)
     {
-      v15[2](v15, v19);
+      handlerCopy[2](handlerCopy, v19);
     }
   }
 
@@ -2804,7 +2804,7 @@ LABEL_3:
     if (!self->_isPrivate)
     {
       v20 = +[CSRecieverState sharedInstance];
-      v21 = [v20 checkBundleIdentifier:v13];
+      v21 = [v20 checkBundleIdentifier:dCopy];
 
       if (v21)
       {
@@ -2812,16 +2812,16 @@ LABEL_3:
         v23[1] = 3221225472;
         v23[2] = __118__MDSearchableIndexService_deleteInteractionsWithGroupIdentifiers_bundleID_protectionClass_options_completionHandler___block_invoke;
         v23[3] = &unk_278937848;
-        v24 = v12;
-        v25 = v13;
-        v26 = v14;
-        [SpotlightSender dispatchWithOptions:a6 block:v23];
+        v24 = identifiersCopy;
+        v25 = dCopy;
+        v26 = classCopy;
+        [SpotlightSender dispatchWithOptions:options block:v23];
       }
     }
 
-    if (v15)
+    if (handlerCopy)
     {
-      v15[2](v15, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
   }
 
@@ -2829,16 +2829,16 @@ LABEL_3:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteAllInteractionsWithBundleID:(id)a3 protectionClass:(id)a4 options:(int64_t)a5 completionHandler:(id)a6
+- (void)deleteAllInteractionsWithBundleID:(id)d protectionClass:(id)class options:(int64_t)options completionHandler:(id)handler
 {
   v33 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  dCopy = d;
+  classCopy = class;
+  handlerCopy = handler;
   v13 = objc_autoreleasePoolPush();
-  if (v10)
+  if (dCopy)
   {
-    if (v11)
+    if (classCopy)
     {
       goto LABEL_3;
     }
@@ -2846,33 +2846,33 @@ LABEL_3:
 
   else
   {
-    v10 = [(MDSearchableIndexService *)self clientBundleID];
-    if (v11)
+    dCopy = [(MDSearchableIndexService *)self clientBundleID];
+    if (classCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v11 = [(MDSearchableIndexService *)self protectionClass];
+  classCopy = [(MDSearchableIndexService *)self protectionClass];
 LABEL_3:
   v14 = logForCSLogCategoryDefault();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v28 = v10;
+    v28 = dCopy;
     v29 = 2112;
-    v30 = v11;
+    v30 = classCopy;
     v31 = 2048;
-    v32 = a5;
+    optionsCopy = options;
     _os_log_impl(&dword_231A35000, v14, OS_LOG_TYPE_DEFAULT, "(%@) deleteAllInteractionsWithBundleID, protectionClass:%@, options:0x%lx", buf, 0x20u);
   }
 
-  v15 = [(MDSearchableIndexService *)self _checkItems:0 identifiers:0 protectionClass:v11 bundleID:v10];
+  v15 = [(MDSearchableIndexService *)self _checkItems:0 identifiers:0 protectionClass:classCopy bundleID:dCopy];
   if (v15)
   {
-    if (v12)
+    if (handlerCopy)
     {
-      v12[2](v12, v15);
+      handlerCopy[2](handlerCopy, v15);
 LABEL_19:
     }
   }
@@ -2882,7 +2882,7 @@ LABEL_19:
     if (!self->_isPrivate)
     {
       v16 = +[CSRecieverState sharedInstance];
-      v17 = [v16 checkBundleIdentifier:v10];
+      v17 = [v16 checkBundleIdentifier:dCopy];
 
       if (v17)
       {
@@ -2890,37 +2890,37 @@ LABEL_19:
         v24[1] = 3221225472;
         v24[2] = __104__MDSearchableIndexService_deleteAllInteractionsWithBundleID_protectionClass_options_completionHandler___block_invoke;
         v24[3] = &unk_278937758;
-        v25 = v10;
-        v26 = v11;
-        [SpotlightSender dispatchWithOptions:a5 block:v24];
+        v25 = dCopy;
+        v26 = classCopy;
+        [SpotlightSender dispatchWithOptions:options block:v24];
       }
     }
 
-    if ([v10 length])
+    if ([dCopy length])
     {
-      if ([(MDSearchableIndexService *)self _jobForIndex:a5])
+      if ([(MDSearchableIndexService *)self _jobForIndex:options])
       {
         indexer = self->_indexer;
         if (objc_opt_respondsToSelector())
         {
           v19 = self->_indexer;
-          v20 = [(MDSearchableIndexService *)self clientBundleID];
+          clientBundleID = [(MDSearchableIndexService *)self clientBundleID];
           v22[0] = MEMORY[0x277D85DD0];
           v22[1] = 3221225472;
           v22[2] = __104__MDSearchableIndexService_deleteAllInteractionsWithBundleID_protectionClass_options_completionHandler___block_invoke_2;
           v22[3] = &unk_278935048;
-          v23 = v12;
-          [(MDIndexer *)v19 deleteAllInteractionsWithBundleID:v10 fromClient:v20 completionHandler:v22];
+          v23 = handlerCopy;
+          [(MDIndexer *)v19 deleteAllInteractionsWithBundleID:dCopy fromClient:clientBundleID completionHandler:v22];
 
-          v12 = v23;
+          handlerCopy = v23;
           goto LABEL_19;
         }
       }
     }
 
-    if (v12)
+    if (handlerCopy)
     {
-      v12[2](v12, 0);
+      handlerCopy[2](handlerCopy, 0);
       goto LABEL_19;
     }
   }
@@ -2940,15 +2940,15 @@ uint64_t __104__MDSearchableIndexService_deleteAllInteractionsWithBundleID_prote
   return result;
 }
 
-- (void)donateRelevantActions:(id)a3 bundleID:(id)a4 options:(int64_t)a5 completionHandler:(id)a6
+- (void)donateRelevantActions:(id)actions bundleID:(id)d options:(int64_t)options completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  actionsCopy = actions;
+  dCopy = d;
+  handlerCopy = handler;
   v13 = objc_autoreleasePoolPush();
-  if (!v11)
+  if (!dCopy)
   {
-    v11 = [(MDSearchableIndexService *)self clientBundleID];
+    dCopy = [(MDSearchableIndexService *)self clientBundleID];
   }
 
   v14 = logForCSLogCategoryDefault();
@@ -2957,12 +2957,12 @@ uint64_t __104__MDSearchableIndexService_deleteAllInteractionsWithBundleID_prote
     [MDSearchableIndexService donateRelevantActions:bundleID:options:completionHandler:];
   }
 
-  v15 = [(MDSearchableIndexService *)self _checkItems:0 identifiers:0 protectionClass:0 bundleID:v11];
+  v15 = [(MDSearchableIndexService *)self _checkItems:0 identifiers:0 protectionClass:0 bundleID:dCopy];
   if (v15)
   {
-    if (v12)
+    if (handlerCopy)
     {
-      v12[2](v12, v15);
+      handlerCopy[2](handlerCopy, v15);
     }
   }
 
@@ -2971,7 +2971,7 @@ uint64_t __104__MDSearchableIndexService_deleteAllInteractionsWithBundleID_prote
     if (!self->_isPrivate)
     {
       v16 = +[CSRecieverState sharedInstance];
-      v17 = [v16 checkBundleIdentifier:v11];
+      v17 = [v16 checkBundleIdentifier:dCopy];
 
       if (v17)
       {
@@ -2979,32 +2979,32 @@ uint64_t __104__MDSearchableIndexService_deleteAllInteractionsWithBundleID_prote
         v18[1] = 3221225472;
         v18[2] = __85__MDSearchableIndexService_donateRelevantActions_bundleID_options_completionHandler___block_invoke;
         v18[3] = &unk_278937758;
-        v19 = v10;
-        v20 = v11;
-        [SpotlightSender dispatchWithOptions:a5 block:v18];
+        v19 = actionsCopy;
+        v20 = dCopy;
+        [SpotlightSender dispatchWithOptions:options block:v18];
       }
     }
 
-    if (v12)
+    if (handlerCopy)
     {
-      v12[2](v12, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
   }
 
   objc_autoreleasePoolPop(v13);
 }
 
-- (BOOL)checkIn:(id)a3
+- (BOOL)checkIn:(id)in
 {
   v57 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = xpc_dictionary_get_remote_connection(v4);
-  reply = xpc_dictionary_create_reply(v4);
+  inCopy = in;
+  v5 = xpc_dictionary_get_remote_connection(inCopy);
+  reply = xpc_dictionary_create_reply(inCopy);
   if (v5)
   {
-    v40 = self;
-    v7 = [MEMORY[0x277CC3510] copyNSStringForKey:"pc" fromXPCDictionary:v4];
-    uint64 = xpc_dictionary_get_uint64(v4, "id");
+    selfCopy = self;
+    v7 = [MEMORY[0x277CC3510] copyNSStringForKey:"pc" fromXPCDictionary:inCopy];
+    uint64 = xpc_dictionary_get_uint64(inCopy, "id");
     v9 = (*MEMORY[0x277D286C8])();
     v10 = *(v9 + 16);
     v52 = *v9;
@@ -3081,14 +3081,14 @@ uint64_t __104__MDSearchableIndexService_deleteAllInteractionsWithBundleID_prote
       v48 = uint64;
       v43 = v7;
       v44 = v5;
-      v20 = v40;
+      v20 = selfCopy;
       v21 = MEMORY[0x2383760E0](v41);
     }
 
     else
     {
       v21 = 0;
-      v20 = v40;
+      v20 = selfCopy;
     }
 
     if (v20->_isExtension)
@@ -3096,9 +3096,9 @@ uint64_t __104__MDSearchableIndexService_deleteAllInteractionsWithBundleID_prote
       v22 = logForCSLogCategoryIndex();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
-        v23 = [(MDSearchableIndexService *)v20 processDescription];
+        processDescription = [(MDSearchableIndexService *)v20 processDescription];
         *buf = 138412290;
-        v56 = v23;
+        v56 = processDescription;
         _os_log_impl(&dword_231A35000, v22, OS_LOG_TYPE_DEFAULT, "*warn* indexDelegate not supported with Extensions process:%@", buf, 0xCu);
       }
 
@@ -3188,56 +3188,56 @@ void __36__MDSearchableIndexService_checkIn___block_invoke(uint64_t a1, void *a2
   *(v6 + 32) = v26;
 }
 
-- (BOOL)processIndexData:(id)a3
+- (BOOL)processIndexData:(id)data
 {
-  v4 = a3;
-  v5 = xpc_dictionary_get_remote_connection(v4);
-  reply = xpc_dictionary_create_reply(v4);
+  dataCopy = data;
+  v5 = xpc_dictionary_get_remote_connection(dataCopy);
+  reply = xpc_dictionary_create_reply(dataCopy);
   v7 = reply;
   v8 = 0;
   if (v5 && reply)
   {
-    value = xpc_dictionary_get_uint64(v4, "id");
-    v9 = [MEMORY[0x277CC3510] copyNSStringForKey:"b" fromXPCDictionary:v4];
+    value = xpc_dictionary_get_uint64(dataCopy, "id");
+    v9 = [MEMORY[0x277CC3510] copyNSStringForKey:"b" fromXPCDictionary:dataCopy];
     v10 = v9;
     if (v9)
     {
-      v11 = v9;
+      clientBundleID = v9;
     }
 
     else
     {
-      v11 = [(MDSearchableIndexService *)self clientBundleID];
+      clientBundleID = [(MDSearchableIndexService *)self clientBundleID];
     }
 
-    v91 = v11;
+    v91 = clientBundleID;
 
-    v83 = [(MDSearchableIndexService *)self clientPersonaID];
-    v12 = [MEMORY[0x277CC3510] copyNSStringForKey:"pc" fromXPCDictionary:v4];
+    clientPersonaID = [(MDSearchableIndexService *)self clientPersonaID];
+    v12 = [MEMORY[0x277CC3510] copyNSStringForKey:"pc" fromXPCDictionary:dataCopy];
     v13 = v12;
     if (v12)
     {
-      v14 = v12;
+      protectionClass = v12;
     }
 
     else
     {
-      v14 = [(MDSearchableIndexService *)self protectionClass];
+      protectionClass = [(MDSearchableIndexService *)self protectionClass];
     }
 
-    v15 = v14;
+    v15 = protectionClass;
 
-    uint64 = xpc_dictionary_get_uint64(v4, "opt");
-    v16 = [MEMORY[0x277CC3510] dataWrapperForKey:"items" sizeKey:"items-size" fromXPCDictionary:v4];
-    v17 = [MEMORY[0x277CC3510] dataWrapperForKey:"ids" sizeKey:"ids-size" fromXPCDictionary:v4];
-    v90 = [MEMORY[0x277CC3510] dataWrapperForKey:"client-state-key" sizeKey:"client-state-size" fromXPCDictionary:v4];
-    v84 = [MEMORY[0x277CC3510] dataWrapperForKey:"expected-client-state-key" sizeKey:"expected-client-state-size" fromXPCDictionary:v4];
-    v89 = [MEMORY[0x277CC3510] copyNSStringForKey:"n" fromXPCDictionary:v4];
+    uint64 = xpc_dictionary_get_uint64(dataCopy, "opt");
+    v16 = [MEMORY[0x277CC3510] dataWrapperForKey:"items" sizeKey:"items-size" fromXPCDictionary:dataCopy];
+    v17 = [MEMORY[0x277CC3510] dataWrapperForKey:"ids" sizeKey:"ids-size" fromXPCDictionary:dataCopy];
+    v90 = [MEMORY[0x277CC3510] dataWrapperForKey:"client-state-key" sizeKey:"client-state-size" fromXPCDictionary:dataCopy];
+    v84 = [MEMORY[0x277CC3510] dataWrapperForKey:"expected-client-state-key" sizeKey:"expected-client-state-size" fromXPCDictionary:dataCopy];
+    v89 = [MEMORY[0x277CC3510] copyNSStringForKey:"n" fromXPCDictionary:dataCopy];
     if (v16)
     {
       v18 = objc_alloc(MEMORY[0x277CC33C8]);
-      v19 = [v16 data];
-      v94 = [v18 initWithData:v19];
+      data = [v16 data];
+      v94 = [v18 initWithData:data];
     }
 
     else
@@ -3250,8 +3250,8 @@ void __36__MDSearchableIndexService_checkIn___block_invoke(uint64_t a1, void *a2
     if (v17)
     {
       v20 = objc_alloc(MEMORY[0x277CC33C8]);
-      v21 = [v17 data];
-      v92 = [v20 initWithData:v21];
+      data2 = [v17 data];
+      v92 = [v20 initWithData:data2];
     }
 
     else
@@ -3337,7 +3337,7 @@ void __36__MDSearchableIndexService_checkIn___block_invoke(uint64_t a1, void *a2
       v36 = v94;
       if (v94 && ([v94 obj], PlistObjectType = _MDPlistGetPlistObjectType(), v36 = v94, PlistObjectType == 240) && (objc_msgSend(v94, "obj"), Count = _MDPlistArrayGetCount(), v36 = v94, Count))
       {
-        v79 = [MEMORY[0x277CC3510] dataWrapperForKey:"textdata" sizeKey:"text-data-size" fromXPCDictionary:v4];
+        v79 = [MEMORY[0x277CC3510] dataWrapperForKey:"textdata" sizeKey:"text-data-size" fromXPCDictionary:dataCopy];
         v39 = 1;
       }
 
@@ -3383,13 +3383,13 @@ LABEL_57:
         {
           if (v39)
           {
-            v80 = [MEMORY[0x277CC3510] dataWrapperForKey:"htmldata" sizeKey:"html-data-size" fromXPCDictionary:v4];
+            v80 = [MEMORY[0x277CC3510] dataWrapperForKey:"htmldata" sizeKey:"html-data-size" fromXPCDictionary:dataCopy];
             v45 = v94;
             if (v80)
             {
               v46 = objc_alloc(MEMORY[0x277CC33C8]);
-              v47 = [v80 data];
-              v48 = [v46 initWithData:v47];
+              data3 = [v80 data];
+              v48 = [v46 initWithData:data3];
 
               [v48 setBackingStore:v80];
             }
@@ -3402,8 +3402,8 @@ LABEL_57:
             if (v79)
             {
               v74 = objc_alloc(MEMORY[0x277CC33C8]);
-              v75 = [v79 data];
-              v73 = [v74 initWithData:v75];
+              data4 = [v79 data];
+              v73 = [v74 initWithData:data4];
 
               [v73 setBackingStore:v79];
             }
@@ -3470,12 +3470,12 @@ LABEL_57:
         v107[4] = __Block_byref_object_dispose__2;
         v54 = v90;
         v108 = v54;
-        v78 = [v50 data];
-        v77 = [v51 data];
-        v55 = [v52 data];
-        v56 = [v54 data];
-        v57 = [v84 data];
-        v58 = [v53 data];
+        data5 = [v50 data];
+        data6 = [v51 data];
+        data7 = [v52 data];
+        data8 = [v54 data];
+        data9 = [v84 data];
+        data10 = [v53 data];
         v95[0] = MEMORY[0x277D85DD0];
         v95[1] = 3221225472;
         v103 = v117;
@@ -3491,7 +3491,7 @@ LABEL_57:
         v96 = v86;
         v106 = value;
         v97 = connection;
-        [(MDSearchableIndexService *)self _processIndexDataForBundle:v91 protectionClass:v93 personaID:v83 options:uint64 items:v78 itemsText:v77 itemsHTML:v55 clientState:v56 expectedClientState:v57 clientStateName:v89 deletes:v58 completionHandler:v95];
+        [(MDSearchableIndexService *)self _processIndexDataForBundle:v91 protectionClass:v93 personaID:clientPersonaID options:uint64 items:data5 itemsText:data6 itemsHTML:data7 clientState:data8 expectedClientState:data9 clientStateName:v89 deletes:data10 completionHandler:v95];
 
         _Block_object_dispose(v107, 8);
         _Block_object_dispose(v109, 8);
@@ -3606,9 +3606,9 @@ void __45__MDSearchableIndexService_processIndexData___block_invoke(uint64_t a1,
   *(v5 + 32) = v34;
 }
 
-- (BOOL)fetchBundleIDs:(id)a3
+- (BOOL)fetchBundleIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   if (!self->_isInternal)
   {
     v6 = logForCSLogCategoryIndex();
@@ -3634,8 +3634,8 @@ LABEL_16:
     goto LABEL_20;
   }
 
-  v6 = xpc_dictionary_get_remote_connection(v4);
-  reply = xpc_dictionary_create_reply(v4);
+  v6 = xpc_dictionary_get_remote_connection(dsCopy);
+  reply = xpc_dictionary_create_reply(dsCopy);
   v8 = reply;
   if (v6)
   {
@@ -3650,19 +3650,19 @@ LABEL_16:
   v10 = !v9;
   if (!v9)
   {
-    v11 = [MEMORY[0x277CC3510] copyNSStringForKey:"ipc" fromXPCDictionary:v4];
+    v11 = [MEMORY[0x277CC3510] copyNSStringForKey:"ipc" fromXPCDictionary:dsCopy];
     v12 = v11;
     if (v11)
     {
-      v13 = v11;
+      protectionClass = v11;
     }
 
     else
     {
-      v13 = [(MDSearchableIndexService *)self protectionClass];
+      protectionClass = [(MDSearchableIndexService *)self protectionClass];
     }
 
-    v14 = v13;
+    v14 = protectionClass;
 
     v15 = self->_indexer;
     v17[0] = MEMORY[0x277D85DD0];
@@ -3698,18 +3698,18 @@ void __43__MDSearchableIndexService_fetchBundleIDs___block_invoke(uint64_t a1, v
   xpc_connection_send_message(*(a1 + 40), *(a1 + 32));
 }
 
-- (BOOL)prepareIndexingLocked:(id)a3
+- (BOOL)prepareIndexingLocked:(id)locked
 {
-  v4 = a3;
-  v5 = xpc_dictionary_get_remote_connection(v4);
-  reply = xpc_dictionary_create_reply(v4);
+  lockedCopy = locked;
+  v5 = xpc_dictionary_get_remote_connection(lockedCopy);
+  reply = xpc_dictionary_create_reply(lockedCopy);
   if (v5)
   {
-    v36 = self;
-    v7 = [MEMORY[0x277CC3510] copyNSStringForKey:"pc" fromXPCDictionary:v4];
-    v37 = [MEMORY[0x277CC3510] copyNSStringForKey:"b" fromXPCDictionary:v4];
-    v8 = xpc_dictionary_get_double(v4, "time");
-    uint64 = xpc_dictionary_get_uint64(v4, "id");
+    selfCopy = self;
+    v7 = [MEMORY[0x277CC3510] copyNSStringForKey:"pc" fromXPCDictionary:lockedCopy];
+    v37 = [MEMORY[0x277CC3510] copyNSStringForKey:"b" fromXPCDictionary:lockedCopy];
+    v8 = xpc_dictionary_get_double(lockedCopy, "time");
+    uint64 = xpc_dictionary_get_uint64(lockedCopy, "id");
     v10 = (*MEMORY[0x277D286C8])();
     v11 = *(v10 + 16);
     v48 = *v10;
@@ -3793,7 +3793,7 @@ void __43__MDSearchableIndexService_fetchBundleIDs___block_invoke(uint64_t a1, v
       v21 = 0;
     }
 
-    [(MDSearchableIndexService *)v36 prepareIndexingWhileLocked:v37 protectionClass:v7 holdAssertionFor:v21 completionHandler:v8];
+    [(MDSearchableIndexService *)selfCopy prepareIndexingWhileLocked:v37 protectionClass:v7 holdAssertionFor:v21 completionHandler:v8];
 
     v22 = *v10;
     v23 = *(v10 + 8);
@@ -3861,17 +3861,17 @@ void __50__MDSearchableIndexService_prepareIndexingLocked___block_invoke(uint64_
   *(v3 + 32) = v22;
 }
 
-- (BOOL)finishIndexingLocked:(id)a3
+- (BOOL)finishIndexingLocked:(id)locked
 {
-  v4 = a3;
-  v5 = xpc_dictionary_get_remote_connection(v4);
-  reply = xpc_dictionary_create_reply(v4);
+  lockedCopy = locked;
+  v5 = xpc_dictionary_get_remote_connection(lockedCopy);
+  reply = xpc_dictionary_create_reply(lockedCopy);
   if (v5)
   {
-    v35 = self;
-    v7 = [MEMORY[0x277CC3510] copyNSStringForKey:"pc" fromXPCDictionary:v4];
-    v36 = [MEMORY[0x277CC3510] copyNSStringForKey:"b" fromXPCDictionary:v4];
-    uint64 = xpc_dictionary_get_uint64(v4, "id");
+    selfCopy = self;
+    v7 = [MEMORY[0x277CC3510] copyNSStringForKey:"pc" fromXPCDictionary:lockedCopy];
+    v36 = [MEMORY[0x277CC3510] copyNSStringForKey:"b" fromXPCDictionary:lockedCopy];
+    uint64 = xpc_dictionary_get_uint64(lockedCopy, "id");
     v9 = (*MEMORY[0x277D286C8])();
     v10 = *(v9 + 16);
     v47 = *v9;
@@ -3955,7 +3955,7 @@ void __50__MDSearchableIndexService_prepareIndexingLocked___block_invoke(uint64_
       v20 = 0;
     }
 
-    [(MDSearchableIndexService *)v35 finishIndexingWhileLocked:v36 protectionClass:v7 completionHandler:v20];
+    [(MDSearchableIndexService *)selfCopy finishIndexingWhileLocked:v36 protectionClass:v7 completionHandler:v20];
 
     v21 = *v9;
     v22 = *(v9 + 8);
@@ -4023,43 +4023,43 @@ void __49__MDSearchableIndexService_finishIndexingLocked___block_invoke(uint64_t
   *(v3 + 32) = v22;
 }
 
-- (void)indexSearchableItems:(id)a3 deleteSearchableItemsWithIdentifiers:(id)a4 clientState:(id)a5 clientStateName:(id)a6 protectionClass:(id)a7 forBundleID:(id)a8 options:(int64_t)a9 completionHandler:(id)a10
+- (void)indexSearchableItems:(id)items deleteSearchableItemsWithIdentifiers:(id)identifiers clientState:(id)state clientStateName:(id)name protectionClass:(id)class forBundleID:(id)d options:(int64_t)options completionHandler:(id)self0
 {
-  v10 = a10;
+  handlerCopy = handler;
   v11 = logForCSLogCategoryDefault();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
   {
     [MDSearchableIndexService indexSearchableItems:deleteSearchableItemsWithIdentifiers:clientState:clientStateName:protectionClass:forBundleID:options:completionHandler:];
   }
 
-  if (v10)
+  if (handlerCopy)
   {
     v12 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CC22E8] code:-1000 userInfo:0];
-    v10[2](v10, v12);
+    handlerCopy[2](handlerCopy, v12);
   }
 }
 
-- (void)indexFromBundle:(id)a3 protectionClass:(id)a4 options:(int64_t)a5 items:(id)a6 itemsText:(id)a7 itemsHTML:(id)a8 clientState:(id)a9 expectedClientState:(id)a10 clientStateName:(id)a11 deletes:(id)a12 userActivities:(BOOL)a13 completionHandler:(id)a14
+- (void)indexFromBundle:(id)bundle protectionClass:(id)class options:(int64_t)options items:(id)items itemsText:(id)text itemsHTML:(id)l clientState:(id)state expectedClientState:(id)self0 clientStateName:(id)self1 deletes:(id)self2 userActivities:(BOOL)self3 completionHandler:(id)self4
 {
-  v14 = a14;
+  handlerCopy = handler;
   v15 = logForCSLogCategoryDefault();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
   {
     [MDSearchableIndexService indexFromBundle:protectionClass:options:items:itemsText:itemsHTML:clientState:expectedClientState:clientStateName:deletes:userActivities:completionHandler:];
   }
 
-  if (v14)
+  if (handlerCopy)
   {
     v16 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CC22E8] code:-1000 userInfo:0];
-    v14[2](v14, v16);
+    handlerCopy[2](handlerCopy, v16);
   }
 }
 
-- (BOOL)willModify:(id)a3
+- (BOOL)willModify:(id)modify
 {
-  v4 = a3;
-  v5 = xpc_dictionary_get_remote_connection(v4);
-  reply = xpc_dictionary_create_reply(v4);
+  modifyCopy = modify;
+  v5 = xpc_dictionary_get_remote_connection(modifyCopy);
+  reply = xpc_dictionary_create_reply(modifyCopy);
   v7 = reply;
   if (v5)
   {
@@ -4074,20 +4074,20 @@ void __49__MDSearchableIndexService_finishIndexingLocked___block_invoke(uint64_t
   v9 = !v8;
   if (!v8)
   {
-    v47 = self;
+    selfCopy = self;
     v43 = v9;
-    uint64 = xpc_dictionary_get_uint64(v4, "id");
-    v11 = [MEMORY[0x277CC3510] copyNSStringForKey:"pc" fromXPCDictionary:v4];
-    v48 = [MEMORY[0x277CC3510] copyNSStringForKey:"b" fromXPCDictionary:v4];
-    v45 = xpc_dictionary_get_uint64(v4, "opt");
-    v12 = [MEMORY[0x277CC3510] dataWrapperForKey:"ids" sizeKey:"ids-size" fromXPCDictionary:v4];
+    uint64 = xpc_dictionary_get_uint64(modifyCopy, "id");
+    v11 = [MEMORY[0x277CC3510] copyNSStringForKey:"pc" fromXPCDictionary:modifyCopy];
+    v48 = [MEMORY[0x277CC3510] copyNSStringForKey:"b" fromXPCDictionary:modifyCopy];
+    v45 = xpc_dictionary_get_uint64(modifyCopy, "opt");
+    v12 = [MEMORY[0x277CC3510] dataWrapperForKey:"ids" sizeKey:"ids-size" fromXPCDictionary:modifyCopy];
     v13 = objc_alloc(MEMORY[0x277CC33C8]);
     v44 = v12;
-    v14 = [v12 data];
-    v15 = [v13 initWithData:v14];
+    data = [v12 data];
+    v15 = [v13 initWithData:data];
 
     v42 = v15;
-    v46 = [v15 decode];
+    decode = [v15 decode];
     v16 = (*MEMORY[0x277D286C8])();
     v17 = *(v16 + 16);
     v60 = *v16;
@@ -4163,7 +4163,7 @@ void __49__MDSearchableIndexService_finishIndexingLocked___block_invoke(uint64_t
     v51 = v7;
     v56 = uint64;
     v52 = v5;
-    [(MDSearchableIndexService *)v47 willModifySearchableItemsWithIdentifiers:v46 protectionClass:v11 forBundleID:v48 options:v45 completionHandler:v49];
+    [(MDSearchableIndexService *)selfCopy willModifySearchableItemsWithIdentifiers:decode protectionClass:v11 forBundleID:v48 options:v45 completionHandler:v49];
 
     v28 = *v16;
     v29 = *(v16 + 8);
@@ -4235,11 +4235,11 @@ void __39__MDSearchableIndexService_willModify___block_invoke(uint64_t a1, void 
   *(v3 + 32) = v24;
 }
 
-- (BOOL)deleteDomains:(id)a3
+- (BOOL)deleteDomains:(id)domains
 {
-  v4 = a3;
-  v5 = xpc_dictionary_get_remote_connection(v4);
-  reply = xpc_dictionary_create_reply(v4);
+  domainsCopy = domains;
+  v5 = xpc_dictionary_get_remote_connection(domainsCopy);
+  reply = xpc_dictionary_create_reply(domainsCopy);
   v7 = reply;
   if (v5)
   {
@@ -4254,20 +4254,20 @@ void __39__MDSearchableIndexService_willModify___block_invoke(uint64_t a1, void 
   v9 = !v8;
   if (!v8)
   {
-    v47 = self;
+    selfCopy = self;
     v44 = v9;
-    uint64 = xpc_dictionary_get_uint64(v4, "id");
-    v11 = [MEMORY[0x277CC3510] copyNSStringForKey:"pc" fromXPCDictionary:v4];
-    v48 = [MEMORY[0x277CC3510] copyNSStringForKey:"b" fromXPCDictionary:v4];
-    v46 = xpc_dictionary_get_uint64(v4, "opt");
-    v12 = [MEMORY[0x277CC3510] dataWrapperForKey:"ids" sizeKey:"ids-size" fromXPCDictionary:v4];
+    uint64 = xpc_dictionary_get_uint64(domainsCopy, "id");
+    v11 = [MEMORY[0x277CC3510] copyNSStringForKey:"pc" fromXPCDictionary:domainsCopy];
+    v48 = [MEMORY[0x277CC3510] copyNSStringForKey:"b" fromXPCDictionary:domainsCopy];
+    v46 = xpc_dictionary_get_uint64(domainsCopy, "opt");
+    v12 = [MEMORY[0x277CC3510] dataWrapperForKey:"ids" sizeKey:"ids-size" fromXPCDictionary:domainsCopy];
     v13 = objc_alloc(MEMORY[0x277CC33C8]);
     v45 = v12;
-    v14 = [v12 data];
-    v15 = [v13 initWithData:v14];
+    data = [v12 data];
+    v15 = [v13 initWithData:data];
 
     v43 = v15;
-    v49 = [v15 decode];
+    decode = [v15 decode];
     v16 = (*MEMORY[0x277D286C8])();
     v17 = *(v16 + 16);
     v64 = *v16;
@@ -4334,7 +4334,7 @@ void __39__MDSearchableIndexService_willModify___block_invoke(uint64_t a1, void 
     v58 = *v16;
     v59 = v26;
     v60 = *(v16 + 32);
-    v27 = [(MDSearchableIndexService *)v47 clientBundleID];
+    clientBundleID = [(MDSearchableIndexService *)selfCopy clientBundleID];
     v50[0] = MEMORY[0x277D85DD0];
     v50[1] = 3221225472;
     v54 = v58;
@@ -4347,7 +4347,7 @@ void __39__MDSearchableIndexService_willModify___block_invoke(uint64_t a1, void 
     v52 = v7;
     v57 = uint64;
     v53 = v5;
-    [(MDSearchableIndexService *)v47 deleteSearchableItemsWithDomainIdentifiers:v49 protectionClass:v11 forBundleID:v48 fromClient:v27 options:v46 completionHandler:v50];
+    [(MDSearchableIndexService *)selfCopy deleteSearchableItemsWithDomainIdentifiers:decode protectionClass:v11 forBundleID:v48 fromClient:clientBundleID options:v46 completionHandler:v50];
 
     v29 = *v16;
     v30 = *(v16 + 8);
@@ -4419,11 +4419,11 @@ void __42__MDSearchableIndexService_deleteDomains___block_invoke(uint64_t a1, vo
   *(v3 + 32) = v24;
 }
 
-- (BOOL)deleteBundle:(id)a3
+- (BOOL)deleteBundle:(id)bundle
 {
-  v4 = a3;
-  v5 = xpc_dictionary_get_remote_connection(v4);
-  reply = xpc_dictionary_create_reply(v4);
+  bundleCopy = bundle;
+  v5 = xpc_dictionary_get_remote_connection(bundleCopy);
+  reply = xpc_dictionary_create_reply(bundleCopy);
   v7 = reply;
   if (v5)
   {
@@ -4438,13 +4438,13 @@ void __42__MDSearchableIndexService_deleteDomains___block_invoke(uint64_t a1, vo
   v9 = !v8;
   if (!v8)
   {
-    v40 = self;
+    selfCopy = self;
     v37 = v9;
-    uint64 = xpc_dictionary_get_uint64(v4, "id");
-    v11 = [MEMORY[0x277CC3510] copyNSStringForKey:"pc" fromXPCDictionary:v4];
-    v41 = [MEMORY[0x277CC3510] copyNSStringForKey:"b" fromXPCDictionary:v4];
-    v39 = xpc_dictionary_get_uint64(v4, "opt");
-    int64 = xpc_dictionary_get_int64(v4, "dar");
+    uint64 = xpc_dictionary_get_uint64(bundleCopy, "id");
+    v11 = [MEMORY[0x277CC3510] copyNSStringForKey:"pc" fromXPCDictionary:bundleCopy];
+    v41 = [MEMORY[0x277CC3510] copyNSStringForKey:"b" fromXPCDictionary:bundleCopy];
+    v39 = xpc_dictionary_get_uint64(bundleCopy, "opt");
+    int64 = xpc_dictionary_get_int64(bundleCopy, "dar");
     v12 = (*MEMORY[0x277D286C8])();
     v13 = *(v12 + 16);
     v52 = *v12;
@@ -4518,7 +4518,7 @@ void __42__MDSearchableIndexService_deleteDomains___block_invoke(uint64_t a1, vo
     v43 = v7;
     v48 = uint64;
     v44 = v5;
-    [(MDSearchableIndexService *)v40 _deleteAllSearchableItemsWithBundleID:v41 protectionClass:v11 shouldGC:1 options:v39 deleteAllReason:int64 completionHandler:v42];
+    [(MDSearchableIndexService *)selfCopy _deleteAllSearchableItemsWithBundleID:v41 protectionClass:v11 shouldGC:1 options:v39 deleteAllReason:int64 completionHandler:v42];
 
     v23 = *v12;
     v24 = *(v12 + 8);
@@ -4588,11 +4588,11 @@ void __41__MDSearchableIndexService_deleteBundle___block_invoke(uint64_t a1, voi
   *(v3 + 32) = v22;
 }
 
-- (BOOL)deleteSinceDate:(id)a3
+- (BOOL)deleteSinceDate:(id)date
 {
-  v4 = a3;
-  v5 = xpc_dictionary_get_remote_connection(v4);
-  reply = xpc_dictionary_create_reply(v4);
+  dateCopy = date;
+  v5 = xpc_dictionary_get_remote_connection(dateCopy);
+  reply = xpc_dictionary_create_reply(dateCopy);
   v7 = reply;
   if (v5)
   {
@@ -4607,13 +4607,13 @@ void __41__MDSearchableIndexService_deleteBundle___block_invoke(uint64_t a1, voi
   v9 = !v8;
   if (!v8)
   {
-    v41 = self;
+    selfCopy = self;
     v39 = v9;
-    uint64 = xpc_dictionary_get_uint64(v4, "id");
-    v11 = [MEMORY[0x277CC3510] copyNSStringForKey:"pc" fromXPCDictionary:v4];
-    v42 = [MEMORY[0x277CC3510] copyNSStringForKey:"b" fromXPCDictionary:v4];
-    v40 = xpc_dictionary_get_uint64(v4, "opt");
-    v12 = xpc_dictionary_get_double(v4, "time");
+    uint64 = xpc_dictionary_get_uint64(dateCopy, "id");
+    v11 = [MEMORY[0x277CC3510] copyNSStringForKey:"pc" fromXPCDictionary:dateCopy];
+    v42 = [MEMORY[0x277CC3510] copyNSStringForKey:"b" fromXPCDictionary:dateCopy];
+    v40 = xpc_dictionary_get_uint64(dateCopy, "opt");
+    v12 = xpc_dictionary_get_double(dateCopy, "time");
     v13 = (*MEMORY[0x277D286C8])();
     v14 = *(v13 + 16);
     v56 = *v13;
@@ -4691,7 +4691,7 @@ void __41__MDSearchableIndexService_deleteBundle___block_invoke(uint64_t a1, voi
     v44 = v7;
     v49 = uint64;
     v45 = v5;
-    [(MDSearchableIndexService *)v41 deleteSearchableItemsSinceDate:v24 protectionClass:v11 forBundleID:v42 options:v40 completionHandler:v43];
+    [(MDSearchableIndexService *)selfCopy deleteSearchableItemsSinceDate:v24 protectionClass:v11 forBundleID:v42 options:v40 completionHandler:v43];
 
     v25 = *v13;
     v26 = *(v13 + 8);
@@ -4761,17 +4761,17 @@ void __44__MDSearchableIndexService_deleteSinceDate___block_invoke(uint64_t a1, 
   *(v3 + 32) = v22;
 }
 
-- (void)_runLibraryDeletedCommand:(id)a3
+- (void)_runLibraryDeletedCommand:(id)command
 {
   v3 = MEMORY[0x277CCAE80];
-  v4 = a3;
+  commandCopy = command;
   v7 = [[v3 alloc] initWithMachServiceName:@"com.apple.photos.service" options:0];
   v5 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_2846DBD48];
   [v7 setRemoteObjectInterface:v5];
 
   [v7 resume];
   v6 = [v7 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_211];
-  [v6 photoLibraryDeletedAtURL:v4 reply:&__block_literal_global_214];
+  [v6 photoLibraryDeletedAtURL:commandCopy reply:&__block_literal_global_214];
 }
 
 void __54__MDSearchableIndexService__runLibraryDeletedCommand___block_invoke(uint64_t a1, void *a2)
@@ -4821,11 +4821,11 @@ LABEL_6:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)photosLibraryDeleted:(id)a3
+- (BOOL)photosLibraryDeleted:(id)deleted
 {
-  v4 = a3;
-  v5 = xpc_dictionary_get_remote_connection(v4);
-  reply = xpc_dictionary_create_reply(v4);
+  deletedCopy = deleted;
+  v5 = xpc_dictionary_get_remote_connection(deletedCopy);
+  reply = xpc_dictionary_create_reply(deletedCopy);
   v7 = reply;
   if (v5)
   {
@@ -4840,8 +4840,8 @@ LABEL_6:
   v9 = !v8;
   if (!v8)
   {
-    uint64 = xpc_dictionary_get_uint64(v4, "id");
-    v11 = [MEMORY[0x277CC3510] copyNSStringForKey:"path" fromXPCDictionary:v4];
+    uint64 = xpc_dictionary_get_uint64(deletedCopy, "id");
+    v11 = [MEMORY[0x277CC3510] copyNSStringForKey:"path" fromXPCDictionary:deletedCopy];
     v12 = (*MEMORY[0x277D286C8])();
     v23 = *v12;
     v24 = *(v12 + 16);
@@ -4879,19 +4879,19 @@ LABEL_6:
   return v9;
 }
 
-- (BOOL)openJournalFile:(id)a3
+- (BOOL)openJournalFile:(id)file
 {
-  v4 = a3;
-  v5 = xpc_dictionary_get_remote_connection(v4);
-  reply = xpc_dictionary_create_reply(v4);
+  fileCopy = file;
+  v5 = xpc_dictionary_get_remote_connection(fileCopy);
+  reply = xpc_dictionary_create_reply(fileCopy);
   v7 = reply;
   v8 = 0;
   if (v5 && reply)
   {
     if ([(MDSearchableIndexService *)self allowOpenJournalFile])
     {
-      uint64 = xpc_dictionary_get_uint64(v4, "id");
-      v10 = [MEMORY[0x277CC3510] copyNSStringForKey:"journal-name" fromXPCDictionary:v4];
+      uint64 = xpc_dictionary_get_uint64(fileCopy, "id");
+      v10 = [MEMORY[0x277CC3510] copyNSStringForKey:"journal-name" fromXPCDictionary:fileCopy];
       v11 = v10;
       if (v10 && [v10 length])
       {
@@ -4936,17 +4936,17 @@ LABEL_11:
   return v8;
 }
 
-- (BOOL)issueCommand:(id)a3
+- (BOOL)issueCommand:(id)command
 {
-  v4 = a3;
-  v5 = xpc_dictionary_get_remote_connection(v4);
-  reply = xpc_dictionary_create_reply(v4);
+  commandCopy = command;
+  v5 = xpc_dictionary_get_remote_connection(commandCopy);
+  reply = xpc_dictionary_create_reply(commandCopy);
   if (v5)
   {
-    v29 = self;
+    selfCopy = self;
     v30 = reply;
-    uint64 = xpc_dictionary_get_uint64(v4, "id");
-    v8 = [MEMORY[0x277CC3510] copyNSStringForKey:"request" fromXPCDictionary:v4];
+    uint64 = xpc_dictionary_get_uint64(commandCopy, "id");
+    v8 = [MEMORY[0x277CC3510] copyNSStringForKey:"request" fromXPCDictionary:commandCopy];
     v9 = (*MEMORY[0x277D286C8])();
     v10 = *(v9 + 16);
     v55 = *v9;
@@ -4971,8 +4971,8 @@ LABEL_11:
       if (([v8 isEqualToString:@"diagnosemd"] & 1) != 0 || objc_msgSend(v8, "isEqualToString:", @"diagnosemd_q"))
       {
         v15 = [v8 isEqualToString:@"diagnosemd_q"];
-        v16 = xpc_dictionary_dup_fd(v4, "fd");
-        string = xpc_dictionary_get_string(v4, "b");
+        v16 = xpc_dictionary_dup_fd(commandCopy, "fd");
+        string = xpc_dictionary_get_string(commandCopy, "b");
         if (string)
         {
           v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:string];
@@ -4993,12 +4993,12 @@ LABEL_11:
         v46 = v30;
         v51 = uint64;
         v47 = v5;
-        [(MDSearchableIndexService *)v29 _issueDiagnose:v16 bundleID:v18 logQuery:v15 completionHandler:v45];
+        [(MDSearchableIndexService *)selfCopy _issueDiagnose:v16 bundleID:v18 logQuery:v15 completionHandler:v45];
       }
 
       else
       {
-        v19 = xpc_dictionary_dup_fd(v4, "fd");
+        v19 = xpc_dictionary_dup_fd(commandCopy, "fd");
         __buf = 0;
         if ((v19 & 0x80000000) != 0)
         {
@@ -5030,7 +5030,7 @@ LABEL_11:
         v40 = uint64;
         v33 = v5;
         v34 = v8;
-        [(MDSearchableIndexService *)v29 _issueCommand:v34 outFileDescriptor:v19 searchContext:0 completionHandler:v31];
+        [(MDSearchableIndexService *)selfCopy _issueCommand:v34 outFileDescriptor:v19 searchContext:0 completionHandler:v31];
 
         _Block_object_dispose(v42, 8);
       }
@@ -5176,11 +5176,11 @@ void __41__MDSearchableIndexService_issueCommand___block_invoke_2(uint64_t a1, v
   }
 }
 
-- (BOOL)fetchClientState:(id)a3
+- (BOOL)fetchClientState:(id)state
 {
-  v4 = a3;
-  v5 = xpc_dictionary_get_remote_connection(v4);
-  reply = xpc_dictionary_create_reply(v4);
+  stateCopy = state;
+  v5 = xpc_dictionary_get_remote_connection(stateCopy);
+  reply = xpc_dictionary_create_reply(stateCopy);
   v7 = reply;
   if (v5)
   {
@@ -5195,13 +5195,13 @@ void __41__MDSearchableIndexService_issueCommand___block_invoke_2(uint64_t a1, v
   v9 = !v8;
   if (!v8)
   {
-    v39 = self;
+    selfCopy = self;
     v37 = v9;
-    uint64 = xpc_dictionary_get_uint64(v4, "id");
-    v11 = [MEMORY[0x277CC3510] copyNSStringForKey:"pc" fromXPCDictionary:v4];
-    v41 = [MEMORY[0x277CC3510] copyNSStringForKey:"b" fromXPCDictionary:v4];
-    v38 = xpc_dictionary_get_uint64(v4, "opt");
-    v40 = [MEMORY[0x277CC3510] copyNSStringForKey:"client-state-name" fromXPCDictionary:v4];
+    uint64 = xpc_dictionary_get_uint64(stateCopy, "id");
+    v11 = [MEMORY[0x277CC3510] copyNSStringForKey:"pc" fromXPCDictionary:stateCopy];
+    v41 = [MEMORY[0x277CC3510] copyNSStringForKey:"b" fromXPCDictionary:stateCopy];
+    v38 = xpc_dictionary_get_uint64(stateCopy, "opt");
+    v40 = [MEMORY[0x277CC3510] copyNSStringForKey:"client-state-name" fromXPCDictionary:stateCopy];
     v12 = (*MEMORY[0x277D286C8])();
     v13 = *(v12 + 16);
     v52 = *v12;
@@ -5275,7 +5275,7 @@ void __41__MDSearchableIndexService_issueCommand___block_invoke_2(uint64_t a1, v
     v43 = v7;
     v48 = uint64;
     v44 = v5;
-    [(MDSearchableIndexService *)v39 fetchLastClientStateWithProtectionClass:v11 forBundleID:v41 clientStateName:v40 options:v38 completionHandler:v42];
+    [(MDSearchableIndexService *)selfCopy fetchLastClientStateWithProtectionClass:v11 forBundleID:v41 clientStateName:v40 options:v38 completionHandler:v42];
 
     v23 = *v12;
     v24 = *(v12 + 8);
@@ -5364,17 +5364,17 @@ void __45__MDSearchableIndexService_fetchClientState___block_invoke(uint64_t a1,
   *(v6 + 32) = v29;
 }
 
-- (BOOL)fetchAttributes:(id)a3
+- (BOOL)fetchAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = xpc_dictionary_get_remote_connection(v4);
-  reply = xpc_dictionary_create_reply(v4);
+  attributesCopy = attributes;
+  v5 = xpc_dictionary_get_remote_connection(attributesCopy);
+  reply = xpc_dictionary_create_reply(attributesCopy);
   v7 = reply;
   v8 = 0;
   if (v5 && reply)
   {
     v9 = MEMORY[0x277CC3510];
-    v10 = xpc_dictionary_get_value(v4, "identifiers");
+    v10 = xpc_dictionary_get_value(attributesCopy, "identifiers");
     v11 = [v9 copyNSStringArrayFromXPCArray:v10];
 
     if (v11)
@@ -5384,7 +5384,7 @@ void __45__MDSearchableIndexService_fetchClientState___block_invoke(uint64_t a1,
 
     else
     {
-      v27 = [MEMORY[0x277CC3510] dataWrapperForKey:"data" sizeKey:"data-size" fromXPCDictionary:v4];
+      v27 = [MEMORY[0x277CC3510] dataWrapperForKey:"data" sizeKey:"data-size" fromXPCDictionary:attributesCopy];
       v12 = v27;
       if (!v27)
       {
@@ -5404,8 +5404,8 @@ void __45__MDSearchableIndexService_fetchClientState___block_invoke(uint64_t a1,
         goto LABEL_29;
       }
 
-      v28 = [v27 data];
-      if (!v28)
+      data = [v27 data];
+      if (!data)
       {
 LABEL_17:
         v29 = 0;
@@ -5415,20 +5415,20 @@ LABEL_30:
         goto LABEL_31;
       }
 
-      v11 = v28;
+      v11 = data;
     }
 
     v54 = v11;
-    v55 = self;
-    uint64 = xpc_dictionary_get_uint64(v4, "id");
-    v14 = [MEMORY[0x277CC3510] copyNSStringForKey:"pc" fromXPCDictionary:v4];
-    v53 = [MEMORY[0x277CC3510] copyNSStringForKey:"b" fromXPCDictionary:v4];
+    selfCopy = self;
+    uint64 = xpc_dictionary_get_uint64(attributesCopy, "id");
+    v14 = [MEMORY[0x277CC3510] copyNSStringForKey:"pc" fromXPCDictionary:attributesCopy];
+    v53 = [MEMORY[0x277CC3510] copyNSStringForKey:"b" fromXPCDictionary:attributesCopy];
     v15 = MEMORY[0x277CC3510];
-    v16 = xpc_dictionary_get_value(v4, "fa");
+    v16 = xpc_dictionary_get_value(attributesCopy, "fa");
     v52 = [v15 copyNSStringArrayFromXPCArray:v16];
 
-    v51 = xpc_dictionary_get_BOOL(v4, "fpa");
-    int64 = xpc_dictionary_get_int64(v4, "qos");
+    v51 = xpc_dictionary_get_BOOL(attributesCopy, "fpa");
+    int64 = xpc_dictionary_get_int64(attributesCopy, "qos");
     v17 = (*MEMORY[0x277D286C8])();
     v18 = *(v17 + 16);
     v70 = *v17;
@@ -5496,13 +5496,13 @@ LABEL_30:
     v64 = *v17;
     v65 = v30;
     v66 = *(v17 + 32);
-    if (v55->_entitledAttributes)
+    if (selfCopy->_entitledAttributes)
     {
       v31 = *MEMORY[0x277CBECE8];
       v32 = SIUserCtxCreateWithLanguages();
       if (v32)
       {
-        entitledAttributes = v55->_entitledAttributes;
+        entitledAttributes = selfCopy->_entitledAttributes;
         SIUserCtxSetEntitlements();
       }
     }
@@ -5526,7 +5526,7 @@ LABEL_30:
     v59 = v12;
     LODWORD(v48) = int64;
     v29 = v54;
-    [(MDSearchableIndexService *)v55 fetchAttributes:v52 protectionClass:v14 bundleID:v53 identifiers:v54 userCtx:v32 flags:v51 qos:v48 reply:v57 completionHandler:v56];
+    [(MDSearchableIndexService *)selfCopy fetchAttributes:v52 protectionClass:v14 bundleID:v53 identifiers:v54 userCtx:v32 flags:v51 qos:v48 reply:v57 completionHandler:v56];
 
     v34 = *v17;
     v35 = *(v17 + 8);
@@ -5603,27 +5603,27 @@ void __44__MDSearchableIndexService_fetchAttributes___block_invoke(uint64_t a1, 
   *(v3 + 32) = v24;
 }
 
-- (BOOL)fetchCacheFileDescriptors:(id)a3
+- (BOOL)fetchCacheFileDescriptors:(id)descriptors
 {
-  v4 = a3;
-  v5 = xpc_dictionary_get_remote_connection(v4);
-  reply = xpc_dictionary_create_reply(v4);
+  descriptorsCopy = descriptors;
+  v5 = xpc_dictionary_get_remote_connection(descriptorsCopy);
+  reply = xpc_dictionary_create_reply(descriptorsCopy);
   v7 = reply;
   v8 = 0;
   if (v5 && reply)
   {
     v9 = MEMORY[0x277CC3510];
-    v10 = xpc_dictionary_get_value(v4, "identifiers");
+    v10 = xpc_dictionary_get_value(descriptorsCopy, "identifiers");
     v11 = [v9 copyNSStringArrayFromXPCArray:v10];
 
     v8 = v11 != 0;
     if (v11)
     {
-      v44 = self;
-      uint64 = xpc_dictionary_get_uint64(v4, "id");
-      v45 = [MEMORY[0x277CC3510] copyNSStringForKey:"pc" fromXPCDictionary:v4];
-      v43 = [MEMORY[0x277CC3510] copyNSStringForKey:"b" fromXPCDictionary:v4];
-      int64 = xpc_dictionary_get_int64(v4, "qos");
+      selfCopy = self;
+      uint64 = xpc_dictionary_get_uint64(descriptorsCopy, "id");
+      v45 = [MEMORY[0x277CC3510] copyNSStringForKey:"pc" fromXPCDictionary:descriptorsCopy];
+      v43 = [MEMORY[0x277CC3510] copyNSStringForKey:"b" fromXPCDictionary:descriptorsCopy];
+      int64 = xpc_dictionary_get_int64(descriptorsCopy, "qos");
       v13 = (*MEMORY[0x277D286C8])();
       v14 = *(v13 + 16);
       v59 = *v13;
@@ -5691,13 +5691,13 @@ void __44__MDSearchableIndexService_fetchAttributes___block_invoke(uint64_t a1, 
       v53 = *v13;
       v54 = v23;
       v55 = *(v13 + 32);
-      if (v44->_entitledAttributes)
+      if (selfCopy->_entitledAttributes)
       {
         v24 = *MEMORY[0x277CBECE8];
         v25 = SIUserCtxCreateWithLanguages();
         if (v25)
         {
-          entitledAttributes = v44->_entitledAttributes;
+          entitledAttributes = selfCopy->_entitledAttributes;
           SIUserCtxSetEntitlements();
         }
       }
@@ -5717,7 +5717,7 @@ void __44__MDSearchableIndexService_fetchAttributes___block_invoke(uint64_t a1, 
       v47 = v7;
       v52 = v41;
       v48 = v5;
-      [(MDSearchableIndexService *)v44 fetchCacheFileDescriptorsForProtectionClass:v45 bundleID:v43 identifiers:v11 userCtx:v25 flags:0 qos:int64 reply:v47 completionHandler:v46];
+      [(MDSearchableIndexService *)selfCopy fetchCacheFileDescriptorsForProtectionClass:v45 bundleID:v43 identifiers:v11 userCtx:v25 flags:0 qos:int64 reply:v47 completionHandler:v46];
 
       v27 = *v13;
       v28 = *(v13 + 8);
@@ -5786,11 +5786,11 @@ void __54__MDSearchableIndexService_fetchCacheFileDescriptors___block_invoke(uin
   *(v3 + 32) = v22;
 }
 
-- (BOOL)changeState:(id)a3
+- (BOOL)changeState:(id)state
 {
-  v4 = a3;
-  v5 = xpc_dictionary_get_remote_connection(v4);
-  reply = xpc_dictionary_create_reply(v4);
+  stateCopy = state;
+  v5 = xpc_dictionary_get_remote_connection(stateCopy);
+  reply = xpc_dictionary_create_reply(stateCopy);
   v7 = reply;
   if (v5)
   {
@@ -5805,22 +5805,22 @@ void __54__MDSearchableIndexService_fetchCacheFileDescriptors___block_invoke(uin
   v9 = !v8;
   if (!v8)
   {
-    v41 = self;
+    selfCopy = self;
     v38 = v9;
-    uint64 = xpc_dictionary_get_uint64(v4, "id");
-    v11 = [MEMORY[0x277CC3510] copyNSStringForKey:"pc" fromXPCDictionary:v4];
-    v44 = [MEMORY[0x277CC3510] copyNSStringForKey:"b" fromXPCDictionary:v4];
-    v40 = xpc_dictionary_get_uint64(v4, "opt");
-    v12 = [MEMORY[0x277CC3510] dataWrapperForKey:"ids" sizeKey:"ids-size" fromXPCDictionary:v4];
+    uint64 = xpc_dictionary_get_uint64(stateCopy, "id");
+    v11 = [MEMORY[0x277CC3510] copyNSStringForKey:"pc" fromXPCDictionary:stateCopy];
+    v44 = [MEMORY[0x277CC3510] copyNSStringForKey:"b" fromXPCDictionary:stateCopy];
+    v40 = xpc_dictionary_get_uint64(stateCopy, "opt");
+    v12 = [MEMORY[0x277CC3510] dataWrapperForKey:"ids" sizeKey:"ids-size" fromXPCDictionary:stateCopy];
     v13 = objc_alloc(MEMORY[0x277CC33C8]);
     v37 = v12;
-    v14 = [v12 data];
-    v15 = [v13 initWithData:v14];
+    data = [v12 data];
+    v15 = [v13 initWithData:data];
 
     v36 = v15;
-    v43 = [v15 decode];
-    v39 = xpc_dictionary_get_uint64(v4, "modify-state");
-    v42 = [MEMORY[0x277CC3510] copyNSStringForKey:"ct" fromXPCDictionary:v4];
+    decode = [v15 decode];
+    v39 = xpc_dictionary_get_uint64(stateCopy, "modify-state");
+    v42 = [MEMORY[0x277CC3510] copyNSStringForKey:"ct" fromXPCDictionary:stateCopy];
     v16 = (*MEMORY[0x277D286C8])();
     v48 = *v16;
     v49 = *(v16 + 16);
@@ -5881,7 +5881,7 @@ void __54__MDSearchableIndexService_fetchCacheFileDescriptors___block_invoke(uin
     *(v16 + 28) = 102;
     *(v16 + 32) = v23;
     si_tracing_log_span_begin();
-    [(MDSearchableIndexService *)v41 changeStateOfSearchableItemsWithUIDs:v43 toState:v39 protectionClass:v11 forBundleID:v44 forUTIType:v42 options:v40];
+    [(MDSearchableIndexService *)selfCopy changeStateOfSearchableItemsWithUIDs:decode toState:v39 protectionClass:v11 forBundleID:v44 forUTIType:v42 options:v40];
     csindex_xpc_dictionary_encode_status_with_error();
     xpc_dictionary_set_uint64(v7, "id", uint64);
     xpc_connection_send_message(v5, v7);
@@ -5911,11 +5911,11 @@ void __54__MDSearchableIndexService_fetchCacheFileDescriptors___block_invoke(uin
   return v9;
 }
 
-- (BOOL)dataMigration:(id)a3
+- (BOOL)dataMigration:(id)migration
 {
-  v4 = a3;
-  v5 = xpc_dictionary_get_remote_connection(v4);
-  reply = xpc_dictionary_create_reply(v4);
+  migrationCopy = migration;
+  v5 = xpc_dictionary_get_remote_connection(migrationCopy);
+  reply = xpc_dictionary_create_reply(migrationCopy);
   v7 = reply;
   if (v5)
   {
@@ -5930,8 +5930,8 @@ void __54__MDSearchableIndexService_fetchCacheFileDescriptors___block_invoke(uin
   v9 = !v8;
   if (!v8)
   {
-    uint64 = xpc_dictionary_get_uint64(v4, "id");
-    v11 = [MEMORY[0x277CCABB0] numberWithDouble:{xpc_dictionary_get_double(v4, "timeout")}];
+    uint64 = xpc_dictionary_get_uint64(migrationCopy, "id");
+    v11 = [MEMORY[0x277CCABB0] numberWithDouble:{xpc_dictionary_get_double(migrationCopy, "timeout")}];
     v12 = (*MEMORY[0x277D286C8])();
     v13 = *(v12 + 16);
     v32 = *v12;
@@ -6015,11 +6015,11 @@ void __42__MDSearchableIndexService_dataMigration___block_invoke(uint64_t a1, vo
   *(v3 + 32) = v22;
 }
 
-- (BOOL)transferDeleteJournals:(id)a3
+- (BOOL)transferDeleteJournals:(id)journals
 {
-  v4 = a3;
-  v5 = xpc_dictionary_get_remote_connection(v4);
-  reply = xpc_dictionary_create_reply(v4);
+  journalsCopy = journals;
+  v5 = xpc_dictionary_get_remote_connection(journalsCopy);
+  reply = xpc_dictionary_create_reply(journalsCopy);
   v7 = reply;
   v8 = 0;
   if (v5 && reply)
@@ -6027,13 +6027,13 @@ void __42__MDSearchableIndexService_dataMigration___block_invoke(uint64_t a1, vo
     v37 = 0;
     v38 = &v37;
     v39 = 0x2020000000;
-    v40 = xpc_dictionary_dup_fd(v4, "fd");
+    v40 = xpc_dictionary_dup_fd(journalsCopy, "fd");
     v9 = *(v38 + 6);
     v8 = v9 > 0;
     if (v9 >= 1)
     {
-      uint64 = xpc_dictionary_get_uint64(v4, "id");
-      string = xpc_dictionary_get_string(v4, "pc");
+      uint64 = xpc_dictionary_get_uint64(journalsCopy, "id");
+      string = xpc_dictionary_get_string(journalsCopy, "pc");
       v12 = (*MEMORY[0x277D286C8])();
       v13 = *(v12 + 16);
       v34 = *v12;
@@ -6123,11 +6123,11 @@ void __51__MDSearchableIndexService_transferDeleteJournals___block_invoke(uint64
   *(v3 + 32) = v22;
 }
 
-- (BOOL)deleteAllUserActivities:(id)a3
+- (BOOL)deleteAllUserActivities:(id)activities
 {
-  v4 = a3;
-  v5 = xpc_dictionary_get_remote_connection(v4);
-  reply = xpc_dictionary_create_reply(v4);
+  activitiesCopy = activities;
+  v5 = xpc_dictionary_get_remote_connection(activitiesCopy);
+  reply = xpc_dictionary_create_reply(activitiesCopy);
   v7 = reply;
   if (v5)
   {
@@ -6142,9 +6142,9 @@ void __51__MDSearchableIndexService_transferDeleteJournals___block_invoke(uint64
   v9 = !v8;
   if (!v8)
   {
-    uint64 = xpc_dictionary_get_uint64(v4, "id");
-    v11 = xpc_dictionary_get_uint64(v4, "opt");
-    v12 = [MEMORY[0x277CC3510] copyNSStringForKey:"b" fromXPCDictionary:v4];
+    uint64 = xpc_dictionary_get_uint64(activitiesCopy, "id");
+    v11 = xpc_dictionary_get_uint64(activitiesCopy, "opt");
+    v12 = [MEMORY[0x277CC3510] copyNSStringForKey:"b" fromXPCDictionary:activitiesCopy];
     v13 = (*MEMORY[0x277D286C8])();
     v14 = *(v13 + 16);
     v37 = *v13;
@@ -6163,7 +6163,7 @@ void __51__MDSearchableIndexService_transferDeleteJournals___block_invoke(uint64
     v34 = *v13;
     v35 = v17;
     v36 = *(v13 + 32);
-    v18 = [(MDSearchableIndexService *)self clientBundleID];
+    clientBundleID = [(MDSearchableIndexService *)self clientBundleID];
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __52__MDSearchableIndexService_deleteAllUserActivities___block_invoke;
@@ -6174,7 +6174,7 @@ void __51__MDSearchableIndexService_transferDeleteJournals___block_invoke(uint64
     v28 = v7;
     v33 = uint64;
     v29 = v5;
-    [(MDSearchableIndexService *)self deleteAllUserActivities:v12 fromClient:v18 options:v11 completionHandler:v27];
+    [(MDSearchableIndexService *)self deleteAllUserActivities:v12 fromClient:clientBundleID options:v11 completionHandler:v27];
 
     v19 = *v13;
     v20 = *(v13 + 8);
@@ -6232,19 +6232,19 @@ void __52__MDSearchableIndexService_deleteAllUserActivities___block_invoke(uint6
   *(v3 + 32) = v22;
 }
 
-- (BOOL)deleteUserActivitiesWithPersistentIdentifiers:(id)a3
+- (BOOL)deleteUserActivitiesWithPersistentIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = xpc_dictionary_get_remote_connection(v4);
-  reply = xpc_dictionary_create_reply(v4);
+  identifiersCopy = identifiers;
+  v5 = xpc_dictionary_get_remote_connection(identifiersCopy);
+  reply = xpc_dictionary_create_reply(identifiersCopy);
   v7 = reply;
   v8 = 0;
   if (v5 && reply)
   {
-    v28 = self;
-    uint64 = xpc_dictionary_get_uint64(v4, "id");
-    v10 = xpc_dictionary_get_uint64(v4, "opt");
-    v29 = [MEMORY[0x277CC3510] copyNSStringForKey:"b" fromXPCDictionary:v4];
+    selfCopy = self;
+    uint64 = xpc_dictionary_get_uint64(identifiersCopy, "id");
+    v10 = xpc_dictionary_get_uint64(identifiersCopy, "opt");
+    v29 = [MEMORY[0x277CC3510] copyNSStringForKey:"b" fromXPCDictionary:identifiersCopy];
     v11 = (*MEMORY[0x277D286C8])();
     v12 = *(v11 + 16);
     v41 = *v11;
@@ -6263,13 +6263,13 @@ void __52__MDSearchableIndexService_deleteAllUserActivities___block_invoke(uint6
     v38 = *v11;
     v39 = v15;
     v40 = *(v11 + 32);
-    v16 = [MEMORY[0x277CC3510] dataWrapperForKey:"ids" sizeKey:"ids-size" fromXPCDictionary:v4];
+    v16 = [MEMORY[0x277CC3510] dataWrapperForKey:"ids" sizeKey:"ids-size" fromXPCDictionary:identifiersCopy];
     v8 = v16 != 0;
     if (v16)
     {
       v17 = objc_alloc(MEMORY[0x277CC33C8]);
-      v18 = [v16 data];
-      v19 = [v17 initWithData:v18];
+      data = [v16 data];
+      v19 = [v17 initWithData:data];
 
       v30[0] = MEMORY[0x277D85DD0];
       v30[1] = 3221225472;
@@ -6282,7 +6282,7 @@ void __52__MDSearchableIndexService_deleteAllUserActivities___block_invoke(uint6
       v32 = v7;
       v37 = uint64;
       v33 = v5;
-      [(MDSearchableIndexService *)v28 deleteUserActivitiesWithPersistentIdentifiers:v19 bundleID:v29 options:v10 completionHandler:v30];
+      [(MDSearchableIndexService *)selfCopy deleteUserActivitiesWithPersistentIdentifiers:v19 bundleID:v29 options:v10 completionHandler:v30];
     }
 
     v20 = *v11;
@@ -6343,11 +6343,11 @@ void __74__MDSearchableIndexService_deleteUserActivitiesWithPersistentIdentifier
   *(v3 + 32) = v24;
 }
 
-- (BOOL)deleteActionsBeforeTime:(id)a3
+- (BOOL)deleteActionsBeforeTime:(id)time
 {
-  v4 = a3;
-  v5 = xpc_dictionary_get_remote_connection(v4);
-  reply = xpc_dictionary_create_reply(v4);
+  timeCopy = time;
+  v5 = xpc_dictionary_get_remote_connection(timeCopy);
+  reply = xpc_dictionary_create_reply(timeCopy);
   v7 = reply;
   if (v5)
   {
@@ -6362,9 +6362,9 @@ void __74__MDSearchableIndexService_deleteUserActivitiesWithPersistentIdentifier
   v9 = !v8;
   if (!v8)
   {
-    uint64 = xpc_dictionary_get_uint64(v4, "id");
-    v11 = xpc_dictionary_get_uint64(v4, "opt");
-    v12 = xpc_dictionary_get_double(v4, "time");
+    uint64 = xpc_dictionary_get_uint64(timeCopy, "id");
+    v11 = xpc_dictionary_get_uint64(timeCopy, "opt");
+    v12 = xpc_dictionary_get_double(timeCopy, "time");
     v13 = (*MEMORY[0x277D286C8])();
     v14 = *(v13 + 16);
     v33 = *v13;
@@ -6448,11 +6448,11 @@ void __52__MDSearchableIndexService_deleteActionsBeforeTime___block_invoke(uint6
   *(v3 + 32) = v22;
 }
 
-- (BOOL)deleteActionsWithIdentifiers:(id)a3
+- (BOOL)deleteActionsWithIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = xpc_dictionary_get_remote_connection(v4);
-  reply = xpc_dictionary_create_reply(v4);
+  identifiersCopy = identifiers;
+  v5 = xpc_dictionary_get_remote_connection(identifiersCopy);
+  reply = xpc_dictionary_create_reply(identifiersCopy);
   v7 = reply;
   if (v5)
   {
@@ -6467,10 +6467,10 @@ void __52__MDSearchableIndexService_deleteActionsBeforeTime___block_invoke(uint6
   v9 = !v8;
   if (!v8)
   {
-    uint64 = xpc_dictionary_get_uint64(v4, "id");
-    v11 = xpc_dictionary_get_uint64(v4, "opt");
+    uint64 = xpc_dictionary_get_uint64(identifiersCopy, "id");
+    v11 = xpc_dictionary_get_uint64(identifiersCopy, "opt");
     v12 = MEMORY[0x277CC3510];
-    v13 = xpc_dictionary_get_value(v4, "identifiers");
+    v13 = xpc_dictionary_get_value(identifiersCopy, "identifiers");
     v14 = [v12 copyNSStringArrayFromXPCArray:v13];
 
     v15 = (*MEMORY[0x277D286C8])();
@@ -6556,10 +6556,10 @@ void __57__MDSearchableIndexService_deleteActionsWithIdentifiers___block_invoke(
   *(v3 + 32) = v22;
 }
 
-- (BOOL)processActivities:(id)a3
+- (BOOL)processActivities:(id)activities
 {
   v52 = *MEMORY[0x277D85DE8];
-  original = a3;
+  original = activities;
   connection = xpc_dictionary_get_remote_connection(original);
   reply = xpc_dictionary_create_reply(original);
   if (connection)
@@ -6593,10 +6593,10 @@ void __57__MDSearchableIndexService_deleteActionsWithIdentifiers___block_invoke(
     *(v38 + 32) = "[MDSearchableIndexService processActivities:]";
     si_tracing_log_span_begin();
     v34 = [MEMORY[0x277CC3510] dataWrapperForKey:"data" sizeKey:"data-size" fromXPCDictionary:original];
-    v36 = [v34 data];
-    if ([v36 length])
+    data = [v34 data];
+    if ([data length])
     {
-      v33 = [objc_alloc(MEMORY[0x277CCAAC8]) initForReadingFromData:v36 error:0];
+      v33 = [objc_alloc(MEMORY[0x277CCAAC8]) initForReadingFromData:data error:0];
       v10 = MEMORY[0x277CBEB98];
       v11 = objc_opt_class();
       v12 = objc_opt_class();
@@ -6676,23 +6676,23 @@ void __57__MDSearchableIndexService_deleteActionsWithIdentifiers___block_invoke(
   return v39;
 }
 
-- (BOOL)addInteraction:(id)a3
+- (BOOL)addInteraction:(id)interaction
 {
-  v4 = a3;
-  v5 = xpc_dictionary_get_remote_connection(v4);
-  reply = xpc_dictionary_create_reply(v4);
+  interactionCopy = interaction;
+  v5 = xpc_dictionary_get_remote_connection(interactionCopy);
+  reply = xpc_dictionary_create_reply(interactionCopy);
   v7 = reply;
   v8 = 0;
   if (v5 && reply)
   {
-    v40 = self;
-    uint64 = xpc_dictionary_get_uint64(v4, "id");
-    v10 = [MEMORY[0x277CC3510] copyNSStringForKey:"pc" fromXPCDictionary:v4];
-    v39 = xpc_dictionary_get_uint64(v4, "opt");
-    v42 = [MEMORY[0x277CC3510] copyNSStringForKey:"b" fromXPCDictionary:v4];
-    v41 = [MEMORY[0x277CC3510] dataWrapperForKey:"data" sizeKey:"data-size" fromXPCDictionary:v4];
-    v11 = [v41 data];
-    v43 = [v11 copy];
+    selfCopy = self;
+    uint64 = xpc_dictionary_get_uint64(interactionCopy, "id");
+    v10 = [MEMORY[0x277CC3510] copyNSStringForKey:"pc" fromXPCDictionary:interactionCopy];
+    v39 = xpc_dictionary_get_uint64(interactionCopy, "opt");
+    v42 = [MEMORY[0x277CC3510] copyNSStringForKey:"b" fromXPCDictionary:interactionCopy];
+    v41 = [MEMORY[0x277CC3510] dataWrapperForKey:"data" sizeKey:"data-size" fromXPCDictionary:interactionCopy];
+    data = [v41 data];
+    v43 = [data copy];
 
     v12 = (*MEMORY[0x277D286C8])();
     v13 = *(v12 + 16);
@@ -6764,7 +6764,7 @@ void __57__MDSearchableIndexService_deleteActionsWithIdentifiers___block_invoke(
     v8 = v23 != 0;
     if (v23)
     {
-      v24 = [MEMORY[0x277CC3510] copyNSStringForKey:"icn" fromXPCDictionary:v4];
+      v24 = [MEMORY[0x277CC3510] copyNSStringForKey:"icn" fromXPCDictionary:interactionCopy];
       v44[0] = MEMORY[0x277D85DD0];
       v44[1] = 3221225472;
       v44[2] = __43__MDSearchableIndexService_addInteraction___block_invoke;
@@ -6775,7 +6775,7 @@ void __57__MDSearchableIndexService_deleteActionsWithIdentifiers___block_invoke(
       v45 = v7;
       v50 = uint64;
       v46 = v5;
-      [(MDSearchableIndexService *)v40 addInteraction:v43 intentClassName:v24 bundleID:v42 protectionClass:v10 options:v39 completionHandler:v44];
+      [(MDSearchableIndexService *)selfCopy addInteraction:v43 intentClassName:v24 bundleID:v42 protectionClass:v10 options:v39 completionHandler:v44];
     }
 
     v25 = *v12;
@@ -6844,24 +6844,24 @@ void __43__MDSearchableIndexService_addInteraction___block_invoke(uint64_t a1, v
   *(v3 + 32) = v22;
 }
 
-- (BOOL)_deleteInteractions:(id)a3 forGroup:(BOOL)a4
+- (BOOL)_deleteInteractions:(id)interactions forGroup:(BOOL)group
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = xpc_dictionary_get_remote_connection(v6);
-  reply = xpc_dictionary_create_reply(v6);
+  groupCopy = group;
+  interactionsCopy = interactions;
+  v7 = xpc_dictionary_get_remote_connection(interactionsCopy);
+  reply = xpc_dictionary_create_reply(interactionsCopy);
   v9 = reply;
   v10 = 0;
   if (v7 && reply)
   {
-    v43 = v4;
-    v45 = self;
-    uint64 = xpc_dictionary_get_uint64(v6, "id");
-    v12 = [MEMORY[0x277CC3510] copyNSStringForKey:"pc" fromXPCDictionary:v6];
-    v44 = xpc_dictionary_get_uint64(v6, "opt");
-    v46 = [MEMORY[0x277CC3510] copyNSStringForKey:"b" fromXPCDictionary:v6];
+    v43 = groupCopy;
+    selfCopy = self;
+    uint64 = xpc_dictionary_get_uint64(interactionsCopy, "id");
+    v12 = [MEMORY[0x277CC3510] copyNSStringForKey:"pc" fromXPCDictionary:interactionsCopy];
+    v44 = xpc_dictionary_get_uint64(interactionsCopy, "opt");
+    v46 = [MEMORY[0x277CC3510] copyNSStringForKey:"b" fromXPCDictionary:interactionsCopy];
     v13 = MEMORY[0x277CC3510];
-    v14 = xpc_dictionary_get_value(v6, "identifiers");
+    v14 = xpc_dictionary_get_value(interactionsCopy, "identifiers");
     v47 = [v13 copyNSStringArrayFromXPCArray:v14];
 
     v15 = (*MEMORY[0x277D286C8])();
@@ -6948,7 +6948,7 @@ void __43__MDSearchableIndexService_addInteraction___block_invoke(uint64_t a1, v
         v53[4] = v9;
         v57 = uint64;
         v53[5] = v7;
-        [(MDSearchableIndexService *)v45 deleteInteractionsWithGroupIdentifiers:v47 bundleID:v46 protectionClass:v12 options:v44 completionHandler:v53];
+        [(MDSearchableIndexService *)selfCopy deleteInteractionsWithGroupIdentifiers:v47 bundleID:v46 protectionClass:v12 options:v44 completionHandler:v53];
       }
 
       else
@@ -6964,7 +6964,7 @@ void __43__MDSearchableIndexService_addInteraction___block_invoke(uint64_t a1, v
         v48[4] = v9;
         v52 = uint64;
         v48[5] = v7;
-        [(MDSearchableIndexService *)v45 deleteInteractionsWithIdentifiers:v47 bundleID:v46 protectionClass:v12 options:v44 completionHandler:v48];
+        [(MDSearchableIndexService *)selfCopy deleteInteractionsWithIdentifiers:v47 bundleID:v46 protectionClass:v12 options:v44 completionHandler:v48];
       }
 
       v26 = v47;
@@ -7076,11 +7076,11 @@ void __57__MDSearchableIndexService__deleteInteractions_forGroup___block_invoke_
   *(v3 + 32) = v22;
 }
 
-- (BOOL)deleteAllInteractions:(id)a3
+- (BOOL)deleteAllInteractions:(id)interactions
 {
-  v4 = a3;
-  v5 = xpc_dictionary_get_remote_connection(v4);
-  reply = xpc_dictionary_create_reply(v4);
+  interactionsCopy = interactions;
+  v5 = xpc_dictionary_get_remote_connection(interactionsCopy);
+  reply = xpc_dictionary_create_reply(interactionsCopy);
   v7 = reply;
   if (v5)
   {
@@ -7095,12 +7095,12 @@ void __57__MDSearchableIndexService__deleteInteractions_forGroup___block_invoke_
   v9 = !v8;
   if (!v8)
   {
-    v39 = self;
+    selfCopy = self;
     v37 = v9;
-    uint64 = xpc_dictionary_get_uint64(v4, "id");
-    v11 = [MEMORY[0x277CC3510] copyNSStringForKey:"pc" fromXPCDictionary:v4];
-    v38 = xpc_dictionary_get_uint64(v4, "opt");
-    v40 = [MEMORY[0x277CC3510] copyNSStringForKey:"b" fromXPCDictionary:v4];
+    uint64 = xpc_dictionary_get_uint64(interactionsCopy, "id");
+    v11 = [MEMORY[0x277CC3510] copyNSStringForKey:"pc" fromXPCDictionary:interactionsCopy];
+    v38 = xpc_dictionary_get_uint64(interactionsCopy, "opt");
+    v40 = [MEMORY[0x277CC3510] copyNSStringForKey:"b" fromXPCDictionary:interactionsCopy];
     v12 = (*MEMORY[0x277D286C8])();
     v13 = *(v12 + 16);
     v51 = *v12;
@@ -7174,7 +7174,7 @@ void __57__MDSearchableIndexService__deleteInteractions_forGroup___block_invoke_
     v42 = v7;
     v47 = uint64;
     v43 = v5;
-    [(MDSearchableIndexService *)v39 deleteAllInteractionsWithBundleID:v40 protectionClass:v11 options:v38 completionHandler:v41];
+    [(MDSearchableIndexService *)selfCopy deleteAllInteractionsWithBundleID:v40 protectionClass:v11 options:v38 completionHandler:v41];
 
     v23 = *v12;
     v24 = *(v12 + 8);
@@ -7244,18 +7244,18 @@ void __50__MDSearchableIndexService_deleteAllInteractions___block_invoke(uint64_
   *(v3 + 32) = v22;
 }
 
-- (BOOL)donateRelevantActions:(id)a3
+- (BOOL)donateRelevantActions:(id)actions
 {
-  v4 = a3;
-  v5 = xpc_dictionary_get_remote_connection(v4);
-  reply = xpc_dictionary_create_reply(v4);
+  actionsCopy = actions;
+  v5 = xpc_dictionary_get_remote_connection(actionsCopy);
+  reply = xpc_dictionary_create_reply(actionsCopy);
   v7 = reply;
   v8 = 0;
   if (v5 && reply)
   {
-    uint64 = xpc_dictionary_get_uint64(v4, "id");
-    v10 = xpc_dictionary_get_uint64(v4, "opt");
-    v11 = [MEMORY[0x277CC3510] copyNSStringForKey:"b" fromXPCDictionary:v4];
+    uint64 = xpc_dictionary_get_uint64(actionsCopy, "id");
+    v10 = xpc_dictionary_get_uint64(actionsCopy, "opt");
+    v11 = [MEMORY[0x277CC3510] copyNSStringForKey:"b" fromXPCDictionary:actionsCopy];
     v12 = (*MEMORY[0x277D286C8])();
     v13 = *(v12 + 16);
     v36 = *v12;
@@ -7274,7 +7274,7 @@ void __50__MDSearchableIndexService_deleteAllInteractions___block_invoke(uint64_
     v33 = *v12;
     v34 = v16;
     v35 = *(v12 + 32);
-    v17 = xpc_dictionary_get_value(v4, "data");
+    v17 = xpc_dictionary_get_value(actionsCopy, "data");
     v8 = v17 != 0;
     if (v17)
     {
@@ -7347,11 +7347,11 @@ void __50__MDSearchableIndexService_donateRelevantActions___block_invoke(uint64_
   *(v3 + 32) = v22;
 }
 
-- (BOOL)updateCorrections:(id)a3
+- (BOOL)updateCorrections:(id)corrections
 {
-  v4 = a3;
-  v5 = xpc_dictionary_get_remote_connection(v4);
-  reply = xpc_dictionary_create_reply(v4);
+  correctionsCopy = corrections;
+  v5 = xpc_dictionary_get_remote_connection(correctionsCopy);
+  reply = xpc_dictionary_create_reply(correctionsCopy);
   v7 = reply;
   if (v5)
   {
@@ -7366,13 +7366,13 @@ void __50__MDSearchableIndexService_donateRelevantActions___block_invoke(uint64_
   v9 = !v8;
   if (!v8)
   {
-    v40 = self;
+    selfCopy = self;
     v38 = v9;
-    uint64 = xpc_dictionary_get_uint64(v4, "id");
-    v11 = [MEMORY[0x277CC3510] copyNSStringForKey:"pc" fromXPCDictionary:v4];
-    v37 = [MEMORY[0x277CC3510] copyNSStringForKey:"b" fromXPCDictionary:v4];
-    v39 = xpc_dictionary_get_uint64(v4, "opt");
-    v41 = [MEMORY[0x277CC3510] copyNSStringForKey:"filepath" fromXPCDictionary:v4];
+    uint64 = xpc_dictionary_get_uint64(correctionsCopy, "id");
+    v11 = [MEMORY[0x277CC3510] copyNSStringForKey:"pc" fromXPCDictionary:correctionsCopy];
+    v37 = [MEMORY[0x277CC3510] copyNSStringForKey:"b" fromXPCDictionary:correctionsCopy];
+    v39 = xpc_dictionary_get_uint64(correctionsCopy, "opt");
+    v41 = [MEMORY[0x277CC3510] copyNSStringForKey:"filepath" fromXPCDictionary:correctionsCopy];
     v12 = (*MEMORY[0x277D286C8])();
     v13 = *(v12 + 16);
     v52 = *v12;
@@ -7446,7 +7446,7 @@ void __50__MDSearchableIndexService_donateRelevantActions___block_invoke(uint64_
     v43 = v7;
     v48 = uint64;
     v44 = v5;
-    [(MDSearchableIndexService *)v40 updateCorrectionsWithFilePath:v41 options:v39 completionHandler:v42];
+    [(MDSearchableIndexService *)selfCopy updateCorrectionsWithFilePath:v41 options:v39 completionHandler:v42];
 
     v23 = *v12;
     v24 = *(v12 + 8);
@@ -7517,15 +7517,15 @@ void __46__MDSearchableIndexService_updateCorrections___block_invoke(uint64_t a1
   *(v6 + 32) = v25;
 }
 
-- (BOOL)issueCacheCommand:(id)a3
+- (BOOL)issueCacheCommand:(id)command
 {
-  v4 = a3;
-  v5 = xpc_dictionary_get_remote_connection(v4);
-  reply = xpc_dictionary_create_reply(v4);
+  commandCopy = command;
+  v5 = xpc_dictionary_get_remote_connection(commandCopy);
+  reply = xpc_dictionary_create_reply(commandCopy);
   if (v5)
   {
-    uint64 = xpc_dictionary_get_uint64(v4, "id");
-    v8 = [MEMORY[0x277CC3510] copyNSStringForKey:"cache-request" fromXPCDictionary:v4];
+    uint64 = xpc_dictionary_get_uint64(commandCopy, "id");
+    v8 = [MEMORY[0x277CC3510] copyNSStringForKey:"cache-request" fromXPCDictionary:commandCopy];
     v9 = (*MEMORY[0x277D286C8])();
     v10 = *(v9 + 16);
     v39 = *v9;
@@ -7636,35 +7636,35 @@ void __46__MDSearchableIndexService_issueCacheCommand___block_invoke(uint64_t a1
   *(v6 + 32) = v24;
 }
 
-- (BOOL)_handleAssetsCommand:(id)a3
+- (BOOL)_handleAssetsCommand:(id)command
 {
-  v4 = a3;
+  commandCopy = command;
   indexer = self->_indexer;
   v6 = objc_opt_respondsToSelector();
   if (v6)
   {
-    [(MDIndexer *)self->_indexer handleAssetsCommand:v4];
+    [(MDIndexer *)self->_indexer handleAssetsCommand:commandCopy];
   }
 
   return v6 & 1;
 }
 
-- (BOOL)handleCommand:(const char *)a3 info:(id)a4
+- (BOOL)handleCommand:(const char *)command info:(id)info
 {
-  v6 = a4;
-  v7 = [MEMORY[0x277CC3510] copyNSStringForKey:"b" fromXPCDictionary:v6];
+  infoCopy = info;
+  v7 = [MEMORY[0x277CC3510] copyNSStringForKey:"b" fromXPCDictionary:infoCopy];
   if (([v7 isEqualToString:@"com.apple.usernotificationsd"] & 1) == 0)
   {
-    v8 = [(MDSearchableIndexService *)self clientBundleID];
-    if (([v8 isEqualToString:@"com.apple.usernotificationsd"] & 1) == 0)
+    clientBundleID = [(MDSearchableIndexService *)self clientBundleID];
+    if (([clientBundleID isEqualToString:@"com.apple.usernotificationsd"] & 1) == 0)
     {
 
       goto LABEL_11;
     }
 
-    v9 = [(MDSearchableIndexService *)self allowNotifications];
+    allowNotifications = [(MDSearchableIndexService *)self allowNotifications];
 
-    if (v9)
+    if (allowNotifications)
     {
       goto LABEL_11;
     }
@@ -7685,197 +7685,197 @@ LABEL_6:
   }
 
 LABEL_11:
-  if (!strcmp(a3, "delete-bundle"))
+  if (!strcmp(command, "delete-bundle"))
   {
-    v13 = [(MDSearchableIndexService *)self deleteBundle:v6];
+    v13 = [(MDSearchableIndexService *)self deleteBundle:infoCopy];
 LABEL_68:
     v11 = v13;
     goto LABEL_69;
   }
 
-  if (!strcmp(a3, "delete-from-date"))
+  if (!strcmp(command, "delete-from-date"))
   {
-    v13 = [(MDSearchableIndexService *)self deleteSinceDate:v6];
+    v13 = [(MDSearchableIndexService *)self deleteSinceDate:infoCopy];
     goto LABEL_68;
   }
 
-  if (!strcmp(a3, "check-in"))
+  if (!strcmp(command, "check-in"))
   {
-    v13 = [(MDSearchableIndexService *)self checkIn:v6];
+    v13 = [(MDSearchableIndexService *)self checkIn:infoCopy];
     goto LABEL_68;
   }
 
-  if (!strcmp(a3, "process-index-data"))
+  if (!strcmp(command, "process-index-data"))
   {
-    v13 = [(MDSearchableIndexService *)self processIndexData:v6];
+    v13 = [(MDSearchableIndexService *)self processIndexData:infoCopy];
     goto LABEL_68;
   }
 
-  if (!strcmp(a3, "fbi"))
+  if (!strcmp(command, "fbi"))
   {
-    v13 = [(MDSearchableIndexService *)self fetchBundleIDs:v6];
+    v13 = [(MDSearchableIndexService *)self fetchBundleIDs:infoCopy];
     goto LABEL_68;
   }
 
-  if (!strcmp(a3, "will-modify"))
+  if (!strcmp(command, "will-modify"))
   {
-    v13 = [(MDSearchableIndexService *)self willModify:v6];
+    v13 = [(MDSearchableIndexService *)self willModify:infoCopy];
     goto LABEL_68;
   }
 
-  if (!strcmp(a3, "delete-domains"))
+  if (!strcmp(command, "delete-domains"))
   {
-    v13 = [(MDSearchableIndexService *)self deleteDomains:v6];
+    v13 = [(MDSearchableIndexService *)self deleteDomains:infoCopy];
     goto LABEL_68;
   }
 
-  if (!strcmp(a3, "issue"))
+  if (!strcmp(command, "issue"))
   {
-    v13 = [(MDSearchableIndexService *)self issueCommand:v6];
+    v13 = [(MDSearchableIndexService *)self issueCommand:infoCopy];
     goto LABEL_68;
   }
 
-  if (!strcmp(a3, "fetch-client-state"))
+  if (!strcmp(command, "fetch-client-state"))
   {
-    v13 = [(MDSearchableIndexService *)self fetchClientState:v6];
+    v13 = [(MDSearchableIndexService *)self fetchClientState:infoCopy];
     goto LABEL_68;
   }
 
-  if (!strcmp(a3, "change-state"))
+  if (!strcmp(command, "change-state"))
   {
-    v13 = [(MDSearchableIndexService *)self changeState:v6];
+    v13 = [(MDSearchableIndexService *)self changeState:infoCopy];
     goto LABEL_68;
   }
 
-  if (!strcmp(a3, "data-migration"))
+  if (!strcmp(command, "data-migration"))
   {
-    v13 = [(MDSearchableIndexService *)self dataMigration:v6];
+    v13 = [(MDSearchableIndexService *)self dataMigration:infoCopy];
     goto LABEL_68;
   }
 
-  if (!strcmp(a3, "delete-journal-transfer"))
+  if (!strcmp(command, "delete-journal-transfer"))
   {
-    v13 = [(MDSearchableIndexService *)self transferDeleteJournals:v6];
+    v13 = [(MDSearchableIndexService *)self transferDeleteJournals:infoCopy];
     goto LABEL_68;
   }
 
-  if (!strcmp(a3, "fetch_attributes"))
+  if (!strcmp(command, "fetch_attributes"))
   {
-    v13 = [(MDSearchableIndexService *)self fetchAttributes:v6];
+    v13 = [(MDSearchableIndexService *)self fetchAttributes:infoCopy];
     goto LABEL_68;
   }
 
-  if (!strcmp(a3, "fetch_cache_file_descriptors"))
+  if (!strcmp(command, "fetch_cache_file_descriptors"))
   {
-    v13 = [(MDSearchableIndexService *)self fetchCacheFileDescriptors:v6];
+    v13 = [(MDSearchableIndexService *)self fetchCacheFileDescriptors:infoCopy];
     goto LABEL_68;
   }
 
-  if (!strcmp(a3, "delete_all_activities"))
+  if (!strcmp(command, "delete_all_activities"))
   {
-    v13 = [(MDSearchableIndexService *)self deleteAllUserActivities:v6];
+    v13 = [(MDSearchableIndexService *)self deleteAllUserActivities:infoCopy];
     goto LABEL_68;
   }
 
-  if (!strcmp(a3, "delete_activities"))
+  if (!strcmp(command, "delete_activities"))
   {
-    v13 = [(MDSearchableIndexService *)self deleteUserActivitiesWithPersistentIdentifiers:v6];
+    v13 = [(MDSearchableIndexService *)self deleteUserActivitiesWithPersistentIdentifiers:infoCopy];
     goto LABEL_68;
   }
 
-  if (!strcmp(a3, "delete-actions-before-time"))
+  if (!strcmp(command, "delete-actions-before-time"))
   {
-    v13 = [(MDSearchableIndexService *)self deleteActionsBeforeTime:v6];
+    v13 = [(MDSearchableIndexService *)self deleteActionsBeforeTime:infoCopy];
     goto LABEL_68;
   }
 
-  if (!strcmp(a3, "delete-actions-with-identifiers"))
+  if (!strcmp(command, "delete-actions-with-identifiers"))
   {
-    v13 = [(MDSearchableIndexService *)self deleteActionsWithIdentifiers:v6];
+    v13 = [(MDSearchableIndexService *)self deleteActionsWithIdentifiers:infoCopy];
     goto LABEL_68;
   }
 
-  if (!strcmp(a3, "activities"))
+  if (!strcmp(command, "activities"))
   {
-    v13 = [(MDSearchableIndexService *)self processActivities:v6];
+    v13 = [(MDSearchableIndexService *)self processActivities:infoCopy];
     goto LABEL_68;
   }
 
-  if (!strcmp(a3, "add_interaction"))
+  if (!strcmp(command, "add_interaction"))
   {
-    v13 = [(MDSearchableIndexService *)self addInteraction:v6];
+    v13 = [(MDSearchableIndexService *)self addInteraction:infoCopy];
     goto LABEL_68;
   }
 
-  if (!strcmp(a3, "delete_interactions"))
+  if (!strcmp(command, "delete_interactions"))
   {
-    v14 = self;
-    v15 = v6;
+    selfCopy2 = self;
+    v15 = infoCopy;
     v16 = 0;
 LABEL_67:
-    v13 = [(MDSearchableIndexService *)v14 _deleteInteractions:v15 forGroup:v16];
+    v13 = [(MDSearchableIndexService *)selfCopy2 _deleteInteractions:v15 forGroup:v16];
     goto LABEL_68;
   }
 
-  if (!strcmp(a3, "delete_group_interactions"))
+  if (!strcmp(command, "delete_group_interactions"))
   {
-    v14 = self;
-    v15 = v6;
+    selfCopy2 = self;
+    v15 = infoCopy;
     v16 = 1;
     goto LABEL_67;
   }
 
-  if (!strcmp(a3, "delete_all_interactions"))
+  if (!strcmp(command, "delete_all_interactions"))
   {
-    v13 = [(MDSearchableIndexService *)self deleteAllInteractions:v6];
+    v13 = [(MDSearchableIndexService *)self deleteAllInteractions:infoCopy];
     goto LABEL_68;
   }
 
-  if (!strcmp(a3, "donate_relevant_actions"))
+  if (!strcmp(command, "donate_relevant_actions"))
   {
-    v13 = [(MDSearchableIndexService *)self donateRelevantActions:v6];
+    v13 = [(MDSearchableIndexService *)self donateRelevantActions:infoCopy];
     goto LABEL_68;
   }
 
-  if (!strcmp(a3, "photoslibrary-deleted"))
+  if (!strcmp(command, "photoslibrary-deleted"))
   {
-    v13 = [(MDSearchableIndexService *)self photosLibraryDeleted:v6];
+    v13 = [(MDSearchableIndexService *)self photosLibraryDeleted:infoCopy];
     goto LABEL_68;
   }
 
-  if (!strcmp(a3, "prepare-indexing-locked"))
+  if (!strcmp(command, "prepare-indexing-locked"))
   {
-    v13 = [(MDSearchableIndexService *)self prepareIndexingLocked:v6];
+    v13 = [(MDSearchableIndexService *)self prepareIndexingLocked:infoCopy];
     goto LABEL_68;
   }
 
-  if (!strcmp(a3, "finish-indexing-locked"))
+  if (!strcmp(command, "finish-indexing-locked"))
   {
-    v13 = [(MDSearchableIndexService *)self finishIndexingLocked:v6];
+    v13 = [(MDSearchableIndexService *)self finishIndexingLocked:infoCopy];
     goto LABEL_68;
   }
 
-  if (!strcmp(a3, "cache-command-issue"))
+  if (!strcmp(command, "cache-command-issue"))
   {
-    v13 = [(MDSearchableIndexService *)self issueCacheCommand:v6];
+    v13 = [(MDSearchableIndexService *)self issueCacheCommand:infoCopy];
     goto LABEL_68;
   }
 
-  if (!strcmp(a3, "update-corrections"))
+  if (!strcmp(command, "update-corrections"))
   {
-    v13 = [(MDSearchableIndexService *)self updateCorrections:v6];
+    v13 = [(MDSearchableIndexService *)self updateCorrections:infoCopy];
     goto LABEL_68;
   }
 
-  if (!strcmp(a3, "open-journal"))
+  if (!strcmp(command, "open-journal"))
   {
-    v13 = [(MDSearchableIndexService *)self openJournalFile:v6];
+    v13 = [(MDSearchableIndexService *)self openJournalFile:infoCopy];
     goto LABEL_68;
   }
 
-  if (!strcmp(a3, "assets"))
+  if (!strcmp(command, "assets"))
   {
-    v13 = [(MDSearchableIndexService *)self _handleAssetsCommand:v6];
+    v13 = [(MDSearchableIndexService *)self _handleAssetsCommand:infoCopy];
     goto LABEL_68;
   }
 

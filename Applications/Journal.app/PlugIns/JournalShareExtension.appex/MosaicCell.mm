@@ -1,11 +1,11 @@
 @interface MosaicCell
-- (_TtC21JournalShareExtension10MosaicCell)initWithCoder:(id)a3;
-- (void)applyLayoutAttributes:(id)a3;
+- (_TtC21JournalShareExtension10MosaicCell)initWithCoder:(id)coder;
+- (void)applyLayoutAttributes:(id)attributes;
 @end
 
 @implementation MosaicCell
 
-- (_TtC21JournalShareExtension10MosaicCell)initWithCoder:(id)a3
+- (_TtC21JournalShareExtension10MosaicCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC21JournalShareExtension10MosaicCell_assetContainerView;
   *(&self->super.super.super.super.super.isa + v4) = [objc_allocWithZone(UIView) init];
@@ -16,11 +16,11 @@
   return result;
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = self;
-  sub_100072D9C(v4);
+  attributesCopy = attributes;
+  selfCopy = self;
+  sub_100072D9C(attributesCopy);
 }
 
 @end

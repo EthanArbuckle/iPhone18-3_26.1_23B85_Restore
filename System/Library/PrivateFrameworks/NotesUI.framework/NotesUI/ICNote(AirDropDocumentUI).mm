@@ -16,7 +16,7 @@
   v14 = v9;
   v10 = v9;
   v11 = v8;
-  [a1 createNoteForAirDropDocument:a3 processAttributedString:v12 completion:v10];
+  [self createNoteForAirDropDocument:a3 processAttributedString:v12 completion:v10];
 }
 
 @end

@@ -1,33 +1,33 @@
 @interface PKRemotePaymentInstrument
-+ (PKRemotePaymentInstrument)remotePaymentInstrumentWithProtobuf:(id)a3;
-+ (id)sortDescriptorForDefaultPaymentInstrument:(id)a3 paymentSupportedQuery:(id)a4;
-+ (id)thumbnailCachePathForManifestHash:(id)a3 size:(CGSize)a4 planningToWrite:(BOOL)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToRemotePaymentInstrument:(id)a3;
-- (PKRemotePaymentInstrument)initWithCoder:(id)a3;
-- (PKRemotePaymentInstrument)initWithPaymentPass:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (PKRemotePaymentInstrument)remotePaymentInstrumentWithProtobuf:(id)protobuf;
++ (id)sortDescriptorForDefaultPaymentInstrument:(id)instrument paymentSupportedQuery:(id)query;
++ (id)thumbnailCachePathForManifestHash:(id)hash size:(CGSize)size planningToWrite:(BOOL)write;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToRemotePaymentInstrument:(id)instrument;
+- (PKRemotePaymentInstrument)initWithCoder:(id)coder;
+- (PKRemotePaymentInstrument)initWithPaymentPass:(id)pass;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)protobuf;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKRemotePaymentInstrument
 
-+ (id)sortDescriptorForDefaultPaymentInstrument:(id)a3 paymentSupportedQuery:(id)a4
++ (id)sortDescriptorForDefaultPaymentInstrument:(id)instrument paymentSupportedQuery:(id)query
 {
-  v5 = a3;
-  v6 = a4;
+  instrumentCopy = instrument;
+  queryCopy = query;
   v7 = MEMORY[0x1E696AEB0];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __126__PKRemotePaymentInstrument_PKPaymentAuthorizationDataModel__sortDescriptorForDefaultPaymentInstrument_paymentSupportedQuery___block_invoke;
   v12[3] = &unk_1E79CC550;
-  v13 = v5;
-  v14 = v6;
-  v8 = v6;
-  v9 = v5;
+  v13 = instrumentCopy;
+  v14 = queryCopy;
+  v8 = queryCopy;
+  v9 = instrumentCopy;
   v10 = [v7 sortDescriptorWithKey:@"paymentApplications" ascending:1 comparator:v12];
 
   return v10;
@@ -198,68 +198,68 @@ LABEL_29:
   return v28;
 }
 
-+ (PKRemotePaymentInstrument)remotePaymentInstrumentWithProtobuf:(id)a3
++ (PKRemotePaymentInstrument)remotePaymentInstrumentWithProtobuf:(id)protobuf
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  protobufCopy = protobuf;
   v4 = objc_alloc_init(PKRemotePaymentInstrument);
-  v5 = [v3 passID];
-  [(PKRemotePaymentInstrument *)v4 setPassIdentifier:v5];
+  passID = [protobufCopy passID];
+  [(PKRemotePaymentInstrument *)v4 setPassIdentifier:passID];
 
-  v6 = [v3 organizationName];
-  [(PKRemotePaymentInstrument *)v4 setOrganizationName:v6];
+  organizationName = [protobufCopy organizationName];
+  [(PKRemotePaymentInstrument *)v4 setOrganizationName:organizationName];
 
-  v7 = [v3 displayName];
-  [(PKRemotePaymentInstrument *)v4 setDisplayName:v7];
+  displayName = [protobufCopy displayName];
+  [(PKRemotePaymentInstrument *)v4 setDisplayName:displayName];
 
   v8 = MEMORY[0x1E695DF00];
-  [v3 ingestedDate];
+  [protobufCopy ingestedDate];
   v9 = [v8 dateWithTimeIntervalSinceReferenceDate:?];
   [(PKRemotePaymentInstrument *)v4 setIngestedDate:v9];
 
-  v10 = [v3 primaryAccountNumberSuffix];
-  [(PKRemotePaymentInstrument *)v4 setPrimaryAccountNumberSuffix:v10];
+  primaryAccountNumberSuffix = [protobufCopy primaryAccountNumberSuffix];
+  [(PKRemotePaymentInstrument *)v4 setPrimaryAccountNumberSuffix:primaryAccountNumberSuffix];
 
-  v11 = [v3 manifestHash];
-  [(PKRemotePaymentInstrument *)v4 setManifestHash:v11];
+  manifestHash = [protobufCopy manifestHash];
+  [(PKRemotePaymentInstrument *)v4 setManifestHash:manifestHash];
 
-  v12 = [v3 primaryAccountIdentifier];
-  [(PKRemotePaymentInstrument *)v4 setPrimaryAccountIdentifier:v12];
+  primaryAccountIdentifier = [protobufCopy primaryAccountIdentifier];
+  [(PKRemotePaymentInstrument *)v4 setPrimaryAccountIdentifier:primaryAccountIdentifier];
 
-  v13 = [v3 associatedWebDomains];
-  [(PKRemotePaymentInstrument *)v4 setAssociatedWebDomains:v13];
+  associatedWebDomains = [protobufCopy associatedWebDomains];
+  [(PKRemotePaymentInstrument *)v4 setAssociatedWebDomains:associatedWebDomains];
 
-  -[PKRemotePaymentInstrument setSupportsAutomaticSelection:](v4, "setSupportsAutomaticSelection:", [v3 supportsAutomaticSelection]);
-  v14 = [v3 issuerCountryCode];
-  [(PKRemotePaymentInstrument *)v4 setIssuerCountryCode:v14];
+  -[PKRemotePaymentInstrument setSupportsAutomaticSelection:](v4, "setSupportsAutomaticSelection:", [protobufCopy supportsAutomaticSelection]);
+  issuerCountryCode = [protobufCopy issuerCountryCode];
+  [(PKRemotePaymentInstrument *)v4 setIssuerCountryCode:issuerCountryCode];
 
-  -[PKRemotePaymentInstrument setHasAssociatedPeerPaymentAccount:](v4, "setHasAssociatedPeerPaymentAccount:", [v3 hasAssociatedPeerPaymentAccount]);
-  -[PKRemotePaymentInstrument setPeerPaymentAccountState:](v4, "setPeerPaymentAccountState:", [v3 peerPaymentAccountState]);
-  if ([v3 hasPeerPaymentAccountBalance] && objc_msgSend(v3, "hasPeerPaymentAccountCurrency"))
+  -[PKRemotePaymentInstrument setHasAssociatedPeerPaymentAccount:](v4, "setHasAssociatedPeerPaymentAccount:", [protobufCopy hasAssociatedPeerPaymentAccount]);
+  -[PKRemotePaymentInstrument setPeerPaymentAccountState:](v4, "setPeerPaymentAccountState:", [protobufCopy peerPaymentAccountState]);
+  if ([protobufCopy hasPeerPaymentAccountBalance] && objc_msgSend(protobufCopy, "hasPeerPaymentAccountCurrency"))
   {
-    if ([v3 hasDecimalAccountBalance])
+    if ([protobufCopy hasDecimalAccountBalance])
     {
-      v15 = [v3 decimalAccountBalance];
-      v16 = PKProtoSupportDecimalNumberFromProtobuf(v15);
+      decimalAccountBalance = [protobufCopy decimalAccountBalance];
+      v16 = PKProtoSupportDecimalNumberFromProtobuf(decimalAccountBalance);
     }
 
     else
     {
-      if (![v3 hasCustomPrecisionPeerPaymentAccountBalance])
+      if (![protobufCopy hasCustomPrecisionPeerPaymentAccountBalance])
       {
-        v17 = PKLegacyCurrencyStorageIntegerToDecimal([v3 peerPaymentAccountBalance], 0);
+        v17 = PKLegacyCurrencyStorageIntegerToDecimal([protobufCopy peerPaymentAccountBalance], 0);
         goto LABEL_9;
       }
 
-      v15 = [v3 customPrecisionPeerPaymentAccountBalance];
-      v16 = PKLegacyCurrencyStorageIntegerToDecimal([v15 amount], 1);
+      decimalAccountBalance = [protobufCopy customPrecisionPeerPaymentAccountBalance];
+      v16 = PKLegacyCurrencyStorageIntegerToDecimal([decimalAccountBalance amount], 1);
     }
 
     v17 = v16;
 
 LABEL_9:
-    v18 = [v3 peerPaymentAccountCurrency];
-    v19 = PKCurrencyAmountCreate(v17, v18, 0);
+    peerPaymentAccountCurrency = [protobufCopy peerPaymentAccountCurrency];
+    v19 = PKCurrencyAmountCreate(v17, peerPaymentAccountCurrency, 0);
     [(PKRemotePaymentInstrument *)v4 setPeerPaymentAccountBalance:v19];
   }
 
@@ -268,8 +268,8 @@ LABEL_9:
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v21 = [v3 paymentApplications];
-  v22 = [v21 countByEnumeratingWithState:&v31 objects:v35 count:16];
+  paymentApplications = [protobufCopy paymentApplications];
+  v22 = [paymentApplications countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v22)
   {
     v23 = v22;
@@ -280,7 +280,7 @@ LABEL_9:
       {
         if (*v32 != v24)
         {
-          objc_enumerationMutation(v21);
+          objc_enumerationMutation(paymentApplications);
         }
 
         v26 = [PKPaymentApplication applicationWithProtobuf:*(*(&v31 + 1) + 8 * i)];
@@ -291,32 +291,32 @@ LABEL_9:
         }
       }
 
-      v23 = [v21 countByEnumeratingWithState:&v31 objects:v35 count:16];
+      v23 = [paymentApplications countByEnumeratingWithState:&v31 objects:v35 count:16];
     }
 
     while (v23);
   }
 
   [(PKRemotePaymentInstrument *)v4 setPaymentApplications:v20];
-  if ([v3 hasAssociatedAccountFeatureIdentifier])
+  if ([protobufCopy hasAssociatedAccountFeatureIdentifier])
   {
-    v27 = [v3 associatedAccountFeatureIdentifier];
+    associatedAccountFeatureIdentifier = [protobufCopy associatedAccountFeatureIdentifier];
   }
 
   else
   {
-    v27 = 0;
+    associatedAccountFeatureIdentifier = 0;
   }
 
-  [(PKRemotePaymentInstrument *)v4 setAssociatedAccountFeatureIdentifier:v27];
-  if ([v3 hasCobranded])
+  [(PKRemotePaymentInstrument *)v4 setAssociatedAccountFeatureIdentifier:associatedAccountFeatureIdentifier];
+  if ([protobufCopy hasCobranded])
   {
-    v28 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v3, "cobranded")}];
+    v28 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(protobufCopy, "cobranded")}];
     [(PKRemotePaymentInstrument *)v4 setCobranded:v28];
   }
 
-  v29 = [v3 cobrandName];
-  [(PKRemotePaymentInstrument *)v4 setCobrandName:v29];
+  cobrandName = [protobufCopy cobrandName];
+  [(PKRemotePaymentInstrument *)v4 setCobrandName:cobrandName];
 
   return v4;
 }
@@ -329,8 +329,8 @@ LABEL_9:
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v4 = [(PKRemotePaymentInstrument *)self paymentApplications];
-  v5 = [v4 countByEnumeratingWithState:&v31 objects:v35 count:16];
+  paymentApplications = [(PKRemotePaymentInstrument *)self paymentApplications];
+  v5 = [paymentApplications countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v5)
   {
     v6 = v5;
@@ -341,157 +341,157 @@ LABEL_9:
       {
         if (*v32 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(paymentApplications);
         }
 
-        v9 = [*(*(&v31 + 1) + 8 * i) protobuf];
-        [(PKProtobufPaymentInstrument *)v3 addPaymentApplications:v9];
+        protobuf = [*(*(&v31 + 1) + 8 * i) protobuf];
+        [(PKProtobufPaymentInstrument *)v3 addPaymentApplications:protobuf];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v31 objects:v35 count:16];
+      v6 = [paymentApplications countByEnumeratingWithState:&v31 objects:v35 count:16];
     }
 
     while (v6);
   }
 
-  v10 = [(PKRemotePaymentInstrument *)self displayName];
-  [(PKProtobufPaymentInstrument *)v3 setDisplayName:v10];
+  displayName = [(PKRemotePaymentInstrument *)self displayName];
+  [(PKProtobufPaymentInstrument *)v3 setDisplayName:displayName];
 
-  v11 = [(PKRemotePaymentInstrument *)self passIdentifier];
-  [(PKProtobufPaymentInstrument *)v3 setPassID:v11];
+  passIdentifier = [(PKRemotePaymentInstrument *)self passIdentifier];
+  [(PKProtobufPaymentInstrument *)v3 setPassID:passIdentifier];
 
-  v12 = [(PKRemotePaymentInstrument *)self organizationName];
-  [(PKProtobufPaymentInstrument *)v3 setOrganizationName:v12];
+  organizationName = [(PKRemotePaymentInstrument *)self organizationName];
+  [(PKProtobufPaymentInstrument *)v3 setOrganizationName:organizationName];
 
-  v13 = [(PKRemotePaymentInstrument *)self ingestedDate];
-  [v13 timeIntervalSinceReferenceDate];
+  ingestedDate = [(PKRemotePaymentInstrument *)self ingestedDate];
+  [ingestedDate timeIntervalSinceReferenceDate];
   [(PKProtobufPaymentInstrument *)v3 setIngestedDate:?];
 
-  v14 = [(PKRemotePaymentInstrument *)self primaryAccountNumberSuffix];
-  [(PKProtobufPaymentInstrument *)v3 setPrimaryAccountNumberSuffix:v14];
+  primaryAccountNumberSuffix = [(PKRemotePaymentInstrument *)self primaryAccountNumberSuffix];
+  [(PKProtobufPaymentInstrument *)v3 setPrimaryAccountNumberSuffix:primaryAccountNumberSuffix];
 
-  v15 = [(PKRemotePaymentInstrument *)self manifestHash];
-  [(PKProtobufPaymentInstrument *)v3 setManifestHash:v15];
+  manifestHash = [(PKRemotePaymentInstrument *)self manifestHash];
+  [(PKProtobufPaymentInstrument *)v3 setManifestHash:manifestHash];
 
-  v16 = [(PKRemotePaymentInstrument *)self primaryAccountIdentifier];
-  [(PKProtobufPaymentInstrument *)v3 setPrimaryAccountIdentifier:v16];
+  primaryAccountIdentifier = [(PKRemotePaymentInstrument *)self primaryAccountIdentifier];
+  [(PKProtobufPaymentInstrument *)v3 setPrimaryAccountIdentifier:primaryAccountIdentifier];
 
-  v17 = [(PKRemotePaymentInstrument *)self associatedWebDomains];
-  v18 = [v17 mutableCopy];
+  associatedWebDomains = [(PKRemotePaymentInstrument *)self associatedWebDomains];
+  v18 = [associatedWebDomains mutableCopy];
   [(PKProtobufPaymentInstrument *)v3 setAssociatedWebDomains:v18];
 
   [(PKProtobufPaymentInstrument *)v3 setSupportsAutomaticSelection:[(PKRemotePaymentInstrument *)self supportsAutomaticSelection]];
-  v19 = [(PKRemotePaymentInstrument *)self issuerCountryCode];
-  [(PKProtobufPaymentInstrument *)v3 setIssuerCountryCode:v19];
+  issuerCountryCode = [(PKRemotePaymentInstrument *)self issuerCountryCode];
+  [(PKProtobufPaymentInstrument *)v3 setIssuerCountryCode:issuerCountryCode];
 
   [(PKProtobufPaymentInstrument *)v3 setHasAssociatedPeerPaymentAccount:[(PKRemotePaymentInstrument *)self hasAssociatedPeerPaymentAccount]];
   [(PKProtobufPaymentInstrument *)v3 setPeerPaymentAccountState:[(PKRemotePaymentInstrument *)self peerPaymentAccountState]];
-  v20 = [(PKRemotePaymentInstrument *)self peerPaymentAccountBalance];
+  peerPaymentAccountBalance = [(PKRemotePaymentInstrument *)self peerPaymentAccountBalance];
 
-  if (v20)
+  if (peerPaymentAccountBalance)
   {
-    v21 = [(PKRemotePaymentInstrument *)self peerPaymentAccountBalance];
-    v22 = [v21 currency];
-    [(PKProtobufPaymentInstrument *)v3 setPeerPaymentAccountCurrency:v22];
+    peerPaymentAccountBalance2 = [(PKRemotePaymentInstrument *)self peerPaymentAccountBalance];
+    currency = [peerPaymentAccountBalance2 currency];
+    [(PKProtobufPaymentInstrument *)v3 setPeerPaymentAccountCurrency:currency];
 
-    v23 = [(PKRemotePaymentInstrument *)self peerPaymentAccountBalance];
-    v24 = [v23 amount];
+    peerPaymentAccountBalance3 = [(PKRemotePaymentInstrument *)self peerPaymentAccountBalance];
+    amount = [peerPaymentAccountBalance3 amount];
 
-    [(PKProtobufPaymentInstrument *)v3 setPeerPaymentAccountBalance:PKCurrencyDecimalToLegacyStorageInteger(v24, 0)];
-    v25 = DecimalToCustomPrecisionProtobuf(v24);
+    [(PKProtobufPaymentInstrument *)v3 setPeerPaymentAccountBalance:PKCurrencyDecimalToLegacyStorageInteger(amount, 0)];
+    v25 = DecimalToCustomPrecisionProtobuf(amount);
     [(PKProtobufPaymentInstrument *)v3 setCustomPrecisionPeerPaymentAccountBalance:v25];
 
-    v26 = PKProtoSupportProtoDecimalNumberFromDecimalNumber(v24);
+    v26 = PKProtoSupportProtoDecimalNumberFromDecimalNumber(amount);
     [(PKProtobufPaymentInstrument *)v3 setDecimalAccountBalance:v26];
   }
 
   [(PKProtobufPaymentInstrument *)v3 setAssociatedAccountFeatureIdentifier:[(PKRemotePaymentInstrument *)self associatedAccountFeatureIdentifier]];
-  v27 = [(PKRemotePaymentInstrument *)self isCobranded];
+  isCobranded = [(PKRemotePaymentInstrument *)self isCobranded];
 
-  if (v27)
+  if (isCobranded)
   {
-    v28 = [(PKRemotePaymentInstrument *)self isCobranded];
-    -[PKProtobufPaymentInstrument setCobranded:](v3, "setCobranded:", [v28 BOOLValue]);
+    isCobranded2 = [(PKRemotePaymentInstrument *)self isCobranded];
+    -[PKProtobufPaymentInstrument setCobranded:](v3, "setCobranded:", [isCobranded2 BOOLValue]);
   }
 
-  v29 = [(PKRemotePaymentInstrument *)self cobrandName];
-  [(PKProtobufPaymentInstrument *)v3 setCobrandName:v29];
+  cobrandName = [(PKRemotePaymentInstrument *)self cobrandName];
+  [(PKProtobufPaymentInstrument *)v3 setCobrandName:cobrandName];
 
   return v3;
 }
 
-- (PKRemotePaymentInstrument)initWithPaymentPass:(id)a3
+- (PKRemotePaymentInstrument)initWithPaymentPass:(id)pass
 {
-  v4 = a3;
+  passCopy = pass;
   v35.receiver = self;
   v35.super_class = PKRemotePaymentInstrument;
   v5 = [(PKRemotePaymentInstrument *)&v35 init];
   if (v5)
   {
-    v6 = [v4 devicePaymentApplications];
-    v7 = [v6 allObjects];
+    devicePaymentApplications = [passCopy devicePaymentApplications];
+    allObjects = [devicePaymentApplications allObjects];
     paymentApplications = v5->_paymentApplications;
-    v5->_paymentApplications = v7;
+    v5->_paymentApplications = allObjects;
 
-    v9 = [v4 devicePrimaryPaymentApplication];
+    devicePrimaryPaymentApplication = [passCopy devicePrimaryPaymentApplication];
     primaryPaymentApplication = v5->_primaryPaymentApplication;
-    v5->_primaryPaymentApplication = v9;
+    v5->_primaryPaymentApplication = devicePrimaryPaymentApplication;
 
-    v11 = [v4 uniqueID];
+    uniqueID = [passCopy uniqueID];
     passIdentifier = v5->_passIdentifier;
-    v5->_passIdentifier = v11;
+    v5->_passIdentifier = uniqueID;
 
-    v13 = [v4 organizationName];
+    organizationName = [passCopy organizationName];
     organizationName = v5->_organizationName;
-    v5->_organizationName = v13;
+    v5->_organizationName = organizationName;
 
-    v15 = [v4 localizedDescription];
+    localizedDescription = [passCopy localizedDescription];
     displayName = v5->_displayName;
-    v5->_displayName = v15;
+    v5->_displayName = localizedDescription;
 
-    v17 = [v4 ingestedDate];
+    ingestedDate = [passCopy ingestedDate];
     ingestedDate = v5->_ingestedDate;
-    v5->_ingestedDate = v17;
+    v5->_ingestedDate = ingestedDate;
 
-    v19 = [v4 primaryAccountNumberSuffix];
+    primaryAccountNumberSuffix = [passCopy primaryAccountNumberSuffix];
     primaryAccountNumberSuffix = v5->_primaryAccountNumberSuffix;
-    v5->_primaryAccountNumberSuffix = v19;
+    v5->_primaryAccountNumberSuffix = primaryAccountNumberSuffix;
 
-    v21 = [v4 manifestHash];
+    manifestHash = [passCopy manifestHash];
     manifestHash = v5->_manifestHash;
-    v5->_manifestHash = v21;
+    v5->_manifestHash = manifestHash;
 
-    v23 = [v4 primaryAccountIdentifier];
+    primaryAccountIdentifier = [passCopy primaryAccountIdentifier];
     primaryAccountIdentifier = v5->_primaryAccountIdentifier;
-    v5->_primaryAccountIdentifier = v23;
+    v5->_primaryAccountIdentifier = primaryAccountIdentifier;
 
-    v25 = [v4 associatedWebDomains];
-    v26 = [v25 allObjects];
+    associatedWebDomains = [passCopy associatedWebDomains];
+    allObjects2 = [associatedWebDomains allObjects];
     associatedWebDomains = v5->_associatedWebDomains;
-    v5->_associatedWebDomains = v26;
+    v5->_associatedWebDomains = allObjects2;
 
-    v5->_supportsAutomaticSelection = ([v4 settings] & 0x10) != 0;
-    v28 = [v4 issuerCountryCode];
+    v5->_supportsAutomaticSelection = ([passCopy settings] & 0x10) != 0;
+    issuerCountryCode = [passCopy issuerCountryCode];
     issuerCountryCode = v5->_issuerCountryCode;
-    v5->_issuerCountryCode = v28;
+    v5->_issuerCountryCode = issuerCountryCode;
 
-    v5->_hasAssociatedPeerPaymentAccount = [v4 hasAssociatedPeerPaymentAccount];
-    v5->_associatedAccountFeatureIdentifier = [v4 associatedAccountFeatureIdentifier];
-    v30 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v4, "isCobranded")}];
+    v5->_hasAssociatedPeerPaymentAccount = [passCopy hasAssociatedPeerPaymentAccount];
+    v5->_associatedAccountFeatureIdentifier = [passCopy associatedAccountFeatureIdentifier];
+    v30 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(passCopy, "isCobranded")}];
     cobranded = v5->_cobranded;
     v5->_cobranded = v30;
 
-    v32 = [v4 cobrandName];
+    cobrandName = [passCopy cobrandName];
     cobrandName = v5->_cobrandName;
-    v5->_cobrandName = v32;
+    v5->_cobrandName = cobrandName;
   }
 
   return v5;
 }
 
-- (PKRemotePaymentInstrument)initWithCoder:(id)a3
+- (PKRemotePaymentInstrument)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v41.receiver = self;
   v41.super_class = PKRemotePaymentInstrument;
   v5 = [(PKRemotePaymentInstrument *)&v41 init];
@@ -500,66 +500,66 @@ LABEL_9:
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"paymentApplications"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"paymentApplications"];
     paymentApplications = v5->_paymentApplications;
     v5->_paymentApplications = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"passID"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"passID"];
     passIdentifier = v5->_passIdentifier;
     v5->_passIdentifier = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"organizationName"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"organizationName"];
     organizationName = v5->_organizationName;
     v5->_organizationName = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
     displayName = v5->_displayName;
     v5->_displayName = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ingestedDate"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ingestedDate"];
     ingestedDate = v5->_ingestedDate;
     v5->_ingestedDate = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"primaryAccountNumberSuffix"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"primaryAccountNumberSuffix"];
     primaryAccountNumberSuffix = v5->_primaryAccountNumberSuffix;
     v5->_primaryAccountNumberSuffix = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"primaryPaymentApplication"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"primaryPaymentApplication"];
     primaryPaymentApplication = v5->_primaryPaymentApplication;
     v5->_primaryPaymentApplication = v21;
 
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"manifestHash"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"manifestHash"];
     manifestHash = v5->_manifestHash;
     v5->_manifestHash = v23;
 
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"primaryAccountIdentifier"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"primaryAccountIdentifier"];
     primaryAccountIdentifier = v5->_primaryAccountIdentifier;
     v5->_primaryAccountIdentifier = v25;
 
     v27 = MEMORY[0x1E695DFD8];
     v28 = objc_opt_class();
     v29 = [v27 setWithObjects:{v28, objc_opt_class(), 0}];
-    v30 = [v4 decodeObjectOfClasses:v29 forKey:@"associatedWebDomains"];
+    v30 = [coderCopy decodeObjectOfClasses:v29 forKey:@"associatedWebDomains"];
     associatedWebDomains = v5->_associatedWebDomains;
     v5->_associatedWebDomains = v30;
 
-    v5->_supportsAutomaticSelection = [v4 decodeBoolForKey:@"supportsAutomaticSelection"];
-    v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"issuerCountryCode"];
+    v5->_supportsAutomaticSelection = [coderCopy decodeBoolForKey:@"supportsAutomaticSelection"];
+    v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"issuerCountryCode"];
     issuerCountryCode = v5->_issuerCountryCode;
     v5->_issuerCountryCode = v32;
 
-    v5->_hasAssociatedPeerPaymentAccount = [v4 decodeBoolForKey:@"hasAssociatedPeerPaymentAccount"];
-    v5->_peerPaymentAccountState = [v4 decodeIntegerForKey:@"peerPaymentAccountState"];
-    v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"peerPaymentAccountBalance"];
+    v5->_hasAssociatedPeerPaymentAccount = [coderCopy decodeBoolForKey:@"hasAssociatedPeerPaymentAccount"];
+    v5->_peerPaymentAccountState = [coderCopy decodeIntegerForKey:@"peerPaymentAccountState"];
+    v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"peerPaymentAccountBalance"];
     peerPaymentAccountBalance = v5->_peerPaymentAccountBalance;
     v5->_peerPaymentAccountBalance = v34;
 
-    v5->_associatedAccountFeatureIdentifier = [v4 decodeIntegerForKey:@"associatedAccountFeatureIdentifier"];
-    v36 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cobranded"];
+    v5->_associatedAccountFeatureIdentifier = [coderCopy decodeIntegerForKey:@"associatedAccountFeatureIdentifier"];
+    v36 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cobranded"];
     cobranded = v5->_cobranded;
     v5->_cobranded = v36;
 
-    v38 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cobrandName"];
+    v38 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cobrandName"];
     cobrandName = v5->_cobrandName;
     v5->_cobrandName = v38;
   }
@@ -567,28 +567,28 @@ LABEL_9:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   paymentApplications = self->_paymentApplications;
-  v5 = a3;
-  [v5 encodeObject:paymentApplications forKey:@"paymentApplications"];
-  [v5 encodeObject:self->_passIdentifier forKey:@"passID"];
-  [v5 encodeObject:self->_organizationName forKey:@"organizationName"];
-  [v5 encodeObject:self->_displayName forKey:@"displayName"];
-  [v5 encodeObject:self->_ingestedDate forKey:@"ingestedDate"];
-  [v5 encodeObject:self->_primaryAccountNumberSuffix forKey:@"primaryAccountNumberSuffix"];
-  [v5 encodeObject:self->_primaryPaymentApplication forKey:@"primaryPaymentApplication"];
-  [v5 encodeObject:self->_manifestHash forKey:@"manifestHash"];
-  [v5 encodeObject:self->_primaryAccountIdentifier forKey:@"primaryAccountIdentifier"];
-  [v5 encodeObject:self->_associatedWebDomains forKey:@"associatedWebDomains"];
-  [v5 encodeBool:self->_supportsAutomaticSelection forKey:@"supportsAutomaticSelection"];
-  [v5 encodeObject:self->_issuerCountryCode forKey:@"issuerCountryCode"];
-  [v5 encodeBool:self->_hasAssociatedPeerPaymentAccount forKey:@"hasAssociatedPeerPaymentAccount"];
-  [v5 encodeInteger:self->_peerPaymentAccountState forKey:@"peerPaymentAccountState"];
-  [v5 encodeObject:self->_peerPaymentAccountBalance forKey:@"peerPaymentAccountBalance"];
-  [v5 encodeInteger:self->_associatedAccountFeatureIdentifier forKey:@"associatedAccountFeatureIdentifier"];
-  [v5 encodeObject:self->_cobranded forKey:@"cobranded"];
-  [v5 encodeObject:self->_cobrandName forKey:@"cobrandName"];
+  coderCopy = coder;
+  [coderCopy encodeObject:paymentApplications forKey:@"paymentApplications"];
+  [coderCopy encodeObject:self->_passIdentifier forKey:@"passID"];
+  [coderCopy encodeObject:self->_organizationName forKey:@"organizationName"];
+  [coderCopy encodeObject:self->_displayName forKey:@"displayName"];
+  [coderCopy encodeObject:self->_ingestedDate forKey:@"ingestedDate"];
+  [coderCopy encodeObject:self->_primaryAccountNumberSuffix forKey:@"primaryAccountNumberSuffix"];
+  [coderCopy encodeObject:self->_primaryPaymentApplication forKey:@"primaryPaymentApplication"];
+  [coderCopy encodeObject:self->_manifestHash forKey:@"manifestHash"];
+  [coderCopy encodeObject:self->_primaryAccountIdentifier forKey:@"primaryAccountIdentifier"];
+  [coderCopy encodeObject:self->_associatedWebDomains forKey:@"associatedWebDomains"];
+  [coderCopy encodeBool:self->_supportsAutomaticSelection forKey:@"supportsAutomaticSelection"];
+  [coderCopy encodeObject:self->_issuerCountryCode forKey:@"issuerCountryCode"];
+  [coderCopy encodeBool:self->_hasAssociatedPeerPaymentAccount forKey:@"hasAssociatedPeerPaymentAccount"];
+  [coderCopy encodeInteger:self->_peerPaymentAccountState forKey:@"peerPaymentAccountState"];
+  [coderCopy encodeObject:self->_peerPaymentAccountBalance forKey:@"peerPaymentAccountBalance"];
+  [coderCopy encodeInteger:self->_associatedAccountFeatureIdentifier forKey:@"associatedAccountFeatureIdentifier"];
+  [coderCopy encodeObject:self->_cobranded forKey:@"cobranded"];
+  [coderCopy encodeObject:self->_cobrandName forKey:@"cobrandName"];
 }
 
 - (id)description
@@ -599,8 +599,8 @@ LABEL_9:
   organizationName = self->_organizationName;
   ingestedDate = self->_ingestedDate;
   displayName = self->_displayName;
-  v8 = [(NSData *)self->_manifestHash hexEncoding];
-  [v3 appendFormat:@"Display Name: %@\nPass ID: %@\nPass organizationName: %@\nIngested: %@\nManifest: %@\n", displayName, passIdentifier, organizationName, ingestedDate, v8];
+  hexEncoding = [(NSData *)self->_manifestHash hexEncoding];
+  [v3 appendFormat:@"Display Name: %@\nPass ID: %@\nPass organizationName: %@\nIngested: %@\nManifest: %@\n", displayName, passIdentifier, organizationName, ingestedDate, hexEncoding];
 
   [v3 appendString:@"Applications: \n"];
   v18 = 0u;
@@ -622,8 +622,8 @@ LABEL_9:
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v16 + 1) + 8 * i) applicationIdentifier];
-        [v3 appendFormat:@"%@\n", v14];
+        applicationIdentifier = [*(*(&v16 + 1) + 8 * i) applicationIdentifier];
+        [v3 appendFormat:@"%@\n", applicationIdentifier];
       }
 
       v11 = [(NSArray *)v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -637,66 +637,66 @@ LABEL_9:
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKRemotePaymentInstrument allocWithZone:](PKRemotePaymentInstrument init];
-  v6 = [(NSString *)self->_passIdentifier copyWithZone:a3];
+  v6 = [(NSString *)self->_passIdentifier copyWithZone:zone];
   passIdentifier = v5->_passIdentifier;
   v5->_passIdentifier = v6;
 
-  v8 = [(NSString *)self->_organizationName copyWithZone:a3];
+  v8 = [(NSString *)self->_organizationName copyWithZone:zone];
   organizationName = v5->_organizationName;
   v5->_organizationName = v8;
 
-  v10 = [(NSData *)self->_manifestHash copyWithZone:a3];
+  v10 = [(NSData *)self->_manifestHash copyWithZone:zone];
   manifestHash = v5->_manifestHash;
   v5->_manifestHash = v10;
 
-  v12 = [(NSString *)self->_displayName copyWithZone:a3];
+  v12 = [(NSString *)self->_displayName copyWithZone:zone];
   displayName = v5->_displayName;
   v5->_displayName = v12;
 
-  v14 = [(NSString *)self->_primaryAccountNumberSuffix copyWithZone:a3];
+  v14 = [(NSString *)self->_primaryAccountNumberSuffix copyWithZone:zone];
   primaryAccountNumberSuffix = v5->_primaryAccountNumberSuffix;
   v5->_primaryAccountNumberSuffix = v14;
 
-  v16 = [(NSString *)self->_primaryAccountIdentifier copyWithZone:a3];
+  v16 = [(NSString *)self->_primaryAccountIdentifier copyWithZone:zone];
   primaryAccountIdentifier = v5->_primaryAccountIdentifier;
   v5->_primaryAccountIdentifier = v16;
 
-  v18 = [(NSArray *)self->_paymentApplications copyWithZone:a3];
+  v18 = [(NSArray *)self->_paymentApplications copyWithZone:zone];
   paymentApplications = v5->_paymentApplications;
   v5->_paymentApplications = v18;
 
-  v20 = [(PKPaymentApplication *)self->_primaryPaymentApplication copyWithZone:a3];
+  v20 = [(PKPaymentApplication *)self->_primaryPaymentApplication copyWithZone:zone];
   primaryPaymentApplication = v5->_primaryPaymentApplication;
   v5->_primaryPaymentApplication = v20;
 
-  v22 = [(NSDate *)self->_ingestedDate copyWithZone:a3];
+  v22 = [(NSDate *)self->_ingestedDate copyWithZone:zone];
   ingestedDate = v5->_ingestedDate;
   v5->_ingestedDate = v22;
 
-  v24 = [(NSArray *)self->_associatedWebDomains copyWithZone:a3];
+  v24 = [(NSArray *)self->_associatedWebDomains copyWithZone:zone];
   associatedWebDomains = v5->_associatedWebDomains;
   v5->_associatedWebDomains = v24;
 
   v5->_supportsAutomaticSelection = self->_supportsAutomaticSelection;
-  v26 = [(NSString *)self->_issuerCountryCode copyWithZone:a3];
+  v26 = [(NSString *)self->_issuerCountryCode copyWithZone:zone];
   issuerCountryCode = v5->_issuerCountryCode;
   v5->_issuerCountryCode = v26;
 
   v5->_hasAssociatedPeerPaymentAccount = self->_hasAssociatedPeerPaymentAccount;
   v5->_peerPaymentAccountState = self->_peerPaymentAccountState;
-  v28 = [(PKCurrencyAmount *)self->_peerPaymentAccountBalance copyWithZone:a3];
+  v28 = [(PKCurrencyAmount *)self->_peerPaymentAccountBalance copyWithZone:zone];
   peerPaymentAccountBalance = v5->_peerPaymentAccountBalance;
   v5->_peerPaymentAccountBalance = v28;
 
   v5->_associatedAccountFeatureIdentifier = self->_associatedAccountFeatureIdentifier;
-  v30 = [(NSNumber *)self->_cobranded copyWithZone:a3];
+  v30 = [(NSNumber *)self->_cobranded copyWithZone:zone];
   cobranded = v5->_cobranded;
   v5->_cobranded = v30;
 
-  v32 = [(NSString *)self->_cobrandName copyWithZone:a3];
+  v32 = [(NSString *)self->_cobrandName copyWithZone:zone];
   cobrandName = v5->_cobrandName;
   v5->_cobrandName = v32;
 
@@ -705,48 +705,48 @@ LABEL_9:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_passIdentifier];
-  [v3 safelyAddObject:self->_organizationName];
-  [v3 safelyAddObject:self->_displayName];
-  [v3 safelyAddObject:self->_ingestedDate];
-  [v3 safelyAddObject:self->_primaryAccountNumberSuffix];
-  [v3 safelyAddObject:self->_primaryPaymentApplication];
-  [v3 safelyAddObject:self->_manifestHash];
-  [v3 safelyAddObject:self->_primaryAccountIdentifier];
-  [v3 safelyAddObject:self->_associatedWebDomains];
-  [v3 safelyAddObject:self->_issuerCountryCode];
-  [v3 safelyAddObject:self->_cobranded];
-  [v3 safelyAddObject:self->_cobrandName];
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_passIdentifier];
+  [array safelyAddObject:self->_organizationName];
+  [array safelyAddObject:self->_displayName];
+  [array safelyAddObject:self->_ingestedDate];
+  [array safelyAddObject:self->_primaryAccountNumberSuffix];
+  [array safelyAddObject:self->_primaryPaymentApplication];
+  [array safelyAddObject:self->_manifestHash];
+  [array safelyAddObject:self->_primaryAccountIdentifier];
+  [array safelyAddObject:self->_associatedWebDomains];
+  [array safelyAddObject:self->_issuerCountryCode];
+  [array safelyAddObject:self->_cobranded];
+  [array safelyAddObject:self->_cobrandName];
   v4 = PKCombinedHash(17, self->_paymentApplications);
-  v5 = PKCombinedHash(v4, v3);
+  v5 = PKCombinedHash(v4, array);
   v6 = self->_associatedAccountFeatureIdentifier - v5 + 32 * v5;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKRemotePaymentInstrument *)self isEqualToRemotePaymentInstrument:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKRemotePaymentInstrument *)self isEqualToRemotePaymentInstrument:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToRemotePaymentInstrument:(id)a3
+- (BOOL)isEqualToRemotePaymentInstrument:(id)instrument
 {
-  v4 = a3;
+  instrumentCopy = instrument;
   paymentApplications = self->_paymentApplications;
-  v6 = v4[12];
+  v6 = instrumentCopy[12];
   if (paymentApplications)
   {
     v7 = v6 == 0;
@@ -775,7 +775,7 @@ LABEL_9:
   }
 
   primaryPaymentApplication = self->_primaryPaymentApplication;
-  v10 = v4[13];
+  v10 = instrumentCopy[13];
   if (primaryPaymentApplication && v10)
   {
     if (![(PKPaymentApplication *)primaryPaymentApplication isEqual:?])
@@ -789,7 +789,7 @@ LABEL_9:
     goto LABEL_54;
   }
 
-  v11 = v4[2];
+  v11 = instrumentCopy[2];
   v12 = self->_passIdentifier;
   v13 = v11;
   v14 = v13;
@@ -812,7 +812,7 @@ LABEL_9:
     }
   }
 
-  v16 = v4[3];
+  v16 = instrumentCopy[3];
   v12 = self->_organizationName;
   v17 = v16;
   v14 = v17;
@@ -835,7 +835,7 @@ LABEL_9:
     }
   }
 
-  v19 = v4[5];
+  v19 = instrumentCopy[5];
   v12 = self->_displayName;
   v20 = v19;
   v14 = v20;
@@ -859,7 +859,7 @@ LABEL_9:
   }
 
   ingestedDate = self->_ingestedDate;
-  v23 = v4[14];
+  v23 = instrumentCopy[14];
   if (ingestedDate && v23)
   {
     if (([(NSDate *)ingestedDate isEqual:?]& 1) == 0)
@@ -874,7 +874,7 @@ LABEL_9:
   }
 
   manifestHash = self->_manifestHash;
-  v25 = v4[4];
+  v25 = instrumentCopy[4];
   if (manifestHash && v25)
   {
     if (([(NSData *)manifestHash isEqual:?]& 1) == 0)
@@ -888,7 +888,7 @@ LABEL_9:
     goto LABEL_54;
   }
 
-  v26 = v4[6];
+  v26 = instrumentCopy[6];
   v12 = self->_primaryAccountNumberSuffix;
   v27 = v26;
   v14 = v27;
@@ -911,7 +911,7 @@ LABEL_9:
     }
   }
 
-  v29 = v4[7];
+  v29 = instrumentCopy[7];
   v12 = self->_primaryAccountIdentifier;
   v30 = v29;
   v14 = v30;
@@ -937,7 +937,7 @@ LABEL_53:
 
 LABEL_57:
   associatedWebDomains = self->_associatedWebDomains;
-  v35 = v4[17];
+  v35 = instrumentCopy[17];
   if (associatedWebDomains && v35)
   {
     if (([(NSArray *)associatedWebDomains isEqual:?]& 1) == 0)
@@ -952,7 +952,7 @@ LABEL_57:
   }
 
   issuerCountryCode = self->_issuerCountryCode;
-  v37 = v4[8];
+  v37 = instrumentCopy[8];
   if (issuerCountryCode && v37)
   {
     if (([(NSString *)issuerCountryCode isEqual:?]& 1) == 0)
@@ -966,13 +966,13 @@ LABEL_57:
     goto LABEL_54;
   }
 
-  if (self->_peerPaymentAccountState != v4[16] || self->_hasAssociatedPeerPaymentAccount != *(v4 + 9))
+  if (self->_peerPaymentAccountState != instrumentCopy[16] || self->_hasAssociatedPeerPaymentAccount != *(instrumentCopy + 9))
   {
     goto LABEL_54;
   }
 
   peerPaymentAccountBalance = self->_peerPaymentAccountBalance;
-  v39 = v4[15];
+  v39 = instrumentCopy[15];
   if (peerPaymentAccountBalance && v39)
   {
     if (![(PKCurrencyAmount *)peerPaymentAccountBalance isEqual:?])
@@ -986,13 +986,13 @@ LABEL_57:
     goto LABEL_54;
   }
 
-  if (self->_associatedAccountFeatureIdentifier != v4[9])
+  if (self->_associatedAccountFeatureIdentifier != instrumentCopy[9])
   {
     goto LABEL_54;
   }
 
   cobranded = self->_cobranded;
-  v41 = v4[10];
+  v41 = instrumentCopy[10];
   if (cobranded && v41)
   {
     if (([(NSNumber *)cobranded isEqual:?]& 1) != 0)
@@ -1012,7 +1012,7 @@ LABEL_54:
 
 LABEL_80:
   cobrandName = self->_cobrandName;
-  v43 = v4[11];
+  v43 = instrumentCopy[11];
   if (cobrandName && v43)
   {
     v32 = [(NSString *)cobrandName isEqual:?];
@@ -1028,20 +1028,20 @@ LABEL_55:
   return v32;
 }
 
-+ (id)thumbnailCachePathForManifestHash:(id)a3 size:(CGSize)a4 planningToWrite:(BOOL)a5
++ (id)thumbnailCachePathForManifestHash:(id)hash size:(CGSize)size planningToWrite:(BOOL)write
 {
-  v5 = a5;
-  height = a4.height;
-  width = a4.width;
-  v8 = a3;
-  v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@#%ld-%ld", v8, llround(width), llround(height)];
+  writeCopy = write;
+  height = size.height;
+  width = size.width;
+  hashCopy = hash;
+  v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@#%ld-%ld", hashCopy, llround(width), llround(height)];
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
   v17 = __Block_byref_object_copy__44;
   v18 = __Block_byref_object_dispose__44;
   v19 = 0;
-  if (v5)
+  if (writeCopy)
   {
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
@@ -1061,10 +1061,10 @@ LABEL_55:
     PKRemoteInstrumentThumbnailsCacheCreateFileURLReadOnly(0, v9, v12);
   }
 
-  v10 = [v15[5] path];
+  path = [v15[5] path];
   _Block_object_dispose(&v14, 8);
 
-  return v10;
+  return path;
 }
 
 @end

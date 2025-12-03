@@ -2,7 +2,7 @@
 - (CGAffineTransform)transform;
 - (CGPoint)center;
 - (CGRect)bounds;
-- (void)setTransform:(CGAffineTransform *)a3;
+- (void)setTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation _MPUFallAnimatorDynamicItem
@@ -38,11 +38,11 @@
   return self;
 }
 
-- (void)setTransform:(CGAffineTransform *)a3
+- (void)setTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->c;
-  *&self->_transform.tx = *&a3->tx;
+  v3 = *&transform->a;
+  v4 = *&transform->c;
+  *&self->_transform.tx = *&transform->tx;
   *&self->_transform.c = v4;
   *&self->_transform.a = v3;
 }

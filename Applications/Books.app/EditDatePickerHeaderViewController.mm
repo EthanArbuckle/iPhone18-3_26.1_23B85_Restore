@@ -1,12 +1,12 @@
 @interface EditDatePickerHeaderViewController
-- (_TtC5Books34EditDatePickerHeaderViewController)initWithCoder:(id)a3;
-- (_TtC5Books34EditDatePickerHeaderViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC5Books34EditDatePickerHeaderViewController)initWithCoder:(id)coder;
+- (_TtC5Books34EditDatePickerHeaderViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)loadView;
 @end
 
 @implementation EditDatePickerHeaderViewController
 
-- (_TtC5Books34EditDatePickerHeaderViewController)initWithCoder:(id)a3
+- (_TtC5Books34EditDatePickerHeaderViewController)initWithCoder:(id)coder
 {
   result = sub_1007A38A4();
   __break(1u);
@@ -15,11 +15,11 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_10038E17C();
 }
 
-- (_TtC5Books34EditDatePickerHeaderViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC5Books34EditDatePickerHeaderViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

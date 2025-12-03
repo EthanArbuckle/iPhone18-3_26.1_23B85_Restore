@@ -1,22 +1,22 @@
 @interface DOCColumnViewCell
-- (_TtC26DocumentManagerExecutables17DOCColumnViewCell)initWithCoder:(id)a3;
+- (_TtC26DocumentManagerExecutables17DOCColumnViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation DOCColumnViewCell
 
-- (_TtC26DocumentManagerExecutables17DOCColumnViewCell)initWithCoder:(id)a3
+- (_TtC26DocumentManagerExecutables17DOCColumnViewCell)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = specialized DOCColumnViewCell.init(coder:)(v3);
+  coderCopy = coder;
+  v4 = specialized DOCColumnViewCell.init(coder:)(coderCopy);
 
   return v4;
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   DOCColumnViewCell.layoutSubviews()();
 }
 

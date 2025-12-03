@@ -1,16 +1,16 @@
 @interface MPSCNNLogSoftMax
-- (MPSCNNLogSoftMax)initWithCoder:(id)a3 device:(id)a4;
-- (MPSCNNLogSoftMax)initWithDevice:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (MPSCNNLogSoftMax)initWithCoder:(id)coder device:(id)device;
+- (MPSCNNLogSoftMax)initWithDevice:(id)device;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSCNNLogSoftMax
 
-- (MPSCNNLogSoftMax)initWithDevice:(id)a3
+- (MPSCNNLogSoftMax)initWithDevice:(id)device
 {
   v4.receiver = self;
   v4.super_class = MPSCNNLogSoftMax;
-  result = [(MPSCNNKernel *)&v4 initWithDevice:a3];
+  result = [(MPSCNNKernel *)&v4 initWithDevice:device];
   if (result)
   {
     result->super._encode = sub_239D6AFBC;
@@ -22,11 +22,11 @@
   return result;
 }
 
-- (MPSCNNLogSoftMax)initWithCoder:(id)a3 device:(id)a4
+- (MPSCNNLogSoftMax)initWithCoder:(id)coder device:(id)device
 {
   v7.receiver = self;
   v7.super_class = MPSCNNLogSoftMax;
-  result = [(MPSCNNKernel *)&v7 initWithCoder:a3 device:a4];
+  result = [(MPSCNNKernel *)&v7 initWithCoder:coder device:device];
   if (result)
   {
     if (*(&result->super.super.super.isa + *MEMORY[0x277CD7358] + 2) << 16 == 0x10000)
@@ -54,12 +54,12 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v3.receiver = self;
   v3.super_class = MPSCNNLogSoftMax;
-  [(MPSCNNKernel *)&v3 encodeWithCoder:a3];
+  [(MPSCNNKernel *)&v3 encodeWithCoder:coder];
 }
 
 @end

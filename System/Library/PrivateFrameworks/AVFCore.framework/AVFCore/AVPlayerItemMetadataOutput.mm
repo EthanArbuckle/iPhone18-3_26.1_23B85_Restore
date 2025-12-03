@@ -1,11 +1,11 @@
 @interface AVPlayerItemMetadataOutput
 - (AVPlayerItemMetadataOutput)initWithIdentifiers:(NSArray *)identifiers;
-- (BOOL)_attachToPlayerItem:(id)a3;
+- (BOOL)_attachToPlayerItem:(id)item;
 - (NSDictionary)_figMetadataOutputsDictionaryOptions;
 - (NSTimeInterval)advanceIntervalForDelegateInvocation;
 - (void)_collectUncollectables;
 - (void)_detachFromPlayerItem;
-- (void)_pushTimedMetadataGroups:(id)a3 fromPlayerItemTrack:(id)a4;
+- (void)_pushTimedMetadataGroups:(id)groups fromPlayerItemTrack:(id)track;
 - (void)_signalFlush;
 - (void)dealloc;
 - (void)setAdvanceIntervalForDelegateInvocation:(NSTimeInterval)advanceIntervalForDelegateInvocation;
@@ -90,13 +90,13 @@
   [(AVPlayerItemOutput *)&v4 dealloc];
 }
 
-- (BOOL)_attachToPlayerItem:(id)a3
+- (BOOL)_attachToPlayerItem:(id)item
 {
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 0;
-  if (!a3)
+  if (!item)
   {
     v11 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"invalid parameter not satisfying: %s", v3, v4, v5, v6, v7, "playerItem != nil"), 0}];
     objc_exception_throw(v11);
@@ -107,7 +107,7 @@
   v12[1] = 3221225472;
   v12[2] = __50__AVPlayerItemMetadataOutput__attachToPlayerItem___block_invoke;
   v12[3] = &unk_1E7461068;
-  v12[5] = a3;
+  v12[5] = item;
   v12[6] = &v13;
   v12[4] = self;
   av_readwrite_dispatch_queue_write(ivarAccessQueue, v12);
@@ -289,31 +289,31 @@ uint64_t __79__AVPlayerItemMetadataOutput_AVPlayerItemMetadataOutput_Internal___
 
 - (NSDictionary)_figMetadataOutputsDictionaryOptions
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   [(AVPlayerItemMetadataOutput *)self advanceIntervalForDelegateInvocation];
   v4 = [MEMORY[0x1E696AD98] numberWithDouble:?];
-  [(NSDictionary *)v3 setObject:v4 forKey:*MEMORY[0x1E6972460]];
+  [(NSDictionary *)dictionary setObject:v4 forKey:*MEMORY[0x1E6972460]];
   metadataIdentifiers = self->_metadataOutputInternal->metadataIdentifiers;
   if (metadataIdentifiers)
   {
-    [(NSDictionary *)v3 setObject:metadataIdentifiers forKey:*MEMORY[0x1E6972468]];
+    [(NSDictionary *)dictionary setObject:metadataIdentifiers forKey:*MEMORY[0x1E6972468]];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)_pushTimedMetadataGroups:(id)a3 fromPlayerItemTrack:(id)a4
+- (void)_pushTimedMetadataGroups:(id)groups fromPlayerItemTrack:(id)track
 {
-  if ([a3 count])
+  if ([groups count])
   {
     accumulationQueue = self->_metadataOutputInternal->accumulationQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __112__AVPlayerItemMetadataOutput_AVPlayerItemMetadataOutput_Internal___pushTimedMetadataGroups_fromPlayerItemTrack___block_invoke;
     block[3] = &unk_1E7460E90;
-    block[4] = a3;
+    block[4] = groups;
     block[5] = self;
-    block[6] = a4;
+    block[6] = track;
     dispatch_async(accumulationQueue, block);
   }
 }

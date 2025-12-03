@@ -1,65 +1,65 @@
 @interface DAContactsProvider
-+ (DAContactsProvider)providerWithAddressBook:(void *)a3;
-+ (DAContactsProvider)providerWithContactStore:(id)a3;
-- (id)contactFromItem:(id)a3;
-- (id)contactsInContainer:(id)a3;
-- (id)contactsWithExternalHREFs:(id)a3 container:(id)a4;
-- (id)contactsWithExternalUUIDs:(id)a3 container:(id)a4;
-- (id)meContactInContainer:(id)a3;
++ (DAContactsProvider)providerWithAddressBook:(void *)book;
++ (DAContactsProvider)providerWithContactStore:(id)store;
+- (id)contactFromItem:(id)item;
+- (id)contactsInContainer:(id)container;
+- (id)contactsWithExternalHREFs:(id)fs container:(id)container;
+- (id)contactsWithExternalUUIDs:(id)ds container:(id)container;
+- (id)meContactInContainer:(id)container;
 - (unint64_t)countOfContacts;
 - (unint64_t)countOfGroups;
 @end
 
 @implementation DAContactsProvider
 
-+ (DAContactsProvider)providerWithContactStore:(id)a3
++ (DAContactsProvider)providerWithContactStore:(id)store
 {
-  v3 = a3;
-  v4 = [[_DAContactsContactsProvider alloc] initWithContactStore:v3];
+  storeCopy = store;
+  v4 = [[_DAContactsContactsProvider alloc] initWithContactStore:storeCopy];
 
   return v4;
 }
 
-+ (DAContactsProvider)providerWithAddressBook:(void *)a3
++ (DAContactsProvider)providerWithAddressBook:(void *)book
 {
-  v3 = [[_DAABLegacyContactsProvider alloc] initWithAddressBook:a3];
+  v3 = [[_DAABLegacyContactsProvider alloc] initWithAddressBook:book];
 
   return v3;
 }
 
-- (id)contactsInContainer:(id)a3
+- (id)contactsInContainer:(id)container
 {
-  v3 = a3;
+  containerCopy = container;
   v4 = [NSException exceptionWithName:NSInternalInconsistencyException reason:@"contactsInContainer: is abstract" userInfo:0];
   objc_exception_throw(v4);
 }
 
-- (id)meContactInContainer:(id)a3
+- (id)meContactInContainer:(id)container
 {
-  v3 = a3;
+  containerCopy = container;
   v4 = [NSException exceptionWithName:NSInternalInconsistencyException reason:@"meContactInContainer: is abstract" userInfo:0];
   objc_exception_throw(v4);
 }
 
-- (id)contactFromItem:(id)a3
+- (id)contactFromItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   v4 = [NSException exceptionWithName:NSInternalInconsistencyException reason:@"contactFromItem: is abstract" userInfo:0];
   objc_exception_throw(v4);
 }
 
-- (id)contactsWithExternalHREFs:(id)a3 container:(id)a4
+- (id)contactsWithExternalHREFs:(id)fs container:(id)container
 {
-  v5 = a3;
-  v6 = a4;
+  fsCopy = fs;
+  containerCopy = container;
   v7 = [NSException exceptionWithName:NSInternalInconsistencyException reason:@"contactsWithHREFs: is abstract" userInfo:0];
   objc_exception_throw(v7);
 }
 
-- (id)contactsWithExternalUUIDs:(id)a3 container:(id)a4
+- (id)contactsWithExternalUUIDs:(id)ds container:(id)container
 {
-  v5 = a3;
-  v6 = a4;
+  dsCopy = ds;
+  containerCopy = container;
   v7 = [NSException exceptionWithName:NSInternalInconsistencyException reason:@"contactsWithExternalUUIDs: is abstract" userInfo:0];
   objc_exception_throw(v7);
 }

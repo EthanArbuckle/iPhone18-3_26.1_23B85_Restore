@@ -1,55 +1,55 @@
 @interface PowerUISmartChargeUtilities
-+ (BOOL)deviceConnectedToWirelessChargerWithContext:(id)a3;
-+ (BOOL)deviceHasEnoughPluggedInTimeWithMinimumDays:(double)a3 withContext:(id)a4 withDefaultsDomain:(id)a5;
-+ (BOOL)deviceWasConnectedToChargerWithinSeconds:(double)a3 withContext:(id)a4;
-+ (BOOL)doesTimeOfDayForDate:(id)a3 fallBetweenDate:(id)a4 andDate:(id)a5;
++ (BOOL)deviceConnectedToWirelessChargerWithContext:(id)context;
++ (BOOL)deviceHasEnoughPluggedInTimeWithMinimumDays:(double)days withContext:(id)context withDefaultsDomain:(id)domain;
++ (BOOL)deviceWasConnectedToChargerWithinSeconds:(double)seconds withContext:(id)context;
++ (BOOL)doesTimeOfDayForDate:(id)date fallBetweenDate:(id)betweenDate andDate:(id)andDate;
 + (BOOL)isInternalBuild;
 + (BOOL)isOBCSupported;
-+ (BOOL)isPluggedInWithContext:(id)a3;
++ (BOOL)isPluggedInWithContext:(id)context;
 + (BOOL)isUltraWatch;
-+ (BOOL)isWeekend:(id)a3;
++ (BOOL)isWeekend:(id)weekend;
 + (BOOL)isiPad;
 + (BOOL)isiPhone;
 + (BOOL)isiPod;
 + (MemoryFootprint)getMemoryUsage;
-+ (double)areaOverEightyWithBatteryLevelDurations:(double *)a3;
-+ (double)batteryLevelAtDate:(id)a3;
++ (double)areaOverEightyWithBatteryLevelDurations:(double *)durations;
++ (double)batteryLevelAtDate:(id)date;
 + (double)cachedHistorical80ToFullDuration;
-+ (double)percentageOfBatteryDurations:(double *)a3 aboveBatteryLevel:(double)a4;
-+ (double)timestampOfFirstEventReachingBatteryLevel:(int)a3 betweenStartTime:(id)a4 andEndTime:(id)a5;
-+ (double)totalPluginDurationAfter:(id)a3 withMinimumDuration:(double)a4 withPluginEvents:(id)a5;
-+ (id)batteryLevelHistogramAroundTime:(id)a3 withDelta:(double)a4 withOffset:(double)a5;
++ (double)percentageOfBatteryDurations:(double *)durations aboveBatteryLevel:(double)level;
++ (double)timestampOfFirstEventReachingBatteryLevel:(int)level betweenStartTime:(id)time andEndTime:(id)endTime;
++ (double)totalPluginDurationAfter:(id)after withMinimumDuration:(double)duration withPluginEvents:(id)events;
++ (id)batteryLevelHistogramAroundTime:(id)time withDelta:(double)delta withOffset:(double)offset;
 + (id)batteryProperties;
-+ (id)concatenateChargeSessions:(id)a3 withMaxDeltaSecondsBetweenEvents:(unint64_t)a4;
-+ (id)curentDateStringFromDate:(id)a3 withFormat:(id)a4;
-+ (id)dateForPreferenceKey:(id)a3 inDomain:(id)a4;
++ (id)concatenateChargeSessions:(id)sessions withMaxDeltaSecondsBetweenEvents:(unint64_t)events;
++ (id)curentDateStringFromDate:(id)date withFormat:(id)format;
++ (id)dateForPreferenceKey:(id)key inDomain:(id)domain;
 + (id)dateFormatter;
-+ (id)drainBetweenRelevantEventsFromDrainSessionInfo:(id)a3;
-+ (id)drainSessionsInfoBetweenRelevantChargesBefore:(id)a3 withMinimumDuration:(double)a4;
-+ (id)filterChargeSessions:(id)a3 startsBefore:(id)a4 dynamicallyAroundDate:(id)a5 withinSeconds:(unint64_t)a6;
++ (id)drainBetweenRelevantEventsFromDrainSessionInfo:(id)info;
++ (id)drainSessionsInfoBetweenRelevantChargesBefore:(id)before withMinimumDuration:(double)duration;
++ (id)filterChargeSessions:(id)sessions startsBefore:(id)before dynamicallyAroundDate:(id)date withinSeconds:(unint64_t)seconds;
 + (id)getCurrentBootSessionUUID;
-+ (id)getTestVector:(id)a3;
-+ (id)historicalFullChargeDurationStartingAt:(int)a3 withMinimumPluginDuration:(int)a4;
++ (id)getTestVector:(id)vector;
++ (id)historicalFullChargeDurationStartingAt:(int)at withMinimumPluginDuration:(int)duration;
 + (id)lastPluggedInDate;
 + (id)log;
-+ (id)numberForKey:(id)a3 fromDict:(id)a4 withDefault:(int64_t)a5;
-+ (id)numberForPreferenceKey:(id)a3 inDomain:(id)a4;
-+ (id)percentageOfTimeForBatteryLevels:(double *)a3 withLog:(id)a4;
-+ (id)pluginEventsBefore:(id)a3 withMinimumDuration:(double)a4 ignoringDisconnectsShorterThan:(double)a5;
-+ (id)pluginEventsBefore:(id)a3 withMinimumDuration:(double)a4 withMinimumPlugoutBatteryLevel:(double)a5 ignoringDisconnectsShorterThan:(double)a6;
-+ (id)readDictForPreferenceKey:(id)a3 inDomain:(id)a4;
-+ (id)readStringForPreferenceKey:(id)a3 inDomain:(id)a4;
++ (id)numberForKey:(id)key fromDict:(id)dict withDefault:(int64_t)default;
++ (id)numberForPreferenceKey:(id)key inDomain:(id)domain;
++ (id)percentageOfTimeForBatteryLevels:(double *)levels withLog:(id)log;
++ (id)pluginEventsBefore:(id)before withMinimumDuration:(double)duration ignoringDisconnectsShorterThan:(double)than;
++ (id)pluginEventsBefore:(id)before withMinimumDuration:(double)duration withMinimumPlugoutBatteryLevel:(double)level ignoringDisconnectsShorterThan:(double)than;
++ (id)readDictForPreferenceKey:(id)key inDomain:(id)domain;
++ (id)readStringForPreferenceKey:(id)key inDomain:(id)domain;
 + (id)recentEngagementHistory;
-+ (id)roundedDateFromDate:(id)a3;
-+ (id)timeStringFromDate:(id)a3;
-+ (id)timelineEventDate:(id)a3 withDefaultsDomain:(id)a4;
-+ (int64_t)currentBatteryLevelWithContext:(id)a3;
-+ (unint64_t)decileClassificationWithTopBinCutOff:(float *)a3;
-+ (void)getBatteryLevelDurations:(double *)a3;
++ (id)roundedDateFromDate:(id)date;
++ (id)timeStringFromDate:(id)date;
++ (id)timelineEventDate:(id)date withDefaultsDomain:(id)domain;
++ (int64_t)currentBatteryLevelWithContext:(id)context;
++ (unint64_t)decileClassificationWithTopBinCutOff:(float *)off;
++ (void)getBatteryLevelDurations:(double *)durations;
 + (void)lastPluggedInDate;
-+ (void)logMemoryUsageInternalForEvent:(id)a3;
-+ (void)mergeDrainSessionsInfo:(id)a3 intoResult:(id)a4;
-+ (void)setDate:(id)a3 forPreferenceKey:(id)a4 inDomain:(id)a5;
++ (void)logMemoryUsageInternalForEvent:(id)event;
++ (void)mergeDrainSessionsInfo:(id)info intoResult:(id)result;
++ (void)setDate:(id)date forPreferenceKey:(id)key inDomain:(id)domain;
 @end
 
 @implementation PowerUISmartChargeUtilities
@@ -93,7 +93,7 @@
   task_info_outCnt = 93;
   if (task_info(*MEMORY[0x277D85F48], 0x16u, task_info_out, &task_info_outCnt))
   {
-    v3 = [a1 log];
+    v3 = [self log];
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
     {
       +[PowerUISmartChargeUtilities getMemoryUsage];
@@ -137,17 +137,17 @@
   return v3;
 }
 
-+ (void)logMemoryUsageInternalForEvent:(id)a3
++ (void)logMemoryUsageInternalForEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if (+[PowerUISmartChargeUtilities isInternalBuild])
   {
     v5 = +[PowerUISmartChargeUtilities getMemoryUsage];
     v7 = v6;
-    v8 = [a1 log];
+    v8 = [self log];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      [(PowerUISmartChargeUtilities *)v5 logMemoryUsageInternalForEvent:v7, v4, v8];
+      [(PowerUISmartChargeUtilities *)v5 logMemoryUsageInternalForEvent:v7, eventCopy, v8];
     }
   }
 }
@@ -208,7 +208,7 @@ uint64_t __46__PowerUISmartChargeUtilities_isInternalBuild__block_invoke()
   sysctlbyname("kern.bootsessionuuid", v3, &size, 0, 0);
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:v3];
   free(v3);
-  v5 = [a1 log];
+  v5 = [self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
@@ -221,7 +221,7 @@ uint64_t __46__PowerUISmartChargeUtilities_isInternalBuild__block_invoke()
   return v4;
 }
 
-+ (void)getBatteryLevelDurations:(double *)a3
++ (void)getBatteryLevelDurations:(double *)durations
 {
   v31 = *MEMORY[0x277D85DE8];
   v24 = 0;
@@ -231,39 +231,39 @@ uint64_t __46__PowerUISmartChargeUtilities_isInternalBuild__block_invoke()
   v28 = __Block_byref_object_dispose__2;
   v29 = 0;
   v5 = BiomeLibrary();
-  v6 = [v5 Device];
-  v7 = [v6 Power];
-  v8 = [v7 BatteryLevel];
-  v9 = [v8 publisher];
+  device = [v5 Device];
+  power = [device Power];
+  batteryLevel = [power BatteryLevel];
+  publisher = [batteryLevel publisher];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __56__PowerUISmartChargeUtilities_getBatteryLevelDurations___block_invoke;
   v23[3] = &__block_descriptor_40_e23_v16__0__BPSCompletion_8l;
-  v23[4] = a1;
+  v23[4] = self;
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __56__PowerUISmartChargeUtilities_getBatteryLevelDurations___block_invoke_23;
   v22[3] = &unk_2782D4218;
   v22[4] = &v24;
-  v22[5] = a1;
-  v22[6] = a3;
-  v10 = [v9 sinkWithCompletion:v23 receiveInput:v22];
+  v22[5] = self;
+  v22[6] = durations;
+  v10 = [publisher sinkWithCompletion:v23 receiveInput:v22];
 
   if (v25[5])
   {
-    v11 = [MEMORY[0x277CBEAA8] date];
-    [v11 timeIntervalSinceReferenceDate];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSinceReferenceDate];
     v13 = v12;
     [v25[5] timestamp];
     v15 = v14;
 
-    v16 = [v25[5] eventBody];
-    [v16 batteryPercentage];
+    eventBody = [v25[5] eventBody];
+    [eventBody batteryPercentage];
     v18 = v17;
 
     if (v18 >= 0x65)
     {
-      v19 = [a1 log];
+      v19 = [self log];
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
         v20 = [MEMORY[0x277CCABB0] numberWithInteger:v18];
@@ -273,7 +273,7 @@ uint64_t __46__PowerUISmartChargeUtilities_isInternalBuild__block_invoke()
 
     else
     {
-      a3[v18] = v13 - v15 + a3[v18];
+      durations[v18] = v13 - v15 + durations[v18];
     }
   }
 
@@ -331,17 +331,17 @@ LABEL_4:
 LABEL_8:
 }
 
-+ (double)percentageOfBatteryDurations:(double *)a3 aboveBatteryLevel:(double)a4
++ (double)percentageOfBatteryDurations:(double *)durations aboveBatteryLevel:(double)level
 {
   v4 = 0;
   v5 = 0.0;
   v6 = 0.0;
   do
   {
-    v7 = a3[v4];
+    v7 = durations[v4];
     v6 = v6 + v7;
     v8 = v5 + v7;
-    if (v4 >= a4)
+    if (v4 >= level)
     {
       v5 = v8;
     }
@@ -355,7 +355,7 @@ LABEL_8:
     return v5 / v6;
   }
 
-  v9 = [a1 log];
+  v9 = [self log];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
     +[PowerUISmartChargeUtilities percentageOfBatteryDurations:aboveBatteryLevel:];
@@ -364,19 +364,19 @@ LABEL_8:
   return 0.0;
 }
 
-+ (double)areaOverEightyWithBatteryLevelDurations:(double *)a3
++ (double)areaOverEightyWithBatteryLevelDurations:(double *)durations
 {
-  bzero(a3, 0x328uLL);
-  [PowerUISmartChargeUtilities getBatteryLevelDurations:a3];
+  bzero(durations, 0x328uLL);
+  [PowerUISmartChargeUtilities getBatteryLevelDurations:durations];
 
-  [PowerUISmartChargeUtilities percentageOfBatteryDurations:a3 aboveBatteryLevel:75.0];
+  [PowerUISmartChargeUtilities percentageOfBatteryDurations:durations aboveBatteryLevel:75.0];
   return result;
 }
 
-+ (id)percentageOfTimeForBatteryLevels:(double *)a3 withLog:(id)a4
++ (id)percentageOfTimeForBatteryLevels:(double *)levels withLog:(id)log
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  logCopy = log;
   v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:4];
   v7 = 0;
   memset(v25, 0, sizeof(v25));
@@ -389,7 +389,7 @@ LABEL_8:
       v9 = 3;
     }
 
-    v10 = a3[v7];
+    v10 = levels[v7];
     *(v25 + v9) = v10 + *(v25 + v9);
     v8 = v8 + v10;
     ++v7;
@@ -409,7 +409,7 @@ LABEL_8:
       v13 = [MEMORY[0x277CCABB0] numberWithDouble:v12 / v8];
       [v6 setObject:v13 atIndexedSubscript:i];
 
-      v14 = v5;
+      v14 = logCopy;
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         v15 = [MEMORY[0x277CCABB0] numberWithInt:i];
@@ -423,7 +423,7 @@ LABEL_8:
     }
   }
 
-  v17 = v5;
+  v17 = logCopy;
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     v18 = [MEMORY[0x277CCABB0] numberWithDouble:v8];
@@ -439,20 +439,20 @@ LABEL_8:
   return v6;
 }
 
-+ (unint64_t)decileClassificationWithTopBinCutOff:(float *)a3
++ (unint64_t)decileClassificationWithTopBinCutOff:(float *)off
 {
   v14[101] = *MEMORY[0x277D85DE8];
   bzero(v14, 0x328uLL);
-  [a1 getBatteryLevelDurations:v14];
-  v5 = [a1 log];
-  v6 = [a1 percentageOfTimeForBatteryLevels:v14 withLog:v5];
+  [self getBatteryLevelDurations:v14];
+  v5 = [self log];
+  v6 = [self percentageOfTimeForBatteryLevels:v14 withLog:v5];
 
   v7 = [v6 objectAtIndexedSubscript:3];
   [v7 floatValue];
   v9 = v8;
 
   v10 = 0;
-  v11 = a3 + 1;
+  v11 = off + 1;
   while (v9 <= *(v11 - 1) || v9 > *v11)
   {
     ++v10;
@@ -468,60 +468,60 @@ LABEL_8:
   return v10;
 }
 
-+ (int64_t)currentBatteryLevelWithContext:(id)a3
++ (int64_t)currentBatteryLevelWithContext:(id)context
 {
   v3 = MEMORY[0x277CFE338];
-  v4 = a3;
-  v5 = [v3 keyPathForBatteryStateDataDictionary];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  contextCopy = context;
+  keyPathForBatteryStateDataDictionary = [v3 keyPathForBatteryStateDataDictionary];
+  v6 = [contextCopy objectForKeyedSubscript:keyPathForBatteryStateDataDictionary];
 
-  v7 = [MEMORY[0x277CFE338] batteryPercentageKey];
-  v8 = [v6 objectForKeyedSubscript:v7];
-  v9 = [v8 integerValue];
+  batteryPercentageKey = [MEMORY[0x277CFE338] batteryPercentageKey];
+  v8 = [v6 objectForKeyedSubscript:batteryPercentageKey];
+  integerValue = [v8 integerValue];
 
-  return v9;
+  return integerValue;
 }
 
-+ (BOOL)isPluggedInWithContext:(id)a3
++ (BOOL)isPluggedInWithContext:(id)context
 {
   v3 = MEMORY[0x277CFE338];
-  v4 = a3;
-  v5 = [v3 keyPathForBatteryStateDataDictionary];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  contextCopy = context;
+  keyPathForBatteryStateDataDictionary = [v3 keyPathForBatteryStateDataDictionary];
+  v6 = [contextCopy objectForKeyedSubscript:keyPathForBatteryStateDataDictionary];
 
-  v7 = [MEMORY[0x277CFE338] batteryExternalConnectedKey];
-  v8 = [v6 objectForKeyedSubscript:v7];
-  v9 = [v8 BOOLValue];
+  batteryExternalConnectedKey = [MEMORY[0x277CFE338] batteryExternalConnectedKey];
+  v8 = [v6 objectForKeyedSubscript:batteryExternalConnectedKey];
+  bOOLValue = [v8 BOOLValue];
 
-  return v9;
+  return bOOLValue;
 }
 
-+ (BOOL)deviceWasConnectedToChargerWithinSeconds:(double)a3 withContext:(id)a4
++ (BOOL)deviceWasConnectedToChargerWithinSeconds:(double)seconds withContext:(id)context
 {
-  v5 = a4;
-  v6 = [MEMORY[0x277CFE338] keyPathForBatteryStateDataDictionary];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  contextCopy = context;
+  keyPathForBatteryStateDataDictionary = [MEMORY[0x277CFE338] keyPathForBatteryStateDataDictionary];
+  v7 = [contextCopy objectForKeyedSubscript:keyPathForBatteryStateDataDictionary];
 
-  v8 = [MEMORY[0x277CFE338] batteryExternalConnectedKey];
-  v9 = [v7 objectForKeyedSubscript:v8];
-  v10 = [v9 BOOLValue];
+  batteryExternalConnectedKey = [MEMORY[0x277CFE338] batteryExternalConnectedKey];
+  v9 = [v7 objectForKeyedSubscript:batteryExternalConnectedKey];
+  bOOLValue = [v9 BOOLValue];
 
-  if (v10)
+  if (bOOLValue)
   {
-    v11 = [MEMORY[0x277CFE338] batteryExternalConnectedChangeDateKey];
-    v12 = [v7 objectForKeyedSubscript:v11];
+    batteryExternalConnectedChangeDateKey = [MEMORY[0x277CFE338] batteryExternalConnectedChangeDateKey];
+    v12 = [v7 objectForKeyedSubscript:batteryExternalConnectedChangeDateKey];
 
     if (!v12)
     {
-      v13 = [MEMORY[0x277CFE338] keyPathForPluginStatus];
-      v12 = [v5 lastModifiedDateForContextualKeyPath:v13];
+      keyPathForPluginStatus = [MEMORY[0x277CFE338] keyPathForPluginStatus];
+      v12 = [contextCopy lastModifiedDateForContextualKeyPath:keyPathForPluginStatus];
     }
 
-    v14 = [MEMORY[0x277CBEAA8] date];
-    [v14 timeIntervalSinceDate:v12];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSinceDate:v12];
     v16 = v15;
 
-    v17 = v16 < a3 && v16 > 0.0;
+    v17 = v16 < seconds && v16 > 0.0;
   }
 
   else
@@ -532,30 +532,30 @@ LABEL_8:
   return v17;
 }
 
-+ (BOOL)deviceConnectedToWirelessChargerWithContext:(id)a3
++ (BOOL)deviceConnectedToWirelessChargerWithContext:(id)context
 {
   v3 = MEMORY[0x277CFE338];
-  v4 = a3;
-  v5 = [v3 keyPathForBatteryStateDataDictionary];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  contextCopy = context;
+  keyPathForBatteryStateDataDictionary = [v3 keyPathForBatteryStateDataDictionary];
+  v6 = [contextCopy objectForKeyedSubscript:keyPathForBatteryStateDataDictionary];
 
-  v7 = [MEMORY[0x277CFE338] batteryAdapterIsWirelessKey];
-  v8 = [v6 objectForKeyedSubscript:v7];
-  v9 = [v8 BOOLValue];
+  batteryAdapterIsWirelessKey = [MEMORY[0x277CFE338] batteryAdapterIsWirelessKey];
+  v8 = [v6 objectForKeyedSubscript:batteryAdapterIsWirelessKey];
+  bOOLValue = [v8 BOOLValue];
 
-  return v9;
+  return bOOLValue;
 }
 
-+ (id)roundedDateFromDate:(id)a3
++ (id)roundedDateFromDate:(id)date
 {
   v3 = MEMORY[0x277CBEA80];
-  v4 = a3;
-  v5 = [v3 currentCalendar];
-  v6 = [v5 components:124 fromDate:v4];
+  dateCopy = date;
+  currentCalendar = [v3 currentCalendar];
+  v6 = [currentCalendar components:124 fromDate:dateCopy];
 
   v7 = (([v6 minute] / 30 + 1) * 30.0);
   [v6 setMinute:0];
-  v8 = [v5 dateFromComponents:v6];
+  v8 = [currentCalendar dateFromComponents:v6];
   v9 = [v8 dateByAddingTimeInterval:(60 * v7)];
 
   return v9;
@@ -585,31 +585,31 @@ uint64_t __44__PowerUISmartChargeUtilities_dateFormatter__block_invoke()
   return [v2 setTimeStyle:1];
 }
 
-+ (id)timeStringFromDate:(id)a3
++ (id)timeStringFromDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   v4 = +[PowerUISmartChargeUtilities dateFormatter];
-  v5 = [v4 stringFromDate:v3];
+  v5 = [v4 stringFromDate:dateCopy];
 
   return v5;
 }
 
-+ (BOOL)isWeekend:(id)a3
++ (BOOL)isWeekend:(id)weekend
 {
   v3 = MEMORY[0x277CBEA80];
-  v4 = a3;
-  v5 = [v3 currentCalendar];
-  v6 = [v5 isDateInWeekend:v4];
+  weekendCopy = weekend;
+  currentCalendar = [v3 currentCalendar];
+  v6 = [currentCalendar isDateInWeekend:weekendCopy];
 
   return v6;
 }
 
-+ (id)numberForKey:(id)a3 fromDict:(id)a4 withDefault:(int64_t)a5
++ (id)numberForKey:(id)key fromDict:(id)dict withDefault:(int64_t)default
 {
-  v8 = a3;
-  if (v8 && a4)
+  keyCopy = key;
+  if (keyCopy && dict)
   {
-    v9 = [a4 objectForKeyedSubscript:v8];
+    v9 = [dict objectForKeyedSubscript:keyCopy];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       v11 = v9;
@@ -617,13 +617,13 @@ uint64_t __44__PowerUISmartChargeUtilities_dateFormatter__block_invoke()
 
     else
     {
-      v10 = [a1 log];
+      v10 = [self log];
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
       {
         +[PowerUISmartChargeUtilities numberForKey:fromDict:withDefault:];
       }
 
-      v11 = [MEMORY[0x277CCABB0] numberWithInteger:a5];
+      v11 = [MEMORY[0x277CCABB0] numberWithInteger:default];
     }
 
     v13 = v11;
@@ -631,28 +631,28 @@ uint64_t __44__PowerUISmartChargeUtilities_dateFormatter__block_invoke()
 
   else
   {
-    v12 = [a1 log];
+    v12 = [self log];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
       +[PowerUISmartChargeUtilities numberForKey:fromDict:withDefault:];
     }
 
-    v13 = [MEMORY[0x277CCABB0] numberWithInteger:a5];
+    v13 = [MEMORY[0x277CCABB0] numberWithInteger:default];
   }
 
   return v13;
 }
 
-+ (id)pluginEventsBefore:(id)a3 withMinimumDuration:(double)a4 ignoringDisconnectsShorterThan:(double)a5
++ (id)pluginEventsBefore:(id)before withMinimumDuration:(double)duration ignoringDisconnectsShorterThan:(double)than
 {
-  v25 = a3;
+  beforeCopy = before;
   v22 = os_transaction_create();
   v34 = 0;
   v35 = &v34;
   v36 = 0x3032000000;
   v37 = __Block_byref_object_copy__2;
   v38 = __Block_byref_object_dispose__2;
-  v39 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v32[0] = 0;
   v32[1] = v32;
   v32[2] = 0x3032000000;
@@ -672,24 +672,24 @@ uint64_t __44__PowerUISmartChargeUtilities_dateFormatter__block_invoke()
   v28[4] = __Block_byref_object_dispose__2;
   v29 = 0;
   v7 = objc_alloc(MEMORY[0x277CF1A50]);
-  v8 = [v25 dateByAddingTimeInterval:-5184000.0];
-  v9 = [v7 initWithStartDate:v8 endDate:v25 maxEvents:0 lastN:0 reversed:0];
+  v8 = [beforeCopy dateByAddingTimeInterval:-5184000.0];
+  v9 = [v7 initWithStartDate:v8 endDate:beforeCopy maxEvents:0 lastN:0 reversed:0];
 
   v24 = BiomeLibrary();
-  v10 = [v24 Device];
-  v11 = [v10 Power];
-  v12 = [v11 PluggedIn];
-  v13 = [v12 publisherWithOptions:v9];
+  device = [v24 Device];
+  power = [device Power];
+  pluggedIn = [power PluggedIn];
+  v13 = [pluggedIn publisherWithOptions:v9];
   v14 = BiomeLibrary();
-  v15 = [v14 Device];
-  v16 = [v15 TimeZone];
-  v17 = [v16 publisherWithOptions:v9];
+  device2 = [v14 Device];
+  timeZone = [device2 TimeZone];
+  v17 = [timeZone publisherWithOptions:v9];
   v18 = [v13 orderedMergeWithOther:v17 comparator:&__block_literal_global_38];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __101__PowerUISmartChargeUtilities_pluginEventsBefore_withMinimumDuration_ignoringDisconnectsShorterThan___block_invoke_2;
   v27[3] = &__block_descriptor_40_e23_v16__0__BPSCompletion_8l;
-  v27[4] = a1;
+  v27[4] = self;
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __101__PowerUISmartChargeUtilities_pluginEventsBefore_withMinimumDuration_ignoringDisconnectsShorterThan___block_invoke_39;
@@ -698,8 +698,8 @@ uint64_t __44__PowerUISmartChargeUtilities_dateFormatter__block_invoke()
   v26[5] = v30;
   v26[6] = v32;
   v26[7] = &v34;
-  *&v26[8] = a5;
-  *&v26[9] = a4;
+  *&v26[8] = than;
+  *&v26[9] = duration;
   v19 = [v18 sinkWithCompletion:v27 receiveInput:v26];
 
   v20 = v35[5];
@@ -843,17 +843,17 @@ LABEL_18:
   objc_autoreleasePoolPop(v3);
 }
 
-+ (id)pluginEventsBefore:(id)a3 withMinimumDuration:(double)a4 withMinimumPlugoutBatteryLevel:(double)a5 ignoringDisconnectsShorterThan:(double)a6
++ (id)pluginEventsBefore:(id)before withMinimumDuration:(double)duration withMinimumPlugoutBatteryLevel:(double)level ignoringDisconnectsShorterThan:(double)than
 {
   v53[2] = *MEMORY[0x277D85DE8];
-  v34 = a3;
+  beforeCopy = before;
   v25 = os_transaction_create();
   v47 = 0;
   v48 = &v47;
   v49 = 0x3032000000;
   v50 = __Block_byref_object_copy__2;
   v51 = __Block_byref_object_dispose__2;
-  v52 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v45[0] = 0;
   v45[1] = v45;
   v45[2] = 0x3032000000;
@@ -883,24 +883,24 @@ LABEL_18:
   v37[2] = 0x2020000000;
   v38 = -1;
   v9 = objc_alloc(MEMORY[0x277CF1A50]);
-  v10 = [v34 dateByAddingTimeInterval:-5184000.0];
-  v11 = [v9 initWithStartDate:v10 endDate:v34 maxEvents:0 lastN:0 reversed:0];
+  v10 = [beforeCopy dateByAddingTimeInterval:-5184000.0];
+  v11 = [v9 initWithStartDate:v10 endDate:beforeCopy maxEvents:0 lastN:0 reversed:0];
 
   v33 = BiomeLibrary();
-  v32 = [v33 Device];
-  v31 = [v32 Power];
-  v30 = [v31 PluggedIn];
-  v27 = [v30 publisherWithOptions:v11];
+  device = [v33 Device];
+  power = [device Power];
+  pluggedIn = [power PluggedIn];
+  v27 = [pluggedIn publisherWithOptions:v11];
   v29 = BiomeLibrary();
-  v28 = [v29 Device];
-  v12 = [v28 TimeZone];
-  v13 = [v12 publisherWithOptions:v11];
+  device2 = [v29 Device];
+  timeZone = [device2 TimeZone];
+  v13 = [timeZone publisherWithOptions:v11];
   v53[0] = v13;
   v14 = BiomeLibrary();
-  v15 = [v14 Device];
-  v16 = [v15 Power];
-  v17 = [v16 BatteryLevel];
-  v18 = [v17 publisherWithOptions:v11];
+  device3 = [v14 Device];
+  power2 = [device3 Power];
+  batteryLevel = [power2 BatteryLevel];
+  v18 = [batteryLevel publisherWithOptions:v11];
   v53[1] = v18;
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v53 count:2];
   v20 = [v27 orderedMergeWithOthers:v19 comparator:&__block_literal_global_45];
@@ -908,7 +908,7 @@ LABEL_18:
   v36[1] = 3221225472;
   v36[2] = __132__PowerUISmartChargeUtilities_pluginEventsBefore_withMinimumDuration_withMinimumPlugoutBatteryLevel_ignoringDisconnectsShorterThan___block_invoke_2;
   v36[3] = &__block_descriptor_40_e23_v16__0__BPSCompletion_8l;
-  v36[4] = a1;
+  v36[4] = self;
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
   v35[2] = __132__PowerUISmartChargeUtilities_pluginEventsBefore_withMinimumDuration_withMinimumPlugoutBatteryLevel_ignoringDisconnectsShorterThan___block_invoke_46;
@@ -919,10 +919,10 @@ LABEL_18:
   v35[7] = v37;
   v35[8] = v45;
   v35[9] = &v47;
-  *&v35[10] = a6;
-  *&v35[11] = a4;
-  *&v35[12] = a5;
-  v35[13] = a1;
+  *&v35[10] = than;
+  *&v35[11] = duration;
+  *&v35[12] = level;
+  v35[13] = self;
   v21 = [v20 sinkWithCompletion:v36 receiveInput:v35];
 
   v22 = v48[5];
@@ -1104,16 +1104,16 @@ LABEL_25:
   objc_autoreleasePoolPop(v5);
 }
 
-+ (id)drainBetweenRelevantEventsFromDrainSessionInfo:(id)a3
++ (id)drainBetweenRelevantEventsFromDrainSessionInfo:(id)info
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  infoCopy = info;
   v4 = objc_opt_new();
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = infoCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -1149,23 +1149,23 @@ LABEL_25:
   return v4;
 }
 
-+ (id)curentDateStringFromDate:(id)a3 withFormat:(id)a4
++ (id)curentDateStringFromDate:(id)date withFormat:(id)format
 {
   v5 = MEMORY[0x277CCA968];
-  v6 = a4;
-  v7 = a3;
+  formatCopy = format;
+  dateCopy = date;
   v8 = objc_alloc_init(v5);
-  [v8 setDateFormat:v6];
+  [v8 setDateFormat:formatCopy];
 
-  v9 = [v8 stringFromDate:v7];
+  v9 = [v8 stringFromDate:dateCopy];
 
   return v9;
 }
 
-+ (id)drainSessionsInfoBetweenRelevantChargesBefore:(id)a3 withMinimumDuration:(double)a4
++ (id)drainSessionsInfoBetweenRelevantChargesBefore:(id)before withMinimumDuration:(double)duration
 {
   v71[2] = *MEMORY[0x277D85DE8];
-  v33 = a3;
+  beforeCopy = before;
   v24 = os_transaction_create();
   v25 = objc_opt_new();
   v65 = 0;
@@ -1225,24 +1225,24 @@ LABEL_25:
   v37[4] = __Block_byref_object_dispose__2;
   v38 = 0;
   v5 = objc_alloc(MEMORY[0x277CF1A50]);
-  v6 = [v33 dateByAddingTimeInterval:-5184000.0];
-  v34 = [v5 initWithStartDate:v6 endDate:v33 maxEvents:0 lastN:0 reversed:0];
+  v6 = [beforeCopy dateByAddingTimeInterval:-5184000.0];
+  v34 = [v5 initWithStartDate:v6 endDate:beforeCopy maxEvents:0 lastN:0 reversed:0];
 
   v32 = BiomeLibrary();
-  v31 = [v32 Device];
-  v30 = [v31 Power];
-  v29 = [v30 PluggedIn];
-  v26 = [v29 publisherWithOptions:v34];
+  device = [v32 Device];
+  power = [device Power];
+  pluggedIn = [power PluggedIn];
+  v26 = [pluggedIn publisherWithOptions:v34];
   v28 = BiomeLibrary();
-  v7 = [v28 Device];
-  v8 = [v7 Power];
-  v9 = [v8 BatteryLevel];
-  v10 = [v9 publisherWithOptions:v34];
+  device2 = [v28 Device];
+  power2 = [device2 Power];
+  batteryLevel = [power2 BatteryLevel];
+  v10 = [batteryLevel publisherWithOptions:v34];
   v71[0] = v10;
   v11 = BiomeLibrary();
-  v12 = [v11 Device];
-  v13 = [v12 TimeZone];
-  v14 = [v13 publisherWithOptions:v34];
+  device3 = [v11 Device];
+  timeZone = [device3 TimeZone];
+  v14 = [timeZone publisherWithOptions:v34];
   v71[1] = v14;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v71 count:2];
   v16 = [v26 orderedMergeWithOthers:v15 comparator:&__block_literal_global_53];
@@ -1250,7 +1250,7 @@ LABEL_25:
   v36[1] = 3221225472;
   v36[2] = __97__PowerUISmartChargeUtilities_drainSessionsInfoBetweenRelevantChargesBefore_withMinimumDuration___block_invoke_2;
   v36[3] = &__block_descriptor_40_e23_v16__0__BPSCompletion_8l;
-  v36[4] = a1;
+  v36[4] = self;
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
   v35[2] = __97__PowerUISmartChargeUtilities_drainSessionsInfoBetweenRelevantChargesBefore_withMinimumDuration___block_invoke_54;
@@ -1263,24 +1263,24 @@ LABEL_25:
   v35[9] = v39;
   v35[10] = v51;
   v35[11] = &v65;
-  *&v35[14] = a4;
+  *&v35[14] = duration;
   v35[12] = v41;
   v35[13] = v49;
   v17 = [v16 sinkWithCompletion:v36 receiveInput:v35];
 
   if ([v66[5] count] && v54[5] && !v44[5] && v62[3] >= 1)
   {
-    v18 = [v66[5] lastObject];
+    lastObject = [v66[5] lastObject];
     v19 = [MEMORY[0x277CCABB0] numberWithLong:v62[3]];
-    [v18 setObject:v19 forKeyedSubscript:@"drain_depth"];
+    [lastObject setObject:v19 forKeyedSubscript:@"drain_depth"];
 
     v20 = MEMORY[0x277CBEAA8];
     [v54[5] timestamp];
     v21 = [v20 dateWithTimeIntervalSinceReferenceDate:?];
-    [v18 setObject:v21 forKeyedSubscript:@"drain_end"];
+    [lastObject setObject:v21 forKeyedSubscript:@"drain_end"];
   }
 
-  [a1 mergeDrainSessionsInfo:v66[5] intoResult:v25];
+  [self mergeDrainSessionsInfo:v66[5] intoResult:v25];
 
   _Block_object_dispose(v37, 8);
   _Block_object_dispose(v39, 8);
@@ -1530,12 +1530,12 @@ LABEL_4:
   objc_autoreleasePoolPop(v4);
 }
 
-+ (void)mergeDrainSessionsInfo:(id)a3 intoResult:(id)a4
++ (void)mergeDrainSessionsInfo:(id)info intoResult:(id)result
 {
-  v67 = a3;
-  v64 = a4;
+  infoCopy = info;
+  resultCopy = result;
   v68 = objc_opt_new();
-  if ([v67 count])
+  if ([infoCopy count])
   {
     v5 = 0;
     v6 = 0;
@@ -1543,35 +1543,35 @@ LABEL_4:
     do
     {
       v8 = v7;
-      v9 = [v67 objectAtIndexedSubscript:{v5, v64}];
+      v9 = [infoCopy objectAtIndexedSubscript:{v5, resultCopy}];
       v7 = [v9 mutableCopy];
 
       v10 = [v7 objectForKeyedSubscript:@"relevant_charge_session"];
-      v11 = [v10 BOOLValue];
+      bOOLValue = [v10 BOOLValue];
 
       v12 = v6;
-      if ([v67 count] > v6)
+      if ([infoCopy count] > v6)
       {
-        v13 = v67;
+        v13 = infoCopy;
         while (1)
         {
           v14 = [v13 objectAtIndexedSubscript:v12];
           v15 = [v14 objectForKeyedSubscript:@"drain_depth"];
-          v16 = [v15 integerValue];
+          integerValue = [v15 integerValue];
 
-          if (v16)
+          if (integerValue)
           {
             break;
           }
 
-          v17 = [v67 objectAtIndexedSubscript:v12];
+          v17 = [infoCopy objectAtIndexedSubscript:v12];
           v18 = [v17 objectForKeyedSubscript:@"relevant_charge_session"];
-          v11 |= [v18 BOOLValue];
+          bOOLValue |= [v18 BOOLValue];
 
           ++v12;
           ++v6;
-          v19 = [v67 count] > v12;
-          v13 = v67;
+          v19 = [infoCopy count] > v12;
+          v13 = infoCopy;
           if (!v19)
           {
             goto LABEL_9;
@@ -1579,18 +1579,18 @@ LABEL_4:
         }
       }
 
-      v13 = v67;
+      v13 = infoCopy;
 LABEL_9:
       if ([v13 count] <= v12)
       {
         break;
       }
 
-      v20 = [v67 objectAtIndexedSubscript:v12];
+      v20 = [infoCopy objectAtIndexedSubscript:v12];
       v21 = [v20 objectForKeyedSubscript:@"charge_end_soc"];
       [v7 setObject:v21 forKeyedSubscript:@"charge_end_soc"];
 
-      v22 = [v67 objectAtIndexedSubscript:v12];
+      v22 = [infoCopy objectAtIndexedSubscript:v12];
       v23 = [v22 objectForKeyedSubscript:@"end"];
       [v7 setObject:v23 forKeyedSubscript:@"end"];
 
@@ -1601,22 +1601,22 @@ LABEL_9:
       v27 = [v24 numberWithDouble:?];
       [v7 setObject:v27 forKeyedSubscript:@"charge_duration"];
 
-      v28 = [v67 objectAtIndexedSubscript:v12];
+      v28 = [infoCopy objectAtIndexedSubscript:v12];
       v29 = [v28 objectForKeyedSubscript:@"drain_depth"];
       [v7 setObject:v29 forKeyedSubscript:@"drain_depth"];
 
-      v30 = [v67 objectAtIndexedSubscript:v12];
+      v30 = [infoCopy objectAtIndexedSubscript:v12];
       v31 = [v30 objectForKeyedSubscript:@"drain_end"];
       [v7 setObject:v31 forKeyedSubscript:@"drain_end"];
 
-      v32 = [MEMORY[0x277CCABB0] numberWithBool:v11 & 1];
+      v32 = [MEMORY[0x277CCABB0] numberWithBool:bOOLValue & 1];
       [v7 setObject:v32 forKeyedSubscript:@"relevant_charge_session"];
 
       [v68 addObject:v7];
       v5 = ++v6;
     }
 
-    while ([v67 count] > v6);
+    while ([infoCopy count] > v6);
   }
 
   else
@@ -1639,7 +1639,7 @@ LABEL_9:
     v37 = [v36 mutableCopy];
 
     v38 = [v37 objectForKeyedSubscript:v35];
-    v39 = [v38 integerValue];
+    integerValue2 = [v38 integerValue];
 
     v66 = v37;
     v40 = [v37 objectForKeyedSubscript:@"drain_end"];
@@ -1667,10 +1667,10 @@ LABEL_9:
       v46 = v45 = v35;
       v47 = [v46 objectForKeyedSubscript:@"charge_start_soc"];
       v48 = v40;
-      v49 = [v47 integerValue];
+      integerValue3 = [v47 integerValue];
 
       v35 = v45;
-      v19 = v49 <= 0;
+      v19 = integerValue3 <= 0;
       v40 = v48;
       if (!v19)
       {
@@ -1680,7 +1680,7 @@ LABEL_9:
 LABEL_21:
       v50 = [v68 objectAtIndexedSubscript:v33];
       v51 = [v50 objectForKeyedSubscript:v35];
-      v39 += [v51 integerValue];
+      integerValue2 += [v51 integerValue];
 
       v52 = [v68 objectAtIndexedSubscript:v33];
       v57 = [v52 objectForKeyedSubscript:@"drain_end"];
@@ -1704,7 +1704,7 @@ LABEL_24:
     v56 = v42;
     v40 = v57;
 LABEL_25:
-    v58 = [MEMORY[0x277CCABB0] numberWithLong:v39];
+    v58 = [MEMORY[0x277CCABB0] numberWithLong:integerValue2];
     [v66 setObject:v58 forKeyedSubscript:v35];
 
     [v66 setObject:v40 forKeyedSubscript:@"drain_end"];
@@ -1724,36 +1724,36 @@ LABEL_25:
 LABEL_28:
 }
 
-+ (double)timestampOfFirstEventReachingBatteryLevel:(int)a3 betweenStartTime:(id)a4 andEndTime:(id)a5
++ (double)timestampOfFirstEventReachingBatteryLevel:(int)level betweenStartTime:(id)time andEndTime:(id)endTime
 {
-  v7 = a4;
-  v8 = a5;
+  timeCopy = time;
+  endTimeCopy = endTime;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
   v28 = 0;
-  v9 = [objc_alloc(MEMORY[0x277CF1A50]) initWithStartDate:v7 endDate:v8 maxEvents:0 lastN:0 reversed:0];
+  v9 = [objc_alloc(MEMORY[0x277CF1A50]) initWithStartDate:timeCopy endDate:endTimeCopy maxEvents:0 lastN:0 reversed:0];
   v10 = BiomeLibrary();
-  v11 = [v10 Device];
-  v12 = [v11 Power];
-  v13 = [v12 BatteryLevel];
-  v14 = [v13 publisherWithOptions:v9];
+  device = [v10 Device];
+  power = [device Power];
+  batteryLevel = [power BatteryLevel];
+  v14 = [batteryLevel publisherWithOptions:v9];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __101__PowerUISmartChargeUtilities_timestampOfFirstEventReachingBatteryLevel_betweenStartTime_andEndTime___block_invoke;
   v23[3] = &__block_descriptor_36_e22_B16__0__BMStoreEvent_8l;
-  v24 = a3;
+  levelCopy = level;
   v15 = [v14 filterWithIsIncluded:v23];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __101__PowerUISmartChargeUtilities_timestampOfFirstEventReachingBatteryLevel_betweenStartTime_andEndTime___block_invoke_2;
   v22[3] = &__block_descriptor_40_e23_v16__0__BPSCompletion_8l;
-  v22[4] = a1;
+  v22[4] = self;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __101__PowerUISmartChargeUtilities_timestampOfFirstEventReachingBatteryLevel_betweenStartTime_andEndTime___block_invoke_82;
   v20[3] = &unk_2782D42D8;
-  v21 = a3;
+  levelCopy2 = level;
   v20[4] = &v25;
   v16 = [v15 sinkWithCompletion:v22 shouldContinue:v20];
 
@@ -1802,17 +1802,17 @@ BOOL __101__PowerUISmartChargeUtilities_timestampOfFirstEventReachingBatteryLeve
   return v6 < v7;
 }
 
-+ (id)historicalFullChargeDurationStartingAt:(int)a3 withMinimumPluginDuration:(int)a4
++ (id)historicalFullChargeDurationStartingAt:(int)at withMinimumPluginDuration:(int)duration
 {
   v35 = *MEMORY[0x277D85DE8];
-  if (a3 > 79)
+  if (at > 79)
   {
     v27 = 0;
     v28 = &v27;
     v29 = 0x3032000000;
     v30 = __Block_byref_object_copy__2;
     v31 = __Block_byref_object_dispose__2;
-    v32 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v9 = objc_autoreleasePoolPush();
     v26[0] = 0;
     v26[1] = v26;
@@ -1823,28 +1823,28 @@ BOOL __101__PowerUISmartChargeUtilities_timestampOfFirstEventReachingBatteryLeve
     v25[2] = 0x2020000000;
     v25[3] = 0;
     v10 = BiomeLibrary();
-    v11 = [v10 Device];
-    v12 = [v11 Charging];
-    v13 = [v12 SmartCharging];
-    v14 = [v13 publisher];
-    v15 = [v14 filterWithIsIncluded:&__block_literal_global_84];
+    device = [v10 Device];
+    charging = [device Charging];
+    smartCharging = [charging SmartCharging];
+    publisher = [smartCharging publisher];
+    v15 = [publisher filterWithIsIncluded:&__block_literal_global_84];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __96__PowerUISmartChargeUtilities_historicalFullChargeDurationStartingAt_withMinimumPluginDuration___block_invoke_2;
     v24[3] = &__block_descriptor_40_e23_v16__0__BPSCompletion_8l;
-    v24[4] = a1;
+    v24[4] = self;
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __96__PowerUISmartChargeUtilities_historicalFullChargeDurationStartingAt_withMinimumPluginDuration___block_invoke_85;
     v21[3] = &unk_2782D4300;
     v21[4] = v26;
     v21[5] = v25;
-    v22 = a3;
-    v23 = a4;
+    atCopy = at;
+    durationCopy = duration;
     v21[6] = &v27;
     v16 = [v15 sinkWithCompletion:v24 receiveInput:v21];
 
-    v17 = [a1 log];
+    v17 = [self log];
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       v18 = v28[5];
@@ -1862,7 +1862,7 @@ BOOL __101__PowerUISmartChargeUtilities_timestampOfFirstEventReachingBatteryLeve
 
   else
   {
-    v5 = [a1 log];
+    v5 = [self log];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
     {
       +[PowerUISmartChargeUtilities historicalFullChargeDurationStartingAt:withMinimumPluginDuration:];
@@ -2092,18 +2092,18 @@ void __63__PowerUISmartChargeUtilities_cachedHistorical80ToFullDuration__block_i
   return v7;
 }
 
-+ (id)concatenateChargeSessions:(id)a3 withMaxDeltaSecondsBetweenEvents:(unint64_t)a4
++ (id)concatenateChargeSessions:(id)sessions withMaxDeltaSecondsBetweenEvents:(unint64_t)events
 {
   v46 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if ([v5 count] > 1)
+  sessionsCopy = sessions;
+  if ([sessionsCopy count] > 1)
   {
-    v38 = a1;
-    v7 = [v5 reverseObjectEnumerator];
-    v6 = [v7 allObjects];
+    selfCopy = self;
+    reverseObjectEnumerator = [sessionsCopy reverseObjectEnumerator];
+    allObjects = [reverseObjectEnumerator allObjects];
 
-    v42 = [MEMORY[0x277CBEB18] array];
-    v8 = [v6 count];
+    array = [MEMORY[0x277CBEB18] array];
+    v8 = [allObjects count];
     LODWORD(v9) = v8 - 1;
     if (v8 >= 2)
     {
@@ -2112,9 +2112,9 @@ void __63__PowerUISmartChargeUtilities_cachedHistorical80ToFullDuration__block_i
         v10 = v9;
         do
         {
-          v11 = [v6 objectAtIndexedSubscript:v10];
-          v12 = [MEMORY[0x277CBEB68] null];
-          if ([v11 isEqual:v12])
+          v11 = [allObjects objectAtIndexedSubscript:v10];
+          null = [MEMORY[0x277CBEB68] null];
+          if ([v11 isEqual:null])
           {
 
             v13 = v10;
@@ -2122,7 +2122,7 @@ void __63__PowerUISmartChargeUtilities_cachedHistorical80ToFullDuration__block_i
 
           else
           {
-            v14 = [v6 objectAtIndexedSubscript:v10];
+            v14 = [allObjects objectAtIndexedSubscript:v10];
 
             v13 = v10;
             if (v14)
@@ -2146,15 +2146,15 @@ LABEL_18:
             v9 = v9;
             while (1)
             {
-              v19 = [v6 objectAtIndexedSubscript:v9];
-              v20 = [v19 startDate];
-              v21 = [v6 objectAtIndexedSubscript:v9 + 1];
-              v22 = [v21 endDate];
-              [v20 timeIntervalSinceDate:v22];
+              v19 = [allObjects objectAtIndexedSubscript:v9];
+              startDate = [v19 startDate];
+              v21 = [allObjects objectAtIndexedSubscript:v9 + 1];
+              endDate = [v21 endDate];
+              [startDate timeIntervalSinceDate:endDate];
               v24 = v23;
               v25 = v23 >= 0 ? v24 : -v24;
 
-              if (v25 > a4)
+              if (v25 > events)
               {
                 break;
               }
@@ -2173,15 +2173,15 @@ LABEL_18:
           v9 = (v10 - 1);
           do
           {
-            v15 = [v6 objectAtIndexedSubscript:v9];
-            v16 = [MEMORY[0x277CBEB68] null];
-            if ([v15 isEqual:v16])
+            v15 = [allObjects objectAtIndexedSubscript:v9];
+            null2 = [MEMORY[0x277CBEB68] null];
+            if ([v15 isEqual:null2])
             {
             }
 
             else
             {
-              v17 = [v6 objectAtIndexedSubscript:v9];
+              v17 = [allObjects objectAtIndexedSubscript:v9];
 
               if (v17)
               {
@@ -2199,25 +2199,25 @@ LABEL_26:
 
         if (v9 >= v10 - 1)
         {
-          v32 = [v6 objectAtIndexedSubscript:v10];
+          v32 = [allObjects objectAtIndexedSubscript:v10];
           LODWORD(v9) = v10 - 1;
         }
 
         else
         {
           v40 = [PowerUIChargeSession alloc];
-          v41 = [v6 objectAtIndexedSubscript:v10];
-          v39 = [v41 startDate];
-          v26 = [v6 objectAtIndexedSubscript:v9 + 1];
-          v27 = [v26 endDate];
-          v28 = [v6 objectAtIndexedSubscript:v10];
-          v29 = [v28 startSoC];
-          v30 = [v6 objectAtIndexedSubscript:v9 + 1];
-          v31 = [v30 endSoC];
-          v32 = [(PowerUIChargeSession *)v40 initWithStartDate:v39 withEndDate:v27 withStartSoC:v29 withEndSoC:v31];
+          v41 = [allObjects objectAtIndexedSubscript:v10];
+          startDate2 = [v41 startDate];
+          v26 = [allObjects objectAtIndexedSubscript:v9 + 1];
+          endDate2 = [v26 endDate];
+          v28 = [allObjects objectAtIndexedSubscript:v10];
+          startSoC = [v28 startSoC];
+          v30 = [allObjects objectAtIndexedSubscript:v9 + 1];
+          endSoC = [v30 endSoC];
+          v32 = [(PowerUIChargeSession *)v40 initWithStartDate:startDate2 withEndDate:endDate2 withStartSoC:startSoC withEndSoC:endSoC];
         }
 
-        [v42 addObject:v32];
+        [array addObject:v32];
       }
 
       while (v9 > 0);
@@ -2225,14 +2225,14 @@ LABEL_26:
 
     if (!v9)
     {
-      v33 = [v6 objectAtIndexedSubscript:0];
-      [v42 addObject:v33];
+      v33 = [allObjects objectAtIndexedSubscript:0];
+      [array addObject:v33];
     }
 
-    v34 = [v38 log];
+    v34 = [selfCopy log];
     if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
     {
-      v35 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v6, "count") - objc_msgSend(v42, "count")}];
+      v35 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(allObjects, "count") - objc_msgSend(array, "count")}];
       *buf = 138412290;
       v45 = v35;
       _os_log_impl(&dword_21B766000, v34, OS_LOG_TYPE_DEFAULT, "Concatenated %@ events", buf, 0xCu);
@@ -2241,13 +2241,13 @@ LABEL_26:
 
   else
   {
-    v6 = v5;
-    v42 = v6;
+    allObjects = sessionsCopy;
+    array = allObjects;
   }
 
   v36 = *MEMORY[0x277D85DE8];
 
-  return v42;
+  return array;
 }
 
 + (id)recentEngagementHistory
@@ -2324,54 +2324,54 @@ LABEL_26:
   return v27;
 }
 
-+ (id)filterChargeSessions:(id)a3 startsBefore:(id)a4 dynamicallyAroundDate:(id)a5 withinSeconds:(unint64_t)a6
++ (id)filterChargeSessions:(id)sessions startsBefore:(id)before dynamicallyAroundDate:(id)date withinSeconds:(unint64_t)seconds
 {
-  v9 = a3;
+  sessionsCopy = sessions;
   v10 = MEMORY[0x277CBEB18];
-  v11 = a5;
-  v12 = a4;
-  v40 = [v10 array];
-  v13 = [MEMORY[0x277CBEA80] currentCalendar];
-  v14 = [v13 timeZone];
-  v15 = [v11 dateByAddingTimeInterval:{objc_msgSend(v14, "secondsFromGMT")}];
+  dateCopy = date;
+  beforeCopy = before;
+  array = [v10 array];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  timeZone = [currentCalendar timeZone];
+  v15 = [dateCopy dateByAddingTimeInterval:{objc_msgSend(timeZone, "secondsFromGMT")}];
 
-  v16 = [v13 timeZone];
-  v17 = [v12 dateByAddingTimeInterval:{objc_msgSend(v16, "secondsFromGMT")}];
+  timeZone2 = [currentCalendar timeZone];
+  v17 = [beforeCopy dateByAddingTimeInterval:{objc_msgSend(timeZone2, "secondsFromGMT")}];
 
   v37 = v15;
-  [v13 components:96 fromDate:v15];
-  v36 = v41 = v13;
-  v18 = [v13 dateFromComponents:?];
+  [currentCalendar components:96 fromDate:v15];
+  v36 = v41 = currentCalendar;
+  v18 = [currentCalendar dateFromComponents:?];
   v38 = [v18 dateByAddingTimeInterval:86400.0];
-  if ([v9 count])
+  if ([sessionsCopy count])
   {
     v19 = 0;
-    v20 = a6;
+    secondsCopy = seconds;
     v39 = v17;
     do
     {
       v21 = objc_autoreleasePoolPush();
-      v22 = [v9 objectAtIndexedSubscript:v19];
-      v23 = [v22 startDate];
+      v22 = [sessionsCopy objectAtIndexedSubscript:v19];
+      startDate = [v22 startDate];
 
       if (v19)
       {
-        v24 = [v9 objectAtIndexedSubscript:v19 - 1];
-        v25 = [v24 endDate];
+        v24 = [sessionsCopy objectAtIndexedSubscript:v19 - 1];
+        endDate = [v24 endDate];
       }
 
       else
       {
-        v25 = [MEMORY[0x277CBEAA8] distantPast];
+        endDate = [MEMORY[0x277CBEAA8] distantPast];
       }
 
-      [v23 timeIntervalSinceDate:v25];
+      [startDate timeIntervalSinceDate:endDate];
       if (v26 >= 0.0)
       {
-        [v23 timeIntervalSinceDate:v17];
+        [startDate timeIntervalSinceDate:v17];
         if (v27 < 0.0)
         {
-          v28 = [v41 components:96 fromDate:v23];
+          v28 = [v41 components:96 fromDate:startDate];
           v29 = [v41 dateFromComponents:v28];
           v30 = [v29 dateByAddingTimeInterval:86400.0];
           [v29 timeIntervalSinceDate:v18];
@@ -2380,7 +2380,7 @@ LABEL_26:
             v31 = -v31;
           }
 
-          if (v31 < v20)
+          if (v31 < secondsCopy)
           {
             goto LABEL_17;
           }
@@ -2391,7 +2391,7 @@ LABEL_26:
             v32 = -v32;
           }
 
-          if (v32 < v20)
+          if (v32 < secondsCopy)
           {
             goto LABEL_17;
           }
@@ -2402,11 +2402,11 @@ LABEL_26:
             v33 = -v33;
           }
 
-          if (v33 < v20)
+          if (v33 < secondsCopy)
           {
 LABEL_17:
-            v34 = [v9 objectAtIndexedSubscript:v19];
-            [v40 addObject:v34];
+            v34 = [sessionsCopy objectAtIndexedSubscript:v19];
+            [array addObject:v34];
           }
 
           v17 = v39;
@@ -2417,18 +2417,18 @@ LABEL_17:
       ++v19;
     }
 
-    while ([v9 count] > v19);
+    while ([sessionsCopy count] > v19);
   }
 
-  return v40;
+  return array;
 }
 
-+ (BOOL)doesTimeOfDayForDate:(id)a3 fallBetweenDate:(id)a4 andDate:(id)a5
++ (BOOL)doesTimeOfDayForDate:(id)date fallBetweenDate:(id)betweenDate andDate:(id)andDate
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  [v9 timeIntervalSinceDate:v8];
+  dateCopy = date;
+  betweenDateCopy = betweenDate;
+  andDateCopy = andDate;
+  [andDateCopy timeIntervalSinceDate:betweenDateCopy];
   if (v10 < 86400.0)
   {
     if (doesTimeOfDayForDate_fallBetweenDate_andDate__onceToken != -1)
@@ -2436,11 +2436,11 @@ LABEL_17:
       +[PowerUISmartChargeUtilities doesTimeOfDayForDate:fallBetweenDate:andDate:];
     }
 
-    v22 = [doesTimeOfDayForDate_fallBetweenDate_andDate__currentCalendar components:96 fromDate:v8];
+    v22 = [doesTimeOfDayForDate_fallBetweenDate_andDate__currentCalendar components:96 fromDate:betweenDateCopy];
     v11 = [doesTimeOfDayForDate_fallBetweenDate_andDate__currentCalendar dateFromComponents:?];
-    v12 = [doesTimeOfDayForDate_fallBetweenDate_andDate__currentCalendar components:96 fromDate:v9];
+    v12 = [doesTimeOfDayForDate_fallBetweenDate_andDate__currentCalendar components:96 fromDate:andDateCopy];
     v13 = [doesTimeOfDayForDate_fallBetweenDate_andDate__currentCalendar dateFromComponents:v12];
-    v14 = [doesTimeOfDayForDate_fallBetweenDate_andDate__currentCalendar components:96 fromDate:v7];
+    v14 = [doesTimeOfDayForDate_fallBetweenDate_andDate__currentCalendar components:96 fromDate:dateCopy];
     v15 = [doesTimeOfDayForDate_fallBetweenDate_andDate__currentCalendar dateFromComponents:v14];
     v16 = [v11 earlierDate:v13];
 
@@ -2482,21 +2482,21 @@ uint64_t __76__PowerUISmartChargeUtilities_doesTimeOfDayForDate_fallBetweenDate_
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)readStringForPreferenceKey:(id)a3 inDomain:(id)a4
++ (id)readStringForPreferenceKey:(id)key inDomain:(id)domain
 {
-  v4 = CFPreferencesCopyAppValue(a3, a4);
+  v4 = CFPreferencesCopyAppValue(key, domain);
 
   return v4;
 }
 
-+ (void)setDate:(id)a3 forPreferenceKey:(id)a4 inDomain:(id)a5
++ (void)setDate:(id)date forPreferenceKey:(id)key inDomain:(id)domain
 {
-  key = a4;
-  v7 = a5;
-  if (a3)
+  key = key;
+  domainCopy = domain;
+  if (date)
   {
     v8 = MEMORY[0x277CCABB0];
-    [a3 timeIntervalSinceReferenceDate];
+    [date timeIntervalSinceReferenceDate];
     v9 = [v8 numberWithDouble:?];
   }
 
@@ -2505,12 +2505,12 @@ uint64_t __76__PowerUISmartChargeUtilities_doesTimeOfDayForDate_fallBetweenDate_
     v9 = 0;
   }
 
-  CFPreferencesSetAppValue(key, v9, v7);
+  CFPreferencesSetAppValue(key, v9, domainCopy);
 }
 
-+ (id)dateForPreferenceKey:(id)a3 inDomain:(id)a4
++ (id)dateForPreferenceKey:(id)key inDomain:(id)domain
 {
-  v4 = CFPreferencesCopyAppValue(a3, a4);
+  v4 = CFPreferencesCopyAppValue(key, domain);
   v5 = v4;
   if (v4)
   {
@@ -2527,25 +2527,25 @@ uint64_t __76__PowerUISmartChargeUtilities_doesTimeOfDayForDate_fallBetweenDate_
   return v7;
 }
 
-+ (id)numberForPreferenceKey:(id)a3 inDomain:(id)a4
++ (id)numberForPreferenceKey:(id)key inDomain:(id)domain
 {
-  v4 = CFPreferencesCopyAppValue(a3, a4);
+  v4 = CFPreferencesCopyAppValue(key, domain);
 
   return v4;
 }
 
-+ (id)readDictForPreferenceKey:(id)a3 inDomain:(id)a4
++ (id)readDictForPreferenceKey:(id)key inDomain:(id)domain
 {
-  v4 = CFPreferencesCopyAppValue(a3, a4);
+  v4 = CFPreferencesCopyAppValue(key, domain);
 
   return v4;
 }
 
-+ (id)timelineEventDate:(id)a3 withDefaultsDomain:(id)a4
++ (id)timelineEventDate:(id)date withDefaultsDomain:(id)domain
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = CFPreferencesCopyAppValue(@"timeline", a4);
+  dateCopy = date;
+  v7 = CFPreferencesCopyAppValue(@"timeline", domain);
   v8 = [v7 mutableCopy];
 
   if (v8)
@@ -2559,7 +2559,7 @@ uint64_t __76__PowerUISmartChargeUtilities_doesTimeOfDayForDate_fallBetweenDate_
     if (v10)
     {
       v11 = v10;
-      v23 = a1;
+      selfCopy = self;
       v12 = *v25;
       while (2)
       {
@@ -2572,7 +2572,7 @@ uint64_t __76__PowerUISmartChargeUtilities_doesTimeOfDayForDate_fallBetweenDate_
 
           v14 = *(*(&v24 + 1) + 8 * i);
           v15 = [v14 objectForKeyedSubscript:@"event"];
-          v16 = [v15 isEqualToString:v6];
+          v16 = [v15 isEqualToString:dateCopy];
 
           if (v16)
           {
@@ -2581,7 +2581,7 @@ uint64_t __76__PowerUISmartChargeUtilities_doesTimeOfDayForDate_fallBetweenDate_
             [v19 doubleValue];
             v17 = [v18 dateWithTimeIntervalSinceReferenceDate:?];
 
-            v20 = [v23 log];
+            v20 = [selfCopy log];
             if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
             {
               +[PowerUISmartChargeUtilities timelineEventDate:withDefaultsDomain:];
@@ -2615,14 +2615,14 @@ LABEL_14:
   return v17;
 }
 
-+ (id)batteryLevelHistogramAroundTime:(id)a3 withDelta:(double)a4 withOffset:(double)a5
++ (id)batteryLevelHistogramAroundTime:(id)time withDelta:(double)delta withOffset:(double)offset
 {
   v62[4] = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  timeCopy = time;
   v8 = BiomeLibrary();
-  v9 = [v8 Device];
-  v10 = [v9 Power];
-  v11 = [v10 BatteryLevel];
+  device = [v8 Device];
+  power = [device Power];
+  batteryLevel = [power BatteryLevel];
 
   v57 = 0;
   v58 = &v57;
@@ -2645,26 +2645,26 @@ LABEL_14:
   v54[1] = v54;
   v54[2] = 0x2020000000;
   v54[3] = 0;
-  if (!v7)
+  if (!timeCopy)
   {
-    v7 = [MEMORY[0x277CBEAA8] now];
+    timeCopy = [MEMORY[0x277CBEAA8] now];
   }
 
-  v14 = [v7 dateByAddingTimeInterval:-2592000.0];
-  v15 = [v14 dateByAddingTimeInterval:a5];
+  v14 = [timeCopy dateByAddingTimeInterval:-2592000.0];
+  v15 = [v14 dateByAddingTimeInterval:offset];
 
   v48 = 0;
   v49 = &v48;
   v50 = 0x3032000000;
   v51 = __Block_byref_object_copy__2;
   v52 = __Block_byref_object_dispose__2;
-  v53 = [v15 dateByAddingTimeInterval:-a4];
+  v53 = [v15 dateByAddingTimeInterval:-delta];
   v42 = 0;
   v43 = &v42;
   v44 = 0x3032000000;
   v45 = __Block_byref_object_copy__2;
   v46 = __Block_byref_object_dispose__2;
-  v47 = [v15 dateByAddingTimeInterval:a4];
+  v47 = [v15 dateByAddingTimeInterval:delta];
   v40[0] = 0;
   v40[1] = v40;
   v40[2] = 0x3032000000;
@@ -2676,7 +2676,7 @@ LABEL_14:
   v18 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-2592000.0];
   v19 = [v17 initWithStartDate:v18 endDate:0 maxEvents:0 lastN:0 reversed:0];
 
-  v20 = [v11 publisherWithOptions:v19];
+  v20 = [batteryLevel publisherWithOptions:v19];
   v39[0] = MEMORY[0x277D85DD0];
   v39[1] = 3221225472;
   v39[2] = __84__PowerUISmartChargeUtilities_batteryLevelHistogramAroundTime_withDelta_withOffset___block_invoke_2;
@@ -2808,23 +2808,23 @@ void __84__PowerUISmartChargeUtilities_batteryLevelHistogramAroundTime_withDelta
   }
 }
 
-+ (BOOL)deviceHasEnoughPluggedInTimeWithMinimumDays:(double)a3 withContext:(id)a4 withDefaultsDomain:(id)a5
++ (BOOL)deviceHasEnoughPluggedInTimeWithMinimumDays:(double)days withContext:(id)context withDefaultsDomain:(id)domain
 {
   v32 = *MEMORY[0x277D85DE8];
   v7 = os_transaction_create();
-  v8 = [MEMORY[0x277CBEAA8] date];
-  v9 = [PowerUISmartChargeUtilities pluginEventsBefore:v8 withMinimumDuration:1200.0 ignoringDisconnectsShorterThan:300.0];
+  date = [MEMORY[0x277CBEAA8] date];
+  v9 = [PowerUISmartChargeUtilities pluginEventsBefore:date withMinimumDuration:1200.0 ignoringDisconnectsShorterThan:300.0];
   v10 = [PowerUISmartChargeUtilities concatenateChargeSessions:v9 withMaxDeltaSecondsBetweenEvents:10];
 
-  v11 = [v10 firstObject];
-  v12 = [v11 startDate];
-  [v8 timeIntervalSinceDate:v12];
+  firstObject = [v10 firstObject];
+  startDate = [firstObject startDate];
+  [date timeIntervalSinceDate:startDate];
   v14 = v13;
 
-  if (v14 < a3 * 86400.0)
+  if (v14 < days * 86400.0)
   {
 LABEL_9:
-    v19 = [a1 log];
+    v19 = [self log];
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       v28 = 134217984;
@@ -2837,7 +2837,7 @@ LABEL_9:
 
   if ([v10 count] < 9)
   {
-    v24 = [a1 log];
+    v24 = [self log];
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
       v28 = 134217984;
@@ -2848,9 +2848,9 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v15 = [v10 lastObject];
-  v16 = [v15 startDate];
-  [v8 timeIntervalSinceDate:v16];
+  lastObject = [v10 lastObject];
+  startDate2 = [lastObject startDate];
+  [date timeIntervalSinceDate:startDate2];
   v18 = v17;
 
   if (v18 <= 604800.0)
@@ -2859,14 +2859,14 @@ LABEL_9:
     goto LABEL_12;
   }
 
-  v19 = [a1 log];
+  v19 = [self log];
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
     [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v10, "count")}];
     v20 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-    v21 = [v10 lastObject];
-    v22 = [v21 startDate];
-    [v8 timeIntervalSinceDate:v22];
+    lastObject2 = [v10 lastObject];
+    startDate3 = [lastObject2 startDate];
+    [date timeIntervalSinceDate:startDate3];
     v28 = 138543618;
     v29 = v20;
     v30 = 2048;
@@ -2883,16 +2883,16 @@ LABEL_12:
   return v25;
 }
 
-+ (double)totalPluginDurationAfter:(id)a3 withMinimumDuration:(double)a4 withPluginEvents:(id)a5
++ (double)totalPluginDurationAfter:(id)after withMinimumDuration:(double)duration withPluginEvents:(id)events
 {
   v27 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
+  afterCopy = after;
+  eventsCopy = events;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v9 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  v9 = [eventsCopy countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v9)
   {
     v10 = v9;
@@ -2904,18 +2904,18 @@ LABEL_12:
       {
         if (*v23 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(eventsCopy);
         }
 
         v14 = *(*(&v22 + 1) + 8 * i);
-        v15 = [v14 startDate];
-        [v7 timeIntervalSinceDate:v15];
+        startDate = [v14 startDate];
+        [afterCopy timeIntervalSinceDate:startDate];
         v17 = v16;
 
         if (v17 <= 0.0)
         {
           [v14 duration];
-          if (v18 >= a4)
+          if (v18 >= duration)
           {
             [v14 duration];
             v12 = v12 + v12 + v19;
@@ -2923,7 +2923,7 @@ LABEL_12:
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v10 = [eventsCopy countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v10);
@@ -2938,15 +2938,15 @@ LABEL_12:
   return v12;
 }
 
-+ (id)getTestVector:(id)a3
++ (id)getTestVector:(id)vector
 {
-  v3 = a3;
+  vectorCopy = vector;
   v48 = 0;
   v44 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:@"(.+?) options:(.+?)" error:{1, &v48}];
   v4 = v48;
   v47 = v4;
-  v42 = v3;
-  v5 = [MEMORY[0x277CCACA8] stringWithContentsOfURL:v3 encoding:1 error:&v47];
+  v42 = vectorCopy;
+  v5 = [MEMORY[0x277CCACA8] stringWithContentsOfURL:vectorCopy encoding:1 error:&v47];
   v41 = v47;
 
   v6 = objc_alloc_init(MEMORY[0x277CCABB8]);
@@ -3053,7 +3053,7 @@ LABEL_15:
   }
 
 LABEL_18:
-  v32 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ([v10 count])
   {
     v33 = 0;
@@ -3063,7 +3063,7 @@ LABEL_18:
       v35 = [v11 objectAtIndexedSubscript:v33];
       v36 = [v34 arrayWithArray:v35];
       v37 = [v10 objectAtIndexedSubscript:v33];
-      [v32 setObject:v36 forKeyedSubscript:v37];
+      [dictionary setObject:v36 forKeyedSubscript:v37];
 
       ++v33;
     }
@@ -3071,33 +3071,33 @@ LABEL_18:
     while ([v10 count] > v33);
   }
 
-  v38 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v32];
+  v38 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:dictionary];
 
   return v38;
 }
 
-+ (double)batteryLevelAtDate:(id)a3
++ (double)batteryLevelAtDate:(id)date
 {
-  v4 = a3;
-  [v4 timeIntervalSinceNow];
+  dateCopy = date;
+  [dateCopy timeIntervalSinceNow];
   if (v5 <= -10.0)
   {
     v24 = 0;
     v25[0] = &v24;
     v25[1] = 0x2020000000;
     v25[2] = 0;
-    v12 = [objc_alloc(MEMORY[0x277CF1A50]) initWithStartDate:v4 endDate:0 maxEvents:20 lastN:0 reversed:1];
+    v12 = [objc_alloc(MEMORY[0x277CF1A50]) initWithStartDate:dateCopy endDate:0 maxEvents:20 lastN:0 reversed:1];
     v13 = BiomeLibrary();
-    v14 = [v13 Device];
-    v15 = [v14 Power];
-    v16 = [v15 BatteryLevel];
-    v17 = [v16 publisherWithOptions:v12];
+    device = [v13 Device];
+    power = [device Power];
+    batteryLevel = [power BatteryLevel];
+    v17 = [batteryLevel publisherWithOptions:v12];
     v18 = [v17 filterWithIsIncluded:&__block_literal_global_185];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __50__PowerUISmartChargeUtilities_batteryLevelAtDate___block_invoke_2;
     v23[3] = &__block_descriptor_40_e23_v16__0__BPSCompletion_8l;
-    v23[4] = a1;
+    v23[4] = self;
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __50__PowerUISmartChargeUtilities_batteryLevelAtDate___block_invoke_186;
@@ -3105,28 +3105,28 @@ LABEL_18:
     v22[4] = &v24;
     v19 = [v18 sinkWithCompletion:v23 shouldContinue:v22];
 
-    v20 = [a1 log];
+    v20 = [self log];
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
     {
-      [(PowerUISmartChargeUtilities *)v4 batteryLevelAtDate:v25];
+      [(PowerUISmartChargeUtilities *)dateCopy batteryLevelAtDate:v25];
     }
 
-    v11 = *(v25[0] + 24);
+    integerValue = *(v25[0] + 24);
     _Block_object_dispose(&v24, 8);
   }
 
   else
   {
-    v6 = [MEMORY[0x277CFE318] userContext];
-    v7 = [MEMORY[0x277CFE338] keyPathForBatteryStateDataDictionary];
-    v8 = [v6 objectForKeyedSubscript:v7];
+    userContext = [MEMORY[0x277CFE318] userContext];
+    keyPathForBatteryStateDataDictionary = [MEMORY[0x277CFE338] keyPathForBatteryStateDataDictionary];
+    v8 = [userContext objectForKeyedSubscript:keyPathForBatteryStateDataDictionary];
 
-    v9 = [MEMORY[0x277CFE338] batteryPercentageKey];
-    v10 = [v8 objectForKeyedSubscript:v9];
-    v11 = [v10 integerValue];
+    batteryPercentageKey = [MEMORY[0x277CFE338] batteryPercentageKey];
+    v10 = [v8 objectForKeyedSubscript:batteryPercentageKey];
+    integerValue = [v10 integerValue];
   }
 
-  return v11;
+  return integerValue;
 }
 
 void __50__PowerUISmartChargeUtilities_batteryLevelAtDate___block_invoke_2(uint64_t a1, void *a2)
@@ -3154,8 +3154,8 @@ uint64_t __50__PowerUISmartChargeUtilities_batteryLevelAtDate___block_invoke_186
 + (id)lastPluggedInDate
 {
   v35 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CFE318] userContext];
-  if (![PowerUISmartChargeUtilities isPluggedInWithContext:v3])
+  userContext = [MEMORY[0x277CFE318] userContext];
+  if (![PowerUISmartChargeUtilities isPluggedInWithContext:userContext])
   {
     v31 = 0;
     v32[0] = &v31;
@@ -3165,16 +3165,16 @@ uint64_t __50__PowerUISmartChargeUtilities_batteryLevelAtDate___block_invoke_186
     v33 = 0;
     v8 = [objc_alloc(MEMORY[0x277CF1A50]) initWithStartDate:0 endDate:0 maxEvents:8 lastN:0 reversed:1];
     v9 = BiomeLibrary();
-    v10 = [v9 Device];
-    v11 = [v10 Power];
-    v12 = [v11 PluggedIn];
-    v13 = [v12 publisherWithOptions:v8];
+    device = [v9 Device];
+    power = [device Power];
+    pluggedIn = [power PluggedIn];
+    v13 = [pluggedIn publisherWithOptions:v8];
     v14 = [v13 filterWithIsIncluded:&__block_literal_global_191];
     v30[0] = MEMORY[0x277D85DD0];
     v30[1] = 3221225472;
     v30[2] = __48__PowerUISmartChargeUtilities_lastPluggedInDate__block_invoke_2;
     v30[3] = &__block_descriptor_40_e23_v16__0__BPSCompletion_8l;
-    v30[4] = a1;
+    v30[4] = self;
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __48__PowerUISmartChargeUtilities_lastPluggedInDate__block_invoke_192;
@@ -3188,18 +3188,18 @@ uint64_t __50__PowerUISmartChargeUtilities_batteryLevelAtDate___block_invoke_186
       [v16 timeIntervalSinceNow];
       if (v17 <= 0.0)
       {
-        v25 = [a1 log];
+        v25 = [self log];
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
         {
           [*(v32[0] + 40) timeIntervalSinceNow];
           [(PowerUISmartChargeUtilities *)v32 lastPluggedInDate:buf];
         }
 
-        v24 = *(v32[0] + 40);
+        date = *(v32[0] + 40);
         goto LABEL_16;
       }
 
-      v18 = [a1 log];
+      v18 = [self log];
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
         +[PowerUISmartChargeUtilities lastPluggedInDate];
@@ -3208,46 +3208,46 @@ uint64_t __50__PowerUISmartChargeUtilities_batteryLevelAtDate___block_invoke_186
 
     else
     {
-      v18 = [a1 log];
+      v18 = [self log];
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
         +[PowerUISmartChargeUtilities lastPluggedInDate];
       }
     }
 
-    v24 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
 LABEL_16:
-    v23 = v24;
+    v23 = date;
 
     _Block_object_dispose(&v31, 8);
     goto LABEL_20;
   }
 
-  v4 = [MEMORY[0x277CFE338] keyPathForBatteryStateDataDictionary];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  keyPathForBatteryStateDataDictionary = [MEMORY[0x277CFE338] keyPathForBatteryStateDataDictionary];
+  v5 = [userContext objectForKeyedSubscript:keyPathForBatteryStateDataDictionary];
 
   v6 = [v5 objectForKeyedSubscript:@"externalConnectedChangeDate"];
 
   if (v6)
   {
-    v7 = [v5 objectForKeyedSubscript:@"externalConnectedChangeDate"];
+    date2 = [v5 objectForKeyedSubscript:@"externalConnectedChangeDate"];
 LABEL_18:
-    v23 = v7;
+    v23 = date2;
     goto LABEL_19;
   }
 
-  v19 = [MEMORY[0x277CFE338] keyPathForPluginStatus];
-  v20 = [v3 objectForKeyedSubscript:v19];
-  v21 = [v20 BOOLValue];
+  keyPathForPluginStatus = [MEMORY[0x277CFE338] keyPathForPluginStatus];
+  v20 = [userContext objectForKeyedSubscript:keyPathForPluginStatus];
+  bOOLValue = [v20 BOOLValue];
 
-  if (!v21)
+  if (!bOOLValue)
   {
-    v7 = [MEMORY[0x277CBEAA8] date];
+    date2 = [MEMORY[0x277CBEAA8] date];
     goto LABEL_18;
   }
 
-  v22 = [MEMORY[0x277CFE338] keyPathForPluginStatus];
-  v23 = [v3 lastModifiedDateForContextualKeyPath:v22];
+  keyPathForPluginStatus2 = [MEMORY[0x277CFE338] keyPathForPluginStatus];
+  v23 = [userContext lastModifiedDateForContextualKeyPath:keyPathForPluginStatus2];
 
 LABEL_19:
 LABEL_20:
@@ -3445,7 +3445,7 @@ void __50__PowerUISmartChargeUtilities_batteryLevelAtDate___block_invoke_2_cold_
 
 + (void)lastPluggedInDate
 {
-  v4 = *(*a1 + 40);
+  v4 = *(*self + 40);
   *buf = 134218242;
   *(buf + 4) = -a4;
   *(buf + 6) = 2112;

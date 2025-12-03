@@ -1,6 +1,6 @@
 @interface _MXExtensionMatchingMerger
 - (_MXExtensionMatchingMerger)init;
-- (id)receiveExtensions:(id)a3 withIndex:(unint64_t)a4;
+- (id)receiveExtensions:(id)extensions withIndex:(unint64_t)index;
 - (void)clearExtensions;
 @end
 
@@ -33,21 +33,21 @@
   dispatch_sync(lock, block);
 }
 
-- (id)receiveExtensions:(id)a3 withIndex:(unint64_t)a4
+- (id)receiveExtensions:(id)extensions withIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = [MEMORY[0x1E695DF70] array];
+  extensionsCopy = extensions;
+  array = [MEMORY[0x1E695DF70] array];
   lock = self->_lock;
   v13 = MEMORY[0x1E69E9820];
   v14 = 3221225472;
   v15 = __58___MXExtensionMatchingMerger_receiveExtensions_withIndex___block_invoke;
   v16 = &unk_1E76C8CE8;
-  v17 = self;
-  v18 = v6;
-  v19 = v7;
-  v20 = a4;
-  v9 = v7;
-  v10 = v6;
+  selfCopy = self;
+  v18 = extensionsCopy;
+  v19 = array;
+  indexCopy = index;
+  v9 = array;
+  v10 = extensionsCopy;
   dispatch_sync(lock, &v13);
   v11 = [v9 copy];
 

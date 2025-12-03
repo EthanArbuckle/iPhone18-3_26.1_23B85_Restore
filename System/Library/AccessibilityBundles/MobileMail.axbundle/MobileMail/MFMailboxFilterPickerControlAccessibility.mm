@@ -1,5 +1,5 @@
 @interface MFMailboxFilterPickerControlAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGRect)accessibilityFrame;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
@@ -7,27 +7,27 @@
 
 @implementation MFMailboxFilterPickerControlAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MFMailboxFilterPickerControl" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
-  [v3 validateClass:@"MFMailboxFilterPickerControl" hasInstanceVariable:@"_filtersLabel" withType:"UILabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MFMailboxFilterPickerControl" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"MFMailboxFilterPickerControl" hasInstanceVariable:@"_filtersLabel" withType:"UILabel"];
 }
 
 - (id)accessibilityLabel
 {
   v2 = [(MFMailboxFilterPickerControlAccessibility *)self safeValueForKey:@"_titleLabel"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityValue
 {
   v2 = [(MFMailboxFilterPickerControlAccessibility *)self safeValueForKey:@"_filtersLabel"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (CGRect)accessibilityFrame

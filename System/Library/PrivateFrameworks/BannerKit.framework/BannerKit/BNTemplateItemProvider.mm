@@ -1,25 +1,25 @@
 @interface BNTemplateItemProvider
 - (BNCAPackageProviding)templateItemCAPackageProvider;
 - (BNImageProviding)templateItemImageProvider;
-- (BNTemplateItemProvider)initWithCoder:(id)a3;
-- (BNTemplateItemProvider)initWithItem:(id)a3;
+- (BNTemplateItemProvider)initWithCoder:(id)coder;
+- (BNTemplateItemProvider)initWithItem:(id)item;
 - (NSAttributedString)templateItemAttributedText;
 - (NSString)templateItemText;
 - (UIButtonConfiguration)templateItemButtonConfiguration;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BNTemplateItemProvider
 
-- (BNTemplateItemProvider)initWithItem:(id)a3
+- (BNTemplateItemProvider)initWithItem:(id)item
 {
-  v6 = a3;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v7 = 1;
 LABEL_10:
-    v8 = v6;
+    currentHandler = itemCopy;
     goto LABEL_11;
   }
 
@@ -30,7 +30,7 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  if (objc_opt_respondsToSelector() & 1) != 0 && ([v6 isImageProvider])
+  if (objc_opt_respondsToSelector() & 1) != 0 && ([itemCopy isImageProvider])
   {
     v7 = 3;
     goto LABEL_10;
@@ -43,14 +43,14 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  if (objc_opt_respondsToSelector() & 1) != 0 && ([v6 isCAPackageProvider])
+  if (objc_opt_respondsToSelector() & 1) != 0 && ([itemCopy isCAPackageProvider])
   {
     v7 = 5;
     goto LABEL_10;
   }
 
-  v8 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v8 handleFailureInMethod:a2 object:self file:@"BNTemplateItemProvider.m" lineNumber:62 description:{@"Invalid item: %@", v6}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"BNTemplateItemProvider.m" lineNumber:62 description:{@"Invalid item: %@", itemCopy}];
   v7 = 0;
 LABEL_11:
 
@@ -60,7 +60,7 @@ LABEL_11:
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_templateItem, a3);
+    objc_storeStrong(&v9->_templateItem, item);
     v10->_templateItemType = v7;
   }
 
@@ -132,42 +132,42 @@ LABEL_11:
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  [v7 encodeInteger:self->_templateItemType forKey:@"itemType"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:self->_templateItemType forKey:@"itemType"];
   v4 = self->_templateItemType - 1;
   if (v4 <= 3)
   {
-    [v7 encodeObject:self->_templateItem forKey:off_1E81E4848[v4]];
+    [coderCopy encodeObject:self->_templateItem forKey:off_1E81E4848[v4]];
   }
 
   if (self->_visualStyleCategory >= 1 && self->_visualStyle >= 1)
   {
-    [v7 encodeInteger:? forKey:?];
-    [v7 encodeInteger:self->_visualStyle forKey:@"visualStyle"];
+    [coderCopy encodeInteger:? forKey:?];
+    [coderCopy encodeInteger:self->_visualStyle forKey:@"visualStyle"];
   }
 
   if (self->_hidden)
   {
-    [v7 encodeBool:1 forKey:@"hidden"];
+    [coderCopy encodeBool:1 forKey:@"hidden"];
   }
 
   v5 = [(NSString *)self->_accessibilityIdentifier length];
-  v6 = v7;
+  v6 = coderCopy;
   if (v5)
   {
-    v5 = [v7 encodeObject:self->_accessibilityIdentifier forKey:@"accessibilityIdentifier"];
-    v6 = v7;
+    v5 = [coderCopy encodeObject:self->_accessibilityIdentifier forKey:@"accessibilityIdentifier"];
+    v6 = coderCopy;
   }
 
   MEMORY[0x1EEE66BB8](v5, v6);
 }
 
-- (BNTemplateItemProvider)initWithCoder:(id)a3
+- (BNTemplateItemProvider)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"itemType"] - 1;
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"itemType"] - 1;
   if (v5 > 3)
   {
     v6 = 0;
@@ -175,16 +175,16 @@ LABEL_11:
 
   else
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:off_1E81E4888[v5]];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:off_1E81E4888[v5]];
   }
 
   v7 = [(BNTemplateItemProvider *)self initWithItem:v6];
   if (v7)
   {
-    v7->_visualStyleCategory = [v4 decodeIntegerForKey:@"visualStyleCategory"];
-    v7->_visualStyle = [v4 decodeIntegerForKey:@"visualStyle"];
-    v7->_hidden = [v4 decodeBoolForKey:@"hidden"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accessibilityIdentifier"];
+    v7->_visualStyleCategory = [coderCopy decodeIntegerForKey:@"visualStyleCategory"];
+    v7->_visualStyle = [coderCopy decodeIntegerForKey:@"visualStyle"];
+    v7->_hidden = [coderCopy decodeBoolForKey:@"hidden"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accessibilityIdentifier"];
     accessibilityIdentifier = v7->_accessibilityIdentifier;
     v7->_accessibilityIdentifier = v8;
   }

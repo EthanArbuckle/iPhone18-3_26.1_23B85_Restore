@@ -1,33 +1,33 @@
 @interface KTAccount
-- (BOOL)active:(id)a3;
+- (BOOL)active:(id)active;
 - (BOOL)everOptedIn;
-- (BOOL)expired:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)marked:(id)a3;
+- (BOOL)expired:(id)expired;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)marked:(id)marked;
 - (BOOL)optInState;
 - (BOOL)recentlyOptedIn;
 - (BOOL)shouldRemove;
-- (BOOL)updateWithOptInOutWithExt:(id)a3 error:(id *)a4;
-- (BOOL)validateEmptyOptInOutHistory:(id)a3 responseTime:(id)a4 error:(id *)a5;
-- (BOOL)validateOptInHistory:(id)a3 responseTime:(id)a4 error:(id *)a5;
-- (KTAccount)initWithCoder:(id)a3;
-- (KTAccount)initWithIdsAccount:(id)a3;
-- (KTAccount)initWithMutation:(id)a3;
+- (BOOL)updateWithOptInOutWithExt:(id)ext error:(id *)error;
+- (BOOL)validateEmptyOptInOutHistory:(id)history responseTime:(id)time error:(id *)error;
+- (BOOL)validateOptInHistory:(id)history responseTime:(id)time error:(id *)error;
+- (KTAccount)initWithCoder:(id)coder;
+- (KTAccount)initWithIdsAccount:(id)account;
+- (KTAccount)initWithMutation:(id)mutation;
 - (NSDictionary)diagnosticsJsonDictionary;
 - (id)debugDescription;
-- (id)deviceForDeviceIdHash:(id)a3;
-- (id)kvsOptInOutEntry:(id)a3 before:(id)a4;
+- (id)deviceForDeviceIdHash:(id)hash;
+- (id)kvsOptInOutEntry:(id)entry before:(id)before;
 - (id)optInHistory;
 - (id)optInHistoryDescription;
 - (id)optInOutHistoryJsonArray;
 - (id)optInRecord;
-- (void)deleteMarkedEntries:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateWithAddMutation:(id)a3 error:(id *)a4;
-- (void)updateWithDeviceStateArray:(id)a3;
-- (void)updateWithExtensions:(id)a3 error:(id *)a4;
-- (void)updateWithMarkDeleteMutation:(id)a3 error:(id *)a4;
-- (void)updateWithOptInOutMutation:(id)a3 error:(id *)a4;
+- (void)deleteMarkedEntries:(id)entries;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateWithAddMutation:(id)mutation error:(id *)error;
+- (void)updateWithDeviceStateArray:(id)array;
+- (void)updateWithExtensions:(id)extensions error:(id *)error;
+- (void)updateWithMarkDeleteMutation:(id)mutation error:(id *)error;
+- (void)updateWithOptInOutMutation:(id)mutation error:(id *)error;
 @end
 
 @implementation KTAccount
@@ -39,7 +39,7 @@
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v32 = self;
+  selfCopy = self;
   obj = self->_devices;
   v36 = [(NSMutableArray *)obj countByEnumeratingWithState:&v42 objects:v47 count:16];
   if (v36)
@@ -59,21 +59,21 @@
         v37 = v4;
         v5 = *(*(&v42 + 1) + 8 * v4);
         [v3 appendFormat:@"   {\n"];
-        v6 = [v5 deviceID];
-        v7 = [v6 kt_hexString];
-        [v3 appendFormat:@"    deviceID:%@\n", v7];
+        deviceID = [v5 deviceID];
+        kt_hexString = [deviceID kt_hexString];
+        [v3 appendFormat:@"    deviceID:%@\n", kt_hexString];
 
-        v8 = [v5 deviceIDHash];
-        v9 = [v8 kt_hexString];
-        [v3 appendFormat:@"    deviceIDHash: %@\n", v9];
+        deviceIDHash = [v5 deviceIDHash];
+        kt_hexString2 = [deviceIDHash kt_hexString];
+        [v3 appendFormat:@"    deviceIDHash: %@\n", kt_hexString2];
 
         v10 = [NSMutableString stringWithFormat:@"[\n"];
         v38 = 0u;
         v39 = 0u;
         v40 = 0u;
         v41 = 0u;
-        v11 = [v5 clientDatas];
-        v12 = [v11 countByEnumeratingWithState:&v38 objects:v46 count:16];
+        clientDatas = [v5 clientDatas];
+        v12 = [clientDatas countByEnumeratingWithState:&v38 objects:v46 count:16];
         if (v12)
         {
           v13 = v12;
@@ -84,30 +84,30 @@
             {
               if (*v39 != v14)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(clientDatas);
               }
 
               v16 = *(*(&v38 + 1) + 8 * i);
               [v10 appendFormat:@"     {\n"];
-              v17 = [v16 clientData];
-              v18 = [v17 kt_hexString];
-              [v10 appendFormat:@"      clientData:%@\n", v18];
+              clientData = [v16 clientData];
+              kt_hexString3 = [clientData kt_hexString];
+              [v10 appendFormat:@"      clientData:%@\n", kt_hexString3];
 
-              v19 = [v16 clientDataHash];
-              v20 = [v19 kt_hexString];
-              [v10 appendFormat:@"      clientDataHash:%@\n", v20];
+              clientDataHash = [v16 clientDataHash];
+              kt_hexString4 = [clientDataHash kt_hexString];
+              [v10 appendFormat:@"      clientDataHash:%@\n", kt_hexString4];
 
               [v10 appendFormat:@"      appVersion:%lu\n", objc_msgSend(v16, "applicationVersion")];
-              v21 = [v16 addedDate];
-              v22 = [v16 markedForDeletion];
-              v23 = [v16 expiry];
-              v24 = [v16 escrowExpiry];
-              [v10 appendFormat:@"      addedDate:%@ markDate:%@; expiryDate:%@; escrowDate:%@\n", v21, v22, v23, v24];
+              addedDate = [v16 addedDate];
+              markedForDeletion = [v16 markedForDeletion];
+              expiry = [v16 expiry];
+              escrowExpiry = [v16 escrowExpiry];
+              [v10 appendFormat:@"      addedDate:%@ markDate:%@; expiryDate:%@; escrowDate:%@\n", addedDate, markedForDeletion, expiry, escrowExpiry];
 
               [v10 appendFormat:@"     }, \n"];
             }
 
-            v13 = [v11 countByEnumeratingWithState:&v38 objects:v46 count:16];
+            v13 = [clientDatas countByEnumeratingWithState:&v38 objects:v46 count:16];
           }
 
           while (v13);
@@ -129,20 +129,20 @@
   }
 
   [v3 appendFormat:@"  ]"];
-  v25 = [(KTAccount *)v32 accountKey];
-  v26 = [v25 kt_hexString];
-  v27 = [(KTAccount *)v32 accountKeyHash];
-  v28 = [v27 kt_hexString];
-  v29 = [(KTAccount *)v32 optInHistoryDescription];
-  v30 = [NSString stringWithFormat:@"{\n  accountKey:%@\n  accountKeyHash:%@\n  optInHistory:%@\n devices: %@\n}", v26, v28, v29, v3];
+  accountKey = [(KTAccount *)selfCopy accountKey];
+  kt_hexString5 = [accountKey kt_hexString];
+  accountKeyHash = [(KTAccount *)selfCopy accountKeyHash];
+  kt_hexString6 = [accountKeyHash kt_hexString];
+  optInHistoryDescription = [(KTAccount *)selfCopy optInHistoryDescription];
+  v30 = [NSString stringWithFormat:@"{\n  accountKey:%@\n  accountKeyHash:%@\n  optInHistory:%@\n devices: %@\n}", kt_hexString5, kt_hexString6, optInHistoryDescription, v3];
 
   return v30;
 }
 
 - (id)optInOutHistoryJsonArray
 {
-  v3 = [(KTAccount *)self optInOutHistory];
-  v4 = [v3 count];
+  optInOutHistory = [(KTAccount *)self optInOutHistory];
+  v4 = [optInOutHistory count];
 
   if (v4)
   {
@@ -151,8 +151,8 @@
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = [(KTAccount *)self optInOutHistory];
-    v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    optInOutHistory2 = [(KTAccount *)self optInOutHistory];
+    v7 = [optInOutHistory2 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
       v8 = v7;
@@ -163,14 +163,14 @@
         {
           if (*v14 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(optInOutHistory2);
           }
 
-          v11 = [*(*(&v13 + 1) + 8 * i) diagnosticsJsonDictionary];
-          [v5 addObject:v11];
+          diagnosticsJsonDictionary = [*(*(&v13 + 1) + 8 * i) diagnosticsJsonDictionary];
+          [v5 addObject:diagnosticsJsonDictionary];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v8 = [optInOutHistory2 countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v8);
@@ -188,26 +188,26 @@
 - (NSDictionary)diagnosticsJsonDictionary
 {
   v3 = +[NSMutableDictionary dictionary];
-  v4 = [(KTAccount *)self accountKey];
+  accountKey = [(KTAccount *)self accountKey];
 
-  if (v4)
+  if (accountKey)
   {
-    v5 = [(KTAccount *)self accountKey];
-    v6 = [v5 kt_hexString];
-    [v3 setObject:v6 forKeyedSubscript:@"accountKey"];
+    accountKey2 = [(KTAccount *)self accountKey];
+    kt_hexString = [accountKey2 kt_hexString];
+    [v3 setObject:kt_hexString forKeyedSubscript:@"accountKey"];
   }
 
-  v7 = [(KTAccount *)self accountKeyHash];
-  v8 = [v7 kt_hexString];
-  [v3 setObject:v8 forKeyedSubscript:@"accountKeyHash"];
+  accountKeyHash = [(KTAccount *)self accountKeyHash];
+  kt_hexString2 = [accountKeyHash kt_hexString];
+  [v3 setObject:kt_hexString2 forKeyedSubscript:@"accountKeyHash"];
 
   v9 = +[NSMutableArray array];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v10 = [(KTAccount *)self devices];
-  v11 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  devices = [(KTAccount *)self devices];
+  v11 = [devices countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v11)
   {
     v12 = v11;
@@ -218,40 +218,40 @@
       {
         if (*v19 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(devices);
         }
 
-        v15 = [*(*(&v18 + 1) + 8 * i) diagnosticsJsonDictionary];
-        [v9 addObject:v15];
+        diagnosticsJsonDictionary = [*(*(&v18 + 1) + 8 * i) diagnosticsJsonDictionary];
+        [v9 addObject:diagnosticsJsonDictionary];
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v12 = [devices countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v12);
   }
 
   [v3 setObject:v9 forKeyedSubscript:@"devices"];
-  v16 = [(KTAccount *)self optInOutHistoryJsonArray];
-  [v3 setObject:v16 forKeyedSubscript:@"optInOutHistory"];
+  optInOutHistoryJsonArray = [(KTAccount *)self optInOutHistoryJsonArray];
+  [v3 setObject:optInOutHistoryJsonArray forKeyedSubscript:@"optInOutHistory"];
 
   return v3;
 }
 
 - (id)optInHistoryDescription
 {
-  v3 = [(KTAccount *)self optInOutHistory];
-  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
+  optInOutHistory = [(KTAccount *)self optInOutHistory];
+  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [optInOutHistory count]);
 
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [(KTAccount *)self optInOutHistory];
-  v6 = [v5 reverseObjectEnumerator];
+  optInOutHistory2 = [(KTAccount *)self optInOutHistory];
+  reverseObjectEnumerator = [optInOutHistory2 reverseObjectEnumerator];
 
-  obj = v6;
-  v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  obj = reverseObjectEnumerator;
+  v7 = [reverseObjectEnumerator countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
     v8 = v7;
@@ -277,8 +277,8 @@
         }
 
         v13 = +[NSDate dateWithTimeIntervalSince1970:](NSDate, "dateWithTimeIntervalSince1970:", ([v11 timestampMs] / 0x3E8));
-        v14 = [v13 kt_toISO_8601_UTCString];
-        v15 = [NSString stringWithFormat:@"%@-%@", v12, v14];
+        kt_toISO_8601_UTCString = [v13 kt_toISO_8601_UTCString];
+        v15 = [NSString stringWithFormat:@"%@-%@", v12, kt_toISO_8601_UTCString];
 
         [v4 addObject:v15];
       }
@@ -294,36 +294,36 @@
   return v16;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(KTAccount *)self accountKey];
-  [v4 encodeObject:v5 forKey:@"accountKey"];
+  coderCopy = coder;
+  accountKey = [(KTAccount *)self accountKey];
+  [coderCopy encodeObject:accountKey forKey:@"accountKey"];
 
-  v6 = [(KTAccount *)self accountKeyHash];
-  [v4 encodeObject:v6 forKey:@"accountKeyHash"];
+  accountKeyHash = [(KTAccount *)self accountKeyHash];
+  [coderCopy encodeObject:accountKeyHash forKey:@"accountKeyHash"];
 
-  v7 = [(KTAccount *)self devices];
-  [v4 encodeObject:v7 forKey:@"devices"];
+  devices = [(KTAccount *)self devices];
+  [coderCopy encodeObject:devices forKey:@"devices"];
 
-  v8 = [(KTAccount *)self optInOutHistory];
-  if (v8)
+  optInOutHistory = [(KTAccount *)self optInOutHistory];
+  if (optInOutHistory)
   {
-    v9 = v8;
-    v10 = [(KTAccount *)self optInOutHistory];
-    v11 = [v10 count];
+    v9 = optInOutHistory;
+    optInOutHistory2 = [(KTAccount *)self optInOutHistory];
+    v11 = [optInOutHistory2 count];
 
     if (v11)
     {
-      v12 = [(KTAccount *)self optInOutHistory];
-      v13 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v12 count]);
+      optInOutHistory3 = [(KTAccount *)self optInOutHistory];
+      v13 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [optInOutHistory3 count]);
 
       v23 = 0u;
       v24 = 0u;
       v21 = 0u;
       v22 = 0u;
-      v14 = [(KTAccount *)self optInOutHistory];
-      v15 = [v14 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      optInOutHistory4 = [(KTAccount *)self optInOutHistory];
+      v15 = [optInOutHistory4 countByEnumeratingWithState:&v21 objects:v25 count:16];
       if (v15)
       {
         v16 = v15;
@@ -335,48 +335,48 @@
           {
             if (*v22 != v17)
             {
-              objc_enumerationMutation(v14);
+              objc_enumerationMutation(optInOutHistory4);
             }
 
-            v19 = [*(*(&v21 + 1) + 8 * v18) data];
-            if (v19)
+            data = [*(*(&v21 + 1) + 8 * v18) data];
+            if (data)
             {
-              [v13 addObject:v19];
+              [v13 addObject:data];
             }
 
             v18 = v18 + 1;
           }
 
           while (v16 != v18);
-          v16 = [v14 countByEnumeratingWithState:&v21 objects:v25 count:16];
+          v16 = [optInOutHistory4 countByEnumeratingWithState:&v21 objects:v25 count:16];
         }
 
         while (v16);
       }
 
       v20 = [NSArray arrayWithArray:v13];
-      [v4 encodeObject:v20 forKey:@"optInOutHistory"];
+      [coderCopy encodeObject:v20 forKey:@"optInOutHistory"];
     }
   }
 }
 
-- (KTAccount)initWithCoder:(id)a3
+- (KTAccount)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v33 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountKey"];
-  v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountKeyHash"];
+  coderCopy = coder;
+  v33 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountKey"];
+  v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountKeyHash"];
   v5 = objc_opt_class();
   v6 = [NSSet setWithObjects:v5, objc_opt_class(), 0];
-  v31 = [v4 decodeObjectOfClasses:v6 forKey:@"devices"];
+  v31 = [coderCopy decodeObjectOfClasses:v6 forKey:@"devices"];
   v7 = objc_opt_class();
   v8 = [NSSet setWithObjects:v7, objc_opt_class(), 0];
 
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"optInOutHistory"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"optInOutHistory"];
   v10 = v9;
   if (v9)
   {
     v29 = v8;
-    v30 = self;
+    selfCopy = self;
     v11 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v9 count]);
     v35 = 0u;
     v36 = 0u;
@@ -421,7 +421,7 @@
             }
 
             v24 = 0;
-            self = v30;
+            self = selfCopy;
             goto LABEL_21;
           }
 
@@ -439,7 +439,7 @@
     }
 
     v8 = v29;
-    self = v30;
+    self = selfCopy;
   }
 
   else
@@ -476,9 +476,9 @@ LABEL_21:
   return v24;
 }
 
-- (KTAccount)initWithIdsAccount:(id)a3
+- (KTAccount)initWithIdsAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v29.receiver = self;
   v29.super_class = KTAccount;
   v5 = [(KTAccount *)&v29 init];
@@ -487,8 +487,8 @@ LABEL_21:
     goto LABEL_15;
   }
 
-  v6 = [v4 accountKeyHash];
-  [(KTAccount *)v5 setAccountKeyHash:v6];
+  accountKeyHash = [accountCopy accountKeyHash];
+  [(KTAccount *)v5 setAccountKeyHash:accountKeyHash];
 
   v7 = +[NSMutableArray array];
   [(KTAccount *)v5 setDevices:v7];
@@ -497,8 +497,8 @@ LABEL_21:
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v8 = [v4 devicesArray];
-  v9 = [v8 countByEnumeratingWithState:&v25 objects:v34 count:16];
+  devicesArray = [accountCopy devicesArray];
+  v9 = [devicesArray countByEnumeratingWithState:&v25 objects:v34 count:16];
   if (v9)
   {
     v10 = v9;
@@ -509,22 +509,22 @@ LABEL_21:
       {
         if (*v26 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(devicesArray);
         }
 
         v13 = [[KTDevice alloc] initWithIdsDevice:*(*(&v25 + 1) + 8 * i)];
-        v14 = [(KTAccount *)v5 devices];
-        [v14 addObject:v13];
+        devices = [(KTAccount *)v5 devices];
+        [devices addObject:v13];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v25 objects:v34 count:16];
+      v10 = [devicesArray countByEnumeratingWithState:&v25 objects:v34 count:16];
     }
 
     while (v10);
   }
 
   v24 = 0;
-  v15 = [v4 sortedOptInOutHistory:&v24];
+  v15 = [accountCopy sortedOptInOutHistory:&v24];
   v16 = v24;
   v17 = [v15 mutableCopy];
   [(KTAccount *)v5 setOptInOutHistory:v17];
@@ -540,10 +540,10 @@ LABEL_21:
     if (os_log_type_enabled(qword_10039C940, OS_LOG_TYPE_ERROR))
     {
       v19 = v18;
-      v20 = [(KTAccount *)v5 accountKeyHash];
-      v21 = [v20 kt_hexString];
+      accountKeyHash2 = [(KTAccount *)v5 accountKeyHash];
+      kt_hexString = [accountKeyHash2 kt_hexString];
       *buf = 138412546;
-      v31 = v21;
+      v31 = kt_hexString;
       v32 = 2112;
       v33 = v16;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "Failed to create account for %@: %@", buf, 0x16u);
@@ -561,9 +561,9 @@ LABEL_15:
   return v22;
 }
 
-- (KTAccount)initWithMutation:(id)a3
+- (KTAccount)initWithMutation:(id)mutation
 {
-  v4 = a3;
+  mutationCopy = mutation;
   v19.receiver = self;
   v19.super_class = KTAccount;
   v5 = [(KTAccount *)&v19 init];
@@ -572,11 +572,11 @@ LABEL_15:
     goto LABEL_9;
   }
 
-  v6 = [v4 accountKeyHash];
+  accountKeyHash = [mutationCopy accountKeyHash];
   accountKeyHash = v5->_accountKeyHash;
-  v5->_accountKeyHash = v6;
+  v5->_accountKeyHash = accountKeyHash;
 
-  v8 = [[KTDevice alloc] initWithMutation:v4];
+  v8 = [[KTDevice alloc] initWithMutation:mutationCopy];
   v9 = [NSMutableArray arrayWithObject:v8];
   devices = v5->_devices;
   v5->_devices = v9;
@@ -591,9 +591,9 @@ LABEL_15:
     goto LABEL_9;
   }
 
-  v13 = [v4 extensions];
+  extensions = [mutationCopy extensions];
   v18 = 0;
-  [(KTAccount *)v5 updateWithExtensions:v13 error:&v18];
+  [(KTAccount *)v5 updateWithExtensions:extensions error:&v18];
   v14 = v18;
 
   if (v14)
@@ -623,10 +623,10 @@ LABEL_9:
   return v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -636,19 +636,19 @@ LABEL_9:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(KTAccount *)self accountKey];
-      v7 = [(KTAccount *)v5 accountKey];
-      v8 = v7;
-      if (v6 == v7)
+      v5 = equalCopy;
+      accountKey = [(KTAccount *)self accountKey];
+      accountKey2 = [(KTAccount *)v5 accountKey];
+      v8 = accountKey2;
+      if (accountKey == accountKey2)
       {
       }
 
       else
       {
-        v9 = [(KTAccount *)self accountKey];
-        v10 = [(KTAccount *)v5 accountKey];
-        v11 = [v9 isEqualToData:v10];
+        accountKey3 = [(KTAccount *)self accountKey];
+        accountKey4 = [(KTAccount *)v5 accountKey];
+        v11 = [accountKey3 isEqualToData:accountKey4];
 
         if (!v11)
         {
@@ -656,18 +656,18 @@ LABEL_9:
         }
       }
 
-      v13 = [(KTAccount *)self accountKeyHash];
-      v14 = [(KTAccount *)v5 accountKeyHash];
-      v15 = v14;
-      if (v13 == v14)
+      accountKeyHash = [(KTAccount *)self accountKeyHash];
+      accountKeyHash2 = [(KTAccount *)v5 accountKeyHash];
+      v15 = accountKeyHash2;
+      if (accountKeyHash == accountKeyHash2)
       {
       }
 
       else
       {
-        v16 = [(KTAccount *)self accountKeyHash];
-        v17 = [(KTAccount *)v5 accountKeyHash];
-        v18 = [v16 isEqualToData:v17];
+        accountKeyHash3 = [(KTAccount *)self accountKeyHash];
+        accountKeyHash4 = [(KTAccount *)v5 accountKeyHash];
+        v18 = [accountKeyHash3 isEqualToData:accountKeyHash4];
 
         if (!v18)
         {
@@ -675,18 +675,18 @@ LABEL_9:
         }
       }
 
-      v19 = [(KTAccount *)self devices];
-      v20 = [(KTAccount *)v5 devices];
-      v21 = v20;
-      if (v19 == v20)
+      devices = [(KTAccount *)self devices];
+      devices2 = [(KTAccount *)v5 devices];
+      v21 = devices2;
+      if (devices == devices2)
       {
       }
 
       else
       {
-        v22 = [(KTAccount *)self devices];
-        v23 = [(KTAccount *)v5 devices];
-        v24 = [v22 isEqual:v23];
+        devices3 = [(KTAccount *)self devices];
+        devices4 = [(KTAccount *)v5 devices];
+        v24 = [devices3 isEqual:devices4];
 
         if ((v24 & 1) == 0)
         {
@@ -710,15 +710,15 @@ LABEL_19:
   return v12;
 }
 
-- (BOOL)marked:(id)a3
+- (BOOL)marked:(id)marked
 {
-  v4 = a3;
+  markedCopy = marked;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(KTAccount *)self devices];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  devices = [(KTAccount *)self devices];
+  v6 = [devices countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -729,17 +729,17 @@ LABEL_19:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(devices);
         }
 
-        if (![*(*(&v12 + 1) + 8 * i) marked:v4])
+        if (![*(*(&v12 + 1) + 8 * i) marked:markedCopy])
         {
           v10 = 0;
           goto LABEL_11;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [devices countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v7)
       {
         continue;
@@ -755,15 +755,15 @@ LABEL_11:
   return v10;
 }
 
-- (BOOL)expired:(id)a3
+- (BOOL)expired:(id)expired
 {
-  v4 = a3;
+  expiredCopy = expired;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(KTAccount *)self devices];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  devices = [(KTAccount *)self devices];
+  v6 = [devices countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -774,17 +774,17 @@ LABEL_11:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(devices);
         }
 
-        if (![*(*(&v12 + 1) + 8 * i) expired:v4])
+        if (![*(*(&v12 + 1) + 8 * i) expired:expiredCopy])
         {
           v10 = 0;
           goto LABEL_11;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [devices countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v7)
       {
         continue;
@@ -800,15 +800,15 @@ LABEL_11:
   return v10;
 }
 
-- (BOOL)active:(id)a3
+- (BOOL)active:(id)active
 {
-  v4 = a3;
+  activeCopy = active;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(KTAccount *)self devices];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  devices = [(KTAccount *)self devices];
+  v6 = [devices countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = *v11;
@@ -818,17 +818,17 @@ LABEL_11:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(devices);
         }
 
-        if ([*(*(&v10 + 1) + 8 * i) active:v4])
+        if ([*(*(&v10 + 1) + 8 * i) active:activeCopy])
         {
           LOBYTE(v6) = 1;
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [devices countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v6)
       {
         continue;
@@ -843,10 +843,10 @@ LABEL_11:
   return v6;
 }
 
-- (id)deviceForDeviceIdHash:(id)a3
+- (id)deviceForDeviceIdHash:(id)hash
 {
-  v4 = a3;
-  if (v4)
+  hashCopy = hash;
+  if (hashCopy)
   {
     v17 = 0u;
     v18 = 0u;
@@ -868,8 +868,8 @@ LABEL_11:
           }
 
           v10 = *(*(&v15 + 1) + 8 * i);
-          v11 = [v10 deviceIDHash];
-          v12 = [v11 isEqualToData:v4];
+          deviceIDHash = [v10 deviceIDHash];
+          v12 = [deviceIDHash isEqualToData:hashCopy];
 
           if (v12)
           {
@@ -904,59 +904,59 @@ LABEL_15:
 
 - (id)optInRecord
 {
-  v3 = [(KTAccount *)self optInOutHistory];
-  if (v3 && (v4 = v3, -[KTAccount optInOutHistory](self, "optInOutHistory"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, v4, v6))
+  optInOutHistory = [(KTAccount *)self optInOutHistory];
+  if (optInOutHistory && (v4 = optInOutHistory, -[KTAccount optInOutHistory](self, "optInOutHistory"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, v4, v6))
   {
-    v7 = [(KTAccount *)self optInOutHistory];
-    v8 = [v7 lastObject];
+    optInOutHistory2 = [(KTAccount *)self optInOutHistory];
+    lastObject = [optInOutHistory2 lastObject];
   }
 
   else
   {
-    v8 = 0;
+    lastObject = 0;
   }
 
-  return v8;
+  return lastObject;
 }
 
 - (id)optInHistory
 {
-  v3 = [(KTAccount *)self optInOutHistory];
-  if (v3)
+  optInOutHistory = [(KTAccount *)self optInOutHistory];
+  if (optInOutHistory)
   {
-    v4 = v3;
-    v5 = [(KTAccount *)self optInOutHistory];
-    v6 = [v5 count];
+    v4 = optInOutHistory;
+    optInOutHistory2 = [(KTAccount *)self optInOutHistory];
+    v6 = [optInOutHistory2 count];
 
     if (v6)
     {
-      v3 = [(KTAccount *)self optInOutHistory];
+      optInOutHistory = [(KTAccount *)self optInOutHistory];
     }
 
     else
     {
-      v3 = 0;
+      optInOutHistory = 0;
     }
   }
 
-  return v3;
+  return optInOutHistory;
 }
 
 - (BOOL)optInState
 {
-  v2 = [(KTAccount *)self optInRecord];
-  v3 = [v2 optIn];
+  optInRecord = [(KTAccount *)self optInRecord];
+  optIn = [optInRecord optIn];
 
-  return v3;
+  return optIn;
 }
 
 - (BOOL)everOptedIn
 {
-  v3 = [(KTAccount *)self optInOutHistory];
-  if (v3)
+  optInOutHistory = [(KTAccount *)self optInOutHistory];
+  if (optInOutHistory)
   {
-    v4 = [(KTAccount *)self optInOutHistory];
-    v5 = [v4 count];
+    optInOutHistory2 = [(KTAccount *)self optInOutHistory];
+    v5 = [optInOutHistory2 count];
 
     if (v5)
     {
@@ -964,29 +964,29 @@ LABEL_15:
       v13 = 0u;
       v10 = 0u;
       v11 = 0u;
-      v6 = [(KTAccount *)self optInOutHistory];
-      v3 = [v6 countByEnumeratingWithState:&v10 objects:v14 count:16];
-      if (v3)
+      optInOutHistory3 = [(KTAccount *)self optInOutHistory];
+      optInOutHistory = [optInOutHistory3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      if (optInOutHistory)
       {
         v7 = *v11;
         while (2)
         {
-          for (i = 0; i != v3; i = i + 1)
+          for (i = 0; i != optInOutHistory; i = i + 1)
           {
             if (*v11 != v7)
             {
-              objc_enumerationMutation(v6);
+              objc_enumerationMutation(optInOutHistory3);
             }
 
             if ([*(*(&v10 + 1) + 8 * i) optIn])
             {
-              LOBYTE(v3) = 1;
+              LOBYTE(optInOutHistory) = 1;
               goto LABEL_13;
             }
           }
 
-          v3 = [v6 countByEnumeratingWithState:&v10 objects:v14 count:16];
-          if (v3)
+          optInOutHistory = [optInOutHistory3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+          if (optInOutHistory)
           {
             continue;
           }
@@ -1000,20 +1000,20 @@ LABEL_13:
 
     else
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(optInOutHistory) = 0;
     }
   }
 
-  return v3;
+  return optInOutHistory;
 }
 
 - (BOOL)recentlyOptedIn
 {
-  v3 = [(KTAccount *)self optInOutHistory];
-  if (v3)
+  optInOutHistory = [(KTAccount *)self optInOutHistory];
+  if (optInOutHistory)
   {
-    v4 = [(KTAccount *)self optInOutHistory];
-    v5 = [v4 count];
+    optInOutHistory2 = [(KTAccount *)self optInOutHistory];
+    v5 = [optInOutHistory2 count];
 
     if (v5)
     {
@@ -1021,29 +1021,29 @@ LABEL_13:
       v13 = 0u;
       v10 = 0u;
       v11 = 0u;
-      v6 = [(KTAccount *)self optInOutHistory];
-      v3 = [v6 countByEnumeratingWithState:&v10 objects:v14 count:16];
-      if (v3)
+      optInOutHistory3 = [(KTAccount *)self optInOutHistory];
+      optInOutHistory = [optInOutHistory3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      if (optInOutHistory)
       {
         v7 = *v11;
         while (2)
         {
-          for (i = 0; i != v3; i = i + 1)
+          for (i = 0; i != optInOutHistory; i = i + 1)
           {
             if (*v11 != v7)
             {
-              objc_enumerationMutation(v6);
+              objc_enumerationMutation(optInOutHistory3);
             }
 
             if ([*(*(&v10 + 1) + 8 * i) optIn])
             {
-              LOBYTE(v3) = 1;
+              LOBYTE(optInOutHistory) = 1;
               goto LABEL_13;
             }
           }
 
-          v3 = [v6 countByEnumeratingWithState:&v10 objects:v14 count:16];
-          if (v3)
+          optInOutHistory = [optInOutHistory3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+          if (optInOutHistory)
           {
             continue;
           }
@@ -1057,29 +1057,29 @@ LABEL_13:
 
     else
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(optInOutHistory) = 0;
     }
   }
 
-  return v3;
+  return optInOutHistory;
 }
 
-- (id)kvsOptInOutEntry:(id)a3 before:(id)a4
+- (id)kvsOptInOutEntry:(id)entry before:(id)before
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 lastObject];
-  v8 = [v7 objectAtIndexedSubscript:0];
-  v9 = [v6 compare:v8];
+  entryCopy = entry;
+  beforeCopy = before;
+  lastObject = [entryCopy lastObject];
+  v8 = [lastObject objectAtIndexedSubscript:0];
+  v9 = [beforeCopy compare:v8];
 
   if (v9 == -1)
   {
-    v11 = [v5 count] - 1;
+    v11 = [entryCopy count] - 1;
     while (1)
     {
-      v12 = [v5 objectAtIndexedSubscript:v11];
+      v12 = [entryCopy objectAtIndexedSubscript:v11];
       v13 = [v12 objectAtIndexedSubscript:0];
-      v14 = [v6 compare:v13];
+      v14 = [beforeCopy compare:v13];
 
       if (v14 != -1)
       {
@@ -1092,42 +1092,42 @@ LABEL_13:
       }
     }
 
-    v10 = [v5 objectAtIndexedSubscript:v11];
-    if (v10)
+    lastObject2 = [entryCopy objectAtIndexedSubscript:v11];
+    if (lastObject2)
     {
       goto LABEL_9;
     }
 
 LABEL_8:
-    v15 = [v5 firstObject];
-    v16 = [v15 objectAtIndexedSubscript:1];
-    v17 = [v16 BOOLValue];
+    firstObject = [entryCopy firstObject];
+    v16 = [firstObject objectAtIndexedSubscript:1];
+    bOOLValue = [v16 BOOLValue];
 
     v18 = [NSDate dateWithTimeIntervalSince1970:0.0];
     v21[0] = v18;
-    v19 = [NSNumber numberWithInt:v17 ^ 1];
+    v19 = [NSNumber numberWithInt:bOOLValue ^ 1];
     v21[1] = v19;
-    v10 = [NSArray arrayWithObjects:v21 count:2];
+    lastObject2 = [NSArray arrayWithObjects:v21 count:2];
   }
 
   else
   {
-    v10 = [v5 lastObject];
+    lastObject2 = [entryCopy lastObject];
   }
 
 LABEL_9:
 
-  return v10;
+  return lastObject2;
 }
 
-- (BOOL)validateEmptyOptInOutHistory:(id)a3 responseTime:(id)a4 error:(id *)a5
+- (BOOL)validateEmptyOptInOutHistory:(id)history responseTime:(id)time error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(KTAccount *)self optInOutHistory];
-  v11 = [v10 count];
+  historyCopy = history;
+  timeCopy = time;
+  optInOutHistory = [(KTAccount *)self optInOutHistory];
+  v11 = [optInOutHistory count];
 
-  v12 = [v8 count];
+  v12 = [historyCopy count];
   if (!(v11 | v12))
   {
 LABEL_2:
@@ -1139,11 +1139,11 @@ LABEL_2:
   {
     if (!v12)
     {
-      v14 = [(KTAccount *)self optInOutHistory];
-      v15 = [v14 lastObject];
-      v16 = [v15 optIn];
+      optInOutHistory2 = [(KTAccount *)self optInOutHistory];
+      lastObject = [optInOutHistory2 lastObject];
+      optIn = [lastObject optIn];
 
-      if (!v16)
+      if (!optIn)
       {
         if (qword_10039C938 != -1)
         {
@@ -1173,10 +1173,10 @@ LABEL_2:
       }
 
       v18 = [TransparencyError errorWithDomain:@"TransparencyErrorVerify" code:-289 description:@"Opt-in state mismatch: kvs = <null> kt = 1"];;
-      if (a5 && v18)
+      if (error && v18)
       {
         v18 = v18;
-        *a5 = v18;
+        *error = v18;
       }
     }
 
@@ -1184,11 +1184,11 @@ LABEL_2:
     goto LABEL_29;
   }
 
-  v19 = [(KTAccount *)self kvsOptInOutEntry:v8 before:v9];
+  v19 = [(KTAccount *)self kvsOptInOutEntry:historyCopy before:timeCopy];
   v20 = [v19 objectAtIndexedSubscript:1];
-  v21 = [v20 BOOLValue];
+  bOOLValue = [v20 BOOLValue];
 
-  if (v21)
+  if (bOOLValue)
   {
     if (qword_10039C938 != -1)
     {
@@ -1203,10 +1203,10 @@ LABEL_2:
     }
 
     v23 = [TransparencyError errorWithDomain:@"TransparencyErrorVerify" code:-289 description:@"Opt-in state mismatch: kvs = 1 kt = <null>"];;
-    if (a5 && v23)
+    if (error && v23)
     {
       v23 = v23;
-      *a5 = v23;
+      *error = v23;
     }
   }
 
@@ -1225,30 +1225,30 @@ LABEL_2:
     }
   }
 
-  v13 = v21 ^ 1;
+  v13 = bOOLValue ^ 1;
 
 LABEL_29:
   return v13;
 }
 
-- (BOOL)validateOptInHistory:(id)a3 responseTime:(id)a4 error:(id *)a5
+- (BOOL)validateOptInHistory:(id)history responseTime:(id)time error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v8 count])
+  historyCopy = history;
+  timeCopy = time;
+  if ([historyCopy count])
   {
-    v10 = [(KTAccount *)self optInOutHistory];
-    v11 = [v10 count];
+    optInOutHistory = [(KTAccount *)self optInOutHistory];
+    v11 = [optInOutHistory count];
 
     if (v11)
     {
-      v12 = [(KTAccount *)self kvsOptInOutEntry:v8 before:v9];
+      v12 = [(KTAccount *)self kvsOptInOutEntry:historyCopy before:timeCopy];
       v13 = [v12 objectAtIndexedSubscript:1];
-      v14 = [v13 BOOLValue];
+      bOOLValue = [v13 BOOLValue];
 
-      if (v14 == [(KTAccount *)self optInState])
+      if (bOOLValue == [(KTAccount *)self optInState])
       {
-        if (!v14)
+        if (!bOOLValue)
         {
           v19 = 1;
 LABEL_34:
@@ -1264,10 +1264,10 @@ LABEL_34:
         v39 = 0u;
         v36 = 0u;
         v37 = 0u;
-        v24 = [(KTAccount *)self optInOutHistory];
-        v18 = [v24 reverseObjectEnumerator];
+        optInOutHistory2 = [(KTAccount *)self optInOutHistory];
+        reverseObjectEnumerator = [optInOutHistory2 reverseObjectEnumerator];
 
-        v25 = [v18 countByEnumeratingWithState:&v36 objects:v43 count:16];
+        v25 = [reverseObjectEnumerator countByEnumeratingWithState:&v36 objects:v43 count:16];
         if (v25)
         {
           v26 = v25;
@@ -1279,7 +1279,7 @@ LABEL_34:
             {
               if (*v37 != v27)
               {
-                objc_enumerationMutation(v18);
+                objc_enumerationMutation(reverseObjectEnumerator);
               }
 
               v29 = *(*(&v36 + 1) + 8 * i);
@@ -1295,19 +1295,19 @@ LABEL_34:
                 if (os_log_type_enabled(qword_10039C940, OS_LOG_TYPE_ERROR))
                 {
                   v31 = v30;
-                  v32 = [v29 timestampMs];
+                  timestampMs = [v29 timestampMs];
                   *buf = 134218240;
-                  *v41 = v32 / 0x3E8;
+                  *v41 = timestampMs / 0x3E8;
                   *&v41[8] = 2048;
                   v42 = v23;
                   _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_ERROR, "Detected opt-out at %llu after kvs opt-in at %llu", buf, 0x16u);
                 }
 
                 v33 = +[TransparencyError errorWithDomain:code:description:](TransparencyError, "errorWithDomain:code:description:", @"TransparencyErrorVerify", -322, @"Detected opt-out at %llu after kvs opt-in at %llu", [v29 timestampMs] / 0x3E8, v23);
-                if (a5 && v33)
+                if (error && v33)
                 {
                   v33 = v33;
-                  *a5 = v33;
+                  *error = v33;
                 }
 
                 v19 = 0;
@@ -1315,7 +1315,7 @@ LABEL_34:
               }
             }
 
-            v26 = [v18 countByEnumeratingWithState:&v36 objects:v43 count:16];
+            v26 = [reverseObjectEnumerator countByEnumeratingWithState:&v36 objects:v43 count:16];
             v19 = 1;
             if (v26)
             {
@@ -1348,18 +1348,18 @@ LABEL_34:
           *buf = 67109376;
           *v41 = [(KTAccount *)self optInState];
           *&v41[4] = 1024;
-          *&v41[6] = v14;
+          *&v41[6] = bOOLValue;
           _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "current opt-in state mismatch: kt = %d, kvs = %d", buf, 0xEu);
         }
 
-        v17 = [TransparencyError errorWithDomain:@"TransparencyErrorVerify" code:-289 description:@"Current opt-in state mismatch: kt = %d, kvs = %d", [(KTAccount *)self optInState], v14];
-        v18 = v17;
+        v17 = [TransparencyError errorWithDomain:@"TransparencyErrorVerify" code:-289 description:@"Current opt-in state mismatch: kt = %d, kvs = %d", [(KTAccount *)self optInState], bOOLValue];
+        reverseObjectEnumerator = v17;
         v19 = 0;
-        if (a5 && v17)
+        if (error && v17)
         {
           v20 = v17;
           v19 = 0;
-          *a5 = v18;
+          *error = reverseObjectEnumerator;
         }
       }
 
@@ -1369,61 +1369,61 @@ LABEL_33:
     }
   }
 
-  v19 = [(KTAccount *)self validateEmptyOptInOutHistory:v8 responseTime:v9 error:a5];
+  v19 = [(KTAccount *)self validateEmptyOptInOutHistory:historyCopy responseTime:timeCopy error:error];
 LABEL_35:
 
   return v19;
 }
 
-- (void)updateWithAddMutation:(id)a3 error:(id *)a4
+- (void)updateWithAddMutation:(id)mutation error:(id *)error
 {
-  v9 = a3;
-  v6 = [v9 deviceIdHash];
-  v7 = [(KTAccount *)self deviceForDeviceIdHash:v6];
+  mutationCopy = mutation;
+  deviceIdHash = [mutationCopy deviceIdHash];
+  v7 = [(KTAccount *)self deviceForDeviceIdHash:deviceIdHash];
 
   if (v7)
   {
-    [(KTDevice *)v7 updateWithAddMutation:v9 error:a4];
+    [(KTDevice *)v7 updateWithAddMutation:mutationCopy error:error];
   }
 
   else
   {
-    v7 = [[KTDevice alloc] initWithMutation:v9];
+    v7 = [[KTDevice alloc] initWithMutation:mutationCopy];
     [(KTAccount *)self addDevicesObject:v7];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v9 extensions];
-    [(KTAccount *)self updateWithExtensions:v8 error:a4];
+    extensions = [mutationCopy extensions];
+    [(KTAccount *)self updateWithExtensions:extensions error:error];
   }
 }
 
-- (void)updateWithMarkDeleteMutation:(id)a3 error:(id *)a4
+- (void)updateWithMarkDeleteMutation:(id)mutation error:(id *)error
 {
-  v8 = a3;
-  v6 = [v8 deviceIdHash];
-  v7 = [(KTAccount *)self deviceForDeviceIdHash:v6];
+  mutationCopy = mutation;
+  deviceIdHash = [mutationCopy deviceIdHash];
+  v7 = [(KTAccount *)self deviceForDeviceIdHash:deviceIdHash];
 
   if (v7)
   {
-    [v7 updateWithMarkDeleteMutation:v8 error:a4];
+    [v7 updateWithMarkDeleteMutation:mutationCopy error:error];
   }
 }
 
-- (void)updateWithDeviceStateArray:(id)a3
+- (void)updateWithDeviceStateArray:(id)array
 {
-  v3 = a3;
-  if ([v3 count])
+  arrayCopy = array;
+  if ([arrayCopy count])
   {
-    v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
+    v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [arrayCopy count]);
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v23 = v3;
-    v5 = v3;
+    v23 = arrayCopy;
+    v5 = arrayCopy;
     v6 = [v5 countByEnumeratingWithState:&v30 objects:v35 count:16];
     if (v6)
     {
@@ -1438,8 +1438,8 @@ LABEL_35:
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v30 + 1) + 8 * i) deviceIdHash];
-          [v4 addObject:v10];
+          deviceIdHash = [*(*(&v30 + 1) + 8 * i) deviceIdHash];
+          [v4 addObject:deviceIdHash];
         }
 
         v7 = [v5 countByEnumeratingWithState:&v30 objects:v35 count:16];
@@ -1448,8 +1448,8 @@ LABEL_35:
       while (v7);
     }
 
-    v11 = [(KTAccount *)self devices];
-    v12 = [NSArray arrayWithArray:v11];
+    devices = [(KTAccount *)self devices];
+    v12 = [NSArray arrayWithArray:devices];
 
     v28 = 0u;
     v29 = 0u;
@@ -1471,8 +1471,8 @@ LABEL_35:
           }
 
           v18 = *(*(&v26 + 1) + 8 * j);
-          v19 = [v18 deviceIDHash];
-          v20 = [v4 containsObject:v19];
+          deviceIDHash = [v18 deviceIDHash];
+          v20 = [v4 containsObject:deviceIDHash];
 
           if (v20)
           {
@@ -1498,18 +1498,18 @@ LABEL_35:
       while (v15);
     }
 
-    v3 = v23;
+    arrayCopy = v23;
   }
 }
 
-- (void)updateWithExtensions:(id)a3 error:(id *)a4
+- (void)updateWithExtensions:(id)extensions error:(id *)error
 {
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = a3;
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  extensionsCopy = extensions;
+  v7 = [extensionsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1520,16 +1520,16 @@ LABEL_35:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(extensionsCopy);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
         if ([v11 extensionType] == 3)
         {
-          v12 = [v11 extensionData];
-          v13 = [OptInOutWithExt parseFromData:v12 error:0];
+          extensionData = [v11 extensionData];
+          v13 = [OptInOutWithExt parseFromData:extensionData error:0];
 
-          if (-[KTAccount updateWithOptInOutWithExt:error:](self, "updateWithOptInOutWithExt:error:", v13, a4) && [v13 optIn])
+          if (-[KTAccount updateWithOptInOutWithExt:error:](self, "updateWithOptInOutWithExt:error:", v13, error) && [v13 optIn])
           {
             v14 = +[NSDate dateWithTimeIntervalSince1970:](NSDate, "dateWithTimeIntervalSince1970:", [v13 timestampMs] / 1000.0);
             [(KTAccount *)self deleteMarkedEntries:v14];
@@ -1539,7 +1539,7 @@ LABEL_35:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [extensionsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v8)
       {
         continue;
@@ -1552,56 +1552,56 @@ LABEL_35:
 LABEL_14:
 }
 
-- (BOOL)updateWithOptInOutWithExt:(id)a3 error:(id *)a4
+- (BOOL)updateWithOptInOutWithExt:(id)ext error:(id *)error
 {
-  v5 = a3;
-  v6 = [(KTAccount *)self optInOutHistory];
-  v7 = [v6 count];
+  extCopy = ext;
+  optInOutHistory = [(KTAccount *)self optInOutHistory];
+  v7 = [optInOutHistory count];
 
-  v8 = [(KTAccount *)self optInOutHistory];
-  v9 = v8;
+  optInOutHistory2 = [(KTAccount *)self optInOutHistory];
+  optInOutHistory8 = optInOutHistory2;
   if (!v7)
   {
     goto LABEL_5;
   }
 
-  v10 = [v8 lastObject];
-  v11 = [v10 timestampMs];
-  v12 = [v5 timestampMs];
+  lastObject = [optInOutHistory2 lastObject];
+  timestampMs = [lastObject timestampMs];
+  timestampMs2 = [extCopy timestampMs];
 
-  v13 = [(KTAccount *)self optInOutHistory];
-  v14 = v13;
-  if (v11 >= v12)
+  optInOutHistory3 = [(KTAccount *)self optInOutHistory];
+  v14 = optInOutHistory3;
+  if (timestampMs >= timestampMs2)
   {
-    v18 = [v13 count];
+    v18 = [optInOutHistory3 count];
 
     v19 = 0;
     if (v18)
     {
       while (1)
       {
-        v20 = [(KTAccount *)self optInOutHistory];
-        v21 = [v20 objectAtIndexedSubscript:v19];
-        LOBYTE(v18) = [v5 isEqual:v21];
+        optInOutHistory4 = [(KTAccount *)self optInOutHistory];
+        v21 = [optInOutHistory4 objectAtIndexedSubscript:v19];
+        LOBYTE(v18) = [extCopy isEqual:v21];
 
         if (v18)
         {
           break;
         }
 
-        v22 = [(KTAccount *)self optInOutHistory];
-        v23 = [v22 objectAtIndexedSubscript:v19];
-        v24 = [v23 timestampMs];
-        v25 = [v5 timestampMs];
+        optInOutHistory5 = [(KTAccount *)self optInOutHistory];
+        v23 = [optInOutHistory5 objectAtIndexedSubscript:v19];
+        timestampMs3 = [v23 timestampMs];
+        timestampMs4 = [extCopy timestampMs];
 
-        if (v24 > v25)
+        if (timestampMs3 > timestampMs4)
         {
           break;
         }
 
         ++v19;
-        v26 = [(KTAccount *)self optInOutHistory];
-        v27 = [v26 count];
+        optInOutHistory6 = [(KTAccount *)self optInOutHistory];
+        v27 = [optInOutHistory6 count];
 
         if (v19 >= v27)
         {
@@ -1616,10 +1616,10 @@ LABEL_14:
       }
 
 LABEL_12:
-      v28 = [(KTAccount *)self optInOutHistory];
-      v29 = [v28 objectAtIndexedSubscript:v19 - 1];
-      v30 = [v29 optIn];
-      v31 = v30 ^ [v5 optIn] ^ 1;
+      optInOutHistory7 = [(KTAccount *)self optInOutHistory];
+      v29 = [optInOutHistory7 objectAtIndexedSubscript:v19 - 1];
+      optIn = [v29 optIn];
+      v31 = optIn ^ [extCopy optIn] ^ 1;
 
       LOBYTE(v18) = v18 | v31;
     }
@@ -1627,24 +1627,24 @@ LABEL_12:
 LABEL_13:
     if ((v18 & 1) == 0)
     {
-      v9 = [(KTAccount *)self optInOutHistory];
-      [v9 insertObject:v5 atIndex:v19];
+      optInOutHistory8 = [(KTAccount *)self optInOutHistory];
+      [optInOutHistory8 insertObject:extCopy atIndex:v19];
       goto LABEL_16;
     }
   }
 
   else
   {
-    v15 = [v13 lastObject];
-    v16 = [v15 optIn];
-    v17 = [v5 optIn];
+    lastObject2 = [optInOutHistory3 lastObject];
+    optIn2 = [lastObject2 optIn];
+    optIn3 = [extCopy optIn];
 
-    if (v16 != v17)
+    if (optIn2 != optIn3)
     {
-      v8 = [(KTAccount *)self optInOutHistory];
-      v9 = v8;
+      optInOutHistory2 = [(KTAccount *)self optInOutHistory];
+      optInOutHistory8 = optInOutHistory2;
 LABEL_5:
-      [v8 addObject:v5];
+      [optInOutHistory2 addObject:extCopy];
 LABEL_16:
 
       v32 = 1;
@@ -1658,18 +1658,18 @@ LABEL_17:
   return v32;
 }
 
-- (void)updateWithOptInOutMutation:(id)a3 error:(id *)a4
+- (void)updateWithOptInOutMutation:(id)mutation error:(id *)error
 {
-  v9 = a3;
-  v6 = [[OptInOutWithExt alloc] initWithMutation:v9];
-  if ([(KTAccount *)self updateWithOptInOutWithExt:v6 error:a4])
+  mutationCopy = mutation;
+  v6 = [[OptInOutWithExt alloc] initWithMutation:mutationCopy];
+  if ([(KTAccount *)self updateWithOptInOutWithExt:v6 error:error])
   {
-    v7 = +[NSDate dateWithTimeIntervalSince1970:](NSDate, "dateWithTimeIntervalSince1970:", [v9 timestampMs] / 1000.0);
+    v7 = +[NSDate dateWithTimeIntervalSince1970:](NSDate, "dateWithTimeIntervalSince1970:", [mutationCopy timestampMs] / 1000.0);
     if ([(OptInOut *)v6 optIn])
     {
       [(KTAccount *)self deleteMarkedEntries:v7];
-      v8 = [v9 devicesArray];
-      [(KTAccount *)self updateWithDeviceStateArray:v8];
+      devicesArray = [mutationCopy devicesArray];
+      [(KTAccount *)self updateWithDeviceStateArray:devicesArray];
     }
 
     [(KTAccount *)self cleanupDevices:v7 removeAllMarked:[(OptInOut *)v6 optIn]];
@@ -1678,17 +1678,17 @@ LABEL_17:
 
 - (BOOL)shouldRemove
 {
-  v2 = [(KTAccount *)self devices];
-  v3 = [v2 count] == 0;
+  devices = [(KTAccount *)self devices];
+  v3 = [devices count] == 0;
 
   return v3;
 }
 
-- (void)deleteMarkedEntries:(id)a3
+- (void)deleteMarkedEntries:(id)entries
 {
-  v4 = a3;
-  v5 = [(KTAccount *)self devices];
-  v6 = [NSArray arrayWithArray:v5];
+  entriesCopy = entries;
+  devices = [(KTAccount *)self devices];
+  v6 = [NSArray arrayWithArray:devices];
 
   v15 = 0u;
   v16 = 0u;
@@ -1710,12 +1710,12 @@ LABEL_17:
         }
 
         v12 = *(*(&v13 + 1) + 8 * i);
-        if ([v12 marked:{v4, v13}])
+        if ([v12 marked:{entriesCopy, v13}])
         {
           [(KTAccount *)self removeDevicesObject:v12];
         }
 
-        [v12 deleteMarkedEntries:v4];
+        [v12 deleteMarkedEntries:entriesCopy];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];

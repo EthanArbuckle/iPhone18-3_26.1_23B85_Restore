@@ -1,21 +1,21 @@
 @interface KCellularGsmCsRfMeasurement
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)csTxPwrAtIndex:(unint64_t)a3;
+- (int)csTxPwrAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCsRxlevSub:(BOOL)a3;
-- (void)setHasCsRxqualSub:(BOOL)a3;
-- (void)setHasCurrentAntenna:(BOOL)a3;
-- (void)setHasScellArfcn:(BOOL)a3;
-- (void)setHasScellBand:(BOOL)a3;
-- (void)setHasSimplifiedL1State:(BOOL)a3;
-- (void)setHasSubsId:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasCsRxlevSub:(BOOL)sub;
+- (void)setHasCsRxqualSub:(BOOL)sub;
+- (void)setHasCurrentAntenna:(BOOL)antenna;
+- (void)setHasScellArfcn:(BOOL)arfcn;
+- (void)setHasScellBand:(BOOL)band;
+- (void)setHasSimplifiedL1State:(BOOL)state;
+- (void)setHasSubsId:(BOOL)id;
+- (void)writeTo:(id)to;
 @end
 
 @implementation KCellularGsmCsRfMeasurement
@@ -28,9 +28,9 @@
   [(KCellularGsmCsRfMeasurement *)&v3 dealloc];
 }
 
-- (void)setHasScellArfcn:(BOOL)a3
+- (void)setHasScellArfcn:(BOOL)arfcn
 {
-  if (a3)
+  if (arfcn)
   {
     v3 = 16;
   }
@@ -43,9 +43,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasSimplifiedL1State:(BOOL)a3
+- (void)setHasSimplifiedL1State:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 64;
   }
@@ -58,9 +58,9 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasCurrentAntenna:(BOOL)a3
+- (void)setHasCurrentAntenna:(BOOL)antenna
 {
-  if (a3)
+  if (antenna)
   {
     v3 = 8;
   }
@@ -73,23 +73,23 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (int)csTxPwrAtIndex:(unint64_t)a3
+- (int)csTxPwrAtIndex:(unint64_t)index
 {
   p_csTxPwrs = &self->_csTxPwrs;
   count = self->_csTxPwrs.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_csTxPwrs->list[a3];
+  return p_csTxPwrs->list[index];
 }
 
-- (void)setHasCsRxlevSub:(BOOL)a3
+- (void)setHasCsRxlevSub:(BOOL)sub
 {
-  if (a3)
+  if (sub)
   {
     v3 = 2;
   }
@@ -102,9 +102,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasCsRxqualSub:(BOOL)a3
+- (void)setHasCsRxqualSub:(BOOL)sub
 {
-  if (a3)
+  if (sub)
   {
     v3 = 4;
   }
@@ -117,9 +117,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasScellBand:(BOOL)a3
+- (void)setHasScellBand:(BOOL)band
 {
-  if (a3)
+  if (band)
   {
     v3 = 32;
   }
@@ -132,9 +132,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasSubsId:(BOOL)a3
+- (void)setHasSubsId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 0x80;
   }
@@ -152,8 +152,8 @@
   v7.receiver = self;
   v7.super_class = KCellularGsmCsRfMeasurement;
   v3 = [(KCellularGsmCsRfMeasurement *)&v7 description];
-  v4 = [(KCellularGsmCsRfMeasurement *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(KCellularGsmCsRfMeasurement *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -272,9 +272,9 @@ LABEL_10:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -393,14 +393,14 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[4] = self->_timestamp;
-    *(v4 + 68) |= 1u;
+    toCopy[4] = self->_timestamp;
+    *(toCopy + 68) |= 1u;
     has = self->_has;
     if ((has & 0x10) == 0)
     {
@@ -411,8 +411,8 @@ LABEL_3:
       }
 
 LABEL_19:
-      *(v4 + 15) = self->_simplifiedL1State;
-      *(v4 + 68) |= 0x40u;
+      *(toCopy + 15) = self->_simplifiedL1State;
+      *(toCopy + 68) |= 0x40u;
       if ((*&self->_has & 8) == 0)
       {
         goto LABEL_6;
@@ -427,8 +427,8 @@ LABEL_19:
     goto LABEL_3;
   }
 
-  *(v4 + 13) = self->_scellArfcn;
-  *(v4 + 68) |= 0x10u;
+  *(toCopy + 13) = self->_scellArfcn;
+  *(toCopy + 68) |= 0x10u;
   has = self->_has;
   if ((has & 0x40) != 0)
   {
@@ -439,19 +439,19 @@ LABEL_4:
   if ((has & 8) != 0)
   {
 LABEL_5:
-    *(v4 + 12) = self->_currentAntenna;
-    *(v4 + 68) |= 8u;
+    *(toCopy + 12) = self->_currentAntenna;
+    *(toCopy + 68) |= 8u;
   }
 
 LABEL_6:
-  v10 = v4;
+  v10 = toCopy;
   if ([(KCellularGsmCsRfMeasurement *)self csTxPwrsCount])
   {
     [v10 clearCsTxPwrs];
-    v6 = [(KCellularGsmCsRfMeasurement *)self csTxPwrsCount];
-    if (v6)
+    csTxPwrsCount = [(KCellularGsmCsRfMeasurement *)self csTxPwrsCount];
+    if (csTxPwrsCount)
     {
-      v7 = v6;
+      v7 = csTxPwrsCount;
       for (i = 0; i != v7; ++i)
       {
         [v10 addCsTxPwr:{-[KCellularGsmCsRfMeasurement csTxPwrAtIndex:](self, "csTxPwrAtIndex:", i)}];
@@ -510,9 +510,9 @@ LABEL_24:
 LABEL_14:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   has = self->_has;
   if (has)
@@ -614,63 +614,63 @@ LABEL_9:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_42;
   }
 
-  v5 = v4[68];
+  v5 = equalCopy[68];
   if (*&self->_has)
   {
-    if ((v4[68] & 1) == 0 || self->_timestamp != *(v4 + 4))
+    if ((equalCopy[68] & 1) == 0 || self->_timestamp != *(equalCopy + 4))
     {
       goto LABEL_42;
     }
   }
 
-  else if (v4[68])
+  else if (equalCopy[68])
   {
     goto LABEL_42;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((v4[68] & 0x10) == 0 || self->_scellArfcn != *(v4 + 13))
+    if ((equalCopy[68] & 0x10) == 0 || self->_scellArfcn != *(equalCopy + 13))
     {
       goto LABEL_42;
     }
   }
 
-  else if ((v4[68] & 0x10) != 0)
+  else if ((equalCopy[68] & 0x10) != 0)
   {
     goto LABEL_42;
   }
 
   if ((*&self->_has & 0x40) != 0)
   {
-    if ((v4[68] & 0x40) == 0 || self->_simplifiedL1State != *(v4 + 15))
+    if ((equalCopy[68] & 0x40) == 0 || self->_simplifiedL1State != *(equalCopy + 15))
     {
       goto LABEL_42;
     }
   }
 
-  else if ((v4[68] & 0x40) != 0)
+  else if ((equalCopy[68] & 0x40) != 0)
   {
     goto LABEL_42;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((v4[68] & 8) == 0 || self->_currentAntenna != *(v4 + 12))
+    if ((equalCopy[68] & 8) == 0 || self->_currentAntenna != *(equalCopy + 12))
     {
       goto LABEL_42;
     }
   }
 
-  else if ((v4[68] & 8) != 0)
+  else if ((equalCopy[68] & 8) != 0)
   {
     goto LABEL_42;
   }
@@ -684,47 +684,47 @@ LABEL_42:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((v4[68] & 2) == 0 || self->_csRxlevSub != *(v4 + 10))
+    if ((equalCopy[68] & 2) == 0 || self->_csRxlevSub != *(equalCopy + 10))
     {
       goto LABEL_42;
     }
   }
 
-  else if ((v4[68] & 2) != 0)
+  else if ((equalCopy[68] & 2) != 0)
   {
     goto LABEL_42;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((v4[68] & 4) == 0 || self->_csRxqualSub != *(v4 + 11))
+    if ((equalCopy[68] & 4) == 0 || self->_csRxqualSub != *(equalCopy + 11))
     {
       goto LABEL_42;
     }
   }
 
-  else if ((v4[68] & 4) != 0)
+  else if ((equalCopy[68] & 4) != 0)
   {
     goto LABEL_42;
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((v4[68] & 0x20) == 0 || self->_scellBand != *(v4 + 14))
+    if ((equalCopy[68] & 0x20) == 0 || self->_scellBand != *(equalCopy + 14))
     {
       goto LABEL_42;
     }
   }
 
-  else if ((v4[68] & 0x20) != 0)
+  else if ((equalCopy[68] & 0x20) != 0)
   {
     goto LABEL_42;
   }
 
-  v6 = v4[68] >= 0;
+  v6 = equalCopy[68] >= 0;
   if ((*&self->_has & 0x80) != 0)
   {
-    if ((v4[68] & 0x80) == 0 || self->_subsId != *(v4 + 16))
+    if ((equalCopy[68] & 0x80) == 0 || self->_subsId != *(equalCopy + 16))
     {
       goto LABEL_42;
     }
@@ -842,15 +842,15 @@ LABEL_14:
   return v4 ^ v3 ^ v5 ^ v6 ^ v8 ^ v9 ^ v10 ^ v11 ^ v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 68);
+  fromCopy = from;
+  v5 = *(fromCopy + 68);
   if (v5)
   {
-    self->_timestamp = *(v4 + 4);
+    self->_timestamp = *(fromCopy + 4);
     *&self->_has |= 1u;
-    v5 = *(v4 + 68);
+    v5 = *(fromCopy + 68);
     if ((v5 & 0x10) == 0)
     {
 LABEL_3:
@@ -863,14 +863,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 68) & 0x10) == 0)
+  else if ((*(fromCopy + 68) & 0x10) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_scellArfcn = *(v4 + 13);
+  self->_scellArfcn = *(fromCopy + 13);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 68);
+  v5 = *(fromCopy + 68);
   if ((v5 & 0x40) == 0)
   {
 LABEL_4:
@@ -883,21 +883,21 @@ LABEL_4:
   }
 
 LABEL_18:
-  self->_simplifiedL1State = *(v4 + 15);
+  self->_simplifiedL1State = *(fromCopy + 15);
   *&self->_has |= 0x40u;
-  if ((*(v4 + 68) & 8) != 0)
+  if ((*(fromCopy + 68) & 8) != 0)
   {
 LABEL_5:
-    self->_currentAntenna = *(v4 + 12);
+    self->_currentAntenna = *(fromCopy + 12);
     *&self->_has |= 8u;
   }
 
 LABEL_6:
-  v10 = v4;
-  v6 = [v4 csTxPwrsCount];
-  if (v6)
+  v10 = fromCopy;
+  csTxPwrsCount = [fromCopy csTxPwrsCount];
+  if (csTxPwrsCount)
   {
-    v7 = v6;
+    v7 = csTxPwrsCount;
     for (i = 0; i != v7; ++i)
     {
       -[KCellularGsmCsRfMeasurement addCsTxPwr:](self, "addCsTxPwr:", [v10 csTxPwrAtIndex:i]);

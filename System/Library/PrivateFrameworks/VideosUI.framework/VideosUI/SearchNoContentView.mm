@@ -1,14 +1,14 @@
 @interface SearchNoContentView
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4;
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only;
 @end
 
 @implementation SearchNoContentView
 
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only
 {
-  v5 = self;
+  selfCopy = self;
   v6 = OUTLINED_FUNCTION_6_12();
-  sub_1E3F71F60(a4, v6, v7);
+  sub_1E3F71F60(only, v6, v7);
   v9 = v8;
   v11 = v10;
 

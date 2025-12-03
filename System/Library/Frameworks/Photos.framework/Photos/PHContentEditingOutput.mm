@@ -1,28 +1,28 @@
 @interface PHContentEditingOutput
-+ (id)_renderURLWithExtensionForMediaType:(int64_t)a3 useHEICImage:(BOOL)a4 appropriateForURL:(id)a5;
-+ (id)_renderURLWithExtensionForUniformTypeIdentifierType:(id)a3 appropriateForURL:(id)a4;
-+ (id)defaultExtensionForUniformTypeIdentifierType:(id)a3;
++ (id)_renderURLWithExtensionForMediaType:(int64_t)type useHEICImage:(BOOL)image appropriateForURL:(id)l;
++ (id)_renderURLWithExtensionForUniformTypeIdentifierType:(id)type appropriateForURL:(id)l;
++ (id)defaultExtensionForUniformTypeIdentifierType:(id)type;
 - (BOOL)isOnlyChangingOriginalChoice;
 - (BOOL)shouldPreferHEICForRenderedImages;
 - (NSArray)supportedRenderedContentTypes;
 - (NSURL)renderedContentURLForType:(UTType *)type error:(NSError *)error;
 - (PHAdjustmentData)adjustmentData;
-- (PHContentEditingOutput)initWithAdjustmentBaseVersion:(int64_t)a3 mediaType:(int64_t)a4 appropriateForURL:(id)a5;
-- (PHContentEditingOutput)initWithCoder:(id)a3;
-- (PHContentEditingOutput)initWithContentEditingInput:(id)a3 withOptions:(id)a4;
+- (PHContentEditingOutput)initWithAdjustmentBaseVersion:(int64_t)version mediaType:(int64_t)type appropriateForURL:(id)l;
+- (PHContentEditingOutput)initWithCoder:(id)coder;
+- (PHContentEditingOutput)initWithContentEditingInput:(id)input withOptions:(id)options;
 - (PHContentEditingOutput)initWithPlaceholderForCreatedAsset:(PHObjectPlaceholder *)placeholderForCreatedAsset;
 - (UTType)defaultRenderedContentType;
-- (id)assetAdjustmentsWithEditorBundleID:(id)a3;
+- (id)assetAdjustmentsWithEditorBundleID:(id)d;
 - (id)debugDescription;
 - (id)description;
-- (id)renderURLWithExtensionForMediaType:(int64_t)a3;
+- (id)renderURLWithExtensionForMediaType:(int64_t)type;
 - (id)setAdjustmentsOptions;
 - (int64_t)baseVersion;
-- (void)_setupRequiredRenderedContentURLsWithEditingInput:(id)a3 options:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)_setupRequiredRenderedContentURLsWithEditingInput:(id)input options:(id)options;
+- (void)encodeWithCoder:(id)coder;
 - (void)setAdjustmentData:(PHAdjustmentData *)adjustmentData;
-- (void)setBaseVersion:(int64_t)a3;
-- (void)setRenderedJPEGData:(id)a3;
+- (void)setBaseVersion:(int64_t)version;
+- (void)setRenderedJPEGData:(id)data;
 @end
 
 @implementation PHContentEditingOutput
@@ -34,40 +34,40 @@
   [(PHContentEditingOutput *)self fullSizeRenderDuration];
   [v3 setFullSizeRenderDuration:?];
   [v3 setShouldGenerateThumbnails:1];
-  v4 = [(PHContentEditingOutput *)self adjustmentSecondaryDataURL];
-  [v3 setAdjustmentSecondaryDataURL:v4];
+  adjustmentSecondaryDataURL = [(PHContentEditingOutput *)self adjustmentSecondaryDataURL];
+  [v3 setAdjustmentSecondaryDataURL:adjustmentSecondaryDataURL];
 
   if ([(PHContentEditingOutput *)self isAsyncAdjustment])
   {
-    v5 = [(PHContentEditingOutput *)self renderedPreviewContentURL];
-    [v3 setRenderedContentURL:v5];
+    renderedPreviewContentURL = [(PHContentEditingOutput *)self renderedPreviewContentURL];
+    [v3 setRenderedContentURL:renderedPreviewContentURL];
 
     [v3 setSubstandardRender:1];
     [v3 setDeferred:1];
-    v6 = [(PHContentEditingOutput *)self renderedVideoPosterURL];
-    [v3 setRenderedVideoPosterContentURL:v6];
+    renderedVideoPosterURL = [(PHContentEditingOutput *)self renderedVideoPosterURL];
+    [v3 setRenderedVideoPosterContentURL:renderedVideoPosterURL];
   }
 
   else
   {
-    v7 = [(PHContentEditingOutput *)self renderedContentURL];
-    [v3 setRenderedContentURL:v7];
+    renderedContentURL = [(PHContentEditingOutput *)self renderedContentURL];
+    [v3 setRenderedContentURL:renderedContentURL];
 
-    v8 = [(PHContentEditingOutput *)self penultimateRenderedJPEGData];
-    [v3 setPenultimateRenderedJPEGData:v8];
+    penultimateRenderedJPEGData = [(PHContentEditingOutput *)self penultimateRenderedJPEGData];
+    [v3 setPenultimateRenderedJPEGData:penultimateRenderedJPEGData];
 
-    v9 = [(PHContentEditingOutput *)self penultimateRenderedVideoContentURL];
-    [v3 setPenultimateRenderedVideoContentURL:v9];
+    penultimateRenderedVideoContentURL = [(PHContentEditingOutput *)self penultimateRenderedVideoContentURL];
+    [v3 setPenultimateRenderedVideoContentURL:penultimateRenderedVideoContentURL];
 
     [v3 setSubstandardRender:{-[PHContentEditingOutput isSubstandardRender](self, "isSubstandardRender")}];
-    v10 = [(PHContentEditingOutput *)self renderedVideoComplementContentURL];
-    [v3 setRenderedVideoComplementContentURL:v10];
+    renderedVideoComplementContentURL = [(PHContentEditingOutput *)self renderedVideoComplementContentURL];
+    [v3 setRenderedVideoComplementContentURL:renderedVideoComplementContentURL];
 
-    v11 = [(PHContentEditingOutput *)self penultimateRenderedVideoComplementContentURL];
-    [v3 setPenultimateRenderedVideoComplementContentURL:v11];
+    penultimateRenderedVideoComplementContentURL = [(PHContentEditingOutput *)self penultimateRenderedVideoComplementContentURL];
+    [v3 setPenultimateRenderedVideoComplementContentURL:penultimateRenderedVideoComplementContentURL];
 
-    v12 = [(PHContentEditingOutput *)self renderedVideoPosterURL];
-    [v3 setRenderedVideoPosterContentURL:v12];
+    renderedVideoPosterURL2 = [(PHContentEditingOutput *)self renderedVideoPosterURL];
+    [v3 setRenderedVideoPosterContentURL:renderedVideoPosterURL2];
 
     [v3 setShouldUpdateAttributes:1];
   }
@@ -122,15 +122,15 @@
   originalResourceChoice = self->_originalResourceChoice;
   if (originalResourceChoice)
   {
-    v14 = [(NSNumber *)originalResourceChoice integerValue];
-    if (v14 > 3)
+    integerValue = [(NSNumber *)originalResourceChoice integerValue];
+    if (integerValue > 3)
     {
       v15 = 0;
     }
 
     else
     {
-      v15 = off_1E75A71C8[v14];
+      v15 = off_1E75A71C8[integerValue];
     }
 
     v16 = v15;
@@ -150,132 +150,132 @@
   v9.receiver = self;
   v9.super_class = PHContentEditingOutput;
   v3 = [(PHContentEditingOutput *)&v9 description];
-  v4 = [(PHContentEditingOutput *)self adjustmentData];
-  v5 = [(PHContentEditingOutput *)self renderedContentURL];
-  v6 = [(PHContentEditingOutput *)self renderedPreviewContentURL];
-  v7 = [v3 stringByAppendingFormat:@" adjustmentData=%@, renderedContentURL=%@, renderedPreviewContentURL=%@", v4, v5, v6];
+  adjustmentData = [(PHContentEditingOutput *)self adjustmentData];
+  renderedContentURL = [(PHContentEditingOutput *)self renderedContentURL];
+  renderedPreviewContentURL = [(PHContentEditingOutput *)self renderedPreviewContentURL];
+  v7 = [v3 stringByAppendingFormat:@" adjustmentData=%@, renderedContentURL=%@, renderedPreviewContentURL=%@", adjustmentData, renderedContentURL, renderedPreviewContentURL];
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   mediaType = self->_mediaType;
-  v13 = a3;
-  [v13 encodeInteger:mediaType forKey:@"mediaType"];
-  [v13 encodeBool:self->_loopingLivePhoto forKey:@"loopingLivePhoto"];
-  [v13 encodeObject:self->_adjustmentData forKey:@"adjustmentData"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:mediaType forKey:@"mediaType"];
+  [coderCopy encodeBool:self->_loopingLivePhoto forKey:@"loopingLivePhoto"];
+  [coderCopy encodeObject:self->_adjustmentData forKey:@"adjustmentData"];
   v5 = OutboundURLForURL(self->_renderedContentURL);
-  [v13 encodeObject:v5 forKey:@"renderedContentURL"];
+  [coderCopy encodeObject:v5 forKey:@"renderedContentURL"];
 
   v6 = OutboundURLForURL(self->_renderedVideoComplementContentURL);
-  [v13 encodeObject:v6 forKey:@"renderedVideoComplementContentURL"];
+  [coderCopy encodeObject:v6 forKey:@"renderedVideoComplementContentURL"];
 
   v7 = OutboundURLForURL(self->_renderedPreviewContentURL);
-  [v13 encodeObject:v7 forKey:@"renderedPreviewContentURL"];
+  [coderCopy encodeObject:v7 forKey:@"renderedPreviewContentURL"];
 
   v8 = OutboundURLForURL(self->_adjustmentSecondaryDataURL);
-  [v13 encodeObject:v8 forKey:@"adjustmentSecondaryDataURL"];
+  [coderCopy encodeObject:v8 forKey:@"adjustmentSecondaryDataURL"];
 
-  [v13 encodeObject:self->_penultimateRenderedJPEGData forKey:@"penultimateRenderedJPEGData"];
+  [coderCopy encodeObject:self->_penultimateRenderedJPEGData forKey:@"penultimateRenderedJPEGData"];
   v9 = OutboundURLForURL(self->_penultimateRenderedVideoContentURL);
-  [v13 encodeObject:v9 forKey:@"penultimateRenderedVideoContentURL"];
+  [coderCopy encodeObject:v9 forKey:@"penultimateRenderedVideoContentURL"];
 
   v10 = OutboundURLForURL(self->_penultimateRenderedVideoComplementContentURL);
-  [v13 encodeObject:v10 forKey:@"penultimateRenderedVideoComplementContentURL"];
+  [coderCopy encodeObject:v10 forKey:@"penultimateRenderedVideoComplementContentURL"];
 
-  [v13 encodeBool:self->_isSubstandardRender forKey:@"isSubstandardRender"];
-  [v13 encodeInteger:self->_fullSizeRenderWidth forKey:@"fullSizeRenderWidth"];
-  [v13 encodeInteger:self->_fullSizeRenderHeight forKey:@"fullSizeRenderHeight"];
-  [v13 encodeDouble:@"fullSizeRenderDuration" forKey:self->_fullSizeRenderDuration];
+  [coderCopy encodeBool:self->_isSubstandardRender forKey:@"isSubstandardRender"];
+  [coderCopy encodeInteger:self->_fullSizeRenderWidth forKey:@"fullSizeRenderWidth"];
+  [coderCopy encodeInteger:self->_fullSizeRenderHeight forKey:@"fullSizeRenderHeight"];
+  [coderCopy encodeDouble:@"fullSizeRenderDuration" forKey:self->_fullSizeRenderDuration];
   v11 = OutboundURLForURL(self->_editorBundleURL);
-  [v13 encodeObject:v11 forKey:@"editorBundleURL"];
+  [coderCopy encodeObject:v11 forKey:@"editorBundleURL"];
 
-  [v13 encodeObject:self->_originalResourceChoice forKey:@"originalResourceChoice"];
-  [v13 encodeBool:self->_isAsyncAdjustment forKey:@"isAsyncAdjustment"];
+  [coderCopy encodeObject:self->_originalResourceChoice forKey:@"originalResourceChoice"];
+  [coderCopy encodeBool:self->_isAsyncAdjustment forKey:@"isAsyncAdjustment"];
   v12 = OutboundURLForURL(self->_renderedVideoPosterURL);
-  [v13 encodeObject:v12 forKey:@"renderedVideoPosterURL"];
+  [coderCopy encodeObject:v12 forKey:@"renderedVideoPosterURL"];
 
-  [v13 encodeObject:self->_playbackVariation forKey:@"playbackVariation"];
-  [v13 encodeObject:self->_videoDuration forKey:@"videoDuration"];
-  [v13 encodeObject:self->_accessibilityDescription forKey:@"accessibilityDescription"];
-  [v13 encodeObject:self->_requestOptions forKey:@"requestOptions"];
+  [coderCopy encodeObject:self->_playbackVariation forKey:@"playbackVariation"];
+  [coderCopy encodeObject:self->_videoDuration forKey:@"videoDuration"];
+  [coderCopy encodeObject:self->_accessibilityDescription forKey:@"accessibilityDescription"];
+  [coderCopy encodeObject:self->_requestOptions forKey:@"requestOptions"];
 }
 
-- (PHContentEditingOutput)initWithCoder:(id)a3
+- (PHContentEditingOutput)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v39.receiver = self;
   v39.super_class = PHContentEditingOutput;
   v5 = [(PHContentEditingOutput *)&v39 init];
   if (v5)
   {
-    v5->_mediaType = [v4 decodeIntegerForKey:@"mediaType"];
-    v5->_loopingLivePhoto = [v4 decodeBoolForKey:@"loopingLivePhoto"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"adjustmentData"];
+    v5->_mediaType = [coderCopy decodeIntegerForKey:@"mediaType"];
+    v5->_loopingLivePhoto = [coderCopy decodeBoolForKey:@"loopingLivePhoto"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"adjustmentData"];
     adjustmentData = v5->_adjustmentData;
     v5->_adjustmentData = v6;
 
     v8 = objc_opt_class();
-    v9 = [v4 decodeObjectOfClass:v8 forKey:@"renderedContentURL"];
+    v9 = [coderCopy decodeObjectOfClass:v8 forKey:@"renderedContentURL"];
     renderedContentURL = v5->_renderedContentURL;
     v5->_renderedContentURL = v9;
 
-    v11 = [v4 decodeObjectOfClass:v8 forKey:@"renderedVideoComplementContentURL"];
+    v11 = [coderCopy decodeObjectOfClass:v8 forKey:@"renderedVideoComplementContentURL"];
     renderedVideoComplementContentURL = v5->_renderedVideoComplementContentURL;
     v5->_renderedVideoComplementContentURL = v11;
 
-    v13 = [v4 decodeObjectOfClass:v8 forKey:@"renderedPreviewContentURL"];
+    v13 = [coderCopy decodeObjectOfClass:v8 forKey:@"renderedPreviewContentURL"];
     renderedPreviewContentURL = v5->_renderedPreviewContentURL;
     v5->_renderedPreviewContentURL = v13;
 
-    v15 = [v4 decodeObjectOfClass:v8 forKey:@"adjustmentSecondaryDataURL"];
+    v15 = [coderCopy decodeObjectOfClass:v8 forKey:@"adjustmentSecondaryDataURL"];
     adjustmentSecondaryDataURL = v5->_adjustmentSecondaryDataURL;
     v5->_adjustmentSecondaryDataURL = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"penultimateRenderedJPEGData"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"penultimateRenderedJPEGData"];
     penultimateRenderedJPEGData = v5->_penultimateRenderedJPEGData;
     v5->_penultimateRenderedJPEGData = v17;
 
-    v19 = [v4 decodeObjectOfClass:v8 forKey:@"penultimateRenderedVideoContentURL"];
+    v19 = [coderCopy decodeObjectOfClass:v8 forKey:@"penultimateRenderedVideoContentURL"];
     penultimateRenderedVideoContentURL = v5->_penultimateRenderedVideoContentURL;
     v5->_penultimateRenderedVideoContentURL = v19;
 
-    v21 = [v4 decodeObjectOfClass:v8 forKey:@"penultimateRenderedVideoComplementContentURL"];
+    v21 = [coderCopy decodeObjectOfClass:v8 forKey:@"penultimateRenderedVideoComplementContentURL"];
     penultimateRenderedVideoComplementContentURL = v5->_penultimateRenderedVideoComplementContentURL;
     v5->_penultimateRenderedVideoComplementContentURL = v21;
 
-    v5->_isSubstandardRender = [v4 decodeBoolForKey:@"isSubstandardRender"];
-    v5->_fullSizeRenderWidth = [v4 decodeIntegerForKey:@"fullSizeRenderWidth"];
-    v5->_fullSizeRenderHeight = [v4 decodeIntegerForKey:@"fullSizeRenderHeight"];
-    [v4 decodeDoubleForKey:@"fullSizeRenderDuration"];
+    v5->_isSubstandardRender = [coderCopy decodeBoolForKey:@"isSubstandardRender"];
+    v5->_fullSizeRenderWidth = [coderCopy decodeIntegerForKey:@"fullSizeRenderWidth"];
+    v5->_fullSizeRenderHeight = [coderCopy decodeIntegerForKey:@"fullSizeRenderHeight"];
+    [coderCopy decodeDoubleForKey:@"fullSizeRenderDuration"];
     v5->_fullSizeRenderDuration = v23;
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"editorBundleURL"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"editorBundleURL"];
     editorBundleURL = v5->_editorBundleURL;
     v5->_editorBundleURL = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"originalResourceChoice"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"originalResourceChoice"];
     originalResourceChoice = v5->_originalResourceChoice;
     v5->_originalResourceChoice = v26;
 
-    v5->_isAsyncAdjustment = [v4 decodeBoolForKey:@"isAsyncAdjustment"];
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"renderedVideoPosterURL"];
+    v5->_isAsyncAdjustment = [coderCopy decodeBoolForKey:@"isAsyncAdjustment"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"renderedVideoPosterURL"];
     renderedVideoPosterURL = v5->_renderedVideoPosterURL;
     v5->_renderedVideoPosterURL = v28;
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"playbackVariation"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"playbackVariation"];
     playbackVariation = v5->_playbackVariation;
     v5->_playbackVariation = v30;
 
-    v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"videoDuration"];
+    v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"videoDuration"];
     videoDuration = v5->_videoDuration;
     v5->_videoDuration = v32;
 
-    v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accessibilityDescription"];
+    v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accessibilityDescription"];
     accessibilityDescription = v5->_accessibilityDescription;
     v5->_accessibilityDescription = v34;
 
-    v36 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requestOptions"];
+    v36 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requestOptions"];
     requestOptions = v5->_requestOptions;
     v5->_requestOptions = v36;
   }
@@ -296,25 +296,25 @@
   return [v3 _currentDeviceSupportsHEICEncoding];
 }
 
-- (void)_setupRequiredRenderedContentURLsWithEditingInput:(id)a3 options:(id)a4
+- (void)_setupRequiredRenderedContentURLsWithEditingInput:(id)input options:(id)options
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v7 isAsyncAdjustment])
+  inputCopy = input;
+  optionsCopy = options;
+  if ([optionsCopy isAsyncAdjustment])
   {
     v8 = PLPhotoEditGetLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      v9 = [v6 mediaType];
-      if ((v9 - 1) > 2)
+      mediaType = [inputCopy mediaType];
+      if ((mediaType - 1) > 2)
       {
         v10 = @"unknown";
       }
 
       else
       {
-        v10 = off_1E75A7238[v9 - 1];
+        v10 = off_1E75A7238[mediaType - 1];
       }
 
       v21 = v10;
@@ -327,7 +327,7 @@
     renderedPreviewContentURL = self->_renderedPreviewContentURL;
     self->_renderedPreviewContentURL = v22;
 
-    if ([v6 mediaType] == 2)
+    if ([inputCopy mediaType] == 2)
     {
       v20 = [(PHContentEditingOutput *)self renderURLWithExtensionForMediaType:1];
 LABEL_25:
@@ -340,21 +340,21 @@ LABEL_26:
 
   else
   {
-    if ([v7 playbackStyle])
+    if ([optionsCopy playbackStyle])
     {
-      v11 = v7;
+      v11 = optionsCopy;
     }
 
     else
     {
-      v11 = v6;
+      v11 = inputCopy;
     }
 
-    v12 = [v11 playbackStyle];
-    v13 = [(PHContentEditingOutput *)self shouldPreferHEICForRenderedImages];
-    v14 = [v6 mediaType] == 1 && v12 == 5;
+    playbackStyle = [v11 playbackStyle];
+    shouldPreferHEICForRenderedImages = [(PHContentEditingOutput *)self shouldPreferHEICForRenderedImages];
+    v14 = [inputCopy mediaType] == 1 && playbackStyle == 5;
     v15 = v14;
-    if (v14 || [v6 mediaType] == 2)
+    if (v14 || [inputCopy mediaType] == 2)
     {
       v16 = PLPhotoEditGetLog();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -375,16 +375,16 @@ LABEL_26:
       renderedContentURL = self->_renderedContentURL;
       self->_renderedContentURL = v18;
 
-      v20 = [objc_opt_class() imageRenderURLUsingHEICFormat:v13 appropriateForURL:self->_appropriateURLForDerivingRenderedContentURLs];
+      v20 = [objc_opt_class() imageRenderURLUsingHEICFormat:shouldPreferHEICForRenderedImages appropriateForURL:self->_appropriateURLForDerivingRenderedContentURLs];
       goto LABEL_25;
     }
 
     v26 = PLPhotoEditGetLog();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
     {
-      v27 = [v6 livePhoto];
+      livePhoto = [inputCopy livePhoto];
       v28 = @"live photo";
-      if (!v27)
+      if (!livePhoto)
       {
         v28 = @"still photo";
       }
@@ -394,13 +394,13 @@ LABEL_26:
       _os_log_impl(&dword_19C86F000, v26, OS_LOG_TYPE_DEBUG, "Preparing photo-based content editing output URLs for %{public}@", &v32, 0xCu);
     }
 
-    v29 = [objc_opt_class() _renderURLWithExtensionForMediaType:self->_mediaType useHEICImage:v13 appropriateForURL:self->_appropriateURLForDerivingRenderedContentURLs];
+    v29 = [objc_opt_class() _renderURLWithExtensionForMediaType:self->_mediaType useHEICImage:shouldPreferHEICForRenderedImages appropriateForURL:self->_appropriateURLForDerivingRenderedContentURLs];
     v30 = self->_renderedContentURL;
     self->_renderedContentURL = v29;
 
-    v31 = [v6 livePhoto];
+    livePhoto2 = [inputCopy livePhoto];
 
-    if (v31)
+    if (livePhoto2)
     {
       v20 = [(PHContentEditingOutput *)self renderURLWithExtensionForMediaType:2];
       v24 = 128;
@@ -411,66 +411,66 @@ LABEL_26:
 
 - (BOOL)isOnlyChangingOriginalChoice
 {
-  v3 = [(PHContentEditingOutput *)self adjustmentData];
-  if (v3)
+  adjustmentData = [(PHContentEditingOutput *)self adjustmentData];
+  if (adjustmentData)
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(PHContentEditingOutput *)self originalResourceChoice];
-    v4 = v5 != 0;
+    originalResourceChoice = [(PHContentEditingOutput *)self originalResourceChoice];
+    v4 = originalResourceChoice != 0;
   }
 
   return v4;
 }
 
-- (id)assetAdjustmentsWithEditorBundleID:(id)a3
+- (id)assetAdjustmentsWithEditorBundleID:(id)d
 {
-  v4 = a3;
-  v5 = [(PHContentEditingOutput *)self adjustmentData];
-  v6 = [v5 formatIdentifier];
+  dCopy = d;
+  adjustmentData = [(PHContentEditingOutput *)self adjustmentData];
+  formatIdentifier = [adjustmentData formatIdentifier];
 
-  v7 = [(PHContentEditingOutput *)self adjustmentData];
-  v8 = [v7 formatVersion];
+  adjustmentData2 = [(PHContentEditingOutput *)self adjustmentData];
+  formatVersion = [adjustmentData2 formatVersion];
 
-  v9 = [(PHContentEditingOutput *)self adjustmentData];
-  v10 = [v9 baseVersion];
+  adjustmentData3 = [(PHContentEditingOutput *)self adjustmentData];
+  baseVersion = [adjustmentData3 baseVersion];
 
-  v11 = [(PHContentEditingOutput *)self adjustmentData];
-  v12 = [v11 data];
+  adjustmentData4 = [(PHContentEditingOutput *)self adjustmentData];
+  data = [adjustmentData4 data];
 
-  v13 = [(PHContentEditingOutput *)self adjustmentData];
-  v14 = [v13 adjustmentRenderTypes];
+  adjustmentData5 = [(PHContentEditingOutput *)self adjustmentData];
+  adjustmentRenderTypes = [adjustmentData5 adjustmentRenderTypes];
 
-  v15 = [objc_alloc(MEMORY[0x1E69C0660]) initWithFormatIdentifier:v6 formatVersion:v8 data:v12 baseVersion:v10 editorBundleID:v4 renderTypes:v14];
+  v15 = [objc_alloc(MEMORY[0x1E69C0660]) initWithFormatIdentifier:formatIdentifier formatVersion:formatVersion data:data baseVersion:baseVersion editorBundleID:dCopy renderTypes:adjustmentRenderTypes];
 
   return v15;
 }
 
-- (void)setRenderedJPEGData:(id)a3
+- (void)setRenderedJPEGData:(id)data
 {
-  v4 = a3;
-  v5 = [(PHContentEditingOutput *)self renderedContentURL];
-  [v4 writeToURL:v5 options:1073741825 error:0];
+  dataCopy = data;
+  renderedContentURL = [(PHContentEditingOutput *)self renderedContentURL];
+  [dataCopy writeToURL:renderedContentURL options:1073741825 error:0];
 }
 
-- (void)setBaseVersion:(int64_t)a3
+- (void)setBaseVersion:(int64_t)version
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_baseVersion = a3;
-  [(PHAdjustmentData *)obj->_adjustmentData setBaseVersion:a3];
+  obj->_baseVersion = version;
+  [(PHAdjustmentData *)obj->_adjustmentData setBaseVersion:version];
   objc_sync_exit(obj);
 }
 
 - (int64_t)baseVersion
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  baseVersion = v2->_baseVersion;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  baseVersion = selfCopy->_baseVersion;
+  objc_sync_exit(selfCopy);
 
   return baseVersion;
 }
@@ -479,22 +479,22 @@ LABEL_26:
 {
   v4 = adjustmentData;
   [(PHAdjustmentData *)v4 setBaseVersion:self->_baseVersion];
-  v5 = [(PHAdjustmentData *)v4 formatIdentifier];
+  formatIdentifier = [(PHAdjustmentData *)v4 formatIdentifier];
 
-  if (!v5)
+  if (!formatIdentifier)
   {
     [(PHAdjustmentData *)v4 setFormatIdentifier:&stru_1F0FC60C8];
   }
 
-  v6 = [(PHAdjustmentData *)v4 formatVersion];
+  formatVersion = [(PHAdjustmentData *)v4 formatVersion];
 
-  if (!v6)
+  if (!formatVersion)
   {
     [(PHAdjustmentData *)v4 setFormatVersion:&stru_1F0FC60C8];
   }
 
-  v7 = [(PHAdjustmentData *)v4 data];
-  v8 = [v7 length];
+  data = [(PHAdjustmentData *)v4 data];
+  v8 = [data length];
   v9 = +[PHContentEditingOutput maximumAdjustmentDataLength];
 
   if (v8 > v9 && (PLIsAssetsd() & 1) == 0 && (PLIsProcessWithAppleBundleIdentifier() & 1) == 0)
@@ -513,21 +513,21 @@ LABEL_26:
 
 - (PHAdjustmentData)adjustmentData
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_adjustmentData;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_adjustmentData;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (id)renderURLWithExtensionForMediaType:(int64_t)a3
+- (id)renderURLWithExtensionForMediaType:(int64_t)type
 {
-  v5 = [(PHContentEditingOutput *)self shouldPreferHEICForRenderedImages];
+  shouldPreferHEICForRenderedImages = [(PHContentEditingOutput *)self shouldPreferHEICForRenderedImages];
   v6 = objc_opt_class();
   appropriateURLForDerivingRenderedContentURLs = self->_appropriateURLForDerivingRenderedContentURLs;
 
-  return [v6 _renderURLWithExtensionForMediaType:a3 useHEICImage:v5 appropriateForURL:appropriateURLForDerivingRenderedContentURLs];
+  return [v6 _renderURLWithExtensionForMediaType:type useHEICImage:shouldPreferHEICForRenderedImages appropriateForURL:appropriateURLForDerivingRenderedContentURLs];
 }
 
 - (NSURL)renderedContentURLForType:(UTType *)type error:(NSError *)error
@@ -541,8 +541,8 @@ LABEL_26:
     self->_deliveredRenderedContentURLs = v7;
   }
 
-  v9 = [(PHContentEditingOutput *)self supportedRenderedContentTypes];
-  v10 = [v9 containsObject:v6];
+  supportedRenderedContentTypes = [(PHContentEditingOutput *)self supportedRenderedContentTypes];
+  v10 = [supportedRenderedContentTypes containsObject:v6];
 
   if (!v10)
   {
@@ -656,22 +656,22 @@ LABEL_10:
   return v7;
 }
 
-- (PHContentEditingOutput)initWithAdjustmentBaseVersion:(int64_t)a3 mediaType:(int64_t)a4 appropriateForURL:(id)a5
+- (PHContentEditingOutput)initWithAdjustmentBaseVersion:(int64_t)version mediaType:(int64_t)type appropriateForURL:(id)l
 {
-  v9 = a5;
+  lCopy = l;
   v15.receiver = self;
   v15.super_class = PHContentEditingOutput;
   v10 = [(PHContentEditingOutput *)&v15 init];
   v11 = v10;
   if (v10)
   {
-    v10->_baseVersion = a3;
-    v10->_mediaType = a4;
-    v12 = [(PHContentEditingOutput *)v10 renderURLWithExtensionForMediaType:a4];
+    v10->_baseVersion = version;
+    v10->_mediaType = type;
+    v12 = [(PHContentEditingOutput *)v10 renderURLWithExtensionForMediaType:type];
     renderedContentURL = v11->_renderedContentURL;
     v11->_renderedContentURL = v12;
 
-    objc_storeStrong(&v11->_appropriateURLForDerivingRenderedContentURLs, a5);
+    objc_storeStrong(&v11->_appropriateURLForDerivingRenderedContentURLs, l);
   }
 
   return v11;
@@ -682,8 +682,8 @@ LABEL_10:
   v5 = placeholderForCreatedAsset;
   if (!v5)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PHContentEditingOutput.m" lineNumber:89 description:{@"Invalid parameter not satisfying: %@", @"placeholderForCreatedAsset != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHContentEditingOutput.m" lineNumber:89 description:{@"Invalid parameter not satisfying: %@", @"placeholderForCreatedAsset != nil"}];
   }
 
   v13.receiver = self;
@@ -693,9 +693,9 @@ LABEL_10:
   if (v6)
   {
     v6->_baseVersion = 0;
-    v8 = [(PHObjectPlaceholder *)v5 assetMediaType];
-    v7->_mediaType = v8;
-    v9 = [(PHContentEditingOutput *)v7 renderURLWithExtensionForMediaType:v8];
+    assetMediaType = [(PHObjectPlaceholder *)v5 assetMediaType];
+    v7->_mediaType = assetMediaType;
+    v9 = [(PHContentEditingOutput *)v7 renderURLWithExtensionForMediaType:assetMediaType];
     renderedContentURL = v7->_renderedContentURL;
     v7->_renderedContentURL = v9;
   }
@@ -703,15 +703,15 @@ LABEL_10:
   return v7;
 }
 
-- (PHContentEditingOutput)initWithContentEditingInput:(id)a3 withOptions:(id)a4
+- (PHContentEditingOutput)initWithContentEditingInput:(id)input withOptions:(id)options
 {
   v23 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  inputCopy = input;
+  optionsCopy = options;
+  if (!inputCopy)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"PHContentEditingOutput.m" lineNumber:60 description:{@"Invalid parameter not satisfying: %@", @"contentEditingInput != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHContentEditingOutput.m" lineNumber:60 description:{@"Invalid parameter not satisfying: %@", @"contentEditingInput != nil"}];
   }
 
   v20.receiver = self;
@@ -720,22 +720,22 @@ LABEL_10:
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_requestOptions, a4);
-    v10->_baseVersion = [v7 baseVersion];
-    v10->_mediaType = [v7 mediaType];
-    v11 = [v7 appropriateURLForDerivingRenderedContentURLs];
+    objc_storeStrong(&v9->_requestOptions, options);
+    v10->_baseVersion = [inputCopy baseVersion];
+    v10->_mediaType = [inputCopy mediaType];
+    appropriateURLForDerivingRenderedContentURLs = [inputCopy appropriateURLForDerivingRenderedContentURLs];
     appropriateURLForDerivingRenderedContentURLs = v10->_appropriateURLForDerivingRenderedContentURLs;
-    v10->_appropriateURLForDerivingRenderedContentURLs = v11;
+    v10->_appropriateURLForDerivingRenderedContentURLs = appropriateURLForDerivingRenderedContentURLs;
 
-    if (([v8 isAsyncAdjustment] & 1) != 0 || objc_msgSend(v8, "isOnlyChangingOriginalChoice"))
+    if (([optionsCopy isAsyncAdjustment] & 1) != 0 || objc_msgSend(optionsCopy, "isOnlyChangingOriginalChoice"))
     {
       v10->_isAsyncAdjustment = 1;
     }
 
-    [(PHContentEditingOutput *)v10 _setupRequiredRenderedContentURLsWithEditingInput:v7 options:v8];
-    v13 = [v7 originalResourceChoice];
+    [(PHContentEditingOutput *)v10 _setupRequiredRenderedContentURLsWithEditingInput:inputCopy options:optionsCopy];
+    originalResourceChoice = [inputCopy originalResourceChoice];
 
-    if (v13)
+    if (originalResourceChoice)
     {
       if (v10->_baseVersion)
       {
@@ -749,9 +749,9 @@ LABEL_10:
 
       else
       {
-        v15 = [v7 originalResourceChoice];
+        originalResourceChoice2 = [inputCopy originalResourceChoice];
         p_super = &v10->_originalResourceChoice->super.super;
-        v10->_originalResourceChoice = v15;
+        v10->_originalResourceChoice = originalResourceChoice2;
       }
     }
 
@@ -768,10 +768,10 @@ LABEL_10:
   return v10;
 }
 
-+ (id)_renderURLWithExtensionForUniformTypeIdentifierType:(id)a3 appropriateForURL:(id)a4
++ (id)_renderURLWithExtensionForUniformTypeIdentifierType:(id)type appropriateForURL:(id)l
 {
-  v6 = a4;
-  v7 = [a1 defaultExtensionForUniformTypeIdentifierType:a3];
+  lCopy = l;
+  v7 = [self defaultExtensionForUniformTypeIdentifierType:type];
   if (v7)
   {
     v8 = v7;
@@ -782,15 +782,15 @@ LABEL_10:
     v8 = &stru_1F0FC60C8;
   }
 
-  v9 = [MEMORY[0x1E69BF2A0] temporaryRenderContentURLForInternalRendersWithExtension:v8 appropriateForURL:v6];
+  v9 = [MEMORY[0x1E69BF2A0] temporaryRenderContentURLForInternalRendersWithExtension:v8 appropriateForURL:lCopy];
 
   return v9;
 }
 
-+ (id)defaultExtensionForUniformTypeIdentifierType:(id)a3
++ (id)defaultExtensionForUniformTypeIdentifierType:(id)type
 {
   v11[4] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (type)
   {
     v3 = *MEMORY[0x1E6982E00];
     v10[0] = *MEMORY[0x1E6982E58];
@@ -803,9 +803,9 @@ LABEL_10:
     v11[2] = @"MOV";
     v11[3] = @"WAV";
     v5 = MEMORY[0x1E695DF20];
-    v6 = a3;
+    typeCopy = type;
     v7 = [v5 dictionaryWithObjects:v11 forKeys:v10 count:4];
-    v8 = [v7 objectForKeyedSubscript:v6];
+    v8 = [v7 objectForKeyedSubscript:typeCopy];
   }
 
   else
@@ -816,9 +816,9 @@ LABEL_10:
   return v8;
 }
 
-+ (id)_renderURLWithExtensionForMediaType:(int64_t)a3 useHEICImage:(BOOL)a4 appropriateForURL:(id)a5
++ (id)_renderURLWithExtensionForMediaType:(int64_t)type useHEICImage:(BOOL)image appropriateForURL:(id)l
 {
-  switch(a3)
+  switch(type)
   {
     case 3:
       v7 = MEMORY[0x1E6983090];
@@ -830,7 +830,7 @@ LABEL_9:
       goto LABEL_11;
     case 1:
       v7 = MEMORY[0x1E6982E00];
-      if (!a4)
+      if (!image)
       {
         v7 = MEMORY[0x1E6982E58];
       }
@@ -840,7 +840,7 @@ LABEL_9:
 
   v8 = 0;
 LABEL_11:
-  v9 = [a1 _renderURLWithExtensionForUniformTypeIdentifierType:v8 appropriateForURL:a5];
+  v9 = [self _renderURLWithExtensionForUniformTypeIdentifierType:v8 appropriateForURL:l];
 
   return v9;
 }

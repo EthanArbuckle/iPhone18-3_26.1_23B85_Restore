@@ -1,14 +1,14 @@
 @interface HMDEventRouterTimerProvider
-- (id)timerWithQueue:(id)a3 interval:(double)a4 timerFireHandler:(id)a5;
+- (id)timerWithQueue:(id)queue interval:(double)interval timerFireHandler:(id)handler;
 @end
 
 @implementation HMDEventRouterTimerProvider
 
-- (id)timerWithQueue:(id)a3 interval:(double)a4 timerFireHandler:(id)a5
+- (id)timerWithQueue:(id)queue interval:(double)interval timerFireHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [[HMDEventRouterTimer alloc] initWithQueue:v8 interval:v7 timerFireHandler:a4];
+  handlerCopy = handler;
+  queueCopy = queue;
+  v9 = [[HMDEventRouterTimer alloc] initWithQueue:queueCopy interval:handlerCopy timerFireHandler:interval];
 
   return v9;
 }

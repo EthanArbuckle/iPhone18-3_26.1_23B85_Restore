@@ -1,5 +1,5 @@
 @interface AVFigRouteDescriptorOutputDeviceImpl
-- (AVFigRouteDescriptorOutputDeviceImpl)initWithRouteDescriptor:(__CFDictionary *)a3 routeDiscoverer:(OpaqueFigRouteDiscoverer *)a4 volumeController:(OpaqueFigVolumeControllerState *)a5 routingContextFactory:(id)a6 useRouteConfigUpdatedNotification:(BOOL)a7 routingContext:(OpaqueFigRoutingContext *)a8;
+- (AVFigRouteDescriptorOutputDeviceImpl)initWithRouteDescriptor:(__CFDictionary *)descriptor routeDiscoverer:(OpaqueFigRouteDiscoverer *)discoverer volumeController:(OpaqueFigVolumeControllerState *)controller routingContextFactory:(id)factory useRouteConfigUpdatedNotification:(BOOL)notification routingContext:(OpaqueFigRoutingContext *)context;
 - (BOOL)OEMIconVisible;
 - (BOOL)allowsHeadTrackedSpatialAudio;
 - (BOOL)automaticallyAllowsConnectionsFromPeersInHomeGroup;
@@ -24,7 +24,7 @@
 - (BOOL)isClusterLeader;
 - (BOOL)isConversationDetectionEnabled;
 - (BOOL)isEligibleToBePredictedOutputDevice;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isGroupLeader;
 - (BOOL)isHeadTrackedSpatialAudioActive;
 - (BOOL)isInUseByPairedDevice;
@@ -39,10 +39,10 @@
 - (BOOL)recognizingSpeech;
 - (BOOL)requiresAuthorization;
 - (BOOL)rightHandDrive;
-- (BOOL)setAllowsHeadTrackedSpatialAudio:(BOOL)a3 error:(id *)a4;
-- (BOOL)setConversationDetectionEnabled:(BOOL)a3 error:(id *)a4;
-- (BOOL)setCurrentBluetoothListeningMode:(id)a3 error:(id *)a4;
-- (BOOL)setHeadTrackedSpatialAudioMode:(id)a3 error:(id *)a4;
+- (BOOL)setAllowsHeadTrackedSpatialAudio:(BOOL)audio error:(id *)error;
+- (BOOL)setConversationDetectionEnabled:(BOOL)enabled error:(id *)error;
+- (BOOL)setCurrentBluetoothListeningMode:(id)mode error:(id *)error;
+- (BOOL)setHeadTrackedSpatialAudioMode:(id)mode error:(id *)error;
 - (BOOL)siriForwardingEnabled;
 - (BOOL)supportsBluetoothSharing;
 - (BOOL)supportsBufferedAirPlay;
@@ -84,11 +84,11 @@
 - (NSString)serialNumber;
 - (__CFDictionary)routeDescriptor;
 - (float)volume;
-- (float)volumeForActivatedDeviceClusterMembersWithRoomID:(id)a3;
-- (id)borrowScreenForClient:(id)a3 reason:(id)a4;
-- (id)currentScreenViewAreaForScreenID:(id)a3;
+- (float)volumeForActivatedDeviceClusterMembersWithRoomID:(id)d;
+- (id)borrowScreenForClient:(id)client reason:(id)reason;
+- (id)currentScreenViewAreaForScreenID:(id)d;
 - (id)requestTurnByTurnNavigationOwnership;
-- (int)_withEndpoint:(id)a3;
+- (int)_withEndpoint:(id)endpoint;
 - (int64_t)HAPConformance;
 - (int64_t)authenticationType;
 - (int64_t)clusterType;
@@ -103,37 +103,37 @@
 - (int64_t)volumeControlType;
 - (unint64_t)deviceFeatures;
 - (unint64_t)hash;
-- (void)_canMuteDidChangeForEndpointWithID:(__CFString *)a3;
-- (void)_canSetEndpointVolumeDidChangeForEndpointWithID:(__CFString *)a3;
-- (void)_carPlayTestNotification:(id)a3;
-- (void)_endpointVolumeControlTypeDidChangeForEndpointWithID:(__CFString *)a3;
-- (void)_handleRouteDescriptionEvent:(__CFString *)a3 payload:(id)a4;
-- (void)_iOSUIRequestedNotification:(id)a3;
-- (void)_mutedDidChangeForEndpointWithID:(__CFString *)a3;
-- (void)_routeDescriptionDidChange:(__CFDictionary *)a3;
-- (void)_siriRequestedNotification:(id)a3;
-- (void)_unhandledRemoteCommandNotification:(id)a3;
-- (void)_vehicleInformationDidChange:(id)a3;
-- (void)_volumeDidChangeForEndpointWithID:(__CFString *)a3;
-- (void)_volumeForEndpointDidChange:(__CFString *)a3 forRoomID:(__CFString *)a4;
-- (void)configureUsingBlock:(id)a3 options:(id)a4 completionHandler:(id)a5;
+- (void)_canMuteDidChangeForEndpointWithID:(__CFString *)d;
+- (void)_canSetEndpointVolumeDidChangeForEndpointWithID:(__CFString *)d;
+- (void)_carPlayTestNotification:(id)notification;
+- (void)_endpointVolumeControlTypeDidChangeForEndpointWithID:(__CFString *)d;
+- (void)_handleRouteDescriptionEvent:(__CFString *)event payload:(id)payload;
+- (void)_iOSUIRequestedNotification:(id)notification;
+- (void)_mutedDidChangeForEndpointWithID:(__CFString *)d;
+- (void)_routeDescriptionDidChange:(__CFDictionary *)change;
+- (void)_siriRequestedNotification:(id)notification;
+- (void)_unhandledRemoteCommandNotification:(id)notification;
+- (void)_vehicleInformationDidChange:(id)change;
+- (void)_volumeDidChangeForEndpointWithID:(__CFString *)d;
+- (void)_volumeForEndpointDidChange:(__CFString *)change forRoomID:(__CFString *)d;
+- (void)configureUsingBlock:(id)block options:(id)options completionHandler:(id)handler;
 - (void)dealloc;
-- (void)decreaseVolumeByCount:(int64_t)a3;
-- (void)increaseVolumeByCount:(int64_t)a3;
-- (void)performHapticFeedbackForUUID:(id)a3 withHapticType:(id)a4 completionHandler:(id)a5;
-- (void)requestCarUIForURL:(id)a3 withUUID:(id)a4;
-- (void)requestViewArea:(int64_t)a3 forScreenID:(id)a4;
-- (void)setActivatedDeviceClusterMembersVolume:(float)a3 withRoomID:(id)a4;
-- (void)setCarPlayVideoActive:(BOOL)a3 completionHandler:(id)a4;
-- (void)setDisplayCornerMasks:(id)a3;
-- (void)setMediaRemoteData:(id)a3 completionHandler:(id)a4;
-- (void)setRouteDescriptor:(__CFDictionary *)a3;
-- (void)setSecondDisplayEnabled:(BOOL)a3;
-- (void)setSecondDisplayMode:(id)a3 completionHandler:(id)a4;
-- (void)setSiriForwardingEnabled:(BOOL)a3;
-- (void)setVolume:(float)a3;
-- (void)suggestUIWithURLs:(id)a3 completionHandler:(id)a4;
-- (void)takeScreenForClient:(id)a3 reason:(id)a4;
+- (void)decreaseVolumeByCount:(int64_t)count;
+- (void)increaseVolumeByCount:(int64_t)count;
+- (void)performHapticFeedbackForUUID:(id)d withHapticType:(id)type completionHandler:(id)handler;
+- (void)requestCarUIForURL:(id)l withUUID:(id)d;
+- (void)requestViewArea:(int64_t)area forScreenID:(id)d;
+- (void)setActivatedDeviceClusterMembersVolume:(float)volume withRoomID:(id)d;
+- (void)setCarPlayVideoActive:(BOOL)active completionHandler:(id)handler;
+- (void)setDisplayCornerMasks:(id)masks;
+- (void)setMediaRemoteData:(id)data completionHandler:(id)handler;
+- (void)setRouteDescriptor:(__CFDictionary *)descriptor;
+- (void)setSecondDisplayEnabled:(BOOL)enabled;
+- (void)setSecondDisplayMode:(id)mode completionHandler:(id)handler;
+- (void)setSiriForwardingEnabled:(BOOL)enabled;
+- (void)setVolume:(float)volume;
+- (void)suggestUIWithURLs:(id)ls completionHandler:(id)handler;
+- (void)takeScreenForClient:(id)client reason:(id)reason;
 @end
 
 @implementation AVFigRouteDescriptorOutputDeviceImpl
@@ -236,10 +236,10 @@ uint64_t __61__AVFigRouteDescriptorOutputDeviceImpl_isCarPlayVideoAllowed__block
 
 - (NSString)name
 {
-  v2 = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
+  routeDescriptor = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
   v3 = *MEMORY[0x1E69AF198];
 
-  return CFDictionaryGetValue(v2, v3);
+  return CFDictionaryGetValue(routeDescriptor, v3);
 }
 
 - (int64_t)deviceType
@@ -258,20 +258,20 @@ uint64_t __61__AVFigRouteDescriptorOutputDeviceImpl_isCarPlayVideoAllowed__block
 
 - (NSString)manufacturer
 {
-  v2 = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
+  routeDescriptor = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
   v3 = *MEMORY[0x1E69AF138];
 
-  return CFDictionaryGetValue(v2, v3);
+  return CFDictionaryGetValue(routeDescriptor, v3);
 }
 
 - (NSString)modelID
 {
-  v3 = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
-  result = CFDictionaryGetValue(v3, *MEMORY[0x1E69AF140]);
+  routeDescriptor = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
+  result = CFDictionaryGetValue(routeDescriptor, *MEMORY[0x1E69AF140]);
   if (!result)
   {
-    v5 = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
-    Value = CFDictionaryGetValue(v5, *MEMORY[0x1E69AF1A0]);
+    routeDescriptor2 = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
+    Value = CFDictionaryGetValue(routeDescriptor2, *MEMORY[0x1E69AF1A0]);
     AVStringForOSType(0x6A333237u);
     if (FigCFEqual())
     {
@@ -289,34 +289,34 @@ uint64_t __61__AVFigRouteDescriptorOutputDeviceImpl_isCarPlayVideoAllowed__block
 
 - (NSString)serialNumber
 {
-  v2 = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
+  routeDescriptor = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
   v3 = *MEMORY[0x1E69AF1C8];
 
-  return CFDictionaryGetValue(v2, v3);
+  return CFDictionaryGetValue(routeDescriptor, v3);
 }
 
 - (NSString)firmwareVersion
 {
-  v2 = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
+  routeDescriptor = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
   v3 = *MEMORY[0x1E69AF0A8];
 
-  return CFDictionaryGetValue(v2, v3);
+  return CFDictionaryGetValue(routeDescriptor, v3);
 }
 
 - (NSData)identifyingMACAddress
 {
-  v2 = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
+  routeDescriptor = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
   v3 = *MEMORY[0x1E69AF130];
 
-  return CFDictionaryGetValue(v2, v3);
+  return CFDictionaryGetValue(routeDescriptor, v3);
 }
 
 - (NSString)ID
 {
-  v2 = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
+  routeDescriptor = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
   v3 = *MEMORY[0x1E69AF1C0];
 
-  return CFDictionaryGetValue(v2, v3);
+  return CFDictionaryGetValue(routeDescriptor, v3);
 }
 
 - (__CFDictionary)routeDescriptor
@@ -331,16 +331,16 @@ uint64_t __61__AVFigRouteDescriptorOutputDeviceImpl_isCarPlayVideoAllowed__block
 
 - (unint64_t)deviceFeatures
 {
-  v3 = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
-  v4 = [CFDictionaryGetValue(v3 *MEMORY[0x1E69AF1B8])];
-  v5 = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
-  if ([CFDictionaryGetValue(v5 *MEMORY[0x1E69AF1B0])])
+  routeDescriptor = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
+  v4 = [CFDictionaryGetValue(routeDescriptor *MEMORY[0x1E69AF1B8])];
+  routeDescriptor2 = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
+  if ([CFDictionaryGetValue(routeDescriptor2 *MEMORY[0x1E69AF1B0])])
   {
     v4 |= 4uLL;
   }
 
-  v6 = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
-  if ([CFDictionaryGetValue(v6 *MEMORY[0x1E69AF1A8])])
+  routeDescriptor3 = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
+  if ([CFDictionaryGetValue(routeDescriptor3 *MEMORY[0x1E69AF1A8])])
   {
     return v4 | 2;
   }
@@ -353,40 +353,40 @@ uint64_t __61__AVFigRouteDescriptorOutputDeviceImpl_isCarPlayVideoAllowed__block
 
 - (NSDictionary)airPlayProperties
 {
-  v2 = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
+  routeDescriptor = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
   v3 = *MEMORY[0x1E69AEF08];
 
-  return CFDictionaryGetValue(v2, v3);
+  return CFDictionaryGetValue(routeDescriptor, v3);
 }
 
 - (NSString)logicalDeviceID
 {
-  v2 = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
+  routeDescriptor = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
   v3 = *MEMORY[0x1E69AF200];
 
-  return CFDictionaryGetValue(v2, v3);
+  return CFDictionaryGetValue(routeDescriptor, v3);
 }
 
 - (BOOL)canAccessRemoteAssets
 {
-  v2 = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
-  Value = CFDictionaryGetValue(v2, *MEMORY[0x1E69AF190]);
+  routeDescriptor = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
+  Value = CFDictionaryGetValue(routeDescriptor, *MEMORY[0x1E69AF190]);
 
   return [Value BOOLValue];
 }
 
 - (BOOL)canAccessAppleMusic
 {
-  v2 = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
-  Value = CFDictionaryGetValue(v2, *MEMORY[0x1E69AF0D8]);
+  routeDescriptor = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
+  Value = CFDictionaryGetValue(routeDescriptor, *MEMORY[0x1E69AF0D8]);
 
   return [Value BOOLValue];
 }
 
 - (BOOL)canAccessiCloudMusicLibrary
 {
-  v2 = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
-  Value = CFDictionaryGetValue(v2, *MEMORY[0x1E69AF060]);
+  routeDescriptor = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
+  Value = CFDictionaryGetValue(routeDescriptor, *MEMORY[0x1E69AF060]);
 
   return [Value BOOLValue];
 }
@@ -409,8 +409,8 @@ uint64_t __61__AVFigRouteDescriptorOutputDeviceImpl_isCarPlayVideoAllowed__block
 
 - (BOOL)supportsBufferedAirPlay
 {
-  v2 = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
-  Value = CFDictionaryGetValue(v2, *MEMORY[0x1E69AF1D8]);
+  routeDescriptor = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
+  Value = CFDictionaryGetValue(routeDescriptor, *MEMORY[0x1E69AF1D8]);
 
   return [Value BOOLValue];
 }
@@ -460,8 +460,8 @@ uint64_t __61__AVFigRouteDescriptorOutputDeviceImpl_isCarPlayVideoAllowed__block
 
 - (int64_t)HAPConformance
 {
-  v2 = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
-  if ([CFDictionaryGetValue(v2 *MEMORY[0x1E69AEF00])])
+  routeDescriptor = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
+  if ([CFDictionaryGetValue(routeDescriptor *MEMORY[0x1E69AEF00])])
   {
     return 2;
   }
@@ -474,71 +474,71 @@ uint64_t __61__AVFigRouteDescriptorOutputDeviceImpl_isCarPlayVideoAllowed__block
 
 - (NSNumber)caseBatteryLevel
 {
-  v2 = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
+  routeDescriptor = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
   v3 = *MEMORY[0x1E69AF008];
 
-  return CFDictionaryGetValue(v2, v3);
+  return CFDictionaryGetValue(routeDescriptor, v3);
 }
 
 - (NSNumber)leftBatteryLevel
 {
-  v2 = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
+  routeDescriptor = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
   v3 = *MEMORY[0x1E69AF010];
 
-  return CFDictionaryGetValue(v2, v3);
+  return CFDictionaryGetValue(routeDescriptor, v3);
 }
 
 - (NSNumber)rightBatteryLevel
 {
-  v2 = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
+  routeDescriptor = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
   v3 = *MEMORY[0x1E69AF018];
 
-  return CFDictionaryGetValue(v2, v3);
+  return CFDictionaryGetValue(routeDescriptor, v3);
 }
 
 - (NSNumber)supportsDataOverACLProtocol
 {
-  v2 = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
+  routeDescriptor = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
   v3 = *MEMORY[0x1E69AF050];
 
-  return CFDictionaryGetValue(v2, v3);
+  return CFDictionaryGetValue(routeDescriptor, v3);
 }
 
 - (NSNumber)isInEar
 {
-  v2 = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
+  routeDescriptor = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
   v3 = *MEMORY[0x1E69AF180];
 
-  return CFDictionaryGetValue(v2, v3);
+  return CFDictionaryGetValue(routeDescriptor, v3);
 }
 
 - (NSNumber)batteryLevel
 {
-  v2 = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
+  routeDescriptor = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
   v3 = *MEMORY[0x1E69AF020];
 
-  return CFDictionaryGetValue(v2, v3);
+  return CFDictionaryGetValue(routeDescriptor, v3);
 }
 
 - (BOOL)requiresAuthorization
 {
-  v2 = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
-  CFDictionaryGetValue(v2, *MEMORY[0x1E69AEF10]);
+  routeDescriptor = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
+  CFDictionaryGetValue(routeDescriptor, *MEMORY[0x1E69AEF10]);
   return FigCFEqual() == 0;
 }
 
 - (NSArray)clusteredDeviceDescriptions
 {
-  v2 = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
-  Value = CFDictionaryGetValue(v2, *MEMORY[0x1E69AF068]);
+  routeDescriptor = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
+  Value = CFDictionaryGetValue(routeDescriptor, *MEMORY[0x1E69AF068]);
 
   return AVOutputDeviceDescriptionsFromFigDescriptions(Value);
 }
 
 - (int64_t)clusterType
 {
-  v2 = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
-  CFDictionaryGetValue(v2, *MEMORY[0x1E69AF078]);
+  routeDescriptor = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
+  CFDictionaryGetValue(routeDescriptor, *MEMORY[0x1E69AF078]);
   v3 = *MEMORY[0x1E69AF220];
   if (FigCFEqual())
   {
@@ -551,24 +551,24 @@ uint64_t __61__AVFigRouteDescriptorOutputDeviceImpl_isCarPlayVideoAllowed__block
 
 - (int64_t)configuredClusterSize
 {
-  v2 = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
-  Value = CFDictionaryGetValue(v2, *MEMORY[0x1E69AF070]);
+  routeDescriptor = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
+  Value = CFDictionaryGetValue(routeDescriptor, *MEMORY[0x1E69AF070]);
 
   return [Value integerValue];
 }
 
 - (NSString)currentBluetoothListeningMode
 {
-  v2 = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
-  v3 = [CFDictionaryGetValue(v2 *MEMORY[0x1E69AF040])];
+  routeDescriptor = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
+  v3 = [CFDictionaryGetValue(routeDescriptor *MEMORY[0x1E69AF040])];
 
   return AVOutputDeviceAVFListeningModeForFigListeningMode(v3);
 }
 
 - (NSArray)availableBluetoothListeningModes
 {
-  v2 = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
-  v3 = [CFDictionaryGetValue(v2 *MEMORY[0x1E69AF048])];
+  routeDescriptor = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
+  v3 = [CFDictionaryGetValue(routeDescriptor *MEMORY[0x1E69AF048])];
 
   return AVOutputDeviceSupportedListeningModesForFigListeningModes(v3);
 }
@@ -583,10 +583,10 @@ uint64_t __61__AVFigRouteDescriptorOutputDeviceImpl_isCarPlayVideoAllowed__block
 
 - (NSString)clusterID
 {
-  v2 = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
+  routeDescriptor = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
   v3 = *MEMORY[0x1E69AF178];
 
-  return CFDictionaryGetValue(v2, v3);
+  return CFDictionaryGetValue(routeDescriptor, v3);
 }
 
 - (BOOL)isClusterLeader
@@ -610,17 +610,17 @@ uint64_t __61__AVFigRouteDescriptorOutputDeviceImpl_isCarPlayVideoAllowed__block
 
 - (BOOL)supportsBluetoothSharing
 {
-  v2 = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
-  Value = CFDictionaryGetValue(v2, *MEMORY[0x1E69AF0E0]);
+  routeDescriptor = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
+  Value = CFDictionaryGetValue(routeDescriptor, *MEMORY[0x1E69AF0E0]);
 
   return [Value BOOLValue];
 }
 
 - (NSArray)connectedPairedDevices
 {
-  v19 = [MEMORY[0x1E695DF70] array];
-  v3 = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
-  Value = CFDictionaryGetValue(v3, *MEMORY[0x1E69AF148]);
+  array = [MEMORY[0x1E695DF70] array];
+  routeDescriptor = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
+  Value = CFDictionaryGetValue(routeDescriptor, *MEMORY[0x1E69AF148]);
   v5 = 0;
   v17 = *MEMORY[0x1E69AF158];
   key = *MEMORY[0x1E69AF170];
@@ -641,7 +641,7 @@ LABEL_2:
     v12 = CFDictionaryGetValue(ValueAtIndex, v16);
     v13 = CFDictionaryGetValue(ValueAtIndex, v6);
     v14 = -[AVPairedDevice initWithName:ID:modelID:playing:productName:]([AVPairedDevice alloc], "initWithName:ID:modelID:playing:productName:", v11, v10, v12, [CFDictionaryGetValue(ValueAtIndex v7)], v13);
-    [(NSArray *)v19 addObject:v14];
+    [(NSArray *)array addObject:v14];
 
     ++v5;
     if (Value)
@@ -653,37 +653,37 @@ LABEL_3:
     ;
   }
 
-  return v19;
+  return array;
 }
 
 - (BOOL)isInUseByPairedDevice
 {
-  v2 = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
-  Value = CFDictionaryGetValue(v2, *MEMORY[0x1E69AF0F0]);
+  routeDescriptor = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
+  Value = CFDictionaryGetValue(routeDescriptor, *MEMORY[0x1E69AF0F0]);
 
   return [Value BOOLValue];
 }
 
 - (BOOL)supportsHeadTrackedSpatialAudio
 {
-  v2 = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
-  Value = CFDictionaryGetValue(v2, *MEMORY[0x1E69AF1E0]);
+  routeDescriptor = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
+  Value = CFDictionaryGetValue(routeDescriptor, *MEMORY[0x1E69AF1E0]);
 
   return [Value BOOLValue];
 }
 
 - (BOOL)isHeadTrackedSpatialAudioActive
 {
-  v2 = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
-  Value = CFDictionaryGetValue(v2, *MEMORY[0x1E69AF0C8]);
+  routeDescriptor = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
+  Value = CFDictionaryGetValue(routeDescriptor, *MEMORY[0x1E69AF0C8]);
 
   return [Value BOOLValue];
 }
 
 - (NSString)headTrackedSpatialAudioMode
 {
-  v2 = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
-  Value = CFDictionaryGetValue(v2, *MEMORY[0x1E69AF0D0]);
+  routeDescriptor = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
+  Value = CFDictionaryGetValue(routeDescriptor, *MEMORY[0x1E69AF0D0]);
 
   return AVOutputDeviceHeadTrackedSpatialAudioModeFromFigMode(Value);
 }
@@ -794,10 +794,10 @@ LABEL_3:
 
 - (NSString)groupID
 {
-  v2 = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
+  routeDescriptor = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
   v3 = *MEMORY[0x1E69AF0B8];
 
-  return CFDictionaryGetValue(v2, v3);
+  return CFDictionaryGetValue(routeDescriptor, v3);
 }
 
 - (BOOL)groupContainsGroupLeader
@@ -823,7 +823,7 @@ LABEL_3:
   return 1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -832,7 +832,7 @@ LABEL_3:
   }
 
   v5 = [(AVFigRouteDescriptorOutputDeviceImpl *)self ID];
-  v6 = [a3 ID];
+  v6 = [equal ID];
 
   return [(NSString *)v5 isEqualToString:v6];
 }
@@ -844,15 +844,15 @@ LABEL_3:
   return [(NSString *)v2 hash];
 }
 
-- (void)setRouteDescriptor:(__CFDictionary *)a3
+- (void)setRouteDescriptor:(__CFDictionary *)descriptor
 {
   routeDescriptionRWLock = self->_routeDescriptionRWLock;
   FigReadWriteLockLockForWrite();
   routeDescriptor = self->_routeDescriptor;
-  self->_routeDescriptor = a3;
-  if (a3)
+  self->_routeDescriptor = descriptor;
+  if (descriptor)
   {
-    CFRetain(a3);
+    CFRetain(descriptor);
   }
 
   if (routeDescriptor)
@@ -963,10 +963,10 @@ uint64_t __58__AVFigRouteDescriptorOutputDeviceImpl_mediaSessionStatus__block_in
   return 0;
 }
 
-- (void)setCarPlayVideoActive:(BOOL)a3 completionHandler:(id)a4
+- (void)setCarPlayVideoActive:(BOOL)active completionHandler:(id)handler
 {
-  v5 = a3;
-  if (a3)
+  activeCopy = active;
+  if (active)
   {
     v7 = 4;
   }
@@ -976,11 +976,11 @@ uint64_t __58__AVFigRouteDescriptorOutputDeviceImpl_mediaSessionStatus__block_in
     v7 = 0;
   }
 
-  v8 = [[AVFigRouteDiscovererUpdateEndpointFeaturesCompletionContext alloc] initWithCompletionHandler:a4];
+  v8 = [[AVFigRouteDiscovererUpdateEndpointFeaturesCompletionContext alloc] initWithCompletionHandler:handler];
   v9 = v8;
-  if (!a4 || v8)
+  if (!handler || v8)
   {
-    if (![(AVFigRouteDescriptorOutputDeviceImpl *)self isCarPlayVideoActive]|| !v5)
+    if (![(AVFigRouteDescriptorOutputDeviceImpl *)self isCarPlayVideoActive]|| !activeCopy)
     {
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
@@ -993,24 +993,24 @@ uint64_t __58__AVFigRouteDescriptorOutputDeviceImpl_mediaSessionStatus__block_in
     }
 
     -[AVFigRouteDescriptorOutputDeviceImpl requestCarUIForURL:withUUID:](self, "requestCarUIForURL:withUUID:", [MEMORY[0x1E695DFF8] URLWithString:@"videoplayback:"], 0);
-    if (!a4)
+    if (!handler)
     {
       return;
     }
 
-    v11 = *(a4 + 2);
-    v12 = a4;
+    v11 = *(handler + 2);
+    handlerCopy2 = handler;
     v10 = 0;
   }
 
   else
   {
     v10 = AVLocalizedErrorWithUnderlyingOSStatus(-12786, 0);
-    v11 = *(a4 + 2);
-    v12 = a4;
+    v11 = *(handler + 2);
+    handlerCopy2 = handler;
   }
 
-  v11(v12, v10);
+  v11(handlerCopy2, v10);
 }
 
 uint64_t __80__AVFigRouteDescriptorOutputDeviceImpl_setCarPlayVideoActive_completionHandler___block_invoke(uint64_t a1, uint64_t a2)
@@ -1061,60 +1061,60 @@ uint64_t __80__AVFigRouteDescriptorOutputDeviceImpl_setCarPlayVideoActive_comple
 
 - (BOOL)onlyAllowsConnectionsFromPeersInHomeGroup
 {
-  v3 = [(AVFigRouteDescriptorOutputDeviceImpl *)self automaticallyAllowsConnectionsFromPeersInHomeGroup];
-  if (v3)
+  automaticallyAllowsConnectionsFromPeersInHomeGroup = [(AVFigRouteDescriptorOutputDeviceImpl *)self automaticallyAllowsConnectionsFromPeersInHomeGroup];
+  if (automaticallyAllowsConnectionsFromPeersInHomeGroup)
   {
-    v4 = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
-    CFDictionaryGetValue(v4, *MEMORY[0x1E69AF0C0]);
-    LOBYTE(v3) = FigCFEqual() == 0;
+    routeDescriptor = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
+    CFDictionaryGetValue(routeDescriptor, *MEMORY[0x1E69AF0C0]);
+    LOBYTE(automaticallyAllowsConnectionsFromPeersInHomeGroup) = FigCFEqual() == 0;
   }
 
-  return v3;
+  return automaticallyAllowsConnectionsFromPeersInHomeGroup;
 }
 
 - (BOOL)allowsHeadTrackedSpatialAudio
 {
-  v2 = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
-  Value = CFDictionaryGetValue(v2, *MEMORY[0x1E69AEF18]);
+  routeDescriptor = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
+  Value = CFDictionaryGetValue(routeDescriptor, *MEMORY[0x1E69AEF18]);
 
   return [Value BOOLValue];
 }
 
-- (BOOL)setAllowsHeadTrackedSpatialAudio:(BOOL)a3 error:(id *)a4
+- (BOOL)setAllowsHeadTrackedSpatialAudio:(BOOL)audio error:(id *)error
 {
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __79__AVFigRouteDescriptorOutputDeviceImpl_setAllowsHeadTrackedSpatialAudio_error___block_invoke;
   v8[3] = &__block_descriptor_33_e28_i16__0__OpaqueFigEndpoint__8l;
-  v9 = a3;
+  audioCopy = audio;
   v5 = [(AVFigRouteDescriptorOutputDeviceImpl *)self _withEndpoint:v8];
   v6 = v5;
-  if (a4 && v5)
+  if (error && v5)
   {
-    *a4 = AVLocalizedErrorWithUnderlyingOSStatus(v5, 0);
+    *error = AVLocalizedErrorWithUnderlyingOSStatus(v5, 0);
   }
 
   return v6 == 0;
 }
 
-- (BOOL)setHeadTrackedSpatialAudioMode:(id)a3 error:(id *)a4
+- (BOOL)setHeadTrackedSpatialAudioMode:(id)mode error:(id *)error
 {
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __77__AVFigRouteDescriptorOutputDeviceImpl_setHeadTrackedSpatialAudioMode_error___block_invoke;
   v8[3] = &unk_1E794EB50;
-  v8[4] = a3;
+  v8[4] = mode;
   v5 = [(AVFigRouteDescriptorOutputDeviceImpl *)self _withEndpoint:v8];
   v6 = v5;
-  if (a4 && v5)
+  if (error && v5)
   {
-    *a4 = AVLocalizedErrorWithUnderlyingOSStatus(v5, 0);
+    *error = AVLocalizedErrorWithUnderlyingOSStatus(v5, 0);
   }
 
   return v6 == 0;
 }
 
-- (BOOL)setConversationDetectionEnabled:(BOOL)a3 error:(id *)a4
+- (BOOL)setConversationDetectionEnabled:(BOOL)enabled error:(id *)error
 {
   if (AVOutputDeviceIsConversationDetectionFeatureEnabled())
   {
@@ -1122,25 +1122,25 @@ uint64_t __80__AVFigRouteDescriptorOutputDeviceImpl_setCarPlayVideoActive_comple
     v11[1] = 3221225472;
     v11[2] = __78__AVFigRouteDescriptorOutputDeviceImpl_setConversationDetectionEnabled_error___block_invoke;
     v11[3] = &__block_descriptor_33_e28_i16__0__OpaqueFigEndpoint__8l;
-    v12 = a3;
+    enabledCopy = enabled;
     v7 = [(AVFigRouteDescriptorOutputDeviceImpl *)self _withEndpoint:v11];
     v8 = v7;
-    if (a4)
+    if (error)
     {
       if (v7)
       {
-        *a4 = AVLocalizedErrorWithUnderlyingOSStatus(v7, 0);
+        *error = AVLocalizedErrorWithUnderlyingOSStatus(v7, 0);
       }
     }
 
     return v8 == 0;
   }
 
-  else if (a4)
+  else if (error)
   {
     v10 = AVLocalizedErrorWithUnderlyingOSStatus(-11862, 0);
     result = 0;
-    *a4 = v10;
+    *error = v10;
   }
 
   else
@@ -1178,14 +1178,14 @@ uint64_t __78__AVFigRouteDescriptorOutputDeviceImpl_setConversationDetectionEnab
   return v4(CMBaseObject, v6, v7);
 }
 
-- (void)setSecondDisplayEnabled:(BOOL)a3
+- (void)setSecondDisplayEnabled:(BOOL)enabled
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __64__AVFigRouteDescriptorOutputDeviceImpl_setSecondDisplayEnabled___block_invoke;
   v3[3] = &unk_1E794EB78;
   v3[4] = self;
-  v4 = a3;
+  enabledCopy = enabled;
   [(AVFigRouteDescriptorOutputDeviceImpl *)self _withEndpoint:v3];
 }
 
@@ -1197,7 +1197,7 @@ uint64_t __64__AVFigRouteDescriptorOutputDeviceImpl_setSecondDisplayEnabled___bl
   return AVOutputDeviceSetSecondDisplayEnabledOnEndpoint(a2, v4, v5);
 }
 
-- (void)setSecondDisplayMode:(id)a3 completionHandler:(id)a4
+- (void)setSecondDisplayMode:(id)mode completionHandler:(id)handler
 {
   v8 = 0;
   v9 = &v8;
@@ -1207,8 +1207,8 @@ uint64_t __64__AVFigRouteDescriptorOutputDeviceImpl_setSecondDisplayEnabled___bl
   v7[1] = 3221225472;
   v7[2] = __79__AVFigRouteDescriptorOutputDeviceImpl_setSecondDisplayMode_completionHandler___block_invoke;
   v7[3] = &unk_1E794EBA0;
-  v7[4] = a3;
-  v7[5] = a4;
+  v7[4] = mode;
+  v7[5] = handler;
   v7[6] = &v8;
   v5 = [(AVFigRouteDescriptorOutputDeviceImpl *)self _withEndpoint:v7];
   if (v5)
@@ -1223,7 +1223,7 @@ uint64_t __64__AVFigRouteDescriptorOutputDeviceImpl_setSecondDisplayEnabled___bl
 
   if (*(v9 + 24) == 1)
   {
-    (*(a4 + 2))(a4, 0, v6);
+    (*(handler + 2))(handler, 0, v6);
   }
 
   _Block_object_dispose(&v8, 8);
@@ -1236,7 +1236,7 @@ uint64_t __79__AVFigRouteDescriptorOutputDeviceImpl_setSecondDisplayMode_complet
   return 0;
 }
 
-- (void)setMediaRemoteData:(id)a3 completionHandler:(id)a4
+- (void)setMediaRemoteData:(id)data completionHandler:(id)handler
 {
   v8 = 0;
   v9 = &v8;
@@ -1246,8 +1246,8 @@ uint64_t __79__AVFigRouteDescriptorOutputDeviceImpl_setSecondDisplayMode_complet
   v7[1] = 3221225472;
   v7[2] = __77__AVFigRouteDescriptorOutputDeviceImpl_setMediaRemoteData_completionHandler___block_invoke;
   v7[3] = &unk_1E794EBA0;
-  v7[4] = a3;
-  v7[5] = a4;
+  v7[4] = data;
+  v7[5] = handler;
   v7[6] = &v8;
   v5 = [(AVFigRouteDescriptorOutputDeviceImpl *)self _withEndpoint:v7];
   if (v5)
@@ -1262,7 +1262,7 @@ uint64_t __79__AVFigRouteDescriptorOutputDeviceImpl_setSecondDisplayMode_complet
 
   if (*(v9 + 24) == 1)
   {
-    (*(a4 + 2))(a4, v6);
+    (*(handler + 2))(handler, v6);
   }
 
   _Block_object_dispose(&v8, 8);
@@ -1296,10 +1296,10 @@ uint64_t __77__AVFigRouteDescriptorOutputDeviceImpl_setMediaRemoteData_completio
   return v3;
 }
 
-- (void)_mutedDidChangeForEndpointWithID:(__CFString *)a3
+- (void)_mutedDidChangeForEndpointWithID:(__CFString *)d
 {
   v8 = *MEMORY[0x1E69E9840];
-  if ([(__CFString *)a3 isEqual:[(AVFigRouteDescriptorOutputDeviceImpl *)self ID]])
+  if ([(__CFString *)d isEqual:[(AVFigRouteDescriptorOutputDeviceImpl *)self ID]])
   {
     if (dword_1ED6F6B68)
     {
@@ -1314,10 +1314,10 @@ uint64_t __77__AVFigRouteDescriptorOutputDeviceImpl_setMediaRemoteData_completio
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_canMuteDidChangeForEndpointWithID:(__CFString *)a3
+- (void)_canMuteDidChangeForEndpointWithID:(__CFString *)d
 {
   v8 = *MEMORY[0x1E69E9840];
-  if ([(__CFString *)a3 isEqual:[(AVFigRouteDescriptorOutputDeviceImpl *)self ID]])
+  if ([(__CFString *)d isEqual:[(AVFigRouteDescriptorOutputDeviceImpl *)self ID]])
   {
     if (dword_1ED6F6B68)
     {
@@ -1332,23 +1332,23 @@ uint64_t __77__AVFigRouteDescriptorOutputDeviceImpl_setMediaRemoteData_completio
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_routeDescriptionDidChange:(__CFDictionary *)a3
+- (void)_routeDescriptionDidChange:(__CFDictionary *)change
 {
   v5 = *MEMORY[0x1E69AF1C0];
   if ([FigCFDictionaryGetValue() isEqual:{-[AVFigRouteDescriptorOutputDeviceImpl ID](self, "ID")}])
   {
 
-    [(AVFigRouteDescriptorOutputDeviceImpl *)self setRouteDescriptor:a3];
+    [(AVFigRouteDescriptorOutputDeviceImpl *)self setRouteDescriptor:change];
   }
 }
 
-- (void)_handleRouteDescriptionEvent:(__CFString *)a3 payload:(id)a4
+- (void)_handleRouteDescriptionEvent:(__CFString *)event payload:(id)payload
 {
   v7 = *MEMORY[0x1E69619C0];
   if (FigCFEqual())
   {
 
-    [(AVFigRouteDescriptorOutputDeviceImpl *)self _vehicleInformationDidChange:a4];
+    [(AVFigRouteDescriptorOutputDeviceImpl *)self _vehicleInformationDidChange:payload];
   }
 
   else
@@ -1361,104 +1361,104 @@ uint64_t __77__AVFigRouteDescriptorOutputDeviceImpl_setMediaRemoteData_completio
         [(AVFigRouteDescriptorOutputDeviceImpl *)self delegate];
         if (objc_opt_respondsToSelector())
         {
-          v9 = [(AVFigRouteDescriptorOutputDeviceImpl *)self delegate];
-          v10 = [objc_msgSend(a4 objectForKeyedSubscript:{@"viewAreaIndex", "integerValue"}];
-          v11 = [a4 objectForKeyedSubscript:@"adjacentViewAreas"];
-          v12 = [a4 objectForKeyedSubscript:@"uuid"];
+          delegate = [(AVFigRouteDescriptorOutputDeviceImpl *)self delegate];
+          v10 = [objc_msgSend(payload objectForKeyedSubscript:{@"viewAreaIndex", "integerValue"}];
+          v11 = [payload objectForKeyedSubscript:@"adjacentViewAreas"];
+          v12 = [payload objectForKeyedSubscript:@"uuid"];
 
-          [(AVOutputDeviceDelegate *)v9 setViewAreaIndex:v10 andAdjacentViewAreas:v11 forScreenID:v12];
+          [(AVOutputDeviceDelegate *)delegate setViewAreaIndex:v10 andAdjacentViewAreas:v11 forScreenID:v12];
         }
       }
     }
 
     else
     {
-      v13 = AVOutputDeviceNotificationFromFigNotification(a3);
+      v13 = AVOutputDeviceNotificationFromFigNotification(event);
       if ([v13 isEqual:@"AVOutputDeviceCarPlayTestNotification"])
       {
 
-        [(AVFigRouteDescriptorOutputDeviceImpl *)self _carPlayTestNotification:a4];
+        [(AVFigRouteDescriptorOutputDeviceImpl *)self _carPlayTestNotification:payload];
       }
 
       else if ([v13 isEqual:@"AVOutputDeviceiOSUIRequestedNotification"])
       {
 
-        [(AVFigRouteDescriptorOutputDeviceImpl *)self _iOSUIRequestedNotification:a4];
+        [(AVFigRouteDescriptorOutputDeviceImpl *)self _iOSUIRequestedNotification:payload];
       }
 
       else if ([v13 isEqual:@"AVOutputDeviceSiriRequestedNotification"])
       {
 
-        [(AVFigRouteDescriptorOutputDeviceImpl *)self _siriRequestedNotification:a4];
+        [(AVFigRouteDescriptorOutputDeviceImpl *)self _siriRequestedNotification:payload];
       }
 
       else if ([v13 isEqual:@"AVOutputDeviceUnhandledRemoteEventNotification"])
       {
 
-        [(AVFigRouteDescriptorOutputDeviceImpl *)self _unhandledRemoteCommandNotification:a4];
+        [(AVFigRouteDescriptorOutputDeviceImpl *)self _unhandledRemoteCommandNotification:payload];
       }
 
       else if (v13)
       {
-        v14 = [(AVFigRouteDescriptorOutputDeviceImpl *)self implEventListener];
+        implEventListener = [(AVFigRouteDescriptorOutputDeviceImpl *)self implEventListener];
 
-        [(AVOutputDeviceImplSupport *)v14 postNotification:v13 fromImpl:self];
+        [(AVOutputDeviceImplSupport *)implEventListener postNotification:v13 fromImpl:self];
       }
     }
   }
 }
 
-- (void)_iOSUIRequestedNotification:(id)a3
+- (void)_iOSUIRequestedNotification:(id)notification
 {
-  v5 = [a3 objectForKey:*MEMORY[0x1E6962708]];
-  v6 = [a3 objectForKey:*MEMORY[0x1E6962710]];
-  v7 = [MEMORY[0x1E695DF90] dictionary];
-  [v7 setValue:v6 forKey:@"AVOutputDeviceiOSUIRequestedDisplayUUIDKey"];
-  [v7 setValue:v5 forKey:@"AVOutputDeviceiOSUIRequestedApplicationURLKey"];
-  v8 = [(AVFigRouteDescriptorOutputDeviceImpl *)self implEventListener];
+  v5 = [notification objectForKey:*MEMORY[0x1E6962708]];
+  v6 = [notification objectForKey:*MEMORY[0x1E6962710]];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setValue:v6 forKey:@"AVOutputDeviceiOSUIRequestedDisplayUUIDKey"];
+  [dictionary setValue:v5 forKey:@"AVOutputDeviceiOSUIRequestedApplicationURLKey"];
+  implEventListener = [(AVFigRouteDescriptorOutputDeviceImpl *)self implEventListener];
 
-  [(AVOutputDeviceImplSupport *)v8 postNotification:@"AVOutputDeviceiOSUIRequestedNotification" withPayload:v7 fromImpl:self];
+  [(AVOutputDeviceImplSupport *)implEventListener postNotification:@"AVOutputDeviceiOSUIRequestedNotification" withPayload:dictionary fromImpl:self];
 }
 
-- (void)_carPlayTestNotification:(id)a3
+- (void)_carPlayTestNotification:(id)notification
 {
-  [a3 objectForKey:*MEMORY[0x1E69624E8]];
+  [notification objectForKey:*MEMORY[0x1E69624E8]];
   SiriRequestedActionFromFigAction = AVOutputDeviceGetSiriRequestedActionFromFigAction();
-  v6 = [a3 objectForKey:*MEMORY[0x1E69624F0]];
-  v7 = [MEMORY[0x1E695DF90] dictionary];
-  [v7 setValue:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInteger:", SiriRequestedActionFromFigAction), @"AVOutputDeviceSiriRequestedActionKey"}];
-  [v7 setValue:v6 forKey:@"AVOutputDeviceSiriRequestedTimestampKey"];
-  v8 = [(AVFigRouteDescriptorOutputDeviceImpl *)self implEventListener];
+  v6 = [notification objectForKey:*MEMORY[0x1E69624F0]];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setValue:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInteger:", SiriRequestedActionFromFigAction), @"AVOutputDeviceSiriRequestedActionKey"}];
+  [dictionary setValue:v6 forKey:@"AVOutputDeviceSiriRequestedTimestampKey"];
+  implEventListener = [(AVFigRouteDescriptorOutputDeviceImpl *)self implEventListener];
 
-  [(AVOutputDeviceImplSupport *)v8 postNotification:@"AVOutputDeviceCarPlayTestNotification" withPayload:v7 fromImpl:self];
+  [(AVOutputDeviceImplSupport *)implEventListener postNotification:@"AVOutputDeviceCarPlayTestNotification" withPayload:dictionary fromImpl:self];
 }
 
-- (void)_siriRequestedNotification:(id)a3
+- (void)_siriRequestedNotification:(id)notification
 {
-  [a3 objectForKey:*MEMORY[0x1E69624E8]];
+  [notification objectForKey:*MEMORY[0x1E69624E8]];
   SiriRequestedActionFromFigAction = AVOutputDeviceGetSiriRequestedActionFromFigAction();
-  v6 = [a3 objectForKey:*MEMORY[0x1E69624F0]];
-  v7 = [MEMORY[0x1E695DF90] dictionary];
-  [v7 setValue:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInteger:", SiriRequestedActionFromFigAction), @"AVOutputDeviceSiriRequestedActionKey"}];
-  [v7 setValue:v6 forKey:@"AVOutputDeviceSiriRequestedTimestampKey"];
-  v8 = [(AVFigRouteDescriptorOutputDeviceImpl *)self implEventListener];
+  v6 = [notification objectForKey:*MEMORY[0x1E69624F0]];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setValue:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInteger:", SiriRequestedActionFromFigAction), @"AVOutputDeviceSiriRequestedActionKey"}];
+  [dictionary setValue:v6 forKey:@"AVOutputDeviceSiriRequestedTimestampKey"];
+  implEventListener = [(AVFigRouteDescriptorOutputDeviceImpl *)self implEventListener];
 
-  [(AVOutputDeviceImplSupport *)v8 postNotification:@"AVOutputDeviceSiriRequestedNotification" withPayload:v7 fromImpl:self];
+  [(AVOutputDeviceImplSupport *)implEventListener postNotification:@"AVOutputDeviceSiriRequestedNotification" withPayload:dictionary fromImpl:self];
 }
 
-- (void)_unhandledRemoteCommandNotification:(id)a3
+- (void)_unhandledRemoteCommandNotification:(id)notification
 {
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  [v5 setValue:objc_msgSend(a3 forKey:{"objectForKey:", *MEMORY[0x1E69626E8]), @"AVOutputDeviceUnhandledRemoteEventCommandTypeKey"}];
-  [v5 setValue:objc_msgSend(a3 forKey:{"objectForKey:", *MEMORY[0x1E69626E0]), @"AVOutputDeviceUnhandledRemoteEventCommandParametersKey"}];
-  v6 = [(AVFigRouteDescriptorOutputDeviceImpl *)self implEventListener];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setValue:objc_msgSend(notification forKey:{"objectForKey:", *MEMORY[0x1E69626E8]), @"AVOutputDeviceUnhandledRemoteEventCommandTypeKey"}];
+  [dictionary setValue:objc_msgSend(notification forKey:{"objectForKey:", *MEMORY[0x1E69626E0]), @"AVOutputDeviceUnhandledRemoteEventCommandParametersKey"}];
+  implEventListener = [(AVFigRouteDescriptorOutputDeviceImpl *)self implEventListener];
 
-  [(AVOutputDeviceImplSupport *)v6 postNotification:@"AVOutputDeviceUnhandledRemoteEventNotification" withPayload:v5 fromImpl:self];
+  [(AVOutputDeviceImplSupport *)implEventListener postNotification:@"AVOutputDeviceUnhandledRemoteEventNotification" withPayload:dictionary fromImpl:self];
 }
 
-- (void)_vehicleInformationDidChange:(id)a3
+- (void)_vehicleInformationDidChange:(id)change
 {
-  v4 = [a3 objectForKey:*MEMORY[0x1E69626F0]];
+  v4 = [change objectForKey:*MEMORY[0x1E69626F0]];
   if (v4)
   {
     v5 = v4;
@@ -1469,17 +1469,17 @@ uint64_t __77__AVFigRouteDescriptorOutputDeviceImpl_setMediaRemoteData_completio
 
     if ([v5 valueForKey:*MEMORY[0x1E6962700]])
     {
-      v6 = [(AVFigRouteDescriptorOutputDeviceImpl *)self implEventListener];
+      implEventListener = [(AVFigRouteDescriptorOutputDeviceImpl *)self implEventListener];
 
-      [(AVOutputDeviceImplSupport *)v6 postNotification:@"AVOutputDeviceNavigationAidedDrivingStateChangedNotification" fromImpl:self];
+      [(AVOutputDeviceImplSupport *)implEventListener postNotification:@"AVOutputDeviceNavigationAidedDrivingStateChangedNotification" fromImpl:self];
     }
   }
 }
 
-- (void)_volumeDidChangeForEndpointWithID:(__CFString *)a3
+- (void)_volumeDidChangeForEndpointWithID:(__CFString *)d
 {
   v8 = *MEMORY[0x1E69E9840];
-  if ([(__CFString *)a3 isEqual:[(AVFigRouteDescriptorOutputDeviceImpl *)self ID]])
+  if ([(__CFString *)d isEqual:[(AVFigRouteDescriptorOutputDeviceImpl *)self ID]])
   {
     if (dword_1ED6F6B68)
     {
@@ -1494,10 +1494,10 @@ uint64_t __77__AVFigRouteDescriptorOutputDeviceImpl_setMediaRemoteData_completio
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_volumeForEndpointDidChange:(__CFString *)a3 forRoomID:(__CFString *)a4
+- (void)_volumeForEndpointDidChange:(__CFString *)change forRoomID:(__CFString *)d
 {
   v10 = *MEMORY[0x1E69E9840];
-  if ([(__CFString *)a3 isEqual:[(AVFigRouteDescriptorOutputDeviceImpl *)self ID]])
+  if ([(__CFString *)change isEqual:[(AVFigRouteDescriptorOutputDeviceImpl *)self ID]])
   {
     if (dword_1ED6F6B68)
     {
@@ -1506,7 +1506,7 @@ uint64_t __77__AVFigRouteDescriptorOutputDeviceImpl_setMediaRemoteData_completio
       fig_log_call_emit_and_clean_up_after_send_and_compose();
     }
 
-    [(AVOutputDeviceImplSupport *)[(AVFigRouteDescriptorOutputDeviceImpl *)self implEventListener:v8] activatedDeviceClusterMembersDidChangeVolume:self forRoomID:a4];
+    [(AVOutputDeviceImplSupport *)[(AVFigRouteDescriptorOutputDeviceImpl *)self implEventListener:v8] activatedDeviceClusterMembersDidChangeVolume:self forRoomID:d];
   }
 
   v7 = *MEMORY[0x1E69E9840];
@@ -1534,10 +1534,10 @@ uint64_t __77__AVFigRouteDescriptorOutputDeviceImpl_setMediaRemoteData_completio
   return v8 != 0;
 }
 
-- (void)_canSetEndpointVolumeDidChangeForEndpointWithID:(__CFString *)a3
+- (void)_canSetEndpointVolumeDidChangeForEndpointWithID:(__CFString *)d
 {
   v8 = *MEMORY[0x1E69E9840];
-  if ([(__CFString *)a3 isEqual:[(AVFigRouteDescriptorOutputDeviceImpl *)self ID]])
+  if ([(__CFString *)d isEqual:[(AVFigRouteDescriptorOutputDeviceImpl *)self ID]])
   {
     if (dword_1ED6F6B68)
     {
@@ -1552,10 +1552,10 @@ uint64_t __77__AVFigRouteDescriptorOutputDeviceImpl_setMediaRemoteData_completio
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_endpointVolumeControlTypeDidChangeForEndpointWithID:(__CFString *)a3
+- (void)_endpointVolumeControlTypeDidChangeForEndpointWithID:(__CFString *)d
 {
   v8 = *MEMORY[0x1E69E9840];
-  if ([(__CFString *)a3 isEqualToString:[(AVFigRouteDescriptorOutputDeviceImpl *)self ID]])
+  if ([(__CFString *)d isEqualToString:[(AVFigRouteDescriptorOutputDeviceImpl *)self ID]])
   {
     if (dword_1ED6F6B68)
     {
@@ -1570,7 +1570,7 @@ uint64_t __77__AVFigRouteDescriptorOutputDeviceImpl_setMediaRemoteData_completio
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setVolume:(float)a3
+- (void)setVolume:(float)volume
 {
   v10 = *MEMORY[0x1E69E9840];
   if (self->_volumeController)
@@ -1587,47 +1587,47 @@ uint64_t __77__AVFigRouteDescriptorOutputDeviceImpl_setMediaRemoteData_completio
     v8 = *(*(CMBaseObjectGetVTable() + 16) + 64);
     if (v8)
     {
-      v8(volumeController, v5, a3);
+      v8(volumeController, v5, volume);
     }
   }
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)increaseVolumeByCount:(int64_t)a3
+- (void)increaseVolumeByCount:(int64_t)count
 {
   volumeController = self->_volumeController;
   if (volumeController)
   {
     v5 = [(AVFigRouteDescriptorOutputDeviceImpl *)self ID];
 
-    AVOutputDeviceImplChangeVolumeByCount(volumeController, v5, a3);
+    AVOutputDeviceImplChangeVolumeByCount(volumeController, v5, count);
   }
 }
 
-- (void)decreaseVolumeByCount:(int64_t)a3
+- (void)decreaseVolumeByCount:(int64_t)count
 {
   volumeController = self->_volumeController;
   if (volumeController)
   {
     v5 = [(AVFigRouteDescriptorOutputDeviceImpl *)self ID];
 
-    AVOutputDeviceImplChangeVolumeByCount(volumeController, v5, -a3);
+    AVOutputDeviceImplChangeVolumeByCount(volumeController, v5, -count);
   }
 }
 
-- (void)setActivatedDeviceClusterMembersVolume:(float)a3 withRoomID:(id)a4
+- (void)setActivatedDeviceClusterMembersVolume:(float)volume withRoomID:(id)d
 {
   volumeController = self->_volumeController;
   if (volumeController)
   {
     v7 = [(AVFigRouteDescriptorOutputDeviceImpl *)self ID];
 
-    AVOutputDeviceImplChangeRoomVolumeForEndpoint(volumeController, v7, a4, a3);
+    AVOutputDeviceImplChangeRoomVolumeForEndpoint(volumeController, v7, d, volume);
   }
 }
 
-- (float)volumeForActivatedDeviceClusterMembersWithRoomID:(id)a3
+- (float)volumeForActivatedDeviceClusterMembersWithRoomID:(id)d
 {
   v11 = 0.0;
   volumeController = self->_volumeController;
@@ -1640,7 +1640,7 @@ uint64_t __77__AVFigRouteDescriptorOutputDeviceImpl_setMediaRemoteData_completio
     if (v8)
     {
       v9 = *(VTable + 16) + 216;
-      v8(volumeController, v6, a3, &v11);
+      v8(volumeController, v6, d, &v11);
       return v11;
     }
   }
@@ -1704,14 +1704,14 @@ uint64_t __77__AVFigRouteDescriptorOutputDeviceImpl_setMediaRemoteData_completio
   return 0;
 }
 
-- (void)configureUsingBlock:(id)a3 options:(id)a4 completionHandler:(id)a5
+- (void)configureUsingBlock:(id)block options:(id)options completionHandler:(id)handler
 {
   v28[19] = *MEMORY[0x1E69E9840];
   cf = 0;
   v9 = +[AVRoutingGlobalOperationQueue defaultQueue];
   v10 = *MEMORY[0x1E695E480];
   Mutable = CFDictionaryCreateMutable(*MEMORY[0x1E695E480], 0, MEMORY[0x1E695E528], MEMORY[0x1E695E9E8]);
-  if ([objc_msgSend(a4 objectForKeyedSubscript:{@"AVOutputDeviceConfigurationOptionCancelConfigurationIfAuthRequired", "BOOLValue"}])
+  if ([objc_msgSend(options objectForKeyedSubscript:{@"AVOutputDeviceConfigurationOptionCancelConfigurationIfAuthRequired", "BOOLValue"}])
   {
     CFDictionaryAddValue(Mutable, *MEMORY[0x1E69AF518], *MEMORY[0x1E695E4D0]);
   }
@@ -1736,7 +1736,7 @@ uint64_t __77__AVFigRouteDescriptorOutputDeviceImpl_setMediaRemoteData_completio
   {
     v14 = AVMakeSelectRouteDescriptorOperation(cf, [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor], Mutable, self->_useRouteConfigUpdatedNotification, 0);
     v15 = [AVRoutingContextSendConfigureDeviceCommandOperation alloc];
-    v16 = [(AVRoutingContextSendConfigureDeviceCommandOperation *)v15 initWithRoutingContext:cf configuratorBlock:a3];
+    v16 = [(AVRoutingContextSendConfigureDeviceCommandOperation *)v15 initWithRoutingContext:cf configuratorBlock:block];
     -[AVRoutingContextSendConfigureDeviceCommandOperation setName:](v16, "setName:", [MEMORY[0x1E696AEC0] stringWithFormat:@"Set configuration on device represented by %@ (impl=%@)", -[AVFigRouteDescriptorOutputDeviceImpl implEventListener](self, "implEventListener"), self]);
     [(AVRoutingContextSendConfigureDeviceCommandOperation *)v16 addDependency:v14];
     if (cf)
@@ -1756,7 +1756,7 @@ uint64_t __77__AVFigRouteDescriptorOutputDeviceImpl_setMediaRemoteData_completio
     v23[3] = &unk_1E794E840;
     v23[4] = v16;
     v23[5] = v14;
-    v23[6] = a5;
+    v23[6] = handler;
     v23[7] = v17;
     [(AVRoutingContextSendConfigureDeviceCommandOperation *)v16 setCompletionBlock:v23];
     [v9 enqueueOperation:v14];
@@ -1785,7 +1785,7 @@ LABEL_12:
     v19 = AVLocalizedError(@"AVFoundationErrorDomain", -11800, v18);
   }
 
-  (*(a5 + 2))(a5, 1, 0, 0, v19);
+  (*(handler + 2))(handler, 1, 0, 0, v19);
 LABEL_16:
   if (Mutable)
   {
@@ -1865,9 +1865,9 @@ void __86__AVFigRouteDescriptorOutputDeviceImpl_configureUsingBlock_options_comp
 
 - (NSString)OEMIconLabel
 {
-  v2 = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
+  routeDescriptor = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
 
-  return CFDictionaryGetValue(v2, @"OEMIconLabel");
+  return CFDictionaryGetValue(routeDescriptor, @"OEMIconLabel");
 }
 
 - (BOOL)OEMIconVisible
@@ -2021,25 +2021,25 @@ uint64_t __56__AVFigRouteDescriptorOutputDeviceImpl_outputDeviceHIDs__block_invo
   }
 }
 
-- (void)requestViewArea:(int64_t)a3 forScreenID:(id)a4
+- (void)requestViewArea:(int64_t)area forScreenID:(id)d
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __68__AVFigRouteDescriptorOutputDeviceImpl_requestViewArea_forScreenID___block_invoke;
   v4[3] = &unk_1E794EB08;
-  v4[4] = a4;
-  v4[5] = a3;
+  v4[4] = d;
+  v4[5] = area;
   [(AVFigRouteDescriptorOutputDeviceImpl *)self _withEndpoint:v4];
 }
 
-- (void)requestCarUIForURL:(id)a3 withUUID:(id)a4
+- (void)requestCarUIForURL:(id)l withUUID:(id)d
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __68__AVFigRouteDescriptorOutputDeviceImpl_requestCarUIForURL_withUUID___block_invoke;
   v4[3] = &unk_1E794EBF0;
-  v4[4] = a4;
-  v4[5] = a3;
+  v4[4] = d;
+  v4[5] = l;
   [(AVFigRouteDescriptorOutputDeviceImpl *)self _withEndpoint:v4];
 }
 
@@ -2062,7 +2062,7 @@ uint64_t __56__AVFigRouteDescriptorOutputDeviceImpl_outputDeviceHIDs__block_invo
   return v2;
 }
 
-- (id)borrowScreenForClient:(id)a3 reason:(id)a4
+- (id)borrowScreenForClient:(id)client reason:(id)reason
 {
   v7 = 0;
   v8 = &v7;
@@ -2074,23 +2074,23 @@ uint64_t __56__AVFigRouteDescriptorOutputDeviceImpl_outputDeviceHIDs__block_invo
   v6[1] = 3221225472;
   v6[2] = __69__AVFigRouteDescriptorOutputDeviceImpl_borrowScreenForClient_reason___block_invoke;
   v6[3] = &unk_1E794EC18;
-  v6[5] = a4;
+  v6[5] = reason;
   v6[6] = &v7;
-  v6[4] = a3;
+  v6[4] = client;
   [(AVFigRouteDescriptorOutputDeviceImpl *)self _withEndpoint:v6];
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
   return v4;
 }
 
-- (void)takeScreenForClient:(id)a3 reason:(id)a4
+- (void)takeScreenForClient:(id)client reason:(id)reason
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __67__AVFigRouteDescriptorOutputDeviceImpl_takeScreenForClient_reason___block_invoke;
   v4[3] = &unk_1E794EBF0;
-  v4[4] = a3;
-  v4[5] = a4;
+  v4[4] = client;
+  v4[5] = reason;
   [(AVFigRouteDescriptorOutputDeviceImpl *)self _withEndpoint:v4];
 }
 
@@ -2101,13 +2101,13 @@ uint64_t __56__AVFigRouteDescriptorOutputDeviceImpl_outputDeviceHIDs__block_invo
   return 0;
 }
 
-- (void)setSiriForwardingEnabled:(BOOL)a3
+- (void)setSiriForwardingEnabled:(BOOL)enabled
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __65__AVFigRouteDescriptorOutputDeviceImpl_setSiriForwardingEnabled___block_invoke;
   v3[3] = &__block_descriptor_33_e28_i16__0__OpaqueFigEndpoint__8l;
-  v4 = a3;
+  enabledCopy = enabled;
   [(AVFigRouteDescriptorOutputDeviceImpl *)self _withEndpoint:v3];
 }
 
@@ -2132,23 +2132,23 @@ uint64_t __56__AVFigRouteDescriptorOutputDeviceImpl_outputDeviceHIDs__block_invo
   v4[3] = &unk_1E794EAB8;
   v4[4] = &v5;
   [(AVFigRouteDescriptorOutputDeviceImpl *)self _withEndpoint:v4];
-  v2 = v6[5];
-  if (!v2)
+  dictionary = v6[5];
+  if (!dictionary)
   {
-    v2 = [MEMORY[0x1E695DF20] dictionary];
+    dictionary = [MEMORY[0x1E695DF20] dictionary];
   }
 
   _Block_object_dispose(&v5, 8);
-  return v2;
+  return dictionary;
 }
 
-- (void)setDisplayCornerMasks:(id)a3
+- (void)setDisplayCornerMasks:(id)masks
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __62__AVFigRouteDescriptorOutputDeviceImpl_setDisplayCornerMasks___block_invoke;
   v3[3] = &unk_1E794EB50;
-  v3[4] = a3;
+  v3[4] = masks;
   [(AVFigRouteDescriptorOutputDeviceImpl *)self _withEndpoint:v3];
 }
 
@@ -2171,7 +2171,7 @@ uint64_t __56__AVFigRouteDescriptorOutputDeviceImpl_outputDeviceHIDs__block_invo
   return AVOutputDeviceAuthenticationTypeFromFigAuthenticationType();
 }
 
-- (id)currentScreenViewAreaForScreenID:(id)a3
+- (id)currentScreenViewAreaForScreenID:(id)d
 {
   v6 = 0;
   v7 = &v6;
@@ -2183,17 +2183,17 @@ uint64_t __56__AVFigRouteDescriptorOutputDeviceImpl_outputDeviceHIDs__block_invo
   v5[1] = 3221225472;
   v5[2] = __73__AVFigRouteDescriptorOutputDeviceImpl_currentScreenViewAreaForScreenID___block_invoke;
   v5[3] = &unk_1E794EBC8;
-  v5[4] = a3;
+  v5[4] = d;
   v5[5] = &v6;
   [(AVFigRouteDescriptorOutputDeviceImpl *)self _withEndpoint:v5];
-  v3 = v7[5];
-  if (!v3)
+  dictionary = v7[5];
+  if (!dictionary)
   {
-    v3 = [MEMORY[0x1E695DF20] dictionary];
+    dictionary = [MEMORY[0x1E695DF20] dictionary];
   }
 
   _Block_object_dispose(&v6, 8);
-  return v3;
+  return dictionary;
 }
 
 - (BOOL)isActivated
@@ -2228,7 +2228,7 @@ uint64_t __56__AVFigRouteDescriptorOutputDeviceImpl_outputDeviceHIDs__block_invo
   }
 }
 
-- (void)suggestUIWithURLs:(id)a3 completionHandler:(id)a4
+- (void)suggestUIWithURLs:(id)ls completionHandler:(id)handler
 {
   v9 = 0;
   v10 = &v9;
@@ -2238,8 +2238,8 @@ uint64_t __56__AVFigRouteDescriptorOutputDeviceImpl_outputDeviceHIDs__block_invo
   v7[1] = 3221225472;
   v7[2] = __76__AVFigRouteDescriptorOutputDeviceImpl_suggestUIWithURLs_completionHandler___block_invoke;
   v7[3] = &unk_1E794EC40;
-  v7[4] = a3;
-  v7[5] = a4;
+  v7[4] = ls;
+  v7[5] = handler;
   v7[6] = &v9;
   v8 = 0;
   v5 = [(AVFigRouteDescriptorOutputDeviceImpl *)self _withEndpoint:v7];
@@ -2255,7 +2255,7 @@ uint64_t __56__AVFigRouteDescriptorOutputDeviceImpl_outputDeviceHIDs__block_invo
 
   if (*(v10 + 24) == 1)
   {
-    (*(a4 + 2))(a4, v6);
+    (*(handler + 2))(handler, v6);
   }
 
   _Block_object_dispose(&v9, 8);
@@ -2268,7 +2268,7 @@ uint64_t __76__AVFigRouteDescriptorOutputDeviceImpl_suggestUIWithURLs_completion
   return *(a1 + 56);
 }
 
-- (void)performHapticFeedbackForUUID:(id)a3 withHapticType:(id)a4 completionHandler:(id)a5
+- (void)performHapticFeedbackForUUID:(id)d withHapticType:(id)type completionHandler:(id)handler
 {
   v10 = 0;
   v11 = &v10;
@@ -2278,9 +2278,9 @@ uint64_t __76__AVFigRouteDescriptorOutputDeviceImpl_suggestUIWithURLs_completion
   v8[1] = 3221225472;
   v8[2] = __102__AVFigRouteDescriptorOutputDeviceImpl_performHapticFeedbackForUUID_withHapticType_completionHandler___block_invoke;
   v8[3] = &unk_1E794EC68;
-  v8[4] = a3;
-  v8[5] = a4;
-  v8[6] = a5;
+  v8[4] = d;
+  v8[5] = type;
+  v8[6] = handler;
   v8[7] = &v10;
   v9 = 0;
   v6 = [(AVFigRouteDescriptorOutputDeviceImpl *)self _withEndpoint:v8];
@@ -2296,7 +2296,7 @@ uint64_t __76__AVFigRouteDescriptorOutputDeviceImpl_suggestUIWithURLs_completion
 
   if (*(v11 + 24) == 1)
   {
-    (*(a5 + 2))(a5, v7);
+    (*(handler + 2))(handler, v7);
   }
 
   _Block_object_dispose(&v10, 8);
@@ -2309,7 +2309,7 @@ uint64_t __102__AVFigRouteDescriptorOutputDeviceImpl_performHapticFeedbackForUUI
   return *(a1 + 64);
 }
 
-- (AVFigRouteDescriptorOutputDeviceImpl)initWithRouteDescriptor:(__CFDictionary *)a3 routeDiscoverer:(OpaqueFigRouteDiscoverer *)a4 volumeController:(OpaqueFigVolumeControllerState *)a5 routingContextFactory:(id)a6 useRouteConfigUpdatedNotification:(BOOL)a7 routingContext:(OpaqueFigRoutingContext *)a8
+- (AVFigRouteDescriptorOutputDeviceImpl)initWithRouteDescriptor:(__CFDictionary *)descriptor routeDiscoverer:(OpaqueFigRouteDiscoverer *)discoverer volumeController:(OpaqueFigVolumeControllerState *)controller routingContextFactory:(id)factory useRouteConfigUpdatedNotification:(BOOL)notification routingContext:(OpaqueFigRoutingContext *)context
 {
   [AVRoutingCMNotificationDispatcher notificationDispatcherForCMNotificationCenter:CMNotificationCenterGetDefaultLocalCenter()];
   v44.receiver = self;
@@ -2321,40 +2321,40 @@ uint64_t __102__AVFigRouteDescriptorOutputDeviceImpl_performHapticFeedbackForUUI
     goto LABEL_21;
   }
 
-  if (!a3)
+  if (!descriptor)
   {
     v20 = 0;
     v15->_routeDescriptor = 0;
     goto LABEL_20;
   }
 
-  v17 = CFRetain(a3);
+  v17 = CFRetain(descriptor);
   v16->_routeDescriptor = v17;
   if (!v17)
   {
     goto LABEL_21;
   }
 
-  if (!a4)
+  if (!discoverer)
   {
     v20 = 0;
     v16->_routeDiscoverer = 0;
     goto LABEL_20;
   }
 
-  v18 = CFRetain(a4);
+  v18 = CFRetain(discoverer);
   v16->_routeDiscoverer = v18;
-  if (!v18 || (!a5 ? (v19 = 0) : (v19 = CFRetain(a5)), v16->_volumeController = v19, v21 = a6, (v16->_routingContextFactory = v21) == 0))
+  if (!v18 || (!controller ? (v19 = 0) : (v19 = CFRetain(controller)), v16->_volumeController = v19, v21 = factory, (v16->_routingContextFactory = v21) == 0))
   {
 LABEL_21:
     v20 = 0;
     goto LABEL_20;
   }
 
-  v16->_useRouteConfigUpdatedNotification = a7;
-  if (a8)
+  v16->_useRouteConfigUpdatedNotification = notification;
+  if (context)
   {
-    v22 = CFRetain(a8);
+    v22 = CFRetain(context);
   }
 
   else
@@ -2391,8 +2391,8 @@ LABEL_20:
 
 - (BOOL)automaticallyAllowsConnectionsFromPeersInHomeGroup
 {
-  v2 = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
-  Value = CFDictionaryGetValue(v2, *MEMORY[0x1E69AF110]);
+  routeDescriptor = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
+  Value = CFDictionaryGetValue(routeDescriptor, *MEMORY[0x1E69AF110]);
   if (Value)
   {
     LOBYTE(Value) = CFBooleanGetValue(Value) != 0;
@@ -2401,7 +2401,7 @@ LABEL_20:
   return Value;
 }
 
-- (int)_withEndpoint:(id)a3
+- (int)_withEndpoint:(id)endpoint
 {
   cf[16] = *MEMORY[0x1E69E9840];
   theArray = 0;
@@ -2512,14 +2512,14 @@ LABEL_25:
   }
 
   routeDiscoverer = self->_routeDiscoverer;
-  v28 = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
+  routeDescriptor = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
   v29 = *(*(CMBaseObjectGetVTable() + 16) + 8);
   if (!v29)
   {
     goto LABEL_25;
   }
 
-  v18 = v29(routeDiscoverer, v28, &v39);
+  v18 = v29(routeDiscoverer, routeDescriptor, &v39);
   if (!v18)
   {
     v30 = v39;
@@ -2531,7 +2531,7 @@ LABEL_33:
     }
 
 LABEL_32:
-    v18 = (*(a3 + 2))(a3, v30);
+    v18 = (*(endpoint + 2))(endpoint, v30);
   }
 
 LABEL_34:
@@ -2551,7 +2551,7 @@ LABEL_35:
   return v31;
 }
 
-- (BOOL)setCurrentBluetoothListeningMode:(id)a3 error:(id *)a4
+- (BOOL)setCurrentBluetoothListeningMode:(id)mode error:(id *)error
 {
   v39 = *MEMORY[0x1E69E9840];
   valuePtr = 0;
@@ -2583,11 +2583,11 @@ LABEL_35:
   }
 
   routeDiscoverer = self->_routeDiscoverer;
-  v18 = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
+  routeDescriptor = [(AVFigRouteDescriptorOutputDeviceImpl *)self routeDescriptor];
   v19 = *(*(CMBaseObjectGetVTable() + 16) + 8);
   if (v19)
   {
-    v20 = v19(routeDiscoverer, v18, &cf);
+    v20 = v19(routeDiscoverer, routeDescriptor, &cf);
     if (v20)
     {
       v24 = v20;
@@ -2601,7 +2601,7 @@ LABEL_35:
       goto LABEL_26;
     }
 
-    valuePtr = AVOutputDeviceFigListeningModeForAVFListeningMode(a3);
+    valuePtr = AVOutputDeviceFigListeningModeForAVFListeningMode(mode);
     v21 = CFNumberCreate(*MEMORY[0x1E695E480], kCFNumberSInt32Type, &valuePtr);
     if (dword_1ED6F6B68)
     {
@@ -2655,9 +2655,9 @@ LABEL_19:
     CFRelease(v21);
   }
 
-  if (a4 && v24)
+  if (error && v24)
   {
-    *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:v24 userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:v24 userInfo:0];
     v24 = 1;
   }
 

@@ -1,20 +1,20 @@
 @interface CTStewieIMessageLiteSummaryMessage
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToOther:(id)a3;
-- (CTStewieIMessageLiteSummaryMessage)initWithCoder:(id)a3;
-- (CTStewieIMessageLiteSummaryMessage)initWithPendingIMessageLiteTotalCount:(int64_t)a3 pendingCounts:(id)a4 error:(id *)p_isa;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToOther:(id)other;
+- (CTStewieIMessageLiteSummaryMessage)initWithCoder:(id)coder;
+- (CTStewieIMessageLiteSummaryMessage)initWithPendingIMessageLiteTotalCount:(int64_t)count pendingCounts:(id)counts error:(id *)p_isa;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTStewieIMessageLiteSummaryMessage
 
-- (CTStewieIMessageLiteSummaryMessage)initWithPendingIMessageLiteTotalCount:(int64_t)a3 pendingCounts:(id)a4 error:(id *)p_isa
+- (CTStewieIMessageLiteSummaryMessage)initWithPendingIMessageLiteTotalCount:(int64_t)count pendingCounts:(id)counts error:(id *)p_isa
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  if (v9)
+  countsCopy = counts;
+  if (countsCopy)
   {
     v15.receiver = self;
     v15.super_class = CTStewieIMessageLiteSummaryMessage;
@@ -22,8 +22,8 @@
     p_isa = &v10->super.isa;
     if (v10)
     {
-      v10->_pendingIMessageLiteTotalCount = a3;
-      objc_storeStrong(&v10->_pendingCounts, a4);
+      v10->_pendingIMessageLiteTotalCount = count;
+      objc_storeStrong(&v10->_pendingCounts, counts);
       self = p_isa;
       p_isa = &self->super.isa;
     }
@@ -53,32 +53,32 @@
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
   [v3 appendFormat:@", pendingIMessageLiteTotalCount=%ld", -[CTStewieIMessageLiteSummaryMessage pendingIMessageLiteTotalCount](self, "pendingIMessageLiteTotalCount")];
-  v4 = [(CTStewieIMessageLiteSummaryMessage *)self pendingCounts];
-  [v3 appendFormat:@", pendingCounts=%@", v4];
+  pendingCounts = [(CTStewieIMessageLiteSummaryMessage *)self pendingCounts];
+  [v3 appendFormat:@", pendingCounts=%@", pendingCounts];
 
   [v3 appendString:@">"];
 
   return v3;
 }
 
-- (BOOL)isEqualToOther:(id)a3
+- (BOOL)isEqualToOther:(id)other
 {
-  v4 = a3;
-  v5 = [(CTStewieIMessageLiteSummaryMessage *)self pendingIMessageLiteTotalCount];
-  if (v5 == [v4 pendingIMessageLiteTotalCount])
+  otherCopy = other;
+  pendingIMessageLiteTotalCount = [(CTStewieIMessageLiteSummaryMessage *)self pendingIMessageLiteTotalCount];
+  if (pendingIMessageLiteTotalCount == [otherCopy pendingIMessageLiteTotalCount])
   {
-    v6 = [(CTStewieIMessageLiteSummaryMessage *)self pendingCounts];
-    v7 = [v4 pendingCounts];
-    if (v6 == v7)
+    pendingCounts = [(CTStewieIMessageLiteSummaryMessage *)self pendingCounts];
+    pendingCounts2 = [otherCopy pendingCounts];
+    if (pendingCounts == pendingCounts2)
     {
       v10 = 1;
     }
 
     else
     {
-      v8 = [(CTStewieIMessageLiteSummaryMessage *)self pendingCounts];
-      v9 = [v4 pendingCounts];
-      v10 = [v8 isEqual:v9];
+      pendingCounts3 = [(CTStewieIMessageLiteSummaryMessage *)self pendingCounts];
+      pendingCounts4 = [otherCopy pendingCounts];
+      v10 = [pendingCounts3 isEqual:pendingCounts4];
     }
   }
 
@@ -90,10 +90,10 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -101,39 +101,39 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CTStewieIMessageLiteSummaryMessage *)self isEqualToOther:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CTStewieIMessageLiteSummaryMessage *)self isEqualToOther:equalCopy];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v5 setPendingIMessageLiteTotalCount:{-[CTStewieIMessageLiteSummaryMessage pendingIMessageLiteTotalCount](self, "pendingIMessageLiteTotalCount")}];
-  v6 = [(CTStewieIMessageLiteSummaryMessage *)self pendingCounts];
-  v7 = [v6 copyWithZone:a3];
+  pendingCounts = [(CTStewieIMessageLiteSummaryMessage *)self pendingCounts];
+  v7 = [pendingCounts copyWithZone:zone];
   [v5 setPendingCounts:v7];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeInteger:-[CTStewieIMessageLiteSummaryMessage pendingIMessageLiteTotalCount](self forKey:{"pendingIMessageLiteTotalCount"), @"pendingIMessageLiteTotalCount"}];
-  v4 = [(CTStewieIMessageLiteSummaryMessage *)self pendingCounts];
-  [v5 encodeObject:v4 forKey:@"pendingCounts"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[CTStewieIMessageLiteSummaryMessage pendingIMessageLiteTotalCount](self forKey:{"pendingIMessageLiteTotalCount"), @"pendingIMessageLiteTotalCount"}];
+  pendingCounts = [(CTStewieIMessageLiteSummaryMessage *)self pendingCounts];
+  [coderCopy encodeObject:pendingCounts forKey:@"pendingCounts"];
 }
 
-- (CTStewieIMessageLiteSummaryMessage)initWithCoder:(id)a3
+- (CTStewieIMessageLiteSummaryMessage)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"pendingIMessageLiteTotalCount"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"pendingIMessageLiteTotalCount"];
   v6 = MEMORY[0x1E695DFD8];
   v7 = objc_opt_class();
   v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"pendingCounts"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"pendingCounts"];
   v10 = [(CTStewieIMessageLiteSummaryMessage *)self initWithPendingIMessageLiteTotalCount:v5 pendingCounts:v9 error:0];
 
   return v10;

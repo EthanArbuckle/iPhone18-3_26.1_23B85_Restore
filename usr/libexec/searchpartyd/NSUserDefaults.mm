@@ -1,25 +1,25 @@
 @interface NSUserDefaults
 - (BOOL)userHasAcknowledgedFindMy;
-- (void)setUserHasAcknowledgedFindMy:(BOOL)a3;
+- (void)setUserHasAcknowledgedFindMy:(BOOL)my;
 @end
 
 @implementation NSUserDefaults
 
 - (BOOL)userHasAcknowledgedFindMy
 {
-  v2 = self;
+  selfCopy = self;
   v3 = String._bridgeToObjectiveC()();
-  v4 = [(NSUserDefaults *)v2 BOOLForKey:v3];
+  v4 = [(NSUserDefaults *)selfCopy BOOLForKey:v3];
 
   return v4;
 }
 
-- (void)setUserHasAcknowledgedFindMy:(BOOL)a3
+- (void)setUserHasAcknowledgedFindMy:(BOOL)my
 {
-  v5 = self;
+  selfCopy = self;
   isa = Bool._bridgeToObjectiveC()().super.super.isa;
   v4 = String._bridgeToObjectiveC()();
-  [(NSUserDefaults *)v5 setValue:isa forKey:v4];
+  [(NSUserDefaults *)selfCopy setValue:isa forKey:v4];
 }
 
 @end

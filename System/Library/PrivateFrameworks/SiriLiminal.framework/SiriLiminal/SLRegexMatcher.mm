@@ -1,21 +1,21 @@
 @interface SLRegexMatcher
-- (SLRegexMatcher)initWithConfigFile:(id)a3;
-- (id)applyPreprocessingOnUtt:(id)a3;
-- (void)_compileRegexRulesForPatterns:(id)a3;
+- (SLRegexMatcher)initWithConfigFile:(id)file;
+- (id)applyPreprocessingOnUtt:(id)utt;
+- (void)_compileRegexRulesForPatterns:(id)patterns;
 @end
 
 @implementation SLRegexMatcher
 
-- (id)applyPreprocessingOnUtt:(id)a3
+- (id)applyPreprocessingOnUtt:(id)utt
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  uttCopy = utt;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__112;
   v16 = __Block_byref_object_dispose__113;
-  v17 = [v4 mutableCopy];
+  v17 = [uttCopy mutableCopy];
   regexMatchingRules = self->_regexMatchingRules;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -30,7 +30,7 @@
     *buf = 136315394;
     v19 = "[SLRegexMatcher applyPreprocessingOnUtt:]";
     v20 = 2112;
-    v21 = v4;
+    v21 = uttCopy;
     _os_log_impl(&dword_26754E000, v6, OS_LOG_TYPE_DEFAULT, "%s Input to regex: %@", buf, 0x16u);
     v6 = SLLogContextFacilityCoreSpeech;
   }
@@ -62,27 +62,27 @@ void __42__SLRegexMatcher_applyPreprocessingOnUtt___block_invoke(uint64_t a1, vo
   [v6 replaceMatchesInString:v5 options:0 range:0 withTemplate:{v7, v8}];
 }
 
-- (void)_compileRegexRulesForPatterns:(id)a3
+- (void)_compileRegexRulesForPatterns:(id)patterns
 {
-  v4 = a3;
+  patternsCopy = patterns;
   v17[0] = 0;
   v17[1] = v17;
   v17[2] = 0x3032000000;
   v17[3] = __Block_byref_object_copy__112;
   v17[4] = __Block_byref_object_dispose__113;
   v18 = 0;
-  v5 = [MEMORY[0x277CBEB18] array];
-  v6 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __48__SLRegexMatcher__compileRegexRulesForPatterns___block_invoke;
   v13[3] = &unk_279C0E8F8;
   v16 = v17;
-  v7 = v5;
+  v7 = array;
   v14 = v7;
-  v8 = v6;
+  v8 = array2;
   v15 = v8;
-  [v4 enumerateObjectsUsingBlock:v13];
+  [patternsCopy enumerateObjectsUsingBlock:v13];
   regexMatchingRules = self->_regexMatchingRules;
   self->_regexMatchingRules = v7;
   v10 = v7;
@@ -156,10 +156,10 @@ void __48__SLRegexMatcher__compileRegexRulesForPatterns___block_invoke(uint64_t 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (SLRegexMatcher)initWithConfigFile:(id)a3
+- (SLRegexMatcher)initWithConfigFile:(id)file
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fileCopy = file;
   v20.receiver = self;
   v20.super_class = SLRegexMatcher;
   v5 = [(SLRegexMatcher *)&v20 init];
@@ -173,7 +173,7 @@ void __48__SLRegexMatcher__compileRegexRulesForPatterns___block_invoke(uint64_t 
     dispatch_once(&SLLogInitIfNeeded_once, &__block_literal_global);
   }
 
-  v6 = [MEMORY[0x277D01778] decodeJsonFromFile:v4];
+  v6 = [MEMORY[0x277D01778] decodeJsonFromFile:fileCopy];
   v7 = v6;
   if (v6)
   {
@@ -208,11 +208,11 @@ LABEL_12:
   if (os_log_type_enabled(SLLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
   {
     v18 = v13;
-    v19 = [v12 localizedDescription];
+    localizedDescription = [v12 localizedDescription];
     *buf = 136315394;
     v22 = "[SLRegexMatcher initWithConfigFile:]";
     v23 = 2112;
-    v24 = v19;
+    v24 = localizedDescription;
     _os_log_error_impl(&dword_26754E000, v18, OS_LOG_TYPE_ERROR, "%s %@", buf, 0x16u);
   }
 

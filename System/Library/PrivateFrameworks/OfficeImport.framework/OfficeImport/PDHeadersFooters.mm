@@ -1,31 +1,31 @@
 @interface PDHeadersFooters
-- (void)setFooter:(id)a3;
-- (void)setHeader:(id)a3;
-- (void)setUserDateTime:(id)a3;
+- (void)setFooter:(id)footer;
+- (void)setHeader:(id)header;
+- (void)setUserDateTime:(id)time;
 @end
 
 @implementation PDHeadersFooters
 
-- (void)setUserDateTime:(id)a3
+- (void)setUserDateTime:(id)time
 {
-  v6 = a3;
-  v4 = [v6 copy];
+  timeCopy = time;
+  v4 = [timeCopy copy];
   mUserDateTime = self->mUserDateTime;
   self->mUserDateTime = v4;
 }
 
-- (void)setHeader:(id)a3
+- (void)setHeader:(id)header
 {
-  v6 = a3;
-  v4 = [v6 copy];
+  headerCopy = header;
+  v4 = [headerCopy copy];
   mHeader = self->mHeader;
   self->mHeader = v4;
 }
 
-- (void)setFooter:(id)a3
+- (void)setFooter:(id)footer
 {
-  v6 = a3;
-  v4 = [v6 copy];
+  footerCopy = footer;
+  v4 = [footerCopy copy];
   mFooter = self->mFooter;
   self->mFooter = v4;
 }

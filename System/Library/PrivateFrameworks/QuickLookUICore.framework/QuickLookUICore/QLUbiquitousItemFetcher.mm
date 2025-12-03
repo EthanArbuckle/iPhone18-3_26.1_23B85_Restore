@@ -1,24 +1,24 @@
 @interface QLUbiquitousItemFetcher
 - (BOOL)isLongFetchOperation;
-- (QLUbiquitousItemFetcher)initWithCoder:(id)a3;
-- (QLUbiquitousItemFetcher)initWithZippingPackageIfNeeded:(BOOL)a3;
+- (QLUbiquitousItemFetcher)initWithCoder:(id)coder;
+- (QLUbiquitousItemFetcher)initWithZippingPackageIfNeeded:(BOOL)needed;
 - (id)_createURLForPackageIfNeeded;
 - (id)fetchedContent;
 - (id)itemSize;
 - (id)newItemProvider;
 - (void)_deleteTempraryZipPackageFileIfNeeded;
-- (void)_removeUpdateBlockIfNeeded:(id)a3;
+- (void)_removeUpdateBlockIfNeeded:(id)needed;
 - (void)cancelFetch;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)fetchContentWithAllowedOutputClasses:(id)a3 inQueue:(id)a4 updateBlock:(id)a5 completionBlock:(id)a6;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)encodeWithCoder:(id)coder;
+- (void)fetchContentWithAllowedOutputClasses:(id)classes inQueue:(id)queue updateBlock:(id)block completionBlock:(id)completionBlock;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)subscribeToPreviewItemProgress;
 @end
 
 @implementation QLUbiquitousItemFetcher
 
-- (QLUbiquitousItemFetcher)initWithZippingPackageIfNeeded:(BOOL)a3
+- (QLUbiquitousItemFetcher)initWithZippingPackageIfNeeded:(BOOL)needed
 {
   v12.receiver = self;
   v12.super_class = QLUbiquitousItemFetcher;
@@ -26,7 +26,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_shouldZipPackageIfNeeded = a3;
+    v4->_shouldZipPackageIfNeeded = needed;
     v6 = objc_opt_new();
     updateBlocks = v5->_updateBlocks;
     v5->_updateBlocks = v6;
@@ -41,19 +41,19 @@
   return v5;
 }
 
-- (void)fetchContentWithAllowedOutputClasses:(id)a3 inQueue:(id)a4 updateBlock:(id)a5 completionBlock:(id)a6
+- (void)fetchContentWithAllowedOutputClasses:(id)classes inQueue:(id)queue updateBlock:(id)block completionBlock:(id)completionBlock
 {
   v38[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v12)
+  classesCopy = classes;
+  queueCopy = queue;
+  blockCopy = block;
+  completionBlockCopy = completionBlock;
+  if (blockCopy)
   {
     v14 = self->_updateBlocks;
     objc_sync_enter(v14);
     updateBlocks = self->_updateBlocks;
-    v16 = MEMORY[0x266708AD0](v12);
+    v16 = MEMORY[0x266708AD0](blockCopy);
     [(NSMutableArray *)updateBlocks addObject:v16];
 
     objc_sync_exit(v14);
@@ -62,10 +62,10 @@
   v17 = [(FPSandboxingURLWrapper *)self->_sandboxingWrapper url];
   self->_isAccessingURL = [v17 startAccessingSecurityScopedResource];
 
-  v18 = [(QLUbiquitousItemFetcher *)self fileURL];
-  if (v18)
+  fileURL = [(QLUbiquitousItemFetcher *)self fileURL];
+  if (fileURL)
   {
-    v19 = [MEMORY[0x277CCA9E0] readingIntentWithURL:v18 options:0];
+    v19 = [MEMORY[0x277CCA9E0] readingIntentWithURL:fileURL options:0];
     v20 = objc_opt_new();
     v21 = self->_fileCoordinators;
     objc_sync_enter(v21);
@@ -78,16 +78,16 @@
     v28 = 3221225472;
     v29 = __100__QLUbiquitousItemFetcher_fetchContentWithAllowedOutputClasses_inQueue_updateBlock_completionBlock___block_invoke;
     v30 = &unk_279AE1400;
-    v31 = self;
-    v35 = v12;
-    v32 = v18;
-    v36 = v13;
+    selfCopy = self;
+    v35 = blockCopy;
+    v32 = fileURL;
+    v36 = completionBlockCopy;
     v33 = v19;
-    v34 = v10;
+    v34 = classesCopy;
     v23 = v19;
-    [v20 coordinateAccessWithIntents:v22 queue:v11 byAccessor:&v27];
+    [v20 coordinateAccessWithIntents:v22 queue:queueCopy byAccessor:&v27];
 
-    if (v12)
+    if (blockCopy)
     {
       [(QLUbiquitousItemFetcher *)self subscribeToPreviewItemProgress:v27];
     }
@@ -109,9 +109,9 @@
       _os_log_impl(&dword_261653000, v25, OS_LOG_TYPE_FAULT, "URL cannot be nil when trying to fetch the contents of QLUbiquitousItemFetcher #PreviewItem", buf, 2u);
     }
 
-    [(QLUbiquitousItemFetcher *)self _removeUpdateBlockIfNeeded:v12];
+    [(QLUbiquitousItemFetcher *)self _removeUpdateBlockIfNeeded:blockCopy];
     v20 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.quicklook.QLUbiquitousItemFetcher" code:0 userInfo:0];
-    (*(v13 + 2))(v13, 0, v20);
+    (*(completionBlockCopy + 2))(completionBlockCopy, 0, v20);
   }
 
   v26 = *MEMORY[0x277D85DE8];
@@ -206,13 +206,13 @@ LABEL_19:
   if (!self->_progressSubscriber)
   {
     v3 = MEMORY[0x277CCAC48];
-    v4 = [(QLUbiquitousItemFetcher *)self fileURL];
+    fileURL = [(QLUbiquitousItemFetcher *)self fileURL];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __57__QLUbiquitousItemFetcher_subscribeToPreviewItemProgress__block_invoke;
     v7[3] = &unk_279AE1428;
     v7[4] = self;
-    v5 = [v3 _addSubscriberForFileURL:v4 withPublishingHandler:v7];
+    v5 = [v3 _addSubscriberForFileURL:fileURL withPublishingHandler:v7];
     progressSubscriber = self->_progressSubscriber;
     self->_progressSubscriber = v5;
   }
@@ -317,15 +317,15 @@ id __57__QLUbiquitousItemFetcher_subscribeToPreviewItemProgress__block_invoke(ui
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v37 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([v10 isEqualToString:@"fractionCompleted"])
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if ([pathCopy isEqualToString:@"fractionCompleted"])
   {
-    [v11 fractionCompleted];
+    [objectCopy fractionCompleted];
     v14 = v13;
     obj = self->_updateBlocks;
     objc_sync_enter(obj);
@@ -344,8 +344,8 @@ id __57__QLUbiquitousItemFetcher_subscribeToPreviewItemProgress__block_invoke(ui
         v20 = 0;
         do
         {
-          v21 = v11;
-          v22 = v12;
+          v21 = objectCopy;
+          v22 = changeCopy;
           if (*v31 != v19)
           {
             objc_enumerationMutation(v15);
@@ -356,8 +356,8 @@ id __57__QLUbiquitousItemFetcher_subscribeToPreviewItemProgress__block_invoke(ui
           v24 = [MEMORY[0x277CCABB0] numberWithFloat:v17];
           (*(v23 + 16))(v23, v24);
 
-          v12 = v22;
-          v11 = v21;
+          changeCopy = v22;
+          objectCopy = v21;
           ++v20;
         }
 
@@ -389,7 +389,7 @@ id __57__QLUbiquitousItemFetcher_subscribeToPreviewItemProgress__block_invoke(ui
   {
     v29.receiver = self;
     v29.super_class = QLUbiquitousItemFetcher;
-    [(QLUbiquitousItemFetcher *)&v29 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(QLUbiquitousItemFetcher *)&v29 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 
   v27 = *MEMORY[0x277D85DE8];
@@ -412,19 +412,19 @@ id __57__QLUbiquitousItemFetcher_subscribeToPreviewItemProgress__block_invoke(ui
 
 - (BOOL)isLongFetchOperation
 {
-  v3 = [(QLUbiquitousItemFetcher *)self fileURL];
-  v4 = [v3 startAccessingSecurityScopedResource];
+  fileURL = [(QLUbiquitousItemFetcher *)self fileURL];
+  startAccessingSecurityScopedResource = [fileURL startAccessingSecurityScopedResource];
 
-  v5 = [(QLUbiquitousItemFetcher *)self fileURL];
-  v6 = [v5 _QLDownloadingStatusIsNotCurrent];
+  fileURL2 = [(QLUbiquitousItemFetcher *)self fileURL];
+  _QLDownloadingStatusIsNotCurrent = [fileURL2 _QLDownloadingStatusIsNotCurrent];
 
-  if (v4)
+  if (startAccessingSecurityScopedResource)
   {
-    v7 = [(QLUbiquitousItemFetcher *)self fileURL];
-    [v7 stopAccessingSecurityScopedResource];
+    fileURL3 = [(QLUbiquitousItemFetcher *)self fileURL];
+    [fileURL3 stopAccessingSecurityScopedResource];
   }
 
-  return v6;
+  return _QLDownloadingStatusIsNotCurrent;
 }
 
 - (id)itemSize
@@ -432,43 +432,43 @@ id __57__QLUbiquitousItemFetcher_subscribeToPreviewItemProgress__block_invoke(ui
   sizeTotalUnitCount = self->_sizeTotalUnitCount;
   if (sizeTotalUnitCount)
   {
-    v3 = sizeTotalUnitCount;
+    _QLUrlFileSize = sizeTotalUnitCount;
   }
 
   else
   {
-    v5 = [(QLUbiquitousItemFetcher *)self fileURL];
-    v6 = [v5 startAccessingSecurityScopedResource];
+    fileURL = [(QLUbiquitousItemFetcher *)self fileURL];
+    startAccessingSecurityScopedResource = [fileURL startAccessingSecurityScopedResource];
 
-    v7 = [(QLUbiquitousItemFetcher *)self fileURL];
-    v3 = [v7 _QLUrlFileSize];
+    fileURL2 = [(QLUbiquitousItemFetcher *)self fileURL];
+    _QLUrlFileSize = [fileURL2 _QLUrlFileSize];
 
-    if (v6)
+    if (startAccessingSecurityScopedResource)
     {
-      v8 = [(QLUbiquitousItemFetcher *)self fileURL];
-      [v8 stopAccessingSecurityScopedResource];
+      fileURL3 = [(QLUbiquitousItemFetcher *)self fileURL];
+      [fileURL3 stopAccessingSecurityScopedResource];
     }
   }
 
-  return v3;
+  return _QLUrlFileSize;
 }
 
 - (id)fetchedContent
 {
-  v3 = [(QLItemFetcher *)self fetchingState];
-  if (v3)
+  fetchingState = [(QLItemFetcher *)self fetchingState];
+  if (fetchingState)
   {
-    v3 = [(QLUbiquitousItemFetcher *)self fileURL];
+    fetchingState = [(QLUbiquitousItemFetcher *)self fileURL];
   }
 
-  return v3;
+  return fetchingState;
 }
 
 - (id)newItemProvider
 {
   v3 = objc_opt_new();
-  v4 = [(QLUbiquitousItemFetcher *)self fileURL];
-  v5 = [v4 copy];
+  fileURL = [(QLUbiquitousItemFetcher *)self fileURL];
+  v5 = [fileURL copy];
 
   v6 = [MEMORY[0x277CDAB20] UTIForURL:v5];
   v9[0] = MEMORY[0x277D85DD0];
@@ -482,12 +482,12 @@ id __57__QLUbiquitousItemFetcher_subscribeToPreviewItemProgress__block_invoke(ui
   return v3;
 }
 
-- (void)_removeUpdateBlockIfNeeded:(id)a3
+- (void)_removeUpdateBlockIfNeeded:(id)needed
 {
-  v4 = a3;
-  if (v4)
+  neededCopy = needed;
+  if (neededCopy)
   {
-    v8 = v4;
+    v8 = neededCopy;
     v5 = self->_updateBlocks;
     objc_sync_enter(v5);
     updateBlocks = self->_updateBlocks;
@@ -495,43 +495,43 @@ id __57__QLUbiquitousItemFetcher_subscribeToPreviewItemProgress__block_invoke(ui
     [(NSMutableArray *)updateBlocks removeObject:v7];
 
     objc_sync_exit(v5);
-    v4 = v8;
+    neededCopy = v8;
   }
 }
 
 - (id)_createURLForPackageIfNeeded
 {
   v49 = *MEMORY[0x277D85DE8];
-  v3 = [(QLUbiquitousItemFetcher *)self fileURL];
-  v4 = [v3 _QLIsPackageURL];
+  fileURL = [(QLUbiquitousItemFetcher *)self fileURL];
+  _QLIsPackageURL = [fileURL _QLIsPackageURL];
 
-  if ((v4 & 1) == 0)
+  if ((_QLIsPackageURL & 1) == 0)
   {
-    v6 = [(QLUbiquitousItemFetcher *)self fileURL];
+    fileURL2 = [(QLUbiquitousItemFetcher *)self fileURL];
     goto LABEL_5;
   }
 
   zipPackageUrlHandler = self->_zipPackageUrlHandler;
   if (zipPackageUrlHandler)
   {
-    v6 = [(QLURLHandler *)zipPackageUrlHandler fileURL];
+    fileURL2 = [(QLURLHandler *)zipPackageUrlHandler fileURL];
 LABEL_5:
-    v7 = v6;
+    fileURL6 = fileURL2;
     goto LABEL_6;
   }
 
-  v10 = [MEMORY[0x277CCAD78] UUID];
-  v11 = [v10 UUIDString];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
 
   v12 = MEMORY[0x277CBEBC0];
   v13 = MEMORY[0x277CCACA8];
   v14 = NSTemporaryDirectory();
-  v15 = [v13 stringWithFormat:@"%@%@", v14, v11];
+  v15 = [v13 stringWithFormat:@"%@%@", v14, uUIDString];
   v16 = [v12 fileURLWithPath:v15];
 
-  v17 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v39 = 0;
-  v18 = [v17 createDirectoryAtURL:v16 withIntermediateDirectories:1 attributes:0 error:&v39];
+  v18 = [defaultManager createDirectoryAtURL:v16 withIntermediateDirectories:1 attributes:0 error:&v39];
   v19 = v39;
   if (v19)
   {
@@ -540,9 +540,9 @@ LABEL_5:
 
   if (v18)
   {
-    v20 = [(QLUbiquitousItemFetcher *)self fileURL];
-    v21 = [v20 lastPathComponent];
-    v22 = [v16 URLByAppendingPathComponent:v21];
+    fileURL3 = [(QLUbiquitousItemFetcher *)self fileURL];
+    lastPathComponent = [fileURL3 lastPathComponent];
+    v22 = [v16 URLByAppendingPathComponent:lastPathComponent];
 
     *&v44 = 0;
     *(&v44 + 1) = &v44;
@@ -551,7 +551,7 @@ LABEL_5:
     v47 = __Block_byref_object_dispose_;
     v48 = 0;
     v23 = objc_opt_new();
-    v24 = [(QLUbiquitousItemFetcher *)self fileURL];
+    fileURL4 = [(QLUbiquitousItemFetcher *)self fileURL];
     v38 = 0;
     v35[0] = MEMORY[0x277D85DD0];
     v35[1] = 3221225472;
@@ -560,7 +560,7 @@ LABEL_5:
     v25 = v22;
     v36 = v25;
     v37 = &v44;
-    [v23 coordinateReadingItemAtURL:v24 options:8 error:&v38 byAccessor:v35];
+    [v23 coordinateReadingItemAtURL:fileURL4 options:8 error:&v38 byAccessor:v35];
     v26 = v38;
 
     if (v26)
@@ -576,9 +576,9 @@ LABEL_5:
       v29 = v28;
       if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
       {
-        v30 = [(QLUbiquitousItemFetcher *)self fileURL];
+        fileURL5 = [(QLUbiquitousItemFetcher *)self fileURL];
         *buf = 138412546;
-        v41 = v30;
+        v41 = fileURL5;
         v42 = 2112;
         v43 = v26;
         _os_log_impl(&dword_261653000, v29, OS_LOG_TYPE_ERROR, "Could not do a coordinated read for directory at URL: %@ (%@). #PreviewItem", buf, 0x16u);
@@ -593,7 +593,7 @@ LABEL_5:
       self->_zipPackageUrlHandler = v34;
     }
 
-    v7 = [(QLURLHandler *)self->_zipPackageUrlHandler fileURL];
+    fileURL6 = [(QLURLHandler *)self->_zipPackageUrlHandler fileURL];
 
     _Block_object_dispose(&v44, 8);
   }
@@ -615,13 +615,13 @@ LABEL_5:
       _os_log_impl(&dword_261653000, v32, OS_LOG_TYPE_ERROR, "Could not create temporary folder for data item with error: %@ #PreviewItem", &v44, 0xCu);
     }
 
-    v7 = 0;
+    fileURL6 = 0;
   }
 
 LABEL_6:
   v8 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return fileURL6;
 }
 
 void __55__QLUbiquitousItemFetcher__createURLForPackageIfNeeded__block_invoke(uint64_t a1, void *a2)
@@ -670,16 +670,16 @@ void __55__QLUbiquitousItemFetcher__createURLForPackageIfNeeded__block_invoke(ui
   v17 = *MEMORY[0x277D85DE8];
   if (self->_zipPackageUrlHandler)
   {
-    v3 = [MEMORY[0x277CCAA00] defaultManager];
-    v4 = [(QLURLHandler *)self->_zipPackageUrlHandler fileURL];
-    v5 = [v4 path];
-    v6 = [v3 fileExistsAtPath:v5];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    fileURL = [(QLURLHandler *)self->_zipPackageUrlHandler fileURL];
+    path = [fileURL path];
+    v6 = [defaultManager fileExistsAtPath:path];
 
     if (v6)
     {
-      v7 = [(QLURLHandler *)self->_zipPackageUrlHandler fileURL];
+      fileURL2 = [(QLURLHandler *)self->_zipPackageUrlHandler fileURL];
       v14 = 0;
-      v8 = [v3 removeItemAtURL:v7 error:&v14];
+      v8 = [defaultManager removeItemAtURL:fileURL2 error:&v14];
       v9 = v14;
 
       if ((v8 & 1) == 0)
@@ -717,38 +717,38 @@ LABEL_10:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = QLUbiquitousItemFetcher;
-  v4 = a3;
-  [(QLItemFetcher *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_sandboxingWrapper forKey:{@"sandboxingWrapper", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_zipPackageUrlHandler forKey:@"zipPackageUrlHandler"];
-  [v4 encodeBool:self->_shouldZipPackageIfNeeded forKey:@"shouldZipPackageIfNeeded"];
+  coderCopy = coder;
+  [(QLItemFetcher *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_sandboxingWrapper forKey:{@"sandboxingWrapper", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_zipPackageUrlHandler forKey:@"zipPackageUrlHandler"];
+  [coderCopy encodeBool:self->_shouldZipPackageIfNeeded forKey:@"shouldZipPackageIfNeeded"];
 }
 
-- (QLUbiquitousItemFetcher)initWithCoder:(id)a3
+- (QLUbiquitousItemFetcher)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = QLUbiquitousItemFetcher;
-  v5 = [(QLItemFetcher *)&v14 initWithCoder:v4];
+  v5 = [(QLItemFetcher *)&v14 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = objc_opt_new();
     updateBlocks = v5->_updateBlocks;
     v5->_updateBlocks = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sandboxingWrapper"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sandboxingWrapper"];
     sandboxingWrapper = v5->_sandboxingWrapper;
     v5->_sandboxingWrapper = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"zipPackageUrlHandler"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"zipPackageUrlHandler"];
     zipPackageUrlHandler = v5->_zipPackageUrlHandler;
     v5->_zipPackageUrlHandler = v10;
 
-    v5->_shouldZipPackageIfNeeded = [v4 decodeBoolForKey:@"shouldZipPackageIfNeeded"];
+    v5->_shouldZipPackageIfNeeded = [coderCopy decodeBoolForKey:@"shouldZipPackageIfNeeded"];
     v12 = v5;
   }
 

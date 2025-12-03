@@ -1,25 +1,25 @@
 @interface SSSRecapViewController
-- (SSSRecapViewController)initWithScreenshot:(id)a3;
+- (SSSRecapViewController)initWithScreenshot:(id)screenshot;
 - (id)tapToRadarURL;
 - (int)_preferredStatusBarVisibility;
-- (void)_sharePushed:(id)a3;
+- (void)_sharePushed:(id)pushed;
 - (void)finishLoadingScreenshot;
 - (void)loadScreenshot;
-- (void)tapToRadar:(id)a3 screenshot:(id)a4;
+- (void)tapToRadar:(id)radar screenshot:(id)screenshot;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation SSSRecapViewController
 
-- (SSSRecapViewController)initWithScreenshot:(id)a3
+- (SSSRecapViewController)initWithScreenshot:(id)screenshot
 {
-  v4 = a3;
+  screenshotCopy = screenshot;
   v8.receiver = self;
   v8.super_class = SSSRecapViewController;
   v5 = [(SSSRecapViewController *)&v8 init];
   screenshot = v5->_screenshot;
-  v5->_screenshot = v4;
+  v5->_screenshot = screenshotCopy;
 
   return v5;
 }
@@ -31,28 +31,28 @@
     exit(0);
   }
 
-  v3 = [(SSSRecapViewController *)self screenshot];
-  v4 = [v3 environmentDescription];
-  v5 = [v4 appleInternalOptions];
-  v6 = [v5 recapMovie];
+  screenshot = [(SSSRecapViewController *)self screenshot];
+  environmentDescription = [screenshot environmentDescription];
+  appleInternalOptions = [environmentDescription appleInternalOptions];
+  recapMovie = [appleInternalOptions recapMovie];
 
-  v7 = [v6 screenRecording];
+  screenRecording = [recapMovie screenRecording];
 
-  if (v7)
+  if (screenRecording)
   {
     [(SSSRecapViewController *)self finishLoadingScreenshot];
   }
 
   else
   {
-    v8 = [(SSSRecapViewController *)self screenshot];
-    v9 = [v8 imageProvider];
+    screenshot2 = [(SSSRecapViewController *)self screenshot];
+    imageProvider = [screenshot2 imageProvider];
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_100037968;
     v19[3] = &unk_1000BAD48;
     v19[4] = self;
-    [v9 requestOutputImageForSaving:v19];
+    [imageProvider requestOutputImageForSaving:v19];
 
     v10 = NSTemporaryDirectory();
     v11 = +[NSUUID UUID];
@@ -64,8 +64,8 @@
     v15[2] = sub_100037A8C;
     v15[3] = &unk_1000BA4D0;
     v16 = v13;
-    v17 = v6;
-    v18 = self;
+    v17 = recapMovie;
+    selfCopy = self;
     v14 = v13;
     [v17 writeToURL:v14 completion:v15];
   }
@@ -95,14 +95,14 @@
   traceView = self->_traceView;
   self->_traceView = v5;
 
-  v7 = [(SSSRecapViewController *)self screenshot];
-  v8 = [v7 environmentDescription];
-  v9 = [v8 appleInternalOptions];
-  v10 = [v9 recapMovie];
-  [(RCPVizualizerView *)self->_traceView setRecapMovie:v10];
+  screenshot = [(SSSRecapViewController *)self screenshot];
+  environmentDescription = [screenshot environmentDescription];
+  appleInternalOptions = [environmentDescription appleInternalOptions];
+  recapMovie = [appleInternalOptions recapMovie];
+  [(RCPVizualizerView *)self->_traceView setRecapMovie:recapMovie];
 
-  v11 = [(SSSRecapViewController *)self view];
-  [v11 addSubview:self->_traceView];
+  view = [(SSSRecapViewController *)self view];
+  [view addSubview:self->_traceView];
 
   v26 = 0;
   v27 = &v26;
@@ -126,15 +126,15 @@
   timelineView = self->_timelineView;
   self->_timelineView = v14;
 
-  v16 = [(SSSRecapViewController *)self screenshot];
-  v17 = [v16 environmentDescription];
-  v18 = [v17 appleInternalOptions];
-  v19 = [v18 recapMovie];
-  [(RCPTimelineView *)self->_timelineView setRecapMovie:v19];
+  screenshot2 = [(SSSRecapViewController *)self screenshot];
+  environmentDescription2 = [screenshot2 environmentDescription];
+  appleInternalOptions2 = [environmentDescription2 appleInternalOptions];
+  recapMovie2 = [appleInternalOptions2 recapMovie];
+  [(RCPTimelineView *)self->_timelineView setRecapMovie:recapMovie2];
 
   [(RCPTimelineView *)self->_timelineView setDelegate:self->_traceView];
-  v20 = [(SSSRecapViewController *)self view];
-  [v20 addSubview:self->_timelineView];
+  view2 = [(SSSRecapViewController *)self view];
+  [view2 addSubview:self->_timelineView];
 }
 
 - (void)viewDidLoad
@@ -162,11 +162,11 @@
   v11 = objc_opt_new();
   [(UINavigationBar *)v10 setBackgroundImage:v11 forBarMetrics:0];
 
-  v12 = [(SSSRecapViewController *)self view];
-  [v12 addSubview:self->_topBar];
+  view = [(SSSRecapViewController *)self view];
+  [view addSubview:self->_topBar];
 
-  v13 = [(SSSRecapViewController *)self view];
-  [v13 bounds];
+  view2 = [(SSSRecapViewController *)self view];
+  [view2 bounds];
   v15 = v14;
   v17 = v16;
   v19 = v18;
@@ -186,23 +186,23 @@
 
   [(UINavigationBar *)self->_topBar pushNavigationItem:v21 animated:0];
   v26 = +[UIColor darkGrayColor];
-  v27 = [(SSSRecapViewController *)self view];
-  [v27 setBackgroundColor:v26];
+  view3 = [(SSSRecapViewController *)self view];
+  [view3 setBackgroundColor:v26];
 
   [(SSSRecapViewController *)self loadScreenshot];
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v3 = [(SSSRecapViewController *)self view];
-  [v3 bounds];
+  view = [(SSSRecapViewController *)self view];
+  [view bounds];
   v5 = v4 + -150.0;
-  v6 = [(SSSRecapViewController *)self view];
-  [v6 bounds];
+  view2 = [(SSSRecapViewController *)self view];
+  [view2 bounds];
   [(RCPTimelineView *)self->_timelineView setFrame:50.0, v5, v7 + -100.0, 100.0];
 
-  v8 = [(SSSRecapViewController *)self view];
-  [v8 bounds];
+  view3 = [(SSSRecapViewController *)self view];
+  [view3 bounds];
   v10 = v9;
   v12 = v11;
 
@@ -221,19 +221,19 @@
 
 - (int)_preferredStatusBarVisibility
 {
-  v2 = [(SSSRecapViewController *)self parentViewController];
-  v3 = [v2 _preferredStatusBarVisibility];
+  parentViewController = [(SSSRecapViewController *)self parentViewController];
+  _preferredStatusBarVisibility = [parentViewController _preferredStatusBarVisibility];
 
-  return v3;
+  return _preferredStatusBarVisibility;
 }
 
-- (void)_sharePushed:(id)a3
+- (void)_sharePushed:(id)pushed
 {
-  v4 = [(RCPTimelineView *)self->_timelineView startCropTimestamp];
-  v5 = [(RCPTimelineView *)self->_timelineView endCropTimestamp];
-  if (v5)
+  startCropTimestamp = [(RCPTimelineView *)self->_timelineView startCropTimestamp];
+  endCropTimestamp = [(RCPTimelineView *)self->_timelineView endCropTimestamp];
+  if (endCropTimestamp)
   {
-    v6 = v5;
+    v6 = endCropTimestamp;
   }
 
   else
@@ -241,20 +241,20 @@
     v6 = -1;
   }
 
-  v7 = [(SSSRecapViewController *)self screenshot];
-  v8 = [v7 environmentDescription];
-  v9 = [v8 appleInternalOptions];
-  v10 = [v9 recapMovie];
+  screenshot = [(SSSRecapViewController *)self screenshot];
+  environmentDescription = [screenshot environmentDescription];
+  appleInternalOptions = [environmentDescription appleInternalOptions];
+  recapMovie = [appleInternalOptions recapMovie];
 
-  v11 = [v10 trimmedFrom:v4 to:v6];
+  v11 = [recapMovie trimmedFrom:startCropTimestamp to:v6];
   [(SSSRecapViewController *)self tapToRadarURL];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100038524;
   v14[3] = &unk_1000BA4D0;
   v15 = v14[4] = self;
-  v16 = v10;
-  v12 = v10;
+  v16 = recapMovie;
+  v12 = recapMovie;
   v13 = v15;
   [v11 writeToURL:v13 completion:v14];
 }
@@ -283,26 +283,26 @@
   return v10;
 }
 
-- (void)tapToRadar:(id)a3 screenshot:(id)a4
+- (void)tapToRadar:(id)radar screenshot:(id)screenshot
 {
-  v5 = a4;
-  v6 = a3;
+  screenshotCopy = screenshot;
+  radarCopy = radar;
   v7 = NSTemporaryDirectory();
-  v8 = [v6 lastPathComponent];
-  v9 = [v8 stringByDeletingPathExtension];
-  v10 = [NSString stringWithFormat:@"screenshot-%@.jpg", v9];
+  lastPathComponent = [radarCopy lastPathComponent];
+  stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
+  v10 = [NSString stringWithFormat:@"screenshot-%@.jpg", stringByDeletingPathExtension];
   v18 = [v7 stringByAppendingPathComponent:v10];
 
-  v11 = UIImageJPEGRepresentation(v5, 0.8);
+  v11 = UIImageJPEGRepresentation(screenshotCopy, 0.8);
 
   [v11 writeToFile:v18 atomically:0];
   v12 = +[NSCharacterSet URLQueryAllowedCharacterSet];
   v13 = [@"\n\nSee attached screenshot and recapmov file.\nhttps:{"stringByAddingPercentEncodingWithAllowedCharacters:", v12}//toolsweb.apple.com/apps/recapedit"];
 
   v14 = +[UIApplication sharedApplication];
-  v15 = [v6 path];
+  path = [radarCopy path];
 
-  v16 = [NSString stringWithFormat:@"tap-to-radar://new?attachments=%@&autoDiagnostics=0&screenshot=%@&deleteOnAttach=1&description=%@", v15, v18, v13];
+  v16 = [NSString stringWithFormat:@"tap-to-radar://new?attachments=%@&autoDiagnostics=0&screenshot=%@&deleteOnAttach=1&description=%@", path, v18, v13];
   v17 = [NSURL URLWithString:v16];
 
   if (v17)

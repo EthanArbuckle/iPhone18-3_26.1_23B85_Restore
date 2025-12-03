@@ -1,35 +1,35 @@
 @interface CADDiagnosticsCollectionOperation
-- (CADDiagnosticsCollectionOperation)initWithConnection:(id)a3 token:(unsigned int)a4 options:(int64_t)a5 trafficLogsCollectionMode:(unint64_t)a6;
+- (CADDiagnosticsCollectionOperation)initWithConnection:(id)connection token:(unsigned int)token options:(int64_t)options trafficLogsCollectionMode:(unint64_t)mode;
 - (id)_createLogDirectory;
 - (id)_randomString;
-- (id)finalFileForFile:(id)a3;
+- (id)finalFileForFile:(id)file;
 - (id)loadLogCollectors;
-- (id)temporaryFileForName:(id)a3;
-- (void)batch:(id)a3;
-- (void)deleteTemporaryFile:(id)a3;
+- (id)temporaryFileForName:(id)name;
+- (void)batch:(id)batch;
+- (void)deleteTemporaryFile:(id)file;
 - (void)finish;
-- (void)logWithLevel:(unsigned __int8)a3 formatString:(id)a4 arguments:(char *)a5;
+- (void)logWithLevel:(unsigned __int8)level formatString:(id)string arguments:(char *)arguments;
 - (void)main;
 - (void)reportFileStatusChangesToClient;
-- (void)setStatus:(unint64_t)a3 forFile:(id)a4;
+- (void)setStatus:(unint64_t)status forFile:(id)file;
 @end
 
 @implementation CADDiagnosticsCollectionOperation
 
-- (CADDiagnosticsCollectionOperation)initWithConnection:(id)a3 token:(unsigned int)a4 options:(int64_t)a5 trafficLogsCollectionMode:(unint64_t)a6
+- (CADDiagnosticsCollectionOperation)initWithConnection:(id)connection token:(unsigned int)token options:(int64_t)options trafficLogsCollectionMode:(unint64_t)mode
 {
   v51 = *MEMORY[0x277D85DE8];
-  v11 = a3;
+  connectionCopy = connection;
   v48.receiver = self;
   v48.super_class = CADDiagnosticsCollectionOperation;
   v12 = [(CADDiagnosticsCollectionOperation *)&v48 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_conn, a3);
-    v13->_token = a4;
-    v13->_options = a5;
-    v13->_trafficLogsCollectionMode = a6;
+    objc_storeStrong(&v12->_conn, connection);
+    v13->_token = token;
+    v13->_options = options;
+    v13->_trafficLogsCollectionMode = mode;
     v14 = objc_opt_new();
     files = v13->_files;
     v13->_files = v14;
@@ -39,9 +39,9 @@
     v13->_changedFiles = v16;
 
     v13->_lock._os_unfair_lock_opaque = 0;
-    v18 = [(CADDiagnosticsCollectionOperation *)v13 _createLogDirectory];
+    _createLogDirectory = [(CADDiagnosticsCollectionOperation *)v13 _createLogDirectory];
     logDirectoryURL = v13->_logDirectoryURL;
-    v13->_logDirectoryURL = v18;
+    v13->_logDirectoryURL = _createLogDirectory;
 
     v20 = [(NSURL *)v13->_logDirectoryURL URLByAppendingPathComponent:@"Incoming/"];
     incomingLogDirectoryURL = v13->_incomingLogDirectoryURL;
@@ -55,9 +55,9 @@
     temporaryFileNames = v13->_temporaryFileNames;
     v13->_temporaryFileNames = v24;
 
-    v26 = [(CADDiagnosticsCollectionOperation *)v13 _createLogFile];
+    _createLogFile = [(CADDiagnosticsCollectionOperation *)v13 _createLogFile];
     logFileURL = v13->_logFileURL;
-    v13->_logFileURL = v26;
+    v13->_logFileURL = _createLogFile;
 
     v28 = v13->_logFileURL;
     if (v28)
@@ -71,10 +71,10 @@
         v13->_dateFormatter = v30;
 
         [(NSDateFormatter *)v13->_dateFormatter setDateFormat:@"yyyy-MM-dd' 'HH:mm:ss.SSSSSZZZ"];
-        v32 = [MEMORY[0x277CCAA00] defaultManager];
+        defaultManager = [MEMORY[0x277CCAA00] defaultManager];
         v33 = v13->_incomingLogDirectoryURL;
         v47 = 0;
-        v34 = [v32 createDirectoryAtURL:v33 withIntermediateDirectories:1 attributes:0 error:&v47];
+        v34 = [defaultManager createDirectoryAtURL:v33 withIntermediateDirectories:1 attributes:0 error:&v47];
         v35 = v47;
         v36 = v35;
         if ((v34 & 1) == 0)
@@ -84,7 +84,7 @@
 
         v37 = v13->_completedLogDirectoryURL;
         v46 = v36;
-        v38 = [v32 createDirectoryAtURL:v37 withIntermediateDirectories:1 attributes:0 error:&v46];
+        v38 = [defaultManager createDirectoryAtURL:v37 withIntermediateDirectories:1 attributes:0 error:&v46];
         v39 = v46;
 
         if ((v38 & 1) == 0)
@@ -153,14 +153,14 @@ LABEL_13:
 {
   v21 = *MEMORY[0x277D85DE8];
   [(CADDiagnosticsCollectionOperation *)self log:@"Started collecting diagnostics"];
-  v3 = [(CADDiagnosticsCollectionOperation *)self loadLogCollectors];
+  loadLogCollectors = [(CADDiagnosticsCollectionOperation *)self loadLogCollectors];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __41__CADDiagnosticsCollectionOperation_main__block_invoke;
   v17[3] = &unk_27851AB28;
-  v4 = v3;
+  v4 = loadLogCollectors;
   v18 = v4;
-  v19 = self;
+  selfCopy = self;
   [(CADDiagnosticsCollectionOperation *)self batch:v17];
   v15 = 0u;
   v16 = 0u;
@@ -325,20 +325,20 @@ LABEL_3:
   return v5;
 }
 
-- (id)temporaryFileForName:(id)a3
+- (id)temporaryFileForName:(id)name
 {
-  v4 = a3;
-  v5 = v4;
-  if ([(NSMutableSet *)self->_temporaryFileNames containsObject:v4])
+  nameCopy = name;
+  v5 = nameCopy;
+  if ([(NSMutableSet *)self->_temporaryFileNames containsObject:nameCopy])
   {
-    v6 = v4;
+    v6 = nameCopy;
     do
     {
-      v7 = [v4 pathExtension];
-      v8 = [v4 stringByDeletingPathExtension];
-      v9 = [(CADDiagnosticsCollectionOperation *)self _randomString];
-      v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", v8, v9];
-      v5 = [v10 stringByAppendingPathExtension:v7];
+      pathExtension = [nameCopy pathExtension];
+      stringByDeletingPathExtension = [nameCopy stringByDeletingPathExtension];
+      _randomString = [(CADDiagnosticsCollectionOperation *)self _randomString];
+      v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", stringByDeletingPathExtension, _randomString];
+      v5 = [v10 stringByAppendingPathExtension:pathExtension];
 
       v6 = v5;
     }
@@ -352,68 +352,68 @@ LABEL_3:
   return v11;
 }
 
-- (void)deleteTemporaryFile:(id)a3
+- (void)deleteTemporaryFile:(id)file
 {
-  v4 = a3;
-  v5 = [v4 path];
-  v6 = [(NSURL *)self->_incomingLogDirectoryURL path];
-  v7 = [v5 hasPrefix:v6];
+  fileCopy = file;
+  path = [fileCopy path];
+  path2 = [(NSURL *)self->_incomingLogDirectoryURL path];
+  v7 = [path hasPrefix:path2];
 
   if (v7)
   {
-    v8 = [v4 lastPathComponent];
-    if (([(NSMutableSet *)self->_temporaryFileNames containsObject:v8]& 1) != 0)
+    lastPathComponent = [fileCopy lastPathComponent];
+    if (([(NSMutableSet *)self->_temporaryFileNames containsObject:lastPathComponent]& 1) != 0)
     {
-      [(NSMutableSet *)self->_temporaryFileNames removeObject:v8];
-      v9 = [MEMORY[0x277CCAA00] defaultManager];
+      [(NSMutableSet *)self->_temporaryFileNames removeObject:lastPathComponent];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
       v12 = 0;
-      v10 = [v9 removeItemAtURL:v4 error:&v12];
+      v10 = [defaultManager removeItemAtURL:fileCopy error:&v12];
       v11 = v12;
 
       if ((v10 & 1) == 0)
       {
-        [(CADDiagnosticsCollectionOperation *)self logError:@"Error removing %@: %@", v4, v11];
+        [(CADDiagnosticsCollectionOperation *)self logError:@"Error removing %@: %@", fileCopy, v11];
       }
     }
 
     else
     {
-      [(CADDiagnosticsCollectionOperation *)self logError:@"Ignoring attempt to delete file %@, which wasn't returned by -temporaryFileForName:!", v8];
+      [(CADDiagnosticsCollectionOperation *)self logError:@"Ignoring attempt to delete file %@, which wasn't returned by -temporaryFileForName:!", lastPathComponent];
     }
   }
 
   else
   {
-    [(CADDiagnosticsCollectionOperation *)self logError:@"Ignoring attempt to delete URL %@, which is not in the log directory %@!", v4, self->_incomingLogDirectoryURL];
+    [(CADDiagnosticsCollectionOperation *)self logError:@"Ignoring attempt to delete URL %@, which is not in the log directory %@!", fileCopy, self->_incomingLogDirectoryURL];
   }
 }
 
-- (void)logWithLevel:(unsigned __int8)a3 formatString:(id)a4 arguments:(char *)a5
+- (void)logWithLevel:(unsigned __int8)level formatString:(id)string arguments:(char *)arguments
 {
-  v6 = a3;
+  levelCopy = level;
   v25 = *MEMORY[0x277D85DE8];
   v8 = MEMORY[0x277CCACA8];
-  v9 = a4;
-  v10 = [[v8 alloc] initWithFormat:v9 arguments:a5];
+  stringCopy = string;
+  v10 = [[v8 alloc] initWithFormat:stringCopy arguments:arguments];
 
   v11 = CADLogHandle;
-  if (os_log_type_enabled(CADLogHandle, v6))
+  if (os_log_type_enabled(CADLogHandle, levelCopy))
   {
     *buf = 138543362;
     v24 = v10;
-    _os_log_impl(&dword_22430B000, v11, v6, "%{public}@", buf, 0xCu);
+    _os_log_impl(&dword_22430B000, v11, levelCopy, "%{public}@", buf, 0xCu);
   }
 
   dateFormatter = self->_dateFormatter;
-  v13 = [MEMORY[0x277CBEAA8] date];
-  v14 = [(NSDateFormatter *)dateFormatter stringFromDate:v13];
+  date = [MEMORY[0x277CBEAA8] date];
+  v14 = [(NSDateFormatter *)dateFormatter stringFromDate:date];
 
   v15 = 0;
-  if (v6 <= 1)
+  if (levelCopy <= 1)
   {
-    if (v6)
+    if (levelCopy)
     {
-      if (v6 == 1)
+      if (levelCopy == 1)
       {
         v15 = @"Info";
       }
@@ -427,7 +427,7 @@ LABEL_3:
 
   else
   {
-    switch(v6)
+    switch(levelCopy)
     {
       case 17:
         v15 = @"Fault";
@@ -487,10 +487,10 @@ LABEL_3:
     self->_logFile = 0;
     os_unfair_lock_unlock(&self->_lock);
     self->_finished = 1;
-    v4 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     incomingLogDirectoryURL = self->_incomingLogDirectoryURL;
     v9 = 0;
-    v6 = [v4 removeItemAtURL:incomingLogDirectoryURL error:&v9];
+    v6 = [defaultManager removeItemAtURL:incomingLogDirectoryURL error:&v9];
     v7 = v9;
 
     if ((v6 & 1) == 0)
@@ -513,10 +513,10 @@ LABEL_3:
   }
 }
 
-- (void)batch:(id)a3
+- (void)batch:(id)batch
 {
   ++self->_batchDepth;
-  (*(a3 + 2))(a3, a2);
+  (*(batch + 2))(batch, a2);
   v4 = self->_batchDepth - 1;
   self->_batchDepth = v4;
   if (!v4)
@@ -526,50 +526,50 @@ LABEL_3:
   }
 }
 
-- (id)finalFileForFile:(id)a3
+- (id)finalFileForFile:(id)file
 {
-  v4 = a3;
-  v5 = [v4 path];
-  v6 = [(NSURL *)self->_incomingLogDirectoryURL path];
-  if ([v5 hasPrefix:v6])
+  fileCopy = file;
+  path = [fileCopy path];
+  path2 = [(NSURL *)self->_incomingLogDirectoryURL path];
+  if ([path hasPrefix:path2])
   {
     completedLogDirectoryURL = self->_completedLogDirectoryURL;
-    v8 = [v5 substringFromIndex:{objc_msgSend(v6, "length")}];
+    v8 = [path substringFromIndex:{objc_msgSend(path2, "length")}];
     v9 = [(NSURL *)completedLogDirectoryURL URLByAppendingPathComponent:v8];
   }
 
   else
   {
-    v9 = v4;
+    v9 = fileCopy;
   }
 
   return v9;
 }
 
-- (void)setStatus:(unint64_t)a3 forFile:(id)a4
+- (void)setStatus:(unint64_t)status forFile:(id)file
 {
-  v6 = a4;
-  v7 = [(CADDiagnosticsCollectionOperation *)self finalFileForFile:v6];
+  fileCopy = file;
+  v7 = [(CADDiagnosticsCollectionOperation *)self finalFileForFile:fileCopy];
   if (v7)
   {
     v8 = [(NSMutableDictionary *)self->_files objectForKeyedSubscript:v7];
-    v9 = v8;
-    if (!v8 || [v8 unsignedIntegerValue] != a3)
+    callStackSymbols = v8;
+    if (!v8 || [v8 unsignedIntegerValue] != status)
     {
-      v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+      v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:status];
       [(NSMutableDictionary *)self->_files setObject:v10 forKeyedSubscript:v7];
 
       [(NSMutableSet *)self->_changedFiles addObject:v7];
-      if (a3 == 2 && v7 != v6)
+      if (status == 2 && v7 != fileCopy)
       {
-        v11 = [MEMORY[0x277CCAA00] defaultManager];
+        defaultManager = [MEMORY[0x277CCAA00] defaultManager];
         v14 = 0;
-        v12 = [v11 moveItemAtURL:v6 toURL:v7 error:&v14];
+        v12 = [defaultManager moveItemAtURL:fileCopy toURL:v7 error:&v14];
         v13 = v14;
 
         if ((v12 & 1) == 0)
         {
-          [(CADDiagnosticsCollectionOperation *)self logError:@"Error moving incoming file %@ to %@: %@", v6, v7, v13];
+          [(CADDiagnosticsCollectionOperation *)self logError:@"Error moving incoming file %@ to %@: %@", fileCopy, v7, v13];
         }
       }
 
@@ -582,8 +582,8 @@ LABEL_3:
 
   else
   {
-    v9 = [MEMORY[0x277CCACC8] callStackSymbols];
-    [(CADDiagnosticsCollectionOperation *)self logError:@"No key found for file %@ %@", v6, v9];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    [(CADDiagnosticsCollectionOperation *)self logError:@"No key found for file %@ %@", fileCopy, callStackSymbols];
   }
 }
 

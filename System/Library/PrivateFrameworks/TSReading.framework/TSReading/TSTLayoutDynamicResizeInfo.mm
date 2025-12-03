@@ -1,74 +1,74 @@
 @interface TSTLayoutDynamicResizeInfo
-- (BOOL)hasHeightForRow:(unsigned __int16)a3;
-- (BOOL)hasWidthForColumn:(unsigned __int8)a3;
+- (BOOL)hasHeightForRow:(unsigned __int16)row;
+- (BOOL)hasWidthForColumn:(unsigned __int8)column;
 - (CGSize)capturedTableSize;
-- (TSTLayoutDynamicResizeInfo)initWithDynamicResizeInfo:(id)a3;
-- (TSTLayoutDynamicResizeInfo)initWithMasterLayout:(id)a3;
-- (TSTLayoutDynamicResizeInfo)initWithMasterLayout:(id)a3 columnRegion:(id)a4;
-- (TSTLayoutDynamicResizeInfo)initWithMasterLayout:(id)a3 rowRegion:(id)a4;
-- (double)getColumnInitialWidth:(unsigned __int8)a3;
-- (double)getColumnWidth:(unsigned __int8)a3;
-- (double)getColumnWidthResize:(unsigned __int8)a3;
-- (double)getRowHeight:(unsigned __int16)a3;
-- (double)getRowHeightResize:(unsigned __int16)a3;
-- (double)getRowInitialHeight:(unsigned __int16)a3;
+- (TSTLayoutDynamicResizeInfo)initWithDynamicResizeInfo:(id)info;
+- (TSTLayoutDynamicResizeInfo)initWithMasterLayout:(id)layout;
+- (TSTLayoutDynamicResizeInfo)initWithMasterLayout:(id)layout columnRegion:(id)region;
+- (TSTLayoutDynamicResizeInfo)initWithMasterLayout:(id)layout rowRegion:(id)region;
+- (double)getColumnInitialWidth:(unsigned __int8)width;
+- (double)getColumnWidth:(unsigned __int8)width;
+- (double)getColumnWidthResize:(unsigned __int8)resize;
+- (double)getRowHeight:(unsigned __int16)height;
+- (double)getRowHeightResize:(unsigned __int16)resize;
+- (double)getRowInitialHeight:(unsigned __int16)height;
 - (id)columnWidths;
 - (id)rowHeights;
 - (void)dealloc;
-- (void)enumerateColumnWidthsUsingBlock:(id)a3;
-- (void)enumerateRowHeightsUsingBlock:(id)a3;
-- (void)p_captureRowColumnInformation:(id)a3 columnRegion:(id)a4 rowRegion:(id)a5;
+- (void)enumerateColumnWidthsUsingBlock:(id)block;
+- (void)enumerateRowHeightsUsingBlock:(id)block;
+- (void)p_captureRowColumnInformation:(id)information columnRegion:(id)region rowRegion:(id)rowRegion;
 @end
 
 @implementation TSTLayoutDynamicResizeInfo
 
-- (TSTLayoutDynamicResizeInfo)initWithMasterLayout:(id)a3
+- (TSTLayoutDynamicResizeInfo)initWithMasterLayout:(id)layout
 {
   v7.receiver = self;
   v7.super_class = TSTLayoutDynamicResizeInfo;
   v4 = [(TSTLayoutDynamicResizeInfo *)&v7 init];
   if (v4)
   {
-    v4->mTableRowsBehavior = [a3 tableRowsBehavior];
-    v5 = [TSTCellRegion regionFromRange:TSTMasterLayoutGetRange(a3)];
-    [(TSTLayoutDynamicResizeInfo *)v4 p_captureRowColumnInformation:a3 columnRegion:v5 rowRegion:v5];
+    v4->mTableRowsBehavior = [layout tableRowsBehavior];
+    v5 = [TSTCellRegion regionFromRange:TSTMasterLayoutGetRange(layout)];
+    [(TSTLayoutDynamicResizeInfo *)v4 p_captureRowColumnInformation:layout columnRegion:v5 rowRegion:v5];
     v4->mValid = 1;
   }
 
   return v4;
 }
 
-- (TSTLayoutDynamicResizeInfo)initWithMasterLayout:(id)a3 columnRegion:(id)a4
+- (TSTLayoutDynamicResizeInfo)initWithMasterLayout:(id)layout columnRegion:(id)region
 {
   v8.receiver = self;
   v8.super_class = TSTLayoutDynamicResizeInfo;
   v6 = [(TSTLayoutDynamicResizeInfo *)&v8 init];
   if (v6)
   {
-    v6->mTableRowsBehavior = [a3 tableRowsBehavior];
-    [(TSTLayoutDynamicResizeInfo *)v6 p_captureRowColumnInformation:a3 columnRegion:a4 rowRegion:0];
+    v6->mTableRowsBehavior = [layout tableRowsBehavior];
+    [(TSTLayoutDynamicResizeInfo *)v6 p_captureRowColumnInformation:layout columnRegion:region rowRegion:0];
     v6->mValid = 1;
   }
 
   return v6;
 }
 
-- (TSTLayoutDynamicResizeInfo)initWithMasterLayout:(id)a3 rowRegion:(id)a4
+- (TSTLayoutDynamicResizeInfo)initWithMasterLayout:(id)layout rowRegion:(id)region
 {
   v8.receiver = self;
   v8.super_class = TSTLayoutDynamicResizeInfo;
   v6 = [(TSTLayoutDynamicResizeInfo *)&v8 init];
   if (v6)
   {
-    v6->mTableRowsBehavior = [a3 tableRowsBehavior];
-    [(TSTLayoutDynamicResizeInfo *)v6 p_captureRowColumnInformation:a3 columnRegion:0 rowRegion:a4];
+    v6->mTableRowsBehavior = [layout tableRowsBehavior];
+    [(TSTLayoutDynamicResizeInfo *)v6 p_captureRowColumnInformation:layout columnRegion:0 rowRegion:region];
     v6->mValid = 1;
   }
 
   return v6;
 }
 
-- (TSTLayoutDynamicResizeInfo)initWithDynamicResizeInfo:(id)a3
+- (TSTLayoutDynamicResizeInfo)initWithDynamicResizeInfo:(id)info
 {
   v15.receiver = self;
   v15.super_class = TSTLayoutDynamicResizeInfo;
@@ -76,23 +76,23 @@
   v5 = v4;
   if (v4)
   {
-    v4->mValid = *(a3 + 8);
-    v4->mTableRowsBehavior = *(a3 + 3);
-    v4->mRowRegion = *(a3 + 2);
-    v5->mStartRowIndex = *(a3 + 12);
-    v6 = *(a3 + 13);
+    v4->mValid = *(info + 8);
+    v4->mTableRowsBehavior = *(info + 3);
+    v4->mRowRegion = *(info + 2);
+    v5->mStartRowIndex = *(info + 12);
+    v6 = *(info + 13);
     v5->mNumberOfRows = v6;
     if (v6)
     {
       v7 = malloc_type_malloc(8 * v6, 0x100004000313F17uLL);
       v5->mCapturedRowHeights = v7;
-      memcpy(v7, *(a3 + 4), 8 * v5->mNumberOfRows);
+      memcpy(v7, *(info + 4), 8 * v5->mNumberOfRows);
       v8 = malloc_type_malloc(8 * v5->mNumberOfRows, 0x100004000313F17uLL);
       v5->mCurrentRowHeights = v8;
-      memcpy(v8, *(a3 + 5), 8 * v5->mNumberOfRows);
+      memcpy(v8, *(info + 5), 8 * v5->mNumberOfRows);
       v9 = malloc_type_malloc(8 * v5->mNumberOfRows, 0x100004000313F17uLL);
       v5->mMinimumRowHeights = v9;
-      memcpy(v9, *(a3 + 6), 8 * v5->mNumberOfRows);
+      memcpy(v9, *(info + 6), 8 * v5->mNumberOfRows);
     }
 
     else
@@ -102,22 +102,22 @@
       v5->mMinimumRowHeights = 0;
     }
 
-    v5->mCapturedRowHeightTotal = *(a3 + 7);
-    v5->mColumnRegion = *(a3 + 8);
-    v5->mStartColumnIndex = *(a3 + 72);
-    v10 = *(a3 + 37);
+    v5->mCapturedRowHeightTotal = *(info + 7);
+    v5->mColumnRegion = *(info + 8);
+    v5->mStartColumnIndex = *(info + 72);
+    v10 = *(info + 37);
     v5->mNumberOfColumns = v10;
     if (v10)
     {
       v11 = malloc_type_malloc(8 * v10, 0x100004000313F17uLL);
       v5->mCapturedColumnWidths = v11;
-      memcpy(v11, *(a3 + 10), 8 * v5->mNumberOfColumns);
+      memcpy(v11, *(info + 10), 8 * v5->mNumberOfColumns);
       v12 = malloc_type_malloc(8 * v5->mNumberOfColumns, 0x100004000313F17uLL);
       v5->mCurrentColumnWidths = v12;
-      memcpy(v12, *(a3 + 11), 8 * v5->mNumberOfColumns);
+      memcpy(v12, *(info + 11), 8 * v5->mNumberOfColumns);
       v13 = malloc_type_malloc(8 * v5->mNumberOfColumns, 0x100004000313F17uLL);
       v5->mMinimumColumnWidths = v13;
-      memcpy(v13, *(a3 + 12), 8 * v5->mNumberOfColumns);
+      memcpy(v13, *(info + 12), 8 * v5->mNumberOfColumns);
     }
 
     else
@@ -127,7 +127,7 @@
       v5->mMinimumColumnWidths = 0;
     }
 
-    v5->mCapturedColumnWidthTotal = *(a3 + 13);
+    v5->mCapturedColumnWidthTotal = *(info + 13);
   }
 
   return v5;
@@ -187,18 +187,18 @@
   [(TSTLayoutDynamicResizeInfo *)&v9 dealloc];
 }
 
-- (void)p_captureRowColumnInformation:(id)a3 columnRegion:(id)a4 rowRegion:(id)a5
+- (void)p_captureRowColumnInformation:(id)information columnRegion:(id)region rowRegion:(id)rowRegion
 {
-  v9 = [a3 tableInfo];
+  tableInfo = [information tableInfo];
   v10 = 1.0;
-  if ([v9 partitioner])
+  if ([tableInfo partitioner])
   {
     v11 = 1.0;
-    if ([objc_msgSend(v9 "partitioner")])
+    if ([objc_msgSend(tableInfo "partitioner")])
     {
-      [objc_msgSend(v9 "partitioner")];
+      [objc_msgSend(tableInfo "partitioner")];
       v11 = v12;
-      [objc_msgSend(v9 "partitioner")];
+      [objc_msgSend(tableInfo "partitioner")];
       v10 = v13;
     }
   }
@@ -208,12 +208,12 @@
     v11 = 1.0;
   }
 
-  if (a5)
+  if (rowRegion)
   {
-    self->mRowRegion = a5;
-    self->mStartRowIndex = [a5 boundingCellRange];
-    self->mNumberOfRows = [a5 boundingCellRange] >> 48;
-    self->mNumberOfResizableRows = [a5 numberOfIntersectingRows];
+    self->mRowRegion = rowRegion;
+    self->mStartRowIndex = [rowRegion boundingCellRange];
+    self->mNumberOfRows = [rowRegion boundingCellRange] >> 48;
+    self->mNumberOfResizableRows = [rowRegion numberOfIntersectingRows];
     v14 = malloc_type_malloc(8 * self->mNumberOfRows, 0x100004000313F17uLL);
     v15 = malloc_type_calloc(self->mNumberOfRows, 8uLL, 0x100004000313F17uLL);
     v16 = malloc_type_calloc(self->mNumberOfRows, 8uLL, 0x100004000313F17uLL);
@@ -238,7 +238,7 @@
     v28 = &v27;
     v29 = 0x2020000000;
     v30 = 0;
-    v17 = [a3 isGrouped];
+    isGrouped = [information isGrouped];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __83__TSTLayoutDynamicResizeInfo_p_captureRowColumnInformation_columnRegion_rowRegion___block_invoke;
@@ -246,14 +246,14 @@
     v25[9] = &v27;
     v25[10] = v14;
     v25[4] = self;
-    v25[5] = a3;
+    v25[5] = information;
     *&v25[11] = v10;
-    v26 = v17;
+    v26 = isGrouped;
     v25[12] = v16;
     v25[6] = &v35;
     v25[7] = &v39;
     v25[8] = &v31;
-    [a5 enumerateRowsUsingBlock:v25];
+    [rowRegion enumerateRowsUsingBlock:v25];
     self->mCapturedRowHeights = v14;
     memcpy(v15, v14, 8 * self->mNumberOfRows);
     self->mCurrentRowHeights = v15;
@@ -265,12 +265,12 @@
     _Block_object_dispose(&v39, 8);
   }
 
-  if (a4)
+  if (region)
   {
-    self->mColumnRegion = a4;
-    self->mStartColumnIndex = [a4 boundingCellRange] >> 16;
-    self->mNumberOfColumns = [a4 boundingCellRange] >> 32;
-    self->mNumberOfResizableColumns = [a4 numberOfIntersectingColumns];
+    self->mColumnRegion = region;
+    self->mStartColumnIndex = [region boundingCellRange] >> 16;
+    self->mNumberOfColumns = [region boundingCellRange] >> 32;
+    self->mNumberOfResizableColumns = [region numberOfIntersectingColumns];
     v18 = malloc_type_malloc(8 * self->mNumberOfColumns, 0x100004000313F17uLL);
     v19 = malloc_type_calloc(self->mNumberOfColumns, 8uLL, 0x100004000313F17uLL);
     v20 = malloc_type_calloc(self->mNumberOfColumns, 8uLL, 0x100004000313F17uLL);
@@ -310,13 +310,13 @@
     v24[9] = &v27;
     v24[10] = v18;
     v24[4] = self;
-    v24[5] = a3;
+    v24[5] = information;
     *&v24[11] = v11;
     v24[12] = v20;
     v24[6] = &v35;
     v24[7] = &v39;
     v24[8] = &v31;
-    [a4 enumerateColumnsUsingBlock:v24];
+    [region enumerateColumnsUsingBlock:v24];
     self->mCapturedColumnWidths = v18;
     memcpy(v19, v18, 8 * self->mNumberOfColumns);
     self->mCurrentColumnWidths = v19;
@@ -411,112 +411,112 @@ double __83__TSTLayoutDynamicResizeInfo_p_captureRowColumnInformation_columnRegi
   return result;
 }
 
-- (BOOL)hasHeightForRow:(unsigned __int16)a3
+- (BOOL)hasHeightForRow:(unsigned __int16)row
 {
   mStartRowIndex = self->mStartRowIndex;
-  v4 = a3 >= mStartRowIndex;
-  v5 = a3 - mStartRowIndex;
+  v4 = row >= mStartRowIndex;
+  v5 = row - mStartRowIndex;
   return v4 && self->mNumberOfRows > v5 && self->mCapturedRowHeights[v5] > 0.0;
 }
 
-- (BOOL)hasWidthForColumn:(unsigned __int8)a3
+- (BOOL)hasWidthForColumn:(unsigned __int8)column
 {
   mStartColumnIndex = self->mStartColumnIndex;
-  v4 = a3 >= mStartColumnIndex;
-  v5 = a3 - mStartColumnIndex;
+  v4 = column >= mStartColumnIndex;
+  v5 = column - mStartColumnIndex;
   return v4 && self->mNumberOfColumns > v5 && self->mCapturedColumnWidths[v5] > 0.0;
 }
 
-- (double)getRowInitialHeight:(unsigned __int16)a3
+- (double)getRowInitialHeight:(unsigned __int16)height
 {
   mCapturedRowHeights = self->mCapturedRowHeights;
   result = 0.0;
   if (mCapturedRowHeights)
   {
     mStartRowIndex = self->mStartRowIndex;
-    if (mStartRowIndex <= a3 && self->mNumberOfRows + mStartRowIndex > a3)
+    if (mStartRowIndex <= height && self->mNumberOfRows + mStartRowIndex > height)
     {
-      return mCapturedRowHeights[a3 - mStartRowIndex];
+      return mCapturedRowHeights[height - mStartRowIndex];
     }
   }
 
   return result;
 }
 
-- (double)getColumnInitialWidth:(unsigned __int8)a3
+- (double)getColumnInitialWidth:(unsigned __int8)width
 {
   mCapturedColumnWidths = self->mCapturedColumnWidths;
   result = 0.0;
   if (mCapturedColumnWidths)
   {
     mStartColumnIndex = self->mStartColumnIndex;
-    if (mStartColumnIndex <= a3 && self->mNumberOfColumns + mStartColumnIndex > a3)
+    if (mStartColumnIndex <= width && self->mNumberOfColumns + mStartColumnIndex > width)
     {
-      return mCapturedColumnWidths[a3 - mStartColumnIndex];
+      return mCapturedColumnWidths[width - mStartColumnIndex];
     }
   }
 
   return result;
 }
 
-- (double)getRowHeight:(unsigned __int16)a3
+- (double)getRowHeight:(unsigned __int16)height
 {
   mCurrentRowHeights = self->mCurrentRowHeights;
   result = 0.0;
   if (mCurrentRowHeights)
   {
     mStartRowIndex = self->mStartRowIndex;
-    if (mStartRowIndex <= a3 && self->mNumberOfRows + mStartRowIndex > a3)
+    if (mStartRowIndex <= height && self->mNumberOfRows + mStartRowIndex > height)
     {
-      return mCurrentRowHeights[a3 - mStartRowIndex];
+      return mCurrentRowHeights[height - mStartRowIndex];
     }
   }
 
   return result;
 }
 
-- (double)getColumnWidth:(unsigned __int8)a3
+- (double)getColumnWidth:(unsigned __int8)width
 {
   mCurrentColumnWidths = self->mCurrentColumnWidths;
   result = 0.0;
   if (mCurrentColumnWidths)
   {
     mStartColumnIndex = self->mStartColumnIndex;
-    if (mStartColumnIndex <= a3 && self->mNumberOfColumns + mStartColumnIndex > a3)
+    if (mStartColumnIndex <= width && self->mNumberOfColumns + mStartColumnIndex > width)
     {
-      return mCurrentColumnWidths[a3 - mStartColumnIndex];
+      return mCurrentColumnWidths[width - mStartColumnIndex];
     }
   }
 
   return result;
 }
 
-- (double)getRowHeightResize:(unsigned __int16)a3
+- (double)getRowHeightResize:(unsigned __int16)resize
 {
   v3 = 0.0;
   if (self->mCurrentRowHeights)
   {
-    v4 = a3;
+    resizeCopy = resize;
     mStartRowIndex = self->mStartRowIndex;
-    if (mStartRowIndex <= a3 && self->mNumberOfRows + mStartRowIndex > a3 && [(TSTLayoutDynamicResizeInfo *)self hasHeightForRow:a3])
+    if (mStartRowIndex <= resize && self->mNumberOfRows + mStartRowIndex > resize && [(TSTLayoutDynamicResizeInfo *)self hasHeightForRow:resize])
     {
-      return self->mCurrentRowHeights[v4 - self->mStartRowIndex] - self->mCapturedRowHeights[v4 - self->mStartRowIndex];
+      return self->mCurrentRowHeights[resizeCopy - self->mStartRowIndex] - self->mCapturedRowHeights[resizeCopy - self->mStartRowIndex];
     }
   }
 
   return v3;
 }
 
-- (double)getColumnWidthResize:(unsigned __int8)a3
+- (double)getColumnWidthResize:(unsigned __int8)resize
 {
   v3 = 0.0;
   if (self->mCurrentColumnWidths)
   {
-    v4 = a3;
+    resizeCopy = resize;
     mStartColumnIndex = self->mStartColumnIndex;
-    if (mStartColumnIndex <= a3 && self->mNumberOfColumns + mStartColumnIndex > a3 && [(TSTLayoutDynamicResizeInfo *)self hasWidthForColumn:a3])
+    if (mStartColumnIndex <= resize && self->mNumberOfColumns + mStartColumnIndex > resize && [(TSTLayoutDynamicResizeInfo *)self hasWidthForColumn:resize])
     {
-      return self->mCurrentColumnWidths[v4 - self->mStartColumnIndex] - self->mCapturedColumnWidths[v4 - self->mStartColumnIndex];
+      return self->mCurrentColumnWidths[resizeCopy - self->mStartColumnIndex] - self->mCapturedColumnWidths[resizeCopy - self->mStartColumnIndex];
     }
   }
 
@@ -532,7 +532,7 @@ double __83__TSTLayoutDynamicResizeInfo_p_captureRowColumnInformation_columnRegi
   return result;
 }
 
-- (void)enumerateColumnWidthsUsingBlock:(id)a3
+- (void)enumerateColumnWidthsUsingBlock:(id)block
 {
   v6 = 0;
   mStartColumnIndex = self->mStartColumnIndex;
@@ -546,7 +546,7 @@ double __83__TSTLayoutDynamicResizeInfo_p_captureRowColumnInformation_columnRegi
     if ([(TSTLayoutDynamicResizeInfo *)self hasWidthForColumn:mStartColumnIndex])
     {
       [(TSTLayoutDynamicResizeInfo *)self getColumnWidth:mStartColumnIndex];
-      (*(a3 + 2))(a3, mStartColumnIndex, &v6);
+      (*(block + 2))(block, mStartColumnIndex, &v6);
     }
 
     ++mStartColumnIndex;
@@ -555,7 +555,7 @@ double __83__TSTLayoutDynamicResizeInfo_p_captureRowColumnInformation_columnRegi
   while (!v6);
 }
 
-- (void)enumerateRowHeightsUsingBlock:(id)a3
+- (void)enumerateRowHeightsUsingBlock:(id)block
 {
   v6 = 0;
   mStartRowIndex = self->mStartRowIndex;
@@ -569,7 +569,7 @@ double __83__TSTLayoutDynamicResizeInfo_p_captureRowColumnInformation_columnRegi
     if ([(TSTLayoutDynamicResizeInfo *)self hasHeightForRow:mStartRowIndex])
     {
       [(TSTLayoutDynamicResizeInfo *)self getRowHeight:mStartRowIndex];
-      (*(a3 + 2))(a3, mStartRowIndex, &v6);
+      (*(block + 2))(block, mStartRowIndex, &v6);
     }
 
     ++mStartRowIndex;

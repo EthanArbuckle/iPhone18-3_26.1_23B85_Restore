@@ -25,7 +25,7 @@
 
 - (void)start
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D5E3C3B8();
 }
 
@@ -35,14 +35,14 @@
   if (*(&self->super.isa + OBJC_IVAR____TtC8NewsFeed33WebEmbedDatastoreURLSchemeHandler_loadTask))
   {
     sub_1D5BA6EF4();
-    v4 = self;
+    selfCopy = self;
 
     sub_1D726296C();
   }
 
   else
   {
-    v5 = self;
+    selfCopy2 = self;
   }
 
   *(&self->super.isa + v3) = 0;

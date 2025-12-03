@@ -1,32 +1,32 @@
 @interface BackupStatusMessage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addKeysAndValues:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addKeysAndValues:(id)values;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BackupStatusMessage
 
-- (void)addKeysAndValues:(id)a3
+- (void)addKeysAndValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   keysAndValues = self->_keysAndValues;
-  v8 = v4;
+  v8 = valuesCopy;
   if (!keysAndValues)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_keysAndValues;
     self->_keysAndValues = v6;
 
-    v4 = v8;
+    valuesCopy = v8;
     keysAndValues = self->_keysAndValues;
   }
 
-  [(NSMutableArray *)keysAndValues addObject:v4];
+  [(NSMutableArray *)keysAndValues addObject:valuesCopy];
 }
 
 - (id)description
@@ -34,8 +34,8 @@
   v7.receiver = self;
   v7.super_class = BackupStatusMessage;
   v3 = [(BackupStatusMessage *)&v7 description];
-  v4 = [(BackupStatusMessage *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(BackupStatusMessage *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -72,8 +72,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -88,9 +88,9 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_key)
   {
     PBDataWriterWriteStringField();
@@ -129,34 +129,34 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_key)
   {
-    [v8 setKey:?];
+    [toCopy setKey:?];
   }
 
   if ([(BackupStatusMessage *)self keysAndValuesCount])
   {
-    [v8 clearKeysAndValues];
-    v4 = [(BackupStatusMessage *)self keysAndValuesCount];
-    if (v4)
+    [toCopy clearKeysAndValues];
+    keysAndValuesCount = [(BackupStatusMessage *)self keysAndValuesCount];
+    if (keysAndValuesCount)
     {
-      v5 = v4;
+      v5 = keysAndValuesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(BackupStatusMessage *)self keysAndValuesAtIndex:i];
-        [v8 addKeysAndValues:v7];
+        [toCopy addKeysAndValues:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_key copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_key copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
@@ -180,7 +180,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v15 + 1) + 8 * v12) copyWithZone:{a3, v15}];
+        v13 = [*(*(&v15 + 1) + 8 * v12) copyWithZone:{zone, v15}];
         [v5 addKeysAndValues:v13];
 
         v12 = v12 + 1;
@@ -196,13 +196,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((key = self->_key, !(key | v4[1])) || -[NSString isEqual:](key, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((key = self->_key, !(key | equalCopy[1])) || -[NSString isEqual:](key, "isEqual:")))
   {
     keysAndValues = self->_keysAndValues;
-    if (keysAndValues | v4[2])
+    if (keysAndValues | equalCopy[2])
     {
       v7 = [(NSMutableArray *)keysAndValues isEqual:?];
     }
@@ -221,10 +221,10 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 1))
+  fromCopy = from;
+  if (*(fromCopy + 1))
   {
     [(BackupStatusMessage *)self setKey:?];
   }
@@ -233,7 +233,7 @@
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = *(v4 + 2);
+  v5 = *(fromCopy + 2);
   v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {

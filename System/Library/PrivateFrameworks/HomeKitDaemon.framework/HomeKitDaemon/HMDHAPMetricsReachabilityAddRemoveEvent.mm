@@ -1,5 +1,5 @@
 @interface HMDHAPMetricsReachabilityAddRemoveEvent
-- (HMDHAPMetricsReachabilityAddRemoveEvent)initWithAccessory:(id)a3 hmdAddRemoveEvent:(unint64_t)a4 forLinkType:(id)a5;
+- (HMDHAPMetricsReachabilityAddRemoveEvent)initWithAccessory:(id)accessory hmdAddRemoveEvent:(unint64_t)event forLinkType:(id)type;
 - (id)coreAnalyticsEventDictionary;
 @end
 
@@ -7,29 +7,29 @@
 
 - (id)coreAnalyticsEventDictionary
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = [MEMORY[0x277CCABB0] numberWithInt:{-[HMDHAPMetricsReachabilityAddRemoveEvent addRemoveEvent](self, "addRemoveEvent")}];
-  [v3 setObject:v4 forKey:@"addremove"];
+  [dictionary setObject:v4 forKey:@"addremove"];
 
-  v5 = [(HMDHAPMetricsReachabilityAddRemoveEvent *)self linkType];
-  [v3 setObject:v5 forKey:@"linkType"];
+  linkType = [(HMDHAPMetricsReachabilityAddRemoveEvent *)self linkType];
+  [dictionary setObject:linkType forKey:@"linkType"];
 
-  v6 = [v3 copy];
+  v6 = [dictionary copy];
 
   return v6;
 }
 
-- (HMDHAPMetricsReachabilityAddRemoveEvent)initWithAccessory:(id)a3 hmdAddRemoveEvent:(unint64_t)a4 forLinkType:(id)a5
+- (HMDHAPMetricsReachabilityAddRemoveEvent)initWithAccessory:(id)accessory hmdAddRemoveEvent:(unint64_t)event forLinkType:(id)type
 {
-  v9 = a5;
+  typeCopy = type;
   v13.receiver = self;
   v13.super_class = HMDHAPMetricsReachabilityAddRemoveEvent;
-  v10 = [(HMDHAPMetrics *)&v13 initWithHMDAccessory:a3];
+  v10 = [(HMDHAPMetrics *)&v13 initWithHMDAccessory:accessory];
   v11 = v10;
   if (v10)
   {
-    v10->_addRemoveEvent = a4;
-    objc_storeStrong(&v10->_linkType, a5);
+    v10->_addRemoveEvent = event;
+    objc_storeStrong(&v10->_linkType, type);
   }
 
   return v11;

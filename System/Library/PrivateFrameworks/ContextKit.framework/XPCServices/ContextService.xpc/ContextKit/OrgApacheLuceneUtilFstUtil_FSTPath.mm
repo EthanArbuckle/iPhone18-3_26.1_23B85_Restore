@@ -1,18 +1,18 @@
 @interface OrgApacheLuceneUtilFstUtil_FSTPath
 - (id)description;
-- (id)newPathWithId:(id)a3 withOrgApacheLuceneUtilIntsRefBuilder:(id)a4;
+- (id)newPathWithId:(id)id withOrgApacheLuceneUtilIntsRefBuilder:(id)builder;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneUtilFstUtil_FSTPath
 
-- (id)newPathWithId:(id)a3 withOrgApacheLuceneUtilIntsRefBuilder:(id)a4
+- (id)newPathWithId:(id)id withOrgApacheLuceneUtilIntsRefBuilder:(id)builder
 {
   arc = self->arc_;
   boost = self->boost_;
   context = self->context_;
   v9 = [OrgApacheLuceneUtilFstUtil_FSTPath alloc];
-  OrgApacheLuceneUtilFstUtil_FSTPath_initWithId_withOrgApacheLuceneUtilFstFST_Arc_withOrgApacheLuceneUtilIntsRefBuilder_withFloat_withJavaLangCharSequence_(v9, a3, arc, a4, context, boost);
+  OrgApacheLuceneUtilFstUtil_FSTPath_initWithId_withOrgApacheLuceneUtilFstFST_Arc_withOrgApacheLuceneUtilIntsRefBuilder_withFloat_withJavaLangCharSequence_(v9, id, arc, builder, context, boost);
 
   return v9;
 }

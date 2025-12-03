@@ -1,11 +1,11 @@
 @interface CHASActivitySetupThreeRingsOnboardingViewController
-- (CHASActivitySetupThreeRingsOnboardingViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (CHASActivitySetupThreeRingsOnboardingViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
+- (CHASActivitySetupThreeRingsOnboardingViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (CHASActivitySetupThreeRingsOnboardingViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
 - (id)delegate;
 - (void)didTapAcceptButton;
 - (void)didTapSkipButton;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
@@ -13,51 +13,51 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10015CDEC();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_10015D2C0(a3);
+  selfCopy = self;
+  sub_10015D2C0(appear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = type metadata accessor for ActivitySetupThreeRingsOnboardingViewController();
   v4 = v5.receiver;
-  [(CHASActivitySetupThreeRingsOnboardingViewController *)&v5 viewDidDisappear:v3];
+  [(CHASActivitySetupThreeRingsOnboardingViewController *)&v5 viewDidDisappear:disappearCopy];
   sub_10015DCD4();
 }
 
 - (void)didTapAcceptButton
 {
-  v2 = self;
+  selfCopy = self;
   sub_10015D418();
 }
 
 - (void)didTapSkipButton
 {
-  v3 = self;
-  v2 = [(CHASActivitySetupThreeRingsOnboardingViewController *)v3 delegate];
-  if (v2)
+  selfCopy = self;
+  delegate = [(CHASActivitySetupThreeRingsOnboardingViewController *)selfCopy delegate];
+  if (delegate)
   {
-    [v2 buddyControllerDone:v3];
+    [delegate buddyControllerDone:selfCopy];
     swift_unknownObjectRelease();
   }
 }
 
-- (CHASActivitySetupThreeRingsOnboardingViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (CHASActivitySetupThreeRingsOnboardingViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (CHASActivitySetupThreeRingsOnboardingViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (CHASActivitySetupThreeRingsOnboardingViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

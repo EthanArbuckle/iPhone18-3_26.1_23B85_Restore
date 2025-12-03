@@ -1,8 +1,8 @@
 @interface CloudDocsAccountDataclassOwner
 + (id)dataclasses;
-- (BOOL)performAction:(id)a3 forAccount:(id)a4 withChildren:(id)a5 forDataclass:(id)a6;
-- (id)actionsForDisablingDataclassOnAccount:(id)a3 forDataclass:(id)a4;
-- (id)actionsForEnablingDataclassOnAccount:(id)a3 forDataclass:(id)a4;
+- (BOOL)performAction:(id)action forAccount:(id)account withChildren:(id)children forDataclass:(id)dataclass;
+- (id)actionsForDisablingDataclassOnAccount:(id)account forDataclass:(id)dataclass;
+- (id)actionsForEnablingDataclassOnAccount:(id)account forDataclass:(id)dataclass;
 @end
 
 @implementation CloudDocsAccountDataclassOwner
@@ -15,10 +15,10 @@
   return v2;
 }
 
-- (id)actionsForEnablingDataclassOnAccount:(id)a3 forDataclass:(id)a4
+- (id)actionsForEnablingDataclassOnAccount:(id)account forDataclass:(id)dataclass
 {
-  v5 = a3;
-  v6 = a4;
+  accountCopy = account;
+  dataclassCopy = dataclass;
   memset(v12, 0, sizeof(v12));
   sub_BD0(0, "[CloudDocsAccountDataclassOwner actionsForEnablingDataclassOnAccount:forDataclass:]", 37, 0, v12);
   v7 = brc_bread_crumbs();
@@ -28,9 +28,9 @@
     *buf = 134218754;
     v15 = v12[0];
     v16 = 2112;
-    v17 = v6;
+    v17 = dataclassCopy;
     v18 = 2112;
-    v19 = v5;
+    v19 = accountCopy;
     v20 = 2112;
     v21 = v7;
     _os_log_debug_impl(&dword_0, v8, OS_LOG_TYPE_DEBUG, "[DEBUG] ┏%llx action for enabling %@ in %@%@", buf, 0x2Au);
@@ -45,10 +45,10 @@
   return v10;
 }
 
-- (id)actionsForDisablingDataclassOnAccount:(id)a3 forDataclass:(id)a4
+- (id)actionsForDisablingDataclassOnAccount:(id)account forDataclass:(id)dataclass
 {
-  v5 = a3;
-  v6 = a4;
+  accountCopy = account;
+  dataclassCopy = dataclass;
   memset(v32, 0, sizeof(v32));
   sub_BD0(0, "[CloudDocsAccountDataclassOwner actionsForDisablingDataclassOnAccount:forDataclass:]", 43, 0, v32);
   v7 = brc_bread_crumbs();
@@ -58,9 +58,9 @@
     *buf = 134218754;
     v37 = v32[0];
     v38 = 2112;
-    v39 = v6;
+    v39 = dataclassCopy;
     v40 = 2112;
-    v41 = v5;
+    v41 = accountCopy;
     v42 = 2112;
     v43 = v7;
     _os_log_debug_impl(&dword_0, v8, OS_LOG_TYPE_DEBUG, "[DEBUG] ┏%llx action for disabling %@ in %@%@", buf, 0x2Au);
@@ -73,9 +73,9 @@
     goto LABEL_9;
   }
 
-  v11 = [v9 containerWithPendingChanges];
-  v12 = [v11 count];
-  if (v11 && !v12)
+  containerWithPendingChanges = [v9 containerWithPendingChanges];
+  v12 = [containerWithPendingChanges count];
+  if (containerWithPendingChanges && !v12)
   {
     v13 = brc_bread_crumbs();
     v14 = brc_default_log();
@@ -93,12 +93,12 @@ LABEL_9:
     goto LABEL_20;
   }
 
-  v16 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v11, "count")}];
+  v16 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(containerWithPendingChanges, "count")}];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v15 = v11;
+  v15 = containerWithPendingChanges;
   v18 = [v15 countByEnumeratingWithState:&v28 objects:v35 count:16];
   if (v18)
   {
@@ -113,8 +113,8 @@ LABEL_9:
           objc_enumerationMutation(v15);
         }
 
-        v22 = [*(*(&v28 + 1) + 8 * i) localizedName];
-        [v16 addObject:v22];
+        localizedName = [*(*(&v28 + 1) + 8 * i) localizedName];
+        [v16 addObject:localizedName];
       }
 
       v19 = [v15 countByEnumeratingWithState:&v28 objects:v35 count:16];
@@ -142,10 +142,10 @@ LABEL_20:
   return v17;
 }
 
-- (BOOL)performAction:(id)a3 forAccount:(id)a4 withChildren:(id)a5 forDataclass:(id)a6
+- (BOOL)performAction:(id)action forAccount:(id)account withChildren:(id)children forDataclass:(id)dataclass
 {
-  v7 = a3;
-  v8 = a4;
+  actionCopy = action;
+  accountCopy = account;
   memset(v12, 0, sizeof(v12));
   sub_BD0(0, "[CloudDocsAccountDataclassOwner performAction:forAccount:withChildren:forDataclass:]", 79, 0, v12);
   v9 = brc_bread_crumbs();
@@ -155,9 +155,9 @@ LABEL_20:
     *buf = 134218754;
     v14 = v12[0];
     v15 = 2112;
-    v16 = v7;
+    v16 = actionCopy;
     v17 = 2112;
-    v18 = v8;
+    v18 = accountCopy;
     v19 = 2112;
     v20 = v9;
     _os_log_debug_impl(&dword_0, v10, OS_LOG_TYPE_DEBUG, "[DEBUG] ┏%llx perform action %@ for %@%@", buf, 0x2Au);

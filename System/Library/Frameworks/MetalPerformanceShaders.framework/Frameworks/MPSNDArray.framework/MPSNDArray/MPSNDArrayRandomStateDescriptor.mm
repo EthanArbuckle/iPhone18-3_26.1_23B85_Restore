@@ -1,13 +1,13 @@
 @interface MPSNDArrayRandomStateDescriptor
 - (MPSNDArrayRandomStateDescriptor)init;
-- (MPSNDArrayRandomStateDescriptor)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)exportStateToNDArray:(id)a3;
-- (id)initPhiloxStateDescriptorWithCounterLow:(unint64_t)a3 counterHigh:(unint64_t)a4 key:(unint64_t)a5;
-- (id)initPhiloxStateDescriptorWithSeed:(unint64_t)a3;
+- (MPSNDArrayRandomStateDescriptor)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)exportStateToNDArray:(id)array;
+- (id)initPhiloxStateDescriptorWithCounterLow:(unint64_t)low counterHigh:(unint64_t)high key:(unint64_t)key;
+- (id)initPhiloxStateDescriptorWithSeed:(unint64_t)seed;
 - (unint64_t)stateLength;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSNDArrayRandomStateDescriptor
@@ -30,7 +30,7 @@
   return result;
 }
 
-- (id)initPhiloxStateDescriptorWithCounterLow:(unint64_t)a3 counterHigh:(unint64_t)a4 key:(unint64_t)a5
+- (id)initPhiloxStateDescriptorWithCounterLow:(unint64_t)low counterHigh:(unint64_t)high key:(unint64_t)key
 {
   v11.receiver = self;
   v11.super_class = MPSNDArrayRandomStateDescriptor;
@@ -42,17 +42,17 @@
     v10 = malloc_type_malloc(0x18uLL, 0x100004052888210uLL);
     result = v9;
     v9[2] = v10;
-    *v10 = a3;
-    v10[1] = a4;
-    v10[2] = a5;
+    *v10 = low;
+    v10[1] = high;
+    v10[2] = key;
   }
 
   return result;
 }
 
-- (id)initPhiloxStateDescriptorWithSeed:(unint64_t)a3
+- (id)initPhiloxStateDescriptorWithSeed:(unint64_t)seed
 {
-  srand48(a3);
+  srand48(seed);
   v4 = mrand48();
   v5 = mrand48() | (v4 << 32);
   v6 = mrand48();
@@ -70,9 +70,9 @@
   return [(MPSNDArrayRandomStateDescriptor *)self initPhiloxStateDescriptorWithSeed:v3];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (result)
   {
     *(result + 2) = self->_algorithm;
@@ -92,29 +92,29 @@
   [(MPSNDArrayRandomStateDescriptor *)&v3 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5 = 4 * [(MPSNDArrayRandomStateDescriptor *)self stateLength];
   v6 = malloc_type_malloc(v5, 0x100004052888210uLL);
   state = self->_state;
   MPSCopyToFromNetworkByteOrder32();
-  [a3 encodeBytes:v6 length:v5 forKey:@"MPSNDArrayRandomStateDescriptorState"];
+  [coder encodeBytes:v6 length:v5 forKey:@"MPSNDArrayRandomStateDescriptorState"];
   algorithm = self->_algorithm;
 
-  [a3 encodeInt32:algorithm forKey:@"MPSNDArrayRandomStateDescriptorAlgorithm"];
+  [coder encodeInt32:algorithm forKey:@"MPSNDArrayRandomStateDescriptorAlgorithm"];
 }
 
-- (MPSNDArrayRandomStateDescriptor)initWithCoder:(id)a3
+- (MPSNDArrayRandomStateDescriptor)initWithCoder:(id)coder
 {
   v4 = [(MPSNDArrayRandomStateDescriptor *)self init];
   if (v4)
   {
-    v4->_algorithm = [a3 decodeInt32ForKey:@"MPSNDArrayRandomStateDescriptorAlgorithm"];
+    v4->_algorithm = [coder decodeInt32ForKey:@"MPSNDArrayRandomStateDescriptorAlgorithm"];
     v8 = 0;
-    [a3 decodeBytesForKey:@"MPSNDArrayRandomStateDescriptorState" returnedLength:&v8];
+    [coder decodeBytesForKey:@"MPSNDArrayRandomStateDescriptorState" returnedLength:&v8];
     [(MPSNDArrayRandomStateDescriptor *)v4 stateLength];
-    v5 = [(MPSNDArrayRandomStateDescriptor *)v4 stateLength];
-    if (v5 != v8 && MTLReportFailureTypeEnabled())
+    stateLength = [(MPSNDArrayRandomStateDescriptor *)v4 stateLength];
+    if (stateLength != v8 && MTLReportFailureTypeEnabled())
     {
       [(MPSNDArrayRandomStateDescriptor *)v4 stateLength];
       MTLReportFailure();
@@ -133,17 +133,17 @@
   return v4;
 }
 
-- (id)exportStateToNDArray:(id)a3
+- (id)exportStateToNDArray:(id)array
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v5 = [(MPSNDArrayRandomStateDescriptor *)self stateLength];
+  stateLength = [(MPSNDArrayRandomStateDescriptor *)self stateLength];
   v6 = MEMORY[0x277CD7268];
-  v12[0] = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v5 + 1];
+  v12[0] = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:stateLength + 1];
   v7 = [v6 descriptorWithDataType:536870944 shape:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", v12, 1)}];
-  v8 = [objc_alloc(MEMORY[0x277CD7260]) initWithDevice:a3 descriptor:v7];
-  v9 = malloc_type_malloc(4 * (v5 + 1), 0x100004052888210uLL);
+  v8 = [objc_alloc(MEMORY[0x277CD7260]) initWithDevice:array descriptor:v7];
+  v9 = malloc_type_malloc(4 * (stateLength + 1), 0x100004052888210uLL);
   *v9 = [(MPSNDArrayRandomStateDescriptor *)self algorithm];
-  memcpy(v9 + 1, [(MPSNDArrayRandomStateDescriptor *)self state], 4 * v5);
+  memcpy(v9 + 1, [(MPSNDArrayRandomStateDescriptor *)self state], 4 * stateLength);
   [v8 writeBytes:v9 strideBytes:0];
   result = v8;
   v11 = *MEMORY[0x277D85DE8];

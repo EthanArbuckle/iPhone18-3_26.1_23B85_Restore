@@ -1,19 +1,19 @@
 @interface _UIFocusEngineDelayedPressAction
-+ (void)sendDelayedPressWithType:(int64_t)a3 timestamp:(double)a4 sender:(id)a5;
++ (void)sendDelayedPressWithType:(int64_t)type timestamp:(double)timestamp sender:(id)sender;
 - (_UIFocusEventRecognizer)sender;
-- (id)_initWithPressType:(int64_t)a3 timestamp:(double)a4 sender:(id)a5;
+- (id)_initWithPressType:(int64_t)type timestamp:(double)timestamp sender:(id)sender;
 - (void)_sendPressEvent;
 @end
 
 @implementation _UIFocusEngineDelayedPressAction
 
-- (id)_initWithPressType:(int64_t)a3 timestamp:(double)a4 sender:(id)a5
+- (id)_initWithPressType:(int64_t)type timestamp:(double)timestamp sender:(id)sender
 {
-  v9 = a5;
-  if (!v9)
+  senderCopy = sender;
+  if (!senderCopy)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"_UIFocusEventRecognizer.m" lineNumber:3487 description:{@"Invalid parameter not satisfying: %@", @"sender"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusEventRecognizer.m" lineNumber:3487 description:{@"Invalid parameter not satisfying: %@", @"sender"}];
   }
 
   v14.receiver = self;
@@ -22,19 +22,19 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_sender, v9);
-    v11->_pressType = a3;
-    v11->_timestamp = a4;
+    objc_storeWeak(&v10->_sender, senderCopy);
+    v11->_pressType = type;
+    v11->_timestamp = timestamp;
   }
 
   return v11;
 }
 
-+ (void)sendDelayedPressWithType:(int64_t)a3 timestamp:(double)a4 sender:(id)a5
++ (void)sendDelayedPressWithType:(int64_t)type timestamp:(double)timestamp sender:(id)sender
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v7 = a5;
-  v8 = [[_UIFocusEngineDelayedPressAction alloc] _initWithPressType:a3 timestamp:v7 sender:a4];
+  senderCopy = sender;
+  v8 = [[_UIFocusEngineDelayedPressAction alloc] _initWithPressType:type timestamp:senderCopy sender:timestamp];
 
   v10[0] = *MEMORY[0x1E695DA28];
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
@@ -43,21 +43,21 @@
 
 - (void)_sendPressEvent
 {
-  v3 = [(_UIFocusEngineDelayedPressAction *)self sender];
-  if (v3)
+  sender = [(_UIFocusEngineDelayedPressAction *)self sender];
+  if (sender)
   {
-    v15 = v3;
-    v4 = [(_UIFocusEngineDelayedPressAction *)self sender];
-    v5 = [v4 owningView];
-    v6 = [v5 _window];
-    if ([v6 _contextId])
+    v15 = sender;
+    sender2 = [(_UIFocusEngineDelayedPressAction *)self sender];
+    owningView = [sender2 owningView];
+    _window = [owningView _window];
+    if ([_window _contextId])
     {
-      v7 = [(_UIFocusEngineDelayedPressAction *)self sender];
-      v8 = [v7 owningView];
-      v9 = [v8 _window];
-      v10 = [v9 windowScene];
+      sender3 = [(_UIFocusEngineDelayedPressAction *)self sender];
+      owningView2 = [sender3 owningView];
+      _window2 = [owningView2 _window];
+      windowScene = [_window2 windowScene];
 
-      if (!v10)
+      if (!windowScene)
       {
         return;
       }
@@ -67,13 +67,13 @@
       [(_UIFocusEngineDelayedPressAction *)self timestamp];
       [(UIPressInfo *)v15 setTimestamp:?];
       [(UIPressInfo *)v15 setSource:3];
-      v11 = [(_UIFocusEngineDelayedPressAction *)self sender];
-      v4 = [v11 owningView];
+      sender4 = [(_UIFocusEngineDelayedPressAction *)self sender];
+      sender2 = [sender4 owningView];
 
-      v12 = [(_UIFocusEngineDelayedPressAction *)self sender];
-      v13 = [v12 owningView];
-      v14 = [v13 _window];
-      -[UIPressInfo setContextID:](v15, "setContextID:", [v14 _contextId]);
+      sender5 = [(_UIFocusEngineDelayedPressAction *)self sender];
+      owningView3 = [sender5 owningView];
+      _window3 = [owningView3 _window];
+      -[UIPressInfo setContextID:](v15, "setContextID:", [_window3 _contextId]);
 
       [(UIPressInfo *)v15 setPhase:0];
       [(UIPressInfo *)v15 setForce:1.0];

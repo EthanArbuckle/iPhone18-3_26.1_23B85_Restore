@@ -1,18 +1,18 @@
 @interface CNVCardActivityAlertQuotingSerializationStrategy
 + (id)regex;
-+ (id)serializeString:(id)a3;
++ (id)serializeString:(id)string;
 @end
 
 @implementation CNVCardActivityAlertQuotingSerializationStrategy
 
-+ (id)serializeString:(id)a3
++ (id)serializeString:(id)string
 {
-  v4 = a3;
-  v5 = [v4 mutableCopy];
-  v6 = [a1 regex];
-  v7 = [v4 length];
+  stringCopy = string;
+  v5 = [stringCopy mutableCopy];
+  regex = [self regex];
+  v7 = [stringCopy length];
 
-  [v6 replaceMatchesInString:v5 options:0 range:0 withTemplate:{v7, @"\\\\$1"}];
+  [regex replaceMatchesInString:v5 options:0 range:0 withTemplate:{v7, @"\\\\$1"}];
   [v5 insertString:@"" atIndex:0];
   [v5 appendString:@""];
 

@@ -4,7 +4,7 @@
 + (MARelation)momentOfPublicEvent;
 + (MARelation)performerOfPublicEvent;
 + (id)filter;
-- (BOOL)hasProperties:(id)a3;
+- (BOOL)hasProperties:(id)properties;
 - (NSSet)categories;
 - (NSSet)localizedCategories;
 - (NSSet)performers;
@@ -12,8 +12,8 @@
 - (NSString)description;
 - (NSString)featureIdentifier;
 - (PGGraphBusinessNode)businessNode;
-- (PGGraphPublicEventNode)initWithLabel:(id)a3 domain:(unsigned __int16)a4 properties:(id)a5;
-- (PGGraphPublicEventNode)initWithMUID:(unint64_t)a3 name:(id)a4 expectedAttendance:(int64_t)a5 publicEventIdentifier:(id)a6;
+- (PGGraphPublicEventNode)initWithLabel:(id)label domain:(unsigned __int16)domain properties:(id)properties;
+- (PGGraphPublicEventNode)initWithMUID:(unint64_t)d name:(id)name expectedAttendance:(int64_t)attendance publicEventIdentifier:(id)identifier;
 - (PGGraphPublicEventNodeCollection)collection;
 - (PHPublicEventInfo)publicEventInfo;
 - (PPNamedEntity)pg_namedEntity;
@@ -33,13 +33,13 @@
     dispatch_once(&_eventInfoCategory_onceToken, &__block_literal_global_3967);
   }
 
-  v3 = [(PGGraphPublicEventNode *)self categories];
+  categories = [(PGGraphPublicEventNode *)self categories];
   v4 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = categories;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -71,28 +71,28 @@
   {
     if ([v4 containsObject:&unk_284482268])
     {
-      v11 = 5;
+      intValue = 5;
     }
 
     else if ([v4 containsObject:&unk_284482298])
     {
-      v11 = 7;
+      intValue = 7;
     }
 
     else
     {
-      v12 = [v4 anyObject];
-      v11 = [v12 intValue];
+      anyObject = [v4 anyObject];
+      intValue = [anyObject intValue];
     }
   }
 
   else
   {
-    v11 = 0;
+    intValue = 0;
   }
 
   v13 = *MEMORY[0x277D85DE8];
-  return v11;
+  return intValue;
 }
 
 void __61__PGGraphPublicEventNode_PublicEventInfo___eventInfoCategory__block_invoke()
@@ -131,42 +131,42 @@ void __61__PGGraphPublicEventNode_PublicEventInfo___eventInfoCategory__block_inv
 
 - (PHPublicEventInfo)publicEventInfo
 {
-  v3 = [(PGGraphPublicEventNode *)self eventIdentifier];
-  v4 = [v3 isEqualToString:&stru_2843F5C58];
+  eventIdentifier = [(PGGraphPublicEventNode *)self eventIdentifier];
+  v4 = [eventIdentifier isEqualToString:&stru_2843F5C58];
 
   if (v4)
   {
     v5 = +[PGLogging sharedLogging];
-    v6 = [v5 loggingConnection];
+    loggingConnection = [v5 loggingConnection];
 
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
     {
       v18 = 0;
       v7 = "PGGraphPublicEventNode.publicEventInfo empty public event identifier, returning nil";
       v8 = &v18;
 LABEL_8:
-      _os_log_impl(&dword_22F0FC000, v6, OS_LOG_TYPE_INFO, v7, v8, 2u);
+      _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_INFO, v7, v8, 2u);
     }
   }
 
   else
   {
-    v9 = [(PGGraphPublicEventNode *)self _eventInfoCategory];
-    if (v9)
+    _eventInfoCategory = [(PGGraphPublicEventNode *)self _eventInfoCategory];
+    if (_eventInfoCategory)
     {
-      v10 = v9;
+      v10 = _eventInfoCategory;
       v11 = objc_alloc(MEMORY[0x277CD9968]);
-      v12 = [(PGGraphPublicEventNode *)self eventIdentifier];
-      v13 = [(PGGraphPublicEventNode *)self name];
-      v14 = [v11 initWithEventID:v12 eventTitle:v13 eventCategory:v10];
+      eventIdentifier2 = [(PGGraphPublicEventNode *)self eventIdentifier];
+      name = [(PGGraphPublicEventNode *)self name];
+      v14 = [v11 initWithEventID:eventIdentifier2 eventTitle:name eventCategory:v10];
 
       goto LABEL_10;
     }
 
     v15 = +[PGLogging sharedLogging];
-    v6 = [v15 loggingConnection];
+    loggingConnection = [v15 loggingConnection];
 
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
     {
       v17 = 0;
       v7 = "PGGraphPublicEventNode.publicEventInfo unknown event info category, returning nil";
@@ -183,14 +183,14 @@ LABEL_10:
 
 - (PPNamedEntity)pg_namedEntity
 {
-  v3 = [(PGGraphPublicEventNode *)self name];
-  v4 = v3;
-  if (v3 && [v3 length])
+  name = [(PGGraphPublicEventNode *)self name];
+  v4 = name;
+  if (name && [name length])
   {
-    v5 = [(PGGraphPublicEventNode *)self categories];
-    v6 = [v5 anyObject];
+    categories = [(PGGraphPublicEventNode *)self categories];
+    anyObject = [categories anyObject];
 
-    v7 = v6;
+    v7 = anyObject;
     if (namedEntityCategoryFromPublicEventCategory_onceToken != -1)
     {
       dispatch_once(&namedEntityCategoryFromPublicEventCategory_onceToken, &__block_literal_global_125);
@@ -200,18 +200,18 @@ LABEL_10:
     v9 = v8;
     if (v8)
     {
-      v10 = [v8 unsignedIntegerValue];
+      unsignedIntegerValue = [v8 unsignedIntegerValue];
     }
 
     else
     {
-      v10 = 2;
+      unsignedIntegerValue = 2;
     }
 
-    v12 = [MEMORY[0x277CBEAF8] currentLocale];
-    v13 = [v12 localeIdentifier];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    localeIdentifier = [currentLocale localeIdentifier];
 
-    v11 = [objc_alloc(MEMORY[0x277D3A420]) initWithName:v4 category:v10 language:v13];
+    v11 = [objc_alloc(MEMORY[0x277D3A420]) initWithName:v4 category:unsignedIntegerValue language:localeIdentifier];
   }
 
   else
@@ -227,8 +227,8 @@ LABEL_10:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PGGraphPublicEventNode *)self name];
-  v7 = [v3 stringWithFormat:@"%@|%@|%llu", v5, v6, -[PGGraphPublicEventNode muid](self, "muid")];
+  name = [(PGGraphPublicEventNode *)self name];
+  v7 = [v3 stringWithFormat:@"%@|%@|%llu", v5, name, -[PGGraphPublicEventNode muid](self, "muid")];
 
   return v7;
 }
@@ -275,17 +275,17 @@ void __51__PGGraphPublicEventNode_associatedNodesForRemoval__block_invoke(uint64
 
 - (id)keywordDescription
 {
-  v3 = [(PGGraphPublicEventNode *)self categories];
-  v4 = [v3 allObjects];
+  categories = [(PGGraphPublicEventNode *)self categories];
+  allObjects = [categories allObjects];
 
-  v5 = [(PGGraphPublicEventNode *)self performers];
-  v6 = [v5 allObjects];
+  performers = [(PGGraphPublicEventNode *)self performers];
+  allObjects2 = [performers allObjects];
 
   v7 = MEMORY[0x277CCACA8];
-  v8 = [(PGGraphPublicEventNode *)self name];
-  v9 = [v4 componentsJoinedByString:{@", "}];
-  v10 = [v6 componentsJoinedByString:{@", "}];
-  v11 = [v7 stringWithFormat:@"%@ [%@] [%@]", v8, v9, v10];
+  name = [(PGGraphPublicEventNode *)self name];
+  v9 = [allObjects componentsJoinedByString:{@", "}];
+  v10 = [allObjects2 componentsJoinedByString:{@", "}];
+  v11 = [v7 stringWithFormat:@"%@ [%@] [%@]", name, v9, v10];
 
   return v11;
 }
@@ -359,25 +359,25 @@ void __55__PGGraphPublicEventNode_preciseLocalizedCategoryNames__block_invoke_2(
 
 - (PGGraphBusinessNode)businessNode
 {
-  v2 = [(PGGraphPublicEventNode *)self collection];
-  v3 = [v2 businessNodes];
-  v4 = [v3 anyNode];
+  collection = [(PGGraphPublicEventNode *)self collection];
+  businessNodes = [collection businessNodes];
+  anyNode = [businessNodes anyNode];
 
-  return v4;
+  return anyNode;
 }
 
 - (NSSet)performers
 {
   v3 = [MEMORY[0x277CBEB58] set];
-  v4 = [(PGGraphPublicEventNode *)self collection];
-  v5 = [v4 performerNodes];
+  collection = [(PGGraphPublicEventNode *)self collection];
+  performerNodes = [collection performerNodes];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __36__PGGraphPublicEventNode_performers__block_invoke;
   v8[3] = &unk_27888B480;
   v6 = v3;
   v9 = v6;
-  [v5 enumerateStringPropertyValuesForKey:@"name" withBlock:v8];
+  [performerNodes enumerateStringPropertyValuesForKey:@"name" withBlock:v8];
 
   return v6;
 }
@@ -522,11 +522,11 @@ void __36__PGGraphPublicEventNode_categories__block_invoke(uint64_t a1, void *a2
   return v9;
 }
 
-- (BOOL)hasProperties:(id)a3
+- (BOOL)hasProperties:(id)properties
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  propertiesCopy = properties;
+  v5 = propertiesCopy;
+  if (propertiesCopy && [propertiesCopy count])
   {
     v6 = [v5 objectForKeyedSubscript:@"id"];
     v7 = v6;
@@ -597,26 +597,26 @@ LABEL_17:
   return v13;
 }
 
-- (PGGraphPublicEventNode)initWithLabel:(id)a3 domain:(unsigned __int16)a4 properties:(id)a5
+- (PGGraphPublicEventNode)initWithLabel:(id)label domain:(unsigned __int16)domain properties:(id)properties
 {
-  v6 = a5;
-  v7 = [v6 objectForKeyedSubscript:@"id"];
-  v8 = [v7 unsignedIntegerValue];
+  propertiesCopy = properties;
+  v7 = [propertiesCopy objectForKeyedSubscript:@"id"];
+  unsignedIntegerValue = [v7 unsignedIntegerValue];
 
-  v9 = [v6 objectForKeyedSubscript:@"name"];
-  v10 = [v6 objectForKeyedSubscript:@"attdc"];
-  v11 = [v10 integerValue];
+  v9 = [propertiesCopy objectForKeyedSubscript:@"name"];
+  v10 = [propertiesCopy objectForKeyedSubscript:@"attdc"];
+  integerValue = [v10 integerValue];
 
-  v12 = [v6 objectForKeyedSubscript:@"eventID"];
-  v13 = [(PGGraphPublicEventNode *)self initWithMUID:v8 name:v9 expectedAttendance:v11 publicEventIdentifier:v12];
+  v12 = [propertiesCopy objectForKeyedSubscript:@"eventID"];
+  v13 = [(PGGraphPublicEventNode *)self initWithMUID:unsignedIntegerValue name:v9 expectedAttendance:integerValue publicEventIdentifier:v12];
   if (v13)
   {
     if (_os_feature_enabled_impl())
     {
-      v14 = [v6 objectForKeyedSubscript:@"supportsEventExperience"];
+      v14 = [propertiesCopy objectForKeyedSubscript:@"supportsEventExperience"];
       v13->_supportsEventExperience = [v14 BOOLValue];
 
-      v15 = [v6 objectForKeyedSubscript:@"canUseWithoutBusiness"];
+      v15 = [propertiesCopy objectForKeyedSubscript:@"canUseWithoutBusiness"];
       v13->_canUseWithoutBusiness = [v15 BOOLValue];
     }
 
@@ -626,20 +626,20 @@ LABEL_17:
   return v13;
 }
 
-- (PGGraphPublicEventNode)initWithMUID:(unint64_t)a3 name:(id)a4 expectedAttendance:(int64_t)a5 publicEventIdentifier:(id)a6
+- (PGGraphPublicEventNode)initWithMUID:(unint64_t)d name:(id)name expectedAttendance:(int64_t)attendance publicEventIdentifier:(id)identifier
 {
-  v11 = a4;
-  v12 = a6;
+  nameCopy = name;
+  identifierCopy = identifier;
   v16.receiver = self;
   v16.super_class = PGGraphPublicEventNode;
   v13 = [(PGGraphNode *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    v13->_muid = a3;
-    objc_storeStrong(&v13->_name, a4);
-    v14->_expectedAttendance = a5;
-    objc_storeStrong(&v14->_eventIdentifier, a6);
+    v13->_muid = d;
+    objc_storeStrong(&v13->_name, name);
+    v14->_expectedAttendance = attendance;
+    objc_storeStrong(&v14->_eventIdentifier, identifier);
   }
 
   return v14;
@@ -648,33 +648,33 @@ LABEL_17:
 + (MARelation)businessOfPublicEvent
 {
   v2 = +[PGGraphPublicEventBusinessEdge filter];
-  v3 = [v2 outRelation];
+  outRelation = [v2 outRelation];
 
-  return v3;
+  return outRelation;
 }
 
 + (MARelation)performerOfPublicEvent
 {
   v2 = +[PGGraphPerformerEdge filter];
-  v3 = [v2 outRelation];
+  outRelation = [v2 outRelation];
 
-  return v3;
+  return outRelation;
 }
 
 + (MARelation)momentOfPublicEvent
 {
   v2 = +[PGGraphPublicEventEdge filter];
-  v3 = [v2 inRelation];
+  inRelation = [v2 inRelation];
 
-  return v3;
+  return inRelation;
 }
 
 + (MARelation)categoryOfPublicEvent
 {
   v2 = +[PGGraphPublicEventCategoryEdge filter];
-  v3 = [v2 outRelation];
+  outRelation = [v2 outRelation];
 
-  return v3;
+  return outRelation;
 }
 
 + (id)filter

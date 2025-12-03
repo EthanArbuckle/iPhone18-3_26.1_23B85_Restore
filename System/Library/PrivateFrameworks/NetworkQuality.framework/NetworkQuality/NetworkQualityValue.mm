@@ -1,55 +1,55 @@
 @interface NetworkQualityValue
 - (NetworkQualityValue)init;
-- (NetworkQualityValue)initWithCoder:(id)a3;
+- (NetworkQualityValue)initWithCoder:(id)coder;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateConfidence:(int64_t)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateConfidence:(int64_t)confidence;
 @end
 
 @implementation NetworkQualityValue
 
-- (void)updateConfidence:(int64_t)a3
+- (void)updateConfidence:(int64_t)confidence
 {
-  if ([(NetworkQualityValue *)self confidence]< a3)
+  if ([(NetworkQualityValue *)self confidence]< confidence)
   {
 
-    [(NetworkQualityValue *)self setConfidence:a3];
+    [(NetworkQualityValue *)self setConfidence:confidence];
   }
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(NetworkQualityValue);
-  v5 = [(NetworkQualityValue *)self value];
-  v6 = [v5 copy];
+  value = [(NetworkQualityValue *)self value];
+  v6 = [value copy];
   [(NetworkQualityValue *)v4 setValue:v6];
 
-  v7 = [(NetworkQualityValue *)self rating];
-  v8 = [v7 copy];
+  rating = [(NetworkQualityValue *)self rating];
+  v8 = [rating copy];
   [(NetworkQualityValue *)v4 setRating:v8];
 
   [(NetworkQualityValue *)v4 setConfidence:[(NetworkQualityValue *)self confidence]];
   return v4;
 }
 
-- (NetworkQualityValue)initWithCoder:(id)a3
+- (NetworkQualityValue)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = NetworkQualityValue;
   v5 = [(NetworkQualityValue *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"value"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"value"];
     value = v5->_value;
     v5->_value = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rating"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rating"];
     rating = v5->_rating;
     v5->_rating = v8;
 
-    v5->_confidence = [v4 decodeIntegerForKey:@"confidence"];
+    v5->_confidence = [coderCopy decodeIntegerForKey:@"confidence"];
   }
 
   return v5;
@@ -76,13 +76,13 @@
   return v2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   value = self->_value;
-  v5 = a3;
-  [v5 encodeObject:value forKey:@"value"];
-  [v5 encodeObject:self->_rating forKey:@"rating"];
-  [v5 encodeInteger:self->_confidence forKey:@"confidence"];
+  coderCopy = coder;
+  [coderCopy encodeObject:value forKey:@"value"];
+  [coderCopy encodeObject:self->_rating forKey:@"rating"];
+  [coderCopy encodeInteger:self->_confidence forKey:@"confidence"];
 }
 
 - (id)description

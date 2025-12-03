@@ -1,16 +1,16 @@
 @interface HUGraphicsUtilities
-+ (void)setRearrangingAnimation:(BOOL)a3 layer:(id)a4 frame:(CGRect)a5;
++ (void)setRearrangingAnimation:(BOOL)animation layer:(id)layer frame:(CGRect)frame;
 @end
 
 @implementation HUGraphicsUtilities
 
-+ (void)setRearrangingAnimation:(BOOL)a3 layer:(id)a4 frame:(CGRect)a5
++ (void)setRearrangingAnimation:(BOOL)animation layer:(id)layer frame:(CGRect)frame
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v10 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  layerCopy = layer;
   v12.origin.x = x;
   v12.origin.y = y;
   v12.size.width = width;
@@ -21,7 +21,7 @@
   v13.size.width = width;
   v13.size.height = height;
   CGRectGetWidth(v13);
-  sub_20D0F0088(a3, v10);
+  sub_20D0F0088(animation, layerCopy);
 }
 
 @end

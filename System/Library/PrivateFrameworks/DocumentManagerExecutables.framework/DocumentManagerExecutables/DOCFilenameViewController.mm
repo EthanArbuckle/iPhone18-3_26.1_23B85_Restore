@@ -1,20 +1,20 @@
 @interface DOCFilenameViewController
-- (BOOL)presentFromViewController:(id)a3 animated:(BOOL)a4;
+- (BOOL)presentFromViewController:(id)controller animated:(BOOL)animated;
 - (NSArray)keyCommands;
-- (_TtC26DocumentManagerExecutables25DOCFilenameViewController)initWithCoder:(id)a3;
-- (_TtC26DocumentManagerExecutables25DOCFilenameViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC26DocumentManagerExecutables25DOCFilenameViewController)initWithCoder:(id)coder;
+- (_TtC26DocumentManagerExecutables25DOCFilenameViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)cancelViewController;
-- (void)effectiveAppearanceDidChange:(id)a3;
+- (void)effectiveAppearanceDidChange:(id)change;
 - (void)loadView;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation DOCFilenameViewController
 
-- (_TtC26DocumentManagerExecutables25DOCFilenameViewController)initWithCoder:(id)a3
+- (_TtC26DocumentManagerExecutables25DOCFilenameViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC26DocumentManagerExecutables25DOCFilenameViewController_keyboardWasOnScreenInViewWillAppear) = 2;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC26DocumentManagerExecutables25DOCFilenameViewController_dismissing) = 0;
@@ -24,11 +24,11 @@
   return result;
 }
 
-- (BOOL)presentFromViewController:(id)a3 animated:(BOOL)a4
+- (BOOL)presentFromViewController:(id)controller animated:(BOOL)animated
 {
-  v6 = a3;
-  v7 = self;
-  DOCFilenameViewController.present(from:animated:)(v6, a4);
+  controllerCopy = controller;
+  selfCopy = self;
+  DOCFilenameViewController.present(from:animated:)(controllerCopy, animated);
 
   return 1;
 }
@@ -37,9 +37,9 @@
 {
   v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC26DocumentManagerExecutables25DOCFilenameViewController_filenameView);
   v4 = objc_allocWithZone(type metadata accessor for DOCSafeAreaView());
-  v6 = self;
+  selfCopy = self;
   v5 = DOCSafeAreaView.init(safeAreaView:)(v3);
-  [(DOCFilenameViewController *)v6 setView:v5];
+  [(DOCFilenameViewController *)selfCopy setView:v5];
 }
 
 - (void)viewDidLoad
@@ -49,24 +49,24 @@
   [(DOCFilenameViewController *)&v2 viewDidLoad];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = type metadata accessor for DOCFilenameViewController();
   v4 = v5.receiver;
-  [(DOCFilenameViewController *)&v5 viewWillAppear:v3];
+  [(DOCFilenameViewController *)&v5 viewWillAppear:appearCopy];
   *(v4 + OBJC_IVAR____TtC26DocumentManagerExecutables25DOCFilenameViewController_keyboardWasOnScreenInViewWillAppear) = [objc_opt_self() isOnScreen];
   (*((*MEMORY[0x277D85000] & *v4) + 0x118))(2);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = type metadata accessor for DOCFilenameViewController();
   v4 = v5.receiver;
-  [(DOCFilenameViewController *)&v5 viewDidDisappear:v3];
+  [(DOCFilenameViewController *)&v5 viewDidDisappear:disappearCopy];
   v4[OBJC_IVAR____TtC26DocumentManagerExecutables25DOCFilenameViewController_keyboardWasOnScreenInViewWillAppear] = 2;
   v4[OBJC_IVAR____TtC26DocumentManagerExecutables25DOCFilenameViewController_dismissing] = 0;
   DOCFilenameViewController.dismissing.didset();
@@ -74,13 +74,13 @@
 
 - (void)cancelViewController
 {
-  v2 = self;
+  selfCopy = self;
   DOCFilenameViewController.cancelViewController()();
 }
 
 - (NSArray)keyCommands
 {
-  v2 = [objc_opt_self() dismissingKeyCommandsWithAction_];
+  dismissingKeyCommandsWithAction_ = [objc_opt_self() dismissingKeyCommandsWithAction_];
   type metadata accessor for NSMutableAttributedString(0, &lazy cache variable for type metadata for UIKeyCommand);
   static Array._unconditionallyBridgeFromObjectiveC(_:)();
 
@@ -89,40 +89,40 @@
   return v3.super.isa;
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
-  v4 = a4;
+  disappearCopy = disappear;
   v9.receiver = self;
   v9.super_class = type metadata accessor for DOCFilenameViewController();
   v6 = v9.receiver;
-  v7 = a3;
-  v8 = [(DOCFilenameViewController *)&v9 viewDidMoveToWindow:v7 shouldAppearOrDisappear:v4];
-  if (v7)
+  windowCopy = window;
+  v8 = [(DOCFilenameViewController *)&v9 viewDidMoveToWindow:windowCopy shouldAppearOrDisappear:disappearCopy];
+  if (windowCopy)
   {
     (*((*MEMORY[0x277D85000] & *v6) + 0x110))(v8);
   }
 }
 
-- (void)effectiveAppearanceDidChange:(id)a3
+- (void)effectiveAppearanceDidChange:(id)change
 {
   v9.receiver = self;
   v9.super_class = type metadata accessor for DOCFilenameViewController();
-  v4 = a3;
+  changeCopy = change;
   v5 = v9.receiver;
-  [(DOCFilenameViewController *)&v9 effectiveAppearanceDidChange:v4];
+  [(DOCFilenameViewController *)&v9 effectiveAppearanceDidChange:changeCopy];
   if (UIAccessibilityIsReduceTransparencyEnabled())
   {
-    v6 = [v5 viewIfLoaded];
-    if (v6)
+    viewIfLoaded = [v5 viewIfLoaded];
+    if (viewIfLoaded)
     {
-      v7 = v6;
-      v8 = [v4 backgroundColor];
+      v7 = viewIfLoaded;
+      backgroundColor = [changeCopy backgroundColor];
       [v7 setBackgroundColor_];
     }
   }
 }
 
-- (_TtC26DocumentManagerExecutables25DOCFilenameViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC26DocumentManagerExecutables25DOCFilenameViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

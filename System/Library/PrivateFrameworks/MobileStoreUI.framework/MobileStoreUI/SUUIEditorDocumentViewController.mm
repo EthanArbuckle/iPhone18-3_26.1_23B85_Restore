@@ -1,47 +1,47 @@
 @interface SUUIEditorDocumentViewController
-- (SUUIEditorDocumentViewController)initWithTemplateElement:(id)a3;
+- (SUUIEditorDocumentViewController)initWithTemplateElement:(id)element;
 - (id)_backgroundColor;
 - (id)_layoutContext;
-- (id)_locateFirstButtonWithType:(int64_t)a3 inChildrenOfElement:(id)a4;
-- (void)_authenticateOnCompletion:(id)a3;
+- (id)_locateFirstButtonWithType:(int64_t)type inChildrenOfElement:(id)element;
+- (void)_authenticateOnCompletion:(id)completion;
 - (void)_doneButtonAction;
-- (void)_keyboardWillChangeFrame:(id)a3;
-- (void)_keyboardWillHide:(id)a3;
-- (void)_keyboardWillShow:(id)a3;
+- (void)_keyboardWillChangeFrame:(id)frame;
+- (void)_keyboardWillHide:(id)hide;
+- (void)_keyboardWillShow:(id)show;
 - (void)_layoutEditorView;
 - (void)_layoutNavigation;
 - (void)_resetButtonAction;
 - (void)_resetTextView;
 - (void)_sendCancelEventAndDismiss;
-- (void)_sendDoneEventAndDismissWithText:(id)a3;
-- (void)_updateBiographyWithText:(id)a3 onCompletion:(id)a4;
+- (void)_sendDoneEventAndDismissWithText:(id)text;
+- (void)_updateBiographyWithText:(id)text onCompletion:(id)completion;
 - (void)_updateEditorViewInset;
 - (void)dealloc;
-- (void)didChangeTextInEditorTemplateView:(id)a3;
-- (void)documentDidUpdate:(id)a3;
+- (void)didChangeTextInEditorTemplateView:(id)view;
+- (void)documentDidUpdate:(id)update;
 - (void)loadView;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SUUIEditorDocumentViewController
 
-- (SUUIEditorDocumentViewController)initWithTemplateElement:(id)a3
+- (SUUIEditorDocumentViewController)initWithTemplateElement:(id)element
 {
-  v5 = a3;
+  elementCopy = element;
   v10.receiver = self;
   v10.super_class = SUUIEditorDocumentViewController;
   v6 = [(SUUIEditorDocumentViewController *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_templateElement, a3);
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:v7 selector:sel__keyboardWillShow_ name:*MEMORY[0x277D76C60] object:0];
-    [v8 addObserver:v7 selector:sel__keyboardWillChangeFrame_ name:*MEMORY[0x277D76C48] object:0];
-    [v8 addObserver:v7 selector:sel__keyboardWillHide_ name:*MEMORY[0x277D76C50] object:0];
+    objc_storeStrong(&v6->_templateElement, element);
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__keyboardWillShow_ name:*MEMORY[0x277D76C60] object:0];
+    [defaultCenter addObserver:v7 selector:sel__keyboardWillChangeFrame_ name:*MEMORY[0x277D76C48] object:0];
+    [defaultCenter addObserver:v7 selector:sel__keyboardWillHide_ name:*MEMORY[0x277D76C50] object:0];
   }
 
   return v7;
@@ -50,10 +50,10 @@
 - (void)dealloc
 {
   [(SUUIViewElementLayoutContext *)self->_layoutContext setParentViewController:0];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D76C60] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D76C48] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D76C50] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76C60] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76C48] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76C50] object:0];
 
   v4.receiver = self;
   v4.super_class = SUUIEditorDocumentViewController;
@@ -62,7 +62,7 @@
 
 - (void)_doneButtonAction
 {
-  v3 = [(SUUIEditorTemplateView *)self->_editorView text];
+  text = [(SUUIEditorTemplateView *)self->_editorView text];
   [(SUUIEditorTemplateView *)self->_editorView setDisabled:1];
   objc_initWeak(&location, self);
   v5[0] = MEMORY[0x277D85DD0];
@@ -70,9 +70,9 @@
   v5[2] = __53__SUUIEditorDocumentViewController__doneButtonAction__block_invoke;
   v5[3] = &unk_2798F6918;
   objc_copyWeak(&v8, &location);
-  v4 = v3;
+  v4 = text;
   v6 = v4;
-  v7 = self;
+  selfCopy = self;
   [(SUUIEditorDocumentViewController *)self _updateBiographyWithText:v4 onCompletion:v5];
 
   objc_destroyWeak(&v8);
@@ -94,16 +94,16 @@ void __53__SUUIEditorDocumentViewController__doneButtonAction__block_invoke(uint
   }
 }
 
-- (void)_keyboardWillShow:(id)a3
+- (void)_keyboardWillShow:(id)show
 {
-  v4 = [a3 userInfo];
-  v10 = [v4 objectForKey:*MEMORY[0x277D76BB8]];
+  userInfo = [show userInfo];
+  v10 = [userInfo objectForKey:*MEMORY[0x277D76BB8]];
 
   if (v10)
   {
-    v5 = [(SUUIEditorDocumentViewController *)self view];
+    view = [(SUUIEditorDocumentViewController *)self view];
     [v10 CGRectValue];
-    [v5 convertRect:0 fromView:?];
+    [view convertRect:0 fromView:?];
     self->_keyboardFrame.origin.x = v6;
     self->_keyboardFrame.origin.y = v7;
     self->_keyboardFrame.size.width = v8;
@@ -113,16 +113,16 @@ void __53__SUUIEditorDocumentViewController__doneButtonAction__block_invoke(uint
   }
 }
 
-- (void)_keyboardWillChangeFrame:(id)a3
+- (void)_keyboardWillChangeFrame:(id)frame
 {
-  v4 = [a3 userInfo];
-  v10 = [v4 objectForKey:*MEMORY[0x277D76BB8]];
+  userInfo = [frame userInfo];
+  v10 = [userInfo objectForKey:*MEMORY[0x277D76BB8]];
 
   if (v10)
   {
-    v5 = [(SUUIEditorDocumentViewController *)self view];
+    view = [(SUUIEditorDocumentViewController *)self view];
     [v10 CGRectValue];
-    [v5 convertRect:0 fromView:?];
+    [view convertRect:0 fromView:?];
     self->_keyboardFrame.origin.x = v6;
     self->_keyboardFrame.origin.y = v7;
     self->_keyboardFrame.size.width = v8;
@@ -132,10 +132,10 @@ void __53__SUUIEditorDocumentViewController__doneButtonAction__block_invoke(uint
   }
 }
 
-- (void)_keyboardWillHide:(id)a3
+- (void)_keyboardWillHide:(id)hide
 {
-  v4 = [a3 userInfo];
-  v6 = [v4 objectForKey:*MEMORY[0x277D76BB8]];
+  userInfo = [hide userInfo];
+  v6 = [userInfo objectForKey:*MEMORY[0x277D76BB8]];
 
   if (v6)
   {
@@ -146,23 +146,23 @@ void __53__SUUIEditorDocumentViewController__doneButtonAction__block_invoke(uint
   }
 }
 
-- (void)documentDidUpdate:(id)a3
+- (void)documentDidUpdate:(id)update
 {
-  v4 = [a3 templateElement];
+  templateElement = [update templateElement];
   templateElement = self->_templateElement;
-  self->_templateElement = v4;
+  self->_templateElement = templateElement;
 
   editorView = self->_editorView;
   if (editorView)
   {
-    v7 = [(SUUIEditorDocumentViewController *)self _backgroundColor];
-    [(SUUIViewReuseView *)editorView setBackgroundColor:v7];
+    _backgroundColor = [(SUUIEditorDocumentViewController *)self _backgroundColor];
+    [(SUUIViewReuseView *)editorView setBackgroundColor:_backgroundColor];
   }
 
   [(SUUIEditorDocumentViewController *)self _layoutNavigation];
 }
 
-- (void)didChangeTextInEditorTemplateView:(id)a3
+- (void)didChangeTextInEditorTemplateView:(id)view
 {
   if (!self->_isTextChanged)
   {
@@ -184,8 +184,8 @@ void __53__SUUIEditorDocumentViewController__doneButtonAction__block_invoke(uint
 
     [(SUUIEditorTemplateView *)self->_editorView setDelegate:self];
     v7 = self->_editorView;
-    v8 = [(SUUIEditorDocumentViewController *)self _backgroundColor];
-    [(SUUIViewReuseView *)v7 setBackgroundColor:v8];
+    _backgroundColor = [(SUUIEditorDocumentViewController *)self _backgroundColor];
+    [(SUUIViewReuseView *)v7 setBackgroundColor:_backgroundColor];
 
     [(SUUIEditorTemplateView *)self->_editorView setPreservesSuperviewLayoutMargins:1];
     v9 = self->_editorView;
@@ -200,23 +200,23 @@ void __53__SUUIEditorDocumentViewController__doneButtonAction__block_invoke(uint
   [(SUUIEditorDocumentViewController *)self setView:v11];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   [(SUUIEditorDocumentViewController *)self _layoutEditorView];
   [(SUUIEditorDocumentViewController *)self _layoutNavigation];
   v5.receiver = self;
   v5.super_class = SUUIEditorDocumentViewController;
-  [(SUUIViewController *)&v5 viewWillAppear:v3];
+  [(SUUIViewController *)&v5 viewWillAppear:appearCopy];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   [(SUUIEditorTemplateView *)self->_editorView resignFirstResponder];
   v5.receiver = self;
   v5.super_class = SUUIEditorDocumentViewController;
-  [(SUUIEditorDocumentViewController *)&v5 viewWillDisappear:v3];
+  [(SUUIEditorDocumentViewController *)&v5 viewWillDisappear:disappearCopy];
 }
 
 - (void)viewWillLayoutSubviews
@@ -228,38 +228,38 @@ void __53__SUUIEditorDocumentViewController__doneButtonAction__block_invoke(uint
   [(SUUIEditorDocumentViewController *)&v3 viewWillLayoutSubviews];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   v4.receiver = self;
   v4.super_class = SUUIEditorDocumentViewController;
-  [(SUUIEditorDocumentViewController *)&v4 viewWillTransitionToSize:a4 withTransitionCoordinator:a3.width, a3.height];
+  [(SUUIEditorDocumentViewController *)&v4 viewWillTransitionToSize:coordinator withTransitionCoordinator:size.width, size.height];
 }
 
-- (void)_authenticateOnCompletion:(id)a3
+- (void)_authenticateOnCompletion:(id)completion
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277D69A20] defaultStore];
-  v5 = [v4 activeAccount];
+  completionCopy = completion;
+  defaultStore = [MEMORY[0x277D69A20] defaultStore];
+  activeAccount = [defaultStore activeAccount];
 
-  if (v5)
+  if (activeAccount)
   {
-    v6 = [objc_alloc(MEMORY[0x277D69BC8]) initWithAccount:v5];
-    [v6 setPromptStyle:1];
-    [v6 setShouldCreateNewSession:1];
+    contextForSignIn = [objc_alloc(MEMORY[0x277D69BC8]) initWithAccount:activeAccount];
+    [contextForSignIn setPromptStyle:1];
+    [contextForSignIn setShouldCreateNewSession:1];
   }
 
   else
   {
-    v6 = [MEMORY[0x277D69BC8] contextForSignIn];
+    contextForSignIn = [MEMORY[0x277D69BC8] contextForSignIn];
   }
 
-  v7 = [objc_alloc(MEMORY[0x277D69A50]) initWithAuthenticationContext:v6];
+  v7 = [objc_alloc(MEMORY[0x277D69A50]) initWithAuthenticationContext:contextForSignIn];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __62__SUUIEditorDocumentViewController__authenticateOnCompletion___block_invoke;
   v9[3] = &unk_2798F6940;
-  v10 = v3;
-  v8 = v3;
+  v10 = completionCopy;
+  v8 = completionCopy;
   [v7 startWithAuthenticateResponseBlock:v9];
 }
 
@@ -292,21 +292,21 @@ uint64_t __62__SUUIEditorDocumentViewController__authenticateOnCompletion___bloc
 
 - (id)_backgroundColor
 {
-  v2 = [(SUUIEditorTemplateViewElement *)self->_templateElement style];
-  v3 = [v2 ikBackgroundColor];
-  v4 = [v3 color];
+  style = [(SUUIEditorTemplateViewElement *)self->_templateElement style];
+  ikBackgroundColor = [style ikBackgroundColor];
+  color = [ikBackgroundColor color];
 
-  if (v4)
+  if (color)
   {
-    v5 = v4;
+    whiteColor = color;
   }
 
   else
   {
-    v5 = [MEMORY[0x277D75348] whiteColor];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
   }
 
-  v6 = v5;
+  v6 = whiteColor;
 
   return v6;
 }
@@ -321,8 +321,8 @@ uint64_t __62__SUUIEditorDocumentViewController__authenticateOnCompletion___bloc
     self->_layoutContext = v4;
 
     v6 = self->_layoutContext;
-    v7 = [(SUUIViewController *)self clientContext];
-    [(SUUIViewElementLayoutContext *)v6 setClientContext:v7];
+    clientContext = [(SUUIViewController *)self clientContext];
+    [(SUUIViewElementLayoutContext *)v6 setClientContext:clientContext];
 
     [(SUUIViewElementLayoutContext *)self->_layoutContext setContainerViewElementType:[(SUUIEditorTemplateViewElement *)self->_templateElement elementType]];
     [(SUUIViewElementLayoutContext *)self->_layoutContext setParentViewController:self];
@@ -335,37 +335,37 @@ uint64_t __62__SUUIEditorDocumentViewController__authenticateOnCompletion___bloc
 - (void)_layoutEditorView
 {
   editorView = self->_editorView;
-  v3 = [(SUUIEditorDocumentViewController *)self view];
-  [v3 bounds];
+  view = [(SUUIEditorDocumentViewController *)self view];
+  [view bounds];
   [(SUUIEditorTemplateView *)editorView setFrame:?];
 }
 
 - (void)_layoutNavigation
 {
-  v18 = [(SUUIEditorDocumentViewController *)self navigationController];
-  v3 = [v18 navigationBar];
-  v4 = [v3 items];
-  v5 = [v4 lastObject];
+  navigationController = [(SUUIEditorDocumentViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  items = [navigationBar items];
+  lastObject = [items lastObject];
 
-  v6 = [v5 rightBarButtonItem];
-  [v6 setEnabled:self->_isTextChanged];
-  [v6 setTarget:self];
-  [v6 setAction:sel__doneButtonAction];
-  v7 = [v5 leftBarButtonItem];
-  [v7 setTarget:self];
-  [v7 setAction:sel__cancelButtonAction];
-  [v18 setToolbarHidden:!self->_isTextChanged];
-  v8 = [v18 toolbar];
-  v9 = [v8 items];
-  v10 = [v9 firstObject];
+  rightBarButtonItem = [lastObject rightBarButtonItem];
+  [rightBarButtonItem setEnabled:self->_isTextChanged];
+  [rightBarButtonItem setTarget:self];
+  [rightBarButtonItem setAction:sel__doneButtonAction];
+  leftBarButtonItem = [lastObject leftBarButtonItem];
+  [leftBarButtonItem setTarget:self];
+  [leftBarButtonItem setAction:sel__cancelButtonAction];
+  [navigationController setToolbarHidden:!self->_isTextChanged];
+  toolbar = [navigationController toolbar];
+  items2 = [toolbar items];
+  firstObject = [items2 firstObject];
 
-  [v10 setTarget:self];
-  [v10 setAction:sel__resetButtonAction];
+  [firstObject setTarget:self];
+  [firstObject setAction:sel__resetButtonAction];
   p_toolbarFrame = &self->_toolbarFrame;
   if (self->_isTextChanged)
   {
-    v12 = [v18 toolbar];
-    [v12 frame];
+    toolbar2 = [navigationController toolbar];
+    [toolbar2 frame];
     p_toolbarFrame->origin.x = v13;
     p_toolbarFrame->origin.y = v14;
     p_toolbarFrame->size.width = v15;
@@ -380,9 +380,9 @@ uint64_t __62__SUUIEditorDocumentViewController__authenticateOnCompletion___bloc
   }
 }
 
-- (id)_locateFirstButtonWithType:(int64_t)a3 inChildrenOfElement:(id)a4
+- (id)_locateFirstButtonWithType:(int64_t)type inChildrenOfElement:(id)element
 {
-  v5 = a4;
+  elementCopy = element;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
@@ -394,8 +394,8 @@ uint64_t __62__SUUIEditorDocumentViewController__authenticateOnCompletion___bloc
   v8[2] = __83__SUUIEditorDocumentViewController__locateFirstButtonWithType_inChildrenOfElement___block_invoke;
   v8[3] = &unk_2798F6968;
   v8[4] = &v9;
-  v8[5] = a3;
-  [v5 enumerateChildrenUsingBlock:v8];
+  v8[5] = type;
+  [elementCopy enumerateChildrenUsingBlock:v8];
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
 
@@ -424,15 +424,15 @@ void __83__SUUIEditorDocumentViewController__locateFirstButtonWithType_inChildre
 {
   v31 = *MEMORY[0x277D85DE8];
   v20 = [(SUUIViewElement *)self->_templateElement firstChildForElementType:31];
-  v2 = [v20 title];
-  v3 = [v2 text];
-  v19 = [v3 string];
+  title = [v20 title];
+  text = [title text];
+  string = [text string];
 
-  v4 = [v20 message];
-  v5 = [v4 text];
-  v18 = [v5 string];
+  message = [v20 message];
+  text2 = [message text];
+  string2 = [text2 string];
 
-  v6 = [MEMORY[0x277D75110] alertControllerWithTitle:v19 message:v18 preferredStyle:1];
+  v6 = [MEMORY[0x277D75110] alertControllerWithTitle:string message:string2 preferredStyle:1];
   [v20 buttons];
   v28 = 0u;
   v29 = 0u;
@@ -456,14 +456,14 @@ void __83__SUUIEditorDocumentViewController__locateFirstButtonWithType_inChildre
         {
           objc_initWeak(&location, self);
           v11 = MEMORY[0x277D750F8];
-          v12 = [v10 buttonText];
-          v13 = [v12 string];
+          buttonText = [v10 buttonText];
+          string3 = [buttonText string];
           v23[0] = MEMORY[0x277D85DD0];
           v23[1] = 3221225472;
           v23[2] = __54__SUUIEditorDocumentViewController__resetButtonAction__block_invoke;
           v23[3] = &unk_2798F6990;
           objc_copyWeak(&v24, &location);
-          v14 = [v11 actionWithTitle:v13 style:2 handler:v23];
+          v14 = [v11 actionWithTitle:string3 style:2 handler:v23];
 
           objc_destroyWeak(&v24);
           objc_destroyWeak(&location);
@@ -472,9 +472,9 @@ void __83__SUUIEditorDocumentViewController__locateFirstButtonWithType_inChildre
         else
         {
           v15 = MEMORY[0x277D750F8];
-          v16 = [v10 buttonText];
-          v17 = [v16 string];
-          v14 = [v15 actionWithTitle:v17 style:1 handler:0];
+          buttonText2 = [v10 buttonText];
+          string4 = [buttonText2 string];
+          v14 = [v15 actionWithTitle:string4 style:1 handler:0];
         }
 
         [v6 addAction:v14];
@@ -518,11 +518,11 @@ void __54__SUUIEditorDocumentViewController__resetButtonAction__block_invoke(uin
   [(SUUIEditorTemplateViewElement *)templateElement dispatchEventOfType:14 canBubble:1 isCancelable:1 extraInfo:v3 completionBlock:v5];
 }
 
-- (void)_sendDoneEventAndDismissWithText:(id)a3
+- (void)_sendDoneEventAndDismissWithText:(id)text
 {
   v4 = MEMORY[0x277CBEAC0];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithObjectsAndKeys:{@"doneButton", @"buttonIdentifier", v5, @"text", 0}];
+  textCopy = text;
+  v6 = [[v4 alloc] initWithObjectsAndKeys:{@"doneButton", @"buttonIdentifier", textCopy, @"text", 0}];
 
   templateElement = self->_templateElement;
   v8[0] = MEMORY[0x277D85DD0];
@@ -533,16 +533,16 @@ void __54__SUUIEditorDocumentViewController__resetButtonAction__block_invoke(uin
   [(SUUIEditorTemplateViewElement *)templateElement dispatchEventOfType:14 canBubble:1 isCancelable:1 extraInfo:v6 completionBlock:v8];
 }
 
-- (void)_updateBiographyWithText:(id)a3 onCompletion:(id)a4
+- (void)_updateBiographyWithText:(id)text onCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  textCopy = text;
+  completionCopy = completion;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
   v24 = 0;
-  v8 = [(SUUIEditorTemplateViewElement *)self->_templateElement contentId];
-  if (v8)
+  contentId = [(SUUIEditorTemplateViewElement *)self->_templateElement contentId];
+  if (contentId)
   {
     v9 = objc_alloc(MEMORY[0x277CBEAC0]);
     v10 = [MEMORY[0x277CCABB0] numberWithBool:1];
@@ -553,7 +553,7 @@ void __54__SUUIEditorDocumentViewController__resetButtonAction__block_invoke(uin
     v18[1] = 3221225472;
     v18[2] = __74__SUUIEditorDocumentViewController__updateBiographyWithText_onCompletion___block_invoke;
     v18[3] = &unk_2798F69B8;
-    v19 = v8;
+    v19 = contentId;
     v20 = &v21;
     [v12 getAuthorsAndWaitWithOptions:v11 authorsBlock:v18];
   }
@@ -561,17 +561,17 @@ void __54__SUUIEditorDocumentViewController__resetButtonAction__block_invoke(uin
   if (*(v22 + 24) == 1)
   {
     v13 = [SUUIMediaSocialUpdateProfileOperation alloc];
-    v14 = [(SUUIViewController *)self clientContext];
-    v15 = [(SUUIMediaSocialUpdateProfileOperation *)v13 initWithClientContext:v14];
+    clientContext = [(SUUIViewController *)self clientContext];
+    v15 = [(SUUIMediaSocialUpdateProfileOperation *)v13 initWithClientContext:clientContext];
 
     [(SUUIMediaSocialUpdateProfileOperation *)v15 setEntityType:@"artist"];
-    [(SUUIMediaSocialUpdateProfileOperation *)v15 setIdentifier:v8];
-    [(SUUIMediaSocialUpdateProfileOperation *)v15 setValue:v6 forProfileField:@"bio"];
+    [(SUUIMediaSocialUpdateProfileOperation *)v15 setIdentifier:contentId];
+    [(SUUIMediaSocialUpdateProfileOperation *)v15 setValue:textCopy forProfileField:@"bio"];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __74__SUUIEditorDocumentViewController__updateBiographyWithText_onCompletion___block_invoke_2;
     v16[3] = &unk_2798F6A08;
-    v17 = v7;
+    v17 = completionCopy;
     [(SUUIMediaSocialUpdateProfileOperation *)v15 setOutputBlock:v16];
     [(SUUIMediaSocialUpdateProfileOperation *)v15 main];
   }

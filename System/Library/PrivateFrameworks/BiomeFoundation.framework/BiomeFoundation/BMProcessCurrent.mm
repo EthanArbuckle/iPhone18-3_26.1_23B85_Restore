@@ -4,9 +4,9 @@
 - (BOOL)isManagedByLaunchd;
 - (BOOL)isManagedByRunningBoard;
 - (BOOL)isRunningInUserContext;
-- (BOOL)reliesOnDirectAccessForDomain:(unint64_t)a3;
-- (id)_initWithAuditToken:(id *)a3;
-- (id)runningBoardAssertionWithExplanation:(id)a3;
+- (BOOL)reliesOnDirectAccessForDomain:(unint64_t)domain;
+- (id)_initWithAuditToken:(id *)token;
+- (id)runningBoardAssertionWithExplanation:(id)explanation;
 - (unint64_t)_session;
 - (void)enforceDatavaultEntitlementRestrictions;
 @end
@@ -63,12 +63,12 @@ uint64_t __59__BMProcessCurrent_enforceDatavaultEntitlementRestrictions__block_i
   return result;
 }
 
-- (id)_initWithAuditToken:(id *)a3
+- (id)_initWithAuditToken:(id *)token
 {
   v9.receiver = self;
   v9.super_class = BMProcessCurrent;
-  v3 = *&a3->var0[4];
-  v8[0] = *a3->var0;
+  v3 = *&token->var0[4];
+  v8[0] = *token->var0;
   v8[1] = v3;
   v4 = [(BMProcess *)&v9 _initWithAuditToken:v8];
   v5 = v4;
@@ -127,16 +127,16 @@ void __28__BMProcessCurrent__session__block_invoke()
     return geteuid() > 0x1F4;
   }
 
-  v3 = [(BMProcessCurrent *)self _session];
-  if (v3 - 3 < 2)
+  _session = [(BMProcessCurrent *)self _session];
+  if (_session - 3 < 2)
   {
     return 0;
   }
 
-  return v3 || geteuid() > 0x1F4;
+  return _session || geteuid() > 0x1F4;
 }
 
-- (BOOL)reliesOnDirectAccessForDomain:(unint64_t)a3
+- (BOOL)reliesOnDirectAccessForDomain:(unint64_t)domain
 {
   if (![(BMProcess *)self processType])
   {
@@ -152,7 +152,7 @@ void __28__BMProcessCurrent__session__block_invoke()
   reliesOnLegacyDirectAccess = self->_reliesOnLegacyDirectAccess;
   if (reliesOnLegacyDirectAccess)
   {
-    v4 = [(NSNumber *)reliesOnLegacyDirectAccess BOOLValue];
+    bOOLValue = [(NSNumber *)reliesOnLegacyDirectAccess BOOLValue];
   }
 
   else if (![(BMProcess *)self BOOLForEntitlement:@"com.apple.private.security.storage.Biome"]|| ([(BMProcessCurrent *)self enforceDatavaultEntitlementRestrictions], [(BMProcess *)self canPerformGlobalMachLookup:@"com.apple.biome.PublicStreamAccessService" report:0]) || [(BMProcess *)self canPerformGlobalMachLookup:@"com.apple.biome.access.user" report:0]|| [(BMProcess *)self canPerformGlobalMachLookup:@"com.apple.biome.access.system" report:0])
@@ -160,7 +160,7 @@ void __28__BMProcessCurrent__session__block_invoke()
     v6 = self->_reliesOnLegacyDirectAccess;
     self->_reliesOnLegacyDirectAccess = MEMORY[0x1E695E110];
 
-    v4 = 0;
+    bOOLValue = 0;
   }
 
   else
@@ -178,33 +178,33 @@ void __28__BMProcessCurrent__session__block_invoke()
     v9 = self->_reliesOnLegacyDirectAccess;
     self->_reliesOnLegacyDirectAccess = MEMORY[0x1E695E118];
 
-    v4 = 1;
+    bOOLValue = 1;
   }
 
   os_unfair_lock_unlock(&self->_reliesOnLegacyDirectAccessLock);
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)allowedToHaveDatavaultEntitlement
 {
-  v3 = [(BMProcess *)self processType];
-  if (v3)
+  processType = [(BMProcess *)self processType];
+  if (processType)
   {
     if ([(BMProcess *)self processType]== 1)
     {
-      v4 = [(BMProcess *)self executableName];
-      v5 = [&unk_1F20EC250 containsObject:v4];
+      executableName = [(BMProcess *)self executableName];
+      v5 = [&unk_1F20EC250 containsObject:executableName];
 
-      LOBYTE(v3) = v5;
+      LOBYTE(processType) = v5;
     }
 
     else
     {
-      LOBYTE(v3) = 1;
+      LOBYTE(processType) = 1;
     }
   }
 
-  return v3;
+  return processType;
 }
 
 uint64_t __42__BMProcessCurrent_canAccessAppleKeyStore__block_invoke(uint64_t a1)
@@ -252,10 +252,10 @@ void __43__BMProcessCurrent_isManagedByRunningBoard__block_invoke()
   isManagedByRunningBoard_isManaged = [v2 isManaged];
 }
 
-- (id)runningBoardAssertionWithExplanation:(id)a3
+- (id)runningBoardAssertionWithExplanation:(id)explanation
 {
   v33[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  explanationCopy = explanation;
   if ([(BMProcessCurrent *)self isManagedByRunningBoard])
   {
     v29 = 0;
@@ -337,7 +337,7 @@ void __43__BMProcessCurrent_isManagedByRunningBoard__block_invoke()
     v16 = [v14 attributeWithCompletionPolicy:1];
     v33[1] = v16;
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:2];
-    v18 = [v10 initWithExplanation:v4 target:v7 attributes:v17];
+    v18 = [v10 initWithExplanation:explanationCopy target:v7 attributes:v17];
 
     v23 = 0;
     LOBYTE(v16) = [v18 acquireWithError:&v23];

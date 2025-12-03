@@ -1,6 +1,6 @@
 @interface GKTurnBasedMatchInternal
 + (id)secureCodedPropertyKeys;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (int64_t)activeExchangeCount;
 - (int64_t)localPlayerParticipantIndex;
 - (int64_t)previousParticipantIndex;
@@ -96,28 +96,28 @@ void __51__GKTurnBasedMatchInternal_secureCodedPropertyKeys__block_invoke()
 
 - (unint64_t)hash
 {
-  v2 = [(GKTurnBasedMatchInternal *)self matchID];
-  v3 = [v2 hash];
+  matchID = [(GKTurnBasedMatchInternal *)self matchID];
+  v3 = [matchID hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(GKTurnBasedMatchInternal *)self lastTurnDate];
-    v7 = [v5 lastTurnDate];
-    v8 = [(GKTurnBasedMatchInternal *)self matchID];
-    v9 = [v5 matchID];
-    if ([v8 isEqualToString:v9] && (v6 == v7 || objc_msgSend(v6, "isEqualToDate:", v7)))
+    v5 = equalCopy;
+    lastTurnDate = [(GKTurnBasedMatchInternal *)self lastTurnDate];
+    lastTurnDate2 = [v5 lastTurnDate];
+    matchID = [(GKTurnBasedMatchInternal *)self matchID];
+    matchID2 = [v5 matchID];
+    if ([matchID isEqualToString:matchID2] && (lastTurnDate == lastTurnDate2 || objc_msgSend(lastTurnDate, "isEqualToDate:", lastTurnDate2)))
     {
-      v10 = [(GKTurnBasedMatchInternal *)self status];
-      v11 = [v5 status];
-      v12 = [v10 isEqualToString:v11];
+      status = [(GKTurnBasedMatchInternal *)self status];
+      status2 = [v5 status];
+      v12 = [status isEqualToString:status2];
     }
 
     else
@@ -136,8 +136,8 @@ void __51__GKTurnBasedMatchInternal_secureCodedPropertyKeys__block_invoke()
 
 - (int64_t)localPlayerParticipantIndex
 {
-  v2 = [(GKTurnBasedMatchInternal *)self participants];
-  v3 = [v2 indexOfObjectPassingTest:&__block_literal_global_82_0];
+  participants = [(GKTurnBasedMatchInternal *)self participants];
+  v3 = [participants indexOfObjectPassingTest:&__block_literal_global_82_0];
 
   return v3;
 }
@@ -157,8 +157,8 @@ uint64_t __55__GKTurnBasedMatchInternal_localPlayerParticipantIndex__block_invok
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v3 = [(GKTurnBasedMatchInternal *)self participants];
-  v4 = [v3 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  participants = [(GKTurnBasedMatchInternal *)self participants];
+  v4 = [participants countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v4)
   {
     v5 = v4;
@@ -170,13 +170,13 @@ uint64_t __55__GKTurnBasedMatchInternal_localPlayerParticipantIndex__block_invok
       {
         if (*v20 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(participants);
         }
 
         v9 = *(*(&v19 + 1) + 8 * i);
-        v10 = [v9 lastTurnDate];
+        lastTurnDate = [v9 lastTurnDate];
 
-        if (v10)
+        if (lastTurnDate)
         {
           if (!v6 || ([v9 lastTurnDate], v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "lastTurnDate"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v11, "compare:", v12), v12, v11, v13 == 1))
           {
@@ -187,7 +187,7 @@ uint64_t __55__GKTurnBasedMatchInternal_localPlayerParticipantIndex__block_invok
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v5 = [participants countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v5);
@@ -198,8 +198,8 @@ uint64_t __55__GKTurnBasedMatchInternal_localPlayerParticipantIndex__block_invok
     v6 = 0;
   }
 
-  v15 = [(GKTurnBasedMatchInternal *)self participants];
-  v16 = [v15 indexOfObject:v6];
+  participants2 = [(GKTurnBasedMatchInternal *)self participants];
+  v16 = [participants2 indexOfObject:v6];
 
   v17 = *MEMORY[0x277D85DE8];
   return v16;
@@ -208,12 +208,12 @@ uint64_t __55__GKTurnBasedMatchInternal_localPlayerParticipantIndex__block_invok
 - (int64_t)activeExchangeCount
 {
   v40 = *MEMORY[0x277D85DE8];
-  v3 = [(GKTurnBasedMatchInternal *)self status];
-  v4 = [v3 isEqualToString:@"Active"];
+  status = [(GKTurnBasedMatchInternal *)self status];
+  v4 = [status isEqualToString:@"Active"];
 
   if (v4)
   {
-    v5 = [(GKTurnBasedMatchInternal *)self localPlayerParticipantIndex];
+    localPlayerParticipantIndex = [(GKTurnBasedMatchInternal *)self localPlayerParticipantIndex];
     [(GKTurnBasedMatchInternal *)self exchanges];
     v34 = 0u;
     v35 = 0u;
@@ -238,12 +238,12 @@ uint64_t __55__GKTurnBasedMatchInternal_localPlayerParticipantIndex__block_invok
           }
 
           v12 = *(*(&v34 + 1) + 8 * v11);
-          v13 = [v12 statusString];
-          v14 = [v13 isEqualToString:v10];
+          statusString = [v12 statusString];
+          v14 = [statusString isEqualToString:v10];
 
           if (v14)
           {
-            v15 = v5 == 0x7FFFFFFFFFFFFFFFLL;
+            v15 = localPlayerParticipantIndex == 0x7FFFFFFFFFFFFFFFLL;
           }
 
           else
@@ -253,12 +253,12 @@ uint64_t __55__GKTurnBasedMatchInternal_localPlayerParticipantIndex__block_invok
 
           if (!v15)
           {
-            v16 = [v12 replies];
+            replies = [v12 replies];
             v30 = 0u;
             v31 = 0u;
             v32 = 0u;
             v33 = 0u;
-            v17 = [v16 countByEnumeratingWithState:&v30 objects:v38 count:16];
+            v17 = [replies countByEnumeratingWithState:&v30 objects:v38 count:16];
             if (v17)
             {
               v18 = v17;
@@ -273,13 +273,13 @@ uint64_t __55__GKTurnBasedMatchInternal_localPlayerParticipantIndex__block_invok
                 {
                   if (*v31 != v23)
                   {
-                    objc_enumerationMutation(v16);
+                    objc_enumerationMutation(replies);
                   }
 
-                  v22 |= v5 == [*(*(&v30 + 1) + 8 * i) recipientIndex];
+                  v22 |= localPlayerParticipantIndex == [*(*(&v30 + 1) + 8 * i) recipientIndex];
                 }
 
-                v18 = [v16 countByEnumeratingWithState:&v30 objects:v38 count:16];
+                v18 = [replies countByEnumeratingWithState:&v30 objects:v38 count:16];
               }
 
               while (v18);
@@ -336,20 +336,20 @@ LABEL_38:
       return state;
     }
 
-    v4 = [(GKTurnBasedMatchInternal *)self status];
-    if ([v4 isEqualToString:@"Active"])
+    status = [(GKTurnBasedMatchInternal *)self status];
+    if ([status isEqualToString:@"Active"])
     {
     }
 
     else
     {
-      v5 = [(GKTurnBasedMatchInternal *)self status];
-      v6 = [v5 isEqualToString:@"Matching"];
+      status2 = [(GKTurnBasedMatchInternal *)self status];
+      v6 = [status2 isEqualToString:@"Matching"];
 
       if (!v6)
       {
-        v30 = [(GKTurnBasedMatchInternal *)self status];
-        v31 = [v30 isEqualToString:@"Complete"];
+        status3 = [(GKTurnBasedMatchInternal *)self status];
+        v31 = [status3 isEqualToString:@"Complete"];
 
         if (v31)
         {
@@ -377,33 +377,33 @@ LABEL_38:
       }
     }
 
-    v7 = [(GKTurnBasedMatchInternal *)self currentParticipant];
-    if (v7 < 0 || (v8 = v7, -[GKTurnBasedMatchInternal participants](self, "participants"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 count], v9, v10 <= v8))
+    currentParticipant = [(GKTurnBasedMatchInternal *)self currentParticipant];
+    if (currentParticipant < 0 || (v8 = currentParticipant, -[GKTurnBasedMatchInternal participants](self, "participants"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 count], v9, v10 <= v8))
     {
       v12 = 0;
     }
 
     else
     {
-      v11 = [(GKTurnBasedMatchInternal *)self participants];
-      v12 = [v11 objectAtIndexedSubscript:v8];
+      participants = [(GKTurnBasedMatchInternal *)self participants];
+      v12 = [participants objectAtIndexedSubscript:v8];
     }
 
-    v13 = [(GKTurnBasedMatchInternal *)self localPlayerParticipantIndex];
-    if (v13 < 0 || (v14 = v13, -[GKTurnBasedMatchInternal participants](self, "participants"), v15 = objc_claimAutoreleasedReturnValue(), v16 = [v15 count], v15, v14 >= v16))
+    localPlayerParticipantIndex = [(GKTurnBasedMatchInternal *)self localPlayerParticipantIndex];
+    if (localPlayerParticipantIndex < 0 || (v14 = localPlayerParticipantIndex, -[GKTurnBasedMatchInternal participants](self, "participants"), v15 = objc_claimAutoreleasedReturnValue(), v16 = [v15 count], v15, v14 >= v16))
     {
       v18 = 0;
     }
 
     else
     {
-      v17 = [(GKTurnBasedMatchInternal *)self participants];
-      v18 = [v17 objectAtIndexedSubscript:v14];
+      participants2 = [(GKTurnBasedMatchInternal *)self participants];
+      v18 = [participants2 objectAtIndexedSubscript:v14];
 
       if (v18)
       {
-        v19 = [v18 status];
-        v20 = [v19 isEqualToString:@"Inactive"];
+        status4 = [v18 status];
+        v20 = [status4 isEqualToString:@"Inactive"];
 
         if (v20)
         {
@@ -415,14 +415,14 @@ LABEL_37:
       }
     }
 
-    v21 = [v12 player];
-    if ([v21 isGuestPlayer])
+    player = [v12 player];
+    if ([player isGuestPlayer])
     {
-      v22 = [v12 player];
-      v23 = [v22 hostPlayerInternal];
-      v24 = [v23 isLocalPlayer];
+      player2 = [v12 player];
+      hostPlayerInternal = [player2 hostPlayerInternal];
+      isLocalPlayer = [hostPlayerInternal isLocalPlayer];
 
-      if (v24)
+      if (isLocalPlayer)
       {
         state = 6;
         goto LABEL_37;
@@ -433,13 +433,13 @@ LABEL_37:
     {
     }
 
-    v25 = [v12 player];
-    v26 = [v25 isLocalPlayer];
+    player3 = [v12 player];
+    isLocalPlayer2 = [player3 isLocalPlayer];
 
-    if (v26)
+    if (isLocalPlayer2)
     {
-      v27 = [v12 status];
-      v28 = [v27 isEqualToString:@"Invited"];
+      status5 = [v12 status];
+      v28 = [status5 isEqualToString:@"Invited"];
 
       if (v28)
       {
@@ -454,8 +454,8 @@ LABEL_37:
 
     else
     {
-      v29 = [(GKTurnBasedMatchInternal *)self participants];
-      if ([v29 count])
+      participants3 = [(GKTurnBasedMatchInternal *)self participants];
+      if ([participants3 count])
       {
 
         state = 4;
@@ -463,10 +463,10 @@ LABEL_37:
 
       else
       {
-        v34 = [v12 player];
-        v35 = [v34 isLocalPlayer];
+        player4 = [v12 player];
+        isLocalPlayer3 = [player4 isLocalPlayer];
 
-        if (v35)
+        if (isLocalPlayer3)
         {
           state = 3;
         }
@@ -487,11 +487,11 @@ LABEL_37:
 - (void)state
 {
   v8 = *MEMORY[0x277D85DE8];
-  v3 = a1;
-  v4 = [a2 status];
+  selfCopy = self;
+  status = [a2 status];
   v6 = 138412290;
-  v7 = v4;
-  _os_log_debug_impl(&dword_227904000, v3, OS_LOG_TYPE_DEBUG, "GKTurnBasedMatchInternal->state Unexpected match status encountered: %@", &v6, 0xCu);
+  v7 = status;
+  _os_log_debug_impl(&dword_227904000, selfCopy, OS_LOG_TYPE_DEBUG, "GKTurnBasedMatchInternal->state Unexpected match status encountered: %@", &v6, 0xCu);
 
   v5 = *MEMORY[0x277D85DE8];
 }

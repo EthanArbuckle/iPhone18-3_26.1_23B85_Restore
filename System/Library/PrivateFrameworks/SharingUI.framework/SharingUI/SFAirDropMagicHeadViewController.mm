@@ -1,45 +1,45 @@
 @interface SFAirDropMagicHeadViewController
-- (SFAirDropMagicHeadViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (SFAirDropMagicHeadViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (SFAirDropMagicHeadViewControllerDelegate)delegate;
-- (id)headForRealName:(id)a3;
+- (id)headForRealName:(id)name;
 - (void)calculatePreferredSize;
 - (void)dealloc;
-- (void)handleDeviceMotion:(id)a3;
-- (void)magicHeadChangedFacingDegree:(double)a3;
-- (void)magicHeadChangedSelectionToNode:(id)a3;
-- (void)magicHeadDidFinishTransferForNode:(id)a3;
-- (void)magicHeadDidStartTransferForNode:(id)a3;
-- (void)magicHeadDidTerminateTransferForNode:(id)a3;
-- (void)magicHeadSelectedHeadRequestingDisabledState:(BOOL)a3;
-- (void)magicHeadSelectedHeadRequestingSubtitleTextChangeForState:(int64_t)a3;
-- (void)magicHeadSelectedNodeTapped:(id)a3;
+- (void)handleDeviceMotion:(id)motion;
+- (void)magicHeadChangedFacingDegree:(double)degree;
+- (void)magicHeadChangedSelectionToNode:(id)node;
+- (void)magicHeadDidFinishTransferForNode:(id)node;
+- (void)magicHeadDidStartTransferForNode:(id)node;
+- (void)magicHeadDidTerminateTransferForNode:(id)node;
+- (void)magicHeadSelectedHeadRequestingDisabledState:(BOOL)state;
+- (void)magicHeadSelectedHeadRequestingSubtitleTextChangeForState:(int64_t)state;
+- (void)magicHeadSelectedNodeTapped:(id)tapped;
 - (void)resetSecondLabel;
-- (void)resetTransferStateWithRealName:(id)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setSecondLabelText:(id)a3 withTextColor:(id)a4 animated:(BOOL)a5 completion:(id)a6;
+- (void)resetTransferStateWithRealName:(id)name;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setSecondLabelText:(id)text withTextColor:(id)color animated:(BOOL)animated completion:(id)completion;
 - (void)start;
 - (void)stop;
-- (void)subscribedProgress:(id)a3 forPersonWithRealName:(id)a4;
-- (void)transferCancelledToPerson:(id)a3;
+- (void)subscribedProgress:(id)progress forPersonWithRealName:(id)name;
+- (void)transferCancelledToPerson:(id)person;
 - (void)update;
 - (void)updateLabels;
-- (void)updateNodes:(id)a3 withPersonToProgress:(id)a4;
-- (void)userSelectedWithRealName:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)updateNodes:(id)nodes withPersonToProgress:(id)progress;
+- (void)userSelectedWithRealName:(id)name;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SFAirDropMagicHeadViewController
 
-- (SFAirDropMagicHeadViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SFAirDropMagicHeadViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  bundleCopy = bundle;
   v14.receiver = self;
   v14.super_class = SFAirDropMagicHeadViewController;
-  v8 = [(SFAirDropMagicHeadViewController *)&v14 initWithNibName:v6 bundle:v7];
+  v8 = [(SFAirDropMagicHeadViewController *)&v14 initWithNibName:nameCopy bundle:bundleCopy];
   if (v8)
   {
     if (IsAppleInternalBuild())
@@ -104,19 +104,19 @@
 {
   if (![(SFAirDropMagicHeadViewController *)self motionUpdatesStarted])
   {
-    v3 = [(SFAirDropMagicHeadViewController *)self wheelView];
-    [v3 setEnabled:1];
+    wheelView = [(SFAirDropMagicHeadViewController *)self wheelView];
+    [wheelView setEnabled:1];
 
     [(SFAirDropMagicHeadViewController *)self setMotionUpdatesStarted:1];
     objc_initWeak(&location, self);
     motionManager = self->_motionManager;
-    v5 = [MEMORY[0x1E696ADC8] mainQueue];
+    mainQueue = [MEMORY[0x1E696ADC8] mainQueue];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __41__SFAirDropMagicHeadViewController_start__block_invoke;
     v6[3] = &unk_1E7EE3A80;
     objc_copyWeak(&v7, &location);
-    [(CMMotionManager *)motionManager startDeviceMotionUpdatesToQueue:v5 withHandler:v6];
+    [(CMMotionManager *)motionManager startDeviceMotionUpdatesToQueue:mainQueue withHandler:v6];
 
     objc_destroyWeak(&v7);
     objc_destroyWeak(&location);
@@ -140,8 +140,8 @@ void __41__SFAirDropMagicHeadViewController_start__block_invoke(uint64_t a1, voi
 {
   if ([(SFAirDropMagicHeadViewController *)self motionUpdatesStarted])
   {
-    v3 = [(SFAirDropMagicHeadViewController *)self wheelView];
-    [v3 setEnabled:0];
+    wheelView = [(SFAirDropMagicHeadViewController *)self wheelView];
+    [wheelView setEnabled:0];
 
     [(SFAirDropMagicHeadViewController *)self setMotionUpdatesStarted:0];
     [(CMMotionManager *)self->_motionManager stopDeviceMotionUpdates];
@@ -151,11 +151,11 @@ void __41__SFAirDropMagicHeadViewController_start__block_invoke(uint64_t a1, voi
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    self->_enabled = a3;
+    self->_enabled = enabled;
     [(SFAirDropMagicHeadViewController *)self update];
   }
 }
@@ -166,18 +166,18 @@ void __41__SFAirDropMagicHeadViewController_start__block_invoke(uint64_t a1, voi
   v79.receiver = self;
   v79.super_class = SFAirDropMagicHeadViewController;
   [(SFAirDropMagicHeadViewController *)&v79 viewDidLoad];
-  v77 = [MEMORY[0x1E69DC888] clearColor];
-  v3 = [(SFAirDropMagicHeadViewController *)self view];
-  [v3 setBackgroundColor:v77];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  view = [(SFAirDropMagicHeadViewController *)self view];
+  [view setBackgroundColor:clearColor];
 
-  v78 = [(SFAirDropMagicHeadViewController *)self view];
+  view2 = [(SFAirDropMagicHeadViewController *)self view];
   v4 = [SFMagicHeadWheelView alloc];
-  v5 = [(SFAirDropMagicHeadViewController *)self numberOfDots];
+  numberOfDots = [(SFAirDropMagicHeadViewController *)self numberOfDots];
   [(SFAirDropMagicHeadViewController *)self dotsRadius];
-  v76 = [(SFMagicHeadWheelView *)v4 initWithNumberOfDots:v5 dotsRadius:[(SFAirDropMagicHeadViewController *)self isMagicHead] isMagicHead:v6];
+  v76 = [(SFMagicHeadWheelView *)v4 initWithNumberOfDots:numberOfDots dotsRadius:[(SFAirDropMagicHeadViewController *)self isMagicHead] isMagicHead:v6];
   [(SFMagicHeadWheelView *)v76 setDelegate:self];
   [(SFMagicHeadWheelView *)v76 setEnabled:[(SFAirDropMagicHeadViewController *)self enabled]];
-  [v78 addSubview:v76];
+  [view2 addSubview:v76];
   if (![(SFAirDropMagicHeadViewController *)self isMagicHead])
   {
     v7 = objc_alloc(MEMORY[0x1E69DCC10]);
@@ -186,16 +186,16 @@ void __41__SFAirDropMagicHeadViewController_start__block_invoke(uint64_t a1, voi
     v9 = SFFontForTextStyleWithAdditionalSymbolicTraits(*MEMORY[0x1E69DDCF8], 0x8000);
     [v75 setFont:v9];
 
-    v10 = [MEMORY[0x1E69DC888] labelColor];
-    [v75 setTextColor:v10];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [v75 setTextColor:labelColor];
 
     [v75 setAlpha:0.0];
     v74 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{*v8, v8[1], v8[2], v8[3]}];
-    v11 = [v75 font];
-    [v74 setFont:v11];
+    font = [v75 font];
+    [v74 setFont:font];
 
-    v12 = [v75 textColor];
-    [v74 setTextColor:v12];
+    textColor = [v75 textColor];
+    [v74 setTextColor:textColor];
 
     [v75 alpha];
     [v74 setAlpha:?];
@@ -203,55 +203,55 @@ void __41__SFAirDropMagicHeadViewController_start__block_invoke(uint64_t a1, voi
     v70 = [MEMORY[0x1E69DD248] effectForBlurEffect:? style:?];
     v73 = [objc_alloc(MEMORY[0x1E69DD298]) initWithEffect:v70];
     [v73 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v78 addSubview:v73];
-    v13 = [v73 contentView];
-    [v13 addSubview:v75];
+    [view2 addSubview:v73];
+    contentView = [v73 contentView];
+    [contentView addSubview:v75];
 
-    v14 = [v73 contentView];
-    [v14 addSubview:v74];
+    contentView2 = [v73 contentView];
+    [contentView2 addSubview:v74];
 
     v15 = MEMORY[0x1E696ACD8];
-    v72 = [v73 leftAnchor];
-    v69 = [v78 leftAnchor];
-    v68 = [v72 constraintEqualToAnchor:?];
+    leftAnchor = [v73 leftAnchor];
+    leftAnchor2 = [view2 leftAnchor];
+    v68 = [leftAnchor constraintEqualToAnchor:?];
     v80[0] = v68;
-    v71 = [v73 rightAnchor];
-    v67 = [v78 rightAnchor];
-    v66 = [v71 constraintEqualToAnchor:?];
+    rightAnchor = [v73 rightAnchor];
+    rightAnchor2 = [view2 rightAnchor];
+    v66 = [rightAnchor constraintEqualToAnchor:?];
     v80[1] = v66;
-    v16 = [v73 topAnchor];
-    v17 = [v75 topAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17];
+    topAnchor = [v73 topAnchor];
+    topAnchor2 = [v75 topAnchor];
+    v18 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v80[2] = v18;
-    v19 = [v73 bottomAnchor];
-    v20 = [v75 bottomAnchor];
-    v21 = [v19 constraintEqualToAnchor:v20];
+    bottomAnchor = [v73 bottomAnchor];
+    bottomAnchor2 = [v75 bottomAnchor];
+    v21 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v80[3] = v21;
     v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v80 count:4];
     [v15 activateConstraints:v22];
 
-    [v78 addSubview:v73];
+    [view2 addSubview:v73];
     v23 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{*v8, v8[1], v8[2], v8[3]}];
     v24 = SFFontForTextStyleWithAdditionalSymbolicTraits(*MEMORY[0x1E69DDD28], 0x8000);
     [v23 setFont:v24];
 
-    v25 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [v23 setTextColor:v25];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [v23 setTextColor:secondaryLabelColor];
 
-    [v78 addSubview:v23];
+    [view2 addSubview:v23];
     [v75 setTranslatesAutoresizingMaskIntoConstraints:0];
     LODWORD(v26) = 1148846080;
     [v75 setContentCompressionResistancePriority:1 forAxis:v26];
     LODWORD(v27) = 1148846080;
     [v75 setContentCompressionResistancePriority:0 forAxis:v27];
-    v28 = [v75 topAnchor];
-    v29 = [(SFMagicHeadWheelView *)v76 bottomAnchor];
-    v30 = [v28 constraintEqualToAnchor:v29 constant:-14.0];
+    topAnchor3 = [v75 topAnchor];
+    bottomAnchor3 = [(SFMagicHeadWheelView *)v76 bottomAnchor];
+    v30 = [topAnchor3 constraintEqualToAnchor:bottomAnchor3 constant:-14.0];
     [v30 setActive:1];
 
-    v31 = [v75 centerXAnchor];
-    v32 = [(SFMagicHeadWheelView *)v76 centerXAnchor];
-    v33 = [v31 constraintEqualToAnchor:v32];
+    centerXAnchor = [v75 centerXAnchor];
+    centerXAnchor2 = [(SFMagicHeadWheelView *)v76 centerXAnchor];
+    v33 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [v33 setActive:1];
 
     [v74 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -259,14 +259,14 @@ void __41__SFAirDropMagicHeadViewController_start__block_invoke(uint64_t a1, voi
     [v74 setContentCompressionResistancePriority:1 forAxis:v34];
     LODWORD(v35) = 1148846080;
     [v74 setContentCompressionResistancePriority:0 forAxis:v35];
-    v36 = [v74 topAnchor];
-    v37 = [(SFMagicHeadWheelView *)v76 bottomAnchor];
-    v38 = [v36 constraintEqualToAnchor:v37 constant:-14.0];
+    topAnchor4 = [v74 topAnchor];
+    bottomAnchor4 = [(SFMagicHeadWheelView *)v76 bottomAnchor];
+    v38 = [topAnchor4 constraintEqualToAnchor:bottomAnchor4 constant:-14.0];
     [v38 setActive:1];
 
-    v39 = [v74 centerXAnchor];
-    v40 = [(SFMagicHeadWheelView *)v76 centerXAnchor];
-    v41 = [v39 constraintEqualToAnchor:v40];
+    centerXAnchor3 = [v74 centerXAnchor];
+    centerXAnchor4 = [(SFMagicHeadWheelView *)v76 centerXAnchor];
+    v41 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     [v41 setActive:1];
 
     [v23 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -274,19 +274,19 @@ void __41__SFAirDropMagicHeadViewController_start__block_invoke(uint64_t a1, voi
     [v23 setContentCompressionResistancePriority:1 forAxis:v42];
     LODWORD(v43) = 1148846080;
     [v23 setContentCompressionResistancePriority:0 forAxis:v43];
-    v44 = [v23 topAnchor];
-    v45 = [v75 bottomAnchor];
-    v46 = [v44 constraintEqualToAnchor:v45 constant:3.0];
+    topAnchor5 = [v23 topAnchor];
+    bottomAnchor5 = [v75 bottomAnchor];
+    v46 = [topAnchor5 constraintEqualToAnchor:bottomAnchor5 constant:3.0];
     [v46 setActive:1];
 
-    v47 = [v23 centerXAnchor];
-    v48 = [(SFMagicHeadWheelView *)v76 centerXAnchor];
-    v49 = [v47 constraintEqualToAnchor:v48];
+    centerXAnchor5 = [v23 centerXAnchor];
+    centerXAnchor6 = [(SFMagicHeadWheelView *)v76 centerXAnchor];
+    v49 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
     [v49 setActive:1];
 
-    v50 = [v23 bottomAnchor];
-    v51 = [v78 bottomAnchor];
-    v52 = [v50 constraintEqualToAnchor:v51];
+    bottomAnchor6 = [v23 bottomAnchor];
+    bottomAnchor7 = [view2 bottomAnchor];
+    v52 = [bottomAnchor6 constraintEqualToAnchor:bottomAnchor7];
     [v52 setActive:1];
 
     [(SFAirDropMagicHeadViewController *)self setNameLabel:v75];
@@ -297,34 +297,34 @@ void __41__SFAirDropMagicHeadViewController_start__block_invoke(uint64_t a1, voi
   }
 
   [(SFMagicHeadWheelView *)v76 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v53 = [(SFMagicHeadWheelView *)v76 topAnchor];
-  v54 = [v78 topAnchor];
-  v55 = [v53 constraintEqualToAnchor:v54];
+  topAnchor6 = [(SFMagicHeadWheelView *)v76 topAnchor];
+  topAnchor7 = [view2 topAnchor];
+  v55 = [topAnchor6 constraintEqualToAnchor:topAnchor7];
   [v55 setActive:1];
 
-  v56 = [(SFMagicHeadWheelView *)v76 rightAnchor];
-  v57 = [v78 rightAnchor];
-  v58 = [v56 constraintEqualToAnchor:v57];
+  rightAnchor3 = [(SFMagicHeadWheelView *)v76 rightAnchor];
+  rightAnchor4 = [view2 rightAnchor];
+  v58 = [rightAnchor3 constraintEqualToAnchor:rightAnchor4];
   [v58 setActive:1];
 
-  v59 = [(SFMagicHeadWheelView *)v76 leftAnchor];
-  v60 = [v78 leftAnchor];
-  v61 = [v59 constraintEqualToAnchor:v60];
+  leftAnchor3 = [(SFMagicHeadWheelView *)v76 leftAnchor];
+  leftAnchor4 = [view2 leftAnchor];
+  v61 = [leftAnchor3 constraintEqualToAnchor:leftAnchor4];
   [v61 setActive:1];
 
   if ([(SFAirDropMagicHeadViewController *)self isMagicHead])
   {
-    v62 = [(SFMagicHeadWheelView *)v76 bottomAnchor];
-    v63 = [v78 bottomAnchor];
-    v64 = [v62 constraintEqualToAnchor:v63];
+    bottomAnchor8 = [(SFMagicHeadWheelView *)v76 bottomAnchor];
+    bottomAnchor9 = [view2 bottomAnchor];
+    v64 = [bottomAnchor8 constraintEqualToAnchor:bottomAnchor9];
     [v64 setActive:1];
   }
 
   else
   {
-    v62 = [(SFMagicHeadWheelView *)v76 heightAnchor];
-    v63 = [v62 constraintEqualToConstant:189.0];
-    [v63 setActive:1];
+    bottomAnchor8 = [(SFMagicHeadWheelView *)v76 heightAnchor];
+    bottomAnchor9 = [bottomAnchor8 constraintEqualToConstant:189.0];
+    [bottomAnchor9 setActive:1];
   }
 
   [(SFAirDropMagicHeadViewController *)self setWheelView:v76];
@@ -332,27 +332,27 @@ void __41__SFAirDropMagicHeadViewController_start__block_invoke(uint64_t a1, voi
 
 - (void)resetSecondLabel
 {
-  v6 = [(SFAirDropMagicHeadViewController *)self secondLabel];
-  v3 = [v6 layer];
-  [v3 removeAllAnimations];
+  secondLabel = [(SFAirDropMagicHeadViewController *)self secondLabel];
+  layer = [secondLabel layer];
+  [layer removeAllAnimations];
 
-  v7 = [(SFAirDropMagicHeadViewController *)self secondLabel];
-  [v7 setAlpha:1.0];
+  secondLabel2 = [(SFAirDropMagicHeadViewController *)self secondLabel];
+  [secondLabel2 setAlpha:1.0];
 
   v8 = SFLocalizedStringForKeyInStringsFileNamed();
-  v4 = [(SFAirDropMagicHeadViewController *)self secondLabel];
-  [v4 setText:v8];
+  secondLabel3 = [(SFAirDropMagicHeadViewController *)self secondLabel];
+  [secondLabel3 setText:v8];
 
-  v9 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  v5 = [(SFAirDropMagicHeadViewController *)self secondLabel];
-  [v5 setTextColor:v9];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  secondLabel4 = [(SFAirDropMagicHeadViewController *)self secondLabel];
+  [secondLabel4 setTextColor:secondaryLabelColor];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = SFAirDropMagicHeadViewController;
-  [(SFAirDropMagicHeadViewController *)&v6 viewWillAppear:a3];
+  [(SFAirDropMagicHeadViewController *)&v6 viewWillAppear:appear];
   v4 = magic_head_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -364,11 +364,11 @@ void __41__SFAirDropMagicHeadViewController_start__block_invoke(uint64_t a1, voi
   [(SFAirDropMagicHeadViewController *)self update];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = SFAirDropMagicHeadViewController;
-  [(SFAirDropMagicHeadViewController *)&v6 viewDidDisappear:a3];
+  [(SFAirDropMagicHeadViewController *)&v6 viewDidDisappear:disappear];
   [(SFAirDropMagicHeadViewController *)self setViewVisible:0];
   [(SFAirDropMagicHeadViewController *)self update];
   v4 = magic_head_log();
@@ -381,13 +381,13 @@ void __41__SFAirDropMagicHeadViewController_start__block_invoke(uint64_t a1, voi
 
 - (void)calculatePreferredSize
 {
-  v6 = [(SFAirDropMagicHeadViewController *)self view];
-  [v6 bounds];
+  view = [(SFAirDropMagicHeadViewController *)self view];
+  [view bounds];
   v4 = v3;
   v5 = *(MEMORY[0x1E69DE090] + 8);
 
-  v7 = [(SFAirDropMagicHeadViewController *)self view];
-  [v7 systemLayoutSizeFittingSize:{v4, v5}];
+  view2 = [(SFAirDropMagicHeadViewController *)self view];
+  [view2 systemLayoutSizeFittingSize:{v4, v5}];
   [(SFAirDropMagicHeadViewController *)self setPreferredContentSize:?];
 }
 
@@ -399,30 +399,30 @@ void __41__SFAirDropMagicHeadViewController_start__block_invoke(uint64_t a1, voi
   [(SFAirDropMagicHeadViewController *)self calculatePreferredSize];
 }
 
-- (void)updateNodes:(id)a3 withPersonToProgress:(id)a4
+- (void)updateNodes:(id)nodes withPersonToProgress:(id)progress
 {
   v41 = *MEMORY[0x1E69E9840];
-  v24 = a3;
-  v25 = a4;
-  v26 = self;
-  v6 = [(SFAirDropMagicHeadViewController *)self wheelView];
-  if (([v6 isMagicHead] & 1) == 0)
+  nodesCopy = nodes;
+  progressCopy = progress;
+  selfCopy = self;
+  wheelView = [(SFAirDropMagicHeadViewController *)self wheelView];
+  if (([wheelView isMagicHead] & 1) == 0)
   {
-    v7 = [(SFAirDropMagicHeadViewController *)self wheelView];
-    v8 = [v7 selectedHead];
-    v9 = [v8 node];
-    v10 = [v24 containsObject:v9];
+    wheelView2 = [(SFAirDropMagicHeadViewController *)self wheelView];
+    selectedHead = [wheelView2 selectedHead];
+    node = [selectedHead node];
+    v10 = [nodesCopy containsObject:node];
 
     if (v10)
     {
       goto LABEL_5;
     }
 
-    v11 = [(SFAirDropMagicHeadViewController *)v26 wheelView];
-    [v11 lostSelectedNode];
+    wheelView3 = [(SFAirDropMagicHeadViewController *)selfCopy wheelView];
+    [wheelView3 lostSelectedNode];
 
-    v6 = [(SFAirDropMagicHeadViewController *)v26 secondLabel];
-    [v6 setText:0];
+    wheelView = [(SFAirDropMagicHeadViewController *)selfCopy secondLabel];
+    [wheelView setText:0];
   }
 
 LABEL_5:
@@ -430,7 +430,7 @@ LABEL_5:
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  obj = v24;
+  obj = nodesCopy;
   v12 = 0;
   v13 = [obj countByEnumeratingWithState:&v30 objects:v40 count:16];
   if (v13)
@@ -450,15 +450,15 @@ LABEL_5:
         v18 = magic_head_log();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
         {
-          v27 = [v17 rangingMeasurement];
-          v19 = [v27 timestampTicks];
-          v20 = [v17 rangingMeasurement];
-          [v20 timestampTicks];
+          rangingMeasurement = [v17 rangingMeasurement];
+          timestampTicks = [rangingMeasurement timestampTicks];
+          rangingMeasurement2 = [v17 rangingMeasurement];
+          [rangingMeasurement2 timestampTicks];
           v21 = SFUpTicksDiffFromNowToString();
           *buf = 138412802;
           v35 = v17;
           v36 = 2048;
-          v37 = v19;
+          v37 = timestampTicks;
           v38 = 2112;
           v39 = v21;
           _os_log_debug_impl(&dword_1B9E4B000, v18, OS_LOG_TYPE_DEBUG, "Inspecting if selection has changed for %@ %llu (%@)", buf, 0x20u);
@@ -491,18 +491,18 @@ LABEL_5:
     v15 = 1;
   }
 
-  v22 = [(SFAirDropMagicHeadViewController *)v26 wheelView];
-  [v22 updateSelectedNode:v12];
+  wheelView4 = [(SFAirDropMagicHeadViewController *)selfCopy wheelView];
+  [wheelView4 updateSelectedNode:v12];
 
-  v23 = [(SFAirDropMagicHeadViewController *)v26 wheelView];
-  [v23 setNoUWBCapableDevices:v15];
+  wheelView5 = [(SFAirDropMagicHeadViewController *)selfCopy wheelView];
+  [wheelView5 setNoUWBCapableDevices:v15];
 
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v29[2] = __69__SFAirDropMagicHeadViewController_updateNodes_withPersonToProgress___block_invoke;
   v29[3] = &unk_1E7EE3AA8;
-  v29[4] = v26;
-  [v25 enumerateKeysAndObjectsUsingBlock:v29];
+  v29[4] = selfCopy;
+  [progressCopy enumerateKeysAndObjectsUsingBlock:v29];
 }
 
 - (void)updateLabels
@@ -532,8 +532,8 @@ LABEL_5:
   v6 = v4;
   v31 = v6;
   v7 = _Block_copy(v30);
-  v8 = [(SFAirDropMagicHeadViewController *)self nameLabel2];
-  [v8 alpha];
+  nameLabel2 = [(SFAirDropMagicHeadViewController *)self nameLabel2];
+  [nameLabel2 alpha];
   if (v9 == 0.0)
   {
     [(SFAirDropMagicHeadViewController *)self nameLabel];
@@ -545,10 +545,10 @@ LABEL_5:
   }
   v10 = ;
 
-  v11 = [(SFAirDropMagicHeadViewController *)self wheelView];
-  v12 = [v11 selectedHead];
+  wheelView = [(SFAirDropMagicHeadViewController *)self wheelView];
+  selectedHead = [wheelView selectedHead];
 
-  if (v12)
+  if (selectedHead)
   {
     v27 = v6;
     v29[0] = MEMORY[0x1E69E9820];
@@ -557,12 +557,12 @@ LABEL_5:
     v29[3] = &__block_descriptor_48_e20_v24__0__UILabel_8d16l;
     v29[4] = 0x3FD0000000000000;
     v29[5] = 608;
-    v13 = _Block_copy(v29);
-    v14 = [(SFAirDropMagicHeadViewController *)self wheelView];
-    v15 = [v14 selectedHead];
-    v16 = [v15 node];
-    v17 = [MEMORY[0x1E695DF58] currentLocale];
-    v18 = [v16 displayNameForLocale:v17];
+    secondLabel2 = _Block_copy(v29);
+    wheelView2 = [(SFAirDropMagicHeadViewController *)self wheelView];
+    selectedHead2 = [wheelView2 selectedHead];
+    node = [selectedHead2 node];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+    v18 = [node displayNameForLocale:currentLocale];
 
     v6 = v27;
     [v10 alpha];
@@ -570,18 +570,18 @@ LABEL_5:
     {
       [v10 setText:v18];
       v5[2](v5, v10);
-      (v13)[2](v13, v10, 0.0);
-      v20 = [(SFAirDropMagicHeadViewController *)self secondLabel];
-      (v13)[2](v13, v20, 0.0);
+      (secondLabel2)[2](secondLabel2, v10, 0.0);
+      secondLabel = [(SFAirDropMagicHeadViewController *)self secondLabel];
+      (secondLabel2)[2](secondLabel2, secondLabel, 0.0);
 LABEL_17:
 
       goto LABEL_18;
     }
 
     v7[2](v7, v10);
-    v21 = [(SFAirDropMagicHeadViewController *)self nameLabel2];
+    nameLabel22 = [(SFAirDropMagicHeadViewController *)self nameLabel2];
     v22 = v10;
-    v23 = v21;
+    v23 = nameLabel22;
     v24 = v23;
     if (v22 == v23)
     {
@@ -593,7 +593,7 @@ LABEL_17:
       {
 
 LABEL_15:
-        v26 = [(SFAirDropMagicHeadViewController *)self nameLabel2];
+        nameLabel23 = [(SFAirDropMagicHeadViewController *)self nameLabel2];
         goto LABEL_16;
       }
 
@@ -605,20 +605,20 @@ LABEL_15:
       }
     }
 
-    v26 = [(SFAirDropMagicHeadViewController *)self nameLabel];
+    nameLabel23 = [(SFAirDropMagicHeadViewController *)self nameLabel];
 LABEL_16:
-    v20 = v26;
+    secondLabel = nameLabel23;
 
-    [v20 setText:v18];
-    v5[2](v5, v20);
-    (v13)[2](v13, v20, 0.15);
+    [secondLabel setText:v18];
+    v5[2](v5, secondLabel);
+    (secondLabel2)[2](secondLabel2, secondLabel, 0.15);
     v6 = v28;
     goto LABEL_17;
   }
 
   v7[2](v7, v10);
-  v13 = [(SFAirDropMagicHeadViewController *)self secondLabel];
-  v7[2](v7, v13);
+  secondLabel2 = [(SFAirDropMagicHeadViewController *)self secondLabel];
+  v7[2](v7, secondLabel2);
 LABEL_18:
 }
 
@@ -685,123 +685,123 @@ uint64_t __48__SFAirDropMagicHeadViewController_updateLabels__block_invoke_6(uin
   return [*(a1 + 32) setAlpha:1.0];
 }
 
-- (id)headForRealName:(id)a3
+- (id)headForRealName:(id)name
 {
-  v4 = a3;
-  v5 = [(SFAirDropMagicHeadViewController *)self wheelView];
-  v6 = [v5 selectedHead];
-  v7 = [v6 node];
-  v8 = [v7 realName];
-  v9 = v4;
+  nameCopy = name;
+  wheelView = [(SFAirDropMagicHeadViewController *)self wheelView];
+  selectedHead = [wheelView selectedHead];
+  node = [selectedHead node];
+  realName = [node realName];
+  v9 = nameCopy;
   v10 = v9;
-  if (v8 == v9)
+  if (realName == v9)
   {
   }
 
   else
   {
-    if ((v9 == 0) == (v8 != 0))
+    if ((v9 == 0) == (realName != 0))
     {
 
-      v12 = 0;
+      selectedHead2 = 0;
       goto LABEL_8;
     }
 
-    v11 = [v8 isEqual:v9];
+    v11 = [realName isEqual:v9];
 
     if ((v11 & 1) == 0)
     {
-      v12 = 0;
+      selectedHead2 = 0;
       goto LABEL_9;
     }
   }
 
-  v5 = [(SFAirDropMagicHeadViewController *)self wheelView];
-  v12 = [v5 selectedHead];
+  wheelView = [(SFAirDropMagicHeadViewController *)self wheelView];
+  selectedHead2 = [wheelView selectedHead];
 LABEL_8:
 
 LABEL_9:
 
-  return v12;
+  return selectedHead2;
 }
 
-- (void)subscribedProgress:(id)a3 forPersonWithRealName:(id)a4
+- (void)subscribedProgress:(id)progress forPersonWithRealName:(id)name
 {
-  v7 = a3;
-  v6 = [(SFAirDropMagicHeadViewController *)self headForRealName:a4];
-  [v6 setProgress:v7];
+  progressCopy = progress;
+  v6 = [(SFAirDropMagicHeadViewController *)self headForRealName:name];
+  [v6 setProgress:progressCopy];
 }
 
-- (void)resetTransferStateWithRealName:(id)a3
+- (void)resetTransferStateWithRealName:(id)name
 {
-  v3 = [(SFAirDropMagicHeadViewController *)self headForRealName:a3];
+  v3 = [(SFAirDropMagicHeadViewController *)self headForRealName:name];
   [v3 resetTransferState];
 }
 
-- (void)userSelectedWithRealName:(id)a3
+- (void)userSelectedWithRealName:(id)name
 {
-  v3 = [(SFAirDropMagicHeadViewController *)self headForRealName:a3];
+  v3 = [(SFAirDropMagicHeadViewController *)self headForRealName:name];
   [v3 userDidSelect];
 }
 
-- (void)transferCancelledToPerson:(id)a3
+- (void)transferCancelledToPerson:(id)person
 {
-  v3 = [(SFAirDropMagicHeadViewController *)self headForRealName:a3];
+  v3 = [(SFAirDropMagicHeadViewController *)self headForRealName:person];
   [v3 userDidCancel];
 }
 
-- (void)magicHeadChangedFacingDegree:(double)a3
+- (void)magicHeadChangedFacingDegree:(double)degree
 {
-  v6 = [(SFAirDropMagicHeadViewController *)self delegate];
+  delegate = [(SFAirDropMagicHeadViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v7 = [(SFAirDropMagicHeadViewController *)self delegate];
-    [v7 magicHeadViewControllerChangedFacingDegree:a3];
+    delegate2 = [(SFAirDropMagicHeadViewController *)self delegate];
+    [delegate2 magicHeadViewControllerChangedFacingDegree:degree];
   }
 }
 
-- (void)magicHeadChangedSelectionToNode:(id)a3
+- (void)magicHeadChangedSelectionToNode:(id)node
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nodeCopy = node;
   v5 = magic_head_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = nodeCopy;
     _os_log_impl(&dword_1B9E4B000, v5, OS_LOG_TYPE_DEFAULT, "Switched selected head to %@", &v6, 0xCu);
   }
 
   [(SFAirDropMagicHeadViewController *)self updateLabels];
 }
 
-- (void)magicHeadSelectedNodeTapped:(id)a3
+- (void)magicHeadSelectedNodeTapped:(id)tapped
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  tappedCopy = tapped;
   v5 = magic_head_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = tappedCopy;
     _os_log_impl(&dword_1B9E4B000, v5, OS_LOG_TYPE_DEFAULT, "Head tapped %@", &v7, 0xCu);
   }
 
-  v6 = [(SFAirDropMagicHeadViewController *)self delegate];
-  [v6 magicHeadViewControllerToggleSelectionForNode:v4];
+  delegate = [(SFAirDropMagicHeadViewController *)self delegate];
+  [delegate magicHeadViewControllerToggleSelectionForNode:tappedCopy];
 }
 
-- (void)magicHeadSelectedHeadRequestingDisabledState:(BOOL)a3
+- (void)magicHeadSelectedHeadRequestingDisabledState:(BOOL)state
 {
-  v3 = a3;
-  v5 = [(SFMagicHeadWheelView *)self->_wheelView selectedHead];
+  stateCopy = state;
+  selectedHead = [(SFMagicHeadWheelView *)self->_wheelView selectedHead];
 
-  if (v5)
+  if (selectedHead)
   {
-    v6 = [(SFAirDropMagicHeadViewController *)self nameLabel2];
-    [v6 alpha];
+    nameLabel2 = [(SFAirDropMagicHeadViewController *)self nameLabel2];
+    [nameLabel2 alpha];
     if (v7 == 0.0)
     {
       [(SFAirDropMagicHeadViewController *)self nameLabel];
@@ -814,89 +814,89 @@ LABEL_9:
     v12 = ;
 
     v8 = 0.2;
-    if (!v3)
+    if (!stateCopy)
     {
       v8 = 1.0;
     }
 
     [v12 setAlpha:v8];
-    v9 = [(SFAirDropMagicHeadViewController *)self secondLabel];
-    v10 = v9;
+    secondLabel = [(SFAirDropMagicHeadViewController *)self secondLabel];
+    v10 = secondLabel;
     v11 = 1.0;
-    if (v3)
+    if (stateCopy)
     {
       v11 = 0.0;
     }
 
-    [v9 setAlpha:v11];
+    [secondLabel setAlpha:v11];
   }
 }
 
-- (void)setSecondLabelText:(id)a3 withTextColor:(id)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)setSecondLabelText:(id)text withTextColor:(id)color animated:(BOOL)animated completion:(id)completion
 {
-  v16 = a3;
-  v9 = a4;
-  v10 = a6;
-  v11 = [(SFAirDropMagicHeadViewController *)self secondLabel];
-  v12 = [v11 layer];
-  [v12 removeAllAnimations];
+  textCopy = text;
+  colorCopy = color;
+  completionCopy = completion;
+  secondLabel = [(SFAirDropMagicHeadViewController *)self secondLabel];
+  layer = [secondLabel layer];
+  [layer removeAllAnimations];
 
-  v13 = [(SFAirDropMagicHeadViewController *)self secondLabel];
-  [v13 setAlpha:1.0];
+  secondLabel2 = [(SFAirDropMagicHeadViewController *)self secondLabel];
+  [secondLabel2 setAlpha:1.0];
 
-  v14 = [(SFAirDropMagicHeadViewController *)self secondLabel];
-  [v14 setText:v16];
+  secondLabel3 = [(SFAirDropMagicHeadViewController *)self secondLabel];
+  [secondLabel3 setText:textCopy];
 
-  v15 = [(SFAirDropMagicHeadViewController *)self secondLabel];
-  [v15 setTextColor:v9];
+  secondLabel4 = [(SFAirDropMagicHeadViewController *)self secondLabel];
+  [secondLabel4 setTextColor:colorCopy];
 
-  if (v10)
+  if (completionCopy)
   {
-    v10[2](v10, 1);
+    completionCopy[2](completionCopy, 1);
   }
 }
 
-- (void)magicHeadSelectedHeadRequestingSubtitleTextChangeForState:(int64_t)a3
+- (void)magicHeadSelectedHeadRequestingSubtitleTextChangeForState:(int64_t)state
 {
-  if (a3 <= 2)
+  if (state <= 2)
   {
-    if (a3)
+    if (state)
     {
-      if (a3 == 1)
+      if (state == 1)
       {
-        v9 = [(SFAirDropMagicHeadViewController *)self secondLabel];
-        objc_initWeak(&location, v9);
+        secondLabel = [(SFAirDropMagicHeadViewController *)self secondLabel];
+        objc_initWeak(&location, secondLabel);
 
         v6 = SFLocalizedStringForKey();
-        v7 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+        secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
         v8 = v13;
         v13[0] = MEMORY[0x1E69E9820];
         v13[1] = 3221225472;
         v13[2] = __94__SFAirDropMagicHeadViewController_magicHeadSelectedHeadRequestingSubtitleTextChangeForState___block_invoke;
         v13[3] = &unk_1E7EE3BE0;
         objc_copyWeak(&v14, &location);
-        [(SFAirDropMagicHeadViewController *)self setSecondLabelText:v6 withTextColor:v7 animated:1 completion:v13];
+        [(SFAirDropMagicHeadViewController *)self setSecondLabelText:v6 withTextColor:secondaryLabelColor animated:1 completion:v13];
       }
 
       else
       {
-        if (a3 != 2)
+        if (state != 2)
         {
           return;
         }
 
-        v5 = [(SFAirDropMagicHeadViewController *)self secondLabel];
-        objc_initWeak(&location, v5);
+        secondLabel2 = [(SFAirDropMagicHeadViewController *)self secondLabel];
+        objc_initWeak(&location, secondLabel2);
 
         v6 = SFLocalizedStringForKey();
-        v7 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+        secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
         v8 = v11;
         v11[0] = MEMORY[0x1E69E9820];
         v11[1] = 3221225472;
         v11[2] = __94__SFAirDropMagicHeadViewController_magicHeadSelectedHeadRequestingSubtitleTextChangeForState___block_invoke_3;
         v11[3] = &unk_1E7EE3BE0;
         objc_copyWeak(&v12, &location);
-        [(SFAirDropMagicHeadViewController *)self setSecondLabelText:v6 withTextColor:v7 animated:1 completion:v11];
+        [(SFAirDropMagicHeadViewController *)self setSecondLabelText:v6 withTextColor:secondaryLabelColor animated:1 completion:v11];
       }
 
       objc_destroyWeak(v8 + 4);
@@ -912,21 +912,21 @@ LABEL_9:
 
   else
   {
-    if (a3 > 4)
+    if (state > 4)
     {
-      if (a3 != 5 && a3 != 6)
+      if (state != 5 && state != 6)
       {
         return;
       }
 
       v10 = SFLocalizedStringForKey();
-      v4 = [MEMORY[0x1E69DC888] systemRedColor];
-      [(SFAirDropMagicHeadViewController *)self setSecondLabelText:v10 withTextColor:v4 animated:1 completion:0];
+      systemRedColor = [MEMORY[0x1E69DC888] systemRedColor];
+      [(SFAirDropMagicHeadViewController *)self setSecondLabelText:v10 withTextColor:systemRedColor animated:1 completion:0];
     }
 
     else
     {
-      if (a3 == 3)
+      if (state == 3)
       {
         v10 = SFLocalizedStringForKey();
         [MEMORY[0x1E69DC888] secondaryLabelColor];
@@ -937,8 +937,8 @@ LABEL_9:
         v10 = SFLocalizedStringForKey();
         [MEMORY[0x1E69DC888] systemBlueColor];
       }
-      v4 = ;
-      [(SFAirDropMagicHeadViewController *)self setSecondLabelText:v10 withTextColor:v4 animated:1 completion:0];
+      systemRedColor = ;
+      [(SFAirDropMagicHeadViewController *)self setSecondLabelText:v10 withTextColor:systemRedColor animated:1 completion:0];
     }
   }
 }
@@ -979,32 +979,32 @@ void __94__SFAirDropMagicHeadViewController_magicHeadSelectedHeadRequestingSubti
   [WeakRetained setAlpha:0.2];
 }
 
-- (void)magicHeadDidStartTransferForNode:(id)a3
+- (void)magicHeadDidStartTransferForNode:(id)node
 {
-  v5 = a3;
-  v4 = [(SFAirDropMagicHeadViewController *)self delegate];
-  [v4 magicHeadViewControllerDidStartTransferForNode:v5];
+  nodeCopy = node;
+  delegate = [(SFAirDropMagicHeadViewController *)self delegate];
+  [delegate magicHeadViewControllerDidStartTransferForNode:nodeCopy];
 }
 
-- (void)magicHeadDidTerminateTransferForNode:(id)a3
+- (void)magicHeadDidTerminateTransferForNode:(id)node
 {
-  v5 = a3;
-  v4 = [(SFAirDropMagicHeadViewController *)self delegate];
-  [v4 magicHeadViewControllerDidTerminateTransferForNode:v5];
+  nodeCopy = node;
+  delegate = [(SFAirDropMagicHeadViewController *)self delegate];
+  [delegate magicHeadViewControllerDidTerminateTransferForNode:nodeCopy];
 }
 
-- (void)magicHeadDidFinishTransferForNode:(id)a3
+- (void)magicHeadDidFinishTransferForNode:(id)node
 {
-  v5 = a3;
-  v4 = [(SFAirDropMagicHeadViewController *)self delegate];
-  [v4 magicHeadViewControllerDidFinishTransferForNode:v5];
+  nodeCopy = node;
+  delegate = [(SFAirDropMagicHeadViewController *)self delegate];
+  [delegate magicHeadViewControllerDidFinishTransferForNode:nodeCopy];
 }
 
-- (void)handleDeviceMotion:(id)a3
+- (void)handleDeviceMotion:(id)motion
 {
-  v4 = a3;
-  v5 = [v4 attitude];
-  [v5 quaternion];
+  motionCopy = motion;
+  attitude = [motionCopy attitude];
+  [attitude quaternion];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -1018,13 +1018,13 @@ void __94__SFAirDropMagicHeadViewController_magicHeadSelectedHeadRequestingSubti
   v24.i64[1] = __PAIR64__(LODWORD(v17), v16);
   CMOQuaternion::normalize(&v24, v17);
   LODWORD(v13) = CMOQuaternion::heading(&v24);
-  v18 = [(SFAirDropMagicHeadViewController *)self wheelView];
-  v19 = [v4 attitude];
-  [v19 pitch];
+  wheelView = [(SFAirDropMagicHeadViewController *)self wheelView];
+  attitude2 = [motionCopy attitude];
+  [attitude2 pitch];
   v21 = v20;
-  v22 = [v4 attitude];
-  [v22 roll];
-  [v18 deviceRotatedToDegrees:360.0 - *&v13 withPitch:v21 andRoll:v23];
+  attitude3 = [motionCopy attitude];
+  [attitude3 roll];
+  [wheelView deviceRotatedToDegrees:360.0 - *&v13 withPitch:v21 andRoll:v23];
 }
 
 - (SFAirDropMagicHeadViewControllerDelegate)delegate

@@ -1,14 +1,14 @@
 @interface CDGetNotifInfoResponse
-- (CDGetNotifInfoResponse)initWithRapportDictionary:(id)a3;
+- (CDGetNotifInfoResponse)initWithRapportDictionary:(id)dictionary;
 - (NSString)description;
 - (id)makeRapportDictionary;
 @end
 
 @implementation CDGetNotifInfoResponse
 
-- (CDGetNotifInfoResponse)initWithRapportDictionary:(id)a3
+- (CDGetNotifInfoResponse)initWithRapportDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = CDGetNotifInfoResponse;
   v5 = [(CDGetNotifInfoResponse *)&v13 init];
@@ -50,9 +50,9 @@
   [v3 appendString:self->_deviceClass withName:@"deviceClass" skipIfEmpty:1];
   [v3 appendString:self->_deviceName withName:@"deviceName" skipIfEmpty:1];
   [v3 appendString:self->_appName withName:@"appName" skipIfEmpty:1];
-  v4 = [v3 build];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 @end

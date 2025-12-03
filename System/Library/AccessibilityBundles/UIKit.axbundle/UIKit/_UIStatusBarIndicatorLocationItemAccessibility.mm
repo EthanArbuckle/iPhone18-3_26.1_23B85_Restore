@@ -1,18 +1,18 @@
 @interface _UIStatusBarIndicatorLocationItemAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation _UIStatusBarIndicatorLocationItemAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v7 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v3 = @"_UIStatusBarIndicatorLocationItem";
   [location[0] validateClass:?];
   v5 = "@";
@@ -27,7 +27,7 @@
 
 - (id)accessibilityLabel
 {
-  v16 = self;
+  selfCopy = self;
   v15 = a2;
   v14 = [(_UIStatusBarIndicatorLocationItemAccessibility *)self safeIntegerForKey:@"previousType"];
   v9 = 0;
@@ -37,7 +37,7 @@
   v13 = 0;
   v7 = 0;
   objc_opt_class();
-  v4 = [(_UIStatusBarIndicatorLocationItemAccessibility *)v16 safeValueForKey:@"displayItems"];
+  v4 = [(_UIStatusBarIndicatorLocationItemAccessibility *)selfCopy safeValueForKey:@"displayItems"];
   v6 = __UIAccessibilityCastAsClass();
   MEMORY[0x29EDC9740](v4);
   v5 = MEMORY[0x29EDC9748](v6);

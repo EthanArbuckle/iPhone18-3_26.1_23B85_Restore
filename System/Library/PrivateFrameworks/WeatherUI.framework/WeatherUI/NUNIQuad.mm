@@ -1,25 +1,25 @@
 @interface NUNIQuad
-- (BOOL)prepareForTime:(double)a3;
-- (NUNIQuad)initWithScreenScale:(double)a3 renderer:(id)a4;
+- (BOOL)prepareForTime:(double)time;
+- (NUNIQuad)initWithScreenScale:(double)scale renderer:(id)renderer;
 - (NUNIViewport)_nuniViewport;
-- (void)performOffscreenPassesWithCommandBuffer:(id)a3;
-- (void)renderFailedForReason:(unint64_t)a3;
-- (void)renderWithCommandBuffer:(id)a3 passDescriptor:(id)a4;
+- (void)performOffscreenPassesWithCommandBuffer:(id)buffer;
+- (void)renderFailedForReason:(unint64_t)reason;
+- (void)renderWithCommandBuffer:(id)buffer passDescriptor:(id)descriptor;
 @end
 
 @implementation NUNIQuad
 
-- (NUNIQuad)initWithScreenScale:(double)a3 renderer:(id)a4
+- (NUNIQuad)initWithScreenScale:(double)scale renderer:(id)renderer
 {
-  v7 = a4;
+  rendererCopy = renderer;
   v13.receiver = self;
   v13.super_class = NUNIQuad;
   v8 = [(CLKUIQuad *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    v8->_screenScale = a3;
-    objc_storeStrong(&v8->_renderer, a4);
+    v8->_screenScale = scale;
+    objc_storeStrong(&v8->_renderer, renderer);
     v10 = dispatch_semaphore_create(3);
     renderSemaphore = v9->_renderSemaphore;
     v9->_renderSemaphore = v10;
@@ -30,37 +30,37 @@
 
 - (NUNIViewport)_nuniViewport
 {
-  v3 = [(CLKUIQuad *)self quadView];
-  [v3 frame];
+  quadView = [(CLKUIQuad *)self quadView];
+  [quadView frame];
   v5 = v4;
   v7 = v6;
 
   return ((v5 * self->_screenScale) | ((v7 * self->_screenScale) << 32));
 }
 
-- (void)performOffscreenPassesWithCommandBuffer:(id)a3
+- (void)performOffscreenPassesWithCommandBuffer:(id)buffer
 {
-  v5 = a3;
-  v4 = [(NUNIQuad *)self scene];
-  if (v4)
+  bufferCopy = buffer;
+  scene = [(NUNIQuad *)self scene];
+  if (scene)
   {
-    [(NUNIRenderer *)self->_renderer renderOffscreenWithScene:v4 viewport:[(NUNIQuad *)self _nuniViewport] commandBuffer:v5];
+    [(NUNIRenderer *)self->_renderer renderOffscreenWithScene:scene viewport:[(NUNIQuad *)self _nuniViewport] commandBuffer:bufferCopy];
   }
 }
 
-- (BOOL)prepareForTime:(double)a3
+- (BOOL)prepareForTime:(double)time
 {
-  v4 = [(NUNIQuad *)self scene];
-  if (v4)
+  scene = [(NUNIQuad *)self scene];
+  if (scene)
   {
     renderSemaphore = self->_renderSemaphore;
     v6 = dispatch_time(0, 3000000000);
     if (!dispatch_semaphore_wait(renderSemaphore, v6))
     {
-      [v4 updateFromDateIfNeeded];
+      [scene updateFromDateIfNeeded];
       v9 = CACurrentMediaTime() - self->_baseTime;
       *&v9 = v9;
-      [v4 update:v9];
+      [scene update:v9];
       v8 = 1;
       goto LABEL_8;
     }
@@ -78,14 +78,14 @@ LABEL_8:
   return v8;
 }
 
-- (void)renderWithCommandBuffer:(id)a3 passDescriptor:(id)a4
+- (void)renderWithCommandBuffer:(id)buffer passDescriptor:(id)descriptor
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NUNIQuad *)self scene];
-  if (v8)
+  bufferCopy = buffer;
+  descriptorCopy = descriptor;
+  scene = [(NUNIQuad *)self scene];
+  if (scene)
   {
-    [(NUNIRenderer *)self->_renderer renderWithScene:v8 viewport:[(NUNIQuad *)self _nuniViewport] commandBuffer:v6 passDescriptor:v7];
+    [(NUNIRenderer *)self->_renderer renderWithScene:scene viewport:[(NUNIQuad *)self _nuniViewport] commandBuffer:bufferCopy passDescriptor:descriptorCopy];
     v10[0] = 0;
     v10[1] = v10;
     v10[2] = 0x3032000000;
@@ -97,18 +97,18 @@ LABEL_8:
     v9[2] = __51__NUNIQuad_renderWithCommandBuffer_passDescriptor___block_invoke;
     v9[3] = &unk_1E7FF8F40;
     v9[4] = v10;
-    [v6 addCompletedHandler:v9];
+    [bufferCopy addCompletedHandler:v9];
     _Block_object_dispose(v10, 8);
   }
 }
 
-- (void)renderFailedForReason:(unint64_t)a3
+- (void)renderFailedForReason:(unint64_t)reason
 {
-  v3 = a3;
+  reasonCopy = reason;
   v5 = NUNILoggingObjectForDomain(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    [(NUNIQuad *)v3 renderFailedForReason:v5];
+    [(NUNIQuad *)reasonCopy renderFailedForReason:v5];
   }
 
   dispatch_semaphore_signal(self->_renderSemaphore);

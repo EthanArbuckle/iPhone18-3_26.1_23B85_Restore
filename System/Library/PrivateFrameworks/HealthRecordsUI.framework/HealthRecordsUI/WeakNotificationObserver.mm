@@ -1,7 +1,7 @@
 @interface WeakNotificationObserver
 - (_TtC15HealthRecordsUI24WeakNotificationObserver)init;
 - (void)dealloc;
-- (void)didReceiveWithNotification:(id)a3;
+- (void)didReceiveWithNotification:(id)notification;
 @end
 
 @implementation WeakNotificationObserver
@@ -9,18 +9,18 @@
 - (void)dealloc
 {
   Strong = swift_unknownObjectWeakLoadStrong();
-  v4 = self;
+  selfCopy = self;
   if (Strong)
   {
     [Strong removeObserver_];
   }
 
-  v5.receiver = v4;
+  v5.receiver = selfCopy;
   v5.super_class = type metadata accessor for WeakNotificationObserver();
   [(WeakNotificationObserver *)&v5 dealloc];
 }
 
-- (void)didReceiveWithNotification:(id)a3
+- (void)didReceiveWithNotification:(id)notification
 {
   v4 = sub_1D138D01C();
   v5 = *(v4 - 8);
@@ -42,7 +42,7 @@
   *(v15 + 24) = v11;
   (*(v5 + 32))(v15 + v14, v7, v4);
   v16 = *(v13 + 8);
-  v17 = self;
+  selfCopy = self;
 
   v16(sub_1D1280054, v15, v19, v13);
 

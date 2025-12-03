@@ -1,25 +1,25 @@
 @interface NSNullFileHandle
-- (BOOL)getOffset:(unint64_t *)a3 error:(id *)a4;
-- (BOOL)seekToEndReturningOffset:(unint64_t *)a3 error:(id *)a4;
+- (BOOL)getOffset:(unint64_t *)offset error:(id *)error;
+- (BOOL)seekToEndReturningOffset:(unint64_t *)offset error:(id *)error;
 @end
 
 @implementation NSNullFileHandle
 
-- (BOOL)getOffset:(unint64_t *)a3 error:(id *)a4
+- (BOOL)getOffset:(unint64_t *)offset error:(id *)error
 {
-  if (a3)
+  if (offset)
   {
-    *a3 = 0;
+    *offset = 0;
   }
 
   return 1;
 }
 
-- (BOOL)seekToEndReturningOffset:(unint64_t *)a3 error:(id *)a4
+- (BOOL)seekToEndReturningOffset:(unint64_t *)offset error:(id *)error
 {
-  if (a3)
+  if (offset)
   {
-    *a3 = 0;
+    *offset = 0;
   }
 
   return 1;

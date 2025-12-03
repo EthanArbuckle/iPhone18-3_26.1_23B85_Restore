@@ -1,34 +1,34 @@
 @interface FTABFileBackDeploy
-- (BOOL)addSubfileWithTagName:(id)a3 contentsOfURL:(id)a4;
-- (BOOL)addSubfileWithTagName:(id)a3 subfileData:(id)a4;
-- (BOOL)configureFileHandleWriteDestinationForURL:(id)a3;
+- (BOOL)addSubfileWithTagName:(id)name contentsOfURL:(id)l;
+- (BOOL)addSubfileWithTagName:(id)name subfileData:(id)data;
+- (BOOL)configureFileHandleWriteDestinationForURL:(id)l;
 - (BOOL)initFile;
 - (BOOL)parseFileData;
-- (BOOL)writeBytes:(const void *)a3 length:(unint64_t)a4;
-- (BOOL)writeBytes:(const void *)a3 length:(unint64_t)a4 handle:(id)a5;
-- (BOOL)writeSubfileToURL:(id)a3 tag:(id)a4;
+- (BOOL)writeBytes:(const void *)bytes length:(unint64_t)length;
+- (BOOL)writeBytes:(const void *)bytes length:(unint64_t)length handle:(id)handle;
+- (BOOL)writeSubfileToURL:(id)l tag:(id)tag;
 - (BOOL)writeToDestination;
-- (BOOL)writeToURL:(id)a3;
+- (BOOL)writeToURL:(id)l;
 - (FTABFileBackDeploy)init;
-- (FTABFileBackDeploy)initWithContentsOfURL:(id)a3;
-- (FTABFileBackDeploy)initWithData:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)createFileHandleForWritingToURL:(id)a3;
+- (FTABFileBackDeploy)initWithContentsOfURL:(id)l;
+- (FTABFileBackDeploy)initWithData:(id)data;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)createFileHandleForWritingToURL:(id)l;
 - (id)description;
-- (id)subfileWithTag:(id)a3;
+- (id)subfileWithTag:(id)tag;
 - (id)writeToData;
-- (void)addSubfiles:(id)a3;
+- (void)addSubfiles:(id)subfiles;
 - (void)configureDataWriteDestination;
-- (void)removeSubfileWithTag:(id)a3;
-- (void)setBootNonce:(id)a3;
-- (void)setManifest:(id)a3;
+- (void)removeSubfileWithTag:(id)tag;
+- (void)setBootNonce:(id)nonce;
+- (void)setManifest:(id)manifest;
 @end
 
 @implementation FTABFileBackDeploy
 
-- (FTABFileBackDeploy)initWithContentsOfURL:(id)a3
+- (FTABFileBackDeploy)initWithContentsOfURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v14.receiver = self;
   v14.super_class = FTABFileBackDeploy;
   v6 = [(FTABFileBackDeploy *)&v14 init];
@@ -38,7 +38,7 @@
   }
 
   v13 = 0;
-  v7 = [NSData dataWithContentsOfURL:v5 options:1 error:&v13];
+  v7 = [NSData dataWithContentsOfURL:lCopy options:1 error:&v13];
   v8 = v13;
   fileData = v6->_fileData;
   v6->_fileData = v7;
@@ -62,7 +62,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  objc_storeStrong(&v6->_url, a3);
+  objc_storeStrong(&v6->_url, l);
 
 LABEL_5:
   v10 = v6;
@@ -71,13 +71,13 @@ LABEL_10:
   return v10;
 }
 
-- (FTABFileBackDeploy)initWithData:(id)a3
+- (FTABFileBackDeploy)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v10.receiver = self;
   v10.super_class = FTABFileBackDeploy;
   v5 = [(FTABFileBackDeploy *)&v10 init];
-  if (v5 && (v6 = [v4 copy], fileData = v5->_fileData, v5->_fileData = v6, fileData, !-[FTABFileBackDeploy initFile](v5, "initFile")))
+  if (v5 && (v6 = [dataCopy copy], fileData = v5->_fileData, v5->_fileData = v6, fileData, !-[FTABFileBackDeploy initFile](v5, "initFile")))
   {
     v8 = 0;
   }
@@ -246,9 +246,9 @@ LABEL_26:
   return 0;
 }
 
-- (id)subfileWithTag:(id)a3
+- (id)subfileWithTag:(id)tag
 {
-  v4 = a3;
+  tagCopy = tag;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -269,7 +269,7 @@ LABEL_26:
 
         v9 = *(*(&v13 + 1) + 8 * i);
         v10 = [v9 tag];
-        v11 = [v10 isEqual:v4];
+        v11 = [v10 isEqual:tagCopy];
 
         if (v11)
         {
@@ -293,9 +293,9 @@ LABEL_11:
   return v6;
 }
 
-- (void)removeSubfileWithTag:(id)a3
+- (void)removeSubfileWithTag:(id)tag
 {
-  v4 = [(FTABFileBackDeploy *)self subfileWithTag:a3];
+  v4 = [(FTABFileBackDeploy *)self subfileWithTag:tag];
   if (v4)
   {
     [(NSMutableArray *)self->_subFileArray removeObject:v4];
@@ -381,16 +381,16 @@ LABEL_11:
   return v13;
 }
 
-- (BOOL)addSubfileWithTagName:(id)a3 contentsOfURL:(id)a4
+- (BOOL)addSubfileWithTagName:(id)name contentsOfURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  lCopy = l;
   v13 = 0;
-  v8 = [NSData dataWithContentsOfURL:v7 options:1 error:&v13];
+  v8 = [NSData dataWithContentsOfURL:lCopy options:1 error:&v13];
   v9 = v13;
   if (v8)
   {
-    v10 = [(FTABFileBackDeploy *)self addSubfileWithTagName:v6 subfileData:v8];
+    v10 = [(FTABFileBackDeploy *)self addSubfileWithTagName:nameCopy subfileData:v8];
   }
 
   else
@@ -407,29 +407,29 @@ LABEL_11:
   return v10;
 }
 
-- (BOOL)addSubfileWithTagName:(id)a3 subfileData:(id)a4
+- (BOOL)addSubfileWithTagName:(id)name subfileData:(id)data
 {
-  v6 = a4;
-  v7 = a3;
-  [(FTABFileBackDeploy *)self removeSubfileWithTag:v7];
+  dataCopy = data;
+  nameCopy = name;
+  [(FTABFileBackDeploy *)self removeSubfileWithTag:nameCopy];
   v8 = [FTABSubfileBackDeploy alloc];
-  v9 = [v6 bytes];
-  v10 = [v6 length];
+  bytes = [dataCopy bytes];
+  v10 = [dataCopy length];
 
-  v11 = [(FTABSubfileBackDeploy *)v8 initWithTag:v7 dataPointer:v9 dataLength:v10];
+  v11 = [(FTABSubfileBackDeploy *)v8 initWithTag:nameCopy dataPointer:bytes dataLength:v10];
   [(NSMutableArray *)self->_subFileArray addObject:v11];
 
   return 1;
 }
 
-- (void)addSubfiles:(id)a3
+- (void)addSubfiles:(id)subfiles
 {
-  v4 = a3;
+  subfilesCopy = subfiles;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [subfilesCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -441,7 +441,7 @@ LABEL_11:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(subfilesCopy);
         }
 
         v9 = [*(*(&v10 + 1) + 8 * v8) tag];
@@ -451,47 +451,47 @@ LABEL_11:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [subfilesCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
   }
 
-  [(NSMutableArray *)self->_subFileArray addObjectsFromArray:v4];
+  [(NSMutableArray *)self->_subFileArray addObjectsFromArray:subfilesCopy];
 }
 
-- (void)setManifest:(id)a3
+- (void)setManifest:(id)manifest
 {
-  v4 = a3;
-  v5 = [[FTABSubfileBackDeploy alloc] initWithTag:@"Manifest" data:v4];
+  manifestCopy = manifest;
+  v5 = [[FTABSubfileBackDeploy alloc] initWithTag:@"Manifest" data:manifestCopy];
 
   manifest = self->_manifest;
   self->_manifest = v5;
 }
 
-- (void)setBootNonce:(id)a3
+- (void)setBootNonce:(id)nonce
 {
-  v4 = a3;
-  if ([v4 length] == 8)
+  nonceCopy = nonce;
+  if ([nonceCopy length] == 8)
   {
-    v5 = [v4 copy];
+    v5 = [nonceCopy copy];
     bootNonce = self->_bootNonce;
     self->_bootNonce = v5;
   }
 }
 
-- (id)createFileHandleForWritingToURL:(id)a3
+- (id)createFileHandleForWritingToURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = +[NSFileManager defaultManager];
-  v5 = [v3 path];
-  v6 = [(NSFileManager *)v4 fileExistsAtPath:v5];
+  path = [lCopy path];
+  v6 = [(NSFileManager *)v4 fileExistsAtPath:path];
 
   if (v6)
   {
-    v7 = [v3 path];
+    path2 = [lCopy path];
     v18 = 0;
-    v8 = [(NSFileManager *)v4 removeItemAtPath:v7 error:&v18];
+    v8 = [(NSFileManager *)v4 removeItemAtPath:path2 error:&v18];
     v9 = v18;
 
     if ((v8 & 1) == 0)
@@ -499,7 +499,7 @@ LABEL_11:
       v15 = os_log_create("com.apple.accessoryupdater.ftab", "writing");
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
-        sub_100036704(v3);
+        sub_100036704(lCopy);
       }
 
       goto LABEL_14;
@@ -507,15 +507,15 @@ LABEL_11:
   }
 
   v10 = +[NSFileManager defaultManager];
-  v11 = [v3 path];
-  v12 = [(NSFileManager *)v10 createFileAtPath:v11 contents:0 attributes:0];
+  path3 = [lCopy path];
+  v12 = [(NSFileManager *)v10 createFileAtPath:path3 contents:0 attributes:0];
 
   if ((v12 & 1) == 0)
   {
     v9 = os_log_create("com.apple.accessoryupdater.ftab", "writing");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      sub_100036790(v3);
+      sub_100036790(lCopy);
     }
 
 LABEL_14:
@@ -524,7 +524,7 @@ LABEL_14:
   }
 
   v17 = 0;
-  v13 = [NSFileHandle fileHandleForWritingToURL:v3 error:&v17];
+  v13 = [NSFileHandle fileHandleForWritingToURL:lCopy error:&v17];
   v9 = v17;
   if (!v13)
   {
@@ -540,13 +540,13 @@ LABEL_15:
   return v13;
 }
 
-- (BOOL)configureFileHandleWriteDestinationForURL:(id)a3
+- (BOOL)configureFileHandleWriteDestinationForURL:(id)l
 {
   dataWriteDestination = self->_dataWriteDestination;
   self->_dataWriteDestination = 0;
-  v5 = a3;
+  lCopy = l;
 
-  v6 = [(FTABFileBackDeploy *)self createFileHandleForWritingToURL:v5];
+  v6 = [(FTABFileBackDeploy *)self createFileHandleForWritingToURL:lCopy];
   fileHandleWriteDestination = self->_fileHandleWriteDestination;
   self->_fileHandleWriteDestination = v6;
 
@@ -563,13 +563,13 @@ LABEL_15:
   self->_dataWriteDestination = v4;
 }
 
-- (BOOL)writeBytes:(const void *)a3 length:(unint64_t)a4
+- (BOOL)writeBytes:(const void *)bytes length:(unint64_t)length
 {
   fileHandleWriteDestination = self->_fileHandleWriteDestination;
   if (fileHandleWriteDestination)
   {
 
-    LOBYTE(dataWriteDestination) = [(NSFileHandle *)fileHandleWriteDestination writeBytes:a3 length:a4];
+    LOBYTE(dataWriteDestination) = [(NSFileHandle *)fileHandleWriteDestination writeBytes:bytes length:length];
   }
 
   else
@@ -577,7 +577,7 @@ LABEL_15:
     dataWriteDestination = self->_dataWriteDestination;
     if (dataWriteDestination)
     {
-      [(NSMutableData *)dataWriteDestination appendBytes:a3 length:a4, v4, v5];
+      [(NSMutableData *)dataWriteDestination appendBytes:bytes length:length, v4, v5];
       LOBYTE(dataWriteDestination) = 1;
     }
   }
@@ -597,17 +597,17 @@ LABEL_15:
   if (manifest)
   {
     v5 = v3 + 48;
-    v6 = [(FTABSubfileBackDeploy *)manifest dataLength];
+    dataLength = [(FTABSubfileBackDeploy *)manifest dataLength];
   }
 
   else
   {
-    v6 = 0;
+    dataLength = 0;
     v5 = 0;
   }
 
   v37 = v5;
-  v38 = v6;
+  v38 = dataLength;
   v40 = *[(NSData *)self->_magic bytes];
   LODWORD(v41) = [(NSMutableArray *)self->_subFileArray count];
   if (![(FTABFileBackDeploy *)self writeBytes:v36 length:48])
@@ -630,7 +630,7 @@ LABEL_15:
   if (v8)
   {
     v9 = v8;
-    v10 = v3 + v6 + 48;
+    v10 = v3 + dataLength + 48;
     v11 = *v31;
     while (2)
     {
@@ -742,12 +742,12 @@ LABEL_32:
   return v21;
 }
 
-- (BOOL)writeToURL:(id)a3
+- (BOOL)writeToURL:(id)l
 {
-  v4 = a3;
-  if ([(FTABFileBackDeploy *)self configureFileHandleWriteDestinationForURL:v4])
+  lCopy = l;
+  if ([(FTABFileBackDeploy *)self configureFileHandleWriteDestinationForURL:lCopy])
   {
-    v5 = [(FTABFileBackDeploy *)self writeToDestination];
+    writeToDestination = [(FTABFileBackDeploy *)self writeToDestination];
     fileHandleWriteDestination = self->_fileHandleWriteDestination;
     self->_fileHandleWriteDestination = 0;
   }
@@ -757,13 +757,13 @@ LABEL_32:
     v7 = os_log_create("com.apple.accessoryupdater.ftab", "writing");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      sub_100036A30(v4);
+      sub_100036A30(lCopy);
     }
 
-    v5 = 0;
+    writeToDestination = 0;
   }
 
-  return v5;
+  return writeToDestination;
 }
 
 - (id)writeToData
@@ -777,14 +777,14 @@ LABEL_32:
   return v3;
 }
 
-- (BOOL)writeSubfileToURL:(id)a3 tag:(id)a4
+- (BOOL)writeSubfileToURL:(id)l tag:(id)tag
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(FTABFileBackDeploy *)self subfileWithTag:v7];
+  lCopy = l;
+  tagCopy = tag;
+  v8 = [(FTABFileBackDeploy *)self subfileWithTag:tagCopy];
   if (v8)
   {
-    v9 = [(FTABFileBackDeploy *)self createFileHandleForWritingToURL:v6];
+    v9 = [(FTABFileBackDeploy *)self createFileHandleForWritingToURL:lCopy];
     if (v9)
     {
       v10 = [v9 writeBytes:objc_msgSend(v8 length:{"dataPointer"), objc_msgSend(v8, "dataLength")}];
@@ -810,19 +810,19 @@ LABEL_32:
   return v10;
 }
 
-- (BOOL)writeBytes:(const void *)a3 length:(unint64_t)a4 handle:(id)a5
+- (BOOL)writeBytes:(const void *)bytes length:(unint64_t)length handle:(id)handle
 {
-  v7 = a5;
-  v8 = [NSData dataWithBytes:a3 length:a4];
-  LOBYTE(a3) = [v7 ftabWriteData:v8 error:0];
+  handleCopy = handle;
+  v8 = [NSData dataWithBytes:bytes length:length];
+  LOBYTE(bytes) = [handleCopy ftabWriteData:v8 error:0];
 
-  return a3;
+  return bytes;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [(FTABFileBackDeploy *)self writeToData];
-  v4 = [[FTABFileBackDeploy alloc] initWithData:v3];
+  writeToData = [(FTABFileBackDeploy *)self writeToData];
+  v4 = [[FTABFileBackDeploy alloc] initWithData:writeToData];
 
   return v4;
 }

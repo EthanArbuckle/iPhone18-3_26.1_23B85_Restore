@@ -1,14 +1,14 @@
 @interface MRGroupSessionAssertion
-- (MRGroupSessionAssertion)initWithCancellationHandler:(id)a3;
+- (MRGroupSessionAssertion)initWithCancellationHandler:(id)handler;
 - (void)cancel;
 - (void)dealloc;
 @end
 
 @implementation MRGroupSessionAssertion
 
-- (MRGroupSessionAssertion)initWithCancellationHandler:(id)a3
+- (MRGroupSessionAssertion)initWithCancellationHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v10.receiver = self;
   v10.super_class = MRGroupSessionAssertion;
   v5 = [(MRGroupSessionAssertion *)&v10 init];
@@ -16,7 +16,7 @@
   if (v5)
   {
     v5->_lock._os_unfair_lock_opaque = 0;
-    v7 = MEMORY[0x1A58E3570](v4);
+    v7 = MEMORY[0x1A58E3570](handlerCopy);
     handler = v6->_handler;
     v6->_handler = v7;
   }

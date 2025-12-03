@@ -1,12 +1,12 @@
 @interface HMCameraClipAssetContext
 + (id)shortDescription;
-- (BOOL)isEqual:(id)a3;
-- (HMCameraClipAssetContext)initWithCoder:(id)a3;
-- (HMCameraClipAssetContext)initWithURL:(id)a3 expirationDate:(id)a4 requiredHTTPHeaders:(id)a5 videoSegments:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (HMCameraClipAssetContext)initWithCoder:(id)coder;
+- (HMCameraClipAssetContext)initWithURL:(id)l expirationDate:(id)date requiredHTTPHeaders:(id)headers videoSegments:(id)segments;
 - (NSArray)attributeDescriptions;
 - (NSString)shortDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMCameraClipAssetContext
@@ -19,17 +19,17 @@
   v5 = [v3 initWithName:@"URL" value:v4];
   v20[0] = v5;
   v6 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v7 = [(HMCameraClipAssetContext *)self expirationDate];
-  v8 = [v6 initWithName:@"Expiration Date" value:v7];
+  expirationDate = [(HMCameraClipAssetContext *)self expirationDate];
+  v8 = [v6 initWithName:@"Expiration Date" value:expirationDate];
   v20[1] = v8;
   v9 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v10 = [(HMCameraClipAssetContext *)self requiredHTTPHeaders];
-  v11 = [v9 initWithName:@"Required HTTP Headers" value:v10];
+  requiredHTTPHeaders = [(HMCameraClipAssetContext *)self requiredHTTPHeaders];
+  v11 = [v9 initWithName:@"Required HTTP Headers" value:requiredHTTPHeaders];
   v20[2] = v11;
   v12 = objc_alloc(MEMORY[0x1E69A29C8]);
   v13 = MEMORY[0x1E696AD98];
-  v14 = [(HMCameraClipAssetContext *)self videoSegments];
-  v15 = [v13 numberWithUnsignedInteger:{objc_msgSend(v14, "count")}];
+  videoSegments = [(HMCameraClipAssetContext *)self videoSegments];
+  v15 = [v13 numberWithUnsignedInteger:{objc_msgSend(videoSegments, "count")}];
   v16 = [v12 initWithName:@"Video Segments Count" value:v15];
   v20[3] = v16;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:4];
@@ -46,51 +46,51 @@
   return [v2 shortDescription];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(HMCameraClipAssetContext *)self url];
-  [v4 encodeObject:v5 forKey:@"HMCCV.u"];
+  [coderCopy encodeObject:v5 forKey:@"HMCCV.u"];
 
-  v6 = [(HMCameraClipAssetContext *)self expirationDate];
-  [v4 encodeObject:v6 forKey:@"HMCCV.ed"];
+  expirationDate = [(HMCameraClipAssetContext *)self expirationDate];
+  [coderCopy encodeObject:expirationDate forKey:@"HMCCV.ed"];
 
-  v7 = [(HMCameraClipAssetContext *)self requiredHTTPHeaders];
-  [v4 encodeObject:v7 forKey:@"HMCCV.rhh"];
+  requiredHTTPHeaders = [(HMCameraClipAssetContext *)self requiredHTTPHeaders];
+  [coderCopy encodeObject:requiredHTTPHeaders forKey:@"HMCCV.rhh"];
 
-  v8 = [(HMCameraClipAssetContext *)self videoSegments];
-  [v4 encodeObject:v8 forKey:@"HMCCV.vs"];
+  videoSegments = [(HMCameraClipAssetContext *)self videoSegments];
+  [coderCopy encodeObject:videoSegments forKey:@"HMCCV.vs"];
 }
 
-- (HMCameraClipAssetContext)initWithCoder:(id)a3
+- (HMCameraClipAssetContext)initWithCoder:(id)coder
 {
   v32[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMCCV.u"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMCCV.ed"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMCCV.u"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMCCV.ed"];
   v7 = MEMORY[0x1E695DFD8];
   v32[0] = objc_opt_class();
   v32[1] = objc_opt_class();
   v32[2] = objc_opt_class();
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:3];
   v9 = [v7 setWithArray:v8];
-  v10 = [v4 decodeObjectOfClasses:v9 forKey:@"HMCCV.rhh"];
+  v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"HMCCV.rhh"];
 
   v11 = MEMORY[0x1E695DFD8];
   v12 = objc_opt_class();
   v13 = [v11 setWithObjects:{v12, objc_opt_class(), 0}];
-  v14 = [v4 decodeObjectOfClasses:v13 forKey:@"HMCCV.vs"];
+  v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"HMCCV.vs"];
 
   if (v5 && v6 && v10 && v14)
   {
-    v15 = [(HMCameraClipAssetContext *)self initWithURL:v5 expirationDate:v6 requiredHTTPHeaders:v10 videoSegments:v14];
-    v16 = v15;
+    selfCopy = [(HMCameraClipAssetContext *)self initWithURL:v5 expirationDate:v6 requiredHTTPHeaders:v10 videoSegments:v14];
+    v16 = selfCopy;
   }
 
   else
   {
     v17 = objc_autoreleasePoolPush();
-    v15 = self;
+    selfCopy = self;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
@@ -121,22 +121,22 @@
   v3 = [(HMCameraClipAssetContext *)self url];
   v4 = [v3 hash];
 
-  v5 = [(HMCameraClipAssetContext *)self expirationDate];
-  v6 = [v5 hash] ^ v4;
+  expirationDate = [(HMCameraClipAssetContext *)self expirationDate];
+  v6 = [expirationDate hash] ^ v4;
 
-  v7 = [(HMCameraClipAssetContext *)self requiredHTTPHeaders];
-  v8 = [v7 hash];
+  requiredHTTPHeaders = [(HMCameraClipAssetContext *)self requiredHTTPHeaders];
+  v8 = [requiredHTTPHeaders hash];
 
-  v9 = [(HMCameraClipAssetContext *)self videoSegments];
-  v10 = v8 ^ [v9 hash];
+  videoSegments = [(HMCameraClipAssetContext *)self videoSegments];
+  v10 = v8 ^ [videoSegments hash];
 
   return v6 ^ v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
@@ -146,7 +146,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -161,17 +161,17 @@
       v8 = [(HMCameraClipAssetContext *)v6 url];
       if ([v7 isEqual:v8])
       {
-        v9 = [(HMCameraClipAssetContext *)self expirationDate];
-        v10 = [(HMCameraClipAssetContext *)v6 expirationDate];
-        if ([v9 isEqualToDate:v10])
+        expirationDate = [(HMCameraClipAssetContext *)self expirationDate];
+        expirationDate2 = [(HMCameraClipAssetContext *)v6 expirationDate];
+        if ([expirationDate isEqualToDate:expirationDate2])
         {
-          v11 = [(HMCameraClipAssetContext *)self requiredHTTPHeaders];
-          v12 = [(HMCameraClipAssetContext *)v6 requiredHTTPHeaders];
-          if ([v11 isEqualToDictionary:v12])
+          requiredHTTPHeaders = [(HMCameraClipAssetContext *)self requiredHTTPHeaders];
+          requiredHTTPHeaders2 = [(HMCameraClipAssetContext *)v6 requiredHTTPHeaders];
+          if ([requiredHTTPHeaders isEqualToDictionary:requiredHTTPHeaders2])
           {
-            v16 = [(HMCameraClipAssetContext *)self videoSegments];
-            v13 = [(HMCameraClipAssetContext *)v6 videoSegments];
-            v14 = [v16 isEqualToArray:v13];
+            videoSegments = [(HMCameraClipAssetContext *)self videoSegments];
+            videoSegments2 = [(HMCameraClipAssetContext *)v6 videoSegments];
+            v14 = [videoSegments isEqualToArray:videoSegments2];
           }
 
           else
@@ -201,25 +201,25 @@
   return v14;
 }
 
-- (HMCameraClipAssetContext)initWithURL:(id)a3 expirationDate:(id)a4 requiredHTTPHeaders:(id)a5 videoSegments:(id)a6
+- (HMCameraClipAssetContext)initWithURL:(id)l expirationDate:(id)date requiredHTTPHeaders:(id)headers videoSegments:(id)segments
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  lCopy = l;
+  dateCopy = date;
+  headersCopy = headers;
+  segmentsCopy = segments;
   v22.receiver = self;
   v22.super_class = HMCameraClipAssetContext;
   v15 = [(HMCameraClipAssetContext *)&v22 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_url, a3);
-    objc_storeStrong(&v16->_expirationDate, a4);
-    v17 = [v13 copy];
+    objc_storeStrong(&v15->_url, l);
+    objc_storeStrong(&v16->_expirationDate, date);
+    v17 = [headersCopy copy];
     requiredHTTPHeaders = v16->_requiredHTTPHeaders;
     v16->_requiredHTTPHeaders = v17;
 
-    v19 = [v14 copy];
+    v19 = [segmentsCopy copy];
     videoSegments = v16->_videoSegments;
     v16->_videoSegments = v19;
   }

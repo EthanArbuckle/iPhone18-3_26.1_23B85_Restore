@@ -9,13 +9,13 @@
 - (void)_serverWasRestarted;
 - (void)_updateOrientationServer;
 - (void)dealloc;
-- (void)setAccelerometerEventsEnabled:(BOOL)a3;
-- (void)setOrientationEventsEnabled:(BOOL)a3;
-- (void)setPassiveOrientationEvents:(BOOL)a3;
-- (void)setUpdateInterval:(double)a3;
-- (void)setXThreshold:(float)a3;
-- (void)setYThreshold:(float)a3;
-- (void)setZThreshold:(float)a3;
+- (void)setAccelerometerEventsEnabled:(BOOL)enabled;
+- (void)setOrientationEventsEnabled:(BOOL)enabled;
+- (void)setPassiveOrientationEvents:(BOOL)events;
+- (void)setUpdateInterval:(double)interval;
+- (void)setXThreshold:(float)threshold;
+- (void)setYThreshold:(float)threshold;
+- (void)setZThreshold:(float)threshold;
 @end
 
 @implementation BKSAccelerometer
@@ -95,9 +95,9 @@
     if (v6)
     {
       v16 = v6;
-      v17 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v18 = objc_opt_class();
-      [v17 handleFailureInMethod:a2 object:self file:@"BKSAccelerometer.m" lineNumber:147 description:{@"%@ unable to allocate notification receive port: %s", v18, mach_error_string(v16)}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"BKSAccelerometer.m" lineNumber:147 description:{@"%@ unable to allocate notification receive port: %s", v18, mach_error_string(v16)}];
     }
 
     v20 = 2;
@@ -106,8 +106,8 @@
     self->_accelerometerEventsSource = v7;
     if (!v7)
     {
-      v19 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v19 handleFailureInMethod:a2 object:self file:@"BKSAccelerometer.m" lineNumber:154 description:{@"%@ unable to create run loop source", objc_opt_class()}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"BKSAccelerometer.m" lineNumber:154 description:{@"%@ unable to create run loop source", objc_opt_class()}];
     }
 
     Current = CFRunLoopGetCurrent();
@@ -180,25 +180,25 @@
 
 - (void)_orientationDidChange
 {
-  v3 = [(BKSAccelerometer *)self delegate];
+  delegate = [(BKSAccelerometer *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 accelerometer:self didChangeDeviceOrientation:{-[BKSAccelerometer currentDeviceOrientation](self, "currentDeviceOrientation")}];
+    [delegate accelerometer:self didChangeDeviceOrientation:{-[BKSAccelerometer currentDeviceOrientation](self, "currentDeviceOrientation")}];
   }
 }
 
-- (void)setOrientationEventsEnabled:(BOOL)a3
+- (void)setOrientationEventsEnabled:(BOOL)enabled
 {
-  if (self->_orientationEventsEnabled != a3)
+  if (self->_orientationEventsEnabled != enabled)
   {
-    v3 = a3;
-    self->_orientationEventsEnabled = a3;
+    enabledCopy = enabled;
+    self->_orientationEventsEnabled = enabled;
     [(BKSAccelerometer *)self _updateOrientationServer];
-    if (v3)
+    if (enabledCopy)
     {
-      v5 = [MEMORY[0x1E696AF00] currentThread];
+      currentThread = [MEMORY[0x1E696AF00] currentThread];
       orientationEventsThread = self->_orientationEventsThread;
-      self->_orientationEventsThread = v5;
+      self->_orientationEventsThread = currentThread;
 
       [(BKSAccelerometer *)self _registerForOrientationNotifications];
     }
@@ -212,11 +212,11 @@
   }
 }
 
-- (void)setPassiveOrientationEvents:(BOOL)a3
+- (void)setPassiveOrientationEvents:(BOOL)events
 {
-  if (self->_passiveOrientationEvents != a3)
+  if (self->_passiveOrientationEvents != events)
   {
-    self->_passiveOrientationEvents = a3;
+    self->_passiveOrientationEvents = events;
     [(BKSAccelerometer *)self _updateOrientationServer];
   }
 }
@@ -239,11 +239,11 @@
   [(NSLock *)lock unlock];
 }
 
-- (void)setZThreshold:(float)a3
+- (void)setZThreshold:(float)threshold
 {
-  if (self->_zThreshold != a3)
+  if (self->_zThreshold != threshold)
   {
-    self->_zThreshold = a3;
+    self->_zThreshold = threshold;
     [(NSLock *)self->_lock lock];
     if (self->_accelerometerEventsSource)
     {
@@ -256,11 +256,11 @@
   }
 }
 
-- (void)setYThreshold:(float)a3
+- (void)setYThreshold:(float)threshold
 {
-  if (self->_yThreshold != a3)
+  if (self->_yThreshold != threshold)
   {
-    self->_yThreshold = a3;
+    self->_yThreshold = threshold;
     [(NSLock *)self->_lock lock];
     if (self->_accelerometerEventsSource)
     {
@@ -273,11 +273,11 @@
   }
 }
 
-- (void)setXThreshold:(float)a3
+- (void)setXThreshold:(float)threshold
 {
-  if (self->_xThreshold != a3)
+  if (self->_xThreshold != threshold)
   {
-    self->_xThreshold = a3;
+    self->_xThreshold = threshold;
     [(NSLock *)self->_lock lock];
     if (self->_accelerometerEventsSource)
     {
@@ -290,11 +290,11 @@
   }
 }
 
-- (void)setUpdateInterval:(double)a3
+- (void)setUpdateInterval:(double)interval
 {
-  if (self->_updateInterval != a3)
+  if (self->_updateInterval != interval)
   {
-    self->_updateInterval = a3;
+    self->_updateInterval = interval;
     [(NSLock *)self->_lock lock];
     if (self->_accelerometerEventsSource)
     {
@@ -307,13 +307,13 @@
   }
 }
 
-- (void)setAccelerometerEventsEnabled:(BOOL)a3
+- (void)setAccelerometerEventsEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   [(NSLock *)self->_lock lock];
-  if ([(BKSAccelerometer *)self accelerometerEventsEnabled]!= v3)
+  if ([(BKSAccelerometer *)self accelerometerEventsEnabled]!= enabledCopy)
   {
-    if (v3)
+    if (enabledCopy)
     {
       [(BKSAccelerometer *)self _checkIn];
     }

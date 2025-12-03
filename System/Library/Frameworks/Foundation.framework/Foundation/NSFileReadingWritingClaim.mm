@@ -1,29 +1,29 @@
 @interface NSFileReadingWritingClaim
-- (BOOL)blocksClaim:(id)a3;
-- (BOOL)evaluateSelfWithRootNode:(id)a3 checkSubarbitrability:(BOOL)a4;
-- (BOOL)isBlockedByWritingItemAtLocation:(id)a3 options:(unint64_t)a4;
-- (NSFileReadingWritingClaim)initWithCoder:(id)a3;
-- (NSFileReadingWritingClaim)initWithPurposeID:(id)a3 readingURL:(id)a4 options:(unint64_t)a5 writingURL:(id)a6 options:(unint64_t)a7 claimer:(id)a8;
+- (BOOL)blocksClaim:(id)claim;
+- (BOOL)evaluateSelfWithRootNode:(id)node checkSubarbitrability:(BOOL)subarbitrability;
+- (BOOL)isBlockedByWritingItemAtLocation:(id)location options:(unint64_t)options;
+- (NSFileReadingWritingClaim)initWithCoder:(id)coder;
+- (NSFileReadingWritingClaim)initWithPurposeID:(id)d readingURL:(id)l options:(unint64_t)options writingURL:(id)rL options:(unint64_t)a7 claimer:(id)claimer;
 - (id)allURLs;
 - (void)dealloc;
 - (void)devalueSelf;
-- (void)encodeWithCoder:(id)a3;
-- (void)forwardUsingConnection:(id)a3 crashHandler:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)forwardUsingConnection:(id)connection crashHandler:(id)handler;
 - (void)granted;
 - (void)invokeClaimer;
-- (void)itemAtLocation:(id)a3 wasReplacedByItemAtLocation:(id)a4;
-- (void)resolveURLsThenMaybeContinueInvokingClaimer:(id)a3;
+- (void)itemAtLocation:(id)location wasReplacedByItemAtLocation:(id)atLocation;
+- (void)resolveURLsThenMaybeContinueInvokingClaimer:(id)claimer;
 @end
 
 @implementation NSFileReadingWritingClaim
 
 - (id)allURLs
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = v3;
+  array = [MEMORY[0x1E695DF70] array];
+  v4 = array;
   if (self->_readingURL)
   {
-    [v3 addObject:?];
+    [array addObject:?];
   }
 
   if (self->_writingURL)
@@ -46,7 +46,7 @@
       if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v27 = [(NSFileAccessClaim *)self claimID];
+        claimID = [(NSFileAccessClaim *)self claimID];
         _os_log_impl(&dword_18075C000, v4, OS_LOG_TYPE_DEFAULT, "Claim %{public}@ granted in server", buf, 0xCu);
       }
     }
@@ -132,7 +132,7 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v27 = [(NSFileAccessClaim *)self claimID];
+      claimID = [(NSFileAccessClaim *)self claimID];
       _os_log_error_impl(&dword_18075C000, v12, OS_LOG_TYPE_ERROR, "Claim %{public}@ can't be granted in daemon", buf, 0xCu);
     }
   }
@@ -146,7 +146,7 @@
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v27 = [(NSFileAccessClaim *)self claimID];
+        claimID = [(NSFileAccessClaim *)self claimID];
         _os_log_impl(&dword_18075C000, v14, OS_LOG_TYPE_DEFAULT, "Claim %{public}@ granted in client", buf, 0xCu);
       }
     }
@@ -316,22 +316,22 @@ uint64_t __36__NSFileReadingWritingClaim_granted__block_invoke_6(uint64_t a1)
   [(NSFileAccessClaim *)&v5 devalueSelf];
 }
 
-- (NSFileReadingWritingClaim)initWithPurposeID:(id)a3 readingURL:(id)a4 options:(unint64_t)a5 writingURL:(id)a6 options:(unint64_t)a7 claimer:(id)a8
+- (NSFileReadingWritingClaim)initWithPurposeID:(id)d readingURL:(id)l options:(unint64_t)options writingURL:(id)rL options:(unint64_t)a7 claimer:(id)claimer
 {
-  v13 = [(NSFileAccessClaim *)self initWithClient:0 claimID:0 purposeID:a3];
+  v13 = [(NSFileAccessClaim *)self initWithClient:0 claimID:0 purposeID:d];
   if (v13)
   {
-    v13->_readingURL = [a4 copy];
-    v13->_readingOptions = (a5 << 14) & 0x20000 | a5;
-    v13->_writingURL = [a6 copy];
+    v13->_readingURL = [l copy];
+    v13->_readingOptions = (options << 14) & 0x20000 | options;
+    v13->_writingURL = [rL copy];
     v13->_writingOptions = a7;
-    v13->super._claimerOrNil = [a8 copy];
+    v13->super._claimerOrNil = [claimer copy];
   }
 
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6 = *MEMORY[0x1E69E9840];
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -339,16 +339,16 @@ uint64_t __36__NSFileReadingWritingClaim_granted__block_invoke_6(uint64_t a1)
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"NSFileAccessClaims should only ever be encoded by XPC" userInfo:0]);
   }
 
-  [a3 encodeObject:+[NSURLPromisePair pairWithURL:](NSURLPromisePair forKey:{"pairWithURL:", self->_readingURL), @"NSReadingURLPairKey"}];
-  [a3 encodeObject:+[NSNumber numberWithUnsignedInteger:](NSNumber forKey:{"numberWithUnsignedInteger:", self->_readingOptions), @"NSReadingOptionsKey"}];
-  [a3 encodeObject:+[NSURLPromisePair pairWithURL:](NSURLPromisePair forKey:{"pairWithURL:", self->_writingURL), @"NSWritingURLPairKey"}];
-  [a3 encodeObject:+[NSNumber numberWithUnsignedInteger:](NSNumber forKey:{"numberWithUnsignedInteger:", self->_writingOptions), @"NSWritingOptionsKey"}];
+  [coder encodeObject:+[NSURLPromisePair pairWithURL:](NSURLPromisePair forKey:{"pairWithURL:", self->_readingURL), @"NSReadingURLPairKey"}];
+  [coder encodeObject:+[NSNumber numberWithUnsignedInteger:](NSNumber forKey:{"numberWithUnsignedInteger:", self->_readingOptions), @"NSReadingOptionsKey"}];
+  [coder encodeObject:+[NSURLPromisePair pairWithURL:](NSURLPromisePair forKey:{"pairWithURL:", self->_writingURL), @"NSWritingURLPairKey"}];
+  [coder encodeObject:+[NSNumber numberWithUnsignedInteger:](NSNumber forKey:{"numberWithUnsignedInteger:", self->_writingOptions), @"NSWritingOptionsKey"}];
   v5.receiver = self;
   v5.super_class = NSFileReadingWritingClaim;
-  [(NSFileAccessClaim *)&v5 encodeWithCoder:a3];
+  [(NSFileAccessClaim *)&v5 encodeWithCoder:coder];
 }
 
-- (NSFileReadingWritingClaim)initWithCoder:(id)a3
+- (NSFileReadingWritingClaim)initWithCoder:(id)coder
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
@@ -362,23 +362,23 @@ uint64_t __36__NSFileReadingWritingClaim_granted__block_invoke_6(uint64_t a1)
       objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"NSFileAccessClaims should only ever be decoded by XPC" userInfo:0]);
     }
 
-    v4->_readingURL = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"NSReadingURLPairKey", "URL"}];
-    v4->_readingOptions = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"NSReadingOptionsKey", "unsignedIntegerValue"}];
-    v4->_writingURL = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"NSWritingURLPairKey", "URL"}];
-    v4->_writingOptions = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"NSWritingOptionsKey", "unsignedIntegerValue"}];
+    v4->_readingURL = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"NSReadingURLPairKey", "URL"}];
+    v4->_readingOptions = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"NSReadingOptionsKey", "unsignedIntegerValue"}];
+    v4->_writingURL = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"NSWritingURLPairKey", "URL"}];
+    v4->_writingOptions = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"NSWritingOptionsKey", "unsignedIntegerValue"}];
   }
 
   return v4;
 }
 
-- (void)forwardUsingConnection:(id)a3 crashHandler:(id)a4
+- (void)forwardUsingConnection:(id)connection crashHandler:(id)handler
 {
   v13 = *MEMORY[0x1E69E9840];
   v7 = _NSFCClaimsLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138543362;
-    v12 = [(NSFileAccessClaim *)self claimID];
+    claimID = [(NSFileAccessClaim *)self claimID];
     _os_log_debug_impl(&dword_18075C000, v7, OS_LOG_TYPE_DEBUG, "%{public}@ blocked pending grantAccessClaim", buf, 0xCu);
   }
 
@@ -388,8 +388,8 @@ uint64_t __36__NSFileReadingWritingClaim_granted__block_invoke_6(uint64_t a1)
   v10[2] = __65__NSFileReadingWritingClaim_forwardUsingConnection_crashHandler___block_invoke;
   v10[3] = &unk_1E69F61A0;
   v10[4] = self;
-  v10[5] = a4;
-  v8 = [a3 remoteObjectProxyWithErrorHandler:v10];
+  v10[5] = handler;
+  v8 = [connection remoteObjectProxyWithErrorHandler:v10];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __65__NSFileReadingWritingClaim_forwardUsingConnection_crashHandler___block_invoke_406;
@@ -490,12 +490,12 @@ LABEL_3:
   return [*(a1 + 32) unblock];
 }
 
-- (BOOL)evaluateSelfWithRootNode:(id)a3 checkSubarbitrability:(BOOL)a4
+- (BOOL)evaluateSelfWithRootNode:(id)node checkSubarbitrability:(BOOL)subarbitrability
 {
-  v4 = a4;
+  subarbitrabilityCopy = subarbitrability;
   v19[1] = *MEMORY[0x1E69E9840];
-  v7 = [a3 descendantForFileURL:self->_readingURL];
-  v8 = [a3 descendantForFileURL:self->_writingURL];
+  v7 = [node descendantForFileURL:self->_readingURL];
+  v8 = [node descendantForFileURL:self->_writingURL];
   if (v7)
   {
     v9 = v8 == 0;
@@ -513,7 +513,7 @@ LABEL_3:
 
   v11 = v8;
   v17 = 0;
-  if (!v4 || [(NSFileAccessNode *)v7 itemIsSubarbitrable]&& [(NSFileAccessNode *)v11 itemIsSubarbitrable])
+  if (!subarbitrabilityCopy || [(NSFileAccessNode *)v7 itemIsSubarbitrable]&& [(NSFileAccessNode *)v11 itemIsSubarbitrable])
   {
     v19[0] = v7;
     if (-[NSFileAccessClaim canAccessLocations:forReading:error:](self, "canAccessLocations:forReading:error:", [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1], 1, &v17) && (v18 = v11, -[NSFileAccessClaim canAccessLocations:forReading:error:](self, "canAccessLocations:forReading:error:", objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", &v18, 1), 0, &v17)))
@@ -524,7 +524,7 @@ LABEL_3:
       [(NSFileAccessNode *)v11 addAccessClaim:self];
       if ((self->_readingOptions & 2) != 0)
       {
-        self->_rootNode = a3;
+        self->_rootNode = node;
       }
 
       readingLocation = self->_readingLocation;
@@ -561,12 +561,12 @@ LABEL_3:
   return v10;
 }
 
-- (BOOL)isBlockedByWritingItemAtLocation:(id)a3 options:(unint64_t)a4
+- (BOOL)isBlockedByWritingItemAtLocation:(id)location options:(unint64_t)options
 {
   v7 = objc_opt_class();
-  if ([v7 canReadingItemAtLocation:self->_readingLocation options:self->_readingOptions safelyOverlapNewWriting:0 ofItemAtLocation:a3 options:a4])
+  if ([v7 canReadingItemAtLocation:self->_readingLocation options:self->_readingOptions safelyOverlapNewWriting:0 ofItemAtLocation:location options:options])
   {
-    return [v7 canNewWriteOfItemAtLocation:self->_writingLocation options:self->_writingOptions safelyOverlapExistingWriteOfItemAtLocation:a3 options:a4] ^ 1;
+    return [v7 canNewWriteOfItemAtLocation:self->_writingLocation options:self->_writingOptions safelyOverlapExistingWriteOfItemAtLocation:location options:options] ^ 1;
   }
 
   else
@@ -667,24 +667,24 @@ void *__36__NSFileReadingWritingClaim_granted__block_invoke_407(void *result, vo
   return result;
 }
 
-- (void)resolveURLsThenMaybeContinueInvokingClaimer:(id)a3
+- (void)resolveURLsThenMaybeContinueInvokingClaimer:(id)claimer
 {
   v11[5] = *MEMORY[0x1E69E9840];
   if ([(NSFileAccessClaim *)self didWait])
   {
-    v5 = [(NSFileAccessNode *)self->_readingLocation standardizedURL];
-    if (v5)
+    standardizedURL = [(NSFileAccessNode *)self->_readingLocation standardizedURL];
+    if (standardizedURL)
     {
-      v6 = v5;
+      v6 = standardizedURL;
 
       self->_readingURL = [v6 copy];
       self->_readingURLDidChange = 1;
     }
 
-    v7 = [(NSFileAccessNode *)self->_writingLocation standardizedURL];
-    if (v7)
+    standardizedURL2 = [(NSFileAccessNode *)self->_writingLocation standardizedURL];
+    if (standardizedURL2)
     {
-      v8 = v7;
+      v8 = standardizedURL2;
 
       self->_writingURL = [v8 copy];
       self->_writingURLDidChange = 1;
@@ -693,9 +693,9 @@ void *__36__NSFileReadingWritingClaim_granted__block_invoke_407(void *result, vo
 
   if ([(NSFileAccessClaim *)self claimerError])
   {
-    v9 = *(a3 + 2);
+    v9 = *(claimer + 2);
 
-    v9(a3, 0, 0);
+    v9(claimer, 0, 0);
   }
 
   else
@@ -710,7 +710,7 @@ void *__36__NSFileReadingWritingClaim_granted__block_invoke_407(void *result, vo
     v10[2] = __73__NSFileReadingWritingClaim_resolveURLsThenMaybeContinueInvokingClaimer___block_invoke_3;
     v10[3] = &unk_1E69F5678;
     v10[4] = self;
-    v10[5] = a3;
+    v10[5] = claimer;
     __73__NSFileReadingWritingClaim_resolveURLsThenMaybeContinueInvokingClaimer___block_invoke(v11, v10);
   }
 }
@@ -787,26 +787,26 @@ uint64_t __73__NSFileReadingWritingClaim_resolveURLsThenMaybeContinueInvokingCla
   return [v4 makeProviderOfItemAtLocation:v5 provideOrAttachPhysicalURLIfNecessaryForPurposeID:v6 writingOptions:v8 thenContinue:v10];
 }
 
-- (void)itemAtLocation:(id)a3 wasReplacedByItemAtLocation:(id)a4
+- (void)itemAtLocation:(id)location wasReplacedByItemAtLocation:(id)atLocation
 {
-  if (self->_writingLocation == a3)
+  if (self->_writingLocation == location)
   {
-    [a4 addAccessClaim:self];
-    [a3 removeAccessClaim:self];
-    self->_writingLocation = a4;
+    [atLocation addAccessClaim:self];
+    [location removeAccessClaim:self];
+    self->_writingLocation = atLocation;
   }
 
-  if (self->_readingLocation == a3)
+  if (self->_readingLocation == location)
   {
-    [a4 addAccessClaim:self];
-    [a3 removeAccessClaim:self];
-    self->_readingLocation = a4;
+    [atLocation addAccessClaim:self];
+    [location removeAccessClaim:self];
+    self->_readingLocation = atLocation;
   }
 }
 
-- (BOOL)blocksClaim:(id)a3
+- (BOOL)blocksClaim:(id)claim
 {
-  if ([a3 isBlockedByReadingItemAtLocation:self->_readingLocation options:self->_readingOptions])
+  if ([claim isBlockedByReadingItemAtLocation:self->_readingLocation options:self->_readingOptions])
   {
     return 1;
   }
@@ -814,7 +814,7 @@ uint64_t __73__NSFileReadingWritingClaim_resolveURLsThenMaybeContinueInvokingCla
   writingLocation = self->_writingLocation;
   writingOptions = self->_writingOptions;
 
-  return [a3 isBlockedByWritingItemAtLocation:writingLocation options:writingOptions];
+  return [claim isBlockedByWritingItemAtLocation:writingLocation options:writingOptions];
 }
 
 @end

@@ -1,19 +1,19 @@
 @interface NGMGFTSignatureFormatter
-- (NGMGFTSignatureFormatter)initWithApplicationData:(id)a3;
+- (NGMGFTSignatureFormatter)initWithApplicationData:(id)data;
 @end
 
 @implementation NGMGFTSignatureFormatter
 
-- (NGMGFTSignatureFormatter)initWithApplicationData:(id)a3
+- (NGMGFTSignatureFormatter)initWithApplicationData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v12.receiver = self;
   v12.super_class = NGMGFTSignatureFormatter;
   v5 = [(NGMGFTSignatureFormatter *)&v12 init];
   if (v5)
   {
     v6 = [@"com.apple.FaceTime.QRKeying" dataUsingEncoding:4];
-    v7 = [MEMORY[0x277CBEB28] dataWithCapacity:{objc_msgSend(v4, "length") + objc_msgSend(v6, "length")}];
+    v7 = [MEMORY[0x277CBEB28] dataWithCapacity:{objc_msgSend(dataCopy, "length") + objc_msgSend(v6, "length")}];
     if (!v7)
     {
 
@@ -23,7 +23,7 @@
 
     v8 = v7;
     [(NSData *)v7 appendData:v6];
-    [(NSData *)v8 appendData:v4];
+    [(NSData *)v8 appendData:dataCopy];
     signedData = v5->_signedData;
     v5->_signedData = v8;
   }

@@ -11,10 +11,10 @@
   [v0 setStartPoint:{0.5, 0.5}];
   [v0 setEndPoint:{0.0, 0.5}];
   [v0 setType:*MEMORY[0x277CDA698]];
-  v1 = [MEMORY[0x277D75348] whiteColor];
-  v5[0] = [v1 CGColor];
-  v2 = [MEMORY[0x277D75348] blackColor];
-  v5[1] = [v2 CGColor];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  v5[0] = [whiteColor CGColor];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  v5[1] = [blackColor CGColor];
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v5 count:2];
   [v0 setColors:v3];
 

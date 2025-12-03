@@ -1,10 +1,10 @@
 @interface SBStateDumpService
-- (BOOL)_authenticateClient:(id)a3;
+- (BOOL)_authenticateClient:(id)client;
 - (SBStateDumpService)init;
-- (void)systemServiceServer:(id)a3 client:(id)a4 disableRemoteStateDumpWithCompletion:(id)a5;
-- (void)systemServiceServer:(id)a3 client:(id)a4 enableRemoteStateDumpWithTimeout:(int64_t)a5 completion:(id)a6;
-- (void)systemServiceServer:(id)a3 client:(id)a4 requestStateDump:(unint64_t)a5 toTextFileAtPath:(id)a6;
-- (void)systemServiceServer:(id)a3 client:(id)a4 requestStateDump:(unint64_t)a5 withCompletion:(id)a6;
+- (void)systemServiceServer:(id)server client:(id)client disableRemoteStateDumpWithCompletion:(id)completion;
+- (void)systemServiceServer:(id)server client:(id)client enableRemoteStateDumpWithTimeout:(int64_t)timeout completion:(id)completion;
+- (void)systemServiceServer:(id)server client:(id)client requestStateDump:(unint64_t)dump toTextFileAtPath:(id)path;
+- (void)systemServiceServer:(id)server client:(id)client requestStateDump:(unint64_t)dump withCompletion:(id)completion;
 @end
 
 @implementation SBStateDumpService
@@ -27,61 +27,61 @@
   return v2;
 }
 
-- (void)systemServiceServer:(id)a3 client:(id)a4 requestStateDump:(unint64_t)a5 withCompletion:(id)a6
+- (void)systemServiceServer:(id)server client:(id)client requestStateDump:(unint64_t)dump withCompletion:(id)completion
 {
-  v9 = a6;
-  if ([(SBStateDumpService *)self _authenticateClient:a4])
+  completionCopy = completion;
+  if ([(SBStateDumpService *)self _authenticateClient:client])
   {
-    if (a5 == 1)
+    if (dump == 1)
     {
-      [SBApp _dumpLoggingStateCaptureWithCompletion:v9];
+      [SBApp _dumpLoggingStateCaptureWithCompletion:completionCopy];
     }
 
     else
     {
-      (*(v9 + 2))(v9, 0, 0, @"Unrecognized state dump type.");
+      (*(completionCopy + 2))(completionCopy, 0, 0, @"Unrecognized state dump type.");
     }
   }
 }
 
-- (void)systemServiceServer:(id)a3 client:(id)a4 requestStateDump:(unint64_t)a5 toTextFileAtPath:(id)a6
+- (void)systemServiceServer:(id)server client:(id)client requestStateDump:(unint64_t)dump toTextFileAtPath:(id)path
 {
-  v10 = a6;
-  v9 = [(SBStateDumpService *)self _authenticateClient:a4];
-  if (a5 == 1 && v9)
+  pathCopy = path;
+  v9 = [(SBStateDumpService *)self _authenticateClient:client];
+  if (dump == 1 && v9)
   {
-    [SBApp _dumpLoggingStateCaptureToTextFileAtPath:v10];
+    [SBApp _dumpLoggingStateCaptureToTextFileAtPath:pathCopy];
   }
 }
 
-- (void)systemServiceServer:(id)a3 client:(id)a4 enableRemoteStateDumpWithTimeout:(int64_t)a5 completion:(id)a6
+- (void)systemServiceServer:(id)server client:(id)client enableRemoteStateDumpWithTimeout:(int64_t)timeout completion:(id)completion
 {
-  v9 = a6;
-  if ([(SBStateDumpService *)self _authenticateClient:a4])
+  completionCopy = completion;
+  if ([(SBStateDumpService *)self _authenticateClient:client])
   {
-    [SBApp _enableRemoteStateDumpWithTimeout:a5 withCompletion:v9];
+    [SBApp _enableRemoteStateDumpWithTimeout:timeout withCompletion:completionCopy];
   }
 }
 
-- (void)systemServiceServer:(id)a3 client:(id)a4 disableRemoteStateDumpWithCompletion:(id)a5
+- (void)systemServiceServer:(id)server client:(id)client disableRemoteStateDumpWithCompletion:(id)completion
 {
-  v7 = a5;
-  if ([(SBStateDumpService *)self _authenticateClient:a4])
+  completionCopy = completion;
+  if ([(SBStateDumpService *)self _authenticateClient:client])
   {
-    [SBApp _disableRemoteStateDumpWithCompletion:v7];
+    [SBApp _disableRemoteStateDumpWithCompletion:completionCopy];
   }
 }
 
-- (BOOL)_authenticateClient:(id)a3
+- (BOOL)_authenticateClient:(id)client
 {
-  v4 = a3;
-  v5 = [(FBServiceClientAuthenticator *)self->_clientAuthenticator authenticateClient:v4];
+  clientCopy = client;
+  v5 = [(FBServiceClientAuthenticator *)self->_clientAuthenticator authenticateClient:clientCopy];
   if ((v5 & 1) == 0)
   {
     v6 = SBLogCommon();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
-      [(SBStateDumpService *)v4 _authenticateClient:v6];
+      [(SBStateDumpService *)clientCopy _authenticateClient:v6];
     }
   }
 

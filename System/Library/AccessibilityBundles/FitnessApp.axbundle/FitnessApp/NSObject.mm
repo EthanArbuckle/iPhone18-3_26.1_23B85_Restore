@@ -1,10 +1,10 @@
 @interface NSObject
-- (id)_fitnessUIAccessibilityDescriptionForPercentages:(double)a3 exercisingPercentage:(double)a4 standingPercentage:(double)a5 arePercentagesCapped:(BOOL)a6;
+- (id)_fitnessUIAccessibilityDescriptionForPercentages:(double)percentages exercisingPercentage:(double)percentage standingPercentage:(double)standingPercentage arePercentagesCapped:(BOOL)capped;
 @end
 
 @implementation NSObject
 
-- (id)_fitnessUIAccessibilityDescriptionForPercentages:(double)a3 exercisingPercentage:(double)a4 standingPercentage:(double)a5 arePercentagesCapped:(BOOL)a6
+- (id)_fitnessUIAccessibilityDescriptionForPercentages:(double)percentages exercisingPercentage:(double)percentage standingPercentage:(double)standingPercentage arePercentagesCapped:(BOOL)capped
 {
   v8 = 0;
   v9 = &v8;

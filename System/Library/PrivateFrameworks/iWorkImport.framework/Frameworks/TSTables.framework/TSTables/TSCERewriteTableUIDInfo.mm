@@ -1,18 +1,18 @@
 @interface TSCERewriteTableUIDInfo
-- (TSCERewriteTableUIDInfo)initWithTableUIDMap:(const void *)a3;
+- (TSCERewriteTableUIDInfo)initWithTableUIDMap:(const void *)map;
 - (TSKUIDStructVectorTemplate<TSKUIDStruct>)originalTableUIDs;
 - (id).cxx_construct;
 - (id)description;
-- (id)extendMappingWithTableUIDs:(const void *)a3 calcEngine:(id)a4;
-- (id)initFromMessage:(const void *)a3;
-- (void)rollbackMappings:(id)a3;
-- (void)saveToMessage:(void *)a3;
-- (void)tableWasAdded:(const TSKUIDStruct *)a3;
+- (id)extendMappingWithTableUIDs:(const void *)ds calcEngine:(id)engine;
+- (id)initFromMessage:(const void *)message;
+- (void)rollbackMappings:(id)mappings;
+- (void)saveToMessage:(void *)message;
+- (void)tableWasAdded:(const TSKUIDStruct *)added;
 @end
 
 @implementation TSCERewriteTableUIDInfo
 
-- (TSCERewriteTableUIDInfo)initWithTableUIDMap:(const void *)a3
+- (TSCERewriteTableUIDInfo)initWithTableUIDMap:(const void *)map
 {
   v8.receiver = self;
   v8.super_class = TSCERewriteTableUIDInfo;
@@ -20,7 +20,7 @@
   p_tableUIDMap = &v4->_tableUIDMap;
   if (v4)
   {
-    v6 = p_tableUIDMap == a3;
+    v6 = p_tableUIDMap == map;
   }
 
   else
@@ -30,8 +30,8 @@
 
   if (!v6)
   {
-    v4->_tableUIDMap.__table_.__max_load_factor_ = *(a3 + 8);
-    sub_221417E5C(p_tableUIDMap, *(a3 + 2), 0);
+    v4->_tableUIDMap.__table_.__max_load_factor_ = *(map + 8);
+    sub_221417E5C(p_tableUIDMap, *(map + 2), 0);
   }
 
   return v4;
@@ -64,21 +64,21 @@
   return v9;
 }
 
-- (id)initFromMessage:(const void *)a3
+- (id)initFromMessage:(const void *)message
 {
   v20.receiver = self;
   v20.super_class = TSCERewriteTableUIDInfo;
   v5 = [(TSCERewriteTableUIDInfo *)&v20 init];
   if (v5)
   {
-    v6 = *(a3 + 6);
+    v6 = *(message + 6);
     if (v6 >= 1)
     {
       v7 = 8;
       v8 = MEMORY[0x277D809E0];
       do
       {
-        v9 = *(*(a3 + 4) + v7);
+        v9 = *(*(message + 4) + v7);
         v18 = 0;
         v19 = 0;
         if (*(v9 + 24))
@@ -120,7 +120,7 @@
   return v5;
 }
 
-- (void)saveToMessage:(void *)a3
+- (void)saveToMessage:(void *)message
 {
   v23[0] = 0;
   v23[1] = 0;
@@ -144,20 +144,20 @@
         v6 = *(v5 + 2);
         v20 = *(v5 + 3);
         v21 = v6;
-        v7 = *(a3 + 4);
+        v7 = *(message + 4);
         if (!v7)
         {
           goto LABEL_9;
         }
 
-        v8 = *(a3 + 6);
+        v8 = *(message + 6);
         v9 = *v7;
         if (v8 >= *v7)
         {
           break;
         }
 
-        *(a3 + 6) = v8 + 1;
+        *(message + 6) = v8 + 1;
         v10 = *&v7[2 * v8 + 2];
 LABEL_11:
         *(v10 + 16) |= 1u;
@@ -221,19 +221,19 @@ LABEL_11:
         }
       }
 
-      if (v9 == *(a3 + 7))
+      if (v9 == *(message + 7))
       {
 LABEL_9:
-        google::protobuf::internal::RepeatedPtrFieldBase::Reserve((a3 + 16));
-        v7 = *(a3 + 4);
+        google::protobuf::internal::RepeatedPtrFieldBase::Reserve((message + 16));
+        v7 = *(message + 4);
         v9 = *v7;
       }
 
       *v7 = v9 + 1;
-      v10 = google::protobuf::Arena::CreateMaybeMessage<TSCE::RewriteTableUIDInfoArchive_TableUIDMapEntryArchive>(*(a3 + 2));
-      v11 = *(a3 + 6);
-      v12 = *(a3 + 4) + 8 * v11;
-      *(a3 + 6) = v11 + 1;
+      v10 = google::protobuf::Arena::CreateMaybeMessage<TSCE::RewriteTableUIDInfoArchive_TableUIDMapEntryArchive>(*(message + 2));
+      v11 = *(message + 6);
+      v12 = *(message + 4) + 8 * v11;
+      *(message + 6) = v11 + 1;
       *(v12 + 8) = v10;
       goto LABEL_11;
     }
@@ -243,9 +243,9 @@ LABEL_25:
   sub_2210BC9F8(&v22, v23[0]);
 }
 
-- (id)extendMappingWithTableUIDs:(const void *)a3 calcEngine:(id)a4
+- (id)extendMappingWithTableUIDs:(const void *)ds calcEngine:(id)engine
 {
-  v8 = a4;
+  engineCopy = engine;
   v40 = 0u;
   v41 = 0u;
   v42 = 1065353216;
@@ -269,7 +269,7 @@ LABEL_25:
       goto LABEL_15;
     }
 
-    v11 = sub_221119F90(a3, next + 2);
+    v11 = sub_221119F90(ds, next + 2);
     if (v11)
     {
       v14 = v11 + 4;
@@ -277,7 +277,7 @@ LABEL_25:
       {
         v15 = next[5];
 LABEL_9:
-        if ((objc_msgSend_ownerIsRegistered_(v8, v12, *v10, v15, v13, v34) & 1) == 0)
+        if ((objc_msgSend_ownerIsRegistered_(engineCopy, v12, *v10, v15, v13, v34) & 1) == 0)
         {
           v43 = next + 4;
           *(sub_221230440(&v34, next + 4) + 2) = *v14;
@@ -294,7 +294,7 @@ LABEL_9:
     }
 
 LABEL_11:
-    v16 = sub_221119F90(a3, next + 4);
+    v16 = sub_221119F90(ds, next + 4);
     if (v16)
     {
       v43 = next + 2;
@@ -342,11 +342,11 @@ LABEL_21:
     v20 += 2;
   }
 
-  for (j = *(a3 + 2); j; j = *j)
+  for (j = *(ds + 2); j; j = *j)
   {
     v24 = j[2];
     v25 = j[3];
-    if ((v24 != j[4] || v25 != j[5]) && (objc_msgSend_ownerIsRegistered_(v8, v6, v24, v25, v7, v34) & 1) == 0)
+    if ((v24 != j[4] || v25 != j[5]) && (objc_msgSend_ownerIsRegistered_(engineCopy, v6, v24, v25, v7, v34) & 1) == 0)
     {
       v26 = sub_2210875C4(&self->_tableUIDMap.__table_.__bucket_list_.__ptr_, j + 2);
       v43 = j + 2;
@@ -390,9 +390,9 @@ LABEL_21:
   return v32;
 }
 
-- (void)tableWasAdded:(const TSKUIDStruct *)a3
+- (void)tableWasAdded:(const TSKUIDStruct *)added
 {
-  v4 = sub_2210875C4(&self->_tableUIDMap.__table_.__bucket_list_.__ptr_, a3);
+  v4 = sub_2210875C4(&self->_tableUIDMap.__table_.__bucket_list_.__ptr_, added);
   if (v4)
   {
 
@@ -400,13 +400,13 @@ LABEL_21:
   }
 }
 
-- (void)rollbackMappings:(id)a3
+- (void)rollbackMappings:(id)mappings
 {
-  v4 = a3;
-  v9 = v4;
-  if (v4)
+  mappingsCopy = mappings;
+  v9 = mappingsCopy;
+  if (mappingsCopy)
   {
-    for (i = *(objc_msgSend_tableUIDMap(v4, v5, v6, v7, v8) + 16); i; i = *i)
+    for (i = *(objc_msgSend_tableUIDMap(mappingsCopy, v5, v6, v7, v8) + 16); i; i = *i)
     {
       v11 = i + 2;
       if (i[4] || i[5])

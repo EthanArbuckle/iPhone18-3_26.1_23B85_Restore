@@ -1,10 +1,10 @@
 @interface CallScreeningViewController
-- (_TtC16CommunicationsUI27CallScreeningViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (_TtC16CommunicationsUI27CallScreeningViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation CallScreeningViewController
@@ -21,25 +21,25 @@
   sub_1C2DB99E0();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  CallScreeningViewController.viewWillAppear(_:)(a3);
+  selfCopy = self;
+  CallScreeningViewController.viewWillAppear(_:)(appear);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  CallScreeningViewController.viewDidAppear(_:)(a3);
+  selfCopy = self;
+  CallScreeningViewController.viewDidAppear(_:)(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
   v4 = v7.receiver;
-  [(CallScreeningViewController *)&v7 viewWillDisappear:v3];
+  [(CallScreeningViewController *)&v7 viewWillDisappear:disappearCopy];
   if (v4[OBJC_IVAR____TtC16CommunicationsUI27CallScreeningViewController_createTextField] == 1)
   {
     v5 = sub_1C2DC0558(&OBJC_IVAR____TtC16CommunicationsUI27CallScreeningViewController____lazy_storage___textField, sub_1C2DBF508);
@@ -50,11 +50,11 @@
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   CallScreeningViewController.viewDidLayoutSubviews()();
 }
 
-- (_TtC16CommunicationsUI27CallScreeningViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC16CommunicationsUI27CallScreeningViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

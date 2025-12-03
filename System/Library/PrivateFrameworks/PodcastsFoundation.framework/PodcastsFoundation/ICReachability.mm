@@ -16,25 +16,25 @@
 
 - (BOOL)isGlobalCellularEnabled
 {
-  v2 = [objc_opt_self() _applePodcastsFoundationSharedUserDefaults];
-  v3 = [v2 BOOLForKey_];
+  _applePodcastsFoundationSharedUserDefaults = [objc_opt_self() _applePodcastsFoundationSharedUserDefaults];
+  bOOLForKey_ = [_applePodcastsFoundationSharedUserDefaults BOOLForKey_];
 
-  return v3;
+  return bOOLForKey_;
 }
 
 - (BOOL)isPodcastsCellularDownloadsEnabled
 {
   v2 = objc_opt_self();
 
-  v3 = [v2 _applePodcastsFoundationSettingsUserDefaults];
-  v4 = [v3 BOOLForKey_];
+  _applePodcastsFoundationSettingsUserDefaults = [v2 _applePodcastsFoundationSettingsUserDefaults];
+  bOOLForKey_ = [_applePodcastsFoundationSettingsUserDefaults BOOLForKey_];
 
-  if (v4)
+  if (bOOLForKey_)
   {
-    v5 = [v2 _applePodcastsFoundationSharedUserDefaults];
-    v6 = [v5 BOOLForKey_];
+    _applePodcastsFoundationSharedUserDefaults = [v2 _applePodcastsFoundationSharedUserDefaults];
+    bOOLForKey_2 = [_applePodcastsFoundationSharedUserDefaults BOOLForKey_];
 
-    return v6;
+    return bOOLForKey_2;
   }
 
   else

@@ -1,38 +1,38 @@
 @interface CRKFeaturePermissionResultObject
-- (CRKFeaturePermissionResultObject)initWithCoder:(id)a3;
+- (CRKFeaturePermissionResultObject)initWithCoder:(id)coder;
 - (NSDictionary)dictionaryValue;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CRKFeaturePermissionResultObject
 
-- (CRKFeaturePermissionResultObject)initWithCoder:(id)a3
+- (CRKFeaturePermissionResultObject)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = CRKFeaturePermissionResultObject;
   v5 = [(CRKFeaturePermissionResultObject *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"permission"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"permission"];
     v5->_permission = [v6 unsignedIntegerValue];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"modifiable"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"modifiable"];
     v5->_modifiable = [v7 BOOLValue];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CCABB0];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithUnsignedInteger:{-[CRKFeaturePermissionResultObject permission](self, "permission")}];
-  [v5 encodeObject:v6 forKey:@"permission"];
+  [coderCopy encodeObject:v6 forKey:@"permission"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithBool:{-[CRKFeaturePermissionResultObject isModifiable](self, "isModifiable")}];
-  [v5 encodeObject:v7 forKey:@"modifiable"];
+  [coderCopy encodeObject:v7 forKey:@"modifiable"];
 }
 
 - (NSDictionary)dictionaryValue

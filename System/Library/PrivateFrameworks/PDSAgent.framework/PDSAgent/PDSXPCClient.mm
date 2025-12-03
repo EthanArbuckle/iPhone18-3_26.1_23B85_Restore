@@ -1,22 +1,22 @@
 @interface PDSXPCClient
 - (BOOL)_hasToolEntitlement;
-- (PDSXPCClient)initWithConnection:(id)a3 interfaceVendor:(id)a4 daemonListenerVendor:(id)a5 queue:(id)a6;
+- (PDSXPCClient)initWithConnection:(id)connection interfaceVendor:(id)vendor daemonListenerVendor:(id)listenerVendor queue:(id)queue;
 - (id)_connectionEntitledClientIDs;
-- (void)connectInternalWithCompletion:(id)a3;
-- (void)connectWithClientID:(id)a3 completion:(id)a4;
+- (void)connectInternalWithCompletion:(id)completion;
+- (void)connectWithClientID:(id)d completion:(id)completion;
 @end
 
 @implementation PDSXPCClient
 
-- (PDSXPCClient)initWithConnection:(id)a3 interfaceVendor:(id)a4 daemonListenerVendor:(id)a5 queue:(id)a6
+- (PDSXPCClient)initWithConnection:(id)connection interfaceVendor:(id)vendor daemonListenerVendor:(id)listenerVendor queue:(id)queue
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (v11)
+  connectionCopy = connection;
+  vendorCopy = vendor;
+  listenerVendorCopy = listenerVendor;
+  queueCopy = queue;
+  if (connectionCopy)
   {
-    if (v12)
+    if (vendorCopy)
     {
       goto LABEL_3;
     }
@@ -25,17 +25,17 @@
   else
   {
     [PDSXPCClient initWithConnection:interfaceVendor:daemonListenerVendor:queue:];
-    if (v12)
+    if (vendorCopy)
     {
 LABEL_3:
-      if (v13)
+      if (listenerVendorCopy)
       {
         goto LABEL_4;
       }
 
 LABEL_10:
       [PDSXPCClient initWithConnection:interfaceVendor:daemonListenerVendor:queue:];
-      if (v14)
+      if (queueCopy)
       {
         goto LABEL_5;
       }
@@ -45,13 +45,13 @@ LABEL_10:
   }
 
   [PDSXPCClient initWithConnection:interfaceVendor:daemonListenerVendor:queue:];
-  if (!v13)
+  if (!listenerVendorCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_4:
-  if (v14)
+  if (queueCopy)
   {
     goto LABEL_5;
   }
@@ -65,14 +65,14 @@ LABEL_5:
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_daemonListenerVendor, a5);
-    objc_storeStrong(&v16->_queue, a6);
-    objc_storeStrong(&v16->_connection, a3);
-    [v11 _setQueue:v14];
-    v17 = [MEMORY[0x277D37AE0] handShakeInterfaceFromVendor:v12];
-    [v11 setExportedInterface:v17];
+    objc_storeStrong(&v15->_daemonListenerVendor, listenerVendor);
+    objc_storeStrong(&v16->_queue, queue);
+    objc_storeStrong(&v16->_connection, connection);
+    [connectionCopy _setQueue:queueCopy];
+    v17 = [MEMORY[0x277D37AE0] handShakeInterfaceFromVendor:vendorCopy];
+    [connectionCopy setExportedInterface:v17];
 
-    [v11 setExportedObject:v16];
+    [connectionCopy setExportedObject:v16];
   }
 
   return v16;
@@ -160,70 +160,70 @@ LABEL_18:
   v2 = [(PDSXPCDaemonConnection *)self->_connection valueForEntitlement:*MEMORY[0x277D37B08]];
   if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)connectWithClientID:(id)a3 completion:(id)a4
+- (void)connectWithClientID:(id)d completion:(id)completion
 {
-  v12 = a3;
-  v6 = a4;
+  dCopy = d;
+  completionCopy = completion;
   if ([(PDSXPCClient *)self _hasToolEntitlement])
   {
-    v7 = [(PDSDaemonListenerVendor *)self->_daemonListenerVendor remoteListenerForAllClientIDs];
-    [(PDSXPCClient *)self setDaemonListener:v7];
+    remoteListenerForAllClientIDs = [(PDSDaemonListenerVendor *)self->_daemonListenerVendor remoteListenerForAllClientIDs];
+    [(PDSXPCClient *)self setDaemonListener:remoteListenerForAllClientIDs];
 
-    v8 = [(PDSXPCClient *)self daemonListener];
-    v6[2](v6, v8, 0);
+    daemonListener = [(PDSXPCClient *)self daemonListener];
+    completionCopy[2](completionCopy, daemonListener, 0);
     goto LABEL_10;
   }
 
-  v8 = [(PDSXPCClient *)self _connectionEntitledClientIDs];
-  if (![v8 count])
+  daemonListener = [(PDSXPCClient *)self _connectionEntitledClientIDs];
+  if (![daemonListener count])
   {
     v11 = -301;
 LABEL_8:
-    v10 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D37B20] code:v11 userInfo:0];
-    (v6)[2](v6, 0, v10);
+    daemonListener2 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D37B20] code:v11 userInfo:0];
+    (completionCopy)[2](completionCopy, 0, daemonListener2);
     goto LABEL_9;
   }
 
-  if (![v8 containsObject:v12])
+  if (![daemonListener containsObject:dCopy])
   {
     v11 = -302;
     goto LABEL_8;
   }
 
-  v9 = [(PDSDaemonListenerVendor *)self->_daemonListenerVendor remoteListenerForClientIDs:v8];
+  v9 = [(PDSDaemonListenerVendor *)self->_daemonListenerVendor remoteListenerForClientIDs:daemonListener];
   [(PDSXPCClient *)self setDaemonListener:v9];
 
-  v10 = [(PDSXPCClient *)self daemonListener];
-  v6[2](v6, v10, 0);
+  daemonListener2 = [(PDSXPCClient *)self daemonListener];
+  completionCopy[2](completionCopy, daemonListener2, 0);
 LABEL_9:
 
 LABEL_10:
 }
 
-- (void)connectInternalWithCompletion:(id)a3
+- (void)connectInternalWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(PDSXPCClient *)self _hasToolEntitlement])
   {
-    v5 = [(PDSDaemonListenerVendor *)self->_daemonListenerVendor remoteInternalListener];
-    v4[2](v4, v5, 0);
+    remoteInternalListener = [(PDSDaemonListenerVendor *)self->_daemonListenerVendor remoteInternalListener];
+    completionCopy[2](completionCopy, remoteInternalListener, 0);
   }
 
   else
   {
-    v5 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D37B20] code:-304 userInfo:0];
-    (v4)[2](v4, 0, v5);
+    remoteInternalListener = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D37B20] code:-304 userInfo:0];
+    (completionCopy)[2](completionCopy, 0, remoteInternalListener);
   }
 }
 

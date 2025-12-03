@@ -6,17 +6,17 @@
 
 - (id)ntk_modificationDate
 {
-  v3 = [(PHAsset *)self modificationDate];
-  if (!v3)
+  modificationDate = [(PHAsset *)self modificationDate];
+  if (!modificationDate)
   {
-    v3 = [(PHAsset *)self creationDate];
-    if (!v3)
+    modificationDate = [(PHAsset *)self creationDate];
+    if (!modificationDate)
     {
-      v3 = +[NSDate distantPast];
+      modificationDate = +[NSDate distantPast];
     }
   }
 
-  return v3;
+  return modificationDate;
 }
 
 @end

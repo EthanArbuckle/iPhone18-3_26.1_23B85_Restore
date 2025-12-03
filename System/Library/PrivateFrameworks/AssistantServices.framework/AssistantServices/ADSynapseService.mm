@@ -7,9 +7,9 @@
 - (id)customVocabSyncInfo
 {
   v2 = +[AFPreferences sharedPreferences];
-  v3 = [v2 assistantIsEnabled];
+  assistantIsEnabled = [v2 assistantIsEnabled];
 
-  if (v3)
+  if (assistantIsEnabled)
   {
     v4 = +[_INVocabularyStoreManager savedCustomVocabularyOverviewDictionary];
   }

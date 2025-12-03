@@ -1,60 +1,60 @@
 @interface OKWidgetMarimbaView
 + (id)supportedSettings;
-+ (void)setupJavascriptContext:(id)a3;
-- (BOOL)marimbaViewCanInteract:(id)a3;
-- (BOOL)prepareForDisplay:(BOOL)a3;
-- (BOOL)prepareForUnload:(BOOL)a3;
-- (BOOL)prepareForWarmup:(BOOL)a3;
++ (void)setupJavascriptContext:(id)context;
+- (BOOL)marimbaViewCanInteract:(id)interact;
+- (BOOL)prepareForDisplay:(BOOL)display;
+- (BOOL)prepareForUnload:(BOOL)unload;
+- (BOOL)prepareForWarmup:(BOOL)warmup;
 - (BOOL)slideshowShouldWrap;
-- (CGImage)retainedCGImageForAssetKey:(id)a3 andSize:(CGSize)a4 orientation:(char *)a5;
-- (CGImage)retainedCGImageForAssetKey:(id)a3 andSize:(CGSize)a4 orientation:(char *)a5 thumbnailIfPossible:(BOOL)a6 now:(BOOL)a7;
-- (CGSize)resolutionForAssetKey:(id)a3;
-- (OKWidgetMarimbaView)initWithWidget:(id)a3;
+- (CGImage)retainedCGImageForAssetKey:(id)key andSize:(CGSize)size orientation:(char *)orientation;
+- (CGImage)retainedCGImageForAssetKey:(id)key andSize:(CGSize)size orientation:(char *)orientation thumbnailIfPossible:(BOOL)possible now:(BOOL)now;
+- (CGSize)resolutionForAssetKey:(id)key;
+- (OKWidgetMarimbaView)initWithWidget:(id)widget;
 - (double)remainingPlayDuration;
-- (id)_mediaPropertiesForMediaURL:(id)a3;
-- (id)attributeForKey:(id)a3 forAssetKey:(id)a4 withOptions:(id)a5;
-- (id)attributesforAssetPath:(id)a3;
-- (id)avAssetForAssetKey:(id)a3;
+- (id)_mediaPropertiesForMediaURL:(id)l;
+- (id)attributeForKey:(id)key forAssetKey:(id)assetKey withOptions:(id)options;
+- (id)attributesforAssetPath:(id)path;
+- (id)avAssetForAssetKey:(id)key;
 - (id)settingTransition;
-- (id)valueForUndefinedKey:(id)a3;
-- (void)_restartSlideshowWithCompletion:(id)a3;
+- (id)valueForUndefinedKey:(id)key;
+- (void)_restartSlideshowWithCompletion:(id)completion;
 - (void)_updateMarimbaDocument;
 - (void)dealloc;
 - (void)instantPause;
 - (void)instantResume;
 - (void)layoutSubviews;
-- (void)navigateToMediaWithIndex:(unint64_t)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)navigateToTextWithIndex:(unint64_t)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)navigatorBounceEnd:(id)a3;
-- (void)navigatorBounceStart:(id)a3;
-- (void)pauseSlideshow:(id)a3;
+- (void)navigateToMediaWithIndex:(unint64_t)index animated:(BOOL)animated completion:(id)completion;
+- (void)navigateToTextWithIndex:(unint64_t)index animated:(BOOL)animated completion:(id)completion;
+- (void)navigatorBounceEnd:(id)end;
+- (void)navigatorBounceStart:(id)start;
+- (void)pauseSlideshow:(id)slideshow;
 - (void)play;
-- (void)playSlideshow:(id)a3;
+- (void)playSlideshow:(id)slideshow;
 - (void)presentationDidLiveUpdate;
-- (void)renderer:(id)a3 renderingTimeLogMessage:(id)a4 withTimestamp:(double)a5;
-- (void)setAntialiasing:(BOOL)a3;
-- (void)setSettingAttributedSubtitles:(id)a3;
-- (void)setSettingAttributedTitle:(id)a3;
-- (void)setSettingDurations:(id)a3;
-- (void)setSettingInteractiveTransitionSettings:(id)a3;
-- (void)setSettingMediaFeeder:(id)a3;
-- (void)setSettingSeed:(unint64_t)a3;
-- (void)setSettingStyle:(id)a3;
-- (void)setSettingSubtitles:(id)a3;
-- (void)setSettingTitle:(id)a3;
-- (void)setSettingTransition:(id)a3;
-- (void)setSettingUrls:(id)a3;
-- (void)slideshowDidEnd:(id)a3;
-- (void)warmup:(BOOL)a3;
+- (void)renderer:(id)renderer renderingTimeLogMessage:(id)message withTimestamp:(double)timestamp;
+- (void)setAntialiasing:(BOOL)antialiasing;
+- (void)setSettingAttributedSubtitles:(id)subtitles;
+- (void)setSettingAttributedTitle:(id)title;
+- (void)setSettingDurations:(id)durations;
+- (void)setSettingInteractiveTransitionSettings:(id)settings;
+- (void)setSettingMediaFeeder:(id)feeder;
+- (void)setSettingSeed:(unint64_t)seed;
+- (void)setSettingStyle:(id)style;
+- (void)setSettingSubtitles:(id)subtitles;
+- (void)setSettingTitle:(id)title;
+- (void)setSettingTransition:(id)transition;
+- (void)setSettingUrls:(id)urls;
+- (void)slideshowDidEnd:(id)end;
+- (void)warmup:(BOOL)warmup;
 @end
 
 @implementation OKWidgetMarimbaView
 
-- (OKWidgetMarimbaView)initWithWidget:(id)a3
+- (OKWidgetMarimbaView)initWithWidget:(id)widget
 {
   v30.receiver = self;
   v30.super_class = OKWidgetMarimbaView;
-  v3 = [(OKWidgetMarimbaView *)&v30 initWithWidget:a3];
+  v3 = [(OKWidgetMarimbaView *)&v30 initWithWidget:widget];
   if (v3)
   {
     v4 = [MRMarimbaView alloc];
@@ -271,12 +271,12 @@
   else
   {
     [+[MPAuthoringController sharedController](MPAuthoringController "sharedController")];
-    v8 = [+[UIApplication sharedApplication](UIApplication statusBarOrientation];
-    v9 = [(MRMarimbaView *)self->_marimbaView marimbaLayer];
+    statusBarOrientation = [+[UIApplication sharedApplication](UIApplication statusBarOrientation];
+    marimbaLayer = [(MRMarimbaView *)self->_marimbaView marimbaLayer];
     [(OKWidgetMarimbaView *)self bounds];
     v11 = v10;
     [(OKWidgetMarimbaView *)self bounds];
-    [(MRMarimbaLayer *)v9 beginMorphingToAspectRatio:v8 andOrientation:v7 withDuration:v11 / v12 switchToDocument:0.5];
+    [(MRMarimbaLayer *)marimbaLayer beginMorphingToAspectRatio:statusBarOrientation andOrientation:v7 withDuration:v11 / v12 switchToDocument:0.5];
     v13.receiver = self;
     v13.super_class = OKWidgetMarimbaView;
     [(OKWidgetMarimbaView *)&v13 layoutSubviews];
@@ -289,7 +289,7 @@
 
 + (id)supportedSettings
 {
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___OKWidgetMarimbaView;
   v2 = [NSMutableDictionary dictionaryWithDictionary:objc_msgSendSuper2(&v6, "supportedSettings")];
   v37[0] = @"urls";
@@ -388,72 +388,72 @@
   return v2;
 }
 
-- (void)setSettingInteractiveTransitionSettings:(id)a3
+- (void)setSettingInteractiveTransitionSettings:(id)settings
 {
-  if ([a3 objectForKeyedSubscript:@"trackingBoxRadiusDefaultValue"])
+  if ([settings objectForKeyedSubscript:@"trackingBoxRadiusDefaultValue"])
   {
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"trackingBoxRadiusDefaultValue", "floatValue"}];
+    [objc_msgSend(settings objectForKeyedSubscript:{@"trackingBoxRadiusDefaultValue", "floatValue"}];
     [-[OKWidgetMarimbaView presentationViewController](self "presentationViewController")];
   }
 
-  if ([a3 objectForKeyedSubscript:@"progressThresholdDefaultValue"])
+  if ([settings objectForKeyedSubscript:@"progressThresholdDefaultValue"])
   {
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"progressThresholdDefaultValue", "floatValue"}];
+    [objc_msgSend(settings objectForKeyedSubscript:{@"progressThresholdDefaultValue", "floatValue"}];
     [-[OKWidgetMarimbaView presentationViewController](self "presentationViewController")];
   }
 
-  if ([a3 objectForKeyedSubscript:@"velocityThresholdDefaultValue"])
+  if ([settings objectForKeyedSubscript:@"velocityThresholdDefaultValue"])
   {
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"velocityThresholdDefaultValue", "floatValue"}];
+    [objc_msgSend(settings objectForKeyedSubscript:{@"velocityThresholdDefaultValue", "floatValue"}];
     v8 = v7;
-    v9 = [(OKWidgetMarimbaView *)self presentationViewController];
+    presentationViewController = [(OKWidgetMarimbaView *)self presentationViewController];
 
-    [v9 setInteractiveTransitionVelocityThreshold:v8];
+    [presentationViewController setInteractiveTransitionVelocityThreshold:v8];
   }
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
   v4.receiver = self;
   v4.super_class = OKWidgetMarimbaView;
-  return [(OKWidgetMarimbaView *)&v4 valueForUndefinedKey:a3];
+  return [(OKWidgetMarimbaView *)&v4 valueForUndefinedKey:key];
 }
 
-- (void)navigatorBounceStart:(id)a3
+- (void)navigatorBounceStart:(id)start
 {
   self->_isBouncing = 1;
   self->_shouldResumeAtBounceEnd = [(MRMarimbaLayer *)[(MRMarimbaView *)self->_marimbaView marimbaLayer] isPlaying];
-  v4 = [(MRMarimbaView *)self->_marimbaView marimbaLayer];
+  marimbaLayer = [(MRMarimbaView *)self->_marimbaView marimbaLayer];
 
-  [(MRMarimbaLayer *)v4 pause];
+  [(MRMarimbaLayer *)marimbaLayer pause];
 }
 
-- (void)navigatorBounceEnd:(id)a3
+- (void)navigatorBounceEnd:(id)end
 {
   self->_isBouncing = 0;
   if (self->_shouldResumeAtBounceEnd)
   {
-    v5 = [(MRMarimbaView *)self->_marimbaView marimbaLayer:a3];
+    v5 = [(MRMarimbaView *)self->_marimbaView marimbaLayer:end];
 
     [(MRMarimbaLayer *)v5 play];
   }
 }
 
-- (void)setSettingUrls:(id)a3
+- (void)setSettingUrls:(id)urls
 {
-  v5 = [(OKWidgetMarimbaView *)self mediaURLs];
-  if ((a3 && [a3 count] || objc_msgSend(v5, "count")) && !self->_mediaFeeder && (objc_msgSend(v5, "isEqualToArray:", a3) & 1) == 0)
+  mediaURLs = [(OKWidgetMarimbaView *)self mediaURLs];
+  if ((urls && [urls count] || objc_msgSend(mediaURLs, "count")) && !self->_mediaFeeder && (objc_msgSend(mediaURLs, "isEqualToArray:", urls) & 1) == 0)
   {
-    [v5 removeAllObjects];
-    [v5 addObjectsFromArray:a3];
-    -[MPDocument setVideoPaths:](self->_landscapeMarimbaDocument, "setVideoPaths:", [a3 valueForKeyPath:@"absoluteString"]);
-    -[MPDocument setVideoPaths:](self->_portraitMarimbaDocument, "setVideoPaths:", [a3 valueForKeyPath:@"absoluteString"]);
-    v6 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(a3, "count")}];
+    [mediaURLs removeAllObjects];
+    [mediaURLs addObjectsFromArray:urls];
+    -[MPDocument setVideoPaths:](self->_landscapeMarimbaDocument, "setVideoPaths:", [urls valueForKeyPath:@"absoluteString"]);
+    -[MPDocument setVideoPaths:](self->_portraitMarimbaDocument, "setVideoPaths:", [urls valueForKeyPath:@"absoluteString"]);
+    v6 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(urls, "count")}];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v7 = [a3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    v7 = [urls countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
       v8 = v7;
@@ -464,7 +464,7 @@
         {
           if (*v15 != v9)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(urls);
           }
 
           v11 = *(*(&v14 + 1) + 8 * i);
@@ -475,7 +475,7 @@
           }
         }
 
-        v8 = [a3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v8 = [urls countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v8);
@@ -493,10 +493,10 @@
   }
 }
 
-- (void)setSettingMediaFeeder:(id)a3
+- (void)setSettingMediaFeeder:(id)feeder
 {
   mediaFeeder = self->_mediaFeeder;
-  if (mediaFeeder != a3)
+  if (mediaFeeder != feeder)
   {
     if (mediaFeeder)
     {
@@ -504,17 +504,17 @@
       self->_mediaFeeder = 0;
     }
 
-    self->_mediaFeeder = a3;
+    self->_mediaFeeder = feeder;
 
     [(OKWidgetMarimbaView *)self presentationDidLiveUpdate];
   }
 }
 
-- (void)setSettingStyle:(id)a3
+- (void)setSettingStyle:(id)style
 {
-  if (([-[NSMutableDictionary objectForKey:](self->_marimbaOptions objectForKey:{kMPAuthoringStyleID), "isEqualToString:", a3}] & 1) == 0)
+  if (([-[NSMutableDictionary objectForKey:](self->_marimbaOptions objectForKey:{kMPAuthoringStyleID), "isEqualToString:", style}] & 1) == 0)
   {
-    [(NSMutableDictionary *)self->_marimbaOptions setObject:a3 forKey:kMPAuthoringStyleID];
+    [(NSMutableDictionary *)self->_marimbaOptions setObject:style forKey:kMPAuthoringStyleID];
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
     v5[2] = sub_10DF4C;
@@ -531,12 +531,12 @@
   return [v2 firstObject];
 }
 
-- (void)setSettingTransition:(id)a3
+- (void)setSettingTransition:(id)transition
 {
-  if (([objc_msgSend(-[NSMutableDictionary objectForKey:](self->_marimbaOptions objectForKey:{kMPAuthoringTransitionList), "firstObject"), "isEqualToString:", a3}] & 1) == 0)
+  if (([objc_msgSend(-[NSMutableDictionary objectForKey:](self->_marimbaOptions objectForKey:{kMPAuthoringTransitionList), "firstObject"), "isEqualToString:", transition}] & 1) == 0)
   {
     marimbaOptions = self->_marimbaOptions;
-    v6 = [NSArray arrayWithObject:a3];
+    v6 = [NSArray arrayWithObject:transition];
     [(NSMutableDictionary *)marimbaOptions setObject:v6 forKey:kMPAuthoringTransitionList];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
@@ -547,64 +547,64 @@
   }
 }
 
-- (void)setSettingAttributedTitle:(id)a3
+- (void)setSettingAttributedTitle:(id)title
 {
   attributedTitle = self->_attributedTitle;
-  if (attributedTitle != a3)
+  if (attributedTitle != title)
   {
 
-    self->_attributedTitle = [a3 copy];
+    self->_attributedTitle = [title copy];
     self->_needsBuildingDocument = 1;
   }
 }
 
-- (void)setSettingTitle:(id)a3
+- (void)setSettingTitle:(id)title
 {
   title = self->_title;
-  if (title != a3)
+  if (title != title)
   {
 
-    self->_title = [a3 copy];
+    self->_title = [title copy];
     self->_needsBuildingDocument = 1;
   }
 }
 
-- (void)setSettingAttributedSubtitles:(id)a3
+- (void)setSettingAttributedSubtitles:(id)subtitles
 {
-  if (([a3 isEqualToDictionary:self->_attributedSubtitles] & 1) == 0)
+  if (([subtitles isEqualToDictionary:self->_attributedSubtitles] & 1) == 0)
   {
 
-    self->_attributedSubtitles = [a3 copy];
+    self->_attributedSubtitles = [subtitles copy];
     self->_needsBuildingDocument = 1;
   }
 }
 
-- (void)setSettingSubtitles:(id)a3
+- (void)setSettingSubtitles:(id)subtitles
 {
-  if (([a3 isEqualToDictionary:self->_subtitles] & 1) == 0)
+  if (([subtitles isEqualToDictionary:self->_subtitles] & 1) == 0)
   {
 
-    self->_subtitles = [a3 copy];
+    self->_subtitles = [subtitles copy];
     self->_needsBuildingDocument = 1;
   }
 }
 
-- (void)setSettingDurations:(id)a3
+- (void)setSettingDurations:(id)durations
 {
-  if (([a3 isEqualToDictionary:self->_durations] & 1) == 0)
+  if (([durations isEqualToDictionary:self->_durations] & 1) == 0)
   {
 
-    self->_durations = [a3 copy];
+    self->_durations = [durations copy];
     self->_needsBuildingDocument = 1;
   }
 }
 
-- (void)setSettingSeed:(unint64_t)a3
+- (void)setSettingSeed:(unint64_t)seed
 {
-  if ([-[NSMutableDictionary objectForKey:](self->_marimbaOptions objectForKey:{kMPAuthoringSeed), "unsignedIntegerValue"}] != a3)
+  if ([-[NSMutableDictionary objectForKey:](self->_marimbaOptions objectForKey:{kMPAuthoringSeed), "unsignedIntegerValue"}] != seed)
   {
     marimbaOptions = self->_marimbaOptions;
-    v6 = [NSNumber numberWithUnsignedInteger:a3];
+    v6 = [NSNumber numberWithUnsignedInteger:seed];
     [(NSMutableDictionary *)marimbaOptions setObject:v6 forKey:kMPAuthoringSeed];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
@@ -615,7 +615,7 @@
   }
 }
 
-- (void)slideshowDidEnd:(id)a3
+- (void)slideshowDidEnd:(id)end
 {
   if (self->_loop)
   {
@@ -639,18 +639,18 @@
 
 - (BOOL)slideshowShouldWrap
 {
-  v2 = [(OKWidgetMarimbaView *)self presentationViewController];
+  presentationViewController = [(OKWidgetMarimbaView *)self presentationViewController];
 
-  return [v2 couchModeLoops];
+  return [presentationViewController couchModeLoops];
 }
 
-- (void)setAntialiasing:(BOOL)a3
+- (void)setAntialiasing:(BOOL)antialiasing
 {
-  v3 = a3;
+  antialiasingCopy = antialiasing;
   v6.receiver = self;
   v6.super_class = OKWidgetMarimbaView;
   [(OKWidgetMarimbaView *)&v6 setAntialiasing:?];
-  if (v3)
+  if (antialiasingCopy)
   {
     v5 = 15;
   }
@@ -741,11 +741,11 @@
   [(OKWidgetMarimbaView *)self playSlideshow:self];
 }
 
-- (BOOL)prepareForDisplay:(BOOL)a3
+- (BOOL)prepareForDisplay:(BOOL)display
 {
   v14.receiver = self;
   v14.super_class = OKWidgetMarimbaView;
-  v4 = [(OKWidgetMarimbaView *)&v14 prepareForDisplay:a3];
+  v4 = [(OKWidgetMarimbaView *)&v14 prepareForDisplay:display];
   if (v4)
   {
     objc_sync_enter(self);
@@ -793,11 +793,11 @@
   return v4;
 }
 
-- (BOOL)prepareForWarmup:(BOOL)a3
+- (BOOL)prepareForWarmup:(BOOL)warmup
 {
   v13.receiver = self;
   v13.super_class = OKWidgetMarimbaView;
-  v4 = [(OKWidgetMarimbaView *)&v13 prepareForWarmup:a3];
+  v4 = [(OKWidgetMarimbaView *)&v13 prepareForWarmup:warmup];
   if (v4)
   {
     objc_sync_enter(self);
@@ -837,11 +837,11 @@
   return v4;
 }
 
-- (BOOL)prepareForUnload:(BOOL)a3
+- (BOOL)prepareForUnload:(BOOL)unload
 {
   v8.receiver = self;
   v8.super_class = OKWidgetMarimbaView;
-  v4 = [(OKWidgetMarimbaView *)&v8 prepareForUnload:a3];
+  v4 = [(OKWidgetMarimbaView *)&v8 prepareForUnload:unload];
   if (v4)
   {
     objc_sync_enter(self);
@@ -932,8 +932,8 @@ LABEL_31:
       mediaFeeder = self->_mediaFeeder;
       if (mediaFeeder)
       {
-        v10 = [(OKMediaFeeder *)mediaFeeder numberOfMediaItems];
-        v11 = v10 > [-[MPDocument videoPaths](self->_landscapeMarimbaDocument "videoPaths")];
+        numberOfMediaItems = [(OKMediaFeeder *)mediaFeeder numberOfMediaItems];
+        v11 = numberOfMediaItems > [-[MPDocument videoPaths](self->_landscapeMarimbaDocument "videoPaths")];
       }
 
       else
@@ -1033,7 +1033,7 @@ LABEL_28:
   dispatch_async(global_queue, block);
 }
 
-- (void)warmup:(BOOL)a3
+- (void)warmup:(BOOL)warmup
 {
   objc_sync_enter(self);
   -[MRRenderer setAllowsThumbnails:](-[MRMarimbaLayer renderer](-[MRMarimbaView marimbaLayer](self->_marimbaView, "marimbaLayer"), "renderer"), "setAllowsThumbnails:", [-[OKWidgetMarimbaView presentationViewController](self "presentationViewController")] ^ 1);
@@ -1048,12 +1048,12 @@ LABEL_28:
   v6[2] = sub_10F758;
   v6[3] = &unk_1AA728;
   v6[4] = self;
-  v7 = a3;
+  warmupCopy = warmup;
   [(OKWidgetMarimbaView *)self performBlockOnMainThread:v6];
   objc_sync_exit(self);
 }
 
-- (void)playSlideshow:(id)a3
+- (void)playSlideshow:(id)slideshow
 {
   if (self->_isBouncing)
   {
@@ -1078,7 +1078,7 @@ LABEL_28:
   }
 }
 
-- (void)pauseSlideshow:(id)a3
+- (void)pauseSlideshow:(id)slideshow
 {
   objc_sync_enter(self);
   self->_shouldResumeAtBounceEnd = 0;
@@ -1087,14 +1087,14 @@ LABEL_28:
   objc_sync_exit(self);
 }
 
-- (void)navigateToMediaWithIndex:(unint64_t)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)navigateToMediaWithIndex:(unint64_t)index animated:(BOOL)animated completion:(id)completion
 {
-  v8 = [(MPDocument *)[(MRMarimbaLayer *)[(MRMarimbaView *)self->_marimbaView marimbaLayer:a3] document] allSlides];
-  if ([v8 count] > a3 && (v9 = objc_msgSend(v8, "objectAtIndexedSubscript:", a3)) != 0)
+  allSlides = [(MPDocument *)[(MRMarimbaLayer *)[(MRMarimbaView *)self->_marimbaView marimbaLayer:index] document] allSlides];
+  if ([allSlides count] > index && (v9 = objc_msgSend(allSlides, "objectAtIndexedSubscript:", index)) != 0)
   {
     [(MRMarimbaLayer *)[(MRMarimbaView *)self->_marimbaView marimbaLayer] gotoSlide:v9];
     v10 = 1;
-    if (!a5)
+    if (!completion)
     {
       return;
     }
@@ -1103,36 +1103,36 @@ LABEL_28:
   else
   {
     v10 = 0;
-    if (!a5)
+    if (!completion)
     {
       return;
     }
   }
 
-  v11 = *(a5 + 2);
+  v11 = *(completion + 2);
 
-  v11(a5, v10);
+  v11(completion, v10);
 }
 
-- (void)navigateToTextWithIndex:(unint64_t)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)navigateToTextWithIndex:(unint64_t)index animated:(BOOL)animated completion:(id)completion
 {
-  v8 = [(MRMarimbaLayer *)[(MRMarimbaView *)self->_marimbaView marimbaLayer:a3] document];
-  if (!a3 && (self->_attributedTitle || self->_title))
+  document = [(MRMarimbaLayer *)[(MRMarimbaView *)self->_marimbaView marimbaLayer:index] document];
+  if (!index && (self->_attributedTitle || self->_title))
   {
-    v10 = [objc_msgSend(-[MPDocument titleEffect](v8 "titleEffect")];
+    v10 = [objc_msgSend(-[MPDocument titleEffect](document "titleEffect")];
     goto LABEL_9;
   }
 
-  v9 = [(MPDocument *)v8 allSlides];
-  if ([v9 count] > a3)
+  allSlides = [(MPDocument *)document allSlides];
+  if ([allSlides count] > index)
   {
-    v10 = [objc_msgSend(objc_msgSend(objc_msgSend(v9 objectAtIndexedSubscript:{a3), "parentSubtitleEffect"), "texts"), "lastObject"}];
+    v10 = [objc_msgSend(objc_msgSend(objc_msgSend(allSlides objectAtIndexedSubscript:{index), "parentSubtitleEffect"), "texts"), "lastObject"}];
     if (v10)
     {
 LABEL_9:
       [(MRMarimbaLayer *)[(MRMarimbaView *)self->_marimbaView marimbaLayer] gotoText:v10];
       v11 = 1;
-      if (!a5)
+      if (!completion)
       {
         return;
       }
@@ -1142,18 +1142,18 @@ LABEL_9:
   }
 
   v11 = 0;
-  if (!a5)
+  if (!completion)
   {
     return;
   }
 
 LABEL_10:
-  v12 = *(a5 + 2);
+  v12 = *(completion + 2);
 
-  v12(a5, v11);
+  v12(completion, v11);
 }
 
-- (void)_restartSlideshowWithCompletion:(id)a3
+- (void)_restartSlideshowWithCompletion:(id)completion
 {
   [(MRMarimbaLayer *)[(MRMarimbaView *)self->_marimbaView marimbaLayer] pause];
   v5[0] = _NSConcreteStackBlock;
@@ -1161,18 +1161,18 @@ LABEL_10:
   v5[2] = sub_10FC4C;
   v5[3] = &unk_1AB6F8;
   v5[4] = self;
-  v5[5] = a3;
+  v5[5] = completion;
   [(OKWidgetMarimbaView *)self navigateToMediaWithIndex:0 animated:0 completion:v5];
 }
 
-- (BOOL)marimbaViewCanInteract:(id)a3
+- (BOOL)marimbaViewCanInteract:(id)interact
 {
-  v3 = [(OKWidgetMarimbaView *)self presentationViewController];
+  presentationViewController = [(OKWidgetMarimbaView *)self presentationViewController];
 
-  return [v3 interactivityEnabled];
+  return [presentationViewController interactivityEnabled];
 }
 
-- (CGSize)resolutionForAssetKey:(id)a3
+- (CGSize)resolutionForAssetKey:(id)key
 {
   v3 = [objc_msgSend(-[OKWidgetMarimbaView page](self "page")];
   if (v3)
@@ -1191,36 +1191,36 @@ LABEL_10:
   return result;
 }
 
-- (id)attributeForKey:(id)a3 forAssetKey:(id)a4 withOptions:(id)a5
+- (id)attributeForKey:(id)key forAssetKey:(id)assetKey withOptions:(id)options
 {
   result = [objc_msgSend(-[OKWidgetMarimbaView page](self page];
   if (result)
   {
-    v7 = [result metadata];
+    metadata = [result metadata];
 
-    return [v7 dictionaryValueForKey:a3];
+    return [metadata dictionaryValueForKey:key];
   }
 
   return result;
 }
 
-- (id)attributesforAssetPath:(id)a3
+- (id)attributesforAssetPath:(id)path
 {
   result = [objc_msgSend(-[OKWidgetMarimbaView page](self "page")];
   if (result)
   {
-    v4 = [result metadata];
+    metadata = [result metadata];
 
-    return [v4 dictionary];
+    return [metadata dictionary];
   }
 
   return result;
 }
 
-- (CGImage)retainedCGImageForAssetKey:(id)a3 andSize:(CGSize)a4 orientation:(char *)a5
+- (CGImage)retainedCGImageForAssetKey:(id)key andSize:(CGSize)size orientation:(char *)orientation
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   result = [objc_msgSend(-[OKWidgetMarimbaView page](self "page")];
   if (result)
   {
@@ -1238,9 +1238,9 @@ LABEL_10:
     v12 = v11;
     [-[OKWidgetMarimbaView presentationViewController](self "presentationViewController")];
     v14 = [(CGImage *)v10 thumbnailImageForResolution:v12 aspectRatio:0 scale:width / height quality:v13 colorSpace:kOKMediaItemQualityGood];
-    if (a5)
+    if (orientation)
     {
-      *a5 = 0;
+      *orientation = 0;
     }
 
     return CGImageRetain(v14);
@@ -1249,21 +1249,21 @@ LABEL_10:
   return result;
 }
 
-- (CGImage)retainedCGImageForAssetKey:(id)a3 andSize:(CGSize)a4 orientation:(char *)a5 thumbnailIfPossible:(BOOL)a6 now:(BOOL)a7
+- (CGImage)retainedCGImageForAssetKey:(id)key andSize:(CGSize)size orientation:(char *)orientation thumbnailIfPossible:(BOOL)possible now:(BOOL)now
 {
-  v7 = a6;
-  height = a4.height;
-  width = a4.width;
-  if (a5)
+  possibleCopy = possible;
+  height = size.height;
+  width = size.width;
+  if (orientation)
   {
-    *a5 = 0;
+    *orientation = 0;
   }
 
   result = [objc_msgSend(-[OKWidgetMarimbaView page](self "page")];
   if (result)
   {
     v12 = result;
-    if (v7)
+    if (possibleCopy)
     {
       v13 = kOKMediaItemThumbnailResolutionLow;
       v14 = kOKMediaItemQualityBest;
@@ -1300,7 +1300,7 @@ LABEL_10:
   return result;
 }
 
-- (id)avAssetForAssetKey:(id)a3
+- (id)avAssetForAssetKey:(id)key
 {
   result = [objc_msgSend(-[OKWidgetMarimbaView page](self "page")];
   if (result)
@@ -1312,7 +1312,7 @@ LABEL_10:
   return result;
 }
 
-- (id)_mediaPropertiesForMediaURL:(id)a3
+- (id)_mediaPropertiesForMediaURL:(id)l
 {
   v3 = [objc_msgSend(-[OKWidgetMarimbaView page](self "page")];
   if (!v3)
@@ -1322,8 +1322,8 @@ LABEL_10:
 
   v4 = v3;
   v5 = +[NSMutableDictionary dictionary];
-  v6 = [v4 metadata];
-  [v6 duration];
+  metadata = [v4 metadata];
+  [metadata duration];
   if (v7 < 3.0 && v7 > 0.0)
   {
     v7 = 3.0;
@@ -1333,15 +1333,15 @@ LABEL_10:
   [v5 setObject:v9 forKeyedSubscript:kMPMetaDataDuration];
   [v5 setObject:&off_1BC0D8 forKeyedSubscript:kMPMetaDataStartTime];
   [v5 setObject:v9 forKeyedSubscript:kMPMetaDataStopTime];
-  if ([v6 creationDate])
+  if ([metadata creationDate])
   {
-    v10 = [v6 creationDate];
-    [v5 setObject:v10 forKeyedSubscript:kMPMetaDataCreationDate];
+    creationDate = [metadata creationDate];
+    [v5 setObject:creationDate forKeyedSubscript:kMPMetaDataCreationDate];
   }
 
-  [v6 resolution];
+  [metadata resolution];
   [v5 setObject:NSStringFromCGSize(v19) forKeyedSubscript:kMPMetaDataResolution];
-  if ([v6 type] == &dword_0 + 3)
+  if ([metadata type] == &dword_0 + 3)
   {
     v11 = 3;
   }
@@ -1353,45 +1353,45 @@ LABEL_10:
 
   v12 = [NSNumber numberWithInt:v11];
   [v5 setObject:v12 forKeyedSubscript:kMPMetaDataMediaType];
-  if ([v6 name])
+  if ([metadata name])
   {
-    v13 = [v6 name];
-    [v5 setObject:v13 forKeyedSubscript:kMPMetaDataCaption];
+    name = [metadata name];
+    [v5 setObject:name forKeyedSubscript:kMPMetaDataCaption];
   }
 
-  if ([v6 caption])
+  if ([metadata caption])
   {
-    v14 = [v6 caption];
-    [v5 setObject:v14 forKeyedSubscript:kMPMetaDataComment];
+    caption = [metadata caption];
+    [v5 setObject:caption forKeyedSubscript:kMPMetaDataComment];
   }
 
-  [v6 longitude];
+  [metadata longitude];
   v15 = [NSNumber numberWithDouble:?];
   [v5 setObject:v15 forKeyedSubscript:kMPMetaDataLongitude];
-  [v6 latitude];
+  [metadata latitude];
   v16 = [NSNumber numberWithDouble:?];
   [v5 setObject:v16 forKeyedSubscript:kMPMetaDataLatitude];
-  if ([v6 regionsOfInterest])
+  if ([metadata regionsOfInterest])
   {
-    v17 = [v6 regionsOfInterest];
-    [v5 setObject:v17 forKeyedSubscript:kMPMetaDataRegionOfInterestRectangles];
+    regionsOfInterest = [metadata regionsOfInterest];
+    [v5 setObject:regionsOfInterest forKeyedSubscript:kMPMetaDataRegionOfInterestRectangles];
   }
 
   return v5;
 }
 
-- (void)renderer:(id)a3 renderingTimeLogMessage:(id)a4 withTimestamp:(double)a5
+- (void)renderer:(id)renderer renderingTimeLogMessage:(id)message withTimestamp:(double)timestamp
 {
-  v7 = [(OKWidgetMarimbaView *)self presentationViewController];
-  v8 = [a4 stringByTrimmingCharactersInSet:{+[NSCharacterSet newlineCharacterSet](NSCharacterSet, "newlineCharacterSet")}];
+  presentationViewController = [(OKWidgetMarimbaView *)self presentationViewController];
+  v8 = [message stringByTrimmingCharactersInSet:{+[NSCharacterSet newlineCharacterSet](NSCharacterSet, "newlineCharacterSet")}];
 
-  [v7 renderingTimeLogMessage:v8 withTimestamp:a5];
+  [presentationViewController renderingTimeLogMessage:v8 withTimestamp:timestamp];
 }
 
-+ (void)setupJavascriptContext:(id)a3
++ (void)setupJavascriptContext:(id)context
 {
-  [a3 setObject:objc_opt_class() forKeyedSubscript:@"OKWidgetMarimbaView"];
-  [OKSettings exportClassSettings:objc_opt_class() toJavaScriptContext:a3];
+  [context setObject:objc_opt_class() forKeyedSubscript:@"OKWidgetMarimbaView"];
+  [OKSettings exportClassSettings:objc_opt_class() toJavaScriptContext:context];
   v10[0] = JSPropertyDescriptorValueKey;
   v10[1] = JSPropertyDescriptorWritableKey;
   v11[0] = &stru_1AB738;
@@ -1400,7 +1400,7 @@ LABEL_10:
   v10[3] = JSPropertyDescriptorConfigurableKey;
   v11[2] = &__kCFBooleanFalse;
   v11[3] = &__kCFBooleanTrue;
-  [objc_msgSend(objc_msgSend(a3 objectForKeyedSubscript:{@"OKWidgetMarimbaView", "objectForKeyedSubscript:", @"prototype", "defineProperty:descriptor:", @"gotoItem", +[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", v11, v10, 4)}];
+  [objc_msgSend(objc_msgSend(context objectForKeyedSubscript:{@"OKWidgetMarimbaView", "objectForKeyedSubscript:", @"prototype", "defineProperty:descriptor:", @"gotoItem", +[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", v11, v10, 4)}];
   v8[0] = JSPropertyDescriptorValueKey;
   v8[1] = JSPropertyDescriptorWritableKey;
   v9[0] = &stru_1AB778;
@@ -1409,7 +1409,7 @@ LABEL_10:
   v8[3] = JSPropertyDescriptorConfigurableKey;
   v9[2] = &__kCFBooleanFalse;
   v9[3] = &__kCFBooleanTrue;
-  [objc_msgSend(objc_msgSend(a3 objectForKeyedSubscript:{@"OKWidgetMarimbaView", "objectForKeyedSubscript:", @"prototype", "defineProperty:descriptor:", @"restart", +[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", v9, v8, 4)}];
+  [objc_msgSend(objc_msgSend(context objectForKeyedSubscript:{@"OKWidgetMarimbaView", "objectForKeyedSubscript:", @"prototype", "defineProperty:descriptor:", @"restart", +[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", v9, v8, 4)}];
   v6[0] = JSPropertyDescriptorValueKey;
   v6[1] = JSPropertyDescriptorWritableKey;
   v7[0] = &stru_1AB7B8;
@@ -1418,7 +1418,7 @@ LABEL_10:
   v6[3] = JSPropertyDescriptorConfigurableKey;
   v7[2] = &__kCFBooleanFalse;
   v7[3] = &__kCFBooleanTrue;
-  [objc_msgSend(objc_msgSend(a3 objectForKeyedSubscript:{@"OKWidgetMarimbaView", "objectForKeyedSubscript:", @"prototype", "defineProperty:descriptor:", @"gotoNext", +[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", v7, v6, 4)}];
+  [objc_msgSend(objc_msgSend(context objectForKeyedSubscript:{@"OKWidgetMarimbaView", "objectForKeyedSubscript:", @"prototype", "defineProperty:descriptor:", @"gotoNext", +[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", v7, v6, 4)}];
   v4[0] = JSPropertyDescriptorValueKey;
   v4[1] = JSPropertyDescriptorWritableKey;
   v5[0] = &stru_1AB7D8;
@@ -1427,7 +1427,7 @@ LABEL_10:
   v4[3] = JSPropertyDescriptorConfigurableKey;
   v5[2] = &__kCFBooleanFalse;
   v5[3] = &__kCFBooleanTrue;
-  [objc_msgSend(objc_msgSend(a3 objectForKeyedSubscript:{@"OKWidgetMarimbaView", "objectForKeyedSubscript:", @"prototype", "defineProperty:descriptor:", @"gotoPrevious", +[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", v5, v4, 4)}];
+  [objc_msgSend(objc_msgSend(context objectForKeyedSubscript:{@"OKWidgetMarimbaView", "objectForKeyedSubscript:", @"prototype", "defineProperty:descriptor:", @"gotoPrevious", +[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", v5, v4, 4)}];
 }
 
 @end

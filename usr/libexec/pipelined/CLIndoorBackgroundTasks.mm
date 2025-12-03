@@ -1,11 +1,11 @@
 @interface CLIndoorBackgroundTasks
 - (CLIndoorBackgroundTasks)init;
-- (CLIndoorBackgroundTasks)initWithService:(id)a3;
+- (CLIndoorBackgroundTasks)initWithService:(id)service;
 - (void)checkIn;
-- (void)handleCheckIn:(id)a3 withPolicy:(const void *)a4 andName:(const char *)a5;
-- (void)handleTileCleanup:(id)a3;
-- (void)handleTileCleanupCheckIn:(id)a3;
-- (void)handleVacuumDBs:(id)a3;
+- (void)handleCheckIn:(id)in withPolicy:(const void *)policy andName:(const char *)name;
+- (void)handleTileCleanup:(id)cleanup;
+- (void)handleTileCleanupCheckIn:(id)in;
+- (void)handleVacuumDBs:(id)bs;
 @end
 
 @implementation CLIndoorBackgroundTasks
@@ -17,16 +17,16 @@
   return 0;
 }
 
-- (CLIndoorBackgroundTasks)initWithService:(id)a3
+- (CLIndoorBackgroundTasks)initWithService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   v9.receiver = self;
   v9.super_class = CLIndoorBackgroundTasks;
   v5 = [(CLIndoorBackgroundTasks *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_service, v4);
+    objc_storeWeak(&v5->_service, serviceCopy);
     [(CLIndoorBackgroundTasks *)v6 checkIn];
     v7 = v6;
   }
@@ -81,17 +81,17 @@ LABEL_4:
   objc_destroyWeak(&location);
 }
 
-- (void)handleCheckIn:(id)a3 withPolicy:(const void *)a4 andName:(const char *)a5
+- (void)handleCheckIn:(id)in withPolicy:(const void *)policy andName:(const char *)name
 {
-  v7 = a3;
-  v8 = xpc_activity_copy_criteria(v7);
+  inCopy = in;
+  v8 = xpc_activity_copy_criteria(inCopy);
   if (v8)
   {
     sub_100351F14(buf, v8);
-    v9 = *a4;
+    v9 = *policy;
     if (buf[0] == 1 && (v9 & 1) != 0)
     {
-      if (*&v30[4] != *(a4 + 1))
+      if (*&v30[4] != *(policy + 1))
       {
         goto LABEL_35;
       }
@@ -102,10 +102,10 @@ LABEL_4:
       goto LABEL_35;
     }
 
-    v10 = *(a4 + 16);
+    v10 = *(policy + 16);
     if (v31 == 1 && (v10 & 1) != 0)
     {
-      if (v32 != *(a4 + 3))
+      if (v32 != *(policy + 3))
       {
         goto LABEL_35;
       }
@@ -116,10 +116,10 @@ LABEL_4:
       goto LABEL_35;
     }
 
-    v12 = *(a4 + 32);
+    v12 = *(policy + 32);
     if (v33 == 1 && (v12 & 1) != 0)
     {
-      if (v34 != *(a4 + 5))
+      if (v34 != *(policy + 5))
       {
         goto LABEL_35;
       }
@@ -130,8 +130,8 @@ LABEL_4:
       goto LABEL_35;
     }
 
-    v13 = *(a4 + 6);
-    if (__s1 != v13 && (!__s1 || !v13 || strcmp(__s1, v13)) || v36 != *(a4 + 14))
+    v13 = *(policy + 6);
+    if (__s1 != v13 && (!__s1 || !v13 || strcmp(__s1, v13)) || v36 != *(policy + 14))
     {
 LABEL_35:
       if (qword_10045B070 != -1)
@@ -148,7 +148,7 @@ LABEL_35:
       sub_100350E94(buf, &__p);
       v17 = SHIBYTE(__p.__r_.__value_.__r.__words[2]);
       v18 = __p.__r_.__value_.__r.__words[0];
-      sub_100350E94(a4, &v28);
+      sub_100350E94(policy, &v28);
       p_p = &__p;
       if (v17 < 0)
       {
@@ -166,7 +166,7 @@ LABEL_35:
       }
 
       *v22 = 136446722;
-      v23 = a5;
+      nameCopy = name;
       v24 = 2082;
       v25 = p_p;
       v26 = 2082;
@@ -185,8 +185,8 @@ LABEL_35:
       {
 LABEL_45:
 
-        sub_100351DC0(a4, v8);
-        xpc_activity_set_criteria(v7, v8);
+        sub_100351DC0(policy, v8);
+        xpc_activity_set_criteria(inCopy, v8);
         goto LABEL_46;
       }
 
@@ -206,7 +206,7 @@ LABEL_45:
       sub_100350E94(v22, &__p);
       v15 = (__p.__r_.__value_.__r.__words[2] & 0x8000000000000000) == 0 ? &__p : __p.__r_.__value_.__r.__words[0];
       LODWORD(v28.__r_.__value_.__l.__data_) = 136446466;
-      *(v28.__r_.__value_.__r.__words + 4) = a5;
+      *(v28.__r_.__value_.__r.__words + 4) = name;
       WORD2(v28.__r_.__value_.__r.__words[1]) = 2082;
       *(&v28.__r_.__value_.__r.__words[1] + 6) = v15;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "%{public}s activity already registered: %{public}s", &v28, 0x16u);
@@ -220,8 +220,8 @@ LABEL_45:
   else
   {
     v8 = xpc_dictionary_create(0, 0, 0);
-    sub_100351DC0(a4, v8);
-    xpc_activity_set_criteria(v7, v8);
+    sub_100351DC0(policy, v8);
+    xpc_activity_set_criteria(inCopy, v8);
     if (qword_10045B070 != -1)
     {
       sub_100387B84();
@@ -231,7 +231,7 @@ LABEL_45:
     if (os_log_type_enabled(qword_10045B078, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136446210;
-      *v30 = a5;
+      *v30 = name;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Registering %{public}s activity for the first time", buf, 0xCu);
     }
   }
@@ -239,10 +239,10 @@ LABEL_45:
 LABEL_46:
 }
 
-- (void)handleVacuumDBs:(id)a3
+- (void)handleVacuumDBs:(id)bs
 {
-  v4 = a3;
-  if (xpc_activity_set_state(v4, 4))
+  bsCopy = bs;
+  if (xpc_activity_set_state(bsCopy, 4))
   {
     if (qword_10045B070 == -1)
     {
@@ -255,7 +255,7 @@ LABEL_6:
         v11[1] = 3221225472;
         v11[2] = sub_1003522CC;
         v11[3] = &unk_100432828;
-        v12 = v4;
+        v12 = bsCopy;
         v6 = objc_retainBlock(v11);
         [WeakRetained fullyVacuumAllDBsWithReply:v6];
 
@@ -302,15 +302,15 @@ LABEL_7:
   _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "Failed to set tile cleanup to continue state", buf, 2u);
 }
 
-- (void)handleTileCleanupCheckIn:(id)a3
+- (void)handleTileCleanupCheckIn:(id)in
 {
-  v4 = a3;
+  inCopy = in;
   *buf = sub_1000DD44C();
   *&buf[8] = v5;
   v7 = 0;
   if (sub_100008F80(buf, &v7))
   {
-    [(CLIndoorBackgroundTasks *)self handleCheckIn:v4 withPolicy:&byte_10045DAC8 andName:"tile cleanup"];
+    [(CLIndoorBackgroundTasks *)self handleCheckIn:inCopy withPolicy:&byte_10045DAC8 andName:"tile cleanup"];
     if (qword_10045B070 != -1)
     {
       sub_100387B5C();
@@ -327,14 +327,14 @@ LABEL_7:
 
   else
   {
-    [(CLIndoorBackgroundTasks *)self handleCheckIn:v4 withPolicy:&byte_10045DA48 andName:"tile cleanup"];
+    [(CLIndoorBackgroundTasks *)self handleCheckIn:inCopy withPolicy:&byte_10045DA48 andName:"tile cleanup"];
   }
 }
 
-- (void)handleTileCleanup:(id)a3
+- (void)handleTileCleanup:(id)cleanup
 {
-  v4 = a3;
-  if (xpc_activity_set_state(v4, 4))
+  cleanupCopy = cleanup;
+  if (xpc_activity_set_state(cleanupCopy, 4))
   {
     if (qword_10045B070 != -1)
     {
@@ -349,7 +349,7 @@ LABEL_7:
     }
 
     v6 = objc_alloc_init(CLIndoorTileEvictionPolicy);
-    [(CLIndoorTileEvictionPolicy *)v6 setActivity:v4];
+    [(CLIndoorTileEvictionPolicy *)v6 setActivity:cleanupCopy];
     *buf = sub_1000DD44C();
     *&buf[8] = v7;
     v18 = 0;

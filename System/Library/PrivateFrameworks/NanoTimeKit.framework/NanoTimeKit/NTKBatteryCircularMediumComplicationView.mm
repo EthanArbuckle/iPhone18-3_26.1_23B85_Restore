@@ -1,16 +1,16 @@
 @interface NTKBatteryCircularMediumComplicationView
-+ (BOOL)handlesComplicationTemplate:(id)a3;
++ (BOOL)handlesComplicationTemplate:(id)template;
 @end
 
 @implementation NTKBatteryCircularMediumComplicationView
 
-+ (BOOL)handlesComplicationTemplate:(id)a3
++ (BOOL)handlesComplicationTemplate:(id)template
 {
-  v3 = a3;
+  templateCopy = template;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 isCompatibleWithFamily:*MEMORY[0x277CBB668]];
+    v4 = [templateCopy isCompatibleWithFamily:*MEMORY[0x277CBB668]];
   }
 
   else

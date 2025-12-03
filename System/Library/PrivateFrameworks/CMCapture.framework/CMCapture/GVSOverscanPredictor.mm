@@ -1,20 +1,20 @@
 @interface GVSOverscanPredictor
-- (BOOL)predictOverscanFitsFromMetadata:(id)a3 finalCropRect:(CGRect)a4 boundingRect:(CGRect)a5;
-- (GVSOverscanPredictor)initWithConfig:(VISOverscanPredictorConfiguration)a3 cameraInfoByPortType:(id)a4 visInputPixelBufferAttributes:(id)a5;
-- (__n64)estimateOverscanUseFromRotation:(float32x4_t)a3 focalLength:(float32x4_t)a4 cornerCoords:;
-- (int)computeFocalLength:(float *)a3 fromMetadata:(id)a4;
-- (int)estimateOverscanUseFromMetadata:(id)a3 finalCropRect:(CGRect)a4;
-- (int)parseCameraInfoByPortType:(id)a3;
+- (BOOL)predictOverscanFitsFromMetadata:(id)metadata finalCropRect:(CGRect)rect boundingRect:(CGRect)boundingRect;
+- (GVSOverscanPredictor)initWithConfig:(VISOverscanPredictorConfiguration)config cameraInfoByPortType:(id)type visInputPixelBufferAttributes:(id)attributes;
+- (__n64)estimateOverscanUseFromRotation:(float32x4_t)rotation focalLength:(float32x4_t)length cornerCoords:;
+- (int)computeFocalLength:(float *)length fromMetadata:(id)metadata;
+- (int)estimateOverscanUseFromMetadata:(id)metadata finalCropRect:(CGRect)rect;
+- (int)parseCameraInfoByPortType:(id)type;
 - (void)resetAndClear;
-- (void)setCameraAlignmentForPortType:(id)a3;
+- (void)setCameraAlignmentForPortType:(id)type;
 @end
 
 @implementation GVSOverscanPredictor
 
-- (GVSOverscanPredictor)initWithConfig:(VISOverscanPredictorConfiguration)a3 cameraInfoByPortType:(id)a4 visInputPixelBufferAttributes:(id)a5
+- (GVSOverscanPredictor)initWithConfig:(VISOverscanPredictorConfiguration)config cameraInfoByPortType:(id)type visInputPixelBufferAttributes:(id)attributes
 {
   v6 = v5;
-  v9 = a5;
+  attributesCopy = attributes;
   v10 = v6;
   v22.receiver = self;
   v22.super_class = GVSOverscanPredictor;
@@ -25,12 +25,12 @@
     goto LABEL_12;
   }
 
-  *v11->_margin = *(a4 + 1);
-  v13 = *(a4 + 4);
+  *v11->_margin = *(type + 1);
+  v13 = *(type + 4);
   v11->_detectionTimeoutSeconds = v13;
   v11->_resetTimeoutSeconds = v13;
   v14 = [VISRotationCorrectionEstimator alloc];
-  LODWORD(v15) = *a4;
+  LODWORD(v15) = *type;
   v16 = [(VISRotationCorrectionEstimator *)v14 initWithTimeScale:v15];
   v17 = v12[11];
   v12[11] = v16;
@@ -73,7 +73,7 @@ LABEL_19:
   }
 
   [(float32x2_t *)v12 resetAndClear];
-  if ([(float32x2_t *)v12 parseCameraInfoByPortType:v9])
+  if ([(float32x2_t *)v12 parseCameraInfoByPortType:attributesCopy])
   {
     [GVSOverscanPredictor initWithConfig:cameraInfoByPortType:visInputPixelBufferAttributes:];
     goto LABEL_19;
@@ -94,15 +94,15 @@ LABEL_13:
   return v20;
 }
 
-- (int)parseCameraInfoByPortType:(id)a3
+- (int)parseCameraInfoByPortType:(id)type
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF90] dictionary];
+  typeCopy = type;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  pixelSizeByPortType = [v3 allKeys];
+  pixelSizeByPortType = [typeCopy allKeys];
   v6 = [pixelSizeByPortType countByEnumeratingWithState:&v21 objects:v20 count:16];
   if (v6)
   {
@@ -119,7 +119,7 @@ LABEL_13:
         }
 
         v11 = *(*(&v21 + 1) + 8 * i);
-        v12 = [v3 objectForKeyedSubscript:v11];
+        v12 = [typeCopy objectForKeyedSubscript:v11];
         v13 = [v12 objectForKeyedSubscript:v9];
         v14 = v13;
         if (!v13 || ([v13 floatValue], v15 <= 0.0))
@@ -129,7 +129,7 @@ LABEL_13:
           goto LABEL_12;
         }
 
-        [v4 setObject:v14 forKeyedSubscript:v11];
+        [dictionary setObject:v14 forKeyedSubscript:v11];
       }
 
       v7 = [pixelSizeByPortType countByEnumeratingWithState:&v21 objects:v20 count:16];
@@ -142,7 +142,7 @@ LABEL_13:
     }
   }
 
-  v16 = v4;
+  v16 = dictionary;
   v17 = 0;
   pixelSizeByPortType = self->_pixelSizeByPortType;
   self->_pixelSizeByPortType = v16;
@@ -151,17 +151,17 @@ LABEL_12:
   return v17;
 }
 
-- (void)setCameraAlignmentForPortType:(id)a3
+- (void)setCameraAlignmentForPortType:(id)type
 {
-  v6 = a3;
-  if ([v6 isEqualToString:*off_1E798A0E0])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:*off_1E798A0E0])
   {
     v4 = xmmword_1AD0562F0;
   }
 
   else
   {
-    if ([v6 isEqualToString:*off_1E798A0F8])
+    if ([typeCopy isEqualToString:*off_1E798A0F8])
     {
       v5 = -1;
     }
@@ -188,13 +188,13 @@ LABEL_12:
   [(VISRotationCorrectionEstimator *)visEstimator reset];
 }
 
-- (int)computeFocalLength:(float *)a3 fromMetadata:(id)a4
+- (int)computeFocalLength:(float *)length fromMetadata:(id)metadata
 {
-  v6 = a4;
-  v7 = [v6 objectForKeyedSubscript:*off_1E798B530];
-  v8 = [v6 objectForKeyedSubscript:*off_1E798B540];
+  metadataCopy = metadata;
+  v7 = [metadataCopy objectForKeyedSubscript:*off_1E798B530];
+  v8 = [metadataCopy objectForKeyedSubscript:*off_1E798B540];
   v9 = [(NSDictionary *)self->_pixelSizeByPortType objectForKeyedSubscript:v8];
-  if (!a3)
+  if (!length)
   {
     [GVSOverscanPredictor computeFocalLength:fromMetadata:];
     v13 = -12782;
@@ -221,7 +221,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v11 = [v6 objectForKeyedSubscript:*off_1E798B588];
+  v11 = [metadataCopy objectForKeyedSubscript:*off_1E798B588];
   if ([v11 intValue] < 1)
   {
     v12 = 0x100000001;
@@ -235,7 +235,7 @@ LABEL_16:
   v18 = v12;
 
   v19 = 1.0;
-  v13 = FigMotionComputeLensPositionScalingFactor(v6, *self->_imageSize, HIDWORD(*self->_imageSize), v18.i32[0], v18.u32[1], &v19);
+  v13 = FigMotionComputeLensPositionScalingFactor(metadataCopy, *self->_imageSize, HIDWORD(*self->_imageSize), v18.i32[0], v18.u32[1], &v19);
   if (v13)
   {
     [GVSOverscanPredictor computeFocalLength:fromMetadata:];
@@ -246,7 +246,7 @@ LABEL_16:
     [v7 floatValue];
     v15 = v14;
     [v9 floatValue];
-    *a3 = (v15 / v16) * v19;
+    *length = (v15 / v16) * v19;
   }
 
 LABEL_11:
@@ -254,21 +254,21 @@ LABEL_11:
   return v13;
 }
 
-- (__n64)estimateOverscanUseFromRotation:(float32x4_t)a3 focalLength:(float32x4_t)a4 cornerCoords:
+- (__n64)estimateOverscanUseFromRotation:(float32x4_t)rotation focalLength:(float32x4_t)length cornerCoords:
 {
   v4 = vrecpe_f32(a2.u32[0]);
   LODWORD(v5) = vmul_f32(v4, vrecps_f32(a2.u32[0], v4)).u32[0];
-  v4.i32[0] = a1.n128_i32[2];
-  v6 = vmulq_n_f32(a3, v5);
-  v7 = vminvq_f32(a3);
-  v8 = vmaxvq_f32(a3);
-  v9 = vmlaq_lane_f32(vmlsq_lane_f32(a3, a4, v4, 0), vdupq_lane_s32(a2, 0), a1.n128_u64[0], 1);
-  v10 = vmulq_n_f32(a4, v5);
+  v4.i32[0] = self.n128_i32[2];
+  v6 = vmulq_n_f32(rotation, v5);
+  v7 = vminvq_f32(rotation);
+  v8 = vmaxvq_f32(rotation);
+  v9 = vmlaq_lane_f32(vmlsq_lane_f32(rotation, length, v4, 0), vdupq_lane_s32(a2, 0), self.n128_u64[0], 1);
+  v10 = vmulq_n_f32(length, v5);
   __asm { FMOV            V4.4S, #1.0 }
 
-  v16 = vmlaq_n_f32(_Q4, v10, a1.n128_f32[0]);
-  a1.n128_u32[0] = a1.n128_u32[1];
-  v17 = vmlsq_lane_f32(v16, v6, a1.n128_u64[0], 0);
+  v16 = vmlaq_n_f32(_Q4, v10, self.n128_f32[0]);
+  self.n128_u32[0] = self.n128_u32[1];
+  v17 = vmlsq_lane_f32(v16, v6, self.n128_u64[0], 0);
   v10.i64[0] = 0x3400000034000000;
   v10.i64[1] = 0x3400000034000000;
   v18 = vmaxnmq_f32(vabsq_f32(v17), v10);
@@ -282,16 +282,16 @@ LABEL_11:
   return result;
 }
 
-- (int)estimateOverscanUseFromMetadata:(id)a3 finalCropRect:(CGRect)a4
+- (int)estimateOverscanUseFromMetadata:(id)metadata finalCropRect:(CGRect)rect
 {
-  v5 = a3;
-  v6 = [v5 allKeys];
-  v7 = [v6 containsObject:*off_1E798B3D0];
+  metadataCopy = metadata;
+  allKeys = [metadataCopy allKeys];
+  v7 = [allKeys containsObject:*off_1E798B3D0];
 
   if (v7)
   {
     v30 = 0;
-    MotionDataFromISP = FigMotionGetMotionDataFromISP(v5, self->_rawQuaternionArray, 0, 36, &v30, 0, 0, 0, 0);
+    MotionDataFromISP = FigMotionGetMotionDataFromISP(metadataCopy, self->_rawQuaternionArray, 0, 36, &v30, 0, 0, 0, 0);
     if (MotionDataFromISP)
     {
       v26 = MotionDataFromISP;
@@ -307,7 +307,7 @@ LABEL_11:
     else
     {
       v29 = 0;
-      v9 = [(GVSOverscanPredictor *)self computeFocalLength:&v29 fromMetadata:v5];
+      v9 = [(GVSOverscanPredictor *)self computeFocalLength:&v29 fromMetadata:metadataCopy];
       if (v9)
       {
         v26 = v9;
@@ -376,20 +376,20 @@ LABEL_11:
   return v26;
 }
 
-- (BOOL)predictOverscanFitsFromMetadata:(id)a3 finalCropRect:(CGRect)a4 boundingRect:(CGRect)a5
+- (BOOL)predictOverscanFitsFromMetadata:(id)metadata finalCropRect:(CGRect)rect boundingRect:(CGRect)boundingRect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v9 = a4.size.height;
-  v10 = a4.size.width;
-  v11 = a4.origin.y;
-  v12 = a4.origin.x;
-  v14 = a3;
-  v15 = [v14 objectForKeyedSubscript:*off_1E798B540];
-  v16 = [v14 allKeys];
-  v17 = [v16 containsObject:*off_1E798B3D0];
+  height = boundingRect.size.height;
+  width = boundingRect.size.width;
+  y = boundingRect.origin.y;
+  x = boundingRect.origin.x;
+  v9 = rect.size.height;
+  v10 = rect.size.width;
+  v11 = rect.origin.y;
+  v12 = rect.origin.x;
+  metadataCopy = metadata;
+  v15 = [metadataCopy objectForKeyedSubscript:*off_1E798B540];
+  allKeys = [metadataCopy allKeys];
+  v17 = [allKeys containsObject:*off_1E798B3D0];
 
   if ((v17 & 1) == 0)
   {
@@ -412,7 +412,7 @@ LABEL_17:
     objc_storeStrong(&self->_previousPort, v15);
   }
 
-  if ([(GVSOverscanPredictor *)self estimateOverscanUseFromMetadata:v14 finalCropRect:v12, v11, v10, v9])
+  if ([(GVSOverscanPredictor *)self estimateOverscanUseFromMetadata:metadataCopy finalCropRect:v12, v11, v10, v9])
   {
     [GVSOverscanPredictor predictOverscanFitsFromMetadata:finalCropRect:boundingRect:];
     goto LABEL_17;

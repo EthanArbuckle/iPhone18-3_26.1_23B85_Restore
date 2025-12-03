@@ -9,27 +9,27 @@
 - (int)acquireExclusiveAccessKey;
 - (void)_cancelAssociatedCancelables;
 - (void)_didChange;
-- (void)addCancelable:(id)a3;
-- (void)addReason:(id)a3;
+- (void)addCancelable:(id)cancelable;
+- (void)addReason:(id)reason;
 - (void)cancelMessage;
-- (void)finishedActivity:(id)a3;
-- (void)postActivityFinished:(id)a3;
+- (void)finishedActivity:(id)activity;
+- (void)postActivityFinished:(id)finished;
 - (void)postActivityStarting;
-- (void)postDidChangeWithUserInfo:(id)a3;
-- (void)recordTransportType:(int64_t)a3;
-- (void)relinquishExclusiveAccessKey:(int)a3;
-- (void)removeCancelable:(id)a3;
+- (void)postDidChangeWithUserInfo:(id)info;
+- (void)recordTransportType:(int64_t)type;
+- (void)relinquishExclusiveAccessKey:(int)key;
+- (void)removeCancelable:(id)cancelable;
 - (void)reset;
 - (void)resetConnectionStats;
-- (void)setCanBeCancelled:(BOOL)a3;
-- (void)setCurrentCount:(unint64_t)a3;
-- (void)setDisplayName:(id)a3 maxCount:(unint64_t)a4;
-- (void)setError:(id)a3;
-- (void)setGotNewMessagesState:(unint64_t)a3;
-- (void)setPercentDone:(double)a3 withKey:(int)a4;
-- (void)setPercentDoneOfCurrentItem:(double)a3;
-- (void)setShouldCancel:(BOOL)a3;
-- (void)setStatusMessage:(id)a3 withKey:(int)a4;
+- (void)setCanBeCancelled:(BOOL)cancelled;
+- (void)setCurrentCount:(unint64_t)count;
+- (void)setDisplayName:(id)name maxCount:(unint64_t)count;
+- (void)setError:(id)error;
+- (void)setGotNewMessagesState:(unint64_t)state;
+- (void)setPercentDone:(double)done withKey:(int)key;
+- (void)setPercentDoneOfCurrentItem:(double)item;
+- (void)setShouldCancel:(BOOL)cancel;
+- (void)setStatusMessage:(id)message withKey:(int)key;
 - (void)startActivity;
 @end
 
@@ -58,13 +58,13 @@
 - (void)startActivity
 {
   +[MFActivityMonitor mf_lock];
-  v3 = [MEMORY[0x1E696AF00] currentThread];
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
   runningThread = self->_runningThread;
-  self->_runningThread = v3;
+  self->_runningThread = currentThread;
 
   +[MFActivityMonitor mf_unlock];
-  v5 = [(NSThread *)self->_runningThread threadDictionary];
-  [v5 setObject:self forKeyedSubscript:*MEMORY[0x1E699B758]];
+  threadDictionary = [(NSThread *)self->_runningThread threadDictionary];
+  [threadDictionary setObject:self forKeyedSubscript:*MEMORY[0x1E699B758]];
 
   *(self + 49) |= 0x80u;
   self->_startTime = CFAbsoluteTimeGetCurrent();
@@ -83,13 +83,13 @@
 
 - (void)postActivityStarting
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 postNotificationName:@"MonitoredActivityStarted" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"MonitoredActivityStarted" object:self];
 }
 
 + (MFActivityMonitor)currentMonitor
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___MFActivityMonitor;
   v2 = objc_msgSendSuper2(&v4, sel_currentDesignator);
 
@@ -106,21 +106,21 @@
   }
 }
 
-- (void)postActivityFinished:(id)a3
+- (void)postActivityFinished:(id)finished
 {
-  v6 = a3;
-  v4 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v6, @"MonitoredActivityInvocation", 0, 0}];
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 postNotificationName:@"MonitoredActivityEnded" object:self userInfo:v4];
+  finishedCopy = finished;
+  v4 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{finishedCopy, @"MonitoredActivityInvocation", 0, 0}];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"MonitoredActivityEnded" object:self userInfo:v4];
 }
 
-- (void)finishedActivity:(id)a3
+- (void)finishedActivity:(id)activity
 {
-  v7 = a3;
+  activityCopy = activity;
   [MEMORY[0x1E69E58C0] mf_clearLocks];
-  v4 = [MEMORY[0x1E696AF00] currentThread];
-  v5 = [v4 threadDictionary];
-  [v5 removeObjectForKey:*MEMORY[0x1E699B758]];
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  threadDictionary = [currentThread threadDictionary];
+  [threadDictionary removeObjectForKey:*MEMORY[0x1E699B758]];
 
   *(self + 49) &= ~0x80u;
   +[MFActivityMonitor mf_lock];
@@ -128,7 +128,7 @@
   self->_runningThread = 0;
 
   +[MFActivityMonitor mf_unlock];
-  [(MFActivityMonitor *)self postActivityFinished:v7];
+  [(MFActivityMonitor *)self postActivityFinished:activityCopy];
 }
 
 - (id)userInfoForNotification
@@ -147,14 +147,14 @@
 
   if ([(NSString *)self->_displayName length])
   {
-    v4 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_maxCount];
-    [v4 setObject:v5 forKey:@"MonitoredActivityMaxCount"];
+    [dictionary setObject:v5 forKey:@"MonitoredActivityMaxCount"];
 
     v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_currentCount];
-    [v4 setObject:v6 forKey:@"MonitoredActivityCurrentCount"];
+    [dictionary setObject:v6 forKey:@"MonitoredActivityCurrentCount"];
 
-    v7 = v4;
+    v7 = dictionary;
   }
 
   else
@@ -167,32 +167,32 @@
   return v7;
 }
 
-- (void)postDidChangeWithUserInfo:(id)a3
+- (void)postDidChangeWithUserInfo:(id)info
 {
-  v4 = a3;
-  if (v4)
+  infoCopy = info;
+  if (infoCopy)
   {
-    v6 = v4;
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 postNotificationName:@"MonitoredActivityMessage" object:self userInfo:v6];
+    v6 = infoCopy;
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"MonitoredActivityMessage" object:self userInfo:v6];
 
-    v4 = v6;
+    infoCopy = v6;
   }
 }
 
 - (void)_didChange
 {
-  v3 = [(MFActivityMonitor *)self userInfoForNotification];
+  userInfoForNotification = [(MFActivityMonitor *)self userInfoForNotification];
   [(MFActivityMonitor *)self postDidChangeWithUserInfo:?];
 }
 
-- (void)setCurrentCount:(unint64_t)a3
+- (void)setCurrentCount:(unint64_t)count
 {
   +[MFActivityMonitor mf_lock];
-  self->_currentCount = a3;
-  v5 = [(MFActivityMonitor *)self userInfoForNotification];
+  self->_currentCount = count;
+  userInfoForNotification = [(MFActivityMonitor *)self userInfoForNotification];
   +[MFActivityMonitor mf_unlock];
-  [(MFActivityMonitor *)self postDidChangeWithUserInfo:v5];
+  [(MFActivityMonitor *)self postDidChangeWithUserInfo:userInfoForNotification];
 }
 
 - (id)_ntsThrottledUserInfoDict
@@ -201,26 +201,26 @@
   v4 = Current;
   if (self->_currentCount == self->_maxCount || Current - self->_lastTime >= 0.0333333351)
   {
-    v5 = [(MFActivityMonitor *)self userInfoForNotification];
+    userInfoForNotification = [(MFActivityMonitor *)self userInfoForNotification];
     self->_lastTime = v4;
   }
 
   else
   {
-    v5 = 0;
+    userInfoForNotification = 0;
   }
 
-  return v5;
+  return userInfoForNotification;
 }
 
-- (void)setPercentDoneOfCurrentItem:(double)a3
+- (void)setPercentDoneOfCurrentItem:(double)item
 {
   +[MFActivityMonitor mf_lock];
-  v4 = [(MFActivityMonitor *)self _ntsThrottledUserInfoDict];
+  _ntsThrottledUserInfoDict = [(MFActivityMonitor *)self _ntsThrottledUserInfoDict];
   +[MFActivityMonitor mf_unlock];
-  if (v4)
+  if (_ntsThrottledUserInfoDict)
   {
-    [(MFActivityMonitor *)self postDidChangeWithUserInfo:v4];
+    [(MFActivityMonitor *)self postDidChangeWithUserInfo:_ntsThrottledUserInfoDict];
   }
 }
 
@@ -247,19 +247,19 @@
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setGotNewMessagesState:(unint64_t)a3
+- (void)setGotNewMessagesState:(unint64_t)state
 {
-  if (self->_gotNewMessagesState < a3)
+  if (self->_gotNewMessagesState < state)
   {
-    self->_gotNewMessagesState = a3;
+    self->_gotNewMessagesState = state;
   }
 }
 
-- (void)addReason:(id)a3
+- (void)addReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   reasons = self->_reasons;
-  v8 = v4;
+  v8 = reasonCopy;
   if (!reasons)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -267,29 +267,29 @@
     self->_reasons = v6;
 
     reasons = self->_reasons;
-    v4 = v8;
+    reasonCopy = v8;
   }
 
-  [(NSMutableSet *)reasons addObject:v4];
+  [(NSMutableSet *)reasons addObject:reasonCopy];
 }
 
-- (void)setDisplayName:(id)a3 maxCount:(unint64_t)a4
+- (void)setDisplayName:(id)name maxCount:(unint64_t)count
 {
-  v8 = a3;
+  nameCopy = name;
   +[MFActivityMonitor mf_lock];
-  objc_storeStrong(&self->_displayName, a3);
-  self->_maxCount = a4;
+  objc_storeStrong(&self->_displayName, name);
+  self->_maxCount = count;
   self->_currentCount = 0;
   self->_lastTime = 0.0;
   self->_percentDone = 0.0;
-  v7 = [(MFActivityMonitor *)self userInfoForNotification];
+  userInfoForNotification = [(MFActivityMonitor *)self userInfoForNotification];
   +[MFActivityMonitor mf_unlock];
-  [(MFActivityMonitor *)self postDidChangeWithUserInfo:v7];
+  [(MFActivityMonitor *)self postDidChangeWithUserInfo:userInfoForNotification];
 }
 
-- (void)setCanBeCancelled:(BOOL)a3
+- (void)setCanBeCancelled:(BOOL)cancelled
 {
-  if (a3)
+  if (cancelled)
   {
     v3 = 32;
   }
@@ -302,17 +302,17 @@
   *(self + 49) = *(self + 49) & 0xDF | v3;
 }
 
-- (void)setShouldCancel:(BOOL)a3
+- (void)setShouldCancel:(BOOL)cancel
 {
   if ((*(self + 49) & 0x20) != 0)
   {
-    if (a3)
+    if (cancel)
     {
       if ([MEMORY[0x1E696AF00] isMainThread])
       {
-        v4 = [MEMORY[0x1E696AF00] currentThread];
-        v5 = [v4 threadDictionary];
-        v6 = [v5 objectForKeyedSubscript:*MEMORY[0x1E699B758]];
+        currentThread = [MEMORY[0x1E696AF00] currentThread];
+        threadDictionary = [currentThread threadDictionary];
+        v6 = [threadDictionary objectForKeyedSubscript:*MEMORY[0x1E699B758]];
 
         if (v6 == self)
         {
@@ -351,9 +351,9 @@
   }
 }
 
-- (void)addCancelable:(id)a3
+- (void)addCancelable:(id)cancelable
 {
-  v7 = a3;
+  cancelableCopy = cancelable;
   +[MFActivityMonitor mf_lock];
   associatedCancelables = self->_associatedCancelables;
   if (!associatedCancelables)
@@ -365,19 +365,19 @@
     associatedCancelables = self->_associatedCancelables;
   }
 
-  [(NSMutableSet *)associatedCancelables addObject:v7];
+  [(NSMutableSet *)associatedCancelables addObject:cancelableCopy];
   +[MFActivityMonitor mf_unlock];
   if ((*(self + 49) & 0x40) != 0)
   {
-    [v7 cancel];
+    [cancelableCopy cancel];
   }
 }
 
-- (void)removeCancelable:(id)a3
+- (void)removeCancelable:(id)cancelable
 {
-  v4 = a3;
+  cancelableCopy = cancelable;
   +[MFActivityMonitor mf_lock];
-  [(NSMutableSet *)self->_associatedCancelables removeObject:v4];
+  [(NSMutableSet *)self->_associatedCancelables removeObject:cancelableCopy];
   +[MFActivityMonitor mf_unlock];
 }
 
@@ -391,7 +391,7 @@
 
 + (id)pushNewMonitor
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___MFActivityMonitor;
   v2 = objc_msgSendSuper2(&v4, sel_pushNewDesignator);
 
@@ -400,7 +400,7 @@
 
 + (void)destroyMonitor
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___MFActivityMonitor;
   objc_msgSendSuper2(&v2, sel_destroyCurrentDesignator);
 }
@@ -423,11 +423,11 @@
   return v3;
 }
 
-- (void)relinquishExclusiveAccessKey:(int)a3
+- (void)relinquishExclusiveAccessKey:(int)key
 {
   +[MFActivityMonitor mf_lock];
   v5 = *(self + 24);
-  if (a3 == v5 << 19 >> 19)
+  if (key == v5 << 19 >> 19)
   {
     *(self + 24) = v5 & 0xE000;
   }
@@ -435,55 +435,55 @@
   +[MFActivityMonitor mf_unlock];
 }
 
-- (void)setStatusMessage:(id)a3 withKey:(int)a4
+- (void)setStatusMessage:(id)message withKey:(int)key
 {
-  v8 = a3;
+  messageCopy = message;
   +[MFActivityMonitor mf_lock];
-  if (a4 != *(self + 24) << 19 >> 19 || self->_statusMessage == v8)
+  if (key != *(self + 24) << 19 >> 19 || self->_statusMessage == messageCopy)
   {
-    v7 = 0;
+    userInfoForNotification = 0;
   }
 
   else
   {
-    objc_storeStrong(&self->_statusMessage, a3);
-    v7 = [(MFActivityMonitor *)self userInfoForNotification];
+    objc_storeStrong(&self->_statusMessage, message);
+    userInfoForNotification = [(MFActivityMonitor *)self userInfoForNotification];
   }
 
   +[MFActivityMonitor mf_unlock];
-  if (v7)
+  if (userInfoForNotification)
   {
-    [(MFActivityMonitor *)self postDidChangeWithUserInfo:v7];
+    [(MFActivityMonitor *)self postDidChangeWithUserInfo:userInfoForNotification];
   }
 }
 
-- (void)setPercentDone:(double)a3 withKey:(int)a4
+- (void)setPercentDone:(double)done withKey:(int)key
 {
   +[MFActivityMonitor mf_lock];
-  if (a4 != *(self + 24) << 19 >> 19)
+  if (key != *(self + 24) << 19 >> 19)
   {
     goto LABEL_6;
   }
 
-  v7 = 1.0;
-  if (a3 <= 1.0)
+  doneCopy = 1.0;
+  if (done <= 1.0)
   {
-    v7 = a3;
+    doneCopy = done;
   }
 
-  if (v7 == self->_percentDone)
+  if (doneCopy == self->_percentDone)
   {
 LABEL_6:
-    v8 = 0;
+    userInfoForNotification = 0;
   }
 
   else
   {
-    self->_percentDone = v7;
-    v8 = [(MFActivityMonitor *)self userInfoForNotification];
+    self->_percentDone = doneCopy;
+    userInfoForNotification = [(MFActivityMonitor *)self userInfoForNotification];
   }
 
-  v9 = v8;
+  v9 = userInfoForNotification;
   +[MFActivityMonitor mf_unlock];
   if (v9)
   {
@@ -500,23 +500,23 @@ LABEL_6:
   return v3;
 }
 
-- (void)setError:(id)a3
+- (void)setError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   +[MFActivityMonitor mf_lock];
-  objc_storeStrong(&self->_error, a3);
+  objc_storeStrong(&self->_error, error);
   +[MFActivityMonitor mf_unlock];
 }
 
-- (void)recordTransportType:(int64_t)a3
+- (void)recordTransportType:(int64_t)type
 {
   transportType = self->_transportType;
-  if (transportType != a3)
+  if (transportType != type)
   {
-    v4 = transportType < a3 && transportType < 3;
-    if (v4 || (transportType >= 3 ? (v5 = a3 < 3) : (v5 = 1), !v5 ? (v6 = transportType <= a3) : (v6 = 1), !v6))
+    v4 = transportType < type && transportType < 3;
+    if (v4 || (transportType >= 3 ? (v5 = type < 3) : (v5 = 1), !v5 ? (v6 = transportType <= type) : (v6 = 1), !v6))
     {
-      self->_transportType = a3;
+      self->_transportType = type;
     }
   }
 }

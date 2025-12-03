@@ -1,13 +1,13 @@
 @interface MTL4MachineLearningPipelineDescriptor
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MTL4MachineLearningPipelineDescriptor)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)inputDimensionsAtBufferIndex:(int64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)inputDimensionsAtBufferIndex:(int64_t)index;
 - (unint64_t)hash;
 - (void)dealloc;
 - (void)reset;
-- (void)setInputDimensions:(id)a3 atBufferIndex:(int64_t)a4;
-- (void)setInputDimensions:(id)a3 withRange:(_NSRange)a4;
+- (void)setInputDimensions:(id)dimensions atBufferIndex:(int64_t)index;
+- (void)setInputDimensions:(id)dimensions withRange:(_NSRange)range;
 @end
 
 @implementation MTL4MachineLearningPipelineDescriptor
@@ -53,12 +53,12 @@ LABEL_5:
   [(MTL4PipelineDescriptor *)&v6 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = MTL4MachineLearningPipelineDescriptor;
   v5 = [(MTL4PipelineDescriptor *)&v7 copyWithZone:?];
-  v5[5] = [(MTL4FunctionDescriptor *)self->_machineLearningFunctionDescriptor copyWithZone:a3];
+  v5[5] = [(MTL4FunctionDescriptor *)self->_machineLearningFunctionDescriptor copyWithZone:zone];
   v5[7] = self->_deviceSelection;
   if (self->_extents)
   {
@@ -68,9 +68,9 @@ LABEL_5:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v8) = 1;
   }
@@ -80,29 +80,29 @@ LABEL_5:
     v17 = v3;
     v18 = v4;
     Class = object_getClass(self);
-    if (Class != object_getClass(a3))
+    if (Class != object_getClass(equal))
     {
       goto LABEL_3;
     }
 
     v16.receiver = self;
     v16.super_class = MTL4MachineLearningPipelineDescriptor;
-    LODWORD(v8) = [(MTL4PipelineDescriptor *)&v16 isEqual:a3];
+    LODWORD(v8) = [(MTL4PipelineDescriptor *)&v16 isEqual:equal];
     if (!v8)
     {
       return v8;
     }
 
-    if (self->_deviceSelection != *(a3 + 7))
+    if (self->_deviceSelection != *(equal + 7))
     {
       goto LABEL_3;
     }
 
     machineLearningFunctionDescriptor = self->_machineLearningFunctionDescriptor;
-    if (machineLearningFunctionDescriptor == *(a3 + 5) || (LODWORD(v8) = [(MTL4FunctionDescriptor *)machineLearningFunctionDescriptor isEqual:?], v8))
+    if (machineLearningFunctionDescriptor == *(equal + 5) || (LODWORD(v8) = [(MTL4FunctionDescriptor *)machineLearningFunctionDescriptor isEqual:?], v8))
     {
       extents = self->_extents;
-      v11 = *(a3 + 6);
+      v11 = *(equal + 6);
       if (extents)
       {
         if (v11 && extents[3] == *(v11 + 24))
@@ -117,7 +117,7 @@ LABEL_5:
             }
 
             v15 = *(v12 + 1);
-            v8 = std::__hash_table<std::__hash_value_type<unsigned long,MTLStructTypeInternal *>,std::__unordered_map_hasher<unsigned long,std::__hash_value_type<unsigned long,MTLStructTypeInternal *>,std::hash<unsigned long>,std::equal_to<unsigned long>,true>,std::__unordered_map_equal<unsigned long,std::__hash_value_type<unsigned long,MTLStructTypeInternal *>,std::equal_to<unsigned long>,std::hash<unsigned long>,true>,std::allocator<std::__hash_value_type<unsigned long,MTLStructTypeInternal *>>>::find<unsigned long>(*(a3 + 6), &v15);
+            v8 = std::__hash_table<std::__hash_value_type<unsigned long,MTLStructTypeInternal *>,std::__unordered_map_hasher<unsigned long,std::__hash_value_type<unsigned long,MTLStructTypeInternal *>,std::hash<unsigned long>,std::equal_to<unsigned long>,true>,std::__unordered_map_equal<unsigned long,std::__hash_value_type<unsigned long,MTLStructTypeInternal *>,std::equal_to<unsigned long>,std::hash<unsigned long>,true>,std::allocator<std::__hash_value_type<unsigned long,MTLStructTypeInternal *>>>::find<unsigned long>(*(equal + 6), &v15);
             if (v8)
             {
               v13 = operator==([*(&v15 + 1) tensorExtentsInternal], objc_msgSend(v8[3], "tensorExtentsInternal"));
@@ -287,32 +287,32 @@ LABEL_5:
   [(MTL4PipelineDescriptor *)&v6 reset];
 }
 
-- (void)setInputDimensions:(id)a3 atBufferIndex:(int64_t)a4
+- (void)setInputDimensions:(id)dimensions atBufferIndex:(int64_t)index
 {
-  v10 = a4;
+  indexCopy = index;
   extents = self->_extents;
   if (!extents)
   {
     operator new();
   }
 
-  if (std::__hash_table<std::__hash_value_type<unsigned long,MTLStructTypeInternal *>,std::__unordered_map_hasher<unsigned long,std::__hash_value_type<unsigned long,MTLStructTypeInternal *>,std::hash<unsigned long>,std::equal_to<unsigned long>,true>,std::__unordered_map_equal<unsigned long,std::__hash_value_type<unsigned long,MTLStructTypeInternal *>,std::equal_to<unsigned long>,std::hash<unsigned long>,true>,std::allocator<std::__hash_value_type<unsigned long,MTLStructTypeInternal *>>>::find<unsigned long>(extents, &v10))
+  if (std::__hash_table<std::__hash_value_type<unsigned long,MTLStructTypeInternal *>,std::__unordered_map_hasher<unsigned long,std::__hash_value_type<unsigned long,MTLStructTypeInternal *>,std::hash<unsigned long>,std::equal_to<unsigned long>,true>,std::__unordered_map_equal<unsigned long,std::__hash_value_type<unsigned long,MTLStructTypeInternal *>,std::equal_to<unsigned long>,std::hash<unsigned long>,true>,std::allocator<std::__hash_value_type<unsigned long,MTLStructTypeInternal *>>>::find<unsigned long>(extents, &indexCopy))
   {
     v7 = self->_extents;
-    v11 = &v10;
+    v11 = &indexCopy;
   }
 
-  v8 = a3;
+  dimensionsCopy = dimensions;
   v9 = self->_extents;
-  v11 = &v10;
-  std::__hash_table<std::__hash_value_type<long,MTLTensorExtents *>,std::__unordered_map_hasher<long,std::__hash_value_type<long,MTLTensorExtents *>,std::hash<long>,std::equal_to<long>,true>,std::__unordered_map_equal<long,std::__hash_value_type<long,MTLTensorExtents *>,std::equal_to<long>,std::hash<long>,true>,std::allocator<std::__hash_value_type<long,MTLTensorExtents *>>>::__emplace_unique_key_args<long,std::piecewise_construct_t const&,std::tuple<long const&>,std::tuple<>>(v9, &v10)[3] = v8;
+  v11 = &indexCopy;
+  std::__hash_table<std::__hash_value_type<long,MTLTensorExtents *>,std::__unordered_map_hasher<long,std::__hash_value_type<long,MTLTensorExtents *>,std::hash<long>,std::equal_to<long>,true>,std::__unordered_map_equal<long,std::__hash_value_type<long,MTLTensorExtents *>,std::equal_to<long>,std::hash<long>,true>,std::allocator<std::__hash_value_type<long,MTLTensorExtents *>>>::__emplace_unique_key_args<long,std::piecewise_construct_t const&,std::tuple<long const&>,std::tuple<>>(v9, &indexCopy)[3] = dimensionsCopy;
 }
 
-- (void)setInputDimensions:(id)a3 withRange:(_NSRange)a4
+- (void)setInputDimensions:(id)dimensions withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v8 = [a3 count];
+  length = range.length;
+  location = range.location;
+  v8 = [dimensions count];
   if (v8 != length)
   {
     [(MTL4MachineLearningPipelineDescriptor *)v8 setInputDimensions:v9 withRange:v10, v11, v12, v13, v14, v15, v22];
@@ -346,7 +346,7 @@ LABEL_5:
         v24 = &v23;
       }
 
-      v20 = [a3 objectAtIndexedSubscript:i];
+      v20 = [dimensions objectAtIndexedSubscript:i];
       v21 = self->_extents;
       v23 = location + i;
       v24 = &v23;
@@ -355,13 +355,13 @@ LABEL_5:
   }
 }
 
-- (id)inputDimensionsAtBufferIndex:(int64_t)a3
+- (id)inputDimensionsAtBufferIndex:(int64_t)index
 {
-  v4 = a3;
+  indexCopy = index;
   result = self->_extents;
   if (result)
   {
-    result = std::__hash_table<std::__hash_value_type<unsigned long,MTLStructTypeInternal *>,std::__unordered_map_hasher<unsigned long,std::__hash_value_type<unsigned long,MTLStructTypeInternal *>,std::hash<unsigned long>,std::equal_to<unsigned long>,true>,std::__unordered_map_equal<unsigned long,std::__hash_value_type<unsigned long,MTLStructTypeInternal *>,std::equal_to<unsigned long>,std::hash<unsigned long>,true>,std::allocator<std::__hash_value_type<unsigned long,MTLStructTypeInternal *>>>::find<unsigned long>(result, &v4);
+    result = std::__hash_table<std::__hash_value_type<unsigned long,MTLStructTypeInternal *>,std::__unordered_map_hasher<unsigned long,std::__hash_value_type<unsigned long,MTLStructTypeInternal *>,std::hash<unsigned long>,std::equal_to<unsigned long>,true>,std::__unordered_map_equal<unsigned long,std::__hash_value_type<unsigned long,MTLStructTypeInternal *>,std::equal_to<unsigned long>,std::hash<unsigned long>,true>,std::allocator<std::__hash_value_type<unsigned long,MTLStructTypeInternal *>>>::find<unsigned long>(result, &indexCopy);
     if (result)
     {
       return *(result + 3);

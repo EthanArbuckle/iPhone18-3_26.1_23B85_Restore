@@ -1,18 +1,18 @@
 @interface CNMultiDictionary
 + (id)multiDictionary;
-+ (id)multiDictionaryWithEntries:(id)a3;
-+ (id)multiDictionaryWithObject:(id)a3 forKey:(id)a4;
-- (BOOL)containsKey:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (CNMultiDictionary)initWithEntries:(id)a3;
++ (id)multiDictionaryWithEntries:(id)entries;
++ (id)multiDictionaryWithObject:(id)object forKey:(id)key;
+- (BOOL)containsKey:(id)key;
+- (BOOL)isEqual:(id)equal;
+- (CNMultiDictionary)initWithEntries:(id)entries;
 - (NSDictionary)dictionaryRepresentation;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)objectsForKey:(id)a3;
-- (id)objectsForKeys:(id)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)objectsForKey:(id)key;
+- (id)objectsForKeys:(id)keys;
 - (unint64_t)count;
 - (unint64_t)hash;
-- (void)eachObject:(id)a3;
+- (void)eachObject:(id)object;
 @end
 
 @implementation CNMultiDictionary
@@ -32,7 +32,7 @@
 
   else
   {
-    v4 = objc_alloc_init(a1);
+    v4 = objc_alloc_init(self);
   }
 
   return v4;
@@ -72,33 +72,33 @@ uint64_t __36__CNMultiDictionary_multiDictionary__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-+ (id)multiDictionaryWithObject:(id)a3 forKey:(id)a4
++ (id)multiDictionaryWithObject:(id)object forKey:(id)key
 {
-  v5 = a4;
-  v6 = a3;
+  keyCopy = key;
+  objectCopy = object;
   v7 = objc_alloc_init(CNMutableMultiDictionary);
-  [(CNMutableMultiDictionary *)v7 addObject:v6 forKey:v5];
+  [(CNMutableMultiDictionary *)v7 addObject:objectCopy forKey:keyCopy];
 
   return v7;
 }
 
-+ (id)multiDictionaryWithEntries:(id)a3
++ (id)multiDictionaryWithEntries:(id)entries
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithEntries:v4];
+  entriesCopy = entries;
+  v5 = [[self alloc] initWithEntries:entriesCopy];
 
   return v5;
 }
 
-- (CNMultiDictionary)initWithEntries:(id)a3
+- (CNMultiDictionary)initWithEntries:(id)entries
 {
-  v4 = a3;
+  entriesCopy = entries;
   v10.receiver = self;
   v10.super_class = CNMultiDictionary;
   v5 = [(CNMultiDictionary *)&v10 init];
   if (v5)
   {
-    v6 = [v4 mutableCopy];
+    v6 = [entriesCopy mutableCopy];
     entries = v5->_entries;
     v5->_entries = v6;
 
@@ -108,7 +108,7 @@ uint64_t __36__CNMultiDictionary_multiDictionary__block_invoke()
   return v5;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [CNMutableMultiDictionary alloc];
   entries = self->_entries;
@@ -116,25 +116,25 @@ uint64_t __36__CNMultiDictionary_multiDictionary__block_invoke()
   return [(CNMultiDictionary *)v4 initWithEntries:entries];
 }
 
-- (id)objectsForKey:(id)a3
+- (id)objectsForKey:(id)key
 {
-  v3 = [(NSMutableDictionary *)self->_entries objectForKey:a3];
-  if (!v3)
+  array = [(NSMutableDictionary *)self->_entries objectForKey:key];
+  if (!array)
   {
-    v3 = [MEMORY[0x1E695DEC8] array];
+    array = [MEMORY[0x1E695DEC8] array];
   }
 
-  return v3;
+  return array;
 }
 
-- (id)objectsForKeys:(id)a3
+- (id)objectsForKeys:(id)keys
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __36__CNMultiDictionary_objectsForKeys___block_invoke;
   v6[3] = &unk_1E6ED5FE0;
   v6[4] = self;
-  v3 = [a3 _cn_map:v6];
+  v3 = [keys _cn_map:v6];
   v4 = [v3 _cn_filter:&__block_literal_global_7_2];
 
   return v4;
@@ -156,24 +156,24 @@ id __36__CNMultiDictionary_objectsForKeys___block_invoke(uint64_t a1, void *a2)
   return v4;
 }
 
-- (BOOL)containsKey:(id)a3
+- (BOOL)containsKey:(id)key
 {
-  v3 = [(NSMutableDictionary *)self->_entries objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_entries objectForKey:key];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (void)eachObject:(id)a3
+- (void)eachObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   entries = self->_entries;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __32__CNMultiDictionary_eachObject___block_invoke;
   v7[3] = &unk_1E6ED77A0;
-  v8 = v4;
-  v6 = v4;
+  v8 = objectCopy;
+  v6 = objectCopy;
   [(NSMutableDictionary *)entries enumerateKeysAndObjectsUsingBlock:v7];
 }
 
@@ -198,17 +198,17 @@ void __32__CNMultiDictionary_eachObject___block_invoke(uint64_t a1, void *a2, vo
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __29__CNMultiDictionary_isEqual___block_invoke;
   v8[3] = &unk_1E6ED60C8;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = equalCopy;
+  v6 = equalCopy;
   LOBYTE(self) = [CNEqualsBuilder isObject:v6 kindOfClass:v5 andEqualToObject:self withBlocks:v8, 0];
 
   return self;
@@ -228,9 +228,9 @@ void __32__CNMultiDictionary_eachObject___block_invoke(uint64_t a1, void *a2, vo
 {
   v3 = [CNDescriptionBuilder descriptionBuilderWithObject:self];
   v4 = [v3 appendNamesAndObjects:{@"entries", self->_entries, 0}];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
 @end

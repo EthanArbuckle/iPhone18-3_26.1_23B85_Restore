@@ -1,21 +1,21 @@
 @interface ASDTIOPAudioVTEnableProperty
-+ (id)configDictForService:(id)a3;
-- (ASDTIOPAudioVTEnableProperty)initWithConfig:(id)a3;
-- (BOOL)retrieveUInt32Value:(unsigned int *)a3;
++ (id)configDictForService:(id)service;
+- (ASDTIOPAudioVTEnableProperty)initWithConfig:(id)config;
+- (BOOL)retrieveUInt32Value:(unsigned int *)value;
 @end
 
 @implementation ASDTIOPAudioVTEnableProperty
 
-+ (id)configDictForService:(id)a3
++ (id)configDictForService:(id)service
 {
   v10[2] = *MEMORY[0x277D85DE8];
   v3 = *MEMORY[0x277CEFC38];
   v9[0] = *MEMORY[0x277CEFC58];
   v9[1] = v3;
   v10[0] = @"ASDTIOPAudioVTEnableProperty";
-  v10[1] = a3;
+  v10[1] = service;
   v4 = MEMORY[0x277CBEAC0];
-  v5 = a3;
+  serviceCopy = service;
   v6 = [v4 dictionaryWithObjects:v10 forKeys:v9 count:2];
 
   v7 = *MEMORY[0x277D85DE8];
@@ -23,10 +23,10 @@
   return v6;
 }
 
-- (ASDTIOPAudioVTEnableProperty)initWithConfig:(id)a3
+- (ASDTIOPAudioVTEnableProperty)initWithConfig:(id)config
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:a3];
+  v4 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:config];
   v10 = *MEMORY[0x277CEFC28];
   v11[0] = &unk_285359BE0;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
@@ -40,12 +40,12 @@
   return v6;
 }
 
-- (BOOL)retrieveUInt32Value:(unsigned int *)a3
+- (BOOL)retrieveUInt32Value:(unsigned int *)value
 {
-  v4 = [(ASDTIOPAudioVTProperty *)self vtDevice];
-  LOBYTE(a3) = [v4 getIsEnabled:a3];
+  vtDevice = [(ASDTIOPAudioVTProperty *)self vtDevice];
+  LOBYTE(value) = [vtDevice getIsEnabled:value];
 
-  return a3;
+  return value;
 }
 
 @end

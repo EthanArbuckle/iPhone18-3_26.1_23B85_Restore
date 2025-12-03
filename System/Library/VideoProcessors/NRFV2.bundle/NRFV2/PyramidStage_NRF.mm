@@ -1,17 +1,17 @@
 @interface PyramidStage_NRF
-+ (int)prewarmShaders:(id)a3;
-- (PyramidStage_NRF)initWithOptions:(id)a3 context:(id)a4;
-- (int)runM2MWithFilters:(PyramidFilterParams *)a3;
-- (int)runWithFilters:(PyramidFilterParams *)a3;
-- (int)setResourcesWithPyramid:(id)a3;
-- (void)setColorSpace:(int)a3 withParams:(const ColorSpaceConversionParameters *)a4;
++ (int)prewarmShaders:(id)shaders;
+- (PyramidStage_NRF)initWithOptions:(id)options context:(id)context;
+- (int)runM2MWithFilters:(PyramidFilterParams *)filters;
+- (int)runWithFilters:(PyramidFilterParams *)filters;
+- (int)setResourcesWithPyramid:(id)pyramid;
+- (void)setColorSpace:(int)space withParams:(const ColorSpaceConversionParameters *)params;
 @end
 
 @implementation PyramidStage_NRF
 
-- (PyramidStage_NRF)initWithOptions:(id)a3 context:(id)a4
+- (PyramidStage_NRF)initWithOptions:(id)options context:(id)context
 {
-  v6 = a4;
+  contextCopy = context;
   v7 = loadDefaultsWritesWithPrefix();
   v91.receiver = self;
   v91.super_class = PyramidStage_NRF;
@@ -75,7 +75,7 @@
     v10->_conf.supportFP16 = 1;
   }
 
-  objc_storeStrong(&v10->_metal, a4);
+  objc_storeStrong(&v10->_metal, context);
   v47 = objc_alloc_init(MEMORY[0x29EDC0A18]);
   m2mController = v10->_m2mController;
   v10->_m2mController = v47;
@@ -211,9 +211,9 @@ LABEL_31:
   return v89;
 }
 
-+ (int)prewarmShaders:(id)a3
++ (int)prewarmShaders:(id)shaders
 {
-  v4 = a3;
+  shadersCopy = shaders;
   v5 = 0;
   v6 = 0;
   v7 = 1;
@@ -226,7 +226,7 @@ LABEL_31:
     {
       v11 = v6;
       v12 = v10;
-      v6 = objc_msgSend_compileShader_lumaWrite_chromaWrite_(PyramidStageShared_NRF, v3, v4, v5 & 1, v8 & 1);
+      v6 = objc_msgSend_compileShader_lumaWrite_chromaWrite_(PyramidStageShared_NRF, v3, shadersCopy, v5 & 1, v8 & 1);
 
       if (!v6)
       {
@@ -253,7 +253,7 @@ LABEL_31:
     v16 = 0;
     while (1)
     {
-      v17 = objc_msgSend_compileShader_kernelType_(PyramidStageShared_NRF, v15, v4, v16);
+      v17 = objc_msgSend_compileShader_kernelType_(PyramidStageShared_NRF, v15, shadersCopy, v16);
 
       if (!v17)
       {
@@ -280,10 +280,10 @@ LABEL_13:
   return 0;
 }
 
-- (int)setResourcesWithPyramid:(id)a3
+- (int)setResourcesWithPyramid:(id)pyramid
 {
-  v5 = a3;
-  objc_storeStrong(&self->_pyr, a3);
+  pyramidCopy = pyramid;
+  objc_storeStrong(&self->_pyr, pyramid);
   pyr = self->_pyr;
   levels = pyr->levels;
   if (levels >= 20)
@@ -307,7 +307,7 @@ LABEL_13:
     else
     {
       v9 = 0;
-      v10 = v5 + 664;
+      v10 = pyramidCopy + 664;
       v11 = 1;
       do
       {
@@ -335,10 +335,10 @@ LABEL_13:
   return v8;
 }
 
-- (int)runM2MWithFilters:(PyramidFilterParams *)a3
+- (int)runM2MWithFilters:(PyramidFilterParams *)filters
 {
   v4 = 0;
-  for (i = &a3->luma_param; ; i += 3)
+  for (i = &filters->luma_param; ; i += 3)
   {
     pyr = self->_pyr;
     if (v4 >= pyr->levels - 1)
@@ -390,7 +390,7 @@ LABEL_13:
   return v19;
 }
 
-- (int)runWithFilters:(PyramidFilterParams *)a3
+- (int)runWithFilters:(PyramidFilterParams *)filters
 {
   pyr = self->_pyr;
   if (pyr)
@@ -410,7 +410,7 @@ LABEL_13:
 
     if (self->_conf.use_m2m)
     {
-      result = objc_msgSend_runM2MWithFilters_(self, a2, a3, v3);
+      result = objc_msgSend_runM2MWithFilters_(self, a2, filters, v3);
       if (result)
       {
         sub_295899B68(&v11);
@@ -420,7 +420,7 @@ LABEL_13:
 
     else
     {
-      result = objc_msgSend_runGPUWithFilters_doShift_(self, a2, a3, self->_conf.compensate_gpu_shift);
+      result = objc_msgSend_runGPUWithFilters_doShift_(self, a2, filters, self->_conf.compensate_gpu_shift);
       if (result)
       {
         sub_295899ABC(&v10);
@@ -438,30 +438,30 @@ LABEL_13:
   return result;
 }
 
-- (void)setColorSpace:(int)a3 withParams:(const ColorSpaceConversionParameters *)a4
+- (void)setColorSpace:(int)space withParams:(const ColorSpaceConversionParameters *)params
 {
-  self->_band0ColorSpace = a3;
-  if (a4)
+  self->_band0ColorSpace = space;
+  if (params)
   {
-    *&self->_colorSpaceConversionParameters.transferFunctionFwd.linearScale = *&a4->transferFunctionFwd.linearScale;
-    v4 = *&a4->transferFunctionFwd.nonLinearPower;
-    v5 = *&a4->transferFunctionInv.nonLinearBias;
-    v6 = *&a4[1].transferFunctionFwd.nonLinearBias;
-    *&self->_colorSpaceConversionParameters.outputToLinearYCbCr = *&a4->outputToLinearYCbCr;
+    *&self->_colorSpaceConversionParameters.transferFunctionFwd.linearScale = *&params->transferFunctionFwd.linearScale;
+    v4 = *&params->transferFunctionFwd.nonLinearPower;
+    v5 = *&params->transferFunctionInv.nonLinearBias;
+    v6 = *&params[1].transferFunctionFwd.nonLinearBias;
+    *&self->_colorSpaceConversionParameters.outputToLinearYCbCr = *&params->outputToLinearYCbCr;
     *&self[1]._conf.use_m2m = v6;
     *&self->_colorSpaceConversionParameters.transferFunctionFwd.nonLinearPower = v4;
     *&self->_colorSpaceConversionParameters.transferFunctionInv.nonLinearBias = v5;
-    v7 = *&a4[1].transferFunctionInv.nonLinearScale;
-    v8 = *&a4[1].finalScale;
-    v9 = *&a4[2].transferFunctionInv.linearThreshold;
-    *&self[1]._uniforms_Y[1] = *&a4[2].transferFunctionFwd.nonLinearScale;
+    v7 = *&params[1].transferFunctionInv.nonLinearScale;
+    v8 = *&params[1].finalScale;
+    v9 = *&params[2].transferFunctionInv.linearThreshold;
+    *&self[1]._uniforms_Y[1] = *&params[2].transferFunctionFwd.nonLinearScale;
     *&self[1]._uniforms_Y[3] = v9;
     *&self[1]._m2mController = v7;
     *&self[1]._uniformsHeap = v8;
-    v10 = *&a4[2].finalScaleFwd;
-    v11 = *&a4[3].transferFunctionFwd.linearThreshold;
-    v12 = *&a4[3].transferFunctionInv.nonLinearPower;
-    *&self[1]._uniforms_Y[9] = *&a4[3].transferFunctionInv.linearScale;
+    v10 = *&params[2].finalScaleFwd;
+    v11 = *&params[3].transferFunctionFwd.linearThreshold;
+    v12 = *&params[3].transferFunctionInv.nonLinearPower;
+    *&self[1]._uniforms_Y[9] = *&params[3].transferFunctionInv.linearScale;
     *&self[1]._uniforms_Y[11] = v12;
     *&self[1]._uniforms_Y[5] = v10;
     *&self[1]._uniforms_Y[7] = v11;

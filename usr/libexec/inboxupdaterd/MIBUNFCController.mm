@@ -1,44 +1,44 @@
 @interface MIBUNFCController
 - (BOOL)_isHeartbeatMode;
-- (MIBUNFCController)initWithDelegate:(id)a3;
+- (MIBUNFCController)initWithDelegate:(id)delegate;
 - (id)_getDispatchTable;
-- (id)_handleConfigureNFC:(id)a3;
-- (id)_handleDeviceInfo:(id)a3;
-- (id)_handleHeartbeat:(id)a3;
-- (id)_handleInstallUpdate:(id *)a3;
-- (id)_handleNetworkInfo:(id *)a3;
-- (id)_handleRetryAfter:(id)a3;
-- (id)_handleSelect:(id)a3;
-- (id)_handleStartDiag:(id)a3;
-- (id)_handleStartUpdate:(id)a3;
-- (id)_handleStatusUpdate:(id)a3;
-- (id)handleCommand:(id)a3;
-- (void)_nfcInactivityTimeoutHandler:(id)a3;
+- (id)_handleConfigureNFC:(id)c;
+- (id)_handleDeviceInfo:(id)info;
+- (id)_handleHeartbeat:(id)heartbeat;
+- (id)_handleInstallUpdate:(id *)update;
+- (id)_handleNetworkInfo:(id *)info;
+- (id)_handleRetryAfter:(id)after;
+- (id)_handleSelect:(id)select;
+- (id)_handleStartDiag:(id)diag;
+- (id)_handleStartUpdate:(id)update;
+- (id)_handleStatusUpdate:(id)update;
+- (id)handleCommand:(id)command;
+- (void)_nfcInactivityTimeoutHandler:(id)handler;
 - (void)_resetNFCInactivityTimer;
-- (void)_restartSession:(id)a3;
-- (void)_restartSessionAfter:(double)a3 forceTerminate:(BOOL)a4 andCompletion:(id)a5;
-- (void)_startHCESession:(id *)a3;
-- (void)_startNFCInactivityTimer:(double)a3;
-- (void)_startSessionRestartTimer:(double)a3 error:(id *)a4;
+- (void)_restartSession:(id)session;
+- (void)_restartSessionAfter:(double)after forceTerminate:(BOOL)terminate andCompletion:(id)completion;
+- (void)_startHCESession:(id *)session;
+- (void)_startNFCInactivityTimer:(double)timer;
+- (void)_startSessionRestartTimer:(double)timer error:(id *)error;
 - (void)_stopNFCInactivityTimer;
 - (void)_stopSessionRestartTimer;
-- (void)_verifyTatsuTicketFromCmd:(id)a3 error:(id *)a4;
-- (void)addObserver:(id)a3;
-- (void)forceTerminateSession:(id *)a3;
-- (void)removeObserver:(id)a3;
-- (void)sessionDidConnect:(id)a3;
-- (void)sessionDidEnd:(id)a3;
-- (void)sessionDidEndUnexpectedly:(id)a3;
-- (void)start:(id *)a3;
-- (void)terminate:(id *)a3;
-- (void)terminateWithCompletion:(id)a3;
+- (void)_verifyTatsuTicketFromCmd:(id)cmd error:(id *)error;
+- (void)addObserver:(id)observer;
+- (void)forceTerminateSession:(id *)session;
+- (void)removeObserver:(id)observer;
+- (void)sessionDidConnect:(id)connect;
+- (void)sessionDidEnd:(id)end;
+- (void)sessionDidEndUnexpectedly:(id)unexpectedly;
+- (void)start:(id *)start;
+- (void)terminate:(id *)terminate;
+- (void)terminateWithCompletion:(id)completion;
 @end
 
 @implementation MIBUNFCController
 
-- (MIBUNFCController)initWithDelegate:(id)a3
+- (MIBUNFCController)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = MIBUNFCController;
   v5 = [(MIBUNFCController *)&v12 init];
@@ -47,10 +47,10 @@
     v6 = [[MIBUHCESession alloc] initWithDelegate:v5];
     [(MIBUNFCController *)v5 setSession:v6];
 
-    v7 = [(MIBUNFCController *)v5 _getDispatchTable];
-    [(MIBUNFCController *)v5 setDispatchTable:v7];
+    _getDispatchTable = [(MIBUNFCController *)v5 _getDispatchTable];
+    [(MIBUNFCController *)v5 setDispatchTable:_getDispatchTable];
 
-    [(MIBUNFCController *)v5 setDelegate:v4];
+    [(MIBUNFCController *)v5 setDelegate:delegateCopy];
     v8 = objc_opt_new();
     [(MIBUNFCController *)v5 setObservers:v8];
 
@@ -69,35 +69,35 @@
   return v5;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v8 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(MIBUNFCController *)v4 observers];
-  v6 = [v5 containsObject:v8];
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  observers = [(MIBUNFCController *)selfCopy observers];
+  v6 = [observers containsObject:observerCopy];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [(MIBUNFCController *)v4 observers];
-    [v7 addObject:v8];
+    observers2 = [(MIBUNFCController *)selfCopy observers];
+    [observers2 addObject:observerCopy];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v6 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(MIBUNFCController *)v4 observers];
-  [v5 removeObject:v6];
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  observers = [(MIBUNFCController *)selfCopy observers];
+  [observers removeObject:observerCopy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)terminate:(id *)a3
+- (void)terminate:(id *)terminate
 {
   v17 = 0;
   v18 = &v17;
@@ -133,81 +133,81 @@
     objc_storeStrong(v12, obj);
   }
 
-  if (a3)
+  if (terminate)
   {
-    *a3 = v18[5];
+    *terminate = v18[5];
   }
 
   _Block_object_dispose(&v17, 8);
 }
 
-- (void)terminateWithCompletion:(id)a3
+- (void)terminateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(MIBUNFCController *)self _isHeartbeatMode])
   {
     v11 = 0;
     v5 = objc_opt_class();
     sub_100016130(&v11, 2147483651, 0, @"Cannot terminate %{public}@ in heartbeat mode", v6, v7, v8, v9, v5);
     v10 = v11;
-    if (v4)
+    if (completionCopy)
     {
-      v4[2](v4, v10);
+      completionCopy[2](completionCopy, v10);
     }
   }
 
   else
   {
     [(MIBUNFCController *)self setTerminated:1];
-    [(MIBUNFCController *)self _restartSessionAfter:0 forceTerminate:v4 andCompletion:0.0];
+    [(MIBUNFCController *)self _restartSessionAfter:0 forceTerminate:completionCopy andCompletion:0.0];
   }
 }
 
-- (id)handleCommand:(id)a3
+- (id)handleCommand:(id)command
 {
-  v4 = a3;
+  commandCopy = command;
   v5 = objc_opt_new();
-  v6 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v4 code]);
-  v7 = [(MIBUNFCController *)self nfcInactivityTimer];
+  v6 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [commandCopy code]);
+  nfcInactivityTimer = [(MIBUNFCController *)self nfcInactivityTimer];
 
-  if (v7)
+  if (nfcInactivityTimer)
   {
     [(MIBUNFCController *)self _resetNFCInactivityTimer];
   }
 
-  v8 = [(MIBUNFCController *)self delegate];
-  v9 = [v8 isCommandAllowed:v6];
+  delegate = [(MIBUNFCController *)self delegate];
+  v9 = [delegate isCommandAllowed:v6];
 
   if (!v9)
   {
     goto LABEL_15;
   }
 
-  v10 = [(MIBUNFCController *)self dispatchTable];
-  v11 = [v10 allKeys];
-  v12 = [v11 containsObject:v6];
+  dispatchTable = [(MIBUNFCController *)self dispatchTable];
+  allKeys = [dispatchTable allKeys];
+  v12 = [allKeys containsObject:v6];
 
   if ((v12 & 1) == 0)
   {
-    sub_10005568C(v4);
+    sub_10005568C(commandCopy);
 LABEL_15:
     [v5 setRejected:1];
     v16 = v5;
     goto LABEL_13;
   }
 
-  v13 = [(MIBUNFCController *)self dispatchTable];
-  v14 = [v13 objectForKey:v6];
+  dispatchTable2 = [(MIBUNFCController *)self dispatchTable];
+  v14 = [dispatchTable2 objectForKey:v6];
   v15 = NSSelectorFromString(v14);
 
-  v16 = ([(MIBUNFCController *)self methodForSelector:v15])(self, v15, v4);
+  v16 = ([(MIBUNFCController *)self methodForSelector:v15])(self, v15, commandCopy);
 
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v17 = [(MIBUNFCController *)self observers];
-  v18 = [v17 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  observers = [(MIBUNFCController *)self observers];
+  v18 = [observers countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v18)
   {
     v19 = v18;
@@ -219,18 +219,18 @@ LABEL_15:
       {
         if (*v27 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(observers);
         }
 
         v22 = *(*(&v26 + 1) + 8 * v21);
-        v23 = [v16 error];
-        [v22 didHandleCommand:v4 withError:v23];
+        error = [v16 error];
+        [v22 didHandleCommand:commandCopy withError:error];
 
         v21 = v21 + 1;
       }
 
       while (v19 != v21);
-      v19 = [v17 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      v19 = [observers countByEnumeratingWithState:&v26 objects:v30 count:16];
     }
 
     while (v19);
@@ -242,12 +242,12 @@ LABEL_13:
   return v16;
 }
 
-- (void)sessionDidConnect:(id)a3
+- (void)sessionDidConnect:(id)connect
 {
   if ([(MIBUNFCController *)self _isHeartbeatMode])
   {
-    v4 = [(MIBUNFCController *)self heartbeatConnectionSem];
-    dispatch_semaphore_signal(v4);
+    heartbeatConnectionSem = [(MIBUNFCController *)self heartbeatConnectionSem];
+    dispatch_semaphore_signal(heartbeatConnectionSem);
 
     [(MIBUNFCController *)self heartbeatPeriod];
 
@@ -255,11 +255,11 @@ LABEL_13:
   }
 }
 
-- (void)sessionDidEnd:(id)a3
+- (void)sessionDidEnd:(id)end
 {
-  v4 = [(MIBUNFCController *)self nfcTerminationSem];
+  nfcTerminationSem = [(MIBUNFCController *)self nfcTerminationSem];
 
-  if (v4)
+  if (nfcTerminationSem)
   {
     if (qword_1000B84A8[0] != -1)
     {
@@ -273,12 +273,12 @@ LABEL_13:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "signaling termination", v7, 2u);
     }
 
-    v6 = [(MIBUNFCController *)self nfcTerminationSem];
-    dispatch_semaphore_signal(v6);
+    nfcTerminationSem2 = [(MIBUNFCController *)self nfcTerminationSem];
+    dispatch_semaphore_signal(nfcTerminationSem2);
   }
 }
 
-- (void)sessionDidEndUnexpectedly:(id)a3
+- (void)sessionDidEndUnexpectedly:(id)unexpectedly
 {
   if (![(MIBUNFCController *)self terminated])
   {
@@ -314,9 +314,9 @@ LABEL_13:
   return v2;
 }
 
-- (id)_handleSelect:(id)a3
+- (id)_handleSelect:(id)select
 {
-  v3 = a3;
+  selectCopy = select;
   v4 = objc_opt_new();
   if (qword_1000B84A8[0] != -1)
   {
@@ -331,9 +331,9 @@ LABEL_13:
   }
 
   v6 = [NSData dataWithBytes:&unk_1000852B8 length:7];
-  v7 = [v3 payload];
+  payload = [selectCopy payload];
 
-  v8 = [v7 objectForKey:@"ApplicationID"];
+  v8 = [payload objectForKey:@"ApplicationID"];
 
   if ([v6 isEqualToData:v8])
   {
@@ -363,7 +363,7 @@ LABEL_13:
   return v4;
 }
 
-- (id)_handleDeviceInfo:(id)a3
+- (id)_handleDeviceInfo:(id)info
 {
   v3 = objc_opt_new();
   if (qword_1000B84A8[0] != -1)
@@ -528,9 +528,9 @@ LABEL_19:
   return v3;
 }
 
-- (id)_handleStartUpdate:(id)a3
+- (id)_handleStartUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v5 = objc_opt_new();
   if (qword_1000B84A8[0] != -1)
   {
@@ -545,7 +545,7 @@ LABEL_19:
   }
 
   v9 = 0;
-  [(MIBUNFCController *)self _verifyTatsuTicketFromCmd:v4 error:&v9];
+  [(MIBUNFCController *)self _verifyTatsuTicketFromCmd:updateCopy error:&v9];
 
   v7 = v9;
   [v5 setError:v7];
@@ -553,7 +553,7 @@ LABEL_19:
   return v5;
 }
 
-- (id)_handleStatusUpdate:(id)a3
+- (id)_handleStatusUpdate:(id)update
 {
   v4 = objc_opt_new();
   if (qword_1000B84A8[0] != -1)
@@ -568,32 +568,32 @@ LABEL_19:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Handling status update command...", buf, 2u);
   }
 
-  v6 = [(MIBUNFCController *)self delegate];
-  v7 = [v6 deviceStatus];
-  [v4 setStatus:v7];
+  delegate = [(MIBUNFCController *)self delegate];
+  deviceStatus = [delegate deviceStatus];
+  [v4 setStatus:deviceStatus];
 
   v8 = +[MIBUDeviceController sharedInstance];
-  v9 = [v8 osVersion];
-  [v4 setOsVersion:v9];
+  osVersion = [v8 osVersion];
+  [v4 setOsVersion:osVersion];
 
-  v10 = [v4 osVersion];
+  osVersion2 = [v4 osVersion];
 
-  if (v10)
+  if (osVersion2)
   {
     v18 = MGCopyAnswer();
     [v4 setSerialNumber:v18];
 
-    v19 = [v4 serialNumber];
+    serialNumber = [v4 serialNumber];
 
-    if (v19)
+    if (serialNumber)
     {
       v27 = +[MIBUDeviceController sharedInstance];
-      v28 = [v27 buildVersion];
-      [v4 setBuildVersion:v28];
+      buildVersion = [v27 buildVersion];
+      [v4 setBuildVersion:buildVersion];
 
-      v29 = [v4 buildVersion];
+      buildVersion2 = [v4 buildVersion];
 
-      if (v29)
+      if (buildVersion2)
       {
         v37 = 0;
         goto LABEL_9;
@@ -623,9 +623,9 @@ LABEL_9:
   return v4;
 }
 
-- (id)_handleRetryAfter:(id)a3
+- (id)_handleRetryAfter:(id)after
 {
-  v4 = a3;
+  afterCopy = after;
   v5 = objc_opt_new();
   if (qword_1000B84A8[0] != -1)
   {
@@ -639,9 +639,9 @@ LABEL_9:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Handling retry after command...", buf, 2u);
   }
 
-  v7 = [v4 payload];
+  payload = [afterCopy payload];
 
-  v8 = [v7 objectForKey:@"RetryAfter"];
+  v8 = [payload objectForKey:@"RetryAfter"];
 
   if (v8)
   {
@@ -658,8 +658,8 @@ LABEL_9:
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Retry after %{public}@ seconds", buf, 0xCu);
     }
 
-    v14 = [(MIBUNFCController *)self session];
-    [v14 stopListening];
+    session = [(MIBUNFCController *)self session];
+    [session stopListening];
 
     [v8 doubleValue];
     [(MIBUNFCController *)self _restartSessionAfter:0 forceTerminate:&stru_10009A430 andCompletion:?];
@@ -678,9 +678,9 @@ LABEL_9:
   return v5;
 }
 
-- (id)_handleHeartbeat:(id)a3
+- (id)_handleHeartbeat:(id)heartbeat
 {
-  v4 = a3;
+  heartbeatCopy = heartbeat;
   objc_initWeak(&location, self);
   v5 = objc_opt_new();
   if (qword_1000B84A8[0] != -1)
@@ -700,16 +700,16 @@ LABEL_9:
   v35 = 0x3032000000;
   v36 = sub_10000FC0C;
   v37 = sub_10000FC1C;
-  v7 = [v4 payload];
-  v38 = [v7 objectForKey:@"HeartbeatPeriod"];
+  payload = [heartbeatCopy payload];
+  v38 = [payload objectForKey:@"HeartbeatPeriod"];
 
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
   v30 = sub_10000FC0C;
   v31 = sub_10000FC1C;
-  v8 = [v4 payload];
-  v32 = [v8 objectForKey:@"HeartbeatTimeout"];
+  payload2 = [heartbeatCopy payload];
+  v32 = [payload2 objectForKey:@"HeartbeatTimeout"];
 
   if (!*(v34 + 5))
   {
@@ -747,8 +747,8 @@ LABEL_17:
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Heartbeat period = %lfs; timeout = %lfs", v40, 0x16u);
   }
 
-  v17 = [(MIBUNFCController *)self session];
-  [v17 stopListening];
+  session = [(MIBUNFCController *)self session];
+  [session stopListening];
 
   [*(v34 + 5) doubleValue];
   v19 = v18;
@@ -773,7 +773,7 @@ LABEL_12:
   return v5;
 }
 
-- (id)_handleInstallUpdate:(id *)a3
+- (id)_handleInstallUpdate:(id *)update
 {
   v3 = objc_opt_new();
   [v3 setError:0];
@@ -792,7 +792,7 @@ LABEL_12:
   return v3;
 }
 
-- (id)_handleNetworkInfo:(id *)a3
+- (id)_handleNetworkInfo:(id *)info
 {
   v3 = objc_opt_new();
   if (qword_1000B84A8[0] != -1)
@@ -813,9 +813,9 @@ LABEL_12:
   return v3;
 }
 
-- (id)_handleConfigureNFC:(id)a3
+- (id)_handleConfigureNFC:(id)c
 {
-  v4 = a3;
+  cCopy = c;
   v5 = objc_opt_new();
   if (![(MIBUNFCController *)self isNFCConfigured])
   {
@@ -831,8 +831,8 @@ LABEL_12:
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Handling configureNFC command...", buf, 2u);
     }
 
-    v8 = [v4 payload];
-    v9 = [v8 objectForKey:@"NFCInactivityTimeout"];
+    payload = [cCopy payload];
+    v9 = [payload objectForKey:@"NFCInactivityTimeout"];
 
     if (v9)
     {
@@ -898,9 +898,9 @@ LABEL_19:
   return v5;
 }
 
-- (id)_handleStartDiag:(id)a3
+- (id)_handleStartDiag:(id)diag
 {
-  v4 = a3;
+  diagCopy = diag;
   v5 = objc_opt_new();
   if (qword_1000B84A8[0] != -1)
   {
@@ -915,7 +915,7 @@ LABEL_19:
   }
 
   v9 = 0;
-  [(MIBUNFCController *)self _verifyTatsuTicketFromCmd:v4 error:&v9];
+  [(MIBUNFCController *)self _verifyTatsuTicketFromCmd:diagCopy error:&v9];
 
   v7 = v9;
   [v5 setError:v7];
@@ -923,7 +923,7 @@ LABEL_19:
   return v5;
 }
 
-- (void)_startHCESession:(id *)a3
+- (void)_startHCESession:(id *)session
 {
   v22 = 0;
   v23 = &v22;
@@ -931,10 +931,10 @@ LABEL_19:
   v25 = sub_10000FC0C;
   v26 = sub_10000FC1C;
   v27 = 0;
-  v5 = [(MIBUNFCController *)self session];
-  v6 = [v5 running];
+  session = [(MIBUNFCController *)self session];
+  running = [session running];
 
-  if (v6)
+  if (running)
   {
     if (qword_1000B84A8[0] != -1)
     {
@@ -956,7 +956,7 @@ LABEL_19:
   {
     v10 = dispatch_semaphore_create(0);
     v11 = dispatch_time(0, 60000000000);
-    v12 = [(MIBUNFCController *)self session];
+    session2 = [(MIBUNFCController *)self session];
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_10005548C;
@@ -965,7 +965,7 @@ LABEL_19:
     v19[4] = self;
     v7 = v10;
     v20 = v7;
-    [v12 startHCESessionWithCompletion:v19];
+    [session2 startHCESessionWithCompletion:v19];
 
     if (dispatch_semaphore_wait(v7, v11))
     {
@@ -986,34 +986,34 @@ LABEL_19:
     }
   }
 
-  if (a3)
+  if (session)
   {
-    *a3 = v23[5];
+    *session = v23[5];
   }
 
   _Block_object_dispose(&v22, 8);
 }
 
-- (void)forceTerminateSession:(id *)a3
+- (void)forceTerminateSession:(id *)session
 {
-  v5 = [(MIBUNFCController *)self session];
-  v6 = [v5 running];
+  session = [(MIBUNFCController *)self session];
+  running = [session running];
 
-  if (v6)
+  if (running)
   {
     v7 = dispatch_semaphore_create(0);
     [(MIBUNFCController *)self setNfcTerminationSem:v7];
 
     v8 = dispatch_time(0, 60000000000);
-    v9 = [(MIBUNFCController *)self session];
+    session2 = [(MIBUNFCController *)self session];
     v20 = 0;
-    [v9 endHCESession:&v20];
+    [session2 endHCESession:&v20];
     v10 = v20;
 
     if (!v10)
     {
-      v11 = [(MIBUNFCController *)self nfcTerminationSem];
-      v12 = dispatch_semaphore_wait(v11, v8);
+      nfcTerminationSem = [(MIBUNFCController *)self nfcTerminationSem];
+      v12 = dispatch_semaphore_wait(nfcTerminationSem, v8);
 
       if (v12)
       {
@@ -1039,10 +1039,10 @@ LABEL_19:
     }
 
     [(MIBUNFCController *)self setNfcTerminationSem:0];
-    if (a3)
+    if (session)
     {
       v18 = v10;
-      *a3 = v10;
+      *session = v10;
     }
   }
 
@@ -1062,28 +1062,28 @@ LABEL_19:
   }
 }
 
-- (void)_restartSessionAfter:(double)a3 forceTerminate:(BOOL)a4 andCompletion:(id)a5
+- (void)_restartSessionAfter:(double)after forceTerminate:(BOOL)terminate andCompletion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v9 = [(MIBUNFCController *)self queue];
+  queue = [(MIBUNFCController *)self queue];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100012EC4;
   v11[3] = &unk_10009A6F0;
   objc_copyWeak(v13, &location);
-  v14 = a4;
-  v13[1] = *&a3;
+  terminateCopy = terminate;
+  v13[1] = *&after;
   v11[4] = self;
-  v12 = v8;
-  v10 = v8;
-  dispatch_async(v9, v11);
+  v12 = completionCopy;
+  v10 = completionCopy;
+  dispatch_async(queue, v11);
 
   objc_destroyWeak(v13);
   objc_destroyWeak(&location);
 }
 
-- (void)_startSessionRestartTimer:(double)a3 error:(id *)a4
+- (void)_startSessionRestartTimer:(double)timer error:(id *)error
 {
   objc_initWeak(&location, self);
   v6[0] = _NSConcreteStackBlock;
@@ -1092,7 +1092,7 @@ LABEL_19:
   v6[3] = &unk_10009A738;
   v6[4] = self;
   objc_copyWeak(v7, &location);
-  v7[1] = *&a3;
+  v7[1] = *&timer;
   dispatch_async(&_dispatch_main_q, v6);
   objc_destroyWeak(v7);
   objc_destroyWeak(&location);
@@ -1100,11 +1100,11 @@ LABEL_19:
 
 - (void)_stopSessionRestartTimer
 {
-  v3 = [(MIBUNFCController *)self sessionRestartTimer];
-  objc_sync_enter(v3);
-  v4 = [(MIBUNFCController *)self sessionRestartTimer];
+  sessionRestartTimer = [(MIBUNFCController *)self sessionRestartTimer];
+  objc_sync_enter(sessionRestartTimer);
+  sessionRestartTimer2 = [(MIBUNFCController *)self sessionRestartTimer];
 
-  if (v4)
+  if (sessionRestartTimer2)
   {
     if (![(MIBUNFCController *)self _isHeartbeatMode])
     {
@@ -1121,24 +1121,24 @@ LABEL_19:
       }
     }
 
-    v6 = [(MIBUNFCController *)self sessionRestartTimer];
-    [v6 invalidate];
+    sessionRestartTimer3 = [(MIBUNFCController *)self sessionRestartTimer];
+    [sessionRestartTimer3 invalidate];
 
     [(MIBUNFCController *)self setSessionRestartTimer:0];
   }
 
-  objc_sync_exit(v3);
+  objc_sync_exit(sessionRestartTimer);
 }
 
 - (BOOL)_isHeartbeatMode
 {
-  v2 = [(MIBUNFCController *)self heartbeatConnectionSem];
-  v3 = v2 != 0;
+  heartbeatConnectionSem = [(MIBUNFCController *)self heartbeatConnectionSem];
+  v3 = heartbeatConnectionSem != 0;
 
   return v3;
 }
 
-- (void)_restartSession:(id)a3
+- (void)_restartSession:(id)session
 {
   if (![(MIBUNFCController *)self _isHeartbeatMode])
   {
@@ -1158,7 +1158,7 @@ LABEL_19:
   [(MIBUNFCController *)self _startHCESession:0];
 }
 
-- (void)_startNFCInactivityTimer:(double)a3
+- (void)_startNFCInactivityTimer:(double)timer
 {
   objc_initWeak(&location, self);
   v5[0] = _NSConcreteStackBlock;
@@ -1167,15 +1167,15 @@ LABEL_19:
   v5[3] = &unk_10009A738;
   v5[4] = self;
   objc_copyWeak(v6, &location);
-  v6[1] = *&a3;
+  v6[1] = *&timer;
   dispatch_async(&_dispatch_main_q, v5);
   objc_destroyWeak(v6);
   objc_destroyWeak(&location);
 }
 
-- (void)_nfcInactivityTimeoutHandler:(id)a3
+- (void)_nfcInactivityTimeoutHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (qword_1000B84A8[0] != -1)
   {
     sub_1000560BC();
@@ -1189,21 +1189,21 @@ LABEL_19:
   }
 
   [(MIBUNFCController *)self _stopNFCInactivityTimer];
-  v6 = [(MIBUNFCController *)self delegate];
+  delegate = [(MIBUNFCController *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(MIBUNFCController *)self delegate];
-    [v8 nfcActivityDidTimeout];
+    delegate2 = [(MIBUNFCController *)self delegate];
+    [delegate2 nfcActivityDidTimeout];
   }
 }
 
 - (void)_stopNFCInactivityTimer
 {
-  v3 = [(MIBUNFCController *)self nfcInactivityTimer];
+  nfcInactivityTimer = [(MIBUNFCController *)self nfcInactivityTimer];
 
-  if (v3)
+  if (nfcInactivityTimer)
   {
     if (qword_1000B84A8[0] != -1)
     {
@@ -1217,8 +1217,8 @@ LABEL_19:
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Stopping nfcInactivityTimer...", v6, 2u);
     }
 
-    v5 = [(MIBUNFCController *)self nfcInactivityTimer];
-    [v5 invalidate];
+    nfcInactivityTimer2 = [(MIBUNFCController *)self nfcInactivityTimer];
+    [nfcInactivityTimer2 invalidate];
 
     [(MIBUNFCController *)self setNfcInactivityTimer:0];
   }
@@ -1226,9 +1226,9 @@ LABEL_19:
 
 - (void)_resetNFCInactivityTimer
 {
-  v3 = [(MIBUNFCController *)self nfcInactivityTimer];
+  nfcInactivityTimer = [(MIBUNFCController *)self nfcInactivityTimer];
 
-  if (v3)
+  if (nfcInactivityTimer)
   {
     if (qword_1000B84A8[0] != -1)
     {
@@ -1242,8 +1242,8 @@ LABEL_19:
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Stopping isNFCActive Timer...", &v9, 2u);
     }
 
-    v5 = [(MIBUNFCController *)self nfcInactivityTimer];
-    [v5 invalidate];
+    nfcInactivityTimer2 = [(MIBUNFCController *)self nfcInactivityTimer];
+    [nfcInactivityTimer2 invalidate];
 
     [(MIBUNFCController *)self setNfcInactivityTimer:0];
   }
@@ -1267,10 +1267,10 @@ LABEL_19:
   [(MIBUNFCController *)self _startNFCInactivityTimer:?];
 }
 
-- (void)_verifyTatsuTicketFromCmd:(id)a3 error:(id *)a4
+- (void)_verifyTatsuTicketFromCmd:(id)cmd error:(id *)error
 {
-  v5 = [a3 payload];
-  v6 = [v5 objectForKey:@"TatsuTicket"];
+  payload = [cmd payload];
+  v6 = [payload objectForKey:@"TatsuTicket"];
 
   if (qword_1000B84A8[0] != -1)
   {
@@ -1303,11 +1303,11 @@ LABEL_19:
   if (v16)
   {
     v18 = v16;
-    *a4 = v17;
+    *error = v17;
   }
 }
 
-- (void)start:(id *)a3
+- (void)start:(id *)start
 {
   v7 = 0;
   [(MIBUNFCController *)self _startHCESession:&v7];
@@ -1317,10 +1317,10 @@ LABEL_19:
     [(MIBUNFCController *)self setTerminated:0];
   }
 
-  if (a3)
+  if (start)
   {
     v6 = v5;
-    *a3 = v5;
+    *start = v5;
   }
 }
 

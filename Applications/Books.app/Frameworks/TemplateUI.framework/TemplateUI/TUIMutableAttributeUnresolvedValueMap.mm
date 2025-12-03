@@ -1,29 +1,29 @@
 @interface TUIMutableAttributeUnresolvedValueMap
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setValue:(id)a3 forAttribute:(unsigned __int16)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setValue:(id)value forAttribute:(unsigned __int16)attribute;
 @end
 
 @implementation TUIMutableAttributeUnresolvedValueMap
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [TUIAttributeUnresolvedValueMap alloc];
 
   return [(TUIAttributeUnresolvedValueMap *)v4 initWithOther:self];
 }
 
-- (void)setValue:(id)a3 forAttribute:(unsigned __int16)a4
+- (void)setValue:(id)value forAttribute:(unsigned __int16)attribute
 {
-  v6 = a4;
-  if (TUIValueIsNil(a3.var0))
+  attributeCopy = attribute;
+  if (TUIValueIsNil(value.var0))
   {
-    sub_345F8(&self->super._map.__table_.__bucket_list_.__ptr_, &v6);
+    sub_345F8(&self->super._map.__table_.__bucket_list_.__ptr_, &attributeCopy);
   }
 
   else
   {
-    v7 = &v6;
-    *(sub_347B0(&self->super._map.__table_.__bucket_list_.__ptr_, &v6) + 5) = a3;
+    v7 = &attributeCopy;
+    *(sub_347B0(&self->super._map.__table_.__bucket_list_.__ptr_, &attributeCopy) + 5) = value;
   }
 }
 

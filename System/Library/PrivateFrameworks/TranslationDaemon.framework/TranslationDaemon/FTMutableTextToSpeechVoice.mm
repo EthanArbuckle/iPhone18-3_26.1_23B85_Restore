@@ -1,13 +1,13 @@
 @interface FTMutableTextToSpeechVoice
 - (FTMutableTextToSpeechVoice)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setGender:(id)a3;
-- (void)setIdentifier:(id)a3;
-- (void)setLanguage:(id)a3;
-- (void)setName:(id)a3;
-- (void)setQuality:(id)a3;
-- (void)setType:(id)a3;
-- (void)setVersion:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setGender:(id)gender;
+- (void)setIdentifier:(id)identifier;
+- (void)setLanguage:(id)language;
+- (void)setName:(id)name;
+- (void)setQuality:(id)quality;
+- (void)setType:(id)type;
+- (void)setVersion:(id)version;
 @end
 
 @implementation FTMutableTextToSpeechVoice
@@ -19,17 +19,17 @@
   v2 = [(FTMutableTextToSpeechVoice *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v2->super._storage;
-    v2->super._storage = v3;
+    v2->super._storage = dictionary;
   }
 
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(NSMutableDictionary *)self->super._storage copy];
   v6 = v4[1];
   v4[1] = v5;
@@ -37,45 +37,45 @@
   return v4;
 }
 
-- (void)setLanguage:(id)a3
+- (void)setLanguage:(id)language
 {
-  v4 = [a3 copy];
+  v4 = [language copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
-- (void)setGender:(id)a3
+- (void)setGender:(id)gender
 {
-  v4 = [a3 copy];
+  v4 = [gender copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
-- (void)setVersion:(id)a3
+- (void)setVersion:(id)version
 {
-  v4 = [a3 copy];
+  v4 = [version copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
-- (void)setQuality:(id)a3
+- (void)setQuality:(id)quality
 {
-  v4 = [a3 copy];
+  v4 = [quality copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
-- (void)setType:(id)a3
+- (void)setType:(id)type
 {
-  v4 = [a3 copy];
+  v4 = [type copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 

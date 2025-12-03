@@ -1,12 +1,12 @@
 @interface EDMessageCategorizationResultMetadata
 + (id)log;
-- (BOOL)isEqual:(id)a3;
-- (EDMessageCategorizationResultMetadata)initWithCoder:(id)a3;
-- (EDMessageCategorizationResultMetadata)initWithScore:(double)a3 senderScore:(double)a4 tsScore:(double)a5 reasonCodes:(id)a6 modelVersion:(id)a7 senderModelVersion:(id)a8 tsModelVersion:(id)a9 finalRuleVersion:(id)a10 experimentID:(id)a11 experimentDeploymentID:(id)a12 experimentTreatmentID:(id)a13 rolloutID:(id)a14 rolloutDeploymentID:(id)a15 rolloutFactorPackID:(id)a16;
+- (BOOL)isEqual:(id)equal;
+- (EDMessageCategorizationResultMetadata)initWithCoder:(id)coder;
+- (EDMessageCategorizationResultMetadata)initWithScore:(double)score senderScore:(double)senderScore tsScore:(double)tsScore reasonCodes:(id)codes modelVersion:(id)version senderModelVersion:(id)modelVersion tsModelVersion:(id)tsModelVersion finalRuleVersion:(id)self0 experimentID:(id)self1 experimentDeploymentID:(id)self2 experimentTreatmentID:(id)self3 rolloutID:(id)self4 rolloutDeploymentID:(id)self5 rolloutFactorPackID:(id)self6;
 - (id)_dictionaryRepresentation;
-- (id)stringRepresentationWithError:(id *)a3;
+- (id)stringRepresentationWithError:(id *)error;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation EDMessageCategorizationResultMetadata
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = __44__EDMessageCategorizationResultMetadata_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_21 != -1)
   {
     dispatch_once(&log_onceToken_21, block);
@@ -36,40 +36,40 @@ void __44__EDMessageCategorizationResultMetadata_log__block_invoke(uint64_t a1)
   log_log_21 = v1;
 }
 
-- (EDMessageCategorizationResultMetadata)initWithScore:(double)a3 senderScore:(double)a4 tsScore:(double)a5 reasonCodes:(id)a6 modelVersion:(id)a7 senderModelVersion:(id)a8 tsModelVersion:(id)a9 finalRuleVersion:(id)a10 experimentID:(id)a11 experimentDeploymentID:(id)a12 experimentTreatmentID:(id)a13 rolloutID:(id)a14 rolloutDeploymentID:(id)a15 rolloutFactorPackID:(id)a16
+- (EDMessageCategorizationResultMetadata)initWithScore:(double)score senderScore:(double)senderScore tsScore:(double)tsScore reasonCodes:(id)codes modelVersion:(id)version senderModelVersion:(id)modelVersion tsModelVersion:(id)tsModelVersion finalRuleVersion:(id)self0 experimentID:(id)self1 experimentDeploymentID:(id)self2 experimentTreatmentID:(id)self3 rolloutID:(id)self4 rolloutDeploymentID:(id)self5 rolloutFactorPackID:(id)self6
 {
-  v40 = a6;
-  v31 = a7;
-  v39 = a7;
-  v38 = a8;
-  v37 = a9;
-  v36 = a10;
-  v35 = a11;
-  v34 = a12;
-  v33 = a13;
-  v24 = a14;
-  v25 = a15;
-  v26 = a16;
+  codesCopy = codes;
+  versionCopy = version;
+  versionCopy2 = version;
+  modelVersionCopy = modelVersion;
+  tsModelVersionCopy = tsModelVersion;
+  ruleVersionCopy = ruleVersion;
+  dCopy = d;
+  iDCopy = iD;
+  treatmentIDCopy = treatmentID;
+  rolloutIDCopy = rolloutID;
+  deploymentIDCopy = deploymentID;
+  packIDCopy = packID;
   v41.receiver = self;
   v41.super_class = EDMessageCategorizationResultMetadata;
   v27 = [(EDMessageCategorizationResultMetadata *)&v41 init];
   v28 = v27;
   if (v27)
   {
-    v27->_score = a3;
-    v27->_senderScore = a4;
-    v27->_tsScore = a5;
-    objc_storeStrong(&v27->_reasonCodes, a6);
-    objc_storeStrong(&v28->_modelVersion, v31);
-    objc_storeStrong(&v28->_senderModelVersion, a8);
-    objc_storeStrong(&v28->_tsModelVersion, a9);
-    objc_storeStrong(&v28->_finalRuleVersion, a10);
-    objc_storeStrong(&v28->_experimentID, a11);
-    objc_storeStrong(&v28->_experimentDeploymentID, a12);
-    objc_storeStrong(&v28->_experimentTreatmentID, a13);
-    objc_storeStrong(&v28->_rolloutID, a14);
-    objc_storeStrong(&v28->_rolloutDeploymentID, a15);
-    objc_storeStrong(&v28->_rolloutFactorPackID, a16);
+    v27->_score = score;
+    v27->_senderScore = senderScore;
+    v27->_tsScore = tsScore;
+    objc_storeStrong(&v27->_reasonCodes, codes);
+    objc_storeStrong(&v28->_modelVersion, versionCopy);
+    objc_storeStrong(&v28->_senderModelVersion, modelVersion);
+    objc_storeStrong(&v28->_tsModelVersion, tsModelVersion);
+    objc_storeStrong(&v28->_finalRuleVersion, ruleVersion);
+    objc_storeStrong(&v28->_experimentID, d);
+    objc_storeStrong(&v28->_experimentDeploymentID, iD);
+    objc_storeStrong(&v28->_experimentTreatmentID, treatmentID);
+    objc_storeStrong(&v28->_rolloutID, rolloutID);
+    objc_storeStrong(&v28->_rolloutDeploymentID, deploymentID);
+    objc_storeStrong(&v28->_rolloutFactorPackID, packID);
   }
 
   return v28;
@@ -81,164 +81,164 @@ void __44__EDMessageCategorizationResultMetadata_log__block_invoke(uint64_t a1)
   v62[0] = @"score";
   v3 = MEMORY[0x1E696AD98];
   [(EDMessageCategorizationResultMetadata *)self score];
-  v4 = [v3 numberWithDouble:?];
-  v5 = v4;
-  if (!v4)
+  null = [v3 numberWithDouble:?];
+  v5 = null;
+  if (!null)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v47 = v4;
-  v63[0] = v4;
+  v47 = null;
+  v63[0] = null;
   v62[1] = @"senderScore";
   v6 = MEMORY[0x1E696AD98];
   [(EDMessageCategorizationResultMetadata *)self senderScore];
-  v7 = [v6 numberWithDouble:?];
-  v51 = v7;
-  if (!v7)
+  null2 = [v6 numberWithDouble:?];
+  v51 = null2;
+  if (!null2)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v46 = v7;
-  v63[1] = v7;
+  v46 = null2;
+  v63[1] = null2;
   v62[2] = @"tsScore";
   v8 = MEMORY[0x1E696AD98];
   [(EDMessageCategorizationResultMetadata *)self tsScore];
-  v9 = [v8 numberWithDouble:?];
-  v49 = v9;
-  if (!v9)
+  null3 = [v8 numberWithDouble:?];
+  v49 = null3;
+  if (!null3)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v45 = v9;
-  v63[2] = v9;
+  v45 = null3;
+  v63[2] = null3;
   v62[3] = @"reasonCodes";
-  v10 = [(EDMessageCategorizationResultMetadata *)self reasonCodes];
-  v50 = v10;
-  if (!v10)
+  reasonCodes = [(EDMessageCategorizationResultMetadata *)self reasonCodes];
+  v50 = reasonCodes;
+  if (!reasonCodes)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    reasonCodes = [MEMORY[0x1E695DFB0] null];
   }
 
-  v44 = v10;
-  v63[3] = v10;
+  v44 = reasonCodes;
+  v63[3] = reasonCodes;
   v62[4] = @"modelVersion";
-  v11 = [(EDMessageCategorizationResultMetadata *)self modelVersion];
-  v52 = v11;
-  if (!v11)
+  modelVersion = [(EDMessageCategorizationResultMetadata *)self modelVersion];
+  v52 = modelVersion;
+  if (!modelVersion)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    modelVersion = [MEMORY[0x1E695DFB0] null];
   }
 
-  v43 = v11;
-  v63[4] = v11;
+  v43 = modelVersion;
+  v63[4] = modelVersion;
   v62[5] = @"senderModelVersion";
-  v12 = [(EDMessageCategorizationResultMetadata *)self senderModelVersion];
-  v53 = v12;
-  if (!v12)
+  senderModelVersion = [(EDMessageCategorizationResultMetadata *)self senderModelVersion];
+  v53 = senderModelVersion;
+  if (!senderModelVersion)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    senderModelVersion = [MEMORY[0x1E695DFB0] null];
   }
 
-  v42 = v12;
-  v63[5] = v12;
+  v42 = senderModelVersion;
+  v63[5] = senderModelVersion;
   v62[6] = @"tsModelVersion";
-  v13 = [(EDMessageCategorizationResultMetadata *)self tsModelVersion];
-  v54 = v13;
-  if (!v13)
+  tsModelVersion = [(EDMessageCategorizationResultMetadata *)self tsModelVersion];
+  v54 = tsModelVersion;
+  if (!tsModelVersion)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    tsModelVersion = [MEMORY[0x1E695DFB0] null];
   }
 
-  v41 = v13;
-  v63[6] = v13;
+  v41 = tsModelVersion;
+  v63[6] = tsModelVersion;
   v62[7] = @"finalRuleVersion";
-  v14 = [(EDMessageCategorizationResultMetadata *)self finalRuleVersion];
-  v55 = v14;
-  if (!v14)
+  finalRuleVersion = [(EDMessageCategorizationResultMetadata *)self finalRuleVersion];
+  v55 = finalRuleVersion;
+  if (!finalRuleVersion)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    finalRuleVersion = [MEMORY[0x1E695DFB0] null];
   }
 
-  v40 = v14;
-  v63[7] = v14;
+  v40 = finalRuleVersion;
+  v63[7] = finalRuleVersion;
   v62[8] = @"experimentID";
-  v15 = [(EDMessageCategorizationResultMetadata *)self experimentID];
-  v56 = v15;
-  if (!v15)
+  experimentID = [(EDMessageCategorizationResultMetadata *)self experimentID];
+  v56 = experimentID;
+  if (!experimentID)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    experimentID = [MEMORY[0x1E695DFB0] null];
   }
 
-  v39 = v15;
-  v63[8] = v15;
+  v39 = experimentID;
+  v63[8] = experimentID;
   v62[9] = @"experimentDeploymentID";
-  v16 = [(EDMessageCategorizationResultMetadata *)self experimentDeploymentID];
-  v17 = v16;
-  if (!v16)
+  experimentDeploymentID = [(EDMessageCategorizationResultMetadata *)self experimentDeploymentID];
+  null4 = experimentDeploymentID;
+  if (!experimentDeploymentID)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v38 = v17;
-  v63[9] = v17;
+  v38 = null4;
+  v63[9] = null4;
   v62[10] = @"experimentTreatmentID";
-  v18 = [(EDMessageCategorizationResultMetadata *)self experimentTreatmentID];
-  v19 = v18;
-  if (!v18)
+  experimentTreatmentID = [(EDMessageCategorizationResultMetadata *)self experimentTreatmentID];
+  null5 = experimentTreatmentID;
+  if (!experimentTreatmentID)
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v37 = v19;
-  v63[10] = v19;
+  v37 = null5;
+  v63[10] = null5;
   v62[11] = @"rolloutID";
-  v20 = [(EDMessageCategorizationResultMetadata *)self rolloutID];
-  v21 = v20;
-  if (!v20)
+  rolloutID = [(EDMessageCategorizationResultMetadata *)self rolloutID];
+  null6 = rolloutID;
+  if (!rolloutID)
   {
-    v21 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v63[11] = v21;
+  v63[11] = null6;
   v62[12] = @"rolloutDeploymentID";
-  v22 = [(EDMessageCategorizationResultMetadata *)self rolloutDeploymentID];
-  v23 = v22;
-  if (!v22)
+  rolloutDeploymentID = [(EDMessageCategorizationResultMetadata *)self rolloutDeploymentID];
+  null7 = rolloutDeploymentID;
+  if (!rolloutDeploymentID)
   {
-    v23 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v63[12] = v23;
+  v63[12] = null7;
   v62[13] = @"rolloutFactorPackID";
-  v24 = [(EDMessageCategorizationResultMetadata *)self rolloutFactorPackID];
-  v25 = v24;
-  if (!v24)
+  rolloutFactorPackID = [(EDMessageCategorizationResultMetadata *)self rolloutFactorPackID];
+  null8 = rolloutFactorPackID;
+  if (!rolloutFactorPackID)
   {
-    v25 = [MEMORY[0x1E695DFB0] null];
+    null8 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v63[13] = v25;
+  v63[13] = null8;
   v48 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v63 forKeys:v62 count:14];
-  if (!v24)
+  if (!rolloutFactorPackID)
   {
   }
 
-  if (!v22)
+  if (!rolloutDeploymentID)
   {
   }
 
-  if (!v20)
+  if (!rolloutID)
   {
   }
 
-  if (!v18)
+  if (!experimentTreatmentID)
   {
   }
 
-  if (!v16)
+  if (!experimentDeploymentID)
   {
   }
 
@@ -278,7 +278,7 @@ void __44__EDMessageCategorizationResultMetadata_log__block_invoke(uint64_t a1)
   {
   }
 
-  v26 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v59 = 0u;
   v60 = 0u;
   v57 = 0u;
@@ -305,12 +305,12 @@ void __44__EDMessageCategorizationResultMetadata_log__block_invoke(uint64_t a1)
           [v32 doubleValue];
         }
 
-        v33 = [MEMORY[0x1E695DFB0] null];
-        v34 = v32 == v33;
+        null9 = [MEMORY[0x1E695DFB0] null];
+        v34 = v32 == null9;
 
         if (!v34)
         {
-          [v26 setObject:v32 forKey:v31];
+          [dictionary setObject:v32 forKey:v31];
         }
       }
 
@@ -322,14 +322,14 @@ void __44__EDMessageCategorizationResultMetadata_log__block_invoke(uint64_t a1)
 
   v35 = *MEMORY[0x1E69E9840];
 
-  return v26;
+  return dictionary;
 }
 
-- (id)stringRepresentationWithError:(id *)a3
+- (id)stringRepresentationWithError:(id *)error
 {
   v4 = MEMORY[0x1E696ACB0];
-  v5 = [(EDMessageCategorizationResultMetadata *)self _dictionaryRepresentation];
-  v6 = [v4 dataWithJSONObject:v5 options:0 error:a3];
+  _dictionaryRepresentation = [(EDMessageCategorizationResultMetadata *)self _dictionaryRepresentation];
+  v6 = [v4 dataWithJSONObject:_dictionaryRepresentation options:0 error:error];
 
   if ([v6 length])
   {
@@ -352,41 +352,41 @@ void __44__EDMessageCategorizationResultMetadata_log__block_invoke(uint64_t a1)
   v6 = v5;
   [(EDMessageCategorizationResultMetadata *)self tsScore];
   v8 = v7;
-  v9 = [(EDMessageCategorizationResultMetadata *)self reasonCodes];
-  v10 = [v9 hash];
+  reasonCodes = [(EDMessageCategorizationResultMetadata *)self reasonCodes];
+  v10 = [reasonCodes hash];
 
-  v11 = [(EDMessageCategorizationResultMetadata *)self modelVersion];
-  v12 = [v11 hash];
+  modelVersion = [(EDMessageCategorizationResultMetadata *)self modelVersion];
+  v12 = [modelVersion hash];
 
-  v13 = [(EDMessageCategorizationResultMetadata *)self senderModelVersion];
-  v14 = [v13 hash];
+  senderModelVersion = [(EDMessageCategorizationResultMetadata *)self senderModelVersion];
+  v14 = [senderModelVersion hash];
 
-  v15 = [(EDMessageCategorizationResultMetadata *)self tsModelVersion];
-  v16 = [v15 hash];
+  tsModelVersion = [(EDMessageCategorizationResultMetadata *)self tsModelVersion];
+  v16 = [tsModelVersion hash];
 
-  v17 = [(EDMessageCategorizationResultMetadata *)self finalRuleVersion];
-  v18 = [v17 hash];
+  finalRuleVersion = [(EDMessageCategorizationResultMetadata *)self finalRuleVersion];
+  v18 = [finalRuleVersion hash];
 
-  v19 = [(EDMessageCategorizationResultMetadata *)self experimentID];
-  v40 = [v19 hash];
+  experimentID = [(EDMessageCategorizationResultMetadata *)self experimentID];
+  v40 = [experimentID hash];
   v41 = v18;
 
-  v20 = [(EDMessageCategorizationResultMetadata *)self experimentDeploymentID];
-  v21 = [v20 hash];
+  experimentDeploymentID = [(EDMessageCategorizationResultMetadata *)self experimentDeploymentID];
+  v21 = [experimentDeploymentID hash];
   v22 = v14;
 
-  v23 = [(EDMessageCategorizationResultMetadata *)self experimentTreatmentID];
-  v24 = [v23 hash];
+  experimentTreatmentID = [(EDMessageCategorizationResultMetadata *)self experimentTreatmentID];
+  v24 = [experimentTreatmentID hash];
   v25 = v12;
 
-  v26 = [(EDMessageCategorizationResultMetadata *)self rolloutID];
-  v27 = [v26 hash];
+  rolloutID = [(EDMessageCategorizationResultMetadata *)self rolloutID];
+  v27 = [rolloutID hash];
 
-  v28 = [(EDMessageCategorizationResultMetadata *)self rolloutDeploymentID];
-  v29 = [v28 hash];
+  rolloutDeploymentID = [(EDMessageCategorizationResultMetadata *)self rolloutDeploymentID];
+  v29 = [rolloutDeploymentID hash];
 
-  v30 = [(EDMessageCategorizationResultMetadata *)self rolloutFactorPackID];
-  v31 = [v30 hash];
+  rolloutFactorPackID = [(EDMessageCategorizationResultMetadata *)self rolloutFactorPackID];
+  v31 = [rolloutFactorPackID hash];
   v32 = round(v4);
   if (v32 < 0.0)
   {
@@ -413,10 +413,10 @@ void __44__EDMessageCategorizationResultMetadata_log__block_invoke(uint64_t a1)
   return v37 + v38;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v25 = 1;
   }
@@ -426,7 +426,7 @@ void __44__EDMessageCategorizationResultMetadata_log__block_invoke(uint64_t a1)
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       [(EDMessageCategorizationResultMetadata *)self score];
       v7 = v6;
       [(EDMessageCategorizationResultMetadata *)v5 score];
@@ -472,49 +472,49 @@ LABEL_25:
 
       else
       {
-        v18 = [(EDMessageCategorizationResultMetadata *)self reasonCodes];
-        v19 = [(EDMessageCategorizationResultMetadata *)v5 reasonCodes];
-        if ([v18 isEqualToArray:v19])
+        reasonCodes = [(EDMessageCategorizationResultMetadata *)self reasonCodes];
+        reasonCodes2 = [(EDMessageCategorizationResultMetadata *)v5 reasonCodes];
+        if ([reasonCodes isEqualToArray:reasonCodes2])
         {
-          v20 = [(EDMessageCategorizationResultMetadata *)self modelVersion];
-          v21 = [(EDMessageCategorizationResultMetadata *)v5 modelVersion];
-          if ([v20 isEqualToString:v21])
+          modelVersion = [(EDMessageCategorizationResultMetadata *)self modelVersion];
+          modelVersion2 = [(EDMessageCategorizationResultMetadata *)v5 modelVersion];
+          if ([modelVersion isEqualToString:modelVersion2])
           {
-            v22 = [(EDMessageCategorizationResultMetadata *)self senderModelVersion];
-            v23 = [(EDMessageCategorizationResultMetadata *)v5 senderModelVersion];
-            if ([v22 isEqualToString:v23])
+            senderModelVersion = [(EDMessageCategorizationResultMetadata *)self senderModelVersion];
+            senderModelVersion2 = [(EDMessageCategorizationResultMetadata *)v5 senderModelVersion];
+            if ([senderModelVersion isEqualToString:senderModelVersion2])
             {
-              v41 = [(EDMessageCategorizationResultMetadata *)self tsModelVersion];
-              v24 = [(EDMessageCategorizationResultMetadata *)v5 tsModelVersion];
-              if ([v41 isEqualToString:v24])
+              tsModelVersion = [(EDMessageCategorizationResultMetadata *)self tsModelVersion];
+              tsModelVersion2 = [(EDMessageCategorizationResultMetadata *)v5 tsModelVersion];
+              if ([tsModelVersion isEqualToString:tsModelVersion2])
               {
-                v40 = [(EDMessageCategorizationResultMetadata *)self finalRuleVersion];
-                v39 = [(EDMessageCategorizationResultMetadata *)v5 finalRuleVersion];
-                if ([v40 isEqualToString:?])
+                finalRuleVersion = [(EDMessageCategorizationResultMetadata *)self finalRuleVersion];
+                finalRuleVersion2 = [(EDMessageCategorizationResultMetadata *)v5 finalRuleVersion];
+                if ([finalRuleVersion isEqualToString:?])
                 {
-                  v38 = [(EDMessageCategorizationResultMetadata *)self experimentID];
-                  v37 = [(EDMessageCategorizationResultMetadata *)v5 experimentID];
-                  if ([v38 isEqualToString:?])
+                  experimentID = [(EDMessageCategorizationResultMetadata *)self experimentID];
+                  experimentID2 = [(EDMessageCategorizationResultMetadata *)v5 experimentID];
+                  if ([experimentID isEqualToString:?])
                   {
-                    v36 = [(EDMessageCategorizationResultMetadata *)self experimentDeploymentID];
-                    v35 = [(EDMessageCategorizationResultMetadata *)v5 experimentDeploymentID];
-                    if ([v36 isEqualToString:?])
+                    experimentDeploymentID = [(EDMessageCategorizationResultMetadata *)self experimentDeploymentID];
+                    experimentDeploymentID2 = [(EDMessageCategorizationResultMetadata *)v5 experimentDeploymentID];
+                    if ([experimentDeploymentID isEqualToString:?])
                     {
-                      v34 = [(EDMessageCategorizationResultMetadata *)self experimentTreatmentID];
-                      v33 = [(EDMessageCategorizationResultMetadata *)v5 experimentTreatmentID];
-                      if ([v34 isEqualToString:?])
+                      experimentTreatmentID = [(EDMessageCategorizationResultMetadata *)self experimentTreatmentID];
+                      experimentTreatmentID2 = [(EDMessageCategorizationResultMetadata *)v5 experimentTreatmentID];
+                      if ([experimentTreatmentID isEqualToString:?])
                       {
-                        v32 = [(EDMessageCategorizationResultMetadata *)self rolloutID];
-                        v31 = [(EDMessageCategorizationResultMetadata *)v5 rolloutID];
-                        if ([v32 isEqualToString:v31])
+                        rolloutID = [(EDMessageCategorizationResultMetadata *)self rolloutID];
+                        rolloutID2 = [(EDMessageCategorizationResultMetadata *)v5 rolloutID];
+                        if ([rolloutID isEqualToString:rolloutID2])
                         {
-                          v30 = [(EDMessageCategorizationResultMetadata *)self rolloutDeploymentID];
-                          v29 = [(EDMessageCategorizationResultMetadata *)v5 rolloutDeploymentID];
-                          if ([v30 isEqualToString:v29])
+                          rolloutDeploymentID = [(EDMessageCategorizationResultMetadata *)self rolloutDeploymentID];
+                          rolloutDeploymentID2 = [(EDMessageCategorizationResultMetadata *)v5 rolloutDeploymentID];
+                          if ([rolloutDeploymentID isEqualToString:rolloutDeploymentID2])
                           {
-                            v28 = [(EDMessageCategorizationResultMetadata *)self rolloutFactorPackID];
-                            v27 = [(EDMessageCategorizationResultMetadata *)v5 rolloutFactorPackID];
-                            v25 = [v28 isEqualToString:v27];
+                            rolloutFactorPackID = [(EDMessageCategorizationResultMetadata *)self rolloutFactorPackID];
+                            rolloutFactorPackID2 = [(EDMessageCategorizationResultMetadata *)v5 rolloutFactorPackID];
+                            v25 = [rolloutFactorPackID isEqualToString:rolloutFactorPackID2];
                           }
 
                           else
@@ -587,112 +587,112 @@ LABEL_25:
   return v25;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v15 = a3;
+  coderCopy = coder;
   [(EDMessageCategorizationResultMetadata *)self score];
-  [v15 encodeDouble:@"EFPropertyKey_score" forKey:?];
+  [coderCopy encodeDouble:@"EFPropertyKey_score" forKey:?];
   [(EDMessageCategorizationResultMetadata *)self senderScore];
-  [v15 encodeDouble:@"EFPropertyKey_senderScore" forKey:?];
+  [coderCopy encodeDouble:@"EFPropertyKey_senderScore" forKey:?];
   [(EDMessageCategorizationResultMetadata *)self tsScore];
-  [v15 encodeDouble:@"EFPropertyKey_tsScore" forKey:?];
-  v4 = [(EDMessageCategorizationResultMetadata *)self reasonCodes];
-  [v15 encodeObject:v4 forKey:@"EFPropertyKey_reasonCodes"];
+  [coderCopy encodeDouble:@"EFPropertyKey_tsScore" forKey:?];
+  reasonCodes = [(EDMessageCategorizationResultMetadata *)self reasonCodes];
+  [coderCopy encodeObject:reasonCodes forKey:@"EFPropertyKey_reasonCodes"];
 
-  v5 = [(EDMessageCategorizationResultMetadata *)self modelVersion];
-  [v15 encodeObject:v5 forKey:@"EFPropertyKey_modelVersion"];
+  modelVersion = [(EDMessageCategorizationResultMetadata *)self modelVersion];
+  [coderCopy encodeObject:modelVersion forKey:@"EFPropertyKey_modelVersion"];
 
-  v6 = [(EDMessageCategorizationResultMetadata *)self senderModelVersion];
-  [v15 encodeObject:v6 forKey:@"EFPropertyKey_senderModelVersion"];
+  senderModelVersion = [(EDMessageCategorizationResultMetadata *)self senderModelVersion];
+  [coderCopy encodeObject:senderModelVersion forKey:@"EFPropertyKey_senderModelVersion"];
 
-  v7 = [(EDMessageCategorizationResultMetadata *)self tsModelVersion];
-  [v15 encodeObject:v7 forKey:@"EFPropertyKey_tsModelVersion"];
+  tsModelVersion = [(EDMessageCategorizationResultMetadata *)self tsModelVersion];
+  [coderCopy encodeObject:tsModelVersion forKey:@"EFPropertyKey_tsModelVersion"];
 
-  v8 = [(EDMessageCategorizationResultMetadata *)self finalRuleVersion];
-  [v15 encodeObject:v8 forKey:@"EFPropertyKey_finalRuleVersion"];
+  finalRuleVersion = [(EDMessageCategorizationResultMetadata *)self finalRuleVersion];
+  [coderCopy encodeObject:finalRuleVersion forKey:@"EFPropertyKey_finalRuleVersion"];
 
-  v9 = [(EDMessageCategorizationResultMetadata *)self experimentID];
-  [v15 encodeObject:v9 forKey:@"EFPropertyKey_experimentID"];
+  experimentID = [(EDMessageCategorizationResultMetadata *)self experimentID];
+  [coderCopy encodeObject:experimentID forKey:@"EFPropertyKey_experimentID"];
 
-  v10 = [(EDMessageCategorizationResultMetadata *)self experimentDeploymentID];
-  [v15 encodeObject:v10 forKey:@"EFPropertyKey_experimentDeploymentID"];
+  experimentDeploymentID = [(EDMessageCategorizationResultMetadata *)self experimentDeploymentID];
+  [coderCopy encodeObject:experimentDeploymentID forKey:@"EFPropertyKey_experimentDeploymentID"];
 
-  v11 = [(EDMessageCategorizationResultMetadata *)self experimentTreatmentID];
-  [v15 encodeObject:v11 forKey:@"EFPropertyKey_experimentTreatmentID"];
+  experimentTreatmentID = [(EDMessageCategorizationResultMetadata *)self experimentTreatmentID];
+  [coderCopy encodeObject:experimentTreatmentID forKey:@"EFPropertyKey_experimentTreatmentID"];
 
-  v12 = [(EDMessageCategorizationResultMetadata *)self rolloutID];
-  [v15 encodeObject:v12 forKey:@"EFPropertyKey_rolloutID"];
+  rolloutID = [(EDMessageCategorizationResultMetadata *)self rolloutID];
+  [coderCopy encodeObject:rolloutID forKey:@"EFPropertyKey_rolloutID"];
 
-  v13 = [(EDMessageCategorizationResultMetadata *)self rolloutDeploymentID];
-  [v15 encodeObject:v13 forKey:@"EFPropertyKey_rolloutDeploymentID"];
+  rolloutDeploymentID = [(EDMessageCategorizationResultMetadata *)self rolloutDeploymentID];
+  [coderCopy encodeObject:rolloutDeploymentID forKey:@"EFPropertyKey_rolloutDeploymentID"];
 
-  v14 = [(EDMessageCategorizationResultMetadata *)self rolloutFactorPackID];
-  [v15 encodeObject:v14 forKey:@"EFPropertyKey_rolloutFactorPackID"];
+  rolloutFactorPackID = [(EDMessageCategorizationResultMetadata *)self rolloutFactorPackID];
+  [coderCopy encodeObject:rolloutFactorPackID forKey:@"EFPropertyKey_rolloutFactorPackID"];
 }
 
-- (EDMessageCategorizationResultMetadata)initWithCoder:(id)a3
+- (EDMessageCategorizationResultMetadata)initWithCoder:(id)coder
 {
-  v47 = a3;
-  [v47 decodeDoubleForKey:@"EFPropertyKey_score"];
+  coderCopy = coder;
+  [coderCopy decodeDoubleForKey:@"EFPropertyKey_score"];
   v5 = v4;
-  [v47 decodeDoubleForKey:@"EFPropertyKey_senderScore"];
+  [coderCopy decodeDoubleForKey:@"EFPropertyKey_senderScore"];
   v7 = v6;
-  [v47 decodeDoubleForKey:@"EFPropertyKey_tsScore"];
+  [coderCopy decodeDoubleForKey:@"EFPropertyKey_tsScore"];
   v9 = v8;
   v10 = MEMORY[0x1E695DFD8];
   v11 = objc_opt_class();
   v12 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
-  v13 = [v47 decodeObjectOfClasses:v12 forKey:@"EFPropertyKey_reasonCodes"];
+  v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"EFPropertyKey_reasonCodes"];
   reasonCodes = self->_reasonCodes;
   self->_reasonCodes = v13;
 
   v46 = v13;
-  v15 = [v47 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_modelVersion"];
+  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_modelVersion"];
   modelVersion = self->_modelVersion;
   self->_modelVersion = v15;
 
   v45 = v15;
-  v17 = [v47 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_senderModelVersion"];
+  v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_senderModelVersion"];
   senderModelVersion = self->_senderModelVersion;
   self->_senderModelVersion = v17;
 
   v44 = v17;
-  v19 = [v47 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_tsModelVersion"];
+  v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_tsModelVersion"];
   tsModelVersion = self->_tsModelVersion;
   self->_tsModelVersion = v19;
 
   v43 = v19;
-  v21 = [v47 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_finalRuleVersion"];
+  v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_finalRuleVersion"];
   finalRuleVersion = self->_finalRuleVersion;
   self->_finalRuleVersion = v21;
 
   v42 = v21;
-  v23 = [v47 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_experimentID"];
+  v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_experimentID"];
   experimentID = self->_experimentID;
   self->_experimentID = v23;
 
   v41 = v23;
-  v25 = [v47 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_experimentDeploymentID"];
+  v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_experimentDeploymentID"];
   experimentDeploymentID = self->_experimentDeploymentID;
   self->_experimentDeploymentID = v25;
 
   v27 = v25;
-  v28 = [v47 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_experimentTreatmentID"];
+  v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_experimentTreatmentID"];
   experimentTreatmentID = self->_experimentTreatmentID;
   self->_experimentTreatmentID = v28;
 
   v40 = v28;
-  v30 = [v47 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_rolloutID"];
+  v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_rolloutID"];
   rolloutID = self->_rolloutID;
   self->_rolloutID = v30;
 
   v32 = v30;
-  v33 = [v47 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_rolloutDeploymentID"];
+  v33 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_rolloutDeploymentID"];
   rolloutDeploymentID = self->_rolloutDeploymentID;
   self->_rolloutDeploymentID = v33;
 
   v35 = v33;
-  v36 = [v47 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_rolloutFactorPackID"];
+  v36 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_rolloutFactorPackID"];
   rolloutFactorPackID = self->_rolloutFactorPackID;
   self->_rolloutFactorPackID = v36;
 

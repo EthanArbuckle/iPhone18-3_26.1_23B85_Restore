@@ -1,174 +1,174 @@
 @interface HPRFSessionTrackerAppCyclingPowerDetailPlatterCell
-- (HPRFSessionTrackerAppCyclingPowerDetailPlatterCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (HPRFSessionTrackerAppCyclingPowerDetailPlatterCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 @end
 
 @implementation HPRFSessionTrackerAppCyclingPowerDetailPlatterCell
 
-- (HPRFSessionTrackerAppCyclingPowerDetailPlatterCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (HPRFSessionTrackerAppCyclingPowerDetailPlatterCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
-  v8 = a5;
+  specifierCopy = specifier;
   v110.receiver = self;
   v110.super_class = HPRFSessionTrackerAppCyclingPowerDetailPlatterCell;
-  v9 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)&v110 initWithStyle:a3 reuseIdentifier:a4 specifier:v8];
+  v9 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)&v110 initWithStyle:style reuseIdentifier:identifier specifier:specifierCopy];
   v10 = v9;
   if (v9)
   {
     [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v9 setPreservesSuperviewLayoutMargins:1];
-    v108 = [v8 propertyForKey:@"HPRFSessionTrackerAppCyclingPowerDetailPlatterCellTitleKey"];
-    v107 = [v8 propertyForKey:@"HPRFSessionTrackerAppCyclingPowerDetailPlatterCellDetailKey"];
+    v108 = [specifierCopy propertyForKey:@"HPRFSessionTrackerAppCyclingPowerDetailPlatterCellTitleKey"];
+    v107 = [specifierCopy propertyForKey:@"HPRFSessionTrackerAppCyclingPowerDetailPlatterCellDetailKey"];
     v11 = [UIImageView alloc];
     v12 = [UIImage _systemImageNamed:@"bluetooth.applewatch"];
     v13 = [v11 initWithImage:v12];
     [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 setIconView:v13];
 
-    v14 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 iconView];
-    [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
+    iconView = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 iconView];
+    [iconView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v15 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 iconView];
-    [v15 setContentMode:1];
+    iconView2 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 iconView];
+    [iconView2 setContentMode:1];
 
-    v16 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 contentView];
-    v17 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 iconView];
-    [v16 addSubview:v17];
+    contentView = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 contentView];
+    iconView3 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 iconView];
+    [contentView addSubview:iconView3];
 
     v18 = objc_alloc_init(UILabel);
     [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 setTitleView:v18];
 
-    v19 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 titleView];
-    [v19 setText:v108];
+    titleView = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 titleView];
+    [titleView setText:v108];
 
-    v20 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 titleView];
-    [v20 setTranslatesAutoresizingMaskIntoConstraints:0];
+    titleView2 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 titleView];
+    [titleView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v21 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 titleView];
-    [v21 setAdjustsFontForContentSizeCategory:1];
+    titleView3 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 titleView];
+    [titleView3 setAdjustsFontForContentSizeCategory:1];
 
-    v22 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 titleView];
-    v23 = [v22 font];
-    [v23 fontDescriptor];
-    v24 = v109 = v8;
+    titleView4 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 titleView];
+    font = [titleView4 font];
+    [font fontDescriptor];
+    v24 = v109 = specifierCopy;
     v25 = [v24 fontDescriptorWithSymbolicTraits:2];
-    v26 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 titleView];
-    v27 = [v26 font];
-    [v27 pointSize];
+    titleView5 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 titleView];
+    font2 = [titleView5 font];
+    [font2 pointSize];
     v28 = [UIFont fontWithDescriptor:v25 size:?];
-    v29 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 titleView];
-    [v29 setFont:v28];
+    titleView6 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 titleView];
+    [titleView6 setFont:v28];
 
     v30 = +[UIColor whiteColor];
-    v31 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 titleView];
-    [v31 setTextColor:v30];
+    titleView7 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 titleView];
+    [titleView7 setTextColor:v30];
 
-    v32 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 titleView];
-    [v32 setTextAlignment:1];
+    titleView8 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 titleView];
+    [titleView8 setTextAlignment:1];
 
-    v33 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 titleView];
-    [v33 setNumberOfLines:0];
+    titleView9 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 titleView];
+    [titleView9 setNumberOfLines:0];
 
-    v34 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 contentView];
-    v35 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 titleView];
-    [v34 addSubview:v35];
+    contentView2 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 contentView];
+    titleView10 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 titleView];
+    [contentView2 addSubview:titleView10];
 
     v36 = objc_alloc_init(UILabel);
     [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 setDetailView:v36];
 
-    v37 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 detailView];
-    [v37 setText:v107];
+    detailView = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 detailView];
+    [detailView setText:v107];
 
-    v38 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 detailView];
-    [v38 setTranslatesAutoresizingMaskIntoConstraints:0];
+    detailView2 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 detailView];
+    [detailView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v39 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 detailView];
-    [v39 setAdjustsFontForContentSizeCategory:1];
+    detailView3 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 detailView];
+    [detailView3 setAdjustsFontForContentSizeCategory:1];
 
     v40 = +[UIColor whiteColor];
-    v41 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 detailView];
-    [v41 setTextColor:v40];
+    detailView4 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 detailView];
+    [detailView4 setTextColor:v40];
 
-    v42 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 detailView];
-    [v42 setTextAlignment:1];
+    detailView5 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 detailView];
+    [detailView5 setTextAlignment:1];
 
-    v43 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 detailView];
-    [v43 setNumberOfLines:0];
+    detailView6 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 detailView];
+    [detailView6 setNumberOfLines:0];
 
-    v44 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 contentView];
-    v45 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 detailView];
-    [v44 addSubview:v45];
+    contentView3 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 contentView];
+    detailView7 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 detailView];
+    [contentView3 addSubview:detailView7];
 
-    v106 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 iconView];
-    v104 = [v106 topAnchor];
-    v105 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 contentView];
-    v103 = [v105 layoutMarginsGuide];
-    v102 = [v103 topAnchor];
-    v101 = [v104 constraintEqualToAnchor:v102 constant:16.0];
+    iconView4 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 iconView];
+    topAnchor = [iconView4 topAnchor];
+    contentView4 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 contentView];
+    layoutMarginsGuide = [contentView4 layoutMarginsGuide];
+    topAnchor2 = [layoutMarginsGuide topAnchor];
+    v101 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:16.0];
     v111[0] = v101;
-    v100 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 iconView];
-    v98 = [v100 centerXAnchor];
-    v99 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 contentView];
-    v97 = [v99 layoutMarginsGuide];
-    v96 = [v97 centerXAnchor];
-    v95 = [v98 constraintEqualToAnchor:v96];
+    iconView5 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 iconView];
+    centerXAnchor = [iconView5 centerXAnchor];
+    contentView5 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 contentView];
+    layoutMarginsGuide2 = [contentView5 layoutMarginsGuide];
+    centerXAnchor2 = [layoutMarginsGuide2 centerXAnchor];
+    v95 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v111[1] = v95;
-    v94 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 iconView];
-    v92 = [v94 widthAnchor];
-    v93 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 iconView];
-    v91 = [v93 heightAnchor];
-    v90 = [v92 constraintEqualToAnchor:v91];
+    iconView6 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 iconView];
+    widthAnchor = [iconView6 widthAnchor];
+    iconView7 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 iconView];
+    heightAnchor = [iconView7 heightAnchor];
+    v90 = [widthAnchor constraintEqualToAnchor:heightAnchor];
     v111[2] = v90;
-    v89 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 iconView];
-    v88 = [v89 widthAnchor];
-    v87 = [v88 constraintEqualToConstant:60.0];
+    iconView8 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 iconView];
+    widthAnchor2 = [iconView8 widthAnchor];
+    v87 = [widthAnchor2 constraintEqualToConstant:60.0];
     v111[3] = v87;
-    v86 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 titleView];
-    v84 = [v86 topAnchor];
-    v85 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 iconView];
-    v83 = [v85 bottomAnchor];
-    v82 = [v84 constraintEqualToAnchor:v83 constant:16.0];
+    titleView11 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 titleView];
+    topAnchor3 = [titleView11 topAnchor];
+    iconView9 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 iconView];
+    bottomAnchor = [iconView9 bottomAnchor];
+    v82 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:16.0];
     v111[4] = v82;
-    v81 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 titleView];
-    v79 = [v81 leadingAnchor];
-    v80 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 contentView];
-    v78 = [v80 layoutMarginsGuide];
-    v77 = [v78 leadingAnchor];
-    v76 = [v79 constraintEqualToAnchor:v77];
+    titleView12 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 titleView];
+    leadingAnchor = [titleView12 leadingAnchor];
+    contentView6 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 contentView];
+    layoutMarginsGuide3 = [contentView6 layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide3 leadingAnchor];
+    v76 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v111[5] = v76;
-    v75 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 titleView];
-    v73 = [v75 trailingAnchor];
-    v74 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 contentView];
-    v72 = [v74 layoutMarginsGuide];
-    v71 = [v72 trailingAnchor];
-    v70 = [v73 constraintEqualToAnchor:v71];
+    titleView13 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 titleView];
+    trailingAnchor = [titleView13 trailingAnchor];
+    contentView7 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 contentView];
+    layoutMarginsGuide4 = [contentView7 layoutMarginsGuide];
+    trailingAnchor2 = [layoutMarginsGuide4 trailingAnchor];
+    v70 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v111[6] = v70;
-    v69 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 detailView];
-    v67 = [v69 topAnchor];
-    v68 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 titleView];
-    v66 = [v68 bottomAnchor];
-    v65 = [v67 constraintEqualToAnchor:v66 constant:16.0];
+    detailView8 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 detailView];
+    topAnchor4 = [detailView8 topAnchor];
+    titleView14 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 titleView];
+    bottomAnchor2 = [titleView14 bottomAnchor];
+    v65 = [topAnchor4 constraintEqualToAnchor:bottomAnchor2 constant:16.0];
     v111[7] = v65;
-    v64 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 detailView];
-    v62 = [v64 leadingAnchor];
-    v63 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 contentView];
-    v61 = [v63 layoutMarginsGuide];
-    v60 = [v61 leadingAnchor];
-    v59 = [v62 constraintEqualToAnchor:v60];
+    detailView9 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 detailView];
+    leadingAnchor3 = [detailView9 leadingAnchor];
+    contentView8 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 contentView];
+    layoutMarginsGuide5 = [contentView8 layoutMarginsGuide];
+    leadingAnchor4 = [layoutMarginsGuide5 leadingAnchor];
+    v59 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v111[8] = v59;
-    v58 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 detailView];
-    v56 = [v58 trailingAnchor];
-    v57 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 contentView];
-    v46 = [v57 layoutMarginsGuide];
-    v47 = [v46 trailingAnchor];
-    v48 = [v56 constraintEqualToAnchor:v47];
+    detailView10 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 detailView];
+    trailingAnchor3 = [detailView10 trailingAnchor];
+    contentView9 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 contentView];
+    layoutMarginsGuide6 = [contentView9 layoutMarginsGuide];
+    trailingAnchor4 = [layoutMarginsGuide6 trailingAnchor];
+    v48 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v111[9] = v48;
-    v49 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 contentView];
-    v50 = [v49 bottomAnchor];
-    v51 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 detailView];
-    v52 = [v51 bottomAnchor];
-    v53 = [v50 constraintEqualToAnchor:v52 constant:16.0];
+    contentView10 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 contentView];
+    bottomAnchor3 = [contentView10 bottomAnchor];
+    detailView11 = [(HPRFSessionTrackerAppCyclingPowerDetailPlatterCell *)v10 detailView];
+    bottomAnchor4 = [detailView11 bottomAnchor];
+    v53 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:16.0];
     v111[10] = v53;
     v54 = [NSArray arrayWithObjects:v111 count:11];
     [NSLayoutConstraint activateConstraints:v54];
 
-    v8 = v109;
+    specifierCopy = v109;
   }
 
   return v10;

@@ -1,22 +1,22 @@
 @interface CADCalSearchOperation
-- (CADCalSearchOperation)initWithConnection:(id)a3 searchTerm:(id)a4 calendars:(id)a5 replyID:(unsigned int)a6;
+- (CADCalSearchOperation)initWithConnection:(id)connection searchTerm:(id)term calendars:(id)calendars replyID:(unsigned int)d;
 - (void)_completeOperation;
-- (void)calSearch:(id)a3 foundOccurrences:(__CFArray *)a4 cachedDays:(__CFArray *)a5 cachedDaysIndexes:(__CFArray *)a6;
-- (void)calSearchComplete:(id)a3;
+- (void)calSearch:(id)search foundOccurrences:(__CFArray *)occurrences cachedDays:(__CFArray *)days cachedDaysIndexes:(__CFArray *)indexes;
+- (void)calSearchComplete:(id)complete;
 - (void)cancel;
-- (void)configureSearch:(id)a3;
+- (void)configureSearch:(id)search;
 - (void)dealloc;
 - (void)main;
 @end
 
 @implementation CADCalSearchOperation
 
-- (CADCalSearchOperation)initWithConnection:(id)a3 searchTerm:(id)a4 calendars:(id)a5 replyID:(unsigned int)a6
+- (CADCalSearchOperation)initWithConnection:(id)connection searchTerm:(id)term calendars:(id)calendars replyID:(unsigned int)d
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if ([v11 eventAccessLevel])
+  connectionCopy = connection;
+  termCopy = term;
+  calendarsCopy = calendars;
+  if ([connectionCopy eventAccessLevel])
   {
     v26.receiver = self;
     v26.super_class = CADCalSearchOperation;
@@ -28,46 +28,46 @@
       v17 = NSStringFromClass(v16);
       v18 = [v15 initWithFormat:@"%@", v17];
 
-      v19 = [MEMORY[0x277CCAC38] processInfo];
-      v20 = [v19 beginActivityWithOptions:0x80000000000 reason:v18];
+      processInfo = [MEMORY[0x277CCAC38] processInfo];
+      v20 = [processInfo beginActivityWithOptions:0x80000000000 reason:v18];
       boostToken = v14->_boostToken;
       v14->_boostToken = v20;
 
-      objc_storeStrong(&v14->_connection, a3);
-      objc_storeStrong(&v14->_calendars, a5);
-      objc_storeStrong(&v14->_searchTerm, a4);
+      objc_storeStrong(&v14->_connection, connection);
+      objc_storeStrong(&v14->_calendars, calendars);
+      objc_storeStrong(&v14->_searchTerm, term);
       v14->_lock._os_unfair_lock_opaque = 0;
-      v14->_replyID = a6;
+      v14->_replyID = d;
       v22 = dispatch_semaphore_create(0);
       finishedSemaphore = v14->_finishedSemaphore;
       v14->_finishedSemaphore = v22;
     }
 
     self = v14;
-    v24 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v24 = 0;
+    selfCopy = 0;
   }
 
-  return v24;
+  return selfCopy;
 }
 
-- (void)configureSearch:(id)a3
+- (void)configureSearch:(id)search
 {
-  v3 = a3;
-  [v3 setSearchAttendees:1];
-  [v3 setSearchLocations:1];
-  [v3 setSearchParticipants:1];
-  [v3 setShouldMatchLocationsOnlyForEventSearch:0];
+  searchCopy = search;
+  [searchCopy setSearchAttendees:1];
+  [searchCopy setSearchLocations:1];
+  [searchCopy setSearchParticipants:1];
+  [searchCopy setShouldMatchLocationsOnlyForEventSearch:0];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAC38] processInfo];
-  [v3 endActivity:self->_boostToken];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  [processInfo endActivity:self->_boostToken];
 
   v4.receiver = self;
   v4.super_class = CADCalSearchOperation;
@@ -143,7 +143,7 @@ uint64_t __29__CADCalSearchOperation_main__block_invoke(uint64_t a1, int a2, voi
   if (os_log_type_enabled(CADLogHandle, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_22430B000, v3, OS_LOG_TYPE_INFO, "Cancelling [%@]", buf, 0xCu);
   }
 
@@ -158,12 +158,12 @@ uint64_t __29__CADCalSearchOperation_main__block_invoke(uint64_t a1, int a2, voi
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)calSearch:(id)a3 foundOccurrences:(__CFArray *)a4 cachedDays:(__CFArray *)a5 cachedDaysIndexes:(__CFArray *)a6
+- (void)calSearch:(id)search foundOccurrences:(__CFArray *)occurrences cachedDays:(__CFArray *)days cachedDaysIndexes:(__CFArray *)indexes
 {
-  v19 = a3;
-  if (a4)
+  searchCopy = search;
+  if (occurrences)
   {
-    Count = CFArrayGetCount(a4);
+    Count = CFArrayGetCount(occurrences);
   }
 
   else
@@ -183,7 +183,7 @@ uint64_t __29__CADCalSearchOperation_main__block_invoke(uint64_t a1, int a2, voi
   {
     for (i = 0; i != Count; ++i)
     {
-      CFArrayGetValueAtIndex(a4, i);
+      CFArrayGetValueAtIndex(occurrences, i);
       CalEventOccurrenceGetEvent();
       if (_CalEventGetJunkStatusWhileLocked() != 1)
       {
@@ -219,7 +219,7 @@ void __81__CADCalSearchOperation_calSearch_foundOccurrences_cachedDays_cachedDay
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)calSearchComplete:(id)a3
+- (void)calSearchComplete:(id)complete
 {
   v4 = CADLogHandle;
   if (os_log_type_enabled(CADLogHandle, OS_LOG_TYPE_INFO))
@@ -238,13 +238,13 @@ void __81__CADCalSearchOperation_calSearch_foundOccurrences_cachedDays_cachedDay
   if (os_log_type_enabled(CADLogHandle, OS_LOG_TYPE_INFO))
   {
     v7 = 138412290;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_22430B000, v3, OS_LOG_TYPE_INFO, "Sending an empty array to client of [%@].", &v7, 0xCu);
   }
 
-  v4 = [MEMORY[0x277CBEA60] array];
-  v5 = [(ClientConnection *)self->_connection remoteObjectProxy];
-  [v5 CADClientReceiveOccurrenceCacheSearchResults:v4 forSearchToken:self->_replyID finished:1];
+  array = [MEMORY[0x277CBEA60] array];
+  remoteObjectProxy = [(ClientConnection *)self->_connection remoteObjectProxy];
+  [remoteObjectProxy CADClientReceiveOccurrenceCacheSearchResults:array forSearchToken:self->_replyID finished:1];
 
   if (self->_objectIDsForPrivacyAccounting)
   {

@@ -1,12 +1,12 @@
 @interface WiFiViabilityMonitor
 - (BOOL)_isCellFallbackAdminDisabled;
 - (BOOL)_isCellOutrankStateMachineInOutrank;
-- (WiFiViabilityMonitor)initWithQueue:(id)a3;
+- (WiFiViabilityMonitor)initWithQueue:(id)queue;
 - (id)getState;
 - (int64_t)_currentRNFAdvice;
 - (unsigned)currentWiFiViabilityFlags;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)possiblySignificantWiFiChange;
 @end
 
@@ -28,7 +28,7 @@
     v7 = off_27898EFE8[v6];
   }
 
-  v8 = [(WiFiViabilityMonitor *)self currentWiFiViabilityFlags];
+  currentWiFiViabilityFlags = [(WiFiViabilityMonitor *)self currentWiFiViabilityFlags];
   v9 = ([(WiFiViabilityMonitor *)self currentWiFiViabilityFlags]>> 2) & 7;
   if (v9 == 7)
   {
@@ -40,7 +40,7 @@
     v10 = off_27898EFE8[v9];
   }
 
-  v11 = [v4 stringWithFormat:@"WiFiViabilityMonitor reported 0x%x (%s) current 0x%x (%s)", prevWiFiViability, v7, v8, v10];
+  v11 = [v4 stringWithFormat:@"WiFiViabilityMonitor reported 0x%x (%s) current 0x%x (%s)", prevWiFiViability, v7, currentWiFiViabilityFlags, v10];
   [v3 addObject:v11];
 
   return v3;
@@ -52,15 +52,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 fallbackAdvice];
+    fallbackAdvice = [v2 fallbackAdvice];
   }
 
   else
   {
-    v4 = 0;
+    fallbackAdvice = 0;
   }
 
-  return v4;
+  return fallbackAdvice;
 }
 
 - (BOOL)_isCellOutrankStateMachineInOutrank
@@ -69,15 +69,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 cellOutranksWiFi];
+    cellOutranksWiFi = [v2 cellOutranksWiFi];
   }
 
   else
   {
-    v4 = 0;
+    cellOutranksWiFi = 0;
   }
 
-  return v4;
+  return cellOutranksWiFi;
 }
 
 - (unsigned)currentWiFiViabilityFlags
@@ -111,24 +111,24 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 adminDisabled];
+    adminDisabled = [v2 adminDisabled];
   }
 
   else
   {
-    v4 = 1;
+    adminDisabled = 1;
   }
 
-  return v4;
+  return adminDisabled;
 }
 
 - (void)possiblySignificantWiFiChange
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = [(WiFiViabilityMonitor *)self currentWiFiViabilityFlags];
-  if (self->_prevWiFiViability != v3)
+  currentWiFiViabilityFlags = [(WiFiViabilityMonitor *)self currentWiFiViabilityFlags];
+  if (self->_prevWiFiViability != currentWiFiViabilityFlags)
   {
-    v4 = v3;
+    v4 = currentWiFiViabilityFlags;
     v5 = flowScrutinyLogHandle;
     if (os_log_type_enabled(flowScrutinyLogHandle, OS_LOG_TYPE_DEFAULT))
     {
@@ -155,10 +155,10 @@
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v7 = a3;
-  if (([v7 isEqualToString:@"primary"] & 1) != 0 || objc_msgSend(v7, "isEqualToString:", @"cellOutranksWiFi"))
+  pathCopy = path;
+  if (([pathCopy isEqualToString:@"primary"] & 1) != 0 || objc_msgSend(pathCopy, "isEqualToString:", @"cellOutranksWiFi"))
   {
     queue = self->_queue;
     block[0] = MEMORY[0x277D85DD0];
@@ -170,17 +170,17 @@
   }
 }
 
-- (WiFiViabilityMonitor)initWithQueue:(id)a3
+- (WiFiViabilityMonitor)initWithQueue:(id)queue
 {
   v37 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  queueCopy = queue;
   v34.receiver = self;
   v34.super_class = WiFiViabilityMonitor;
   v6 = [(WiFiViabilityMonitor *)&v34 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
     v8 = [NetworkStateRelay getStateRelayFor:3];
     wifiRelay = v7->_wifiRelay;
     v7->_wifiRelay = v8;
@@ -206,14 +206,14 @@
     v7->_outrankRelay = v12;
 
     [(CellOutrankHandler *)v7->_outrankRelay addObserver:v7 forKeyPath:@"cellOutranksWiFi" options:7 context:0];
-    v14 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
     v32[2] = __38__WiFiViabilityMonitor_initWithQueue___block_invoke;
     v32[3] = &unk_27898A690;
     v15 = v7;
     v33 = v15;
-    v16 = [v14 addObserverForName:@"fallbackRecommendation" object:0 queue:0 usingBlock:v32];
+    v16 = [defaultCenter addObserverForName:@"fallbackRecommendation" object:0 queue:0 usingBlock:v32];
     cellFallbackObserver = v15->_cellFallbackObserver;
     v15->_cellFallbackObserver = v16;
 
@@ -223,7 +223,7 @@
     v30 = &unk_27898A690;
     v18 = v15;
     v31 = v18;
-    v19 = [v14 addObserverForName:@"adminEnablementChange" object:0 queue:0 usingBlock:&v27];
+    v19 = [defaultCenter addObserverForName:@"adminEnablementChange" object:0 queue:0 usingBlock:&v27];
     cellFallbackAdminObserver = v18->_cellFallbackAdminObserver;
     v18->_cellFallbackAdminObserver = v19;
 
@@ -325,12 +325,12 @@ uint64_t __38__WiFiViabilityMonitor_initWithQueue___block_invoke_2_11(uint64_t a
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self->_cellFallbackObserver];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self->_cellFallbackObserver];
   cellFallbackObserver = self->_cellFallbackObserver;
   self->_cellFallbackObserver = 0;
 
-  [v3 removeObserver:self->_cellFallbackAdminObserver];
+  [defaultCenter removeObserver:self->_cellFallbackAdminObserver];
   cellFallbackAdminObserver = self->_cellFallbackAdminObserver;
   self->_cellFallbackAdminObserver = 0;
 

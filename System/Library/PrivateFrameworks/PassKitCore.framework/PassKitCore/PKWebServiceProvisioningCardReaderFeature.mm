@@ -1,19 +1,19 @@
 @interface PKWebServiceProvisioningCardReaderFeature
-- (BOOL)isSupportedForNetwork:(int64_t)a3 device:(id)a4;
-- (PKWebServiceProvisioningCardReaderFeature)initWithDictionary:(id)a3 region:(id)a4;
+- (BOOL)isSupportedForNetwork:(int64_t)network device:(id)device;
+- (PKWebServiceProvisioningCardReaderFeature)initWithDictionary:(id)dictionary region:(id)region;
 @end
 
 @implementation PKWebServiceProvisioningCardReaderFeature
 
-- (PKWebServiceProvisioningCardReaderFeature)initWithDictionary:(id)a3 region:(id)a4
+- (PKWebServiceProvisioningCardReaderFeature)initWithDictionary:(id)dictionary region:(id)region
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = PKWebServiceProvisioningCardReaderFeature;
-  v7 = [(PKWebServiceRegionFeature *)&v12 initWithFeatureType:19 dictionary:v6 region:a4];
+  v7 = [(PKWebServiceRegionFeature *)&v12 initWithFeatureType:19 dictionary:dictionaryCopy region:region];
   if (v7)
   {
-    v8 = [v6 PKArrayContaining:objc_opt_class() forKey:@"networks"];
+    v8 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"networks"];
     v9 = [v8 pk_arrayBySafelyApplyingBlock:&__block_literal_global_22];
     networkConfigurations = v7->_networkConfigurations;
     v7->_networkConfigurations = v9;
@@ -30,10 +30,10 @@ PKWebServiceProvisioningCardReaderNetworkConfiguration *__71__PKWebServiceProvis
   return v3;
 }
 
-- (BOOL)isSupportedForNetwork:(int64_t)a3 device:(id)a4
+- (BOOL)isSupportedForNetwork:(int64_t)network device:(id)device
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = [a4 deviceClass];
+  deviceClass = [device deviceClass];
   v7 = +[PKOSVersionRequirement fromDeviceVersion];
   v18 = 0u;
   v19 = 0u;
@@ -55,11 +55,11 @@ PKWebServiceProvisioningCardReaderNetworkConfiguration *__71__PKWebServiceProvis
         }
 
         v13 = *(*(&v18 + 1) + 8 * i);
-        if ([v13 network] == a3)
+        if ([v13 network] == network)
         {
-          v14 = [v13 versionRange];
-          v15 = v14;
-          if (!v14 || [v14 versionMeetsRequirements:v7 deviceClass:v6]) && (objc_msgSend(v13, "blocked"))
+          versionRange = [v13 versionRange];
+          v15 = versionRange;
+          if (!versionRange || [versionRange versionMeetsRequirements:v7 deviceClass:deviceClass]) && (objc_msgSend(v13, "blocked"))
           {
 
             v16 = 0;

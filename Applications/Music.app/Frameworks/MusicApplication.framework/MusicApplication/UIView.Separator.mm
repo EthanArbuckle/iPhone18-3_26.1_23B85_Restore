@@ -1,22 +1,22 @@
 @interface UIView.Separator
 - (CGSize)intrinsicContentSize;
-- (_TtCE16MusicApplicationCSo6UIView9Separator)initWithCoder:(id)a3;
-- (_TtCE16MusicApplicationCSo6UIView9Separator)initWithFrame:(CGRect)a3;
+- (_TtCE16MusicApplicationCSo6UIView9Separator)initWithCoder:(id)coder;
+- (_TtCE16MusicApplicationCSo6UIView9Separator)initWithFrame:(CGRect)frame;
 @end
 
 @implementation UIView.Separator
 
-- (_TtCE16MusicApplicationCSo6UIView9Separator)initWithFrame:(CGRect)a3
+- (_TtCE16MusicApplicationCSo6UIView9Separator)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v13.receiver = self;
   v13.super_class = _s9SeparatorCMa();
-  v7 = [(UIView.Separator *)&v13 initWithFrame:x, y, width, height];
+  height = [(UIView.Separator *)&v13 initWithFrame:x, y, width, height];
   v8 = qword_DE6C70;
-  v9 = v7;
+  v9 = height;
   if (v8 != -1)
   {
     v12 = v9;
@@ -30,7 +30,7 @@
   return v10;
 }
 
-- (_TtCE16MusicApplicationCSo6UIView9Separator)initWithCoder:(id)a3
+- (_TtCE16MusicApplicationCSo6UIView9Separator)initWithCoder:(id)coder
 {
   result = sub_ABAFD0();
   __break(1u);
@@ -39,9 +39,9 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
-  v3 = [(UIView.Separator *)v2 traitCollection];
-  [v3 displayScale];
+  selfCopy = self;
+  traitCollection = [(UIView.Separator *)selfCopy traitCollection];
+  [traitCollection displayScale];
   v5 = v4;
 
   v6 = 1.0 / v5;

@@ -1,15 +1,15 @@
 @interface ACRemoteCommandHandler
 - (ACRemoteCommandHandler)init;
-- (void)_addAccount:(id)a3 withOptions:(id)a4 completion:(id)a5;
-- (void)_authenticateAccount:(id)a3 withOptions:(id)a4 completion:(id)a5;
-- (void)_deleteAccount:(id)a3 withCompletion:(id)a4;
-- (void)_fetchAccountsWithCompletion:(id)a3 options:(id)a4;
-- (void)_invalidateFetchedAccountsCacheWithCompletion:(id)a3;
-- (void)_promptUserForAccountCredential:(id)a3 withOptions:(id)a4 completion:(id)a5;
-- (void)_removeAllAccountsWithCompletion:(id)a3;
-- (void)_saveAccount:(id)a3 completion:(id)a4;
-- (void)_updateAccount:(id)a3 withCompletion:(id)a4;
-- (void)handleCommand:(id)a3 forAccount:(id)a4 options:(id)a5 completion:(id)a6;
+- (void)_addAccount:(id)account withOptions:(id)options completion:(id)completion;
+- (void)_authenticateAccount:(id)account withOptions:(id)options completion:(id)completion;
+- (void)_deleteAccount:(id)account withCompletion:(id)completion;
+- (void)_fetchAccountsWithCompletion:(id)completion options:(id)options;
+- (void)_invalidateFetchedAccountsCacheWithCompletion:(id)completion;
+- (void)_promptUserForAccountCredential:(id)credential withOptions:(id)options completion:(id)completion;
+- (void)_removeAllAccountsWithCompletion:(id)completion;
+- (void)_saveAccount:(id)account completion:(id)completion;
+- (void)_updateAccount:(id)account withCompletion:(id)completion;
+- (void)handleCommand:(id)command forAccount:(id)account options:(id)options completion:(id)completion;
 @end
 
 @implementation ACRemoteCommandHandler
@@ -29,88 +29,88 @@
   return v2;
 }
 
-- (void)handleCommand:(id)a3 forAccount:(id)a4 options:(id)a5 completion:(id)a6
+- (void)handleCommand:(id)command forAccount:(id)account options:(id)options completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  commandCopy = command;
+  accountCopy = account;
+  optionsCopy = options;
+  completionCopy = completion;
   v14 = _ACLogSystem();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
     [ACRemoteCommandHandler handleCommand:forAccount:options:completion:];
   }
 
-  if ([v10 isEqualToString:*MEMORY[0x277CB8EA0]])
+  if ([commandCopy isEqualToString:*MEMORY[0x277CB8EA0]])
   {
-    [(ACRemoteCommandHandler *)self _addAccount:v11 withOptions:v12 completion:v13];
+    [(ACRemoteCommandHandler *)self _addAccount:accountCopy withOptions:optionsCopy completion:completionCopy];
   }
 
-  else if ([v10 isEqualToString:*MEMORY[0x277CB8ED0]])
+  else if ([commandCopy isEqualToString:*MEMORY[0x277CB8ED0]])
   {
-    [(ACRemoteCommandHandler *)self _updateAccount:v11 withCompletion:v13];
+    [(ACRemoteCommandHandler *)self _updateAccount:accountCopy withCompletion:completionCopy];
   }
 
-  else if ([v10 isEqualToString:*MEMORY[0x277CB8EC8]])
+  else if ([commandCopy isEqualToString:*MEMORY[0x277CB8EC8]])
   {
-    [(ACRemoteCommandHandler *)self _promptUserForAccountCredential:v11 withOptions:v12 completion:v13];
+    [(ACRemoteCommandHandler *)self _promptUserForAccountCredential:accountCopy withOptions:optionsCopy completion:completionCopy];
   }
 
-  else if ([v10 isEqualToString:*MEMORY[0x277CB8EA8]])
+  else if ([commandCopy isEqualToString:*MEMORY[0x277CB8EA8]])
   {
-    [(ACRemoteCommandHandler *)self _deleteAccount:v11 withCompletion:v13];
+    [(ACRemoteCommandHandler *)self _deleteAccount:accountCopy withCompletion:completionCopy];
   }
 
-  else if ([v10 isEqualToString:*MEMORY[0x277CB8ED8]])
+  else if ([commandCopy isEqualToString:*MEMORY[0x277CB8ED8]])
   {
-    [(ACRemoteCommandHandler *)self _authenticateAccount:v11 withOptions:v12 completion:v13];
+    [(ACRemoteCommandHandler *)self _authenticateAccount:accountCopy withOptions:optionsCopy completion:completionCopy];
   }
 
-  else if ([v10 isEqualToString:*MEMORY[0x277CB8EB0]])
+  else if ([commandCopy isEqualToString:*MEMORY[0x277CB8EB0]])
   {
-    [(ACRemoteCommandHandler *)self _removeAllAccountsWithCompletion:v13];
+    [(ACRemoteCommandHandler *)self _removeAllAccountsWithCompletion:completionCopy];
   }
 
-  else if ([v10 isEqualToString:*MEMORY[0x277CB8EB8]])
+  else if ([commandCopy isEqualToString:*MEMORY[0x277CB8EB8]])
   {
-    [(ACRemoteCommandHandler *)self _fetchAccountsWithCompletion:v13 options:v12];
+    [(ACRemoteCommandHandler *)self _fetchAccountsWithCompletion:completionCopy options:optionsCopy];
   }
 
-  else if ([v10 isEqualToString:*MEMORY[0x277CB8EC0]])
+  else if ([commandCopy isEqualToString:*MEMORY[0x277CB8EC0]])
   {
-    [(ACRemoteCommandHandler *)self _invalidateFetchedAccountsCacheWithCompletion:v13];
-  }
-}
-
-- (void)_removeAllAccountsWithCompletion:(id)a3
-{
-  if (a3)
-  {
-    (*(a3 + 2))(a3, 0, 0, 0);
+    [(ACRemoteCommandHandler *)self _invalidateFetchedAccountsCacheWithCompletion:completionCopy];
   }
 }
 
-- (void)_addAccount:(id)a3 withOptions:(id)a4 completion:(id)a5
+- (void)_removeAllAccountsWithCompletion:(id)completion
 {
-  if (a5)
+  if (completion)
   {
-    (*(a5 + 2))(a5, 0, 0, 0);
+    (*(completion + 2))(completion, 0, 0, 0);
   }
 }
 
-- (void)_saveAccount:(id)a3 completion:(id)a4
+- (void)_addAccount:(id)account withOptions:(id)options completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  if (completion)
+  {
+    (*(completion + 2))(completion, 0, 0, 0);
+  }
+}
+
+- (void)_saveAccount:(id)account completion:(id)completion
+{
+  accountCopy = account;
+  completionCopy = completion;
   accountStore = self->_accountStore;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __50__ACRemoteCommandHandler__saveAccount_completion___block_invoke;
   v11[3] = &unk_27848BC58;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = accountCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = accountCopy;
   [(ACAccountStore *)accountStore saveVerifiedAccount:v10 withCompletionHandler:v11];
 }
 
@@ -139,37 +139,37 @@ void __50__ACRemoteCommandHandler__saveAccount_completion___block_invoke(uint64_
   }
 }
 
-- (void)_updateAccount:(id)a3 withCompletion:(id)a4
+- (void)_updateAccount:(id)account withCompletion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4, 0, 0, 0);
+    (*(completion + 2))(completion, 0, 0, 0);
   }
 }
 
-- (void)_authenticateAccount:(id)a3 withOptions:(id)a4 completion:(id)a5
+- (void)_authenticateAccount:(id)account withOptions:(id)options completion:(id)completion
 {
-  if (a5)
+  if (completion)
   {
-    (*(a5 + 2))(a5, 0, 0, 0);
+    (*(completion + 2))(completion, 0, 0, 0);
   }
 }
 
-- (void)_promptUserForAccountCredential:(id)a3 withOptions:(id)a4 completion:(id)a5
+- (void)_promptUserForAccountCredential:(id)credential withOptions:(id)options completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  credentialCopy = credential;
+  optionsCopy = options;
+  completionCopy = completion;
   v11 = _ACLogSystem();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     [ACRemoteCommandHandler _promptUserForAccountCredential:withOptions:completion:];
   }
 
-  v12 = [ACRemoteUtilities localAccountMatchingRemoteAccount:v8 inAccountStore:self->_accountStore];
+  v12 = [ACRemoteUtilities localAccountMatchingRemoteAccount:credentialCopy inAccountStore:self->_accountStore];
   if (v12)
   {
-    v13 = [v9 mutableCopy];
+    v13 = [optionsCopy mutableCopy];
     if (!v13)
     {
       v13 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -181,7 +181,7 @@ void __50__ACRemoteCommandHandler__saveAccount_completion___block_invoke(uint64_
     v16[1] = 3221225472;
     v16[2] = __81__ACRemoteCommandHandler__promptUserForAccountCredential_withOptions_completion___block_invoke;
     v16[3] = &unk_27848BC80;
-    v18 = v10;
+    v18 = completionCopy;
     v17 = v12;
     [(ACAccountStore *)accountStore renewCredentialsForAccount:v17 options:v13 completion:v16];
 
@@ -194,10 +194,10 @@ void __50__ACRemoteCommandHandler__saveAccount_completion___block_invoke(uint64_
     [ACRemoteCommandHandler _promptUserForAccountCredential:v15 withOptions:? completion:?];
   }
 
-  if (v10)
+  if (completionCopy)
   {
     v13 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CB8DC0] code:6 userInfo:0];
-    (*(v10 + 2))(v10, 0, 0, v13);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v13);
 LABEL_11:
   }
 }
@@ -240,18 +240,18 @@ void __81__ACRemoteCommandHandler__promptUserForAccountCredential_withOptions_co
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_deleteAccount:(id)a3 withCompletion:(id)a4
+- (void)_deleteAccount:(id)account withCompletion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4, 0, 0, 0);
+    (*(completion + 2))(completion, 0, 0, 0);
   }
 }
 
-- (void)_fetchAccountsWithCompletion:(id)a3 options:(id)a4
+- (void)_fetchAccountsWithCompletion:(id)completion options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  completionCopy = completion;
+  optionsCopy = options;
   v8 = _ACLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -259,19 +259,19 @@ void __81__ACRemoteCommandHandler__promptUserForAccountCredential_withOptions_co
   }
 
   accountStore = self->_accountStore;
-  v10 = [v7 objectForKeyedSubscript:*MEMORY[0x277CB8EF0]];
+  v10 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x277CB8EF0]];
 
   v11 = [(ACAccountStore *)accountStore accountsWithAccountTypeIdentifiers:0 preloadedProperties:v10 error:0];
 
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6, 1, v11, 0);
+    completionCopy[2](completionCopy, 1, v11, 0);
   }
 }
 
-- (void)_invalidateFetchedAccountsCacheWithCompletion:(id)a3
+- (void)_invalidateFetchedAccountsCacheWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = _ACLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -281,9 +281,9 @@ void __81__ACRemoteCommandHandler__promptUserForAccountCredential_withOptions_co
   v5 = +[ACDPairedDeviceAccountCache sharedInstance];
   [v5 invalidate];
 
-  if (v3)
+  if (completionCopy)
   {
-    (*(v3 + 2))(v3, 1, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 1, 0, 0);
   }
 
   v6 = _ACLogSystem();

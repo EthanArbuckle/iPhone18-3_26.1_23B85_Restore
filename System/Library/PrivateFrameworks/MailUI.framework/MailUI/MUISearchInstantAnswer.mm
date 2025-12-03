@@ -1,21 +1,21 @@
 @interface MUISearchInstantAnswer
-- (id)initFlightAnswerWithCSInstantAnswer:(id)a3;
-- (id)initHotelAnswerWithCSInstantAnswer:(id)a3;
-- (void)initSearchInstantAnswer:(void *)a1;
-- (void)initWithInstantAnswerKind:(void *)a1;
-- (void)initWithMessageId:(void *)a3 groupId:(void *)a4 fallbackGroupId:(uint64_t)a5 instantAnswerKind:;
+- (id)initFlightAnswerWithCSInstantAnswer:(id)answer;
+- (id)initHotelAnswerWithCSInstantAnswer:(id)answer;
+- (void)initSearchInstantAnswer:(void *)answer;
+- (void)initWithInstantAnswerKind:(void *)kind;
+- (void)initWithMessageId:(void *)id groupId:(void *)groupId fallbackGroupId:(uint64_t)fallbackGroupId instantAnswerKind:;
 @end
 
 @implementation MUISearchInstantAnswer
 
-- (id)initFlightAnswerWithCSInstantAnswer:(id)a3
+- (id)initFlightAnswerWithCSInstantAnswer:(id)answer
 {
-  v4 = a3;
+  answerCopy = answer;
   v9.receiver = self;
   v9.super_class = MUISearchInstantAnswer;
   v5 = [(MUISearchInstantAnswer *)&v9 init];
   v6 = v5;
-  if (v5 && ([(MUISearchInstantAnswer(Flight) *)v5 initFlightAnswerWithCSInstantAnswer:v4, &v10]& 1) != 0)
+  if (v5 && ([(MUISearchInstantAnswer(Flight) *)v5 initFlightAnswerWithCSInstantAnswer:answerCopy, &v10]& 1) != 0)
   {
     v7 = v10;
   }
@@ -28,14 +28,14 @@
   return v7;
 }
 
-- (id)initHotelAnswerWithCSInstantAnswer:(id)a3
+- (id)initHotelAnswerWithCSInstantAnswer:(id)answer
 {
-  v4 = a3;
+  answerCopy = answer;
   v9.receiver = self;
   v9.super_class = MUISearchInstantAnswer;
   v5 = [(MUISearchInstantAnswer *)&v9 init];
   v6 = v5;
-  if (v5 && ([(MUISearchInstantAnswer(Hotel) *)v5 initHotelAnswerWithCSInstantAnswer:v4, &v10]& 1) != 0)
+  if (v5 && ([(MUISearchInstantAnswer(Hotel) *)v5 initHotelAnswerWithCSInstantAnswer:answerCopy, &v10]& 1) != 0)
   {
     v7 = v10;
   }
@@ -48,10 +48,10 @@
   return v7;
 }
 
-- (void)initSearchInstantAnswer:(void *)a1
+- (void)initSearchInstantAnswer:(void *)answer
 {
   v9 = a2;
-  if (a1)
+  if (answer)
   {
     v3 = NSSelectorFromString(&cfstr_Messageid.isa);
     v4 = NSSelectorFromString(&cfstr_Groupid.isa);
@@ -61,53 +61,53 @@
       v6 = [v9 v3];
       v7 = [v9 v4];
       v8 = [v9 v5];
-      -[MUISearchInstantAnswer initWithMessageId:groupId:fallbackGroupId:instantAnswerKind:](a1, v6, v7, v8, [v9 instantAnswersKind]);
+      -[MUISearchInstantAnswer initWithMessageId:groupId:fallbackGroupId:instantAnswerKind:](answer, v6, v7, v8, [v9 instantAnswersKind]);
     }
 
     else
     {
-      -[MUISearchInstantAnswer initWithInstantAnswerKind:](a1, [v9 instantAnswersKind]);
+      -[MUISearchInstantAnswer initWithInstantAnswerKind:](answer, [v9 instantAnswersKind]);
     }
   }
 }
 
-- (void)initWithMessageId:(void *)a3 groupId:(void *)a4 fallbackGroupId:(uint64_t)a5 instantAnswerKind:
+- (void)initWithMessageId:(void *)id groupId:(void *)groupId fallbackGroupId:(uint64_t)fallbackGroupId instantAnswerKind:
 {
   v18 = a2;
-  v10 = a3;
-  v11 = a4;
-  if (a1)
+  idCopy = id;
+  groupIdCopy = groupId;
+  if (self)
   {
-    objc_storeStrong((a1 + 240), a2);
-    objc_storeStrong((a1 + 248), a3);
-    objc_storeStrong((a1 + 256), a4);
-    *(a1 + 232) = a5;
-    v12 = [MEMORY[0x277CCAD78] UUID];
-    v13 = [v12 UUIDString];
-    v14 = *(a1 + 264);
-    *(a1 + 264) = v13;
+    objc_storeStrong((self + 240), a2);
+    objc_storeStrong((self + 248), id);
+    objc_storeStrong((self + 256), groupId);
+    *(self + 232) = fallbackGroupId;
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    v14 = *(self + 264);
+    *(self + 264) = uUIDString;
 
-    v15 = [MEMORY[0x277CCAD78] UUID];
-    v16 = [v15 UUIDString];
-    v17 = *(a1 + 272);
-    *(a1 + 272) = v16;
+    uUID2 = [MEMORY[0x277CCAD78] UUID];
+    uUIDString2 = [uUID2 UUIDString];
+    v17 = *(self + 272);
+    *(self + 272) = uUIDString2;
   }
 }
 
-- (void)initWithInstantAnswerKind:(void *)a1
+- (void)initWithInstantAnswerKind:(void *)kind
 {
-  if (a1)
+  if (kind)
   {
-    a1[29] = a2;
-    v3 = [MEMORY[0x277CCAD78] UUID];
-    v4 = [v3 UUIDString];
-    v5 = a1[33];
-    a1[33] = v4;
+    kind[29] = a2;
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    v5 = kind[33];
+    kind[33] = uUIDString;
 
-    v8 = [MEMORY[0x277CCAD78] UUID];
-    v6 = [v8 UUIDString];
-    v7 = a1[34];
-    a1[34] = v6;
+    uUID2 = [MEMORY[0x277CCAD78] UUID];
+    uUIDString2 = [uUID2 UUIDString];
+    v7 = kind[34];
+    kind[34] = uUIDString2;
   }
 }
 

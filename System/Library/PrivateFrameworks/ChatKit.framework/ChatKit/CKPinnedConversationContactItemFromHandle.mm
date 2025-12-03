@@ -1,20 +1,20 @@
 @interface CKPinnedConversationContactItemFromHandle
-- (CKPinnedConversationContactItemFromHandle)initWithEntity:(id)a3;
+- (CKPinnedConversationContactItemFromHandle)initWithEntity:(id)entity;
 - (id)contactItemView;
 @end
 
 @implementation CKPinnedConversationContactItemFromHandle
 
-- (CKPinnedConversationContactItemFromHandle)initWithEntity:(id)a3
+- (CKPinnedConversationContactItemFromHandle)initWithEntity:(id)entity
 {
-  v5 = a3;
+  entityCopy = entity;
   v9.receiver = self;
   v9.super_class = CKPinnedConversationContactItemFromHandle;
   v6 = [(CKPinnedConversationContactItemFromHandle *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_entity, a3);
+    objc_storeStrong(&v6->_entity, entity);
   }
 
   return v7;

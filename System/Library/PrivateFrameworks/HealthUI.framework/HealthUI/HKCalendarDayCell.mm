@@ -1,40 +1,40 @@
 @interface HKCalendarDayCell
 + (void)clearImageCache;
-- (CGSize)_roundedRectSizeForDayNumberString:(id)a3;
+- (CGSize)_roundedRectSizeForDayNumberString:(id)string;
 - (CGSize)circleSize;
 - (HKCalendarDayCell)init;
-- (HKCalendarDayCell)initWithDateCache:(id)a3;
+- (HKCalendarDayCell)initWithDateCache:(id)cache;
 - (double)_roundedRectCornerRadius;
 - (id)_integerNumberFormatter;
-- (id)_reusedImageForDateIndex:(int64_t)a3 color:(id)a4;
+- (id)_reusedImageForDateIndex:(int64_t)index color:(id)color;
 - (id)debugDescription;
 - (void)layoutOnce;
-- (void)setSelected:(BOOL)a3;
-- (void)updateDateTextForDayNumber:(int64_t)a3 textColor:(id)a4;
-- (void)updateWithDate:(id)a3 dayOfMonth:(int64_t)a4;
+- (void)setSelected:(BOOL)selected;
+- (void)updateDateTextForDayNumber:(int64_t)number textColor:(id)color;
+- (void)updateWithDate:(id)date dayOfMonth:(int64_t)month;
 @end
 
 @implementation HKCalendarDayCell
 
-- (HKCalendarDayCell)initWithDateCache:(id)a3
+- (HKCalendarDayCell)initWithDateCache:(id)cache
 {
-  v5 = a3;
+  cacheCopy = cache;
   v13.receiver = self;
   v13.super_class = HKCalendarDayCell;
   v6 = [(HKCalendarDayCell *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dateCache, a3);
-    v8 = [MEMORY[0x1E6979398] layer];
+    objc_storeStrong(&v6->_dateCache, cache);
+    layer = [MEMORY[0x1E6979398] layer];
     circle = v7->_circle;
-    v7->_circle = v8;
+    v7->_circle = layer;
 
     [(CALayer *)v7->_circle setHidden:1];
     [(HKCalendarDayCell *)v7 addSublayer:v7->_circle];
-    v10 = [MEMORY[0x1E6979398] layer];
+    layer2 = [MEMORY[0x1E6979398] layer];
     dayLabel = v7->_dayLabel;
-    v7->_dayLabel = v10;
+    v7->_dayLabel = layer2;
 
     [(HKCalendarDayCell *)v7 addSublayer:v7->_dayLabel];
   }
@@ -78,10 +78,10 @@
   return v2;
 }
 
-- (id)_reusedImageForDateIndex:(int64_t)a3 color:(id)a4
+- (id)_reusedImageForDateIndex:(int64_t)index color:(id)color
 {
   v36[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  colorCopy = color;
   if ([(HKCalendarDayCell *)self isSelected])
   {
     _BoldImageCache();
@@ -92,10 +92,10 @@
     _NormalImageCache();
   }
   v7 = ;
-  v8 = [MEMORY[0x1E69DD1B8] currentTraitCollection];
-  v9 = [v6 resolvedColorWithTraitCollection:v8];
+  currentTraitCollection = [MEMORY[0x1E69DD1B8] currentTraitCollection];
+  v9 = [colorCopy resolvedColorWithTraitCollection:currentTraitCollection];
 
-  v10 = +[_HKCalendarDayCellIconConfiguration configurationWithDateIndex:color:style:](_HKCalendarDayCellIconConfiguration, "configurationWithDateIndex:color:style:", a3, v9, [v8 userInterfaceStyle]);
+  v10 = +[_HKCalendarDayCellIconConfiguration configurationWithDateIndex:color:style:](_HKCalendarDayCellIconConfiguration, "configurationWithDateIndex:color:style:", index, v9, [currentTraitCollection userInterfaceStyle]);
   v11 = [v7 objectForKey:v10];
   v12 = v11;
   if (v11)
@@ -105,9 +105,9 @@
 
   else
   {
-    v14 = [(HKCalendarDayCell *)self _integerNumberFormatter];
-    v15 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-    v32 = [v14 stringFromNumber:v15];
+    _integerNumberFormatter = [(HKCalendarDayCell *)self _integerNumberFormatter];
+    v15 = [MEMORY[0x1E696AD98] numberWithInteger:index];
+    v32 = [_integerNumberFormatter stringFromNumber:v15];
 
     if ([(HKCalendarDayCell *)self isSelected])
     {
@@ -157,23 +157,23 @@
   return v13;
 }
 
-- (void)updateWithDate:(id)a3 dayOfMonth:(int64_t)a4
+- (void)updateWithDate:(id)date dayOfMonth:(int64_t)month
 {
-  v6 = a3;
+  dateCopy = date;
   [(HKCalendarDayCell *)self setHidden:0];
   date = self->_date;
-  self->_date = v6;
-  v8 = v6;
+  self->_date = dateCopy;
+  v8 = dateCopy;
 
-  self->_dayOfMonth = a4;
-  LOBYTE(a4) = [(HKDateCache *)self->_dateCache isDateInToday:v8];
+  self->_dayOfMonth = month;
+  LOBYTE(month) = [(HKDateCache *)self->_dateCache isDateInToday:v8];
 
-  self->_representsToday = a4;
+  self->_representsToday = month;
 }
 
-- (void)updateDateTextForDayNumber:(int64_t)a3 textColor:(id)a4
+- (void)updateDateTextForDayNumber:(int64_t)number textColor:(id)color
 {
-  v7 = [(HKCalendarDayCell *)self _reusedImageForDateIndex:a3 color:a4];
+  v7 = [(HKCalendarDayCell *)self _reusedImageForDateIndex:number color:color];
   dayLabel = self->_dayLabel;
   v6 = v7;
   -[CALayer setContents:](dayLabel, "setContents:", [v7 CGImage]);
@@ -210,8 +210,8 @@
 - (double)_roundedRectCornerRadius
 {
   [(HKCalendarDayCell *)self dayDiameter];
-  v2 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v2 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   UIRoundToScale();
   v4 = v3;
 
@@ -223,8 +223,8 @@
   if (HKUIApplicationContentSizeCategoryIsLargerThanSizeCategory(*MEMORY[0x1E69DDC70]))
   {
     v3 = [MEMORY[0x1E696AD98] numberWithInteger:{-[HKCalendarDayCell dayOfMonth](self, "dayOfMonth")}];
-    v4 = [v3 stringValue];
-    [(HKCalendarDayCell *)self _roundedRectSizeForDayNumberString:v4];
+    stringValue = [v3 stringValue];
+    [(HKCalendarDayCell *)self _roundedRectSizeForDayNumberString:stringValue];
     v6 = v5;
     v8 = v7;
 
@@ -246,19 +246,19 @@
   return result;
 }
 
-- (CGSize)_roundedRectSizeForDayNumberString:(id)a3
+- (CGSize)_roundedRectSizeForDayNumberString:(id)string
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  stringCopy = string;
   [(HKCalendarDayCell *)self dayDiameter];
   v6 = v5 + -1.0;
   [(HKCalendarDayCell *)self dayDiameter];
   v8 = v7;
   v16 = *MEMORY[0x1E69DB648];
-  v9 = [(HKCalendarDayCell *)self boldFont];
-  v17[0] = v9;
+  boldFont = [(HKCalendarDayCell *)self boldFont];
+  v17[0] = boldFont;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
-  [v4 sizeWithAttributes:v10];
+  [stringCopy sizeWithAttributes:v10];
   v12 = v11;
 
   v13 = v12 + 4.0;
@@ -278,16 +278,16 @@
   return result;
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  if (self->_selected != a3)
+  if (self->_selected != selected)
   {
-    v4 = a3;
-    self->_selected = a3;
-    v6 = [(HKCalendarDayCell *)self circle];
-    [v6 setHidden:!v4];
+    selectedCopy = selected;
+    self->_selected = selected;
+    circle = [(HKCalendarDayCell *)self circle];
+    [circle setHidden:!selectedCopy];
 
-    if (v4)
+    if (selectedCopy)
     {
       [MEMORY[0x1E69DC888] whiteColor];
     }
@@ -307,8 +307,8 @@
   v8.super_class = HKCalendarDayCell;
   v3 = [(HKCalendarDayCell *)&v8 debugDescription];
   v4 = MEMORY[0x1E696AB78];
-  v5 = [(HKCalendarDayCell *)self date];
-  v6 = [v4 localizedStringFromDate:v5 dateStyle:2 timeStyle:0];
+  date = [(HKCalendarDayCell *)self date];
+  v6 = [v4 localizedStringFromDate:date dateStyle:2 timeStyle:0];
 
   [v3 deleteCharactersInRange:{objc_msgSend(v3, "length") - 1, 1}];
   [v3 appendFormat:@"date: %@; > ", v6];

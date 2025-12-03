@@ -1,25 +1,25 @@
 @interface HFTriggerAnonymousActionSetBuilder
 - (BOOL)hasActions;
 - (BOOL)useActionSetBuilder;
-- (HFTriggerAnonymousActionSetBuilder)initWithExistingObject:(id)a3 inHome:(id)a4;
+- (HFTriggerAnonymousActionSetBuilder)initWithExistingObject:(id)object inHome:(id)home;
 - (id)commitItem;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)createActionSetBuilder;
 - (id)deleteActionSet;
 - (id)getOrCreateActionSet;
 - (id)shortcutsComponentActionSet;
-- (void)addAction:(id)a3 actionSetType:(unint64_t)a4;
-- (void)updateAction:(id)a3;
-- (void)updateActionBuildersDiff:(id)a3;
+- (void)addAction:(id)action actionSetType:(unint64_t)type;
+- (void)updateAction:(id)action;
+- (void)updateActionBuildersDiff:(id)diff;
 @end
 
 @implementation HFTriggerAnonymousActionSetBuilder
 
-- (HFTriggerAnonymousActionSetBuilder)initWithExistingObject:(id)a3 inHome:(id)a4
+- (HFTriggerAnonymousActionSetBuilder)initWithExistingObject:(id)object inHome:(id)home
 {
   v7.receiver = self;
   v7.super_class = HFTriggerAnonymousActionSetBuilder;
-  v4 = [(HFAbstractBaseActionSetBuilder *)&v7 initWithExistingObject:a3 inHome:a4];
+  v4 = [(HFAbstractBaseActionSetBuilder *)&v7 initWithExistingObject:object inHome:home];
   v5 = v4;
   if (v4)
   {
@@ -31,21 +31,21 @@
 
 - (BOOL)hasActions
 {
-  v2 = [(HFAbstractBaseActionSetBuilder *)self actions];
-  v3 = [v2 count] != 0;
+  actions = [(HFAbstractBaseActionSetBuilder *)self actions];
+  v3 = [actions count] != 0;
 
   return v3;
 }
 
 - (id)shortcutsComponentActionSet
 {
-  v3 = [(HFAbstractBaseActionSetBuilder *)self actions];
-  v4 = [v3 na_map:&__block_literal_global_2];
+  actions = [(HFAbstractBaseActionSetBuilder *)self actions];
+  v4 = [actions na_map:&__block_literal_global_2];
   v5 = [v4 na_filter:&__block_literal_global_3];
 
-  v6 = [(HFItemBuilder *)self home];
+  home = [(HFItemBuilder *)self home];
   v7 = [MEMORY[0x277CBEB98] setWithArray:v5];
-  v8 = [v6 hf_shortcutsComponentActionSetWithActions:v7];
+  v8 = [home hf_shortcutsComponentActionSetWithActions:v7];
 
   if (!v8)
   {
@@ -57,21 +57,21 @@
 
 - (id)getOrCreateActionSet
 {
-  v3 = [(HFAbstractBaseActionSetBuilder *)self actionSet];
-  if (!v3)
+  actionSet = [(HFAbstractBaseActionSetBuilder *)self actionSet];
+  if (!actionSet)
   {
-    v3 = [(HFTriggerAnonymousActionSetBuilder *)self shortcutsComponentActionSet];
+    actionSet = [(HFTriggerAnonymousActionSetBuilder *)self shortcutsComponentActionSet];
   }
 
-  return v3;
+  return actionSet;
 }
 
-- (void)addAction:(id)a3 actionSetType:(unint64_t)a4
+- (void)addAction:(id)action actionSetType:(unint64_t)type
 {
-  v6 = a3;
-  if ([(HFTriggerAnonymousActionSetBuilder *)self actionSetType]!= a4)
+  actionCopy = action;
+  if ([(HFTriggerAnonymousActionSetBuilder *)self actionSetType]!= type)
   {
-    [(HFTriggerAnonymousActionSetBuilder *)self setActionSetType:a4];
+    [(HFTriggerAnonymousActionSetBuilder *)self setActionSetType:type];
     goto LABEL_5;
   }
 
@@ -81,40 +81,40 @@ LABEL_5:
     [(HFAbstractBaseActionSetBuilder *)self removeAllActions];
   }
 
-  [(HFAbstractBaseActionSetBuilder *)self addAction:v6];
+  [(HFAbstractBaseActionSetBuilder *)self addAction:actionCopy];
 }
 
-- (void)updateActionBuildersDiff:(id)a3
+- (void)updateActionBuildersDiff:(id)diff
 {
-  v4 = a3;
-  v5 = [v4 mutableCopyWithZone:MEMORY[0x20F326D80]()];
+  diffCopy = diff;
+  v5 = [diffCopy mutableCopyWithZone:MEMORY[0x20F326D80]()];
 
   [(HFAbstractBaseActionSetBuilder *)self setActionBuilders:v5];
 }
 
-- (void)updateAction:(id)a3
+- (void)updateAction:(id)action
 {
-  v4 = a3;
-  v5 = [(HFAbstractBaseActionSetBuilder *)self actionBuilders];
-  v6 = [v5 fromSet];
-  v7 = [(HFAbstractBaseActionSetBuilder *)self existingActionBuilder:v4 inSet:v6];
+  actionCopy = action;
+  actionBuilders = [(HFAbstractBaseActionSetBuilder *)self actionBuilders];
+  fromSet = [actionBuilders fromSet];
+  v7 = [(HFAbstractBaseActionSetBuilder *)self existingActionBuilder:actionCopy inSet:fromSet];
 
   if (v7)
   {
     goto LABEL_3;
   }
 
-  [0 updateWithActionBuilder:v4];
-  v8 = [(HFAbstractBaseActionSetBuilder *)self actionBuilders];
-  v9 = [v8 toSet];
-  v7 = [(HFAbstractBaseActionSetBuilder *)self existingActionBuilder:v4 inSet:v9];
+  [0 updateWithActionBuilder:actionCopy];
+  actionBuilders2 = [(HFAbstractBaseActionSetBuilder *)self actionBuilders];
+  toSet = [actionBuilders2 toSet];
+  v7 = [(HFAbstractBaseActionSetBuilder *)self existingActionBuilder:actionCopy inSet:toSet];
 
   if (v7)
   {
 LABEL_3:
     v10.receiver = self;
     v10.super_class = HFTriggerAnonymousActionSetBuilder;
-    [(HFAbstractBaseActionSetBuilder *)&v10 updateAction:v4];
+    [(HFAbstractBaseActionSetBuilder *)&v10 updateAction:actionCopy];
   }
 }
 
@@ -129,10 +129,10 @@ LABEL_3:
 - (id)createActionSetBuilder
 {
   objc_opt_class();
-  v3 = [(HFTriggerAnonymousActionSetBuilder *)self containingTrigger];
+  containingTrigger = [(HFTriggerAnonymousActionSetBuilder *)self containingTrigger];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = containingTrigger;
   }
 
   else
@@ -144,9 +144,9 @@ LABEL_3:
 
   if (v5)
   {
-    v6 = [v5 triggerOwnedActionSet];
-    [(HFAbstractBaseActionSetBuilder *)self updateActionsInBuilder:v6];
-    v7 = [MEMORY[0x277D2C900] futureWithResult:v6];
+    triggerOwnedActionSet = [v5 triggerOwnedActionSet];
+    [(HFAbstractBaseActionSetBuilder *)self updateActionsInBuilder:triggerOwnedActionSet];
+    v7 = [MEMORY[0x277D2C900] futureWithResult:triggerOwnedActionSet];
   }
 
   else
@@ -160,10 +160,10 @@ LABEL_3:
 - (BOOL)useActionSetBuilder
 {
   objc_opt_class();
-  v3 = [(HFTriggerAnonymousActionSetBuilder *)self containingTrigger];
+  containingTrigger = [(HFTriggerAnonymousActionSetBuilder *)self containingTrigger];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = containingTrigger;
   }
 
   else
@@ -171,11 +171,11 @@ LABEL_3:
     v4 = 0;
   }
 
-  v5 = [(HFItemBuilder *)self home];
-  v6 = [v5 areAutomationBuildersSupported];
+  home = [(HFItemBuilder *)self home];
+  areAutomationBuildersSupported = [home areAutomationBuildersSupported];
   if (v4)
   {
-    v7 = v6;
+    v7 = areAutomationBuildersSupported;
   }
 
   else
@@ -189,20 +189,20 @@ LABEL_3:
 - (id)commitItem
 {
   v37[2] = *MEMORY[0x277D85DE8];
-  v3 = [(HFTriggerAnonymousActionSetBuilder *)self containingTrigger];
+  containingTrigger = [(HFTriggerAnonymousActionSetBuilder *)self containingTrigger];
 
-  if (!v3)
+  if (!containingTrigger)
   {
     NSLog(&cfstr_CanTCommitAHft.isa);
   }
 
-  v4 = [(HFTriggerAnonymousActionSetBuilder *)self containingTrigger];
+  containingTrigger2 = [(HFTriggerAnonymousActionSetBuilder *)self containingTrigger];
 
-  if (!v4)
+  if (!containingTrigger2)
   {
     v23 = MEMORY[0x277D2C900];
-    v8 = [MEMORY[0x277CCA9B8] hf_errorWithCode:33];
-    v5 = [v23 futureWithError:v8];
+    futureWithNoResult2 = [MEMORY[0x277CCA9B8] hf_errorWithCode:33];
+    v5 = [v23 futureWithError:futureWithNoResult2];
 LABEL_13:
 
     goto LABEL_18;
@@ -210,45 +210,45 @@ LABEL_13:
 
   if (![(HFTriggerAnonymousActionSetBuilder *)self useActionSetBuilder]|| ([(HFTriggerAnonymousActionSetBuilder *)self createActionSetBuilder], (v5 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v6 = [(HFAbstractBaseActionSetBuilder *)self actions];
-    v7 = [v6 count];
+    actions = [(HFAbstractBaseActionSetBuilder *)self actions];
+    v7 = [actions count];
 
     if (!v7)
     {
-      v24 = [(HFAbstractBaseActionSetBuilder *)self actionSet];
+      actionSet = [(HFAbstractBaseActionSetBuilder *)self actionSet];
 
-      if (v24)
+      if (actionSet)
       {
         v36[0] = MEMORY[0x277D85DD0];
         v36[1] = 3221225472;
         v36[2] = __48__HFTriggerAnonymousActionSetBuilder_commitItem__block_invoke;
         v36[3] = &unk_277DF2C68;
         v36[4] = self;
-        v25 = [MEMORY[0x277D2C900] futureWithErrorOnlyHandlerAdapterBlock:v36];
+        futureWithNoResult = [MEMORY[0x277D2C900] futureWithErrorOnlyHandlerAdapterBlock:v36];
       }
 
       else
       {
-        v25 = [MEMORY[0x277D2C900] futureWithNoResult];
+        futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
       }
 
-      v5 = v25;
+      v5 = futureWithNoResult;
       goto LABEL_18;
     }
 
-    v8 = [MEMORY[0x277D2C900] futureWithNoResult];
-    v9 = [(HFAbstractBaseActionSetBuilder *)self actionSet];
+    futureWithNoResult2 = [MEMORY[0x277D2C900] futureWithNoResult];
+    actionSet2 = [(HFAbstractBaseActionSetBuilder *)self actionSet];
     v10 = HFOperationEditTrigger;
-    if (!v9)
+    if (!actionSet2)
     {
       v10 = HFOperationAddTrigger;
     }
 
     v11 = *v10;
 
-    v12 = [(HFAbstractBaseActionSetBuilder *)self actionSet];
+    actionSet3 = [(HFAbstractBaseActionSetBuilder *)self actionSet];
 
-    if (!v12)
+    if (!actionSet3)
     {
       v35[0] = MEMORY[0x277D85DD0];
       v35[1] = 3221225472;
@@ -275,13 +275,13 @@ LABEL_13:
       v32[3] = &unk_277DF2D08;
       v32[4] = self;
       v16 = [v14 addFailureBlock:v32];
-      v8 = v14;
+      futureWithNoResult2 = v14;
     }
 
     v17 = MEMORY[0x277D2C900];
-    v37[0] = v8;
-    v18 = [(HFAbstractBaseActionSetBuilder *)self lazilyUpdateActions];
-    v37[1] = v18;
+    v37[0] = futureWithNoResult2;
+    lazilyUpdateActions = [(HFAbstractBaseActionSetBuilder *)self lazilyUpdateActions];
+    v37[1] = lazilyUpdateActions;
     v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v37 count:2];
     v20 = [v17 chainFutures:v19];
     v29[0] = MEMORY[0x277D85DD0];
@@ -289,7 +289,7 @@ LABEL_13:
     v29[2] = __48__HFTriggerAnonymousActionSetBuilder_commitItem__block_invoke_24;
     v29[3] = &unk_277DF2D30;
     v30 = v11;
-    v31 = self;
+    selfCopy = self;
     v21 = v11;
     v22 = [v20 recover:v29];
     v28[0] = MEMORY[0x277D85DD0];
@@ -414,13 +414,13 @@ id __48__HFTriggerAnonymousActionSetBuilder_commitItem__block_invoke_2_26(uint64
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = HFTriggerAnonymousActionSetBuilder;
-  v4 = [(HFAbstractBaseActionSetBuilder *)&v7 copyWithZone:a3];
-  v5 = [(HFTriggerAnonymousActionSetBuilder *)self containingTrigger];
-  [v4 setContainingTrigger:v5];
+  v4 = [(HFAbstractBaseActionSetBuilder *)&v7 copyWithZone:zone];
+  containingTrigger = [(HFTriggerAnonymousActionSetBuilder *)self containingTrigger];
+  [v4 setContainingTrigger:containingTrigger];
 
   [v4 setActionSetType:{-[HFTriggerAnonymousActionSetBuilder actionSetType](self, "actionSetType")}];
   return v4;

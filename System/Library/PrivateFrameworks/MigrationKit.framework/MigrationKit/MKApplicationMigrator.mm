@@ -5,18 +5,18 @@
 - (id)lookup;
 - (void)close;
 - (void)dealloc;
-- (void)didLookup:(id)a3 identifiers:(id)a4 error:(id)a5;
+- (void)didLookup:(id)lookup identifiers:(id)identifiers error:(id)error;
 - (void)drainQueue;
 - (void)import;
-- (void)import:(id)a3;
-- (void)import:(id)a3 identifiers:(id)a4;
-- (void)importDataEncodedInJSON:(id)a3;
-- (void)install:(id)a3;
-- (void)lookup:(id)a3;
+- (void)import:(id)import;
+- (void)import:(id)import identifiers:(id)identifiers;
+- (void)importDataEncodedInJSON:(id)n;
+- (void)install:(id)install;
+- (void)lookup:(id)lookup;
 - (void)purchase;
 - (void)purchase2;
-- (void)purchase:(id)a3 handleAuthenticateRequest:(id)a4 completion:(id)a5;
-- (void)slice:(unint64_t)a3;
+- (void)purchase:(id)purchase handleAuthenticateRequest:(id)request completion:(id)completion;
+- (void)slice:(unint64_t)slice;
 @end
 
 @implementation MKApplicationMigrator
@@ -73,31 +73,31 @@
   self->_db = 0;
 }
 
-- (void)importDataEncodedInJSON:(id)a3
+- (void)importDataEncodedInJSON:(id)n
 {
-  v6 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
+  nCopy = n;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v5 = objc_autoreleasePoolPush();
-  [(MKApplicationMigrator *)v4 import:v6];
+  [(MKApplicationMigrator *)selfCopy import:nCopy];
   objc_autoreleasePoolPop(v5);
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)import:(id)a3
+- (void)import:(id)import
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  importCopy = import;
   v5 = +[MKLog log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v16 = self;
+    selfCopy = self;
     _os_log_impl(&dword_2592D2000, v5, OS_LOG_TYPE_INFO, "%@ will import applications.", buf, 0xCu);
   }
 
   v14 = 0;
-  v6 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v4 options:0 error:&v14];
+  v6 = [MEMORY[0x277CCAAA0] JSONObjectWithData:importCopy options:0 error:&v14];
   v7 = v14;
   if (v7)
   {
@@ -120,7 +120,7 @@
         [(MKApplicationMigrator *)self setIdentifiers:v9];
 
         self->_totalCount = [(NSMutableArray *)self->_identifiers count];
-        -[MKMigrator migratorDidAppendDataSize:](self, "migratorDidAppendDataSize:", [v4 length]);
+        -[MKMigrator migratorDidAppendDataSize:](self, "migratorDidAppendDataSize:", [importCopy length]);
         totalCount = self->_totalCount;
         if (totalCount % 0x32)
         {
@@ -134,8 +134,8 @@
 
         for (; v11; --v11)
         {
-          v12 = [(MKMigrator *)self delegate];
-          [v12 migratorWillExecuteOperation:self];
+          delegate = [(MKMigrator *)self delegate];
+          [delegate migratorWillExecuteOperation:self];
         }
 
         [(MKApplicationMigrator *)self drainQueue];
@@ -185,7 +185,7 @@
       totalCount = self->_totalCount;
       matchedAppsCount = self->_matchedAppsCount;
       *buf = 138413058;
-      v14 = self;
+      selfCopy = self;
       v15 = 2048;
       v16 = totalCount;
       v17 = 2048;
@@ -207,16 +207,16 @@
   }
 }
 
-- (void)slice:(unint64_t)a3
+- (void)slice:(unint64_t)slice
 {
-  [(NSMutableArray *)self->_identifiers removeObjectsInRange:0, a3];
+  [(NSMutableArray *)self->_identifiers removeObjectsInRange:0, slice];
 
   [(MKApplicationMigrator *)self drainQueue];
 }
 
-- (void)lookup:(id)a3
+- (void)lookup:(id)lookup
 {
-  v4 = a3;
+  lookupCopy = lookup;
   objc_initWeak(&location, self);
   v5 = objc_alloc_init(MKAppSearchRequest);
   v7[0] = MEMORY[0x277D85DD0];
@@ -224,7 +224,7 @@
   v7[2] = __32__MKApplicationMigrator_lookup___block_invoke;
   v7[3] = &unk_2798DCCF0;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = lookupCopy;
   v8 = v6;
   [(MKAppSearchRequest *)v5 search:0 androidIDs:v6 completion:v7];
 
@@ -240,71 +240,71 @@ void __32__MKApplicationMigrator_lookup___block_invoke(uint64_t a1, void *a2, vo
   [WeakRetained didLookup:v6 identifiers:*(a1 + 32) error:v5];
 }
 
-- (void)didLookup:(id)a3 identifiers:(id)a4 error:(id)a5
+- (void)didLookup:(id)lookup identifiers:(id)identifiers error:(id)error
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MKMigrator *)self delegate];
-  [v11 migratorDidExecuteOperation:self];
+  lookupCopy = lookup;
+  identifiersCopy = identifiers;
+  errorCopy = error;
+  delegate = [(MKMigrator *)self delegate];
+  [delegate migratorDidExecuteOperation:self];
 
-  v12 = self;
-  objc_sync_enter(v12);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v13 = objc_autoreleasePoolPush();
   v14 = +[MKLog log];
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     v17 = 138412802;
-    v18 = v12;
+    v18 = selfCopy;
     v19 = 2048;
-    v20 = [v8 count];
+    v20 = [lookupCopy count];
     v21 = 2112;
-    v22 = v10;
+    v22 = errorCopy;
     _os_log_impl(&dword_2592D2000, v14, OS_LOG_TYPE_INFO, "%@ did lookup android ids. apps=%ld, error=%@", &v17, 0x20u);
   }
 
-  if (v10)
+  if (errorCopy)
   {
-    lookupErrorCount = v12->_lookupErrorCount;
+    lookupErrorCount = selfCopy->_lookupErrorCount;
     if (lookupErrorCount < 0xA)
     {
-      v12->_lookupErrorCount = lookupErrorCount + 1;
-      [(MKApplicationMigrator *)v12 drainQueue];
+      selfCopy->_lookupErrorCount = lookupErrorCount + 1;
+      [(MKApplicationMigrator *)selfCopy drainQueue];
     }
 
     else
     {
-      [(MKApplicationDatabase *)v12->_db addIdentifiers:v9];
-      -[MKMigrator migratorDidFailWithImportError:count:](v12, "migratorDidFailWithImportError:count:", v10, [v9 count]);
-      -[MKApplicationMigrator slice:](v12, "slice:", [v9 count]);
+      [(MKApplicationDatabase *)selfCopy->_db addIdentifiers:identifiersCopy];
+      -[MKMigrator migratorDidFailWithImportError:count:](selfCopy, "migratorDidFailWithImportError:count:", errorCopy, [identifiersCopy count]);
+      -[MKApplicationMigrator slice:](selfCopy, "slice:", [identifiersCopy count]);
     }
   }
 
   else
   {
-    v12->_lookupErrorCount = 0;
-    [(MKApplicationMigrator *)v12 import:v8 identifiers:v9];
+    selfCopy->_lookupErrorCount = 0;
+    [(MKApplicationMigrator *)selfCopy import:lookupCopy identifiers:identifiersCopy];
   }
 
   objc_autoreleasePoolPop(v13);
-  objc_sync_exit(v12);
+  objc_sync_exit(selfCopy);
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)import:(id)a3 identifiers:(id)a4
+- (void)import:(id)import identifiers:(id)identifiers
 {
-  v6 = a4;
-  v7 = a3;
-  self->_matchedAppsCount += [v7 count];
-  [(MKApplicationMigrator *)self install:v7];
-  -[MKMigrator migratorDidImportWithCount:](self, "migratorDidImportWithCount:", [v7 count]);
-  v8 = [v6 count];
-  v9 = [v7 count];
+  identifiersCopy = identifiers;
+  importCopy = import;
+  self->_matchedAppsCount += [importCopy count];
+  [(MKApplicationMigrator *)self install:importCopy];
+  -[MKMigrator migratorDidImportWithCount:](self, "migratorDidImportWithCount:", [importCopy count]);
+  v8 = [identifiersCopy count];
+  v9 = [importCopy count];
 
   [(MKMigrator *)self migratorDidFailWithImportError:0 count:v8 - v9];
-  v10 = [v6 count];
+  v10 = [identifiersCopy count];
 
   [(MKApplicationMigrator *)self slice:v10];
 }
@@ -318,8 +318,8 @@ void __32__MKApplicationMigrator_lookup___block_invoke(uint64_t a1, void *a2, vo
     _os_log_impl(&dword_2592D2000, v3, OS_LOG_TYPE_INFO, "app installation will continue.", buf, 2u);
   }
 
-  v4 = [(MKApplicationMigrator *)self lookup];
-  [(MKApplicationMigrator *)self install:v4];
+  lookup = [(MKApplicationMigrator *)self lookup];
+  [(MKApplicationMigrator *)self install:lookup];
   if ([(MKApplicationDatabase *)self->_db countForAppStoreIdentifiers]>= 1 && [(MKApplicationMigrator *)self prompt])
   {
     [(MKApplicationMigrator *)self purchase];
@@ -342,8 +342,8 @@ void __32__MKApplicationMigrator_lookup___block_invoke(uint64_t a1, void *a2, vo
 
 - (id)lookup
 {
-  v2 = [(MKApplicationDatabase *)self->_db identifiers];
-  v3 = [v2 count];
+  identifiers = [(MKApplicationDatabase *)self->_db identifiers];
+  v3 = [identifiers count];
   v4 = v3;
   if (v3 >= 50)
   {
@@ -355,7 +355,7 @@ void __32__MKApplicationMigrator_lookup___block_invoke(uint64_t a1, void *a2, vo
     v5 = v3;
   }
 
-  v6 = [v2 subarrayWithRange:{0, v5}];
+  v6 = [identifiers subarrayWithRange:{0, v5}];
   v7 = dispatch_semaphore_create(0);
   v31 = 0;
   v32 = &v31;
@@ -415,7 +415,7 @@ void __32__MKApplicationMigrator_lookup___block_invoke(uint64_t a1, void *a2, vo
       v5 = v4;
     }
 
-    v13 = [v2 subarrayWithRange:{v8, v5}];
+    v13 = [identifiers subarrayWithRange:{v8, v5}];
 
     v6 = v13;
 LABEL_13:
@@ -453,14 +453,14 @@ void __31__MKApplicationMigrator_lookup__block_invoke(uint64_t a1, void *a2, voi
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)install:(id)a3
+- (void)install:(id)install
 {
   v54 = *MEMORY[0x277D85DE8];
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  obj = a3;
+  obj = install;
   v4 = [obj countByEnumeratingWithState:&v37 objects:v53 count:16];
   if (v4)
   {
@@ -468,7 +468,7 @@ void __31__MKApplicationMigrator_lookup__block_invoke(uint64_t a1, void *a2, voi
     v36 = *v38;
     *&v5 = 138413570;
     v33 = v5;
-    v35 = self;
+    selfCopy = self;
     do
     {
       v7 = 0;
@@ -483,57 +483,57 @@ void __31__MKApplicationMigrator_lookup__block_invoke(uint64_t a1, void *a2, voi
         v9 = +[MKLog log];
         if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
         {
-          v10 = [v8 bundleIdentifier];
-          v11 = [v8 appStoreIdentifier];
-          v12 = [v8 name];
-          v13 = [v8 developer];
-          v14 = [v8 iconURL];
-          v15 = [v8 isFree];
+          bundleIdentifier = [v8 bundleIdentifier];
+          appStoreIdentifier = [v8 appStoreIdentifier];
+          name = [v8 name];
+          developer = [v8 developer];
+          iconURL = [v8 iconURL];
+          isFree = [v8 isFree];
           *buf = v33;
-          v42 = v10;
+          v42 = bundleIdentifier;
           v43 = 2112;
-          v44 = v11;
+          v44 = appStoreIdentifier;
           v45 = 2112;
-          v46 = v12;
+          v46 = name;
           v47 = 2112;
-          v48 = v13;
+          v48 = developer;
           v49 = 2112;
-          v50 = v14;
+          v50 = iconURL;
           v51 = 1024;
-          v52 = v15;
+          v52 = isFree;
           _os_log_impl(&dword_2592D2000, v9, OS_LOG_TYPE_INFO, "will install an application. bundle_id=%@, appstore_id=%@, name=%@, developer=%@, icon=%@, free=%d", buf, 0x3Au);
 
-          self = v35;
+          self = selfCopy;
         }
 
         if ([v8 isFree])
         {
           signatures = self->_signatures;
-          v17 = [v8 bundleIdentifier];
-          v18 = [(NSDictionary *)signatures objectForKey:v17];
+          bundleIdentifier2 = [v8 bundleIdentifier];
+          v18 = [(NSDictionary *)signatures objectForKey:bundleIdentifier2];
 
           if (!v18)
           {
             v19 = MEMORY[0x277CBEA90];
             v20 = MEMORY[0x277CBEBC0];
-            v21 = [v8 iconURL];
-            v22 = [v20 URLWithString:v21];
+            iconURL2 = [v8 iconURL];
+            v22 = [v20 URLWithString:iconURL2];
             v23 = [v19 dataWithContentsOfURL:v22];
 
             v24 = [MKPlaceholder alloc];
-            v25 = [v8 bundleIdentifier];
-            v26 = [v8 appStoreIdentifier];
-            v27 = [v8 name];
-            v28 = [v8 developer];
-            v29 = [(MKPlaceholder *)v24 initWithBundleIdentifier:v25 appStoreIdentifier:v26 bundleName:v27 developer:v28 icon:v23];
+            bundleIdentifier3 = [v8 bundleIdentifier];
+            appStoreIdentifier2 = [v8 appStoreIdentifier];
+            name2 = [v8 name];
+            developer2 = [v8 developer];
+            v29 = [(MKPlaceholder *)v24 initWithBundleIdentifier:bundleIdentifier3 appStoreIdentifier:appStoreIdentifier2 bundleName:name2 developer:developer2 icon:v23];
 
-            self = v35;
+            self = selfCopy;
             [(MKPlaceholder *)v29 install];
           }
 
           db = self->_db;
-          v31 = [v8 appStoreIdentifier];
-          [(MKApplicationDatabase *)db addAppStoreIdentifier:v31];
+          appStoreIdentifier3 = [v8 appStoreIdentifier];
+          [(MKApplicationDatabase *)db addAppStoreIdentifier:appStoreIdentifier3];
         }
 
         ++v7;
@@ -623,14 +623,14 @@ intptr_t __31__MKApplicationMigrator_prompt__block_invoke(uint64_t a1)
   v33 = __Block_byref_object_copy_;
   v34 = __Block_byref_object_dispose_;
   v35 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v4 = [(MKApplicationDatabase *)self->_db appStoreIdentifiers];
+  appStoreIdentifiers = [(MKApplicationDatabase *)self->_db appStoreIdentifiers];
   v5 = 0;
   v6 = *MEMORY[0x277D6A288];
   *&v7 = 138412290;
   v19 = v7;
-  while (v5 < [v4 count])
+  while (v5 < [appStoreIdentifiers count])
   {
-    v8 = [v4 objectAtIndexedSubscript:v5];
+    v8 = [appStoreIdentifiers objectAtIndexedSubscript:v5];
     v9 = +[MKLog log];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
@@ -777,7 +777,7 @@ void __33__MKApplicationMigrator_purchase__block_invoke_29(uint64_t a1, void *a2
   v5 = [MEMORY[0x277CEE3F8] bagForProfile:@"AMSPurchase" profileVersion:@"1"];
   v6 = [objc_alloc(MEMORY[0x277CEE660]) initWithPurchase:v4 bag:v5];
   [v6 setDelegate:self];
-  v7 = [v6 performPurchase];
+  performPurchase = [v6 performPurchase];
   v8 = dispatch_semaphore_create(0);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -785,7 +785,7 @@ void __33__MKApplicationMigrator_purchase__block_invoke_29(uint64_t a1, void *a2
   v10[3] = &unk_2798DCD90;
   v11 = v8;
   v9 = v8;
-  [v7 resultWithCompletion:v10];
+  [performPurchase resultWithCompletion:v10];
   dispatch_semaphore_wait(v9, 0xFFFFFFFFFFFFFFFFLL);
 }
 
@@ -808,15 +808,15 @@ void __34__MKApplicationMigrator_purchase2__block_invoke(uint64_t a1, void *a2, 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)purchase:(id)a3 handleAuthenticateRequest:(id)a4 completion:(id)a5
+- (void)purchase:(id)purchase handleAuthenticateRequest:(id)request completion:(id)completion
 {
   v6 = MEMORY[0x277CEE3E8];
-  v7 = a5;
-  v8 = a4;
-  v10 = [[v6 alloc] initWithRequest:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  v10 = [[v6 alloc] initWithRequest:requestCopy];
 
-  v9 = [v10 performAuthentication];
-  [v9 addFinishBlock:v7];
+  performAuthentication = [v10 performAuthentication];
+  [performAuthentication addFinishBlock:completionCopy];
 }
 
 @end

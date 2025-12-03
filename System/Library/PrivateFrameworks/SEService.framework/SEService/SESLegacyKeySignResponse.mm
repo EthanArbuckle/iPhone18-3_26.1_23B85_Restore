@@ -1,20 +1,20 @@
 @interface SESLegacyKeySignResponse
-+ (id)withSignature:(id)a3 localValidationVerified:(id)a4;
-- (SESLegacyKeySignResponse)initWithCoder:(id)a3;
++ (id)withSignature:(id)signature localValidationVerified:(id)verified;
+- (SESLegacyKeySignResponse)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SESLegacyKeySignResponse
 
-+ (id)withSignature:(id)a3 localValidationVerified:(id)a4
++ (id)withSignature:(id)signature localValidationVerified:(id)verified
 {
-  v5 = a4;
-  v6 = a3;
+  verifiedCopy = verified;
+  signatureCopy = signature;
   v7 = objc_opt_new();
-  [v7 setSignature:v6];
+  [v7 setSignature:signatureCopy];
 
-  [v7 setLocalValidationVerified:v5];
+  [v7 setLocalValidationVerified:verifiedCopy];
 
   return v7;
 }
@@ -22,40 +22,40 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(SESLegacyKeySignResponse *)self signature];
-  v5 = [v4 asHexString];
-  v6 = [(SESLegacyKeySignResponse *)self localValidationVerified];
-  v7 = [v3 stringWithFormat:@"{\n\tsignature : %@, \n\tlocalValidationVerified : %d, \n}", v5, objc_msgSend(v6, "intValue")];
+  signature = [(SESLegacyKeySignResponse *)self signature];
+  asHexString = [signature asHexString];
+  localValidationVerified = [(SESLegacyKeySignResponse *)self localValidationVerified];
+  v7 = [v3 stringWithFormat:@"{\n\tsignature : %@, \n\tlocalValidationVerified : %d, \n}", asHexString, objc_msgSend(localValidationVerified, "intValue")];
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SESLegacyKeySignResponse *)self signature];
-  [v4 encodeObject:v5 forKey:@"signature"];
+  coderCopy = coder;
+  signature = [(SESLegacyKeySignResponse *)self signature];
+  [coderCopy encodeObject:signature forKey:@"signature"];
 
-  v6 = [(SESLegacyKeySignResponse *)self localValidationVerified];
-  [v4 encodeObject:v6 forKey:@"localValidationVerified"];
+  localValidationVerified = [(SESLegacyKeySignResponse *)self localValidationVerified];
+  [coderCopy encodeObject:localValidationVerified forKey:@"localValidationVerified"];
 }
 
-- (SESLegacyKeySignResponse)initWithCoder:(id)a3
+- (SESLegacyKeySignResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = SESLegacyKeySignResponse;
   v5 = [(SESLegacyKeySignResponse *)&v14 init];
   v6 = v5;
   if (v5)
   {
-    v7 = [(SESLegacyKeySignResponse *)v5 signature];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"signature"];
+    signature = [(SESLegacyKeySignResponse *)v5 signature];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"signature"];
     signature = v6->_signature;
     v6->_signature = v8;
 
-    v10 = [(SESLegacyKeySignResponse *)v6 localValidationVerified];
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localValidationVerified"];
+    localValidationVerified = [(SESLegacyKeySignResponse *)v6 localValidationVerified];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localValidationVerified"];
     localValidationVerified = v6->_localValidationVerified;
     v6->_localValidationVerified = v11;
   }

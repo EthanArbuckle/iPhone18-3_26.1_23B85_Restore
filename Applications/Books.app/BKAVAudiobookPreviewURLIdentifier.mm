@@ -1,54 +1,54 @@
 @interface BKAVAudiobookPreviewURLIdentifier
-+ (id)audiobookIdentifierWithPreviewURL:(id)a3 storeID:(id)a4 title:(id)a5 author:(id)a6 duration:(double)a7;
-- (BKAVAudiobookPreviewURLIdentifier)initWithPreviewURL:(id)a3 storeID:(id)a4 title:(id)a5 author:(id)a6 duration:(double)a7;
-- (BOOL)isEqualToIdentifier:(id)a3;
++ (id)audiobookIdentifierWithPreviewURL:(id)l storeID:(id)d title:(id)title author:(id)author duration:(double)duration;
+- (BKAVAudiobookPreviewURLIdentifier)initWithPreviewURL:(id)l storeID:(id)d title:(id)title author:(id)author duration:(double)duration;
+- (BOOL)isEqualToIdentifier:(id)identifier;
 - (id)copy;
 @end
 
 @implementation BKAVAudiobookPreviewURLIdentifier
 
-+ (id)audiobookIdentifierWithPreviewURL:(id)a3 storeID:(id)a4 title:(id)a5 author:(id)a6 duration:(double)a7
++ (id)audiobookIdentifierWithPreviewURL:(id)l storeID:(id)d title:(id)title author:(id)author duration:(double)duration
 {
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v16 = [[a1 alloc] initWithPreviewURL:v15 storeID:v14 title:v13 author:v12 duration:a7];
+  authorCopy = author;
+  titleCopy = title;
+  dCopy = d;
+  lCopy = l;
+  v16 = [[self alloc] initWithPreviewURL:lCopy storeID:dCopy title:titleCopy author:authorCopy duration:duration];
 
   return v16;
 }
 
-- (BKAVAudiobookPreviewURLIdentifier)initWithPreviewURL:(id)a3 storeID:(id)a4 title:(id)a5 author:(id)a6 duration:(double)a7
+- (BKAVAudiobookPreviewURLIdentifier)initWithPreviewURL:(id)l storeID:(id)d title:(id)title author:(id)author duration:(double)duration
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  lCopy = l;
+  dCopy = d;
+  titleCopy = title;
+  authorCopy = author;
   v20.receiver = self;
   v20.super_class = BKAVAudiobookPreviewURLIdentifier;
   v17 = [(BKAVAudiobookPreviewURLIdentifier *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_previewURL, a3);
-    objc_storeStrong(&v18->_storeID, a4);
-    objc_storeStrong(&v18->_title, a5);
-    objc_storeStrong(&v18->_author, a6);
-    v18->_duration = a7;
+    objc_storeStrong(&v17->_previewURL, l);
+    objc_storeStrong(&v18->_storeID, d);
+    objc_storeStrong(&v18->_title, title);
+    objc_storeStrong(&v18->_author, author);
+    v18->_duration = duration;
   }
 
   return v18;
 }
 
-- (BOOL)isEqualToIdentifier:(id)a3
+- (BOOL)isEqualToIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(BKAVAudiobookPreviewURLIdentifier *)self previewURL];
-    v6 = [v4 previewURL];
-    v7 = [v5 isEqual:v6];
+    previewURL = [(BKAVAudiobookPreviewURLIdentifier *)self previewURL];
+    previewURL2 = [identifierCopy previewURL];
+    v7 = [previewURL isEqual:previewURL2];
   }
 
   else
@@ -62,8 +62,8 @@
 - (id)copy
 {
   v3 = objc_opt_new();
-  v4 = [(BKAVAudiobookPreviewURLIdentifier *)self previewURL];
-  [v3 setPreviewURL:v4];
+  previewURL = [(BKAVAudiobookPreviewURLIdentifier *)self previewURL];
+  [v3 setPreviewURL:previewURL];
 
   return v3;
 }

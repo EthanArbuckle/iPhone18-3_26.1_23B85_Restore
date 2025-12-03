@@ -1,14 +1,14 @@
 @interface PLModelMigrationAction_FixupDefaultVideoStickerSuggestionScoreValues
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_FixupDefaultVideoStickerSuggestionScoreValues
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v75[1] = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E696AE18];
-  v7 = a3;
+  contextCopy = context;
   v8 = [v6 predicateWithFormat:@"%K = 0", @"mediaAnalysisVersion"];
   v74 = @"videoStickerSuggestionScore";
   LODWORD(v9) = -1.0;
@@ -18,7 +18,7 @@
 
   v12 = +[PLMediaAnalysisAssetAttributes entityName];
   v38 = 0;
-  LODWORD(v10) = [PLModelMigrator executeBatchUpdateWithEntityName:v12 predicate:v8 propertiesToUpdate:v11 managedObjectContext:v7 error:&v38];
+  LODWORD(v10) = [PLModelMigrator executeBatchUpdateWithEntityName:v12 predicate:v8 propertiesToUpdate:v11 managedObjectContext:contextCopy error:&v38];
 
   v13 = v38;
   if (v10)
@@ -28,9 +28,9 @@
 
     if (v15)
     {
-      v16 = [(PLModelMigrationActionCore *)self logger];
+      logger = [(PLModelMigrationActionCore *)self logger];
 
-      if (v16)
+      if (logger)
       {
         v72 = 0u;
         v73 = 0u;
@@ -96,10 +96,10 @@
 
   else
   {
-    if (a4)
+    if (error)
     {
       v20 = v13;
-      *a4 = v13;
+      *error = v13;
     }
 
     v21 = PLMigrationGetLog();
@@ -107,9 +107,9 @@
 
     if (v22)
     {
-      v23 = [(PLModelMigrationActionCore *)self logger];
+      logger2 = [(PLModelMigrationActionCore *)self logger];
 
-      if (v23)
+      if (logger2)
       {
         v72 = 0u;
         v73 = 0u;
@@ -180,9 +180,9 @@
 
     [(PLModelMigrationActionCore *)self finalizeProgress];
     v35 = v13;
-    if (a4)
+    if (error)
     {
-      *a4 = v35;
+      *error = v35;
     }
 
     v31 = 3;

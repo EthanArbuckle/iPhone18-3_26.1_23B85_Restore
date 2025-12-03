@@ -1,10 +1,10 @@
 @interface MADMultiModalInputSegment
-- (MADMultiModalInputSegment)initWithCoder:(id)a3;
+- (MADMultiModalInputSegment)initWithCoder:(id)coder;
 @end
 
 @implementation MADMultiModalInputSegment
 
-- (MADMultiModalInputSegment)initWithCoder:(id)a3
+- (MADMultiModalInputSegment)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = MADMultiModalInputSegment;

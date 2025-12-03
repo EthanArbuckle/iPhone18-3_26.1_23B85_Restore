@@ -1,24 +1,24 @@
 @interface UIBlurEffect
-+ (UIBlurEffect)effectWithBlurRadius:(double)a3;
-+ (UIBlurEffect)effectWithVariableBlurRadius:(double)a3 imageMask:(id)a4;
-+ (id)_effectForLightMaterial:(id)a3 darkMaterial:(id)a4 bundle:(id)a5;
-+ (id)_effectWithBlurRadius:(double)a3 scale:(double)a4;
++ (UIBlurEffect)effectWithBlurRadius:(double)radius;
++ (UIBlurEffect)effectWithVariableBlurRadius:(double)radius imageMask:(id)mask;
++ (id)_effectForLightMaterial:(id)material darkMaterial:(id)darkMaterial bundle:(id)bundle;
++ (id)_effectWithBlurRadius:(double)radius scale:(double)scale;
 + (id)_effectWithInfiniteRadius;
-+ (id)_effectWithInfiniteRadiusScale:(double)a3;
-+ (id)_effectWithStyle:(int64_t)a3 tintColor:(id)a4 invertAutomaticStyle:(BOOL)a5;
-+ (id)_effectWithVariableBlurRadius:(double)a3 imageMask:(id)a4 scale:(double)a5;
-+ (id)_effectWithVariableBlurRadius:(double)a3 imageMask:(id)a4 scale:(double)a5 allowingAXAdaptation:(BOOL)a6;
++ (id)_effectWithInfiniteRadiusScale:(double)scale;
++ (id)_effectWithStyle:(int64_t)style tintColor:(id)color invertAutomaticStyle:(BOOL)automaticStyle;
++ (id)_effectWithVariableBlurRadius:(double)radius imageMask:(id)mask scale:(double)scale;
++ (id)_effectWithVariableBlurRadius:(double)radius imageMask:(id)mask scale:(double)scale allowingAXAdaptation:(BOOL)adaptation;
 - (BOOL)_isAutomaticStyle;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (UIBlurEffect)init;
-- (UIBlurEffect)initWithCoder:(id)a3;
-- (id)_initWithImplementation:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (UIBlurEffect)initWithCoder:(id)coder;
+- (id)_initWithImplementation:(id)implementation;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)effectForUserInterfaceStyle:(int64_t)a3;
+- (id)effectForUserInterfaceStyle:(int64_t)style;
 - (id)effectSettings;
-- (void)_updateEffectDescriptor:(id)a3 forEnvironment:(id)a4 usage:(int64_t)a5;
-- (void)encodeWithCoder:(id)a3;
+- (void)_updateEffectDescriptor:(id)descriptor forEnvironment:(id)environment usage:(int64_t)usage;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UIBlurEffect
@@ -31,20 +31,20 @@
   return v4;
 }
 
-+ (id)_effectWithStyle:(int64_t)a3 tintColor:(id)a4 invertAutomaticStyle:(BOOL)a5
++ (id)_effectWithStyle:(int64_t)style tintColor:(id)color invertAutomaticStyle:(BOOL)automaticStyle
 {
-  v5 = a5;
-  v8 = a4;
-  if ((a3 & 0xFFFFFFFFFFFFFFFCLL) == 0x4B0 || (a3 - 6) < 0xF || (a3 - 1100) <= 2)
+  automaticStyleCopy = automaticStyle;
+  colorCopy = color;
+  if ((style & 0xFFFFFFFFFFFFFFFCLL) == 0x4B0 || (style - 6) < 0xF || (style - 1100) <= 2)
   {
-    v10 = [[_UIBlurEffectCoreMaterialImpl alloc] initWithStyle:a3];
-    v11 = [a1 alloc];
+    v10 = [[_UIBlurEffectCoreMaterialImpl alloc] initWithStyle:style];
+    v11 = [self alloc];
   }
 
   else
   {
-    v9 = [a1 alloc];
-    v10 = [[_UIBlurEffectLegacyImpl alloc] initWithStyle:a3 tintColor:v8 invertAutomaticStyle:v5];
+    v9 = [self alloc];
+    v10 = [[_UIBlurEffectLegacyImpl alloc] initWithStyle:style tintColor:colorCopy invertAutomaticStyle:automaticStyleCopy];
     v11 = v9;
   }
 
@@ -53,69 +53,69 @@
   return v12;
 }
 
-+ (UIBlurEffect)effectWithBlurRadius:(double)a3
++ (UIBlurEffect)effectWithBlurRadius:(double)radius
 {
-  v4 = [a1 alloc];
-  v5 = [[_UIBlurEffectModernImpl alloc] initWithBlurRadius:a3 scale:0.0];
+  v4 = [self alloc];
+  v5 = [[_UIBlurEffectModernImpl alloc] initWithBlurRadius:radius scale:0.0];
   v6 = [v4 _initWithImplementation:v5];
 
   return v6;
 }
 
-+ (id)_effectWithBlurRadius:(double)a3 scale:(double)a4
++ (id)_effectWithBlurRadius:(double)radius scale:(double)scale
 {
-  v6 = [a1 alloc];
-  v7 = [[_UIBlurEffectModernImpl alloc] initWithBlurRadius:a3 scale:a4];
+  v6 = [self alloc];
+  v7 = [[_UIBlurEffectModernImpl alloc] initWithBlurRadius:radius scale:scale];
   v8 = [v6 _initWithImplementation:v7];
 
   return v8;
 }
 
-+ (UIBlurEffect)effectWithVariableBlurRadius:(double)a3 imageMask:(id)a4
++ (UIBlurEffect)effectWithVariableBlurRadius:(double)radius imageMask:(id)mask
 {
-  v6 = a4;
-  v7 = [a1 alloc];
-  v8 = [[_UIBlurEffectVariableImpl alloc] initWithBaseRadius:v6 imageMask:1 scale:a3 allowAXAdaptation:0.0];
+  maskCopy = mask;
+  v7 = [self alloc];
+  v8 = [[_UIBlurEffectVariableImpl alloc] initWithBaseRadius:maskCopy imageMask:1 scale:radius allowAXAdaptation:0.0];
 
   v9 = [v7 _initWithImplementation:v8];
 
   return v9;
 }
 
-+ (id)_effectWithVariableBlurRadius:(double)a3 imageMask:(id)a4 scale:(double)a5
++ (id)_effectWithVariableBlurRadius:(double)radius imageMask:(id)mask scale:(double)scale
 {
-  v8 = a4;
-  v9 = [a1 alloc];
-  v10 = [[_UIBlurEffectVariableImpl alloc] initWithBaseRadius:v8 imageMask:1 scale:a3 allowAXAdaptation:a5];
+  maskCopy = mask;
+  v9 = [self alloc];
+  v10 = [[_UIBlurEffectVariableImpl alloc] initWithBaseRadius:maskCopy imageMask:1 scale:radius allowAXAdaptation:scale];
 
   v11 = [v9 _initWithImplementation:v10];
 
   return v11;
 }
 
-+ (id)_effectWithVariableBlurRadius:(double)a3 imageMask:(id)a4 scale:(double)a5 allowingAXAdaptation:(BOOL)a6
++ (id)_effectWithVariableBlurRadius:(double)radius imageMask:(id)mask scale:(double)scale allowingAXAdaptation:(BOOL)adaptation
 {
-  v6 = a6;
-  v10 = a4;
-  v11 = [a1 alloc];
-  v12 = [[_UIBlurEffectVariableImpl alloc] initWithBaseRadius:v10 imageMask:v6 scale:a3 allowAXAdaptation:a5];
+  adaptationCopy = adaptation;
+  maskCopy = mask;
+  v11 = [self alloc];
+  v12 = [[_UIBlurEffectVariableImpl alloc] initWithBaseRadius:maskCopy imageMask:adaptationCopy scale:radius allowAXAdaptation:scale];
 
   v13 = [v11 _initWithImplementation:v12];
 
   return v13;
 }
 
-+ (id)_effectForLightMaterial:(id)a3 darkMaterial:(id)a4 bundle:(id)a5
++ (id)_effectForLightMaterial:(id)material darkMaterial:(id)darkMaterial bundle:(id)bundle
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = _UICoreMaterialSanitizeMaterial(a3);
-  v11 = _UICoreMaterialSanitizeMaterial(v9);
+  bundleCopy = bundle;
+  darkMaterialCopy = darkMaterial;
+  v10 = _UICoreMaterialSanitizeMaterial(material);
+  v11 = _UICoreMaterialSanitizeMaterial(darkMaterialCopy);
 
   if (v10 | v11)
   {
-    v13 = [[_UIBlurEffectCoreMaterialImpl alloc] initWithLightMaterial:v10 darkMaterial:v11 bundle:v8];
-    v12 = [[a1 alloc] _initWithImplementation:v13];
+    v13 = [[_UIBlurEffectCoreMaterialImpl alloc] initWithLightMaterial:v10 darkMaterial:v11 bundle:bundleCopy];
+    v12 = [[self alloc] _initWithImplementation:v13];
   }
 
   else
@@ -128,17 +128,17 @@
 
 + (id)_effectWithInfiniteRadius
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = +[_UIBlurEffectAverageImpl sharedInstance];
   v4 = [v2 _initWithImplementation:v3];
 
   return v4;
 }
 
-+ (id)_effectWithInfiniteRadiusScale:(double)a3
++ (id)_effectWithInfiniteRadiusScale:(double)scale
 {
-  v4 = [a1 alloc];
-  v5 = [[_UIBlurEffectAverageImpl alloc] initWithScale:a3];
+  v4 = [self alloc];
+  v5 = [[_UIBlurEffectAverageImpl alloc] initWithScale:scale];
   v6 = [v4 _initWithImplementation:v5];
 
   return v6;
@@ -163,31 +163,31 @@
   return v6;
 }
 
-- (id)_initWithImplementation:(id)a3
+- (id)_initWithImplementation:(id)implementation
 {
-  v5 = a3;
+  implementationCopy = implementation;
   v9.receiver = self;
   v9.super_class = UIBlurEffect;
   v6 = [(UIBlurEffect *)&v9 init];
   p_isa = &v6->super.super.isa;
   if (v6)
   {
-    objc_storeStrong(&v6->_impl, a3);
+    objc_storeStrong(&v6->_impl, implementation);
     [p_isa[1] setEffect:p_isa];
   }
 
   return p_isa;
 }
 
-- (UIBlurEffect)initWithCoder:(id)a3
+- (UIBlurEffect)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = UIBlurEffect;
-  v5 = [(UIVisualEffect *)&v9 initWithCoder:v4];
+  v5 = [(UIVisualEffect *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [_UIBlurEffectImpl implementationFromCoder:v4];
+    v6 = [_UIBlurEffectImpl implementationFromCoder:coderCopy];
     impl = v5->_impl;
     v5->_impl = v6;
 
@@ -197,25 +197,25 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = UIBlurEffect;
-  v4 = a3;
-  [(UIVisualEffect *)&v5 encodeWithCoder:v4];
-  [(_UIBlurEffectImpl *)self->_impl encodeWithCoder:v4, v5.receiver, v5.super_class];
+  coderCopy = coder;
+  [(UIVisualEffect *)&v5 encodeWithCoder:coderCopy];
+  [(_UIBlurEffectImpl *)self->_impl encodeWithCoder:coderCopy, v5.receiver, v5.super_class];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  p_isa = &v4->super.super.isa;
-  if (v4 == self)
+  equalCopy = equal;
+  p_isa = &equalCopy->super.super.isa;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
-  else if (v4 && [(UIBlurEffect *)v4 isMemberOfClass:objc_opt_class()])
+  else if (equalCopy && [(UIBlurEffect *)equalCopy isMemberOfClass:objc_opt_class()])
   {
     v6 = [p_isa[1] isEqual:self->_impl];
   }
@@ -228,27 +228,27 @@
   return v6;
 }
 
-- (void)_updateEffectDescriptor:(id)a3 forEnvironment:(id)a4 usage:(int64_t)a5
+- (void)_updateEffectDescriptor:(id)descriptor forEnvironment:(id)environment usage:(int64_t)usage
 {
-  v10 = a3;
+  descriptorCopy = descriptor;
   impl = self->_impl;
-  v9 = a4;
-  [(_UIBlurEffectImpl *)impl _updateEffectDescriptor:v10 forEnvironment:v9 usage:a5];
-  LODWORD(impl) = [v9 allowsBlurring];
+  environmentCopy = environment;
+  [(_UIBlurEffectImpl *)impl _updateEffectDescriptor:descriptorCopy forEnvironment:environmentCopy usage:usage];
+  LODWORD(impl) = [environmentCopy allowsBlurring];
 
   if (impl)
   {
-    [v10 setDisableInPlaceFiltering:1];
+    [descriptorCopy setDisableInPlaceFiltering:1];
   }
 
-  if (a5 == 1)
+  if (usage == 1)
   {
-    [v10 setAllowsVibrancyInContent:1];
-    [v10 setLayerHitTestsAsOpaque:1];
+    [descriptorCopy setAllowsVibrancyInContent:1];
+    [descriptorCopy setLayerHitTestsAsOpaque:1];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if ([(_UIBlurEffectImpl *)self->_impl requiresCopying])
   {
@@ -266,14 +266,14 @@
   }
 }
 
-- (id)effectForUserInterfaceStyle:(int64_t)a3
+- (id)effectForUserInterfaceStyle:(int64_t)style
 {
   v5 = [(_UIBlurEffectImpl *)self->_impl implementationForUserInterfaceStyle:?];
   if (v5 == self->_impl)
   {
     v9.receiver = self;
     v9.super_class = UIBlurEffect;
-    v6 = [(UIVisualEffect *)&v9 effectForUserInterfaceStyle:a3];
+    v6 = [(UIVisualEffect *)&v9 effectForUserInterfaceStyle:style];
   }
 
   else
@@ -288,11 +288,11 @@
 
 - (BOOL)_isAutomaticStyle
 {
-  v2 = [(_UIBlurEffectImpl *)self->_impl style];
+  style = [(_UIBlurEffectImpl *)self->_impl style];
   result = 1;
-  if ((v2 - 4) >= 2 && v2 != 1000)
+  if ((style - 4) >= 2 && style != 1000)
   {
-    return v2 > 4999;
+    return style > 4999;
   }
 
   return result;

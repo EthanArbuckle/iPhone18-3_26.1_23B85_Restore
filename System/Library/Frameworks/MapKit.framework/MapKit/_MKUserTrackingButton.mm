@@ -1,45 +1,45 @@
 @interface _MKUserTrackingButton
-+ (_MKUserTrackingButton)buttonWithUserTrackingView:(id)a3 withType:(int64_t)a4 applyDefaultImageIfNeeded:(BOOL)a5;
-- (CGSize)sizeThatFits:(CGSize)a3;
++ (_MKUserTrackingButton)buttonWithUserTrackingView:(id)view withType:(int64_t)type applyDefaultImageIfNeeded:(BOOL)needed;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (MKMapView)mapView;
-- (UIEdgeInsets)_imageEdgeInsetsForUserTrackingMode:(int64_t)a3;
-- (id)_defaultImageForUserTrackingMode:(int64_t)a3 controlState:(unint64_t)a4;
-- (id)_defaultLandscapeImagePhoneForUserTrackingMode:(int64_t)a3 controlState:(unint64_t)a4;
-- (id)_imageForState:(int64_t)a3 controlState:(unint64_t)a4;
-- (id)_imageForUserTrackingMode:(int64_t)a3 controlState:(unint64_t)a4;
-- (id)_landscapeImagePhoneForUserTrackingMode:(int64_t)a3 controlState:(unint64_t)a4;
+- (UIEdgeInsets)_imageEdgeInsetsForUserTrackingMode:(int64_t)mode;
+- (id)_defaultImageForUserTrackingMode:(int64_t)mode controlState:(unint64_t)state;
+- (id)_defaultLandscapeImagePhoneForUserTrackingMode:(int64_t)mode controlState:(unint64_t)state;
+- (id)_imageForState:(int64_t)state controlState:(unint64_t)controlState;
+- (id)_imageForUserTrackingMode:(int64_t)mode controlState:(unint64_t)state;
+- (id)_landscapeImagePhoneForUserTrackingMode:(int64_t)mode controlState:(unint64_t)state;
 - (void)_repositionViews;
-- (void)_setImage:(id)a3 forUserTrackingMode:(int64_t)a4 controlState:(unint64_t)a5;
-- (void)_setImageEdgeInsets:(UIEdgeInsets)a3 forUserTrackingMode:(int64_t)a4;
-- (void)_setInternallyEnabled:(BOOL)a3;
-- (void)_setLandscapeImagePhone:(id)a3 forUserTrackingMode:(int64_t)a4 controlState:(unint64_t)a5;
-- (void)setControlSize:(unint64_t)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setMapView:(id)a3;
-- (void)traitEnvironment:(id)a3 didChangeTraitCollection:(id)a4;
-- (void)updateForMiniBarState:(BOOL)a3;
+- (void)_setImage:(id)image forUserTrackingMode:(int64_t)mode controlState:(unint64_t)state;
+- (void)_setImageEdgeInsets:(UIEdgeInsets)insets forUserTrackingMode:(int64_t)mode;
+- (void)_setInternallyEnabled:(BOOL)enabled;
+- (void)_setLandscapeImagePhone:(id)phone forUserTrackingMode:(int64_t)mode controlState:(unint64_t)state;
+- (void)setControlSize:(unint64_t)size;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setMapView:(id)view;
+- (void)traitEnvironment:(id)environment didChangeTraitCollection:(id)collection;
+- (void)updateForMiniBarState:(BOOL)state;
 @end
 
 @implementation _MKUserTrackingButton
 
 - (void)_repositionViews
 {
-  v3 = [(_MKUserTrackingButtonController *)self->_controller state];
-  switch(v3)
+  state = [(_MKUserTrackingButtonController *)self->_controller state];
+  switch(state)
   {
     case 3:
-      v4 = self;
+      selfCopy3 = self;
       v5 = 2;
       goto LABEL_7;
     case 2:
-      v4 = self;
+      selfCopy3 = self;
       v5 = 1;
       goto LABEL_7;
     case 0:
-      v4 = self;
+      selfCopy3 = self;
       v5 = 0;
 LABEL_7:
-      [(_MKUserTrackingButton *)v4 _imageEdgeInsetsForUserTrackingMode:v5];
+      [(_MKUserTrackingButton *)selfCopy3 _imageEdgeInsetsForUserTrackingMode:v5];
       goto LABEL_9;
   }
 
@@ -52,19 +52,19 @@ LABEL_9:
   [(_MKUserTrackingButton *)self setImageEdgeInsets:v6, v7, v8, v9];
 }
 
-- (void)_setInternallyEnabled:(BOOL)a3
+- (void)_setInternallyEnabled:(BOOL)enabled
 {
-  self->_internallyEnabled = a3;
+  self->_internallyEnabled = enabled;
   explicitlyEnabled = self->_explicitlyEnabled;
   v4.receiver = self;
   v4.super_class = _MKUserTrackingButton;
-  [(_MKUserTrackingButton *)&v4 setEnabled:explicitlyEnabled & a3];
+  [(_MKUserTrackingButton *)&v4 setEnabled:explicitlyEnabled & enabled];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  self->_explicitlyEnabled = a3;
-  v5 = a3 && self->_internallyEnabled;
+  self->_explicitlyEnabled = enabled;
+  v5 = enabled && self->_internallyEnabled;
   v7 = v3;
   v8 = v4;
   v6.receiver = self;
@@ -72,18 +72,18 @@ LABEL_9:
   [(_MKUserTrackingButton *)&v6 setEnabled:v5];
 }
 
-- (void)updateForMiniBarState:(BOOL)a3
+- (void)updateForMiniBarState:(BOOL)state
 {
-  if (self->_inMiniBar != a3)
+  if (self->_inMiniBar != state)
   {
-    self->_inMiniBar = a3;
+    self->_inMiniBar = state;
     [(_MKUserTrackingButtonController *)self->_controller _reloadState];
 
     [(_MKUserTrackingButton *)self sizeToFit];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v3 = 36.0;
   if (self->_inMiniBar)
@@ -97,12 +97,12 @@ LABEL_9:
   return result;
 }
 
-- (void)_setImageEdgeInsets:(UIEdgeInsets)a3 forUserTrackingMode:(int64_t)a4
+- (void)_setImageEdgeInsets:(UIEdgeInsets)insets forUserTrackingMode:(int64_t)mode
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   if (!self->_customImageEdgeInsets)
   {
     v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -112,7 +112,7 @@ LABEL_9:
 
   v12 = [MEMORY[0x1E696B098] valueWithUIEdgeInsets:{top, left, bottom, right}];
   v13 = self->_customImageEdgeInsets;
-  v14 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v14 = [MEMORY[0x1E696AD98] numberWithInteger:mode];
   [(NSMutableDictionary *)v13 setObject:v12 forKeyedSubscript:v14];
 
   controller = self->_controller;
@@ -120,7 +120,7 @@ LABEL_9:
   [(_MKUserTrackingButtonController *)controller _reloadState];
 }
 
-- (UIEdgeInsets)_imageEdgeInsetsForUserTrackingMode:(int64_t)a3
+- (UIEdgeInsets)_imageEdgeInsetsForUserTrackingMode:(int64_t)mode
 {
   customImageEdgeInsets = self->_customImageEdgeInsets;
   v6 = [MEMORY[0x1E696AD98] numberWithInteger:?];
@@ -137,7 +137,7 @@ LABEL_9:
   }
 
   v13 = 0.0;
-  if (a3 > 1)
+  if (mode > 1)
   {
     v15 = 0.0;
     v11 = 0.0;
@@ -195,9 +195,9 @@ LABEL_15:
   return result;
 }
 
-- (void)_setLandscapeImagePhone:(id)a3 forUserTrackingMode:(int64_t)a4 controlState:(unint64_t)a5
+- (void)_setLandscapeImagePhone:(id)phone forUserTrackingMode:(int64_t)mode controlState:(unint64_t)state
 {
-  v16 = a3;
+  phoneCopy = phone;
   customLandscapeImagePhones = self->_customLandscapeImagePhones;
   if (!customLandscapeImagePhones)
   {
@@ -208,21 +208,21 @@ LABEL_15:
     customLandscapeImagePhones = self->_customLandscapeImagePhones;
   }
 
-  v11 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v11 = [MEMORY[0x1E696AD98] numberWithInteger:mode];
   v12 = [(NSMutableDictionary *)customLandscapeImagePhones objectForKeyedSubscript:v11];
 
   if (!v12)
   {
     v12 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v13 = self->_customLandscapeImagePhones;
-    v14 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+    v14 = [MEMORY[0x1E696AD98] numberWithInteger:mode];
     [(NSMutableDictionary *)v13 setObject:v12 forKeyedSubscript:v14];
   }
 
-  v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a5];
-  if (v16)
+  v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:state];
+  if (phoneCopy)
   {
-    [v12 setObject:v16 forKeyedSubscript:v15];
+    [v12 setObject:phoneCopy forKeyedSubscript:v15];
   }
 
   else
@@ -233,23 +233,23 @@ LABEL_15:
   [(_MKUserTrackingButtonController *)self->_controller _reloadState];
 }
 
-- (id)_landscapeImagePhoneForUserTrackingMode:(int64_t)a3 controlState:(unint64_t)a4
+- (id)_landscapeImagePhoneForUserTrackingMode:(int64_t)mode controlState:(unint64_t)state
 {
   customLandscapeImagePhones = self->_customLandscapeImagePhones;
   v8 = [MEMORY[0x1E696AD98] numberWithInteger:?];
   v9 = [(NSMutableDictionary *)customLandscapeImagePhones objectForKeyedSubscript:v8];
 
-  if (!v9 || ([MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "objectForKeyedSubscript:", v10), v11 = objc_claimAutoreleasedReturnValue(), v10, !v11))
+  if (!v9 || ([MEMORY[0x1E696AD98] numberWithUnsignedInteger:state], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "objectForKeyedSubscript:", v10), v11 = objc_claimAutoreleasedReturnValue(), v10, !v11))
   {
-    v11 = [(_MKUserTrackingButton *)self _defaultLandscapeImagePhoneForUserTrackingMode:a3 controlState:a4];
+    v11 = [(_MKUserTrackingButton *)self _defaultLandscapeImagePhoneForUserTrackingMode:mode controlState:state];
   }
 
   return v11;
 }
 
-- (id)_defaultLandscapeImagePhoneForUserTrackingMode:(int64_t)a3 controlState:(unint64_t)a4
+- (id)_defaultLandscapeImagePhoneForUserTrackingMode:(int64_t)mode controlState:(unint64_t)state
 {
-  if (a4)
+  if (state)
   {
     v8 = 0;
 
@@ -261,12 +261,12 @@ LABEL_15:
   if (v8)
   {
     v11 = @"location";
-    if (a3 == 1)
+    if (mode == 1)
     {
       v11 = @"location.fill";
     }
 
-    if (a3 == 2)
+    if (mode == 2)
     {
       v12 = @"location.north.line.fill";
     }
@@ -280,13 +280,13 @@ LABEL_15:
     goto LABEL_19;
   }
 
-  if (a3 == 2)
+  if (mode == 2)
   {
     v13 = MEMORY[0x1E69DCAB8];
     v14 = @"TrackingHeadingMaskLandscape.png";
   }
 
-  else if (a3 == 1)
+  else if (mode == 1)
   {
     v13 = MEMORY[0x1E69DCAB8];
     v14 = @"TrackingLocationMaskLandscape.png";
@@ -294,7 +294,7 @@ LABEL_15:
 
   else
   {
-    if (a3)
+    if (mode)
     {
       goto LABEL_19;
     }
@@ -309,9 +309,9 @@ LABEL_19:
   return v8;
 }
 
-- (void)_setImage:(id)a3 forUserTrackingMode:(int64_t)a4 controlState:(unint64_t)a5
+- (void)_setImage:(id)image forUserTrackingMode:(int64_t)mode controlState:(unint64_t)state
 {
-  v16 = a3;
+  imageCopy = image;
   customImages = self->_customImages;
   if (!customImages)
   {
@@ -322,21 +322,21 @@ LABEL_19:
     customImages = self->_customImages;
   }
 
-  v11 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v11 = [MEMORY[0x1E696AD98] numberWithInteger:mode];
   v12 = [(NSMutableDictionary *)customImages objectForKeyedSubscript:v11];
 
   if (!v12)
   {
     v12 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v13 = self->_customImages;
-    v14 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+    v14 = [MEMORY[0x1E696AD98] numberWithInteger:mode];
     [(NSMutableDictionary *)v13 setObject:v12 forKeyedSubscript:v14];
   }
 
-  v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a5];
-  if (v16)
+  v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:state];
+  if (imageCopy)
   {
-    [v12 setObject:v16 forKeyedSubscript:v15];
+    [v12 setObject:imageCopy forKeyedSubscript:v15];
   }
 
   else
@@ -347,17 +347,17 @@ LABEL_19:
   [(_MKUserTrackingButtonController *)self->_controller _reloadState];
 }
 
-- (id)_imageForUserTrackingMode:(int64_t)a3 controlState:(unint64_t)a4
+- (id)_imageForUserTrackingMode:(int64_t)mode controlState:(unint64_t)state
 {
   customImages = self->_customImages;
   v8 = [MEMORY[0x1E696AD98] numberWithInteger:?];
   v9 = [(NSMutableDictionary *)customImages objectForKeyedSubscript:v8];
 
-  if (!v9 || ([MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "objectForKeyedSubscript:", v10), v11 = objc_claimAutoreleasedReturnValue(), v10, !v11))
+  if (!v9 || ([MEMORY[0x1E696AD98] numberWithUnsignedInteger:state], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "objectForKeyedSubscript:", v10), v11 = objc_claimAutoreleasedReturnValue(), v10, !v11))
   {
     if (self->_applyDefaultImageIfNeeded)
     {
-      v11 = [(_MKUserTrackingButton *)self _defaultImageForUserTrackingMode:a3 controlState:a4];
+      v11 = [(_MKUserTrackingButton *)self _defaultImageForUserTrackingMode:mode controlState:state];
     }
 
     else
@@ -369,9 +369,9 @@ LABEL_19:
   return v11;
 }
 
-- (id)_defaultImageForUserTrackingMode:(int64_t)a3 controlState:(unint64_t)a4
+- (id)_defaultImageForUserTrackingMode:(int64_t)mode controlState:(unint64_t)state
 {
-  if (a4)
+  if (state)
   {
     v8 = 0;
 
@@ -383,12 +383,12 @@ LABEL_19:
   if (v8)
   {
     v11 = @"location";
-    if (a3 == 1)
+    if (mode == 1)
     {
       v11 = @"location.fill";
     }
 
-    if (a3 == 2)
+    if (mode == 2)
     {
       v12 = @"location.north.line.fill";
     }
@@ -402,13 +402,13 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if (a3 == 2)
+  if (mode == 2)
   {
     v13 = MEMORY[0x1E69DCAB8];
     v14 = @"TrackingHeadingMask.png";
   }
 
-  else if (a3 == 1)
+  else if (mode == 1)
   {
     v13 = MEMORY[0x1E69DCAB8];
     v14 = @"TrackingLocationMask.png";
@@ -416,7 +416,7 @@ LABEL_19:
 
   else
   {
-    if (a3)
+    if (mode)
     {
       goto LABEL_19;
     }
@@ -431,17 +431,17 @@ LABEL_19:
   return v8;
 }
 
-- (id)_imageForState:(int64_t)a3 controlState:(unint64_t)a4
+- (id)_imageForState:(int64_t)state controlState:(unint64_t)controlState
 {
   v4 = 0;
-  if (a3 <= 0)
+  if (state <= 0)
   {
-    if (a3 == -1)
+    if (state == -1)
     {
       goto LABEL_10;
     }
 
-    if (a3)
+    if (state)
     {
       goto LABEL_21;
     }
@@ -456,7 +456,7 @@ LABEL_19:
     goto LABEL_15;
   }
 
-  switch(a3)
+  switch(state)
   {
     case 3:
       if (!self->_inMiniBar)
@@ -467,7 +467,7 @@ LABEL_19:
 
       v5 = 2;
 LABEL_15:
-      v6 = [(_MKUserTrackingButton *)self _landscapeImagePhoneForUserTrackingMode:v5 controlState:a4];
+      v6 = [(_MKUserTrackingButton *)self _landscapeImagePhoneForUserTrackingMode:v5 controlState:controlState];
       goto LABEL_20;
     case 2:
       if (self->_inMiniBar)
@@ -478,11 +478,11 @@ LABEL_15:
 
       v7 = 1;
 LABEL_19:
-      v6 = [(_MKUserTrackingButton *)self _imageForUserTrackingMode:v7 controlState:a4];
+      v6 = [(_MKUserTrackingButton *)self _imageForUserTrackingMode:v7 controlState:controlState];
       goto LABEL_20;
     case 1:
 LABEL_10:
-      v6 = [MEMORY[0x1E69DCAB8] _mapkit_imageNamed:{@"TrackingEmpty.png", a4}];
+      v6 = [MEMORY[0x1E69DCAB8] _mapkit_imageNamed:{@"TrackingEmpty.png", controlState}];
 LABEL_20:
       v4 = v6;
       break;
@@ -493,13 +493,13 @@ LABEL_21:
   return v4;
 }
 
-- (void)traitEnvironment:(id)a3 didChangeTraitCollection:(id)a4
+- (void)traitEnvironment:(id)environment didChangeTraitCollection:(id)collection
 {
-  v5 = [a4 userInterfaceStyle];
-  v6 = [(_MKUserTrackingButton *)self traitCollection];
-  v7 = [v6 userInterfaceStyle];
+  userInterfaceStyle = [collection userInterfaceStyle];
+  traitCollection = [(_MKUserTrackingButton *)self traitCollection];
+  userInterfaceStyle2 = [traitCollection userInterfaceStyle];
 
-  if (v5 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
     controller = self->_controller;
 
@@ -507,68 +507,68 @@ LABEL_21:
   }
 }
 
-- (void)setControlSize:(unint64_t)a3
+- (void)setControlSize:(unint64_t)size
 {
-  if (self->_controlSize != a3)
+  if (self->_controlSize != size)
   {
-    self->_controlSize = a3;
+    self->_controlSize = size;
     [(_MKUserTrackingButtonController *)self->_controller setControlSize:?];
   }
 }
 
-- (void)setMapView:(id)a3
+- (void)setMapView:(id)view
 {
-  v5 = a3;
-  v13 = v5;
-  if (v5 && (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v5 = v13, (isKindOfClass & 1) == 0))
+  viewCopy = view;
+  v13 = viewCopy;
+  if (viewCopy && (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), viewCopy = v13, (isKindOfClass & 1) == 0))
   {
     v7 = MEMORY[0x1E695DF30];
     v8 = *MEMORY[0x1E695D940];
     v9 = MEMORY[0x1E696AEC0];
-    v10 = self;
+    selfCopy = self;
     v11 = NSStringFromSelector(a2);
-    v12 = [v9 stringWithFormat:@"%@ %@", v10, v11];
+    v12 = [v9 stringWithFormat:@"%@ %@", selfCopy, v11];
 
     [v7 raise:v8 format:{@"%@: mapView must be an MKMapView instance", v12}];
   }
 
   else
   {
-    [(_MKUserTrackingButtonController *)self->_controller setUserTrackingView:v5];
+    [(_MKUserTrackingButtonController *)self->_controller setUserTrackingView:viewCopy];
   }
 }
 
 - (MKMapView)mapView
 {
-  v3 = [(_MKUserTrackingButtonController *)self->_controller userTrackingView];
+  userTrackingView = [(_MKUserTrackingButtonController *)self->_controller userTrackingView];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(_MKUserTrackingButtonController *)self->_controller userTrackingView];
+    userTrackingView2 = [(_MKUserTrackingButtonController *)self->_controller userTrackingView];
   }
 
   else
   {
-    v5 = 0;
+    userTrackingView2 = 0;
   }
 
-  return v5;
+  return userTrackingView2;
 }
 
-+ (_MKUserTrackingButton)buttonWithUserTrackingView:(id)a3 withType:(int64_t)a4 applyDefaultImageIfNeeded:(BOOL)a5
++ (_MKUserTrackingButton)buttonWithUserTrackingView:(id)view withType:(int64_t)type applyDefaultImageIfNeeded:(BOOL)needed
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = [a1 buttonWithType:a4];
+  viewCopy = view;
+  v9 = [self buttonWithType:type];
   [v9 sizeToFit];
   *(v9 + 777) = 1;
   *(v9 + 778) = 1;
-  *(v9 + 779) = a5;
+  *(v9 + 779) = needed;
   v10 = [_MKUserTrackingButtonController alloc];
-  v11 = [v9 imageView];
-  v12 = [(_MKUserTrackingButtonController *)v10 initWithTarget:v9 userTrackingView:v8 imageView:v11 button:v9];
+  imageView = [v9 imageView];
+  v12 = [(_MKUserTrackingButtonController *)v10 initWithTarget:v9 userTrackingView:viewCopy imageView:imageView button:v9];
 
   v13 = *(v9 + 744);
   *(v9 + 744) = v12;

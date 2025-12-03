@@ -1,24 +1,24 @@
 @interface NEKSyncCoordinator
 - (BOOL)okToPerformDeltaSync;
-- (NEKSyncCoordinator)initWithEnvironment:(id)a3;
+- (NEKSyncCoordinator)initWithEnvironment:(id)environment;
 - (id)environment;
-- (void)syncCoordinator:(id)a3 beginSyncSession:(id)a4;
-- (void)syncCoordinator:(id)a3 didInvalidateSyncSession:(id)a4;
-- (void)syncCoordinatorDidChangeSyncRestriction:(id)a3;
+- (void)syncCoordinator:(id)coordinator beginSyncSession:(id)session;
+- (void)syncCoordinator:(id)coordinator didInvalidateSyncSession:(id)session;
+- (void)syncCoordinatorDidChangeSyncRestriction:(id)restriction;
 @end
 
 @implementation NEKSyncCoordinator
 
-- (NEKSyncCoordinator)initWithEnvironment:(id)a3
+- (NEKSyncCoordinator)initWithEnvironment:(id)environment
 {
-  v4 = a3;
+  environmentCopy = environment;
   v12.receiver = self;
   v12.super_class = NEKSyncCoordinator;
   v5 = [(NEKSyncCoordinator *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_environment, v4);
+    objc_storeWeak(&v5->_environment, environmentCopy);
     v7 = [PSYSyncCoordinator syncCoordinatorWithServiceName:@"com.apple.pairedsync.eventkitsync"];
     syncCoordinator = v6->_syncCoordinator;
     v6->_syncCoordinator = v7;
@@ -66,41 +66,41 @@
   return !v5 || syncRestrictionShadow == 0;
 }
 
-- (void)syncCoordinator:(id)a3 beginSyncSession:(id)a4
+- (void)syncCoordinator:(id)coordinator beginSyncSession:(id)session
 {
-  v6 = a3;
-  v7 = a4;
+  coordinatorCopy = coordinator;
+  sessionCopy = session;
   v8 = *(qword_1000D18A8 + 8);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     sub_100070E64(v8);
   }
 
-  [(NEKSyncCoordinator *)self setSession:v7];
-  v9 = [(NEKSyncCoordinator *)self session];
-  v10 = [v9 syncSessionType];
+  [(NEKSyncCoordinator *)self setSession:sessionCopy];
+  session = [(NEKSyncCoordinator *)self session];
+  syncSessionType = [session syncSessionType];
 
-  if (!v10)
+  if (!syncSessionType)
   {
     v13 = +[NSNotificationCenter defaultCenter];
-    v14 = [objc_opt_class() receivedStartSyncNotificationString];
+    receivedStartSyncNotificationString = [objc_opt_class() receivedStartSyncNotificationString];
     goto LABEL_7;
   }
 
-  v11 = [(NEKSyncCoordinator *)self session];
-  v12 = [v11 syncSessionType];
+  session2 = [(NEKSyncCoordinator *)self session];
+  syncSessionType2 = [session2 syncSessionType];
 
-  if (v12 == 1)
+  if (syncSessionType2 == 1)
   {
     v13 = +[NSNotificationCenter defaultCenter];
-    v14 = [objc_opt_class() receivedReunionSyncNotificationString];
+    receivedStartSyncNotificationString = [objc_opt_class() receivedReunionSyncNotificationString];
 LABEL_7:
-    v15 = v14;
-    [v13 postNotificationName:v14 object:self];
+    v15 = receivedStartSyncNotificationString;
+    [v13 postNotificationName:receivedStartSyncNotificationString object:self];
   }
 }
 
-- (void)syncCoordinator:(id)a3 didInvalidateSyncSession:(id)a4
+- (void)syncCoordinator:(id)coordinator didInvalidateSyncSession:(id)session
 {
   v5 = *(qword_1000D18A8 + 8);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -111,13 +111,13 @@ LABEL_7:
   [(NEKSyncCoordinator *)self setSession:0];
 }
 
-- (void)syncCoordinatorDidChangeSyncRestriction:(id)a3
+- (void)syncCoordinatorDidChangeSyncRestriction:(id)restriction
 {
-  v4 = a3;
+  restrictionCopy = restriction;
   os_unfair_lock_lock(&self->_shadowLock);
-  v5 = [v4 syncRestriction];
+  syncRestriction = [restrictionCopy syncRestriction];
 
-  self->_syncRestrictionShadow = v5;
+  self->_syncRestrictionShadow = syncRestriction;
   v6 = *(qword_1000D18A8 + 8);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {

@@ -1,22 +1,22 @@
 @interface SIRINLUEXTERNALUsoOntologyVocabulary
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addElementNames:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addElementNames:(id)names;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUEXTERNALUsoOntologyVocabulary
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   usoVersion = self->_usoVersion;
-  v6 = *(v4 + 2);
+  v6 = *(fromCopy + 2);
   if (usoVersion)
   {
     if (v6)
@@ -34,7 +34,7 @@
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = *(v4 + 1);
+  v7 = *(fromCopy + 1);
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
@@ -61,13 +61,13 @@
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((usoVersion = self->_usoVersion, !(usoVersion | v4[2])) || -[SIRINLUEXTERNALSemVer isEqual:](usoVersion, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((usoVersion = self->_usoVersion, !(usoVersion | equalCopy[2])) || -[SIRINLUEXTERNALSemVer isEqual:](usoVersion, "isEqual:")))
   {
     elementNames = self->_elementNames;
-    if (elementNames | v4[1])
+    if (elementNames | equalCopy[1])
     {
       v7 = [(NSMutableArray *)elementNames isEqual:?];
     }
@@ -86,11 +86,11 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(SIRINLUEXTERNALSemVer *)self->_usoVersion copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(SIRINLUEXTERNALSemVer *)self->_usoVersion copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
@@ -114,7 +114,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{a3, v16}];
+        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{zone, v16}];
         [v5 addElementNames:v13];
 
         ++v12;
@@ -131,34 +131,34 @@
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_usoVersion)
   {
-    [v8 setUsoVersion:?];
+    [toCopy setUsoVersion:?];
   }
 
   if ([(SIRINLUEXTERNALUsoOntologyVocabulary *)self elementNamesCount])
   {
-    [v8 clearElementNames];
-    v4 = [(SIRINLUEXTERNALUsoOntologyVocabulary *)self elementNamesCount];
-    if (v4)
+    [toCopy clearElementNames];
+    elementNamesCount = [(SIRINLUEXTERNALUsoOntologyVocabulary *)self elementNamesCount];
+    if (elementNamesCount)
     {
-      v5 = v4;
+      v5 = elementNamesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(SIRINLUEXTERNALUsoOntologyVocabulary *)self elementNamesAtIndex:i];
-        [v8 addElementNames:v7];
+        [toCopy addElementNames:v7];
       }
     }
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_usoVersion)
   {
     PBDataWriterWriteSubmessage();
@@ -201,21 +201,21 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   usoVersion = self->_usoVersion;
   if (usoVersion)
   {
-    v5 = [(SIRINLUEXTERNALSemVer *)usoVersion dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"uso_version"];
+    dictionaryRepresentation = [(SIRINLUEXTERNALSemVer *)usoVersion dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"uso_version"];
   }
 
   elementNames = self->_elementNames;
   if (elementNames)
   {
-    [v3 setObject:elementNames forKey:@"element_names"];
+    [dictionary setObject:elementNames forKey:@"element_names"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -224,28 +224,28 @@
   v8.receiver = self;
   v8.super_class = SIRINLUEXTERNALUsoOntologyVocabulary;
   v4 = [(SIRINLUEXTERNALUsoOntologyVocabulary *)&v8 description];
-  v5 = [(SIRINLUEXTERNALUsoOntologyVocabulary *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUEXTERNALUsoOntologyVocabulary *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addElementNames:(id)a3
+- (void)addElementNames:(id)names
 {
-  v4 = a3;
+  namesCopy = names;
   elementNames = self->_elementNames;
-  v8 = v4;
+  v8 = namesCopy;
   if (!elementNames)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_elementNames;
     self->_elementNames = v6;
 
-    v4 = v8;
+    namesCopy = v8;
     elementNames = self->_elementNames;
   }
 
-  [(NSMutableArray *)elementNames addObject:v4];
+  [(NSMutableArray *)elementNames addObject:namesCopy];
 }
 
 @end

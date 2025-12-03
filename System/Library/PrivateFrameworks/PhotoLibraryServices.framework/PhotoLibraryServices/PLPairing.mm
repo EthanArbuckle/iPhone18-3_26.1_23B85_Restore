@@ -1,27 +1,27 @@
 @interface PLPairing
-- (BOOL)processPairingForEntireLibraryInContext:(id)a3 error:(id *)a4;
-- (BOOL)processPairingForGroupIDs:(id)a3 inContext:(id)a4 error:(id *)a5;
+- (BOOL)processPairingForEntireLibraryInContext:(id)context error:(id *)error;
+- (BOOL)processPairingForGroupIDs:(id)ds inContext:(id)context error:(id *)error;
 - (PLPairing)init;
 @end
 
 @implementation PLPairing
 
-- (BOOL)processPairingForGroupIDs:(id)a3 inContext:(id)a4 error:(id *)a5
+- (BOOL)processPairingForGroupIDs:(id)ds inContext:(id)context error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
+  dsCopy = ds;
+  contextCopy = context;
   if ((!MEMORY[0x19EAEE520]() || (PLIsAssetsd() & 1) == 0) && (PLIsReallyAssetsd() & 1) == 0)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v16 = NSStringFromSelector(a2);
-    [v15 handleFailureInMethod:a2 object:self file:@"PLPairing.m" lineNumber:99 description:{@"%@: Only do pairing in server", v16}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPairing.m" lineNumber:99 description:{@"%@: Only do pairing in server", v16}];
   }
 
   v28 = 0;
   v29 = &v28;
   v30 = 0x2020000000;
   v31 = 1;
-  if (v9 && ![v9 count])
+  if (dsCopy && ![dsCopy count])
   {
     v13 = 1;
   }
@@ -39,17 +39,17 @@
     v17[1] = 3221225472;
     v17[2] = __55__PLPairing_processPairingForGroupIDs_inContext_error___block_invoke;
     v17[3] = &unk_1E7578898;
-    v18 = v9;
+    v18 = dsCopy;
     v20 = &v28;
-    v19 = v10;
+    v19 = contextCopy;
     v21 = &v22;
     [v19 performBlockAndWait:v17];
     v11 = *(v29 + 24);
     v12 = v23[5];
-    if (a5 && (v11 & 1) == 0)
+    if (error && (v11 & 1) == 0)
     {
       v12 = v12;
-      *a5 = v12;
+      *error = v12;
     }
 
     os_unfair_lock_unlock(&self->_lock);
@@ -79,14 +79,14 @@ void __55__PLPairing_processPairingForGroupIDs_inContext_error___block_invoke(ui
   }
 }
 
-- (BOOL)processPairingForEntireLibraryInContext:(id)a3 error:(id *)a4
+- (BOOL)processPairingForEntireLibraryInContext:(id)context error:(id *)error
 {
-  v7 = a3;
+  contextCopy = context;
   if ((!MEMORY[0x19EAEE520]() || (PLIsAssetsd() & 1) == 0) && (PLIsReallyAssetsd() & 1) == 0)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v12 = NSStringFromSelector(a2);
-    [v11 handleFailureInMethod:a2 object:self file:@"PLPairing.m" lineNumber:80 description:{@"%@: Only do pairing in server", v12}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPairing.m" lineNumber:80 description:{@"%@: Only do pairing in server", v12}];
   }
 
   v17 = 0;
@@ -99,9 +99,9 @@ void __55__PLPairing_processPairingForGroupIDs_inContext_error___block_invoke(ui
   v13[2] = __59__PLPairing_processPairingForEntireLibraryInContext_error___block_invoke;
   v13[3] = &unk_1E7576208;
   v15 = &v17;
-  v8 = v7;
+  v8 = contextCopy;
   v14 = v8;
-  v16 = a4;
+  errorCopy = error;
   [v8 performBlockAndWait:v13];
   os_unfair_lock_unlock(&self->_lock);
   v9 = *(v18 + 24);

@@ -1,21 +1,21 @@
 @interface OKMediaSearchClusterPredicate
-- (OKMediaSearchClusterPredicate)initWithString:(id)a3 type:(unint64_t)a4 options:(unint64_t)a5;
-- (id)evaluateItems:(id)a3 progressBlock:(id)a4;
+- (OKMediaSearchClusterPredicate)initWithString:(id)string type:(unint64_t)type options:(unint64_t)options;
+- (id)evaluateItems:(id)items progressBlock:(id)block;
 - (void)dealloc;
 @end
 
 @implementation OKMediaSearchClusterPredicate
 
-- (OKMediaSearchClusterPredicate)initWithString:(id)a3 type:(unint64_t)a4 options:(unint64_t)a5
+- (OKMediaSearchClusterPredicate)initWithString:(id)string type:(unint64_t)type options:(unint64_t)options
 {
   v10.receiver = self;
   v10.super_class = OKMediaSearchClusterPredicate;
   v8 = [(OKMediaClusterPredicate *)&v10 init];
   if (v8)
   {
-    v8->_searchString = [a3 copy];
-    v8->_type = a4;
-    v8->_options = a5;
+    v8->_searchString = [string copy];
+    v8->_type = type;
+    v8->_options = options;
     -[OKMediaClusterPredicate setUniqueID:](v8, "setUniqueID:", [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", @"search", -[NSString sha1HashString](v8->_searchString, "sha1HashString")]);
     [(OKMediaClusterPredicate *)v8 setCategory:3];
   }
@@ -37,12 +37,12 @@
   [(OKMediaClusterPredicate *)&v4 dealloc];
 }
 
-- (id)evaluateItems:(id)a3 progressBlock:(id)a4
+- (id)evaluateItems:(id)items progressBlock:(id)block
 {
   v72 = *MEMORY[0x277D85DE8];
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
   context = objc_autoreleasePoolPush();
-  obj = [MEMORY[0x277CBEB58] setWithSet:a3];
+  obj = [MEMORY[0x277CBEB58] setWithSet:items];
   v7 = objc_alloc_init(OKMediaCluster);
   -[OKMediaCluster setTitle:](v7, "setTitle:", [objc_msgSend(MEMORY[0x277CCA8D8] bundleForClass:{objc_opt_class()), "localizedStringForKey:value:table:", @"Search Results", @"Search Results", @"Localizable"}]);
   v44 = v7;
@@ -256,8 +256,8 @@ LABEL_43:
   }
 
   v37 = [objc_alloc(MEMORY[0x277CCAC98]) initWithKey:@"creationDate" ascending:0];
-  v38 = [(OKMediaCluster *)v44 items];
-  -[NSMutableArray sortUsingDescriptors:](v38, "sortUsingDescriptors:", [MEMORY[0x277CBEA60] arrayWithObject:v37]);
+  items = [(OKMediaCluster *)v44 items];
+  -[NSMutableArray sortUsingDescriptors:](items, "sortUsingDescriptors:", [MEMORY[0x277CBEA60] arrayWithObject:v37]);
   objc_autoreleasePoolPop(context);
   return v6;
 }

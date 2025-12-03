@@ -11,11 +11,11 @@
   v4 = a3;
   v5 = [v4 componentsSeparatedByString:@"."];
   v6 = [v5 count];
-  v7 = [v5 firstObject];
-  v8 = [a1 valueForKey:v7];
+  firstObject = [v5 firstObject];
+  v8 = [self valueForKey:firstObject];
   if (v6 < 2)
   {
-    v11 = [a1 _independentlyAnimatableMemberKeyPathsForProperty:v4];
+    v11 = [self _independentlyAnimatableMemberKeyPathsForProperty:v4];
   }
 
   else
@@ -43,8 +43,8 @@
 
 - (void)_setValue:()SBSAGeometricTypeAnimationDecomposing byUpdatingMemberKeypaths:forKeyPath:
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"NSObject+SBSAGeometricTypeAnimationDecomposing.m" lineNumber:46 description:@"Subclass Responsibility"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"NSObject+SBSAGeometricTypeAnimationDecomposing.m" lineNumber:46 description:@"Subclass Responsibility"];
 }
 
 @end

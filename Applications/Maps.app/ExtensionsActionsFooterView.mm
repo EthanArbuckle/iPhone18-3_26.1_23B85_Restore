@@ -1,21 +1,21 @@
 @interface ExtensionsActionsFooterView
-- (ExtensionsActionsFooterView)initWithCoder:(id)a3;
-- (ExtensionsActionsFooterView)initWithFrame:(CGRect)a3;
+- (ExtensionsActionsFooterView)initWithCoder:(id)coder;
+- (ExtensionsActionsFooterView)initWithFrame:(CGRect)frame;
 - (void)_commonInit;
-- (void)setActions:(id)a3;
+- (void)setActions:(id)actions;
 @end
 
 @implementation ExtensionsActionsFooterView
 
-- (void)setActions:(id)a3
+- (void)setActions:(id)actions
 {
-  v4 = sub_100021DB0(a3, &stru_1016262A8);
+  v4 = sub_100021DB0(actions, &stru_1016262A8);
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = [(UIStackView *)self->_stackView arrangedSubviews];
-  v6 = [v5 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  arrangedSubviews = [(UIStackView *)self->_stackView arrangedSubviews];
+  v6 = [arrangedSubviews countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v6)
   {
     v7 = v6;
@@ -26,7 +26,7 @@
       {
         if (*v22 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(arrangedSubviews);
         }
 
         if (*(*(&v21 + 1) + 8 * i) != self->_openAppView)
@@ -35,7 +35,7 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v7 = [arrangedSubviews countByEnumeratingWithState:&v21 objects:v26 count:16];
     }
 
     while (v7);
@@ -70,9 +70,9 @@
     while (v12);
   }
 
-  v16 = [(ExtensionsActionView *)self->_openAppView superview];
+  superview = [(ExtensionsActionView *)self->_openAppView superview];
 
-  if (!v16)
+  if (!superview)
   {
     [(UIStackView *)self->_stackView addArrangedSubview:self->_openAppView];
   }
@@ -98,11 +98,11 @@
   [(ExtensionsActionsFooterView *)self setActions:&__NSArray0__struct];
 }
 
-- (ExtensionsActionsFooterView)initWithFrame:(CGRect)a3
+- (ExtensionsActionsFooterView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = ExtensionsActionsFooterView;
-  v3 = [(ExtensionsActionsFooterView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ExtensionsActionsFooterView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -112,11 +112,11 @@
   return v4;
 }
 
-- (ExtensionsActionsFooterView)initWithCoder:(id)a3
+- (ExtensionsActionsFooterView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = ExtensionsActionsFooterView;
-  v3 = [(ExtensionsActionsFooterView *)&v6 initWithCoder:a3];
+  v3 = [(ExtensionsActionsFooterView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {

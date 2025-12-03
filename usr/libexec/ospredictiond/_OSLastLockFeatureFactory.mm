@@ -1,7 +1,7 @@
 @interface _OSLastLockFeatureFactory
-+ (id)activityFeatureValueWithName:(id)a3 atDate:(id)a4 withUserPresenceHistory:(id)a5 withContext:(id)a6;
-+ (id)handleSpecialHistoryAgnosticFeaturesWithName:(id)a3 atDate:(id)a4 withContext:(id)a5;
-+ (id)inputFeaturesWithNames:(id)a3 atDate:(id)a4 withIntervalHistory:(id)a5 withContext:(id)a6;
++ (id)activityFeatureValueWithName:(id)name atDate:(id)date withUserPresenceHistory:(id)history withContext:(id)context;
++ (id)handleSpecialHistoryAgnosticFeaturesWithName:(id)name atDate:(id)date withContext:(id)context;
++ (id)inputFeaturesWithNames:(id)names atDate:(id)date withIntervalHistory:(id)history withContext:(id)context;
 + (void)initialize;
 @end
 
@@ -14,18 +14,18 @@
   _objc_release_x1();
 }
 
-+ (id)inputFeaturesWithNames:(id)a3 atDate:(id)a4 withIntervalHistory:(id)a5 withContext:(id)a6
++ (id)inputFeaturesWithNames:(id)names atDate:(id)date withIntervalHistory:(id)history withContext:(id)context
 {
-  v10 = a3;
-  v27 = a4;
-  v11 = a5;
-  v26 = a6;
+  namesCopy = names;
+  dateCopy = date;
+  historyCopy = history;
+  contextCopy = context;
   v12 = +[NSMutableDictionary dictionary];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = v10;
+  obj = namesCopy;
   v13 = [obj countByEnumeratingWithState:&v30 objects:v36 count:16];
   if (v13)
   {
@@ -46,7 +46,7 @@
         v18 = *(*(&v30 + 1) + 8 * v17);
         v19 = objc_autoreleasePoolPush();
         objc_opt_class();
-        if ((objc_opt_isKindOfClass() & 1) == 0 || ([a1 activityFeatureValueWithName:v18 atDate:v27 withUserPresenceHistory:v11 withContext:v26], (v20 = objc_claimAutoreleasedReturnValue()) == 0))
+        if ((objc_opt_isKindOfClass() & 1) == 0 || ([self activityFeatureValueWithName:v18 atDate:dateCopy withUserPresenceHistory:historyCopy withContext:contextCopy], (v20 = objc_claimAutoreleasedReturnValue()) == 0))
         {
           v21 = qword_1000B6A38;
           if (os_log_type_enabled(qword_1000B6A38, OS_LOG_TYPE_ERROR))
@@ -83,19 +83,19 @@
   return v22;
 }
 
-+ (id)activityFeatureValueWithName:(id)a3 atDate:(id)a4 withUserPresenceHistory:(id)a5 withContext:(id)a6
++ (id)activityFeatureValueWithName:(id)name atDate:(id)date withUserPresenceHistory:(id)history withContext:(id)context
 {
-  v10 = a3;
-  v11 = a4;
-  v60 = a5;
-  v12 = a6;
-  if (v10)
+  nameCopy = name;
+  dateCopy = date;
+  historyCopy = history;
+  contextCopy = context;
+  if (nameCopy)
   {
-    if (v11)
+    if (dateCopy)
     {
-      v13 = [a1 handleSpecialHistoryAgnosticFeaturesWithName:v10 atDate:v11 withContext:v12];
+      v13 = [self handleSpecialHistoryAgnosticFeaturesWithName:nameCopy atDate:dateCopy withContext:contextCopy];
       v14 = v13;
-      v15 = v60;
+      v15 = historyCopy;
       if (v13)
       {
         v16 = v13;
@@ -104,7 +104,7 @@ LABEL_58:
         goto LABEL_59;
       }
 
-      if (!v60)
+      if (!historyCopy)
       {
         if (os_log_type_enabled(qword_1000B6A38, OS_LOG_TYPE_ERROR))
         {
@@ -115,17 +115,17 @@ LABEL_58:
         goto LABEL_58;
       }
 
-      v17 = [OSIntelligenceUtilities parseStrataTypeFromFeatureName:v10];
-      v18 = [v60 oldestIntervalInHistory];
-      v19 = [v18 startDate];
-      v20 = [OSIntelligenceUtilities datewiseDistanceBetweenDate:v11 andDate:v19];
+      v17 = [OSIntelligenceUtilities parseStrataTypeFromFeatureName:nameCopy];
+      oldestIntervalInHistory = [historyCopy oldestIntervalInHistory];
+      startDate = [oldestIntervalInHistory startDate];
+      v20 = [OSIntelligenceUtilities datewiseDistanceBetweenDate:dateCopy andDate:startDate];
 
       v54 = v17;
-      v21 = [OSIntelligenceUtilities getDailyAnchorsForDate:v11 whichStrata:v17 withNrDaysHistory:v20];
-      if ([v10 containsString:@"dur_til_act"])
+      v21 = [OSIntelligenceUtilities getDailyAnchorsForDate:dateCopy whichStrata:v17 withNrDaysHistory:v20];
+      if ([nameCopy containsString:@"dur_til_act"])
       {
-        v22 = v11;
-        v53 = v10;
+        v22 = dateCopy;
+        v53 = nameCopy;
         v23 = objc_opt_new();
         v66 = 0u;
         v67 = 0u;
@@ -149,10 +149,10 @@ LABEL_58:
 
               v28 = *(*(&v66 + 1) + 8 * i);
               v29 = [OSIntelligenceUtilities datewiseDistanceBetweenDate:v22 andDate:v28];
-              [v60 recommendedDecayDegree];
+              [historyCopy recommendedDecayDegree];
               [OSIntelligenceUtilities exponentialDecayByDateDistance:v29 withDegree:?];
               v31 = v30;
-              [v60 hoursUntilNextActivityAtDate:v28];
+              [historyCopy hoursUntilNextActivityAtDate:v28];
               v33 = [NSNumber numberWithDouble:v31 * v32];
               [v23 addObject:v33];
             }
@@ -163,7 +163,7 @@ LABEL_58:
           while (v25);
         }
 
-        v10 = v53;
+        nameCopy = v53;
         v34 = [OSIntelligenceUtilities extractPercentileOrQuantileNumberIfAnyFromFeatureName:v53];
         v35 = v34;
         if (v34)
@@ -173,8 +173,8 @@ LABEL_58:
           v16 = [NSNumber numberWithDouble:?];
 LABEL_27:
 
-          v11 = v22;
-          v15 = v60;
+          dateCopy = v22;
+          v15 = historyCopy;
           v21 = v55;
           v14 = 0;
 LABEL_57:
@@ -189,20 +189,20 @@ LABEL_57:
           goto LABEL_27;
         }
 
-        v11 = v22;
-        v15 = v60;
+        dateCopy = v22;
+        v15 = historyCopy;
         v21 = v55;
         v14 = 0;
       }
 
       v65 = 0;
-      if ([OSIntelligenceUtilities extractLeftWatershed:&v65 + 4 andRight:&v65 fromFeatureName:v10])
+      if ([OSIntelligenceUtilities extractLeftWatershed:&v65 + 4 andRight:&v65 fromFeatureName:nameCopy])
       {
         p_cache = &OBJC_METACLASS___OSInactivityPredictionService.cache;
         v57 = v14;
-        v58 = v12;
-        v37 = v10;
-        v38 = [v15 getPastSliceTimewiseNearDate:v11 whichStrata:v54 earlyBoundaryInSeconds:1 laterBoundaryInSeconds:(60 * HIDWORD(v65)) clipIntervals:(60 * v65)];
+        v58 = contextCopy;
+        v37 = nameCopy;
+        v38 = [v15 getPastSliceTimewiseNearDate:dateCopy whichStrata:v54 earlyBoundaryInSeconds:1 laterBoundaryInSeconds:(60 * HIDWORD(v65)) clipIntervals:(60 * v65)];
         v61 = 0u;
         v62 = 0u;
         v63 = 0u;
@@ -225,7 +225,7 @@ LABEL_57:
               }
 
               v45 = (v65 - HIDWORD(v65)) / 60.0;
-              v46 = [p_cache + 433 datewiseDistanceBetweenDate:v11 andDate:*(*(&v61 + 1) + 8 * j)];
+              v46 = [p_cache + 433 datewiseDistanceBetweenDate:dateCopy andDate:*(*(&v61 + 1) + 8 * j)];
               [v15 recommendedDecayDegree];
               p_cache = (&OBJC_METACLASS___OSInactivityPredictionService + 16);
               [OSIntelligenceUtilities exponentialDecayByDateDistance:v46 withDegree:?];
@@ -243,12 +243,12 @@ LABEL_57:
           v43 = 0.0;
         }
 
-        v10 = v37;
-        v12 = v58;
+        nameCopy = v37;
+        contextCopy = v58;
         if ([v37 containsString:@"dur"])
         {
           [v15 recommendedDecayDegree];
-          [p_cache + 433 sumIntervalsWithDateDecay:v38 fromDate:v11 withDecayDegree:?];
+          [p_cache + 433 sumIntervalsWithDateDecay:v38 fromDate:dateCopy withDecayDegree:?];
           v49 = v48 / 3600.0;
           if ([v37 hasSuffix:@"act"])
           {
@@ -283,7 +283,7 @@ LABEL_47:
         if ([v37 containsString:@"cnt"])
         {
           [v15 recommendedDecayDegree];
-          [p_cache + 433 countIntervalsWithDateDecay:v38 fromDate:v11 withDecayDegree:?];
+          [p_cache + 433 countIntervalsWithDateDecay:v38 fromDate:dateCopy withDecayDegree:?];
           v49 = v50;
           if ([v37 hasSuffix:@"act"])
           {
@@ -316,7 +316,7 @@ LABEL_51:
       goto LABEL_57;
     }
 
-    v15 = v60;
+    v15 = historyCopy;
     if (os_log_type_enabled(qword_1000B6A38, OS_LOG_TYPE_ERROR))
     {
       sub_10005AA74();
@@ -333,7 +333,7 @@ LABEL_51:
     }
 
     v16 = 0;
-    v15 = v60;
+    v15 = historyCopy;
   }
 
 LABEL_59:
@@ -341,37 +341,37 @@ LABEL_59:
   return v16;
 }
 
-+ (id)handleSpecialHistoryAgnosticFeaturesWithName:(id)a3 atDate:(id)a4 withContext:(id)a5
++ (id)handleSpecialHistoryAgnosticFeaturesWithName:(id)name atDate:(id)date withContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v7)
+  nameCopy = name;
+  dateCopy = date;
+  contextCopy = context;
+  v10 = contextCopy;
+  if (nameCopy)
   {
-    if (v9)
+    if (contextCopy)
     {
-      v11 = [v9 objectForKey:v7];
+      v11 = [contextCopy objectForKey:nameCopy];
 
       if (v11)
       {
-        v12 = [v10 objectForKey:v7];
+        v12 = [v10 objectForKey:nameCopy];
 LABEL_11:
         v13 = v12;
         goto LABEL_13;
       }
     }
 
-    if ([v7 isEqualToString:@"time_of_day"])
+    if ([nameCopy isEqualToString:@"time_of_day"])
     {
-      [OSIntelligenceUtilities timeOfDayWithDate:v8];
+      [OSIntelligenceUtilities timeOfDayWithDate:dateCopy];
       v12 = [NSNumber numberWithDouble:?];
       goto LABEL_11;
     }
 
-    if ([v7 isEqualToString:@"day_of_week"])
+    if ([nameCopy isEqualToString:@"day_of_week"])
     {
-      v12 = [NSNumber numberWithInt:[OSIntelligenceUtilities pandasWeekdayOf:v8]];
+      v12 = [NSNumber numberWithInt:[OSIntelligenceUtilities pandasWeekdayOf:dateCopy]];
       goto LABEL_11;
     }
   }

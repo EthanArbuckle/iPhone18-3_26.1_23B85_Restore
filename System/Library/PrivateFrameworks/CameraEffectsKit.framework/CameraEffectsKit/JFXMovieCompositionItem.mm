@@ -1,35 +1,35 @@
 @interface JFXMovieCompositionItem
-- ($AC64C642040120CEEAD84DEEACA9A5CE)applySpeed:(SEL)a3;
+- ($AC64C642040120CEEAD84DEEACA9A5CE)applySpeed:(SEL)speed;
 - (BOOL)hasVideoContent;
 - (BOOL)needAudioLoop;
-- (JFXMovieCompositionItem)initWithClip:(id)a3 timeScale:(int)a4;
-- (id)audioTrackSegmentsLoopedForDestinationTimeRange:(id *)a3;
-- (id)audioTrackSegmentsLoopedWithDestinationTime:(id *)a3;
-- (id)audioTrackSegmentsWithDestinationTime:(id *)a3;
-- (id)audioTrackSegmentsWithDestinationTime:(id *)a3 paddedFromTime:(id *)a4;
-- (id)segmentWithCharacteristic:(id)a3 sourceRange:(id *)a4 destinationRange:(id *)a5;
-- (id)speedRangesForSourceRange:(id *)a3 destinationRange:(id *)a4;
-- (id)videoTrackSegmentsWithDestinationRange:(id *)a3;
+- (JFXMovieCompositionItem)initWithClip:(id)clip timeScale:(int)scale;
+- (id)audioTrackSegmentsLoopedForDestinationTimeRange:(id *)range;
+- (id)audioTrackSegmentsLoopedWithDestinationTime:(id *)time;
+- (id)audioTrackSegmentsWithDestinationTime:(id *)time;
+- (id)audioTrackSegmentsWithDestinationTime:(id *)time paddedFromTime:(id *)fromTime;
+- (id)segmentWithCharacteristic:(id)characteristic sourceRange:(id *)range destinationRange:(id *)destinationRange;
+- (id)speedRangesForSourceRange:(id *)range destinationRange:(id *)destinationRange;
+- (id)videoTrackSegmentsWithDestinationRange:(id *)range;
 @end
 
 @implementation JFXMovieCompositionItem
 
-- (JFXMovieCompositionItem)initWithClip:(id)a3 timeScale:(int)a4
+- (JFXMovieCompositionItem)initWithClip:(id)clip timeScale:(int)scale
 {
-  v4 = *&a4;
-  v6 = a3;
+  v4 = *&scale;
+  clipCopy = clip;
   v16.receiver = self;
   v16.super_class = JFXMovieCompositionItem;
-  v7 = [(JFXCompositionItem *)&v16 initWithClip:v6 timeScale:v4];
-  if (v7 && [v6 mediaType] == 1)
+  v7 = [(JFXCompositionItem *)&v16 initWithClip:clipCopy timeScale:v4];
+  if (v7 && [clipCopy mediaType] == 1)
   {
-    v8 = [v6 mediaItem];
-    if ([v6 isAssetUnavailable])
+    mediaItem = [clipCopy mediaItem];
+    if ([clipCopy isAssetUnavailable])
     {
       v9 = objc_alloc(MEMORY[0x277CE6650]);
       v10 = MEMORY[0x277CBEBC0];
-      v11 = [MEMORY[0x277CCA8D8] jfxBundle];
-      v12 = [v11 pathForResource:@"blhack" ofType:@"mov"];
+      jfxBundle = [MEMORY[0x277CCA8D8] jfxBundle];
+      v12 = [jfxBundle pathForResource:@"blhack" ofType:@"mov"];
       v13 = [v10 fileURLWithPath:v12];
       v14 = [v9 initWithURL:v13 options:0];
       [(JFXMovieCompositionItem *)v7 setAsset:v14];
@@ -37,8 +37,8 @@
 
     else
     {
-      v11 = [v8 avAsset];
-      [(JFXMovieCompositionItem *)v7 setAsset:v11];
+      jfxBundle = [mediaItem avAsset];
+      [(JFXMovieCompositionItem *)v7 setAsset:jfxBundle];
     }
   }
 
@@ -52,7 +52,7 @@
   v13 = 0x2020000000;
   v14 = 0;
   v3 = dispatch_semaphore_create(0);
-  v4 = [(JFXMovieCompositionItem *)self asset];
+  asset = [(JFXMovieCompositionItem *)self asset];
   v5 = *MEMORY[0x277CE5E40];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
@@ -61,13 +61,13 @@
   v10 = &v11;
   v6 = v3;
   v9 = v6;
-  [v4 loadTracksWithMediaCharacteristic:v5 completionHandler:v8];
+  [asset loadTracksWithMediaCharacteristic:v5 completionHandler:v8];
 
   dispatch_semaphore_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
-  LOBYTE(v4) = *(v12 + 24);
+  LOBYTE(asset) = *(v12 + 24);
 
   _Block_object_dispose(&v11, 8);
-  return v4;
+  return asset;
 }
 
 intptr_t __42__JFXMovieCompositionItem_hasVideoContent__block_invoke(uint64_t a1, void *a2)
@@ -84,27 +84,27 @@ intptr_t __42__JFXMovieCompositionItem_hasVideoContent__block_invoke(uint64_t a1
 
 - (BOOL)needAudioLoop
 {
-  v2 = [(JFXMovieCompositionItem *)self audioAssetOverwrite];
-  v3 = v2 != 0;
+  audioAssetOverwrite = [(JFXMovieCompositionItem *)self audioAssetOverwrite];
+  v3 = audioAssetOverwrite != 0;
 
   return v3;
 }
 
-- (id)segmentWithCharacteristic:(id)a3 sourceRange:(id *)a4 destinationRange:(id *)a5
+- (id)segmentWithCharacteristic:(id)characteristic sourceRange:(id *)range destinationRange:(id *)destinationRange
 {
-  v8 = a3;
+  characteristicCopy = characteristic;
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
   v33 = __Block_byref_object_copy__26;
   v34 = __Block_byref_object_dispose__26;
   v35 = 0;
-  v9 = [(JFXMovieCompositionItem *)self asset];
-  v10 = [(JFXMovieCompositionItem *)self audioAssetOverwrite];
-  v11 = v10;
-  if (v8 && v10)
+  asset = [(JFXMovieCompositionItem *)self asset];
+  audioAssetOverwrite = [(JFXMovieCompositionItem *)self audioAssetOverwrite];
+  v11 = audioAssetOverwrite;
+  if (characteristicCopy && audioAssetOverwrite)
   {
-    v12 = [v8 isEqualToString:*MEMORY[0x277CE5DE0]];
+    v12 = [characteristicCopy isEqualToString:*MEMORY[0x277CE5DE0]];
 
     if (!v12)
     {
@@ -112,7 +112,7 @@ intptr_t __42__JFXMovieCompositionItem_hasVideoContent__block_invoke(uint64_t a1
     }
 
     [(JFXMovieCompositionItem *)self audioAssetOverwrite];
-    v9 = v11 = v9;
+    asset = v11 = asset;
   }
 
 LABEL_6:
@@ -122,20 +122,20 @@ LABEL_6:
     v13 = dispatch_semaphore_create(0);
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
-    v14 = *&a4->var0.var3;
-    v24 = *&a4->var0.var0;
+    v14 = *&range->var0.var3;
+    v24 = *&range->var0.var0;
     v25 = v14;
     v19[2] = __82__JFXMovieCompositionItem_segmentWithCharacteristic_sourceRange_destinationRange___block_invoke;
     v19[3] = &unk_278D7D288;
-    v26 = *&a4->var1.var1;
+    v26 = *&range->var1.var1;
     v19[4] = self;
     v23 = &v30;
-    v20 = v9;
-    v15 = *&a5->var0.var3;
-    v27 = *&a5->var0.var0;
+    v20 = asset;
+    v15 = *&destinationRange->var0.var3;
+    v27 = *&destinationRange->var0.var0;
     v28 = v15;
-    v29 = *&a5->var1.var1;
-    v21 = v8;
+    v29 = *&destinationRange->var1.var1;
+    v21 = characteristicCopy;
     v16 = v13;
     v22 = v16;
     [v20 loadTracksWithMediaCharacteristic:v21 completionHandler:v19];
@@ -148,7 +148,7 @@ LABEL_6:
     v16 = JFXLog_playback();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
-      [JFXMovieCompositionItem segmentWithCharacteristic:v9 sourceRange:v16 destinationRange:?];
+      [JFXMovieCompositionItem segmentWithCharacteristic:asset sourceRange:v16 destinationRange:?];
     }
 
     v17 = 0;
@@ -201,7 +201,7 @@ void __82__JFXMovieCompositionItem_segmentWithCharacteristic_sourceRange_destina
   dispatch_semaphore_signal(*(a1 + 56));
 }
 
-- ($AC64C642040120CEEAD84DEEACA9A5CE)applySpeed:(SEL)a3
+- ($AC64C642040120CEEAD84DEEACA9A5CE)applySpeed:(SEL)speed
 {
   v6 = *&a4->var0.var3;
   *&retstr->var0.var0 = *&a4->var0.var0;
@@ -231,18 +231,18 @@ void __82__JFXMovieCompositionItem_segmentWithCharacteristic_sourceRange_destina
   return result;
 }
 
-- (id)speedRangesForSourceRange:(id *)a3 destinationRange:(id *)a4
+- (id)speedRangesForSourceRange:(id *)range destinationRange:(id *)destinationRange
 {
   v13[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CCAE60];
-  v5 = *&a3->var0.var3;
-  *&source.start.value = *&a3->var0.var0;
+  v5 = *&range->var0.var3;
+  *&source.start.value = *&range->var0.var0;
   *&source.start.epoch = v5;
-  *&source.duration.timescale = *&a3->var1.var1;
-  v6 = *&a4->var0.var3;
-  *&v10.start.value = *&a4->var0.var0;
+  *&source.duration.timescale = *&range->var1.var1;
+  v6 = *&destinationRange->var0.var3;
+  *&v10.start.value = *&destinationRange->var0.var0;
   *&v10.start.epoch = v6;
-  *&v10.duration.timescale = *&a4->var1.var1;
+  *&v10.duration.timescale = *&destinationRange->var1.var1;
   CMTimeMappingMake(&v12, &source, &v10);
   v7 = [v4 valueWithCMTimeMapping:&v12];
   v13[0] = v7;
@@ -251,22 +251,22 @@ void __82__JFXMovieCompositionItem_segmentWithCharacteristic_sourceRange_destina
   return v8;
 }
 
-- (id)videoTrackSegmentsWithDestinationRange:(id *)a3
+- (id)videoTrackSegmentsWithDestinationRange:(id *)range
 {
-  v4 = self;
+  selfCopy = self;
   v44 = *MEMORY[0x277D85DE8];
   memset(&v40, 0, sizeof(v40));
   [(JFXCompositionItem *)self sourceTimeRange];
-  v30 = [MEMORY[0x277CBEB18] array];
-  if ([(JFXCompositionItem *)v4 isFreezeFrame])
+  array = [MEMORY[0x277CBEB18] array];
+  if ([(JFXCompositionItem *)selfCopy isFreezeFrame])
   {
     v40.duration.timescale *= 1000;
     v5 = MEMORY[0x277CCAE60];
     source = v40;
-    v6 = *&a3->var0.var3;
-    *&target.start.value = *&a3->var0.var0;
+    v6 = *&range->var0.var3;
+    *&target.start.value = *&range->var0.var0;
     *&target.start.epoch = v6;
-    *&target.duration.timescale = *&a3->var1.var1;
+    *&target.duration.timescale = *&range->var1.var1;
     CMTimeMappingMake(&v39, &source, &target);
     v7 = [v5 valueWithCMTimeMapping:&v39];
     v42 = v7;
@@ -276,11 +276,11 @@ void __82__JFXMovieCompositionItem_segmentWithCharacteristic_sourceRange_destina
   else
   {
     v39.source = v40;
-    v9 = *&a3->var0.var3;
-    *&source.start.value = *&a3->var0.var0;
+    v9 = *&range->var0.var3;
+    *&source.start.value = *&range->var0.var0;
     *&source.start.epoch = v9;
-    *&source.duration.timescale = *&a3->var1.var1;
-    v8 = [(JFXMovieCompositionItem *)v4 speedRangesForSourceRange:&v39 destinationRange:&source];
+    *&source.duration.timescale = *&range->var1.var1;
+    v8 = [(JFXMovieCompositionItem *)selfCopy speedRangesForSourceRange:&v39 destinationRange:&source];
   }
 
   v36 = 0u;
@@ -334,16 +334,16 @@ void __82__JFXMovieCompositionItem_segmentWithCharacteristic_sourceRange_destina
         target.start.value = v18;
         target.duration.value = v19;
         *&target.duration.timescale = *&v39.target.duration.timescale;
-        v20 = [(JFXMovieCompositionItem *)v4 segmentWithCharacteristic:v31 sourceRange:&source destinationRange:&target, v27];
+        v20 = [(JFXMovieCompositionItem *)selfCopy segmentWithCharacteristic:v31 sourceRange:&source destinationRange:&target, v27];
         if (v20)
         {
-          [v30 addObject:v20];
+          [array addObject:v20];
         }
 
         else
         {
           v21 = v13;
-          v22 = v4;
+          v22 = selfCopy;
           v23 = JFXLog_DebugComposition();
           if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
           {
@@ -370,7 +370,7 @@ void __82__JFXMovieCompositionItem_segmentWithCharacteristic_sourceRange_destina
             _os_log_debug_impl(&dword_242A3B000, v25, OS_LOG_TYPE_DEBUG, "  destinationTime was (%lld, %lld)", &source, 0x16u);
           }
 
-          v4 = v22;
+          selfCopy = v22;
           v13 = v21;
           v12 = v28;
         }
@@ -385,12 +385,12 @@ void __82__JFXMovieCompositionItem_segmentWithCharacteristic_sourceRange_destina
     while (v12);
   }
 
-  return v30;
+  return array;
 }
 
-- (id)audioTrackSegmentsWithDestinationTime:(id *)a3
+- (id)audioTrackSegmentsWithDestinationTime:(id *)time
 {
-  v7 = *a3;
+  v7 = *time;
   v5 = *MEMORY[0x277CC0898];
   v6 = *(MEMORY[0x277CC0898] + 16);
   v3 = [(JFXMovieCompositionItem *)self audioTrackSegmentsWithDestinationTime:&v7 paddedFromTime:&v5];
@@ -398,7 +398,7 @@ void __82__JFXMovieCompositionItem_segmentWithCharacteristic_sourceRange_destina
   return v3;
 }
 
-- (id)audioTrackSegmentsWithDestinationTime:(id *)a3 paddedFromTime:(id *)a4
+- (id)audioTrackSegmentsWithDestinationTime:(id *)time paddedFromTime:(id *)fromTime
 {
   v44 = *MEMORY[0x277D85DE8];
   memset(v42, 0, sizeof(v42));
@@ -412,8 +412,8 @@ void __82__JFXMovieCompositionItem_segmentWithCharacteristic_sourceRange_destina
   }
 
   [(JFXCompositionItem *)self audioStartOffset];
-  *lhs = *&a3->var0;
-  *&lhs[16] = a3->var3;
+  *lhs = *&time->var0;
+  *&lhs[16] = time->var3;
   CMTimeAdd(&v39, lhs, rhs);
   memset(&v40[8], 0, 24);
   [(JFXCompositionItem *)self destinationDuration];
@@ -423,20 +423,20 @@ void __82__JFXMovieCompositionItem_segmentWithCharacteristic_sourceRange_destina
   CMTimeAdd(rhs, lhs, time2);
   *&v40[8] = *rhs;
   *&v40[24] = *&rhs[16];
-  v7 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v8 = MEMORY[0x277CC08F0];
-  if (a4->var2)
+  if (fromTime->var2)
   {
-    v9 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v10 = [v9 BOOLForKey:@"enableGapSyncWorkaround"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v10 = [standardUserDefaults BOOLForKey:@"enableGapSyncWorkaround"];
 
     if (v10)
     {
       memset(rhs, 0, 24);
       *lhs = v39;
       *&lhs[16] = *v40;
-      *time2 = *&a4->var0;
-      *&time2[16] = a4->var3;
+      *time2 = *&fromTime->var0;
+      *&time2[16] = fromTime->var3;
       CMTimeSubtract(rhs, lhs, time2);
       *lhs = *rhs;
       *&lhs[16] = *&rhs[16];
@@ -492,8 +492,8 @@ void __82__JFXMovieCompositionItem_segmentWithCharacteristic_sourceRange_destina
   *&lhs[16] = *(v8 + 16);
   if (!CMTimeCompare(rhs, lhs))
   {
-    v11 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v12 = [v11 BOOLForKey:@"enableStartupSyncWorkaround"];
+    standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v12 = [standardUserDefaults2 BOOLForKey:@"enableStartupSyncWorkaround"];
 
     if (v12)
     {
@@ -590,7 +590,7 @@ void __82__JFXMovieCompositionItem_segmentWithCharacteristic_sourceRange_destina
         }
 
         v21 = v20;
-        [v7 addObject:v20];
+        [array addObject:v20];
       }
 
       v15 = [v13 countByEnumeratingWithState:&v35 objects:v43 count:16];
@@ -599,13 +599,13 @@ void __82__JFXMovieCompositionItem_segmentWithCharacteristic_sourceRange_destina
     while (v15);
   }
 
-  return v7;
+  return array;
 }
 
-- (id)audioTrackSegmentsLoopedWithDestinationTime:(id *)a3
+- (id)audioTrackSegmentsLoopedWithDestinationTime:(id *)time
 {
   [(JFXCompositionItem *)self audioStartOffset];
-  lhs = *a3;
+  lhs = *time;
   CMTimeAdd(&v12, &lhs, &v7);
   memset(&v13[8], 0, 24);
   [(JFXCompositionItem *)self destinationDuration];
@@ -623,12 +623,12 @@ void __82__JFXMovieCompositionItem_segmentWithCharacteristic_sourceRange_destina
   return v5;
 }
 
-- (id)audioTrackSegmentsLoopedForDestinationTimeRange:(id *)a3
+- (id)audioTrackSegmentsLoopedForDestinationTimeRange:(id *)range
 {
-  v5 = [MEMORY[0x277CBEA60] array];
-  v6 = [(JFXMovieCompositionItem *)self audioAssetOverwrite];
+  array = [MEMORY[0x277CBEA60] array];
+  audioAssetOverwrite = [(JFXMovieCompositionItem *)self audioAssetOverwrite];
 
-  if (v6)
+  if (audioAssetOverwrite)
   {
     [(JFXMovieCompositionItem *)self audioAssetOverwrite];
   }
@@ -655,7 +655,7 @@ void __82__JFXMovieCompositionItem_segmentWithCharacteristic_sourceRange_destina
   CMTimeConvertScale(&v31, v30, [(JFXCompositionItem *)self timeScale], kCMTimeRoundingMethod_RoundHalfAwayFromZero);
   memset(v30, 0, sizeof(v30));
   [(JFXCompositionItem *)self sourceTimeRange];
-  if (v6)
+  if (audioAssetOverwrite)
   {
     *&time.start.value = v28;
     time.start.epoch = v29;
@@ -684,11 +684,11 @@ void __82__JFXMovieCompositionItem_segmentWithCharacteristic_sourceRange_destina
     while (CMTimeCompare(&time.start, rhs) > 0);
   }
 
-  v10 = *&a3->var0.var3;
-  var0 = a3->var0;
+  v10 = *&range->var0.var3;
+  var0 = range->var0;
   memset(&v25, 0, sizeof(v25));
-  v11 = *&a3->var1.var1;
-  *&time.start.value = *&a3->var0.var0;
+  v11 = *&range->var1.var1;
+  *&time.start.value = *&range->var0.var0;
   *&time.start.epoch = v10;
   *&time.duration.timescale = v11;
   CMTimeRangeGetEnd(&v25, &time);
@@ -740,7 +740,7 @@ void __82__JFXMovieCompositionItem_segmentWithCharacteristic_sourceRange_destina
       }
 
       v18 = v17;
-      v12 = [v5 arrayByAddingObject:v17];
+      v12 = [array arrayByAddingObject:v17];
 
       *time2 = var0;
       v19.start = v30[1];
@@ -750,7 +750,7 @@ void __82__JFXMovieCompositionItem_segmentWithCharacteristic_sourceRange_destina
 
       time.start = var0;
       *rhs = v25;
-      v5 = v12;
+      array = v12;
       if ((CMTimeCompare(&time.start, rhs) & 0x80000000) == 0)
       {
         goto LABEL_14;
@@ -758,7 +758,7 @@ void __82__JFXMovieCompositionItem_segmentWithCharacteristic_sourceRange_destina
     }
   }
 
-  v12 = v5;
+  v12 = array;
 LABEL_14:
   if (![v12 count])
   {

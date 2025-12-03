@@ -1,23 +1,23 @@
 @interface PKPassAuxiliaryCapabilitySignatureCarConnectivityConsortiumKeyCreationMetadata
-- (PKPassAuxiliaryCapabilitySignatureCarConnectivityConsortiumKeyCreationMetadata)initWithCoder:(id)a3;
-- (PKPassAuxiliaryCapabilitySignatureCarConnectivityConsortiumKeyCreationMetadata)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PKPassAuxiliaryCapabilitySignatureCarConnectivityConsortiumKeyCreationMetadata)initWithCoder:(id)coder;
+- (PKPassAuxiliaryCapabilitySignatureCarConnectivityConsortiumKeyCreationMetadata)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPassAuxiliaryCapabilitySignatureCarConnectivityConsortiumKeyCreationMetadata
 
-- (PKPassAuxiliaryCapabilitySignatureCarConnectivityConsortiumKeyCreationMetadata)initWithDictionary:(id)a3
+- (PKPassAuxiliaryCapabilitySignatureCarConnectivityConsortiumKeyCreationMetadata)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = PKPassAuxiliaryCapabilitySignatureCarConnectivityConsortiumKeyCreationMetadata;
-  v5 = [(PKPassAuxiliaryCapabilityKeyCreationMetadata *)&v9 initWithDictionary:v4];
+  v5 = [(PKPassAuxiliaryCapabilityKeyCreationMetadata *)&v9 initWithDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [[PKSubcredentialEncryptedContainer alloc] initWithDictionary:v4];
+    v6 = [[PKSubcredentialEncryptedContainer alloc] initWithDictionary:dictionaryCopy];
     container = v5->_container;
     v5->_container = v6;
 
@@ -31,26 +31,26 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [(PKPassAuxiliaryCapabilityKeyCreationMetadata *)[PKPassAuxiliaryCapabilitySignatureCarConnectivityConsortiumKeyCreationMetadata alloc] _init];
-  [(PKPassAuxiliaryCapabilityKeyCreationMetadata *)self _copyInto:v4];
+  _init = [(PKPassAuxiliaryCapabilityKeyCreationMetadata *)[PKPassAuxiliaryCapabilitySignatureCarConnectivityConsortiumKeyCreationMetadata alloc] _init];
+  [(PKPassAuxiliaryCapabilityKeyCreationMetadata *)self _copyInto:_init];
   v5 = [(PKSubcredentialEncryptedContainer *)self->_container copy];
-  v6 = v4[1];
-  v4[1] = v5;
+  v6 = _init[1];
+  _init[1] = v5;
 
-  return v4;
+  return _init;
 }
 
-- (PKPassAuxiliaryCapabilitySignatureCarConnectivityConsortiumKeyCreationMetadata)initWithCoder:(id)a3
+- (PKPassAuxiliaryCapabilitySignatureCarConnectivityConsortiumKeyCreationMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PKPassAuxiliaryCapabilitySignatureCarConnectivityConsortiumKeyCreationMetadata;
-  v5 = [(PKPassAuxiliaryCapabilityKeyCreationMetadata *)&v9 initWithCoder:v4];
+  v5 = [(PKPassAuxiliaryCapabilityKeyCreationMetadata *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"container"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"container"];
     container = v5->_container;
     v5->_container = v6;
   }
@@ -58,13 +58,13 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKPassAuxiliaryCapabilitySignatureCarConnectivityConsortiumKeyCreationMetadata;
-  v4 = a3;
-  [(PKPassAuxiliaryCapabilityKeyCreationMetadata *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_container forKey:{@"container", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(PKPassAuxiliaryCapabilityKeyCreationMetadata *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_container forKey:{@"container", v5.receiver, v5.super_class}];
 }
 
 - (id)description
@@ -84,8 +84,8 @@
 - (id)dictionaryRepresentation
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(PKSubcredentialEncryptedContainer *)self->_container dictionaryRepresentation];
-  [v3 setObject:v4 forKeyedSubscript:@"container"];
+  dictionaryRepresentation = [(PKSubcredentialEncryptedContainer *)self->_container dictionaryRepresentation];
+  [v3 setObject:dictionaryRepresentation forKeyedSubscript:@"container"];
 
   v5 = [v3 copy];
 

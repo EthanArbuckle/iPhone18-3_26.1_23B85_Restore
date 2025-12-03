@@ -1,20 +1,20 @@
 @interface EducationalMessageAnimationView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC9PassKitUI31EducationalMessageAnimationView)initWithCoder:(id)a3;
-- (_TtC9PassKitUI31EducationalMessageAnimationView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC9PassKitUI31EducationalMessageAnimationView)initWithCoder:(id)coder;
+- (_TtC9PassKitUI31EducationalMessageAnimationView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation EducationalMessageAnimationView
 
-- (_TtC9PassKitUI31EducationalMessageAnimationView)initWithCoder:(id)a3
+- (_TtC9PassKitUI31EducationalMessageAnimationView)initWithCoder:(id)coder
 {
   result = sub_1BE053994();
   __break(1u);
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   [*(&self->super.super.super.isa + OBJC_IVAR____TtC9PassKitUI31EducationalMessageAnimationView_rootLayer) size];
   result.height = v4;
@@ -36,7 +36,7 @@
   [*&v2[v7] setFrame_];
 }
 
-- (_TtC9PassKitUI31EducationalMessageAnimationView)initWithFrame:(CGRect)a3
+- (_TtC9PassKitUI31EducationalMessageAnimationView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

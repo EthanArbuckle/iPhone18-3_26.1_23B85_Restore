@@ -1,46 +1,46 @@
 @interface SCROBrailleHandler
-- (SCROBrailleHandler)initWithBrailleDisplayManager:(id)a3;
-- (int)handlePerformActionForKey:(int)a3 trusted:(BOOL)a4;
-- (int)handleRegisterCallbackForKey:(int)a3 trusted:(BOOL)a4;
+- (SCROBrailleHandler)initWithBrailleDisplayManager:(id)manager;
+- (int)handlePerformActionForKey:(int)key trusted:(BOOL)trusted;
+- (int)handleRegisterCallbackForKey:(int)key trusted:(BOOL)trusted;
 - (void)configurationDidChange;
-- (void)handleBrailleDidDisplay:(id)a3;
-- (void)handleBrailleDidPanLeft:(id)a3 elementToken:(id)a4 appToken:(id)a5 lineOffset:(id)a6;
-- (void)handleBrailleDidPanRight:(id)a3 elementToken:(id)a4 appToken:(id)a5 lineOffset:(id)a6;
-- (void)handleBrailleDidShowNextAnnouncement:(id)a3;
-- (void)handleBrailleDidShowPreviousAnnouncement:(id)a3;
+- (void)handleBrailleDidDisplay:(id)display;
+- (void)handleBrailleDidPanLeft:(id)left elementToken:(id)token appToken:(id)appToken lineOffset:(id)offset;
+- (void)handleBrailleDidPanRight:(id)right elementToken:(id)token appToken:(id)appToken lineOffset:(id)offset;
+- (void)handleBrailleDidShowNextAnnouncement:(id)announcement;
+- (void)handleBrailleDidShowPreviousAnnouncement:(id)announcement;
 - (void)handleBrailleDriverDidLoad;
 - (void)handleBrailleDriverDisconnected;
-- (void)handleBrailleKeyMemorize:(id)a3;
-- (void)handleBrailleKeyWillMemorize:(id)a3;
-- (void)handleBrailleKeypress:(id)a3;
-- (void)handleBrailleReplaceTextRange:(_NSRange)a3 withString:(id)a4 cursor:(unint64_t)a5;
-- (void)handleBrailleTableFailedToLoad:(id)a3;
-- (void)handleBrailleUIRequest:(id)a3;
-- (void)handleCopyStringToClipboard:(id)a3;
+- (void)handleBrailleKeyMemorize:(id)memorize;
+- (void)handleBrailleKeyWillMemorize:(id)memorize;
+- (void)handleBrailleKeypress:(id)keypress;
+- (void)handleBrailleReplaceTextRange:(_NSRange)range withString:(id)string cursor:(unint64_t)cursor;
+- (void)handleBrailleTableFailedToLoad:(id)load;
+- (void)handleBrailleUIRequest:(id)request;
+- (void)handleCopyStringToClipboard:(id)clipboard;
 - (void)handleDidBrailleUIEnd;
 - (void)handleDidBrailleUIStart;
-- (void)handleDisplayModeChanged:(id)a3;
-- (void)handleFailedToLoadBluetoothDevice:(id)a3;
+- (void)handleDisplayModeChanged:(id)changed;
+- (void)handleFailedToLoadBluetoothDevice:(id)device;
 - (void)handlePlayBorderHitSound;
 - (void)handlePlayCommandNotSupportedSound;
 - (void)handleStartEditing;
-- (void)handleTacticalGraphicsCanvasDidChange:(id)a3;
+- (void)handleTacticalGraphicsCanvasDidChange:(id)change;
 - (void)handleUserEventOccured;
 - (void)invalidate;
 @end
 
 @implementation SCROBrailleHandler
 
-- (SCROBrailleHandler)initWithBrailleDisplayManager:(id)a3
+- (SCROBrailleHandler)initWithBrailleDisplayManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = SCROBrailleHandler;
   v6 = [(SCROHandler *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_brailleDisplayManager, a3);
+    objc_storeStrong(&v6->_brailleDisplayManager, manager);
     [(SCROBrailleDisplayManager *)v7->_brailleDisplayManager setDelegate:v7];
   }
 
@@ -55,9 +55,9 @@
   [(SCROHandler *)&v3 invalidate];
 }
 
-- (int)handleRegisterCallbackForKey:(int)a3 trusted:(BOOL)a4
+- (int)handleRegisterCallbackForKey:(int)key trusted:(BOOL)trusted
 {
-  switch(a3)
+  switch(key)
   {
     case 'N':
       result = 0;
@@ -104,7 +104,7 @@
       self->_callbacks.keymem = 1;
       break;
     case 'Y':
-      if (!a4)
+      if (!trusted)
       {
         goto LABEL_29;
       }
@@ -202,9 +202,9 @@ LABEL_29:
   return result;
 }
 
-- (int)handlePerformActionForKey:(int)a3 trusted:(BOOL)a4
+- (int)handlePerformActionForKey:(int)key trusted:(BOOL)trusted
 {
-  switch(a3)
+  switch(key)
   {
     case 1:
       [(SCROBrailleDisplayManager *)self->_brailleDisplayManager beginUpdates];
@@ -260,41 +260,41 @@ LABEL_16:
   return result;
 }
 
-- (void)handleBrailleKeypress:(id)a3
+- (void)handleBrailleKeypress:(id)keypress
 {
   if (self->_callbacks.keypress)
   {
-    v5 = a3;
-    v7 = [[SCROCallback alloc] initWithKey:80 object:v5];
+    keypressCopy = keypress;
+    v7 = [[SCROCallback alloc] initWithKey:80 object:keypressCopy];
 
-    v6 = [(SCROHandler *)self callbackDelegate];
-    [(SCROCallback *)v7 postToHandler:v6];
+    callbackDelegate = [(SCROHandler *)self callbackDelegate];
+    [(SCROCallback *)v7 postToHandler:callbackDelegate];
   }
 }
 
-- (void)handleBrailleReplaceTextRange:(_NSRange)a3 withString:(id)a4 cursor:(unint64_t)a5
+- (void)handleBrailleReplaceTextRange:(_NSRange)range withString:(id)string cursor:(unint64_t)cursor
 {
   v19[3] = *MEMORY[0x277D85DE8];
   if (self->_callbacks.replaceTextRange)
   {
-    length = a3.length;
-    location = a3.location;
+    length = range.length;
+    location = range.location;
     v18[0] = kSCROBrailleCallbackReplaceTextRange_RangeKey;
     v9 = MEMORY[0x277CCAE60];
-    v10 = a4;
+    stringCopy = string;
     v11 = [v9 valueWithRange:{location, length}];
     v19[0] = v11;
-    v19[1] = v10;
+    v19[1] = stringCopy;
     v18[1] = kSCROBrailleCallbackReplaceTextRange_StringKey;
     v18[2] = kSCROBrailleCallbackReplaceTextRange_CursorKey;
-    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a5];
+    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:cursor];
     v19[2] = v12;
     v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:3];
 
     v14 = [SCROCallback alloc];
     v15 = [(SCROCallback *)v14 initWithKey:82 object:v13];
-    v16 = [(SCROHandler *)self callbackDelegate];
-    [(SCROCallback *)v15 postToHandler:v16];
+    callbackDelegate = [(SCROHandler *)self callbackDelegate];
+    [(SCROCallback *)v15 postToHandler:callbackDelegate];
   }
 
   v17 = *MEMORY[0x277D85DE8];
@@ -305,8 +305,8 @@ LABEL_16:
   if (self->_callbacks.userEventOccured)
   {
     v5 = [[SCROCallback alloc] initWithKey:81 object:0];
-    v4 = [(SCROHandler *)self callbackDelegate];
-    [(SCROCallback *)v5 postToHandler:v4];
+    callbackDelegate = [(SCROHandler *)self callbackDelegate];
+    [(SCROCallback *)v5 postToHandler:callbackDelegate];
   }
 }
 
@@ -315,41 +315,41 @@ LABEL_16:
   if (self->_callbacks.startEditing)
   {
     v5 = [[SCROCallback alloc] initWithKey:83 object:0];
-    v4 = [(SCROHandler *)self callbackDelegate];
-    [(SCROCallback *)v5 postToHandler:v4];
+    callbackDelegate = [(SCROHandler *)self callbackDelegate];
+    [(SCROCallback *)v5 postToHandler:callbackDelegate];
   }
 }
 
-- (void)handleBrailleKeyWillMemorize:(id)a3
+- (void)handleBrailleKeyWillMemorize:(id)memorize
 {
   if (self->_callbacks.keyWillMem)
   {
-    v5 = a3;
-    v7 = [[SCROCallback alloc] initWithKey:87 object:v5];
+    memorizeCopy = memorize;
+    v7 = [[SCROCallback alloc] initWithKey:87 object:memorizeCopy];
 
-    v6 = [(SCROHandler *)self callbackDelegate];
-    [(SCROCallback *)v7 postToHandler:v6];
+    callbackDelegate = [(SCROHandler *)self callbackDelegate];
+    [(SCROCallback *)v7 postToHandler:callbackDelegate];
   }
 }
 
-- (void)handleBrailleKeyMemorize:(id)a3
+- (void)handleBrailleKeyMemorize:(id)memorize
 {
   if (self->_callbacks.keymem)
   {
-    v5 = a3;
-    v7 = [[SCROCallback alloc] initWithKey:88 object:v5];
+    memorizeCopy = memorize;
+    v7 = [[SCROCallback alloc] initWithKey:88 object:memorizeCopy];
 
-    v6 = [(SCROHandler *)self callbackDelegate];
-    [(SCROCallback *)v7 postToHandler:v6];
+    callbackDelegate = [(SCROHandler *)self callbackDelegate];
+    [(SCROCallback *)v7 postToHandler:callbackDelegate];
   }
 }
 
-- (void)handleBrailleDidDisplay:(id)a3
+- (void)handleBrailleDidDisplay:(id)display
 {
-  v4 = a3;
+  displayCopy = display;
   if (self->_callbacks.didDisplay)
   {
-    v8 = v4;
+    v8 = displayCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -359,68 +359,68 @@ LABEL_16:
     }
 
     v6 = [[SCROCallback alloc] initWithKey:89 object:v8];
-    v7 = [(SCROHandler *)self callbackDelegate];
-    [(SCROCallback *)v6 postToHandler:v7];
+    callbackDelegate = [(SCROHandler *)self callbackDelegate];
+    [(SCROCallback *)v6 postToHandler:callbackDelegate];
 
-    v4 = v8;
+    displayCopy = v8;
   }
 }
 
-- (void)handleBrailleDidPanLeft:(id)a3 elementToken:(id)a4 appToken:(id)a5 lineOffset:(id)a6
+- (void)handleBrailleDidPanLeft:(id)left elementToken:(id)token appToken:(id)appToken lineOffset:(id)offset
 {
   if (self->_callbacks.panLeft)
   {
     v11 = MEMORY[0x277CBEAC0];
-    v12 = a6;
-    v13 = a5;
-    v14 = a4;
-    v15 = a3;
-    v18 = [[v11 alloc] initWithObjectsAndKeys:{v15, @"success", v14, @"token", v12, @"lineOffset", v13, @"appToken", 0}];
+    offsetCopy = offset;
+    appTokenCopy = appToken;
+    tokenCopy = token;
+    leftCopy = left;
+    v18 = [[v11 alloc] initWithObjectsAndKeys:{leftCopy, @"success", tokenCopy, @"token", offsetCopy, @"lineOffset", appTokenCopy, @"appToken", 0}];
 
     v16 = [[SCROCallback alloc] initWithKey:90 object:v18];
-    v17 = [(SCROHandler *)self callbackDelegate];
-    [(SCROCallback *)v16 postToHandler:v17];
+    callbackDelegate = [(SCROHandler *)self callbackDelegate];
+    [(SCROCallback *)v16 postToHandler:callbackDelegate];
   }
 }
 
-- (void)handleBrailleDidPanRight:(id)a3 elementToken:(id)a4 appToken:(id)a5 lineOffset:(id)a6
+- (void)handleBrailleDidPanRight:(id)right elementToken:(id)token appToken:(id)appToken lineOffset:(id)offset
 {
   if (self->_callbacks.panRight)
   {
     v11 = MEMORY[0x277CBEAC0];
-    v12 = a6;
-    v13 = a5;
-    v14 = a4;
-    v15 = a3;
-    v18 = [[v11 alloc] initWithObjectsAndKeys:{v15, @"success", v14, @"token", v12, @"lineOffset", v13, @"appToken", 0}];
+    offsetCopy = offset;
+    appTokenCopy = appToken;
+    tokenCopy = token;
+    rightCopy = right;
+    v18 = [[v11 alloc] initWithObjectsAndKeys:{rightCopy, @"success", tokenCopy, @"token", offsetCopy, @"lineOffset", appTokenCopy, @"appToken", 0}];
 
     v16 = [[SCROCallback alloc] initWithKey:91 object:v18];
-    v17 = [(SCROHandler *)self callbackDelegate];
-    [(SCROCallback *)v16 postToHandler:v17];
+    callbackDelegate = [(SCROHandler *)self callbackDelegate];
+    [(SCROCallback *)v16 postToHandler:callbackDelegate];
   }
 }
 
-- (void)handleBrailleDidShowPreviousAnnouncement:(id)a3
+- (void)handleBrailleDidShowPreviousAnnouncement:(id)announcement
 {
   if (self->_callbacks.showPreviousAnnouncement)
   {
-    v5 = a3;
-    v7 = [[SCROCallback alloc] initWithKey:92 object:v5];
+    announcementCopy = announcement;
+    v7 = [[SCROCallback alloc] initWithKey:92 object:announcementCopy];
 
-    v6 = [(SCROHandler *)self callbackDelegate];
-    [(SCROCallback *)v7 postToHandler:v6];
+    callbackDelegate = [(SCROHandler *)self callbackDelegate];
+    [(SCROCallback *)v7 postToHandler:callbackDelegate];
   }
 }
 
-- (void)handleBrailleDidShowNextAnnouncement:(id)a3
+- (void)handleBrailleDidShowNextAnnouncement:(id)announcement
 {
   if (self->_callbacks.showNextAnnouncement)
   {
-    v5 = a3;
-    v7 = [[SCROCallback alloc] initWithKey:93 object:v5];
+    announcementCopy = announcement;
+    v7 = [[SCROCallback alloc] initWithKey:93 object:announcementCopy];
 
-    v6 = [(SCROHandler *)self callbackDelegate];
-    [(SCROCallback *)v7 postToHandler:v6];
+    callbackDelegate = [(SCROHandler *)self callbackDelegate];
+    [(SCROCallback *)v7 postToHandler:callbackDelegate];
   }
 }
 
@@ -431,8 +431,8 @@ LABEL_16:
     v4 = [SCROCallback alloc];
     v6 = [(SCROCallback *)v4 initWithKey:96 object:MEMORY[0x277CBEC28]];
     [(SCROCallback *)v6 setIsAtomic:1];
-    v5 = [(SCROHandler *)self callbackDelegate];
-    [(SCROCallback *)v6 postToHandler:v5];
+    callbackDelegate = [(SCROHandler *)self callbackDelegate];
+    [(SCROCallback *)v6 postToHandler:callbackDelegate];
   }
 }
 
@@ -453,8 +453,8 @@ LABEL_16:
     v5 = [SCROCallback alloc];
     v6 = [(SCROCallback *)v5 initWithKey:96 object:MEMORY[0x277CBEC38]];
     [(SCROCallback *)v6 setIsAtomic:1];
-    v7 = [(SCROHandler *)self callbackDelegate];
-    [(SCROCallback *)v6 postToHandler:v7];
+    callbackDelegate = [(SCROHandler *)self callbackDelegate];
+    [(SCROCallback *)v6 postToHandler:callbackDelegate];
   }
 
   v8 = *MEMORY[0x277D85DE8];
@@ -476,8 +476,8 @@ LABEL_16:
   {
     v5 = [MEMORY[0x277CCABB0] numberWithBool:{-[SCROBrailleDisplayManager isConfigured](self->_brailleDisplayManager, "isConfigured")}];
     v6 = [[SCROCallback alloc] initWithKey:78 object:v5];
-    v7 = [(SCROHandler *)self callbackDelegate];
-    [(SCROCallback *)v6 postToHandler:v7];
+    callbackDelegate = [(SCROHandler *)self callbackDelegate];
+    [(SCROCallback *)v6 postToHandler:callbackDelegate];
 
     v8 = _SCROD_LOG();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -493,63 +493,63 @@ LABEL_16:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleFailedToLoadBluetoothDevice:(id)a3
+- (void)handleFailedToLoadBluetoothDevice:(id)device
 {
   if (self->_callbacks.bluetoothDisplayLoadFailed)
   {
-    v5 = a3;
-    v7 = [[SCROCallback alloc] initWithKey:97 object:v5];
+    deviceCopy = device;
+    v7 = [[SCROCallback alloc] initWithKey:97 object:deviceCopy];
 
-    v6 = [(SCROHandler *)self callbackDelegate];
-    [(SCROCallback *)v7 postToHandler:v6];
+    callbackDelegate = [(SCROHandler *)self callbackDelegate];
+    [(SCROCallback *)v7 postToHandler:callbackDelegate];
   }
 }
 
-- (void)handleBrailleTableFailedToLoad:(id)a3
+- (void)handleBrailleTableFailedToLoad:(id)load
 {
   if (self->_callbacks.tableLoadFailed)
   {
-    v5 = a3;
-    v7 = [[SCROCallback alloc] initWithKey:79 object:v5];
+    loadCopy = load;
+    v7 = [[SCROCallback alloc] initWithKey:79 object:loadCopy];
 
-    v6 = [(SCROHandler *)self callbackDelegate];
-    [(SCROCallback *)v7 postToHandler:v6];
+    callbackDelegate = [(SCROHandler *)self callbackDelegate];
+    [(SCROCallback *)v7 postToHandler:callbackDelegate];
   }
 }
 
-- (void)handleDisplayModeChanged:(id)a3
+- (void)handleDisplayModeChanged:(id)changed
 {
   if (self->_callbacks.displayModeChanged)
   {
-    v5 = a3;
-    v7 = [[SCROCallback alloc] initWithKey:98 object:v5];
+    changedCopy = changed;
+    v7 = [[SCROCallback alloc] initWithKey:98 object:changedCopy];
 
-    v6 = [(SCROHandler *)self callbackDelegate];
-    [(SCROCallback *)v7 postToHandler:v6];
+    callbackDelegate = [(SCROHandler *)self callbackDelegate];
+    [(SCROCallback *)v7 postToHandler:callbackDelegate];
   }
 }
 
-- (void)handleCopyStringToClipboard:(id)a3
+- (void)handleCopyStringToClipboard:(id)clipboard
 {
   if (self->_callbacks.copyStringToClipboard)
   {
-    v5 = a3;
-    v7 = [[SCROCallback alloc] initWithKey:99 object:v5];
+    clipboardCopy = clipboard;
+    v7 = [[SCROCallback alloc] initWithKey:99 object:clipboardCopy];
 
-    v6 = [(SCROHandler *)self callbackDelegate];
-    [(SCROCallback *)v7 postToHandler:v6];
+    callbackDelegate = [(SCROHandler *)self callbackDelegate];
+    [(SCROCallback *)v7 postToHandler:callbackDelegate];
   }
 }
 
-- (void)handleTacticalGraphicsCanvasDidChange:(id)a3
+- (void)handleTacticalGraphicsCanvasDidChange:(id)change
 {
   if (self->_callbacks.planarCanvasDidChange)
   {
-    v5 = a3;
-    v7 = [[SCROCallback alloc] initWithKey:100 object:v5];
+    changeCopy = change;
+    v7 = [[SCROCallback alloc] initWithKey:100 object:changeCopy];
 
-    v6 = [(SCROHandler *)self callbackDelegate];
-    [(SCROCallback *)v7 postToHandler:v6];
+    callbackDelegate = [(SCROHandler *)self callbackDelegate];
+    [(SCROCallback *)v7 postToHandler:callbackDelegate];
   }
 }
 
@@ -558,8 +558,8 @@ LABEL_16:
   if (self->_callbacks.playBorderHitSound)
   {
     v5 = [[SCROCallback alloc] initWithKey:94 object:0];
-    v4 = [(SCROHandler *)self callbackDelegate];
-    [(SCROCallback *)v5 postToHandler:v4];
+    callbackDelegate = [(SCROHandler *)self callbackDelegate];
+    [(SCROCallback *)v5 postToHandler:callbackDelegate];
   }
 }
 
@@ -568,8 +568,8 @@ LABEL_16:
   if (self->_callbacks.playCommandNotSupportedSound)
   {
     v5 = [[SCROCallback alloc] initWithKey:95 object:0];
-    v4 = [(SCROHandler *)self callbackDelegate];
-    [(SCROCallback *)v5 postToHandler:v4];
+    callbackDelegate = [(SCROHandler *)self callbackDelegate];
+    [(SCROCallback *)v5 postToHandler:callbackDelegate];
   }
 }
 
@@ -578,20 +578,20 @@ LABEL_16:
   if (self->_callbacks.didBrailleUIStart)
   {
     v5 = [[SCROCallback alloc] initWithKey:102 object:0];
-    v4 = [(SCROHandler *)self callbackDelegate];
-    [(SCROCallback *)v5 postToHandler:v4];
+    callbackDelegate = [(SCROHandler *)self callbackDelegate];
+    [(SCROCallback *)v5 postToHandler:callbackDelegate];
   }
 }
 
-- (void)handleBrailleUIRequest:(id)a3
+- (void)handleBrailleUIRequest:(id)request
 {
   if (self->_callbacks.brailleUIRequest)
   {
-    v5 = a3;
-    v7 = [[SCROCallback alloc] initWithKey:103 object:v5];
+    requestCopy = request;
+    v7 = [[SCROCallback alloc] initWithKey:103 object:requestCopy];
 
-    v6 = [(SCROHandler *)self callbackDelegate];
-    [(SCROCallback *)v7 postToHandler:v6];
+    callbackDelegate = [(SCROHandler *)self callbackDelegate];
+    [(SCROCallback *)v7 postToHandler:callbackDelegate];
   }
 }
 
@@ -600,8 +600,8 @@ LABEL_16:
   if (self->_callbacks.didBrailleUIEnd)
   {
     v5 = [[SCROCallback alloc] initWithKey:104 object:0];
-    v4 = [(SCROHandler *)self callbackDelegate];
-    [(SCROCallback *)v5 postToHandler:v4];
+    callbackDelegate = [(SCROHandler *)self callbackDelegate];
+    [(SCROCallback *)v5 postToHandler:callbackDelegate];
   }
 }
 

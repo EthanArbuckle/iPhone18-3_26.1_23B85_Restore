@@ -1,11 +1,11 @@
 @interface CKKeepMessagesPreferenceManager
 + (IMSyncedSettingsManaging)syncedSettingsManager;
 + (id)keepMessagesPreference;
-- (void)_setLegacyKeepMessagesPreference:(id)a3;
-- (void)addSyncedSettingObserver:(id)a3 selector:(SEL)a4 key:(int64_t)a5;
+- (void)_setLegacyKeepMessagesPreference:(id)preference;
+- (void)addSyncedSettingObserver:(id)observer selector:(SEL)selector key:(int64_t)key;
 - (void)dealloc;
-- (void)removeSyncedSettingObserver:(id)a3 key:(int64_t)a4;
-- (void)updateKeepMessagesPreference:(id)a3;
+- (void)removeSyncedSettingObserver:(id)observer key:(int64_t)key;
+- (void)updateKeepMessagesPreference:(id)preference;
 @end
 
 @implementation CKKeepMessagesPreferenceManager
@@ -18,11 +18,11 @@
   [(CKKeepMessagesPreferenceManager *)&v3 dealloc];
 }
 
-- (void)updateKeepMessagesPreference:(id)a3
+- (void)updateKeepMessagesPreference:(id)preference
 {
-  v3 = a3;
+  preferenceCopy = preference;
   v4 = +[CKKeepMessagesPreferenceManager syncedSettingsManager];
-  [v4 setSettingValue:v3 forKey:0];
+  [v4 setSettingValue:preferenceCopy forKey:0];
 }
 
 + (id)keepMessagesPreference
@@ -33,18 +33,18 @@
   return v3;
 }
 
-- (void)addSyncedSettingObserver:(id)a3 selector:(SEL)a4 key:(int64_t)a5
+- (void)addSyncedSettingObserver:(id)observer selector:(SEL)selector key:(int64_t)key
 {
-  v7 = a3;
+  observerCopy = observer;
   v8 = +[CKKeepMessagesPreferenceManager syncedSettingsManager];
-  [v8 addObserver:v7 selector:a4 key:a5];
+  [v8 addObserver:observerCopy selector:selector key:key];
 }
 
-- (void)removeSyncedSettingObserver:(id)a3 key:(int64_t)a4
+- (void)removeSyncedSettingObserver:(id)observer key:(int64_t)key
 {
-  v5 = a3;
+  observerCopy = observer;
   v6 = +[CKKeepMessagesPreferenceManager syncedSettingsManager];
-  [v6 removeObserver:v5 key:a4];
+  [v6 removeObserver:observerCopy key:key];
 }
 
 + (IMSyncedSettingsManaging)syncedSettingsManager
@@ -52,9 +52,9 @@
   v2 = _syncedSettingsManager;
   if (!_syncedSettingsManager)
   {
-    v3 = [MEMORY[0x277D18DE8] sharedManager];
+    mEMORY[0x277D18DE8] = [MEMORY[0x277D18DE8] sharedManager];
     v4 = _syncedSettingsManager;
-    _syncedSettingsManager = v3;
+    _syncedSettingsManager = mEMORY[0x277D18DE8];
 
     v2 = _syncedSettingsManager;
   }
@@ -62,9 +62,9 @@
   return v2;
 }
 
-- (void)_setLegacyKeepMessagesPreference:(id)a3
+- (void)_setLegacyKeepMessagesPreference:(id)preference
 {
-  v3 = a3;
+  preferenceCopy = preference;
   v4 = MEMORY[0x259C9B360](@"com.apple.MobileSMS", @"KeepMessagesVersionID");
   v7 = v4;
   if (v4)
@@ -78,7 +78,7 @@
   }
 
   CFPreferencesSetAppValue(@"KeepMessagesVersionID", [MEMORY[0x277CCABB0] numberWithInteger:v5], @"com.apple.MobileSMS");
-  CFPreferencesSetAppValue(@"KeepMessageForDays", v3, @"com.apple.MobileSMS");
+  CFPreferencesSetAppValue(@"KeepMessageForDays", preferenceCopy, @"com.apple.MobileSMS");
 
   CFPreferencesSynchronize(@"com.apple.MobileSMS", *MEMORY[0x277CBF040], *MEMORY[0x277CBF010]);
   notify_post("com.apple.MobileSMS.KeepMessages.shouldUpdateDevices");

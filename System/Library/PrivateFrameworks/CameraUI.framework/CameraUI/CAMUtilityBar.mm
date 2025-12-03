@@ -1,28 +1,28 @@
 @interface CAMUtilityBar
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)_layoutFilterScrubberView;
 - (void)_layoutPortraitApertureSlider;
-- (void)_layoutSliderView:(id)a3;
-- (void)_updateVisibilityForUpdatedContent:(unint64_t)a3 contentView:(id)a4;
-- (void)_updateVisibleViewAnimated:(BOOL)a3;
+- (void)_layoutSliderView:(id)view;
+- (void)_updateVisibilityForUpdatedContent:(unint64_t)content contentView:(id)view;
+- (void)_updateVisibleViewAnimated:(BOOL)animated;
 - (void)layoutSubviews;
-- (void)setApertureSlider:(id)a3;
-- (void)setFilterScrubberView:(id)a3;
-- (void)setIntensitySlider:(id)a3;
-- (void)setVisibleContent:(unint64_t)a3 animated:(BOOL)a4;
+- (void)setApertureSlider:(id)slider;
+- (void)setFilterScrubberView:(id)view;
+- (void)setIntensitySlider:(id)slider;
+- (void)setVisibleContent:(unint64_t)content animated:(BOOL)animated;
 @end
 
 @implementation CAMUtilityBar
 
-- (void)setFilterScrubberView:(id)a3
+- (void)setFilterScrubberView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   filterScrubberView = self->_filterScrubberView;
-  if (filterScrubberView != v5)
+  if (filterScrubberView != viewCopy)
   {
-    v12 = v5;
+    v12 = viewCopy;
     [(CEKWheelScrubberView *)filterScrubberView removeFromSuperview];
-    objc_storeStrong(&self->_filterScrubberView, a3);
+    objc_storeStrong(&self->_filterScrubberView, view);
     v7 = *(MEMORY[0x1E69DDCE0] + 8);
     v8 = *(MEMORY[0x1E69DDCE0] + 24);
     v9 = CAMIsSmallPhone();
@@ -41,109 +41,109 @@
     [(CEKWheelScrubberView *)self->_filterScrubberView setThumbnailEdgeInsets:v10, v7, v11, v8];
     [(CAMUtilityBar *)self addSubview:v12];
     filterScrubberView = [(CAMUtilityBar *)self _updateVisibilityForUpdatedContent:1 contentView:v12];
-    v5 = v12;
+    viewCopy = v12;
   }
 
-  MEMORY[0x1EEE66BB8](filterScrubberView, v5);
+  MEMORY[0x1EEE66BB8](filterScrubberView, viewCopy);
 }
 
-- (void)setApertureSlider:(id)a3
+- (void)setApertureSlider:(id)slider
 {
-  v5 = a3;
+  sliderCopy = slider;
   apertureSlider = self->_apertureSlider;
-  if (apertureSlider != v5)
+  if (apertureSlider != sliderCopy)
   {
-    v8 = v5;
-    v7 = [(CEKApertureSlider *)apertureSlider superview];
+    v8 = sliderCopy;
+    superview = [(CEKApertureSlider *)apertureSlider superview];
 
-    if (v7 == self)
+    if (superview == self)
     {
       [(CEKApertureSlider *)self->_apertureSlider removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_apertureSlider, a3);
+    objc_storeStrong(&self->_apertureSlider, slider);
     [(CAMUtilityBar *)self addSubview:v8];
     apertureSlider = [(CAMUtilityBar *)self _updateVisibilityForUpdatedContent:2 contentView:v8];
-    v5 = v8;
+    sliderCopy = v8;
   }
 
-  MEMORY[0x1EEE66BB8](apertureSlider, v5);
+  MEMORY[0x1EEE66BB8](apertureSlider, sliderCopy);
 }
 
-- (void)setIntensitySlider:(id)a3
+- (void)setIntensitySlider:(id)slider
 {
-  v5 = a3;
+  sliderCopy = slider;
   intensitySlider = self->_intensitySlider;
-  if (intensitySlider != v5)
+  if (intensitySlider != sliderCopy)
   {
-    v8 = v5;
-    v7 = [(CEKSlider *)intensitySlider superview];
+    v8 = sliderCopy;
+    superview = [(CEKSlider *)intensitySlider superview];
 
-    if (v7 == self)
+    if (superview == self)
     {
       [(CEKSlider *)self->_intensitySlider removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_intensitySlider, a3);
+    objc_storeStrong(&self->_intensitySlider, slider);
     [(CAMUtilityBar *)self addSubview:v8];
     intensitySlider = [(CAMUtilityBar *)self _updateVisibilityForUpdatedContent:3 contentView:v8];
-    v5 = v8;
+    sliderCopy = v8;
   }
 
-  MEMORY[0x1EEE66BB8](intensitySlider, v5);
+  MEMORY[0x1EEE66BB8](intensitySlider, sliderCopy);
 }
 
-- (void)_updateVisibilityForUpdatedContent:(unint64_t)a3 contentView:(id)a4
+- (void)_updateVisibilityForUpdatedContent:(unint64_t)content contentView:(id)view
 {
-  v7 = [(CAMUtilityBar *)self visibleContent];
-  if (a4)
+  visibleContent = [(CAMUtilityBar *)self visibleContent];
+  if (view)
   {
-    if (v7)
+    if (visibleContent)
     {
 
       [(CAMUtilityBar *)self _updateVisibleViewAnimated:0];
       return;
     }
 
-    v8 = self;
-    v9 = a3;
+    selfCopy2 = self;
+    contentCopy = content;
   }
 
   else
   {
-    v8 = self;
-    v9 = 0;
+    selfCopy2 = self;
+    contentCopy = 0;
   }
 
-  [(CAMUtilityBar *)v8 setVisibleContent:v9];
+  [(CAMUtilityBar *)selfCopy2 setVisibleContent:contentCopy];
 }
 
-- (void)setVisibleContent:(unint64_t)a3 animated:(BOOL)a4
+- (void)setVisibleContent:(unint64_t)content animated:(BOOL)animated
 {
-  if (self->_visibleContent != a3)
+  if (self->_visibleContent != content)
   {
-    self->_visibleContent = a3;
-    [(CAMUtilityBar *)self _updateVisibleViewAnimated:a4];
+    self->_visibleContent = content;
+    [(CAMUtilityBar *)self _updateVisibleViewAnimated:animated];
   }
 }
 
-- (void)_updateVisibleViewAnimated:(BOOL)a3
+- (void)_updateVisibleViewAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(CAMUtilityBar *)self visibleContent];
-  switch(v5)
+  animatedCopy = animated;
+  visibleContent = [(CAMUtilityBar *)self visibleContent];
+  switch(visibleContent)
   {
     case 1uLL:
-      v6 = [(CAMUtilityBar *)self filterScrubberView];
+      filterScrubberView = [(CAMUtilityBar *)self filterScrubberView];
       break;
     case 3uLL:
-      v6 = [(CAMUtilityBar *)self intensitySlider];
+      filterScrubberView = [(CAMUtilityBar *)self intensitySlider];
       break;
     case 2uLL:
-      v6 = [(CAMUtilityBar *)self apertureSlider];
+      filterScrubberView = [(CAMUtilityBar *)self apertureSlider];
       break;
     default:
-      v6 = 0;
+      filterScrubberView = 0;
       break;
   }
 
@@ -151,7 +151,7 @@
   v9[0] = MEMORY[0x1E69E9820];
   v9[2] = __44__CAMUtilityBar__updateVisibleViewAnimated___block_invoke;
   v9[3] = &unk_1E76F7960;
-  if (v3)
+  if (animatedCopy)
   {
     v7 = 0.25;
   }
@@ -162,8 +162,8 @@
   }
 
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = filterScrubberView;
+  v8 = filterScrubberView;
   [CAMView animateIfNeededWithDuration:v9 animations:v7];
 }
 
@@ -220,15 +220,15 @@ void __44__CAMUtilityBar__updateVisibleViewAnimated___block_invoke(uint64_t a1)
   [(CAMUtilityBar *)&v4 layoutSubviews];
   [(CAMUtilityBar *)self _layoutFilterScrubberView];
   [(CAMUtilityBar *)self _layoutPortraitApertureSlider];
-  v3 = [(CAMUtilityBar *)self intensitySlider];
-  [(CAMUtilityBar *)self _layoutSliderView:v3];
+  intensitySlider = [(CAMUtilityBar *)self intensitySlider];
+  [(CAMUtilityBar *)self _layoutSliderView:intensitySlider];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v9.receiver = self;
   v9.super_class = CAMUtilityBar;
-  v5 = [(CAMUtilityBar *)&v9 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(CAMUtilityBar *)&v9 hitTest:event withEvent:test.x, test.y];
   v6 = v5;
   if (v5 == self)
   {
@@ -250,8 +250,8 @@ void __44__CAMUtilityBar__updateVisibleViewAnimated___block_invoke(uint64_t a1)
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v14 = [(CAMUtilityBar *)self filterScrubberView];
-  [v14 thumbnailSize];
+  filterScrubberView = [(CAMUtilityBar *)self filterScrubberView];
+  [filterScrubberView thumbnailSize];
   v12 = v11;
   v16.origin.x = v4;
   v16.origin.y = v6;
@@ -259,27 +259,27 @@ void __44__CAMUtilityBar__updateVisibleViewAnimated___block_invoke(uint64_t a1)
   v16.size.height = v10;
   CGRectGetMaxY(v16);
   UIRoundToViewScale();
-  [v14 frameForAlignmentRect:{0.0, v13, v8, v12}];
-  [v14 setFrame:?];
-  [v14 selectedThumbnailBorderWidth];
+  [filterScrubberView frameForAlignmentRect:{0.0, v13, v8, v12}];
+  [filterScrubberView setFrame:?];
+  [filterScrubberView selectedThumbnailBorderWidth];
   UIFloorToViewScale();
-  [v14 setSelectionDotCenterTopSpacing:?];
+  [filterScrubberView setSelectionDotCenterTopSpacing:?];
 }
 
 - (void)_layoutPortraitApertureSlider
 {
-  v3 = [(CAMUtilityBar *)self apertureSlider];
-  [(CAMUtilityBar *)self _layoutSliderView:v3];
+  apertureSlider = [(CAMUtilityBar *)self apertureSlider];
+  [(CAMUtilityBar *)self _layoutSliderView:apertureSlider];
 
   [(CAMUtilityBar *)self bounds];
   v6 = 2 * (v4 < v5);
-  v7 = [(CAMUtilityBar *)self apertureSlider];
-  [v7 setTextOrientation:v6];
+  apertureSlider2 = [(CAMUtilityBar *)self apertureSlider];
+  [apertureSlider2 setTextOrientation:v6];
 }
 
-- (void)_layoutSliderView:(id)a3
+- (void)_layoutSliderView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(CAMUtilityBar *)self bounds];
   v6 = v5;
   v8 = v7;
@@ -298,10 +298,10 @@ void __44__CAMUtilityBar__updateVisibleViewAnimated___block_invoke(uint64_t a1)
   }
 
   UIRectGetCenter();
-  [v4 setCenter:?];
-  [v4 setBounds:{v6, v8, v14, v13}];
+  [viewCopy setCenter:?];
+  [viewCopy setBounds:{v6, v8, v14, v13}];
   v15 = v16;
-  [v4 setTransform:&v15];
+  [viewCopy setTransform:&v15];
 }
 
 @end

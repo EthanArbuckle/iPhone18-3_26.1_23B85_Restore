@@ -1,20 +1,20 @@
 @interface _UIBarInsertLayoutData
-+ ($1AB5FA073B851C12C2339EC22442E995)calculateLayoutHeights:(id)a3;
-+ (id)calculateRestingHeightsForLayouts:(id)a3;
-+ (id)layoutPriorToItemWithOrder:(int64_t)a3 inLayouts:(id)a4;
-+ (void)assignVerticalOriginsToItemsInLayouts:(id)a3;
-+ (void)updateLayoutParameters:(id)a3 overflowLayout:(id)a4 forAvailableHeight:(double)a5;
++ ($1AB5FA073B851C12C2339EC22442E995)calculateLayoutHeights:(id)heights;
++ (id)calculateRestingHeightsForLayouts:(id)layouts;
++ (id)layoutPriorToItemWithOrder:(int64_t)order inLayouts:(id)layouts;
++ (void)assignVerticalOriginsToItemsInLayouts:(id)layouts;
++ (void)updateLayoutParameters:(id)parameters overflowLayout:(id)layout forAvailableHeight:(double)height;
 - (BOOL)isVariableHeight;
-- (CGRect)layoutFrameInWidth:(double)a3;
+- (CGRect)layoutFrameInWidth:(double)width;
 - (NSString)description;
 - (_UIBarInsertLayoutData)init;
 - (double)layoutMinimumHeight;
 - (double)transitionProgress;
 - (double)verticalOrigin;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setActive:(BOOL)a3;
-- (void)setIgnoredForCollapsingBehaviors:(BOOL)a3;
-- (void)setPrefersExpanded:(BOOL)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setActive:(BOOL)active;
+- (void)setIgnoredForCollapsingBehaviors:(BOOL)behaviors;
+- (void)setPrefersExpanded:(BOOL)expanded;
 @end
 
 @implementation _UIBarInsertLayoutData
@@ -116,7 +116,7 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v5 = [(NSString *)self->_identifier copy];
@@ -136,9 +136,9 @@
   return v4;
 }
 
-- (void)setPrefersExpanded:(BOOL)a3
+- (void)setPrefersExpanded:(BOOL)expanded
 {
-  if (a3)
+  if (expanded)
   {
     v3 = 2;
   }
@@ -180,7 +180,7 @@
       if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
       {
         v6 = 138412290;
-        v7 = self;
+        selfCopy2 = self;
         _os_log_fault_impl(&dword_188A29000, v5, OS_LOG_TYPE_FAULT, "Accessing invalid yOrigin on %@", &v6, 0xCu);
       }
     }
@@ -191,7 +191,7 @@
       if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
       {
         v6 = 138412290;
-        v7 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_188A29000, v4, OS_LOG_TYPE_ERROR, "Accessing invalid yOrigin on %@", &v6, 0xCu);
       }
     }
@@ -200,23 +200,23 @@
   return self->_verticalOrigin;
 }
 
-- (CGRect)layoutFrameInWidth:(double)a3
+- (CGRect)layoutFrameInWidth:(double)width
 {
   [(_UIBarInsertLayoutData *)self verticalOrigin];
   v6 = v5;
   collapsingHeight = self->_collapsingHeight;
   v8 = 0.0;
-  v9 = a3;
+  widthCopy = width;
   result.size.height = collapsingHeight;
-  result.size.width = v9;
+  result.size.width = widthCopy;
   result.origin.y = v6;
   result.origin.x = v8;
   return result;
 }
 
-- (void)setIgnoredForCollapsingBehaviors:(BOOL)a3
+- (void)setIgnoredForCollapsingBehaviors:(BOOL)behaviors
 {
-  if (a3)
+  if (behaviors)
   {
     v3 = 4;
   }
@@ -229,9 +229,9 @@
   *&self->_flags = *&self->_flags & 0xFB | v3;
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (a3)
+  if (active)
   {
     v3 = 8;
   }
@@ -244,16 +244,16 @@
   *&self->_flags = *&self->_flags & 0xF7 | v3;
 }
 
-+ (void)updateLayoutParameters:(id)a3 overflowLayout:(id)a4 forAvailableHeight:(double)a5
++ (void)updateLayoutParameters:(id)parameters overflowLayout:(id)layout forAvailableHeight:(double)height
 {
   v73 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  parametersCopy = parameters;
+  layoutCopy = layout;
   v64 = 0u;
   v65 = 0u;
   v66 = 0u;
   v67 = 0u;
-  v9 = [v7 countByEnumeratingWithState:&v64 objects:v72 count:16];
+  v9 = [parametersCopy countByEnumeratingWithState:&v64 objects:v72 count:16];
   if (v9)
   {
     v10 = v9;
@@ -266,7 +266,7 @@
       {
         if (*v65 != v11)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(parametersCopy);
         }
 
         v15 = *(*(&v64 + 1) + 8 * i);
@@ -279,7 +279,7 @@
         *(v15 + 8) &= ~0x10u;
       }
 
-      v10 = [v7 countByEnumeratingWithState:&v64 objects:v72 count:16];
+      v10 = [parametersCopy countByEnumeratingWithState:&v64 objects:v72 count:16];
     }
 
     while (v10);
@@ -291,13 +291,13 @@
     v13 = 0.0;
   }
 
-  if (v12 <= a5)
+  if (v12 <= height)
   {
     v62 = 0uLL;
     v63 = 0uLL;
     v60 = 0uLL;
     v61 = 0uLL;
-    v30 = v7;
+    v30 = parametersCopy;
     v31 = [v30 countByEnumeratingWithState:&v60 objects:v71 count:16];
     if (v31)
     {
@@ -324,23 +324,23 @@
       while (v32);
     }
 
-    if (v8)
+    if (layoutCopy)
     {
-      v37 = a5 - v12 + v8[5];
-      v8[7] = v37;
-      v8[8] = v37;
+      v37 = height - v12 + layoutCopy[5];
+      layoutCopy[7] = v37;
+      layoutCopy[8] = v37;
     }
 
     goto LABEL_63;
   }
 
-  if (v13 <= a5)
+  if (v13 <= height)
   {
     v58 = 0uLL;
     v59 = 0uLL;
     v56 = 0uLL;
     v57 = 0uLL;
-    v23 = v7;
+    v23 = parametersCopy;
     v38 = [v23 countByEnumeratingWithState:&v56 objects:v70 count:16];
     if (!v38)
     {
@@ -348,7 +348,7 @@
     }
 
     v39 = v38;
-    v40 = a5 - v13;
+    v40 = height - v13;
     v41 = *v57;
     while (1)
     {
@@ -415,7 +415,7 @@ LABEL_55:
   v55 = 0uLL;
   v52 = 0uLL;
   v53 = 0uLL;
-  v16 = v7;
+  v16 = parametersCopy;
   v17 = [v16 countByEnumeratingWithState:&v52 objects:v69 count:16];
   if (v17)
   {
@@ -436,7 +436,7 @@ LABEL_55:
           v22 = *(v21 + 32);
           *(v21 + 56) = v22;
           *(v21 + 64) = v22;
-          a5 = a5 - v22;
+          height = height - v22;
         }
       }
 
@@ -470,16 +470,16 @@ LABEL_55:
         {
           v29 = *(v28 + 32);
           *(v28 + 56) = v29;
-          if (a5 >= v29)
+          if (height >= v29)
           {
             *(v28 + 64) = v29;
-            a5 = a5 - v29;
+            height = height - v29;
           }
 
           else
           {
-            *(v28 + 64) = a5;
-            a5 = 0.0;
+            *(v28 + 64) = height;
+            height = 0.0;
           }
         }
       }
@@ -495,15 +495,15 @@ LABEL_62:
 LABEL_63:
 }
 
-+ (id)calculateRestingHeightsForLayouts:(id)a3
++ (id)calculateRestingHeightsForLayouts:(id)layouts
 {
   v34 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  layoutsCopy = layouts;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v28 objects:v33 count:16];
+  v4 = [layoutsCopy countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (!v4)
   {
     v6 = 0;
@@ -521,7 +521,7 @@ LABEL_63:
     {
       if (*v29 != v7)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(layoutsCopy);
       }
 
       v10 = *(*(&v28 + 1) + 8 * i);
@@ -543,7 +543,7 @@ LABEL_9:
       v8 = v8 + v12;
     }
 
-    v5 = [v3 countByEnumeratingWithState:&v28 objects:v33 count:16];
+    v5 = [layoutsCopy countByEnumeratingWithState:&v28 objects:v33 count:16];
   }
 
   while (v5);
@@ -558,7 +558,7 @@ LABEL_15:
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v15 = v3;
+    v15 = layoutsCopy;
     v16 = [v15 countByEnumeratingWithState:&v24 objects:v32 count:16];
     if (v16)
     {
@@ -598,15 +598,15 @@ LABEL_15:
   return v13;
 }
 
-+ ($1AB5FA073B851C12C2339EC22442E995)calculateLayoutHeights:(id)a3
++ ($1AB5FA073B851C12C2339EC22442E995)calculateLayoutHeights:(id)heights
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  heightsCopy = heights;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v4 = [heightsCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v4)
   {
     v5 = v4;
@@ -620,7 +620,7 @@ LABEL_15:
       {
         if (*v17 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(heightsCopy);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
@@ -635,7 +635,7 @@ LABEL_15:
         v7 = v7 + *(v11 + 40);
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v5 = [heightsCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v5);
@@ -657,15 +657,15 @@ LABEL_15:
   return result;
 }
 
-+ (void)assignVerticalOriginsToItemsInLayouts:(id)a3
++ (void)assignVerticalOriginsToItemsInLayouts:(id)layouts
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  layoutsCopy = layouts;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v4 = [layoutsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -678,7 +678,7 @@ LABEL_15:
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(layoutsCopy);
         }
 
         v9 = *(*(&v11 + 1) + 8 * v8);
@@ -690,24 +690,24 @@ LABEL_15:
       }
 
       while (v5 != v8);
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [layoutsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
   }
 }
 
-+ (id)layoutPriorToItemWithOrder:(int64_t)a3 inLayouts:(id)a4
++ (id)layoutPriorToItemWithOrder:(int64_t)order inLayouts:(id)layouts
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  if ([v5 count])
+  layoutsCopy = layouts;
+  if ([layoutsCopy count])
   {
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v6 = v5;
+    v6 = layoutsCopy;
     v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v7)
     {
@@ -728,7 +728,7 @@ LABEL_4:
           objc_enumerationMutation(v6);
         }
 
-        if ([*(*(&v17 + 1) + 8 * v12) order] <= a3)
+        if ([*(*(&v17 + 1) + 8 * v12) order] <= order)
         {
           break;
         }

@@ -1,31 +1,31 @@
 @interface SPSpotlightRecentsCache
-+ (BOOL)topic:(id)a3 isSameAsTopic:(id)a4;
-+ (id)filteredTopics:(id)a3;
++ (BOOL)topic:(id)topic isSameAsTopic:(id)asTopic;
++ (id)filteredTopics:(id)topics;
 + (id)recentResults;
-+ (id)recentResultsWithOptions:(id)a3;
-+ (id)recentResultsWithOptions:(id)a3 rankAndDeduplicate:(id)a4;
-+ (id)resultFromTopic:(id)a3;
-+ (void)cacheContact:(id)a3 contactIdentifier:(id)a4 score:(id)a5 searchString:(id)a6;
-+ (void)cacheLocalResult:(id)a3 identifier:(id)a4 bundleIdentifier:(id)a5 protectionClass:(id)a6 searchString:(id)a7;
-+ (void)cachePerson:(id)a3 personQueryIdentifier:(id)a4 score:(id)a5 searchString:(id)a6;
-+ (void)cacheResult:(id)a3 title:(id)a4 searchString:(id)a5;
++ (id)recentResultsWithOptions:(id)options;
++ (id)recentResultsWithOptions:(id)options rankAndDeduplicate:(id)deduplicate;
++ (id)resultFromTopic:(id)topic;
++ (void)cacheContact:(id)contact contactIdentifier:(id)identifier score:(id)score searchString:(id)string;
++ (void)cacheLocalResult:(id)result identifier:(id)identifier bundleIdentifier:(id)bundleIdentifier protectionClass:(id)class searchString:(id)string;
++ (void)cachePerson:(id)person personQueryIdentifier:(id)identifier score:(id)score searchString:(id)string;
++ (void)cacheResult:(id)result title:(id)title searchString:(id)string;
 + (void)deleteAllRecentResults;
-+ (void)deleteContact:(id)a3 contactIdentifier:(id)a4 score:(id)a5;
-+ (void)deleteLocalResult:(id)a3 identifier:(id)a4 bundleIdentifier:(id)a5 protectionClass:(id)a6;
-+ (void)deletePerson:(id)a3 personQueryIdentifier:(id)a4 score:(id)a5;
-+ (void)deleteResult:(id)a3 title:(id)a4;
-+ (void)enumerateRecentCompletionsWithSearchString:(id)a3 usingBlock:(id)a4;
-+ (void)enumerateRecentResultsUsingBlock:(id)a3;
-+ (void)updateApplicationContexts:(id)a3;
++ (void)deleteContact:(id)contact contactIdentifier:(id)identifier score:(id)score;
++ (void)deleteLocalResult:(id)result identifier:(id)identifier bundleIdentifier:(id)bundleIdentifier protectionClass:(id)class;
++ (void)deletePerson:(id)person personQueryIdentifier:(id)identifier score:(id)score;
++ (void)deleteResult:(id)result title:(id)title;
++ (void)enumerateRecentCompletionsWithSearchString:(id)string usingBlock:(id)block;
++ (void)enumerateRecentResultsUsingBlock:(id)block;
++ (void)updateApplicationContexts:(id)contexts;
 @end
 
 @implementation SPSpotlightRecentsCache
 
-+ (void)updateApplicationContexts:(id)a3
++ (void)updateApplicationContexts:(id)contexts
 {
-  v3 = a3;
+  contextsCopy = contexts;
   v4 = +[SPCacheManager defaultManager];
-  [v4 updateRecentsWithBundleIdentifiers:v3];
+  [v4 updateRecentsWithBundleIdentifiers:contextsCopy];
 }
 
 + (id)recentResults
@@ -41,114 +41,114 @@
   return v3;
 }
 
-+ (id)recentResultsWithOptions:(id)a3
++ (id)recentResultsWithOptions:(id)options
 {
-  v3 = a3;
+  optionsCopy = options;
   v4 = +[SPCacheManager defaultManager];
-  v5 = [v4 recentResultsWithOptions:v3 rankAndDeduplicate:0];
+  v5 = [v4 recentResultsWithOptions:optionsCopy rankAndDeduplicate:0];
 
   return v5;
 }
 
-+ (id)recentResultsWithOptions:(id)a3 rankAndDeduplicate:(id)a4
++ (id)recentResultsWithOptions:(id)options rankAndDeduplicate:(id)deduplicate
 {
-  v5 = a4;
-  v6 = a3;
+  deduplicateCopy = deduplicate;
+  optionsCopy = options;
   v7 = +[SPCacheManager defaultManager];
-  v8 = [v7 recentResultsWithOptions:v6 rankAndDeduplicate:v5];
+  v8 = [v7 recentResultsWithOptions:optionsCopy rankAndDeduplicate:deduplicateCopy];
 
   return v8;
 }
 
-+ (void)enumerateRecentResultsUsingBlock:(id)a3
++ (void)enumerateRecentResultsUsingBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = +[SPCacheManager defaultManager];
-  [v4 enumerateRecentResultsUsingBlock:v3];
+  [v4 enumerateRecentResultsUsingBlock:blockCopy];
 }
 
-+ (void)enumerateRecentCompletionsWithSearchString:(id)a3 usingBlock:(id)a4
++ (void)enumerateRecentCompletionsWithSearchString:(id)string usingBlock:(id)block
 {
-  v5 = a4;
-  v6 = a3;
+  blockCopy = block;
+  stringCopy = string;
   v7 = +[SPCacheManager defaultManager];
-  [v7 enumerateRecentCompletionsWithSearchString:v6 usingBlock:v5];
+  [v7 enumerateRecentCompletionsWithSearchString:stringCopy usingBlock:blockCopy];
 }
 
-+ (void)cacheResult:(id)a3 title:(id)a4 searchString:(id)a5
++ (void)cacheResult:(id)result title:(id)title searchString:(id)string
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  stringCopy = string;
+  titleCopy = title;
+  resultCopy = result;
   v10 = +[SPCacheManager defaultManager];
-  [v10 cacheResult:v9 title:v8 searchString:v7];
+  [v10 cacheResult:resultCopy title:titleCopy searchString:stringCopy];
 }
 
-+ (void)cacheLocalResult:(id)a3 identifier:(id)a4 bundleIdentifier:(id)a5 protectionClass:(id)a6 searchString:(id)a7
++ (void)cacheLocalResult:(id)result identifier:(id)identifier bundleIdentifier:(id)bundleIdentifier protectionClass:(id)class searchString:(id)string
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
+  stringCopy = string;
+  classCopy = class;
+  bundleIdentifierCopy = bundleIdentifier;
+  identifierCopy = identifier;
+  resultCopy = result;
   v16 = +[SPCacheManager defaultManager];
-  [v16 cacheLocalResult:v15 identifier:v14 bundleIdentifier:v13 protectionClass:v12 searchString:v11];
+  [v16 cacheLocalResult:resultCopy identifier:identifierCopy bundleIdentifier:bundleIdentifierCopy protectionClass:classCopy searchString:stringCopy];
 }
 
-+ (void)cachePerson:(id)a3 personQueryIdentifier:(id)a4 score:(id)a5 searchString:(id)a6
++ (void)cachePerson:(id)person personQueryIdentifier:(id)identifier score:(id)score searchString:(id)string
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  stringCopy = string;
+  scoreCopy = score;
+  identifierCopy = identifier;
+  personCopy = person;
   v13 = +[SPCacheManager defaultManager];
-  [v13 cachePerson:v12 personQueryIdentifier:v11 score:v10 searchString:v9];
+  [v13 cachePerson:personCopy personQueryIdentifier:identifierCopy score:scoreCopy searchString:stringCopy];
 }
 
-+ (void)cacheContact:(id)a3 contactIdentifier:(id)a4 score:(id)a5 searchString:(id)a6
++ (void)cacheContact:(id)contact contactIdentifier:(id)identifier score:(id)score searchString:(id)string
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  stringCopy = string;
+  scoreCopy = score;
+  identifierCopy = identifier;
+  contactCopy = contact;
   v13 = +[SPCacheManager defaultManager];
-  [v13 cacheContact:v12 contactIdentifier:v11 score:v10 searchString:v9];
+  [v13 cacheContact:contactCopy contactIdentifier:identifierCopy score:scoreCopy searchString:stringCopy];
 }
 
-+ (void)deleteResult:(id)a3 title:(id)a4
++ (void)deleteResult:(id)result title:(id)title
 {
-  v5 = a4;
-  v6 = a3;
+  titleCopy = title;
+  resultCopy = result;
   v7 = +[SPCacheManager defaultManager];
-  [v7 deleteResult:v6 title:v5];
+  [v7 deleteResult:resultCopy title:titleCopy];
 }
 
-+ (void)deleteLocalResult:(id)a3 identifier:(id)a4 bundleIdentifier:(id)a5 protectionClass:(id)a6
++ (void)deleteLocalResult:(id)result identifier:(id)identifier bundleIdentifier:(id)bundleIdentifier protectionClass:(id)class
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  classCopy = class;
+  bundleIdentifierCopy = bundleIdentifier;
+  identifierCopy = identifier;
+  resultCopy = result;
   v13 = +[SPCacheManager defaultManager];
-  [v13 deleteLocalResult:v12 identifier:v11 bundleIdentifier:v10 protectionClass:v9];
+  [v13 deleteLocalResult:resultCopy identifier:identifierCopy bundleIdentifier:bundleIdentifierCopy protectionClass:classCopy];
 }
 
-+ (void)deletePerson:(id)a3 personQueryIdentifier:(id)a4 score:(id)a5
++ (void)deletePerson:(id)person personQueryIdentifier:(id)identifier score:(id)score
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  scoreCopy = score;
+  identifierCopy = identifier;
+  personCopy = person;
   v10 = +[SPCacheManager defaultManager];
-  [v10 deletePerson:v9 personQueryIdentifier:v8 score:v7];
+  [v10 deletePerson:personCopy personQueryIdentifier:identifierCopy score:scoreCopy];
 }
 
-+ (void)deleteContact:(id)a3 contactIdentifier:(id)a4 score:(id)a5
++ (void)deleteContact:(id)contact contactIdentifier:(id)identifier score:(id)score
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  scoreCopy = score;
+  identifierCopy = identifier;
+  contactCopy = contact;
   v10 = +[SPCacheManager defaultManager];
-  [v10 deleteContact:v9 contactIdentifier:v8 score:v7];
+  [v10 deleteContact:contactCopy contactIdentifier:identifierCopy score:scoreCopy];
 }
 
 + (void)deleteAllRecentResults
@@ -157,12 +157,12 @@
   [v2 deleteAllResults];
 }
 
-+ (BOOL)topic:(id)a3 isSameAsTopic:(id)a4
++ (BOOL)topic:(id)topic isSameAsTopic:(id)asTopic
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (!v5)
+  topicCopy = topic;
+  asTopicCopy = asTopic;
+  if (!topicCopy)
   {
     goto LABEL_14;
   }
@@ -170,7 +170,7 @@
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   LOBYTE(v8) = 0;
-  if (!v6 || (isKindOfClass & 1) == 0)
+  if (!asTopicCopy || (isKindOfClass & 1) == 0)
   {
     goto LABEL_17;
   }
@@ -183,11 +183,11 @@ LABEL_14:
     goto LABEL_17;
   }
 
-  v9 = [v5 identifier];
-  v10 = attributesForTopicIdentifier(v9, 0);
+  identifier = [topicCopy identifier];
+  v10 = attributesForTopicIdentifier(identifier, 0);
 
-  v11 = [v6 identifier];
-  v12 = attributesForTopicIdentifier(v11, 0);
+  identifier2 = [asTopicCopy identifier];
+  v12 = attributesForTopicIdentifier(identifier2, 0);
 
   v20 = 0u;
   v21 = 0u;
@@ -231,17 +231,17 @@ LABEL_17:
   return v8;
 }
 
-+ (id)filteredTopics:(id)a3
++ (id)filteredTopics:(id)topics
 {
   v41 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  topicsCopy = topics;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v5 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v6 = v3;
+  v6 = topicsCopy;
   v7 = [v6 countByEnumeratingWithState:&v35 objects:v40 count:16];
   if (v7)
   {
@@ -266,8 +266,8 @@ LABEL_17:
         if (objc_opt_isKindOfClass())
         {
           v34 = 0;
-          v14 = [v12 identifier];
-          v15 = attributesForTopicIdentifier(v14, &v34);
+          identifier = [v12 identifier];
+          v15 = attributesForTopicIdentifier(identifier, &v34);
 
           if (v34 == 1)
           {
@@ -332,14 +332,14 @@ LABEL_22:
 
         else
         {
-          v23 = [v12 identifier];
-          v24 = [v5 containsObject:v23];
+          identifier2 = [v12 identifier];
+          v24 = [v5 containsObject:identifier2];
 
           if ((v24 & 1) == 0)
           {
             [v4 addObject:v12];
-            v25 = [v12 identifier];
-            [v5 addObject:v25];
+            identifier3 = [v12 identifier];
+            [v5 addObject:identifier3];
           }
         }
 
@@ -358,12 +358,12 @@ LABEL_22:
   return v4;
 }
 
-+ (id)resultFromTopic:(id)a3
++ (id)resultFromTopic:(id)topic
 {
-  if (a3)
+  if (topic)
   {
-    v3 = [a3 identifier];
-    v4 = searchResultWithTopicIdentifier(v3, 1.0);
+    identifier = [topic identifier];
+    v4 = searchResultWithTopicIdentifier(identifier, 1.0);
   }
 
   else

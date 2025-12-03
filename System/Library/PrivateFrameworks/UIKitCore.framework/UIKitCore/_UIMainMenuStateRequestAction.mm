@@ -1,18 +1,18 @@
 @interface _UIMainMenuStateRequestAction
-- (_UIMainMenuStateRequestAction)initWithMenuStateRequest:(id)a3 handler:(id)a4;
+- (_UIMainMenuStateRequestAction)initWithMenuStateRequest:(id)request handler:(id)handler;
 - (id)menuStateRequest;
 - (void)handleMainMenuAction;
 @end
 
 @implementation _UIMainMenuStateRequestAction
 
-- (_UIMainMenuStateRequestAction)initWithMenuStateRequest:(id)a3 handler:(id)a4
+- (_UIMainMenuStateRequestAction)initWithMenuStateRequest:(id)request handler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = MEMORY[0x1E698E700];
-  v8 = a3;
+  requestCopy = request;
   v9 = objc_alloc_init(v7);
-  v10 = [MEMORY[0x1E696ACC8] _ui_archivedInterprocessDataWithRootObject:v8 requiringSecureCoding:1 error:0];
+  v10 = [MEMORY[0x1E696ACC8] _ui_archivedInterprocessDataWithRootObject:requestCopy requiringSecureCoding:1 error:0];
 
   [v9 setObject:v10 forSetting:7];
   v11 = MEMORY[0x1E698E5F8];
@@ -20,8 +20,8 @@
   v17[1] = 3221225472;
   v17[2] = __66___UIMainMenuStateRequestAction_initWithMenuStateRequest_handler___block_invoke;
   v17[3] = &unk_1E7108B40;
-  v18 = v6;
-  v12 = v6;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
   v13 = [v11 responderWithHandler:v17];
   [v13 setTimeout:{dispatch_time(0, 2000000000)}];
   [v13 setQueue:MEMORY[0x1E69E96A0]];
@@ -34,8 +34,8 @@
 
 - (id)menuStateRequest
 {
-  v2 = [(_UIMainMenuStateRequestAction *)self info];
-  v3 = [v2 objectForSetting:7];
+  info = [(_UIMainMenuStateRequestAction *)self info];
+  v3 = [info objectForSetting:7];
   v4 = objc_opt_self();
   v5 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:v4 fromData:v3 error:0];
 
@@ -45,8 +45,8 @@
 - (void)handleMainMenuAction
 {
   v3 = +[_UIMainMenuManager sharedManager];
-  v4 = [(_UIMainMenuStateRequestAction *)self menuStateRequest];
-  v6 = [v3 performMainMenuStateRequest:v4];
+  menuStateRequest = [(_UIMainMenuStateRequestAction *)self menuStateRequest];
+  v6 = [v3 performMainMenuStateRequest:menuStateRequest];
 
   if ([(_UIMainMenuStateRequestAction *)self canSendResponse])
   {

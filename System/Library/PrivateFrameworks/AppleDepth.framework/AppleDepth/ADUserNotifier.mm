@@ -1,49 +1,49 @@
 @interface ADUserNotifier
 + (id)defaultUserNotifier;
 - (ADUserNotifier)init;
-- (BOOL)createNotificationWithTitle:(id)a3 message:(id)a4 defaultButton:(id)a5 alternateButton:(id)a6 responseBlock:(id)a7;
-- (id)buildTapToRadarURLWithRadarTitle:(id)a3 radarComponent:(unint64_t)a4;
+- (BOOL)createNotificationWithTitle:(id)title message:(id)message defaultButton:(id)button alternateButton:(id)alternateButton responseBlock:(id)block;
+- (id)buildTapToRadarURLWithRadarTitle:(id)title radarComponent:(unint64_t)component;
 - (void)dealloc;
 - (void)dismissNotification;
-- (void)setComponentID:(id)a3 componentName:(id)a4 forQuery:(id)a5;
-- (void)showUserNotificationWithTitle:(id)a3 message:(id)a4;
-- (void)triggerApplicationWithNotificationTitle:(id)a3 notificationMessage:(id)a4 acceptButtonText:(id)a5 rejectButtonText:(id)a6 applicationURL:(id)a7;
-- (void)triggerTapToRadarWithNotificationTitle:(id)a3 notificationMessage:(id)a4 radarTitle:(id)a5 radarComponent:(unint64_t)a6;
+- (void)setComponentID:(id)d componentName:(id)name forQuery:(id)query;
+- (void)showUserNotificationWithTitle:(id)title message:(id)message;
+- (void)triggerApplicationWithNotificationTitle:(id)title notificationMessage:(id)message acceptButtonText:(id)text rejectButtonText:(id)buttonText applicationURL:(id)l;
+- (void)triggerTapToRadarWithNotificationTitle:(id)title notificationMessage:(id)message radarTitle:(id)radarTitle radarComponent:(unint64_t)component;
 @end
 
 @implementation ADUserNotifier
 
-- (id)buildTapToRadarURLWithRadarTitle:(id)a3 radarComponent:(unint64_t)a4
+- (id)buildTapToRadarURLWithRadarTitle:(id)title radarComponent:(unint64_t)component
 {
   v31[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  titleCopy = title;
   v7 = MEMORY[0x277CBEB38];
   v30[0] = @"Title";
   v30[1] = @"Classification";
-  v22 = v6;
-  v31[0] = v6;
+  v22 = titleCopy;
+  v31[0] = titleCopy;
   v31[1] = @"Other Bug";
   v30[2] = @"Reproducibility";
   v31[2] = @"I Didn't Try";
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v31 forKeys:v30 count:3];
   v9 = [v7 dictionaryWithDictionary:v8];
 
-  if (a4 >= 4)
+  if (component >= 4)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       *buf = 134217984;
-      v29 = a4;
+      componentCopy = component;
       _os_log_error_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "ADUserNotifier: Unknown radar component: %lu", buf, 0xCu);
     }
   }
 
   else
   {
-    [(ADUserNotifier *)self setComponentID:off_278CA1620[a4] componentName:off_278CA1640[a4] forQuery:v9];
+    [(ADUserNotifier *)self setComponentID:off_278CA1620[component] componentName:off_278CA1640[component] forQuery:v9];
   }
 
-  v10 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
@@ -66,7 +66,7 @@
         v16 = MEMORY[0x277CCAD18];
         v17 = [v11 objectForKeyedSubscript:v15];
         v18 = [v16 queryItemWithName:v15 value:v17];
-        [v10 addObject:v18];
+        [array addObject:v18];
       }
 
       v12 = [v11 countByEnumeratingWithState:&v23 objects:v27 count:16];
@@ -76,19 +76,19 @@
   }
 
   v19 = [MEMORY[0x277CCACE0] componentsWithString:@"tap-to-radar://new"];
-  [v19 setQueryItems:v10];
+  [v19 setQueryItems:array];
   v20 = [v19 URL];
 
   return v20;
 }
 
-- (void)setComponentID:(id)a3 componentName:(id)a4 forQuery:(id)a5
+- (void)setComponentID:(id)d componentName:(id)name forQuery:(id)query
 {
-  v9 = a3;
-  v7 = a4;
-  v8 = a5;
-  [v8 setObject:v9 forKey:@"ComponentID"];
-  [v8 setObject:v7 forKey:@"ComponentName"];
+  dCopy = d;
+  nameCopy = name;
+  queryCopy = query;
+  [queryCopy setObject:dCopy forKey:@"ComponentID"];
+  [queryCopy setObject:nameCopy forKey:@"ComponentName"];
 }
 
 - (void)dealloc
@@ -125,14 +125,14 @@
   }
 }
 
-- (BOOL)createNotificationWithTitle:(id)a3 message:(id)a4 defaultButton:(id)a5 alternateButton:(id)a6 responseBlock:(id)a7
+- (BOOL)createNotificationWithTitle:(id)title message:(id)message defaultButton:(id)button alternateButton:(id)alternateButton responseBlock:(id)block
 {
   v32 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  titleCopy = title;
+  messageCopy = message;
+  buttonCopy = button;
+  alternateButtonCopy = alternateButton;
+  blockCopy = block;
   if (!+[ADDeviceConfiguration isInternalBuild])
   {
     if (ADDebugUtilsADVerboseLogsEnabled != 1)
@@ -140,7 +140,7 @@
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v31 = v12;
+        v31 = titleCopy;
         _os_log_debug_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "Customer build, canceling notification with title: %@", buf, 0xCu);
       }
 
@@ -150,7 +150,7 @@
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v31 = v12;
+      v31 = titleCopy;
       v17 = MEMORY[0x277D86220];
       v18 = "Customer build, canceling notification with title: %@";
       goto LABEL_8;
@@ -166,7 +166,7 @@ LABEL_24:
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v31 = v12;
+      v31 = titleCopy;
       v17 = MEMORY[0x277D86220];
       v18 = "Another notification is currently active, canceling notification with title: %@";
 LABEL_8:
@@ -179,12 +179,12 @@ LABEL_8:
 
   v19 = *MEMORY[0x277CBECE8];
   Mutable = CFDictionaryCreateMutable(*MEMORY[0x277CBECE8], 0, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
-  CFDictionarySetValue(Mutable, *MEMORY[0x277CBF188], v12);
-  CFDictionarySetValue(Mutable, *MEMORY[0x277CBF198], v13);
-  CFDictionarySetValue(Mutable, *MEMORY[0x277CBF1E8], v14);
-  if (v15)
+  CFDictionarySetValue(Mutable, *MEMORY[0x277CBF188], titleCopy);
+  CFDictionarySetValue(Mutable, *MEMORY[0x277CBF198], messageCopy);
+  CFDictionarySetValue(Mutable, *MEMORY[0x277CBF1E8], buttonCopy);
+  if (alternateButtonCopy)
   {
-    CFDictionarySetValue(Mutable, *MEMORY[0x277CBF1C0], v15);
+    CFDictionarySetValue(Mutable, *MEMORY[0x277CBF1C0], alternateButtonCopy);
   }
 
   error = 0;
@@ -222,7 +222,7 @@ LABEL_8:
   }
 
   v24 = ADUserNotificationAlertResultBlockMap(void)::s_map;
-  v25 = MEMORY[0x245CC0270](v16);
+  v25 = MEMORY[0x245CC0270](blockCopy);
   [v24 setObject:v25 forKey:v23];
 
   Main = CFRunLoopGetMain();
@@ -230,7 +230,7 @@ LABEL_8:
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v31 = v12;
+    v31 = titleCopy;
     _os_log_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Notification has been triggered with title: %@", buf, 0xCu);
   }
 
@@ -242,28 +242,28 @@ LABEL_25:
   return v27;
 }
 
-- (void)triggerTapToRadarWithNotificationTitle:(id)a3 notificationMessage:(id)a4 radarTitle:(id)a5 radarComponent:(unint64_t)a6
+- (void)triggerTapToRadarWithNotificationTitle:(id)title notificationMessage:(id)message radarTitle:(id)radarTitle radarComponent:(unint64_t)component
 {
-  v12 = a3;
-  v10 = a4;
-  v11 = [(ADUserNotifier *)self buildTapToRadarURLWithRadarTitle:a5 radarComponent:a6];
-  [(ADUserNotifier *)self triggerApplicationWithNotificationTitle:v12 notificationMessage:v10 acceptButtonText:@"File a radar" rejectButtonText:@"Cancel" applicationURL:v11];
+  titleCopy = title;
+  messageCopy = message;
+  v11 = [(ADUserNotifier *)self buildTapToRadarURLWithRadarTitle:radarTitle radarComponent:component];
+  [(ADUserNotifier *)self triggerApplicationWithNotificationTitle:titleCopy notificationMessage:messageCopy acceptButtonText:@"File a radar" rejectButtonText:@"Cancel" applicationURL:v11];
 }
 
-- (void)triggerApplicationWithNotificationTitle:(id)a3 notificationMessage:(id)a4 acceptButtonText:(id)a5 rejectButtonText:(id)a6 applicationURL:(id)a7
+- (void)triggerApplicationWithNotificationTitle:(id)title notificationMessage:(id)message acceptButtonText:(id)text rejectButtonText:(id)buttonText applicationURL:(id)l
 {
   v33 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  titleCopy = title;
+  messageCopy = message;
+  textCopy = text;
+  buttonTextCopy = buttonText;
+  lCopy = l;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v30 = v12;
+    v30 = titleCopy;
     v31 = 2112;
-    v32 = v16;
+    v32 = lCopy;
     _os_log_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Triggering notification with title: %@; Application URL: %@", buf, 0x16u);
   }
 
@@ -273,16 +273,16 @@ LABEL_25:
   v23[2] = __127__ADUserNotifier_triggerApplicationWithNotificationTitle_notificationMessage_acceptButtonText_rejectButtonText_applicationURL___block_invoke;
   v23[3] = &unk_278CA1600;
   v23[4] = self;
-  v24 = v12;
-  v25 = v13;
-  v26 = v15;
-  v27 = v14;
-  v28 = v16;
-  v18 = v16;
-  v19 = v14;
-  v20 = v15;
-  v21 = v13;
-  v22 = v12;
+  v24 = titleCopy;
+  v25 = messageCopy;
+  v26 = buttonTextCopy;
+  v27 = textCopy;
+  v28 = lCopy;
+  v18 = lCopy;
+  v19 = textCopy;
+  v20 = buttonTextCopy;
+  v21 = messageCopy;
+  v22 = titleCopy;
   dispatch_async(notificationQueue, v23);
 }
 
@@ -318,20 +318,20 @@ void __127__ADUserNotifier_triggerApplicationWithNotificationTitle_notificationM
   }
 }
 
-- (void)showUserNotificationWithTitle:(id)a3 message:(id)a4
+- (void)showUserNotificationWithTitle:(id)title message:(id)message
 {
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  messageCopy = message;
   notificationQueue = self->_notificationQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__ADUserNotifier_showUserNotificationWithTitle_message___block_invoke;
   block[3] = &unk_278CA15B0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = titleCopy;
+  v13 = messageCopy;
+  v9 = messageCopy;
+  v10 = titleCopy;
   dispatch_async(notificationQueue, block);
 }
 
@@ -378,7 +378,7 @@ void __56__ADUserNotifier_showUserNotificationWithTitle_message___block_invoke_2
   v3 = +[ADUserNotifier defaultUserNotifier]::defaultUserNotifier;
   if (!+[ADUserNotifier defaultUserNotifier]::defaultUserNotifier)
   {
-    v4 = objc_alloc_init(a1);
+    v4 = objc_alloc_init(self);
     v5 = +[ADUserNotifier defaultUserNotifier]::defaultUserNotifier;
     +[ADUserNotifier defaultUserNotifier]::defaultUserNotifier = v4;
 

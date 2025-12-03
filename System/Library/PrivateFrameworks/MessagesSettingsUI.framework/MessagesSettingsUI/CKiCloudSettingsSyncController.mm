@@ -1,26 +1,26 @@
 @interface CKiCloudSettingsSyncController
 - (BOOL)isMiCEnabled;
 - (BOOL)micAccountsMatch;
-- (CKiCloudSettingsSyncController)initWithSyncStatusHandler:(id)a3;
-- (id)_syncSummaryForSyncState:(id)a3;
+- (CKiCloudSettingsSyncController)initWithSyncStatusHandler:(id)handler;
+- (id)_syncSummaryForSyncState:(id)state;
 - (void)_prepareForInitialSyncState;
 - (void)_wrapperInit;
 - (void)cancelCurrentSync;
-- (void)cloudKitEventNotificationManager:(id)a3 syncStateDidChange:(id)a4;
+- (void)cloudKitEventNotificationManager:(id)manager syncStateDidChange:(id)change;
 - (void)startSync;
 @end
 
 @implementation CKiCloudSettingsSyncController
 
-- (CKiCloudSettingsSyncController)initWithSyncStatusHandler:(id)a3
+- (CKiCloudSettingsSyncController)initWithSyncStatusHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v9.receiver = self;
   v9.super_class = CKiCloudSettingsSyncController;
   v5 = [(CKiCloudSettingsSyncController *)&v9 init];
   if (v5)
   {
-    v6 = MEMORY[0x259C9B8B0](v4);
+    v6 = MEMORY[0x259C9B8B0](handlerCopy);
     syncStatusHandler = v5->_syncStatusHandler;
     v5->_syncStatusHandler = v6;
 
@@ -32,11 +32,11 @@
 
 - (void)_wrapperInit
 {
-  v3 = [MEMORY[0x277D18D58] sharedInstance];
-  [v3 setupIMCloudKitHooks];
+  mEMORY[0x277D18D58] = [MEMORY[0x277D18D58] sharedInstance];
+  [mEMORY[0x277D18D58] setupIMCloudKitHooks];
 
-  v4 = [MEMORY[0x277D18D50] sharedInstance];
-  [v4 addEventHandler:self];
+  mEMORY[0x277D18D50] = [MEMORY[0x277D18D50] sharedInstance];
+  [mEMORY[0x277D18D50] addEventHandler:self];
 
   if (IMOSLoggingEnabled())
   {
@@ -54,16 +54,16 @@
 - (void)_prepareForInitialSyncState
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D18D58] sharedInstance];
-  v4 = [v3 isSyncing];
+  mEMORY[0x277D18D58] = [MEMORY[0x277D18D58] sharedInstance];
+  isSyncing = [mEMORY[0x277D18D58] isSyncing];
 
-  [(CKiCloudSettingsSyncController *)self setSyncing:v4];
+  [(CKiCloudSettingsSyncController *)self setSyncing:isSyncing];
   [(CKiCloudSettingsSyncController *)self setMessagesToUploadCount:0];
-  v5 = [MEMORY[0x277D18D50] sharedInstance];
-  v6 = [v5 accountHasiMessageEnabled];
+  mEMORY[0x277D18D50] = [MEMORY[0x277D18D50] sharedInstance];
+  accountHasiMessageEnabled = [mEMORY[0x277D18D50] accountHasiMessageEnabled];
 
   v7 = IMCloudKitGetSyncStateDictionary();
-  v8 = [objc_alloc(MEMORY[0x277D18D60]) initWithAccountEnabled:v6 stateDictionary:v7];
+  v8 = [objc_alloc(MEMORY[0x277D18D60]) initWithAccountEnabled:accountHasiMessageEnabled stateDictionary:v7];
   if (IMOSLoggingEnabled())
   {
     v9 = OSLogHandleForIMFoundationCategory();
@@ -77,8 +77,8 @@
     }
   }
 
-  v11 = [(CKiCloudSettingsSyncController *)self syncStatusHandler];
-  (v11)[2](v11, v8);
+  syncStatusHandler = [(CKiCloudSettingsSyncController *)self syncStatusHandler];
+  (syncStatusHandler)[2](syncStatusHandler, v8);
 
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -88,9 +88,9 @@
   v12 = *MEMORY[0x277D85DE8];
   v2 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.Messages"];
   v3 = [v2 objectForKey:@"hasFinishedNewDeviceBringUpSync"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
   v5 = @"Initial";
-  if (v4)
+  if (bOOLValue)
   {
     v5 = @"UserInitiated";
   }
@@ -107,8 +107,8 @@
     }
   }
 
-  v8 = [MEMORY[0x277D18D58] sharedInstance];
-  [v8 initiateSync:v6 forceRunNow:1 reply:&__block_literal_global_1];
+  mEMORY[0x277D18D58] = [MEMORY[0x277D18D58] sharedInstance];
+  [mEMORY[0x277D18D58] initiateSync:v6 forceRunNow:1 reply:&__block_literal_global_1];
 
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -159,8 +159,8 @@ void __43__CKiCloudSettingsSyncController_startSync__block_invoke(uint64_t a1, i
     }
   }
 
-  v4 = [MEMORY[0x277D18D58] sharedInstance];
-  [v4 cancelSync:&__block_literal_global_56];
+  mEMORY[0x277D18D58] = [MEMORY[0x277D18D58] sharedInstance];
+  [mEMORY[0x277D18D58] cancelSync:&__block_literal_global_56];
 }
 
 void __51__CKiCloudSettingsSyncController_cancelCurrentSync__block_invoke(uint64_t a1, int a2)
@@ -192,32 +192,32 @@ void __51__CKiCloudSettingsSyncController_cancelCurrentSync__block_invoke(uint64
 
 - (BOOL)isMiCEnabled
 {
-  v2 = [MEMORY[0x277D18D58] sharedInstance];
-  v3 = [v2 isEnabled];
+  mEMORY[0x277D18D58] = [MEMORY[0x277D18D58] sharedInstance];
+  isEnabled = [mEMORY[0x277D18D58] isEnabled];
 
-  return v3;
+  return isEnabled;
 }
 
 - (BOOL)micAccountsMatch
 {
-  v2 = [MEMORY[0x277D18D58] sharedInstance];
-  v3 = [v2 mocAccountsMatch];
+  mEMORY[0x277D18D58] = [MEMORY[0x277D18D58] sharedInstance];
+  mocAccountsMatch = [mEMORY[0x277D18D58] mocAccountsMatch];
 
-  return v3;
+  return mocAccountsMatch;
 }
 
-- (void)cloudKitEventNotificationManager:(id)a3 syncStateDidChange:(id)a4
+- (void)cloudKitEventNotificationManager:(id)manager syncStateDidChange:(id)change
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CKiCloudSettingsSyncController *)self syncStatusHandler];
+  managerCopy = manager;
+  changeCopy = change;
+  syncStatusHandler = [(CKiCloudSettingsSyncController *)self syncStatusHandler];
 
-  if (v8)
+  if (syncStatusHandler)
   {
-    v9 = [v7 statistics];
-    v10 = [v9 remainingMessagesCount];
-    v11 = [v7 syncJobState];
+    statistics = [changeCopy statistics];
+    remainingMessagesCount = [statistics remainingMessagesCount];
+    syncJobState = [changeCopy syncJobState];
     v12 = IMStringFromIMCloudKitSyncJobState();
     if (IMOSLoggingEnabled())
     {
@@ -226,7 +226,7 @@ void __51__CKiCloudSettingsSyncController_cancelCurrentSync__block_invoke(uint64
       {
         v14 = @"NO";
         *v19 = 138413058;
-        if (v11)
+        if (syncJobState)
         {
           v14 = @"YES";
         }
@@ -235,20 +235,20 @@ void __51__CKiCloudSettingsSyncController_cancelCurrentSync__block_invoke(uint64
         v20 = 2112;
         v21 = v12;
         v22 = 2112;
-        v23 = v9;
+        v23 = statistics;
         v24 = 2048;
-        v25 = v10;
+        v25 = remainingMessagesCount;
         _os_log_impl(&dword_258D24000, v13, OS_LOG_TYPE_INFO, "syncStateDidChange – syncing={%@}, jobState={%@}, syncStatistics={%@}, messagesToUpload={%ld}", v19, 0x2Au);
       }
     }
 
-    [(CKiCloudSettingsSyncController *)self setSyncing:v11 != 0, *v19];
-    [(CKiCloudSettingsSyncController *)self setMessagesToUploadCount:v10];
-    v15 = [(CKiCloudSettingsSyncController *)self _syncSummaryForSyncState:v7];
+    [(CKiCloudSettingsSyncController *)self setSyncing:syncJobState != 0, *v19];
+    [(CKiCloudSettingsSyncController *)self setMessagesToUploadCount:remainingMessagesCount];
+    v15 = [(CKiCloudSettingsSyncController *)self _syncSummaryForSyncState:changeCopy];
     [(CKiCloudSettingsSyncController *)self setSyncSummary:v15];
 
-    v16 = [(CKiCloudSettingsSyncController *)self syncStatusHandler];
-    (v16)[2](v16, v7);
+    syncStatusHandler2 = [(CKiCloudSettingsSyncController *)self syncStatusHandler];
+    (syncStatusHandler2)[2](syncStatusHandler2, changeCopy);
   }
 
   else if (IMOSLoggingEnabled())
@@ -264,9 +264,9 @@ void __51__CKiCloudSettingsSyncController_cancelCurrentSync__block_invoke(uint64
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_syncSummaryForSyncState:(id)a3
+- (id)_syncSummaryForSyncState:(id)state
 {
-  [a3 syncJobState];
+  [state syncJobState];
   v3 = IMStringFromIMCloudKitSyncJobState();
   v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"[Internal]\nSync Job State:\n%@", v3];
 

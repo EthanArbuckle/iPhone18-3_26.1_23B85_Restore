@@ -1,16 +1,16 @@
 @interface CKVMatchingSpan
-+ (id)_extractOntologyLabelFromGraph:(id)a3;
-+ (id)matchingSpanFromSpanMatchResult:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToMatchingSpan:(id)a3;
++ (id)_extractOntologyLabelFromGraph:(id)graph;
++ (id)matchingSpanFromSpanMatchResult:(id)result;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToMatchingSpan:(id)span;
 - (CKVMatchingSpan)init;
-- (CKVMatchingSpan)initWithCoder:(id)a3;
-- (CKVMatchingSpan)initWithOntologyGraph:(id)a3 ontologyLabel:(id)a4 semanticValue:(id)a5 beginIndex:(unint64_t)a6 endIndex:(unint64_t)a7 itemId:(id)a8 originAppId:(id)a9 score:(float)a10 matchScore:(float)a11 priorInfo:(id)a12;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CKVMatchingSpan)initWithCoder:(id)coder;
+- (CKVMatchingSpan)initWithOntologyGraph:(id)graph ontologyLabel:(id)label semanticValue:(id)value beginIndex:(unint64_t)index endIndex:(unint64_t)endIndex itemId:(id)id originAppId:(id)appId score:(float)self0 matchScore:(float)self1 priorInfo:(id)self2;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)ontologyGraphData:(id *)a3;
+- (id)ontologyGraphData:(id *)data;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKVMatchingSpan
@@ -33,7 +33,7 @@
   return v4 ^ v15 ^ v6 ^ v7 ^ v13;
 }
 
-- (id)ontologyGraphData:(id *)a3
+- (id)ontologyGraphData:(id *)data
 {
   v8 = *MEMORY[0x1E69E9840];
   [(USOGraph *)self->_ontologyGraph getCppGraph];
@@ -48,15 +48,15 @@
   return v4;
 }
 
-- (BOOL)isEqualToMatchingSpan:(id)a3
+- (BOOL)isEqualToMatchingSpan:(id)span
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && (ontologyLabel = self->_ontologyLabel, [v4 ontologyLabel], v7 = objc_claimAutoreleasedReturnValue(), LOBYTE(ontologyLabel) = -[NSString isEqualToString:](ontologyLabel, "isEqualToString:", v7), v7, (ontologyLabel & 1) != 0) && (beginIndex = self->_beginIndex, beginIndex == objc_msgSend(v5, "beginIndex")) && (endIndex = self->_endIndex, endIndex == objc_msgSend(v5, "endIndex")) && (itemId = self->_itemId, objc_msgSend(v5, "itemId"), v11 = objc_claimAutoreleasedReturnValue(), LOBYTE(itemId) = -[NSString isEqualToString:](itemId, "isEqualToString:", v11), v11, (itemId & 1) != 0) && (originAppId = self->_originAppId, objc_msgSend(v5, "originAppId"), v13 = objc_claimAutoreleasedReturnValue(), LOBYTE(originAppId) = -[NSString isEqualToString:](originAppId, "isEqualToString:", v13), v13, (originAppId & 1) != 0) && (semanticValue = self->_semanticValue, objc_msgSend(v5, "semanticValue"), v15 = objc_claimAutoreleasedReturnValue(), LOBYTE(semanticValue) = -[NSString isEqualToString:](semanticValue, "isEqualToString:", v15), v15, (semanticValue & 1) != 0) && (score = self->_score, objc_msgSend(v5, "score"), score == v17))
+  spanCopy = span;
+  v5 = spanCopy;
+  if (spanCopy && (ontologyLabel = self->_ontologyLabel, [spanCopy ontologyLabel], v7 = objc_claimAutoreleasedReturnValue(), LOBYTE(ontologyLabel) = -[NSString isEqualToString:](ontologyLabel, "isEqualToString:", v7), v7, (ontologyLabel & 1) != 0) && (beginIndex = self->_beginIndex, beginIndex == objc_msgSend(v5, "beginIndex")) && (endIndex = self->_endIndex, endIndex == objc_msgSend(v5, "endIndex")) && (itemId = self->_itemId, objc_msgSend(v5, "itemId"), v11 = objc_claimAutoreleasedReturnValue(), LOBYTE(itemId) = -[NSString isEqualToString:](itemId, "isEqualToString:", v11), v11, (itemId & 1) != 0) && (originAppId = self->_originAppId, objc_msgSend(v5, "originAppId"), v13 = objc_claimAutoreleasedReturnValue(), LOBYTE(originAppId) = -[NSString isEqualToString:](originAppId, "isEqualToString:", v13), v13, (originAppId & 1) != 0) && (semanticValue = self->_semanticValue, objc_msgSend(v5, "semanticValue"), v15 = objc_claimAutoreleasedReturnValue(), LOBYTE(semanticValue) = -[NSString isEqualToString:](semanticValue, "isEqualToString:", v15), v15, (semanticValue & 1) != 0) && (score = self->_score, objc_msgSend(v5, "score"), score == v17))
   {
     metadata = self->_metadata;
-    v21 = [v5 metadata];
-    v18 = [(CKVMatchingSpanMetadata *)metadata isEqual:v21];
+    metadata = [v5 metadata];
+    v18 = [(CKVMatchingSpanMetadata *)metadata isEqual:metadata];
   }
 
   else
@@ -67,90 +67,90 @@
   return v18;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CKVMatchingSpan *)self isEqualToMatchingSpan:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CKVMatchingSpan *)self isEqualToMatchingSpan:v5];
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
   objc_storeStrong((v5 + 16), self->_ontologyGraph);
-  v6 = [(NSString *)self->_ontologyLabel copyWithZone:a3];
+  v6 = [(NSString *)self->_ontologyLabel copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
   *(v5 + 40) = self->_beginIndex;
   *(v5 + 48) = self->_endIndex;
-  v8 = [(NSString *)self->_itemId copyWithZone:a3];
+  v8 = [(NSString *)self->_itemId copyWithZone:zone];
   v9 = *(v5 + 56);
   *(v5 + 56) = v8;
 
-  v10 = [(NSString *)self->_originAppId copyWithZone:a3];
+  v10 = [(NSString *)self->_originAppId copyWithZone:zone];
   v11 = *(v5 + 64);
   *(v5 + 64) = v10;
 
-  v12 = [(NSString *)self->_semanticValue copyWithZone:a3];
+  v12 = [(NSString *)self->_semanticValue copyWithZone:zone];
   v13 = *(v5 + 32);
   *(v5 + 32) = v12;
 
   *(v5 + 8) = self->_score;
-  v14 = [(CKVMatchingSpanMetadata *)self->_metadata copyWithZone:a3];
+  v14 = [(CKVMatchingSpanMetadata *)self->_metadata copyWithZone:zone];
   v15 = *(v5 + 72);
   *(v5 + 72) = v14;
 
   return v5;
 }
 
-- (CKVMatchingSpan)initWithCoder:(id)a3
+- (CKVMatchingSpan)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = CKVMatchingSpan;
   v5 = [(CKVMatchingSpan *)&v22 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ontologyGraph"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ontologyGraph"];
     ontologyGraph = v5->_ontologyGraph;
     v5->_ontologyGraph = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ontologyLabel"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ontologyLabel"];
     ontologyLabel = v5->_ontologyLabel;
     v5->_ontologyLabel = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"b"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"b"];
     v5->_beginIndex = [v10 unsignedLongValue];
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"e"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"e"];
     v5->_endIndex = [v11 unsignedLongValue];
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"itemId"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"itemId"];
     itemId = v5->_itemId;
     v5->_itemId = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appId"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appId"];
     originAppId = v5->_originAppId;
     v5->_originAppId = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"semanticValue"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"semanticValue"];
     semanticValue = v5->_semanticValue;
     v5->_semanticValue = v16;
 
-    [v4 decodeFloatForKey:@"score"];
+    [coderCopy decodeFloatForKey:@"score"];
     v5->_score = v18;
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"metadata"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"metadata"];
     metadata = v5->_metadata;
     v5->_metadata = v19;
   }
@@ -158,23 +158,23 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  [v7 encodeObject:self->_ontologyGraph forKey:@"ontologyGraph"];
-  [v7 encodeObject:self->_ontologyLabel forKey:@"ontologyLabel"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_ontologyGraph forKey:@"ontologyGraph"];
+  [coderCopy encodeObject:self->_ontologyLabel forKey:@"ontologyLabel"];
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:self->_beginIndex];
-  [v7 encodeObject:v4 forKey:@"b"];
+  [coderCopy encodeObject:v4 forKey:@"b"];
 
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:self->_endIndex];
-  [v7 encodeObject:v5 forKey:@"e"];
+  [coderCopy encodeObject:v5 forKey:@"e"];
 
-  [v7 encodeObject:self->_itemId forKey:@"itemId"];
-  [v7 encodeObject:self->_originAppId forKey:@"appId"];
-  [v7 encodeObject:self->_semanticValue forKey:@"semanticValue"];
+  [coderCopy encodeObject:self->_itemId forKey:@"itemId"];
+  [coderCopy encodeObject:self->_originAppId forKey:@"appId"];
+  [coderCopy encodeObject:self->_semanticValue forKey:@"semanticValue"];
   *&v6 = self->_score;
-  [v7 encodeFloat:@"score" forKey:v6];
-  [v7 encodeObject:self->_metadata forKey:@"metadata"];
+  [coderCopy encodeFloat:@"score" forKey:v6];
+  [coderCopy encodeObject:self->_metadata forKey:@"metadata"];
 }
 
 - (id)description
@@ -196,15 +196,15 @@
   objc_exception_throw(v2);
 }
 
-- (CKVMatchingSpan)initWithOntologyGraph:(id)a3 ontologyLabel:(id)a4 semanticValue:(id)a5 beginIndex:(unint64_t)a6 endIndex:(unint64_t)a7 itemId:(id)a8 originAppId:(id)a9 score:(float)a10 matchScore:(float)a11 priorInfo:(id)a12
+- (CKVMatchingSpan)initWithOntologyGraph:(id)graph ontologyLabel:(id)label semanticValue:(id)value beginIndex:(unint64_t)index endIndex:(unint64_t)endIndex itemId:(id)id originAppId:(id)appId score:(float)self0 matchScore:(float)self1 priorInfo:(id)self2
 {
   v51 = *MEMORY[0x1E69E9840];
-  v42 = a3;
-  v43 = a4;
-  v44 = a5;
-  v21 = a8;
-  v45 = a9;
-  v22 = a12;
+  graphCopy = graph;
+  labelCopy = label;
+  valueCopy = value;
+  idCopy = id;
+  appIdCopy = appId;
+  infoCopy = info;
   v46.receiver = self;
   v46.super_class = CKVMatchingSpan;
   v23 = [(CKVMatchingSpan *)&v46 init];
@@ -214,7 +214,7 @@
     goto LABEL_8;
   }
 
-  objc_storeStrong(&v23->_ontologyGraph, a3);
+  objc_storeStrong(&v23->_ontologyGraph, graph);
   if (!v24->_ontologyGraph)
   {
     v32 = CKLogContextVocabulary;
@@ -233,8 +233,8 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  objc_storeStrong(&v24->_ontologyLabel, a4);
-  if (![(NSString *)v24->_ontologyLabel length:v42])
+  objc_storeStrong(&v24->_ontologyLabel, label);
+  if (![(NSString *)v24->_ontologyLabel length:graphCopy])
   {
     v36 = CKLogContextVocabulary;
     if (!os_log_type_enabled(CKLogContextVocabulary, OS_LOG_TYPE_ERROR))
@@ -254,7 +254,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  objc_storeStrong(&v24->_semanticValue, a5);
+  objc_storeStrong(&v24->_semanticValue, value);
   if (![(NSString *)v24->_semanticValue length])
   {
     v36 = CKLogContextVocabulary;
@@ -272,9 +272,9 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v24->_beginIndex = a6;
-  v24->_endIndex = a7;
-  v25 = [v21 copy];
+  v24->_beginIndex = index;
+  v24->_endIndex = endIndex;
+  v25 = [idCopy copy];
   itemId = v24->_itemId;
   v24->_itemId = v25;
 
@@ -295,7 +295,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  objc_storeStrong(&v24->_originAppId, a9);
+  objc_storeStrong(&v24->_originAppId, appId);
   if (![(NSString *)v24->_originAppId length])
   {
     v36 = CKLogContextVocabulary;
@@ -315,10 +315,10 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  v24->_score = a10;
+  v24->_score = score;
   v27 = [CKVMatchingSpanMetadata alloc];
-  *&v28 = a11;
-  v29 = [(CKVMatchingSpanMetadata *)v27 initWithMatchingSpanPriorInfo:v22 matchScore:v28];
+  *&v28 = matchScore;
+  v29 = [(CKVMatchingSpanMetadata *)v27 initWithMatchingSpanPriorInfo:infoCopy matchScore:v28];
   metadata = v24->_metadata;
   v24->_metadata = v29;
 
@@ -329,10 +329,10 @@ LABEL_22:
   return v31;
 }
 
-+ (id)_extractOntologyLabelFromGraph:(id)a3
++ (id)_extractOntologyLabelFromGraph:(id)graph
 {
-  v3 = a3;
-  [v3 getCppRootNode];
+  graphCopy = graph;
+  [graphCopy getCppRootNode];
   siri::ontology::UsoGraph::getSuccessors();
   v4 = __p;
   if (__dst != __p)
@@ -514,40 +514,40 @@ LABEL_39:
   return v18;
 }
 
-+ (id)matchingSpanFromSpanMatchResult:(id)a3
++ (id)matchingSpanFromSpanMatchResult:(id)result
 {
   v37 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  resultCopy = result;
   v30 = 0;
-  v4 = [v3 toOntologyGraph:&v30];
+  v4 = [resultCopy toOntologyGraph:&v30];
   v5 = v30;
   if (v4)
   {
     v28 = [objc_opt_class() _extractOntologyLabelFromGraph:v4];
-    v6 = [v3 spanInfo];
-    v7 = [v6 spanRange];
+    spanInfo = [resultCopy spanInfo];
+    spanRange = [spanInfo spanRange];
     v9 = v8;
 
-    v10 = [v3 entityInfo];
-    if ([v10 entityType] == 1)
+    entityInfo = [resultCopy entityInfo];
+    if ([entityInfo entityType] == 1)
     {
       v29 = v5;
-      v11 = [v10 toKVItem:&v29];
+      v11 = [entityInfo toKVItem:&v29];
       v27 = v29;
 
       if (v11)
       {
         v12 = objc_alloc(objc_opt_class());
-        v26 = [v3 spanValue];
-        v13 = [v11 itemId];
-        v14 = [v10 sourceIdentifierOrConstant];
-        [v3 score];
+        spanValue = [resultCopy spanValue];
+        itemId = [v11 itemId];
+        sourceIdentifierOrConstant = [entityInfo sourceIdentifierOrConstant];
+        [resultCopy score];
         v16 = v15;
-        v17 = [v3 spanInfo];
-        [v17 matchScore];
+        spanInfo2 = [resultCopy spanInfo];
+        [spanInfo2 matchScore];
         LODWORD(v19) = v18;
         LODWORD(v20) = v16;
-        v21 = [v12 initWithOntologyGraph:v4 ontologyLabel:v28 semanticValue:v26 beginIndex:v7 endIndex:v7 + v9 itemId:v13 originAppId:v20 score:v19 matchScore:v14 priorInfo:0];
+        v21 = [v12 initWithOntologyGraph:v4 ontologyLabel:v28 semanticValue:spanValue beginIndex:spanRange endIndex:spanRange + v9 itemId:itemId originAppId:v20 score:v19 matchScore:sourceIdentifierOrConstant priorInfo:0];
       }
 
       else
@@ -558,7 +558,7 @@ LABEL_39:
           *buf = 136315650;
           v32 = "+[CKVMatchingSpan matchingSpanFromSpanMatchResult:]";
           v33 = 2112;
-          v34 = v3;
+          v34 = resultCopy;
           v35 = 2112;
           v36 = v27;
           _os_log_error_impl(&dword_1C8683000, v24, OS_LOG_TYPE_ERROR, "%s Failed to resolve item from result: %@ error: %@", buf, 0x20u);
@@ -578,7 +578,7 @@ LABEL_39:
         *buf = 136315394;
         v32 = "+[CKVMatchingSpan matchingSpanFromSpanMatchResult:]";
         v33 = 2112;
-        v34 = v3;
+        v34 = resultCopy;
         _os_log_error_impl(&dword_1C8683000, v23, OS_LOG_TYPE_ERROR, "%s Unsupported entityInfo for result: %@", buf, 0x16u);
       }
 

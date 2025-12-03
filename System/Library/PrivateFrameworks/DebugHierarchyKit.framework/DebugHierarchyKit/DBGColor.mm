@@ -1,34 +1,34 @@
 @interface DBGColor
-+ (id)valueWithEncodedValue:(id)a3 format:(id)a4 error:(id *)a5;
-+ (id)withCGColor:(CGColor *)a3 colorName:(id)a4 catalogName:(id)a5;
-- (DBGColor)initWithCGColor:(CGColor *)a3 colorName:(id)a4 catalogName:(id)a5;
++ (id)valueWithEncodedValue:(id)value format:(id)format error:(id *)error;
++ (id)withCGColor:(CGColor *)color colorName:(id)name catalogName:(id)catalogName;
+- (DBGColor)initWithCGColor:(CGColor *)color colorName:(id)name catalogName:(id)catalogName;
 - (id)JSONCompatibleRepresentation;
 - (void)dealloc;
 @end
 
 @implementation DBGColor
 
-+ (id)withCGColor:(CGColor *)a3 colorName:(id)a4 catalogName:(id)a5
++ (id)withCGColor:(CGColor *)color colorName:(id)name catalogName:(id)catalogName
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [[a1 alloc] initWithCGColor:a3 colorName:v9 catalogName:v8];
+  catalogNameCopy = catalogName;
+  nameCopy = name;
+  v10 = [[self alloc] initWithCGColor:color colorName:nameCopy catalogName:catalogNameCopy];
 
   return v10;
 }
 
-- (DBGColor)initWithCGColor:(CGColor *)a3 colorName:(id)a4 catalogName:(id)a5
+- (DBGColor)initWithCGColor:(CGColor *)color colorName:(id)name catalogName:(id)catalogName
 {
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  catalogNameCopy = catalogName;
   v13.receiver = self;
   v13.super_class = DBGColor;
   v11 = [(DBGColor *)&v13 init];
   if (v11)
   {
-    v11->_CGColor = CGColorRetain(a3);
-    objc_storeStrong(&v11->_colorName, a4);
-    objc_storeStrong(&v11->_catalogName, a5);
+    v11->_CGColor = CGColorRetain(color);
+    objc_storeStrong(&v11->_colorName, name);
+    objc_storeStrong(&v11->_catalogName, catalogName);
   }
 
   return v11;
@@ -42,23 +42,23 @@
   [(DBGColor *)&v3 dealloc];
 }
 
-+ (id)valueWithEncodedValue:(id)a3 format:(id)a4 error:(id *)a5
++ (id)valueWithEncodedValue:(id)value format:(id)format error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  valueCopy = value;
+  formatCopy = format;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (([(__CFString *)v9 isEqualToString:@"color"]& 1) != 0 || [(__CFString *)v9 isEqualToString:@"patternImageColor"]))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (([(__CFString *)formatCopy isEqualToString:@"color"]& 1) != 0 || [(__CFString *)formatCopy isEqualToString:@"patternImageColor"]))
   {
     v10 = DBGDecodeValueFromJSONCompatibleValue();
     v11 = 0;
     v12 = v11;
     if (v11)
     {
-      if (a5)
+      if (error)
       {
         v13 = v11;
         v14 = 0;
-        *a5 = v12;
+        *error = v12;
       }
 
       else
@@ -70,9 +70,9 @@
     else
     {
       v15 = 0;
-      if (v9 && v10)
+      if (formatCopy && v10)
       {
-        if (CFStringCompare(v9, @"color", 0) || (v16 = CFDictionaryGetValue(v10, @"colorSpaceName")) == 0)
+        if (CFStringCompare(formatCopy, @"color", 0) || (v16 = CFDictionaryGetValue(v10, @"colorSpaceName")) == 0)
         {
           v15 = 0;
         }
@@ -111,7 +111,7 @@
 
       v22 = [(__CFDictionary *)v10 objectForKeyedSubscript:@"colorName"];
       v23 = [(__CFDictionary *)v10 objectForKeyedSubscript:@"catalogName"];
-      v14 = [a1 withCGColor:v15 colorName:v22 catalogName:v23];
+      v14 = [self withCGColor:v15 colorName:v22 catalogName:v23];
       CGColorRelease(v15);
     }
   }
@@ -119,10 +119,10 @@
   else
   {
     v14 = 0;
-    if (!v8 && a5)
+    if (!valueCopy && error)
     {
       v14 = 0;
-      *a5 = 0;
+      *error = 0;
     }
   }
 
@@ -133,10 +133,10 @@
 {
   if ([(DBGColor *)self CGColor])
   {
-    v3 = [(DBGColor *)self CGColor];
-    if (v3)
+    cGColor = [(DBGColor *)self CGColor];
+    if (cGColor)
     {
-      v4 = v3;
+      v4 = cGColor;
       Mutable = CFDictionaryCreateMutable(0, 20, &kCFCopyStringDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
       ColorSpace = CGColorGetColorSpace(v4);
       v7 = CGColorSpaceCopyName(ColorSpace);
@@ -262,8 +262,8 @@
     v24 = v23;
     if (v23)
     {
-      v25 = [v23 localizedDescription];
-      NSLog(&cfstr_SError_0.isa, "[DBGColor(JSONSerialization) JSONCompatibleRepresentation]", v25);
+      localizedDescription = [v23 localizedDescription];
+      NSLog(&cfstr_SError_0.isa, "[DBGColor(JSONSerialization) JSONCompatibleRepresentation]", localizedDescription);
 
       v15 = 0;
     }

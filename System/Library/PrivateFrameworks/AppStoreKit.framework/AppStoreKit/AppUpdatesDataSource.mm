@@ -1,16 +1,16 @@
 @interface AppUpdatesDataSource
 - (_TtC11AppStoreKit20AppUpdatesDataSource)init;
-- (void)appQuery:(id)a3 resultsDidChange:(id)a4;
+- (void)appQuery:(id)query resultsDidChange:(id)change;
 @end
 
 @implementation AppUpdatesDataSource
 
-- (void)appQuery:(id)a3 resultsDidChange:(id)a4
+- (void)appQuery:(id)query resultsDidChange:(id)change
 {
   sub_1E13006E4(0, &qword_1EE1E32C0);
   v6 = sub_1E1AF621C();
-  v7 = a3;
-  v8 = self;
+  queryCopy = query;
+  selfCopy = self;
   sub_1E13A8508(v6);
 }
 

@@ -1,36 +1,36 @@
 @interface HMDRemoteEventRouterProtoServerMessage
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsMessage:(id)a3;
+- (int)StringAsMessage:(id)message;
 - (int)message;
 - (unint64_t)hash;
 - (void)clearOneofValuesForMessage;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setChangeRegistrationsResponse:(id)a3;
-- (void)setConnectResponse:(id)a3;
-- (void)setMultiHopFetchEventsResponse:(id)a3;
-- (void)setUpdatedEvents:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setChangeRegistrationsResponse:(id)response;
+- (void)setConnectResponse:(id)response;
+- (void)setMultiHopFetchEventsResponse:(id)response;
+- (void)setUpdatedEvents:(id)events;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HMDRemoteEventRouterProtoServerMessage
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 56))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 56))
   {
-    self->_message = *(v4 + 8);
+    self->_message = *(fromCopy + 8);
     *&self->_has |= 1u;
   }
 
-  v14 = v4;
-  if (*(v4 + 3))
+  v14 = fromCopy;
+  if (*(fromCopy + 3))
   {
     [(HMDRemoteEventRouterProtoServerMessage *)self setIdentifier:?];
     v5 = v14;
@@ -155,24 +155,24 @@ LABEL_29:
   return v6 ^ v7 ^ [(HMDRemoteEventRouterProtoMultiHopFetchEventsResponse *)self->_multiHopFetchEventsResponse hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = *(v4 + 56);
+  v5 = *(equalCopy + 56);
   if (*&self->_has)
   {
-    if ((*(v4 + 56) & 1) == 0 || self->_message != *(v4 + 8))
+    if ((*(equalCopy + 56) & 1) == 0 || self->_message != *(equalCopy + 8))
     {
       goto LABEL_17;
     }
   }
 
-  else if (*(v4 + 56))
+  else if (*(equalCopy + 56))
   {
 LABEL_17:
     v11 = 0;
@@ -180,13 +180,13 @@ LABEL_17:
   }
 
   identifier = self->_identifier;
-  if (identifier | *(v4 + 3) && ![(NSString *)identifier isEqual:?])
+  if (identifier | *(equalCopy + 3) && ![(NSString *)identifier isEqual:?])
   {
     goto LABEL_17;
   }
 
   updatedEvents = self->_updatedEvents;
-  if (updatedEvents | *(v4 + 6))
+  if (updatedEvents | *(equalCopy + 6))
   {
     if (![(HMDRemoteEventRouterProtoEventsMessage *)updatedEvents isEqual:?])
     {
@@ -195,7 +195,7 @@ LABEL_17:
   }
 
   connectResponse = self->_connectResponse;
-  if (connectResponse | *(v4 + 2))
+  if (connectResponse | *(equalCopy + 2))
   {
     if (![(HMDRemoteEventRouterProtoConnectResponse *)connectResponse isEqual:?])
     {
@@ -204,7 +204,7 @@ LABEL_17:
   }
 
   changeRegistrationsResponse = self->_changeRegistrationsResponse;
-  if (changeRegistrationsResponse | *(v4 + 1))
+  if (changeRegistrationsResponse | *(equalCopy + 1))
   {
     if (![(HMDRemoteEventRouterProtoChangeRegistrationsResponse *)changeRegistrationsResponse isEqual:?])
     {
@@ -213,7 +213,7 @@ LABEL_17:
   }
 
   multiHopFetchEventsResponse = self->_multiHopFetchEventsResponse;
-  if (multiHopFetchEventsResponse | *(v4 + 5))
+  if (multiHopFetchEventsResponse | *(equalCopy + 5))
   {
     v11 = [(HMDRemoteEventRouterProtoMultiHopFetchEventsResponse *)multiHopFetchEventsResponse isEqual:?];
   }
@@ -228,9 +228,9 @@ LABEL_18:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -238,115 +238,115 @@ LABEL_18:
     *(v5 + 56) |= 1u;
   }
 
-  v7 = [(NSString *)self->_identifier copyWithZone:a3];
+  v7 = [(NSString *)self->_identifier copyWithZone:zone];
   v8 = v6[3];
   v6[3] = v7;
 
-  v9 = [(HMDRemoteEventRouterProtoEventsMessage *)self->_updatedEvents copyWithZone:a3];
+  v9 = [(HMDRemoteEventRouterProtoEventsMessage *)self->_updatedEvents copyWithZone:zone];
   v10 = v6[6];
   v6[6] = v9;
 
-  v11 = [(HMDRemoteEventRouterProtoConnectResponse *)self->_connectResponse copyWithZone:a3];
+  v11 = [(HMDRemoteEventRouterProtoConnectResponse *)self->_connectResponse copyWithZone:zone];
   v12 = v6[2];
   v6[2] = v11;
 
-  v13 = [(HMDRemoteEventRouterProtoChangeRegistrationsResponse *)self->_changeRegistrationsResponse copyWithZone:a3];
+  v13 = [(HMDRemoteEventRouterProtoChangeRegistrationsResponse *)self->_changeRegistrationsResponse copyWithZone:zone];
   v14 = v6[1];
   v6[1] = v13;
 
-  v15 = [(HMDRemoteEventRouterProtoMultiHopFetchEventsResponse *)self->_multiHopFetchEventsResponse copyWithZone:a3];
+  v15 = [(HMDRemoteEventRouterProtoMultiHopFetchEventsResponse *)self->_multiHopFetchEventsResponse copyWithZone:zone];
   v16 = v6[5];
   v6[5] = v15;
 
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[8] = self->_message;
-    *(v4 + 56) |= 1u;
+    toCopy[8] = self->_message;
+    *(toCopy + 56) |= 1u;
   }
 
-  v5 = v4;
+  v5 = toCopy;
   if (self->_identifier)
   {
-    [v4 setIdentifier:?];
-    v4 = v5;
+    [toCopy setIdentifier:?];
+    toCopy = v5;
   }
 
   if (self->_updatedEvents)
   {
     [v5 setUpdatedEvents:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_connectResponse)
   {
     [v5 setConnectResponse:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_changeRegistrationsResponse)
   {
     [v5 setChangeRegistrationsResponse:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_multiHopFetchEventsResponse)
   {
     [v5 setMultiHopFetchEventsResponse:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_identifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_updatedEvents)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_connectResponse)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_changeRegistrationsResponse)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_multiHopFetchEventsResponse)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     do
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v6 = 0;
@@ -355,18 +355,18 @@ LABEL_18:
       while (1)
       {
         LOBYTE(v25) = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          v11 = [a3 data];
-          [v11 getBytes:&v25 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:&v25 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v25 & 0x7F) << v6;
@@ -383,11 +383,11 @@ LABEL_18:
         }
       }
 
-      v13 = [a3 hasError] ? 0 : v8;
+      v13 = [from hasError] ? 0 : v8;
 LABEL_15:
-      if (([a3 hasError] & 1) != 0 || (v13 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v13 & 7) == 4)
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v14 = v13 >> 3;
@@ -403,7 +403,7 @@ LABEL_15:
             objc_storeStrong(&self->_connectResponse, v15);
             v25 = 0;
             v26 = 0;
-            if (!PBReaderPlaceMark() || !HMDRemoteEventRouterProtoConnectResponseReadFrom(v15, a3))
+            if (!PBReaderPlaceMark() || !HMDRemoteEventRouterProtoConnectResponseReadFrom(v15, from))
             {
 LABEL_52:
 
@@ -419,7 +419,7 @@ LABEL_52:
             objc_storeStrong(&self->_changeRegistrationsResponse, v15);
             v25 = 0;
             v26 = 0;
-            if (!PBReaderPlaceMark() || !HMDRemoteEventRouterProtoConnectResponseReadFrom(v15, a3))
+            if (!PBReaderPlaceMark() || !HMDRemoteEventRouterProtoConnectResponseReadFrom(v15, from))
             {
               goto LABEL_52;
             }
@@ -433,7 +433,7 @@ LABEL_52:
             objc_storeStrong(&self->_multiHopFetchEventsResponse, v15);
             v25 = 0;
             v26 = 0;
-            if (!PBReaderPlaceMark() || !HMDRemoteEventRouterProtoMultiHopFetchEventsResponseReadFrom(v15, a3))
+            if (!PBReaderPlaceMark() || !HMDRemoteEventRouterProtoMultiHopFetchEventsResponseReadFrom(v15, from))
             {
               goto LABEL_52;
             }
@@ -451,18 +451,18 @@ LABEL_52:
             while (1)
             {
               LOBYTE(v25) = 0;
-              v17 = [a3 position] + 1;
-              if (v17 >= [a3 position] && (v18 = objc_msgSend(a3, "position") + 1, v18 <= objc_msgSend(a3, "length")))
+              v17 = [from position] + 1;
+              if (v17 >= [from position] && (v18 = objc_msgSend(from, "position") + 1, v18 <= objc_msgSend(from, "length")))
               {
-                v19 = [a3 data];
-                [v19 getBytes:&v25 range:{objc_msgSend(a3, "position"), 1}];
+                data2 = [from data];
+                [data2 getBytes:&v25 range:{objc_msgSend(from, "position"), 1}];
 
-                [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+                [from setPosition:{objc_msgSend(from, "position") + 1}];
               }
 
               else
               {
-                [a3 _setError];
+                [from _setError];
               }
 
               if ((v25 & 0x80000000) == 0)
@@ -476,7 +476,7 @@ LABEL_52:
               }
             }
 
-            [a3 hasError];
+            [from hasError];
             goto LABEL_48;
           case 1:
             v21 = PBReaderReadString();
@@ -492,7 +492,7 @@ LABEL_52:
             objc_storeStrong(&self->_updatedEvents, v15);
             v25 = 0;
             v26 = 0;
-            if (!PBReaderPlaceMark() || !HMDRemoteEventRouterProtoEventsMessageReadFrom(v15, a3))
+            if (!PBReaderPlaceMark() || !HMDRemoteEventRouterProtoEventsMessageReadFrom(v15, from))
             {
               goto LABEL_52;
             }
@@ -510,51 +510,51 @@ LABEL_47:
       }
 
 LABEL_48:
-      v23 = [a3 position];
+      position2 = [from position];
     }
 
-    while (v23 < [a3 length]);
+    while (position2 < [from length]);
   }
 
-  return [a3 hasError] ^ 1;
+  return [from hasError] ^ 1;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   identifier = self->_identifier;
   if (identifier)
   {
-    [v3 setObject:identifier forKey:@"identifier"];
+    [dictionary setObject:identifier forKey:@"identifier"];
   }
 
   updatedEvents = self->_updatedEvents;
   if (updatedEvents)
   {
-    v7 = [(HMDRemoteEventRouterProtoEventsMessage *)updatedEvents dictionaryRepresentation];
-    [v4 setObject:v7 forKey:@"updatedEvents"];
+    dictionaryRepresentation = [(HMDRemoteEventRouterProtoEventsMessage *)updatedEvents dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"updatedEvents"];
   }
 
   connectResponse = self->_connectResponse;
   if (connectResponse)
   {
-    v9 = [(HMDRemoteEventRouterProtoConnectResponse *)connectResponse dictionaryRepresentation];
-    [v4 setObject:v9 forKey:@"connectResponse"];
+    dictionaryRepresentation2 = [(HMDRemoteEventRouterProtoConnectResponse *)connectResponse dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"connectResponse"];
   }
 
   changeRegistrationsResponse = self->_changeRegistrationsResponse;
   if (changeRegistrationsResponse)
   {
-    v11 = [(HMDRemoteEventRouterProtoChangeRegistrationsResponse *)changeRegistrationsResponse dictionaryRepresentation];
-    [v4 setObject:v11 forKey:@"changeRegistrationsResponse"];
+    dictionaryRepresentation3 = [(HMDRemoteEventRouterProtoChangeRegistrationsResponse *)changeRegistrationsResponse dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation3 forKey:@"changeRegistrationsResponse"];
   }
 
   multiHopFetchEventsResponse = self->_multiHopFetchEventsResponse;
   if (multiHopFetchEventsResponse)
   {
-    v13 = [(HMDRemoteEventRouterProtoMultiHopFetchEventsResponse *)multiHopFetchEventsResponse dictionaryRepresentation];
-    [v4 setObject:v13 forKey:@"multiHopFetchEventsResponse"];
+    dictionaryRepresentation4 = [(HMDRemoteEventRouterProtoMultiHopFetchEventsResponse *)multiHopFetchEventsResponse dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation4 forKey:@"multiHopFetchEventsResponse"];
   }
 
   if (*&self->_has)
@@ -582,8 +582,8 @@ LABEL_48:
   v8.receiver = self;
   v8.super_class = HMDRemoteEventRouterProtoServerMessage;
   v4 = [(HMDRemoteEventRouterProtoServerMessage *)&v8 description];
-  v5 = [(HMDRemoteEventRouterProtoServerMessage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HMDRemoteEventRouterProtoServerMessage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -605,30 +605,30 @@ LABEL_48:
   self->_multiHopFetchEventsResponse = 0;
 }
 
-- (int)StringAsMessage:(id)a3
+- (int)StringAsMessage:(id)message
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"PBUNSET"])
+  messageCopy = message;
+  if ([messageCopy isEqualToString:@"PBUNSET"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"updatedEvents"])
+  else if ([messageCopy isEqualToString:@"updatedEvents"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"connectResponse"])
+  else if ([messageCopy isEqualToString:@"connectResponse"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"changeRegistrationsResponse"])
+  else if ([messageCopy isEqualToString:@"changeRegistrationsResponse"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"multiHopFetchEventsResponse"])
+  else if ([messageCopy isEqualToString:@"multiHopFetchEventsResponse"])
   {
     v4 = 4;
   }
@@ -654,44 +654,44 @@ LABEL_48:
   }
 }
 
-- (void)setMultiHopFetchEventsResponse:(id)a3
+- (void)setMultiHopFetchEventsResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   [(HMDRemoteEventRouterProtoServerMessage *)self clearOneofValuesForMessage];
   *&self->_has |= 1u;
   self->_message = 4;
   multiHopFetchEventsResponse = self->_multiHopFetchEventsResponse;
-  self->_multiHopFetchEventsResponse = v4;
+  self->_multiHopFetchEventsResponse = responseCopy;
 }
 
-- (void)setChangeRegistrationsResponse:(id)a3
+- (void)setChangeRegistrationsResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   [(HMDRemoteEventRouterProtoServerMessage *)self clearOneofValuesForMessage];
   *&self->_has |= 1u;
   self->_message = 3;
   changeRegistrationsResponse = self->_changeRegistrationsResponse;
-  self->_changeRegistrationsResponse = v4;
+  self->_changeRegistrationsResponse = responseCopy;
 }
 
-- (void)setConnectResponse:(id)a3
+- (void)setConnectResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   [(HMDRemoteEventRouterProtoServerMessage *)self clearOneofValuesForMessage];
   *&self->_has |= 1u;
   self->_message = 2;
   connectResponse = self->_connectResponse;
-  self->_connectResponse = v4;
+  self->_connectResponse = responseCopy;
 }
 
-- (void)setUpdatedEvents:(id)a3
+- (void)setUpdatedEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   [(HMDRemoteEventRouterProtoServerMessage *)self clearOneofValuesForMessage];
   *&self->_has |= 1u;
   self->_message = 1;
   updatedEvents = self->_updatedEvents;
-  self->_updatedEvents = v4;
+  self->_updatedEvents = eventsCopy;
 }
 
 @end

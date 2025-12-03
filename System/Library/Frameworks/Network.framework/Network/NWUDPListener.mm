@@ -1,8 +1,8 @@
 @interface NWUDPListener
-- (NWUDPListener)initWithParameters:(id)a3 delegate:(id)a4;
+- (NWUDPListener)initWithParameters:(id)parameters delegate:(id)delegate;
 - (NWUDPListenerDelegate)delegate;
-- (void)handleConnection:(id)a3;
-- (void)handleError:(id)a3;
+- (void)handleConnection:(id)connection;
+- (void)handleError:(id)error;
 @end
 
 @implementation NWUDPListener
@@ -14,13 +14,13 @@
   return WeakRetained;
 }
 
-- (NWUDPListener)initWithParameters:(id)a3 delegate:(id)a4
+- (NWUDPListener)initWithParameters:(id)parameters delegate:(id)delegate
 {
   v70 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  parametersCopy = parameters;
+  delegateCopy = delegate;
+  v8 = delegateCopy;
+  if (!parametersCopy)
   {
     v34 = __nwlog_obj();
     *buf = 136446210;
@@ -94,7 +94,7 @@ LABEL_72:
     goto LABEL_74;
   }
 
-  if (!v7)
+  if (!delegateCopy)
   {
     v38 = __nwlog_obj();
     *buf = 136446210;
@@ -250,17 +250,17 @@ LABEL_84:
   }
 
   objc_initWeak(&location, v9);
-  v10 = [v6 internalParameters];
-  v11 = nw_parameters_copy_default_protocol_stack(v10);
+  internalParameters = [parametersCopy internalParameters];
+  v11 = nw_parameters_copy_default_protocol_stack(internalParameters);
 
   options = _nw_udp_create_options();
   nw_protocol_stack_set_transport_protocol(v11, options);
 
-  v13 = [v6 internalParameters];
-  nw_parameters_set_data_mode(v13, 1);
+  internalParameters2 = [parametersCopy internalParameters];
+  nw_parameters_set_data_mode(internalParameters2, 1);
 
-  v14 = [v6 internalParameters];
-  v15 = nw_listener_create(v14);
+  internalParameters3 = [parametersCopy internalParameters];
+  v15 = nw_listener_create(internalParameters3);
   v16 = *(v9 + 3);
   *(v9 + 3) = v15;
 
@@ -289,7 +289,7 @@ LABEL_84:
     v58[3] = &unk_1E6A3D258;
     objc_copyWeak(&v59, &location);
     nw_listener_set_new_connection_handler(v20, v58);
-    v21 = [v6 copy];
+    v21 = [parametersCopy copy];
     v22 = *(v9 + 4);
     *(v9 + 4) = v21;
 
@@ -431,11 +431,11 @@ void __45__NWUDPListener_initWithParameters_delegate___block_invoke_2(uint64_t a
   }
 }
 
-- (void)handleError:(id)a3
+- (void)handleError:(id)error
 {
-  if (a3)
+  if (error)
   {
-    v5 = nw_error_copy_cf_error(a3);
+    v5 = nw_error_copy_cf_error(error);
     [(NWUDPListener *)self setError:v5];
   }
 
@@ -446,15 +446,15 @@ void __45__NWUDPListener_initWithParameters_delegate___block_invoke_2(uint64_t a
   }
 }
 
-- (void)handleConnection:(id)a3
+- (void)handleConnection:(id)connection
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NWUDPListener *)self delegate];
-  if (v5 && (objc_opt_respondsToSelector() & 1) != 0)
+  connectionCopy = connection;
+  delegate = [(NWUDPListener *)self delegate];
+  if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v6 = [[NWUDPSession alloc] initWithConnection:v4];
-    [v5 handleSession:v6];
+    v6 = [[NWUDPSession alloc] initWithConnection:connectionCopy];
+    [delegate handleSession:v6];
   }
 
   else

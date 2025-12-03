@@ -1,5 +1,5 @@
 @interface NSRelationshipStoreMapping
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (uint64_t)setDestinationEntityExternalName:(uint64_t)result;
 - (uint64_t)setForeignKeys:(uint64_t)result;
 - (uint64_t)setJoins:(uint64_t)result;
@@ -69,24 +69,24 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v11.receiver = self;
   v11.super_class = NSRelationshipStoreMapping;
   v5 = [(NSPropertyStoreMapping *)&v11 isEqual:?];
   if (v5)
   {
-    v6 = [(NSRelationshipStoreMapping *)self destinationEntityExternalName];
-    if (v6 == [a3 destinationEntityExternalName] || (v5 = objc_msgSend(-[NSRelationshipStoreMapping destinationEntityExternalName](self, "destinationEntityExternalName"), "isEqual:", objc_msgSend(a3, "destinationEntityExternalName"))) != 0)
+    destinationEntityExternalName = [(NSRelationshipStoreMapping *)self destinationEntityExternalName];
+    if (destinationEntityExternalName == [equal destinationEntityExternalName] || (v5 = objc_msgSend(-[NSRelationshipStoreMapping destinationEntityExternalName](self, "destinationEntityExternalName"), "isEqual:", objc_msgSend(equal, "destinationEntityExternalName"))) != 0)
     {
-      v7 = [(NSRelationshipStoreMapping *)self foreignKeys];
-      if (v7 == [a3 foreignKeys] || (v5 = objc_msgSend(-[NSRelationshipStoreMapping foreignKeys](self, "foreignKeys"), "isEqual:", objc_msgSend(a3, "foreignKeys"))) != 0)
+      foreignKeys = [(NSRelationshipStoreMapping *)self foreignKeys];
+      if (foreignKeys == [equal foreignKeys] || (v5 = objc_msgSend(-[NSRelationshipStoreMapping foreignKeys](self, "foreignKeys"), "isEqual:", objc_msgSend(equal, "foreignKeys"))) != 0)
       {
-        v8 = [(NSRelationshipStoreMapping *)self joins];
-        if (v8 == [a3 joins] || (v5 = objc_msgSend(-[NSRelationshipStoreMapping joins](self, "joins"), "isEqual:", objc_msgSend(a3, "joins"))) != 0)
+        joins = [(NSRelationshipStoreMapping *)self joins];
+        if (joins == [equal joins] || (v5 = objc_msgSend(-[NSRelationshipStoreMapping joins](self, "joins"), "isEqual:", objc_msgSend(equal, "joins"))) != 0)
         {
-          v9 = [(NSRelationshipStoreMapping *)self joinSemantic];
-          LOBYTE(v5) = v9 == [a3 joinSemantic];
+          joinSemantic = [(NSRelationshipStoreMapping *)self joinSemantic];
+          LOBYTE(v5) = joinSemantic == [equal joinSemantic];
         }
       }
     }

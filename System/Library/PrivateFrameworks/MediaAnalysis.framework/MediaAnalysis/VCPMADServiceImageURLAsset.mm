@@ -1,27 +1,27 @@
 @interface VCPMADServiceImageURLAsset
 - (CGSize)resolution;
-- (VCPMADServiceImageURLAsset)initWithURL:(id)a3 identifier:(id)a4 clientBundleID:(id)a5 clientTeamID:(id)a6;
+- (VCPMADServiceImageURLAsset)initWithURL:(id)l identifier:(id)identifier clientBundleID:(id)d clientTeamID:(id)iD;
 - (id)cachedParseData;
 - (id)documentObservations;
-- (int)loadPixelBuffer:(__CVBuffer *)a3 orientation:(unsigned int *)a4;
-- (void)setCachedParseData:(id)a3 overwriteExisting:(BOOL)a4;
-- (void)setDocumentObservations:(id)a3;
+- (int)loadPixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int *)orientation;
+- (void)setCachedParseData:(id)data overwriteExisting:(BOOL)existing;
+- (void)setDocumentObservations:(id)observations;
 @end
 
 @implementation VCPMADServiceImageURLAsset
 
-- (VCPMADServiceImageURLAsset)initWithURL:(id)a3 identifier:(id)a4 clientBundleID:(id)a5 clientTeamID:(id)a6
+- (VCPMADServiceImageURLAsset)initWithURL:(id)l identifier:(id)identifier clientBundleID:(id)d clientTeamID:(id)iD
 {
-  v11 = a3;
-  v12 = a4;
+  lCopy = l;
+  identifierCopy = identifier;
   v16.receiver = self;
   v16.super_class = VCPMADServiceImageURLAsset;
-  v13 = [(VCPMADServiceImageAsset *)&v16 initWithClientBundleID:a5 clientTeamID:a6];
+  v13 = [(VCPMADServiceImageAsset *)&v16 initWithClientBundleID:d clientTeamID:iD];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_url, a3);
-    objc_storeStrong(&v14->_identifier, a4);
+    objc_storeStrong(&v13->_url, l);
+    objc_storeStrong(&v14->_identifier, identifier);
     v14->_orientation = 1;
   }
 
@@ -55,7 +55,7 @@
   return result;
 }
 
-- (int)loadPixelBuffer:(__CVBuffer *)a3 orientation:(unsigned int *)a4
+- (int)loadPixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int *)orientation
 {
   v20 = *MEMORY[0x1E69E9840];
   value = self->_pixelBuffer.value_;
@@ -68,9 +68,9 @@
     v11 = v10;
     if (v9 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
     {
-      v12 = [(VCPMADServiceImageAsset *)self signpostPayload];
+      signpostPayload = [(VCPMADServiceImageAsset *)self signpostPayload];
       *v19 = 138412290;
-      *&v19[4] = v12;
+      *&v19[4] = signpostPayload;
       _os_signpost_emit_with_name_impl(&dword_1C9B70000, v11, OS_SIGNPOST_INTERVAL_BEGIN, v9, "VCPMADServiceImageURLAsset_Decode", "%@", v19, 0xCu);
     }
 
@@ -83,9 +83,9 @@
     v15 = v14;
     if (v9 - 1 < 0xFFFFFFFFFFFFFFFELL && os_signpost_enabled(v14))
     {
-      v16 = [(VCPMADServiceImageAsset *)self signpostPayload];
+      signpostPayload2 = [(VCPMADServiceImageAsset *)self signpostPayload];
       *v19 = 138412290;
-      *&v19[4] = v16;
+      *&v19[4] = signpostPayload2;
       _os_signpost_emit_with_name_impl(&dword_1C9B70000, v15, OS_SIGNPOST_INTERVAL_END, v9, "VCPMADServiceImageURLAsset_Decode", "%@", v19, 0xCu);
     }
 
@@ -98,8 +98,8 @@
 
   v17 = CFRetain(value);
   result = 0;
-  *a3 = v17;
-  *a4 = self->_orientation;
+  *buffer = v17;
+  *orientation = self->_orientation;
   return result;
 }
 
@@ -119,10 +119,10 @@
   return documentObservations;
 }
 
-- (void)setDocumentObservations:(id)a3
+- (void)setDocumentObservations:(id)observations
 {
-  v6 = a3;
-  v4 = [v6 copy];
+  observationsCopy = observations;
+  v4 = [observationsCopy copy];
   documentObservations = self->_documentObservations;
   self->_documentObservations = v4;
 }
@@ -143,10 +143,10 @@
   return cachedParseData;
 }
 
-- (void)setCachedParseData:(id)a3 overwriteExisting:(BOOL)a4
+- (void)setCachedParseData:(id)data overwriteExisting:(BOOL)existing
 {
-  v7 = a3;
-  v5 = [v7 copy];
+  dataCopy = data;
+  v5 = [dataCopy copy];
   cachedParseData = self->_cachedParseData;
   self->_cachedParseData = v5;
 

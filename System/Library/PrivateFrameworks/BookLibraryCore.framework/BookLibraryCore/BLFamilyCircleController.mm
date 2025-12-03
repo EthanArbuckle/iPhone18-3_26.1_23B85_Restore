@@ -1,8 +1,8 @@
 @interface BLFamilyCircleController
 + (id)sharedInstance;
 - (BLFamilyCircleController)init;
-- (void)dq_processFamilyCircle:(id)a3 completion:(id)a4;
-- (void)refreshWithCompletion:(id)a3;
+- (void)dq_processFamilyCircle:(id)circle completion:(id)completion;
+- (void)refreshWithCompletion:(id)completion;
 @end
 
 @implementation BLFamilyCircleController
@@ -31,17 +31,17 @@
     dispatchQueue = v2->_dispatchQueue;
     v2->_dispatchQueue = v4;
 
-    v6 = [MEMORY[0x277CF32F0] sharedProvider];
-    v7 = [v6 activeStoreAccount];
-    v8 = [v7 ams_DSID];
+    mEMORY[0x277CF32F0] = [MEMORY[0x277CF32F0] sharedProvider];
+    activeStoreAccount = [mEMORY[0x277CF32F0] activeStoreAccount];
+    ams_DSID = [activeStoreAccount ams_DSID];
 
     v9 = [MEMORY[0x277CBEB58] set];
     cachedDSIDs = v2->_cachedDSIDs;
     v2->_cachedDSIDs = v9;
 
-    if (v8)
+    if (ams_DSID)
     {
-      [(NSMutableSet *)v2->_cachedDSIDs addObject:v8];
+      [(NSMutableSet *)v2->_cachedDSIDs addObject:ams_DSID];
     }
 
     v11 = [MEMORY[0x277CBEB58] set];
@@ -52,17 +52,17 @@
   return v2;
 }
 
-- (void)refreshWithCompletion:(id)a3
+- (void)refreshWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF32F0] sharedProvider];
-  v6 = [v5 activeStoreAccount];
+  completionCopy = completion;
+  mEMORY[0x277CF32F0] = [MEMORY[0x277CF32F0] sharedProvider];
+  activeStoreAccount = [mEMORY[0x277CF32F0] activeStoreAccount];
 
-  if (v6)
+  if (activeStoreAccount)
   {
-    v7 = [MEMORY[0x277CF3300] defaultBag];
-    v8 = [objc_alloc(MEMORY[0x277CEE4E0]) initWithAccount:v6 bag:v7];
-    v9 = [v8 performFamilyInfoLookup];
+    defaultBag = [MEMORY[0x277CF3300] defaultBag];
+    v8 = [objc_alloc(MEMORY[0x277CEE4E0]) initWithAccount:activeStoreAccount bag:defaultBag];
+    performFamilyInfoLookup = [v8 performFamilyInfoLookup];
     objc_initWeak(location, self);
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
@@ -70,8 +70,8 @@
     v13[3] = &unk_278D18AB8;
     v13[4] = self;
     objc_copyWeak(&v15, location);
-    v14 = v4;
-    [v9 addFinishBlock:v13];
+    v14 = completionCopy;
+    [performFamilyInfoLookup addFinishBlock:v13];
 
     objc_destroyWeak(&v15);
     objc_destroyWeak(location);
@@ -87,16 +87,16 @@ LABEL_7:
     _os_log_impl(&dword_241D1F000, v10, OS_LOG_TYPE_DEFAULT, "Attempted to look up family circle without a logged in account", location, 2u);
   }
 
-  v11 = [(BLFamilyCircleController *)self ignoredDSIDs];
-  [v11 removeAllObjects];
+  ignoredDSIDs = [(BLFamilyCircleController *)self ignoredDSIDs];
+  [ignoredDSIDs removeAllObjects];
 
-  v7 = MEMORY[0x245CFF560](v4);
-  if (v7)
+  defaultBag = MEMORY[0x245CFF560](completionCopy);
+  if (defaultBag)
   {
     v8 = objc_opt_new();
-    v9 = objc_opt_new();
+    performFamilyInfoLookup = objc_opt_new();
     v12 = objc_opt_new();
-    (v7)[2](v7, v8, v9, v12);
+    (defaultBag)[2](defaultBag, v8, performFamilyInfoLookup, v12);
 
     goto LABEL_7;
   }
@@ -104,28 +104,28 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)dq_processFamilyCircle:(id)a3 completion:(id)a4
+- (void)dq_processFamilyCircle:(id)circle completion:(id)completion
 {
   v70 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  circleCopy = circle;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v8 = [MEMORY[0x277CF32F0] sharedProvider];
-  v9 = [v8 activeStoreAccount];
-  v10 = [v9 ams_DSID];
+  mEMORY[0x277CF32F0] = [MEMORY[0x277CF32F0] sharedProvider];
+  activeStoreAccount = [mEMORY[0x277CF32F0] activeStoreAccount];
+  ams_DSID = [activeStoreAccount ams_DSID];
 
   v11 = [MEMORY[0x277CBEB58] set];
-  v12 = [(BLFamilyCircleController *)self cachedDSIDs];
-  v52 = [v12 mutableCopy];
+  cachedDSIDs = [(BLFamilyCircleController *)self cachedDSIDs];
+  v52 = [cachedDSIDs mutableCopy];
 
-  if ([v6 count])
+  if ([circleCopy count])
   {
-    v49 = v10;
-    v50 = v7;
-    v13 = [v6 valueForKey:@"iTunesDSID"];
+    v49 = ams_DSID;
+    v50 = completionCopy;
+    v13 = [circleCopy valueForKey:@"iTunesDSID"];
     [v11 addObjectsFromArray:v13];
 
-    v14 = [v6 valueForKey:@"iCloudDSID"];
+    v14 = [circleCopy valueForKey:@"iCloudDSID"];
     [v11 addObjectsFromArray:v14];
 
     v15 = [MEMORY[0x277CBEB58] set];
@@ -133,8 +133,8 @@ LABEL_8:
     v54 = 0u;
     v55 = 0u;
     v56 = 0u;
-    v51 = v6;
-    v16 = v6;
+    v51 = circleCopy;
+    v16 = circleCopy;
     v17 = [v16 countByEnumeratingWithState:&v53 objects:v69 count:16];
     if (!v17)
     {
@@ -155,25 +155,25 @@ LABEL_8:
         v21 = *(*(&v53 + 1) + 8 * i);
         if (([v21 isCurrentSignedInUser] & 1) == 0)
         {
-          v22 = [v21 isSharingPurchases];
-          v23 = [v21 iCloudDSID];
+          isSharingPurchases = [v21 isSharingPurchases];
+          iCloudDSID = [v21 iCloudDSID];
 
-          if (v22)
+          if (isSharingPurchases)
           {
-            if (v23)
+            if (iCloudDSID)
             {
-              v24 = [(BLFamilyCircleController *)self ignoredDSIDs];
-              v25 = [v21 iCloudDSID];
-              [v24 removeObject:v25];
+              ignoredDSIDs = [(BLFamilyCircleController *)self ignoredDSIDs];
+              iCloudDSID2 = [v21 iCloudDSID];
+              [ignoredDSIDs removeObject:iCloudDSID2];
             }
 
-            v26 = [v21 iTunesDSID];
+            iTunesDSID = [v21 iTunesDSID];
 
-            if (v26)
+            if (iTunesDSID)
             {
-              v27 = [(BLFamilyCircleController *)self ignoredDSIDs];
-              v28 = [v21 iTunesDSID];
-              [v27 removeObject:v28];
+              ignoredDSIDs2 = [(BLFamilyCircleController *)self ignoredDSIDs];
+              iTunesDSID2 = [v21 iTunesDSID];
+              [ignoredDSIDs2 removeObject:iTunesDSID2];
 
 LABEL_17:
               continue;
@@ -182,18 +182,18 @@ LABEL_17:
 
           else
           {
-            if (v23)
+            if (iCloudDSID)
             {
-              v29 = [v21 iCloudDSID];
-              [v15 addObject:v29];
+              iCloudDSID3 = [v21 iCloudDSID];
+              [v15 addObject:iCloudDSID3];
             }
 
-            v30 = [v21 iTunesDSID];
+            iTunesDSID3 = [v21 iTunesDSID];
 
-            if (v30)
+            if (iTunesDSID3)
             {
-              v27 = [v21 iTunesDSID];
-              [v15 addObject:v27];
+              ignoredDSIDs2 = [v21 iTunesDSID];
+              [v15 addObject:ignoredDSIDs2];
               goto LABEL_17;
             }
           }
@@ -205,45 +205,45 @@ LABEL_17:
       {
 LABEL_20:
 
-        v31 = [(BLFamilyCircleController *)self ignoredDSIDs];
-        [v15 minusSet:v31];
+        ignoredDSIDs3 = [(BLFamilyCircleController *)self ignoredDSIDs];
+        [v15 minusSet:ignoredDSIDs3];
 
-        v32 = [(BLFamilyCircleController *)self ignoredDSIDs];
-        [v32 intersectSet:v11];
+        ignoredDSIDs4 = [(BLFamilyCircleController *)self ignoredDSIDs];
+        [ignoredDSIDs4 intersectSet:v11];
 
-        v33 = [(BLFamilyCircleController *)self ignoredDSIDs];
-        [v33 unionSet:v15];
+        ignoredDSIDs5 = [(BLFamilyCircleController *)self ignoredDSIDs];
+        [ignoredDSIDs5 unionSet:v15];
 
         v34 = v52;
         [v52 unionSet:v15];
-        v35 = [(BLFamilyCircleController *)self ignoredDSIDs];
-        [v11 minusSet:v35];
+        ignoredDSIDs6 = [(BLFamilyCircleController *)self ignoredDSIDs];
+        [v11 minusSet:ignoredDSIDs6];
 
-        v7 = v50;
-        v6 = v51;
-        v10 = v49;
+        completionCopy = v50;
+        circleCopy = v51;
+        ams_DSID = v49;
         goto LABEL_24;
       }
     }
   }
 
-  if (v10)
+  if (ams_DSID)
   {
-    [v11 addObject:v10];
+    [v11 addObject:ams_DSID];
   }
 
-  v36 = [(BLFamilyCircleController *)self ignoredDSIDs];
-  [v36 removeAllObjects];
+  ignoredDSIDs7 = [(BLFamilyCircleController *)self ignoredDSIDs];
+  [ignoredDSIDs7 removeAllObjects];
 
   v34 = v52;
 LABEL_24:
   v37 = [v11 mutableCopy];
-  v38 = [(BLFamilyCircleController *)self cachedDSIDs];
-  [v37 minusSet:v38];
+  cachedDSIDs2 = [(BLFamilyCircleController *)self cachedDSIDs];
+  [v37 minusSet:cachedDSIDs2];
 
   [v34 minusSet:v11];
-  v39 = [(BLFamilyCircleController *)self cachedDSIDs];
-  v40 = [v39 mutableCopy];
+  cachedDSIDs3 = [(BLFamilyCircleController *)self cachedDSIDs];
+  v40 = [cachedDSIDs3 mutableCopy];
 
   [v40 intersectSet:v11];
   v41 = [v11 mutableCopy];
@@ -270,7 +270,7 @@ LABEL_24:
     _os_log_impl(&dword_241D1F000, v42, OS_LOG_TYPE_DEFAULT, "Processed Family:  Added: %@ (%lu) | Removed: %@ (%lu) | Unchanged: %@ (%lu)", buf, 0x3Eu);
   }
 
-  v46 = MEMORY[0x245CFF560](v7);
+  v46 = MEMORY[0x245CFF560](completionCopy);
   v47 = v46;
   if (v46)
   {

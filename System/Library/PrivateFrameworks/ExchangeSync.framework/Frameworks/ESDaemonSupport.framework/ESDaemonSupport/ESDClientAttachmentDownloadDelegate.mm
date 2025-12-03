@@ -1,23 +1,23 @@
 @interface ESDClientAttachmentDownloadDelegate
-- (ESDClientAttachmentDownloadDelegate)initWithAccountID:(id)a3 attachmentUUID:(id)a4 client:(id)a5;
+- (ESDClientAttachmentDownloadDelegate)initWithAccountID:(id)d attachmentUUID:(id)iD client:(id)client;
 - (void)beginDownload;
 - (void)dealloc;
-- (void)downloadProgressDownloadedByteCount:(int64_t)a3 totalByteCount:(int64_t)a4;
-- (void)finishWithError:(id)a3;
+- (void)downloadProgressDownloadedByteCount:(int64_t)count totalByteCount:(int64_t)byteCount;
+- (void)finishWithError:(id)error;
 @end
 
 @implementation ESDClientAttachmentDownloadDelegate
 
-- (ESDClientAttachmentDownloadDelegate)initWithAccountID:(id)a3 attachmentUUID:(id)a4 client:(id)a5
+- (ESDClientAttachmentDownloadDelegate)initWithAccountID:(id)d attachmentUUID:(id)iD client:(id)client
 {
-  v8 = a4;
+  iDCopy = iD;
   v12.receiver = self;
   v12.super_class = ESDClientAttachmentDownloadDelegate;
-  v9 = [(ESDClientDelegate *)&v12 initWithAccountID:a3 client:a5];
+  v9 = [(ESDClientDelegate *)&v12 initWithAccountID:d client:client];
   v10 = v9;
   if (v9)
   {
-    [(ESDClientAttachmentDownloadDelegate *)v9 setAttachmentUUID:v8];
+    [(ESDClientAttachmentDownloadDelegate *)v9 setAttachmentUUID:iDCopy];
   }
 
   return v10;
@@ -37,8 +37,8 @@
   if (![(DADisableableObject *)self isDisabled])
   {
     v3 = +[ESDAgentManager sharedManager];
-    v4 = [(ESDClientDelegate *)self accountID];
-    v5 = [v3 accountWithAccountID:v4];
+    accountID = [(ESDClientDelegate *)self accountID];
+    v5 = [v3 accountWithAccountID:accountID];
 
     if (v5)
     {
@@ -52,9 +52,9 @@
       v8 = *(MEMORY[0x277D03988] + 3);
       if (os_log_type_enabled(v7, v8))
       {
-        v9 = [(ESDClientDelegate *)self accountID];
+        accountID2 = [(ESDClientDelegate *)self accountID];
         v11 = 138412290;
-        v12 = v9;
+        v12 = accountID2;
         _os_log_impl(&dword_24A184000, v7, v8, "Could not get an account with the ID %@", &v11, 0xCu);
       }
 
@@ -66,48 +66,48 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)downloadProgressDownloadedByteCount:(int64_t)a3 totalByteCount:(int64_t)a4
+- (void)downloadProgressDownloadedByteCount:(int64_t)count totalByteCount:(int64_t)byteCount
 {
   v21[5] = *MEMORY[0x277D85DE8];
   if (![(DADisableableObject *)self isDisabled])
   {
-    v7 = [(ESDClientDelegate *)self client];
-    v8 = [v7 rawConnection];
+    client = [(ESDClientDelegate *)self client];
+    rawConnection = [client rawConnection];
 
-    if (v8)
+    if (rawConnection)
     {
       v9 = *MEMORY[0x277D03C88];
       v21[0] = *MEMORY[0x277D03A28];
       v10 = *MEMORY[0x277D03A38];
       v20[0] = v9;
       v20[1] = v10;
-      v11 = [(ESDClientAttachmentDownloadDelegate *)self attachmentUUID];
-      v21[1] = v11;
+      attachmentUUID = [(ESDClientAttachmentDownloadDelegate *)self attachmentUUID];
+      v21[1] = attachmentUUID;
       v20[2] = *MEMORY[0x277D03A30];
-      v12 = [(ESDClientDelegate *)self delegateID];
-      v19 = v12;
+      delegateID = [(ESDClientDelegate *)self delegateID];
+      v19 = delegateID;
       v13 = [MEMORY[0x277CBEA60] arrayWithObjects:&v19 count:1];
       v21[2] = v13;
       v20[3] = *MEMORY[0x277D03B30];
-      v14 = [MEMORY[0x277CCABB0] numberWithLongLong:a3];
+      v14 = [MEMORY[0x277CCABB0] numberWithLongLong:count];
       v21[3] = v14;
       v20[4] = *MEMORY[0x277D03E90];
-      v15 = [MEMORY[0x277CCABB0] numberWithLongLong:a4];
+      v15 = [MEMORY[0x277CCABB0] numberWithLongLong:byteCount];
       v21[4] = v15;
       v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:5];
 
       v17 = _CFXPCCreateXPCObjectFromCFObject();
-      xpc_connection_send_message(v8, v17);
+      xpc_connection_send_message(rawConnection, v17);
     }
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   if (![(DADisableableObject *)self isDisabled]&& ![(ESDClientDelegate *)self finished])
   {
     [(ESDClientDelegate *)self setFinished:1];
@@ -117,24 +117,24 @@
     if (os_log_type_enabled(v5, v7))
     {
       *buf = 138412290;
-      v32 = v4;
+      v32 = errorCopy;
       _os_log_impl(&dword_24A184000, v5, v7, "DADAttachmentDownloadDelegate finished with error %@", buf, 0xCu);
     }
 
-    v8 = [v4 domain];
-    if ([v8 isEqualToString:*MEMORY[0x277D038E0]])
+    domain = [errorCopy domain];
+    if ([domain isEqualToString:*MEMORY[0x277D038E0]])
     {
-      v9 = [v4 code];
+      code = [errorCopy code];
 
-      if (v9 == -1)
+      if (code == -1)
       {
         v10 = +[ESDAgentManager sharedManager];
-        v11 = [(ESDClientDelegate *)self accountID];
-        v12 = [v10 accountWithAccountID:v11];
+        accountID = [(ESDClientDelegate *)self accountID];
+        rawConnection = [v10 accountWithAccountID:accountID];
 
-        if (v12)
+        if (rawConnection)
         {
-          [v12 cancelDownloadingInstance:self->_downloadID error:v4];
+          [rawConnection cancelDownloadingInstance:self->_downloadID error:errorCopy];
         }
 
         else
@@ -143,18 +143,18 @@
           v26 = *(v6 + 3);
           if (os_log_type_enabled(v25, v26))
           {
-            v27 = [(ESDClientDelegate *)self accountID];
+            accountID2 = [(ESDClientDelegate *)self accountID];
             *buf = 138412290;
-            v32 = v27;
+            v32 = accountID2;
             _os_log_impl(&dword_24A184000, v25, v26, "DADAttachmentDownloadDelegate finished, but could not find an account with the ID %@", buf, 0xCu);
           }
         }
 
 LABEL_12:
 
-        v22 = [(ESDClientDelegate *)self client];
-        v23 = [(ESDClientDelegate *)self delegateID];
-        [v22 delegateWithIDIsGoingAway:v23];
+        client = [(ESDClientDelegate *)self client];
+        delegateID = [(ESDClientDelegate *)self delegateID];
+        [client delegateWithIDIsGoingAway:delegateID];
 
         goto LABEL_13;
       }
@@ -164,30 +164,30 @@ LABEL_12:
     {
     }
 
-    v13 = [(ESDClientDelegate *)self client];
-    v12 = [v13 rawConnection];
+    client2 = [(ESDClientDelegate *)self client];
+    rawConnection = [client2 rawConnection];
 
-    if (v12)
+    if (rawConnection)
     {
       v14 = *MEMORY[0x277D03C88];
       v30[0] = *MEMORY[0x277D03A18];
       v15 = *MEMORY[0x277D03A38];
       v29[0] = v14;
       v29[1] = v15;
-      v16 = [(ESDClientAttachmentDownloadDelegate *)self attachmentUUID];
-      v30[1] = v16;
+      attachmentUUID = [(ESDClientAttachmentDownloadDelegate *)self attachmentUUID];
+      v30[1] = attachmentUUID;
       v29[2] = *MEMORY[0x277D03A30];
-      v17 = [(ESDClientDelegate *)self delegateID];
-      v28 = v17;
+      delegateID2 = [(ESDClientDelegate *)self delegateID];
+      v28 = delegateID2;
       v18 = [MEMORY[0x277CBEA60] arrayWithObjects:&v28 count:1];
       v30[2] = v18;
       v29[3] = *MEMORY[0x277D03B40];
-      v19 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v4];
+      v19 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:errorCopy];
       v30[3] = v19;
       v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:v29 count:4];
 
       v21 = _CFXPCCreateXPCObjectFromCFObject();
-      xpc_connection_send_message(v12, v21);
+      xpc_connection_send_message(rawConnection, v21);
     }
 
     goto LABEL_12;

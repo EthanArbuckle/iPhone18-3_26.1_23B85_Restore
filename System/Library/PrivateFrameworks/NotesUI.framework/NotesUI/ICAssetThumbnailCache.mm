@@ -2,8 +2,8 @@
 + (ICAssetThumbnailCache)shared;
 + (NSDate)currentVersionDate;
 - (ICAssetThumbnailCache)init;
-- (id)creationDateFor:(id)a3;
-- (id)objectForKeyedSubscript:(id)a3;
+- (id)creationDateFor:(id)for;
+- (id)objectForKeyedSubscript:(id)subscript;
 @end
 
 @implementation ICAssetThumbnailCache
@@ -48,16 +48,16 @@
   return v3;
 }
 
-- (id)objectForKeyedSubscript:(id)a3
+- (id)objectForKeyedSubscript:(id)subscript
 {
-  v4 = a3;
-  v5 = self;
-  v6 = _s7NotesUI19AssetThumbnailCacheCySo22ICThumbnailDescriptionCSgSo0F13ConfigurationCcig_0(v4);
+  subscriptCopy = subscript;
+  selfCopy = self;
+  v6 = _s7NotesUI19AssetThumbnailCacheCySo22ICThumbnailDescriptionCSgSo0F13ConfigurationCcig_0(subscriptCopy);
 
   return v6;
 }
 
-- (id)creationDateFor:(id)a3
+- (id)creationDateFor:(id)for
 {
   v3 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EC7C98F0);
   v4 = MEMORY[0x1EEE9AC00](v3);

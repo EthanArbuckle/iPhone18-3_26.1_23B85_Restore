@@ -29,7 +29,7 @@
 - (void)userInterfaceStyleChanged
 {
   v2 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC7Journal19GenericMapAssetView_mapThumbnailView);
-  v3 = self;
+  selfCopy = self;
   [v2 setImage:0];
   sub_1007195FC();
 }

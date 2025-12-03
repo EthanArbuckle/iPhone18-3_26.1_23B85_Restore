@@ -2,7 +2,7 @@
 - (TSPMemoryComponentWriteChannel)init;
 - (id)serializedData;
 - (void)close;
-- (void)writeData:(id)a3;
+- (void)writeData:(id)data;
 @end
 
 @implementation TSPMemoryComponentWriteChannel
@@ -25,17 +25,17 @@
   return v2;
 }
 
-- (void)writeData:(id)a3
+- (void)writeData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   streamQueue = self->_streamQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_276A66020;
   v7[3] = &unk_27A6E2898;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dataCopy;
+  v6 = dataCopy;
   dispatch_async(streamQueue, v7);
 }
 

@@ -1,6 +1,6 @@
 @interface MathMLExporter
 - (MathMLExporter)init;
-- (id)exportDataForEquation:(id)a3;
+- (id)exportDataForEquation:(id)equation;
 @end
 
 @implementation MathMLExporter
@@ -12,11 +12,11 @@
   return [(MathMLExporter *)&v3 init];
 }
 
-- (id)exportDataForEquation:(id)a3
+- (id)exportDataForEquation:(id)equation
 {
   v4 = xmlBufferCreate();
   v5 = xmlNewTextWriterMemory(v4, 0);
-  v7 = objc_msgSend_exportToXMLWriter_ns_prefix_characterCount_(a3, v6, v5, "http://www.w3.org/1998/Math/MathML", "m", 0);
+  v7 = objc_msgSend_exportToXMLWriter_ns_prefix_characterCount_(equation, v6, v5, "http://www.w3.org/1998/Math/MathML", "m", 0);
   v8 = 0;
   if (v7)
   {

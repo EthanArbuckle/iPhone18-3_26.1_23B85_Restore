@@ -1,7 +1,7 @@
 @interface WDInsulinDeliveryListDataProvider
 - (id)sampleTypes;
-- (id)textForObject:(id)a3;
-- (id)titleForSection:(unint64_t)a3;
+- (id)textForObject:(id)object;
+- (id)titleForSection:(unint64_t)section;
 @end
 
 @implementation WDInsulinDeliveryListDataProvider
@@ -9,9 +9,9 @@
 - (id)sampleTypes
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  v2 = [(WDSampleListDataProvider *)self displayType];
-  v3 = [v2 sampleType];
-  v7[0] = v3;
+  displayType = [(WDSampleListDataProvider *)self displayType];
+  sampleType = [displayType sampleType];
+  v7[0] = sampleType;
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:1];
 
   v5 = *MEMORY[0x277D85DE8];
@@ -19,27 +19,27 @@
   return v4;
 }
 
-- (id)textForObject:(id)a3
+- (id)textForObject:(id)object
 {
   v24[5] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WDSampleListDataProvider *)self displayType];
-  v6 = [(WDSampleListDataProvider *)self unitController];
-  v23 = v5;
-  v7 = [v6 unitForDisplayType:v5];
+  objectCopy = object;
+  displayType = [(WDSampleListDataProvider *)self displayType];
+  unitController = [(WDSampleListDataProvider *)self unitController];
+  v23 = displayType;
+  v7 = [unitController unitForDisplayType:displayType];
   v8 = MEMORY[0x277CCABB0];
-  v9 = [v4 quantity];
-  [v9 doubleValueForUnit:v7];
+  quantity = [objectCopy quantity];
+  [quantity doubleValueForUnit:v7];
   v10 = [v8 numberWithDouble:?];
 
   v11 = HKFormattedStringFromValue();
-  v12 = [v6 localizedDisplayNameForUnit:v7 value:v10];
-  v13 = [v4 metadata];
+  v12 = [unitController localizedDisplayNameForUnit:v7 value:v10];
+  metadata = [objectCopy metadata];
 
-  v14 = [v13 objectForKeyedSubscript:*MEMORY[0x277CCC4C8]];
-  v15 = [v14 integerValue];
+  v14 = [metadata objectForKeyedSubscript:*MEMORY[0x277CCC4C8]];
+  integerValue = [v14 integerValue];
 
-  v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"INSULIN_DELIVERY_REASON_%zd", v15];
+  v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"INSULIN_DELIVERY_REASON_%zd", integerValue];
   v24[0] = v11;
   v24[1] = @" ";
   v24[2] = v12;
@@ -55,21 +55,21 @@
   return v20;
 }
 
-- (id)titleForSection:(unint64_t)a3
+- (id)titleForSection:(unint64_t)section
 {
-  if ([(WDSampleListDataProvider *)self numberOfObjectsForSection:a3])
+  if ([(WDSampleListDataProvider *)self numberOfObjectsForSection:section])
   {
-    v4 = [(WDSampleListDataProvider *)self displayType];
-    v5 = [v4 localization];
-    v6 = [v5 displayName];
+    displayType = [(WDSampleListDataProvider *)self displayType];
+    localization = [displayType localization];
+    displayName = [localization displayName];
   }
 
   else
   {
-    v6 = 0;
+    displayName = 0;
   }
 
-  return v6;
+  return displayName;
 }
 
 @end

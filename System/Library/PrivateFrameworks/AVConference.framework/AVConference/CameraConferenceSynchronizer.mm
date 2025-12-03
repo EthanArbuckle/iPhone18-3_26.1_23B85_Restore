@@ -4,14 +4,14 @@
 - (BOOL)shouldConferenceSendFirstRemoteFrameNotification;
 - (CGSize)localPortraitAspectRatio;
 - (CameraConferenceSynchronizer)init;
-- (void)cameraSizeChangedTo:(CGSize)a3;
-- (void)changeCameraToCaptureSettings:(double)a3 forced:(BOOL)a4;
+- (void)cameraSizeChangedTo:(CGSize)to;
+- (void)changeCameraToCaptureSettings:(double)settings forced:(BOOL)forced;
 - (void)dealloc;
-- (void)notifyClientOfRemoteFrame:(double)a3;
+- (void)notifyClientOfRemoteFrame:(double)frame;
 - (void)reset;
-- (void)scheduleCameraChangeToCaptureSettings:(id)a3;
+- (void)scheduleCameraChangeToCaptureSettings:(id)settings;
 - (void)scheduleCameraChangeToPreviewSettings;
-- (void)scheduleFirstRemoteFrameNotification:(id)a3;
+- (void)scheduleFirstRemoteFrameNotification:(id)notification;
 @end
 
 @implementation CameraConferenceSynchronizer
@@ -189,12 +189,12 @@
   return 0;
 }
 
-- (void)changeCameraToCaptureSettings:(double)a3 forced:(BOOL)a4
+- (void)changeCameraToCaptureSettings:(double)settings forced:(BOOL)forced
 {
   v27 = *MEMORY[0x1E69E9840];
   if (!self->cameraHasChangedToCapture)
   {
-    v4 = a4;
+    forcedCopy = forced;
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
       v7 = VRTraceErrorLogLevelToCSTR();
@@ -204,12 +204,12 @@
         captureRule = self->captureRule;
         if (captureRule)
         {
-          v10 = [(NSString *)[(VCVideoRule *)captureRule description] UTF8String];
+          uTF8String = [(NSString *)[(VCVideoRule *)captureRule description] UTF8String];
         }
 
         else
         {
-          v10 = "<nil>";
+          uTF8String = "<nil>";
         }
 
         *buf = 136316418;
@@ -219,23 +219,23 @@
         v19 = 1024;
         v20 = 98;
         v21 = 2080;
-        v22 = v10;
+        v22 = uTF8String;
         v23 = 2048;
-        v24 = a3;
+        settingsCopy = settings;
         v25 = 1024;
-        v26 = v4;
+        v26 = forcedCopy;
         _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d scheduling camera change to %s in %g ms forced %d", buf, 0x36u);
       }
     }
 
-    v11 = dispatch_time(0, (a3 * 1000000.0));
+    v11 = dispatch_time(0, (settings * 1000000.0));
     global_queue = dispatch_get_global_queue(2, 0);
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __69__CameraConferenceSynchronizer_changeCameraToCaptureSettings_forced___block_invoke;
     v13[3] = &unk_1E85F37A0;
     v13[4] = self;
-    v14 = v4;
+    v14 = forcedCopy;
     dispatch_after(v11, global_queue, v13);
   }
 }
@@ -251,7 +251,7 @@ uint64_t __69__CameraConferenceSynchronizer_changeCameraToCaptureSettings_forced
   return [v2 setCaptureWidth:v3 height:v4 rate:v5 forced:v6];
 }
 
-- (void)notifyClientOfRemoteFrame:(double)a3
+- (void)notifyClientOfRemoteFrame:(double)frame
 {
   v18 = *MEMORY[0x1E69E9840];
   if (self->remoteFrameNotificationBlock)
@@ -273,12 +273,12 @@ uint64_t __69__CameraConferenceSynchronizer_changeCameraToCaptureSettings_forced
           v14 = 1024;
           v15 = 114;
           v16 = 2048;
-          v17 = a3;
+          frameCopy = frame;
           _os_log_impl(&dword_1DB56E000, v7, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d scheduling remote frame notification in %g ms", &v10, 0x26u);
         }
       }
 
-      v8 = dispatch_time(0, (a3 * 1000000.0));
+      v8 = dispatch_time(0, (frame * 1000000.0));
       global_queue = dispatch_get_global_queue(2, 0);
       dispatch_after(v8, global_queue, self->remoteFrameNotificationBlock);
       _Block_release(self->remoteFrameNotificationBlock);
@@ -355,11 +355,11 @@ uint64_t __69__CameraConferenceSynchronizer_changeCameraToCaptureSettings_forced
   self->localPortraitAspectRatio = *v5;
 }
 
-- (void)cameraSizeChangedTo:(CGSize)a3
+- (void)cameraSizeChangedTo:(CGSize)to
 {
-  height = a3.height;
+  height = to.height;
   v14 = *MEMORY[0x1E69E9840];
-  if (a3.width == [(VCVideoRule *)self->captureRule iWidth]&& height == [(VCVideoRule *)self->captureRule iHeight])
+  if (to.width == [(VCVideoRule *)self->captureRule iWidth]&& height == [(VCVideoRule *)self->captureRule iHeight])
   {
     v5 = 0;
     atomic_compare_exchange_strong_explicit(&self->cameraHasChangedToCapture, &v5, 1u, memory_order_relaxed, memory_order_relaxed);
@@ -389,10 +389,10 @@ uint64_t __69__CameraConferenceSynchronizer_changeCameraToCaptureSettings_forced
   }
 }
 
-- (void)scheduleFirstRemoteFrameNotification:(id)a3
+- (void)scheduleFirstRemoteFrameNotification:(id)notification
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (notification)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
@@ -417,7 +417,7 @@ uint64_t __69__CameraConferenceSynchronizer_changeCameraToCaptureSettings_forced
       _Block_release(remoteFrameNotificationBlock);
     }
 
-    self->remoteFrameNotificationBlock = _Block_copy(a3);
+    self->remoteFrameNotificationBlock = _Block_copy(notification);
     if ([(CameraConferenceSynchronizer *)self shouldConferenceSendFirstRemoteFrameNotification])
     {
       [(CameraConferenceSynchronizer *)self notifyClientOfRemoteFrame:0.0];
@@ -451,10 +451,10 @@ uint64_t __69__CameraConferenceSynchronizer_changeCameraToCaptureSettings_forced
   }
 }
 
-- (void)scheduleCameraChangeToCaptureSettings:(id)a3
+- (void)scheduleCameraChangeToCaptureSettings:(id)settings
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (settings)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
@@ -472,10 +472,10 @@ uint64_t __69__CameraConferenceSynchronizer_changeCameraToCaptureSettings_forced
       }
     }
 
-    [(VCVideoRule *)self->captureRule setToVideoRule:a3];
+    [(VCVideoRule *)self->captureRule setToVideoRule:settings];
     self->receivedRequestToChangeCamera = 1;
-    v7 = [(VCVideoRule *)self->captureRule iWidth];
-    self->isConference720p = [(VCVideoRule *)self->captureRule iHeight]* v7 == 921600;
+    iWidth = [(VCVideoRule *)self->captureRule iWidth];
+    self->isConference720p = [(VCVideoRule *)self->captureRule iHeight]* iWidth == 921600;
     if ([(CameraConferenceSynchronizer *)self shouldConferenceSendFirstRemoteFrameNotification])
     {
       [(CameraConferenceSynchronizer *)self notifyClientOfRemoteFrame:0.0];

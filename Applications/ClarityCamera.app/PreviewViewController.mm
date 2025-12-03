@@ -1,49 +1,49 @@
 @interface PreviewViewController
-- (_TtC13ClarityCamera21PreviewViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (_TtC13ClarityCamera21PreviewViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation PreviewViewController
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
+  selfCopy = self;
   sub_100011E24();
-  v3 = [objc_opt_self() sharedApplication];
-  [v3 setIdleTimerDisabled:1];
+  sharedApplication = [objc_opt_self() sharedApplication];
+  [sharedApplication setIdleTimerDisabled:1];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = [objc_opt_self() sharedApplication];
-  [v3 setIdleTimerDisabled:0];
+  sharedApplication = [objc_opt_self() sharedApplication];
+  [sharedApplication setIdleTimerDisabled:0];
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100011A20();
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v8.receiver = self;
   v8.super_class = type metadata accessor for PreviewViewController();
   swift_unknownObjectRetain();
   v7 = v8.receiver;
-  [(PreviewViewController *)&v8 viewWillTransitionToSize:a4 withTransitionCoordinator:width, height];
+  [(PreviewViewController *)&v8 viewWillTransitionToSize:coordinator withTransitionCoordinator:width, height];
   sub_100011E24();
   swift_unknownObjectRelease();
 }
 
-- (_TtC13ClarityCamera21PreviewViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC13ClarityCamera21PreviewViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -55,8 +55,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_100012348(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_100012348(v5, v7, bundle);
 }
 
 @end

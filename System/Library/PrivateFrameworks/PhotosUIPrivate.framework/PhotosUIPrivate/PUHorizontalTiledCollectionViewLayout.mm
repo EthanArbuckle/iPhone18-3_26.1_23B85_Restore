@@ -1,20 +1,20 @@
 @interface PUHorizontalTiledCollectionViewLayout
-- (BOOL)_shouldInvalidateCachedLayoutForBoundsChange:(CGRect)a3;
-- (BOOL)_updateLayoutData:(id)a3 inDirection:(int64_t)a4 outDeltaOriginX:(double *)a5;
+- (BOOL)_shouldInvalidateCachedLayoutForBoundsChange:(CGRect)change;
+- (BOOL)_updateLayoutData:(id)data inDirection:(int64_t)direction outDeltaOriginX:(double *)x;
 - (CGSize)collectionViewContentSize;
 - (PUHorizontalTiledCollectionViewLayout)init;
 - (PUHorizontalTiledCollectionViewLayoutDelegate)delegate;
 - (UIEdgeInsets)itemsContentInset;
-- (id)_layoutAttributesForItemAtIndexPath:(id)a3;
-- (id)invalidationContextForBoundsChange:(CGRect)a3;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
-- (id)layoutAttributesForItemsInRect:(CGRect)a3;
-- (void)_ensureIndexPath:(id)a3 inData:(id)a4;
-- (void)_ensureRect:(CGRect)a3 inData:(id)a4 outDeltaOriginX:(double *)a5;
-- (void)invalidateLayoutWithContext:(id)a3;
+- (id)_layoutAttributesForItemAtIndexPath:(id)path;
+- (id)invalidationContextForBoundsChange:(CGRect)change;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
+- (id)layoutAttributesForItemsInRect:(CGRect)rect;
+- (void)_ensureIndexPath:(id)path inData:(id)data;
+- (void)_ensureRect:(CGRect)rect inData:(id)data outDeltaOriginX:(double *)x;
+- (void)invalidateLayoutWithContext:(id)context;
 - (void)prepareLayout;
-- (void)setInteritemSpacing:(double)a3;
-- (void)setItemsContentInset:(UIEdgeInsets)a3;
+- (void)setInteritemSpacing:(double)spacing;
+- (void)setItemsContentInset:(UIEdgeInsets)inset;
 @end
 
 @implementation PUHorizontalTiledCollectionViewLayout
@@ -39,12 +39,12 @@
   return result;
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
   data = self->_data;
-  v5 = a3;
-  [(PUHorizontalTiledCollectionViewLayout *)self _ensureIndexPath:v5 inData:data];
-  v6 = [(PUHorizontalTiledCollectionViewLayout *)self _layoutAttributesForItemAtIndexPath:v5];
+  pathCopy = path;
+  [(PUHorizontalTiledCollectionViewLayout *)self _ensureIndexPath:pathCopy inData:data];
+  v6 = [(PUHorizontalTiledCollectionViewLayout *)self _layoutAttributesForItemAtIndexPath:pathCopy];
 
   return v6;
 }
@@ -72,29 +72,29 @@
 
 - (void)prepareLayout
 {
-  v3 = [(PUHorizontalTiledCollectionViewLayout *)self collectionView];
-  [v3 bounds];
+  collectionView = [(PUHorizontalTiledCollectionViewLayout *)self collectionView];
+  [collectionView bounds];
   [(PUHorizontalTiledCollectionViewLayout *)self _ensureRect:self->_data inData:0 outDeltaOriginX:?];
 }
 
-- (void)invalidateLayoutWithContext:(id)a3
+- (void)invalidateLayoutWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5.receiver = self;
   v5.super_class = PUHorizontalTiledCollectionViewLayout;
-  [(PUHorizontalTiledCollectionViewLayout *)&v5 invalidateLayoutWithContext:v4];
-  if (([v4 invalidateCachedLayout] & 1) != 0 || (objc_msgSend(v4, "invalidateDataSourceCounts") & 1) != 0 || objc_msgSend(v4, "invalidateEverything"))
+  [(PUHorizontalTiledCollectionViewLayout *)&v5 invalidateLayoutWithContext:contextCopy];
+  if (([contextCopy invalidateCachedLayout] & 1) != 0 || (objc_msgSend(contextCopy, "invalidateDataSourceCounts") & 1) != 0 || objc_msgSend(contextCopy, "invalidateEverything"))
   {
     [(PUHorizontalTiledCollectionViewLayout *)self invalidateCachedLayout];
   }
 }
 
-- (id)invalidationContextForBoundsChange:(CGRect)a3
+- (id)invalidationContextForBoundsChange:(CGRect)change
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = change.size.height;
+  width = change.size.width;
+  y = change.origin.y;
+  x = change.origin.x;
   v11.receiver = self;
   v11.super_class = PUHorizontalTiledCollectionViewLayout;
   v8 = [(PUHorizontalTiledCollectionViewLayout *)&v11 invalidationContextForBoundsChange:?];
@@ -104,26 +104,26 @@
   return v8;
 }
 
-- (id)layoutAttributesForItemsInRect:(CGRect)a3
+- (id)layoutAttributesForItemsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v15 = 0.0;
   [(PUHorizontalTiledCollectionViewLayout *)self _ensureRect:self->_data inData:&v15 outDeltaOriginX:?];
   [(UICollectionViewLayoutAttributes *)self->_dummyAttrs setFrame:x + v15, y, width, height];
-  v8 = [(PUCollectionViewData *)self->_data itemLayoutAttributes];
-  v9 = [v8 count];
-  v10 = [v8 indexOfObject:self->_dummyAttrs inSortedRange:0 options:v9 usingComparator:{256, &__block_literal_global_28234}];
-  if (v10 == 0x7FFFFFFFFFFFFFFFLL || (v11 = v10, v12 = [v8 indexOfObject:self->_dummyAttrs inSortedRange:v10 options:v9 - v10 usingComparator:{512, &__block_literal_global_28234}], v12 == 0x7FFFFFFFFFFFFFFFLL))
+  itemLayoutAttributes = [(PUCollectionViewData *)self->_data itemLayoutAttributes];
+  v9 = [itemLayoutAttributes count];
+  v10 = [itemLayoutAttributes indexOfObject:self->_dummyAttrs inSortedRange:0 options:v9 usingComparator:{256, &__block_literal_global_28234}];
+  if (v10 == 0x7FFFFFFFFFFFFFFFLL || (v11 = v10, v12 = [itemLayoutAttributes indexOfObject:self->_dummyAttrs inSortedRange:v10 options:v9 - v10 usingComparator:{512, &__block_literal_global_28234}], v12 == 0x7FFFFFFFFFFFFFFFLL))
   {
     v13 = 0;
   }
 
   else
   {
-    v13 = [v8 subarrayWithRange:{v11, v12 - v11 + 1}];
+    v13 = [itemLayoutAttributes subarrayWithRange:{v11, v12 - v11 + 1}];
   }
 
   return v13;
@@ -170,22 +170,22 @@ uint64_t __72__PUHorizontalTiledCollectionViewLayout_layoutAttributesForItemsInR
   return MinX > CGRectGetMaxX(v28);
 }
 
-- (BOOL)_shouldInvalidateCachedLayoutForBoundsChange:(CGRect)a3
+- (BOOL)_shouldInvalidateCachedLayoutForBoundsChange:(CGRect)change
 {
-  height = a3.size.height;
-  v4 = [(PUHorizontalTiledCollectionViewLayout *)self collectionView:a3.origin.x];
+  height = change.size.height;
+  v4 = [(PUHorizontalTiledCollectionViewLayout *)self collectionView:change.origin.x];
   [v4 bounds];
   v6 = v5;
 
   return v6 != height;
 }
 
-- (void)setItemsContentInset:(UIEdgeInsets)a3
+- (void)setItemsContentInset:(UIEdgeInsets)inset
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = inset.right;
+  bottom = inset.bottom;
+  left = inset.left;
+  top = inset.top;
   [(PUHorizontalTiledCollectionViewLayout *)self itemsContentInset];
   if (v11 != left || v8 != top || v10 != right || v9 != bottom)
   {
@@ -199,102 +199,102 @@ uint64_t __72__PUHorizontalTiledCollectionViewLayout_layoutAttributesForItemsInR
   }
 }
 
-- (void)setInteritemSpacing:(double)a3
+- (void)setInteritemSpacing:(double)spacing
 {
   [(PUHorizontalTiledCollectionViewLayout *)self interitemSpacing];
-  if (v5 != a3)
+  if (v5 != spacing)
   {
-    self->_interitemSpacing = a3;
+    self->_interitemSpacing = spacing;
     [(PUHorizontalTiledCollectionViewLayout *)self invalidateCachedLayout];
 
     [(PUHorizontalTiledCollectionViewLayout *)self invalidateLayout];
   }
 }
 
-- (id)_layoutAttributesForItemAtIndexPath:(id)a3
+- (id)_layoutAttributesForItemAtIndexPath:(id)path
 {
   data = self->_data;
-  v4 = a3;
-  v5 = [(PUCollectionViewData *)data itemLayoutAttributesByIndexPath];
-  v6 = [v5 objectForKey:v4];
+  pathCopy = path;
+  itemLayoutAttributesByIndexPath = [(PUCollectionViewData *)data itemLayoutAttributesByIndexPath];
+  v6 = [itemLayoutAttributesByIndexPath objectForKey:pathCopy];
 
   return v6;
 }
 
-- (void)_ensureIndexPath:(id)a3 inData:(id)a4
+- (void)_ensureIndexPath:(id)path inData:(id)data
 {
-  v23 = a3;
-  v6 = a4;
-  v7 = [v6 itemLayoutAttributes];
-  v8 = [v7 count];
+  pathCopy = path;
+  dataCopy = data;
+  itemLayoutAttributes = [dataCopy itemLayoutAttributes];
+  v8 = [itemLayoutAttributes count];
 
   if (!v8)
   {
-    [(PUHorizontalTiledCollectionViewLayout *)self _updateLayoutData:v6 inDirection:1 outDeltaOriginX:0];
+    [(PUHorizontalTiledCollectionViewLayout *)self _updateLayoutData:dataCopy inDirection:1 outDeltaOriginX:0];
   }
 
-  v9 = [v6 itemLayoutAttributes];
-  v10 = [v9 firstObject];
-  v11 = [v10 indexPath];
+  itemLayoutAttributes2 = [dataCopy itemLayoutAttributes];
+  firstObject = [itemLayoutAttributes2 firstObject];
+  indexPath = [firstObject indexPath];
 
-  while ([v23 compare:v11] == -1)
+  while ([pathCopy compare:indexPath] == -1)
   {
-    v12 = [(PUHorizontalTiledCollectionViewLayout *)self _updateLayoutData:v6 inDirection:-1 outDeltaOriginX:0];
-    v13 = [v6 itemLayoutAttributes];
-    v14 = [v13 firstObject];
-    v15 = [v14 indexPath];
+    v12 = [(PUHorizontalTiledCollectionViewLayout *)self _updateLayoutData:dataCopy inDirection:-1 outDeltaOriginX:0];
+    itemLayoutAttributes3 = [dataCopy itemLayoutAttributes];
+    firstObject2 = [itemLayoutAttributes3 firstObject];
+    indexPath2 = [firstObject2 indexPath];
 
-    v11 = v15;
+    indexPath = indexPath2;
     if (!v12)
     {
       goto LABEL_8;
     }
   }
 
-  v15 = v11;
+  indexPath2 = indexPath;
 LABEL_8:
-  v16 = [v6 itemLayoutAttributes];
-  v17 = [v16 lastObject];
-  v18 = [v17 indexPath];
+  itemLayoutAttributes4 = [dataCopy itemLayoutAttributes];
+  lastObject = [itemLayoutAttributes4 lastObject];
+  indexPath3 = [lastObject indexPath];
 
-  while ([v23 compare:v18] == 1)
+  while ([pathCopy compare:indexPath3] == 1)
   {
-    v19 = [(PUHorizontalTiledCollectionViewLayout *)self _updateLayoutData:v6 inDirection:1 outDeltaOriginX:0];
-    v20 = [v6 itemLayoutAttributes];
-    v21 = [v20 lastObject];
-    v22 = [v21 indexPath];
+    v19 = [(PUHorizontalTiledCollectionViewLayout *)self _updateLayoutData:dataCopy inDirection:1 outDeltaOriginX:0];
+    itemLayoutAttributes5 = [dataCopy itemLayoutAttributes];
+    lastObject2 = [itemLayoutAttributes5 lastObject];
+    indexPath4 = [lastObject2 indexPath];
 
-    v18 = v22;
+    indexPath3 = indexPath4;
     if (!v19)
     {
       goto LABEL_13;
     }
   }
 
-  v22 = v18;
+  indexPath4 = indexPath3;
 LABEL_13:
 }
 
-- (void)_ensureRect:(CGRect)a3 inData:(id)a4 outDeltaOriginX:(double *)a5
+- (void)_ensureRect:(CGRect)rect inData:(id)data outDeltaOriginX:(double *)x
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  rect = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
-  v11 = v10;
+  height = rect.size.height;
+  width = rect.size.width;
+  rect = rect.origin.y;
+  x = rect.origin.x;
+  dataCopy = data;
+  v11 = dataCopy;
   if (width < 0.0 || height < 0.0)
   {
-    if (a5)
+    if (x)
     {
-      *a5 = 0.0;
+      *x = 0.0;
     }
   }
 
   else
   {
     v35 = 0.0;
-    [v10 currentContentBounds];
+    [dataCopy currentContentBounds];
     v12 = v36.origin.x;
     y = v36.origin.y;
     v14 = v36.size.width;
@@ -371,37 +371,37 @@ LABEL_13:
   }
 }
 
-- (BOOL)_updateLayoutData:(id)a3 inDirection:(int64_t)a4 outDeltaOriginX:(double *)a5
+- (BOOL)_updateLayoutData:(id)data inDirection:(int64_t)direction outDeltaOriginX:(double *)x
 {
   v111 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v100 = [(PUHorizontalTiledCollectionViewLayout *)self delegate];
-  v98 = self;
-  v10 = [(PUHorizontalTiledCollectionViewLayout *)self collectionView];
-  [v10 bounds];
+  dataCopy = data;
+  delegate = [(PUHorizontalTiledCollectionViewLayout *)self delegate];
+  selfCopy = self;
+  collectionView = [(PUHorizontalTiledCollectionViewLayout *)self collectionView];
+  [collectionView bounds];
   v88 = v11;
   v13 = v12;
   v92 = v15;
   v93 = v14;
-  v16 = [(PUCollectionViewData *)v9 cachedPageCount];
-  [(PUCollectionViewData *)v9 currentContentBounds];
+  cachedPageCount = [(PUCollectionViewData *)dataCopy cachedPageCount];
+  [(PUCollectionViewData *)dataCopy currentContentBounds];
   MidX = v17;
   MidY = v19;
   width = v21;
   height = v23;
-  v25 = [(PUCollectionViewData *)v9 itemLayoutAttributes];
-  v99 = [(PUCollectionViewData *)v9 itemLayoutAttributesByIndexPath];
-  if (a4 == 1)
+  itemLayoutAttributes = [(PUCollectionViewData *)dataCopy itemLayoutAttributes];
+  itemLayoutAttributesByIndexPath = [(PUCollectionViewData *)dataCopy itemLayoutAttributesByIndexPath];
+  if (direction == 1)
   {
-    [v25 lastObject];
+    [itemLayoutAttributes lastObject];
   }
 
   else
   {
-    [v25 firstObject];
+    [itemLayoutAttributes firstObject];
   }
   v26 = ;
-  v27 = [v26 indexPath];
+  indexPath = [v26 indexPath];
   [v26 frame];
   v101 = v29;
   v102 = v28;
@@ -411,13 +411,13 @@ LABEL_13:
   v34 = v26 == 0;
   if (!v26)
   {
-    if ([v25 count] || objc_msgSend(v99, "count") || (v112.origin.x = MidX, v112.origin.y = MidY, v112.size.width = width, v112.size.height = height, !CGRectIsEmpty(v112)))
+    if ([itemLayoutAttributes count] || objc_msgSend(itemLayoutAttributesByIndexPath, "count") || (v112.origin.x = MidX, v112.origin.y = MidY, v112.size.width = width, v112.size.height = height, !CGRectIsEmpty(v112)))
     {
-      v104 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v104 handleFailureInMethod:a2 object:v98 file:@"PUHorizontalTiledCollectionViewLayout.m" lineNumber:114 description:0];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"PUHorizontalTiledCollectionViewLayout.m" lineNumber:114 description:0];
     }
 
-    v35 = [v100 layout:v98 collectionView:v10 referenceIndexPathWithOffsetX:&v109];
+    v35 = [delegate layout:selfCopy collectionView:collectionView referenceIndexPathWithOffsetX:&v109];
 
     v113.origin.x = v88;
     v113.origin.y = v13;
@@ -439,7 +439,7 @@ LABEL_13:
 LABEL_12:
     v51 = 0;
     v52 = 0.0;
-    if (!a5)
+    if (!x)
     {
       goto LABEL_53;
     }
@@ -447,7 +447,7 @@ LABEL_12:
     goto LABEL_52;
   }
 
-  v35 = [v10 next:a4 indexPathFromIndexPath:v27];
+  v35 = [collectionView next:direction indexPathFromIndexPath:indexPath];
 
   if (!v35)
   {
@@ -456,27 +456,27 @@ LABEL_12:
 
 LABEL_6:
   v87 = v13;
-  v91 = a5;
-  [(PUHorizontalTiledCollectionViewLayout *)v98 interitemSpacing];
+  xCopy = x;
+  [(PUHorizontalTiledCollectionViewLayout *)selfCopy interitemSpacing];
   v97 = v36;
-  [(PUHorizontalTiledCollectionViewLayout *)v98 itemsContentInset];
+  [(PUHorizontalTiledCollectionViewLayout *)selfCopy itemsContentInset];
   v85 = v37;
   v96 = v38;
   v40 = v38 + v39;
   [MEMORY[0x1E696AC88] indexPathForItem:0 inSection:0];
-  v90 = v9;
-  v42 = v41 = v16;
-  v43 = [v25 firstObject];
-  v44 = [v43 indexPath];
+  v90 = dataCopy;
+  v42 = v41 = cachedPageCount;
+  firstObject = [itemLayoutAttributes firstObject];
+  indexPath2 = [firstObject indexPath];
   v89 = v42;
-  v86 = [v44 isEqual:v42];
+  v86 = [indexPath2 isEqual:v42];
 
   v45 = v93 * v41;
   v46 = MidX;
   v47 = MidY;
   v48 = width;
   v49 = height;
-  if (a4 == 1)
+  if (direction == 1)
   {
     v50 = v45 + CGRectGetMaxX(*&v46);
   }
@@ -509,7 +509,7 @@ LABEL_6:
 
     v103 = MidY;
     v53 = height;
-    [v100 layout:v98 collectionView:v10 sizeForItemAtIndexPath:v35];
+    [delegate layout:selfCopy collectionView:collectionView sizeForItemAtIndexPath:v35];
     v55 = v54;
     v57 = v56;
     if (v54 <= 0.0)
@@ -533,7 +533,7 @@ LABEL_6:
       v60 = v102;
       v62 = v31;
       v63 = v33;
-      if (a4 == 1)
+      if (direction == 1)
       {
         v59 = v58 + CGRectGetMaxX(*&v60);
       }
@@ -566,9 +566,9 @@ LABEL_6:
     IsEmpty = CGRectIsEmpty(v118);
     [v66 setHidden:IsEmpty];
     [v66 setAlpha:(IsEmpty ^ 1)];
-    if (a4 == 1)
+    if (direction == 1)
     {
-      v68 = [v25 count];
+      v68 = [itemLayoutAttributes count];
     }
 
     else
@@ -576,8 +576,8 @@ LABEL_6:
       v68 = 0;
     }
 
-    [v25 insertObject:v66 atIndex:v68];
-    [v99 setObject:v66 forKey:v35];
+    [itemLayoutAttributes insertObject:v66 atIndex:v68];
+    [itemLayoutAttributesByIndexPath setObject:v66 forKey:v35];
     v119.origin.x = MidX;
     v119.origin.y = v103;
     v119.size.width = width;
@@ -592,7 +592,7 @@ LABEL_6:
     MidY = v120.origin.y;
     width = v120.size.width;
     height = v120.size.height;
-    v69 = [v10 next:a4 indexPathFromIndexPath:v35];
+    v69 = [collectionView next:direction indexPathFromIndexPath:v35];
 
     v34 = 0;
     v51 = 1;
@@ -608,17 +608,17 @@ LABEL_6:
     }
   }
 
-  v70 = [v25 firstObject];
-  v71 = [v70 indexPath];
+  firstObject2 = [itemLayoutAttributes firstObject];
+  indexPath3 = [firstObject2 indexPath];
   v72 = v89;
-  v73 = [v71 isEqual:v89];
+  v73 = [indexPath3 isEqual:v89];
 
-  v9 = v90;
+  dataCopy = v90;
   if (MidX <= 0.0 || (v52 = 0.0, v73))
   {
     v74 = -MidX;
     v109 = -MidX;
-    a5 = v91;
+    x = xCopy;
     if (!(v86 & 1 | ((v73 & 1) == 0)))
     {
       v74 = v85 - MidX;
@@ -632,7 +632,7 @@ LABEL_6:
       v108 = 0u;
       v105 = 0u;
       v106 = 0u;
-      v75 = v25;
+      v75 = itemLayoutAttributes;
       v76 = [v75 countByEnumeratingWithState:&v105 objects:v110 count:16];
       if (v76)
       {
@@ -658,19 +658,19 @@ LABEL_6:
         while (v77);
       }
 
-      v9 = v90;
-      a5 = v91;
+      dataCopy = v90;
+      x = xCopy;
       v72 = v89;
-      if (v98->_data == v90)
+      if (selfCopy->_data == v90)
       {
-        [(PUHorizontalTiledCollectionViewLayout *)v98 invalidateLayout];
-        v82 = [v10 collectionViewLayout];
+        [(PUHorizontalTiledCollectionViewLayout *)selfCopy invalidateLayout];
+        collectionViewLayout = [collectionView collectionViewLayout];
 
-        v83 = v82 == v98;
-        a5 = v91;
+        v83 = collectionViewLayout == selfCopy;
+        x = xCopy;
         if (v83)
         {
-          [v10 setBounds:{v88 + v109, v87, v93, v92}];
+          [collectionView setBounds:{v88 + v109, v87, v93, v92}];
         }
       }
     }
@@ -681,15 +681,15 @@ LABEL_6:
 
   else
   {
-    a5 = v91;
+    x = xCopy;
   }
 
-  [(PUCollectionViewData *)v9 setCurrentContentBounds:MidX, MidY, width, height];
+  [(PUCollectionViewData *)dataCopy setCurrentContentBounds:MidX, MidY, width, height];
 
-  if (a5)
+  if (x)
   {
 LABEL_52:
-    *a5 = v52;
+    *x = v52;
   }
 
 LABEL_53:

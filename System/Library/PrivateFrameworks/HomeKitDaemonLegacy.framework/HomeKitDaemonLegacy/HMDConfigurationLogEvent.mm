@@ -1,61 +1,61 @@
 @interface HMDConfigurationLogEvent
 - (BOOL)isMediaOnlyConfiguration;
 - (BOOL)isTelevisionOnlyConfiguration;
-- (HMDConfigurationLogEvent)initWithHomeConfigurations:(id)a3 widgetDataSource:(id)a4 isFMFDevice:(BOOL)a5 isStandaloneWatch:(BOOL)a6;
+- (HMDConfigurationLogEvent)initWithHomeConfigurations:(id)configurations widgetDataSource:(id)source isFMFDevice:(BOOL)device isStandaloneWatch:(BOOL)watch;
 @end
 
 @implementation HMDConfigurationLogEvent
 
 - (BOOL)isMediaOnlyConfiguration
 {
-  v3 = [(HMDConfigurationLogEvent *)self totalAccessories];
-  if (v3)
+  totalAccessories = [(HMDConfigurationLogEvent *)self totalAccessories];
+  if (totalAccessories)
   {
-    v4 = [(HMDConfigurationLogEvent *)self totalAccessories];
-    v5 = [(HMDConfigurationLogEvent *)self totalTelevisionServiceAccessories];
-    v6 = [(HMDConfigurationLogEvent *)self totalHAPSpeakerAccessories]+ v5;
-    v7 = [(HMDConfigurationLogEvent *)self totalWholeHouseAudioAccessories];
-    LOBYTE(v3) = v4 == v6 + v7 + [(HMDConfigurationLogEvent *)self totalAppleMediaAccessories];
+    totalAccessories2 = [(HMDConfigurationLogEvent *)self totalAccessories];
+    totalTelevisionServiceAccessories = [(HMDConfigurationLogEvent *)self totalTelevisionServiceAccessories];
+    v6 = [(HMDConfigurationLogEvent *)self totalHAPSpeakerAccessories]+ totalTelevisionServiceAccessories;
+    totalWholeHouseAudioAccessories = [(HMDConfigurationLogEvent *)self totalWholeHouseAudioAccessories];
+    LOBYTE(totalAccessories) = totalAccessories2 == v6 + totalWholeHouseAudioAccessories + [(HMDConfigurationLogEvent *)self totalAppleMediaAccessories];
   }
 
-  return v3;
+  return totalAccessories;
 }
 
 - (BOOL)isTelevisionOnlyConfiguration
 {
-  v3 = [(HMDConfigurationLogEvent *)self totalAccessories];
-  if (v3)
+  totalAccessories = [(HMDConfigurationLogEvent *)self totalAccessories];
+  if (totalAccessories)
   {
-    v4 = [(HMDConfigurationLogEvent *)self totalAccessories];
-    LOBYTE(v3) = v4 == [(HMDConfigurationLogEvent *)self totalTelevisionServiceAccessories];
+    totalAccessories2 = [(HMDConfigurationLogEvent *)self totalAccessories];
+    LOBYTE(totalAccessories) = totalAccessories2 == [(HMDConfigurationLogEvent *)self totalTelevisionServiceAccessories];
   }
 
-  return v3;
+  return totalAccessories;
 }
 
-- (HMDConfigurationLogEvent)initWithHomeConfigurations:(id)a3 widgetDataSource:(id)a4 isFMFDevice:(BOOL)a5 isStandaloneWatch:(BOOL)a6
+- (HMDConfigurationLogEvent)initWithHomeConfigurations:(id)configurations widgetDataSource:(id)source isFMFDevice:(BOOL)device isStandaloneWatch:(BOOL)watch
 {
   v30 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
+  configurationsCopy = configurations;
+  sourceCopy = source;
   v28.receiver = self;
   v28.super_class = HMDConfigurationLogEvent;
   v13 = [(HMMLogEvent *)&v28 init];
   if (v13)
   {
-    v23 = v11;
+    v23 = configurationsCopy;
     os_unfair_lock_lock_with_options();
     v13->_instanceId = ++_currentInstanceId;
     os_unfair_lock_unlock(&_lock_25480);
-    v22 = v12;
-    v13->_totalWidgets = [v12 configuredWidgetsCount];
-    objc_storeStrong(&v13->_homeConfigurations, a3);
+    v22 = sourceCopy;
+    v13->_totalWidgets = [sourceCopy configuredWidgetsCount];
+    objc_storeStrong(&v13->_homeConfigurations, configurations);
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v14 = [(HMDConfigurationLogEvent *)v13 homeConfigurations];
-    v15 = [v14 countByEnumeratingWithState:&v24 objects:v29 count:16];
+    homeConfigurations = [(HMDConfigurationLogEvent *)v13 homeConfigurations];
+    v15 = [homeConfigurations countByEnumeratingWithState:&v24 objects:v29 count:16];
     if (v15)
     {
       v16 = v15;
@@ -66,7 +66,7 @@
         {
           if (*v25 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(homeConfigurations);
           }
 
           v19 = *(*(&v24 + 1) + 8 * i);
@@ -127,16 +127,16 @@
           }
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v24 objects:v29 count:16];
+        v16 = [homeConfigurations countByEnumeratingWithState:&v24 objects:v29 count:16];
       }
 
       while (v16);
     }
 
-    v13->_isFMFDevice = a5;
-    v13->_isStandaloneWatch = a6;
-    v11 = v23;
-    v12 = v22;
+    v13->_isFMFDevice = device;
+    v13->_isStandaloneWatch = watch;
+    configurationsCopy = v23;
+    sourceCopy = v22;
   }
 
   v20 = *MEMORY[0x277D85DE8];

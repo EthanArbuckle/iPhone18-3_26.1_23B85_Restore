@@ -1,17 +1,17 @@
 @interface SKUITextInputViewElement
-+ (BOOL)isTextInputType:(id)a3;
++ (BOOL)isTextInputType:(id)type;
 + (id)supportedFeatures;
-- (SKUITextInputViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
-- (id)applyUpdatesWithElement:(id)a3;
+- (SKUITextInputViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
+- (id)applyUpdatesWithElement:(id)element;
 @end
 
 @implementation SKUITextInputViewElement
 
-- (SKUITextInputViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SKUITextInputViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  elementCopy = element;
+  parentCopy = parent;
+  factoryCopy = factory;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -26,10 +26,10 @@
 
   v28.receiver = self;
   v28.super_class = SKUITextInputViewElement;
-  v19 = [(SKUIInputViewElement *)&v28 initWithDOMElement:v8 parent:v9 elementFactory:v10];
+  v19 = [(SKUIInputViewElement *)&v28 initWithDOMElement:elementCopy parent:parentCopy elementFactory:factoryCopy];
   if (v19)
   {
-    v20 = [v8 getAttribute:@"type"];
+    v20 = [elementCopy getAttribute:@"type"];
     if ([v20 isEqualToString:@"email"])
     {
       v21 = 7;
@@ -48,14 +48,14 @@
 
     v19->_keyboardType = v21;
 LABEL_12:
-    v22 = [v8 getAttribute:@"maxlength"];
+    v22 = [elementCopy getAttribute:@"maxlength"];
     v23 = v22;
     if (v22)
     {
       v19->_maximumLength = [v22 integerValue];
     }
 
-    v24 = [v8 getAttribute:@"secure"];
+    v24 = [elementCopy getAttribute:@"secure"];
     v25 = v24;
     if (v24)
     {
@@ -67,7 +67,7 @@ LABEL_12:
       v19->_secure = 1;
     }
 
-    v26 = [v8 getAttribute:@"placeholdertext"];
+    v26 = [elementCopy getAttribute:@"placeholdertext"];
     if (v26)
     {
       objc_storeStrong(&v19->_placeholderText, v26);
@@ -77,9 +77,9 @@ LABEL_12:
   return v19;
 }
 
-+ (BOOL)isTextInputType:(id)a3
++ (BOOL)isTextInputType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -92,14 +92,14 @@ LABEL_12:
     }
   }
 
-  if ([v3 isEqualToString:@"number"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"email") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"password"))
+  if ([typeCopy isEqualToString:@"number"] & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", @"email") & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", @"password"))
   {
     v12 = 1;
   }
 
   else
   {
-    v12 = [v3 isEqualToString:@"text"];
+    v12 = [typeCopy isEqualToString:@"text"];
   }
 
   return v12;
@@ -126,17 +126,17 @@ LABEL_12:
   return v10;
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v8.receiver = self;
   v8.super_class = SKUITextInputViewElement;
-  v5 = [(SKUIViewElement *)&v8 applyUpdatesWithElement:v4];
+  v5 = [(SKUIViewElement *)&v8 applyUpdatesWithElement:elementCopy];
   v6 = v5;
-  if (v4 != self && v5 == self)
+  if (elementCopy != self && v5 == self)
   {
-    self->_keyboardType = [(SKUITextInputViewElement *)v4 keyboardType];
-    self->_maximumLength = [(SKUITextInputViewElement *)v4 maximumLength];
+    self->_keyboardType = [(SKUITextInputViewElement *)elementCopy keyboardType];
+    self->_maximumLength = [(SKUITextInputViewElement *)elementCopy maximumLength];
   }
 
   return v6;

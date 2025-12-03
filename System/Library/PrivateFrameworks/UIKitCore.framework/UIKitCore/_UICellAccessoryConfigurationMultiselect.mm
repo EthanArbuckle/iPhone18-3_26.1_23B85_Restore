@@ -1,21 +1,21 @@
 @interface _UICellAccessoryConfigurationMultiselect
-- (BOOL)isEqual:(id)a3;
-- (_UICellAccessoryConfigurationMultiselect)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_UICellAccessoryConfigurationMultiselect)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UICellAccessoryConfigurationMultiselect
 
-- (_UICellAccessoryConfigurationMultiselect)initWithCoder:(id)a3
+- (_UICellAccessoryConfigurationMultiselect)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = _UICellAccessoryConfigurationMultiselect;
-  v5 = [(_UICellAccessoryConfiguration *)&v9 initWithCoder:v4];
+  v5 = [(_UICellAccessoryConfiguration *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"selectedTintColor"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"selectedTintColor"];
     selectedTintColor = v5->_selectedTintColor;
     v5->_selectedTintColor = v6;
   }
@@ -23,20 +23,20 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = _UICellAccessoryConfigurationMultiselect;
-  v4 = a3;
-  [(_UICellAccessoryConfiguration *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_selectedTintColor forKey:{@"selectedTintColor", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(_UICellAccessoryConfiguration *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_selectedTintColor forKey:{@"selectedTintColor", v5.receiver, v5.super_class}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = _UICellAccessoryConfigurationMultiselect;
-  v4 = [(_UICellAccessoryConfiguration *)&v7 copyWithZone:a3];
+  v4 = [(_UICellAccessoryConfiguration *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -46,14 +46,14 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v13.receiver = self;
   v13.super_class = _UICellAccessoryConfigurationMultiselect;
-  if ([(_UICellAccessoryConfiguration *)&v13 isEqual:v4])
+  if ([(_UICellAccessoryConfiguration *)&v13 isEqual:equalCopy])
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5[4];
     v7 = self->_selectedTintColor;
     v8 = v6;

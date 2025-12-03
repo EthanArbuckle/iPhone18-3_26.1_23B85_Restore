@@ -1,40 +1,40 @@
 @interface SFNotificationInfo
-- (SFNotificationInfo)initWithCoder:(id)a3;
+- (SFNotificationInfo)initWithCoder:(id)coder;
 - (SFNotificationInfo)mediumBubbleVersion;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFNotificationInfo
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v4)
   {
-    v5 = [(SFNotificationInfo *)self attachmentURL];
-    v6 = [v5 copy];
+    attachmentURL = [(SFNotificationInfo *)self attachmentURL];
+    v6 = [attachmentURL copy];
     [v4 setAttachmentURL:v6];
 
-    v7 = [(SFNotificationInfo *)self body];
-    v8 = [v7 copy];
+    body = [(SFNotificationInfo *)self body];
+    v8 = [body copy];
     [v4 setBody:v8];
 
     [v4 setDeviceClass:{-[SFNotificationInfo deviceClass](self, "deviceClass")}];
-    v9 = [(SFNotificationInfo *)self error];
-    v10 = [v9 copy];
+    error = [(SFNotificationInfo *)self error];
+    v10 = [error copy];
     [v4 setError:v10];
 
-    v11 = [(SFNotificationInfo *)self header];
-    v12 = [v11 copy];
+    header = [(SFNotificationInfo *)self header];
+    v12 = [header copy];
     [v4 setHeader:v12];
 
     [v4 setInteractionBehavior:{-[SFNotificationInfo interactionBehavior](self, "interactionBehavior")}];
     [v4 setInteractionDirection:{-[SFNotificationInfo interactionDirection](self, "interactionDirection")}];
     [v4 setNotificationType:{-[SFNotificationInfo notificationType](self, "notificationType")}];
-    v13 = [(SFNotificationInfo *)self title];
-    v14 = [v13 copy];
+    title = [(SFNotificationInfo *)self title];
+    v14 = [title copy];
     [v4 setTitle:v14];
 
     [v4 setHomePodType:{-[SFNotificationInfo homePodType](self, "homePodType")}];
@@ -43,75 +43,75 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   attachmentURL = self->_attachmentURL;
-  v12 = v4;
+  v12 = coderCopy;
   if (attachmentURL)
   {
-    [v4 encodeObject:attachmentURL forKey:@"url"];
-    v4 = v12;
+    [coderCopy encodeObject:attachmentURL forKey:@"url"];
+    coderCopy = v12;
   }
 
   body = self->_body;
   if (body)
   {
     [v12 encodeObject:body forKey:@"bod"];
-    v4 = v12;
+    coderCopy = v12;
   }
 
   if (self->_deviceClass)
   {
     [v12 encodeInteger:? forKey:?];
-    v4 = v12;
+    coderCopy = v12;
   }
 
   error = self->_error;
   if (error)
   {
     [v12 encodeObject:error forKey:@"er"];
-    v4 = v12;
+    coderCopy = v12;
   }
 
   header = self->_header;
   if (header)
   {
     [v12 encodeObject:header forKey:@"hea"];
-    v4 = v12;
+    coderCopy = v12;
   }
 
   if (self->_interactionBehavior)
   {
     [v12 encodeInteger:? forKey:?];
-    v4 = v12;
+    coderCopy = v12;
   }
 
   if (self->_interactionDirection)
   {
     [v12 encodeInteger:? forKey:?];
-    v4 = v12;
+    coderCopy = v12;
   }
 
   notificationType = self->_notificationType;
   if (notificationType)
   {
     [v12 encodeInt64:notificationType forKey:@"nt"];
-    v4 = v12;
+    coderCopy = v12;
   }
 
   title = self->_title;
   if (title)
   {
     [v12 encodeObject:title forKey:@"tit"];
-    v4 = v12;
+    coderCopy = v12;
   }
 
   homePodType = self->_homePodType;
   if (homePodType)
   {
     [v12 encodeInteger:homePodType forKey:@"homePodType"];
-    v4 = v12;
+    coderCopy = v12;
   }
 }
 
@@ -272,9 +272,9 @@ LABEL_19:
   return v3;
 }
 
-- (SFNotificationInfo)initWithCoder:(id)a3
+- (SFNotificationInfo)initWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = SFNotificationInfo;
   v6 = [(SFNotificationInfo *)&v13 init];
@@ -282,7 +282,7 @@ LABEL_19:
   {
     objc_opt_class();
     NSDecodeObjectIfPresent();
-    v7 = v5;
+    v7 = coderCopy;
     OUTLINED_FUNCTION_1_14();
     objc_opt_class();
     NSDecodeObjectIfPresent();

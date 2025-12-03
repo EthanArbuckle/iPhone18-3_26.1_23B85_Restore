@@ -1,28 +1,28 @@
 @interface BFFTitleView
-- (BFFTitleView)initWithFrame:(CGRect)a3;
+- (BFFTitleView)initWithFrame:(CGRect)frame;
 - (CGRect)contentBounds;
 - (void)layoutSubviews;
-- (void)setTitle:(id)a3;
+- (void)setTitle:(id)title;
 @end
 
 @implementation BFFTitleView
 
-- (BFFTitleView)initWithFrame:(CGRect)a3
+- (BFFTitleView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = BFFTitleView;
-  v3 = [(BFFTitleView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(BFFTitleView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277D756B8]);
     [(BFFTitleView *)v3 setTitleLabel:v4];
 
     v5 = +[BFFStyle sharedStyle];
-    v6 = [(BFFTitleView *)v3 titleLabel];
-    [v5 applyThemeToTitleLabel:v6];
+    titleLabel = [(BFFTitleView *)v3 titleLabel];
+    [v5 applyThemeToTitleLabel:titleLabel];
 
-    v7 = [(BFFTitleView *)v3 titleLabel];
-    [(BFFTitleView *)v3 addSubview:v7];
+    titleLabel2 = [(BFFTitleView *)v3 titleLabel];
+    [(BFFTitleView *)v3 addSubview:titleLabel2];
 
     [(BFFTitleView *)v3 setContentInsetAdjustmentBehavior:2];
   }
@@ -30,11 +30,11 @@
   return v3;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(BFFTitleView *)self titleLabel];
-  [v5 setText:v4];
+  titleCopy = title;
+  titleLabel = [(BFFTitleView *)self titleLabel];
+  [titleLabel setText:titleCopy];
 
   [(BFFTitleView *)self setNeedsLayout];
 }
@@ -42,10 +42,10 @@
 - (CGRect)contentBounds
 {
   v3 = +[BFFStyle sharedStyle];
-  v4 = [(BFFTitleView *)self superview];
-  v5 = [(BFFTitleView *)self superview];
-  [v5 bounds];
-  [v3 horizontalInsetsForContainingInView:v4 width:v6];
+  superview = [(BFFTitleView *)self superview];
+  superview2 = [(BFFTitleView *)self superview];
+  [superview2 bounds];
+  [v3 horizontalInsetsForContainingInView:superview width:v6];
 
   [(BFFTitleView *)self frame];
   [(BFFTitleView *)self safeAreaInsets];
@@ -78,19 +78,19 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(BFFTitleView *)self titleLabel];
-  [v11 sizeThatFits:{v8, v10}];
+  titleLabel = [(BFFTitleView *)self titleLabel];
+  [titleLabel sizeThatFits:{v8, v10}];
   v13 = v12;
 
   v14 = +[BFFStyle sharedStyle];
   [v14 headerTitleBaselineOffsetForView:self iconSize:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
   v16 = v6 + v15;
-  v17 = [(BFFTitleView *)self titleLabel];
-  [v17 _firstBaselineOffsetFromTop];
+  titleLabel2 = [(BFFTitleView *)self titleLabel];
+  [titleLabel2 _firstBaselineOffsetFromTop];
   v19 = v16 - v18;
 
-  v20 = [(BFFTitleView *)self titleLabel];
-  [v20 setFrame:{v4, v19, v8, v13}];
+  titleLabel3 = [(BFFTitleView *)self titleLabel];
+  [titleLabel3 setFrame:{v4, v19, v8, v13}];
 }
 
 @end

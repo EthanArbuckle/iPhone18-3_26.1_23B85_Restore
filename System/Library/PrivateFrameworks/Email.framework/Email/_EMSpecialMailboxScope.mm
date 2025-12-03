@@ -1,16 +1,16 @@
 @interface _EMSpecialMailboxScope
-- (BOOL)isEqual:(id)a3;
-- (BOOL)scopeContainsMailbox:(id)a3;
-- (BOOL)scopeContainsMailboxObjectID:(id)a3 mailboxTypeResolver:(id)a4;
-- (_EMSpecialMailboxScope)initWithCoder:(id)a3;
-- (_EMSpecialMailboxScope)initWithIdentifier:(id)a3;
-- (id)allMailboxObjectIDsWithMailboxTypeResolver:(id)a3 forExclusion:(BOOL *)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)scopeContainsMailbox:(id)mailbox;
+- (BOOL)scopeContainsMailboxObjectID:(id)d mailboxTypeResolver:(id)resolver;
+- (_EMSpecialMailboxScope)initWithCoder:(id)coder;
+- (_EMSpecialMailboxScope)initWithIdentifier:(id)identifier;
+- (id)allMailboxObjectIDsWithMailboxTypeResolver:(id)resolver forExclusion:(BOOL *)exclusion;
 - (id)cachedSelf;
 - (id)ef_publicDescription;
-- (id)mailboxScopeByAddingMailboxes:(id)a3;
-- (id)mailboxScopeByRemovingMailboxes:(id)a3;
+- (id)mailboxScopeByAddingMailboxes:(id)mailboxes;
+- (id)mailboxScopeByRemovingMailboxes:(id)mailboxes;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _EMSpecialMailboxScope
@@ -31,8 +31,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(_EMSpecialMailboxScope *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(_EMSpecialMailboxScope *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
@@ -41,34 +41,34 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(_EMSpecialMailboxScope *)self identifier];
-  v6 = [v3 stringWithFormat:@"<%@: %p> %@", v4, self, v5];
+  identifier = [(_EMSpecialMailboxScope *)self identifier];
+  v6 = [v3 stringWithFormat:@"<%@: %p> %@", v4, self, identifier];
 
   return v6;
 }
 
-- (_EMSpecialMailboxScope)initWithIdentifier:(id)a3
+- (_EMSpecialMailboxScope)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v10.receiver = self;
   v10.super_class = _EMSpecialMailboxScope;
   v5 = [(EMMailboxScope *)&v10 initWithMailboxTypes:0 excludeTypes:0 mailboxObjectIDs:0 excludeMailboxes:0 cached:0];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     identifier = v5->_identifier;
     v5->_identifier = v6;
   }
 
-  v8 = [(_EMSpecialMailboxScope *)v5 cachedSelf];
+  cachedSelf = [(_EMSpecialMailboxScope *)v5 cachedSelf];
 
-  return v8;
+  return cachedSelf;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -78,9 +78,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(_EMSpecialMailboxScope *)self identifier];
-      v6 = [(_EMSpecialMailboxScope *)v4 identifier];
-      v7 = [v5 isEqualToString:v6];
+      identifier = [(_EMSpecialMailboxScope *)self identifier];
+      identifier2 = [(_EMSpecialMailboxScope *)equalCopy identifier];
+      v7 = [identifier isEqualToString:identifier2];
     }
 
     else
@@ -92,97 +92,97 @@
   return v7;
 }
 
-- (_EMSpecialMailboxScope)initWithCoder:(id)a3
+- (_EMSpecialMailboxScope)initWithCoder:(id)coder
 {
-  v8 = a3;
-  v9 = self;
-  v4 = self;
-  v5 = v8;
+  coderCopy = coder;
+  selfCopy = self;
+  selfCopy2 = self;
+  v5 = coderCopy;
   v6 = EFDecodeCacheableInstance();
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v3 = v4;
+  coderCopy = coder;
+  v3 = coderCopy;
   EFEncodeCacheableInstance();
 }
 
-- (id)mailboxScopeByAddingMailboxes:(id)a3
+- (id)mailboxScopeByAddingMailboxes:(id)mailboxes
 {
-  v4 = a3;
-  v5 = [(_EMSpecialMailboxScope *)self identifier];
-  v6 = [v5 isEqualToString:@"AllMailboxes"];
+  mailboxesCopy = mailboxes;
+  identifier = [(_EMSpecialMailboxScope *)self identifier];
+  v6 = [identifier isEqualToString:@"AllMailboxes"];
 
   if (v6)
   {
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = [v4 ef_mapSelector:sel_objectID];
-    v7 = [EMMailboxScope mailboxScopeForMailboxObjectIDs:v8 forExclusion:0];
+    v8 = [mailboxesCopy ef_mapSelector:sel_objectID];
+    selfCopy = [EMMailboxScope mailboxScopeForMailboxObjectIDs:v8 forExclusion:0];
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (id)mailboxScopeByRemovingMailboxes:(id)a3
+- (id)mailboxScopeByRemovingMailboxes:(id)mailboxes
 {
-  v4 = a3;
-  v5 = [(_EMSpecialMailboxScope *)self identifier];
-  v6 = [v5 isEqualToString:@"AllMailboxes"];
+  mailboxesCopy = mailboxes;
+  identifier = [(_EMSpecialMailboxScope *)self identifier];
+  v6 = [identifier isEqualToString:@"AllMailboxes"];
 
   if (v6)
   {
-    v7 = [v4 ef_mapSelector:sel_objectID];
-    v8 = [EMMailboxScope mailboxScopeForMailboxObjectIDs:v7 forExclusion:1];
+    v7 = [mailboxesCopy ef_mapSelector:sel_objectID];
+    selfCopy = [EMMailboxScope mailboxScopeForMailboxObjectIDs:v7 forExclusion:1];
   }
 
   else
   {
-    v8 = self;
+    selfCopy = self;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (id)allMailboxObjectIDsWithMailboxTypeResolver:(id)a3 forExclusion:(BOOL *)a4
+- (id)allMailboxObjectIDsWithMailboxTypeResolver:(id)resolver forExclusion:(BOOL *)exclusion
 {
-  v6 = a3;
-  *a4 = 0;
-  v7 = [(_EMSpecialMailboxScope *)self identifier];
-  LODWORD(self) = [v7 isEqualToString:@"AllMailboxes"];
+  resolverCopy = resolver;
+  *exclusion = 0;
+  identifier = [(_EMSpecialMailboxScope *)self identifier];
+  LODWORD(self) = [identifier isEqualToString:@"AllMailboxes"];
 
   if (self)
   {
-    v8 = [v6 allMailboxObjectIDs];
+    allMailboxObjectIDs = [resolverCopy allMailboxObjectIDs];
   }
 
   else
   {
-    v8 = objc_alloc_init(MEMORY[0x1E695DFD8]);
+    allMailboxObjectIDs = objc_alloc_init(MEMORY[0x1E695DFD8]);
   }
 
-  v9 = v8;
+  v9 = allMailboxObjectIDs;
 
   return v9;
 }
 
-- (BOOL)scopeContainsMailbox:(id)a3
+- (BOOL)scopeContainsMailbox:(id)mailbox
 {
-  v3 = [(_EMSpecialMailboxScope *)self identifier];
-  v4 = [v3 isEqualToString:@"AllMailboxes"];
+  identifier = [(_EMSpecialMailboxScope *)self identifier];
+  v4 = [identifier isEqualToString:@"AllMailboxes"];
 
   return v4;
 }
 
-- (BOOL)scopeContainsMailboxObjectID:(id)a3 mailboxTypeResolver:(id)a4
+- (BOOL)scopeContainsMailboxObjectID:(id)d mailboxTypeResolver:(id)resolver
 {
-  v4 = [(_EMSpecialMailboxScope *)self identifier:a3];
+  v4 = [(_EMSpecialMailboxScope *)self identifier:d];
   v5 = [v4 isEqualToString:@"AllMailboxes"];
 
   return v5;

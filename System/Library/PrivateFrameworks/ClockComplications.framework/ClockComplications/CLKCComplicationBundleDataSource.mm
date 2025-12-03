@@ -2,29 +2,29 @@
 + (NSString)bundleIdentifier;
 - (CLKComplicationDescriptor)complicationDescriptor;
 - (id)complicationApplicationIdentifier;
-- (void)getLaunchURLForTimelineEntryDate:(id)a3 timeTravelDate:(id)a4 withHandler:(id)a5;
+- (void)getLaunchURLForTimelineEntryDate:(id)date timeTravelDate:(id)travelDate withHandler:(id)handler;
 @end
 
 @implementation CLKCComplicationBundleDataSource
 
 + (NSString)bundleIdentifier
 {
-  v2 = [MEMORY[0x277CCA8D8] bundleForClass:a1];
-  v3 = [v2 bundleIdentifier];
+  v2 = [MEMORY[0x277CCA8D8] bundleForClass:self];
+  bundleIdentifier = [v2 bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
 - (CLKComplicationDescriptor)complicationDescriptor
 {
-  v2 = [(CLKCComplicationDataSource *)self complication];
+  complication = [(CLKCComplicationDataSource *)self complication];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 complicationDescriptor];
+    complicationDescriptor = [complication complicationDescriptor];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if (v3)
+      if (complicationDescriptor)
       {
         goto LABEL_7;
       }
@@ -35,10 +35,10 @@
     }
   }
 
-  v3 = [MEMORY[0x277CBB718] legacyComplicationDescriptor];
+  complicationDescriptor = [MEMORY[0x277CBB718] legacyComplicationDescriptor];
 LABEL_7:
 
-  return v3;
+  return complicationDescriptor;
 }
 
 - (id)complicationApplicationIdentifier
@@ -48,21 +48,21 @@ LABEL_7:
   return [v2 appIdentifier];
 }
 
-- (void)getLaunchURLForTimelineEntryDate:(id)a3 timeTravelDate:(id)a4 withHandler:(id)a5
+- (void)getLaunchURLForTimelineEntryDate:(id)date timeTravelDate:(id)travelDate withHandler:(id)handler
 {
-  v11 = a5;
-  v6 = [objc_opt_class() appIdentifier];
-  if (![v6 length])
+  handlerCopy = handler;
+  appIdentifier = [objc_opt_class() appIdentifier];
+  if (![appIdentifier length])
   {
-    v7 = [(CLKCComplicationBundleDataSource *)self complicationApplicationIdentifier];
+    complicationApplicationIdentifier = [(CLKCComplicationBundleDataSource *)self complicationApplicationIdentifier];
 
-    v6 = v7;
+    appIdentifier = complicationApplicationIdentifier;
   }
 
-  if ([v6 length])
+  if ([appIdentifier length])
   {
     v8 = MEMORY[0x277CBEBC0];
-    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@://", v6];
+    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@://", appIdentifier];
     v10 = [v8 URLWithString:v9];
   }
 
@@ -71,7 +71,7 @@ LABEL_7:
     v10 = 0;
   }
 
-  v11[2](v11, v10);
+  handlerCopy[2](handlerCopy, v10);
 }
 
 @end

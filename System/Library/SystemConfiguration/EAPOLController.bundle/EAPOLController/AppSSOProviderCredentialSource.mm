@@ -1,37 +1,37 @@
 @interface AppSSOProviderCredentialSource
-- ($7C9D15F3256170E4E3E5F2CB1E52084F)createResponseWithIdentityPref:(id)a3;
-- (AppSSOProviderCredentialSource)initWithProviderURLString:(id)a3 ssid:(id)a4 queue:(id)a5 callback:(void *)a6 context:(void *)a7;
+- ($7C9D15F3256170E4E3E5F2CB1E52084F)createResponseWithIdentityPref:(id)pref;
+- (AppSSOProviderCredentialSource)initWithProviderURLString:(id)string ssid:(id)ssid queue:(id)queue callback:(void *)callback context:(void *)context;
 - (BOOL)canPerformAuthorization;
-- (void)authorization:(id)a3 didCompleteWithError:(id)a4;
-- (void)authorization:(id)a3 didCompleteWithHTTPResponse:(id)a4 httpBody:(id)a5;
+- (void)authorization:(id)authorization didCompleteWithError:(id)error;
+- (void)authorization:(id)authorization didCompleteWithHTTPResponse:(id)response httpBody:(id)body;
 - (void)invalidate;
 - (void)startAuthorization;
 @end
 
 @implementation AppSSOProviderCredentialSource
 
-- (AppSSOProviderCredentialSource)initWithProviderURLString:(id)a3 ssid:(id)a4 queue:(id)a5 callback:(void *)a6 context:(void *)a7
+- (AppSSOProviderCredentialSource)initWithProviderURLString:(id)string ssid:(id)ssid queue:(id)queue callback:(void *)callback context:(void *)context
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
+  stringCopy = string;
+  ssidCopy = ssid;
+  queueCopy = queue;
   v21.receiver = self;
   v21.super_class = AppSSOProviderCredentialSource;
   v16 = [(AppSSOProviderCredentialSource *)&v21 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_providerURL, a3);
-    objc_storeStrong(&v17->_queue, a5);
-    v17->_callback = a6;
-    v17->_callbackContext = a7;
-    objc_storeStrong(&v17->_ssid, a4);
+    objc_storeStrong(&v16->_providerURL, string);
+    objc_storeStrong(&v17->_queue, queue);
+    v17->_callback = callback;
+    v17->_callbackContext = context;
+    objc_storeStrong(&v17->_ssid, ssid);
     v18 = objc_alloc_init(SOAuthorization);
     appSSOAuthorization = v17->_appSSOAuthorization;
     v17->_appSSOAuthorization = v18;
 
     [v17->_appSSOAuthorization setDelegate:v17];
-    [v17->_appSSOAuthorization setDelegateDispatchQueue:v15];
+    [v17->_appSSOAuthorization setDelegateDispatchQueue:queueCopy];
   }
 
   return v17;
@@ -60,14 +60,14 @@
     *&buf[8] = buf;
     *&buf[16] = 0x2020000000;
     v12 = CFErrorCreate(kCFAllocatorDefault, @"EAPAppSSOErrorDomain", 2, 0);
-    v8 = [(AppSSOProviderCredentialSource *)self queue];
+    queue = [(AppSSOProviderCredentialSource *)self queue];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_1000015CC;
     v10[3] = &unk_100014840;
     v10[4] = self;
     v10[5] = buf;
-    dispatch_async(v8, v10);
+    dispatch_async(queue, v10);
 
     _Block_object_dispose(buf, 8);
   }
@@ -84,7 +84,7 @@
     if (os_log_type_enabled(v3, v4))
     {
       *buf = 138412290;
-      v13 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v3, v4, "%@ starting AppSSO authorization", buf, 0xCu);
     }
 
@@ -103,14 +103,14 @@
   }
 }
 
-- ($7C9D15F3256170E4E3E5F2CB1E52084F)createResponseWithIdentityPref:(id)a3
+- ($7C9D15F3256170E4E3E5F2CB1E52084F)createResponseWithIdentityPref:(id)pref
 {
-  v3 = a3;
+  prefCopy = pref;
   result = malloc_type_malloc(0x20uLL, 0x1060040BB51C48DuLL);
   *&result->var0 = 0u;
   *&result->var2 = 0u;
   *&result->var2 = 257;
-  result->var4 = v3;
+  result->var4 = prefCopy;
   return result;
 }
 
@@ -121,7 +121,7 @@
   if (os_log_type_enabled(v3, v4))
   {
     v7 = 138412290;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, v4, "%@ invalidate", &v7, 0xCu);
   }
 
@@ -135,11 +135,11 @@
   }
 }
 
-- (void)authorization:(id)a3 didCompleteWithHTTPResponse:(id)a4 httpBody:(id)a5
+- (void)authorization:(id)authorization didCompleteWithHTTPResponse:(id)response httpBody:(id)body
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  authorizationCopy = authorization;
+  responseCopy = response;
+  bodyCopy = body;
   v11 = EAPLogGetLogHandle();
   v12 = _SC_syslog_os_log_mapping();
   if (os_log_type_enabled(v11, v12))
@@ -149,11 +149,11 @@
     _os_log_impl(&_mh_execute_header, v11, v12, "%@ didCompleteWithHTTPResponse", buf, 0xCu);
   }
 
-  if (v9)
+  if (responseCopy)
   {
-    v13 = [v9 valueForHTTPHeaderField:@"X-SSO-Net-Credentials"];
+    v13 = [responseCopy valueForHTTPHeaderField:@"X-SSO-Net-Credentials"];
     v14 = [v13 isEqualToString:@"IdentityPersistentReference"] ^ 1;
-    if (!v10)
+    if (!bodyCopy)
     {
       LOBYTE(v14) = 1;
     }
@@ -163,15 +163,15 @@
       *buf = 0;
       *&buf[8] = buf;
       *&buf[16] = 0x2020000000;
-      v23 = [(AppSSOProviderCredentialSource *)self createResponseWithIdentityPref:v10];
-      v15 = [(AppSSOProviderCredentialSource *)self queue];
+      v23 = [(AppSSOProviderCredentialSource *)self createResponseWithIdentityPref:bodyCopy];
+      queue = [(AppSSOProviderCredentialSource *)self queue];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_100001C04;
       block[3] = &unk_100014840;
       block[4] = self;
       block[5] = buf;
-      dispatch_async(v15, block);
+      dispatch_async(queue, block);
 
       goto LABEL_12;
     }
@@ -198,42 +198,42 @@
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
   v23 = CFErrorCreate(kCFAllocatorDefault, @"EAPAppSSOErrorDomain", 1, 0);
-  v19 = [(AppSSOProviderCredentialSource *)self queue];
+  queue2 = [(AppSSOProviderCredentialSource *)self queue];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_100001C80;
   v20[3] = &unk_100014840;
   v20[4] = self;
   v20[5] = buf;
-  dispatch_async(v19, v20);
+  dispatch_async(queue2, v20);
 
 LABEL_12:
   _Block_object_dispose(buf, 8);
 }
 
-- (void)authorization:(id)a3 didCompleteWithError:(id)a4
+- (void)authorization:(id)authorization didCompleteWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = EAPLogGetLogHandle();
   v7 = _SC_syslog_os_log_mapping();
   if (os_log_type_enabled(v6, v7))
   {
     *buf = 138412546;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
-    v15 = v5;
+    v15 = errorCopy;
     _os_log_impl(&_mh_execute_header, v6, v7, "%@ didCompleteWithError error: %@", buf, 0x16u);
   }
 
-  v8 = [(AppSSOProviderCredentialSource *)self queue];
+  queue = [(AppSSOProviderCredentialSource *)self queue];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100001E48;
   v10[3] = &unk_100014868;
   v10[4] = self;
-  v11 = v5;
-  v9 = v5;
-  dispatch_async(v8, v10);
+  v11 = errorCopy;
+  v9 = errorCopy;
+  dispatch_async(queue, v10);
 }
 
 @end

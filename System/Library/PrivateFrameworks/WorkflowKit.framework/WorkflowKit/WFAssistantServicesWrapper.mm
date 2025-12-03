@@ -28,9 +28,9 @@
     return v2();
   }
 
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"BOOL soft_AFIsPersistentSiriAvailable(void)"];
-  [v4 handleFailureInFunction:v5 file:@"WFAssistantServicesWrapper.m" lineNumber:14 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v5 file:@"WFAssistantServicesWrapper.m" lineNumber:14 description:{@"%s", dlerror()}];
 
   __break(1u);
   return result;

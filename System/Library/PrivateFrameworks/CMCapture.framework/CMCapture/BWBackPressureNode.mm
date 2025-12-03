@@ -1,23 +1,23 @@
 @interface BWBackPressureNode
 + (void)initialize;
-- (BWBackPressureNode)initWithNumberOfInputsAndOutputs:(unsigned int)a3 initialSemaphoreValue:(int64_t)a4;
-- (void)_handleUpdatedPresentationTimestamp:(id *)a3 forIndex:(unint64_t)a4;
-- (void)_setSemaphore:(id)a3;
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5;
+- (BWBackPressureNode)initWithNumberOfInputsAndOutputs:(unsigned int)outputs initialSemaphoreValue:(int64_t)value;
+- (void)_handleUpdatedPresentationTimestamp:(id *)timestamp forIndex:(unint64_t)index;
+- (void)_setSemaphore:(id)semaphore;
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input;
 - (void)dealloc;
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4;
-- (void)didSelectFormat:(id)a3 forInput:(id)a4;
-- (void)handleDroppedSample:(id)a3 forInput:(id)a4;
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input;
+- (void)didSelectFormat:(id)format forInput:(id)input;
+- (void)handleDroppedSample:(id)sample forInput:(id)input;
 - (void)prepareForCurrentConfigurationToBecomeLive;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
-- (void)setInitialSemaphoreValue:(int)a3;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
+- (void)setInitialSemaphoreValue:(int)value;
 @end
 
 @implementation BWBackPressureNode
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -26,26 +26,26 @@
   }
 }
 
-- (BWBackPressureNode)initWithNumberOfInputsAndOutputs:(unsigned int)a3 initialSemaphoreValue:(int64_t)a4
+- (BWBackPressureNode)initWithNumberOfInputsAndOutputs:(unsigned int)outputs initialSemaphoreValue:(int64_t)value
 {
   v12.receiver = self;
   v12.super_class = BWBackPressureNode;
   v6 = [(BWNode *)&v12 init];
   if (v6)
   {
-    if (a4)
+    if (value)
     {
-      v6->_semaphore = dispatch_semaphore_create(a4);
+      v6->_semaphore = dispatch_semaphore_create(value);
     }
 
-    v6->_initialSemaphoreValue = a4;
-    v6->_numberOfInputs = a3;
+    v6->_initialSemaphoreValue = value;
+    v6->_numberOfInputs = outputs;
     v6->_presentationTimestampLock._os_unfair_lock_opaque = 0;
     v6->_receivedPresentationTimestampByInput = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v6->_numberOfInputs];
-    if (a3)
+    if (outputs)
     {
       v7 = 0;
-      v8 = a3;
+      outputsCopy = outputs;
       do
       {
         v9 = [[BWNodeInput alloc] initWithMediaType:1986618469 node:v6 index:v7];
@@ -62,7 +62,7 @@
         -[NSMutableArray setObject:atIndexedSubscript:](v6->_receivedPresentationTimestampByInput, "setObject:atIndexedSubscript:", [MEMORY[0x1E695DF70] array], v7++);
       }
 
-      while (v8 != v7);
+      while (outputsCopy != v7);
     }
 
     v6->_limitedGMErrorLogger = [[BWLimitedGMErrorLogger alloc] initWithName:@"Back Pressure" maxLoggingCount:10];
@@ -85,9 +85,9 @@
   [(BWNode *)&v3 dealloc];
 }
 
-- (void)setInitialSemaphoreValue:(int)a3
+- (void)setInitialSemaphoreValue:(int)value
 {
-  if (!a3)
+  if (!value)
   {
     v5 = MEMORY[0x1E695DF30];
     v6 = *MEMORY[0x1E695D930];
@@ -96,10 +96,10 @@ LABEL_8:
     objc_exception_throw([v5 exceptionWithName:v6 reason:v7 userInfo:0]);
   }
 
-  v4 = a3;
+  valueCopy = value;
   if (self->_semaphore)
   {
-    if (self->_initialSemaphoreValue != a3)
+    if (self->_initialSemaphoreValue != value)
     {
       v5 = MEMORY[0x1E695DF30];
       v6 = *MEMORY[0x1E695D930];
@@ -110,27 +110,27 @@ LABEL_8:
 
   else
   {
-    self->_semaphore = dispatch_semaphore_create(a3);
-    self->_initialSemaphoreValue = v4;
+    self->_semaphore = dispatch_semaphore_create(value);
+    self->_initialSemaphoreValue = valueCopy;
   }
 }
 
-- (void)_setSemaphore:(id)a3
+- (void)_setSemaphore:(id)semaphore
 {
   semaphore = self->_semaphore;
-  if (semaphore != a3)
+  if (semaphore != semaphore)
   {
 
-    self->_semaphore = a3;
+    self->_semaphore = semaphore;
   }
 }
 
-- (void)didSelectFormat:(id)a3 forInput:(id)a4
+- (void)didSelectFormat:(id)format forInput:(id)input
 {
-  v5 = -[NSArray objectAtIndexedSubscript:](-[BWNode outputs](self, "outputs", a3), "objectAtIndexedSubscript:", [a4 index]);
-  v6 = [a4 format];
+  v5 = -[NSArray objectAtIndexedSubscript:](-[BWNode outputs](self, "outputs", format), "objectAtIndexedSubscript:", [input index]);
+  format = [input format];
 
-  [v5 setFormat:v6];
+  [v5 setFormat:format];
 }
 
 - (void)prepareForCurrentConfigurationToBecomeLive
@@ -145,14 +145,14 @@ LABEL_8:
   [(BWNode *)&v2 prepareForCurrentConfigurationToBecomeLive];
 }
 
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input
 {
-  v5 = -[NSArray objectAtIndexedSubscript:](-[BWNode outputs](self, "outputs", a3, a4), "objectAtIndexedSubscript:", [a5 index]);
+  v5 = -[NSArray objectAtIndexedSubscript:](-[BWNode outputs](self, "outputs", d, format), "objectAtIndexedSubscript:", [input index]);
 
   [v5 makeConfiguredFormatLive];
 }
 
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input
 {
   os_unfair_lock_lock(&self->_stateLock);
   numEODMessagesReceived = self->_numEODMessagesReceived;
@@ -163,8 +163,8 @@ LABEL_8:
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v7 = [(BWNode *)self outputs];
-    v8 = [(NSArray *)v7 countByEnumeratingWithState:&v13 objects:v12 count:16];
+    outputs = [(BWNode *)self outputs];
+    v8 = [(NSArray *)outputs countByEnumeratingWithState:&v13 objects:v12 count:16];
     if (v8)
     {
       v9 = v8;
@@ -176,14 +176,14 @@ LABEL_8:
         {
           if (*v14 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(outputs);
           }
 
-          [*(*(&v13 + 1) + 8 * v11++) markEndOfLiveOutputForConfigurationID:a3];
+          [*(*(&v13 + 1) + 8 * v11++) markEndOfLiveOutputForConfigurationID:d];
         }
 
         while (v9 != v11);
-        v9 = [(NSArray *)v7 countByEnumeratingWithState:&v13 objects:v12 count:16];
+        v9 = [(NSArray *)outputs countByEnumeratingWithState:&v13 objects:v12 count:16];
       }
 
       while (v9);
@@ -195,16 +195,16 @@ LABEL_8:
   os_unfair_lock_unlock(&self->_stateLock);
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
-  v6 = [a4 index];
-  v7 = [(NSArray *)[(BWNode *)self outputs] objectAtIndexedSubscript:v6];
+  index = [input index];
+  v7 = [(NSArray *)[(BWNode *)self outputs] objectAtIndexedSubscript:index];
   memset(&v12, 0, sizeof(v12));
-  CMSampleBufferGetPresentationTimeStamp(&v12, a3);
-  if (BWSampleBufferIsMarkerBuffer(a3))
+  CMSampleBufferGetPresentationTimeStamp(&v12, buffer);
+  if (BWSampleBufferIsMarkerBuffer(buffer))
   {
     [(BWLimitedGMErrorLogger *)self->_limitedGMErrorLogger resetCurrentLoggingCounter];
-    v8 = CMGetAttachment(a3, @"FileWriterAction", 0);
+    v8 = CMGetAttachment(buffer, @"FileWriterAction", 0);
     if (v8)
     {
       v9 = v8;
@@ -220,38 +220,38 @@ LABEL_8:
   else
   {
     v11 = v12;
-    [(BWBackPressureNode *)self _handleUpdatedPresentationTimestamp:&v11 forIndex:v6];
+    [(BWBackPressureNode *)self _handleUpdatedPresentationTimestamp:&v11 forIndex:index];
   }
 
-  [v7 emitSampleBuffer:a3];
+  [v7 emitSampleBuffer:buffer];
 }
 
-- (void)handleDroppedSample:(id)a3 forInput:(id)a4
+- (void)handleDroppedSample:(id)sample forInput:(id)input
 {
-  v6 = [a4 index];
-  v7 = [(NSArray *)[(BWNode *)self outputs] objectAtIndexedSubscript:v6];
-  if (([objc_msgSend(a3 "backPressureSemaphoresToIgnore")] & 1) == 0)
+  index = [input index];
+  v7 = [(NSArray *)[(BWNode *)self outputs] objectAtIndexedSubscript:index];
+  if (([objc_msgSend(sample "backPressureSemaphoresToIgnore")] & 1) == 0)
   {
     v10 = 0uLL;
     v11 = 0;
-    if (a3)
+    if (sample)
     {
-      [a3 pts];
+      [sample pts];
     }
 
     v8 = v10;
     v9 = v11;
-    [(BWBackPressureNode *)self _handleUpdatedPresentationTimestamp:&v8 forIndex:v6];
+    [(BWBackPressureNode *)self _handleUpdatedPresentationTimestamp:&v8 forIndex:index];
   }
 
-  [v7 emitDroppedSample:a3];
+  [v7 emitDroppedSample:sample];
 }
 
-- (void)_handleUpdatedPresentationTimestamp:(id *)a3 forIndex:(unint64_t)a4
+- (void)_handleUpdatedPresentationTimestamp:(id *)timestamp forIndex:(unint64_t)index
 {
-  time = *a3;
+  time = *timestamp;
   Seconds = CMTimeGetSeconds(&time);
-  if ((a3->var2 & 1) == 0)
+  if ((timestamp->var2 & 1) == 0)
   {
     [(BWLimitedGMErrorLogger *)self->_limitedGMErrorLogger logErrorNumber:0 errorString:@"Backpressure received unexpected invalid PTS"];
   }
@@ -274,7 +274,7 @@ LABEL_8:
   do
   {
     *&v10[4 * v13] = -1;
-    if (v13 != a4)
+    if (v13 != index)
     {
       v15 = [*(&self->super.super.isa + v12[235]) objectAtIndexedSubscript:v13];
       if ([v15 count])
@@ -361,9 +361,9 @@ LABEL_13:
   {
 LABEL_17:
     v21 = v12[235];
-    v22 = [*(&self->super.super.isa + v21) objectAtIndexedSubscript:a4];
+    v22 = [*(&self->super.super.isa + v21) objectAtIndexedSubscript:index];
     [v22 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithDouble:", Seconds)}];
-    [objc_msgSend(*(&self->super.super.isa + v21) objectAtIndexedSubscript:{a4), "count"}];
+    [objc_msgSend(*(&self->super.super.isa + v21) objectAtIndexedSubscript:{index), "count"}];
     os_unfair_lock_unlock((self + v8));
   }
 }

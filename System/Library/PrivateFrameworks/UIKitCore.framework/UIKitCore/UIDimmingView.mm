@@ -1,31 +1,31 @@
 @interface UIDimmingView
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
 - (BOOL)hitTestsAsOpaque;
 - (BOOL)isTransparentFocusItem;
-- (UIDimmingView)initWithFrame:(CGRect)a3;
+- (UIDimmingView)initWithFrame:(CGRect)frame;
 - (UIDimmingViewDelegate)delegate;
 - (id)_backdropViewsToAnimate;
-- (id)_gestureRecognizersForEvent:(id)a3;
-- (id)hitTest:(CGPoint)a3 forEvent:(__GSEvent *)a4;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)_gestureRecognizersForEvent:(id)event;
+- (id)hitTest:(CGPoint)test forEvent:(__GSEvent *)event;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)_clearAdditionalEventGestures;
 - (void)_dynamicUserInterfaceTraitDidChange;
-- (void)_queueAdditionalEventGesturesFromView:(id)a3;
+- (void)_queueAdditionalEventGesturesFromView:(id)view;
 - (void)_sendDelegateDimmingViewWasTapped;
 - (void)_simulateTap;
 - (void)dealloc;
-- (void)display:(BOOL)a3;
-- (void)display:(BOOL)a3 withAnimationDuration:(double)a4 afterDelay:(double)a5;
-- (void)handleSingleTap:(id)a3;
-- (void)setBlurEffect:(id)a3;
-- (void)setDimmingColor:(id)a3;
-- (void)setHighlightedBarButtonItem:(id)a3;
-- (void)setHitTestsAsOpaque:(BOOL)a3;
-- (void)setPercentDisplayed:(double)a3;
-- (void)setPercentLightened:(double)a3;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)display:(BOOL)display;
+- (void)display:(BOOL)display withAnimationDuration:(double)duration afterDelay:(double)delay;
+- (void)handleSingleTap:(id)tap;
+- (void)setBlurEffect:(id)effect;
+- (void)setDimmingColor:(id)color;
+- (void)setHighlightedBarButtonItem:(id)item;
+- (void)setHitTestsAsOpaque:(BOOL)opaque;
+- (void)setPercentDisplayed:(double)displayed;
+- (void)setPercentLightened:(double)lightened;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 - (void)updateBackgroundColor;
-- (void)willMoveToWindow:(id)a3;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation UIDimmingView
@@ -44,13 +44,13 @@
   [(UIDimmingView *)self percentLightened];
   v8 = [UIColor colorWithRed:v3 green:v4 blue:v5 alpha:v6 * v7];
   v15 = 0.0;
-  v9 = [(UIDimmingView *)self dimmingColor];
-  [v9 getRed:0 green:0 blue:0 alpha:&v15];
+  dimmingColor = [(UIDimmingView *)self dimmingColor];
+  [dimmingColor getRed:0 green:0 blue:0 alpha:&v15];
 
-  v10 = [(UIDimmingView *)self dimmingColor];
+  dimmingColor2 = [(UIDimmingView *)self dimmingColor];
   v11 = v15;
   [(UIDimmingView *)self percentDisplayed];
-  v13 = [v10 colorWithAlphaComponent:v11 * v12];
+  v13 = [dimmingColor2 colorWithAlphaComponent:v11 * v12];
 
   v14 = [v8 _colorBlendedWithColor:v13];
   [(UIView *)self setBackgroundColor:v14];
@@ -151,13 +151,13 @@ void __38__UIDimmingView_updateBackgroundColor__block_invoke()
   [(NSMutableSet *)additionalEventGestureRecognizers removeAllObjects];
 }
 
-- (UIDimmingView)initWithFrame:(CGRect)a3
+- (UIDimmingView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = UIDimmingView;
-  v3 = [(UIView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
-  v4 = [objc_opt_class() defaultDimmingColor];
-  [(UIDimmingView *)v3 setDimmingColor:v4];
+  v3 = [(UIView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
+  defaultDimmingColor = [objc_opt_class() defaultDimmingColor];
+  [(UIDimmingView *)v3 setDimmingColor:defaultDimmingColor];
 
   if (v3)
   {
@@ -183,22 +183,22 @@ void __38__UIDimmingView_updateBackgroundColor__block_invoke()
   return v3;
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
   v4.receiver = self;
   v4.super_class = UIDimmingView;
-  [(UIView *)&v4 willMoveToWindow:a3];
+  [(UIView *)&v4 willMoveToWindow:window];
   [(UIDimmingView *)self _clearAdditionalEventGestures];
 }
 
-- (void)setHighlightedBarButtonItem:(id)a3
+- (void)setHighlightedBarButtonItem:(id)item
 {
-  v25 = a3;
-  objc_storeStrong(&self->_highlightedBarButtonItem, a3);
+  itemCopy = item;
+  objc_storeStrong(&self->_highlightedBarButtonItem, item);
   if (self->_highlightedBarButtonItem)
   {
-    v5 = [v25 view];
-    [v5 bounds];
+    view = [itemCopy view];
+    [view bounds];
     _UIGraphicsBeginImageContextWithOptions(0, 0, v6, v7, 0.0);
     ContextStack = GetContextStack(0);
     if (*ContextStack < 1)
@@ -211,11 +211,11 @@ void __38__UIDimmingView_updateBackgroundColor__block_invoke()
       v9 = ContextStack[3 * (*ContextStack - 1) + 1];
     }
 
-    [v5 bounds];
+    [view bounds];
     v11 = -v10;
-    [v5 bounds];
+    [view bounds];
     CGContextTranslateCTM(v9, v11, -v12);
-    v13 = [v5 layer];
+    layer = [view layer];
     v14 = GetContextStack(0);
     if (*v14 < 1)
     {
@@ -227,7 +227,7 @@ void __38__UIDimmingView_updateBackgroundColor__block_invoke()
       v15 = v14[3 * (*v14 - 1) + 1];
     }
 
-    [v13 renderInContext:v15];
+    [layer renderInContext:v15];
 
     v16 = _UIGraphicsGetImageFromCurrentImageContext(0);
     UIGraphicsEndImageContext();
@@ -242,9 +242,9 @@ void __38__UIDimmingView_updateBackgroundColor__block_invoke()
       [(UIView *)self addSubview:self->_highlightedImageView];
     }
 
-    v20 = [v5 superview];
-    [v5 frame];
-    [v20 convertRect:self toView:?];
+    superview = [view superview];
+    [view frame];
+    [superview convertRect:self toView:?];
     [(UIImageView *)self->_highlightedImageView setFrame:?];
 
     [(UIImageView *)self->_highlightedImageView setImage:v16];
@@ -275,7 +275,7 @@ void __38__UIDimmingView_updateBackgroundColor__block_invoke()
 - (id)_backdropViewsToAnimate
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -300,7 +300,7 @@ void __38__UIDimmingView_updateBackgroundColor__block_invoke()
           v9 = *(*(&v11 + 1) + 8 * i);
           if ([(UIView *)self _viewOrderRelativeToView:v9 requireIntersection:1]== -2)
           {
-            [v3 addObject:v9];
+            [array addObject:v9];
           }
         }
       }
@@ -311,66 +311,66 @@ void __38__UIDimmingView_updateBackgroundColor__block_invoke()
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
-- (void)setPercentDisplayed:(double)a3
+- (void)setPercentDisplayed:(double)displayed
 {
-  if (self->_percentDisplayed != a3)
+  if (self->_percentDisplayed != displayed)
   {
-    self->_percentDisplayed = a3;
+    self->_percentDisplayed = displayed;
     [(UIDimmingView *)self updateBackground];
   }
 }
 
-- (void)setPercentLightened:(double)a3
+- (void)setPercentLightened:(double)lightened
 {
-  if (self->_percentLightened != a3)
+  if (self->_percentLightened != lightened)
   {
-    self->_percentLightened = a3;
+    self->_percentLightened = lightened;
     [(UIDimmingView *)self updateBackground];
   }
 }
 
-- (void)setDimmingColor:(id)a3
+- (void)setDimmingColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if (![(UIColor *)self->_dimmingColor isEqual:?])
   {
-    objc_storeStrong(&self->_dimmingColor, a3);
+    objc_storeStrong(&self->_dimmingColor, color);
     [(UIDimmingView *)self updateBackground];
   }
 }
 
-- (void)setBlurEffect:(id)a3
+- (void)setBlurEffect:(id)effect
 {
-  v5 = a3;
+  effectCopy = effect;
   if (![(UIBlurEffect *)self->_blurEffect isEqual:?])
   {
-    objc_storeStrong(&self->_blurEffect, a3);
+    objc_storeStrong(&self->_blurEffect, effect);
     [(UIDimmingView *)self updateBackground];
   }
 }
 
 - (BOOL)hitTestsAsOpaque
 {
-  v2 = [(UIView *)self layer];
-  v3 = [v2 hitTestsAsOpaque];
+  layer = [(UIView *)self layer];
+  hitTestsAsOpaque = [layer hitTestsAsOpaque];
 
-  return v3;
+  return hitTestsAsOpaque;
 }
 
-- (void)setHitTestsAsOpaque:(BOOL)a3
+- (void)setHitTestsAsOpaque:(BOOL)opaque
 {
-  v3 = a3;
-  v4 = [(UIView *)self layer];
-  [v4 setHitTestsAsOpaque:v3];
+  opaqueCopy = opaque;
+  layer = [(UIView *)self layer];
+  [layer setHitTestsAsOpaque:opaqueCopy];
 }
 
-- (void)display:(BOOL)a3
+- (void)display:(BOOL)display
 {
   v4 = 0.0;
-  if (a3)
+  if (display)
   {
     v4 = 1.0;
   }
@@ -381,7 +381,7 @@ void __38__UIDimmingView_updateBackgroundColor__block_invoke()
   v5[2] = __25__UIDimmingView_display___block_invoke;
   v5[3] = &unk_1E70F35E0;
   v5[4] = self;
-  v6 = a3;
+  displayCopy = display;
   [UIView performWithoutAnimation:v5];
   [(UIDimmingView *)self updateBackground];
 }
@@ -423,12 +423,12 @@ void __25__UIDimmingView_display___block_invoke(uint64_t a1)
   }
 }
 
-- (void)display:(BOOL)a3 withAnimationDuration:(double)a4 afterDelay:(double)a5
+- (void)display:(BOOL)display withAnimationDuration:(double)duration afterDelay:(double)delay
 {
-  v7 = a3;
+  displayCopy = display;
   v23 = *MEMORY[0x1E69E9840];
   v9 = 0.0;
-  if (a3)
+  if (display)
   {
     v9 = 1.0;
   }
@@ -440,8 +440,8 @@ void __25__UIDimmingView_display___block_invoke(uint64_t a1)
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v10 = [(UIDimmingView *)self _backdropViewsToAnimate];
-    v11 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    _backdropViewsToAnimate = [(UIDimmingView *)self _backdropViewsToAnimate];
+    v11 = [_backdropViewsToAnimate countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v11)
     {
       v12 = v11;
@@ -453,14 +453,14 @@ void __25__UIDimmingView_display___block_invoke(uint64_t a1)
         {
           if (*v19 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(_backdropViewsToAnimate);
           }
 
-          [*(*(&v18 + 1) + 8 * v14++) setShouldRasterizeEffectsView:v7];
+          [*(*(&v18 + 1) + 8 * v14++) setShouldRasterizeEffectsView:displayCopy];
         }
 
         while (v12 != v14);
-        v12 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v12 = [_backdropViewsToAnimate countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v12);
@@ -476,9 +476,9 @@ void __25__UIDimmingView_display___block_invoke(uint64_t a1)
   v15[1] = 3221225472;
   v15[2] = __58__UIDimmingView_display_withAnimationDuration_afterDelay___block_invoke_2;
   v15[3] = &unk_1E70FA0F0;
-  v16 = v7;
+  v16 = displayCopy;
   v15[4] = self;
-  [UIView animateWithDuration:4 delay:v17 options:v15 animations:a4 completion:a5];
+  [UIView animateWithDuration:4 delay:v17 options:v15 animations:duration completion:delay];
 }
 
 uint64_t __58__UIDimmingView_display_withAnimationDuration_afterDelay___block_invoke_2(uint64_t result)
@@ -495,12 +495,12 @@ uint64_t __58__UIDimmingView_display_withAnimationDuration_afterDelay___block_in
   return result;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v59 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  eventCopy = event;
   if (self->_inPassthroughHitTest)
   {
     v8 = 0;
@@ -509,7 +509,7 @@ uint64_t __58__UIDimmingView_display_withAnimationDuration_afterDelay___block_in
 
   v56.receiver = self;
   v56.super_class = UIDimmingView;
-  v9 = [(UIView *)&v56 hitTest:v7 withEvent:x, y];
+  v9 = [(UIView *)&v56 hitTest:eventCopy withEvent:x, y];
   v10 = v9;
   if (v9 != self)
   {
@@ -517,7 +517,7 @@ uint64_t __58__UIDimmingView_display_withAnimationDuration_afterDelay___block_in
   }
 
   v43 = v9;
-  v45 = v7;
+  v45 = eventCopy;
   v54 = 0u;
   v55 = 0u;
   v52 = 0u;
@@ -538,14 +538,14 @@ uint64_t __58__UIDimmingView_display_withAnimationDuration_afterDelay___block_in
         }
 
         v16 = *(*(&v52 + 1) + 8 * i);
-        v17 = [v16 window];
-        if (v17)
+        window = [v16 window];
+        if (window)
         {
-          v18 = v17;
-          v19 = [v16 window];
-          v20 = [(UIView *)self window];
-          v21 = v20;
-          if (v19 == v20)
+          v18 = window;
+          window2 = [v16 window];
+          window3 = [(UIView *)self window];
+          v21 = window3;
+          if (window2 == window3)
           {
             [v16 bounds];
             [v16 convertRect:self toView:?];
@@ -563,7 +563,7 @@ uint64_t __58__UIDimmingView_display_withAnimationDuration_afterDelay___block_in
               {
                 v8 = v23;
 
-                v7 = v45;
+                eventCopy = v45;
                 v10 = v43;
                 goto LABEL_43;
               }
@@ -587,7 +587,7 @@ uint64_t __58__UIDimmingView_display_withAnimationDuration_afterDelay___block_in
   v48 = 0u;
   v49 = 0u;
   obj = self->_lowerWindowDismissalGestureViews;
-  v7 = v45;
+  eventCopy = v45;
   v47 = [(NSArray *)obj countByEnumeratingWithState:&v48 objects:v57 count:16];
   if (!v47)
   {
@@ -605,12 +605,12 @@ uint64_t __58__UIDimmingView_display_withAnimationDuration_afterDelay___block_in
       }
 
       v25 = *(*(&v48 + 1) + 8 * j);
-      v26 = [(UIView *)self window];
+      window4 = [(UIView *)self window];
       v27 = v25;
-      v28 = v26;
-      v29 = v7;
+      v28 = window4;
+      v29 = eventCopy;
       v30 = v29;
-      if (v7)
+      if (eventCopy)
       {
         v31 = [v29 type] == 0;
       }
@@ -620,25 +620,25 @@ uint64_t __58__UIDimmingView_display_withAnimationDuration_afterDelay___block_in
         v31 = 0;
       }
 
-      v32 = [v27 window];
-      if (v32)
+      window5 = [v27 window];
+      if (window5)
       {
-        v33 = [v27 window];
-        if (v33 == v28)
+        window6 = [v27 window];
+        if (window6 == v28)
         {
           v38 = 0;
         }
 
         else
         {
-          v34 = [v27 window];
-          [v34 level];
+          window7 = [v27 window];
+          [window7 level];
           v36 = v35;
           [v28 level];
           v38 = v36 <= v37;
         }
 
-        v7 = v45;
+        eventCopy = v45;
       }
 
       else
@@ -646,8 +646,8 @@ uint64_t __58__UIDimmingView_display_withAnimationDuration_afterDelay___block_in
         v38 = 0;
       }
 
-      v39 = [v27 gestureRecognizers];
-      v40 = [v39 count];
+      gestureRecognizers = [v27 gestureRecognizers];
+      v40 = [gestureRecognizers count];
 
       if (!v31)
       {
@@ -697,7 +697,7 @@ LABEL_44:
   return v8;
 }
 
-- (id)hitTest:(CGPoint)a3 forEvent:(__GSEvent *)a4
+- (id)hitTest:(CGPoint)test forEvent:(__GSEvent *)event
 {
   v33 = *MEMORY[0x1E69E9840];
   if (self->_inPassthroughHitTest)
@@ -707,8 +707,8 @@ LABEL_44:
 
   else
   {
-    y = a3.y;
-    x = a3.x;
+    y = test.y;
+    x = test.x;
     v31.receiver = self;
     v31.super_class = UIDimmingView;
     v9 = [UIView hitTest:sel_hitTest_forEvent_ forEvent:?];
@@ -716,7 +716,7 @@ LABEL_44:
     if (v9 == self)
     {
       v25 = v9;
-      v26 = a4;
+      eventCopy = event;
       v29 = 0u;
       v30 = 0u;
       v27 = 0u;
@@ -737,14 +737,14 @@ LABEL_44:
             }
 
             v16 = *(*(&v27 + 1) + 8 * i);
-            v17 = [v16 window];
-            if (v17)
+            window = [v16 window];
+            if (window)
             {
-              v18 = v17;
-              v19 = [v16 window];
-              v20 = [(UIView *)self window];
-              v21 = v20;
-              if (v19 == v20)
+              v18 = window;
+              window2 = [v16 window];
+              window3 = [(UIView *)self window];
+              v21 = window3;
+              if (window2 == window3)
               {
                 [v16 bounds];
                 [v16 convertRect:self toView:?];
@@ -756,7 +756,7 @@ LABEL_44:
                 {
                   self->_inPassthroughHitTest = 1;
                   [(UIView *)self convertPoint:v16 toView:x, y];
-                  v23 = [v16 hitTest:v26 forEvent:?];
+                  v23 = [v16 hitTest:eventCopy forEvent:?];
                   self->_inPassthroughHitTest = 0;
                   if (v23)
                   {
@@ -794,31 +794,31 @@ LABEL_18:
   return v4;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  if (self->_singleFingerTapRecognizer != a3)
+  if (self->_singleFingerTapRecognizer != recognizer)
   {
     return 1;
   }
 
-  v6 = a3;
-  v7 = [a4 view];
-  v8 = [v6 view];
+  recognizerCopy = recognizer;
+  view = [touch view];
+  view2 = [recognizerCopy view];
 
-  v4 = v7 == v8;
+  v4 = view == view2;
   return v4;
 }
 
-- (void)handleSingleTap:(id)a3
+- (void)handleSingleTap:(id)tap
 {
-  if ([a3 state] == 3)
+  if ([tap state] == 3)
   {
 
     [(UIDimmingView *)self _simulateTap];
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   if ((dyld_program_sdk_at_least() & 1) == 0)
   {
@@ -847,28 +847,28 @@ LABEL_18:
   }
 }
 
-- (void)_queueAdditionalEventGesturesFromView:(id)a3
+- (void)_queueAdditionalEventGesturesFromView:(id)view
 {
-  v15 = [a3 gestureRecognizers];
-  v4 = [(UIView *)self window];
-  if (v4)
+  gestureRecognizers = [view gestureRecognizers];
+  window = [(UIView *)self window];
+  if (window)
   {
-    v5 = v4;
-    v6 = [v15 count];
+    v5 = window;
+    v6 = [gestureRecognizers count];
 
     if (v6)
     {
-      v7 = v15;
+      v7 = gestureRecognizers;
       if (!self->_observedEventForAdditionalGestures)
       {
         v8 = UIApp;
-        v9 = [(UIView *)self window];
-        v10 = [v8 _touchesEventForWindow:v9];
+        window2 = [(UIView *)self window];
+        v10 = [v8 _touchesEventForWindow:window2];
         observedEventForAdditionalGestures = self->_observedEventForAdditionalGestures;
         self->_observedEventForAdditionalGestures = v10;
 
         [(UIEvent *)self->_observedEventForAdditionalGestures _addEventObserver:?];
-        v7 = v15;
+        v7 = gestureRecognizers;
       }
 
       additionalEventGestureRecognizers = self->_additionalEventGestureRecognizers;
@@ -878,7 +878,7 @@ LABEL_18:
         v14 = self->_additionalEventGestureRecognizers;
         self->_additionalEventGestureRecognizers = v13;
 
-        v7 = v15;
+        v7 = gestureRecognizers;
         additionalEventGestureRecognizers = self->_additionalEventGestureRecognizers;
       }
 
@@ -887,37 +887,37 @@ LABEL_18:
   }
 }
 
-- (id)_gestureRecognizersForEvent:(id)a3
+- (id)_gestureRecognizersForEvent:(id)event
 {
   additionalEventGestureRecognizers = self->_additionalEventGestureRecognizers;
   if (additionalEventGestureRecognizers)
   {
-    v5 = [(NSMutableSet *)additionalEventGestureRecognizers allObjects];
+    allObjects = [(NSMutableSet *)additionalEventGestureRecognizers allObjects];
     [(NSMutableSet *)self->_additionalEventGestureRecognizers removeAllObjects];
   }
 
   else
   {
-    v5 = MEMORY[0x1E695E0F0];
+    allObjects = MEMORY[0x1E695E0F0];
   }
 
-  return v5;
+  return allObjects;
 }
 
 - (BOOL)isTransparentFocusItem
 {
-  v3 = [(UIView *)self _focusBehavior];
-  if ([v3 supportsViewTransparency])
+  _focusBehavior = [(UIView *)self _focusBehavior];
+  if ([_focusBehavior supportsViewTransparency])
   {
-    v4 = [(UIDimmingView *)self delegate];
+    delegate = [(UIDimmingView *)self delegate];
     v5 = objc_opt_respondsToSelector();
 
     if (v5)
     {
-      v6 = [(UIDimmingView *)self delegate];
-      v7 = [v6 _allowsFocusBehindDimmingView];
+      delegate2 = [(UIDimmingView *)self delegate];
+      _allowsFocusBehindDimmingView = [delegate2 _allowsFocusBehindDimmingView];
 
-      return v7;
+      return _allowsFocusBehindDimmingView;
     }
   }
 

@@ -6,9 +6,9 @@
 
 - (id)cacheKeyRepresentation
 {
-  v2 = [a1 mutableCopy];
-  [v2 replaceOccurrencesOfString:@"/" withString:@"_" options:2 range:{0, objc_msgSend(a1, "length")}];
-  [v2 replaceOccurrencesOfString:@":" withString:@"_" options:2 range:{0, objc_msgSend(a1, "length")}];
+  v2 = [self mutableCopy];
+  [v2 replaceOccurrencesOfString:@"/" withString:@"_" options:2 range:{0, objc_msgSend(self, "length")}];
+  [v2 replaceOccurrencesOfString:@":" withString:@"_" options:2 range:{0, objc_msgSend(self, "length")}];
 
   return v2;
 }

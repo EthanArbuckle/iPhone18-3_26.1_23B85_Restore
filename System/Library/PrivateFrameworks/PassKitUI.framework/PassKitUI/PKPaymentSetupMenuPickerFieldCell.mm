@@ -1,10 +1,10 @@
 @interface PKPaymentSetupMenuPickerFieldCell
 - (BOOL)becomeFirstResponder;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)_pullCurrentValueFromField;
-- (void)_updateDisplay:(BOOL)a3;
-- (void)_updateDisplayForFieldTypePicker:(id)a3;
-- (void)_updatePaymentSetupFieldPickerItem:(id)a3;
+- (void)_updateDisplay:(BOOL)display;
+- (void)_updateDisplayForFieldTypePicker:(id)picker;
+- (void)_updatePaymentSetupFieldPickerItem:(id)item;
 - (void)layoutSubviews;
 @end
 
@@ -26,66 +26,66 @@
   }
 }
 
-- (void)_updateDisplay:(BOOL)a3
+- (void)_updateDisplay:(BOOL)display
 {
-  if (a3)
+  if (display)
   {
     [(PKPaymentSetupFieldCell *)self _applyDefaultValues];
   }
 
-  v5 = [(PKPaymentSetupFieldCell *)self paymentSetupField];
-  v4 = [v5 pickerFieldObject];
-  [(PKPaymentSetupMenuPickerFieldCell *)self _updateDisplayForFieldTypePicker:v4];
+  paymentSetupField = [(PKPaymentSetupFieldCell *)self paymentSetupField];
+  pickerFieldObject = [paymentSetupField pickerFieldObject];
+  [(PKPaymentSetupMenuPickerFieldCell *)self _updateDisplayForFieldTypePicker:pickerFieldObject];
 }
 
-- (void)_updatePaymentSetupFieldPickerItem:(id)a3
+- (void)_updatePaymentSetupFieldPickerItem:(id)item
 {
-  v4 = a3;
-  v5 = [(PKPaymentSetupFieldCell *)self paymentSetupField];
-  v6 = [v5 pickerFieldObject];
+  itemCopy = item;
+  paymentSetupField = [(PKPaymentSetupFieldCell *)self paymentSetupField];
+  pickerFieldObject = [paymentSetupField pickerFieldObject];
 
-  [v6 setCurrentValue:v4];
+  [pickerFieldObject setCurrentValue:itemCopy];
   [(PKPaymentSetupMenuPickerFieldCell *)self _pullCurrentValueFromField];
 }
 
 - (void)_pullCurrentValueFromField
 {
-  v3 = [(PKPaymentSetupFieldCell *)self paymentSetupField];
-  v21 = [v3 currentValue];
+  paymentSetupField = [(PKPaymentSetupFieldCell *)self paymentSetupField];
+  currentValue = [paymentSetupField currentValue];
 
-  v4 = [(UIButton *)self->_button configuration];
-  if (v21)
+  configuration = [(UIButton *)self->_button configuration];
+  if (currentValue)
   {
     v5 = MEMORY[0x1E696AAB0];
-    v6 = [(PKPaymentSetupFieldCell *)self paymentSetupField];
-    v7 = [v6 displayString];
+    paymentSetupField2 = [(PKPaymentSetupFieldCell *)self paymentSetupField];
+    displayString = [paymentSetupField2 displayString];
     v8 = PKOBKListTextFieldCellTextFieldFont();
-    v9 = [v5 pkui_attriutedStringWithString:v7 font:v8 paragraphStyle:0];
+    tertiaryLabelColor = [v5 pkui_attriutedStringWithString:displayString font:v8 paragraphStyle:0];
 
-    [v4 setAttributedTitle:v9];
-    v10 = [MEMORY[0x1E69DC888] labelColor];
-    [v4 setBaseForegroundColor:v10];
+    [configuration setAttributedTitle:tertiaryLabelColor];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [configuration setBaseForegroundColor:labelColor];
 
-    v11 = [(PKPaymentSetupFieldCell *)self paymentSetupField];
-    v12 = [v11 pickerFieldObject];
-    v13 = [v12 pickerItems];
-    v14 = [v13 indexOfObject:v21];
+    paymentSetupField3 = [(PKPaymentSetupFieldCell *)self paymentSetupField];
+    pickerFieldObject = [paymentSetupField3 pickerFieldObject];
+    pickerItems = [pickerFieldObject pickerItems];
+    v14 = [pickerItems indexOfObject:currentValue];
 
-    v15 = [(UIMenu *)self->_menu children];
+    children = [(UIMenu *)self->_menu children];
     v16 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    if ([v15 count])
+    if ([children count])
     {
       v17 = 0;
       do
       {
-        v18 = [v15 objectAtIndexedSubscript:v17];
+        v18 = [children objectAtIndexedSubscript:v17];
         [v18 setState:v14 == v17];
         [v16 addObject:v18];
 
         ++v17;
       }
 
-      while (v17 < [v15 count]);
+      while (v17 < [children count]);
     }
 
     v19 = [(UIMenu *)self->_menu menuByReplacingChildren:v16];
@@ -97,39 +97,39 @@
 
   else
   {
-    v9 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
-    [v4 setBaseForegroundColor:v9];
+    tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+    [configuration setBaseForegroundColor:tertiaryLabelColor];
   }
 
-  [(UIButton *)self->_button setConfiguration:v4];
+  [(UIButton *)self->_button setConfiguration:configuration];
 }
 
-- (void)_updateDisplayForFieldTypePicker:(id)a3
+- (void)_updateDisplayForFieldTypePicker:(id)picker
 {
-  v4 = a3;
+  pickerCopy = picker;
   if (PKUIGetMinScreenWidthType())
   {
-    [v4 localizedDisplayName];
+    [pickerCopy localizedDisplayName];
   }
 
   else
   {
-    [v4 compactLocalizedDisplayName];
+    [pickerCopy compactLocalizedDisplayName];
   }
   v5 = ;
-  v6 = [(PKPaymentSetupMenuPickerFieldCell *)self textLabel];
-  [v6 setText:v5];
+  textLabel = [(PKPaymentSetupMenuPickerFieldCell *)self textLabel];
+  [textLabel setText:v5];
 
   objc_initWeak(&location, self);
-  v7 = [(PKPaymentSetupFieldCell *)self paymentSetupField];
-  v8 = [v7 pickerFieldObject];
-  v9 = [v8 pickerItems];
+  paymentSetupField = [(PKPaymentSetupFieldCell *)self paymentSetupField];
+  pickerFieldObject = [paymentSetupField pickerFieldObject];
+  pickerItems = [pickerFieldObject pickerItems];
   v23 = MEMORY[0x1E69E9820];
   v24 = 3221225472;
   v25 = __70__PKPaymentSetupMenuPickerFieldCell__updateDisplayForFieldTypePicker___block_invoke;
   v26 = &unk_1E801B980;
   objc_copyWeak(&v27, &location);
-  v10 = [v9 pk_arrayByApplyingBlock:&v23];
+  v10 = [pickerItems pk_arrayByApplyingBlock:&v23];
 
   v11 = [MEMORY[0x1E69DCC60] menuWithChildren:{v10, v23, v24, v25, v26}];
   menu = self->_menu;
@@ -139,16 +139,16 @@
   if (!button)
   {
     v14 = MEMORY[0x1E69DC740];
-    v15 = [v4 localizedDisplayName];
+    localizedDisplayName = [pickerCopy localizedDisplayName];
     v16 = PKFontForDefaultDesign(*MEMORY[0x1E69DDCF8], *MEMORY[0x1E69DDC50]);
-    v17 = [v14 pkui_plainConfigurationWithTitle:v15 font:v16];
+    v17 = [v14 pkui_plainConfigurationWithTitle:localizedDisplayName font:v16];
 
-    v18 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [v17 setBaseForegroundColor:v18];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [v17 setBaseForegroundColor:secondaryLabelColor];
 
     [v17 setContentInsets:{*MEMORY[0x1E69DC5C0], *(MEMORY[0x1E69DC5C0] + 8), *(MEMORY[0x1E69DC5C0] + 16), *(MEMORY[0x1E69DC5C0] + 24)}];
-    v19 = [v4 localizedPlaceholder];
-    [v17 setTitle:v19];
+    localizedPlaceholder = [pickerCopy localizedPlaceholder];
+    [v17 setTitle:localizedPlaceholder];
 
     [v17 setIndicator:2];
     v20 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v17 primaryAction:0];
@@ -156,8 +156,8 @@
     self->_button = v20;
 
     [(UIButton *)self->_button setShowsMenuAsPrimaryAction:1];
-    v22 = [(PKPaymentSetupMenuPickerFieldCell *)self contentView];
-    [v22 addSubview:self->_button];
+    contentView = [(PKPaymentSetupMenuPickerFieldCell *)self contentView];
+    [contentView addSubview:self->_button];
 
     button = self->_button;
   }
@@ -195,11 +195,11 @@ void __70__PKPaymentSetupMenuPickerFieldCell__updateDisplayForFieldTypePicker___
   [WeakRetained setNeedsLayout];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  PKFloatCeilToPixel(a3, *&a3.height);
+  height = fits.height;
+  width = fits.width;
+  PKFloatCeilToPixel(fits, *&fits.height);
   v7 = v6;
   v8 = width + PKTableViewCellTextInset() * -2.0;
   [(PKPaymentSetupMenuPickerFieldCell *)self layoutMargins];
@@ -234,19 +234,19 @@ void __70__PKPaymentSetupMenuPickerFieldCell__updateDisplayForFieldTypePicker___
   v44.receiver = self;
   v44.super_class = PKPaymentSetupMenuPickerFieldCell;
   [(PKPaymentSetupFieldCell *)&v44 layoutSubviews];
-  v3 = [(PKPaymentSetupMenuPickerFieldCell *)self textLabel];
-  v4 = [(PKPaymentSetupMenuPickerFieldCell *)self contentView];
-  [v4 bounds];
+  textLabel = [(PKPaymentSetupMenuPickerFieldCell *)self textLabel];
+  contentView = [(PKPaymentSetupMenuPickerFieldCell *)self contentView];
+  [contentView bounds];
   v6 = v5;
   v43 = v7;
   v9 = v8;
   v11 = v10;
-  [v3 frame];
+  [textLabel frame];
   [(UIButton *)self->_button sizeThatFits:v9, v11];
-  [v4 bounds];
-  v12 = [(PKPaymentSetupMenuPickerFieldCell *)self _shouldReverseLayoutDirection];
+  [contentView bounds];
+  _shouldReverseLayoutDirection = [(PKPaymentSetupMenuPickerFieldCell *)self _shouldReverseLayoutDirection];
   PKOBKListInlineCellContentEdgeInsets();
-  if (v12)
+  if (_shouldReverseLayoutDirection)
   {
     v17 = v16;
   }
@@ -257,11 +257,11 @@ void __70__PKPaymentSetupMenuPickerFieldCell__updateDisplayForFieldTypePicker___
   }
 
   v18 = v9 - (v16 + v14);
-  [v3 sizeThatFits:{v18, v11 - (v13 + v15), *&v13}];
+  [textLabel sizeThatFits:{v18, v11 - (v13 + v15), *&v13}];
   v20 = v19;
-  v21 = [(PKPaymentSetupMenuPickerFieldCell *)self traitCollection];
-  v22 = [v21 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v22);
+  traitCollection = [(PKPaymentSetupMenuPickerFieldCell *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   v24 = 0.0;
   if (!IsAccessibilityCategory)
@@ -278,7 +278,7 @@ void __70__PKPaymentSetupMenuPickerFieldCell__updateDisplayForFieldTypePicker___
   UIRectCenteredYInRect();
   v33 = v31;
   v34 = v32;
-  if (v12)
+  if (_shouldReverseLayoutDirection)
   {
     v45.size.height = v39;
     v45.origin.y = v43 + v40;
@@ -286,14 +286,14 @@ void __70__PKPaymentSetupMenuPickerFieldCell__updateDisplayForFieldTypePicker___
     v45.size.width = v18;
     MaxX = CGRectGetMaxX(v45);
     v36 = MaxX - v26;
-    [v3 setFrame:{MaxX - v26, v33, v26, v34}];
+    [textLabel setFrame:{MaxX - v26, v33, v26, v34}];
     v37 = v36 - v30;
     v38 = -22.0;
   }
 
   else
   {
-    [v3 setFrame:{v25, v31, v26, v32}];
+    [textLabel setFrame:{v25, v31, v26, v32}];
     v46.origin.x = v25;
     v46.origin.y = v33;
     v46.size.width = v26;

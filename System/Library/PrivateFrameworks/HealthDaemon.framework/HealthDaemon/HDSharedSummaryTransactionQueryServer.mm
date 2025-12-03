@@ -1,22 +1,22 @@
 @interface HDSharedSummaryTransactionQueryServer
-- (HDSharedSummaryTransactionQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6;
+- (HDSharedSummaryTransactionQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate;
 - (void)_queue_deliverAllTransactions;
 - (void)_queue_didDeactivate;
 - (void)_queue_start;
-- (void)sharedSummaryManagerCommittedTransactionsDidChange:(id)a3;
+- (void)sharedSummaryManagerCommittedTransactionsDidChange:(id)change;
 @end
 
 @implementation HDSharedSummaryTransactionQueryServer
 
-- (HDSharedSummaryTransactionQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6
+- (HDSharedSummaryTransactionQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate
 {
-  v10 = a4;
+  configurationCopy = configuration;
   v13.receiver = self;
   v13.super_class = HDSharedSummaryTransactionQueryServer;
-  v11 = [(HDQueryServer *)&v13 initWithUUID:a3 configuration:v10 client:a5 delegate:a6];
+  v11 = [(HDQueryServer *)&v13 initWithUUID:d configuration:configurationCopy client:client delegate:delegate];
   if (v11)
   {
-    v11->_committedTransactions = [v10 committedTransactions];
+    v11->_committedTransactions = [configurationCopy committedTransactions];
   }
 
   return v11;
@@ -27,21 +27,21 @@
   v5.receiver = self;
   v5.super_class = HDSharedSummaryTransactionQueryServer;
   [(HDQueryServer *)&v5 _queue_start];
-  v3 = [(HDQueryServer *)self profile];
-  v4 = [v3 sharedSummaryManager];
-  [v4 registerObserver:self];
+  profile = [(HDQueryServer *)self profile];
+  sharedSummaryManager = [profile sharedSummaryManager];
+  [sharedSummaryManager registerObserver:self];
 
   [(HDSharedSummaryTransactionQueryServer *)self _queue_deliverAllTransactions];
 }
 
 - (void)_queue_deliverAllTransactions
 {
-  if (a1)
+  if (self)
   {
     v2 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v3 = a1[208];
-    v4 = [a1 profile];
-    v5 = [v4 sharedSummaryManager];
+    v3 = self[208];
+    profile = [self profile];
+    sharedSummaryManager = [profile sharedSummaryManager];
     if (v3 == 1)
     {
       v19 = 0;
@@ -50,18 +50,18 @@
       v17[2] = __70__HDSharedSummaryTransactionQueryServer__queue_deliverAllTransactions__block_invoke;
       v17[3] = &unk_278618520;
       v18 = v2;
-      v6 = [v5 enumerateCommittedTransactionsWithError:&v19 handler:v17];
+      v6 = [sharedSummaryManager enumerateCommittedTransactionsWithError:&v19 handler:v17];
       v7 = v19;
 
       if ((v6 & 1) == 0)
       {
 LABEL_4:
-        v8 = [a1 clientProxy];
-        v9 = [a1 queryUUID];
-        [v8 client_deliverError:v7 forQuery:v9];
+        clientProxy = [self clientProxy];
+        queryUUID = [self queryUUID];
+        [clientProxy client_deliverError:v7 forQuery:queryUUID];
 LABEL_7:
 
-        [a1 setDataCount:{objc_msgSend(v2, "count")}];
+        [self setDataCount:{objc_msgSend(v2, "count")}];
         return;
       }
     }
@@ -74,7 +74,7 @@ LABEL_7:
       v13 = __70__HDSharedSummaryTransactionQueryServer__queue_deliverAllTransactions__block_invoke_2;
       v14 = &unk_278618520;
       v15 = v2;
-      v10 = [v5 enumerateNonCommittedTransactionsWithError:&v16 handler:&v11];
+      v10 = [sharedSummaryManager enumerateNonCommittedTransactionsWithError:&v16 handler:&v11];
       v7 = v16;
 
       if (!v10)
@@ -83,23 +83,23 @@ LABEL_7:
       }
     }
 
-    v8 = [a1 clientProxy];
-    v9 = [a1 queryUUID];
-    [v8 client_deliverTransactions:v2 query:v9];
+    clientProxy = [self clientProxy];
+    queryUUID = [self queryUUID];
+    [clientProxy client_deliverTransactions:v2 query:queryUUID];
     goto LABEL_7;
   }
 }
 
 - (void)_queue_didDeactivate
 {
-  v4 = [(HDQueryServer *)self profile];
-  v3 = [v4 sharedSummaryManager];
-  [v3 unregisterObserver:self];
+  profile = [(HDQueryServer *)self profile];
+  sharedSummaryManager = [profile sharedSummaryManager];
+  [sharedSummaryManager unregisterObserver:self];
 }
 
-- (void)sharedSummaryManagerCommittedTransactionsDidChange:(id)a3
+- (void)sharedSummaryManagerCommittedTransactionsDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   objc_initWeak(&location, self);
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;

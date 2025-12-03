@@ -1,68 +1,68 @@
 @interface PRSPosterUpdateComplicationPayload
-- (PRSPosterUpdateComplicationPayload)initWithAmbientWidgets:(id)a3;
-- (PRSPosterUpdateComplicationPayload)initWithCoder:(id)a3;
-- (PRSPosterUpdateComplicationPayload)initWithComplications:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PRSPosterUpdateComplicationPayload)initWithAmbientWidgets:(id)widgets;
+- (PRSPosterUpdateComplicationPayload)initWithCoder:(id)coder;
+- (PRSPosterUpdateComplicationPayload)initWithComplications:(id)complications;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)rawValue;
 @end
 
 @implementation PRSPosterUpdateComplicationPayload
 
-- (PRSPosterUpdateComplicationPayload)initWithComplications:(id)a3
+- (PRSPosterUpdateComplicationPayload)initWithComplications:(id)complications
 {
-  v4 = a3;
+  complicationsCopy = complications;
   v9.receiver = self;
   v9.super_class = PRSPosterUpdateComplicationPayload;
-  v5 = [(PRSPosterUpdatePayload *)&v9 _init];
-  if (v5)
+  _init = [(PRSPosterUpdatePayload *)&v9 _init];
+  if (_init)
   {
-    v6 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:v4 copyItems:1];
-    complications = v5->_complications;
-    v5->_complications = v6;
+    v6 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:complicationsCopy copyItems:1];
+    complications = _init->_complications;
+    _init->_complications = v6;
   }
 
-  return v5;
+  return _init;
 }
 
-- (PRSPosterUpdateComplicationPayload)initWithAmbientWidgets:(id)a3
+- (PRSPosterUpdateComplicationPayload)initWithAmbientWidgets:(id)widgets
 {
-  v4 = a3;
+  widgetsCopy = widgets;
   v9.receiver = self;
   v9.super_class = PRSPosterUpdateComplicationPayload;
-  v5 = [(PRSPosterUpdatePayload *)&v9 _init];
-  if (v5)
+  _init = [(PRSPosterUpdatePayload *)&v9 _init];
+  if (_init)
   {
-    v6 = [objc_alloc(MEMORY[0x1E695DF20]) initWithDictionary:v4 copyItems:1];
-    ambientWidgets = v5->_ambientWidgets;
-    v5->_ambientWidgets = v6;
+    v6 = [objc_alloc(MEMORY[0x1E695DF20]) initWithDictionary:widgetsCopy copyItems:1];
+    ambientWidgets = _init->_ambientWidgets;
+    _init->_ambientWidgets = v6;
   }
 
-  return v5;
+  return _init;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   complications = self->_complications;
 
   return [v4 initWithComplications:complications];
 }
 
-- (PRSPosterUpdateComplicationPayload)initWithCoder:(id)a3
+- (PRSPosterUpdateComplicationPayload)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(PRSPosterUpdatePayload *)self _init];
-  if (v5)
+  coderCopy = coder;
+  _init = [(PRSPosterUpdatePayload *)self _init];
+  if (_init)
   {
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_self();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"_complications"];
-    complications = v5->_complications;
-    v5->_complications = v9;
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"_complications"];
+    complications = _init->_complications;
+    _init->_complications = v9;
   }
 
-  return v5;
+  return _init;
 }
 
 - (id)rawValue

@@ -1,35 +1,35 @@
 @interface AudioFeaturePrint.Observer
-- (void)request:(id)a3 didFailWithError:(id)a4;
-- (void)request:(id)a3 didProduceResult:(id)a4;
-- (void)requestDidComplete:(id)a3;
+- (void)request:(id)request didFailWithError:(id)error;
+- (void)request:(id)request didProduceResult:(id)result;
+- (void)requestDidComplete:(id)complete;
 @end
 
 @implementation AudioFeaturePrint.Observer
 
-- (void)request:(id)a3 didProduceResult:(id)a4
+- (void)request:(id)request didProduceResult:(id)result
 {
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v6 = self;
-  sub_237C708D4(a3);
+  selfCopy = self;
+  sub_237C708D4(request);
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
 }
 
-- (void)request:(id)a3 didFailWithError:(id)a4
+- (void)request:(id)request didFailWithError:(id)error
 {
   swift_unknownObjectRetain();
-  v8 = a4;
-  v7 = self;
-  sub_237C70F34(a3, v8);
+  errorCopy = error;
+  selfCopy = self;
+  sub_237C70F34(request, errorCopy);
   swift_unknownObjectRelease();
 }
 
-- (void)requestDidComplete:(id)a3
+- (void)requestDidComplete:(id)complete
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_237C71148(a3);
+  selfCopy = self;
+  sub_237C71148(complete);
   swift_unknownObjectRelease();
 }
 

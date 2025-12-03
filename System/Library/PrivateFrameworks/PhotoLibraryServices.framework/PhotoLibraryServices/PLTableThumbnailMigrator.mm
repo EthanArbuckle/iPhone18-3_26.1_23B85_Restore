@@ -1,65 +1,65 @@
 @interface PLTableThumbnailMigrator
-+ (BOOL)_writeCompressedTableThumbsFromMasterThumb:(CGImageSource *)a3 uuid:(id)a4 formats:(id)a5 toIndex:(unint64_t)a6 thumbnailManager:(id)a7;
-+ (id)_fetchRequstForAssetsPendingTableRebuildWithLimit:(int64_t)a3 excludingAssetIDs:(id)a4;
-+ (id)_nextBatchOfItemsPendingTableRebuildInLibrary:(id)a3 excludingAssetIDs:(id)a4 sourceObjects:(id *)a5;
-+ (id)_workItemForAsset:(id)a3 library:(id)a4 thumbnailManager:(id)a5;
-+ (unint64_t)countOfAssetsPendingTableThumbRebuildInLibrary:(id)a3;
++ (BOOL)_writeCompressedTableThumbsFromMasterThumb:(CGImageSource *)thumb uuid:(id)uuid formats:(id)formats toIndex:(unint64_t)index thumbnailManager:(id)manager;
++ (id)_fetchRequstForAssetsPendingTableRebuildWithLimit:(int64_t)limit excludingAssetIDs:(id)ds;
++ (id)_nextBatchOfItemsPendingTableRebuildInLibrary:(id)library excludingAssetIDs:(id)ds sourceObjects:(id *)objects;
++ (id)_workItemForAsset:(id)asset library:(id)library thumbnailManager:(id)manager;
++ (unint64_t)countOfAssetsPendingTableThumbRebuildInLibrary:(id)library;
 - (PLTableThumbnailMigrator)init;
 - (id)_bulkMigratorQueue;
-- (void)_rebuildTablesForBatch:(id)a3 inLibrary:(id)a4 toFormats:(id)a5;
-- (void)migrateAllAssetsPendingTableThumbRebuildInLibrary:(id)a3 toTableFormats:(id)a4 limit:(unint64_t)a5;
-- (void)rebuildTableThumbForAsset:(id)a3 inLibrary:(id)a4 toTableFormats:(id)a5;
+- (void)_rebuildTablesForBatch:(id)batch inLibrary:(id)library toFormats:(id)formats;
+- (void)migrateAllAssetsPendingTableThumbRebuildInLibrary:(id)library toTableFormats:(id)formats limit:(unint64_t)limit;
+- (void)rebuildTableThumbForAsset:(id)asset inLibrary:(id)library toTableFormats:(id)formats;
 @end
 
 @implementation PLTableThumbnailMigrator
 
-- (void)migrateAllAssetsPendingTableThumbRebuildInLibrary:(id)a3 toTableFormats:(id)a4 limit:(unint64_t)a5
+- (void)migrateAllAssetsPendingTableThumbRebuildInLibrary:(id)library toTableFormats:(id)formats limit:(unint64_t)limit
 {
-  v9 = a3;
-  v10 = a4;
-  if (!v9)
+  libraryCopy = library;
+  formatsCopy = formats;
+  if (!libraryCopy)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PLTableThumbnailMigrator.m" lineNumber:297 description:{@"Invalid parameter not satisfying: %@", @"library"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLTableThumbnailMigrator.m" lineNumber:297 description:{@"Invalid parameter not satisfying: %@", @"library"}];
   }
 
-  v11 = [v9 thumbnailManager];
+  thumbnailManager = [libraryCopy thumbnailManager];
 
-  if (!v11)
+  if (!thumbnailManager)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PLTableThumbnailMigrator.m" lineNumber:298 description:{@"Invalid parameter not satisfying: %@", @"library.thumbnailManager"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLTableThumbnailMigrator.m" lineNumber:298 description:{@"Invalid parameter not satisfying: %@", @"library.thumbnailManager"}];
 
-    if (v10)
+    if (formatsCopy)
     {
       goto LABEL_5;
     }
 
 LABEL_7:
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PLTableThumbnailMigrator.m" lineNumber:299 description:{@"Invalid parameter not satisfying: %@", @"tableFormats"}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PLTableThumbnailMigrator.m" lineNumber:299 description:{@"Invalid parameter not satisfying: %@", @"tableFormats"}];
 
     goto LABEL_5;
   }
 
-  if (!v10)
+  if (!formatsCopy)
   {
     goto LABEL_7;
   }
 
 LABEL_5:
-  v12 = [(PLTableThumbnailMigrator *)self _bulkMigratorQueue];
+  _bulkMigratorQueue = [(PLTableThumbnailMigrator *)self _bulkMigratorQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __99__PLTableThumbnailMigrator_migrateAllAssetsPendingTableThumbRebuildInLibrary_toTableFormats_limit___block_invoke;
   block[3] = &unk_1E7576168;
-  v19 = v10;
-  v20 = self;
-  v21 = v9;
-  v22 = a5;
-  v13 = v9;
-  v14 = v10;
-  dispatch_sync(v12, block);
+  v19 = formatsCopy;
+  selfCopy = self;
+  v21 = libraryCopy;
+  limitCopy = limit;
+  v13 = libraryCopy;
+  v14 = formatsCopy;
+  dispatch_sync(_bulkMigratorQueue, block);
 }
 
 void __99__PLTableThumbnailMigrator_migrateAllAssetsPendingTableThumbRebuildInLibrary_toTableFormats_limit___block_invoke(uint64_t a1)
@@ -167,15 +167,15 @@ LABEL_13:
   }
 }
 
-- (void)rebuildTableThumbForAsset:(id)a3 inLibrary:(id)a4 toTableFormats:(id)a5
+- (void)rebuildTableThumbForAsset:(id)asset inLibrary:(id)library toTableFormats:(id)formats
 {
   v38 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  assetCopy = asset;
+  libraryCopy = library;
+  formatsCopy = formats;
+  if (assetCopy)
   {
-    if (v10)
+    if (libraryCopy)
     {
       goto LABEL_3;
     }
@@ -183,24 +183,24 @@ LABEL_13:
 
   else
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"PLTableThumbnailMigrator.m" lineNumber:274 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLTableThumbnailMigrator.m" lineNumber:274 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
 
-    if (v10)
+    if (libraryCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v22 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v22 handleFailureInMethod:a2 object:self file:@"PLTableThumbnailMigrator.m" lineNumber:275 description:{@"Invalid parameter not satisfying: %@", @"library"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLTableThumbnailMigrator.m" lineNumber:275 description:{@"Invalid parameter not satisfying: %@", @"library"}];
 
 LABEL_3:
-  v12 = [v10 thumbnailManager];
+  thumbnailManager = [libraryCopy thumbnailManager];
 
-  if (v12)
+  if (thumbnailManager)
   {
-    if (v11)
+    if (formatsCopy)
     {
       goto LABEL_5;
     }
@@ -208,17 +208,17 @@ LABEL_3:
 
   else
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"PLTableThumbnailMigrator.m" lineNumber:276 description:{@"Invalid parameter not satisfying: %@", @"library.thumbnailManager"}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PLTableThumbnailMigrator.m" lineNumber:276 description:{@"Invalid parameter not satisfying: %@", @"library.thumbnailManager"}];
 
-    if (v11)
+    if (formatsCopy)
     {
       goto LABEL_5;
     }
   }
 
-  v24 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v24 handleFailureInMethod:a2 object:self file:@"PLTableThumbnailMigrator.m" lineNumber:277 description:{@"Invalid parameter not satisfying: %@", @"tableFormats"}];
+  currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler4 handleFailureInMethod:a2 object:self file:@"PLTableThumbnailMigrator.m" lineNumber:277 description:{@"Invalid parameter not satisfying: %@", @"tableFormats"}];
 
 LABEL_5:
   v29 = 0;
@@ -233,18 +233,18 @@ LABEL_5:
   v25[3] = &unk_1E75778C0;
   v28 = &v29;
   v25[4] = self;
-  v13 = v9;
+  v13 = assetCopy;
   v26 = v13;
-  v14 = v10;
+  v14 = libraryCopy;
   v27 = v14;
   [v14 performBlockAndWait:v25];
-  v15 = [v11 sortedArrayUsingComparator:&__block_literal_global_112];
+  v15 = [formatsCopy sortedArrayUsingComparator:&__block_literal_global_112];
   v16 = PLThumbnailsGetLog();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [v30[5] uuid];
+    uuid = [v30[5] uuid];
     *buf = 138412290;
-    v37 = v17;
+    v37 = uuid;
     _os_log_impl(&dword_19BF1F000, v16, OS_LOG_TYPE_DEFAULT, "Processing asset %@ for table thumb migration...", buf, 0xCu);
   }
 
@@ -255,9 +255,9 @@ LABEL_5:
   v19 = PLThumbnailsGetLog();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
-    v20 = [v30[5] uuid];
+    uuid2 = [v30[5] uuid];
     *buf = 138412290;
-    v37 = v20;
+    v37 = uuid2;
     _os_log_impl(&dword_19BF1F000, v19, OS_LOG_TYPE_DEFAULT, "Completed asset %@ for table thumb migration", buf, 0xCu);
   }
 
@@ -276,20 +276,20 @@ void __79__PLTableThumbnailMigrator_rebuildTableThumbForAsset_inLibrary_toTableF
   *(v6 + 40) = v5;
 }
 
-- (void)_rebuildTablesForBatch:(id)a3 inLibrary:(id)a4 toFormats:(id)a5
+- (void)_rebuildTablesForBatch:(id)batch inLibrary:(id)library toFormats:(id)formats
 {
   v36 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count])
+  batchCopy = batch;
+  libraryCopy = library;
+  formatsCopy = formats;
+  if ([batchCopy count])
   {
     os_unfair_lock_lock(&self->_pendingAssetObjectIDsLock);
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v11 = v8;
+    v11 = batchCopy;
     v12 = [v11 countByEnumeratingWithState:&v31 objects:v35 count:16];
     if (v12)
     {
@@ -305,12 +305,12 @@ void __79__PLTableThumbnailMigrator_rebuildTableThumbForAsset_inLibrary_toTableF
             objc_enumerationMutation(v11);
           }
 
-          v16 = [*(*(&v31 + 1) + 8 * v15) asset];
-          v17 = [v16 objectID];
+          asset = [*(*(&v31 + 1) + 8 * v15) asset];
+          objectID = [asset objectID];
 
-          if (v17)
+          if (objectID)
           {
-            [(NSMutableSet *)self->_pendingAssetObjectIDs addObject:v17];
+            [(NSMutableSet *)self->_pendingAssetObjectIDs addObject:objectID];
           }
 
           ++v15;
@@ -331,9 +331,9 @@ void __79__PLTableThumbnailMigrator_rebuildTableThumbForAsset_inLibrary_toTableF
     block[3] = &unk_1E7573F18;
     v19 = v11;
     v27 = v19;
-    v28 = self;
-    v29 = v10;
-    v20 = v9;
+    selfCopy = self;
+    v29 = formatsCopy;
+    v20 = libraryCopy;
     v30 = v20;
     dispatch_apply(v18, 0, block);
     v23[0] = MEMORY[0x1E69E9820];
@@ -520,13 +520,13 @@ void __46__PLTableThumbnailMigrator__bulkMigratorQueue__block_invoke()
   return v3;
 }
 
-+ (unint64_t)countOfAssetsPendingTableThumbRebuildInLibrary:(id)a3
++ (unint64_t)countOfAssetsPendingTableThumbRebuildInLibrary:(id)library
 {
-  v5 = a3;
-  if (!v5)
+  libraryCopy = library;
+  if (!libraryCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"PLTableThumbnailMigrator.m" lineNumber:342 description:{@"Invalid parameter not satisfying: %@", @"library"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLTableThumbnailMigrator.m" lineNumber:342 description:{@"Invalid parameter not satisfying: %@", @"library"}];
   }
 
   v14 = 0;
@@ -538,8 +538,8 @@ void __46__PLTableThumbnailMigrator__bulkMigratorQueue__block_invoke()
   v10[2] = __75__PLTableThumbnailMigrator_countOfAssetsPendingTableThumbRebuildInLibrary___block_invoke;
   v10[3] = &unk_1E7576208;
   v12 = &v14;
-  v13 = a1;
-  v6 = v5;
+  selfCopy = self;
+  v6 = libraryCopy;
   v11 = v6;
   [v6 performBlockAndWait:v10];
   v7 = v15[3];
@@ -570,11 +570,11 @@ void __75__PLTableThumbnailMigrator_countOfAssetsPendingTableThumbRebuildInLibra
   }
 }
 
-+ (id)_nextBatchOfItemsPendingTableRebuildInLibrary:(id)a3 excludingAssetIDs:(id)a4 sourceObjects:(id *)a5
++ (id)_nextBatchOfItemsPendingTableRebuildInLibrary:(id)library excludingAssetIDs:(id)ds sourceObjects:(id *)objects
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 thumbnailManager];
+  libraryCopy = library;
+  dsCopy = ds;
+  thumbnailManager = [libraryCopy thumbnailManager];
   v29 = 0;
   v30 = &v29;
   v31 = 0x3032000000;
@@ -591,19 +591,19 @@ void __75__PLTableThumbnailMigrator_countOfAssetsPendingTableThumbRebuildInLibra
   v16[1] = 3221225472;
   v16[2] = __106__PLTableThumbnailMigrator__nextBatchOfItemsPendingTableRebuildInLibrary_excludingAssetIDs_sourceObjects___block_invoke;
   v16[3] = &unk_1E7573EF0;
-  v11 = v8;
+  v11 = libraryCopy;
   v17 = v11;
-  v22 = a1;
-  v12 = v9;
+  selfCopy = self;
+  v12 = dsCopy;
   v18 = v12;
   v20 = &v23;
   v21 = &v29;
-  v13 = v10;
+  v13 = thumbnailManager;
   v19 = v13;
   [PLManagedObjectContext _pl_megamoc_runWithPerformWarningsSuppressed:v16];
-  if (a5)
+  if (objects)
   {
-    *a5 = v24[5];
+    *objects = v24[5];
   }
 
   v14 = v30[5];
@@ -660,33 +660,33 @@ void __106__PLTableThumbnailMigrator__nextBatchOfItemsPendingTableRebuildInLibra
   *(v10 + 40) = v9;
 }
 
-+ (id)_workItemForAsset:(id)a3 library:(id)a4 thumbnailManager:(id)a5
++ (id)_workItemForAsset:(id)asset library:(id)library thumbnailManager:(id)manager
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  managerCopy = manager;
+  libraryCopy = library;
+  assetCopy = asset;
   v10 = objc_alloc_init(PLThumbnailMigratorWorkItem);
-  v11 = [v9 uuid];
-  [(PLThumbnailMigratorWorkItem *)v10 setUuid:v11];
+  uuid = [assetCopy uuid];
+  [(PLThumbnailMigratorWorkItem *)v10 setUuid:uuid];
 
-  v12 = [PLThumbnailIndexes nextAvailableThumbnailIndexInLibrary:v8];
+  v12 = [PLThumbnailIndexes nextAvailableThumbnailIndexInLibrary:libraryCopy];
   [(PLThumbnailMigratorWorkItem *)v10 setDestinationThumbnailIndex:v12];
-  v13 = [v7 thumbnailJPEGPathForPhoto:v9];
+  v13 = [managerCopy thumbnailJPEGPathForPhoto:assetCopy];
 
   [(PLThumbnailMigratorWorkItem *)v10 setMasterThumbFilePath:v13];
-  [(PLThumbnailMigratorWorkItem *)v10 setAsset:v9];
+  [(PLThumbnailMigratorWorkItem *)v10 setAsset:assetCopy];
 
   return v10;
 }
 
-+ (BOOL)_writeCompressedTableThumbsFromMasterThumb:(CGImageSource *)a3 uuid:(id)a4 formats:(id)a5 toIndex:(unint64_t)a6 thumbnailManager:(id)a7
++ (BOOL)_writeCompressedTableThumbsFromMasterThumb:(CGImageSource *)thumb uuid:(id)uuid formats:(id)formats toIndex:(unint64_t)index thumbnailManager:(id)manager
 {
   v47 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
-  v12 = a7;
+  uuidCopy = uuid;
+  formatsCopy = formats;
+  managerCopy = manager;
   v41 = 0;
-  v13 = [PLTableThumbnailEncoder encodeThumbnailSource:a3 toFormats:v11 withUUID:v10 error:&v41];
+  v13 = [PLTableThumbnailEncoder encodeThumbnailSource:thumb toFormats:formatsCopy withUUID:uuidCopy error:&v41];
   v14 = v41;
   v35 = v13;
   if (v13)
@@ -695,7 +695,7 @@ void __106__PLTableThumbnailMigrator__nextBatchOfItemsPendingTableRebuildInLibra
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v15 = v11;
+    v15 = formatsCopy;
     v16 = [v15 countByEnumeratingWithState:&v37 objects:v46 count:16];
     if (!v16)
     {
@@ -705,8 +705,8 @@ void __106__PLTableThumbnailMigrator__nextBatchOfItemsPendingTableRebuildInLibra
 
     v17 = v16;
     v31 = v14;
-    v32 = v11;
-    v33 = v10;
+    v32 = formatsCopy;
+    v33 = uuidCopy;
     v18 = *v38;
 LABEL_4:
     v19 = 0;
@@ -718,7 +718,7 @@ LABEL_4:
       }
 
       v20 = *(*(&v37 + 1) + 8 * v19);
-      v21 = [v12 thumbManagerForFormatID:{objc_msgSend(v20, "formatID", v31, v32)}];
+      v21 = [managerCopy thumbManagerForFormatID:{objc_msgSend(v20, "formatID", v31, v32)}];
       if ([v20 isTable])
       {
         v36[0] = MEMORY[0x1E69E9820];
@@ -727,49 +727,49 @@ LABEL_4:
         v36[3] = &unk_1E7573EA0;
         v36[4] = v20;
         v22 = [v35 _pl_filter:v36];
-        v23 = [v22 firstObject];
+        firstObject = [v22 firstObject];
 
-        if (!v23)
+        if (!firstObject)
         {
-          v23 = PLThumbnailsGetLog();
-          if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
+          firstObject = PLThumbnailsGetLog();
+          if (os_log_type_enabled(firstObject, OS_LOG_TYPE_ERROR))
           {
-            v26 = [v20 formatID];
+            formatID = [v20 formatID];
             *buf = 67109378;
-            *v43 = v26;
+            *v43 = formatID;
             *&v43[4] = 2114;
-            v10 = v33;
+            uuidCopy = v33;
             *&v43[6] = v33;
-            _os_log_impl(&dword_19BF1F000, v23, OS_LOG_TYPE_ERROR, "Failed to find result for format: %hu, asset uuid: %{public}@", buf, 0x12u);
+            _os_log_impl(&dword_19BF1F000, firstObject, OS_LOG_TYPE_ERROR, "Failed to find result for format: %hu, asset uuid: %{public}@", buf, 0x12u);
           }
 
           else
           {
-            v10 = v33;
+            uuidCopy = v33;
           }
 
 LABEL_23:
           v14 = v31;
-          v11 = v32;
+          formatsCopy = v32;
 
           goto LABEL_24;
         }
 
-        v24 = -[NSObject entryDataForEntryLength:](v23, "entryDataForEntryLength:", [v21 entryLength]);
-        if (([v21 writeEntryData:v24 toIndex:a6] & 1) == 0)
+        v24 = -[NSObject entryDataForEntryLength:](firstObject, "entryDataForEntryLength:", [v21 entryLength]);
+        if (([v21 writeEntryData:v24 toIndex:index] & 1) == 0)
         {
           v27 = PLThumbnailsGetLog();
-          v10 = v33;
+          uuidCopy = v33;
           if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
           {
             v28 = [v24 length];
-            v29 = [v20 formatID];
+            formatID2 = [v20 formatID];
             *buf = 134218498;
             *v43 = v28;
             *&v43[8] = 2114;
             *&v43[10] = v33;
             v44 = 2048;
-            v45 = v29;
+            v45 = formatID2;
             _os_log_impl(&dword_19BF1F000, v27, OS_LOG_TYPE_ERROR, "Failed to write compressed thumbnail image of len: %ld, for asset uuid: %{public}@, to table format: %ld", buf, 0x20u);
           }
 
@@ -786,8 +786,8 @@ LABEL_23:
           goto LABEL_4;
         }
 
-        v11 = v32;
-        v10 = v33;
+        formatsCopy = v32;
+        uuidCopy = v33;
         v14 = v31;
         goto LABEL_25;
       }
@@ -798,7 +798,7 @@ LABEL_23:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
   {
     *buf = 138543618;
-    *v43 = v10;
+    *v43 = uuidCopy;
     *&v43[8] = 2112;
     *&v43[10] = v14;
     _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_ERROR, "Failed to generate compressed thumbnails for asset uuid: %{public}@, error:%@", buf, 0x16u);
@@ -819,29 +819,29 @@ uint64_t __109__PLTableThumbnailMigrator__writeCompressedTableThumbsFromMasterTh
   return v4;
 }
 
-+ (id)_fetchRequstForAssetsPendingTableRebuildWithLimit:(int64_t)a3 excludingAssetIDs:(id)a4
++ (id)_fetchRequstForAssetsPendingTableRebuildWithLimit:(int64_t)limit excludingAssetIDs:(id)ds
 {
   v20[2] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  dsCopy = ds;
   v7 = MEMORY[0x1E695D5E0];
   v8 = +[PLManagedAsset entityName];
   v9 = [v7 fetchRequestWithEntityName:v8];
 
-  if (a3)
+  if (limit)
   {
-    [v9 setFetchLimit:a3];
+    [v9 setFetchLimit:limit];
   }
 
-  v10 = [a1 _predicateForAssetsPendingTableRebuild];
-  [v9 setPredicate:v10];
+  _predicateForAssetsPendingTableRebuild = [self _predicateForAssetsPendingTableRebuild];
+  [v9 setPredicate:_predicateForAssetsPendingTableRebuild];
 
-  if ([v6 count])
+  if ([dsCopy count])
   {
     v11 = MEMORY[0x1E696AB28];
-    v12 = [v9 predicate];
-    v20[0] = v12;
-    v13 = [MEMORY[0x1E696AE18] predicateWithFormat:@"NOT self IN %@", v6];
-    v20[1] = v13;
+    predicate = [v9 predicate];
+    v20[0] = predicate;
+    dsCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"NOT self IN %@", dsCopy];
+    v20[1] = dsCopy;
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:2];
     v15 = [v11 andPredicateWithSubpredicates:v14];
     [v9 setPredicate:v15];

@@ -1,36 +1,36 @@
 @interface GKVoiceChatServicePrivate
 + (id)defaultVoiceChatService;
-- (BOOL)getNSError:(id *)a3 code:(int64_t)a4 description:(id)a5 hResult:(int)a6;
-- (BOOL)getNSError:(id *)a3 code:(int64_t)a4 description:(id)a5 reason:(id)a6;
-- (BOOL)startVoiceChatWithParticipantID:(id)a3 error:(id *)a4;
+- (BOOL)getNSError:(id *)error code:(int64_t)code description:(id)description hResult:(int)result;
+- (BOOL)getNSError:(id *)error code:(int64_t)code description:(id)description reason:(id)reason;
+- (BOOL)startVoiceChatWithParticipantID:(id)d error:(id *)error;
 - (GKVoiceChatServicePrivate)init;
 - (double)localBitrate;
 - (double)localFramerate;
 - (double)remoteBitrate;
 - (double)remoteFramerate;
-- (id)createInvite:(id *)a3 toParticipant:(id)a4 callID:(unsigned int *)a5;
-- (id)createReplyUsingDictionary:(id)a3 replyCode:(unint64_t)a4 error:(id *)a5;
+- (id)createInvite:(id *)invite toParticipant:(id)participant callID:(unsigned int *)d;
+- (id)createReplyUsingDictionary:(id)dictionary replyCode:(unint64_t)code error:(id *)error;
 - (void)cleanup;
 - (void)dealloc;
-- (void)denyCallID:(unsigned int)a3;
+- (void)denyCallID:(unsigned int)d;
 - (void)informClientOfInviteFromParticipant:(id)incomingCallDict;
-- (void)informClientVoiceChatDidNotStart:(id)a3;
-- (void)informClientVoiceChatDidNotStartMainSelector:(id)a3;
-- (void)informClientVoiceChatDidStart:(id)a3;
-- (void)informClientVoiceChatDidStartMainSelector:(id)a3;
-- (void)informClientVoiceChatDidStop:(id)a3;
+- (void)informClientVoiceChatDidNotStart:(id)start;
+- (void)informClientVoiceChatDidNotStartMainSelector:(id)selector;
+- (void)informClientVoiceChatDidStart:(id)start;
+- (void)informClientVoiceChatDidStartMainSelector:(id)selector;
+- (void)informClientVoiceChatDidStop:(id)stop;
 - (void)localVideoLayer;
-- (void)receivedData:(id)a3 fromParticipantID:(id)a4;
+- (void)receivedData:(id)data fromParticipantID:(id)d;
 - (void)remoteVideoLayer;
 - (void)resetState;
-- (void)setClient:(id)a3;
-- (void)setLocalVideoLayer:(void *)a3;
-- (void)setMicrophoneMuted:(BOOL)a3;
-- (void)setRemoteVideoLayer:(void *)a3;
-- (void)stopVoiceChatProc:(id)a3;
-- (void)stopVoiceChatWithParticipantID:(id)a3;
-- (void)videoConference:(id)a3 didStartSession:(BOOL)a4 withCallID:(unsigned int)a5 error:(id)a6;
-- (void)videoConference:(id)a3 didStopWithCallID:(unsigned int)a4 error:(id)a5;
+- (void)setClient:(id)client;
+- (void)setLocalVideoLayer:(void *)layer;
+- (void)setMicrophoneMuted:(BOOL)muted;
+- (void)setRemoteVideoLayer:(void *)layer;
+- (void)stopVoiceChatProc:(id)proc;
+- (void)stopVoiceChatWithParticipantID:(id)d;
+- (void)videoConference:(id)conference didStartSession:(BOOL)session withCallID:(unsigned int)d error:(id)error;
+- (void)videoConference:(id)conference didStopWithCallID:(unsigned int)d error:(id)error;
 @end
 
 @implementation GKVoiceChatServicePrivate
@@ -117,7 +117,7 @@
   [(GKVoiceChatServicePrivate *)&v3 dealloc];
 }
 
-- (BOOL)startVoiceChatWithParticipantID:(id)a3 error:(id *)a4
+- (BOOL)startVoiceChatWithParticipantID:(id)d error:(id *)error
 {
   v37 = *MEMORY[0x277D85DE8];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -126,9 +126,9 @@
     v8 = *MEMORY[0x277CE5818];
     if (os_log_type_enabled(*MEMORY[0x277CE5818], OS_LOG_TYPE_DEFAULT))
     {
-      if (a3)
+      if (d)
       {
-        v9 = [objc_msgSend(a3 "description")];
+        v9 = [objc_msgSend(d "description")];
       }
 
       else
@@ -149,12 +149,12 @@
   }
 
   [(NSRecursiveLock *)self->stateLock lock];
-  if (!a3)
+  if (!d)
   {
     v12 = @"participantID is nil";
     v13 = @"nil participantID";
-    v14 = self;
-    v15 = a4;
+    selfCopy3 = self;
+    errorCopy3 = error;
     v16 = 32016;
     goto LABEL_15;
   }
@@ -164,19 +164,19 @@
     goto LABEL_13;
   }
 
-  v10 = [(GKVoiceChatServicePrivate *)self state];
+  state = [(GKVoiceChatServicePrivate *)self state];
   client = self->client;
-  if (v10)
+  if (state)
   {
     if (client)
     {
       v12 = @"Cannot do startVoiceChatWithParticipantID:error:";
       v13 = @"GKVoiceChatService is not idle.";
-      v14 = self;
-      v15 = a4;
+      selfCopy3 = self;
+      errorCopy3 = error;
       v16 = 32012;
 LABEL_15:
-      [(GKVoiceChatServicePrivate *)v14 getNSError:v15 code:v16 description:v12 reason:v13];
+      [(GKVoiceChatServicePrivate *)selfCopy3 getNSError:errorCopy3 code:v16 description:v12 reason:v13];
       v17 = 0;
       goto LABEL_16;
     }
@@ -185,8 +185,8 @@ LABEL_13:
     v12 = @"Client is not set.";
     v13 = @"Client is nil.";
 LABEL_14:
-    v14 = self;
-    v15 = a4;
+    selfCopy3 = self;
+    errorCopy3 = error;
     v16 = 32006;
     goto LABEL_15;
   }
@@ -198,15 +198,15 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v20 = [(GKVoiceChatServicePrivate *)self createInvite:a4 toParticipant:a3 callID:&self->curCallID];
+  v20 = [(GKVoiceChatServicePrivate *)self createInvite:error toParticipant:d callID:&self->curCallID];
   self->outgoingCallDict = v20;
-  v21 = [(GKVoiceChatDictionary *)v20 createBlob];
+  createBlob = [(GKVoiceChatDictionary *)v20 createBlob];
   v17 = 0;
   outgoingCallDict = self->outgoingCallDict;
   if (outgoingCallDict)
   {
-    v23 = v21;
-    if (v21)
+    v23 = createBlob;
+    if (createBlob)
     {
       v24 = outgoingCallDict;
       [(GKVoiceChatServicePrivate *)self setState:3];
@@ -239,7 +239,7 @@ LABEL_14:
         }
       }
 
-      [(GKVoiceChatClient *)self->client voiceChatService:self->wrapperService sendData:v23 toParticipantID:a3];
+      [(GKVoiceChatClient *)self->client voiceChatService:self->wrapperService sendData:v23 toParticipantID:d];
       v17 = 1;
     }
   }
@@ -250,7 +250,7 @@ LABEL_16:
   return v17;
 }
 
-- (void)stopVoiceChatProc:(id)a3
+- (void)stopVoiceChatProc:(id)proc
 {
   v34 = *MEMORY[0x277D85DE8];
   ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule();
@@ -261,9 +261,9 @@ LABEL_16:
     v8 = *v6;
     if (os_log_type_enabled(*v6, OS_LOG_TYPE_DEFAULT))
     {
-      if (a3)
+      if (proc)
       {
-        v9 = [objc_msgSend(a3 "description")];
+        v9 = [objc_msgSend(proc "description")];
       }
 
       else
@@ -292,9 +292,9 @@ LABEL_16:
       v11 = *v6;
       if (os_log_type_enabled(*v6, OS_LOG_TYPE_DEFAULT))
       {
-        if (a3)
+        if (proc)
         {
-          v12 = [objc_msgSend(a3 "description")];
+          v12 = [objc_msgSend(proc "description")];
         }
 
         else
@@ -340,16 +340,16 @@ LABEL_16:
       }
     }
 
-    v18 = [(GKVoiceChatServicePrivate *)self state];
-    if (v18 <= 6 && ((1 << v18) & 0x68) != 0)
+    state = [(GKVoiceChatServicePrivate *)self state];
+    if (state <= 6 && ((1 << state) & 0x68) != 0)
     {
-      -[GKVoiceChatClient voiceChatService:sendData:toParticipantID:](self->client, "voiceChatService:sendData:toParticipantID:", self->wrapperService, [-[GKVoiceChatDictionary cancelDictionary](self->outgoingCallDict "cancelDictionary")], a3);
+      -[GKVoiceChatClient voiceChatService:sendData:toParticipantID:](self->client, "voiceChatService:sendData:toParticipantID:", self->wrapperService, [-[GKVoiceChatDictionary cancelDictionary](self->outgoingCallDict "cancelDictionary")], proc);
     }
 
     [(GKVoiceChatServicePrivate *)self resetState];
     v20 = @"participantID";
-    v21 = a3;
-    -[GKVoiceChatServicePrivate performSelectorOnMainThread:withObject:waitUntilDone:](self, "performSelectorOnMainThread:withObject:waitUntilDone:", sel_informClientVoiceChatDidStop_, [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v21 forKeys:&v20 count:1], 0);
+    procCopy = proc;
+    -[GKVoiceChatServicePrivate performSelectorOnMainThread:withObject:waitUntilDone:](self, "performSelectorOnMainThread:withObject:waitUntilDone:", sel_informClientVoiceChatDidStop_, [MEMORY[0x277CBEAC0] dictionaryWithObjects:&procCopy forKeys:&v20 count:1], 0);
     [(NSRecursiveLock *)self->stateLock unlock];
   }
 
@@ -361,19 +361,19 @@ LABEL_16:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopVoiceChatWithParticipantID:(id)a3
+- (void)stopVoiceChatWithParticipantID:(id)d
 {
   if (self->client)
   {
-    [MEMORY[0x277CCACC8] detachNewThreadSelector:sel_stopVoiceChatProc_ toTarget:self withObject:a3];
+    [MEMORY[0x277CCACC8] detachNewThreadSelector:sel_stopVoiceChatProc_ toTarget:self withObject:d];
   }
 }
 
-- (void)denyCallID:(unsigned int)a3
+- (void)denyCallID:(unsigned int)d
 {
   v28 = *MEMORY[0x277D85DE8];
   [(NSRecursiveLock *)self->stateLock lock];
-  if (self->client && [(GKVoiceChatServicePrivate *)self state]== 2 && self->curCallID == a3)
+  if (self->client && [(GKVoiceChatServicePrivate *)self state]== 2 && self->curCallID == d)
   {
     ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule();
     v6 = MEMORY[0x277CE5818];
@@ -429,8 +429,8 @@ LABEL_16:
     v15 = [(GKVoiceChatServicePrivate *)self createReplyUsingDictionary:self->incomingCallDict replyCode:2 error:&v17];
     -[GKVoiceChatClient voiceChatService:sendData:toParticipantID:](self->client, "voiceChatService:sendData:toParticipantID:", self->wrapperService, [v15 createBlob], objc_msgSend(v15, "participantID"));
     v18 = @"participantID";
-    v19 = [(GKVoiceChatDictionary *)self->incomingCallDict fromParticipantID];
-    -[GKVoiceChatServicePrivate informClientVoiceChatDidNotStart:](self, "informClientVoiceChatDidNotStart:", [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v19 forKeys:&v18 count:1]);
+    fromParticipantID = [(GKVoiceChatDictionary *)self->incomingCallDict fromParticipantID];
+    -[GKVoiceChatServicePrivate informClientVoiceChatDidNotStart:](self, "informClientVoiceChatDidNotStart:", [MEMORY[0x277CBEAC0] dictionaryWithObjects:&fromParticipantID forKeys:&v18 count:1]);
     [(GKVoiceChatServicePrivate *)self resetState];
     [(NSRecursiveLock *)self->stateLock unlock];
     v16 = *MEMORY[0x277D85DE8];
@@ -445,12 +445,12 @@ LABEL_16:
   }
 }
 
-- (void)setClient:(id)a3
+- (void)setClient:(id)client
 {
   [(NSRecursiveLock *)self->stateLock lock];
   [(VideoConference *)self->conf setRequiresWifi:1];
   [(NSLock *)self->clientLock lock];
-  self->client = a3;
+  self->client = client;
   [(NSLock *)self->clientLock unlock];
   stateLock = self->stateLock;
 
@@ -476,52 +476,52 @@ LABEL_16:
   else
   {
 
-    v6 = [(GKVoiceChatDictionary *)self->incomingCallDict callID];
+    callID = [(GKVoiceChatDictionary *)self->incomingCallDict callID];
 
-    [(GKVoiceChatServicePrivate *)self acceptCallID:v6 error:0];
+    [(GKVoiceChatServicePrivate *)self acceptCallID:callID error:0];
   }
 }
 
-- (void)informClientVoiceChatDidStart:(id)a3
+- (void)informClientVoiceChatDidStart:(id)start
 {
   client = self->client;
   if (objc_opt_respondsToSelector())
   {
-    v6 = a3;
+    startCopy = start;
 
-    [(GKVoiceChatServicePrivate *)self performSelectorOnMainThread:sel_informClientVoiceChatDidStartMainSelector_ withObject:v6 waitUntilDone:0];
+    [(GKVoiceChatServicePrivate *)self performSelectorOnMainThread:sel_informClientVoiceChatDidStartMainSelector_ withObject:startCopy waitUntilDone:0];
   }
 }
 
-- (void)informClientVoiceChatDidStartMainSelector:(id)a3
+- (void)informClientVoiceChatDidStartMainSelector:(id)selector
 {
   [(NSLock *)self->clientLock lock];
   v5 = self->client;
   client = self->client;
   [(NSLock *)self->clientLock unlock];
-  [(GKVoiceChatClient *)client voiceChatService:self->wrapperService didStartWithParticipantID:a3];
+  [(GKVoiceChatClient *)client voiceChatService:self->wrapperService didStartWithParticipantID:selector];
 }
 
-- (void)informClientVoiceChatDidNotStart:(id)a3
+- (void)informClientVoiceChatDidNotStart:(id)start
 {
   client = self->client;
   if (objc_opt_respondsToSelector())
   {
 
-    [(GKVoiceChatServicePrivate *)self performSelectorOnMainThread:sel_informClientVoiceChatDidNotStartMainSelector_ withObject:a3 waitUntilDone:0];
+    [(GKVoiceChatServicePrivate *)self performSelectorOnMainThread:sel_informClientVoiceChatDidNotStartMainSelector_ withObject:start waitUntilDone:0];
   }
 }
 
-- (void)informClientVoiceChatDidNotStartMainSelector:(id)a3
+- (void)informClientVoiceChatDidNotStartMainSelector:(id)selector
 {
   [(NSLock *)self->clientLock lock];
   v5 = self->client;
   client = self->client;
   [(NSLock *)self->clientLock unlock];
-  -[GKVoiceChatClient voiceChatService:didNotStartWithParticipantID:error:](client, "voiceChatService:didNotStartWithParticipantID:error:", self->wrapperService, [a3 objectForKeyedSubscript:@"participantID"], objc_msgSend(a3, "objectForKeyedSubscript:", @"error"));
+  -[GKVoiceChatClient voiceChatService:didNotStartWithParticipantID:error:](client, "voiceChatService:didNotStartWithParticipantID:error:", self->wrapperService, [selector objectForKeyedSubscript:@"participantID"], objc_msgSend(selector, "objectForKeyedSubscript:", @"error"));
 }
 
-- (void)informClientVoiceChatDidStop:(id)a3
+- (void)informClientVoiceChatDidStop:(id)stop
 {
   [(NSLock *)self->clientLock lock];
   v5 = self->client;
@@ -529,7 +529,7 @@ LABEL_16:
   [(NSLock *)self->clientLock unlock];
   if (objc_opt_respondsToSelector())
   {
-    -[GKVoiceChatClient voiceChatService:didStopWithParticipantID:error:](client, "voiceChatService:didStopWithParticipantID:error:", self->wrapperService, [a3 objectForKeyedSubscript:@"participantID"], objc_msgSend(a3, "objectForKeyedSubscript:", @"error"));
+    -[GKVoiceChatClient voiceChatService:didStopWithParticipantID:error:](client, "voiceChatService:didStopWithParticipantID:error:", self->wrapperService, [stop objectForKeyedSubscript:@"participantID"], objc_msgSend(stop, "objectForKeyedSubscript:", @"error"));
   }
 }
 
@@ -566,7 +566,7 @@ LABEL_16:
   [(NSRecursiveLock *)stateLock unlock];
 }
 
-- (void)receivedData:(id)a3 fromParticipantID:(id)a4
+- (void)receivedData:(id)data fromParticipantID:(id)d
 {
   v109 = *MEMORY[0x277D85DE8];
   if (!self->client)
@@ -575,7 +575,7 @@ LABEL_16:
   }
 
   [(NSRecursiveLock *)self->stateLock lock];
-  v7 = [GKVoiceChatDictionary dictionaryFromData:a3];
+  v7 = [GKVoiceChatDictionary dictionaryFromData:data];
   if (v7)
   {
     v8 = v7;
@@ -614,9 +614,9 @@ LABEL_16:
           v43 = *MEMORY[0x277CE5818];
           if (os_log_type_enabled(*MEMORY[0x277CE5818], OS_LOG_TYPE_DEFAULT))
           {
-            if (a4)
+            if (d)
             {
-              v44 = [objc_msgSend(a4 "description")];
+              v44 = [objc_msgSend(d "description")];
             }
 
             else
@@ -625,7 +625,7 @@ LABEL_16:
             }
 
             v68 = [objc_msgSend(v8 "description")];
-            v69 = [v8 isInviteDictionary];
+            isInviteDictionary = [v8 isInviteDictionary];
             *buf = 136316418;
             *&buf[4] = v42;
             v101 = 2080;
@@ -637,7 +637,7 @@ LABEL_16:
             *&v106[8] = 2080;
             *v107 = v68;
             *&v107[8] = 1024;
-            v108 = v69;
+            v108 = isInviteDictionary;
             _os_log_impl(&dword_24E50C000, v43, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d switch - GKVoiceChatServiceStateIdle from = %s: inviteIsValid = %s, %d", buf, 0x36u);
           }
         }
@@ -684,7 +684,7 @@ LABEL_16:
           }
         }
 
-        if ([a4 isEqualToString:{-[GKVoiceChatDictionary fromParticipantID](self->incomingCallDict, "fromParticipantID")}])
+        if ([d isEqualToString:{-[GKVoiceChatDictionary fromParticipantID](self->incomingCallDict, "fromParticipantID")}])
         {
           if ([v8 isCancelDictionary])
           {
@@ -709,11 +709,11 @@ LABEL_16:
 
             *buf = 0;
             [(VideoConference *)self->conf remoteCancelledCallID:self->curCallID];
-            v20 = [MEMORY[0x277CCACA8] stringWithFormat:objc_msgSend(GCKGameConnectivityKitBundle(), "localizedStringForKey:value:table:", @"%@ has cancelled this request.", &stru_286195238, @"GKSessionEvent", a4];
+            v20 = [MEMORY[0x277CCACA8] stringWithFormat:objc_msgSend(GCKGameConnectivityKitBundle(), "localizedStringForKey:value:table:", @"%@ has cancelled this request.", &stru_286195238, @"GKSessionEvent", d];
             -[GKVoiceChatServicePrivate getNSError:code:description:reason:](self, "getNSError:code:description:reason:", buf, 32009, v20, [GCKGameConnectivityKitBundle() localizedStringForKey:@"This request was cancelled." value:&stru_286195238 table:@"GKSessionEvent"]);
             v98[0] = @"participantID";
             v98[1] = @"error";
-            v99[0] = a4;
+            v99[0] = d;
             v99[1] = *buf;
             v21 = MEMORY[0x277CBEAC0];
             v22 = v99;
@@ -767,7 +767,7 @@ LABEL_100:
     if ((v13 - 5) < 2)
     {
 LABEL_24:
-      if (-[GKVoiceChatServicePrivate inviteIsValid:](self, "inviteIsValid:", v8) && (![a4 isEqualToString:{-[GKVoiceChatDictionary fromParticipantID](self->incomingCallDict, "fromParticipantID")}] || (objc_msgSend(v8, "matchesNonce:", -[GKVoiceChatDictionary nonce](self->incomingCallDict, "nonce")) & 1) == 0))
+      if (-[GKVoiceChatServicePrivate inviteIsValid:](self, "inviteIsValid:", v8) && (![d isEqualToString:{-[GKVoiceChatDictionary fromParticipantID](self->incomingCallDict, "fromParticipantID")}] || (objc_msgSend(v8, "matchesNonce:", -[GKVoiceChatDictionary nonce](self->incomingCallDict, "nonce")) & 1) == 0))
       {
         v89 = 0;
         if (VRTraceGetErrorLogLevelForModule() >= 5)
@@ -794,14 +794,14 @@ LABEL_24:
 
         v39 = &v89;
 LABEL_48:
-        v40 = self;
+        selfCopy2 = self;
         v41 = v8;
 LABEL_57:
-        -[GKVoiceChatClient voiceChatService:sendData:toParticipantID:](self->client, "voiceChatService:sendData:toParticipantID:", self->wrapperService, [-[GKVoiceChatServicePrivate createReplyUsingDictionary:replyCode:error:](v40 createReplyUsingDictionary:v41 replyCode:3 error:{v39), "createBlob"}], a4);
+        -[GKVoiceChatClient voiceChatService:sendData:toParticipantID:](self->client, "voiceChatService:sendData:toParticipantID:", self->wrapperService, [-[GKVoiceChatServicePrivate createReplyUsingDictionary:replyCode:error:](selfCopy2 createReplyUsingDictionary:v41 replyCode:3 error:{v39), "createBlob"}], d);
         goto LABEL_99;
       }
 
-      if (![a4 isEqualToString:{-[GKVoiceChatDictionary fromParticipantID](self->incomingCallDict, "fromParticipantID")}] || !objc_msgSend(v8, "isCancelDictionary") || !objc_msgSend(v8, "matchesNonce:", -[GKVoiceChatDictionary nonce](self->outgoingCallDict, "nonce")))
+      if (![d isEqualToString:{-[GKVoiceChatDictionary fromParticipantID](self->incomingCallDict, "fromParticipantID")}] || !objc_msgSend(v8, "isCancelDictionary") || !objc_msgSend(v8, "matchesNonce:", -[GKVoiceChatDictionary nonce](self->outgoingCallDict, "nonce")))
       {
         goto LABEL_99;
       }
@@ -828,11 +828,11 @@ LABEL_57:
 
       [(VideoConference *)self->conf remoteCancelledCallID:self->curCallID];
       [(GKVoiceChatServicePrivate *)self resetState];
-      v30 = [MEMORY[0x277CCACA8] stringWithFormat:objc_msgSend(GCKGameConnectivityKitBundle(), "localizedStringForKey:value:table:", @"%@ has cancelled this request.", &stru_286195238, @"GKSessionEvent", a4];
+      v30 = [MEMORY[0x277CCACA8] stringWithFormat:objc_msgSend(GCKGameConnectivityKitBundle(), "localizedStringForKey:value:table:", @"%@ has cancelled this request.", &stru_286195238, @"GKSessionEvent", d];
       -[GKVoiceChatServicePrivate getNSError:code:description:reason:](self, "getNSError:code:description:reason:", &v89, 32009, v30, [GCKGameConnectivityKitBundle() localizedStringForKey:@"This request was cancelled." value:&stru_286195238 table:@"GKSessionEvent"]);
       v90[0] = @"participantID";
       v90[1] = @"error";
-      v91[0] = a4;
+      v91[0] = d;
       v91[1] = v89;
       -[GKVoiceChatServicePrivate informClientVoiceChatDidNotStart:](self, "informClientVoiceChatDidNotStart:", [MEMORY[0x277CBEAC0] dictionaryWithObjects:v91 forKeys:v90 count:2]);
 LABEL_97:
@@ -864,7 +864,7 @@ LABEL_97:
       }
     }
 
-    if (![a4 isEqualToString:{-[GKVoiceChatDictionary participantID](self->outgoingCallDict, "participantID")}])
+    if (![d isEqualToString:{-[GKVoiceChatDictionary participantID](self->outgoingCallDict, "participantID")}])
     {
       if (VRTraceGetErrorLogLevelForModule() >= 7)
       {
@@ -885,7 +885,7 @@ LABEL_97:
         }
       }
 
-      v40 = self;
+      selfCopy2 = self;
       v41 = v8;
       v39 = 0;
       goto LABEL_57;
@@ -895,8 +895,8 @@ LABEL_97:
     {
       self->incomingCallDict = v8;
       v89 = 0;
-      v34 = [v8 response];
-      if (v34 == 3)
+      response = [v8 response];
+      if (response == 3)
       {
         [(VideoConference *)self->conf stopCallID:self->curCallID];
         if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -917,17 +917,17 @@ LABEL_97:
           }
         }
 
-        v72 = [MEMORY[0x277CCACA8] stringWithFormat:objc_msgSend(GCKGameConnectivityKitBundle(), "localizedStringForKey:value:table:", @"%@ is currently busy in another call.", &stru_286195238, @"GKSessionEvent", a4];
+        v72 = [MEMORY[0x277CCACA8] stringWithFormat:objc_msgSend(GCKGameConnectivityKitBundle(), "localizedStringForKey:value:table:", @"%@ is currently busy in another call.", &stru_286195238, @"GKSessionEvent", d];
         v73 = [GCKGameConnectivityKitBundle() localizedStringForKey:@"Request declined." value:&stru_286195238 table:@"GKSessionEvent"];
-        v74 = self;
+        selfCopy4 = self;
         v75 = 32008;
       }
 
       else
       {
-        if (v34 != 2)
+        if (response != 2)
         {
-          if (v34 == 1)
+          if (response == 1)
           {
             [(GKVoiceChatServicePrivate *)self setState:5];
             [(GKVoiceChatServicePrivate *)self startICEConnectionCheck:v8 isCaller:1];
@@ -955,13 +955,13 @@ LABEL_97:
           }
         }
 
-        v72 = [MEMORY[0x277CCACA8] stringWithFormat:objc_msgSend(GCKGameConnectivityKitBundle(), "localizedStringForKey:value:table:", @"%@ has declined your request.", &stru_286195238, @"GKSessionEvent", a4];
+        v72 = [MEMORY[0x277CCACA8] stringWithFormat:objc_msgSend(GCKGameConnectivityKitBundle(), "localizedStringForKey:value:table:", @"%@ has declined your request.", &stru_286195238, @"GKSessionEvent", d];
         v73 = [GCKGameConnectivityKitBundle() localizedStringForKey:@"Request declined." value:&stru_286195238 table:@"GKSessionEvent"];
-        v74 = self;
+        selfCopy4 = self;
         v75 = 32011;
       }
 
-      [(GKVoiceChatServicePrivate *)v74 getNSError:&v89 code:v75 description:v72 reason:v73];
+      [(GKVoiceChatServicePrivate *)selfCopy4 getNSError:&v89 code:v75 description:v72 reason:v73];
 LABEL_94:
       if (!v89)
       {
@@ -970,7 +970,7 @@ LABEL_94:
 
       v96[0] = @"participantID";
       v96[1] = @"error";
-      v97[0] = a4;
+      v97[0] = d;
       v97[1] = v89;
       v65 = MEMORY[0x277CBEAC0];
       v66 = v97;
@@ -1026,11 +1026,11 @@ LABEL_94:
         }
       }
 
-      v64 = [MEMORY[0x277CCACA8] stringWithFormat:objc_msgSend(GCKGameConnectivityKitBundle(), "localizedStringForKey:value:table:", @"%@ has declined your request.", &stru_286195238, @"GKSessionEvent", a4];
+      v64 = [MEMORY[0x277CCACA8] stringWithFormat:objc_msgSend(GCKGameConnectivityKitBundle(), "localizedStringForKey:value:table:", @"%@ has declined your request.", &stru_286195238, @"GKSessionEvent", d];
       -[GKVoiceChatServicePrivate getNSError:code:description:reason:](self, "getNSError:code:description:reason:", &v89, 32011, v64, [GCKGameConnectivityKitBundle() localizedStringForKey:@"Request declined." value:&stru_286195238 table:@"GKSessionEvent"]);
       v92[0] = @"participantID";
       v92[1] = @"error";
-      v93[0] = a4;
+      v93[0] = d;
       v93[1] = v89;
       v65 = MEMORY[0x277CBEAC0];
       v66 = v93;
@@ -1106,16 +1106,16 @@ LABEL_96:
 LABEL_107:
         [(GKVoiceChatServicePrivate *)self setState:6];
         incomingCallDict = self->incomingCallDict;
-        v84 = self;
+        selfCopy6 = self;
         v85 = 0;
         goto LABEL_108;
       }
 
-      v81 = [(GKVoiceChatDictionary *)self->incomingCallDict nonce];
-      v82 = [(GKVoiceChatDictionary *)self->outgoingCallDict nonce];
-      if (v82 >= v81)
+      nonce = [(GKVoiceChatDictionary *)self->incomingCallDict nonce];
+      nonce2 = [(GKVoiceChatDictionary *)self->outgoingCallDict nonce];
+      if (nonce2 >= nonce)
       {
-        if (v82 <= v81)
+        if (nonce2 <= nonce)
         {
           [(VideoConference *)self->conf stopCallID:self->curCallID];
           if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -1137,11 +1137,11 @@ LABEL_107:
           }
 
           *buf = 0;
-          v88 = [MEMORY[0x277CCACA8] stringWithFormat:objc_msgSend(GCKGameConnectivityKitBundle(), "localizedStringForKey:value:table:", @"%@ has declined your request.", &stru_286195238, @"GKSessionEvent", a4];
+          v88 = [MEMORY[0x277CCACA8] stringWithFormat:objc_msgSend(GCKGameConnectivityKitBundle(), "localizedStringForKey:value:table:", @"%@ has declined your request.", &stru_286195238, @"GKSessionEvent", d];
           -[GKVoiceChatServicePrivate getNSError:code:description:reason:](self, "getNSError:code:description:reason:", buf, 32011, v88, [GCKGameConnectivityKitBundle() localizedStringForKey:@"Request declined." value:&stru_286195238 table:@"GKSessionEvent"]);
           v94[0] = @"participantID";
           v94[1] = @"error";
-          v95[0] = a4;
+          v95[0] = d;
           v95[1] = *buf;
           v21 = MEMORY[0x277CBEAC0];
           v22 = v95;
@@ -1155,10 +1155,10 @@ LABEL_107:
 
     [(GKVoiceChatServicePrivate *)self setState:5];
     incomingCallDict = self->incomingCallDict;
-    v84 = self;
+    selfCopy6 = self;
     v85 = 1;
 LABEL_108:
-    [(GKVoiceChatServicePrivate *)v84 startICEConnectionCheck:incomingCallDict isCaller:v85];
+    [(GKVoiceChatServicePrivate *)selfCopy6 startICEConnectionCheck:incomingCallDict isCaller:v85];
     goto LABEL_99;
   }
 
@@ -1168,13 +1168,13 @@ LABEL_108:
   [(NSRecursiveLock *)stateLock unlock];
 }
 
-- (id)createReplyUsingDictionary:(id)a3 replyCode:(unint64_t)a4 error:(id *)a5
+- (id)createReplyUsingDictionary:(id)dictionary replyCode:(unint64_t)code error:(id *)error
 {
   v13 = *MEMORY[0x277D85DE8];
   v12 = 0;
-  if (a4 == 1)
+  if (code == 1)
   {
-    v8 = [(VideoConference *)self->conf connectionBlobForParticipantID:[(GKVoiceChatClient *)self->client participantID] callID:&v12 error:a5];
+    v8 = [(VideoConference *)self->conf connectionBlobForParticipantID:[(GKVoiceChatClient *)self->client participantID] callID:&v12 error:error];
     if (!v8)
     {
       result = 0;
@@ -1187,42 +1187,42 @@ LABEL_108:
 
   else
   {
-    v8 = [MEMORY[0x277CBEA90] dataWithBytes:"empty" length:{5, a5}];
+    v8 = [MEMORY[0x277CBEA90] dataWithBytes:"empty" length:{5, error}];
     v9 = 0;
   }
 
-  result = [a3 replyDictionary:a4 connectionData:v8 callID:v9 focus:{-[GKVoiceChatServicePrivate isFocus](self, "isFocus")}];
+  result = [dictionary replyDictionary:code connectionData:v8 callID:v9 focus:{-[GKVoiceChatServicePrivate isFocus](self, "isFocus")}];
 LABEL_6:
   v11 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (id)createInvite:(id *)a3 toParticipant:(id)a4 callID:(unsigned int *)a5
+- (id)createInvite:(id *)invite toParticipant:(id)participant callID:(unsigned int *)d
 {
-  v9 = *a5;
-  result = [(VideoConference *)self->conf connectionBlobForParticipantID:[(GKVoiceChatClient *)self->client participantID] callID:&v9 error:a3];
-  *a5 = v9;
+  v9 = *d;
+  result = [(VideoConference *)self->conf connectionBlobForParticipantID:[(GKVoiceChatClient *)self->client participantID] callID:&v9 error:invite];
+  *d = v9;
   if (result)
   {
-    return [GKVoiceChatDictionary inviteDictionaryToParticipantID:a4 fromParticipantID:[(GKVoiceChatClient *)self->client participantID] connectionData:result callID:*a5 focus:[(GKVoiceChatServicePrivate *)self isFocus]];
+    return [GKVoiceChatDictionary inviteDictionaryToParticipantID:participant fromParticipantID:[(GKVoiceChatClient *)self->client participantID] connectionData:result callID:*d focus:[(GKVoiceChatServicePrivate *)self isFocus]];
   }
 
   return result;
 }
 
-- (BOOL)getNSError:(id *)a3 code:(int64_t)a4 description:(id)a5 hResult:(int)a6
+- (BOOL)getNSError:(id *)error code:(int64_t)code description:(id)description hResult:(int)result
 {
-  if (a6 <= 0x16u)
+  if (result <= 0x16u)
   {
-    if (a6 <= 0xEu)
+    if (result <= 0xEu)
     {
-      if (a6 == 3)
+      if (result == 3)
       {
         v8 = @"Out of memory";
         goto LABEL_27;
       }
 
-      if (a6 == 14)
+      if (result == 14)
       {
         v8 = @"Data size too large";
         goto LABEL_27;
@@ -1231,7 +1231,7 @@ LABEL_6:
 
     else
     {
-      switch(a6)
+      switch(result)
       {
         case 0xFu:
           v8 = @"Invalid payload";
@@ -1250,9 +1250,9 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  if (a6 > 0x21u)
+  if (result > 0x21u)
   {
-    switch(a6)
+    switch(result)
     {
       case '""':
         v8 = @"Bad message";
@@ -1268,45 +1268,45 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  if (a6 == 23)
+  if (result == 23)
   {
     v8 = @"Timed out";
     goto LABEL_27;
   }
 
-  if (a6 == 30)
+  if (result == 30)
   {
     v8 = @"Cancelled";
     goto LABEL_27;
   }
 
-  if (a6 != 33)
+  if (result != 33)
   {
     goto LABEL_26;
   }
 
   v8 = @"Connection closed";
 LABEL_27:
-  [(GKVoiceChatServicePrivate *)self getNSError:a3 code:a4 description:a5 reason:v8, v6, v7];
+  [(GKVoiceChatServicePrivate *)self getNSError:error code:code description:description reason:v8, v6, v7];
   return 1;
 }
 
-- (BOOL)getNSError:(id *)a3 code:(int64_t)a4 description:(id)a5 reason:(id)a6
+- (BOOL)getNSError:(id *)error code:(int64_t)code description:(id)description reason:(id)reason
 {
   v30 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (error)
   {
     v9 = 0;
-    if (a5 && a6)
+    if (description && reason)
     {
       v11 = objc_alloc(MEMORY[0x277CBEAC0]);
-      v9 = [v11 initWithObjectsAndKeys:{a5, *MEMORY[0x277CCA450], a6, *MEMORY[0x277CCA470], 0}];
+      v9 = [v11 initWithObjectsAndKeys:{description, *MEMORY[0x277CCA450], reason, *MEMORY[0x277CCA470], 0}];
     }
 
-    v12 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:*off_279682960 code:a4 userInfo:v9];
-    *a3 = v12;
+    v12 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:*off_279682960 code:code userInfo:v9];
+    *error = v12;
     v13 = v12;
-    v14 = *a3;
+    v14 = *error;
 
     if (VRTraceGetErrorLogLevelForModule() >= 5)
     {
@@ -1314,9 +1314,9 @@ LABEL_27:
       v16 = *MEMORY[0x277CE5818];
       if (os_log_type_enabled(*MEMORY[0x277CE5818], OS_LOG_TYPE_DEFAULT))
       {
-        if (*a3)
+        if (*error)
         {
-          v17 = [objc_msgSend(*a3 "description")];
+          v17 = [objc_msgSend(*error "description")];
         }
 
         else
@@ -1331,7 +1331,7 @@ LABEL_27:
         v24 = 1024;
         v25 = 804;
         v26 = 1024;
-        v27 = a4;
+        codeCopy = code;
         v28 = 2080;
         v29 = v17;
         _os_log_impl(&dword_24E50C000, v16, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Error: %d -- %s.", buf, 0x2Cu);
@@ -1339,15 +1339,15 @@ LABEL_27:
     }
   }
 
-  result = a3 != 0;
+  result = error != 0;
   v19 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (void)setMicrophoneMuted:(BOOL)a3
+- (void)setMicrophoneMuted:(BOOL)muted
 {
   [(NSRecursiveLock *)self->stateLock lock];
-  self->microphoneMuted = a3;
+  self->microphoneMuted = muted;
   [(NSRecursiveLock *)self->stateLock unlock];
   microphoneMuted = self->microphoneMuted;
   conf = self->conf;
@@ -1355,9 +1355,9 @@ LABEL_27:
   [(VideoConference *)conf setMicrophoneMuted:microphoneMuted];
 }
 
-- (void)videoConference:(id)a3 didStartSession:(BOOL)a4 withCallID:(unsigned int)a5 error:(id)a6
+- (void)videoConference:(id)conference didStartSession:(BOOL)session withCallID:(unsigned int)d error:(id)error
 {
-  v8 = a4;
+  sessionCopy = session;
   v31 = *MEMORY[0x277D85DE8];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
@@ -1373,19 +1373,19 @@ LABEL_27:
       v23 = 1024;
       v24 = 885;
       v25 = 1024;
-      v26 = a5;
+      dCopy = d;
       v27 = 1024;
       v28 = curCallID;
       v29 = 1024;
-      v30 = curCallID == a5;
+      v30 = curCallID == d;
       _os_log_impl(&dword_24E50C000, v11, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d videoConference: didStopWithCallID:%d == %d ? %d", buf, 0x2Eu);
     }
   }
 
   [(NSRecursiveLock *)self->stateLock lock];
-  if (self->curCallID == a5 && self->state)
+  if (self->curCallID == d && self->state)
   {
-    if (v8)
+    if (sessionCopy)
     {
       self->state = 1;
       [(GKVoiceChatServicePrivate *)self informClientVoiceChatDidStart:[(GKVoiceChatDictionary *)self->outgoingCallDict participantID]];
@@ -1393,10 +1393,10 @@ LABEL_27:
 
     else
     {
-      v15 = [(GKVoiceChatDictionary *)self->outgoingCallDict participantID];
+      participantID = [(GKVoiceChatDictionary *)self->outgoingCallDict participantID];
       v17[1] = @"error";
-      v18[0] = v15;
-      v18[1] = a6;
+      v18[0] = participantID;
+      v18[1] = error;
       -[GKVoiceChatServicePrivate informClientVoiceChatDidNotStart:](self, "informClientVoiceChatDidNotStart:", [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:2]);
       [(GKVoiceChatServicePrivate *)self resetState];
     }
@@ -1418,7 +1418,7 @@ LABEL_27:
         v23 = 1024;
         v24 = 902;
         v25 = 1024;
-        v26 = 902;
+        dCopy = 902;
         _os_log_impl(&dword_24E50C000, v14, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d stopCallID:__LINE = %d", buf, 0x22u);
       }
     }
@@ -1428,7 +1428,7 @@ LABEL_27:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)videoConference:(id)a3 didStopWithCallID:(unsigned int)a4 error:(id)a5
+- (void)videoConference:(id)conference didStopWithCallID:(unsigned int)d error:(id)error
 {
   v27 = *MEMORY[0x277D85DE8];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -1445,22 +1445,22 @@ LABEL_27:
       v19 = 1024;
       v20 = 911;
       v21 = 1024;
-      v22 = a4;
+      dCopy = d;
       v23 = 1024;
       v24 = curCallID;
       v25 = 1024;
-      v26 = curCallID == a4;
+      v26 = curCallID == d;
       _os_log_impl(&dword_24E50C000, v9, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d videoConference: didStopWithCallID:%d == %d ? %d", buf, 0x2Eu);
     }
   }
 
   [(NSRecursiveLock *)self->stateLock lock];
-  if (self->curCallID == a4 && self->state)
+  if (self->curCallID == d && self->state)
   {
-    v11 = [(GKVoiceChatDictionary *)self->outgoingCallDict participantID];
+    participantID = [(GKVoiceChatDictionary *)self->outgoingCallDict participantID];
     v13[1] = @"error";
-    v14[0] = v11;
-    v14[1] = a5;
+    v14[0] = participantID;
+    v14[1] = error;
     -[GKVoiceChatServicePrivate performSelectorOnMainThread:withObject:waitUntilDone:](self, "performSelectorOnMainThread:withObject:waitUntilDone:", sel_informClientVoiceChatDidStop_, [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:2], 0);
     [(GKVoiceChatServicePrivate *)self resetState];
   }
@@ -1469,7 +1469,7 @@ LABEL_27:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setLocalVideoLayer:(void *)a3
+- (void)setLocalVideoLayer:(void *)layer
 {
   v16 = *MEMORY[0x277D85DE8];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -1522,7 +1522,7 @@ LABEL_27:
   return 0;
 }
 
-- (void)setRemoteVideoLayer:(void *)a3
+- (void)setRemoteVideoLayer:(void *)layer
 {
   v16 = *MEMORY[0x277D85DE8];
   if (VRTraceGetErrorLogLevelForModule() >= 7)

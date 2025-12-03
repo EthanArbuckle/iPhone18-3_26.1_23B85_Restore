@@ -1,16 +1,16 @@
 @interface ADStereoPipeline
-- (ADStereoPipeline)initWithInputAlignment:(unint64_t)a3 prioritization:(int64_t)a4 andParameters:(id)a5;
-- (int64_t)adjustForEngine:(unint64_t)a3;
-- (int64_t)preProcessColorInput:(__CVBuffer *)a3 toBuffer:(__CVBuffer *)a4;
+- (ADStereoPipeline)initWithInputAlignment:(unint64_t)alignment prioritization:(int64_t)prioritization andParameters:(id)parameters;
+- (int64_t)adjustForEngine:(unint64_t)engine;
+- (int64_t)preProcessColorInput:(__CVBuffer *)input toBuffer:(__CVBuffer *)buffer;
 @end
 
 @implementation ADStereoPipeline
 
-- (ADStereoPipeline)initWithInputAlignment:(unint64_t)a3 prioritization:(int64_t)a4 andParameters:(id)a5
+- (ADStereoPipeline)initWithInputAlignment:(unint64_t)alignment prioritization:(int64_t)prioritization andParameters:(id)parameters
 {
-  v8 = a5;
+  parametersCopy = parameters;
   v22 = 335687464;
-  v23 = a4;
+  prioritizationCopy = prioritization;
   v24 = 0;
   v25 = 0;
   v26 = 0;
@@ -23,14 +23,14 @@
     goto LABEL_27;
   }
 
-  if (!v8)
+  if (!parametersCopy)
   {
-    v8 = objc_opt_new();
+    parametersCopy = objc_opt_new();
   }
 
-  objc_storeStrong(&v9->_pipelineParameters, v8);
-  v9->_stereoImagesAlignment = a3;
-  v9->_prioritization = a4;
+  objc_storeStrong(&v9->_pipelineParameters, parametersCopy);
+  v9->_stereoImagesAlignment = alignment;
+  v9->_prioritization = prioritization;
   if ([MEMORY[0x277CEE958] hasANE])
   {
     ADCommonUtils::runtimePlatformANEVersionString(buf);
@@ -97,7 +97,7 @@
         v14 = &unk_28524ABA8;
       }
 
-      if (a4 == 1)
+      if (prioritization == 1)
       {
         v13 = &unk_28524ABD8;
       }
@@ -125,12 +125,12 @@ LABEL_30:
   return v19;
 }
 
-- (int64_t)preProcessColorInput:(__CVBuffer *)a3 toBuffer:(__CVBuffer *)a4
+- (int64_t)preProcessColorInput:(__CVBuffer *)input toBuffer:(__CVBuffer *)buffer
 {
   kdebug_trace();
   if (self->_shouldPreProcessColorInputs)
   {
-    [ADUtils convertRGBAFloat:a3 toPlanar:a4];
+    [ADUtils convertRGBAFloat:input toPlanar:buffer];
     v7 = 0;
   }
 
@@ -143,7 +143,7 @@ LABEL_30:
   return v7;
 }
 
-- (int64_t)adjustForEngine:(unint64_t)a3
+- (int64_t)adjustForEngine:(unint64_t)engine
 {
   self->_shouldPreProcessColorInputs = 0;
   prioritization = self->_prioritization;
@@ -156,7 +156,7 @@ LABEL_30:
 
   else
   {
-    if (a3 - 3 <= 1)
+    if (engine - 3 <= 1)
     {
       v6 = [ADEspressoStereoInferenceDescriptor alloc];
       networkProvider = self->_networkProvider;

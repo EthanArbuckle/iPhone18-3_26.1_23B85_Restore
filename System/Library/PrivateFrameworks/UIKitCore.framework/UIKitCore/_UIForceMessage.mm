@@ -1,15 +1,15 @@
 @interface _UIForceMessage
-+ (id)observe:(id)a3;
++ (id)observe:(id)observe;
 + (id)reset;
 @end
 
 @implementation _UIForceMessage
 
-+ (id)observe:(id)a3
++ (id)observe:(id)observe
 {
-  v3 = a3;
+  observeCopy = observe;
   v4 = objc_opt_new();
-  v3[2](v3, v4);
+  observeCopy[2](observeCopy, v4);
 
   return v4;
 }

@@ -9,13 +9,13 @@
 - (BOOL)isLocallyHosted
 {
   v3 = +[MRDAVOutputContextManager sharedManager];
-  v4 = [v3 populatedOutputContexts];
+  populatedOutputContexts = [v3 populatedOutputContexts];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10011CBDC;
   v7[3] = &unk_1004BD958;
   v7[4] = self;
-  v5 = [v4 msv_firstWhere:v7];
+  v5 = [populatedOutputContexts msv_firstWhere:v7];
   LOBYTE(self) = v5 != 0;
 
   return self;
@@ -28,32 +28,32 @@
   {
     if ([(MRAVOutputDevice *)self isLocallyHosted]|| ([(MRAVOutputDevice *)self shouldBeLocallyHosted]& 1) != 0)
     {
-      v4 = 1;
+      isPrimaryLocalDevice = 1;
     }
 
     else
     {
-      v4 = [(MRAVOutputDevice *)self isPrimaryLocalDevice];
+      isPrimaryLocalDevice = [(MRAVOutputDevice *)self isPrimaryLocalDevice];
     }
   }
 
   else
   {
-    v4 = 0;
+    isPrimaryLocalDevice = 0;
   }
 
-  return v4;
+  return isPrimaryLocalDevice;
 }
 
 - (BOOL)isSmartDevice
 {
-  v3 = [(MRAVOutputDevice *)self isRemoteControllable];
-  if (v3)
+  isRemoteControllable = [(MRAVOutputDevice *)self isRemoteControllable];
+  if (isRemoteControllable)
   {
-    LOBYTE(v3) = [(MRAVOutputDevice *)self isAuxiliary]^ 1;
+    LOBYTE(isRemoteControllable) = [(MRAVOutputDevice *)self isAuxiliary]^ 1;
   }
 
-  return v3;
+  return isRemoteControllable;
 }
 
 @end

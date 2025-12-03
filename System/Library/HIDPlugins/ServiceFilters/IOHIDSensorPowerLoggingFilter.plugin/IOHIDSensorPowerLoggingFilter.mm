@@ -1,33 +1,26 @@
-void sub_E3C(id a1)
-{
-  qword_8658 = dispatch_queue_create("com.apple.HID.SensorPowerLog", 0);
-
-  _objc_release_x1();
-}
-
-void sub_17E8(uint64_t a1, NSObject *a2)
-{
-  v2 = 138412290;
-  v3 = a1;
-  _os_log_debug_impl(&dword_0, a2, OS_LOG_TYPE_DEBUG, "IOHIDSensorPowerLoggingFilter: sending telemetry: %@\n", &v2, 0xCu);
-}
-
-a3 withUsagePage:(id)a4 andUsage:(id)a5 forClient:(id)a6;
-- (void)setCancelHandler:(id)a3;
+@interface IOHIDSensorPowerLoggingFilter
+- (BOOL)setProperty:(id)property forKey:(id)key client:(id)client;
+- (HIDEventService)service;
+- (IOHIDSensorPowerLoggingFilter)initWithService:(id)service;
+- (id)propertyForKey:(id)key client:(id)client;
+- (void)cancel;
+- (void)clientNotification:(id)notification added:(BOOL)added;
+- (void)sendPPSTelemetry:(id)telemetry withUsagePage:(id)page andUsage:(id)usage forClient:(id)client;
+- (void)setCancelHandler:(id)handler;
 @end
 
 @implementation IOHIDSensorPowerLoggingFilter
 
-- (IOHIDSensorPowerLoggingFilter)initWithService:(id)a3
+- (IOHIDSensorPowerLoggingFilter)initWithService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   v19.receiver = self;
   v19.super_class = IOHIDSensorPowerLoggingFilter;
   v5 = [(IOHIDSensorPowerLoggingFilter *)&v19 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_service, v4);
+    objc_storeWeak(&v5->_service, serviceCopy);
     v7 = objc_opt_new();
     clients = v6->_clients;
     v6->_clients = v7;
@@ -68,10 +61,10 @@ a3 withUsagePage:(id)a4 andUsage:(id)a5 forClient:(id)a6;
   return v6;
 }
 
-- (id)propertyForKey:(id)a3 client:(id)a4
+- (id)propertyForKey:(id)key client:(id)client
 {
-  v5 = a3;
-  if ([v5 isEqualToString:@"ServiceFilterDebug"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"ServiceFilterDebug"])
   {
     v6 = objc_opt_new();
     [v6 setObject:@"IOHIDSensorPowerLoggingFilter" forKeyedSubscript:@"Class"];
@@ -91,7 +84,7 @@ LABEL_11:
     goto LABEL_13;
   }
 
-  if ([v5 isEqualToString:@"TestHIDSensorPowerLoggingFilterKey"])
+  if ([keyCopy isEqualToString:@"TestHIDSensorPowerLoggingFilterKey"])
   {
     v6 = objc_opt_new();
     [v6 setObject:self->_clients forKeyedSubscript:@"clients"];
@@ -121,9 +114,9 @@ LABEL_13:
   return v6;
 }
 
-- (void)setCancelHandler:(id)a3
+- (void)setCancelHandler:(id)handler
 {
-  v4 = objc_retainBlock(a3);
+  v4 = objc_retainBlock(handler);
   cancelHandler = self->_cancelHandler;
   self->_cancelHandler = v4;
 
@@ -137,23 +130,23 @@ LABEL_13:
   self->_cancelHandler = 0;
 }
 
-- (void)sendPPSTelemetry:(id)a3 withUsagePage:(id)a4 andUsage:(id)a5 forClient:(id)a6
+- (void)sendPPSTelemetry:(id)telemetry withUsagePage:(id)page andUsage:(id)usage forClient:(id)client
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
+  telemetryCopy = telemetry;
+  pageCopy = page;
+  usageCopy = usage;
+  clientCopy = client;
+  v14 = clientCopy;
   if (qword_8668)
   {
     v21[0] = @"ProcessName";
     v21[1] = @"ReportInterval";
-    v22[0] = v13;
-    v22[1] = v10;
+    v22[0] = clientCopy;
+    v22[1] = telemetryCopy;
     v21[2] = @"UsagePage";
     v21[3] = @"Usage";
-    v22[2] = v11;
-    v22[3] = v12;
+    v22[2] = pageCopy;
+    v22[3] = usageCopy;
     v15 = [NSDictionary dictionaryWithObjects:v22 forKeys:v21 count:4];
     v16 = _IOHIDLogCategory();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -162,7 +155,7 @@ LABEL_13:
     }
 
     ++self->_ppsCount;
-    self->_lastInterval = [v10 unsignedLongLongValue];
+    self->_lastInterval = [telemetryCopy unsignedLongLongValue];
     v17 = qword_8658;
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
@@ -181,13 +174,13 @@ LABEL_13:
   return WeakRetained;
 }
 
-- (BOOL)setProperty:(id)a3 forKey:(id)a4 client:(id)a5
+- (BOOL)setProperty:(id)property forKey:(id)key client:(id)client
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [a4 isEqualToString:@"ReportInterval"];
+  propertyCopy = property;
+  clientCopy = client;
+  v10 = [key isEqualToString:@"ReportInterval"];
   v11 = 0;
-  if (v8 && v10)
+  if (propertyCopy && v10)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -196,10 +189,10 @@ LABEL_13:
       goto LABEL_18;
     }
 
-    v12 = v8;
-    if (v9)
+    v12 = propertyCopy;
+    if (clientCopy)
     {
-      v13 = [IOHIDSensorPowerLoggingFilter getClientProcessName:v9];
+      v13 = [IOHIDSensorPowerLoggingFilter getClientProcessName:clientCopy];
     }
 
     else
@@ -213,17 +206,17 @@ LABEL_13:
       *buf = 138412546;
       v27 = v12;
       v28 = 2112;
-      v29 = v9;
+      v29 = clientCopy;
       _os_log_debug_impl(&dword_0, v14, OS_LOG_TYPE_DEBUG, "IOHIDSensorPowerLoggingFilter: set report interval:%@ client:%@\n", buf, 0x16u);
     }
 
-    v15 = [v9 uuid];
+    uuid = [clientCopy uuid];
 
-    if (v15)
+    if (uuid)
     {
       clients = self->_clients;
-      v17 = [v9 uuid];
-      v18 = [(NSMutableDictionary *)clients objectForKeyedSubscript:v17];
+      uuid2 = [clientCopy uuid];
+      v18 = [(NSMutableDictionary *)clients objectForKeyedSubscript:uuid2];
 
       if (v18)
       {
@@ -251,8 +244,8 @@ LABEL_17:
       }
 
       v21 = self->_clients;
-      v22 = [v9 uuid];
-      [(NSMutableDictionary *)v21 setObject:v18 forKey:v22];
+      uuid3 = [clientCopy uuid];
+      [(NSMutableDictionary *)v21 setObject:v18 forKey:uuid3];
     }
 
     [(IOHIDSensorPowerLoggingFilter *)self sendPPSTelemetry:v12 withUsagePage:self->_usagePage andUsage:self->_usage forClient:v13];
@@ -264,17 +257,17 @@ LABEL_18:
   return v11;
 }
 
-- (void)clientNotification:(id)a3 added:(BOOL)a4
+- (void)clientNotification:(id)notification added:(BOOL)added
 {
-  v6 = a3;
-  v7 = v6;
+  notificationCopy = notification;
+  v7 = notificationCopy;
   v8 = 0;
-  v9 = 0;
-  if (v6 && !a4)
+  uuid = 0;
+  if (notificationCopy && !added)
   {
-    v9 = [v6 uuid];
+    uuid = [notificationCopy uuid];
 
-    if (v9 && (v10 = self->_clients, [v7 uuid], v11 = objc_claimAutoreleasedReturnValue(), -[NSMutableDictionary objectForKey:](v10, "objectForKey:", v11), v9 = objc_claimAutoreleasedReturnValue(), v11, v9))
+    if (uuid && (v10 = self->_clients, [v7 uuid], v11 = objc_claimAutoreleasedReturnValue(), -[NSMutableDictionary objectForKey:](v10, "objectForKey:", v11), uuid = objc_claimAutoreleasedReturnValue(), v11, uuid))
     {
       v12 = _IOHIDLogCategory();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -285,13 +278,13 @@ LABEL_18:
       }
 
       clients = self->_clients;
-      v14 = [v7 uuid];
-      [(NSMutableDictionary *)clients removeObjectForKey:v14];
+      uuid2 = [v7 uuid];
+      [(NSMutableDictionary *)clients removeObjectForKey:uuid2];
 
-      v8 = [v9 objectForKeyedSubscript:@"ReportInterval"];
+      v8 = [uuid objectForKeyedSubscript:@"ReportInterval"];
       if (([v8 isEqualToNumber:&off_4498] & 1) == 0)
       {
-        v15 = [v9 objectForKeyedSubscript:@"ProcessName"];
+        v15 = [uuid objectForKeyedSubscript:@"ProcessName"];
         [(IOHIDSensorPowerLoggingFilter *)self sendPPSTelemetry:&off_4498 withUsagePage:self->_usagePage andUsage:self->_usage forClient:v15];
       }
     }

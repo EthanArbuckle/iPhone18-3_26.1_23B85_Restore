@@ -1,5 +1,5 @@
 @interface _DASDeviceQuery
-+ (BOOL)doesDeviceSupportGraphicsFeatureSet:(__CFString *)a3;
++ (BOOL)doesDeviceSupportGraphicsFeatureSet:(__CFString *)set;
 + (BOOL)hasEmbeddedSwap;
 + (BOOL)supportsBackgroundGPU;
 + (id)log;
@@ -53,19 +53,19 @@
   return v5 & v6;
 }
 
-+ (BOOL)doesDeviceSupportGraphicsFeatureSet:(__CFString *)a3
++ (BOOL)doesDeviceSupportGraphicsFeatureSet:(__CFString *)set
 {
   v4 = MGCopyAnswer();
   Value = CFDictionaryGetValue(v4, @"GraphicsFeatureSetClass");
   v6 = CFDictionaryGetValue(v4, @"GraphicsFeatureSetFallbacks");
-  if (!a3 || !Value)
+  if (!set || !Value)
   {
     goto LABEL_7;
   }
 
   v7 = v6;
   v8 = 1;
-  if (CFStringCompare(Value, a3, 1uLL) == kCFCompareEqualTo)
+  if (CFStringCompare(Value, set, 1uLL) == kCFCompareEqualTo)
   {
     goto LABEL_8;
   }
@@ -75,7 +75,7 @@
     ArrayBySeparatingStrings = CFStringCreateArrayBySeparatingStrings(kCFAllocatorDefault, v7, @":");
     v11.length = CFArrayGetCount(ArrayBySeparatingStrings);
     v11.location = 0;
-    v8 = CFArrayContainsValue(ArrayBySeparatingStrings, v11, a3) != 0;
+    v8 = CFArrayContainsValue(ArrayBySeparatingStrings, v11, set) != 0;
     if (ArrayBySeparatingStrings)
     {
       CFRelease(ArrayBySeparatingStrings);

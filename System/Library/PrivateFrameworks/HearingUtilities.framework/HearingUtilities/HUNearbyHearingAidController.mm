@@ -1,82 +1,82 @@
 @interface HUNearbyHearingAidController
 + (id)sharedInstance;
 - (BOOL)isPeerConnectedToHearingDevice;
-- (BOOL)processStateMessageFromPeer:(id)a3 state:(id)a4;
-- (BOOL)relinquishConnectionForReason:(int64_t)a3 toDevice:(id)a4;
-- (BOOL)requestHandoff:(int64_t)a3 reason:(int64_t)a4;
+- (BOOL)processStateMessageFromPeer:(id)peer state:(id)state;
+- (BOOL)relinquishConnectionForReason:(int64_t)reason toDevice:(id)device;
+- (BOOL)requestHandoff:(int64_t)handoff reason:(int64_t)reason;
 - (BOOL)shouldConnect;
 - (BOOL)shouldDisconnect;
-- (BOOL)shouldRelinquishConnectionForReason:(int64_t)a3;
-- (BOOL)shouldRoute:(BOOL)a3;
+- (BOOL)shouldRelinquishConnectionForReason:(int64_t)reason;
+- (BOOL)shouldRoute:(BOOL)route;
 - (BOOL)updateStateOnDeviceQueue;
 - (HUNearbyHearingAidController)init;
 - (HUNearbyHearingAidControllerDelegate)delegate;
 - (id)availableDevices;
 - (id)descriptionForCurrentMessagePriority;
 - (id)descriptionForCurrentState;
-- (id)descriptionForHandoffReason:(int64_t)a3;
+- (id)descriptionForHandoffReason:(int64_t)reason;
 - (id)descriptionForHandoffState;
-- (id)descriptionForState:(int64_t)a3;
-- (id)device:(id)a3 didReceiveMessage:(id)a4;
-- (id)devicesFromDevices:(id)a3 withMessagePriority:(unint64_t)a4;
-- (id)hearingAidForDeviceID:(id)a3;
+- (id)descriptionForState:(int64_t)state;
+- (id)device:(id)device didReceiveMessage:(id)message;
+- (id)devicesFromDevices:(id)devices withMessagePriority:(unint64_t)priority;
+- (id)hearingAidForDeviceID:(id)d;
 - (id)hearingDevice;
-- (id)peerWithState:(int64_t)a3;
+- (id)peerWithState:(int64_t)state;
 - (id)timeStamp;
-- (int64_t)connectionStateForDevice:(id)a3;
-- (unint64_t)messagePriorityForDevice:(id)a3;
-- (void)callStatusDidChange:(id)a3;
+- (int64_t)connectionStateForDevice:(id)device;
+- (unint64_t)messagePriorityForDevice:(id)device;
+- (void)callStatusDidChange:(id)change;
 - (void)checkConnectionRequestedForMediaAfterTimeout;
 - (void)checkHandoffAfterTimeout;
 - (void)checkPeerStateAfterTimout;
-- (void)clientRemoved:(id)a3;
-- (void)collectPropertyUpdatesFromPayload:(id)a3;
-- (void)connectedPeerWithCompletion:(id)a3;
+- (void)clientRemoved:(id)removed;
+- (void)collectPropertyUpdatesFromPayload:(id)payload;
+- (void)connectedPeerWithCompletion:(id)completion;
 - (void)disconnectFromPairedDevice;
 - (void)finishHandoff;
-- (void)logAvailableDevicesWithTitle:(id)a3;
-- (void)logDevices:(id)a3 withTitle:(id)a4 fullInfo:(BOOL)a5;
-- (void)mediaPlaybackDidChange:(id)a3;
+- (void)logAvailableDevicesWithTitle:(id)title;
+- (void)logDevices:(id)devices withTitle:(id)title fullInfo:(BOOL)info;
+- (void)mediaPlaybackDidChange:(id)change;
 - (void)mediaServerDied;
-- (void)processHandoffMessageFromPeer:(id)a3 state:(id)a4;
-- (void)processReadMessageFromPeerDevice:(id)a3 value:(id)a4;
-- (void)processReadProperty:(id)a3 fromPeerDevice:(id)a4;
-- (void)processWriteMessageWithValue:(id)a3;
+- (void)processHandoffMessageFromPeer:(id)peer state:(id)state;
+- (void)processReadMessageFromPeerDevice:(id)device value:(id)value;
+- (void)processReadProperty:(id)property fromPeerDevice:(id)device;
+- (void)processWriteMessageWithValue:(id)value;
 - (void)registerMediaNotifications;
 - (void)relinquishConnection;
-- (void)relinquishConnectionWithCompletion:(id)a3;
+- (void)relinquishConnectionWithCompletion:(id)completion;
 - (void)requestConnection;
 - (void)requestConnectionForMedia;
-- (void)requestConnectionForReason:(int64_t)a3;
+- (void)requestConnectionForReason:(int64_t)reason;
 - (void)resetHandoff;
 - (void)resetHandoffOnDeviceQueue;
-- (void)routesDidChange:(id)a3;
-- (void)scIDSServiceDevice:(id)a3 didReceiveMessage:(id)a4;
-- (void)scIDSServiceDidAddDevices:(id)a3;
-- (void)scIDSServiceDidRemoveDevices:(id)a3;
+- (void)routesDidChange:(id)change;
+- (void)scIDSServiceDevice:(id)device didReceiveMessage:(id)message;
+- (void)scIDSServiceDidAddDevices:(id)devices;
+- (void)scIDSServiceDidRemoveDevices:(id)devices;
 - (void)sendConnectionUpdateToPeers;
-- (void)sendMessage:(id)a3 toDevices:(id)a4;
-- (void)sendMessage:(id)a3 toDevices:(id)a4 messagePriority:(unint64_t)a5;
-- (void)sendMessageToAllDevices:(id)a3 messagePriority:(unint64_t)a4;
-- (void)sendMessagesPriority:(unint64_t)a3;
-- (void)sendMessagesPriorityDefaultForClient:(id)a3;
-- (void)sendMessagesPriorityHighForClient:(id)a3;
-- (void)sendStateMessage:(id)a3 toDevices:(id)a4 isUrgent:(BOOL)a5;
-- (void)sendStateMessageToAllDevices:(id)a3 isUrgent:(BOOL)a4;
-- (void)sendWrite:(id)a3 toDevices:(id)a4;
-- (void)sendWriteToAllDevices:(id)a3;
-- (void)setConnectionState:(int64_t)a3 forDevice:(id)a4;
-- (void)setMessagePriority:(unint64_t)a3 forDevice:(id)a4;
-- (void)shouldRequestAudioConnectionForCall:(BOOL)a3 withCompletion:(id)a4;
+- (void)sendMessage:(id)message toDevices:(id)devices;
+- (void)sendMessage:(id)message toDevices:(id)devices messagePriority:(unint64_t)priority;
+- (void)sendMessageToAllDevices:(id)devices messagePriority:(unint64_t)priority;
+- (void)sendMessagesPriority:(unint64_t)priority;
+- (void)sendMessagesPriorityDefaultForClient:(id)client;
+- (void)sendMessagesPriorityHighForClient:(id)client;
+- (void)sendStateMessage:(id)message toDevices:(id)devices isUrgent:(BOOL)urgent;
+- (void)sendStateMessageToAllDevices:(id)devices isUrgent:(BOOL)urgent;
+- (void)sendWrite:(id)write toDevices:(id)devices;
+- (void)sendWriteToAllDevices:(id)devices;
+- (void)setConnectionState:(int64_t)state forDevice:(id)device;
+- (void)setMessagePriority:(unint64_t)priority forDevice:(id)device;
+- (void)shouldRequestAudioConnectionForCall:(BOOL)call withCompletion:(id)completion;
 - (void)start;
 - (void)stop;
 - (void)unregisterMediaNotifications;
-- (void)updateProperty:(unint64_t)a3 forDeviceID:(id)a4;
-- (void)updateResponse:(id)a3 withState:(int64_t)a4;
+- (void)updateProperty:(unint64_t)property forDeviceID:(id)d;
+- (void)updateResponse:(id)response withState:(int64_t)state;
 - (void)updateState;
-- (void)validateResponse:(id)a3;
-- (void)writeValue:(id)a3 forProperty:(unint64_t)a4 andDeviceID:(id)a5;
-- (void)writeValue:(id)a3 forProperty:(unint64_t)a4 andDeviceID:(id)a5 toDevices:(id)a6;
+- (void)validateResponse:(id)response;
+- (void)writeValue:(id)value forProperty:(unint64_t)property andDeviceID:(id)d;
+- (void)writeValue:(id)value forProperty:(unint64_t)property andDeviceID:(id)d toDevices:(id)devices;
 @end
 
 @implementation HUNearbyHearingAidController
@@ -128,32 +128,32 @@ uint64_t __46__HUNearbyHearingAidController_sharedInstance__block_invoke()
     processesHighMessagePriority = v5->_processesHighMessagePriority;
     v5->_processesHighMessagePriority = v8;
 
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v10 addObserver:v5 selector:sel_callStatusDidChange_ name:*MEMORY[0x1E69D8E08] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel_callStatusDidChange_ name:*MEMORY[0x1E69D8E08] object:0];
 
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v11 addObserver:v5 selector:sel_callStatusDidChange_ name:*MEMORY[0x1E69D8E58] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v5 selector:sel_callStatusDidChange_ name:*MEMORY[0x1E69D8E58] object:0];
 
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v12 addObserver:v5 selector:sel_routesDidChange_ name:@"com.apple.accessibility.hearingaid.audio.route.changed" object:0];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 addObserver:v5 selector:sel_routesDidChange_ name:@"com.apple.accessibility.hearingaid.audio.route.changed" object:0];
 
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v5, UserRequestedAudioTransferNotification, @"com.apple.accessibility.hearing.audio.transfer", 0, 0);
     v14 = objc_alloc(MEMORY[0x1E6988780]);
-    v15 = [(HUNearbyHearingAidController *)v5 mediaQueue];
-    v16 = [v14 initWithTargetSerialQueue:v15];
+    mediaQueue = [(HUNearbyHearingAidController *)v5 mediaQueue];
+    v16 = [v14 initWithTargetSerialQueue:mediaQueue];
     [(HUNearbyHearingAidController *)v5 setSendConnectionToCompanionTimer:v16];
 
     v17 = objc_alloc(MEMORY[0x1E6988780]);
-    v18 = [(HUDeviceController *)v5 deviceUpdatesQueue];
-    v19 = [v17 initWithTargetSerialQueue:v18];
+    deviceUpdatesQueue = [(HUDeviceController *)v5 deviceUpdatesQueue];
+    v19 = [v17 initWithTargetSerialQueue:deviceUpdatesQueue];
     handoffTimer = v5->_handoffTimer;
     v5->_handoffTimer = v19;
 
     [(AXDispatchTimer *)v5->_handoffTimer setAutomaticallyCancelPendingBlockUponSchedulingNewBlock:1];
     v21 = objc_alloc(MEMORY[0x1E6988780]);
-    v22 = [(HUDeviceController *)v5 deviceUpdatesQueue];
-    v23 = [v21 initWithTargetSerialQueue:v22];
+    deviceUpdatesQueue2 = [(HUDeviceController *)v5 deviceUpdatesQueue];
+    v23 = [v21 initWithTargetSerialQueue:deviceUpdatesQueue2];
     sendPropertyUpdatesLowTimer = v5->_sendPropertyUpdatesLowTimer;
     v5->_sendPropertyUpdatesLowTimer = v23;
 
@@ -163,8 +163,8 @@ uint64_t __46__HUNearbyHearingAidController_sharedInstance__block_invoke()
     v5->_collectedPropertyUpdates = v25;
 
     v27 = objc_alloc(MEMORY[0x1E6988780]);
-    v28 = [(HUDeviceController *)v5 deviceUpdatesQueue];
-    v29 = [v27 initWithTargetSerialQueue:v28];
+    deviceUpdatesQueue3 = [(HUDeviceController *)v5 deviceUpdatesQueue];
+    v29 = [v27 initWithTargetSerialQueue:deviceUpdatesQueue3];
     messagesPriorityTimer = v5->_messagesPriorityTimer;
     v5->_messagesPriorityTimer = v29;
 
@@ -197,28 +197,28 @@ void __36__HUNearbyHearingAidController_init__block_invoke(uint64_t a1)
     _os_log_impl(&dword_1DA5E2000, v3, OS_LOG_TYPE_DEFAULT, "Registering media", v17, 2u);
   }
 
-  v4 = [MEMORY[0x1E69AED10] sharedAVSystemController];
+  mEMORY[0x1E69AED10] = [MEMORY[0x1E69AED10] sharedAVSystemController];
   v5 = MEMORY[0x1E69AECB8];
   v6 = MEMORY[0x1E69AEAB0];
   v7 = *MEMORY[0x1E69AEAB0];
   v18[0] = *MEMORY[0x1E69AECB8];
   v18[1] = v7;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:2];
-  [v4 setAttribute:v8 forKey:*MEMORY[0x1E69AECD8] error:0];
+  [mEMORY[0x1E69AED10] setAttribute:v8 forKey:*MEMORY[0x1E69AECD8] error:0];
 
-  v9 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v10 = *v5;
-  v11 = [MEMORY[0x1E69AED10] sharedAVSystemController];
-  [v9 addObserver:self selector:sel_mediaServerDied name:v10 object:v11];
+  mEMORY[0x1E69AED10]2 = [MEMORY[0x1E69AED10] sharedAVSystemController];
+  [defaultCenter addObserver:self selector:sel_mediaServerDied name:v10 object:mEMORY[0x1E69AED10]2];
 
-  v12 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
   v13 = *v6;
-  v14 = [MEMORY[0x1E69AED10] sharedAVSystemController];
-  [v12 addObserver:self selector:sel_mediaPlaybackDidChange_ name:v13 object:v14];
+  mEMORY[0x1E69AED10]3 = [MEMORY[0x1E69AED10] sharedAVSystemController];
+  [defaultCenter2 addObserver:self selector:sel_mediaPlaybackDidChange_ name:v13 object:mEMORY[0x1E69AED10]3];
 
   MRMediaRemoteSetWantsNowPlayingNotifications();
-  v15 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v15 addObserver:self selector:sel_mediaPlaybackDidChange_ name:*MEMORY[0x1E69B0E08] object:0];
+  defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter3 addObserver:self selector:sel_mediaPlaybackDidChange_ name:*MEMORY[0x1E69B0E08] object:0];
 
   v16 = *MEMORY[0x1E69E9840];
 }
@@ -232,15 +232,15 @@ void __36__HUNearbyHearingAidController_init__block_invoke(uint64_t a1)
     _os_log_impl(&dword_1DA5E2000, v3, OS_LOG_TYPE_DEFAULT, "Unregistering media", v10, 2u);
   }
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v5 = *MEMORY[0x1E69AECB8];
-  v6 = [MEMORY[0x1E69AED10] sharedAVSystemController];
-  [v4 removeObserver:self name:v5 object:v6];
+  mEMORY[0x1E69AED10] = [MEMORY[0x1E69AED10] sharedAVSystemController];
+  [defaultCenter removeObserver:self name:v5 object:mEMORY[0x1E69AED10]];
 
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
   v8 = *MEMORY[0x1E69AEAB0];
-  v9 = [MEMORY[0x1E69AED10] sharedAVSystemController];
-  [v7 removeObserver:self name:v8 object:v9];
+  mEMORY[0x1E69AED10]2 = [MEMORY[0x1E69AED10] sharedAVSystemController];
+  [defaultCenter2 removeObserver:self name:v8 object:mEMORY[0x1E69AED10]2];
 }
 
 - (void)mediaServerDied
@@ -253,25 +253,25 @@ void __36__HUNearbyHearingAidController_init__block_invoke(uint64_t a1)
 
   [(HUNearbyHearingAidController *)self unregisterMediaNotifications];
   v4 = dispatch_time(0, 2000000000);
-  v5 = [(HUNearbyHearingAidController *)self mediaQueue];
+  mediaQueue = [(HUNearbyHearingAidController *)self mediaQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __47__HUNearbyHearingAidController_mediaServerDied__block_invoke;
   block[3] = &unk_1E85C9F60;
   block[4] = self;
-  dispatch_after(v4, v5, block);
+  dispatch_after(v4, mediaQueue, block);
 }
 
-- (void)mediaPlaybackDidChange:(id)a3
+- (void)mediaPlaybackDidChange:(id)change
 {
   v4 = +[HUUtilities sharedUtilities];
-  v5 = [(HUNearbyHearingAidController *)self mediaQueue];
+  mediaQueue = [(HUNearbyHearingAidController *)self mediaQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __55__HUNearbyHearingAidController_mediaPlaybackDidChange___block_invoke;
   v6[3] = &unk_1E85CA050;
   v6[4] = self;
-  [v4 checkAudioPlayingWithQueue:v5 andCompletion:v6];
+  [v4 checkAudioPlayingWithQueue:mediaQueue andCompletion:v6];
 }
 
 void __55__HUNearbyHearingAidController_mediaPlaybackDidChange___block_invoke(uint64_t a1, int a2)
@@ -304,7 +304,7 @@ void __55__HUNearbyHearingAidController_mediaPlaybackDidChange___block_invoke(ui
   }
 }
 
-- (void)routesDidChange:(id)a3
+- (void)routesDidChange:(id)change
 {
   if (hearingAidStreamSelected())
   {
@@ -322,23 +322,23 @@ void __55__HUNearbyHearingAidController_mediaPlaybackDidChange___block_invoke(ui
         }
 
         v5 = +[HUUtilities sharedUtilities];
-        v6 = [(HUNearbyHearingAidController *)self mediaQueue];
-        [v5 pauseNowPlaying:0 withQueue:v6 andCompletion:0];
+        mediaQueue = [(HUNearbyHearingAidController *)self mediaQueue];
+        [v5 pauseNowPlaying:0 withQueue:mediaQueue andCompletion:0];
       }
     }
   }
 }
 
-- (void)callStatusDidChange:(id)a3
+- (void)callStatusDidChange:(id)change
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   v5 = HCLogHearingHandoff();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 name];
+    name = [changeCopy name];
     *buf = 138412290;
-    v13 = v6;
+    v13 = name;
     _os_log_impl(&dword_1DA5E2000, v5, OS_LOG_TYPE_DEFAULT, "Call status changed - %@", buf, 0xCu);
   }
 
@@ -346,9 +346,9 @@ void __55__HUNearbyHearingAidController_mediaPlaybackDidChange___block_invoke(ui
   v9[1] = 3221225472;
   v9[2] = __52__HUNearbyHearingAidController_callStatusDidChange___block_invoke;
   v9[3] = &unk_1E85CA2E0;
-  v10 = v4;
-  v11 = self;
-  v7 = v4;
+  v10 = changeCopy;
+  selfCopy = self;
+  v7 = changeCopy;
   [(HUNearbyHearingAidController *)self shouldRequestAudioConnectionForCall:1 withCompletion:v9];
 
   v8 = *MEMORY[0x1E69E9840];
@@ -466,21 +466,21 @@ void *__52__HUNearbyHearingAidController_callStatusDidChange___block_invoke_2(vo
   return result;
 }
 
-- (BOOL)shouldRoute:(BOOL)a3
+- (BOOL)shouldRoute:(BOOL)route
 {
   v4 = +[HUHearingAidSettings sharedInstance];
   v5 = v4;
-  if (a3)
+  if (route)
   {
-    v6 = [v4 callAudioRoute];
+    callAudioRoute = [v4 callAudioRoute];
   }
 
   else
   {
-    v6 = [v4 mediaAudioRoute];
+    callAudioRoute = [v4 mediaAudioRoute];
   }
 
-  v7 = v6;
+  v7 = callAudioRoute;
 
   if (v7 == 1)
   {
@@ -493,30 +493,30 @@ void *__52__HUNearbyHearingAidController_callStatusDidChange___block_invoke_2(vo
   }
 
   v8 = +[HUUtilities sharedUtilities];
-  v9 = [v8 currentPickableAudioRoutes];
+  currentPickableAudioRoutes = [v8 currentPickableAudioRoutes];
 
-  v10 = [v9 valueForKey:@"AXSHARouteHeadset"];
-  v11 = [v9 valueForKey:@"AXSHARoutePicked"];
+  v10 = [currentPickableAudioRoutes valueForKey:@"AXSHARouteHeadset"];
+  v11 = [currentPickableAudioRoutes valueForKey:@"AXSHARoutePicked"];
   v12 = [v10 isEqualToDictionary:v11];
 
   v13 = v12 ^ 1;
   return v13;
 }
 
-- (void)shouldRequestAudioConnectionForCall:(BOOL)a3 withCompletion:(id)a4
+- (void)shouldRequestAudioConnectionForCall:(BOOL)call withCompletion:(id)completion
 {
-  v6 = a4;
-  if (v6)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v7 = [(HUDeviceController *)self deviceUpdatesQueue];
+    deviceUpdatesQueue = [(HUDeviceController *)self deviceUpdatesQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __83__HUNearbyHearingAidController_shouldRequestAudioConnectionForCall_withCompletion___block_invoke;
     block[3] = &unk_1E85CA308;
     block[4] = self;
-    v10 = a3;
-    v9 = v6;
-    dispatch_async(v7, block);
+    callCopy = call;
+    v9 = completionCopy;
+    dispatch_async(deviceUpdatesQueue, block);
   }
 }
 
@@ -767,13 +767,13 @@ uint64_t __57__HUNearbyHearingAidController_requestConnectionForMedia__block_inv
   return [*(a1 + 32) requestConnectionForReason:1];
 }
 
-- (void)requestConnectionForReason:(int64_t)a3
+- (void)requestConnectionForReason:(int64_t)reason
 {
   v11 = *MEMORY[0x1E69E9840];
   v5 = HCLogHearingHandoff();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(HUNearbyHearingAidController *)self descriptionForHandoffReason:a3];
+    v6 = [(HUNearbyHearingAidController *)self descriptionForHandoffReason:reason];
     *buf = 138412290;
     v10 = v6;
     _os_log_impl(&dword_1DA5E2000, v5, OS_LOG_TYPE_DEFAULT, "Request connection reason %@", buf, 0xCu);
@@ -784,7 +784,7 @@ uint64_t __57__HUNearbyHearingAidController_requestConnectionForMedia__block_inv
   v8[2] = __59__HUNearbyHearingAidController_requestConnectionForReason___block_invoke;
   v8[3] = &unk_1E85CA358;
   v8[4] = self;
-  v8[5] = a3;
+  v8[5] = reason;
   [(HUNearbyHearingAidController *)self connectedPeerWithCompletion:v8];
   v7 = *MEMORY[0x1E69E9840];
 }
@@ -869,13 +869,13 @@ void __59__HUNearbyHearingAidController_requestConnectionForReason___block_invok
   v4 = +[AXHAController sharedController];
   [v4 setListenForAvailableDeviceUpdates:0];
 
-  v5 = [(HUDeviceController *)self deviceUpdatesQueue];
+  deviceUpdatesQueue = [(HUDeviceController *)self deviceUpdatesQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __49__HUNearbyHearingAidController_requestConnection__block_invoke;
   block[3] = &unk_1E85C9F60;
   block[4] = self;
-  dispatch_async(v5, block);
+  dispatch_async(deviceUpdatesQueue, block);
 
   v6 = +[AXHAController sharedController];
   [v6 setListenForAvailableDeviceUpdates:1];
@@ -909,13 +909,13 @@ LABEL_6:
 
 - (void)checkConnectionRequestedForMediaAfterTimeout
 {
-  v3 = [(HUNearbyHearingAidController *)self mediaQueue];
+  mediaQueue = [(HUNearbyHearingAidController *)self mediaQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __76__HUNearbyHearingAidController_checkConnectionRequestedForMediaAfterTimeout__block_invoke;
   block[3] = &unk_1E85C9F60;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(mediaQueue, block);
 }
 
 void __76__HUNearbyHearingAidController_checkConnectionRequestedForMediaAfterTimeout__block_invoke(uint64_t a1)
@@ -968,7 +968,7 @@ uint64_t __76__HUNearbyHearingAidController_checkConnectionRequestedForMediaAfte
   return [*(a1 + 32) setHoldingMediaForConnection:0];
 }
 
-- (BOOL)shouldRelinquishConnectionForReason:(int64_t)a3
+- (BOOL)shouldRelinquishConnectionForReason:(int64_t)reason
 {
   v47 = *MEMORY[0x1E69E9840];
   v29 = 0;
@@ -1015,7 +1015,7 @@ uint64_t __76__HUNearbyHearingAidController_checkConnectionRequestedForMediaAfte
     v6 = 0;
   }
 
-  if ((a3 - 1) < 2)
+  if ((reason - 1) < 2)
   {
     if (!*(v30 + 24))
     {
@@ -1033,9 +1033,9 @@ uint64_t __76__HUNearbyHearingAidController_checkConnectionRequestedForMediaAfte
 
   else
   {
-    if (a3 != 3)
+    if (reason != 3)
     {
-      if (a3 == 4)
+      if (reason == 4)
       {
         v7 = v6 ^ 1;
         goto LABEL_20;
@@ -1057,7 +1057,7 @@ LABEL_20:
   v8 = HCLogHearingHandoff();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(HUNearbyHearingAidController *)self descriptionForHandoffReason:a3];
+    v9 = [(HUNearbyHearingAidController *)self descriptionForHandoffReason:reason];
     v10 = *(v18 + 24);
     v11 = *(v26 + 24);
     v12 = *(v22 + 24);
@@ -1096,26 +1096,26 @@ void *__68__HUNearbyHearingAidController_shouldRelinquishConnectionForReason___b
   return result;
 }
 
-- (BOOL)relinquishConnectionForReason:(int64_t)a3 toDevice:(id)a4
+- (BOOL)relinquishConnectionForReason:(int64_t)reason toDevice:(id)device
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  deviceCopy = device;
   v7 = HCLogHearingHandoff();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(HUNearbyHearingAidController *)self descriptionForHandoffReason:a3];
-    v9 = [v6 name];
+    v8 = [(HUNearbyHearingAidController *)self descriptionForHandoffReason:reason];
+    name = [deviceCopy name];
     *buf = 138412546;
     v21 = v8;
     v22 = 2112;
-    v23 = v9;
+    v23 = name;
     _os_log_impl(&dword_1DA5E2000, v7, OS_LOG_TYPE_DEFAULT, "relinquishConnectionForReason: %@ to peer: %@", buf, 0x16u);
   }
 
-  if ([(HUNearbyHearingAidController *)self shouldRelinquishConnectionForReason:a3]&& [(HUNearbyHearingAidController *)self requestHandoff:2 reason:a3])
+  if ([(HUNearbyHearingAidController *)self shouldRelinquishConnectionForReason:reason]&& [(HUNearbyHearingAidController *)self requestHandoff:2 reason:reason])
   {
-    [(HUNearbyHearingAidController *)self setConnectionState:3 forDevice:v6];
-    if (!a3)
+    [(HUNearbyHearingAidController *)self setConnectionState:3 forDevice:deviceCopy];
+    if (!reason)
     {
       v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:0x8000];
       v18 = v10;
@@ -1123,9 +1123,9 @@ void *__68__HUNearbyHearingAidController_shouldRelinquishConnectionForReason___b
       v19 = v11;
       v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v19 forKeys:&v18 count:1];
 
-      if (v6)
+      if (deviceCopy)
       {
-        v17 = v6;
+        v17 = deviceCopy;
         v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v17 count:1];
         [(HUNearbyHearingAidController *)self sendMessage:v12 toDevices:v13 messagePriority:1];
       }
@@ -1157,13 +1157,13 @@ void *__68__HUNearbyHearingAidController_shouldRelinquishConnectionForReason___b
     _os_log_impl(&dword_1DA5E2000, v3, OS_LOG_TYPE_DEFAULT, "Relinquish connection", buf, 2u);
   }
 
-  v4 = [(HUDeviceController *)self deviceUpdatesQueue];
+  deviceUpdatesQueue = [(HUDeviceController *)self deviceUpdatesQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __52__HUNearbyHearingAidController_relinquishConnection__block_invoke;
   block[3] = &unk_1E85C9F60;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(deviceUpdatesQueue, block);
 }
 
 void __52__HUNearbyHearingAidController_relinquishConnection__block_invoke(uint64_t a1)
@@ -1192,9 +1192,9 @@ LABEL_6:
   }
 }
 
-- (void)relinquishConnectionWithCompletion:(id)a3
+- (void)relinquishConnectionWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = HCLogHearingHandoff();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1202,15 +1202,15 @@ LABEL_6:
     _os_log_impl(&dword_1DA5E2000, v5, OS_LOG_TYPE_DEFAULT, "Relinquish connection with callback", buf, 2u);
   }
 
-  v6 = [(HUDeviceController *)self deviceUpdatesQueue];
+  deviceUpdatesQueue = [(HUDeviceController *)self deviceUpdatesQueue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __67__HUNearbyHearingAidController_relinquishConnectionWithCompletion___block_invoke;
   v8[3] = &unk_1E85CA380;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = completionCopy;
+  v7 = completionCopy;
+  dispatch_async(deviceUpdatesQueue, v8);
 }
 
 uint64_t __67__HUNearbyHearingAidController_relinquishConnectionWithCompletion___block_invoke(uint64_t a1)
@@ -1228,11 +1228,11 @@ uint64_t __67__HUNearbyHearingAidController_relinquishConnectionWithCompletion__
   v4 = HCLogHearingHandoff();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(HUNearbyHearingAidController *)self descriptionForCurrentState];
+    descriptionForCurrentState = [(HUNearbyHearingAidController *)self descriptionForCurrentState];
     v8[0] = 67109378;
     v8[1] = v3;
     v9 = 2112;
-    v10 = v5;
+    v10 = descriptionForCurrentState;
     _os_log_impl(&dword_1DA5E2000, v4, OS_LOG_TYPE_DEFAULT, "NearbyHearingAidController shouldConnect: %d, state: %@", v8, 0x12u);
   }
 
@@ -1243,20 +1243,20 @@ uint64_t __67__HUNearbyHearingAidController_relinquishConnectionWithCompletion__
 - (BOOL)shouldDisconnect
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = [(HUNearbyHearingAidController *)self state];
+  state = [(HUNearbyHearingAidController *)self state];
   v4 = HCLogHearingHandoff();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(HUNearbyHearingAidController *)self descriptionForCurrentState];
+    descriptionForCurrentState = [(HUNearbyHearingAidController *)self descriptionForCurrentState];
     v8[0] = 67109378;
-    v8[1] = v3 != 3;
+    v8[1] = state != 3;
     v9 = 2112;
-    v10 = v5;
+    v10 = descriptionForCurrentState;
     _os_log_impl(&dword_1DA5E2000, v4, OS_LOG_TYPE_DEFAULT, "NearbyHearingAidController shouldDisconnect: %d, state: %@", v8, 0x12u);
   }
 
   v6 = *MEMORY[0x1E69E9840];
-  return v3 != 3;
+  return state != 3;
 }
 
 - (id)timeStamp
@@ -1280,8 +1280,8 @@ uint64_t __67__HUNearbyHearingAidController_relinquishConnectionWithCompletion__
 
   v3 = +[AXHearingAidDeviceController sharedController];
   v4 = +[AXHAController sharedController];
-  v5 = [v4 pairedDeviceUUID];
-  [v3 disconnectFromHearingAidWithDeviceUUID:v5];
+  pairedDeviceUUID = [v4 pairedDeviceUUID];
+  [v3 disconnectFromHearingAidWithDeviceUUID:pairedDeviceUUID];
 
   v6 = +[AXHearingAidDeviceController sharedController];
   [v6 cancelPendingConnections];
@@ -1289,42 +1289,42 @@ uint64_t __67__HUNearbyHearingAidController_relinquishConnectionWithCompletion__
 
 - (id)descriptionForHandoffState
 {
-  v2 = [(HUNearbyHearingAidController *)self processingHandoff];
-  if (v2 > 2)
+  processingHandoff = [(HUNearbyHearingAidController *)self processingHandoff];
+  if (processingHandoff > 2)
   {
     return @"N/A";
   }
 
   else
   {
-    return off_1E85CA5F0[v2];
+    return off_1E85CA5F0[processingHandoff];
   }
 }
 
-- (id)descriptionForHandoffReason:(int64_t)a3
+- (id)descriptionForHandoffReason:(int64_t)reason
 {
-  if (a3 > 5)
+  if (reason > 5)
   {
     return @"N/A";
   }
 
   else
   {
-    return off_1E85CA608[a3];
+    return off_1E85CA608[reason];
   }
 }
 
-- (BOOL)requestHandoff:(int64_t)a3 reason:(int64_t)a4
+- (BOOL)requestHandoff:(int64_t)handoff reason:(int64_t)reason
 {
   v23 = *MEMORY[0x1E69E9840];
-  if ([(HUNearbyHearingAidController *)self processingHandoff]== a3 && [(HUNearbyHearingAidController *)self handoffReason]== a4)
+  if ([(HUNearbyHearingAidController *)self processingHandoff]== handoff && [(HUNearbyHearingAidController *)self handoffReason]== reason)
   {
     v7 = HCLogHearingHandoff();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(HUNearbyHearingAidController *)self descriptionForHandoffState];
+      descriptionForHandoffState = [(HUNearbyHearingAidController *)self descriptionForHandoffState];
       v19 = 138412290;
-      v20 = v8;
+      v20 = descriptionForHandoffState;
       _os_log_impl(&dword_1DA5E2000, v7, OS_LOG_TYPE_DEFAULT, "Already processing, skip requestHandoff: %@", &v19, 0xCu);
     }
 
@@ -1333,15 +1333,15 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  [(HUNearbyHearingAidController *)self setProcessingHandoff:a3];
-  [(HUNearbyHearingAidController *)self setHandoffReason:a4];
+  [(HUNearbyHearingAidController *)self setProcessingHandoff:handoff];
+  [(HUNearbyHearingAidController *)self setHandoffReason:reason];
   v9 = HCLogHearingHandoff();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(HUNearbyHearingAidController *)self descriptionForHandoffState];
-    v11 = [(HUNearbyHearingAidController *)self descriptionForHandoffReason:a4];
+    descriptionForHandoffState2 = [(HUNearbyHearingAidController *)self descriptionForHandoffState];
+    v11 = [(HUNearbyHearingAidController *)self descriptionForHandoffReason:reason];
     v19 = 138412546;
-    v20 = v10;
+    v20 = descriptionForHandoffState2;
     v21 = 2112;
     v22 = v11;
     _os_log_impl(&dword_1DA5E2000, v9, OS_LOG_TYPE_DEFAULT, "Start requestHandoff: %@, reason: %@", &v19, 0x16u);
@@ -1353,15 +1353,15 @@ LABEL_16:
     v13 = HCLogHearingHandoff();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [(HUNearbyHearingAidController *)self descriptionForHandoffReason:a4];
+      v14 = [(HUNearbyHearingAidController *)self descriptionForHandoffReason:reason];
       v19 = 138412290;
       v20 = v14;
       _os_log_impl(&dword_1DA5E2000, v13, OS_LOG_TYPE_DEFAULT, "Couldn't Start handoff for a reason: %@", &v19, 0xCu);
     }
 
-    v15 = [(HUNearbyHearingAidController *)self relinquishCompleted];
+    relinquishCompleted = [(HUNearbyHearingAidController *)self relinquishCompleted];
 
-    if (v15)
+    if (relinquishCompleted)
     {
       v16 = HCLogHearingHandoff();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -1370,8 +1370,8 @@ LABEL_16:
         _os_log_impl(&dword_1DA5E2000, v16, OS_LOG_TYPE_DEFAULT, "Invoking relinquishCompleted callback", &v19, 2u);
       }
 
-      v17 = [(HUNearbyHearingAidController *)self relinquishCompleted];
-      v17[2]();
+      relinquishCompleted2 = [(HUNearbyHearingAidController *)self relinquishCompleted];
+      relinquishCompleted2[2]();
 
       [(HUNearbyHearingAidController *)self setRelinquishCompleted:0];
     }
@@ -1389,20 +1389,20 @@ LABEL_17:
 - (void)checkHandoffAfterTimeout
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [(HUNearbyHearingAidController *)self processingHandoff];
+  processingHandoff = [(HUNearbyHearingAidController *)self processingHandoff];
   v4 = HCLogHearingHandoff();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(HUNearbyHearingAidController *)self descriptionForHandoffState];
+    descriptionForHandoffState = [(HUNearbyHearingAidController *)self descriptionForHandoffState];
     v6 = [(HUNearbyHearingAidController *)self descriptionForHandoffReason:[(HUNearbyHearingAidController *)self handoffReason]];
     *buf = 138412546;
-    v12 = v5;
+    v12 = descriptionForHandoffState;
     v13 = 2112;
     v14 = v6;
     _os_log_impl(&dword_1DA5E2000, v4, OS_LOG_TYPE_DEFAULT, "Starting check timer for handoff %@, reason: %@", buf, 0x16u);
   }
 
-  if (v3 == 1)
+  if (processingHandoff == 1)
   {
     v7 = 7.5;
   }
@@ -1412,13 +1412,13 @@ LABEL_17:
     v7 = 15.0;
   }
 
-  v8 = [(HUNearbyHearingAidController *)self handoffTimer];
+  handoffTimer = [(HUNearbyHearingAidController *)self handoffTimer];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __56__HUNearbyHearingAidController_checkHandoffAfterTimeout__block_invoke;
   v10[3] = &unk_1E85C9F60;
   v10[4] = self;
-  [v8 afterDelay:v10 processBlock:v7];
+  [handoffTimer afterDelay:v10 processBlock:v7];
 
   v9 = *MEMORY[0x1E69E9840];
 }
@@ -1499,31 +1499,31 @@ uint64_t __56__HUNearbyHearingAidController_checkHandoffAfterTimeout__block_invo
   v3 = HCLogHearingHandoff();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(HUNearbyHearingAidController *)self descriptionForHandoffState];
+    descriptionForHandoffState = [(HUNearbyHearingAidController *)self descriptionForHandoffState];
     v5 = [(HUNearbyHearingAidController *)self descriptionForHandoffReason:[(HUNearbyHearingAidController *)self handoffReason]];
-    v6 = [(HUNearbyHearingAidController *)self connectedPeer];
-    v7 = [v6 name];
+    connectedPeer = [(HUNearbyHearingAidController *)self connectedPeer];
+    name = [connectedPeer name];
     v15 = 138413058;
-    v16 = v4;
+    v16 = descriptionForHandoffState;
     v17 = 2112;
     v18 = v5;
     v19 = 2112;
-    v20 = v7;
+    v20 = name;
     v21 = 1024;
-    v22 = [(HUNearbyHearingAidController *)self holdingMediaForConnection];
+    holdingMediaForConnection = [(HUNearbyHearingAidController *)self holdingMediaForConnection];
     _os_log_impl(&dword_1DA5E2000, v3, OS_LOG_TYPE_DEFAULT, "Finish handoff %@, reason: %@, connectedPeer: %@, holding media %d", &v15, 0x26u);
   }
 
-  v8 = [(HUNearbyHearingAidController *)self handoffTimer];
-  [v8 cancel];
+  handoffTimer = [(HUNearbyHearingAidController *)self handoffTimer];
+  [handoffTimer cancel];
 
-  v9 = [(HUNearbyHearingAidController *)self relinquishCompleted];
-  if (v9)
+  relinquishCompleted = [(HUNearbyHearingAidController *)self relinquishCompleted];
+  if (relinquishCompleted)
   {
-    v10 = v9;
-    v11 = [(HUNearbyHearingAidController *)self processingHandoff];
+    v10 = relinquishCompleted;
+    processingHandoff = [(HUNearbyHearingAidController *)self processingHandoff];
 
-    if (v11 == 2)
+    if (processingHandoff == 2)
     {
       v12 = HCLogHearingHandoff();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -1532,8 +1532,8 @@ uint64_t __56__HUNearbyHearingAidController_checkHandoffAfterTimeout__block_invo
         _os_log_impl(&dword_1DA5E2000, v12, OS_LOG_TYPE_DEFAULT, "Invoking relinquishCompleted callback", &v15, 2u);
       }
 
-      v13 = [(HUNearbyHearingAidController *)self relinquishCompleted];
-      v13[2]();
+      relinquishCompleted2 = [(HUNearbyHearingAidController *)self relinquishCompleted];
+      relinquishCompleted2[2]();
 
       [(HUNearbyHearingAidController *)self setRelinquishCompleted:0];
     }
@@ -1568,9 +1568,9 @@ void __45__HUNearbyHearingAidController_finishHandoff__block_invoke()
   v3 = HCLogHearingHandoff();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(HUNearbyHearingAidController *)self descriptionForHandoffState];
+    descriptionForHandoffState = [(HUNearbyHearingAidController *)self descriptionForHandoffState];
     v6 = 138412290;
-    v7 = v4;
+    v7 = descriptionForHandoffState;
     _os_log_impl(&dword_1DA5E2000, v3, OS_LOG_TYPE_DEFAULT, "Reset handoff from: %@", &v6, 0xCu);
   }
 
@@ -1585,13 +1585,13 @@ void __45__HUNearbyHearingAidController_finishHandoff__block_invoke()
 
 - (void)resetHandoff
 {
-  v3 = [(HUDeviceController *)self deviceUpdatesQueue];
+  deviceUpdatesQueue = [(HUDeviceController *)self deviceUpdatesQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __44__HUNearbyHearingAidController_resetHandoff__block_invoke;
   block[3] = &unk_1E85C9F60;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(deviceUpdatesQueue, block);
 }
 
 uint64_t __44__HUNearbyHearingAidController_resetHandoff__block_invoke(uint64_t a1)
@@ -1631,8 +1631,8 @@ uint64_t __44__HUNearbyHearingAidController_resetHandoff__block_invoke(uint64_t 
     [(HUNearbyHearingAidController *)self registerMediaNotifications];
     objc_initWeak(buf, self);
     v4 = +[HUNearbyController sharedInstance];
-    v5 = [(HUDeviceController *)self deviceUpdatesQueue];
-    [v4 registerQueue:v5 forDomain:@"com.apple.hearing.hearingaids"];
+    deviceUpdatesQueue = [(HUDeviceController *)self deviceUpdatesQueue];
+    [v4 registerQueue:deviceUpdatesQueue forDomain:@"com.apple.hearing.hearingaids"];
 
     v6 = +[HUNearbyController sharedInstance];
     [v6 registerLoggingBlock:&__block_literal_global_82 forDomain:@"com.apple.hearing.hearingaids" withListener:self];
@@ -1678,13 +1678,13 @@ uint64_t __44__HUNearbyHearingAidController_resetHandoff__block_invoke(uint64_t 
     v15[3] = &unk_1E85CA4B8;
     [v11 discoverSCIDSServiceWithDevicesUpdates:v16 messageBlock:v15];
 
-    v12 = [(HUDeviceController *)self deviceUpdatesQueue];
+    deviceUpdatesQueue2 = [(HUDeviceController *)self deviceUpdatesQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __37__HUNearbyHearingAidController_start__block_invoke_5;
     block[3] = &unk_1E85C9F10;
     objc_copyWeak(&v14, buf);
-    dispatch_async(v12, block);
+    dispatch_async(deviceUpdatesQueue2, block);
 
     objc_destroyWeak(&v14);
     objc_destroyWeak(&v19);
@@ -1920,13 +1920,13 @@ void __37__HUNearbyHearingAidController_start__block_invoke_5(uint64_t a1)
     _os_log_impl(&dword_1DA5E2000, v3, OS_LOG_TYPE_DEFAULT, "Nearby stop", buf, 2u);
   }
 
-  v4 = [(HUDeviceController *)self deviceUpdatesQueue];
+  deviceUpdatesQueue = [(HUDeviceController *)self deviceUpdatesQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __36__HUNearbyHearingAidController_stop__block_invoke;
   block[3] = &unk_1E85C9F60;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(deviceUpdatesQueue, block);
 
   [(HUNearbyHearingAidController *)self unregisterMediaNotifications];
   v5 = HCLogHearingHandoff();
@@ -1938,8 +1938,8 @@ void __37__HUNearbyHearingAidController_start__block_invoke_5(uint64_t a1)
     _os_log_impl(&dword_1DA5E2000, v5, OS_LOG_TYPE_DEFAULT, "IDS messages count: %@", buf, 0xCu);
   }
 
-  v7 = [(HUNearbyHearingAidController *)self idsMessagesTimer];
-  [v7 invalidate];
+  idsMessagesTimer = [(HUNearbyHearingAidController *)self idsMessagesTimer];
+  [idsMessagesTimer invalidate];
 
   [(HUNearbyHearingAidController *)self setIdsMessagesTimer:0];
   v8 = *MEMORY[0x1E69E9840];
@@ -1975,81 +1975,81 @@ void __36__HUNearbyHearingAidController_stop__block_invoke_2(uint64_t a1)
 {
   v90 = *MEMORY[0x1E69E9840];
   v3 = +[HUHearingAidSettings sharedInstance];
-  v4 = [v3 isiCloudPaired];
+  isiCloudPaired = [v3 isiCloudPaired];
 
   v5 = +[HUHearingAidSettings sharedInstance];
-  v6 = [v5 pairedHearingAids];
-  v7 = (v6 != 0) & (v4 ^ 1);
+  pairedHearingAids = [v5 pairedHearingAids];
+  v7 = (pairedHearingAids != 0) & (isiCloudPaired ^ 1);
 
   v8 = +[AXHearingAidDeviceController sharedController];
-  v81 = [v8 isConnected];
+  isConnected = [v8 isConnected];
 
   v9 = +[AXHearingAidDeviceController sharedController];
-  v10 = [v9 isConnecting];
+  isConnecting = [v9 isConnecting];
 
-  v11 = [(HUNearbyHearingAidController *)self availableDevices];
-  v12 = [v11 count];
+  availableDevices = [(HUNearbyHearingAidController *)self availableDevices];
+  v12 = [availableDevices count];
 
   v13 = +[AXHearingAidDeviceController sharedController];
-  v14 = [v13 isBluetoothAvailable];
+  isBluetoothAvailable = [v13 isBluetoothAvailable];
 
-  v15 = [(HUNearbyHearingAidController *)self connectedPeer];
-  v16 = [(HUNearbyHearingAidController *)self connectingPeer];
+  connectedPeer = [(HUNearbyHearingAidController *)self connectedPeer];
+  connectingPeer = [(HUNearbyHearingAidController *)self connectingPeer];
   v17 = HCLogHearingHandoff();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67110144;
-    *v87 = v14;
+    *v87 = isBluetoothAvailable;
     *&v87[4] = 1024;
     *&v87[6] = v7;
     LOWORD(v88) = 1024;
-    *(&v88 + 2) = v4 & 1;
+    *(&v88 + 2) = isiCloudPaired & 1;
     HIWORD(v88) = 1024;
-    v89[0] = v81;
+    v89[0] = isConnected;
     LOWORD(v89[1]) = 1024;
-    *(&v89[1] + 2) = v10;
+    *(&v89[1] + 2) = isConnecting;
     _os_log_impl(&dword_1DA5E2000, v17, OS_LOG_TYPE_DEFAULT, "UpdateState BT: %d, Paired: %d iCloudPaired %d, Connected: %d, Connecting: %d", buf, 0x20u);
   }
 
   v18 = HCLogHearingHandoff();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
-    v19 = [v15 name];
-    [v16 name];
-    v20 = v14;
-    v21 = v15;
-    v23 = v22 = v16;
+    name = [connectedPeer name];
+    [connectingPeer name];
+    v20 = isBluetoothAvailable;
+    v21 = connectedPeer;
+    v23 = v22 = connectingPeer;
     *buf = 138412546;
-    *v87 = v19;
+    *v87 = name;
     *&v87[8] = 2112;
     v88 = v23;
     _os_log_impl(&dword_1DA5E2000, v18, OS_LOG_TYPE_DEFAULT, "connectedPeer: %@, connectingPeer: %@", buf, 0x16u);
 
-    v16 = v22;
-    v15 = v21;
-    v14 = v20;
+    connectingPeer = v22;
+    connectedPeer = v21;
+    isBluetoothAvailable = v20;
   }
 
   v24 = HCLogHearingHandoff();
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
   {
-    v25 = [(HUNearbyHearingAidController *)self descriptionForCurrentState];
+    descriptionForCurrentState = [(HUNearbyHearingAidController *)self descriptionForCurrentState];
     [(HUNearbyHearingAidController *)self descriptionForHandoffState];
-    v26 = v14;
-    v27 = v15;
-    v29 = v28 = v16;
+    v26 = isBluetoothAvailable;
+    v27 = connectedPeer;
+    v29 = v28 = connectingPeer;
     *buf = 138412546;
-    *v87 = v25;
+    *v87 = descriptionForCurrentState;
     *&v87[8] = 2112;
     v88 = v29;
     _os_log_impl(&dword_1DA5E2000, v24, OS_LOG_TYPE_DEFAULT, "Processing state: %@, handoff: %@", buf, 0x16u);
 
-    v16 = v28;
-    v15 = v27;
-    v14 = v26;
+    connectingPeer = v28;
+    connectedPeer = v27;
+    isBluetoothAvailable = v26;
   }
 
-  v30 = [(HUNearbyHearingAidController *)self hasStarted]& v14;
+  v30 = [(HUNearbyHearingAidController *)self hasStarted]& isBluetoothAvailable;
   if (v12)
   {
     v31 = v30;
@@ -2062,18 +2062,18 @@ void __36__HUNearbyHearingAidController_stop__block_invoke_2(uint64_t a1)
 
   if ((v7 & v31 & 1) == 0)
   {
-    if ([(HUNearbyHearingAidController *)self processingHandoff]== 1 && ((v4 & 1) == 0 || (([(HUNearbyHearingAidController *)self handoffReason]== 4) & v31) == 0))
+    if ([(HUNearbyHearingAidController *)self processingHandoff]== 1 && ((isiCloudPaired & 1) == 0 || (([(HUNearbyHearingAidController *)self handoffReason]== 4) & v31) == 0))
     {
       v32 = HCLogHearingHandoff();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
       {
-        v33 = [(HUNearbyHearingAidController *)self hasStarted];
+        hasStarted = [(HUNearbyHearingAidController *)self hasStarted];
         *buf = 67109888;
-        *v87 = v33;
+        *v87 = hasStarted;
         *&v87[4] = 1024;
         *&v87[6] = v7;
         LOWORD(v88) = 1024;
-        *(&v88 + 2) = v14;
+        *(&v88 + 2) = isBluetoothAvailable;
         HIWORD(v88) = 1024;
         v89[0] = v12 != 0;
         _os_log_impl(&dword_1DA5E2000, v32, OS_LOG_TYPE_DEFAULT, "Connection request interrupted, Nearby started: %d, isPaired: %d, BT available: %d, hasPeers: %d", buf, 0x1Au);
@@ -2087,13 +2087,13 @@ void __36__HUNearbyHearingAidController_stop__block_invoke_2(uint64_t a1)
       v34 = HCLogHearingHandoff();
       if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
       {
-        v35 = [(HUNearbyHearingAidController *)self hasStarted];
+        hasStarted2 = [(HUNearbyHearingAidController *)self hasStarted];
         *buf = 67109888;
-        *v87 = v35;
+        *v87 = hasStarted2;
         *&v87[4] = 1024;
         *&v87[6] = v7;
         LOWORD(v88) = 1024;
-        *(&v88 + 2) = v14;
+        *(&v88 + 2) = isBluetoothAvailable;
         HIWORD(v88) = 1024;
         v89[0] = v12 != 0;
         _os_log_impl(&dword_1DA5E2000, v34, OS_LOG_TYPE_DEFAULT, "Transition request interrupted, Nearby started: %d, isPaired: %d, BT available: %d, hasPeers: %d", buf, 0x1Au);
@@ -2103,23 +2103,23 @@ void __36__HUNearbyHearingAidController_stop__block_invoke_2(uint64_t a1)
     }
   }
 
-  v36 = [(HUNearbyHearingAidController *)self hasStarted];
-  v37 = v36;
-  if (v36 && v12)
+  hasStarted3 = [(HUNearbyHearingAidController *)self hasStarted];
+  peerTimer = hasStarted3;
+  if (hasStarted3 && v12)
   {
-    if (v81)
+    if (isConnected)
     {
       if ([(HUNearbyHearingAidController *)self processingHandoff]== 2)
       {
 LABEL_25:
-        v37 = 4;
+        peerTimer = 4;
         goto LABEL_62;
       }
 
-      v38 = [(HUNearbyHearingAidController *)self processingHandoff];
-      if (!v15)
+      processingHandoff = [(HUNearbyHearingAidController *)self processingHandoff];
+      if (!connectedPeer)
       {
-        if (v38 == 1)
+        if (processingHandoff == 1)
         {
           v41 = HCLogHearingHandoff();
           if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
@@ -2134,20 +2134,20 @@ LABEL_25:
         goto LABEL_54;
       }
 
-      if (v38 == 1)
+      if (processingHandoff == 1)
       {
         [(HUNearbyHearingAidController *)self processingHandoff];
 LABEL_54:
-        v37 = 5;
+        peerTimer = 5;
         goto LABEL_62;
       }
 
 LABEL_39:
-      v37 = 2;
+      peerTimer = 2;
       goto LABEL_62;
     }
 
-    if (v15)
+    if (connectedPeer)
     {
       if ([(HUNearbyHearingAidController *)self processingHandoff]!= 1)
       {
@@ -2167,17 +2167,17 @@ LABEL_39:
       }
 
 LABEL_28:
-      v37 = 3;
+      peerTimer = 3;
       goto LABEL_62;
     }
 
-    v39 = (v4 & 1) != 0 && [(HUNearbyHearingAidController *)self processingHandoff]== 1 && [(HUNearbyHearingAidController *)self handoffReason]== 4;
+    v39 = (isiCloudPaired & 1) != 0 && [(HUNearbyHearingAidController *)self processingHandoff]== 1 && [(HUNearbyHearingAidController *)self handoffReason]== 4;
     if (((v7 | v39) & 1) == 0)
     {
       goto LABEL_61;
     }
 
-    if ((v14 & 1) == 0)
+    if ((isBluetoothAvailable & 1) == 0)
     {
       v42 = HCLogHearingHandoff();
       if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
@@ -2204,10 +2204,10 @@ LABEL_28:
       goto LABEL_28;
     }
 
-    if (!v16 || [(HUNearbyHearingAidController *)self state]== 4)
+    if (!connectingPeer || [(HUNearbyHearingAidController *)self state]== 4)
     {
 LABEL_49:
-      v37 = 1;
+      peerTimer = 1;
       goto LABEL_62;
     }
 
@@ -2216,14 +2216,14 @@ LABEL_49:
       goto LABEL_61;
     }
 
-    v37 = [(HUNearbyHearingAidController *)self peerTimer];
+    peerTimer = [(HUNearbyHearingAidController *)self peerTimer];
 
-    if (v37)
+    if (peerTimer)
     {
-      v43 = [(HUNearbyHearingAidController *)self peerTimer];
-      v44 = [v43 isPending];
+      peerTimer2 = [(HUNearbyHearingAidController *)self peerTimer];
+      isPending = [peerTimer2 isPending];
 
-      if ((v44 & 1) == 0)
+      if ((isPending & 1) == 0)
       {
         [(HUNearbyHearingAidController *)self setPeerTimer:0];
         v80 = HCLogHearingHandoff();
@@ -2237,7 +2237,7 @@ LABEL_49:
       }
 
 LABEL_61:
-      v37 = 0;
+      peerTimer = 0;
       goto LABEL_62;
     }
 
@@ -2245,14 +2245,14 @@ LABEL_61:
   }
 
 LABEL_62:
-  if (v37 == [(HUNearbyHearingAidController *)self state])
+  if (peerTimer == [(HUNearbyHearingAidController *)self state])
   {
 LABEL_63:
     v45 = 0;
     goto LABEL_64;
   }
 
-  if (((v37 == 0) & v7) == 1)
+  if (((peerTimer == 0) & v7) == 1)
   {
     if ([(HUNearbyHearingAidController *)self hasStarted])
     {
@@ -2265,16 +2265,16 @@ LABEL_63:
   else
   {
     [(HUNearbyHearingAidController *)self logAvailableDevicesWithTitle:@"Available Devices"];
-    if (v37 == 5)
+    if (peerTimer == 5)
     {
       v55 = 1;
       goto LABEL_79;
     }
   }
 
-  v56 = [(HUNearbyHearingAidController *)self state];
+  state = [(HUNearbyHearingAidController *)self state];
   v55 = 1;
-  if (v37 != 3 && v56 != 5)
+  if (peerTimer != 3 && state != 5)
   {
     v55 = [(HUNearbyHearingAidController *)self state]== 3;
   }
@@ -2283,19 +2283,19 @@ LABEL_79:
   v57 = HCLogHearingHandoff();
   if (os_log_type_enabled(v57, OS_LOG_TYPE_DEFAULT))
   {
-    v58 = [(HUNearbyHearingAidController *)self descriptionForState:v37];
-    v59 = [(HUNearbyHearingAidController *)self descriptionForCurrentState];
-    v60 = [(HUNearbyHearingAidController *)self descriptionForHandoffState];
+    v58 = [(HUNearbyHearingAidController *)self descriptionForState:peerTimer];
+    descriptionForCurrentState2 = [(HUNearbyHearingAidController *)self descriptionForCurrentState];
+    descriptionForHandoffState = [(HUNearbyHearingAidController *)self descriptionForHandoffState];
     *buf = 138412802;
     *v87 = v58;
     *&v87[8] = 2112;
-    v88 = v59;
+    v88 = descriptionForCurrentState2;
     LOWORD(v89[0]) = 2112;
-    *(v89 + 2) = v60;
+    *(v89 + 2) = descriptionForHandoffState;
     _os_log_impl(&dword_1DA5E2000, v57, OS_LOG_TYPE_DEFAULT, "Did update state new: %@, old: %@, handoff: %@", buf, 0x20u);
   }
 
-  [(HUNearbyHearingAidController *)self setState:v37];
+  [(HUNearbyHearingAidController *)self setState:peerTimer];
   v61 = HCLogHearingHandoff();
   v62 = os_log_type_enabled(v61, OS_LOG_TYPE_DEFAULT);
   if (!v55)
@@ -2307,9 +2307,9 @@ LABEL_91:
       goto LABEL_92;
     }
 
-    v69 = [(HUNearbyHearingAidController *)self descriptionForCurrentState];
+    descriptionForCurrentState3 = [(HUNearbyHearingAidController *)self descriptionForCurrentState];
     *buf = 138412290;
-    *v87 = v69;
+    *v87 = descriptionForCurrentState3;
     _os_log_impl(&dword_1DA5E2000, v61, OS_LOG_TYPE_DEFAULT, "Skipping sending ControllerConnected: %@", buf, 0xCu);
 LABEL_90:
 
@@ -2318,9 +2318,9 @@ LABEL_90:
 
   if (v62)
   {
-    v63 = [(HUNearbyHearingAidController *)self descriptionForCurrentState];
+    descriptionForCurrentState4 = [(HUNearbyHearingAidController *)self descriptionForCurrentState];
     *buf = 138412290;
-    *v87 = v63;
+    *v87 = descriptionForCurrentState4;
     _os_log_impl(&dword_1DA5E2000, v61, OS_LOG_TYPE_DEFAULT, "Sending ControllerConnected: %@, isUrgent: YES", buf, 0xCu);
   }
 
@@ -2346,8 +2346,8 @@ LABEL_90:
 
     v61 = +[HUNearbyController sharedInstance];
     v82 = @"HCMessageIdentifierControllerConnected";
-    v69 = [MEMORY[0x1E696AD98] numberWithInteger:{-[HUNearbyHearingAidController state](self, "state")}];
-    v83 = v69;
+    descriptionForCurrentState3 = [MEMORY[0x1E696AD98] numberWithInteger:{-[HUNearbyHearingAidController state](self, "state")}];
+    v83 = descriptionForCurrentState3;
     v70 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v83 forKeys:&v82 count:1];
     [v61 sendSCIDSMessage:v70 toDevice:0];
 
@@ -2356,11 +2356,11 @@ LABEL_90:
 
 LABEL_92:
   v45 = 1;
-  if (v37 > 2)
+  if (peerTimer > 2)
   {
-    if (v37 != 3)
+    if (peerTimer != 3)
     {
-      if (v37 != 4)
+      if (peerTimer != 4)
       {
         goto LABEL_64;
       }
@@ -2371,9 +2371,9 @@ LABEL_92:
 
   else
   {
-    if (v37 != 1)
+    if (peerTimer != 1)
     {
-      if (v37 != 2)
+      if (peerTimer != 2)
       {
         goto LABEL_64;
       }
@@ -2382,12 +2382,12 @@ LABEL_98:
       v71 = HCLogHearingHandoff();
       if (os_log_type_enabled(v71, OS_LOG_TYPE_DEFAULT))
       {
-        v72 = [v15 name];
-        v73 = [v16 name];
+        name2 = [connectedPeer name];
+        name3 = [connectingPeer name];
         *buf = 138412546;
-        *v87 = v72;
+        *v87 = name2;
         *&v87[8] = 2112;
-        v88 = v73;
+        v88 = name3;
         _os_log_impl(&dword_1DA5E2000, v71, OS_LOG_TYPE_DEFAULT, "NearbyHearingAidController: Disconnect, Connected peer: %@, Connecting Peer: %@", buf, 0x16u);
       }
 
@@ -2397,53 +2397,53 @@ LABEL_98:
       goto LABEL_64;
     }
 
-    if (!v14)
+    if (!isBluetoothAvailable)
     {
       goto LABEL_64;
     }
   }
 
   v74 = +[AXHearingAidDeviceController sharedController];
-  v75 = [v74 pairedHearingDevice];
+  pairedHearingDevice = [v74 pairedHearingDevice];
 
   v76 = HCLogHearingHandoff();
   if (os_log_type_enabled(v76, OS_LOG_TYPE_DEFAULT))
   {
-    v77 = [v75 name];
-    v78 = [v15 name];
-    v79 = [v16 name];
+    name4 = [pairedHearingDevice name];
+    name5 = [connectedPeer name];
+    name6 = [connectingPeer name];
     *buf = 138412802;
-    *v87 = v77;
+    *v87 = name4;
     *&v87[8] = 2112;
-    v88 = v78;
+    v88 = name5;
     LOWORD(v89[0]) = 2112;
-    *(v89 + 2) = v79;
+    *(v89 + 2) = name6;
     _os_log_impl(&dword_1DA5E2000, v76, OS_LOG_TYPE_DEFAULT, "NearbyHearingAidController: Connect to %@, Connected peer: %@, Connecting Peer: %@", buf, 0x20u);
   }
 
-  [v75 connect];
+  [pairedHearingDevice connect];
   v45 = 1;
 LABEL_64:
-  v46 = [(HUNearbyHearingAidController *)self peerTimer];
-  if (v46)
+  peerTimer3 = [(HUNearbyHearingAidController *)self peerTimer];
+  if (peerTimer3)
   {
-    v47 = v46;
-    v48 = [(HUNearbyHearingAidController *)self state];
+    v47 = peerTimer3;
+    state2 = [(HUNearbyHearingAidController *)self state];
 
-    if (v48 != 2 || v15)
+    if (state2 != 2 || connectedPeer)
     {
       v49 = HCLogHearingHandoff();
       if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
       {
-        v50 = [(HUNearbyHearingAidController *)self peerTimer];
-        v51 = [v50 isPending];
+        peerTimer4 = [(HUNearbyHearingAidController *)self peerTimer];
+        isPending2 = [peerTimer4 isPending];
         *buf = 67109120;
-        *v87 = v51;
+        *v87 = isPending2;
         _os_log_impl(&dword_1DA5E2000, v49, OS_LOG_TYPE_DEFAULT, "NearbyHearingAidController: Cancel and Destroy peerTimer, is pending %d", buf, 8u);
       }
 
-      v52 = [(HUNearbyHearingAidController *)self peerTimer];
-      [v52 cancel];
+      peerTimer5 = [(HUNearbyHearingAidController *)self peerTimer];
+      [peerTimer5 cancel];
 
       [(HUNearbyHearingAidController *)self setPeerTimer:0];
     }
@@ -2455,65 +2455,65 @@ LABEL_64:
 
 - (void)updateState
 {
-  v3 = [(HUDeviceController *)self deviceUpdatesQueue];
+  deviceUpdatesQueue = [(HUDeviceController *)self deviceUpdatesQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __43__HUNearbyHearingAidController_updateState__block_invoke;
   block[3] = &unk_1E85C9F60;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(deviceUpdatesQueue, block);
 }
 
-- (id)descriptionForState:(int64_t)a3
+- (id)descriptionForState:(int64_t)state
 {
-  if (a3 > 5)
+  if (state > 5)
   {
     return @"N/A";
   }
 
   else
   {
-    return off_1E85CA638[a3];
+    return off_1E85CA638[state];
   }
 }
 
 - (id)descriptionForCurrentState
 {
-  v3 = [(HUNearbyHearingAidController *)self state];
+  state = [(HUNearbyHearingAidController *)self state];
 
-  return [(HUNearbyHearingAidController *)self descriptionForState:v3];
+  return [(HUNearbyHearingAidController *)self descriptionForState:state];
 }
 
 - (id)availableDevices
 {
   v2 = +[HUNearbyController sharedInstance];
-  v3 = [v2 nearbyDevices];
+  nearbyDevices = [v2 nearbyDevices];
 
-  return v3;
+  return nearbyDevices;
 }
 
-- (void)logAvailableDevicesWithTitle:(id)a3
+- (void)logAvailableDevicesWithTitle:(id)title
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E69A4560] isInternalInstall];
-  v6 = HCLogHearingAids();
-  v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-  if (v5)
+  titleCopy = title;
+  isInternalInstall = [MEMORY[0x1E69A4560] isInternalInstall];
+  availableDevices = HCLogHearingAids();
+  v7 = os_log_type_enabled(availableDevices, OS_LOG_TYPE_DEFAULT);
+  if (isInternalInstall)
   {
     if (v7)
     {
       *buf = 138412290;
-      v21 = v4;
-      _os_log_impl(&dword_1DA5E2000, v6, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
+      v21 = titleCopy;
+      _os_log_impl(&dword_1DA5E2000, availableDevices, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
     }
 
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = [(HUNearbyHearingAidController *)self availableDevices];
-    v8 = [v6 countByEnumeratingWithState:&v16 objects:v24 count:16];
+    availableDevices = [(HUNearbyHearingAidController *)self availableDevices];
+    v8 = [availableDevices countByEnumeratingWithState:&v16 objects:v24 count:16];
     if (v8)
     {
       v9 = v8;
@@ -2524,7 +2524,7 @@ LABEL_64:
         {
           if (*v17 != v10)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(availableDevices);
           }
 
           v12 = *(*(&v16 + 1) + 8 * i);
@@ -2537,7 +2537,7 @@ LABEL_64:
           }
         }
 
-        v9 = [v6 countByEnumeratingWithState:&v16 objects:v24 count:16];
+        v9 = [availableDevices countByEnumeratingWithState:&v16 objects:v24 count:16];
       }
 
       while (v9);
@@ -2546,26 +2546,26 @@ LABEL_64:
 
   else if (v7)
   {
-    v14 = [(HUNearbyHearingAidController *)self availableDevices];
+    availableDevices2 = [(HUNearbyHearingAidController *)self availableDevices];
     *buf = 138412546;
-    v21 = v4;
+    v21 = titleCopy;
     v22 = 2112;
-    v23 = v14;
-    _os_log_impl(&dword_1DA5E2000, v6, OS_LOG_TYPE_DEFAULT, "%@ - %@", buf, 0x16u);
+    v23 = availableDevices2;
+    _os_log_impl(&dword_1DA5E2000, availableDevices, OS_LOG_TYPE_DEFAULT, "%@ - %@", buf, 0x16u);
   }
 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)logDevices:(id)a3 withTitle:(id)a4 fullInfo:(BOOL)a5
+- (void)logDevices:(id)devices withTitle:(id)title fullInfo:(BOOL)info
 {
-  v5 = a5;
+  infoCopy = info;
   v29 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (v5)
+  devicesCopy = devices;
+  titleCopy = title;
+  if (infoCopy)
   {
-    v9 = [v7 mutableCopy];
+    v9 = [devicesCopy mutableCopy];
   }
 
   else
@@ -2575,7 +2575,7 @@ LABEL_64:
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v10 = v7;
+    v10 = devicesCopy;
     v11 = [v10 countByEnumeratingWithState:&v20 objects:v28 count:16];
     if (v11)
     {
@@ -2591,8 +2591,8 @@ LABEL_64:
           }
 
           v15 = *(*(&v20 + 1) + 8 * i);
-          v16 = [v15 name];
-          if (v16)
+          name = [v15 name];
+          if (name)
           {
             [v15 name];
           }
@@ -2622,7 +2622,7 @@ LABEL_64:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v25 = v8;
+      v25 = titleCopy;
       v26 = 2112;
       v27 = v9;
       _os_log_impl(&dword_1DA5E2000, v18, OS_LOG_TYPE_DEFAULT, "%@ devices: %@", buf, 0x16u);
@@ -2632,93 +2632,93 @@ LABEL_64:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (int64_t)connectionStateForDevice:(id)a3
+- (int64_t)connectionStateForDevice:(id)device
 {
-  v3 = a3;
-  v4 = [v3 stateForDomain:@"com.apple.hearing.hearingaids.connection"];
+  deviceCopy = device;
+  v4 = [deviceCopy stateForDomain:@"com.apple.hearing.hearingaids.connection"];
   if (v4)
   {
     v5 = HCLogHearingAids();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      [(HUNearbyHearingAidController *)v4 connectionStateForDevice:v3];
+      [(HUNearbyHearingAidController *)v4 connectionStateForDevice:deviceCopy];
     }
   }
 
-  v6 = [v4 integerValue];
+  integerValue = [v4 integerValue];
 
-  return v6;
+  return integerValue;
 }
 
-- (void)setConnectionState:(int64_t)a3 forDevice:(id)a4
+- (void)setConnectionState:(int64_t)state forDevice:(id)device
 {
-  v5 = a4;
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [v5 setState:v6 forDomain:@"com.apple.hearing.hearingaids.connection"];
+  deviceCopy = device;
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:state];
+  [deviceCopy setState:v6 forDomain:@"com.apple.hearing.hearingaids.connection"];
 
   v7 = HCLogHearingAids();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    [HUNearbyHearingAidController setConnectionState:v5 forDevice:?];
+    [HUNearbyHearingAidController setConnectionState:deviceCopy forDevice:?];
   }
 }
 
-- (unint64_t)messagePriorityForDevice:(id)a3
+- (unint64_t)messagePriorityForDevice:(id)device
 {
-  v3 = a3;
-  v4 = [v3 stateForDomain:@"com.apple.hearing.hearingaids.priority"];
+  deviceCopy = device;
+  v4 = [deviceCopy stateForDomain:@"com.apple.hearing.hearingaids.priority"];
   if (v4)
   {
     v5 = HCLogHearingAids();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      [(HUNearbyHearingAidController *)v4 messagePriorityForDevice:v3];
+      [(HUNearbyHearingAidController *)v4 messagePriorityForDevice:deviceCopy];
     }
   }
 
-  v6 = [v4 integerValue];
+  integerValue = [v4 integerValue];
 
-  return v6;
+  return integerValue;
 }
 
-- (void)setMessagePriority:(unint64_t)a3 forDevice:(id)a4
+- (void)setMessagePriority:(unint64_t)priority forDevice:(id)device
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  deviceCopy = device;
   v6 = HCLogHearingAids();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-    v8 = [v5 name];
+    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:priority];
+    name = [deviceCopy name];
     v12 = 138412546;
     v13 = v7;
     v14 = 2112;
-    v15 = v8;
+    v15 = name;
     _os_log_impl(&dword_1DA5E2000, v6, OS_LOG_TYPE_DEFAULT, "setMessagePriority: %@ for device: %@", &v12, 0x16u);
   }
 
-  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  [v5 setState:v9 forDomain:@"com.apple.hearing.hearingaids.priority"];
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:priority];
+  [deviceCopy setState:v9 forDomain:@"com.apple.hearing.hearingaids.priority"];
 
   v10 = HCLogHearingAids();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    [HUNearbyHearingAidController setMessagePriority:v5 forDevice:?];
+    [HUNearbyHearingAidController setMessagePriority:deviceCopy forDevice:?];
   }
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (id)peerWithState:(int64_t)a3
+- (id)peerWithState:(int64_t)state
 {
-  v5 = [(HUNearbyHearingAidController *)self availableDevices];
+  availableDevices = [(HUNearbyHearingAidController *)self availableDevices];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __46__HUNearbyHearingAidController_peerWithState___block_invoke;
   v9[3] = &unk_1E85CA4E0;
   v9[4] = self;
-  v9[5] = a3;
-  v6 = [v5 indexOfObjectPassingTest:v9];
+  v9[5] = state;
+  v6 = [availableDevices indexOfObjectPassingTest:v9];
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v7 = 0;
@@ -2726,7 +2726,7 @@ LABEL_64:
 
   else
   {
-    v7 = [v5 objectAtIndex:v6];
+    v7 = [availableDevices objectAtIndex:v6];
   }
 
   return v7;
@@ -2752,36 +2752,36 @@ BOOL __46__HUNearbyHearingAidController_peerWithState___block_invoke(uint64_t a1
 
 - (BOOL)isPeerConnectedToHearingDevice
 {
-  v2 = self;
+  selfCopy = self;
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(HUNearbyHearingAidController *)self connectedPeer];
-  v5 = [v3 stringWithFormat:@"Checking connection %@", v4];
-  [(HUNearbyHearingAidController *)v2 logAvailableDevicesWithTitle:v5];
+  connectedPeer = [(HUNearbyHearingAidController *)self connectedPeer];
+  v5 = [v3 stringWithFormat:@"Checking connection %@", connectedPeer];
+  [(HUNearbyHearingAidController *)selfCopy logAvailableDevicesWithTitle:v5];
 
-  v6 = [(HUNearbyHearingAidController *)v2 connectedPeer];
-  LOBYTE(v2) = v6 != 0;
+  connectedPeer2 = [(HUNearbyHearingAidController *)selfCopy connectedPeer];
+  LOBYTE(selfCopy) = connectedPeer2 != 0;
 
-  return v2;
+  return selfCopy;
 }
 
 - (void)checkPeerStateAfterTimout
 {
-  v3 = [(HUNearbyHearingAidController *)self peerTimer];
+  peerTimer = [(HUNearbyHearingAidController *)self peerTimer];
 
-  if (!v3)
+  if (!peerTimer)
   {
     v4 = objc_alloc(MEMORY[0x1E6988780]);
-    v5 = [(HUDeviceController *)self deviceUpdatesQueue];
-    v6 = [v4 initWithTargetSerialQueue:v5];
+    deviceUpdatesQueue = [(HUDeviceController *)self deviceUpdatesQueue];
+    v6 = [v4 initWithTargetSerialQueue:deviceUpdatesQueue];
     [(HUNearbyHearingAidController *)self setPeerTimer:v6];
 
-    v7 = [(HUNearbyHearingAidController *)self peerTimer];
+    peerTimer2 = [(HUNearbyHearingAidController *)self peerTimer];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __57__HUNearbyHearingAidController_checkPeerStateAfterTimout__block_invoke;
     v10[3] = &unk_1E85C9F60;
     v10[4] = self;
-    [v7 afterDelay:v10 processBlock:7.5];
+    [peerTimer2 afterDelay:v10 processBlock:7.5];
 
     v8 = HCLogHearingHandoff();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -2804,19 +2804,19 @@ uint64_t __57__HUNearbyHearingAidController_checkPeerStateAfterTimout__block_inv
   return [*(a1 + 32) updateStateOnDeviceQueue];
 }
 
-- (void)connectedPeerWithCompletion:(id)a3
+- (void)connectedPeerWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v5 = [(HUDeviceController *)self deviceUpdatesQueue];
+    deviceUpdatesQueue = [(HUDeviceController *)self deviceUpdatesQueue];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __60__HUNearbyHearingAidController_connectedPeerWithCompletion___block_invoke;
     v6[3] = &unk_1E85CA508;
     v6[4] = self;
-    v7 = v4;
-    dispatch_async(v5, v6);
+    v7 = completionCopy;
+    dispatch_async(deviceUpdatesQueue, v6);
   }
 }
 
@@ -2827,15 +2827,15 @@ void __60__HUNearbyHearingAidController_connectedPeerWithCompletion___block_invo
   (*(v1 + 16))(v1, v2);
 }
 
-- (id)devicesFromDevices:(id)a3 withMessagePriority:(unint64_t)a4
+- (id)devicesFromDevices:(id)devices withMessagePriority:(unint64_t)priority
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __71__HUNearbyHearingAidController_devicesFromDevices_withMessagePriority___block_invoke;
   v6[3] = &unk_1E85CA4E0;
   v6[4] = self;
-  v6[5] = a4;
-  v4 = [a3 ax_filteredArrayUsingBlock:v6];
+  v6[5] = priority;
+  v4 = [devices ax_filteredArrayUsingBlock:v6];
 
   return v4;
 }
@@ -2870,36 +2870,36 @@ BOOL __71__HUNearbyHearingAidController_devicesFromDevices_withMessagePriority__
 
 - (id)hearingDevice
 {
-  v3 = [(HUNearbyHearingAidController *)self localDevice];
-  if (!v3)
+  localDevice = [(HUNearbyHearingAidController *)self localDevice];
+  if (!localDevice)
   {
     v4 = +[HUHearingAidSettings sharedInstance];
-    v5 = [v4 pairedHearingAids];
+    pairedHearingAids = [v4 pairedHearingAids];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [[AXRemoteHearingAidDevice alloc] initWithPersistentRepresentation:v5];
+      v6 = [[AXRemoteHearingAidDevice alloc] initWithPersistentRepresentation:pairedHearingAids];
       [(AXRemoteHearingAidDevice *)v6 setUpdateDelegate:self];
       [(HUNearbyHearingAidController *)self setLocalDevice:v6];
     }
   }
 
-  return v3;
+  return localDevice;
 }
 
-- (void)sendMessagesPriorityHighForClient:(id)a3
+- (void)sendMessagesPriorityHighForClient:(id)client
 {
-  v4 = a3;
-  v5 = [(HUDeviceController *)self deviceUpdatesQueue];
+  clientCopy = client;
+  deviceUpdatesQueue = [(HUDeviceController *)self deviceUpdatesQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __66__HUNearbyHearingAidController_sendMessagesPriorityHighForClient___block_invoke;
   v7[3] = &unk_1E85C9F38;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = clientCopy;
+  selfCopy = self;
+  v6 = clientCopy;
+  dispatch_async(deviceUpdatesQueue, v7);
 }
 
 uint64_t __66__HUNearbyHearingAidController_sendMessagesPriorityHighForClient___block_invoke(uint64_t a1)
@@ -2955,18 +2955,18 @@ uint64_t __66__HUNearbyHearingAidController_sendMessagesPriorityHighForClient___
   return result;
 }
 
-- (void)sendMessagesPriorityDefaultForClient:(id)a3
+- (void)sendMessagesPriorityDefaultForClient:(id)client
 {
-  v4 = a3;
-  v5 = [(HUDeviceController *)self deviceUpdatesQueue];
+  clientCopy = client;
+  deviceUpdatesQueue = [(HUDeviceController *)self deviceUpdatesQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __69__HUNearbyHearingAidController_sendMessagesPriorityDefaultForClient___block_invoke;
   v7[3] = &unk_1E85C9F38;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = clientCopy;
+  selfCopy = self;
+  v6 = clientCopy;
+  dispatch_async(deviceUpdatesQueue, v7);
 }
 
 void __69__HUNearbyHearingAidController_sendMessagesPriorityDefaultForClient___block_invoke(uint64_t a1)
@@ -3040,21 +3040,21 @@ void __69__HUNearbyHearingAidController_sendMessagesPriorityDefaultForClient___b
   }
 }
 
-- (void)sendMessagesPriority:(unint64_t)a3
+- (void)sendMessagesPriority:(unint64_t)priority
 {
   v15 = *MEMORY[0x1E69E9840];
-  [(HUNearbyHearingAidController *)self setDeviceMessagePriority:a3];
+  [(HUNearbyHearingAidController *)self setDeviceMessagePriority:priority];
   v4 = +[HUHearingAidSettings sharedInstance];
-  v5 = [v4 pairedHearingAids];
+  pairedHearingAids = [v4 pairedHearingAids];
 
-  if (v5)
+  if (pairedHearingAids)
   {
     v6 = HCLogHearingAids();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(HUNearbyHearingAidController *)self descriptionForCurrentMessagePriority];
+      descriptionForCurrentMessagePriority = [(HUNearbyHearingAidController *)self descriptionForCurrentMessagePriority];
       *buf = 138412290;
-      v14 = v7;
+      v14 = descriptionForCurrentMessagePriority;
       _os_log_impl(&dword_1DA5E2000, v6, OS_LOG_TYPE_DEFAULT, "IDS Sending MessagesPriority %@", buf, 0xCu);
     }
 
@@ -3080,17 +3080,17 @@ void __69__HUNearbyHearingAidController_sendMessagesPriorityDefaultForClient___b
   }
 }
 
-- (void)clientRemoved:(id)a3
+- (void)clientRemoved:(id)removed
 {
-  v4 = [a3 pid];
-  v5 = [(HUDeviceController *)self deviceUpdatesQueue];
+  v4 = [removed pid];
+  deviceUpdatesQueue = [(HUDeviceController *)self deviceUpdatesQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __46__HUNearbyHearingAidController_clientRemoved___block_invoke;
   v6[3] = &unk_1E85CA530;
   v6[4] = self;
   v7 = v4;
-  dispatch_async(v5, v6);
+  dispatch_async(deviceUpdatesQueue, v6);
 }
 
 uint64_t __46__HUNearbyHearingAidController_clientRemoved___block_invoke(uint64_t a1)
@@ -3120,17 +3120,17 @@ uint64_t __46__HUNearbyHearingAidController_clientRemoved___block_invoke(uint64_
 - (void)sendConnectionUpdateToPeers
 {
   v3 = +[HUHearingAidSettings sharedInstance];
-  v4 = [v3 pairedHearingAids];
+  pairedHearingAids = [v3 pairedHearingAids];
 
-  if (v4)
+  if (pairedHearingAids)
   {
-    v5 = [(HUDeviceController *)self deviceUpdatesQueue];
+    deviceUpdatesQueue = [(HUDeviceController *)self deviceUpdatesQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __59__HUNearbyHearingAidController_sendConnectionUpdateToPeers__block_invoke;
     block[3] = &unk_1E85C9F60;
     block[4] = self;
-    dispatch_async(v5, block);
+    dispatch_async(deviceUpdatesQueue, block);
   }
 }
 
@@ -3142,14 +3142,14 @@ void __59__HUNearbyHearingAidController_sendConnectionUpdateToPeers__block_invok
   [v2 availableRemoteControllersDidChange];
 }
 
-- (void)sendStateMessageToAllDevices:(id)a3 isUrgent:(BOOL)a4
+- (void)sendStateMessageToAllDevices:(id)devices isUrgent:(BOOL)urgent
 {
-  v4 = a4;
-  v6 = a3;
+  urgentCopy = urgent;
+  devicesCopy = devices;
   [(HUNearbyHearingAidController *)self setIdsMessagesCount:[(HUNearbyHearingAidController *)self idsMessagesCount]+ 1];
   v7 = +[HUNearbyController sharedInstance];
   v9 = v7;
-  if (v4)
+  if (urgentCopy)
   {
     v8 = 1;
   }
@@ -3159,25 +3159,25 @@ void __59__HUNearbyHearingAidController_sendConnectionUpdateToPeers__block_invok
     v8 = 2;
   }
 
-  [v7 sendMessage:v6 toDevicesWithDomain:@"com.apple.hearing.hearingaids" withPriority:v8];
+  [v7 sendMessage:devicesCopy toDevicesWithDomain:@"com.apple.hearing.hearingaids" withPriority:v8];
 }
 
-- (void)sendMessageToAllDevices:(id)a3 messagePriority:(unint64_t)a4
+- (void)sendMessageToAllDevices:(id)devices messagePriority:(unint64_t)priority
 {
-  v5 = a3;
+  devicesCopy = devices;
   v6 = +[HUNearbyController sharedInstance];
-  [v6 sendMessage:v5 toDevicesWithDomain:@"com.apple.hearing.hearingaids" withPriority:a4];
+  [v6 sendMessage:devicesCopy toDevicesWithDomain:@"com.apple.hearing.hearingaids" withPriority:priority];
 }
 
-- (void)sendStateMessage:(id)a3 toDevices:(id)a4 isUrgent:(BOOL)a5
+- (void)sendStateMessage:(id)message toDevices:(id)devices isUrgent:(BOOL)urgent
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = a3;
+  urgentCopy = urgent;
+  devicesCopy = devices;
+  messageCopy = message;
   [(HUNearbyHearingAidController *)self setIdsMessagesCount:[(HUNearbyHearingAidController *)self idsMessagesCount]+ 1];
   v10 = +[HUNearbyController sharedInstance];
   v12 = v10;
-  if (v5)
+  if (urgentCopy)
   {
     v11 = 1;
   }
@@ -3187,37 +3187,37 @@ void __59__HUNearbyHearingAidController_sendConnectionUpdateToPeers__block_invok
     v11 = 2;
   }
 
-  [v10 sendMessage:v9 withDomain:@"com.apple.hearing.hearingaids" toDevices:v8 withPriority:v11];
+  [v10 sendMessage:messageCopy withDomain:@"com.apple.hearing.hearingaids" toDevices:devicesCopy withPriority:v11];
 }
 
-- (void)sendMessage:(id)a3 toDevices:(id)a4 messagePriority:(unint64_t)a5
+- (void)sendMessage:(id)message toDevices:(id)devices messagePriority:(unint64_t)priority
 {
-  v7 = a4;
-  v8 = a3;
+  devicesCopy = devices;
+  messageCopy = message;
   v9 = +[HUNearbyController sharedInstance];
-  [v9 sendMessage:v8 withDomain:@"com.apple.hearing.hearingaids" toDevices:v7 withPriority:a5];
+  [v9 sendMessage:messageCopy withDomain:@"com.apple.hearing.hearingaids" toDevices:devicesCopy withPriority:priority];
 }
 
-- (void)sendMessage:(id)a3 toDevices:(id)a4
+- (void)sendMessage:(id)message toDevices:(id)devices
 {
-  v5 = a4;
-  v6 = a3;
+  devicesCopy = devices;
+  messageCopy = message;
   v7 = +[HUNearbyController sharedInstance];
-  [v7 sendMessage:v6 withDomain:@"com.apple.hearing.hearingaids" toDevices:v5 withPriority:1];
+  [v7 sendMessage:messageCopy withDomain:@"com.apple.hearing.hearingaids" toDevices:devicesCopy withPriority:1];
 }
 
-- (void)sendWriteToAllDevices:(id)a3
+- (void)sendWriteToAllDevices:(id)devices
 {
-  v4 = a3;
-  v5 = [(HUDeviceController *)self deviceUpdatesQueue];
+  devicesCopy = devices;
+  deviceUpdatesQueue = [(HUDeviceController *)self deviceUpdatesQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __54__HUNearbyHearingAidController_sendWriteToAllDevices___block_invoke;
   v7[3] = &unk_1E85C9F38;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = devicesCopy;
+  v6 = devicesCopy;
+  dispatch_async(deviceUpdatesQueue, v7);
 }
 
 void __54__HUNearbyHearingAidController_sendWriteToAllDevices___block_invoke(uint64_t a1)
@@ -3250,17 +3250,17 @@ void __54__HUNearbyHearingAidController_sendWriteToAllDevices___block_invoke(uin
   }
 }
 
-- (void)sendWrite:(id)a3 toDevices:(id)a4
+- (void)sendWrite:(id)write toDevices:(id)devices
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && [v7 count])
+  writeCopy = write;
+  devicesCopy = devices;
+  v8 = devicesCopy;
+  if (writeCopy && [devicesCopy count])
   {
     v9 = MEMORY[0x1E695DF20];
     v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:8];
-    v11 = [v9 dictionaryWithObject:v6 forKey:v10];
+    v11 = [v9 dictionaryWithObject:writeCopy forKey:v10];
 
     v12 = [(HUNearbyHearingAidController *)self urgentDevicesFromDevices:v8];
     if ([v12 count])
@@ -3276,15 +3276,15 @@ void __54__HUNearbyHearingAidController_sendWriteToAllDevices___block_invoke(uin
       [(HUNearbyHearingAidController *)self sendMessage:v11 toDevices:v12];
     }
 
-    [(HUNearbyHearingAidController *)self collectPropertyUpdatesFromPayload:v6];
-    v14 = [(HUNearbyHearingAidController *)self sendPropertyUpdatesLowTimer];
+    [(HUNearbyHearingAidController *)self collectPropertyUpdatesFromPayload:writeCopy];
+    sendPropertyUpdatesLowTimer = [(HUNearbyHearingAidController *)self sendPropertyUpdatesLowTimer];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __52__HUNearbyHearingAidController_sendWrite_toDevices___block_invoke;
     v16[3] = &unk_1E85C9F38;
     v16[4] = self;
     v17 = v8;
-    [v14 afterDelay:v16 processBlock:4.0];
+    [sendPropertyUpdatesLowTimer afterDelay:v16 processBlock:4.0];
   }
 
   v15 = *MEMORY[0x1E69E9840];
@@ -3326,35 +3326,35 @@ void __52__HUNearbyHearingAidController_sendWrite_toDevices___block_invoke(uint6
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)writeValue:(id)a3 forProperty:(unint64_t)a4 andDeviceID:(id)a5 toDevices:(id)a6
+- (void)writeValue:(id)value forProperty:(unint64_t)property andDeviceID:(id)d toDevices:(id)devices
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if (v10 && [v11 length])
+  valueCopy = value;
+  dCopy = d;
+  devicesCopy = devices;
+  if (valueCopy && [dCopy length])
   {
-    v19 = v11;
-    v13 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a4];
+    v19 = dCopy;
+    v13 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:property];
     v17 = v13;
-    v18 = v10;
+    v18 = valueCopy;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v18 forKeys:&v17 count:1];
     v20[0] = v14;
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:&v19 count:1];
-    [(HUNearbyHearingAidController *)self sendWrite:v15 toDevices:v12];
+    [(HUNearbyHearingAidController *)self sendWrite:v15 toDevices:devicesCopy];
   }
 
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)collectPropertyUpdatesFromPayload:(id)a3
+- (void)collectPropertyUpdatesFromPayload:(id)payload
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __66__HUNearbyHearingAidController_collectPropertyUpdatesFromPayload___block_invoke;
   v3[3] = &unk_1E85CA558;
   v3[4] = self;
-  [a3 enumerateKeysAndObjectsUsingBlock:v3];
+  [payload enumerateKeysAndObjectsUsingBlock:v3];
 }
 
 void __66__HUNearbyHearingAidController_collectPropertyUpdatesFromPayload___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -3383,20 +3383,20 @@ void __66__HUNearbyHearingAidController_collectPropertyUpdatesFromPayload___bloc
   }
 }
 
-- (id)device:(id)a3 didReceiveMessage:(id)a4
+- (id)device:(id)device didReceiveMessage:(id)message
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  messageCopy = message;
   v8 = HCLogHearingAids();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218498;
     *&buf[4] = [(HUNearbyHearingAidController *)self state];
     *&buf[12] = 2112;
-    *&buf[14] = v6;
+    *&buf[14] = deviceCopy;
     *&buf[22] = 2112;
-    v28 = v7;
+    v28 = messageCopy;
     _os_log_impl(&dword_1DA5E2000, v8, OS_LOG_TYPE_DEFAULT, "%ld== %@ - %@", buf, 0x20u);
   }
 
@@ -3408,17 +3408,17 @@ void __66__HUNearbyHearingAidController_collectPropertyUpdatesFromPayload___bloc
   v23 = &v22;
   v24 = 0x2020000000;
   v25 = 0;
-  v9 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __57__HUNearbyHearingAidController_device_didReceiveMessage___block_invoke;
   v17[3] = &unk_1E85CA580;
-  v10 = v6;
+  v10 = deviceCopy;
   v18 = v10;
-  v19 = self;
+  selfCopy = self;
   v20 = buf;
   v21 = &v22;
-  [v7 enumerateKeysAndObjectsUsingBlock:v17];
+  [messageCopy enumerateKeysAndObjectsUsingBlock:v17];
   if (v10 && (*(*&buf[8] + 24) & 1) != 0)
   {
     v11 = objc_opt_new();
@@ -3441,7 +3441,7 @@ void __66__HUNearbyHearingAidController_collectPropertyUpdatesFromPayload___bloc
 
   v15 = *MEMORY[0x1E69E9840];
 
-  return v9;
+  return dictionary;
 }
 
 void __57__HUNearbyHearingAidController_device_didReceiveMessage___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -3519,40 +3519,40 @@ LABEL_20:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateResponse:(id)a3 withState:(int64_t)a4
+- (void)updateResponse:(id)response withState:(int64_t)state
 {
-  v6 = a3;
-  v7 = [v6 objectForKey:&unk_1F5623998];
+  responseCopy = response;
+  v7 = [responseCopy objectForKey:&unk_1F5623998];
 
   if (!v7)
   {
     [(HUNearbyHearingAidController *)self setIdsMessagesCount:[(HUNearbyHearingAidController *)self idsMessagesCount]+ 1];
   }
 
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-  [v6 setObject:v8 forKey:&unk_1F5623998];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:state];
+  [responseCopy setObject:v8 forKey:&unk_1F5623998];
 }
 
-- (void)validateResponse:(id)a3
+- (void)validateResponse:(id)response
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 objectForKey:&unk_1F5623998];
+  responseCopy = response;
+  v5 = [responseCopy objectForKey:&unk_1F5623998];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 unsignedIntegerValue];
-    if (v7 != [(HUNearbyHearingAidController *)self state])
+    unsignedIntegerValue = [v5 unsignedIntegerValue];
+    if (unsignedIntegerValue != [(HUNearbyHearingAidController *)self state])
     {
-      [(HUNearbyHearingAidController *)self updateResponse:v4 withState:[(HUNearbyHearingAidController *)self state]];
+      [(HUNearbyHearingAidController *)self updateResponse:responseCopy withState:[(HUNearbyHearingAidController *)self state]];
     }
 
     v8 = HCLogHearingHandoff();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(HUNearbyHearingAidController *)self descriptionForCurrentState];
+      descriptionForCurrentState = [(HUNearbyHearingAidController *)self descriptionForCurrentState];
       v11 = 138412290;
-      v12 = v9;
+      v12 = descriptionForCurrentState;
       _os_log_impl(&dword_1DA5E2000, v8, OS_LOG_TYPE_DEFAULT, "Response ControllerConnected state: %@", &v11, 0xCu);
     }
   }
@@ -3560,26 +3560,26 @@ LABEL_20:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)processHandoffMessageFromPeer:(id)a3 state:(id)a4
+- (void)processHandoffMessageFromPeer:(id)peer state:(id)state
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  peerCopy = peer;
+  stateCopy = state;
   v8 = HCLogHearingHandoff();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(HUNearbyHearingAidController *)self timeStamp];
-    v10 = [v6 name];
+    timeStamp = [(HUNearbyHearingAidController *)self timeStamp];
+    name = [peerCopy name];
     *buf = 138412802;
-    v22 = v7;
+    v22 = stateCopy;
     v23 = 2112;
-    v24 = v9;
+    v24 = timeStamp;
     v25 = 2112;
-    v26 = v10;
+    v26 = name;
     _os_log_impl(&dword_1DA5E2000, v8, OS_LOG_TYPE_DEFAULT, "Received ControllerConnectWithReason: %@, time: %@, from device: %@", buf, 0x20u);
   }
 
-  v11 = v7;
+  v11 = stateCopy;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -3587,34 +3587,34 @@ LABEL_20:
     goto LABEL_8;
   }
 
-  v12 = [v11 integerValue];
-  v13 = v12;
-  if ((v12 - 1) < 5)
+  integerValue = [v11 integerValue];
+  v13 = integerValue;
+  if ((integerValue - 1) < 5)
   {
 LABEL_8:
-    [(HUNearbyHearingAidController *)self relinquishConnectionForReason:v13 toDevice:v6];
+    [(HUNearbyHearingAidController *)self relinquishConnectionForReason:v13 toDevice:peerCopy];
     goto LABEL_9;
   }
 
-  if (!v12)
+  if (!integerValue)
   {
     v14 = dispatch_time(0, 1000000000);
-    v15 = [(HUDeviceController *)self deviceUpdatesQueue];
+    deviceUpdatesQueue = [(HUDeviceController *)self deviceUpdatesQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __68__HUNearbyHearingAidController_processHandoffMessageFromPeer_state___block_invoke;
     block[3] = &unk_1E85C9F60;
     block[4] = self;
-    dispatch_after(v14, v15, block);
+    dispatch_after(v14, deviceUpdatesQueue, block);
   }
 
 LABEL_9:
-  v16 = [(HUNearbyHearingAidController *)self delegate];
+  delegate = [(HUNearbyHearingAidController *)self delegate];
 
-  if (v16)
+  if (delegate)
   {
-    v17 = [(HUNearbyHearingAidController *)self delegate];
-    [v17 availableRemoteControllersDidChange];
+    delegate2 = [(HUNearbyHearingAidController *)self delegate];
+    [delegate2 availableRemoteControllersDidChange];
 
     v18 = HCLogHearingAids();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -3627,46 +3627,46 @@ LABEL_9:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)processStateMessageFromPeer:(id)a3 state:(id)a4
+- (BOOL)processStateMessageFromPeer:(id)peer state:(id)state
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [a4 integerValue];
+  peerCopy = peer;
+  integerValue = [state integerValue];
   v8 = HCLogHearingHandoff();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 name];
-    v10 = [(HUNearbyHearingAidController *)self descriptionForState:v7];
+    name = [peerCopy name];
+    v10 = [(HUNearbyHearingAidController *)self descriptionForState:integerValue];
     v22 = 138412546;
-    v23 = v9;
+    v23 = name;
     v24 = 2112;
     v25 = v10;
     _os_log_impl(&dword_1DA5E2000, v8, OS_LOG_TYPE_DEFAULT, "Received ControllerConnected peer: %@, peer state: %@", &v22, 0x16u);
   }
 
-  [(HUNearbyHearingAidController *)self setConnectionState:v7 forDevice:v6];
-  v11 = [(HUNearbyHearingAidController *)self updateStateOnDeviceQueue];
+  [(HUNearbyHearingAidController *)self setConnectionState:integerValue forDevice:peerCopy];
+  updateStateOnDeviceQueue = [(HUNearbyHearingAidController *)self updateStateOnDeviceQueue];
   v12 = +[AXHearingAidDeviceController sharedController];
-  v13 = [v12 isConnected];
+  isConnected = [v12 isConnected];
 
-  if ((v13 & 1) == 0)
+  if ((isConnected & 1) == 0)
   {
-    v14 = [(HUNearbyHearingAidController *)self hearingDevice];
-    v15 = [v14 didLoadRequiredPeerProperties];
+    hearingDevice = [(HUNearbyHearingAidController *)self hearingDevice];
+    didLoadRequiredPeerProperties = [hearingDevice didLoadRequiredPeerProperties];
 
-    if ((v15 & 1) == 0)
+    if ((didLoadRequiredPeerProperties & 1) == 0)
     {
-      v16 = [(HUNearbyHearingAidController *)self hearingDevice];
-      [v16 loadRequiredProperties];
+      hearingDevice2 = [(HUNearbyHearingAidController *)self hearingDevice];
+      [hearingDevice2 loadRequiredProperties];
     }
   }
 
-  v17 = [(HUNearbyHearingAidController *)self delegate];
+  delegate = [(HUNearbyHearingAidController *)self delegate];
 
-  if (v17)
+  if (delegate)
   {
-    v18 = [(HUNearbyHearingAidController *)self delegate];
-    [v18 availableRemoteControllersDidChange];
+    delegate2 = [(HUNearbyHearingAidController *)self delegate];
+    [delegate2 availableRemoteControllersDidChange];
 
     v19 = HCLogHearingAids();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -3677,18 +3677,18 @@ LABEL_9:
   }
 
   v20 = *MEMORY[0x1E69E9840];
-  return v11;
+  return updateStateOnDeviceQueue;
 }
 
-- (void)processReadMessageFromPeerDevice:(id)a3 value:(id)a4
+- (void)processReadMessageFromPeerDevice:(id)device value:(id)value
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  valueCopy = value;
   v8 = +[AXHAController sharedController];
-  v9 = [v8 pairedDeviceUUID];
+  pairedDeviceUUID = [v8 pairedDeviceUUID];
 
-  if (v6)
+  if (deviceCopy)
   {
     if ([(HUNearbyHearingAidController *)self state]== 5)
     {
@@ -3700,8 +3700,8 @@ LABEL_9:
         v15[2] = __71__HUNearbyHearingAidController_processReadMessageFromPeerDevice_value___block_invoke;
         v15[3] = &unk_1E85CA5A8;
         v15[4] = self;
-        v16 = v6;
-        [v7 enumerateKeysAndObjectsUsingBlock:v15];
+        v16 = deviceCopy;
+        [valueCopy enumerateKeysAndObjectsUsingBlock:v15];
       }
 
       else
@@ -3709,7 +3709,7 @@ LABEL_9:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [(HUNearbyHearingAidController *)self processReadProperty:v7 fromPeerDevice:v6];
+          [(HUNearbyHearingAidController *)self processReadProperty:valueCopy fromPeerDevice:deviceCopy];
         }
       }
     }
@@ -3717,13 +3717,13 @@ LABEL_9:
     else if ([(HUNearbyHearingAidController *)self state]== 2)
     {
       objc_opt_class();
-      if ((objc_opt_isKindOfClass() & 1) != 0 && [v7 integerValue] == 0x1000000)
+      if ((objc_opt_isKindOfClass() & 1) != 0 && [valueCopy integerValue] == 0x1000000)
       {
-        v11 = [(HUNearbyHearingAidController *)self hearingDevice];
-        v12 = [v11 valueForProperty:0x1000000];
-        v18[0] = v6;
+        hearingDevice = [(HUNearbyHearingAidController *)self hearingDevice];
+        v12 = [hearingDevice valueForProperty:0x1000000];
+        v18[0] = deviceCopy;
         v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
-        [(HUNearbyHearingAidController *)self writeValue:v12 forProperty:0x1000000 andDeviceID:v9 toDevices:v13];
+        [(HUNearbyHearingAidController *)self writeValue:v12 forProperty:0x1000000 andDeviceID:pairedDeviceUUID toDevices:v13];
       }
     }
   }
@@ -3741,48 +3741,48 @@ LABEL_9:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)processReadProperty:(id)a3 fromPeerDevice:(id)a4
+- (void)processReadProperty:(id)property fromPeerDevice:(id)device
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
+  deviceCopy = device;
+  propertyCopy = property;
   v8 = +[AXHAController sharedController];
-  v9 = [v8 pairedDeviceUUID];
+  pairedDeviceUUID = [v8 pairedDeviceUUID];
 
-  v10 = [v7 unsignedLongLongValue];
+  unsignedLongLongValue = [propertyCopy unsignedLongLongValue];
   v11 = +[AXHearingAidDeviceController sharedController];
-  v12 = [v11 valueForProperty:v10 forDeviceID:v9];
+  v12 = [v11 valueForProperty:unsignedLongLongValue forDeviceID:pairedDeviceUUID];
 
-  v15[0] = v6;
+  v15[0] = deviceCopy;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
 
-  [(HUNearbyHearingAidController *)self writeValue:v12 forProperty:v10 andDeviceID:v9 toDevices:v13];
+  [(HUNearbyHearingAidController *)self writeValue:v12 forProperty:unsignedLongLongValue andDeviceID:pairedDeviceUUID toDevices:v13];
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)processWriteMessageWithValue:(id)a3
+- (void)processWriteMessageWithValue:(id)value
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  valueCopy = value;
   v5 = +[AXHAController sharedController];
-  v6 = [v5 pairedDeviceUUID];
+  pairedDeviceUUID = [v5 pairedDeviceUUID];
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v4 count] == 1)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [valueCopy count] == 1)
   {
     if ([(HUNearbyHearingAidController *)self state]== 5)
     {
       v7 = +[AXHearingAidDeviceController sharedController];
-      v8 = [v7 hearingAidForDeviceID:v6];
+      hearingDevice = [v7 hearingAidForDeviceID:pairedDeviceUUID];
 
-      v9 = +[AXHearingAidDeviceController sharedController];
+      selfCopy = +[AXHearingAidDeviceController sharedController];
     }
 
     else
     {
-      v8 = [(HUNearbyHearingAidController *)self hearingDevice];
-      v9 = self;
-      if ([(HUNearbyHearingAidController *)v9 isPeerConnectedToHearingDevice])
+      hearingDevice = [(HUNearbyHearingAidController *)self hearingDevice];
+      selfCopy = self;
+      if ([(HUNearbyHearingAidController *)selfCopy isPeerConnectedToHearingDevice])
       {
         v10 = &unk_1F56239E0;
       }
@@ -3792,19 +3792,19 @@ LABEL_9:
         v10 = &unk_1F56239C8;
       }
 
-      [v8 setValue:v10 forProperty:0x200000];
+      [hearingDevice setValue:v10 forProperty:0x200000];
     }
 
-    v11 = v4;
-    v12 = [v11 allKeys];
-    v13 = [v12 lastObject];
-    v14 = [v8 deviceUUID];
-    v15 = [v13 isEqualToString:v14];
+    v11 = valueCopy;
+    allKeys = [v11 allKeys];
+    lastObject = [allKeys lastObject];
+    deviceUUID = [hearingDevice deviceUUID];
+    v15 = [lastObject isEqualToString:deviceUUID];
 
     if (v15)
     {
-      v16 = [v8 deviceUUID];
-      v17 = [v11 objectForKey:v16];
+      deviceUUID2 = [hearingDevice deviceUUID];
+      v17 = [v11 objectForKey:deviceUUID2];
 
       v11 = v17;
     }
@@ -3815,7 +3815,7 @@ LABEL_9:
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v26 = v8;
+        v26 = hearingDevice;
         v27 = 2112;
         v28 = v11;
         _os_log_impl(&dword_1DA5E2000, v18, OS_LOG_TYPE_DEFAULT, "Unknown device ID %@ - %@", buf, 0x16u);
@@ -3826,10 +3826,10 @@ LABEL_9:
     v22[1] = 3221225472;
     v22[2] = __61__HUNearbyHearingAidController_processWriteMessageWithValue___block_invoke;
     v22[3] = &unk_1E85CA5A8;
-    v23 = v9;
-    v24 = v8;
-    v19 = v8;
-    v20 = v9;
+    v23 = selfCopy;
+    v24 = hearingDevice;
+    v19 = hearingDevice;
+    v20 = selfCopy;
     [v11 enumerateKeysAndObjectsUsingBlock:v22];
   }
 
@@ -3873,35 +3873,35 @@ void __61__HUNearbyHearingAidController_processWriteMessageWithValue___block_inv
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)scIDSServiceDevice:(id)a3 didReceiveMessage:(id)a4
+- (void)scIDSServiceDevice:(id)device didReceiveMessage:(id)message
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  messageCopy = message;
   v8 = HCLogHearingHandoff();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v24 = v7;
+    v24 = messageCopy;
     v25 = 2112;
-    v26 = v6;
+    v26 = deviceCopy;
     _os_log_impl(&dword_1DA5E2000, v8, OS_LOG_TYPE_DEFAULT, "Received HearingAids Message %@ from device: %@", buf, 0x16u);
   }
 
-  v9 = [v7 objectForKeyedSubscript:@"com.apple.hearing.hearingaids"];
+  v9 = [messageCopy objectForKeyedSubscript:@"com.apple.hearing.hearingaids"];
   v10 = [v9 objectForKeyedSubscript:@"HCMessageIdentifierRemoteControllerConnectWithReason"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [(HUDeviceController *)self deviceUpdatesQueue];
+    deviceUpdatesQueue = [(HUDeviceController *)self deviceUpdatesQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __69__HUNearbyHearingAidController_scIDSServiceDevice_didReceiveMessage___block_invoke;
     block[3] = &unk_1E85CA468;
     block[4] = self;
     v21 = v10;
-    v22 = v6;
-    dispatch_async(v11, block);
+    v22 = deviceCopy;
+    dispatch_async(deviceUpdatesQueue, block);
   }
 
   v12 = [v9 objectForKeyedSubscript:@"HCMessageIdentifierControllerConnected"];
@@ -3915,19 +3915,19 @@ void __61__HUNearbyHearingAidController_processWriteMessageWithValue___block_inv
       *buf = 138412546;
       v24 = v14;
       v25 = 2112;
-      v26 = v6;
+      v26 = deviceCopy;
       _os_log_impl(&dword_1DA5E2000, v13, OS_LOG_TYPE_DEFAULT, "Update controllerState %@ for device: %@", buf, 0x16u);
     }
 
-    v15 = [(HUDeviceController *)self deviceUpdatesQueue];
+    deviceUpdatesQueue2 = [(HUDeviceController *)self deviceUpdatesQueue];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __69__HUNearbyHearingAidController_scIDSServiceDevice_didReceiveMessage___block_invoke_154;
     v17[3] = &unk_1E85CA468;
     v17[4] = self;
-    v18 = v6;
+    v18 = deviceCopy;
     v19 = v12;
-    dispatch_async(v15, v17);
+    dispatch_async(deviceUpdatesQueue2, v17);
   }
 
   v16 = *MEMORY[0x1E69E9840];
@@ -3942,16 +3942,16 @@ uint64_t __69__HUNearbyHearingAidController_scIDSServiceDevice_didReceiveMessage
   return [v2 relinquishConnectionForReason:v3 toDevice:v4];
 }
 
-- (void)scIDSServiceDidRemoveDevices:(id)a3
+- (void)scIDSServiceDidRemoveDevices:(id)devices
 {
   v20 = *MEMORY[0x1E69E9840];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v19 count:16];
-  v6 = v4;
+  devicesCopy = devices;
+  v5 = [devicesCopy countByEnumeratingWithState:&v13 objects:v19 count:16];
+  delegate = devicesCopy;
   if (v5)
   {
     v7 = v5;
@@ -3962,7 +3962,7 @@ uint64_t __69__HUNearbyHearingAidController_scIDSServiceDevice_didReceiveMessage
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(devicesCopy);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
@@ -3977,13 +3977,13 @@ uint64_t __69__HUNearbyHearingAidController_scIDSServiceDevice_didReceiveMessage
           }
 
           [(HUNearbyHearingAidController *)self updateStateOnDeviceQueue];
-          v6 = [(HUNearbyHearingAidController *)self delegate];
-          [v6 availableRemoteControllersDidChange];
+          delegate = [(HUNearbyHearingAidController *)self delegate];
+          [delegate availableRemoteControllersDidChange];
           goto LABEL_13;
         }
       }
 
-      v7 = [v4 countByEnumeratingWithState:&v13 objects:v19 count:16];
+      v7 = [devicesCopy countByEnumeratingWithState:&v13 objects:v19 count:16];
       if (v7)
       {
         continue;
@@ -3992,7 +3992,7 @@ uint64_t __69__HUNearbyHearingAidController_scIDSServiceDevice_didReceiveMessage
       break;
     }
 
-    v6 = v4;
+    delegate = devicesCopy;
   }
 
 LABEL_13:
@@ -4000,40 +4000,40 @@ LABEL_13:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)scIDSServiceDidAddDevices:(id)a3
+- (void)scIDSServiceDidAddDevices:(id)devices
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  devicesCopy = devices;
+  if ([devicesCopy count])
   {
     v5 = HCLogHearingHandoff();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(HUNearbyHearingAidController *)self descriptionForCurrentState];
+      descriptionForCurrentState = [(HUNearbyHearingAidController *)self descriptionForCurrentState];
       v15 = 138412290;
-      v16 = v6;
+      v16 = descriptionForCurrentState;
       _os_log_impl(&dword_1DA5E2000, v5, OS_LOG_TYPE_DEFAULT, "SC IDS Service Added, current state %@", &v15, 0xCu);
     }
 
     if ([(HUNearbyHearingAidController *)self state]== 5)
     {
-      v7 = [v4 count];
+      v7 = [devicesCopy count];
       v8 = HCLogHearingHandoff();
       v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
       if (v7 < 2)
       {
         if (v9)
         {
-          v11 = [v4 objectAtIndexedSubscript:0];
-          v12 = [v11 name];
+          v11 = [devicesCopy objectAtIndexedSubscript:0];
+          name = [v11 name];
           v15 = 138412290;
-          v16 = v12;
+          v16 = name;
           _os_log_impl(&dword_1DA5E2000, v8, OS_LOG_TYPE_DEFAULT, "SC IDS Service Sending PeerConnected to %@", &v15, 0xCu);
         }
 
-        v10 = +[HUNearbyController sharedInstance];
-        v13 = [v4 objectAtIndexedSubscript:0];
-        [v10 sendSCIDSMessage:&unk_1F5624488 toDevice:v13];
+        delegate = +[HUNearbyController sharedInstance];
+        v13 = [devicesCopy objectAtIndexedSubscript:0];
+        [delegate sendSCIDSMessage:&unk_1F5624488 toDevice:v13];
       }
 
       else
@@ -4044,49 +4044,49 @@ LABEL_13:
           _os_log_impl(&dword_1DA5E2000, v8, OS_LOG_TYPE_DEFAULT, "SC IDS Service Sending PeerConnected to all", &v15, 2u);
         }
 
-        v10 = +[HUNearbyController sharedInstance];
-        [v10 sendSCIDSMessage:&unk_1F5624460 toDevice:0];
+        delegate = +[HUNearbyController sharedInstance];
+        [delegate sendSCIDSMessage:&unk_1F5624460 toDevice:0];
       }
     }
 
     else
     {
       [(HUNearbyHearingAidController *)self updateStateOnDeviceQueue];
-      v10 = [(HUNearbyHearingAidController *)self delegate];
-      [v10 availableRemoteControllersDidChange];
+      delegate = [(HUNearbyHearingAidController *)self delegate];
+      [delegate availableRemoteControllersDidChange];
     }
   }
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (id)hearingAidForDeviceID:(id)a3
+- (id)hearingAidForDeviceID:(id)d
 {
-  v4 = a3;
-  v5 = [(HUNearbyHearingAidController *)self hearingDevice];
-  v6 = [v5 deviceUUID];
-  v7 = [v6 isEqualToString:v4];
+  dCopy = d;
+  hearingDevice = [(HUNearbyHearingAidController *)self hearingDevice];
+  deviceUUID = [hearingDevice deviceUUID];
+  v7 = [deviceUUID isEqualToString:dCopy];
 
   if (v7)
   {
-    v8 = [(HUNearbyHearingAidController *)self hearingDevice];
+    hearingDevice2 = [(HUNearbyHearingAidController *)self hearingDevice];
   }
 
   else
   {
-    v8 = 0;
+    hearingDevice2 = 0;
   }
 
-  return v8;
+  return hearingDevice2;
 }
 
-- (void)updateProperty:(unint64_t)a3 forDeviceID:(id)a4
+- (void)updateProperty:(unint64_t)property forDeviceID:(id)d
 {
-  v6 = a4;
+  dCopy = d;
   v7 = +[HUHearingAidSettings sharedInstance];
-  v8 = [v7 isiCloudPaired];
+  isiCloudPaired = [v7 isiCloudPaired];
 
-  if (v8)
+  if (isiCloudPaired)
   {
     v9 = HCLogHearingAids();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -4103,13 +4103,13 @@ LABEL_13:
     v12[2] = __59__HUNearbyHearingAidController_updateProperty_forDeviceID___block_invoke;
     v12[3] = &unk_1E85CA358;
     v12[4] = self;
-    v12[5] = a3;
+    v12[5] = property;
     [(HUNearbyHearingAidController *)self connectedPeerWithCompletion:v12];
   }
 
   v10.receiver = self;
   v10.super_class = HUNearbyHearingAidController;
-  [(HUDeviceController *)&v10 updateProperty:a3 forDeviceID:v6];
+  [(HUDeviceController *)&v10 updateProperty:property forDeviceID:dCopy];
 }
 
 void __59__HUNearbyHearingAidController_updateProperty_forDeviceID___block_invoke(uint64_t a1, void *a2)
@@ -4154,14 +4154,14 @@ void __59__HUNearbyHearingAidController_updateProperty_forDeviceID___block_invok
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)writeValue:(id)a3 forProperty:(unint64_t)a4 andDeviceID:(id)a5
+- (void)writeValue:(id)value forProperty:(unint64_t)property andDeviceID:(id)d
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = [(HUNearbyHearingAidController *)self hearingAidForDeviceID:v9];
-  v11 = [v10 valueForProperty:a4];
-  v12 = [v11 isEqual:v8];
+  valueCopy = value;
+  dCopy = d;
+  v10 = [(HUNearbyHearingAidController *)self hearingAidForDeviceID:dCopy];
+  v11 = [v10 valueForProperty:property];
+  v12 = [v11 isEqual:valueCopy];
 
   v13 = HCLogHearingAids();
   v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
@@ -4178,27 +4178,27 @@ void __59__HUNearbyHearingAidController_updateProperty_forDeviceID___block_invok
   {
     if (v14)
     {
-      v15 = [v10 valueForProperty:a4];
+      v15 = [v10 valueForProperty:property];
       *buf = 138412546;
       v24 = v15;
       v25 = 2112;
-      v26 = v8;
+      v26 = valueCopy;
       _os_log_impl(&dword_1DA5E2000, v13, OS_LOG_TYPE_DEFAULT, "Writing %@ = %@", buf, 0x16u);
     }
 
     v22.receiver = self;
     v22.super_class = HUNearbyHearingAidController;
-    [(HUDeviceController *)&v22 writeValue:v8 forProperty:a4 andDeviceID:v9];
-    v16 = [(HUDeviceController *)self deviceUpdatesQueue];
+    [(HUDeviceController *)&v22 writeValue:valueCopy forProperty:property andDeviceID:dCopy];
+    deviceUpdatesQueue = [(HUDeviceController *)self deviceUpdatesQueue];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __67__HUNearbyHearingAidController_writeValue_forProperty_andDeviceID___block_invoke;
     v18[3] = &unk_1E85CA5D0;
     v18[4] = self;
-    v19 = v8;
-    v21 = a4;
-    v20 = v9;
-    dispatch_async(v16, v18);
+    v19 = valueCopy;
+    propertyCopy = property;
+    v20 = dCopy;
+    dispatch_async(deviceUpdatesQueue, v18);
   }
 
   v17 = *MEMORY[0x1E69E9840];

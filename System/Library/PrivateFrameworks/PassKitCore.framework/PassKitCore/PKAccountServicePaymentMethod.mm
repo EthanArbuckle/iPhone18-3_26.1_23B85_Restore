@@ -1,65 +1,65 @@
 @interface PKAccountServicePaymentMethod
-- (PKAccountServicePaymentMethod)initWithBankAccountInformation:(id)a3 peerPaymentBalance:(id)a4 deviceSupportsPeerPaymentAccountPayment:(BOOL)a5 selectedMethods:(unint64_t)a6;
-- (PKAccountServicePaymentMethod)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (PKAccountServicePaymentMethod)initWithBankAccountInformation:(id)information peerPaymentBalance:(id)balance deviceSupportsPeerPaymentAccountPayment:(BOOL)payment selectedMethods:(unint64_t)methods;
+- (PKAccountServicePaymentMethod)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKAccountServicePaymentMethod
 
-- (PKAccountServicePaymentMethod)initWithBankAccountInformation:(id)a3 peerPaymentBalance:(id)a4 deviceSupportsPeerPaymentAccountPayment:(BOOL)a5 selectedMethods:(unint64_t)a6
+- (PKAccountServicePaymentMethod)initWithBankAccountInformation:(id)information peerPaymentBalance:(id)balance deviceSupportsPeerPaymentAccountPayment:(BOOL)payment selectedMethods:(unint64_t)methods
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
+  paymentCopy = payment;
+  informationCopy = information;
+  balanceCopy = balance;
   v15.receiver = self;
   v15.super_class = PKAccountServicePaymentMethod;
   v12 = [(PKAccountServicePaymentMethod *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    [(PKAccountServicePaymentMethod *)v12 setBankAccountInformation:v10];
-    [(PKAccountServicePaymentMethod *)v13 setPeerPaymentBalance:v11];
-    [(PKAccountServicePaymentMethod *)v13 setDeviceSupportsPeerPaymentAccountPayment:v7];
-    [(PKAccountServicePaymentMethod *)v13 setSelectedMethods:a6];
+    [(PKAccountServicePaymentMethod *)v12 setBankAccountInformation:informationCopy];
+    [(PKAccountServicePaymentMethod *)v13 setPeerPaymentBalance:balanceCopy];
+    [(PKAccountServicePaymentMethod *)v13 setDeviceSupportsPeerPaymentAccountPayment:paymentCopy];
+    [(PKAccountServicePaymentMethod *)v13 setSelectedMethods:methods];
   }
 
   return v13;
 }
 
-- (PKAccountServicePaymentMethod)initWithCoder:(id)a3
+- (PKAccountServicePaymentMethod)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PKAccountServicePaymentMethod;
   v5 = [(PKAccountServicePaymentMethod *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bankAccountInformation"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bankAccountInformation"];
     bankAccountInformation = v5->_bankAccountInformation;
     v5->_bankAccountInformation = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"peerPaymentBalance"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"peerPaymentBalance"];
     peerPaymentBalance = v5->_peerPaymentBalance;
     v5->_peerPaymentBalance = v8;
 
-    v5->_deviceSupportsPeerPaymentAccountPayment = [v4 decodeBoolForKey:@"deviceSupportsPeerPaymentAccountPayment"];
-    v5->_selectedMethods = [v4 decodeIntegerForKey:@"selectedMethod"];
+    v5->_deviceSupportsPeerPaymentAccountPayment = [coderCopy decodeBoolForKey:@"deviceSupportsPeerPaymentAccountPayment"];
+    v5->_selectedMethods = [coderCopy decodeIntegerForKey:@"selectedMethod"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(PKAccountServicePaymentMethod *)self bankAccountInformation];
-  [v6 encodeObject:v4 forKey:@"bankAccountInformation"];
+  coderCopy = coder;
+  bankAccountInformation = [(PKAccountServicePaymentMethod *)self bankAccountInformation];
+  [coderCopy encodeObject:bankAccountInformation forKey:@"bankAccountInformation"];
 
-  v5 = [(PKAccountServicePaymentMethod *)self peerPaymentBalance];
-  [v6 encodeObject:v5 forKey:@"peerPaymentBalance"];
+  peerPaymentBalance = [(PKAccountServicePaymentMethod *)self peerPaymentBalance];
+  [coderCopy encodeObject:peerPaymentBalance forKey:@"peerPaymentBalance"];
 
-  [v6 encodeBool:-[PKAccountServicePaymentMethod deviceSupportsPeerPaymentAccountPayment](self forKey:{"deviceSupportsPeerPaymentAccountPayment"), @"deviceSupportsPeerPaymentAccountPayment"}];
-  [v6 encodeInteger:-[PKAccountServicePaymentMethod selectedMethods](self forKey:{"selectedMethods"), @"selectedMethod"}];
+  [coderCopy encodeBool:-[PKAccountServicePaymentMethod deviceSupportsPeerPaymentAccountPayment](self forKey:{"deviceSupportsPeerPaymentAccountPayment"), @"deviceSupportsPeerPaymentAccountPayment"}];
+  [coderCopy encodeInteger:-[PKAccountServicePaymentMethod selectedMethods](self forKey:{"selectedMethods"), @"selectedMethod"}];
 }
 
 @end

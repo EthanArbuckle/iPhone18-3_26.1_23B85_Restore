@@ -1,61 +1,61 @@
 @interface UITableViewController
 - (BOOL)_viewControllerWasSelected;
-- (BOOL)respondsToSelector:(SEL)a3;
+- (BOOL)respondsToSelector:(SEL)selector;
 - (UIRefreshControl)refreshControl;
 - (UITableView)tableView;
 - (UITableViewController)initWithCoder:(NSCoder *)coder;
 - (UITableViewController)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil;
 - (UITableViewController)initWithStyle:(UITableViewStyle)style;
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
 - (id)_existingTableView;
-- (id)previewViewControllerForLocation:(CGPoint)a3 inSourceView:(id)a4;
-- (id)previewingContext:(id)a3 viewControllerForLocation:(CGPoint)a4;
-- (int64_t)_resolvedDataSourceFilterTypeForScreen:(id)a3;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 indentationLevelForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_applyDefaultDataSourceToTable:(id)a3;
+- (id)previewViewControllerForLocation:(CGPoint)location inSourceView:(id)view;
+- (id)previewingContext:(id)context viewControllerForLocation:(CGPoint)location;
+- (int64_t)_resolvedDataSourceFilterTypeForScreen:(id)screen;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view indentationLevelForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_applyDefaultDataSourceToTable:(id)table;
 - (void)_limitedUIDidChange;
-- (void)_refreshFilteredDataSourceFilterTypeForScreen:(id)a3;
-- (void)_setFilteredDataType:(int64_t)a3;
-- (void)_setStaticDataSource:(id)a3;
+- (void)_refreshFilteredDataSourceFilterTypeForScreen:(id)screen;
+- (void)_setFilteredDataType:(int64_t)type;
+- (void)_setStaticDataSource:(id)source;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)loadView;
-- (void)previewingContext:(id)a3 commitViewController:(id)a4;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
+- (void)previewingContext:(id)context commitViewController:(id)controller;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
 - (void)setRefreshControl:(UIRefreshControl *)refreshControl;
 - (void)setTableView:(UITableView *)tableView;
-- (void)tableView:(id)a3 didBeginMultipleSelectionInteractionAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didEndEditingRowAtIndexPath:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)willPresentPreviewViewController:(id)a3 forLocation:(CGPoint)a4 inSourceView:(id)a5;
+- (void)tableView:(id)view didBeginMultipleSelectionInteractionAtIndexPath:(id)path;
+- (void)tableView:(id)view didEndEditingRowAtIndexPath:(id)path;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)willPresentPreviewViewController:(id)controller forLocation:(CGPoint)location inSourceView:(id)view;
 @end
 
 @implementation UITableViewController
 
 - (UITableView)tableView
 {
-  v3 = [(UIViewController *)self view];
+  view = [(UIViewController *)self view];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     goto LABEL_4;
   }
 
-  v4 = [(UIViewController *)self _embeddedView];
+  _embeddedView = [(UIViewController *)self _embeddedView];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v4;
+    view = _embeddedView;
 LABEL_4:
-    v5 = v3;
-    v4 = v5;
+    v5 = view;
+    _embeddedView = v5;
     goto LABEL_6;
   }
 
@@ -67,54 +67,54 @@ LABEL_6:
 
 - (void)loadView
 {
-  v3 = [(UIViewController *)self nibName];
-  if (v3)
+  nibName = [(UIViewController *)self nibName];
+  if (nibName)
   {
     v22.receiver = self;
     v22.super_class = UITableViewController;
     [(UIViewController *)&v22 loadView];
-    v4 = [(UITableViewController *)self _existingTableView];
-    if (!v4)
+    _existingTableView = [(UITableViewController *)self _existingTableView];
+    if (!_existingTableView)
     {
-      v5 = [(UIViewController *)self storyboardIdentifier];
-      if (v5)
+      storyboardIdentifier = [(UIViewController *)self storyboardIdentifier];
+      if (storyboardIdentifier)
       {
-        v6 = [(UIViewController *)self storyboard];
-        v7 = [v6 name];
-        v8 = v7;
-        if (v7)
+        storyboard = [(UIViewController *)self storyboard];
+        name = [storyboard name];
+        v8 = name;
+        if (name)
         {
-          v9 = v7;
+          v9 = name;
         }
 
         else
         {
-          v9 = [v6 description];
+          v9 = [storyboard description];
         }
 
         v19 = v9;
 
-        [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"%s instantiated view controller with identifier %@ from storyboard %@, but didn't get a UITableView.", "-[UITableViewController loadView]", v5, v19}];
+        [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"%s instantiated view controller with identifier %@ from storyboard %@, but didn't get a UITableView.", "-[UITableViewController loadView]", storyboardIdentifier, v19}];
       }
 
       else
       {
-        [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"%s loaded the %@ nib but didn't get a UITableView.", "-[UITableViewController loadView]", v3}];
+        [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"%s loaded the %@ nib but didn't get a UITableView.", "-[UITableViewController loadView]", nibName}];
       }
     }
 
-    v20 = [(UITableView *)v4 delegate];
+    delegate = [(UITableView *)_existingTableView delegate];
 
-    if (!v20)
+    if (!delegate)
     {
-      [(UITableView *)v4 setDelegate:self];
+      [(UITableView *)_existingTableView setDelegate:self];
     }
 
-    v21 = [(UITableView *)v4 dataSource];
+    dataSource = [(UITableView *)_existingTableView dataSource];
 
-    if (!v21)
+    if (!dataSource)
     {
-      [(UITableViewController *)self _applyDefaultDataSourceToTable:v4];
+      [(UITableViewController *)self _applyDefaultDataSourceToTable:_existingTableView];
     }
   }
 
@@ -130,30 +130,30 @@ LABEL_6:
 
     else
     {
-      v14 = [(UIViewController *)self _screen];
-      [v14 _applicationFrame];
+      _screen = [(UIViewController *)self _screen];
+      [_screen _applicationFrame];
       v10 = v15;
       v11 = v16;
       v12 = v17;
       v13 = v18;
     }
 
-    v4 = [[UITableView alloc] initWithFrame:self->_tableViewStyle style:v10, v11, v12, v13];
-    [(UIView *)v4 setAutoresizingMask:18];
-    [(UITableViewController *)self _applyDefaultDataSourceToTable:v4];
-    [(UITableView *)v4 setDelegate:self];
-    [(UIViewController *)self setView:v4];
+    _existingTableView = [[UITableView alloc] initWithFrame:self->_tableViewStyle style:v10, v11, v12, v13];
+    [(UIView *)_existingTableView setAutoresizingMask:18];
+    [(UITableViewController *)self _applyDefaultDataSourceToTable:_existingTableView];
+    [(UITableView *)_existingTableView setDelegate:self];
+    [(UIViewController *)self setView:_existingTableView];
   }
 
-  [(UITableView *)v4 setEditing:[(UIViewController *)self isEditing]];
+  [(UITableView *)_existingTableView setEditing:[(UIViewController *)self isEditing]];
 }
 
 - (BOOL)_viewControllerWasSelected
 {
-  v2 = [(UITableViewController *)self tableView];
-  v3 = [v2 _highlightFirstVisibleRowIfAppropriate];
+  tableView = [(UITableViewController *)self tableView];
+  _highlightFirstVisibleRowIfAppropriate = [tableView _highlightFirstVisibleRowIfAppropriate];
 
-  return v3;
+  return _highlightFirstVisibleRowIfAppropriate;
 }
 
 - (UITableViewController)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -219,45 +219,45 @@ LABEL_6:
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = UITableViewController;
-  [(UIViewController *)&v6 encodeWithCoder:v4];
+  [(UIViewController *)&v6 encodeWithCoder:coderCopy];
   if ((*&self->_tableViewControllerFlags & 1) == 0)
   {
-    [v4 encodeBool:0 forKey:@"UIClearsSelectionOnViewWillAppear"];
+    [coderCopy encodeBool:0 forKey:@"UIClearsSelectionOnViewWillAppear"];
   }
 
   staticDataSource = self->_staticDataSource;
   if (staticDataSource)
   {
-    [v4 encodeObject:staticDataSource forKey:@"UITableViewControllerStaticDataSource"];
+    [coderCopy encodeObject:staticDataSource forKey:@"UITableViewControllerStaticDataSource"];
   }
 }
 
 - (void)dealloc
 {
-  v3 = [(UITableViewController *)self _existingTableView];
-  v4 = [v3 dataSource];
+  _existingTableView = [(UITableViewController *)self _existingTableView];
+  dataSource = [_existingTableView dataSource];
   filteredDataSource = self->_filteredDataSource;
 
-  if (v4 == filteredDataSource)
+  if (dataSource == filteredDataSource)
   {
-    [v3 setDataSource:0];
+    [_existingTableView setDataSource:0];
   }
 
   if (self->_keyboardSupport)
   {
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 removeObserver:self->_keyboardSupport];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self->_keyboardSupport];
   }
 
   if ((*&self->_tableViewControllerFlags & 8) != 0)
   {
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 removeObserver:self name:@"UIScreenCarScreenLimitedUIDidChangeNotification" object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 removeObserver:self name:@"UIScreenCarScreenLimitedUIDidChangeNotification" object:0];
 
     *&self->_tableViewControllerFlags &= ~8u;
   }
@@ -269,11 +269,11 @@ LABEL_6:
 
 - (id)_existingTableView
 {
-  v2 = [(UIViewController *)self _existingView];
+  _existingView = [(UIViewController *)self _existingView];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = _existingView;
   }
 
   else
@@ -287,60 +287,60 @@ LABEL_6:
 - (void)setTableView:(UITableView *)tableView
 {
   v11 = tableView;
-  v4 = [(UITableViewController *)self _existingTableView];
-  if (v4 != v11)
+  _existingTableView = [(UITableViewController *)self _existingTableView];
+  if (_existingTableView != v11)
   {
-    v5 = [(UITableView *)v4 dataSource];
-    v6 = v5;
-    if (v5 == self || v5 == self->_filteredDataSource)
+    dataSource = [(UITableView *)_existingTableView dataSource];
+    v6 = dataSource;
+    if (dataSource == self || dataSource == self->_filteredDataSource)
     {
-      [(UITableView *)v4 setDataSource:0];
+      [(UITableView *)_existingTableView setDataSource:0];
     }
 
-    v7 = [(UITableView *)v4 delegate];
+    delegate = [(UITableView *)_existingTableView delegate];
 
-    if (v7 == self)
+    if (delegate == self)
     {
-      [(UITableView *)v4 setDelegate:0];
+      [(UITableView *)_existingTableView setDelegate:0];
     }
 
-    v8 = [(UIScrollView *)v4 _refreshControl];
+    _refreshControl = [(UIScrollView *)_existingTableView _refreshControl];
     [(UIViewController *)self setView:v11];
-    [(UIScrollView *)v11 _setRefreshControl:v8];
-    v9 = [(UITableView *)v11 dataSource];
+    [(UIScrollView *)v11 _setRefreshControl:_refreshControl];
+    dataSource2 = [(UITableView *)v11 dataSource];
 
-    if (!v9)
+    if (!dataSource2)
     {
       [(UITableViewController *)self _applyDefaultDataSourceToTable:v11];
     }
 
-    v10 = [(UITableView *)v11 delegate];
+    delegate2 = [(UITableView *)v11 delegate];
 
-    if (!v10)
+    if (!delegate2)
     {
       [(UITableView *)v11 setDelegate:self];
     }
   }
 }
 
-- (void)_applyDefaultDataSourceToTable:(id)a3
+- (void)_applyDefaultDataSourceToTable:(id)table
 {
   filteredDataSource = self->_filteredDataSource;
-  v7 = a3;
+  tableCopy = table;
   if (filteredDataSource)
   {
     [(_UIFilteredDataSource *)filteredDataSource setTableDataSource:self];
-    v5 = self->_filteredDataSource;
-    v6 = v7;
+    selfCopy = self->_filteredDataSource;
+    v6 = tableCopy;
   }
 
   else
   {
-    v6 = v7;
-    v5 = self;
+    v6 = tableCopy;
+    selfCopy = self;
   }
 
-  [v6 setDataSource:v5];
+  [v6 setDataSource:selfCopy];
 }
 
 - (void)_limitedUIDidChange
@@ -360,64 +360,64 @@ void __44__UITableViewController__limitedUIDidChange__block_invoke(uint64_t a1)
   [v1 _refreshFilteredDataSourceFilterTypeForScreen:v2];
 }
 
-- (int64_t)_resolvedDataSourceFilterTypeForScreen:(id)a3
+- (int64_t)_resolvedDataSourceFilterTypeForScreen:(id)screen
 {
-  v4 = a3;
-  v5 = v4;
+  screenCopy = screen;
+  v5 = screenCopy;
   filteredDataType = self->_filteredDataType;
   if (filteredDataType)
   {
-    v7 = 0;
+    _areListsLimited = 0;
   }
 
   else
   {
-    v7 = [v4 _areListsLimited];
+    _areListsLimited = [screenCopy _areListsLimited];
     filteredDataType = self->_filteredDataType;
   }
 
   if (filteredDataType == 1)
   {
-    v8 = [v5 _areMusicListsLimited];
+    _areMusicListsLimited = [v5 _areMusicListsLimited];
   }
 
   else
   {
-    v8 = 0;
+    _areMusicListsLimited = 0;
   }
 
-  v9 = v7 | v8;
+  v9 = _areListsLimited | _areMusicListsLimited;
 
   return v9 & 1;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v40 = *MEMORY[0x1E69E9840];
   v38.receiver = self;
   v38.super_class = UITableViewController;
   [(UIViewController *)&v38 viewWillAppear:?];
-  v5 = [(UITableViewController *)self tableView];
+  tableView = [(UITableViewController *)self tableView];
   v6 = &OBJC_IVAR____UISystemBackgroundView__strokeView;
-  if ([v5 numberOfSections])
+  if ([tableView numberOfSections])
   {
     if (*&self->_tableViewControllerFlags)
     {
-      v32 = v5;
+      v32 = tableView;
       v7 = objc_alloc(MEMORY[0x1E695DF70]);
-      v8 = [(UITableViewController *)self tableView];
-      v9 = [v8 indexPathsForSelectedRows];
-      v10 = [v7 initWithCapacity:{objc_msgSend(v9, "count")}];
+      tableView2 = [(UITableViewController *)self tableView];
+      indexPathsForSelectedRows = [tableView2 indexPathsForSelectedRows];
+      v10 = [v7 initWithCapacity:{objc_msgSend(indexPathsForSelectedRows, "count")}];
 
       v36 = 0u;
       v37 = 0u;
       v34 = 0u;
       v35 = 0u;
-      v11 = [(UITableViewController *)self tableView];
-      v12 = [v11 indexPathsForSelectedRows];
+      tableView3 = [(UITableViewController *)self tableView];
+      indexPathsForSelectedRows2 = [tableView3 indexPathsForSelectedRows];
 
-      v13 = [v12 countByEnumeratingWithState:&v34 objects:v39 count:16];
+      v13 = [indexPathsForSelectedRows2 countByEnumeratingWithState:&v34 objects:v39 count:16];
       if (v13)
       {
         v14 = v13;
@@ -428,12 +428,12 @@ void __44__UITableViewController__limitedUIDidChange__block_invoke(uint64_t a1)
           {
             if (*v35 != v15)
             {
-              objc_enumerationMutation(v12);
+              objc_enumerationMutation(indexPathsForSelectedRows2);
             }
 
             v17 = *(*(&v34 + 1) + 8 * i);
-            v18 = [(UITableViewController *)self tableView];
-            v19 = [v18 _isRowMultiSelect:v17 followingMacBehavior:0];
+            tableView4 = [(UITableViewController *)self tableView];
+            v19 = [tableView4 _isRowMultiSelect:v17 followingMacBehavior:0];
 
             if ((v19 & 1) == 0)
             {
@@ -441,15 +441,15 @@ void __44__UITableViewController__limitedUIDidChange__block_invoke(uint64_t a1)
             }
           }
 
-          v14 = [v12 countByEnumeratingWithState:&v34 objects:v39 count:16];
+          v14 = [indexPathsForSelectedRows2 countByEnumeratingWithState:&v34 objects:v39 count:16];
         }
 
         while (v14);
       }
 
-      v20 = [(UIViewController *)self transitionCoordinator];
-      v5 = v32;
-      [v32 _deselectRowsAtIndexPaths:v10 animated:v3 transitionCoordinator:v20];
+      transitionCoordinator = [(UIViewController *)self transitionCoordinator];
+      tableView = v32;
+      [v32 _deselectRowsAtIndexPaths:v10 animated:appearCopy transitionCoordinator:transitionCoordinator];
 
       v6 = &OBJC_IVAR____UISystemBackgroundView__strokeView;
     }
@@ -457,7 +457,7 @@ void __44__UITableViewController__limitedUIDidChange__block_invoke(uint64_t a1)
 
   else
   {
-    [v5 reloadData];
+    [tableView reloadData];
   }
 
   keyboardSupport = self->_keyboardSupport;
@@ -472,13 +472,13 @@ void __44__UITableViewController__limitedUIDidChange__block_invoke(uint64_t a1)
 
   if (![(UIAutoRespondingScrollViewControllerKeyboardSupport *)keyboardSupport registeredForNotifications])
   {
-    v24 = [MEMORY[0x1E696AD88] defaultCenter];
-    v25 = [(UIViewController *)self _screen];
-    [v24 addObserver:self->_keyboardSupport selector:sel__keyboardWillShow_ name:@"UIKeyboardPrivateWillShowNotification" object:v25];
-    [v24 addObserver:self->_keyboardSupport selector:sel__keyboardWillHide_ name:@"UIKeyboardPrivateWillHideNotification" object:v25];
-    [v24 addObserver:self->_keyboardSupport selector:sel__keyboardDidShow_ name:@"UIKeyboardPrivateDidShowNotification" object:v25];
-    [v24 addObserver:self->_keyboardSupport selector:sel__keyboardDidHide_ name:@"UIKeyboardPrivateDidHideNotification" object:v25];
-    [v24 addObserver:self->_keyboardSupport selector:sel__keyboardDidChangeFrame_ name:@"UIKeyboardPrivateDidChangeFrameNotification" object:v25];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    _screen = [(UIViewController *)self _screen];
+    [defaultCenter addObserver:self->_keyboardSupport selector:sel__keyboardWillShow_ name:@"UIKeyboardPrivateWillShowNotification" object:_screen];
+    [defaultCenter addObserver:self->_keyboardSupport selector:sel__keyboardWillHide_ name:@"UIKeyboardPrivateWillHideNotification" object:_screen];
+    [defaultCenter addObserver:self->_keyboardSupport selector:sel__keyboardDidShow_ name:@"UIKeyboardPrivateDidShowNotification" object:_screen];
+    [defaultCenter addObserver:self->_keyboardSupport selector:sel__keyboardDidHide_ name:@"UIKeyboardPrivateDidHideNotification" object:_screen];
+    [defaultCenter addObserver:self->_keyboardSupport selector:sel__keyboardDidChangeFrame_ name:@"UIKeyboardPrivateDidChangeFrameNotification" object:_screen];
     [(UIAutoRespondingScrollViewControllerKeyboardSupport *)self->_keyboardSupport setRegisteredForNotifications:1];
   }
 
@@ -486,13 +486,13 @@ void __44__UITableViewController__limitedUIDidChange__block_invoke(uint64_t a1)
   v26 = v6[808];
   if ((*(&self->super.super.super.isa + v26) & 8) == 0)
   {
-    v27 = [(UIViewController *)self traitCollection];
-    v28 = [v27 userInterfaceIdiom];
+    traitCollection = [(UIViewController *)self traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-    if (v28 == 3)
+    if (userInterfaceIdiom == 3)
     {
-      v29 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v29 addObserver:self selector:sel__limitedUIDidChange name:@"UIScreenCarScreenLimitedUIDidChangeNotification" object:0];
+      defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter2 addObserver:self selector:sel__limitedUIDidChange name:@"UIScreenCarScreenLimitedUIDidChangeNotification" object:0];
 
       *(&self->super.super.super.isa + v26) |= 8u;
     }
@@ -502,20 +502,20 @@ void __44__UITableViewController__limitedUIDidChange__block_invoke(uint64_t a1)
   {
     [(UIAutoRespondingScrollViewControllerKeyboardSupport *)self->_keyboardSupport adjustmentForKeyboard];
     v33 = v30;
-    v31 = [(UITableViewController *)self tableView];
-    [v31 _adjustForAutomaticKeyboardInfo:0 animated:0 lastAdjustment:&v33];
+    tableView5 = [(UITableViewController *)self tableView];
+    [tableView5 _adjustForAutomaticKeyboardInfo:0 animated:0 lastAdjustment:&v33];
 
     [(UIAutoRespondingScrollViewControllerKeyboardSupport *)self->_keyboardSupport setAdjustmentForKeyboard:v33];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if (self->_keyboardSupport)
   {
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 removeObserver:self->_keyboardSupport];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self->_keyboardSupport];
 
     [(UIAutoRespondingScrollViewControllerKeyboardSupport *)self->_keyboardSupport setViewIsDisappearing:1];
     [(UIAutoRespondingScrollViewControllerKeyboardSupport *)self->_keyboardSupport setRegisteredForNotifications:0];
@@ -523,76 +523,76 @@ void __44__UITableViewController__limitedUIDidChange__block_invoke(uint64_t a1)
 
   if ((*&self->_tableViewControllerFlags & 8) != 0)
   {
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 removeObserver:self name:@"UIScreenCarScreenLimitedUIDidChangeNotification" object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 removeObserver:self name:@"UIScreenCarScreenLimitedUIDidChangeNotification" object:0];
 
     *&self->_tableViewControllerFlags &= ~8u;
   }
 
   v7.receiver = self;
   v7.super_class = UITableViewController;
-  [(UIViewController *)&v7 viewWillDisappear:v3];
+  [(UIViewController *)&v7 viewWillDisappear:disappearCopy];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = UITableViewController;
-  [(UIViewController *)&v5 viewDidAppear:a3];
-  v4 = [(UITableViewController *)self tableView];
-  [v4 flashScrollIndicators];
+  [(UIViewController *)&v5 viewDidAppear:appear];
+  tableView = [(UITableViewController *)self tableView];
+  [tableView flashScrollIndicators];
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  editingCopy = editing;
   v8.receiver = self;
   v8.super_class = UITableViewController;
   [UIViewController setEditing:sel_setEditing_animated_ animated:?];
-  v7 = [(UITableViewController *)self tableView];
-  [v7 setEditing:v5 animated:v4];
+  tableView = [(UITableViewController *)self tableView];
+  [tableView setEditing:editingCopy animated:animatedCopy];
 }
 
 - (void)setRefreshControl:(UIRefreshControl *)refreshControl
 {
   v4 = refreshControl;
-  v5 = [(UITableViewController *)self tableView];
-  [v5 setRefreshControl:v4];
+  tableView = [(UITableViewController *)self tableView];
+  [tableView setRefreshControl:v4];
 }
 
 - (UIRefreshControl)refreshControl
 {
-  v2 = [(UITableViewController *)self tableView];
-  v3 = [v2 refreshControl];
+  tableView = [(UITableViewController *)self tableView];
+  refreshControl = [tableView refreshControl];
 
-  return v3;
+  return refreshControl;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
-  if (!self->_staticDataSource && (sel_tableView_titleForHeaderInSection_ != a3 ? (v4 = sel_tableView_titleForFooterInSection_ == a3) : (v4 = 1), !v4 ? (v5 = sel_tableView_heightForHeaderInSection_ == a3) : (v5 = 1), !v5 ? (v6 = sel_tableView_heightForFooterInSection_ == a3) : (v6 = 1), !v6 ? (v7 = sel_tableView_viewForHeaderInSection_ == a3) : (v7 = 1), !v7 ? (v8 = sel_tableView_viewForFooterInSection_ == a3) : (v8 = 1), !v8 ? (v9 = sel_tableView_heightForRowAtIndexPath_ == a3) : (v9 = 1), !v9 ? (v10 = sel_tableView_indentationLevelForRowAtIndexPath_ == a3) : (v10 = 1), v10))
+  if (!self->_staticDataSource && (sel_tableView_titleForHeaderInSection_ != selector ? (v4 = sel_tableView_titleForFooterInSection_ == selector) : (v4 = 1), !v4 ? (v5 = sel_tableView_heightForHeaderInSection_ == selector) : (v5 = 1), !v5 ? (v6 = sel_tableView_heightForFooterInSection_ == selector) : (v6 = 1), !v6 ? (v7 = sel_tableView_viewForHeaderInSection_ == selector) : (v7 = 1), !v7 ? (v8 = sel_tableView_viewForFooterInSection_ == selector) : (v8 = 1), !v8 ? (v9 = sel_tableView_heightForRowAtIndexPath_ == selector) : (v9 = 1), !v9 ? (v10 = sel_tableView_indentationLevelForRowAtIndexPath_ == selector) : (v10 = 1), v10))
   {
     v11 = objc_opt_class();
-    MethodImplementation = class_getMethodImplementation(v11, a3);
+    MethodImplementation = class_getMethodImplementation(v11, selector);
     v13 = objc_opt_class();
-    return class_getMethodImplementation(v13, a3) != MethodImplementation;
+    return class_getMethodImplementation(v13, selector) != MethodImplementation;
   }
 
   else
   {
     v15.receiver = self;
     v15.super_class = UITableViewController;
-    return [(UITableViewController *)&v15 respondsToSelector:a3];
+    return [(UITableViewController *)&v15 respondsToSelector:selector];
   }
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   staticDataSource = self->_staticDataSource;
   if (staticDataSource)
   {
-    return [(UITableViewDataSource *)staticDataSource numberOfSectionsInTableView:a3];
+    return [(UITableViewDataSource *)staticDataSource numberOfSectionsInTableView:view];
   }
 
   else
@@ -601,18 +601,18 @@ void __44__UITableViewController__limitedUIDidChange__block_invoke(uint64_t a1)
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   result = self->_staticDataSource;
   if (result)
   {
-    return [result tableView:a3 numberOfRowsInSection:a4];
+    return [result tableView:view numberOfRowsInSection:section];
   }
 
   return result;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
   staticDataSource = self->_staticDataSource;
   if (!staticDataSource)
@@ -620,11 +620,11 @@ void __44__UITableViewController__limitedUIDidChange__block_invoke(uint64_t a1)
     return 0.0;
   }
 
-  [(UITableViewDataSource *)staticDataSource tableView:a3 heightForHeaderInSection:a4];
+  [(UITableViewDataSource *)staticDataSource tableView:view heightForHeaderInSection:section];
   return result;
 }
 
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section
 {
   staticDataSource = self->_staticDataSource;
   if (!staticDataSource)
@@ -632,82 +632,82 @@ void __44__UITableViewController__limitedUIDidChange__block_invoke(uint64_t a1)
     return 0.0;
   }
 
-  [(UITableViewDataSource *)staticDataSource tableView:a3 heightForFooterInSection:a4];
+  [(UITableViewDataSource *)staticDataSource tableView:view heightForFooterInSection:section];
   return result;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
   staticDataSource = self->_staticDataSource;
   if (staticDataSource)
   {
-    [(UITableViewDataSource *)staticDataSource tableView:a3 heightForRowAtIndexPath:a4];
+    [(UITableViewDataSource *)staticDataSource tableView:view heightForRowAtIndexPath:path];
   }
 
   else
   {
-    [a3 rowHeight];
+    [view rowHeight];
   }
 
   return result;
 }
 
-- (int64_t)tableView:(id)a3 indentationLevelForRowAtIndexPath:(id)a4
+- (int64_t)tableView:(id)view indentationLevelForRowAtIndexPath:(id)path
 {
   result = self->_staticDataSource;
   if (result)
   {
-    return [result tableView:a3 indentationLevelForRowAtIndexPath:a4];
+    return [result tableView:view indentationLevelForRowAtIndexPath:path];
   }
 
   return result;
 }
 
-- (void)tableView:(id)a3 didEndEditingRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didEndEditingRowAtIndexPath:(id)path
 {
-  if (([a3 isEditing] & 1) == 0)
+  if (([view isEditing] & 1) == 0)
   {
 
     [(UITableViewController *)self setEditing:0 animated:1];
   }
 }
 
-- (void)tableView:(id)a3 didBeginMultipleSelectionInteractionAtIndexPath:(id)a4
+- (void)tableView:(id)view didBeginMultipleSelectionInteractionAtIndexPath:(id)path
 {
-  v5 = a3;
-  if (dyld_program_sdk_at_least() && [v5 isEditing])
+  viewCopy = view;
+  if (dyld_program_sdk_at_least() && [viewCopy isEditing])
   {
     [(UITableViewController *)self setEditing:1 animated:1];
   }
 }
 
-- (void)_setFilteredDataType:(int64_t)a3
+- (void)_setFilteredDataType:(int64_t)type
 {
-  self->_filteredDataType = a3;
-  v4 = [(UIViewController *)self _screen];
-  [(UITableViewController *)self _refreshFilteredDataSourceFilterTypeForScreen:v4];
+  self->_filteredDataType = type;
+  _screen = [(UIViewController *)self _screen];
+  [(UITableViewController *)self _refreshFilteredDataSourceFilterTypeForScreen:_screen];
 
-  v5 = [(UITableViewController *)self tableView];
-  [v5 reloadData];
+  tableView = [(UITableViewController *)self tableView];
+  [tableView reloadData];
 }
 
-- (void)_refreshFilteredDataSourceFilterTypeForScreen:(id)a3
+- (void)_refreshFilteredDataSourceFilterTypeForScreen:(id)screen
 {
   filteredDataSource = self->_filteredDataSource;
-  v4 = [(UITableViewController *)self _resolvedDataSourceFilterTypeForScreen:a3];
+  v4 = [(UITableViewController *)self _resolvedDataSourceFilterTypeForScreen:screen];
 
   [(_UIFilteredDataSource *)filteredDataSource setFilterType:v4];
 }
 
-- (id)previewingContext:(id)a3 viewControllerForLocation:(CGPoint)a4
+- (id)previewingContext:(id)context viewControllerForLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  v8 = a3;
+  y = location.y;
+  x = location.x;
+  contextCopy = context;
   if ([(UITableViewController *)self _shouldRespondToPreviewingMethods])
   {
-    v9 = [v8 sourceView];
-    v10 = [(UITableViewController *)self previewViewControllerForLocation:v9 inSourceView:x, y];
+    sourceView = [contextCopy sourceView];
+    v10 = [(UITableViewController *)self previewViewControllerForLocation:sourceView inSourceView:x, y];
   }
 
   else
@@ -719,12 +719,12 @@ void __44__UITableViewController__limitedUIDidChange__block_invoke(uint64_t a1)
   return v10;
 }
 
-- (void)previewingContext:(id)a3 commitViewController:(id)a4
+- (void)previewingContext:(id)context commitViewController:(id)controller
 {
-  v8 = a4;
+  controllerCopy = controller;
   if ([(UITableViewController *)self _shouldRespondToPreviewingMethods])
   {
-    v6 = v8;
+    v6 = controllerCopy;
     v7 = v6;
     if (objc_opt_respondsToSelector())
     {
@@ -753,11 +753,11 @@ void __44__UITableViewController__limitedUIDidChange__block_invoke(uint64_t a1)
   }
 }
 
-- (id)previewViewControllerForLocation:(CGPoint)a3 inSourceView:(id)a4
+- (id)previewViewControllerForLocation:(CGPoint)location inSourceView:(id)view
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = location.y;
+  x = location.x;
+  viewCopy = view;
   if ([(UIViewController *)self isEditing]|| ![(UITableViewController *)self _shouldRespondToPreviewingMethods])
   {
     v10 = 0;
@@ -765,66 +765,66 @@ void __44__UITableViewController__limitedUIDidChange__block_invoke(uint64_t a1)
 
   else
   {
-    v8 = [(UITableViewController *)self tableView];
-    [v8 convertPoint:v7 fromView:{x, y}];
-    v9 = [v8 indexPathForRowAtPoint:?];
+    tableView = [(UITableViewController *)self tableView];
+    [tableView convertPoint:viewCopy fromView:{x, y}];
+    v9 = [tableView indexPathForRowAtPoint:?];
     v10 = [(UITableViewController *)self previewViewControllerForRowAtIndexPath:v9];
   }
 
   return v10;
 }
 
-- (void)willPresentPreviewViewController:(id)a3 forLocation:(CGPoint)a4 inSourceView:(id)a5
+- (void)willPresentPreviewViewController:(id)controller forLocation:(CGPoint)location inSourceView:(id)view
 {
-  y = a4.y;
-  x = a4.x;
-  v14 = a3;
-  v9 = a5;
+  y = location.y;
+  x = location.x;
+  controllerCopy = controller;
+  viewCopy = view;
   if ([(UITableViewController *)self _shouldRespondToPreviewingMethods])
   {
-    v10 = [(UITableViewController *)self tableView];
-    [v10 convertPoint:v9 fromView:{x, y}];
-    v11 = [v10 indexPathForRowAtPoint:?];
-    v12 = [v10 cellForRowAtIndexPath:v11];
-    v13 = [v14 presentationController];
-    [v13 setSourceView:v12];
+    tableView = [(UITableViewController *)self tableView];
+    [tableView convertPoint:viewCopy fromView:{x, y}];
+    v11 = [tableView indexPathForRowAtPoint:?];
+    v12 = [tableView cellForRowAtIndexPath:v11];
+    presentationController = [controllerCopy presentationController];
+    [presentationController setSourceView:v12];
     [v12 bounds];
-    [v13 setSourceRect:?];
-    [(UITableViewController *)self willPresentPreviewViewController:v14 forRowAtIndexPath:v11];
+    [presentationController setSourceRect:?];
+    [(UITableViewController *)self willPresentPreviewViewController:controllerCopy forRowAtIndexPath:v11];
   }
 }
 
-- (void)_setStaticDataSource:(id)a3
+- (void)_setStaticDataSource:(id)source
 {
-  v5 = a3;
-  if (self->_staticDataSource != v5)
+  sourceCopy = source;
+  if (self->_staticDataSource != sourceCopy)
   {
-    v11 = v5;
-    objc_storeStrong(&self->_staticDataSource, a3);
-    v6 = [(UIViewController *)self isViewLoaded];
-    v5 = v11;
-    if (v6)
+    v11 = sourceCopy;
+    objc_storeStrong(&self->_staticDataSource, source);
+    isViewLoaded = [(UIViewController *)self isViewLoaded];
+    sourceCopy = v11;
+    if (isViewLoaded)
     {
-      v7 = [(UITableViewController *)self tableView];
-      v8 = [v7 delegate];
+      tableView = [(UITableViewController *)self tableView];
+      delegate = [tableView delegate];
 
-      if (v8 == self)
+      if (delegate == self)
       {
-        [v7 setDelegate:0];
-        [v7 setDelegate:self];
+        [tableView setDelegate:0];
+        [tableView setDelegate:self];
       }
 
-      v9 = [v7 dataSource];
+      dataSource = [tableView dataSource];
       filteredDataSource = self->_filteredDataSource;
 
-      if (v9 == filteredDataSource)
+      if (dataSource == filteredDataSource)
       {
-        [(UITableViewController *)self _applyDefaultDataSourceToTable:v7];
+        [(UITableViewController *)self _applyDefaultDataSourceToTable:tableView];
       }
 
-      [v7 reloadData];
+      [tableView reloadData];
 
-      v5 = v11;
+      sourceCopy = v11;
     }
   }
 }

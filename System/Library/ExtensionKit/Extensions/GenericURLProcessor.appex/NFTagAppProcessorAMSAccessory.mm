@@ -1,18 +1,18 @@
 @interface NFTagAppProcessorAMSAccessory
-- (id)processNDEFMesssage:(id)a3 outputMessage:(id *)a4 tag:(id)a5 stopProcessing:(BOOL *)a6;
+- (id)processNDEFMesssage:(id)messsage outputMessage:(id *)message tag:(id)tag stopProcessing:(BOOL *)processing;
 @end
 
 @implementation NFTagAppProcessorAMSAccessory
 
-- (id)processNDEFMesssage:(id)a3 outputMessage:(id *)a4 tag:(id)a5 stopProcessing:(BOOL *)a6
+- (id)processNDEFMesssage:(id)messsage outputMessage:(id *)message tag:(id)tag stopProcessing:(BOOL *)processing
 {
-  *a6 = 0;
+  *processing = 0;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v6 = [a3 records];
-  v7 = [v6 countByEnumeratingWithState:&v43 objects:v57 count:16];
+  records = [messsage records];
+  v7 = [records countByEnumeratingWithState:&v43 objects:v57 count:16];
   if (!v7)
   {
     goto LABEL_24;
@@ -20,7 +20,7 @@
 
   v8 = v7;
   v9 = *v44;
-  v42 = v6;
+  v42 = records;
   while (2)
   {
     v10 = 0;
@@ -28,38 +28,38 @@
     {
       if (*v44 != v9)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(records);
       }
 
       v11 = *(*(&v43 + 1) + 8 * v10);
       if ([v11 isURIRecord])
       {
-        v12 = [v11 decode];
-        v13 = [NSURLComponents componentsWithString:v12];
+        decode = [v11 decode];
+        v13 = [NSURLComponents componentsWithString:decode];
         v14 = v13;
         if (v13)
         {
-          v15 = [v13 scheme];
-          v16 = [v15 lowercaseString];
-          if ([v16 isEqualToString:@"https"])
+          scheme = [v13 scheme];
+          lowercaseString = [scheme lowercaseString];
+          if ([lowercaseString isEqualToString:@"https"])
           {
-            v17 = [v14 host];
-            v18 = [v17 lowercaseString];
-            if ([v18 isEqualToString:@"ams.apple.com"])
+            host = [v14 host];
+            lowercaseString2 = [host lowercaseString];
+            if ([lowercaseString2 isEqualToString:@"ams.apple.com"])
             {
-              v19 = [v14 user];
-              if (!v19)
+              user = [v14 user];
+              if (!user)
               {
-                v20 = [v14 password];
-                if (!v20)
+                password = [v14 password];
+                if (!password)
                 {
-                  v21 = [v14 port];
-                  if (!v21)
+                  port = [v14 port];
+                  if (!port)
                   {
-                    v22 = [v14 fragment];
+                    fragment = [v14 fragment];
 
-                    v6 = v42;
-                    if (!v22)
+                    records = v42;
+                    if (!fragment)
                     {
                       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
                       Logger = NFLogGetLogger();
@@ -76,7 +76,7 @@
                           v29 = 43;
                         }
 
-                        v6 = v42;
+                        records = v42;
                         v26(6, "%c[%{public}s %{public}s]:%i Found AMS Accessory: %{public}@", v29, ClassName, Name, 40, v14);
                       }
 
@@ -118,21 +118,21 @@
                       }
 
                       v36 = +[NSDistributedNotificationCenter defaultCenter];
-                      [v36 postNotificationName:@"com.apple.nfcd.ams.accessory" object:v12 userInfo:0 options:3];
+                      [v36 postNotificationName:@"com.apple.nfcd.ams.accessory" object:decode userInfo:0 options:3];
 
-                      *a6 = 1;
+                      *processing = 1;
                       goto LABEL_24;
                     }
 
                     goto LABEL_18;
                   }
 
-                  v20 = 0;
+                  password = 0;
                 }
               }
             }
 
-            v6 = v42;
+            records = v42;
           }
         }
 
@@ -143,7 +143,7 @@ LABEL_18:
     }
 
     while (v8 != v10);
-    v23 = [v6 countByEnumeratingWithState:&v43 objects:v57 count:16];
+    v23 = [records countByEnumeratingWithState:&v43 objects:v57 count:16];
     v8 = v23;
     if (v23)
     {

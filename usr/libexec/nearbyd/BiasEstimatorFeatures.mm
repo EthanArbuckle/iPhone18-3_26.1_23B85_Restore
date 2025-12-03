@@ -1,20 +1,20 @@
 @interface BiasEstimatorFeatures
-- (BOOL)isEqual:(id)a3;
-- (BiasEstimatorFeatures)initWithBiasEstimatorFeatures:(id)a3;
-- (BiasEstimatorFeatures)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BiasEstimatorFeatures)initWithBiasEstimatorFeatures:(id)features;
+- (BiasEstimatorFeatures)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)populateOrderedInputFeature;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BiasEstimatorFeatures
 
-- (BiasEstimatorFeatures)initWithBiasEstimatorFeatures:(id)a3
+- (BiasEstimatorFeatures)initWithBiasEstimatorFeatures:(id)features
 {
-  v5 = a3;
-  if (!v5)
+  featuresCopy = features;
+  if (!featuresCopy)
   {
     v30 = +[NSAssertionHandler currentHandler];
     [v30 handleFailureInMethod:a2 object:self file:@"UWBSignalFeatures.mm" lineNumber:43 description:{@"Invalid parameter not satisfying: %@", @"features"}];
@@ -25,122 +25,122 @@
   v6 = [(BiasEstimatorFeatures *)&v31 init];
   if (v6)
   {
-    v6->_antennaMask = [v5 antennaMask];
-    [v5 uwbTime];
+    v6->_antennaMask = [featuresCopy antennaMask];
+    [featuresCopy uwbTime];
     v6->_uwbTime = v7;
-    [v5 timestamp];
+    [featuresCopy timestamp];
     v6->_timestamp = v8;
-    [v5 tofPicSecond];
+    [featuresCopy tofPicSecond];
     v6->_tofPicSecond = v9;
-    [v5 rssiDbm];
+    [featuresCopy rssiDbm];
     v6->_rssiDbm = v10;
-    [v5 soiRssiDbm];
+    [featuresCopy soiRssiDbm];
     v6->_soiRssiDbm = v11;
-    [v5 toaNoiseRms];
+    [featuresCopy toaNoiseRms];
     v6->_toaNoiseRms = v12;
-    [v5 toaPpwinRms];
+    [featuresCopy toaPpwinRms];
     v6->_toaPpwinRms = v13;
-    [v5 toaPpwinPeak];
+    [featuresCopy toaPpwinPeak];
     v6->_toaPpwinPeak = v14;
-    [v5 rttInitiator];
+    [featuresCopy rttInitiator];
     v6->_rttInitiator = v15;
-    [v5 tatInitiator];
+    [featuresCopy tatInitiator];
     v6->_tatInitiator = v16;
-    [v5 rttResponder];
+    [featuresCopy rttResponder];
     v6->_rttResponder = v17;
-    [v5 tatResponder];
+    [featuresCopy tatResponder];
     v6->_tatResponder = v18;
-    v19 = [v5 cirPacket1];
-    v20 = [v19 copy];
+    cirPacket1 = [featuresCopy cirPacket1];
+    v20 = [cirPacket1 copy];
     cirPacket1 = v6->_cirPacket1;
     v6->_cirPacket1 = v20;
 
-    [v5 leadingEdgePacket1];
+    [featuresCopy leadingEdgePacket1];
     v6->_leadingEdgePacket1 = v22;
-    [v5 firstPathIndexPacket1];
+    [featuresCopy firstPathIndexPacket1];
     v6->_firstPathIndexPacket1 = v23;
-    v6->_rxAntennaPacket1 = [v5 rxAntennaPacket1];
-    v24 = [v5 cirPacket2];
-    v25 = [v24 copy];
+    v6->_rxAntennaPacket1 = [featuresCopy rxAntennaPacket1];
+    cirPacket2 = [featuresCopy cirPacket2];
+    v25 = [cirPacket2 copy];
     cirPacket2 = v6->_cirPacket2;
     v6->_cirPacket2 = v25;
 
-    [v5 leadingEdgePacket2];
+    [featuresCopy leadingEdgePacket2];
     v6->_leadingEdgePacket2 = v27;
-    [v5 firstPathIndexPacket2];
+    [featuresCopy firstPathIndexPacket2];
     v6->_firstPathIndexPacket2 = v28;
-    v6->_rxAntennaPacket2 = [v5 rxAntennaPacket2];
+    v6->_rxAntennaPacket2 = [featuresCopy rxAntennaPacket2];
   }
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt:self->_antennaMask forKey:@"antennaMask"];
-  [v4 encodeDouble:@"uwbTime" forKey:self->_uwbTime];
-  [v4 encodeDouble:@"timestamp" forKey:self->_timestamp];
-  [v4 encodeDouble:@"tofPicSecond" forKey:self->_tofPicSecond];
-  [v4 encodeDouble:@"rssiDbm" forKey:self->_rssiDbm];
-  [v4 encodeDouble:@"soiRssiDbm" forKey:self->_soiRssiDbm];
-  [v4 encodeDouble:@"toaNoiseRms" forKey:self->_toaNoiseRms];
-  [v4 encodeDouble:@"toaPpwinRms" forKey:self->_toaPpwinRms];
-  [v4 encodeDouble:@"toaPpwinPeak" forKey:self->_toaPpwinPeak];
-  [v4 encodeDouble:@"rttInitiator" forKey:self->_rttInitiator];
-  [v4 encodeDouble:@"tatInitiator" forKey:self->_tatInitiator];
-  [v4 encodeDouble:@"rttResponder" forKey:self->_rttResponder];
-  [v4 encodeDouble:@"tatResponder" forKey:self->_tatResponder];
-  [v4 encodeObject:self->_cirPacket1 forKey:@"cirPacket1"];
-  [v4 encodeDouble:@"leadingEdgePacket1" forKey:self->_leadingEdgePacket1];
-  [v4 encodeDouble:@"firstPathIndexPacket1" forKey:self->_firstPathIndexPacket1];
-  [v4 encodeInt:self->_rxAntennaPacket1 forKey:@"rxAntennaPacket1"];
-  [v4 encodeObject:self->_cirPacket2 forKey:@"cirPacket2"];
-  [v4 encodeDouble:@"leadingEdgePacket2" forKey:self->_leadingEdgePacket2];
-  [v4 encodeDouble:@"firstPathIndexPacket2" forKey:self->_firstPathIndexPacket2];
-  [v4 encodeInt:self->_rxAntennaPacket2 forKey:@"rxAntennaPacket2"];
+  coderCopy = coder;
+  [coderCopy encodeInt:self->_antennaMask forKey:@"antennaMask"];
+  [coderCopy encodeDouble:@"uwbTime" forKey:self->_uwbTime];
+  [coderCopy encodeDouble:@"timestamp" forKey:self->_timestamp];
+  [coderCopy encodeDouble:@"tofPicSecond" forKey:self->_tofPicSecond];
+  [coderCopy encodeDouble:@"rssiDbm" forKey:self->_rssiDbm];
+  [coderCopy encodeDouble:@"soiRssiDbm" forKey:self->_soiRssiDbm];
+  [coderCopy encodeDouble:@"toaNoiseRms" forKey:self->_toaNoiseRms];
+  [coderCopy encodeDouble:@"toaPpwinRms" forKey:self->_toaPpwinRms];
+  [coderCopy encodeDouble:@"toaPpwinPeak" forKey:self->_toaPpwinPeak];
+  [coderCopy encodeDouble:@"rttInitiator" forKey:self->_rttInitiator];
+  [coderCopy encodeDouble:@"tatInitiator" forKey:self->_tatInitiator];
+  [coderCopy encodeDouble:@"rttResponder" forKey:self->_rttResponder];
+  [coderCopy encodeDouble:@"tatResponder" forKey:self->_tatResponder];
+  [coderCopy encodeObject:self->_cirPacket1 forKey:@"cirPacket1"];
+  [coderCopy encodeDouble:@"leadingEdgePacket1" forKey:self->_leadingEdgePacket1];
+  [coderCopy encodeDouble:@"firstPathIndexPacket1" forKey:self->_firstPathIndexPacket1];
+  [coderCopy encodeInt:self->_rxAntennaPacket1 forKey:@"rxAntennaPacket1"];
+  [coderCopy encodeObject:self->_cirPacket2 forKey:@"cirPacket2"];
+  [coderCopy encodeDouble:@"leadingEdgePacket2" forKey:self->_leadingEdgePacket2];
+  [coderCopy encodeDouble:@"firstPathIndexPacket2" forKey:self->_firstPathIndexPacket2];
+  [coderCopy encodeInt:self->_rxAntennaPacket2 forKey:@"rxAntennaPacket2"];
 }
 
-- (BiasEstimatorFeatures)initWithCoder:(id)a3
+- (BiasEstimatorFeatures)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntForKey:@"antennaMask"];
-  [v4 decodeDoubleForKey:@"uwbTime"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntForKey:@"antennaMask"];
+  [coderCopy decodeDoubleForKey:@"uwbTime"];
   v7 = v6;
-  [v4 decodeDoubleForKey:@"timestamp"];
+  [coderCopy decodeDoubleForKey:@"timestamp"];
   v9 = v8;
-  [v4 decodeDoubleForKey:@"tofPicSecond"];
+  [coderCopy decodeDoubleForKey:@"tofPicSecond"];
   v11 = v10;
-  [v4 decodeDoubleForKey:@"soiRssiDbm"];
+  [coderCopy decodeDoubleForKey:@"soiRssiDbm"];
   v44 = v12;
-  [v4 decodeDoubleForKey:@"rssiDbm"];
+  [coderCopy decodeDoubleForKey:@"rssiDbm"];
   v14 = v13;
-  [v4 decodeDoubleForKey:@"toaNoiseRms"];
+  [coderCopy decodeDoubleForKey:@"toaNoiseRms"];
   v16 = v15;
-  [v4 decodeDoubleForKey:@"toaPpwinRms"];
+  [coderCopy decodeDoubleForKey:@"toaPpwinRms"];
   v43 = v17;
-  [v4 decodeDoubleForKey:@"toaPpwinPeak"];
+  [coderCopy decodeDoubleForKey:@"toaPpwinPeak"];
   v42 = v18;
-  [v4 decodeDoubleForKey:@"rttInitiator"];
+  [coderCopy decodeDoubleForKey:@"rttInitiator"];
   v41 = v19;
-  [v4 decodeDoubleForKey:@"tatInitiator"];
+  [coderCopy decodeDoubleForKey:@"tatInitiator"];
   v40 = v20;
-  [v4 decodeDoubleForKey:@"rttResponder"];
+  [coderCopy decodeDoubleForKey:@"rttResponder"];
   v39 = v21;
-  [v4 decodeDoubleForKey:@"tatResponder"];
+  [coderCopy decodeDoubleForKey:@"tatResponder"];
   v38 = v22;
-  v23 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"cirPacket1"];
-  [v4 decodeDoubleForKey:@"leadingEdgePacket1"];
+  v23 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"cirPacket1"];
+  [coderCopy decodeDoubleForKey:@"leadingEdgePacket1"];
   v25 = v24;
-  [v4 decodeDoubleForKey:@"firstPathIndexPacket1"];
+  [coderCopy decodeDoubleForKey:@"firstPathIndexPacket1"];
   v37 = v26;
-  v27 = [v4 decodeIntForKey:@"rxAntennaPacket1"];
-  v28 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"cirPacket2"];
-  [v4 decodeDoubleForKey:@"leadingEdgePacket2"];
+  v27 = [coderCopy decodeIntForKey:@"rxAntennaPacket1"];
+  v28 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"cirPacket2"];
+  [coderCopy decodeDoubleForKey:@"leadingEdgePacket2"];
   v30 = v29;
-  [v4 decodeDoubleForKey:@"firstPathIndexPacket2"];
+  [coderCopy decodeDoubleForKey:@"firstPathIndexPacket2"];
   v32 = v31;
-  v33 = [v4 decodeIntForKey:@"rxAntennaPacket2"];
+  v33 = [coderCopy decodeIntForKey:@"rxAntennaPacket2"];
   v45.receiver = self;
   v45.super_class = BiasEstimatorFeatures;
   v34 = [(BiasEstimatorFeatures *)&v45 init];
@@ -173,20 +173,20 @@
   return v35;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
 
   return [v4 initWithBiasEstimatorFeatures:self];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5;
     if (v5 == self)
     {
@@ -197,7 +197,7 @@ LABEL_30:
     }
 
     antennaMask = self->_antennaMask;
-    v8 = [(BiasEstimatorFeatures *)v5 antennaMask];
+    antennaMask = [(BiasEstimatorFeatures *)v5 antennaMask];
     uwbTime = self->_uwbTime;
     [(BiasEstimatorFeatures *)v6 uwbTime];
     v11 = v10;
@@ -237,9 +237,9 @@ LABEL_30:
     cirPacket1 = self->_cirPacket1;
     if (!cirPacket1)
     {
-      v30 = [(BiasEstimatorFeatures *)v6 cirPacket1];
+      cirPacket1 = [(BiasEstimatorFeatures *)v6 cirPacket1];
 
-      if (!v30)
+      if (!cirPacket1)
       {
         v33 = 0;
 LABEL_7:
@@ -250,7 +250,7 @@ LABEL_7:
         [(BiasEstimatorFeatures *)v6 firstPathIndexPacket1];
         v61 = v35;
         rxAntennaPacket1 = self->_rxAntennaPacket1;
-        v37 = [(BiasEstimatorFeatures *)v6 rxAntennaPacket1];
+        rxAntennaPacket1 = [(BiasEstimatorFeatures *)v6 rxAntennaPacket1];
         cirPacket2 = self->_cirPacket2;
         v59 = v17;
         v60 = rssiDbm;
@@ -258,9 +258,9 @@ LABEL_7:
         v58 = soiRssiDbm;
         if (!cirPacket2)
         {
-          v39 = [(BiasEstimatorFeatures *)v6 cirPacket2];
+          cirPacket2 = [(BiasEstimatorFeatures *)v6 cirPacket2];
 
-          if (!v39)
+          if (!cirPacket2)
           {
             v41 = v14;
             v42 = timestamp;
@@ -272,14 +272,14 @@ LABEL_7:
           cirPacket2 = self->_cirPacket2;
         }
 
-        v39 = [(BiasEstimatorFeatures *)v6 cirPacket2];
-        v40 = [(NSArray *)cirPacket2 isEqualToArray:v39];
+        cirPacket2 = [(BiasEstimatorFeatures *)v6 cirPacket2];
+        v40 = [(NSArray *)cirPacket2 isEqualToArray:cirPacket2];
         v41 = v14;
         v42 = timestamp;
         v43 = v11;
         v44 = uwbTime;
 
-        LOBYTE(v39) = v40 ^ 1;
+        LOBYTE(cirPacket2) = v40 ^ 1;
 LABEL_11:
         leadingEdgePacket2 = self->_leadingEdgePacket2;
         [(BiasEstimatorFeatures *)v6 leadingEdgePacket2];
@@ -288,14 +288,14 @@ LABEL_11:
         [(BiasEstimatorFeatures *)v6 firstPathIndexPacket2];
         v50 = v49;
         rxAntennaPacket2 = self->_rxAntennaPacket2;
-        v52 = [(BiasEstimatorFeatures *)v6 rxAntennaPacket2];
+        rxAntennaPacket2 = [(BiasEstimatorFeatures *)v6 rxAntennaPacket2];
         v53 = v44 != v43;
         if (v42 != v41)
         {
           v53 = 1;
         }
 
-        if (antennaMask != v8)
+        if (antennaMask != antennaMask)
         {
           v53 = 1;
         }
@@ -320,21 +320,21 @@ LABEL_11:
           v53 = 1;
         }
 
-        v54 = (leadingEdgePacket2 == v47) & ~(v53 | (toaPpwinRms != v75 || toaPpwinPeak != v73 || rttInitiator != v71 || tatInitiator != v69 || rttResponder != v67 || tatResponder != v65) | v33 | (leadingEdgePacket1 != v63 || firstPathIndexPacket1 != v61 || rxAntennaPacket1 != v37) | v39);
+        v54 = (leadingEdgePacket2 == v47) & ~(v53 | (toaPpwinRms != v75 || toaPpwinPeak != v73 || rttInitiator != v71 || tatInitiator != v69 || rttResponder != v67 || tatResponder != v65) | v33 | (leadingEdgePacket1 != v63 || firstPathIndexPacket1 != v61 || rxAntennaPacket1 != rxAntennaPacket1) | cirPacket2);
         if (firstPathIndexPacket2 != v50)
         {
           v54 = 0;
         }
 
-        v55 = rxAntennaPacket2 == v52 && v54;
+        v55 = rxAntennaPacket2 == rxAntennaPacket2 && v54;
         goto LABEL_30;
       }
 
       cirPacket1 = self->_cirPacket1;
     }
 
-    v31 = [(BiasEstimatorFeatures *)v6 cirPacket1];
-    v32 = [(NSArray *)cirPacket1 isEqualToArray:v31];
+    cirPacket12 = [(BiasEstimatorFeatures *)v6 cirPacket1];
+    v32 = [(NSArray *)cirPacket1 isEqualToArray:cirPacket12];
 
     v33 = v32 ^ 1;
     goto LABEL_7;
@@ -400,24 +400,24 @@ LABEL_31:
   for (i = 0; [(NSArray *)self->_cirPacket1 count]> i; ++i)
   {
     v7 = [(NSArray *)self->_cirPacket1 objectAtIndex:i];
-    v8 = [v7 real];
+    real = [v7 real];
 
     v9 = [(NSArray *)self->_cirPacket1 objectAtIndex:i];
-    v10 = [v9 imag];
+    imag = [v9 imag];
 
-    [v5 appendFormat:@", %d, %d", objc_msgSend(v8, "intValue"), objc_msgSend(v10, "intValue")];
+    [v5 appendFormat:@", %d, %d", objc_msgSend(real, "intValue"), objc_msgSend(imag, "intValue")];
   }
 
   [v5 appendFormat:@", %d, %d, %d", self->_leadingEdgePacket1, self->_firstPathIndexPacket1, self->_rxAntennaPacket1];
   for (j = 0; [(NSArray *)self->_cirPacket2 count]> j; ++j)
   {
     v12 = [(NSArray *)self->_cirPacket2 objectAtIndex:j];
-    v13 = [v12 real];
+    real2 = [v12 real];
 
     v14 = [(NSArray *)self->_cirPacket2 objectAtIndex:j];
-    v15 = [v14 imag];
+    imag2 = [v14 imag];
 
-    [v5 appendFormat:@", %d, %d", objc_msgSend(v13, "intValue"), objc_msgSend(v15, "intValue")];
+    [v5 appendFormat:@", %d, %d", objc_msgSend(real2, "intValue"), objc_msgSend(imag2, "intValue")];
   }
 
   [v5 appendFormat:@", %d, %d, %d", self->_leadingEdgePacket2, self->_firstPathIndexPacket2, self->_rxAntennaPacket2];

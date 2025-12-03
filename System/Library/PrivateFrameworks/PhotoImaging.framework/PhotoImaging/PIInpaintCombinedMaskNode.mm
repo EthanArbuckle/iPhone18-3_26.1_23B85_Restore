@@ -1,46 +1,46 @@
 @interface PIInpaintCombinedMaskNode
-- (PIInpaintCombinedMaskNode)initWithSettings:(id)a3 inputs:(id)a4;
-- (PIInpaintCombinedMaskNode)initWithSettings:(id)a3 inputs:(id)a4 mode:(unint64_t)a5;
-- (id)_evaluateImage:(id *)a3;
-- (id)_evaluateImageGeometry:(id *)a3;
-- (id)_evaluateImageProperties:(id *)a3;
-- (id)_scaleImage:(id)a3 toSize:(CGSize)a4;
-- (id)maskImageForIdentifier:(id)a3 error:(id *)a4;
-- (id)resolvedNodeWithCachedInputs:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6;
+- (PIInpaintCombinedMaskNode)initWithSettings:(id)settings inputs:(id)inputs;
+- (PIInpaintCombinedMaskNode)initWithSettings:(id)settings inputs:(id)inputs mode:(unint64_t)mode;
+- (id)_evaluateImage:(id *)image;
+- (id)_evaluateImageGeometry:(id *)geometry;
+- (id)_evaluateImageProperties:(id *)properties;
+- (id)_scaleImage:(id)image toSize:(CGSize)size;
+- (id)maskImageForIdentifier:(id)identifier error:(id *)error;
+- (id)resolvedNodeWithCachedInputs:(id)inputs settings:(id)settings pipelineState:(id)state error:(id *)error;
 - (unint64_t)mode;
 @end
 
 @implementation PIInpaintCombinedMaskNode
 
-- (id)resolvedNodeWithCachedInputs:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6
+- (id)resolvedNodeWithCachedInputs:(id)inputs settings:(id)settings pipelineState:(id)state error:(id *)error
 {
   v8.receiver = self;
   v8.super_class = PIInpaintCombinedMaskNode;
-  v6 = [(NURenderNode *)&v8 resolvedNodeWithCachedInputs:a3 settings:a4 pipelineState:a5 error:a6];
+  v6 = [(NURenderNode *)&v8 resolvedNodeWithCachedInputs:inputs settings:settings pipelineState:state error:error];
 
   return v6;
 }
 
-- (id)_scaleImage:(id)a3 toSize:(CGSize)a4
+- (id)_scaleImage:(id)image toSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = a3;
-  [v6 extent];
+  height = size.height;
+  width = size.width;
+  imageCopy = image;
+  [imageCopy extent];
   if (v8 == width && v7 == height)
   {
-    v13 = v6;
+    v13 = imageCopy;
   }
 
   else
   {
-    [v6 extent];
+    [imageCopy extent];
     v11 = width / v10;
-    [v6 extent];
+    [imageCopy extent];
     memset(&v17, 0, sizeof(v17));
     CGAffineTransformMakeScale(&v17, v11, height / v12);
     v16 = v17;
-    v13 = [v6 imageByApplyingTransform:&v16];
+    v13 = [imageCopy imageByApplyingTransform:&v16];
   }
 
   v14 = v13;
@@ -48,10 +48,10 @@
   return v14;
 }
 
-- (id)_evaluateImage:(id *)a3
+- (id)_evaluateImage:(id *)image
 {
   v120 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!image)
   {
     v61 = NUAssertLogger_6299();
     if (os_log_type_enabled(v61, OS_LOG_TYPE_ERROR))
@@ -73,8 +73,8 @@
         v69 = dispatch_get_specific(*v63);
         v70 = MEMORY[0x1E696AF00];
         v71 = v69;
-        v72 = [v70 callStackSymbols];
-        v73 = [v72 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v70 callStackSymbols];
+        v73 = [callStackSymbols componentsJoinedByString:@"\n"];
         LODWORD(v119.a) = 138543618;
         *(&v119.a + 4) = v69;
         WORD2(v119.b) = 2114;
@@ -85,8 +85,8 @@
 
     else if (v66)
     {
-      v67 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v68 = [v67 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v68 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       LODWORD(v119.a) = 138543362;
       *(&v119.a + 4) = v68;
       _os_log_error_impl(&dword_1C7694000, v65, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &v119, 0xCu);
@@ -95,10 +95,10 @@
     _NUAssertFailHandler();
   }
 
-  v5 = [(NURenderNode *)self settings];
-  v6 = [v5 objectForKeyedSubscript:@"operations"];
+  settings = [(NURenderNode *)self settings];
+  v6 = [settings objectForKeyedSubscript:@"operations"];
 
-  v7 = [(NURenderNode *)self outputImageGeometry:a3];
+  v7 = [(NURenderNode *)self outputImageGeometry:image];
   v8 = v7;
   if (v7)
   {
@@ -113,10 +113,10 @@
     v20 = v19;
     memset(&v119, 0, sizeof(v119));
     CGAffineTransformMakeScale(&v119, v17 / v10, v19 / v12);
-    v21 = [MEMORY[0x1E695F658] blackImage];
-    v22 = [v21 imageByCroppingToRect:{v14, v16, v18, v20}];
+    blackImage = [MEMORY[0x1E695F658] blackImage];
+    v22 = [blackImage imageByCroppingToRect:{v14, v16, v18, v20}];
 
-    v23 = [(PIInpaintCombinedMaskNode *)self mode];
+    mode = [(PIInpaintCombinedMaskNode *)self mode];
     v24 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v112[0] = MEMORY[0x1E69E9820];
     v112[1] = 3221225472;
@@ -124,14 +124,14 @@
     v112[3] = &unk_1E82AA2F8;
     v25 = v24;
     v113 = v25;
-    v114 = self;
+    selfCopy = self;
     v115 = v119;
     v26 = MEMORY[0x1CCA61740](v112);
     v109[0] = MEMORY[0x1E69E9820];
     v109[1] = 3221225472;
     v109[2] = __44__PIInpaintCombinedMaskNode__evaluateImage___block_invoke_2;
     v109[3] = &unk_1E82AA320;
-    v111 = v23;
+    v111 = mode;
     v27 = v26;
     v110 = v27;
     v28 = MEMORY[0x1CCA61740](v109);
@@ -144,7 +144,7 @@
     if (v30)
     {
       v31 = v30;
-      v91 = a3;
+      imageCopy = image;
       v92 = v25;
       v32 = *v106;
       v93 = v6;
@@ -160,15 +160,15 @@ LABEL_5:
         }
 
         v34 = *(*(&v105 + 1) + 8 * v33);
-        v35 = [v34 mode];
-        if ((v35 - 1) < 2)
+        mode2 = [v34 mode];
+        if ((mode2 - 1) < 2)
         {
           break;
         }
 
-        if ((v35 - 3) >= 2)
+        if ((mode2 - 3) >= 2)
         {
-          if (!v35)
+          if (!mode2)
           {
             v74 = NUAssertLogger_6299();
             if (os_log_type_enabled(v74, OS_LOG_TYPE_ERROR))
@@ -190,8 +190,8 @@ LABEL_5:
                 v83 = dispatch_get_specific(*v77);
                 v84 = MEMORY[0x1E696AF00];
                 v85 = v83;
-                v86 = [v84 callStackSymbols];
-                v87 = [v86 componentsJoinedByString:@"\n"];
+                callStackSymbols3 = [v84 callStackSymbols];
+                v87 = [callStackSymbols3 componentsJoinedByString:@"\n"];
                 LODWORD(buf.a) = 138543618;
                 *(&buf.a + 4) = v83;
                 WORD2(buf.b) = 2114;
@@ -202,8 +202,8 @@ LABEL_5:
 
             else if (v80)
             {
-              v81 = [MEMORY[0x1E696AF00] callStackSymbols];
-              v82 = [v81 componentsJoinedByString:@"\n"];
+              callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+              v82 = [callStackSymbols4 componentsJoinedByString:@"\n"];
               LODWORD(buf.a) = 138543362;
               *(&buf.a + 4) = v82;
               _os_log_error_impl(&dword_1C7694000, v79, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &buf, 0xCu);
@@ -254,7 +254,7 @@ LABEL_5:
                 v58 = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to generate mask" object:v34 underlyingError:v45];
 LABEL_39:
                 v59 = v94;
-                *v91 = v58;
+                *imageCopy = v58;
 
                 v39 = v45;
                 v25 = v92;
@@ -267,9 +267,9 @@ LABEL_39:
               if ([PIInpaintRendering shouldDilateMaskForOperation:v34])
               {
                 v46 = +[PIGlobalSettings globalSettings];
-                v47 = [v46 inpaintFillsMaskHoles];
+                inpaintFillsMaskHoles = [v46 inpaintFillsMaskHoles];
 
-                if (v47)
+                if (inpaintFillsMaskHoles)
                 {
                   v48 = [PIInpaintRendering maskByFillingHolesInMask:v44];
 
@@ -338,19 +338,19 @@ LABEL_33:
       v95 = v33;
       v50 = v32;
       v51 = ([v34 options] >> 4) & 1;
-      v52 = [v34 brushStroke];
-      v53 = [v52 ciImageTiled:0 closed:1 pressureMode:1 filled:v51];
+      brushStroke = [v34 brushStroke];
+      v53 = [brushStroke ciImageTiled:0 closed:1 pressureMode:1 filled:v51];
       buf = v119;
       v54 = [v53 imageByApplyingTransform:&buf];
 
       if ([v34 options])
       {
-        v56 = [MEMORY[0x1E695F658] whiteImage];
+        whiteImage = [MEMORY[0x1E695F658] whiteImage];
         [v54 extent];
-        v55 = [v56 imageByCroppingToRect:?];
+        v55 = [whiteImage imageByCroppingToRect:?];
 
         v39 = 0;
-        v54 = v56;
+        v54 = whiteImage;
       }
 
       else
@@ -363,7 +363,7 @@ LABEL_33:
       if (!v55)
       {
         [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to apply exclusion mask" object:v34 underlyingError:v39];
-        *v91 = v25 = v92;
+        *imageCopy = v25 = v92;
         v28 = v97;
         v6 = v93;
         v59 = v94;
@@ -509,27 +509,27 @@ LABEL_21:
   return v10;
 }
 
-- (id)_evaluateImageProperties:(id *)a3
+- (id)_evaluateImageProperties:(id *)properties
 {
-  v4 = [(PIInpaintCombinedMaskNode *)self inputNode];
-  v5 = [v4 imageProperties:a3];
+  inputNode = [(PIInpaintCombinedMaskNode *)self inputNode];
+  v5 = [inputNode imageProperties:properties];
 
   return v5;
 }
 
-- (id)_evaluateImageGeometry:(id *)a3
+- (id)_evaluateImageGeometry:(id *)geometry
 {
-  v4 = [(PIInpaintCombinedMaskNode *)self inputNode];
-  v5 = [v4 outputImageGeometry:a3];
+  inputNode = [(PIInpaintCombinedMaskNode *)self inputNode];
+  v5 = [inputNode outputImageGeometry:geometry];
 
   return v5;
 }
 
-- (id)maskImageForIdentifier:(id)a3 error:(id *)a4
+- (id)maskImageForIdentifier:(id)identifier error:(id *)error
 {
   v45 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     v18 = NUAssertLogger_6299();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -540,7 +540,7 @@ LABEL_21:
       _os_log_error_impl(&dword_1C7694000, v18, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v20 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v22 = NUAssertLogger_6299();
     v23 = os_log_type_enabled(v22, OS_LOG_TYPE_ERROR);
@@ -548,11 +548,11 @@ LABEL_21:
     {
       if (v23)
       {
-        v31 = dispatch_get_specific(*v20);
+        v31 = dispatch_get_specific(*callStackSymbols);
         v32 = MEMORY[0x1E696AF00];
         v33 = v31;
-        v20 = [v32 callStackSymbols];
-        v34 = [v20 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v32 callStackSymbols];
+        v34 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v42 = v31;
         v43 = 2114;
@@ -563,10 +563,10 @@ LABEL_21:
 
     else if (v23)
     {
-      v24 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v20 = [v24 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v42 = v20;
+      v42 = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v22, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -574,7 +574,7 @@ LABEL_21:
     goto LABEL_25;
   }
 
-  if (!a4)
+  if (!error)
   {
     v25 = NUAssertLogger_6299();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -585,7 +585,7 @@ LABEL_21:
       _os_log_error_impl(&dword_1C7694000, v25, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v20 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v27 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v22 = NUAssertLogger_6299();
     v28 = os_log_type_enabled(v22, OS_LOG_TYPE_ERROR);
@@ -593,8 +593,8 @@ LABEL_21:
     {
       if (v28)
       {
-        v29 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v30 = [v29 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v30 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v42 = v30;
         _os_log_error_impl(&dword_1C7694000, v22, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -606,11 +606,11 @@ LABEL_21:
 LABEL_25:
     if (v28)
     {
-      v35 = dispatch_get_specific(*v20);
+      v35 = dispatch_get_specific(*callStackSymbols);
       v36 = MEMORY[0x1E696AF00];
       v37 = v35;
-      v38 = [v36 callStackSymbols];
-      v39 = [v38 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [v36 callStackSymbols];
+      v39 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v42 = v35;
       v43 = 2114;
@@ -623,9 +623,9 @@ LABEL_27:
     _NUAssertFailHandler();
   }
 
-  v7 = v6;
-  v8 = [(NURenderNode *)self inputs];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  v7 = identifierCopy;
+  inputs = [(NURenderNode *)self inputs];
+  v9 = [inputs objectForKeyedSubscript:v7];
 
   if (v9)
   {
@@ -644,14 +644,14 @@ LABEL_27:
       v15 = [v13 errorWithCode:1 reason:@"Failed to get mask image" object:v9 underlyingError:v14];
       v16 = v15;
 
-      *a4 = v15;
+      *error = v15;
     }
   }
 
   else
   {
     [MEMORY[0x1E69B3A48] missingError:@"Missing mask input" object:v7];
-    *a4 = v11 = 0;
+    *error = v11 = 0;
   }
 
   return v11;
@@ -659,17 +659,17 @@ LABEL_27:
 
 - (unint64_t)mode
 {
-  v2 = [(NURenderNode *)self settings];
-  v3 = [v2 objectForKeyedSubscript:@"mode"];
+  settings = [(NURenderNode *)self settings];
+  v3 = [settings objectForKeyedSubscript:@"mode"];
 
-  v4 = [v3 unsignedIntegerValue];
-  return v4;
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
+  return unsignedIntegerValue;
 }
 
-- (PIInpaintCombinedMaskNode)initWithSettings:(id)a3 inputs:(id)a4 mode:(unint64_t)a5
+- (PIInpaintCombinedMaskNode)initWithSettings:(id)settings inputs:(id)inputs mode:(unint64_t)mode
 {
-  v8 = a4;
-  v9 = [a3 mutableCopy];
+  inputsCopy = inputs;
+  v9 = [settings mutableCopy];
   v10 = v9;
   if (v9)
   {
@@ -683,21 +683,21 @@ LABEL_27:
 
   v12 = v11;
 
-  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a5];
+  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:mode];
   [v12 setObject:v13 forKeyedSubscript:@"mode"];
 
   v16.receiver = self;
   v16.super_class = PIInpaintCombinedMaskNode;
-  v14 = [(NURenderNode *)&v16 initWithSettings:v12 inputs:v8];
+  v14 = [(NURenderNode *)&v16 initWithSettings:v12 inputs:inputsCopy];
 
   return v14;
 }
 
-- (PIInpaintCombinedMaskNode)initWithSettings:(id)a3 inputs:(id)a4
+- (PIInpaintCombinedMaskNode)initWithSettings:(id)settings inputs:(id)inputs
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  settingsCopy = settings;
+  inputsCopy = inputs;
   v8 = MEMORY[0x1E69B3D78];
   if (*MEMORY[0x1E69B3D78] != -1)
   {
@@ -736,8 +736,8 @@ LABEL_11:
           v25 = MEMORY[0x1E696AF00];
           v26 = specific;
           v27 = v23;
-          v28 = [v25 callStackSymbols];
-          v29 = [v28 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v25 callStackSymbols];
+          v29 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v32 = specific;
           v33 = 2114;
@@ -764,8 +764,8 @@ LABEL_11:
     {
       v19 = MEMORY[0x1E696AF00];
       v20 = v18;
-      v21 = [v19 callStackSymbols];
-      v22 = [v21 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v19 callStackSymbols];
+      v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v32 = v22;
       _os_log_error_impl(&dword_1C7694000, v20, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);

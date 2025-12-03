@@ -1,8 +1,8 @@
 @interface UIPDFHighlightLayer
 - (CGPoint)offset;
 - (void)dealloc;
-- (void)setBorderPath:(CGPath *)a3;
-- (void)setClipPath:(CGPath *)a3;
+- (void)setBorderPath:(CGPath *)path;
+- (void)setClipPath:(CGPath *)path;
 @end
 
 @implementation UIPDFHighlightLayer
@@ -16,18 +16,18 @@
   CGPathRelease(self->_borderPath);
 }
 
-- (void)setClipPath:(CGPath *)a3
+- (void)setClipPath:(CGPath *)path
 {
-  CGPathRetain(a3);
+  CGPathRetain(path);
   CGPathRelease(self->_clipPath);
-  self->_clipPath = a3;
+  self->_clipPath = path;
 }
 
-- (void)setBorderPath:(CGPath *)a3
+- (void)setBorderPath:(CGPath *)path
 {
-  CGPathRetain(a3);
+  CGPathRetain(path);
   CGPathRelease(self->_borderPath);
-  self->_borderPath = a3;
+  self->_borderPath = path;
 }
 
 - (CGPoint)offset

@@ -1,57 +1,57 @@
 @interface WFResponseParsingRules
-+ (BOOL)aqiEnabledByRules:(id)a3 forLocation:(id)a4;
-- (BOOL)aqiEnabledForCountryCode:(id)a3;
-- (WFResponseParsingRules)initWithSettings:(id)a3;
++ (BOOL)aqiEnabledByRules:(id)rules forLocation:(id)location;
+- (BOOL)aqiEnabledForCountryCode:(id)code;
+- (WFResponseParsingRules)initWithSettings:(id)settings;
 @end
 
 @implementation WFResponseParsingRules
 
-+ (BOOL)aqiEnabledByRules:(id)a3 forLocation:(id)a4
++ (BOOL)aqiEnabledByRules:(id)rules forLocation:(id)location
 {
-  if (!a3)
+  if (!rules)
   {
     return 1;
   }
 
-  v5 = a3;
-  v6 = [a4 countryAbbreviation];
-  v7 = [v5 aqiEnabledForCountryCode:v6];
+  rulesCopy = rules;
+  countryAbbreviation = [location countryAbbreviation];
+  v7 = [rulesCopy aqiEnabledForCountryCode:countryAbbreviation];
 
   return v7;
 }
 
-- (WFResponseParsingRules)initWithSettings:(id)a3
+- (WFResponseParsingRules)initWithSettings:(id)settings
 {
-  v5 = a3;
+  settingsCopy = settings;
   v9.receiver = self;
   v9.super_class = WFResponseParsingRules;
   v6 = [(WFResponseParsingRules *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_settings, a3);
+    objc_storeStrong(&v6->_settings, settings);
   }
 
   return v7;
 }
 
-- (BOOL)aqiEnabledForCountryCode:(id)a3
+- (BOOL)aqiEnabledForCountryCode:(id)code
 {
-  v4 = a3;
-  v5 = [(WFResponseParsingRules *)self settings];
-  v6 = [v5 aqiEnabledCountryCodes];
+  codeCopy = code;
+  settings = [(WFResponseParsingRules *)self settings];
+  aqiEnabledCountryCodes = [settings aqiEnabledCountryCodes];
 
-  if (v6)
+  if (aqiEnabledCountryCodes)
   {
-    v7 = [v6 allObjects];
+    allObjects = [aqiEnabledCountryCodes allObjects];
   }
 
   else
   {
-    v7 = &unk_288254F10;
+    allObjects = &unk_288254F10;
   }
 
-  v8 = [v7 containsObject:v4];
+  v8 = [allObjects containsObject:codeCopy];
 
   return v8;
 }

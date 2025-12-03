@@ -1,41 +1,41 @@
 @interface WFMultipleValueParameterState
-+ (id)serializedRepresentationFromValue:(id)a3;
-+ (id)valueFromSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5;
++ (id)serializedRepresentationFromValue:(id)value;
++ (id)valueFromSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter;
 - (NSArray)parameterStates;
-- (WFMultipleValueParameterState)initWithParameterStates:(id)a3;
-- (WFMultipleValueParameterState)initWithValue:(id)a3;
+- (WFMultipleValueParameterState)initWithParameterStates:(id)states;
+- (WFMultipleValueParameterState)initWithValue:(id)value;
 - (id)containedVariables;
-- (id)stateByAppendingValue:(id)a3;
-- (id)stateByInsertingValueAtIndex:(unint64_t)a3 withValue:(id)a4;
-- (id)stateByRemovingValueAtIndex:(unint64_t)a3;
-- (id)stateByReplacingValueAtIndex:(unint64_t)a3 withValue:(id)a4;
-- (id)stateByReplacingValueAtIndexes:(id)a3 withValues:(id)a4;
-- (id)stateByReplacingVariable:(id)a3 withVariable:(id)a4;
-- (id)stateByTogglingValue:(id)a3;
-- (void)finishProcessingWithContent:(id)a3 error:(id)a4 forParameterStateClass:(Class)a5 valueHandler:(id)a6;
-- (void)processWithContext:(id)a3 userInputRequiredHandler:(id)a4 valueHandler:(id)a5;
+- (id)stateByAppendingValue:(id)value;
+- (id)stateByInsertingValueAtIndex:(unint64_t)index withValue:(id)value;
+- (id)stateByRemovingValueAtIndex:(unint64_t)index;
+- (id)stateByReplacingValueAtIndex:(unint64_t)index withValue:(id)value;
+- (id)stateByReplacingValueAtIndexes:(id)indexes withValues:(id)values;
+- (id)stateByReplacingVariable:(id)variable withVariable:(id)withVariable;
+- (id)stateByTogglingValue:(id)value;
+- (void)finishProcessingWithContent:(id)content error:(id)error forParameterStateClass:(Class)class valueHandler:(id)handler;
+- (void)processWithContext:(id)context userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler;
 @end
 
 @implementation WFMultipleValueParameterState
 
-- (id)stateByInsertingValueAtIndex:(unint64_t)a3 withValue:(id)a4
+- (id)stateByInsertingValueAtIndex:(unint64_t)index withValue:(id)value
 {
-  v6 = a4;
-  v7 = [(WFVariableSubstitutableParameterState *)self value];
-  v8 = [v7 mutableCopy];
+  valueCopy = value;
+  value = [(WFVariableSubstitutableParameterState *)self value];
+  v8 = [value mutableCopy];
 
   v9 = [WFMultipleValueParameterStateEntry alloc];
-  v10 = [MEMORY[0x1E696AFB0] UUID];
-  v11 = [(WFMultipleValueParameterStateEntry *)v9 initWithIdentity:v10 parameterState:v6];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  v11 = [(WFMultipleValueParameterStateEntry *)v9 initWithIdentity:uUID parameterState:valueCopy];
 
-  if ([v8 count] <= a3)
+  if ([v8 count] <= index)
   {
     [v8 addObject:v11];
   }
 
   else
   {
-    [v8 insertObject:v11 atIndex:a3];
+    [v8 insertObject:v11 atIndex:index];
   }
 
   v12 = [objc_alloc(objc_opt_class()) initWithValue:v8];
@@ -43,42 +43,42 @@
   return v12;
 }
 
-- (id)stateByRemovingValueAtIndex:(unint64_t)a3
+- (id)stateByRemovingValueAtIndex:(unint64_t)index
 {
-  v4 = [(WFVariableSubstitutableParameterState *)self value];
-  v5 = [v4 mutableCopy];
+  value = [(WFVariableSubstitutableParameterState *)self value];
+  v5 = [value mutableCopy];
 
-  [v5 removeObjectAtIndex:a3];
+  [v5 removeObjectAtIndex:index];
   v6 = [objc_alloc(objc_opt_class()) initWithValue:v5];
 
   return v6;
 }
 
-- (id)stateByAppendingValue:(id)a3
+- (id)stateByAppendingValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v5 = objc_alloc(objc_opt_class());
-  v6 = [(WFVariableSubstitutableParameterState *)self value];
+  value = [(WFVariableSubstitutableParameterState *)self value];
   v7 = [WFMultipleValueParameterStateEntry alloc];
-  v8 = [MEMORY[0x1E696AFB0] UUID];
-  v9 = [(WFMultipleValueParameterStateEntry *)v7 initWithIdentity:v8 parameterState:v4];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  v9 = [(WFMultipleValueParameterStateEntry *)v7 initWithIdentity:uUID parameterState:valueCopy];
 
-  v10 = [v6 arrayByAddingObject:v9];
+  v10 = [value arrayByAddingObject:v9];
   v11 = [v5 initWithValue:v10];
 
   return v11;
 }
 
-- (id)stateByReplacingValueAtIndexes:(id)a3 withValues:(id)a4
+- (id)stateByReplacingValueAtIndexes:(id)indexes withValues:(id)values
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(WFVariableSubstitutableParameterState *)self value];
-  v9 = [v8 mutableCopy];
+  valuesCopy = values;
+  indexesCopy = indexes;
+  value = [(WFVariableSubstitutableParameterState *)self value];
+  v9 = [value mutableCopy];
 
-  v10 = [v6 if_map:&__block_literal_global_247];
+  v10 = [valuesCopy if_map:&__block_literal_global_247];
 
-  [v9 replaceObjectsAtIndexes:v7 withObjects:v10];
+  [v9 replaceObjectsAtIndexes:indexesCopy withObjects:v10];
   v11 = [objc_alloc(objc_opt_class()) initWithValue:v9];
 
   return v11;
@@ -94,48 +94,48 @@ WFMultipleValueParameterStateEntry *__75__WFMultipleValueParameterState_stateByR
   return v5;
 }
 
-- (id)stateByReplacingValueAtIndex:(unint64_t)a3 withValue:(id)a4
+- (id)stateByReplacingValueAtIndex:(unint64_t)index withValue:(id)value
 {
-  v6 = a4;
-  v7 = [(WFVariableSubstitutableParameterState *)self value];
-  v8 = [v7 mutableCopy];
+  valueCopy = value;
+  value = [(WFVariableSubstitutableParameterState *)self value];
+  v8 = [value mutableCopy];
 
   v9 = [WFMultipleValueParameterStateEntry alloc];
-  v10 = [MEMORY[0x1E696AFB0] UUID];
-  v11 = [(WFMultipleValueParameterStateEntry *)v9 initWithIdentity:v10 parameterState:v6];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  v11 = [(WFMultipleValueParameterStateEntry *)v9 initWithIdentity:uUID parameterState:valueCopy];
 
-  [v8 replaceObjectAtIndex:a3 withObject:v11];
+  [v8 replaceObjectAtIndex:index withObject:v11];
   v12 = [objc_alloc(objc_opt_class()) initWithValue:v8];
 
   return v12;
 }
 
-- (id)stateByTogglingValue:(id)a3
+- (id)stateByTogglingValue:(id)value
 {
-  v4 = a3;
-  v5 = [(WFMultipleValueParameterState *)self parameterStates];
-  v6 = [v5 indexOfObject:v4];
+  valueCopy = value;
+  parameterStates = [(WFMultipleValueParameterState *)self parameterStates];
+  v6 = [parameterStates indexOfObject:valueCopy];
 
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v7 = objc_alloc(objc_opt_class());
-    v8 = [(WFVariableSubstitutableParameterState *)self value];
+    value = [(WFVariableSubstitutableParameterState *)self value];
     v9 = [WFMultipleValueParameterStateEntry alloc];
-    v10 = [MEMORY[0x1E696AFB0] UUID];
-    v11 = [(WFMultipleValueParameterStateEntry *)v9 initWithIdentity:v10 parameterState:v4];
-    v12 = [v8 arrayByAddingObject:v11];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    v11 = [(WFMultipleValueParameterStateEntry *)v9 initWithIdentity:uUID parameterState:valueCopy];
+    v12 = [value arrayByAddingObject:v11];
     v13 = [v7 initWithValue:v12];
   }
 
   else
   {
-    v14 = [(WFVariableSubstitutableParameterState *)self value];
-    v8 = [v14 mutableCopy];
+    value2 = [(WFVariableSubstitutableParameterState *)self value];
+    value = [value2 mutableCopy];
 
-    [v8 removeObjectAtIndex:v6];
-    if ([v8 count])
+    [value removeObjectAtIndex:v6];
+    if ([value count])
     {
-      v13 = [objc_alloc(objc_opt_class()) initWithValue:v8];
+      v13 = [objc_alloc(objc_opt_class()) initWithValue:value];
     }
 
     else
@@ -147,15 +147,15 @@ WFMultipleValueParameterStateEntry *__75__WFMultipleValueParameterState_stateByR
   return v13;
 }
 
-- (void)finishProcessingWithContent:(id)a3 error:(id)a4 forParameterStateClass:(Class)a5 valueHandler:(id)a6
+- (void)finishProcessingWithContent:(id)content error:(id)error forParameterStateClass:(Class)class valueHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = v11;
-  if (!v9)
+  contentCopy = content;
+  errorCopy = error;
+  handlerCopy = handler;
+  v12 = handlerCopy;
+  if (!contentCopy)
   {
-    v14 = *(v11 + 2);
+    v14 = *(handlerCopy + 2);
 LABEL_8:
     v14();
     goto LABEL_9;
@@ -167,8 +167,8 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v13 = [(objc_class *)a5 processingValueClass];
-  if (v13 == objc_opt_class())
+  processingValueClass = [(objc_class *)class processingValueClass];
+  if (processingValueClass == objc_opt_class())
   {
     v14 = v12[2];
     goto LABEL_8;
@@ -179,54 +179,54 @@ LABEL_8:
   v15[2] = __103__WFMultipleValueParameterState_finishProcessingWithContent_error_forParameterStateClass_valueHandler___block_invoke;
   v15[3] = &unk_1E8378790;
   v16 = v12;
-  [v9 getObjectRepresentations:v15 forClass:v13];
+  [contentCopy getObjectRepresentations:v15 forClass:processingValueClass];
 
 LABEL_9:
 }
 
-- (void)processWithContext:(id)a3 userInputRequiredHandler:(id)a4 valueHandler:(id)a5
+- (void)processWithContext:(id)context userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  handlerCopy = handler;
+  valueHandlerCopy = valueHandler;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __90__WFMultipleValueParameterState_processWithContext_userInputRequiredHandler_valueHandler___block_invoke;
   aBlock[3] = &unk_1E8376300;
-  v11 = v8;
+  v11 = contextCopy;
   v82 = v11;
-  v12 = v10;
+  v12 = valueHandlerCopy;
   v83 = v12;
   v13 = _Block_copy(aBlock);
-  v14 = [(WFVariableSubstitutableParameterState *)self variable];
+  variable = [(WFVariableSubstitutableParameterState *)self variable];
 
-  if (!v14)
+  if (!variable)
   {
     v72[0] = 0;
     v72[1] = v72;
     v72[2] = 0x2020000000;
     v73 = 0;
-    v21 = [v11 parameter];
-    v22 = [v21 singleStateClass];
+    parameter = [v11 parameter];
+    singleStateClass = [parameter singleStateClass];
 
-    if (![v22 isSubclassOfClass:objc_opt_class()])
+    if (![singleStateClass isSubclassOfClass:objc_opt_class()])
     {
-      v37 = [(WFMultipleValueParameterState *)self parameterStates];
+      parameterStates = [(WFMultipleValueParameterState *)self parameterStates];
       v46[0] = MEMORY[0x1E69E9820];
       v46[1] = 3221225472;
       v46[2] = __90__WFMultipleValueParameterState_processWithContext_userInputRequiredHandler_valueHandler___block_invoke_5_235;
       v46[3] = &unk_1E8376438;
       v47 = v11;
-      v48 = self;
+      selfCopy = self;
       v50 = v72;
-      v49 = v9;
+      v49 = handlerCopy;
       v43[0] = MEMORY[0x1E69E9820];
       v43[1] = 3221225472;
       v43[2] = __90__WFMultipleValueParameterState_processWithContext_userInputRequiredHandler_valueHandler___block_invoke_12;
       v43[3] = &unk_1E8376460;
       v45 = v72;
       v44 = v13;
-      [v37 if_flatMapAsynchronously:v46 completionHandler:v43];
+      [parameterStates if_flatMapAsynchronously:v46 completionHandler:v43];
 
       v38 = v47;
 LABEL_25:
@@ -235,7 +235,7 @@ LABEL_25:
       goto LABEL_26;
     }
 
-    v42 = [(WFMultipleValueParameterState *)self parameterStates];
+    parameterStates2 = [(WFMultipleValueParameterState *)self parameterStates];
     v23 = objc_opt_new();
     v24 = objc_opt_new();
     v66 = 0;
@@ -248,8 +248,8 @@ LABEL_25:
     v63 = &v62;
     v64 = 0x2020000000;
     v65 = 1;
-    v25 = [(WFMultipleValueParameterState *)self parameterStates];
-    v26 = [v25 count];
+    parameterStates3 = [(WFMultipleValueParameterState *)self parameterStates];
+    v26 = [parameterStates3 count];
 
     if (!v26)
     {
@@ -258,7 +258,7 @@ LABEL_25:
       _Block_object_dispose(&v66, 8);
 
 LABEL_24:
-      v38 = v42;
+      v38 = parameterStates2;
       goto LABEL_25;
     }
 
@@ -274,18 +274,18 @@ LABEL_24:
     v58 = v28;
     v29 = v24;
     v59 = v29;
-    [v42 enumerateObjectsUsingBlock:v56];
+    [parameterStates2 enumerateObjectsUsingBlock:v56];
     if (v63[3])
     {
-      v30 = [v29 allValues];
-      v31 = [v30 count];
+      allValues = [v29 allValues];
+      v31 = [allValues count];
 
       if (v31)
       {
-        v32 = [v29 allValues];
-        v33 = [v32 if_compactMap:&__block_literal_global_230];
+        allValues2 = [v29 allValues];
+        v33 = [allValues2 if_compactMap:&__block_literal_global_230];
 
-        v34 = [v27 variableSource];
+        variableSource = [v27 variableSource];
         v51[0] = MEMORY[0x1E69E9820];
         v51[1] = 3221225472;
         v51[2] = __90__WFMultipleValueParameterState_processWithContext_userInputRequiredHandler_valueHandler___block_invoke_3_231;
@@ -294,7 +294,7 @@ LABEL_24:
         v52 = v29;
         v53 = v27;
         v54 = v28;
-        [v34 requestAccessToFileAtLocations:v33 completionHandler:v51];
+        [variableSource requestAccessToFileAtLocations:v33 completionHandler:v51];
 
 LABEL_23:
         _Block_object_dispose(&v62, 8);
@@ -317,64 +317,64 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  v15 = [(WFVariableSubstitutableParameterState *)self variable];
-  if (v15)
+  variable2 = [(WFVariableSubstitutableParameterState *)self variable];
+  if (variable2)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v16 = [v15 prompt];
-      (*(v9 + 2))(v9, v16, 0);
+      prompt = [variable2 prompt];
+      (*(handlerCopy + 2))(handlerCopy, prompt, 0);
 
 LABEL_16:
       goto LABEL_26;
     }
   }
 
-  v17 = [v11 parameter];
-  v18 = [v17 singleStateClass];
+  parameter2 = [v11 parameter];
+  singleStateClass2 = [parameter2 singleStateClass];
 
-  if ([(objc_class *)v18 isSubclassOfClass:objc_opt_class()])
+  if ([(objc_class *)singleStateClass2 isSubclassOfClass:objc_opt_class()])
   {
-    v19 = [(WFVariableSubstitutableParameterState *)self variable];
+    variable3 = [(WFVariableSubstitutableParameterState *)self variable];
     v79[0] = MEMORY[0x1E69E9820];
     v79[1] = 3221225472;
     v79[2] = __90__WFMultipleValueParameterState_processWithContext_userInputRequiredHandler_valueHandler___block_invoke_2;
     v79[3] = &unk_1E837DAB0;
     v79[4] = self;
     v80 = v13;
-    [v19 getContentWithContext:v11 completionHandler:v79];
+    [variable3 getContentWithContext:v11 completionHandler:v79];
 
     v20 = v80;
   }
 
   else
   {
-    if (([(objc_class *)v18 isSubclassOfClass:objc_opt_class()]& 1) != 0 || [(objc_class *)v18 isSubclassOfClass:objc_opt_class()])
+    if (([(objc_class *)singleStateClass2 isSubclassOfClass:objc_opt_class()]& 1) != 0 || [(objc_class *)singleStateClass2 isSubclassOfClass:objc_opt_class()])
     {
-      v35 = [v18 alloc];
-      v36 = [(WFVariableSubstitutableParameterState *)self variable];
-      v15 = [v35 initWithVariable:v36];
+      v35 = [singleStateClass2 alloc];
+      variable4 = [(WFVariableSubstitutableParameterState *)self variable];
+      variable2 = [v35 initWithVariable:variable4];
 
       v77[0] = MEMORY[0x1E69E9820];
       v77[1] = 3221225472;
       v77[2] = __90__WFMultipleValueParameterState_processWithContext_userInputRequiredHandler_valueHandler___block_invoke_5;
       v77[3] = &unk_1E8376328;
       v78 = v13;
-      [v15 processWithContext:v11 userInputRequiredHandler:v9 valueHandler:v77];
+      [variable2 processWithContext:v11 userInputRequiredHandler:handlerCopy valueHandler:v77];
 
       goto LABEL_16;
     }
 
-    v39 = [(WFVariableSubstitutableParameterState *)self variable];
+    variable5 = [(WFVariableSubstitutableParameterState *)self variable];
     v74[0] = MEMORY[0x1E69E9820];
     v74[1] = 3221225472;
     v74[2] = __90__WFMultipleValueParameterState_processWithContext_userInputRequiredHandler_valueHandler___block_invoke_6;
     v74[3] = &unk_1E8376350;
     v74[4] = self;
-    v76 = v18;
+    v76 = singleStateClass2;
     v75 = v13;
-    [v39 getContentWithContext:v11 completionHandler:v74];
+    [variable5 getContentWithContext:v11 completionHandler:v74];
 
     v20 = v75;
   }
@@ -818,33 +818,33 @@ id __90__WFMultipleValueParameterState_processWithContext_userInputRequiredHandl
   return v3;
 }
 
-- (id)stateByReplacingVariable:(id)a3 withVariable:(id)a4
+- (id)stateByReplacingVariable:(id)variable withVariable:(id)withVariable
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WFVariableSubstitutableParameterState *)self value];
-  v9 = [v8 count];
+  variableCopy = variable;
+  withVariableCopy = withVariable;
+  value = [(WFVariableSubstitutableParameterState *)self value];
+  v9 = [value count];
 
   if (v9)
   {
     v10 = objc_alloc(objc_opt_class());
-    v11 = [(WFVariableSubstitutableParameterState *)self value];
+    value2 = [(WFVariableSubstitutableParameterState *)self value];
     v17 = MEMORY[0x1E69E9820];
     v18 = 3221225472;
     v19 = __71__WFMultipleValueParameterState_stateByReplacingVariable_withVariable___block_invoke;
     v20 = &unk_1E83762D8;
-    v21 = v6;
-    v22 = v7;
-    v12 = [v11 if_map:&v17];
+    v21 = variableCopy;
+    v22 = withVariableCopy;
+    v12 = [value2 if_map:&v17];
     v13 = [v10 initWithValue:{v12, v17, v18, v19, v20}];
   }
 
   else
   {
     v14 = objc_alloc(objc_opt_class());
-    if (v7)
+    if (withVariableCopy)
     {
-      v15 = [v14 initWithVariable:v7];
+      v15 = [v14 initWithVariable:withVariableCopy];
     }
 
     else
@@ -900,15 +900,15 @@ LABEL_9:
   v3 = objc_alloc(MEMORY[0x1E695DF70]);
   v19.receiver = self;
   v19.super_class = WFMultipleValueParameterState;
-  v4 = [(WFVariableSubstitutableParameterState *)&v19 containedVariables];
-  v5 = [v3 initWithArray:v4];
+  containedVariables = [(WFVariableSubstitutableParameterState *)&v19 containedVariables];
+  v5 = [v3 initWithArray:containedVariables];
 
-  v6 = [(WFVariableSubstitutableParameterState *)self value];
+  value = [(WFVariableSubstitutableParameterState *)self value];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v20 count:16];
+  v7 = [value countByEnumeratingWithState:&v15 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -919,15 +919,15 @@ LABEL_9:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(value);
         }
 
-        v11 = [*(*(&v15 + 1) + 8 * i) parameterState];
-        v12 = [v11 containedVariables];
-        [v5 addObjectsFromArray:v12];
+        parameterState = [*(*(&v15 + 1) + 8 * i) parameterState];
+        containedVariables2 = [parameterState containedVariables];
+        [v5 addObjectsFromArray:containedVariables2];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v20 count:16];
+      v8 = [value countByEnumeratingWithState:&v15 objects:v20 count:16];
     }
 
     while (v8);
@@ -940,15 +940,15 @@ LABEL_9:
 
 - (NSArray)parameterStates
 {
-  v2 = [(WFVariableSubstitutableParameterState *)self value];
-  v3 = [v2 if_compactMap:&__block_literal_global_202];
+  value = [(WFVariableSubstitutableParameterState *)self value];
+  v3 = [value if_compactMap:&__block_literal_global_202];
 
   return v3;
 }
 
-- (WFMultipleValueParameterState)initWithParameterStates:(id)a3
+- (WFMultipleValueParameterState)initWithParameterStates:(id)states
 {
-  v4 = [a3 if_map:&__block_literal_global_199_18215];
+  v4 = [states if_map:&__block_literal_global_199_18215];
   v5 = [(WFMultipleValueParameterState *)self initWithValue:v4];
 
   return v5;
@@ -964,15 +964,15 @@ WFMultipleValueParameterStateEntry *__57__WFMultipleValueParameterState_initWith
   return v5;
 }
 
-- (WFMultipleValueParameterState)initWithValue:(id)a3
+- (WFMultipleValueParameterState)initWithValue:(id)value
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  valueCopy = value;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v6 = [valueCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -984,22 +984,22 @@ WFMultipleValueParameterStateEntry *__57__WFMultipleValueParameterState_initWith
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(valueCopy);
         }
 
         v10 = *(*(&v16 + 1) + 8 * v9);
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          v11 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v11 handleFailureInMethod:a2 object:self file:@"WFMultipleValueParameterState.m" lineNumber:90 description:{@"Invalid parameter not satisfying: %@", @"[entry isKindOfClass:[WFMultipleValueParameterStateEntry class]]"}];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"WFMultipleValueParameterState.m" lineNumber:90 description:{@"Invalid parameter not satisfying: %@", @"[entry isKindOfClass:[WFMultipleValueParameterStateEntry class]]"}];
         }
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [valueCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v7);
@@ -1007,36 +1007,36 @@ WFMultipleValueParameterStateEntry *__57__WFMultipleValueParameterState_initWith
 
   v15.receiver = self;
   v15.super_class = WFMultipleValueParameterState;
-  v12 = [(WFVariableSubstitutableParameterState *)&v15 initWithValue:v5];
+  v12 = [(WFVariableSubstitutableParameterState *)&v15 initWithValue:valueCopy];
 
   v13 = *MEMORY[0x1E69E9840];
   return v12;
 }
 
-+ (id)serializedRepresentationFromValue:(id)a3
++ (id)serializedRepresentationFromValue:(id)value
 {
-  v3 = a3;
-  if ([v3 count] != 1)
+  valueCopy = value;
+  if ([valueCopy count] != 1)
   {
     goto LABEL_5;
   }
 
-  v4 = [v3 firstObject];
-  v5 = [v4 parameterState];
-  v6 = [v5 serializedRepresentation];
+  firstObject = [valueCopy firstObject];
+  parameterState = [firstObject parameterState];
+  serializedRepresentation = [parameterState serializedRepresentation];
 
-  if (v6)
+  if (serializedRepresentation)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
 
 LABEL_5:
-      v6 = [v3 if_compactMap:&__block_literal_global_18235];
+      serializedRepresentation = [valueCopy if_compactMap:&__block_literal_global_18235];
     }
   }
 
-  return v6;
+  return serializedRepresentation;
 }
 
 id __67__WFMultipleValueParameterState_serializedRepresentationFromValue___block_invoke(uint64_t a1, void *a2)
@@ -1047,25 +1047,25 @@ id __67__WFMultipleValueParameterState_serializedRepresentationFromValue___block
   return v3;
 }
 
-+ (id)valueFromSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5
++ (id)valueFromSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v9 singleStateClass];
+  representationCopy = representation;
+  providerCopy = provider;
+  parameterCopy = parameter;
+  singleStateClass = [parameterCopy singleStateClass];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = v7;
+    v11 = representationCopy;
 LABEL_5:
     v12 = v11;
     goto LABEL_6;
   }
 
-  if (v7)
+  if (representationCopy)
   {
-    v22[0] = v7;
+    v22[0] = representationCopy;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:1];
     goto LABEL_5;
   }
@@ -1076,11 +1076,11 @@ LABEL_6:
   v18[1] = 3221225472;
   v18[2] = __94__WFMultipleValueParameterState_valueFromSerializedRepresentation_variableProvider_parameter___block_invoke;
   v18[3] = &unk_1E8376270;
-  v20 = v9;
-  v21 = v10;
-  v19 = v8;
-  v13 = v9;
-  v14 = v8;
+  v20 = parameterCopy;
+  v21 = singleStateClass;
+  v19 = providerCopy;
+  v13 = parameterCopy;
+  v14 = providerCopy;
   v15 = [v12 if_compactMap:v18];
 
   v16 = *MEMORY[0x1E69E9840];

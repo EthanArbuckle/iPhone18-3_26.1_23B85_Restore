@@ -1,19 +1,19 @@
 @interface STSRootView
-- (STSRootView)initWithFrame:(CGRect)a3;
+- (STSRootView)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)contentInsets;
 - (void)_setupView;
 - (void)awakeFromNib;
-- (void)setContentInsets:(UIEdgeInsets)a3;
-- (void)setContentView:(id)a3;
+- (void)setContentInsets:(UIEdgeInsets)insets;
+- (void)setContentView:(id)view;
 @end
 
 @implementation STSRootView
 
-- (STSRootView)initWithFrame:(CGRect)a3
+- (STSRootView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = STSRootView;
-  v3 = [(STSRootView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(STSRootView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -34,21 +34,21 @@
 - (void)_setupView
 {
   [(STSRootView *)self setTranslatesAutoresizingMaskIntoConstraints:0];
-  v3 = [MEMORY[0x277D75348] sts_defaultBackgroundColor];
-  [(STSRootView *)self setBackgroundColor:v3];
+  sts_defaultBackgroundColor = [MEMORY[0x277D75348] sts_defaultBackgroundColor];
+  [(STSRootView *)self setBackgroundColor:sts_defaultBackgroundColor];
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   contentView = self->_contentView;
-  if (contentView != v5)
+  if (contentView != viewCopy)
   {
-    v9 = v5;
+    v9 = viewCopy;
     [(UIView *)contentView removeFromSuperview];
-    objc_storeStrong(&self->_contentView, a3);
-    v7 = [(UIView *)self->_contentView superview];
-    v8 = [v7 isEqual:self];
+    objc_storeStrong(&self->_contentView, view);
+    superview = [(UIView *)self->_contentView superview];
+    v8 = [superview isEqual:self];
 
     if ((v8 & 1) == 0)
     {
@@ -56,21 +56,21 @@
     }
 
     contentView = [(STSRootView *)self setNeedsLayout];
-    v5 = v9;
+    viewCopy = v9;
   }
 
-  MEMORY[0x2821F96F8](contentView, v5);
+  MEMORY[0x2821F96F8](contentView, viewCopy);
 }
 
-- (void)setContentInsets:(UIEdgeInsets)a3
+- (void)setContentInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_contentInsets.top), vceqq_f64(v4, *&self->_contentInsets.bottom)))) & 1) == 0)
   {
-    self->_contentInsets = a3;
+    self->_contentInsets = insets;
     [(STSRootView *)self setNeedsLayout];
   }
 }

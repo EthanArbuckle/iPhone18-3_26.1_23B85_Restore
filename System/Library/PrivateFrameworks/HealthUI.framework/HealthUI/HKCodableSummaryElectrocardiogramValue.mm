@@ -1,21 +1,21 @@
 @interface HKCodableSummaryElectrocardiogramValue
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasClassificationRawValue:(BOOL)a3;
-- (void)setHasTimestampData:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasClassificationRawValue:(BOOL)value;
+- (void)setHasTimestampData:(BOOL)data;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HKCodableSummaryElectrocardiogramValue
 
-- (void)setHasClassificationRawValue:(BOOL)a3
+- (void)setHasClassificationRawValue:(BOOL)value
 {
-  if (a3)
+  if (value)
   {
     v3 = 2;
   }
@@ -28,9 +28,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasTimestampData:(BOOL)a3
+- (void)setHasTimestampData:(BOOL)data
 {
-  if (a3)
+  if (data)
   {
     v3 = 4;
   }
@@ -49,20 +49,20 @@
   v8.receiver = self;
   v8.super_class = HKCodableSummaryElectrocardiogramValue;
   v4 = [(HKCodableSummaryElectrocardiogramValue *)&v8 description];
-  v5 = [(HKCodableSummaryElectrocardiogramValue *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HKCodableSummaryElectrocardiogramValue *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_algorithmVersionRawValue];
-    [v3 setObject:v5 forKey:@"algorithmVersionRawValue"];
+    [dictionary setObject:v5 forKey:@"algorithmVersionRawValue"];
 
     has = self->_has;
   }
@@ -70,28 +70,28 @@
   if ((has & 2) != 0)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_classificationRawValue];
-    [v3 setObject:v6 forKey:@"classificationRawValue"];
+    [dictionary setObject:v6 forKey:@"classificationRawValue"];
   }
 
   averageHeartRate = self->_averageHeartRate;
   if (averageHeartRate)
   {
-    v8 = [(HKCodableQuantity *)averageHeartRate dictionaryRepresentation];
-    [v3 setObject:v8 forKey:@"averageHeartRate"];
+    dictionaryRepresentation = [(HKCodableQuantity *)averageHeartRate dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"averageHeartRate"];
   }
 
   if ((*&self->_has & 4) != 0)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithDouble:self->_timestampData];
-    [v3 setObject:v9 forKey:@"timestampData"];
+    [dictionary setObject:v9 forKey:@"timestampData"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -115,40 +115,40 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_algorithmVersionRawValue;
-    *(v4 + 40) |= 1u;
+    toCopy[1] = self->_algorithmVersionRawValue;
+    *(toCopy + 40) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    v4[2] = self->_classificationRawValue;
-    *(v4 + 40) |= 2u;
+    toCopy[2] = self->_classificationRawValue;
+    *(toCopy + 40) |= 2u;
   }
 
   if (self->_averageHeartRate)
   {
-    v6 = v4;
-    [v4 setAverageHeartRate:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setAverageHeartRate:?];
+    toCopy = v6;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    v4[3] = *&self->_timestampData;
-    *(v4 + 40) |= 4u;
+    toCopy[3] = *&self->_timestampData;
+    *(toCopy + 40) |= 4u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -164,7 +164,7 @@
     *(v5 + 40) |= 2u;
   }
 
-  v8 = [(HKCodableQuantity *)self->_averageHeartRate copyWithZone:a3];
+  v8 = [(HKCodableQuantity *)self->_averageHeartRate copyWithZone:zone];
   v9 = *(v6 + 32);
   *(v6 + 32) = v8;
 
@@ -177,10 +177,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
@@ -188,32 +188,32 @@
   has = self->_has;
   if (has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_algorithmVersionRawValue != *(v4 + 1))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_algorithmVersionRawValue != *(equalCopy + 1))
     {
       goto LABEL_19;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
     goto LABEL_19;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 40) & 2) == 0 || self->_classificationRawValue != *(v4 + 2))
+    if ((*(equalCopy + 40) & 2) == 0 || self->_classificationRawValue != *(equalCopy + 2))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 40) & 2) != 0)
+  else if ((*(equalCopy + 40) & 2) != 0)
   {
     goto LABEL_19;
   }
 
   averageHeartRate = self->_averageHeartRate;
-  if (averageHeartRate | *(v4 + 4))
+  if (averageHeartRate | *(equalCopy + 4))
   {
     if (![(HKCodableQuantity *)averageHeartRate isEqual:?])
     {
@@ -225,10 +225,10 @@ LABEL_19:
     has = self->_has;
   }
 
-  v7 = (*(v4 + 40) & 4) == 0;
+  v7 = (*(equalCopy + 40) & 4) == 0;
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 40) & 4) == 0 || self->_timestampData != *(v4 + 3))
+    if ((*(equalCopy + 40) & 4) == 0 || self->_timestampData != *(equalCopy + 3))
     {
       goto LABEL_19;
     }
@@ -302,21 +302,21 @@ LABEL_6:
   return v4 ^ v3 ^ v8 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 40);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 40);
   if (v6)
   {
-    self->_algorithmVersionRawValue = v4[1];
+    self->_algorithmVersionRawValue = fromCopy[1];
     *&self->_has |= 1u;
-    v6 = *(v4 + 40);
+    v6 = *(fromCopy + 40);
   }
 
   if ((v6 & 2) != 0)
   {
-    self->_classificationRawValue = v4[2];
+    self->_classificationRawValue = fromCopy[2];
     *&self->_has |= 2u;
   }
 

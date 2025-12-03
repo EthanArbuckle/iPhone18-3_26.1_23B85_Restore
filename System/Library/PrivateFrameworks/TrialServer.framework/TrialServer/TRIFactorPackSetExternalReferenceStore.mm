@@ -1,53 +1,53 @@
 @interface TRIFactorPackSetExternalReferenceStore
-- (BOOL)hasReferenceToPath:(id)a3;
-- (TRIFactorPackSetExternalReferenceStore)initWithServerContext:(id)a3;
+- (BOOL)hasReferenceToPath:(id)path;
+- (TRIFactorPackSetExternalReferenceStore)initWithServerContext:(id)context;
 @end
 
 @implementation TRIFactorPackSetExternalReferenceStore
 
-- (TRIFactorPackSetExternalReferenceStore)initWithServerContext:(id)a3
+- (TRIFactorPackSetExternalReferenceStore)initWithServerContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = TRIFactorPackSetExternalReferenceStore;
   v6 = [(TRIFactorPackSetExternalReferenceStore *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_context, a3);
+    objc_storeStrong(&v6->_context, context);
   }
 
   return v7;
 }
 
-- (BOOL)hasReferenceToPath:(id)a3
+- (BOOL)hasReferenceToPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = [TRIFactorPackSetStorage alloc];
-  v6 = [(TRIServerContext *)self->_context paths];
-  v7 = [(TRIFactorPackSetStorage *)v5 initWithPaths:v6];
+  paths = [(TRIServerContext *)self->_context paths];
+  v7 = [(TRIFactorPackSetStorage *)v5 initWithPaths:paths];
 
-  v8 = [(TRIFactorPackSetStorage *)v7 parentDirForFactorPackSets];
-  v9 = [v8 stringByAppendingString:@"/"];
+  parentDirForFactorPackSets = [(TRIFactorPackSetStorage *)v7 parentDirForFactorPackSets];
+  v9 = [parentDirForFactorPackSets stringByAppendingString:@"/"];
 
-  v10 = [v4 triStringByResolvingSymlinksInPath];
-  v11 = [v9 triStringByResolvingSymlinksInPath];
-  v12 = [v10 hasPrefix:v11];
+  triStringByResolvingSymlinksInPath = [pathCopy triStringByResolvingSymlinksInPath];
+  triStringByResolvingSymlinksInPath2 = [v9 triStringByResolvingSymlinksInPath];
+  v12 = [triStringByResolvingSymlinksInPath hasPrefix:triStringByResolvingSymlinksInPath2];
 
   if (v12)
   {
-    v13 = [v4 lastPathComponent];
+    lastPathComponent = [pathCopy lastPathComponent];
     v14 = TRIValidateFactorPackSetId();
 
     if (v14)
     {
-      v15 = [(TRIServerContext *)self->_context rolloutDatabase];
-      v16 = [v15 hasRecordReferencingFactorPackSetId:v14 withReferenceType:3];
+      rolloutDatabase = [(TRIServerContext *)self->_context rolloutDatabase];
+      v16 = [rolloutDatabase hasRecordReferencingFactorPackSetId:v14 withReferenceType:3];
 
-      v17 = [(TRIServerContext *)self->_context experimentDatabase];
-      LOBYTE(v15) = [v17 hasRecordReferencingFactorPackSetId:v14 withReferenceType:3];
+      experimentDatabase = [(TRIServerContext *)self->_context experimentDatabase];
+      LOBYTE(rolloutDatabase) = [experimentDatabase hasRecordReferencingFactorPackSetId:v14 withReferenceType:3];
 
-      v18 = v16 | v15;
+      v18 = v16 | rolloutDatabase;
     }
 
     else

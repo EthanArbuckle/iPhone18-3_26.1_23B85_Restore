@@ -2,15 +2,15 @@
 - (CGAffineTransform)layoutToEquationTransform;
 - (CGAffineTransform)layoutToStrokeTransform;
 - (CGColor)textColor;
-- (CGRect)adornmentBoundsWithEquationSize:(CGSize)a3;
-- (CGRect)computeAlignmentFrameInRoot:(BOOL)a3;
+- (CGRect)adornmentBoundsWithEquationSize:(CGSize)size;
+- (CGRect)computeAlignmentFrameInRoot:(BOOL)root;
 - (TSDLayoutGeometry)equationGeometryInRoot;
 - (TSDShadow)textShadow;
 - (void)invalidateSize;
-- (void)offsetGeometryBy:(CGPoint)a3;
-- (void)setLayoutToEquationTransform:(CGAffineTransform *)a3;
-- (void)setLayoutToStrokeTransform:(CGAffineTransform *)a3;
-- (void)setParent:(id)a3;
+- (void)offsetGeometryBy:(CGPoint)by;
+- (void)setLayoutToEquationTransform:(CGAffineTransform *)transform;
+- (void)setLayoutToStrokeTransform:(CGAffineTransform *)transform;
+- (void)setParent:(id)parent;
 @end
 
 @implementation TSWPEquationLayout
@@ -53,12 +53,12 @@
   return v7;
 }
 
-- (void)setParent:(id)a3
+- (void)setParent:(id)parent
 {
-  v4 = a3;
+  parentCopy = parent;
   v7 = objc_msgSend_parent(self, v5, v6);
 
-  if (v7 != v4)
+  if (v7 != parentCopy)
   {
     v10 = objc_msgSend_equationInfo(self, v8, v9);
     v13 = objc_msgSend_documentRoot(v10, v11, v12);
@@ -66,7 +66,7 @@
 
     v19 = objc_msgSend_info(self, v17, v18);
     v23 = objc_msgSend_owningAttachment(v19, v20, v21);
-    if (v4)
+    if (parentCopy)
     {
       objc_msgSend_addObserver_forChangeSource_(v16, v22, self, v23);
     }
@@ -79,7 +79,7 @@
 
   v24.receiver = self;
   v24.super_class = TSWPEquationLayout;
-  [(TSWPEquationLayout *)&v24 setParent:v4];
+  [(TSWPEquationLayout *)&v24 setParent:parentCopy];
 }
 
 - (CGColor)textColor
@@ -115,11 +115,11 @@
   return v8;
 }
 
-- (void)offsetGeometryBy:(CGPoint)a3
+- (void)offsetGeometryBy:(CGPoint)by
 {
-  y = a3.y;
-  x = a3.x;
-  if (a3.x != *MEMORY[0x277CBF348] || a3.y != *(MEMORY[0x277CBF348] + 8))
+  y = by.y;
+  x = by.x;
+  if (by.x != *MEMORY[0x277CBF348] || by.y != *(MEMORY[0x277CBF348] + 8))
   {
     v8 = objc_msgSend_equationGeometry(self, a2, v3);
     v11 = objc_msgSend_geometryByTranslatingBy_(v8, v9, v10, x, y);
@@ -143,11 +143,11 @@
   objc_msgSend_setNeedsDisplay(self, v4, v5);
 }
 
-- (CGRect)computeAlignmentFrameInRoot:(BOOL)a3
+- (CGRect)computeAlignmentFrameInRoot:(BOOL)root
 {
-  v3 = a3;
+  rootCopy = root;
   memset(&v21, 0, sizeof(v21));
-  v5 = objc_msgSend_geometry(self, a2, a3);
+  v5 = objc_msgSend_geometry(self, a2, root);
   v8 = v5;
   if (v5)
   {
@@ -159,7 +159,7 @@
     memset(&v21, 0, sizeof(v21));
   }
 
-  if (v3)
+  if (rootCopy)
   {
     v11 = objc_msgSend_parent(self, v9, v10);
 
@@ -191,7 +191,7 @@
   return CGRectApplyAffineTransform(v22, &v20);
 }
 
-- (CGRect)adornmentBoundsWithEquationSize:(CGSize)a3
+- (CGRect)adornmentBoundsWithEquationSize:(CGSize)size
 {
   TSURectWithSize();
   x = v4;
@@ -251,11 +251,11 @@
   return self;
 }
 
-- (void)setLayoutToStrokeTransform:(CGAffineTransform *)a3
+- (void)setLayoutToStrokeTransform:(CGAffineTransform *)transform
 {
-  v4 = *&a3->c;
-  v3 = *&a3->tx;
-  *&self->_layoutToStrokeTransform.a = *&a3->a;
+  v4 = *&transform->c;
+  v3 = *&transform->tx;
+  *&self->_layoutToStrokeTransform.a = *&transform->a;
   *&self->_layoutToStrokeTransform.c = v4;
   *&self->_layoutToStrokeTransform.tx = v3;
 }
@@ -269,11 +269,11 @@
   return self;
 }
 
-- (void)setLayoutToEquationTransform:(CGAffineTransform *)a3
+- (void)setLayoutToEquationTransform:(CGAffineTransform *)transform
 {
-  v4 = *&a3->c;
-  v3 = *&a3->tx;
-  *&self->_layoutToEquationTransform.a = *&a3->a;
+  v4 = *&transform->c;
+  v3 = *&transform->tx;
+  *&self->_layoutToEquationTransform.a = *&transform->a;
   *&self->_layoutToEquationTransform.c = v4;
   *&self->_layoutToEquationTransform.tx = v3;
 }

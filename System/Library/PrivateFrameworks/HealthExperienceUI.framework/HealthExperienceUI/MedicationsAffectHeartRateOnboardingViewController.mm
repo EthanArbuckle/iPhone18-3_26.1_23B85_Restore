@@ -7,7 +7,7 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BA001F14();
 }
 
@@ -20,7 +20,7 @@
     v4 = *(v3 + 1);
     ObjectType = swift_getObjectType();
     v6 = *(v4 + 8);
-    v7 = self;
+    selfCopy = self;
     v6(ObjectType, v4);
     swift_unknownObjectRelease();
   }

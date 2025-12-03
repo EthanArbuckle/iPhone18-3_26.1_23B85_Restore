@@ -1,16 +1,16 @@
 @interface PXStoryPlayButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation PXStoryPlayButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PXStoryPlayButton" hasInstanceMethod:@"viewModel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXStoryViewModel" hasInstanceMethod:@"isAtPlaybackEnd" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"PXStoryViewModel" hasInstanceMethod:@"desiredPlayState" withFullSignature:{"q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PXStoryPlayButton" hasInstanceMethod:@"viewModel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXStoryViewModel" hasInstanceMethod:@"isAtPlaybackEnd" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"PXStoryViewModel" hasInstanceMethod:@"desiredPlayState" withFullSignature:{"q", 0}];
 }
 
 - (id)accessibilityLabel
@@ -36,8 +36,8 @@
     }
 
 LABEL_7:
-    v6 = accessibilityPhotosUICoreLocalizedString(v5);
-    if (v6)
+    accessibilityLabel = accessibilityPhotosUICoreLocalizedString(v5);
+    if (accessibilityLabel)
     {
       goto LABEL_9;
     }
@@ -45,10 +45,10 @@ LABEL_7:
 
   v8.receiver = self;
   v8.super_class = PXStoryPlayButtonAccessibility;
-  v6 = [(PXStoryPlayButtonAccessibility *)&v8 accessibilityLabel];
+  accessibilityLabel = [(PXStoryPlayButtonAccessibility *)&v8 accessibilityLabel];
 LABEL_9:
 
-  return v6;
+  return accessibilityLabel;
 }
 
 @end

@@ -1,25 +1,25 @@
 @interface TTRICustomRecurrenceEditorViewController
-+ (BOOL)isRecurrenceRuleOrdinal:(id)a3;
++ (BOOL)isRecurrenceRuleOrdinal:(id)ordinal;
 - (BOOL)prohibitsMultipleDaysInMonthlyRecurrence;
 - (BOOL)prohibitsMultipleMonthsInYearlyRecurrence;
 - (CGSize)calculatePreferredContentSize;
-- (TTRICustomRecurrenceEditorViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (TTRICustomRecurrenceEditorViewController)initWithStartDate:(id)a3 timeZone:(id)a4;
+- (TTRICustomRecurrenceEditorViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (TTRICustomRecurrenceEditorViewController)initWithStartDate:(id)date timeZone:(id)zone;
 - (TTRIRecurrenceChooserController)currentChooser;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
 - (id)_availableRecurrenceFrequencies;
-- (id)_chooserForFrequency:(int64_t)a3;
-- (id)_localizedEveryStringForFrequency:(int64_t)a3 interval:(int64_t)a4;
-- (id)_stringForFrequency:(int64_t)a3;
-- (id)_stringForFrequency:(int64_t)a3 interval:(int64_t)a4;
+- (id)_chooserForFrequency:(int64_t)frequency;
+- (id)_localizedEveryStringForFrequency:(int64_t)frequency interval:(int64_t)interval;
+- (id)_stringForFrequency:(int64_t)frequency;
+- (id)_stringForFrequency:(int64_t)frequency interval:(int64_t)interval;
 - (id)frequencyTypeMenu;
 - (id)recurrenceRule;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
-- (int64_t)_numberOfRowsForSection:(int64_t)a3;
-- (int64_t)_tagForIndexPath:(id)a3;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
+- (int64_t)_numberOfRowsForSection:(int64_t)section;
+- (int64_t)_tagForIndexPath:(id)path;
+- (int64_t)numberOfSectionsInTableView:(id)view;
 - (void)_createChoosersAndControls;
 - (void)_frequencyUpdated;
 - (void)_refreshCacheAndPickers;
@@ -28,46 +28,46 @@
 - (void)_updateRecurrenceRule;
 - (void)_updateRecurrenceRuleWithoutBatching;
 - (void)_updateSummaryLabel;
-- (void)_updateTableSectionsFromFrequency:(int64_t)a3 toFrequency:(int64_t)a4;
-- (void)_yearOrdinalSwitchChanged:(id)a3;
-- (void)didSelectFrequencyType:(int64_t)a3;
-- (void)didSelectIntervalType:(int64_t)a3;
+- (void)_updateTableSectionsFromFrequency:(int64_t)frequency toFrequency:(int64_t)toFrequency;
+- (void)_yearOrdinalSwitchChanged:(id)changed;
+- (void)didSelectFrequencyType:(int64_t)type;
+- (void)didSelectIntervalType:(int64_t)type;
 - (void)didTapCommit;
 - (void)loadView;
-- (void)presentationControllerWillDismiss:(id)a3;
+- (void)presentationControllerWillDismiss:(id)dismiss;
 - (void)queuePreferredContentSizeRefresh;
-- (void)recurrenceChooser:(id)a3 wantsRowReload:(int64_t)a4;
-- (void)recurrenceChooserWantsReload:(id)a3;
-- (void)setProhibitsHourlyRecurrence:(BOOL)a3;
-- (void)setProhibitsMultipleDaysInMonthlyRecurrence:(BOOL)a3;
-- (void)setProhibitsMultipleMonthsInYearlyRecurrence:(BOOL)a3;
-- (void)setRecurrenceRule:(id)a3 shouldUpdatePickers:(BOOL)a4;
+- (void)recurrenceChooser:(id)chooser wantsRowReload:(int64_t)reload;
+- (void)recurrenceChooserWantsReload:(id)reload;
+- (void)setProhibitsHourlyRecurrence:(BOOL)recurrence;
+- (void)setProhibitsMultipleDaysInMonthlyRecurrence:(BOOL)recurrence;
+- (void)setProhibitsMultipleMonthsInYearlyRecurrence:(BOOL)recurrence;
+- (void)setRecurrenceRule:(id)rule shouldUpdatePickers:(BOOL)pickers;
 - (void)stopEditingIfNeeded;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation TTRICustomRecurrenceEditorViewController
 
-- (TTRICustomRecurrenceEditorViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (TTRICustomRecurrenceEditorViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v13.receiver = self;
   v13.super_class = TTRICustomRecurrenceEditorViewController;
-  v4 = [(TTRICustomRecurrenceEditorViewController *)&v13 initWithNibName:a3 bundle:a4];
+  v4 = [(TTRICustomRecurrenceEditorViewController *)&v13 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
     v4->_cachedFrequency = 0;
     v4->_cachedInterval = 1;
-    v6 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     startDate = v5->_startDate;
-    v5->_startDate = v6;
+    v5->_startDate = date;
 
-    v8 = [MEMORY[0x277CBEBB0] systemTimeZone];
+    systemTimeZone = [MEMORY[0x277CBEBB0] systemTimeZone];
     timeZone = v5->_timeZone;
-    v5->_timeZone = v8;
+    v5->_timeZone = systemTimeZone;
 
     v10 = RemindersUICoreBundleGet();
     v11 = [v10 localizedStringForKey:@"CUSTOM_RECURRENCE_LABEL" value:@"Custom" table:@"Localizable"];
@@ -77,16 +77,16 @@
   return v5;
 }
 
-- (TTRICustomRecurrenceEditorViewController)initWithStartDate:(id)a3 timeZone:(id)a4
+- (TTRICustomRecurrenceEditorViewController)initWithStartDate:(id)date timeZone:(id)zone
 {
-  v7 = a3;
-  v8 = a4;
+  dateCopy = date;
+  zoneCopy = zone;
   v9 = [(TTRICustomRecurrenceEditorViewController *)self initWithNibName:0 bundle:0];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_startDate, a3);
-    objc_storeStrong(&v10->_timeZone, a4);
+    objc_storeStrong(&v9->_startDate, date);
+    objc_storeStrong(&v10->_timeZone, zone);
     [(TTRICustomRecurrenceEditorViewController *)v10 _createChoosersAndControls];
   }
 
@@ -99,23 +99,23 @@
   v4 = [v3 initWithFrame:2 style:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [(TTRICustomRecurrenceEditorViewController *)self setTableView:v4];
 
-  v5 = [(TTRICustomRecurrenceEditorViewController *)self tableView];
-  [v5 setDelegate:self];
+  tableView = [(TTRICustomRecurrenceEditorViewController *)self tableView];
+  [tableView setDelegate:self];
 
-  v6 = [(TTRICustomRecurrenceEditorViewController *)self tableView];
-  [v6 setDataSource:self];
+  tableView2 = [(TTRICustomRecurrenceEditorViewController *)self tableView];
+  [tableView2 setDataSource:self];
 
   v7 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
   [v7 lineHeight];
   v9 = v8;
-  v10 = [(TTRICustomRecurrenceEditorViewController *)self tableView];
-  [v10 setEstimatedRowHeight:v9];
+  tableView3 = [(TTRICustomRecurrenceEditorViewController *)self tableView];
+  [tableView3 setEstimatedRowHeight:v9];
 
-  v11 = [(TTRICustomRecurrenceEditorViewController *)self tableView];
-  [v11 setKeyboardDismissMode:1];
+  tableView4 = [(TTRICustomRecurrenceEditorViewController *)self tableView];
+  [tableView4 setKeyboardDismissMode:1];
 
-  v12 = [(TTRICustomRecurrenceEditorViewController *)self tableView];
-  [(TTRICustomRecurrenceEditorViewController *)self setView:v12];
+  tableView5 = [(TTRICustomRecurrenceEditorViewController *)self tableView];
+  [(TTRICustomRecurrenceEditorViewController *)self setView:tableView5];
 }
 
 - (void)viewDidLoad
@@ -124,8 +124,8 @@
   v5.super_class = TTRICustomRecurrenceEditorViewController;
   [(TTRICustomRecurrenceEditorViewController *)&v5 viewDidLoad];
   v3 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:self action:sel_didTapCommit];
-  v4 = [(TTRICustomRecurrenceEditorViewController *)self navigationItem];
-  [v4 setRightBarButtonItem:v3];
+  navigationItem = [(TTRICustomRecurrenceEditorViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v3];
 }
 
 - (void)queuePreferredContentSizeRefresh
@@ -148,8 +148,8 @@ uint64_t __76__TTRICustomRecurrenceEditorViewController_queuePreferredContentSiz
 
 - (CGSize)calculatePreferredContentSize
 {
-  v2 = [(TTRICustomRecurrenceEditorViewController *)self tableView];
-  [v2 contentSize];
+  tableView = [(TTRICustomRecurrenceEditorViewController *)self tableView];
+  [tableView contentSize];
   v4 = v3;
 
   v5 = 320.0;
@@ -201,8 +201,8 @@ uint64_t __76__TTRICustomRecurrenceEditorViewController_queuePreferredContentSiz
   [(TTRIPopupMenuTableViewCell *)v20 setTitle:v22];
 
   v23 = self->_frequencySummaryCell;
-  v24 = [(TTRICustomRecurrenceEditorViewController *)self frequencyTypeMenu];
-  [(TTRIPopupMenuTableViewCell *)v23 setPopupMenu:v24];
+  frequencyTypeMenu = [(TTRICustomRecurrenceEditorViewController *)self frequencyTypeMenu];
+  [(TTRIPopupMenuTableViewCell *)v23 setPopupMenu:frequencyTypeMenu];
 
   v25 = self->_frequencySummaryCell;
   v26 = [(TTRICustomRecurrenceEditorViewController *)self _stringForFrequency:self->_cachedFrequency];
@@ -218,24 +218,24 @@ uint64_t __76__TTRICustomRecurrenceEditorViewController_queuePreferredContentSiz
   [(TTRICustomRecurrenceEditorIntervalChooserTableViewCell *)v29 setDelegate:self];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = TTRICustomRecurrenceEditorViewController;
-  [(TTRICustomRecurrenceEditorViewController *)&v5 viewWillAppear:a3];
+  [(TTRICustomRecurrenceEditorViewController *)&v5 viewWillAppear:appear];
   [(TTRICustomRecurrenceEditorViewController *)self queuePreferredContentSizeRefresh];
-  v4 = [(TTRICustomRecurrenceEditorViewController *)self presentationController];
-  [v4 setDelegate:self];
+  presentationController = [(TTRICustomRecurrenceEditorViewController *)self presentationController];
+  [presentationController setDelegate:self];
 }
 
-- (void)setProhibitsHourlyRecurrence:(BOOL)a3
+- (void)setProhibitsHourlyRecurrence:(BOOL)recurrence
 {
-  if (self->_prohibitsHourlyRecurrence != a3)
+  if (self->_prohibitsHourlyRecurrence != recurrence)
   {
-    self->_prohibitsHourlyRecurrence = a3;
-    v4 = [(TTRICustomRecurrenceEditorViewController *)self cachedAvailableRecurrenceFrequencies];
+    self->_prohibitsHourlyRecurrence = recurrence;
+    cachedAvailableRecurrenceFrequencies = [(TTRICustomRecurrenceEditorViewController *)self cachedAvailableRecurrenceFrequencies];
 
-    if (v4)
+    if (cachedAvailableRecurrenceFrequencies)
     {
       [(TTRICustomRecurrenceEditorViewController *)self setCachedAvailableRecurrenceFrequencies:0];
 
@@ -247,23 +247,23 @@ uint64_t __76__TTRICustomRecurrenceEditorViewController_queuePreferredContentSiz
 - (void)didTapCommit
 {
   [(TTRICustomRecurrenceEditorViewController *)self stopEditingIfNeeded];
-  v3 = [(TTRICustomRecurrenceEditorViewController *)self completionBlock];
-  v4 = [(TTRICustomRecurrenceEditorViewController *)self recurrenceRule];
-  (v3)[2](v3, v4);
+  completionBlock = [(TTRICustomRecurrenceEditorViewController *)self completionBlock];
+  recurrenceRule = [(TTRICustomRecurrenceEditorViewController *)self recurrenceRule];
+  (completionBlock)[2](completionBlock, recurrenceRule);
 
-  v5 = [(TTRICustomRecurrenceEditorViewController *)self navigationController];
-  [v5 dismissViewControllerAnimated:1 completion:0];
+  navigationController = [(TTRICustomRecurrenceEditorViewController *)self navigationController];
+  [navigationController dismissViewControllerAnimated:1 completion:0];
 }
 
 - (void)stopEditingIfNeeded
 {
   objc_opt_class();
-  v3 = [(TTRICustomRecurrenceEditorViewController *)self view];
-  v4 = [v3 firstResponder];
+  view = [(TTRICustomRecurrenceEditorViewController *)self view];
+  firstResponder = [view firstResponder];
   v7 = REMDynamicCast();
 
-  v5 = [(TTRICustomRecurrenceEditorViewController *)self view];
-  v6 = [v7 isDescendantOfView:v5];
+  view2 = [(TTRICustomRecurrenceEditorViewController *)self view];
+  v6 = [v7 isDescendantOfView:view2];
 
   if (v6)
   {
@@ -271,10 +271,10 @@ uint64_t __76__TTRICustomRecurrenceEditorViewController_queuePreferredContentSiz
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(TTRICustomRecurrenceEditorViewController *)self _tagForIndexPath:v5];
+  pathCopy = path;
+  v6 = [(TTRICustomRecurrenceEditorViewController *)self _tagForIndexPath:pathCopy];
   v7 = v6;
   v8 = 0;
   if (v6 > 2)
@@ -283,7 +283,7 @@ uint64_t __76__TTRICustomRecurrenceEditorViewController_queuePreferredContentSiz
     {
       if (v6 == 4)
       {
-        v9 = [(TTRICustomRecurrenceEditorViewController *)self yearlyOrdinalChooser];
+        yearlyOrdinalChooser = [(TTRICustomRecurrenceEditorViewController *)self yearlyOrdinalChooser];
       }
 
       else
@@ -293,11 +293,11 @@ uint64_t __76__TTRICustomRecurrenceEditorViewController_queuePreferredContentSiz
           goto LABEL_11;
         }
 
-        v9 = [(TTRICustomRecurrenceEditorViewController *)self currentChooser];
+        yearlyOrdinalChooser = [(TTRICustomRecurrenceEditorViewController *)self currentChooser];
       }
 
-      v12 = v9;
-      v8 = [v9 cellForRow:{objc_msgSend(v5, "row")}];
+      v12 = yearlyOrdinalChooser;
+      v8 = [yearlyOrdinalChooser cellForRow:{objc_msgSend(pathCopy, "row")}];
       goto LABEL_20;
     }
 
@@ -354,8 +354,8 @@ LABEL_11:
   v18 = [v17 localizedStringForKey:@"Days of Week" value:@"Days of Week" table:@"Localizable"];
   objc_opt_class();
   v19 = REMDynamicCast();
-  v20 = [v19 titleLabel];
-  [v20 setText:v18];
+  titleLabel = [v19 titleLabel];
+  [titleLabel setText:v18];
 
   [(TTRICustomRecurrenceEditorIntervalChooserTableViewCell *)v8 setAccessoryView:self->_yearOrdinalSwitch];
 LABEL_21:
@@ -363,20 +363,20 @@ LABEL_21:
   return v8;
 }
 
-- (void)didSelectFrequencyType:(int64_t)a3
+- (void)didSelectFrequencyType:(int64_t)type
 {
-  if (self->_cachedFrequency != a3)
+  if (self->_cachedFrequency != type)
   {
-    self->_cachedFrequency = a3;
+    self->_cachedFrequency = type;
     [(TTRICustomRecurrenceEditorViewController *)self _frequencyUpdated];
   }
 }
 
-- (void)didSelectIntervalType:(int64_t)a3
+- (void)didSelectIntervalType:(int64_t)type
 {
-  if (self->_cachedInterval != a3)
+  if (self->_cachedInterval != type)
   {
-    self->_cachedInterval = a3;
+    self->_cachedInterval = type;
     [(TTRICustomRecurrenceEditorViewController *)self _frequencyUpdated];
   }
 }
@@ -385,13 +385,13 @@ LABEL_21:
 {
   v23 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v4 = [(TTRICustomRecurrenceEditorViewController *)self _availableRecurrenceFrequencies];
+  _availableRecurrenceFrequencies = [(TTRICustomRecurrenceEditorViewController *)self _availableRecurrenceFrequencies];
   objc_initWeak(&location, self);
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  obj = v4;
+  obj = _availableRecurrenceFrequencies;
   v5 = [obj countByEnumeratingWithState:&v17 objects:v22 count:16];
   if (v5)
   {
@@ -405,17 +405,17 @@ LABEL_21:
           objc_enumerationMutation(obj);
         }
 
-        v8 = [*(*(&v17 + 1) + 8 * i) intValue];
-        v9 = [(TTRICustomRecurrenceEditorViewController *)self _stringForFrequency:v8];
+        intValue = [*(*(&v17 + 1) + 8 * i) intValue];
+        v9 = [(TTRICustomRecurrenceEditorViewController *)self _stringForFrequency:intValue];
         v10 = MEMORY[0x277D750C8];
         v15[0] = MEMORY[0x277D85DD0];
         v15[1] = 3221225472;
         v15[2] = __61__TTRICustomRecurrenceEditorViewController_frequencyTypeMenu__block_invoke;
         v15[3] = &unk_27832D4C0;
         objc_copyWeak(v16, &location);
-        v16[1] = v8;
+        v16[1] = intValue;
         v11 = [v10 actionWithTitle:v9 image:0 identifier:0 handler:v15];
-        [v11 setState:self->_cachedFrequency == v8];
+        [v11 setState:self->_cachedFrequency == intValue];
         [v3 addObject:v11];
 
         objc_destroyWeak(v16);
@@ -444,7 +444,7 @@ void __61__TTRICustomRecurrenceEditorViewController_frequencyTypeMenu__block_inv
   }
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   v3 = self->_cachedFrequency - 1;
   if (v3 > 2)
@@ -458,16 +458,16 @@ void __61__TTRICustomRecurrenceEditorViewController_frequencyTypeMenu__block_inv
   }
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(TTRICustomRecurrenceEditorViewController *)self _tagForIndexPath:v8];
+  viewCopy = view;
+  pathCopy = path;
+  v9 = [(TTRICustomRecurrenceEditorViewController *)self _tagForIndexPath:pathCopy];
   if (v9 >= 4)
   {
     if (v9 == 5)
     {
-      v11 = [(TTRICustomRecurrenceEditorViewController *)self currentChooser];
+      currentChooser = [(TTRICustomRecurrenceEditorViewController *)self currentChooser];
     }
 
     else
@@ -477,30 +477,30 @@ void __61__TTRICustomRecurrenceEditorViewController_frequencyTypeMenu__block_inv
         goto LABEL_8;
       }
 
-      v11 = [(TTRICustomRecurrenceEditorViewController *)self yearlyOrdinalChooser];
+      currentChooser = [(TTRICustomRecurrenceEditorViewController *)self yearlyOrdinalChooser];
     }
 
-    v12 = v11;
-    [v11 heightForRow:{objc_msgSend(v8, "row")}];
+    v12 = currentChooser;
+    [currentChooser heightForRow:{objc_msgSend(pathCopy, "row")}];
     v4 = v13;
 
     goto LABEL_8;
   }
 
-  [v7 rowHeight];
+  [viewCopy rowHeight];
   v4 = v10;
 LABEL_8:
 
   return v4;
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [a3 cellForRowAtIndexPath:v5];
+  pathCopy = path;
+  v6 = [view cellForRowAtIndexPath:pathCopy];
   if ([v6 selectionStyle])
   {
-    v7 = v5;
+    v7 = pathCopy;
   }
 
   else
@@ -513,58 +513,58 @@ LABEL_8:
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v7 = a4;
-  [a3 deselectRowAtIndexPath:v7 animated:1];
-  if ([(TTRICustomRecurrenceEditorViewController *)self _tagForIndexPath:v7]== 5)
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
+  if ([(TTRICustomRecurrenceEditorViewController *)self _tagForIndexPath:pathCopy]== 5)
   {
-    v6 = [(TTRICustomRecurrenceEditorViewController *)self currentChooser];
-    [v6 rowTapped:{objc_msgSend(v7, "row")}];
+    currentChooser = [(TTRICustomRecurrenceEditorViewController *)self currentChooser];
+    [currentChooser rowTapped:{objc_msgSend(pathCopy, "row")}];
   }
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [(TTRICustomRecurrenceEditorViewController *)self recurrenceSummaryString:a3];
+    v6 = [(TTRICustomRecurrenceEditorViewController *)self recurrenceSummaryString:view];
   }
 
   return v6;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v13 = a4;
-  v7 = a5;
-  if ([v7 section] == 1)
+  cellCopy = cell;
+  pathCopy = path;
+  if ([pathCopy section] == 1)
   {
-    v8 = [(TTRICustomRecurrenceEditorViewController *)self currentChooser];
-    v9 = [v8 drawBackgroundForRow:{objc_msgSend(v7, "row")}];
+    currentChooser = [(TTRICustomRecurrenceEditorViewController *)self currentChooser];
+    v9 = [currentChooser drawBackgroundForRow:{objc_msgSend(pathCopy, "row")}];
 
     if ((v9 & 1) == 0)
     {
-      v10 = [MEMORY[0x277D75348] clearColor];
-      [v13 setBackgroundColor:v10];
+      clearColor = [MEMORY[0x277D75348] clearColor];
+      [cellCopy setBackgroundColor:clearColor];
 
-      v11 = [MEMORY[0x277D75348] clearColor];
-      v12 = [v13 backgroundView];
-      [v12 setBackgroundColor:v11];
+      clearColor2 = [MEMORY[0x277D75348] clearColor];
+      backgroundView = [cellCopy backgroundView];
+      [backgroundView setBackgroundColor:clearColor2];
     }
   }
 }
 
 - (id)_availableRecurrenceFrequencies
 {
-  v3 = [(TTRICustomRecurrenceEditorViewController *)self cachedAvailableRecurrenceFrequencies];
+  cachedAvailableRecurrenceFrequencies = [(TTRICustomRecurrenceEditorViewController *)self cachedAvailableRecurrenceFrequencies];
 
-  if (!v3)
+  if (!cachedAvailableRecurrenceFrequencies)
   {
     v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:5];
     if (![(TTRICustomRecurrenceEditorViewController *)self prohibitsHourlyRecurrence])
@@ -582,7 +582,7 @@ LABEL_8:
   return [(TTRICustomRecurrenceEditorViewController *)self cachedAvailableRecurrenceFrequencies];
 }
 
-- (void)recurrenceChooserWantsReload:(id)a3
+- (void)recurrenceChooserWantsReload:(id)reload
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
@@ -599,14 +599,14 @@ void __73__TTRICustomRecurrenceEditorViewController_recurrenceChooserWantsReload
   [v2 reloadSections:v1 withRowAnimation:0];
 }
 
-- (void)recurrenceChooser:(id)a3 wantsRowReload:(int64_t)a4
+- (void)recurrenceChooser:(id)chooser wantsRowReload:(int64_t)reload
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __77__TTRICustomRecurrenceEditorViewController_recurrenceChooser_wantsRowReload___block_invoke;
   v4[3] = &unk_27832D4E8;
   v4[4] = self;
-  v4[5] = a4;
+  v4[5] = reload;
   [MEMORY[0x277D75D18] performWithoutAnimation:v4];
 }
 
@@ -620,16 +620,16 @@ void __77__TTRICustomRecurrenceEditorViewController_recurrenceChooser_wantsRowRe
   [v2 reloadRowsAtIndexPaths:v4 withRowAnimation:0];
 }
 
-- (void)presentationControllerWillDismiss:(id)a3
+- (void)presentationControllerWillDismiss:(id)dismiss
 {
-  v5 = [(TTRICustomRecurrenceEditorViewController *)self completionBlock];
-  v4 = [(TTRICustomRecurrenceEditorViewController *)self recurrenceRule];
-  v5[2](v5, v4);
+  completionBlock = [(TTRICustomRecurrenceEditorViewController *)self completionBlock];
+  recurrenceRule = [(TTRICustomRecurrenceEditorViewController *)self recurrenceRule];
+  completionBlock[2](completionBlock, recurrenceRule);
 }
 
 - (void)_updateRecurrenceRule
 {
-  v3 = [(TTRICustomRecurrenceEditorViewController *)self tableView];
+  tableView = [(TTRICustomRecurrenceEditorViewController *)self tableView];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __65__TTRICustomRecurrenceEditorViewController__updateRecurrenceRule__block_invoke;
@@ -640,7 +640,7 @@ void __77__TTRICustomRecurrenceEditorViewController_recurrenceChooser_wantsRowRe
   v4[2] = __65__TTRICustomRecurrenceEditorViewController__updateRecurrenceRule__block_invoke_2;
   v4[3] = &unk_27832D510;
   v4[4] = self;
-  [v3 performBatchUpdates:v5 completion:v4];
+  [tableView performBatchUpdates:v5 completion:v4];
 }
 
 - (void)_updateRecurrenceRuleWithoutBatching
@@ -648,29 +648,29 @@ void __77__TTRICustomRecurrenceEditorViewController_recurrenceChooser_wantsRowRe
   cachedFrequency = self->_cachedFrequency;
   cachedInterval = self->_cachedInterval;
   v11 = objc_opt_new();
-  v5 = [(TTRICustomRecurrenceEditorViewController *)self currentChooser];
-  v6 = v5;
-  if (v5)
+  currentChooser = [(TTRICustomRecurrenceEditorViewController *)self currentChooser];
+  v6 = currentChooser;
+  if (currentChooser)
   {
-    cachedFrequency = [v5 frequency];
+    cachedFrequency = [currentChooser frequency];
     [v6 updateRecurrenceRuleBuilder:v11];
   }
 
   [v11 setFrequency:cachedFrequency];
   [v11 setInterval:cachedInterval];
-  v7 = [(TTRICustomRecurrenceEditorViewController *)self yearlyChooser];
-  if (v6 == v7)
+  yearlyChooser = [(TTRICustomRecurrenceEditorViewController *)self yearlyChooser];
+  if (v6 == yearlyChooser)
   {
-    v8 = [(TTRICustomRecurrenceEditorViewController *)self yearOrdinalSwitch];
-    v9 = [v8 isOn];
+    yearOrdinalSwitch = [(TTRICustomRecurrenceEditorViewController *)self yearOrdinalSwitch];
+    isOn = [yearOrdinalSwitch isOn];
 
-    if (!v9)
+    if (!isOn)
     {
       goto LABEL_7;
     }
 
-    v7 = [(TTRICustomRecurrenceEditorViewController *)self yearlyOrdinalChooser];
-    [v7 updateRecurrenceRuleBuilder:v11];
+    yearlyChooser = [(TTRICustomRecurrenceEditorViewController *)self yearlyOrdinalChooser];
+    [yearlyChooser updateRecurrenceRuleBuilder:v11];
   }
 
 LABEL_7:
@@ -690,25 +690,25 @@ LABEL_7:
   return cachedRecurrenceRule;
 }
 
-- (void)setRecurrenceRule:(id)a3 shouldUpdatePickers:(BOOL)a4
+- (void)setRecurrenceRule:(id)rule shouldUpdatePickers:(BOOL)pickers
 {
-  v4 = a4;
-  v7 = a3;
-  if (self->_cachedRecurrenceRule != v7)
+  pickersCopy = pickers;
+  ruleCopy = rule;
+  if (self->_cachedRecurrenceRule != ruleCopy)
   {
-    v8 = v7;
-    objc_storeStrong(&self->_cachedRecurrenceRule, a3);
-    v7 = v8;
+    v8 = ruleCopy;
+    objc_storeStrong(&self->_cachedRecurrenceRule, rule);
+    ruleCopy = v8;
     if (v8)
     {
       [(TTRICustomRecurrenceEditorViewController *)self _updateSummaryLabel];
-      v7 = v8;
+      ruleCopy = v8;
     }
 
-    if (v4)
+    if (pickersCopy)
     {
       [(TTRICustomRecurrenceEditorViewController *)self _refreshCacheAndPickers];
-      v7 = v8;
+      ruleCopy = v8;
     }
   }
 }
@@ -721,26 +721,26 @@ LABEL_7:
   [(TTRICustomRecurrenceEditorViewController *)self _frequencyUpdated];
   if ([(REMRecurrenceRule *)self->_cachedRecurrenceRule frequency]== 3)
   {
-    v4 = [(TTRICustomRecurrenceEditorViewController *)self yearOrdinalSwitch];
-    [v4 setOn:v3];
+    yearOrdinalSwitch = [(TTRICustomRecurrenceEditorViewController *)self yearOrdinalSwitch];
+    [yearOrdinalSwitch setOn:v3];
   }
 }
 
-+ (BOOL)isRecurrenceRuleOrdinal:(id)a3
++ (BOOL)isRecurrenceRuleOrdinal:(id)ordinal
 {
-  v3 = a3;
-  v4 = [v3 setPositions];
-  v5 = [v4 count];
+  ordinalCopy = ordinal;
+  setPositions = [ordinalCopy setPositions];
+  v5 = [setPositions count];
 
   if (v5)
   {
     v6 = 1;
   }
 
-  else if ([v3 frequency] == 2 || objc_msgSend(v3, "frequency") == 3)
+  else if ([ordinalCopy frequency] == 2 || objc_msgSend(ordinalCopy, "frequency") == 3)
   {
-    v7 = [v3 daysOfTheWeek];
-    v6 = [v7 count] != 0;
+    daysOfTheWeek = [ordinalCopy daysOfTheWeek];
+    v6 = [daysOfTheWeek count] != 0;
   }
 
   else
@@ -753,40 +753,40 @@ LABEL_7:
 
 - (BOOL)prohibitsMultipleDaysInMonthlyRecurrence
 {
-  v2 = [(TTRICustomRecurrenceEditorViewController *)self monthlyChooser];
-  v3 = [v2 prohibitsMultipleDaysInMonthlyRecurrence];
+  monthlyChooser = [(TTRICustomRecurrenceEditorViewController *)self monthlyChooser];
+  prohibitsMultipleDaysInMonthlyRecurrence = [monthlyChooser prohibitsMultipleDaysInMonthlyRecurrence];
 
-  return v3;
+  return prohibitsMultipleDaysInMonthlyRecurrence;
 }
 
-- (void)setProhibitsMultipleDaysInMonthlyRecurrence:(BOOL)a3
+- (void)setProhibitsMultipleDaysInMonthlyRecurrence:(BOOL)recurrence
 {
-  v3 = a3;
-  v4 = [(TTRICustomRecurrenceEditorViewController *)self monthlyChooser];
-  [v4 setProhibitsMultipleDaysInMonthlyRecurrence:v3];
+  recurrenceCopy = recurrence;
+  monthlyChooser = [(TTRICustomRecurrenceEditorViewController *)self monthlyChooser];
+  [monthlyChooser setProhibitsMultipleDaysInMonthlyRecurrence:recurrenceCopy];
 }
 
 - (BOOL)prohibitsMultipleMonthsInYearlyRecurrence
 {
-  v2 = [(TTRICustomRecurrenceEditorViewController *)self yearlyChooser];
-  v3 = [v2 prohibitsMultipleMonthsInYearlyRecurrence];
+  yearlyChooser = [(TTRICustomRecurrenceEditorViewController *)self yearlyChooser];
+  prohibitsMultipleMonthsInYearlyRecurrence = [yearlyChooser prohibitsMultipleMonthsInYearlyRecurrence];
 
-  return v3;
+  return prohibitsMultipleMonthsInYearlyRecurrence;
 }
 
-- (void)setProhibitsMultipleMonthsInYearlyRecurrence:(BOOL)a3
+- (void)setProhibitsMultipleMonthsInYearlyRecurrence:(BOOL)recurrence
 {
-  v3 = a3;
-  v4 = [(TTRICustomRecurrenceEditorViewController *)self yearlyChooser];
-  [v4 setProhibitsMultipleMonthsInYearlyRecurrence:v3];
+  recurrenceCopy = recurrence;
+  yearlyChooser = [(TTRICustomRecurrenceEditorViewController *)self yearlyChooser];
+  [yearlyChooser setProhibitsMultipleMonthsInYearlyRecurrence:recurrenceCopy];
 }
 
 - (void)_updateSummaryLabel
 {
   v3 = MEMORY[0x277D44748];
-  v4 = [(TTRICustomRecurrenceEditorViewController *)self recurrenceRule];
-  v5 = [(TTRICustomRecurrenceEditorViewController *)self startDate];
-  v6 = [v3 naturalLanguageDescriptionForRecurrenceRule:v4 withStartDate:v5];
+  recurrenceRule = [(TTRICustomRecurrenceEditorViewController *)self recurrenceRule];
+  startDate = [(TTRICustomRecurrenceEditorViewController *)self startDate];
+  v6 = [v3 naturalLanguageDescriptionForRecurrenceRule:recurrenceRule withStartDate:startDate];
   [(TTRICustomRecurrenceEditorViewController *)self setRecurrenceSummaryString:v6];
 
   block[0] = MEMORY[0x277D85DD0];
@@ -816,68 +816,68 @@ void __63__TTRICustomRecurrenceEditorViewController__updateSummaryLabel__block_i
 
 - (void)_updateCustomPickerView
 {
-  v3 = [(TTRICustomRecurrenceEditorViewController *)self currentChooser];
-  v4 = [v3 frequency];
+  currentChooser = [(TTRICustomRecurrenceEditorViewController *)self currentChooser];
+  frequency = [currentChooser frequency];
 
   v5 = [(TTRICustomRecurrenceEditorViewController *)self _chooserForFrequency:self->_cachedFrequency];
   [(TTRICustomRecurrenceEditorViewController *)self setCurrentChooser:v5];
 
-  v6 = [(TTRICustomRecurrenceEditorViewController *)self currentChooser];
-  v7 = [v6 frequency];
+  currentChooser2 = [(TTRICustomRecurrenceEditorViewController *)self currentChooser];
+  frequency2 = [currentChooser2 frequency];
 
-  v8 = [(TTRICustomRecurrenceEditorViewController *)self currentChooser];
-  [v8 updateFromRecurrenceRule:self->_cachedRecurrenceRule];
+  currentChooser3 = [(TTRICustomRecurrenceEditorViewController *)self currentChooser];
+  [currentChooser3 updateFromRecurrenceRule:self->_cachedRecurrenceRule];
 
-  [(TTRICustomRecurrenceEditorViewController *)self _updateTableSectionsFromFrequency:v4 toFrequency:v7];
+  [(TTRICustomRecurrenceEditorViewController *)self _updateTableSectionsFromFrequency:frequency toFrequency:frequency2];
 }
 
-- (void)_updateTableSectionsFromFrequency:(int64_t)a3 toFrequency:(int64_t)a4
+- (void)_updateTableSectionsFromFrequency:(int64_t)frequency toFrequency:(int64_t)toFrequency
 {
-  v7 = [(TTRICustomRecurrenceEditorViewController *)self tableView];
-  [v7 beginUpdates];
+  tableView = [(TTRICustomRecurrenceEditorViewController *)self tableView];
+  [tableView beginUpdates];
 
-  if (a3 == 3 || a4 != 3)
+  if (frequency == 3 || toFrequency != 3)
   {
-    if (a3 == 3 && a4 != 3)
+    if (frequency == 3 && toFrequency != 3)
     {
-      v13 = [(TTRICustomRecurrenceEditorViewController *)self tableView];
+      tableView2 = [(TTRICustomRecurrenceEditorViewController *)self tableView];
       v14 = [MEMORY[0x277CCAA78] indexSetWithIndex:2];
-      [v13 deleteSections:v14 withRowAnimation:6];
+      [tableView2 deleteSections:v14 withRowAnimation:6];
 
-      v10 = a4 != 0;
+      v10 = toFrequency != 0;
       goto LABEL_10;
     }
   }
 
   else
   {
-    v8 = [(TTRICustomRecurrenceEditorViewController *)self tableView];
+    tableView3 = [(TTRICustomRecurrenceEditorViewController *)self tableView];
     v9 = [MEMORY[0x277CCAA78] indexSetWithIndex:2];
-    [v8 insertSections:v9 withRowAnimation:6];
+    [tableView3 insertSections:v9 withRowAnimation:6];
   }
 
-  v10 = a4 != 0;
-  if (!a3 && a4)
+  v10 = toFrequency != 0;
+  if (!frequency && toFrequency)
   {
-    v11 = [(TTRICustomRecurrenceEditorViewController *)self tableView];
+    tableView4 = [(TTRICustomRecurrenceEditorViewController *)self tableView];
     v12 = [MEMORY[0x277CCAA78] indexSetWithIndex:1];
-    [v11 insertSections:v12 withRowAnimation:6];
+    [tableView4 insertSections:v12 withRowAnimation:6];
 LABEL_13:
 
     goto LABEL_14;
   }
 
 LABEL_10:
-  if (a3 && !a4)
+  if (frequency && !toFrequency)
   {
-    v11 = [(TTRICustomRecurrenceEditorViewController *)self tableView];
+    tableView4 = [(TTRICustomRecurrenceEditorViewController *)self tableView];
     v12 = [MEMORY[0x277CCAA78] indexSetWithIndex:1];
-    [v11 deleteSections:v12 withRowAnimation:6];
+    [tableView4 deleteSections:v12 withRowAnimation:6];
     goto LABEL_13;
   }
 
   v16 = !v10;
-  if (a3 == a4)
+  if (frequency == toFrequency)
   {
     v16 = 1;
   }
@@ -893,8 +893,8 @@ LABEL_10:
   }
 
 LABEL_14:
-  v15 = [(TTRICustomRecurrenceEditorViewController *)self tableView];
-  [v15 endUpdates];
+  tableView5 = [(TTRICustomRecurrenceEditorViewController *)self tableView];
+  [tableView5 endUpdates];
 }
 
 void __90__TTRICustomRecurrenceEditorViewController__updateTableSectionsFromFrequency_toFrequency___block_invoke(uint64_t a1)
@@ -909,11 +909,11 @@ void __90__TTRICustomRecurrenceEditorViewController__updateTableSectionsFromFreq
   v7[2] = *MEMORY[0x277D85DE8];
   v3 = [MEMORY[0x277CCAA70] indexPathForRow:0 inSection:0];
   v4 = [MEMORY[0x277CCAA70] indexPathForRow:1 inSection:0];
-  v5 = [(TTRICustomRecurrenceEditorViewController *)self tableView];
+  tableView = [(TTRICustomRecurrenceEditorViewController *)self tableView];
   v7[0] = v3;
   v7[1] = v4;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:2];
-  [v5 reloadRowsAtIndexPaths:v6 withRowAnimation:5];
+  [tableView reloadRowsAtIndexPaths:v6 withRowAnimation:5];
 }
 
 - (void)_frequencyUpdated
@@ -922,8 +922,8 @@ void __90__TTRICustomRecurrenceEditorViewController__updateTableSectionsFromFreq
   [(TTRICustomRecurrenceEditorViewController *)self _updateRecurrenceRule];
   [(TTRICustomRecurrenceEditorViewController *)self _updateFrequencyRows];
   frequencySummaryCell = self->_frequencySummaryCell;
-  v4 = [(TTRICustomRecurrenceEditorViewController *)self frequencyTypeMenu];
-  [(TTRIPopupMenuTableViewCell *)frequencySummaryCell setPopupMenu:v4];
+  frequencyTypeMenu = [(TTRICustomRecurrenceEditorViewController *)self frequencyTypeMenu];
+  [(TTRIPopupMenuTableViewCell *)frequencySummaryCell setPopupMenu:frequencyTypeMenu];
 
   v5 = self->_frequencySummaryCell;
   v6 = [(TTRICustomRecurrenceEditorViewController *)self _stringForFrequency:self->_cachedFrequency];
@@ -934,30 +934,30 @@ void __90__TTRICustomRecurrenceEditorViewController__updateTableSectionsFromFreq
   [(TTRICustomRecurrenceEditorViewController *)self queuePreferredContentSizeRefresh];
 }
 
-- (id)_chooserForFrequency:(int64_t)a3
+- (id)_chooserForFrequency:(int64_t)frequency
 {
-  switch(a3)
+  switch(frequency)
   {
     case 3:
-      v3 = [(TTRICustomRecurrenceEditorViewController *)self yearlyChooser];
+      yearlyChooser = [(TTRICustomRecurrenceEditorViewController *)self yearlyChooser];
       break;
     case 2:
-      v3 = [(TTRICustomRecurrenceEditorViewController *)self monthlyChooser];
+      yearlyChooser = [(TTRICustomRecurrenceEditorViewController *)self monthlyChooser];
       break;
     case 1:
-      v3 = [(TTRICustomRecurrenceEditorViewController *)self weeklyChooser];
+      yearlyChooser = [(TTRICustomRecurrenceEditorViewController *)self weeklyChooser];
       break;
     default:
-      v3 = 0;
+      yearlyChooser = 0;
       break;
   }
 
-  return v3;
+  return yearlyChooser;
 }
 
-- (void)_yearOrdinalSwitchChanged:(id)a3
+- (void)_yearOrdinalSwitchChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v15[0] = 0;
   v15[1] = v15;
   v15[2] = 0x3032000000;
@@ -968,16 +968,16 @@ void __90__TTRICustomRecurrenceEditorViewController__updateTableSectionsFromFreq
   v13[1] = v13;
   v13[2] = 0x2020000000;
   v14 = 0;
-  v5 = [(TTRICustomRecurrenceEditorViewController *)self tableView];
+  tableView = [(TTRICustomRecurrenceEditorViewController *)self tableView];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __70__TTRICustomRecurrenceEditorViewController__yearOrdinalSwitchChanged___block_invoke;
   v8[3] = &unk_27832D538;
   v11 = v15;
-  v6 = v4;
+  v6 = changedCopy;
   v12 = v13;
   v9 = v6;
-  v10 = self;
+  selfCopy = self;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __70__TTRICustomRecurrenceEditorViewController__yearOrdinalSwitchChanged___block_invoke_2;
@@ -985,7 +985,7 @@ void __90__TTRICustomRecurrenceEditorViewController__updateTableSectionsFromFreq
   v7[5] = v15;
   v7[6] = v13;
   v7[4] = self;
-  [v5 performBatchUpdates:v8 completion:v7];
+  [tableView performBatchUpdates:v8 completion:v7];
 
   _Block_object_dispose(v13, 8);
   _Block_object_dispose(v15, 8);
@@ -1032,11 +1032,11 @@ uint64_t __70__TTRICustomRecurrenceEditorViewController__yearOrdinalSwitchChange
   return [v3 queuePreferredContentSizeRefresh];
 }
 
-- (id)_stringForFrequency:(int64_t)a3
+- (id)_stringForFrequency:(int64_t)frequency
 {
-  if (a3 <= 1)
+  if (frequency <= 1)
   {
-    if (a3 > 1)
+    if (frequency > 1)
     {
       goto LABEL_8;
     }
@@ -1044,14 +1044,14 @@ uint64_t __70__TTRICustomRecurrenceEditorViewController__yearOrdinalSwitchChange
     goto LABEL_7;
   }
 
-  if (a3 == 2 || a3 == 3)
+  if (frequency == 2 || frequency == 3)
   {
 LABEL_7:
     v3 = CUIKStringForRepeatType();
     goto LABEL_8;
   }
 
-  if (a3 == 4)
+  if (frequency == 4)
   {
     v4 = RemindersUICoreBundleGet();
     v3 = [v4 localizedStringForKey:@"Hourly" value:@"Hourly" table:@"Localizable"];
@@ -1062,32 +1062,32 @@ LABEL_8:
   return v3;
 }
 
-- (id)_stringForFrequency:(int64_t)a3 interval:(int64_t)a4
+- (id)_stringForFrequency:(int64_t)frequency interval:(int64_t)interval
 {
-  if (a3 > 4)
+  if (frequency > 4)
   {
     v7 = 0;
   }
 
   else
   {
-    v5 = off_27832D580[a3];
+    v5 = off_27832D580[frequency];
     v6 = RemindersUICoreBundleGet();
     v7 = [v6 localizedStringForKey:v5 value:&stru_282EF0770 table:@"PluralLocalizable"];
   }
 
-  v8 = [MEMORY[0x277CCACA8] stringWithFormat:v7, a4];
+  interval = [MEMORY[0x277CCACA8] stringWithFormat:v7, interval];
 
-  return v8;
+  return interval;
 }
 
-- (int64_t)_tagForIndexPath:(id)a3
+- (int64_t)_tagForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 row];
-  v6 = [v4 section];
+  pathCopy = path;
+  v5 = [pathCopy row];
+  section = [pathCopy section];
 
-  if (v6 == 2)
+  if (section == 2)
   {
     if (self->_cachedFrequency == 3)
     {
@@ -1116,12 +1116,12 @@ LABEL_8:
       v7 = 2;
     }
 
-    if (v6)
+    if (section)
     {
       v7 = 0;
     }
 
-    if (v6 == 1)
+    if (section == 1)
     {
       return 5;
     }
@@ -1133,17 +1133,17 @@ LABEL_8:
   }
 }
 
-- (int64_t)_numberOfRowsForSection:(int64_t)a3
+- (int64_t)_numberOfRowsForSection:(int64_t)section
 {
-  if (a3 == 2)
+  if (section == 2)
   {
     if (self->_cachedFrequency != 3)
     {
       return 0;
     }
 
-    v7 = [(TTRICustomRecurrenceEditorViewController *)self yearOrdinalSwitch];
-    if ([v7 isOn])
+    yearOrdinalSwitch = [(TTRICustomRecurrenceEditorViewController *)self yearOrdinalSwitch];
+    if ([yearOrdinalSwitch isOn])
     {
       v3 = 2;
     }
@@ -1156,9 +1156,9 @@ LABEL_8:
     return v3;
   }
 
-  if (a3 != 1)
+  if (section != 1)
   {
-    if (a3)
+    if (section)
     {
       return 0;
     }
@@ -1169,29 +1169,29 @@ LABEL_8:
     }
   }
 
-  v5 = [(TTRICustomRecurrenceEditorViewController *)self currentChooser];
-  v6 = [v5 numberOfRows];
+  currentChooser = [(TTRICustomRecurrenceEditorViewController *)self currentChooser];
+  numberOfRows = [currentChooser numberOfRows];
 
-  return v6;
+  return numberOfRows;
 }
 
-- (id)_localizedEveryStringForFrequency:(int64_t)a3 interval:(int64_t)a4
+- (id)_localizedEveryStringForFrequency:(int64_t)frequency interval:(int64_t)interval
 {
-  if (a3 > 4)
+  if (frequency > 4)
   {
     v7 = 0;
   }
 
   else
   {
-    v5 = off_27832D5A8[a3];
+    v5 = off_27832D5A8[frequency];
     v6 = RemindersUICoreBundleGet();
     v7 = [v6 localizedStringForKey:v5 value:@"Every" table:@"PluralLocalizable"];
   }
 
-  v8 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v7, a4];
+  interval = [MEMORY[0x277CCACA8] localizedStringWithFormat:v7, interval];
 
-  return v8;
+  return interval;
 }
 
 - (TTRIRecurrenceChooserController)currentChooser

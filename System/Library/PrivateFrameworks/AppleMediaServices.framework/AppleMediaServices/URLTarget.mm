@@ -1,35 +1,35 @@
 @interface URLTarget
-+ (id)targetWithBundle:(id)a3 scheme:(id)a4 secureScheme:(id)a5;
-- (URLTarget)initWithBundle:(id)a3 scheme:(id)a4 secureScheme:(id)a5;
++ (id)targetWithBundle:(id)bundle scheme:(id)scheme secureScheme:(id)secureScheme;
+- (URLTarget)initWithBundle:(id)bundle scheme:(id)scheme secureScheme:(id)secureScheme;
 @end
 
 @implementation URLTarget
 
-- (URLTarget)initWithBundle:(id)a3 scheme:(id)a4 secureScheme:(id)a5
+- (URLTarget)initWithBundle:(id)bundle scheme:(id)scheme secureScheme:(id)secureScheme
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  bundleCopy = bundle;
+  schemeCopy = scheme;
+  secureSchemeCopy = secureScheme;
   v15.receiver = self;
   v15.super_class = URLTarget;
   v12 = [(URLTarget *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_bundleID, a3);
-    objc_storeStrong(&v13->_normalScheme, a4);
-    objc_storeStrong(&v13->_secureScheme, a5);
+    objc_storeStrong(&v12->_bundleID, bundle);
+    objc_storeStrong(&v13->_normalScheme, scheme);
+    objc_storeStrong(&v13->_secureScheme, secureScheme);
   }
 
   return v13;
 }
 
-+ (id)targetWithBundle:(id)a3 scheme:(id)a4 secureScheme:(id)a5
++ (id)targetWithBundle:(id)bundle scheme:(id)scheme secureScheme:(id)secureScheme
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithBundle:v10 scheme:v9 secureScheme:v8];
+  secureSchemeCopy = secureScheme;
+  schemeCopy = scheme;
+  bundleCopy = bundle;
+  v11 = [[self alloc] initWithBundle:bundleCopy scheme:schemeCopy secureScheme:secureSchemeCopy];
 
   return v11;
 }

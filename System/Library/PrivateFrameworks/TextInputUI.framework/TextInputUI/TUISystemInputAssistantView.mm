@@ -2,15 +2,15 @@
 - (BOOL)_shouldHostCenterViewOutsidePageView;
 - (BOOL)_swiftPlaygroundsWorkaroundEnabled;
 - (BOOL)isInputAssistantItemHidden;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (BOOL)shouldSkipValidation;
 - (BOOL)showsCenterView;
 - (BOOL)validateIfNeeded;
 - (CGRect)containerFrame;
-- (CGSize)sizeForVisualState:(int64_t)a3;
+- (CGSize)sizeForVisualState:(int64_t)state;
 - (TUICandidateView)candidateView;
 - (TUIPredictionView)predictionView;
-- (TUISystemInputAssistantView)initWithFrame:(CGRect)a3;
+- (TUISystemInputAssistantView)initWithFrame:(CGRect)frame;
 - (TUISystemInputAssistantViewDelegate)delegate;
 - (UIEdgeInsets)overrideSafeAreaInsets;
 - (UIEdgeInsets)safeAreaInsets;
@@ -19,35 +19,35 @@
 - (id)_currentLayoutViewSet;
 - (id)_hostedCenterView;
 - (void)_exchangeCenterViewIfNecessaryForCompatibility;
-- (void)_setButtonBarItemsExpanded:(BOOL)a3 animationType:(unint64_t)a4;
+- (void)_setButtonBarItemsExpanded:(BOOL)expanded animationType:(unint64_t)type;
 - (void)_updateBarButtonGroups;
 - (void)_updateBarButtonGroupsIfNeeded;
 - (void)_updateExpandableButtonBarItems;
 - (void)_updateStyle;
 - (void)_updateStyleForButtonBars;
 - (void)_updateVisualProvider;
-- (void)assistantButtonBarView:(id)a3 wantsToShowCollapsedItemGroup:(id)a4 fromButton:(id)a5;
-- (void)assistantPageView:(id)a3 didSwitchToSecondaryViewVisible:(BOOL)a4;
+- (void)assistantButtonBarView:(id)view wantsToShowCollapsedItemGroup:(id)group fromButton:(id)button;
+- (void)assistantPageView:(id)view didSwitchToSecondaryViewVisible:(BOOL)visible;
 - (void)layoutSubviews;
-- (void)prepareForTransitionToState:(int64_t)a3 animationType:(int64_t)a4 interactiveTransition:(BOOL)a5;
+- (void)prepareForTransitionToState:(int64_t)state animationType:(int64_t)type interactiveTransition:(BOOL)transition;
 - (void)resetContainerConstraints;
-- (void)setBackgroundVisible:(BOOL)a3;
-- (void)setButtonBarItemsExpanded:(BOOL)a3 animated:(BOOL)a4;
-- (void)setCenterView:(id)a3;
-- (void)setCenterViewHidden:(BOOL)a3;
-- (void)setCenterViewWidth:(double)a3;
-- (void)setHidesExpandableButton:(BOOL)a3;
-- (void)setInputAssistantItem:(id)a3 force:(BOOL)a4;
-- (void)setLayout:(id)a3;
+- (void)setBackgroundVisible:(BOOL)visible;
+- (void)setButtonBarItemsExpanded:(BOOL)expanded animated:(BOOL)animated;
+- (void)setCenterView:(id)view;
+- (void)setCenterViewHidden:(BOOL)hidden;
+- (void)setCenterViewWidth:(double)width;
+- (void)setHidesExpandableButton:(BOOL)button;
+- (void)setInputAssistantItem:(id)item force:(BOOL)force;
+- (void)setLayout:(id)layout;
 - (void)setNeedsValidation;
-- (void)setRenderConfig:(id)a3;
-- (void)setScrollEnabled:(BOOL)a3;
-- (void)setSecondaryView:(id)a3;
-- (void)setShowsButtonBarItemsInline:(BOOL)a3;
-- (void)setShowsExpandableButtonBarItems:(BOOL)a3;
-- (void)setStyle:(id)a3;
-- (void)setSystemInputAssistantItem:(id)a3;
-- (void)transitionToLayout:(id)a3 withStyle:(id)a4 start:(id)a5;
+- (void)setRenderConfig:(id)config;
+- (void)setScrollEnabled:(BOOL)enabled;
+- (void)setSecondaryView:(id)view;
+- (void)setShowsButtonBarItemsInline:(BOOL)inline;
+- (void)setShowsExpandableButtonBarItems:(BOOL)items;
+- (void)setStyle:(id)style;
+- (void)setSystemInputAssistantItem:(id)item;
+- (void)transitionToLayout:(id)layout withStyle:(id)style start:(id)start;
 - (void)updateContainerConstraintsForFloating;
 @end
 
@@ -56,20 +56,20 @@
 - (id)_currentLayoutViewSet
 {
   v3 = objc_alloc_init(TUISystemInputAssistantLayoutViewSet);
-  v4 = [(TUISystemInputAssistantView *)self _hostedCenterView];
-  [(TUISystemInputAssistantLayoutViewSet *)v3 setCenterView:v4];
+  _hostedCenterView = [(TUISystemInputAssistantView *)self _hostedCenterView];
+  [(TUISystemInputAssistantLayoutViewSet *)v3 setCenterView:_hostedCenterView];
 
-  v5 = [(TUISystemInputAssistantView *)self leftButtonBar];
-  [(TUISystemInputAssistantLayoutViewSet *)v3 setLeftButtonBar:v5];
+  leftButtonBar = [(TUISystemInputAssistantView *)self leftButtonBar];
+  [(TUISystemInputAssistantLayoutViewSet *)v3 setLeftButtonBar:leftButtonBar];
 
-  v6 = [(TUISystemInputAssistantView *)self rightButtonBar];
-  [(TUISystemInputAssistantLayoutViewSet *)v3 setRightButtonBar:v6];
+  rightButtonBar = [(TUISystemInputAssistantView *)self rightButtonBar];
+  [(TUISystemInputAssistantLayoutViewSet *)v3 setRightButtonBar:rightButtonBar];
 
-  v7 = [(TUISystemInputAssistantView *)self unifiedButtonBar];
-  [(TUISystemInputAssistantLayoutViewSet *)v3 setUnifiedButtonBar:v7];
+  unifiedButtonBar = [(TUISystemInputAssistantView *)self unifiedButtonBar];
+  [(TUISystemInputAssistantLayoutViewSet *)v3 setUnifiedButtonBar:unifiedButtonBar];
 
-  v8 = [(TUISystemInputAssistantView *)self containerView];
-  [(TUISystemInputAssistantLayoutViewSet *)v3 setViewSetContainer:v8];
+  containerView = [(TUISystemInputAssistantView *)self containerView];
+  [(TUISystemInputAssistantLayoutViewSet *)v3 setViewSetContainer:containerView];
 
   return v3;
 }
@@ -78,15 +78,15 @@
 {
   if ([(TUISystemInputAssistantView *)self _swiftPlaygroundsWorkaroundEnabled]&& [(TUISystemInputAssistantView *)self _shouldHostCenterViewOutsidePageView])
   {
-    v3 = [(TUISystemInputAssistantView *)self centerView];
+    centerView = [(TUISystemInputAssistantView *)self centerView];
   }
 
   else
   {
-    v3 = [(TUISystemInputAssistantView *)self centerPageView];
+    centerView = [(TUISystemInputAssistantView *)self centerPageView];
   }
 
-  return v3;
+  return centerView;
 }
 
 - (BOOL)_swiftPlaygroundsWorkaroundEnabled
@@ -193,14 +193,14 @@ void __65__TUISystemInputAssistantView__swiftPlaygroundsWorkaroundEnabled__block
 
 - (void)_updateBarButtonGroups
 {
-  v3 = [(TUISystemInputAssistantView *)self layout];
-  [v3 setUsesUnifiedButtonBar:self->_showsExpandableButtonBarItems];
+  layout = [(TUISystemInputAssistantView *)self layout];
+  [layout setUsesUnifiedButtonBar:self->_showsExpandableButtonBarItems];
 
-  v4 = [(TUISystemInputAssistantView *)self layout];
-  v5 = [(TUISystemInputAssistantView *)self _currentLayoutViewSet];
-  v6 = [(TUISystemInputAssistantView *)self inputAssistantItem];
-  v7 = [(TUISystemInputAssistantView *)self systemInputAssistantItem];
-  [v4 configureButtonBarsInViewSet:v5 forApplicationAssistantItem:v6 withSystemAssistantItem:v7 withAssistantView:self];
+  layout2 = [(TUISystemInputAssistantView *)self layout];
+  _currentLayoutViewSet = [(TUISystemInputAssistantView *)self _currentLayoutViewSet];
+  inputAssistantItem = [(TUISystemInputAssistantView *)self inputAssistantItem];
+  systemInputAssistantItem = [(TUISystemInputAssistantView *)self systemInputAssistantItem];
+  [layout2 configureButtonBarsInViewSet:_currentLayoutViewSet forApplicationAssistantItem:inputAssistantItem withSystemAssistantItem:systemInputAssistantItem withAssistantView:self];
 
   [(TUISystemInputAssistantView *)self setNeedsValidation];
 
@@ -218,25 +218,25 @@ void __65__TUISystemInputAssistantView__swiftPlaygroundsWorkaroundEnabled__block
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(TUISystemInputAssistantView *)self backdropView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  backdropView = [(TUISystemInputAssistantView *)self backdropView];
+  [backdropView setFrame:{v4, v6, v8, v10}];
 
   [(TUISystemInputAssistantView *)self safeAreaInsets];
   if (v10 > v12)
   {
     [(TUISystemInputAssistantView *)self preferredInsets];
-    v13 = [(TUISystemInputAssistantView *)self renderConfig];
-    if ([v13 colorAdaptiveBackground])
+    renderConfig = [(TUISystemInputAssistantView *)self renderConfig];
+    if ([renderConfig colorAdaptiveBackground])
     {
-      v14 = [MEMORY[0x1E69DCBE0] activeInstance];
-      v15 = [v14 isMinimized];
+      activeInstance = [MEMORY[0x1E69DCBE0] activeInstance];
+      isMinimized = [activeInstance isMinimized];
 
-      if ((v15 & 1) == 0)
+      if ((isMinimized & 1) == 0)
       {
-        v16 = [MEMORY[0x1E69DC938] currentDevice];
-        v17 = [v16 userInterfaceIdiom];
+        currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+        userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-        if ((v17 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+        if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
         {
           [MEMORY[0x1E69DCBE0] isFloating];
         }
@@ -254,20 +254,20 @@ void __65__TUISystemInputAssistantView__swiftPlaygroundsWorkaroundEnabled__block
     v10 = v21;
   }
 
-  v22 = [(TUISystemInputAssistantView *)self _currentLayoutViewSet];
-  v23 = [(TUISystemInputAssistantView *)self layout];
-  [v23 layoutViewSet:v22 inBounds:self forAssistantView:{v4, v6, v8, v10}];
+  _currentLayoutViewSet = [(TUISystemInputAssistantView *)self _currentLayoutViewSet];
+  layout = [(TUISystemInputAssistantView *)self layout];
+  [layout layoutViewSet:_currentLayoutViewSet inBounds:self forAssistantView:{v4, v6, v8, v10}];
 }
 
 - (BOOL)validateIfNeeded
 {
   if (self->_needsValidation && ![(TUISystemInputAssistantView *)self shouldSkipValidation])
   {
-    v4 = [(TUIAssistantButtonBarView *)self->_leftButtonBar validateButtonGroups];
-    v5 = [(TUIAssistantButtonBarView *)self->_rightButtonBar validateButtonGroups];
-    v6 = [(TUIAssistantButtonBarView *)self->_unifiedButtonBar validateButtonGroups];
+    validateButtonGroups = [(TUIAssistantButtonBarView *)self->_leftButtonBar validateButtonGroups];
+    validateButtonGroups2 = [(TUIAssistantButtonBarView *)self->_rightButtonBar validateButtonGroups];
+    validateButtonGroups3 = [(TUIAssistantButtonBarView *)self->_unifiedButtonBar validateButtonGroups];
     self->_needsValidation = 0;
-    v3 = v4 || v5 || v6;
+    v3 = validateButtonGroups || validateButtonGroups2 || validateButtonGroups3;
   }
 
   else
@@ -289,41 +289,41 @@ void __65__TUISystemInputAssistantView__swiftPlaygroundsWorkaroundEnabled__block
 {
   if (self->_showsExpandableButtonBarItems)
   {
-    v3 = [(TUISystemInputAssistantView *)self _createUnifiedButtonBarIfNecessary];
+    _createUnifiedButtonBarIfNecessary = [(TUISystemInputAssistantView *)self _createUnifiedButtonBarIfNecessary];
     [(TUIAssistantButtonBarView *)self->_unifiedButtonBar setHidden:0];
     [(TUISystemInputAssistantPageView *)self->_centerPageView setHidesExpandButton:self->_hidesExpandableButton];
-    v4 = [(TUISystemInputAssistantPageView *)self->_centerPageView expandButton];
-    [v4 addTarget:self action:sel__didTapExpandButton_ forControlEvents:64];
+    expandButton = [(TUISystemInputAssistantPageView *)self->_centerPageView expandButton];
+    [expandButton addTarget:self action:sel__didTapExpandButton_ forControlEvents:64];
 
     [(TUISystemInputAssistantView *)self _updateVisualProvider];
     [(TUISystemInputAssistantView *)self _updateBarButtonGroups];
-    v5 = [(TUISystemInputAssistantView *)self centerViewHidden];
+    centerViewHidden = [(TUISystemInputAssistantView *)self centerViewHidden];
   }
 
   else
   {
     [(TUIAssistantButtonBarView *)self->_unifiedButtonBar setHidden:1];
     [(TUISystemInputAssistantPageView *)self->_centerPageView setHidesExpandButton:1];
-    v5 = 0;
+    centerViewHidden = 0;
   }
 
-  [(TUISystemInputAssistantView *)self setButtonBarItemsExpanded:v5 animated:0];
+  [(TUISystemInputAssistantView *)self setButtonBarItemsExpanded:centerViewHidden animated:0];
 }
 
 - (BOOL)isInputAssistantItemHidden
 {
   [(TUISystemInputAssistantView *)self validateIfNeeded];
-  v3 = [(TUISystemInputAssistantView *)self inputAssistantItem];
-  v4 = [v3 leadingBarButtonGroups];
-  if (__57__TUISystemInputAssistantView_isInputAssistantItemHidden__block_invoke(v4))
+  inputAssistantItem = [(TUISystemInputAssistantView *)self inputAssistantItem];
+  leadingBarButtonGroups = [inputAssistantItem leadingBarButtonGroups];
+  if (__57__TUISystemInputAssistantView_isInputAssistantItemHidden__block_invoke(leadingBarButtonGroups))
   {
-    v5 = [(TUISystemInputAssistantView *)self inputAssistantItem];
-    v6 = [v5 _centerBarButtonGroups];
-    if (__57__TUISystemInputAssistantView_isInputAssistantItemHidden__block_invoke(v6))
+    inputAssistantItem2 = [(TUISystemInputAssistantView *)self inputAssistantItem];
+    _centerBarButtonGroups = [inputAssistantItem2 _centerBarButtonGroups];
+    if (__57__TUISystemInputAssistantView_isInputAssistantItemHidden__block_invoke(_centerBarButtonGroups))
     {
-      v7 = [(TUISystemInputAssistantView *)self inputAssistantItem];
-      v8 = [v7 trailingBarButtonGroups];
-      v9 = __57__TUISystemInputAssistantView_isInputAssistantItemHidden__block_invoke(v8);
+      inputAssistantItem3 = [(TUISystemInputAssistantView *)self inputAssistantItem];
+      trailingBarButtonGroups = [inputAssistantItem3 trailingBarButtonGroups];
+      v9 = __57__TUISystemInputAssistantView_isInputAssistantItemHidden__block_invoke(trailingBarButtonGroups);
     }
 
     else
@@ -434,48 +434,48 @@ LABEL_24:
 
 - (void)_updateStyle
 {
-  v3 = [(TUISystemInputAssistantView *)self style];
-  v4 = [v3 drawsPredictionBackdropView];
-  v5 = [(TUISystemInputAssistantView *)self predictionView];
-  [v5 setDrawsBackdropView:v4];
+  style = [(TUISystemInputAssistantView *)self style];
+  drawsPredictionBackdropView = [style drawsPredictionBackdropView];
+  predictionView = [(TUISystemInputAssistantView *)self predictionView];
+  [predictionView setDrawsBackdropView:drawsPredictionBackdropView];
 
-  v6 = [(TUISystemInputAssistantView *)self style];
-  v7 = [v6 predictionSeparatorColor];
-  v8 = [(TUISystemInputAssistantView *)self predictionView];
-  [v8 setSeparatorColor:v7];
+  style2 = [(TUISystemInputAssistantView *)self style];
+  predictionSeparatorColor = [style2 predictionSeparatorColor];
+  predictionView2 = [(TUISystemInputAssistantView *)self predictionView];
+  [predictionView2 setSeparatorColor:predictionSeparatorColor];
 
-  v9 = [(TUISystemInputAssistantView *)self style];
-  v10 = [v9 predictionHighlightColor];
-  v11 = [(TUISystemInputAssistantView *)self predictionView];
-  [v11 setHighlightColor:v10];
+  style3 = [(TUISystemInputAssistantView *)self style];
+  predictionHighlightColor = [style3 predictionHighlightColor];
+  predictionView3 = [(TUISystemInputAssistantView *)self predictionView];
+  [predictionView3 setHighlightColor:predictionHighlightColor];
 
-  v12 = [(TUISystemInputAssistantView *)self style];
-  [v12 highlightMargin];
+  style4 = [(TUISystemInputAssistantView *)self style];
+  [style4 highlightMargin];
   v14 = v13;
-  v15 = [(TUISystemInputAssistantView *)self predictionView];
-  [v15 setHighlightMargin:v14];
+  predictionView4 = [(TUISystemInputAssistantView *)self predictionView];
+  [predictionView4 setHighlightMargin:v14];
 
-  v16 = [(TUISystemInputAssistantView *)self style];
-  v17 = [v16 useContinuousCornerInHighlight];
-  v18 = [(TUISystemInputAssistantView *)self predictionView];
-  [v18 setUseContinuousCornerInHighlight:v17];
+  style5 = [(TUISystemInputAssistantView *)self style];
+  useContinuousCornerInHighlight = [style5 useContinuousCornerInHighlight];
+  predictionView5 = [(TUISystemInputAssistantView *)self predictionView];
+  [predictionView5 setUseContinuousCornerInHighlight:useContinuousCornerInHighlight];
 
-  v19 = [(TUISystemInputAssistantView *)self style];
-  [v19 highlightCornerRadius];
+  style6 = [(TUISystemInputAssistantView *)self style];
+  [style6 highlightCornerRadius];
   v21 = v20;
-  v22 = [(TUISystemInputAssistantView *)self predictionView];
-  [v22 setHighlightCornerRadius:v21];
+  predictionView6 = [(TUISystemInputAssistantView *)self predictionView];
+  [predictionView6 setHighlightCornerRadius:v21];
 
-  v23 = [(TUISystemInputAssistantView *)self style];
-  [v23 separatorMargin];
+  style7 = [(TUISystemInputAssistantView *)self style];
+  [style7 separatorMargin];
   v25 = v24;
-  v26 = [(TUISystemInputAssistantView *)self predictionView];
-  [v26 setSeparatorMargin:v25];
+  predictionView7 = [(TUISystemInputAssistantView *)self predictionView];
+  [predictionView7 setSeparatorMargin:v25];
 
-  v27 = [(TUISystemInputAssistantView *)self style];
-  v28 = [v27 shouldAnimatePredictionCandidate];
-  v29 = [(TUISystemInputAssistantView *)self predictionView];
-  [v29 setShouldAnimateCells:v28];
+  style8 = [(TUISystemInputAssistantView *)self style];
+  shouldAnimatePredictionCandidate = [style8 shouldAnimatePredictionCandidate];
+  predictionView8 = [(TUISystemInputAssistantView *)self predictionView];
+  [predictionView8 setShouldAnimateCells:shouldAnimatePredictionCandidate];
 
   [(TUISystemInputAssistantView *)self _updateStyleForButtonBars];
   [(TUISystemInputAssistantView *)self _updateBarButtonGroupsIfNeeded];
@@ -486,20 +486,20 @@ LABEL_24:
 - (TUIPredictionView)predictionView
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [(TUISystemInputAssistantView *)self centerView];
+  centerView = [(TUISystemInputAssistantView *)self centerView];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(TUISystemInputAssistantView *)self centerView];
+    centerView2 = [(TUISystemInputAssistantView *)self centerView];
   }
 
   else
   {
     if (_os_feature_enabled_impl())
     {
-      v6 = [(TUISystemInputAssistantView *)self centerView];
+      centerView3 = [(TUISystemInputAssistantView *)self centerView];
       objc_opt_class();
       v7 = objc_opt_isKindOfClass();
 
@@ -509,10 +509,10 @@ LABEL_24:
         v19 = 0u;
         v16 = 0u;
         v17 = 0u;
-        v8 = [(TUISystemInputAssistantView *)self centerView];
-        v9 = [v8 arrangedSubviews];
+        centerView4 = [(TUISystemInputAssistantView *)self centerView];
+        arrangedSubviews = [centerView4 arrangedSubviews];
 
-        v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v10 = [arrangedSubviews countByEnumeratingWithState:&v16 objects:v20 count:16];
         if (v10)
         {
           v11 = v10;
@@ -523,20 +523,20 @@ LABEL_24:
             {
               if (*v17 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(arrangedSubviews);
               }
 
               v14 = *(*(&v16 + 1) + 8 * i);
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v5 = v14;
+                centerView2 = v14;
 
                 goto LABEL_15;
               }
             }
 
-            v11 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+            v11 = [arrangedSubviews countByEnumeratingWithState:&v16 objects:v20 count:16];
             if (v11)
             {
               continue;
@@ -548,55 +548,55 @@ LABEL_24:
       }
     }
 
-    v5 = 0;
+    centerView2 = 0;
   }
 
 LABEL_15:
 
-  return v5;
+  return centerView2;
 }
 
 - (void)_updateStyleForButtonBars
 {
-  v3 = [(TUISystemInputAssistantView *)self style];
-  [v3 barButtonWidth];
+  style = [(TUISystemInputAssistantView *)self style];
+  [style barButtonWidth];
   v5 = v4;
-  v6 = [(TUISystemInputAssistantView *)self leftButtonBar];
-  [v6 setBarButtonWidth:v5];
+  leftButtonBar = [(TUISystemInputAssistantView *)self leftButtonBar];
+  [leftButtonBar setBarButtonWidth:v5];
 
-  v7 = [(TUISystemInputAssistantView *)self style];
-  [v7 minimumInterBarItemSpace];
+  style2 = [(TUISystemInputAssistantView *)self style];
+  [style2 minimumInterBarItemSpace];
   v9 = v8;
-  v10 = [(TUISystemInputAssistantView *)self leftButtonBar];
-  [v10 setMinimumInterItemSpace:v9];
+  leftButtonBar2 = [(TUISystemInputAssistantView *)self leftButtonBar];
+  [leftButtonBar2 setMinimumInterItemSpace:v9];
 
-  v11 = [(TUISystemInputAssistantView *)self style];
-  v12 = [v11 clipsToBounds];
-  v13 = [(TUISystemInputAssistantView *)self leftButtonBar];
-  [v13 setClipsToBounds:v12];
+  style3 = [(TUISystemInputAssistantView *)self style];
+  clipsToBounds = [style3 clipsToBounds];
+  leftButtonBar3 = [(TUISystemInputAssistantView *)self leftButtonBar];
+  [leftButtonBar3 setClipsToBounds:clipsToBounds];
 
-  v14 = [(TUISystemInputAssistantView *)self style];
-  [v14 barButtonWidth];
+  style4 = [(TUISystemInputAssistantView *)self style];
+  [style4 barButtonWidth];
   v16 = v15;
-  v17 = [(TUISystemInputAssistantView *)self rightButtonBar];
-  [v17 setBarButtonWidth:v16];
+  rightButtonBar = [(TUISystemInputAssistantView *)self rightButtonBar];
+  [rightButtonBar setBarButtonWidth:v16];
 
-  v18 = [(TUISystemInputAssistantView *)self style];
-  [v18 minimumInterBarItemSpace];
+  style5 = [(TUISystemInputAssistantView *)self style];
+  [style5 minimumInterBarItemSpace];
   v20 = v19;
-  v21 = [(TUISystemInputAssistantView *)self rightButtonBar];
-  [v21 setMinimumInterItemSpace:v20];
+  rightButtonBar2 = [(TUISystemInputAssistantView *)self rightButtonBar];
+  [rightButtonBar2 setMinimumInterItemSpace:v20];
 
-  v24 = [(TUISystemInputAssistantView *)self style];
-  v22 = [v24 clipsToBounds];
-  v23 = [(TUISystemInputAssistantView *)self rightButtonBar];
-  [v23 setClipsToBounds:v22];
+  style6 = [(TUISystemInputAssistantView *)self style];
+  clipsToBounds2 = [style6 clipsToBounds];
+  rightButtonBar3 = [(TUISystemInputAssistantView *)self rightButtonBar];
+  [rightButtonBar3 setClipsToBounds:clipsToBounds2];
 }
 
 - (void)_updateVisualProvider
 {
-  v3 = [(TUISystemInputAssistantView *)self renderConfig];
-  if ([v3 lightKeyboard])
+  renderConfig = [(TUISystemInputAssistantView *)self renderConfig];
+  if ([renderConfig lightKeyboard])
   {
     [MEMORY[0x1E69DC888] blackColor];
   }
@@ -608,19 +608,19 @@ LABEL_15:
   v4 = ;
   [(TUISystemInputAssistantView *)self setTintColor:v4];
 
-  v5 = [(TUISystemInputAssistantView *)self renderConfig];
-  v9 = [v5 buttonBarVisualProvider];
+  renderConfig2 = [(TUISystemInputAssistantView *)self renderConfig];
+  buttonBarVisualProvider = [renderConfig2 buttonBarVisualProvider];
 
-  if (v9)
+  if (buttonBarVisualProvider)
   {
-    v6 = [(TUISystemInputAssistantView *)self leftButtonBar];
-    [v6 setVisualProvider:v9];
+    leftButtonBar = [(TUISystemInputAssistantView *)self leftButtonBar];
+    [leftButtonBar setVisualProvider:buttonBarVisualProvider];
 
-    v7 = [(TUISystemInputAssistantView *)self rightButtonBar];
-    [v7 setVisualProvider:v9];
+    rightButtonBar = [(TUISystemInputAssistantView *)self rightButtonBar];
+    [rightButtonBar setVisualProvider:buttonBarVisualProvider];
 
-    v8 = [(TUISystemInputAssistantView *)self unifiedButtonBar];
-    [v8 setVisualProvider:v9];
+    unifiedButtonBar = [(TUISystemInputAssistantView *)self unifiedButtonBar];
+    [unifiedButtonBar setVisualProvider:buttonBarVisualProvider];
 
     [(TUISystemInputAssistantView *)self layoutIfNeeded];
   }
@@ -632,44 +632,44 @@ LABEL_15:
   {
     if ([(TUISystemInputAssistantView *)self _shouldHostCenterViewOutsidePageView])
     {
-      v3 = [(TUISystemInputAssistantView *)self centerView];
-      v4 = [v3 superview];
+      centerView = [(TUISystemInputAssistantView *)self centerView];
+      superview = [centerView superview];
 
-      if (v4 == self)
+      if (superview == self)
       {
         return;
       }
 
-      v5 = [(TUISystemInputAssistantView *)self centerPageView];
-      [v5 removeFromSuperview];
+      centerPageView = [(TUISystemInputAssistantView *)self centerPageView];
+      [centerPageView removeFromSuperview];
 
-      v13 = [(TUISystemInputAssistantView *)self containerView];
-      v6 = [(TUISystemInputAssistantView *)self centerView];
+      containerView = [(TUISystemInputAssistantView *)self containerView];
+      centerView2 = [(TUISystemInputAssistantView *)self centerView];
     }
 
     else
     {
-      v7 = [(TUISystemInputAssistantView *)self centerPageView];
-      v8 = [v7 superview];
+      centerPageView2 = [(TUISystemInputAssistantView *)self centerPageView];
+      superview2 = [centerPageView2 superview];
 
-      if (v8 == self)
+      if (superview2 == self)
       {
         return;
       }
 
-      v9 = [(TUISystemInputAssistantView *)self centerView];
-      [v9 removeFromSuperview];
+      centerView3 = [(TUISystemInputAssistantView *)self centerView];
+      [centerView3 removeFromSuperview];
 
-      v10 = [(TUISystemInputAssistantView *)self centerView];
-      v11 = [(TUISystemInputAssistantView *)self centerPageView];
-      [v11 setPrimaryView:v10];
+      centerView4 = [(TUISystemInputAssistantView *)self centerView];
+      centerPageView3 = [(TUISystemInputAssistantView *)self centerPageView];
+      [centerPageView3 setPrimaryView:centerView4];
 
-      v13 = [(TUISystemInputAssistantView *)self containerView];
-      v6 = [(TUISystemInputAssistantView *)self centerPageView];
+      containerView = [(TUISystemInputAssistantView *)self containerView];
+      centerView2 = [(TUISystemInputAssistantView *)self centerPageView];
     }
 
-    v12 = v6;
-    [v13 addSubview:v6];
+    v12 = centerView2;
+    [containerView addSubview:centerView2];
   }
 }
 
@@ -712,36 +712,36 @@ uint64_t __49__TUISystemInputAssistantView_setNeedsValidation__block_invoke(uint
 
 - (BOOL)_shouldHostCenterViewOutsidePageView
 {
-  v2 = [(TUISystemInputAssistantView *)self inputAssistantItem];
-  v3 = [v2 _centerBarButtonGroups];
-  v4 = [v3 count] != 0;
+  inputAssistantItem = [(TUISystemInputAssistantView *)self inputAssistantItem];
+  _centerBarButtonGroups = [inputAssistantItem _centerBarButtonGroups];
+  v4 = [_centerBarButtonGroups count] != 0;
 
   return v4;
 }
 
-- (void)assistantPageView:(id)a3 didSwitchToSecondaryViewVisible:(BOOL)a4
+- (void)assistantPageView:(id)view didSwitchToSecondaryViewVisible:(BOOL)visible
 {
-  v4 = a4;
-  self->_buttonBarItemsExpanded = a4;
-  v6 = [(TUISystemInputAssistantView *)self delegate];
+  visibleCopy = visible;
+  self->_buttonBarItemsExpanded = visible;
+  delegate = [(TUISystemInputAssistantView *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(TUISystemInputAssistantView *)self delegate];
-    [v8 systemInputAssistantView:self didExpand:v4];
+    delegate2 = [(TUISystemInputAssistantView *)self delegate];
+    [delegate2 systemInputAssistantView:self didExpand:visibleCopy];
   }
 }
 
-- (void)prepareForTransitionToState:(int64_t)a3 animationType:(int64_t)a4 interactiveTransition:(BOOL)a5
+- (void)prepareForTransitionToState:(int64_t)state animationType:(int64_t)type interactiveTransition:(BOOL)transition
 {
-  if ((a4 - 6) <= 2)
+  if ((type - 6) <= 2)
   {
-    [(TUISystemInputAssistantView *)self setAlpha:a3, 0.0];
+    [(TUISystemInputAssistantView *)self setAlpha:state, 0.0];
   }
 }
 
-- (CGSize)sizeForVisualState:(int64_t)a3
+- (CGSize)sizeForVisualState:(int64_t)state
 {
   v3 = *MEMORY[0x1E69DE788];
   v4 = *MEMORY[0x1E69DE788];
@@ -750,38 +750,38 @@ uint64_t __49__TUISystemInputAssistantView_setNeedsValidation__block_invoke(uint
   return result;
 }
 
-- (void)assistantButtonBarView:(id)a3 wantsToShowCollapsedItemGroup:(id)a4 fromButton:(id)a5
+- (void)assistantButtonBarView:(id)view wantsToShowCollapsedItemGroup:(id)group fromButton:(id)button
 {
-  v17 = a4;
-  v7 = a5;
-  v8 = [v17 representativeItem];
-  v9 = [v8 target];
-  if (v9)
+  groupCopy = group;
+  buttonCopy = button;
+  representativeItem = [groupCopy representativeItem];
+  target = [representativeItem target];
+  if (target)
   {
-    v10 = v9;
-    v11 = [v8 action];
+    v10 = target;
+    action = [representativeItem action];
 
-    if (v11)
+    if (action)
     {
-      v12 = [v8 target];
-      [v12 performSelector:objc_msgSend(v8 withObject:{"action"), v8}];
+      target2 = [representativeItem target];
+      [target2 performSelector:objc_msgSend(representativeItem withObject:{"action"), representativeItem}];
 LABEL_7:
 
       goto LABEL_8;
     }
   }
 
-  v13 = [(TUISystemInputAssistantView *)self delegate];
-  if (v13)
+  delegate = [(TUISystemInputAssistantView *)self delegate];
+  if (delegate)
   {
-    v14 = v13;
-    v15 = [(TUISystemInputAssistantView *)self delegate];
+    v14 = delegate;
+    delegate2 = [(TUISystemInputAssistantView *)self delegate];
     v16 = objc_opt_respondsToSelector();
 
     if (v16)
     {
-      v12 = [(TUISystemInputAssistantView *)self delegate];
-      [v12 systemInputAssistantView:self wantsToShowCollapsedItemGroup:v17 fromView:v7];
+      target2 = [(TUISystemInputAssistantView *)self delegate];
+      [target2 systemInputAssistantView:self wantsToShowCollapsedItemGroup:groupCopy fromView:buttonCopy];
       goto LABEL_7;
     }
   }
@@ -789,75 +789,75 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)transitionToLayout:(id)a3 withStyle:(id)a4 start:(id)a5
+- (void)transitionToLayout:(id)layout withStyle:(id)style start:(id)start
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(TUISystemInputAssistantView *)self layout];
+  layoutCopy = layout;
+  styleCopy = style;
+  startCopy = start;
+  layout = [(TUISystemInputAssistantView *)self layout];
 
-  if (v10 != v11)
+  if (layout != layoutCopy)
   {
     self->_isTransitioning = 1;
   }
 
-  if (v9)
+  if (startCopy)
   {
-    v9[2](v9);
+    startCopy[2](startCopy);
   }
 
-  [(TUISystemInputAssistantView *)self setStyle:v8];
-  [(TUISystemInputAssistantView *)self setLayout:v11];
+  [(TUISystemInputAssistantView *)self setStyle:styleCopy];
+  [(TUISystemInputAssistantView *)self setLayout:layoutCopy];
   [(TUISystemInputAssistantView *)self _updateBarButtonGroups];
   self->_isTransitioning = 0;
 }
 
-- (void)setStyle:(id)a3
+- (void)setStyle:(id)style
 {
-  v5 = a3;
-  if (self->_style != v5)
+  styleCopy = style;
+  if (self->_style != styleCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_style, a3);
+    v6 = styleCopy;
+    objc_storeStrong(&self->_style, style);
     [(TUISystemInputAssistantView *)self _updateStyle];
-    v5 = v6;
+    styleCopy = v6;
   }
 }
 
-- (void)setLayout:(id)a3
+- (void)setLayout:(id)layout
 {
-  v5 = a3;
+  layoutCopy = layout;
   layout = self->_layout;
-  if (layout != v5)
+  if (layout != layoutCopy)
   {
-    v9 = v5;
-    v7 = [(TUISystemInputAssistantView *)self _currentLayoutViewSet];
-    [(TUISystemInputAssistantLayout *)layout invalidate:v7];
+    v9 = layoutCopy;
+    _currentLayoutViewSet = [(TUISystemInputAssistantView *)self _currentLayoutViewSet];
+    [(TUISystemInputAssistantLayout *)layout invalidate:_currentLayoutViewSet];
 
-    objc_storeStrong(&self->_layout, a3);
+    objc_storeStrong(&self->_layout, layout);
     if ([(TUISystemInputAssistantLayout *)v9 usesUnifiedButtonBar])
     {
-      v8 = [(TUISystemInputAssistantView *)self _createUnifiedButtonBarIfNecessary];
+      _createUnifiedButtonBarIfNecessary = [(TUISystemInputAssistantView *)self _createUnifiedButtonBarIfNecessary];
     }
 
     [(TUISystemInputAssistantView *)self _updateBarButtonGroupsIfNeeded];
     [(TUISystemInputAssistantView *)self setNeedsLayout];
-    v5 = v9;
+    layoutCopy = v9;
   }
 }
 
-- (void)setRenderConfig:(id)a3
+- (void)setRenderConfig:(id)config
 {
-  v5 = a3;
+  configCopy = config;
   renderConfig = self->_renderConfig;
   if (renderConfig)
   {
-    v7 = [(UIKBRenderConfig *)renderConfig lightKeyboard];
-    v8 = [v5 lightKeyboard];
+    lightKeyboard = [(UIKBRenderConfig *)renderConfig lightKeyboard];
+    lightKeyboard2 = [configCopy lightKeyboard];
     v11.receiver = self;
     v11.super_class = TUISystemInputAssistantView;
-    [(TUISystemInputAssistantView *)&v11 _setRenderConfig:v5];
-    if (v7 == v8)
+    [(TUISystemInputAssistantView *)&v11 _setRenderConfig:configCopy];
+    if (lightKeyboard == lightKeyboard2)
     {
       goto LABEL_11;
     }
@@ -867,17 +867,17 @@ LABEL_8:
   {
     v11.receiver = self;
     v11.super_class = TUISystemInputAssistantView;
-    [(TUISystemInputAssistantView *)&v11 _setRenderConfig:v5];
+    [(TUISystemInputAssistantView *)&v11 _setRenderConfig:configCopy];
   }
 
-  objc_storeStrong(&self->_renderConfig, a3);
+  objc_storeStrong(&self->_renderConfig, config);
   if (objc_opt_respondsToSelector())
   {
-    [(UIView *)self->_centerView setRenderConfig:v5];
+    [(UIView *)self->_centerView setRenderConfig:configCopy];
   }
 
   [(TUISystemInputAssistantView *)self _updateVisualProvider];
-  if ([v5 lightKeyboard])
+  if ([configCopy lightKeyboard])
   {
     v9 = 3901;
   }
@@ -887,63 +887,63 @@ LABEL_8:
     v9 = 2030;
   }
 
-  v10 = [(TUISystemInputAssistantView *)self backdropView];
-  [v10 transitionToStyle:v9];
+  backdropView = [(TUISystemInputAssistantView *)self backdropView];
+  [backdropView transitionToStyle:v9];
 
 LABEL_11:
 }
 
-- (void)setSystemInputAssistantItem:(id)a3
+- (void)setSystemInputAssistantItem:(id)item
 {
-  v5 = a3;
-  if (self->_systemInputAssistantItem != v5)
+  itemCopy = item;
+  if (self->_systemInputAssistantItem != itemCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_systemInputAssistantItem, a3);
+    v6 = itemCopy;
+    objc_storeStrong(&self->_systemInputAssistantItem, item);
     [(TUISystemInputAssistantView *)self _updateBarButtonGroupsIfNeeded];
-    v5 = v6;
+    itemCopy = v6;
   }
 }
 
-- (void)setInputAssistantItem:(id)a3 force:(BOOL)a4
+- (void)setInputAssistantItem:(id)item force:(BOOL)force
 {
-  v4 = a4;
-  v7 = a3;
-  if (self->_inputAssistantItem != v7 || v4)
+  forceCopy = force;
+  itemCopy = item;
+  if (self->_inputAssistantItem != itemCopy || forceCopy)
   {
-    v9 = v7;
-    objc_storeStrong(&self->_inputAssistantItem, a3);
+    v9 = itemCopy;
+    objc_storeStrong(&self->_inputAssistantItem, item);
     [(TUISystemInputAssistantView *)self _updateBarButtonGroups];
     [(TUISystemInputAssistantView *)self _exchangeCenterViewIfNecessaryForCompatibility];
-    v7 = v9;
+    itemCopy = v9;
   }
 }
 
-- (void)_setButtonBarItemsExpanded:(BOOL)a3 animationType:(unint64_t)a4
+- (void)_setButtonBarItemsExpanded:(BOOL)expanded animationType:(unint64_t)type
 {
-  if (self->_buttonBarItemsExpanded != a3)
+  if (self->_buttonBarItemsExpanded != expanded)
   {
     v15 = v4;
     v16 = v5;
-    v7 = a3;
-    self->_buttonBarItemsExpanded = a3;
-    v9 = [(TUISystemInputAssistantView *)self delegate];
+    expandedCopy = expanded;
+    self->_buttonBarItemsExpanded = expanded;
+    delegate = [(TUISystemInputAssistantView *)self delegate];
     v10 = objc_opt_respondsToSelector();
 
     if (v10)
     {
-      v11 = [(TUISystemInputAssistantView *)self delegate];
-      [v11 systemInputAssistantView:self willExpand:v7];
+      delegate2 = [(TUISystemInputAssistantView *)self delegate];
+      [delegate2 systemInputAssistantView:self willExpand:expandedCopy];
     }
 
-    v12 = [(TUISystemInputAssistantView *)self centerPageView];
+    centerPageView = [(TUISystemInputAssistantView *)self centerPageView];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __72__TUISystemInputAssistantView__setButtonBarItemsExpanded_animationType___block_invoke;
     v13[3] = &unk_1E72D2C30;
     v13[4] = self;
-    v14 = v7;
-    [v12 setSecondaryViewVisible:v7 withAnimationType:a4 completion:v13];
+    v14 = expandedCopy;
+    [centerPageView setSecondaryViewVisible:expandedCopy withAnimationType:type completion:v13];
 
     [(TUISystemInputAssistantView *)self _updateBarButtonGroups];
   }
@@ -964,9 +964,9 @@ void __72__TUISystemInputAssistantView__setButtonBarItemsExpanded_animationType_
   }
 }
 
-- (void)setButtonBarItemsExpanded:(BOOL)a3 animated:(BOOL)a4
+- (void)setButtonBarItemsExpanded:(BOOL)expanded animated:(BOOL)animated
 {
-  if (a4)
+  if (animated)
   {
     v4 = 2;
   }
@@ -976,23 +976,23 @@ void __72__TUISystemInputAssistantView__setButtonBarItemsExpanded_animationType_
     v4 = 0;
   }
 
-  [(TUISystemInputAssistantView *)self _setButtonBarItemsExpanded:a3 animationType:v4];
+  [(TUISystemInputAssistantView *)self _setButtonBarItemsExpanded:expanded animationType:v4];
 }
 
-- (void)setHidesExpandableButton:(BOOL)a3
+- (void)setHidesExpandableButton:(BOOL)button
 {
-  if (self->_hidesExpandableButton != a3)
+  if (self->_hidesExpandableButton != button)
   {
-    self->_hidesExpandableButton = a3;
+    self->_hidesExpandableButton = button;
     [(TUISystemInputAssistantView *)self _updateExpandableButtonBarItems];
   }
 }
 
-- (void)setShowsExpandableButtonBarItems:(BOOL)a3
+- (void)setShowsExpandableButtonBarItems:(BOOL)items
 {
-  if (self->_showsExpandableButtonBarItems != a3)
+  if (self->_showsExpandableButtonBarItems != items)
   {
-    self->_showsExpandableButtonBarItems = a3;
+    self->_showsExpandableButtonBarItems = items;
     [(TUISystemInputAssistantView *)self _updateExpandableButtonBarItems];
 
     [(TUISystemInputAssistantView *)self _updateBarButtonGroups];
@@ -1010,37 +1010,37 @@ void __72__TUISystemInputAssistantView__setButtonBarItemsExpanded_animationType_
 
     [(TUIAssistantButtonBarView *)self->_unifiedButtonBar setDelegate:self];
     [(TUIAssistantButtonBarView *)self->_unifiedButtonBar setButtonAlignment:1];
-    v6 = [(TUISystemInputAssistantView *)self renderConfig];
-    v7 = [v6 buttonBarVisualProvider];
-    [(TUIAssistantButtonBarView *)self->_unifiedButtonBar setVisualProvider:v7];
+    renderConfig = [(TUISystemInputAssistantView *)self renderConfig];
+    buttonBarVisualProvider = [renderConfig buttonBarVisualProvider];
+    [(TUIAssistantButtonBarView *)self->_unifiedButtonBar setVisualProvider:buttonBarVisualProvider];
 
     [(TUIAssistantButtonBarView *)self->_unifiedButtonBar setAccessibilityIdentifier:@"UnifiedButtonBar"];
     [(TUISystemInputAssistantView *)self setButtonBarItemsExpanded:0 animated:0];
     [(TUISystemInputAssistantView *)self _updateBarButtonGroups];
   }
 
-  v8 = [(TUISystemInputAssistantView *)self secondaryView];
-  v9 = v8;
-  if (!v8)
+  secondaryView = [(TUISystemInputAssistantView *)self secondaryView];
+  v9 = secondaryView;
+  if (!secondaryView)
   {
     v9 = self->_unifiedButtonBar;
   }
 
-  v10 = [(TUISystemInputAssistantView *)self centerPageView];
-  [v10 setSecondaryView:v9];
+  centerPageView = [(TUISystemInputAssistantView *)self centerPageView];
+  [centerPageView setSecondaryView:v9];
 
   v11 = self->_unifiedButtonBar;
 
   return v11;
 }
 
-- (void)setShowsButtonBarItemsInline:(BOOL)a3
+- (void)setShowsButtonBarItemsInline:(BOOL)inline
 {
-  if (self->_showsButtonBarItemsInline != a3)
+  if (self->_showsButtonBarItemsInline != inline)
   {
-    self->_showsButtonBarItemsInline = a3;
+    self->_showsButtonBarItemsInline = inline;
     leftButtonBar = self->_leftButtonBar;
-    if (a3)
+    if (inline)
     {
       if (!leftButtonBar)
       {
@@ -1050,13 +1050,13 @@ void __72__TUISystemInputAssistantView__setButtonBarItemsExpanded_animationType_
         self->_leftButtonBar = v6;
 
         [(TUIAssistantButtonBarView *)self->_leftButtonBar setDelegate:self];
-        v8 = [(TUISystemInputAssistantView *)self appearanceDelegate];
-        [(TUIAssistantButtonBarView *)self->_leftButtonBar setAppearanceDelegate:v8];
+        appearanceDelegate = [(TUISystemInputAssistantView *)self appearanceDelegate];
+        [(TUIAssistantButtonBarView *)self->_leftButtonBar setAppearanceDelegate:appearanceDelegate];
 
         [(TUIAssistantButtonBarView *)self->_leftButtonBar setButtonAlignment:0];
         [(TUIAssistantButtonBarView *)self->_leftButtonBar setAccessibilityIdentifier:@"LeftButtonBar"];
-        v9 = [(TUISystemInputAssistantView *)self containerView];
-        [v9 addSubview:self->_leftButtonBar];
+        containerView = [(TUISystemInputAssistantView *)self containerView];
+        [containerView addSubview:self->_leftButtonBar];
       }
 
       if (!self->_rightButtonBar)
@@ -1067,13 +1067,13 @@ void __72__TUISystemInputAssistantView__setButtonBarItemsExpanded_animationType_
         self->_rightButtonBar = v11;
 
         [(TUIAssistantButtonBarView *)self->_rightButtonBar setDelegate:self];
-        v13 = [(TUISystemInputAssistantView *)self appearanceDelegate];
-        [(TUIAssistantButtonBarView *)self->_rightButtonBar setAppearanceDelegate:v13];
+        appearanceDelegate2 = [(TUISystemInputAssistantView *)self appearanceDelegate];
+        [(TUIAssistantButtonBarView *)self->_rightButtonBar setAppearanceDelegate:appearanceDelegate2];
 
         [(TUIAssistantButtonBarView *)self->_rightButtonBar setButtonAlignment:2];
         [(TUIAssistantButtonBarView *)self->_rightButtonBar setAccessibilityIdentifier:@"RightButtonBar"];
-        v14 = [(TUISystemInputAssistantView *)self containerView];
-        [v14 addSubview:self->_rightButtonBar];
+        containerView2 = [(TUISystemInputAssistantView *)self containerView];
+        [containerView2 addSubview:self->_rightButtonBar];
       }
 
       [(TUIAssistantButtonBarView *)self->_leftButtonBar setHidden:0];
@@ -1093,36 +1093,36 @@ void __72__TUISystemInputAssistantView__setButtonBarItemsExpanded_animationType_
   }
 }
 
-- (void)setBackgroundVisible:(BOOL)a3
+- (void)setBackgroundVisible:(BOOL)visible
 {
-  v3 = a3;
-  self->_backgroundVisible = a3;
-  v4 = [(TUISystemInputAssistantView *)self backdropView];
-  [v4 setHidden:!v3];
+  visibleCopy = visible;
+  self->_backgroundVisible = visible;
+  backdropView = [(TUISystemInputAssistantView *)self backdropView];
+  [backdropView setHidden:!visibleCopy];
 }
 
-- (void)setScrollEnabled:(BOOL)a3
+- (void)setScrollEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  self->_scrollEnabled = a3;
-  v4 = [(TUISystemInputAssistantView *)self centerPageView];
-  [v4 setScrollEnabled:v3];
+  enabledCopy = enabled;
+  self->_scrollEnabled = enabled;
+  centerPageView = [(TUISystemInputAssistantView *)self centerPageView];
+  [centerPageView setScrollEnabled:enabledCopy];
 }
 
-- (void)setCenterViewHidden:(BOOL)a3
+- (void)setCenterViewHidden:(BOOL)hidden
 {
-  if (self->_centerViewHidden != a3)
+  if (self->_centerViewHidden != hidden)
   {
-    v4 = a3;
-    self->_centerViewHidden = a3;
-    v6 = [(TUISystemInputAssistantView *)self centerView];
-    [v6 setHidden:v4];
+    hiddenCopy = hidden;
+    self->_centerViewHidden = hidden;
+    centerView = [(TUISystemInputAssistantView *)self centerView];
+    [centerView setHidden:hiddenCopy];
 
-    v7 = [(TUISystemInputAssistantView *)self leftButtonBar];
-    [v7 setConstrainedHorizontally:v4 ^ 1];
+    leftButtonBar = [(TUISystemInputAssistantView *)self leftButtonBar];
+    [leftButtonBar setConstrainedHorizontally:hiddenCopy ^ 1];
 
-    v8 = [(TUISystemInputAssistantView *)self rightButtonBar];
-    [v8 setConstrainedHorizontally:v4 ^ 1];
+    rightButtonBar = [(TUISystemInputAssistantView *)self rightButtonBar];
+    [rightButtonBar setConstrainedHorizontally:hiddenCopy ^ 1];
 
     [(TUISystemInputAssistantView *)self _updateExpandableButtonBarItems];
     [(TUISystemInputAssistantView *)self _updateBarButtonGroups];
@@ -1131,39 +1131,39 @@ void __72__TUISystemInputAssistantView__setButtonBarItemsExpanded_animationType_
   }
 }
 
-- (void)setCenterViewWidth:(double)a3
+- (void)setCenterViewWidth:(double)width
 {
-  if (self->_centerViewWidth != a3)
+  if (self->_centerViewWidth != width)
   {
-    self->_centerViewWidth = a3;
+    self->_centerViewWidth = width;
     [(TUISystemInputAssistantView *)self setNeedsLayout];
   }
 }
 
-- (void)setSecondaryView:(id)a3
+- (void)setSecondaryView:(id)view
 {
-  objc_storeStrong(&self->_secondaryView, a3);
-  v5 = a3;
-  unifiedButtonBar = v5;
-  if (!v5)
+  objc_storeStrong(&self->_secondaryView, view);
+  viewCopy = view;
+  unifiedButtonBar = viewCopy;
+  if (!viewCopy)
   {
     unifiedButtonBar = self->_unifiedButtonBar;
   }
 
-  v7 = [(TUISystemInputAssistantView *)self centerPageView];
-  [v7 setSecondaryView:unifiedButtonBar];
+  centerPageView = [(TUISystemInputAssistantView *)self centerPageView];
+  [centerPageView setSecondaryView:unifiedButtonBar];
 }
 
-- (void)setCenterView:(id)a3
+- (void)setCenterView:(id)view
 {
-  objc_storeStrong(&self->_centerView, a3);
-  v5 = a3;
-  [v5 setHidden:self->_centerViewHidden];
-  v6 = [(TUISystemInputAssistantView *)self renderConfig];
-  [v5 _setRenderConfig:v6];
+  objc_storeStrong(&self->_centerView, view);
+  viewCopy = view;
+  [viewCopy setHidden:self->_centerViewHidden];
+  renderConfig = [(TUISystemInputAssistantView *)self renderConfig];
+  [viewCopy _setRenderConfig:renderConfig];
 
-  v7 = [(TUISystemInputAssistantView *)self centerPageView];
-  [v7 setPrimaryView:v5];
+  centerPageView = [(TUISystemInputAssistantView *)self centerPageView];
+  [centerPageView setPrimaryView:viewCopy];
 
   [(TUISystemInputAssistantView *)self _exchangeCenterViewIfNecessaryForCompatibility];
 
@@ -1172,144 +1172,144 @@ void __72__TUISystemInputAssistantView__setButtonBarItemsExpanded_animationType_
 
 - (void)resetContainerConstraints
 {
-  v3 = [(TUISystemInputAssistantView *)self staticConstraints];
+  staticConstraints = [(TUISystemInputAssistantView *)self staticConstraints];
 
-  if (v3)
+  if (staticConstraints)
   {
     v4 = MEMORY[0x1E696ACD8];
-    v5 = [(TUISystemInputAssistantView *)self staticConstraints];
-    [v4 deactivateConstraints:v5];
+    staticConstraints2 = [(TUISystemInputAssistantView *)self staticConstraints];
+    [v4 deactivateConstraints:staticConstraints2];
   }
 
-  v6 = [(TUISystemInputAssistantView *)self containerLeading];
+  containerLeading = [(TUISystemInputAssistantView *)self containerLeading];
 
-  if (v6)
+  if (containerLeading)
   {
-    v7 = [(TUISystemInputAssistantView *)self containerLeading];
-    [v7 setActive:0];
+    containerLeading2 = [(TUISystemInputAssistantView *)self containerLeading];
+    [containerLeading2 setActive:0];
   }
 
-  v8 = [(TUISystemInputAssistantView *)self containerTrailing];
+  containerTrailing = [(TUISystemInputAssistantView *)self containerTrailing];
 
-  if (v8)
+  if (containerTrailing)
   {
-    v9 = [(TUISystemInputAssistantView *)self containerTrailing];
-    [v9 setActive:0];
+    containerTrailing2 = [(TUISystemInputAssistantView *)self containerTrailing];
+    [containerTrailing2 setActive:0];
   }
 
-  v10 = [(TUISystemInputAssistantView *)self containerCenter];
+  containerCenter = [(TUISystemInputAssistantView *)self containerCenter];
 
-  if (v10)
+  if (containerCenter)
   {
-    v11 = [(TUISystemInputAssistantView *)self containerCenter];
-    [v11 setActive:0];
+    containerCenter2 = [(TUISystemInputAssistantView *)self containerCenter];
+    [containerCenter2 setActive:0];
   }
 
-  v12 = [(TUISystemInputAssistantView *)self containerView];
-  [v12 setTranslatesAutoresizingMaskIntoConstraints:1];
+  containerView = [(TUISystemInputAssistantView *)self containerView];
+  [containerView setTranslatesAutoresizingMaskIntoConstraints:1];
 }
 
 - (void)updateContainerConstraintsForFloating
 {
   v50[5] = *MEMORY[0x1E69E9840];
-  v3 = [(TUISystemInputAssistantView *)self containerView];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+  containerView = [(TUISystemInputAssistantView *)self containerView];
+  [containerView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v4 = [(TUISystemInputAssistantView *)self containerLeading];
+  containerLeading = [(TUISystemInputAssistantView *)self containerLeading];
 
-  if (!v4)
+  if (!containerLeading)
   {
-    v5 = [(TUISystemInputAssistantView *)self containerView];
-    v6 = [v5 leadingAnchor];
-    v7 = [(TUISystemInputAssistantView *)self leadingAnchor];
-    v8 = [v6 constraintEqualToAnchor:v7 constant:16.0];
+    containerView2 = [(TUISystemInputAssistantView *)self containerView];
+    leadingAnchor = [containerView2 leadingAnchor];
+    leadingAnchor2 = [(TUISystemInputAssistantView *)self leadingAnchor];
+    v8 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
     [(TUISystemInputAssistantView *)self setContainerLeading:v8];
   }
 
-  v9 = [(TUISystemInputAssistantView *)self containerTrailing];
+  containerTrailing = [(TUISystemInputAssistantView *)self containerTrailing];
 
-  if (!v9)
+  if (!containerTrailing)
   {
-    v10 = [(TUISystemInputAssistantView *)self trailingAnchor];
-    v11 = [(TUISystemInputAssistantView *)self containerView];
-    v12 = [v11 trailingAnchor];
-    v13 = [v10 constraintEqualToAnchor:v12 constant:16.0];
+    trailingAnchor = [(TUISystemInputAssistantView *)self trailingAnchor];
+    containerView3 = [(TUISystemInputAssistantView *)self containerView];
+    trailingAnchor2 = [containerView3 trailingAnchor];
+    v13 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:16.0];
     [(TUISystemInputAssistantView *)self setContainerTrailing:v13];
   }
 
-  v14 = [(TUISystemInputAssistantView *)self containerCenter];
+  containerCenter = [(TUISystemInputAssistantView *)self containerCenter];
 
-  if (!v14)
+  if (!containerCenter)
   {
-    v15 = [(TUISystemInputAssistantView *)self containerView];
-    v16 = [v15 centerXAnchor];
-    v17 = [(TUISystemInputAssistantView *)self centerXAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17];
+    containerView4 = [(TUISystemInputAssistantView *)self containerView];
+    centerXAnchor = [containerView4 centerXAnchor];
+    centerXAnchor2 = [(TUISystemInputAssistantView *)self centerXAnchor];
+    v18 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [(TUISystemInputAssistantView *)self setContainerCenter:v18];
   }
 
-  v19 = [(TUISystemInputAssistantView *)self staticConstraints];
+  staticConstraints = [(TUISystemInputAssistantView *)self staticConstraints];
 
-  if (!v19)
+  if (!staticConstraints)
   {
-    v49 = [(TUISystemInputAssistantView *)self containerView];
-    v47 = [v49 leftAnchor];
-    v48 = [(TUISystemInputAssistantView *)self leftButtonBar];
-    v46 = [v48 leftAnchor];
-    v45 = [v47 constraintEqualToAnchor:v46];
+    containerView5 = [(TUISystemInputAssistantView *)self containerView];
+    leftAnchor = [containerView5 leftAnchor];
+    leftButtonBar = [(TUISystemInputAssistantView *)self leftButtonBar];
+    leftAnchor2 = [leftButtonBar leftAnchor];
+    v45 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     v50[0] = v45;
-    v44 = [(TUISystemInputAssistantView *)self containerView];
-    v42 = [v44 rightAnchor];
-    v43 = [(TUISystemInputAssistantView *)self rightButtonBar];
-    v41 = [v43 rightAnchor];
-    v40 = [v42 constraintEqualToAnchor:v41];
+    containerView6 = [(TUISystemInputAssistantView *)self containerView];
+    rightAnchor = [containerView6 rightAnchor];
+    rightButtonBar = [(TUISystemInputAssistantView *)self rightButtonBar];
+    rightAnchor2 = [rightButtonBar rightAnchor];
+    v40 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
     v50[1] = v40;
-    v39 = [(TUISystemInputAssistantView *)self containerView];
-    v37 = [v39 topAnchor];
-    v38 = [(TUISystemInputAssistantView *)self rightButtonBar];
-    v36 = [v38 topAnchor];
-    v35 = [v37 constraintEqualToAnchor:v36];
+    containerView7 = [(TUISystemInputAssistantView *)self containerView];
+    topAnchor = [containerView7 topAnchor];
+    rightButtonBar2 = [(TUISystemInputAssistantView *)self rightButtonBar];
+    topAnchor2 = [rightButtonBar2 topAnchor];
+    v35 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v50[2] = v35;
-    v34 = [(TUISystemInputAssistantView *)self containerView];
-    v20 = [v34 bottomAnchor];
-    v21 = [(TUISystemInputAssistantView *)self rightButtonBar];
-    v22 = [v21 bottomAnchor];
-    v23 = [v20 constraintEqualToAnchor:v22];
+    containerView8 = [(TUISystemInputAssistantView *)self containerView];
+    bottomAnchor = [containerView8 bottomAnchor];
+    rightButtonBar3 = [(TUISystemInputAssistantView *)self rightButtonBar];
+    bottomAnchor2 = [rightButtonBar3 bottomAnchor];
+    v23 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v50[3] = v23;
-    v24 = [(TUISystemInputAssistantView *)self containerView];
-    v25 = [v24 topAnchor];
-    v26 = [(TUISystemInputAssistantView *)self topAnchor];
-    v27 = [v25 constraintEqualToAnchor:v26];
+    containerView9 = [(TUISystemInputAssistantView *)self containerView];
+    topAnchor3 = [containerView9 topAnchor];
+    topAnchor4 = [(TUISystemInputAssistantView *)self topAnchor];
+    v27 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v50[4] = v27;
     v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:v50 count:5];
     [(TUISystemInputAssistantView *)self setStaticConstraints:v28];
   }
 
-  v29 = [(TUISystemInputAssistantView *)self staticConstraints];
-  v30 = [v29 objectAtIndexedSubscript:0];
-  v31 = [v30 isActive];
+  staticConstraints2 = [(TUISystemInputAssistantView *)self staticConstraints];
+  v30 = [staticConstraints2 objectAtIndexedSubscript:0];
+  isActive = [v30 isActive];
 
-  if ((v31 & 1) == 0)
+  if ((isActive & 1) == 0)
   {
     v32 = MEMORY[0x1E696ACD8];
-    v33 = [(TUISystemInputAssistantView *)self staticConstraints];
-    [v32 activateConstraints:v33];
+    staticConstraints3 = [(TUISystemInputAssistantView *)self staticConstraints];
+    [v32 activateConstraints:staticConstraints3];
   }
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = [(TUISystemInputAssistantView *)self centerPageView];
-  v10 = [v9 isHidden];
-  if ((v10 & 1) == 0)
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
+  centerPageView = [(TUISystemInputAssistantView *)self centerPageView];
+  isHidden = [centerPageView isHidden];
+  if ((isHidden & 1) == 0)
   {
-    v11 = [(TUISystemInputAssistantView *)self centerPageView];
-    v12 = [(TUISystemInputAssistantView *)self centerPageView];
-    [(TUISystemInputAssistantView *)self convertPoint:v12 toView:x, y];
-    if ([v11 pointInside:v8 withEvent:?])
+    centerPageView2 = [(TUISystemInputAssistantView *)self centerPageView];
+    centerPageView3 = [(TUISystemInputAssistantView *)self centerPageView];
+    [(TUISystemInputAssistantView *)self convertPoint:centerPageView3 toView:x, y];
+    if ([centerPageView2 pointInside:eventCopy withEvent:?])
     {
       v13 = 1;
 LABEL_15:
@@ -1317,18 +1317,18 @@ LABEL_15:
       goto LABEL_16;
     }
 
-    v22 = v12;
-    v23 = v11;
+    v22 = centerPageView3;
+    v23 = centerPageView2;
   }
 
-  v14 = [(TUISystemInputAssistantView *)self leftButtonBar];
-  v15 = [v14 isHidden];
-  if ((v15 & 1) == 0)
+  leftButtonBar = [(TUISystemInputAssistantView *)self leftButtonBar];
+  isHidden2 = [leftButtonBar isHidden];
+  if ((isHidden2 & 1) == 0)
   {
-    v16 = [(TUISystemInputAssistantView *)self leftButtonBar];
-    v4 = [(TUISystemInputAssistantView *)self leftButtonBar];
-    [(TUISystemInputAssistantView *)self convertPoint:v4 toView:x, y];
-    if ([v16 pointInside:v8 withEvent:?])
+    leftButtonBar2 = [(TUISystemInputAssistantView *)self leftButtonBar];
+    leftButtonBar3 = [(TUISystemInputAssistantView *)self leftButtonBar];
+    [(TUISystemInputAssistantView *)self convertPoint:leftButtonBar3 toView:x, y];
+    if ([leftButtonBar2 pointInside:eventCopy withEvent:?])
     {
       v13 = 1;
 LABEL_13:
@@ -1336,11 +1336,11 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    v21 = v16;
+    v21 = leftButtonBar2;
   }
 
-  v17 = [(TUISystemInputAssistantView *)self rightButtonBar];
-  if ([v17 isHidden])
+  rightButtonBar = [(TUISystemInputAssistantView *)self rightButtonBar];
+  if ([rightButtonBar isHidden])
   {
 
     v13 = 0;
@@ -1348,23 +1348,23 @@ LABEL_13:
 
   else
   {
-    v18 = [(TUISystemInputAssistantView *)self rightButtonBar];
-    v19 = [(TUISystemInputAssistantView *)self rightButtonBar];
-    [(TUISystemInputAssistantView *)self convertPoint:v19 toView:x, y];
-    v13 = [v18 pointInside:v8 withEvent:?];
+    rightButtonBar2 = [(TUISystemInputAssistantView *)self rightButtonBar];
+    rightButtonBar3 = [(TUISystemInputAssistantView *)self rightButtonBar];
+    [(TUISystemInputAssistantView *)self convertPoint:rightButtonBar3 toView:x, y];
+    v13 = [rightButtonBar2 pointInside:eventCopy withEvent:?];
   }
 
-  v16 = v21;
-  if ((v15 & 1) == 0)
+  leftButtonBar2 = v21;
+  if ((isHidden2 & 1) == 0)
   {
     goto LABEL_13;
   }
 
 LABEL_14:
 
-  v12 = v22;
-  v11 = v23;
-  if ((v10 & 1) == 0)
+  centerPageView3 = v22;
+  centerPageView2 = v23;
+  if ((isHidden & 1) == 0)
   {
     goto LABEL_15;
   }
@@ -1374,11 +1374,11 @@ LABEL_16:
   return v13;
 }
 
-- (TUISystemInputAssistantView)initWithFrame:(CGRect)a3
+- (TUISystemInputAssistantView)initWithFrame:(CGRect)frame
 {
   v21.receiver = self;
   v21.super_class = TUISystemInputAssistantView;
-  v3 = [(TUISystemInputAssistantView *)&v21 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TUISystemInputAssistantView *)&v21 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E69DCB90]);
@@ -1389,9 +1389,9 @@ LABEL_16:
     v9 = [v4 initWithFrame:3903 style:{*MEMORY[0x1E695F058], v6, v7, v8}];
     [(TUISystemInputAssistantView *)v3 setBackdropView:v9];
 
-    v10 = [(TUISystemInputAssistantView *)v3 containerView];
-    v11 = [(TUISystemInputAssistantView *)v3 backdropView];
-    [v10 addSubview:v11];
+    containerView = [(TUISystemInputAssistantView *)v3 containerView];
+    backdropView = [(TUISystemInputAssistantView *)v3 backdropView];
+    [containerView addSubview:backdropView];
 
     v12 = objc_alloc_init(TUISystemInputAssistantLayoutStandard);
     [(TUISystemInputAssistantView *)v3 setLayout:v12];
@@ -1402,15 +1402,15 @@ LABEL_16:
     v14 = [[TUISystemInputAssistantPageView alloc] initWithFrame:v5, v6, v7, v8];
     [(TUISystemInputAssistantView *)v3 setCenterPageView:v14];
 
-    v15 = [(TUISystemInputAssistantView *)v3 centerPageView];
-    [v15 setPageViewDelegate:v3];
+    centerPageView = [(TUISystemInputAssistantView *)v3 centerPageView];
+    [centerPageView setPageViewDelegate:v3];
 
-    v16 = [(TUISystemInputAssistantView *)v3 centerPageView];
-    [v16 setAccessibilityIdentifier:@"CenterPageView"];
+    centerPageView2 = [(TUISystemInputAssistantView *)v3 centerPageView];
+    [centerPageView2 setAccessibilityIdentifier:@"CenterPageView"];
 
-    v17 = [(TUISystemInputAssistantView *)v3 containerView];
-    v18 = [(TUISystemInputAssistantView *)v3 centerPageView];
-    [v17 addSubview:v18];
+    containerView2 = [(TUISystemInputAssistantView *)v3 containerView];
+    centerPageView3 = [(TUISystemInputAssistantView *)v3 centerPageView];
+    [containerView2 addSubview:centerPageView3];
 
     [(TUISystemInputAssistantView *)v3 setScrollEnabled:1];
     v19 = [[TUIButtonBarAppearanceDelegate alloc] initWithSystemInputAssistantView:v3];
@@ -1422,14 +1422,14 @@ LABEL_16:
 
 - (CGRect)containerFrame
 {
-  v3 = [(TUISystemInputAssistantView *)self leftButtonBar];
-  [v3 frame];
+  leftButtonBar = [(TUISystemInputAssistantView *)self leftButtonBar];
+  [leftButtonBar frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(TUISystemInputAssistantView *)self rightButtonBar];
-  [v12 frame];
+  rightButtonBar = [(TUISystemInputAssistantView *)self rightButtonBar];
+  [rightButtonBar frame];
   v40.origin.x = v13;
   v40.origin.y = v14;
   v40.size.width = v15;
@@ -1446,8 +1446,8 @@ LABEL_16:
 
   if (![(TUISystemInputAssistantView *)self centerViewHidden])
   {
-    v21 = [(TUISystemInputAssistantView *)self centerPageView];
-    [v21 frame];
+    centerPageView = [(TUISystemInputAssistantView *)self centerPageView];
+    [centerPageView frame];
     v41.origin.x = v22;
     v41.origin.y = v23;
     v41.size.width = v24;
@@ -1487,20 +1487,20 @@ LABEL_16:
 - (TUICandidateView)candidateView
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [(TUISystemInputAssistantView *)self centerView];
+  centerView = [(TUISystemInputAssistantView *)self centerView];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(TUISystemInputAssistantView *)self centerView];
+    centerView2 = [(TUISystemInputAssistantView *)self centerView];
   }
 
   else
   {
     if (_os_feature_enabled_impl())
     {
-      v6 = [(TUISystemInputAssistantView *)self centerView];
+      centerView3 = [(TUISystemInputAssistantView *)self centerView];
       objc_opt_class();
       v7 = objc_opt_isKindOfClass();
 
@@ -1510,10 +1510,10 @@ LABEL_16:
         v19 = 0u;
         v16 = 0u;
         v17 = 0u;
-        v8 = [(TUISystemInputAssistantView *)self centerView];
-        v9 = [v8 arrangedSubviews];
+        centerView4 = [(TUISystemInputAssistantView *)self centerView];
+        arrangedSubviews = [centerView4 arrangedSubviews];
 
-        v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v10 = [arrangedSubviews countByEnumeratingWithState:&v16 objects:v20 count:16];
         if (v10)
         {
           v11 = v10;
@@ -1524,20 +1524,20 @@ LABEL_16:
             {
               if (*v17 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(arrangedSubviews);
               }
 
               v14 = *(*(&v16 + 1) + 8 * i);
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v5 = v14;
+                centerView2 = v14;
 
                 goto LABEL_15;
               }
             }
 
-            v11 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+            v11 = [arrangedSubviews countByEnumeratingWithState:&v16 objects:v20 count:16];
             if (v11)
             {
               continue;
@@ -1549,12 +1549,12 @@ LABEL_16:
       }
     }
 
-    v5 = 0;
+    centerView2 = 0;
   }
 
 LABEL_15:
 
-  return v5;
+  return centerView2;
 }
 
 @end

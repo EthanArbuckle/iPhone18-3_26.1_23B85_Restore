@@ -6,17 +6,17 @@
 - (double)getServingCellRSRP;
 - (void)configureCTNotificationCallBacks;
 - (void)dealloc;
-- (void)getCurrentCTMetrics:(__CTServerConnection *)a3;
-- (void)setCurrentSignalBars:(int64_t)a3;
-- (void)setServingCellECIO:(double)a3;
-- (void)setServingCellRSCP:(double)a3;
-- (void)setServingCellRSRP:(double)a3;
-- (void)setServingCellRSRQ:(double)a3;
-- (void)setServingCellRSSI:(double)a3;
-- (void)setServingCellSNR:(double)a3;
-- (void)setSrvccHandoverState:(BOOL)a3;
+- (void)getCurrentCTMetrics:(__CTServerConnection *)metrics;
+- (void)setCurrentSignalBars:(int64_t)bars;
+- (void)setServingCellECIO:(double)o;
+- (void)setServingCellRSCP:(double)p;
+- (void)setServingCellRSRP:(double)p;
+- (void)setServingCellRSRQ:(double)q;
+- (void)setServingCellRSSI:(double)i;
+- (void)setServingCellSNR:(double)r;
+- (void)setSrvccHandoverState:(BOOL)state;
 - (void)tiggerEnhanceLQMConfiguration;
-- (void)updateAudioQualityKaroo:(id *)a3;
+- (void)updateAudioQualityKaroo:(id *)karoo;
 - (void)updateMovAverageOfSignalBar;
 @end
 
@@ -28,7 +28,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000E6F68;
   block[3] = &unk_10023DB28;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1002B81C8 != -1)
   {
     dispatch_once(&qword_1002B81C8, block);
@@ -157,7 +157,7 @@
   return v5;
 }
 
-- (void)getCurrentCTMetrics:(__CTServerConnection *)a3
+- (void)getCurrentCTMetrics:(__CTServerConnection *)metrics
 {
   v18 = 0;
   cf = 0;
@@ -169,7 +169,7 @@
   [WCM_Logging logLevel:22 message:@"Did not receive LQM BLOB from CT"];
   sub_1000E8210(0, self);
   LOBYTE(theString1) = 1;
-  if (a3)
+  if (metrics)
   {
     if (_CTServerConnectionIsDataAttached())
     {
@@ -227,7 +227,7 @@ LABEL_10:
     [WCM_Logging logLevel:22 message:@"WRM_CTService:_CTServerConnectionGetRegistrationStatus reg status %d, roaming Status %d", v12, v13];
   }
 
-  sub_1000E833C(a3, self);
+  sub_1000E833C(metrics, self);
   CapabilityStatusExtended = _CTServerConnectionGetCapabilityStatusExtended();
   if (HIDWORD(CapabilityStatusExtended))
   {
@@ -329,101 +329,101 @@ LABEL_10:
   }
 }
 
-- (void)setServingCellRSSI:(double)a3
+- (void)setServingCellRSSI:(double)i
 {
   if (self->mValidRssiMeasurement)
   {
-    self->mRssiDelta = self->mRssi - a3;
-    self->mRssi = a3;
+    self->mRssiDelta = self->mRssi - i;
+    self->mRssi = i;
   }
 
   else
   {
-    self->mRssi = a3;
+    self->mRssi = i;
     self->mValidRssiMeasurement = 1;
   }
 }
 
-- (void)setServingCellRSRP:(double)a3
+- (void)setServingCellRSRP:(double)p
 {
   if (self->mValidRsrpMeasurement)
   {
-    self->mRsrpDelta = self->mRsrp - a3;
-    self->mRsrp = a3;
+    self->mRsrpDelta = self->mRsrp - p;
+    self->mRsrp = p;
   }
 
   else
   {
-    self->mRsrp = a3;
+    self->mRsrp = p;
     self->mValidRsrpMeasurement = 1;
   }
 }
 
-- (void)setServingCellRSRQ:(double)a3
+- (void)setServingCellRSRQ:(double)q
 {
   if (self->mValidRsrqMeasurement)
   {
-    self->mRsrqDelta = self->mRsrq - a3;
-    self->mRsrq = a3;
+    self->mRsrqDelta = self->mRsrq - q;
+    self->mRsrq = q;
   }
 
   else
   {
-    self->mRsrq = a3;
+    self->mRsrq = q;
     self->mValidRsrqMeasurement = 1;
   }
 }
 
-- (void)setServingCellSNR:(double)a3
+- (void)setServingCellSNR:(double)r
 {
   if (self->mValidSnrMeasurement)
   {
-    self->mSnrDelta = self->mSnr - a3;
-    self->mSnr = a3;
+    self->mSnrDelta = self->mSnr - r;
+    self->mSnr = r;
   }
 
   else
   {
-    self->mSnr = a3;
+    self->mSnr = r;
     self->mValidSnrMeasurement = 1;
   }
 }
 
-- (void)setServingCellRSCP:(double)a3
+- (void)setServingCellRSCP:(double)p
 {
   if (self->mValidRscpMeasurement)
   {
-    self->mRscpDelta = self->mRscp - a3;
-    self->mRscp = a3;
+    self->mRscpDelta = self->mRscp - p;
+    self->mRscp = p;
   }
 
   else
   {
-    self->mRscp = a3;
+    self->mRscp = p;
     self->mValidRscpMeasurement = 1;
   }
 }
 
-- (void)setServingCellECIO:(double)a3
+- (void)setServingCellECIO:(double)o
 {
   if (self->mValidEcioMeasurement)
   {
-    self->mEcioDelta = self->mEcio - a3;
-    self->mEcio = a3;
+    self->mEcioDelta = self->mEcio - o;
+    self->mEcio = o;
   }
 
   else
   {
-    self->mEcio = a3;
+    self->mEcio = o;
     self->mValidEcioMeasurement = 1;
   }
 }
 
-- (void)setCurrentSignalBars:(int64_t)a3
+- (void)setCurrentSignalBars:(int64_t)bars
 {
-  if (a3)
+  if (bars)
   {
-    self->mCurrentSignalBars = a3;
+    self->mCurrentSignalBars = bars;
   }
 
   else
@@ -433,7 +433,7 @@ LABEL_10:
   }
 }
 
-- (void)setSrvccHandoverState:(BOOL)a3
+- (void)setSrvccHandoverState:(BOOL)state
 {
   mQueue = self->mQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -441,17 +441,17 @@ LABEL_10:
   v4[2] = sub_1000E9500;
   v4[3] = &unk_10023E008;
   v4[4] = self;
-  v5 = a3;
+  stateCopy = state;
   dispatch_async(mQueue, v4);
 }
 
-- (void)updateAudioQualityKaroo:(id *)a3
+- (void)updateAudioQualityKaroo:(id *)karoo
 {
-  var0 = a3->var0;
-  var1 = a3->var1;
+  var0 = karoo->var0;
+  var1 = karoo->var1;
   v6 = (100 * var0) / (var1 + 0.000001) < 80.0 || var1 < 0x1F5;
   self->mPrevAudioQualityWasGood = v6;
-  [WCM_Logging logLevel:22 message:@"BB Audio Metrics, CodecType: %d, Total Erasures: %d, Total playbacks: %d, Percent Erasures: %f, RSCP: %f, ECIO:%f, Eval Quality: %d", a3->var2, var0, var1, (100 * var0) / (var1 + 0.000001), *&self->mRscp, *&self->mEcio, v6];
+  [WCM_Logging logLevel:22 message:@"BB Audio Metrics, CodecType: %d, Total Erasures: %d, Total playbacks: %d, Percent Erasures: %f, RSCP: %f, ECIO:%f, Eval Quality: %d", karoo->var2, var0, var1, (100 * var0) / (var1 + 0.000001), *&self->mRscp, *&self->mEcio, v6];
 }
 
 - (void)updateMovAverageOfSignalBar

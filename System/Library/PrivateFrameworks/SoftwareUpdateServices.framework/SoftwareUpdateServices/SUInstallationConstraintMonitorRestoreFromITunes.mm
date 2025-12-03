@@ -1,22 +1,22 @@
 @interface SUInstallationConstraintMonitorRestoreFromITunes
-- (id)initOnQueue:(id)a3 withDownload:(id)a4;
+- (id)initOnQueue:(id)queue withDownload:(id)download;
 - (unint64_t)unsatisfiedConstraints;
 - (void)_queue_beganRestoring;
 - (void)_queue_endedRestoring;
-- (void)_queue_setRestoring:(BOOL)a3;
+- (void)_queue_setRestoring:(BOOL)restoring;
 - (void)dealloc;
 @end
 
 @implementation SUInstallationConstraintMonitorRestoreFromITunes
 
-- (id)initOnQueue:(id)a3 withDownload:(id)a4
+- (id)initOnQueue:(id)queue withDownload:(id)download
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  downloadCopy = download;
   BSDispatchQueueAssert();
   v21.receiver = self;
   v21.super_class = SUInstallationConstraintMonitorRestoreFromITunes;
-  v8 = [(SUInstallationConstraintMonitorBase *)&v21 initOnQueue:v6 withRepresentedInstallationConstraints:64 andDownload:v7];
+  v8 = [(SUInstallationConstraintMonitorBase *)&v21 initOnQueue:queueCopy withRepresentedInstallationConstraints:64 andDownload:downloadCopy];
   v9 = v8;
   if (v8)
   {
@@ -27,22 +27,22 @@
     v19[4] = __Block_byref_object_dispose__3;
     v10 = v8;
     v20 = v10;
-    v11 = [*MEMORY[0x277D28A28] UTF8String];
+    uTF8String = [*MEMORY[0x277D28A28] UTF8String];
     v12 = *(v10 + 1);
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;
     handler[2] = __77__SUInstallationConstraintMonitorRestoreFromITunes_initOnQueue_withDownload___block_invoke;
     handler[3] = &unk_279CAB718;
     handler[4] = v19;
-    notify_register_dispatch(v11, v10 + 13, v12, handler);
-    v13 = [*MEMORY[0x277D28A20] UTF8String];
+    notify_register_dispatch(uTF8String, v10 + 13, v12, handler);
+    uTF8String2 = [*MEMORY[0x277D28A20] UTF8String];
     v14 = *(v10 + 1);
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __77__SUInstallationConstraintMonitorRestoreFromITunes_initOnQueue_withDownload___block_invoke_2;
     v17[3] = &unk_279CAB718;
     v17[4] = v19;
-    notify_register_dispatch(v13, v10 + 14, v14, v17);
+    notify_register_dispatch(uTF8String2, v10 + 14, v14, v17);
     state64 = 0;
     notify_get_state(*(v10 + 13), &state64);
     if (state64)
@@ -95,20 +95,20 @@
   [(SUInstallationConstraintMonitorRestoreFromITunes *)self _queue_setRestoring:0];
 }
 
-- (void)_queue_setRestoring:(BOOL)a3
+- (void)_queue_setRestoring:(BOOL)restoring
 {
-  v3 = a3;
+  restoringCopy = restoring;
   queue = self->super._queue;
   BSDispatchQueueAssert();
-  if (self->_queue_isRestoring != v3)
+  if (self->_queue_isRestoring != restoringCopy)
   {
-    self->_queue_isRestoring = v3;
+    self->_queue_isRestoring = restoringCopy;
     v6 = SULogInstallConstraints();
     self->_queue_isRestoring;
     SULogInfoForSubsystem(v6, @"%@ - iTunes restore constraint changed (satisfied? %@)", v7, v8, v9, v10, v11, v12, self);
 
-    v13 = [(SUInstallationConstraintMonitorBase *)self delegate];
-    [v13 installationConstraintMonitor:self constraintsDidChange:{-[SUInstallationConstraintMonitorBase representedConstraints](self, "representedConstraints")}];
+    delegate = [(SUInstallationConstraintMonitorBase *)self delegate];
+    [delegate installationConstraintMonitor:self constraintsDidChange:{-[SUInstallationConstraintMonitorBase representedConstraints](self, "representedConstraints")}];
   }
 }
 

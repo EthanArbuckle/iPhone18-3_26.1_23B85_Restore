@@ -6,8 +6,8 @@
 - (NavContainerLayoutDelegate)containerLayoutDelegate;
 - (NavManeuverSignView)maneuverSign;
 - (NavSignLayoutDelegate)signLayoutDelegate;
-- (NavSignView)initWithCoder:(id)a3;
-- (NavSignView)initWithFrame:(CGRect)a3;
+- (NavSignView)initWithCoder:(id)coder;
+- (NavSignView)initWithFrame:(CGRect)frame;
 - (NavSignViewAnalyticsDelegate)analyticsDelegate;
 - (TextFirstLineCharacterRangeFinder)firstLineCharacterRangeFinder;
 - (double)_calculateInterLabelConstraintConstant;
@@ -21,11 +21,11 @@
 - (void)clearContent;
 - (void)layoutSubviews;
 - (void)refreshSign;
-- (void)setDimmed:(BOOL)a3;
-- (void)setMaxHeight:(double)a3;
-- (void)setSignLayoutDelegate:(id)a3;
-- (void)setSignLayoutDelegate:(id)a3 withAnimation:(id)a4;
-- (void)setUsePersistentDisplay:(BOOL)a3;
+- (void)setDimmed:(BOOL)dimmed;
+- (void)setMaxHeight:(double)height;
+- (void)setSignLayoutDelegate:(id)delegate;
+- (void)setSignLayoutDelegate:(id)delegate withAnimation:(id)animation;
+- (void)setUsePersistentDisplay:(BOOL)display;
 - (void)updateTheme;
 @end
 
@@ -54,29 +54,29 @@
 
 - (double)_calculateInterLabelConstraintConstant
 {
-  v3 = [(NavSignView *)self signLayoutDelegate];
-  [v3 baselineMarginBetweenLabelsForSign:self];
+  signLayoutDelegate = [(NavSignView *)self signLayoutDelegate];
+  [signLayoutDelegate baselineMarginBetweenLabelsForSign:self];
   v5 = v4;
 
-  v6 = [(NavSignView *)self minorLabel];
-  [v6 bounds];
+  minorLabel = [(NavSignView *)self minorLabel];
+  [minorLabel bounds];
   v8 = v7;
   v10 = v9;
-  v11 = [(NavSignView *)self firstLineCharacterRangeFinder];
-  [v11 setTextSize:{v8, v10}];
+  firstLineCharacterRangeFinder = [(NavSignView *)self firstLineCharacterRangeFinder];
+  [firstLineCharacterRangeFinder setTextSize:{v8, v10}];
 
-  v12 = [(NavSignView *)self minorLabel];
-  v13 = [v12 attributedText];
+  minorLabel2 = [(NavSignView *)self minorLabel];
+  attributedText = [minorLabel2 attributedText];
 
-  v14 = [(NavSignView *)self firstLineCharacterRangeFinder];
-  [v14 setAttributedText:v13];
+  firstLineCharacterRangeFinder2 = [(NavSignView *)self firstLineCharacterRangeFinder];
+  [firstLineCharacterRangeFinder2 setAttributedText:attributedText];
 
-  v15 = [(NavSignView *)self firstLineCharacterRangeFinder];
-  v16 = [v15 lineFragments];
-  v17 = [v16 firstObject];
+  firstLineCharacterRangeFinder3 = [(NavSignView *)self firstLineCharacterRangeFinder];
+  lineFragments = [firstLineCharacterRangeFinder3 lineFragments];
+  firstObject = [lineFragments firstObject];
 
-  v18 = [(NavSignView *)self firstLineCharacterRangeFinder];
-  v19 = [v18 attributedStringForLineFragment:v17];
+  firstLineCharacterRangeFinder4 = [(NavSignView *)self firstLineCharacterRangeFinder];
+  v19 = [firstLineCharacterRangeFinder4 attributedStringForLineFragment:firstObject];
 
   v35 = 0;
   v36 = &v35;
@@ -90,39 +90,39 @@
   v34[3] = &unk_101653058;
   v34[4] = &v35;
   [v19 enumerateAttribute:NSAttachmentAttributeName inRange:0 options:objc_msgSend(v19 usingBlock:{"length"), 0, v34}];
-  v20 = [v36[5] image];
+  image = [v36[5] image];
 
-  if (v20)
+  if (image)
   {
-    v21 = [(NavSignView *)self minorLabel];
-    if ([v21 shouldUseAlternateFont])
+    minorLabel3 = [(NavSignView *)self minorLabel];
+    if ([minorLabel3 shouldUseAlternateFont])
     {
-      v22 = [(NavSignView *)self minorLabel];
-      [v22 alternateFont];
+      minorLabel4 = [(NavSignView *)self minorLabel];
+      [minorLabel4 alternateFont];
     }
 
     else
     {
-      v22 = [(NavSignView *)self minorLabel];
-      [v22 preferredFont];
+      minorLabel4 = [(NavSignView *)self minorLabel];
+      [minorLabel4 preferredFont];
     }
     v23 = ;
 
-    v24 = [v36[5] image];
-    [v24 size];
+    image2 = [v36[5] image];
+    [image2 size];
     v26 = v25;
     [v23 lineHeight];
     v28 = v27;
 
     if (v26 > v28)
     {
-      v29 = [(NavSignView *)self signLayoutDelegate];
-      [v29 labelBaselineToInlineShieldTopForSign:self];
+      signLayoutDelegate2 = [(NavSignView *)self signLayoutDelegate];
+      [signLayoutDelegate2 labelBaselineToInlineShieldTopForSign:self];
 
-      v30 = [v36[5] image];
-      [v30 size];
+      image3 = [v36[5] image];
+      [image3 size];
       [v36[5] bounds];
-      v31 = self;
+      selfCopy = self;
       UIRoundToViewScale();
       v5 = v32;
     }
@@ -135,69 +135,69 @@
 
 - (void)_configureLabels
 {
-  v3 = [(NavSignView *)self signLayoutDelegate];
+  signLayoutDelegate = [(NavSignView *)self signLayoutDelegate];
 
-  if (v3)
+  if (signLayoutDelegate)
   {
-    v29 = [(NavSignView *)self majorLabel];
-    v4 = [(NavSignView *)self signLayoutDelegate];
-    [v29 setTextAlignment:{objc_msgSend(v4, "navSignView:textAlignmentForMajorText:", self, 1)}];
+    majorLabel = [(NavSignView *)self majorLabel];
+    signLayoutDelegate2 = [(NavSignView *)self signLayoutDelegate];
+    [majorLabel setTextAlignment:{objc_msgSend(signLayoutDelegate2, "navSignView:textAlignmentForMajorText:", self, 1)}];
 
-    v5 = [(NavSignView *)self signLayoutDelegate];
-    v6 = [v5 navSignView:self preferredFontForMajorText:1];
-    v7 = [v6 _mapkit_fontByAddingFeaturesForTabularFigures];
-    [v29 setPreferredFont:v7];
+    signLayoutDelegate3 = [(NavSignView *)self signLayoutDelegate];
+    v6 = [signLayoutDelegate3 navSignView:self preferredFontForMajorText:1];
+    _mapkit_fontByAddingFeaturesForTabularFigures = [v6 _mapkit_fontByAddingFeaturesForTabularFigures];
+    [majorLabel setPreferredFont:_mapkit_fontByAddingFeaturesForTabularFigures];
 
-    v8 = [(NavSignView *)self signLayoutDelegate];
-    v9 = [v8 navSignView:self alternateFontForMajorText:1];
-    v10 = [v9 _mapkit_fontByAddingFeaturesForTabularFigures];
-    [v29 setAlternateFont:v10];
+    signLayoutDelegate4 = [(NavSignView *)self signLayoutDelegate];
+    v9 = [signLayoutDelegate4 navSignView:self alternateFontForMajorText:1];
+    _mapkit_fontByAddingFeaturesForTabularFigures2 = [v9 _mapkit_fontByAddingFeaturesForTabularFigures];
+    [majorLabel setAlternateFont:_mapkit_fontByAddingFeaturesForTabularFigures2];
 
-    v11 = [(NavSignView *)self signLayoutDelegate];
-    [v11 navSignView:self alternateFontLineSpacingForMajorText:1];
-    [v29 setAlternateFontLineSpacing:?];
+    signLayoutDelegate5 = [(NavSignView *)self signLayoutDelegate];
+    [signLayoutDelegate5 navSignView:self alternateFontLineSpacingForMajorText:1];
+    [majorLabel setAlternateFontLineSpacing:?];
 
-    v12 = [(NavSignView *)self signLayoutDelegate];
-    [v29 setMaxNumberOfLinesWithPreferredFont:{objc_msgSend(v12, "navSignView:maxNumberOfLinesWithPreferredFontForMajorText:", self, 1)}];
+    signLayoutDelegate6 = [(NavSignView *)self signLayoutDelegate];
+    [majorLabel setMaxNumberOfLinesWithPreferredFont:{objc_msgSend(signLayoutDelegate6, "navSignView:maxNumberOfLinesWithPreferredFontForMajorText:", self, 1)}];
 
-    v13 = [(NavSignView *)self signLayoutDelegate];
-    [v29 setMaxNumberOfLinesWithLongestAlternative:{objc_msgSend(v13, "navSignView:maxNumberOfLinesWithLongestAlternativeForMajorText:", self, 1)}];
+    signLayoutDelegate7 = [(NavSignView *)self signLayoutDelegate];
+    [majorLabel setMaxNumberOfLinesWithLongestAlternative:{objc_msgSend(signLayoutDelegate7, "navSignView:maxNumberOfLinesWithLongestAlternativeForMajorText:", self, 1)}];
 
-    v14 = [(NavSignView *)self signLayoutDelegate];
-    [v29 setMaxNumberOfTotalLines:{objc_msgSend(v14, "navSignView:maxNumberOfTotalLinesForMajorText:", self, 1)}];
+    signLayoutDelegate8 = [(NavSignView *)self signLayoutDelegate];
+    [majorLabel setMaxNumberOfTotalLines:{objc_msgSend(signLayoutDelegate8, "navSignView:maxNumberOfTotalLinesForMajorText:", self, 1)}];
 
-    v15 = [(NavSignView *)self signLayoutDelegate];
-    [v29 setInlineShieldSize:{objc_msgSend(v15, "navSignView:inlineShieldSizeForMajorText:", self, 1)}];
+    signLayoutDelegate9 = [(NavSignView *)self signLayoutDelegate];
+    [majorLabel setInlineShieldSize:{objc_msgSend(signLayoutDelegate9, "navSignView:inlineShieldSizeForMajorText:", self, 1)}];
 
-    v16 = [(NavSignView *)self minorLabel];
-    v17 = [(NavSignView *)self signLayoutDelegate];
-    [v16 setTextAlignment:{objc_msgSend(v17, "navSignView:textAlignmentForMajorText:", self, 0)}];
+    minorLabel = [(NavSignView *)self minorLabel];
+    signLayoutDelegate10 = [(NavSignView *)self signLayoutDelegate];
+    [minorLabel setTextAlignment:{objc_msgSend(signLayoutDelegate10, "navSignView:textAlignmentForMajorText:", self, 0)}];
 
-    v18 = [(NavSignView *)self signLayoutDelegate];
-    v19 = [v18 navSignView:self preferredFontForMajorText:0];
-    v20 = [v19 _mapkit_fontByAddingFeaturesForTabularFigures];
-    [v16 setPreferredFont:v20];
+    signLayoutDelegate11 = [(NavSignView *)self signLayoutDelegate];
+    v19 = [signLayoutDelegate11 navSignView:self preferredFontForMajorText:0];
+    _mapkit_fontByAddingFeaturesForTabularFigures3 = [v19 _mapkit_fontByAddingFeaturesForTabularFigures];
+    [minorLabel setPreferredFont:_mapkit_fontByAddingFeaturesForTabularFigures3];
 
-    v21 = [(NavSignView *)self signLayoutDelegate];
-    v22 = [v21 navSignView:self alternateFontForMajorText:0];
-    v23 = [v22 _mapkit_fontByAddingFeaturesForTabularFigures];
-    [v16 setAlternateFont:v23];
+    signLayoutDelegate12 = [(NavSignView *)self signLayoutDelegate];
+    v22 = [signLayoutDelegate12 navSignView:self alternateFontForMajorText:0];
+    _mapkit_fontByAddingFeaturesForTabularFigures4 = [v22 _mapkit_fontByAddingFeaturesForTabularFigures];
+    [minorLabel setAlternateFont:_mapkit_fontByAddingFeaturesForTabularFigures4];
 
-    v24 = [(NavSignView *)self signLayoutDelegate];
-    [v24 navSignView:self alternateFontLineSpacingForMajorText:0];
-    [v16 setAlternateFontLineSpacing:?];
+    signLayoutDelegate13 = [(NavSignView *)self signLayoutDelegate];
+    [signLayoutDelegate13 navSignView:self alternateFontLineSpacingForMajorText:0];
+    [minorLabel setAlternateFontLineSpacing:?];
 
-    v25 = [(NavSignView *)self signLayoutDelegate];
-    [v16 setMaxNumberOfLinesWithPreferredFont:{objc_msgSend(v25, "navSignView:maxNumberOfLinesWithPreferredFontForMajorText:", self, 0)}];
+    signLayoutDelegate14 = [(NavSignView *)self signLayoutDelegate];
+    [minorLabel setMaxNumberOfLinesWithPreferredFont:{objc_msgSend(signLayoutDelegate14, "navSignView:maxNumberOfLinesWithPreferredFontForMajorText:", self, 0)}];
 
-    v26 = [(NavSignView *)self signLayoutDelegate];
-    [v16 setMaxNumberOfLinesWithLongestAlternative:{objc_msgSend(v26, "navSignView:maxNumberOfLinesWithLongestAlternativeForMajorText:", self, 0)}];
+    signLayoutDelegate15 = [(NavSignView *)self signLayoutDelegate];
+    [minorLabel setMaxNumberOfLinesWithLongestAlternative:{objc_msgSend(signLayoutDelegate15, "navSignView:maxNumberOfLinesWithLongestAlternativeForMajorText:", self, 0)}];
 
-    v27 = [(NavSignView *)self signLayoutDelegate];
-    [v16 setMaxNumberOfTotalLines:{objc_msgSend(v27, "navSignView:maxNumberOfTotalLinesForMajorText:", self, 0)}];
+    signLayoutDelegate16 = [(NavSignView *)self signLayoutDelegate];
+    [minorLabel setMaxNumberOfTotalLines:{objc_msgSend(signLayoutDelegate16, "navSignView:maxNumberOfTotalLinesForMajorText:", self, 0)}];
 
-    v28 = [(NavSignView *)self signLayoutDelegate];
-    [v16 setInlineShieldSize:{objc_msgSend(v28, "navSignView:inlineShieldSizeForMajorText:", self, 0)}];
+    signLayoutDelegate17 = [(NavSignView *)self signLayoutDelegate];
+    [minorLabel setInlineShieldSize:{objc_msgSend(signLayoutDelegate17, "navSignView:inlineShieldSizeForMajorText:", self, 0)}];
   }
 }
 
@@ -218,126 +218,126 @@
 
 - (void)_updateConstraints
 {
-  v3 = [(NavSignView *)self hasMajorText];
-  v4 = [(NavSignView *)self hasMinorText];
-  v5 = [(NavSignView *)self majorLabel];
-  [v5 setHidden:v3 ^ 1];
+  hasMajorText = [(NavSignView *)self hasMajorText];
+  hasMinorText = [(NavSignView *)self hasMinorText];
+  majorLabel = [(NavSignView *)self majorLabel];
+  [majorLabel setHidden:hasMajorText ^ 1];
 
-  v6 = [(NavSignView *)self minorLabel];
-  [v6 setHidden:v4 ^ 1];
+  minorLabel = [(NavSignView *)self minorLabel];
+  [minorLabel setHidden:hasMinorText ^ 1];
 
   [(NavSignView *)self _configureLabels];
-  v7 = [(NavSignView *)self signLayoutDelegate];
-  [v7 minimumHeightForSign:self];
+  signLayoutDelegate = [(NavSignView *)self signLayoutDelegate];
+  [signLayoutDelegate minimumHeightForSign:self];
   v9 = v8;
 
-  v10 = [(NavSignView *)self minSignHeightConstraint];
-  [v10 setConstant:v9];
+  minSignHeightConstraint = [(NavSignView *)self minSignHeightConstraint];
+  [minSignHeightConstraint setConstant:v9];
 
-  v11 = [(NavSignView *)self signLayoutDelegate];
-  [v11 navSignView:self textLeadingMarginForMajorText:1];
+  signLayoutDelegate2 = [(NavSignView *)self signLayoutDelegate];
+  [signLayoutDelegate2 navSignView:self textLeadingMarginForMajorText:1];
   v13 = v12;
 
-  v14 = [(NavSignView *)self signLayoutDelegate];
-  [v14 navSignView:self textLeadingMarginForMajorText:0];
+  signLayoutDelegate3 = [(NavSignView *)self signLayoutDelegate];
+  [signLayoutDelegate3 navSignView:self textLeadingMarginForMajorText:0];
   v16 = v15;
 
-  v17 = [(NavSignView *)self signLayoutDelegate];
-  [v17 navSignView:self textTrailingMarginForMajorText:1];
+  signLayoutDelegate4 = [(NavSignView *)self signLayoutDelegate];
+  [signLayoutDelegate4 navSignView:self textTrailingMarginForMajorText:1];
   v19 = v18;
 
-  v20 = [(NavSignView *)self signLayoutDelegate];
-  [v20 navSignView:self textTrailingMarginForMajorText:0];
+  signLayoutDelegate5 = [(NavSignView *)self signLayoutDelegate];
+  [signLayoutDelegate5 navSignView:self textTrailingMarginForMajorText:0];
   v22 = v21;
 
-  v23 = [(NavSignView *)self majorLabelLeadingMarginConstraint];
-  [v23 setConstant:v13];
+  majorLabelLeadingMarginConstraint = [(NavSignView *)self majorLabelLeadingMarginConstraint];
+  [majorLabelLeadingMarginConstraint setConstant:v13];
 
-  v24 = [(NavSignView *)self minorLabelLeadingMarginConstraint];
-  [v24 setConstant:v16];
+  minorLabelLeadingMarginConstraint = [(NavSignView *)self minorLabelLeadingMarginConstraint];
+  [minorLabelLeadingMarginConstraint setConstant:v16];
 
-  v25 = [(NavSignView *)self majorLabelTrailingMarginConstraint];
-  [v25 setConstant:v19];
+  majorLabelTrailingMarginConstraint = [(NavSignView *)self majorLabelTrailingMarginConstraint];
+  [majorLabelTrailingMarginConstraint setConstant:v19];
 
-  v26 = [(NavSignView *)self minorLabelTrailingMarginConstraint];
-  [v26 setConstant:v22];
+  minorLabelTrailingMarginConstraint = [(NavSignView *)self minorLabelTrailingMarginConstraint];
+  [minorLabelTrailingMarginConstraint setConstant:v22];
 
-  v27 = [(NavSignView *)self signLayoutDelegate];
-  [v27 textTopMarginForSign:self];
+  signLayoutDelegate6 = [(NavSignView *)self signLayoutDelegate];
+  [signLayoutDelegate6 textTopMarginForSign:self];
   v29 = round(v28);
 
-  v30 = [(NavSignView *)self majorLabelBaselineToTopConstraint];
-  [v30 setConstant:v29];
+  majorLabelBaselineToTopConstraint = [(NavSignView *)self majorLabelBaselineToTopConstraint];
+  [majorLabelBaselineToTopConstraint setConstant:v29];
 
-  v31 = [(NavSignView *)self minorLabelBaselineToTopConstraint];
-  [v31 setConstant:v29];
+  minorLabelBaselineToTopConstraint = [(NavSignView *)self minorLabelBaselineToTopConstraint];
+  [minorLabelBaselineToTopConstraint setConstant:v29];
 
-  v32 = [(NavSignView *)self signLayoutDelegate];
-  [v32 textBottomMarginForSign:self];
+  signLayoutDelegate7 = [(NavSignView *)self signLayoutDelegate];
+  [signLayoutDelegate7 textBottomMarginForSign:self];
   v34 = round(v33);
 
-  v35 = [(NavSignView *)self bottomToMajorLabelBaselineConstraint];
-  [v35 setConstant:v34];
+  bottomToMajorLabelBaselineConstraint = [(NavSignView *)self bottomToMajorLabelBaselineConstraint];
+  [bottomToMajorLabelBaselineConstraint setConstant:v34];
 
-  v36 = [(NavSignView *)self bottomToMinorLabelBaselineConstraint];
-  [v36 setConstant:v34];
+  bottomToMinorLabelBaselineConstraint = [(NavSignView *)self bottomToMinorLabelBaselineConstraint];
+  [bottomToMinorLabelBaselineConstraint setConstant:v34];
 
   [(NavSignView *)self _calculateInterLabelConstraintConstant];
   v38 = v37;
-  v39 = [(NavSignView *)self minorToMajorLabelBaselineConstraint];
-  [v39 setConstant:v38];
+  minorToMajorLabelBaselineConstraint = [(NavSignView *)self minorToMajorLabelBaselineConstraint];
+  [minorToMajorLabelBaselineConstraint setConstant:v38];
 
   v63 = objc_alloc_init(LayoutConstraintActivationHelper);
-  v40 = [(NavSignView *)self signLayoutDelegate];
-  v41 = [v40 navSignView:self shouldAlignToLeadingForMajorText:1];
+  signLayoutDelegate8 = [(NavSignView *)self signLayoutDelegate];
+  v41 = [signLayoutDelegate8 navSignView:self shouldAlignToLeadingForMajorText:1];
 
-  v42 = [(NavSignView *)self signLayoutDelegate];
-  v43 = [v42 navSignView:self shouldAlignToLeadingForMajorText:0];
+  signLayoutDelegate9 = [(NavSignView *)self signLayoutDelegate];
+  v43 = [signLayoutDelegate9 navSignView:self shouldAlignToLeadingForMajorText:0];
 
-  v44 = [(NavSignView *)self signLayoutDelegate];
-  v45 = [v44 navSignView:self shouldAlignToTrailingForMajorText:1];
+  signLayoutDelegate10 = [(NavSignView *)self signLayoutDelegate];
+  v45 = [signLayoutDelegate10 navSignView:self shouldAlignToTrailingForMajorText:1];
 
-  v46 = [(NavSignView *)self signLayoutDelegate];
-  v47 = [v46 navSignView:self shouldAlignToTrailingForMajorText:0];
+  signLayoutDelegate11 = [(NavSignView *)self signLayoutDelegate];
+  v47 = [signLayoutDelegate11 navSignView:self shouldAlignToTrailingForMajorText:0];
 
-  v48 = [(NavSignView *)self signLayoutDelegate];
-  v49 = [v48 shouldAlignMinorToMajorLabelLeadingForSign:self];
+  signLayoutDelegate12 = [(NavSignView *)self signLayoutDelegate];
+  v49 = [signLayoutDelegate12 shouldAlignMinorToMajorLabelLeadingForSign:self];
 
-  v50 = [(NavSignView *)self signLayoutDelegate];
-  v51 = [v50 shouldAlignMinorToMajorLabelTrailingForSign:self];
+  signLayoutDelegate13 = [(NavSignView *)self signLayoutDelegate];
+  v51 = [signLayoutDelegate13 shouldAlignMinorToMajorLabelTrailingForSign:self];
 
-  v52 = [(NavSignView *)self majorLabelLeadingMarginConstraint];
-  [(LayoutConstraintActivationHelper *)v63 scheduleConstraint:v52 activate:v41];
+  majorLabelLeadingMarginConstraint2 = [(NavSignView *)self majorLabelLeadingMarginConstraint];
+  [(LayoutConstraintActivationHelper *)v63 scheduleConstraint:majorLabelLeadingMarginConstraint2 activate:v41];
 
-  v53 = [(NavSignView *)self minorLabelLeadingMarginConstraint];
-  [(LayoutConstraintActivationHelper *)v63 scheduleConstraint:v53 activate:v43];
+  minorLabelLeadingMarginConstraint2 = [(NavSignView *)self minorLabelLeadingMarginConstraint];
+  [(LayoutConstraintActivationHelper *)v63 scheduleConstraint:minorLabelLeadingMarginConstraint2 activate:v43];
 
-  v54 = [(NavSignView *)self majorLabelTrailingMarginConstraint];
-  [(LayoutConstraintActivationHelper *)v63 scheduleConstraint:v54 activate:v45];
+  majorLabelTrailingMarginConstraint2 = [(NavSignView *)self majorLabelTrailingMarginConstraint];
+  [(LayoutConstraintActivationHelper *)v63 scheduleConstraint:majorLabelTrailingMarginConstraint2 activate:v45];
 
-  v55 = [(NavSignView *)self minorLabelTrailingMarginConstraint];
-  [(LayoutConstraintActivationHelper *)v63 scheduleConstraint:v55 activate:v47];
+  minorLabelTrailingMarginConstraint2 = [(NavSignView *)self minorLabelTrailingMarginConstraint];
+  [(LayoutConstraintActivationHelper *)v63 scheduleConstraint:minorLabelTrailingMarginConstraint2 activate:v47];
 
-  v56 = [(NavSignView *)self minorToMajorLabelLeadingAlignmentConstraint];
-  [(LayoutConstraintActivationHelper *)v63 scheduleConstraint:v56 activate:v49];
+  minorToMajorLabelLeadingAlignmentConstraint = [(NavSignView *)self minorToMajorLabelLeadingAlignmentConstraint];
+  [(LayoutConstraintActivationHelper *)v63 scheduleConstraint:minorToMajorLabelLeadingAlignmentConstraint activate:v49];
 
-  v57 = [(NavSignView *)self minorToMajorLabelTrailingAlignmentConstraint];
-  [(LayoutConstraintActivationHelper *)v63 scheduleConstraint:v57 activate:v51];
+  minorToMajorLabelTrailingAlignmentConstraint = [(NavSignView *)self minorToMajorLabelTrailingAlignmentConstraint];
+  [(LayoutConstraintActivationHelper *)v63 scheduleConstraint:minorToMajorLabelTrailingAlignmentConstraint activate:v51];
 
-  v58 = [(NavSignView *)self majorLabelBaselineToTopConstraint];
-  [(LayoutConstraintActivationHelper *)v63 scheduleConstraint:v58 activate:v3];
+  majorLabelBaselineToTopConstraint2 = [(NavSignView *)self majorLabelBaselineToTopConstraint];
+  [(LayoutConstraintActivationHelper *)v63 scheduleConstraint:majorLabelBaselineToTopConstraint2 activate:hasMajorText];
 
-  v59 = [(NavSignView *)self minorLabelBaselineToTopConstraint];
-  [(LayoutConstraintActivationHelper *)v63 scheduleConstraint:v59 activate:!v3 & v4];
+  minorLabelBaselineToTopConstraint2 = [(NavSignView *)self minorLabelBaselineToTopConstraint];
+  [(LayoutConstraintActivationHelper *)v63 scheduleConstraint:minorLabelBaselineToTopConstraint2 activate:!hasMajorText & hasMinorText];
 
-  v60 = [(NavSignView *)self minorToMajorLabelBaselineConstraint];
-  [(LayoutConstraintActivationHelper *)v63 scheduleConstraint:v60 activate:v4 & v3];
+  minorToMajorLabelBaselineConstraint2 = [(NavSignView *)self minorToMajorLabelBaselineConstraint];
+  [(LayoutConstraintActivationHelper *)v63 scheduleConstraint:minorToMajorLabelBaselineConstraint2 activate:hasMinorText & hasMajorText];
 
-  v61 = [(NavSignView *)self bottomToMinorLabelBaselineConstraint];
-  [(LayoutConstraintActivationHelper *)v63 scheduleConstraint:v61 activate:v4];
+  bottomToMinorLabelBaselineConstraint2 = [(NavSignView *)self bottomToMinorLabelBaselineConstraint];
+  [(LayoutConstraintActivationHelper *)v63 scheduleConstraint:bottomToMinorLabelBaselineConstraint2 activate:hasMinorText];
 
-  v62 = [(NavSignView *)self bottomToMajorLabelBaselineConstraint];
-  [(LayoutConstraintActivationHelper *)v63 scheduleConstraint:v62 activate:v3 && !v4];
+  bottomToMajorLabelBaselineConstraint2 = [(NavSignView *)self bottomToMajorLabelBaselineConstraint];
+  [(LayoutConstraintActivationHelper *)v63 scheduleConstraint:bottomToMajorLabelBaselineConstraint2 activate:hasMajorText && !hasMinorText];
 
   [(LayoutConstraintActivationHelper *)v63 commitPendingConstraints];
 }
@@ -355,110 +355,110 @@
   v7 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"H:|-(>=0)-[_minorLabel]-(>=0)-|", 0, 0, v3);
   [v4 addObjectsFromArray:v7];
 
-  v8 = [(NavSignView *)self heightAnchor];
-  v9 = [v8 constraintGreaterThanOrEqualToConstant:0.0];
+  heightAnchor = [(NavSignView *)self heightAnchor];
+  v9 = [heightAnchor constraintGreaterThanOrEqualToConstant:0.0];
   minSignHeightConstraint = self->_minSignHeightConstraint;
   self->_minSignHeightConstraint = v9;
 
-  v11 = [(NavSignView *)self heightAnchor];
+  heightAnchor2 = [(NavSignView *)self heightAnchor];
   [(NavSignView *)self _maps_maxConstraintConstantForAxis:0];
-  v12 = [v11 constraintLessThanOrEqualToConstant:?];
+  v12 = [heightAnchor2 constraintLessThanOrEqualToConstant:?];
   maxSignHeightConstraint = self->_maxSignHeightConstraint;
   self->_maxSignHeightConstraint = v12;
 
-  v14 = [(NavSignView *)self minSignHeightConstraint];
-  v80[0] = v14;
-  v15 = [(NavSignView *)self maxSignHeightConstraint];
-  v80[1] = v15;
+  minSignHeightConstraint = [(NavSignView *)self minSignHeightConstraint];
+  v80[0] = minSignHeightConstraint;
+  maxSignHeightConstraint = [(NavSignView *)self maxSignHeightConstraint];
+  v80[1] = maxSignHeightConstraint;
   v16 = [NSArray arrayWithObjects:v80 count:2];
   [v4 addObjectsFromArray:v16];
 
   [NSLayoutConstraint activateConstraints:v4];
-  v17 = [(NavSignView *)self majorLabel];
-  v18 = [v17 leadingAnchor];
-  v19 = [(NavSignView *)self leadingAnchor];
-  v20 = [v18 constraintEqualToAnchor:v19];
+  majorLabel = [(NavSignView *)self majorLabel];
+  leadingAnchor = [majorLabel leadingAnchor];
+  leadingAnchor2 = [(NavSignView *)self leadingAnchor];
+  v20 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   majorLabelLeadingMarginConstraint = self->_majorLabelLeadingMarginConstraint;
   self->_majorLabelLeadingMarginConstraint = v20;
 
-  v22 = [(NavSignView *)self trailingAnchor];
-  v23 = [(NavSignView *)self majorLabel];
-  v24 = [v23 trailingAnchor];
-  v25 = [v22 constraintEqualToAnchor:v24];
+  trailingAnchor = [(NavSignView *)self trailingAnchor];
+  majorLabel2 = [(NavSignView *)self majorLabel];
+  trailingAnchor2 = [majorLabel2 trailingAnchor];
+  v25 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   majorLabelTrailingMarginConstraint = self->_majorLabelTrailingMarginConstraint;
   self->_majorLabelTrailingMarginConstraint = v25;
 
-  v27 = [(NavSignView *)self minorLabel];
-  v28 = [v27 leadingAnchor];
-  v29 = [(NavSignView *)self leadingAnchor];
-  v30 = [v28 constraintEqualToAnchor:v29];
+  minorLabel = [(NavSignView *)self minorLabel];
+  leadingAnchor3 = [minorLabel leadingAnchor];
+  leadingAnchor4 = [(NavSignView *)self leadingAnchor];
+  v30 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   minorLabelLeadingMarginConstraint = self->_minorLabelLeadingMarginConstraint;
   self->_minorLabelLeadingMarginConstraint = v30;
 
-  v32 = [(NavSignView *)self trailingAnchor];
-  v33 = [(NavSignView *)self minorLabel];
-  v34 = [v33 trailingAnchor];
-  v35 = [v32 constraintEqualToAnchor:v34];
+  trailingAnchor3 = [(NavSignView *)self trailingAnchor];
+  minorLabel2 = [(NavSignView *)self minorLabel];
+  trailingAnchor4 = [minorLabel2 trailingAnchor];
+  v35 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   minorLabelTrailingMarginConstraint = self->_minorLabelTrailingMarginConstraint;
   self->_minorLabelTrailingMarginConstraint = v35;
 
-  v37 = [(NavSignView *)self minorLabel];
-  v38 = [v37 leadingAnchor];
-  v39 = [(NavSignView *)self majorLabel];
-  v40 = [v39 leadingAnchor];
-  v41 = [v38 constraintEqualToAnchor:v40];
+  minorLabel3 = [(NavSignView *)self minorLabel];
+  leadingAnchor5 = [minorLabel3 leadingAnchor];
+  majorLabel3 = [(NavSignView *)self majorLabel];
+  leadingAnchor6 = [majorLabel3 leadingAnchor];
+  v41 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   minorToMajorLabelLeadingAlignmentConstraint = self->_minorToMajorLabelLeadingAlignmentConstraint;
   self->_minorToMajorLabelLeadingAlignmentConstraint = v41;
 
-  v43 = [(NavSignView *)self minorLabel];
-  v44 = [v43 trailingAnchor];
-  v45 = [(NavSignView *)self majorLabel];
-  v46 = [v45 trailingAnchor];
-  v47 = [v44 constraintEqualToAnchor:v46];
+  minorLabel4 = [(NavSignView *)self minorLabel];
+  trailingAnchor5 = [minorLabel4 trailingAnchor];
+  majorLabel4 = [(NavSignView *)self majorLabel];
+  trailingAnchor6 = [majorLabel4 trailingAnchor];
+  v47 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   minorToMajorLabelTrailingAlignmentConstraint = self->_minorToMajorLabelTrailingAlignmentConstraint;
   self->_minorToMajorLabelTrailingAlignmentConstraint = v47;
 
-  v49 = [(NavSignView *)self majorLabel];
-  v50 = [v49 firstBaselineAnchor];
-  v51 = [(NavSignView *)self topAnchor];
-  v52 = [v50 constraintEqualToAnchor:v51];
+  majorLabel5 = [(NavSignView *)self majorLabel];
+  firstBaselineAnchor = [majorLabel5 firstBaselineAnchor];
+  topAnchor = [(NavSignView *)self topAnchor];
+  v52 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor];
   majorLabelBaselineToTopConstraint = self->_majorLabelBaselineToTopConstraint;
   self->_majorLabelBaselineToTopConstraint = v52;
 
   LODWORD(v54) = 1148829696;
   [(NSLayoutConstraint *)self->_majorLabelBaselineToTopConstraint setPriority:v54];
-  v55 = [(NavSignView *)self minorLabel];
-  v56 = [v55 firstBaselineAnchor];
-  v57 = [(NavSignView *)self topAnchor];
-  v58 = [v56 constraintEqualToAnchor:v57];
+  minorLabel5 = [(NavSignView *)self minorLabel];
+  firstBaselineAnchor2 = [minorLabel5 firstBaselineAnchor];
+  topAnchor2 = [(NavSignView *)self topAnchor];
+  v58 = [firstBaselineAnchor2 constraintEqualToAnchor:topAnchor2];
   minorLabelBaselineToTopConstraint = self->_minorLabelBaselineToTopConstraint;
   self->_minorLabelBaselineToTopConstraint = v58;
 
   LODWORD(v60) = 1148829696;
   [(NSLayoutConstraint *)self->_minorLabelBaselineToTopConstraint setPriority:v60];
-  v61 = [(NavSignView *)self minorLabel];
-  v62 = [v61 firstBaselineAnchor];
-  v63 = [(NavSignView *)self majorLabel];
-  v64 = [v63 lastBaselineAnchor];
-  v65 = [v62 constraintEqualToAnchor:v64];
+  minorLabel6 = [(NavSignView *)self minorLabel];
+  firstBaselineAnchor3 = [minorLabel6 firstBaselineAnchor];
+  majorLabel6 = [(NavSignView *)self majorLabel];
+  lastBaselineAnchor = [majorLabel6 lastBaselineAnchor];
+  v65 = [firstBaselineAnchor3 constraintEqualToAnchor:lastBaselineAnchor];
   minorToMajorLabelBaselineConstraint = self->_minorToMajorLabelBaselineConstraint;
   self->_minorToMajorLabelBaselineConstraint = v65;
 
   LODWORD(v67) = *"";
   [(NSLayoutConstraint *)self->_minorToMajorLabelBaselineConstraint setPriority:v67];
-  v68 = [(NavSignView *)self bottomAnchor];
-  v69 = [(NavSignView *)self majorLabel];
-  v70 = [v69 lastBaselineAnchor];
-  v71 = [v68 constraintEqualToAnchor:v70];
+  bottomAnchor = [(NavSignView *)self bottomAnchor];
+  majorLabel7 = [(NavSignView *)self majorLabel];
+  lastBaselineAnchor2 = [majorLabel7 lastBaselineAnchor];
+  v71 = [bottomAnchor constraintEqualToAnchor:lastBaselineAnchor2];
   bottomToMajorLabelBaselineConstraint = self->_bottomToMajorLabelBaselineConstraint;
   self->_bottomToMajorLabelBaselineConstraint = v71;
 
   LODWORD(v73) = 1148829696;
   [(NSLayoutConstraint *)self->_bottomToMajorLabelBaselineConstraint setPriority:v73];
-  v74 = [(NavSignView *)self bottomAnchor];
-  v75 = [(NavSignView *)self minorLabel];
-  v76 = [v75 lastBaselineAnchor];
-  v77 = [v74 constraintEqualToAnchor:v76];
+  bottomAnchor2 = [(NavSignView *)self bottomAnchor];
+  minorLabel7 = [(NavSignView *)self minorLabel];
+  lastBaselineAnchor3 = [minorLabel7 lastBaselineAnchor];
+  v77 = [bottomAnchor2 constraintEqualToAnchor:lastBaselineAnchor3];
   bottomToMinorLabelBaselineConstraint = self->_bottomToMinorLabelBaselineConstraint;
   self->_bottomToMinorLabelBaselineConstraint = v77;
 
@@ -472,52 +472,52 @@
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v7 = [(NavSignLabel *)v3 initWithFrame:CGRectZero.origin.x, y, width, height];
+  height = [(NavSignLabel *)v3 initWithFrame:CGRectZero.origin.x, y, width, height];
   majorLabel = self->_majorLabel;
-  self->_majorLabel = v7;
+  self->_majorLabel = height;
 
-  v9 = [(NavSignView *)self majorLabel];
-  [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+  majorLabel = [(NavSignView *)self majorLabel];
+  [majorLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v10 = [(NavSignView *)self majorLabel];
+  majorLabel2 = [(NavSignView *)self majorLabel];
   LODWORD(v11) = 1148846080;
-  [v10 setContentCompressionResistancePriority:1 forAxis:v11];
+  [majorLabel2 setContentCompressionResistancePriority:1 forAxis:v11];
 
-  v12 = [(NavSignView *)self majorLabel];
+  majorLabel3 = [(NavSignView *)self majorLabel];
   LODWORD(v13) = 1148846080;
-  [v12 setContentHuggingPriority:1 forAxis:v13];
+  [majorLabel3 setContentHuggingPriority:1 forAxis:v13];
 
-  v14 = [(NavSignView *)self majorLabel];
-  [v14 setDelegate:self];
+  majorLabel4 = [(NavSignView *)self majorLabel];
+  [majorLabel4 setDelegate:self];
 
   [(NavSignLabel *)self->_majorLabel setAccessibilityIdentifier:@"MajorLabel"];
-  v15 = [(NavSignView *)self majorLabel];
-  [(NavSignView *)self addSubview:v15];
+  majorLabel5 = [(NavSignView *)self majorLabel];
+  [(NavSignView *)self addSubview:majorLabel5];
 
-  v16 = [[NavSignLabel alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+  height2 = [[NavSignLabel alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
   minorLabel = self->_minorLabel;
-  self->_minorLabel = v16;
+  self->_minorLabel = height2;
 
-  v18 = [(NavSignView *)self minorLabel];
-  [v18 setTranslatesAutoresizingMaskIntoConstraints:0];
+  minorLabel = [(NavSignView *)self minorLabel];
+  [minorLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v19 = [(NavSignView *)self minorLabel];
+  minorLabel2 = [(NavSignView *)self minorLabel];
   LODWORD(v20) = 1148829696;
-  [v19 setContentCompressionResistancePriority:1 forAxis:v20];
+  [minorLabel2 setContentCompressionResistancePriority:1 forAxis:v20];
 
-  v21 = [(NavSignView *)self minorLabel];
+  minorLabel3 = [(NavSignView *)self minorLabel];
   LODWORD(v22) = 1148846080;
-  [v21 setContentHuggingPriority:1 forAxis:v22];
+  [minorLabel3 setContentHuggingPriority:1 forAxis:v22];
 
-  v23 = [(NavSignView *)self minorLabel];
-  [v23 setLineBreakMode:4];
+  minorLabel4 = [(NavSignView *)self minorLabel];
+  [minorLabel4 setLineBreakMode:4];
 
-  v24 = [(NavSignView *)self minorLabel];
-  [v24 setDelegate:self];
+  minorLabel5 = [(NavSignView *)self minorLabel];
+  [minorLabel5 setDelegate:self];
 
   [(NavSignLabel *)self->_minorLabel setAccessibilityIdentifier:@"MinorLabel"];
-  v25 = [(NavSignView *)self minorLabel];
-  [(NavSignView *)self addSubview:v25];
+  minorLabel6 = [(NavSignView *)self minorLabel];
+  [(NavSignView *)self addSubview:minorLabel6];
 }
 
 - (void)layoutSubviews
@@ -526,26 +526,26 @@
   v37.receiver = self;
   v37.super_class = NavSignView;
   [(NavSignView *)&v37 layoutSubviews];
-  v3 = [(NavSignView *)self majorLabel];
-  [v3 updateLabelIfNeeded];
+  majorLabel = [(NavSignView *)self majorLabel];
+  [majorLabel updateLabelIfNeeded];
 
-  v4 = [(NavSignView *)self minorLabel];
-  [v4 updateLabelIfNeeded];
+  minorLabel = [(NavSignView *)self minorLabel];
+  [minorLabel updateLabelIfNeeded];
 
   v36.receiver = self;
   v36.super_class = NavSignView;
   [(NavSignView *)&v36 layoutSubviews];
-  v5 = [(NavSignView *)self signLayoutDelegate];
-  LOBYTE(v4) = objc_opt_respondsToSelector();
+  signLayoutDelegate = [(NavSignView *)self signLayoutDelegate];
+  LOBYTE(minorLabel) = objc_opt_respondsToSelector();
 
-  if (v4)
+  if (minorLabel)
   {
     v34 = 0uLL;
     v35 = 0uLL;
     v32 = 0uLL;
     v33 = 0uLL;
-    v6 = [(NavSignView *)self subviews];
-    v7 = [v6 countByEnumeratingWithState:&v32 objects:v39 count:16];
+    subviews = [(NavSignView *)self subviews];
+    v7 = [subviews countByEnumeratingWithState:&v32 objects:v39 count:16];
     if (v7)
     {
       v8 = v7;
@@ -556,15 +556,15 @@
         {
           if (*v33 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(subviews);
           }
 
           v11 = *(*(&v32 + 1) + 8 * i);
-          v12 = [(NavSignView *)self signLayoutDelegate];
-          v13 = v12;
-          if (v12)
+          signLayoutDelegate2 = [(NavSignView *)self signLayoutDelegate];
+          v13 = signLayoutDelegate2;
+          if (signLayoutDelegate2)
           {
-            [v12 navSignView:self transformForSubview:v11];
+            [signLayoutDelegate2 navSignView:self transformForSubview:v11];
           }
 
           else
@@ -580,7 +580,7 @@
           [v11 setTransform:&v26];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v32 objects:v39 count:16];
+        v8 = [subviews countByEnumeratingWithState:&v32 objects:v39 count:16];
       }
 
       while (v8);
@@ -593,8 +593,8 @@
     v25 = 0uLL;
     v22 = 0uLL;
     v23 = 0uLL;
-    v6 = [(NavSignView *)self subviews];
-    v14 = [v6 countByEnumeratingWithState:&v22 objects:v38 count:16];
+    subviews = [(NavSignView *)self subviews];
+    v14 = [subviews countByEnumeratingWithState:&v22 objects:v38 count:16];
     if (v14)
     {
       v15 = v14;
@@ -608,7 +608,7 @@
         {
           if (*v23 != v16)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(subviews);
           }
 
           v18 = *(*(&v22 + 1) + 8 * j);
@@ -618,7 +618,7 @@
           [v18 setTransform:{&v26, v19, v20, v21}];
         }
 
-        v15 = [v6 countByEnumeratingWithState:&v22 objects:v38 count:16];
+        v15 = [subviews countByEnumeratingWithState:&v22 objects:v38 count:16];
       }
 
       while (v15);
@@ -631,50 +631,50 @@
   v9.receiver = self;
   v9.super_class = NavSignView;
   [(MapsThemeView *)&v9 updateTheme];
-  v3 = [(NavSignView *)self theme];
-  v4 = [v3 navSignMajorTextColor];
-  v5 = [(NavSignView *)self majorLabel];
-  [v5 setTextColor:v4];
+  theme = [(NavSignView *)self theme];
+  navSignMajorTextColor = [theme navSignMajorTextColor];
+  majorLabel = [(NavSignView *)self majorLabel];
+  [majorLabel setTextColor:navSignMajorTextColor];
 
-  v6 = [(NavSignView *)self theme];
-  v7 = [v6 navSignMinorTextColor];
-  v8 = [(NavSignView *)self minorLabel];
-  [v8 setTextColor:v7];
+  theme2 = [(NavSignView *)self theme];
+  navSignMinorTextColor = [theme2 navSignMinorTextColor];
+  minorLabel = [(NavSignView *)self minorLabel];
+  [minorLabel setTextColor:navSignMinorTextColor];
 }
 
-- (void)setUsePersistentDisplay:(BOOL)a3
+- (void)setUsePersistentDisplay:(BOOL)display
 {
-  if (self->_usePersistentDisplay != a3)
+  if (self->_usePersistentDisplay != display)
   {
-    self->_usePersistentDisplay = a3;
+    self->_usePersistentDisplay = display;
     [(NavSignView *)self setNeedsLayout];
   }
 }
 
-- (void)setMaxHeight:(double)a3
+- (void)setMaxHeight:(double)height
 {
-  v4 = [(NavSignView *)self maxSignHeightConstraint];
-  [v4 setConstant:a3];
+  maxSignHeightConstraint = [(NavSignView *)self maxSignHeightConstraint];
+  [maxSignHeightConstraint setConstant:height];
 }
 
 - (double)maxHeight
 {
-  v2 = [(NavSignView *)self maxSignHeightConstraint];
-  [v2 constant];
+  maxSignHeightConstraint = [(NavSignView *)self maxSignHeightConstraint];
+  [maxSignHeightConstraint constant];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setSignLayoutDelegate:(id)a3 withAnimation:(id)a4
+- (void)setSignLayoutDelegate:(id)delegate withAnimation:(id)animation
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  animationCopy = animation;
   WeakRetained = objc_loadWeakRetained(&self->_signLayoutDelegate);
 
-  if (WeakRetained != v6)
+  if (WeakRetained != delegateCopy)
   {
-    objc_storeWeak(&self->_signLayoutDelegate, v6);
+    objc_storeWeak(&self->_signLayoutDelegate, delegateCopy);
     [(NavSignView *)self _configureLabels];
     [(NavSignView *)self _updateLabelText];
     v9[0] = _NSConcreteStackBlock;
@@ -682,16 +682,16 @@
     v9[2] = sub_100D73874;
     v9[3] = &unk_101661B18;
     v9[4] = self;
-    [v7 addAnimations:v9 completion:0];
+    [animationCopy addAnimations:v9 completion:0];
   }
 }
 
-- (void)setSignLayoutDelegate:(id)a3
+- (void)setSignLayoutDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = +[GroupAnimation animation];
   [v5 setAnimated:0];
-  [(NavSignView *)self setSignLayoutDelegate:v4 withAnimation:v5];
+  [(NavSignView *)self setSignLayoutDelegate:delegateCopy withAnimation:v5];
 
   [v5 runWithDefaultOptions];
 }
@@ -700,17 +700,17 @@
 {
   if (![(NavSignView *)self hasMajorText])
   {
-    v4 = [(NavSignView *)self minorLabel];
+    minorLabel = [(NavSignView *)self minorLabel];
 LABEL_6:
-    v5 = v4;
-    v3 = [v4 lineCount] == 1;
+    v5 = minorLabel;
+    v3 = [minorLabel lineCount] == 1;
 
     return v3;
   }
 
   if (![(NavSignView *)self hasMinorText])
   {
-    v4 = [(NavSignView *)self majorLabel];
+    minorLabel = [(NavSignView *)self majorLabel];
     goto LABEL_6;
   }
 
@@ -729,29 +729,29 @@ LABEL_6:
 
 - (BOOL)hasMinorText
 {
-  v2 = [(NavSignView *)self minorLabel];
-  v3 = [v2 textAlternatives];
-  v4 = [v3 count] != 0;
+  minorLabel = [(NavSignView *)self minorLabel];
+  textAlternatives = [minorLabel textAlternatives];
+  v4 = [textAlternatives count] != 0;
 
   return v4;
 }
 
 - (BOOL)hasMajorText
 {
-  v2 = [(NavSignView *)self majorLabel];
-  v3 = [v2 textAlternatives];
-  v4 = [v3 count] != 0;
+  majorLabel = [(NavSignView *)self majorLabel];
+  textAlternatives = [majorLabel textAlternatives];
+  v4 = [textAlternatives count] != 0;
 
   return v4;
 }
 
-- (void)setDimmed:(BOOL)a3
+- (void)setDimmed:(BOOL)dimmed
 {
-  if (self->_dimmed != a3)
+  if (self->_dimmed != dimmed)
   {
-    self->_dimmed = a3;
+    self->_dimmed = dimmed;
     v3 = 0.400000006;
-    if (!a3)
+    if (!dimmed)
     {
       v3 = 1.0;
     }
@@ -770,11 +770,11 @@ LABEL_6:
 - (void)clearContent
 {
   [(NavSignView *)self setDimmed:0];
-  v3 = [(NavSignView *)self majorLabel];
-  [v3 setTextAlternatives:0];
+  majorLabel = [(NavSignView *)self majorLabel];
+  [majorLabel setTextAlternatives:0];
 
-  v4 = [(NavSignView *)self minorLabel];
-  [v4 setTextAlternatives:0];
+  minorLabel = [(NavSignView *)self minorLabel];
+  [minorLabel setTextAlternatives:0];
 }
 
 - (id)accessibilityIdentifier
@@ -786,8 +786,8 @@ LABEL_6:
 
 - (void)_maps_commonInit
 {
-  v3 = [(NavSignView *)self _defaultSignLayoutDelegate];
-  objc_storeWeak(&self->_signLayoutDelegate, v3);
+  _defaultSignLayoutDelegate = [(NavSignView *)self _defaultSignLayoutDelegate];
+  objc_storeWeak(&self->_signLayoutDelegate, _defaultSignLayoutDelegate);
 
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
@@ -799,11 +799,11 @@ LABEL_6:
   [(NavSignView *)self _setupConstraints];
 }
 
-- (NavSignView)initWithCoder:(id)a3
+- (NavSignView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = NavSignView;
-  v3 = [(NavSignView *)&v6 initWithCoder:a3];
+  v3 = [(NavSignView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -813,11 +813,11 @@ LABEL_6:
   return v4;
 }
 
-- (NavSignView)initWithFrame:(CGRect)a3
+- (NavSignView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = NavSignView;
-  v3 = [(NavSignView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NavSignView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -829,11 +829,11 @@ LABEL_6:
 
 - (NavManeuverSignView)maneuverSign
 {
-  v2 = self;
+  selfCopy = self;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = selfCopy;
   }
 
   else

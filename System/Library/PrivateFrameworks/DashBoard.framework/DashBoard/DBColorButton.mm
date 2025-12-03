@@ -6,21 +6,21 @@
 
 - (id)_externalUnfocusedBorderColor
 {
-  v3 = [(DBColorButton *)self carButtonColor];
+  carButtonColor = [(DBColorButton *)self carButtonColor];
 
-  if (v3)
+  if (carButtonColor)
   {
-    v4 = [(DBColorButton *)self carButtonColor];
+    carButtonColor2 = [(DBColorButton *)self carButtonColor];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = DBColorButton;
-    v4 = [(DBColorButton *)&v6 _externalUnfocusedBorderColor];
+    carButtonColor2 = [(DBColorButton *)&v6 _externalUnfocusedBorderColor];
   }
 
-  return v4;
+  return carButtonColor2;
 }
 
 @end

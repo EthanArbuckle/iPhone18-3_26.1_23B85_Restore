@@ -1,16 +1,16 @@
 @interface BMAppInstallation
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMAppInstallation)initWithApp:(id)a3 transition:(int)a4 metadata:(id)a5 transitionDate:(id)a6;
-- (BMAppInstallation)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMAppInstallation)initWithApp:(id)app transition:(int)transition metadata:(id)metadata transitionDate:(id)date;
+- (BMAppInstallation)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)transitionDate;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMAppInstallation
@@ -33,13 +33,13 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = [(BMAppInstallation *)self app];
     v7 = [v5 app];
     v8 = v7;
@@ -59,21 +59,21 @@
       }
     }
 
-    v13 = [(BMAppInstallation *)self transition];
-    if (v13 == [v5 transition])
+    transition = [(BMAppInstallation *)self transition];
+    if (transition == [v5 transition])
     {
-      v14 = [(BMAppInstallation *)self metadata];
-      v15 = [v5 metadata];
-      v16 = v15;
-      if (v14 == v15)
+      metadata = [(BMAppInstallation *)self metadata];
+      metadata2 = [v5 metadata];
+      v16 = metadata2;
+      if (metadata == metadata2)
       {
       }
 
       else
       {
-        v17 = [(BMAppInstallation *)self metadata];
-        v18 = [v5 metadata];
-        v19 = [v17 isEqual:v18];
+        metadata3 = [(BMAppInstallation *)self metadata];
+        metadata4 = [v5 metadata];
+        v19 = [metadata3 isEqual:metadata4];
 
         if (!v19)
         {
@@ -81,18 +81,18 @@
         }
       }
 
-      v20 = [(BMAppInstallation *)self transitionDate];
-      v21 = [v5 transitionDate];
-      if (v20 == v21)
+      transitionDate = [(BMAppInstallation *)self transitionDate];
+      transitionDate2 = [v5 transitionDate];
+      if (transitionDate == transitionDate2)
       {
         v12 = 1;
       }
 
       else
       {
-        v22 = [(BMAppInstallation *)self transitionDate];
-        v23 = [v5 transitionDate];
-        v12 = [v22 isEqual:v23];
+        transitionDate3 = [(BMAppInstallation *)self transitionDate];
+        transitionDate4 = [v5 transitionDate];
+        v12 = [transitionDate3 isEqual:transitionDate4];
       }
 
       goto LABEL_16;
@@ -132,18 +132,18 @@ LABEL_17:
 {
   v20[4] = *MEMORY[0x1E69E9840];
   v3 = [(BMAppInstallation *)self app];
-  v4 = [v3 jsonDictionary];
+  jsonDictionary = [v3 jsonDictionary];
 
   v5 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMAppInstallation transition](self, "transition")}];
-  v6 = [(BMAppInstallation *)self metadata];
-  v7 = [v6 jsonDictionary];
+  metadata = [(BMAppInstallation *)self metadata];
+  jsonDictionary2 = [metadata jsonDictionary];
 
-  v8 = [(BMAppInstallation *)self transitionDate];
-  if (v8)
+  transitionDate = [(BMAppInstallation *)self transitionDate];
+  if (transitionDate)
   {
     v9 = MEMORY[0x1E696AD98];
-    v10 = [(BMAppInstallation *)self transitionDate];
-    [v10 timeIntervalSince1970];
+    transitionDate2 = [(BMAppInstallation *)self transitionDate];
+    [transitionDate2 timeIntervalSince1970];
     v11 = [v9 numberWithDouble:?];
   }
 
@@ -153,41 +153,41 @@ LABEL_17:
   }
 
   v19[0] = @"app";
-  v12 = v4;
-  if (!v4)
+  null = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v20[0] = v12;
+  v20[0] = null;
   v19[1] = @"transition";
-  v13 = v5;
+  null2 = v5;
   if (!v5)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v20[1] = v13;
+  v20[1] = null2;
   v19[2] = @"metadata";
-  v14 = v7;
-  if (!v7)
+  null3 = jsonDictionary2;
+  if (!jsonDictionary2)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v20[2] = v14;
+  v20[2] = null3;
   v19[3] = @"transitionDate";
-  v15 = v11;
+  null4 = v11;
   if (!v11)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v20[3] = v15;
+  v20[3] = null4;
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:4];
   if (v11)
   {
-    if (v7)
+    if (jsonDictionary2)
     {
       goto LABEL_14;
     }
@@ -196,7 +196,7 @@ LABEL_17:
   else
   {
 
-    if (v7)
+    if (jsonDictionary2)
     {
 LABEL_14:
       if (v5)
@@ -206,7 +206,7 @@ LABEL_14:
 
 LABEL_21:
 
-      if (v4)
+      if (jsonDictionary)
       {
         goto LABEL_16;
       }
@@ -221,7 +221,7 @@ LABEL_21:
   }
 
 LABEL_15:
-  if (v4)
+  if (jsonDictionary)
   {
     goto LABEL_16;
   }
@@ -234,11 +234,11 @@ LABEL_16:
   return v16;
 }
 
-- (BMAppInstallation)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMAppInstallation)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v57[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"app"];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"app"];
   if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v7 = 0;
@@ -254,19 +254,19 @@ LABEL_16:
     v10 = v49;
     if (v10)
     {
-      v11 = self;
-      if (a4)
+      selfCopy8 = self;
+      if (error)
       {
         v10 = v10;
-        *a4 = v10;
+        *error = v10;
       }
 
-      v12 = 0;
+      errorCopy3 = 0;
       goto LABEL_47;
     }
 
 LABEL_4:
-    v8 = [v5 objectForKeyedSubscript:@"transition"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"transition"];
     if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
@@ -280,24 +280,24 @@ LABEL_4:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v9 = 0;
-            v12 = 0;
-            v11 = self;
+            errorCopy3 = 0;
+            selfCopy8 = self;
             goto LABEL_46;
           }
 
           v35 = objc_alloc(MEMORY[0x1E696ABC0]);
-          v36 = a4;
+          errorCopy = error;
           v37 = *MEMORY[0x1E698F240];
           v54 = *MEMORY[0x1E696A578];
           v16 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (corresponding to enum value), or NSString (string version of enum)", objc_opt_class(), @"transition"];
           v55 = v16;
           v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v55 forKeys:&v54 count:1];
           v46 = 0;
-          v12 = 0;
-          *v36 = [v35 initWithDomain:v37 code:2 userInfo:v18];
+          errorCopy3 = 0;
+          *errorCopy = [v35 initWithDomain:v37 code:2 userInfo:v18];
           goto LABEL_43;
         }
 
@@ -312,19 +312,19 @@ LABEL_4:
       v9 = 0;
     }
 
-    v16 = [v5 objectForKeyedSubscript:@"metadata"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"metadata"];
     v46 = v9;
     if (!v16 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v12 = a4;
+      errorCopy3 = error;
       v17 = v7;
       v18 = 0;
 LABEL_22:
-      v19 = [v5 objectForKeyedSubscript:@"transitionDate"];
+      v19 = [dictionaryCopy objectForKeyedSubscript:@"transitionDate"];
       if (v19 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
         objc_opt_class();
-        v11 = self;
+        selfCopy8 = self;
         if (objc_opt_isKindOfClass())
         {
           v23 = MEMORY[0x1E695DF00];
@@ -350,19 +350,19 @@ LABEL_22:
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            if (v12)
+            if (errorCopy3)
             {
               v43 = objc_alloc(MEMORY[0x1E696ABC0]);
               v42 = *MEMORY[0x1E698F240];
               v50 = *MEMORY[0x1E696A578];
-              v45 = v12;
+              v45 = errorCopy3;
               v40 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (as time internal since 1970), NSString (ISO8601 format), or NSDate", objc_opt_class(), @"transitionDate"];
               v51 = v40;
               v41 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v51 forKeys:&v50 count:1];
               v45->super.super.isa = [v43 initWithDomain:v42 code:2 userInfo:v41];
 
               v20 = 0;
-              v12 = 0;
+              errorCopy3 = 0;
             }
 
             else
@@ -382,12 +382,12 @@ LABEL_22:
       else
       {
         v20 = 0;
-        v11 = self;
+        selfCopy8 = self;
       }
 
 LABEL_37:
-      v11 = -[BMAppInstallation initWithApp:transition:metadata:transitionDate:](v11, "initWithApp:transition:metadata:transitionDate:", v17, [v46 intValue], v18, v20);
-      v12 = v11;
+      selfCopy8 = -[BMAppInstallation initWithApp:transition:metadata:transitionDate:](selfCopy8, "initWithApp:transition:metadata:transitionDate:", v17, [v46 intValue], v18, v20);
+      errorCopy3 = selfCopy8;
 LABEL_38:
 
       v7 = v17;
@@ -409,33 +409,33 @@ LABEL_46:
       v22 = v48;
       if (!v22)
       {
-        v12 = a4;
+        errorCopy3 = error;
         v17 = v7;
 
         goto LABEL_22;
       }
 
-      if (a4)
+      if (error)
       {
         v22 = v22;
-        *a4 = v22;
+        *error = v22;
       }
 
-      v12 = 0;
+      errorCopy3 = 0;
       v16 = v21;
     }
 
     else
     {
-      if (!a4)
+      if (!error)
       {
-        v12 = 0;
-        v11 = self;
+        errorCopy3 = 0;
+        selfCopy8 = self;
         goto LABEL_45;
       }
 
       v29 = objc_alloc(MEMORY[0x1E696ABC0]);
-      v44 = a4;
+      errorCopy4 = error;
       v30 = v7;
       v31 = *MEMORY[0x1E698F240];
       v52 = *MEMORY[0x1E696A578];
@@ -444,17 +444,17 @@ LABEL_46:
       v32 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v53 forKeys:&v52 count:1];
       v33 = v31;
       v7 = v30;
-      *v44 = [v29 initWithDomain:v33 code:2 userInfo:v32];
+      *errorCopy4 = [v29 initWithDomain:v33 code:2 userInfo:v32];
 
-      v12 = 0;
+      errorCopy3 = 0;
     }
 
 LABEL_43:
-    v11 = self;
+    selfCopy8 = self;
     goto LABEL_44;
   }
 
-  if (a4)
+  if (error)
   {
     v14 = objc_alloc(MEMORY[0x1E696ABC0]);
     v15 = *MEMORY[0x1E698F240];
@@ -462,38 +462,38 @@ LABEL_43:
     v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"app"];
     v57[0] = v7;
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v57 forKeys:&v56 count:1];
-    v12 = 0;
-    *a4 = [v14 initWithDomain:v15 code:2 userInfo:v9];
-    v11 = self;
+    errorCopy3 = 0;
+    *error = [v14 initWithDomain:v15 code:2 userInfo:v9];
+    selfCopy8 = self;
 LABEL_47:
 
     goto LABEL_48;
   }
 
-  v12 = 0;
-  v11 = self;
+  errorCopy3 = 0;
+  selfCopy8 = self;
 LABEL_48:
 
   v38 = *MEMORY[0x1E69E9840];
-  return v12;
+  return errorCopy3;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMAppInstallation *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_app)
   {
     PBDataWriterPlaceMark();
-    [(BMAppInstallationApp *)self->_app writeTo:v4];
+    [(BMAppInstallationApp *)self->_app writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
@@ -502,7 +502,7 @@ LABEL_48:
   if (self->_metadata)
   {
     PBDataWriterPlaceMark();
-    [(BMAppInstallationMetadata *)self->_metadata writeTo:v4];
+    [(BMAppInstallationMetadata *)self->_metadata writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
@@ -513,9 +513,9 @@ LABEL_48:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v32.receiver = self;
   v32.super_class = BMAppInstallation;
   v5 = [(BMEventBase *)&v32 init];
@@ -524,12 +524,12 @@ LABEL_48:
     goto LABEL_53;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -540,18 +540,18 @@ LABEL_48:
       while (1)
       {
         LOBYTE(v33) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v33 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v33 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (LOBYTE(v33) & 0x7F) << v7;
@@ -568,9 +568,9 @@ LABEL_48:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -587,7 +587,7 @@ LABEL_16:
             goto LABEL_52;
           }
 
-          v25 = [[BMAppInstallationMetadata alloc] initByReadFrom:v4];
+          v25 = [[BMAppInstallationMetadata alloc] initByReadFrom:fromCopy];
           if (!v25)
           {
             goto LABEL_52;
@@ -610,18 +610,18 @@ LABEL_35:
 
         v5->_hasRaw_transitionDate = 1;
         v33 = 0.0;
-        v23 = [v4 position] + 8;
-        if (v23 >= [v4 position] && (v24 = objc_msgSend(v4, "position") + 8, v24 <= objc_msgSend(v4, "length")))
+        v23 = [fromCopy position] + 8;
+        if (v23 >= [fromCopy position] && (v24 = objc_msgSend(fromCopy, "position") + 8, v24 <= objc_msgSend(fromCopy, "length")))
         {
-          v28 = [v4 data];
-          [v28 getBytes:&v33 range:{objc_msgSend(v4, "position"), 8}];
+          data2 = [fromCopy data];
+          [data2 getBytes:&v33 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v5->_raw_transitionDate = v33;
@@ -638,7 +638,7 @@ LABEL_35:
             goto LABEL_52;
           }
 
-          v25 = [[BMAppInstallationApp alloc] initByReadFrom:v4];
+          v25 = [[BMAppInstallationApp alloc] initByReadFrom:fromCopy];
           if (!v25)
           {
             goto LABEL_52;
@@ -664,18 +664,18 @@ LABEL_43:
         while (1)
         {
           LOBYTE(v33) = 0;
-          v19 = [v4 position] + 1;
-          if (v19 >= [v4 position] && (v20 = objc_msgSend(v4, "position") + 1, v20 <= objc_msgSend(v4, "length")))
+          v19 = [fromCopy position] + 1;
+          if (v19 >= [fromCopy position] && (v20 = objc_msgSend(fromCopy, "position") + 1, v20 <= objc_msgSend(fromCopy, "length")))
           {
-            v21 = [v4 data];
-            [v21 getBytes:&v33 range:{objc_msgSend(v4, "position"), 1}];
+            data3 = [fromCopy data];
+            [data3 getBytes:&v33 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v18 |= (LOBYTE(v33) & 0x7F) << v16;
@@ -691,7 +691,7 @@ LABEL_43:
           }
         }
 
-        if (([v4 hasError] & 1) != 0 || v18 > 4)
+        if (([fromCopy hasError] & 1) != 0 || v18 > 4)
         {
 LABEL_46:
           LODWORD(v18) = 0;
@@ -701,13 +701,13 @@ LABEL_46:
       }
 
 LABEL_50:
-      v29 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v29 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_52:
     v30 = 0;
@@ -727,31 +727,31 @@ LABEL_53:
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = [(BMAppInstallation *)self app];
   v5 = BMAppInstallationTransitionAsString([(BMAppInstallation *)self transition]);
-  v6 = [(BMAppInstallation *)self metadata];
-  v7 = [(BMAppInstallation *)self transitionDate];
-  v8 = [v3 initWithFormat:@"BMAppInstallation with app: %@, transition: %@, metadata: %@, transitionDate: %@", v4, v5, v6, v7];
+  metadata = [(BMAppInstallation *)self metadata];
+  transitionDate = [(BMAppInstallation *)self transitionDate];
+  v8 = [v3 initWithFormat:@"BMAppInstallation with app: %@, transition: %@, metadata: %@, transitionDate: %@", v4, v5, metadata, transitionDate];
 
   return v8;
 }
 
-- (BMAppInstallation)initWithApp:(id)a3 transition:(int)a4 metadata:(id)a5 transitionDate:(id)a6
+- (BMAppInstallation)initWithApp:(id)app transition:(int)transition metadata:(id)metadata transitionDate:(id)date
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  appCopy = app;
+  metadataCopy = metadata;
+  dateCopy = date;
   v17.receiver = self;
   v17.super_class = BMAppInstallation;
   v14 = [(BMEventBase *)&v17 init];
   if (v14)
   {
     v14->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v14->_app, a3);
-    v14->_transition = a4;
-    objc_storeStrong(&v14->_metadata, a5);
-    if (v13)
+    objc_storeStrong(&v14->_app, app);
+    v14->_transition = transition;
+    objc_storeStrong(&v14->_metadata, metadata);
+    if (dateCopy)
     {
       v14->_hasRaw_transitionDate = 1;
-      [v13 timeIntervalSince1970];
+      [dateCopy timeIntervalSince1970];
     }
 
     else
@@ -804,9 +804,9 @@ id __28__BMAppInstallation_columns__block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -814,8 +814,8 @@ id __28__BMAppInstallation_columns__block_invoke(uint64_t a1, void *a2)
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMAppInstallation alloc] initByReadFrom:v7];
     v4 = v8;

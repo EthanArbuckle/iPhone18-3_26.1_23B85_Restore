@@ -2,15 +2,15 @@
 + (id)accountPayloadClasses;
 + (id)managedAppClasses;
 + (id)managedBookClasses;
-+ (id)payloadViewModelsFromPayload:(id)a3;
-+ (id)removeDuplicatesFromRestrictionPayloadViewModels:(id)a3;
++ (id)payloadViewModelsFromPayload:(id)payload;
++ (id)removeDuplicatesFromRestrictionPayloadViewModels:(id)models;
 + (id)restrictionPayloadClasses;
-+ (int64_t)payloadTypeForPayloadClass:(Class)a3;
-- (DMCPayloadViewModel)initWithCoder:(id)a3;
-- (DMCPayloadViewModel)initWithManagedApp:(id)a3;
-- (DMCPayloadViewModel)initWithManagedBook:(id)a3;
-- (DMCPayloadViewModel)initWithPayload:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (int64_t)payloadTypeForPayloadClass:(Class)class;
+- (DMCPayloadViewModel)initWithCoder:(id)coder;
+- (DMCPayloadViewModel)initWithManagedApp:(id)app;
+- (DMCPayloadViewModel)initWithManagedBook:(id)book;
+- (DMCPayloadViewModel)initWithPayload:(id)payload;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DMCPayloadViewModel
@@ -93,10 +93,10 @@
   return v2;
 }
 
-+ (int64_t)payloadTypeForPayloadClass:(Class)a3
++ (int64_t)payloadTypeForPayloadClass:(Class)class
 {
   v4 = +[DMCPayloadViewModel accountPayloadClasses];
-  v5 = [v4 containsObject:a3];
+  v5 = [v4 containsObject:class];
 
   if (v5)
   {
@@ -104,7 +104,7 @@
   }
 
   v7 = +[DMCPayloadViewModel managedAppClasses];
-  v8 = [v7 containsObject:a3];
+  v8 = [v7 containsObject:class];
 
   if (v8)
   {
@@ -112,7 +112,7 @@
   }
 
   v9 = +[DMCPayloadViewModel managedBookClasses];
-  v10 = [v9 containsObject:a3];
+  v10 = [v9 containsObject:class];
 
   if (v10)
   {
@@ -120,7 +120,7 @@
   }
 
   v11 = +[DMCPayloadViewModel restrictionPayloadClasses];
-  v12 = [v11 containsObject:a3];
+  v12 = [v11 containsObject:class];
 
   if (v12)
   {
@@ -133,23 +133,23 @@
   }
 }
 
-+ (id)payloadViewModelsFromPayload:(id)a3
++ (id)payloadViewModelsFromPayload:(id)payload
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  payloadCopy = payload;
+  if (payloadCopy)
   {
     v4 = objc_opt_new();
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v3;
+      v5 = payloadCopy;
       v15 = 0u;
       v16 = 0u;
       v17 = 0u;
       v18 = 0u;
-      v6 = [(DMCPayloadViewModel *)v5 localizedRestrictionStrings];
-      v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      localizedRestrictionStrings = [(DMCPayloadViewModel *)v5 localizedRestrictionStrings];
+      v7 = [localizedRestrictionStrings countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v7)
       {
         v8 = v7;
@@ -160,7 +160,7 @@
           {
             if (*v16 != v9)
             {
-              objc_enumerationMutation(v6);
+              objc_enumerationMutation(localizedRestrictionStrings);
             }
 
             v11 = *(*(&v15 + 1) + 8 * i);
@@ -172,7 +172,7 @@
             [v4 addObject:v12];
           }
 
-          v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+          v8 = [localizedRestrictionStrings countByEnumeratingWithState:&v15 objects:v19 count:16];
         }
 
         while (v8);
@@ -181,7 +181,7 @@
 
     else
     {
-      v5 = [[DMCPayloadViewModel alloc] initWithPayload:v3];
+      v5 = [[DMCPayloadViewModel alloc] initWithPayload:payloadCopy];
       [v4 addObject:v5];
     }
 
@@ -196,16 +196,16 @@
   return v13;
 }
 
-+ (id)removeDuplicatesFromRestrictionPayloadViewModels:(id)a3
++ (id)removeDuplicatesFromRestrictionPayloadViewModels:(id)models
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  modelsCopy = models;
   v4 = objc_opt_new();
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = modelsCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -221,8 +221,8 @@
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 title];
-        [v4 setObject:v10 forKey:v11];
+        title = [v10 title];
+        [v4 setObject:v10 forKey:title];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -231,22 +231,22 @@
     while (v7);
   }
 
-  v12 = [v4 allValues];
+  allValues = [v4 allValues];
 
-  return v12;
+  return allValues;
 }
 
-- (DMCPayloadViewModel)initWithManagedApp:(id)a3
+- (DMCPayloadViewModel)initWithManagedApp:(id)app
 {
-  v5 = a3;
+  appCopy = app;
   v16.receiver = self;
   v16.super_class = DMCPayloadViewModel;
   v6 = [(DMCPayloadViewModel *)&v16 init];
   if (v6)
   {
-    v7 = [v5 bundleID];
+    bundleID = [appCopy bundleID];
     title = v6->_title;
-    v6->_title = v7;
+    v6->_title = bundleID;
 
     v9 = DMCEnrollmentLocalizedString(@"DMC_MANAGED_APPS_SINGULAR");
     localizedSingularForm = v6->_localizedSingularForm;
@@ -263,7 +263,7 @@
     v6->_payloadDescriptionKeyValueSections = 0;
 
     v6->_showIcon = 1;
-    objc_storeStrong(&v6->_managedApp, a3);
+    objc_storeStrong(&v6->_managedApp, app);
     v6->_isManagedAppPayload = 1;
     v6->_hasDetails = 1;
   }
@@ -271,17 +271,17 @@
   return v6;
 }
 
-- (DMCPayloadViewModel)initWithManagedBook:(id)a3
+- (DMCPayloadViewModel)initWithManagedBook:(id)book
 {
-  v5 = a3;
+  bookCopy = book;
   v16.receiver = self;
   v16.super_class = DMCPayloadViewModel;
   v6 = [(DMCPayloadViewModel *)&v16 init];
   if (v6)
   {
-    v7 = [v5 friendlyName];
+    friendlyName = [bookCopy friendlyName];
     title = v6->_title;
-    v6->_title = v7;
+    v6->_title = friendlyName;
 
     v9 = DMCEnrollmentLocalizedString(@"DMC_MANAGED_BOOKS_SINGULAR");
     localizedSingularForm = v6->_localizedSingularForm;
@@ -298,7 +298,7 @@
     v6->_payloadDescriptionKeyValueSections = 0;
 
     v6->_showIcon = 1;
-    objc_storeStrong(&v6->_managedBook, a3);
+    objc_storeStrong(&v6->_managedBook, book);
     v6->_isManagedBookPayload = 1;
     v6->_hasDetails = 1;
   }
@@ -306,58 +306,58 @@
   return v6;
 }
 
-- (DMCPayloadViewModel)initWithPayload:(id)a3
+- (DMCPayloadViewModel)initWithPayload:(id)payload
 {
-  v4 = a3;
+  payloadCopy = payload;
   v37.receiver = self;
   v37.super_class = DMCPayloadViewModel;
   v5 = [(DMCPayloadViewModel *)&v37 init];
   if (v5)
   {
     v5->_type = [DMCPayloadViewModel payloadTypeForPayloadClass:objc_opt_class()];
-    v6 = [v4 title];
+    title = [payloadCopy title];
     title = v5->_title;
-    v5->_title = v6;
+    v5->_title = title;
 
-    v8 = [objc_opt_class() localizedSingularForm];
+    localizedSingularForm = [objc_opt_class() localizedSingularForm];
     localizedSingularForm = v5->_localizedSingularForm;
-    v5->_localizedSingularForm = v8;
+    v5->_localizedSingularForm = localizedSingularForm;
 
-    v10 = [objc_opt_class() localizedPluralForm];
+    localizedPluralForm = [objc_opt_class() localizedPluralForm];
     localizedPluralForm = v5->_localizedPluralForm;
-    v5->_localizedPluralForm = v10;
+    v5->_localizedPluralForm = localizedPluralForm;
 
-    v12 = [objc_opt_class() typeStrings];
+    typeStrings = [objc_opt_class() typeStrings];
     typeStrings = v5->_typeStrings;
-    v5->_typeStrings = v12;
+    v5->_typeStrings = typeStrings;
 
-    v14 = [v4 payloadDescriptionKeyValueSections];
+    payloadDescriptionKeyValueSections = [payloadCopy payloadDescriptionKeyValueSections];
     payloadDescriptionKeyValueSections = v5->_payloadDescriptionKeyValueSections;
-    v5->_payloadDescriptionKeyValueSections = v14;
+    v5->_payloadDescriptionKeyValueSections = payloadDescriptionKeyValueSections;
 
-    v16 = [v4 friendlyName];
+    friendlyName = [payloadCopy friendlyName];
     friendlyName = v5->_friendlyName;
-    v5->_friendlyName = v16;
+    v5->_friendlyName = friendlyName;
 
-    v18 = [v4 title];
+    title2 = [payloadCopy title];
     v19 = v5->_title;
-    v5->_title = v18;
+    v5->_title = title2;
 
-    v20 = [v4 subtitle1Label];
+    subtitle1Label = [payloadCopy subtitle1Label];
     subtitle1Label = v5->_subtitle1Label;
-    v5->_subtitle1Label = v20;
+    v5->_subtitle1Label = subtitle1Label;
 
-    v22 = [v4 subtitle1Description];
+    subtitle1Description = [payloadCopy subtitle1Description];
     subtitle1Description = v5->_subtitle1Description;
-    v5->_subtitle1Description = v22;
+    v5->_subtitle1Description = subtitle1Description;
 
-    v24 = [v4 subtitle2Label];
+    subtitle2Label = [payloadCopy subtitle2Label];
     subtitle2Label = v5->_subtitle2Label;
-    v5->_subtitle2Label = v24;
+    v5->_subtitle2Label = subtitle2Label;
 
-    v26 = [v4 subtitle2Description];
+    subtitle2Description = [payloadCopy subtitle2Description];
     subtitle2Description = v5->_subtitle2Description;
-    v5->_subtitle2Description = v26;
+    v5->_subtitle2Description = subtitle2Description;
 
     objc_opt_class();
     v5->_isCertificate = objc_opt_isKindOfClass() & 1;
@@ -367,10 +367,10 @@
     v5->_isManagedBookPayload = objc_opt_isKindOfClass() & 1;
     if (v5->_isCertificate || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v28 = [v4 copyCertificate];
-      if (v28)
+      copyCertificate = [payloadCopy copyCertificate];
+      if (copyCertificate)
       {
-        v29 = v28;
+        v29 = copyCertificate;
         v30 = SecCertificateCopyProperties();
         if (v30)
         {
@@ -397,74 +397,74 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(DMCPayloadViewModel *)self typeStrings];
-  [v4 encodeObject:v5 forKey:@"typeStrings"];
+  coderCopy = coder;
+  typeStrings = [(DMCPayloadViewModel *)self typeStrings];
+  [coderCopy encodeObject:typeStrings forKey:@"typeStrings"];
 
-  v6 = [(DMCPayloadViewModel *)self localizedSingularForm];
-  [v4 encodeObject:v6 forKey:@"localizedSingularForm"];
+  localizedSingularForm = [(DMCPayloadViewModel *)self localizedSingularForm];
+  [coderCopy encodeObject:localizedSingularForm forKey:@"localizedSingularForm"];
 
-  v7 = [(DMCPayloadViewModel *)self localizedPluralForm];
-  [v4 encodeObject:v7 forKey:@"localizedPluralForm"];
+  localizedPluralForm = [(DMCPayloadViewModel *)self localizedPluralForm];
+  [coderCopy encodeObject:localizedPluralForm forKey:@"localizedPluralForm"];
 
-  v8 = [(DMCPayloadViewModel *)self payloadDescriptionKeyValueSections];
-  [v4 encodeObject:v8 forKey:@"payloadDescriptionKeyValueSections"];
+  payloadDescriptionKeyValueSections = [(DMCPayloadViewModel *)self payloadDescriptionKeyValueSections];
+  [coderCopy encodeObject:payloadDescriptionKeyValueSections forKey:@"payloadDescriptionKeyValueSections"];
 
-  v9 = [(DMCPayloadViewModel *)self friendlyName];
-  [v4 encodeObject:v9 forKey:@"friendlyName"];
+  friendlyName = [(DMCPayloadViewModel *)self friendlyName];
+  [coderCopy encodeObject:friendlyName forKey:@"friendlyName"];
 
-  v10 = [(DMCPayloadViewModel *)self title];
-  [v4 encodeObject:v10 forKey:@"title"];
+  title = [(DMCPayloadViewModel *)self title];
+  [coderCopy encodeObject:title forKey:@"title"];
 
-  v11 = [(DMCPayloadViewModel *)self subtitle1Label];
-  [v4 encodeObject:v11 forKey:@"subtitle1Label"];
+  subtitle1Label = [(DMCPayloadViewModel *)self subtitle1Label];
+  [coderCopy encodeObject:subtitle1Label forKey:@"subtitle1Label"];
 
-  v12 = [(DMCPayloadViewModel *)self subtitle1Description];
-  [v4 encodeObject:v12 forKey:@"subtitle1Description"];
+  subtitle1Description = [(DMCPayloadViewModel *)self subtitle1Description];
+  [coderCopy encodeObject:subtitle1Description forKey:@"subtitle1Description"];
 
-  v13 = [(DMCPayloadViewModel *)self subtitle2Label];
-  [v4 encodeObject:v13 forKey:@"subtitle2Label"];
+  subtitle2Label = [(DMCPayloadViewModel *)self subtitle2Label];
+  [coderCopy encodeObject:subtitle2Label forKey:@"subtitle2Label"];
 
-  v14 = [(DMCPayloadViewModel *)self subtitle2Description];
-  [v4 encodeObject:v14 forKey:@"subtitle2Description"];
+  subtitle2Description = [(DMCPayloadViewModel *)self subtitle2Description];
+  [coderCopy encodeObject:subtitle2Description forKey:@"subtitle2Description"];
 
   v15 = [MEMORY[0x277CCABB0] numberWithBool:{-[DMCPayloadViewModel showIcon](self, "showIcon")}];
-  [v4 encodeObject:v15 forKey:@"showIcon"];
+  [coderCopy encodeObject:v15 forKey:@"showIcon"];
 
   v16 = [MEMORY[0x277CCABB0] numberWithBool:{-[DMCPayloadViewModel hasDetails](self, "hasDetails")}];
-  [v4 encodeObject:v16 forKey:@"hasDetails"];
+  [coderCopy encodeObject:v16 forKey:@"hasDetails"];
 
   v17 = [MEMORY[0x277CCABB0] numberWithBool:{-[DMCPayloadViewModel isCertificate](self, "isCertificate")}];
-  [v4 encodeObject:v17 forKey:@"isCertificate"];
+  [coderCopy encodeObject:v17 forKey:@"isCertificate"];
 
   v18 = [MEMORY[0x277CCABB0] numberWithBool:{-[DMCPayloadViewModel isManagedAppPayload](self, "isManagedAppPayload")}];
-  [v4 encodeObject:v18 forKey:@"isManagedAppPayload"];
+  [coderCopy encodeObject:v18 forKey:@"isManagedAppPayload"];
 
   v19 = [MEMORY[0x277CCABB0] numberWithBool:{-[DMCPayloadViewModel isManagedBookPayload](self, "isManagedBookPayload")}];
-  [v4 encodeObject:v19 forKey:@"isManagedBookPayload"];
+  [coderCopy encodeObject:v19 forKey:@"isManagedBookPayload"];
 
-  v20 = [(DMCPayloadViewModel *)self managedApp];
-  [v4 encodeObject:v20 forKey:@"managedApp"];
+  managedApp = [(DMCPayloadViewModel *)self managedApp];
+  [coderCopy encodeObject:managedApp forKey:@"managedApp"];
 
-  v21 = [(DMCPayloadViewModel *)self managedBook];
-  [v4 encodeObject:v21 forKey:@"managedBook"];
+  managedBook = [(DMCPayloadViewModel *)self managedBook];
+  [coderCopy encodeObject:managedBook forKey:@"managedBook"];
 
-  v22 = [(DMCPayloadViewModel *)self certificateExpirationDate];
-  [v4 encodeObject:v22 forKey:@"certificateExpirationDate"];
+  certificateExpirationDate = [(DMCPayloadViewModel *)self certificateExpirationDate];
+  [coderCopy encodeObject:certificateExpirationDate forKey:@"certificateExpirationDate"];
 
   v23 = [MEMORY[0x277CCABB0] numberWithInteger:{-[DMCPayloadViewModel type](self, "type")}];
-  [v4 encodeObject:v23 forKey:@"type"];
+  [coderCopy encodeObject:v23 forKey:@"type"];
 
-  v24 = [(DMCPayloadViewModel *)self _sendableCertificateProperties];
-  [v4 encodeObject:v24 forKey:@"certificateProperties"];
+  _sendableCertificateProperties = [(DMCPayloadViewModel *)self _sendableCertificateProperties];
+  [coderCopy encodeObject:_sendableCertificateProperties forKey:@"certificateProperties"];
 }
 
-- (DMCPayloadViewModel)initWithCoder:(id)a3
+- (DMCPayloadViewModel)initWithCoder:(id)coder
 {
   v76 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v73.receiver = self;
   v73.super_class = DMCPayloadViewModel;
   v5 = [(DMCPayloadViewModel *)&v73 init];
@@ -473,88 +473,88 @@
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"typeStrings"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"typeStrings"];
     typeStrings = v5->_typeStrings;
     v5->_typeStrings = v9;
 
     v11 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"localizedSingularForm"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"localizedSingularForm"];
     localizedSingularForm = v5->_localizedSingularForm;
     v5->_localizedSingularForm = v12;
 
     v14 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"localizedPluralForm"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"localizedPluralForm"];
     localizedPluralForm = v5->_localizedPluralForm;
     v5->_localizedPluralForm = v15;
 
     v17 = MEMORY[0x277CBEB98];
     v18 = objc_opt_class();
     v19 = [v17 setWithObjects:{v18, objc_opt_class(), 0}];
-    v20 = [v4 decodeObjectOfClasses:v19 forKey:@"payloadDescriptionKeyValueSections"];
+    v20 = [coderCopy decodeObjectOfClasses:v19 forKey:@"payloadDescriptionKeyValueSections"];
     payloadDescriptionKeyValueSections = v5->_payloadDescriptionKeyValueSections;
     v5->_payloadDescriptionKeyValueSections = v20;
 
     v22 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v23 = [v4 decodeObjectOfClasses:v22 forKey:@"friendlyName"];
+    v23 = [coderCopy decodeObjectOfClasses:v22 forKey:@"friendlyName"];
     friendlyName = v5->_friendlyName;
     v5->_friendlyName = v23;
 
     v25 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v26 = [v4 decodeObjectOfClasses:v25 forKey:@"title"];
+    v26 = [coderCopy decodeObjectOfClasses:v25 forKey:@"title"];
     title = v5->_title;
     v5->_title = v26;
 
     v28 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v29 = [v4 decodeObjectOfClasses:v28 forKey:@"subtitle1Label"];
+    v29 = [coderCopy decodeObjectOfClasses:v28 forKey:@"subtitle1Label"];
     subtitle1Label = v5->_subtitle1Label;
     v5->_subtitle1Label = v29;
 
     v31 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v32 = [v4 decodeObjectOfClasses:v31 forKey:@"subtitle1Description"];
+    v32 = [coderCopy decodeObjectOfClasses:v31 forKey:@"subtitle1Description"];
     subtitle1Description = v5->_subtitle1Description;
     v5->_subtitle1Description = v32;
 
     v34 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v35 = [v4 decodeObjectOfClasses:v34 forKey:@"subtitle2Label"];
+    v35 = [coderCopy decodeObjectOfClasses:v34 forKey:@"subtitle2Label"];
     subtitle2Label = v5->_subtitle2Label;
     v5->_subtitle2Label = v35;
 
     v37 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v38 = [v4 decodeObjectOfClasses:v37 forKey:@"subtitle2Description"];
+    v38 = [coderCopy decodeObjectOfClasses:v37 forKey:@"subtitle2Description"];
     subtitle2Description = v5->_subtitle2Description;
     v5->_subtitle2Description = v38;
 
-    v40 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"showIcon"];
+    v40 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"showIcon"];
     v5->_showIcon = [v40 BOOLValue];
 
-    v41 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"hasDetails"];
+    v41 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"hasDetails"];
     v5->_hasDetails = [v41 BOOLValue];
 
-    v42 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"isCertificate"];
+    v42 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isCertificate"];
     v5->_isCertificate = [v42 BOOLValue];
 
-    v43 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"isManagedAppPayload"];
+    v43 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isManagedAppPayload"];
     v5->_isManagedAppPayload = [v43 BOOLValue];
 
-    v44 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"isManagedBookPayload"];
+    v44 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isManagedBookPayload"];
     v5->_isManagedBookPayload = [v44 BOOLValue];
 
     v45 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v46 = [v4 decodeObjectOfClasses:v45 forKey:@"managedApp"];
+    v46 = [coderCopy decodeObjectOfClasses:v45 forKey:@"managedApp"];
     managedApp = v5->_managedApp;
     v5->_managedApp = v46;
 
     v48 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v49 = [v4 decodeObjectOfClasses:v48 forKey:@"managedBook"];
+    v49 = [coderCopy decodeObjectOfClasses:v48 forKey:@"managedBook"];
     managedBook = v5->_managedBook;
     v5->_managedBook = v49;
 
     v51 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v52 = [v4 decodeObjectOfClasses:v51 forKey:@"certificateExpirationDate"];
+    v52 = [coderCopy decodeObjectOfClasses:v51 forKey:@"certificateExpirationDate"];
     certificateExpirationDate = v5->_certificateExpirationDate;
     v5->_certificateExpirationDate = v52;
 
-    v54 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+    v54 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
     v5->_type = [v54 integerValue];
 
     v72 = MEMORY[0x277CBEB98];
@@ -569,7 +569,7 @@
     v61 = objc_opt_class();
     v62 = objc_opt_class();
     v63 = [v72 setWithObjects:{v71, v70, v55, v56, v57, v58, v59, v60, v61, v62, objc_opt_class(), 0}];
-    v64 = [v4 decodeObjectOfClasses:v63 forKey:@"certificateProperties"];
+    v64 = [coderCopy decodeObjectOfClasses:v63 forKey:@"certificateProperties"];
     certificateProperties = v5->_certificateProperties;
     v5->_certificateProperties = v64;
 

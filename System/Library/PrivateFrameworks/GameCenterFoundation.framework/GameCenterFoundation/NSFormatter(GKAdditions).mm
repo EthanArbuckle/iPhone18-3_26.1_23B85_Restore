@@ -6,13 +6,13 @@
 
 - (void)_gkUpdateLocale
 {
-  v3 = a1;
-  v1 = [MEMORY[0x277CBEAF8] currentLocale];
-  v2 = [v3 locale];
+  selfCopy = self;
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  locale = [selfCopy locale];
 
-  if (v2 != v1)
+  if (locale != currentLocale)
   {
-    [v3 setLocale:v1];
+    [selfCopy setLocale:currentLocale];
   }
 }
 

@@ -1,12 +1,12 @@
 @interface MSServerEvaluationStatus
 + (Class)managedClass;
-- (MSServerEvaluationStatus)initWithObject:(id)a3 store:(id)a4 lazyLoad:(BOOL)a5 parent:(BOOL)a6;
+- (MSServerEvaluationStatus)initWithObject:(id)object store:(id)store lazyLoad:(BOOL)load parent:(BOOL)parent;
 - (int64_t)positionIndex;
-- (void)setArpStatus:(BOOL)a3;
-- (void)setPositionIndex:(int64_t)a3;
-- (void)setPropertiesUnsafeWithManagedObject:(id)a3 lazyLoad:(BOOL)a4 parent:(BOOL)a5;
-- (void)setRapStatus:(BOOL)a3;
-- (void)setReliabilityStatus:(BOOL)a3;
+- (void)setArpStatus:(BOOL)status;
+- (void)setPositionIndex:(int64_t)index;
+- (void)setPropertiesUnsafeWithManagedObject:(id)object lazyLoad:(BOOL)load parent:(BOOL)parent;
+- (void)setRapStatus:(BOOL)status;
+- (void)setReliabilityStatus:(BOOL)status;
 @end
 
 @implementation MSServerEvaluationStatus
@@ -18,55 +18,55 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (void)setPropertiesUnsafeWithManagedObject:(id)a3 lazyLoad:(BOOL)a4 parent:(BOOL)a5
+- (void)setPropertiesUnsafeWithManagedObject:(id)object lazyLoad:(BOOL)load parent:(BOOL)parent
 {
-  v6 = a3;
-  v7 = self;
-  sub_1B631D878(v6);
+  objectCopy = object;
+  selfCopy = self;
+  sub_1B631D878(objectCopy);
 }
 
-- (void)setArpStatus:(BOOL)a3
+- (void)setArpStatus:(BOOL)status
 {
-  v4 = self;
-  sub_1B631C160(a3);
+  selfCopy = self;
+  sub_1B631C160(status);
 }
 
 - (int64_t)positionIndex
 {
   v3 = OBJC_IVAR____TtC8MapsSync14MapsSyncObject__propertyLock;
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC8MapsSync14MapsSyncObject__propertyLock);
-  v5 = self;
+  selfCopy = self;
   [v4 lock];
-  v6 = *(&v5->super.super.isa + OBJC_IVAR___MSServerEvaluationStatus__positionIndex);
+  v6 = *(&selfCopy->super.super.isa + OBJC_IVAR___MSServerEvaluationStatus__positionIndex);
   [*(&self->super.super.isa + v3) unlock];
 
   return v6;
 }
 
-- (void)setPositionIndex:(int64_t)a3
+- (void)setPositionIndex:(int64_t)index
 {
-  v4 = self;
-  sub_1B631C4C4(a3);
+  selfCopy = self;
+  sub_1B631C4C4(index);
 }
 
-- (void)setRapStatus:(BOOL)a3
+- (void)setRapStatus:(BOOL)status
 {
-  v4 = self;
-  sub_1B631C7D8(a3);
+  selfCopy = self;
+  sub_1B631C7D8(status);
 }
 
-- (void)setReliabilityStatus:(BOOL)a3
+- (void)setReliabilityStatus:(BOOL)status
 {
-  v4 = self;
-  sub_1B631CB64(a3);
+  selfCopy = self;
+  sub_1B631CB64(status);
 }
 
-- (MSServerEvaluationStatus)initWithObject:(id)a3 store:(id)a4 lazyLoad:(BOOL)a5 parent:(BOOL)a6
+- (MSServerEvaluationStatus)initWithObject:(id)object store:(id)store lazyLoad:(BOOL)load parent:(BOOL)parent
 {
-  v6 = a6;
-  v7 = a5;
-  v10 = a3;
-  return sub_1B631CE78(a3, a4, v7, v6);
+  parentCopy = parent;
+  loadCopy = load;
+  objectCopy = object;
+  return sub_1B631CE78(object, store, loadCopy, parentCopy);
 }
 
 @end

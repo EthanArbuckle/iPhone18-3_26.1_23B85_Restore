@@ -1,23 +1,23 @@
 @interface SXScaleAndFadeComponentAnimationHandler
-- (SXScaleAndFadeComponentAnimationHandler)initWithComponent:(id)a3 withAnimation:(id)a4;
+- (SXScaleAndFadeComponentAnimationHandler)initWithComponent:(id)component withAnimation:(id)animation;
 - (void)finishAnimation;
 - (void)prepareAnimation;
 - (void)startAnimation;
-- (void)updateAnimationWithFactor:(double)a3;
+- (void)updateAnimationWithFactor:(double)factor;
 @end
 
 @implementation SXScaleAndFadeComponentAnimationHandler
 
-- (SXScaleAndFadeComponentAnimationHandler)initWithComponent:(id)a3 withAnimation:(id)a4
+- (SXScaleAndFadeComponentAnimationHandler)initWithComponent:(id)component withAnimation:(id)animation
 {
   v15.receiver = self;
   v15.super_class = SXScaleAndFadeComponentAnimationHandler;
-  v4 = [(SXComponentAnimationHandler *)&v15 initWithComponent:a3 withAnimation:a4];
+  v4 = [(SXComponentAnimationHandler *)&v15 initWithComponent:component withAnimation:animation];
   v5 = v4;
   if (v4)
   {
-    v6 = [(SXComponentAnimationHandler *)v4 animation];
-    [v6 initialAlpha];
+    animation = [(SXComponentAnimationHandler *)v4 animation];
+    [animation initialAlpha];
     if (v7 == 1.79769313e308)
     {
       v5->_initialAlpha = 0.3;
@@ -25,13 +25,13 @@
 
     else
     {
-      v8 = [(SXComponentAnimationHandler *)v5 animation];
-      [v8 initialAlpha];
+      animation2 = [(SXComponentAnimationHandler *)v5 animation];
+      [animation2 initialAlpha];
       v5->_initialAlpha = v9;
     }
 
-    v10 = [(SXComponentAnimationHandler *)v5 animation];
-    [v10 initialAlpha];
+    animation3 = [(SXComponentAnimationHandler *)v5 animation];
+    [animation3 initialAlpha];
     if (v11 == 1.79769313e308)
     {
       v5->_initialScale = 0.75;
@@ -39,8 +39,8 @@
 
     else
     {
-      v12 = [(SXComponentAnimationHandler *)v5 animation];
-      [v12 initialScale];
+      animation4 = [(SXComponentAnimationHandler *)v5 animation];
+      [animation4 initialScale];
       v5->_initialScale = v13;
     }
   }
@@ -77,15 +77,15 @@
     v7 = 1.0;
   }
 
-  v12 = [(SXComponentAnimationHandler *)self component];
-  v13 = [v12 layer];
+  component = [(SXComponentAnimationHandler *)self component];
+  layer = [component layer];
   v17 = v18;
-  [v13 setTransform:&v17];
+  [layer setTransform:&v17];
 
-  v14 = [(SXComponentAnimationHandler *)self component];
-  v15 = [v14 layer];
+  component2 = [(SXComponentAnimationHandler *)self component];
+  layer2 = [component2 layer];
   *&v16 = v7;
-  [v15 setOpacity:v16];
+  [layer2 setOpacity:v16];
 }
 
 - (void)startAnimation
@@ -94,53 +94,53 @@
   v23.receiver = self;
   v23.super_class = SXScaleAndFadeComponentAnimationHandler;
   [(SXComponentAnimationHandler *)&v23 startAnimation];
-  v3 = [(SXComponentAnimationHandler *)self component];
-  v4 = [v3 layer];
-  v5 = [v4 presentationLayer];
+  component = [(SXComponentAnimationHandler *)self component];
+  layer = [component layer];
+  presentationLayer = [layer presentationLayer];
 
-  if (!v5)
+  if (!presentationLayer)
   {
-    v6 = [(SXComponentAnimationHandler *)self component];
-    v5 = [v6 layer];
+    component2 = [(SXComponentAnimationHandler *)self component];
+    presentationLayer = [component2 layer];
   }
 
-  v7 = [MEMORY[0x1E6979308] animation];
-  [v7 setDelegate:self];
-  [v7 setDuration:0.3];
+  animation = [MEMORY[0x1E6979308] animation];
+  [animation setDelegate:self];
+  [animation setDuration:0.3];
   v8 = [MEMORY[0x1E6979318] animationWithKeyPath:@"opacity"];
   v9 = MEMORY[0x1E696AD98];
-  [v5 opacity];
+  [presentationLayer opacity];
   v10 = [v9 numberWithFloat:?];
   [v8 setFromValue:v10];
 
   [v8 setToValue:&unk_1F538A208];
-  v11 = [v5 valueForKeyPath:@"transform.scale"];
+  v11 = [presentationLayer valueForKeyPath:@"transform.scale"];
   v12 = [MEMORY[0x1E6979318] animationWithKeyPath:@"transform.scale"];
   [v12 setFromValue:v11];
   [v12 setToValue:&unk_1F538A208];
   v24[0] = v8;
   v24[1] = v12;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:2];
-  [v7 setAnimations:v13];
+  [animation setAnimations:v13];
 
-  v14 = [(SXComponentAnimationHandler *)self component];
-  v15 = [v14 layer];
-  [v15 addAnimation:v7 forKey:@"scaleAndFade"];
+  component3 = [(SXComponentAnimationHandler *)self component];
+  layer2 = [component3 layer];
+  [layer2 addAnimation:animation forKey:@"scaleAndFade"];
 
   memset(&v22, 0, sizeof(v22));
   CATransform3DMakeScale(&v22, 1.0, 1.0, 1.0);
-  v16 = [(SXComponentAnimationHandler *)self component];
-  v17 = [v16 layer];
+  component4 = [(SXComponentAnimationHandler *)self component];
+  layer3 = [component4 layer];
   v21 = v22;
-  [v17 setTransform:&v21];
+  [layer3 setTransform:&v21];
 
-  v18 = [(SXComponentAnimationHandler *)self component];
-  v19 = [v18 layer];
+  component5 = [(SXComponentAnimationHandler *)self component];
+  layer4 = [component5 layer];
   LODWORD(v20) = 1.0;
-  [v19 setOpacity:v20];
+  [layer4 setOpacity:v20];
 }
 
-- (void)updateAnimationWithFactor:(double)a3
+- (void)updateAnimationWithFactor:(double)factor
 {
   v21.receiver = self;
   v21.super_class = SXScaleAndFadeComponentAnimationHandler;
@@ -160,20 +160,20 @@
 
   else
   {
-    v13 = v12 + (1.0 - v10) * a3;
+    v13 = v12 + (1.0 - v10) * factor;
   }
 
   memset(&v20, 0, sizeof(v20));
   CATransform3DMakeScale(&v20, v13, v13, 1.0);
-  v14 = [(SXComponentAnimationHandler *)self component];
-  v15 = [v14 layer];
+  component = [(SXComponentAnimationHandler *)self component];
+  layer = [component layer];
   v19 = v20;
-  [v15 setTransform:&v19];
+  [layer setTransform:&v19];
 
-  v16 = [(SXComponentAnimationHandler *)self component];
-  v17 = [v16 layer];
-  *&v18 = v8 + (1.0 - v6) * a3;
-  [v17 setOpacity:v18];
+  component2 = [(SXComponentAnimationHandler *)self component];
+  layer2 = [component2 layer];
+  *&v18 = v8 + (1.0 - v6) * factor;
+  [layer2 setOpacity:v18];
 }
 
 - (void)finishAnimation
@@ -181,8 +181,8 @@
   v13.receiver = self;
   v13.super_class = SXScaleAndFadeComponentAnimationHandler;
   [(SXComponentAnimationHandler *)&v13 finishAnimation];
-  v3 = [(SXComponentAnimationHandler *)self component];
-  v4 = [v3 layer];
+  component = [(SXComponentAnimationHandler *)self component];
+  layer = [component layer];
   v5 = *(MEMORY[0x1E69792E8] + 80);
   v12[4] = *(MEMORY[0x1E69792E8] + 64);
   v12[5] = v5;
@@ -195,12 +195,12 @@
   v8 = *(MEMORY[0x1E69792E8] + 48);
   v12[2] = *(MEMORY[0x1E69792E8] + 32);
   v12[3] = v8;
-  [v4 setTransform:v12];
+  [layer setTransform:v12];
 
-  v9 = [(SXComponentAnimationHandler *)self component];
-  v10 = [v9 layer];
+  component2 = [(SXComponentAnimationHandler *)self component];
+  layer2 = [component2 layer];
   LODWORD(v11) = 1.0;
-  [v10 setOpacity:v11];
+  [layer2 setOpacity:v11];
 }
 
 @end

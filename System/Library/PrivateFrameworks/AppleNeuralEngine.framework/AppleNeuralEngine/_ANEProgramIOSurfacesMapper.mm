@@ -1,21 +1,21 @@
 @interface _ANEProgramIOSurfacesMapper
-+ (_ANEProgramIOSurfacesMapper)mapperWithController:(id)a3;
-+ (_ANEProgramIOSurfacesMapper)mapperWithProgramHandle:(unint64_t)a3;
++ (_ANEProgramIOSurfacesMapper)mapperWithController:(id)controller;
++ (_ANEProgramIOSurfacesMapper)mapperWithProgramHandle:(unint64_t)handle;
 + (void)initialize;
-- (BOOL)mapIOSurfacesWithModel:(id)a3 request:(id)a4 cacheInference:(BOOL)a5 error:(id *)a6;
-- (BOOL)unmapIOSurfacesWithModel:(id)a3 request:(id)a4 error:(id *)a5;
-- (BOOL)validateRequest:(id)a3 model:(id)a4;
-- (_ANEProgramIOSurfacesMapper)initWithController:(id)a3;
+- (BOOL)mapIOSurfacesWithModel:(id)model request:(id)request cacheInference:(BOOL)inference error:(id *)error;
+- (BOOL)unmapIOSurfacesWithModel:(id)model request:(id)request error:(id *)error;
+- (BOOL)validateRequest:(id)request model:(id)model;
+- (_ANEProgramIOSurfacesMapper)initWithController:(id)controller;
 - (void)dealloc;
-- (void)prepareANEMemoryMappingParams:(ANEMemoryMappingParamsStruct *)a3 request:(id)a4;
+- (void)prepareANEMemoryMappingParams:(ANEMemoryMappingParamsStruct *)params request:(id)request;
 @end
 
 @implementation _ANEProgramIOSurfacesMapper
 
 - (void)dealloc
 {
-  v3 = [(_ANEProgramIOSurfacesMapper *)self controller];
-  [v3 stop];
+  controller = [(_ANEProgramIOSurfacesMapper *)self controller];
+  [controller stop];
 
   v4.receiver = self;
   v4.super_class = _ANEProgramIOSurfacesMapper;
@@ -30,73 +30,73 @@
   }
 }
 
-- (_ANEProgramIOSurfacesMapper)initWithController:(id)a3
+- (_ANEProgramIOSurfacesMapper)initWithController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = _ANEProgramIOSurfacesMapper;
   v6 = [(_ANEProgramIOSurfacesMapper *)&v8 init];
   if (v6)
   {
-    v6->_programHandle = [v5 programHandle];
-    objc_storeStrong(&v6->_controller, a3);
+    v6->_programHandle = [controllerCopy programHandle];
+    objc_storeStrong(&v6->_controller, controller);
     [(_ANEDeviceController *)v6->_controller start];
   }
 
   return v6;
 }
 
-+ (_ANEProgramIOSurfacesMapper)mapperWithProgramHandle:(unint64_t)a3
++ (_ANEProgramIOSurfacesMapper)mapperWithProgramHandle:(unint64_t)handle
 {
-  v4 = [_ANEDeviceController controllerWithProgramHandle:a3];
-  v5 = [[a1 alloc] initWithController:v4];
+  v4 = [_ANEDeviceController controllerWithProgramHandle:handle];
+  v5 = [[self alloc] initWithController:v4];
 
   return v5;
 }
 
-+ (_ANEProgramIOSurfacesMapper)mapperWithController:(id)a3
++ (_ANEProgramIOSurfacesMapper)mapperWithController:(id)controller
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithController:v4];
+  controllerCopy = controller;
+  v5 = [[self alloc] initWithController:controllerCopy];
 
   return v5;
 }
 
-- (BOOL)validateRequest:(id)a3 model:(id)a4
+- (BOOL)validateRequest:(id)request model:(id)model
 {
   v41 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 validate])
+  requestCopy = request;
+  modelCopy = model;
+  if ([requestCopy validate])
   {
-    v8 = [v6 procedureIndex];
+    procedureIndex = [requestCopy procedureIndex];
     aSelector = a2;
-    v9 = [v8 unsignedIntegerValue];
+    unsignedIntegerValue = [procedureIndex unsignedIntegerValue];
 
-    v10 = [v6 ioSurfacesCount];
-    if ((v10 - 129) <= 0xFFFFFFFFFFFFFF7FLL)
+    ioSurfacesCount = [requestCopy ioSurfacesCount];
+    if ((ioSurfacesCount - 129) <= 0xFFFFFFFFFFFFFF7FLL)
     {
       v11 = +[_ANELog common];
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
         v12 = NSStringFromSelector(aSelector);
-        [(_ANEProgramIOSurfacesMapper *)v12 validateRequest:v40 model:v10, v11];
+        [(_ANEProgramIOSurfacesMapper *)v12 validateRequest:v40 model:ioSurfacesCount, v11];
       }
     }
 
-    v13 = [v7 inputSymbolIndicesForProcedureIndex:v9];
-    v14 = [v6 inputIndexArray];
-    v15 = [v14 count];
+    v13 = [modelCopy inputSymbolIndicesForProcedureIndex:unsignedIntegerValue];
+    inputIndexArray = [requestCopy inputIndexArray];
+    v15 = [inputIndexArray count];
     if (v15)
     {
       v16 = 0;
       v17 = 0;
       while (1)
       {
-        v18 = [v14 objectAtIndexedSubscript:v16];
-        v19 = [v18 unsignedIntegerValue];
+        v18 = [inputIndexArray objectAtIndexedSubscript:v16];
+        unsignedIntegerValue2 = [v18 unsignedIntegerValue];
 
-        if (([v13 containsIndex:v19] & 1) == 0)
+        if (([v13 containsIndex:unsignedIntegerValue2] & 1) == 0)
         {
           break;
         }
@@ -117,7 +117,7 @@
         v36 = 1024;
         v37 = v17;
         v38 = 1024;
-        v39 = v19;
+        v39 = unsignedIntegerValue2;
         _os_log_error_impl(&dword_1AD246000, v20, OS_LOG_TYPE_ERROR, "%@: request.inputIndexArray[%u]=%u is invalid", buf, 0x18u);
       }
 
@@ -127,19 +127,19 @@
     else
     {
 LABEL_10:
-      v20 = [v7 outputSymbolIndicesForProcedureIndex:v9];
-      v21 = [v6 outputIndexArray];
-      v22 = [v21 count];
+      v20 = [modelCopy outputSymbolIndicesForProcedureIndex:unsignedIntegerValue];
+      outputIndexArray = [requestCopy outputIndexArray];
+      v22 = [outputIndexArray count];
       if (v22)
       {
         v23 = 0;
         v24 = 0;
         while (1)
         {
-          v25 = [v21 objectAtIndexedSubscript:v23];
-          v26 = [v25 unsignedIntegerValue];
+          v25 = [outputIndexArray objectAtIndexedSubscript:v23];
+          unsignedIntegerValue3 = [v25 unsignedIntegerValue];
 
-          if (([v20 containsIndex:v26]& 1) == 0)
+          if (([v20 containsIndex:unsignedIntegerValue3]& 1) == 0)
           {
             break;
           }
@@ -160,7 +160,7 @@ LABEL_10:
           v36 = 1024;
           v37 = v24;
           v38 = 1024;
-          v39 = v26;
+          v39 = unsignedIntegerValue3;
           _os_log_error_impl(&dword_1AD246000, v28, OS_LOG_TYPE_ERROR, "%@: request.outputIndexArray[%u]=%u is invalid", buf, 0x18u);
         }
 
@@ -184,29 +184,29 @@ LABEL_14:
   return v27;
 }
 
-- (void)prepareANEMemoryMappingParams:(ANEMemoryMappingParamsStruct *)a3 request:(id)a4
+- (void)prepareANEMemoryMappingParams:(ANEMemoryMappingParamsStruct *)params request:(id)request
 {
-  v27 = a4;
-  bzero(a3, 0xC18uLL);
-  a3->var2 = [v27 ioSurfacesCount];
-  v6 = [v27 procedureIndex];
-  a3->var3 = [v6 unsignedIntValue];
+  requestCopy = request;
+  bzero(params, 0xC18uLL);
+  params->var2 = [requestCopy ioSurfacesCount];
+  procedureIndex = [requestCopy procedureIndex];
+  params->var3 = [procedureIndex unsignedIntValue];
 
-  a3->var1 = [(_ANEProgramIOSurfacesMapper *)self programHandle];
-  v26 = [v27 inputIndexArray];
-  v7 = [v26 count];
+  params->var1 = [(_ANEProgramIOSurfacesMapper *)self programHandle];
+  inputIndexArray = [requestCopy inputIndexArray];
+  v7 = [inputIndexArray count];
   if (v7)
   {
     v8 = 0;
     v9 = 1;
     do
     {
-      v10 = [v27 inputArray];
-      v11 = [v10 objectAtIndexedSubscript:v8];
-      v12 = &a3->var0[v8];
+      inputArray = [requestCopy inputArray];
+      v11 = [inputArray objectAtIndexedSubscript:v8];
+      v12 = &params->var0[v8];
       v12->var0 = [v11 ioSurface];
 
-      v13 = [v26 objectAtIndexedSubscript:v8];
+      v13 = [inputIndexArray objectAtIndexedSubscript:v8];
       v12->var1 = [v13 unsignedIntValue];
 
       v12->var3 = 1;
@@ -217,20 +217,20 @@ LABEL_14:
     while (v14);
   }
 
-  v15 = [v27 outputIndexArray];
-  v16 = [v15 count];
+  outputIndexArray = [requestCopy outputIndexArray];
+  v16 = [outputIndexArray count];
   if (v16)
   {
     v17 = 0;
     v18 = 1;
     do
     {
-      v19 = [v27 outputArray];
-      v20 = [v19 objectAtIndexedSubscript:v17];
-      v21 = &a3->var0[v17 + v7];
+      outputArray = [requestCopy outputArray];
+      v20 = [outputArray objectAtIndexedSubscript:v17];
+      v21 = &params->var0[v17 + v7];
       v21->var0 = [v20 ioSurface];
 
-      v22 = [v15 objectAtIndexedSubscript:v17];
+      v22 = [outputIndexArray objectAtIndexedSubscript:v17];
       v21->var1 = [v22 unsignedIntValue];
 
       v21->var3 = 2;
@@ -241,23 +241,23 @@ LABEL_14:
     while (v14);
   }
 
-  v23 = [v27 weightsBuffer];
+  weightsBuffer = [requestCopy weightsBuffer];
 
-  if (v23)
+  if (weightsBuffer)
   {
-    v24 = [v27 weightsBuffer];
-    v25 = &a3->var0[v16 + v7];
-    v25->var0 = [v24 ioSurface];
+    weightsBuffer2 = [requestCopy weightsBuffer];
+    v25 = &params->var0[v16 + v7];
+    v25->var0 = [weightsBuffer2 ioSurface];
 
     v25->var3 = 8;
   }
 }
 
-- (BOOL)mapIOSurfacesWithModel:(id)a3 request:(id)a4 cacheInference:(BOOL)a5 error:(id *)a6
+- (BOOL)mapIOSurfacesWithModel:(id)model request:(id)request cacheInference:(BOOL)inference error:(id *)error
 {
   v43 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
+  modelCopy = model;
+  requestCopy = request;
   v13 = +[_ANEVirtualClient sharedConnection];
 
   if (v13)
@@ -283,13 +283,13 @@ LABEL_14:
       [_ANEProgramIOSurfacesMapper mapIOSurfacesWithModel:v17 request:buf cacheInference:v16 error:?];
     }
 
-    if (a6)
+    if (error)
     {
       v18 = NSStringFromSelector(a2);
-      *a6 = [_ANEErrors hostTooOld:v18];
+      *error = [_ANEErrors hostTooOld:v18];
 
 LABEL_5:
-      LOBYTE(a6) = 0;
+      LOBYTE(error) = 0;
     }
   }
 
@@ -306,21 +306,21 @@ LABEL_5:
     v33 = 0x2020000000;
     v34 = 0;
     v19 = objc_autoreleasePoolPush();
-    v20 = [(_ANEProgramIOSurfacesMapper *)self validateRequest:v12 model:v11];
+    v20 = [(_ANEProgramIOSurfacesMapper *)self validateRequest:requestCopy model:modelCopy];
     if (v20)
     {
-      [(_ANEProgramIOSurfacesMapper *)self prepareANEMemoryMappingParams:buf request:v12];
+      [(_ANEProgramIOSurfacesMapper *)self prepareANEMemoryMappingParams:buf request:requestCopy];
       v21 = gANEMemoryMapperQueue;
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __83___ANEProgramIOSurfacesMapper_mapIOSurfacesWithModel_request_cacheInference_error___block_invoke;
       block[3] = &unk_1E79BA1E8;
-      v30 = a5;
+      inferenceCopy = inference;
       v28 = buf;
       v29 = a2;
       block[4] = self;
       v26 = &v31;
-      v25 = v12;
+      v25 = requestCopy;
       v27 = &v35;
       dispatch_sync(v21, block);
     }
@@ -328,17 +328,17 @@ LABEL_5:
     objc_autoreleasePoolPop(v19);
     if (v20)
     {
-      if (a6)
+      if (error)
       {
-        *a6 = v36[5];
+        *error = v36[5];
       }
 
-      LOBYTE(a6) = *(v32 + 24);
+      LOBYTE(error) = *(v32 + 24);
     }
 
     else
     {
-      LOBYTE(a6) = 0;
+      LOBYTE(error) = 0;
     }
 
     _Block_object_dispose(&v31, 8);
@@ -346,14 +346,14 @@ LABEL_5:
   }
 
   v22 = *MEMORY[0x1E69E9840];
-  return a6 & 1;
+  return error & 1;
 }
 
-- (BOOL)unmapIOSurfacesWithModel:(id)a3 request:(id)a4 error:(id *)a5
+- (BOOL)unmapIOSurfacesWithModel:(id)model request:(id)request error:(id *)error
 {
   v36 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
+  modelCopy = model;
+  requestCopy = request;
   v11 = +[_ANEVirtualClient sharedConnection];
 
   if (v11)
@@ -379,13 +379,13 @@ LABEL_5:
       [_ANEProgramIOSurfacesMapper mapIOSurfacesWithModel:v15 request:buf cacheInference:v14 error:?];
     }
 
-    if (a5)
+    if (error)
     {
       v16 = NSStringFromSelector(a2);
-      *a5 = [_ANEErrors hostTooOld:v16];
+      *error = [_ANEErrors hostTooOld:v16];
 
 LABEL_5:
-      LOBYTE(a5) = 0;
+      LOBYTE(error) = 0;
     }
   }
 
@@ -402,12 +402,12 @@ LABEL_5:
     v25 = 0x2020000000;
     v26 = 0;
     v17 = objc_autoreleasePoolPush();
-    v18 = [(_ANEProgramIOSurfacesMapper *)self validateRequest:v10 model:v9];
+    v18 = [(_ANEProgramIOSurfacesMapper *)self validateRequest:requestCopy model:modelCopy];
     if (v18)
     {
-      [(_ANEProgramIOSurfacesMapper *)self prepareANEMemoryMappingParams:buf request:v10];
-      v19 = [v10 transactionHandle];
-      v35 = [v19 unsignedIntegerValue];
+      [(_ANEProgramIOSurfacesMapper *)self prepareANEMemoryMappingParams:buf request:requestCopy];
+      transactionHandle = [requestCopy transactionHandle];
+      unsignedIntegerValue = [transactionHandle unsignedIntegerValue];
 
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
@@ -424,17 +424,17 @@ LABEL_5:
     objc_autoreleasePoolPop(v17);
     if (v18)
     {
-      if (a5)
+      if (error)
       {
-        *a5 = v28[5];
+        *error = v28[5];
       }
 
-      LOBYTE(a5) = *(v24 + 24);
+      LOBYTE(error) = *(v24 + 24);
     }
 
     else
     {
-      LOBYTE(a5) = 0;
+      LOBYTE(error) = 0;
     }
 
     _Block_object_dispose(&v23, 8);
@@ -442,7 +442,7 @@ LABEL_5:
   }
 
   v20 = *MEMORY[0x1E69E9840];
-  return a5 & 1;
+  return error & 1;
 }
 
 - (void)validateRequest:(uint64_t)a3 model:(os_log_t)log .cold.1(void *a1, uint8_t *buf, uint64_t a3, os_log_t log)

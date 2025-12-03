@@ -1,10 +1,10 @@
 @interface AAUIInviteMessageFlowController
-- (AAUIInviteMessageFlowController)initWithContext:(id)a3 flow:(unint64_t)a4 navigationController:(id)a5 defaultMessageViewModel:(id)a6 messageSentViewModel:(id)a7;
-- (AAUIInviteMessageFlowController)initWithContext:(id)a3 flow:(unint64_t)a4 navigationController:(id)a5 defaultMessageViewModel:(id)a6 messageSentViewModel:(id)a7 isADPUpsellFlow:(BOOL)a8 isFamilyMember:(BOOL)a9 cdpContext:(id)a10;
+- (AAUIInviteMessageFlowController)initWithContext:(id)context flow:(unint64_t)flow navigationController:(id)controller defaultMessageViewModel:(id)model messageSentViewModel:(id)viewModel;
+- (AAUIInviteMessageFlowController)initWithContext:(id)context flow:(unint64_t)flow navigationController:(id)controller defaultMessageViewModel:(id)model messageSentViewModel:(id)viewModel isADPUpsellFlow:(BOOL)upsellFlow isFamilyMember:(BOOL)member cdpContext:(id)self0;
 - (AAUIInviteMessageFlowControllerDelegate)delegate;
 - (AIDAAccountManager)accountManager;
-- (BOOL)_sendLCLiveMessage:(id)a3;
-- (id)_bubbleImageForFlow:(unint64_t)a3;
+- (BOOL)_sendLCLiveMessage:(id)message;
+- (id)_bubbleImageForFlow:(unint64_t)flow;
 - (void)_cancelMessageInvitationFlow;
 - (void)_finishMessageInvitationFlow;
 - (void)_hideActivitySpinnerInNavigationBar;
@@ -13,24 +13,24 @@
 - (void)_postAdpUpsellCFUCustodianInviteSentEvent;
 - (void)_postAdpUpsellCFUFamilyCustodianAddedEvent;
 - (void)_sendDefaultMessage;
-- (void)_sendEscapeOfferSelectedEvent:(id)a3;
-- (void)_sendRecoveryContactSendMessageLandingEvent:(id)a3;
-- (void)_sendTelemetryEventWithSuccess:(id)a3 didSucceed:(BOOL)a4 error:(id)a5;
+- (void)_sendEscapeOfferSelectedEvent:(id)event;
+- (void)_sendRecoveryContactSendMessageLandingEvent:(id)event;
+- (void)_sendTelemetryEventWithSuccess:(id)success didSucceed:(BOOL)succeed error:(id)error;
 - (void)_showActivitySpinnerInNavigationBar;
 - (void)_showDefaultMessageView;
 - (void)_showInvitationSent;
 - (void)_showMessagesComposeController;
-- (void)inviteController:(id)a3 didFinishWithStatus:(unint64_t)a4 recipients:(id)a5 userInfo:(id)a6 error:(id)a7;
+- (void)inviteController:(id)controller didFinishWithStatus:(unint64_t)status recipients:(id)recipients userInfo:(id)info error:(id)error;
 @end
 
 @implementation AAUIInviteMessageFlowController
 
-- (AAUIInviteMessageFlowController)initWithContext:(id)a3 flow:(unint64_t)a4 navigationController:(id)a5 defaultMessageViewModel:(id)a6 messageSentViewModel:(id)a7
+- (AAUIInviteMessageFlowController)initWithContext:(id)context flow:(unint64_t)flow navigationController:(id)controller defaultMessageViewModel:(id)model messageSentViewModel:(id)viewModel
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a3;
+  viewModelCopy = viewModel;
+  modelCopy = model;
+  controllerCopy = controller;
+  contextCopy = context;
   v16 = _AAUILogSystem();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
@@ -38,37 +38,37 @@
   }
 
   LOBYTE(v19) = 0;
-  v17 = [(AAUIInviteMessageFlowController *)self initWithContext:v15 flow:a4 navigationController:v14 defaultMessageViewModel:v13 messageSentViewModel:v12 isADPUpsellFlow:0 isFamilyMember:v19 cdpContext:0];
+  v17 = [(AAUIInviteMessageFlowController *)self initWithContext:contextCopy flow:flow navigationController:controllerCopy defaultMessageViewModel:modelCopy messageSentViewModel:viewModelCopy isADPUpsellFlow:0 isFamilyMember:v19 cdpContext:0];
 
   return v17;
 }
 
-- (AAUIInviteMessageFlowController)initWithContext:(id)a3 flow:(unint64_t)a4 navigationController:(id)a5 defaultMessageViewModel:(id)a6 messageSentViewModel:(id)a7 isADPUpsellFlow:(BOOL)a8 isFamilyMember:(BOOL)a9 cdpContext:(id)a10
+- (AAUIInviteMessageFlowController)initWithContext:(id)context flow:(unint64_t)flow navigationController:(id)controller defaultMessageViewModel:(id)model messageSentViewModel:(id)viewModel isADPUpsellFlow:(BOOL)upsellFlow isFamilyMember:(BOOL)member cdpContext:(id)self0
 {
-  v16 = a3;
-  v27 = a5;
-  v26 = a6;
-  v17 = a7;
-  v18 = a10;
+  contextCopy = context;
+  controllerCopy = controller;
+  modelCopy = model;
+  viewModelCopy = viewModel;
+  cdpContextCopy = cdpContext;
   v28.receiver = self;
   v28.super_class = AAUIInviteMessageFlowController;
   v19 = [(AAUIInviteMessageFlowController *)&v28 init];
   v20 = v19;
   if (v19)
   {
-    v19->_flow = a4;
-    objc_storeStrong(&v19->_context, a3);
-    v21 = [v16 recipients];
-    v22 = [v21 firstObject];
+    v19->_flow = flow;
+    objc_storeStrong(&v19->_context, context);
+    recipients = [contextCopy recipients];
+    firstObject = [recipients firstObject];
     recipientHandle = v20->_recipientHandle;
-    v20->_recipientHandle = v22;
+    v20->_recipientHandle = firstObject;
 
-    objc_storeStrong(&v20->_navigationController, a5);
-    objc_storeStrong(&v20->_defaultMessageViewModel, a6);
-    objc_storeStrong(&v20->_messageSentViewModel, a7);
-    v20->_isADPUpsellFlow = a8;
-    v20->_isFamilyMember = a9;
-    objc_storeStrong(&v20->_cdpContext, a10);
+    objc_storeStrong(&v20->_navigationController, controller);
+    objc_storeStrong(&v20->_defaultMessageViewModel, model);
+    objc_storeStrong(&v20->_messageSentViewModel, viewModel);
+    v20->_isADPUpsellFlow = upsellFlow;
+    v20->_isFamilyMember = member;
+    objc_storeStrong(&v20->_cdpContext, cdpContext);
   }
 
   return v20;
@@ -79,11 +79,11 @@
   spinnerManager = self->_spinnerManager;
   if (!spinnerManager)
   {
-    v4 = [(AAUIInviteMessageFlowController *)self navigationController];
-    v5 = [v4 topViewController];
-    v6 = [v5 navigationItem];
+    navigationController = [(AAUIInviteMessageFlowController *)self navigationController];
+    topViewController = [navigationController topViewController];
+    navigationItem = [topViewController navigationItem];
 
-    v7 = [[AAUISpinnerManager alloc] initWithNavigationItem:v6 hideBackButton:1];
+    v7 = [[AAUISpinnerManager alloc] initWithNavigationItem:navigationItem hideBackButton:1];
     v8 = self->_spinnerManager;
     self->_spinnerManager = v7;
 
@@ -111,15 +111,15 @@
   defaultMessageController = self->_defaultMessageController;
   self->_defaultMessageController = v4;
 
-  v6 = [(AAUIOBWelcomeController *)self->_defaultMessageController primaryButton];
-  [v6 addTarget:self action:sel__sendDefaultMessage forControlEvents:64];
+  primaryButton = [(AAUIOBWelcomeController *)self->_defaultMessageController primaryButton];
+  [primaryButton addTarget:self action:sel__sendDefaultMessage forControlEvents:64];
 
-  v7 = [(AAUIOBWelcomeController *)self->_defaultMessageController secondaryButton];
-  [v7 addTarget:self action:sel__showMessagesComposeController forControlEvents:64];
+  secondaryButton = [(AAUIOBWelcomeController *)self->_defaultMessageController secondaryButton];
+  [secondaryButton addTarget:self action:sel__showMessagesComposeController forControlEvents:64];
 
   if (!self->_hideCancel)
   {
-    v8 = [(AAUIInviteMessageFlowController *)self delegate];
+    delegate = [(AAUIInviteMessageFlowController *)self delegate];
     v9 = objc_opt_respondsToSelector();
 
     v10 = objc_alloc(MEMORY[0x1E69DC708]);
@@ -134,8 +134,8 @@
     }
 
     v12 = [v10 initWithBarButtonSystemItem:v11 target:self action:sel__cancelMessageInvitationFlow];
-    v13 = [(OBBaseWelcomeController *)self->_defaultMessageController navigationItem];
-    [v13 setLeftBarButtonItem:v12];
+    navigationItem = [(OBBaseWelcomeController *)self->_defaultMessageController navigationItem];
+    [navigationItem setLeftBarButtonItem:v12];
 
     [v3 addObject:*MEMORY[0x1E698BB28]];
   }
@@ -199,10 +199,10 @@
     _os_log_impl(&dword_1C5355000, v3, OS_LOG_TYPE_DEFAULT, "Initiating Trusted Contact invitation message flow...", buf, 2u);
   }
 
-  v4 = [(AAUIInviteMessageFlowController *)self uiVersion];
+  uiVersion = [(AAUIInviteMessageFlowController *)self uiVersion];
   v5 = _AAUILogSystem();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v4 == 1)
+  if (uiVersion == 1)
   {
     if (v6)
     {
@@ -225,14 +225,14 @@
     allSetVC = self->_allSetVC;
     self->_allSetVC = v7;
 
-    v9 = [(OBBaseWelcomeController *)self->_allSetVC navigationItem];
-    [v9 setHidesBackButton:1];
+    navigationItem = [(OBBaseWelcomeController *)self->_allSetVC navigationItem];
+    [navigationItem setHidesBackButton:1];
 
-    v10 = [(AAUIOBWelcomeController *)self->_allSetVC primaryButton];
-    [v10 addTarget:self action:sel__finishMessageInvitationFlow forEvents:64];
+    primaryButton = [(AAUIOBWelcomeController *)self->_allSetVC primaryButton];
+    [primaryButton addTarget:self action:sel__finishMessageInvitationFlow forEvents:64];
 
-    v11 = [(AAUIOBWelcomeController *)self->_allSetVC secondaryButton];
-    [v11 addTarget:self action:sel__messageSentSecondaryActionTapped forEvents:64];
+    secondaryButton = [(AAUIOBWelcomeController *)self->_allSetVC secondaryButton];
+    [secondaryButton addTarget:self action:sel__messageSentSecondaryActionTapped forEvents:64];
 
     objc_initWeak(buf, self);
     v12[0] = MEMORY[0x1E69E9820];
@@ -271,38 +271,38 @@ void __54__AAUIInviteMessageFlowController__showInvitationSent__block_invoke(uin
 - (void)_postAdpUpsellCFUFamilyCustodianAddedEvent
 {
   v3 = MEMORY[0x1E6985DB0];
-  v4 = [(CDPContext *)self->_cdpContext altDSID];
-  v5 = [(CDPContext *)self->_cdpContext telemetryFlowID];
-  v7 = [v3 analyticsEventWithName:@"com.apple.appleaccount.familyCustodianAdded" altDSID:v4 flowID:v5];
+  altDSID = [(CDPContext *)self->_cdpContext altDSID];
+  telemetryFlowID = [(CDPContext *)self->_cdpContext telemetryFlowID];
+  v7 = [v3 analyticsEventWithName:@"com.apple.appleaccount.familyCustodianAdded" altDSID:altDSID flowID:telemetryFlowID];
 
-  v6 = [MEMORY[0x1E698B810] reporter];
-  [v6 sendEvent:v7];
+  reporter = [MEMORY[0x1E698B810] reporter];
+  [reporter sendEvent:v7];
 }
 
 - (void)_postAdpUpsellCFUCustodianInviteSentEvent
 {
   v3 = MEMORY[0x1E6985DB0];
-  v4 = [(CDPContext *)self->_cdpContext altDSID];
-  v5 = [(CDPContext *)self->_cdpContext telemetryFlowID];
-  v7 = [v3 analyticsEventWithName:@"com.apple.appleaccount.custodianInviteSent" altDSID:v4 flowID:v5];
+  altDSID = [(CDPContext *)self->_cdpContext altDSID];
+  telemetryFlowID = [(CDPContext *)self->_cdpContext telemetryFlowID];
+  v7 = [v3 analyticsEventWithName:@"com.apple.appleaccount.custodianInviteSent" altDSID:altDSID flowID:telemetryFlowID];
 
-  v6 = [MEMORY[0x1E698B810] reporter];
-  [v6 sendEvent:v7];
+  reporter = [MEMORY[0x1E698B810] reporter];
+  [reporter sendEvent:v7];
 }
 
 - (void)_invitationWasSent
 {
   WeakRetained = objc_loadWeakRetained(&self->_accountManager);
-  v4 = [WeakRetained accounts];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E698C218]];
+  accounts = [WeakRetained accounts];
+  v5 = [accounts objectForKeyedSubscript:*MEMORY[0x1E698C218]];
 
   if (v5)
   {
     v6 = MEMORY[0x1E6985DB0];
     v7 = *MEMORY[0x1E698BA48];
-    v8 = [v5 aida_alternateDSID];
-    v9 = [(AAUIInviteMessageFlowController *)self telemetryFlowID];
-    v10 = [v6 analyticsEventWithName:v7 altDSID:v8 flowID:v9];
+    aida_alternateDSID = [v5 aida_alternateDSID];
+    telemetryFlowID = [(AAUIInviteMessageFlowController *)self telemetryFlowID];
+    v10 = [v6 analyticsEventWithName:v7 altDSID:aida_alternateDSID flowID:telemetryFlowID];
   }
 
   else
@@ -310,7 +310,7 @@ void __54__AAUIInviteMessageFlowController__showInvitationSent__block_invoke(uin
     v10 = 0;
   }
 
-  v11 = [(AAUIInviteMessageFlowController *)self delegate];
+  delegate = [(AAUIInviteMessageFlowController *)self delegate];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
@@ -318,11 +318,11 @@ void __54__AAUIInviteMessageFlowController__showInvitationSent__block_invoke(uin
     objc_initWeak(&location, self);
     if (+[AAUIFeatureFlags isSolariumEnabled])
     {
-      v13 = [(AAUIOBWelcomeController *)self->_defaultMessageController primaryButton];
-      [v13 showsBusyIndicator];
+      primaryButton = [(AAUIOBWelcomeController *)self->_defaultMessageController primaryButton];
+      [primaryButton showsBusyIndicator];
     }
 
-    v14 = [(AAUIInviteMessageFlowController *)self delegate];
+    delegate2 = [(AAUIInviteMessageFlowController *)self delegate];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __53__AAUIInviteMessageFlowController__invitationWasSent__block_invoke;
@@ -330,7 +330,7 @@ void __54__AAUIInviteMessageFlowController__showInvitationSent__block_invoke(uin
     v15[4] = self;
     v16 = v10;
     objc_copyWeak(&v17, &location);
-    [v14 inviteMessageWasSent:self completion:v15];
+    [delegate2 inviteMessageWasSent:self completion:v15];
 
     objc_destroyWeak(&v17);
     objc_destroyWeak(&location);
@@ -369,20 +369,20 @@ void __53__AAUIInviteMessageFlowController__invitationWasSent__block_invoke(uint
   }
 }
 
-- (void)_sendTelemetryEventWithSuccess:(id)a3 didSucceed:(BOOL)a4 error:(id)a5
+- (void)_sendTelemetryEventWithSuccess:(id)success didSucceed:(BOOL)succeed error:(id)error
 {
-  if (a3)
+  if (success)
   {
-    v5 = a4;
+    succeedCopy = succeed;
     v7 = MEMORY[0x1E696AD98];
-    v8 = a5;
-    v9 = a3;
-    v10 = [v7 numberWithBool:v5];
-    [v9 setObject:v10 forKeyedSubscript:*MEMORY[0x1E6985E40]];
+    errorCopy = error;
+    successCopy = success;
+    v10 = [v7 numberWithBool:succeedCopy];
+    [successCopy setObject:v10 forKeyedSubscript:*MEMORY[0x1E6985E40]];
 
-    [v9 populateUnderlyingErrorsStartingWithRootError:v8];
-    v11 = [MEMORY[0x1E698B810] reporter];
-    [v11 sendEvent:v9];
+    [successCopy populateUnderlyingErrorsStartingWithRootError:errorCopy];
+    reporter = [MEMORY[0x1E698B810] reporter];
+    [reporter sendEvent:successCopy];
   }
 }
 
@@ -395,13 +395,13 @@ void __53__AAUIInviteMessageFlowController__invitationWasSent__block_invoke(uint
     _os_log_impl(&dword_1C5355000, v3, OS_LOG_TYPE_DEFAULT, "Cancelling invitation flow...", buf, 2u);
   }
 
-  v4 = [(AAUIInviteMessageFlowController *)self delegate];
+  delegate = [(AAUIInviteMessageFlowController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(AAUIInviteMessageFlowController *)self delegate];
-    [v6 inviteMessageFlowWasCancelled:self];
+    delegate2 = [(AAUIInviteMessageFlowController *)self delegate];
+    [delegate2 inviteMessageFlowWasCancelled:self];
   }
 
   else
@@ -433,15 +433,15 @@ void __63__AAUIInviteMessageFlowController__cancelMessageInvitationFlow__block_i
     _os_log_impl(&dword_1C5355000, v3, OS_LOG_TYPE_DEFAULT, "Finishing invitation flow...", buf, 2u);
   }
 
-  v4 = [(AAUIOBWelcomeController *)self->_allSetVC primaryButton];
-  [v4 setEnabled:0];
+  primaryButton = [(AAUIOBWelcomeController *)self->_allSetVC primaryButton];
+  [primaryButton setEnabled:0];
 
-  v5 = [(AAUIInviteMessageFlowController *)self delegate];
+  delegate = [(AAUIInviteMessageFlowController *)self delegate];
 
-  if (v5)
+  if (delegate)
   {
-    v6 = [(AAUIInviteMessageFlowController *)self delegate];
-    [v6 inviteMessageFlowDidFinish:self];
+    delegate2 = [(AAUIInviteMessageFlowController *)self delegate];
+    [delegate2 inviteMessageFlowDidFinish:self];
   }
 
   else
@@ -473,13 +473,13 @@ void __63__AAUIInviteMessageFlowController__finishMessageInvitationFlow__block_i
     _os_log_impl(&dword_1C5355000, v3, OS_LOG_TYPE_DEFAULT, "Invite Message Completed - Secondary Button tapped", v7, 2u);
   }
 
-  v4 = [(AAUIInviteMessageFlowController *)self delegate];
+  delegate = [(AAUIInviteMessageFlowController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(AAUIInviteMessageFlowController *)self delegate];
-    [v6 inviteMessageCompleteSecondaryButtonTapped:self];
+    delegate2 = [(AAUIInviteMessageFlowController *)self delegate];
+    [delegate2 inviteMessageCompleteSecondaryButtonTapped:self];
   }
 }
 
@@ -498,8 +498,8 @@ void __63__AAUIInviteMessageFlowController__finishMessageInvitationFlow__block_i
   [(AAUIInviteMessageFlowController *)self _sendEscapeOfferSelectedEvent:@"com.apple.accountaccess.send"];
   if (+[AAUIFeatureFlags isSolariumEnabled])
   {
-    v6 = [(AAUIOBWelcomeController *)self->_defaultMessageController primaryButton];
-    [v6 showsBusyIndicator];
+    primaryButton = [(AAUIOBWelcomeController *)self->_defaultMessageController primaryButton];
+    [primaryButton showsBusyIndicator];
   }
 
   else
@@ -654,25 +654,25 @@ void __54__AAUIInviteMessageFlowController__sendDefaultMessage__block_invoke_99(
   }
 }
 
-- (BOOL)_sendLCLiveMessage:(id)a3
+- (BOOL)_sendLCLiveMessage:(id)message
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v4 = [a3 bubbleMetadata];
-  v5 = [objc_alloc(getMSMessageRichLinkLayoutClass()) initWithLinkMetadata:v4];
+  bubbleMetadata = [message bubbleMetadata];
+  v5 = [objc_alloc(getMSMessageRichLinkLayoutClass()) initWithLinkMetadata:bubbleMetadata];
   v6 = [objc_alloc(getMSMessageLiveLayoutClass()) initWithAlternateLayout:v5];
   v7 = objc_alloc(getMSMessageClass());
   v8 = objc_alloc_init(getMSSessionClass());
   v9 = [v7 initWithSession:v8];
 
   [v9 setLayout:v6];
-  v10 = [(AAMessagesInviteContext *)self->_context messageURL];
-  [v9 setURL:v10];
+  messageURL = [(AAMessagesInviteContext *)self->_context messageURL];
+  [v9 setURL:messageURL];
 
-  v11 = [v4 title];
-  [v9 setSummaryText:v11];
+  title = [bubbleMetadata title];
+  [v9 setSummaryText:title];
 
   v12 = [v9 _pluginPayloadWithAppIconData:0 appName:@"LegacyContactMessageExtention" allowDataPayloads:1];
-  v13 = [v12 data];
+  data = [v12 data];
   v16[0] = self->_recipientHandle;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
   LOBYTE(self) = IMSPISendMSMessagePayloadReturningGUID();
@@ -693,15 +693,15 @@ void __54__AAUIInviteMessageFlowController__sendLCLiveMessage___block_invoke(uin
   }
 }
 
-- (id)_bubbleImageForFlow:(unint64_t)a3
+- (id)_bubbleImageForFlow:(unint64_t)flow
 {
-  if (!a3)
+  if (!flow)
   {
     v3 = @"custodian_message_bubble";
     goto LABEL_5;
   }
 
-  if (a3 == 1)
+  if (flow == 1)
   {
     v3 = @"beneficiary_message_bubble";
 LABEL_5:
@@ -718,66 +718,66 @@ LABEL_7:
   return v6;
 }
 
-- (void)_sendRecoveryContactSendMessageLandingEvent:(id)a3
+- (void)_sendRecoveryContactSendMessageLandingEvent:(id)event
 {
-  v14 = a3;
+  eventCopy = event;
   WeakRetained = objc_loadWeakRetained(&self->_accountManager);
-  v5 = [WeakRetained accounts];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x1E698C218]];
+  accounts = [WeakRetained accounts];
+  v6 = [accounts objectForKeyedSubscript:*MEMORY[0x1E698C218]];
 
   if (v6)
   {
     v7 = MEMORY[0x1E6985DB0];
     v8 = *MEMORY[0x1E698BA50];
-    v9 = [v6 aida_alternateDSID];
-    v10 = [(AAUIInviteMessageFlowController *)self telemetryFlowID];
-    v11 = [v7 analyticsEventWithName:v8 altDSID:v9 flowID:v10];
+    aida_alternateDSID = [v6 aida_alternateDSID];
+    telemetryFlowID = [(AAUIInviteMessageFlowController *)self telemetryFlowID];
+    v11 = [v7 analyticsEventWithName:v8 altDSID:aida_alternateDSID flowID:telemetryFlowID];
 
-    v12 = [v14 aaf_arrayAsCommaSeperatedString];
-    [v11 setObject:v12 forKeyedSubscript:*MEMORY[0x1E6997818]];
+    aaf_arrayAsCommaSeperatedString = [eventCopy aaf_arrayAsCommaSeperatedString];
+    [v11 setObject:aaf_arrayAsCommaSeperatedString forKeyedSubscript:*MEMORY[0x1E6997818]];
 
-    v13 = [MEMORY[0x1E698B810] reporter];
-    [v13 sendEvent:v11];
+    reporter = [MEMORY[0x1E698B810] reporter];
+    [reporter sendEvent:v11];
   }
 }
 
-- (void)_sendEscapeOfferSelectedEvent:(id)a3
+- (void)_sendEscapeOfferSelectedEvent:(id)event
 {
-  v13 = a3;
+  eventCopy = event;
   WeakRetained = objc_loadWeakRetained(&self->_accountManager);
-  v5 = [WeakRetained accounts];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x1E698C218]];
+  accounts = [WeakRetained accounts];
+  v6 = [accounts objectForKeyedSubscript:*MEMORY[0x1E698C218]];
 
   if (v6)
   {
     v7 = MEMORY[0x1E6985DB0];
     v8 = *MEMORY[0x1E698BA68];
-    v9 = [v6 aida_alternateDSID];
-    v10 = [(AAUIInviteMessageFlowController *)self telemetryFlowID];
-    v11 = [v7 analyticsEventWithName:v8 altDSID:v9 flowID:v10];
+    aida_alternateDSID = [v6 aida_alternateDSID];
+    telemetryFlowID = [(AAUIInviteMessageFlowController *)self telemetryFlowID];
+    v11 = [v7 analyticsEventWithName:v8 altDSID:aida_alternateDSID flowID:telemetryFlowID];
 
-    [v11 setObject:v13 forKeyedSubscript:*MEMORY[0x1E6997820]];
-    v12 = [MEMORY[0x1E698B810] reporter];
-    [v12 sendEvent:v11];
+    [v11 setObject:eventCopy forKeyedSubscript:*MEMORY[0x1E6997820]];
+    reporter = [MEMORY[0x1E698B810] reporter];
+    [reporter sendEvent:v11];
   }
 }
 
-- (void)inviteController:(id)a3 didFinishWithStatus:(unint64_t)a4 recipients:(id)a5 userInfo:(id)a6 error:(id)a7
+- (void)inviteController:(id)controller didFinishWithStatus:(unint64_t)status recipients:(id)recipients userInfo:(id)info error:(id)error
 {
-  v9 = a3;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_accountManager);
-  v11 = [WeakRetained accounts];
-  v12 = [v11 objectForKeyedSubscript:*MEMORY[0x1E698C218]];
+  accounts = [WeakRetained accounts];
+  v12 = [accounts objectForKeyedSubscript:*MEMORY[0x1E698C218]];
 
   if (v12)
   {
     v13 = MEMORY[0x1E6985DB0];
     v14 = *MEMORY[0x1E698BA48];
-    v15 = [v12 aida_alternateDSID];
-    v16 = [(AAUIInviteMessageFlowController *)self telemetryFlowID];
-    v17 = [v13 analyticsEventWithName:v14 altDSID:v15 flowID:v16];
+    aida_alternateDSID = [v12 aida_alternateDSID];
+    telemetryFlowID = [(AAUIInviteMessageFlowController *)self telemetryFlowID];
+    v17 = [v13 analyticsEventWithName:v14 altDSID:aida_alternateDSID flowID:telemetryFlowID];
 
-    if (a4)
+    if (status)
     {
       goto LABEL_3;
     }
@@ -796,13 +796,13 @@ LABEL_6:
   }
 
   v17 = 0;
-  if (!a4)
+  if (!status)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
-  if (a4 != 1)
+  if (status != 1)
   {
     v21 = _AAUILogSystem();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -821,7 +821,7 @@ LABEL_12:
 
   [(AAUIInviteMessageFlowController *)self _invitationWasSent];
 LABEL_13:
-  [v9 dismissViewControllerAnimated:1 completion:0];
+  [controllerCopy dismissViewControllerAnimated:1 completion:0];
 }
 
 - (AAUIInviteMessageFlowControllerDelegate)delegate

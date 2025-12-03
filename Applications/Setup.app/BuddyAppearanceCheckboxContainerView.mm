@@ -1,13 +1,13 @@
 @interface BuddyAppearanceCheckboxContainerView
 - (CGSize)intrinsicContentSize;
-- (_TtC5Setup36BuddyAppearanceCheckboxContainerView)initWithFrame:(CGRect)a3;
+- (_TtC5Setup36BuddyAppearanceCheckboxContainerView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation BuddyAppearanceCheckboxContainerView
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   sub_10000B148();
   v4 = v3;
   v6 = v5;
@@ -19,7 +19,7 @@
   return result;
 }
 
-- (_TtC5Setup36BuddyAppearanceCheckboxContainerView)initWithFrame:(CGRect)a3
+- (_TtC5Setup36BuddyAppearanceCheckboxContainerView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

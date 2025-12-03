@@ -1,22 +1,22 @@
 @interface PKPaymentSetupPartner
-- (PKPaymentSetupPartner)initWithDictionary:(id)a3;
+- (PKPaymentSetupPartner)initWithDictionary:(id)dictionary;
 @end
 
 @implementation PKPaymentSetupPartner
 
-- (PKPaymentSetupPartner)initWithDictionary:(id)a3
+- (PKPaymentSetupPartner)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = PKPaymentSetupPartner;
   v5 = [(PKPaymentSetupPartner *)&v11 init];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"identifier"];
+    v6 = [dictionaryCopy PKStringForKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 PKStringForKey:@"displayName"];
+    v8 = [dictionaryCopy PKStringForKey:@"displayName"];
     displayName = v5->_displayName;
     v5->_displayName = v8;
   }

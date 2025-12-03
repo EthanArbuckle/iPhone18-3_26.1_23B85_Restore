@@ -1,56 +1,56 @@
 @interface SVXDeviceSetupFlowDisplayKeyFrame
-+ (id)newWithBuilder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (SVXDeviceSetupFlowDisplayKeyFrame)initWithCoder:(id)a3;
-- (SVXDeviceSetupFlowDisplayKeyFrame)initWithKeyFrameID:(int64_t)a3 text:(id)a4 offset:(double)a5 duration:(double)a6;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)mutatedCopyWithMutator:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (BOOL)isEqual:(id)equal;
+- (SVXDeviceSetupFlowDisplayKeyFrame)initWithCoder:(id)coder;
+- (SVXDeviceSetupFlowDisplayKeyFrame)initWithKeyFrameID:(int64_t)d text:(id)text offset:(double)offset duration:(double)duration;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SVXDeviceSetupFlowDisplayKeyFrame
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CCABB0];
   keyFrameID = self->_keyFrameID;
-  v6 = a3;
+  coderCopy = coder;
   v7 = [v4 numberWithInteger:keyFrameID];
-  [v6 encodeObject:v7 forKey:@"SVXDeviceSetupFlowDisplayKeyFrame::keyFrameID"];
+  [coderCopy encodeObject:v7 forKey:@"SVXDeviceSetupFlowDisplayKeyFrame::keyFrameID"];
 
-  [v6 encodeObject:self->_text forKey:@"SVXDeviceSetupFlowDisplayKeyFrame::text"];
+  [coderCopy encodeObject:self->_text forKey:@"SVXDeviceSetupFlowDisplayKeyFrame::text"];
   v8 = [MEMORY[0x277CCABB0] numberWithDouble:self->_offset];
-  [v6 encodeObject:v8 forKey:@"SVXDeviceSetupFlowDisplayKeyFrame::offset"];
+  [coderCopy encodeObject:v8 forKey:@"SVXDeviceSetupFlowDisplayKeyFrame::offset"];
 
   v9 = [MEMORY[0x277CCABB0] numberWithDouble:self->_duration];
-  [v6 encodeObject:v9 forKey:@"SVXDeviceSetupFlowDisplayKeyFrame::duration"];
+  [coderCopy encodeObject:v9 forKey:@"SVXDeviceSetupFlowDisplayKeyFrame::duration"];
 }
 
-- (SVXDeviceSetupFlowDisplayKeyFrame)initWithCoder:(id)a3
+- (SVXDeviceSetupFlowDisplayKeyFrame)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SVXDeviceSetupFlowDisplayKeyFrame::keyFrameID"];
-  v6 = [v5 integerValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVXDeviceSetupFlowDisplayKeyFrame::keyFrameID"];
+  integerValue = [v5 integerValue];
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SVXDeviceSetupFlowDisplayKeyFrame::text"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SVXDeviceSetupFlowDisplayKeyFrame::offset"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVXDeviceSetupFlowDisplayKeyFrame::text"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVXDeviceSetupFlowDisplayKeyFrame::offset"];
   [v8 doubleValue];
   v10 = v9;
 
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SVXDeviceSetupFlowDisplayKeyFrame::duration"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVXDeviceSetupFlowDisplayKeyFrame::duration"];
 
   [v11 doubleValue];
   v13 = v12;
 
-  v14 = [(SVXDeviceSetupFlowDisplayKeyFrame *)self initWithKeyFrameID:v6 text:v7 offset:v10 duration:v13];
+  v14 = [(SVXDeviceSetupFlowDisplayKeyFrame *)self initWithKeyFrameID:integerValue text:v7 offset:v10 duration:v13];
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -60,13 +60,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       keyFrameID = self->_keyFrameID;
       if (keyFrameID == [(SVXDeviceSetupFlowDisplayKeyFrame *)v5 keyFrameID]&& (offset = self->_offset, [(SVXDeviceSetupFlowDisplayKeyFrame *)v5 offset], offset == v8) && (duration = self->_duration, [(SVXDeviceSetupFlowDisplayKeyFrame *)v5 duration], duration == v10))
       {
-        v13 = [(SVXDeviceSetupFlowDisplayKeyFrame *)v5 text];
+        text = [(SVXDeviceSetupFlowDisplayKeyFrame *)v5 text];
         text = self->_text;
-        v11 = text == v13 || [(NSString *)text isEqual:v13];
+        v11 = text == text || [(NSString *)text isEqual:text];
       }
 
       else
@@ -97,7 +97,7 @@
   return v5 ^ v9;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x277CCACA8]);
   v11.receiver = self;
@@ -120,57 +120,57 @@
   return v9;
 }
 
-- (SVXDeviceSetupFlowDisplayKeyFrame)initWithKeyFrameID:(int64_t)a3 text:(id)a4 offset:(double)a5 duration:(double)a6
+- (SVXDeviceSetupFlowDisplayKeyFrame)initWithKeyFrameID:(int64_t)d text:(id)text offset:(double)offset duration:(double)duration
 {
-  v10 = a4;
+  textCopy = text;
   v16.receiver = self;
   v16.super_class = SVXDeviceSetupFlowDisplayKeyFrame;
   v11 = [(SVXDeviceSetupFlowDisplayKeyFrame *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    v11->_keyFrameID = a3;
-    v13 = [v10 copy];
+    v11->_keyFrameID = d;
+    v13 = [textCopy copy];
     text = v12->_text;
     v12->_text = v13;
 
-    v12->_offset = a5;
-    v12->_duration = a6;
+    v12->_offset = offset;
+    v12->_duration = duration;
   }
 
   return v12;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_SVXDeviceSetupFlowDisplayKeyFrameMutation alloc] initWithBaseModel:self];
-    v4[2](v4, v5);
-    v6 = [(_SVXDeviceSetupFlowDisplayKeyFrameMutation *)v5 generate];
+    mutatorCopy[2](mutatorCopy, v5);
+    generate = [(_SVXDeviceSetupFlowDisplayKeyFrameMutation *)v5 generate];
   }
 
   else
   {
-    v6 = [(SVXDeviceSetupFlowDisplayKeyFrame *)self copy];
+    generate = [(SVXDeviceSetupFlowDisplayKeyFrame *)self copy];
   }
 
-  return v6;
+  return generate;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
+  builderCopy = builder;
   v4 = objc_alloc_init(_SVXDeviceSetupFlowDisplayKeyFrameMutation);
-  if (v3)
+  if (builderCopy)
   {
-    v3[2](v3, v4);
+    builderCopy[2](builderCopy, v4);
   }
 
-  v5 = [(_SVXDeviceSetupFlowDisplayKeyFrameMutation *)v4 generate];
+  generate = [(_SVXDeviceSetupFlowDisplayKeyFrameMutation *)v4 generate];
 
-  return v5;
+  return generate;
 }
 
 @end

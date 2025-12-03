@@ -1,9 +1,9 @@
 @interface MLCRMSPropOptimizer
 + (MLCRMSPropOptimizer)optimizerWithDescriptor:(MLCOptimizerDescriptor *)optimizerDescriptor;
-- (BOOL)compileForDevice:(id)a3;
-- (MLCRMSPropOptimizer)initWithDescriptor:(id)a3 momentumScale:(float)a4 alpha:(float)a5 epsilon:(float)a6 centered:(BOOL)a7;
+- (BOOL)compileForDevice:(id)device;
+- (MLCRMSPropOptimizer)initWithDescriptor:(id)descriptor momentumScale:(float)scale alpha:(float)alpha epsilon:(float)epsilon centered:(BOOL)centered;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation MLCRMSPropOptimizer
@@ -11,7 +11,7 @@
 + (MLCRMSPropOptimizer)optimizerWithDescriptor:(MLCOptimizerDescriptor *)optimizerDescriptor
 {
   v4 = optimizerDescriptor;
-  v5 = [a1 alloc];
+  v5 = [self alloc];
   LODWORD(v6) = 1065185444;
   LODWORD(v7) = 841731191;
   v8 = [v5 initWithDescriptor:v4 momentumScale:0 alpha:0.0 epsilon:v6 centered:v7];
@@ -19,74 +19,74 @@
   return v8;
 }
 
-- (MLCRMSPropOptimizer)initWithDescriptor:(id)a3 momentumScale:(float)a4 alpha:(float)a5 epsilon:(float)a6 centered:(BOOL)a7
+- (MLCRMSPropOptimizer)initWithDescriptor:(id)descriptor momentumScale:(float)scale alpha:(float)alpha epsilon:(float)epsilon centered:(BOOL)centered
 {
-  v7 = a7;
-  v13 = a3;
+  centeredCopy = centered;
+  descriptorCopy = descriptor;
   v24.receiver = self;
   v24.super_class = MLCRMSPropOptimizer;
-  v14 = [(MLCOptimizer *)&v24 initWithDescriptor:v13];
+  v14 = [(MLCOptimizer *)&v24 initWithDescriptor:descriptorCopy];
   v15 = v14;
   if (v14)
   {
-    v14->_momentumScale = a4;
-    v14->_alpha = a5;
-    v14->_epsilon = a6;
-    v14->_isCentered = v7;
-    objc_storeStrong(&v14->_optimizerDescriptor, a3);
+    v14->_momentumScale = scale;
+    v14->_alpha = alpha;
+    v14->_epsilon = epsilon;
+    v14->_isCentered = centeredCopy;
+    objc_storeStrong(&v14->_optimizerDescriptor, descriptor);
     v23.receiver = v15;
     v23.super_class = MLCRMSPropOptimizer;
     [(MLCOptimizer *)&v23 setNumOptimizerDataBuffers:1];
-    if (v7)
+    if (centeredCopy)
     {
       v22.receiver = v15;
       v22.super_class = MLCRMSPropOptimizer;
-      v16 = [(MLCOptimizer *)&v22 numOptimizerDataBuffers];
+      numOptimizerDataBuffers = [(MLCOptimizer *)&v22 numOptimizerDataBuffers];
       v21.receiver = v15;
       v21.super_class = MLCRMSPropOptimizer;
-      [(MLCOptimizer *)&v21 setNumOptimizerDataBuffers:v16 + 1];
+      [(MLCOptimizer *)&v21 setNumOptimizerDataBuffers:numOptimizerDataBuffers + 1];
     }
 
-    if (a4 > 0.0)
+    if (scale > 0.0)
     {
       v20.receiver = v15;
       v20.super_class = MLCRMSPropOptimizer;
-      v17 = [(MLCOptimizer *)&v20 numOptimizerDataBuffers];
+      numOptimizerDataBuffers2 = [(MLCOptimizer *)&v20 numOptimizerDataBuffers];
       v19.receiver = v15;
       v19.super_class = MLCRMSPropOptimizer;
-      [(MLCOptimizer *)&v19 setNumOptimizerDataBuffers:v17 + 1];
+      [(MLCOptimizer *)&v19 setNumOptimizerDataBuffers:numOptimizerDataBuffers2 + 1];
     }
   }
 
   return v15;
 }
 
-- (BOOL)compileForDevice:(id)a3
+- (BOOL)compileForDevice:(id)device
 {
-  v5 = a3;
-  v6 = [v5 computeEngine];
-  v7 = [(MLCRMSPropOptimizer *)self optimizerDescriptor];
+  deviceCopy = device;
+  computeEngine = [deviceCopy computeEngine];
+  optimizerDescriptor = [(MLCRMSPropOptimizer *)self optimizerDescriptor];
   [(MLCRMSPropOptimizer *)self momentumScale];
   v9 = v8;
   [(MLCRMSPropOptimizer *)self alpha];
   v11 = v10;
   [(MLCRMSPropOptimizer *)self epsilon];
   v13 = v12;
-  v14 = [(MLCRMSPropOptimizer *)self isCentered];
+  isCentered = [(MLCRMSPropOptimizer *)self isCentered];
   LODWORD(v15) = v9;
   LODWORD(v16) = v11;
   LODWORD(v17) = v13;
-  v18 = [v6 optimizerRMSPropWithDescriptor:v7 momentumScale:v14 alpha:v15 epsilon:v16 centered:v17];
+  v18 = [computeEngine optimizerRMSPropWithDescriptor:optimizerDescriptor momentumScale:isCentered alpha:v15 epsilon:v16 centered:v17];
 
   if (v18 && [v18 count])
   {
-    v19 = [v5 computeEngine];
+    computeEngine2 = [deviceCopy computeEngine];
     v20 = objc_opt_respondsToSelector();
 
     if (v20)
     {
-      v21 = [v5 computeEngine];
-      v22 = [v21 compileOptimizerDeviceOps:v18];
+      computeEngine3 = [deviceCopy computeEngine];
+      v22 = [computeEngine3 compileOptimizerDeviceOps:v18];
     }
 
     else
@@ -96,7 +96,7 @@
 
     v25.receiver = self;
     v25.super_class = MLCRMSPropOptimizer;
-    [(MLCOptimizer *)&v25 bindDevice:v5 deviceOps:v18];
+    [(MLCOptimizer *)&v25 bindDevice:deviceCopy deviceOps:v18];
   }
 
   else
@@ -124,28 +124,28 @@
   v9 = v8;
   [(MLCRMSPropOptimizer *)self epsilon];
   v11 = v10;
-  v12 = [(MLCRMSPropOptimizer *)self isCentered];
-  v13 = [(MLCRMSPropOptimizer *)self optimizerDescriptor];
-  v14 = [v3 stringWithFormat:@"%@: { momentumScale=%f : alpha=%f : epsilon=%f : centered=%d : optimizerDescriptor=%@ }", v5, *&v7, *&v9, *&v11, v12, v13];
+  isCentered = [(MLCRMSPropOptimizer *)self isCentered];
+  optimizerDescriptor = [(MLCRMSPropOptimizer *)self optimizerDescriptor];
+  v14 = [v3 stringWithFormat:@"%@: { momentumScale=%f : alpha=%f : epsilon=%f : centered=%d : optimizerDescriptor=%@ }", v5, *&v7, *&v9, *&v11, isCentered, optimizerDescriptor];
 
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(MLCRMSPropOptimizer *)self optimizerDescriptor];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  optimizerDescriptor = [(MLCRMSPropOptimizer *)self optimizerDescriptor];
   [(MLCRMSPropOptimizer *)self momentumScale];
   v7 = v6;
   [(MLCRMSPropOptimizer *)self alpha];
   v9 = v8;
   [(MLCRMSPropOptimizer *)self epsilon];
   v11 = v10;
-  v12 = [(MLCRMSPropOptimizer *)self isCentered];
+  isCentered = [(MLCRMSPropOptimizer *)self isCentered];
   LODWORD(v13) = v7;
   LODWORD(v14) = v9;
   LODWORD(v15) = v11;
-  v16 = [v4 initWithDescriptor:v5 momentumScale:v12 alpha:v13 epsilon:v14 centered:v15];
+  v16 = [v4 initWithDescriptor:optimizerDescriptor momentumScale:isCentered alpha:v13 epsilon:v14 centered:v15];
 
   return v16;
 }

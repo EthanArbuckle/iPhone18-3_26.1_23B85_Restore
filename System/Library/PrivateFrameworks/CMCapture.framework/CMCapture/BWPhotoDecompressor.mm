@@ -1,9 +1,9 @@
 @interface BWPhotoDecompressor
-- (BWPhotoDecompressor)initWithOutputPixelBufferPool:(id)a3;
-- (BWPhotoDecompressor)initWithPoolSize:(int)a3 outputPixelFormat:(unsigned int)a4 outputLargestDimension:(int)a5;
+- (BWPhotoDecompressor)initWithOutputPixelBufferPool:(id)pool;
+- (BWPhotoDecompressor)initWithPoolSize:(int)size outputPixelFormat:(unsigned int)format outputLargestDimension:(int)dimension;
 - (CFDictionaryRef)_setCVColorProperties:(CMSampleBufferRef)sbuf fromSourceBuffer:;
-- (_DWORD)_initWithPoolSize:(int)a3 outputPixelFormat:(void *)a4 outputPixelBufferPool:(int)a5 outputLargestDimension:;
-- (__CVBuffer)_newUncompressedSampleBufferFromSampleBuffer:(__CVBuffer *)result pixelBufferTrackingTag:(opaqueCMSampleBuffer *)a2;
+- (_DWORD)_initWithPoolSize:(int)size outputPixelFormat:(void *)format outputPixelBufferPool:(int)pool outputLargestDimension:;
+- (__CVBuffer)_newUncompressedSampleBufferFromSampleBuffer:(__CVBuffer *)result pixelBufferTrackingTag:(opaqueCMSampleBuffer *)tag;
 - (uint64_t)_newUncompressedPixelBufferFromSampleBuffer:(uint64_t)result pixelBufferTrackingTag:(CMSampleBufferRef)sbuf;
 - (uint64_t)_setupDecompressionOptions;
 - (uint64_t)_setupDecompressionSession;
@@ -16,9 +16,9 @@
 
 @implementation BWPhotoDecompressor
 
-- (BWPhotoDecompressor)initWithPoolSize:(int)a3 outputPixelFormat:(unsigned int)a4 outputLargestDimension:(int)a5
+- (BWPhotoDecompressor)initWithPoolSize:(int)size outputPixelFormat:(unsigned int)format outputLargestDimension:(int)dimension
 {
-  if (a3 < 1 || !a4)
+  if (size < 1 || !format)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695D940];
@@ -26,7 +26,7 @@
     goto LABEL_9;
   }
 
-  if (a5 < 0)
+  if (dimension < 0)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695D940];
@@ -35,17 +35,17 @@ LABEL_9:
     objc_exception_throw([v6 exceptionWithName:v7 reason:v8 userInfo:0]);
   }
 
-  return [(BWPhotoDecompressor *)self _initWithPoolSize:a3 outputPixelFormat:a4 outputPixelBufferPool:0 outputLargestDimension:a5];
+  return [(BWPhotoDecompressor *)self _initWithPoolSize:size outputPixelFormat:format outputPixelBufferPool:0 outputLargestDimension:dimension];
 }
 
-- (BWPhotoDecompressor)initWithOutputPixelBufferPool:(id)a3
+- (BWPhotoDecompressor)initWithOutputPixelBufferPool:(id)pool
 {
-  if (!a3)
+  if (!pool)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"outputPixelPool must not be nil" userInfo:0]);
   }
 
-  [(BWPhotoDecompressor *)a3 initWithOutputPixelBufferPool:&v4];
+  [(BWPhotoDecompressor *)pool initWithOutputPixelBufferPool:&v4];
   return v4;
 }
 
@@ -72,23 +72,23 @@ LABEL_9:
   [(BWPixelBufferPool *)outputPixelBufferPool flushToMinimumCapacity:0];
 }
 
-- (_DWORD)_initWithPoolSize:(int)a3 outputPixelFormat:(void *)a4 outputPixelBufferPool:(int)a5 outputLargestDimension:
+- (_DWORD)_initWithPoolSize:(int)size outputPixelFormat:(void *)format outputPixelBufferPool:(int)pool outputLargestDimension:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v12.receiver = a1;
+  v12.receiver = self;
   v12.super_class = BWPhotoDecompressor;
   v9 = objc_msgSendSuper2(&v12, sel_init);
   v10 = v9;
   if (v9)
   {
     v9[2] = a2;
-    v9[3] = a3;
-    *(v9 + 2) = a4;
-    v10[6] = a5;
+    v9[3] = size;
+    *(v9 + 2) = format;
+    v10[6] = pool;
     *(v10 + 72) = 0;
   }
 
@@ -97,36 +97,36 @@ LABEL_9:
 
 - (void)_releaseResources
 {
-  if (a1)
+  if (self)
   {
-    if (*(a1 + 48))
+    if (*(self + 48))
     {
       CMPhotoDecompressionSessionReleaseHardwareResources();
       CMPhotoDecompressionSessionFlushCachedBuffers();
-      v2 = *(a1 + 48);
+      v2 = *(self + 48);
       if (v2)
       {
         CFRelease(v2);
-        *(a1 + 48) = 0;
+        *(self + 48) = 0;
       }
     }
 
-    v3 = *(a1 + 40);
+    v3 = *(self + 40);
     if (v3)
     {
       CFRelease(v3);
-      *(a1 + 40) = 0;
+      *(self + 40) = 0;
     }
 
-    *(a1 + 56) = 0;
-    v4 = *(a1 + 64);
+    *(self + 56) = 0;
+    v4 = *(self + 64);
     if (v4)
     {
       CFRelease(v4);
-      *(a1 + 64) = 0;
+      *(self + 64) = 0;
     }
 
-    *(a1 + 28) = 0;
+    *(self + 28) = 0;
   }
 }
 
@@ -149,49 +149,49 @@ LABEL_9:
 
 - (uint64_t)_setupResources
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  if (*(a1 + 16) && *(a1 + 72) != 1 || *(a1 + 40))
+  if (*(self + 16) && *(self + 72) != 1 || *(self + 40))
   {
-    v2 = 0;
+    _setupDecompressionSurfacePool = 0;
   }
 
   else
   {
-    v2 = [(BWPhotoDecompressor *)a1 _setupDecompressionSurfacePool];
-    if (!*(a1 + 40))
+    _setupDecompressionSurfacePool = [(BWPhotoDecompressor *)self _setupDecompressionSurfacePool];
+    if (!*(self + 40))
     {
 LABEL_15:
       fig_log_get_emitter();
       OUTLINED_FUNCTION_0_30();
       FigSignalErrorAtGM();
-      return v2;
+      return _setupDecompressionSurfacePool;
     }
   }
 
-  if (!*(a1 + 48))
+  if (!*(self + 48))
   {
-    v2 = [(BWPhotoDecompressor *)a1 _setupDecompressionSession];
-    if (!*(a1 + 48))
+    _setupDecompressionSurfacePool = [(BWPhotoDecompressor *)self _setupDecompressionSession];
+    if (!*(self + 48))
     {
       goto LABEL_15;
     }
   }
 
-  if (!*(a1 + 56))
+  if (!*(self + 56))
   {
-    v2 = [(BWPhotoDecompressor *)a1 _setupDecompressionOptions];
-    if (!*(a1 + 56))
+    _setupDecompressionSurfacePool = [(BWPhotoDecompressor *)self _setupDecompressionOptions];
+    if (!*(self + 56))
     {
       goto LABEL_15;
     }
   }
 
-  *(a1 + 28) = 1;
-  return v2;
+  *(self + 28) = 1;
+  return _setupDecompressionSurfacePool;
 }
 
 - (CFDictionaryRef)_setCVColorProperties:(CMSampleBufferRef)sbuf fromSourceBuffer:
@@ -250,17 +250,17 @@ LABEL_15:
   return result;
 }
 
-- (__CVBuffer)_newUncompressedSampleBufferFromSampleBuffer:(__CVBuffer *)result pixelBufferTrackingTag:(opaqueCMSampleBuffer *)a2
+- (__CVBuffer)_newUncompressedSampleBufferFromSampleBuffer:(__CVBuffer *)result pixelBufferTrackingTag:(opaqueCMSampleBuffer *)tag
 {
   if (result)
   {
     v3 = result;
     v5 = 0;
-    result = [BWPhotoDecompressor _newUncompressedPixelBufferFromSampleBuffer:a2 pixelBufferTrackingTag:?];
+    result = [BWPhotoDecompressor _newUncompressedPixelBufferFromSampleBuffer:tag pixelBufferTrackingTag:?];
     if (result)
     {
       v4 = result;
-      BWCMSampleBufferCreateCopyWithNewPixelBuffer(a2, result, v3 + 8, &v5);
+      BWCMSampleBufferCreateCopyWithNewPixelBuffer(tag, result, v3 + 8, &v5);
       CFRelease(v4);
       return v5;
     }

@@ -1,38 +1,38 @@
 @interface UAActivityReplay
-- (BOOL)processCommand:(id)a3;
-- (BOOL)processCommands:(id)a3 completionHandler:(id)a4;
+- (BOOL)processCommand:(id)command;
+- (BOOL)processCommands:(id)commands completionHandler:(id)handler;
 - (BOOL)terminate;
-- (UAActivityReplay)initWithManager:(id)a3 name:(id)a4;
-- (id)scanMockAdvertisement:(id)a3;
+- (UAActivityReplay)initWithManager:(id)manager name:(id)name;
+- (id)scanMockAdvertisement:(id)advertisement;
 - (id)sharingAdvertiser;
 - (id)sharingReceiver;
-- (void)activityPayloadFromDevice:(id)a3 forAdvertisementPayload:(id)a4 command:(id)a5 timeout:(unint64_t)a6 withCompletionHandler:(id)a7;
+- (void)activityPayloadFromDevice:(id)device forAdvertisementPayload:(id)payload command:(id)command timeout:(unint64_t)timeout withCompletionHandler:(id)handler;
 - (void)dealloc;
-- (void)doAdvertiseAdvertisementPayload:(id)a3 options:(id)a4;
+- (void)doAdvertiseAdvertisementPayload:(id)payload options:(id)options;
 @end
 
 @implementation UAActivityReplay
 
-- (UAActivityReplay)initWithManager:(id)a3 name:(id)a4
+- (UAActivityReplay)initWithManager:(id)manager name:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  nameCopy = name;
   v32.receiver = self;
   v32.super_class = UAActivityReplay;
-  v8 = [(UACornerActionManagerHandler *)&v32 initWithManager:v6 name:v7];
+  v8 = [(UACornerActionManagerHandler *)&v32 initWithManager:managerCopy name:nameCopy];
   if (v8)
   {
     v9 = dispatch_queue_create("Replay", 0);
     queue = v8->_queue;
     v8->_queue = v9;
 
-    v11 = [(UAAdvertiser *)[UAActivityReplayAdvertiser alloc] initWithManager:v6 name:@"ReplayAdvertiser"];
+    v11 = [(UAAdvertiser *)[UAActivityReplayAdvertiser alloc] initWithManager:managerCopy name:@"ReplayAdvertiser"];
     [(UAActivityReplay *)v8 setAdvertiser:v11];
 
-    v12 = [(UAReceiver *)[UAActivityReplayReceiver alloc] initWithManager:v6 name:@"ReplayReceiver"];
+    v12 = [(UAReceiver *)[UAActivityReplayReceiver alloc] initWithManager:managerCopy name:@"ReplayReceiver"];
     [(UAActivityReplay *)v8 setReceiver:v12];
 
-    v13 = [[UAReplayClientController alloc] initWithManager:v6];
+    v13 = [[UAReplayClientController alloc] initWithManager:managerCopy];
     [(UAActivityReplay *)v8 setClient:v13];
 
     v14 = +[NSMutableDictionary dictionary];
@@ -43,9 +43,9 @@
     v8->_pendingPayloadFetches = v15;
 
     v17 = objc_alloc_init(SFPeerDevice);
-    v18 = [(UACornerActionManagerHandler *)v8 uuid];
-    v19 = [v18 UUIDString];
-    [v17 setUniqueID:v19];
+    uuid = [(UACornerActionManagerHandler *)v8 uuid];
+    uUIDString = [uuid UUIDString];
+    [v17 setUniqueID:uUIDString];
 
     [v17 setModelIdentifier:{@"iPhone5, 1"}];
     [v17 setProductName:@"Mac OS X"];
@@ -55,36 +55,36 @@
     [v17 setDeviceColor:@"Orangeish"];
     [v17 setEnclosureColor:@"Greenish"];
     [(UAActivityReplay *)v8 setPairedPeer:v17];
-    v20 = [(UAActivityReplay *)v8 sharingAdvertiser];
-    if (v20)
+    sharingAdvertiser = [(UAActivityReplay *)v8 sharingAdvertiser];
+    if (sharingAdvertiser)
     {
       v21 = [[UAMockActivityAdvertiser alloc] initWithController:v8];
       mockAdvertiser = v8->_mockAdvertiser;
       v8->_mockAdvertiser = v21;
 
-      v23 = [(UAActivityReplay *)v8 mockAdvertiser];
-      [v20 addSFActivityAdvertiser:v23];
+      mockAdvertiser = [(UAActivityReplay *)v8 mockAdvertiser];
+      [sharingAdvertiser addSFActivityAdvertiser:mockAdvertiser];
     }
 
-    v24 = [(UAActivityReplay *)v8 sharingReceiver];
-    if (v24)
+    sharingReceiver = [(UAActivityReplay *)v8 sharingReceiver];
+    if (sharingReceiver)
     {
       v25 = [[UAMockActivityScanner alloc] initWithController:v8];
       mockScanner = v8->_mockScanner;
       v8->_mockScanner = v25;
 
-      v27 = [(UAActivityReplay *)v8 mockScanner];
-      [v24 addSFActivityScanner:v27];
+      mockScanner = [(UAActivityReplay *)v8 mockScanner];
+      [sharingReceiver addSFActivityScanner:mockScanner];
     }
 
-    v28 = [(UACornerActionManagerHandler *)v8 manager];
-    [v28 addHandler:v8];
+    manager = [(UACornerActionManagerHandler *)v8 manager];
+    [manager addHandler:v8];
 
-    v29 = [(UACornerActionManagerHandler *)v8 manager];
-    [v29 scheduleUpdatingAdvertisableItems];
+    manager2 = [(UACornerActionManagerHandler *)v8 manager];
+    [manager2 scheduleUpdatingAdvertisableItems];
 
-    v30 = [(UACornerActionManagerHandler *)v8 manager];
-    [v30 scheduleBestAppDetermination:0.25];
+    manager3 = [(UACornerActionManagerHandler *)v8 manager];
+    [manager3 scheduleBestAppDetermination:0.25];
   }
 
   return v8;
@@ -92,28 +92,28 @@
 
 - (void)dealloc
 {
-  v3 = [(UAActivityReplay *)self mockScanner];
-  v4 = [v3 delegate];
-  v5 = [(UAActivityReplay *)self mockScanner];
-  v6 = [(UAActivityReplay *)self pairedPeer];
-  [v4 activityScanner:v5 lostDeviceWithDevice:v6];
+  mockScanner = [(UAActivityReplay *)self mockScanner];
+  delegate = [mockScanner delegate];
+  mockScanner2 = [(UAActivityReplay *)self mockScanner];
+  pairedPeer = [(UAActivityReplay *)self pairedPeer];
+  [delegate activityScanner:mockScanner2 lostDeviceWithDevice:pairedPeer];
 
-  v7 = [(UAActivityReplay *)self sharingReceiver];
-  if (v7)
+  sharingReceiver = [(UAActivityReplay *)self sharingReceiver];
+  if (sharingReceiver)
   {
-    v8 = [(UAActivityReplay *)self mockScanner];
-    [v7 removeSFActivityScanner:v8];
+    mockScanner3 = [(UAActivityReplay *)self mockScanner];
+    [sharingReceiver removeSFActivityScanner:mockScanner3];
   }
 
-  v9 = [(UAActivityReplay *)self sharingAdvertiser];
-  if (v9)
+  sharingAdvertiser = [(UAActivityReplay *)self sharingAdvertiser];
+  if (sharingAdvertiser)
   {
     v10 = [[UAMockActivityAdvertiser alloc] initWithController:self];
     mockAdvertiser = self->_mockAdvertiser;
     self->_mockAdvertiser = v10;
 
-    v12 = [(UAActivityReplay *)self mockAdvertiser];
-    [v9 removeSFActivityAdvertiser:v12];
+    mockAdvertiser = [(UAActivityReplay *)self mockAdvertiser];
+    [sharingAdvertiser removeSFActivityAdvertiser:mockAdvertiser];
   }
 
   v13.receiver = self;
@@ -123,16 +123,16 @@
 
 - (id)sharingReceiver
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(UACornerActionManagerHandler *)v2 manager];
-  v4 = [v3 receivers];
+  manager = [(UACornerActionManagerHandler *)selfCopy manager];
+  receivers = [manager receivers];
 
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [receivers countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = *v11;
@@ -142,7 +142,7 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(receivers);
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
@@ -154,7 +154,7 @@
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [receivers countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v5)
       {
         continue;
@@ -166,23 +166,23 @@
 
 LABEL_11:
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
 
 - (id)sharingAdvertiser
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(UACornerActionManagerHandler *)v2 manager];
-  v4 = [v3 advertisers];
+  manager = [(UACornerActionManagerHandler *)selfCopy manager];
+  advertisers = [manager advertisers];
 
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [advertisers countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = *v11;
@@ -192,7 +192,7 @@ LABEL_11:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(advertisers);
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
@@ -204,7 +204,7 @@ LABEL_11:
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [advertisers countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v5)
       {
         continue;
@@ -216,38 +216,38 @@ LABEL_11:
 
 LABEL_11:
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
 
-- (void)doAdvertiseAdvertisementPayload:(id)a3 options:(id)a4
+- (void)doAdvertiseAdvertisementPayload:(id)payload options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UAActivityReplay *)self queue];
+  payloadCopy = payload;
+  optionsCopy = options;
+  queue = [(UAActivityReplay *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100038AE8;
   block[3] = &unk_1000C5828;
-  v12 = v7;
-  v13 = self;
-  v14 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v12 = optionsCopy;
+  selfCopy = self;
+  v14 = payloadCopy;
+  v9 = payloadCopy;
+  v10 = optionsCopy;
+  dispatch_async(queue, block);
 }
 
-- (id)scanMockAdvertisement:(id)a3
+- (id)scanMockAdvertisement:(id)advertisement
 {
-  v4 = a3;
-  if ([v4 scanString:@"[$" intoString:0])
+  advertisementCopy = advertisement;
+  if ([advertisementCopy scanString:@"[$" intoString:0])
   {
-    v5 = sub_1000391E8(v4, 1);
-    v6 = [[NSKeyedUnarchiver alloc] initForReadingFromData:v5 error:0];
+    pairedPeer2 = sub_1000391E8(advertisementCopy, 1);
+    v6 = [[NSKeyedUnarchiver alloc] initForReadingFromData:pairedPeer2 error:0];
     v7 = [v6 decodeObjectOfClass:objc_opt_class() forKey:NSKeyedArchiveRootObjectKey];
-    v8 = [(UAActivityReplay *)self pairedPeer];
-    [(UAMockActivityAdvertisement *)v7 setDevice:v8];
+    pairedPeer = [(UAActivityReplay *)self pairedPeer];
+    [(UAMockActivityAdvertisement *)v7 setDevice:pairedPeer];
 
     [v6 finishDecoding];
 LABEL_3:
@@ -256,45 +256,45 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (([v4 scanString:@"-" intoString:0] & 1) != 0 || objc_msgSend(v4, "scanString:intoString:", @"$-", 0))
+  if (([advertisementCopy scanString:@"-" intoString:0] & 1) != 0 || objc_msgSend(advertisementCopy, "scanString:intoString:", @"$-", 0))
   {
     v7 = objc_alloc_init(UAMockActivityAdvertisement);
     [(UAMockActivityAdvertisement *)v7 setAdvertisementPayload:0];
     [(UAMockActivityAdvertisement *)v7 setAdvertisementVersion:1];
     [(UAMockActivityAdvertisement *)v7 setOptions:0];
-    v5 = [(UAActivityReplay *)self pairedPeer];
-    [(UAMockActivityAdvertisement *)v7 setDevice:v5];
+    pairedPeer2 = [(UAActivityReplay *)self pairedPeer];
+    [(UAMockActivityAdvertisement *)v7 setDevice:pairedPeer2];
     goto LABEL_7;
   }
 
-  if ([v4 scanString:@"$" intoString:0])
+  if ([advertisementCopy scanString:@"$" intoString:0])
   {
-    v5 = sub_1000391E8(v4, 0);
-    if (v5)
+    pairedPeer2 = sub_1000391E8(advertisementCopy, 0);
+    if (pairedPeer2)
     {
       v7 = objc_alloc_init(UAMockActivityAdvertisement);
       [(UAMockActivityAdvertisement *)v7 setAdvertisementVersion:1];
-      [(UAMockActivityAdvertisement *)v7 setAdvertisementPayload:v5];
-      v10 = [(UAActivityReplay *)self pairedPeer];
-      [(UAMockActivityAdvertisement *)v7 setDevice:v10];
+      [(UAMockActivityAdvertisement *)v7 setAdvertisementPayload:pairedPeer2];
+      pairedPeer3 = [(UAActivityReplay *)self pairedPeer];
+      [(UAMockActivityAdvertisement *)v7 setDevice:pairedPeer3];
 
-      if ([v4 isAtEnd])
+      if ([advertisementCopy isAtEnd])
       {
         goto LABEL_7;
       }
 
-      v11 = [v4 string];
-      v6 = [v11 substringFromIndex:{objc_msgSend(v4, "scanLocation")}];
+      string = [advertisementCopy string];
+      v6 = [string substringFromIndex:{objc_msgSend(advertisementCopy, "scanLocation")}];
 
       v12 = [v6 dataUsingEncoding:4];
-      v13 = [NSJSONSerialization JSONObjectWithData:v12 options:0 error:0];
+      pairedPeer4 = [NSJSONSerialization JSONObjectWithData:v12 options:0 error:0];
 
-      if (v13)
+      if (pairedPeer4)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [(UAMockActivityAdvertisement *)v7 setOptions:v13];
+          [(UAMockActivityAdvertisement *)v7 setOptions:pairedPeer4];
         }
       }
 
@@ -304,24 +304,24 @@ LABEL_7:
     goto LABEL_24;
   }
 
-  if (([v4 scanString:@"http://" intoString:0] & 1) == 0)
+  if (([advertisementCopy scanString:@"http://" intoString:0] & 1) == 0)
   {
     v26 = 0;
     v14 = +[NSCharacterSet whitespaceCharacterSet];
     v25 = 0;
-    v15 = [v4 scanUpToCharactersFromSet:v14 intoString:&v25];
-    v5 = v25;
+    v15 = [advertisementCopy scanUpToCharactersFromSet:v14 intoString:&v25];
+    pairedPeer2 = v25;
 
     if (v15)
     {
       v16 = +[NSCharacterSet whitespaceCharacterSet];
       v24 = 0;
-      v17 = [v4 scanUpToCharactersFromSet:v16 intoString:&v24];
+      v17 = [advertisementCopy scanUpToCharactersFromSet:v16 intoString:&v24];
       v6 = v24;
 
       if (v17)
       {
-        [v4 scanInteger:&v26];
+        [advertisementCopy scanInteger:&v26];
       }
 
       v7 = objc_alloc_init(UAMockActivityAdvertisement);
@@ -330,13 +330,13 @@ LABEL_7:
       v19 = v26;
       v20 = [NSDate dateWithTimeIntervalSinceNow:-v26];
       LOBYTE(v23) = v19 < 10;
-      v21 = [(SharingBTLEAdvertisementPayload *)v18 initWithType:1 string:v5 dynamicType:0 teamID:v6 webpageURL:0 options:0 isCurrent:v23 when:v20];
-      v22 = [(SharingBTLEAdvertisementPayload *)v21 advertisementPayload];
-      [(UAMockActivityAdvertisement *)v7 setAdvertisementPayload:v22];
+      v21 = [(SharingBTLEAdvertisementPayload *)v18 initWithType:1 string:pairedPeer2 dynamicType:0 teamID:v6 webpageURL:0 options:0 isCurrent:v23 when:v20];
+      advertisementPayload = [(SharingBTLEAdvertisementPayload *)v21 advertisementPayload];
+      [(UAMockActivityAdvertisement *)v7 setAdvertisementPayload:advertisementPayload];
 
       [(UAMockActivityAdvertisement *)v7 setOptions:0];
-      v13 = [(UAActivityReplay *)self pairedPeer];
-      [(UAMockActivityAdvertisement *)v7 setDevice:v13];
+      pairedPeer4 = [(UAActivityReplay *)self pairedPeer];
+      [(UAMockActivityAdvertisement *)v7 setDevice:pairedPeer4];
 LABEL_23:
 
       goto LABEL_3;
@@ -353,34 +353,34 @@ LABEL_8:
   return v7;
 }
 
-- (BOOL)processCommand:(id)a3
+- (BOOL)processCommand:(id)command
 {
-  v4 = a3;
-  v5 = [(UAActivityReplay *)self queue];
-  dispatch_assert_queue_V2(v5);
+  commandCopy = command;
+  queue = [(UAActivityReplay *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = sub_100001A30(0);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     *buf = 138477827;
-    *&buf[4] = v4;
+    *&buf[4] = commandCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "PROCESSCOMMAND:%{private}@", buf, 0xCu);
   }
 
-  if ([v4 length] >= 0x2E && objc_msgSend(v4, "characterAtIndex:", 9) == 58 && objc_msgSend(v4, "characterAtIndex:", 12) == 58 && objc_msgSend(v4, "characterAtIndex:", 16) == 32 && objc_msgSend(v4, "characterAtIndex:", 38) == 60)
+  if ([commandCopy length] >= 0x2E && objc_msgSend(commandCopy, "characterAtIndex:", 9) == 58 && objc_msgSend(commandCopy, "characterAtIndex:", 12) == 58 && objc_msgSend(commandCopy, "characterAtIndex:", 16) == 32 && objc_msgSend(commandCopy, "characterAtIndex:", 38) == 60)
   {
-    v7 = [v4 rangeOfString:@">: "];
+    v7 = [commandCopy rangeOfString:@">: "];
     if (v8)
     {
-      v9 = [v4 substringFromIndex:&v7[v8]];
+      v9 = [commandCopy substringFromIndex:&v7[v8]];
 
-      v4 = v9;
+      commandCopy = v9;
     }
   }
 
-  if (([v4 hasPrefix:@"#"] & 1) == 0 && (objc_msgSend(v4, "hasPrefix:", @"//") & 1) == 0)
+  if (([commandCopy hasPrefix:@"#"] & 1) == 0 && (objc_msgSend(commandCopy, "hasPrefix:", @"//") & 1) == 0)
   {
-    v11 = [NSScanner scannerWithString:v4];
+    v11 = [NSScanner scannerWithString:commandCopy];
     [v11 setCaseSensitive:0];
     v12 = +[NSCharacterSet whitespaceAndNewlineCharacterSet];
     v104 = 0;
@@ -396,10 +396,10 @@ LABEL_8:
       goto LABEL_39;
     }
 
-    v14 = [v13 uppercaseString];
+    uppercaseString = [v13 uppercaseString];
 
-    v13 = v14;
-    if ([v14 isEqual:@"HELP"])
+    v13 = uppercaseString;
+    if ([uppercaseString isEqual:@"HELP"])
     {
       [(UAActivityReplay *)self sendResponse:@"COMMANDS: ...\n"];
       [(UAActivityReplay *)self sendResponse:@" - ADVERTISEITEM:<tag> <activitytype> [<archivedUserActivityData>]\n"];
@@ -410,7 +410,7 @@ LABEL_39:
       goto LABEL_40;
     }
 
-    if (([v14 isEqual:@"HANDOFF"] & 1) != 0 || objc_msgSend(v14, "isEqual:", @"VERSION"))
+    if (([uppercaseString isEqual:@"HANDOFF"] & 1) != 0 || objc_msgSend(uppercaseString, "isEqual:", @"VERSION"))
     {
       v103 = 0;
       if ([v11 scanString:@"v" intoString:0] && objc_msgSend(v11, "scanDouble:", &v103))
@@ -436,18 +436,18 @@ LABEL_39:
         v18 = 0;
       }
 
-      v20 = [(UACornerActionManagerHandler *)self manager];
-      v21 = [v20 uuid];
-      v22 = [v18 isEqual:v21];
+      manager = [(UACornerActionManagerHandler *)self manager];
+      uuid = [manager uuid];
+      v22 = [v18 isEqual:uuid];
 
       if (v22)
       {
         v23 = sub_100001A30(0);
         if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
         {
-          v24 = [v18 UUIDString];
+          uUIDString = [v18 UUIDString];
           *buf = 138543362;
-          *&buf[4] = v24;
+          *&buf[4] = uUIDString;
           _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_INFO, "REPLAY: Destroying replay object because the peer's UUID %{public}@ matched our own.", buf, 0xCu);
         }
 
@@ -457,14 +457,14 @@ LABEL_39:
       goto LABEL_38;
     }
 
-    if (![v14 compare:@"STARTUP" options:1])
+    if (![uppercaseString compare:@"STARTUP" options:1])
     {
 LABEL_38:
       LOBYTE(v10) = 1;
       goto LABEL_39;
     }
 
-    if ([v14 isEqual:@"TERMINATE"])
+    if ([uppercaseString isEqual:@"TERMINATE"])
     {
       v19 = sub_100001A30(0);
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -477,13 +477,13 @@ LABEL_38:
       goto LABEL_18;
     }
 
-    if ([v14 compare:@"ADVERTISEITEM" options:1])
+    if ([uppercaseString compare:@"ADVERTISEITEM" options:1])
     {
-      if ([v14 compare:@"PAYLOAD" options:1])
+      if ([uppercaseString compare:@"PAYLOAD" options:1])
       {
-        if ([v14 compare:@"PULL" options:1])
+        if ([uppercaseString compare:@"PULL" options:1])
         {
-          if (![v14 compare:@"REMOVEITEM" options:1])
+          if (![uppercaseString compare:@"REMOVEITEM" options:1])
           {
             v52 = +[NSMutableArray array];
             v53 = sub_10003A940(v11);
@@ -494,18 +494,18 @@ LABEL_38:
 
             else if ([v11 scanString:@"all" intoString:0])
             {
-              v70 = [(UAActivityReplay *)self items];
-              v71 = [v70 allKeys];
-              [v52 addObjectsFromArray:v71];
+              items = [(UAActivityReplay *)self items];
+              allKeys = [items allKeys];
+              [v52 addObjectsFromArray:allKeys];
             }
 
-            v72 = [v52 firstObject];
-            LODWORD(v10) = v72 != 0;
+            firstObject = [v52 firstObject];
+            LODWORD(v10) = firstObject != 0;
 
             if (v10)
             {
-              v73 = [(UAActivityReplay *)self items];
-              v74 = [v73 objectForKeyedSubscript:v53];
+              items2 = [(UAActivityReplay *)self items];
+              v74 = [items2 objectForKeyedSubscript:v53];
 
               if (v74)
               {
@@ -517,21 +517,21 @@ LABEL_38:
                   _os_log_impl(&_mh_execute_header, v75, OS_LOG_TYPE_INFO, "=== REMOVING ACTIVITY %{private}@ to be resumed", buf, 0xCu);
                 }
 
-                v76 = [(UAActivityReplay *)self items];
-                [v76 removeObjectForKey:v53];
+                items3 = [(UAActivityReplay *)self items];
+                [items3 removeObjectForKey:v53];
               }
             }
 
             goto LABEL_39;
           }
 
-          if ([v14 compare:@"PEERINFO" options:1])
+          if ([uppercaseString compare:@"PEERINFO" options:1])
           {
-            if ([v14 compare:@"RECEIVE" options:1] && objc_msgSend(v14, "compare:options:", @"BROADCAST", 1))
+            if ([uppercaseString compare:@"RECEIVE" options:1] && objc_msgSend(uppercaseString, "compare:options:", @"BROADCAST", 1))
             {
-              if ([v14 compare:@"REQUESTPAYLOAD" options:1])
+              if ([uppercaseString compare:@"REQUESTPAYLOAD" options:1])
               {
-                if (![v14 compare:@"RETURNPAYLOAD" options:1])
+                if (![uppercaseString compare:@"RETURNPAYLOAD" options:1])
                 {
                   v26 = [(UAActivityReplay *)self scanMockAdvertisement:v11];
                   v97 = sub_1000391E8(v11, 1);
@@ -546,11 +546,11 @@ LABEL_38:
                   LOBYTE(v10) = v26 != 0;
                   if (v26)
                   {
-                    v27 = self;
-                    objc_sync_enter(v27);
-                    pendingPayloadFetches = v27->_pendingPayloadFetches;
-                    v29 = [v26 advertisementPayload];
-                    v30 = [(NSMutableDictionary *)pendingPayloadFetches objectForKey:v29];
+                    selfCopy = self;
+                    objc_sync_enter(selfCopy);
+                    pendingPayloadFetches = selfCopy->_pendingPayloadFetches;
+                    advertisementPayload = [v26 advertisementPayload];
+                    v30 = [(NSMutableDictionary *)pendingPayloadFetches objectForKey:advertisementPayload];
 
                     if (v30)
                     {
@@ -562,19 +562,19 @@ LABEL_38:
                         _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEBUG, "REPLAY: RETURNPAYLOAD request, found existing payloadHandler in _pendingPayloadFetches for advertisementPayload=%{private}@", buf, 0xCu);
                       }
 
-                      v32 = v27->_pendingPayloadFetches;
-                      v33 = [v26 advertisementPayload];
-                      [(NSMutableDictionary *)v32 removeObjectForKey:v33];
+                      v32 = selfCopy->_pendingPayloadFetches;
+                      advertisementPayload2 = [v26 advertisementPayload];
+                      [(NSMutableDictionary *)v32 removeObjectForKey:advertisementPayload2];
                     }
 
                     else
                     {
-                      v33 = sub_100001A30(0);
-                      if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
+                      advertisementPayload2 = sub_100001A30(0);
+                      if (os_log_type_enabled(advertisementPayload2, OS_LOG_TYPE_ERROR))
                       {
-                        v95 = [v26 advertisementPayload];
-                        v96 = sub_100006EF4(v95);
-                        v92 = [(NSMutableDictionary *)v27->_pendingPayloadFetches description];
+                        advertisementPayload3 = [v26 advertisementPayload];
+                        v96 = sub_100006EF4(advertisementPayload3);
+                        v92 = [(NSMutableDictionary *)selfCopy->_pendingPayloadFetches description];
                         v93 = sub_100009684(v92);
                         *buf = 138543875;
                         *&buf[4] = v96;
@@ -582,11 +582,11 @@ LABEL_38:
                         v107 = *&v26;
                         v108 = 2113;
                         v109 = v93;
-                        _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_ERROR, "REPLAY: Didn't find handler for advertisement %{public}@/%{private}@, pendingPayloads=%{private}@", buf, 0x20u);
+                        _os_log_impl(&_mh_execute_header, advertisementPayload2, OS_LOG_TYPE_ERROR, "REPLAY: Didn't find handler for advertisement %{public}@/%{private}@, pendingPayloads=%{private}@", buf, 0x20u);
                       }
                     }
 
-                    objc_sync_exit(v27);
+                    objc_sync_exit(selfCopy);
                     if (v97)
                     {
                       v94 = sub_100001A30(0);
@@ -621,17 +621,17 @@ LABEL_38:
 
               if (v86)
               {
-                v88 = [(UAActivityReplay *)self sharingAdvertiser];
-                v89 = [(UAActivityReplay *)self sharingAdvertiser];
-                v90 = [v86 advertisementPayload];
-                v91 = [v86 device];
+                sharingAdvertiser = [(UAActivityReplay *)self sharingAdvertiser];
+                sharingAdvertiser2 = [(UAActivityReplay *)self sharingAdvertiser];
+                advertisementPayload4 = [v86 advertisementPayload];
+                device = [v86 device];
                 v99[0] = _NSConcreteStackBlock;
                 v99[1] = 3221225472;
                 v99[2] = sub_10003ABA8;
                 v99[3] = &unk_1000C5878;
                 v99[4] = self;
                 v100 = v86;
-                [v88 activityAdvertiser:v89 activityPayloadForAdvertisementPayload:v90 command:@"-" requestedByDevice:v91 withCompletionHandler:v99];
+                [sharingAdvertiser activityAdvertiser:sharingAdvertiser2 activityPayloadForAdvertisementPayload:advertisementPayload4 command:@"-" requestedByDevice:device withCompletionHandler:v99];
               }
             }
 
@@ -648,12 +648,12 @@ LABEL_38:
 
               if (v54)
               {
-                v56 = [(UAActivityReplay *)self pairedPeer];
-                [v54 setDevice:v56];
+                pairedPeer = [(UAActivityReplay *)self pairedPeer];
+                [v54 setDevice:pairedPeer];
 
-                v57 = [(UAActivityReplay *)self sharingReceiver];
-                v58 = [(UAActivityReplay *)self mockScanner];
-                [v57 activityScanner:v58 receivedAdvertisement:v54];
+                sharingReceiver = [(UAActivityReplay *)self sharingReceiver];
+                mockScanner = [(UAActivityReplay *)self mockScanner];
+                [sharingReceiver activityScanner:mockScanner receivedAdvertisement:v54];
               }
             }
 
@@ -663,27 +663,27 @@ LABEL_38:
           if ([v11 scanString:@"SF[$" intoString:0])
           {
             v59 = sub_1000391E8(v11, 0);
-            v60 = [[NSKeyedUnarchiver alloc] initForReadingFromData:v59 error:0];
-            v61 = [v60 decodeObjectOfClass:objc_opt_class() forKey:NSKeyedArchiveRootObjectKey];
+            pairedPeer6 = [[NSKeyedUnarchiver alloc] initForReadingFromData:v59 error:0];
+            v61 = [pairedPeer6 decodeObjectOfClass:objc_opt_class() forKey:NSKeyedArchiveRootObjectKey];
             [(UAActivityReplay *)self setPairedPeer:v61];
 
-            v62 = [(UAActivityReplay *)self pairedPeer];
-            v63 = [v62 uniqueID];
-            v64 = v63 == 0;
+            pairedPeer2 = [(UAActivityReplay *)self pairedPeer];
+            uniqueID = [pairedPeer2 uniqueID];
+            v64 = uniqueID == 0;
 
             if (v64)
             {
-              v65 = [(UACornerActionManagerHandler *)self uuid];
-              v66 = [v65 UUIDString];
-              v67 = [(UAActivityReplay *)self pairedPeer];
-              [v67 setUniqueID:v66];
+              uuid2 = [(UACornerActionManagerHandler *)self uuid];
+              uUIDString2 = [uuid2 UUIDString];
+              pairedPeer3 = [(UAActivityReplay *)self pairedPeer];
+              [pairedPeer3 setUniqueID:uUIDString2];
 
-              v68 = [(UAActivityReplay *)self pairedPeer];
-              v69 = [v68 name];
-              [(UACornerActionManagerHandler *)self setName:v69];
+              pairedPeer4 = [(UAActivityReplay *)self pairedPeer];
+              name = [pairedPeer4 name];
+              [(UACornerActionManagerHandler *)self setName:name];
             }
 
-            [v60 finishDecoding];
+            [pairedPeer6 finishDecoding];
           }
 
           else
@@ -691,16 +691,16 @@ LABEL_38:
             if ([v11 scanString:@"[$" intoString:0])
             {
 LABEL_115:
-              v85 = [(UAActivityReplay *)self pairedPeer];
-              LOBYTE(v10) = v85 != 0;
+              pairedPeer5 = [(UAActivityReplay *)self pairedPeer];
+              LOBYTE(v10) = pairedPeer5 != 0;
 
               goto LABEL_39;
             }
 
             v59 = objc_alloc_init(SFPeerDevice);
             v77 = +[NSUUID UUID];
-            v78 = [v77 UUIDString];
-            [v59 setUniqueID:v78];
+            uUIDString3 = [v77 UUIDString];
+            [v59 setUniqueID:uUIDString3];
 
             v79 = sub_10003A9F8(v11);
             [v59 setName:v79];
@@ -718,9 +718,9 @@ LABEL_115:
             [v59 setProductBuildVersion:v83];
 
             [(UAActivityReplay *)self setPairedPeer:v59];
-            v60 = [(UAActivityReplay *)self pairedPeer];
-            v84 = [v60 name];
-            [(UACornerActionManagerHandler *)self setName:v84];
+            pairedPeer6 = [(UAActivityReplay *)self pairedPeer];
+            name2 = [pairedPeer6 name];
+            [(UACornerActionManagerHandler *)self setName:name2];
           }
 
           goto LABEL_115;
@@ -735,8 +735,8 @@ LABEL_88:
           goto LABEL_39;
         }
 
-        v46 = [(UAActivityReplay *)self items];
-        v43 = [v46 objectForKeyedSubscript:v41];
+        items4 = [(UAActivityReplay *)self items];
+        v43 = [items4 objectForKeyedSubscript:v41];
 
         if (v43)
         {
@@ -767,9 +767,9 @@ LABEL_88:
             _os_log_impl(&_mh_execute_header, v49, OS_LOG_TYPE_INFO, "=== WAITING FOR ACTIVITY %{private}@ to be resumed (for %g seconds)", buf, 0x16u);
           }
 
-          v50 = [v43 wasResumed];
+          wasResumed = [v43 wasResumed];
           v51 = dispatch_time(0, (v47 * 1000000000.0));
-          dispatch_semaphore_wait(v50, v51);
+          dispatch_semaphore_wait(wasResumed, v51);
         }
       }
 
@@ -782,8 +782,8 @@ LABEL_88:
           goto LABEL_88;
         }
 
-        v42 = [(UAActivityReplay *)self items];
-        v43 = [v42 objectForKeyedSubscript:v41];
+        items5 = [(UAActivityReplay *)self items];
+        v43 = [items5 objectForKeyedSubscript:v41];
 
         LOBYTE(v10) = v43 != 0;
         if (v43)
@@ -838,8 +838,8 @@ LABEL_90:
         LOBYTE(v10) = v37 != 0;
         if (v37)
         {
-          v38 = [(UAActivityReplay *)self items];
-          [v38 setObject:v37 forKeyedSubscript:v34];
+          items6 = [(UAActivityReplay *)self items];
+          [items6 setObject:v37 forKeyedSubscript:v34];
 
           v39 = sub_100001A30(0);
           if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
@@ -849,8 +849,8 @@ LABEL_90:
             _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_INFO, "=== Forcing item into replay client: %{private}@", buf, 0xCu);
           }
 
-          v40 = [(UAActivityReplay *)self client];
-          [v40 addItem:v37];
+          client = [(UAActivityReplay *)self client];
+          [client addItem:v37];
         }
 
         [v98 finishDecoding];
@@ -872,40 +872,40 @@ LABEL_40:
   return v10;
 }
 
-- (BOOL)processCommands:(id)a3 completionHandler:(id)a4
+- (BOOL)processCommands:(id)commands completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UAActivityReplay *)self queue];
+  commandsCopy = commands;
+  handlerCopy = handler;
+  queue = [(UAActivityReplay *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10003AFCC;
   block[3] = &unk_1000C58A0;
-  v13 = v6;
-  v14 = self;
-  v15 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v13 = commandsCopy;
+  selfCopy = self;
+  v15 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = commandsCopy;
+  dispatch_async(queue, block);
 
   return 1;
 }
 
-- (void)activityPayloadFromDevice:(id)a3 forAdvertisementPayload:(id)a4 command:(id)a5 timeout:(unint64_t)a6 withCompletionHandler:(id)a7
+- (void)activityPayloadFromDevice:(id)device forAdvertisementPayload:(id)payload command:(id)command timeout:(unint64_t)timeout withCompletionHandler:(id)handler
 {
-  v15 = a4;
-  v9 = a7;
-  v10 = sub_100006EF4(v15);
+  payloadCopy = payload;
+  handlerCopy = handler;
+  v10 = sub_100006EF4(payloadCopy);
   v11 = [NSString stringWithFormat:@"REQUESTPAYLOAD $%@\n", v10];
   [(UAActivityReplay *)self sendResponse:v11];
 
-  v12 = self;
-  objc_sync_enter(v12);
-  pendingPayloadFetches = v12->_pendingPayloadFetches;
-  v14 = objc_retainBlock(v9);
-  [(NSMutableDictionary *)pendingPayloadFetches setObject:v14 forKey:v15];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  pendingPayloadFetches = selfCopy->_pendingPayloadFetches;
+  v14 = objc_retainBlock(handlerCopy);
+  [(NSMutableDictionary *)pendingPayloadFetches setObject:v14 forKey:payloadCopy];
 
-  objc_sync_exit(v12);
+  objc_sync_exit(selfCopy);
 }
 
 - (BOOL)terminate
@@ -917,8 +917,8 @@ LABEL_40:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "terminate", buf, 2u);
   }
 
-  v4 = [(UAActivityReplay *)self pairedPeer];
-  v5 = v4 == 0;
+  pairedPeer = [(UAActivityReplay *)self pairedPeer];
+  v5 = pairedPeer == 0;
 
   if (!v5)
   {
@@ -926,10 +926,10 @@ LABEL_40:
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v6 = [(UACornerActionManagerHandler *)self manager];
-    v7 = [v6 receivers];
+    manager = [(UACornerActionManagerHandler *)self manager];
+    receivers = [manager receivers];
 
-    v8 = [v7 countByEnumeratingWithState:&v26 objects:v31 count:16];
+    v8 = [receivers countByEnumeratingWithState:&v26 objects:v31 count:16];
     if (v8)
     {
       v9 = *v27;
@@ -940,52 +940,52 @@ LABEL_40:
         {
           if (*v27 != v9)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(receivers);
           }
 
           v11 = *(*(&v26 + 1) + 8 * v10);
           if (objc_opt_respondsToSelector())
           {
-            v12 = [(UAActivityReplay *)self pairedPeer];
-            v13 = [v12 uniqueID];
-            [v11 lostDeviceWithUUID:v13];
+            pairedPeer2 = [(UAActivityReplay *)self pairedPeer];
+            uniqueID = [pairedPeer2 uniqueID];
+            [v11 lostDeviceWithUUID:uniqueID];
           }
 
           v10 = v10 + 1;
         }
 
         while (v8 != v10);
-        v8 = [v7 countByEnumeratingWithState:&v26 objects:v31 count:16];
+        v8 = [receivers countByEnumeratingWithState:&v26 objects:v31 count:16];
       }
 
       while (v8);
     }
   }
 
-  v14 = [(UAActivityReplay *)self sharingReceiver];
-  v15 = [(UAActivityReplay *)self mockScanner];
-  [v14 removeSFActivityScanner:v15];
+  sharingReceiver = [(UAActivityReplay *)self sharingReceiver];
+  mockScanner = [(UAActivityReplay *)self mockScanner];
+  [sharingReceiver removeSFActivityScanner:mockScanner];
 
-  v16 = [(UAActivityReplay *)self sharingAdvertiser];
-  v17 = [(UAActivityReplay *)self mockAdvertiser];
-  [v16 removeSFActivityAdvertiser:v17];
+  sharingAdvertiser = [(UAActivityReplay *)self sharingAdvertiser];
+  mockAdvertiser = [(UAActivityReplay *)self mockAdvertiser];
+  [sharingAdvertiser removeSFActivityAdvertiser:mockAdvertiser];
 
-  v18 = [(UACornerActionManagerHandler *)self manager];
-  v19 = [(UAActivityReplay *)self receiver];
-  [v18 removeReceiver:v19];
+  manager2 = [(UACornerActionManagerHandler *)self manager];
+  receiver = [(UAActivityReplay *)self receiver];
+  [manager2 removeReceiver:receiver];
 
-  v20 = [(UACornerActionManagerHandler *)self manager];
-  v21 = [(UAActivityReplay *)self advertiser];
-  [v20 removeAdvertiser:v21];
+  manager3 = [(UACornerActionManagerHandler *)self manager];
+  advertiser = [(UAActivityReplay *)self advertiser];
+  [manager3 removeAdvertiser:advertiser];
 
-  v22 = [(UAActivityReplay *)self receiver];
-  [v22 terminate];
+  receiver2 = [(UAActivityReplay *)self receiver];
+  [receiver2 terminate];
 
-  v23 = [(UAActivityReplay *)self advertiser];
-  [v23 terminate];
+  advertiser2 = [(UAActivityReplay *)self advertiser];
+  [advertiser2 terminate];
 
-  v24 = [(UACornerActionManagerHandler *)self manager];
-  [v24 removeHandler:self];
+  manager4 = [(UACornerActionManagerHandler *)self manager];
+  [manager4 removeHandler:self];
 
   return 1;
 }

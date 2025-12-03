@@ -1,15 +1,15 @@
 @interface ManagedAppsReportedStateItem
 - (_TtC20ManagedAppsInterface28ManagedAppsReportedStateItem)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ManagedAppsReportedStateItem
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_258067ED8(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_258067ED8(coderCopy);
 }
 
 - (_TtC20ManagedAppsInterface28ManagedAppsReportedStateItem)init

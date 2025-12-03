@@ -1,16 +1,16 @@
 @interface HSPCCameraSetupViewController
-- (HSPCCameraSetupViewController)initWithCoordinator:(id)a3 config:(id)a4;
+- (HSPCCameraSetupViewController)initWithCoordinator:(id)coordinator config:(id)config;
 - (void)launchCameraRecordingLearnMore;
 @end
 
 @implementation HSPCCameraSetupViewController
 
-- (HSPCCameraSetupViewController)initWithCoordinator:(id)a3 config:(id)a4
+- (HSPCCameraSetupViewController)initWithCoordinator:(id)coordinator config:(id)config
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 addedAccessory];
-  [v9 cameraProfiles];
+  coordinatorCopy = coordinator;
+  configCopy = config;
+  addedAccessory = [configCopy addedAccessory];
+  [addedAccessory cameraProfiles];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_100025EE0;
@@ -23,8 +23,8 @@
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_config, a4);
-    objc_storeStrong(&v13->_coordinator, a3);
+    objc_storeStrong(&v12->_config, config);
+    objc_storeStrong(&v13->_coordinator, coordinator);
     v14 = HULocalizedString();
     [(HSPCCameraSetupViewController *)v13 setTitle:v14];
 

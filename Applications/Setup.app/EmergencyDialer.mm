@@ -9,16 +9,16 @@
 - (void)dismiss
 {
   [(EmergencyDialer *)self dismissViewControllerAnimated:1 completion:0, a2];
-  v2 = [(EmergencyDialer *)self delegate];
-  [(EmergencyDialerDelegate *)v2 dialerDidDismiss:self];
+  delegate = [(EmergencyDialer *)self delegate];
+  [(EmergencyDialerDelegate *)delegate dialerDidDismiss:self];
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
   v2 = +[UIDevice currentDevice];
-  v3 = [(UIDevice *)v2 userInterfaceIdiom];
+  userInterfaceIdiom = [(UIDevice *)v2 userInterfaceIdiom];
 
-  if (v3 == 1)
+  if (userInterfaceIdiom == 1)
   {
     return 30;
   }

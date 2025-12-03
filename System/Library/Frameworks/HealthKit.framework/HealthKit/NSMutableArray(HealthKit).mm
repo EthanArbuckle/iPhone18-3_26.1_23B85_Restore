@@ -11,13 +11,13 @@
 
 - (id)hk_dequeue
 {
-  v2 = [a1 firstObject];
-  if (v2)
+  firstObject = [self firstObject];
+  if (firstObject)
   {
-    [a1 removeObjectAtIndex:0];
+    [self removeObjectAtIndex:0];
   }
 
-  return v2;
+  return firstObject;
 }
 
 - (void)hk_addObjectsFromArray:()HealthKit passingTest:
@@ -46,7 +46,7 @@
         v12 = *(*(&v14 + 1) + 8 * i);
         if (v7[2](v7, v12))
         {
-          [a1 addObject:v12];
+          [self addObject:v12];
         }
       }
 
@@ -82,9 +82,9 @@
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
-        if (([a1 containsObject:v9] & 1) == 0)
+        if (([self containsObject:v9] & 1) == 0)
         {
-          [a1 addObject:v9];
+          [self addObject:v9];
         }
       }
 
@@ -100,17 +100,17 @@
 - (void)hk_removeObjectsPassingTest:()HealthKit
 {
   v8 = a3;
-  v4 = [a1 count];
+  v4 = [self count];
   if (v4)
   {
     v5 = v4;
     v6 = 0;
     do
     {
-      v7 = [a1 objectAtIndexedSubscript:v6];
+      v7 = [self objectAtIndexedSubscript:v6];
       if (v8[2](v8, v7))
       {
-        [a1 removeObjectAtIndex:v6];
+        [self removeObjectAtIndex:v6];
         --v5;
       }
 
@@ -128,21 +128,21 @@
 {
   if (a3)
   {
-    return [a1 addObject:?];
+    return [self addObject:?];
   }
 
-  return a1;
+  return self;
 }
 
 - (uint64_t)hk_shuffle
 {
-  result = [a1 count];
+  result = [self count];
   if (result - 1 >= 1)
   {
     do
     {
       v3 = result - 1;
-      [a1 exchangeObjectAtIndex:result - 1 withObjectAtIndex:arc4random_uniform(result)];
+      [self exchangeObjectAtIndex:result - 1 withObjectAtIndex:arc4random_uniform(result)];
       result = v3;
     }
 

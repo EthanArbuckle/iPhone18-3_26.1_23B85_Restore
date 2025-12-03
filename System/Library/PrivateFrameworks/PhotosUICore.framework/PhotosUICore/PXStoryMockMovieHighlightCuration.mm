@@ -1,5 +1,5 @@
 @interface PXStoryMockMovieHighlightCuration
-- (PXStoryMockMovieHighlightCuration)initWithHighlights:(id)a3 fallback:(id)a4 summary:(id)a5 live:(id)a6 full:(id)a7;
+- (PXStoryMockMovieHighlightCuration)initWithHighlights:(id)highlights fallback:(id)fallback summary:(id)summary live:(id)live full:(id)full;
 - (PXStoryMovieHighlight)bestHighlight;
 @end
 
@@ -59,17 +59,17 @@
   return v5;
 }
 
-- (PXStoryMockMovieHighlightCuration)initWithHighlights:(id)a3 fallback:(id)a4 summary:(id)a5 live:(id)a6 full:(id)a7
+- (PXStoryMockMovieHighlightCuration)initWithHighlights:(id)highlights fallback:(id)fallback summary:(id)summary live:(id)live full:(id)full
 {
-  v13 = a3;
-  v22 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (!v13)
+  highlightsCopy = highlights;
+  fallbackCopy = fallback;
+  summaryCopy = summary;
+  liveCopy = live;
+  fullCopy = full;
+  if (!highlightsCopy)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"PXStoryMovieHighlight.m" lineNumber:191 description:{@"Invalid parameter not satisfying: %@", @"highlights != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryMovieHighlight.m" lineNumber:191 description:{@"Invalid parameter not satisfying: %@", @"highlights != nil"}];
   }
 
   v23.receiver = self;
@@ -77,14 +77,14 @@
   v17 = [(PXStoryMockMovieHighlightCuration *)&v23 init];
   if (v17)
   {
-    v18 = [v13 copy];
+    v18 = [highlightsCopy copy];
     highlights = v17->_highlights;
     v17->_highlights = v18;
 
-    objc_storeStrong(&v17->_fallback, a4);
-    objc_storeStrong(&v17->_summary, a5);
-    objc_storeStrong(&v17->_live, a6);
-    objc_storeStrong(&v17->_movie, a7);
+    objc_storeStrong(&v17->_fallback, fallback);
+    objc_storeStrong(&v17->_summary, summary);
+    objc_storeStrong(&v17->_live, live);
+    objc_storeStrong(&v17->_movie, full);
   }
 
   return v17;

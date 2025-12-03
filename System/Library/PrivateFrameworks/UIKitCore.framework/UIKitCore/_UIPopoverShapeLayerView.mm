@@ -1,13 +1,13 @@
 @interface _UIPopoverShapeLayerView
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
 @end
 
 @implementation _UIPopoverShapeLayerView
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
-  if ([@"path" isEqualToString:v4])
+  keyCopy = key;
+  if ([@"path" isEqualToString:keyCopy])
   {
     v5 = 1;
   }
@@ -16,7 +16,7 @@
   {
     v7.receiver = self;
     v7.super_class = _UIPopoverShapeLayerView;
-    v5 = [(UIView *)&v7 _shouldAnimatePropertyWithKey:v4];
+    v5 = [(UIView *)&v7 _shouldAnimatePropertyWithKey:keyCopy];
   }
 
   return v5;

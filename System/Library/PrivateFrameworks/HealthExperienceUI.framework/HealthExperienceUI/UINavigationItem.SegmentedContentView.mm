@@ -1,14 +1,14 @@
 @interface UINavigationItem.SegmentedContentView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtCE18HealthExperienceUICSo16UINavigationItemP33_5F11F40652BD0C60053B51DD9E749E2B20SegmentedContentView)initWithCoder:(id)a3;
-- (_TtCE18HealthExperienceUICSo16UINavigationItemP33_5F11F40652BD0C60053B51DD9E749E2B20SegmentedContentView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtCE18HealthExperienceUICSo16UINavigationItemP33_5F11F40652BD0C60053B51DD9E749E2B20SegmentedContentView)initWithCoder:(id)coder;
+- (_TtCE18HealthExperienceUICSo16UINavigationItemP33_5F11F40652BD0C60053B51DD9E749E2B20SegmentedContentView)initWithFrame:(CGRect)frame;
 - (void)layoutMarginsDidChange;
 - (void)layoutSubviews;
 @end
 
 @implementation UINavigationItem.SegmentedContentView
 
-- (_TtCE18HealthExperienceUICSo16UINavigationItemP33_5F11F40652BD0C60053B51DD9E749E2B20SegmentedContentView)initWithCoder:(id)a3
+- (_TtCE18HealthExperienceUICSo16UINavigationItemP33_5F11F40652BD0C60053B51DD9E749E2B20SegmentedContentView)initWithCoder:(id)coder
 {
   result = sub_1BA4A8018();
   __break(1u);
@@ -17,17 +17,17 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BA1DE090();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = self;
-  [(UINavigationItem.SegmentedContentView *)v4 directionalLayoutMargins];
+  width = fits.width;
+  selfCopy = self;
+  [(UINavigationItem.SegmentedContentView *)selfCopy directionalLayoutMargins];
   v7 = width - v5 - v6;
-  v8 = *(&v4->super.super.super.isa + OBJC_IVAR____TtCE18HealthExperienceUICSo16UINavigationItemP33_5F11F40652BD0C60053B51DD9E749E2B20SegmentedContentView_control);
+  v8 = *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtCE18HealthExperienceUICSo16UINavigationItemP33_5F11F40652BD0C60053B51DD9E749E2B20SegmentedContentView_control);
   [v8 sizeThatFits_];
   v10 = v9;
 
@@ -47,7 +47,7 @@
   [v2 setNeedsLayout];
 }
 
-- (_TtCE18HealthExperienceUICSo16UINavigationItemP33_5F11F40652BD0C60053B51DD9E749E2B20SegmentedContentView)initWithFrame:(CGRect)a3
+- (_TtCE18HealthExperienceUICSo16UINavigationItemP33_5F11F40652BD0C60053B51DD9E749E2B20SegmentedContentView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

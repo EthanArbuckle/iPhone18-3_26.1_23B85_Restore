@@ -1,15 +1,15 @@
 @interface FROpenInNews
 - (FCCoreConfigurationManager)configurationManager;
-- (void)_openNewsArticleWithURL:(id)a3;
-- (void)beginRequestWithExtensionContext:(id)a3;
+- (void)_openNewsArticleWithURL:(id)l;
+- (void)beginRequestWithExtensionContext:(id)context;
 @end
 
 @implementation FROpenInNews
 
-- (void)beginRequestWithExtensionContext:(id)a3
+- (void)beginRequestWithExtensionContext:(id)context
 {
-  v17 = a3;
-  objc_storeStrong(&self->_extensionContext, a3);
+  contextCopy = context;
+  objc_storeStrong(&self->_extensionContext, context);
   v43[0] = 0;
   v43[1] = v43;
   v43[2] = 0x3032000000;
@@ -33,9 +33,9 @@
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v5 = [v17 inputItems];
-  v6 = [v5 countByEnumeratingWithState:&v35 objects:v46 count:16];
-  obj = v5;
+  inputItems = [contextCopy inputItems];
+  v6 = [inputItems countByEnumeratingWithState:&v35 objects:v46 count:16];
+  obj = inputItems;
   if (v6)
   {
     v19 = *v36;
@@ -55,8 +55,8 @@
         v32 = 0u;
         v33 = 0u;
         v34 = 0u;
-        v9 = [v8 attachments];
-        v10 = [v9 countByEnumeratingWithState:&v31 objects:v45 count:16];
+        attachments = [v8 attachments];
+        v10 = [attachments countByEnumeratingWithState:&v31 objects:v45 count:16];
         v21 = v7;
         if (v10)
         {
@@ -67,7 +67,7 @@
             {
               if (*v32 != v11)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(attachments);
               }
 
               v13 = *(*(&v31 + 1) + 8 * i);
@@ -116,7 +116,7 @@
               }
             }
 
-            v10 = [v9 countByEnumeratingWithState:&v31 objects:v45 count:16];
+            v10 = [attachments countByEnumeratingWithState:&v31 objects:v45 count:16];
           }
 
           while (v10);
@@ -138,8 +138,8 @@
   block[3] = &unk_10000C380;
   v24 = v41;
   block[4] = self;
-  v23 = v17;
-  v15 = v17;
+  v23 = contextCopy;
+  v15 = contextCopy;
   dispatch_group_notify(v4, &_dispatch_main_q, block);
 
   _Block_object_dispose(v39, 8);
@@ -169,20 +169,20 @@
   return configurationManager;
 }
 
-- (void)_openNewsArticleWithURL:(id)a3
+- (void)_openNewsArticleWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = [FROpenInNewsManager alloc];
-  v6 = [(FROpenInNews *)self configurationManager];
+  configurationManager = [(FROpenInNews *)self configurationManager];
   v7 = +[FCNetworkReachability sharedNetworkReachability];
-  v8 = [(FROpenInNewsManager *)v5 initWithConfigurationManager:v6 networkReachability:v7];
+  v8 = [(FROpenInNewsManager *)v5 initWithConfigurationManager:configurationManager networkReachability:v7];
 
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100002488;
   v9[3] = &unk_10000C3A8;
   v9[4] = self;
-  [(FROpenInNewsManager *)v8 openArticleWithURL:v4 completion:v9];
+  [(FROpenInNewsManager *)v8 openArticleWithURL:lCopy completion:v9];
 }
 
 @end

@@ -1,52 +1,52 @@
 @interface CKMainController
-- (void)_handleRemoteTextEvent:(id)a3;
-- (void)_textSessionDidBegin:(id)a3;
-- (void)_textSessionDidEnd:(id)a3;
-- (void)_updateTextField:(id)a3;
+- (void)_handleRemoteTextEvent:(id)event;
+- (void)_textSessionDidBegin:(id)begin;
+- (void)_textSessionDidEnd:(id)end;
+- (void)_updateTextField:(id)field;
 - (void)activateUILockTimer;
 - (void)autoFillEnsureActive;
-- (void)didReceiveNotification:(id)a3;
+- (void)didReceiveNotification:(id)notification;
 - (void)dismissWithDeferral;
 - (void)keyboardEnsureActive;
 - (void)refreshRTI;
 - (void)showContinuityKeyboardUI;
-- (void)showPickerUIWithURLString:(id)a3 bundleID:(id)a4 localizedAppName:(id)a5 unlocalizedAppName:(id)a6 handler:(id)a7;
-- (void)transitionToViewControllerWhenReady:(id)a3;
+- (void)showPickerUIWithURLString:(id)string bundleID:(id)d localizedAppName:(id)name unlocalizedAppName:(id)appName handler:(id)handler;
+- (void)transitionToViewControllerWhenReady:(id)ready;
 - (void)update;
 @end
 
 @implementation CKMainController
 
-- (void)didReceiveNotification:(id)a3
+- (void)didReceiveNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [CRSessionInfo sessionInfoWithNotification:v4];
+  notificationCopy = notification;
+  v5 = [CRSessionInfo sessionInfoWithNotification:notificationCopy];
   if (gLogCategory_ContinuityKeyboard <= 30 && (gLogCategory_ContinuityKeyboard != -1 || _LogCategory_Initialize()))
   {
     sub_10000592C(v5);
   }
 
-  v6 = [v4 request];
-  v7 = [v6 content];
-  v8 = [v7 userInfo];
+  request = [notificationCopy request];
+  content = [request content];
+  userInfo = [content userInfo];
 
   Int64 = CFDictionaryGetInt64();
   if (v5)
   {
     objc_storeStrong(&self->_sessionInfo, v5);
     self->_testFlags = 0;
-    v10 = [(CRSessionInfo *)self->_sessionInfo deviceIdentifier];
-    if ([v10 isEqualToString:@"00000000-0000-0000-0000-000000000001"])
+    deviceIdentifier = [(CRSessionInfo *)self->_sessionInfo deviceIdentifier];
+    if ([deviceIdentifier isEqualToString:@"00000000-0000-0000-0000-000000000001"])
     {
       self->_testFlags |= 1u;
     }
 
-    if ([v10 isEqualToString:@"00000000-0000-0000-0000-000000000002"])
+    if ([deviceIdentifier isEqualToString:@"00000000-0000-0000-0000-000000000002"])
     {
       self->_testFlags |= 2u;
     }
 
-    v11 = [[NSUUID alloc] initWithUUIDString:v10];
+    v11 = [[NSUUID alloc] initWithUUIDString:deviceIdentifier];
     v12 = v11;
     if (!v11)
     {
@@ -208,14 +208,14 @@
   [(CKMainController *)self transitionToViewControllerWhenReady:vcKeyboard];
 }
 
-- (void)showPickerUIWithURLString:(id)a3 bundleID:(id)a4 localizedAppName:(id)a5 unlocalizedAppName:(id)a6 handler:(id)a7
+- (void)showPickerUIWithURLString:(id)string bundleID:(id)d localizedAppName:(id)name unlocalizedAppName:(id)appName handler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = v12;
+  stringCopy = string;
+  dCopy = d;
+  nameCopy = name;
+  appNameCopy = appName;
+  handlerCopy = handler;
+  v17 = stringCopy;
   if (v17)
   {
     v18 = [NSURL URLWithString:v17];
@@ -254,19 +254,19 @@
     [(_SFAppAutoFillPasswordViewController *)self->_vcPicker setWebViewURL:v18];
   }
 
-  if (v13)
+  if (dCopy)
   {
-    [(_SFAppAutoFillPasswordViewController *)self->_vcPicker setRemoteAppID:v13];
+    [(_SFAppAutoFillPasswordViewController *)self->_vcPicker setRemoteAppID:dCopy];
   }
 
-  if (v14)
+  if (nameCopy)
   {
-    [(_SFAppAutoFillPasswordViewController *)self->_vcPicker setRemoteLocalizedAppName:v14];
+    [(_SFAppAutoFillPasswordViewController *)self->_vcPicker setRemoteLocalizedAppName:nameCopy];
   }
 
-  if (v15)
+  if (appNameCopy)
   {
-    [(_SFAppAutoFillPasswordViewController *)self->_vcPicker setRemoteUnlocalizedAppName:v15];
+    [(_SFAppAutoFillPasswordViewController *)self->_vcPicker setRemoteUnlocalizedAppName:appNameCopy];
   }
 
   [(_SFAppAutoFillPasswordViewController *)self->_vcPicker setAuthenticationGracePeriod:45.0];
@@ -279,37 +279,37 @@
   [(_SFAppAutoFillPasswordViewController *)v23 authenticateToPresentInPopover:0 completion:v24];
 }
 
-- (void)transitionToViewControllerWhenReady:(id)a3
+- (void)transitionToViewControllerWhenReady:(id)ready
 {
-  v4 = a3;
-  v8 = v4;
+  readyCopy = ready;
+  v8 = readyCopy;
   if (self->_uiLockActive)
   {
     if (gLogCategory_ContinuityKeyboard <= 30)
     {
-      if (gLogCategory_ContinuityKeyboard != -1 || (v5 = _LogCategory_Initialize(), v4 = v8, v5))
+      if (gLogCategory_ContinuityKeyboard != -1 || (v5 = _LogCategory_Initialize(), readyCopy = v8, v5))
       {
         sub_100005C64();
-        v4 = v8;
+        readyCopy = v8;
       }
     }
 
-    v6 = v4;
+    v6 = readyCopy;
     vcDeferred = self->_vcDeferred;
     self->_vcDeferred = v6;
   }
 
   else
   {
-    CKTransitionToViewController(self->_vcNav, v4, self);
+    CKTransitionToViewController(self->_vcNav, readyCopy, self);
     vcDeferred = self->_vcDeferred;
     self->_vcDeferred = 0;
   }
 }
 
-- (void)_handleRemoteTextEvent:(id)a3
+- (void)_handleRemoteTextEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   dismissTimer = self->_dismissTimer;
   if (dismissTimer)
   {
@@ -319,11 +319,11 @@
     self->_dismissTimer = 0;
   }
 
-  v8 = [v4 copy];
+  v8 = [eventCopy copy];
   cachedRTIData = self->_cachedRTIData;
   self->_cachedRTIData = v8;
 
-  [(SFRemoteTextInputClient *)self->_rtiClient handleTextInputData:v4];
+  [(SFRemoteTextInputClient *)self->_rtiClient handleTextInputData:eventCopy];
   v10 = SFRTIDataPayloadForData();
   if (!v10)
   {
@@ -353,8 +353,8 @@
 
   v12 = v11;
   _Block_object_dispose(&v22, 8);
-  v13 = [v10 data];
-  v14 = [v11 payloadWithData:v13 version:{objc_msgSend(v10, "version")}];
+  data = [v10 data];
+  v14 = [v11 payloadWithData:data version:{objc_msgSend(v10, "version")}];
 
   if (!v14)
   {
@@ -365,31 +365,31 @@
 
 LABEL_24:
     v19 = 0;
-    v16 = 0;
+    prompt = 0;
     v14 = 0;
-    v18 = 0;
+    title = 0;
     goto LABEL_16;
   }
 
-  v15 = [v14 documentTraits];
-  v16 = [v15 prompt];
+  documentTraits = [v14 documentTraits];
+  prompt = [documentTraits prompt];
 
-  v17 = [v14 documentTraits];
-  v18 = [v17 title];
+  documentTraits2 = [v14 documentTraits];
+  title = [documentTraits2 title];
 
-  if (!v16)
+  if (!prompt)
   {
     v19 = 0;
 LABEL_11:
-    if (v18)
+    if (title)
     {
-      v19 = [v18 copy];
+      v19 = [title copy];
     }
 
     goto LABEL_13;
   }
 
-  v19 = [v16 copy];
+  v19 = [prompt copy];
   if (!v19)
   {
     goto LABEL_11;
@@ -408,9 +408,9 @@ LABEL_13:
 LABEL_16:
 }
 
-- (void)_textSessionDidBegin:(id)a3
+- (void)_textSessionDidBegin:(id)begin
 {
-  [(CKMainController *)self _updateTextField:a3];
+  [(CKMainController *)self _updateTextField:begin];
   dismissTimer = self->_dismissTimer;
   if (dismissTimer)
   {
@@ -421,9 +421,9 @@ LABEL_16:
   }
 }
 
-- (void)_textSessionDidEnd:(id)a3
+- (void)_textSessionDidEnd:(id)end
 {
-  v4 = a3;
+  endCopy = end;
   if (gLogCategory_ContinuityKeyboard <= 30 && (gLogCategory_ContinuityKeyboard != -1 || _LogCategory_Initialize()))
   {
     sub_100005CD0();
@@ -432,31 +432,31 @@ LABEL_16:
   [(CKMainController *)self dismissWithDeferral];
 }
 
-- (void)_updateTextField:(id)a3
+- (void)_updateTextField:(id)field
 {
-  v8 = a3;
-  v4 = [(CKKeyboardViewController *)self->_vcKeyboard textField];
-  if (v4)
+  fieldCopy = field;
+  textField = [(CKKeyboardViewController *)self->_vcKeyboard textField];
+  if (textField)
   {
-    [v4 setKeyboardType:{objc_msgSend(v8, "keyboardType")}];
-    [v4 setReturnKeyType:{objc_msgSend(v8, "returnKeyType")}];
-    [v4 setSecureTextEntry:{objc_msgSend(v8, "secureTextEntry")}];
-    v5 = [v8 text];
-    [v4 setText:v5];
+    [textField setKeyboardType:{objc_msgSend(fieldCopy, "keyboardType")}];
+    [textField setReturnKeyType:{objc_msgSend(fieldCopy, "returnKeyType")}];
+    [textField setSecureTextEntry:{objc_msgSend(fieldCopy, "secureTextEntry")}];
+    text = [fieldCopy text];
+    [textField setText:text];
 
-    v6 = [v8 prompt];
-    if (v6)
+    prompt = [fieldCopy prompt];
+    if (prompt)
     {
-      [v4 setPlaceholder:v6];
+      [textField setPlaceholder:prompt];
     }
 
     else
     {
-      v7 = [v8 title];
-      [v4 setPlaceholder:v7];
+      title = [fieldCopy title];
+      [textField setPlaceholder:title];
     }
 
-    [v4 becomeFirstResponder];
+    [textField becomeFirstResponder];
   }
 
   else
@@ -467,8 +467,8 @@ LABEL_16:
 
 - (void)autoFillEnsureActive
 {
-  v3 = [(CRSessionInfo *)self->_sessionInfo deviceIdentifier];
-  v4 = [[NSUUID alloc] initWithUUIDString:v3];
+  deviceIdentifier = [(CRSessionInfo *)self->_sessionInfo deviceIdentifier];
+  v4 = [[NSUUID alloc] initWithUUIDString:deviceIdentifier];
   if (!self->_rafHelper)
   {
     v5 = objc_alloc_init(SFRemoteAutoFillSessionHelper);
@@ -499,7 +499,7 @@ LABEL_16:
     sub_100004F60();
     v10 = sub_1000025DC;
     v11 = &unk_10000C3C0;
-    v12 = self;
+    selfCopy = self;
     v13 = v4;
     [v8 activateWithCompletion:v9];
   }
@@ -507,8 +507,8 @@ LABEL_16:
 
 - (void)keyboardEnsureActive
 {
-  v3 = [(CRSessionInfo *)self->_sessionInfo deviceIdentifier];
-  v4 = [[NSUUID alloc] initWithUUIDString:v3];
+  deviceIdentifier = [(CRSessionInfo *)self->_sessionInfo deviceIdentifier];
+  v4 = [[NSUUID alloc] initWithUUIDString:deviceIdentifier];
   v5 = v4;
   if (self->_riSession)
   {
@@ -542,7 +542,7 @@ LABEL_17:
     LogPrintF();
   }
 
-  if ([v3 isEqualToString:@"00000000-0000-0000-0000-000000000001"])
+  if ([deviceIdentifier isEqualToString:@"00000000-0000-0000-0000-000000000001"])
   {
     self->_testFlags |= 4u;
   }
@@ -586,7 +586,7 @@ LABEL_17:
   sub_100004F60();
   v12 = sub_100002818;
   v13 = &unk_10000C3E8;
-  v14 = self;
+  selfCopy = self;
   [(SFRemoteTextInputClient *)self->_rtiClient setEventHandler:v11];
   [(SFRemoteTextInputClient *)self->_rtiClient activate];
 

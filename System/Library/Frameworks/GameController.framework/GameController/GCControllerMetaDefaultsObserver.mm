@@ -1,7 +1,7 @@
 @interface GCControllerMetaDefaultsObserver
 - (GCControllerMetaDefaultsObserver)init;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation GCControllerMetaDefaultsObserver
@@ -35,19 +35,19 @@
   return v2;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a5;
-  if (kGCSettingsContext == a6)
+  pathCopy = path;
+  changeCopy = change;
+  if (kGCSettingsContext == context)
   {
     v12 = +[GCControllerSettings settingsDispatchQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __83__GCControllerMetaDefaultsObserver_observeValueForKeyPath_ofObject_change_context___block_invoke;
     block[3] = &unk_1E8418C50;
-    v15 = v10;
-    v16 = v11;
+    v15 = pathCopy;
+    v16 = changeCopy;
     dispatch_sync(v12, block);
   }
 
@@ -55,7 +55,7 @@
   {
     v13.receiver = self;
     v13.super_class = GCControllerMetaDefaultsObserver;
-    [(GCControllerMetaDefaultsObserver *)&v13 observeValueForKeyPath:v10 ofObject:a4 change:v11 context:a6];
+    [(GCControllerMetaDefaultsObserver *)&v13 observeValueForKeyPath:pathCopy ofObject:object change:changeCopy context:context];
   }
 }
 

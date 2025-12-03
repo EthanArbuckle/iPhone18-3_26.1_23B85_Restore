@@ -1,21 +1,21 @@
 @interface CRLoadCounterFacade
-+ (void)recordLoad:(id)a3 owner:(id)a4;
-+ (void)recordUnload:(id)a3 owner:(id)a4;
++ (void)recordLoad:(id)load owner:(id)owner;
++ (void)recordUnload:(id)unload owner:(id)owner;
 - (CRLoadCounterFacade)init;
 @end
 
 @implementation CRLoadCounterFacade
 
-+ (void)recordLoad:(id)a3 owner:(id)a4
++ (void)recordLoad:(id)load owner:(id)owner
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EB884870);
   MEMORY[0x1EEE9AC00](v5 - 8, v6);
   v8 = v13 - v7;
   swift_unknownObjectRetain();
-  v9 = a4;
+  ownerCopy = owner;
   sub_1B42A0348();
   swift_unknownObjectRelease();
-  if (v9)
+  if (ownerCopy)
   {
     sub_1B429F6B8();
 
@@ -36,16 +36,16 @@
   __swift_destroy_boxed_opaque_existential_0(v13);
 }
 
-+ (void)recordUnload:(id)a3 owner:(id)a4
++ (void)recordUnload:(id)unload owner:(id)owner
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EB884870);
   MEMORY[0x1EEE9AC00](v5 - 8, v6);
   v8 = v12 - v7;
   swift_unknownObjectRetain();
-  v9 = a4;
+  ownerCopy = owner;
   sub_1B42A0348();
   swift_unknownObjectRelease();
-  if (v9)
+  if (ownerCopy)
   {
     sub_1B429F6B8();
 

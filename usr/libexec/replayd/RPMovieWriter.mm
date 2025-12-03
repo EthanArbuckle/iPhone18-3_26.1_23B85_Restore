@@ -1,132 +1,132 @@
 @interface RPMovieWriter
-+ (BOOL)replaceFormatDescription:(opaqueCMFormatDescription *)a3 WithReplacementFormatDescription:(const opaqueCMFormatDescription *)a4 width:(int)a5 height:(int)a6 maxCLL:(unsigned __int16)a7;
-+ (id)averageVideoBitrateForWidth:(double)a3 height:(double)a4 codecType:(id)a5 isHDR:(BOOL)a6 shouldCapForExport:(BOOL)a7;
-- (BOOL)appendInitialSampleBuffer:(opaqueCMSampleBuffer *)a3 withTransform:(CGAffineTransform *)a4 input:(id)a5;
-- (BOOL)appendVideoSampleBuffer:(opaqueCMSampleBuffer *)a3 withWindowTransform:(CGAffineTransform *)a4;
-- (BOOL)assetWriterInput:(id)a3 shouldReplaceFormatDescription:(opaqueCMFormatDescription *)a4 replacementFormatDescription:(const opaqueCMFormatDescription *)a5;
-- (BOOL)dispatchedAppendVideoSampleBuffer:(opaqueCMSampleBuffer *)a3 withWindowTransform:(CGAffineTransform *)a4;
++ (BOOL)replaceFormatDescription:(opaqueCMFormatDescription *)description WithReplacementFormatDescription:(const opaqueCMFormatDescription *)formatDescription width:(int)width height:(int)height maxCLL:(unsigned __int16)l;
++ (id)averageVideoBitrateForWidth:(double)width height:(double)height codecType:(id)type isHDR:(BOOL)r shouldCapForExport:(BOOL)export;
+- (BOOL)appendInitialSampleBuffer:(opaqueCMSampleBuffer *)buffer withTransform:(CGAffineTransform *)transform input:(id)input;
+- (BOOL)appendVideoSampleBuffer:(opaqueCMSampleBuffer *)buffer withWindowTransform:(CGAffineTransform *)transform;
+- (BOOL)assetWriterInput:(id)input shouldReplaceFormatDescription:(opaqueCMFormatDescription *)description replacementFormatDescription:(const opaqueCMFormatDescription *)formatDescription;
+- (BOOL)dispatchedAppendVideoSampleBuffer:(opaqueCMSampleBuffer *)buffer withWindowTransform:(CGAffineTransform *)transform;
 - (CGSize)windowSize;
 - (NSURL)outputURL;
-- (id)audioOutputSettingsForCodec:(unsigned int)a3 audioChannelLayout:(AudioChannelLayout *)a4;
+- (id)audioOutputSettingsForCodec:(unsigned int)codec audioChannelLayout:(AudioChannelLayout *)layout;
 - (id)averageVideoBitrate;
-- (id)createAssetURLFromPhotosIdentifier:(id)a3;
-- (id)createCustomDirectoryURLFromDestURL:(id)a3;
-- (id)createDownloadsURLFromDestURL:(id)a3;
-- (id)createNotificationRequestWithAssetURL:(id)a3;
-- (id)createNotificationRequestWithURL:(id)a3 photoAsset:(id)a4;
+- (id)createAssetURLFromPhotosIdentifier:(id)identifier;
+- (id)createCustomDirectoryURLFromDestURL:(id)l;
+- (id)createDownloadsURLFromDestURL:(id)l;
+- (id)createNotificationRequestWithAssetURL:(id)l;
+- (id)createNotificationRequestWithURL:(id)l photoAsset:(id)asset;
 - (id)createVideoCompressionSettings;
-- (id)createVideoSettingsWithVideoCompressionSettings:(id)a3;
-- (id)displayNameForFolderPath:(id)a3;
-- (int64_t)consumeSandboxExtensionToken:(id)a3;
-- (void)appendAudio1SampleBuffer:(opaqueCMSampleBuffer *)a3;
-- (void)appendAudio2SampleBuffer:(opaqueCMSampleBuffer *)a3;
-- (void)appendHQLRAudioSampleBuffer:(opaqueCMSampleBuffer *)a3;
+- (id)createVideoSettingsWithVideoCompressionSettings:(id)settings;
+- (id)displayNameForFolderPath:(id)path;
+- (int64_t)consumeSandboxExtensionToken:(id)token;
+- (void)appendAudio1SampleBuffer:(opaqueCMSampleBuffer *)buffer;
+- (void)appendAudio2SampleBuffer:(opaqueCMSampleBuffer *)buffer;
+- (void)appendHQLRAudioSampleBuffer:(opaqueCMSampleBuffer *)buffer;
 - (void)dealloc;
-- (void)dispatchedAppendAudio1SampleBuffer:(opaqueCMSampleBuffer *)a3;
-- (void)displayHQLRNotificationWithURL:(id)a3;
-- (void)displayScreenRecorderNotificationWithPhotoAsset:(id)a3;
-- (void)finishWritingAndSaveToCameraRollWithSessionID:(id)a3 mixAudioTracks:(BOOL)a4 handler:(id)a5;
-- (void)finishWritingAndSaveToDownloadsWithSessionID:(id)a3 mixAudioTracks:(BOOL)a4 handler:(id)a5;
-- (void)finishWritingAndSaveToURL:(id)a3 sandboxExtensionTokenForFileURL:(id)a4 withHandler:(id)a5;
-- (void)finishWritingWithHandler:(id)a3;
-- (void)moveToCustomSaveLocation:(id)a3 handler:(id)a4;
+- (void)dispatchedAppendAudio1SampleBuffer:(opaqueCMSampleBuffer *)buffer;
+- (void)displayHQLRNotificationWithURL:(id)l;
+- (void)displayScreenRecorderNotificationWithPhotoAsset:(id)asset;
+- (void)finishWritingAndSaveToCameraRollWithSessionID:(id)d mixAudioTracks:(BOOL)tracks handler:(id)handler;
+- (void)finishWritingAndSaveToDownloadsWithSessionID:(id)d mixAudioTracks:(BOOL)tracks handler:(id)handler;
+- (void)finishWritingAndSaveToURL:(id)l sandboxExtensionTokenForFileURL:(id)rL withHandler:(id)handler;
+- (void)finishWritingWithHandler:(id)handler;
+- (void)moveToCustomSaveLocation:(id)location handler:(id)handler;
 - (void)notifyRecordingMayBeStopped;
 - (void)notifyRecordingResumed;
-- (void)saveVideoToCameraRoll:(id)a3 sessionID:(id)a4 mixAudioTracks:(BOOL)a5 handler:(id)a6;
-- (void)saveVideoToDownloads:(id)a3 sessionID:(id)a4 handler:(id)a5;
-- (void)setLastAudio1PresentationTime:(id *)a3;
-- (void)setLastAudio2PresentationTime:(id *)a3;
-- (void)setLastVideoPresentationTime:(id *)a3;
-- (void)setTrimVideoPresentationTime:(id *)a3;
-- (void)setUpAssetWriterWithHandler:(id)a3;
-- (void)showHQLRNotificationForCustomLocation:(id)a3 sessionID:(id)a4;
-- (void)startWritingHandler:(id)a3;
-- (void)trimMovieWithURL:(id)a3 startClipDuration:(double)a4 endClipDuration:(double)a5 outputFileURL:(id)a6 handler:(id)a7;
+- (void)saveVideoToCameraRoll:(id)roll sessionID:(id)d mixAudioTracks:(BOOL)tracks handler:(id)handler;
+- (void)saveVideoToDownloads:(id)downloads sessionID:(id)d handler:(id)handler;
+- (void)setLastAudio1PresentationTime:(id *)time;
+- (void)setLastAudio2PresentationTime:(id *)time;
+- (void)setLastVideoPresentationTime:(id *)time;
+- (void)setTrimVideoPresentationTime:(id *)time;
+- (void)setUpAssetWriterWithHandler:(id)handler;
+- (void)showHQLRNotificationForCustomLocation:(id)location sessionID:(id)d;
+- (void)startWritingHandler:(id)handler;
+- (void)trimMovieWithURL:(id)l startClipDuration:(double)duration endClipDuration:(double)clipDuration outputFileURL:(id)rL handler:(id)handler;
 - (void)updateOutputPath;
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5;
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler;
 @end
 
 @implementation RPMovieWriter
 
-- (void)startWritingHandler:(id)a3
+- (void)startWritingHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(RPMovieWriter *)self movieWriterQueue];
+  handlerCopy = handler;
+  movieWriterQueue = [(RPMovieWriter *)self movieWriterQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000077A8;
   v7[3] = &unk_1000A11E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(movieWriterQueue, v7);
 }
 
-- (BOOL)appendVideoSampleBuffer:(opaqueCMSampleBuffer *)a3 withWindowTransform:(CGAffineTransform *)a4
+- (BOOL)appendVideoSampleBuffer:(opaqueCMSampleBuffer *)buffer withWindowTransform:(CGAffineTransform *)transform
 {
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 1;
-  v7 = [(RPMovieWriter *)self movieWriterQueue];
+  movieWriterQueue = [(RPMovieWriter *)self movieWriterQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
-  v8 = *&a4->c;
-  v11 = *&a4->a;
+  v8 = *&transform->c;
+  v11 = *&transform->a;
   v12 = v8;
   block[2] = sub_100007A94;
   block[3] = &unk_1000A1208;
   block[4] = self;
   block[5] = &v14;
-  block[6] = a3;
-  v13 = *&a4->tx;
-  dispatch_sync(v7, block);
+  block[6] = buffer;
+  v13 = *&transform->tx;
+  dispatch_sync(movieWriterQueue, block);
 
-  LOBYTE(a4) = *(v15 + 24);
+  LOBYTE(transform) = *(v15 + 24);
   _Block_object_dispose(&v14, 8);
-  return a4;
+  return transform;
 }
 
-- (void)appendAudio1SampleBuffer:(opaqueCMSampleBuffer *)a3
+- (void)appendAudio1SampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
-  v5 = [(RPMovieWriter *)self movieWriterQueue];
+  movieWriterQueue = [(RPMovieWriter *)self movieWriterQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100007B80;
   v6[3] = &unk_1000A1230;
   v6[4] = self;
-  v6[5] = a3;
-  dispatch_sync(v5, v6);
+  v6[5] = buffer;
+  dispatch_sync(movieWriterQueue, v6);
 }
 
-- (void)appendAudio2SampleBuffer:(opaqueCMSampleBuffer *)a3
+- (void)appendAudio2SampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
-  v5 = [(RPMovieWriter *)self movieWriterQueue];
+  movieWriterQueue = [(RPMovieWriter *)self movieWriterQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100007C20;
   v6[3] = &unk_1000A1230;
   v6[4] = self;
-  v6[5] = a3;
-  dispatch_sync(v5, v6);
+  v6[5] = buffer;
+  dispatch_sync(movieWriterQueue, v6);
 }
 
-- (void)appendHQLRAudioSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (void)appendHQLRAudioSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
-  v5 = [(RPMovieWriter *)self movieWriterQueue];
+  movieWriterQueue = [(RPMovieWriter *)self movieWriterQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100007CC4;
   v6[3] = &unk_1000A1230;
   v6[4] = self;
-  v6[5] = a3;
-  dispatch_sync(v5, v6);
+  v6[5] = buffer;
+  dispatch_sync(movieWriterQueue, v6);
 }
 
-- (void)moveToCustomSaveLocation:(id)a3 handler:(id)a4
+- (void)moveToCustomSaveLocation:(id)location handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  locationCopy = location;
+  handlerCopy = handler;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -158,12 +158,12 @@
       CFRelease(v9);
       if ([v9 length])
       {
-        v22 = [v6 lastPathComponent];
+        lastPathComponent = [locationCopy lastPathComponent];
         v11 = [NSURL fileURLWithPath:v9];
-        v21 = [v11 URLByAppendingPathComponent:v22];
+        v21 = [v11 URLByAppendingPathComponent:lastPathComponent];
 
         v12 = v9;
-        v13 = [v9 fileSystemRepresentation];
+        fileSystemRepresentation = [v9 fileSystemRepresentation];
         v14 = sandbox_extension_issue_file();
         if (!v14)
         {
@@ -173,7 +173,7 @@
           }
 
           v15 = [NSError _rpUserErrorForCode:-5835 userInfo:0, v21];
-          v7[2](v7, v6, v15);
+          handlerCopy[2](handlerCopy, locationCopy, v15);
           goto LABEL_42;
         }
 
@@ -186,7 +186,7 @@
           *&buf[12] = 1024;
           *&buf[14] = 272;
           *&buf[18] = 2080;
-          *&buf[20] = v13;
+          *&buf[20] = fileSystemRepresentation;
           _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d Issued sandbox extension for custom save path: %s", buf, 0x1Cu);
         }
 
@@ -206,7 +206,7 @@
             }
 
             v17 = [NSError _rpUserErrorForCode:-5835 userInfo:0];
-            v7[2](v7, v6, v17);
+            handlerCopy[2](handlerCopy, locationCopy, v17);
             goto LABEL_41;
           }
         }
@@ -234,7 +234,7 @@
               [(RPMovieWriter *)self releaseSandboxExtensionHandle:?];
             }
 
-            v7[2](v7, v6, v18);
+            handlerCopy[2](handlerCopy, locationCopy, v18);
             goto LABEL_40;
           }
         }
@@ -246,8 +246,8 @@
         v23[3] = &unk_1000A1258;
         v27 = buf;
         v23[4] = self;
-        v26 = v7;
-        v24 = v6;
+        v26 = handlerCopy;
+        v24 = locationCopy;
         v25 = v21;
         [v20 _srMoveFileFromURL:v24 toURL:v25 completion:v23];
 
@@ -277,13 +277,13 @@ LABEL_42:
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d No custom save location configured, using default location", buf, 0x12u);
   }
 
-  v7[2](v7, v6, 0);
+  handlerCopy[2](handlerCopy, locationCopy, 0);
 LABEL_23:
 }
 
-- (void)finishWritingWithHandler:(id)a3
+- (void)finishWritingWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -293,21 +293,21 @@ LABEL_23:
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d ", buf, 0x12u);
   }
 
-  v5 = [(RPMovieWriter *)self movieWriterQueue];
+  movieWriterQueue = [(RPMovieWriter *)self movieWriterQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000085F0;
   v7[3] = &unk_1000A11E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(movieWriterQueue, v7);
 }
 
-- (void)finishWritingAndSaveToCameraRollWithSessionID:(id)a3 mixAudioTracks:(BOOL)a4 handler:(id)a5
+- (void)finishWritingAndSaveToCameraRollWithSessionID:(id)d mixAudioTracks:(BOOL)tracks handler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  dCopy = d;
+  handlerCopy = handler;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -321,19 +321,19 @@ LABEL_23:
   v12[1] = 3221225472;
   v12[2] = sub_100008D70;
   v12[3] = &unk_1000A12A8;
-  v13 = v8;
-  v14 = v9;
+  v13 = dCopy;
+  v14 = handlerCopy;
   v12[4] = self;
-  v15 = a4;
-  v10 = v8;
-  v11 = v9;
+  tracksCopy = tracks;
+  v10 = dCopy;
+  v11 = handlerCopy;
   [(RPMovieWriter *)self finishWritingWithHandler:v12];
 }
 
-- (void)finishWritingAndSaveToDownloadsWithSessionID:(id)a3 mixAudioTracks:(BOOL)a4 handler:(id)a5
+- (void)finishWritingAndSaveToDownloadsWithSessionID:(id)d mixAudioTracks:(BOOL)tracks handler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
+  dCopy = d;
+  handlerCopy = handler;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -347,22 +347,22 @@ LABEL_23:
   v11[1] = 3221225472;
   v11[2] = sub_1000091E8;
   v11[3] = &unk_1000A1320;
-  v12 = v7;
-  v13 = v8;
+  v12 = dCopy;
+  v13 = handlerCopy;
   v11[4] = self;
-  v9 = v7;
-  v10 = v8;
+  v9 = dCopy;
+  v10 = handlerCopy;
   [(RPMovieWriter *)self finishWritingWithHandler:v11];
 }
 
-- (void)showHQLRNotificationForCustomLocation:(id)a3 sessionID:(id)a4
+- (void)showHQLRNotificationForCustomLocation:(id)location sessionID:(id)d
 {
-  v6 = a4;
-  v7 = [(RPMovieWriter *)self createCustomDirectoryURLFromDestURL:a3];
+  dCopy = d;
+  v7 = [(RPMovieWriter *)self createCustomDirectoryURLFromDestURL:location];
   v8 = +[RPFeatureFlagUtility sharedInstance];
-  v9 = [v8 systemBannerEnabled];
+  systemBannerEnabled = [v8 systemBannerEnabled];
 
-  if (v9)
+  if (systemBannerEnabled)
   {
     if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
@@ -380,7 +380,7 @@ LABEL_23:
     v11[3] = &unk_1000A1348;
     v11[4] = self;
     v12 = v7;
-    [v10 showBannerWithURL:v12 identifier:0 sessionID:v6 completionHandler:v11];
+    [v10 showBannerWithURL:v12 identifier:0 sessionID:dCopy completionHandler:v11];
   }
 
   else
@@ -389,11 +389,11 @@ LABEL_23:
   }
 }
 
-- (void)finishWritingAndSaveToURL:(id)a3 sandboxExtensionTokenForFileURL:(id)a4 withHandler:(id)a5
+- (void)finishWritingAndSaveToURL:(id)l sandboxExtensionTokenForFileURL:(id)rL withHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  rLCopy = rL;
+  handlerCopy = handler;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -407,35 +407,35 @@ LABEL_23:
   v14[1] = 3221225472;
   v14[2] = sub_100009BA0;
   v14[3] = &unk_1000A1398;
-  v15 = v9;
-  v16 = self;
-  v17 = v8;
-  v18 = v10;
-  v11 = v8;
-  v12 = v9;
-  v13 = v10;
+  v15 = rLCopy;
+  selfCopy = self;
+  v17 = lCopy;
+  v18 = handlerCopy;
+  v11 = lCopy;
+  v12 = rLCopy;
+  v13 = handlerCopy;
   [(RPMovieWriter *)self finishWritingWithHandler:v14];
 }
 
-- (void)trimMovieWithURL:(id)a3 startClipDuration:(double)a4 endClipDuration:(double)a5 outputFileURL:(id)a6 handler:(id)a7
+- (void)trimMovieWithURL:(id)l startClipDuration:(double)duration endClipDuration:(double)clipDuration outputFileURL:(id)rL handler:(id)handler
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
-  v15 = [(RPMovieWriter *)self movieWriterQueue];
+  lCopy = l;
+  rLCopy = rL;
+  handlerCopy = handler;
+  movieWriterQueue = [(RPMovieWriter *)self movieWriterQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000A09C;
   block[3] = &unk_1000A13E8;
-  v21 = v12;
-  v22 = v14;
-  v20 = v13;
-  v23 = a4;
-  v24 = a5;
-  v16 = v12;
-  v17 = v14;
-  v18 = v13;
-  dispatch_async(v15, block);
+  v21 = lCopy;
+  v22 = handlerCopy;
+  v20 = rLCopy;
+  durationCopy = duration;
+  clipDurationCopy = clipDuration;
+  v16 = lCopy;
+  v17 = handlerCopy;
+  v18 = rLCopy;
+  dispatch_async(movieWriterQueue, block);
 }
 
 - (void)dealloc
@@ -447,7 +447,7 @@ LABEL_23:
     v9 = 1024;
     v10 = 595;
     v11 = 2048;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p", buf, 0x1Cu);
   }
 
@@ -476,8 +476,8 @@ LABEL_23:
 
 - (NSURL)outputURL
 {
-  v2 = [(RPMovieWriter *)self outputPath];
-  v3 = [NSURL fileURLWithPath:v2];
+  outputPath = [(RPMovieWriter *)self outputPath];
+  v3 = [NSURL fileURLWithPath:outputPath];
 
   return v3;
 }
@@ -485,27 +485,27 @@ LABEL_23:
 - (void)updateOutputPath
 {
   [(RPMovieWriter *)self setAssetWriterStartCount:[(RPMovieWriter *)self assetWriterStartCount]+ 1];
-  v3 = [(RPMovieWriter *)self originalOutputPath];
-  v4 = [NSURL fileURLWithPath:v3];
+  originalOutputPath = [(RPMovieWriter *)self originalOutputPath];
+  v4 = [NSURL fileURLWithPath:originalOutputPath];
 
-  v5 = [v4 pathExtension];
-  v6 = [v4 URLByDeletingPathExtension];
-  v7 = [v6 path];
+  pathExtension = [v4 pathExtension];
+  uRLByDeletingPathExtension = [v4 URLByDeletingPathExtension];
+  path = [uRLByDeletingPathExtension path];
 
-  v8 = [NSString stringWithFormat:@"%@_%d.%@", v7, [(RPMovieWriter *)self assetWriterStartCount], v5];
+  v8 = [NSString stringWithFormat:@"%@_%d.%@", path, [(RPMovieWriter *)self assetWriterStartCount], pathExtension];
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(RPMovieWriter *)self outputPath];
+    outputPath = [(RPMovieWriter *)self outputPath];
     *buf = 136447234;
     v11 = "[RPMovieWriter updateOutputPath]";
     v12 = 1024;
     v13 = 611;
     v14 = 2112;
-    v15 = v9;
+    v15 = outputPath;
     v16 = 2112;
     v17 = v8;
     v18 = 1024;
-    v19 = [(RPMovieWriter *)self assetWriterStartCount];
+    assetWriterStartCount = [(RPMovieWriter *)self assetWriterStartCount];
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d Updating the AVAssetWriter path from %@ to %@ with start count of %d", buf, 0x2Cu);
   }
 
@@ -535,11 +535,11 @@ LABEL_23:
   return v9;
 }
 
-+ (id)averageVideoBitrateForWidth:(double)a3 height:(double)a4 codecType:(id)a5 isHDR:(BOOL)a6 shouldCapForExport:(BOOL)a7
++ (id)averageVideoBitrateForWidth:(double)width height:(double)height codecType:(id)type isHDR:(BOOL)r shouldCapForExport:(BOOL)export
 {
-  v7 = a7;
-  v8 = a6;
-  v11 = a5;
+  exportCopy = export;
+  rCopy = r;
+  typeCopy = type;
   [@"com.apple.replayd" UTF8String];
   if (os_variant_allows_internal_security_policies() && (v12 = CFPreferencesCopyAppValue(@"SCKBitRateOverride", @"com.apple.replayd")) != 0)
   {
@@ -560,7 +560,7 @@ LABEL_23:
 
   else
   {
-    v14 = a3 * 11.4 * a4;
+    v14 = width * 11.4 * height;
     v15 = v14;
     if (v14 <= 64000)
     {
@@ -572,7 +572,7 @@ LABEL_23:
       v16 = v14;
     }
 
-    if (v7 && (![v11 isEqualToString:AVVideoCodecTypeHEVC] ? (v17 = 25000000) : (v17 = 15000000), v17 < v15))
+    if (exportCopy && (![typeCopy isEqualToString:AVVideoCodecTypeHEVC] ? (v17 = 25000000) : (v17 = 15000000), v17 < v15))
     {
       if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
       {
@@ -585,7 +585,7 @@ LABEL_23:
         v26 = 2048;
         v27 = v17;
         v28 = 2112;
-        v29 = v11;
+        v29 = typeCopy;
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d bitrate=%ld exceed maxBitrate=%ld for videoCodecType=%@, cap at max", &v20, 0x30u);
       }
     }
@@ -595,7 +595,7 @@ LABEL_23:
       v17 = v16;
     }
 
-    if (v8)
+    if (rCopy)
     {
       v18 = (v17 * 1.2);
     }
@@ -614,7 +614,7 @@ LABEL_23:
 - (id)createVideoCompressionSettings
 {
   v3 = +[NSMutableDictionary dictionary];
-  v4 = [(RPMovieWriter *)self averageVideoBitrate];
+  averageVideoBitrate = [(RPMovieWriter *)self averageVideoBitrate];
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446722;
@@ -622,13 +622,13 @@ LABEL_23:
     v36 = 1024;
     v37 = 664;
     v38 = 2048;
-    v39 = COERCE_DOUBLE([v4 integerValue]);
+    v39 = COERCE_DOUBLE([averageVideoBitrate integerValue]);
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d bit rate set to %ld", buf, 0x1Cu);
   }
 
-  v5 = [(RPMovieWriter *)self assetWriterIsHDR];
-  v6 = [(RPMovieWriter *)self videoCodecType];
-  v7 = [v6 isEqualToString:AVVideoCodecTypeH264];
+  assetWriterIsHDR = [(RPMovieWriter *)self assetWriterIsHDR];
+  videoCodecType = [(RPMovieWriter *)self videoCodecType];
+  v7 = [videoCodecType isEqualToString:AVVideoCodecTypeH264];
 
   if (v7)
   {
@@ -638,13 +638,13 @@ LABEL_9:
     goto LABEL_11;
   }
 
-  v9 = [(RPMovieWriter *)self videoCodecType];
-  v10 = [v9 isEqualToString:AVVideoCodecTypeHEVC];
+  videoCodecType2 = [(RPMovieWriter *)self videoCodecType];
+  v10 = [videoCodecType2 isEqualToString:AVVideoCodecTypeHEVC];
 
   if (v10)
   {
     v8 = &kVTProfileLevel_HEVC_Main_AutoLevel;
-    if (v5)
+    if (assetWriterIsHDR)
     {
       v8 = &kVTProfileLevel_HEVC_Main10_AutoLevel;
     }
@@ -663,10 +663,10 @@ LABEL_11:
   v12 = [NSDictionary dictionaryWithObjects:v33 forKeys:v32 count:3];
   [v3 addEntriesFromDictionary:v12];
 
-  if ((v5 & 1) == 0)
+  if ((assetWriterIsHDR & 1) == 0)
   {
     v30 = AVVideoAverageBitRateKey;
-    v31 = v4;
+    v31 = averageVideoBitrate;
     v25 = [NSDictionary dictionaryWithObjects:&v31 forKeys:&v30 count:1];
     [v3 addEntriesFromDictionary:v25];
 
@@ -762,24 +762,24 @@ LABEL_32:
   return v3;
 }
 
-- (id)createVideoSettingsWithVideoCompressionSettings:(id)a3
+- (id)createVideoSettingsWithVideoCompressionSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   [(RPMovieWriter *)self windowSize];
   v6 = ((v5 + 1 + ((v5 + 1) >> 63)) & 0xFFFFFFFFFFFFFFFELL);
   [(RPMovieWriter *)self windowSize];
   v8 = ((v7 + 1 + ((v7 + 1) >> 63)) & 0xFFFFFFFFFFFFFFFELL);
   v9 = [NSMutableDictionary alloc];
   v25[0] = AVVideoCodecKey;
-  v10 = [(RPMovieWriter *)self videoCodecType];
-  v26[0] = v10;
+  videoCodecType = [(RPMovieWriter *)self videoCodecType];
+  v26[0] = videoCodecType;
   v25[1] = AVVideoWidthKey;
   v11 = [NSNumber numberWithDouble:v6];
   v26[1] = v11;
   v25[2] = AVVideoHeightKey;
   v12 = [NSNumber numberWithDouble:v8];
   v26[2] = v12;
-  v26[3] = v4;
+  v26[3] = settingsCopy;
   v25[3] = AVVideoCompressionPropertiesKey;
   v25[4] = AVVideoScalingModeKey;
   v26[4] = AVVideoScalingModeResizeAspect;
@@ -834,9 +834,9 @@ LABEL_9:
   return v14;
 }
 
-- (void)setUpAssetWriterWithHandler:(id)a3
+- (void)setUpAssetWriterWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -862,21 +862,21 @@ LABEL_9:
   *&buf[16] = v5;
   [(RPMovieWriter *)self setLastAudio2PresentationTime:buf];
   v6 = [AVAssetWriter alloc];
-  v7 = [(RPMovieWriter *)self outputURL];
+  outputURL = [(RPMovieWriter *)self outputURL];
   v38 = 0;
-  v8 = [v6 initWithURL:v7 fileType:AVFileTypeMPEG4 error:&v38];
+  v8 = [v6 initWithURL:outputURL fileType:AVFileTypeMPEG4 error:&v38];
   v9 = v38;
   [(RPMovieWriter *)self setAssetWriter:v8];
 
-  v10 = [(RPMovieWriter *)self assetWriter];
-  [v10 setFinishWritingDelegate:self];
+  assetWriter = [(RPMovieWriter *)self assetWriter];
+  [assetWriter setFinishWritingDelegate:self];
 
   if (v9)
   {
     if (dword_1000B6840 <= 2 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
       sub_10005F6CC(v9);
-      if (!v4)
+      if (!handlerCopy)
       {
         goto LABEL_28;
       }
@@ -884,12 +884,12 @@ LABEL_9:
       goto LABEL_8;
     }
 
-    if (v4)
+    if (handlerCopy)
     {
 LABEL_8:
       v11 = [NSError _rpUserErrorForCode:-5824 userInfo:0];
 LABEL_27:
-      v4[2](v4, v11);
+      handlerCopy[2](handlerCopy, v11);
     }
   }
 
@@ -904,13 +904,13 @@ LABEL_27:
     [v13 setDataType:kCMMetadataBaseDataType_UInt32];
     [v13 setValue:&__kCFBooleanTrue];
     v14 = [NSArray arrayWithObjects:v12, v13, 0];
-    v15 = [(RPMovieWriter *)self assetWriter];
-    [v15 setMetadata:v14];
+    assetWriter2 = [(RPMovieWriter *)self assetWriter];
+    [assetWriter2 setMetadata:v14];
 
-    v16 = [(RPMovieWriter *)self createVideoCompressionSettings];
-    v17 = [(RPBroadcastConfiguration *)self->_broadcastConfig videoCompressionProperties];
+    createVideoCompressionSettings = [(RPMovieWriter *)self createVideoCompressionSettings];
+    videoCompressionProperties = [(RPBroadcastConfiguration *)self->_broadcastConfig videoCompressionProperties];
 
-    if (v17)
+    if (videoCompressionProperties)
     {
       if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
       {
@@ -921,11 +921,11 @@ LABEL_27:
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d using custom video compression properties", buf, 0x12u);
       }
 
-      v18 = [(RPBroadcastConfiguration *)self->_broadcastConfig videoCompressionProperties];
-      [v16 addEntriesFromDictionary:v18];
+      videoCompressionProperties2 = [(RPBroadcastConfiguration *)self->_broadcastConfig videoCompressionProperties];
+      [createVideoCompressionSettings addEntriesFromDictionary:videoCompressionProperties2];
     }
 
-    v19 = [(RPMovieWriter *)self createVideoSettingsWithVideoCompressionSettings:v16];
+    v19 = [(RPMovieWriter *)self createVideoSettingsWithVideoCompressionSettings:createVideoCompressionSettings];
     if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136446722;
@@ -937,21 +937,21 @@ LABEL_27:
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d videoSettings=%@", buf, 0x1Cu);
     }
 
-    v37 = v16;
+    v37 = createVideoCompressionSettings;
     v20 = [[AVAssetWriterInput alloc] initWithMediaType:AVMediaTypeVideo outputSettings:v19];
     [(RPMovieWriter *)self setVideoInput:v20];
 
-    v21 = [(RPMovieWriter *)self videoInput];
-    [v21 setExpectsMediaDataInRealTime:1];
+    videoInput = [(RPMovieWriter *)self videoInput];
+    [videoInput setExpectsMediaDataInRealTime:1];
 
     if ([(RPMovieWriter *)self isSparselyInterleaved])
     {
       [(AVAssetWriterInput *)self->_videoInput setMediaDataLocation:AVAssetWriterInputMediaDataLocationSparselyInterleavedWithMainMediaData];
     }
 
-    v22 = [(RPMovieWriter *)self assetWriter];
-    v23 = [(RPMovieWriter *)self videoInput];
-    [v22 addInput:v23];
+    assetWriter3 = [(RPMovieWriter *)self assetWriter];
+    videoInput2 = [(RPMovieWriter *)self videoInput];
+    [assetWriter3 addInput:videoInput2];
 
     if ([(RPMovieWriter *)self audioCodecType]== 1718378851)
     {
@@ -963,35 +963,35 @@ LABEL_27:
       v24 = 6619138;
     }
 
-    v25 = [(RPMovieWriter *)self audioCodecType];
+    audioCodecType = [(RPMovieWriter *)self audioCodecType];
     *buf = v24;
     memset(&buf[4], 0, 24);
     v40 = 0;
-    v26 = [(RPMovieWriter *)self audioOutputSettingsForCodec:v25 audioChannelLayout:buf];
+    v26 = [(RPMovieWriter *)self audioOutputSettingsForCodec:audioCodecType audioChannelLayout:buf];
     v27 = [[AVAssetWriterInput alloc] initWithMediaType:AVMediaTypeAudio outputSettings:v26];
     [(RPMovieWriter *)self setAudioInput1:v27];
 
-    v28 = [(RPMovieWriter *)self audioInput1];
-    [v28 setExpectsMediaDataInRealTime:1];
+    audioInput1 = [(RPMovieWriter *)self audioInput1];
+    [audioInput1 setExpectsMediaDataInRealTime:1];
 
-    v29 = [(RPMovieWriter *)self assetWriter];
-    v30 = [(RPMovieWriter *)self audioInput1];
-    [v29 addInput:v30];
+    assetWriter4 = [(RPMovieWriter *)self assetWriter];
+    audioInput12 = [(RPMovieWriter *)self audioInput1];
+    [assetWriter4 addInput:audioInput12];
 
     v31 = [[AVAssetWriterInput alloc] initWithMediaType:AVMediaTypeAudio outputSettings:v26];
     [(RPMovieWriter *)self setAudioInput2:v31];
 
-    v32 = [(RPMovieWriter *)self audioInput2];
-    [v32 setExpectsMediaDataInRealTime:1];
+    audioInput2 = [(RPMovieWriter *)self audioInput2];
+    [audioInput2 setExpectsMediaDataInRealTime:1];
 
-    v33 = [(RPMovieWriter *)self assetWriter];
-    v34 = [(RPMovieWriter *)self audioInput2];
-    [v33 addInput:v34];
+    assetWriter5 = [(RPMovieWriter *)self assetWriter];
+    audioInput22 = [(RPMovieWriter *)self audioInput2];
+    [assetWriter5 addInput:audioInput22];
 
-    if (v4)
+    if (handlerCopy)
     {
-      v35 = [(RPMovieWriter *)self assetWriter];
-      if (v35)
+      assetWriter6 = [(RPMovieWriter *)self assetWriter];
+      if (assetWriter6)
       {
         v11 = 0;
       }
@@ -1008,9 +1008,9 @@ LABEL_27:
 LABEL_28:
 }
 
-- (id)audioOutputSettingsForCodec:(unsigned int)a3 audioChannelLayout:(AudioChannelLayout *)a4
+- (id)audioOutputSettingsForCodec:(unsigned int)codec audioChannelLayout:(AudioChannelLayout *)layout
 {
-  if (a3 == 1718378851)
+  if (codec == 1718378851)
   {
     v21[0] = AVFormatIDKey;
     v21[1] = AVNumberOfChannelsKey;
@@ -1019,7 +1019,7 @@ LABEL_28:
     v22[2] = &off_1000A6E10;
     v21[2] = AVSampleRateKey;
     v21[3] = AVChannelLayoutKey;
-    v5 = [NSData dataWithBytes:a4 length:32];
+    v5 = [NSData dataWithBytes:layout length:32];
     v22[3] = v5;
     v6 = v22;
     v7 = v21;
@@ -1035,7 +1035,7 @@ LABEL_28:
     v20[2] = &off_1000A6E20;
     v19[2] = AVSampleRateKey;
     v19[3] = AVChannelLayoutKey;
-    v5 = [NSData dataWithBytes:a4 length:32];
+    v5 = [NSData dataWithBytes:layout length:32];
     v19[4] = AVEncoderBitRateKey;
     v20[3] = v5;
     v20[4] = &off_1000A6B60;
@@ -1055,33 +1055,33 @@ LABEL_28:
     v15 = 2112;
     v16 = v9;
     v17 = 1024;
-    v18 = a3;
+    codecCopy = codec;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d using settings=%@ for codecType=%d", &v11, 0x22u);
   }
 
   return v9;
 }
 
-- (BOOL)dispatchedAppendVideoSampleBuffer:(opaqueCMSampleBuffer *)a3 withWindowTransform:(CGAffineTransform *)a4
+- (BOOL)dispatchedAppendVideoSampleBuffer:(opaqueCMSampleBuffer *)buffer withWindowTransform:(CGAffineTransform *)transform
 {
-  v7 = [(RPMovieWriter *)self assetWriter];
-  v8 = v7;
-  if (!a3 || !v7)
+  assetWriter = [(RPMovieWriter *)self assetWriter];
+  v8 = assetWriter;
+  if (!buffer || !assetWriter)
   {
 
     return 1;
   }
 
-  v9 = [(RPMovieWriter *)self isFinishingWriting];
+  isFinishingWriting = [(RPMovieWriter *)self isFinishingWriting];
 
-  if ((v9 & 1) == 0)
+  if ((isFinishingWriting & 1) == 0)
   {
-    v10 = [(RPMovieWriter *)self assetWriter];
-    if ([v10 status] == 1)
+    assetWriter2 = [(RPMovieWriter *)self assetWriter];
+    if ([assetWriter2 status] == 1)
     {
-      v11 = [(RPMovieWriter *)self didProcessFirstSample];
+      didProcessFirstSample = [(RPMovieWriter *)self didProcessFirstSample];
 
-      if (v11)
+      if (didProcessFirstSample)
       {
         if (CMBufferQueueGetBufferCount(self->_videoBufferQueue) >= 5)
         {
@@ -1101,7 +1101,7 @@ LABEL_28:
           }
         }
 
-        if (CMBufferQueueEnqueue(self->_videoBufferQueue, a3))
+        if (CMBufferQueueEnqueue(self->_videoBufferQueue, buffer))
         {
           if (dword_1000B6840 <= 2 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
           {
@@ -1111,8 +1111,8 @@ LABEL_28:
 
         else
         {
-          v25 = [(RPMovieWriter *)self videoInput];
-          if ([v25 isReadyForMoreMediaData])
+          videoInput = [(RPMovieWriter *)self videoInput];
+          if ([videoInput isReadyForMoreMediaData])
           {
             *&v26 = 136446722;
             v40 = v26;
@@ -1161,7 +1161,7 @@ LABEL_28:
 
                 else
                 {
-                  v30 = sub_100057EA8(a3);
+                  v30 = sub_100057EA8(buffer);
                   if (dword_1000B6840 <= 1)
                   {
                     v31 = *&v30;
@@ -1202,22 +1202,22 @@ LABEL_28:
                 }
 
                 v34 = sub_100057578(v28);
-                v35 = [(RPMovieWriter *)self maxContentLightLevel];
-                v36 = v34 * 100.0;
-                if (v36 < v35)
+                maxContentLightLevel = [(RPMovieWriter *)self maxContentLightLevel];
+                maxContentLightLevel2 = v34 * 100.0;
+                if (maxContentLightLevel2 < maxContentLightLevel)
                 {
-                  v36 = [(RPMovieWriter *)self maxContentLightLevel];
+                  maxContentLightLevel2 = [(RPMovieWriter *)self maxContentLightLevel];
                 }
 
-                [(RPMovieWriter *)self setMaxContentLightLevel:v36, v40];
-                v37 = [(RPMovieWriter *)self videoInput];
-                [v37 appendSampleBuffer:v28];
+                [(RPMovieWriter *)self setMaxContentLightLevel:maxContentLightLevel2, v40];
+                videoInput2 = [(RPMovieWriter *)self videoInput];
+                [videoInput2 appendSampleBuffer:v28];
 
                 CFRelease(v28);
               }
 
-              v25 = [(RPMovieWriter *)self videoInput];
-              if (([v25 isReadyForMoreMediaData] & 1) == 0)
+              videoInput = [(RPMovieWriter *)self videoInput];
+              if (([videoInput isReadyForMoreMediaData] & 1) == 0)
               {
                 goto LABEL_46;
               }
@@ -1242,8 +1242,8 @@ LABEL_46:
     *&time2.timescale = &time2;
     time2.epoch = 0x2020000000;
     v46 = 0;
-    v13 = [(RPMovieWriter *)self assetWriter];
-    v14 = [v13 status] == 3;
+    assetWriter3 = [(RPMovieWriter *)self assetWriter];
+    v14 = [assetWriter3 status] == 3;
 
     if (v14)
     {
@@ -1252,41 +1252,41 @@ LABEL_46:
         v15 = &_os_log_default;
         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
         {
-          v16 = [(RPMovieWriter *)self assetWriter];
-          v17 = [v16 error];
-          sub_10005F75C(v17, buf, v16);
+          assetWriter4 = [(RPMovieWriter *)self assetWriter];
+          error = [assetWriter4 error];
+          sub_10005F75C(error, buf, assetWriter4);
         }
       }
 
       if ([(RPMovieWriter *)self didProcessFirstSample])
       {
         v18 = +[NSFileManager defaultManager];
-        v19 = [(RPMovieWriter *)self outputURL];
-        [v18 _srRemoveFile:v19 completion:&stru_1000A1408];
+        outputURL = [(RPMovieWriter *)self outputURL];
+        [v18 _srRemoveFile:outputURL completion:&stru_1000A1408];
       }
 
       v41[0] = _NSConcreteStackBlock;
       v41[1] = 3221225472;
-      v20 = *&a4->c;
-      v42 = *&a4->a;
+      v20 = *&transform->c;
+      v42 = *&transform->a;
       v43 = v20;
       v41[2] = sub_10000C66C;
       v41[3] = &unk_1000A1430;
       v41[4] = self;
       v41[5] = &time2;
-      v41[6] = a3;
-      v44 = *&a4->tx;
+      v41[6] = buffer;
+      v44 = *&transform->tx;
       [(RPMovieWriter *)self setUpAssetWriterWithHandler:v41];
     }
 
     else
     {
-      v21 = [(RPMovieWriter *)self videoInput];
-      v22 = *&a4->c;
-      *&buf[0].value = *&a4->a;
+      videoInput3 = [(RPMovieWriter *)self videoInput];
+      v22 = *&transform->c;
+      *&buf[0].value = *&transform->a;
       *&buf[0].epoch = v22;
-      *&buf[1].timescale = *&a4->tx;
-      v23 = [(RPMovieWriter *)self appendInitialSampleBuffer:a3 withTransform:buf input:v21];
+      *&buf[1].timescale = *&transform->tx;
+      v23 = [(RPMovieWriter *)self appendInitialSampleBuffer:buffer withTransform:buf input:videoInput3];
       *(*&time2.timescale + 24) = v23;
     }
 
@@ -1296,41 +1296,41 @@ LABEL_46:
   return 1;
 }
 
-- (BOOL)appendInitialSampleBuffer:(opaqueCMSampleBuffer *)a3 withTransform:(CGAffineTransform *)a4 input:(id)a5
+- (BOOL)appendInitialSampleBuffer:(opaqueCMSampleBuffer *)buffer withTransform:(CGAffineTransform *)transform input:(id)input
 {
-  v8 = a5;
+  inputCopy = input;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(RPMovieWriter *)self assetWriter];
+    assetWriter = [(RPMovieWriter *)self assetWriter];
     *buf = 136446722;
     *&buf[4] = "[RPMovieWriter appendInitialSampleBuffer:withTransform:input:]";
     *&buf[12] = 1024;
     *&buf[14] = 963;
     *&buf[18] = 1024;
-    *&buf[20] = [v9 status];
+    *&buf[20] = [assetWriter status];
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d asset writer status %d", buf, 0x18u);
   }
 
-  v10 = [(RPMovieWriter *)self assetWriter];
-  if ([v10 status] == 1)
+  assetWriter2 = [(RPMovieWriter *)self assetWriter];
+  if ([assetWriter2 status] == 1)
   {
 
     goto LABEL_7;
   }
 
-  v11 = [(RPMovieWriter *)self assetWriter];
-  v12 = [v11 status];
+  assetWriter3 = [(RPMovieWriter *)self assetWriter];
+  status = [assetWriter3 status];
 
-  if (v12 == 3)
+  if (status == 3)
   {
 LABEL_7:
-    v13 = [(RPMovieWriter *)self assetWriter];
-    v14 = [v13 status];
+    assetWriter4 = [(RPMovieWriter *)self assetWriter];
+    status2 = [assetWriter4 status];
 
-    if (v14 == 1)
+    if (status2 == 1)
     {
       memset(buf, 0, 24);
-      CMSampleBufferGetPresentationTimeStamp(buf, a3);
+      CMSampleBufferGetPresentationTimeStamp(buf, buffer);
       if ((buf[12] & 1) == 0)
       {
         if (dword_1000B6840 <= 2 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -1341,14 +1341,14 @@ LABEL_7:
         goto LABEL_35;
       }
 
-      v20 = [(RPMovieWriter *)self assetWriter];
+      assetWriter5 = [(RPMovieWriter *)self assetWriter];
       *v28 = *buf;
       *&v28[16] = *&buf[16];
-      [v20 startSessionAtSourceTime:v28];
+      [assetWriter5 startSessionAtSourceTime:v28];
 
-      if ([v8 isReadyForMoreMediaData])
+      if ([inputCopy isReadyForMoreMediaData])
       {
-        v21 = [v8 appendSampleBuffer:a3];
+        v21 = [inputCopy appendSampleBuffer:buffer];
         [(RPMovieWriter *)self setDidProcessFirstSample:1];
         if (!v21)
         {
@@ -1395,30 +1395,30 @@ LABEL_35:
     goto LABEL_24;
   }
 
-  v25 = *&a4->a;
-  v26 = *&a4->c;
-  v27 = *&a4->tx;
-  v15 = [(RPMovieWriter *)self videoInput];
+  v25 = *&transform->a;
+  v26 = *&transform->c;
+  v27 = *&transform->tx;
+  videoInput = [(RPMovieWriter *)self videoInput];
   *buf = v25;
   *&buf[16] = v26;
   v30 = v27;
-  [v15 setTransform:buf];
+  [videoInput setTransform:buf];
 
-  v16 = [(RPMovieWriter *)self assetWriter];
-  v17 = [v16 startWriting];
+  assetWriter6 = [(RPMovieWriter *)self assetWriter];
+  startWriting = [assetWriter6 startWriting];
 
-  if (v17)
+  if (startWriting)
   {
     if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [(RPMovieWriter *)self assetWriter];
-      v19 = [v18 status];
+      assetWriter7 = [(RPMovieWriter *)self assetWriter];
+      status3 = [assetWriter7 status];
       *buf = 136446722;
       *&buf[4] = "[RPMovieWriter appendInitialSampleBuffer:withTransform:input:]";
       *&buf[12] = 1024;
       *&buf[14] = 970;
       *&buf[18] = 1024;
-      *&buf[20] = v19;
+      *&buf[20] = status3;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d asset writer started with status %d", buf, 0x18u);
     }
 
@@ -1445,36 +1445,36 @@ LABEL_36:
   return v23;
 }
 
-- (void)dispatchedAppendAudio1SampleBuffer:(opaqueCMSampleBuffer *)a3
+- (void)dispatchedAppendAudio1SampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
-  v5 = [(RPMovieWriter *)self assetWriter];
-  if (!a3 || !v5)
+  assetWriter = [(RPMovieWriter *)self assetWriter];
+  if (!buffer || !assetWriter)
   {
     goto LABEL_12;
   }
 
-  v22 = v5;
-  v6 = [(RPMovieWriter *)self isFinishingWriting];
+  v22 = assetWriter;
+  isFinishingWriting = [(RPMovieWriter *)self isFinishingWriting];
 
-  if (v6)
+  if (isFinishingWriting)
   {
     return;
   }
 
-  v23 = [(RPMovieWriter *)self assetWriter];
-  if ([v23 status] != 1)
+  assetWriter2 = [(RPMovieWriter *)self assetWriter];
+  if ([assetWriter2 status] != 1)
   {
-    v5 = v23;
+    assetWriter = assetWriter2;
 LABEL_12:
 
     return;
   }
 
-  v7 = [(RPMovieWriter *)self didProcessFirstSample];
+  didProcessFirstSample = [(RPMovieWriter *)self didProcessFirstSample];
 
-  if (v7)
+  if (didProcessFirstSample)
   {
-    if (CMBufferQueueEnqueue(self->_audioBufferQueue1, a3))
+    if (CMBufferQueueEnqueue(self->_audioBufferQueue1, buffer))
     {
       if (dword_1000B6840 <= 2 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
       {
@@ -1484,8 +1484,8 @@ LABEL_12:
 
     else
     {
-      v8 = [(RPMovieWriter *)self audioInput1];
-      if ([v8 isReadyForMoreMediaData])
+      audioInput1 = [(RPMovieWriter *)self audioInput1];
+      if ([audioInput1 isReadyForMoreMediaData])
       {
         *&v9 = 136446722;
         v21 = v9;
@@ -1528,7 +1528,7 @@ LABEL_12:
 
             else
             {
-              v15 = sub_100057EA8(a3);
+              v15 = sub_100057EA8(buffer);
               if (dword_1000B6840 <= 1)
               {
                 v16 = *&v15;
@@ -1570,14 +1570,14 @@ LABEL_12:
               _os_log_impl(v18, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [DEBUG] %{public}s:%d appending app audio sample with timestamp:%lld scale:%d duration:%lld", time1, 0x2Cu);
             }
 
-            v20 = [(RPMovieWriter *)self audioInput1];
-            [v20 appendSampleBuffer:v13];
+            audioInput12 = [(RPMovieWriter *)self audioInput1];
+            [audioInput12 appendSampleBuffer:v13];
 
             CFRelease(v13);
           }
 
-          v8 = [(RPMovieWriter *)self audioInput1];
-          if (([v8 isReadyForMoreMediaData] & 1) == 0)
+          audioInput1 = [(RPMovieWriter *)self audioInput1];
+          if (([audioInput1 isReadyForMoreMediaData] & 1) == 0)
           {
             goto LABEL_30;
           }
@@ -1592,23 +1592,23 @@ LABEL_30:
   }
 }
 
-+ (BOOL)replaceFormatDescription:(opaqueCMFormatDescription *)a3 WithReplacementFormatDescription:(const opaqueCMFormatDescription *)a4 width:(int)a5 height:(int)a6 maxCLL:(unsigned __int16)a7
++ (BOOL)replaceFormatDescription:(opaqueCMFormatDescription *)description WithReplacementFormatDescription:(const opaqueCMFormatDescription *)formatDescription width:(int)width height:(int)height maxCLL:(unsigned __int16)l
 {
   formatDescriptionOut = 0;
-  if (!a3)
+  if (!description)
   {
     sub_10005FF2C(buf);
     return buf[0];
   }
 
-  if (!a4)
+  if (!formatDescription)
   {
     sub_10005FE68(buf);
     return buf[0];
   }
 
-  v8 = a7;
-  Extensions = CMFormatDescriptionGetExtensions(a3);
+  lCopy = l;
+  Extensions = CMFormatDescriptionGetExtensions(description);
   if (Extensions)
   {
     MutableCopy = CFDictionaryCreateMutableCopy(kCFAllocatorDefault, 0, Extensions);
@@ -1625,13 +1625,13 @@ LABEL_30:
     goto LABEL_26;
   }
 
-  v15 = a5 + 1;
-  v16 = a6 + 1;
+  v15 = width + 1;
+  v16 = height + 1;
   [@"com.apple.replayd" UTF8String];
   if (os_variant_allows_internal_security_policies() && (v17 = CFPreferencesCopyAppValue(@"SCKClliCap", @"com.apple.replayd")) != 0)
   {
     v18 = v17;
-    v19 = [v17 integerValue];
+    integerValue = [v17 integerValue];
     if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136446722;
@@ -1639,12 +1639,12 @@ LABEL_30:
       v30 = 1024;
       v31 = 1121;
       v32 = 1024;
-      v33 = v19;
+      v33 = integerValue;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d use default write clliCap=%u", buf, 0x18u);
     }
 
     CFRelease(v18);
-    v20 = v19;
+    v20 = integerValue;
   }
 
   else
@@ -1654,12 +1654,12 @@ LABEL_30:
 
   v21 = v15 + (v15 >> 31);
   v22 = v16 + (v16 >> 31);
-  if (v20 >= v8)
+  if (v20 >= lCopy)
   {
-    LOWORD(v20) = v8;
+    LOWORD(v20) = lCopy;
   }
 
-  if (v8)
+  if (lCopy)
   {
     v23 = 0;
   }
@@ -1684,7 +1684,7 @@ LABEL_30:
     CFRelease(v24);
   }
 
-  MediaSubType = CMFormatDescriptionGetMediaSubType(a3);
+  MediaSubType = CMFormatDescriptionGetMediaSubType(description);
   CMVideoFormatDescriptionCreate(kCFAllocatorDefault, MediaSubType, v21 & 0xFFFFFFFE, v22 & 0xFFFFFFFE, v14, &formatDescriptionOut);
   CFRelease(v14);
   if (!formatDescriptionOut)
@@ -1694,7 +1694,7 @@ LABEL_26:
     return buf[0];
   }
 
-  *a4 = formatDescriptionOut;
+  *formatDescription = formatDescriptionOut;
   formatDescriptionOut = 0;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
@@ -1703,17 +1703,17 @@ LABEL_26:
     v30 = 1024;
     v31 = 1152;
     v32 = 1024;
-    v33 = v8;
+    v33 = lCopy;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d shouldReplaceFormatDescription with maxCLL=%d", buf, 0x18u);
   }
 
   return 1;
 }
 
-- (BOOL)assetWriterInput:(id)a3 shouldReplaceFormatDescription:(opaqueCMFormatDescription *)a4 replacementFormatDescription:(const opaqueCMFormatDescription *)a5
+- (BOOL)assetWriterInput:(id)input shouldReplaceFormatDescription:(opaqueCMFormatDescription *)description replacementFormatDescription:(const opaqueCMFormatDescription *)formatDescription
 {
-  v8 = [a3 mediaType];
-  v9 = [v8 isEqual:AVMediaTypeVideo];
+  mediaType = [input mediaType];
+  v9 = [mediaType isEqual:AVMediaTypeVideo];
 
   if (!v9 || [(RPMovieWriter *)self assetWriterSetting]!= 1)
   {
@@ -1724,85 +1724,85 @@ LABEL_26:
   v11 = v10;
   [(RPMovieWriter *)self windowSize];
   v13 = v12;
-  v14 = [(RPMovieWriter *)self maxContentLightLevel];
+  maxContentLightLevel = [(RPMovieWriter *)self maxContentLightLevel];
 
-  return [RPMovieWriter replaceFormatDescription:a4 WithReplacementFormatDescription:a5 width:v11 height:v13 maxCLL:v14];
+  return [RPMovieWriter replaceFormatDescription:description WithReplacementFormatDescription:formatDescription width:v11 height:v13 maxCLL:maxContentLightLevel];
 }
 
-- (void)saveVideoToCameraRoll:(id)a3 sessionID:(id)a4 mixAudioTracks:(BOOL)a5 handler:(id)a6
+- (void)saveVideoToCameraRoll:(id)roll sessionID:(id)d mixAudioTracks:(BOOL)tracks handler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  rollCopy = roll;
+  dCopy = d;
+  handlerCopy = handler;
   movieSaveQueue = self->_movieSaveQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000DACC;
   block[3] = &unk_1000A1480;
-  v21 = a5;
+  tracksCopy = tracks;
   block[4] = self;
-  v18 = v10;
-  v19 = v11;
-  v20 = v12;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
+  v18 = rollCopy;
+  v19 = dCopy;
+  v20 = handlerCopy;
+  v14 = handlerCopy;
+  v15 = dCopy;
+  v16 = rollCopy;
   dispatch_async(movieSaveQueue, block);
 }
 
-- (id)createAssetURLFromPhotosIdentifier:(id)a3
+- (id)createAssetURLFromPhotosIdentifier:(id)identifier
 {
-  v3 = [PHObject uuidFromLocalIdentifier:a3];
+  v3 = [PHObject uuidFromLocalIdentifier:identifier];
   v4 = [NSString stringWithFormat:@"photos://asset?uuid=%@&albumname=camera-roll", v3];
   v5 = [NSURL URLWithString:v4];
 
   return v5;
 }
 
-- (void)saveVideoToDownloads:(id)a3 sessionID:(id)a4 handler:(id)a5
+- (void)saveVideoToDownloads:(id)downloads sessionID:(id)d handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  downloadsCopy = downloads;
+  dCopy = d;
+  handlerCopy = handler;
   movieSaveQueue = self->_movieSaveQueue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10000E114;
   v15[3] = &unk_1000A1100;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = downloadsCopy;
+  v17 = dCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = dCopy;
+  v14 = downloadsCopy;
   dispatch_async(movieSaveQueue, v15);
 }
 
-- (id)createDownloadsURLFromDestURL:(id)a3
+- (id)createDownloadsURLFromDestURL:(id)l
 {
-  v3 = [a3 absoluteString];
-  v4 = [v3 stringByReplacingOccurrencesOfString:@"file://" withString:@"shareddocuments://"];
+  absoluteString = [l absoluteString];
+  v4 = [absoluteString stringByReplacingOccurrencesOfString:@"file://" withString:@"shareddocuments://"];
 
   v5 = [NSURL URLWithString:v4];
 
   return v5;
 }
 
-- (id)createCustomDirectoryURLFromDestURL:(id)a3
+- (id)createCustomDirectoryURLFromDestURL:(id)l
 {
-  v3 = [a3 absoluteString];
-  v4 = [v3 stringByReplacingOccurrencesOfString:@"file://" withString:@"shareddocuments://"];
+  absoluteString = [l absoluteString];
+  v4 = [absoluteString stringByReplacingOccurrencesOfString:@"file://" withString:@"shareddocuments://"];
 
   v5 = [NSURL URLWithString:v4];
 
   return v5;
 }
 
-- (id)displayNameForFolderPath:(id)a3
+- (id)displayNameForFolderPath:(id)path
 {
-  v3 = a3;
-  v4 = [NSURL fileURLWithPath:v3];
+  pathCopy = path;
+  v4 = [NSURL fileURLWithPath:pathCopy];
   v14 = 0;
   v13 = 0;
   v5 = [v4 getResourceValue:&v14 forKey:NSURLLocalizedNameKey error:&v13];
@@ -1811,39 +1811,39 @@ LABEL_26:
   if (v5)
   {
     v8 = v6;
-    v9 = v8;
+    lastPathComponent = v8;
   }
 
   else
   {
     v10 = +[NSFileManager defaultManager];
-    v8 = [v10 displayNameAtPath:v3];
+    v8 = [v10 displayNameAtPath:pathCopy];
 
     if (v8 && ([v8 isEqualToString:&stru_1000A2FB8] & 1) == 0)
     {
-      v9 = v8;
+      lastPathComponent = v8;
     }
 
     else
     {
-      v11 = [NSURL fileURLWithPath:v3];
-      v9 = [v11 lastPathComponent];
+      v11 = [NSURL fileURLWithPath:pathCopy];
+      lastPathComponent = [v11 lastPathComponent];
     }
   }
 
-  return v9;
+  return lastPathComponent;
 }
 
-- (int64_t)consumeSandboxExtensionToken:(id)a3
+- (int64_t)consumeSandboxExtensionToken:(id)token
 {
-  v3 = [a3 UTF8String];
+  uTF8String = [token UTF8String];
 
-  return _sandbox_extension_consume(v3);
+  return _sandbox_extension_consume(uTF8String);
 }
 
-- (void)displayScreenRecorderNotificationWithPhotoAsset:(id)a3
+- (void)displayScreenRecorderNotificationWithPhotoAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 136446722;
@@ -1851,17 +1851,17 @@ LABEL_26:
     v8 = 1024;
     v9 = 1339;
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p", &v6, 0x1Cu);
   }
 
-  v5 = [(RPMovieWriter *)self createNotificationRequestWithAssetURL:v4];
+  v5 = [(RPMovieWriter *)self createNotificationRequestWithAssetURL:assetCopy];
   [(UNUserNotificationCenter *)self->_userNotificationCenter addNotificationRequest:v5 withCompletionHandler:&stru_1000A14C0];
 }
 
-- (void)displayHQLRNotificationWithURL:(id)a3
+- (void)displayHQLRNotificationWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 136446722;
@@ -1869,32 +1869,32 @@ LABEL_26:
     v8 = 1024;
     v9 = 1350;
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p", &v6, 0x1Cu);
   }
 
-  v5 = [(RPMovieWriter *)self createNotificationRequestWithURL:v4 photoAsset:0];
+  v5 = [(RPMovieWriter *)self createNotificationRequestWithURL:lCopy photoAsset:0];
   [(UNUserNotificationCenter *)self->_callRecordingUserNotificationCenter addNotificationRequest:v5 withCompletionHandler:&stru_1000A14E0];
 }
 
-- (id)createNotificationRequestWithAssetURL:(id)a3
+- (id)createNotificationRequestWithAssetURL:(id)l
 {
-  v4 = a3;
-  v5 = [(RPMovieWriter *)self createAssetURLFromPhotosIdentifier:v4];
-  v6 = [(RPMovieWriter *)self createNotificationRequestWithURL:v5 photoAsset:v4];
+  lCopy = l;
+  v5 = [(RPMovieWriter *)self createAssetURLFromPhotosIdentifier:lCopy];
+  v6 = [(RPMovieWriter *)self createNotificationRequestWithURL:v5 photoAsset:lCopy];
 
   return v6;
 }
 
-- (id)createNotificationRequestWithURL:(id)a3 photoAsset:(id)a4
+- (id)createNotificationRequestWithURL:(id)l photoAsset:(id)asset
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 scheme];
-  v9 = [v8 isEqualToString:@"photos"];
+  lCopy = l;
+  assetCopy = asset;
+  scheme = [lCopy scheme];
+  v9 = [scheme isEqualToString:@"photos"];
 
-  v10 = [v6 scheme];
-  v11 = [v10 isEqualToString:@"shareddocuments"];
+  scheme2 = [lCopy scheme];
+  v11 = [scheme2 isEqualToString:@"shareddocuments"];
 
   if (v9)
   {
@@ -1943,46 +1943,46 @@ LABEL_26:
   v17 = [NSBundle _rpLocalizedStringFromFrameworkBundleWithKey:v14];
   [v15 setTitle:v17];
 
-  v37 = self;
+  selfCopy = self;
   if (v11)
   {
-    [v6 URLByDeletingLastPathComponent];
+    [lCopy URLByDeletingLastPathComponent];
     v18 = v12;
-    v20 = v19 = v7;
-    v21 = [v20 path];
+    v20 = v19 = assetCopy;
+    path = [v20 path];
 
-    v22 = [(RPMovieWriter *)self displayNameForFolderPath:v21];
+    v22 = [(RPMovieWriter *)self displayNameForFolderPath:path];
     v23 = [NSBundle _rpLocalizedStringFromFrameworkBundleWithKey:v13];
     v24 = [NSString stringWithFormat:@"%@ %@", v23, v22];
     [v15 setBody:v24];
 
-    v7 = v19;
+    assetCopy = v19;
     v12 = v18;
     v16 = &_AXSVoiceOverTouchEnabled_ptr;
   }
 
   else
   {
-    v21 = [NSBundle _rpLocalizedStringFromFrameworkBundleWithKey:v13];
-    [v15 setBody:v21];
+    path = [NSBundle _rpLocalizedStringFromFrameworkBundleWithKey:v13];
+    [v15 setBody:path];
   }
 
   [v15 setThreadIdentifier:@"orginalRecordID"];
-  if (v7)
+  if (assetCopy)
   {
     v39 = @"photoAssetIdKey";
-    v40 = v7;
+    v40 = assetCopy;
     v25 = [NSDictionary dictionaryWithObjects:&v40 forKeys:&v39 count:1];
     [v15 setUserInfo:v25];
   }
 
-  [v15 setDefaultActionURL:v6];
+  [v15 setDefaultActionURL:lCopy];
   [v15 setShouldIgnoreDoNotDisturb:1];
   if (v9)
   {
     v26 = [UNNotificationActionIcon iconWithSystemImageName:v12];
     v27 = [v16[410] _rpLocalizedStringFromFrameworkBundleWithKey:@"SYSTEM_RECORDING_LONG_PRESS_VIEW"];
-    v28 = [UNNotificationAction actionWithIdentifier:@"viewAction" title:v27 url:v6 options:0 icon:v26];
+    v28 = [UNNotificationAction actionWithIdentifier:@"viewAction" title:v27 url:lCopy options:0 icon:v26];
 
     v29 = [UNNotificationActionIcon iconWithSystemImageName:@"xmark.circle"];
     v30 = [v16[410] _rpLocalizedStringFromFrameworkBundleWithKey:@"SYSTEM_RECORDING_LONG_PRESS_DELETE"];
@@ -1994,7 +1994,7 @@ LABEL_26:
     v33 = [UNNotificationCategory categoryWithIdentifier:@"orginalRecordID" actions:v32 intentIdentifiers:&__NSArray0__struct options:0];
 
     v34 = [NSSet setWithObject:v33];
-    [(UNUserNotificationCenter *)v37->_userNotificationCenter setNotificationCategories:v34];
+    [(UNUserNotificationCenter *)selfCopy->_userNotificationCenter setNotificationCategories:v34];
   }
 
   else
@@ -2006,7 +2006,7 @@ LABEL_26:
 
     v26 = [UNNotificationCategory categoryWithIdentifier:@"orginalRecordID" actions:&__NSArray0__struct intentIdentifiers:&__NSArray0__struct options:0];
     v28 = [NSSet setWithObject:v26];
-    [(UNUserNotificationCenter *)v37->_callRecordingUserNotificationCenter setNotificationCategories:v28];
+    [(UNUserNotificationCenter *)selfCopy->_callRecordingUserNotificationCenter setNotificationCategories:v28];
   }
 
 LABEL_26:
@@ -2016,11 +2016,11 @@ LABEL_26:
   return v35;
 }
 
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  centerCopy = center;
+  responseCopy = response;
+  handlerCopy = handler;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446722;
@@ -2028,26 +2028,26 @@ LABEL_26:
     v31 = 1024;
     v32 = 1448;
     v33 = 2048;
-    v34 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p", buf, 0x1Cu);
   }
 
-  v11 = [v9 actionIdentifier];
-  v12 = [v11 isEqualToString:@"deleteAction"];
+  actionIdentifier = [responseCopy actionIdentifier];
+  v12 = [actionIdentifier isEqualToString:@"deleteAction"];
 
   if (v12)
   {
-    v13 = [v9 notification];
-    v14 = [v13 request];
-    v15 = [v14 content];
-    v16 = [v15 userInfo];
+    notification = [responseCopy notification];
+    request = [notification request];
+    content = [request content];
+    userInfo = [content userInfo];
 
-    if (!v16)
+    if (!userInfo)
     {
       goto LABEL_20;
     }
 
-    v17 = [v16 objectForKey:@"photoAssetIdKey"];
+    v17 = [userInfo objectForKey:@"photoAssetIdKey"];
     if (!v17)
     {
       goto LABEL_20;
@@ -2057,16 +2057,16 @@ LABEL_26:
     v28 = v17;
     v19 = [NSArray arrayWithObjects:&v28 count:1];
     v20 = [PHAsset fetchAssetsWithLocalIdentifiers:v19 options:0];
-    v21 = [v20 firstObject];
+    firstObject = [v20 firstObject];
 
-    if (v21)
+    if (firstObject)
     {
       v22 = +[PHPhotoLibrary sharedPhotoLibrary];
       v26[0] = _NSConcreteStackBlock;
       v26[1] = 3221225472;
       v26[2] = sub_10000F390;
       v26[3] = &unk_1000A1088;
-      v23 = v21;
+      v23 = firstObject;
       v27 = v23;
       v25 = 0;
       [v22 performChangesAndWait:v26 error:&v25];
@@ -2077,7 +2077,7 @@ LABEL_26:
         sub_100060224();
       }
 
-      v10[2](v10);
+      handlerCopy[2](handlerCopy);
     }
 
     else
@@ -2115,31 +2115,31 @@ LABEL_20:
   return result;
 }
 
-- (void)setLastVideoPresentationTime:(id *)a3
+- (void)setLastVideoPresentationTime:(id *)time
 {
-  v3 = *&a3->var0;
-  self->_lastVideoPresentationTime.epoch = a3->var3;
+  v3 = *&time->var0;
+  self->_lastVideoPresentationTime.epoch = time->var3;
   *&self->_lastVideoPresentationTime.value = v3;
 }
 
-- (void)setLastAudio1PresentationTime:(id *)a3
+- (void)setLastAudio1PresentationTime:(id *)time
 {
-  v3 = *&a3->var0;
-  self->_lastAudio1PresentationTime.epoch = a3->var3;
+  v3 = *&time->var0;
+  self->_lastAudio1PresentationTime.epoch = time->var3;
   *&self->_lastAudio1PresentationTime.value = v3;
 }
 
-- (void)setLastAudio2PresentationTime:(id *)a3
+- (void)setLastAudio2PresentationTime:(id *)time
 {
-  v3 = *&a3->var0;
-  self->_lastAudio2PresentationTime.epoch = a3->var3;
+  v3 = *&time->var0;
+  self->_lastAudio2PresentationTime.epoch = time->var3;
   *&self->_lastAudio2PresentationTime.value = v3;
 }
 
-- (void)setTrimVideoPresentationTime:(id *)a3
+- (void)setTrimVideoPresentationTime:(id *)time
 {
-  v3 = *&a3->var0;
-  self->_trimVideoPresentationTime.epoch = a3->var3;
+  v3 = *&time->var0;
+  self->_trimVideoPresentationTime.epoch = time->var3;
   *&self->_trimVideoPresentationTime.value = v3;
 }
 

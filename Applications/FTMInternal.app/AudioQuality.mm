@@ -1,23 +1,23 @@
 @interface AudioQuality
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (unsigned)delayCntAtIndex:(unint64_t)a3;
-- (void)copyTo:(id)a3;
+- (unsigned)delayCntAtIndex:(unint64_t)index;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasNumEnqdSpeechPkt:(BOOL)a3;
-- (void)setHasNumLostPkt:(BOOL)a3;
-- (void)setHasNumMissedSpeechPkt:(BOOL)a3;
-- (void)setHasNumPlayedSpeechPkt:(BOOL)a3;
-- (void)setHasNumRecvdSilencePkt:(BOOL)a3;
-- (void)setHasNumRecvdSpeechPkt:(BOOL)a3;
-- (void)setHasNumSpeechQempty:(BOOL)a3;
-- (void)setHasNumUflwSilencePkt:(BOOL)a3;
-- (void)setHasNumUflwSpeechPkt:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasNumEnqdSpeechPkt:(BOOL)pkt;
+- (void)setHasNumLostPkt:(BOOL)pkt;
+- (void)setHasNumMissedSpeechPkt:(BOOL)pkt;
+- (void)setHasNumPlayedSpeechPkt:(BOOL)pkt;
+- (void)setHasNumRecvdSilencePkt:(BOOL)pkt;
+- (void)setHasNumRecvdSpeechPkt:(BOOL)pkt;
+- (void)setHasNumSpeechQempty:(BOOL)qempty;
+- (void)setHasNumUflwSilencePkt:(BOOL)pkt;
+- (void)setHasNumUflwSpeechPkt:(BOOL)pkt;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AudioQuality
@@ -30,9 +30,9 @@
   [(AudioQuality *)&v3 dealloc];
 }
 
-- (void)setHasNumRecvdSpeechPkt:(BOOL)a3
+- (void)setHasNumRecvdSpeechPkt:(BOOL)pkt
 {
-  if (a3)
+  if (pkt)
   {
     v3 = 64;
   }
@@ -45,9 +45,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasNumRecvdSilencePkt:(BOOL)a3
+- (void)setHasNumRecvdSilencePkt:(BOOL)pkt
 {
-  if (a3)
+  if (pkt)
   {
     v3 = 32;
   }
@@ -60,9 +60,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasNumLostPkt:(BOOL)a3
+- (void)setHasNumLostPkt:(BOOL)pkt
 {
-  if (a3)
+  if (pkt)
   {
     v3 = 4;
   }
@@ -75,9 +75,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasNumUflwSpeechPkt:(BOOL)a3
+- (void)setHasNumUflwSpeechPkt:(BOOL)pkt
 {
-  if (a3)
+  if (pkt)
   {
     v3 = 512;
   }
@@ -90,9 +90,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasNumUflwSilencePkt:(BOOL)a3
+- (void)setHasNumUflwSilencePkt:(BOOL)pkt
 {
-  if (a3)
+  if (pkt)
   {
     v3 = 256;
   }
@@ -105,9 +105,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasNumEnqdSpeechPkt:(BOOL)a3
+- (void)setHasNumEnqdSpeechPkt:(BOOL)pkt
 {
-  if (a3)
+  if (pkt)
   {
     v3 = 2;
   }
@@ -120,9 +120,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasNumPlayedSpeechPkt:(BOOL)a3
+- (void)setHasNumPlayedSpeechPkt:(BOOL)pkt
 {
-  if (a3)
+  if (pkt)
   {
     v3 = 16;
   }
@@ -135,9 +135,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasNumMissedSpeechPkt:(BOOL)a3
+- (void)setHasNumMissedSpeechPkt:(BOOL)pkt
 {
-  if (a3)
+  if (pkt)
   {
     v3 = 8;
   }
@@ -150,9 +150,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasNumSpeechQempty:(BOOL)a3
+- (void)setHasNumSpeechQempty:(BOOL)qempty
 {
-  if (a3)
+  if (qempty)
   {
     v3 = 128;
   }
@@ -165,18 +165,18 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (unsigned)delayCntAtIndex:(unint64_t)a3
+- (unsigned)delayCntAtIndex:(unint64_t)index
 {
   p_delayCnts = &self->_delayCnts;
   count = self->_delayCnts.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_delayCnts->list[a3];
+  return p_delayCnts->list[index];
 }
 
 - (id)description
@@ -184,8 +184,8 @@
   v7.receiver = self;
   v7.super_class = AudioQuality;
   v3 = [(AudioQuality *)&v7 description];
-  v4 = [(AudioQuality *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(AudioQuality *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -353,14 +353,14 @@ LABEL_14:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v19 = v4;
+  toCopy = to;
+  v19 = toCopy;
   if (self->_recordType)
   {
     PBDataWriterWriteStringField();
-    v4 = v19;
+    toCopy = v19;
   }
 
   has = self->_has;
@@ -368,7 +368,7 @@ LABEL_14:
   {
     numRecvdSpeechPkt = self->_numRecvdSpeechPkt;
     PBDataWriterWriteUint32Field();
-    v4 = v19;
+    toCopy = v19;
     has = self->_has;
     if ((has & 0x20) == 0)
     {
@@ -389,7 +389,7 @@ LABEL_5:
 
   numRecvdSilencePkt = self->_numRecvdSilencePkt;
   PBDataWriterWriteUint32Field();
-  v4 = v19;
+  toCopy = v19;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -405,7 +405,7 @@ LABEL_6:
 LABEL_22:
   numLostPkt = self->_numLostPkt;
   PBDataWriterWriteUint32Field();
-  v4 = v19;
+  toCopy = v19;
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -421,7 +421,7 @@ LABEL_7:
 LABEL_23:
   numUflwSpeechPkt = self->_numUflwSpeechPkt;
   PBDataWriterWriteUint32Field();
-  v4 = v19;
+  toCopy = v19;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -437,7 +437,7 @@ LABEL_8:
 LABEL_24:
   numUflwSilencePkt = self->_numUflwSilencePkt;
   PBDataWriterWriteUint32Field();
-  v4 = v19;
+  toCopy = v19;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -453,7 +453,7 @@ LABEL_9:
 LABEL_25:
   numEnqdSpeechPkt = self->_numEnqdSpeechPkt;
   PBDataWriterWriteUint32Field();
-  v4 = v19;
+  toCopy = v19;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -469,7 +469,7 @@ LABEL_10:
 LABEL_26:
   numEnqdSilencePkt = self->_numEnqdSilencePkt;
   PBDataWriterWriteUint32Field();
-  v4 = v19;
+  toCopy = v19;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -485,7 +485,7 @@ LABEL_11:
 LABEL_27:
   numPlayedSpeechPkt = self->_numPlayedSpeechPkt;
   PBDataWriterWriteUint32Field();
-  v4 = v19;
+  toCopy = v19;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -501,13 +501,13 @@ LABEL_12:
 LABEL_28:
   numMissedSpeechPkt = self->_numMissedSpeechPkt;
   PBDataWriterWriteUint32Field();
-  v4 = v19;
+  toCopy = v19;
   if ((*&self->_has & 0x80) != 0)
   {
 LABEL_13:
     numSpeechQempty = self->_numSpeechQempty;
     PBDataWriterWriteUint32Field();
-    v4 = v19;
+    toCopy = v19;
   }
 
 LABEL_14:
@@ -519,7 +519,7 @@ LABEL_14:
     {
       v9 = p_delayCnts->list[v8];
       PBDataWriterWriteUint32Field();
-      v4 = v19;
+      toCopy = v19;
       ++v8;
     }
 
@@ -527,21 +527,21 @@ LABEL_14:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (self->_recordType)
   {
-    [v4 setRecordType:?];
-    v4 = v9;
+    [toCopy setRecordType:?];
+    toCopy = v9;
   }
 
   has = self->_has;
   if ((has & 0x40) != 0)
   {
-    *(v4 + 14) = self->_numRecvdSpeechPkt;
-    *(v4 + 40) |= 0x40u;
+    *(toCopy + 14) = self->_numRecvdSpeechPkt;
+    *(toCopy + 40) |= 0x40u;
     has = self->_has;
     if ((has & 0x20) == 0)
     {
@@ -560,8 +560,8 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(v4 + 13) = self->_numRecvdSilencePkt;
-  *(v4 + 40) |= 0x20u;
+  *(toCopy + 13) = self->_numRecvdSilencePkt;
+  *(toCopy + 40) |= 0x20u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -575,8 +575,8 @@ LABEL_6:
   }
 
 LABEL_23:
-  *(v4 + 10) = self->_numLostPkt;
-  *(v4 + 40) |= 4u;
+  *(toCopy + 10) = self->_numLostPkt;
+  *(toCopy + 40) |= 4u;
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -590,8 +590,8 @@ LABEL_7:
   }
 
 LABEL_24:
-  *(v4 + 17) = self->_numUflwSpeechPkt;
-  *(v4 + 40) |= 0x200u;
+  *(toCopy + 17) = self->_numUflwSpeechPkt;
+  *(toCopy + 40) |= 0x200u;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -605,8 +605,8 @@ LABEL_8:
   }
 
 LABEL_25:
-  *(v4 + 16) = self->_numUflwSilencePkt;
-  *(v4 + 40) |= 0x100u;
+  *(toCopy + 16) = self->_numUflwSilencePkt;
+  *(toCopy + 40) |= 0x100u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -620,8 +620,8 @@ LABEL_9:
   }
 
 LABEL_26:
-  *(v4 + 9) = self->_numEnqdSpeechPkt;
-  *(v4 + 40) |= 2u;
+  *(toCopy + 9) = self->_numEnqdSpeechPkt;
+  *(toCopy + 40) |= 2u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -635,8 +635,8 @@ LABEL_10:
   }
 
 LABEL_27:
-  *(v4 + 8) = self->_numEnqdSilencePkt;
-  *(v4 + 40) |= 1u;
+  *(toCopy + 8) = self->_numEnqdSilencePkt;
+  *(toCopy + 40) |= 1u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -647,8 +647,8 @@ LABEL_11:
     }
 
 LABEL_29:
-    *(v4 + 11) = self->_numMissedSpeechPkt;
-    *(v4 + 40) |= 8u;
+    *(toCopy + 11) = self->_numMissedSpeechPkt;
+    *(toCopy + 40) |= 8u;
     if ((*&self->_has & 0x80) == 0)
     {
       goto LABEL_14;
@@ -658,8 +658,8 @@ LABEL_29:
   }
 
 LABEL_28:
-  *(v4 + 12) = self->_numPlayedSpeechPkt;
-  *(v4 + 40) |= 0x10u;
+  *(toCopy + 12) = self->_numPlayedSpeechPkt;
+  *(toCopy + 40) |= 0x10u;
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -670,18 +670,18 @@ LABEL_12:
   if ((has & 0x80) != 0)
   {
 LABEL_13:
-    *(v4 + 15) = self->_numSpeechQempty;
-    *(v4 + 40) |= 0x80u;
+    *(toCopy + 15) = self->_numSpeechQempty;
+    *(toCopy + 40) |= 0x80u;
   }
 
 LABEL_14:
   if ([(AudioQuality *)self delayCntsCount])
   {
     [v9 clearDelayCnts];
-    v6 = [(AudioQuality *)self delayCntsCount];
-    if (v6)
+    delayCntsCount = [(AudioQuality *)self delayCntsCount];
+    if (delayCntsCount)
     {
-      v7 = v6;
+      v7 = delayCntsCount;
       for (i = 0; i != v7; ++i)
       {
         [v9 addDelayCnt:{-[AudioQuality delayCntAtIndex:](self, "delayCntAtIndex:", i)}];
@@ -690,10 +690,10 @@ LABEL_14:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_recordType copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_recordType copyWithZone:zone];
   v7 = v5[9];
   v5[9] = v6;
 
@@ -839,16 +839,16 @@ LABEL_12:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_55;
   }
 
   recordType = self->_recordType;
-  if (recordType | *(v4 + 9))
+  if (recordType | *(equalCopy + 9))
   {
     if (![(NSString *)recordType isEqual:?])
     {
@@ -857,10 +857,10 @@ LABEL_12:
   }
 
   has = self->_has;
-  v7 = *(v4 + 40);
+  v7 = *(equalCopy + 40);
   if ((has & 0x40) != 0)
   {
-    if ((v7 & 0x40) == 0 || self->_numRecvdSpeechPkt != *(v4 + 14))
+    if ((v7 & 0x40) == 0 || self->_numRecvdSpeechPkt != *(equalCopy + 14))
     {
       goto LABEL_55;
     }
@@ -875,7 +875,7 @@ LABEL_55:
 
   if ((has & 0x20) != 0)
   {
-    if ((v7 & 0x20) == 0 || self->_numRecvdSilencePkt != *(v4 + 13))
+    if ((v7 & 0x20) == 0 || self->_numRecvdSilencePkt != *(equalCopy + 13))
     {
       goto LABEL_55;
     }
@@ -888,7 +888,7 @@ LABEL_55:
 
   if ((has & 4) != 0)
   {
-    if ((v7 & 4) == 0 || self->_numLostPkt != *(v4 + 10))
+    if ((v7 & 4) == 0 || self->_numLostPkt != *(equalCopy + 10))
     {
       goto LABEL_55;
     }
@@ -901,33 +901,33 @@ LABEL_55:
 
   if ((*&self->_has & 0x200) != 0)
   {
-    if ((*(v4 + 40) & 0x200) == 0 || self->_numUflwSpeechPkt != *(v4 + 17))
+    if ((*(equalCopy + 40) & 0x200) == 0 || self->_numUflwSpeechPkt != *(equalCopy + 17))
     {
       goto LABEL_55;
     }
   }
 
-  else if ((*(v4 + 40) & 0x200) != 0)
+  else if ((*(equalCopy + 40) & 0x200) != 0)
   {
     goto LABEL_55;
   }
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(v4 + 40) & 0x100) == 0 || self->_numUflwSilencePkt != *(v4 + 16))
+    if ((*(equalCopy + 40) & 0x100) == 0 || self->_numUflwSilencePkt != *(equalCopy + 16))
     {
       goto LABEL_55;
     }
   }
 
-  else if ((*(v4 + 40) & 0x100) != 0)
+  else if ((*(equalCopy + 40) & 0x100) != 0)
   {
     goto LABEL_55;
   }
 
   if ((has & 2) != 0)
   {
-    if ((v7 & 2) == 0 || self->_numEnqdSpeechPkt != *(v4 + 9))
+    if ((v7 & 2) == 0 || self->_numEnqdSpeechPkt != *(equalCopy + 9))
     {
       goto LABEL_55;
     }
@@ -940,7 +940,7 @@ LABEL_55:
 
   if (has)
   {
-    if ((v7 & 1) == 0 || self->_numEnqdSilencePkt != *(v4 + 8))
+    if ((v7 & 1) == 0 || self->_numEnqdSilencePkt != *(equalCopy + 8))
     {
       goto LABEL_55;
     }
@@ -953,7 +953,7 @@ LABEL_55:
 
   if ((has & 0x10) != 0)
   {
-    if ((v7 & 0x10) == 0 || self->_numPlayedSpeechPkt != *(v4 + 12))
+    if ((v7 & 0x10) == 0 || self->_numPlayedSpeechPkt != *(equalCopy + 12))
     {
       goto LABEL_55;
     }
@@ -966,7 +966,7 @@ LABEL_55:
 
   if ((has & 8) != 0)
   {
-    if ((v7 & 8) == 0 || self->_numMissedSpeechPkt != *(v4 + 11))
+    if ((v7 & 8) == 0 || self->_numMissedSpeechPkt != *(equalCopy + 11))
     {
       goto LABEL_55;
     }
@@ -979,7 +979,7 @@ LABEL_55:
 
   if ((has & 0x80) != 0)
   {
-    if ((v7 & 0x80) == 0 || self->_numSpeechQempty != *(v4 + 15))
+    if ((v7 & 0x80) == 0 || self->_numSpeechQempty != *(equalCopy + 15))
     {
       goto LABEL_55;
     }
@@ -1136,22 +1136,22 @@ LABEL_11:
   return v5 ^ v3 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ PBRepeatedUInt32Hash();
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v9 = v4;
-  if (*(v4 + 9))
+  fromCopy = from;
+  v9 = fromCopy;
+  if (*(fromCopy + 9))
   {
     [(AudioQuality *)self setRecordType:?];
-    v4 = v9;
+    fromCopy = v9;
   }
 
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 0x40) != 0)
   {
-    self->_numRecvdSpeechPkt = v4[14];
+    self->_numRecvdSpeechPkt = fromCopy[14];
     *&self->_has |= 0x40u;
-    v5 = *(v4 + 40);
+    v5 = *(fromCopy + 40);
     if ((v5 & 0x20) == 0)
     {
 LABEL_5:
@@ -1169,9 +1169,9 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  self->_numRecvdSilencePkt = v4[13];
+  self->_numRecvdSilencePkt = fromCopy[13];
   *&self->_has |= 0x20u;
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 4) == 0)
   {
 LABEL_6:
@@ -1184,9 +1184,9 @@ LABEL_6:
   }
 
 LABEL_22:
-  self->_numLostPkt = v4[10];
+  self->_numLostPkt = fromCopy[10];
   *&self->_has |= 4u;
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 0x200) == 0)
   {
 LABEL_7:
@@ -1199,9 +1199,9 @@ LABEL_7:
   }
 
 LABEL_23:
-  self->_numUflwSpeechPkt = v4[17];
+  self->_numUflwSpeechPkt = fromCopy[17];
   *&self->_has |= 0x200u;
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 0x100) == 0)
   {
 LABEL_8:
@@ -1214,9 +1214,9 @@ LABEL_8:
   }
 
 LABEL_24:
-  self->_numUflwSilencePkt = v4[16];
+  self->_numUflwSilencePkt = fromCopy[16];
   *&self->_has |= 0x100u;
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 2) == 0)
   {
 LABEL_9:
@@ -1229,9 +1229,9 @@ LABEL_9:
   }
 
 LABEL_25:
-  self->_numEnqdSpeechPkt = v4[9];
+  self->_numEnqdSpeechPkt = fromCopy[9];
   *&self->_has |= 2u;
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 1) == 0)
   {
 LABEL_10:
@@ -1244,9 +1244,9 @@ LABEL_10:
   }
 
 LABEL_26:
-  self->_numEnqdSilencePkt = v4[8];
+  self->_numEnqdSilencePkt = fromCopy[8];
   *&self->_has |= 1u;
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 0x10) == 0)
   {
 LABEL_11:
@@ -1259,9 +1259,9 @@ LABEL_11:
   }
 
 LABEL_27:
-  self->_numPlayedSpeechPkt = v4[12];
+  self->_numPlayedSpeechPkt = fromCopy[12];
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 8) == 0)
   {
 LABEL_12:
@@ -1274,20 +1274,20 @@ LABEL_12:
   }
 
 LABEL_28:
-  self->_numMissedSpeechPkt = v4[11];
+  self->_numMissedSpeechPkt = fromCopy[11];
   *&self->_has |= 8u;
-  if ((v4[20] & 0x80) != 0)
+  if ((fromCopy[20] & 0x80) != 0)
   {
 LABEL_13:
-    self->_numSpeechQempty = v4[15];
+    self->_numSpeechQempty = fromCopy[15];
     *&self->_has |= 0x80u;
   }
 
 LABEL_14:
-  v6 = [v4 delayCntsCount];
-  if (v6)
+  delayCntsCount = [fromCopy delayCntsCount];
+  if (delayCntsCount)
   {
-    v7 = v6;
+    v7 = delayCntsCount;
     for (i = 0; i != v7; ++i)
     {
       -[AudioQuality addDelayCnt:](self, "addDelayCnt:", [v9 delayCntAtIndex:i]);

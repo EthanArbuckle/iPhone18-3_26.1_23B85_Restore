@@ -1,19 +1,19 @@
 @interface MTPodcastPlaylistCell
-+ (CGSize)artworkSizeForViewWidth:(double)a3;
-- (MTPodcastPlaylistCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
++ (CGSize)artworkSizeForViewWidth:(double)width;
+- (MTPodcastPlaylistCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setAdded:(BOOL)a3;
-- (void)setEnabled:(BOOL)a3;
+- (void)setAdded:(BOOL)added;
+- (void)setEnabled:(BOOL)enabled;
 @end
 
 @implementation MTPodcastPlaylistCell
 
-- (MTPodcastPlaylistCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (MTPodcastPlaylistCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = MTPodcastPlaylistCell;
-  v4 = [(MTPodcastCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(MTPodcastCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -41,7 +41,7 @@
   }
 }
 
-+ (CGSize)artworkSizeForViewWidth:(double)a3
++ (CGSize)artworkSizeForViewWidth:(double)width
 {
   v3 = 44.0;
   v4 = 44.0;
@@ -50,10 +50,10 @@
   return result;
 }
 
-- (void)setAdded:(BOOL)a3
+- (void)setAdded:(BOOL)added
 {
-  self->_added = a3;
-  if (a3)
+  self->_added = added;
+  if (added)
   {
     v3 = 3;
   }
@@ -75,11 +75,11 @@
   [(MTPodcastPlaylistCell *)self setEnabled:1];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   disabledView = self->_disabledView;
-  if (a3)
+  if (enabled)
   {
     if (disabledView)
     {
@@ -99,7 +99,7 @@
     [(MTPodcastPlaylistCell *)self setNeedsLayout];
   }
 
-  [(MTPodcastPlaylistCell *)self setUserInteractionEnabled:v3];
+  [(MTPodcastPlaylistCell *)self setUserInteractionEnabled:enabledCopy];
 }
 
 @end

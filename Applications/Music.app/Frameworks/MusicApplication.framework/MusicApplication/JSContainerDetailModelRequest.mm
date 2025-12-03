@@ -1,10 +1,10 @@
 @interface JSContainerDetailModelRequest
 - (_TtC16MusicApplication29JSContainerDetailModelRequest)init;
-- (id)copyWithZone:(void *)a3;
-- (id)newOperationWithResponseHandler:(id)a3;
-- (id)playbackIntentFor:(id)a3 itemKind:(id)a4 itemProperties:(id)a5;
-- (id)playbackIntentWithStartItemIdentifiers:(id)a3;
-- (id)requestForDetailFor:(id)a3 kind:(id)a4 requestedProperties:(id)a5;
+- (id)copyWithZone:(void *)zone;
+- (id)newOperationWithResponseHandler:(id)handler;
+- (id)playbackIntentFor:(id)for itemKind:(id)kind itemProperties:(id)properties;
+- (id)playbackIntentWithStartItemIdentifiers:(id)identifiers;
+- (id)requestForDetailFor:(id)for kind:(id)kind requestedProperties:(id)properties;
 @end
 
 @implementation JSContainerDetailModelRequest
@@ -24,10 +24,10 @@
   return [(JSContainerDetailModelRequest *)&v6 init];
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v4 = self;
-  sub_19A2A0(a3, v7);
+  selfCopy = self;
+  sub_19A2A0(zone, v7);
 
   __swift_project_boxed_opaque_existential_1(v7, v7[3]);
   v5 = sub_ABB3A0();
@@ -35,12 +35,12 @@
   return v5;
 }
 
-- (id)newOperationWithResponseHandler:(id)a3
+- (id)newOperationWithResponseHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   v7 = JSViewModelRequestCoordinator.sharedCoordinator.unsafeMutableAddressor();
   v8 = *v7;
   v9 = *(**v7 + 144);
@@ -52,24 +52,24 @@
   v12[4] = sub_AACD4;
   v12[5] = v5;
   v13 = objc_allocWithZone(type metadata accessor for JSContainerDetailModelRequestOperation());
-  v14 = sub_1A4668(v6, sub_1A5ADC, v12);
+  v14 = sub_1A4668(selfCopy, sub_1A5ADC, v12);
 
   return v14;
 }
 
-- (id)playbackIntentWithStartItemIdentifiers:(id)a3
+- (id)playbackIntentWithStartItemIdentifiers:(id)identifiers
 {
-  v5 = a3;
-  v6 = self;
-  v7 = sub_19A5E0(a3);
+  identifiersCopy = identifiers;
+  selfCopy = self;
+  v7 = sub_19A5E0(identifiers);
 
   return v7;
 }
 
-- (id)playbackIntentFor:(id)a3 itemKind:(id)a4 itemProperties:(id)a5
+- (id)playbackIntentFor:(id)for itemKind:(id)kind itemProperties:(id)properties
 {
-  v6 = a3;
-  v7 = self;
+  forCopy = for;
+  selfCopy = self;
   v8 = MPIdentifierSet.Purpose.Options.catalog.unsafeMutableAddressor();
   v9 = MPModelObject.bestIdentifier(for:)(*v8, 1u);
   if (v10)
@@ -93,23 +93,23 @@
   return v14;
 }
 
-- (id)requestForDetailFor:(id)a3 kind:(id)a4 requestedProperties:(id)a5
+- (id)requestForDetailFor:(id)for kind:(id)kind requestedProperties:(id)properties
 {
   v8 = type metadata accessor for StoreModelItemRequest();
   v9 = objc_allocWithZone(v8);
   v10 = OBJC_IVAR____TtC16MusicApplication21StoreModelItemRequest_model;
   *&v9[OBJC_IVAR____TtC16MusicApplication21StoreModelItemRequest_model] = 0;
   v11 = OBJC_IVAR____TtC16MusicApplication21StoreModelItemRequest_preventStoreItemMetadataCaching;
-  *&v9[v10] = a3;
+  *&v9[v10] = for;
   v9[v11] = 0;
   v17.receiver = v9;
   v17.super_class = v8;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  forCopy = for;
+  kindCopy = kind;
+  propertiesCopy = properties;
   v15 = [(JSContainerDetailModelRequest *)&v17 init];
-  [(JSContainerDetailModelRequest *)v15 setItemKind:v13, v17.receiver, v17.super_class];
-  [(JSContainerDetailModelRequest *)v15 setItemProperties:v14];
+  [(JSContainerDetailModelRequest *)v15 setItemKind:kindCopy, v17.receiver, v17.super_class];
+  [(JSContainerDetailModelRequest *)v15 setItemProperties:propertiesCopy];
 
   return v15;
 }

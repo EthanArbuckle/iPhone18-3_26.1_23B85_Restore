@@ -1,17 +1,17 @@
 @interface _SFFindOnPageInputBarAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)layoutSubviews;
 @end
 
 @implementation _SFFindOnPageInputBarAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_SFFindOnPageInputBar" isKindOfClass:@"UISearchBar"];
-  [v3 validateClass:@"UISearchBar" hasInstanceMethod:@"_visualProvider" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"_UISearchBarVisualProviderBase" hasInstanceMethod:@"searchField" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_SFFindOnPageInputBar" isKindOfClass:@"UISearchBar"];
+  [validationsCopy validateClass:@"UISearchBar" hasInstanceMethod:@"_visualProvider" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"_UISearchBarVisualProviderBase" hasInstanceMethod:@"searchField" withFullSignature:{"@", 0}];
 }
 
 - (void)layoutSubviews

@@ -1,7 +1,7 @@
 @interface SecureSpeakerRecognitionPhraseConfig
 - (NSString)name;
 - (SecureSpeakerRecognitionPhraseConfig)init;
-- (SecureSpeakerRecognitionPhraseConfig)initWithName:(id)a3 satThreshold:(float)a4 satStrongAcceptThreshold:(float)a5 satStrongRejectThreshold:(float)a6 multiUserLowScoreThreshold:(int64_t)a7 multiUserHighScoreThreshold:(int64_t)a8 multiUserConfidentScoreThreshold:(int64_t)a9 multiUserDeltaScoreThreshold:(int64_t)a10;
+- (SecureSpeakerRecognitionPhraseConfig)initWithName:(id)name satThreshold:(float)threshold satStrongAcceptThreshold:(float)acceptThreshold satStrongRejectThreshold:(float)rejectThreshold multiUserLowScoreThreshold:(int64_t)scoreThreshold multiUserHighScoreThreshold:(int64_t)highScoreThreshold multiUserConfidentScoreThreshold:(int64_t)confidentScoreThreshold multiUserDeltaScoreThreshold:(int64_t)self0;
 @end
 
 @implementation SecureSpeakerRecognitionPhraseConfig
@@ -16,19 +16,19 @@
   return v4;
 }
 
-- (SecureSpeakerRecognitionPhraseConfig)initWithName:(id)a3 satThreshold:(float)a4 satStrongAcceptThreshold:(float)a5 satStrongRejectThreshold:(float)a6 multiUserLowScoreThreshold:(int64_t)a7 multiUserHighScoreThreshold:(int64_t)a8 multiUserConfidentScoreThreshold:(int64_t)a9 multiUserDeltaScoreThreshold:(int64_t)a10
+- (SecureSpeakerRecognitionPhraseConfig)initWithName:(id)name satThreshold:(float)threshold satStrongAcceptThreshold:(float)acceptThreshold satStrongRejectThreshold:(float)rejectThreshold multiUserLowScoreThreshold:(int64_t)scoreThreshold multiUserHighScoreThreshold:(int64_t)highScoreThreshold multiUserConfidentScoreThreshold:(int64_t)confidentScoreThreshold multiUserDeltaScoreThreshold:(int64_t)self0
 {
   v18 = sub_247994E84();
   v19 = (self + OBJC_IVAR___SecureSpeakerRecognitionPhraseConfig_name);
   *v19 = v18;
   v19[1] = v20;
-  *(self + OBJC_IVAR___SecureSpeakerRecognitionPhraseConfig_satThreshold) = a4;
-  *(self + OBJC_IVAR___SecureSpeakerRecognitionPhraseConfig_satStrongAcceptThreshold) = a5;
-  *(self + OBJC_IVAR___SecureSpeakerRecognitionPhraseConfig_satStrongRejectThreshold) = a6;
-  *(self + OBJC_IVAR___SecureSpeakerRecognitionPhraseConfig_multiUserLowScoreThreshold) = a7;
-  *(self + OBJC_IVAR___SecureSpeakerRecognitionPhraseConfig_multiUserHighScoreThreshold) = a8;
-  *(self + OBJC_IVAR___SecureSpeakerRecognitionPhraseConfig_multiUserConfidentScoreThreshold) = a9;
-  *(self + OBJC_IVAR___SecureSpeakerRecognitionPhraseConfig_multiUserDeltaScoreThreshold) = a10;
+  *(self + OBJC_IVAR___SecureSpeakerRecognitionPhraseConfig_satThreshold) = threshold;
+  *(self + OBJC_IVAR___SecureSpeakerRecognitionPhraseConfig_satStrongAcceptThreshold) = acceptThreshold;
+  *(self + OBJC_IVAR___SecureSpeakerRecognitionPhraseConfig_satStrongRejectThreshold) = rejectThreshold;
+  *(self + OBJC_IVAR___SecureSpeakerRecognitionPhraseConfig_multiUserLowScoreThreshold) = scoreThreshold;
+  *(self + OBJC_IVAR___SecureSpeakerRecognitionPhraseConfig_multiUserHighScoreThreshold) = highScoreThreshold;
+  *(self + OBJC_IVAR___SecureSpeakerRecognitionPhraseConfig_multiUserConfidentScoreThreshold) = confidentScoreThreshold;
+  *(self + OBJC_IVAR___SecureSpeakerRecognitionPhraseConfig_multiUserDeltaScoreThreshold) = deltaScoreThreshold;
   v22.receiver = self;
   v22.super_class = SecureSpeakerRecognitionPhraseConfig;
   return [(SecureSpeakerRecognitionPhraseConfig *)&v22 init];

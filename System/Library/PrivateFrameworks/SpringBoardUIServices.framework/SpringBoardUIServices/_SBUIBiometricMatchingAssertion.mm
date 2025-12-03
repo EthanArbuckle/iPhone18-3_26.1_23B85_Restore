@@ -1,31 +1,31 @@
 @interface _SBUIBiometricMatchingAssertion
-- (_SBUIBiometricMatchingAssertion)initWithIdentifier:(id)a3 forReason:(id)a4 queue:(id)a5 invalidationBlock:(id)a6;
-- (_SBUIBiometricMatchingAssertion)initWithMatchMode:(unint64_t)a3 reason:(id)a4 invalidationBlock:(id)a5;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (_SBUIBiometricMatchingAssertion)initWithIdentifier:(id)identifier forReason:(id)reason queue:(id)queue invalidationBlock:(id)block;
+- (_SBUIBiometricMatchingAssertion)initWithMatchMode:(unint64_t)mode reason:(id)reason invalidationBlock:(id)block;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 @end
 
 @implementation _SBUIBiometricMatchingAssertion
 
-- (_SBUIBiometricMatchingAssertion)initWithIdentifier:(id)a3 forReason:(id)a4 queue:(id)a5 invalidationBlock:(id)a6
+- (_SBUIBiometricMatchingAssertion)initWithIdentifier:(id)identifier forReason:(id)reason queue:(id)queue invalidationBlock:(id)block
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  identifierCopy = identifier;
+  reasonCopy = reason;
+  queueCopy = queue;
+  blockCopy = block;
   v13 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"Use initWithMatchMode:reason:invalidationBlock:" userInfo:0];
   objc_exception_throw(v13);
 }
 
-- (_SBUIBiometricMatchingAssertion)initWithMatchMode:(unint64_t)a3 reason:(id)a4 invalidationBlock:(id)a5
+- (_SBUIBiometricMatchingAssertion)initWithMatchMode:(unint64_t)mode reason:(id)reason invalidationBlock:(id)block
 {
   v7.receiver = self;
   v7.super_class = _SBUIBiometricMatchingAssertion;
-  result = [(_SBUIBiometricOperationAssertion *)&v7 initWithIdentifier:@"MatchingAssertion" forReason:a4 queue:MEMORY[0x1E69E96A0] invalidationBlock:a5];
+  result = [(_SBUIBiometricOperationAssertion *)&v7 initWithIdentifier:@"MatchingAssertion" forReason:reason queue:MEMORY[0x1E69E96A0] invalidationBlock:block];
   if (result)
   {
-    result->_matchMode = a3;
+    result->_matchMode = mode;
   }
 
   return result;
@@ -33,30 +33,30 @@
 
 - (id)succinctDescription
 {
-  v2 = [(_SBUIBiometricMatchingAssertion *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(_SBUIBiometricMatchingAssertion *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(_SBUIBiometricMatchingAssertion *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(_SBUIBiometricMatchingAssertion *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(_SBUIBiometricMatchingAssertion *)self succinctDescriptionBuilder];
+  succinctDescriptionBuilder = [(_SBUIBiometricMatchingAssertion *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __73___SBUIBiometricMatchingAssertion_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_1E789DD98;
-  v5 = v4;
+  v5 = succinctDescriptionBuilder;
   v10 = v5;
-  v11 = self;
+  selfCopy = self;
   v6 = [v5 modifyProem:v9];
   v7 = v5;
 

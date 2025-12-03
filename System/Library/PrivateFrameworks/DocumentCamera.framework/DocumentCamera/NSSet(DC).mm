@@ -8,15 +8,15 @@
 
 - (id)dc_objectPassingTest:()DC
 {
-  v1 = [a1 objectsPassingTest:?];
-  v2 = [v1 anyObject];
+  v1 = [self objectsPassingTest:?];
+  anyObject = [v1 anyObject];
 
-  return v2;
+  return anyObject;
 }
 
 - (BOOL)dc_containsObjectPassingTest:()DC
 {
-  v1 = [a1 dc_objectPassingTest:?];
+  v1 = [self dc_objectPassingTest:?];
   v2 = v1 != 0;
 
   return v2;
@@ -29,7 +29,7 @@
   v5[2] = __31__NSSet_DC__dc_objectsOfClass___block_invoke;
   v5[3] = &__block_descriptor_40_e12_B24__0_8_B16lu32l8;
   v5[4] = a3;
-  v3 = [a1 objectsPassingTest:v5];
+  v3 = [self objectsPassingTest:v5];
 
   return v3;
 }

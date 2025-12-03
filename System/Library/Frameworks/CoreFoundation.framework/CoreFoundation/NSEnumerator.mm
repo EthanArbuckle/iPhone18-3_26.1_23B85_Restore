@@ -1,6 +1,6 @@
 @interface NSEnumerator
 - (NSArray)allObjects;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
 @end
 
 @implementation NSEnumerator
@@ -42,26 +42,26 @@
   return v3;
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  if (a3->var0 == -1)
+  if (state->var0 == -1)
   {
     return 0;
   }
 
   v13 = v6;
   v14 = v5;
-  if (!a3->var0)
+  if (!state->var0)
   {
-    a3->var2 = &countByEnumeratingWithState_objects_count__const_mu_5;
+    state->var2 = &countByEnumeratingWithState_objects_count__const_mu_5;
   }
 
   result = [(NSEnumerator *)self nextObject:v13];
   if (result)
   {
-    a3->var1 = a4;
-    *a4 = result;
-    v12 = a3->var0 + 1;
+    state->var1 = objects;
+    *objects = result;
+    v12 = state->var0 + 1;
     result = 1;
   }
 
@@ -70,7 +70,7 @@
     v12 = -1;
   }
 
-  a3->var0 = v12;
+  state->var0 = v12;
   return result;
 }
 

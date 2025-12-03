@@ -2,17 +2,17 @@
 + (BOOL)deviceSupportsElement;
 + (void)registerElementForRecording;
 - (BOOL)_activelyWantsMatching;
-- (BOOL)_canApplyRequestedState:(unint64_t)a3;
+- (BOOL)_canApplyRequestedState:(unint64_t)state;
 - (BOOL)_isSecurelyRenderingInJindo;
 - (BOOL)_treatCustomAsLarge;
 - (BOOL)_treatsAsAmbientSearching;
 - (BOOL)_useSecureElementHostStates;
 - (BOOL)isIndicatorVisibilityRequired;
-- (CGSize)_elementSizeLeading:(BOOL)a3 forLayoutMode:(int64_t)a4;
-- (CGSize)sizeThatFitsSize:(CGSize)a3 forProvidedView:(id)a4 inLayoutMode:(int64_t)a5;
+- (CGSize)_elementSizeLeading:(BOOL)leading forLayoutMode:(int64_t)mode;
+- (CGSize)sizeThatFitsSize:(CGSize)size forProvidedView:(id)view inLayoutMode:(int64_t)mode;
 - (NSArray)recordableConfigurations;
 - (NSDictionary)preferredComponentStates;
-- (NSDirectionalEdgeInsets)preferredEdgeOutsetsForLayoutMode:(int64_t)a3 suggestedOutsets:(NSDirectionalEdgeInsets)a4 maximumOutsets:(NSDirectionalEdgeInsets)a5;
+- (NSDirectionalEdgeInsets)preferredEdgeOutsetsForLayoutMode:(int64_t)mode suggestedOutsets:(NSDirectionalEdgeInsets)outsets maximumOutsets:(NSDirectionalEdgeInsets)maximumOutsets;
 - (SAElementHosting)elementHost;
 - (SAUILayoutHosting)layoutHost;
 - (SBBiometricAuthenticationIndicatorHost)indicatorHost;
@@ -20,21 +20,21 @@
 - (SBSecureFlipBookElementHost)secureElementHost;
 - (id)leadingLock;
 - (id)trailingContentView;
-- (int64_t)_resolvedEventForState:(int64_t)a3;
+- (int64_t)_resolvedEventForState:(int64_t)state;
 - (int64_t)elementOrientation;
 - (int64_t)preferredLayoutMode;
 - (int64_t)systemApertureCustomLayout;
-- (unint64_t)_nextSecureStateForState:(unint64_t)a3;
-- (unint64_t)_nextSecureStateForState:(unint64_t)a3 from:(unint64_t)a4;
-- (unint64_t)_secureStateContainsSecureFrames:(unint64_t)a3;
-- (void)_deferSecureState:(unint64_t)a3 completion:(id)a4;
+- (unint64_t)_nextSecureStateForState:(unint64_t)state;
+- (unint64_t)_nextSecureStateForState:(unint64_t)state from:(unint64_t)from;
+- (unint64_t)_secureStateContainsSecureFrames:(unint64_t)frames;
+- (void)_deferSecureState:(unint64_t)state completion:(id)completion;
 - (void)_forceSleepSecureState;
 - (void)_reconcileAppliedSecureState;
 - (void)_reconcileDeferredSecureState;
 - (void)_reconcileNotifiedSecureState;
 - (void)_reconcileRequestedSecureState;
-- (void)_requestSecureState:(unint64_t)a3 completion:(id)a4;
-- (void)_setAcquiring:(BOOL)a3;
+- (void)_requestSecureState:(unint64_t)state completion:(id)completion;
+- (void)_setAcquiring:(BOOL)acquiring;
 - (void)_toggleUnlockMode;
 - (void)_updateAllowsBioUnlock;
 - (void)_updateRequiredPriorityAssertion;
@@ -42,20 +42,20 @@
 - (void)_updateTrailingPackageVisibility;
 - (void)_updateUnlockModeForState;
 - (void)_updateVisibilityAssertion;
-- (void)biometricResource:(id)a3 matchingEnabledDidChange:(BOOL)a4;
-- (void)biometricResource:(id)a3 observeEvent:(unint64_t)a4;
-- (void)contentProviderWillTransitionToSize:(CGSize)a3 inContainerView:(id)a4 transitionCoordinator:(id)a5;
-- (void)handleBiometricEvent:(int64_t)a3;
+- (void)biometricResource:(id)resource matchingEnabledDidChange:(BOOL)change;
+- (void)biometricResource:(id)resource observeEvent:(unint64_t)event;
+- (void)contentProviderWillTransitionToSize:(CGSize)size inContainerView:(id)view transitionCoordinator:(id)coordinator;
+- (void)handleBiometricEvent:(int64_t)event;
 - (void)init;
-- (void)layoutHostContainerViewDidLayoutSubviews:(id)a3;
+- (void)layoutHostContainerViewDidLayoutSubviews:(id)subviews;
 - (void)recordingModeChanged;
-- (void)setActiveComponentStates:(id)a3;
-- (void)setAppliedComponentStates:(id)a3;
-- (void)setAuthenticated:(BOOL)a3;
-- (void)setBloomed:(BOOL)a3;
-- (void)setEmpty:(BOOL)a3;
-- (void)setIsForCapture:(BOOL)a3;
-- (void)setLayoutMode:(int64_t)a3 reason:(int64_t)a4;
+- (void)setActiveComponentStates:(id)states;
+- (void)setAppliedComponentStates:(id)states;
+- (void)setAuthenticated:(BOOL)authenticated;
+- (void)setBloomed:(BOOL)bloomed;
+- (void)setEmpty:(BOOL)empty;
+- (void)setIsForCapture:(BOOL)capture;
+- (void)setLayoutMode:(int64_t)mode reason:(int64_t)reason;
 - (void)shake;
 - (void)systemApertureElementAssertionAcquired;
 @end
@@ -64,25 +64,25 @@
 
 - (int64_t)elementOrientation
 {
-  v2 = [(SBLockElementViewProvider *)self obstructionEdge];
-  if (v2 > 3)
+  obstructionEdge = [(SBLockElementViewProvider *)self obstructionEdge];
+  if (obstructionEdge > 3)
   {
     return 1;
   }
 
   else
   {
-    return qword_21F8A5AC8[v2];
+    return qword_21F8A5AC8[obstructionEdge];
   }
 }
 
 - (void)_updateUnlockModeForState
 {
-  v3 = [(SBLockElementViewProvider *)self _requestedSecureState];
-  v4 = v3;
-  if (v3 - 5 <= 4)
+  _requestedSecureState = [(SBLockElementViewProvider *)self _requestedSecureState];
+  v4 = _requestedSecureState;
+  if (_requestedSecureState - 5 <= 4)
   {
-    v4 = qword_21F8A5AA0[v3 - 5];
+    v4 = qword_21F8A5AA0[_requestedSecureState - 5];
   }
 
   if (self->_isInBloomMode && [(SBLockElementViewProvider *)self _activelyWantsMatching])
@@ -103,9 +103,9 @@
 
 - (BOOL)_treatCustomAsLarge
 {
-  v3 = [(SBLockElementViewProvider *)self _appliedSecureState];
+  _appliedSecureState = [(SBLockElementViewProvider *)self _appliedSecureState];
 
-  return [(SBLockElementViewProvider *)self _secureStateIsLarge:v3];
+  return [(SBLockElementViewProvider *)self _secureStateIsLarge:_appliedSecureState];
 }
 
 - (int64_t)systemApertureCustomLayout
@@ -135,8 +135,8 @@
 
 - (BOOL)_useSecureElementHostStates
 {
-  v3 = [(SBLockElementViewProvider *)self secureElementHost];
-  if (v3)
+  secureElementHost = [(SBLockElementViewProvider *)self secureElementHost];
+  if (secureElementHost)
   {
     v4 = !self->_isForCapture;
   }
@@ -201,17 +201,17 @@
   {
     if ([(SBLockElementViewProvider *)self _appliedSecureState]|| ![(SBLockElementViewProvider *)self _notifiedSecureState])
     {
-      v4 = [(SBLockElementViewProvider *)self _appliedSecureState];
+      _appliedSecureState = [(SBLockElementViewProvider *)self _appliedSecureState];
     }
 
     else
     {
-      v4 = [(SBLockElementViewProvider *)self _notifiedSecureState];
+      _appliedSecureState = [(SBLockElementViewProvider *)self _notifiedSecureState];
     }
 
-    if (v4 - 5 >= 5)
+    if (_appliedSecureState - 5 >= 5)
     {
-      if (!v4)
+      if (!_appliedSecureState)
       {
         if (self->_isForCapture)
         {
@@ -236,8 +236,8 @@
 
 - (void)_updateVisibilityAssertion
 {
-  v3 = [(SBLockElementViewProvider *)self indicatorHost];
-  [v3 preferredVisibilityStateDidInvalidateForSpecifier:self];
+  indicatorHost = [(SBLockElementViewProvider *)self indicatorHost];
+  [indicatorHost preferredVisibilityStateDidInvalidateForSpecifier:self];
 }
 
 - (void)_reconcileRequestedSecureState
@@ -245,16 +245,16 @@
   v57 = *MEMORY[0x277D85DE8];
   if (self->_isElementRegistered)
   {
-    v3 = [(SBLockElementViewProvider *)self _requestedSecureState];
-    if (v3 != [(SBLockElementViewProvider *)self _appliedSecureState])
+    _requestedSecureState = [(SBLockElementViewProvider *)self _requestedSecureState];
+    if (_requestedSecureState != [(SBLockElementViewProvider *)self _appliedSecureState])
     {
-      v4 = [(SBLockElementViewProvider *)self _notifiedSecureState];
-      if (v4 == [(SBLockElementViewProvider *)self _appliedSecureState])
+      _notifiedSecureState = [(SBLockElementViewProvider *)self _notifiedSecureState];
+      if (_notifiedSecureState == [(SBLockElementViewProvider *)self _appliedSecureState])
       {
-        v5 = [(SBLockElementViewProvider *)self _currentSecureState];
-        if (v5 == [(SBLockElementViewProvider *)self _appliedSecureState])
+        _currentSecureState = [(SBLockElementViewProvider *)self _currentSecureState];
+        if (_currentSecureState == [(SBLockElementViewProvider *)self _appliedSecureState])
         {
-          v6 = [(SBSystemApertureProvidedContentElement *)self platformElementHost];
+          platformElementHost = [(SBSystemApertureProvidedContentElement *)self platformElementHost];
           v7 = SBLockElementFlipBookStateLocked;
           v8 = &SBPearlElementFlipBookStateResting;
           v9 = SBPearlElementFlipBookStateResting;
@@ -318,15 +318,15 @@ LABEL_53:
             v30 = SBLogSystemApertureLockElement();
             if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
             {
-              v31 = [(SBLockElementViewProvider *)self _appliedSecureState];
-              if (v31 - 1 > 8)
+              _appliedSecureState = [(SBLockElementViewProvider *)self _appliedSecureState];
+              if (_appliedSecureState - 1 > 8)
               {
                 v32 = @"Sleep";
               }
 
               else
               {
-                v32 = off_2783ABF90[v31 - 1];
+                v32 = off_2783ABF90[_appliedSecureState - 1];
               }
 
               if (v11 - 1 > 8)
@@ -398,7 +398,7 @@ LABEL_53:
                 v44[2] = __59__SBLockElementViewProvider__reconcileRequestedSecureState__block_invoke_4;
                 v44[3] = &unk_2783A8C18;
                 v45 = v34;
-                [v6 performAction:v46 withCompletionUponAnimationSettling:v44];
+                [platformElementHost performAction:v46 withCompletionUponAnimationSettling:v44];
               }
 
               [(SBLockElementViewProvider *)self _reconcileNotifiedSecureState];
@@ -464,8 +464,8 @@ LABEL_43:
           goto LABEL_43;
         }
 
-        v6 = SBLogSystemApertureLockElement();
-        if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
+        platformElementHost = SBLogSystemApertureLockElement();
+        if (os_log_type_enabled(platformElementHost, OS_LOG_TYPE_INFO))
         {
           v17 = [(SBLockElementViewProvider *)self _requestedSecureState]- 1;
           if (v17 > 8)
@@ -489,15 +489,15 @@ LABEL_43:
             v25 = off_2783ABF90[v24];
           }
 
-          v26 = [(SBLockElementViewProvider *)self _appliedSecureState];
-          if (v26 - 1 > 8)
+          _appliedSecureState2 = [(SBLockElementViewProvider *)self _appliedSecureState];
+          if (_appliedSecureState2 - 1 > 8)
           {
             v27 = @"Sleep";
           }
 
           else
           {
-            v27 = off_2783ABF90[v26 - 1];
+            v27 = off_2783ABF90[_appliedSecureState2 - 1];
           }
 
           *buf = 138412802;
@@ -508,14 +508,14 @@ LABEL_43:
           v56 = v27;
           v23 = "Cannot apply requested state: %@ (waiting for '%@ -> %@' to finish)";
 LABEL_37:
-          _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_INFO, v23, buf, 0x20u);
+          _os_log_impl(&dword_21ED4E000, platformElementHost, OS_LOG_TYPE_INFO, v23, buf, 0x20u);
         }
       }
 
       else
       {
-        v6 = SBLogSystemApertureLockElement();
-        if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
+        platformElementHost = SBLogSystemApertureLockElement();
+        if (os_log_type_enabled(platformElementHost, OS_LOG_TYPE_INFO))
         {
           v15 = [(SBLockElementViewProvider *)self _requestedSecureState]- 1;
           if (v15 > 8)
@@ -539,15 +539,15 @@ LABEL_37:
             v20 = off_2783ABF90[v19];
           }
 
-          v21 = [(SBLockElementViewProvider *)self _notifiedSecureState];
-          if (v21 - 1 > 8)
+          _notifiedSecureState2 = [(SBLockElementViewProvider *)self _notifiedSecureState];
+          if (_notifiedSecureState2 - 1 > 8)
           {
             v22 = @"Sleep";
           }
 
           else
           {
-            v22 = off_2783ABF90[v21 - 1];
+            v22 = off_2783ABF90[_notifiedSecureState2 - 1];
           }
 
           *buf = 138412802;
@@ -569,17 +569,17 @@ LABEL_68:
 - (void)_reconcileAppliedSecureState
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = [(SBLockElementViewProvider *)self _appliedSecureState];
-  if (v3 != [(SBLockElementViewProvider *)self _currentSecureState])
+  _appliedSecureState = [(SBLockElementViewProvider *)self _appliedSecureState];
+  if (_appliedSecureState != [(SBLockElementViewProvider *)self _currentSecureState])
   {
-    v4 = [(SBLockElementViewProvider *)self _useSecureElementHostStates];
+    _useSecureElementHostStates = [(SBLockElementViewProvider *)self _useSecureElementHostStates];
     v5 = [(NSDictionary *)self->_activeComponentStates objectForKeyedSubscript:SBLockElementLeadingFlipBookName];
     v6 = [v5 isEqualToString:self->_leadingViewFlipBookState];
 
     v7 = [(NSDictionary *)self->_activeComponentStates objectForKeyedSubscript:SBLockElementTrailingFlipBookName];
     v8 = [v7 isEqualToString:self->_trailingViewFlipBookState];
 
-    if (!v4 || (v6 & v8) != 0)
+    if (!_useSecureElementHostStates || (v6 & v8) != 0)
     {
       v9 = SBLogSystemApertureLockElement();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -595,15 +595,15 @@ LABEL_68:
           v11 = off_2783ABF90[v10];
         }
 
-        v12 = [(SBLockElementViewProvider *)self _appliedSecureState];
-        if (v12 - 1 > 8)
+        _appliedSecureState2 = [(SBLockElementViewProvider *)self _appliedSecureState];
+        if (_appliedSecureState2 - 1 > 8)
         {
           v13 = @"Sleep";
         }
 
         else
         {
-          v13 = off_2783ABF90[v12 - 1];
+          v13 = off_2783ABF90[_appliedSecureState2 - 1];
         }
 
         *buf = 138412546;
@@ -650,15 +650,15 @@ LABEL_68:
         while (v19);
       }
 
-      v22 = [(SBLockElementViewProvider *)self _requestedSecureState];
-      if (v22 == 4)
+      _requestedSecureState = [(SBLockElementViewProvider *)self _requestedSecureState];
+      if (_requestedSecureState == 4)
       {
         v23 = 1;
       }
 
       else
       {
-        if (v22 != 9)
+        if (_requestedSecureState != 9)
         {
 LABEL_24:
           [(SBLockElementViewProvider *)self _reconcileDeferredSecureState];
@@ -725,13 +725,13 @@ LABEL_24:
 - (void)_reconcileDeferredSecureState
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(SBLockElementViewProvider *)self _requestedSecureState];
-  v4 = [(SBLockElementViewProvider *)self _appliedSecureState];
-  v5 = [(SBLockElementViewProvider *)self _appliedSecureState];
-  v6 = [(SBLockElementViewProvider *)self _currentSecureState];
-  v7 = [(SBLockElementViewProvider *)self _deferredSecureState];
-  v8 = [(SBLockElementViewProvider *)self _requestedSecureState];
-  if (v3 == v4 && v5 == v6 && v7 != v8)
+  _requestedSecureState = [(SBLockElementViewProvider *)self _requestedSecureState];
+  _appliedSecureState = [(SBLockElementViewProvider *)self _appliedSecureState];
+  _appliedSecureState2 = [(SBLockElementViewProvider *)self _appliedSecureState];
+  _currentSecureState = [(SBLockElementViewProvider *)self _currentSecureState];
+  _deferredSecureState = [(SBLockElementViewProvider *)self _deferredSecureState];
+  _requestedSecureState2 = [(SBLockElementViewProvider *)self _requestedSecureState];
+  if (_requestedSecureState == _appliedSecureState && _appliedSecureState2 == _currentSecureState && _deferredSecureState != _requestedSecureState2)
   {
     v9 = SBLogSystemApertureLockElement();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -747,15 +747,15 @@ LABEL_24:
         v11 = off_2783ABF90[v10];
       }
 
-      v12 = [(SBLockElementViewProvider *)self _deferredSecureState];
-      if (v12 - 1 > 8)
+      _deferredSecureState2 = [(SBLockElementViewProvider *)self _deferredSecureState];
+      if (_deferredSecureState2 - 1 > 8)
       {
         v13 = @"Sleep";
       }
 
       else
       {
-        v13 = off_2783ABF90[v12 - 1];
+        v13 = off_2783ABF90[_deferredSecureState2 - 1];
       }
 
       v14 = 138412546;
@@ -811,9 +811,9 @@ LABEL_24:
     }
 
     v5->_alwaysUseCustomLayoutMode = _os_feature_enabled_impl();
-    v6 = [MEMORY[0x277D67C98] sharedInstance];
+    mEMORY[0x277D67C98] = [MEMORY[0x277D67C98] sharedInstance];
     sharedResource = v5->_sharedResource;
-    v5->_sharedResource = v6;
+    v5->_sharedResource = mEMORY[0x277D67C98];
 
     [(SBUIBiometricResource *)v5->_sharedResource addObserver:v5];
     v5->_allowsBioUnlock = [(SBLockElementViewProvider *)v5 _activelyWantsMatching];
@@ -837,14 +837,14 @@ LABEL_24:
 
     [(SBLockElementViewProvider *)v5 _updateTrailingGlyph];
     v12 = objc_alloc(MEMORY[0x277D67E10]);
-    v13 = [(SBLockElementViewProvider *)v5 leadingLock];
-    v14 = [v12 initWithView:v13];
+    leadingLock = [(SBLockElementViewProvider *)v5 leadingLock];
+    v14 = [v12 initWithView:leadingLock];
     lockProvider = v5->_lockProvider;
     v5->_lockProvider = v14;
 
     v16 = objc_alloc(MEMORY[0x277D67E10]);
-    v17 = [(SBLockElementViewProvider *)v5 trailingContentView];
-    v18 = [v16 initWithView:v17];
+    trailingContentView = [(SBLockElementViewProvider *)v5 trailingContentView];
+    v18 = [v16 initWithView:trailingContentView];
     trailingPackageProvider = v5->_trailingPackageProvider;
     v5->_trailingPackageProvider = v18;
 
@@ -856,12 +856,12 @@ LABEL_24:
 
     v22 = v5->_flipBookConfiguration;
     v23 = [SBLockElementFlipBookDescription alloc];
-    v24 = [(SBLockElementViewProvider *)v5 leadingLock];
-    v25 = [(SBLockElementFlipBookDescription *)v23 initWithViewProvider:v5 lockView:v24];
+    leadingLock2 = [(SBLockElementViewProvider *)v5 leadingLock];
+    v25 = [(SBLockElementFlipBookDescription *)v23 initWithViewProvider:v5 lockView:leadingLock2];
     v32[0] = v25;
     v26 = [SBLockElementPearlFlipBookDescription alloc];
-    v27 = [(SBLockElementViewProvider *)v5 trailingContentView];
-    v28 = [(SBLockElementPearlFlipBookDescription *)v26 initWithViewProvider:v5 contentView:v27];
+    trailingContentView2 = [(SBLockElementViewProvider *)v5 trailingContentView];
+    v28 = [(SBLockElementPearlFlipBookDescription *)v26 initWithViewProvider:v5 contentView:trailingContentView2];
     v32[1] = v28;
     v29 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:2];
     [(SBLockElementFlipBookConfiguration *)v22 configureLayoutMode:3 withDescriptions:v29];
@@ -892,7 +892,7 @@ uint64_t __50__SBLockElementViewProvider_deviceSupportsElement__block_invoke()
   [(SBLockElementViewProvider *)self _requestSecureState:v3];
 }
 
-- (NSDirectionalEdgeInsets)preferredEdgeOutsetsForLayoutMode:(int64_t)a3 suggestedOutsets:(NSDirectionalEdgeInsets)a4 maximumOutsets:(NSDirectionalEdgeInsets)a5
+- (NSDirectionalEdgeInsets)preferredEdgeOutsetsForLayoutMode:(int64_t)mode suggestedOutsets:(NSDirectionalEdgeInsets)outsets maximumOutsets:(NSDirectionalEdgeInsets)maximumOutsets
 {
   if (self->_isEmpty)
   {
@@ -904,11 +904,11 @@ uint64_t __50__SBLockElementViewProvider_deviceSupportsElement__block_invoke()
 
   else
   {
-    trailing = a4.trailing;
-    bottom = a4.bottom;
-    leading = a4.leading;
-    top = a4.top;
-    if ([(SBLockElementViewProvider *)self layoutMode:a3]== 3 && [(SBLockElementViewProvider *)self _treatCustomAsLarge])
+    trailing = outsets.trailing;
+    bottom = outsets.bottom;
+    leading = outsets.leading;
+    top = outsets.top;
+    if ([(SBLockElementViewProvider *)self layoutMode:mode]== 3 && [(SBLockElementViewProvider *)self _treatCustomAsLarge])
     {
       if ([(SBLockElementViewProvider *)self _treatsAsAmbientSearching])
       {
@@ -930,21 +930,21 @@ uint64_t __50__SBLockElementViewProvider_deviceSupportsElement__block_invoke()
       v12 = 0.0;
       if (self->_isAuthenticated)
       {
-        v13 = [(SBLockElementViewProvider *)self leadingLock];
-        v14 = [v13 traitCollection];
-        v15 = [v14 layoutDirection];
+        leadingLock = [(SBLockElementViewProvider *)self leadingLock];
+        traitCollection = [leadingLock traitCollection];
+        layoutDirection = [traitCollection layoutDirection];
 
         v12 = 0.666666;
-        if (v15 == 1)
+        if (layoutDirection == 1)
         {
           v12 = 2.0;
         }
       }
 
       v16 = leading - v12;
-      v17 = [(SBLockElementViewProvider *)self _isShowingInLandscape];
+      _isShowingInLandscape = [(SBLockElementViewProvider *)self _isShowingInLandscape];
       v5 = v16 + -4.0;
-      if (v17)
+      if (_isShowingInLandscape)
       {
         v7 = trailing + -4.0;
       }
@@ -954,7 +954,7 @@ uint64_t __50__SBLockElementViewProvider_deviceSupportsElement__block_invoke()
         v7 = trailing;
       }
 
-      if (!v17)
+      if (!_isShowingInLandscape)
       {
         v5 = v16;
       }
@@ -970,13 +970,13 @@ uint64_t __50__SBLockElementViewProvider_deviceSupportsElement__block_invoke()
   return result;
 }
 
-- (void)setAuthenticated:(BOOL)a3
+- (void)setAuthenticated:(BOOL)authenticated
 {
-  if (self->_isAuthenticated != a3)
+  if (self->_isAuthenticated != authenticated)
   {
-    v3 = a3;
-    self->_isAuthenticated = a3;
-    if (a3)
+    authenticatedCopy = authenticated;
+    self->_isAuthenticated = authenticated;
+    if (authenticated)
     {
       v5 = [(SBLockElementViewProvider *)self _resolvedEventForState:2];
     }
@@ -993,7 +993,7 @@ uint64_t __50__SBLockElementViewProvider_deviceSupportsElement__block_invoke()
       [WeakRetained preferredEdgeOutsetsDidInvalidateForLayoutSpecifier:self];
     }
 
-    if (v3)
+    if (authenticatedCopy)
     {
       if (self->_hasActiveUnlockAttempt)
       {
@@ -1019,8 +1019,8 @@ uint64_t __50__SBLockElementViewProvider_deviceSupportsElement__block_invoke()
 
 - (void)_updateAllowsBioUnlock
 {
-  v3 = [(SBLockElementViewProvider *)self _activelyWantsMatching];
-  if (self->_allowsBioUnlock == v3)
+  _activelyWantsMatching = [(SBLockElementViewProvider *)self _activelyWantsMatching];
+  if (self->_allowsBioUnlock == _activelyWantsMatching)
   {
     if (self->_allowsBioUnlock && !self->_isAuthenticated)
     {
@@ -1031,8 +1031,8 @@ uint64_t __50__SBLockElementViewProvider_deviceSupportsElement__block_invoke()
 
   else
   {
-    self->_allowsBioUnlock = v3;
-    if (v3)
+    self->_allowsBioUnlock = _activelyWantsMatching;
+    if (_activelyWantsMatching)
     {
       v4 = 21;
     }
@@ -1051,47 +1051,47 @@ uint64_t __50__SBLockElementViewProvider_deviceSupportsElement__block_invoke()
   }
 }
 
-- (void)setEmpty:(BOOL)a3
+- (void)setEmpty:(BOOL)empty
 {
-  if (self->_isEmpty != a3)
+  if (self->_isEmpty != empty)
   {
     if (self->_isElementRegistered)
     {
       [(SBLockElementViewProvider *)a2 setEmpty:?];
     }
 
-    self->_isEmpty = a3;
+    self->_isEmpty = empty;
   }
 }
 
-- (void)setBloomed:(BOOL)a3
+- (void)setBloomed:(BOOL)bloomed
 {
-  if (self->_isInBloomMode != a3)
+  if (self->_isInBloomMode != bloomed)
   {
-    self->_isInBloomMode = a3;
+    self->_isInBloomMode = bloomed;
     [(SBLockElementViewProvider *)self _updateUnlockModeForState];
   }
 }
 
 - (BOOL)_treatsAsAmbientSearching
 {
-  v3 = [(SBLockElementViewProvider *)self _treatAsAmbient];
-  if (v3)
+  _treatAsAmbient = [(SBLockElementViewProvider *)self _treatAsAmbient];
+  if (_treatAsAmbient)
   {
-    LOBYTE(v3) = self->_layoutMode == 3;
+    LOBYTE(_treatAsAmbient) = self->_layoutMode == 3;
   }
 
-  return v3;
+  return _treatAsAmbient;
 }
 
-- (void)setIsForCapture:(BOOL)a3
+- (void)setIsForCapture:(BOOL)capture
 {
-  v3 = a3;
-  self->_isForCapture = a3;
+  captureCopy = capture;
+  self->_isForCapture = capture;
   [(SBUIProudLockIconView *)self->_leadingLock setIsForCapture:?];
   trailingContentView = self->_trailingContentView;
 
-  [(SBLockElementTrailingContentView *)trailingContentView setIsForCapture:v3];
+  [(SBLockElementTrailingContentView *)trailingContentView setIsForCapture:captureCopy];
 }
 
 - (BOOL)_isSecurelyRenderingInJindo
@@ -1119,15 +1119,15 @@ uint64_t __50__SBLockElementViewProvider_deviceSupportsElement__block_invoke()
     v4 = SBLogSystemApertureLockElement();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [(SBLockElementViewProvider *)self _requestedSecureState];
-      if (v5 - 1 > 8)
+      _requestedSecureState = [(SBLockElementViewProvider *)self _requestedSecureState];
+      if (_requestedSecureState - 1 > 8)
       {
         v6 = @"Sleep";
       }
 
       else
       {
-        v6 = off_2783ABF90[v5 - 1];
+        v6 = off_2783ABF90[_requestedSecureState - 1];
       }
 
       v13 = 138412290;
@@ -1135,8 +1135,8 @@ uint64_t __50__SBLockElementViewProvider_deviceSupportsElement__block_invoke()
       _os_log_impl(&dword_21ED4E000, v4, OS_LOG_TYPE_DEFAULT, "Taking priority assertion, requested = %@", &v13, 0xCu);
     }
 
-    v10 = [(SBSystemApertureProvidedContentElement *)self platformElementHost];
-    v11 = [v10 requestRequiredPriorityAssertionWithReason:@"Lock Element Secure State"];
+    platformElementHost = [(SBSystemApertureProvidedContentElement *)self platformElementHost];
+    v11 = [platformElementHost requestRequiredPriorityAssertionWithReason:@"Lock Element Secure State"];
     requiredPriorityAssertion = self->_requiredPriorityAssertion;
     self->_requiredPriorityAssertion = v11;
   }
@@ -1151,15 +1151,15 @@ uint64_t __50__SBLockElementViewProvider_deviceSupportsElement__block_invoke()
     v7 = SBLogSystemApertureLockElement();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(SBLockElementViewProvider *)self _requestedSecureState];
-      if (v8 - 1 > 8)
+      _requestedSecureState2 = [(SBLockElementViewProvider *)self _requestedSecureState];
+      if (_requestedSecureState2 - 1 > 8)
       {
         v9 = @"Sleep";
       }
 
       else
       {
-        v9 = off_2783ABF90[v8 - 1];
+        v9 = off_2783ABF90[_requestedSecureState2 - 1];
       }
 
       v13 = 138412290;
@@ -1168,127 +1168,127 @@ uint64_t __50__SBLockElementViewProvider_deviceSupportsElement__block_invoke()
     }
 
     [(SAInvalidatable *)self->_requiredPriorityAssertion invalidateWithReason:@"Lock ELement no longer in secure state"];
-    v10 = self->_requiredPriorityAssertion;
+    platformElementHost = self->_requiredPriorityAssertion;
     self->_requiredPriorityAssertion = 0;
   }
 }
 
-- (unint64_t)_secureStateContainsSecureFrames:(unint64_t)a3
+- (unint64_t)_secureStateContainsSecureFrames:(unint64_t)frames
 {
-  if (a3 > 8)
+  if (frames > 8)
   {
     return 1;
   }
 
   else
   {
-    return qword_21F8A58C8[a3];
+    return qword_21F8A58C8[frames];
   }
 }
 
-- (unint64_t)_nextSecureStateForState:(unint64_t)a3
+- (unint64_t)_nextSecureStateForState:(unint64_t)state
 {
-  v5 = [(SBLockElementViewProvider *)self _currentSecureState];
+  _currentSecureState = [(SBLockElementViewProvider *)self _currentSecureState];
 
-  return [(SBLockElementViewProvider *)self _nextSecureStateForState:a3 from:v5];
+  return [(SBLockElementViewProvider *)self _nextSecureStateForState:state from:_currentSecureState];
 }
 
-- (unint64_t)_nextSecureStateForState:(unint64_t)a3 from:(unint64_t)a4
+- (unint64_t)_nextSecureStateForState:(unint64_t)state from:(unint64_t)from
 {
   if (self->_isForCapture)
   {
-    return a3;
+    return state;
   }
 
   result = 3;
-  if (a4 <= 4)
+  if (from <= 4)
   {
-    if (a4 <= 2)
+    if (from <= 2)
     {
-      if (a4)
+      if (from)
       {
-        if (a4 != 1)
+        if (from != 1)
         {
           return result;
         }
 
-        if (a3 < 0xA)
+        if (state < 0xA)
         {
           v5 = &unk_21F8A5960;
-          return v5[a3];
+          return v5[state];
         }
       }
 
-      else if (a3 < 0xA)
+      else if (state < 0xA)
       {
         v5 = &unk_21F8A5910;
-        return v5[a3];
+        return v5[state];
       }
 
       return 3;
     }
 
-    if (a4 == 3)
+    if (from == 3)
     {
-      if (a3 < 0xA)
+      if (state < 0xA)
       {
         v5 = &unk_21F8A59B0;
-        return v5[a3];
+        return v5[state];
       }
     }
 
-    else if (a3 < 0xA)
+    else if (state < 0xA)
     {
       v5 = &unk_21F8A5A00;
-      return v5[a3];
+      return v5[state];
     }
 
     return 8;
   }
 
-  if (a4 <= 7)
+  if (from <= 7)
   {
-    if (a4 - 5 >= 2)
+    if (from - 5 >= 2)
     {
-      if (a4 != 7)
+      if (from != 7)
       {
         return result;
       }
     }
 
-    else if (a3 < 0xA)
+    else if (state < 0xA)
     {
       v5 = &unk_21F8A5A50;
-      return v5[a3];
+      return v5[state];
     }
 
     return 8;
   }
 
   v6 = 5;
-  v7 = 5;
-  if (a3 != 4)
+  stateCopy = 5;
+  if (state != 4)
   {
-    v7 = a3;
+    stateCopy = state;
   }
 
-  if (a3 != 9)
+  if (state != 9)
   {
-    v6 = v7;
+    v6 = stateCopy;
   }
 
   v8 = 5;
-  if (a3 == 9)
+  if (state == 9)
   {
     v8 = 9;
   }
 
-  if (a4 != 9)
+  if (from != 9)
   {
     v8 = 3;
   }
 
-  if (a4 == 8)
+  if (from == 8)
   {
     return v6;
   }
@@ -1302,17 +1302,17 @@ uint64_t __50__SBLockElementViewProvider_deviceSupportsElement__block_invoke()
 - (void)_reconcileNotifiedSecureState
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [(SBLockElementViewProvider *)self _notifiedSecureState];
-  if (v3 != [(SBLockElementViewProvider *)self _appliedSecureState])
+  _notifiedSecureState = [(SBLockElementViewProvider *)self _notifiedSecureState];
+  if (_notifiedSecureState != [(SBLockElementViewProvider *)self _appliedSecureState])
   {
-    v4 = [(SBLockElementViewProvider *)self _useSecureElementHostStates];
+    _useSecureElementHostStates = [(SBLockElementViewProvider *)self _useSecureElementHostStates];
     v5 = [(NSDictionary *)self->_appliedComponentStates objectForKeyedSubscript:SBLockElementLeadingFlipBookName];
     v6 = [v5 isEqualToString:self->_leadingViewFlipBookState];
 
     v7 = [(NSDictionary *)self->_appliedComponentStates objectForKeyedSubscript:SBLockElementTrailingFlipBookName];
     v8 = [v7 isEqualToString:self->_trailingViewFlipBookState];
 
-    if (v4 && v6 && v8 != 0)
+    if (_useSecureElementHostStates && v6 && v8 != 0)
     {
       v10 = SBLogSystemApertureLockElement();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -1326,11 +1326,11 @@ uint64_t __50__SBLockElementViewProvider_deviceSupportsElement__block_invoke()
         _os_log_impl(&dword_21ED4E000, v10, OS_LOG_TYPE_DEFAULT, "Requested Jindo-managed state begun: leading: %@, trailing: %@", &v17, 0x16u);
       }
 
-      v13 = [(SBLockElementViewProvider *)self _notifiedSecureState];
-      if (v13 == 9 || v13 == 4)
+      _notifiedSecureState2 = [(SBLockElementViewProvider *)self _notifiedSecureState];
+      if (_notifiedSecureState2 == 9 || _notifiedSecureState2 == 4)
       {
-        v14 = [(SBLockElementViewProvider *)self elementHost];
-        [v14 elementRequestsNegativeResponse:self];
+        elementHost = [(SBLockElementViewProvider *)self elementHost];
+        [elementHost elementRequestsNegativeResponse:self];
       }
     }
 
@@ -1353,12 +1353,12 @@ void __59__SBLockElementViewProvider__reconcileRequestedSecureState__block_invok
   [v2 elementRequestsNegativeResponse:*(a1 + 32)];
 }
 
-- (BOOL)_canApplyRequestedState:(unint64_t)a3
+- (BOOL)_canApplyRequestedState:(unint64_t)state
 {
-  v5 = [(SBLockElementViewProvider *)self _requestedSecureState];
-  v6 = [(SBLockElementViewProvider *)self _appliedSecureState];
+  _requestedSecureState = [(SBLockElementViewProvider *)self _requestedSecureState];
+  _appliedSecureState = [(SBLockElementViewProvider *)self _appliedSecureState];
   v7 = [(SBLockElementViewProvider *)self _secureStateContainsSecureFrames:[(SBLockElementViewProvider *)self _nextSecureStateForState:[(SBLockElementViewProvider *)self _requestedSecureState] from:[(SBLockElementViewProvider *)self _appliedSecureState]]];
-  v8 = [(SBLockElementViewProvider *)self _secureStateContainsSecureFrames:[(SBLockElementViewProvider *)self _nextSecureStateForState:a3 from:[(SBLockElementViewProvider *)self _appliedSecureState]]];
+  v8 = [(SBLockElementViewProvider *)self _secureStateContainsSecureFrames:[(SBLockElementViewProvider *)self _nextSecureStateForState:state from:[(SBLockElementViewProvider *)self _appliedSecureState]]];
   if (v7)
   {
     v9 = v8 == 0;
@@ -1370,35 +1370,35 @@ void __59__SBLockElementViewProvider__reconcileRequestedSecureState__block_invok
   }
 
   v10 = !v9;
-  return v5 == v6 || v10;
+  return _requestedSecureState == _appliedSecureState || v10;
 }
 
-- (void)_deferSecureState:(unint64_t)a3 completion:(id)a4
+- (void)_deferSecureState:(unint64_t)state completion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  completionCopy = completion;
   v7 = SBLogSystemApertureLockElement();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    if (a3 - 1 > 8)
+    if (state - 1 > 8)
     {
       v8 = @"Sleep";
     }
 
     else
     {
-      v8 = off_2783ABF90[a3 - 1];
+      v8 = off_2783ABF90[state - 1];
     }
 
-    v9 = [(SBLockElementViewProvider *)self _currentSecureState];
-    if (v9 - 1 > 8)
+    _currentSecureState = [(SBLockElementViewProvider *)self _currentSecureState];
+    if (_currentSecureState - 1 > 8)
     {
       v10 = @"Sleep";
     }
 
     else
     {
-      v10 = off_2783ABF90[v9 - 1];
+      v10 = off_2783ABF90[_currentSecureState - 1];
     }
 
     v13 = 138412546;
@@ -1408,53 +1408,53 @@ void __59__SBLockElementViewProvider__reconcileRequestedSecureState__block_invok
     _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "Deferring requested secure state: %@ (still waiting for secure state: %@)", &v13, 0x16u);
   }
 
-  self->_deferredSecureState = a3;
-  if (v6)
+  self->_deferredSecureState = state;
+  if (completionCopy)
   {
     deferredStateCompletions = self->_deferredStateCompletions;
-    v12 = MEMORY[0x223D6F7F0](v6);
+    v12 = MEMORY[0x223D6F7F0](completionCopy);
     [(NSMutableArray *)deferredStateCompletions addObject:v12];
   }
 }
 
-- (void)_requestSecureState:(unint64_t)a3 completion:(id)a4
+- (void)_requestSecureState:(unint64_t)state completion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  completionCopy = completion;
   if (!self->_isEmpty)
   {
-    if ([(SBLockElementViewProvider *)self _requestedSecureState]== a3)
+    if ([(SBLockElementViewProvider *)self _requestedSecureState]== state)
     {
-      if (v6)
+      if (completionCopy)
       {
-        v6[2](v6);
+        completionCopy[2](completionCopy);
       }
     }
 
-    else if ([(SBLockElementViewProvider *)self _canApplyRequestedState:a3])
+    else if ([(SBLockElementViewProvider *)self _canApplyRequestedState:state])
     {
       v7 = SBLogSystemApertureLockElement();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
-        v8 = [(SBLockElementViewProvider *)self _requestedSecureState];
-        if (v8 - 1 > 8)
+        _requestedSecureState = [(SBLockElementViewProvider *)self _requestedSecureState];
+        if (_requestedSecureState - 1 > 8)
         {
           v9 = @"Sleep";
         }
 
         else
         {
-          v9 = off_2783ABF90[v8 - 1];
+          v9 = off_2783ABF90[_requestedSecureState - 1];
         }
 
-        if (a3 - 1 > 8)
+        if (state - 1 > 8)
         {
           v10 = @"Sleep";
         }
 
         else
         {
-          v10 = off_2783ABF90[a3 - 1];
+          v10 = off_2783ABF90[state - 1];
         }
 
         v16 = 138412546;
@@ -1464,22 +1464,22 @@ void __59__SBLockElementViewProvider__reconcileRequestedSecureState__block_invok
         _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "Requesting secure state: %@ -> %@", &v16, 0x16u);
       }
 
-      self->_requestedSecureState = a3;
-      self->_deferredSecureState = a3;
-      if (v6)
+      self->_requestedSecureState = state;
+      self->_deferredSecureState = state;
+      if (completionCopy)
       {
         stateCompletions = self->_stateCompletions;
-        v12 = MEMORY[0x223D6F7F0](v6);
+        v12 = MEMORY[0x223D6F7F0](completionCopy);
         [(NSMutableArray *)stateCompletions addObject:v12];
       }
 
-      v13 = [(SBLockElementViewProvider *)self _useSecureElementHostStates];
+      _useSecureElementHostStates = [(SBLockElementViewProvider *)self _useSecureElementHostStates];
       [(SBLockElementViewProvider *)self _updateVisibilityAssertion];
       [(SBLockElementViewProvider *)self _updateRequiredPriorityAssertion];
-      if (v13)
+      if (_useSecureElementHostStates)
       {
-        v14 = [(SBLockElementViewProvider *)self secureElementHost];
-        [v14 preferredRecordedStateDidInvalidateForLayoutSpecifier:self];
+        secureElementHost = [(SBLockElementViewProvider *)self secureElementHost];
+        [secureElementHost preferredRecordedStateDidInvalidateForLayoutSpecifier:self];
 
         WeakRetained = objc_loadWeakRetained(&self->_layoutHost);
         [WeakRetained preferredLayoutModeDidInvalidateForLayoutSpecifier:self];
@@ -1493,36 +1493,36 @@ void __59__SBLockElementViewProvider__reconcileRequestedSecureState__block_invok
 
     else
     {
-      [(SBLockElementViewProvider *)self _deferSecureState:a3 completion:v6];
+      [(SBLockElementViewProvider *)self _deferSecureState:state completion:completionCopy];
     }
   }
 }
 
-- (void)handleBiometricEvent:(int64_t)a3
+- (void)handleBiometricEvent:(int64_t)event
 {
-  if (a3 > 7)
+  if (event > 7)
   {
-    if (a3 <= 11)
+    if (event <= 11)
     {
-      if (a3 != 8 && a3 != 10)
+      if (event != 8 && event != 10)
       {
-        if (a3 != 11)
+        if (event != 11)
         {
           return;
         }
 
-        a3 = 5;
+        event = 5;
         goto LABEL_7;
       }
 
       goto LABEL_19;
     }
 
-    if (a3 != 12)
+    if (event != 12)
     {
-      if (a3 != 13)
+      if (event != 13)
       {
-        if (a3 != 21)
+        if (event != 21)
         {
           return;
         }
@@ -1531,26 +1531,26 @@ void __59__SBLockElementViewProvider__reconcileRequestedSecureState__block_invok
       }
 
 LABEL_23:
-      a3 = 9;
+      event = 9;
       goto LABEL_7;
     }
 
-    a3 = 8;
+    event = 8;
     goto LABEL_7;
   }
 
-  if (a3 > 2)
+  if (event > 2)
   {
-    if (a3 != 3)
+    if (event != 3)
     {
-      if (a3 == 5)
+      if (event == 5)
       {
 LABEL_19:
         v3 = 1;
         goto LABEL_18;
       }
 
-      if (a3 != 7)
+      if (event != 7)
       {
         return;
       }
@@ -1567,39 +1567,39 @@ LABEL_18:
       goto LABEL_23;
     }
 
-    a3 = 4;
+    event = 4;
 LABEL_7:
-    [(SBLockElementViewProvider *)self _requestSecureState:a3];
+    [(SBLockElementViewProvider *)self _requestSecureState:event];
     return;
   }
 
-  if (a3 == 1)
+  if (event == 1)
   {
     goto LABEL_7;
   }
 
-  if (a3 == 2)
+  if (event == 2)
   {
-    a3 = 3;
+    event = 3;
     goto LABEL_7;
   }
 }
 
-- (void)_setAcquiring:(BOOL)a3
+- (void)_setAcquiring:(BOOL)acquiring
 {
-  if (a3)
+  if (acquiring)
   {
-    v4 = 1;
+    requiresSecureIndicator = 1;
   }
 
   else
   {
-    v4 = [(SBUIBiometricResource *)self->_sharedResource requiresSecureIndicator];
+    requiresSecureIndicator = [(SBUIBiometricResource *)self->_sharedResource requiresSecureIndicator];
   }
 
-  if (self->_isAcquiring != v4)
+  if (self->_isAcquiring != requiresSecureIndicator)
   {
-    self->_isAcquiring = v4;
+    self->_isAcquiring = requiresSecureIndicator;
 
     [(SBLockElementViewProvider *)self _updateUnlockModeForState];
   }
@@ -1616,20 +1616,20 @@ LABEL_7:
   [(SBLockElementViewProvider *)self _reconcileRequestedSecureState];
 }
 
-- (CGSize)_elementSizeLeading:(BOOL)a3 forLayoutMode:(int64_t)a4
+- (CGSize)_elementSizeLeading:(BOOL)leading forLayoutMode:(int64_t)mode
 {
-  if ((a4 + 1) >= 4)
+  if ((mode + 1) >= 4)
   {
     v5 = 0.0;
     v4 = 0.0;
-    if (a4 == 3)
+    if (mode == 3)
     {
-      v6 = a3;
+      leadingCopy = leading;
       if ([(SBLockElementViewProvider *)self _treatCustomAsLarge:0.0])
       {
         v4 = 37.0;
         v5 = 23.0;
-        if (v6)
+        if (leadingCopy)
         {
           v4 = 17.3333333;
         }
@@ -1677,38 +1677,38 @@ LABEL_7:
   return trailingContentView;
 }
 
-- (void)setLayoutMode:(int64_t)a3 reason:(int64_t)a4
+- (void)setLayoutMode:(int64_t)mode reason:(int64_t)reason
 {
   layoutMode = self->_layoutMode;
-  if (layoutMode != a3)
+  if (layoutMode != mode)
   {
     self->_priorLayoutMode = layoutMode;
-    if (a3 <= 0)
+    if (mode <= 0)
     {
       [(SBLockElementViewProvider *)self _forceSleepSecureState];
     }
   }
 
-  self->_layoutMode = a3;
+  self->_layoutMode = mode;
 }
 
-- (CGSize)sizeThatFitsSize:(CGSize)a3 forProvidedView:(id)a4 inLayoutMode:(int64_t)a5
+- (CGSize)sizeThatFitsSize:(CGSize)size forProvidedView:(id)view inLayoutMode:(int64_t)mode
 {
-  [(SBLockElementViewProvider *)self _elementSizeLeading:self->_leadingLock == a4 forLayoutMode:a5, a3.width, a3.height];
+  [(SBLockElementViewProvider *)self _elementSizeLeading:self->_leadingLock == view forLayoutMode:mode, size.width, size.height];
   result.height = v6;
   result.width = v5;
   return result;
 }
 
-- (void)layoutHostContainerViewDidLayoutSubviews:(id)a3
+- (void)layoutHostContainerViewDidLayoutSubviews:(id)subviews
 {
-  v4 = a3;
-  [v4 bounds];
+  subviewsCopy = subviews;
+  [subviewsCopy bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(SBLockElementViewProvider *)self layoutMode];
+  layoutMode = [(SBLockElementViewProvider *)self layoutMode];
   v35.origin.x = v6;
   v35.origin.y = v8;
   v35.size.width = v10;
@@ -1724,7 +1724,7 @@ LABEL_7:
   v37.size.width = v10;
   v37.size.height = v12;
   Width = CGRectGetWidth(v37);
-  v15 = v13 == 3 || Width > 200.0;
+  v15 = layoutMode == 3 || Width > 200.0;
   if (v15)
   {
     v16 = 3;
@@ -1757,15 +1757,15 @@ LABEL_7:
   BSRectWithSize();
   [(SBLockElementTrailingContentView *)trailingContentView setBounds:?];
   UIRectGetCenter();
-  if (v13 != 3 || ![(SBLockElementViewProvider *)self _isShowingInLandscape])
+  if (layoutMode != 3 || ![(SBLockElementViewProvider *)self _isShowingInLandscape])
   {
-    v24 = [(SBLockElementViewProvider *)self leadingLock];
-    v25 = [v24 traitCollection];
-    [v25 layoutDirection];
+    leadingLock = [(SBLockElementViewProvider *)self leadingLock];
+    traitCollection = [leadingLock traitCollection];
+    [traitCollection layoutDirection];
 
-    v26 = [(SBLockElementViewProvider *)self leadingLock];
-    v27 = [v26 traitCollection];
-    [v27 layoutDirection];
+    leadingLock2 = [(SBLockElementViewProvider *)self leadingLock];
+    traitCollection2 = [leadingLock2 traitCollection];
+    [traitCollection2 layoutDirection];
   }
 
   v28 = self->_leadingLock;
@@ -1779,23 +1779,23 @@ LABEL_7:
   [(SBLockElementTrailingContentView *)v29 setCenter:v31, v33];
 }
 
-- (void)biometricResource:(id)a3 matchingEnabledDidChange:(BOOL)a4
+- (void)biometricResource:(id)resource matchingEnabledDidChange:(BOOL)change
 {
-  [(SBLockElementViewProvider *)self _updateAllowsBioUnlock:a3];
+  [(SBLockElementViewProvider *)self _updateAllowsBioUnlock:resource];
 
   [(SBLockElementViewProvider *)self _updateTrailingGlyph];
 }
 
-- (void)biometricResource:(id)a3 observeEvent:(unint64_t)a4
+- (void)biometricResource:(id)resource observeEvent:(unint64_t)event
 {
-  v6 = a3;
-  if (self->_sharedResource == v6)
+  resourceCopy = resource;
+  if (self->_sharedResource == resourceCopy)
   {
-    v11 = v6;
-    switch(a4)
+    v11 = resourceCopy;
+    switch(event)
     {
       case 4uLL:
-        v7 = self;
+        selfCopy8 = self;
         v8 = 6;
         goto LABEL_4;
       case 5uLL:
@@ -1816,7 +1816,7 @@ LABEL_7:
       case 0x18uLL:
         goto LABEL_3;
       case 0xCuLL:
-        v7 = self;
+        selfCopy8 = self;
         v8 = 4;
         goto LABEL_4;
       case 0xDuLL:
@@ -1826,44 +1826,44 @@ LABEL_7:
         }
 
         self->_hasActiveUnlockAttempt = 1;
-        v7 = self;
+        selfCopy8 = self;
         v8 = 5;
         goto LABEL_4;
       case 0xEuLL:
       case 0x16uLL:
-        v7 = self;
+        selfCopy8 = self;
         v8 = 21;
         goto LABEL_4;
       case 0x15uLL:
-        v9 = [MEMORY[0x277D67D38] sharedInstance];
-        v10 = [v9 isPhoneUnlockEnabledAndRequirementsMet];
+        mEMORY[0x277D67D38] = [MEMORY[0x277D67D38] sharedInstance];
+        isPhoneUnlockEnabledAndRequirementsMet = [mEMORY[0x277D67D38] isPhoneUnlockEnabledAndRequirementsMet];
 
-        v6 = v11;
-        if (v10)
+        resourceCopy = v11;
+        if (isPhoneUnlockEnabledAndRequirementsMet)
         {
           break;
         }
 
 LABEL_3:
         self->_hasActiveUnlockAttempt = 0;
-        v7 = self;
+        selfCopy8 = self;
         v8 = 7;
         goto LABEL_4;
       case 0x22uLL:
-        v7 = self;
+        selfCopy8 = self;
         v8 = 8;
         goto LABEL_4;
       case 0x23uLL:
-        v7 = self;
+        selfCopy8 = self;
         v8 = 9;
         goto LABEL_4;
       case 0x24uLL:
-        v7 = self;
+        selfCopy8 = self;
         v8 = 10;
 LABEL_4:
-        [(SBLockElementViewProvider *)v7 handleBiometricEvent:v8];
+        [(SBLockElementViewProvider *)selfCopy8 handleBiometricEvent:v8];
 LABEL_6:
-        v6 = v11;
+        resourceCopy = v11;
         break;
       default:
         break;
@@ -1871,10 +1871,10 @@ LABEL_6:
   }
 }
 
-- (void)contentProviderWillTransitionToSize:(CGSize)a3 inContainerView:(id)a4 transitionCoordinator:(id)a5
+- (void)contentProviderWillTransitionToSize:(CGSize)size inContainerView:(id)view transitionCoordinator:(id)coordinator
 {
-  v7 = a4;
-  v8 = a5;
+  viewCopy = view;
+  coordinatorCopy = coordinator;
   v9 = self->_alwaysUseCustomLayoutMode && [(SBLockElementViewProvider *)self _treatCustomAsLarge];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
@@ -1888,10 +1888,10 @@ LABEL_6:
   v11[2] = __103__SBLockElementViewProvider_contentProviderWillTransitionToSize_inContainerView_transitionCoordinator___block_invoke_2;
   v11[3] = &unk_2783ABF70;
   v11[4] = self;
-  v12 = v7;
+  v12 = viewCopy;
   v13 = v9;
-  v10 = v7;
-  [v8 animateAlongsideTransition:v11 completion:0];
+  v10 = viewCopy;
+  [coordinatorCopy animateAlongsideTransition:v11 completion:0];
 }
 
 uint64_t __103__SBLockElementViewProvider_contentProviderWillTransitionToSize_inContainerView_transitionCoordinator___block_invoke(uint64_t a1)
@@ -1946,17 +1946,17 @@ uint64_t __103__SBLockElementViewProvider_contentProviderWillTransitionToSize_in
   else
   {
     v4 = [(SBLockElementViewProvider *)self _nextSecureStateForState:[(SBLockElementViewProvider *)self _requestedSecureState]];
-    v5 = [(SBLockElementViewProvider *)self _requestedSecureState];
-    v6 = [(SBLockElementViewProvider *)self _currentSecureState];
+    _requestedSecureState = [(SBLockElementViewProvider *)self _requestedSecureState];
+    _currentSecureState = [(SBLockElementViewProvider *)self _currentSecureState];
     v7 = [(SBLockElementViewProvider *)self _secureStateContainsSecureFrames:v4];
-    v8 = [(SBLockElementViewProvider *)self _appliedSecureState];
-    v9 = [(SBLockElementViewProvider *)self _currentSecureState];
+    _appliedSecureState = [(SBLockElementViewProvider *)self _appliedSecureState];
+    _currentSecureState2 = [(SBLockElementViewProvider *)self _currentSecureState];
     v10 = [(SBLockElementViewProvider *)self _secureStateContainsSecureFrames:[(SBLockElementViewProvider *)self _appliedSecureState]];
     v11 = [(SBLockElementViewProvider *)self _secureStateContainsSecureFrames:[(SBLockElementViewProvider *)self _currentSecureState]];
     v12 = v11;
     v23 = v7;
-    v14 = v5 != v6 && v7 != 0;
-    if (v8 != v9 && v10 != 0)
+    v14 = _requestedSecureState != _currentSecureState && v7 != 0;
+    if (_appliedSecureState != _currentSecureState2 && v10 != 0)
     {
       v14 = 1;
     }
@@ -1974,7 +1974,7 @@ uint64_t __103__SBLockElementViewProvider_contentProviderWillTransitionToSize_in
     v16 = SBLogSystemApertureLockElement();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = v5 != v6;
+      v17 = _requestedSecureState != _currentSecureState;
       if (v2)
       {
         v18 = "required";
@@ -1985,15 +1985,15 @@ uint64_t __103__SBLockElementViewProvider_contentProviderWillTransitionToSize_in
         v18 = "dropped";
       }
 
-      v19 = [(SBLockElementViewProvider *)self _requestedSecureState];
-      if (v19 - 1 > 8)
+      _requestedSecureState2 = [(SBLockElementViewProvider *)self _requestedSecureState];
+      if (_requestedSecureState2 - 1 > 8)
       {
         v20 = @"Sleep";
       }
 
       else
       {
-        v20 = off_2783ABF90[v19 - 1];
+        v20 = off_2783ABF90[_requestedSecureState2 - 1];
       }
 
       if (v4 - 1 > 8)
@@ -2017,7 +2017,7 @@ uint64_t __103__SBLockElementViewProvider_contentProviderWillTransitionToSize_in
       v32 = 1024;
       v33 = v23 != 0;
       v34 = 1024;
-      v35 = v8 == v9;
+      v35 = _appliedSecureState == _currentSecureState2;
       v36 = 1024;
       v37 = v10 != 0;
       v38 = 1024;
@@ -2034,8 +2034,8 @@ uint64_t __103__SBLockElementViewProvider_contentProviderWillTransitionToSize_in
   v4 = objc_alloc_init(SBLockElementViewProvider);
   [(SBLockElementViewProvider *)v4 setIsForCapture:1];
   [(SBLockElementViewProvider *)v4 setEmpty:0];
-  v2 = [SBApp systemApertureControllerForMainDisplay];
-  v3 = [v2 registerElement:v4];
+  systemApertureControllerForMainDisplay = [SBApp systemApertureControllerForMainDisplay];
+  v3 = [systemApertureControllerForMainDisplay registerElement:v4];
 
   [(SBLockElementViewProvider *)v4 setElementAssertion:v3];
 }
@@ -2051,10 +2051,10 @@ uint64_t __103__SBLockElementViewProvider_contentProviderWillTransitionToSize_in
 
 - (void)recordingModeChanged
 {
-  v3 = [(SBLockElementViewProvider *)self secureElementHost];
-  v4 = [v3 isInRecordingMode];
+  secureElementHost = [(SBLockElementViewProvider *)self secureElementHost];
+  isInRecordingMode = [secureElementHost isInRecordingMode];
 
-  if ((v4 & 1) == 0)
+  if ((isInRecordingMode & 1) == 0)
   {
     [(SAInvalidatable *)self->_elementAssertion invalidateWithReason:@"recording mode changed"];
     elementAssertion = self->_elementAssertion;
@@ -2077,11 +2077,11 @@ uint64_t __103__SBLockElementViewProvider_contentProviderWillTransitionToSize_in
   return v5;
 }
 
-- (void)setAppliedComponentStates:(id)a3
+- (void)setAppliedComponentStates:(id)states
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  objc_storeStrong(&self->_appliedComponentStates, a3);
+  statesCopy = states;
+  objc_storeStrong(&self->_appliedComponentStates, states);
   v6 = SBLogSystemApertureLockElement();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -2097,14 +2097,14 @@ uint64_t __103__SBLockElementViewProvider_contentProviderWillTransitionToSize_in
   [(SBLockElementViewProvider *)self _reconcileNotifiedSecureState];
 }
 
-- (void)setActiveComponentStates:(id)a3
+- (void)setActiveComponentStates:(id)states
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SBLockElementViewProvider *)self _isSecurelyRenderingInJindo];
-  [(SBUIProudLockIconView *)self->_leadingLock setIsSecurelyRenderingInJindo:v5];
-  [(SBLockElementTrailingContentView *)self->_trailingContentView setIsSecurelyRenderingInJindo:v5];
-  v6 = [v4 copy];
+  statesCopy = states;
+  _isSecurelyRenderingInJindo = [(SBLockElementViewProvider *)self _isSecurelyRenderingInJindo];
+  [(SBUIProudLockIconView *)self->_leadingLock setIsSecurelyRenderingInJindo:_isSecurelyRenderingInJindo];
+  [(SBLockElementTrailingContentView *)self->_trailingContentView setIsSecurelyRenderingInJindo:_isSecurelyRenderingInJindo];
+  v6 = [statesCopy copy];
 
   activeComponentStates = self->_activeComponentStates;
   self->_activeComponentStates = v6;
@@ -2126,10 +2126,10 @@ uint64_t __103__SBLockElementViewProvider_contentProviderWillTransitionToSize_in
 
 - (void)_toggleUnlockMode
 {
-  v3 = [(SBLockElementViewProvider *)self _currentSecureState];
-  if (v3 <= 9)
+  _currentSecureState = [(SBLockElementViewProvider *)self _currentSecureState];
+  if (_currentSecureState <= 9)
   {
-    v4 = qword_21F8A5AE8[v3];
+    v4 = qword_21F8A5AE8[_currentSecureState];
 
     [(SBLockElementViewProvider *)self _requestSecureState:v4];
   }
@@ -2137,13 +2137,13 @@ uint64_t __103__SBLockElementViewProvider_contentProviderWillTransitionToSize_in
 
 - (void)_updateTrailingGlyph
 {
-  v3 = [(SBLockElementViewProvider *)self _appliedSecureState];
+  _appliedSecureState = [(SBLockElementViewProvider *)self _appliedSecureState];
   v4 = 1;
-  if (v3 > 6)
+  if (_appliedSecureState > 6)
   {
-    if ((v3 - 7) >= 2)
+    if ((_appliedSecureState - 7) >= 2)
     {
-      if (v3 != 9)
+      if (_appliedSecureState != 9)
       {
         return;
       }
@@ -2156,9 +2156,9 @@ LABEL_3:
     goto LABEL_8;
   }
 
-  if (v3 != 5)
+  if (_appliedSecureState != 5)
   {
-    if (v3 != 6)
+    if (_appliedSecureState != 6)
     {
       return;
     }
@@ -2183,16 +2183,16 @@ LABEL_8:
   [(SBLockElementTrailingContentView *)trailingContentView setState:v4 animated:1];
 }
 
-- (int64_t)_resolvedEventForState:(int64_t)a3
+- (int64_t)_resolvedEventForState:(int64_t)state
 {
-  if ([(SBLockElementViewProvider *)self _treatCustomAsLarge]&& (a3 - 1) < 3)
+  if ([(SBLockElementViewProvider *)self _treatCustomAsLarge]&& (state - 1) < 3)
   {
-    return a3 + 10;
+    return state + 10;
   }
 
   else
   {
-    return a3;
+    return state;
   }
 }
 
@@ -2212,8 +2212,8 @@ LABEL_8:
 
 - (void)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"SBLockElementViewProvider.m" lineNumber:110 description:@"It's probably not beneficial to use this when unsupported."];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SBLockElementViewProvider.m" lineNumber:110 description:@"It's probably not beneficial to use this when unsupported."];
 }
 
 - (void)setEmpty:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)

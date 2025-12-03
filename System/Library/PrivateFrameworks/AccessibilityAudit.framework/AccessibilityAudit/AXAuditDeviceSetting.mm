@@ -1,33 +1,33 @@
 @interface AXAuditDeviceSetting
-+ (id)createWithIdentifier:(id)a3 currentValue:(id)a4 settingType:(unint64_t)a5;
-+ (void)registerTransportableObjectWithManager:(id)a3;
++ (id)createWithIdentifier:(id)identifier currentValue:(id)value settingType:(unint64_t)type;
++ (void)registerTransportableObjectWithManager:(id)manager;
 - (AXAuditDeviceSetting)init;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation AXAuditDeviceSetting
 
-+ (id)createWithIdentifier:(id)a3 currentValue:(id)a4 settingType:(unint64_t)a5
++ (id)createWithIdentifier:(id)identifier currentValue:(id)value settingType:(unint64_t)type
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = objc_alloc_init(a1);
-  [v10 setIdentifier:v9];
+  valueCopy = value;
+  identifierCopy = identifier;
+  v10 = objc_alloc_init(self);
+  [v10 setIdentifier:identifierCopy];
 
-  [v10 setSettingType:a5];
-  [v10 setCurrentValueNumber:v8];
+  [v10 setSettingType:type];
+  [v10 setCurrentValueNumber:valueCopy];
 
   [v10 setEnabled:1];
 
   return v10;
 }
 
-+ (void)registerTransportableObjectWithManager:(id)a3
++ (void)registerTransportableObjectWithManager:(id)manager
 {
-  v3 = a3;
+  managerCopy = manager;
   v9 = [[AXAuditObjectTransportInfoPropertyBased alloc] initWithClass:objc_opt_class() transportKey:@"AXAuditDeviceSetting_v1"];
   v4 = objc_alloc_init(AXAuditObjectTransportPropertyEntry);
   [(AXAuditObjectTransportInfoPropertyBased *)v9 addPropertyEntry:v4];
@@ -54,7 +54,7 @@
   [(AXAuditObjectTransportPropertyEntry *)v8 setTransportKey:@"SliderTickMarksValue_v1"];
   [(AXAuditObjectTransportPropertyEntry *)v8 setLocalValueToTransportValue:&__block_literal_global_78];
   [(AXAuditObjectTransportPropertyEntry *)v8 setPopulateLocalObjectWithTransportValue:&__block_literal_global_80];
-  [v3 registerTransportInfoPropertyBased:v9];
+  [managerCopy registerTransportInfoPropertyBased:v9];
 }
 
 void __63__AXAuditDeviceSetting_registerTransportableObjectWithManager___block_invoke_2(uint64_t a1, void *a2, void *a3)
@@ -149,17 +149,17 @@ void __63__AXAuditDeviceSetting_registerTransportableObjectWithManager___block_i
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(AXAuditDeviceSetting *)self identifier];
-  [v4 setIdentifier:v5];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  identifier = [(AXAuditDeviceSetting *)self identifier];
+  [v4 setIdentifier:identifier];
 
   [v4 setSettingType:{-[AXAuditDeviceSetting settingType](self, "settingType")}];
   [v4 setEnabled:{-[AXAuditDeviceSetting enabled](self, "enabled")}];
   [v4 setSliderTickMarks:{-[AXAuditDeviceSetting sliderTickMarks](self, "sliderTickMarks")}];
-  v6 = [(AXAuditDeviceSetting *)self currentValueNumber];
-  [v4 setCurrentValueNumber:v6];
+  currentValueNumber = [(AXAuditDeviceSetting *)self currentValueNumber];
+  [v4 setCurrentValueNumber:currentValueNumber];
 
   return v4;
 }
@@ -169,30 +169,30 @@ void __63__AXAuditDeviceSetting_registerTransportableObjectWithManager___block_i
   v8.receiver = self;
   v8.super_class = AXAuditDeviceSetting;
   v3 = [(AXAuditDeviceSetting *)&v8 description];
-  v4 = [(AXAuditDeviceSetting *)self identifier];
-  v5 = [(AXAuditDeviceSetting *)self currentValueNumber];
-  v6 = [v3 stringByAppendingFormat:@"identifier:%@ value:%@ type:%i", v4, v5, -[AXAuditDeviceSetting settingType](self, "settingType")];
+  identifier = [(AXAuditDeviceSetting *)self identifier];
+  currentValueNumber = [(AXAuditDeviceSetting *)self currentValueNumber];
+  v6 = [v3 stringByAppendingFormat:@"identifier:%@ value:%@ type:%i", identifier, currentValueNumber, -[AXAuditDeviceSetting settingType](self, "settingType")];
 
   return v6;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(AXAuditDeviceSetting *)self settingType];
-  v4 = [(AXAuditDeviceSetting *)self identifier];
-  v5 = [v4 hash] ^ v3;
-  v6 = [(AXAuditDeviceSetting *)self currentValueNumber];
-  v7 = [v6 hash];
+  settingType = [(AXAuditDeviceSetting *)self settingType];
+  identifier = [(AXAuditDeviceSetting *)self identifier];
+  v5 = [identifier hash] ^ settingType;
+  currentValueNumber = [(AXAuditDeviceSetting *)self currentValueNumber];
+  v7 = [currentValueNumber hash];
   v8 = v7 + [(AXAuditDeviceSetting *)self enabled];
   v9 = v8 + [(AXAuditDeviceSetting *)self sliderTickMarks];
 
   return v5 ^ v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -202,25 +202,25 @@ void __63__AXAuditDeviceSetting_registerTransportableObjectWithManager___block_i
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(AXAuditDeviceSetting *)self settingType];
-      if (v6 == [(AXAuditDeviceSetting *)v5 settingType])
+      v5 = equalCopy;
+      settingType = [(AXAuditDeviceSetting *)self settingType];
+      if (settingType == [(AXAuditDeviceSetting *)v5 settingType])
       {
-        v7 = [(AXAuditDeviceSetting *)self identifier];
-        v8 = [(AXAuditDeviceSetting *)v5 identifier];
-        if (v7 | v8 && ![v7 isEqual:v8])
+        identifier = [(AXAuditDeviceSetting *)self identifier];
+        identifier2 = [(AXAuditDeviceSetting *)v5 identifier];
+        if (identifier | identifier2 && ![identifier isEqual:identifier2])
         {
           v12 = 0;
         }
 
         else
         {
-          v9 = [(AXAuditDeviceSetting *)self currentValueNumber];
-          v10 = [(AXAuditDeviceSetting *)v5 currentValueNumber];
-          if ((!(v9 | v10) || [v9 isEqual:v10]) && (v11 = -[AXAuditDeviceSetting enabled](self, "enabled"), v11 == -[AXAuditDeviceSetting enabled](v5, "enabled")))
+          currentValueNumber = [(AXAuditDeviceSetting *)self currentValueNumber];
+          currentValueNumber2 = [(AXAuditDeviceSetting *)v5 currentValueNumber];
+          if ((!(currentValueNumber | currentValueNumber2) || [currentValueNumber isEqual:currentValueNumber2]) && (v11 = -[AXAuditDeviceSetting enabled](self, "enabled"), v11 == -[AXAuditDeviceSetting enabled](v5, "enabled")))
           {
-            v13 = [(AXAuditDeviceSetting *)self sliderTickMarks];
-            v12 = v13 == [(AXAuditDeviceSetting *)v5 sliderTickMarks];
+            sliderTickMarks = [(AXAuditDeviceSetting *)self sliderTickMarks];
+            v12 = sliderTickMarks == [(AXAuditDeviceSetting *)v5 sliderTickMarks];
           }
 
           else

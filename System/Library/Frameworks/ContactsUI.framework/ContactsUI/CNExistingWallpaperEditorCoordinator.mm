@@ -1,16 +1,16 @@
 @interface CNExistingWallpaperEditorCoordinator
 - (_TtC10ContactsUI36CNExistingWallpaperEditorCoordinator)init;
-- (void)editingViewController:(id)a3 didFinishWithConfiguration:(id)a4;
+- (void)editingViewController:(id)controller didFinishWithConfiguration:(id)configuration;
 @end
 
 @implementation CNExistingWallpaperEditorCoordinator
 
-- (void)editingViewController:(id)a3 didFinishWithConfiguration:(id)a4
+- (void)editingViewController:(id)controller didFinishWithConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_199AFFC10(a4);
+  controllerCopy = controller;
+  configurationCopy = configuration;
+  selfCopy = self;
+  sub_199AFFC10(configuration);
 }
 
 - (_TtC10ContactsUI36CNExistingWallpaperEditorCoordinator)init

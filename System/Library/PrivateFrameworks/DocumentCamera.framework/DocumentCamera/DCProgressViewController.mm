@@ -1,17 +1,17 @@
 @interface DCProgressViewController
-- (DCProgressViewController)initWithDelegate:(id)a3;
+- (DCProgressViewController)initWithDelegate:(id)delegate;
 - (DCProgressViewControllerDelegate)progressDelegate;
-- (void)setObservedProgress:(id)a3;
+- (void)setObservedProgress:(id)progress;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation DCProgressViewController
 
-- (DCProgressViewController)initWithDelegate:(id)a3
+- (DCProgressViewController)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v8.receiver = self;
   v8.super_class = DCProgressViewController;
@@ -19,7 +19,7 @@
 
   if (v6)
   {
-    [(DCProgressViewController *)v6 setProgressDelegate:v4];
+    [(DCProgressViewController *)v6 setProgressDelegate:delegateCopy];
   }
 
   return v6;
@@ -30,58 +30,58 @@
   v7.receiver = self;
   v7.super_class = DCProgressViewController;
   [(DCProgressViewController *)&v7 viewDidLoad];
-  v3 = [MEMORY[0x277D75348] clearColor];
-  v4 = [(DCProgressViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  view = [(DCProgressViewController *)self view];
+  [view setBackgroundColor:clearColor];
 
-  v5 = [(DCProgressViewController *)self label];
-  [v5 setText:@" "];
+  label = [(DCProgressViewController *)self label];
+  [label setText:@" "];
 
-  v6 = [(DCProgressViewController *)self circularProgressView];
-  [v6 setHidden:1];
+  circularProgressView = [(DCProgressViewController *)self circularProgressView];
+  [circularProgressView setHidden:1];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = DCProgressViewController;
-  [(DCProgressViewController *)&v5 viewWillAppear:a3];
-  v4 = [(DCProgressViewController *)self activityIndicator];
-  [v4 startAnimating];
+  [(DCProgressViewController *)&v5 viewWillAppear:appear];
+  activityIndicator = [(DCProgressViewController *)self activityIndicator];
+  [activityIndicator startAnimating];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = DCProgressViewController;
-  [(DCProgressViewController *)&v6 viewWillDisappear:a3];
-  v4 = [(DCProgressViewController *)self activityIndicator];
-  [v4 stopAnimating];
+  [(DCProgressViewController *)&v6 viewWillDisappear:disappear];
+  activityIndicator = [(DCProgressViewController *)self activityIndicator];
+  [activityIndicator stopAnimating];
 
-  v5 = [(DCProgressViewController *)self progressDelegate];
-  [v5 willDismissProgressViewController:self];
+  progressDelegate = [(DCProgressViewController *)self progressDelegate];
+  [progressDelegate willDismissProgressViewController:self];
 }
 
-- (void)setObservedProgress:(id)a3
+- (void)setObservedProgress:(id)progress
 {
-  v5 = a3;
-  if (self->_observedProgress != v5)
+  progressCopy = progress;
+  if (self->_observedProgress != progressCopy)
   {
-    v12 = v5;
-    objc_storeStrong(&self->_observedProgress, a3);
-    v6 = [(DCProgressViewController *)self circularProgressView];
-    [v6 setObservedProgress:v12];
+    v12 = progressCopy;
+    objc_storeStrong(&self->_observedProgress, progress);
+    circularProgressView = [(DCProgressViewController *)self circularProgressView];
+    [circularProgressView setObservedProgress:v12];
 
     observedProgress = self->_observedProgress;
     v8 = observedProgress == 0;
     v9 = observedProgress != 0;
-    v10 = [(DCProgressViewController *)self activityIndicator];
-    [v10 setHidden:v9];
+    activityIndicator = [(DCProgressViewController *)self activityIndicator];
+    [activityIndicator setHidden:v9];
 
-    v11 = [(DCProgressViewController *)self circularProgressView];
-    [v11 setHidden:v8];
+    circularProgressView2 = [(DCProgressViewController *)self circularProgressView];
+    [circularProgressView2 setHidden:v8];
 
-    v5 = v12;
+    progressCopy = v12;
   }
 }
 

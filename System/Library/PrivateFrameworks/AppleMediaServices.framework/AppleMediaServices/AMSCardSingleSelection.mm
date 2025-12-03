@@ -1,40 +1,40 @@
 @interface AMSCardSingleSelection
-- (AMSCardSingleSelection)initWithCoder:(id)a3;
-- (AMSCardSingleSelection)initWithPassTypeIdentifier:(id)a3 passSerialNumber:(id)a4;
-- (BOOL)isEqual:(id)a3;
+- (AMSCardSingleSelection)initWithCoder:(id)coder;
+- (AMSCardSingleSelection)initWithPassTypeIdentifier:(id)identifier passSerialNumber:(id)number;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AMSCardSingleSelection
 
-- (AMSCardSingleSelection)initWithPassTypeIdentifier:(id)a3 passSerialNumber:(id)a4
+- (AMSCardSingleSelection)initWithPassTypeIdentifier:(id)identifier passSerialNumber:(id)number
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  numberCopy = number;
   v11.receiver = self;
   v11.super_class = AMSCardSingleSelection;
   v8 = [(AMSCardSingleSelection *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(AMSCardSingleSelection *)v8 setPassTypeIdentifier:v6];
-    [(AMSCardSingleSelection *)v9 setPassSerialNumber:v7];
+    [(AMSCardSingleSelection *)v8 setPassTypeIdentifier:identifierCopy];
+    [(AMSCardSingleSelection *)v9 setPassSerialNumber:numberCopy];
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_6;
   }
 
-  if (self == v4)
+  if (self == equalCopy)
   {
     v10 = 1;
     goto LABEL_10;
@@ -43,13 +43,13 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [(AMSCardSingleSelection *)self passTypeIdentifier];
-    v7 = [(AMSCardSingleSelection *)v5 passTypeIdentifier];
-    if ([v6 isEqualToString:v7])
+    passTypeIdentifier = [(AMSCardSingleSelection *)self passTypeIdentifier];
+    passTypeIdentifier2 = [(AMSCardSingleSelection *)v5 passTypeIdentifier];
+    if ([passTypeIdentifier isEqualToString:passTypeIdentifier2])
     {
-      v8 = [(AMSCardSingleSelection *)self passSerialNumber];
-      v9 = [(AMSCardSingleSelection *)v5 passSerialNumber];
-      v10 = [v8 isEqualToString:v9];
+      passSerialNumber = [(AMSCardSingleSelection *)self passSerialNumber];
+      passSerialNumber2 = [(AMSCardSingleSelection *)v5 passSerialNumber];
+      v10 = [passSerialNumber isEqualToString:passSerialNumber2];
     }
 
     else
@@ -71,27 +71,27 @@ LABEL_10:
 
 - (unint64_t)hash
 {
-  v3 = [(AMSCardSingleSelection *)self passTypeIdentifier];
-  v4 = [v3 hash];
-  v5 = [(AMSCardSingleSelection *)self passSerialNumber];
-  v6 = [v5 hash];
+  passTypeIdentifier = [(AMSCardSingleSelection *)self passTypeIdentifier];
+  v4 = [passTypeIdentifier hash];
+  passSerialNumber = [(AMSCardSingleSelection *)self passSerialNumber];
+  v6 = [passSerialNumber hash];
 
   return v6 ^ v4;
 }
 
-- (AMSCardSingleSelection)initWithCoder:(id)a3
+- (AMSCardSingleSelection)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = AMSCardSingleSelection;
   v5 = [(AMSCardSingleSelection *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"passTypeIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"passTypeIdentifier"];
     passTypeIdentifier = v5->_passTypeIdentifier;
     v5->_passTypeIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"passSerialNumber"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"passSerialNumber"];
     passSerialNumber = v5->_passSerialNumber;
     v5->_passSerialNumber = v8;
   }
@@ -99,14 +99,14 @@ LABEL_10:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(AMSCardSingleSelection *)self passTypeIdentifier];
-  [v4 encodeObject:v5 forKey:@"passTypeIdentifier"];
+  coderCopy = coder;
+  passTypeIdentifier = [(AMSCardSingleSelection *)self passTypeIdentifier];
+  [coderCopy encodeObject:passTypeIdentifier forKey:@"passTypeIdentifier"];
 
-  v6 = [(AMSCardSingleSelection *)self passSerialNumber];
-  [v4 encodeObject:v6 forKey:@"passSerialNumber"];
+  passSerialNumber = [(AMSCardSingleSelection *)self passSerialNumber];
+  [coderCopy encodeObject:passSerialNumber forKey:@"passSerialNumber"];
 }
 
 @end

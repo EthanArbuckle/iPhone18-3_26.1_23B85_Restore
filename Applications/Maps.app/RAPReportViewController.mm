@@ -1,5 +1,5 @@
 @interface RAPReportViewController
-- (RAPReportViewController)initWithReport:(id)a3 question:(id)a4 completion:(id)a5;
+- (RAPReportViewController)initWithReport:(id)report question:(id)question completion:(id)completion;
 - (RAPUserInfoPart)userInfoPart;
 - (void)_send;
 @end
@@ -23,8 +23,8 @@
 
 - (void)_send
 {
-  v3 = [(RAPReportViewController *)self view];
-  [v3 endEditing:1];
+  view = [(RAPReportViewController *)self view];
+  [view endEditing:1];
 
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
@@ -34,23 +34,23 @@
   [RAPPrivacy performPrivacyCheckWithAppearance:1 completion:v4];
 }
 
-- (RAPReportViewController)initWithReport:(id)a3 question:(id)a4 completion:(id)a5
+- (RAPReportViewController)initWithReport:(id)report question:(id)question completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  reportCopy = report;
+  questionCopy = question;
+  completionCopy = completion;
   v16.receiver = self;
   v16.super_class = RAPReportViewController;
   v11 = [(RAPReportViewController *)&v16 initWithNibName:0 bundle:0];
   if (v11)
   {
-    v12 = [[RAPReportViewControllerDelegate alloc] initWithReport:v8 completion:v10 delegate:v11];
+    v12 = [[RAPReportViewControllerDelegate alloc] initWithReport:reportCopy completion:completionCopy delegate:v11];
     rapDelegate = v11->_rapDelegate;
     v11->_rapDelegate = v12;
 
-    if (v9)
+    if (questionCopy)
     {
-      [v9 localizedTitle];
+      [questionCopy localizedTitle];
     }
 
     else

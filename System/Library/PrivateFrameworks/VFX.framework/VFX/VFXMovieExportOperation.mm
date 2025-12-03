@@ -1,19 +1,19 @@
 @interface VFXMovieExportOperation
-- (CGImage)_copySnapshot:(CGSize)a3;
-- (VFXMovieExportOperation)initWithRenderer:(id)a3 size:(CGSize)a4 attributes:(id)a5 outputURL:(id)a6;
+- (CGImage)_copySnapshot:(CGSize)snapshot;
+- (VFXMovieExportOperation)initWithRenderer:(id)renderer size:(CGSize)size attributes:(id)attributes outputURL:(id)l;
 - (void)_finishedExport;
-- (void)appendImage:(CGImage *)a3 withPresentationTime:(id *)a4 usingAdaptor:(id)a5;
+- (void)appendImage:(CGImage *)image withPresentationTime:(id *)time usingAdaptor:(id)adaptor;
 - (void)dealloc;
 - (void)main;
-- (void)renderAndAppendWithPresentationTime:(id *)a3 usingAdaptor:(id)a4 metalTextureCache:(__CVMetalTextureCache *)a5 cvQueue:(id)a6 completionBlock:(id)a7;
+- (void)renderAndAppendWithPresentationTime:(id *)time usingAdaptor:(id)adaptor metalTextureCache:(__CVMetalTextureCache *)cache cvQueue:(id)queue completionBlock:(id)block;
 @end
 
 @implementation VFXMovieExportOperation
 
-- (VFXMovieExportOperation)initWithRenderer:(id)a3 size:(CGSize)a4 attributes:(id)a5 outputURL:(id)a6
+- (VFXMovieExportOperation)initWithRenderer:(id)renderer size:(CGSize)size attributes:(id)attributes outputURL:(id)l
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v166[3] = *MEMORY[0x1E69E9840];
   v164.receiver = self;
   v164.super_class = VFXMovieExportOperation;
@@ -22,7 +22,7 @@
   if (v11)
   {
     objc_msgSend_setAntialiasingMode_(v11, v12, 2, v13);
-    v20 = objc_msgSend_mutableCopy(a5, v15, v16, v17);
+    v20 = objc_msgSend_mutableCopy(attributes, v15, v16, v17);
     if (!v20)
     {
       v20 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -96,7 +96,7 @@
     objc_msgSend_setObject_forKey_(v84, v94, v93, *MEMORY[0x1E6966208]);
     v97 = objc_msgSend_numberWithInt_(MEMORY[0x1E696AD98], v95, height, v96);
     objc_msgSend_setObject_forKey_(v84, v98, v97, *MEMORY[0x1E69660B8]);
-    v102 = objc_msgSend_device(a3, v99, v100, v101);
+    v102 = objc_msgSend_device(renderer, v99, v100, v101);
     v104 = MEMORY[0x1E6966030];
     if (v102)
     {
@@ -108,16 +108,16 @@
     v14->_avAdaptor = objc_msgSend_initWithAssetWriterInput_sourcePixelBufferAttributes_(v105, v106, v14->_assetWriterInput, v84);
     v163 = 0;
     v110 = objc_msgSend_defaultManager(MEMORY[0x1E696AC08], v107, v108, v109);
-    objc_msgSend_removeItemAtURL_error_(v110, v111, a6, 0);
+    objc_msgSend_removeItemAtURL_error_(v110, v111, l, 0);
     v112 = objc_alloc(MEMORY[0x1E6987ED8]);
-    v114 = objc_msgSend_initWithURL_fileType_error_(v112, v113, a6, *MEMORY[0x1E69874C0], &v163);
+    v114 = objc_msgSend_initWithURL_fileType_error_(v112, v113, l, *MEMORY[0x1E69874C0], &v163);
     v14->_assetWriter = v114;
     if (objc_msgSend_status(v114, v115, v116, v117) == 3)
     {
       v120 = sub_1AF0D5194();
       if (os_log_type_enabled(v120, OS_LOG_TYPE_ERROR))
       {
-        sub_1AFDFACB0(a6, &v163, v120);
+        sub_1AFDFACB0(l, &v163, v120);
       }
 
       return 0;
@@ -132,17 +132,17 @@
       v162[1] = 0x100000001;
       v162[2] = 0;
       objc_msgSend_startSessionAtSourceTime_(assetWriter, v125, v162, v126);
-      objc_msgSend_setRenderer_(v14, v127, a3, v128);
+      objc_msgSend_setRenderer_(v14, v127, renderer, v128);
       objc_msgSend_setSize_(v14, v129, v130, v131, width, height);
       objc_msgSend_setAttributes_(v14, v132, v20, v133);
-      v137 = objc_msgSend_world(a3, v134, v135, v136);
+      v137 = objc_msgSend_world(renderer, v134, v135, v136);
       objc_msgSend_startTime(v137, v138, v139, v140);
       objc_msgSend_setStartTime_(v14, v141, v142, v143);
-      v147 = objc_msgSend_world(a3, v144, v145, v146);
+      v147 = objc_msgSend_world(renderer, v144, v145, v146);
       objc_msgSend_endTime(v147, v148, v149, v150);
       objc_msgSend_setEndTime_(v14, v151, v152, v153);
-      objc_msgSend_setOutputURL_(v14, v154, a6, v155);
-      v158 = objc_msgSend_objectForKey_(a5, v156, @"kExportPointOfViewAttribute", v157);
+      objc_msgSend_setOutputURL_(v14, v154, l, v155);
+      v158 = objc_msgSend_objectForKey_(attributes, v156, @"kExportPointOfViewAttribute", v157);
       objc_msgSend_setPointOfView_(v14, v159, v158, v160);
     }
   }
@@ -157,10 +157,10 @@
   [(_VFXExportOperation *)&v3 dealloc];
 }
 
-- (CGImage)_copySnapshot:(CGSize)a3
+- (CGImage)_copySnapshot:(CGSize)snapshot
 {
-  height = a3.height;
-  width = a3.width;
+  height = snapshot.height;
+  width = snapshot.width;
   v11 = objc_msgSend_renderer(self, a2, v3, v4);
   systemTime = self->super._systemTime;
   if (systemTime == 0.0)
@@ -199,21 +199,21 @@
   }
 }
 
-- (void)appendImage:(CGImage *)a3 withPresentationTime:(id *)a4 usingAdaptor:(id)a5
+- (void)appendImage:(CGImage *)image withPresentationTime:(id *)time usingAdaptor:(id)adaptor
 {
   pixelBufferOut = 0;
-  v10 = objc_msgSend_pixelBufferPool(a5, a2, a3, a4);
+  v10 = objc_msgSend_pixelBufferPool(adaptor, a2, image, time);
   if (v10)
   {
     v11 = v10;
-    Width = CGImageGetWidth(a3);
-    Height = CGImageGetHeight(a3);
+    Width = CGImageGetWidth(image);
+    Height = CGImageGetHeight(image);
     if (CVPixelBufferPoolCreatePixelBuffer(*MEMORY[0x1E695E480], v11, &pixelBufferOut))
     {
       sub_1AFDFAD3C(a2, self, v14, v15);
     }
 
-    ColorSpace = CGImageGetColorSpace(a3);
+    ColorSpace = CGImageGetColorSpace(image);
     CVPixelBufferLockBaseAddress(pixelBufferOut, 0);
     BaseAddress = CVPixelBufferGetBaseAddress(pixelBufferOut);
     BytesPerRow = CVPixelBufferGetBytesPerRow(pixelBufferOut);
@@ -227,13 +227,13 @@
     v27.origin.y = 0.0;
     v27.size.width = Width;
     v27.size.height = Height;
-    CGContextDrawImage(v19, v27, a3);
+    CGContextDrawImage(v19, v27, image);
     CGContextFlush(v19);
     CFRelease(v19);
     CVPixelBufferUnlockBaseAddress(pixelBufferOut, 0);
-    v23 = *&a4->var0;
-    var3 = a4->var3;
-    if ((objc_msgSend_appendPixelBuffer_withPresentationTime_(a5, v20, pixelBufferOut, &v23) & 1) == 0)
+    v23 = *&time->var0;
+    var3 = time->var3;
+    if ((objc_msgSend_appendPixelBuffer_withPresentationTime_(adaptor, v20, pixelBufferOut, &v23) & 1) == 0)
     {
       v21 = sub_1AF0D5194();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -255,13 +255,13 @@
   }
 }
 
-- (void)renderAndAppendWithPresentationTime:(id *)a3 usingAdaptor:(id)a4 metalTextureCache:(__CVMetalTextureCache *)a5 cvQueue:(id)a6 completionBlock:(id)a7
+- (void)renderAndAppendWithPresentationTime:(id *)time usingAdaptor:(id)adaptor metalTextureCache:(__CVMetalTextureCache *)cache cvQueue:(id)queue completionBlock:(id)block
 {
   pixelBufferOut = 0;
-  v14 = objc_msgSend_pixelBufferPool(a4, a2, a3, a4);
+  v14 = objc_msgSend_pixelBufferPool(adaptor, a2, time, adaptor);
   if (v14)
   {
-    v204 = a7;
+    blockCopy = block;
     v15 = *MEMORY[0x1E695E480];
     if (CVPixelBufferPoolCreatePixelBuffer(*MEMORY[0x1E695E480], v14, &pixelBufferOut))
     {
@@ -271,7 +271,7 @@
     textureOut = 0;
     WidthOfPlane = CVPixelBufferGetWidthOfPlane(pixelBufferOut, 0);
     HeightOfPlane = CVPixelBufferGetHeightOfPlane(pixelBufferOut, 0);
-    CVMetalTextureCacheCreateTextureFromImage(v15, a5, pixelBufferOut, 0, MTLPixelFormatBGRA8Unorm_sRGB, WidthOfPlane, HeightOfPlane, 0, &textureOut);
+    CVMetalTextureCacheCreateTextureFromImage(v15, cache, pixelBufferOut, 0, MTLPixelFormatBGRA8Unorm_sRGB, WidthOfPlane, HeightOfPlane, 0, &textureOut);
     v23 = objc_msgSend_renderPassDescriptor(MEMORY[0x1E6974128], v20, v21, v22);
     v27 = objc_msgSend_colorAttachments(v23, v24, v25, v26);
     v30 = objc_msgSend_objectAtIndexedSubscript_(v27, v28, 0, v29);
@@ -363,7 +363,7 @@
 
     self->super._systemTime = v171;
     objc_msgSend_startTime(v163, v167, v168, v169);
-    v173 = v172 + (a3->var0 / a3->var1);
+    v173 = v172 + (time->var0 / time->var1);
     v177 = objc_msgSend_clock(v163, v174, v175, v176);
     objc_msgSend_setTime_(v177, v178, v179, v180, v173);
     v184 = objc_msgSend_renderer(self, v181, v182, v183);
@@ -376,15 +376,15 @@
     v205[1] = 3221225472;
     v205[2] = sub_1AF36F308;
     v205[3] = &unk_1E7A7F940;
-    v205[4] = a6;
+    v205[4] = queue;
     v205[5] = self;
-    v206 = *&a3->var0;
-    var3 = a3->var3;
+    v206 = *&time->var0;
+    var3 = time->var3;
     v205[8] = pixelBufferOut;
     v205[9] = textureOut;
-    v205[10] = a5;
-    v205[6] = a4;
-    v205[7] = v204;
+    v205[10] = cache;
+    v205[6] = adaptor;
+    v205[7] = blockCopy;
     objc_msgSend_addCompletedHandler_(v152, v199, v205, v200);
     objc_msgSend_commit(v152, v201, v202, v203);
   }

@@ -1,31 +1,31 @@
 @interface SCWWatchlistInlineDefaultsProvider
-- (SCWWatchlistInlineDefaultsProvider)initWithDefaults:(id)a3;
-- (void)fetchWatchlistDefaultsWithCompletion:(id)a3;
+- (SCWWatchlistInlineDefaultsProvider)initWithDefaults:(id)defaults;
+- (void)fetchWatchlistDefaultsWithCompletion:(id)completion;
 @end
 
 @implementation SCWWatchlistInlineDefaultsProvider
 
-- (SCWWatchlistInlineDefaultsProvider)initWithDefaults:(id)a3
+- (SCWWatchlistInlineDefaultsProvider)initWithDefaults:(id)defaults
 {
-  v5 = a3;
+  defaultsCopy = defaults;
   v9.receiver = self;
   v9.super_class = SCWWatchlistInlineDefaultsProvider;
   v6 = [(SCWWatchlistInlineDefaultsProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_defaults, a3);
+    objc_storeStrong(&v6->_defaults, defaults);
   }
 
   return v7;
 }
 
-- (void)fetchWatchlistDefaultsWithCompletion:(id)a3
+- (void)fetchWatchlistDefaultsWithCompletion:(id)completion
 {
   defaults = self->_defaults;
-  v5 = a3;
-  v6 = [(SCWWatchlistDefaults *)defaults defaultSymbols];
-  (*(a3 + 2))(v5, v6, 0);
+  completionCopy = completion;
+  defaultSymbols = [(SCWWatchlistDefaults *)defaults defaultSymbols];
+  (*(completion + 2))(completionCopy, defaultSymbols, 0);
 }
 
 @end

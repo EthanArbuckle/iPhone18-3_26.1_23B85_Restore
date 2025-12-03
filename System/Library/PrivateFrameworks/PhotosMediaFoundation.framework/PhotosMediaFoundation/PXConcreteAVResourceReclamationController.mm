@@ -1,10 +1,10 @@
 @interface PXConcreteAVResourceReclamationController
 - (PXConcreteAVResourceReclamationController)init;
-- (id)observationWithWeakTarget:(id)a3 selector:(SEL)a4;
-- (void)_enumerateObservers:(id)a3;
-- (void)registerObserver:(id)a3;
-- (void)setMostRecentReclamationEvent:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (id)observationWithWeakTarget:(id)target selector:(SEL)selector;
+- (void)_enumerateObservers:(id)observers;
+- (void)registerObserver:(id)observer;
+- (void)setMostRecentReclamationEvent:(id)event;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation PXConcreteAVResourceReclamationController
@@ -16,9 +16,9 @@
   v2 = [(PXConcreteAVResourceReclamationController *)&v10 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v2->_observers;
-    v2->_observers = v3;
+    v2->_observers = weakObjectsHashTable;
 
     v5 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v6 = dispatch_queue_attr_make_with_qos_class(v5, QOS_CLASS_USER_INITIATED, 0);
@@ -31,10 +31,10 @@
   return v2;
 }
 
-- (void)_enumerateObservers:(id)a3
+- (void)_enumerateObservers:(id)observers
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  observersCopy = observers;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -70,7 +70,7 @@
 
         if (*(*(&v11 + 1) + 8 * v9))
         {
-          v4[2](v4);
+          observersCopy[2](observersCopy);
         }
 
         ++v9;
@@ -97,54 +97,54 @@ uint64_t __65__PXConcreteAVResourceReclamationController__enumerateObservers___b
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)setMostRecentReclamationEvent:(id)a3
+- (void)setMostRecentReclamationEvent:(id)event
 {
-  v5 = a3;
-  if (self->_mostRecentReclamationEvent != v5)
+  eventCopy = event;
+  if (self->_mostRecentReclamationEvent != eventCopy)
   {
-    objc_storeStrong(&self->_mostRecentReclamationEvent, a3);
+    objc_storeStrong(&self->_mostRecentReclamationEvent, event);
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __75__PXConcreteAVResourceReclamationController_setMostRecentReclamationEvent___block_invoke;
     v6[3] = &unk_279A29050;
-    v7 = v5;
+    v7 = eventCopy;
     [(PXConcreteAVResourceReclamationController *)self _enumerateObservers:v6];
   }
 }
 
-- (id)observationWithWeakTarget:(id)a3 selector:(SEL)a4
+- (id)observationWithWeakTarget:(id)target selector:(SEL)selector
 {
-  v6 = a3;
-  v7 = [[PXResourceReclamationObservation alloc] initWithController:self weakTarget:v6 selector:a4];
+  targetCopy = target;
+  v7 = [[PXResourceReclamationObservation alloc] initWithController:self weakTarget:targetCopy selector:selector];
 
   return v7;
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observersQueue = self->_observersQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __64__PXConcreteAVResourceReclamationController_unregisterObserver___block_invoke;
   v7[3] = &unk_279A29028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(observersQueue, v7);
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observersQueue = self->_observersQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __62__PXConcreteAVResourceReclamationController_registerObserver___block_invoke;
   v7[3] = &unk_279A29028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(observersQueue, v7);
 }
 

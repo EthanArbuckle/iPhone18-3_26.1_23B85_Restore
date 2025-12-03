@@ -1,30 +1,30 @@
 @interface FCHandlePushNotificationResult
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setRecordZoneIDs:(uint64_t)a1;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setRecordZoneIDs:(uint64_t)ds;
 @end
 
 @implementation FCHandlePushNotificationResult
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[FCHandlePushNotificationResult allocWithZone:?]];
-  v5 = [(FCHandlePushNotificationResult *)self wasHandled];
+  wasHandled = [(FCHandlePushNotificationResult *)self wasHandled];
   if (v4)
   {
-    v4->_handled = v5;
+    v4->_handled = wasHandled;
   }
 
-  v6 = [(FCHandlePushNotificationResult *)self recordZoneIDs];
-  [(FCHandlePushNotificationResult *)v4 setRecordZoneIDs:v6];
+  recordZoneIDs = [(FCHandlePushNotificationResult *)self recordZoneIDs];
+  [(FCHandlePushNotificationResult *)v4 setRecordZoneIDs:recordZoneIDs];
 
   return v4;
 }
 
-- (void)setRecordZoneIDs:(uint64_t)a1
+- (void)setRecordZoneIDs:(uint64_t)ds
 {
-  if (a1)
+  if (ds)
   {
-    objc_storeStrong((a1 + 16), a2);
+    objc_storeStrong((ds + 16), a2);
   }
 }
 

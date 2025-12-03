@@ -1,8 +1,8 @@
 @interface UARPMetaDataTLV
 + (id)metaDataTable;
-+ (id)tlvFromKey:(id)a3 value:(id)a4;
++ (id)tlvFromKey:(id)key value:(id)value;
 - (UARPMetaDataTLV)init;
-- (UARPMetaDataTLV)initWithType:(unsigned int)a3 length:(unsigned int)a4 value:(void *)a5;
+- (UARPMetaDataTLV)initWithType:(unsigned int)type length:(unsigned int)length value:(void *)value;
 - (id)generateTLV;
 @end
 
@@ -15,7 +15,7 @@
   return [(UARPMetaDataTLV *)&v3 init];
 }
 
-- (UARPMetaDataTLV)initWithType:(unsigned int)a3 length:(unsigned int)a4 value:(void *)a5
+- (UARPMetaDataTLV)initWithType:(unsigned int)type length:(unsigned int)length value:(void *)value
 {
   v13.receiver = self;
   v13.super_class = UARPMetaDataTLV;
@@ -23,9 +23,9 @@
   v9 = v8;
   if (v8)
   {
-    v8->_tlvType = a3;
-    v8->_tlvLength = a4;
-    v10 = [MEMORY[0x277CBEA90] dataWithBytes:a5 length:a4];
+    v8->_tlvType = type;
+    v8->_tlvLength = length;
+    v10 = [MEMORY[0x277CBEA90] dataWithBytes:value length:length];
     tlvValue = v9->_tlvValue;
     v9->_tlvValue = v10;
   }
@@ -33,11 +33,11 @@
   return v9;
 }
 
-+ (id)tlvFromKey:(id)a3 value:(id)a4
++ (id)tlvFromKey:(id)key value:(id)value
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v20 = a4;
+  keyCopy = key;
+  valueCopy = value;
   v6 = +[UARPMetaDataTLV metaDataTable];
   v21 = 0u;
   v22 = 0u;
@@ -60,13 +60,13 @@
 
         v12 = *(*(&v21 + 1) + 8 * i);
         v13 = [v12 objectForKeyedSubscript:@"Name"];
-        if (![v5 caseInsensitiveCompare:v13])
+        if (![keyCopy caseInsensitiveCompare:v13])
         {
           v14 = [v12 objectForKeyedSubscript:@"Value"];
           v15 = [v14 unsignedLongValue] + 2001563392;
           if (v15 <= 0x35 && ((0x3F036601FFFFFFuLL >> v15) & 1) != 0)
           {
-            v16 = [(__objc2_class *)*off_278EC1180[v15] tlvFromPropertyListValue:v20];
+            v16 = [(__objc2_class *)*off_278EC1180[v15] tlvFromPropertyListValue:valueCopy];
             v17 = v9;
             v9 = v16;
           }

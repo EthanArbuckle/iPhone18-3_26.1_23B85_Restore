@@ -1,43 +1,43 @@
 @interface IMDaemonChatModifyReadStateRequestHandler
-- (void)markHasHadSuccessfulQueryForIDs:(id)a3 style:(unsigned __int8)a4 onServices:(id)a5;
-- (void)markPlayedExpressiveSendForIDs:(id)a3 style:(unsigned __int8)a4 onServices:(id)a5 message:(id)a6;
-- (void)markSavedForIDs:(id)a3 style:(unsigned __int8)a4 onServices:(id)a5 message:(id)a6;
-- (void)markSavedForMessageGUID:(id)a3;
-- (void)sendNotifyRecipientCommandForIDs:(id)a3 style:(unsigned __int8)a4 onServices:(id)a5 message:(id)a6;
+- (void)markHasHadSuccessfulQueryForIDs:(id)ds style:(unsigned __int8)style onServices:(id)services;
+- (void)markPlayedExpressiveSendForIDs:(id)ds style:(unsigned __int8)style onServices:(id)services message:(id)message;
+- (void)markSavedForIDs:(id)ds style:(unsigned __int8)style onServices:(id)services message:(id)message;
+- (void)markSavedForMessageGUID:(id)d;
+- (void)sendNotifyRecipientCommandForIDs:(id)ds style:(unsigned __int8)style onServices:(id)services message:(id)message;
 @end
 
 @implementation IMDaemonChatModifyReadStateRequestHandler
 
-- (void)markPlayedExpressiveSendForIDs:(id)a3 style:(unsigned __int8)a4 onServices:(id)a5 message:(id)a6
+- (void)markPlayedExpressiveSendForIDs:(id)ds style:(unsigned __int8)style onServices:(id)services message:(id)message
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a6;
+  dsCopy = ds;
+  servicesCopy = services;
+  messageCopy = message;
   if (IMOSLoggingEnabled())
   {
     v11 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       v12 = +[IMDClientRequestContext currentContext];
-      v13 = [v12 listenerID];
+      listenerID = [v12 listenerID];
       v28 = 138412802;
-      v29 = v13;
+      v29 = listenerID;
       v30 = 2112;
-      v31 = v8;
+      v31 = dsCopy;
       v32 = 2112;
-      v33 = v9;
+      v33 = servicesCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Request from %@ to mark message as played expressive send with IDs: %@  services: %@", &v28, 0x20u);
     }
   }
 
-  if ([v8 count] && objc_msgSend(v9, "count"))
+  if ([dsCopy count] && objc_msgSend(servicesCopy, "count"))
   {
-    v14 = [v8 count];
-    if (v14 == [v9 count])
+    v14 = [dsCopy count];
+    if (v14 == [servicesCopy count])
     {
       v15 = +[IMDMessageStore sharedInstance];
-      v16 = [v10 guid];
-      v17 = [v15 messageWithGUID:v16];
+      guid = [messageCopy guid];
+      v17 = [v15 messageWithGUID:guid];
 
       if (v17)
       {
@@ -54,12 +54,12 @@
       }
 
       v22 = +[IMDMessageStore sharedInstance];
-      v23 = [v20 guid];
-      v10 = [v22 messageWithGUID:v23];
+      guid2 = [v20 guid];
+      messageCopy = [v22 messageWithGUID:guid2];
 
-      v24 = [v10 accountID];
+      accountID = [messageCopy accountID];
       v25 = +[IMDBroadcastController sharedProvider];
-      v26 = [v25 broadcasterForChatListeners];
+      broadcasterForChatListeners = [v25 broadcasterForChatListeners];
 
       if (IMOSLoggingEnabled())
       {
@@ -67,12 +67,12 @@
         if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
         {
           v28 = 138412290;
-          v29 = v10;
+          v29 = messageCopy;
           _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_INFO, "Notifying about message: %@", &v28, 0xCu);
         }
       }
 
-      [v26 account:v24 chat:0 style:0 messageUpdated:v10];
+      [broadcasterForChatListeners account:accountID chat:0 style:0 messageUpdated:messageCopy];
     }
 
     else if (IMOSLoggingEnabled())
@@ -81,56 +81,56 @@
       if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
       {
         v28 = 138412546;
-        v29 = v8;
+        v29 = dsCopy;
         v30 = 2112;
-        v31 = v9;
+        v31 = servicesCopy;
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "Mismatched IDs and serviceNames array to mark as played expressive send (IDs: %@   Service names: %@)", &v28, 0x16u);
       }
     }
   }
 }
 
-- (void)markHasHadSuccessfulQueryForIDs:(id)a3 style:(unsigned __int8)a4 onServices:(id)a5
+- (void)markHasHadSuccessfulQueryForIDs:(id)ds style:(unsigned __int8)style onServices:(id)services
 {
-  v6 = a3;
-  v7 = a5;
+  dsCopy = ds;
+  servicesCopy = services;
   if (IMOSLoggingEnabled())
   {
     v8 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v9 = +[IMDClientRequestContext currentContext];
-      v10 = [v9 listenerID];
+      listenerID = [v9 listenerID];
       *buf = 138412802;
-      v31 = v10;
+      v31 = listenerID;
       v32 = 2112;
-      v33 = v6;
+      v33 = dsCopy;
       v34 = 2112;
-      v35 = v7;
+      v35 = servicesCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Request from %@ to mark chat as had successful ID query for IDs: %@  services: %@", buf, 0x20u);
     }
   }
 
-  if ([v6 count] && objc_msgSend(v7, "count"))
+  if ([dsCopy count] && objc_msgSend(servicesCopy, "count"))
   {
-    v11 = [v6 count];
-    if (v11 == [v7 count])
+    v11 = [dsCopy count];
+    if (v11 == [servicesCopy count])
     {
       v12 = objc_alloc_init(NSMutableSet);
-      if ([v6 count])
+      if ([dsCopy count])
       {
         v13 = 0;
         do
         {
-          v14 = [v6 objectAtIndex:v13];
-          v15 = [v7 objectAtIndex:v13];
+          v14 = [dsCopy objectAtIndex:v13];
+          v15 = [servicesCopy objectAtIndex:v13];
           v16 = IMCopyGUIDForChat();
 
           [v12 addObject:v16];
           ++v13;
         }
 
-        while (v13 < [v6 count]);
+        while (v13 < [dsCopy count]);
       }
 
       v27 = 0u;
@@ -174,56 +174,56 @@
       if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v31 = v6;
+        v31 = dsCopy;
         v32 = 2112;
-        v33 = v7;
+        v33 = servicesCopy;
         _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_INFO, "Mismatched IDs and serviceNames array to mark chat as had successful ID query (IDs: %@   Service names: %@)", buf, 0x16u);
       }
     }
   }
 }
 
-- (void)sendNotifyRecipientCommandForIDs:(id)a3 style:(unsigned __int8)a4 onServices:(id)a5 message:(id)a6
+- (void)sendNotifyRecipientCommandForIDs:(id)ds style:(unsigned __int8)style onServices:(id)services message:(id)message
 {
-  v59 = a3;
-  v58 = a5;
-  v56 = a6;
+  dsCopy = ds;
+  servicesCopy = services;
+  messageCopy = message;
   if (IMOSLoggingEnabled())
   {
     v8 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v9 = +[IMDClientRequestContext currentContext];
-      v10 = [v9 listenerID];
+      listenerID = [v9 listenerID];
       *buf = 138412802;
-      v67 = v10;
+      v67 = listenerID;
       v68 = 2112;
-      v69 = v59;
+      v69 = dsCopy;
       v70 = 2112;
-      v71 = v58;
+      v71 = servicesCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Request from %@ to send notify recipient command with IDs: %@  services: %@", buf, 0x20u);
     }
   }
 
-  if ([v59 count] && objc_msgSend(v58, "count"))
+  if ([dsCopy count] && objc_msgSend(servicesCopy, "count"))
   {
-    v11 = [v59 count];
-    if (v11 == [v58 count])
+    v11 = [dsCopy count];
+    if (v11 == [servicesCopy count])
     {
       v12 = +[IMDMessageStore sharedInstance];
-      v13 = [v56 guid];
-      v14 = [v12 messageWithGUID:v13];
+      guid = [messageCopy guid];
+      v14 = [v12 messageWithGUID:guid];
 
       if (v14)
       {
         [v14 setFlags:{objc_msgSend(v14, "flags") | 0x800000000}];
         v15 = +[IMDMessageStore sharedInstance];
-        v56 = [v15 storeMessage:v14 forceReplace:0 modifyError:0 modifyFlags:1 flagMask:0x800000000];
+        messageCopy = [v15 storeMessage:v14 forceReplace:0 modifyError:0 modifyFlags:1 flagMask:0x800000000];
       }
 
       else
       {
-        v56 = 0;
+        messageCopy = 0;
       }
 
       if (IMOSLoggingEnabled())
@@ -232,35 +232,35 @@
         if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v67 = v56;
+          v67 = messageCopy;
           _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "Found message to mark as notified recipient: %@", buf, 0xCu);
         }
       }
 
       v57 = objc_alloc_init(NSMutableSet);
-      if ([v59 count])
+      if ([dsCopy count])
       {
         v18 = 0;
         do
         {
-          v19 = [v59 objectAtIndex:v18];
-          v20 = [v58 objectAtIndex:v18];
+          v19 = [dsCopy objectAtIndex:v18];
+          v20 = [servicesCopy objectAtIndex:v18];
           v21 = IMCopyGUIDForChat();
 
           [v57 addObject:v21];
           ++v18;
         }
 
-        while (v18 < [v59 count]);
+        while (v18 < [dsCopy count]);
       }
 
-      if (v56)
+      if (messageCopy)
       {
         v22 = +[IMDMessageStore sharedInstance];
-        v60 = [v22 chatForMessage:v56];
+        v60 = [v22 chatForMessage:messageCopy];
 
         v23 = [v60 style] == 45;
-        v24 = [v59 count];
+        v24 = [dsCopy count];
         if (v23)
         {
           if (v24)
@@ -268,8 +268,8 @@
             v25 = 0;
             do
             {
-              v26 = [v59 objectAtIndex:v25];
-              v27 = [v58 objectAtIndex:v25];
+              v26 = [dsCopy objectAtIndex:v25];
+              v27 = [servicesCopy objectAtIndex:v25];
               v28 = +[IMDChatStore sharedInstance];
               v29 = [v28 chatsWithHandle:v26 onService:v27];
 
@@ -279,7 +279,7 @@
               ++v25;
             }
 
-            while (v25 < [v59 count]);
+            while (v25 < [dsCopy count]);
           }
         }
 
@@ -288,8 +288,8 @@
           v31 = 0;
           do
           {
-            v32 = [v59 objectAtIndex:v31];
-            v33 = [v58 objectAtIndex:v31];
+            v32 = [dsCopy objectAtIndex:v31];
+            v33 = [servicesCopy objectAtIndex:v31];
             v34 = +[IMDChatStore sharedInstance];
             v35 = [v34 chatsWithRoomname:v32 onService:v33];
 
@@ -299,10 +299,10 @@
             ++v31;
           }
 
-          while (v31 < [v59 count]);
+          while (v31 < [dsCopy count]);
         }
 
-        v37 = [v56 guid];
+        guid2 = [messageCopy guid];
         v63 = 0u;
         v64 = 0u;
         v61 = 0u;
@@ -326,9 +326,9 @@
               v43 = +[IMDChatRegistry sharedInstance];
               v44 = [v43 existingChatWithGUID:v42];
 
-              v45 = [v44 lastMessage];
-              v46 = [v45 guid];
-              LODWORD(v43) = [v46 isEqualToString:v37];
+              lastMessage = [v44 lastMessage];
+              guid3 = [lastMessage guid];
+              LODWORD(v43) = [guid3 isEqualToString:guid2];
 
               if (v43)
               {
@@ -346,9 +346,9 @@
           while (v39);
         }
 
-        v48 = [v56 accountID];
+        accountID = [messageCopy accountID];
         v49 = +[IMDAccountController sharedInstance];
-        v50 = [v49 sessionForAccount:v48];
+        v50 = [v49 sessionForAccount:accountID];
 
         if (IMOSLoggingEnabled())
         {
@@ -356,16 +356,16 @@
           if (os_log_type_enabled(v51, OS_LOG_TYPE_INFO))
           {
             *buf = 138412290;
-            v67 = v56;
+            v67 = messageCopy;
             _os_log_impl(&_mh_execute_header, v51, OS_LOG_TYPE_INFO, "Sending notifiy recipient command for: %@", buf, 0xCu);
           }
         }
 
-        v52 = [v60 chatIdentifier];
-        [v50 sendNotifyRecipientCommandForMessage:v56 toChatGuid:0 identifier:v52 style:{objc_msgSend(v60, "style")}];
+        chatIdentifier = [v60 chatIdentifier];
+        [v50 sendNotifyRecipientCommandForMessage:messageCopy toChatGuid:0 identifier:chatIdentifier style:{objc_msgSend(v60, "style")}];
 
         v53 = +[IMDBroadcastController sharedProvider];
-        v54 = [v53 broadcasterForChatListeners];
+        broadcasterForChatListeners = [v53 broadcasterForChatListeners];
 
         if (IMOSLoggingEnabled())
         {
@@ -373,12 +373,12 @@
           if (os_log_type_enabled(v55, OS_LOG_TYPE_INFO))
           {
             *buf = 138412290;
-            v67 = v56;
+            v67 = messageCopy;
             _os_log_impl(&_mh_execute_header, v55, OS_LOG_TYPE_INFO, "Notifying about message: %@", buf, 0xCu);
           }
         }
 
-        [v54 account:v48 chat:0 style:0 messageUpdated:v56];
+        [broadcasterForChatListeners account:accountID chat:0 style:0 messageUpdated:messageCopy];
       }
     }
 
@@ -388,37 +388,37 @@
       if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v67 = v59;
+        v67 = dsCopy;
         v68 = 2112;
-        v69 = v58;
+        v69 = servicesCopy;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "Mismatched IDs and serviceNames array to notify recipient (IDs: %@   Service names: %@)", buf, 0x16u);
       }
     }
   }
 }
 
-- (void)markSavedForMessageGUID:(id)a3
+- (void)markSavedForMessageGUID:(id)d
 {
-  v23 = a3;
+  dCopy = d;
   if (IMOSLoggingEnabled())
   {
     v4 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       v5 = +[IMDClientRequestContext currentContext];
-      v6 = [v5 listenerID];
+      listenerID = [v5 listenerID];
       *buf = 138412546;
-      v29 = v6;
+      v29 = listenerID;
       v30 = 2112;
-      v31 = v23;
+      v31 = dCopy;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Request from %@ to mark message as saved with GUID: %@", buf, 0x16u);
     }
   }
 
-  if ([v23 length])
+  if ([dCopy length])
   {
     v7 = +[IMDMessageStore sharedInstance];
-    v8 = [v7 chatsForMessageGUID:v23];
+    v8 = [v7 chatsForMessageGUID:dCopy];
 
     v26 = 0u;
     v27 = 0u;
@@ -441,16 +441,16 @@
           }
 
           v14 = *(*(&v24 + 1) + 8 * i);
-          v15 = [v14 chatIdentifier];
+          chatIdentifier = [v14 chatIdentifier];
           v16 = IMSingleObjectArray();
 
-          v17 = [v14 serviceName];
+          serviceName = [v14 serviceName];
           v18 = IMSingleObjectArray();
 
           if ([v18 count] && objc_msgSend(v16, "count"))
           {
             v19 = +[IMDMessageStore sharedInstance];
-            v20 = [v19 messageWithGUID:v23];
+            v20 = [v19 messageWithGUID:dCopy];
 
             -[IMDaemonChatModifyReadStateRequestHandler markSavedForIDs:style:onServices:message:](self, "markSavedForIDs:style:onServices:message:", v16, [v14 style], v18, v20);
           }
@@ -479,38 +479,38 @@
   }
 }
 
-- (void)markSavedForIDs:(id)a3 style:(unsigned __int8)a4 onServices:(id)a5 message:(id)a6
+- (void)markSavedForIDs:(id)ds style:(unsigned __int8)style onServices:(id)services message:(id)message
 {
-  v63 = a3;
-  v62 = a5;
-  v59 = a6;
+  dsCopy = ds;
+  servicesCopy = services;
+  messageCopy = message;
   if (IMOSLoggingEnabled())
   {
     v8 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v9 = +[IMDClientRequestContext currentContext];
-      v10 = [v9 listenerID];
+      listenerID = [v9 listenerID];
       *buf = 138412802;
-      v71 = v10;
+      v71 = listenerID;
       v72 = 2112;
-      v73 = v63;
+      v73 = dsCopy;
       v74 = 2112;
-      v75 = v62;
+      v75 = servicesCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Request from %@ to mark message as saved with IDs: %@  services: %@", buf, 0x20u);
     }
   }
 
-  if ([v63 count] && objc_msgSend(v62, "count"))
+  if ([dsCopy count] && objc_msgSend(servicesCopy, "count"))
   {
-    v11 = [v63 count];
-    if (v11 == [v62 count])
+    v11 = [dsCopy count];
+    if (v11 == [servicesCopy count])
     {
-      v12 = [v60 guid];
-      if ([v12 length])
+      guid = [v60 guid];
+      if ([guid length])
       {
         v13 = +[IMDMessageStore sharedInstance];
-        v14 = [v13 messageWithGUID:v12];
+        v14 = [v13 messageWithGUID:guid];
 
         if (v14)
         {
@@ -530,27 +530,27 @@
           }
 
           v17 = objc_alloc_init(NSMutableSet);
-          if ([v63 count])
+          if ([dsCopy count])
           {
             v18 = 0;
             do
             {
-              v19 = [v63 objectAtIndex:{v18, v61}];
-              v20 = [v62 objectAtIndex:v18];
+              v19 = [dsCopy objectAtIndex:{v18, v61}];
+              v20 = [servicesCopy objectAtIndex:v18];
               v21 = IMCopyGUIDForChat();
 
               [v17 addObject:v21];
               ++v18;
             }
 
-            while (v18 < [v63 count]);
+            while (v18 < [dsCopy count]);
           }
 
           v22 = +[IMDMessageStore sharedInstance];
           v64 = [v22 chatForMessage:v60];
 
           v23 = [v64 style] == 45;
-          v24 = [v63 count];
+          v24 = [dsCopy count];
           if (v23)
           {
             if (v24)
@@ -558,8 +558,8 @@
               v25 = 0;
               do
               {
-                v26 = [v63 objectAtIndex:v25];
-                v27 = [v62 objectAtIndex:v25];
+                v26 = [dsCopy objectAtIndex:v25];
+                v27 = [servicesCopy objectAtIndex:v25];
                 v28 = +[IMDChatStore sharedInstance];
                 v29 = [v28 chatsWithHandle:v26 onService:v27];
 
@@ -569,7 +569,7 @@
                 ++v25;
               }
 
-              while (v25 < [v63 count]);
+              while (v25 < [dsCopy count]);
             }
           }
 
@@ -578,8 +578,8 @@
             v34 = 0;
             do
             {
-              v35 = [v63 objectAtIndex:v34];
-              v36 = [v62 objectAtIndex:v34];
+              v35 = [dsCopy objectAtIndex:v34];
+              v36 = [servicesCopy objectAtIndex:v34];
               v37 = +[IMDChatStore sharedInstance];
               v38 = [v37 chatsWithRoomname:v35 onService:v36];
 
@@ -589,7 +589,7 @@
               ++v34;
             }
 
-            while (v34 < [v63 count]);
+            while (v34 < [dsCopy count]);
           }
 
           v67 = 0u;
@@ -615,9 +615,9 @@
                 v45 = +[IMDChatRegistry sharedInstance];
                 v46 = [v45 existingChatWithGUID:v44];
 
-                v47 = [v46 lastMessage];
-                v48 = [v47 guid];
-                v49 = [v48 isEqualToString:v12];
+                lastMessage = [v46 lastMessage];
+                guid2 = [lastMessage guid];
+                v49 = [guid2 isEqualToString:guid];
 
                 if (v49)
                 {
@@ -635,9 +635,9 @@
             while (v41);
           }
 
-          v51 = [v60 accountID];
+          accountID = [v60 accountID];
           v52 = +[IMDAccountController sharedInstance];
-          v53 = [v52 sessionForAccount:v51];
+          v53 = [v52 sessionForAccount:accountID];
 
           if (IMOSLoggingEnabled())
           {
@@ -650,11 +650,11 @@
             }
           }
 
-          v55 = [v64 chatIdentifier];
-          [v53 sendSavedReceiptForMessage:v60 toChatID:0 identifier:v55 style:{objc_msgSend(v64, "style")}];
+          chatIdentifier = [v64 chatIdentifier];
+          [v53 sendSavedReceiptForMessage:v60 toChatID:0 identifier:chatIdentifier style:{objc_msgSend(v64, "style")}];
 
           v56 = +[IMDBroadcastController sharedProvider];
-          v57 = [v56 broadcasterForChatListeners];
+          broadcasterForChatListeners = [v56 broadcasterForChatListeners];
 
           if (IMOSLoggingEnabled())
           {
@@ -667,7 +667,7 @@
             }
           }
 
-          [v57 account:v51 chat:0 style:0 messageUpdated:v60];
+          [broadcasterForChatListeners account:accountID chat:0 style:0 messageUpdated:v60];
         }
 
         else
@@ -678,7 +678,7 @@
             if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
             {
               *buf = 138412290;
-              v71 = v12;
+              v71 = guid;
               _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_INFO, "No message found for message guid: %@", buf, 0xCu);
             }
           }
@@ -703,9 +703,9 @@
       if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v71 = v63;
+        v71 = dsCopy;
         v72 = 2112;
-        v73 = v62;
+        v73 = servicesCopy;
         _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_INFO, "Mismatched IDs and serviceNames array to mark as saved (IDs: %@   Service names: %@)", buf, 0x16u);
       }
     }

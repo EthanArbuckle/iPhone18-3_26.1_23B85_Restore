@@ -1,77 +1,77 @@
 @interface WFEvernoteTag
 + (void)initialize;
-- (WFEvernoteTag)initWithCoder:(id)a3;
-- (WFEvernoteTag)initWithGUID:(id)a3 name:(id)a4 parentGuid:(id)a5 updateSequenceNum:(id)a6;
-- (WFEvernoteTag)initWithTag:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (WFEvernoteTag)initWithCoder:(id)coder;
+- (WFEvernoteTag)initWithGUID:(id)d name:(id)name parentGuid:(id)guid updateSequenceNum:(id)num;
+- (WFEvernoteTag)initWithTag:(id)tag;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFEvernoteTag
 
-- (WFEvernoteTag)initWithCoder:(id)a3
+- (WFEvernoteTag)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"guid"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"parentGuid"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"updateSequenceNum"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"guid"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"parentGuid"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"updateSequenceNum"];
 
   v9 = [(WFEvernoteTag *)self initWithGUID:v5 name:v6 parentGuid:v7 updateSequenceNum:v8];
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WFEvernoteTag *)self guid];
-  [v4 encodeObject:v5 forKey:@"guid"];
+  coderCopy = coder;
+  guid = [(WFEvernoteTag *)self guid];
+  [coderCopy encodeObject:guid forKey:@"guid"];
 
-  v6 = [(WFEvernoteTag *)self name];
-  [v4 encodeObject:v6 forKey:@"name"];
+  name = [(WFEvernoteTag *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
-  v7 = [(WFEvernoteTag *)self parentGuid];
-  [v4 encodeObject:v7 forKey:@"parentGuid"];
+  parentGuid = [(WFEvernoteTag *)self parentGuid];
+  [coderCopy encodeObject:parentGuid forKey:@"parentGuid"];
 
-  v8 = [(WFEvernoteTag *)self updateSequenceNum];
-  [v4 encodeObject:v8 forKey:@"updateSequenceNum"];
+  updateSequenceNum = [(WFEvernoteTag *)self updateSequenceNum];
+  [coderCopy encodeObject:updateSequenceNum forKey:@"updateSequenceNum"];
 }
 
-- (WFEvernoteTag)initWithTag:(id)a3
+- (WFEvernoteTag)initWithTag:(id)tag
 {
-  v4 = a3;
-  v5 = [v4 guid];
-  v6 = [v4 name];
-  v7 = [v4 parentGuid];
-  v8 = [v4 updateSequenceNum];
+  tagCopy = tag;
+  guid = [tagCopy guid];
+  name = [tagCopy name];
+  parentGuid = [tagCopy parentGuid];
+  updateSequenceNum = [tagCopy updateSequenceNum];
 
-  v9 = [(WFEvernoteTag *)self initWithGUID:v5 name:v6 parentGuid:v7 updateSequenceNum:v8];
+  v9 = [(WFEvernoteTag *)self initWithGUID:guid name:name parentGuid:parentGuid updateSequenceNum:updateSequenceNum];
   return v9;
 }
 
-- (WFEvernoteTag)initWithGUID:(id)a3 name:(id)a4 parentGuid:(id)a5 updateSequenceNum:(id)a6
+- (WFEvernoteTag)initWithGUID:(id)d name:(id)name parentGuid:(id)guid updateSequenceNum:(id)num
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  nameCopy = name;
+  guidCopy = guid;
+  numCopy = num;
   v25.receiver = self;
   v25.super_class = WFEvernoteTag;
   v14 = [(WFEvernoteTag *)&v25 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [dCopy copy];
     guid = v14->_guid;
     v14->_guid = v15;
 
-    v17 = [v11 copy];
+    v17 = [nameCopy copy];
     name = v14->_name;
     v14->_name = v17;
 
-    v19 = [v12 copy];
+    v19 = [guidCopy copy];
     parentGuid = v14->_parentGuid;
     v14->_parentGuid = v19;
 
-    v21 = [v13 copy];
+    v21 = [numCopy copy];
     updateSequenceNum = v14->_updateSequenceNum;
     v14->_updateSequenceNum = v21;
 
@@ -83,7 +83,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v5 = +[WFDiskCache workflowCache];
     v2 = objc_opt_class();

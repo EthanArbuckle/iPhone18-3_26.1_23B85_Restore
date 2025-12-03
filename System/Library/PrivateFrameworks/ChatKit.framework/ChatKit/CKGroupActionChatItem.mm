@@ -14,66 +14,66 @@
 {
   v100[2] = *MEMORY[0x1E69E9840];
   v3 = +[CKUIBehavior sharedBehaviors];
-  v4 = [v3 transcriptRegularFontAttributes];
+  transcriptRegularFontAttributes = [v3 transcriptRegularFontAttributes];
 
   v5 = +[CKUIBehavior sharedBehaviors];
-  v6 = [v5 transcriptEmphasizedFontAttributes];
+  transcriptEmphasizedFontAttributes = [v5 transcriptEmphasizedFontAttributes];
 
   v7 = +[CKUIBehavior sharedBehaviors];
-  v8 = [v7 transcriptGroupModificationErrorRegularFontAttributes];
+  transcriptGroupModificationErrorRegularFontAttributes = [v7 transcriptGroupModificationErrorRegularFontAttributes];
 
   v9 = +[CKUIBehavior sharedBehaviors];
-  v10 = [v9 transcriptGroupModificationErrorEmphasizedFontAttributes];
+  transcriptGroupModificationErrorEmphasizedFontAttributes = [v9 transcriptGroupModificationErrorEmphasizedFontAttributes];
 
-  v11 = [(CKGroupActionChatItem *)self sender];
-  v12 = [v11 name];
-  v13 = v12;
+  sender = [(CKGroupActionChatItem *)self sender];
+  name = [sender name];
+  v13 = name;
   v14 = &stru_1F04268F8;
-  if (v12)
+  if (name)
   {
-    v14 = v12;
+    v14 = name;
   }
 
   v15 = v14;
 
-  v91 = v4;
+  v91 = transcriptRegularFontAttributes;
   if ([(CKGroupActionChatItem *)self failed])
   {
-    v16 = v8;
+    v16 = transcriptGroupModificationErrorRegularFontAttributes;
   }
 
   else
   {
-    v16 = v4;
+    v16 = transcriptRegularFontAttributes;
   }
 
   v17 = v16;
-  v94 = v10;
+  v94 = transcriptGroupModificationErrorEmphasizedFontAttributes;
   if ([(CKGroupActionChatItem *)self failed])
   {
-    v18 = v10;
+    v18 = transcriptGroupModificationErrorEmphasizedFontAttributes;
   }
 
   else
   {
-    v18 = v6;
+    v18 = transcriptEmphasizedFontAttributes;
   }
 
   v19 = v18;
-  v98 = self;
-  v20 = [(CKGroupActionChatItem *)self actionType];
+  selfCopy = self;
+  actionType = [(CKGroupActionChatItem *)self actionType];
   v21 = 0;
   v95 = v17;
-  if (v20 <= 3)
+  if (actionType <= 3)
   {
-    if (!v20)
+    if (!actionType)
     {
-      if (v11)
+      if (sender)
       {
-        v25 = [v11 isBusiness];
+        isBusiness = [sender isBusiness];
         v26 = CKFrameworkBundle();
         v23 = v26;
-        if (v25)
+        if (isBusiness)
         {
           v27 = @"BIA_LEAVE_CONVERSATION";
         }
@@ -95,7 +95,7 @@
       goto LABEL_49;
     }
 
-    if (v20 == 1)
+    if (actionType == 1)
     {
       if ([(CKGroupActionChatItem *)self unattributed])
       {
@@ -106,7 +106,7 @@
       }
 
       v23 = CKFrameworkBundle();
-      if (v11)
+      if (sender)
       {
         v28 = @"GROUP_UPDATE_PHOTO_STATUS";
         goto LABEL_37;
@@ -118,7 +118,7 @@
     else
     {
       v97 = 0;
-      if (v20 != 2)
+      if (actionType != 2)
       {
         goto LABEL_52;
       }
@@ -135,7 +135,7 @@ LABEL_49:
       }
 
       v23 = CKFrameworkBundle();
-      if (v11)
+      if (sender)
       {
         v28 = @"GROUP_DELETE_PHOTO_STATUS";
         goto LABEL_37;
@@ -147,7 +147,7 @@ LABEL_49:
     goto LABEL_48;
   }
 
-  if (v20 == 4)
+  if (actionType == 4)
   {
     if ([(CKGroupActionChatItem *)self unattributed])
     {
@@ -158,7 +158,7 @@ LABEL_49:
     }
 
     v23 = CKFrameworkBundle();
-    if (v11)
+    if (sender)
     {
       v28 = @"GROUP_UPDATE_BACKGROUND_STATUS";
 LABEL_37:
@@ -176,10 +176,10 @@ LABEL_48:
     goto LABEL_49;
   }
 
-  if (v20 != 5)
+  if (actionType != 5)
   {
     v97 = 0;
-    if (v20 != 6)
+    if (actionType != 6)
     {
       goto LABEL_52;
     }
@@ -193,7 +193,7 @@ LABEL_48:
     }
 
     v23 = CKFrameworkBundle();
-    if (v11)
+    if (sender)
     {
       v28 = @"GROUP_DELETE_BACKGROUND_STATUS";
       goto LABEL_37;
@@ -213,7 +213,7 @@ LABEL_48:
 
   v35 = CKFrameworkBundle();
   v23 = v35;
-  if (!v11)
+  if (!sender)
   {
     v24 = @"GROUP_YOU_UPDATE_BACKGROUND_STATUS_SENSITIVE";
     goto LABEL_48;
@@ -229,13 +229,13 @@ LABEL_51:
 LABEL_52:
   v52 = 0x1E696A000;
   v96 = v19;
-  if (![(CKGroupActionChatItem *)v98 unattributed])
+  if (![(CKGroupActionChatItem *)selfCopy unattributed])
   {
     goto LABEL_57;
   }
 
-  v53 = [MEMORY[0x1E69A60F0] sharedInstance];
-  if ([v53 isInternalInstall])
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  if ([mEMORY[0x1E69A60F0] isInternalInstall])
   {
     v54 = IMGetDomainBoolForKey();
 
@@ -244,19 +244,19 @@ LABEL_52:
       goto LABEL_57;
     }
 
-    v53 = objc_alloc_init(MEMORY[0x1E696AD40]);
-    [v53 appendAttributedString:v97];
+    mEMORY[0x1E69A60F0] = objc_alloc_init(MEMORY[0x1E696AD40]);
+    [mEMORY[0x1E69A60F0] appendAttributedString:v97];
     v55 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:@"\n"];
-    [v53 appendAttributedString:v55];
+    [mEMORY[0x1E69A60F0] appendAttributedString:v55];
 
     v56 = CKFrameworkBundle();
     v57 = [v56 localizedStringForKey:@"GROUP_SYSTEM_DEBUG_STATUS" value:&stru_1F04268F8 table:@"ChatKit"];
     CKAttributedFormatString(v17, v96, v57, v58, v59, v60, v61, v62, v15);
-    v64 = v63 = v8;
-    [v53 appendAttributedString:v64];
+    v64 = v63 = transcriptGroupModificationErrorRegularFontAttributes;
+    [mEMORY[0x1E69A60F0] appendAttributedString:v64];
 
-    v8 = v63;
-    v65 = [v53 copy];
+    transcriptGroupModificationErrorRegularFontAttributes = v63;
+    v65 = [mEMORY[0x1E69A60F0] copy];
 
     v52 = 0x1E696A000uLL;
     v97 = v65;
@@ -264,27 +264,27 @@ LABEL_52:
 
 LABEL_57:
   v92 = v15;
-  v93 = v11;
+  v93 = sender;
   if (v21)
   {
     v99[0] = *MEMORY[0x1E69DB648];
     v66 = +[CKUIBehavior sharedBehaviors];
-    v67 = [v66 transcriptBoldFont];
-    v100[0] = v67;
+    transcriptBoldFont = [v66 transcriptBoldFont];
+    v100[0] = transcriptBoldFont;
     v99[1] = *MEMORY[0x1E69DB650];
     +[CKUIBehavior sharedBehaviors];
-    v69 = v68 = v8;
+    v69 = v68 = transcriptGroupModificationErrorRegularFontAttributes;
     [v69 theme];
-    v70 = v6;
+    v70 = transcriptEmphasizedFontAttributes;
     v72 = v71 = v52;
-    v73 = [v72 appTintColor];
-    v100[1] = v73;
+    appTintColor = [v72 appTintColor];
+    v100[1] = appTintColor;
     v74 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v100 forKeys:v99 count:2];
 
     v52 = v71;
-    v6 = v70;
+    transcriptEmphasizedFontAttributes = v70;
 
-    v8 = v68;
+    transcriptGroupModificationErrorRegularFontAttributes = v68;
     v75 = [objc_alloc(*(v52 + 2736)) initWithString:v21 attributes:v74];
     v76 = [objc_alloc(MEMORY[0x1E696AD40]) initWithAttributedString:v97];
     v77 = [objc_alloc(*(v52 + 2736)) initWithString:@" " attributes:v74];
@@ -299,21 +299,21 @@ LABEL_57:
     v78 = v97;
   }
 
-  if ([(CKGroupActionChatItem *)v98 failed])
+  if ([(CKGroupActionChatItem *)selfCopy failed])
   {
     v79 = MEMORY[0x1E69DCAD8];
     +[CKUIBehavior sharedBehaviors];
     v81 = v80 = v78;
-    v82 = [v81 transcriptLightFont];
-    v83 = [v79 configurationWithFont:v82];
+    transcriptLightFont = [v81 transcriptLightFont];
+    v83 = [v79 configurationWithFont:transcriptLightFont];
 
     v84 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"exclamationmark.circle" withConfiguration:v83];
-    v85 = [MEMORY[0x1E69DC888] redColor];
-    v86 = [v84 imageWithTintColor:v85];
+    redColor = [MEMORY[0x1E69DC888] redColor];
+    v86 = [v84 imageWithTintColor:redColor];
 
     v87 = objc_alloc_init(MEMORY[0x1E69DB7F0]);
     [v87 setImage:v86];
-    v88 = [MEMORY[0x1E696AD40] attributedStringWithAttachment:v87 attributes:v8];
+    v88 = [MEMORY[0x1E696AD40] attributedStringWithAttachment:v87 attributes:transcriptGroupModificationErrorRegularFontAttributes];
     v89 = [objc_alloc(*(v52 + 2736)) initWithString:@" "];
     [v88 appendAttributedString:v89];
 
@@ -331,34 +331,34 @@ LABEL_57:
 
 - (int64_t)actionType
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 actionType];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  actionType = [iMChatItem actionType];
 
-  return v3;
+  return actionType;
 }
 
 - (IMHandle)sender
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 sender];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  sender = [iMChatItem sender];
 
-  return v3;
+  return sender;
 }
 
 - (BOOL)failed
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 failed];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  failed = [iMChatItem failed];
 
-  return v3;
+  return failed;
 }
 
 - (BOOL)unattributed
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 unattributed];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  unattributed = [iMChatItem unattributed];
 
-  return v3;
+  return unattributed;
 }
 
 - (NSString)errorText
@@ -379,10 +379,10 @@ LABEL_57:
 
 - (NSArray)fileTransferGUIDs
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 fileTransferGUIDs];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  fileTransferGUIDs = [iMChatItem fileTransferGUIDs];
 
-  return v3;
+  return fileTransferGUIDs;
 }
 
 @end

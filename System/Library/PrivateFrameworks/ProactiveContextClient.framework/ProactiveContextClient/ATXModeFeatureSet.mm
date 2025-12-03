@@ -1,11 +1,11 @@
 @interface ATXModeFeatureSet
 - (ATXModeFeatureSet)init;
-- (ATXModeFeatureSet)initWithCoder:(id)a3;
-- (ATXModeFeatureSet)initWithDictionary:(id)a3;
+- (ATXModeFeatureSet)initWithCoder:(id)coder;
+- (ATXModeFeatureSet)initWithDictionary:(id)dictionary;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)_enumerateFeaturesUsingBlock:(id)a3;
-- (void)mergeWithFeatures:(id)a3;
+- (void)_enumerateFeaturesUsingBlock:(id)block;
+- (void)mergeWithFeatures:(id)features;
 @end
 
 @implementation ATXModeFeatureSet
@@ -27,15 +27,15 @@
   return v2;
 }
 
-- (ATXModeFeatureSet)initWithDictionary:(id)a3
+- (ATXModeFeatureSet)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = ATXModeFeatureSet;
   v5 = [(ATXModeFeatureSet *)&v10 init];
   if (v5)
   {
-    v6 = [v4 mutableCopy];
+    v6 = [dictionaryCopy mutableCopy];
     features = v5->_features;
     v5->_features = v6;
 
@@ -45,16 +45,16 @@
   return v5;
 }
 
-- (void)_enumerateFeaturesUsingBlock:(id)a3
+- (void)_enumerateFeaturesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   features = self->_features;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__ATXModeFeatureSet__enumerateFeaturesUsingBlock___block_invoke;
   v7[3] = &unk_279AB8290;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(NSMutableDictionary *)features enumerateKeysAndObjectsUsingBlock:v7];
 }
 
@@ -65,14 +65,14 @@ void __50__ATXModeFeatureSet__enumerateFeaturesUsingBlock___block_invoke(uint64_
   (*(v6 + 16))(v6, [a2 intValue], v7, a4);
 }
 
-- (void)mergeWithFeatures:(id)a3
+- (void)mergeWithFeatures:(id)features
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __39__ATXModeFeatureSet_mergeWithFeatures___block_invoke;
   v3[3] = &unk_279AB82B8;
   v3[4] = self;
-  [a3 _enumerateFeaturesUsingBlock:v3];
+  [features _enumerateFeaturesUsingBlock:v3];
 }
 
 void __39__ATXModeFeatureSet_mergeWithFeatures___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -143,39 +143,39 @@ void __45__ATXModeFeatureSet_dictionaryRepresentation__block_invoke(uint64_t a1,
 - (id)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(ATXModeFeatureSet *)self dictionaryRepresentation];
-  v4 = [v2 stringWithFormat:@"%@", v3];
+  dictionaryRepresentation = [(ATXModeFeatureSet *)self dictionaryRepresentation];
+  v4 = [v2 stringWithFormat:@"%@", dictionaryRepresentation];
 
   return v4;
 }
 
-- (ATXModeFeatureSet)initWithCoder:(id)a3
+- (ATXModeFeatureSet)initWithCoder:(id)coder
 {
   v30[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x277CBEB98];
   v6 = objc_opt_class();
   v7 = objc_opt_class();
   v8 = objc_opt_class();
   v9 = [v5 setWithObjects:{v6, v7, v8, objc_opt_class(), 0}];
-  v10 = [v4 decodeObjectOfClasses:v9 forKey:@"fs"];
+  v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"fs"];
 
   if (!v10)
   {
-    v12 = [v4 error];
+    error = [coderCopy error];
 
-    if (v12)
+    if (error)
     {
       v13 = __atxlog_handle_modes();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        [(ATXModeFeatureSet *)v4 initWithCoder:v13];
+        [(ATXModeFeatureSet *)coderCopy initWithCoder:v13];
       }
 
       goto LABEL_10;
     }
 
-    v22 = [v4 containsValueForKey:@"fs"];
+    v22 = [coderCopy containsValueForKey:@"fs"];
     v23 = objc_alloc(MEMORY[0x277CCA9B8]);
     v24 = *MEMORY[0x277CCA450];
     if (v22)
@@ -201,9 +201,9 @@ void __45__ATXModeFeatureSet_dictionaryRepresentation__block_invoke(uint64_t a1,
 LABEL_9:
     v19 = [v17 initWithDomain:@"com.apple.duetexpertd.modes" code:v18 userInfo:v16];
 
-    [v4 failWithError:v19];
+    [coderCopy failWithError:v19];
 LABEL_10:
-    v11 = 0;
+    selfCopy = 0;
     goto LABEL_11;
   }
 
@@ -221,11 +221,11 @@ LABEL_10:
   }
 
   self = [(ATXModeFeatureSet *)self initWithDictionary:v10];
-  v11 = self;
+  selfCopy = self;
 LABEL_11:
 
   v20 = *MEMORY[0x277D85DE8];
-  return v11;
+  return selfCopy;
 }
 
 - (void)initWithCoder:(void *)a1 .cold.1(void *a1, NSObject *a2)

@@ -1,33 +1,33 @@
 @interface PKPassShareSelectDateSectionController
-- (PKPassShareSelectDateSectionController)initWithDate:(id)a3 minimumDate:(id)a4 maximumDate:(id)a5 delegate:(id)a6;
+- (PKPassShareSelectDateSectionController)initWithDate:(id)date minimumDate:(id)minimumDate maximumDate:(id)maximumDate delegate:(id)delegate;
 - (PKPassShareSelectDateSectionControllerDelegate)delegate;
-- (id)cellRegistrationForItem:(id)a3;
-- (id)decorateListCell:(id)a3 forScheduleRowItem:(id)a4;
-- (void)_setDate:(id)a3;
-- (void)_setSelected:(id)a3;
-- (void)decorateCalendarCell:(id)a3;
-- (void)didSelectItem:(id)a3;
-- (void)reloadItemsAnimated:(BOOL)a3;
+- (id)cellRegistrationForItem:(id)item;
+- (id)decorateListCell:(id)cell forScheduleRowItem:(id)item;
+- (void)_setDate:(id)date;
+- (void)_setSelected:(id)selected;
+- (void)decorateCalendarCell:(id)cell;
+- (void)didSelectItem:(id)item;
+- (void)reloadItemsAnimated:(BOOL)animated;
 @end
 
 @implementation PKPassShareSelectDateSectionController
 
-- (PKPassShareSelectDateSectionController)initWithDate:(id)a3 minimumDate:(id)a4 maximumDate:(id)a5 delegate:(id)a6
+- (PKPassShareSelectDateSectionController)initWithDate:(id)date minimumDate:(id)minimumDate maximumDate:(id)maximumDate delegate:(id)delegate
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  dateCopy = date;
+  minimumDateCopy = minimumDate;
+  maximumDateCopy = maximumDate;
+  delegateCopy = delegate;
   v18.receiver = self;
   v18.super_class = PKPassShareSelectDateSectionController;
   v15 = [(PKPassShareSectionController *)&v18 initWithIdentifiers:&unk_1F3CC8420];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_date, a3);
-    objc_storeStrong(&v16->_minimumDate, a4);
-    objc_storeStrong(&v16->_maximumDate, a5);
-    objc_storeWeak(&v16->_delegate, v14);
+    objc_storeStrong(&v15->_date, date);
+    objc_storeStrong(&v16->_minimumDate, minimumDate);
+    objc_storeStrong(&v16->_maximumDate, maximumDate);
+    objc_storeWeak(&v16->_delegate, delegateCopy);
     v16->_selected = v16->_date != 0;
     [(PKPassShareSelectDateSectionController *)v16 reloadItemsAnimated:0];
   }
@@ -35,9 +35,9 @@
   return v16;
 }
 
-- (void)reloadItemsAnimated:(BOOL)a3
+- (void)reloadItemsAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v14 = objc_alloc_init(MEMORY[0x1E695DF70]);
   date = self->_date;
   v6 = [PKPassShareScheduleRowItem alloc];
@@ -63,25 +63,25 @@
 
   [(PKPaymentSetupListSectionController *)self setItems:v14];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained reloadDataAnimated:v3];
+  [WeakRetained reloadDataAnimated:animatedCopy];
 }
 
-- (void)_setDate:(id)a3
+- (void)_setDate:(id)date
 {
-  v6 = a3;
+  dateCopy = date;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_date, a3);
+    objc_storeStrong(&self->_date, date);
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained didUpdateDate:self->_date];
   }
 }
 
-- (void)_setSelected:(id)a3
+- (void)_setSelected:(id)selected
 {
-  v4 = [a3 identifier];
-  v7 = v4;
-  if (v4 == @"StartDateRow" || v4 && (v5 = [(__CFString *)v4 isEqualToString:@"StartDateRow"], v7, v5))
+  identifier = [selected identifier];
+  v7 = identifier;
+  if (identifier == @"StartDateRow" || identifier && (v5 = [(__CFString *)identifier isEqualToString:@"StartDateRow"], v7, v5))
   {
     [(PKPassShareSelectDateSectionController *)self _setDate:0];
   }
@@ -95,12 +95,12 @@
   [(PKPassShareSelectDateSectionController *)self reloadItemsAnimated:1];
 }
 
-- (id)cellRegistrationForItem:(id)a3
+- (id)cellRegistrationForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_initWeak(&location, self);
-  v5 = [v4 identifier];
-  if (v5 == @"CalendarRow" || (v6 = v5) != 0 && (v7 = [(__CFString *)v5 isEqualToString:@"CalendarRow"], v6, v6, v7))
+  identifier = [itemCopy identifier];
+  if (identifier == @"CalendarRow" || (v6 = identifier) != 0 && (v7 = [(__CFString *)identifier isEqualToString:@"CalendarRow"], v6, v6, v7))
   {
     v8 = MEMORY[0x1E69DC800];
     v9 = objc_opt_class();
@@ -156,52 +156,52 @@ void __66__PKPassShareSelectDateSectionController_cellRegistrationForItem___bloc
   }
 }
 
-- (void)didSelectItem:(id)a3
+- (void)didSelectItem:(id)item
 {
-  [(PKPassShareSelectDateSectionController *)self _setSelected:a3];
+  [(PKPassShareSelectDateSectionController *)self _setSelected:item];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained deselectCells];
 }
 
-- (void)decorateCalendarCell:(id)a3
+- (void)decorateCalendarCell:(id)cell
 {
   v4 = MEMORY[0x1E69DC888];
-  v6 = a3;
-  v5 = [v4 secondarySystemBackgroundColor];
-  [v6 setBackgroundColor:v5];
+  cellCopy = cell;
+  secondarySystemBackgroundColor = [v4 secondarySystemBackgroundColor];
+  [cellCopy setBackgroundColor:secondarySystemBackgroundColor];
 
-  [v6 setDate:self->_date];
-  [v6 setMinimumDate:self->_minimumDate];
-  [v6 setMaximumDate:self->_maximumDate];
+  [cellCopy setDate:self->_date];
+  [cellCopy setMinimumDate:self->_minimumDate];
+  [cellCopy setMaximumDate:self->_maximumDate];
 }
 
-- (id)decorateListCell:(id)a3 forScheduleRowItem:(id)a4
+- (id)decorateListCell:(id)cell forScheduleRowItem:(id)item
 {
   v14[1] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E69DCC28];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 subtitleCellConfiguration];
-  v9 = [v6 title];
-  [v8 setText:v9];
+  itemCopy = item;
+  cellCopy = cell;
+  subtitleCellConfiguration = [v5 subtitleCellConfiguration];
+  title = [itemCopy title];
+  [subtitleCellConfiguration setText:title];
 
   v10 = objc_alloc_init(MEMORY[0x1E69DC788]);
   [v10 setReservedLayoutWidth:*MEMORY[0x1E69DDBF8]];
-  v11 = [v6 isOn];
+  isOn = [itemCopy isOn];
 
-  if ((v11 & 1) == 0)
+  if ((isOn & 1) == 0)
   {
     [v10 setHidden:1];
   }
 
   v14[0] = v10;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-  [v7 setAccessories:v12];
+  [cellCopy setAccessories:v12];
 
-  [v7 setConfigurationUpdateHandler:&__block_literal_global_107];
-  [v7 setContentConfiguration:v8];
+  [cellCopy setConfigurationUpdateHandler:&__block_literal_global_107];
+  [cellCopy setContentConfiguration:subtitleCellConfiguration];
 
-  return v8;
+  return subtitleCellConfiguration;
 }
 
 void __78__PKPassShareSelectDateSectionController_decorateListCell_forScheduleRowItem___block_invoke(uint64_t a1, void *a2, void *a3)

@@ -1,39 +1,39 @@
 @interface AXRUIContinuousTextView.Coordinator
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (void)handleTap:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (void)handleTap:(id)tap;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
 @end
 
 @implementation AXRUIContinuousTextView.Coordinator
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v4 = a3;
-  v5 = self;
-  sub_23D873550(v4);
+  draggingCopy = dragging;
+  selfCopy = self;
+  sub_23D873550(draggingCopy);
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
-  sub_23D873754(v4);
+  scrollCopy = scroll;
+  selfCopy = self;
+  sub_23D873754(scrollCopy);
 }
 
-- (void)handleTap:(id)a3
+- (void)handleTap:(id)tap
 {
-  v4 = a3;
-  v5 = self;
-  sub_23D874470(v4);
+  tapCopy = tap;
+  selfCopy = self;
+  sub_23D874470(tapCopy);
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_23D878EA8(v7);
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  selfCopy = self;
+  v9 = sub_23D878EA8(touchCopy);
 
   return v9 & 1;
 }

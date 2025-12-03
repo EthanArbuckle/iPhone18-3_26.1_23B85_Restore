@@ -1,12 +1,12 @@
 @interface KTOptIOValidator
 - (_TtC13transparencyd16KTOptIOValidator)init;
-- (_TtC13transparencyd16KTOptIOValidator)initWithOptInRecords:(id)a3 uriToSMT:(id)a4;
-- (id)urisNeedOptInApplication:(id)a3 error:(id *)a4;
+- (_TtC13transparencyd16KTOptIOValidator)initWithOptInRecords:(id)records uriToSMT:(id)t;
+- (id)urisNeedOptInApplication:(id)application error:(id *)error;
 @end
 
 @implementation KTOptIOValidator
 
-- (_TtC13transparencyd16KTOptIOValidator)initWithOptInRecords:(id)a3 uriToSMT:(id)a4
+- (_TtC13transparencyd16KTOptIOValidator)initWithOptInRecords:(id)records uriToSMT:(id)t
 {
   sub_100151DDC();
   v5 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -23,10 +23,10 @@
   return [(KTOptIOValidator *)&v9 init];
 }
 
-- (id)urisNeedOptInApplication:(id)a3 error:(id *)a4
+- (id)urisNeedOptInApplication:(id)application error:(id *)error
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = self;
+  selfCopy = self;
   KTOptIOValidator.urisNeedOptIn(application:)();
 
   v6.super.isa = Array._bridgeToObjectiveC()().super.isa;

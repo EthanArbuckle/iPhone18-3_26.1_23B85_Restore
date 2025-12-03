@@ -1,9 +1,9 @@
 @interface STUIStatusBarRegionAxisSquishyLayout
 - (STUIStatusBarRegionAxisSquishyLayout)init;
 - (STUIStatusBarRegionAxisSquishyLayoutDynamicHidingDelegate)dynamicHidingDelegate;
-- (id)constraintsForDisplayItems:(id)a3 layoutGuides:(id)a4 inContainerItem:(id)a5 axis:(int64_t)a6;
-- (void)setMinInterspaceDynamicScale:(double)a3;
-- (void)setMinItemDynamicScale:(double)a3;
+- (id)constraintsForDisplayItems:(id)items layoutGuides:(id)guides inContainerItem:(id)item axis:(int64_t)axis;
+- (void)setMinInterspaceDynamicScale:(double)scale;
+- (void)setMinItemDynamicScale:(double)scale;
 @end
 
 @implementation STUIStatusBarRegionAxisSquishyLayout
@@ -21,33 +21,33 @@
   return result;
 }
 
-- (void)setMinItemDynamicScale:(double)a3
+- (void)setMinItemDynamicScale:(double)scale
 {
-  v3 = fmax(fmin(a3, 1.0), 0.0);
+  v3 = fmax(fmin(scale, 1.0), 0.0);
   if (v3 != self->_minItemDynamicScale)
   {
     self->_minItemDynamicScale = v3;
   }
 }
 
-- (void)setMinInterspaceDynamicScale:(double)a3
+- (void)setMinInterspaceDynamicScale:(double)scale
 {
-  v3 = fmax(fmin(a3, 1.0), 0.0);
+  v3 = fmax(fmin(scale, 1.0), 0.0);
   if (v3 != self->_minInterspaceDynamicScale)
   {
     self->_minInterspaceDynamicScale = v3;
   }
 }
 
-- (id)constraintsForDisplayItems:(id)a3 layoutGuides:(id)a4 inContainerItem:(id)a5 axis:(int64_t)a6
+- (id)constraintsForDisplayItems:(id)items layoutGuides:(id)guides inContainerItem:(id)item axis:(int64_t)axis
 {
-  v10 = a3;
-  v51 = a4;
-  v53 = a5;
-  v11 = [MEMORY[0x277CBEB18] array];
+  itemsCopy = items;
+  guidesCopy = guides;
+  itemCopy = item;
+  array = [MEMORY[0x277CBEB18] array];
   alignment = self->_alignment;
-  v50 = v11;
-  if (a6 == 1)
+  v50 = array;
+  if (axis == 1)
   {
     v13 = 0;
     if (alignment <= 3)
@@ -79,13 +79,13 @@
     }
 
 LABEL_15:
-    v49 = 8 * (a6 == 1);
+    v49 = 8 * (axis == 1);
     v55 = 3;
     v13 = 4;
     goto LABEL_27;
   }
 
-  if (a6)
+  if (axis)
   {
     goto LABEL_15;
   }
@@ -128,8 +128,8 @@ LABEL_22:
   }
 
 LABEL_24:
-  v14 = 8 * (a6 == 1);
-  if (!a6)
+  v14 = 8 * (axis == 1);
+  if (!axis)
   {
     v14 = 7;
   }
@@ -166,13 +166,13 @@ LABEL_27:
 
   if ((alignment | 2) == 6)
   {
-    v19 = [v10 reverseObjectEnumerator];
-    v20 = [v19 allObjects];
+    reverseObjectEnumerator = [itemsCopy reverseObjectEnumerator];
+    allObjects = [reverseObjectEnumerator allObjects];
 
-    v10 = v20;
+    itemsCopy = allObjects;
   }
 
-  v21 = v10;
+  v21 = itemsCopy;
   if ([(NSSet *)self->_dynamicallyHiddenIdentifiers count])
   {
     v75[0] = MEMORY[0x277D85DD0];
@@ -231,7 +231,7 @@ LABEL_27:
   v30 = v24;
   v65 = v16;
   v57 = v30;
-  v58 = self;
+  selfCopy = self;
   v62 = v72;
   v63 = v71;
   v31 = v50;
@@ -241,22 +241,22 @@ LABEL_27:
   v69 = v49;
   v59 = v31;
   v64 = v73;
-  v32 = v51;
+  v32 = guidesCopy;
   v60 = v32;
-  v33 = v53;
+  v33 = itemCopy;
   v61 = v33;
   v70 = itemDynamicScale;
   [v21 enumerateObjectsUsingBlock:v56];
   if ([v30 count])
   {
-    v34 = [v30 firstObject];
-    v54 = [v34 layoutItem];
+    firstObject = [v30 firstObject];
+    layoutItem = [firstObject layoutItem];
     v52 = v32;
 
-    v35 = [v30 lastObject];
-    v36 = [v35 layoutItem];
+    lastObject = [v30 lastObject];
+    layoutItem2 = [lastObject layoutItem];
 
-    if (a6 == 1)
+    if (axis == 1)
     {
       v37 = 10;
     }
@@ -267,10 +267,10 @@ LABEL_27:
     }
 
     v38 = objc_alloc_init(MEMORY[0x277D756D0]);
-    v39 = [MEMORY[0x277CCAAD0] constraintWithItem:v38 attribute:v13 relatedBy:0 toItem:v54 attribute:v13 multiplier:1.0 constant:0.0];
+    v39 = [MEMORY[0x277CCAAD0] constraintWithItem:v38 attribute:v13 relatedBy:0 toItem:layoutItem attribute:v13 multiplier:1.0 constant:0.0];
     [v31 addObject:v39];
 
-    v40 = [MEMORY[0x277CCAAD0] constraintWithItem:v38 attribute:v55 relatedBy:0 toItem:v36 attribute:v55 multiplier:1.0 constant:0.0];
+    v40 = [MEMORY[0x277CCAAD0] constraintWithItem:v38 attribute:v55 relatedBy:0 toItem:layoutItem2 attribute:v55 multiplier:1.0 constant:0.0];
     [v31 addObject:v40];
 
     v41 = [MEMORY[0x277CCAAD0] constraintWithItem:v38 attribute:v37 relatedBy:0 toItem:v33 attribute:v37 multiplier:1.0 constant:(1.0 - v15) * (v16 * self->_interspace)];
@@ -287,7 +287,7 @@ LABEL_27:
       v42 = 1;
     }
 
-    v43 = [MEMORY[0x277CCAAD0] constraintWithItem:v36 attribute:v55 relatedBy:v42 toItem:v33 attribute:v55 multiplier:? constant:?];
+    v43 = [MEMORY[0x277CCAAD0] constraintWithItem:layoutItem2 attribute:v55 relatedBy:v42 toItem:v33 attribute:v55 multiplier:? constant:?];
     LODWORD(v44) = 1111752704;
     [v43 setPriority:v44];
     [v31 addObject:v43];

@@ -12,7 +12,7 @@
 
 - (id)title
 {
-  v1 = [a1 category];
+  category = [self category];
   v2 = HKDiagnosticTestResultCategoryFromNSString();
 
   if (v2 == *MEMORY[0x1E696B790])
@@ -39,10 +39,10 @@ LABEL_7:
 
 - (id)codings
 {
-  v1 = [a1 diagnosticTestCodingCollection];
-  v2 = [v1 codings];
+  diagnosticTestCodingCollection = [self diagnosticTestCodingCollection];
+  codings = [diagnosticTestCodingCollection codings];
 
-  return v2;
+  return codings;
 }
 
 - (void)fetchDetailItemsWithHealthRecordsStore:()Displayable conceptStore:completion:
@@ -54,11 +54,11 @@ LABEL_7:
   v12[2] = __102__HKDiagnosticTestResult_Displayable__fetchDetailItemsWithHealthRecordsStore_conceptStore_completion___block_invoke;
   v12[3] = &unk_1E83DCE28;
   v13 = v8;
-  v14 = a1;
+  selfCopy = self;
   v15 = v9;
   v10 = v9;
   v11 = v8;
-  [a1 _displayItemsForValuePreferedStyle:2 healthRecordsStore:a3 signedClinicalDataRecord:0 completion:v12];
+  [self _displayItemsForValuePreferedStyle:2 healthRecordsStore:a3 signedClinicalDataRecord:0 completion:v12];
 }
 
 - (void)fetchObservationDetailItemsWithHealthRecordsStore:()Displayable style:completion:
@@ -69,13 +69,13 @@ LABEL_7:
   v12[1] = 3221225472;
   v12[2] = __106__HKDiagnosticTestResult_Displayable__fetchObservationDetailItemsWithHealthRecordsStore_style_completion___block_invoke;
   v12[3] = &unk_1E83DCE50;
-  v12[4] = a1;
+  v12[4] = self;
   v13 = v8;
   v14 = v9;
   v15 = a4;
   v10 = v9;
   v11 = v8;
-  [a1 fetchCorrespondingSignedClinicalDataRecordWithHealthRecordsStore:v11 completion:v12];
+  [self fetchCorrespondingSignedClinicalDataRecordWithHealthRecordsStore:v11 completion:v12];
 }
 
 - (void)_displayItemsForValuePreferedStyle:()Displayable healthRecordsStore:signedClinicalDataRecord:completion:
@@ -83,17 +83,17 @@ LABEL_7:
   v10 = a4;
   v11 = a5;
   v12 = a6;
-  v13 = [a1 value];
-  v14 = [v13 inspectableValue];
-  v15 = [v14 codedValueCollection];
-  v16 = [v15 canonicalBloodPressureDisplay];
+  value = [self value];
+  inspectableValue = [value inspectableValue];
+  codedValueCollection = [inspectableValue codedValueCollection];
+  canonicalBloodPressureDisplay = [codedValueCollection canonicalBloodPressureDisplay];
 
-  v17 = [a1 primaryConcept];
-  v18 = [v17 groupByConcept];
-  v19 = [v18 chartsBloodPressure];
-  if (v16)
+  primaryConcept = [self primaryConcept];
+  groupByConcept = [primaryConcept groupByConcept];
+  chartsBloodPressure = [groupByConcept chartsBloodPressure];
+  if (canonicalBloodPressureDisplay)
   {
-    v20 = v19;
+    v20 = chartsBloodPressure;
   }
 
   else
@@ -101,13 +101,13 @@ LABEL_7:
     v20 = 0;
   }
 
-  v21 = [a1 value];
-  v22 = [v21 inspectableValue];
-  v23 = [v22 valueType];
+  value2 = [self value];
+  inspectableValue2 = [value2 inspectableValue];
+  valueType = [inspectableValue2 valueType];
 
-  v24 = [a1 value];
-  v25 = v24;
-  if (v23 != 8 || (v20 & 1) != 0)
+  value3 = [self value];
+  v25 = value3;
+  if (valueType != 8 || (v20 & 1) != 0)
   {
 
     if (v25)
@@ -115,21 +115,21 @@ LABEL_7:
       v28 = a3;
       v29 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v33 = MEMORY[0x1E696C200];
-      v30 = [a1 value];
-      v31 = [a1 referenceRanges];
+      value4 = [self value];
+      referenceRanges = [self referenceRanges];
       v34[0] = MEMORY[0x1E69E9820];
       v34[1] = 3221225472;
       v34[2] = __129__HKDiagnosticTestResult_Displayable___displayItemsForValuePreferedStyle_healthRecordsStore_signedClinicalDataRecord_completion___block_invoke;
       v34[3] = &unk_1E83DCE78;
       v41 = v20;
       v40 = v28;
-      v35 = v16;
-      v36 = a1;
+      v35 = canonicalBloodPressureDisplay;
+      selfCopy = self;
       v37 = v11;
       v38 = v29;
       v39 = v12;
       v32 = v29;
-      [v33 parseValueCollection:v30 referenceRanges:v31 healthRecordsStore:v10 withCompletion:v34];
+      [v33 parseValueCollection:value4 referenceRanges:referenceRanges healthRecordsStore:v10 withCompletion:v34];
     }
 
     else
@@ -140,9 +140,9 @@ LABEL_7:
 
   else
   {
-    v26 = [v24 inspectableValue];
-    v27 = [v26 codedValueCollection];
-    [a1 _displayItemsForCodedValueCollection:v27 healthRecordsStore:v10 preferredStyle:a3 signedClinicalDataRecord:v11 completion:v12];
+    inspectableValue3 = [value3 inspectableValue];
+    codedValueCollection2 = [inspectableValue3 codedValueCollection];
+    [self _displayItemsForCodedValueCollection:codedValueCollection2 healthRecordsStore:v10 preferredStyle:a3 signedClinicalDataRecord:v11 completion:v12];
   }
 }
 
@@ -152,28 +152,28 @@ LABEL_7:
   v12 = a6;
   v13 = MEMORY[0x1E695DF70];
   v14 = a7;
-  v15 = [v13 array];
-  v16 = [v11 codedValues];
+  array = [v13 array];
+  codedValues = [v11 codedValues];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __146__HKDiagnosticTestResult_Displayable___displayItemsForCodedValueCollection_healthRecordsStore_preferredStyle_signedClinicalDataRecord_completion___block_invoke;
   v20[3] = &unk_1E83DCEC8;
-  v24 = v15;
+  v24 = array;
   v25 = a5;
   v21 = v11;
-  v22 = a1;
+  selfCopy = self;
   v23 = v12;
-  v17 = v15;
+  v17 = array;
   v18 = v12;
   v19 = v11;
-  [v16 enumerateObjectsUsingBlock:v20];
+  [codedValues enumerateObjectsUsingBlock:v20];
 
   v14[2](v14, v17);
 }
 
 - (id)titleDisplayStringForDetailViewController
 {
-  v1 = [a1 category];
+  category = [self category];
   v2 = HKDiagnosticTestResultCategoryFromNSString();
 
   if (v2 == *MEMORY[0x1E696B798])

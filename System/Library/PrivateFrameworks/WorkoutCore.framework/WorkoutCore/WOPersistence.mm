@@ -7,8 +7,8 @@
 - (uint64_t):(@guaranteed [WOPersistence :(@guaranteed)Error? )[WOPersistence]]?
 {
   v4 = a2;
-  v6 = *(a1 + 32);
-  v5 = *(a1 + 40);
+  v6 = *(self + 32);
+  v5 = *(self + 40);
   if (a2)
   {
     type metadata accessor for NSNumber(0, &lazy cache variable for type metadata for WOPersistence, 0x277D7E7E8);

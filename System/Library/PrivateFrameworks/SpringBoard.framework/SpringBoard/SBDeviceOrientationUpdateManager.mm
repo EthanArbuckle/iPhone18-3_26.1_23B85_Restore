@@ -1,16 +1,16 @@
 @interface SBDeviceOrientationUpdateManager
-- (BOOL)_deviceOrientationUpdateNeededForOrientation:(int64_t)a3;
+- (BOOL)_deviceOrientationUpdateNeededForOrientation:(int64_t)orientation;
 - (SBDeviceOrientationUpdateManager)init;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)deviceOrientationUpdateDeferralAssertionWithReason:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)deviceOrientationUpdateDeferralAssertionWithReason:(id)reason;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (void)_endDeferringOrientationUpdatesForAssertion:(id)a3;
-- (void)_enqueueOrientationUpdateToDeviceOrientation:(int64_t)a3;
-- (void)_legacy_enqueueOrientationUpdateToDeviceOrientation:(int64_t)a3 source:(id)a4;
+- (void)_endDeferringOrientationUpdatesForAssertion:(id)assertion;
+- (void)_enqueueOrientationUpdateToDeviceOrientation:(int64_t)orientation;
+- (void)_legacy_enqueueOrientationUpdateToDeviceOrientation:(int64_t)orientation source:(id)source;
 - (void)dealloc;
-- (void)setLastUpdatedDeviceOrientation:(int64_t)a3;
+- (void)setLastUpdatedDeviceOrientation:(int64_t)orientation;
 @end
 
 @implementation SBDeviceOrientationUpdateManager
@@ -22,9 +22,9 @@
   v2 = [(SBDeviceOrientationUpdateManager *)&v11 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     deferralAssertions = v2->_deferralAssertions;
-    v2->_deferralAssertions = v3;
+    v2->_deferralAssertions = weakObjectsHashTable;
 
     objc_initWeak(&location, v2);
     v5 = MEMORY[0x277D85CD0];
@@ -56,17 +56,17 @@ id __40__SBDeviceOrientationUpdateManager_init__block_invoke(uint64_t a1)
   [(SBDeviceOrientationUpdateManager *)&v3 dealloc];
 }
 
-- (void)setLastUpdatedDeviceOrientation:(int64_t)a3
+- (void)setLastUpdatedDeviceOrientation:(int64_t)orientation
 {
   v15 = *MEMORY[0x277D85DE8];
-  if (self->_lastUpdatedDeviceOrientation != a3)
+  if (self->_lastUpdatedDeviceOrientation != orientation)
   {
-    self->_lastUpdatedDeviceOrientation = a3;
+    self->_lastUpdatedDeviceOrientation = orientation;
     self->_deviceOrientationIsDirty = 1;
     if ([(SBDeviceOrientationUpdateManager *)self _deviceOrientationUpdateNeededForOrientation:?])
     {
 
-      [(SBDeviceOrientationUpdateManager *)self _enqueueOrientationUpdateToDeviceOrientation:a3];
+      [(SBDeviceOrientationUpdateManager *)self _enqueueOrientationUpdateToDeviceOrientation:orientation];
     }
 
     else
@@ -98,53 +98,53 @@ id __40__SBDeviceOrientationUpdateManager_init__block_invoke(uint64_t a1)
   }
 }
 
-- (id)deviceOrientationUpdateDeferralAssertionWithReason:(id)a3
+- (id)deviceOrientationUpdateDeferralAssertionWithReason:(id)reason
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonCopy = reason;
   v5 = BKLogOrientationGlobal();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543362;
-    v10 = v4;
+    v10 = reasonCopy;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "Deferring device orientation updates for reason: %{public}@", &v9, 0xCu);
   }
 
-  v6 = [[SBDeviceOrientationUpdateDeferralAssertion alloc] initWithReason:v4];
+  v6 = [[SBDeviceOrientationUpdateDeferralAssertion alloc] initWithReason:reasonCopy];
   [(SBDeviceOrientationUpdateDeferralAssertion *)v6 _setHackyBackReference:self];
   [(NSHashTable *)self->_deferralAssertions addObject:v6];
   if (SBTraitsArbiterOrientationActuationEnabledForRole(@"SBTraitsParticipantRolePipelineManager"))
   {
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 postNotificationName:@"SBDeviceOrientationUpdateManager-DeferralAssertionAcquired" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"SBDeviceOrientationUpdateManager-DeferralAssertionAcquired" object:0];
   }
 
   return v6;
 }
 
-- (void)_endDeferringOrientationUpdatesForAssertion:(id)a3
+- (void)_endDeferringOrientationUpdatesForAssertion:(id)assertion
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 reason];
+  assertionCopy = assertion;
+  reason = [assertionCopy reason];
   v6 = BKLogOrientationGlobal();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138543362;
-    v13 = v5;
+    v13 = reason;
     _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "Resuming device orientation updates for reason: %{public}@", &v12, 0xCu);
   }
 
   lastUpdatedDeviceOrientation = self->_lastUpdatedDeviceOrientation;
-  v8 = [(NSHashTable *)self->_deferralAssertions containsObject:v4];
-  [(NSHashTable *)self->_deferralAssertions removeObject:v4];
+  v8 = [(NSHashTable *)self->_deferralAssertions containsObject:assertionCopy];
+  [(NSHashTable *)self->_deferralAssertions removeObject:assertionCopy];
 
   if (SBTraitsArbiterOrientationActuationEnabledForRole(@"SBTraitsParticipantRolePipelineManager"))
   {
     if (v8 && ![(NSHashTable *)self->_deferralAssertions count])
     {
-      v9 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v9 postNotificationName:@"SBDeviceOrientationUpdateManager-HasNoActiveDeferralAssertions" object:0];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter postNotificationName:@"SBDeviceOrientationUpdateManager-HasNoActiveDeferralAssertions" object:0];
     }
   }
 
@@ -155,7 +155,7 @@ id __40__SBDeviceOrientationUpdateManager_init__block_invoke(uint64_t a1)
     {
       v11 = BSDeviceOrientationDescription();
       v12 = 138543618;
-      v13 = v5;
+      v13 = reason;
       v14 = 2114;
       v15 = v11;
       _os_log_impl(&dword_21ED4E000, v10, OS_LOG_TYPE_INFO, "%{public}@ was the last reason, schdeuling update to: %{public}@.", &v12, 0x16u);
@@ -165,16 +165,16 @@ id __40__SBDeviceOrientationUpdateManager_init__block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)_deviceOrientationUpdateNeededForOrientation:(int64_t)a3
+- (BOOL)_deviceOrientationUpdateNeededForOrientation:(int64_t)orientation
 {
   v5 = +[SBOrientationLockManager sharedInstance];
   if ([v5 isUserLocked])
   {
-    v6 = [MEMORY[0x277D75418] currentDevice];
-    v7 = [v6 orientation];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    orientation = [currentDevice orientation];
 
-    v8 = [v5 userLockOrientation];
-    v9 = v7 != v8 && v8 == a3;
+    userLockOrientation = [v5 userLockOrientation];
+    v9 = orientation != userLockOrientation && userLockOrientation == orientation;
   }
 
   else
@@ -194,21 +194,21 @@ LABEL_11:
   return v10;
 }
 
-- (void)_enqueueOrientationUpdateToDeviceOrientation:(int64_t)a3
+- (void)_enqueueOrientationUpdateToDeviceOrientation:(int64_t)orientation
 {
   if ((SBTraitsArbiterOrientationActuationEnabledForRole(@"SBTraitsParticipantRolePipelineManager") & 1) == 0)
   {
     v5 = objc_opt_class();
     v6 = NSStringFromClass(v5);
-    [(SBDeviceOrientationUpdateManager *)self _legacy_enqueueOrientationUpdateToDeviceOrientation:a3 source:v6];
+    [(SBDeviceOrientationUpdateManager *)self _legacy_enqueueOrientationUpdateToDeviceOrientation:orientation source:v6];
   }
 }
 
-- (void)_legacy_enqueueOrientationUpdateToDeviceOrientation:(int64_t)a3 source:(id)a4
+- (void)_legacy_enqueueOrientationUpdateToDeviceOrientation:(int64_t)orientation source:(id)source
 {
   v21 = *MEMORY[0x277D85DE8];
   v6 = ++_legacy_enqueueOrientationUpdateToDeviceOrientation_source____deviceOrientationChangeCount;
-  v7 = a4;
+  sourceCopy = source;
   v8 = BKLogOrientationDevice();
   if (os_signpost_enabled(v8))
   {
@@ -220,21 +220,21 @@ LABEL_11:
     _os_signpost_emit_with_name_impl(&dword_21ED4E000, v8, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "SB_ROTATION_DEVICE_ORIENTATION_UPDATE_ENQUEUE", "change #%ld, deviceOrientation: %{public}@", buf, 0x16u);
   }
 
-  v10 = [MEMORY[0x277D0AB20] sharedInstance];
+  mEMORY[0x277D0AB20] = [MEMORY[0x277D0AB20] sharedInstance];
   v11 = MEMORY[0x277D0AB18];
   v12 = MEMORY[0x277CCACA8];
   v13 = BSDeviceOrientationDescription();
-  v14 = [v12 stringWithFormat:@"Device Orientation Changed via %@ to %@", v7, v13];
+  v14 = [v12 stringWithFormat:@"Device Orientation Changed via %@ to %@", sourceCopy, v13];
 
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __95__SBDeviceOrientationUpdateManager__legacy_enqueueOrientationUpdateToDeviceOrientation_source___block_invoke;
   v16[3] = &unk_2783A8C40;
-  v16[5] = a3;
+  v16[5] = orientation;
   v16[6] = v6;
   v16[4] = self;
   v15 = [v11 eventWithName:v14 handler:v16];
-  [v10 executeOrAppendEvent:v15];
+  [mEMORY[0x277D0AB20] executeOrAppendEvent:v15];
 }
 
 void __95__SBDeviceOrientationUpdateManager__legacy_enqueueOrientationUpdateToDeviceOrientation_source___block_invoke(void *a1)
@@ -337,10 +337,10 @@ LABEL_19:
 
 - (id)succinctDescription
 {
-  v2 = [(SBDeviceOrientationUpdateManager *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBDeviceOrientationUpdateManager *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -351,26 +351,26 @@ LABEL_19:
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBDeviceOrientationUpdateManager *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBDeviceOrientationUpdateManager *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(SBDeviceOrientationUpdateManager *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(SBDeviceOrientationUpdateManager *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __74__SBDeviceOrientationUpdateManager_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_2783A92D8;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;

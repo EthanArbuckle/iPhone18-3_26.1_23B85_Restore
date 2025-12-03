@@ -1,15 +1,15 @@
 @interface RemoteAlertHandleObserver
 - (_TtC21DeviceSharingServicesP33_DCC69EBB8BA68A324D11B2F382DAF43C25RemoteAlertHandleObserver)init;
-- (void)remoteAlertHandleDidDeactivate:(id)a3;
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate;
 @end
 
 @implementation RemoteAlertHandleObserver
 
-- (void)remoteAlertHandleDidDeactivate:(id)a3
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate
 {
-  v4 = a3;
-  v5 = self;
-  sub_248A5C330(v4);
+  deactivateCopy = deactivate;
+  selfCopy = self;
+  sub_248A5C330(deactivateCopy);
 }
 
 - (_TtC21DeviceSharingServicesP33_DCC69EBB8BA68A324D11B2F382DAF43C25RemoteAlertHandleObserver)init

@@ -1,17 +1,17 @@
 @interface PLPhotoAnalysisServiceRemoteServiceProxy
-- (BOOL)conformsToProtocol:(id)a3;
-- (BOOL)respondsToSelector:(SEL)a3;
-- (PLPhotoAnalysisServiceRemoteServiceProxy)initWithServiceProvider:(id)a3 remoteInterface:(id)a4 synchronous:(BOOL)a5 errorHandler:(id)a6;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (void)forwardInvocation:(id)a3;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (PLPhotoAnalysisServiceRemoteServiceProxy)initWithServiceProvider:(id)provider remoteInterface:(id)interface synchronous:(BOOL)synchronous errorHandler:(id)handler;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation PLPhotoAnalysisServiceRemoteServiceProxy
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v4 = a3;
-  v5 = v4;
+  invocationCopy = invocation;
+  v5 = invocationCopy;
   if (self->_synchronous)
   {
     WeakRetained = objc_loadWeakRetained(&self->_service);
@@ -25,7 +25,7 @@
 
   else
   {
-    [v4 retainArguments];
+    [invocationCopy retainArguments];
     v8 = objc_loadWeakRetained(&self->_service);
     errorHandler = self->_errorHandler;
     v10[0] = MEMORY[0x1E69E9820];
@@ -37,7 +37,7 @@
   }
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   if (objc_opt_respondsToSelector())
   {
@@ -46,58 +46,58 @@
 
   v6.receiver = self;
   v6.super_class = PLPhotoAnalysisServiceRemoteServiceProxy;
-  return [(PLPhotoAnalysisServiceRemoteServiceProxy *)&v6 respondsToSelector:a3];
+  return [(PLPhotoAnalysisServiceRemoteServiceProxy *)&v6 respondsToSelector:selector];
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
-  v5 = [(NSXPCInterface *)self->_remoteInterface protocol];
-  MethodDescription = protocol_getMethodDescription(v5, a3, 1, 1);
+  protocol = [(NSXPCInterface *)self->_remoteInterface protocol];
+  MethodDescription = protocol_getMethodDescription(protocol, selector, 1, 1);
   types = MethodDescription.types;
-  if (!MethodDescription.name && (v8 = protocol_getMethodDescription(v5, a3, 0, 1), types = v8.types, !v8.name) || ([MEMORY[0x1E695DF68] signatureWithObjCTypes:types], (v9 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!MethodDescription.name && (v8 = protocol_getMethodDescription(protocol, selector, 0, 1), types = v8.types, !v8.name) || ([MEMORY[0x1E695DF68] signatureWithObjCTypes:types], (v9 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v11.receiver = self;
     v11.super_class = PLPhotoAnalysisServiceRemoteServiceProxy;
-    v9 = [(PLPhotoAnalysisServiceRemoteServiceProxy *)&v11 methodSignatureForSelector:a3];
+    v9 = [(PLPhotoAnalysisServiceRemoteServiceProxy *)&v11 methodSignatureForSelector:selector];
   }
 
   return v9;
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
-  v4 = a3;
+  protocolCopy = protocol;
   v8.receiver = self;
   v8.super_class = PLPhotoAnalysisServiceRemoteServiceProxy;
-  if ([(PLPhotoAnalysisServiceRemoteServiceProxy *)&v8 conformsToProtocol:v4])
+  if ([(PLPhotoAnalysisServiceRemoteServiceProxy *)&v8 conformsToProtocol:protocolCopy])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [(NSXPCInterface *)self->_remoteInterface protocol];
-    v5 = protocol_conformsToProtocol(v6, v4);
+    protocol = [(NSXPCInterface *)self->_remoteInterface protocol];
+    v5 = protocol_conformsToProtocol(protocol, protocolCopy);
   }
 
   return v5;
 }
 
-- (PLPhotoAnalysisServiceRemoteServiceProxy)initWithServiceProvider:(id)a3 remoteInterface:(id)a4 synchronous:(BOOL)a5 errorHandler:(id)a6
+- (PLPhotoAnalysisServiceRemoteServiceProxy)initWithServiceProvider:(id)provider remoteInterface:(id)interface synchronous:(BOOL)synchronous errorHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  providerCopy = provider;
+  interfaceCopy = interface;
+  handlerCopy = handler;
   v18.receiver = self;
   v18.super_class = PLPhotoAnalysisServiceRemoteServiceProxy;
   v13 = [(PLPhotoAnalysisServiceRemoteServiceProxy *)&v18 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeWeak(&v13->_service, v10);
-    objc_storeStrong(&v14->_remoteInterface, a4);
-    v14->_synchronous = a5;
-    v15 = _Block_copy(v12);
+    objc_storeWeak(&v13->_service, providerCopy);
+    objc_storeStrong(&v14->_remoteInterface, interface);
+    v14->_synchronous = synchronous;
+    v15 = _Block_copy(handlerCopy);
     errorHandler = v14->_errorHandler;
     v14->_errorHandler = v15;
   }

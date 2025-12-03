@@ -1,19 +1,19 @@
 @interface SYLegacyStore
 + (id)fullSyncActivityDictionary;
-- (BOOL)_allowDeltaSyncWithContext:(id)a3 error:(id *)a4;
-- (BOOL)_checkMessageHeader:(id)a3 messageID:(id)a4;
-- (BOOL)_isPairedWithDevice:(id)a3;
+- (BOOL)_allowDeltaSyncWithContext:(id)context error:(id *)error;
+- (BOOL)_checkMessageHeader:(id)header messageID:(id)d;
+- (BOOL)_isPairedWithDevice:(id)device;
 - (BOOL)_isUsingGenericCache;
-- (BOOL)_shouldIgnoreSyncID:(id)a3;
+- (BOOL)_shouldIgnoreSyncID:(id)d;
 - (BOOL)_shouldSkipNonSyncMessages;
-- (BOOL)addObject:(id)a3 context:(id)a4 idsOptions:(id)a5 error:(id *)a6;
-- (BOOL)deleteObject:(id)a3 context:(id)a4 idsOptions:(id)a5 error:(id *)a6;
+- (BOOL)addObject:(id)object context:(id)context idsOptions:(id)options error:(id *)error;
+- (BOOL)deleteObject:(id)object context:(id)context idsOptions:(id)options error:(id *)error;
 - (BOOL)isPaired;
-- (BOOL)objectChanged:(id)a3 sinceVersion:(unint64_t)a4;
-- (BOOL)peerState:(id)a3 fromPeer:(id)a4 matchesExpectationForChangeCount:(unint64_t)a5 offsetAmount:(unint64_t *)a6;
+- (BOOL)objectChanged:(id)changed sinceVersion:(unint64_t)version;
+- (BOOL)peerState:(id)state fromPeer:(id)peer matchesExpectationForChangeCount:(unint64_t)count offsetAmount:(unint64_t *)amount;
 - (BOOL)performBatchedSyncToCurrentDBVersion;
-- (BOOL)processBatchChunkAtIndex:(unsigned int)a3 encodedObjects:(id)a4 error:(id *)a5;
-- (BOOL)updateObject:(id)a3 context:(id)a4 idsOptions:(id)a5 error:(id *)a6;
+- (BOOL)processBatchChunkAtIndex:(unsigned int)index encodedObjects:(id)objects error:(id *)error;
+- (BOOL)updateObject:(id)object context:(id)context idsOptions:(id)options error:(id *)error;
 - (double)timeToLive;
 - (id)_batchChunkUnackedIndices;
 - (id)_getPairedDeviceID;
@@ -23,55 +23,55 @@
 - (id)newMessageHeader;
 - (int64_t)maxBytesInFlight;
 - (int64_t)state;
-- (void)_copyPeerClockFromMessageHeaderIfNecessary:(id)a3;
-- (void)_devicePaired:(id)a3;
-- (void)_deviceUnpaired:(id)a3;
-- (void)_handleIDSOverflowWithError:(id)a3;
-- (void)_handleObjectChanges:(id)a3 contextInfo:(id)a4 idsOptions:(id)a5 blockUntilSent:(BOOL)a6 reportError:(id)a7 notifyingTransaction:(id)a8;
+- (void)_copyPeerClockFromMessageHeaderIfNecessary:(id)necessary;
+- (void)_devicePaired:(id)paired;
+- (void)_deviceUnpaired:(id)unpaired;
+- (void)_handleIDSOverflowWithError:(id)error;
+- (void)_handleObjectChanges:(id)changes contextInfo:(id)info idsOptions:(id)options blockUntilSent:(BOOL)sent reportError:(id)error notifyingTransaction:(id)transaction;
 - (void)_listenForPrefsChangeNotifications;
-- (void)_postBatchEndMessageWithState:(id)a3 error:(id)a4 then:(id)a5;
-- (void)_postBatchStartMessageWithState:(id)a3 then:(id)a4;
-- (void)_postVersionRejectedForMessageID:(id)a3;
+- (void)_postBatchEndMessageWithState:(id)state error:(id)error then:(id)then;
+- (void)_postBatchStartMessageWithState:(id)state then:(id)then;
+- (void)_postVersionRejectedForMessageID:(id)d;
 - (void)_prefsChanged;
-- (void)_recordLastSeqNo:(id)a3;
-- (void)_restartBatchSyncWithState:(id)a3 then:(id)a4;
+- (void)_recordLastSeqNo:(id)no;
+- (void)_restartBatchSyncWithState:(id)state then:(id)then;
 - (void)_retrySync;
-- (void)_sendBatchChunk:(id)a3 withState:(id)a4 then:(id)a5;
+- (void)_sendBatchChunk:(id)chunk withState:(id)state then:(id)then;
 - (void)_setupMessageCenter_LOCKED;
-- (void)_syncEndedWithSyncID:(id)a3;
-- (void)_transaction:(id)a3 context:(id)a4 idsOptions:(id)a5 blockUntilSent:(BOOL)a6 reportError:(id)a7;
-- (void)_updateMessageCenterPrefs:(id)a3;
+- (void)_syncEndedWithSyncID:(id)d;
+- (void)_transaction:(id)_transaction context:(id)context idsOptions:(id)options blockUntilSent:(BOOL)sent reportError:(id)error;
+- (void)_updateMessageCenterPrefs:(id)prefs;
 - (void)_vectorClockUpdated;
 - (void)dealloc;
 - (void)didEndDeltaSync;
-- (void)handleBatchSyncChunk:(id)a3 response:(id)a4;
-- (void)handleBatchSyncEnd:(id)a3 response:(id)a4;
-- (void)handleBatchSyncStart:(id)a3;
-- (void)handleChangeMessage:(id)a3;
-- (void)handleFullSyncRequest:(id)a3 response:(id)a4;
-- (void)handleSyncAllObjects:(id)a3 response:(id)a4;
-- (void)logChanges:(id)a3;
-- (void)messageCenter:(id)a3 didReceiveUnknownRequest:(id)a4;
-- (void)messageCenter:(id)a3 didResolveIDSIdentifier:(id)a4 forResponse:(id)a5;
-- (void)messageCenter:(id)a3 didResolveIDSIdentifierForRequest:(id)a4;
-- (void)messageCenter:(id)a3 didSuccessfullyDeliverRequestWithIdentifier:(id)a4 userInfo:(id)a5;
-- (void)messageCenter:(id)a3 didSuccessfullySendRequestWithIdentifier:(id)a4 userInfo:(id)a5;
+- (void)handleBatchSyncChunk:(id)chunk response:(id)response;
+- (void)handleBatchSyncEnd:(id)end response:(id)response;
+- (void)handleBatchSyncStart:(id)start;
+- (void)handleChangeMessage:(id)message;
+- (void)handleFullSyncRequest:(id)request response:(id)response;
+- (void)handleSyncAllObjects:(id)objects response:(id)response;
+- (void)logChanges:(id)changes;
+- (void)messageCenter:(id)center didReceiveUnknownRequest:(id)request;
+- (void)messageCenter:(id)center didResolveIDSIdentifier:(id)identifier forResponse:(id)response;
+- (void)messageCenter:(id)center didResolveIDSIdentifierForRequest:(id)request;
+- (void)messageCenter:(id)center didSuccessfullyDeliverRequestWithIdentifier:(id)identifier userInfo:(id)info;
+- (void)messageCenter:(id)center didSuccessfullySendRequestWithIdentifier:(id)identifier userInfo:(id)info;
 - (void)performFullSync;
-- (void)performFullSyncIfNecessaryAskingDelegate:(BOOL)a3;
+- (void)performFullSyncIfNecessaryAskingDelegate:(BOOL)delegate;
 - (void)performFullSyncToCurrentDBVersion;
-- (void)postUserNotification:(id)a3 message:(id)a4;
-- (void)processBatchChunkAck:(unsigned int)a3;
-- (void)processBatchSyncEnd:(unint64_t)a3;
+- (void)postUserNotification:(id)notification message:(id)message;
+- (void)processBatchChunkAck:(unsigned int)ack;
+- (void)processBatchSyncEnd:(unint64_t)end;
 - (void)processBatchSyncStart;
-- (void)remoteStoreAllObjects:(id)a3 fromPeer:(id)a4 clock:(id)a5;
+- (void)remoteStoreAllObjects:(id)objects fromPeer:(id)peer clock:(id)clock;
 - (void)remoteStoreRequestFullSync;
-- (void)sendChanges:(id)a3 context:(id)a4 options:(id)a5 sentSignal:(id)a6;
-- (void)setDelegate:(id)a3;
-- (void)setDeliveryQOS:(unsigned int)a3;
-- (void)setMaxBytesInFlight:(int64_t)a3;
-- (void)setNeedsFullSyncWithContext:(id)a3 idsOptions:(id)a4;
-- (void)setTimeToLive:(double)a3;
-- (void)setTracksChanges:(BOOL)a3;
+- (void)sendChanges:(id)changes context:(id)context options:(id)options sentSignal:(id)signal;
+- (void)setDelegate:(id)delegate;
+- (void)setDeliveryQOS:(unsigned int)s;
+- (void)setMaxBytesInFlight:(int64_t)flight;
+- (void)setNeedsFullSyncWithContext:(id)context idsOptions:(id)options;
+- (void)setTimeToLive:(double)live;
+- (void)setTracksChanges:(BOOL)changes;
 - (void)setupDatabase;
 - (void)setupMessageCenter;
 - (void)setupPairingNotifications;
@@ -159,8 +159,8 @@ uint64_t __79__SYLegacyStore_initWithService_isGStore_priority_isMasterStore_tra
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveEveryObserver(DarwinNotifyCenter, self);
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v6 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v7.receiver = self;
   v7.super_class = SYLegacyStore;
@@ -169,18 +169,18 @@ uint64_t __79__SYLegacyStore_initWithService_isGStore_priority_isMasterStore_tra
 
 - (id)_getPairedDeviceID
 {
-  v2 = [MEMORY[0x1E69B36C0] sharedInstance];
-  v3 = [v2 pairingID];
+  mEMORY[0x1E69B36C0] = [MEMORY[0x1E69B36C0] sharedInstance];
+  pairingID = [mEMORY[0x1E69B36C0] pairingID];
 
-  return v3;
+  return pairingID;
 }
 
 - (id)_getPairingStorePath
 {
-  v2 = [MEMORY[0x1E69B36C0] sharedInstance];
-  v3 = [v2 pairingStorePath];
+  mEMORY[0x1E69B36C0] = [MEMORY[0x1E69B36C0] sharedInstance];
+  pairingStorePath = [mEMORY[0x1E69B36C0] pairingStorePath];
 
-  return v3;
+  return pairingStorePath;
 }
 
 - (id)_batchChunkUnackedIndices
@@ -192,8 +192,8 @@ uint64_t __79__SYLegacyStore_initWithService_isGStore_priority_isMasterStore_tra
 
 - (void)_prefsChanged
 {
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v4 = [v3 persistentDomainForName:@"com.apple.companionsync"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v4 = [standardUserDefaults persistentDomainForName:@"com.apple.companionsync"];
 
   if (self->_messageCenter)
   {
@@ -201,53 +201,53 @@ uint64_t __79__SYLegacyStore_initWithService_isGStore_priority_isMasterStore_tra
   }
 }
 
-- (void)_updateMessageCenterPrefs:(id)a3
+- (void)_updateMessageCenterPrefs:(id)prefs
 {
-  v11 = a3;
-  v4 = [v11 objectForKeyedSubscript:@"EnableTransmitWindow"];
+  prefsCopy = prefs;
+  v4 = [prefsCopy objectForKeyedSubscript:@"EnableTransmitWindow"];
   v5 = v4;
   if (!v4 || [v4 BOOLValue])
   {
     [(NMSMessageCenter *)self->_messageCenter setEnableTransmissionWindow:1];
-    v6 = [v11 objectForKeyedSubscript:@"MaxMessagesInFlight"];
+    v6 = [prefsCopy objectForKeyedSubscript:@"MaxMessagesInFlight"];
 
     if (v6)
     {
-      v7 = [v6 unsignedIntegerValue];
+      unsignedIntegerValue = [v6 unsignedIntegerValue];
     }
 
     else
     {
-      v7 = 20;
+      unsignedIntegerValue = 20;
     }
 
-    [(NMSMessageCenter *)self->_messageCenter setMaxMessagesInFlight:v7];
-    v8 = [v11 objectForKeyedSubscript:@"MinMessagesInFlight"];
+    [(NMSMessageCenter *)self->_messageCenter setMaxMessagesInFlight:unsignedIntegerValue];
+    v8 = [prefsCopy objectForKeyedSubscript:@"MinMessagesInFlight"];
 
     if (v8)
     {
-      v9 = [v8 unsignedIntegerValue];
+      unsignedIntegerValue2 = [v8 unsignedIntegerValue];
     }
 
     else
     {
-      v9 = 10;
+      unsignedIntegerValue2 = 10;
     }
 
-    [(NMSMessageCenter *)self->_messageCenter setMinMessagesInFlight:v9];
-    v5 = [v11 objectForKeyedSubscript:@"MaxBytesInFlight"];
+    [(NMSMessageCenter *)self->_messageCenter setMinMessagesInFlight:unsignedIntegerValue2];
+    v5 = [prefsCopy objectForKeyedSubscript:@"MaxBytesInFlight"];
 
     if (v5)
     {
-      v10 = [v5 unsignedIntegerValue];
+      unsignedIntegerValue3 = [v5 unsignedIntegerValue];
     }
 
     else
     {
-      v10 = 1000000;
+      unsignedIntegerValue3 = 1000000;
     }
 
-    [(NMSMessageCenter *)self->_messageCenter setMaxBytesInFlight:v10];
+    [(NMSMessageCenter *)self->_messageCenter setMaxBytesInFlight:unsignedIntegerValue3];
   }
 }
 
@@ -263,25 +263,25 @@ uint64_t __79__SYLegacyStore_initWithService_isGStore_priority_isMasterStore_tra
   if (![(SYLegacyStore *)self registeredNotificationHandlers])
   {
     [(SYLegacyStore *)self setRegisteredNotificationHandlers:1];
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 addObserver:self selector:sel__devicePaired_ name:*MEMORY[0x1E69B3678] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__devicePaired_ name:*MEMORY[0x1E69B3678] object:0];
 
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:self selector:sel__deviceUnpaired_ name:*MEMORY[0x1E69B3688] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:self selector:sel__deviceUnpaired_ name:*MEMORY[0x1E69B3688] object:0];
   }
 }
 
 - (BOOL)isPaired
 {
-  v2 = [(SYLegacyStore *)self pairedDeviceID];
-  v3 = v2 != 0;
+  pairedDeviceID = [(SYLegacyStore *)self pairedDeviceID];
+  v3 = pairedDeviceID != 0;
 
   return v3;
 }
 
-- (void)setDeliveryQOS:(unsigned int)a3
+- (void)setDeliveryQOS:(unsigned int)s
 {
-  if ([(SYStore *)self deliveryQOS]!= a3)
+  if ([(SYStore *)self deliveryQOS]!= s)
   {
     queue = self->_queue;
     v6[0] = MEMORY[0x1E69E9820];
@@ -289,7 +289,7 @@ uint64_t __79__SYLegacyStore_initWithService_isGStore_priority_isMasterStore_tra
     v6[2] = __32__SYLegacyStore_setDeliveryQOS___block_invoke;
     v6[3] = &unk_1E86CA080;
     v6[4] = self;
-    v7 = a3;
+    sCopy = s;
     dispatch_async(queue, v6);
   }
 }
@@ -323,33 +323,33 @@ void __32__SYLegacyStore_setDeliveryQOS___block_invoke(uint64_t a1)
 
 - (int64_t)maxBytesInFlight
 {
-  v2 = [(SYLegacyStore *)self messageCenter];
-  v3 = [v2 maxBytesInFlight];
+  messageCenter = [(SYLegacyStore *)self messageCenter];
+  maxBytesInFlight = [messageCenter maxBytesInFlight];
 
-  return v3;
+  return maxBytesInFlight;
 }
 
-- (void)setMaxBytesInFlight:(int64_t)a3
+- (void)setMaxBytesInFlight:(int64_t)flight
 {
-  v4 = [(SYLegacyStore *)self messageCenter];
-  [v4 setMaxBytesInFlight:a3];
+  messageCenter = [(SYLegacyStore *)self messageCenter];
+  [messageCenter setMaxBytesInFlight:flight];
 }
 
-- (BOOL)_isPairedWithDevice:(id)a3
+- (BOOL)_isPairedWithDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   dispatch_assert_queue_V2(self->super._qosTargetQueue);
-  v5 = [(SYLegacyStore *)self pairedDeviceID];
-  v6 = v5;
-  if (v4)
+  pairedDeviceID = [(SYLegacyStore *)self pairedDeviceID];
+  v6 = pairedDeviceID;
+  if (deviceCopy)
   {
-    v7 = [v4 valueForProperty:*MEMORY[0x1E69B3610]];
+    v7 = [deviceCopy valueForProperty:*MEMORY[0x1E69B3610]];
     v8 = [v6 isEqual:v7];
   }
 
   else
   {
-    v8 = v5 != 0;
+    v8 = pairedDeviceID != 0;
   }
 
   return v8;
@@ -358,33 +358,33 @@ void __32__SYLegacyStore_setDeliveryQOS___block_invoke(uint64_t a1)
 - (BOOL)_isUsingGenericCache
 {
   dispatch_assert_queue_V2(self->super._qosTargetQueue);
-  v3 = [(SYLegacyStore *)self pairedDeviceID];
-  if (v3)
+  pairedDeviceID = [(SYLegacyStore *)self pairedDeviceID];
+  if (pairedDeviceID)
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(SYLegacyStore *)self persistentStore];
-    v4 = v5 != 0;
+    persistentStore = [(SYLegacyStore *)self persistentStore];
+    v4 = persistentStore != 0;
   }
 
   return v4;
 }
 
-- (void)_deviceUnpaired:(id)a3
+- (void)_deviceUnpaired:(id)unpaired
 {
-  v4 = a3;
+  unpairedCopy = unpaired;
   [(NMSMessageCenter *)self->_messageCenter _obliterate];
   qosTargetQueue = self->super._qosTargetQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __33__SYLegacyStore__deviceUnpaired___block_invoke;
   v7[3] = &unk_1E86C9E90;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = unpairedCopy;
+  selfCopy = self;
+  v6 = unpairedCopy;
   dispatch_async(qosTargetQueue, v7);
 }
 
@@ -434,17 +434,17 @@ void __33__SYLegacyStore__deviceUnpaired___block_invoke_87(uint64_t a1)
   }
 }
 
-- (void)_devicePaired:(id)a3
+- (void)_devicePaired:(id)paired
 {
-  v4 = a3;
+  pairedCopy = paired;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __31__SYLegacyStore__devicePaired___block_invoke;
   v7[3] = &unk_1E86C9E90;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = pairedCopy;
+  v6 = pairedCopy;
   dispatch_async(queue, v7);
 }
 
@@ -523,16 +523,16 @@ uint64_t __31__SYLegacyStore__devicePaired___block_invoke_88(uint64_t a1)
 - (void)_vectorClockUpdated
 {
   dispatch_assert_queue_V2(self->_queue);
-  v3 = [(SYVectorClock *)self->_vectorClock jsonRepresentation];
-  [(SYPersistentStore *)self->_persistentStore setVectorClockJSON:v3];
+  jsonRepresentation = [(SYVectorClock *)self->_vectorClock jsonRepresentation];
+  [(SYPersistentStore *)self->_persistentStore setVectorClockJSON:jsonRepresentation];
 }
 
 - (id)_pathForMessageCenterCache
 {
   v10 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E69B36C0] sharedInstance];
-  v3 = [v2 pairingStorePath];
-  v4 = [v3 stringByAppendingPathComponent:@"CompanionSync"];
+  mEMORY[0x1E69B36C0] = [MEMORY[0x1E69B36C0] sharedInstance];
+  pairingStorePath = [mEMORY[0x1E69B36C0] pairingStorePath];
+  v4 = [pairingStorePath stringByAppendingPathComponent:@"CompanionSync"];
 
   if (_sync_log_facilities_pred != -1)
   {
@@ -552,20 +552,20 @@ uint64_t __31__SYLegacyStore__devicePaired___block_invoke_88(uint64_t a1)
   return v4;
 }
 
-- (BOOL)_checkMessageHeader:(id)a3 messageID:(id)a4
+- (BOOL)_checkMessageHeader:(id)header messageID:(id)d
 {
   v55 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 sequenceNumber];
+  headerCopy = header;
+  dCopy = d;
+  sequenceNumber = [headerCopy sequenceNumber];
   v9 = MEMORY[0x1E695DF00];
-  [v6 timestamp];
+  [headerCopy timestamp];
   v46 = [v9 dateWithTimeIntervalSinceReferenceDate:?];
-  v10 = [(SYPersistentStore *)self->_persistentStore lastMessageReceived];
-  v11 = [(SYLegacyStore *)self persistentStore];
-  v12 = [v6 sender];
-  v13 = [v12 peerID];
-  v14 = [v11 sequenceNumberIsDuplicate:v8 forPeer:v13];
+  lastMessageReceived = [(SYPersistentStore *)self->_persistentStore lastMessageReceived];
+  persistentStore = [(SYLegacyStore *)self persistentStore];
+  sender = [headerCopy sender];
+  peerID = [sender peerID];
+  v14 = [persistentStore sequenceNumberIsDuplicate:sequenceNumber forPeer:peerID];
 
   if (v14)
   {
@@ -574,15 +574,15 @@ uint64_t __31__SYLegacyStore__devicePaired___block_invoke_88(uint64_t a1)
       [SYIncomingSyncAllObjectsSession _continueProcessing];
     }
 
-    v15 = v7;
+    v15 = dCopy;
     v16 = v46;
     v17 = qword_1EDE73420;
     if (os_log_type_enabled(qword_1EDE73420, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218242;
-      v48 = v8;
+      v48 = sequenceNumber;
       v49 = 2114;
-      v50 = v7;
+      v50 = dCopy;
       _os_log_impl(&dword_1DF835000, v17, OS_LOG_TYPE_DEFAULT, "Possible duplicate message received with seqno %qu and ID %{public}@. Comparing timestamps.", buf, 0x16u);
     }
 
@@ -595,9 +595,9 @@ uint64_t __31__SYLegacyStore__devicePaired___block_invoke_88(uint64_t a1)
     if (os_log_type_enabled(qword_1EDE73420, OS_LOG_TYPE_DEFAULT))
     {
       v19 = v18;
-      [v6 timestamp];
+      [headerCopy timestamp];
       v21 = v20;
-      [v10 timeIntervalSinceReferenceDate];
+      [lastMessageReceived timeIntervalSinceReferenceDate];
       *buf = 134218754;
       v48 = v21;
       v49 = 2114;
@@ -605,20 +605,20 @@ uint64_t __31__SYLegacyStore__devicePaired___block_invoke_88(uint64_t a1)
       v51 = 2048;
       v52 = v22;
       v53 = 2114;
-      v54 = v10;
+      v54 = lastMessageReceived;
       _os_log_impl(&dword_1DF835000, v19, OS_LOG_TYPE_DEFAULT, "This message timestamp = %.04g (%{public}@) vs. last message timestamp = %.04g (%{public}@)", buf, 0x2Au);
     }
 
-    v23 = [v10 earlierDate:v46];
+    v23 = [lastMessageReceived earlierDate:v46];
 
-    if (v23 != v10)
+    if (v23 != lastMessageReceived)
     {
       v24 = +[SYTransportLog sharedInstance];
-      v25 = [v24 oslog];
+      oslog = [v24 oslog];
 
-      if (os_log_type_enabled(v25, 0x90u))
+      if (os_log_type_enabled(oslog, 0x90u))
       {
-        [(SYLegacyStore *)v7 _checkMessageHeader:v8 messageID:v25];
+        [(SYLegacyStore *)dCopy _checkMessageHeader:sequenceNumber messageID:oslog];
       }
 
 LABEL_35:
@@ -639,58 +639,58 @@ LABEL_35:
     }
 
     persistentStore = self->_persistentStore;
-    v28 = [v6 sender];
-    v29 = [v28 peerID];
-    [(SYPersistentStore *)persistentStore resetSequenceNumbersForPeer:v29];
+    sender2 = [headerCopy sender];
+    peerID2 = [sender2 peerID];
+    [(SYPersistentStore *)persistentStore resetSequenceNumbersForPeer:peerID2];
   }
 
-  v30 = [(SYLegacyStore *)self persistentStore];
-  v31 = [v6 sender];
-  v32 = [v31 peerID];
-  v33 = [v30 lastSequenceNumberForPeerID:v32];
+  persistentStore2 = [(SYLegacyStore *)self persistentStore];
+  sender3 = [headerCopy sender];
+  peerID3 = [sender3 peerID];
+  v33 = [persistentStore2 lastSequenceNumberForPeerID:peerID3];
 
   if (_sync_log_facilities_pred != -1)
   {
     [SYIncomingSyncAllObjectsSession _continueProcessing];
   }
 
-  v15 = v7;
+  v15 = dCopy;
   v34 = qword_1EDE73420;
   if (os_log_type_enabled(qword_1EDE73420, OS_LOG_TYPE_INFO))
   {
     *buf = 134218240;
-    v48 = v8;
+    v48 = sequenceNumber;
     v49 = 2048;
     v50 = v33;
     _os_log_impl(&dword_1DF835000, v34, OS_LOG_TYPE_INFO, "Received seqno=%llu, last seen=%llu", buf, 0x16u);
   }
 
-  if (v8 != v33 + 1)
+  if (sequenceNumber != v33 + 1)
   {
     v35 = +[SYTransportLog sharedInstance];
-    v36 = [v35 oslog];
+    oslog2 = [v35 oslog];
 
-    if (os_log_type_enabled(v36, 0x90u))
+    if (os_log_type_enabled(oslog2, 0x90u))
     {
       *buf = 138543874;
-      v48 = v7;
+      v48 = dCopy;
       v49 = 2048;
-      v50 = v8;
+      v50 = sequenceNumber;
       v51 = 2048;
       v52 = v33;
-      _os_log_error_impl(&dword_1DF835000, v36, 0x90u, "Out of order delivery or dropped message detected on receipt of message with ID %{public}@. Message sequence number = %llu, last received sequence number = %llu", buf, 0x20u);
+      _os_log_error_impl(&dword_1DF835000, oslog2, 0x90u, "Out of order delivery or dropped message detected on receipt of message with ID %{public}@. Message sequence number = %llu, last received sequence number = %llu", buf, 0x20u);
     }
 
     if (+[SYLogs shouldDisplaySyncErrorMessage])
     {
-      v37 = [(SYLegacyStore *)self service];
-      v38 = _ClientNameForServiceName(v37);
+      service = [(SYLegacyStore *)self service];
+      v38 = _ClientNameForServiceName(service);
       v39 = [@"Message out of order in " stringByAppendingString:v38];
       [(SYLegacyStore *)self postUserNotification:v39 message:@"File against Pepper CompanionSync|1.0, attach all logs"];
     }
   }
 
-  if ([v6 version] >= 2)
+  if ([headerCopy version] >= 2)
   {
     v16 = v46;
     if (_sync_log_facilities_pred != -1)
@@ -704,13 +704,13 @@ LABEL_35:
       [SYLegacyStore _checkMessageHeader:v43 messageID:?];
     }
 
-    [(SYLegacyStore *)self _postVersionRejectedForMessageID:v7];
+    [(SYLegacyStore *)self _postVersionRejectedForMessageID:dCopy];
     goto LABEL_35;
   }
 
   v40 = objc_opt_new();
-  v41 = [(SYLegacyStore *)self persistentStore];
-  [v41 setLastMessageReceived:v40];
+  persistentStore3 = [(SYLegacyStore *)self persistentStore];
+  [persistentStore3 setLastMessageReceived:v40];
 
   v42 = 1;
   v16 = v46;
@@ -720,17 +720,17 @@ LABEL_36:
   return v42;
 }
 
-- (void)_postVersionRejectedForMessageID:(id)a3
+- (void)_postVersionRejectedForMessageID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50__SYLegacyStore__postVersionRejectedForMessageID___block_invoke;
   v7[3] = &unk_1E86C9E90;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_async(queue, v7);
 }
 
@@ -745,16 +745,16 @@ void __50__SYLegacyStore__postVersionRejectedForMessageID___block_invoke(uint64_
   [*(a1 + 32) sendMessage:v3 ofType:0x7FFFLL respondingTo:0 userInfo:0 idsOptions:0];
 }
 
-- (void)_recordLastSeqNo:(id)a3
+- (void)_recordLastSeqNo:(id)no
 {
-  v4 = a3;
-  v5 = [(SYLegacyStore *)self persistentStore];
-  v6 = [v4 sequenceNumber];
-  v7 = [v4 sender];
+  noCopy = no;
+  persistentStore = [(SYLegacyStore *)self persistentStore];
+  sequenceNumber = [noCopy sequenceNumber];
+  sender = [noCopy sender];
 
-  v8 = [v7 peerID];
+  peerID = [sender peerID];
   v12 = 0;
-  v9 = [v5 setLastSequenceNumber:v6 fromPeer:v8 error:&v12];
+  v9 = [persistentStore setLastSequenceNumber:sequenceNumber fromPeer:peerID error:&v12];
   v10 = v12;
 
   if ((v9 & 1) == 0)
@@ -772,16 +772,16 @@ void __50__SYLegacyStore__postVersionRejectedForMessageID___block_invoke(uint64_
   }
 }
 
-- (void)_handleIDSOverflowWithError:(id)a3
+- (void)_handleIDSOverflowWithError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   if (!self->_overflowRetryTimer)
   {
     v6 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, self->_queue);
     overflowRetryTimer = self->_overflowRetryTimer;
     self->_overflowRetryTimer = v6;
 
-    objc_storeStrong(&self->_overflowRetryError, a3);
+    objc_storeStrong(&self->_overflowRetryError, error);
     objc_initWeak(&location, self);
     v8 = self->_overflowRetryTimer;
     v12 = MEMORY[0x1E69E9820];
@@ -831,12 +831,12 @@ void __45__SYLegacyStore__handleIDSOverflowWithError___block_invoke(uint64_t a1)
   messageCenter = self->_messageCenter;
   self->_messageCenter = 0;
 
-  v4 = [(SYLegacyStore *)self pairedDeviceID];
+  pairedDeviceID = [(SYLegacyStore *)self pairedDeviceID];
 
-  if (v4)
+  if (pairedDeviceID)
   {
-    v5 = [(SYLegacyStore *)self _pathForMessageCenterCache];
-    if (v5)
+    _pathForMessageCenterCache = [(SYLegacyStore *)self _pathForMessageCenterCache];
+    if (_pathForMessageCenterCache)
     {
       if (_sync_log_facilities_pred != -1)
       {
@@ -848,12 +848,12 @@ void __45__SYLegacyStore__handleIDSOverflowWithError___block_invoke(uint64_t a1)
         [SYLegacyStore _setupMessageCenter_LOCKED];
       }
 
-      v6 = [[NMSMessageCenter alloc] initWithIDSServiceIdentifier:self->_service launchOnDemandNotification:0 cacheFolderPath:v5];
+      v6 = [[NMSMessageCenter alloc] initWithIDSServiceIdentifier:self->_service launchOnDemandNotification:0 cacheFolderPath:_pathForMessageCenterCache];
       v7 = self->_messageCenter;
       self->_messageCenter = v6;
 
-      v8 = [MEMORY[0x1E695E000] standardUserDefaults];
-      v9 = [v8 persistentDomainForName:@"com.apple.companionsync"];
+      standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+      v9 = [standardUserDefaults persistentDomainForName:@"com.apple.companionsync"];
 
       [(SYLegacyStore *)self _updateMessageCenterPrefs:v9];
       v10 = self->_messageCenter;
@@ -946,7 +946,7 @@ void __45__SYLegacyStore__handleIDSOverflowWithError___block_invoke(uint64_t a1)
       [(NMSMessageCenter *)self->_messageCenter addResponseHandler:5 usingBlock:v27];
       [(NMSMessageCenter *)self->_messageCenter addResponseHandler:2 usingBlock:v27];
       v45 = v9;
-      v46 = v5;
+      v46 = _pathForMessageCenterCache;
       v28 = 1;
       do
       {
@@ -980,18 +980,18 @@ void __45__SYLegacyStore__handleIDSOverflowWithError___block_invoke(uint64_t a1)
 
       while (v31 < 0x6A);
       [(SYStore *)self delegate];
-      v32 = v5 = v46;
+      v32 = _pathForMessageCenterCache = v46;
 
       if (v32)
       {
         [(NMSMessageCenter *)self->_messageCenter resume];
-        v33 = [(SYPersistentStore *)self->_persistentStore overflowResyncTime];
-        if (v33)
+        overflowResyncTime = [(SYPersistentStore *)self->_persistentStore overflowResyncTime];
+        if (overflowResyncTime)
         {
-          v34 = [MEMORY[0x1E695DF00] date];
-          v35 = [v33 earlierDate:v34];
+          date = [MEMORY[0x1E695DF00] date];
+          v35 = [overflowResyncTime earlierDate:date];
 
-          if (v35 == v33)
+          if (v35 == overflowResyncTime)
           {
             [(SYPersistentStore *)self->_persistentStore setOverflowResyncTime:0];
             [(SYStore *)self setNeedsFullSync];
@@ -1017,7 +1017,7 @@ void __45__SYLegacyStore__handleIDSOverflowWithError___block_invoke(uint64_t a1)
             objc_copyWeak(&v48, &from);
             dispatch_source_set_event_handler(v41, handler);
             v42 = self->_overflowRetryTimer;
-            [v33 timeIntervalSinceNow];
+            [overflowResyncTime timeIntervalSinceNow];
             v44 = dispatch_time(0, (v43 * 1000000000.0));
             dispatch_source_set_timer(v42, v44, 0xFFFFFFFFFFFFFFFFLL, 0x6FC23AC00uLL);
             dispatch_resume(self->_overflowRetryTimer);
@@ -1800,8 +1800,8 @@ void __43__SYLegacyStore__setupMessageCenter_LOCKED__block_invoke_136(uint64_t a
 - (void)setupDatabase
 {
   v9 = *MEMORY[0x1E69E9840];
-  v2 = a1;
-  v3 = [OUTLINED_FUNCTION_7() pairedDeviceID];
+  selfCopy = self;
+  pairedDeviceID = [OUTLINED_FUNCTION_7() pairedDeviceID];
   OUTLINED_FUNCTION_5_0();
   OUTLINED_FUNCTION_8();
   _os_log_fault_impl(v4, v5, OS_LOG_TYPE_FAULT, v6, v7, 0xCu);
@@ -1809,13 +1809,13 @@ void __43__SYLegacyStore__setupMessageCenter_LOCKED__block_invoke_136(uint64_t a
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v6.receiver = self;
   v6.super_class = SYLegacyStore;
   [(SYStore *)&v6 setDelegate:?];
   messageCenter = self->_messageCenter;
-  if (a3)
+  if (delegate)
   {
     if (messageCenter)
     {
@@ -1832,28 +1832,28 @@ void __43__SYLegacyStore__setupMessageCenter_LOCKED__block_invoke_136(uint64_t a
 
 - (double)timeToLive
 {
-  v2 = [(SYLegacyStore *)self persistentStore];
-  [v2 timeToLive];
+  persistentStore = [(SYLegacyStore *)self persistentStore];
+  [persistentStore timeToLive];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setTimeToLive:(double)a3
+- (void)setTimeToLive:(double)live
 {
-  v4 = [(SYLegacyStore *)self persistentStore];
-  [v4 setTimeToLive:a3];
+  persistentStore = [(SYLegacyStore *)self persistentStore];
+  [persistentStore setTimeToLive:live];
 }
 
-- (void)postUserNotification:(id)a3 message:(id)a4
+- (void)postUserNotification:(id)notification message:(id)message
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  notificationCopy = notification;
+  messageCopy = message;
   if (+[SYLogs shouldDumpIDSOnSyncError]&& MGGetBoolAnswer() && (_shouldDumpIDSOnSyncErrorOnce & 1) == 0)
   {
     _shouldDumpIDSOnSyncErrorOnce = 1;
-    CFUserNotificationDisplayNotice(0.0, 0, 0, 0, 0, v5, v6, 0);
+    CFUserNotificationDisplayNotice(0.0, 0, 0, 0, 0, notificationCopy, messageCopy, 0);
     *__argv = xmmword_1E86CA4C0;
     v11 = 0;
     v9 = 0;
@@ -1864,34 +1864,34 @@ void __43__SYLegacyStore__setupMessageCenter_LOCKED__block_invoke_136(uint64_t a
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_copyPeerClockFromMessageHeaderIfNecessary:(id)a3
+- (void)_copyPeerClockFromMessageHeaderIfNecessary:(id)necessary
 {
-  v4 = a3;
+  necessaryCopy = necessary;
   vectorClock = self->_vectorClock;
-  v11 = v4;
-  v6 = [v4 sender];
-  LOBYTE(vectorClock) = [(SYVectorClock *)vectorClock hasClockForPeer:v6];
+  v11 = necessaryCopy;
+  sender = [necessaryCopy sender];
+  LOBYTE(vectorClock) = [(SYVectorClock *)vectorClock hasClockForPeer:sender];
 
   if ((vectorClock & 1) == 0)
   {
     v7 = self->_vectorClock;
-    v8 = [v11 state];
-    v9 = [v11 sender];
-    v10 = [v8 clockForPeer:v9];
+    state = [v11 state];
+    sender2 = [v11 sender];
+    v10 = [state clockForPeer:sender2];
     [(SYVectorClock *)v7 addClocks:v10];
 
     [(SYLegacyStore *)self _vectorClockUpdated];
   }
 }
 
-- (BOOL)peerState:(id)a3 fromPeer:(id)a4 matchesExpectationForChangeCount:(unint64_t)a5 offsetAmount:(unint64_t *)a6
+- (BOOL)peerState:(id)state fromPeer:(id)peer matchesExpectationForChangeCount:(unint64_t)count offsetAmount:(unint64_t *)amount
 {
   v33 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  if ([(SYVectorClock *)self->_vectorClock hasClockForPeer:v11])
+  stateCopy = state;
+  peerCopy = peer;
+  if ([(SYVectorClock *)self->_vectorClock hasClockForPeer:peerCopy])
   {
-    v12 = [(SYPersistentStore *)self->_persistentStore peerID];
+    peerID = [(SYPersistentStore *)self->_persistentStore peerID];
     if (_sync_log_facilities_pred != -1)
     {
       [SYIncomingSyncAllObjectsSession _continueProcessing];
@@ -1907,17 +1907,17 @@ void __43__SYLegacyStore__setupMessageCenter_LOCKED__block_invoke_136(uint64_t a
       [SYIncomingSyncAllObjectsSession _continueProcessing];
     }
 
-    v26 = a5;
+    countCopy = count;
     if (os_log_type_enabled(qword_1EDE73420, OS_LOG_TYPE_DEBUG))
     {
       [SYLegacyStore peerState:? fromPeer:? matchesExpectationForChangeCount:? offsetAmount:?];
     }
 
-    v13 = [(SYVectorClock *)self->_vectorClock clockValueForPeerID:v12, a6];
-    v14 = [v10 clockValueForPeerID:v12];
-    v15 = [(SYVectorClock *)self->_vectorClock clockValueForPeer:v11];
-    v16 = [v10 clockValueForPeer:v11];
-    if (v14 > v13)
+    amount = [(SYVectorClock *)self->_vectorClock clockValueForPeerID:peerID, amount];
+    v14 = [stateCopy clockValueForPeerID:peerID];
+    v15 = [(SYVectorClock *)self->_vectorClock clockValueForPeer:peerCopy];
+    v16 = [stateCopy clockValueForPeer:peerCopy];
+    if (v14 > amount)
     {
       if (_sync_log_facilities_pred != -1)
       {
@@ -1933,7 +1933,7 @@ void __43__SYLegacyStore__setupMessageCenter_LOCKED__block_invoke_136(uint64_t a
     }
 
     v18 = v16;
-    if (v14 != v13)
+    if (v14 != amount)
     {
       if (_sync_log_facilities_pred != -1)
       {
@@ -1944,16 +1944,16 @@ void __43__SYLegacyStore__setupMessageCenter_LOCKED__block_invoke_136(uint64_t a
       if (os_log_type_enabled(qword_1EDE73420, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218240;
-        v28 = v13;
+        v28 = amount;
         v29 = 2048;
         v30 = v14;
         _os_log_impl(&dword_1DF835000, v19, OS_LOG_TYPE_DEFAULT, "Accepting change list from peer that has not received my latest updates: %llu vs. %llu", buf, 0x16u);
       }
     }
 
-    v20 = [(SYVectorClock *)self->_vectorClock hasClockForPeer:v11];
+    v20 = [(SYVectorClock *)self->_vectorClock hasClockForPeer:peerCopy];
     v17 = 1;
-    if (!v20 || v18 == v15 + v26 || v18 == v15 + 1)
+    if (!v20 || v18 == v15 + countCopy || v18 == v15 + 1)
     {
       goto LABEL_32;
     }
@@ -1971,7 +1971,7 @@ void __43__SYLegacyStore__setupMessageCenter_LOCKED__block_invoke_136(uint64_t a
       v29 = 2048;
       v30 = v18;
       v31 = 1024;
-      v32 = v26;
+      v32 = countCopy;
       _os_log_error_impl(&dword_1DF835000, v21, OS_LOG_TYPE_ERROR, "Peer state doesn't match my expectation-- likely a message is missing. I have %llu, they sent %llu, there are %u changes incoming", buf, 0x1Cu);
       if (v25)
       {
@@ -1983,10 +1983,10 @@ void __43__SYLegacyStore__setupMessageCenter_LOCKED__block_invoke_136(uint64_t a
     {
 LABEL_29:
       v17 = 0;
-      v22 = v15 - (v18 + v26);
+      v22 = v15 - (v18 + countCopy);
       if (v22 < 0)
       {
-        v22 = v18 + v26 - v15;
+        v22 = v18 + countCopy - v15;
       }
 
       *v25 = v22;
@@ -2007,38 +2007,38 @@ LABEL_33:
   return v17;
 }
 
-- (void)handleFullSyncRequest:(id)a3 response:(id)a4
+- (void)handleFullSyncRequest:(id)request response:(id)response
 {
-  v6 = a3;
+  requestCopy = request;
   persistentStore = self->_persistentStore;
-  v8 = a4;
-  v9 = [(SYPersistentStore *)persistentStore currentFullSyncID];
+  responseCopy = response;
+  currentFullSyncID = [(SYPersistentStore *)persistentStore currentFullSyncID];
 
-  if (v9)
+  if (currentFullSyncID)
   {
-    v10 = [(SYLegacyStore *)self newMessageHeader];
-    [v8 setHeader:v10];
+    newMessageHeader = [(SYLegacyStore *)self newMessageHeader];
+    [responseCopy setHeader:newMessageHeader];
 
-    [v8 setAccepted:0];
+    [responseCopy setAccepted:0];
     v11 = [SYErrorInfo alloc];
     v12 = [MEMORY[0x1E696ABC0] errorWithSYError:1002 userInfo:0];
     v13 = [(SYErrorInfo *)v11 initWithError:v12];
-    [v8 setError:v13];
+    [responseCopy setError:v13];
 
-    v14 = [(SYPersistentStore *)self->_persistentStore currentFullSyncID];
-    [v8 setInProgressSyncID:v14];
+    currentFullSyncID2 = [(SYPersistentStore *)self->_persistentStore currentFullSyncID];
+    [responseCopy setInProgressSyncID:currentFullSyncID2];
   }
 
   else
   {
     v15 = self->_persistentStore;
-    v16 = [v6 syncID];
-    [(SYPersistentStore *)v15 enterFullSyncWithID:v16 ignoring:0];
+    syncID = [requestCopy syncID];
+    [(SYPersistentStore *)v15 enterFullSyncWithID:syncID ignoring:0];
 
-    v17 = [(SYLegacyStore *)self newMessageHeader];
-    [v8 setHeader:v17];
+    newMessageHeader2 = [(SYLegacyStore *)self newMessageHeader];
+    [responseCopy setHeader:newMessageHeader2];
 
-    [v8 setAccepted:1];
+    [responseCopy setAccepted:1];
     queue = self->_queue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -2049,13 +2049,13 @@ LABEL_33:
   }
 }
 
-- (BOOL)_shouldIgnoreSyncID:(id)a3
+- (BOOL)_shouldIgnoreSyncID:(id)d
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SYPersistentStore *)self->_persistentStore currentFullSyncID];
-  v6 = v5;
-  if (!v5 || ([v5 hasPrefix:@"InitialSync"] & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", v4) & 1) != 0 || -[SYPersistentStore canStartNewSyncSession](self->_persistentStore, "canStartNewSyncSession"))
+  dCopy = d;
+  currentFullSyncID = [(SYPersistentStore *)self->_persistentStore currentFullSyncID];
+  v6 = currentFullSyncID;
+  if (!currentFullSyncID || ([currentFullSyncID hasPrefix:@"InitialSync"] & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", dCopy) & 1) != 0 || -[SYPersistentStore canStartNewSyncSession](self->_persistentStore, "canStartNewSyncSession"))
   {
     v7 = 0;
   }
@@ -2071,7 +2071,7 @@ LABEL_33:
     if (os_log_type_enabled(qword_1EDE73420, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138543618;
-      v12 = v4;
+      v12 = dCopy;
       v13 = 2114;
       v14 = v6;
       _os_log_impl(&dword_1DF835000, v10, OS_LOG_TYPE_DEFAULT, "Skipping one sync message (syncID %{public}@) while waiting for another (syncID %{public}@)", &v11, 0x16u);
@@ -2087,15 +2087,15 @@ LABEL_33:
 - (BOOL)_shouldSkipNonSyncMessages
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [(SYPersistentStore *)self->_persistentStore currentFullSyncID];
-  if (v3)
+  currentFullSyncID = [(SYPersistentStore *)self->_persistentStore currentFullSyncID];
+  if (currentFullSyncID)
   {
-    v4 = v3;
-    v5 = [(SYPersistentStore *)self->_persistentStore canStartNewSyncSession];
+    v4 = currentFullSyncID;
+    canStartNewSyncSession = [(SYPersistentStore *)self->_persistentStore canStartNewSyncSession];
 
-    if (v5)
+    if (canStartNewSyncSession)
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(currentFullSyncID) = 0;
     }
 
     else
@@ -2110,28 +2110,28 @@ LABEL_33:
       {
         persistentStore = self->_persistentStore;
         v8 = v6;
-        v9 = [(SYPersistentStore *)persistentStore currentFullSyncID];
+        currentFullSyncID2 = [(SYPersistentStore *)persistentStore currentFullSyncID];
         v12 = 138543362;
-        v13 = v9;
+        v13 = currentFullSyncID2;
         _os_log_impl(&dword_1DF835000, v8, OS_LOG_TYPE_DEFAULT, "Skipping while waiting for sync; fullSyncIdentifier == '%{public}@'", &v12, 0xCu);
       }
 
-      LOBYTE(v3) = 1;
+      LOBYTE(currentFullSyncID) = 1;
     }
   }
 
   v10 = *MEMORY[0x1E69E9840];
-  return v3;
+  return currentFullSyncID;
 }
 
-- (void)_syncEndedWithSyncID:(id)a3
+- (void)_syncEndedWithSyncID:(id)d
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [(SYPersistentStore *)self->_persistentStore exitFullSyncWithID:v4 error:0];
+  dCopy = d;
+  [(SYPersistentStore *)self->_persistentStore exitFullSyncWithID:dCopy error:0];
   [(SYPersistentStore *)self->_persistentStore clearAllChanges];
-  v5 = [(SYPersistentStore *)self->_persistentStore waitingForSyncEndID];
-  v6 = [v5 isEqualToString:v4];
+  waitingForSyncEndID = [(SYPersistentStore *)self->_persistentStore waitingForSyncEndID];
+  v6 = [waitingForSyncEndID isEqualToString:dCopy];
 
   if (v6)
   {
@@ -2145,11 +2145,11 @@ LABEL_33:
     {
       persistentStore = self->_persistentStore;
       v9 = v7;
-      v10 = [(SYPersistentStore *)persistentStore waitingForSyncEndID];
+      waitingForSyncEndID2 = [(SYPersistentStore *)persistentStore waitingForSyncEndID];
       *buf = 138543618;
-      v15 = v4;
+      v15 = dCopy;
       v16 = 2114;
-      v17 = v10;
+      v17 = waitingForSyncEndID2;
       _os_log_impl(&dword_1DF835000, v9, OS_LOG_TYPE_DEFAULT, "Sync %{public}@ has finished, and I'm waiting for sync %{public}@ to finish, and they match. Triggering full-sync now.", buf, 0x16u);
     }
 
@@ -2176,56 +2176,56 @@ LABEL_33:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleSyncAllObjects:(id)a3 response:(id)a4
+- (void)handleSyncAllObjects:(id)objects response:(id)response
 {
   v46 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 syncID];
-  v9 = [(SYLegacyStore *)self _shouldIgnoreSyncID:v8];
+  objectsCopy = objects;
+  responseCopy = response;
+  syncID = [objectsCopy syncID];
+  v9 = [(SYLegacyStore *)self _shouldIgnoreSyncID:syncID];
 
   if (v9)
   {
-    v10 = [(SYLegacyStore *)self newMessageHeader];
-    [v7 setHeader:v10];
+    newMessageHeader = [(SYLegacyStore *)self newMessageHeader];
+    [responseCopy setHeader:newMessageHeader];
 
-    v11 = [v6 syncID];
-    [v7 setSyncID:v11];
+    syncID2 = [objectsCopy syncID];
+    [responseCopy setSyncID:syncID2];
 
     v12 = [SYErrorInfo alloc];
     v13 = [MEMORY[0x1E696ABC0] errorWithSYError:1001 userInfo:0];
     v14 = [(SYErrorInfo *)v12 initWithError:v13];
-    [v7 setError:v14];
+    [responseCopy setError:v14];
 
-    v15 = [v6 syncID];
-    [(SYLegacyStore *)self _syncEndedWithSyncID:v15];
+    syncID3 = [objectsCopy syncID];
+    [(SYLegacyStore *)self _syncEndedWithSyncID:syncID3];
 
     goto LABEL_13;
   }
 
-  v16 = [(SYPersistentStore *)self->_persistentStore currentFullSyncID];
+  currentFullSyncID = [(SYPersistentStore *)self->_persistentStore currentFullSyncID];
 
   persistentStore = self->_persistentStore;
-  if (!v16)
+  if (!currentFullSyncID)
   {
-    v21 = [v6 syncID];
-    [(SYPersistentStore *)persistentStore enterFullSyncWithID:v21 ignoring:0];
+    syncID4 = [objectsCopy syncID];
+    [(SYPersistentStore *)persistentStore enterFullSyncWithID:syncID4 ignoring:0];
     goto LABEL_7;
   }
 
-  v18 = [(SYPersistentStore *)self->_persistentStore currentFullSyncID];
-  v19 = [v18 hasPrefix:@"InitialSync"];
+  currentFullSyncID2 = [(SYPersistentStore *)self->_persistentStore currentFullSyncID];
+  v19 = [currentFullSyncID2 hasPrefix:@"InitialSync"];
 
   if (v19)
   {
     v20 = self->_persistentStore;
-    v21 = [v6 syncID];
-    [(SYPersistentStore *)v20 reassignCurrentSyncID:v21];
+    syncID4 = [objectsCopy syncID];
+    [(SYPersistentStore *)v20 reassignCurrentSyncID:syncID4];
 LABEL_7:
   }
 
-  v22 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v6, "allObjectsCount")}];
-  v23 = [v6 allObjects];
+  v22 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(objectsCopy, "allObjectsCount")}];
+  allObjects = [objectsCopy allObjects];
   v39[0] = MEMORY[0x1E69E9820];
   v39[1] = 3221225472;
   v39[2] = __47__SYLegacyStore_handleSyncAllObjects_response___block_invoke;
@@ -2233,20 +2233,20 @@ LABEL_7:
   v39[4] = self;
   v24 = v22;
   v40 = v24;
-  v25 = v6;
+  v25 = objectsCopy;
   v41 = v25;
-  [v23 enumerateObjectsUsingBlock:v39];
+  [allObjects enumerateObjectsUsingBlock:v39];
 
-  v26 = [v25 header];
-  v27 = [v26 sender];
+  header = [v25 header];
+  sender = [header sender];
 
-  v28 = [v25 header];
-  v29 = [v28 state];
-  v30 = [v29 clockForPeer:v27];
+  header2 = [v25 header];
+  state = [header2 state];
+  v30 = [state clockForPeer:sender];
 
-  [(SYLegacyStore *)self remoteStoreAllObjects:v24 fromPeer:v27 clock:v30];
-  v31 = [(SYPersistentStore *)self->_persistentStore peerID];
-  -[SYVectorClock setClockValue:forPeer:](self->_vectorClock, "setClockValue:forPeer:", [v30 version], v27);
+  [(SYLegacyStore *)self remoteStoreAllObjects:v24 fromPeer:sender clock:v30];
+  peerID = [(SYPersistentStore *)self->_persistentStore peerID];
+  -[SYVectorClock setClockValue:forPeer:](self->_vectorClock, "setClockValue:forPeer:", [v30 version], sender);
   [(SYLegacyStore *)self _vectorClockUpdated];
   if (_sync_log_facilities_pred != -1)
   {
@@ -2258,19 +2258,19 @@ LABEL_7:
   {
     vectorClock = self->_vectorClock;
     v34 = v32;
-    v35 = [(SYVectorClock *)vectorClock jsonRepresentation];
+    jsonRepresentation = [(SYVectorClock *)vectorClock jsonRepresentation];
     *buf = 138543618;
-    v43 = v35;
+    v43 = jsonRepresentation;
     v44 = 2114;
-    v45 = v31;
+    v45 = peerID;
     _os_log_impl(&dword_1DF835000, v34, OS_LOG_TYPE_INFO, "Copied peer clock into our vector. Value is now: %{public}@ (my PeerID is %{public}@)", buf, 0x16u);
   }
 
-  v36 = [(SYLegacyStore *)self newMessageHeader];
-  [v7 setHeader:v36];
+  newMessageHeader2 = [(SYLegacyStore *)self newMessageHeader];
+  [responseCopy setHeader:newMessageHeader2];
 
-  v37 = [v25 syncID];
-  [(SYLegacyStore *)self _syncEndedWithSyncID:v37];
+  syncID5 = [v25 syncID];
+  [(SYLegacyStore *)self _syncEndedWithSyncID:syncID5];
 
 LABEL_13:
   v38 = *MEMORY[0x1E69E9840];
@@ -2311,112 +2311,112 @@ void __47__SYLegacyStore_handleSyncAllObjects_response___block_invoke(uint64_t a
   }
 }
 
-- (void)handleBatchSyncStart:(id)a3
+- (void)handleBatchSyncStart:(id)start
 {
-  v9 = a3;
-  v4 = [v9 syncID];
-  v5 = [(SYLegacyStore *)self _shouldIgnoreSyncID:v4];
+  startCopy = start;
+  syncID = [startCopy syncID];
+  v5 = [(SYLegacyStore *)self _shouldIgnoreSyncID:syncID];
 
   if (!v5)
   {
-    v6 = [(SYPersistentStore *)self->_persistentStore currentFullSyncID];
+    currentFullSyncID = [(SYPersistentStore *)self->_persistentStore currentFullSyncID];
 
-    if (!v6)
+    if (!currentFullSyncID)
     {
       persistentStore = self->_persistentStore;
-      v8 = [v9 syncID];
-      [(SYPersistentStore *)persistentStore enterFullSyncWithID:v8 ignoring:0];
+      syncID2 = [startCopy syncID];
+      [(SYPersistentStore *)persistentStore enterFullSyncWithID:syncID2 ignoring:0];
     }
 
     [(SYLegacyStore *)self processBatchSyncStart];
   }
 }
 
-- (void)handleBatchSyncChunk:(id)a3 response:(id)a4
+- (void)handleBatchSyncChunk:(id)chunk response:(id)response
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 syncID];
-  v9 = [(SYLegacyStore *)self _shouldIgnoreSyncID:v8];
+  responseCopy = response;
+  chunkCopy = chunk;
+  syncID = [chunkCopy syncID];
+  v9 = [(SYLegacyStore *)self _shouldIgnoreSyncID:syncID];
 
   if (v9)
   {
-    v10 = [(SYLegacyStore *)self newMessageHeader];
-    [v6 setHeader:v10];
+    newMessageHeader = [(SYLegacyStore *)self newMessageHeader];
+    [responseCopy setHeader:newMessageHeader];
 
-    v11 = [v7 syncID];
+    syncID2 = [chunkCopy syncID];
 
-    [v6 setSyncID:v11];
+    [responseCopy setSyncID:syncID2];
     v12 = [SYErrorInfo alloc];
     v13 = [MEMORY[0x1E696ABC0] errorWithSYError:1001 userInfo:0];
     v14 = [(SYErrorInfo *)v12 initWithError:v13];
-    [v6 setError:v14];
+    [responseCopy setError:v14];
   }
 
   else
   {
-    v15 = [v7 chunkIndex];
-    v16 = [v7 objects];
+    chunkIndex = [chunkCopy chunkIndex];
+    objects = [chunkCopy objects];
     v21 = 0;
-    [(SYLegacyStore *)self processBatchChunkAtIndex:v15 encodedObjects:v16 error:&v21];
+    [(SYLegacyStore *)self processBatchChunkAtIndex:chunkIndex encodedObjects:objects error:&v21];
     v17 = v21;
 
-    v18 = [(SYLegacyStore *)self newMessageHeader];
-    [v6 setHeader:v18];
+    newMessageHeader2 = [(SYLegacyStore *)self newMessageHeader];
+    [responseCopy setHeader:newMessageHeader2];
 
-    v19 = [v7 chunkIndex];
-    [v6 setChunkIndex:v19];
+    chunkIndex2 = [chunkCopy chunkIndex];
+    [responseCopy setChunkIndex:chunkIndex2];
     if (v17)
     {
       v20 = [[SYErrorInfo alloc] initWithError:v17];
-      [v6 setError:v20];
+      [responseCopy setError:v20];
     }
   }
 }
 
-- (void)handleBatchSyncEnd:(id)a3 response:(id)a4
+- (void)handleBatchSyncEnd:(id)end response:(id)response
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 syncID];
-  v9 = [(SYLegacyStore *)self _shouldIgnoreSyncID:v8];
+  endCopy = end;
+  responseCopy = response;
+  syncID = [endCopy syncID];
+  v9 = [(SYLegacyStore *)self _shouldIgnoreSyncID:syncID];
 
   if (v9)
   {
-    v10 = [(SYLegacyStore *)self newMessageHeader];
-    [v7 setHeader:v10];
+    newMessageHeader = [(SYLegacyStore *)self newMessageHeader];
+    [responseCopy setHeader:newMessageHeader];
 
-    v11 = [v6 syncID];
-    [v7 setSyncID:v11];
+    syncID2 = [endCopy syncID];
+    [responseCopy setSyncID:syncID2];
 
     v12 = [SYErrorInfo alloc];
     v13 = [MEMORY[0x1E696ABC0] errorWithSYError:1001 userInfo:0];
     v14 = [(SYErrorInfo *)v12 initWithError:v13];
-    [v7 setError:v14];
+    [responseCopy setError:v14];
 
-    v15 = [v6 syncID];
-    [(SYLegacyStore *)self _syncEndedWithSyncID:v15];
+    syncID3 = [endCopy syncID];
+    [(SYLegacyStore *)self _syncEndedWithSyncID:syncID3];
   }
 
   else
   {
-    v16 = [v6 header];
-    v17 = [v16 state];
-    v18 = [v6 header];
-    v19 = [v18 sender];
-    v20 = [v17 clockValueForPeer:v19];
+    header = [endCopy header];
+    state = [header state];
+    header2 = [endCopy header];
+    sender = [header2 sender];
+    v20 = [state clockValueForPeer:sender];
 
     [(SYLegacyStore *)self processBatchSyncEnd:v20];
-    v21 = [v6 header];
-    v22 = [v21 sender];
+    header3 = [endCopy header];
+    sender2 = [header3 sender];
 
-    v23 = [v6 header];
-    v24 = [v23 state];
-    v25 = [v24 clockForPeer:v22];
+    header4 = [endCopy header];
+    state2 = [header4 state];
+    v25 = [state2 clockForPeer:sender2];
 
-    v26 = [(SYPersistentStore *)self->_persistentStore peerID];
-    -[SYVectorClock setClockValue:forPeer:](self->_vectorClock, "setClockValue:forPeer:", [v25 version], v22);
+    peerID = [(SYPersistentStore *)self->_persistentStore peerID];
+    -[SYVectorClock setClockValue:forPeer:](self->_vectorClock, "setClockValue:forPeer:", [v25 version], sender2);
     [(SYLegacyStore *)self _vectorClockUpdated];
     if (_sync_log_facilities_pred != -1)
     {
@@ -2428,28 +2428,28 @@ void __47__SYLegacyStore_handleSyncAllObjects_response___block_invoke(uint64_t a
     {
       vectorClock = self->_vectorClock;
       v29 = v27;
-      v30 = [(SYVectorClock *)vectorClock jsonRepresentation];
+      jsonRepresentation = [(SYVectorClock *)vectorClock jsonRepresentation];
       v34 = 138543618;
-      v35 = v30;
+      v35 = jsonRepresentation;
       v36 = 2114;
-      v37 = v26;
+      v37 = peerID;
       _os_log_impl(&dword_1DF835000, v29, OS_LOG_TYPE_INFO, "Copied peer clock into our vector. Value is now: %{public}@ (my PeerID is %{public}@)", &v34, 0x16u);
     }
 
-    v31 = [(SYLegacyStore *)self newMessageHeader];
-    [v7 setHeader:v31];
+    newMessageHeader2 = [(SYLegacyStore *)self newMessageHeader];
+    [responseCopy setHeader:newMessageHeader2];
 
-    v32 = [v6 syncID];
-    [(SYLegacyStore *)self _syncEndedWithSyncID:v32];
+    syncID4 = [endCopy syncID];
+    [(SYLegacyStore *)self _syncEndedWithSyncID:syncID4];
   }
 
   v33 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleChangeMessage:(id)a3
+- (void)handleChangeMessage:(id)message
 {
   *(&v52[1] + 4) = *MEMORY[0x1E69E9840];
-  v39 = a3;
+  messageCopy = message;
   if (![(SYLegacyStore *)self _shouldSkipNonSyncMessages])
   {
     v38 = _os_activity_create(&dword_1DF835000, "CompanionSync Change Application", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DETACHED);
@@ -2462,18 +2462,18 @@ void __47__SYLegacyStore_handleSyncAllObjects_response___block_invoke(uint64_t a
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      LODWORD(v52[0]) = [v39 changesCount];
+      LODWORD(v52[0]) = [messageCopy changesCount];
       _os_log_impl(&dword_1DF835000, v4, OS_LOG_TYPE_DEFAULT, "Applying %d incoming changes", buf, 8u);
     }
 
-    v5 = [v39 header];
-    v6 = [v5 sequenceNumber];
+    header = [messageCopy header];
+    sequenceNumber = [header sequenceNumber];
 
-    v7 = [(SYLegacyStore *)self persistentStore];
-    v8 = [v39 header];
-    v9 = [v8 sender];
-    v10 = [v9 peerID];
-    v11 = [v7 lastSequenceNumberForPeerID:v10];
+    persistentStore = [(SYLegacyStore *)self persistentStore];
+    header2 = [messageCopy header];
+    sender = [header2 sender];
+    peerID = [sender peerID];
+    v11 = [persistentStore lastSequenceNumberForPeerID:peerID];
 
     if (_sync_log_facilities_pred != -1)
     {
@@ -2487,7 +2487,7 @@ void __47__SYLegacyStore_handleSyncAllObjects_response___block_invoke(uint64_t a
 
     if (v11)
     {
-      v12 = v6 + ~v11;
+      v12 = sequenceNumber + ~v11;
     }
 
     else
@@ -2495,7 +2495,7 @@ void __47__SYLegacyStore_handleSyncAllObjects_response___block_invoke(uint64_t a
       v12 = 0;
     }
 
-    v13 = [(SYStore *)self delegate];
+    delegate = [(SYStore *)self delegate];
     if (v12)
     {
       if ([(SYLegacyStore *)self tracksChanges])
@@ -2508,9 +2508,9 @@ void __47__SYLegacyStore_handleSyncAllObjects_response___block_invoke(uint64_t a
         v14 = qword_1EDE73420;
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
-          v15 = [v39 changesCount];
+          changesCount = [messageCopy changesCount];
           *buf = 134217984;
-          v52[0] = v15;
+          v52[0] = changesCount;
           _os_log_impl(&dword_1DF835000, v14, OS_LOG_TYPE_DEFAULT, "-handleChangeMessage:<%zu objects> -- changes are not consecutive, triggering full sync", buf, 0xCu);
         }
 
@@ -2536,11 +2536,11 @@ LABEL_35:
 
       if (objc_opt_respondsToSelector())
       {
-        [v13 syncStore:self detectedChangeListBubbleOfSize:v12];
+        [delegate syncStore:self detectedChangeListBubbleOfSize:v12];
       }
     }
 
-    if (!v13)
+    if (!delegate)
     {
       if (_sync_log_facilities_pred != -1)
       {
@@ -2561,20 +2561,20 @@ LABEL_35:
     flags = self->super._flags;
     if ((flags & 2) != 0)
     {
-      [v13 syncStoreWillUpdate:self objectCount:{objc_msgSend(v39, "changesCount")}];
+      [delegate syncStoreWillUpdate:self objectCount:{objc_msgSend(messageCopy, "changesCount")}];
     }
 
     else if (flags)
     {
-      [v13 syncStoreWillUpdate:self];
+      [delegate syncStoreWillUpdate:self];
     }
 
     v48 = 0u;
     v49 = 0u;
     v46 = 0u;
     v47 = 0u;
-    v20 = [v39 changes];
-    v21 = [v20 countByEnumeratingWithState:&v46 objects:v50 count:16];
+    changes = [messageCopy changes];
+    v21 = [changes countByEnumeratingWithState:&v46 objects:v50 count:16];
     if (v21)
     {
       v22 = *v47;
@@ -2585,7 +2585,7 @@ LABEL_35:
         {
           if (*v47 != v22)
           {
-            objc_enumerationMutation(v20);
+            objc_enumerationMutation(changes);
           }
 
           v24 = *(*(&v46 + 1) + 8 * v23);
@@ -2606,7 +2606,7 @@ LABEL_35:
                   [(SYLegacyStore *)&v42 handleChangeMessage:v43];
                 }
 
-                [v13 syncStore:self objectUpdated:v25];
+                [delegate syncStore:self objectUpdated:v25];
               }
 
               else if ([v24 type] == 2)
@@ -2621,7 +2621,7 @@ LABEL_35:
                   [(SYLegacyStore *)&v40 handleChangeMessage:v41];
                 }
 
-                [v13 syncStore:self objectDeleted:v25];
+                [delegate syncStore:self objectDeleted:v25];
               }
             }
 
@@ -2637,7 +2637,7 @@ LABEL_35:
                 [(SYLegacyStore *)&v44 handleChangeMessage:v45];
               }
 
-              [v13 syncStore:self objectAdded:v25];
+              [delegate syncStore:self objectAdded:v25];
             }
           }
 
@@ -2660,26 +2660,26 @@ LABEL_35:
         }
 
         while (v21 != v23);
-        v21 = [v20 countByEnumeratingWithState:&v46 objects:v50 count:16];
+        v21 = [changes countByEnumeratingWithState:&v46 objects:v50 count:16];
       }
 
       while (v21);
     }
 
     vectorClock = self->_vectorClock;
-    v29 = [v39 header];
-    v30 = [v29 state];
-    v31 = [v39 header];
-    v32 = [v31 sender];
-    v33 = [v30 clockValueForPeer:v32];
-    v34 = [v39 header];
-    v35 = [v34 sender];
-    [(SYVectorClock *)vectorClock setClockValue:v33 forPeer:v35];
+    header3 = [messageCopy header];
+    state = [header3 state];
+    header4 = [messageCopy header];
+    sender2 = [header4 sender];
+    v33 = [state clockValueForPeer:sender2];
+    header5 = [messageCopy header];
+    sender3 = [header5 sender];
+    [(SYVectorClock *)vectorClock setClockValue:v33 forPeer:sender3];
 
     [(SYLegacyStore *)self _vectorClockUpdated];
     if ((*&self->super._flags & 4) != 0)
     {
-      [v13 syncStoreDidUpdate:self];
+      [delegate syncStoreDidUpdate:self];
     }
 
     v36 = +[SYStatisticStore sharedInstance];
@@ -2701,10 +2701,10 @@ LABEL_74:
   v37 = *MEMORY[0x1E69E9840];
 }
 
-- (void)messageCenter:(id)a3 didReceiveUnknownRequest:(id)a4
+- (void)messageCenter:(id)center didReceiveUnknownRequest:(id)request
 {
-  v6 = a3;
-  v7 = a4;
+  centerCopy = center;
+  requestCopy = request;
   if (_sync_log_facilities_pred != -1)
   {
     [SYIncomingSyncAllObjectsSession _continueProcessing];
@@ -2716,58 +2716,58 @@ LABEL_74:
     [SYLegacyStore messageCenter:v8 didReceiveUnknownRequest:?];
   }
 
-  v9 = [v7 idsIdentifier];
-  [(SYLegacyStore *)self _postVersionRejectedForMessageID:v9];
+  idsIdentifier = [requestCopy idsIdentifier];
+  [(SYLegacyStore *)self _postVersionRejectedForMessageID:idsIdentifier];
 
-  [v7 setExpectsResponse:0];
+  [requestCopy setExpectsResponse:0];
 }
 
-- (void)messageCenter:(id)a3 didResolveIDSIdentifierForRequest:(id)a4
+- (void)messageCenter:(id)center didResolveIDSIdentifierForRequest:(id)request
 {
-  v5 = a4;
-  v6 = [v5 idsIdentifier];
+  requestCopy = request;
+  idsIdentifier = [requestCopy idsIdentifier];
 
-  if (v6)
+  if (idsIdentifier)
   {
     v7 = +[SYStatisticStore sharedInstance];
-    v8 = [v5 idsIdentifier];
-    [v7 assignIdentifier:v8 toOutgoingMessage:v5];
+    idsIdentifier2 = [requestCopy idsIdentifier];
+    [v7 assignIdentifier:idsIdentifier2 toOutgoingMessage:requestCopy];
 
     if ([(SYLegacyStore *)self alwaysWins])
     {
-      if ([v5 messageID] - 3 <= 2)
+      if ([requestCopy messageID] - 3 <= 2)
       {
-        v9 = [(SYLegacyStore *)self nextBatchStep];
+        nextBatchStep = [(SYLegacyStore *)self nextBatchStep];
 
-        if (v9)
+        if (nextBatchStep)
         {
-          v10 = [(SYLegacyStore *)self nextBatchStep];
-          v10[2](v10, 0, 0);
+          nextBatchStep2 = [(SYLegacyStore *)self nextBatchStep];
+          nextBatchStep2[2](nextBatchStep2, 0, 0);
         }
       }
 
       if ((*&self->super._flags & 0x80000000) != 0)
       {
-        v11 = [(SYStore *)self delegate];
-        v12 = [v5 messageID];
-        if (v12 == 5)
+        delegate = [(SYStore *)self delegate];
+        messageID = [requestCopy messageID];
+        if (messageID == 5)
         {
-          v13 = [v5 persistentUserInfo];
-          v14 = [v13 objectForKeyedSubscript:@"UserInfo"];
-          [v11 syncStoreEnqueuedAllFullSyncMessages:self context:v14];
+          persistentUserInfo = [requestCopy persistentUserInfo];
+          v14 = [persistentUserInfo objectForKeyedSubscript:@"UserInfo"];
+          [delegate syncStoreEnqueuedAllFullSyncMessages:self context:v14];
         }
 
         else
         {
-          if (v12 != 2)
+          if (messageID != 2)
           {
 LABEL_12:
 
             goto LABEL_13;
           }
 
-          v13 = [v5 persistentUserInfo];
-          [v11 syncStoreEnqueuedAllFullSyncMessages:self context:v13];
+          persistentUserInfo = [requestCopy persistentUserInfo];
+          [delegate syncStoreEnqueuedAllFullSyncMessages:self context:persistentUserInfo];
         }
 
         goto LABEL_12;
@@ -2776,19 +2776,19 @@ LABEL_12:
   }
 
 LABEL_13:
-  v15 = [v5 pbRequest];
-  v16 = [v15 header];
-  v17 = [v16 sequenceNumber];
+  pbRequest = [requestCopy pbRequest];
+  header = [pbRequest header];
+  sequenceNumber = [header sequenceNumber];
 
   sendSignals = self->_sendSignals;
-  v19 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v17];
+  v19 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:sequenceNumber];
   v20 = [(NSMutableDictionary *)sendSignals objectForKeyedSubscript:v19];
 
   if (v20)
   {
     dispatch_semaphore_signal(v20);
     v21 = self->_sendSignals;
-    v22 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v17];
+    v22 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:sequenceNumber];
     [(NSMutableDictionary *)v21 removeObjectForKey:v22];
   }
 
@@ -2807,22 +2807,22 @@ LABEL_13:
   self->_transaction = 0;
 }
 
-- (void)messageCenter:(id)a3 didResolveIDSIdentifier:(id)a4 forResponse:(id)a5
+- (void)messageCenter:(id)center didResolveIDSIdentifier:(id)identifier forResponse:(id)response
 {
-  if (a4)
+  if (identifier)
   {
-    v6 = a5;
-    v7 = a4;
+    responseCopy = response;
+    identifierCopy = identifier;
     v8 = +[SYStatisticStore sharedInstance];
-    [v8 assignIdentifier:v7 toOutgoingMessage:v6];
+    [v8 assignIdentifier:identifierCopy toOutgoingMessage:responseCopy];
   }
 }
 
-- (void)messageCenter:(id)a3 didSuccessfullySendRequestWithIdentifier:(id)a4 userInfo:(id)a5
+- (void)messageCenter:(id)center didSuccessfullySendRequestWithIdentifier:(id)identifier userInfo:(id)info
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  centerCopy = center;
+  identifierCopy = identifier;
+  infoCopy = info;
   if (_sync_log_facilities_pred != -1)
   {
     [SYIncomingSyncAllObjectsSession _continueProcessing];
@@ -2834,21 +2834,21 @@ LABEL_13:
   }
 
   v11 = +[SYStatisticStore sharedInstance];
-  v12 = [(SYLegacyStore *)self service];
-  [v11 updateOutgoingMessageWithIdentifier:v9 forService:v12 sentSuccessfully:1 sendError:0];
+  service = [(SYLegacyStore *)self service];
+  [v11 updateOutgoingMessageWithIdentifier:identifierCopy forService:service sentSuccessfully:1 sendError:0];
 
   if ((*&self->super._flags & 0x2000) != 0)
   {
-    v13 = [(SYStore *)self delegate];
-    [v13 syncStore:self sentMessageWithContext:v10];
+    delegate = [(SYStore *)self delegate];
+    [delegate syncStore:self sentMessageWithContext:infoCopy];
   }
 }
 
-- (void)messageCenter:(id)a3 didSuccessfullyDeliverRequestWithIdentifier:(id)a4 userInfo:(id)a5
+- (void)messageCenter:(id)center didSuccessfullyDeliverRequestWithIdentifier:(id)identifier userInfo:(id)info
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  centerCopy = center;
+  identifierCopy = identifier;
+  infoCopy = info;
   if (_sync_log_facilities_pred != -1)
   {
     [SYIncomingSyncAllObjectsSession _continueProcessing];
@@ -2860,12 +2860,12 @@ LABEL_13:
   }
 
   v11 = +[SYStatisticStore sharedInstance];
-  [v11 confirmDeliveryOfOutgoingMessage:v9];
+  [v11 confirmDeliveryOfOutgoingMessage:identifierCopy];
 
   if ((*&self->super._flags & 0x4000) != 0)
   {
-    v12 = [(SYStore *)self delegate];
-    [v12 syncStore:self peerFinishedProcessingMessageWithContext:v10];
+    delegate = [(SYStore *)self delegate];
+    [delegate syncStore:self peerFinishedProcessingMessageWithContext:infoCopy];
   }
 }
 
@@ -2874,28 +2874,28 @@ LABEL_13:
   v3 = objc_opt_new();
   [v3 setTimestamp:CFAbsoluteTimeGetCurrent()];
   v4 = [SYPeer alloc];
-  v5 = [(SYLegacyStore *)self persistentStore];
-  v6 = [v5 peerID];
-  v7 = [(SYPeer *)v4 initWithPeerID:v6 generation:0];
+  persistentStore = [(SYLegacyStore *)self persistentStore];
+  peerID = [persistentStore peerID];
+  v7 = [(SYPeer *)v4 initWithPeerID:peerID generation:0];
   [v3 setSender:v7];
 
-  v8 = [(SYLegacyStore *)self vectorClock];
-  v9 = [v8 copy];
+  vectorClock = [(SYLegacyStore *)self vectorClock];
+  v9 = [vectorClock copy];
   [v3 setState:v9];
 
   [v3 setVersion:1];
-  v10 = [(SYLegacyStore *)self persistentStore];
-  [v3 setSequenceNumber:{objc_msgSend(v10, "nextSequenceNumber")}];
+  persistentStore2 = [(SYLegacyStore *)self persistentStore];
+  [v3 setSequenceNumber:{objc_msgSend(persistentStore2, "nextSequenceNumber")}];
 
   return v3;
 }
 
-- (void)_transaction:(id)a3 context:(id)a4 idsOptions:(id)a5 blockUntilSent:(BOOL)a6 reportError:(id)a7
+- (void)_transaction:(id)_transaction context:(id)context idsOptions:(id)options blockUntilSent:(BOOL)sent reportError:(id)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  _transactionCopy = _transaction;
+  contextCopy = context;
+  optionsCopy = options;
+  errorCopy = error;
   if ([(SYPersistentStore *)self->_persistentStore completedSync])
   {
     v17[0] = MEMORY[0x1E69E9820];
@@ -2903,18 +2903,18 @@ LABEL_13:
     v17[2] = __76__SYLegacyStore__transaction_context_idsOptions_blockUntilSent_reportError___block_invoke;
     v17[3] = &unk_1E86CA508;
     v17[4] = self;
-    v18 = v13;
-    v19 = v14;
-    v20 = v12;
-    v22 = a6;
-    v21 = v15;
+    v18 = contextCopy;
+    v19 = optionsCopy;
+    v20 = _transactionCopy;
+    sentCopy = sent;
+    v21 = errorCopy;
     _os_activity_initiate(&dword_1DF835000, "CompanionSync Transaction", OS_ACTIVITY_FLAG_DEFAULT, v17);
   }
 
-  else if (v15)
+  else if (errorCopy)
   {
     v16 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithSYError:1005 userInfo:0];
-    (*(v15 + 2))(v15, v16);
+    (*(errorCopy + 2))(errorCopy, v16);
   }
 }
 
@@ -2930,12 +2930,12 @@ void __76__SYLegacyStore__transaction_context_idsOptions_blockUntilSent_reportEr
   objc_autoreleasePoolPop(v2);
 }
 
-- (BOOL)_allowDeltaSyncWithContext:(id)a3 error:(id *)a4
+- (BOOL)_allowDeltaSyncWithContext:(id)context error:(id *)error
 {
-  v6 = a3;
-  v7 = [(SYLegacyStore *)self pairedDeviceID];
+  contextCopy = context;
+  pairedDeviceID = [(SYLegacyStore *)self pairedDeviceID];
 
-  if (v7)
+  if (pairedDeviceID)
   {
     v8 = 0;
   }
@@ -2966,23 +2966,23 @@ void __76__SYLegacyStore__transaction_context_idsOptions_blockUntilSent_reportEr
 LABEL_9:
   if (v8)
   {
-    if (a4)
+    if (error)
     {
       v11 = v8;
-      *a4 = v8;
+      *error = v8;
     }
 
     else if ((*&self->super._flags & 0x400) != 0)
     {
-      v12 = [(SYLegacyStore *)self queue];
+      queue = [(SYLegacyStore *)self queue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __50__SYLegacyStore__allowDeltaSyncWithContext_error___block_invoke;
       block[3] = &unk_1E86CA0F8;
       block[4] = self;
       v15 = v8;
-      v16 = v6;
-      dispatch_async(v12, block);
+      v16 = contextCopy;
+      dispatch_async(queue, block);
     }
   }
 
@@ -2995,13 +2995,13 @@ void __50__SYLegacyStore__allowDeltaSyncWithContext_error___block_invoke(uint64_
   [v2 syncStore:*(a1 + 32) encounteredError:*(a1 + 40) context:*(a1 + 48)];
 }
 
-- (BOOL)addObject:(id)a3 context:(id)a4 idsOptions:(id)a5 error:(id *)a6
+- (BOOL)addObject:(id)object context:(id)context idsOptions:(id)options error:(id *)error
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(SYLegacyStore *)self _allowDeltaSyncWithContext:v11 error:a6];
+  objectCopy = object;
+  contextCopy = context;
+  optionsCopy = options;
+  v13 = [(SYLegacyStore *)self _allowDeltaSyncWithContext:contextCopy error:error];
   if (v13)
   {
     v14 = _os_activity_create(&dword_1DF835000, "CompanionSync AddObject", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
@@ -3017,23 +3017,23 @@ void __50__SYLegacyStore__allowDeltaSyncWithContext_error___block_invoke(uint64_
       _os_log_impl(&dword_1DF835000, v15, OS_LOG_TYPE_INFO, "addObject", v20, 2u);
     }
 
-    v16 = [SYChange changeWithObject:v10 updateType:0 store:self];
+    v16 = [SYChange changeWithObject:objectCopy updateType:0 store:self];
     v21[0] = v16;
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1];
-    [(SYLegacyStore *)self handleObjectChanges:v17 contextInfo:v11 idsOptions:v12 blockUntilSent:0 reportError:0];
+    [(SYLegacyStore *)self handleObjectChanges:v17 contextInfo:contextCopy idsOptions:optionsCopy blockUntilSent:0 reportError:0];
   }
 
   v18 = *MEMORY[0x1E69E9840];
   return v13;
 }
 
-- (BOOL)updateObject:(id)a3 context:(id)a4 idsOptions:(id)a5 error:(id *)a6
+- (BOOL)updateObject:(id)object context:(id)context idsOptions:(id)options error:(id *)error
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(SYLegacyStore *)self _allowDeltaSyncWithContext:v11 error:a6];
+  objectCopy = object;
+  contextCopy = context;
+  optionsCopy = options;
+  v13 = [(SYLegacyStore *)self _allowDeltaSyncWithContext:contextCopy error:error];
   if (v13)
   {
     v14 = _os_activity_create(&dword_1DF835000, "CompanionSync UpdateObject", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
@@ -3049,26 +3049,26 @@ void __50__SYLegacyStore__allowDeltaSyncWithContext_error___block_invoke(uint64_
       _os_log_impl(&dword_1DF835000, v15, OS_LOG_TYPE_INFO, "updateObject", v20, 2u);
     }
 
-    v16 = [SYChange changeWithObject:v10 updateType:1 store:self];
+    v16 = [SYChange changeWithObject:objectCopy updateType:1 store:self];
     v21[0] = v16;
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1];
-    [(SYLegacyStore *)self handleObjectChanges:v17 contextInfo:v11 idsOptions:v12 blockUntilSent:0 reportError:0];
+    [(SYLegacyStore *)self handleObjectChanges:v17 contextInfo:contextCopy idsOptions:optionsCopy blockUntilSent:0 reportError:0];
   }
 
   v18 = *MEMORY[0x1E69E9840];
   return v13;
 }
 
-- (BOOL)deleteObject:(id)a3 context:(id)a4 idsOptions:(id)a5 error:(id *)a6
+- (BOOL)deleteObject:(id)object context:(id)context idsOptions:(id)options error:(id *)error
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([(SYLegacyStore *)self _allowDeltaSyncWithContext:v11 error:a6])
+  objectCopy = object;
+  contextCopy = context;
+  optionsCopy = options;
+  if ([(SYLegacyStore *)self _allowDeltaSyncWithContext:contextCopy error:error])
   {
-    v13 = [(SYStore *)self allowsDeletes];
-    if (v13)
+    allowsDeletes = [(SYStore *)self allowsDeletes];
+    if (allowsDeletes)
     {
       v14 = _os_activity_create(&dword_1DF835000, "CompanionSync DeleteObject", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
       if (_sync_log_facilities_pred != -1)
@@ -3083,10 +3083,10 @@ void __50__SYLegacyStore__allowDeltaSyncWithContext_error___block_invoke(uint64_
         _os_log_impl(&dword_1DF835000, v15, OS_LOG_TYPE_INFO, "deleteObject", &v23, 2u);
       }
 
-      v16 = [SYChange changeWithObject:v10 updateType:2 store:self];
+      v16 = [SYChange changeWithObject:objectCopy updateType:2 store:self];
       v27[0] = v16;
       v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:1];
-      [(SYLegacyStore *)self handleObjectChanges:v17 contextInfo:v11 idsOptions:v12 blockUntilSent:0 reportError:0];
+      [(SYLegacyStore *)self handleObjectChanges:v17 contextInfo:contextCopy idsOptions:optionsCopy blockUntilSent:0 reportError:0];
     }
 
     else
@@ -3094,15 +3094,15 @@ void __50__SYLegacyStore__allowDeltaSyncWithContext_error___block_invoke(uint64_
       [(SYLegacyStore *)self postUserNotification:@"Delete Denied" message:@"A client attempted to send a delete message while deletes were denied."];
       v18 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithSYError:1006 userInfo:0];
       v14 = v18;
-      if (a6)
+      if (error)
       {
         v19 = v18;
-        *a6 = v14;
+        *error = v14;
       }
 
       else if ((*&self->super._flags & 0x400) != 0)
       {
-        v20 = [(SYLegacyStore *)self queue];
+        queue = [(SYLegacyStore *)self queue];
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
         block[2] = __55__SYLegacyStore_deleteObject_context_idsOptions_error___block_invoke;
@@ -3110,19 +3110,19 @@ void __50__SYLegacyStore__allowDeltaSyncWithContext_error___block_invoke(uint64_
         block[4] = self;
         v14 = v14;
         v25 = v14;
-        v26 = v11;
-        dispatch_async(v20, block);
+        v26 = contextCopy;
+        dispatch_async(queue, block);
       }
     }
   }
 
   else
   {
-    v13 = 0;
+    allowsDeletes = 0;
   }
 
   v21 = *MEMORY[0x1E69E9840];
-  return v13;
+  return allowsDeletes;
 }
 
 void __55__SYLegacyStore_deleteObject_context_idsOptions_error___block_invoke(uint64_t a1)
@@ -3131,37 +3131,37 @@ void __55__SYLegacyStore_deleteObject_context_idsOptions_error___block_invoke(ui
   [v2 syncStore:*(a1 + 32) encounteredError:*(a1 + 40) context:*(a1 + 48)];
 }
 
-- (void)_handleObjectChanges:(id)a3 contextInfo:(id)a4 idsOptions:(id)a5 blockUntilSent:(BOOL)a6 reportError:(id)a7 notifyingTransaction:(id)a8
+- (void)_handleObjectChanges:(id)changes contextInfo:(id)info idsOptions:(id)options blockUntilSent:(BOOL)sent reportError:(id)error notifyingTransaction:(id)transaction
 {
-  v10 = a6;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
+  sentCopy = sent;
+  changesCopy = changes;
+  infoCopy = info;
+  optionsCopy = options;
+  errorCopy = error;
+  transactionCopy = transaction;
   if (self->_overflowRetryTimer)
   {
-    if (v17)
+    if (errorCopy)
     {
-      v17[2](v17, self->_overflowRetryError);
+      errorCopy[2](errorCopy, self->_overflowRetryError);
     }
 
     else if ((*&self->super._flags & 0x400) != 0)
     {
-      v20 = [(SYLegacyStore *)self queue];
+      queue = [(SYLegacyStore *)self queue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __109__SYLegacyStore__handleObjectChanges_contextInfo_idsOptions_blockUntilSent_reportError_notifyingTransaction___block_invoke;
       block[3] = &unk_1E86C9E90;
       block[4] = self;
-      v35 = v15;
-      dispatch_async(v20, block);
+      v35 = infoCopy;
+      dispatch_async(queue, block);
     }
   }
 
   else if ([(SYPersistentStore *)self->_persistentStore completedSync])
   {
-    if (v10)
+    if (sentCopy)
     {
       v19 = dispatch_semaphore_create(0);
     }
@@ -3171,19 +3171,19 @@ void __55__SYLegacyStore_deleteObject_context_idsOptions_error___block_invoke(ui
       v19 = 0;
     }
 
-    v22 = [(SYLegacyStore *)self queue];
+    queue2 = [(SYLegacyStore *)self queue];
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __109__SYLegacyStore__handleObjectChanges_contextInfo_idsOptions_blockUntilSent_reportError_notifyingTransaction___block_invoke_3;
     v25[3] = &unk_1E86CA558;
     v25[4] = self;
-    v26 = v18;
-    v27 = v14;
-    v28 = v15;
-    v29 = v16;
+    v26 = transactionCopy;
+    v27 = changesCopy;
+    v28 = infoCopy;
+    v29 = optionsCopy;
     v23 = v19;
     v30 = v23;
-    dispatch_async(v22, v25);
+    dispatch_async(queue2, v25);
 
     if (v23)
     {
@@ -3194,22 +3194,22 @@ void __55__SYLegacyStore_deleteObject_context_idsOptions_error___block_invoke(ui
   else
   {
     v21 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithSYError:1005 userInfo:0];
-    if (v17)
+    if (errorCopy)
     {
-      v17[2](v17, v21);
+      errorCopy[2](errorCopy, v21);
     }
 
     else if ((*&self->super._flags & 0x400) != 0)
     {
-      v24 = [(SYLegacyStore *)self queue];
+      queue3 = [(SYLegacyStore *)self queue];
       v31[0] = MEMORY[0x1E69E9820];
       v31[1] = 3221225472;
       v31[2] = __109__SYLegacyStore__handleObjectChanges_contextInfo_idsOptions_blockUntilSent_reportError_notifyingTransaction___block_invoke_2;
       v31[3] = &unk_1E86CA0F8;
       v31[4] = self;
       v32 = v21;
-      v33 = v15;
-      dispatch_async(v24, v31);
+      v33 = infoCopy;
+      dispatch_async(queue3, v31);
     }
   }
 }
@@ -3305,28 +3305,28 @@ uint64_t __109__SYLegacyStore__handleObjectChanges_contextInfo_idsOptions_blockU
   return [v2 sendChanges:v3 context:v4 options:v5 sentSignal:v6];
 }
 
-- (void)sendChanges:(id)a3 context:(id)a4 options:(id)a5 sentSignal:(id)a6
+- (void)sendChanges:(id)changes context:(id)context options:(id)options sentSignal:(id)signal
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(SYLegacyStore *)self queue];
-  dispatch_assert_queue_V2(v14);
+  changesCopy = changes;
+  contextCopy = context;
+  optionsCopy = options;
+  signalCopy = signal;
+  queue = [(SYLegacyStore *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   activity_block[0] = MEMORY[0x1E69E9820];
   activity_block[1] = 3221225472;
   activity_block[2] = __56__SYLegacyStore_sendChanges_context_options_sentSignal___block_invoke;
   activity_block[3] = &unk_1E86CA530;
-  v20 = v10;
-  v21 = self;
-  v22 = v13;
-  v23 = v11;
-  v24 = v12;
-  v15 = v12;
-  v16 = v11;
-  v17 = v13;
-  v18 = v10;
+  v20 = changesCopy;
+  selfCopy = self;
+  v22 = signalCopy;
+  v23 = contextCopy;
+  v24 = optionsCopy;
+  v15 = optionsCopy;
+  v16 = contextCopy;
+  v17 = signalCopy;
+  v18 = changesCopy;
   _os_activity_initiate(&dword_1DF835000, "CompanionSync SendChanges", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
@@ -3357,15 +3357,15 @@ void __56__SYLegacyStore_sendChanges_context_options_sentSignal___block_invoke(u
   [*(a1 + 40) sendMessage:v12 ofType:6 respondingTo:0 userInfo:*(a1 + 56) idsOptions:*(a1 + 64)];
 }
 
-- (void)logChanges:(id)a3
+- (void)logChanges:(id)changes
 {
-  v4 = a3;
+  changesCopy = changes;
   if ([(SYLegacyStore *)self tracksChanges])
   {
     v5 = _os_activity_create(&dword_1DF835000, "CompanionSync LogChanges", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
-    v6 = [(SYLegacyStore *)self persistentStore];
+    persistentStore = [(SYLegacyStore *)self persistentStore];
     v13 = 0;
-    v7 = [v6 logChanges:v4 error:&v13];
+    v7 = [persistentStore logChanges:changesCopy error:&v13];
     v8 = v13;
 
     if ((v7 & 1) == 0)
@@ -3380,12 +3380,12 @@ void __56__SYLegacyStore_sendChanges_context_options_sentSignal___block_invoke(u
         [SYLegacyStore logChanges:];
       }
 
-      v9 = [v8 localizedDescription];
+      localizedDescription = [v8 localizedDescription];
 
-      if (v9)
+      if (localizedDescription)
       {
-        v10 = [v8 localizedDescription];
-        v11 = [@"DB changelog failure. " stringByAppendingString:v10];
+        localizedDescription2 = [v8 localizedDescription];
+        v11 = [@"DB changelog failure. " stringByAppendingString:localizedDescription2];
       }
 
       else
@@ -3399,19 +3399,19 @@ void __56__SYLegacyStore_sendChanges_context_options_sentSignal___block_invoke(u
   }
 }
 
-- (void)setNeedsFullSyncWithContext:(id)a3 idsOptions:(id)a4
+- (void)setNeedsFullSyncWithContext:(id)context idsOptions:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  optionsCopy = options;
   if (self->_overflowRetryTimer)
   {
-    v8 = [(SYLegacyStore *)self queue];
+    queue = [(SYLegacyStore *)self queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __56__SYLegacyStore_setNeedsFullSyncWithContext_idsOptions___block_invoke;
     block[3] = &unk_1E86C9FB0;
     block[4] = self;
-    dispatch_async(v8, block);
+    dispatch_async(queue, block);
   }
 
   else
@@ -3427,15 +3427,15 @@ void __56__SYLegacyStore_sendChanges_context_options_sentSignal___block_invoke(u
 
     else
     {
-      v10 = [(SYLegacyStore *)self queue];
+      queue2 = [(SYLegacyStore *)self queue];
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __56__SYLegacyStore_setNeedsFullSyncWithContext_idsOptions___block_invoke_2;
       v11[3] = &unk_1E86CA0F8;
       v11[4] = self;
-      v12 = v6;
-      v13 = v7;
-      dispatch_async(v10, v11);
+      v12 = contextCopy;
+      v13 = optionsCopy;
+      dispatch_async(queue2, v11);
     }
   }
 }
@@ -3534,12 +3534,12 @@ LABEL_12:
   }
 }
 
-- (void)remoteStoreAllObjects:(id)a3 fromPeer:(id)a4 clock:(id)a5
+- (void)remoteStoreAllObjects:(id)objects fromPeer:(id)peer clock:(id)clock
 {
   v41 = *MEMORY[0x1E69E9840];
-  v29 = a3;
-  v8 = a4;
-  v9 = a5;
+  objectsCopy = objects;
+  peerCopy = peer;
+  clockCopy = clock;
   v10 = _os_activity_create(&dword_1DF835000, "CompanionSync remoteStoreAllObjects", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   if (_sync_log_facilities_pred != -1)
   {
@@ -3550,14 +3550,14 @@ LABEL_12:
   if (os_log_type_enabled(qword_1EDE73420, OS_LOG_TYPE_DEBUG))
   {
     v26 = v11;
-    [v8 peerID];
+    [peerCopy peerID];
     v28 = v27 = v10;
     *buf = 138543874;
     v36 = v28;
     v37 = 2048;
-    v38 = [v29 count];
+    v38 = [objectsCopy count];
     v39 = 2048;
-    v40 = [v9 version];
+    version = [clockCopy version];
     _os_log_debug_impl(&dword_1DF835000, v26, OS_LOG_TYPE_DEBUG, "remoteStoreAllObjects from %{public}@, %lu objects, version %qu", buf, 0x20u);
 
     v10 = v27;
@@ -3581,38 +3581,38 @@ LABEL_12:
     [MEMORY[0x1E695DF30] raise:@"Full sync sent to master device" format:@"Only the slave device should receive a full sync (from the master)"];
   }
 
-  v13 = [(SYStore *)self delegate];
-  if (v13)
+  delegate = [(SYStore *)self delegate];
+  if (delegate)
   {
     Current = CFAbsoluteTimeGetCurrent();
     flags = self->super._flags;
     if ((flags & 2) != 0)
     {
       v16 = v10;
-      v17 = v8;
-      [v13 syncStoreWillUpdate:self objectCount:{objc_msgSend(v29, "count")}];
+      v17 = peerCopy;
+      [delegate syncStoreWillUpdate:self objectCount:{objc_msgSend(objectsCopy, "count")}];
     }
 
     else
     {
       v16 = v10;
-      v17 = v8;
+      v17 = peerCopy;
       if (flags)
       {
-        [v13 syncStoreWillUpdate:self];
+        [delegate syncStoreWillUpdate:self];
       }
     }
 
     if ((*&self->super._flags & 0x10) != 0)
     {
-      [v13 syncStoreAllObjectsDeleted:self];
+      [delegate syncStoreAllObjectsDeleted:self];
     }
 
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v18 = v29;
+    v18 = objectsCopy;
     v19 = [v18 countByEnumeratingWithState:&v30 objects:v34 count:16];
     if (v19)
     {
@@ -3627,7 +3627,7 @@ LABEL_12:
             objc_enumerationMutation(v18);
           }
 
-          [v13 syncStore:self objectAdded:*(*(&v30 + 1) + 8 * i)];
+          [delegate syncStore:self objectAdded:*(*(&v30 + 1) + 8 * i)];
         }
 
         v20 = [v18 countByEnumeratingWithState:&v30 objects:v34 count:16];
@@ -3639,15 +3639,15 @@ LABEL_12:
     v23 = self->super._flags;
     if ((v23 & 4) != 0)
     {
-      [v13 syncStoreDidUpdate:self];
+      [delegate syncStoreDidUpdate:self];
       v23 = self->super._flags;
     }
 
-    v8 = v17;
+    peerCopy = v17;
     v10 = v16;
     if ((v23 & 8) != 0)
     {
-      [v13 syncStoreDidCompleteFullSync:self];
+      [delegate syncStoreDidCompleteFullSync:self];
     }
 
     v24 = +[SYStatisticStore sharedInstance];
@@ -3710,15 +3710,15 @@ LABEL_12:
   [(SYLegacyStore *)self performFullSync];
 }
 
-- (void)performFullSyncIfNecessaryAskingDelegate:(BOOL)a3
+- (void)performFullSyncIfNecessaryAskingDelegate:(BOOL)delegate
 {
-  v3 = a3;
+  delegateCopy = delegate;
   if (![(SYLegacyStore *)self inFullSync])
   {
     goto LABEL_9;
   }
 
-  if (v3 && [(SYLegacyStore *)self alwaysWins])
+  if (delegateCopy && [(SYLegacyStore *)self alwaysWins])
   {
     if ([(SYPersistentStore *)self->_persistentStore currentSyncSendComplete])
     {
@@ -3753,7 +3753,7 @@ LABEL_9:
     v9[2] = __58__SYLegacyStore_performFullSyncIfNecessaryAskingDelegate___block_invoke_206;
     v9[3] = &unk_1E86CA3D8;
     v9[4] = self;
-    v10 = v3;
+    v10 = delegateCopy;
     dispatch_async(v5, v9);
     return;
   }
@@ -3850,8 +3850,8 @@ LABEL_11:
 
     if ([(SYLegacyStore *)self alwaysWins])
     {
-      v3 = [(SYLegacyStore *)self persistentStore];
-      v4 = [v3 currentLocalVersion];
+      persistentStore = [(SYLegacyStore *)self persistentStore];
+      currentLocalVersion = [persistentStore currentLocalVersion];
 
       if (_sync_log_facilities_pred != -1)
       {
@@ -3877,10 +3877,10 @@ LABEL_11:
         [MEMORY[0x1E695DF30] raise:@"Missing delegate method" format:@"The delegate on the master (alwaysWins) side must implement syncStoreAllObjects"];
       }
 
-      v18 = [(SYStore *)self delegate];
-      v19 = [v18 syncStoreAllObjects:self];
+      delegate = [(SYStore *)self delegate];
+      v19 = [delegate syncStoreAllObjects:self];
 
-      v16 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v40 = 0u;
       v41 = 0u;
       v42 = 0u;
@@ -3901,7 +3901,7 @@ LABEL_11:
             }
 
             v24 = [(SYStore *)self encodeSYObject:*(*(&v40 + 1) + 8 * i)];
-            [v16 addObject:v24];
+            [array addObject:v24];
           }
 
           v21 = [(SYRequestFullSync *)v13 countByEnumeratingWithState:&v40 objects:v48 count:16];
@@ -3919,50 +3919,50 @@ LABEL_11:
       if (os_log_type_enabled(qword_1EDE73420, OS_LOG_TYPE_DEFAULT))
       {
         v26 = v25;
-        v27 = [v16 count];
+        v27 = [array count];
         *buf = 134218240;
         v45 = v27;
         v46 = 2048;
-        v47 = v4;
+        v47 = currentLocalVersion;
         _os_log_impl(&dword_1DF835000, v26, OS_LOG_TYPE_DEFAULT, "performFullSync - %lu objects, %lu finalVersion", buf, 0x16u);
       }
 
-      v28 = [(SYPersistentStore *)self->_persistentStore currentFullSyncID];
+      currentFullSyncID = [(SYPersistentStore *)self->_persistentStore currentFullSyncID];
 
-      if (!v28)
+      if (!currentFullSyncID)
       {
-        v29 = [(SYLegacyStore *)self persistentStore];
-        v30 = [v29 completedSync];
+        persistentStore2 = [(SYLegacyStore *)self persistentStore];
+        completedSync = [persistentStore2 completedSync];
 
-        if (v30)
+        if (completedSync)
         {
           v31 = objc_opt_new();
-          v32 = [v31 UUIDString];
+          uUIDString = [v31 UUIDString];
         }
 
         else
         {
           v31 = [@"InitialSync" stringByAppendingString:@"-Master-"];
           v33 = objc_opt_new();
-          v34 = [v33 UUIDString];
-          v32 = [v31 stringByAppendingString:v34];
+          uUIDString2 = [v33 UUIDString];
+          uUIDString = [v31 stringByAppendingString:uUIDString2];
         }
 
-        [(SYPersistentStore *)self->_persistentStore enterFullSyncWithID:v32 ignoring:0];
+        [(SYPersistentStore *)self->_persistentStore enterFullSyncWithID:uUIDString ignoring:0];
       }
 
-      v17 = objc_alloc_init(SYSyncAllObjects);
-      v35 = [(SYLegacyStore *)self newMessageHeader];
-      [(SYSyncAllObjects *)v17 setHeader:v35];
+      fullSyncIDSOptions2 = objc_alloc_init(SYSyncAllObjects);
+      newMessageHeader = [(SYLegacyStore *)self newMessageHeader];
+      [(SYSyncAllObjects *)fullSyncIDSOptions2 setHeader:newMessageHeader];
 
-      v36 = [(SYPersistentStore *)self->_persistentStore currentFullSyncID];
-      [(SYSyncAllObjects *)v17 setSyncID:v36];
+      currentFullSyncID2 = [(SYPersistentStore *)self->_persistentStore currentFullSyncID];
+      [(SYSyncAllObjects *)fullSyncIDSOptions2 setSyncID:currentFullSyncID2];
 
-      [(SYSyncAllObjects *)v17 setVersion:0];
-      [(SYSyncAllObjects *)v17 setAllObjects:v16];
-      v37 = [(SYPersistentStore *)self->_persistentStore fullSyncUserInfo];
-      v38 = [(SYPersistentStore *)self->_persistentStore fullSyncIDSOptions];
-      [(SYLegacyStore *)self sendMessage:v17 ofType:2 respondingTo:0 userInfo:v37 idsOptions:v38];
+      [(SYSyncAllObjects *)fullSyncIDSOptions2 setVersion:0];
+      [(SYSyncAllObjects *)fullSyncIDSOptions2 setAllObjects:array];
+      fullSyncUserInfo = [(SYPersistentStore *)self->_persistentStore fullSyncUserInfo];
+      fullSyncIDSOptions = [(SYPersistentStore *)self->_persistentStore fullSyncIDSOptions];
+      [(SYLegacyStore *)self sendMessage:fullSyncIDSOptions2 ofType:2 respondingTo:0 userInfo:fullSyncUserInfo idsOptions:fullSyncIDSOptions];
 
       [(SYPersistentStore *)self->_persistentStore setCompletedSync:1];
     }
@@ -3979,19 +3979,19 @@ LABEL_11:
         [SYLegacyStore performFullSyncToCurrentDBVersion];
       }
 
-      v6 = [(SYPersistentStore *)self->_persistentStore currentFullSyncID];
+      currentFullSyncID3 = [(SYPersistentStore *)self->_persistentStore currentFullSyncID];
 
-      if (!v6)
+      if (!currentFullSyncID3)
       {
-        v7 = [(SYLegacyStore *)self persistentStore];
-        v8 = [v7 completedSync];
+        persistentStore3 = [(SYLegacyStore *)self persistentStore];
+        completedSync2 = [persistentStore3 completedSync];
 
         v9 = objc_opt_new();
-        v10 = [v9 UUIDString];
-        v11 = v10;
-        if ((v8 & 1) == 0)
+        uUIDString3 = [v9 UUIDString];
+        v11 = uUIDString3;
+        if ((completedSync2 & 1) == 0)
         {
-          v12 = [@"InitialSync" stringByAppendingFormat:@"-%@", v10];
+          v12 = [@"InitialSync" stringByAppendingFormat:@"-%@", uUIDString3];
 
           v11 = v12;
         }
@@ -4000,15 +4000,15 @@ LABEL_11:
       }
 
       v13 = objc_alloc_init(SYRequestFullSync);
-      v14 = [(SYLegacyStore *)self newMessageHeader];
-      [(SYRequestFullSync *)v13 setHeader:v14];
+      newMessageHeader2 = [(SYLegacyStore *)self newMessageHeader];
+      [(SYRequestFullSync *)v13 setHeader:newMessageHeader2];
 
-      v15 = [(SYPersistentStore *)self->_persistentStore currentFullSyncID];
-      [(SYRequestFullSync *)v13 setSyncID:v15];
+      currentFullSyncID4 = [(SYPersistentStore *)self->_persistentStore currentFullSyncID];
+      [(SYRequestFullSync *)v13 setSyncID:currentFullSyncID4];
 
-      v16 = [(SYPersistentStore *)self->_persistentStore fullSyncUserInfo];
-      v17 = [(SYPersistentStore *)self->_persistentStore fullSyncIDSOptions];
-      [(SYLegacyStore *)self sendMessage:v13 ofType:1 respondingTo:0 userInfo:v16 idsOptions:v17];
+      array = [(SYPersistentStore *)self->_persistentStore fullSyncUserInfo];
+      fullSyncIDSOptions2 = [(SYPersistentStore *)self->_persistentStore fullSyncIDSOptions];
+      [(SYLegacyStore *)self sendMessage:v13 ofType:1 respondingTo:0 userInfo:array idsOptions:fullSyncIDSOptions2];
     }
 
     if (_sync_log_facilities_pred != -1)
@@ -4036,9 +4036,9 @@ LABEL_46:
     }
 
     v3 = objc_opt_new();
-    v4 = [v3 UUIDString];
+    uUIDString = [v3 UUIDString];
 
-    [(SYPersistentStore *)self->_persistentStore enterFullSyncWithID:v4 ignoring:0];
+    [(SYPersistentStore *)self->_persistentStore enterFullSyncWithID:uUIDString ignoring:0];
   }
 
   queue = self->_queue;
@@ -4050,13 +4050,13 @@ LABEL_46:
   dispatch_async(queue, block);
 }
 
-- (BOOL)objectChanged:(id)a3 sinceVersion:(unint64_t)a4
+- (BOOL)objectChanged:(id)changed sinceVersion:(unint64_t)version
 {
-  v6 = a3;
+  changedCopy = changed;
   if ([(SYLegacyStore *)self tracksChanges])
   {
-    v7 = [(SYLegacyStore *)self persistentStore];
-    v8 = [v7 objectChanged:v6 sinceVersion:a4];
+    persistentStore = [(SYLegacyStore *)self persistentStore];
+    v8 = [persistentStore objectChanged:changedCopy sinceVersion:version];
   }
 
   else
@@ -4100,13 +4100,13 @@ LABEL_46:
   {
     objc_initWeak(&location, self);
     v5 = [SYRetryTimer alloc];
-    v6 = [(SYLegacyStore *)self queue];
+    queue = [(SYLegacyStore *)self queue];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __44__SYLegacyStore_FullSyncSupport___retrySync__block_invoke;
     v9[3] = &unk_1E86CA190;
     objc_copyWeak(&v10, &location);
-    v7 = [(SYRetryTimer *)v5 initWithInterval:3 backoffFactor:v6 maxRetries:v9 queue:15.0 callout:2.0];
+    v7 = [(SYRetryTimer *)v5 initWithInterval:3 backoffFactor:queue maxRetries:v9 queue:15.0 callout:2.0];
     v8 = self->_syncRetryTimer;
     self->_syncRetryTimer = v7;
 
@@ -4121,61 +4121,61 @@ void __44__SYLegacyStore_FullSyncSupport___retrySync__block_invoke(uint64_t a1)
   [WeakRetained performFullSyncToCurrentDBVersion];
 }
 
-- (void)_postBatchStartMessageWithState:(id)a3 then:(id)a4
+- (void)_postBatchStartMessageWithState:(id)state then:(id)then
 {
-  v6 = a4;
-  v7 = a3;
+  thenCopy = then;
+  stateCopy = state;
   v11 = objc_opt_new();
-  v8 = [(SYLegacyStore *)self newMessageHeader];
-  [v11 setHeader:v8];
+  newMessageHeader = [(SYLegacyStore *)self newMessageHeader];
+  [v11 setHeader:newMessageHeader];
 
-  v9 = [v7 objectForKeyedSubscript:@"SyncID"];
+  v9 = [stateCopy objectForKeyedSubscript:@"SyncID"];
   [v11 setSyncID:v9];
 
-  [(SYLegacyStore *)self setNextBatchStep:v6];
-  v10 = [v7 objectForKeyedSubscript:@"IDSOptions"];
-  [(SYLegacyStore *)self sendMessage:v11 ofType:3 respondingTo:0 userInfo:v7 idsOptions:v10];
+  [(SYLegacyStore *)self setNextBatchStep:thenCopy];
+  v10 = [stateCopy objectForKeyedSubscript:@"IDSOptions"];
+  [(SYLegacyStore *)self sendMessage:v11 ofType:3 respondingTo:0 userInfo:stateCopy idsOptions:v10];
 }
 
-- (void)_postBatchEndMessageWithState:(id)a3 error:(id)a4 then:(id)a5
+- (void)_postBatchEndMessageWithState:(id)state error:(id)error then:(id)then
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  stateCopy = state;
+  errorCopy = error;
+  thenCopy = then;
   v11 = objc_opt_new();
-  v12 = [(SYLegacyStore *)self newMessageHeader];
-  [v11 setHeader:v12];
+  newMessageHeader = [(SYLegacyStore *)self newMessageHeader];
+  [v11 setHeader:newMessageHeader];
 
-  v13 = [v8 objectForKeyedSubscript:@"SyncID"];
+  v13 = [stateCopy objectForKeyedSubscript:@"SyncID"];
   [v11 setSyncID:v13];
 
-  if (!v9)
+  if (!errorCopy)
   {
     goto LABEL_5;
   }
 
-  v14 = [[SYErrorInfo alloc] initWithError:v9];
+  v14 = [[SYErrorInfo alloc] initWithError:errorCopy];
   [v11 setError:v14];
 
-  v15 = [v11 syncID];
-  if (v15)
+  syncID = [v11 syncID];
+  if (syncID)
   {
-    v16 = v15;
-    v17 = [v11 header];
-    v18 = [v17 sender];
-    if (v18)
+    v16 = syncID;
+    header = [v11 header];
+    sender = [header sender];
+    if (sender)
     {
-      v19 = v18;
-      v20 = [v11 header];
-      v21 = [v20 state];
+      v19 = sender;
+      header2 = [v11 header];
+      state = [header2 state];
 
-      if (v21)
+      if (state)
       {
 LABEL_5:
-        [(SYLegacyStore *)self setNextBatchStep:v10];
-        v22 = [v8 objectForKeyedSubscript:@"IDSOptions"];
-        [(SYLegacyStore *)self sendMessage:v11 ofType:5 respondingTo:0 userInfo:v8 idsOptions:v22];
+        [(SYLegacyStore *)self setNextBatchStep:thenCopy];
+        v22 = [stateCopy objectForKeyedSubscript:@"IDSOptions"];
+        [(SYLegacyStore *)self sendMessage:v11 ofType:5 respondingTo:0 userInfo:stateCopy idsOptions:v22];
 LABEL_13:
 
         goto LABEL_14;
@@ -4201,12 +4201,12 @@ LABEL_13:
   {
     v23 = objc_alloc(MEMORY[0x1E696ABC0]);
     v27 = *MEMORY[0x1E696AA08];
-    v28[0] = v9;
+    v28[0] = errorCopy;
     v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:&v27 count:1];
     v22 = [v23 initWithSYError:2017 userInfo:v24];
 
-    v25 = [(SYStore *)self delegate];
-    [v25 syncStore:self encounteredErrorInFullSync:v22];
+    delegate = [(SYStore *)self delegate];
+    [delegate syncStore:self encounteredErrorInFullSync:v22];
 
     goto LABEL_13;
   }
@@ -4216,27 +4216,27 @@ LABEL_14:
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_restartBatchSyncWithState:(id)a3 then:(id)a4
+- (void)_restartBatchSyncWithState:(id)state then:(id)then
 {
   batchChunkUnackedIndices = self->_batchChunkUnackedIndices;
-  v7 = a4;
-  v8 = a3;
+  thenCopy = then;
+  stateCopy = state;
   [(NSMutableIndexSet *)batchChunkUnackedIndices removeAllIndexes];
-  [(SYLegacyStore *)self _postBatchStartMessageWithState:v8 then:v7];
+  [(SYLegacyStore *)self _postBatchStartMessageWithState:stateCopy then:thenCopy];
 }
 
-- (void)_sendBatchChunk:(id)a3 withState:(id)a4 then:(id)a5
+- (void)_sendBatchChunk:(id)chunk withState:(id)state then:(id)then
 {
   v31 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v8, "count")}];
+  chunkCopy = chunk;
+  stateCopy = state;
+  thenCopy = then;
+  v11 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(chunkCopy, "count")}];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v12 = v8;
+  v12 = chunkCopy;
   v13 = [v12 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v13)
   {
@@ -4264,8 +4264,8 @@ LABEL_14:
     while (v14);
   }
 
-  v18 = [MEMORY[0x1E696AFB0] UUID];
-  v19 = [v18 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
   if (_sync_log_facilities_pred != -1)
   {
@@ -4278,19 +4278,19 @@ LABEL_14:
   }
 
   v20 = objc_opt_new();
-  v21 = [(SYLegacyStore *)self newMessageHeader];
-  [v20 setHeader:v21];
+  newMessageHeader = [(SYLegacyStore *)self newMessageHeader];
+  [v20 setHeader:newMessageHeader];
 
-  v22 = [v9 objectForKeyedSubscript:@"SyncID"];
+  v22 = [stateCopy objectForKeyedSubscript:@"SyncID"];
   [v20 setSyncID:v22];
 
-  v23 = [v9 objectForKeyedSubscript:@"BatchIndex"];
+  v23 = [stateCopy objectForKeyedSubscript:@"BatchIndex"];
   [v20 setChunkIndex:{objc_msgSend(v23, "unsignedIntValue")}];
 
   [v20 setObjects:v11];
-  [(SYLegacyStore *)self setNextBatchStep:v10];
-  v24 = [v9 objectForKeyedSubscript:@"IDSOptions"];
-  [(SYLegacyStore *)self sendMessage:v20 ofType:4 respondingTo:0 userInfo:v9 idsOptions:v24];
+  [(SYLegacyStore *)self setNextBatchStep:thenCopy];
+  v24 = [stateCopy objectForKeyedSubscript:@"IDSOptions"];
+  [(SYLegacyStore *)self sendMessage:v20 ofType:4 respondingTo:0 userInfo:stateCopy idsOptions:v24];
 
   v25 = *MEMORY[0x1E69E9840];
 }
@@ -4298,7 +4298,7 @@ LABEL_14:
 - (BOOL)performBatchedSyncToCurrentDBVersion
 {
   v69 = *MEMORY[0x1E69E9840];
-  v42 = [MEMORY[0x1E696AFB0] UUID];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
   if (_sync_log_facilities_pred != -1)
   {
     [SYIncomingSyncAllObjectsSession _continueProcessing];
@@ -4308,36 +4308,36 @@ LABEL_14:
   if (os_log_type_enabled(qword_1EDE73420, OS_LOG_TYPE_DEFAULT))
   {
     v4 = v3;
-    v5 = [v42 UUIDString];
+    uUIDString = [uUID UUIDString];
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v5;
+    *(&buf + 4) = uUIDString;
     _os_log_impl(&dword_1DF835000, v4, OS_LOG_TYPE_DEFAULT, "performBatchedSync: assigned UUID %{public}@", &buf, 0xCu);
   }
 
   v40 = _os_activity_create(&dword_1DF835000, "CompanionSync BatchedFullSync", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
-  v6 = [(SYStore *)self delegate];
-  v7 = [v6 beginSyncingAllObjectsForStore:self];
+  delegate = [(SYStore *)self delegate];
+  v7 = [delegate beginSyncingAllObjectsForStore:self];
 
   if (v7)
   {
-    v8 = [(SYPersistentStore *)self->_persistentStore currentFullSyncID];
-    v9 = [(SYLegacyStore *)self persistentStore];
-    [v9 setCompletedSync:0];
+    currentFullSyncID = [(SYPersistentStore *)self->_persistentStore currentFullSyncID];
+    persistentStore = [(SYLegacyStore *)self persistentStore];
+    [persistentStore setCompletedSync:0];
 
-    v10 = [(SYPersistentStore *)self->_persistentStore currentFullSyncID];
-    LODWORD(v9) = v10 == 0;
+    currentFullSyncID2 = [(SYPersistentStore *)self->_persistentStore currentFullSyncID];
+    LODWORD(persistentStore) = currentFullSyncID2 == 0;
 
-    if (v9)
+    if (persistentStore)
     {
       v11 = objc_opt_new();
-      v41 = [v11 UUIDString];
+      uUIDString2 = [v11 UUIDString];
 
-      [(SYPersistentStore *)self->_persistentStore enterFullSyncWithID:v41 ignoring:0];
+      [(SYPersistentStore *)self->_persistentStore enterFullSyncWithID:uUIDString2 ignoring:0];
     }
 
     else
     {
-      v41 = v8;
+      uUIDString2 = currentFullSyncID;
     }
 
     if (_sync_log_facilities_pred != -1)
@@ -4349,30 +4349,30 @@ LABEL_14:
     if (os_log_type_enabled(qword_1EDE73420, OS_LOG_TYPE_DEFAULT))
     {
       v13 = v12;
-      v14 = [v42 UUIDString];
+      uUIDString3 = [uUID UUIDString];
       LODWORD(buf) = 138543362;
-      *(&buf + 4) = v14;
+      *(&buf + 4) = uUIDString3;
       _os_log_impl(&dword_1DF835000, v13, OS_LOG_TYPE_DEFAULT, "Entering batch sync loop for UUID %{public}@", &buf, 0xCu);
     }
 
-    v15 = [(SYLegacyStore *)self newFullSyncContext];
-    [v15 setObject:v41 forKeyedSubscript:@"SyncID"];
-    v16 = [(SYPersistentStore *)self->_persistentStore fullSyncUserInfo];
-    v17 = v16 == 0;
+    newFullSyncContext = [(SYLegacyStore *)self newFullSyncContext];
+    [newFullSyncContext setObject:uUIDString2 forKeyedSubscript:@"SyncID"];
+    fullSyncUserInfo = [(SYPersistentStore *)self->_persistentStore fullSyncUserInfo];
+    v17 = fullSyncUserInfo == 0;
 
     if (!v17)
     {
-      v18 = [(SYPersistentStore *)self->_persistentStore fullSyncUserInfo];
-      [v15 setObject:v18 forKeyedSubscript:@"UserInfo"];
+      fullSyncUserInfo2 = [(SYPersistentStore *)self->_persistentStore fullSyncUserInfo];
+      [newFullSyncContext setObject:fullSyncUserInfo2 forKeyedSubscript:@"UserInfo"];
     }
 
-    v19 = [(SYPersistentStore *)self->_persistentStore fullSyncIDSOptions];
-    v20 = v19 == 0;
+    fullSyncIDSOptions = [(SYPersistentStore *)self->_persistentStore fullSyncIDSOptions];
+    v20 = fullSyncIDSOptions == 0;
 
     if (!v20)
     {
-      v21 = [(SYPersistentStore *)self->_persistentStore fullSyncIDSOptions];
-      [v15 setObject:v21 forKeyedSubscript:@"IDSOptions"];
+      fullSyncIDSOptions2 = [(SYPersistentStore *)self->_persistentStore fullSyncIDSOptions];
+      [newFullSyncContext setObject:fullSyncIDSOptions2 forKeyedSubscript:@"IDSOptions"];
     }
 
     batchChunkUnackedIndices = self->_batchChunkUnackedIndices;
@@ -4413,7 +4413,7 @@ LABEL_14:
     v56[2] = __73__SYLegacyStore_BatchedSyncSupport__performBatchedSyncToCurrentDBVersion__block_invoke_2;
     v56[3] = &unk_1E86CA5D0;
     objc_copyWeak(&v59, &location);
-    v27 = v15;
+    v27 = newFullSyncContext;
     v57 = v27;
     v28 = v26;
     v58 = v28;
@@ -4804,15 +4804,15 @@ void __73__SYLegacyStore_BatchedSyncSupport__performBatchedSyncToCurrentDBVersio
   }
 
   Current = CFAbsoluteTimeGetCurrent();
-  v4 = [(SYStore *)self delegate];
+  delegate = [(SYStore *)self delegate];
   v5 = _os_activity_create(&dword_1DF835000, "CompanionSync ProcessBatchSyncStart", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v8 = MEMORY[0x1E69E9820];
   v9 = 3221225472;
   v10 = __58__SYLegacyStore_BatchedSyncSupport__processBatchSyncStart__block_invoke;
   v11 = &unk_1E86C9E90;
-  v12 = self;
-  v13 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v13 = delegate;
+  v6 = delegate;
   os_activity_apply(v5, &v8);
   v7 = [SYStatisticStore sharedInstance:v8];
   [v7 updateLastIncomingMessageWithProcessingTime:CFAbsoluteTimeGetCurrent() - Current];
@@ -4854,7 +4854,7 @@ void __58__SYLegacyStore_BatchedSyncSupport__processBatchSyncStart__block_invoke
   }
 }
 
-- (void)processBatchSyncEnd:(unint64_t)a3
+- (void)processBatchSyncEnd:(unint64_t)end
 {
   v4 = _os_activity_create(&dword_1DF835000, "CompanionSync ProcessBatchSyncEnd", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   if (_sync_log_facilities_pred != -1)
@@ -4869,14 +4869,14 @@ void __58__SYLegacyStore_BatchedSyncSupport__processBatchSyncStart__block_invoke
 
   if ((*&self->super._flags & 8) != 0)
   {
-    v5 = [(SYStore *)self delegate];
-    [v5 syncStoreDidCompleteFullSync:self];
+    delegate = [(SYStore *)self delegate];
+    [delegate syncStoreDidCompleteFullSync:self];
   }
 }
 
-- (BOOL)processBatchChunkAtIndex:(unsigned int)a3 encodedObjects:(id)a4 error:(id *)a5
+- (BOOL)processBatchChunkAtIndex:(unsigned int)index encodedObjects:(id)objects error:(id *)error
 {
-  v6 = a4;
+  objectsCopy = objects;
   if (_sync_log_facilities_pred != -1)
   {
     [SYIncomingSyncAllObjectsSession _continueProcessing];
@@ -4894,9 +4894,9 @@ void __58__SYLegacyStore_BatchedSyncSupport__processBatchSyncStart__block_invoke
   v14 = 3221225472;
   v15 = __83__SYLegacyStore_BatchedSyncSupport__processBatchChunkAtIndex_encodedObjects_error___block_invoke;
   v16 = &unk_1E86C9E90;
-  v17 = v6;
-  v18 = self;
-  v10 = v6;
+  v17 = objectsCopy;
+  selfCopy = self;
+  v10 = objectsCopy;
   os_activity_apply(v9, &v13);
   v11 = [SYStatisticStore sharedInstance:v13];
   [v11 updateLastIncomingMessageWithProcessingTime:CFAbsoluteTimeGetCurrent() - Current];
@@ -4940,7 +4940,7 @@ void __83__SYLegacyStore_BatchedSyncSupport__processBatchChunkAtIndex_encodedObj
   }
 }
 
-- (void)processBatchChunkAck:(unsigned int)a3
+- (void)processBatchChunkAck:(unsigned int)ack
 {
   if (_sync_log_facilities_pred != -1)
   {
@@ -4952,9 +4952,9 @@ void __83__SYLegacyStore_BatchedSyncSupport__processBatchChunkAtIndex_encodedObj
     [SYLegacyStore(BatchedSyncSupport) processBatchChunkAck:];
   }
 
-  if (([(NSMutableIndexSet *)self->_batchChunkUnackedIndices containsIndex:a3]& 1) != 0)
+  if (([(NSMutableIndexSet *)self->_batchChunkUnackedIndices containsIndex:ack]& 1) != 0)
   {
-    [(NSMutableIndexSet *)self->_batchChunkUnackedIndices removeIndex:a3];
+    [(NSMutableIndexSet *)self->_batchChunkUnackedIndices removeIndex:ack];
   }
 
   else
@@ -4967,7 +4967,7 @@ void __83__SYLegacyStore_BatchedSyncSupport__processBatchChunkAtIndex_encodedObj
     v5 = qword_1EDE73420;
     if (os_log_type_enabled(qword_1EDE73420, OS_LOG_TYPE_ERROR))
     {
-      [(SYLegacyStore(BatchedSyncSupport) *)a3 processBatchChunkAck:v5];
+      [(SYLegacyStore(BatchedSyncSupport) *)ack processBatchChunkAck:v5];
     }
   }
 }
@@ -5011,11 +5011,11 @@ void __83__SYLegacyStore_BatchedSyncSupport__processBatchChunkAtIndex_encodedObj
   }
 }
 
-- (void)setTracksChanges:(BOOL)a3
+- (void)setTracksChanges:(BOOL)changes
 {
-  if (self->_tracksChanges != a3)
+  if (self->_tracksChanges != changes)
   {
-    self->_tracksChanges = a3;
+    self->_tracksChanges = changes;
     [(SYPersistentStore *)self->_persistentStore changeTrackingToggled:?];
   }
 }

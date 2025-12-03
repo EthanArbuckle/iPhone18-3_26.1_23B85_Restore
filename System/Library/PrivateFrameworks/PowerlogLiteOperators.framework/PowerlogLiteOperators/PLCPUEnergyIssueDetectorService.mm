@@ -1,25 +1,25 @@
 @interface PLCPUEnergyIssueDetectorService
 + (void)load;
 - (PLCPUEnergyIssueDetectorService)init;
-- (double)getCPUTime:(id)a3;
-- (id)buildCallBack:(id)a3 withGroup:(BOOL)a4 withHandler:(id)a5;
+- (double)getCPUTime:(id)time;
+- (id)buildCallBack:(id)back withGroup:(BOOL)group withHandler:(id)handler;
 - (id)loadCPUAllowlist;
 - (id)loadCpuThresholds;
 - (int)customLongTermCPUThreshold;
-- (int)matchingPidWithProcessName:(id)a3 withBundleID:(id)a4;
-- (void)checkCpuUsage:(id)a3 withNewCoaltionArray:(id)a4;
-- (void)handleBatteryCallback:(id)a3;
-- (void)handleCoalitionCallback:(id)a3;
+- (int)matchingPidWithProcessName:(id)name withBundleID:(id)d;
+- (void)checkCpuUsage:(id)usage withNewCoaltionArray:(id)array;
+- (void)handleBatteryCallback:(id)callback;
+- (void)handleCoalitionCallback:(id)callback;
 - (void)initOperatorDependancies;
-- (void)listAllRunningPidsWithBuffer:(int *)a3 withSizeOfBuffer:(int)a4;
-- (void)sendEnergyIssueSignatureNotification:(id)a3 withThreshold:(double)a4;
+- (void)listAllRunningPidsWithBuffer:(int *)buffer withSizeOfBuffer:(int)ofBuffer;
+- (void)sendEnergyIssueSignatureNotification:(id)notification withThreshold:(double)threshold;
 @end
 
 @implementation PLCPUEnergyIssueDetectorService
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLCPUEnergyIssueDetectorService;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -28,7 +28,7 @@
 {
   if (([MEMORY[0x277D3F208] isHomePod] & 1) != 0 || (objc_msgSend(MEMORY[0x277D3F258], "isPowerlogHelperd") & 1) != 0 || (objc_msgSend(MEMORY[0x277D3F258], "isPerfPowerMetricd") & 1) != 0 || (objc_msgSend(MEMORY[0x277D3F208], "seedBuild") & 1) == 0 && !objc_msgSend(MEMORY[0x277D3F208], "internalBuild"))
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -36,10 +36,10 @@
     v5.receiver = self;
     v5.super_class = PLCPUEnergyIssueDetectorService;
     self = [(PLOperator *)&v5 init];
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (void)initOperatorDependancies
@@ -61,13 +61,13 @@
     cpuUsage = self->_cpuUsage;
     self->_cpuUsage = v5;
 
-    v7 = [(PLCPUEnergyIssueDetectorService *)self loadCpuThresholds];
+    loadCpuThresholds = [(PLCPUEnergyIssueDetectorService *)self loadCpuThresholds];
     cpuThresholds = self->_cpuThresholds;
-    self->_cpuThresholds = v7;
+    self->_cpuThresholds = loadCpuThresholds;
 
-    v9 = [(PLCPUEnergyIssueDetectorService *)self loadCPUAllowlist];
+    loadCPUAllowlist = [(PLCPUEnergyIssueDetectorService *)self loadCPUAllowlist];
     cpuAllowList = self->_cpuAllowList;
-    self->_cpuAllowList = v9;
+    self->_cpuAllowList = loadCPUAllowlist;
 
     v11 = [(PLOperator *)PLCoalitionAgent entryKeyForType:*MEMORY[0x277D3F5D8] andName:@"CoalitionInterval"];
     v18[0] = MEMORY[0x277D85DD0];
@@ -94,29 +94,29 @@
   }
 }
 
-- (id)buildCallBack:(id)a3 withGroup:(BOOL)a4 withHandler:(id)a5
+- (id)buildCallBack:(id)back withGroup:(BOOL)group withHandler:(id)handler
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  if (v6)
+  groupCopy = group;
+  backCopy = back;
+  handlerCopy = handler;
+  if (groupCopy)
   {
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"GroupID_%@", v8];
+    backCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"GroupID_%@", backCopy];
   }
 
   else
   {
-    v10 = v8;
+    backCopy = backCopy;
   }
 
-  v11 = v10;
+  v11 = backCopy;
   v12 = objc_alloc(MEMORY[0x277D3F1A8]);
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __71__PLCPUEnergyIssueDetectorService_buildCallBack_withGroup_withHandler___block_invoke;
   v16[3] = &unk_27825A338;
-  v17 = v9;
-  v13 = v9;
+  v17 = handlerCopy;
+  v13 = handlerCopy;
   v14 = [v12 initWithOperator:self forEntryKey:v11 withBlock:v16];
 
   return v14;
@@ -132,32 +132,32 @@ uint64_t __71__PLCPUEnergyIssueDetectorService_buildCallBack_withGroup_withHandl
   return result;
 }
 
-- (void)handleCoalitionCallback:(id)a3
+- (void)handleCoalitionCallback:(id)callback
 {
   v4 = MEMORY[0x277CBEAA8];
-  v5 = a3;
-  v9 = [v4 monotonicDate];
-  v6 = [v5 objectForKey:@"group"];
+  callbackCopy = callback;
+  monotonicDate = [v4 monotonicDate];
+  v6 = [callbackCopy objectForKey:@"group"];
 
-  v7 = [(PLCPUEnergyIssueDetectorService *)self entryKeyPLCoalitionAgentEventIntervalCoalition];
-  v8 = [v6 objectForKeyedSubscript:v7];
+  entryKeyPLCoalitionAgentEventIntervalCoalition = [(PLCPUEnergyIssueDetectorService *)self entryKeyPLCoalitionAgentEventIntervalCoalition];
+  v8 = [v6 objectForKeyedSubscript:entryKeyPLCoalitionAgentEventIntervalCoalition];
 
-  [(PLCPUEnergyIssueDetectorService *)self checkCpuUsage:v9 withNewCoaltionArray:v8];
+  [(PLCPUEnergyIssueDetectorService *)self checkCpuUsage:monotonicDate withNewCoaltionArray:v8];
 }
 
-- (void)handleBatteryCallback:(id)a3
+- (void)handleBatteryCallback:(id)callback
 {
-  v20 = a3;
-  v4 = [v20 objectForKeyedSubscript:@"entry"];
+  callbackCopy = callback;
+  v4 = [callbackCopy objectForKeyedSubscript:@"entry"];
   v5 = [v4 objectForKeyedSubscript:@"ExternalConnected"];
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  v7 = [v20 objectForKeyedSubscript:@"entry"];
+  v7 = [callbackCopy objectForKeyedSubscript:@"entry"];
   v8 = [v7 objectForKeyedSubscript:@"CurrentCapacity"];
   [v8 doubleValue];
   v10 = v9;
 
-  v11 = [v20 objectForKeyedSubscript:@"entry"];
+  v11 = [callbackCopy objectForKeyedSubscript:@"entry"];
   v12 = [v11 objectForKeyedSubscript:@"MaxCapacity"];
   [v12 doubleValue];
   v14 = v13;
@@ -168,8 +168,8 @@ uint64_t __71__PLCPUEnergyIssueDetectorService_buildCallBack_withGroup_withHandl
     v15 = v10 * 100.0 / v14;
   }
 
-  v16 = [MEMORY[0x277D3F258] isPingPongChargingWith:v6 andBatteryLevelPercent:v15];
-  v17 = [v20 objectForKeyedSubscript:@"entry"];
+  v16 = [MEMORY[0x277D3F258] isPingPongChargingWith:bOOLValue andBatteryLevelPercent:v15];
+  v17 = [callbackCopy objectForKeyedSubscript:@"entry"];
   v18 = [v17 objectForKeyedSubscript:@"IsCharging"];
   v19 = [v18 BOOLValue] | v16;
 
@@ -180,23 +180,23 @@ uint64_t __71__PLCPUEnergyIssueDetectorService_buildCallBack_withGroup_withHandl
   }
 }
 
-- (double)getCPUTime:(id)a3
+- (double)getCPUTime:(id)time
 {
-  v3 = [a3 objectForKeyedSubscript:@"cpu_time"];
+  v3 = [time objectForKeyedSubscript:@"cpu_time"];
   [v3 doubleValue];
   v5 = v4;
 
   return v5;
 }
 
-- (void)checkCpuUsage:(id)a3 withNewCoaltionArray:(id)a4
+- (void)checkCpuUsage:(id)usage withNewCoaltionArray:(id)array
 {
   v104 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  usageCopy = usage;
+  arrayCopy = array;
   if (self->_detectionStartTime)
   {
-    [v7 timeIntervalSinceDate:?];
+    [usageCopy timeIntervalSinceDate:?];
     if (v9 > 3600.0)
     {
       [(NSMutableDictionary *)self->_cpuUsage removeAllObjects];
@@ -205,7 +205,7 @@ uint64_t __71__PLCPUEnergyIssueDetectorService_buildCallBack_withGroup_withHandl
 
   else
   {
-    objc_storeStrong(&self->_detectionStartTime, a3);
+    objc_storeStrong(&self->_detectionStartTime, usage);
   }
 
   v10 = 0x277D3F000uLL;
@@ -224,13 +224,13 @@ uint64_t __71__PLCPUEnergyIssueDetectorService_buildCallBack_withGroup_withHandl
 
     if (_MergedGlobals_1_44 == 1)
     {
-      v12 = v8;
+      v12 = arrayCopy;
       v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"CPUEnergyIssueDetectorService: checkCpuUsage"];
       v14 = MEMORY[0x277D3F178];
       v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLCPUEnergyIssueDetectorService.m"];
-      v16 = [v15 lastPathComponent];
+      lastPathComponent = [v15 lastPathComponent];
       v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLCPUEnergyIssueDetectorService checkCpuUsage:withNewCoaltionArray:]"];
-      [v14 logMessage:v13 fromFile:v16 fromFunction:v17 fromLineNumber:222];
+      [v14 logMessage:v13 fromFile:lastPathComponent fromFunction:v17 fromLineNumber:222];
 
       v18 = PLLogCommon();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -240,20 +240,20 @@ uint64_t __71__PLCPUEnergyIssueDetectorService_buildCallBack_withGroup_withHandl
         _os_log_debug_impl(&dword_21A4C6000, v18, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
       }
 
-      v8 = v12;
+      arrayCopy = v12;
       v10 = 0x277D3F000uLL;
     }
   }
 
-  if (!-[PLCPUEnergyIssueDetectorService pluggedInBetweenCoalitionSBC](self, "pluggedInBetweenCoalitionSBC") && [v8 count])
+  if (!-[PLCPUEnergyIssueDetectorService pluggedInBetweenCoalitionSBC](self, "pluggedInBetweenCoalitionSBC") && [arrayCopy count])
   {
-    v87 = v8;
-    v88 = v7;
+    v87 = arrayCopy;
+    v88 = usageCopy;
     v98 = 0u;
     v99 = 0u;
     v96 = 0u;
     v97 = 0u;
-    obj = v8;
+    obj = arrayCopy;
     v19 = [obj countByEnumeratingWithState:&v96 objects:v101 count:16];
     if (v19)
     {
@@ -292,9 +292,9 @@ uint64_t __71__PLCPUEnergyIssueDetectorService_buildCallBack_withGroup_withHandl
 
               v28 = MEMORY[0x277D3F178];
               v29 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLCPUEnergyIssueDetectorService.m"];
-              v30 = [v29 lastPathComponent];
+              lastPathComponent2 = [v29 lastPathComponent];
               v31 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLCPUEnergyIssueDetectorService checkCpuUsage:withNewCoaltionArray:]"];
-              [v28 logMessage:v27 fromFile:v30 fromFunction:v31 fromLineNumber:228];
+              [v28 logMessage:v27 fromFile:lastPathComponent2 fromFunction:v31 fromLineNumber:228];
 
               v32 = PLLogCommon();
               if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
@@ -331,9 +331,9 @@ uint64_t __71__PLCPUEnergyIssueDetectorService_buildCallBack_withGroup_withHandl
 
               v39 = MEMORY[0x277D3F178];
               v40 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLCPUEnergyIssueDetectorService.m"];
-              v41 = [v40 lastPathComponent];
+              lastPathComponent3 = [v40 lastPathComponent];
               v42 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLCPUEnergyIssueDetectorService checkCpuUsage:withNewCoaltionArray:]"];
-              [v39 logMessage:v38 fromFile:v41 fromFunction:v42 fromLineNumber:233];
+              [v39 logMessage:v38 fromFile:lastPathComponent3 fromFunction:v42 fromLineNumber:233];
 
               v43 = PLLogCommon();
               if (os_log_type_enabled(v43, OS_LOG_TYPE_DEBUG))
@@ -380,9 +380,9 @@ uint64_t __71__PLCPUEnergyIssueDetectorService_buildCallBack_withGroup_withHandl
 
                   v54 = MEMORY[0x277D3F178];
                   v55 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLCPUEnergyIssueDetectorService.m"];
-                  v56 = [v55 lastPathComponent];
+                  lastPathComponent4 = [v55 lastPathComponent];
                   v57 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLCPUEnergyIssueDetectorService checkCpuUsage:withNewCoaltionArray:]"];
-                  [v54 logMessage:v53 fromFile:v56 fromFunction:v57 fromLineNumber:254];
+                  [v54 logMessage:v53 fromFile:lastPathComponent4 fromFunction:v57 fromLineNumber:254];
 
                   v58 = PLLogCommon();
                   if (os_log_type_enabled(v58, OS_LOG_TYPE_DEBUG))
@@ -419,24 +419,24 @@ uint64_t __71__PLCPUEnergyIssueDetectorService_buildCallBack_withGroup_withHandl
 
               v66 = [(NSDictionary *)self->_cpuThresholds objectForKey:v33];
 
-              v67 = 2000.0;
+              customLongTermCPUThreshold = 2000.0;
               if (v66)
               {
                 v68 = [(NSDictionary *)self->_cpuThresholds objectForKeyedSubscript:v33];
                 [v68 doubleValue];
-                v67 = v69;
+                customLongTermCPUThreshold = v69;
               }
 
               if ([(PLCPUEnergyIssueDetectorService *)self customLongTermCPUThreshold]>= 1)
               {
-                v67 = [(PLCPUEnergyIssueDetectorService *)self customLongTermCPUThreshold];
+                customLongTermCPUThreshold = [(PLCPUEnergyIssueDetectorService *)self customLongTermCPUThreshold];
               }
 
               v70 = [(NSMutableDictionary *)self->_cpuUsage objectForKeyedSubscript:v33];
               [v70 doubleValue];
               v72 = v71;
 
-              if (v72 > v67)
+              if (v72 > customLongTermCPUThreshold)
               {
                 if ([*(v10 + 384) debugEnabled])
                 {
@@ -463,9 +463,9 @@ uint64_t __71__PLCPUEnergyIssueDetectorService_buildCallBack_withGroup_withHandl
 
                     v81 = MEMORY[0x277D3F178];
                     v82 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLCPUEnergyIssueDetectorService.m"];
-                    v83 = [v82 lastPathComponent];
+                    lastPathComponent5 = [v82 lastPathComponent];
                     v84 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLCPUEnergyIssueDetectorService checkCpuUsage:withNewCoaltionArray:]"];
-                    [v81 logMessage:v80 fromFile:v83 fromFunction:v84 fromLineNumber:274];
+                    [v81 logMessage:v80 fromFile:lastPathComponent5 fromFunction:v84 fromLineNumber:274];
 
                     v85 = PLLogCommon();
                     if (os_log_type_enabled(v85, OS_LOG_TYPE_DEBUG))
@@ -479,7 +479,7 @@ uint64_t __71__PLCPUEnergyIssueDetectorService_buildCallBack_withGroup_withHandl
                   }
                 }
 
-                [(PLCPUEnergyIssueDetectorService *)self sendEnergyIssueSignatureNotification:v33 withThreshold:v67];
+                [(PLCPUEnergyIssueDetectorService *)self sendEnergyIssueSignatureNotification:v33 withThreshold:customLongTermCPUThreshold];
                 [(NSMutableDictionary *)self->_cpuUsage setObject:&unk_282C11E20 forKeyedSubscript:v33];
               }
             }
@@ -495,8 +495,8 @@ uint64_t __71__PLCPUEnergyIssueDetectorService_buildCallBack_withGroup_withHandl
       while (v20);
     }
 
-    v8 = v87;
-    v7 = v88;
+    arrayCopy = v87;
+    usageCopy = v88;
   }
 
   [(PLCPUEnergyIssueDetectorService *)self setPluggedInBetweenCoalitionSBC:[(PLCPUEnergyIssueDetectorService *)self deviceIsPluggedIn]];
@@ -539,17 +539,17 @@ uint64_t __70__PLCPUEnergyIssueDetectorService_checkCpuUsage_withNewCoaltionArra
   return result;
 }
 
-- (void)listAllRunningPidsWithBuffer:(int *)a3 withSizeOfBuffer:(int)a4
+- (void)listAllRunningPidsWithBuffer:(int *)buffer withSizeOfBuffer:(int)ofBuffer
 {
-  if (a4 >= 1)
+  if (ofBuffer >= 1)
   {
-    memset(a3, 255, 4 * a4);
+    memset(buffer, 255, 4 * ofBuffer);
   }
 
-  proc_listpids(1u, 0, a3, 4 * a4);
+  proc_listpids(1u, 0, buffer, 4 * ofBuffer);
 }
 
-- (int)matchingPidWithProcessName:(id)a3 withBundleID:(id)a4
+- (int)matchingPidWithProcessName:(id)name withBundleID:(id)d
 {
   v4 = MEMORY[0x28223BE20](self, a2);
   v6 = v5;
@@ -590,9 +590,9 @@ uint64_t __70__PLCPUEnergyIssueDetectorService_checkCpuUsage_withNewCoaltionArra
             v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"pid[%d]=%@", *v15, v16];
             v19 = MEMORY[0x277D3F178];
             v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLCPUEnergyIssueDetectorService.m"];
-            v21 = [v20 lastPathComponent];
+            lastPathComponent = [v20 lastPathComponent];
             v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLCPUEnergyIssueDetectorService matchingPidWithProcessName:withBundleID:]"];
-            [v19 logMessage:v18 fromFile:v21 fromFunction:v22 fromLineNumber:318];
+            [v19 logMessage:v18 fromFile:lastPathComponent fromFunction:v22 fromLineNumber:318];
 
             v23 = PLLogCommon();
             if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
@@ -652,14 +652,14 @@ uint64_t __75__PLCPUEnergyIssueDetectorService_matchingPidWithProcessName_withBu
   return result;
 }
 
-- (void)sendEnergyIssueSignatureNotification:(id)a3 withThreshold:(double)a4
+- (void)sendEnergyIssueSignatureNotification:(id)notification withThreshold:(double)threshold
 {
-  v6 = a3;
+  notificationCopy = notification;
   v7 = objc_alloc_init(MEMORY[0x277D6AFC0]);
   if (v7)
   {
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%f", *&a4];
-    v9 = [v7 signatureWithDomain:@"Energy" type:@"CPU" subType:@"LongTerm" subtypeContext:&stru_282B650A0 detectedProcess:v6 triggerThresholdValues:v8];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%f", *&threshold];
+    v9 = [v7 signatureWithDomain:@"Energy" type:@"CPU" subType:@"LongTerm" subtypeContext:&stru_282B650A0 detectedProcess:notificationCopy triggerThresholdValues:v8];
 
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;

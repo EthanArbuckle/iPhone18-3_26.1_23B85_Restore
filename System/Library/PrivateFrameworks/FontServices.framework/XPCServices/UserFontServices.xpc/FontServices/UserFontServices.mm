@@ -1,8 +1,8 @@
 @interface UserFontServices
 - (UserFontServices)init;
-- (void)GSFontEnableOrDisablePersistentURLs:(id)a3 forProfileFonts:(BOOL)a4 enabled:(BOOL)a5 suspend:(BOOL)a6 withReply:(id)a7;
-- (void)GSFontRegisterPersistentURLs:(id)a3 enabled:(BOOL)a4 forProfileFonts:(BOOL)a5 withReply:(id)a6;
-- (void)GSFontUnregisterPersistentURLs:(id)a3 forProfileFonts:(BOOL)a4 withReply:(id)a5;
+- (void)GSFontEnableOrDisablePersistentURLs:(id)ls forProfileFonts:(BOOL)fonts enabled:(BOOL)enabled suspend:(BOOL)suspend withReply:(id)reply;
+- (void)GSFontRegisterPersistentURLs:(id)ls enabled:(BOOL)enabled forProfileFonts:(BOOL)fonts withReply:(id)reply;
+- (void)GSFontUnregisterPersistentURLs:(id)ls forProfileFonts:(BOOL)fonts withReply:(id)reply;
 @end
 
 @implementation UserFontServices
@@ -23,10 +23,10 @@
   return v2;
 }
 
-- (void)GSFontRegisterPersistentURLs:(id)a3 enabled:(BOOL)a4 forProfileFonts:(BOOL)a5 withReply:(id)a6
+- (void)GSFontRegisterPersistentURLs:(id)ls enabled:(BOOL)enabled forProfileFonts:(BOOL)fonts withReply:(id)reply
 {
-  v10 = a3;
-  v11 = a6;
+  lsCopy = ls;
+  replyCopy = reply;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
@@ -41,13 +41,13 @@
   v15[2] = sub_100001228;
   v15[3] = &unk_100004180;
   v17 = &v21;
-  v19 = a5;
-  v13 = v10;
-  v20 = a4;
+  fontsCopy = fonts;
+  v13 = lsCopy;
+  enabledCopy = enabled;
   v16 = v13;
   v18 = &v25;
   dispatch_sync(dispatchQueue, v15);
-  v11[2](v11, v26[3], v22[3]);
+  replyCopy[2](replyCopy, v26[3], v22[3]);
   v14 = v26[3];
   if (v14)
   {
@@ -58,10 +58,10 @@
   _Block_object_dispose(&v25, 8);
 }
 
-- (void)GSFontUnregisterPersistentURLs:(id)a3 forProfileFonts:(BOOL)a4 withReply:(id)a5
+- (void)GSFontUnregisterPersistentURLs:(id)ls forProfileFonts:(BOOL)fonts withReply:(id)reply
 {
-  v8 = a3;
-  v9 = a5;
+  lsCopy = ls;
+  replyCopy = reply;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -76,12 +76,12 @@
   v13[2] = sub_1000013D0;
   v13[3] = &unk_1000041A8;
   v15 = &v18;
-  v17 = a4;
-  v11 = v8;
+  fontsCopy = fonts;
+  v11 = lsCopy;
   v14 = v11;
   v16 = &v22;
   dispatch_sync(dispatchQueue, v13);
-  v9[2](v9, v23[3], v19[3]);
+  replyCopy[2](replyCopy, v23[3], v19[3]);
   v12 = v23[3];
   if (v12)
   {
@@ -92,10 +92,10 @@
   _Block_object_dispose(&v22, 8);
 }
 
-- (void)GSFontEnableOrDisablePersistentURLs:(id)a3 forProfileFonts:(BOOL)a4 enabled:(BOOL)a5 suspend:(BOOL)a6 withReply:(id)a7
+- (void)GSFontEnableOrDisablePersistentURLs:(id)ls forProfileFonts:(BOOL)fonts enabled:(BOOL)enabled suspend:(BOOL)suspend withReply:(id)reply
 {
-  v12 = a3;
-  v13 = a7;
+  lsCopy = ls;
+  replyCopy = reply;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
@@ -105,14 +105,14 @@
   block[1] = 3221225472;
   block[2] = sub_100001554;
   block[3] = &unk_1000041D0;
-  v20 = a4;
-  v15 = v12;
-  v21 = a5;
-  v22 = a6;
+  fontsCopy = fonts;
+  v15 = lsCopy;
+  enabledCopy = enabled;
+  suspendCopy = suspend;
   v18 = v15;
   v19 = &v23;
   dispatch_sync(dispatchQueue, block);
-  v13[2](v13, v24[3]);
+  replyCopy[2](replyCopy, v24[3]);
   v16 = v24[3];
   if (v16)
   {

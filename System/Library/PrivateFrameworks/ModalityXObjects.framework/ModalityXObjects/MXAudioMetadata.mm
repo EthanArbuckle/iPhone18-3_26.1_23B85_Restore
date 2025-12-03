@@ -1,19 +1,19 @@
 @interface MXAudioMetadata
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsAudioSource:(id)a3;
-- (int)StringAsCodec:(id)a3;
+- (int)StringAsAudioSource:(id)source;
+- (int)StringAsCodec:(id)codec;
 - (int)audioSource;
 - (int)codec;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCodec:(BOOL)a3;
-- (void)setHasEnableServerEndpoint:(BOOL)a3;
-- (void)setHasIsFarField:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCodec:(BOOL)codec;
+- (void)setHasEnableServerEndpoint:(BOOL)endpoint;
+- (void)setHasIsFarField:(BOOL)field;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MXAudioMetadata
@@ -31,9 +31,9 @@
   }
 }
 
-- (void)setHasCodec:(BOOL)a3
+- (void)setHasCodec:(BOOL)codec
 {
-  if (a3)
+  if (codec)
   {
     v3 = 2;
   }
@@ -46,45 +46,45 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsCodec:(id)a3
+- (int)StringAsCodec:(id)codec
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"CODEC_UNDEF"])
+  codecCopy = codec;
+  if ([codecCopy isEqualToString:@"CODEC_UNDEF"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SPXWB"])
+  else if ([codecCopy isEqualToString:@"SPXWB"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SPXNB"])
+  else if ([codecCopy isEqualToString:@"SPXNB"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"PCM_8K"])
+  else if ([codecCopy isEqualToString:@"PCM_8K"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"PCM_16K"])
+  else if ([codecCopy isEqualToString:@"PCM_16K"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"OPUS_8K"])
+  else if ([codecCopy isEqualToString:@"OPUS_8K"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"OPUS_16K"])
+  else if ([codecCopy isEqualToString:@"OPUS_16K"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"ULAW_8K"])
+  else if ([codecCopy isEqualToString:@"ULAW_8K"])
   {
     v4 = 7;
   }
@@ -110,45 +110,45 @@
   }
 }
 
-- (int)StringAsAudioSource:(id)a3
+- (int)StringAsAudioSource:(id)source
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"BuiltInMic"])
+  sourceCopy = source;
+  if ([sourceCopy isEqualToString:@"BuiltInMic"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"LineIn"])
+  else if ([sourceCopy isEqualToString:@"LineIn"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"WiredHeadsetMic"])
+  else if ([sourceCopy isEqualToString:@"WiredHeadsetMic"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"BluetoothHandsFreeDeviceSource"])
+  else if ([sourceCopy isEqualToString:@"BluetoothHandsFreeDeviceSource"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"UsbAudioSource"])
+  else if ([sourceCopy isEqualToString:@"UsbAudioSource"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"CarAudioSource"])
+  else if ([sourceCopy isEqualToString:@"CarAudioSource"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"BluetoothDoAPDevice"])
+  else if ([sourceCopy isEqualToString:@"BluetoothDoAPDevice"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"CarJarvisDevice"])
+  else if ([sourceCopy isEqualToString:@"CarJarvisDevice"])
   {
     v4 = 7;
   }
@@ -161,9 +161,9 @@
   return v4;
 }
 
-- (void)setHasIsFarField:(BOOL)a3
+- (void)setHasIsFarField:(BOOL)field
 {
-  if (a3)
+  if (field)
   {
     v3 = 8;
   }
@@ -176,9 +176,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasEnableServerEndpoint:(BOOL)a3
+- (void)setHasEnableServerEndpoint:(BOOL)endpoint
 {
-  if (a3)
+  if (endpoint)
   {
     v3 = 4;
   }
@@ -197,15 +197,15 @@
   v8.receiver = self;
   v8.super_class = MXAudioMetadata;
   v4 = [(MXAudioMetadata *)&v8 description];
-  v5 = [(MXAudioMetadata *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MXAudioMetadata *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -220,7 +220,7 @@
       v6 = off_27991BC40[codec];
     }
 
-    [v3 setObject:v6 forKey:@"codec"];
+    [dictionary setObject:v6 forKey:@"codec"];
 
     has = self->_has;
   }
@@ -238,7 +238,7 @@
       v8 = off_27991BC80[audioSource];
     }
 
-    [v3 setObject:v8 forKey:@"audio_source"];
+    [dictionary setObject:v8 forKey:@"audio_source"];
 
     has = self->_has;
   }
@@ -246,41 +246,41 @@
   if ((has & 8) != 0)
   {
     v9 = [MEMORY[0x277CCABB0] numberWithBool:self->_isFarField];
-    [v3 setObject:v9 forKey:@"is_far_field"];
+    [dictionary setObject:v9 forKey:@"is_far_field"];
   }
 
   voiceTriggerInfo = self->_voiceTriggerInfo;
   if (voiceTriggerInfo)
   {
-    v11 = [(MXVoiceTriggerInfo *)voiceTriggerInfo dictionaryRepresentation];
-    [v3 setObject:v11 forKey:@"voice_trigger_info"];
+    dictionaryRepresentation = [(MXVoiceTriggerInfo *)voiceTriggerInfo dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"voice_trigger_info"];
   }
 
   if ((*&self->_has & 4) != 0)
   {
     v12 = [MEMORY[0x277CCABB0] numberWithBool:self->_enableServerEndpoint];
-    [v3 setObject:v12 forKey:@"enable_server_endpoint"];
+    [dictionary setObject:v12 forKey:@"enable_server_endpoint"];
   }
 
   clientModelVersion = self->_clientModelVersion;
   if (clientModelVersion)
   {
-    [v3 setObject:clientModelVersion forKey:@"client_model_version"];
+    [dictionary setObject:clientModelVersion forKey:@"client_model_version"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v10 = v4;
+  v10 = toCopy;
   if ((has & 2) != 0)
   {
     codec = self->_codec;
     PBDataWriterWriteInt32Field();
-    v4 = v10;
+    toCopy = v10;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -301,44 +301,44 @@ LABEL_3:
 
   audioSource = self->_audioSource;
   PBDataWriterWriteInt32Field();
-  v4 = v10;
+  toCopy = v10;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_4:
     isFarField = self->_isFarField;
     PBDataWriterWriteBOOLField();
-    v4 = v10;
+    toCopy = v10;
   }
 
 LABEL_5:
   if (self->_voiceTriggerInfo)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if ((*&self->_has & 4) != 0)
   {
     enableServerEndpoint = self->_enableServerEndpoint;
     PBDataWriterWriteBOOLField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_clientModelVersion)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[6] = self->_codec;
-    *(v4 + 44) |= 2u;
+    toCopy[6] = self->_codec;
+    *(toCopy + 44) |= 2u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -357,39 +357,39 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[2] = self->_audioSource;
-  *(v4 + 44) |= 1u;
+  toCopy[2] = self->_audioSource;
+  *(toCopy + 44) |= 1u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_4:
-    *(v4 + 41) = self->_isFarField;
-    *(v4 + 44) |= 8u;
+    *(toCopy + 41) = self->_isFarField;
+    *(toCopy + 44) |= 8u;
   }
 
 LABEL_5:
-  v6 = v4;
+  v6 = toCopy;
   if (self->_voiceTriggerInfo)
   {
-    [v4 setVoiceTriggerInfo:?];
-    v4 = v6;
+    [toCopy setVoiceTriggerInfo:?];
+    toCopy = v6;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    *(v4 + 40) = self->_enableServerEndpoint;
-    *(v4 + 44) |= 4u;
+    *(toCopy + 40) = self->_enableServerEndpoint;
+    *(toCopy + 44) |= 4u;
   }
 
   if (self->_clientModelVersion)
   {
     [v6 setClientModelVersion:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) != 0)
@@ -424,7 +424,7 @@ LABEL_4:
   }
 
 LABEL_5:
-  v8 = [(MXVoiceTriggerInfo *)self->_voiceTriggerInfo copyWithZone:a3];
+  v8 = [(MXVoiceTriggerInfo *)self->_voiceTriggerInfo copyWithZone:zone];
   v9 = *(v6 + 32);
   *(v6 + 32) = v8;
 
@@ -434,78 +434,78 @@ LABEL_5:
     *(v6 + 44) |= 4u;
   }
 
-  v10 = [(NSString *)self->_clientModelVersion copyWithZone:a3];
+  v10 = [(NSString *)self->_clientModelVersion copyWithZone:zone];
   v11 = *(v6 + 16);
   *(v6 + 16) = v10;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_33;
   }
 
   has = self->_has;
-  v6 = *(v4 + 44);
+  v6 = *(equalCopy + 44);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 44) & 2) == 0 || self->_codec != *(v4 + 6))
+    if ((*(equalCopy + 44) & 2) == 0 || self->_codec != *(equalCopy + 6))
     {
       goto LABEL_33;
     }
   }
 
-  else if ((*(v4 + 44) & 2) != 0)
+  else if ((*(equalCopy + 44) & 2) != 0)
   {
     goto LABEL_33;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 44) & 1) == 0 || self->_audioSource != *(v4 + 2))
+    if ((*(equalCopy + 44) & 1) == 0 || self->_audioSource != *(equalCopy + 2))
     {
       goto LABEL_33;
     }
   }
 
-  else if (*(v4 + 44))
+  else if (*(equalCopy + 44))
   {
     goto LABEL_33;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 44) & 8) == 0)
+    if ((*(equalCopy + 44) & 8) == 0)
     {
       goto LABEL_33;
     }
 
-    v11 = *(v4 + 41);
+    v11 = *(equalCopy + 41);
     if (self->_isFarField)
     {
-      if ((*(v4 + 41) & 1) == 0)
+      if ((*(equalCopy + 41) & 1) == 0)
       {
         goto LABEL_33;
       }
     }
 
-    else if (*(v4 + 41))
+    else if (*(equalCopy + 41))
     {
       goto LABEL_33;
     }
   }
 
-  else if ((*(v4 + 44) & 8) != 0)
+  else if ((*(equalCopy + 44) & 8) != 0)
   {
     goto LABEL_33;
   }
 
   voiceTriggerInfo = self->_voiceTriggerInfo;
-  if (voiceTriggerInfo | *(v4 + 4))
+  if (voiceTriggerInfo | *(equalCopy + 4))
   {
     if (![(MXVoiceTriggerInfo *)voiceTriggerInfo isEqual:?])
     {
@@ -515,10 +515,10 @@ LABEL_5:
     has = self->_has;
   }
 
-  v8 = *(v4 + 44);
+  v8 = *(equalCopy + 44);
   if ((has & 4) == 0)
   {
-    if ((*(v4 + 44) & 4) == 0)
+    if ((*(equalCopy + 44) & 4) == 0)
     {
       goto LABEL_19;
     }
@@ -528,28 +528,28 @@ LABEL_33:
     goto LABEL_34;
   }
 
-  if ((*(v4 + 44) & 4) == 0)
+  if ((*(equalCopy + 44) & 4) == 0)
   {
     goto LABEL_33;
   }
 
-  v12 = *(v4 + 40);
+  v12 = *(equalCopy + 40);
   if (self->_enableServerEndpoint)
   {
-    if ((*(v4 + 40) & 1) == 0)
+    if ((*(equalCopy + 40) & 1) == 0)
     {
       goto LABEL_33;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
     goto LABEL_33;
   }
 
 LABEL_19:
   clientModelVersion = self->_clientModelVersion;
-  if (clientModelVersion | *(v4 + 2))
+  if (clientModelVersion | *(equalCopy + 2))
   {
     v10 = [(NSString *)clientModelVersion isEqual:?];
   }
@@ -616,16 +616,16 @@ LABEL_8:
   return v4 ^ v3 ^ v5 ^ v7 ^ v6 ^ [(NSString *)self->_clientModelVersion hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 44);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 44);
   if ((v6 & 2) != 0)
   {
-    self->_codec = *(v4 + 6);
+    self->_codec = *(fromCopy + 6);
     *&self->_has |= 2u;
-    v6 = *(v4 + 44);
+    v6 = *(fromCopy + 44);
     if ((v6 & 1) == 0)
     {
 LABEL_3:
@@ -638,17 +638,17 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 44) & 1) == 0)
+  else if ((*(fromCopy + 44) & 1) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_audioSource = *(v4 + 2);
+  self->_audioSource = *(fromCopy + 2);
   *&self->_has |= 1u;
-  if ((*(v4 + 44) & 8) != 0)
+  if ((*(fromCopy + 44) & 8) != 0)
   {
 LABEL_4:
-    self->_isFarField = *(v4 + 41);
+    self->_isFarField = *(fromCopy + 41);
     *&self->_has |= 8u;
   }
 

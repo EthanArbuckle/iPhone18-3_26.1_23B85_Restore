@@ -1,22 +1,22 @@
 @interface PIPortraitAdjustmentController
 - (BOOL)canRenderPortraitEffect;
-- (BOOL)isSettingEqual:(id)a3 forKey:(id)a4;
+- (BOOL)isSettingEqual:(id)equal forKey:(id)key;
 - (NSDictionary)portraitInfo;
 - (NSNumber)spillMatteAllowed;
 - (NSString)kind;
-- (PIPortraitAdjustmentController)initWithAdjustment:(id)a3;
+- (PIPortraitAdjustmentController)initWithAdjustment:(id)adjustment;
 - (double)defaultStrength;
 - (double)strength;
-- (id)pasteKeysForMediaType:(int64_t)a3;
-- (void)setKind:(id)a3;
-- (void)setPortraitInfo:(id)a3;
-- (void)setSpillMatteAllowed:(id)a3;
-- (void)setStrength:(double)a3;
+- (id)pasteKeysForMediaType:(int64_t)type;
+- (void)setKind:(id)kind;
+- (void)setPortraitInfo:(id)info;
+- (void)setSpillMatteAllowed:(id)allowed;
+- (void)setStrength:(double)strength;
 @end
 
 @implementation PIPortraitAdjustmentController
 
-- (id)pasteKeysForMediaType:(int64_t)a3
+- (id)pasteKeysForMediaType:(int64_t)type
 {
   v8[3] = *MEMORY[0x1E69E9840];
   v3 = +[PIAdjustmentController enabledKey];
@@ -31,12 +31,12 @@
 
 - (NSNumber)spillMatteAllowed
 {
-  v2 = [(PIAdjustmentController *)self adjustment];
+  adjustment = [(PIAdjustmentController *)self adjustment];
   v3 = +[PIPortraitAdjustmentController spillMatteAllowedKey];
-  v4 = [v2 objectForKeyedSubscript:v3];
-  v5 = [v4 BOOLValue];
+  v4 = [adjustment objectForKeyedSubscript:v3];
+  bOOLValue = [v4 BOOLValue];
 
-  if (v5)
+  if (bOOLValue)
   {
     return MEMORY[0x1E695E118];
   }
@@ -47,20 +47,20 @@
   }
 }
 
-- (void)setSpillMatteAllowed:(id)a3
+- (void)setSpillMatteAllowed:(id)allowed
 {
-  v4 = [a3 BOOLValue];
-  v8 = [(PIAdjustmentController *)self adjustment];
+  bOOLValue = [allowed BOOLValue];
+  adjustment = [(PIAdjustmentController *)self adjustment];
   v5 = +[PIPortraitAdjustmentController spillMatteAllowedKey];
-  if (v4)
+  if (bOOLValue)
   {
     v6 = MEMORY[0x1E695E118];
-    v7 = v8;
+    v7 = adjustment;
   }
 
   else
   {
-    v7 = v8;
+    v7 = adjustment;
     v6 = 0;
   }
 
@@ -70,13 +70,13 @@
 - (double)defaultStrength
 {
   v3 = +[PIPortraitAdjustmentController strengthKey];
-  v4 = [(PIAdjustmentController *)self adjustment];
-  v5 = [v4 schema];
-  v6 = [v5 settings];
-  v7 = [v6 objectForKeyedSubscript:v3];
+  adjustment = [(PIAdjustmentController *)self adjustment];
+  schema = [adjustment schema];
+  settings = [schema settings];
+  v7 = [settings objectForKeyedSubscript:v3];
 
-  v8 = [v7 defaultValue];
-  [v8 floatValue];
+  defaultValue = [v7 defaultValue];
+  [defaultValue floatValue];
   v10 = v9;
 
   return v10;
@@ -85,96 +85,96 @@
 - (double)strength
 {
   v3 = +[PIPortraitAdjustmentController strengthKey];
-  v4 = [(PIAdjustmentController *)self adjustment];
-  v5 = [v4 schema];
-  v6 = [v5 settings];
-  v7 = [v6 objectForKeyedSubscript:v3];
+  adjustment = [(PIAdjustmentController *)self adjustment];
+  schema = [adjustment schema];
+  settings = [schema settings];
+  v7 = [settings objectForKeyedSubscript:v3];
 
-  v8 = [(PIAdjustmentController *)self adjustment];
-  v9 = [v8 objectForKeyedSubscript:v3];
+  adjustment2 = [(PIAdjustmentController *)self adjustment];
+  defaultValue = [adjustment2 objectForKeyedSubscript:v3];
 
-  if (!v9)
+  if (!defaultValue)
   {
-    v9 = [v7 defaultValue];
+    defaultValue = [v7 defaultValue];
   }
 
-  [v9 floatValue];
+  [defaultValue floatValue];
   v11 = v10;
 
   return v11;
 }
 
-- (void)setStrength:(double)a3
+- (void)setStrength:(double)strength
 {
-  v6 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  v4 = [(PIAdjustmentController *)self adjustment];
+  v6 = [MEMORY[0x1E696AD98] numberWithDouble:strength];
+  adjustment = [(PIAdjustmentController *)self adjustment];
   v5 = +[PIPortraitAdjustmentController strengthKey];
-  [v4 setObject:v6 forKeyedSubscript:v5];
+  [adjustment setObject:v6 forKeyedSubscript:v5];
 }
 
 - (BOOL)canRenderPortraitEffect
 {
-  v2 = [(PIPortraitAdjustmentController *)self portraitInfo];
-  v3 = [v2 count] != 0;
+  portraitInfo = [(PIPortraitAdjustmentController *)self portraitInfo];
+  v3 = [portraitInfo count] != 0;
 
   return v3;
 }
 
 - (NSDictionary)portraitInfo
 {
-  v2 = [(PIAdjustmentController *)self adjustment];
+  adjustment = [(PIAdjustmentController *)self adjustment];
   v3 = +[PIPortraitAdjustmentController portraitInfoKey];
-  v4 = [v2 objectForKeyedSubscript:v3];
+  v4 = [adjustment objectForKeyedSubscript:v3];
 
   return v4;
 }
 
-- (void)setPortraitInfo:(id)a3
+- (void)setPortraitInfo:(id)info
 {
-  v6 = [a3 copy];
-  v4 = [(PIAdjustmentController *)self adjustment];
+  v6 = [info copy];
+  adjustment = [(PIAdjustmentController *)self adjustment];
   v5 = +[PIPortraitAdjustmentController portraitInfoKey];
-  [v4 setObject:v6 forKeyedSubscript:v5];
+  [adjustment setObject:v6 forKeyedSubscript:v5];
 }
 
 - (NSString)kind
 {
-  v2 = [(PIAdjustmentController *)self adjustment];
+  adjustment = [(PIAdjustmentController *)self adjustment];
   v3 = +[PIPortraitAdjustmentController kindKey];
-  v4 = [v2 objectForKeyedSubscript:v3];
+  v4 = [adjustment objectForKeyedSubscript:v3];
 
   return v4;
 }
 
-- (void)setKind:(id)a3
+- (void)setKind:(id)kind
 {
-  v6 = [a3 copy];
-  v4 = [(PIAdjustmentController *)self adjustment];
+  v6 = [kind copy];
+  adjustment = [(PIAdjustmentController *)self adjustment];
   v5 = +[PIPortraitAdjustmentController kindKey];
-  [v4 setObject:v6 forKeyedSubscript:v5];
+  [adjustment setObject:v6 forKeyedSubscript:v5];
 }
 
-- (BOOL)isSettingEqual:(id)a3 forKey:(id)a4
+- (BOOL)isSettingEqual:(id)equal forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  equalCopy = equal;
+  keyCopy = key;
   v8 = +[PIPortraitAdjustmentController strengthKey];
-  v9 = [v7 isEqualToString:v8];
+  v9 = [keyCopy isEqualToString:v8];
 
   if (v9)
   {
-    v10 = [(PIAdjustmentController *)self adjustment];
-    v11 = [v10 objectForKeyedSubscript:v7];
+    adjustment = [(PIAdjustmentController *)self adjustment];
+    v11 = [adjustment objectForKeyedSubscript:keyCopy];
 
-    v12 = [v6 objectForKeyedSubscript:v7];
-    v13 = [(PIAdjustmentController *)self adjustment];
-    v14 = [v13 schema];
-    v15 = [v14 settings];
+    v12 = [equalCopy objectForKeyedSubscript:keyCopy];
+    adjustment2 = [(PIAdjustmentController *)self adjustment];
+    schema = [adjustment2 schema];
+    settings = [schema settings];
     v16 = +[PIPortraitAdjustmentController strengthKey];
-    v17 = [v15 objectForKeyedSubscript:v16];
+    v17 = [settings objectForKeyedSubscript:v16];
 
-    v18 = [v17 defaultValue];
-    v19 = v18;
+    defaultValue = [v17 defaultValue];
+    v19 = defaultValue;
     if (v11)
     {
       v20 = v11;
@@ -182,7 +182,7 @@
 
     else
     {
-      v20 = v18;
+      v20 = defaultValue;
     }
 
     v21 = v20;
@@ -209,17 +209,17 @@
   {
     v29.receiver = self;
     v29.super_class = PIPortraitAdjustmentController;
-    v27 = [(PIAdjustmentController *)&v29 isSettingEqual:v6 forKey:v7];
+    v27 = [(PIAdjustmentController *)&v29 isSettingEqual:equalCopy forKey:keyCopy];
   }
 
   return v27;
 }
 
-- (PIPortraitAdjustmentController)initWithAdjustment:(id)a3
+- (PIPortraitAdjustmentController)initWithAdjustment:(id)adjustment
 {
   v4.receiver = self;
   v4.super_class = PIPortraitAdjustmentController;
-  return [(PIAdjustmentController *)&v4 initWithAdjustment:a3];
+  return [(PIAdjustmentController *)&v4 initWithAdjustment:adjustment];
 }
 
 @end

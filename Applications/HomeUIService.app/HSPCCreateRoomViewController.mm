@@ -1,15 +1,15 @@
 @interface HSPCCreateRoomViewController
-- (HSPCCreateRoomViewController)initWithCoordinator:(id)a3 config:(id)a4;
+- (HSPCCreateRoomViewController)initWithCoordinator:(id)coordinator config:(id)config;
 - (id)commitConfiguration;
 @end
 
 @implementation HSPCCreateRoomViewController
 
-- (HSPCCreateRoomViewController)initWithCoordinator:(id)a3 config:(id)a4
+- (HSPCCreateRoomViewController)initWithCoordinator:(id)coordinator config:(id)config
 {
   v7.receiver = self;
   v7.super_class = HSPCCreateRoomViewController;
-  v4 = [(HSPCTextFieldViewController *)&v7 initWithCoordinator:a3 config:a4];
+  v4 = [(HSPCTextFieldViewController *)&v7 initWithCoordinator:coordinator config:config];
   if (v4)
   {
     v5 = HULocalizedString();
@@ -22,20 +22,20 @@
 - (id)commitConfiguration
 {
   [(HSPCTextFieldViewController *)self endEditing];
-  v3 = [(HSPCTextFieldViewController *)self textFieldText];
-  v4 = [(HSPCTextFieldViewController *)self config];
-  v5 = [v4 isSetupInitiatedByOtherMatterEcosystem];
+  textFieldText = [(HSPCTextFieldViewController *)self textFieldText];
+  config = [(HSPCTextFieldViewController *)self config];
+  isSetupInitiatedByOtherMatterEcosystem = [config isSetupInitiatedByOtherMatterEcosystem];
 
-  if (v5)
+  if (isSetupInitiatedByOtherMatterEcosystem)
   {
-    v6 = [[MTSDeviceSetupRoom alloc] initWithName:v3];
+    v6 = [[MTSDeviceSetupRoom alloc] initWithName:textFieldText];
     v7 = objc_opt_class();
-    v8 = [(HSPCTextFieldViewController *)self config];
-    if (v8)
+    config2 = [(HSPCTextFieldViewController *)self config];
+    if (config2)
     {
       if (objc_opt_isKindOfClass())
       {
-        v9 = v8;
+        v9 = config2;
       }
 
       else
@@ -43,31 +43,31 @@
         v9 = 0;
       }
 
-      v10 = v9;
-      if (!v10)
+      config4 = v9;
+      if (!config4)
       {
-        sub_1000774F0(v8, v7);
+        sub_1000774F0(config2, v7);
       }
     }
 
     else
     {
-      v10 = 0;
+      config4 = 0;
     }
 
-    [v10 setSelectedPartnerRoom:v6];
+    [config4 setSelectedPartnerRoom:v6];
     v13 = [NAFuture futureWithResult:&off_1000CD468];
   }
 
   else
   {
-    v11 = [(HSPCTextFieldViewController *)self config];
-    [v11 setRoomName:v3];
+    config3 = [(HSPCTextFieldViewController *)self config];
+    [config3 setRoomName:textFieldText];
 
-    v6 = [NSString stringWithFormat:@"Create Room: %@", v3];
-    v10 = [(HSPCTextFieldViewController *)self config];
-    v12 = [v10 configureRoom];
-    v13 = [v12 hs_commitConfigurationFutureWithContextMessage:v6];
+    v6 = [NSString stringWithFormat:@"Create Room: %@", textFieldText];
+    config4 = [(HSPCTextFieldViewController *)self config];
+    configureRoom = [config4 configureRoom];
+    v13 = [configureRoom hs_commitConfigurationFutureWithContextMessage:v6];
   }
 
   return v13;

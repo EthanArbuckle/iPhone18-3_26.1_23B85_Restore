@@ -1,23 +1,23 @@
 @interface PKASCAssociatedReaderID
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToASCAssociatedReaderID:(id)a3;
-- (PKASCAssociatedReaderID)initWithCoder:(id)a3;
-- (PKASCAssociatedReaderID)initWithDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToASCAssociatedReaderID:(id)d;
+- (PKASCAssociatedReaderID)initWithCoder:(id)coder;
+- (PKASCAssociatedReaderID)initWithDictionary:(id)dictionary;
 - (id)asDictionary;
 - (id)description;
 - (id)redactedDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKASCAssociatedReaderID
 
-- (PKASCAssociatedReaderID)initWithDictionary:(id)a3
+- (PKASCAssociatedReaderID)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 PKStringForKey:@"readerID"];
-  v6 = [v5 pk_decodeHexadecimal];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy PKStringForKey:@"readerID"];
+  pk_decodeHexadecimal = [v5 pk_decodeHexadecimal];
 
-  if (v6)
+  if (pk_decodeHexadecimal)
   {
     v12.receiver = self;
     v12.super_class = PKASCAssociatedReaderID;
@@ -25,28 +25,28 @@
     v8 = v7;
     if (v7)
     {
-      objc_storeStrong(&v7->_readerID, v6);
-      v9 = [v4 PKNumberForKey:@"priority"];
+      objc_storeStrong(&v7->_readerID, pk_decodeHexadecimal);
+      v9 = [dictionaryCopy PKNumberForKey:@"priority"];
       v8->_priority = [v9 unsignedIntegerValue];
     }
 
     self = v8;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (id)asDictionary
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(NSData *)self->_readerID hexEncoding];
-  [v3 setObject:v4 forKeyedSubscript:@"readerID"];
+  hexEncoding = [(NSData *)self->_readerID hexEncoding];
+  [v3 setObject:hexEncoding forKeyedSubscript:@"readerID"];
 
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_priority];
   [v3 setObject:v5 forKeyedSubscript:@"priority"];
@@ -56,32 +56,32 @@
   return v6;
 }
 
-- (PKASCAssociatedReaderID)initWithCoder:(id)a3
+- (PKASCAssociatedReaderID)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = PKASCAssociatedReaderID;
   v5 = [(PKASCAssociatedReaderID *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"readerID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"readerID"];
     readerID = v5->_readerID;
     v5->_readerID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"priority"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"priority"];
     v5->_priority = [v8 unsignedIntegerValue];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   readerID = self->_readerID;
-  v5 = a3;
-  [v5 encodeObject:readerID forKey:@"readerID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:readerID forKey:@"readerID"];
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_priority];
-  [v5 encodeObject:v6 forKey:@"priority"];
+  [coderCopy encodeObject:v6 forKey:@"priority"];
 }
 
 - (id)description
@@ -118,30 +118,30 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKASCAssociatedReaderID *)self isEqualToASCAssociatedReaderID:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKASCAssociatedReaderID *)self isEqualToASCAssociatedReaderID:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToASCAssociatedReaderID:(id)a3
+- (BOOL)isEqualToASCAssociatedReaderID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
     readerID = self->_readerID;
-    v6 = v4[1];
+    v6 = dCopy[1];
     if (readerID)
     {
       v7 = v6 == 0;
@@ -157,7 +157,7 @@
       if (readerID == v6)
       {
 LABEL_10:
-        v8 = self->_priority == v4[2];
+        v8 = self->_priority == dCopy[2];
         goto LABEL_11;
       }
     }

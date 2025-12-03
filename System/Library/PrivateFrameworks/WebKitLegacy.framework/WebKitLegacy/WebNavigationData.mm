@@ -1,11 +1,11 @@
 @interface WebNavigationData
-- (WebNavigationData)initWithURLString:(id)a3 title:(id)a4 originalRequest:(id)a5 response:(id)a6 hasSubstituteData:(BOOL)a7 clientRedirectSource:(id)a8;
+- (WebNavigationData)initWithURLString:(id)string title:(id)title originalRequest:(id)request response:(id)response hasSubstituteData:(BOOL)data clientRedirectSource:(id)source;
 - (void)dealloc;
 @end
 
 @implementation WebNavigationData
 
-- (WebNavigationData)initWithURLString:(id)a3 title:(id)a4 originalRequest:(id)a5 response:(id)a6 hasSubstituteData:(BOOL)a7 clientRedirectSource:(id)a8
+- (WebNavigationData)initWithURLString:(id)string title:(id)title originalRequest:(id)request response:(id)response hasSubstituteData:(BOOL)data clientRedirectSource:(id)source
 {
   v31.receiver = self;
   v31.super_class = WebNavigationData;
@@ -14,62 +14,62 @@
   {
     v15 = objc_alloc_init(WebNavigationDataPrivate);
     v14->_private = v15;
-    if (a3)
+    if (string)
     {
-      v16 = a3;
+      stringCopy = string;
     }
 
     m_ptr = v15->url.m_ptr;
-    v15->url.m_ptr = a3;
+    v15->url.m_ptr = string;
     if (m_ptr)
     {
     }
 
     v18 = v14->_private;
-    if (a4)
+    if (title)
     {
-      v19 = a4;
+      titleCopy = title;
     }
 
     v20 = v18->title.m_ptr;
-    v18->title.m_ptr = a4;
+    v18->title.m_ptr = title;
     if (v20)
     {
     }
 
     v21 = v14->_private;
-    if (a5)
+    if (request)
     {
-      v22 = a5;
+      requestCopy = request;
     }
 
     v23 = v21->originalRequest.m_ptr;
-    v21->originalRequest.m_ptr = a5;
+    v21->originalRequest.m_ptr = request;
     if (v23)
     {
     }
 
     v24 = v14->_private;
-    if (a6)
+    if (response)
     {
-      v25 = a6;
+      responseCopy = response;
     }
 
     v26 = v24->response.m_ptr;
-    v24->response.m_ptr = a6;
+    v24->response.m_ptr = response;
     if (v26)
     {
     }
 
-    v14->_private->hasSubstituteData = a7;
+    v14->_private->hasSubstituteData = data;
     v27 = v14->_private;
-    if (a8)
+    if (source)
     {
-      v28 = a8;
+      sourceCopy = source;
     }
 
     v29 = v27->clientRedirectSource.m_ptr;
-    v27->clientRedirectSource.m_ptr = a8;
+    v27->clientRedirectSource.m_ptr = source;
     if (v29)
     {
     }

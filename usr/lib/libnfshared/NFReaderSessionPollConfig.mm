@@ -1,16 +1,16 @@
 @interface NFReaderSessionPollConfig
-+ (id)pollConfigWithTypeFSystemCode:(id)a3;
-- (NFReaderSessionPollConfig)initWithCoder:(id)a3;
-- (NFReaderSessionPollConfig)initWithType:(unint64_t)a3;
++ (id)pollConfigWithTypeFSystemCode:(id)code;
+- (NFReaderSessionPollConfig)initWithCoder:(id)coder;
+- (NFReaderSessionPollConfig)initWithType:(unint64_t)type;
 - (id)asDictionary;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)setEcp:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setEcp:(id)ecp;
 @end
 
 @implementation NFReaderSessionPollConfig
 
-- (NFReaderSessionPollConfig)initWithType:(unint64_t)a3
+- (NFReaderSessionPollConfig)initWithType:(unint64_t)type
 {
   v8.receiver = self;
   v8.super_class = NFReaderSessionPollConfig;
@@ -20,27 +20,27 @@
   {
     v4->_technology = 23;
     v4->_fieldDetect = 1;
-    v4->_type = a3;
+    v4->_type = type;
     v6 = v4;
   }
 
   return v5;
 }
 
-+ (id)pollConfigWithTypeFSystemCode:(id)a3
++ (id)pollConfigWithTypeFSystemCode:(id)code
 {
-  v3 = a3;
+  codeCopy = code;
   v4 = objc_opt_new();
   objc_msgSend_setTechnology_(v4, v5, 4);
-  objc_msgSend_setTypeFSystemCode_(v4, v6, v3);
+  objc_msgSend_setTypeFSystemCode_(v4, v6, codeCopy);
 
   return v4;
 }
 
-- (void)setEcp:(id)a3
+- (void)setEcp:(id)ecp
 {
-  v4 = a3 != 0;
-  objc_storeStrong(&self->_ecp, a3);
+  v4 = ecp != 0;
+  objc_storeStrong(&self->_ecp, ecp);
   self->_technology = self->_technology & 0xFFFFFFF7 | (8 * v4);
 }
 
@@ -108,41 +108,41 @@
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v13 = a3;
-  objc_msgSend_encodeInteger_forKey_(v13, v5, type, @"ConfigType");
-  objc_msgSend_encodeInteger_forKey_(v13, v6, self->_technology, @"tech");
-  objc_msgSend_encodeObject_forKey_(v13, v7, self->_ecp, @"ecp");
-  objc_msgSend_encodeInteger_forKey_(v13, v8, self->_pollDuration, @"pollDuration");
-  objc_msgSend_encodeBool_forKey_(v13, v9, self->_skipMifareClassify, @"skipMifareClassify");
-  objc_msgSend_encodeBool_forKey_(v13, v10, self->_lpcd, @"lpcd");
-  objc_msgSend_encodeBool_forKey_(v13, v11, self->_fieldDetect, @"fd");
-  objc_msgSend_encodeObject_forKey_(v13, v12, self->_typeFSystemCode, @"typeFSystemCode");
+  coderCopy = coder;
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v5, type, @"ConfigType");
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v6, self->_technology, @"tech");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v7, self->_ecp, @"ecp");
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v8, self->_pollDuration, @"pollDuration");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v9, self->_skipMifareClassify, @"skipMifareClassify");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v10, self->_lpcd, @"lpcd");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v11, self->_fieldDetect, @"fd");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v12, self->_typeFSystemCode, @"typeFSystemCode");
 }
 
-- (NFReaderSessionPollConfig)initWithCoder:(id)a3
+- (NFReaderSessionPollConfig)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = NFReaderSessionPollConfig;
   v6 = [(NFReaderSessionPollConfig *)&v22 init];
   if (v6)
   {
-    v6->_type = objc_msgSend_decodeIntegerForKey_(v4, v5, @"ConfigType");
-    v6->_technology = objc_msgSend_decodeIntegerForKey_(v4, v7, @"tech");
+    v6->_type = objc_msgSend_decodeIntegerForKey_(coderCopy, v5, @"ConfigType");
+    v6->_technology = objc_msgSend_decodeIntegerForKey_(coderCopy, v7, @"tech");
     v8 = objc_opt_class();
-    v10 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v9, v8, @"ecp");
+    v10 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v9, v8, @"ecp");
     ecp = v6->_ecp;
     v6->_ecp = v10;
 
-    v6->_pollDuration = objc_msgSend_decodeIntegerForKey_(v4, v12, @"pollDuration");
-    v6->_skipMifareClassify = objc_msgSend_decodeBoolForKey_(v4, v13, @"skipMifareClassify");
-    v6->_lpcd = objc_msgSend_decodeBoolForKey_(v4, v14, @"lpcd");
-    v6->_fieldDetect = objc_msgSend_decodeBoolForKey_(v4, v15, @"fd");
+    v6->_pollDuration = objc_msgSend_decodeIntegerForKey_(coderCopy, v12, @"pollDuration");
+    v6->_skipMifareClassify = objc_msgSend_decodeBoolForKey_(coderCopy, v13, @"skipMifareClassify");
+    v6->_lpcd = objc_msgSend_decodeBoolForKey_(coderCopy, v14, @"lpcd");
+    v6->_fieldDetect = objc_msgSend_decodeBoolForKey_(coderCopy, v15, @"fd");
     v16 = objc_opt_class();
-    v18 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v17, v16, @"typeFSystemCode");
+    v18 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v17, v16, @"typeFSystemCode");
     typeFSystemCode = v6->_typeFSystemCode;
     v6->_typeFSystemCode = v18;
 

@@ -1,39 +1,39 @@
 @interface WFNANTableViewDataSource
-- (WFNANTableViewDataSource)initWithTableView:(id)a3 sections:(id)a4 cellProvider:(id)a5;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
+- (WFNANTableViewDataSource)initWithTableView:(id)view sections:(id)sections cellProvider:(id)provider;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
 @end
 
 @implementation WFNANTableViewDataSource
 
-- (WFNANTableViewDataSource)initWithTableView:(id)a3 sections:(id)a4 cellProvider:(id)a5
+- (WFNANTableViewDataSource)initWithTableView:(id)view sections:(id)sections cellProvider:(id)provider
 {
-  v8 = a4;
+  sectionsCopy = sections;
   v12.receiver = self;
   v12.super_class = WFNANTableViewDataSource;
-  v9 = [(UITableViewDiffableDataSource *)&v12 initWithTableView:a3 cellProvider:a5];
+  v9 = [(UITableViewDiffableDataSource *)&v12 initWithTableView:view cellProvider:provider];
   v10 = v9;
   if (v9)
   {
-    [(WFNANTableViewDataSource *)v9 setSections:v8];
+    [(WFNANTableViewDataSource *)v9 setSections:sectionsCopy];
   }
 
   return v10;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v5 = [(WFNANTableViewDataSource *)self sections];
-  v6 = [v5 objectAtIndexedSubscript:a4];
-  v7 = [v6 unsignedIntegerValue];
+  sections = [(WFNANTableViewDataSource *)self sections];
+  v6 = [sections objectAtIndexedSubscript:section];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-  if (v7 > 2)
+  if (unsignedIntegerValue > 2)
   {
     v10 = 0;
   }
 
   else
   {
-    v8 = off_279EC5BA8[v7];
+    v8 = off_279EC5BA8[unsignedIntegerValue];
     v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v10 = [v9 localizedStringForKey:v8 value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
   }

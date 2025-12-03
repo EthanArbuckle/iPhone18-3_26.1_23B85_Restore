@@ -12,11 +12,11 @@
   v4 = identifier;
   v11.receiver = self;
   v11.super_class = PHASEContainerNodeDefinition;
-  v5 = [(PHASEDefinition *)&v11 initInternal];
-  v6 = v5;
-  if (v5)
+  initInternal = [(PHASEDefinition *)&v11 initInternal];
+  v6 = initInternal;
+  if (initInternal)
   {
-    [(PHASEDefinition *)v5 setIdentifier:v4];
+    [(PHASEDefinition *)initInternal setIdentifier:v4];
     v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
     subtrees = v6->_subtrees;
     v6->_subtrees = v7;

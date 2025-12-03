@@ -1,13 +1,13 @@
 @interface NSDictionary
-- (BOOL)NDTWriteToBinaryFile:(id)a3;
-- (BOOL)writeToBinaryFile:(id)a3;
+- (BOOL)NDTWriteToBinaryFile:(id)file;
+- (BOOL)writeToBinaryFile:(id)file;
 @end
 
 @implementation NSDictionary
 
-- (BOOL)writeToBinaryFile:(id)a3
+- (BOOL)writeToBinaryFile:(id)file
 {
-  v4 = a3;
+  fileCopy = file;
   v9 = 0;
   v5 = [NSPropertyListSerialization dataWithPropertyList:self format:200 options:0 error:&v9];
   v6 = v5;
@@ -18,15 +18,15 @@
 
   else
   {
-    v7 = [v5 writeToFile:v4 atomically:1];
+    v7 = [v5 writeToFile:fileCopy atomically:1];
   }
 
   return v7;
 }
 
-- (BOOL)NDTWriteToBinaryFile:(id)a3
+- (BOOL)NDTWriteToBinaryFile:(id)file
 {
-  v4 = a3;
+  fileCopy = file;
   v9 = 0;
   v5 = [NSPropertyListSerialization dataWithPropertyList:self format:200 options:0 error:&v9];
   v6 = v5;
@@ -37,7 +37,7 @@
 
   else
   {
-    v7 = [v5 writeToFile:v4 atomically:1];
+    v7 = [v5 writeToFile:fileCopy atomically:1];
   }
 
   return v7;

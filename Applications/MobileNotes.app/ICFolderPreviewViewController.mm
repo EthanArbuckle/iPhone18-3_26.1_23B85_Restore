@@ -1,26 +1,26 @@
 @interface ICFolderPreviewViewController
 - (ICFolder)folder;
-- (ICFolderPreviewViewController)initWithFolder:(id)a3;
+- (ICFolderPreviewViewController)initWithFolder:(id)folder;
 - (ICNoteBrowseFolderThumbnailView)folderThumbnailView;
 - (ICPreviewFooterView)previewFooterView;
 - (UIStackView)stackView;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
 @end
 
 @implementation ICFolderPreviewViewController
 
-- (ICFolderPreviewViewController)initWithFolder:(id)a3
+- (ICFolderPreviewViewController)initWithFolder:(id)folder
 {
-  v4 = a3;
+  folderCopy = folder;
   v8.receiver = self;
   v8.super_class = ICFolderPreviewViewController;
   v5 = [(ICFolderPreviewViewController *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_folder, v4);
+    objc_storeWeak(&v5->_folder, folderCopy);
   }
 
   return v6;
@@ -31,47 +31,47 @@
   v17.receiver = self;
   v17.super_class = ICFolderPreviewViewController;
   [(ICFolderPreviewViewController *)&v17 viewDidLoad];
-  v3 = [(ICFolderPreviewViewController *)self folderThumbnailView];
-  [v3 setBackgroundColor:0];
+  folderThumbnailView = [(ICFolderPreviewViewController *)self folderThumbnailView];
+  [folderThumbnailView setBackgroundColor:0];
 
-  v4 = [(ICFolderPreviewViewController *)self folderThumbnailView];
-  [v4 setHasDropShadow:0];
+  folderThumbnailView2 = [(ICFolderPreviewViewController *)self folderThumbnailView];
+  [folderThumbnailView2 setHasDropShadow:0];
 
-  v5 = [(ICFolderPreviewViewController *)self folderThumbnailView];
-  [v5 setAllowsCompactSizeMetrics:0];
+  folderThumbnailView3 = [(ICFolderPreviewViewController *)self folderThumbnailView];
+  [folderThumbnailView3 setAllowsCompactSizeMetrics:0];
 
-  v6 = [(ICFolderPreviewViewController *)self folder];
-  v7 = [v6 title];
-  v8 = [(ICFolderPreviewViewController *)self previewFooterView];
-  [v8 setTitle:v7];
+  folder = [(ICFolderPreviewViewController *)self folder];
+  title = [folder title];
+  previewFooterView = [(ICFolderPreviewViewController *)self previewFooterView];
+  [previewFooterView setTitle:title];
 
   v9 = +[NSBundle mainBundle];
   v10 = [v9 localizedStringForKey:@"%lu Notes" value:&stru_100661CF0 table:0];
-  v11 = [(ICFolderPreviewViewController *)self folder];
-  v12 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v10, [v11 visibleNotesCount]);
-  v13 = [(ICFolderPreviewViewController *)self previewFooterView];
-  [v13 setContentsSubtitle:v12];
+  folder2 = [(ICFolderPreviewViewController *)self folder];
+  v12 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v10, [folder2 visibleNotesCount]);
+  previewFooterView2 = [(ICFolderPreviewViewController *)self previewFooterView];
+  [previewFooterView2 setContentsSubtitle:v12];
 
-  v14 = [(ICFolderPreviewViewController *)self folder];
-  v15 = [v14 shareDescription];
-  v16 = [(ICFolderPreviewViewController *)self previewFooterView];
-  [v16 setSharingSubtitle:v15];
+  folder3 = [(ICFolderPreviewViewController *)self folder];
+  shareDescription = [folder3 shareDescription];
+  previewFooterView3 = [(ICFolderPreviewViewController *)self previewFooterView];
+  [previewFooterView3 setSharingSubtitle:shareDescription];
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v6.receiver = self;
   v6.super_class = ICFolderPreviewViewController;
-  [(ICFolderPreviewViewController *)&v6 viewIsAppearing:a3];
-  v4 = [(ICFolderPreviewViewController *)self folder];
-  v5 = [(ICFolderPreviewViewController *)self folderThumbnailView];
-  [v5 setFolder:v4];
+  [(ICFolderPreviewViewController *)&v6 viewIsAppearing:appearing];
+  folder = [(ICFolderPreviewViewController *)self folder];
+  folderThumbnailView = [(ICFolderPreviewViewController *)self folderThumbnailView];
+  [folderThumbnailView setFolder:folder];
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v5 = [(ICFolderPreviewViewController *)self stackView];
-  [v5 frame];
+  stackView = [(ICFolderPreviewViewController *)self stackView];
+  [stackView frame];
   [(ICFolderPreviewViewController *)self setPreferredContentSize:v3, v4];
 }
 

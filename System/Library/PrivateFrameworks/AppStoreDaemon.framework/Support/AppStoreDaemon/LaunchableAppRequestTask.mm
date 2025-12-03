@@ -22,7 +22,7 @@
     }
 
     v7 = client;
-    v8 = [(XPCClient *)v7 clientID];
+    clientID = [(XPCClient *)v7 clientID];
     if (self)
     {
       options = self->super._options;
@@ -34,12 +34,12 @@
     }
 
     v10 = options;
-    v11 = [(ASDRequestOptions *)v10 bundleIDs];
-    v12 = [v11 componentsJoinedByString:{@", "}];
+    bundleIDs = [(ASDRequestOptions *)v10 bundleIDs];
+    v12 = [bundleIDs componentsJoinedByString:{@", "}];
     *buf = 138543874;
     v39 = v4;
     v40 = 2114;
-    v41 = v8;
+    v41 = clientID;
     v42 = 2114;
     v43 = v12;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@]: Launable apps request by client: %{public}@ for bundleIDs: [%{public}@]", buf, 0x20u);
@@ -52,7 +52,7 @@
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v32 = self;
+  selfCopy = self;
   v31 = v14;
   if (self)
   {
@@ -65,9 +65,9 @@
   }
 
   v16 = v15;
-  v17 = [(ASDRequestOptions *)v16 bundleIDs];
+  bundleIDs2 = [(ASDRequestOptions *)v16 bundleIDs];
 
-  v18 = [v17 countByEnumeratingWithState:&v33 objects:v37 count:16];
+  v18 = [bundleIDs2 countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v18)
   {
     v19 = v18;
@@ -78,7 +78,7 @@
       {
         if (*v34 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(bundleIDs2);
         }
 
         v22 = *(*(&v33 + 1) + 8 * i);
@@ -111,7 +111,7 @@
         objc_autoreleasePoolPop(v23);
       }
 
-      v19 = [v17 countByEnumeratingWithState:&v33 objects:v37 count:16];
+      v19 = [bundleIDs2 countByEnumeratingWithState:&v33 objects:v37 count:16];
     }
 
     while (v19);
@@ -123,10 +123,10 @@
   }
 
   v29 = [[ASDLaunchableAppsResponse alloc] initWithBundleIDs:v13];
-  sub_10020F258(v32, v29);
-  if (v32)
+  sub_10020F258(selfCopy, v29);
+  if (selfCopy)
   {
-    v32->super.super._success = 1;
+    selfCopy->super.super._success = 1;
   }
 }
 

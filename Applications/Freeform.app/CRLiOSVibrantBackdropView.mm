@@ -1,46 +1,46 @@
 @interface CRLiOSVibrantBackdropView
-+ (id)backdropViewForSoloButton:(id)a3 active:(BOOL)a4;
-+ (id)backdropViewForTieredButton:(id)a3 withPosition:(int64_t)a4;
-- (CRLiOSVibrantBackdropView)initWithCoder:(id)a3;
-- (CRLiOSVibrantBackdropView)initWithCorners:(int64_t)a3 radius:(double)a4 style:(int64_t)a5;
-- (CRLiOSVibrantBackdropView)initWithFrame:(CGRect)a3;
++ (id)backdropViewForSoloButton:(id)button active:(BOOL)active;
++ (id)backdropViewForTieredButton:(id)button withPosition:(int64_t)position;
+- (CRLiOSVibrantBackdropView)initWithCoder:(id)coder;
+- (CRLiOSVibrantBackdropView)initWithCorners:(int64_t)corners radius:(double)radius style:(int64_t)style;
+- (CRLiOSVibrantBackdropView)initWithFrame:(CGRect)frame;
 - (UIButton)touchedButton;
-- (int64_t)p_alternateStyleForStyle:(int64_t)a3;
-- (int64_t)p_effectiveStyleForStyle:(int64_t)a3;
-- (int64_t)p_presetColorPairForStyle:(int64_t)a3;
-- (int64_t)p_selectedStyleForStyle:(int64_t)a3;
+- (int64_t)p_alternateStyleForStyle:(int64_t)style;
+- (int64_t)p_effectiveStyleForStyle:(int64_t)style;
+- (int64_t)p_presetColorPairForStyle:(int64_t)style;
+- (int64_t)p_selectedStyleForStyle:(int64_t)style;
 - (void)dealloc;
 - (void)didMoveToWindow;
-- (void)linkStyleWithHighlightedStateOfButton:(id)a3;
-- (void)p_buttonDragEnter:(id)a3;
-- (void)p_buttonDragExit:(id)a3;
-- (void)p_buttonTouchCancel:(id)a3;
-- (void)p_buttonTouchDown:(id)a3;
+- (void)linkStyleWithHighlightedStateOfButton:(id)button;
+- (void)p_buttonDragEnter:(id)enter;
+- (void)p_buttonDragExit:(id)exit;
+- (void)p_buttonTouchCancel:(id)cancel;
+- (void)p_buttonTouchDown:(id)down;
 - (void)p_commonInit;
 - (void)p_configureBackdropsForCurrentEffectiveStyle;
-- (void)p_configureBackdropsWithCorners:(int64_t)a3 radius:(double)a4 presetPair:(int64_t)a5;
-- (void)p_constrainToSuperview:(id)a3;
+- (void)p_configureBackdropsWithCorners:(int64_t)corners radius:(double)radius presetPair:(int64_t)pair;
+- (void)p_constrainToSuperview:(id)superview;
 - (void)p_didChangeColorPresets;
 - (void)p_resetSubviewHierarchy;
 - (void)p_setupSubviewHierarchy;
-- (void)setActiveStylePresetPair:(int64_t)a3;
-- (void)setAlwaysUsesBoldActiveStyle:(BOOL)a3;
-- (void)setBoldActiveStylePresetPair:(int64_t)a3;
-- (void)setCornerRadius:(double)a3;
-- (void)setHighContrastStylePresetPair:(int64_t)a3;
-- (void)setNoneStylePresetPair:(int64_t)a3;
-- (void)setNormalStylePresetPair:(int64_t)a3;
-- (void)setRoundedCorners:(int64_t)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setStyle:(int64_t)a3;
-- (void)setTouchOverlayRoundsAllCorners:(BOOL)a3;
-- (void)unlinkStyleWithHighlightedStateOfButton:(id)a3;
-- (void)willMoveToWindow:(id)a3;
+- (void)setActiveStylePresetPair:(int64_t)pair;
+- (void)setAlwaysUsesBoldActiveStyle:(BOOL)style;
+- (void)setBoldActiveStylePresetPair:(int64_t)pair;
+- (void)setCornerRadius:(double)radius;
+- (void)setHighContrastStylePresetPair:(int64_t)pair;
+- (void)setNoneStylePresetPair:(int64_t)pair;
+- (void)setNormalStylePresetPair:(int64_t)pair;
+- (void)setRoundedCorners:(int64_t)corners;
+- (void)setSelected:(BOOL)selected;
+- (void)setStyle:(int64_t)style;
+- (void)setTouchOverlayRoundsAllCorners:(BOOL)corners;
+- (void)unlinkStyleWithHighlightedStateOfButton:(id)button;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation CRLiOSVibrantBackdropView
 
-- (CRLiOSVibrantBackdropView)initWithCorners:(int64_t)a3 radius:(double)a4 style:(int64_t)a5
+- (CRLiOSVibrantBackdropView)initWithCorners:(int64_t)corners radius:(double)radius style:(int64_t)style
 {
   v11.receiver = self;
   v11.super_class = CRLiOSVibrantBackdropView;
@@ -48,9 +48,9 @@
   v9 = v8;
   if (v8)
   {
-    v8->_roundedCorners = a3;
-    v8->_cornerRadius = a4;
-    v8->_style = a5;
+    v8->_roundedCorners = corners;
+    v8->_cornerRadius = radius;
+    v8->_style = style;
     v8->_selected = 0;
     [(CRLiOSVibrantBackdropView *)v8 p_commonInit];
   }
@@ -58,9 +58,9 @@
   return v9;
 }
 
-- (CRLiOSVibrantBackdropView)initWithFrame:(CGRect)a3
+- (CRLiOSVibrantBackdropView)initWithFrame:(CGRect)frame
 {
-  v3 = [(CRLiOSVibrantBackdropView *)self initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CRLiOSVibrantBackdropView *)self initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -70,9 +70,9 @@
   return v4;
 }
 
-- (CRLiOSVibrantBackdropView)initWithCoder:(id)a3
+- (CRLiOSVibrantBackdropView)initWithCoder:(id)coder
 {
-  v3 = [(CRLiOSVibrantBackdropView *)self initWithCoder:a3];
+  v3 = [(CRLiOSVibrantBackdropView *)self initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -106,9 +106,9 @@
   [v5 addObserver:self selector:"p_configureBackdropsForCurrentEffectiveStyle" name:UIAccessibilityDarkerSystemColorsStatusDidChangeNotification object:0];
 }
 
-+ (id)backdropViewForSoloButton:(id)a3 active:(BOOL)a4
++ (id)backdropViewForSoloButton:(id)button active:(BOOL)active
 {
-  if (a4)
+  if (active)
   {
     v5 = 4;
   }
@@ -118,28 +118,28 @@
     v5 = 0;
   }
 
-  v6 = a3;
-  v7 = [[a1 alloc] initWithCorners:5 radius:v5 style:7.5];
-  [v7 linkStyleWithHighlightedStateOfButton:v6];
+  buttonCopy = button;
+  v7 = [[self alloc] initWithCorners:5 radius:v5 style:7.5];
+  [v7 linkStyleWithHighlightedStateOfButton:buttonCopy];
 
   return v7;
 }
 
-+ (id)backdropViewForTieredButton:(id)a3 withPosition:(int64_t)a4
++ (id)backdropViewForTieredButton:(id)button withPosition:(int64_t)position
 {
-  if (a4 > 4)
+  if (position > 4)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = qword_101466400[a4];
+    v5 = qword_101466400[position];
   }
 
-  v6 = a3;
-  v7 = [[a1 alloc] initWithCorners:v5 radius:0 style:7.5];
-  [v7 linkStyleWithHighlightedStateOfButton:v6];
+  buttonCopy = button;
+  v7 = [[self alloc] initWithCorners:v5 radius:0 style:7.5];
+  [v7 linkStyleWithHighlightedStateOfButton:buttonCopy];
 
   return v7;
 }
@@ -154,10 +154,10 @@
   [(CRLiOSVibrantBackdropView *)&v4 dealloc];
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  v4 = a3;
-  if (!v4)
+  windowCopy = window;
+  if (!windowCopy)
   {
     [(CRLiOSVibrantBackdropView *)self p_resetSubviewHierarchy];
   }
@@ -165,7 +165,7 @@
   [(CRLiOSVibrantBackdropView *)self setIsMovingToWindow:1];
   v5.receiver = self;
   v5.super_class = CRLiOSVibrantBackdropView;
-  [(CRLiOSVibrantBackdropView *)&v5 willMoveToWindow:v4];
+  [(CRLiOSVibrantBackdropView *)&v5 willMoveToWindow:windowCopy];
 }
 
 - (void)didMoveToWindow
@@ -174,9 +174,9 @@
   v4.super_class = CRLiOSVibrantBackdropView;
   [(CRLiOSVibrantBackdropView *)&v4 didMoveToWindow];
   [(CRLiOSVibrantBackdropView *)self setIsMovingToWindow:0];
-  v3 = [(CRLiOSVibrantBackdropView *)self window];
+  window = [(CRLiOSVibrantBackdropView *)self window];
 
-  if (v3)
+  if (window)
   {
     [(CRLiOSVibrantBackdropView *)self p_setupSubviewHierarchy];
   }
@@ -185,18 +185,18 @@
 - (void)p_resetSubviewHierarchy
 {
   [(CRLiOSVibrantBackdropView *)self setUnableToFindBlurEffect:0];
-  v3 = [(CRLiOSVibrantBackdropView *)self baseBackdrop];
-  [v3 removeFromSuperview];
+  baseBackdrop = [(CRLiOSVibrantBackdropView *)self baseBackdrop];
+  [baseBackdrop removeFromSuperview];
 
-  v4 = [(CRLiOSVibrantBackdropView *)self overlayBackdrop];
-  [v4 removeFromSuperview];
+  overlayBackdrop = [(CRLiOSVibrantBackdropView *)self overlayBackdrop];
+  [overlayBackdrop removeFromSuperview];
 
-  v5 = [(CRLiOSVibrantBackdropView *)self visualEffectView];
+  visualEffectView = [(CRLiOSVibrantBackdropView *)self visualEffectView];
 
-  if (v5)
+  if (visualEffectView)
   {
-    v6 = [(CRLiOSVibrantBackdropView *)self visualEffectView];
-    [v6 removeFromSuperview];
+    visualEffectView2 = [(CRLiOSVibrantBackdropView *)self visualEffectView];
+    [visualEffectView2 removeFromSuperview];
 
     [(CRLiOSVibrantBackdropView *)self setVisualEffectView:0];
   }
@@ -205,31 +205,31 @@
 - (void)p_setupSubviewHierarchy
 {
   v3 = [(CRLiOSVibrantBackdropView *)self p_presetColorPairForStyle:[(CRLiOSVibrantBackdropView *)self p_effectiveStyleForStyle:self->_style]];
-  if (v3 == 2 && ([(CRLiOSVibrantBackdropView *)self superview], v4 = objc_claimAutoreleasedReturnValue(), [CRLiOSVisualEffectHelper blurEffectProvidedByHierarchyOfView:v4], v5 = objc_claimAutoreleasedReturnValue(), v4, v5))
+  if (v3 == 2 && ([(CRLiOSVibrantBackdropView *)self superview], v4 = objc_claimAutoreleasedReturnValue(), [CRLiOSVisualEffectHelper blurEffectProvidedByHierarchyOfView:v4], scrimBackdrop4 = objc_claimAutoreleasedReturnValue(), v4, scrimBackdrop4))
   {
-    v6 = [UIVibrancyEffect effectForBlurEffect:v5 style:6];
+    v6 = [UIVibrancyEffect effectForBlurEffect:scrimBackdrop4 style:6];
     v7 = [[UIVisualEffectView alloc] initWithEffect:v6];
     [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
     [(CRLiOSVibrantBackdropView *)self addSubview:v7];
     [(CRLiOSVibrantBackdropView *)self p_constrainToSuperview:v7];
-    v8 = [v7 contentView];
-    v9 = [(CRLiOSVibrantBackdropView *)self baseBackdrop];
-    [v8 addSubview:v9];
+    contentView = [v7 contentView];
+    baseBackdrop = [(CRLiOSVibrantBackdropView *)self baseBackdrop];
+    [contentView addSubview:baseBackdrop];
 
-    v10 = [(CRLiOSVibrantBackdropView *)self baseBackdrop];
-    [(CRLiOSVibrantBackdropView *)self p_constrainToSuperview:v10];
+    baseBackdrop2 = [(CRLiOSVibrantBackdropView *)self baseBackdrop];
+    [(CRLiOSVibrantBackdropView *)self p_constrainToSuperview:baseBackdrop2];
 
-    v11 = [(CRLiOSVibrantBackdropView *)self overlayBackdrop];
-    [(CRLiOSVibrantBackdropView *)self addSubview:v11];
+    overlayBackdrop = [(CRLiOSVibrantBackdropView *)self overlayBackdrop];
+    [(CRLiOSVibrantBackdropView *)self addSubview:overlayBackdrop];
 
-    v12 = [(CRLiOSVibrantBackdropView *)self overlayBackdrop];
-    [(CRLiOSVibrantBackdropView *)self p_constrainToSuperview:v12];
+    overlayBackdrop2 = [(CRLiOSVibrantBackdropView *)self overlayBackdrop];
+    [(CRLiOSVibrantBackdropView *)self p_constrainToSuperview:overlayBackdrop2];
 
-    v13 = [(CRLiOSVibrantBackdropView *)self scrimBackdrop];
-    [(CRLiOSVibrantBackdropView *)self addSubview:v13];
+    scrimBackdrop = [(CRLiOSVibrantBackdropView *)self scrimBackdrop];
+    [(CRLiOSVibrantBackdropView *)self addSubview:scrimBackdrop];
 
-    v14 = [(CRLiOSVibrantBackdropView *)self scrimBackdrop];
-    [(CRLiOSVibrantBackdropView *)self p_constrainToSuperview:v14];
+    scrimBackdrop2 = [(CRLiOSVibrantBackdropView *)self scrimBackdrop];
+    [(CRLiOSVibrantBackdropView *)self p_constrainToSuperview:scrimBackdrop2];
 
     [(CRLiOSVibrantBackdropView *)self setVisualEffectView:v7];
   }
@@ -237,125 +237,125 @@
   else
   {
     [(CRLiOSVibrantBackdropView *)self setUnableToFindBlurEffect:v3 == 2];
-    v15 = [(CRLiOSVibrantBackdropView *)self baseBackdrop];
-    [(CRLiOSVibrantBackdropView *)self addSubview:v15];
+    baseBackdrop3 = [(CRLiOSVibrantBackdropView *)self baseBackdrop];
+    [(CRLiOSVibrantBackdropView *)self addSubview:baseBackdrop3];
 
-    v16 = [(CRLiOSVibrantBackdropView *)self baseBackdrop];
-    [(CRLiOSVibrantBackdropView *)self p_constrainToSuperview:v16];
+    baseBackdrop4 = [(CRLiOSVibrantBackdropView *)self baseBackdrop];
+    [(CRLiOSVibrantBackdropView *)self p_constrainToSuperview:baseBackdrop4];
 
-    v17 = [(CRLiOSVibrantBackdropView *)self overlayBackdrop];
-    [(CRLiOSVibrantBackdropView *)self addSubview:v17];
+    overlayBackdrop3 = [(CRLiOSVibrantBackdropView *)self overlayBackdrop];
+    [(CRLiOSVibrantBackdropView *)self addSubview:overlayBackdrop3];
 
-    v18 = [(CRLiOSVibrantBackdropView *)self overlayBackdrop];
-    [(CRLiOSVibrantBackdropView *)self p_constrainToSuperview:v18];
+    overlayBackdrop4 = [(CRLiOSVibrantBackdropView *)self overlayBackdrop];
+    [(CRLiOSVibrantBackdropView *)self p_constrainToSuperview:overlayBackdrop4];
 
-    v19 = [(CRLiOSVibrantBackdropView *)self scrimBackdrop];
-    [(CRLiOSVibrantBackdropView *)self addSubview:v19];
+    scrimBackdrop3 = [(CRLiOSVibrantBackdropView *)self scrimBackdrop];
+    [(CRLiOSVibrantBackdropView *)self addSubview:scrimBackdrop3];
 
-    v5 = [(CRLiOSVibrantBackdropView *)self scrimBackdrop];
-    [(CRLiOSVibrantBackdropView *)self p_constrainToSuperview:v5];
+    scrimBackdrop4 = [(CRLiOSVibrantBackdropView *)self scrimBackdrop];
+    [(CRLiOSVibrantBackdropView *)self p_constrainToSuperview:scrimBackdrop4];
   }
 
   [(CRLiOSVibrantBackdropView *)self p_configureBackdropsForCurrentEffectiveStyle];
 }
 
-- (int64_t)p_alternateStyleForStyle:(int64_t)a3
+- (int64_t)p_alternateStyleForStyle:(int64_t)style
 {
-  result = a3;
-  if (a3 <= 9)
+  result = style;
+  if (style <= 9)
   {
-    return qword_101466428[a3];
+    return qword_101466428[style];
   }
 
   return result;
 }
 
-- (int64_t)p_selectedStyleForStyle:(int64_t)a3
+- (int64_t)p_selectedStyleForStyle:(int64_t)style
 {
-  result = a3;
-  if (a3 <= 9)
+  result = style;
+  if (style <= 9)
   {
-    return qword_101466478[a3];
+    return qword_101466478[style];
   }
 
   return result;
 }
 
-- (int64_t)p_effectiveStyleForStyle:(int64_t)a3
+- (int64_t)p_effectiveStyleForStyle:(int64_t)style
 {
-  v5 = [(CRLiOSVibrantBackdropView *)self touchedButton];
-  if (v5)
+  touchedButton = [(CRLiOSVibrantBackdropView *)self touchedButton];
+  if (touchedButton)
   {
-    v6 = v5;
-    v7 = [(CRLiOSVibrantBackdropView *)self isInsideTouchedButton];
+    v6 = touchedButton;
+    isInsideTouchedButton = [(CRLiOSVibrantBackdropView *)self isInsideTouchedButton];
 
-    if (v7)
+    if (isInsideTouchedButton)
     {
-      a3 = [(CRLiOSVibrantBackdropView *)self p_alternateStyleForStyle:a3];
+      style = [(CRLiOSVibrantBackdropView *)self p_alternateStyleForStyle:style];
     }
   }
 
   if (self->_selected)
   {
-    a3 = [(CRLiOSVibrantBackdropView *)self p_selectedStyleForStyle:a3];
+    style = [(CRLiOSVibrantBackdropView *)self p_selectedStyleForStyle:style];
   }
 
   if (self->_alwaysUsesBoldActiveStyle || UIAccessibilityDarkerSystemColorsEnabled())
   {
-    v8 = 6;
-    if (a3 != 4)
+    styleCopy = 6;
+    if (style != 4)
     {
-      v8 = a3;
+      styleCopy = style;
     }
 
-    if (a3 == 5)
+    if (style == 5)
     {
       return 7;
     }
 
     else
     {
-      return v8;
+      return styleCopy;
     }
   }
 
-  return a3;
+  return style;
 }
 
-- (int64_t)p_presetColorPairForStyle:(int64_t)a3
+- (int64_t)p_presetColorPairForStyle:(int64_t)style
 {
-  if (a3 <= 9)
+  if (style <= 9)
   {
-    if (((1 << a3) & 0x30) != 0)
+    if (((1 << style) & 0x30) != 0)
     {
-      v4 = [(CRLiOSVibrantBackdropView *)self activeStylePresetPair];
+      activeStylePresetPair = [(CRLiOSVibrantBackdropView *)self activeStylePresetPair];
       goto LABEL_12;
     }
 
-    if (((1 << a3) & 0xC0) != 0)
+    if (((1 << style) & 0xC0) != 0)
     {
-      v4 = [(CRLiOSVibrantBackdropView *)self boldActiveStylePresetPair];
+      activeStylePresetPair = [(CRLiOSVibrantBackdropView *)self boldActiveStylePresetPair];
       goto LABEL_12;
     }
 
-    if (((1 << a3) & 0x300) != 0)
+    if (((1 << style) & 0x300) != 0)
     {
-      v4 = [(CRLiOSVibrantBackdropView *)self noneStylePresetPair];
+      activeStylePresetPair = [(CRLiOSVibrantBackdropView *)self noneStylePresetPair];
 LABEL_12:
-      v5 = v4;
+      v5 = activeStylePresetPair;
       goto LABEL_13;
     }
   }
 
-  if ((a3 - 2) < 2)
+  if ((style - 2) < 2)
   {
-    v4 = [(CRLiOSVibrantBackdropView *)self highContrastStylePresetPair];
+    activeStylePresetPair = [(CRLiOSVibrantBackdropView *)self highContrastStylePresetPair];
     goto LABEL_12;
   }
 
-  if (a3 <= 1)
+  if (style <= 1)
   {
-    v4 = [(CRLiOSVibrantBackdropView *)self normalStylePresetPair];
+    activeStylePresetPair = [(CRLiOSVibrantBackdropView *)self normalStylePresetPair];
     goto LABEL_12;
   }
 
@@ -372,73 +372,73 @@ LABEL_13:
   }
 }
 
-- (void)p_configureBackdropsWithCorners:(int64_t)a3 radius:(double)a4 presetPair:(int64_t)a5
+- (void)p_configureBackdropsWithCorners:(int64_t)corners radius:(double)radius presetPair:(int64_t)pair
 {
-  v9 = a5;
-  v10 = a5 == 2;
-  v11 = [(CRLiOSVibrantBackdropView *)self visualEffectView];
+  pairCopy = pair;
+  v10 = pair == 2;
+  visualEffectView = [(CRLiOSVibrantBackdropView *)self visualEffectView];
 
-  if (((v10 ^ (v11 == 0)) & 1) == 0)
+  if (((v10 ^ (visualEffectView == 0)) & 1) == 0)
   {
     [(CRLiOSVibrantBackdropView *)self p_resetSubviewHierarchy];
     [(CRLiOSVibrantBackdropView *)self p_setupSubviewHierarchy];
   }
 
-  v12 = [(CRLiOSVibrantBackdropView *)self baseBackdrop];
-  v13 = v12;
-  if (v9)
+  baseBackdrop = [(CRLiOSVibrantBackdropView *)self baseBackdrop];
+  v13 = baseBackdrop;
+  if (pairCopy)
   {
-    [v12 setHidden:0];
+    [baseBackdrop setHidden:0];
 
     v13 = +[CRLiOSVisualEffectHelper sharedHelper];
-    v14 = [(CRLiOSVibrantBackdropView *)self baseBackdrop];
-    v15 = [v14 layer];
-    v16 = [(CRLiOSVibrantBackdropView *)self traitCollection];
-    [v13 configureBackdropLayer:v15 radius:a3 corners:v9 colorPreset:v16 forTraitCollection:a4];
+    baseBackdrop2 = [(CRLiOSVibrantBackdropView *)self baseBackdrop];
+    layer = [baseBackdrop2 layer];
+    traitCollection = [(CRLiOSVibrantBackdropView *)self traitCollection];
+    [v13 configureBackdropLayer:layer radius:corners corners:pairCopy colorPreset:traitCollection forTraitCollection:radius];
   }
 
   else
   {
-    [v12 setHidden:1];
+    [baseBackdrop setHidden:1];
   }
 
-  v17 = [(CRLiOSVibrantBackdropView *)self overlayBackdrop];
-  v18 = v17;
-  if (a5 >= 0x10000)
+  overlayBackdrop = [(CRLiOSVibrantBackdropView *)self overlayBackdrop];
+  v18 = overlayBackdrop;
+  if (pair >= 0x10000)
   {
-    [v17 setHidden:0];
+    [overlayBackdrop setHidden:0];
 
     v18 = +[CRLiOSVisualEffectHelper sharedHelper];
-    v19 = [(CRLiOSVibrantBackdropView *)self overlayBackdrop];
-    v20 = [v19 layer];
-    v21 = [(CRLiOSVibrantBackdropView *)self traitCollection];
-    [v18 configureBackdropLayer:v20 radius:a3 corners:a5 >> 16 colorPreset:v21 forTraitCollection:a4];
+    overlayBackdrop2 = [(CRLiOSVibrantBackdropView *)self overlayBackdrop];
+    layer2 = [overlayBackdrop2 layer];
+    traitCollection2 = [(CRLiOSVibrantBackdropView *)self traitCollection];
+    [v18 configureBackdropLayer:layer2 radius:corners corners:pair >> 16 colorPreset:traitCollection2 forTraitCollection:radius];
   }
 
   else
   {
-    [v17 setHidden:1];
+    [overlayBackdrop setHidden:1];
   }
 
   v25 = +[CRLiOSVisualEffectHelper sharedHelper];
-  v22 = [(CRLiOSVibrantBackdropView *)self scrimBackdrop];
-  v23 = [v22 layer];
+  scrimBackdrop = [(CRLiOSVibrantBackdropView *)self scrimBackdrop];
+  layer3 = [scrimBackdrop layer];
   if (self->_touchOverlayRoundsAllCorners)
   {
-    a3 = 5;
+    corners = 5;
   }
 
-  v24 = [(CRLiOSVibrantBackdropView *)self traitCollection];
-  [v25 configureBackdropLayer:v23 radius:a3 corners:7 colorPreset:v24 forTraitCollection:a4];
+  traitCollection3 = [(CRLiOSVibrantBackdropView *)self traitCollection];
+  [v25 configureBackdropLayer:layer3 radius:corners corners:7 colorPreset:traitCollection3 forTraitCollection:radius];
 }
 
 - (void)p_configureBackdropsForCurrentEffectiveStyle
 {
   v3 = [(CRLiOSVibrantBackdropView *)self p_presetColorPairForStyle:[(CRLiOSVibrantBackdropView *)self p_effectiveStyleForStyle:[(CRLiOSVibrantBackdropView *)self style]]];
-  v4 = [(CRLiOSVibrantBackdropView *)self roundedCorners];
+  roundedCorners = [(CRLiOSVibrantBackdropView *)self roundedCorners];
   [(CRLiOSVibrantBackdropView *)self cornerRadius];
 
-  [(CRLiOSVibrantBackdropView *)self p_configureBackdropsWithCorners:v4 radius:v3 presetPair:?];
+  [(CRLiOSVibrantBackdropView *)self p_configureBackdropsWithCorners:roundedCorners radius:v3 presetPair:?];
 }
 
 - (void)p_didChangeColorPresets
@@ -450,48 +450,48 @@ LABEL_13:
   }
 }
 
-- (void)p_constrainToSuperview:(id)a3
+- (void)p_constrainToSuperview:(id)superview
 {
-  v16 = a3;
-  v3 = [v16 superview];
-  if (v3)
+  superviewCopy = superview;
+  superview = [superviewCopy superview];
+  if (superview)
   {
-    v4 = [v16 leadingAnchor];
-    v5 = [v3 leadingAnchor];
-    v6 = [v4 constraintEqualToAnchor:v5];
+    leadingAnchor = [superviewCopy leadingAnchor];
+    leadingAnchor2 = [superview leadingAnchor];
+    v6 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v6 setActive:1];
 
-    v7 = [v16 topAnchor];
-    v8 = [v3 topAnchor];
-    v9 = [v7 constraintEqualToAnchor:v8];
+    topAnchor = [superviewCopy topAnchor];
+    topAnchor2 = [superview topAnchor];
+    v9 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v9 setActive:1];
 
-    v10 = [v16 trailingAnchor];
-    v11 = [v3 trailingAnchor];
-    v12 = [v10 constraintEqualToAnchor:v11];
+    trailingAnchor = [superviewCopy trailingAnchor];
+    trailingAnchor2 = [superview trailingAnchor];
+    v12 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [v12 setActive:1];
 
-    v13 = [v16 bottomAnchor];
-    v14 = [v3 bottomAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
+    bottomAnchor = [superviewCopy bottomAnchor];
+    bottomAnchor2 = [superview bottomAnchor];
+    v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [v15 setActive:1];
   }
 }
 
-- (void)p_buttonTouchDown:(id)a3
+- (void)p_buttonTouchDown:(id)down
 {
-  [(CRLiOSVibrantBackdropView *)self setTouchedButton:a3];
+  [(CRLiOSVibrantBackdropView *)self setTouchedButton:down];
   [(CRLiOSVibrantBackdropView *)self setIsInsideTouchedButton:1];
 
   [(CRLiOSVibrantBackdropView *)self p_configureBackdropsForCurrentEffectiveStyle];
 }
 
-- (void)p_buttonDragEnter:(id)a3
+- (void)p_buttonDragEnter:(id)enter
 {
-  v4 = a3;
-  v5 = [(CRLiOSVibrantBackdropView *)self touchedButton];
+  enterCopy = enter;
+  touchedButton = [(CRLiOSVibrantBackdropView *)self touchedButton];
 
-  if (v5 == v4)
+  if (touchedButton == enterCopy)
   {
     [(CRLiOSVibrantBackdropView *)self setIsInsideTouchedButton:1];
 
@@ -499,12 +499,12 @@ LABEL_13:
   }
 }
 
-- (void)p_buttonDragExit:(id)a3
+- (void)p_buttonDragExit:(id)exit
 {
-  v4 = a3;
-  v5 = [(CRLiOSVibrantBackdropView *)self touchedButton];
+  exitCopy = exit;
+  touchedButton = [(CRLiOSVibrantBackdropView *)self touchedButton];
 
-  if (v5 == v4)
+  if (touchedButton == exitCopy)
   {
     [(CRLiOSVibrantBackdropView *)self setIsInsideTouchedButton:0];
 
@@ -512,7 +512,7 @@ LABEL_13:
   }
 }
 
-- (void)p_buttonTouchCancel:(id)a3
+- (void)p_buttonTouchCancel:(id)cancel
 {
   [(CRLiOSVibrantBackdropView *)self setTouchedButton:0];
   [(CRLiOSVibrantBackdropView *)self setIsInsideTouchedButton:0];
@@ -520,124 +520,124 @@ LABEL_13:
   [(CRLiOSVibrantBackdropView *)self p_configureBackdropsForCurrentEffectiveStyle];
 }
 
-- (void)setRoundedCorners:(int64_t)a3
+- (void)setRoundedCorners:(int64_t)corners
 {
-  if (self->_roundedCorners != a3)
+  if (self->_roundedCorners != corners)
   {
-    self->_roundedCorners = a3;
+    self->_roundedCorners = corners;
     [(CRLiOSVibrantBackdropView *)self p_configureBackdropsForCurrentEffectiveStyle];
   }
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  if (self->_cornerRadius != a3)
+  if (self->_cornerRadius != radius)
   {
-    self->_cornerRadius = a3;
+    self->_cornerRadius = radius;
     [(CRLiOSVibrantBackdropView *)self p_configureBackdropsForCurrentEffectiveStyle];
   }
 }
 
-- (void)setStyle:(int64_t)a3
+- (void)setStyle:(int64_t)style
 {
-  if (self->_style != a3)
+  if (self->_style != style)
   {
-    self->_style = a3;
+    self->_style = style;
     [(CRLiOSVibrantBackdropView *)self p_configureBackdropsForCurrentEffectiveStyle];
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  if (self->_selected != a3)
+  if (self->_selected != selected)
   {
-    self->_selected = a3;
+    self->_selected = selected;
     [(CRLiOSVibrantBackdropView *)self p_configureBackdropsForCurrentEffectiveStyle];
   }
 }
 
-- (void)setAlwaysUsesBoldActiveStyle:(BOOL)a3
+- (void)setAlwaysUsesBoldActiveStyle:(BOOL)style
 {
-  if (self->_alwaysUsesBoldActiveStyle != a3)
+  if (self->_alwaysUsesBoldActiveStyle != style)
   {
-    self->_alwaysUsesBoldActiveStyle = a3;
+    self->_alwaysUsesBoldActiveStyle = style;
     [(CRLiOSVibrantBackdropView *)self p_configureBackdropsForCurrentEffectiveStyle];
   }
 }
 
-- (void)setTouchOverlayRoundsAllCorners:(BOOL)a3
+- (void)setTouchOverlayRoundsAllCorners:(BOOL)corners
 {
-  if (self->_touchOverlayRoundsAllCorners != a3)
+  if (self->_touchOverlayRoundsAllCorners != corners)
   {
-    self->_touchOverlayRoundsAllCorners = a3;
+    self->_touchOverlayRoundsAllCorners = corners;
   }
 
   [(CRLiOSVibrantBackdropView *)self p_configureBackdropsForCurrentEffectiveStyle];
 }
 
-- (void)linkStyleWithHighlightedStateOfButton:(id)a3
+- (void)linkStyleWithHighlightedStateOfButton:(id)button
 {
-  v4 = a3;
-  [v4 addTarget:self action:"p_buttonTouchDown:" forControlEvents:1];
-  [v4 addTarget:self action:"p_buttonDragEnter:" forControlEvents:16];
-  [v4 addTarget:self action:"p_buttonDragExit:" forControlEvents:32];
-  [v4 addTarget:self action:"p_buttonTouchCancel:" forControlEvents:256];
-  [v4 addTarget:self action:"p_buttonTouchCancel:" forControlEvents:64];
-  [v4 addTarget:self action:"p_buttonTouchCancel:" forControlEvents:128];
+  buttonCopy = button;
+  [buttonCopy addTarget:self action:"p_buttonTouchDown:" forControlEvents:1];
+  [buttonCopy addTarget:self action:"p_buttonDragEnter:" forControlEvents:16];
+  [buttonCopy addTarget:self action:"p_buttonDragExit:" forControlEvents:32];
+  [buttonCopy addTarget:self action:"p_buttonTouchCancel:" forControlEvents:256];
+  [buttonCopy addTarget:self action:"p_buttonTouchCancel:" forControlEvents:64];
+  [buttonCopy addTarget:self action:"p_buttonTouchCancel:" forControlEvents:128];
 }
 
-- (void)unlinkStyleWithHighlightedStateOfButton:(id)a3
+- (void)unlinkStyleWithHighlightedStateOfButton:(id)button
 {
-  v4 = a3;
-  [v4 removeTarget:self action:"p_buttonTouchDown:" forControlEvents:1];
-  [v4 removeTarget:self action:"p_buttonDragEnter:" forControlEvents:16];
-  [v4 removeTarget:self action:"p_buttonDragExit:" forControlEvents:32];
-  [v4 removeTarget:self action:"p_buttonTouchCancel:" forControlEvents:256];
-  [v4 removeTarget:self action:"p_buttonTouchCancel:" forControlEvents:64];
-  [v4 removeTarget:self action:"p_buttonTouchCancel:" forControlEvents:128];
+  buttonCopy = button;
+  [buttonCopy removeTarget:self action:"p_buttonTouchDown:" forControlEvents:1];
+  [buttonCopy removeTarget:self action:"p_buttonDragEnter:" forControlEvents:16];
+  [buttonCopy removeTarget:self action:"p_buttonDragExit:" forControlEvents:32];
+  [buttonCopy removeTarget:self action:"p_buttonTouchCancel:" forControlEvents:256];
+  [buttonCopy removeTarget:self action:"p_buttonTouchCancel:" forControlEvents:64];
+  [buttonCopy removeTarget:self action:"p_buttonTouchCancel:" forControlEvents:128];
 }
 
-- (void)setNormalStylePresetPair:(int64_t)a3
+- (void)setNormalStylePresetPair:(int64_t)pair
 {
-  if (self->_normalStylePresetPair != a3)
+  if (self->_normalStylePresetPair != pair)
   {
-    self->_normalStylePresetPair = a3;
+    self->_normalStylePresetPair = pair;
     [(CRLiOSVibrantBackdropView *)self p_didChangeColorPresets];
   }
 }
 
-- (void)setHighContrastStylePresetPair:(int64_t)a3
+- (void)setHighContrastStylePresetPair:(int64_t)pair
 {
-  if (self->_highContrastStylePresetPair != a3)
+  if (self->_highContrastStylePresetPair != pair)
   {
-    self->_highContrastStylePresetPair = a3;
+    self->_highContrastStylePresetPair = pair;
     [(CRLiOSVibrantBackdropView *)self p_didChangeColorPresets];
   }
 }
 
-- (void)setActiveStylePresetPair:(int64_t)a3
+- (void)setActiveStylePresetPair:(int64_t)pair
 {
-  if (self->_activeStylePresetPair != a3)
+  if (self->_activeStylePresetPair != pair)
   {
-    self->_activeStylePresetPair = a3;
+    self->_activeStylePresetPair = pair;
     [(CRLiOSVibrantBackdropView *)self p_didChangeColorPresets];
   }
 }
 
-- (void)setBoldActiveStylePresetPair:(int64_t)a3
+- (void)setBoldActiveStylePresetPair:(int64_t)pair
 {
-  if (self->_boldActiveStylePresetPair != a3)
+  if (self->_boldActiveStylePresetPair != pair)
   {
-    self->_boldActiveStylePresetPair = a3;
+    self->_boldActiveStylePresetPair = pair;
     [(CRLiOSVibrantBackdropView *)self p_didChangeColorPresets];
   }
 }
 
-- (void)setNoneStylePresetPair:(int64_t)a3
+- (void)setNoneStylePresetPair:(int64_t)pair
 {
-  if (self->_noneStylePresetPair != a3)
+  if (self->_noneStylePresetPair != pair)
   {
-    self->_noneStylePresetPair = a3;
+    self->_noneStylePresetPair = pair;
     [(CRLiOSVibrantBackdropView *)self p_didChangeColorPresets];
   }
 }

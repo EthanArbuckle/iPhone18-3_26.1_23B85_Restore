@@ -1,7 +1,7 @@
 @interface HealthActivityCacheDaemonPlugin
 - (HealthActivityCacheDaemonPlugin)init;
-- (id)extensionForHealthDaemon:(id)a3;
-- (id)extensionForProfile:(id)a3;
+- (id)extensionForHealthDaemon:(id)daemon;
+- (id)extensionForProfile:(id)profile;
 - (id)taskServerClasses;
 @end
 
@@ -22,20 +22,20 @@
   return [(HealthActivityCacheDaemonPlugin *)&v5 init];
 }
 
-- (id)extensionForHealthDaemon:(id)a3
+- (id)extensionForHealthDaemon:(id)daemon
 {
-  v3 = a3;
-  v4 = [[HDHealthActivityCachePluginDaemonExtension alloc] initWithDaemon:v3];
+  daemonCopy = daemon;
+  v4 = [[HDHealthActivityCachePluginDaemonExtension alloc] initWithDaemon:daemonCopy];
 
   return v4;
 }
 
-- (id)extensionForProfile:(id)a3
+- (id)extensionForProfile:(id)profile
 {
-  v3 = a3;
-  if ([v3 profileType] == &def_21990 + 1)
+  profileCopy = profile;
+  if ([profileCopy profileType] == &def_21990 + 1)
   {
-    v4 = [[HealthActivityCacheProfileExtension alloc] initWithProfile:v3];
+    v4 = [[HealthActivityCacheProfileExtension alloc] initWithProfile:profileCopy];
   }
 
   else

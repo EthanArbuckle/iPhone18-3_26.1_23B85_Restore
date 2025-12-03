@@ -1,10 +1,10 @@
 @interface TSCEFormulaRewriteSpec
-- (BOOL)adjustViewTractRef:(id)a3 calcEngine:(id)a4 containingCellRef:(const TSCECellRef *)a5 undoTractList:(id *)a6;
-- (BOOL)isForTable:(const TSKUIDStruct *)a3;
-- (TSCECellRef)flattenedCellRefForCategoryRef:(SEL)a3 calcEngine:(id)a4;
-- (TSCECellRef)originalCellRefForUpdatedCellRef:(SEL)a3;
-- (TSCECellRef)updatedCellRefForOriginalCellRef:(SEL)a3;
-- (TSCEFormulaRewriteSpec)initWithRewriteType:(unsigned int)a3;
+- (BOOL)adjustViewTractRef:(id)ref calcEngine:(id)engine containingCellRef:(const TSCECellRef *)cellRef undoTractList:(id *)list;
+- (BOOL)isForTable:(const TSKUIDStruct *)table;
+- (TSCECellRef)flattenedCellRefForCategoryRef:(SEL)ref calcEngine:(id)engine;
+- (TSCECellRef)originalCellRefForUpdatedCellRef:(SEL)ref;
+- (TSCECellRef)updatedCellRefForOriginalCellRef:(SEL)ref;
+- (TSCEFormulaRewriteSpec)initWithRewriteType:(unsigned int)type;
 - (TSCERangeCoordinate)affectedRange;
 - (TSKUIDStruct)affectedConditionalStyleOwnerUID;
 - (TSKUIDStruct)affectedOwnerUID;
@@ -15,36 +15,36 @@
 - (TSKUIDStruct)insertOppositeUid;
 - (TSKUIDStruct)tableUID;
 - (TSKUIDStructVectorTemplate<TSKUIDStruct>)expandedRowColumnUuids;
-- (TSUCellRect)mergeRangeAtOriginalCellRef:(const TSCECellRef *)a3;
-- (TSUCellRect)tableRangeForTable:(const TSKUIDStruct *)a3 calcEngine:(id)a4;
+- (TSUCellRect)mergeRangeAtOriginalCellRef:(const TSCECellRef *)ref;
+- (TSUCellRect)tableRangeForTable:(const TSKUIDStruct *)table calcEngine:(id)engine;
 - (id).cxx_construct;
-- (id)amendRewriteWithCalcEngine:(id)a3;
-- (id)coordMapperForTableUID:(const TSKUIDStruct *)a3 calcEngine:(id)a4;
+- (id)amendRewriteWithCalcEngine:(id)engine;
+- (id)coordMapperForTableUID:(const TSKUIDStruct *)d calcEngine:(id)engine;
 - (id)description;
-- (id)prepareToRewriteWithCalcEngine:(id)a3;
-- (id)restoreViewTractRefFromUndoTractList:(id)a3 calcEngine:(id)a4 containingCellRef:(const TSCECellRef *)a5;
+- (id)prepareToRewriteWithCalcEngine:(id)engine;
+- (id)restoreViewTractRefFromUndoTractList:(id)list calcEngine:(id)engine containingCellRef:(const TSCECellRef *)ref;
 - (unordered_set<TSKUIDStruct,)affectedOwnerUIDs;
-- (void)addCoordMapper:(id)a3;
-- (void)addNestedRewrite:(id)a3;
+- (void)addCoordMapper:(id)mapper;
+- (void)addNestedRewrite:(id)rewrite;
 - (void)clearTableIndexes;
-- (void)didModifySrcTable:(id)a3 dstTable:(id)a4;
-- (void)didModifyTable:(id)a3;
-- (void)didModifyTable:(id)a3 calcEngine:(id)a4;
-- (void)loadMergeRangesContainingFormulasInTable:(id)a3 calcEngine:(id)a4;
-- (void)willModifySrcTable:(id)a3 srcUidResolver:(id)a4 dstTable:(id)a5 dstUidResolver:(id)a6;
-- (void)willModifyTable:(id)a3 uidResolver:(id)a4 calcEngine:(id)a5;
+- (void)didModifySrcTable:(id)table dstTable:(id)dstTable;
+- (void)didModifyTable:(id)table;
+- (void)didModifyTable:(id)table calcEngine:(id)engine;
+- (void)loadMergeRangesContainingFormulasInTable:(id)table calcEngine:(id)engine;
+- (void)willModifySrcTable:(id)table srcUidResolver:(id)resolver dstTable:(id)dstTable dstUidResolver:(id)uidResolver;
+- (void)willModifyTable:(id)table uidResolver:(id)resolver calcEngine:(id)engine;
 @end
 
 @implementation TSCEFormulaRewriteSpec
 
-- (TSCEFormulaRewriteSpec)initWithRewriteType:(unsigned int)a3
+- (TSCEFormulaRewriteSpec)initWithRewriteType:(unsigned int)type
 {
   v5.receiver = self;
   v5.super_class = TSCEFormulaRewriteSpec;
   result = [(TSCEFormulaRewriteSpec *)&v5 init];
   if (result)
   {
-    result->_rewriteType = a3;
+    result->_rewriteType = type;
     result->_coordMappersLock._os_unfair_lock_opaque = 0;
     __dmb(0xBu);
     result->_tableUID = 0u;
@@ -75,16 +75,16 @@
   return result;
 }
 
-- (id)coordMapperForTableUID:(const TSKUIDStruct *)a3 calcEngine:(id)a4
+- (id)coordMapperForTableUID:(const TSKUIDStruct *)d calcEngine:(id)engine
 {
-  v10 = a4;
-  if (*a3 == 0)
+  engineCopy = engine;
+  if (*d == 0)
   {
     v18 = 0;
     goto LABEL_19;
   }
 
-  v37 = *a3;
+  v37 = *d;
   if (v37._lower == objc_msgSend_conditionalStyleOwnerUID(self, v6, v7, v8, v9) && v37._upper == v11)
   {
     v37._lower = objc_msgSend_tableUID(self, v11, v12, v13, v14);
@@ -96,7 +96,7 @@
   if (!v17)
   {
     os_unfair_lock_unlock(&self->_coordMappersLock);
-    if (v10)
+    if (engineCopy)
     {
       goto LABEL_11;
     }
@@ -113,13 +113,13 @@ LABEL_16:
     goto LABEL_19;
   }
 
-  if (!v10)
+  if (!engineCopy)
   {
     goto LABEL_16;
   }
 
 LABEL_11:
-  v22 = objc_msgSend_tableOrLinkedResolverForTableUID_(v10, v19, &v37, v20, v21);
+  v22 = objc_msgSend_tableOrLinkedResolverForTableUID_(engineCopy, v19, &v37, v20, v21);
   v27 = v22;
   if (v22)
   {
@@ -142,22 +142,22 @@ LABEL_19:
   return v18;
 }
 
-- (void)addCoordMapper:(id)a3
+- (void)addCoordMapper:(id)mapper
 {
-  v5 = a3;
-  if (v5)
+  mapperCopy = mapper;
+  if (mapperCopy)
   {
     os_unfair_lock_lock(&self->_coordMappersLock);
-    v10 = objc_msgSend_tableUID(v5, v6, v7, v8, v9);
+    v10 = objc_msgSend_tableUID(mapperCopy, v6, v7, v8, v9);
     v11 = sub_2210875C4(&self->_coordMappersByTableUID.__table_.__bucket_list_.__ptr_, v10);
     if (v11)
     {
-      if (v11[4] != v5)
+      if (v11[4] != mapperCopy)
       {
         v16 = MEMORY[0x277D81150];
         v17 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v12, "[TSCEFormulaRewriteSpec addCoordMapper:]", v14, v15);
         v21 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v18, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/calculationEngine/TSCEFormulaRewriteSpec.mm", v19, v20);
-        v26 = objc_msgSend_tableUID(v5, v22, v23, v24, v25);
+        v26 = objc_msgSend_tableUID(mapperCopy, v22, v23, v24, v25);
         v27 = TSKUIDStruct::description(v26);
         objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v16, v28, v17, v21, 178, 0, "Replacing same tableUID with a different coordMapper - expect trouble: %@", v27);
 
@@ -167,9 +167,9 @@ LABEL_19:
 
     else
     {
-      v34 = objc_msgSend_tableUID(v5, v12, v13, v14, v15);
+      v34 = objc_msgSend_tableUID(mapperCopy, v12, v13, v14, v15);
       v33 = sub_221244808(&self->_coordMappersByTableUID.__table_.__bucket_list_.__ptr_, v34);
-      objc_storeStrong(v33 + 4, a3);
+      objc_storeStrong(v33 + 4, mapper);
     }
 
     os_unfair_lock_unlock(&self->_coordMappersLock);
@@ -279,7 +279,7 @@ LABEL_8:
 
 - (unordered_set<TSKUIDStruct,)affectedOwnerUIDs
 {
-  v6 = self;
+  selfCopy = self;
   retstr->__table_.__bucket_list_ = 0u;
   *&retstr->__table_.__first_node_.__next_ = 0u;
   retstr->__table_.__max_load_factor_ = 1.0;
@@ -297,7 +297,7 @@ LABEL_14:
       v17 = objc_msgSend_srcTableUID(self[2].__table_.__size_, a3, v3, v4, v5);
       v18 = v10;
       sub_2211D6484(retstr, &v17);
-      v17 = objc_msgSend_dstTableUID(v6[2].__table_.__size_, v11, v12, v13, v14);
+      v17 = objc_msgSend_dstTableUID(selfCopy[2].__table_.__size_, v11, v12, v13, v14);
       v18 = v15;
       return sub_2211D6484(retstr, &v17);
     }
@@ -384,26 +384,26 @@ LABEL_8:
   return result;
 }
 
-- (BOOL)isForTable:(const TSKUIDStruct *)a3
+- (BOOL)isForTable:(const TSKUIDStruct *)table
 {
-  lower = a3->_lower;
-  if (a3->_lower == self->_tableUID._lower && a3->_upper == self->_tableUID._upper || lower == self->_conditionalStyleOwnerUID._lower && a3->_upper == self->_conditionalStyleOwnerUID._upper)
+  lower = table->_lower;
+  if (table->_lower == self->_tableUID._lower && table->_upper == self->_tableUID._upper || lower == self->_conditionalStyleOwnerUID._lower && table->_upper == self->_conditionalStyleOwnerUID._upper)
   {
     return 1;
   }
 
   if (lower == self->_groupByUID._lower)
   {
-    return a3->_upper == self->_groupByUID._upper;
+    return table->_upper == self->_groupByUID._upper;
   }
 
   return 0;
 }
 
-- (TSUCellRect)tableRangeForTable:(const TSKUIDStruct *)a3 calcEngine:(id)a4
+- (TSUCellRect)tableRangeForTable:(const TSKUIDStruct *)table calcEngine:(id)engine
 {
-  v9 = a4;
-  if (*a3 == *&self->_tableUID || a3->_lower == self->_conditionalStyleOwnerUID._lower && a3->_upper == self->_conditionalStyleOwnerUID._upper)
+  engineCopy = engine;
+  if (*table == *&self->_tableUID || table->_lower == self->_conditionalStyleOwnerUID._lower && table->_upper == self->_conditionalStyleOwnerUID._upper)
   {
     if (TSUCellRect::isValid(&self->_tableRange))
     {
@@ -420,7 +420,7 @@ LABEL_8:
     v12 = 0;
   }
 
-  v13 = objc_msgSend_tableOrLinkedResolverForTableUID_(v9, v6, a3, v7, v8);
+  v13 = objc_msgSend_tableOrLinkedResolverForTableUID_(engineCopy, v6, table, v7, v8);
   v18 = v13;
   if (v13)
   {
@@ -450,9 +450,9 @@ LABEL_13:
   return result;
 }
 
-- (TSCECellRef)updatedCellRefForOriginalCellRef:(SEL)a3
+- (TSCECellRef)updatedCellRefForOriginalCellRef:(SEL)ref
 {
-  v7 = self;
+  selfCopy = self;
   lower = a4->_tableUID._lower;
   upper = a4->_tableUID._upper;
   v206 = lower;
@@ -469,13 +469,13 @@ LABEL_13:
       {
         if (v12 == 9)
         {
-          self = objc_msgSend_isForTable_(self, a3, &v206, v4, v5);
+          self = objc_msgSend_isForTable_(self, ref, &v206, v4, v5);
           if (!self)
           {
             return self;
           }
 
-          v181 = objc_msgSend_mergeOriginsMap(*&v7[5].coordinate, v177, v178, v179, v180);
+          v181 = objc_msgSend_mergeOriginsMap(*&selfCopy[5].coordinate, v177, v178, v179, v180);
           self = sub_221244A70(v181, &coordinate);
           if (!self)
           {
@@ -492,7 +492,7 @@ LABEL_13:
             return self;
           }
 
-          self = objc_msgSend_isForTable_(self, a3, &v206, v4, v5);
+          self = objc_msgSend_isForTable_(self, ref, &v206, v4, v5);
           if (!self)
           {
             return self;
@@ -505,13 +505,13 @@ LABEL_13:
         return self;
       }
 
-      self = objc_msgSend_isForTable_(self, a3, &v206, v4, v5);
+      self = objc_msgSend_isForTable_(self, ref, &v206, v4, v5);
       if (!self)
       {
         return self;
       }
 
-      v14 = v7[4]._tableUID._upper;
+      v14 = selfCopy[4]._tableUID._upper;
       v80 = objc_msgSend_mergeRegion(v14, v146, v147, v148, v149);
       v154 = objc_msgSend_mergeSource(v14, v150, v151, v152, v153);
       if (*v154 != 0x7FFFFFFF && (*v154 & 0xFFFF00000000) != 0x7FFF00000000)
@@ -547,16 +547,16 @@ LABEL_13:
     }
 
 LABEL_34:
-    if (lower != objc_msgSend_srcTableUID(self[4]._tableUID._lower, a3, a4, v4, v5) || upper != v70)
+    if (lower != objc_msgSend_srcTableUID(self[4]._tableUID._lower, ref, a4, v4, v5) || upper != v70)
     {
-      self = objc_msgSend_srcCondStyleOwnerUID(v7[4]._tableUID._lower, v70, v71, v72, v73);
+      self = objc_msgSend_srcCondStyleOwnerUID(selfCopy[4]._tableUID._lower, v70, v71, v72, v73);
       if (lower != self || upper != v75)
       {
         return self;
       }
     }
 
-    v14 = v7[4]._tableUID._lower;
+    v14 = selfCopy[4]._tableUID._lower;
     v80 = objc_msgSend_srcColumnUids(v14, v76, v77, v78, v79);
     if (objc_msgSend_containsIndex_(v80, v81, WORD2(v11), v82, v83))
     {
@@ -611,14 +611,14 @@ LABEL_78:
   {
     if (v12 != 6)
     {
-      self = objc_msgSend_isForTable_(self, a3, &v206, v4, v5);
+      self = objc_msgSend_isForTable_(self, ref, &v206, v4, v5);
       if (!self)
       {
         return self;
       }
 
-      v14 = objc_msgSend_mergeRegion(v7[4]._tableUID._upper, v39, v40, v41, v42);
-      v51 = *objc_msgSend_mergeSource(v7[4]._tableUID._upper, v43, v44, v45, v46);
+      v14 = objc_msgSend_mergeRegion(selfCopy[4]._tableUID._upper, v39, v40, v41, v42);
+      v51 = *objc_msgSend_mergeSource(selfCopy[4]._tableUID._upper, v43, v44, v45, v46);
       if (v51 == 0x7FFFFFFF || (v51 & 0xFFFF00000000) == 0x7FFF00000000)
       {
         v51 = objc_msgSend_topLeftCellCoord(v14, v47, v48, v49, v50);
@@ -664,13 +664,13 @@ LABEL_78:
     }
 
 LABEL_14:
-    self = objc_msgSend_isForTable_(*&self[4].coordinate, a3, &v206, v4, v5);
+    self = objc_msgSend_isForTable_(*&self[4].coordinate, ref, &v206, v4, v5);
     if (!self)
     {
       return self;
     }
 
-    v14 = *&v7[4].coordinate;
+    v14 = *&selfCopy[4].coordinate;
     if (objc_msgSend_isRows(v14, v15, v16, v17, v18))
     {
       v11 = v11;
@@ -712,11 +712,11 @@ LABEL_14:
 
     else
     {
-      v182 = v7[4].coordinate;
+      v182 = selfCopy[4].coordinate;
       if (v182)
       {
         objc_msgSend_updatedCellRefForRewriteType_originalCellRef_(v182, v22, 2, a4, v25);
-        objc_msgSend_auxRowColumnInfo(*&v7[4].coordinate, v183, v184, v185, v186);
+        objc_msgSend_auxRowColumnInfo(*&selfCopy[4].coordinate, v183, v184, v185, v186);
       }
 
       else
@@ -745,13 +745,13 @@ LABEL_14:
     goto LABEL_78;
   }
 
-  self = objc_msgSend_isForTable_(*&self[4].coordinate, a3, &v206, v4, v5);
+  self = objc_msgSend_isForTable_(*&self[4].coordinate, ref, &v206, v4, v5);
   if (self)
   {
-    self = v7[4].coordinate;
+    self = selfCopy[4].coordinate;
     if (self)
     {
-      self = objc_msgSend_updatedCellRefForRewriteType_originalCellRef_(self, v144, LODWORD(v7->_tableUID._lower), a4, v145);
+      self = objc_msgSend_updatedCellRefForRewriteType_originalCellRef_(self, v144, LODWORD(selfCopy->_tableUID._lower), a4, v145);
     }
 
     else
@@ -767,9 +767,9 @@ LABEL_14:
   return self;
 }
 
-- (TSCECellRef)originalCellRefForUpdatedCellRef:(SEL)a3
+- (TSCECellRef)originalCellRefForUpdatedCellRef:(SEL)ref
 {
-  v7 = self;
+  selfCopy = self;
   coordinate = a4->coordinate;
   v9 = coordinate;
   tableUID = a4->_tableUID;
@@ -783,13 +783,13 @@ LABEL_14:
       {
         if (lower == 9)
         {
-          self = objc_msgSend_isForTable_(self, a3, &tableUID, v4, v5);
+          self = objc_msgSend_isForTable_(self, ref, &tableUID, v4, v5);
           if (!self)
           {
             return self;
           }
 
-          v11 = *&v7[5].coordinate;
+          v11 = *&selfCopy[5].coordinate;
           v176 = objc_msgSend_reverseOriginsMap(v11, v172, v173, v174, v175);
           v177 = sub_221244A70(v176, &coordinate);
           if (v177)
@@ -802,7 +802,7 @@ LABEL_14:
 
         if (lower == 11)
         {
-          self = objc_msgSend_isForTable_(self, a3, &tableUID, v4, v5);
+          self = objc_msgSend_isForTable_(self, ref, &tableUID, v4, v5);
           if (self)
           {
             retstr->coordinate = (__ROR8__(v9, 32) & 0xFFFF0000FFFFLL);
@@ -812,13 +812,13 @@ LABEL_14:
         return self;
       }
 
-      self = objc_msgSend_isForTable_(self, a3, &tableUID, v4, v5);
+      self = objc_msgSend_isForTable_(self, ref, &tableUID, v4, v5);
       if (!self)
       {
         return self;
       }
 
-      v11 = objc_msgSend_mergeRegion(v7[4]._tableUID._upper, v148, v149, v150, v151);
+      v11 = objc_msgSend_mergeRegion(selfCopy[4]._tableUID._upper, v148, v149, v150, v151);
       v50 = objc_msgSend_columnUids(v11, v152, v153, v154, v155);
       if (objc_msgSend_containsIndex_(v50, v156, WORD2(v9), v157, v158))
       {
@@ -844,13 +844,13 @@ LABEL_14:
       }
 
 LABEL_14:
-      self = objc_msgSend_isForTable_(*&self[4].coordinate, a3, &tableUID, v4, v5);
+      self = objc_msgSend_isForTable_(*&self[4].coordinate, ref, &tableUID, v4, v5);
       if (!self)
       {
         return self;
       }
 
-      v11 = *&v7[4].coordinate;
+      v11 = *&selfCopy[4].coordinate;
       if (objc_msgSend_isRows(v11, v12, v13, v14, v15))
       {
         v9 = v9;
@@ -894,7 +894,7 @@ LABEL_14:
 
       else
       {
-        v178 = objc_msgSend_auxRowColumnInfo(*&v7[4].coordinate, v25, v26, v27, v28);
+        v178 = objc_msgSend_auxRowColumnInfo(*&selfCopy[4].coordinate, v25, v26, v27, v28);
         v181 = v178;
         if (v178)
         {
@@ -907,7 +907,7 @@ LABEL_14:
           v191 = 0;
         }
 
-        v185 = v7[4].coordinate;
+        v185 = selfCopy[4].coordinate;
         if (v185)
         {
           objc_msgSend_originalCellRefForRewriteType_updatedCellRef_(v185, v183, 2, &v190, v184);
@@ -933,13 +933,13 @@ LABEL_14:
   {
     if (lower != 6)
     {
-      self = objc_msgSend_isForTable_(self, a3, &tableUID, v4, v5);
+      self = objc_msgSend_isForTable_(self, ref, &tableUID, v4, v5);
       if (!self)
       {
         return self;
       }
 
-      v11 = v7[4]._tableUID._upper;
+      v11 = selfCopy[4]._tableUID._upper;
       v50 = objc_msgSend_mergeRegion(v11, v46, v47, v48, v49);
       v55 = objc_msgSend_mergeSource(v11, v51, v52, v53, v54);
       if (*v55 != 0x7FFFFFFF && (*v55 & 0xFFFF00000000) != 0x7FFF00000000)
@@ -965,13 +965,13 @@ LABEL_14:
     }
 
 LABEL_30:
-    self = objc_msgSend_isForDstTable_(self[4]._tableUID._lower, a3, &tableUID, v4, v5);
+    self = objc_msgSend_isForDstTable_(self[4]._tableUID._lower, ref, &tableUID, v4, v5);
     if (!self)
     {
       return self;
     }
 
-    v11 = v7[4]._tableUID._lower;
+    v11 = selfCopy[4]._tableUID._lower;
     v50 = objc_msgSend_dstColumnUids(v11, v78, v79, v80, v81);
     if (objc_msgSend_containsIndex_(v50, v82, WORD2(v9), v83, v84))
     {
@@ -1031,13 +1031,13 @@ LABEL_62:
     goto LABEL_14;
   }
 
-  self = objc_msgSend_isForTable_(*&self[4].coordinate, a3, &tableUID, v4, v5);
+  self = objc_msgSend_isForTable_(*&self[4].coordinate, ref, &tableUID, v4, v5);
   if (self)
   {
-    self = v7[4].coordinate;
+    self = selfCopy[4].coordinate;
     if (self)
     {
-      self = objc_msgSend_originalCellRefForRewriteType_updatedCellRef_(self, v146, LODWORD(v7->_tableUID._lower), a4, v147);
+      self = objc_msgSend_originalCellRefForRewriteType_updatedCellRef_(self, v146, LODWORD(selfCopy->_tableUID._lower), a4, v147);
     }
 
     else
@@ -1053,16 +1053,16 @@ LABEL_62:
   return self;
 }
 
-- (TSCECellRef)flattenedCellRefForCategoryRef:(SEL)a3 calcEngine:(id)a4
+- (TSCECellRef)flattenedCellRefForCategoryRef:(SEL)ref calcEngine:(id)engine
 {
-  v8 = a4;
+  engineCopy = engine;
   v13 = a5;
   retstr->_tableUID._lower = 0;
   retstr->_tableUID._upper = 0;
   retstr->coordinate = 0x7FFF7FFFFFFFLL;
   if (self->_rewriteType == 6)
   {
-    v14 = objc_msgSend_absoluteGroupUid(v8, v9, v10, v11, v12);
+    v14 = objc_msgSend_absoluteGroupUid(engineCopy, v9, v10, v11, v12);
     if (v14 | v15)
     {
       v19 = objc_msgSend_originalSrcTableUID(self->_regionMovedInfo, v15, v16, v17, v18);
@@ -1083,9 +1083,9 @@ LABEL_62:
             {
               v53 = objc_msgSend_groupByUUID(v47, v48, v49, v50, v51);
               v55 = v54;
-              if (v53 == objc_msgSend_groupByUid(v8, v54, v56, v57, v58) && v55 == v59)
+              if (v53 == objc_msgSend_groupByUid(engineCopy, v54, v56, v57, v58) && v55 == v59)
               {
-                v122 = objc_msgSend_columnUid(v8, v59, v60, v61, v62);
+                v122 = objc_msgSend_columnUid(engineCopy, v59, v60, v61, v62);
                 v123 = v63;
                 v117 = objc_msgSend_columnIndexForColumnUID_(v52, v63, &v122, v64, v65);
                 if (v117 != 0x7FFF)
@@ -1103,7 +1103,7 @@ LABEL_62:
                     if (*v84 != v89)
                     {
                       v91 = 0;
-                      while (*v90 != objc_msgSend_absoluteGroupUid(v8, v85, v86, v87, v88) || v90[1] != v85)
+                      while (*v90 != objc_msgSend_absoluteGroupUid(engineCopy, v85, v86, v87, v88) || v90[1] != v85)
                       {
                         v90 += 2;
                         --v91;
@@ -1144,9 +1144,9 @@ LABEL_25:
   return result;
 }
 
-- (TSUCellRect)mergeRangeAtOriginalCellRef:(const TSCECellRef *)a3
+- (TSUCellRect)mergeRangeAtOriginalCellRef:(const TSCECellRef *)ref
 {
-  v3 = sub_221244B44(&self->_mergeRangesContainingFormulas.__table_.__bucket_list_.__ptr_, a3);
+  v3 = sub_221244B44(&self->_mergeRangesContainingFormulas.__table_.__bucket_list_.__ptr_, ref);
   if (v3)
   {
     v4 = v3;
@@ -1165,15 +1165,15 @@ LABEL_25:
   return result;
 }
 
-- (void)loadMergeRangesContainingFormulasInTable:(id)a3 calcEngine:(id)a4
+- (void)loadMergeRangesContainingFormulasInTable:(id)table calcEngine:(id)engine
 {
-  v6 = a3;
-  v7 = a4;
-  v12 = objc_msgSend_tableRangeCoordinate(v6, v8, v9, v10, v11);
+  tableCopy = table;
+  engineCopy = engine;
+  v12 = objc_msgSend_tableRangeCoordinate(tableCopy, v8, v9, v10, v11);
   v14 = v13;
-  *&v40 = objc_msgSend_resolverUID(v6, v13, v15, v16, v17);
+  *&v40 = objc_msgSend_resolverUID(tableCopy, v13, v15, v16, v17);
   *(&v40 + 1) = v18;
-  v21 = objc_msgSend_tableResolverForTableUID_(v7, v18, &v40, v19, v20);
+  v21 = objc_msgSend_tableResolverForTableUID_(engineCopy, v18, &v40, v19, v20);
   sub_2210BE918(&self->_mergeRangesContainingFormulas.__table_.__bucket_list_.__ptr_);
   v26 = objc_msgSend_rowOrColumnIndices(self->_rowColumnInfo, v22, v23, v24, v25);
   v33[0] = MEMORY[0x277D85DD0];
@@ -1185,18 +1185,18 @@ LABEL_25:
   v39 = v14;
   v27 = v21;
   v34 = v27;
-  v28 = v7;
+  v28 = engineCopy;
   v35 = v28;
-  v29 = v6;
+  v29 = tableCopy;
   v36 = v29;
   v37 = v40;
   objc_msgSend_enumerateRangesUsingBlock_(v26, v30, v33, v31, v32);
 }
 
-- (BOOL)adjustViewTractRef:(id)a3 calcEngine:(id)a4 containingCellRef:(const TSCECellRef *)a5 undoTractList:(id *)a6
+- (BOOL)adjustViewTractRef:(id)ref calcEngine:(id)engine containingCellRef:(const TSCECellRef *)cellRef undoTractList:(id *)list
 {
   v6 = MEMORY[0x277D81150];
-  v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEFormulaRewriteSpec adjustViewTractRef:calcEngine:containingCellRef:undoTractList:]", a4, a5, a6);
+  v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEFormulaRewriteSpec adjustViewTractRef:calcEngine:containingCellRef:undoTractList:]", engine, cellRef, list);
   v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/calculationEngine/TSCEFormulaRewriteSpec.mm", v9, v10);
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v6, v12, v7, v11, 749, 0, "subclasses must override");
 
@@ -1204,10 +1204,10 @@ LABEL_25:
   return 0;
 }
 
-- (id)restoreViewTractRefFromUndoTractList:(id)a3 calcEngine:(id)a4 containingCellRef:(const TSCECellRef *)a5
+- (id)restoreViewTractRefFromUndoTractList:(id)list calcEngine:(id)engine containingCellRef:(const TSCECellRef *)ref
 {
   v5 = MEMORY[0x277D81150];
-  v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEFormulaRewriteSpec restoreViewTractRefFromUndoTractList:calcEngine:containingCellRef:]", a4, a5);
+  v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEFormulaRewriteSpec restoreViewTractRefFromUndoTractList:calcEngine:containingCellRef:]", engine, ref);
   v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/calculationEngine/TSCEFormulaRewriteSpec.mm", v8, v9);
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v5, v11, v6, v10, 756, 0, "subclasses must override");
 
@@ -1215,26 +1215,26 @@ LABEL_25:
   return 0;
 }
 
-- (void)willModifyTable:(id)a3 uidResolver:(id)a4 calcEngine:(id)a5
+- (void)willModifyTable:(id)table uidResolver:(id)resolver calcEngine:(id)engine
 {
-  v51 = a3;
-  v8 = a4;
-  v9 = a5;
+  tableCopy = table;
+  resolverCopy = resolver;
+  engineCopy = engine;
   objc_msgSend_removeAllObjects(self->_nestedRewrites, v10, v11, v12, v13);
   if (self->_conditionalStyleOwnerUID._lower)
   {
-    v18 = v51 != 0;
+    v18 = tableCopy != 0;
   }
 
   else
   {
-    v18 = v51 != 0;
-    if (v51 && !self->_conditionalStyleOwnerUID._upper)
+    v18 = tableCopy != 0;
+    if (tableCopy && !self->_conditionalStyleOwnerUID._upper)
     {
-      v19 = objc_msgSend_conditionalStyleFormulaOwnerUID(v51, v14, v15, v16, v17);
+      v19 = objc_msgSend_conditionalStyleFormulaOwnerUID(tableCopy, v14, v15, v16, v17);
       if (v19 | v14)
       {
-        self->_conditionalStyleOwnerUID._lower = objc_msgSend_conditionalStyleFormulaOwnerUID(v51, v14, v15, v16, v17);
+        self->_conditionalStyleOwnerUID._lower = objc_msgSend_conditionalStyleFormulaOwnerUID(tableCopy, v14, v15, v16, v17);
         self->_conditionalStyleOwnerUID._upper = v14;
       }
 
@@ -1252,7 +1252,7 @@ LABEL_25:
 
     if ((v20 & 1) == 0)
     {
-      self->_groupByUID._lower = objc_msgSend_groupByUID(v51, v14, v15, v16, v17);
+      self->_groupByUID._lower = objc_msgSend_groupByUID(tableCopy, v14, v15, v16, v17);
       self->_groupByUID._upper = v14;
     }
   }
@@ -1262,10 +1262,10 @@ LABEL_25:
   {
     if (((1 << rewriteType) & 0x1030) != 0)
     {
-      objc_msgSend_loadIndexesForTable_uidResolver_forRemoveRows_shuffleMap_(self->_rowColumnInfo, v14, v51, v8, 1, 0);
+      objc_msgSend_loadIndexesForTable_uidResolver_forRemoveRows_shuffleMap_(self->_rowColumnInfo, v14, tableCopy, resolverCopy, 1, 0);
       objc_msgSend_createAuxRowColumnInfoForMove(self->_rowColumnInfo, v36, v37, v38, v39);
       v22 = objc_msgSend_auxRowColumnInfo(self->_rowColumnInfo, v40, v41, v42, v43);
-      objc_msgSend_loadIndexesForTable_uidResolver_forRemoveRows_shuffleMap_(v22, v44, v51, v8, 0, self->_shuffleMap);
+      objc_msgSend_loadIndexesForTable_uidResolver_forRemoveRows_shuffleMap_(v22, v44, tableCopy, resolverCopy, 0, self->_shuffleMap);
       goto LABEL_20;
     }
 
@@ -1283,7 +1283,7 @@ LABEL_25:
     if (((1 << rewriteType) & 0x20180) != 0)
     {
       v22 = objc_msgSend_mergeRegion(self->_mergeInfo, v14, v15, v16, v17);
-      objc_msgSend_loadIndexesForTable_uidResolver_(v22, v23, v51, v8, v24);
+      objc_msgSend_loadIndexesForTable_uidResolver_(v22, v23, tableCopy, resolverCopy, v24);
 LABEL_20:
 
       goto LABEL_21;
@@ -1292,28 +1292,28 @@ LABEL_20:
 
   if (rewriteType == 3)
   {
-    objc_msgSend_loadIndexesForTable_uidResolver_forRemoveRows_shuffleMap_(self->_rowColumnInfo, v14, v51, v8, 0, 0);
+    objc_msgSend_loadIndexesForTable_uidResolver_forRemoveRows_shuffleMap_(self->_rowColumnInfo, v14, tableCopy, resolverCopy, 0, 0);
   }
 
   else if (rewriteType == 2)
   {
-    objc_msgSend_loadIndexesForTable_uidResolver_forRemoveRows_shuffleMap_(self->_rowColumnInfo, v14, v51, v8, 1, 0);
-    objc_msgSend_loadMergeRangesContainingFormulasInTable_calcEngine_(self, v49, v51, v9, v50);
+    objc_msgSend_loadIndexesForTable_uidResolver_forRemoveRows_shuffleMap_(self->_rowColumnInfo, v14, tableCopy, resolverCopy, 1, 0);
+    objc_msgSend_loadMergeRangesContainingFormulasInTable_calcEngine_(self, v49, tableCopy, engineCopy, v50);
   }
 
 LABEL_21:
   *&self->_willModifyWasCalled = 1;
-  if (v9)
+  if (engineCopy)
   {
-    objc_msgSend_pushRewriteSpec_(v9, v14, self, v16, v17);
-    v48 = objc_msgSend_prepareToRewriteWithCalcEngine_(self, v45, v9, v46, v47);
+    objc_msgSend_pushRewriteSpec_(engineCopy, v14, self, v16, v17);
+    v48 = objc_msgSend_prepareToRewriteWithCalcEngine_(self, v45, engineCopy, v46, v47);
   }
 }
 
-- (void)addNestedRewrite:(id)a3
+- (void)addNestedRewrite:(id)rewrite
 {
-  v14 = a3;
-  if (v14 && objc_msgSend_canBeNested(v14, v4, v5, v6, v7))
+  rewriteCopy = rewrite;
+  if (rewriteCopy && objc_msgSend_canBeNested(rewriteCopy, v4, v5, v6, v7))
   {
     nestedRewrites = self->_nestedRewrites;
     if (!nestedRewrites)
@@ -1325,11 +1325,11 @@ LABEL_21:
       nestedRewrites = self->_nestedRewrites;
     }
 
-    objc_msgSend_addObject_(nestedRewrites, v8, v14, v9, v10);
+    objc_msgSend_addObject_(nestedRewrites, v8, rewriteCopy, v9, v10);
   }
 }
 
-- (id)prepareToRewriteWithCalcEngine:(id)a3
+- (id)prepareToRewriteWithCalcEngine:(id)engine
 {
   v4 = objc_opt_new();
   formulasForUndo = self->_formulasForUndo;
@@ -1340,7 +1340,7 @@ LABEL_21:
   return v6;
 }
 
-- (id)amendRewriteWithCalcEngine:(id)a3
+- (id)amendRewriteWithCalcEngine:(id)engine
 {
   formulasForUndo = self->_formulasForUndo;
   if (!formulasForUndo)
@@ -1355,12 +1355,12 @@ LABEL_21:
   return formulasForUndo;
 }
 
-- (void)willModifySrcTable:(id)a3 srcUidResolver:(id)a4 dstTable:(id)a5 dstUidResolver:(id)a6
+- (void)willModifySrcTable:(id)table srcUidResolver:(id)resolver dstTable:(id)dstTable dstUidResolver:(id)uidResolver
 {
-  v53 = a3;
-  v10 = a4;
-  v11 = a5;
-  v16 = a6;
+  tableCopy = table;
+  resolverCopy = resolver;
+  dstTableCopy = dstTable;
+  uidResolverCopy = uidResolver;
   rewriteType = self->_rewriteType;
   v18 = rewriteType > 0xF;
   v19 = (1 << rewriteType) & 0xC040;
@@ -1377,18 +1377,18 @@ LABEL_21:
   objc_msgSend_removeAllObjects(self->_nestedRewrites, v12, v13, v14, v15);
   if (self->_conditionalStyleOwnerUID._lower)
   {
-    v36 = v11 != 0;
+    v36 = dstTableCopy != 0;
   }
 
   else
   {
-    v36 = v11 != 0;
-    if (v11 && !self->_conditionalStyleOwnerUID._upper)
+    v36 = dstTableCopy != 0;
+    if (dstTableCopy && !self->_conditionalStyleOwnerUID._upper)
     {
-      v37 = objc_msgSend_conditionalStyleFormulaOwnerUID(v11, v32, v33, v34, v35);
+      v37 = objc_msgSend_conditionalStyleFormulaOwnerUID(dstTableCopy, v32, v33, v34, v35);
       if (v37 | v32)
       {
-        self->_conditionalStyleOwnerUID._lower = objc_msgSend_conditionalStyleFormulaOwnerUID(v11, v32, v33, v34, v35);
+        self->_conditionalStyleOwnerUID._lower = objc_msgSend_conditionalStyleFormulaOwnerUID(dstTableCopy, v32, v33, v34, v35);
         self->_conditionalStyleOwnerUID._upper = v32;
       }
 
@@ -1406,7 +1406,7 @@ LABEL_21:
 
     if ((v38 & 1) == 0)
     {
-      self->_groupByUID._lower = objc_msgSend_groupByUID(v11, v32, v33, v34, v35);
+      self->_groupByUID._lower = objc_msgSend_groupByUID(dstTableCopy, v32, v33, v34, v35);
       self->_groupByUID._upper = v32;
     }
   }
@@ -1414,13 +1414,13 @@ LABEL_21:
   v39 = self->_rewriteType;
   if (v39 <= 0xF && ((1 << v39) & 0xC040) != 0)
   {
-    objc_msgSend_loadIndexesForSrcTable_srcUidResolver_dstTable_dstUidResolver_(self->_regionMovedInfo, v32, v53, v10, v11, v16);
+    objc_msgSend_loadIndexesForSrcTable_srcUidResolver_dstTable_dstUidResolver_(self->_regionMovedInfo, v32, tableCopy, resolverCopy, dstTableCopy, uidResolverCopy);
   }
 
-  v44 = objc_msgSend_calcEngine(v53, v32, v33, v34, v35);
+  v44 = objc_msgSend_calcEngine(tableCopy, v32, v33, v34, v35);
   if (!v44)
   {
-    v44 = objc_msgSend_calcEngine(v11, v40, v41, v42, v43);
+    v44 = objc_msgSend_calcEngine(dstTableCopy, v40, v41, v42, v43);
   }
 
   if (objc_msgSend_rewriteType(self, v40, v41, v42, v43) != 6)
@@ -1433,10 +1433,10 @@ LABEL_21:
   v52 = objc_msgSend_prepareToRewriteWithCalcEngine_(self, v49, v44, v50, v51);
 }
 
-- (void)didModifySrcTable:(id)a3 dstTable:(id)a4
+- (void)didModifySrcTable:(id)table dstTable:(id)dstTable
 {
-  v35 = a3;
-  v10 = a4;
+  tableCopy = table;
+  dstTableCopy = dstTable;
   rewriteType = self->_rewriteType;
   v12 = rewriteType > 0xF;
   v13 = (1 << rewriteType) & 0xC040;
@@ -1450,10 +1450,10 @@ LABEL_21:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v22, v23, v24, v25);
   }
 
-  v30 = objc_msgSend_calcEngine(v35, v6, v7, v8, v9);
+  v30 = objc_msgSend_calcEngine(tableCopy, v6, v7, v8, v9);
   if (!v30)
   {
-    v30 = objc_msgSend_calcEngine(v10, v26, v27, v28, v29);
+    v30 = objc_msgSend_calcEngine(dstTableCopy, v26, v27, v28, v29);
   }
 
   self->_didModifyWasCalled = 1;
@@ -1461,37 +1461,37 @@ LABEL_21:
   v34 = objc_msgSend_amendRewriteWithCalcEngine_(self, v31, v30, v32, v33);
 }
 
-- (void)didModifyTable:(id)a3
+- (void)didModifyTable:(id)table
 {
-  v11 = a3;
-  v8 = objc_msgSend_calcEngine(v11, v4, v5, v6, v7);
-  objc_msgSend_didModifyTable_calcEngine_(self, v9, v11, v8, v10);
+  tableCopy = table;
+  v8 = objc_msgSend_calcEngine(tableCopy, v4, v5, v6, v7);
+  objc_msgSend_didModifyTable_calcEngine_(self, v9, tableCopy, v8, v10);
 }
 
-- (void)didModifyTable:(id)a3 calcEngine:(id)a4
+- (void)didModifyTable:(id)table calcEngine:(id)engine
 {
-  v34 = a3;
-  v10 = a4;
-  v11 = v34;
+  tableCopy = table;
+  engineCopy = engine;
+  v11 = tableCopy;
   if (self->_conditionalStyleOwnerUID._lower)
   {
-    v12 = v34 != 0;
+    v12 = tableCopy != 0;
   }
 
   else
   {
-    v12 = v34 != 0;
-    if (v34 && !self->_conditionalStyleOwnerUID._upper)
+    v12 = tableCopy != 0;
+    if (tableCopy && !self->_conditionalStyleOwnerUID._upper)
     {
-      v13 = objc_msgSend_conditionalStyleFormulaOwnerUID(v34, v6, v7, v8, v9);
+      v13 = objc_msgSend_conditionalStyleFormulaOwnerUID(tableCopy, v6, v7, v8, v9);
       if (v13 | v6)
       {
-        self->_conditionalStyleOwnerUID._lower = objc_msgSend_conditionalStyleFormulaOwnerUID(v34, v6, v7, v8, v9);
+        self->_conditionalStyleOwnerUID._lower = objc_msgSend_conditionalStyleFormulaOwnerUID(tableCopy, v6, v7, v8, v9);
         self->_conditionalStyleOwnerUID._upper = v6;
       }
 
       v12 = 1;
-      v11 = v34;
+      v11 = tableCopy;
     }
   }
 
@@ -1524,10 +1524,10 @@ LABEL_21:
   }
 
   self->_didModifyWasCalled = 1;
-  if (v10)
+  if (engineCopy)
   {
-    objc_msgSend_popRewriteSpec_(v10, v6, self, v8, v9);
-    v33 = objc_msgSend_amendRewriteWithCalcEngine_(self, v30, v10, v31, v32);
+    objc_msgSend_popRewriteSpec_(engineCopy, v6, self, v8, v9);
+    v33 = objc_msgSend_amendRewriteWithCalcEngine_(self, v30, engineCopy, v31, v32);
   }
 }
 

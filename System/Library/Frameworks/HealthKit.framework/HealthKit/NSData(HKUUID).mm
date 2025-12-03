@@ -16,22 +16,22 @@
   v6[3] = &unk_1E7379DF0;
   v7 = v4;
   v5 = v4;
-  [a1 hk_enumerateUUIDBytesUsingBlock:v6];
+  [self hk_enumerateUUIDBytesUsingBlock:v6];
 }
 
 - (void)hk_enumerateUUIDBytesUsingBlock:()HKUUID
 {
   v4 = a3;
-  v5 = [a1 length];
+  v5 = [self length];
   if ((v5 & 0xF) == 0)
   {
     v6 = v5;
-    v7 = [a1 bytes];
+    bytes = [self bytes];
     v10 = 0;
     if (v6 >= 1)
     {
-      v8 = v7;
-      v9 = v7 + v6;
+      v8 = bytes;
+      v9 = bytes + v6;
       do
       {
         v4[2](v4, v8, &v10);
@@ -50,7 +50,7 @@
 
 - (unint64_t)hk_countOfUUIDs
 {
-  v1 = [a1 length];
+  v1 = [self length];
   if ((v1 & 0xF) != 0)
   {
     return 0;
@@ -83,7 +83,7 @@
   v7 = v6;
   v14 = v7;
   v16 = &v23;
-  [a1 hk_enumerateUUIDBytesUsingBlock:v13];
+  [self hk_enumerateUUIDBytesUsingBlock:v13];
   v8 = v18[5];
   v9 = v8;
   if (v8)

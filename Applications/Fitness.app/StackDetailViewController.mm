@@ -1,26 +1,26 @@
 @interface StackDetailViewController
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
-- (_TtC10FitnessApp25StackDetailViewController)initWithCoder:(id)a3;
-- (_TtC10FitnessApp25StackDetailViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC10FitnessApp25StackDetailViewController)initWithStyle:(int64_t)a3;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewWillAppear:(BOOL)a3;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
+- (_TtC10FitnessApp25StackDetailViewController)initWithCoder:(id)coder;
+- (_TtC10FitnessApp25StackDetailViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC10FitnessApp25StackDetailViewController)initWithStyle:(int64_t)style;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation StackDetailViewController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v8.receiver = self;
   v8.super_class = type metadata accessor for StackDetailViewController();
   v4 = v8.receiver;
-  [(StackDetailViewController *)&v8 viewWillAppear:v3];
-  v5 = [v4 navigationController];
-  if (v5)
+  [(StackDetailViewController *)&v8 viewWillAppear:appearCopy];
+  navigationController = [v4 navigationController];
+  if (navigationController)
   {
-    v6 = v5;
+    v6 = navigationController;
     objc_opt_self();
     v7 = swift_dynamicCastObjCClass();
     if (!v7)
@@ -31,7 +31,7 @@
   }
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
   v4 = type metadata accessor for IndexPath();
   v5 = *(v4 - 8);
@@ -42,7 +42,7 @@
   return UITableViewAutomaticDimension;
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
   v4 = type metadata accessor for IndexPath();
   v5 = *(v4 - 8);
@@ -63,21 +63,21 @@
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  sub_10029F4F4(v10);
+  viewCopy = view;
+  selfCopy = self;
+  sub_10029F4F4(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (_TtC10FitnessApp25StackDetailViewController)initWithCoder:(id)a3
+- (_TtC10FitnessApp25StackDetailViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC10FitnessApp25StackDetailViewController_dataSource) = 0;
   result = _assertionFailure(_:_:file:line:flags:)();
@@ -85,14 +85,14 @@
   return result;
 }
 
-- (_TtC10FitnessApp25StackDetailViewController)initWithStyle:(int64_t)a3
+- (_TtC10FitnessApp25StackDetailViewController)initWithStyle:(int64_t)style
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC10FitnessApp25StackDetailViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC10FitnessApp25StackDetailViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

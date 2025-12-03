@@ -1,12 +1,12 @@
 @interface MRAVConcreteRoutingDiscoverySession
 - (BOOL)devicePresenceDetected;
-- (MRAVConcreteRoutingDiscoverySession)initWithConfiguration:(id)a3;
+- (MRAVConcreteRoutingDiscoverySession)initWithConfiguration:(id)configuration;
 - (NSArray)availableOutputDevices;
 - (NSSet)lastReportedClientIdentifiers;
 - (NSString)debugDescription;
 - (NSString)description;
-- (id)_onReloadQueue_createOutputDevicesFromAVOutputDevices:(id)a3;
-- (id)_onReloadQueue_fetchOutputDevicesFromDiscoverySession:(id)a3;
+- (id)_onReloadQueue_createOutputDevicesFromAVOutputDevices:(id)devices;
+- (id)_onReloadQueue_fetchOutputDevicesFromDiscoverySession:(id)session;
 - (id)_onReloadQueue_reloadAvailableOutputDevices;
 - (id)routingContextUID;
 - (unsigned)discoveryMode;
@@ -14,11 +14,11 @@
 - (void)_loadDefaults;
 - (void)_onReloadQueue_reload;
 - (void)_scheduleReload;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setAvailableOutputDevices:(id)a3;
-- (void)setDiscoveryMode:(unsigned int)a3 forClientIdentifiers:(id)a4;
-- (void)setRoutingContextUID:(id)a3;
-- (void)setTargetAudioSessionID:(unsigned int)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setAvailableOutputDevices:(id)devices;
+- (void)setDiscoveryMode:(unsigned int)mode forClientIdentifiers:(id)identifiers;
+- (void)setRoutingContextUID:(id)d;
+- (void)setTargetAudioSessionID:(unsigned int)d;
 @end
 
 @implementation MRAVConcreteRoutingDiscoverySession
@@ -240,7 +240,7 @@ void __50__MRAVConcreteRoutingDiscoverySession_description__block_invoke(uint64_
 - (void)_onReloadQueue_reload
 {
   v10 = *MEMORY[0x1E69E9840];
-  [a1 timeIntervalSinceNow];
+  [self timeIntervalSinceNow];
   OUTLINED_FUNCTION_1_16(v1);
   OUTLINED_FUNCTION_0_18(&dword_1A2860000, v2, v3, "[AVDiscoverySession] NotifyOutputDevicesChanged took %lf seconds", v4, v5, v6, v7, v9);
   v8 = *MEMORY[0x1E69E9840];
@@ -315,28 +315,28 @@ void __61__MRAVConcreteRoutingDiscoverySession_availableOutputDevices__block_inv
 
 - (BOOL)devicePresenceDetected
 {
-  v2 = [(MRAVConcreteRoutingDiscoverySession *)self availableOutputDevices];
-  v3 = [v2 count] != 0;
+  availableOutputDevices = [(MRAVConcreteRoutingDiscoverySession *)self availableOutputDevices];
+  v3 = [availableOutputDevices count] != 0;
 
   return v3;
 }
 
-- (MRAVConcreteRoutingDiscoverySession)initWithConfiguration:(id)a3
+- (MRAVConcreteRoutingDiscoverySession)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v53.receiver = self;
   v53.super_class = MRAVConcreteRoutingDiscoverySession;
-  v5 = [(MRAVRoutingDiscoverySession *)&v53 initWithConfiguration:v4];
+  v5 = [(MRAVRoutingDiscoverySession *)&v53 initWithConfiguration:configurationCopy];
   if (v5)
   {
-    v5->_endpointFeatures = [v4 features];
-    v6 = [v4 routingContextUID];
+    v5->_endpointFeatures = [configurationCopy features];
+    routingContextUID = [configurationCopy routingContextUID];
     routingContextUID = v5->_routingContextUID;
-    v5->_routingContextUID = v6;
+    v5->_routingContextUID = routingContextUID;
 
     v5->_discoveryMode = 0;
     v5->_targetAudioSessionID = 0;
-    v5->_clientProvidedTargetAudioSessionID = [v4 targetAudioSessionID];
+    v5->_clientProvidedTargetAudioSessionID = [configurationCopy targetAudioSessionID];
     v8 = objc_opt_class();
     Name = class_getName(v8);
     v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -347,15 +347,15 @@ void __61__MRAVConcreteRoutingDiscoverySession_availableOutputDevices__block_inv
     v13 = objc_alloc(MEMORY[0x1E696AEC0]);
     v14 = objc_opt_class();
     v45 = [v13 initWithFormat:@"%s.reloadQueue", class_getName(v14)];
-    v15 = [v45 UTF8String];
+    uTF8String = [v45 UTF8String];
     v16 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v17 = dispatch_queue_create(v15, v16);
+    v17 = dispatch_queue_create(uTF8String, v16);
     reloadQueue = v5->_reloadQueue;
     v5->_reloadQueue = v17;
 
-    v19 = [objc_alloc(MEMORY[0x1E6958810]) initWithDeviceFeatures:v5->_endpointFeatures & 0xFLL];
+    0xFLL = [objc_alloc(MEMORY[0x1E6958810]) initWithDeviceFeatures:v5->_endpointFeatures & 0xFLL];
     avDiscoverySession = v5->_avDiscoverySession;
-    v5->_avDiscoverySession = v19;
+    v5->_avDiscoverySession = 0xFLL;
 
     v21 = +[MRUserSettings currentSettings];
     LODWORD(v16) = [v21 supportDiscoveryCaching];
@@ -378,7 +378,7 @@ void __61__MRAVConcreteRoutingDiscoverySession_availableOutputDevices__block_inv
     v5->_reloadRateLimiter = v24;
 
     v26 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v27 = MRMediaRemoteEndpointFeaturesDescription([v4 features]);
+    v27 = MRMediaRemoteEndpointFeaturesDescription([configurationCopy features]);
     v28 = [v26 initWithFormat:@"Concrete.%@", v27];
 
     v29 = [MRRollingWindowActivityTracker alloc];
@@ -409,10 +409,10 @@ void __61__MRAVConcreteRoutingDiscoverySession_availableOutputDevices__block_inv
       dispatch_async(v39, block);
     }
 
-    v40 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v40 addObserver:v5 selector:sel__availableOutputDevicesDidChangeNotification_ name:*MEMORY[0x1E69587A0] object:v5->_avDiscoverySession];
-    [v40 addObserver:v5 selector:sel__availableOutputDevicesDidChangeNotification_ name:*MEMORY[0x1E69586A8] object:0];
-    [v40 addObserver:v5 selector:sel__deviceInfoDidChange_ name:@"kMRActiveDeviceInfoDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel__availableOutputDevicesDidChangeNotification_ name:*MEMORY[0x1E69587A0] object:v5->_avDiscoverySession];
+    [defaultCenter addObserver:v5 selector:sel__availableOutputDevicesDidChangeNotification_ name:*MEMORY[0x1E69586A8] object:0];
+    [defaultCenter addObserver:v5 selector:sel__deviceInfoDidChange_ name:@"kMRActiveDeviceInfoDidChangeNotification" object:0];
     v41 = +[MRAVClusterController sharedController];
     [v41 registerObserver:v5];
 
@@ -452,17 +452,17 @@ void __61__MRAVConcreteRoutingDiscoverySession_initWithConfiguration___block_inv
   [v1 snapshotWithDomain:v2 type:@"Discovery" subType:v3 context:v4 triggerThresholdValues:0 events:0 completion:0];
 }
 
-- (void)setAvailableOutputDevices:(id)a3
+- (void)setAvailableOutputDevices:(id)devices
 {
-  v4 = a3;
+  devicesCopy = devices;
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __65__MRAVConcreteRoutingDiscoverySession_setAvailableOutputDevices___block_invoke;
   v7[3] = &unk_1E769A4A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = devicesCopy;
+  v6 = devicesCopy;
   dispatch_sync(serialQueue, v7);
 }
 
@@ -496,18 +496,18 @@ void __68__MRAVConcreteRoutingDiscoverySession_lastReportedClientIdentifiers__bl
   *(v3 + 40) = v2;
 }
 
-- (void)setDiscoveryMode:(unsigned int)a3 forClientIdentifiers:(id)a4
+- (void)setDiscoveryMode:(unsigned int)mode forClientIdentifiers:(id)identifiers
 {
-  v6 = a4;
+  identifiersCopy = identifiers;
   serialQueue = self->_serialQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __77__MRAVConcreteRoutingDiscoverySession_setDiscoveryMode_forClientIdentifiers___block_invoke;
   block[3] = &unk_1E769BCF8;
-  v11 = a3;
+  modeCopy = mode;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = identifiersCopy;
+  v8 = identifiersCopy;
   dispatch_async(serialQueue, block);
 }
 
@@ -603,7 +603,7 @@ void __59__MRAVConcreteRoutingDiscoverySession_targetAudioSessionID__block_invok
   *(*(*(a1 + 40) + 8) + 24) = v3;
 }
 
-- (void)setTargetAudioSessionID:(unsigned int)a3
+- (void)setTargetAudioSessionID:(unsigned int)d
 {
   serialQueue = self->_serialQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -611,7 +611,7 @@ void __59__MRAVConcreteRoutingDiscoverySession_targetAudioSessionID__block_invok
   v4[2] = __63__MRAVConcreteRoutingDiscoverySession_setTargetAudioSessionID___block_invoke;
   v4[3] = &unk_1E769E760;
   v4[4] = self;
-  v5 = a3;
+  dCopy = d;
   dispatch_async(serialQueue, v4);
 }
 
@@ -658,17 +658,17 @@ void __56__MRAVConcreteRoutingDiscoverySession_routingContextUID__block_invoke(u
   *(v3 + 40) = v2;
 }
 
-- (void)setRoutingContextUID:(id)a3
+- (void)setRoutingContextUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __60__MRAVConcreteRoutingDiscoverySession_setRoutingContextUID___block_invoke;
   v7[3] = &unk_1E769A4A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_sync(serialQueue, v7);
 }
 
@@ -691,11 +691,11 @@ void *__60__MRAVConcreteRoutingDiscoverySession_setRoutingContextUID___block_inv
   return result;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (MRAudioOutputDeviceDiscoverySessionDenyListContext == a6 || MRAudioOutputDeviceDiscoverySessionAllowListContext == a6)
+  if (MRAudioOutputDeviceDiscoverySessionDenyListContext == context || MRAudioOutputDeviceDiscoverySessionAllowListContext == context)
   {
-    [(MRAVConcreteRoutingDiscoverySession *)self _loadDefaults:a3];
+    [(MRAVConcreteRoutingDiscoverySession *)self _loadDefaults:path];
 
     [(MRAVConcreteRoutingDiscoverySession *)self _scheduleReload];
   }
@@ -704,7 +704,7 @@ void *__60__MRAVConcreteRoutingDiscoverySession_setRoutingContextUID___block_inv
   {
     v8.receiver = self;
     v8.super_class = MRAVConcreteRoutingDiscoverySession;
-    [(MRAVConcreteRoutingDiscoverySession *)&v8 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(MRAVConcreteRoutingDiscoverySession *)&v8 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
@@ -726,18 +726,18 @@ uint64_t __60__MRAVConcreteRoutingDiscoverySession__onReloadQueue_reload__block_
   return v2 ^ 1;
 }
 
-- (id)_onReloadQueue_fetchOutputDevicesFromDiscoverySession:(id)a3
+- (id)_onReloadQueue_fetchOutputDevicesFromDiscoverySession:(id)session
 {
   reloadQueue = self->_reloadQueue;
-  v4 = a3;
+  sessionCopy = session;
   dispatch_assert_queue_V2(reloadQueue);
   v5 = [MEMORY[0x1E695DF00] now];
   v6 = objc_alloc(MEMORY[0x1E695DF70]);
-  v7 = [v4 availableOutputDevices];
+  availableOutputDevices = [sessionCopy availableOutputDevices];
 
-  v8 = [v6 initWithArray:v7];
-  v9 = [MEMORY[0x1E6958800] sharedLocalDevice];
-  [v8 removeObject:v9];
+  v8 = [v6 initWithArray:availableOutputDevices];
+  mEMORY[0x1E6958800] = [MEMORY[0x1E6958800] sharedLocalDevice];
+  [v8 removeObject:mEMORY[0x1E6958800]];
 
   [v5 timeIntervalSinceNow];
   if (v10 < -0.1)
@@ -752,13 +752,13 @@ uint64_t __60__MRAVConcreteRoutingDiscoverySession__onReloadQueue_reload__block_
   return v8;
 }
 
-- (id)_onReloadQueue_createOutputDevicesFromAVOutputDevices:(id)a3
+- (id)_onReloadQueue_createOutputDevicesFromAVOutputDevices:(id)devices
 {
   reloadQueue = self->_reloadQueue;
-  v4 = a3;
+  devicesCopy = devices;
   dispatch_assert_queue_V2(reloadQueue);
   v5 = [MEMORY[0x1E695DF00] now];
-  v6 = [v4 indexesOfObjectsPassingTest:&__block_literal_global_107];
+  v6 = [devicesCopy indexesOfObjectsPassingTest:&__block_literal_global_107];
   v7 = -[MRAVOutputDeviceSourceInfo initWithMultipleBuiltInDevices:sourceType:]([MRAVOutputDeviceSourceInfo alloc], "initWithMultipleBuiltInDevices:sourceType:", [v6 count] > 1, 2);
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
@@ -766,7 +766,7 @@ uint64_t __60__MRAVConcreteRoutingDiscoverySession__onReloadQueue_reload__block_
   v16[3] = &unk_1E76A4CC0;
   v8 = v7;
   v17 = v8;
-  v9 = [v4 msv_compactMap:v16];
+  v9 = [devicesCopy msv_compactMap:v16];
 
   [v5 timeIntervalSinceNow];
   if (v10 < -0.1)
@@ -779,9 +779,9 @@ uint64_t __60__MRAVConcreteRoutingDiscoverySession__onReloadQueue_reload__block_
   }
 
   v12 = +[MRUserSettings currentSettings];
-  v13 = [v12 disableAWDLRoutes];
+  disableAWDLRoutes = [v12 disableAWDLRoutes];
 
-  if (v13)
+  if (disableAWDLRoutes)
   {
     v14 = [v9 msv_filter:&__block_literal_global_46];
 

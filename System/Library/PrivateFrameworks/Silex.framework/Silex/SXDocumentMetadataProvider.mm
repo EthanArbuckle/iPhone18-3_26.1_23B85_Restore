@@ -1,22 +1,22 @@
 @interface SXDocumentMetadataProvider
 - (NSString)language;
 - (NSString)title;
-- (SXDocumentMetadataProvider)initWithDocumentProvider:(id)a3;
+- (SXDocumentMetadataProvider)initWithDocumentProvider:(id)provider;
 - (SXMetadata)metadata;
 @end
 
 @implementation SXDocumentMetadataProvider
 
-- (SXDocumentMetadataProvider)initWithDocumentProvider:(id)a3
+- (SXDocumentMetadataProvider)initWithDocumentProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v9.receiver = self;
   v9.super_class = SXDocumentMetadataProvider;
   v6 = [(SXDocumentMetadataProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_documentProvider, a3);
+    objc_storeStrong(&v6->_documentProvider, provider);
   }
 
   return v7;
@@ -24,29 +24,29 @@
 
 - (SXMetadata)metadata
 {
-  v2 = [(SXDocumentMetadataProvider *)self documentProvider];
-  v3 = [v2 document];
-  v4 = [v3 metadata];
+  documentProvider = [(SXDocumentMetadataProvider *)self documentProvider];
+  document = [documentProvider document];
+  metadata = [document metadata];
 
-  return v4;
+  return metadata;
 }
 
 - (NSString)title
 {
-  v2 = [(SXDocumentMetadataProvider *)self documentProvider];
-  v3 = [v2 document];
-  v4 = [v3 title];
+  documentProvider = [(SXDocumentMetadataProvider *)self documentProvider];
+  document = [documentProvider document];
+  title = [document title];
 
-  return v4;
+  return title;
 }
 
 - (NSString)language
 {
-  v2 = [(SXDocumentMetadataProvider *)self documentProvider];
-  v3 = [v2 document];
-  v4 = [v3 language];
+  documentProvider = [(SXDocumentMetadataProvider *)self documentProvider];
+  document = [documentProvider document];
+  language = [document language];
 
-  return v4;
+  return language;
 }
 
 @end

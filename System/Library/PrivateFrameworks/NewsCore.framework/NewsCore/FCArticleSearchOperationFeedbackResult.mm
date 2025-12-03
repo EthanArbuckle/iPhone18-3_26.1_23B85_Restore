@@ -1,18 +1,18 @@
 @interface FCArticleSearchOperationFeedbackResult
-- (FCArticleSearchOperationFeedbackResult)initWithSearchOperationRankingFeedBack:(id)a3;
+- (FCArticleSearchOperationFeedbackResult)initWithSearchOperationRankingFeedBack:(id)back;
 @end
 
 @implementation FCArticleSearchOperationFeedbackResult
 
-- (FCArticleSearchOperationFeedbackResult)initWithSearchOperationRankingFeedBack:(id)a3
+- (FCArticleSearchOperationFeedbackResult)initWithSearchOperationRankingFeedBack:(id)back
 {
-  v4 = a3;
+  backCopy = back;
   v9.receiver = self;
   v9.super_class = FCArticleSearchOperationFeedbackResult;
   v5 = [(FCArticleSearchOperationFeedbackResult *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [backCopy copy];
     resultRankingFeedback = v5->_resultRankingFeedback;
     v5->_resultRankingFeedback = v6;
   }

@@ -1,30 +1,30 @@
 @interface VUIAccountSettingsConnectedAppsViewController
-+ (void)fetchConnectedAppsWithCompletion:(id)a3;
-- (BOOL)_runPrePromptContinuationCheck:(id)a3 sender:(id)a4;
++ (void)fetchConnectedAppsWithCompletion:(id)completion;
+- (BOOL)_runPrePromptContinuationCheck:(id)check sender:(id)sender;
 - (CGSize)_iconSize;
 - (VUIAccountSettingsConnectedAppsViewController)init;
-- (id)_accessStatusForSpecifier:(id)a3;
+- (id)_accessStatusForSpecifier:(id)specifier;
 - (id)_appGroupSpecifier;
 - (id)_fetchAllChannels;
-- (id)_getChannelDetailsFor:(id)a3 channelsResponse:(id)a4;
+- (id)_getChannelDetailsFor:(id)for channelsResponse:(id)response;
 - (id)specifiers;
 - (int64_t)_alertStyle;
-- (void)_addPrivacyFooterToGroup:(id)a3;
-- (void)_completeChannelDisablement:(BOOL)a3 channelID:(id)a4 externalID:(id)a5 error:(id)a6;
-- (void)_completeChannelEnablement:(BOOL)a3 channelID:(id)a4 externalID:(id)a5;
+- (void)_addPrivacyFooterToGroup:(id)group;
+- (void)_completeChannelDisablement:(BOOL)disablement channelID:(id)d externalID:(id)iD error:(id)error;
+- (void)_completeChannelEnablement:(BOOL)enablement channelID:(id)d externalID:(id)iD;
 - (void)_configureDoneButton;
 - (void)_dismiss;
-- (void)_handleChannelPromptDismiss:(id)a3;
-- (void)_handleToggleSpecifierHelper:(id)a3 channel:(id)a4 externalID:(id)a5 vppaStatus:(int64_t)a6;
+- (void)_handleChannelPromptDismiss:(id)dismiss;
+- (void)_handleToggleSpecifierHelper:(id)helper channel:(id)channel externalID:(id)d vppaStatus:(int64_t)status;
 - (void)_loadAppGroup;
-- (void)_promptToDisableChannel:(id)a3 withExternalID:(id)a4;
-- (void)_promptToEnableChannel:(id)a3 withExternalID:(id)a4;
-- (void)_reloadSpecifierValueAfterCancelation:(id)a3;
-- (void)_showPrivacySheet:(id)a3;
-- (void)_showVppaExpiredPrompt:(id)a3;
+- (void)_promptToDisableChannel:(id)channel withExternalID:(id)d;
+- (void)_promptToEnableChannel:(id)channel withExternalID:(id)d;
+- (void)_reloadSpecifierValueAfterCancelation:(id)cancelation;
+- (void)_showPrivacySheet:(id)sheet;
+- (void)_showVppaExpiredPrompt:(id)prompt;
 - (void)_startAppSpinner;
 - (void)_stopAppSpinner;
-- (void)_toggleSpecifier:(id)a3 sender:(id)a4;
+- (void)_toggleSpecifier:(id)specifier sender:(id)sender;
 - (void)viewDidLoad;
 @end
 
@@ -49,10 +49,10 @@
   v12.receiver = self;
   v12.super_class = VUIAccountSettingsConnectedAppsViewController;
   [(VUIAccountSettingsConnectedAppsViewController *)&v12 viewDidLoad];
-  v3 = [(VUIAccountSettingsConnectedAppsViewController *)self navigationItem];
+  navigationItem = [(VUIAccountSettingsConnectedAppsViewController *)self navigationItem];
   v4 = +[VUILocalizationManager sharedInstance];
   v5 = [v4 localizedStringForKey:@"SETTINGS_CONNECTED_APPS"];
-  [v3 setTitle:v5];
+  [navigationItem setTitle:v5];
 
   [(VUIAccountSettingsConnectedAppsViewController *)self _configureDoneButton];
   v6 = objc_alloc_init(VUIConnectedAppOperationCoordinator);
@@ -64,8 +64,8 @@
   [v9 recordPage:v8];
 
   v10 = [MEMORY[0x1E69DF678] makeAccessibilityIdentifierString:*MEMORY[0x1E69DF7C8] additionalString:@"ConnectedApps"];
-  v11 = [(VUIAccountSettingsConnectedAppsViewController *)self view];
-  [v11 setAccessibilityIdentifier:v10];
+  view = [(VUIAccountSettingsConnectedAppsViewController *)self view];
+  [view setAccessibilityIdentifier:v10];
 }
 
 - (id)specifiers
@@ -91,9 +91,9 @@
         _os_log_impl(&dword_1E323F000, v7, OS_LOG_TYPE_DEFAULT, "VUIAccountSettingsConnectedApps - specifiers - existing app group is nil, adding new appGroupSpecifier", v12, 2u);
       }
 
-      v8 = [(VUIAccountSettingsConnectedAppsViewController *)self _appGroupSpecifier];
+      _appGroupSpecifier = [(VUIAccountSettingsConnectedAppsViewController *)self _appGroupSpecifier];
       appGroup = self->_appGroup;
-      self->_appGroup = v8;
+      self->_appGroup = _appGroupSpecifier;
 
       [v6 addObject:self->_appGroup];
       [(VUIAccountSettingsConnectedAppsViewController *)self _loadAppGroup];
@@ -110,13 +110,13 @@
 
 - (id)_appGroupSpecifier
 {
-  v3 = [MEMORY[0x1E696AAE8] mainBundle];
-  v4 = [v3 preferredLocalizations];
-  v5 = [v4 firstObject];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  preferredLocalizations = [mainBundle preferredLocalizations];
+  firstObject = [preferredLocalizations firstObject];
 
   v6 = +[VUILocalizationManager sharedInstance];
   v7 = [v6 localizedStringForKey:@"SETTINGS_APPS_GROUP"];
-  v8 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:v5];
+  v8 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:firstObject];
   v9 = [v7 uppercaseStringWithLocale:v8];
 
   v10 = [MEMORY[0x1E69C5748] groupSpecifierWithName:v9];
@@ -126,31 +126,31 @@
   return v10;
 }
 
-- (void)_addPrivacyFooterToGroup:(id)a3
+- (void)_addPrivacyFooterToGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 setProperty:v6 forKey:*MEMORY[0x1E69C58D8]];
+  [groupCopy setProperty:v6 forKey:*MEMORY[0x1E69C58D8]];
 
   v7 = +[VUILocalizationManager sharedInstance];
   v15 = [v7 localizedStringForKey:@"SETTINGS_APPS_GROUP_FOOTER_FORMAT"];
 
   v8 = [MEMORY[0x1E69B7D50] linkWithBundleIdentifier:@"com.apple.onboarding.tvapp"];
-  v9 = [v8 flow];
-  v10 = [v9 localizedButtonTitle];
+  flow = [v8 flow];
+  localizedButtonTitle = [flow localizedButtonTitle];
 
-  v11 = [MEMORY[0x1E696AEC0] stringWithValidatedFormat:v15 validFormatSpecifiers:@"%@" error:0, v10];
-  [v4 setProperty:v11 forKey:*MEMORY[0x1E69C58F8]];
-  v17.location = [v11 rangeOfString:v10];
+  v11 = [MEMORY[0x1E696AEC0] stringWithValidatedFormat:v15 validFormatSpecifiers:@"%@" error:0, localizedButtonTitle];
+  [groupCopy setProperty:v11 forKey:*MEMORY[0x1E69C58F8]];
+  v17.location = [v11 rangeOfString:localizedButtonTitle];
   v12 = NSStringFromRange(v17);
-  [v4 setProperty:v12 forKey:*MEMORY[0x1E69C58E8]];
+  [groupCopy setProperty:v12 forKey:*MEMORY[0x1E69C58E8]];
 
   v13 = [MEMORY[0x1E696B098] valueWithNonretainedObject:self];
-  [v4 setProperty:v13 forKey:*MEMORY[0x1E69C58F0]];
+  [groupCopy setProperty:v13 forKey:*MEMORY[0x1E69C58F0]];
 
   v14 = NSStringFromSelector(sel__showPrivacySheet_);
-  [v4 setProperty:v14 forKey:*MEMORY[0x1E69C58E0]];
+  [groupCopy setProperty:v14 forKey:*MEMORY[0x1E69C58E0]];
 }
 
 - (id)_fetchAllChannels
@@ -539,11 +539,11 @@ void __62__VUIAccountSettingsConnectedAppsViewController__loadAppGroup__block_in
   return result;
 }
 
-- (id)_getChannelDetailsFor:(id)a3 channelsResponse:(id)a4
+- (id)_getChannelDetailsFor:(id)for channelsResponse:(id)response
 {
-  if (a4)
+  if (response)
   {
-    v5 = [a4 vui_dictionaryForKey:a3];
+    v5 = [response vui_dictionaryForKey:for];
   }
 
   else
@@ -554,24 +554,24 @@ void __62__VUIAccountSettingsConnectedAppsViewController__loadAppGroup__block_in
   return v5;
 }
 
-- (void)_handleToggleSpecifierHelper:(id)a3 channel:(id)a4 externalID:(id)a5 vppaStatus:(int64_t)a6
+- (void)_handleToggleSpecifierHelper:(id)helper channel:(id)channel externalID:(id)d vppaStatus:(int64_t)status
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  helperCopy = helper;
+  channelCopy = channel;
+  dCopy = d;
   objc_initWeak(&location, self);
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __108__VUIAccountSettingsConnectedAppsViewController__handleToggleSpecifierHelper_channel_externalID_vppaStatus___block_invoke;
   v16[3] = &unk_1E8735E48;
   objc_copyWeak(v20, &location);
-  v17 = v10;
-  v18 = v11;
-  v19 = v12;
-  v20[1] = a6;
-  v13 = v12;
-  v14 = v11;
-  v15 = v10;
+  v17 = helperCopy;
+  v18 = channelCopy;
+  v19 = dCopy;
+  v20[1] = status;
+  v13 = dCopy;
+  v14 = channelCopy;
+  v15 = helperCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v16);
 
   objc_destroyWeak(v20);
@@ -601,17 +601,17 @@ void __108__VUIAccountSettingsConnectedAppsViewController__handleToggleSpecifier
   }
 }
 
-- (void)_toggleSpecifier:(id)a3 sender:(id)a4
+- (void)_toggleSpecifier:(id)specifier sender:(id)sender
 {
   v40[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([(VUIAccountSettingsConnectedAppsViewController *)self _runPrePromptContinuationCheck:v6 sender:v7])
+  specifierCopy = specifier;
+  senderCopy = sender;
+  if ([(VUIAccountSettingsConnectedAppsViewController *)self _runPrePromptContinuationCheck:specifierCopy sender:senderCopy])
   {
-    v8 = [v7 userInfo];
-    v9 = [v8 externalID];
-    v10 = [v7 identifier];
-    [(VUIConnectedAppOperationCoordinator *)self->_inflightOperationCoordinator setOperationForID:v10 operationType:v6 != 0];
+    userInfo = [senderCopy userInfo];
+    externalID = [userInfo externalID];
+    identifier = [senderCopy identifier];
+    [(VUIConnectedAppOperationCoordinator *)self->_inflightOperationCoordinator setOperationForID:identifier operationType:specifierCopy != 0];
     if (_os_feature_enabled_impl())
     {
       location = 0;
@@ -634,7 +634,7 @@ void __108__VUIAccountSettingsConnectedAppsViewController__handleToggleSpecifier
       v14 = dispatch_time(0, 10000000000);
       dispatch_semaphore_wait(v13, v14);
       v15 = objc_alloc(MEMORY[0x1E69E14F0]);
-      v16 = [(VUIAccountSettingsConnectedAppsViewController *)self _getChannelDetailsFor:v10 channelsResponse:p_location[5]];
+      v16 = [(VUIAccountSettingsConnectedAppsViewController *)self _getChannelDetailsFor:identifier channelsResponse:p_location[5]];
       v17 = [v15 initWithDictionary:v16];
 
       _Block_object_dispose(&location, 8);
@@ -642,8 +642,8 @@ void __108__VUIAccountSettingsConnectedAppsViewController__handleToggleSpecifier
 
     else
     {
-      v18 = [MEMORY[0x1E69E1500] sharedInstance];
-      v17 = [v18 channelForID:v10];
+      mEMORY[0x1E69E1500] = [MEMORY[0x1E69E1500] sharedInstance];
+      v17 = [mEMORY[0x1E69E1500] channelForID:identifier];
     }
 
     objc_initWeak(&location, self);
@@ -656,15 +656,15 @@ void __108__VUIAccountSettingsConnectedAppsViewController__handleToggleSpecifier
       v28[3] = &unk_1E8735E70;
       v20 = &v29;
       objc_copyWeak(&v29, &location);
-      v28[4] = v6;
+      v28[4] = specifierCopy;
       v28[5] = v17;
-      v28[6] = v9;
+      v28[6] = externalID;
       [_TtC8VideosUI25VUIUTSNetworkManagerProxy fetchConfiguration:0 completion:v28];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E69E1508] sharedInstance];
+      mEMORY[0x1E69E1508] = [MEMORY[0x1E69E1508] sharedInstance];
       v19 = v26;
       v26[0] = MEMORY[0x1E69E9820];
       v26[1] = 3221225472;
@@ -672,22 +672,22 @@ void __108__VUIAccountSettingsConnectedAppsViewController__handleToggleSpecifier
       v26[3] = &unk_1E8735E98;
       v20 = &v27;
       objc_copyWeak(&v27, &location);
-      v26[4] = v6;
+      v26[4] = specifierCopy;
       v26[5] = v17;
-      v26[6] = v9;
-      [v21 fetchConfigurationWithCompletionHandler:v26];
+      v26[6] = externalID;
+      [mEMORY[0x1E69E1508] fetchConfigurationWithCompletionHandler:v26];
     }
 
     objc_destroyWeak(v20);
     v22 = +[VUIMetricsController sharedInstance];
     v39[0] = @"targetId";
     v39[1] = @"targetType";
-    v40[0] = v10;
+    v40[0] = identifier;
     v40[1] = @"switch";
     v39[2] = @"actionType";
-    v23 = [v6 BOOLValue];
+    bOOLValue = [specifierCopy BOOLValue];
     v24 = VUIMetricsActionTypeAdd;
-    if (!v23)
+    if (!bOOLValue)
     {
       v24 = VUIMetricsActionTypeRemove;
     }
@@ -752,17 +752,17 @@ void __73__VUIAccountSettingsConnectedAppsViewController__toggleSpecifier_sender
   [WeakRetained _handleToggleSpecifierHelper:*(a1 + 32) channel:*(a1 + 40) externalID:*(a1 + 48) vppaStatus:v4];
 }
 
-- (id)_accessStatusForSpecifier:(id)a3
+- (id)_accessStatusForSpecifier:(id)specifier
 {
-  v4 = [a3 userInfo];
-  v5 = [MEMORY[0x1E69E15D0] sharedSettings];
-  v6 = [v4 channelID];
-  v7 = [v4 externalID];
-  v8 = [v5 settingsForChannelID:v6 externalID:v7];
+  userInfo = [specifier userInfo];
+  mEMORY[0x1E69E15D0] = [MEMORY[0x1E69E15D0] sharedSettings];
+  channelID = [userInfo channelID];
+  externalID = [userInfo externalID];
+  v8 = [mEMORY[0x1E69E15D0] settingsForChannelID:channelID externalID:externalID];
 
   inflightOperationCoordinator = self->_inflightOperationCoordinator;
-  v10 = [v4 channelID];
-  v11 = [(VUIConnectedAppOperationCoordinator *)inflightOperationCoordinator specifierToggleValueForID:v10];
+  channelID2 = [userInfo channelID];
+  v11 = [(VUIConnectedAppOperationCoordinator *)inflightOperationCoordinator specifierToggleValueForID:channelID2];
 
   if (v11)
   {
@@ -782,7 +782,7 @@ void __73__VUIAccountSettingsConnectedAppsViewController__toggleSpecifier_sender
   return v12;
 }
 
-- (void)_showPrivacySheet:(id)a3
+- (void)_showPrivacySheet:(id)sheet
 {
   v8[3] = *MEMORY[0x1E69E9840];
   v4 = [MEMORY[0x1E69B7D58] presenterForPrivacySplashWithIdentifier:@"com.apple.onboarding.tvapp"];
@@ -799,21 +799,21 @@ void __73__VUIAccountSettingsConnectedAppsViewController__toggleSpecifier_sender
   [v5 recordClick:v6];
 }
 
-- (void)_showVppaExpiredPrompt:(id)a3
+- (void)_showVppaExpiredPrompt:(id)prompt
 {
-  v4 = a3;
+  promptCopy = prompt;
   inflightOperationCoordinator = self->_inflightOperationCoordinator;
-  v6 = [v4 channelID];
-  [(VUIConnectedAppOperationCoordinator *)inflightOperationCoordinator clearOperationForID:v6];
+  channelID = [promptCopy channelID];
+  [(VUIConnectedAppOperationCoordinator *)inflightOperationCoordinator clearOperationForID:channelID];
 
-  v7 = [(VUIAccountSettingsConnectedAppsViewController *)self navigationController];
+  navigationController = [(VUIAccountSettingsConnectedAppsViewController *)self navigationController];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __72__VUIAccountSettingsConnectedAppsViewController__showVppaExpiredPrompt___block_invoke;
   v9[3] = &unk_1E872D768;
-  v10 = v4;
-  v8 = v4;
-  [v7 dismissViewControllerAnimated:1 completion:v9];
+  v10 = promptCopy;
+  v8 = promptCopy;
+  [navigationController dismissViewControllerAnimated:1 completion:v9];
 }
 
 void __72__VUIAccountSettingsConnectedAppsViewController__showVppaExpiredPrompt___block_invoke(uint64_t a1)
@@ -841,30 +841,30 @@ void __72__VUIAccountSettingsConnectedAppsViewController__showVppaExpiredPrompt_
   }
 }
 
-- (void)_completeChannelEnablement:(BOOL)a3 channelID:(id)a4 externalID:(id)a5
+- (void)_completeChannelEnablement:(BOOL)enablement channelID:(id)d externalID:(id)iD
 {
-  v6 = a3;
+  enablementCopy = enablement;
   v15 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  [(VUIConnectedAppOperationCoordinator *)self->_inflightOperationCoordinator clearOperationForID:v8];
-  if (v6)
+  dCopy = d;
+  iDCopy = iD;
+  [(VUIConnectedAppOperationCoordinator *)self->_inflightOperationCoordinator clearOperationForID:dCopy];
+  if (enablementCopy)
   {
     v10 = VUIDefaultLogObject();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412290;
-      v14 = v8;
+      v14 = dCopy;
       _os_log_impl(&dword_1E323F000, v10, OS_LOG_TYPE_DEFAULT, "VUIAccountSettingsConnectedApps - promptToEnableChannel - Successfully enabled channel %@", &v13, 0xCu);
     }
 
-    v11 = +[VUIVPPAManager sharedInstance];
-    [v11 reloadConfigurationAfterVPPAChange];
+    mEMORY[0x1E69E15D0] = +[VUIVPPAManager sharedInstance];
+    [mEMORY[0x1E69E15D0] reloadConfigurationAfterVPPAChange];
   }
 
   else
   {
-    v11 = [MEMORY[0x1E69E15D0] sharedSettings];
+    mEMORY[0x1E69E15D0] = [MEMORY[0x1E69E15D0] sharedSettings];
     v12 = VUIDefaultLogObject();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
@@ -872,33 +872,33 @@ void __72__VUIAccountSettingsConnectedAppsViewController__showVppaExpiredPrompt_
       _os_log_impl(&dword_1E323F000, v12, OS_LOG_TYPE_DEFAULT, "VUIAccountSettingsConnectedApps - promptToEnableChannel - Failed to sync opt-in to cloud, reverting", &v13, 2u);
     }
 
-    [v11 setStatus:2 forChannelID:v8 externalID:v9];
-    [(VUIAccountSettingsConnectedAppsViewController *)self _reloadSpecifierValueAfterCancelation:v8];
+    [mEMORY[0x1E69E15D0] setStatus:2 forChannelID:dCopy externalID:iDCopy];
+    [(VUIAccountSettingsConnectedAppsViewController *)self _reloadSpecifierValueAfterCancelation:dCopy];
   }
 }
 
-- (void)_promptToEnableChannel:(id)a3 withExternalID:(id)a4
+- (void)_promptToEnableChannel:(id)channel withExternalID:(id)d
 {
-  v6 = a3;
-  v43 = a4;
-  v7 = [MEMORY[0x1E69D5920] activeAccount];
-  v8 = [v7 username];
+  channelCopy = channel;
+  dCopy = d;
+  activeAccount = [MEMORY[0x1E69D5920] activeAccount];
+  username = [activeAccount username];
 
   v9 = +[VUILocalizationManager sharedInstance];
   v10 = [v9 localizedStringForKey:@"SETTINGS_APP_OPT_IN_PROMPT_FORMAT"];
 
   v11 = MEMORY[0x1E696AEC0];
-  v12 = [v6 name];
+  name = [channelCopy name];
   v42 = v10;
-  v13 = [v11 stringWithValidatedFormat:v10 validFormatSpecifiers:@"%@ %@" error:0, v12, v8];
+  v13 = [v11 stringWithValidatedFormat:v10 validFormatSpecifiers:@"%@ %@" error:0, name, username];
 
   v14 = +[VUILocalizationManager sharedInstance];
   v15 = [v14 localizedStringForKey:@"SETTINGS_APP_OPT_IN_TITLE_FORMAT"];
 
   v16 = MEMORY[0x1E696AEC0];
-  v17 = [v6 name];
+  name2 = [channelCopy name];
   v40 = v15;
-  v18 = [v16 stringWithValidatedFormat:v15 validFormatSpecifiers:@"%@" error:0, v17];
+  v18 = [v16 stringWithValidatedFormat:v15 validFormatSpecifiers:@"%@" error:0, name2];
 
   v39 = v18;
   if ([(VUIAccountSettingsConnectedAppsViewController *)self _alertStyle]== 1)
@@ -914,14 +914,14 @@ void __72__VUIAccountSettingsConnectedAppsViewController__showVppaExpiredPrompt_
   v38 = v19;
   v41 = v13;
   v20 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v38 message:v13 preferredStyle:{-[VUIAccountSettingsConnectedAppsViewController _alertStyle](self, "_alertStyle")}];
-  v21 = [v6 channelID];
+  channelID = [channelCopy channelID];
   v22 = +[VUILocalizationManager sharedInstance];
   v23 = [v22 localizedStringForKey:@"SETTINGS_APP_OPT_IN_FORMAT"];
 
   v24 = MEMORY[0x1E696AEC0];
-  v25 = [v6 name];
+  name3 = [channelCopy name];
   v37 = v23;
-  v26 = [v24 stringWithValidatedFormat:v23 validFormatSpecifiers:@"%@" error:0, v25];
+  v26 = [v24 stringWithValidatedFormat:v23 validFormatSpecifiers:@"%@" error:0, name3];
 
   objc_initWeak(location, self);
   v27 = MEMORY[0x1E69DC648];
@@ -930,11 +930,11 @@ void __72__VUIAccountSettingsConnectedAppsViewController__showVppaExpiredPrompt_
   v48[2] = __87__VUIAccountSettingsConnectedAppsViewController__promptToEnableChannel_withExternalID___block_invoke;
   v48[3] = &unk_1E8735F10;
   objc_copyWeak(&v52, location);
-  v28 = v21;
+  v28 = channelID;
   v49 = v28;
-  v29 = v43;
+  v29 = dCopy;
   v50 = v29;
-  v30 = v6;
+  v30 = channelCopy;
   v51 = v30;
   v44 = v26;
   v31 = [v27 actionWithTitle:v26 style:0 handler:v48];
@@ -1045,27 +1045,27 @@ void __87__VUIAccountSettingsConnectedAppsViewController__promptToEnableChannel_
   [WeakRetained _handleChannelPromptDismiss:*(a1 + 32)];
 }
 
-- (void)_completeChannelDisablement:(BOOL)a3 channelID:(id)a4 externalID:(id)a5 error:(id)a6
+- (void)_completeChannelDisablement:(BOOL)disablement channelID:(id)d externalID:(id)iD error:(id)error
 {
-  v8 = a3;
+  disablementCopy = disablement;
   v18 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  [(VUIConnectedAppOperationCoordinator *)self->_inflightOperationCoordinator clearOperationForID:v10];
+  dCopy = d;
+  iDCopy = iD;
+  errorCopy = error;
+  [(VUIConnectedAppOperationCoordinator *)self->_inflightOperationCoordinator clearOperationForID:dCopy];
   v13 = VUIDefaultLogObject();
   v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
-  if (v8)
+  if (disablementCopy)
   {
     if (v14)
     {
       v16 = 138412290;
-      v17 = v10;
+      v17 = dCopy;
       _os_log_impl(&dword_1E323F000, v13, OS_LOG_TYPE_DEFAULT, "VUIAccountSettingsConnectedApps - promptToDisableChannel - Successfully disabled channel %@", &v16, 0xCu);
     }
 
-    v15 = +[VUIVPPAManager sharedInstance];
-    [v15 reloadConfigurationAfterVPPAChange];
+    mEMORY[0x1E69E15D0] = +[VUIVPPAManager sharedInstance];
+    [mEMORY[0x1E69E15D0] reloadConfigurationAfterVPPAChange];
   }
 
   else
@@ -1073,37 +1073,37 @@ void __87__VUIAccountSettingsConnectedAppsViewController__promptToEnableChannel_
     if (v14)
     {
       v16 = 138412290;
-      v17 = v12;
+      v17 = errorCopy;
       _os_log_impl(&dword_1E323F000, v13, OS_LOG_TYPE_DEFAULT, "VUIAccountSettingsConnectedApps - promptToDisableChannel - Failed to sync opt-out to cloud, reverting: %@", &v16, 0xCu);
     }
 
-    v15 = [MEMORY[0x1E69E15D0] sharedSettings];
-    [v15 setStatus:1 forChannelID:v10 externalID:v11];
-    [(VUIAccountSettingsConnectedAppsViewController *)self _reloadSpecifierValueAfterCancelation:v10];
+    mEMORY[0x1E69E15D0] = [MEMORY[0x1E69E15D0] sharedSettings];
+    [mEMORY[0x1E69E15D0] setStatus:1 forChannelID:dCopy externalID:iDCopy];
+    [(VUIAccountSettingsConnectedAppsViewController *)self _reloadSpecifierValueAfterCancelation:dCopy];
   }
 }
 
-- (void)_promptToDisableChannel:(id)a3 withExternalID:(id)a4
+- (void)_promptToDisableChannel:(id)channel withExternalID:(id)d
 {
-  v6 = a3;
-  v54 = a4;
-  v7 = [MEMORY[0x1E69D5920] activeAccount];
-  v8 = [v7 username];
+  channelCopy = channel;
+  dCopy = d;
+  activeAccount = [MEMORY[0x1E69D5920] activeAccount];
+  username = [activeAccount username];
 
   v9 = +[VUILocalizationManager sharedInstance];
   v10 = [v9 localizedStringForKey:@"SETTINGS_APP_OPT_OUT_PROMPT_FORMAT"];
 
   v11 = MEMORY[0x1E696AEC0];
-  v12 = [v6 name];
-  v13 = [v6 name];
-  v14 = [v11 stringWithValidatedFormat:v10 validFormatSpecifiers:@"%@ %@ %@" error:0, v12, v13, v8];
+  name = [channelCopy name];
+  name2 = [channelCopy name];
+  v14 = [v11 stringWithValidatedFormat:v10 validFormatSpecifiers:@"%@ %@ %@" error:0, name, name2, username];
 
   v15 = +[VUILocalizationManager sharedInstance];
   v16 = [v15 localizedStringForKey:@"SETTINGS_APP_OPT_OUT_TITLE_FORMAT"];
 
   v17 = MEMORY[0x1E696AEC0];
-  v18 = [v6 name];
-  v19 = [v17 stringWithValidatedFormat:v16 validFormatSpecifiers:@"%@" error:0, v18];
+  name3 = [channelCopy name];
+  v19 = [v17 stringWithValidatedFormat:v16 validFormatSpecifiers:@"%@" error:0, name3];
 
   v51 = v19;
   if ([(VUIAccountSettingsConnectedAppsViewController *)self _alertStyle]== 1)
@@ -1119,19 +1119,19 @@ void __87__VUIAccountSettingsConnectedAppsViewController__promptToEnableChannel_
   v50 = v20;
   v52 = v14;
   v21 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v50 message:v14 preferredStyle:{-[VUIAccountSettingsConnectedAppsViewController _alertStyle](self, "_alertStyle")}];
-  v22 = [v6 channelID];
-  v53 = self;
+  channelID = [channelCopy channelID];
+  selfCopy = self;
   objc_initWeak(location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __88__VUIAccountSettingsConnectedAppsViewController__promptToDisableChannel_withExternalID___block_invoke;
   aBlock[3] = &unk_1E8734880;
   objc_copyWeak(&v69, location);
-  v23 = v22;
+  v23 = channelID;
   v66 = v23;
-  v49 = v54;
+  v49 = dCopy;
   v67 = v49;
-  v55 = v6;
+  v55 = channelCopy;
   v68 = v55;
   v24 = _Block_copy(aBlock);
   v25 = +[VUILocalizationManager sharedInstance];
@@ -1139,8 +1139,8 @@ void __87__VUIAccountSettingsConnectedAppsViewController__promptToEnableChannel_
   v48 = v16;
 
   v27 = MEMORY[0x1E696AEC0];
-  v28 = [v55 name];
-  v29 = [v27 stringWithValidatedFormat:v26 validFormatSpecifiers:@"%@" error:0, v28];
+  name4 = [v55 name];
+  v29 = [v27 stringWithValidatedFormat:v26 validFormatSpecifiers:@"%@" error:0, name4];
   v46 = v26;
   v47 = v10;
 
@@ -1183,7 +1183,7 @@ void __87__VUIAccountSettingsConnectedAppsViewController__promptToEnableChannel_
   [v21 addAction:v33];
   [v21 addAction:v39];
   [v21 addAction:v44];
-  [(VUIAccountSettingsConnectedAppsViewController *)v53 presentViewController:v21 animated:1 completion:0];
+  [(VUIAccountSettingsConnectedAppsViewController *)selfCopy presentViewController:v21 animated:1 completion:0];
 
   objc_destroyWeak(&v58);
   objc_destroyWeak(&v69);
@@ -1334,13 +1334,13 @@ void __88__VUIAccountSettingsConnectedAppsViewController__promptToDisableChannel
   [WeakRetained _handleChannelPromptDismiss:*(a1 + 32)];
 }
 
-- (BOOL)_runPrePromptContinuationCheck:(id)a3 sender:(id)a4
+- (BOOL)_runPrePromptContinuationCheck:(id)check sender:(id)sender
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 identifier];
-  v9 = [(VUIConnectedAppOperationCoordinator *)self->_inflightOperationCoordinator isReloadingForID:v8];
+  checkCopy = check;
+  senderCopy = sender;
+  identifier = [senderCopy identifier];
+  v9 = [(VUIConnectedAppOperationCoordinator *)self->_inflightOperationCoordinator isReloadingForID:identifier];
   v10 = v9 | [(VUIConnectedAppOperationCoordinator *)self->_inflightOperationCoordinator isCurrentlyPrompting];
   if (v10)
   {
@@ -1349,24 +1349,24 @@ void __88__VUIAccountSettingsConnectedAppsViewController__promptToDisableChannel
     {
       v12 = @"prompting";
       v16 = 138412802;
-      v17 = v6;
+      v17 = checkCopy;
       v18 = 2112;
       if (v9)
       {
         v12 = @"reloading";
       }
 
-      v19 = v8;
+      v19 = identifier;
       v20 = 2112;
       v21 = v12;
       _os_log_impl(&dword_1E323F000, v11, OS_LOG_TYPE_DEFAULT, "VUIAccountSettingsConnectedApps - Received toggleSpecifier of value:%@ for specifierID: %@ while %@. Clearing operation for this channel", &v16, 0x20u);
     }
 
-    [(VUIConnectedAppOperationCoordinator *)self->_inflightOperationCoordinator clearOperationForID:v8];
-    [(VUIAccountSettingsConnectedAppsViewController *)self reloadSpecifier:v7 animated:1];
+    [(VUIConnectedAppOperationCoordinator *)self->_inflightOperationCoordinator clearOperationForID:identifier];
+    [(VUIAccountSettingsConnectedAppsViewController *)self reloadSpecifier:senderCopy animated:1];
   }
 
-  if (v6 && [v6 intValue] < 2)
+  if (checkCopy && [checkCopy intValue] < 2)
   {
     v14 = v10 ^ 1;
   }
@@ -1376,7 +1376,7 @@ void __88__VUIAccountSettingsConnectedAppsViewController__promptToDisableChannel
     v13 = VUIDefaultLogObject();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      [(VUIAccountSettingsConnectedAppsViewController *)v6 _runPrePromptContinuationCheck:v8 sender:v13];
+      [(VUIAccountSettingsConnectedAppsViewController *)checkCopy _runPrePromptContinuationCheck:identifier sender:v13];
     }
 
     v14 = 0;
@@ -1385,20 +1385,20 @@ void __88__VUIAccountSettingsConnectedAppsViewController__promptToDisableChannel
   return v14 & 1;
 }
 
-- (void)_reloadSpecifierValueAfterCancelation:(id)a3
+- (void)_reloadSpecifierValueAfterCancelation:(id)cancelation
 {
-  v4 = a3;
-  v5 = [(VUIAccountSettingsConnectedAppsViewController *)self specifierForID:v4];
+  cancelationCopy = cancelation;
+  v5 = [(VUIAccountSettingsConnectedAppsViewController *)self specifierForID:cancelationCopy];
   objc_initWeak(&location, self);
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __87__VUIAccountSettingsConnectedAppsViewController__reloadSpecifierValueAfterCancelation___block_invoke;
   v8[3] = &unk_1E872D9B8;
   objc_copyWeak(&v11, &location);
-  v9 = v4;
+  v9 = cancelationCopy;
   v10 = v5;
   v6 = v5;
-  v7 = v4;
+  v7 = cancelationCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v8);
 
   objc_destroyWeak(&v11);
@@ -1412,17 +1412,17 @@ void __87__VUIAccountSettingsConnectedAppsViewController__reloadSpecifierValueAf
   [WeakRetained reloadSpecifier:*(a1 + 40) animated:1];
 }
 
-- (void)_handleChannelPromptDismiss:(id)a3
+- (void)_handleChannelPromptDismiss:(id)dismiss
 {
   v9[4] = *MEMORY[0x1E69E9840];
   inflightOperationCoordinator = self->_inflightOperationCoordinator;
-  v5 = a3;
-  [(VUIConnectedAppOperationCoordinator *)inflightOperationCoordinator clearOperationForID:v5];
-  [(VUIAccountSettingsConnectedAppsViewController *)self _reloadSpecifierValueAfterCancelation:v5];
+  dismissCopy = dismiss;
+  [(VUIConnectedAppOperationCoordinator *)inflightOperationCoordinator clearOperationForID:dismissCopy];
+  [(VUIAccountSettingsConnectedAppsViewController *)self _reloadSpecifierValueAfterCancelation:dismissCopy];
   v6 = +[VUIMetricsController sharedInstance];
   v8[0] = @"targetId";
   v8[1] = @"targetType";
-  v9[0] = v5;
+  v9[0] = dismissCopy;
   v9[1] = @"alertButton";
   v8[2] = @"actionType";
   v8[3] = @"actionContext";
@@ -1436,8 +1436,8 @@ void __87__VUIAccountSettingsConnectedAppsViewController__reloadSpecifierValueAf
 - (int64_t)_alertStyle
 {
   v3 = [MEMORY[0x1E69DD1B8] traitCollectionWithHorizontalSizeClass:2];
-  v4 = [(VUIAccountSettingsConnectedAppsViewController *)self traitCollection];
-  v5 = [v4 containsTraitsInCollection:v3];
+  traitCollection = [(VUIAccountSettingsConnectedAppsViewController *)self traitCollection];
+  v5 = [traitCollection containsTraitsInCollection:v3];
 
   return v5;
 }
@@ -1447,28 +1447,28 @@ void __87__VUIAccountSettingsConnectedAppsViewController__reloadSpecifierValueAf
   if (self->_showsDoneButton)
   {
     v5 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:self action:sel__dismiss];
-    v4 = [(VUIAccountSettingsConnectedAppsViewController *)self navigationItem];
-    [v4 setRightBarButtonItem:v5];
+    navigationItem = [(VUIAccountSettingsConnectedAppsViewController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:v5];
   }
 }
 
 - (void)_dismiss
 {
-  v2 = [(VUIAccountSettingsConnectedAppsViewController *)self presentingViewController];
-  [v2 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(VUIAccountSettingsConnectedAppsViewController *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-+ (void)fetchConnectedAppsWithCompletion:(id)a3
++ (void)fetchConnectedAppsWithCompletion:(id)completion
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E69E15D0] sharedSettings];
+  completionCopy = completion;
+  mEMORY[0x1E69E15D0] = [MEMORY[0x1E69E15D0] sharedSettings];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __82__VUIAccountSettingsConnectedAppsViewController_fetchConnectedAppsWithCompletion___block_invoke;
   v6[3] = &unk_1E872E470;
-  v7 = v3;
-  v5 = v3;
-  [v4 synchronize:1 completion:v6];
+  v7 = completionCopy;
+  v5 = completionCopy;
+  [mEMORY[0x1E69E15D0] synchronize:1 completion:v6];
 }
 
 void __82__VUIAccountSettingsConnectedAppsViewController_fetchConnectedAppsWithCompletion___block_invoke(uint64_t a1, uint64_t a2, void *a3)

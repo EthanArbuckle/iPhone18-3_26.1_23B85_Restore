@@ -1,20 +1,20 @@
 @interface _UIContextMenuAvoidanceSceneComponent
-+ (id)sceneComponentForView:(id)a3;
-- (UIEdgeInsets)_overlapInsetsInCoordinateSpace:(id)a3;
++ (id)sceneComponentForView:(id)view;
+- (UIEdgeInsets)_overlapInsetsInCoordinateSpace:(id)space;
 - (UIScene)_scene;
-- (_UIContextMenuAvoidanceSceneComponent)initWithScene:(id)a3;
-- (id)addAvoidanceRect:(id)a3 forKey:(id)a4;
+- (_UIContextMenuAvoidanceSceneComponent)initWithScene:(id)scene;
+- (id)addAvoidanceRect:(id)rect forKey:(id)key;
 - (unint64_t)_nextAssertionID;
-- (void)assertionActivationStateChangedToState:(BOOL)a3 forType:(unint64_t)a4;
-- (void)removeAvoidanceRectForKey:(id)a3;
+- (void)assertionActivationStateChangedToState:(BOOL)state forType:(unint64_t)type;
+- (void)removeAvoidanceRectForKey:(id)key;
 @end
 
 @implementation _UIContextMenuAvoidanceSceneComponent
 
-- (_UIContextMenuAvoidanceSceneComponent)initWithScene:(id)a3
+- (_UIContextMenuAvoidanceSceneComponent)initWithScene:(id)scene
 {
   v33 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  sceneCopy = scene;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -33,7 +33,7 @@
       v23 = 2114;
       v24 = v19;
       v25 = 2048;
-      v26 = self;
+      selfCopy = self;
       v27 = 2114;
       v28 = @"_UIContextMenuAvoidanceSceneComponent.m";
       v29 = 1024;
@@ -55,10 +55,10 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeWeak(&v6->_scene, v5);
-    v8 = [MEMORY[0x1E695DF90] dictionary];
+    objc_storeWeak(&v6->_scene, sceneCopy);
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     avoidanceRects = v7->_avoidanceRects;
-    v7->_avoidanceRects = v8;
+    v7->_avoidanceRects = dictionary;
 
     v10 = [[_UIAssertionController alloc] initWithAssertionSubject:v7];
     assertionController = v7->_assertionController;
@@ -68,21 +68,21 @@
   return v7;
 }
 
-+ (id)sceneComponentForView:(id)a3
++ (id)sceneComponentForView:(id)view
 {
-  v3 = [a3 _window];
-  v4 = [v3 windowScene];
-  v5 = [v4 _contextMenuAvoidanceSceneComponent];
+  _window = [view _window];
+  windowScene = [_window windowScene];
+  _contextMenuAvoidanceSceneComponent = [windowScene _contextMenuAvoidanceSceneComponent];
 
-  return v5;
+  return _contextMenuAvoidanceSceneComponent;
 }
 
-- (id)addAvoidanceRect:(id)a3 forKey:(id)a4
+- (id)addAvoidanceRect:(id)rect forKey:(id)key
 {
   v32 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (![v8 length])
+  rectCopy = rect;
+  keyCopy = key;
+  if (![keyCopy length])
   {
     v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Avoidance rect key cannot be empty."];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -95,7 +95,7 @@
       v22 = 2114;
       v23 = v19;
       v24 = 2048;
-      v25 = self;
+      selfCopy = self;
       v26 = 2114;
       v27 = @"_UIContextMenuAvoidanceSceneComponent.m";
       v28 = 1024;
@@ -115,29 +115,29 @@
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = v9;
-    v11 = _NSStringFromUIRectEdge([v7 edge]);
+    v11 = _NSStringFromUIRectEdge([rectCopy edge]);
     v20 = 138412546;
-    v21 = v8;
+    v21 = keyCopy;
     v22 = 2112;
     v23 = v11;
     _os_log_impl(&dword_188A29000, v10, OS_LOG_TYPE_DEFAULT, "Adding menu avoidance rect for key: %@ (edge = %@)", &v20, 0x16u);
   }
 
-  [(NSMutableDictionary *)self->_avoidanceRects setObject:v7 forKey:v8];
-  v12 = [(_UIContextMenuAvoidanceSceneComponent *)self _nextAssertionID];
-  v13 = [(_UIContextMenuAvoidanceSceneComponent *)self assertionController];
-  v14 = [v13 vendAssertionOfType:v12 initialState:0 reason:v8 requiresExplicitInvalidation:0];
+  [(NSMutableDictionary *)self->_avoidanceRects setObject:rectCopy forKey:keyCopy];
+  _nextAssertionID = [(_UIContextMenuAvoidanceSceneComponent *)self _nextAssertionID];
+  assertionController = [(_UIContextMenuAvoidanceSceneComponent *)self assertionController];
+  v14 = [assertionController vendAssertionOfType:_nextAssertionID initialState:0 reason:keyCopy requiresExplicitInvalidation:0];
 
-  [v7 setAssertionID:v12];
+  [rectCopy setAssertionID:_nextAssertionID];
 
   return v14;
 }
 
-- (void)removeAvoidanceRectForKey:(id)a3
+- (void)removeAvoidanceRectForKey:(id)key
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (![v5 length])
+  keyCopy = key;
+  if (![keyCopy length])
   {
     v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Avoidance rect key cannot be empty."];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -150,7 +150,7 @@
       v16 = 2114;
       v17 = v13;
       v18 = 2048;
-      v19 = self;
+      selfCopy = self;
       v20 = 2114;
       v21 = @"_UIContextMenuAvoidanceSceneComponent.m";
       v22 = 1024;
@@ -166,7 +166,7 @@
     JUMPOUT(0x18A29DBF8);
   }
 
-  v6 = [(NSMutableDictionary *)self->_avoidanceRects objectForKey:v5];
+  v6 = [(NSMutableDictionary *)self->_avoidanceRects objectForKey:keyCopy];
   if (v6)
   {
     v7 = *(__UILogGetCategoryCachedImpl("ContextMenu", &removeAvoidanceRectForKey____s_category) + 8);
@@ -175,7 +175,7 @@
       v8 = v7;
       v9 = _NSStringFromUIRectEdge([v6 edge]);
       v14 = 138412546;
-      v15 = v5;
+      v15 = keyCopy;
       v16 = 2112;
       v17 = v9;
       _os_log_impl(&dword_188A29000, v8, OS_LOG_TYPE_DEFAULT, "Removing menu avoidance rect for key: %@ (edge = %@)", &v14, 0x16u);
@@ -184,12 +184,12 @@
     [v6 setAssertionID:0];
   }
 
-  [(NSMutableDictionary *)self->_avoidanceRects removeObjectForKey:v5];
+  [(NSMutableDictionary *)self->_avoidanceRects removeObjectForKey:keyCopy];
 }
 
-- (UIEdgeInsets)_overlapInsetsInCoordinateSpace:(id)a3
+- (UIEdgeInsets)_overlapInsetsInCoordinateSpace:(id)space
 {
-  v4 = a3;
+  spaceCopy = space;
   v18 = 0;
   v19 = &v18;
   v20 = 0x4010000000;
@@ -201,7 +201,7 @@
   v15[1] = 3221225472;
   v15[2] = __73___UIContextMenuAvoidanceSceneComponent__overlapInsetsInCoordinateSpace___block_invoke;
   v15[3] = &unk_1E7128978;
-  v6 = v4;
+  v6 = spaceCopy;
   v16 = v6;
   v17 = &v18;
   [(NSMutableDictionary *)avoidanceRects enumerateKeysAndObjectsUsingBlock:v15];
@@ -222,7 +222,7 @@
   return result;
 }
 
-- (void)assertionActivationStateChangedToState:(BOOL)a3 forType:(unint64_t)a4
+- (void)assertionActivationStateChangedToState:(BOOL)state forType:(unint64_t)type
 {
   v7 = 0;
   v8 = &v7;
@@ -236,7 +236,7 @@
   v6[2] = __88___UIContextMenuAvoidanceSceneComponent_assertionActivationStateChangedToState_forType___block_invoke;
   v6[3] = &unk_1E71289A0;
   v6[4] = &v7;
-  v6[5] = a4;
+  v6[5] = type;
   [(NSMutableDictionary *)avoidanceRects enumerateKeysAndObjectsUsingBlock:v6];
   if (v8[5])
   {

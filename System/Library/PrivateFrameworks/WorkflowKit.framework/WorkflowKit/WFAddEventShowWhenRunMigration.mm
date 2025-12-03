@@ -1,17 +1,17 @@
 @interface WFAddEventShowWhenRunMigration
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4;
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version;
 - (void)migrateWorkflow;
 @end
 
 @implementation WFAddEventShowWhenRunMigration
 
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version
 {
-  v5 = a3;
-  v6 = a4;
-  if (WFCompareBundleVersions(v6, @"0") == 2 && (WFCompareBundleVersions(v6, @"1084") & 1) != 0)
+  migrationCopy = migration;
+  versionCopy = version;
+  if (WFCompareBundleVersions(versionCopy, @"0") == 2 && (WFCompareBundleVersions(versionCopy, @"1084") & 1) != 0)
   {
-    HasActionsWithIdentifier = WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.addnewevent", v5);
+    HasActionsWithIdentifier = WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.addnewevent", migrationCopy);
   }
 
   else

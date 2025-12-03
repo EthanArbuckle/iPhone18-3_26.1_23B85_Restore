@@ -1,37 +1,37 @@
 @interface SXWebContentGenericNavigationHandler
-- (SXWebContentGenericNavigationHandler)initWithActionManager:(id)a3 URLActionFactory:(id)a4;
-- (id)actionForRequest:(id)a3;
-- (id)previewViewControllerForRequest:(id)a3;
-- (unint64_t)handleRequest:(id)a3;
-- (void)commitViewController:(id)a3 URLRequest:(id)a4;
+- (SXWebContentGenericNavigationHandler)initWithActionManager:(id)manager URLActionFactory:(id)factory;
+- (id)actionForRequest:(id)request;
+- (id)previewViewControllerForRequest:(id)request;
+- (unint64_t)handleRequest:(id)request;
+- (void)commitViewController:(id)controller URLRequest:(id)request;
 @end
 
 @implementation SXWebContentGenericNavigationHandler
 
-- (SXWebContentGenericNavigationHandler)initWithActionManager:(id)a3 URLActionFactory:(id)a4
+- (SXWebContentGenericNavigationHandler)initWithActionManager:(id)manager URLActionFactory:(id)factory
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  factoryCopy = factory;
   v12.receiver = self;
   v12.super_class = SXWebContentGenericNavigationHandler;
   v9 = [(SXWebContentGenericNavigationHandler *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_actionManager, a3);
-    objc_storeStrong(&v10->_URLActionFactory, a4);
+    objc_storeStrong(&v9->_actionManager, manager);
+    objc_storeStrong(&v10->_URLActionFactory, factory);
   }
 
   return v10;
 }
 
-- (unint64_t)handleRequest:(id)a3
+- (unint64_t)handleRequest:(id)request
 {
-  v4 = [(SXWebContentGenericNavigationHandler *)self actionForRequest:a3];
+  v4 = [(SXWebContentGenericNavigationHandler *)self actionForRequest:request];
   if (v4)
   {
-    v5 = [(SXWebContentGenericNavigationHandler *)self actionManager];
-    [v5 performAction:v4 postActionHandlers:MEMORY[0x1E695E0F0]];
+    actionManager = [(SXWebContentGenericNavigationHandler *)self actionManager];
+    [actionManager performAction:v4 postActionHandlers:MEMORY[0x1E695E0F0]];
 
     v6 = 1;
   }
@@ -44,29 +44,29 @@
   return v6;
 }
 
-- (id)previewViewControllerForRequest:(id)a3
+- (id)previewViewControllerForRequest:(id)request
 {
-  v4 = [(SXWebContentGenericNavigationHandler *)self actionForRequest:a3];
-  v5 = [(SXWebContentGenericNavigationHandler *)self actionManager];
-  v6 = [v5 previewViewControllerForAction:v4];
+  v4 = [(SXWebContentGenericNavigationHandler *)self actionForRequest:request];
+  actionManager = [(SXWebContentGenericNavigationHandler *)self actionManager];
+  v6 = [actionManager previewViewControllerForAction:v4];
 
   return v6;
 }
 
-- (void)commitViewController:(id)a3 URLRequest:(id)a4
+- (void)commitViewController:(id)controller URLRequest:(id)request
 {
-  v5 = a3;
-  v6 = [(SXWebContentGenericNavigationHandler *)self actionManager];
-  [v6 commitPreviewViewController:v5];
+  controllerCopy = controller;
+  actionManager = [(SXWebContentGenericNavigationHandler *)self actionManager];
+  [actionManager commitPreviewViewController:controllerCopy];
 }
 
-- (id)actionForRequest:(id)a3
+- (id)actionForRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(SXWebContentGenericNavigationHandler *)self URLActionFactory];
-  v6 = [v4 URL];
+  requestCopy = request;
+  uRLActionFactory = [(SXWebContentGenericNavigationHandler *)self URLActionFactory];
+  v6 = [requestCopy URL];
 
-  v7 = [v5 actionForURL:v6];
+  v7 = [uRLActionFactory actionForURL:v6];
 
   return v7;
 }

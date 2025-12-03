@@ -1,16 +1,16 @@
 @interface PKStrokeProviderSliceIdentifierCoherence
 - (NSString)description;
 - (PKStrokeProviderSliceIdentifierCoherence)init;
-- (PKStrokeProviderSliceIdentifierCoherence)initWithUUID:(id)a3 tStart:(double)a4 tEnd:(double)a5;
+- (PKStrokeProviderSliceIdentifierCoherence)initWithUUID:(id)d tStart:(double)start tEnd:(double)end;
 - (int64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKStrokeProviderSliceIdentifierCoherence
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PKStrokeProviderSliceIdentifierCoherence.hash.getter();
 
   return v3;
@@ -18,7 +18,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PKStrokeProviderSliceIdentifierCoherence.description.getter();
   v5 = v4;
 
@@ -27,14 +27,14 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  PKStrokeProviderSliceIdentifierCoherence.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  PKStrokeProviderSliceIdentifierCoherence.encode(with:)(coderCopy);
 }
 
-- (PKStrokeProviderSliceIdentifierCoherence)initWithUUID:(id)a3 tStart:(double)a4 tEnd:(double)a5
+- (PKStrokeProviderSliceIdentifierCoherence)initWithUUID:(id)d tStart:(double)start tEnd:(double)end
 {
   v5 = type metadata accessor for UUID();
   MEMORY[0x1EEE9AC00](v5 - 8);

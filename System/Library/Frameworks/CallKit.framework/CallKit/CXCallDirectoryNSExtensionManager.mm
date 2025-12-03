@@ -3,12 +3,12 @@
 - (CXCallDirectoryNSExtensionManager)init;
 - (CXCallDirectoryNSExtensionManagerDelegate)delegate;
 - (void)_beginMatchingExtensionsIfNecessary;
-- (void)_extensionForIdentifier:(id)a3 containingAppBundleURL:(id)a4 completion:(id)a5;
+- (void)_extensionForIdentifier:(id)identifier containingAppBundleURL:(id)l completion:(id)completion;
 - (void)beginMatchingExtensions;
 - (void)dealloc;
-- (void)extensionsWithCompletionHandler:(id)a3;
-- (void)pluginsDidInstall:(id)a3;
-- (void)setDelegate:(id)a3 queue:(id)a4;
+- (void)extensionsWithCompletionHandler:(id)handler;
+- (void)pluginsDidInstall:(id)install;
+- (void)setDelegate:(id)delegate queue:(id)queue;
 @end
 
 @implementation CXCallDirectoryNSExtensionManager
@@ -25,46 +25,46 @@
     v2->_queue = v3;
   }
 
-  v5 = [MEMORY[0x1E6963608] defaultWorkspace];
-  [v5 addObserver:v2];
+  defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
+  [defaultWorkspace addObserver:v2];
 
   return v2;
 }
 
 - (void)dealloc
 {
-  v3 = [(CXCallDirectoryNSExtensionManager *)self extensionMatchingContext];
+  extensionMatchingContext = [(CXCallDirectoryNSExtensionManager *)self extensionMatchingContext];
 
-  if (v3)
+  if (extensionMatchingContext)
   {
     v4 = MEMORY[0x1E696ABD0];
-    v5 = [(CXCallDirectoryNSExtensionManager *)self extensionMatchingContext];
-    [v4 endMatchingExtensions:v5];
+    extensionMatchingContext2 = [(CXCallDirectoryNSExtensionManager *)self extensionMatchingContext];
+    [v4 endMatchingExtensions:extensionMatchingContext2];
   }
 
-  v6 = [MEMORY[0x1E6963608] defaultWorkspace];
-  [v6 removeObserver:self];
+  defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
+  [defaultWorkspace removeObserver:self];
 
   v7.receiver = self;
   v7.super_class = CXCallDirectoryNSExtensionManager;
   [(CXCallDirectoryNSExtensionManager *)&v7 dealloc];
 }
 
-- (void)setDelegate:(id)a3 queue:(id)a4
+- (void)setDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CXCallDirectoryNSExtensionManager *)self queue];
+  delegateCopy = delegate;
+  queueCopy = queue;
+  queue = [(CXCallDirectoryNSExtensionManager *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __55__CXCallDirectoryNSExtensionManager_setDelegate_queue___block_invoke;
   block[3] = &unk_1E7C06C80;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = delegateCopy;
+  v13 = queueCopy;
+  v9 = queueCopy;
+  v10 = delegateCopy;
+  dispatch_async(queue, block);
 }
 
 uint64_t __55__CXCallDirectoryNSExtensionManager_setDelegate_queue___block_invoke(uint64_t a1)
@@ -87,13 +87,13 @@ uint64_t __55__CXCallDirectoryNSExtensionManager_setDelegate_queue___block_invok
 
 - (void)beginMatchingExtensions
 {
-  v3 = [(CXCallDirectoryNSExtensionManager *)self queue];
+  queue = [(CXCallDirectoryNSExtensionManager *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __60__CXCallDirectoryNSExtensionManager_beginMatchingExtensions__block_invoke;
   block[3] = &unk_1E7C06CA8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 + (NSDictionary)baseExtensionMatchingAttributes
@@ -128,11 +128,11 @@ uint64_t __55__CXCallDirectoryNSExtensionManager_setDelegate_queue___block_invok
 
 - (void)_beginMatchingExtensionsIfNecessary
 {
-  v3 = [(CXCallDirectoryNSExtensionManager *)self extensionMatchingContext];
+  extensionMatchingContext = [(CXCallDirectoryNSExtensionManager *)self extensionMatchingContext];
 
-  if (!v3)
+  if (!extensionMatchingContext)
   {
-    v4 = [objc_opt_class() baseExtensionMatchingAttributes];
+    baseExtensionMatchingAttributes = [objc_opt_class() baseExtensionMatchingAttributes];
     objc_initWeak(&location, self);
     v5 = MEMORY[0x1E696ABD0];
     v8 = MEMORY[0x1E69E9820];
@@ -140,11 +140,11 @@ uint64_t __55__CXCallDirectoryNSExtensionManager_setDelegate_queue___block_invok
     v10 = __72__CXCallDirectoryNSExtensionManager__beginMatchingExtensionsIfNecessary__block_invoke;
     v11 = &unk_1E7C07048;
     objc_copyWeak(&v14, &location);
-    v12 = self;
-    v6 = v4;
+    selfCopy = self;
+    v6 = baseExtensionMatchingAttributes;
     v13 = v6;
     v7 = [v5 beginMatchingExtensionsWithAttributes:v6 completion:&v8];
-    [(CXCallDirectoryNSExtensionManager *)self setExtensionMatchingContext:v7, v8, v9, v10, v11, v12];
+    [(CXCallDirectoryNSExtensionManager *)self setExtensionMatchingContext:v7, v8, v9, v10, v11, selfCopy];
 
     objc_destroyWeak(&v14);
     objc_destroyWeak(&location);
@@ -254,11 +254,11 @@ void __72__CXCallDirectoryNSExtensionManager__beginMatchingExtensionsIfNecessary
   [v2 callDirectoryNSExtensionManager:*(a1 + 40) extensionsChanged:*(a1 + 48)];
 }
 
-- (void)extensionsWithCompletionHandler:(id)a3
+- (void)extensionsWithCompletionHandler:(id)handler
 {
-  v3 = a3;
-  v4 = [objc_opt_class() baseExtensionMatchingAttributes];
-  [MEMORY[0x1E696ABD0] extensionsWithMatchingAttributes:v4 completion:v3];
+  handlerCopy = handler;
+  baseExtensionMatchingAttributes = [objc_opt_class() baseExtensionMatchingAttributes];
+  [MEMORY[0x1E696ABD0] extensionsWithMatchingAttributes:baseExtensionMatchingAttributes completion:handlerCopy];
 }
 
 void __109__CXCallDirectoryNSExtensionManager_extensionWithIdentifier_inContainingAppWithProcessIdentifier_completion___block_invoke(uint64_t a1, void *a2)
@@ -276,26 +276,26 @@ void __109__CXCallDirectoryNSExtensionManager_extensionWithIdentifier_inContaini
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)_extensionForIdentifier:(id)a3 containingAppBundleURL:(id)a4 completion:(id)a5
+- (void)_extensionForIdentifier:(id)identifier containingAppBundleURL:(id)l completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [objc_opt_class() baseExtensionMatchingAttributes];
-  v11 = [v10 mutableCopy];
+  completionCopy = completion;
+  lCopy = l;
+  identifierCopy = identifier;
+  baseExtensionMatchingAttributes = [objc_opt_class() baseExtensionMatchingAttributes];
+  v11 = [baseExtensionMatchingAttributes mutableCopy];
 
-  [v11 setObject:v9 forKeyedSubscript:*MEMORY[0x1E696A2E0]];
-  v12 = [v8 path];
+  [v11 setObject:identifierCopy forKeyedSubscript:*MEMORY[0x1E696A2E0]];
+  path = [lCopy path];
 
-  [v11 setObject:v12 forKeyedSubscript:*MEMORY[0x1E696A2B0]];
+  [v11 setObject:path forKeyedSubscript:*MEMORY[0x1E696A2B0]];
   v13 = MEMORY[0x1E696ABD0];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __95__CXCallDirectoryNSExtensionManager__extensionForIdentifier_containingAppBundleURL_completion___block_invoke;
   v16[3] = &unk_1E7C07098;
   v17 = v11;
-  v18 = v7;
-  v14 = v7;
+  v18 = completionCopy;
+  v14 = completionCopy;
   v15 = v11;
   [v13 extensionsWithMatchingAttributes:v15 completion:v16];
 }
@@ -322,18 +322,18 @@ void __95__CXCallDirectoryNSExtensionManager__extensionForIdentifier_containingA
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)pluginsDidInstall:(id)a3
+- (void)pluginsDidInstall:(id)install
 {
-  v4 = a3;
-  v5 = [(CXCallDirectoryNSExtensionManager *)self queue];
+  installCopy = install;
+  queue = [(CXCallDirectoryNSExtensionManager *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __55__CXCallDirectoryNSExtensionManager_pluginsDidInstall___block_invoke;
   v7[3] = &unk_1E7C06BE0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = installCopy;
+  v6 = installCopy;
+  dispatch_async(queue, v7);
 }
 
 void __55__CXCallDirectoryNSExtensionManager_pluginsDidInstall___block_invoke(uint64_t a1)

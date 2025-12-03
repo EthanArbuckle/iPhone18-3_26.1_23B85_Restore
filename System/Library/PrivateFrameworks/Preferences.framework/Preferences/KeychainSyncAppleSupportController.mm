@@ -13,9 +13,9 @@
   v3 = PS_LocalizedStringForKeychainSync(@"CONTACTING_APPLE_SUPPORT_BUDDY");
   [(PSKeychainSyncViewController *)self setTitle:v3];
 
-  v4 = [(PSListController *)self table];
-  v5 = [MEMORY[0x1E69DC888] whiteColor];
-  [v4 setBackgroundColor:v5];
+  table = [(PSListController *)self table];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [table setBackgroundColor:whiteColor];
 }
 
 - (id)specifiers
@@ -25,10 +25,10 @@
   {
     v8.receiver = self;
     v8.super_class = KeychainSyncAppleSupportController;
-    v4 = [(PSKeychainSyncViewController *)&v8 specifiers];
-    v5 = [(PSKeychainSyncViewController *)self groupSpecifier];
+    specifiers = [(PSKeychainSyncViewController *)&v8 specifiers];
+    groupSpecifier = [(PSKeychainSyncViewController *)self groupSpecifier];
     v6 = PS_LocalizedStringForKeychainSync(@"APPLE_SUPPORT_VERIFICATION_DETAILS");
-    [v5 setProperty:v6 forKey:@"footerText"];
+    [groupSpecifier setProperty:v6 forKey:@"footerText"];
 
     specifiers = self->super.super._specifiers;
   }

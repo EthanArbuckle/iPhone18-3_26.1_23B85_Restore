@@ -1,35 +1,35 @@
 @interface MRUTransportControlItem
-- (BOOL)isEqual:(id)a3;
-- (MRUTransportControlItem)initWithIdentifier:(id)a3 asset:(id)a4 mainAction:(id)a5 holdBeganAction:(id)a6 holdEndAction:(id)a7;
+- (BOOL)isEqual:(id)equal;
+- (MRUTransportControlItem)initWithIdentifier:(id)identifier asset:(id)asset mainAction:(id)action holdBeganAction:(id)beganAction holdEndAction:(id)endAction;
 - (id)description;
 @end
 
 @implementation MRUTransportControlItem
 
-- (MRUTransportControlItem)initWithIdentifier:(id)a3 asset:(id)a4 mainAction:(id)a5 holdBeganAction:(id)a6 holdEndAction:(id)a7
+- (MRUTransportControlItem)initWithIdentifier:(id)identifier asset:(id)asset mainAction:(id)action holdBeganAction:(id)beganAction holdEndAction:(id)endAction
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  identifierCopy = identifier;
+  assetCopy = asset;
+  actionCopy = action;
+  beganActionCopy = beganAction;
+  endActionCopy = endAction;
   v27.receiver = self;
   v27.super_class = MRUTransportControlItem;
   v18 = [(MRUTransportControlItem *)&v27 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_identifier, a3);
-    objc_storeStrong(&v19->_asset, a4);
-    v20 = _Block_copy(v15);
+    objc_storeStrong(&v18->_identifier, identifier);
+    objc_storeStrong(&v19->_asset, asset);
+    v20 = _Block_copy(actionCopy);
     mainAction = v19->_mainAction;
     v19->_mainAction = v20;
 
-    v22 = _Block_copy(v16);
+    v22 = _Block_copy(beganActionCopy);
     holdBeganAction = v19->_holdBeganAction;
     v19->_holdBeganAction = v22;
 
-    v24 = _Block_copy(v17);
+    v24 = _Block_copy(endActionCopy);
     holdEndAction = v19->_holdEndAction;
     v19->_holdEndAction = v24;
   }
@@ -66,10 +66,10 @@
   return [v3 stringWithFormat:@"%@ identifier: %@ | asset: %@ | enabled: %@ | holding: %@", v4, identifier, asset, v7, v8];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v9) = 1;
   }
@@ -79,27 +79,27 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(MRUTransportControlItem *)v5 identifier];
-      v7 = v6;
-      if (v6 == self->_identifier)
+      v5 = equalCopy;
+      identifier = [(MRUTransportControlItem *)v5 identifier];
+      v7 = identifier;
+      if (identifier == self->_identifier)
       {
         v8 = 1;
       }
 
       else
       {
-        v8 = [(NSString *)v6 isEqual:?];
+        v8 = [(NSString *)identifier isEqual:?];
       }
 
-      v10 = [(MRUTransportControlItem *)v5 asset];
-      v11 = v8 & [v10 isEqual:self->_asset];
+      asset = [(MRUTransportControlItem *)v5 asset];
+      v11 = v8 & [asset isEqual:self->_asset];
 
-      v12 = [(MRUTransportControlItem *)v5 isEnabled];
-      LODWORD(v10) = v12 ^ [(MRUTransportControlItem *)self isEnabled];
-      v13 = [(MRUTransportControlItem *)v5 supportsHolding];
+      isEnabled = [(MRUTransportControlItem *)v5 isEnabled];
+      LODWORD(asset) = isEnabled ^ [(MRUTransportControlItem *)self isEnabled];
+      supportsHolding = [(MRUTransportControlItem *)v5 supportsHolding];
 
-      v9 = v11 & ((v10 | v13 ^ [(MRUTransportControlItem *)self supportsHolding]) ^ 1);
+      v9 = v11 & ((asset | supportsHolding ^ [(MRUTransportControlItem *)self supportsHolding]) ^ 1);
     }
 
     else

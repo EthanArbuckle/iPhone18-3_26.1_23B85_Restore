@@ -1,12 +1,12 @@
 @interface CPUIMediaButton
 - (BOOL)canShowHighlight;
 - (CGSize)intrinsicContentSize;
-- (CPUIMediaButton)initWithFrame:(CGRect)a3;
+- (CPUIMediaButton)initWithFrame:(CGRect)frame;
 - (id)colorForKnobFocusLayer;
 - (void)layoutSubviews;
-- (void)setHidden:(BOOL)a3;
-- (void)setShowBezelInTouch:(BOOL)a3;
-- (void)setShowHighlight:(BOOL)a3;
+- (void)setHidden:(BOOL)hidden;
+- (void)setShowBezelInTouch:(BOOL)touch;
+- (void)setShowHighlight:(BOOL)highlight;
 - (void)updateButtonOpacityForKnobUnfocused;
 @end
 
@@ -17,20 +17,20 @@
   v33.receiver = self;
   v33.super_class = CPUIMediaButton;
   [(CPUIMediaButton *)&v33 layoutSubviews];
-  v3 = [(CPUIMediaButton *)self canShowHighlight];
+  canShowHighlight = [(CPUIMediaButton *)self canShowHighlight];
   if ([(CPUIMediaButton *)self showHighlight])
   {
-    v4 = 1;
+    isHighlighted = 1;
   }
 
   else
   {
-    v4 = [(CPUIMediaButton *)self isHighlighted];
+    isHighlighted = [(CPUIMediaButton *)self isHighlighted];
   }
 
-  v5 = [(CPUIMediaButton *)self isFocused];
-  v6 = [(CPUIMediaButton *)self isSelected];
-  v7 = [MEMORY[0x277D75348] clearColor];
+  isFocused = [(CPUIMediaButton *)self isFocused];
+  isSelected = [(CPUIMediaButton *)self isSelected];
+  clearColor = [MEMORY[0x277D75348] clearColor];
   if (([(CPUIMediaButton *)self isHighlighted]& 1) != 0)
   {
     [MEMORY[0x277D75348] _carSystemFocusPrimaryColor];
@@ -41,8 +41,8 @@
     [(CPUIMediaButton *)self tintColorForUnhighlightedTextLabel];
   }
   v8 = ;
-  v9 = [(CPUIMediaButton *)self layer];
-  if (!v3 && ![(CPUIMediaButton *)self showBezelInTouch])
+  layer = [(CPUIMediaButton *)self layer];
+  if (!canShowHighlight && ![(CPUIMediaButton *)self showBezelInTouch])
   {
     goto LABEL_16;
   }
@@ -50,9 +50,9 @@
   focusColorLayer = self->_focusColorLayer;
   if (!focusColorLayer)
   {
-    v11 = [MEMORY[0x277CD9ED0] layer];
+    layer2 = [MEMORY[0x277CD9ED0] layer];
     v12 = self->_focusColorLayer;
-    self->_focusColorLayer = v11;
+    self->_focusColorLayer = layer2;
 
     [(CALayer *)self->_focusColorLayer setCornerCurve:*MEMORY[0x277CDA138]];
     [(CPUIMediaButton *)self focusLayerCornerRadius];
@@ -60,29 +60,29 @@
     focusColorLayer = self->_focusColorLayer;
   }
 
-  [v9 addSublayer:focusColorLayer];
+  [layer addSublayer:focusColorLayer];
   v13 = self->_focusColorLayer;
   [(CPUIMediaButton *)self bounds];
   [(CALayer *)v13 setFrame:?];
   LODWORD(v14) = 1.0;
   [(CALayer *)self->_focusColorLayer setOpacity:v14];
-  if (!v3)
+  if (!canShowHighlight)
   {
 LABEL_16:
-    if (v6)
+    if (isSelected)
     {
-      v16 = [(CPUIMediaButton *)self colorForTouchContentSelected];
+      colorForTouchContentSelected = [(CPUIMediaButton *)self colorForTouchContentSelected];
       if ([(CPUIMediaButton *)self showBezelInTouch])
       {
-        v17 = [(CPUIMediaButton *)self colorForTouchFocusLayerSelected];
+        colorForTouchFocusLayerSelected = [(CPUIMediaButton *)self colorForTouchFocusLayerSelected];
 LABEL_21:
-        v18 = v17;
+        colorForKnobFocused = colorForTouchFocusLayerSelected;
         v19 = 0;
         v20 = 0;
-        v15 = v7;
+        colorForKnobFocusLayer = clearColor;
 LABEL_31:
 
-        v15 = v18;
+        colorForKnobFocusLayer = colorForKnobFocused;
         goto LABEL_32;
       }
     }
@@ -90,29 +90,29 @@ LABEL_31:
     else
     {
       [(CPUIMediaButton *)self updateButtonOpacityForKnobUnfocused];
-      v16 = [(CPUIMediaButton *)self colorForKnobFocusLayer];
+      colorForTouchContentSelected = [(CPUIMediaButton *)self colorForKnobFocusLayer];
       if ([(CPUIMediaButton *)self showBezelInTouch])
       {
-        v17 = [(CPUIMediaButton *)self colorForTouchFocusLayer];
+        colorForTouchFocusLayerSelected = [(CPUIMediaButton *)self colorForTouchFocusLayer];
         goto LABEL_21;
       }
     }
 
     v19 = 0;
     v20 = 0;
-    v15 = v7;
+    colorForKnobFocusLayer = clearColor;
     goto LABEL_32;
   }
 
-  v15 = [(CPUIMediaButton *)self colorForKnobFocusLayer];
+  colorForKnobFocusLayer = [(CPUIMediaButton *)self colorForKnobFocusLayer];
 
-  if (v6)
+  if (isSelected)
   {
-    if (v5 || ![(CPUIMediaButton *)self shouldUpdateButtonOpacityForKnobUnfocused])
+    if (isFocused || ![(CPUIMediaButton *)self shouldUpdateButtonOpacityForKnobUnfocused])
     {
-      v22 = [(CPUIMediaButton *)self colorForKnobFocusLayerSelected];
+      colorForKnobFocusLayerSelected = [(CPUIMediaButton *)self colorForKnobFocusLayerSelected];
 
-      v15 = v22;
+      colorForKnobFocusLayer = colorForKnobFocusLayerSelected;
     }
 
     else
@@ -120,12 +120,12 @@ LABEL_31:
       [(CPUIMediaButton *)self updateButtonOpacityForKnobUnfocused];
     }
 
-    v16 = [(CPUIMediaButton *)self colorForKnobContentSelected];
-    v20 = v5;
-    if (v5)
+    colorForTouchContentSelected = [(CPUIMediaButton *)self colorForKnobContentSelected];
+    v20 = isFocused;
+    if (isFocused)
     {
 LABEL_30:
-      v18 = [(CPUIMediaButton *)self colorForKnobFocused];
+      colorForKnobFocused = [(CPUIMediaButton *)self colorForKnobFocused];
       v19 = 1;
       goto LABEL_31;
     }
@@ -133,39 +133,39 @@ LABEL_30:
 
   else
   {
-    if ((v5 & 1) == 0)
+    if ((isFocused & 1) == 0)
     {
       [(CPUIMediaButton *)self updateButtonOpacityForKnobUnfocused];
     }
 
-    v16 = [(CPUIMediaButton *)self colorForKnobFocusLayer];
+    colorForTouchContentSelected = [(CPUIMediaButton *)self colorForKnobFocusLayer];
     v20 = 0;
-    if (v5)
+    if (isFocused)
     {
       goto LABEL_30;
     }
   }
 
-  if (v4)
+  if (isHighlighted)
   {
     LODWORD(v21) = 1.0;
     [(CALayer *)self->_focusColorLayer setOpacity:v21];
-    v18 = [(CPUIMediaButton *)self colorForKnobFocused];
+    colorForKnobFocused = [(CPUIMediaButton *)self colorForKnobFocused];
     v19 = 0;
     goto LABEL_31;
   }
 
   v19 = 0;
 LABEL_32:
-  -[CALayer setBackgroundColor:](self->_focusColorLayer, "setBackgroundColor:", [v15 CGColor]);
-  v23 = [(CPUIMediaButton *)self titleLabel];
-  v24 = [v23 layer];
+  -[CALayer setBackgroundColor:](self->_focusColorLayer, "setBackgroundColor:", [colorForKnobFocusLayer CGColor]);
+  titleLabel = [(CPUIMediaButton *)self titleLabel];
+  layer3 = [titleLabel layer];
 
-  v25 = [(CPUIMediaButton *)self imageView];
-  v26 = [v25 layer];
+  imageView = [(CPUIMediaButton *)self imageView];
+  layer4 = [imageView layer];
 
-  v27 = [(CPUIMediaButton *)self imageView];
-  [v27 setTintColor:v16];
+  imageView2 = [(CPUIMediaButton *)self imageView];
+  [imageView2 setTintColor:colorForTouchContentSelected];
 
   [(CPUIMediaButton *)self setTitleColor:v8 forState:0];
   v28 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA310]];
@@ -181,7 +181,7 @@ LABEL_32:
     v31 = v29;
   }
 
-  [v26 setCompositingFilter:v31];
+  [layer4 setCompositingFilter:v31];
   if (v19)
   {
     v32 = v28;
@@ -192,15 +192,15 @@ LABEL_32:
     v32 = v30;
   }
 
-  [v24 setCompositingFilter:v32];
-  [v9 addSublayer:v26];
-  [v9 addSublayer:v24];
+  [layer3 setCompositingFilter:v32];
+  [layer addSublayer:layer4];
+  [layer addSublayer:layer3];
 }
 
 - (void)updateButtonOpacityForKnobUnfocused
 {
-  v3 = [(CPUIMediaButton *)self traitCollection];
-  v4 = [v3 userInterfaceStyle] == 1;
+  traitCollection = [(CPUIMediaButton *)self traitCollection];
+  v4 = [traitCollection userInterfaceStyle] == 1;
 
   focusColorLayer = self->_focusColorLayer;
   LODWORD(v6) = dword_2431E2678[v4];
@@ -208,17 +208,17 @@ LABEL_32:
   [(CALayer *)focusColorLayer setOpacity:v6];
 }
 
-- (CPUIMediaButton)initWithFrame:(CGRect)a3
+- (CPUIMediaButton)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = CPUIMediaButton;
-  v3 = [(CPUIMediaButton *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CPUIMediaButton *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(CPUIMediaButton *)v3 titleLabel];
+    titleLabel = [(CPUIMediaButton *)v3 titleLabel];
     v6 = [MEMORY[0x277D74300] systemFontOfSize:16.0 weight:*MEMORY[0x277D74418]];
-    [v5 setFont:v6];
+    [titleLabel setFont:v6];
 
     [(CPUIMediaButton *)v4 setShowsTouchWhenHighlighted:0];
     [(CPUIMediaButton *)v4 setAdjustsImageWhenDisabled:0];
@@ -230,44 +230,44 @@ LABEL_32:
 
 - (BOOL)canShowHighlight
 {
-  v2 = [(CPUIMediaButton *)self traitCollection];
-  v3 = CPUITraitCollectionSupportsFocus(v2);
+  traitCollection = [(CPUIMediaButton *)self traitCollection];
+  v3 = CPUITraitCollectionSupportsFocus(traitCollection);
 
   return v3;
 }
 
-- (void)setShowBezelInTouch:(BOOL)a3
+- (void)setShowBezelInTouch:(BOOL)touch
 {
-  if (self->_showBezelInTouch != a3)
+  if (self->_showBezelInTouch != touch)
   {
-    self->_showBezelInTouch = a3;
+    self->_showBezelInTouch = touch;
     [(CPUIMediaButton *)self _updateButtonStyle];
   }
 }
 
-- (void)setShowHighlight:(BOOL)a3
+- (void)setShowHighlight:(BOOL)highlight
 {
-  if (self->_showHighlight != a3)
+  if (self->_showHighlight != highlight)
   {
-    self->_showHighlight = a3;
+    self->_showHighlight = highlight;
     [(CPUIMediaButton *)self _updateButtonStyle];
   }
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
-  if ([(CPUIMediaButton *)self isHidden]!= a3)
+  hiddenCopy = hidden;
+  if ([(CPUIMediaButton *)self isHidden]!= hidden)
   {
     v6.receiver = self;
     v6.super_class = CPUIMediaButton;
-    [(CPUIMediaButton *)&v6 setHidden:v3];
+    [(CPUIMediaButton *)&v6 setHidden:hiddenCopy];
     if ([(CPUIMediaButton *)self isFocused])
     {
-      if (v3)
+      if (hiddenCopy)
       {
-        v5 = [(CPUIMediaButton *)self superview];
-        [v5 setNeedsFocusUpdate];
+        superview = [(CPUIMediaButton *)self superview];
+        [superview setNeedsFocusUpdate];
       }
     }
   }
@@ -275,12 +275,12 @@ LABEL_32:
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(CPUIMediaButton *)self titleLabel];
-  [v3 sizeThatFits:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
+  titleLabel = [(CPUIMediaButton *)self titleLabel];
+  [titleLabel sizeThatFits:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
   v5 = v4 + 12.0;
-  v6 = [(CPUIMediaButton *)self titleLabel];
-  v7 = [v6 font];
-  [v7 lineHeight];
+  titleLabel2 = [(CPUIMediaButton *)self titleLabel];
+  font = [titleLabel2 font];
+  [font lineHeight];
   v9 = v8;
 
   v10 = v5;

@@ -1,16 +1,16 @@
 @interface MCMCommand
 + (Class)incomingMessageClass;
-+ (id)relayToPrivilegedDaemonMessage:(id)a3 context:(id)a4;
++ (id)relayToPrivilegedDaemonMessage:(id)message context:(id)context;
 + (unint64_t)command;
 - (BOOL)preflightClientAllowed;
-- (MCMCommand)initWithContext:(id)a3 resultPromise:(id)a4;
-- (MCMCommand)initWithMessage:(id)a3 context:(id)a4 reply:(id)a5;
+- (MCMCommand)initWithContext:(id)context resultPromise:(id)promise;
+- (MCMCommand)initWithMessage:(id)message context:(id)context reply:(id)reply;
 - (MCMCommandContext)context;
 - (MCMReply)reply;
 - (MCMResultPromise)resultPromise;
 - (NSMutableArray)warnings;
 - (void)execute;
-- (void)recordWarning:(id)a3;
+- (void)recordWarning:(id)warning;
 @end
 
 @implementation MCMCommand
@@ -47,12 +47,12 @@
   return result;
 }
 
-- (void)recordWarning:(id)a3
+- (void)recordWarning:(id)warning
 {
   v7 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v6 = [(MCMCommand *)self warnings];
-  [v6 addObject:v4];
+  warningCopy = warning;
+  warnings = [(MCMCommand *)self warnings];
+  [warnings addObject:warningCopy];
 
   v5 = *MEMORY[0x1E69E9840];
 }
@@ -76,67 +76,67 @@
   return 0;
 }
 
-- (MCMCommand)initWithMessage:(id)a3 context:(id)a4 reply:(id)a5
+- (MCMCommand)initWithMessage:(id)message context:(id)context reply:(id)reply
 {
   v17 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [v9 resultPromise];
-  v12 = [(MCMCommand *)self initWithContext:v10 resultPromise:v11];
+  messageCopy = message;
+  replyCopy = reply;
+  contextCopy = context;
+  resultPromise = [replyCopy resultPromise];
+  v12 = [(MCMCommand *)self initWithContext:contextCopy resultPromise:resultPromise];
 
   if (v12)
   {
-    objc_storeStrong(&v12->_reply, a5);
+    objc_storeStrong(&v12->_reply, reply);
     warnings = v12->_warnings;
-    v14 = [v8 warnings];
-    [(NSMutableArray *)warnings addObjectsFromArray:v14];
+    warnings = [messageCopy warnings];
+    [(NSMutableArray *)warnings addObjectsFromArray:warnings];
   }
 
   v15 = *MEMORY[0x1E69E9840];
   return v12;
 }
 
-- (MCMCommand)initWithContext:(id)a3 resultPromise:(id)a4
+- (MCMCommand)initWithContext:(id)context resultPromise:(id)promise
 {
   v16 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  promiseCopy = promise;
   v15.receiver = self;
   v15.super_class = MCMCommand;
   v9 = [(MCMCommand *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_context, a3);
-    v11 = [v8 warnings];
+    objc_storeStrong(&v9->_context, context);
+    warnings = [promiseCopy warnings];
     warnings = v10->_warnings;
-    v10->_warnings = v11;
+    v10->_warnings = warnings;
 
-    objc_storeStrong(&v10->_resultPromise, a4);
+    objc_storeStrong(&v10->_resultPromise, promise);
   }
 
   v13 = *MEMORY[0x1E69E9840];
   return v10;
 }
 
-+ (id)relayToPrivilegedDaemonMessage:(id)a3 context:(id)a4
++ (id)relayToPrivilegedDaemonMessage:(id)message context:(id)context
 {
   buf[3] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  messageCopy = message;
+  contextCopy = context;
   container_xpc_set_use_shared_connection();
-  v7 = [v6 clientIdentity];
+  clientIdentity = [contextCopy clientIdentity];
 
-  [v7 createLibsystemClient];
+  [clientIdentity createLibsystemClient];
   v8 = container_client_copy_encoded_xpc_object();
   if (v8)
   {
-    v9 = [v5 xpcObject];
-    xpc_dictionary_set_value(v9, "ProxyForClient", v8);
+    xpcObject = [messageCopy xpcObject];
+    xpc_dictionary_set_value(xpcObject, "ProxyForClient", v8);
 
     buf[0] = 0;
-    v10 = [v5 xpcObject];
+    xpcObject2 = [messageCopy xpcObject];
     v11 = container_xpc_send_sync_message();
 
     if (v11)

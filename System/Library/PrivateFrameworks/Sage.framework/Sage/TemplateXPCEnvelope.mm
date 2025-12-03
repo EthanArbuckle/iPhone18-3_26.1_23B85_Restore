@@ -1,14 +1,14 @@
 @interface TemplateXPCEnvelope
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TemplateXPCEnvelope
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  TemplateXPCEnvelope.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  TemplateXPCEnvelope.encode(with:)(coderCopy);
 }
 
 @end

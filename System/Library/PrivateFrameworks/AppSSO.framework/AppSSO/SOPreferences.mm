@@ -1,22 +1,22 @@
 @interface SOPreferences
-+ (BOOL)BOOLValueForKey:(__CFString *)a3 defaultValue:(BOOL)a4;
++ (BOOL)BOOLValueForKey:(__CFString *)key defaultValue:(BOOL)value;
 + (BOOL)isAssociatedDomainValidated;
 + (BOOL)isExtensionSignatureValidated;
 @end
 
 @implementation SOPreferences
 
-+ (BOOL)BOOLValueForKey:(__CFString *)a3 defaultValue:(BOOL)a4
++ (BOOL)BOOLValueForKey:(__CFString *)key defaultValue:(BOOL)value
 {
   v6 = *MEMORY[0x1E695E898];
-  v7 = CFPreferencesCopyValue(a3, @"com.apple.AppSSO", *MEMORY[0x1E695E8B8], *MEMORY[0x1E695E898]);
-  if (v7 || (v7 = CFPreferencesCopyValue(a3, @"com.apple.AppSSO", *MEMORY[0x1E695E8A0], v6)) != 0)
+  v7 = CFPreferencesCopyValue(key, @"com.apple.AppSSO", *MEMORY[0x1E695E8B8], *MEMORY[0x1E695E898]);
+  if (v7 || (v7 = CFPreferencesCopyValue(key, @"com.apple.AppSSO", *MEMORY[0x1E695E8A0], v6)) != 0)
   {
     v8 = v7;
-    a4 = [v7 BOOLValue];
+    value = [v7 BOOLValue];
   }
 
-  return a4;
+  return value;
 }
 
 + (BOOL)isExtensionSignatureValidated
@@ -25,7 +25,7 @@
   block[1] = 3221225472;
   block[2] = __46__SOPreferences_isExtensionSignatureValidated__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (isExtensionSignatureValidated_onceToken != -1)
   {
     dispatch_once(&isExtensionSignatureValidated_onceToken, block);
@@ -76,7 +76,7 @@ void __46__SOPreferences_isExtensionSignatureValidated__block_invoke(uint64_t a1
   block[1] = 3221225472;
   block[2] = __44__SOPreferences_isAssociatedDomainValidated__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (isAssociatedDomainValidated_onceToken != -1)
   {
     dispatch_once(&isAssociatedDomainValidated_onceToken, block);

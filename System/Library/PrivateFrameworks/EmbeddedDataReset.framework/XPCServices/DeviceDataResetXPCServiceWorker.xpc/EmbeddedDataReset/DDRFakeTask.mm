@@ -1,6 +1,6 @@
 @interface DDRFakeTask
 - (DDRFakeTask)init;
-- (DDRFakeTask)initWithDuration:(double)a3;
+- (DDRFakeTask)initWithDuration:(double)duration;
 - (void)run;
 @end
 
@@ -19,14 +19,14 @@
   return result;
 }
 
-- (DDRFakeTask)initWithDuration:(double)a3
+- (DDRFakeTask)initWithDuration:(double)duration
 {
   v5.receiver = self;
   v5.super_class = DDRFakeTask;
   result = [(DDRFakeTask *)&v5 init];
   if (result)
   {
-    result->_duration = a3;
+    result->_duration = duration;
   }
 
   return result;

@@ -1,19 +1,19 @@
 @interface WFPersonalHotspotSettingsClient
-+ (void)createClientWithCompletionHandler:(id)a3;
-- (WFPersonalHotspotSettingsClient)initWithClient:(NETRBClient *)a3;
++ (void)createClientWithCompletionHandler:(id)handler;
+- (WFPersonalHotspotSettingsClient)initWithClient:(NETRBClient *)client;
 - (void)dealloc;
-- (void)getStateWithCompletionHandler:(id)a3;
-- (void)setState:(BOOL)a3 completionHandler:(id)a4;
+- (void)getStateWithCompletionHandler:(id)handler;
+- (void)setState:(BOOL)state completionHandler:(id)handler;
 @end
 
 @implementation WFPersonalHotspotSettingsClient
 
-- (void)setState:(BOOL)a3 completionHandler:(id)a4
+- (void)setState:(BOOL)state completionHandler:(id)handler
 {
-  v4 = a3;
+  stateCopy = state;
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (v4)
+  handlerCopy = handler;
+  if (stateCopy)
   {
     v7 = 1023;
   }
@@ -23,7 +23,7 @@
     v7 = 1022;
   }
 
-  v8 = [(WFPersonalHotspotSettingsClient *)self client];
+  client = [(WFPersonalHotspotSettingsClient *)self client];
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -46,14 +46,14 @@
   _Block_object_dispose(&v19, 8);
   if (!v9)
   {
-    v17 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"_Bool soft_NETRBClientSetGlobalServiceState(NETRBClientRef, netrbState)"}];
-    [v17 handleFailureInFunction:v18 file:@"WFPersonalHotspotSettingsClient.m" lineNumber:23 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v18 file:@"WFPersonalHotspotSettingsClient.m" lineNumber:23 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
 
-  if ((v9(v8, v7) & 1) == 0)
+  if ((v9(client, v7) & 1) == 0)
   {
     goto LABEL_13;
   }
@@ -71,13 +71,13 @@
   v13 = *MEMORY[0x277CBECE8];
   if (WiFiManagerClientCreate())
   {
-    if (v4)
+    if (stateCopy)
     {
       WiFiManagerClientSetMISDiscoveryState();
     }
 
     WiFiManagerClientSetMISDiscoveryState();
-    if (((WiFiManagerClientGetMISDiscoveryState() == 0) ^ v4))
+    if (((WiFiManagerClientGetMISDiscoveryState() == 0) ^ stateCopy))
     {
       v14 = 0;
     }
@@ -103,18 +103,18 @@ LABEL_13:
     v14 = WFSettingsClientError();
   }
 
-  v6[2](v6, v14);
+  handlerCopy[2](handlerCopy, v14);
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getStateWithCompletionHandler:(id)a3
+- (void)getStateWithCompletionHandler:(id)handler
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v13 = 0;
   v14 = 1020;
-  v5 = [(WFPersonalHotspotSettingsClient *)self client];
+  client = [(WFPersonalHotspotSettingsClient *)self client];
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -137,14 +137,14 @@ LABEL_13:
   _Block_object_dispose(&v15, 8);
   if (!v6)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"_Bool soft_NETRBClientGetGlobalServiceState(NETRBClientRef, netrbStateRef, netrbReasonRef)"}];
-    [v11 handleFailureInFunction:v12 file:@"WFPersonalHotspotSettingsClient.m" lineNumber:22 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v12 file:@"WFPersonalHotspotSettingsClient.m" lineNumber:22 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
 
-  v6(v5, &v14, &v13);
+  v6(client, &v14, &v13);
   v9 = getWFBundledIntentsLogObject();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -155,13 +155,13 @@ LABEL_13:
     _os_log_impl(&dword_23DE30000, v9, OS_LOG_TYPE_INFO, "%s Retrieved Personal Hotspot state: %d", buf, 0x12u);
   }
 
-  v4[2](v4, v14 == 1023, 0);
+  handlerCopy[2](handlerCopy, v14 == 1023, 0);
   v10 = *MEMORY[0x277D85DE8];
 }
 
 - (void)dealloc
 {
-  v3 = [(WFPersonalHotspotSettingsClient *)self client];
+  client = [(WFPersonalHotspotSettingsClient *)self client];
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -183,7 +183,7 @@ LABEL_13:
   _Block_object_dispose(&v14, 8);
   if (v4)
   {
-    v4(v3);
+    v4(client);
     v8.receiver = self;
     v8.super_class = WFPersonalHotspotSettingsClient;
     [(WFPersonalHotspotSettingsClient *)&v8 dealloc];
@@ -191,20 +191,20 @@ LABEL_13:
 
   else
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"_Bool soft_NETRBClientDestroy(NETRBClientRef)"];
-    [v6 handleFailureInFunction:v7 file:@"WFPersonalHotspotSettingsClient.m" lineNumber:21 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v7 file:@"WFPersonalHotspotSettingsClient.m" lineNumber:21 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
 }
 
-- (WFPersonalHotspotSettingsClient)initWithClient:(NETRBClient *)a3
+- (WFPersonalHotspotSettingsClient)initWithClient:(NETRBClient *)client
 {
-  if (!a3)
+  if (!client)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"WFPersonalHotspotSettingsClient.m" lineNumber:70 description:{@"Invalid parameter not satisfying: %@", @"client"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFPersonalHotspotSettingsClient.m" lineNumber:70 description:{@"Invalid parameter not satisfying: %@", @"client"}];
   }
 
   v11.receiver = self;
@@ -213,18 +213,18 @@ LABEL_13:
   v6 = v5;
   if (v5)
   {
-    v5->_client = a3;
+    v5->_client = client;
     v7 = v5;
   }
 
   return v6;
 }
 
-+ (void)createClientWithCompletionHandler:(id)a3
++ (void)createClientWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D79F18] currentDevice];
-  v6 = [v5 hasCapability:*MEMORY[0x277D7A3E8]];
+  handlerCopy = handler;
+  currentDevice = [MEMORY[0x277D79F18] currentDevice];
+  v6 = [currentDevice hasCapability:*MEMORY[0x277D7A3E8]];
 
   if ((v6 & 1) == 0)
   {
@@ -250,8 +250,8 @@ LABEL_13:
     v9 = (v7)(0, 0, 0);
     if (v9)
     {
-      v10 = [[a1 alloc] initWithClient:v9];
-      v4[2](v4, v10, 0);
+      v10 = [[self alloc] initWithClient:v9];
+      handlerCopy[2](handlerCopy, v10, 0);
 LABEL_8:
 
       return;
@@ -259,13 +259,13 @@ LABEL_8:
 
 LABEL_7:
     v10 = WFSettingsClientError();
-    (v4)[2](v4, 0, v10);
+    (handlerCopy)[2](handlerCopy, 0, v10);
     goto LABEL_8;
   }
 
-  v11 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"NETRBClientRef soft_NETRBClientCreate(__strong dispatch_queue_t, __strong NETRBEventHandler, __strong xpc_object_t)"}];
-  [v11 handleFailureInFunction:v12 file:@"WFPersonalHotspotSettingsClient.m" lineNumber:20 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v12 file:@"WFPersonalHotspotSettingsClient.m" lineNumber:20 description:{@"%s", dlerror()}];
 
   __break(1u);
 }

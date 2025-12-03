@@ -36,12 +36,12 @@
   v10 = a5;
   if ([MEMORY[0x1E696AAE8] _navigation_isRunningInSiri] && objc_msgSend(MEMORY[0x1E696AAE8], "_navigation_implementsSiriMethod"))
   {
-    v11 = [a1 siriUILocalizedStringForKey:v8 value:v9 table:v10];
+    v11 = [self siriUILocalizedStringForKey:v8 value:v9 table:v10];
   }
 
   else
   {
-    v11 = [a1 localizedStringForKey:v8 value:v9 table:v10];
+    v11 = [self localizedStringForKey:v8 value:v9 table:v10];
   }
 
   v12 = v11;
@@ -55,7 +55,7 @@
   block[1] = 3221225472;
   block[2] = __54__NSBundle_MNExtras___navigation_implementsSiriMethod__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_navigation_implementsSiriMethod_onceToken != -1)
   {
     dispatch_once(&_navigation_implementsSiriMethod_onceToken, block);

@@ -1,31 +1,31 @@
 @interface CHScriptClassificationRawResult
 + (id)changeableTextMathScriptClassifications;
 + (id)validFallbackScriptClassificationsForNontext;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToScriptClassificationRawResult:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToScriptClassificationRawResult:(id)result;
 - (BOOL)isValidScriptClassificationForShapeStroke;
-- (CHScriptClassificationRawResult)initWithCoder:(id)a3;
-- (CHScriptClassificationRawResult)initWithProbabilityByScriptClassifications:(id)a3;
+- (CHScriptClassificationRawResult)initWithCoder:(id)coder;
+- (CHScriptClassificationRawResult)initWithProbabilityByScriptClassifications:(id)classifications;
 - (double)mathScriptProbability;
 - (id)fallbackScriptClassificationForWeakLabel;
 - (id)fallbackTextScriptClassificationForNonText;
-- (id)scriptClassificationAtIndex:(int64_t)a3;
-- (id)scriptProbabilityAtIndex:(int64_t)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)scriptClassificationAtIndex:(int64_t)index;
+- (id)scriptProbabilityAtIndex:(int64_t)index;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CHScriptClassificationRawResult
 
-- (CHScriptClassificationRawResult)initWithProbabilityByScriptClassifications:(id)a3
+- (CHScriptClassificationRawResult)initWithProbabilityByScriptClassifications:(id)classifications
 {
-  v5 = a3;
+  classificationsCopy = classifications;
   v21.receiver = self;
   v21.super_class = CHScriptClassificationRawResult;
   v6 = [(CHScriptClassificationRawResult *)&v21 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_probabilityByScriptClassifications, a3);
+    objc_storeStrong(&v6->_probabilityByScriptClassifications, classifications);
     v13 = objc_msgSend_probabilityByScriptClassifications(v7, v8, v9, v10, v11, v12);
     v18 = objc_msgSend_keysSortedByValueUsingComparator_(v13, v14, &unk_1EF1BC7F0, v15, v16, v17);
     orderedScriptClassification = v7->_orderedScriptClassification;
@@ -35,18 +35,18 @@
   return v7;
 }
 
-- (id)scriptClassificationAtIndex:(int64_t)a3
+- (id)scriptClassificationAtIndex:(int64_t)index
 {
-  v7 = objc_msgSend_orderedScriptClassification(self, a2, a3, v3, v4, v5);
-  v12 = objc_msgSend_objectAtIndexedSubscript_(v7, v8, a3, v9, v10, v11);
+  v7 = objc_msgSend_orderedScriptClassification(self, a2, index, v3, v4, v5);
+  v12 = objc_msgSend_objectAtIndexedSubscript_(v7, v8, index, v9, v10, v11);
 
   return v12;
 }
 
-- (id)scriptProbabilityAtIndex:(int64_t)a3
+- (id)scriptProbabilityAtIndex:(int64_t)index
 {
-  v8 = objc_msgSend_orderedScriptClassification(self, a2, a3, v3, v4, v5);
-  v13 = objc_msgSend_objectAtIndexedSubscript_(v8, v9, a3, v10, v11, v12);
+  v8 = objc_msgSend_orderedScriptClassification(self, a2, index, v3, v4, v5);
+  v13 = objc_msgSend_objectAtIndexedSubscript_(v8, v9, index, v10, v11, v12);
 
   v19 = objc_msgSend_probabilityByScriptClassifications(self, v14, v15, v16, v17, v18);
   v24 = objc_msgSend_objectForKeyedSubscript_(v19, v20, v13, v21, v22, v23);
@@ -228,41 +228,41 @@ LABEL_6:
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v13 = a3;
+  coderCopy = coder;
   v9 = objc_msgSend_probabilityByScriptClassifications(self, v4, v5, v6, v7, v8);
-  objc_msgSend_encodeObject_forKey_(v13, v10, v9, @"scriptClassificationRawResultsProbability", v11, v12);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v10, v9, @"scriptClassificationRawResultsProbability", v11, v12);
 }
 
-- (CHScriptClassificationRawResult)initWithCoder:(id)a3
+- (CHScriptClassificationRawResult)initWithCoder:(id)coder
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x1E695DFD8];
   v25 = objc_opt_class();
   v26 = objc_opt_class();
   v27 = objc_opt_class();
   v9 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v6, &v25, 3, v7, v8);
   v14 = objc_msgSend_setWithArray_(v5, v10, v9, v11, v12, v13, v25, v26);
-  v18 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v15, v14, @"scriptClassificationRawResultsProbability", v16, v17);
+  v18 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v15, v14, @"scriptClassificationRawResultsProbability", v16, v17);
 
   v23 = objc_msgSend_initWithProbabilityByScriptClassifications_(self, v19, v18, v20, v21, v22);
   return v23;
 }
 
-- (BOOL)isEqualToScriptClassificationRawResult:(id)a3
+- (BOOL)isEqualToScriptClassificationRawResult:(id)result
 {
-  v4 = a3;
-  v10 = v4;
-  if (self == v4)
+  resultCopy = result;
+  v10 = resultCopy;
+  if (self == resultCopy)
   {
     isEqualToArray = 1;
     goto LABEL_11;
   }
 
   probabilityByScriptClassifications = self->_probabilityByScriptClassifications;
-  v12 = objc_msgSend_probabilityByScriptClassifications(v4, v5, v6, v7, v8, v9);
+  v12 = objc_msgSend_probabilityByScriptClassifications(resultCopy, v5, v6, v7, v8, v9);
   v18 = v12;
   if (probabilityByScriptClassifications == v12)
   {
@@ -299,13 +299,13 @@ LABEL_11:
   return isEqualToArray;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    isEqualToScriptClassificationRawResult = objc_msgSend_isEqualToScriptClassificationRawResult_(self, v5, v4, v6, v7, v8);
+    isEqualToScriptClassificationRawResult = objc_msgSend_isEqualToScriptClassificationRawResult_(self, v5, equalCopy, v6, v7, v8);
 
     return isEqualToScriptClassificationRawResult;
   }

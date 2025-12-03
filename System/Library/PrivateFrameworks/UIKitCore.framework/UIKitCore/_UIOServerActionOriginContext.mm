@@ -1,14 +1,14 @@
 @interface _UIOServerActionOriginContext
 + (id)defaultOriginContext;
-+ (id)originContextForView:(id)a3 referencePoint:(CGPoint)a4;
++ (id)originContextForView:(id)view referencePoint:(CGPoint)point;
 - (CGPoint)layerReferencePoint;
-- (CGPoint)translatedReferencePointForDestinationView:(id)a3;
-- (_UIOServerActionOriginContext)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CGPoint)translatedReferencePointForDestinationView:(id)view;
+- (_UIOServerActionOriginContext)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)_configureWithWindow:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)_configureWithWindow:(id)window;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UIOServerActionOriginContext
@@ -17,22 +17,22 @@
 {
   v2 = objc_alloc_init(_UIOServerActionOriginContext);
   v3 = +[UIWindowScene _keyWindowScene];
-  v4 = [v3 keyWindow];
-  [(_UIOServerActionOriginContext *)v2 _configureWithWindow:v4];
+  keyWindow = [v3 keyWindow];
+  [(_UIOServerActionOriginContext *)v2 _configureWithWindow:keyWindow];
 
   return v2;
 }
 
-+ (id)originContextForView:(id)a3 referencePoint:(CGPoint)a4
++ (id)originContextForView:(id)view referencePoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3;
+  y = point.y;
+  x = point.x;
+  viewCopy = view;
   v7 = objc_alloc_init(_UIOServerActionOriginContext);
-  v8 = [v6 _window];
-  [(_UIOServerActionOriginContext *)v7 _configureWithWindow:v8];
+  _window = [viewCopy _window];
+  [(_UIOServerActionOriginContext *)v7 _configureWithWindow:_window];
 
-  v9 = [v6 layer];
+  layer = [viewCopy layer];
 
   v7->_layerId = CALayerGetRenderId();
   v7->_layerReferencePoint.x = x;
@@ -41,26 +41,26 @@
   return v7;
 }
 
-- (void)_configureWithWindow:(id)a3
+- (void)_configureWithWindow:(id)window
 {
   v22 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (window)
   {
-    v4 = a3;
-    v5 = [v4 windowScene];
-    v6 = [v5 _FBSScene];
-    v7 = [v4 _contextId];
+    windowCopy = window;
+    windowScene = [windowCopy windowScene];
+    _FBSScene = [windowScene _FBSScene];
+    _contextId = [windowCopy _contextId];
 
-    self->_contextId = v7;
-    v8 = [v6 identityToken];
-    v9 = [v8 stringRepresentation];
+    self->_contextId = _contextId;
+    identityToken = [_FBSScene identityToken];
+    stringRepresentation = [identityToken stringRepresentation];
     sceneIdentity = self->_sceneIdentity;
-    self->_sceneIdentity = v9;
+    self->_sceneIdentity = stringRepresentation;
 
-    v11 = [v5 systemShellHostingEnvironment];
-    v12 = [v11 systemShellHostingSpaceIdentifier];
+    systemShellHostingEnvironment = [windowScene systemShellHostingEnvironment];
+    systemShellHostingSpaceIdentifier = [systemShellHostingEnvironment systemShellHostingSpaceIdentifier];
     spaceIdentifier = self->_spaceIdentifier;
-    self->_spaceIdentifier = v12;
+    self->_spaceIdentifier = systemShellHostingSpaceIdentifier;
 
     if (!self->_spaceIdentifier)
     {
@@ -72,7 +72,7 @@
         v18 = 138543618;
         v19 = v16;
         v20 = 2050;
-        v21 = v5;
+        v21 = windowScene;
         _os_log_impl(&dword_188A29000, v14, OS_LOG_TYPE_DEFAULT, "Could not find a systemShellHostingSpaceIdentifier for scene: <%{public}@: %{public}p>", &v18, 0x16u);
       }
 
@@ -82,30 +82,30 @@
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   sceneIdentity = self->_sceneIdentity;
-  v7 = v4;
+  v7 = coderCopy;
   if (sceneIdentity)
   {
-    [v4 encodeObject:sceneIdentity forKey:@"scene"];
-    v4 = v7;
+    [coderCopy encodeObject:sceneIdentity forKey:@"scene"];
+    coderCopy = v7;
   }
 
   spaceIdentifier = self->_spaceIdentifier;
   if (spaceIdentifier)
   {
     [v7 encodeObject:spaceIdentifier forKey:@"space"];
-    v4 = v7;
+    coderCopy = v7;
   }
 
-  [v4 encodeInt64:self->_layerId forKey:@"layer"];
+  [coderCopy encodeInt64:self->_layerId forKey:@"layer"];
   [v7 encodeInt32:self->_contextId forKey:@"context"];
   [v7 encodeCGPoint:@"layerPoint" forKey:{self->_layerReferencePoint.x, self->_layerReferencePoint.y}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if ([(_UIOServerActionOriginContext *)self isMemberOfClass:objc_opt_class()])
   {
@@ -125,7 +125,7 @@
   }
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(_UIOMutableActionOriginContext);
   [(_UIOMutableActionOriginContext *)v4 setSceneIdentity:self->_sceneIdentity];
@@ -136,25 +136,25 @@
   return v4;
 }
 
-- (_UIOServerActionOriginContext)initWithCoder:(id)a3
+- (_UIOServerActionOriginContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(_UIOServerActionOriginContext *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"scene"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"scene"];
     sceneIdentity = v5->_sceneIdentity;
     v5->_sceneIdentity = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"space"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"space"];
     spaceIdentifier = v5->_spaceIdentifier;
     v5->_spaceIdentifier = v8;
 
-    [v4 decodeCGPointForKey:@"layerPoint"];
+    [coderCopy decodeCGPointForKey:@"layerPoint"];
     v5->_layerReferencePoint.x = v10;
     v5->_layerReferencePoint.y = v11;
-    v5->_layerId = [v4 decodeInt64ForKey:@"layer"];
-    v5->_contextId = [v4 decodeInt32ForKey:@"context"];
+    v5->_layerId = [coderCopy decodeInt64ForKey:@"layer"];
+    v5->_contextId = [coderCopy decodeInt32ForKey:@"context"];
   }
 
   return v5;
@@ -179,13 +179,13 @@
   return v9;
 }
 
-- (CGPoint)translatedReferencePointForDestinationView:(id)a3
+- (CGPoint)translatedReferencePointForDestinationView:(id)view
 {
-  v4 = a3;
-  v5 = [v4 window];
-  [v5 _contextId];
+  viewCopy = view;
+  window = [viewCopy window];
+  [window _contextId];
 
-  v6 = [v4 layer];
+  layer = [viewCopy layer];
 
   CALayerGetRenderId();
   memset(&v16, 0, sizeof(v16));

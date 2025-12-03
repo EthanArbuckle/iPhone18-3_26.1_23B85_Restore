@@ -1,5 +1,5 @@
 @interface MCDAlbumTracksDataSource
-- (MCDAlbumTracksDataSource)initWithAlbum:(id)a3 storeContent:(BOOL)a4;
+- (MCDAlbumTracksDataSource)initWithAlbum:(id)album storeContent:(BOOL)content;
 - (id)allowedSectionIdentifiers;
 - (id)itemSortDescriptors;
 - (id)requestIdentifierSet;
@@ -11,15 +11,15 @@
 
 @implementation MCDAlbumTracksDataSource
 
-- (MCDAlbumTracksDataSource)initWithAlbum:(id)a3 storeContent:(BOOL)a4
+- (MCDAlbumTracksDataSource)initWithAlbum:(id)album storeContent:(BOOL)content
 {
-  v7 = a3;
+  albumCopy = album;
   v8 = [(MCDAlbumTracksDataSource *)self init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_album, a3);
-    v9->_storeContent = a4;
+    objc_storeStrong(&v8->_album, album);
+    v9->_storeContent = content;
   }
 
   return v9;
@@ -27,8 +27,8 @@
 
 - (id)requestSectionKind
 {
-  v2 = [(MCDAlbumTracksDataSource *)self requestItemKind];
-  v3 = [MPModelAlbum kindWithSongKind:v2];
+  requestItemKind = [(MCDAlbumTracksDataSource *)self requestItemKind];
+  v3 = [MPModelAlbum kindWithSongKind:requestItemKind];
 
   return v3;
 }
@@ -61,8 +61,8 @@
 
   v9.receiver = self;
   v9.super_class = MCDAlbumTracksDataSource;
-  v6 = [(MCDPlayableItemsDataSource *)&v9 requestItemProperties];
-  v7 = [v6 propertySetByCombiningWithPropertySet:v5];
+  requestItemProperties = [(MCDPlayableItemsDataSource *)&v9 requestItemProperties];
+  v7 = [requestItemProperties propertySetByCombiningWithPropertySet:v5];
 
   return v7;
 }
@@ -109,8 +109,8 @@
 
 - (id)scopedContainers
 {
-  v2 = [(MCDAlbumTracksDataSource *)self album];
-  v5 = v2;
+  album = [(MCDAlbumTracksDataSource *)self album];
+  v5 = album;
   v3 = [NSArray arrayWithObjects:&v5 count:1];
 
   return v3;
@@ -118,9 +118,9 @@
 
 - (id)allowedSectionIdentifiers
 {
-  v2 = [(MCDAlbumTracksDataSource *)self album];
-  v3 = [v2 identifiers];
-  v6 = v3;
+  album = [(MCDAlbumTracksDataSource *)self album];
+  identifiers = [album identifiers];
+  v6 = identifiers;
   v4 = [NSArray arrayWithObjects:&v6 count:1];
 
   return v4;
@@ -128,10 +128,10 @@
 
 - (id)requestIdentifierSet
 {
-  v2 = [(MCDAlbumTracksDataSource *)self album];
-  v3 = [v2 identifiers];
+  album = [(MCDAlbumTracksDataSource *)self album];
+  identifiers = [album identifiers];
 
-  return v3;
+  return identifiers;
 }
 
 @end

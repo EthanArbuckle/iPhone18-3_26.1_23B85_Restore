@@ -7,7 +7,7 @@
 + (id)payloadValueFromJSONValue:()MPCPlaybackEngineEventPayload
 {
   v4 = a3;
-  v5 = [[a1 alloc] initWithBase64EncodedString:v4 options:0];
+  v5 = [[self alloc] initWithBase64EncodedString:v4 options:0];
 
   return v5;
 }

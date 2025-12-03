@@ -1,16 +1,16 @@
 @interface ML3HomeSharingImportOperation
-- (BOOL)_performHomeSharingImportWithTransaction:(id)a3;
+- (BOOL)_performHomeSharingImportWithTransaction:(id)transaction;
 - (void)main;
 @end
 
 @implementation ML3HomeSharingImportOperation
 
-- (BOOL)_performHomeSharingImportWithTransaction:(id)a3
+- (BOOL)_performHomeSharingImportWithTransaction:(id)transaction
 {
-  v4 = [a3 connection];
+  connection = [transaction connection];
   if (([(ML3HomeSharingImportOperation *)self isCancelled]& 1) == 0)
   {
-    v6 = [(ML3DAAPImportOperation *)self performImportOfSourceType:0 usingConnection:v4];
+    v6 = [(ML3DAAPImportOperation *)self performImportOfSourceType:0 usingConnection:connection];
     v7 = os_log_create("com.apple.amp.medialibrary", "Default");
     v8 = v7;
     if (v6)
@@ -67,11 +67,11 @@ LABEL_10:
   v5 = os_log_create("com.apple.amp.medialibrary", "Default");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(ML3HomeSharingImportOperation *)self isCancelled];
+    isCancelled = [(ML3HomeSharingImportOperation *)self isCancelled];
     v7 = *(v12 + 24);
     [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
     *buf = 67109632;
-    v16 = v6;
+    v16 = isCancelled;
     v17 = 1024;
     v18 = v7;
     v19 = 2048;

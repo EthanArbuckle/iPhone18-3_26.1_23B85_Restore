@@ -1,27 +1,27 @@
 @interface PBFDataStoreArchiveMetadata
-- (BOOL)isEqual:(id)a3;
-- (PBFDataStoreArchiveMetadata)initWithURL:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PBFDataStoreArchiveMetadata)initWithURL:(id)l;
 @end
 
 @implementation PBFDataStoreArchiveMetadata
 
-- (PBFDataStoreArchiveMetadata)initWithURL:(id)a3
+- (PBFDataStoreArchiveMetadata)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v21.receiver = self;
   v21.super_class = PBFDataStoreArchiveMetadata;
   v5 = [(PBFDataStoreArchiveMetadata *)&v21 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [lCopy copy];
     archiveURL = v5->_archiveURL;
     v5->_archiveURL = v6;
 
-    v8 = [v4 lastPathComponent];
+    lastPathComponent = [lCopy lastPathComponent];
     v19 = 0;
     v20 = 0;
     v18 = 0;
-    v9 = _PBFDistillFileNameIntoArchiveComponents(v8, &v20, &v19, &v18);
+    v9 = _PBFDistillFileNameIntoArchiveComponents(lastPathComponent, &v20, &v19, &v18);
     v10 = v19;
     v11 = v18;
     if (!v9)
@@ -47,10 +47,10 @@ LABEL_6:
   return v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -62,7 +62,7 @@ LABEL_6:
 
     if (isKindOfClass)
     {
-      v7 = [(NSURL *)v4->_archiveURL isEqual:self->_archiveURL];
+      v7 = [(NSURL *)equalCopy->_archiveURL isEqual:self->_archiveURL];
     }
 
     else

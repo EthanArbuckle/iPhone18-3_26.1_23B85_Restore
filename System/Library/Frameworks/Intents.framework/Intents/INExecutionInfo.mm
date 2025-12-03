@@ -2,7 +2,7 @@
 + (void)initialize;
 - (INAppInfo)_appInfo;
 - (LSApplicationRecord)_applicationRecord;
-- (id)_initWithLaunchableAppBundleId:(id)a3 displayableAppBundleId:(id)a4 containingAppBundleURL:(id)a5 extensionBundleId:(id)a6;
+- (id)_initWithLaunchableAppBundleId:(id)id displayableAppBundleId:(id)bundleId containingAppBundleURL:(id)l extensionBundleId:(id)extensionBundleId;
 @end
 
 @implementation INExecutionInfo
@@ -10,11 +10,11 @@
 - (LSApplicationRecord)_applicationRecord
 {
   v15 = *MEMORY[0x1E69E9840];
-  v2 = [(INExecutionInfo *)self launchableAppBundleId];
-  if ([v2 length])
+  launchableAppBundleId = [(INExecutionInfo *)self launchableAppBundleId];
+  if ([launchableAppBundleId length])
   {
     v8 = 0;
-    v3 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:v2 allowPlaceholder:0 error:&v8];
+    v3 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:launchableAppBundleId allowPlaceholder:0 error:&v8];
     v4 = v8;
     if (v4)
     {
@@ -24,7 +24,7 @@
         *buf = 136315650;
         v10 = "[INExecutionInfo _applicationRecord]";
         v11 = 2112;
-        v12 = v2;
+        v12 = launchableAppBundleId;
         v13 = 2112;
         v14 = v4;
         _os_log_error_impl(&dword_18E991000, v5, OS_LOG_TYPE_ERROR, "%s Unable to create application record for %@: %@", buf, 0x20u);
@@ -47,15 +47,15 @@
   appInfo = self->_appInfo;
   if (!appInfo)
   {
-    v4 = [(INExecutionInfo *)self _applicationRecord];
-    v5 = v4;
-    if (v4)
+    _applicationRecord = [(INExecutionInfo *)self _applicationRecord];
+    v5 = _applicationRecord;
+    if (_applicationRecord)
     {
-      v4 = [INAppInfo appInfoWithApplicationRecord:v4];
+      _applicationRecord = [INAppInfo appInfoWithApplicationRecord:_applicationRecord];
     }
 
     v6 = self->_appInfo;
-    self->_appInfo = v4;
+    self->_appInfo = _applicationRecord;
 
     appInfo = self->_appInfo;
   }
@@ -63,31 +63,31 @@
   return appInfo;
 }
 
-- (id)_initWithLaunchableAppBundleId:(id)a3 displayableAppBundleId:(id)a4 containingAppBundleURL:(id)a5 extensionBundleId:(id)a6
+- (id)_initWithLaunchableAppBundleId:(id)id displayableAppBundleId:(id)bundleId containingAppBundleURL:(id)l extensionBundleId:(id)extensionBundleId
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  idCopy = id;
+  bundleIdCopy = bundleId;
+  lCopy = l;
+  extensionBundleIdCopy = extensionBundleId;
   v28.receiver = self;
   v28.super_class = INExecutionInfo;
   v14 = [(INExecutionInfo *)&v28 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [idCopy copy];
     p_launchableAppBundleId = &v14->_launchableAppBundleId;
     launchableAppBundleId = v14->_launchableAppBundleId;
     v14->_launchableAppBundleId = v15;
 
-    v18 = [v11 copy];
+    v18 = [bundleIdCopy copy];
     displayableAppBundleId = v14->_displayableAppBundleId;
     v14->_displayableAppBundleId = v18;
 
-    v20 = [v12 copy];
+    v20 = [lCopy copy];
     containingAppBundleURL = v14->_containingAppBundleURL;
     v14->_containingAppBundleURL = v20;
 
-    v22 = [v13 copy];
+    v22 = [extensionBundleIdCopy copy];
     extensionBundleId = v14->_extensionBundleId;
     v14->_extensionBundleId = v22;
 
@@ -116,7 +116,7 @@ LABEL_6:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1 && INLogInitIfNeeded_once != -1)
+  if (objc_opt_class() == self && INLogInitIfNeeded_once != -1)
   {
 
     dispatch_once(&INLogInitIfNeeded_once, &__block_literal_global_72043);

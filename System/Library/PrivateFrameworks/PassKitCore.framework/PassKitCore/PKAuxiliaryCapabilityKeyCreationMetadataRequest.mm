@@ -1,40 +1,40 @@
 @interface PKAuxiliaryCapabilityKeyCreationMetadataRequest
-- (PKAuxiliaryCapabilityKeyCreationMetadataRequest)initWithCapabilityStates:(id)a3 pass:(id)a4;
-- (id)_urlRequestWithServiceURL:(id)a3 deviceIdentifier:(id)a4 appleAccountInformation:(id)a5;
+- (PKAuxiliaryCapabilityKeyCreationMetadataRequest)initWithCapabilityStates:(id)states pass:(id)pass;
+- (id)_urlRequestWithServiceURL:(id)l deviceIdentifier:(id)identifier appleAccountInformation:(id)information;
 @end
 
 @implementation PKAuxiliaryCapabilityKeyCreationMetadataRequest
 
-- (PKAuxiliaryCapabilityKeyCreationMetadataRequest)initWithCapabilityStates:(id)a3 pass:(id)a4
+- (PKAuxiliaryCapabilityKeyCreationMetadataRequest)initWithCapabilityStates:(id)states pass:(id)pass
 {
-  v7 = a3;
-  v8 = a4;
+  statesCopy = states;
+  passCopy = pass;
   v12.receiver = self;
   v12.super_class = PKAuxiliaryCapabilityKeyCreationMetadataRequest;
   v9 = [(PKAuxiliaryCapabilityWebServiceRequest *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_capabilityStates, a3);
-    [(PKAuxiliaryCapabilityWebServiceRequest *)v10 setPass:v8];
+    objc_storeStrong(&v9->_capabilityStates, states);
+    [(PKAuxiliaryCapabilityWebServiceRequest *)v10 setPass:passCopy];
   }
 
   return v10;
 }
 
-- (id)_urlRequestWithServiceURL:(id)a3 deviceIdentifier:(id)a4 appleAccountInformation:(id)a5
+- (id)_urlRequestWithServiceURL:(id)l deviceIdentifier:(id)identifier appleAccountInformation:(id)information
 {
   v32[3] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  identifierCopy = identifier;
+  informationCopy = information;
   v32[0] = @"devices";
-  v32[1] = v9;
-  v25 = v9;
+  v32[1] = identifierCopy;
+  v25 = identifierCopy;
   v32[2] = @"auxiliaryCapabilityKeyCreationMetadata";
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:3];
-  v26 = v8;
-  v12 = [(PKAuxiliaryCapabilityWebServiceRequest *)self _murlRequestWithServiceURL:v8 endpointComponents:v11 queryParameters:0 appleAccountInformation:v10];
+  v26 = lCopy;
+  v12 = [(PKAuxiliaryCapabilityWebServiceRequest *)self _murlRequestWithServiceURL:lCopy endpointComponents:v11 queryParameters:0 appleAccountInformation:informationCopy];
 
   v13 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v14 = [(NSArray *)self->_capabilityStates pk_arrayByApplyingBlock:&__block_literal_global_41];
@@ -45,10 +45,10 @@
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v16 = [(PKAuxiliaryCapabilityWebServiceRequest *)self pass];
-  v17 = [v16 devicePaymentApplications];
+  pass = [(PKAuxiliaryCapabilityWebServiceRequest *)self pass];
+  devicePaymentApplications = [pass devicePaymentApplications];
 
-  v18 = [v17 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  v18 = [devicePaymentApplications countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v18)
   {
     v19 = v18;
@@ -59,14 +59,14 @@
       {
         if (*v28 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(devicePaymentApplications);
         }
 
-        v22 = [*(*(&v27 + 1) + 8 * i) dpanIdentifier];
-        [v15 addObject:v22];
+        dpanIdentifier = [*(*(&v27 + 1) + 8 * i) dpanIdentifier];
+        [v15 addObject:dpanIdentifier];
       }
 
-      v19 = [v17 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v19 = [devicePaymentApplications countByEnumeratingWithState:&v27 objects:v31 count:16];
     }
 
     while (v19);

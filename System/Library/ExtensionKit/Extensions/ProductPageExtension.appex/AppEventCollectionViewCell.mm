@@ -1,12 +1,12 @@
 @interface AppEventCollectionViewCell
-- (_TtC20ProductPageExtension26AppEventCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC20ProductPageExtension26AppEventCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation AppEventCollectionViewCell
 
-- (_TtC20ProductPageExtension26AppEventCollectionViewCell)initWithCoder:(id)a3
+- (_TtC20ProductPageExtension26AppEventCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC20ProductPageExtension26AppEventCollectionViewCell_itemLayoutContext;
   v5 = sub_10076341C();
@@ -42,7 +42,7 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_1006FCEA4();
 }
 

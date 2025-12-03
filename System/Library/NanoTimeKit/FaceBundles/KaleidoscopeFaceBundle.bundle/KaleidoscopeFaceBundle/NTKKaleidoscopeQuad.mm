@@ -1,24 +1,24 @@
 @interface NTKKaleidoscopeQuad
-+ (id)quadWithShaderType:(unint64_t)a3;
-- (NTKKaleidoscopeQuad)initWithShaderType:(unint64_t)a3;
++ (id)quadWithShaderType:(unint64_t)type;
+- (NTKKaleidoscopeQuad)initWithShaderType:(unint64_t)type;
 - (id)geomBuffer;
 - (id)mtlPipelineBlend;
 - (id)mtlPipelineOpaque;
 - (void)dealloc;
-- (void)renderForDisplayWithEncoder:(id)a3;
-- (void)setupForQuadView:(id)a3;
+- (void)renderForDisplayWithEncoder:(id)encoder;
+- (void)setupForQuadView:(id)view;
 @end
 
 @implementation NTKKaleidoscopeQuad
 
-- (NTKKaleidoscopeQuad)initWithShaderType:(unint64_t)a3
+- (NTKKaleidoscopeQuad)initWithShaderType:(unint64_t)type
 {
   v10.receiver = self;
   v10.super_class = NTKKaleidoscopeQuad;
   result = [(NTKKaleidoscopeQuad *)&v10 init];
   if (result)
   {
-    result->_shaderType = a3;
+    result->_shaderType = type;
     result->_alpha = 1.0;
     __asm { FMOV            V0.2S, #1.0 }
 
@@ -29,9 +29,9 @@
   return result;
 }
 
-+ (id)quadWithShaderType:(unint64_t)a3
++ (id)quadWithShaderType:(unint64_t)type
 {
-  v3 = [[NTKKaleidoscopeQuad alloc] initWithShaderType:a3];
+  v3 = [[NTKKaleidoscopeQuad alloc] initWithShaderType:type];
 
   return v3;
 }
@@ -47,10 +47,10 @@
   [(NTKKaleidoscopeQuad *)&v4 dealloc];
 }
 
-- (void)setupForQuadView:(id)a3
+- (void)setupForQuadView:(id)view
 {
-  v20 = a3;
-  [v20 bounds];
+  viewCopy = view;
+  [viewCopy bounds];
   v5 = v4;
   v7 = v6;
   __asm { FMOV            V5.2S, #1.0 }
@@ -69,7 +69,7 @@
   }
 
   *self->_aspect = v14;
-  v15 = +[NTKKaleidoscopeResourceManager sharedInstanceWithPixelFormat:](NTKKaleidoscopeResourceManager, "sharedInstanceWithPixelFormat:", [v20 colorPixelFormat]);
+  v15 = +[NTKKaleidoscopeResourceManager sharedInstanceWithPixelFormat:](NTKKaleidoscopeResourceManager, "sharedInstanceWithPixelFormat:", [viewCopy colorPixelFormat]);
   loader = self->_loader;
   self->_loader = v15;
 
@@ -89,9 +89,9 @@
   geomBuffer = self->_geomBuffer;
   if (!geomBuffer)
   {
-    v4 = [(NTKKaleidoscopeResourceManager *)self->_loader getGeometryBuffer];
+    getGeometryBuffer = [(NTKKaleidoscopeResourceManager *)self->_loader getGeometryBuffer];
     v5 = self->_geomBuffer;
-    self->_geomBuffer = v4;
+    self->_geomBuffer = getGeometryBuffer;
 
     geomBuffer = self->_geomBuffer;
   }
@@ -129,32 +129,32 @@
   return mtlPipelineBlend;
 }
 
-- (void)renderForDisplayWithEncoder:(id)a3
+- (void)renderForDisplayWithEncoder:(id)encoder
 {
-  v4 = a3;
+  encoderCopy = encoder;
   kdebug_trace();
   [(NTKKaleidoscopeQuad *)self alpha];
   v6 = v5;
   v32 = v5;
   if (([(NTKKaleidoscopeQuad *)self isOpaque]& 1) != 0 || v6 >= 1.0)
   {
-    v8 = [(NTKKaleidoscopeQuad *)self mtlPipelineOpaque];
-    [v4 setRenderPipelineState:v8];
+    mtlPipelineOpaque = [(NTKKaleidoscopeQuad *)self mtlPipelineOpaque];
+    [encoderCopy setRenderPipelineState:mtlPipelineOpaque];
   }
 
   else
   {
-    v7 = [(NTKKaleidoscopeQuad *)self mtlPipelineBlend];
-    [v4 setRenderPipelineState:v7];
+    mtlPipelineBlend = [(NTKKaleidoscopeQuad *)self mtlPipelineBlend];
+    [encoderCopy setRenderPipelineState:mtlPipelineBlend];
 
-    [v4 setFragmentBytes:&v32 length:4 atIndex:1];
+    [encoderCopy setFragmentBytes:&v32 length:4 atIndex:1];
   }
 
-  v9 = [(NTKKaleidoscopeQuad *)self geomBuffer];
-  [v4 setVertexBuffer:v9 offset:0 atIndex:0];
+  geomBuffer = [(NTKKaleidoscopeQuad *)self geomBuffer];
+  [encoderCopy setVertexBuffer:geomBuffer offset:0 atIndex:0];
 
-  v10 = [(NTKKaleidoscopeQuad *)self primaryLumaTexture];
-  [v10 rect];
+  primaryLumaTexture = [(NTKKaleidoscopeQuad *)self primaryLumaTexture];
+  [primaryLumaTexture rect];
   [(NTKKaleidoscopeQuad *)self sampleRadius:v11];
   v27 = v13;
   [(NTKKaleidoscopeQuad *)self sampleCenter];
@@ -166,24 +166,24 @@
   [(NTKKaleidoscopeQuad *)self lineThickness];
   v31 = v17;
 
-  [v4 setFragmentBytes:&v26 length:48 atIndex:0];
-  v18 = [(NTKKaleidoscopeQuad *)self primaryLumaTexture];
-  v19 = [v18 atlas];
-  [v19 bind:v4 slot:0];
+  [encoderCopy setFragmentBytes:&v26 length:48 atIndex:0];
+  primaryLumaTexture2 = [(NTKKaleidoscopeQuad *)self primaryLumaTexture];
+  atlas = [primaryLumaTexture2 atlas];
+  [atlas bind:encoderCopy slot:0];
 
-  v20 = [(NTKKaleidoscopeQuad *)self primaryChromaTexture];
-  v21 = [v20 atlas];
-  [v21 bind:v4 slot:1];
+  primaryChromaTexture = [(NTKKaleidoscopeQuad *)self primaryChromaTexture];
+  atlas2 = [primaryChromaTexture atlas];
+  [atlas2 bind:encoderCopy slot:1];
 
   if (self->_secondaryTexture)
   {
-    v22 = [(NTKKaleidoscopeQuad *)self secondaryTexture];
-    v23 = [v22 atlas];
-    [v23 bind:v4 slot:2];
+    secondaryTexture = [(NTKKaleidoscopeQuad *)self secondaryTexture];
+    atlas3 = [secondaryTexture atlas];
+    [atlas3 bind:encoderCopy slot:2];
   }
 
-  [v4 setVertexBytes:self->_aspect length:8 atIndex:1];
-  [v4 setVertexBytes:&self->_dialRadius length:4 atIndex:2];
+  [encoderCopy setVertexBytes:self->_aspect length:8 atIndex:1];
+  [encoderCopy setVertexBytes:&self->_dialRadius length:4 atIndex:2];
   if (self->_shaderType == 3)
   {
     v24 = 0;
@@ -196,7 +196,7 @@
     v25 = 12;
   }
 
-  [v4 drawPrimitives:4 vertexStart:v24 vertexCount:v25];
+  [encoderCopy drawPrimitives:4 vertexStart:v24 vertexCount:v25];
   kdebug_trace();
 }
 

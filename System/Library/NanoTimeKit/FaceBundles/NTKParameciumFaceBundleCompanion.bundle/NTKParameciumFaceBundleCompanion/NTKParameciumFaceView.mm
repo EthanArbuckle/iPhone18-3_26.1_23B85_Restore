@@ -1,45 +1,45 @@
 @interface NTKParameciumFaceView
-+ (id)_swatchForEditModeDependsOnOptions:(int64_t)a3 forDevice:(id)a4;
-- (NTKParameciumFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5;
-- (double)_backgroundAlphaForEditMode:(int64_t)a3;
-- (double)_complicationAlphaForEditMode:(int64_t)a3;
-- (id)_complicationContainerViewForSlot:(id)a3;
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5;
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
++ (id)_swatchForEditModeDependsOnOptions:(int64_t)options forDevice:(id)device;
+- (NTKParameciumFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier;
+- (double)_backgroundAlphaForEditMode:(int64_t)mode;
+- (double)_complicationAlphaForEditMode:(int64_t)mode;
+- (id)_complicationContainerViewForSlot:(id)slot;
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options;
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (void)_applyDataMode;
 - (void)_applyFrozen;
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7;
-- (void)_cleanupAfterTransitionComplicationSlot:(id)a3 selectedComplication:(id)a4;
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4;
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5;
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_cleanupAfterTransitionComplicationSlot:(id)slot selectedComplication:(id)complication;
+- (void)_configureComplicationView:(id)view forSlot:(id)slot;
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode;
 - (void)_loadLayoutRules;
 - (void)_loadSnapshotContentViews;
 - (void)_unloadSnapshotContentViews;
-- (void)_updateBackgroundAndPlatterAlpha:(double)a3;
-- (void)_updateComplicationCenterOffsetForStyle:(unint64_t)a3;
+- (void)_updateBackgroundAndPlatterAlpha:(double)alpha;
+- (void)_updateComplicationCenterOffsetForStyle:(unint64_t)style;
 - (void)_updateConfettiRotationRate;
 - (void)_updatePausedState;
 - (void)cleanupAfterEditing;
 - (void)layoutSubviews;
 - (void)prepareForEditing;
-- (void)setOverrideDate:(id)a3 duration:(double)a4;
-- (void)updateTime:(CLKClockTimerDate *)a3;
+- (void)setOverrideDate:(id)date duration:(double)duration;
+- (void)updateTime:(CLKClockTimerDate *)time;
 @end
 
 @implementation NTKParameciumFaceView
 
-- (NTKParameciumFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5
+- (NTKParameciumFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier
 {
-  v9 = a4;
+  deviceCopy = device;
   v29.receiver = self;
   v29.super_class = NTKParameciumFaceView;
-  v10 = [(NTKParameciumFaceView *)&v29 initWithFaceStyle:a3 forDevice:v9 clientIdentifier:a5];
+  v10 = [(NTKParameciumFaceView *)&v29 initWithFaceStyle:style forDevice:deviceCopy clientIdentifier:identifier];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_device, a4);
+    objc_storeStrong(&v10->_device, device);
     v11->_isPaused = 1;
     v11->_tritiumProgress = 1.0;
     v11->_confettiRotationRate = 0.0;
@@ -53,7 +53,7 @@
     [(NTKParameciumFaceView *)v11 setComplicationBackgroundColor:v13];
 
     v14 = objc_alloc_init(NTKCompositeComplicationFactory);
-    v15 = [[NTKWhistlerAnalogFaceViewComplicationFactory alloc] initForDevice:v9];
+    v15 = [[NTKWhistlerAnalogFaceViewComplicationFactory alloc] initForDevice:deviceCopy];
     [v15 setAlpha:v11 faceView:1.0];
     v30[0] = NTKComplicationSlotTopLeft;
     v30[1] = NTKComplicationSlotTopRight;
@@ -68,8 +68,8 @@
 
     v19 = objc_alloc_init(NTKSimpleTextFaceViewComplicationFactory);
     [v19 setFaceView:v11];
-    v20 = [(NTKParameciumFaceView *)v11 device];
-    [v19 setVerticalCenterOffset:{sub_3A78(v20, v20)}];
+    device = [(NTKParameciumFaceView *)v11 device];
+    [v19 setVerticalCenterOffset:{sub_3A78(device, device)}];
 
     [v14 registerFactory:v19 forSlot:NTKComplicationSlotSubdialTop];
     subdialFactory = v11->_subdialFactory;
@@ -83,8 +83,8 @@
     subdialComplicationContainerView = v11->_subdialComplicationContainerView;
     v11->_subdialComplicationContainerView = v24;
 
-    v26 = [(NTKParameciumFaceView *)v11 contentView];
-    [v26 addSubview:v11->_subdialComplicationContainerView];
+    contentView = [(NTKParameciumFaceView *)v11 contentView];
+    [contentView addSubview:v11->_subdialComplicationContainerView];
 
     v27 = +[NSNotificationCenter defaultCenter];
     [v27 addObserver:v11 selector:"_significantTimeChanged" name:UIApplicationSignificantTimeChangeNotification object:0];
@@ -123,8 +123,8 @@
 
   [(CLKUIMetalQuadView *)self->_quadView addQuad:self->_compositeQuad];
   [(NTKParameciumCompositeQuad *)self->_compositeQuad setConfettiEntropy:1.0];
-  v8 = [(NTKParameciumFaceView *)self contentView];
-  [v8 addSubview:self->_quadView];
+  contentView = [(NTKParameciumFaceView *)self contentView];
+  [contentView addSubview:self->_quadView];
 
   [(NTKParameciumFaceView *)self bounds];
   [(CLKUIMetalQuadView *)self->_quadView setFrame:?];
@@ -136,11 +136,11 @@
   v11 = +[UIColor blackColor];
   [(UIView *)self->_pin setBackgroundColor:v11];
 
-  v12 = [(UIView *)self->_pin layer];
-  [v12 setCornerRadius:1.0];
+  layer = [(UIView *)self->_pin layer];
+  [layer setCornerRadius:1.0];
 
-  v13 = [(NTKParameciumFaceView *)self contentView];
-  [v13 addSubview:self->_pin];
+  contentView2 = [(NTKParameciumFaceView *)self contentView];
+  [contentView2 addSubview:self->_pin];
 
   [(NTKParameciumFaceView *)self _updatePausedState];
   [(NTKParameciumFaceView *)self _updateBackgroundAndPlatterAlpha:1.0];
@@ -202,10 +202,10 @@
 
 - (void)_updatePausedState
 {
-  v3 = [(NTKParameciumFaceView *)self dataMode];
-  v4 = [(NTKParameciumFaceView *)self editing];
+  dataMode = [(NTKParameciumFaceView *)self dataMode];
+  editing = [(NTKParameciumFaceView *)self editing];
   v5 = [(NTKParameciumFaceView *)self isFrozen]^ 1;
-  if ((((v3 & 0xFFFFFFFFFFFFFFFBLL) == 1) & v5 & NTKIsScreenOn()) != 0 || v4)
+  if ((((dataMode & 0xFFFFFFFFFFFFFFFBLL) == 1) & v5 & NTKIsScreenOn()) != 0 || editing)
   {
     if (self->_isPaused)
     {
@@ -238,11 +238,11 @@
 
 - (void)_updateConfettiRotationRate
 {
-  v3 = [(NTKParameciumFaceView *)self dataMode];
+  dataMode = [(NTKParameciumFaceView *)self dataMode];
   v4 = [(NTKParameciumFaceView *)self optionForCustomEditMode:12 slot:0];
-  v5 = [v4 style];
+  style = [v4 style];
 
-  v6 = v5 == &dword_0 + 2 && v3 == &dword_0 + 1;
+  v6 = style == &dword_0 + 2 && dataMode == &dword_0 + 1;
   v7 = 0.00174532925;
   if (!v6)
   {
@@ -252,21 +252,21 @@
   self->_confettiRotationRate = v7;
 }
 
-- (void)setOverrideDate:(id)a3 duration:(double)a4
+- (void)setOverrideDate:(id)date duration:(double)duration
 {
-  v6 = a3;
+  dateCopy = date;
   v10.receiver = self;
   v10.super_class = NTKParameciumFaceView;
-  [(NTKParameciumFaceView *)&v10 setOverrideDate:v6 duration:a4];
+  [(NTKParameciumFaceView *)&v10 setOverrideDate:dateCopy duration:duration];
   overrideDate = self->_overrideDate;
-  self->_overrideDate = v6;
-  v8 = v6;
+  self->_overrideDate = dateCopy;
+  v8 = dateCopy;
 
   CLKClockTimerDateForDate();
   [(NTKParameciumFaceView *)self updateTime:v9];
 }
 
-- (void)updateTime:(CLKClockTimerDate *)a3
+- (void)updateTime:(CLKClockTimerDate *)time
 {
   if (self->_overrideDate)
   {
@@ -276,7 +276,7 @@
 
   else
   {
-    if (a3->var0)
+    if (time->var0)
     {
       v6 = +[NTKTimeOffsetManager sharedManager];
       [v6 timeOffset];
@@ -284,12 +284,12 @@
 
       if (v8 <= 0.0)
       {
-        v5 = a3->var0;
+        v5 = time->var0;
         goto LABEL_9;
       }
 
       v9 = +[NTKTimeOffsetManager sharedManager];
-      v10 = [v9 displayTimeForRealTime:a3->var0];
+      faceDisplayTime = [v9 displayTimeForRealTime:time->var0];
 
       CLKClockTimerDateForDate();
     }
@@ -297,7 +297,7 @@
     else
     {
       v11 = +[NTKTimeOffsetManager sharedManager];
-      v10 = [v11 faceDisplayTime];
+      faceDisplayTime = [v11 faceDisplayTime];
 
       CLKClockTimerDateForDate();
     }
@@ -309,10 +309,10 @@ LABEL_9:
   [(NTKParameciumCompositeQuad *)self->_compositeQuad setToDate:v5];
 }
 
-- (id)_complicationContainerViewForSlot:(id)a3
+- (id)_complicationContainerViewForSlot:(id)slot
 {
-  v4 = a3;
-  if ([v4 isEqualToString:NTKComplicationSlotSubdialTop])
+  slotCopy = slot;
+  if ([slotCopy isEqualToString:NTKComplicationSlotSubdialTop])
   {
     v5 = self->_subdialComplicationContainerView;
   }
@@ -321,7 +321,7 @@ LABEL_9:
   {
     v8.receiver = self;
     v8.super_class = NTKParameciumFaceView;
-    v5 = [(NTKParameciumFaceView *)&v8 _complicationContainerViewForSlot:v4];
+    v5 = [(NTKParameciumFaceView *)&v8 _complicationContainerViewForSlot:slotCopy];
   }
 
   v6 = v5;
@@ -340,17 +340,17 @@ LABEL_9:
   [(UIView *)self->_pin setCenter:v3 * 0.5, v4 * 0.5];
 }
 
-- (void)_updateBackgroundAndPlatterAlpha:(double)a3
+- (void)_updateBackgroundAndPlatterAlpha:(double)alpha
 {
   if (self->_snapshotContentViewsLoaded)
   {
-    v4 = ((self->_tritiumProgress + -1.0) + 1.0) * 0.992156863 * (1.0 - self->_backgroundOn) * a3;
+    v4 = ((self->_tritiumProgress + -1.0) + 1.0) * 0.992156863 * (1.0 - self->_backgroundOn) * alpha;
     v9 = [UIColor colorWithRed:v4 green:v4 blue:v4 alpha:1.0];
-    v5 = [(NTKParameciumFaceView *)self rootContainerView];
-    [v5 setBackgroundColor:v9];
+    rootContainerView = [(NTKParameciumFaceView *)self rootContainerView];
+    [rootContainerView setBackgroundColor:v9];
 
-    v6 = [(NTKParameciumFaceView *)self complicationBackgroundColor];
-    v7 = [v6 isEqual:v9];
+    complicationBackgroundColor = [(NTKParameciumFaceView *)self complicationBackgroundColor];
+    v7 = [complicationBackgroundColor isEqual:v9];
 
     if ((v7 & 1) == 0)
     {
@@ -362,24 +362,24 @@ LABEL_9:
   else
   {
     v9 = +[UIColor clearColor];
-    v8 = [(NTKParameciumFaceView *)self rootContainerView];
-    [v8 setBackgroundColor:v9];
+    rootContainerView2 = [(NTKParameciumFaceView *)self rootContainerView];
+    [rootContainerView2 setBackgroundColor:v9];
   }
 }
 
-- (void)_updateComplicationCenterOffsetForStyle:(unint64_t)a3
+- (void)_updateComplicationCenterOffsetForStyle:(unint64_t)style
 {
-  v5 = [(NTKParameciumFaceView *)self device];
-  v6 = sub_3A78(v5, v5);
+  device = [(NTKParameciumFaceView *)self device];
+  v6 = sub_3A78(device, device);
   v8 = v7;
 
-  if (a3 == 2)
+  if (style == 2)
   {
     v6 = v8;
   }
 
-  v10 = [(NTKParameciumFaceView *)self complicationFactory];
-  v9 = [v10 factoryAtSlot:NTKComplicationSlotSubdialTop];
+  complicationFactory = [(NTKParameciumFaceView *)self complicationFactory];
+  v9 = [complicationFactory factoryAtSlot:NTKComplicationSlotSubdialTop];
   [v9 verticalCenterOffset];
   if ((CLKFloatEqualsFloat() & 1) == 0)
   {
@@ -390,27 +390,27 @@ LABEL_9:
   }
 }
 
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v12 = a3;
-  v8 = a5;
-  if (a4 == 12)
+  optionCopy = option;
+  slotCopy = slot;
+  if (mode == 12)
   {
-    v10 = [v12 style];
+    style = [optionCopy style];
     [(NTKParameciumCompositeQuad *)self->_compositeQuad setTickShadows:0.0];
-    [(NTKParameciumCompositeQuad *)self->_compositeQuad setShowsTicks:flt_BE20[v10]];
-    v11 = flt_BE38[v10];
+    [(NTKParameciumCompositeQuad *)self->_compositeQuad setShowsTicks:flt_BE20[style]];
+    v11 = flt_BE38[style];
     [(NTKParameciumCompositeQuad *)self->_compositeQuad setShowsConfetti:v11];
-    [(NTKParameciumCompositeQuad *)self->_compositeQuad setShowsNumbers:flt_BE2C[v10]];
+    [(NTKParameciumCompositeQuad *)self->_compositeQuad setShowsNumbers:flt_BE2C[style]];
     self->_simpleProgress = v11;
     [(NTKParameciumCompositeQuad *)self->_compositeQuad setConfettiRotation:0.0];
     [(NTKParameciumFaceView *)self _updateConfettiRotationRate];
-    [(NTKParameciumFaceView *)self _updateComplicationCenterOffsetForStyle:v10];
+    [(NTKParameciumFaceView *)self _updateComplicationCenterOffsetForStyle:style];
   }
 
-  else if (a4 == 15)
+  else if (mode == 15)
   {
-    v9 = flt_BE18[[v12 background]];
+    v9 = flt_BE18[[optionCopy background]];
     self->_backgroundOn = v9;
     [(NTKParameciumCompositeQuad *)self->_compositeQuad setBackgroundOn:v9];
     if (self->_forSwatchRendering)
@@ -422,36 +422,36 @@ LABEL_9:
   [(NTKParameciumFaceView *)self _updateBackgroundAndPlatterAlpha:1.0];
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
-  if (a6 == 12)
+  optionCopy = option;
+  toOptionCopy = toOption;
+  slotCopy = slot;
+  if (mode == 12)
   {
-    v18 = [v12 style];
-    v19 = [v13 style];
-    v20 = v19;
-    v21 = v18 << 32;
-    v22 = v19 << 32;
+    style = [optionCopy style];
+    style2 = [toOptionCopy style];
+    v20 = style2;
+    v21 = style << 32;
+    v22 = style2 << 32;
     CLKInterpolateBetweenFloatsUnclipped();
     [(NTKParameciumCompositeQuad *)self->_compositeQuad setTickShadows:?];
-    v23 = flt_BE38[v18];
+    v23 = flt_BE38[style];
     v24 = flt_BE38[v20];
     CLKInterpolateBetweenFloatsUnclipped();
     *&v25 = v25;
     self->_simpleProgress = *&v25;
-    v26 = flt_BE2C[v18];
+    v26 = flt_BE2C[style];
     v27 = flt_BE2C[v20];
     CLKInterpolateBetweenFloatsUnclipped();
     [(NTKParameciumCompositeQuad *)self->_compositeQuad setShowsNumbers:?];
-    v28 = flt_BE20[v18];
+    v28 = flt_BE20[style];
     v29 = flt_BE20[v20];
     CLKInterpolateBetweenFloatsUnclipped();
     v31 = v30;
     CLKInterpolateBetweenFloatsUnclipped();
     v33 = v32;
-    if (v18 << 32 == 0x100000000 && v22 == 0x200000000 || v21 == 0x200000000 && v22 == 0x100000000)
+    if (style << 32 == 0x100000000 && v22 == 0x200000000 || v21 == 0x200000000 && v22 == 0x100000000)
     {
       v31 = floorf(v31);
     }
@@ -459,14 +459,14 @@ LABEL_9:
     [(NTKParameciumCompositeQuad *)self->_compositeQuad setShowsTicks:v31];
     [(NTKParameciumCompositeQuad *)self->_compositeQuad setShowsConfetti:v33];
     [(NTKParameciumCompositeQuad *)self->_compositeQuad setConfettiRotation:0.0];
-    if (a3 >= 0.5)
+    if (fraction >= 0.5)
     {
-      v18 = v20;
+      style = v20;
     }
 
     else
     {
-      v18 = v18;
+      style = style;
     }
 
     CLKMapFractionIntoRange();
@@ -474,25 +474,25 @@ LABEL_9:
     CLKMapFractionIntoRange();
     memset(&v40, 0, sizeof(v40));
     CGAffineTransformMakeScale(&v40, v36, v36);
-    [(NTKParameciumFaceView *)self _updateComplicationCenterOffsetForStyle:v18];
+    [(NTKParameciumFaceView *)self _updateComplicationCenterOffsetForStyle:style];
     if (v22 == 0x200000000 || v21 == 0x200000000)
     {
       v37 = [(NTKParameciumFaceView *)self normalComplicationDisplayWrapperForSlot:NTKComplicationSlotSubdialTop];
-      v38 = [v37 display];
+      display = [v37 display];
 
-      [v38 setAlpha:v35];
+      [display setAlpha:v35];
       v39 = v40;
-      [v38 setTransform:&v39];
+      [display setTransform:&v39];
     }
 
     [(NTKParameciumFaceView *)self _updateConfettiRotationRate];
     goto LABEL_16;
   }
 
-  if (a6 == 15)
+  if (mode == 15)
   {
-    v15 = flt_BE18[[v12 background]];
-    v16 = flt_BE18[[v13 background]];
+    v15 = flt_BE18[[optionCopy background]];
+    v16 = flt_BE18[[toOptionCopy background]];
     CLKInterpolateBetweenFloatsUnclipped();
     *&v17 = v17;
     self->_backgroundOn = *&v17;
@@ -504,10 +504,10 @@ LABEL_16:
   [(NTKParameciumFaceView *)self _updateBackgroundAndPlatterAlpha:1.0];
 }
 
-- (double)_complicationAlphaForEditMode:(int64_t)a3
+- (double)_complicationAlphaForEditMode:(int64_t)mode
 {
   result = NTKEditModeDimmedAlpha;
-  if (a3 < 2)
+  if (mode < 2)
   {
     return 1.0;
   }
@@ -515,10 +515,10 @@ LABEL_16:
   return result;
 }
 
-- (double)_backgroundAlphaForEditMode:(int64_t)a3
+- (double)_backgroundAlphaForEditMode:(int64_t)mode
 {
   result = 0.2;
-  if (a3 != 1)
+  if (mode != 1)
   {
     return 1.0;
   }
@@ -526,37 +526,37 @@ LABEL_16:
   return result;
 }
 
-- (void)_cleanupAfterTransitionComplicationSlot:(id)a3 selectedComplication:(id)a4
+- (void)_cleanupAfterTransitionComplicationSlot:(id)slot selectedComplication:(id)complication
 {
   v4.receiver = self;
   v4.super_class = NTKParameciumFaceView;
-  [(NTKParameciumFaceView *)&v4 _cleanupAfterTransitionComplicationSlot:a3 selectedComplication:a4];
+  [(NTKParameciumFaceView *)&v4 _cleanupAfterTransitionComplicationSlot:slot selectedComplication:complication];
 }
 
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v5.receiver = self;
   v5.super_class = NTKParameciumFaceView;
-  [(NTKParameciumFaceView *)&v5 _applyRubberBandingFraction:a4 forCustomEditMode:a5 slot:a3];
+  [(NTKParameciumFaceView *)&v5 _applyRubberBandingFraction:mode forCustomEditMode:slot slot:fraction];
 }
 
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v5.receiver = self;
   v5.super_class = NTKParameciumFaceView;
-  [(NTKParameciumFaceView *)&v5 _applyBreathingFraction:a4 forCustomEditMode:a5 slot:a3];
+  [(NTKParameciumFaceView *)&v5 _applyBreathingFraction:mode forCustomEditMode:slot slot:fraction];
 }
 
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode
 {
-  v8 = [(NTKParameciumFaceView *)self complicationContainerView];
-  [(NTKParameciumFaceView *)self _complicationAlphaForEditMode:a4];
-  [(NTKParameciumFaceView *)self _complicationAlphaForEditMode:a5];
+  complicationContainerView = [(NTKParameciumFaceView *)self complicationContainerView];
+  [(NTKParameciumFaceView *)self _complicationAlphaForEditMode:mode];
+  [(NTKParameciumFaceView *)self _complicationAlphaForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
-  [v8 setAlpha:?];
+  [complicationContainerView setAlpha:?];
 
-  [(NTKParameciumFaceView *)self _backgroundAlphaForEditMode:a4];
-  [(NTKParameciumFaceView *)self _backgroundAlphaForEditMode:a5];
+  [(NTKParameciumFaceView *)self _backgroundAlphaForEditMode:mode];
+  [(NTKParameciumFaceView *)self _backgroundAlphaForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
 
   [(NTKParameciumFaceView *)self _updateBackgroundAndPlatterAlpha:?];
@@ -568,38 +568,38 @@ LABEL_16:
   v9.super_class = NTKParameciumFaceView;
   [(NTKParameciumFaceView *)&v9 _loadLayoutRules];
   cornerFactory = self->_cornerFactory;
-  v4 = [(NTKParameciumFaceView *)self device];
-  [v4 screenBounds];
+  device = [(NTKParameciumFaceView *)self device];
+  [device screenBounds];
   v6 = v5;
-  v7 = [(NTKParameciumFaceView *)self device];
-  [v7 screenScale];
+  device2 = [(NTKParameciumFaceView *)self device];
+  [device2 screenScale];
   [(NTKWhistlerAnalogFaceViewComplicationFactory *)cornerFactory loadLayoutRulesForFaceView:self dialDiameter:v6 * v8];
 
   [(NTKSimpleTextFaceViewComplicationFactory *)self->_subdialFactory loadLayoutRules];
 }
 
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4
+- (void)_configureComplicationView:(id)view forSlot:(id)slot
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [(NTKParameciumFaceView *)self complicationFactory];
-  [v7 configureComplicationView:v12 forSlot:v6];
+  viewCopy = view;
+  slotCopy = slot;
+  complicationFactory = [(NTKParameciumFaceView *)self complicationFactory];
+  [complicationFactory configureComplicationView:viewCopy forSlot:slotCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v12 transitionToMonochromeWithFraction:1.0];
+    [viewCopy transitionToMonochromeWithFraction:1.0];
     goto LABEL_8;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v12;
-    v9 = [(NTKParameciumFaceView *)self complicationColor];
-    v10 = [v8 label];
+    v8 = viewCopy;
+    complicationColor = [(NTKParameciumFaceView *)self complicationColor];
+    label = [v8 label];
 
-    [v10 setTextColor:v9];
+    [label setTextColor:complicationColor];
   }
 
   else
@@ -610,24 +610,24 @@ LABEL_16:
       goto LABEL_8;
     }
 
-    v11 = v12;
+    v11 = viewCopy;
     [v11 setShowsSeconds:0];
-    v9 = [(NTKParameciumFaceView *)self complicationColor];
-    [v11 setTextColor:v9];
+    complicationColor = [(NTKParameciumFaceView *)self complicationColor];
+    [v11 setTextColor:complicationColor];
   }
 
 LABEL_8:
 }
 
-+ (id)_swatchForEditModeDependsOnOptions:(int64_t)a3 forDevice:(id)a4
++ (id)_swatchForEditModeDependsOnOptions:(int64_t)options forDevice:(id)device
 {
   v4 = &off_15000;
-  if (a3 != 15)
+  if (options != 15)
   {
     v4 = 0;
   }
 
-  if (a3 == 12)
+  if (options == 12)
   {
     return &off_14FE8;
   }
@@ -638,10 +638,10 @@ LABEL_8:
   }
 }
 
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options
 {
-  v8 = a3;
-  v9 = a5;
+  optionCopy = option;
+  optionsCopy = options;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -658,23 +658,23 @@ LABEL_8:
     sub_8EB0();
   }
 
-  if (a4 == 15)
+  if (mode == 15)
   {
-    v10 = v8;
-    v11 = [v9 objectForKeyedSubscript:&off_14D30];
+    v10 = optionCopy;
+    v11 = [optionsCopy objectForKeyedSubscript:&off_14D30];
   }
 
   else
   {
-    if (a4 != 12)
+    if (mode != 12)
     {
       v12 = 0;
       v10 = 0;
       goto LABEL_12;
     }
 
-    v10 = [v9 objectForKeyedSubscript:&off_14D18];
-    v11 = v8;
+    v10 = [optionsCopy objectForKeyedSubscript:&off_14D18];
+    v11 = optionCopy;
   }
 
   v12 = v11;
@@ -687,8 +687,8 @@ LABEL_12:
   if (!v13)
   {
     v17 = [NTKParameciumFaceView alloc];
-    v18 = [(NTKParameciumFaceView *)self device];
-    v19 = [(NTKParameciumFaceView *)v17 initWithFaceStyle:44 forDevice:v18 clientIdentifier:0];
+    device = [(NTKParameciumFaceView *)self device];
+    v19 = [(NTKParameciumFaceView *)v17 initWithFaceStyle:44 forDevice:device clientIdentifier:0];
 
     v19->_forSwatchRendering = 1;
     [(NTKParameciumFaceView *)v19 _loadSnapshotContentViews];

@@ -1,31 +1,31 @@
 @interface ADSessionRemoteServerLimited
 - (BOOL)_sessionRequiresConnection;
-- (id)initOnQueue:(id)a3 withAccount:(id)a4 languageCode:(id)a5 connectionMode:(id)a6 sharedUserIdentifier:(id)a7 loggingSharedUserIdentifier:(id)a8 instanceContext:(id)a9;
-- (void)_saCommandFailed:(id)a3;
-- (void)_siriNetworkConnection:(id)a3 didEncounterError:(id)a4 siriNetworkAnalysisInfo:(id)a5;
-- (void)_siriNetworkConnection:(id)a3 didEncounterIntermediateError:(id)a4;
+- (id)initOnQueue:(id)queue withAccount:(id)account languageCode:(id)code connectionMode:(id)mode sharedUserIdentifier:(id)identifier loggingSharedUserIdentifier:(id)userIdentifier instanceContext:(id)context;
+- (void)_saCommandFailed:(id)failed;
+- (void)_siriNetworkConnection:(id)connection didEncounterError:(id)error siriNetworkAnalysisInfo:(id)info;
+- (void)_siriNetworkConnection:(id)connection didEncounterIntermediateError:(id)error;
 @end
 
 @implementation ADSessionRemoteServerLimited
 
 - (BOOL)_sessionRequiresConnection
 {
-  v3 = [(ADSession *)self sessionRequiresServerConnection];
-  v4 = [(ADSession *)self sessionRequiresSync];
-  if ((v3 & 1) == 0 && v4)
+  sessionRequiresServerConnection = [(ADSession *)self sessionRequiresServerConnection];
+  sessionRequiresSync = [(ADSession *)self sessionRequiresSync];
+  if ((sessionRequiresServerConnection & 1) == 0 && sessionRequiresSync)
   {
-    v5 = [(ADSession *)self _requestId];
-    v3 = v5 == 0;
+    _requestId = [(ADSession *)self _requestId];
+    sessionRequiresServerConnection = _requestId == 0;
   }
 
-  return v3;
+  return sessionRequiresServerConnection;
 }
 
-- (void)_siriNetworkConnection:(id)a3 didEncounterIntermediateError:(id)a4
+- (void)_siriNetworkConnection:(id)connection didEncounterIntermediateError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ADSessionRemoteServerLimited *)self _sessionRequiresConnection];
+  connectionCopy = connection;
+  errorCopy = error;
+  _sessionRequiresConnection = [(ADSessionRemoteServerLimited *)self _sessionRequiresConnection];
   v9 = AFSiriLogContextSession;
   if (os_log_type_enabled(AFSiriLogContextSession, OS_LOG_TYPE_INFO))
   {
@@ -33,22 +33,22 @@
     *buf = 136315650;
     v14 = "[ADSessionRemoteServerLimited _siriNetworkConnection:didEncounterIntermediateError:]";
     v15 = 2112;
-    if (v8)
+    if (_sessionRequiresConnection)
     {
       v10 = &stru_10051F508;
     }
 
     v16 = v10;
     v17 = 2112;
-    v18 = v7;
+    v18 = errorCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%s Server connection %@required for intermediate error %@", buf, 0x20u);
   }
 
-  if (v8)
+  if (_sessionRequiresConnection)
   {
     v12.receiver = self;
     v12.super_class = ADSessionRemoteServerLimited;
-    [(ADSessionRemoteServer *)&v12 _siriNetworkConnection:v6 didEncounterIntermediateError:v7];
+    [(ADSessionRemoteServer *)&v12 _siriNetworkConnection:connectionCopy didEncounterIntermediateError:errorCopy];
   }
 
   else
@@ -59,16 +59,16 @@
       *buf = 136315394;
       v14 = "[ADSessionRemoteServerLimited _siriNetworkConnection:didEncounterIntermediateError:]";
       v15 = 2112;
-      v16 = v7;
+      v16 = errorCopy;
       _os_log_debug_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "%s Ignoring intermediate error %@ from server", buf, 0x16u);
     }
   }
 }
 
-- (void)_saCommandFailed:(id)a3
+- (void)_saCommandFailed:(id)failed
 {
-  v4 = a3;
-  v5 = [(ADSessionRemoteServerLimited *)self _sessionRequiresConnection];
+  failedCopy = failed;
+  _sessionRequiresConnection = [(ADSessionRemoteServerLimited *)self _sessionRequiresConnection];
   v6 = AFSiriLogContextSession;
   if (os_log_type_enabled(AFSiriLogContextSession, OS_LOG_TYPE_INFO))
   {
@@ -76,22 +76,22 @@
     *buf = 136315650;
     v11 = "[ADSessionRemoteServerLimited _saCommandFailed:]";
     v12 = 2112;
-    if (v5)
+    if (_sessionRequiresConnection)
     {
       v7 = &stru_10051F508;
     }
 
     v13 = v7;
     v14 = 2112;
-    v15 = v4;
+    v15 = failedCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%s Server connection %@required for %@", buf, 0x20u);
   }
 
-  if (v5)
+  if (_sessionRequiresConnection)
   {
     v9.receiver = self;
     v9.super_class = ADSessionRemoteServerLimited;
-    [(ADSessionRemoteServer *)&v9 _saCommandFailed:v4];
+    [(ADSessionRemoteServer *)&v9 _saCommandFailed:failedCopy];
   }
 
   else
@@ -102,48 +102,48 @@
       *buf = 136315394;
       v11 = "[ADSessionRemoteServerLimited _saCommandFailed:]";
       v12 = 2112;
-      v13 = v4;
+      v13 = failedCopy;
       _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "%s Ignoring %@ from server", buf, 0x16u);
     }
   }
 }
 
-- (void)_siriNetworkConnection:(id)a3 didEncounterError:(id)a4 siriNetworkAnalysisInfo:(id)a5
+- (void)_siriNetworkConnection:(id)connection didEncounterError:(id)error siriNetworkAnalysisInfo:(id)info
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(ADSessionRemoteServer *)self siriNetworkConnection];
+  connectionCopy = connection;
+  errorCopy = error;
+  infoCopy = info;
+  siriNetworkConnection = [(ADSessionRemoteServer *)self siriNetworkConnection];
 
-  if (v11 != v8)
+  if (siriNetworkConnection != connectionCopy)
   {
     goto LABEL_12;
   }
 
-  v12 = [v9 domain];
-  if (![v12 isEqualToString:SiriNetworkNetworkConnectionErrorDomain])
+  domain = [errorCopy domain];
+  if (![domain isEqualToString:SiriNetworkNetworkConnectionErrorDomain])
   {
 
 LABEL_11:
     v17.receiver = self;
     v17.super_class = ADSessionRemoteServerLimited;
-    [(ADSessionRemoteServer *)&v17 _siriNetworkConnection:v8 didEncounterError:v9 siriNetworkAnalysisInfo:v10];
+    [(ADSessionRemoteServer *)&v17 _siriNetworkConnection:connectionCopy didEncounterError:errorCopy siriNetworkAnalysisInfo:infoCopy];
     goto LABEL_12;
   }
 
-  v13 = [v9 code];
+  code = [errorCopy code];
 
-  if (v13 != 6)
+  if (code != 6)
   {
     goto LABEL_11;
   }
 
-  v14 = [(ADSessionRemoteServerLimited *)self _sessionRequiresConnection];
+  _sessionRequiresConnection = [(ADSessionRemoteServerLimited *)self _sessionRequiresConnection];
   v15 = AFSiriLogContextSession;
   if (os_log_type_enabled(AFSiriLogContextSession, OS_LOG_TYPE_INFO))
   {
     v16 = @"not ";
-    if (v14)
+    if (_sessionRequiresConnection)
     {
       v16 = &stru_10051F508;
     }
@@ -155,7 +155,7 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "%s Server connection %@required for connection open timeout", buf, 0x16u);
   }
 
-  if (v14)
+  if (_sessionRequiresConnection)
   {
     goto LABEL_11;
   }
@@ -163,11 +163,11 @@ LABEL_11:
 LABEL_12:
 }
 
-- (id)initOnQueue:(id)a3 withAccount:(id)a4 languageCode:(id)a5 connectionMode:(id)a6 sharedUserIdentifier:(id)a7 loggingSharedUserIdentifier:(id)a8 instanceContext:(id)a9
+- (id)initOnQueue:(id)queue withAccount:(id)account languageCode:(id)code connectionMode:(id)mode sharedUserIdentifier:(id)identifier loggingSharedUserIdentifier:(id)userIdentifier instanceContext:(id)context
 {
   v15.receiver = self;
   v15.super_class = ADSessionRemoteServerLimited;
-  v9 = [(ADSessionRemoteServer *)&v15 initOnQueue:a3 withAccount:a4 languageCode:a5 connectionMode:a6 sharedUserIdentifier:a7 loggingSharedUserIdentifier:a8 instanceContext:a9];
+  v9 = [(ADSessionRemoteServer *)&v15 initOnQueue:queue withAccount:account languageCode:code connectionMode:mode sharedUserIdentifier:identifier loggingSharedUserIdentifier:userIdentifier instanceContext:context];
   v10 = v9;
   if (v9)
   {

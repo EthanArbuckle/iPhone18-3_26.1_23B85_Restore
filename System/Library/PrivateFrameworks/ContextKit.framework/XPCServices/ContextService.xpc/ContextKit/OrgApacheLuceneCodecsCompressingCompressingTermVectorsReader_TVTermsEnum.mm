@@ -1,34 +1,34 @@
 @interface OrgApacheLuceneCodecsCompressingCompressingTermVectorsReader_TVTermsEnum
 - (id)next;
-- (id)postingsWithOrgApacheLuceneIndexPostingsEnum:(id)a3 withInt:(int)a4;
-- (id)seekCeilWithOrgApacheLuceneUtilBytesRef:(id)a3;
+- (id)postingsWithOrgApacheLuceneIndexPostingsEnum:(id)enum withInt:(int)int;
+- (id)seekCeilWithOrgApacheLuceneUtilBytesRef:(id)ref;
 - (int64_t)totalTermFreq;
 - (void)dealloc;
 - (void)reset;
-- (void)resetWithInt:(int)a3 withInt:(int)a4 withIntArray:(id)a5 withIntArray:(id)a6 withIntArray:(id)a7 withIntArray:(id)a8 withIntArray:(id)a9 withIntArray:(id)a10 withIntArray:(id)a11 withIntArray:(id)a12 withOrgApacheLuceneUtilBytesRef:(id)a13 withOrgApacheLuceneStoreByteArrayDataInput:(id)a14;
+- (void)resetWithInt:(int)int withInt:(int)withInt withIntArray:(id)array withIntArray:(id)intArray withIntArray:(id)withIntArray withIntArray:(id)a8 withIntArray:(id)a9 withIntArray:(id)self0 withIntArray:(id)self1 withIntArray:(id)self2 withOrgApacheLuceneUtilBytesRef:(id)self3 withOrgApacheLuceneStoreByteArrayDataInput:(id)self4;
 @end
 
 @implementation OrgApacheLuceneCodecsCompressingCompressingTermVectorsReader_TVTermsEnum
 
-- (void)resetWithInt:(int)a3 withInt:(int)a4 withIntArray:(id)a5 withIntArray:(id)a6 withIntArray:(id)a7 withIntArray:(id)a8 withIntArray:(id)a9 withIntArray:(id)a10 withIntArray:(id)a11 withIntArray:(id)a12 withOrgApacheLuceneUtilBytesRef:(id)a13 withOrgApacheLuceneStoreByteArrayDataInput:(id)a14
+- (void)resetWithInt:(int)int withInt:(int)withInt withIntArray:(id)array withIntArray:(id)intArray withIntArray:(id)withIntArray withIntArray:(id)a8 withIntArray:(id)a9 withIntArray:(id)self0 withIntArray:(id)self1 withIntArray:(id)self2 withOrgApacheLuceneUtilBytesRef:(id)self3 withOrgApacheLuceneStoreByteArrayDataInput:(id)self4
 {
-  self->numTerms_ = a3;
-  JreStrongAssign(&self->prefixLengths_, a5);
-  JreStrongAssign(&self->suffixLengths_, a6);
-  JreStrongAssign(&self->termFreqs_, a7);
+  self->numTerms_ = int;
+  JreStrongAssign(&self->prefixLengths_, array);
+  JreStrongAssign(&self->suffixLengths_, intArray);
+  JreStrongAssign(&self->termFreqs_, withIntArray);
   JreStrongAssign(&self->positionIndex_, a8);
   JreStrongAssign(&self->positions_, a9);
   JreStrongAssign(&self->startOffsets_, a10);
   JreStrongAssign(&self->lengths_, a11);
   JreStrongAssign(&self->payloadIndex_, a12);
-  JreStrongAssign(&self->payloads_, a13);
-  JreStrongAssign(&self->in_, a14);
-  if (!a14)
+  JreStrongAssign(&self->payloads_, ref);
+  JreStrongAssign(&self->in_, input);
+  if (!input)
   {
     JreThrowNullPointerException();
   }
 
-  self->startPos_ = [a14 getPosition];
+  self->startPos_ = [input getPosition];
 
   [(OrgApacheLuceneCodecsCompressingCompressingTermVectorsReader_TVTermsEnum *)self reset];
 }
@@ -128,7 +128,7 @@ LABEL_19:
   return self->term_;
 }
 
-- (id)seekCeilWithOrgApacheLuceneUtilBytesRef:(id)a3
+- (id)seekCeilWithOrgApacheLuceneUtilBytesRef:(id)ref
 {
   ord = self->ord_;
   if (ord < 0 || ord >= self->numTerms_)
@@ -136,13 +136,13 @@ LABEL_19:
     goto LABEL_7;
   }
 
-  v6 = [(OrgApacheLuceneCodecsCompressingCompressingTermVectorsReader_TVTermsEnum *)self term];
-  if (!v6)
+  term = [(OrgApacheLuceneCodecsCompressingCompressingTermVectorsReader_TVTermsEnum *)self term];
+  if (!term)
   {
     JreThrowNullPointerException();
   }
 
-  v7 = [v6 compareToWithId:a3];
+  v7 = [term compareToWithId:ref];
   if (v7)
   {
     if (v7 >= 1)
@@ -153,8 +153,8 @@ LABEL_19:
     while (1)
     {
 LABEL_7:
-      v8 = [(OrgApacheLuceneCodecsCompressingCompressingTermVectorsReader_TVTermsEnum *)self next];
-      if (!v8)
+      next = [(OrgApacheLuceneCodecsCompressingCompressingTermVectorsReader_TVTermsEnum *)self next];
+      if (!next)
       {
         v10 = &OrgApacheLuceneIndexTermsEnum_SeekStatusEnum_values_;
         if (atomic_load_explicit(OrgApacheLuceneIndexTermsEnum_SeekStatusEnum__initialized, memory_order_acquire))
@@ -165,7 +165,7 @@ LABEL_7:
         goto LABEL_13;
       }
 
-      v9 = [v8 compareToWithId:a3];
+      v9 = [next compareToWithId:ref];
       if (v9 >= 1)
       {
         break;
@@ -215,14 +215,14 @@ LABEL_13:
   return *(&termFreqs->super.size_ + ord + 1);
 }
 
-- (id)postingsWithOrgApacheLuceneIndexPostingsEnum:(id)a3 withInt:(int)a4
+- (id)postingsWithOrgApacheLuceneIndexPostingsEnum:(id)enum withInt:(int)int
 {
-  if (OrgApacheLuceneIndexPostingsEnum_featureRequestedWithInt_withShort_(a4, 0x4000) && !self->positions_ && !self->startOffsets_)
+  if (OrgApacheLuceneIndexPostingsEnum_featureRequestedWithInt_withShort_(int, 0x4000) && !self->positions_ && !self->startOffsets_)
   {
     return 0;
   }
 
-  if (a3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if (enum && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -238,8 +238,8 @@ LABEL_13:
     v6->doc_ = -1;
     v8 = new_OrgApacheLuceneUtilBytesRef_init();
     JreStrongAssignAndConsume(&v6->payload_, v8);
-    a3 = v6;
-    if (!a3)
+    enum = v6;
+    if (!enum)
     {
       goto LABEL_18;
     }
@@ -272,8 +272,8 @@ LABEL_18:
     IOSArray_throwOutOfBoundsWithMsg(v14, v13);
   }
 
-  [a3 resetWithInt:*(&termFreqs->super.size_ + ord + 1) withInt:*(&positionIndex->super.size_ + v13 + 1) withIntArray:self->positions_ withIntArray:self->startOffsets_ withIntArray:self->lengths_ withOrgApacheLuceneUtilBytesRef:self->payloads_ withIntArray:self->payloadIndex_];
-  return a3;
+  [enum resetWithInt:*(&termFreqs->super.size_ + ord + 1) withInt:*(&positionIndex->super.size_ + v13 + 1) withIntArray:self->positions_ withIntArray:self->startOffsets_ withIntArray:self->lengths_ withOrgApacheLuceneUtilBytesRef:self->payloads_ withIntArray:self->payloadIndex_];
+  return enum;
 }
 
 - (void)dealloc

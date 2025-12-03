@@ -1,12 +1,12 @@
 @interface MFRequestQueue
 + (OS_os_log)log;
 + (id)signpostLog;
-- (BOOL)_processRequests:(id)a3;
-- (BOOL)addRequest:(id)a3;
-- (BOOL)addRequests:(id)a3 combine:(BOOL)a4;
-- (BOOL)processRequest:(id)a3;
-- (BOOL)processRequests:(id)a3;
-- (BOOL)sendRequests:(id)a3;
+- (BOOL)_processRequests:(id)requests;
+- (BOOL)addRequest:(id)request;
+- (BOOL)addRequests:(id)requests combine:(BOOL)combine;
+- (BOOL)processRequest:(id)request;
+- (BOOL)processRequests:(id)requests;
+- (BOOL)sendRequests:(id)requests;
 - (MFRequestQueue)init;
 - (unint64_t)signpostID;
 @end
@@ -19,7 +19,7 @@
   block[1] = 3221225472;
   block[2] = __21__MFRequestQueue_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_29 != -1)
   {
     dispatch_once(&log_onceToken_29, block);
@@ -44,7 +44,7 @@ void __21__MFRequestQueue_log__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __29__MFRequestQueue_signpostLog__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (signpostLog_onceToken_1 != -1)
   {
     dispatch_once(&signpostLog_onceToken_1, block);
@@ -65,8 +65,8 @@ void __29__MFRequestQueue_signpostLog__block_invoke(uint64_t a1)
 
 - (unint64_t)signpostID
 {
-  v3 = [objc_opt_class() signpostLog];
-  v4 = os_signpost_id_make_with_pointer(v3, self);
+  signpostLog = [objc_opt_class() signpostLog];
+  v4 = os_signpost_id_make_with_pointer(signpostLog, self);
 
   return v4;
 }
@@ -88,15 +88,15 @@ void __29__MFRequestQueue_signpostLog__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (BOOL)addRequests:(id)a3 combine:(BOOL)a4
+- (BOOL)addRequests:(id)requests combine:(BOOL)combine
 {
-  v4 = a4;
+  combineCopy = combine;
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
-  if (v4)
+  requestsCopy = requests;
+  v7 = requestsCopy;
+  if (combineCopy)
   {
-    v8 = [(MFRequestQueue *)self sendRequests:v6];
+    v8 = [(MFRequestQueue *)self sendRequests:requestsCopy];
   }
 
   else
@@ -105,7 +105,7 @@ void __29__MFRequestQueue_signpostLog__block_invoke(uint64_t a1)
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v9 = v6;
+    v9 = requestsCopy;
     v10 = [v9 countByEnumeratingWithState:&v17 objects:v22 count:16];
     if (v10)
     {
@@ -143,11 +143,11 @@ void __29__MFRequestQueue_signpostLog__block_invoke(uint64_t a1)
   return v8;
 }
 
-- (BOOL)addRequest:(id)a3
+- (BOOL)addRequest:(id)request
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v8[0] = v4;
+  requestCopy = request;
+  v8[0] = requestCopy;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
   LOBYTE(self) = [(MFRequestQueue *)self sendRequests:v5];
 
@@ -155,12 +155,12 @@ void __29__MFRequestQueue_signpostLog__block_invoke(uint64_t a1)
   return self;
 }
 
-- (BOOL)sendRequests:(id)a3
+- (BOOL)sendRequests:(id)requests
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 firstObject];
-  v6 = [v5 first];
+  requestsCopy = requests;
+  firstObject = [requestsCopy firstObject];
+  first = [firstObject first];
 
   v7 = objc_opt_class();
   v8 = +[MFRequestQueue signpostLog];
@@ -175,12 +175,12 @@ void __29__MFRequestQueue_signpostLog__block_invoke(uint64_t a1)
     v19 = 2050;
     v20 = [v7 hash];
     v21 = 2050;
-    v22 = [v4 count];
+    v22 = [requestsCopy count];
     _os_signpost_emit_with_name_impl(&dword_1B0389000, v11, OS_SIGNPOST_INTERVAL_BEGIN, v9, "REQUEST QUEUE", "RequestClass=%{signpost.description:attribute,public}@ RequestType=%{public, signpost.telemetry:number1}lu RequestCount=%{public, signpost.telemetry:number2}lu enableTelemetry=YES ", &v17, 0x20u);
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v12 = [(MFRequestQueue *)self _processRequests:v4];
+  v12 = [(MFRequestQueue *)self _processRequests:requestsCopy];
   os_unfair_lock_unlock(&self->_lock);
   v13 = +[MFRequestQueue signpostLog];
   v14 = v13;
@@ -194,27 +194,27 @@ void __29__MFRequestQueue_signpostLog__block_invoke(uint64_t a1)
   return v12;
 }
 
-- (BOOL)processRequest:(id)a3
+- (BOOL)processRequest:(id)request
 {
-  v3 = a3;
-  v4 = [v3 second];
-  v5 = [v3 first];
-  [v4 handleResponse:v5 error:0];
+  requestCopy = request;
+  second = [requestCopy second];
+  first = [requestCopy first];
+  [second handleResponse:first error:0];
 
   return 1;
 }
 
-- (BOOL)_processRequests:(id)a3
+- (BOOL)_processRequests:(id)requests
 {
   v7 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  LOBYTE(self) = [(MFRequestQueue *)self processRequests:v4];
+  requestsCopy = requests;
+  LOBYTE(self) = [(MFRequestQueue *)self processRequests:requestsCopy];
 
   v5 = *MEMORY[0x1E69E9840];
   return self;
 }
 
-- (BOOL)processRequests:(id)a3
+- (BOOL)processRequests:(id)requests
 {
   v6 = 0;
   v7 = &v6;
@@ -226,7 +226,7 @@ void __29__MFRequestQueue_signpostLog__block_invoke(uint64_t a1)
   v5[3] = &unk_1E7AA2550;
   v5[4] = self;
   v5[5] = &v6;
-  [a3 enumerateObjectsUsingBlock:v5];
+  [requests enumerateObjectsUsingBlock:v5];
   v3 = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
   return v3;

@@ -1,25 +1,25 @@
 @interface HMDMediaAccessoryAdvertisement
 - (BOOL)isAssociated;
-- (BOOL)matchesWACDeviceID:(id)a3;
-- (HMDMediaAccessoryAdvertisement)initWithOutputDevice:(id)a3;
+- (BOOL)matchesWACDeviceID:(id)d;
+- (HMDMediaAccessoryAdvertisement)initWithOutputDevice:(id)device;
 - (HMDMediaOutputDevice)outputDevice;
 - (id)description;
 - (int64_t)associationOptions;
-- (void)setAssociated:(BOOL)a3;
-- (void)setOutputDevice:(id)a3;
+- (void)setAssociated:(BOOL)associated;
+- (void)setOutputDevice:(id)device;
 @end
 
 @implementation HMDMediaAccessoryAdvertisement
 
 - (int64_t)associationOptions
 {
-  v3 = [(HMDMediaAccessoryAdvertisement *)self outputDevice];
-  v4 = [v3 modelID];
+  outputDevice = [(HMDMediaAccessoryAdvertisement *)self outputDevice];
+  modelID = [outputDevice modelID];
 
-  v5 = [(HMDMediaAccessoryAdvertisement *)self outputDevice];
-  LOBYTE(v3) = [v5 supportsWHA];
+  outputDevice2 = [(HMDMediaAccessoryAdvertisement *)self outputDevice];
+  LOBYTE(outputDevice) = [outputDevice2 supportsWHA];
 
-  if ((v3 & 1) != 0 || ![HMDMediaAccessoryAdvertisement canAirPortExpressSupportMediaAccessory:v4])
+  if ((outputDevice & 1) != 0 || ![HMDMediaAccessoryAdvertisement canAirPortExpressSupportMediaAccessory:modelID])
   {
     v6 = 0;
   }
@@ -32,10 +32,10 @@
   return v6;
 }
 
-- (void)setAssociated:(BOOL)a3
+- (void)setAssociated:(BOOL)associated
 {
   os_unfair_lock_lock_with_options();
-  self->_associated = a3;
+  self->_associated = associated;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -48,12 +48,12 @@
   return associated;
 }
 
-- (void)setOutputDevice:(id)a3
+- (void)setOutputDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   os_unfair_lock_lock_with_options();
   outputDevice = self->_outputDevice;
-  self->_outputDevice = v4;
+  self->_outputDevice = deviceCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -73,29 +73,29 @@
   v9.receiver = self;
   v9.super_class = HMDMediaAccessoryAdvertisement;
   v4 = [(HMDAccessoryAdvertisement *)&v9 description];
-  v5 = [(HMDMediaAccessoryAdvertisement *)self outputDevice];
-  v6 = [v5 modelID];
-  v7 = [v3 stringWithFormat:@"[ %@, modelID = %@]", v4, v6];
+  outputDevice = [(HMDMediaAccessoryAdvertisement *)self outputDevice];
+  modelID = [outputDevice modelID];
+  v7 = [v3 stringWithFormat:@"[ %@, modelID = %@]", v4, modelID];
 
   return v7;
 }
 
-- (BOOL)matchesWACDeviceID:(id)a3
+- (BOOL)matchesWACDeviceID:(id)d
 {
-  v4 = a3;
-  v5 = [(HMDAccessoryAdvertisement *)self identifier];
-  v6 = [v5 caseInsensitiveCompare:v4];
+  dCopy = d;
+  identifier = [(HMDAccessoryAdvertisement *)self identifier];
+  v6 = [identifier caseInsensitiveCompare:dCopy];
 
   return v6 == 0;
 }
 
-- (HMDMediaAccessoryAdvertisement)initWithOutputDevice:(id)a3
+- (HMDMediaAccessoryAdvertisement)initWithOutputDevice:(id)device
 {
-  v5 = a3;
-  v6 = [v5 uniqueIdentifier];
-  v7 = [v5 name];
-  v8 = [v5 modelID];
-  if ([HMDMediaAccessoryAdvertisement canAirPortExpressSupportMediaAccessory:v8])
+  deviceCopy = device;
+  uniqueIdentifier = [deviceCopy uniqueIdentifier];
+  name = [deviceCopy name];
+  modelID = [deviceCopy modelID];
+  if ([HMDMediaAccessoryAdvertisement canAirPortExpressSupportMediaAccessory:modelID])
   {
     v9 = objc_alloc(MEMORY[0x277CCAD78]);
     v10 = [v9 initWithUUIDString:*MEMORY[0x277CCE860]];
@@ -109,11 +109,11 @@
 
   v15.receiver = self;
   v15.super_class = HMDMediaAccessoryAdvertisement;
-  v12 = [(HMDAccessoryAdvertisement *)&v15 initWithIdentifier:v6 name:v7 category:v11];
+  v12 = [(HMDAccessoryAdvertisement *)&v15 initWithIdentifier:uniqueIdentifier name:name category:v11];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_outputDevice, a3);
+    objc_storeStrong(&v12->_outputDevice, device);
   }
 
   return v13;

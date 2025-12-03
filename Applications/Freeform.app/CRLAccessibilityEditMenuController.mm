@@ -1,7 +1,7 @@
 @interface CRLAccessibilityEditMenuController
 + (id)sharedController;
-- (BOOL)performActionTitled:(id)a3 forEditMenuProvider:(id)a4;
-- (id)editMenuTitlesForItemProvider:(id)a3;
+- (BOOL)performActionTitled:(id)titled forEditMenuProvider:(id)provider;
+- (id)editMenuTitlesForItemProvider:(id)provider;
 @end
 
 @implementation CRLAccessibilityEditMenuController
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = sub_1003BD460;
   block[3] = &unk_10183B690;
-  block[4] = a1;
+  block[4] = self;
   if (qword_101A34DC8 != -1)
   {
     dispatch_once(&qword_101A34DC8, block);
@@ -23,17 +23,17 @@
   return v2;
 }
 
-- (id)editMenuTitlesForItemProvider:(id)a3
+- (id)editMenuTitlesForItemProvider:(id)provider
 {
-  v3 = a3;
-  v4 = [v3 crlaxEditMenuItems];
-  if ([v4 count])
+  providerCopy = provider;
+  crlaxEditMenuItems = [providerCopy crlaxEditMenuItems];
+  if ([crlaxEditMenuItems count])
   {
     v5 = +[NSMutableSet set];
     v25 = 0;
-    v6 = [v3 crlaxWindow];
+    crlaxWindow = [providerCopy crlaxWindow];
     v7 = objc_opt_class();
-    v8 = __CRLAccessibilityCastAsSafeCategory(v7, v6, 1, &v25);
+    v8 = __CRLAccessibilityCastAsSafeCategory(v7, crlaxWindow, 1, &v25);
     if (v25 == 1)
     {
       abort();
@@ -42,12 +42,12 @@
     v9 = v8;
 
     v20 = v9;
-    v10 = [v9 crlaxFirstResponder];
+    crlaxFirstResponder = [v9 crlaxFirstResponder];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v11 = v4;
+    v11 = crlaxEditMenuItems;
     v12 = [v11 countByEnumeratingWithState:&v21 objects:v26 count:16];
     if (v12)
     {
@@ -63,7 +63,7 @@
           }
 
           v16 = *(*(&v21 + 1) + 8 * i);
-          v17 = [v10 targetForAction:objc_msgSend(v3 withSender:{"crlaxSelectorForEditMenuItemName:", v16), 0}];
+          v17 = [crlaxFirstResponder targetForAction:objc_msgSend(providerCopy withSender:{"crlaxSelectorForEditMenuItemName:", v16), 0}];
 
           if (v17)
           {
@@ -83,32 +83,32 @@
     v5 = 0;
   }
 
-  v18 = [v5 allObjects];
+  allObjects = [v5 allObjects];
 
-  return v18;
+  return allObjects;
 }
 
-- (BOOL)performActionTitled:(id)a3 forEditMenuProvider:(id)a4
+- (BOOL)performActionTitled:(id)titled forEditMenuProvider:(id)provider
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 crlaxEditMenuItems];
-  if ([v7 count])
+  titledCopy = titled;
+  providerCopy = provider;
+  crlaxEditMenuItems = [providerCopy crlaxEditMenuItems];
+  if ([crlaxEditMenuItems count])
   {
     v64 = 0u;
     v65 = 0u;
     v62 = 0u;
     v63 = 0u;
-    v45 = v7;
-    obj = v7;
+    v45 = crlaxEditMenuItems;
+    obj = crlaxEditMenuItems;
     v8 = [obj countByEnumeratingWithState:&v62 objects:v67 count:16];
     if (v8)
     {
       v9 = v8;
       v55 = 0;
       v10 = *v63;
-      v46 = v5;
-      v51 = v6;
+      v46 = titledCopy;
+      v51 = providerCopy;
       v52 = *v63;
       do
       {
@@ -122,13 +122,13 @@
           }
 
           v12 = *(*(&v62 + 1) + 8 * v11);
-          if ([v12 isEqualToString:v5])
+          if ([v12 isEqualToString:titledCopy])
           {
-            v13 = [v6 crlaxSelectorForEditMenuItemName:v12];
+            v13 = [providerCopy crlaxSelectorForEditMenuItemName:v12];
             v61 = 0;
-            v14 = [v6 crlaxWindow];
+            crlaxWindow = [providerCopy crlaxWindow];
             v15 = objc_opt_class();
-            v16 = __CRLAccessibilityCastAsSafeCategory(v15, v14, 1, &v61);
+            v16 = __CRLAccessibilityCastAsSafeCategory(v15, crlaxWindow, 1, &v61);
             if (v61 == 1)
             {
               goto LABEL_43;
@@ -136,10 +136,10 @@
 
             v17 = v16;
 
-            v18 = [v17 crlaxFirstResponder];
+            crlaxFirstResponder = [v17 crlaxFirstResponder];
 
             v61 = 0;
-            v19 = v18;
+            v19 = crlaxFirstResponder;
             v20 = objc_opt_class();
             v21 = __CRLAccessibilityCastAsClass(v20, v19, 1, &v61);
             if (v61 == 1)
@@ -149,12 +149,12 @@
 
             v22 = v21;
 
-            v56 = [v22 editor];
+            editor = [v22 editor];
             if (objc_opt_respondsToSelector())
             {
               v23 = v19;
               v61 = 0;
-              v24 = v56;
+              v24 = editor;
               v25 = objc_opt_class();
               v26 = __CRLAccessibilityCastAsClass(v25, v24, 1, &v61);
               if (v61 == 1)
@@ -167,11 +167,11 @@
               v28 = [v27 crlaxPerformSelector:v13 withObject:0];
               v55 = 1;
               v19 = v23;
-              v6 = v51;
+              providerCopy = v51;
             }
 
             v61 = 0;
-            v29 = v6;
+            v29 = providerCopy;
             v30 = objc_opt_class();
             v31 = __CRLAccessibilityCastAsClass(v30, v29, 1, &v61);
             if (v61 == 1)
@@ -190,14 +190,14 @@ LABEL_43:
               {
                 v49 = v22;
                 v50 = v19;
-                v35 = [v33 editorController];
+                editorController = [v33 editorController];
                 v57 = 0u;
                 v58 = 0u;
                 v59 = 0u;
                 v60 = 0u;
-                v48 = v35;
-                v36 = [v35 currentEditors];
-                v37 = [v36 countByEnumeratingWithState:&v57 objects:v66 count:16];
+                v48 = editorController;
+                currentEditors = [editorController currentEditors];
+                v37 = [currentEditors countByEnumeratingWithState:&v57 objects:v66 count:16];
                 if (v37)
                 {
                   v38 = v37;
@@ -209,7 +209,7 @@ LABEL_43:
                     {
                       if (*v58 != v39)
                       {
-                        objc_enumerationMutation(v36);
+                        objc_enumerationMutation(currentEditors);
                       }
 
                       v41 = *(*(&v57 + 1) + 8 * i);
@@ -226,7 +226,7 @@ LABEL_43:
                       }
                     }
 
-                    v38 = [v36 countByEnumeratingWithState:&v57 objects:v66 count:16];
+                    v38 = [currentEditors countByEnumeratingWithState:&v57 objects:v66 count:16];
                     if (v38)
                     {
                       continue;
@@ -237,9 +237,9 @@ LABEL_43:
 
                   v55 = 0;
 LABEL_31:
-                  v5 = v46;
+                  titledCopy = v46;
                   v34 = v47;
-                  v6 = v51;
+                  providerCopy = v51;
                 }
 
                 else
@@ -276,7 +276,7 @@ LABEL_31:
       v55 = 0;
     }
 
-    v7 = v45;
+    crlaxEditMenuItems = v45;
   }
 
   else

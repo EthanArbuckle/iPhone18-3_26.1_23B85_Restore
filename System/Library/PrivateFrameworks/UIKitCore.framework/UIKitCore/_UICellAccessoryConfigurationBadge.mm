@@ -1,21 +1,21 @@
 @interface _UICellAccessoryConfigurationBadge
-- (BOOL)isEqual:(id)a3;
-- (_UICellAccessoryConfigurationBadge)initWithCoder:(id)a3;
-- (_UICellAccessoryConfigurationBadge)initWithText:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_UICellAccessoryConfigurationBadge)initWithCoder:(id)coder;
+- (_UICellAccessoryConfigurationBadge)initWithText:(id)text;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UICellAccessoryConfigurationBadge
 
-- (_UICellAccessoryConfigurationBadge)initWithText:(id)a3
+- (_UICellAccessoryConfigurationBadge)initWithText:(id)text
 {
-  v5 = a3;
-  if (!v5)
+  textCopy = text;
+  if (!textCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"_UICellAccessoryConfiguration.m" lineNumber:422 description:{@"Invalid parameter not satisfying: %@", @"text != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UICellAccessoryConfiguration.m" lineNumber:422 description:{@"Invalid parameter not satisfying: %@", @"text != nil"}];
   }
 
   v13.receiver = self;
@@ -23,7 +23,7 @@
   v6 = [(_UICellAccessoryConfiguration *)&v13 init];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [textCopy copy];
     text = v6->_text;
     v6->_text = v7;
 
@@ -38,24 +38,24 @@
   return v6;
 }
 
-- (_UICellAccessoryConfigurationBadge)initWithCoder:(id)a3
+- (_UICellAccessoryConfigurationBadge)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"text"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"text"];
   if (v5)
   {
     v11.receiver = self;
     v11.super_class = _UICellAccessoryConfigurationBadge;
-    v6 = [(_UICellAccessoryConfiguration *)&v11 initWithCoder:v4];
+    v6 = [(_UICellAccessoryConfiguration *)&v11 initWithCoder:coderCopy];
     v7 = v6;
     if (v6)
     {
       objc_storeStrong(&v6->_text, v5);
-      v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"font"];
+      v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"font"];
       font = v7->_font;
       v7->_font = v8;
 
-      v7->_adjustsFontForContentSizeCategory = [v4 decodeBoolForKey:@"adjustsFontForContentSizeCategory"];
+      v7->_adjustsFontForContentSizeCategory = [coderCopy decodeBoolForKey:@"adjustsFontForContentSizeCategory"];
     }
   }
 
@@ -68,22 +68,22 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = _UICellAccessoryConfigurationBadge;
-  v4 = a3;
-  [(_UICellAccessoryConfiguration *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_text forKey:{@"text", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_font forKey:@"font"];
-  [v4 encodeBool:self->_adjustsFontForContentSizeCategory forKey:@"adjustsFontForContentSizeCategory"];
+  coderCopy = coder;
+  [(_UICellAccessoryConfiguration *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_text forKey:{@"text", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_font forKey:@"font"];
+  [coderCopy encodeBool:self->_adjustsFontForContentSizeCategory forKey:@"adjustsFontForContentSizeCategory"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = _UICellAccessoryConfigurationBadge;
-  v4 = [(_UICellAccessoryConfiguration *)&v8 copyWithZone:a3];
+  v4 = [(_UICellAccessoryConfiguration *)&v8 copyWithZone:zone];
   if (v4)
   {
     v5 = [(NSString *)self->_text copy];
@@ -97,14 +97,14 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v18.receiver = self;
   v18.super_class = _UICellAccessoryConfigurationBadge;
-  if ([(_UICellAccessoryConfiguration *)&v18 isEqual:v4])
+  if ([(_UICellAccessoryConfiguration *)&v18 isEqual:equalCopy])
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5[5];
     v7 = self->_text;
     v8 = v6;

@@ -1,15 +1,15 @@
 @interface WidgetNamedImageView
-- (_TtC19ComplicationDisplay20WidgetNamedImageView)initWithCoder:(id)a3;
-- (_TtC19ComplicationDisplay20WidgetNamedImageView)initWithFrame:(CGRect)a3;
+- (_TtC19ComplicationDisplay20WidgetNamedImageView)initWithCoder:(id)coder;
+- (_TtC19ComplicationDisplay20WidgetNamedImageView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setColor:(id)a3;
-- (void)setImageProvider:(id)a3;
-- (void)setOverrideColor:(id)a3;
+- (void)setColor:(id)color;
+- (void)setImageProvider:(id)provider;
+- (void)setOverrideColor:(id)color;
 @end
 
 @implementation WidgetNamedImageView
 
-- (_TtC19ComplicationDisplay20WidgetNamedImageView)initWithCoder:(id)a3
+- (_TtC19ComplicationDisplay20WidgetNamedImageView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC19ComplicationDisplay20WidgetNamedImageView_baseline) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC19ComplicationDisplay20WidgetNamedImageView_imageProvider) = 0;
@@ -24,34 +24,34 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_243DAA31C();
 }
 
-- (void)setImageProvider:(id)a3
+- (void)setImageProvider:(id)provider
 {
   v6 = *(&self->super.super.super.isa + OBJC_IVAR____TtC19ComplicationDisplay20WidgetNamedImageView_imageProvider);
-  *(&self->super.super.super.isa + OBJC_IVAR____TtC19ComplicationDisplay20WidgetNamedImageView_imageProvider) = a3;
-  v4 = a3;
-  v5 = self;
+  *(&self->super.super.super.isa + OBJC_IVAR____TtC19ComplicationDisplay20WidgetNamedImageView_imageProvider) = provider;
+  providerCopy = provider;
+  selfCopy = self;
   sub_243DAA490(v6);
 }
 
-- (void)setColor:(id)a3
+- (void)setColor:(id)color
 {
-  v5 = a3;
-  v6 = self;
-  sub_243DAA750(a3);
+  colorCopy = color;
+  selfCopy = self;
+  sub_243DAA750(color);
 }
 
-- (void)setOverrideColor:(id)a3
+- (void)setOverrideColor:(id)color
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR____TtC19ComplicationDisplay20WidgetNamedImageView_overrideColor);
-  *(&self->super.super.super.isa + OBJC_IVAR____TtC19ComplicationDisplay20WidgetNamedImageView_overrideColor) = a3;
-  v3 = a3;
+  *(&self->super.super.super.isa + OBJC_IVAR____TtC19ComplicationDisplay20WidgetNamedImageView_overrideColor) = color;
+  colorCopy = color;
 }
 
-- (_TtC19ComplicationDisplay20WidgetNamedImageView)initWithFrame:(CGRect)a3
+- (_TtC19ComplicationDisplay20WidgetNamedImageView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

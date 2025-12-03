@@ -1,82 +1,82 @@
 @interface CRLCounterRotateInfo
-+ (CGAffineTransform)counterTransformForTransformInRoot:(SEL)a3;
-+ (id)infoGeometryForTransformInRoot:(CGAffineTransform *)a3 isChildFlipped:(BOOL)a4;
-+ (id)infoGeometryInRootIncludingCounterRotateIfNeededForBoardItem:(id)a3;
-+ (id)p_infoGeometryForCounterTransform:(CGAffineTransform *)a3 isChildFlipped:(BOOL)a4;
++ (CGAffineTransform)counterTransformForTransformInRoot:(SEL)root;
++ (id)infoGeometryForTransformInRoot:(CGAffineTransform *)root isChildFlipped:(BOOL)flipped;
++ (id)infoGeometryInRootIncludingCounterRotateIfNeededForBoardItem:(id)item;
++ (id)p_infoGeometryForCounterTransform:(CGAffineTransform *)transform isChildFlipped:(BOOL)flipped;
 - (CGAffineTransform)counterTransform;
 - (CRLCanvasElementInfo)parentInfo;
-- (CRLCounterRotateInfo)initWithChildInfo:(id)a3 parentGroup:(id)a4 counterTransform:(CGAffineTransform *)a5;
+- (CRLCounterRotateInfo)initWithChildInfo:(id)info parentGroup:(id)group counterTransform:(CGAffineTransform *)transform;
 - (Class)editorClass;
 - (NSArray)childInfos;
 - (_TtC8Freeform12CRLBoardItem)childInfo;
 - (_TtC8Freeform12CRLGroupItem)parentGroup;
-- (id)infoForSelectionPath:(id)a3;
-- (void)clearBackPointerToParentInfoIfNeeded:(id)a3;
-- (void)setCounterTransform:(CGAffineTransform *)a3;
-- (void)setParentInfo:(id)a3;
+- (id)infoForSelectionPath:(id)path;
+- (void)clearBackPointerToParentInfoIfNeeded:(id)needed;
+- (void)setCounterTransform:(CGAffineTransform *)transform;
+- (void)setParentInfo:(id)info;
 @end
 
 @implementation CRLCounterRotateInfo
 
-- (CRLCounterRotateInfo)initWithChildInfo:(id)a3 parentGroup:(id)a4 counterTransform:(CGAffineTransform *)a5
+- (CRLCounterRotateInfo)initWithChildInfo:(id)info parentGroup:(id)group counterTransform:(CGAffineTransform *)transform
 {
-  v8 = a3;
-  v9 = a4;
+  infoCopy = info;
+  groupCopy = group;
   v15.receiver = self;
   v15.super_class = CRLCounterRotateInfo;
   v10 = [(CRLCounterRotateInfo *)&v15 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_childInfo, v8);
-    objc_storeWeak(&v11->_parentGroup, v9);
-    v12 = *&a5->c;
-    v14[0] = *&a5->a;
+    objc_storeWeak(&v10->_childInfo, infoCopy);
+    objc_storeWeak(&v11->_parentGroup, groupCopy);
+    v12 = *&transform->c;
+    v14[0] = *&transform->a;
     v14[1] = v12;
-    v14[2] = *&a5->tx;
+    v14[2] = *&transform->tx;
     [(CRLCounterRotateInfo *)v11 setCounterTransform:v14];
   }
 
   return v11;
 }
 
-+ (id)infoGeometryForTransformInRoot:(CGAffineTransform *)a3 isChildFlipped:(BOOL)a4
++ (id)infoGeometryForTransformInRoot:(CGAffineTransform *)root isChildFlipped:(BOOL)flipped
 {
-  v4 = a4;
+  flippedCopy = flipped;
   v13 = 0u;
   v14 = 0u;
-  v6 = *&a3->c;
-  v9 = *&a3->a;
+  v6 = *&root->c;
+  v9 = *&root->a;
   v10 = v6;
-  v11 = *&a3->tx;
+  v11 = *&root->tx;
   v12 = 0u;
-  [a1 counterTransformForTransformInRoot:&v9];
+  [self counterTransformForTransformInRoot:&v9];
   v9 = v12;
   v10 = v13;
   v11 = v14;
-  v7 = [a1 p_infoGeometryForCounterTransform:&v9 isChildFlipped:v4];
+  v7 = [self p_infoGeometryForCounterTransform:&v9 isChildFlipped:flippedCopy];
 
   return v7;
 }
 
-+ (id)p_infoGeometryForCounterTransform:(CGAffineTransform *)a3 isChildFlipped:(BOOL)a4
++ (id)p_infoGeometryForCounterTransform:(CGAffineTransform *)transform isChildFlipped:(BOOL)flipped
 {
-  v4 = a4;
-  v6 = *&a3->c;
-  v11 = *&a3->a;
+  flippedCopy = flipped;
+  v6 = *&transform->c;
+  v11 = *&transform->a;
   v12 = v6;
-  v13 = *&a3->tx;
+  v13 = *&transform->tx;
   v7 = sub_1001399E4(&v11);
-  v8 = *&a3->c;
-  v11 = *&a3->a;
+  v8 = *&transform->c;
+  v11 = *&transform->a;
   v12 = v8;
-  v13 = *&a3->tx;
-  v9 = [[CRLCanvasInfoGeometry alloc] initWithPosition:1 size:1 widthValid:v7 ^ v4 heightValid:0 horizontalFlip:CGPointZero.x verticalFlip:CGPointZero.y angle:10.0, 10.0, -sub_100139980(&v11)];
+  v13 = *&transform->tx;
+  v9 = [[CRLCanvasInfoGeometry alloc] initWithPosition:1 size:1 widthValid:v7 ^ flippedCopy heightValid:0 horizontalFlip:CGPointZero.x verticalFlip:CGPointZero.y angle:10.0, 10.0, -sub_100139980(&v11)];
 
   return v9;
 }
 
-+ (CGAffineTransform)counterTransformForTransformInRoot:(SEL)a3
++ (CGAffineTransform)counterTransformForTransformInRoot:(SEL)root
 {
   v4 = *&a4->c;
   *&v6.a = *&a4->a;
@@ -89,21 +89,21 @@
   return CGAffineTransformInvert(retstr, &v6);
 }
 
-+ (id)infoGeometryInRootIncludingCounterRotateIfNeededForBoardItem:(id)a3
++ (id)infoGeometryInRootIncludingCounterRotateIfNeededForBoardItem:(id)item
 {
-  v3 = a3;
-  v4 = [v3 geometry];
+  itemCopy = item;
+  geometry = [itemCopy geometry];
   v5 = objc_opt_class();
-  v6 = [v3 parentInfo];
-  v7 = sub_100014370(v5, v6);
+  parentInfo = [itemCopy parentInfo];
+  v7 = sub_100014370(v5, parentInfo);
 
-  if ([v3 wantsCounterRotationWhenNotSupportingParentRotationInRotatedParent])
+  if ([itemCopy wantsCounterRotationWhenNotSupportingParentRotationInRotatedParent])
   {
-    if (([v3 supportsParentRotation] & 1) == 0)
+    if (([itemCopy supportsParentRotation] & 1) == 0)
     {
-      v8 = [v3 containingGroup];
+      containingGroup = [itemCopy containingGroup];
 
-      if (v8)
+      if (containingGroup)
       {
         v31 = 0;
         v32 = &v31;
@@ -129,11 +129,11 @@
           memset(&v29, 0, sizeof(v29));
         }
 
-        v10 = [v3 geometry];
-        v11 = v10;
-        if (v10)
+        geometry2 = [itemCopy geometry];
+        v11 = geometry2;
+        if (geometry2)
         {
-          [v10 transform];
+          [geometry2 transform];
         }
 
         else
@@ -160,9 +160,9 @@
         *&t2.tx = *(v32 + 4);
         CGAffineTransformConcat(&v29, &t1, &t2);
         memset(&t1, 0, sizeof(t1));
-        if (v4)
+        if (geometry)
         {
-          [v4 fullTransform];
+          [geometry fullTransform];
         }
 
         else
@@ -172,18 +172,18 @@
 
         v26 = v29;
         CGAffineTransformConcat(&t1, &t2, &v26);
-        v14 = [v4 widthValid];
-        v15 = [v4 heightValid];
+        widthValid = [geometry widthValid];
+        heightValid = [geometry heightValid];
         t2 = t1;
-        v16 = [CRLCanvasInfoGeometry geometryFromFullTransform:&t2 widthValid:v14 heightValid:v15];
+        v16 = [CRLCanvasInfoGeometry geometryFromFullTransform:&t2 widthValid:widthValid heightValid:heightValid];
 
         v17 = objc_opt_class();
-        v18 = [v7 parentInfo];
-        v19 = sub_100014370(v17, v18);
+        parentInfo2 = [v7 parentInfo];
+        v19 = sub_100014370(v17, parentInfo2);
 
         _Block_object_dispose(&v31, 8);
         v7 = v19;
-        v4 = v16;
+        geometry = v16;
       }
     }
   }
@@ -192,14 +192,14 @@
   {
     do
     {
-      v20 = [v7 geometry];
-      v21 = [v4 geometryWithParentGeometry:v20];
+      geometry3 = [v7 geometry];
+      v21 = [geometry geometryWithParentGeometry:geometry3];
 
       v22 = objc_opt_class();
-      v23 = [v7 parentInfo];
-      v24 = sub_100014370(v22, v23);
+      parentInfo3 = [v7 parentInfo];
+      v24 = sub_100014370(v22, parentInfo3);
 
-      v4 = v21;
+      geometry = v21;
       v7 = v24;
     }
 
@@ -208,26 +208,26 @@
 
   else
   {
-    v21 = v4;
+    v21 = geometry;
   }
 
   return v21;
 }
 
-- (void)setCounterTransform:(CGAffineTransform *)a3
+- (void)setCounterTransform:(CGAffineTransform *)transform
 {
-  v5 = *&a3->a;
-  v6 = *&a3->tx;
-  *&self->_counterTransform.c = *&a3->c;
+  v5 = *&transform->a;
+  v6 = *&transform->tx;
+  *&self->_counterTransform.c = *&transform->c;
   *&self->_counterTransform.tx = v6;
   *&self->_counterTransform.a = v5;
   v7 = objc_opt_class();
   WeakRetained = objc_loadWeakRetained(&self->_childInfo);
-  v9 = [WeakRetained geometry];
-  v10 = v9;
-  if (v9)
+  geometry = [WeakRetained geometry];
+  v10 = geometry;
+  if (geometry)
   {
-    [v9 transform];
+    [geometry transform];
   }
 
   else
@@ -238,10 +238,10 @@
   }
 
   v11 = sub_1001399E4(&v14);
-  v12 = *&a3->c;
-  v14 = *&a3->a;
+  v12 = *&transform->c;
+  v14 = *&transform->a;
   v15 = v12;
-  v16 = *&a3->tx;
+  v16 = *&transform->tx;
   v13 = [v7 p_infoGeometryForCounterTransform:&v14 isChildFlipped:v11];
   [(CRLCounterRotateInfo *)self setGeometry:v13];
 }
@@ -253,12 +253,12 @@
   return WeakRetained;
 }
 
-- (void)setParentInfo:(id)a3
+- (void)setParentInfo:(id)info
 {
-  v18 = a3;
+  infoCopy = info;
   v4 = objc_opt_class();
-  v5 = sub_100014370(v4, v18);
-  if (v18 && !v5)
+  v5 = sub_100014370(v4, infoCopy);
+  if (infoCopy && !v5)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -294,12 +294,12 @@
   objc_storeWeak(&self->_parentGroup, v5);
 }
 
-- (void)clearBackPointerToParentInfoIfNeeded:(id)a3
+- (void)clearBackPointerToParentInfoIfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   WeakRetained = objc_loadWeakRetained(&self->_parentGroup);
 
-  if (WeakRetained == v4)
+  if (WeakRetained == neededCopy)
   {
 
     objc_storeWeak(&self->_parentGroup, 0);
@@ -346,7 +346,7 @@
   return v3;
 }
 
-- (id)infoForSelectionPath:(id)a3
+- (id)infoForSelectionPath:(id)path
 {
   +[CRLAssertionHandler _atomicIncrementAssertCount];
   if (qword_101AD5A10 != -1)

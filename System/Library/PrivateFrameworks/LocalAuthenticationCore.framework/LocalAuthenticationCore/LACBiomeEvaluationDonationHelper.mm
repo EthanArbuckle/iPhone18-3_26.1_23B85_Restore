@@ -1,8 +1,8 @@
 @interface LACBiomeEvaluationDonationHelper
 + (id)sharedInstance;
 - (LACBiomeEvaluationDonationHelper)init;
-- (id)_mechanismWithState:(id)a3;
-- (void)donateEvent:(id)a3;
+- (id)_mechanismWithState:(id)state;
+- (void)donateEvent:(id)event;
 @end
 
 @implementation LACBiomeEvaluationDonationHelper
@@ -54,12 +54,12 @@ uint64_t __50__LACBiomeEvaluationDonationHelper_sharedInstance__block_invoke()
   if (BiomeLibrarySymbolLoc)
   {
     v4 = BiomeLibrarySymbolLoc();
-    v5 = [v4 LocalAuthentication];
-    v6 = [v5 Interactive];
-    v7 = [v6 Evaluations];
-    v8 = [v7 source];
+    localAuthentication = [v4 LocalAuthentication];
+    interactive = [localAuthentication Interactive];
+    evaluations = [interactive Evaluations];
+    source = [evaluations source];
     laSource = v2->_laSource;
-    v2->_laSource = v8;
+    v2->_laSource = source;
 
 LABEL_6:
     v10 = v2;
@@ -73,10 +73,10 @@ LABEL_10:
   return result;
 }
 
-- (void)donateEvent:(id)a3
+- (void)donateEvent:(id)event
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  eventCopy = event;
   v29 = 0;
   v30 = &v29;
   v31 = 0x2050000000;
@@ -106,7 +106,7 @@ LABEL_10:
     {
       laSource = self->_laSource;
       *buf = 138412546;
-      *&buf[4] = v4;
+      *&buf[4] = eventCopy;
       *&buf[12] = 2112;
       *&buf[14] = laSource;
       _os_log_impl(&dword_1B0233000, v9, OS_LOG_TYPE_DEFAULT, "Donating %@ to %@", buf, 0x16u);
@@ -114,15 +114,15 @@ LABEL_10:
 
     v11 = self->_laSource;
     v12 = [v5 alloc];
-    v9 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v4, "policy")}];
-    v13 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v4, "errorCode")}];
-    v14 = [v4 biometry];
-    v15 = [(LACBiomeEvaluationDonationHelper *)self _mechanismWithState:v14];
-    v16 = [v4 passcode];
-    v17 = [(LACBiomeEvaluationDonationHelper *)self _mechanismWithState:v16];
-    v18 = [v4 dtoState];
-    LODWORD(v28) = [v4 ratchetState];
-    v19 = [v12 initWithPolicy:v9 result:v13 biometry:v15 passcode:v17 ratchetState:v18 callerBundleId:0 ratchetArmingState:v28];
+    v9 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(eventCopy, "policy")}];
+    v13 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(eventCopy, "errorCode")}];
+    biometry = [eventCopy biometry];
+    v15 = [(LACBiomeEvaluationDonationHelper *)self _mechanismWithState:biometry];
+    passcode = [eventCopy passcode];
+    v17 = [(LACBiomeEvaluationDonationHelper *)self _mechanismWithState:passcode];
+    dtoState = [eventCopy dtoState];
+    LODWORD(v28) = [eventCopy ratchetState];
+    v19 = [v12 initWithPolicy:v9 result:v13 biometry:v15 passcode:v17 ratchetState:dtoState callerBundleId:0 ratchetArmingState:v28];
     [(BMSource *)v11 sendEvent:v19];
   }
 
@@ -134,9 +134,9 @@ LABEL_10:
   v27 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_mechanismWithState:(id)a3
+- (id)_mechanismWithState:(id)state
 {
-  v3 = a3;
+  stateCopy = state;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2050000000;
@@ -155,13 +155,13 @@ LABEL_10:
   if (v4)
   {
     v6 = [v4 alloc];
-    v7 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v3, "available")}];
-    v8 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v3, "started")}];
-    v9 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v3, "success")}];
-    v10 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v3, "lockout")}];
-    if ([v3 generation])
+    v7 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(stateCopy, "available")}];
+    v8 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(stateCopy, "started")}];
+    v9 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(stateCopy, "success")}];
+    v10 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(stateCopy, "lockout")}];
+    if ([stateCopy generation])
     {
-      v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v3, "generation")}];
+      v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(stateCopy, "generation")}];
       v12 = [v6 initWithAvailable:v7 started:v8 success:v9 lockout:v10 generation:v11];
     }
 

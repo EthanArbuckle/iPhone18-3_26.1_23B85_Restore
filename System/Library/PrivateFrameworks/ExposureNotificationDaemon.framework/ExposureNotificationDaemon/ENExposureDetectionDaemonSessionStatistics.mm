@@ -1,11 +1,11 @@
 @interface ENExposureDetectionDaemonSessionStatistics
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation ENExposureDetectionDaemonSessionStatistics
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = objc_alloc_init(ENExposureDetectionDaemonSessionStatistics);
   *(result + 2) = self->_droppedCachedKeyUpdatesCount;

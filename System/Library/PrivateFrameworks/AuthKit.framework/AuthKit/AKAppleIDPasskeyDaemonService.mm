@@ -1,33 +1,33 @@
 @interface AKAppleIDPasskeyDaemonService
 - (AKAppleIDPasskeyDaemonService)init;
-- (BOOL)shouldAcceptNewConnection:(id)a3;
-- (void)appleIDPasskeyStatusWithContext:(AKAppleIDPasskeySetupContext *)a3 completion:(id)a4;
-- (void)configureExportedInterface:(id)a3;
-- (void)setupAppleIDPasskeyWithContext:(AKAppleIDPasskeySetupContext *)a3 completion:(id)a4;
-- (void)unenrollAppleIDPasskeyWithContext:(AKAppleIDPasskeySetupContext *)a3 completion:(id)a4;
-- (void)verifyAppleIDPasskeyWithContext:(AKAppleIDPasskeySetupContext *)a3 completion:(id)a4;
+- (BOOL)shouldAcceptNewConnection:(id)connection;
+- (void)appleIDPasskeyStatusWithContext:(AKAppleIDPasskeySetupContext *)context completion:(id)completion;
+- (void)configureExportedInterface:(id)interface;
+- (void)setupAppleIDPasskeyWithContext:(AKAppleIDPasskeySetupContext *)context completion:(id)completion;
+- (void)unenrollAppleIDPasskeyWithContext:(AKAppleIDPasskeySetupContext *)context completion:(id)completion;
+- (void)verifyAppleIDPasskeyWithContext:(AKAppleIDPasskeySetupContext *)context completion:(id)completion;
 @end
 
 @implementation AKAppleIDPasskeyDaemonService
 
-- (void)configureExportedInterface:(id)a3
+- (void)configureExportedInterface:(id)interface
 {
-  v4 = a3;
-  v5 = self;
+  interfaceCopy = interface;
+  selfCopy = self;
   _s3akd27AppleIDPasskeyDaemonServiceC26configureExportedInterfaceyySo14NSXPCInterfaceCF_0();
 }
 
-- (BOOL)shouldAcceptNewConnection:(id)a3
+- (BOOL)shouldAcceptNewConnection:(id)connection
 {
   v11.receiver = self;
   v11.super_class = type metadata accessor for AppleIDPasskeyDaemonService();
-  v4 = a3;
+  connectionCopy = connection;
   v5 = v11.receiver;
-  v6 = [(AKAppleIDPasskeyDaemonService *)&v11 shouldAcceptNewConnection:v4];
+  v6 = [(AKAppleIDPasskeyDaemonService *)&v11 shouldAcceptNewConnection:connectionCopy];
   if (v6)
   {
     v7 = objc_allocWithZone(AKClient);
-    v8 = [v7 initWithConnection:{v4, v11.receiver, v11.super_class}];
+    v8 = [v7 initWithConnection:{connectionCopy, v11.receiver, v11.super_class}];
 
     v9 = *&v5[OBJC_IVAR___AKAppleIDPasskeyDaemonService_client];
     *&v5[OBJC_IVAR___AKAppleIDPasskeyDaemonService_client] = v8;
@@ -50,15 +50,15 @@
   return [(AKAppleIDPasskeyDaemonService *)&v3 init];
 }
 
-- (void)setupAppleIDPasskeyWithContext:(AKAppleIDPasskeySetupContext *)a3 completion:(id)a4
+- (void)setupAppleIDPasskeyWithContext:(AKAppleIDPasskeySetupContext *)context completion:(id)completion
 {
   v7 = sub_1001AD17C(&unk_100372310, &qword_10029CEC0);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(completion);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = context;
   v12[3] = v11;
   v12[4] = self;
   v13 = type metadata accessor for TaskPriority();
@@ -73,20 +73,20 @@
   v15[3] = 0;
   v15[4] = &unk_10029DE20;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  contextCopy = context;
+  selfCopy = self;
   sub_100244978(0, 0, v10, &unk_10029DE28, v15);
 }
 
-- (void)verifyAppleIDPasskeyWithContext:(AKAppleIDPasskeySetupContext *)a3 completion:(id)a4
+- (void)verifyAppleIDPasskeyWithContext:(AKAppleIDPasskeySetupContext *)context completion:(id)completion
 {
   v7 = sub_1001AD17C(&unk_100372310, &qword_10029CEC0);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(completion);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = context;
   v12[3] = v11;
   v12[4] = self;
   v13 = type metadata accessor for TaskPriority();
@@ -101,20 +101,20 @@
   v15[3] = 0;
   v15[4] = &unk_10029DE00;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  contextCopy = context;
+  selfCopy = self;
   sub_100244978(0, 0, v10, &unk_10029DE08, v15);
 }
 
-- (void)unenrollAppleIDPasskeyWithContext:(AKAppleIDPasskeySetupContext *)a3 completion:(id)a4
+- (void)unenrollAppleIDPasskeyWithContext:(AKAppleIDPasskeySetupContext *)context completion:(id)completion
 {
   v7 = sub_1001AD17C(&unk_100372310, &qword_10029CEC0);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(completion);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = context;
   v12[3] = v11;
   v12[4] = self;
   v13 = type metadata accessor for TaskPriority();
@@ -129,20 +129,20 @@
   v15[3] = 0;
   v15[4] = &unk_10029DDE0;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  contextCopy = context;
+  selfCopy = self;
   sub_100244978(0, 0, v10, &unk_10029DDE8, v15);
 }
 
-- (void)appleIDPasskeyStatusWithContext:(AKAppleIDPasskeySetupContext *)a3 completion:(id)a4
+- (void)appleIDPasskeyStatusWithContext:(AKAppleIDPasskeySetupContext *)context completion:(id)completion
 {
   v7 = sub_1001AD17C(&unk_100372310, &qword_10029CEC0);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(completion);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = context;
   v12[3] = v11;
   v12[4] = self;
   v13 = type metadata accessor for TaskPriority();
@@ -157,8 +157,8 @@
   v15[3] = 0;
   v15[4] = &unk_10029C6A0;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  contextCopy = context;
+  selfCopy = self;
   sub_100244978(0, 0, v10, &unk_10029CEE0, v15);
 }
 

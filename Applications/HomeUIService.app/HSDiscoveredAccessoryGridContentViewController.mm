@@ -1,23 +1,23 @@
 @interface HSDiscoveredAccessoryGridContentViewController
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4;
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path;
 - (HFAccessoryBrowsingManager)accessoryBrowsingManager;
-- (HSDiscoveredAccessoryGridContentViewController)initWithAccessoryBrowsingManager:(id)a3 discoveredAccessoryFilter:(id)a4;
-- (HSDiscoveredAccessoryGridContentViewController)initWithItemManager:(id)a3;
+- (HSDiscoveredAccessoryGridContentViewController)initWithAccessoryBrowsingManager:(id)manager discoveredAccessoryFilter:(id)filter;
+- (HSDiscoveredAccessoryGridContentViewController)initWithItemManager:(id)manager;
 - (HSDiscoveredAccessoryGridContentViewControllerDelegate)delegate;
-- (id)_defaultLayoutOptionsForViewSize:(CGSize)a3;
-- (id)layoutOptionsForSection:(int64_t)a3;
-- (void)_identifyAccessory:(id)a3;
+- (id)_defaultLayoutOptionsForViewSize:(CGSize)size;
+- (id)layoutOptionsForSection:(int64_t)section;
+- (void)_identifyAccessory:(id)accessory;
 - (void)_updateScrollingAttributes;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)configureCell:(id)a3 forItem:(id)a4;
-- (void)itemManagerDidUpdate:(id)a3;
-- (void)setScrollDirection:(int64_t)a3;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)configureCell:(id)cell forItem:(id)item;
+- (void)itemManagerDidUpdate:(id)update;
+- (void)setScrollDirection:(int64_t)direction;
 - (void)viewDidLoad;
 @end
 
 @implementation HSDiscoveredAccessoryGridContentViewController
 
-- (HSDiscoveredAccessoryGridContentViewController)initWithItemManager:(id)a3
+- (HSDiscoveredAccessoryGridContentViewController)initWithItemManager:(id)manager
 {
   v5 = +[NSAssertionHandler currentHandler];
   v6 = NSStringFromSelector("initWithAccessoryBrowsingManager:discoveredAccessoryFilter:");
@@ -26,11 +26,11 @@
   return 0;
 }
 
-- (HSDiscoveredAccessoryGridContentViewController)initWithAccessoryBrowsingManager:(id)a3 discoveredAccessoryFilter:(id)a4
+- (HSDiscoveredAccessoryGridContentViewController)initWithAccessoryBrowsingManager:(id)manager discoveredAccessoryFilter:(id)filter
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[HSDiscoveredAccessoryGridContentItemManager alloc] initWithAccessoryBrowsingManager:v7 delegate:self discoveredAccessoryFilter:v6];
+  filterCopy = filter;
+  managerCopy = manager;
+  v8 = [[HSDiscoveredAccessoryGridContentItemManager alloc] initWithAccessoryBrowsingManager:managerCopy delegate:self discoveredAccessoryFilter:filterCopy];
 
   v11.receiver = self;
   v11.super_class = HSDiscoveredAccessoryGridContentViewController;
@@ -39,18 +39,18 @@
   return v9;
 }
 
-- (id)_defaultLayoutOptionsForViewSize:(CGSize)a3
+- (id)_defaultLayoutOptionsForViewSize:(CGSize)size
 {
   v35.receiver = self;
   v35.super_class = HSDiscoveredAccessoryGridContentViewController;
-  v4 = [(HSDiscoveredAccessoryGridContentViewController *)&v35 _defaultLayoutOptionsForViewSize:a3.width, a3.height];
+  v4 = [(HSDiscoveredAccessoryGridContentViewController *)&v35 _defaultLayoutOptionsForViewSize:size.width, size.height];
   objc_opt_class();
-  v5 = [(HSDiscoveredAccessoryGridContentViewController *)self collectionView];
-  v6 = [v5 visibleCells];
-  v7 = [v6 firstObject];
+  collectionView = [(HSDiscoveredAccessoryGridContentViewController *)self collectionView];
+  visibleCells = [collectionView visibleCells];
+  firstObject = [visibleCells firstObject];
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    v8 = firstObject;
   }
 
   else
@@ -62,15 +62,15 @@
 
   if (v9)
   {
-    v10 = [v9 iconView];
-    [v10 frame];
+    iconView = [v9 iconView];
+    [iconView frame];
     v12 = v11;
     v14 = v13;
     v16 = v15;
     v18 = v17;
 
-    v19 = [v9 serviceTextView];
-    [v19 frame];
+    serviceTextView = [v9 serviceTextView];
+    [serviceTextView frame];
     v21 = v20;
     v23 = v22;
     v25 = v24;
@@ -91,11 +91,11 @@
     {
       HUDefaultSizeForIconSize();
       v31 = v30;
-      v32 = [v4 serviceCellOptions];
-      [v32 setIconSize:v31];
+      serviceCellOptions = [v4 serviceCellOptions];
+      [serviceCellOptions setIconSize:v31];
 
-      v33 = [v4 serviceCellOptions];
-      [v33 setIconContentMode:1];
+      serviceCellOptions2 = [v4 serviceCellOptions];
+      [serviceCellOptions2 setIconContentMode:1];
     }
   }
 
@@ -109,10 +109,10 @@
 
 - (HFAccessoryBrowsingManager)accessoryBrowsingManager
 {
-  v2 = [(HSDiscoveredAccessoryGridContentViewController *)self itemManager];
-  v3 = [v2 accessoryBrowsingManager];
+  itemManager = [(HSDiscoveredAccessoryGridContentViewController *)self itemManager];
+  accessoryBrowsingManager = [itemManager accessoryBrowsingManager];
 
-  return v3;
+  return accessoryBrowsingManager;
 }
 
 - (void)viewDidLoad
@@ -121,77 +121,77 @@
   v16.super_class = HSDiscoveredAccessoryGridContentViewController;
   [(HSDiscoveredAccessoryGridContentViewController *)&v16 viewDidLoad];
   v3 = +[UIColor clearColor];
-  v4 = [(HSDiscoveredAccessoryGridContentViewController *)self collectionView];
-  [v4 setBackgroundColor:v3];
+  collectionView = [(HSDiscoveredAccessoryGridContentViewController *)self collectionView];
+  [collectionView setBackgroundColor:v3];
 
   v5 = +[UIColor clearColor];
-  v6 = [(HSDiscoveredAccessoryGridContentViewController *)self view];
-  [v6 setBackgroundColor:v5];
+  view = [(HSDiscoveredAccessoryGridContentViewController *)self view];
+  [view setBackgroundColor:v5];
 
-  v7 = [(HSDiscoveredAccessoryGridContentViewController *)self collectionView];
-  [v7 setShowsVerticalScrollIndicator:0];
+  collectionView2 = [(HSDiscoveredAccessoryGridContentViewController *)self collectionView];
+  [collectionView2 setShowsVerticalScrollIndicator:0];
 
-  v8 = [(HSDiscoveredAccessoryGridContentViewController *)self collectionView];
-  [v8 setAlwaysBounceVertical:0];
+  collectionView3 = [(HSDiscoveredAccessoryGridContentViewController *)self collectionView];
+  [collectionView3 setAlwaysBounceVertical:0];
 
   v9 = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:"_identifyAccessory:"];
   [v9 setDelaysTouchesBegan:1];
-  v10 = [(HSDiscoveredAccessoryGridContentViewController *)self collectionView];
-  [v10 addGestureRecognizer:v9];
+  collectionView4 = [(HSDiscoveredAccessoryGridContentViewController *)self collectionView];
+  [collectionView4 addGestureRecognizer:v9];
 
   [(HSDiscoveredAccessoryGridContentViewController *)self _updateScrollingAttributes];
-  v11 = [(HSDiscoveredAccessoryGridContentViewController *)self itemManager];
-  v12 = [v11 home];
-  if (v12)
+  itemManager = [(HSDiscoveredAccessoryGridContentViewController *)self itemManager];
+  home = [itemManager home];
+  if (home)
   {
   }
 
   else
   {
-    v13 = [(HSDiscoveredAccessoryGridContentViewController *)self itemManager];
-    v14 = [v13 itemProviders];
-    v15 = [v14 count];
+    itemManager2 = [(HSDiscoveredAccessoryGridContentViewController *)self itemManager];
+    itemProviders = [itemManager2 itemProviders];
+    v15 = [itemProviders count];
 
     if (v15)
     {
       goto LABEL_5;
     }
 
-    v11 = [(HSDiscoveredAccessoryGridContentViewController *)self itemManager];
-    [v11 resetItemProvidersAndModules];
+    itemManager = [(HSDiscoveredAccessoryGridContentViewController *)self itemManager];
+    [itemManager resetItemProvidersAndModules];
   }
 
 LABEL_5:
 }
 
-- (void)setScrollDirection:(int64_t)a3
+- (void)setScrollDirection:(int64_t)direction
 {
   v4.receiver = self;
   v4.super_class = HSDiscoveredAccessoryGridContentViewController;
-  [(HSDiscoveredAccessoryGridContentViewController *)&v4 setScrollDirection:a3];
+  [(HSDiscoveredAccessoryGridContentViewController *)&v4 setScrollDirection:direction];
   [(HSDiscoveredAccessoryGridContentViewController *)self _updateScrollingAttributes];
 }
 
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(HSDiscoveredAccessoryGridContentViewController *)self itemManager];
-  v7 = [v6 displayedItemAtIndexPath:v5];
+  pathCopy = path;
+  itemManager = [(HSDiscoveredAccessoryGridContentViewController *)self itemManager];
+  v7 = [itemManager displayedItemAtIndexPath:pathCopy];
 
   objc_opt_class();
-  LOBYTE(v6) = objc_opt_isKindOfClass();
+  LOBYTE(itemManager) = objc_opt_isKindOfClass();
 
-  return v6 & 1;
+  return itemManager & 1;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v15.receiver = self;
   v15.super_class = HSDiscoveredAccessoryGridContentViewController;
-  v6 = a4;
-  [(HSDiscoveredAccessoryGridContentViewController *)&v15 collectionView:a3 didSelectItemAtIndexPath:v6];
+  pathCopy = path;
+  [(HSDiscoveredAccessoryGridContentViewController *)&v15 collectionView:view didSelectItemAtIndexPath:pathCopy];
   v7 = [(HSDiscoveredAccessoryGridContentViewController *)self itemManager:v15.receiver];
-  v8 = [v7 displayedItemAtIndexPath:v6];
+  v8 = [v7 displayedItemAtIndexPath:pathCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -222,23 +222,23 @@ LABEL_5:
       v12 = 0;
     }
 
-    v13 = [(HSDiscoveredAccessoryGridContentViewController *)self delegate];
-    v14 = [v12 discoveredAccessory];
-    [v13 discoveredAccessoryGrid:self didSelectDiscoveredAccessory:v14];
+    delegate = [(HSDiscoveredAccessoryGridContentViewController *)self delegate];
+    discoveredAccessory = [v12 discoveredAccessory];
+    [delegate discoveredAccessoryGrid:self didSelectDiscoveredAccessory:discoveredAccessory];
   }
 }
 
-- (void)configureCell:(id)a3 forItem:(id)a4
+- (void)configureCell:(id)cell forItem:(id)item
 {
-  v6 = a3;
+  cellCopy = cell;
   v14.receiver = self;
   v14.super_class = HSDiscoveredAccessoryGridContentViewController;
-  [(HSDiscoveredAccessoryGridContentViewController *)&v14 configureCell:v6 forItem:a4];
+  [(HSDiscoveredAccessoryGridContentViewController *)&v14 configureCell:cellCopy forItem:item];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
-    v7 = v6;
+    v7 = cellCopy;
     if (objc_opt_isKindOfClass())
     {
       v8 = v7;
@@ -251,58 +251,58 @@ LABEL_5:
 
     v9 = v8;
 
-    v10 = [(HSDiscoveredAccessoryGridContentViewController *)self cellContentViewBackgroundColor];
+    cellContentViewBackgroundColor = [(HSDiscoveredAccessoryGridContentViewController *)self cellContentViewBackgroundColor];
 
-    if (v10)
+    if (cellContentViewBackgroundColor)
     {
       v11 = +[UIColor labelColor];
       [v9 setDefaultNameTextColor:v11];
 
-      v12 = [(HSDiscoveredAccessoryGridContentViewController *)self cellContentViewBackgroundColor];
-      v13 = [v9 gridBackgroundView];
-      [v13 setBackgroundTintColor:v12];
+      cellContentViewBackgroundColor2 = [(HSDiscoveredAccessoryGridContentViewController *)self cellContentViewBackgroundColor];
+      gridBackgroundView = [v9 gridBackgroundView];
+      [gridBackgroundView setBackgroundTintColor:cellContentViewBackgroundColor2];
     }
   }
 }
 
-- (id)layoutOptionsForSection:(int64_t)a3
+- (id)layoutOptionsForSection:(int64_t)section
 {
   v6.receiver = self;
   v6.super_class = HSDiscoveredAccessoryGridContentViewController;
-  v3 = [(HSDiscoveredAccessoryGridContentViewController *)&v6 layoutOptionsForSection:a3];
-  v4 = [v3 serviceCellOptions];
-  [v4 setShowDescription:0];
+  v3 = [(HSDiscoveredAccessoryGridContentViewController *)&v6 layoutOptionsForSection:section];
+  serviceCellOptions = [v3 serviceCellOptions];
+  [serviceCellOptions setShowDescription:0];
 
   return v3;
 }
 
-- (void)itemManagerDidUpdate:(id)a3
+- (void)itemManagerDidUpdate:(id)update
 {
   v7.receiver = self;
   v7.super_class = HSDiscoveredAccessoryGridContentViewController;
-  v4 = a3;
-  [(HSDiscoveredAccessoryGridContentViewController *)&v7 itemManagerDidUpdate:v4];
+  updateCopy = update;
+  [(HSDiscoveredAccessoryGridContentViewController *)&v7 itemManagerDidUpdate:updateCopy];
   v5 = [(HSDiscoveredAccessoryGridContentViewController *)self delegate:v7.receiver];
-  v6 = [v4 allItems];
+  allItems = [updateCopy allItems];
 
-  [v5 discoveredAccessoryGrid:self didUpdateNumberOfDiscoveredAccessories:{objc_msgSend(v6, "count")}];
+  [v5 discoveredAccessoryGrid:self didUpdateNumberOfDiscoveredAccessories:{objc_msgSend(allItems, "count")}];
 }
 
-- (void)_identifyAccessory:(id)a3
+- (void)_identifyAccessory:(id)accessory
 {
-  v14 = a3;
-  if ([v14 state] == 3)
+  accessoryCopy = accessory;
+  if ([accessoryCopy state] == 3)
   {
-    v4 = [(HSDiscoveredAccessoryGridContentViewController *)self collectionView];
-    v5 = [(HSDiscoveredAccessoryGridContentViewController *)self collectionView];
-    [v14 locationInView:v5];
-    v6 = [v4 indexPathForItemAtPoint:?];
+    collectionView = [(HSDiscoveredAccessoryGridContentViewController *)self collectionView];
+    collectionView2 = [(HSDiscoveredAccessoryGridContentViewController *)self collectionView];
+    [accessoryCopy locationInView:collectionView2];
+    v6 = [collectionView indexPathForItemAtPoint:?];
 
     if (v6)
     {
       objc_opt_class();
-      v7 = [(HSDiscoveredAccessoryGridContentViewController *)self itemManager];
-      v8 = [v7 displayedItemAtIndexPath:v6];
+      itemManager = [(HSDiscoveredAccessoryGridContentViewController *)self itemManager];
+      v8 = [itemManager displayedItemAtIndexPath:v6];
       if (objc_opt_isKindOfClass())
       {
         v9 = v8;
@@ -315,12 +315,12 @@ LABEL_5:
 
       v10 = v9;
 
-      v11 = [v10 discoveredAccessory];
+      discoveredAccessory = [v10 discoveredAccessory];
 
-      if (v11)
+      if (discoveredAccessory)
       {
-        v12 = [v10 discoveredAccessory];
-        v13 = [v12 identify];
+        discoveredAccessory2 = [v10 discoveredAccessory];
+        identify = [discoveredAccessory2 identify];
       }
     }
   }
@@ -329,8 +329,8 @@ LABEL_5:
 - (void)_updateScrollingAttributes
 {
   v3 = [(HSDiscoveredAccessoryGridContentViewController *)self scrollDirection]== 1;
-  v4 = [(HSDiscoveredAccessoryGridContentViewController *)self collectionView];
-  [v4 setScrollEnabled:v3];
+  collectionView = [(HSDiscoveredAccessoryGridContentViewController *)self collectionView];
+  [collectionView setScrollEnabled:v3];
 }
 
 - (HSDiscoveredAccessoryGridContentViewControllerDelegate)delegate

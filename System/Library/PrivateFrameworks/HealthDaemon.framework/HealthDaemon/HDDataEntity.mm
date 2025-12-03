@@ -1,59 +1,59 @@
 @interface HDDataEntity
-+ (BOOL)_removeObjectWithPersistentID:(int64_t)a3 database:(id)a4 error:(id *)a5;
-+ (BOOL)addCodableObject:(id)a3 toCollection:(id)a4;
-+ (BOOL)generateSyncObjectsForSession:(id)a3 syncEntityClass:(Class)a4 predicate:(id)a5 syncAnchorRange:(HDSyncAnchorRange)a6 profile:(id)a7 messageHandler:(id)a8 error:(id *)a9;
-+ (BOOL)journalObjects:(id)a3 insertionContext:(id)a4 profile:(id)a5 error:(id *)a6;
-+ (BOOL)replaceExistingObject:(id)a3 existingObjectID:(id)a4 replacementObject:(id)a5 replacementObjectID:(id)a6 profile:(id)a7 transaction:(id)a8 error:(id *)a9;
-+ (id)_insertDataObject:(id)a3 withProvenanceID:(id)a4 inDatabase:(id)a5 error:(id *)a6;
-+ (id)_objectWithPredicate:(void *)a3 encodingOptions:(void *)a4 profile:(uint64_t)a5 error:;
-+ (id)_primitiveInsertDataObject:(void *)a3 insertionContext:(void *)a4 entityClass:(uint64_t)a5 provenanceEntityID:(void *)a6 profile:(void *)a7 transaction:(uint64_t)a8 error:;
-+ (id)anyInDatabase:(id)a3 predicate:(id)a4 error:(id *)a5;
++ (BOOL)_removeObjectWithPersistentID:(int64_t)d database:(id)database error:(id *)error;
++ (BOOL)addCodableObject:(id)object toCollection:(id)collection;
++ (BOOL)generateSyncObjectsForSession:(id)session syncEntityClass:(Class)class predicate:(id)predicate syncAnchorRange:(HDSyncAnchorRange)range profile:(id)profile messageHandler:(id)handler error:(id *)error;
++ (BOOL)journalObjects:(id)objects insertionContext:(id)context profile:(id)profile error:(id *)error;
++ (BOOL)replaceExistingObject:(id)object existingObjectID:(id)d replacementObject:(id)replacementObject replacementObjectID:(id)iD profile:(id)profile transaction:(id)transaction error:(id *)error;
++ (id)_insertDataObject:(id)object withProvenanceID:(id)d inDatabase:(id)database error:(id *)error;
++ (id)_objectWithPredicate:(void *)predicate encodingOptions:(void *)options profile:(uint64_t)profile error:;
++ (id)_primitiveInsertDataObject:(void *)object insertionContext:(void *)context entityClass:(uint64_t)class provenanceEntityID:(void *)d profile:(void *)profile transaction:(uint64_t)transaction error:;
++ (id)anyInDatabase:(id)database predicate:(id)predicate error:(id *)error;
 + (id)columnNamesForTimeOffset;
-+ (id)dataEntityForObject:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (id)dataEntityForObject:(id)a3 transaction:(id)a4 error:(id *)a5;
++ (id)dataEntityForObject:(id)object profile:(id)profile error:(id *)error;
++ (id)dataEntityForObject:(id)object transaction:(id)transaction error:(id *)error;
 + (id)defaultForeignKey;
-+ (id)deleteStatementsForRelatedEntitiesWithTransaction:(id)a3;
-+ (id)disambiguatedSQLForProperty:(id)a3;
-+ (id)entityEncoderForProfile:(id)a3 transaction:(id)a4 purpose:(int64_t)a5 encodingOptions:(id)a6 authorizationFilter:(id)a7;
-+ (id)entityEnumeratorWithProfile:(id)a3;
++ (id)deleteStatementsForRelatedEntitiesWithTransaction:(id)transaction;
++ (id)disambiguatedSQLForProperty:(id)property;
++ (id)entityEncoderForProfile:(id)profile transaction:(id)transaction purpose:(int64_t)purpose encodingOptions:(id)options authorizationFilter:(id)filter;
++ (id)entityEnumeratorWithProfile:(id)profile;
 + (id)foreignKeys;
 + (id)hk_timeZoneEncodingOptions;
 + (id)indices;
-+ (id)insertDataObject:(id)a3 withProvenance:(id)a4 inDatabase:(id)a5 persistentID:(id)a6 error:(id *)a7;
-+ (id)joinClausesForProperty:(id)a3;
-+ (id)mergeDataObject:(id)a3 provenance:(id)a4 profile:(id)a5 transaction:(id)a6 error:(id *)a7 insertHandler:(id)a8;
-+ (id)objectWithID:(id)a3 encodingOptions:(id)a4 profile:(id)a5 error:(id *)a6;
-+ (id)objectWithUUID:(id)a3 encodingOptions:(id)a4 profile:(id)a5 error:(id *)a6;
-+ (id)orderingTermForSortDescriptor:(id)a3;
-+ (id)predicateForObjectsFromLocalSourceWithBundleIdentifier:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (id)predicateMatchingPreferredEntityTypeIfRequiredWithPredicate:(id)a3;
-+ (id)sourceIDForObjectID:(id)a3 type:(int64_t)a4 profile:(id)a5 errorOut:(id *)a6;
-+ (id)sourceIDsForObjectsOfType:(int64_t)a3 profile:(id)a4 predicate:(id)a5 error:(id *)a6;
-+ (int64_t)countOfObjectsWithPredicate:(id)a3 healthDatabase:(id)a4 error:(id *)a5;
-+ (int64_t)shouldInsertObject:(id)a3 sourceID:(id)a4 profile:(id)a5 transaction:(id)a6 objectToReplace:(id *)a7 objectID:(id *)a8 error:(id *)a9;
-+ (void)deleteDataObjects:(id)a3 restrictedSourceEntities:(id)a4 failIfNotFound:(BOOL)a5 profile:(id)a6 recursiveDeleteAuthorizationBlock:(id)a7 completionHandler:(id)a8;
-+ (void)insertDataObjects:(id)a3 insertionContext:(id)a4 profile:(id)a5 completionHandler:(id)a6;
++ (id)insertDataObject:(id)object withProvenance:(id)provenance inDatabase:(id)database persistentID:(id)d error:(id *)error;
++ (id)joinClausesForProperty:(id)property;
++ (id)mergeDataObject:(id)object provenance:(id)provenance profile:(id)profile transaction:(id)transaction error:(id *)error insertHandler:(id)handler;
++ (id)objectWithID:(id)d encodingOptions:(id)options profile:(id)profile error:(id *)error;
++ (id)objectWithUUID:(id)d encodingOptions:(id)options profile:(id)profile error:(id *)error;
++ (id)orderingTermForSortDescriptor:(id)descriptor;
++ (id)predicateForObjectsFromLocalSourceWithBundleIdentifier:(id)identifier profile:(id)profile error:(id *)error;
++ (id)predicateMatchingPreferredEntityTypeIfRequiredWithPredicate:(id)predicate;
++ (id)sourceIDForObjectID:(id)d type:(int64_t)type profile:(id)profile errorOut:(id *)out;
++ (id)sourceIDsForObjectsOfType:(int64_t)type profile:(id)profile predicate:(id)predicate error:(id *)error;
++ (int64_t)countOfObjectsWithPredicate:(id)predicate healthDatabase:(id)database error:(id *)error;
++ (int64_t)shouldInsertObject:(id)object sourceID:(id)d profile:(id)profile transaction:(id)transaction objectToReplace:(id *)replace objectID:(id *)iD error:(id *)error;
++ (void)deleteDataObjects:(id)objects restrictedSourceEntities:(id)entities failIfNotFound:(BOOL)found profile:(id)profile recursiveDeleteAuthorizationBlock:(id)block completionHandler:(id)handler;
++ (void)insertDataObjects:(id)objects insertionContext:(id)context profile:(id)profile completionHandler:(id)handler;
 @end
 
 @implementation HDDataEntity
 
-+ (id)_primitiveInsertDataObject:(void *)a3 insertionContext:(void *)a4 entityClass:(uint64_t)a5 provenanceEntityID:(void *)a6 profile:(void *)a7 transaction:(uint64_t)a8 error:
++ (id)_primitiveInsertDataObject:(void *)object insertionContext:(void *)context entityClass:(uint64_t)class provenanceEntityID:(void *)d profile:(void *)profile transaction:(uint64_t)transaction error:
 {
   v14 = a2;
-  v15 = a3;
-  v16 = a6;
-  v17 = a7;
-  v18 = [v17 databaseForEntityClass:objc_opt_self()];
-  v19 = [MEMORY[0x277CCABB0] numberWithLongLong:a5];
-  v20 = [a4 _insertDataObject:v14 withProvenanceID:v19 inDatabase:v18 error:a8];
+  objectCopy = object;
+  dCopy = d;
+  profileCopy = profile;
+  v18 = [profileCopy databaseForEntityClass:objc_opt_self()];
+  v19 = [MEMORY[0x277CCABB0] numberWithLongLong:class];
+  v20 = [context _insertDataObject:v14 withProvenanceID:v19 inDatabase:v18 error:transaction];
 
-  if (v20 && [v14 hd_insertRelatedDataWithPersistentID:v20 insertionContext:v15 profile:v16 transaction:v17 error:a8])
+  if (v20 && [v14 hd_insertRelatedDataWithPersistentID:v20 insertionContext:objectCopy profile:dCopy transaction:profileCopy error:transaction])
   {
-    v21 = [a4 conformsToProtocol:&unk_283D712B8];
+    v21 = [context conformsToProtocol:&unk_283D712B8];
     v22 = v20;
     if (v21)
     {
-      if ([a4 hd_insertRelatedDataWithPersistentID:v20 insertionContext:v15 dataObject:v14 profile:v16 transaction:v17 error:a8])
+      if ([context hd_insertRelatedDataWithPersistentID:v20 insertionContext:objectCopy dataObject:v14 profile:dCopy transaction:profileCopy error:transaction])
       {
         v22 = v20;
       }
@@ -75,21 +75,21 @@
   return v23;
 }
 
-+ (int64_t)shouldInsertObject:(id)a3 sourceID:(id)a4 profile:(id)a5 transaction:(id)a6 objectToReplace:(id *)a7 objectID:(id *)a8 error:(id *)a9
++ (int64_t)shouldInsertObject:(id)object sourceID:(id)d profile:(id)profile transaction:(id)transaction objectToReplace:(id *)replace objectID:(id *)iD error:(id *)error
 {
   v76 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v60 = a4;
-  v15 = a5;
-  v59 = a6;
-  v16 = [v14 metadata];
+  objectCopy = object;
+  dCopy = d;
+  profileCopy = profile;
+  transactionCopy = transaction;
+  metadata = [objectCopy metadata];
   v17 = *MEMORY[0x277CCC520];
-  v18 = [v16 objectForKeyedSubscript:*MEMORY[0x277CCC520]];
+  v18 = [metadata objectForKeyedSubscript:*MEMORY[0x277CCC520]];
 
   if (v18)
   {
-    v19 = [v15 sourceManager];
-    v58 = [v19 localSourceForSourceID:v60 copyIfNecessary:1 error:a9];
+    sourceManager = [profileCopy sourceManager];
+    v58 = [sourceManager localSourceForSourceID:dCopy copyIfNecessary:1 error:error];
 
     if (!v58)
     {
@@ -99,23 +99,23 @@ LABEL_41:
       goto LABEL_42;
     }
 
-    v57 = [v59 databaseForEntityClass:objc_opt_class()];
+    v57 = [transactionCopy databaseForEntityClass:objc_opt_class()];
     v69 = 0;
-    v20 = +[HDDataExternalSyncIdentifierEntity populateSyncInfoForLocalSourceID:externalSyncObjectCode:syncIdentifier:deleted:database:objectIDOut:errorOut:](HDDataExternalSyncIdentifierEntity, "populateSyncInfoForLocalSourceID:externalSyncObjectCode:syncIdentifier:deleted:database:objectIDOut:errorOut:", [v58 persistentID], objc_msgSend(v14, "_externalSyncObjectCode"), v18, 0, v57, &v69, a9);
+    v20 = +[HDDataExternalSyncIdentifierEntity populateSyncInfoForLocalSourceID:externalSyncObjectCode:syncIdentifier:deleted:database:objectIDOut:errorOut:](HDDataExternalSyncIdentifierEntity, "populateSyncInfoForLocalSourceID:externalSyncObjectCode:syncIdentifier:deleted:database:objectIDOut:errorOut:", [v58 persistentID], objc_msgSend(objectCopy, "_externalSyncObjectCode"), v18, 0, v57, &v69, error);
     v21 = v69;
     if (v20)
     {
       v22 = v21;
       if (v21)
       {
-        v54 = [v14 hd_dataEntityClass];
+        hd_dataEntityClass = [objectCopy hd_dataEntityClass];
         v63 = 0;
         v64 = &v63;
         v65 = 0x3032000000;
         v66 = __Block_byref_object_copy__69;
         v67 = __Block_byref_object_dispose__69;
         v68 = 0;
-        v56 = [v54 entityEnumeratorWithProfile:v15];
+        v56 = [hd_dataEntityClass entityEnumeratorWithProfile:profileCopy];
         v23 = [MEMORY[0x277D10B18] predicateWithProperty:@"data_id" value:v22 comparisonType:1];
         [v56 setPredicate:v23];
 
@@ -138,7 +138,7 @@ LABEL_41:
 
           else
           {
-            v28 = [MEMORY[0x277CCA9B8] hk_error:100 format:{@"Could not find existing object of class %@ to delete with external sync identifier '%@' (object ID %@)", v54, v18, v22}];
+            v28 = [MEMORY[0x277CCA9B8] hk_error:100 format:{@"Could not find existing object of class %@ to delete with external sync identifier '%@' (object ID %@)", hd_dataEntityClass, v18, v22}];
             if (!v28)
             {
               v53 = 0;
@@ -147,10 +147,10 @@ LABEL_41:
             }
           }
 
-          if (a9)
+          if (error)
           {
             v45 = v28;
-            *a9 = v28;
+            *error = v28;
           }
 
           else
@@ -164,48 +164,48 @@ LABEL_41:
         }
 
         v53 = v24;
-        if (a7)
+        if (replace)
         {
-          *a7 = v25;
+          *replace = v25;
         }
 
-        if (a8)
+        if (iD)
         {
           v26 = v22;
-          *a8 = v22;
+          *iD = v22;
         }
 
-        v27 = [v64[5] metadata];
-        v28 = [v27 objectForKeyedSubscript:v17];
+        metadata2 = [v64[5] metadata];
+        v28 = [metadata2 objectForKeyedSubscript:v17];
 
         if ([v28 isEqualToString:v18])
         {
           v51 = v64[5];
-          v52 = v14;
+          v52 = objectCopy;
           v29 = objc_opt_self();
           if (!v52)
           {
-            v48 = [MEMORY[0x277CCA890] currentHandler];
-            [v48 handleFailureInMethod:sel__shouldReplaceExistingObject_withObject_dataEntityClass_ object:v29 file:@"HDDataEntity.m" lineNumber:204 description:{@"Invalid parameter not satisfying: %@", @"dataObject != nil"}];
+            currentHandler = [MEMORY[0x277CCA890] currentHandler];
+            [currentHandler handleFailureInMethod:sel__shouldReplaceExistingObject_withObject_dataEntityClass_ object:v29 file:@"HDDataEntity.m" lineNumber:204 description:{@"Invalid parameter not satisfying: %@", @"dataObject != nil"}];
           }
 
           v30 = v51;
           if (!v51)
           {
-            v49 = [MEMORY[0x277CCA890] currentHandler];
-            [v49 handleFailureInMethod:sel__shouldReplaceExistingObject_withObject_dataEntityClass_ object:v29 file:@"HDDataEntity.m" lineNumber:205 description:{@"Invalid parameter not satisfying: %@", @"existingObject != nil"}];
+            currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+            [currentHandler2 handleFailureInMethod:sel__shouldReplaceExistingObject_withObject_dataEntityClass_ object:v29 file:@"HDDataEntity.m" lineNumber:205 description:{@"Invalid parameter not satisfying: %@", @"existingObject != nil"}];
 
             v30 = 0;
           }
 
-          v31 = [v30 metadata];
+          metadata3 = [v30 metadata];
           v32 = *MEMORY[0x277CCC528];
-          v33 = [v31 objectForKeyedSubscript:*MEMORY[0x277CCC528]];
+          v33 = [metadata3 objectForKeyedSubscript:*MEMORY[0x277CCC528]];
 
           if (v33)
           {
-            v34 = [v52 metadata];
-            v35 = [v34 objectForKeyedSubscript:v32];
+            metadata4 = [v52 metadata];
+            v35 = [metadata4 objectForKeyedSubscript:v32];
 
             if (!v35)
             {
@@ -218,20 +218,20 @@ LABEL_44:
             v36 = [v35 compare:v33];
             if (!v36)
             {
-              v37 = [v52 _creationDate];
-              v38 = [v51 _creationDate];
-              v36 = [v37 compare:v38];
+              _creationDate = [v52 _creationDate];
+              _creationDate2 = [v51 _creationDate];
+              v36 = [_creationDate compare:_creationDate2];
 
               if (!v36)
               {
-                v36 = [v54 compareForReplacmentWithObject:v52 existingObject:v51];
+                v36 = [hd_dataEntityClass compareForReplacmentWithObject:v52 existingObject:v51];
                 if (!v36)
                 {
-                  v55 = [v52 UUID];
-                  v50 = [v55 UUIDString];
-                  v39 = [v51 UUID];
-                  v40 = [v39 UUIDString];
-                  v36 = [v50 compare:v40];
+                  uUID = [v52 UUID];
+                  uUIDString = [uUID UUIDString];
+                  uUID2 = [v51 UUID];
+                  uUIDString2 = [uUID2 UUIDString];
+                  v36 = [uUIDString compare:uUIDString2];
                 }
               }
             }
@@ -258,14 +258,14 @@ LABEL_39:
           v42 = *MEMORY[0x277CCC2A0];
           if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
           {
-            v43 = [v64[5] UUID];
-            v44 = [v43 UUIDString];
+            uUID3 = [v64[5] UUID];
+            uUIDString3 = [uUID3 UUIDString];
             *buf = 138412802;
             v71 = v28;
             v72 = 2112;
             v73 = v18;
             v74 = 2114;
-            v75 = v44;
+            v75 = uUIDString3;
             _os_log_error_impl(&dword_228986000, v42, OS_LOG_TYPE_ERROR, "Unexpected sync identifier %@ (expected %@) for existing object %{public}@", buf, 0x20u);
           }
         }
@@ -294,17 +294,17 @@ LABEL_42:
   return v41;
 }
 
-+ (BOOL)replaceExistingObject:(id)a3 existingObjectID:(id)a4 replacementObject:(id)a5 replacementObjectID:(id)a6 profile:(id)a7 transaction:(id)a8 error:(id *)a9
++ (BOOL)replaceExistingObject:(id)object existingObjectID:(id)d replacementObject:(id)replacementObject replacementObjectID:(id)iD profile:(id)profile transaction:(id)transaction error:(id *)error
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a7;
-  if ([HDAssociationEntity copyAssociationsFromChildID:a4 toObjectID:a6 profile:v13 error:a9])
+  objectCopy = object;
+  profileCopy = profile;
+  if ([HDAssociationEntity copyAssociationsFromChildID:d toObjectID:iD profile:profileCopy error:error])
   {
-    v14 = [v13 dataManager];
-    v19[0] = v12;
+    dataManager = [profileCopy dataManager];
+    v19[0] = objectCopy;
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:1];
-    v16 = [v14 deleteDataObjects:v15 restrictedSourceEntities:0 failIfNotFound:1 recursiveDeleteAuthorizationBlock:0 error:a9];
+    v16 = [dataManager deleteDataObjects:v15 restrictedSourceEntities:0 failIfNotFound:1 recursiveDeleteAuthorizationBlock:0 error:error];
   }
 
   else
@@ -316,28 +316,28 @@ LABEL_42:
   return v16;
 }
 
-+ (void)insertDataObjects:(id)a3 insertionContext:(id)a4 profile:(id)a5 completionHandler:(id)a6
++ (void)insertDataObjects:(id)objects insertionContext:(id)context profile:(id)profile completionHandler:(id)handler
 {
   v82 = *MEMORY[0x277D85DE8];
-  v50 = a3;
-  v9 = a4;
-  v49 = a5;
-  v51 = v9;
-  v52 = a6;
-  v10 = [v9 provenance];
-  LOBYTE(a5) = [v10 isValid];
+  objectsCopy = objects;
+  contextCopy = context;
+  profileCopy = profile;
+  v51 = contextCopy;
+  handlerCopy = handler;
+  provenance = [contextCopy provenance];
+  LOBYTE(profile) = [provenance isValid];
 
-  if (a5)
+  if (profile)
   {
     v68 = 0;
-    v11 = v50;
-    v12 = v9;
-    v48 = v49;
+    v11 = objectsCopy;
+    v12 = contextCopy;
+    v48 = profileCopy;
     v53 = objc_opt_self();
     v45 = v12;
-    v13 = [v12 skipInsertionFilter];
+    skipInsertionFilter = [v12 skipInsertionFilter];
     v14 = 0;
-    if ((v13 & 1) == 0)
+    if ((skipInsertionFilter & 1) == 0)
     {
       v14 = objc_alloc_init(MEMORY[0x277CBEB38]);
     }
@@ -368,12 +368,12 @@ LABEL_42:
             goto LABEL_31;
           }
 
-          if ((v13 & 1) == 0)
+          if ((skipInsertionFilter & 1) == 0)
           {
-            v19 = [v18 hd_dataEntityClass];
-            if (v19)
+            hd_dataEntityClass = [v18 hd_dataEntityClass];
+            if (hd_dataEntityClass)
             {
-              v20 = v19;
+              v20 = hd_dataEntityClass;
             }
 
             else
@@ -443,12 +443,12 @@ LABEL_32:
       *(&v69 + 1) = &v69;
       *&v70 = 0x2020000000;
       BYTE8(v70) = 0;
-      v33 = [v48 database];
+      database = [v48 database];
       v61[0] = MEMORY[0x277D85DD0];
       v61[1] = 3221225472;
       v61[2] = __77__HDDataEntity_insertDataObjects_insertionContext_profile_completionHandler___block_invoke;
       v61[3] = &unk_27861DAA8;
-      v66 = a1;
+      selfCopy = self;
       v67 = v29;
       v62 = v45;
       v63 = v48;
@@ -459,11 +459,11 @@ LABEL_32:
       v55[2] = __77__HDDataEntity_insertDataObjects_insertionContext_profile_completionHandler___block_invoke_2;
       v55[3] = &unk_27861DAD0;
       v59 = &v69;
-      v60 = a1;
+      selfCopy2 = self;
       v56 = v64;
       v57 = v62;
       v58 = v63;
-      v34 = [a1 performWriteTransactionWithHealthDatabase:v33 error:&v67 block:v61 inaccessibilityHandler:v55];
+      v34 = [self performWriteTransactionWithHealthDatabase:database error:&v67 block:v61 inaccessibilityHandler:v55];
       v35 = v67;
 
       if ((v34 & 1) == 0)
@@ -498,9 +498,9 @@ LABEL_32:
         }
       }
 
-      if (v52)
+      if (handlerCopy)
       {
-        v52[2](v52, v34, *(*&v78[8] + 40) != 0);
+        handlerCopy[2](handlerCopy, v34, *(*&v78[8] + 40) != 0);
       }
 
       _Block_object_dispose(&v69, 8);
@@ -516,9 +516,9 @@ LABEL_32:
         v29 = [MEMORY[0x277CCA9B8] hk_errorForInvalidArgument:@"@" class:objc_opt_class() selector:a2 format:@"Internal error attempting to validate objects for insertion."];
       }
 
-      if (v52)
+      if (handlerCopy)
       {
-        (v52[2])();
+        (handlerCopy[2])();
       }
     }
 
@@ -530,23 +530,23 @@ LABEL_32:
   if (os_log_type_enabled(*MEMORY[0x277CCC2A0], OS_LOG_TYPE_ERROR))
   {
     v42 = v27;
-    v43 = [v50 count];
-    v44 = [v51 provenance];
+    v43 = [objectsCopy count];
+    provenance2 = [v51 provenance];
     *v78 = 134218242;
     *&v78[4] = v43;
     *&v78[12] = 2114;
-    *&v78[14] = v44;
+    *&v78[14] = provenance2;
     _os_log_error_impl(&dword_228986000, v42, OS_LOG_TYPE_ERROR, "Failed to insert %lu objects, invalid provenance %{public}@", v78, 0x16u);
   }
 
-  v28 = v52;
-  if (v52)
+  v28 = handlerCopy;
+  if (handlerCopy)
   {
     v29 = [MEMORY[0x277CCA9B8] hk_errorForInvalidArgument:@"@" class:objc_opt_class() selector:a2 format:@"Invalid provenance."];
-    (v52[2])(v52, 0, 0, 0, v29);
+    (handlerCopy[2])(handlerCopy, 0, 0, 0, v29);
 LABEL_48:
 
-    v28 = v52;
+    v28 = handlerCopy;
   }
 
   v41 = *MEMORY[0x277D85DE8];
@@ -997,31 +997,31 @@ LABEL_37:
   return v21;
 }
 
-+ (BOOL)journalObjects:(id)a3 insertionContext:(id)a4 profile:(id)a5 error:(id *)a6
++ (BOOL)journalObjects:(id)objects insertionContext:(id)context profile:(id)profile error:(id *)error
 {
   v53 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v44 = v10;
-  v12 = [v10 provenance];
-  v45 = v11;
-  v13 = [v11 sourceManager];
-  v14 = [v12 sourceID];
+  objectsCopy = objects;
+  contextCopy = context;
+  profileCopy = profile;
+  v44 = contextCopy;
+  provenance = [contextCopy provenance];
+  v45 = profileCopy;
+  sourceManager = [profileCopy sourceManager];
+  sourceID = [provenance sourceID];
   v51 = 0;
-  v15 = [v13 clientSourceForPersistentID:v14 error:&v51];
+  v15 = [sourceManager clientSourceForPersistentID:sourceID error:&v51];
   v16 = v51;
 
-  v17 = [v15 bundleIdentifier];
-  if (v17)
+  bundleIdentifier = [v15 bundleIdentifier];
+  if (bundleIdentifier)
   {
     v40 = v16;
     v41 = v15;
-    v38 = a6;
-    v18 = v12;
+    errorCopy = error;
+    v18 = provenance;
     v19 = objc_alloc_init(HDCodableObjectCollection);
-    v43 = v17;
-    [(HDCodableObjectCollection *)v19 setSourceBundleIdentifier:v17];
+    v43 = bundleIdentifier;
+    [(HDCodableObjectCollection *)v19 setSourceBundleIdentifier:bundleIdentifier];
     context = objc_autoreleasePoolPush();
     v20 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v21 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -1029,8 +1029,8 @@ LABEL_37:
     v48 = 0u;
     v49 = 0u;
     v50 = 0u;
-    v42 = v9;
-    v22 = v9;
+    v42 = objectsCopy;
+    v22 = objectsCopy;
     v23 = [v22 countByEnumeratingWithState:&v47 objects:v52 count:16];
     if (v23)
     {
@@ -1066,7 +1066,7 @@ LABEL_37:
       while (v24);
     }
 
-    v12 = v18;
+    provenance = v18;
     if ([(HDCodableObjectCollection *)v19 count])
     {
       v30 = [[_HDDataBatchInsertionJournalEntry alloc] initWithCodableObjectCollection:v19 provenance:v18];
@@ -1074,9 +1074,9 @@ LABEL_37:
     }
 
     [v20 addObjectsFromArray:v21];
-    v31 = [v45 database];
+    database = [v45 database];
     v46 = v40;
-    v32 = [v31 addJournalEntries:v20 error:&v46];
+    v32 = [database addJournalEntries:v20 error:&v46];
     v33 = v46;
 
     objc_autoreleasePoolPop(context);
@@ -1084,29 +1084,29 @@ LABEL_37:
     {
       v34 = 1;
       v15 = v41;
-      v9 = v42;
-      v17 = v43;
+      objectsCopy = v42;
+      bundleIdentifier = v43;
       goto LABEL_22;
     }
 
     v15 = v41;
-    v9 = v42;
-    a6 = v38;
-    v17 = v43;
+    objectsCopy = v42;
+    error = errorCopy;
+    bundleIdentifier = v43;
   }
 
   else
   {
-    v33 = [MEMORY[0x277CCA9B8] hk_error:100 format:{@"Batch journal failed on nil identifier, %@", v12}];
+    v33 = [MEMORY[0x277CCA9B8] hk_error:100 format:{@"Batch journal failed on nil identifier, %@", provenance}];
   }
 
   v33 = v33;
   if (v33)
   {
-    if (a6)
+    if (error)
     {
       v35 = v33;
-      *a6 = v33;
+      *error = v33;
     }
 
     else
@@ -1178,13 +1178,13 @@ LABEL_11:
   return v14;
 }
 
-+ (void)deleteDataObjects:(id)a3 restrictedSourceEntities:(id)a4 failIfNotFound:(BOOL)a5 profile:(id)a6 recursiveDeleteAuthorizationBlock:(id)a7 completionHandler:(id)a8
++ (void)deleteDataObjects:(id)objects restrictedSourceEntities:(id)entities failIfNotFound:(BOOL)found profile:(id)profile recursiveDeleteAuthorizationBlock:(id)block completionHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  objectsCopy = objects;
+  entitiesCopy = entities;
+  profileCopy = profile;
+  blockCopy = block;
+  handlerCopy = handler;
   v54 = 0;
   v55 = &v54;
   v56 = 0x2020000000;
@@ -1196,18 +1196,18 @@ LABEL_11:
   v52 = __Block_byref_object_dispose__69;
   v53 = 0;
   v19 = objc_alloc_init(MEMORY[0x277CCD2D8]);
-  v20 = [v16 database];
+  database = [profileCopy database];
   v47 = 0;
   v38[0] = MEMORY[0x277D85DD0];
   v38[1] = 3221225472;
   v38[2] = __134__HDDataEntity_deleteDataObjects_restrictedSourceEntities_failIfNotFound_profile_recursiveDeleteAuthorizationBlock_completionHandler___block_invoke;
   v38[3] = &unk_27861DAF8;
-  v39 = v15;
-  v40 = v16;
-  v43 = v17;
-  v41 = v14;
+  v39 = entitiesCopy;
+  v40 = profileCopy;
+  v43 = blockCopy;
+  v41 = objectsCopy;
   v21 = v19;
-  v46 = a5;
+  foundCopy = found;
   v42 = v21;
   v44 = &v54;
   v45 = &v48;
@@ -1219,15 +1219,15 @@ LABEL_11:
   v36 = v22;
   v23 = v39;
   v33 = v23;
-  v37 = a1;
+  selfCopy = self;
   v24 = v40;
   v34 = v24;
   v25 = v41;
   v35 = v25;
-  v26 = [a1 performWriteTransactionWithHealthDatabase:v20 error:&v47 block:v38 inaccessibilityHandler:v32];
+  v26 = [self performWriteTransactionWithHealthDatabase:database error:&v47 block:v38 inaccessibilityHandler:v32];
   v27 = v47;
 
-  if (v18)
+  if (handlerCopy)
   {
     if (v26)
     {
@@ -1256,7 +1256,7 @@ LABEL_11:
       v28 = v27;
     }
 
-    v18[2](v18, v26, v30, v29, v31, v28);
+    handlerCopy[2](handlerCopy, v26, v30, v29, v31, v28);
   }
 
   _Block_object_dispose(&v48, 8);
@@ -1574,12 +1574,12 @@ LABEL_25:
   return v4;
 }
 
-+ (id)dataEntityForObject:(id)a3 profile:(id)a4 error:(id *)a5
++ (id)dataEntityForObject:(id)object profile:(id)profile error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  objectCopy = object;
+  profileCopy = profile;
+  v10 = profileCopy;
+  if (objectCopy)
   {
     v20 = 0;
     v21 = &v20;
@@ -1587,15 +1587,15 @@ LABEL_25:
     v23 = __Block_byref_object_copy__69;
     v24 = __Block_byref_object_dispose__69;
     v25 = 0;
-    v11 = [v9 database];
+    database = [profileCopy database];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __50__HDDataEntity_dataEntityForObject_profile_error___block_invoke;
     v16[3] = &unk_2786169D8;
     v18 = &v20;
-    v19 = a1;
-    v17 = v8;
-    v12 = [a1 performReadTransactionWithHealthDatabase:v11 error:a5 block:v16];
+    selfCopy = self;
+    v17 = objectCopy;
+    v12 = [self performReadTransactionWithHealthDatabase:database error:error block:v16];
 
     if (v12)
     {
@@ -1630,30 +1630,30 @@ uint64_t __50__HDDataEntity_dataEntityForObject_profile_error___block_invoke(uin
   return 1;
 }
 
-+ (id)dataEntityForObject:(id)a3 transaction:(id)a4 error:(id *)a5
++ (id)dataEntityForObject:(id)object transaction:(id)transaction error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  objectCopy = object;
+  transactionCopy = transaction;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
   v21 = __Block_byref_object_copy__69;
   v22 = __Block_byref_object_dispose__69;
   v23 = 0;
-  v10 = [v9 databaseForEntityClass:a1];
+  v10 = [transactionCopy databaseForEntityClass:self];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __54__HDDataEntity_dataEntityForObject_transaction_error___block_invoke_2;
   v16[3] = &unk_278614860;
-  v11 = v8;
+  v11 = objectCopy;
   v17 = v11;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __54__HDDataEntity_dataEntityForObject_transaction_error___block_invoke_3;
   v15[3] = &unk_2786135E0;
   v15[4] = &v18;
-  v15[5] = a1;
-  if ([v10 executeCachedStatementForKey:&dataEntityForObject_transaction_error__lookupKey error:a5 SQLGenerator:&__block_literal_global_76 bindingHandler:v16 enumerationHandler:v15])
+  v15[5] = self;
+  if ([v10 executeCachedStatementForKey:&dataEntityForObject_transaction_error__lookupKey error:error SQLGenerator:&__block_literal_global_76 bindingHandler:v16 enumerationHandler:v15])
   {
     v12 = v19[5];
   }
@@ -1688,33 +1688,33 @@ uint64_t __54__HDDataEntity_dataEntityForObject_transaction_error___block_invoke
   return 0;
 }
 
-+ (id)entityEnumeratorWithProfile:(id)a3
++ (id)entityEnumeratorWithProfile:(id)profile
 {
-  v5 = a3;
-  if (([a1 isConcreteEntity] & 1) == 0)
+  profileCopy = profile;
+  if (([self isConcreteEntity] & 1) == 0)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v9 = NSStringFromSelector(a2);
-    v10 = NSStringFromClass(a1);
-    [v8 handleFailureInMethod:a2 object:a1 file:@"HDDataEntity.m" lineNumber:917 description:{@"%@ should not be used for abstract class %@", v9, v10}];
+    v10 = NSStringFromClass(self);
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDDataEntity.m" lineNumber:917 description:{@"%@ should not be used for abstract class %@", v9, v10}];
   }
 
-  v6 = [[HDDataEntityEnumerator alloc] _initWithEntityClass:a1 profile:v5];
+  v6 = [[HDDataEntityEnumerator alloc] _initWithEntityClass:self profile:profileCopy];
 
   return v6;
 }
 
-+ (id)sourceIDsForObjectsOfType:(int64_t)a3 profile:(id)a4 predicate:(id)a5 error:(id *)a6
++ (id)sourceIDsForObjectsOfType:(int64_t)type profile:(id)profile predicate:(id)predicate error:(id *)error
 {
-  v10 = a4;
-  v11 = a5;
-  if ([a1 requiresSampleTypePredicate])
+  profileCopy = profile;
+  predicateCopy = predicate;
+  if ([self requiresSampleTypePredicate])
   {
     v12 = MEMORY[0x277D10B20];
-    v13 = HDDataEntityPredicateForType(a3);
-    v14 = [v12 compoundPredicateWithPredicate:v11 otherPredicate:v13];
+    v13 = HDDataEntityPredicateForType(type);
+    v14 = [v12 compoundPredicateWithPredicate:predicateCopy otherPredicate:v13];
 
-    v11 = v14;
+    predicateCopy = v14;
   }
 
   v25 = 0;
@@ -1723,16 +1723,16 @@ uint64_t __54__HDDataEntity_dataEntityForObject_transaction_error___block_invoke
   v28 = __Block_byref_object_copy__69;
   v29 = __Block_byref_object_dispose__69;
   v30 = 0;
-  v15 = [v10 database];
+  database = [profileCopy database];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __66__HDDataEntity_sourceIDsForObjectsOfType_profile_predicate_error___block_invoke;
   v21[3] = &unk_2786169D8;
   v23 = &v25;
-  v24 = a1;
-  v16 = v11;
+  selfCopy = self;
+  v16 = predicateCopy;
   v22 = v16;
-  v17 = [a1 performReadTransactionWithHealthDatabase:v15 error:a6 block:v21];
+  v17 = [self performReadTransactionWithHealthDatabase:database error:error block:v21];
 
   if (v17)
   {
@@ -1762,27 +1762,27 @@ uint64_t __66__HDDataEntity_sourceIDsForObjectsOfType_profile_predicate_error___
   return 1;
 }
 
-+ (id)sourceIDForObjectID:(id)a3 type:(int64_t)a4 profile:(id)a5 errorOut:(id *)a6
++ (id)sourceIDForObjectID:(id)d type:(int64_t)type profile:(id)profile errorOut:(id *)out
 {
-  v10 = a3;
+  dCopy = d;
   v11 = MEMORY[0x277D10B18];
-  v12 = a5;
-  v13 = [v11 predicateWithProperty:@"data_id" equalToValue:v10];
+  profileCopy = profile;
+  v13 = [v11 predicateWithProperty:@"data_id" equalToValue:dCopy];
   v19 = 0;
-  v14 = [a1 sourceIDsForObjectsOfType:a4 profile:v12 predicate:v13 error:&v19];
+  v14 = [self sourceIDsForObjectsOfType:type profile:profileCopy predicate:v13 error:&v19];
 
   v15 = v19;
-  v16 = [v14 firstObject];
-  if (!v16)
+  firstObject = [v14 firstObject];
+  if (!firstObject)
   {
     if (v15)
     {
       v15 = v15;
 LABEL_5:
-      if (a6)
+      if (out)
       {
         v17 = v15;
-        *a6 = v15;
+        *out = v15;
       }
 
       else
@@ -1793,7 +1793,7 @@ LABEL_5:
       goto LABEL_9;
     }
 
-    v15 = [MEMORY[0x277CCA9B8] hk_error:100 format:{@"Could not find expected sourceID for object with ID %@", v10}];
+    v15 = [MEMORY[0x277CCA9B8] hk_error:100 format:{@"Could not find expected sourceID for object with ID %@", dCopy}];
     if (v15)
     {
       goto LABEL_5;
@@ -1802,15 +1802,15 @@ LABEL_5:
 
 LABEL_9:
 
-  return v16;
+  return firstObject;
 }
 
-+ (id)predicateForObjectsFromLocalSourceWithBundleIdentifier:(id)a3 profile:(id)a4 error:(id *)a5
++ (id)predicateForObjectsFromLocalSourceWithBundleIdentifier:(id)identifier profile:(id)profile error:(id *)error
 {
-  v7 = a3;
-  v8 = [a4 sourceManager];
+  identifierCopy = identifier;
+  sourceManager = [profile sourceManager];
   v14 = 0;
-  v9 = [v8 localSourceForBundleIdentifier:v7 error:&v14];
+  v9 = [sourceManager localSourceForBundleIdentifier:identifierCopy error:&v14];
   v10 = v14;
 
   if (v9)
@@ -1821,11 +1821,11 @@ LABEL_9:
 
   if (v10)
   {
-    if (a5)
+    if (error)
     {
       v12 = v10;
       v11 = 0;
-      *a5 = v10;
+      *error = v10;
       goto LABEL_9;
     }
 
@@ -1834,7 +1834,7 @@ LABEL_9:
 
   else
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a5 code:100 format:{@"No source found with bundle identifier %@", v7}];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:100 format:{@"No source found with bundle identifier %@", identifierCopy}];
   }
 
   v11 = 0;
@@ -1843,36 +1843,36 @@ LABEL_9:
   return v11;
 }
 
-+ (id)objectWithUUID:(id)a3 encodingOptions:(id)a4 profile:(id)a5 error:(id *)a6
++ (id)objectWithUUID:(id)d encodingOptions:(id)options profile:(id)profile error:(id *)error
 {
-  v9 = a5;
-  v10 = a4;
+  profileCopy = profile;
+  optionsCopy = options;
   v11 = HDDataEntityPredicateForDataUUID();
-  v12 = [(HDDataEntity *)a1 _objectWithPredicate:v11 encodingOptions:v10 profile:v9 error:a6];
+  v12 = [(HDDataEntity *)self _objectWithPredicate:v11 encodingOptions:optionsCopy profile:profileCopy error:error];
 
   return v12;
 }
 
-+ (id)_objectWithPredicate:(void *)a3 encodingOptions:(void *)a4 profile:(uint64_t)a5 error:
++ (id)_objectWithPredicate:(void *)predicate encodingOptions:(void *)options profile:(uint64_t)profile error:
 {
   v8 = a2;
-  v9 = a3;
-  v10 = a4;
+  predicateCopy = predicate;
+  optionsCopy = options;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
   v18 = __Block_byref_object_copy__69;
   v19 = __Block_byref_object_dispose__69;
   v20 = 0;
-  v11 = [objc_opt_self() entityEnumeratorWithProfile:v10];
+  v11 = [objc_opt_self() entityEnumeratorWithProfile:optionsCopy];
   [v11 setPredicate:v8];
-  [v11 addEncodingOptionsFromDictionary:v9];
+  [v11 addEncodingOptionsFromDictionary:predicateCopy];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __67__HDDataEntity__objectWithPredicate_encodingOptions_profile_error___block_invoke;
   v14[3] = &unk_278613718;
   v14[4] = &v15;
-  [v11 enumerateWithError:a5 handler:v14];
+  [v11 enumerateWithError:profile handler:v14];
   v12 = v16[5];
 
   _Block_object_dispose(&v15, 8);
@@ -1880,43 +1880,43 @@ LABEL_9:
   return v12;
 }
 
-+ (id)objectWithID:(id)a3 encodingOptions:(id)a4 profile:(id)a5 error:(id *)a6
++ (id)objectWithID:(id)d encodingOptions:(id)options profile:(id)profile error:(id *)error
 {
   v10 = MEMORY[0x277D10B18];
-  v11 = a5;
-  v12 = a4;
-  v13 = [v10 predicateWithProperty:@"data_id" value:a3 comparisonType:1];
-  v14 = [(HDDataEntity *)a1 _objectWithPredicate:v13 encodingOptions:v12 profile:v11 error:a6];
+  profileCopy = profile;
+  optionsCopy = options;
+  v13 = [v10 predicateWithProperty:@"data_id" value:d comparisonType:1];
+  v14 = [(HDDataEntity *)self _objectWithPredicate:v13 encodingOptions:optionsCopy profile:profileCopy error:error];
 
   return v14;
 }
 
-+ (BOOL)generateSyncObjectsForSession:(id)a3 syncEntityClass:(Class)a4 predicate:(id)a5 syncAnchorRange:(HDSyncAnchorRange)a6 profile:(id)a7 messageHandler:(id)a8 error:(id *)a9
++ (BOOL)generateSyncObjectsForSession:(id)session syncEntityClass:(Class)class predicate:(id)predicate syncAnchorRange:(HDSyncAnchorRange)range profile:(id)profile messageHandler:(id)handler error:(id *)error
 {
-  end = a6.end;
-  start = a6.start;
-  v15 = a3;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
-  v19 = [v17 database];
+  end = range.end;
+  start = range.start;
+  sessionCopy = session;
+  predicateCopy = predicate;
+  profileCopy = profile;
+  handlerCopy = handler;
+  database = [profileCopy database];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __117__HDDataEntity_generateSyncObjectsForSession_syncEntityClass_predicate_syncAnchorRange_profile_messageHandler_error___block_invoke;
   v26[3] = &unk_27861DB70;
-  v27 = v17;
-  v28 = v15;
-  v31 = a4;
-  v32 = a1;
-  v29 = v18;
-  v30 = v16;
+  v27 = profileCopy;
+  v28 = sessionCopy;
+  classCopy = class;
+  selfCopy = self;
+  v29 = handlerCopy;
+  v30 = predicateCopy;
   v33 = start;
   v34 = end;
-  v20 = v16;
-  v21 = v18;
-  v22 = v15;
-  v23 = v17;
-  v24 = [a1 performReadTransactionWithHealthDatabase:v19 error:a9 block:v26];
+  v20 = predicateCopy;
+  v21 = handlerCopy;
+  v22 = sessionCopy;
+  v23 = profileCopy;
+  v24 = [self performReadTransactionWithHealthDatabase:database error:error block:v26];
 
   return v24;
 }
@@ -2003,21 +2003,21 @@ uint64_t __117__HDDataEntity_generateSyncObjectsForSession_syncEntityClass_predi
   return 1;
 }
 
-+ (id)joinClausesForProperty:(id)a3
++ (id)joinClausesForProperty:(id)property
 {
-  v4 = a3;
-  v5 = [a1 entityForProperty:v4];
+  propertyCopy = property;
+  v5 = [self entityForProperty:propertyCopy];
   if (v5)
   {
     v6 = v5;
-    if (v5 != a1)
+    if (v5 != self)
     {
       v7 = MEMORY[0x277D10B50];
-      v8 = [a1 disambiguatedDatabaseTable];
-      v9 = [v7 innerJoinClauseFromTable:v8 toTargetEntity:v6 as:0 localReference:@"data_id" targetKey:@"data_id"];
+      disambiguatedDatabaseTable = [self disambiguatedDatabaseTable];
+      v9 = [v7 innerJoinClauseFromTable:disambiguatedDatabaseTable toTargetEntity:v6 as:0 localReference:@"data_id" targetKey:@"data_id"];
 
       v10 = [MEMORY[0x277CBEB98] setWithObject:v9];
-      v11 = [v6 joinClausesForProperty:v4];
+      v11 = [v6 joinClausesForProperty:propertyCopy];
       if (v11)
       {
         v12 = [v10 setByAddingObjectsFromSet:v11];
@@ -2034,14 +2034,14 @@ uint64_t __117__HDDataEntity_generateSyncObjectsForSession_syncEntityClass_predi
     dispatch_once(&qword_280D67BC8, &__block_literal_global_520);
   }
 
-  if ([v4 isEqualToString:@"data_provenances.sync_provenance"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"data_provenances.origin_build") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"data_provenances.origin_product_type") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"data_provenances.local_build") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"data_provenances.local_product_type") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"data_provenances.source_version") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"data_provenances.tz_name") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"data_provenances.source_id") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"data_provenances.device_id") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"data_provenances.origin_major_version") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"data_provenances.origin_minor_version") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"data_provenances.origin_patch_version") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"data_provenances.derived_flags") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"data_provenances.contributor_id") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"data_provenances.sync_identity"))
+  if ([propertyCopy isEqualToString:@"data_provenances.sync_provenance"] & 1) != 0 || (objc_msgSend(propertyCopy, "isEqualToString:", @"data_provenances.origin_build") & 1) != 0 || (objc_msgSend(propertyCopy, "isEqualToString:", @"data_provenances.origin_product_type") & 1) != 0 || (objc_msgSend(propertyCopy, "isEqualToString:", @"data_provenances.local_build") & 1) != 0 || (objc_msgSend(propertyCopy, "isEqualToString:", @"data_provenances.local_product_type") & 1) != 0 || (objc_msgSend(propertyCopy, "isEqualToString:", @"data_provenances.source_version") & 1) != 0 || (objc_msgSend(propertyCopy, "isEqualToString:", @"data_provenances.tz_name") & 1) != 0 || (objc_msgSend(propertyCopy, "isEqualToString:", @"data_provenances.source_id") & 1) != 0 || (objc_msgSend(propertyCopy, "isEqualToString:", @"data_provenances.device_id") & 1) != 0 || (objc_msgSend(propertyCopy, "isEqualToString:", @"data_provenances.origin_major_version") & 1) != 0 || (objc_msgSend(propertyCopy, "isEqualToString:", @"data_provenances.origin_minor_version") & 1) != 0 || (objc_msgSend(propertyCopy, "isEqualToString:", @"data_provenances.origin_patch_version") & 1) != 0 || (objc_msgSend(propertyCopy, "isEqualToString:", @"data_provenances.derived_flags") & 1) != 0 || (objc_msgSend(propertyCopy, "isEqualToString:", @"data_provenances.contributor_id") & 1) != 0 || (objc_msgSend(propertyCopy, "isEqualToString:", @"data_provenances.sync_identity"))
   {
     v13 = &_MergedGlobals_5;
   }
 
   else
   {
-    if (([v4 isEqualToString:@"external_sync_ids.sid"] & 1) == 0 && (objc_msgSend(v4, "isEqualToString:", @"external_sync_ids.version") & 1) == 0 && !objc_msgSend(v4, "isEqualToString:", @"external_sync_ids.object_code"))
+    if (([propertyCopy isEqualToString:@"external_sync_ids.sid"] & 1) == 0 && (objc_msgSend(propertyCopy, "isEqualToString:", @"external_sync_ids.version") & 1) == 0 && !objc_msgSend(propertyCopy, "isEqualToString:", @"external_sync_ids.object_code"))
     {
       goto LABEL_36;
     }
@@ -2064,8 +2064,8 @@ uint64_t __117__HDDataEntity_generateSyncObjectsForSession_syncEntityClass_predi
     else
     {
       v18 = MEMORY[0x277D10B50];
-      v19 = [a1 disambiguatedDatabaseTable];
-      v20 = [v18 innerJoinClauseFromTable:v19 toTargetEntity:objc_opt_class() as:0 localReference:@"data_id" targetKey:@"data_id"];
+      disambiguatedDatabaseTable2 = [self disambiguatedDatabaseTable];
+      v20 = [v18 innerJoinClauseFromTable:disambiguatedDatabaseTable2 toTargetEntity:objc_opt_class() as:0 localReference:@"data_id" targetKey:@"data_id"];
       v10 = [v17 setWithObjects:{v9, v20, 0}];
     }
 
@@ -2075,9 +2075,9 @@ LABEL_28:
   }
 
 LABEL_36:
-  v22.receiver = a1;
+  v22.receiver = self;
   v22.super_class = &OBJC_METACLASS___HDDataEntity;
-  v10 = objc_msgSendSuper2(&v22, sel_joinClausesForProperty_, v4);
+  v10 = objc_msgSendSuper2(&v22, sel_joinClausesForProperty_, propertyCopy);
 LABEL_29:
 
   return v10;
@@ -2095,33 +2095,33 @@ void __39__HDDataEntity_joinClausesForProperty___block_invoke()
   qword_280D67BC0 = v2;
 }
 
-+ (id)disambiguatedSQLForProperty:(id)a3
++ (id)disambiguatedSQLForProperty:(id)property
 {
-  v4 = a3;
-  if ([v4 isEqualToString:*MEMORY[0x277D10A40]])
+  propertyCopy = property;
+  if ([propertyCopy isEqualToString:*MEMORY[0x277D10A40]])
   {
     v5 = MEMORY[0x277CCACA8];
-    v6 = [a1 disambiguatedDatabaseTable];
-    v7 = [v5 stringWithFormat:@"%@.%@", v6, v4];
+    disambiguatedDatabaseTable = [self disambiguatedDatabaseTable];
+    propertyCopy = [v5 stringWithFormat:@"%@.%@", disambiguatedDatabaseTable, propertyCopy];
   }
 
   else
   {
-    v8 = [a1 entityForProperty:v4];
+    v8 = [self entityForProperty:propertyCopy];
     if (v8)
     {
       v9 = MEMORY[0x277CCACA8];
-      v10 = [v8 disambiguatedDatabaseTable];
-      v7 = [v9 stringWithFormat:@"%@.%@", v10, v4];
+      disambiguatedDatabaseTable2 = [v8 disambiguatedDatabaseTable];
+      propertyCopy = [v9 stringWithFormat:@"%@.%@", disambiguatedDatabaseTable2, propertyCopy];
     }
 
     else
     {
-      v7 = v4;
+      propertyCopy = propertyCopy;
     }
   }
 
-  return v7;
+  return propertyCopy;
 }
 
 + (id)foreignKeys
@@ -2139,7 +2139,7 @@ void __39__HDDataEntity_joinClausesForProperty___block_invoke()
 
 + (id)defaultForeignKey
 {
-  v2 = [objc_alloc(MEMORY[0x277D10B38]) initWithEntityClass:a1 property:@"data_id" deletionAction:2];
+  v2 = [objc_alloc(MEMORY[0x277D10B38]) initWithEntityClass:self property:@"data_id" deletionAction:2];
 
   return v2;
 }
@@ -2148,7 +2148,7 @@ void __39__HDDataEntity_joinClausesForProperty___block_invoke()
 {
   v13[1] = *MEMORY[0x277D85DE8];
   v2 = MEMORY[0x277CCACA8];
-  v3 = [a1 disambiguatedSQLForProperty:@"type"];
+  v3 = [self disambiguatedSQLForProperty:@"type"];
   v4 = [v2 stringWithFormat:@"%@ = %ld", v3, 2];
 
   v5 = objc_alloc(MEMORY[0x277D10B40]);
@@ -2164,36 +2164,36 @@ void __39__HDDataEntity_joinClausesForProperty___block_invoke()
   return v9;
 }
 
-+ (id)predicateMatchingPreferredEntityTypeIfRequiredWithPredicate:(id)a3
++ (id)predicateMatchingPreferredEntityTypeIfRequiredWithPredicate:(id)predicate
 {
-  v4 = a3;
-  if ([a1 requiresSampleTypePredicate])
+  predicateCopy = predicate;
+  if ([self requiresSampleTypePredicate])
   {
     v5 = MEMORY[0x277D10B70];
-    v6 = HDDataEntityPredicateForType([a1 preferredEntityType]);
-    v7 = [v5 compoundPredicateWithPredicate:v4 otherPredicate:v6];
+    v6 = HDDataEntityPredicateForType([self preferredEntityType]);
+    v7 = [v5 compoundPredicateWithPredicate:predicateCopy otherPredicate:v6];
   }
 
   else
   {
-    v7 = v4;
+    v7 = predicateCopy;
   }
 
   return v7;
 }
 
-+ (id)orderingTermForSortDescriptor:(id)a3
++ (id)orderingTermForSortDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = [v4 key];
-  v6 = [v4 ascending];
+  descriptorCopy = descriptor;
+  v5 = [descriptorCopy key];
+  ascending = [descriptorCopy ascending];
   if ([v5 isEqualToString:*MEMORY[0x277CCC5B8]])
   {
     v7 = MEMORY[0x277D10B68];
     v8 = objc_opt_class();
     v9 = @"data_id";
 LABEL_5:
-    v10 = [v7 orderingTermWithProperty:v9 entityClass:v8 ascending:v6];
+    v10 = [v7 orderingTermWithProperty:v9 entityClass:v8 ascending:ascending];
     goto LABEL_7;
   }
 
@@ -2205,25 +2205,25 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v13.receiver = a1;
+  v13.receiver = self;
   v13.super_class = &OBJC_METACLASS___HDDataEntity;
-  v10 = objc_msgSendSuper2(&v13, sel_orderingTermForSortDescriptor_, v4);
+  v10 = objc_msgSendSuper2(&v13, sel_orderingTermForSortDescriptor_, descriptorCopy);
 LABEL_7:
   v11 = v10;
 
   return v11;
 }
 
-+ (id)_insertDataObject:(id)a3 withProvenanceID:(id)a4 inDatabase:(id)a5 error:(id *)a6
++ (id)_insertDataObject:(id)object withProvenanceID:(id)d inDatabase:(id)database error:(id *)error
 {
   v38 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [a1 superclass];
+  objectCopy = object;
+  dCopy = d;
+  databaseCopy = database;
+  v13 = [self superclass];
   if ([v13 isSubclassOfClass:objc_opt_class()])
   {
-    v14 = [v13 _insertDataObject:v10 withProvenanceID:v11 inDatabase:v12 error:a6];
+    v14 = [v13 _insertDataObject:objectCopy withProvenanceID:dCopy inDatabase:databaseCopy error:error];
   }
 
   else
@@ -2231,20 +2231,20 @@ LABEL_7:
     v14 = 0;
   }
 
-  if ([a1 participatesInInsertion])
+  if ([self participatesInInsertion])
   {
     v15 = objc_opt_class();
     if (v15 == objc_opt_class())
     {
-      v22 = v10;
-      v32 = v11;
-      v23 = v12;
+      v22 = objectCopy;
+      v32 = dCopy;
+      v23 = databaseCopy;
       v24 = objc_opt_self();
       v25 = objc_opt_class();
       if (([v25 isEqual:objc_opt_class()] & 1) == 0)
       {
-        v31 = [MEMORY[0x277CCA890] currentHandler];
-        [v31 handleFailureInMethod:sel__insertBaseDataObject_withProvenance_inDatabase_error_ object:v24 file:@"HDDataEntity.m" lineNumber:1338 description:{@"Subclasses must not override %s", "+[HDDataEntity _insertBaseDataObject:withProvenance:inDatabase:error:]"}];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:sel__insertBaseDataObject_withProvenance_inDatabase_error_ object:v24 file:@"HDDataEntity.m" lineNumber:1338 description:{@"Subclasses must not override %s", "+[HDDataEntity _insertBaseDataObject:withProvenance:inDatabase:error:]"}];
       }
 
       *buf = MEMORY[0x277D85DD0];
@@ -2255,18 +2255,18 @@ LABEL_7:
       v36 = v26;
       v27 = v32;
       v37 = v27;
-      v28 = 0;
-      if ([v23 executeSQL:@"INSERT OR IGNORE INTO objects (uuid error:provenance bindingHandler:type enumerationHandler:{creation_date) VALUES (?, ?, ?, ?)", a6, buf, 0}])
+      lastInsertRowID = 0;
+      if ([v23 executeSQL:@"INSERT OR IGNORE INTO objects (uuid error:provenance bindingHandler:type enumerationHandler:{creation_date) VALUES (?, ?, ?, ?)", error, buf, 0}])
       {
         if ([v23 getChangesCount] < 1)
         {
-          [MEMORY[0x277CCA9B8] hk_assignError:a6 code:115 format:@"Duplicate HKObject"];
-          v28 = 0;
+          [MEMORY[0x277CCA9B8] hk_assignError:error code:115 format:@"Duplicate HKObject"];
+          lastInsertRowID = 0;
         }
 
         else
         {
-          v28 = [v23 lastInsertRowID];
+          lastInsertRowID = [v23 lastInsertRowID];
         }
       }
     }
@@ -2278,11 +2278,11 @@ LABEL_7:
         goto LABEL_26;
       }
 
-      v16 = [a1 insertDataObject:v10 withProvenance:v11 inDatabase:v12 persistentID:v14 error:a6];
+      v16 = [self insertDataObject:objectCopy withProvenance:dCopy inDatabase:databaseCopy persistentID:v14 error:error];
       if (!v16)
       {
         v33 = 0;
-        v17 = [a1 _removeObjectWithPersistentID:objc_msgSend(v14 database:"longLongValue") error:{v12, &v33}];
+        v17 = [self _removeObjectWithPersistentID:objc_msgSend(v14 database:"longLongValue") error:{databaseCopy, &v33}];
         v18 = v33;
         if ((v17 & 1) == 0)
         {
@@ -2300,10 +2300,10 @@ LABEL_7:
           v20 = v18;
           if (v20)
           {
-            if (a6)
+            if (error)
             {
               v21 = v20;
-              *a6 = v20;
+              *error = v20;
             }
 
             else
@@ -2318,10 +2318,10 @@ LABEL_7:
 
       v14 = v14;
 
-      v28 = v14;
+      lastInsertRowID = v14;
     }
 
-    v14 = v28;
+    v14 = lastInsertRowID;
   }
 
 LABEL_26:
@@ -2331,7 +2331,7 @@ LABEL_26:
   return v14;
 }
 
-+ (id)insertDataObject:(id)a3 withProvenance:(id)a4 inDatabase:(id)a5 persistentID:(id)a6 error:(id *)a7
++ (id)insertDataObject:(id)object withProvenance:(id)provenance inDatabase:(id)database persistentID:(id)d error:(id *)error
 {
   objc_opt_class();
   NSRequestConcreteImplementation();
@@ -2351,49 +2351,49 @@ uint64_t __70__HDDataEntity__insertBaseDataObject_withProvenance_inDatabase_erro
   return sqlite3_bind_double(a2, 4, v6);
 }
 
-+ (BOOL)_removeObjectWithPersistentID:(int64_t)a3 database:(id)a4 error:(id *)a5
++ (BOOL)_removeObjectWithPersistentID:(int64_t)d database:(id)database error:(id *)error
 {
-  v8 = a4;
-  v9 = [a1 superclass];
-  if ([v9 isSubclassOfClass:objc_opt_class()] && !objc_msgSend(v9, "_removeObjectWithPersistentID:database:error:", a3, v8, a5))
+  databaseCopy = database;
+  v9 = [self superclass];
+  if ([v9 isSubclassOfClass:objc_opt_class()] && !objc_msgSend(v9, "_removeObjectWithPersistentID:database:error:", d, databaseCopy, error))
   {
     v11 = 0;
   }
 
   else
   {
-    v10 = [[a1 alloc] initWithPersistentID:a3];
-    v11 = [v10 deleteFromDatabase:v8 error:a5];
+    v10 = [[self alloc] initWithPersistentID:d];
+    v11 = [v10 deleteFromDatabase:databaseCopy error:error];
   }
 
   return v11;
 }
 
-+ (id)mergeDataObject:(id)a3 provenance:(id)a4 profile:(id)a5 transaction:(id)a6 error:(id *)a7 insertHandler:(id)a8
++ (id)mergeDataObject:(id)object provenance:(id)provenance profile:(id)profile transaction:(id)transaction error:(id *)error insertHandler:(id)handler
 {
   objc_opt_class();
   NSRequestConcreteImplementation();
   return 0;
 }
 
-+ (id)entityEncoderForProfile:(id)a3 transaction:(id)a4 purpose:(int64_t)a5 encodingOptions:(id)a6 authorizationFilter:(id)a7
++ (id)entityEncoderForProfile:(id)profile transaction:(id)transaction purpose:(int64_t)purpose encodingOptions:(id)options authorizationFilter:(id)filter
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a4;
-  v14 = a3;
-  v15 = [[_HDDataEntityEncoder alloc] initWithHealthEntityClass:objc_opt_class() profile:v14 transaction:v13 purpose:a5 encodingOptions:v12 authorizationFilter:v11];
+  filterCopy = filter;
+  optionsCopy = options;
+  transactionCopy = transaction;
+  profileCopy = profile;
+  v15 = [[_HDDataEntityEncoder alloc] initWithHealthEntityClass:objc_opt_class() profile:profileCopy transaction:transactionCopy purpose:purpose encodingOptions:optionsCopy authorizationFilter:filterCopy];
 
   return v15;
 }
 
-+ (id)deleteStatementsForRelatedEntitiesWithTransaction:(id)a3
++ (id)deleteStatementsForRelatedEntitiesWithTransaction:(id)transaction
 {
   v9[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [HDMetadataValueEntity deleteStatementForObjectMetadataWithTransaction:v3];
+  transactionCopy = transaction;
+  v4 = [HDMetadataValueEntity deleteStatementForObjectMetadataWithTransaction:transactionCopy];
   v9[0] = v4;
-  v5 = [HDAssociationEntity deleteStatementForChildIDsWithTransaction:v3];
+  v5 = [HDAssociationEntity deleteStatementForChildIDsWithTransaction:transactionCopy];
 
   v9[1] = v5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:2];
@@ -2403,31 +2403,31 @@ uint64_t __70__HDDataEntity__insertBaseDataObject_withProvenance_inDatabase_erro
   return v6;
 }
 
-+ (BOOL)addCodableObject:(id)a3 toCollection:(id)a4
++ (BOOL)addCodableObject:(id)object toCollection:(id)collection
 {
   objc_opt_class();
   NSRequestConcreteImplementation();
   return 0;
 }
 
-+ (id)anyInDatabase:(id)a3 predicate:(id)a4 error:(id *)a5
++ (id)anyInDatabase:(id)database predicate:(id)predicate error:(id *)error
 {
-  v8 = a3;
-  v9 = [a1 predicateMatchingPreferredEntityTypeIfRequiredWithPredicate:a4];
-  v12.receiver = a1;
+  databaseCopy = database;
+  v9 = [self predicateMatchingPreferredEntityTypeIfRequiredWithPredicate:predicate];
+  v12.receiver = self;
   v12.super_class = &OBJC_METACLASS___HDDataEntity;
-  v10 = objc_msgSendSuper2(&v12, sel_anyInDatabase_predicate_error_, v8, v9, a5);
+  v10 = objc_msgSendSuper2(&v12, sel_anyInDatabase_predicate_error_, databaseCopy, v9, error);
 
   return v10;
 }
 
-+ (int64_t)countOfObjectsWithPredicate:(id)a3 healthDatabase:(id)a4 error:(id *)a5
++ (int64_t)countOfObjectsWithPredicate:(id)predicate healthDatabase:(id)database error:(id *)error
 {
-  v8 = a4;
-  v9 = [a1 predicateMatchingPreferredEntityTypeIfRequiredWithPredicate:a3];
-  v12.receiver = a1;
+  databaseCopy = database;
+  v9 = [self predicateMatchingPreferredEntityTypeIfRequiredWithPredicate:predicate];
+  v12.receiver = self;
   v12.super_class = &OBJC_METACLASS___HDDataEntity;
-  v10 = objc_msgSendSuper2(&v12, sel_countOfObjectsWithPredicate_healthDatabase_error_, v9, v8, a5);
+  v10 = objc_msgSendSuper2(&v12, sel_countOfObjectsWithPredicate_healthDatabase_error_, v9, databaseCopy, error);
 
   return v10;
 }
@@ -2435,7 +2435,7 @@ uint64_t __70__HDDataEntity__insertBaseDataObject_withProvenance_inDatabase_erro
 + (id)columnNamesForTimeOffset
 {
   v5[1] = *MEMORY[0x277D85DE8];
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v5[0] = @"creation_date";
     v2 = [MEMORY[0x277CBEA60] arrayWithObjects:v5 count:1];

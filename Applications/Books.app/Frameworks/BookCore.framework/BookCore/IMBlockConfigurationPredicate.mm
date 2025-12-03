@@ -1,28 +1,28 @@
 @interface IMBlockConfigurationPredicate
-+ (id)predicateWithBlock:(id)a3;
-- (BOOL)evaluateWithContext:(id)a3;
++ (id)predicateWithBlock:(id)block;
+- (BOOL)evaluateWithContext:(id)context;
 @end
 
 @implementation IMBlockConfigurationPredicate
 
-+ (id)predicateWithBlock:(id)a3
++ (id)predicateWithBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = objc_alloc_init(IMBlockConfigurationPredicate);
-  [(IMBlockConfigurationPredicate *)v4 setBlock:v3];
+  [(IMBlockConfigurationPredicate *)v4 setBlock:blockCopy];
 
   return v4;
 }
 
-- (BOOL)evaluateWithContext:(id)a3
+- (BOOL)evaluateWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(IMBlockConfigurationPredicate *)self block];
+  contextCopy = context;
+  block = [(IMBlockConfigurationPredicate *)self block];
 
-  if (v5)
+  if (block)
   {
-    v6 = [(IMBlockConfigurationPredicate *)self block];
-    v7 = (v6)[2](v6, v4);
+    block2 = [(IMBlockConfigurationPredicate *)self block];
+    v7 = (block2)[2](block2, contextCopy);
   }
 
   else

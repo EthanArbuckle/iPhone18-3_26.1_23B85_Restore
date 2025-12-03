@@ -1,255 +1,255 @@
 @interface WFDatabase
 + (WFDatabase)defaultDatabase;
-+ (id)appDescriptorFromData:(id)a3;
++ (id)appDescriptorFromData:(id)data;
 + (id)createDatabaseForTesting;
-+ (id)disabledAutoShortcutsFromData:(id)a3;
-+ (id)identifierForAppDescriptor:(id)a3;
-+ (void)setDefaultDatabase:(id)a3;
-- (BOOL)_moveReferences:(id)a3 toIndexes:(id)a4 ofCollectionID:(id)a5 error:(id *)a6;
++ (id)disabledAutoShortcutsFromData:(id)data;
++ (id)identifierForAppDescriptor:(id)descriptor;
++ (void)setDefaultDatabase:(id)database;
+- (BOOL)_moveReferences:(id)references toIndexes:(id)indexes ofCollectionID:(id)d error:(id *)error;
 - (BOOL)coherenceSyncEnabled;
-- (BOOL)deleteAllBookmarksForWorkflowID:(id)a3 error:(id *)a4;
-- (BOOL)deleteAutoShortcutsPreferencesForIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)deleteReference:(id)a3 error:(id *)a4;
-- (BOOL)deleteReference:(id)a3 tombstone:(BOOL)a4 error:(id *)a5;
-- (BOOL)deleteWorkflowRecordWithIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)handleDeletedFolderRecordWithIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)handleFetchedFolderRecordWithIdentifier:(id)a3 name:(id)a4 icon:(unsigned __int16)a5 encryptedSchemaVersion:(int64_t)a6 cloudKitMetadata:(id)a7 error:(id *)a8;
-- (BOOL)handleFetchedOrderingRecordWithIdentifier:(id)a3 shortcuts:(id)a4 folders:(id)a5 cloudKitMetadata:(id)a6 error:(id *)a7;
-- (BOOL)handleUploadedWorkflowRecordWithIdentifier:(id)a3 cloudKitMetadata:(id)a4 syncHash:(int64_t)a5 encryptedSchemaVersion:(int64_t)a6 error:(id *)a7;
-- (BOOL)hasConflictWithName:(id)a3;
-- (BOOL)hasConflictingReferenceForWorkflowID:(id)a3;
-- (BOOL)hasVisibleWorkflowsWithName:(id)a3;
-- (BOOL)isAutoShortcutDisabledForAppDescriptor:(id)a3 autoShortcutIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)isAutoShortcutDisabledForBundleIdentifier:(id)a3 autoShortcutIdentifier:(id)a4;
-- (BOOL)isAutoShortcutDisabledForBundleIdentifier:(id)a3 autoShortcutIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isReference:(id)a3 allowedToRunOnDomain:(id)a4;
-- (BOOL)isSiriEnabledForAutoShortcutsWithAppDescriptor:(id)a3 error:(id *)a4;
-- (BOOL)isSiriEnabledForAutoShortcutsWithBundleIdentifier:(id)a3;
-- (BOOL)isSiriEnabledForAutoShortcutsWithBundleIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)isSpotlightEnabledForAutoShortcutsWithAppDescriptor:(id)a3 error:(id *)a4;
-- (BOOL)isSpotlightEnabledForAutoShortcutsWithBundleIdentifier:(id)a3;
-- (BOOL)isSpotlightEnabledForAutoShortcutsWithBundleIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)mergeAutoShortcutsPreferencesWithNewPreferences:(id)a3 error:(id *)a4;
+- (BOOL)deleteAllBookmarksForWorkflowID:(id)d error:(id *)error;
+- (BOOL)deleteAutoShortcutsPreferencesForIdentifier:(id)identifier error:(id *)error;
+- (BOOL)deleteReference:(id)reference error:(id *)error;
+- (BOOL)deleteReference:(id)reference tombstone:(BOOL)tombstone error:(id *)error;
+- (BOOL)deleteWorkflowRecordWithIdentifier:(id)identifier error:(id *)error;
+- (BOOL)handleDeletedFolderRecordWithIdentifier:(id)identifier error:(id *)error;
+- (BOOL)handleFetchedFolderRecordWithIdentifier:(id)identifier name:(id)name icon:(unsigned __int16)icon encryptedSchemaVersion:(int64_t)version cloudKitMetadata:(id)metadata error:(id *)error;
+- (BOOL)handleFetchedOrderingRecordWithIdentifier:(id)identifier shortcuts:(id)shortcuts folders:(id)folders cloudKitMetadata:(id)metadata error:(id *)error;
+- (BOOL)handleUploadedWorkflowRecordWithIdentifier:(id)identifier cloudKitMetadata:(id)metadata syncHash:(int64_t)hash encryptedSchemaVersion:(int64_t)version error:(id *)error;
+- (BOOL)hasConflictWithName:(id)name;
+- (BOOL)hasConflictingReferenceForWorkflowID:(id)d;
+- (BOOL)hasVisibleWorkflowsWithName:(id)name;
+- (BOOL)isAutoShortcutDisabledForAppDescriptor:(id)descriptor autoShortcutIdentifier:(id)identifier error:(id *)error;
+- (BOOL)isAutoShortcutDisabledForBundleIdentifier:(id)identifier autoShortcutIdentifier:(id)shortcutIdentifier;
+- (BOOL)isAutoShortcutDisabledForBundleIdentifier:(id)identifier autoShortcutIdentifier:(id)shortcutIdentifier error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isReference:(id)reference allowedToRunOnDomain:(id)domain;
+- (BOOL)isSiriEnabledForAutoShortcutsWithAppDescriptor:(id)descriptor error:(id *)error;
+- (BOOL)isSiriEnabledForAutoShortcutsWithBundleIdentifier:(id)identifier;
+- (BOOL)isSiriEnabledForAutoShortcutsWithBundleIdentifier:(id)identifier error:(id *)error;
+- (BOOL)isSpotlightEnabledForAutoShortcutsWithAppDescriptor:(id)descriptor error:(id *)error;
+- (BOOL)isSpotlightEnabledForAutoShortcutsWithBundleIdentifier:(id)identifier;
+- (BOOL)isSpotlightEnabledForAutoShortcutsWithBundleIdentifier:(id)identifier error:(id *)error;
+- (BOOL)mergeAutoShortcutsPreferencesWithNewPreferences:(id)preferences error:(id *)error;
 - (BOOL)mergeAutomationsAndShortcuts;
-- (BOOL)moveCollections:(id)a3 toIndex:(unint64_t)a4 ofCollectionWithIdentifier:(id)a5 error:(id *)a6;
-- (BOOL)moveReferences:(id)a3 toIndex:(int64_t)a4 ofCollection:(id)a5 error:(id *)a6;
-- (BOOL)moveReferences:(id)a3 toIndexes:(id)a4 ofCollection:(id)a5 error:(id *)a6;
-- (BOOL)prependReferences:(id)a3 toCollection:(id)a4 error:(id *)a5;
-- (BOOL)prependReferences:(id)a3 toCollectionWithType:(id)a4 error:(id *)a5;
-- (BOOL)reloadRecord:(id)a3 withDescriptor:(id)a4 error:(id *)a5;
-- (BOOL)removeReferences:(id)a3 fromCollectionWithIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)replaceWithFileAtURL:(id)a3 error:(id *)a4;
-- (BOOL)saveContextOrRollback:(id)a3 error:(id *)a4;
-- (BOOL)saveRecord:(id)a3 withDescriptor:(id)a4 error:(id *)a5;
-- (BOOL)saveSmartPromptState:(id)a3 reference:(id)a4 error:(id *)a5;
-- (BOOL)saveSmartPromptStateData:(id)a3 actionUUID:(id)a4 reference:(id)a5 error:(id *)a6;
-- (BOOL)setAutoShortcutDisabledForAppDescriptor:(id)a3 autoShortcutDisabled:(BOOL)a4 autoShortcutIdentifier:(id)a5 error:(id *)a6;
-- (BOOL)setCloudKitMetadata:(id)a3 forWorkflowRecordWithIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)setShortcutSuggestions:(id)a3 forAppWithBundleIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)setSiriAutoShortcutsEnablement:(BOOL)a3 forAppDescriptor:(id)a4 error:(id *)a5;
-- (BOOL)setSpotlightAutoShortcutsEnablement:(BOOL)a3 forAppDescriptor:(id)a4 error:(id *)a5;
-- (BOOL)setWalrusStateForTesting:(int64_t)a3 withError:(id *)a4;
-- (BOOL)shouldPromptForCurrentContentItemCount:(unint64_t)a3 previousCount:(unint64_t)a4 contentOrigin:(id)a5;
-- (BOOL)startObservingChangesForResult:(id)a3;
-- (BOOL)updateAutoShortcutsPreferencesWithNewPreferences:(id)a3 error:(id *)a4;
-- (Class)recordClassForObjectType:(unint64_t)a3;
+- (BOOL)moveCollections:(id)collections toIndex:(unint64_t)index ofCollectionWithIdentifier:(id)identifier error:(id *)error;
+- (BOOL)moveReferences:(id)references toIndex:(int64_t)index ofCollection:(id)collection error:(id *)error;
+- (BOOL)moveReferences:(id)references toIndexes:(id)indexes ofCollection:(id)collection error:(id *)error;
+- (BOOL)prependReferences:(id)references toCollection:(id)collection error:(id *)error;
+- (BOOL)prependReferences:(id)references toCollectionWithType:(id)type error:(id *)error;
+- (BOOL)reloadRecord:(id)record withDescriptor:(id)descriptor error:(id *)error;
+- (BOOL)removeReferences:(id)references fromCollectionWithIdentifier:(id)identifier error:(id *)error;
+- (BOOL)replaceWithFileAtURL:(id)l error:(id *)error;
+- (BOOL)saveContextOrRollback:(id)rollback error:(id *)error;
+- (BOOL)saveRecord:(id)record withDescriptor:(id)descriptor error:(id *)error;
+- (BOOL)saveSmartPromptState:(id)state reference:(id)reference error:(id *)error;
+- (BOOL)saveSmartPromptStateData:(id)data actionUUID:(id)d reference:(id)reference error:(id *)error;
+- (BOOL)setAutoShortcutDisabledForAppDescriptor:(id)descriptor autoShortcutDisabled:(BOOL)disabled autoShortcutIdentifier:(id)identifier error:(id *)error;
+- (BOOL)setCloudKitMetadata:(id)metadata forWorkflowRecordWithIdentifier:(id)identifier error:(id *)error;
+- (BOOL)setShortcutSuggestions:(id)suggestions forAppWithBundleIdentifier:(id)identifier error:(id *)error;
+- (BOOL)setSiriAutoShortcutsEnablement:(BOOL)enablement forAppDescriptor:(id)descriptor error:(id *)error;
+- (BOOL)setSpotlightAutoShortcutsEnablement:(BOOL)enablement forAppDescriptor:(id)descriptor error:(id *)error;
+- (BOOL)setWalrusStateForTesting:(int64_t)testing withError:(id *)error;
+- (BOOL)shouldPromptForCurrentContentItemCount:(unint64_t)count previousCount:(unint64_t)previousCount contentOrigin:(id)origin;
+- (BOOL)startObservingChangesForResult:(id)result;
+- (BOOL)updateAutoShortcutsPreferencesWithNewPreferences:(id)preferences error:(id *)error;
+- (Class)recordClassForObjectType:(unint64_t)type;
 - (NSArray)activeObjectObservers;
 - (NSArray)activeResults;
 - (NSString)debugDescription;
 - (NSURL)exportableURL;
-- (WFDatabase)initWithPersistenceMode:(unint64_t)a3 error:(id *)a4;
-- (WFDatabase)initWithPersistenceMode:(unint64_t)a3 fileURL:(id)a4 error:(id *)a5;
+- (WFDatabase)initWithPersistenceMode:(unint64_t)mode error:(id *)error;
+- (WFDatabase)initWithPersistenceMode:(unint64_t)mode fileURL:(id)l error:(id *)error;
 - (WFLibrary)library;
-- (id)_createWorkflowWithOptions:(id)a3 error:(id *)a4;
-- (id)_syncTokenWithError:(id *)a3;
+- (id)_createWorkflowWithOptions:(id)options error:(id *)error;
+- (id)_syncTokenWithError:(id *)error;
 - (id)allCollectionIdentifiersForSync;
 - (id)allConfiguredTriggers;
 - (id)allConfiguredTriggersNeedingRunningNotifications;
 - (id)allShortcutBookmarks;
 - (id)allShortcutSuggestions;
 - (id)allSortedTriggerEvents;
-- (id)allStatesDataForReference:(id)a3 actionUUID:(id)a4;
+- (id)allStatesDataForReference:(id)reference actionUUID:(id)d;
 - (id)allTrackedFilesystemNodes;
 - (id)allWorkflowIdentifiersForSync;
-- (id)applyConflictResolution:(id)a3;
-- (id)approvalResultForContentAttributionSet:(id)a3 contentDestination:(id)a4 actionUUID:(id)a5 actionIdentifier:(id)a6 actionIndex:(unint64_t)a7 reference:(id)a8 allowedOnceStates:(id)a9;
-- (id)associateWorkflowToTrigger:(id)a3 workflow:(id)a4 error:(id *)a5;
-- (id)autoShortcutsPreferencesForAppDescriptor:(id)a3 error:(id *)a4;
-- (id)autoShortcutsPreferencesForBundleIdentifier:(id)a3 error:(id *)a4;
-- (id)autoShortcutsPreferencesForIdentifier:(id)a3 error:(id *)a4;
-- (id)autoShortcutsPreferencesFromCoreDataAutoShortcutsPreferences:(id)a3;
-- (id)badgeTypeForEntityIdentifier:(id)a3 error:(id *)a4;
-- (id)bookmarkDataForWorkflowID:(id)a3 path:(id)a4 error:(id *)a5;
-- (id)bookmarksForWorkflowID:(id)a3 error:(id *)a4;
-- (id)collectionForWorkflowType:(id)a3;
-- (id)collectionResultWithLibraryQuery:(id)a3;
-- (id)collectionWithIdentifier:(id)a3;
-- (id)collectionsForWorkflowReference:(id)a3;
+- (id)applyConflictResolution:(id)resolution;
+- (id)approvalResultForContentAttributionSet:(id)set contentDestination:(id)destination actionUUID:(id)d actionIdentifier:(id)identifier actionIndex:(unint64_t)index reference:(id)reference allowedOnceStates:(id)states;
+- (id)associateWorkflowToTrigger:(id)trigger workflow:(id)workflow error:(id *)error;
+- (id)autoShortcutsPreferencesForAppDescriptor:(id)descriptor error:(id *)error;
+- (id)autoShortcutsPreferencesForBundleIdentifier:(id)identifier error:(id *)error;
+- (id)autoShortcutsPreferencesForIdentifier:(id)identifier error:(id *)error;
+- (id)autoShortcutsPreferencesFromCoreDataAutoShortcutsPreferences:(id)preferences;
+- (id)badgeTypeForEntityIdentifier:(id)identifier error:(id *)error;
+- (id)bookmarkDataForWorkflowID:(id)d path:(id)path error:(id *)error;
+- (id)bookmarksForWorkflowID:(id)d error:(id *)error;
+- (id)collectionForWorkflowType:(id)type;
+- (id)collectionResultWithLibraryQuery:(id)query;
+- (id)collectionWithIdentifier:(id)identifier;
+- (id)collectionsForWorkflowReference:(id)reference;
 - (id)collectionsWithOutOfSyncWalrusStatus;
-- (id)configuredTriggerForTriggerID:(id)a3;
-- (id)configuredTriggersForWorkflowID:(id)a3;
-- (id)conflictForWorkflowReference:(id)a3;
-- (id)conflictingReferenceForWorkflowID:(id)a3;
-- (id)coreDataAutoShortcutsPreferencesForAppDescriptor:(id)a3 error:(id *)a4;
-- (id)coreDataAutoShortcutsPreferencesForIdentifier:(id)a3 error:(id *)a4;
+- (id)configuredTriggerForTriggerID:(id)d;
+- (id)configuredTriggersForWorkflowID:(id)d;
+- (id)conflictForWorkflowReference:(id)reference;
+- (id)conflictingReferenceForWorkflowID:(id)d;
+- (id)coreDataAutoShortcutsPreferencesForAppDescriptor:(id)descriptor error:(id *)error;
+- (id)coreDataAutoShortcutsPreferencesForIdentifier:(id)identifier error:(id *)error;
 - (id)coreDataLibrary;
-- (id)createBookmarkWithWorkflowID:(id)a3 path:(id)a4 bookmarkData:(id)a5 error:(id *)a6;
-- (id)createFolderWithName:(id)a3 icon:(unsigned __int16)a4 error:(id *)a5;
-- (id)createTriggerEventWithTriggerID:(id)a3 eventInfo:(id)a4 confirmed:(BOOL)a5 paused:(BOOL)a6 error:(id *)a7;
-- (id)createTriggerWithRecord:(id)a3 error:(id *)a4;
-- (id)createTriggerWithRecord:(id)a3 workflow:(id)a4 error:(id *)a5;
-- (id)createWorkflowWithError:(id *)a3;
-- (id)createWorkflowWithOptions:(id)a3 nameCollisionBehavior:(unint64_t)a4 error:(id *)a5;
-- (id)currentDeletionAuthorizationStatusWithContentItemClassName:(id)a3 actionUUID:(id)a4 actionIdentifier:(id)a5 actionIndex:(unint64_t)a6 count:(unint64_t)a7 reference:(id)a8;
+- (id)createBookmarkWithWorkflowID:(id)d path:(id)path bookmarkData:(id)data error:(id *)error;
+- (id)createFolderWithName:(id)name icon:(unsigned __int16)icon error:(id *)error;
+- (id)createTriggerEventWithTriggerID:(id)d eventInfo:(id)info confirmed:(BOOL)confirmed paused:(BOOL)paused error:(id *)error;
+- (id)createTriggerWithRecord:(id)record error:(id *)error;
+- (id)createTriggerWithRecord:(id)record workflow:(id)workflow error:(id *)error;
+- (id)createWorkflowWithError:(id *)error;
+- (id)createWorkflowWithOptions:(id)options nameCollisionBehavior:(unint64_t)behavior error:(id *)error;
+- (id)currentDeletionAuthorizationStatusWithContentItemClassName:(id)name actionUUID:(id)d actionIdentifier:(id)identifier actionIndex:(unint64_t)index count:(unint64_t)count reference:(id)reference;
 - (id)debugLegacyFolderSyncState;
-- (id)defaultCoreDataAutoShortcutsPreferencesForAppDescriptor:(id)a3 error:(id *)a4;
-- (id)deletionAuthorizationStatesForReference:(id)a3;
-- (id)descriptorsForFetchOperation:(id)a3 state:(id *)a4 error:(id *)a5;
-- (id)descriptorsForResult:(id)a3 state:(id *)a4 error:(id *)a5;
-- (id)desiredSyncOperationForWorkflow:(id)a3;
-- (id)duplicateNameErrorWithName:(id)a3;
-- (id)duplicateReference:(id)a3 error:(id *)a4;
-- (id)duplicateReference:(id)a3 newName:(id)a4 error:(id *)a5;
-- (id)fetchFirstAllowedStateMatching:(id)a3 actionUUID:(id)a4 forReference:(id)a5;
-- (id)folderForWorkflowReference:(id)a3;
-- (id)generateAndPersistUUIDForActionWithIdentifier:(id)a3 actionIndex:(unint64_t)a4 workflowIdentifier:(id)a5;
-- (id)handleFetchedWorkflowRecord:(id)a3 identifier:(id)a4 recordChangeTag:(id)a5 modificationDate:(id)a6 error:(id *)a7;
+- (id)defaultCoreDataAutoShortcutsPreferencesForAppDescriptor:(id)descriptor error:(id *)error;
+- (id)deletionAuthorizationStatesForReference:(id)reference;
+- (id)descriptorsForFetchOperation:(id)operation state:(id *)state error:(id *)error;
+- (id)descriptorsForResult:(id)result state:(id *)state error:(id *)error;
+- (id)desiredSyncOperationForWorkflow:(id)workflow;
+- (id)duplicateNameErrorWithName:(id)name;
+- (id)duplicateReference:(id)reference error:(id *)error;
+- (id)duplicateReference:(id)reference newName:(id)name error:(id *)error;
+- (id)fetchFirstAllowedStateMatching:(id)matching actionUUID:(id)d forReference:(id)reference;
+- (id)folderForWorkflowReference:(id)reference;
+- (id)generateAndPersistUUIDForActionWithIdentifier:(id)identifier actionIndex:(unint64_t)index workflowIdentifier:(id)workflowIdentifier;
+- (id)handleFetchedWorkflowRecord:(id)record identifier:(id)identifier recordChangeTag:(id)tag modificationDate:(id)date error:(id *)error;
 - (id)invisibleWorkflows;
 - (id)latestLibrary;
 - (id)latestLibraryIdentifier;
 - (id)latestRunEvent;
 - (id)latestWorkflowSiriRunEvent;
 - (id)libraryDotRepresentation;
-- (id)logRunOfWorkflow:(id)a3 atDate:(id)a4 withIdentifier:(id)a5 source:(id)a6 triggerID:(id)a7;
-- (id)logRunOfWorkflow:(id)a3 withSource:(id)a4 triggerID:(id)a5;
-- (id)migrateAccountStateToAppOriginIfNecessary:(id)a3 reference:(id)a4 actionUUID:(id)a5;
-- (id)missingErrorForDescriptor:(id)a3;
+- (id)logRunOfWorkflow:(id)workflow atDate:(id)date withIdentifier:(id)identifier source:(id)source triggerID:(id)d;
+- (id)logRunOfWorkflow:(id)workflow withSource:(id)source triggerID:(id)d;
+- (id)migrateAccountStateToAppOriginIfNecessary:(id)necessary reference:(id)reference actionUUID:(id)d;
+- (id)missingErrorForDescriptor:(id)descriptor;
 - (id)mostRunOrLatestImportedVisibleShortcut;
-- (id)objectOfClass:(Class)a3 withIdentifier:(id)a4 forKey:(id)a5 createIfNecessary:(BOOL)a6 properties:(id)a7;
-- (id)performDatabaseLookupForState:(id)a3 actionUUID:(id)a4 reference:(id)a5;
-- (id)performOperationWithReason:(id)a3 block:(id)a4 error:(id *)a5;
-- (id)performSaveOperationWithReason:(id)a3 block:(id)a4 error:(id *)a5;
-- (id)performSuggestionsOperationWithBlock:(id)a3 error:(id *)a4;
-- (id)reasonsForConflictWithLocalWorkflow:(id)a3 remoteWorkflow:(id)a4;
+- (id)objectOfClass:(Class)class withIdentifier:(id)identifier forKey:(id)key createIfNecessary:(BOOL)necessary properties:(id)properties;
+- (id)performDatabaseLookupForState:(id)state actionUUID:(id)d reference:(id)reference;
+- (id)performOperationWithReason:(id)reason block:(id)block error:(id *)error;
+- (id)performSaveOperationWithReason:(id)reason block:(id)block error:(id *)error;
+- (id)performSuggestionsOperationWithBlock:(id)block error:(id *)error;
+- (id)reasonsForConflictWithLocalWorkflow:(id)workflow remoteWorkflow:(id)remoteWorkflow;
 - (id)recentlyModifiedShortcuts;
-- (id)recentlyRunShortcutsWithLimit:(int64_t)a3;
-- (id)recordWithDescriptor:(id)a3 properties:(id)a4 error:(id *)a5;
-- (id)referenceForWorkflowID:(id)a3 includingTombstones:(BOOL)a4;
-- (id)renameReference:(id)a3 to:(id)a4 error:(id *)a5;
+- (id)recentlyRunShortcutsWithLimit:(int64_t)limit;
+- (id)recordWithDescriptor:(id)descriptor properties:(id)properties error:(id *)error;
+- (id)referenceForWorkflowID:(id)d includingTombstones:(BOOL)tombstones;
+- (id)renameReference:(id)reference to:(id)to error:(id *)error;
 - (id)runnableSortedTriggerEvents;
-- (id)saveAutoShortcutsPreferencesForAppDescriptor:(id)a3 update:(id)a4 error:(id *)a5;
-- (id)serializedParametersForIdentifier:(id)a3 error:(id *)a4;
-- (id)shortcutSuggestionsForAllAppsWithLimit:(unint64_t)a3 shortcutAvailability:(unint64_t)a4 error:(id *)a5;
-- (id)shortcutSuggestionsForAppWithBundleIdentifier:(id)a3 shortcutAvailability:(unint64_t)a4 error:(id *)a5;
+- (id)saveAutoShortcutsPreferencesForAppDescriptor:(id)descriptor update:(id)update error:(id *)error;
+- (id)serializedParametersForIdentifier:(id)identifier error:(id *)error;
+- (id)shortcutSuggestionsForAllAppsWithLimit:(unint64_t)limit shortcutAvailability:(unint64_t)availability error:(id *)error;
+- (id)shortcutSuggestionsForAppWithBundleIdentifier:(id)identifier shortcutAvailability:(unint64_t)availability error:(id *)error;
 - (id)shortcutsWithOutOfSyncWalrusStatus;
-- (id)smartPromptStatesForReference:(id)a3 actionUUID:(id)a4;
-- (id)sortedRunEventsForTriggerID:(id)a3;
-- (id)sortedRunEventsWithSource:(id)a3 startDate:(id)a4 endDate:(id)a5;
+- (id)smartPromptStatesForReference:(id)reference actionUUID:(id)d;
+- (id)sortedRunEventsForTriggerID:(id)d;
+- (id)sortedRunEventsWithSource:(id)source startDate:(id)date endDate:(id)endDate;
 - (id)sortedVisibleAppAssociatedWorkflows;
 - (id)sortedVisibleFolders;
-- (id)sortedVisibleWorkflowsByLastRunOrModificationDateWithLimit:(int64_t)a3;
-- (id)sortedVisibleWorkflowsByNameWithLimit:(int64_t)a3;
-- (id)sortedVisibleWorkflowsInCollection:(id)a3;
-- (id)sortedVisibleWorkflowsNameContains:(id)a3 limit:(int64_t)a4;
-- (id)sortedVisibleWorkflowsWithAssociatedAppBundleIdentifier:(id)a3;
-- (id)sortedVisibleWorkflowsWithType:(id)a3;
-- (id)sortedWorkflowsWithQuery:(id)a3;
-- (id)storeTrackedFilesystemNodeWithIdentifier:(id)a3 bookmark:(id)a4 contents:(id)a5 triggers:(id)a6 isDirectory:(BOOL)a7 ignoringSubfolders:(BOOL)a8 error:(id *)a9;
-- (id)suggestedFolderNameForName:(id)a3;
-- (id)suggestedWorkflowNameForName:(id)a3;
+- (id)sortedVisibleWorkflowsByLastRunOrModificationDateWithLimit:(int64_t)limit;
+- (id)sortedVisibleWorkflowsByNameWithLimit:(int64_t)limit;
+- (id)sortedVisibleWorkflowsInCollection:(id)collection;
+- (id)sortedVisibleWorkflowsNameContains:(id)contains limit:(int64_t)limit;
+- (id)sortedVisibleWorkflowsWithAssociatedAppBundleIdentifier:(id)identifier;
+- (id)sortedVisibleWorkflowsWithType:(id)type;
+- (id)sortedWorkflowsWithQuery:(id)query;
+- (id)storeTrackedFilesystemNodeWithIdentifier:(id)identifier bookmark:(id)bookmark contents:(id)contents triggers:(id)triggers isDirectory:(BOOL)directory ignoringSubfolders:(BOOL)subfolders error:(id *)error;
+- (id)suggestedFolderNameForName:(id)name;
+- (id)suggestedWorkflowNameForName:(id)name;
 - (id)syncToken;
-- (id)trackedFilesystemNodeForIdentifier:(id)a3;
-- (id)trackedFilesystemNodeForTriggerIdentifier:(id)a3;
-- (id)trackedFilesystemNodeResultWithFetchRequest:(id)a3;
-- (id)triggerEventForIdentifier:(id)a3 error:(id *)a4;
-- (id)triggerEventsForTriggerIdentifier:(id)a3;
-- (id)triggerResultWithFetchRequest:(id)a3;
+- (id)trackedFilesystemNodeForIdentifier:(id)identifier;
+- (id)trackedFilesystemNodeForTriggerIdentifier:(id)identifier;
+- (id)trackedFilesystemNodeResultWithFetchRequest:(id)request;
+- (id)triggerEventForIdentifier:(id)identifier error:(id *)error;
+- (id)triggerEventsForTriggerIdentifier:(id)identifier;
+- (id)triggerResultWithFetchRequest:(id)request;
 - (id)triggerRunEventsInTheLastWeek;
-- (id)uniqueVisibleReferenceForWorkflowName:(id)a3;
-- (id)updateFolder:(id)a3 newName:(id)a4 newIcon:(unsigned __int16)a5 error:(id *)a6;
-- (id)validateFolderName:(id)a3 forCollection:(id)a4 error:(id *)a5;
-- (id)validateWorkflowName:(id)a3 forCreation:(BOOL)a4 overwriting:(BOOL)a5 error:(id *)a6;
-- (id)visibleCollectionForFolderName:(id)a3;
+- (id)uniqueVisibleReferenceForWorkflowName:(id)name;
+- (id)updateFolder:(id)folder newName:(id)name newIcon:(unsigned __int16)icon error:(id *)error;
+- (id)validateFolderName:(id)name forCollection:(id)collection error:(id *)error;
+- (id)validateWorkflowName:(id)name forCreation:(BOOL)creation overwriting:(BOOL)overwriting error:(id *)error;
+- (id)visibleCollectionForFolderName:(id)name;
 - (id)visiblePredicate;
-- (id)visibleReferencesForWorkflowIDs:(id)a3 sortBy:(unint64_t)a4 nameContaining:(id)a5 nameEqualing:(id)a6 hasAssociatedAppBundleIdentifier:(BOOL)a7 associatedAppBundleIdentifier:(id)a8 isRecentlyModified:(BOOL)a9 isRecentlyRun:(BOOL)a10 limitTo:(unint64_t)a11;
-- (id)visibleReferencesForWorkflowIDs:(id)a3 sortByKeys:(id)a4 nameContaining:(id)a5 nameEqualing:(id)a6 hasAssociatedAppBundleIdentifier:(BOOL)a7 associatedAppBundleIdentifier:(id)a8 isRecentlyModified:(BOOL)a9 isRecentlyRun:(BOOL)a10 limitTo:(unint64_t)a11;
-- (id)visibleReferencesForWorkflowName:(id)a3;
+- (id)visibleReferencesForWorkflowIDs:(id)ds sortBy:(unint64_t)by nameContaining:(id)containing nameEqualing:(id)equaling hasAssociatedAppBundleIdentifier:(BOOL)identifier associatedAppBundleIdentifier:(id)bundleIdentifier isRecentlyModified:(BOOL)modified isRecentlyRun:(BOOL)self0 limitTo:(unint64_t)self1;
+- (id)visibleReferencesForWorkflowIDs:(id)ds sortByKeys:(id)keys nameContaining:(id)containing nameEqualing:(id)equaling hasAssociatedAppBundleIdentifier:(BOOL)identifier associatedAppBundleIdentifier:(id)bundleIdentifier isRecentlyModified:(BOOL)modified isRecentlyRun:(BOOL)self0 limitTo:(unint64_t)self1;
+- (id)visibleReferencesForWorkflowName:(id)name;
 - (id)workflowIdentifiersUnexpectedlyMissingFromLibrary;
-- (id)workflowResultWithFetchRequest:(id)a3;
-- (id)workflowResultWithLibraryQuery:(id)a3;
-- (id)workflowSiriRunEventWithIdentifier:(id)a3;
-- (unint64_t)countForResult:(id)a3;
+- (id)workflowResultWithFetchRequest:(id)request;
+- (id)workflowResultWithLibraryQuery:(id)query;
+- (id)workflowSiriRunEventWithIdentifier:(id)identifier;
+- (unint64_t)countForResult:(id)result;
 - (unint64_t)countOfAllVisibleWorkflows;
 - (unint64_t)countOfWorkflowsInAFolder;
 - (unint64_t)libraryBlobSize;
-- (void)_deleteSmartPromptState:(id)a3 forReference:(id)a4;
-- (void)_deleteWorkflow:(id)a3 deleteConflict:(BOOL)a4;
-- (void)_saveSmartPromptStateData:(id)a3 actionUUID:(id)a4 forWorkflow:(id)a5;
-- (void)_updateDeletionAuthorizationsToMatchAuthorization:(id)a3 forWorkflow:(id)a4;
-- (void)_updateStatesToMatchSmartPromptState:(id)a3 forWorkflow:(id)a4;
-- (void)accessStorageForDescriptor:(id)a3 forWriting:(BOOL)a4 readingRecordProperties:(id)a5 usingBlock:(id)a6 withError:(id *)a7;
+- (void)_deleteSmartPromptState:(id)state forReference:(id)reference;
+- (void)_deleteWorkflow:(id)workflow deleteConflict:(BOOL)conflict;
+- (void)_saveSmartPromptStateData:(id)data actionUUID:(id)d forWorkflow:(id)workflow;
+- (void)_updateDeletionAuthorizationsToMatchAuthorization:(id)authorization forWorkflow:(id)workflow;
+- (void)_updateStatesToMatchSmartPromptState:(id)state forWorkflow:(id)workflow;
+- (void)accessStorageForDescriptor:(id)descriptor forWriting:(BOOL)writing readingRecordProperties:(id)properties usingBlock:(id)block withError:(id *)error;
 - (void)addActionCountsToShortcutsIfNecessary;
-- (void)addObjectObserver:(id)a3;
-- (void)addPendingDeletedDescriptor:(id)a3;
-- (void)addPendingInsertedDescriptor:(id)a3;
-- (void)addPendingUpdatedDescriptor:(id)a3;
+- (void)addObjectObserver:(id)observer;
+- (void)addPendingDeletedDescriptor:(id)descriptor;
+- (void)addPendingInsertedDescriptor:(id)descriptor;
+- (void)addPendingUpdatedDescriptor:(id)descriptor;
 - (void)addSpotlightSyncHashesToShortcutsIfNecessary;
 - (void)addSyncHashesToShortcutsIfNecessary;
-- (void)addWorkflowIdentifiersToLibraryRootCollection:(id)a3;
+- (void)addWorkflowIdentifiersToLibraryRootCollection:(id)collection;
 - (void)clearTombstonesAndSyncState;
-- (void)compactDeletionAuthorizationsIfNecessaryForWorkflowReference:(id)a3;
-- (void)createSmartPromptStatesForInsertedActions:(id)a3 forReference:(id)a4 completionHandler:(id)a5;
-- (void)deleteAllDeletionAuthorizationsForReference:(id)a3;
-- (void)deleteAllSmartPromptStateDataForReference:(id)a3;
-- (void)deleteDonationsForShortcutWithIdentifier:(id)a3;
-- (void)deleteShortcutSuggestionsFromApps:(id)a3;
-- (void)deleteSmartPromptState:(id)a3 forReference:(id)a4;
-- (void)deleteSmartPromptStatesForDeletedActionUUIDs:(id)a3 forReference:(id)a4;
+- (void)compactDeletionAuthorizationsIfNecessaryForWorkflowReference:(id)reference;
+- (void)createSmartPromptStatesForInsertedActions:(id)actions forReference:(id)reference completionHandler:(id)handler;
+- (void)deleteAllDeletionAuthorizationsForReference:(id)reference;
+- (void)deleteAllSmartPromptStateDataForReference:(id)reference;
+- (void)deleteDonationsForShortcutWithIdentifier:(id)identifier;
+- (void)deleteShortcutSuggestionsFromApps:(id)apps;
+- (void)deleteSmartPromptState:(id)state forReference:(id)reference;
+- (void)deleteSmartPromptStatesForDeletedActionUUIDs:(id)ds forReference:(id)reference;
 - (void)invalidateAllObjectsAndNotify;
 - (void)libraryDidChange;
 - (void)markTriggersAsRunAfterConfirmationIfNeeded;
-- (void)mergeChangesFrom:(id)a3 into:(id)a4;
-- (void)notifyResultsAboutChange:(id)a3;
-- (void)object:(id)a3 didUpdateProperties:(id)a4;
-- (void)objectWasCreated:(id)a3 identifier:(id)a4;
-- (void)performTransactionWithReason:(id)a3 block:(id)a4 error:(id *)a5;
+- (void)mergeChangesFrom:(id)from into:(id)into;
+- (void)notifyResultsAboutChange:(id)change;
+- (void)object:(id)object didUpdateProperties:(id)properties;
+- (void)objectWasCreated:(id)created identifier:(id)identifier;
+- (void)performTransactionWithReason:(id)reason block:(id)block error:(id *)error;
 - (void)remoteChangeDebouncerDidFire;
-- (void)remoteContextDidSave:(id)a3;
-- (void)removeAllSerializedParametersForQueryName:(id)a3 error:(id *)a4;
-- (void)removeObjectObserver:(id)a3;
+- (void)remoteContextDidSave:(id)save;
+- (void)removeAllSerializedParametersForQueryName:(id)name error:(id *)error;
+- (void)removeObjectObserver:(id)observer;
 - (void)removePermissionsWithoutAssociatedShortcuts;
 - (void)removeRunEventsWithoutAssociatedShortcuts;
 - (void)saveLibraryToDatabase;
-- (void)saveOutputActionSmartPromtDataForWorkflowReference:(id)a3 error:(id *)a4;
-- (void)saveSmartPromptStatesForInsertedAction:(id)a3 contentDestination:(id)a4 reference:(id)a5;
+- (void)saveOutputActionSmartPromtDataForWorkflowReference:(id)reference error:(id *)error;
+- (void)saveSmartPromptStatesForInsertedAction:(id)action contentDestination:(id)destination reference:(id)reference;
 - (void)sendPendingChangeNotification;
-- (void)setConfirmedForTriggerEventWithIdentifier:(id)a3 error:(id *)a4;
-- (void)setOutcome:(int64_t)a3 forRunEvent:(id)a4;
-- (void)setPausedForTriggerEventWithIdentifier:(id)a3 paused:(BOOL)a4 error:(id *)a5;
-- (void)setSyncToken:(id)a3;
-- (void)setTrustedToRunScripts:(BOOL)a3 forReference:(id)a4 onDomain:(id)a5;
-- (void)storeSerializedParameters:(id)a3 forIdentifier:(id)a4 queryName:(id)a5 badgeType:(unint64_t)a6 error:(id *)a7;
-- (void)updateAppDescriptor:(id)a3 atKey:(id)a4 actionUUID:(id)a5 actionIndex:(id)a6 actionIdentifier:(id)a7 workflowID:(id)a8;
-- (void)updateLibraryWithNewWorkflowID:(id)a3 adjacentToExistingWorkflowID:(id)a4;
-- (void)updateSyncTokenWithBlock:(id)a3;
+- (void)setConfirmedForTriggerEventWithIdentifier:(id)identifier error:(id *)error;
+- (void)setOutcome:(int64_t)outcome forRunEvent:(id)event;
+- (void)setPausedForTriggerEventWithIdentifier:(id)identifier paused:(BOOL)paused error:(id *)error;
+- (void)setSyncToken:(id)token;
+- (void)setTrustedToRunScripts:(BOOL)scripts forReference:(id)reference onDomain:(id)domain;
+- (void)storeSerializedParameters:(id)parameters forIdentifier:(id)identifier queryName:(id)name badgeType:(unint64_t)type error:(id *)error;
+- (void)updateAppDescriptor:(id)descriptor atKey:(id)key actionUUID:(id)d actionIndex:(id)index actionIdentifier:(id)identifier workflowID:(id)iD;
+- (void)updateLibraryWithNewWorkflowID:(id)d adjacentToExistingWorkflowID:(id)iD;
+- (void)updateSyncTokenWithBlock:(id)block;
 - (void)updateWalrusStatus;
-- (void)writeCapsuleDataAndUpdatedSyncHashToCoreDataLibrary:(id)a3;
+- (void)writeCapsuleDataAndUpdatedSyncHashToCoreDataLibrary:(id)library;
 @end
 
 @implementation WFDatabase
 
 - (void)clearTombstonesAndSyncState
 {
-  v3 = [(WFDatabase *)self context];
+  context = [(WFDatabase *)self context];
   v6 = 0;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __47__WFDatabase_Sync__clearTombstonesAndSyncState__block_invoke;
   v7[3] = &unk_1E837F978;
   v7[4] = self;
-  v8 = v3;
-  v4 = v3;
+  v8 = context;
+  v4 = context;
   [(WFDatabase *)self performTransactionWithReason:@"clear tombstones and sync state" block:v7 error:&v6];
   v5 = v6;
 }
@@ -988,7 +988,7 @@ void __49__WFDatabase_addSyncHashesToShortcutsIfNecessary__block_invoke(uint64_t
   v6 = v3;
   v29 = 5;
   v25 = v6;
-  v26 = self;
+  selfCopy = self;
   v27 = &v34;
   v28 = &v30;
   v23 = 0;
@@ -1002,7 +1002,7 @@ void __49__WFDatabase_addSyncHashesToShortcutsIfNecessary__block_invoke(uint64_t
     v17[3] = &unk_1E8377B10;
     v22 = 5;
     v18 = v6;
-    v19 = self;
+    selfCopy2 = self;
     v20 = &v34;
     v21 = &v30;
     v16 = v7;
@@ -1088,8 +1088,8 @@ LABEL_13:
 {
   v12[2] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696AB28];
-  v4 = [(WFDatabase *)self tombstonedShortcutsPredicate];
-  v5 = [v3 notPredicateWithSubpredicate:v4];
+  tombstonedShortcutsPredicate = [(WFDatabase *)self tombstonedShortcutsPredicate];
+  v5 = [v3 notPredicateWithSubpredicate:tombstonedShortcutsPredicate];
 
   if (![(WFDatabase *)self mergeAutomationsAndShortcuts])
   {
@@ -1110,8 +1110,8 @@ LABEL_13:
 
 - (BOOL)mergeAutomationsAndShortcuts
 {
-  v2 = [MEMORY[0x1E695E000] systemShortcutsUserDefaults];
-  v3 = [v2 BOOLForKey:@"WFAutomationsMergeEnabled"];
+  systemShortcutsUserDefaults = [MEMORY[0x1E695E000] systemShortcutsUserDefaults];
+  v3 = [systemShortcutsUserDefaults BOOLForKey:@"WFAutomationsMergeEnabled"];
 
   return v3;
 }
@@ -1259,7 +1259,7 @@ id __60__WFDatabase_TipKit__mostRunOrLatestImportedVisibleShortcut__block_invoke
 
 - (id)allCollectionIdentifiersForSync
 {
-  v2 = self;
+  selfCopy = self;
   WFDatabase.allCollectionIdentifiersForSync()();
 
   v3 = sub_1CA94C648();
@@ -1267,12 +1267,12 @@ id __60__WFDatabase_TipKit__mostRunOrLatestImportedVisibleShortcut__block_invoke
   return v3;
 }
 
-- (BOOL)handleFetchedFolderRecordWithIdentifier:(id)a3 name:(id)a4 icon:(unsigned __int16)a5 encryptedSchemaVersion:(int64_t)a6 cloudKitMetadata:(id)a7 error:(id *)a8
+- (BOOL)handleFetchedFolderRecordWithIdentifier:(id)identifier name:(id)name icon:(unsigned __int16)icon encryptedSchemaVersion:(int64_t)version cloudKitMetadata:(id)metadata error:(id *)error
 {
   sub_1CA94C3A8();
   sub_1CA94C3A8();
-  v10 = a7;
-  v11 = self;
+  metadataCopy = metadata;
+  selfCopy = self;
   v12 = sub_1CA948C08();
   v14 = v13;
 
@@ -1282,13 +1282,13 @@ id __60__WFDatabase_TipKit__mostRunOrLatestImportedVisibleShortcut__block_invoke
   return 1;
 }
 
-- (BOOL)handleFetchedOrderingRecordWithIdentifier:(id)a3 shortcuts:(id)a4 folders:(id)a5 cloudKitMetadata:(id)a6 error:(id *)a7
+- (BOOL)handleFetchedOrderingRecordWithIdentifier:(id)identifier shortcuts:(id)shortcuts folders:(id)folders cloudKitMetadata:(id)metadata error:(id *)error
 {
   sub_1CA94C3A8();
   sub_1CA94C658();
   sub_1CA94C658();
-  v9 = a6;
-  v10 = self;
+  metadataCopy = metadata;
+  selfCopy = self;
   v11 = sub_1CA948C08();
   v13 = v12;
 
@@ -1298,23 +1298,23 @@ id __60__WFDatabase_TipKit__mostRunOrLatestImportedVisibleShortcut__block_invoke
   return 1;
 }
 
-- (BOOL)handleDeletedFolderRecordWithIdentifier:(id)a3 error:(id *)a4
+- (BOOL)handleDeletedFolderRecordWithIdentifier:(id)identifier error:(id *)error
 {
   v6 = sub_1CA94C3A8();
   v8 = v7;
-  v9 = self;
+  selfCopy = self;
   v10._countAndFlagsBits = v6;
   v10._object = v8;
   WFDatabase.handleDeletedFolderRecord(withIdentifier:)(v10);
 
   if (v11)
   {
-    if (a4)
+    if (error)
     {
       v12 = sub_1CA948AC8();
 
       v13 = v12;
-      *a4 = v12;
+      *error = v12;
     }
 
     else
@@ -1327,7 +1327,7 @@ id __60__WFDatabase_TipKit__mostRunOrLatestImportedVisibleShortcut__block_invoke
 
 - (id)debugLegacyFolderSyncState
 {
-  v2 = self;
+  selfCopy = self;
   WFDatabase.debugLegacyFolderSyncState()();
 
   v3 = sub_1CA94C368();
@@ -1337,7 +1337,7 @@ id __60__WFDatabase_TipKit__mostRunOrLatestImportedVisibleShortcut__block_invoke
 
 - (id)allWorkflowIdentifiersForSync
 {
-  v2 = self;
+  selfCopy = self;
   WFDatabase.allWorkflowIdentifiersForSync()();
 
   v3 = sub_1CA94C648();
@@ -1345,11 +1345,11 @@ id __60__WFDatabase_TipKit__mostRunOrLatestImportedVisibleShortcut__block_invoke
   return v3;
 }
 
-- (id)handleFetchedWorkflowRecord:(id)a3 identifier:(id)a4 recordChangeTag:(id)a5 modificationDate:(id)a6 error:(id *)a7
+- (id)handleFetchedWorkflowRecord:(id)record identifier:(id)identifier recordChangeTag:(id)tag modificationDate:(id)date error:(id *)error
 {
-  v28 = a7;
+  errorCopy = error;
   sub_1CA94C3A8();
-  if (a5)
+  if (tag)
   {
     sub_1CA94C3A8();
   }
@@ -1361,20 +1361,20 @@ id __60__WFDatabase_TipKit__mostRunOrLatestImportedVisibleShortcut__block_invoke
   v14 = v26 - v13;
   v15 = sub_1CA948CB8();
   v16 = v15;
-  if (a6)
+  if (date)
   {
     v26[1] = v26;
-    v27 = self;
-    v17 = a3;
+    selfCopy = self;
+    recordCopy = record;
     v18 = *(v15 - 8);
     v19 = *(v18 + 64);
     MEMORY[0x1EEE9AC00](v15);
     v21 = v26 - ((v20 + 15) & 0xFFFFFFFFFFFFFFF0);
     sub_1CA948C78();
     (*(v18 + 32))(v14, v21, v16);
-    a3 = v17;
+    record = recordCopy;
     __swift_storeEnumTagSinglePayload(v14, 0, 1, v16);
-    self = v27;
+    self = selfCopy;
   }
 
   else
@@ -1382,39 +1382,39 @@ id __60__WFDatabase_TipKit__mostRunOrLatestImportedVisibleShortcut__block_invoke
     __swift_storeEnumTagSinglePayload(v14, 1, 1, v15);
   }
 
-  v22 = a3;
-  v23 = self;
+  recordCopy2 = record;
+  selfCopy2 = self;
   v24 = WFDatabase.handleFetchedWorkflowRecord(_:identifier:recordChangeTag:modificationDate:)();
   sub_1CA633484(v14);
 
   return v24;
 }
 
-- (id)reasonsForConflictWithLocalWorkflow:(id)a3 remoteWorkflow:(id)a4
+- (id)reasonsForConflictWithLocalWorkflow:(id)workflow remoteWorkflow:(id)remoteWorkflow
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1CA68DBC0(v6, v7);
+  workflowCopy = workflow;
+  remoteWorkflowCopy = remoteWorkflow;
+  selfCopy = self;
+  sub_1CA68DBC0(workflowCopy, remoteWorkflowCopy);
 
   v9 = sub_1CA94C648();
 
   return v9;
 }
 
-- (void)mergeChangesFrom:(id)a3 into:(id)a4
+- (void)mergeChangesFrom:(id)from into:(id)into
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1CA68DEF0(v6, v7);
+  fromCopy = from;
+  intoCopy = into;
+  selfCopy = self;
+  sub_1CA68DEF0(fromCopy, intoCopy);
 }
 
-- (BOOL)handleUploadedWorkflowRecordWithIdentifier:(id)a3 cloudKitMetadata:(id)a4 syncHash:(int64_t)a5 encryptedSchemaVersion:(int64_t)a6 error:(id *)a7
+- (BOOL)handleUploadedWorkflowRecordWithIdentifier:(id)identifier cloudKitMetadata:(id)metadata syncHash:(int64_t)hash encryptedSchemaVersion:(int64_t)version error:(id *)error
 {
   sub_1CA94C3A8();
-  v9 = a4;
-  v10 = self;
+  metadataCopy = metadata;
+  selfCopy = self;
   v11 = sub_1CA948C08();
   v13 = v12;
 
@@ -1424,22 +1424,22 @@ id __60__WFDatabase_TipKit__mostRunOrLatestImportedVisibleShortcut__block_invoke
   return 1;
 }
 
-- (BOOL)setCloudKitMetadata:(id)a3 forWorkflowRecordWithIdentifier:(id)a4 error:(id *)a5
+- (BOOL)setCloudKitMetadata:(id)metadata forWorkflowRecordWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
-  if (a3)
+  metadataCopy = metadata;
+  if (metadata)
   {
-    v8 = a4;
-    v9 = self;
-    v10 = v6;
-    v6 = sub_1CA948C08();
+    identifierCopy = identifier;
+    selfCopy = self;
+    v10 = metadataCopy;
+    metadataCopy = sub_1CA948C08();
     v12 = v11;
   }
 
   else
   {
-    v13 = a4;
-    v14 = self;
+    identifierCopy2 = identifier;
+    selfCopy2 = self;
     v12 = 0xF000000000000000;
   }
 
@@ -1447,29 +1447,29 @@ id __60__WFDatabase_TipKit__mostRunOrLatestImportedVisibleShortcut__block_invoke
 
   WFDatabase.setCloudKitMetadata(_:forWorkflowRecordWithIdentifier:)();
 
-  sub_1CA39F318(v6, v12);
+  sub_1CA39F318(metadataCopy, v12);
   return 1;
 }
 
-- (id)desiredSyncOperationForWorkflow:(id)a3
+- (id)desiredSyncOperationForWorkflow:(id)workflow
 {
   sub_1CA94C3A8();
-  v4 = self;
+  selfCopy = self;
   v5 = WFDatabase.desiredSyncOperation(forWorkflow:)();
 
   return v5;
 }
 
-- (void)addWorkflowIdentifiersToLibraryRootCollection:(id)a3
+- (void)addWorkflowIdentifiersToLibraryRootCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __69__WFDatabase_Library__addWorkflowIdentifiersToLibraryRootCollection___block_invoke;
   v6[3] = &unk_1E837F978;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = collectionCopy;
+  v5 = collectionCopy;
   [(WFDatabase *)self performTransactionWithReason:@"add workflow ids to root collection" block:v6 error:0];
 }
 
@@ -1568,9 +1568,9 @@ id __72__WFDatabase_Library__workflowIdentifiersUnexpectedlyMissingFromLibrary__
   v5[3] = &unk_1E837F248;
   v5[4] = self;
   v2 = [(WFDatabase *)self performOperationWithReason:@"get library blob size" block:v5 error:0];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 id __38__WFDatabase_Library__libraryBlobSize__block_invoke(uint64_t a1)
@@ -1610,29 +1610,29 @@ id __47__WFDatabase_Library__libraryDotRepresentation__block_invoke(uint64_t a1)
 
 - (id)latestLibraryIdentifier
 {
-  v2 = [(WFDatabase *)self latestLibrary];
-  v3 = [v2 identifier];
+  latestLibrary = [(WFDatabase *)self latestLibrary];
+  identifier = [latestLibrary identifier];
 
-  return v3;
+  return identifier;
 }
 
-- (BOOL)isReference:(id)a3 allowedToRunOnDomain:(id)a4
+- (BOOL)isReference:(id)reference allowedToRunOnDomain:(id)domain
 {
-  v6 = a3;
-  v7 = a4;
+  referenceCopy = reference;
+  domainCopy = domain;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __64__WFDatabase_AccessResources__isReference_allowedToRunOnDomain___block_invoke;
   v13[3] = &unk_1E8373BF8;
-  v14 = v7;
-  v15 = v6;
-  v16 = self;
-  v8 = v6;
-  v9 = v7;
+  v14 = domainCopy;
+  v15 = referenceCopy;
+  selfCopy = self;
+  v8 = referenceCopy;
+  v9 = domainCopy;
   v10 = [(WFDatabase *)self performOperationWithReason:@"getting domain trust" block:v13 error:0];
-  v11 = [v10 BOOLValue];
+  bOOLValue = [v10 BOOLValue];
 
-  return v11;
+  return bOOLValue;
 }
 
 id __64__WFDatabase_AccessResources__isReference_allowedToRunOnDomain___block_invoke(id *a1, uint64_t a2)
@@ -1654,21 +1654,21 @@ id __64__WFDatabase_AccessResources__isReference_allowedToRunOnDomain___block_in
   return v12;
 }
 
-- (void)setTrustedToRunScripts:(BOOL)a3 forReference:(id)a4 onDomain:(id)a5
+- (void)setTrustedToRunScripts:(BOOL)scripts forReference:(id)reference onDomain:(id)domain
 {
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  referenceCopy = reference;
+  domainCopy = domain;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __76__WFDatabase_AccessResources__setTrustedToRunScripts_forReference_onDomain___block_invoke;
   v17[3] = &unk_1E8373BD0;
   v17[4] = self;
-  v10 = v8;
+  v10 = referenceCopy;
   v18 = v10;
-  v11 = v9;
+  v11 = domainCopy;
   v19 = v11;
-  v20 = a3;
+  scriptsCopy = scripts;
   v16 = 0;
   [(WFDatabase *)self performTransactionWithReason:@"set domain trust" block:v17 error:&v16];
   v12 = v16;
@@ -1677,11 +1677,11 @@ id __64__WFDatabase_AccessResources__isReference_allowedToRunOnDomain___block_in
     v13 = getWFDatabaseLogObject();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v14 = [v12 localizedDescription];
+      localizedDescription = [v12 localizedDescription];
       *buf = 136315394;
       v22 = "[WFDatabase(AccessResources) setTrustedToRunScripts:forReference:onDomain:]";
       v23 = 2112;
-      v24 = v14;
+      v24 = localizedDescription;
       _os_log_impl(&dword_1CA256000, v13, OS_LOG_TYPE_ERROR, "%s Unable to update trusted run scripts: %@", buf, 0x16u);
     }
   }
@@ -1859,16 +1859,16 @@ id __48__WFDatabase_TipKit__latestWorkflowSiriRunEvent__block_invoke(uint64_t a1
   return v16;
 }
 
-- (id)workflowSiriRunEventWithIdentifier:(id)a3
+- (id)workflowSiriRunEventWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __57__WFDatabase_TipKit__workflowSiriRunEventWithIdentifier___block_invoke;
   v8[3] = &unk_1E83741F0;
-  v9 = v4;
-  v10 = self;
-  v5 = v4;
+  v9 = identifierCopy;
+  selfCopy = self;
+  v5 = identifierCopy;
   v6 = [(WFDatabase *)self performOperationWithReason:@"getting siri run event by id" block:v8 error:0];
 
   return v6;
@@ -1938,12 +1938,12 @@ uint64_t __60__WFDatabase_TipKit__mostRunOrLatestImportedVisibleShortcut__block_
   return v11;
 }
 
-- (id)trackedFilesystemNodeResultWithFetchRequest:(id)a3
+- (id)trackedFilesystemNodeResultWithFetchRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = [WFCoreDataDatabaseResult alloc];
   v6 = [MEMORY[0x1E695DFD8] setWithObject:@"triggers"];
-  v7 = [(WFCoreDataDatabaseResult *)v5 initWithDatabase:self fetchRequest:v4 relationshipKeysAffectingDescriptors:v6];
+  v7 = [(WFCoreDataDatabaseResult *)v5 initWithDatabase:self fetchRequest:requestCopy relationshipKeysAffectingDescriptors:v6];
 
   return v7;
 }
@@ -1959,18 +1959,18 @@ uint64_t __60__WFDatabase_TipKit__mostRunOrLatestImportedVisibleShortcut__block_
   return v5;
 }
 
-- (id)trackedFilesystemNodeForTriggerIdentifier:(id)a3
+- (id)trackedFilesystemNodeForTriggerIdentifier:(id)identifier
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(WFDatabase *)self allTrackedFilesystemNodes];
-  v6 = [v5 descriptors];
+  identifierCopy = identifier;
+  allTrackedFilesystemNodes = [(WFDatabase *)self allTrackedFilesystemNodes];
+  descriptors = [allTrackedFilesystemNodes descriptors];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = v6;
+  v7 = descriptors;
   v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
@@ -1985,8 +1985,8 @@ uint64_t __60__WFDatabase_TipKit__mostRunOrLatestImportedVisibleShortcut__block_
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v11 listeningTriggers];
-        v13 = [v12 containsObject:v4];
+        listeningTriggers = [v11 listeningTriggers];
+        v13 = [listeningTriggers containsObject:identifierCopy];
 
         if (v13)
         {
@@ -2012,28 +2012,28 @@ LABEL_11:
   return v8;
 }
 
-- (id)storeTrackedFilesystemNodeWithIdentifier:(id)a3 bookmark:(id)a4 contents:(id)a5 triggers:(id)a6 isDirectory:(BOOL)a7 ignoringSubfolders:(BOOL)a8 error:(id *)a9
+- (id)storeTrackedFilesystemNodeWithIdentifier:(id)identifier bookmark:(id)bookmark contents:(id)contents triggers:(id)triggers isDirectory:(BOOL)directory ignoringSubfolders:(BOOL)subfolders error:(id *)error
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
+  identifierCopy = identifier;
+  bookmarkCopy = bookmark;
+  contentsCopy = contents;
+  triggersCopy = triggers;
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __142__WFDatabase_TrackedFilesystemNode__storeTrackedFilesystemNodeWithIdentifier_bookmark_contents_triggers_isDirectory_ignoringSubfolders_error___block_invoke;
   v25[3] = &unk_1E83757B0;
   v25[4] = self;
-  v26 = v15;
-  v30 = a7;
-  v31 = a8;
-  v27 = v16;
-  v28 = v17;
-  v29 = v18;
-  v19 = v18;
-  v20 = v17;
-  v21 = v16;
-  v22 = v15;
-  v23 = [(WFDatabase *)self performSaveOperationWithReason:@"creating tracked filesystem node" block:v25 error:a9];
+  v26 = identifierCopy;
+  directoryCopy = directory;
+  subfoldersCopy = subfolders;
+  v27 = bookmarkCopy;
+  v28 = contentsCopy;
+  v29 = triggersCopy;
+  v19 = triggersCopy;
+  v20 = contentsCopy;
+  v21 = bookmarkCopy;
+  v22 = identifierCopy;
+  v23 = [(WFDatabase *)self performSaveOperationWithReason:@"creating tracked filesystem node" block:v25 error:error];
 
   return v23;
 }
@@ -2104,10 +2104,10 @@ WFTrackedFilesystemNode *__142__WFDatabase_TrackedFilesystemNode__storeTrackedFi
   return v17;
 }
 
-- (id)trackedFilesystemNodeForIdentifier:(id)a3
+- (id)trackedFilesystemNodeForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E69E0A68]) initWithIdentifier:v4 objectType:11];
+  identifierCopy = identifier;
+  v5 = [objc_alloc(MEMORY[0x1E69E0A68]) initWithIdentifier:identifierCopy objectType:11];
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
@@ -2134,12 +2134,12 @@ void __72__WFDatabase_TrackedFilesystemNode__trackedFilesystemNodeForIdentifier_
   *(v4 + 40) = v3;
 }
 
-- (BOOL)saveContextOrRollback:(id)a3 error:(id *)a4
+- (BOOL)saveContextOrRollback:(id)rollback error:(id *)error
 {
-  v5 = a3;
-  if ([v5 hasChanges] && (objc_msgSend(v5, "save:", a4) & 1) == 0)
+  rollbackCopy = rollback;
+  if ([rollbackCopy hasChanges] && (objc_msgSend(rollbackCopy, "save:", error) & 1) == 0)
   {
-    [v5 rollback];
+    [rollbackCopy rollback];
     v6 = 0;
   }
 
@@ -2151,9 +2151,9 @@ void __72__WFDatabase_TrackedFilesystemNode__trackedFilesystemNodeForIdentifier_
   return v6;
 }
 
-- (id)performSuggestionsOperationWithBlock:(id)a3 error:(id *)a4
+- (id)performSuggestionsOperationWithBlock:(id)block error:(id *)error
 {
-  v6 = a3;
+  blockCopy = block;
   v7 = os_transaction_create();
   v22 = 0;
   v23 = &v22;
@@ -2167,20 +2167,20 @@ void __72__WFDatabase_TrackedFilesystemNode__trackedFilesystemNodeForIdentifier_
   v19 = __Block_byref_object_copy__18089;
   v20 = __Block_byref_object_dispose__18090;
   v21 = 0;
-  v8 = [(WFDatabase *)self suggestionsContext];
+  suggestionsContext = [(WFDatabase *)self suggestionsContext];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __78__WFDatabase_ShortcutSuggestions__performSuggestionsOperationWithBlock_error___block_invoke;
   v12[3] = &unk_1E8376248;
   v14 = &v22;
-  v9 = v6;
+  v9 = blockCopy;
   v13 = v9;
   v15 = &v16;
-  [v8 performBlockAndWait:v12];
+  [suggestionsContext performBlockAndWait:v12];
 
-  if (a4)
+  if (error)
   {
-    *a4 = v17[5];
+    *error = v17[5];
   }
 
   v10 = v23[5];
@@ -2206,24 +2206,24 @@ void __78__WFDatabase_ShortcutSuggestions__performSuggestionsOperationWithBlock_
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)deleteShortcutSuggestionsFromApps:(id)a3
+- (void)deleteShortcutSuggestionsFromApps:(id)apps
 {
-  v5 = a3;
-  if (!v5)
+  appsCopy = apps;
+  if (!appsCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"WFDatabase+ShortcutSuggestions.m" lineNumber:190 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifiers"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFDatabase+ShortcutSuggestions.m" lineNumber:190 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifiers"}];
   }
 
-  v6 = [(WFDatabase *)self suggestionsContext];
+  suggestionsContext = [(WFDatabase *)self suggestionsContext];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __69__WFDatabase_ShortcutSuggestions__deleteShortcutSuggestionsFromApps___block_invoke;
   v9[3] = &unk_1E837F870;
-  v10 = v5;
-  v11 = self;
-  v7 = v5;
-  [v6 performBlockAndWait:v9];
+  v10 = appsCopy;
+  selfCopy = self;
+  v7 = appsCopy;
+  [suggestionsContext performBlockAndWait:v9];
 }
 
 void __69__WFDatabase_ShortcutSuggestions__deleteShortcutSuggestionsFromApps___block_invoke(uint64_t a1)
@@ -2275,16 +2275,16 @@ void __69__WFDatabase_ShortcutSuggestions__deleteShortcutSuggestionsFromApps___b
   return v6;
 }
 
-- (id)shortcutSuggestionsForAllAppsWithLimit:(unint64_t)a3 shortcutAvailability:(unint64_t)a4 error:(id *)a5
+- (id)shortcutSuggestionsForAllAppsWithLimit:(unint64_t)limit shortcutAvailability:(unint64_t)availability error:(id *)error
 {
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __101__WFDatabase_ShortcutSuggestions__shortcutSuggestionsForAllAppsWithLimit_shortcutAvailability_error___block_invoke;
   v7[3] = &unk_1E8376220;
   v7[4] = self;
-  v7[5] = a4;
-  v7[6] = a3;
-  v5 = [(WFDatabase *)self performSuggestionsOperationWithBlock:v7 error:a5];
+  v7[5] = availability;
+  v7[6] = limit;
+  v5 = [(WFDatabase *)self performSuggestionsOperationWithBlock:v7 error:error];
 
   return v5;
 }
@@ -2386,24 +2386,24 @@ id __101__WFDatabase_ShortcutSuggestions__shortcutSuggestionsForAllAppsWithLimit
   return v29;
 }
 
-- (id)shortcutSuggestionsForAppWithBundleIdentifier:(id)a3 shortcutAvailability:(unint64_t)a4 error:(id *)a5
+- (id)shortcutSuggestionsForAppWithBundleIdentifier:(id)identifier shortcutAvailability:(unint64_t)availability error:(id *)error
 {
-  v9 = a3;
-  if (!v9)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"WFDatabase+ShortcutSuggestions.m" lineNumber:103 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFDatabase+ShortcutSuggestions.m" lineNumber:103 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier"}];
   }
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __108__WFDatabase_ShortcutSuggestions__shortcutSuggestionsForAppWithBundleIdentifier_shortcutAvailability_error___block_invoke;
   v14[3] = &unk_1E83761F8;
-  v16 = self;
-  v17 = a4;
-  v15 = v9;
-  v10 = v9;
-  v11 = [(WFDatabase *)self performSuggestionsOperationWithBlock:v14 error:a5];
+  selfCopy = self;
+  availabilityCopy = availability;
+  v15 = identifierCopy;
+  v10 = identifierCopy;
+  v11 = [(WFDatabase *)self performSuggestionsOperationWithBlock:v14 error:error];
 
   return v11;
 }
@@ -2480,14 +2480,14 @@ id __108__WFDatabase_ShortcutSuggestions__shortcutSuggestionsForAppWithBundleIde
   return v15;
 }
 
-- (BOOL)setShortcutSuggestions:(id)a3 forAppWithBundleIdentifier:(id)a4 error:(id *)a5
+- (BOOL)setShortcutSuggestions:(id)suggestions forAppWithBundleIdentifier:(id)identifier error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (v9)
+  suggestionsCopy = suggestions;
+  identifierCopy = identifier;
+  v11 = identifierCopy;
+  if (suggestionsCopy)
   {
-    if (v10)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
@@ -2495,8 +2495,8 @@ id __108__WFDatabase_ShortcutSuggestions__shortcutSuggestionsForAppWithBundleIde
 
   else
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"WFDatabase+ShortcutSuggestions.m" lineNumber:72 description:{@"Invalid parameter not satisfying: %@", @"shortcutSuggestions"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFDatabase+ShortcutSuggestions.m" lineNumber:72 description:{@"Invalid parameter not satisfying: %@", @"shortcutSuggestions"}];
 
     if (v11)
     {
@@ -2504,11 +2504,11 @@ id __108__WFDatabase_ShortcutSuggestions__shortcutSuggestionsForAppWithBundleIde
     }
   }
 
-  v17 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v17 handleFailureInMethod:a2 object:self file:@"WFDatabase+ShortcutSuggestions.m" lineNumber:73 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFDatabase+ShortcutSuggestions.m" lineNumber:73 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier"}];
 
 LABEL_3:
-  v12 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v9 requiringSecureCoding:1 error:a5];
+  v12 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:suggestionsCopy requiringSecureCoding:1 error:error];
   if (v12)
   {
     v23[0] = 0;
@@ -2520,7 +2520,7 @@ LABEL_3:
     v22[2] = __91__WFDatabase_ShortcutSuggestions__setShortcutSuggestions_forAppWithBundleIdentifier_error___block_invoke;
     v22[3] = &unk_1E8376188;
     v22[4] = v23;
-    [v9 enumerateObjectsUsingBlock:v22];
+    [suggestionsCopy enumerateObjectsUsingBlock:v22];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __91__WFDatabase_ShortcutSuggestions__setShortcutSuggestions_forAppWithBundleIdentifier_error___block_invoke_2;
@@ -2529,18 +2529,18 @@ LABEL_3:
     v19 = v11;
     v20 = v12;
     v21 = v23;
-    v13 = [(WFDatabase *)self performSuggestionsOperationWithBlock:v18 error:a5];
-    v14 = [v13 BOOLValue];
+    v13 = [(WFDatabase *)self performSuggestionsOperationWithBlock:v18 error:error];
+    bOOLValue = [v13 BOOLValue];
 
     _Block_object_dispose(v23, 8);
   }
 
   else
   {
-    v14 = 0;
+    bOOLValue = 0;
   }
 
-  return v14;
+  return bOOLValue;
 }
 
 uint64_t __91__WFDatabase_ShortcutSuggestions__setShortcutSuggestions_forAppWithBundleIdentifier_error___block_invoke(uint64_t a1, void *a2)
@@ -2573,10 +2573,10 @@ id __91__WFDatabase_ShortcutSuggestions__setShortcutSuggestions_forAppWithBundle
 
 - (BOOL)coherenceSyncEnabled
 {
-  v2 = [(WFDatabase *)self syncToken];
-  v3 = [v2 coherenceSyncEnabled];
+  syncToken = [(WFDatabase *)self syncToken];
+  coherenceSyncEnabled = [syncToken coherenceSyncEnabled];
 
-  return v3;
+  return coherenceSyncEnabled;
 }
 
 void __38__WFDatabase_Sync__updateWalrusStatus__block_invoke_231(uint64_t a1, uint64_t a2)
@@ -2742,7 +2742,7 @@ void __38__WFDatabase_Sync__updateWalrusStatus__block_invoke_231(uint64_t a1, ui
   v33 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_syncTokenWithError:(id *)a3
+- (id)_syncTokenWithError:(id *)error
 {
   v14[1] = *MEMORY[0x1E69E9840];
   v5 = +[WFCoreDataCloudKitSyncToken fetchRequest];
@@ -2755,25 +2755,25 @@ void __38__WFDatabase_Sync__updateWalrusStatus__block_invoke_231(uint64_t a1, ui
   [v5 setSortDescriptors:v8];
 
   [v5 setFetchLimit:1];
-  v9 = [(WFDatabase *)self context];
-  v10 = [v9 executeFetchRequest:v5 error:a3];
+  context = [(WFDatabase *)self context];
+  v10 = [context executeFetchRequest:v5 error:error];
 
-  v11 = [v10 firstObject];
+  firstObject = [v10 firstObject];
 
   v12 = *MEMORY[0x1E69E9840];
 
-  return v11;
+  return firstObject;
 }
 
-- (void)updateSyncTokenWithBlock:(id)a3
+- (void)updateSyncTokenWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(WFDatabase *)self syncToken];
-  v6 = [v5 newTokenWithCopiedPayload];
-  v7 = v6;
-  if (v6)
+  blockCopy = block;
+  syncToken = [(WFDatabase *)self syncToken];
+  newTokenWithCopiedPayload = [syncToken newTokenWithCopiedPayload];
+  v7 = newTokenWithCopiedPayload;
+  if (newTokenWithCopiedPayload)
   {
-    v8 = v6;
+    v8 = newTokenWithCopiedPayload;
   }
 
   else
@@ -2783,7 +2783,7 @@ void __38__WFDatabase_Sync__updateWalrusStatus__block_invoke_231(uint64_t a1, ui
 
   v9 = v8;
 
-  v4[2](v4, v9);
+  blockCopy[2](blockCopy, v9);
   [(WFDatabase *)self setSyncToken:v9];
 }
 
@@ -2815,16 +2815,16 @@ WFCloudKitSyncToken *__29__WFDatabase_Sync__syncToken__block_invoke(uint64_t a1,
   return v3;
 }
 
-- (void)setSyncToken:(id)a3
+- (void)setSyncToken:(id)token
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  tokenCopy = token;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __33__WFDatabase_Sync__setSyncToken___block_invoke;
   v11[3] = &unk_1E837F978;
   v11[4] = self;
-  v5 = v4;
+  v5 = tokenCopy;
   v12 = v5;
   v10 = 0;
   [(WFDatabase *)self performTransactionWithReason:@"set sync token" block:v11 error:&v10];
@@ -2834,11 +2834,11 @@ WFCloudKitSyncToken *__29__WFDatabase_Sync__syncToken__block_invoke(uint64_t a1,
     v7 = getWFDatabaseLogObject();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v8 = [v6 localizedDescription];
+      localizedDescription = [v6 localizedDescription];
       *buf = 136315394;
       v14 = "[WFDatabase(Sync) setSyncToken:]";
       v15 = 2112;
-      v16 = v8;
+      v16 = localizedDescription;
       _os_log_impl(&dword_1CA256000, v7, OS_LOG_TYPE_ERROR, "%s Unable to set sync token: %@", buf, 0x16u);
     }
   }
@@ -2879,17 +2879,17 @@ void __33__WFDatabase_Sync__setSyncToken___block_invoke(uint64_t a1, uint64_t a2
   }
 }
 
-- (BOOL)deleteAutoShortcutsPreferencesForIdentifier:(id)a3 error:(id *)a4
+- (BOOL)deleteAutoShortcutsPreferencesForIdentifier:(id)identifier error:(id *)error
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = getWFDatabaseLogObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v15 = "[WFDatabase(AutoShortcutsPreferences) deleteAutoShortcutsPreferencesForIdentifier:error:]";
     v16 = 2114;
-    v17 = v6;
+    v17 = identifierCopy;
     _os_log_impl(&dword_1CA256000, v7, OS_LOG_TYPE_INFO, "%s Deleting auto shortcut preferences with identifier: %{public}@", buf, 0x16u);
   }
 
@@ -2898,12 +2898,12 @@ void __33__WFDatabase_Sync__setSyncToken___block_invoke(uint64_t a1, uint64_t a2
   v12[2] = __90__WFDatabase_AutoShortcutsPreferences__deleteAutoShortcutsPreferencesForIdentifier_error___block_invoke;
   v12[3] = &unk_1E8377E30;
   v12[4] = self;
-  v13 = v6;
-  v8 = v6;
-  v9 = [(WFDatabase *)self performSaveOperationWithReason:@"deleting auto shortcut preferences by id" block:v12 error:a4];
+  v13 = identifierCopy;
+  v8 = identifierCopy;
+  v9 = [(WFDatabase *)self performSaveOperationWithReason:@"deleting auto shortcut preferences by id" block:v12 error:error];
 
   v10 = *MEMORY[0x1E69E9840];
-  return a4 == 0;
+  return error == 0;
 }
 
 uint64_t __90__WFDatabase_AutoShortcutsPreferences__deleteAutoShortcutsPreferencesForIdentifier_error___block_invoke(uint64_t a1, uint64_t a2)
@@ -2922,10 +2922,10 @@ uint64_t __90__WFDatabase_AutoShortcutsPreferences__deleteAutoShortcutsPreferenc
   return 0;
 }
 
-- (BOOL)mergeAutoShortcutsPreferencesWithNewPreferences:(id)a3 error:(id *)a4
+- (BOOL)mergeAutoShortcutsPreferencesWithNewPreferences:(id)preferences error:(id *)error
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  preferencesCopy = preferences;
   v7 = getWFDatabaseLogObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -2934,28 +2934,28 @@ uint64_t __90__WFDatabase_AutoShortcutsPreferences__deleteAutoShortcutsPreferenc
     _os_log_impl(&dword_1CA256000, v7, OS_LOG_TYPE_INFO, "%s Merging local auto shortcuts preferences with new preferences", buf, 0xCu);
   }
 
-  v8 = [v6 appDescriptor];
-  if (v8)
+  appDescriptor = [preferencesCopy appDescriptor];
+  if (appDescriptor)
   {
-    v9 = [v6 appDescriptor];
+    appDescriptor2 = [preferencesCopy appDescriptor];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __94__WFDatabase_AutoShortcutsPreferences__mergeAutoShortcutsPreferencesWithNewPreferences_error___block_invoke;
     v14[3] = &unk_1E8377E08;
-    v15 = v6;
-    v16 = a4;
-    v10 = [(WFDatabase *)self saveAutoShortcutsPreferencesForAppDescriptor:v9 update:v14 error:a4];
+    v15 = preferencesCopy;
+    errorCopy = error;
+    v10 = [(WFDatabase *)self saveAutoShortcutsPreferencesForAppDescriptor:appDescriptor2 update:v14 error:error];
     v11 = v10 != 0;
   }
 
   else
   {
-    v9 = getWFDatabaseLogObject();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    appDescriptor2 = getWFDatabaseLogObject();
+    if (os_log_type_enabled(appDescriptor2, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315138;
       v18 = "[WFDatabase(AutoShortcutsPreferences) mergeAutoShortcutsPreferencesWithNewPreferences:error:]";
-      _os_log_impl(&dword_1CA256000, v9, OS_LOG_TYPE_ERROR, "%s Attempting to merge auto shortcuts preferences but app descriptor is nil; skipping merge", buf, 0xCu);
+      _os_log_impl(&dword_1CA256000, appDescriptor2, OS_LOG_TYPE_ERROR, "%s Attempting to merge auto shortcuts preferences but app descriptor is nil; skipping merge", buf, 0xCu);
     }
 
     v11 = 0;
@@ -3037,10 +3037,10 @@ void __94__WFDatabase_AutoShortcutsPreferences__mergeAutoShortcutsPreferencesWit
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)updateAutoShortcutsPreferencesWithNewPreferences:(id)a3 error:(id *)a4
+- (BOOL)updateAutoShortcutsPreferencesWithNewPreferences:(id)preferences error:(id *)error
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  preferencesCopy = preferences;
   v7 = getWFDatabaseLogObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -3049,28 +3049,28 @@ void __94__WFDatabase_AutoShortcutsPreferences__mergeAutoShortcutsPreferencesWit
     _os_log_impl(&dword_1CA256000, v7, OS_LOG_TYPE_INFO, "%s Updating local auto shortcuts preferences with new preferences", buf, 0xCu);
   }
 
-  v8 = [v6 appDescriptor];
-  if (v8)
+  appDescriptor = [preferencesCopy appDescriptor];
+  if (appDescriptor)
   {
-    v9 = [v6 appDescriptor];
+    appDescriptor2 = [preferencesCopy appDescriptor];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __95__WFDatabase_AutoShortcutsPreferences__updateAutoShortcutsPreferencesWithNewPreferences_error___block_invoke;
     v14[3] = &unk_1E8377E08;
-    v15 = v6;
-    v16 = a4;
-    v10 = [(WFDatabase *)self saveAutoShortcutsPreferencesForAppDescriptor:v9 update:v14 error:a4];
+    v15 = preferencesCopy;
+    errorCopy = error;
+    v10 = [(WFDatabase *)self saveAutoShortcutsPreferencesForAppDescriptor:appDescriptor2 update:v14 error:error];
     v11 = v10 != 0;
   }
 
   else
   {
-    v9 = getWFDatabaseLogObject();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    appDescriptor2 = getWFDatabaseLogObject();
+    if (os_log_type_enabled(appDescriptor2, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315138;
       v18 = "[WFDatabase(AutoShortcutsPreferences) updateAutoShortcutsPreferencesWithNewPreferences:error:]";
-      _os_log_impl(&dword_1CA256000, v9, OS_LOG_TYPE_ERROR, "%s Attempting to update auto shortcuts preferences but app descriptor is nil; skipping update", buf, 0xCu);
+      _os_log_impl(&dword_1CA256000, appDescriptor2, OS_LOG_TYPE_ERROR, "%s Attempting to update auto shortcuts preferences but app descriptor is nil; skipping update", buf, 0xCu);
     }
 
     v11 = 0;
@@ -3119,26 +3119,26 @@ void __95__WFDatabase_AutoShortcutsPreferences__updateAutoShortcutsPreferencesWi
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (id)defaultCoreDataAutoShortcutsPreferencesForAppDescriptor:(id)a3 error:(id *)a4
+- (id)defaultCoreDataAutoShortcutsPreferencesForAppDescriptor:(id)descriptor error:(id *)error
 {
-  v6 = a3;
-  v7 = [WFAutoShortcutsPreferences defaultSettingsForAppDescriptor:v6];
+  descriptorCopy = descriptor;
+  v7 = [WFAutoShortcutsPreferences defaultSettingsForAppDescriptor:descriptorCopy];
   v8 = [WFCoreDataAutoShortcutsPreferences alloc];
-  v9 = [(WFDatabase *)self context];
-  v10 = [(WFCoreDataAutoShortcutsPreferences *)v8 initWithContext:v9];
+  context = [(WFDatabase *)self context];
+  v10 = [(WFCoreDataAutoShortcutsPreferences *)v8 initWithContext:context];
 
-  v11 = [WFDatabase identifierForAppDescriptor:v6];
+  v11 = [WFDatabase identifierForAppDescriptor:descriptorCopy];
 
   [(WFCoreDataAutoShortcutsPreferences *)v10 setIdentifier:v11];
-  v12 = [v7 appDescriptor];
-  v13 = [WFDatabase dataFromObject:v12 error:a4];
+  appDescriptor = [v7 appDescriptor];
+  v13 = [WFDatabase dataFromObject:appDescriptor error:error];
   [(WFCoreDataAutoShortcutsPreferences *)v10 setAppDescriptor:v13];
 
-  v14 = [v7 appName];
-  [(WFCoreDataAutoShortcutsPreferences *)v10 setAppName:v14];
+  appName = [v7 appName];
+  [(WFCoreDataAutoShortcutsPreferences *)v10 setAppName:appName];
 
-  v15 = [v7 disabledAutoShortcuts];
-  v16 = [WFDatabase dataFromObject:v15 error:a4];
+  disabledAutoShortcuts = [v7 disabledAutoShortcuts];
+  v16 = [WFDatabase dataFromObject:disabledAutoShortcuts error:error];
   [(WFCoreDataAutoShortcutsPreferences *)v10 setDisabledAutoShortcuts:v16];
 
   -[WFCoreDataAutoShortcutsPreferences setSiriEnabled:](v10, "setSiriEnabled:", [v7 isSiriEnabled]);
@@ -3147,14 +3147,14 @@ void __95__WFDatabase_AutoShortcutsPreferences__updateAutoShortcutsPreferencesWi
   return v10;
 }
 
-- (id)saveAutoShortcutsPreferencesForAppDescriptor:(id)a3 update:(id)a4 error:(id *)a5
+- (id)saveAutoShortcutsPreferencesForAppDescriptor:(id)descriptor update:(id)update error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  if (!v9)
+  descriptorCopy = descriptor;
+  updateCopy = update;
+  if (!descriptorCopy)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"WFDatabase+AutoShortcutsPreferences.m" lineNumber:210 description:{@"Invalid parameter not satisfying: %@", @"appDescriptor"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFDatabase+AutoShortcutsPreferences.m" lineNumber:210 description:{@"Invalid parameter not satisfying: %@", @"appDescriptor"}];
   }
 
   v16[0] = MEMORY[0x1E69E9820];
@@ -3162,11 +3162,11 @@ void __95__WFDatabase_AutoShortcutsPreferences__updateAutoShortcutsPreferencesWi
   v16[2] = __98__WFDatabase_AutoShortcutsPreferences__saveAutoShortcutsPreferencesForAppDescriptor_update_error___block_invoke;
   v16[3] = &unk_1E8377DE0;
   v16[4] = self;
-  v17 = v9;
-  v18 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = [(WFDatabase *)self performSaveOperationWithReason:@"saving auto shortcut preferences for app" block:v16 error:a5];
+  v17 = descriptorCopy;
+  v18 = updateCopy;
+  v11 = updateCopy;
+  v12 = descriptorCopy;
+  v13 = [(WFDatabase *)self performSaveOperationWithReason:@"saving auto shortcut preferences for app" block:v16 error:error];
 
   return v13;
 }
@@ -3199,11 +3199,11 @@ id __98__WFDatabase_AutoShortcutsPreferences__saveAutoShortcutsPreferencesForApp
   return v6;
 }
 
-- (BOOL)setAutoShortcutDisabledForAppDescriptor:(id)a3 autoShortcutDisabled:(BOOL)a4 autoShortcutIdentifier:(id)a5 error:(id *)a6
+- (BOOL)setAutoShortcutDisabledForAppDescriptor:(id)descriptor autoShortcutDisabled:(BOOL)disabled autoShortcutIdentifier:(id)identifier error:(id *)error
 {
   v24 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
+  descriptorCopy = descriptor;
+  identifierCopy = identifier;
   v12 = getWFDatabaseLogObject();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
@@ -3212,16 +3212,16 @@ id __98__WFDatabase_AutoShortcutsPreferences__saveAutoShortcutsPreferencesForApp
     _os_log_impl(&dword_1CA256000, v12, OS_LOG_TYPE_INFO, "%s Setting disabled auto shortcuts", buf, 0xCu);
   }
 
-  if (v10)
+  if (descriptorCopy)
   {
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __130__WFDatabase_AutoShortcutsPreferences__setAutoShortcutDisabledForAppDescriptor_autoShortcutDisabled_autoShortcutIdentifier_error___block_invoke;
     v18[3] = &unk_1E8377DB8;
-    v21 = a4;
-    v19 = v11;
-    v20 = a6;
-    v13 = [(WFDatabase *)self saveAutoShortcutsPreferencesForAppDescriptor:v10 update:v18 error:a6];
+    disabledCopy = disabled;
+    v19 = identifierCopy;
+    errorCopy = error;
+    v13 = [(WFDatabase *)self saveAutoShortcutsPreferencesForAppDescriptor:descriptorCopy update:v18 error:error];
     v14 = v13 != 0;
 
     v15 = v19;
@@ -3269,13 +3269,13 @@ void __130__WFDatabase_AutoShortcutsPreferences__setAutoShortcutDisabledForAppDe
   [v3 setDisabledAutoShortcuts:v9];
 }
 
-- (BOOL)isAutoShortcutDisabledForBundleIdentifier:(id)a3 autoShortcutIdentifier:(id)a4
+- (BOOL)isAutoShortcutDisabledForBundleIdentifier:(id)identifier autoShortcutIdentifier:(id)shortcutIdentifier
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [WFAutoShortcutsPreferences appDescriptorWithBundleIdentifier:a3];
+  shortcutIdentifierCopy = shortcutIdentifier;
+  v7 = [WFAutoShortcutsPreferences appDescriptorWithBundleIdentifier:identifier];
   v13 = 0;
-  v8 = [(WFDatabase *)self isAutoShortcutDisabledForAppDescriptor:v7 autoShortcutIdentifier:v6 error:&v13];
+  v8 = [(WFDatabase *)self isAutoShortcutDisabledForAppDescriptor:v7 autoShortcutIdentifier:shortcutIdentifierCopy error:&v13];
 
   v9 = v13;
   if (v9)
@@ -3297,29 +3297,29 @@ void __130__WFDatabase_AutoShortcutsPreferences__setAutoShortcutDisabledForAppDe
   return v8;
 }
 
-- (BOOL)isAutoShortcutDisabledForBundleIdentifier:(id)a3 autoShortcutIdentifier:(id)a4 error:(id *)a5
+- (BOOL)isAutoShortcutDisabledForBundleIdentifier:(id)identifier autoShortcutIdentifier:(id)shortcutIdentifier error:(id *)error
 {
-  v8 = a4;
-  v9 = [WFAutoShortcutsPreferences appDescriptorWithBundleIdentifier:a3];
-  LOBYTE(a5) = [(WFDatabase *)self isAutoShortcutDisabledForAppDescriptor:v9 autoShortcutIdentifier:v8 error:a5];
+  shortcutIdentifierCopy = shortcutIdentifier;
+  v9 = [WFAutoShortcutsPreferences appDescriptorWithBundleIdentifier:identifier];
+  LOBYTE(error) = [(WFDatabase *)self isAutoShortcutDisabledForAppDescriptor:v9 autoShortcutIdentifier:shortcutIdentifierCopy error:error];
 
-  return a5;
+  return error;
 }
 
-- (BOOL)isAutoShortcutDisabledForAppDescriptor:(id)a3 autoShortcutIdentifier:(id)a4 error:(id *)a5
+- (BOOL)isAutoShortcutDisabledForAppDescriptor:(id)descriptor autoShortcutIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a4;
-  v9 = [(WFDatabase *)self autoShortcutsPreferencesForAppDescriptor:a3 error:a5];
-  v10 = [v9 disabledAutoShortcuts];
-  LOBYTE(self) = [v10 containsObject:v8];
+  identifierCopy = identifier;
+  v9 = [(WFDatabase *)self autoShortcutsPreferencesForAppDescriptor:descriptor error:error];
+  disabledAutoShortcuts = [v9 disabledAutoShortcuts];
+  LOBYTE(self) = [disabledAutoShortcuts containsObject:identifierCopy];
 
   return self;
 }
 
-- (BOOL)setSpotlightAutoShortcutsEnablement:(BOOL)a3 forAppDescriptor:(id)a4 error:(id *)a5
+- (BOOL)setSpotlightAutoShortcutsEnablement:(BOOL)enablement forAppDescriptor:(id)descriptor error:(id *)error
 {
   v18 = *MEMORY[0x1E69E9840];
-  v8 = a4;
+  descriptorCopy = descriptor;
   v9 = getWFDatabaseLogObject();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -3328,14 +3328,14 @@ void __130__WFDatabase_AutoShortcutsPreferences__setAutoShortcutDisabledForAppDe
     _os_log_impl(&dword_1CA256000, v9, OS_LOG_TYPE_INFO, "%s Setting Spotlight auto shortcuts enablement", buf, 0xCu);
   }
 
-  if (v8)
+  if (descriptorCopy)
   {
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __99__WFDatabase_AutoShortcutsPreferences__setSpotlightAutoShortcutsEnablement_forAppDescriptor_error___block_invoke;
     v14[3] = &__block_descriptor_33_e44_v16__0__WFCoreDataAutoShortcutsPreferences_8l;
-    v15 = a3;
-    v10 = [(WFDatabase *)self saveAutoShortcutsPreferencesForAppDescriptor:v8 update:v14 error:a5];
+    enablementCopy = enablement;
+    v10 = [(WFDatabase *)self saveAutoShortcutsPreferencesForAppDescriptor:descriptorCopy update:v14 error:error];
     v11 = v10 != 0;
   }
 
@@ -3356,11 +3356,11 @@ void __130__WFDatabase_AutoShortcutsPreferences__setAutoShortcutDisabledForAppDe
   return v11;
 }
 
-- (BOOL)isSpotlightEnabledForAutoShortcutsWithBundleIdentifier:(id)a3
+- (BOOL)isSpotlightEnabledForAutoShortcutsWithBundleIdentifier:(id)identifier
 {
   v13 = *MEMORY[0x1E69E9840];
   v8 = 0;
-  v3 = [(WFDatabase *)self isSpotlightEnabledForAutoShortcutsWithBundleIdentifier:a3 error:&v8];
+  v3 = [(WFDatabase *)self isSpotlightEnabledForAutoShortcutsWithBundleIdentifier:identifier error:&v8];
   v4 = v8;
   if (v4)
   {
@@ -3379,26 +3379,26 @@ void __130__WFDatabase_AutoShortcutsPreferences__setAutoShortcutDisabledForAppDe
   return v3;
 }
 
-- (BOOL)isSpotlightEnabledForAutoShortcutsWithBundleIdentifier:(id)a3 error:(id *)a4
+- (BOOL)isSpotlightEnabledForAutoShortcutsWithBundleIdentifier:(id)identifier error:(id *)error
 {
-  v6 = [WFAutoShortcutsPreferences appDescriptorWithBundleIdentifier:a3];
-  LOBYTE(a4) = [(WFDatabase *)self isSpotlightEnabledForAutoShortcutsWithAppDescriptor:v6 error:a4];
+  v6 = [WFAutoShortcutsPreferences appDescriptorWithBundleIdentifier:identifier];
+  LOBYTE(error) = [(WFDatabase *)self isSpotlightEnabledForAutoShortcutsWithAppDescriptor:v6 error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)isSpotlightEnabledForAutoShortcutsWithAppDescriptor:(id)a3 error:(id *)a4
+- (BOOL)isSpotlightEnabledForAutoShortcutsWithAppDescriptor:(id)descriptor error:(id *)error
 {
-  v4 = [(WFDatabase *)self autoShortcutsPreferencesForAppDescriptor:a3 error:a4];
-  v5 = [v4 isSpotlightEnabled];
+  v4 = [(WFDatabase *)self autoShortcutsPreferencesForAppDescriptor:descriptor error:error];
+  isSpotlightEnabled = [v4 isSpotlightEnabled];
 
-  return v5;
+  return isSpotlightEnabled;
 }
 
-- (BOOL)setSiriAutoShortcutsEnablement:(BOOL)a3 forAppDescriptor:(id)a4 error:(id *)a5
+- (BOOL)setSiriAutoShortcutsEnablement:(BOOL)enablement forAppDescriptor:(id)descriptor error:(id *)error
 {
   v18 = *MEMORY[0x1E69E9840];
-  v8 = a4;
+  descriptorCopy = descriptor;
   v9 = getWFDatabaseLogObject();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -3407,14 +3407,14 @@ void __130__WFDatabase_AutoShortcutsPreferences__setAutoShortcutDisabledForAppDe
     _os_log_impl(&dword_1CA256000, v9, OS_LOG_TYPE_INFO, "%s Setting Siri auto shortcuts enablement", buf, 0xCu);
   }
 
-  if (v8)
+  if (descriptorCopy)
   {
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __94__WFDatabase_AutoShortcutsPreferences__setSiriAutoShortcutsEnablement_forAppDescriptor_error___block_invoke;
     v14[3] = &__block_descriptor_33_e44_v16__0__WFCoreDataAutoShortcutsPreferences_8l;
-    v15 = a3;
-    v10 = [(WFDatabase *)self saveAutoShortcutsPreferencesForAppDescriptor:v8 update:v14 error:a5];
+    enablementCopy = enablement;
+    v10 = [(WFDatabase *)self saveAutoShortcutsPreferencesForAppDescriptor:descriptorCopy update:v14 error:error];
     v11 = v10 != 0;
   }
 
@@ -3435,11 +3435,11 @@ void __130__WFDatabase_AutoShortcutsPreferences__setAutoShortcutDisabledForAppDe
   return v11;
 }
 
-- (BOOL)isSiriEnabledForAutoShortcutsWithBundleIdentifier:(id)a3
+- (BOOL)isSiriEnabledForAutoShortcutsWithBundleIdentifier:(id)identifier
 {
   v13 = *MEMORY[0x1E69E9840];
   v8 = 0;
-  v3 = [(WFDatabase *)self isSiriEnabledForAutoShortcutsWithBundleIdentifier:a3 error:&v8];
+  v3 = [(WFDatabase *)self isSiriEnabledForAutoShortcutsWithBundleIdentifier:identifier error:&v8];
   v4 = v8;
   if (v4)
   {
@@ -3458,72 +3458,72 @@ void __130__WFDatabase_AutoShortcutsPreferences__setAutoShortcutDisabledForAppDe
   return v3;
 }
 
-- (BOOL)isSiriEnabledForAutoShortcutsWithBundleIdentifier:(id)a3 error:(id *)a4
+- (BOOL)isSiriEnabledForAutoShortcutsWithBundleIdentifier:(id)identifier error:(id *)error
 {
-  v6 = [WFAutoShortcutsPreferences appDescriptorWithBundleIdentifier:a3];
-  LOBYTE(a4) = [(WFDatabase *)self isSiriEnabledForAutoShortcutsWithAppDescriptor:v6 error:a4];
+  v6 = [WFAutoShortcutsPreferences appDescriptorWithBundleIdentifier:identifier];
+  LOBYTE(error) = [(WFDatabase *)self isSiriEnabledForAutoShortcutsWithAppDescriptor:v6 error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)isSiriEnabledForAutoShortcutsWithAppDescriptor:(id)a3 error:(id *)a4
+- (BOOL)isSiriEnabledForAutoShortcutsWithAppDescriptor:(id)descriptor error:(id *)error
 {
-  v4 = [(WFDatabase *)self autoShortcutsPreferencesForAppDescriptor:a3 error:a4];
-  v5 = [v4 isSiriEnabled];
+  v4 = [(WFDatabase *)self autoShortcutsPreferencesForAppDescriptor:descriptor error:error];
+  isSiriEnabled = [v4 isSiriEnabled];
 
-  return v5;
+  return isSiriEnabled;
 }
 
-- (id)coreDataAutoShortcutsPreferencesForIdentifier:(id)a3 error:(id *)a4
+- (id)coreDataAutoShortcutsPreferencesForIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = +[WFCoreDataAutoShortcutsPreferences fetchRequest];
-  v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"identifier", v6];
+  identifierCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"identifier", identifierCopy];
 
-  [v7 setPredicate:v8];
+  [v7 setPredicate:identifierCopy];
   [v7 setFetchLimit:1];
-  v9 = [(WFDatabase *)self context];
-  v10 = [v9 executeFetchRequest:v7 error:a4];
+  context = [(WFDatabase *)self context];
+  v10 = [context executeFetchRequest:v7 error:error];
 
-  v11 = [v10 firstObject];
+  firstObject = [v10 firstObject];
 
-  return v11;
+  return firstObject;
 }
 
-- (id)coreDataAutoShortcutsPreferencesForAppDescriptor:(id)a3 error:(id *)a4
+- (id)coreDataAutoShortcutsPreferencesForAppDescriptor:(id)descriptor error:(id *)error
 {
-  v6 = [WFDatabase identifierForAppDescriptor:a3];
-  v7 = [(WFDatabase *)self coreDataAutoShortcutsPreferencesForIdentifier:v6 error:a4];
+  v6 = [WFDatabase identifierForAppDescriptor:descriptor];
+  v7 = [(WFDatabase *)self coreDataAutoShortcutsPreferencesForIdentifier:v6 error:error];
 
   return v7;
 }
 
-- (id)autoShortcutsPreferencesForBundleIdentifier:(id)a3 error:(id *)a4
+- (id)autoShortcutsPreferencesForBundleIdentifier:(id)identifier error:(id *)error
 {
-  v6 = [WFAutoShortcutsPreferences appDescriptorWithBundleIdentifier:a3];
-  v7 = [(WFDatabase *)self autoShortcutsPreferencesForAppDescriptor:v6 error:a4];
+  v6 = [WFAutoShortcutsPreferences appDescriptorWithBundleIdentifier:identifier];
+  v7 = [(WFDatabase *)self autoShortcutsPreferencesForAppDescriptor:v6 error:error];
 
   return v7;
 }
 
-- (id)autoShortcutsPreferencesFromCoreDataAutoShortcutsPreferences:(id)a3
+- (id)autoShortcutsPreferencesFromCoreDataAutoShortcutsPreferences:(id)preferences
 {
-  if (a3)
+  if (preferences)
   {
-    v3 = a3;
-    v4 = [v3 appDescriptor];
-    v5 = [WFDatabase appDescriptorFromData:v4];
+    preferencesCopy = preferences;
+    appDescriptor = [preferencesCopy appDescriptor];
+    v5 = [WFDatabase appDescriptorFromData:appDescriptor];
 
-    v6 = [v3 disabledAutoShortcuts];
-    v7 = [WFDatabase disabledAutoShortcutsFromData:v6];
+    disabledAutoShortcuts = [preferencesCopy disabledAutoShortcuts];
+    v7 = [WFDatabase disabledAutoShortcutsFromData:disabledAutoShortcuts];
 
     v8 = [WFAutoShortcutsPreferences alloc];
-    v9 = [v3 siriEnabled];
-    v10 = [v3 spotlightEnabled];
-    v11 = [v3 cloudKitMetadata];
-    v12 = [v3 lastSyncedHash];
+    siriEnabled = [preferencesCopy siriEnabled];
+    spotlightEnabled = [preferencesCopy spotlightEnabled];
+    cloudKitMetadata = [preferencesCopy cloudKitMetadata];
+    lastSyncedHash = [preferencesCopy lastSyncedHash];
 
-    v13 = [(WFAutoShortcutsPreferences *)v8 initWithAppDescriptor:v5 isSiriEnabled:v9 isSpotlightEnabled:v10 disabledAutoShortcuts:v7 cloudKitMetadata:v11 lastSyncedHash:v12];
+    v13 = [(WFAutoShortcutsPreferences *)v8 initWithAppDescriptor:v5 isSiriEnabled:siriEnabled isSpotlightEnabled:spotlightEnabled disabledAutoShortcuts:v7 cloudKitMetadata:cloudKitMetadata lastSyncedHash:lastSyncedHash];
   }
 
   else
@@ -3534,17 +3534,17 @@ void __130__WFDatabase_AutoShortcutsPreferences__setAutoShortcutDisabledForAppDe
   return v13;
 }
 
-- (id)autoShortcutsPreferencesForIdentifier:(id)a3 error:(id *)a4
+- (id)autoShortcutsPreferencesForIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __84__WFDatabase_AutoShortcutsPreferences__autoShortcutsPreferencesForIdentifier_error___block_invoke;
   v10[3] = &unk_1E8377D70;
   v10[4] = self;
-  v11 = v6;
-  v7 = v6;
-  v8 = [(WFDatabase *)self performOperationWithReason:@"getting auto shortcut preferences for id" block:v10 error:a4];
+  v11 = identifierCopy;
+  v7 = identifierCopy;
+  v8 = [(WFDatabase *)self performOperationWithReason:@"getting auto shortcut preferences for id" block:v10 error:error];
 
   return v8;
 }
@@ -3557,17 +3557,17 @@ id __84__WFDatabase_AutoShortcutsPreferences__autoShortcutsPreferencesForIdentif
   return v4;
 }
 
-- (id)autoShortcutsPreferencesForAppDescriptor:(id)a3 error:(id *)a4
+- (id)autoShortcutsPreferencesForAppDescriptor:(id)descriptor error:(id *)error
 {
-  v6 = a3;
+  descriptorCopy = descriptor;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __87__WFDatabase_AutoShortcutsPreferences__autoShortcutsPreferencesForAppDescriptor_error___block_invoke;
   v10[3] = &unk_1E8377D70;
   v10[4] = self;
-  v11 = v6;
-  v7 = v6;
-  v8 = [(WFDatabase *)self performOperationWithReason:@"getting auto shortcut preferences for app" block:v10 error:a4];
+  v11 = descriptorCopy;
+  v7 = descriptorCopy;
+  v8 = [(WFDatabase *)self performOperationWithReason:@"getting auto shortcut preferences for app" block:v10 error:error];
 
   return v8;
 }
@@ -3589,10 +3589,10 @@ id __87__WFDatabase_AutoShortcutsPreferences__autoShortcutsPreferencesForAppDesc
   return v4;
 }
 
-+ (id)appDescriptorFromData:(id)a3
++ (id)appDescriptorFromData:(id)data
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dataCopy = data;
   v4 = getWFDatabaseLogObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
@@ -3601,10 +3601,10 @@ id __87__WFDatabase_AutoShortcutsPreferences__autoShortcutsPreferencesForAppDesc
     _os_log_impl(&dword_1CA256000, v4, OS_LOG_TYPE_INFO, "%s Unarchiving app descriptor for auto shortcuts preferences", buf, 0xCu);
   }
 
-  if (v3)
+  if (dataCopy)
   {
     v10 = 0;
-    v5 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:v3 error:&v10];
+    v5 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:dataCopy error:&v10];
     v6 = v10;
     if (v6)
     {
@@ -3638,10 +3638,10 @@ id __87__WFDatabase_AutoShortcutsPreferences__autoShortcutsPreferencesForAppDesc
   return v5;
 }
 
-+ (id)disabledAutoShortcutsFromData:(id)a3
++ (id)disabledAutoShortcutsFromData:(id)data
 {
   v32 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dataCopy = data;
   v4 = getWFDatabaseLogObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
@@ -3650,11 +3650,11 @@ id __87__WFDatabase_AutoShortcutsPreferences__autoShortcutsPreferencesForAppDesc
     _os_log_impl(&dword_1CA256000, v4, OS_LOG_TYPE_INFO, "%s Unarchiving disabled auto shortcuts", buf, 0xCu);
   }
 
-  if (v3)
+  if (dataCopy)
   {
     v5 = objc_opt_new();
     v27 = 0;
-    v6 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:v3 error:&v27];
+    v6 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:dataCopy error:&v27];
     v7 = v27;
     v8 = objc_alloc(MEMORY[0x1E695DFD8]);
     v9 = objc_opt_class();
@@ -3714,10 +3714,10 @@ id __87__WFDatabase_AutoShortcutsPreferences__autoShortcutsPreferencesForAppDesc
 
         v24 = MEMORY[0x1E695DFD8];
         v25 = v13;
-        v26 = [v25 allKeys];
-        v20 = [v24 setWithArray:v26];
+        allKeys = [v25 allKeys];
+        v20 = [v24 setWithArray:allKeys];
 
-        v5 = v26;
+        v5 = allKeys;
 LABEL_20:
 
         v5 = v20;
@@ -3760,30 +3760,30 @@ LABEL_22:
   return v18;
 }
 
-+ (id)identifierForAppDescriptor:(id)a3
++ (id)identifierForAppDescriptor:(id)descriptor
 {
-  v3 = [WFAutoShortcutsPreferences crossPlatformHashForAppDescriptor:a3];
+  v3 = [WFAutoShortcutsPreferences crossPlatformHashForAppDescriptor:descriptor];
   v4 = [MEMORY[0x1E696AD98] numberWithInt:v3];
-  v5 = [v4 stringValue];
+  stringValue = [v4 stringValue];
 
-  return v5;
+  return stringValue;
 }
 
-- (id)generateAndPersistUUIDForActionWithIdentifier:(id)a3 actionIndex:(unint64_t)a4 workflowIdentifier:(id)a5
+- (id)generateAndPersistUUIDForActionWithIdentifier:(id)identifier actionIndex:(unint64_t)index workflowIdentifier:(id)workflowIdentifier
 {
-  v8 = a3;
-  v9 = a5;
+  identifierCopy = identifier;
+  workflowIdentifierCopy = workflowIdentifier;
   v15 = 0;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __105__WFDatabase_SmartPrompts__generateAndPersistUUIDForActionWithIdentifier_actionIndex_workflowIdentifier___block_invoke;
   v16[3] = &unk_1E83780B8;
-  v17 = v9;
-  v18 = self;
-  v19 = v8;
-  v20 = a4;
-  v10 = v8;
-  v11 = v9;
+  v17 = workflowIdentifierCopy;
+  selfCopy = self;
+  v19 = identifierCopy;
+  indexCopy = index;
+  v10 = identifierCopy;
+  v11 = workflowIdentifierCopy;
   v12 = [(WFDatabase *)self performSaveOperationWithReason:@"generating UUID for action" block:v16 error:&v15];
   v13 = v15;
 
@@ -3927,16 +3927,16 @@ id __105__WFDatabase_SmartPrompts__generateAndPersistUUIDForActionWithIdentifier
   return v19;
 }
 
-- (void)deleteAllDeletionAuthorizationsForReference:(id)a3
+- (void)deleteAllDeletionAuthorizationsForReference:(id)reference
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  referenceCopy = reference;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __72__WFDatabase_SmartPrompts__deleteAllDeletionAuthorizationsForReference___block_invoke;
   v11[3] = &unk_1E837F978;
   v11[4] = self;
-  v5 = v4;
+  v5 = referenceCopy;
   v12 = v5;
   v10 = 0;
   [(WFDatabase *)self performTransactionWithReason:@"delete all deletion authorizations" block:v11 error:&v10];
@@ -3946,11 +3946,11 @@ id __105__WFDatabase_SmartPrompts__generateAndPersistUUIDForActionWithIdentifier
     v7 = getWFDatabaseLogObject();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v8 = [v6 localizedDescription];
+      localizedDescription = [v6 localizedDescription];
       *buf = 136315394;
       v14 = "[WFDatabase(SmartPrompts) deleteAllDeletionAuthorizationsForReference:]";
       v15 = 2112;
-      v16 = v8;
+      v16 = localizedDescription;
       _os_log_impl(&dword_1CA256000, v7, OS_LOG_TYPE_ERROR, "%s Unable to delete all per-workflow smart prompt data: %@", buf, 0x16u);
     }
   }
@@ -4026,16 +4026,16 @@ void __72__WFDatabase_SmartPrompts__deleteAllDeletionAuthorizationsForReference_
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)deleteAllSmartPromptStateDataForReference:(id)a3
+- (void)deleteAllSmartPromptStateDataForReference:(id)reference
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  referenceCopy = reference;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __70__WFDatabase_SmartPrompts__deleteAllSmartPromptStateDataForReference___block_invoke;
   v11[3] = &unk_1E837F978;
   v11[4] = self;
-  v5 = v4;
+  v5 = referenceCopy;
   v12 = v5;
   v10 = 0;
   [(WFDatabase *)self performTransactionWithReason:@"delete all smart prompt states" block:v11 error:&v10];
@@ -4045,11 +4045,11 @@ void __72__WFDatabase_SmartPrompts__deleteAllDeletionAuthorizationsForReference_
     v7 = getWFDatabaseLogObject();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v8 = [v6 localizedDescription];
+      localizedDescription = [v6 localizedDescription];
       *buf = 136315394;
       v14 = "[WFDatabase(SmartPrompts) deleteAllSmartPromptStateDataForReference:]";
       v15 = 2112;
-      v16 = v8;
+      v16 = localizedDescription;
       _os_log_impl(&dword_1CA256000, v7, OS_LOG_TYPE_ERROR, "%s Unable to delete all per-workflow smart prompt data: %@", buf, 0x16u);
     }
   }
@@ -4124,19 +4124,19 @@ void __70__WFDatabase_SmartPrompts__deleteAllSmartPromptStateDataForReference___
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)deleteSmartPromptStatesForDeletedActionUUIDs:(id)a3 forReference:(id)a4
+- (void)deleteSmartPromptStatesForDeletedActionUUIDs:(id)ds forReference:(id)reference
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  referenceCopy = reference;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __86__WFDatabase_SmartPrompts__deleteSmartPromptStatesForDeletedActionUUIDs_forReference___block_invoke;
   v15[3] = &unk_1E837F390;
   v15[4] = self;
-  v8 = v7;
+  v8 = referenceCopy;
   v16 = v8;
-  v9 = v6;
+  v9 = dsCopy;
   v17 = v9;
   v14 = 0;
   [(WFDatabase *)self performTransactionWithReason:@"delete smart prompt state for deleted actions" block:v15 error:&v14];
@@ -4146,11 +4146,11 @@ void __70__WFDatabase_SmartPrompts__deleteAllSmartPromptStateDataForReference___
     v11 = getWFDatabaseLogObject();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v12 = [v10 localizedDescription];
+      localizedDescription = [v10 localizedDescription];
       *buf = 136315394;
       v19 = "[WFDatabase(SmartPrompts) deleteSmartPromptStatesForDeletedActionUUIDs:forReference:]";
       v20 = 2112;
-      v21 = v12;
+      v21 = localizedDescription;
       _os_log_impl(&dword_1CA256000, v11, OS_LOG_TYPE_ERROR, "%s Unable to delete smart prompt data upon action deletion: %@", buf, 0x16u);
     }
   }
@@ -4229,18 +4229,18 @@ void __86__WFDatabase_SmartPrompts__deleteSmartPromptStatesForDeletedActionUUIDs
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_deleteSmartPromptState:(id)a3 forReference:(id)a4
+- (void)_deleteSmartPromptState:(id)state forReference:(id)reference
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v26 = a4;
+  stateCopy = state;
+  referenceCopy = reference;
   v7 = [WFDatabase objectForDescriptor:"objectForDescriptor:properties:" properties:?];
   v8 = objc_opt_class();
   v9 = WFEnforceClass_29244(v7, v8);
 
   v25 = v9;
-  v10 = [v9 smartPromptPermissions];
-  v11 = [v10 mutableCopy];
+  smartPromptPermissions = [v9 smartPromptPermissions];
+  v11 = [smartPromptPermissions mutableCopy];
   v12 = v11;
   if (v11)
   {
@@ -4274,13 +4274,13 @@ void __86__WFDatabase_SmartPrompts__deleteSmartPromptStatesForDeletedActionUUIDs
         }
 
         v20 = *(*(&v27 + 1) + 8 * i);
-        v21 = [v20 data];
-        v22 = [WFSmartPromptState stateFromDatabaseData:v21];
+        data = [v20 data];
+        v22 = [WFSmartPromptState stateFromDatabaseData:data];
 
-        if ([v22 matches:v6])
+        if ([v22 matches:stateCopy])
         {
-          v23 = [(WFDatabase *)self context];
-          [v23 deleteObject:v20];
+          context = [(WFDatabase *)self context];
+          [context deleteObject:v20];
         }
       }
 
@@ -4290,23 +4290,23 @@ void __86__WFDatabase_SmartPrompts__deleteSmartPromptStatesForDeletedActionUUIDs
     while (v17);
   }
 
-  [(WFDatabase *)self addPendingUpdatedDescriptor:v26];
+  [(WFDatabase *)self addPendingUpdatedDescriptor:referenceCopy];
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)deleteSmartPromptState:(id)a3 forReference:(id)a4
+- (void)deleteSmartPromptState:(id)state forReference:(id)reference
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  stateCopy = state;
+  referenceCopy = reference;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __64__WFDatabase_SmartPrompts__deleteSmartPromptState_forReference___block_invoke;
   v15[3] = &unk_1E837F390;
   v15[4] = self;
-  v8 = v6;
+  v8 = stateCopy;
   v16 = v8;
-  v9 = v7;
+  v9 = referenceCopy;
   v17 = v9;
   v14 = 0;
   [(WFDatabase *)self performTransactionWithReason:@"delete smart prompt state" block:v15 error:&v14];
@@ -4316,11 +4316,11 @@ void __86__WFDatabase_SmartPrompts__deleteSmartPromptStatesForDeletedActionUUIDs
     v11 = getWFDatabaseLogObject();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v12 = [v10 localizedDescription];
+      localizedDescription = [v10 localizedDescription];
       *buf = 136315394;
       v19 = "[WFDatabase(SmartPrompts) deleteSmartPromptState:forReference:]";
       v20 = 2112;
-      v21 = v12;
+      v21 = localizedDescription;
       _os_log_impl(&dword_1CA256000, v11, OS_LOG_TYPE_ERROR, "%s Unable to delete smart prompt state: %@", buf, 0x16u);
     }
   }
@@ -4328,19 +4328,19 @@ void __86__WFDatabase_SmartPrompts__deleteSmartPromptStatesForDeletedActionUUIDs
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateDeletionAuthorizationsToMatchAuthorization:(id)a3 forWorkflow:(id)a4
+- (void)_updateDeletionAuthorizationsToMatchAuthorization:(id)authorization forWorkflow:(id)workflow
 {
   v35 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v24 = [v5 status];
+  authorizationCopy = authorization;
+  workflowCopy = workflow;
+  status = [authorizationCopy status];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v23 = v6;
-  v7 = [v6 smartPromptPermissions];
-  v8 = [v7 countByEnumeratingWithState:&v26 objects:v34 count:16];
+  v23 = workflowCopy;
+  smartPromptPermissions = [workflowCopy smartPromptPermissions];
+  v8 = [smartPromptPermissions countByEnumeratingWithState:&v26 objects:v34 count:16];
   if (v8)
   {
     v9 = v8;
@@ -4351,22 +4351,22 @@ void __86__WFDatabase_SmartPrompts__deleteSmartPromptStatesForDeletedActionUUIDs
       {
         if (*v27 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(smartPromptPermissions);
         }
 
         v12 = *(*(&v26 + 1) + 8 * i);
-        v13 = [v12 data];
-        v14 = [WFDeletionAuthorizationState stateFromDatabaseData:v13];
+        data = [v12 data];
+        v14 = [WFDeletionAuthorizationState stateFromDatabaseData:data];
 
         if (v14)
         {
-          v15 = [v14 contentItemClassName];
-          v16 = [v5 contentItemClassName];
-          v17 = [v15 isEqualToString:v16];
+          contentItemClassName = [v14 contentItemClassName];
+          contentItemClassName2 = [authorizationCopy contentItemClassName];
+          v17 = [contentItemClassName isEqualToString:contentItemClassName2];
 
           if (v17)
           {
-            v18 = [v14 stateWithStatus:v24 count:{objc_msgSend(v14, "count")}];
+            v18 = [v14 stateWithStatus:status count:{objc_msgSend(v14, "count")}];
             v25 = 0;
             v19 = [v18 databaseDataWithError:&v25];
             v20 = v25;
@@ -4388,7 +4388,7 @@ void __86__WFDatabase_SmartPrompts__deleteSmartPromptStatesForDeletedActionUUIDs
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v26 objects:v34 count:16];
+      v9 = [smartPromptPermissions countByEnumeratingWithState:&v26 objects:v34 count:16];
     }
 
     while (v9);
@@ -4397,31 +4397,31 @@ void __86__WFDatabase_SmartPrompts__deleteSmartPromptStatesForDeletedActionUUIDs
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateStatesToMatchSmartPromptState:(id)a3 forWorkflow:(id)a4
+- (void)_updateStatesToMatchSmartPromptState:(id)state forWorkflow:(id)workflow
 {
   v57 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  stateCopy = state;
+  workflowCopy = workflow;
   v7 = getWFSecurityLogObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    v8 = [v6 smartPromptPermissions];
+    smartPromptPermissions = [workflowCopy smartPromptPermissions];
     *buf = 136315650;
     v52 = "[WFDatabase(SmartPrompts) _updateStatesToMatchSmartPromptState:forWorkflow:]";
     v53 = 2048;
-    v54 = [v8 count];
+    v54 = [smartPromptPermissions count];
     v55 = 2114;
-    v56 = v5;
+    v56 = stateCopy;
     _os_log_impl(&dword_1CA256000, v7, OS_LOG_TYPE_DEBUG, "%s Grouping: updating %lu permissions to match %{public}@", buf, 0x20u);
   }
 
-  v40 = [v5 status];
+  status = [stateCopy status];
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v39 = v6;
-  obj = [v6 smartPromptPermissions];
+  v39 = workflowCopy;
+  obj = [workflowCopy smartPromptPermissions];
   v9 = [obj countByEnumeratingWithState:&v46 objects:v50 count:16];
   if (v9)
   {
@@ -4440,23 +4440,23 @@ void __86__WFDatabase_SmartPrompts__deleteSmartPromptStatesForDeletedActionUUIDs
         }
 
         v13 = *(*(&v46 + 1) + 8 * v12);
-        v14 = [v13 data];
-        v15 = [WFSmartPromptState stateFromDatabaseData:v14];
+        data = [v13 data];
+        v15 = [WFSmartPromptState stateFromDatabaseData:data];
 
         if (v15)
         {
-          v16 = [v15 mode];
-          v17 = [v16 isEqualToString:@"Normal"];
+          mode = [v15 mode];
+          v17 = [mode isEqualToString:@"Normal"];
 
           if (v17)
           {
-            v18 = [v15 sourceContentAttribution];
-            v19 = [v18 origin];
-            v20 = v5;
-            v21 = [v5 sourceContentAttribution];
-            v22 = [v21 origin];
-            v23 = v19;
-            v24 = v22;
+            sourceContentAttribution = [v15 sourceContentAttribution];
+            origin = [sourceContentAttribution origin];
+            v20 = stateCopy;
+            sourceContentAttribution2 = [stateCopy sourceContentAttribution];
+            origin2 = [sourceContentAttribution2 origin];
+            v23 = origin;
+            v24 = origin2;
             v25 = v24;
             if (v23 == v24)
             {
@@ -4485,10 +4485,10 @@ void __86__WFDatabase_SmartPrompts__deleteSmartPromptStatesForDeletedActionUUIDs
               if (v33)
               {
 LABEL_24:
-                v34 = [v15 contentDestination];
-                v5 = v20;
-                v35 = [v20 contentDestination];
-                v42 = [v34 isEqual:v35];
+                contentDestination = [v15 contentDestination];
+                stateCopy = v20;
+                contentDestination2 = [v20 contentDestination];
+                v42 = [contentDestination isEqual:contentDestination2];
 
                 v11 = v41;
                 v10 = v43;
@@ -4498,13 +4498,13 @@ LABEL_24:
                 }
 
 LABEL_25:
-                v36 = [v15 stateWithStatus:v40];
+                v36 = [v15 stateWithStatus:status];
                 v45 = 0;
                 v37 = [v36 databaseDataWithError:&v45];
-                v18 = v45;
+                sourceContentAttribution = v45;
                 [v13 setData:v37];
 
-                if (v18)
+                if (sourceContentAttribution)
                 {
                   v23 = getWFSecurityLogObject();
                   if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -4512,7 +4512,7 @@ LABEL_25:
                     *buf = 136315394;
                     v52 = "[WFDatabase(SmartPrompts) _updateStatesToMatchSmartPromptState:forWorkflow:]";
                     v53 = 2112;
-                    v54 = v18;
+                    v54 = sourceContentAttribution;
                     _os_log_impl(&dword_1CA256000, v23, OS_LOG_TYPE_ERROR, "%s Failed to generate database data for smart prompt state upon grouping: %@", buf, 0x16u);
                   }
 
@@ -4525,20 +4525,20 @@ LABEL_29:
               }
             }
 
-            v5 = v20;
+            stateCopy = v20;
             v11 = v41;
             goto LABEL_29;
           }
 
-          v27 = [v15 mode];
-          if ([v27 isEqualToString:@"UserWildcard"])
+          mode2 = [v15 mode];
+          if ([mode2 isEqualToString:@"UserWildcard"])
           {
           }
 
           else
           {
-            v28 = [v15 mode];
-            v29 = [v28 isEqualToString:@"ActionWildcard"];
+            mode3 = [v15 mode];
+            v29 = [mode3 isEqualToString:@"ActionWildcard"];
 
             if (!v29)
             {
@@ -4546,9 +4546,9 @@ LABEL_29:
             }
           }
 
-          v30 = [v15 contentDestination];
-          v31 = [v5 contentDestination];
-          v32 = [v30 isEqual:v31];
+          contentDestination3 = [v15 contentDestination];
+          contentDestination4 = [stateCopy contentDestination];
+          v32 = [contentDestination3 isEqual:contentDestination4];
 
           if (v32)
           {
@@ -4571,30 +4571,30 @@ LABEL_31:
   v38 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_saveSmartPromptStateData:(id)a3 actionUUID:(id)a4 forWorkflow:(id)a5
+- (void)_saveSmartPromptStateData:(id)data actionUUID:(id)d forWorkflow:(id)workflow
 {
   v50 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v40 = [WFDeletionAuthorizationState stateFromDatabaseData:v8];
-  v38 = [WFSmartPromptState stateFromDatabaseData:v8];
+  dataCopy = data;
+  dCopy = d;
+  workflowCopy = workflow;
+  v40 = [WFDeletionAuthorizationState stateFromDatabaseData:dataCopy];
+  v38 = [WFSmartPromptState stateFromDatabaseData:dataCopy];
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v11 = [v10 smartPromptPermissions];
-  v12 = [v11 countByEnumeratingWithState:&v41 objects:v49 count:16];
+  smartPromptPermissions = [workflowCopy smartPromptPermissions];
+  v12 = [smartPromptPermissions countByEnumeratingWithState:&v41 objects:v49 count:16];
   if (v12)
   {
     v13 = v12;
-    v34 = self;
-    v35 = v10;
-    v36 = v9;
-    v37 = v8;
+    selfCopy = self;
+    v35 = workflowCopy;
+    v36 = dCopy;
+    v37 = dataCopy;
     v14 = 0;
     v15 = *v42;
-    obj = v11;
+    obj = smartPromptPermissions;
     do
     {
       for (i = 0; i != v13; ++i)
@@ -4605,11 +4605,11 @@ LABEL_31:
         }
 
         v17 = *(*(&v41 + 1) + 8 * i);
-        v18 = [v17 data];
-        v19 = [WFDeletionAuthorizationState stateFromDatabaseData:v18];
+        data = [v17 data];
+        v19 = [WFDeletionAuthorizationState stateFromDatabaseData:data];
 
-        v20 = [v17 data];
-        v21 = [WFSmartPromptState stateFromDatabaseData:v20];
+        data2 = [v17 data];
+        v21 = [WFSmartPromptState stateFromDatabaseData:data2];
 
         if (v19 && ([v19 actionUUID], v22 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v40, "actionUUID"), v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend(v22, "isEqual:", v23), v23, v22, (v24 & 1) != 0) || v21 && objc_msgSend(v21, "matches:", v38))
         {
@@ -4624,10 +4624,10 @@ LABEL_31:
 
     while (v13);
 
-    v9 = v36;
-    v8 = v37;
-    self = v34;
-    v10 = v35;
+    dCopy = v36;
+    dataCopy = v37;
+    self = selfCopy;
+    workflowCopy = v35;
     if (v14)
     {
       v26 = getWFSecurityLogObject();
@@ -4659,46 +4659,46 @@ LABEL_31:
   }
 
   v28 = [WFCoreDataSmartPromptPermission alloc];
-  v29 = [(WFDatabase *)self context];
-  v14 = [(WFCoreDataSmartPromptPermission *)v28 initWithContext:v29];
+  context = [(WFDatabase *)self context];
+  v14 = [(WFCoreDataSmartPromptPermission *)v28 initWithContext:context];
 
-  [v10 addSmartPromptPermissionsObject:v14];
+  [workflowCopy addSmartPromptPermissionsObject:v14];
 LABEL_21:
-  [(WFCoreDataSmartPromptPermission *)v14 setShortcut:v10];
-  [(WFCoreDataSmartPromptPermission *)v14 setActionUUID:v9];
-  [(WFCoreDataSmartPromptPermission *)v14 setData:v8];
+  [(WFCoreDataSmartPromptPermission *)v14 setShortcut:workflowCopy];
+  [(WFCoreDataSmartPromptPermission *)v14 setActionUUID:dCopy];
+  [(WFCoreDataSmartPromptPermission *)v14 setData:dataCopy];
   v30 = objc_alloc(MEMORY[0x1E69E0A68]);
-  v31 = [v10 workflowID];
-  v32 = [v30 initWithIdentifier:v31 objectType:0];
+  workflowID = [workflowCopy workflowID];
+  v32 = [v30 initWithIdentifier:workflowID objectType:0];
   [(WFDatabase *)self addPendingUpdatedDescriptor:v32];
 
   v33 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)saveSmartPromptStateData:(id)a3 actionUUID:(id)a4 reference:(id)a5 error:(id *)a6
+- (BOOL)saveSmartPromptStateData:(id)data actionUUID:(id)d reference:(id)reference error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  dataCopy = data;
+  dCopy = d;
+  referenceCopy = reference;
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __80__WFDatabase_SmartPrompts__saveSmartPromptStateData_actionUUID_reference_error___block_invoke;
   v21[3] = &unk_1E837F368;
   v21[4] = self;
-  v13 = v12;
+  v13 = referenceCopy;
   v22 = v13;
-  v14 = v10;
+  v14 = dataCopy;
   v23 = v14;
-  v15 = v11;
+  v15 = dCopy;
   v24 = v15;
   v20 = 0;
   [(WFDatabase *)self performTransactionWithReason:@"save smart prompt state" block:v21 error:&v20];
   v16 = v20;
   v17 = v16;
-  if (a6)
+  if (error)
   {
     v18 = v16;
-    *a6 = v17;
+    *error = v17;
   }
 
   return v17 == 0;
@@ -4767,19 +4767,19 @@ void __80__WFDatabase_SmartPrompts__saveSmartPromptStateData_actionUUID_referenc
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)saveSmartPromptState:(id)a3 reference:(id)a4 error:(id *)a5
+- (BOOL)saveSmartPromptState:(id)state reference:(id)reference error:(id *)error
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  stateCopy = state;
+  referenceCopy = reference;
   v22 = 0;
-  v10 = [v8 databaseDataWithError:&v22];
+  v10 = [stateCopy databaseDataWithError:&v22];
   v11 = v22;
   if (v10)
   {
-    v12 = [v8 actionUUID];
+    actionUUID = [stateCopy actionUUID];
     v21 = 0;
-    v13 = [(WFDatabase *)self saveSmartPromptStateData:v10 actionUUID:v12 reference:v9 error:&v21];
+    v13 = [(WFDatabase *)self saveSmartPromptStateData:v10 actionUUID:actionUUID reference:referenceCopy error:&v21];
     v14 = v21;
 
     if (!v13)
@@ -4794,10 +4794,10 @@ void __80__WFDatabase_SmartPrompts__saveSmartPromptStateData_actionUUID_referenc
         _os_log_impl(&dword_1CA256000, v15, OS_LOG_TYPE_ERROR, "%s Could not save flattened smart prompt state: %{public}@", buf, 0x16u);
       }
 
-      if (a5)
+      if (error)
       {
         v16 = v14;
-        *a5 = v14;
+        *error = v14;
       }
     }
   }
@@ -4814,11 +4814,11 @@ void __80__WFDatabase_SmartPrompts__saveSmartPromptStateData_actionUUID_referenc
       _os_log_impl(&dword_1CA256000, v17, OS_LOG_TYPE_ERROR, "%s Could not serialize smart prompt state: %{public}@", buf, 0x16u);
     }
 
-    if (a5)
+    if (error)
     {
       v18 = v11;
       v13 = 0;
-      *a5 = v11;
+      *error = v11;
     }
 
     else
@@ -4831,20 +4831,20 @@ void __80__WFDatabase_SmartPrompts__saveSmartPromptStateData_actionUUID_referenc
   return v13;
 }
 
-- (id)allStatesDataForReference:(id)a3 actionUUID:(id)a4
+- (id)allStatesDataForReference:(id)reference actionUUID:(id)d
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  referenceCopy = reference;
+  dCopy = d;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __65__WFDatabase_SmartPrompts__allStatesDataForReference_actionUUID___block_invoke;
   v17[3] = &unk_1E8378090;
-  v8 = v7;
+  v8 = dCopy;
   v18 = v8;
-  v9 = v6;
+  v9 = referenceCopy;
   v19 = v9;
-  v20 = self;
+  selfCopy = self;
   v16 = 0;
   v10 = [(WFDatabase *)self performOperationWithReason:@"getting smart prompt data for shortcut" block:v17 error:&v16];
   v11 = v16;
@@ -4899,18 +4899,18 @@ id __65__WFDatabase_SmartPrompts__allStatesDataForReference_actionUUID___block_i
   return v12;
 }
 
-- (id)deletionAuthorizationStatesForReference:(id)a3
+- (id)deletionAuthorizationStatesForReference:(id)reference
 {
-  v3 = [(WFDatabase *)self allStatesDataForReference:a3 actionUUID:0];
+  v3 = [(WFDatabase *)self allStatesDataForReference:reference actionUUID:0];
   v4 = [v3 if_compactMap:&__block_literal_global_193_29296];
 
   return v4;
 }
 
-- (void)compactDeletionAuthorizationsIfNecessaryForWorkflowReference:(id)a3
+- (void)compactDeletionAuthorizationsIfNecessaryForWorkflowReference:(id)reference
 {
   v52 = *MEMORY[0x1E69E9840];
-  v35 = a3;
+  referenceCopy = reference;
   v3 = [(WFDatabase *)self deletionAuthorizationStatesForReference:?];
   v4 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v3, "count")}];
   v42 = 0u;
@@ -4934,30 +4934,30 @@ id __65__WFDatabase_SmartPrompts__allStatesDataForReference_actionUUID___block_i
         }
 
         v10 = *(*(&v42 + 1) + 8 * i);
-        v11 = [v10 contentItemClassName];
-        v12 = [v4 objectForKey:v11];
+        contentItemClassName = [v10 contentItemClassName];
+        v12 = [v4 objectForKey:contentItemClassName];
 
         if (!v12)
         {
           goto LABEL_12;
         }
 
-        v13 = [v12 status];
+        status = [v12 status];
 
-        if (v13 == @"Disallow")
+        if (status == @"Disallow")
         {
           goto LABEL_14;
         }
 
-        v14 = [v10 status];
+        status2 = [v10 status];
 
-        if (v14 == @"Disallow")
+        if (status2 == @"Disallow")
         {
           goto LABEL_12;
         }
 
-        v15 = [v10 status];
-        if (v15 != @"Allow")
+        status3 = [v10 status];
+        if (status3 != @"Allow")
         {
           goto LABEL_13;
         }
@@ -4970,8 +4970,8 @@ id __65__WFDatabase_SmartPrompts__allStatesDataForReference_actionUUID___block_i
         if (v18)
         {
 LABEL_12:
-          v15 = [v10 contentItemClassName];
-          [v4 setObject:v10 forKey:v15];
+          status3 = [v10 contentItemClassName];
+          [v4 setObject:v10 forKey:status3];
 LABEL_13:
         }
 
@@ -4984,13 +4984,13 @@ LABEL_14:
     while (v7);
   }
 
-  v19 = [v4 allValues];
-  [(WFDatabase *)self deleteAllDeletionAuthorizationsForReference:v35];
+  allValues = [v4 allValues];
+  [(WFDatabase *)self deleteAllDeletionAuthorizationsForReference:referenceCopy];
   v40 = 0u;
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v20 = v19;
+  v20 = allValues;
   v21 = [v20 countByEnumeratingWithState:&v38 objects:v50 count:16];
   if (v21)
   {
@@ -5024,9 +5024,9 @@ LABEL_14:
 
         else
         {
-          v29 = [v25 actionUUID];
+          actionUUID = [v25 actionUUID];
           v36 = 0;
-          v30 = [(WFDatabase *)self saveSmartPromptStateData:v26 actionUUID:v29 reference:v35 error:&v36];
+          v30 = [(WFDatabase *)self saveSmartPromptStateData:v26 actionUUID:actionUUID reference:referenceCopy error:&v36];
           v28 = v36;
 
           if (!v30)
@@ -5053,21 +5053,21 @@ LABEL_14:
   v32 = *MEMORY[0x1E69E9840];
 }
 
-- (id)currentDeletionAuthorizationStatusWithContentItemClassName:(id)a3 actionUUID:(id)a4 actionIdentifier:(id)a5 actionIndex:(unint64_t)a6 count:(unint64_t)a7 reference:(id)a8
+- (id)currentDeletionAuthorizationStatusWithContentItemClassName:(id)name actionUUID:(id)d actionIdentifier:(id)identifier actionIndex:(unint64_t)index count:(unint64_t)count reference:(id)reference
 {
   v44 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a8;
-  v18 = v17;
-  if (!v15)
+  nameCopy = name;
+  dCopy = d;
+  identifierCopy = identifier;
+  referenceCopy = reference;
+  v18 = referenceCopy;
+  if (!dCopy)
   {
-    v19 = [v17 identifier];
-    v15 = [(WFDatabase *)self generateAndPersistUUIDForActionWithIdentifier:v16 actionIndex:a6 workflowIdentifier:v19];
+    identifier = [referenceCopy identifier];
+    dCopy = [(WFDatabase *)self generateAndPersistUUIDForActionWithIdentifier:identifierCopy actionIndex:index workflowIdentifier:identifier];
   }
 
-  if (+[WFShortcutsSecuritySettings allowsDeletingLargeAmountsOfData]|| [WFContentExfiltrationQuantityInfo deletionItemCountLimitForContentWithContentItemClassName:v14]>= a7)
+  if (+[WFShortcutsSecuritySettings allowsDeletingLargeAmountsOfData]|| [WFContentExfiltrationQuantityInfo deletionItemCountLimitForContentWithContentItemClassName:nameCopy]>= count)
   {
     [(WFDatabase *)self compactDeletionAuthorizationsIfNecessaryForWorkflowReference:v18];
     v22 = [(WFDatabase *)self deletionAuthorizationStatesForReference:v18];
@@ -5075,7 +5075,7 @@ LABEL_14:
     v36[1] = 3221225472;
     v36[2] = __143__WFDatabase_SmartPrompts__currentDeletionAuthorizationStatusWithContentItemClassName_actionUUID_actionIdentifier_actionIndex_count_reference___block_invoke;
     v36[3] = &unk_1E8378028;
-    v23 = v14;
+    v23 = nameCopy;
     v37 = v23;
     v24 = [v22 if_firstObjectPassingTest:v36];
     v25 = v24;
@@ -5089,16 +5089,16 @@ LABEL_14:
         v40 = 2114;
         v41 = v23;
         v42 = 2114;
-        v43 = v15;
+        v43 = dCopy;
         _os_log_impl(&dword_1CA256000, v29, OS_LOG_TYPE_DEFAULT, "%s No deletion authorization states found for content item class %{public}@, actionUUID: %{public}@", buf, 0x20u);
       }
 
-      v30 = [[WFDeletionAuthorizationState alloc] initWithStatus:@"Undefined" contentItemClassName:v23 actionUUID:v15 count:a7];
+      v30 = [[WFDeletionAuthorizationState alloc] initWithStatus:@"Undefined" contentItemClassName:v23 actionUUID:dCopy count:count];
       goto LABEL_24;
     }
 
-    v26 = [v24 status];
-    v27 = [v26 isEqualToString:@"Disallow"];
+    status = [v24 status];
+    v27 = [status isEqualToString:@"Disallow"];
 
     if (v27)
     {
@@ -5116,7 +5116,7 @@ LABEL_14:
       v31 = [v25 count];
       v32 = getWFSecurityLogObject();
       v33 = os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT);
-      if (a7 > 2 * v31)
+      if (count > 2 * v31)
       {
         if (v33)
         {
@@ -5125,7 +5125,7 @@ LABEL_14:
           _os_log_impl(&dword_1CA256000, v32, OS_LOG_TYPE_DEFAULT, "%s Will prompt for deletion because currentCount > 2 * previousCount", buf, 0xCu);
         }
 
-        v30 = [v25 stateWithStatus:@"Undefined" count:a7];
+        v30 = [v25 stateWithStatus:@"Undefined" count:count];
         goto LABEL_24;
       }
 
@@ -5150,11 +5150,11 @@ LABEL_24:
     *buf = 136315394;
     v39 = "[WFDatabase(SmartPrompts) currentDeletionAuthorizationStatusWithContentItemClassName:actionUUID:actionIdentifier:actionIndex:count:reference:]";
     v40 = 2114;
-    v41 = v14;
+    v41 = nameCopy;
     _os_log_impl(&dword_1CA256000, v20, OS_LOG_TYPE_DEFAULT, "%s Deletion action will be restricted because allowsDeletingLargeAmountsOfData is set to NO, and the count for %{public}@ is greater than the maximum allowed", buf, 0x16u);
   }
 
-  v21 = [[WFDeletionAuthorizationState alloc] initWithStatus:@"Restricted" contentItemClassName:v14 actionUUID:v15 count:a7];
+  v21 = [[WFDeletionAuthorizationState alloc] initWithStatus:@"Restricted" contentItemClassName:nameCopy actionUUID:dCopy count:count];
 LABEL_25:
 
   v34 = *MEMORY[0x1E69E9840];
@@ -5170,32 +5170,32 @@ uint64_t __143__WFDatabase_SmartPrompts__currentDeletionAuthorizationStatusWithC
   return v4;
 }
 
-- (id)smartPromptStatesForReference:(id)a3 actionUUID:(id)a4
+- (id)smartPromptStatesForReference:(id)reference actionUUID:(id)d
 {
-  v4 = [(WFDatabase *)self allStatesDataForReference:a3 actionUUID:a4];
+  v4 = [(WFDatabase *)self allStatesDataForReference:reference actionUUID:d];
   v5 = [v4 if_compactMap:&__block_literal_global_29307];
 
   return v5;
 }
 
-- (void)saveSmartPromptStatesForInsertedAction:(id)a3 contentDestination:(id)a4 reference:(id)a5
+- (void)saveSmartPromptStatesForInsertedAction:(id)action contentDestination:(id)destination reference:(id)reference
 {
   v36 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v10 = [a3 generateUUIDIfNecessaryWithUUIDProvider:0];
+  destinationCopy = destination;
+  referenceCopy = reference;
+  v10 = [action generateUUIDIfNecessaryWithUUIDProvider:0];
   v11 = [MEMORY[0x1E695DF70] arrayWithCapacity:2];
-  v12 = [[WFSmartPromptState alloc] initWithMode:@"UserWildcard" sourceContentAttribution:0 actionUUID:v10 contentDestination:v8 status:@"Allow"];
+  v12 = [[WFSmartPromptState alloc] initWithMode:@"UserWildcard" sourceContentAttribution:0 actionUUID:v10 contentDestination:destinationCopy status:@"Allow"];
   [v11 addObject:v12];
 
-  if ([v8 promptingBehaviour])
+  if ([destinationCopy promptingBehaviour])
   {
-    v13 = [[WFSmartPromptState alloc] initWithMode:@"ActionWildcard" sourceContentAttribution:0 actionUUID:v10 contentDestination:v8 status:@"Allow"];
+    v13 = [[WFSmartPromptState alloc] initWithMode:@"ActionWildcard" sourceContentAttribution:0 actionUUID:v10 contentDestination:destinationCopy status:@"Allow"];
     [v11 addObject:v13];
   }
 
   v24 = v10;
-  v25 = v8;
+  v25 = destinationCopy;
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
@@ -5217,7 +5217,7 @@ uint64_t __143__WFDatabase_SmartPrompts__currentDeletionAuthorizationStatusWithC
 
         v19 = *(*(&v27 + 1) + 8 * i);
         v26 = 0;
-        v20 = [(WFDatabase *)self saveSmartPromptState:v19 reference:v9 error:&v26, v24, v25];
+        v20 = [(WFDatabase *)self saveSmartPromptState:v19 reference:referenceCopy error:&v26, v24, v25];
         v21 = v26;
         if (!v20)
         {
@@ -5242,19 +5242,19 @@ uint64_t __143__WFDatabase_SmartPrompts__currentDeletionAuthorizationStatusWithC
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)createSmartPromptStatesForInsertedActions:(id)a3 forReference:(id)a4 completionHandler:(id)a5
+- (void)createSmartPromptStatesForInsertedActions:(id)actions forReference:(id)reference completionHandler:(id)handler
 {
   v69 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  block = a5;
+  actionsCopy = actions;
+  referenceCopy = reference;
+  block = handler;
   v10 = getWFSecurityLogObject();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315394;
     v63 = "[WFDatabase(SmartPrompts) createSmartPromptStatesForInsertedActions:forReference:completionHandler:]";
     v64 = 2048;
-    v65 = [v8 count];
+    v65 = [actionsCopy count];
     _os_log_impl(&dword_1CA256000, v10, OS_LOG_TYPE_DEBUG, "%s Will attempt to create SP states for %lu inserted actions.", buf, 0x16u);
   }
 
@@ -5263,13 +5263,13 @@ uint64_t __143__WFDatabase_SmartPrompts__currentDeletionAuthorizationStatusWithC
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
-  obj = v8;
+  obj = actionsCopy;
   v46 = [obj countByEnumeratingWithState:&v57 objects:v68 count:16];
   if (v46)
   {
     v45 = *v58;
     v41 = v11;
-    v42 = v9;
+    v42 = referenceCopy;
     do
     {
       for (i = 0; i != v46; ++i)
@@ -5286,23 +5286,23 @@ uint64_t __143__WFDatabase_SmartPrompts__currentDeletionAuthorizationStatusWithC
           v15 = getWFSecurityLogObject();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
           {
-            v16 = [v13 identifier];
+            identifier = [v13 identifier];
             *buf = 136315394;
             v63 = "[WFDatabase(SmartPrompts) createSmartPromptStatesForInsertedActions:forReference:completionHandler:]";
             v64 = 2112;
-            v65 = v16;
+            v65 = identifier;
             _os_log_impl(&dword_1CA256000, v15, OS_LOG_TYPE_DEBUG, "%s Creating a network wildcard permission for action %@", buf, 0x16u);
           }
 
           v17 = [v13 generateUUIDIfNecessaryWithUUIDProvider:0];
           v18 = [WFSmartPromptState alloc];
-          v19 = [MEMORY[0x1E6996F90] locationMatchingAnyHostname];
-          v20 = [(WFSmartPromptState *)v18 initWithMode:@"UserWildcard" sourceContentAttribution:0 actionUUID:v17 contentDestination:v19 status:@"Allow"];
+          locationMatchingAnyHostname = [MEMORY[0x1E6996F90] locationMatchingAnyHostname];
+          v20 = [(WFSmartPromptState *)v18 initWithMode:@"UserWildcard" sourceContentAttribution:0 actionUUID:v17 contentDestination:locationMatchingAnyHostname status:@"Allow"];
 
           v56 = 0;
-          LOBYTE(v19) = [(WFDatabase *)self saveSmartPromptState:v20 reference:v9 error:&v56];
+          LOBYTE(locationMatchingAnyHostname) = [(WFDatabase *)self saveSmartPromptState:v20 reference:referenceCopy error:&v56];
           v21 = v56;
-          if ((v19 & 1) == 0)
+          if ((locationMatchingAnyHostname & 1) == 0)
           {
             v22 = getWFSecurityLogObject();
             if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -5325,24 +5325,24 @@ uint64_t __143__WFDatabase_SmartPrompts__currentDeletionAuthorizationStatusWithC
         v53[3] = &unk_1E8377FE0;
         v53[4] = v13;
         v53[5] = self;
-        v23 = v9;
+        v23 = referenceCopy;
         v54 = v23;
         v55 = v11;
         [v13 getContentDestinationWithCompletionHandler:v53];
-        v24 = [v13 additionalContentDestinations];
-        v25 = [v24 count];
+        additionalContentDestinations = [v13 additionalContentDestinations];
+        v25 = [additionalContentDestinations count];
         log = getWFSecurityLogObject();
         v26 = os_log_type_enabled(log, OS_LOG_TYPE_DEBUG);
         if (v25)
         {
           if (v26)
           {
-            v27 = [v13 identifier];
-            v28 = [v24 count];
+            identifier2 = [v13 identifier];
+            v28 = [additionalContentDestinations count];
             *buf = 136315650;
             v63 = "[WFDatabase(SmartPrompts) createSmartPromptStatesForInsertedActions:forReference:completionHandler:]";
             v64 = 2112;
-            v65 = v27;
+            v65 = identifier2;
             v66 = 2048;
             v67 = v28;
             _os_log_impl(&dword_1CA256000, log, OS_LOG_TYPE_DEBUG, "%s Action %@ provides %lu additional content destinations", buf, 0x20u);
@@ -5352,8 +5352,8 @@ uint64_t __143__WFDatabase_SmartPrompts__currentDeletionAuthorizationStatusWithC
           v52 = 0u;
           v49 = 0u;
           v50 = 0u;
-          v47 = v24;
-          log = v24;
+          v47 = additionalContentDestinations;
+          log = additionalContentDestinations;
           v29 = [log countByEnumeratingWithState:&v49 objects:v61 count:16];
           if (v29)
           {
@@ -5375,13 +5375,13 @@ uint64_t __143__WFDatabase_SmartPrompts__currentDeletionAuthorizationStatusWithC
                 {
                   [v33 identifier];
                   v36 = v35 = self;
-                  v37 = [v13 identifier];
+                  identifier3 = [v13 identifier];
                   *buf = 136315650;
                   v63 = "[WFDatabase(SmartPrompts) createSmartPromptStatesForInsertedActions:forReference:completionHandler:]";
                   v64 = 2112;
                   v65 = v36;
                   v66 = 2112;
-                  v67 = v37;
+                  v67 = identifier3;
                   _os_log_impl(&dword_1CA256000, v34, OS_LOG_TYPE_DEBUG, "%s Creating permission upon insertion for additional content destination %@ for action %@", buf, 0x20u);
 
                   self = v35;
@@ -5395,20 +5395,20 @@ uint64_t __143__WFDatabase_SmartPrompts__currentDeletionAuthorizationStatusWithC
 
             while (v30);
             v11 = v41;
-            v9 = v42;
+            referenceCopy = v42;
             i = v44;
           }
 
-          v24 = v47;
+          additionalContentDestinations = v47;
         }
 
         else if (v26)
         {
-          v38 = [v13 identifier];
+          identifier4 = [v13 identifier];
           *buf = 136315394;
           v63 = "[WFDatabase(SmartPrompts) createSmartPromptStatesForInsertedActions:forReference:completionHandler:]";
           v64 = 2112;
-          v65 = v38;
+          v65 = identifier4;
           _os_log_impl(&dword_1CA256000, log, OS_LOG_TYPE_DEBUG, "%s Action %@ provides no additional content destinations", buf, 0x16u);
         }
       }
@@ -5496,13 +5496,13 @@ LABEL_10:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (id)migrateAccountStateToAppOriginIfNecessary:(id)a3 reference:(id)a4 actionUUID:(id)a5
+- (id)migrateAccountStateToAppOriginIfNecessary:(id)necessary reference:(id)reference actionUUID:(id)d
 {
   v29 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 sourceContentAttribution];
-  v10 = [v9 origin];
+  necessaryCopy = necessary;
+  referenceCopy = reference;
+  sourceContentAttribution = [necessaryCopy sourceContentAttribution];
+  origin = [sourceContentAttribution origin];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -5514,7 +5514,7 @@ LABEL_10:
       *buf = 136315394;
       v24 = "[WFDatabase(SmartPrompts) migrateAccountStateToAppOriginIfNecessary:reference:actionUUID:]";
       v25 = 2112;
-      v26 = v7;
+      v26 = necessaryCopy;
       _os_log_impl(&dword_1CA256000, v12, OS_LOG_TYPE_INFO, "%s Migrating saved state from account to app origin: %@", buf, 0x16u);
     }
 
@@ -5523,9 +5523,9 @@ LABEL_10:
     v20[2] = __91__WFDatabase_SmartPrompts__migrateAccountStateToAppOriginIfNecessary_reference_actionUUID___block_invoke;
     v20[3] = &unk_1E8377FB8;
     v20[4] = self;
-    v13 = v7;
+    v13 = necessaryCopy;
     v21 = v13;
-    v22 = v8;
+    v22 = referenceCopy;
     v19 = 0;
     v14 = [(WFDatabase *)self performSaveOperationWithReason:@"migrating smart prompt state" block:v20 error:&v19];
     v15 = v19;
@@ -5547,7 +5547,7 @@ LABEL_10:
 
   else
   {
-    v14 = v7;
+    v14 = necessaryCopy;
   }
 
   v17 = *MEMORY[0x1E69E9840];
@@ -5585,33 +5585,33 @@ id __91__WFDatabase_SmartPrompts__migrateAccountStateToAppOriginIfNecessary_refe
   return v9;
 }
 
-- (BOOL)shouldPromptForCurrentContentItemCount:(unint64_t)a3 previousCount:(unint64_t)a4 contentOrigin:(id)a5
+- (BOOL)shouldPromptForCurrentContentItemCount:(unint64_t)count previousCount:(unint64_t)previousCount contentOrigin:(id)origin
 {
   v22 = *MEMORY[0x1E69E9840];
-  v7 = a5;
+  originCopy = origin;
   v8 = getWFSecurityLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v14 = 136315906;
     v15 = "[WFDatabase(SmartPrompts) shouldPromptForCurrentContentItemCount:previousCount:contentOrigin:]";
     v16 = 2112;
-    v17 = v7;
+    v17 = originCopy;
     v18 = 2048;
-    v19 = a3;
+    countCopy = count;
     v20 = 2048;
-    v21 = a4;
+    previousCountCopy = previousCount;
     _os_log_impl(&dword_1CA256000, v8, OS_LOG_TYPE_DEBUG, "%s Decision counts for %@: currentCount = %lu, previousCount = %lu", &v14, 0x2Au);
   }
 
-  v10 = a3 > 0x64 && a4 < 0x65;
-  if (a4 <= 0x19)
+  v10 = count > 0x64 && previousCount < 0x65;
+  if (previousCount <= 0x19)
   {
-    v10 = a3 > 0x19;
+    v10 = count > 0x19;
   }
 
-  if (a4 <= 5)
+  if (previousCount <= 5)
   {
-    v11 = a3 > 5;
+    v11 = count > 5;
   }
 
   else
@@ -5623,55 +5623,55 @@ id __91__WFDatabase_SmartPrompts__migrateAccountStateToAppOriginIfNecessary_refe
   return v11;
 }
 
-- (id)performDatabaseLookupForState:(id)a3 actionUUID:(id)a4 reference:(id)a5
+- (id)performDatabaseLookupForState:(id)state actionUUID:(id)d reference:(id)reference
 {
   v118[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  stateCopy = state;
+  dCopy = d;
+  referenceCopy = reference;
   if (!+[WFShortcutsSecuritySettings allowsSharingLargeAmountsOfData])
   {
-    v11 = [v8 sourceContentAttribution];
-    v12 = self;
-    v13 = [v11 count];
-    v14 = [v8 sourceContentAttribution];
-    v15 = [WFContentExfiltrationQuantityInfo sharingItemCountLimitForContentWithAttribution:v14];
+    sourceContentAttribution = [stateCopy sourceContentAttribution];
+    selfCopy = self;
+    v13 = [sourceContentAttribution count];
+    sourceContentAttribution2 = [stateCopy sourceContentAttribution];
+    v15 = [WFContentExfiltrationQuantityInfo sharingItemCountLimitForContentWithAttribution:sourceContentAttribution2];
 
     v16 = v13 > v15;
-    self = v12;
+    self = selfCopy;
     if (v16)
     {
-      v17 = [v8 stateWithStatus:@"Restricted"];
+      v17 = [stateCopy stateWithStatus:@"Restricted"];
 
       v18 = [WFSmartPromptDatabaseLookupResult alloc];
       v118[0] = v17;
       v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v118 count:1];
       v20 = [(WFSmartPromptDatabaseLookupResult *)v18 initWithAllowedStates:MEMORY[0x1E695E0F0] deniedStates:MEMORY[0x1E695E0F0] undefinedStates:MEMORY[0x1E695E0F0] restrictedStates:v19];
-      v8 = v17;
+      stateCopy = v17;
       goto LABEL_67;
     }
   }
 
-  v21 = [(WFDatabase *)self smartPromptStatesForReference:v10 actionUUID:v9];
+  v21 = [(WFDatabase *)self smartPromptStatesForReference:referenceCopy actionUUID:dCopy];
   if (![v21 count])
   {
-    v19 = [(WFDatabase *)self smartPromptStatesForReference:v10];
+    v19 = [(WFDatabase *)self smartPromptStatesForReference:referenceCopy];
 
     if (![v19 count])
     {
       v63 = getWFWorkflowExecutionLogObject();
       if (os_log_type_enabled(v63, OS_LOG_TYPE_DEFAULT))
       {
-        v64 = [v10 name];
+        name = [referenceCopy name];
         *buf = 136315394;
         v115 = "[WFDatabase(SmartPrompts) performDatabaseLookupForState:actionUUID:reference:]";
         v116 = 2112;
-        v117 = v64;
+        v117 = name;
         _os_log_impl(&dword_1CA256000, v63, OS_LOG_TYPE_DEFAULT, "%s No saved smart prompt states found for workflow '%@'", buf, 0x16u);
       }
 
       v65 = [WFSmartPromptDatabaseLookupResult alloc];
-      v113 = v8;
+      v113 = stateCopy;
       v66 = MEMORY[0x1E695DEC8];
       v67 = &v113;
       goto LABEL_60;
@@ -5680,7 +5680,7 @@ id __91__WFDatabase_SmartPrompts__migrateAccountStateToAppOriginIfNecessary_refe
     v21 = v19;
   }
 
-  v95 = self;
+  selfCopy2 = self;
   v103 = 0u;
   v104 = 0u;
   v101 = 0u;
@@ -5703,8 +5703,8 @@ id __91__WFDatabase_SmartPrompts__migrateAccountStateToAppOriginIfNecessary_refe
         }
 
         v28 = *(*(&v101 + 1) + 8 * i);
-        v29 = [(WFDatabase *)v95 migrateAccountStateToAppOriginIfNecessary:v28 reference:v10 actionUUID:v9];
-        if ([v29 matches:v8])
+        v29 = [(WFDatabase *)selfCopy2 migrateAccountStateToAppOriginIfNecessary:v28 reference:referenceCopy actionUUID:dCopy];
+        if ([v29 matches:stateCopy])
         {
           v30 = v28;
 
@@ -5720,8 +5720,8 @@ id __91__WFDatabase_SmartPrompts__migrateAccountStateToAppOriginIfNecessary_refe
 
     if (v25)
     {
-      v31 = [v25 status];
-      v32 = [v31 isEqualToString:@"Disallow"];
+      status = [v25 status];
+      v32 = [status isEqualToString:@"Disallow"];
 
       if (v32)
       {
@@ -5746,8 +5746,8 @@ id __91__WFDatabase_SmartPrompts__migrateAccountStateToAppOriginIfNecessary_refe
 
       else
       {
-        v59 = [v25 status];
-        v60 = [v59 isEqualToString:@"Undefined"];
+        status2 = [v25 status];
+        v60 = [status2 isEqualToString:@"Undefined"];
 
         if (v60)
         {
@@ -5772,15 +5772,15 @@ id __91__WFDatabase_SmartPrompts__migrateAccountStateToAppOriginIfNecessary_refe
 
         else
         {
-          v74 = [v25 sourceContentAttribution];
-          v75 = [v74 count];
+          sourceContentAttribution3 = [v25 sourceContentAttribution];
+          v75 = [sourceContentAttribution3 count];
 
-          v76 = [v8 sourceContentAttribution];
-          v77 = [v76 count];
+          sourceContentAttribution4 = [stateCopy sourceContentAttribution];
+          v77 = [sourceContentAttribution4 count];
 
-          v78 = [v8 sourceContentAttribution];
-          v79 = [v78 origin];
-          LODWORD(v75) = [(WFDatabase *)v95 shouldPromptForCurrentContentItemCount:v77 previousCount:v75 contentOrigin:v79];
+          sourceContentAttribution5 = [stateCopy sourceContentAttribution];
+          origin = [sourceContentAttribution5 origin];
+          LODWORD(v75) = [(WFDatabase *)selfCopy2 shouldPromptForCurrentContentItemCount:v77 previousCount:v75 contentOrigin:origin];
 
           v80 = getWFSecurityLogObject();
           v81 = os_log_type_enabled(v80, OS_LOG_TYPE_DEFAULT);
@@ -5796,10 +5796,10 @@ id __91__WFDatabase_SmartPrompts__migrateAccountStateToAppOriginIfNecessary_refe
             }
 
             v82 = [WFSmartPromptDatabaseLookupResult alloc];
-            v106 = v8;
+            v106 = stateCopy;
             v35 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v106 count:1];
-            v83 = [v25 sourceContentAttribution];
-            v20 = [(WFSmartPromptDatabaseLookupResult *)v82 initWithAllowedStates:MEMORY[0x1E695E0F0] deniedStates:MEMORY[0x1E695E0F0] undefinedStates:v35 previousAttribution:v83];
+            sourceContentAttribution6 = [v25 sourceContentAttribution];
+            v20 = [(WFSmartPromptDatabaseLookupResult *)v82 initWithAllowedStates:MEMORY[0x1E695E0F0] deniedStates:MEMORY[0x1E695E0F0] undefinedStates:v35 previousAttribution:sourceContentAttribution6];
 
             goto LABEL_65;
           }
@@ -5834,8 +5834,8 @@ LABEL_65:
   {
   }
 
-  v40 = [v8 mode];
-  v41 = [v40 isEqualToString:@"ActionWildcard"];
+  mode = [stateCopy mode];
+  v41 = [mode isEqualToString:@"ActionWildcard"];
 
   if (!v41)
   {
@@ -5843,8 +5843,8 @@ LABEL_65:
   }
 
   v89 = v19;
-  v90 = v10;
-  [(WFDatabase *)v95 smartPromptStatesForReference:v10];
+  v90 = referenceCopy;
+  [(WFDatabase *)selfCopy2 smartPromptStatesForReference:referenceCopy];
   v97 = 0u;
   v98 = 0u;
   v99 = 0u;
@@ -5858,7 +5858,7 @@ LABEL_65:
   v43 = v42;
   v44 = *v98;
   v45 = @"ActionWildcard";
-  v94 = v9;
+  v94 = dCopy;
   v92 = v25;
 LABEL_26:
   v46 = 0;
@@ -5871,32 +5871,32 @@ LABEL_26:
     }
 
     v47 = *(*(&v97 + 1) + 8 * v46);
-    v48 = [v47 mode];
-    if (![v48 isEqualToString:v45])
+    mode2 = [v47 mode];
+    if (![mode2 isEqualToString:v45])
     {
       goto LABEL_36;
     }
 
-    v49 = [v47 actionUUID];
-    v50 = [v8 actionUUID];
-    if ([v49 isEqualToString:v50])
+    actionUUID = [v47 actionUUID];
+    actionUUID2 = [stateCopy actionUUID];
+    if ([actionUUID isEqualToString:actionUUID2])
     {
       goto LABEL_35;
     }
 
     v51 = v45;
     v52 = v44;
-    v53 = [v47 contentDestination];
-    v54 = v8;
-    v55 = v8;
-    v56 = v53;
-    v57 = [v55 contentDestination];
-    if (![v56 isEqual:v57])
+    contentDestination = [v47 contentDestination];
+    v54 = stateCopy;
+    v55 = stateCopy;
+    v56 = contentDestination;
+    contentDestination2 = [v55 contentDestination];
+    if (![v56 isEqual:contentDestination2])
     {
 
       v44 = v52;
       v45 = v51;
-      v8 = v54;
+      stateCopy = v54;
       v25 = v92;
       v43 = v93;
 LABEL_35:
@@ -5905,12 +5905,12 @@ LABEL_36:
       goto LABEL_37;
     }
 
-    v58 = [v47 status];
-    v91 = [v58 isEqualToString:@"Allow"];
+    status3 = [v47 status];
+    v91 = [status3 isEqualToString:@"Allow"];
 
     v44 = v52;
     v45 = v51;
-    v8 = v54;
+    stateCopy = v54;
     v25 = v92;
     v43 = v93;
     if (v91)
@@ -5920,7 +5920,7 @@ LABEL_36:
 
 LABEL_37:
     ++v46;
-    v9 = v94;
+    dCopy = v94;
     if (v43 == v46)
     {
       v43 = [v25 countByEnumeratingWithState:&v97 objects:v111 count:16];
@@ -5933,12 +5933,12 @@ LABEL_37:
     }
   }
 
-  v68 = [v8 stateWithStatus:@"Allow"];
+  v68 = [stateCopy stateWithStatus:@"Allow"];
   v96 = 0;
-  v69 = [(WFDatabase *)v95 saveSmartPromptState:v68 reference:v90 error:&v96];
+  v69 = [(WFDatabase *)selfCopy2 saveSmartPromptState:v68 reference:v90 error:&v96];
   v70 = v96;
   v71 = v70;
-  v9 = v94;
+  dCopy = v94;
   if (v69)
   {
     v72 = [WFSmartPromptDatabaseLookupResult alloc];
@@ -5947,7 +5947,7 @@ LABEL_37:
     v20 = [(WFSmartPromptDatabaseLookupResult *)v72 initWithAllowedStates:v73 deniedStates:MEMORY[0x1E695E0F0] undefinedStates:MEMORY[0x1E695E0F0]];
 
     v19 = v89;
-    v10 = v90;
+    referenceCopy = v90;
     goto LABEL_66;
   }
 
@@ -5961,7 +5961,7 @@ LABEL_37:
 
 LABEL_56:
   v19 = v89;
-  v10 = v90;
+  referenceCopy = v90;
 LABEL_57:
   v85 = getWFWorkflowExecutionLogObject();
   if (os_log_type_enabled(v85, OS_LOG_TYPE_DEFAULT))
@@ -5969,12 +5969,12 @@ LABEL_57:
     *buf = 136315395;
     v115 = "[WFDatabase(SmartPrompts) performDatabaseLookupForState:actionUUID:reference:]";
     v116 = 2113;
-    v117 = v8;
+    v117 = stateCopy;
     _os_log_impl(&dword_1CA256000, v85, OS_LOG_TYPE_DEFAULT, "%s Will prompt because no state in database matches lookup state: %{private}@", buf, 0x16u);
   }
 
   v65 = [WFSmartPromptDatabaseLookupResult alloc];
-  v109 = v8;
+  v109 = stateCopy;
   v66 = MEMORY[0x1E695DEC8];
   v67 = &v109;
 LABEL_60:
@@ -5988,70 +5988,70 @@ LABEL_67:
   return v20;
 }
 
-- (id)fetchFirstAllowedStateMatching:(id)a3 actionUUID:(id)a4 forReference:(id)a5
+- (id)fetchFirstAllowedStateMatching:(id)matching actionUUID:(id)d forReference:(id)reference
 {
-  v5 = [(WFDatabase *)self performDatabaseLookupForState:a3 actionUUID:a4 reference:a5];
-  v6 = [v5 allowedStates];
-  v7 = [v6 firstObject];
+  v5 = [(WFDatabase *)self performDatabaseLookupForState:matching actionUUID:d reference:reference];
+  allowedStates = [v5 allowedStates];
+  firstObject = [allowedStates firstObject];
 
-  if (v7)
+  if (firstObject)
   {
-    v8 = [v5 allowedStates];
-    v9 = [v8 firstObject];
+    allowedStates2 = [v5 allowedStates];
+    firstObject2 = [allowedStates2 firstObject];
   }
 
   else
   {
-    v9 = 0;
+    firstObject2 = 0;
   }
 
-  return v9;
+  return firstObject2;
 }
 
-- (id)approvalResultForContentAttributionSet:(id)a3 contentDestination:(id)a4 actionUUID:(id)a5 actionIdentifier:(id)a6 actionIndex:(unint64_t)a7 reference:(id)a8 allowedOnceStates:(id)a9
+- (id)approvalResultForContentAttributionSet:(id)set contentDestination:(id)destination actionUUID:(id)d actionIdentifier:(id)identifier actionIndex:(unint64_t)index reference:(id)reference allowedOnceStates:(id)states
 {
   v171 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v113 = a6;
-  v17 = a8;
-  v115 = a9;
-  if (!v16)
+  setCopy = set;
+  destinationCopy = destination;
+  dCopy = d;
+  identifierCopy = identifier;
+  referenceCopy = reference;
+  statesCopy = states;
+  if (!dCopy)
   {
-    v18 = [v17 identifier];
-    v16 = [(WFDatabase *)self generateAndPersistUUIDForActionWithIdentifier:v113 actionIndex:a7 workflowIdentifier:v18];
+    identifier = [referenceCopy identifier];
+    dCopy = [(WFDatabase *)self generateAndPersistUUIDForActionWithIdentifier:identifierCopy actionIndex:index workflowIdentifier:identifier];
   }
 
-  v19 = [v14 attributionSetByReplacingAccountWithAppOrigins];
+  attributionSetByReplacingAccountWithAppOrigins = [setCopy attributionSetByReplacingAccountWithAppOrigins];
 
-  v20 = [[WFSmartPromptApprovalResult alloc] initWithActionUUID:v16];
-  v114 = v19;
-  if ([v19 derivedDisclosureLevel] == 1 || objc_msgSend(v15, "promptingBehaviour"))
+  v20 = [[WFSmartPromptApprovalResult alloc] initWithActionUUID:dCopy];
+  v114 = attributionSetByReplacingAccountWithAppOrigins;
+  if ([attributionSetByReplacingAccountWithAppOrigins derivedDisclosureLevel] == 1 || objc_msgSend(destinationCopy, "promptingBehaviour"))
   {
-    v116 = [MEMORY[0x1E695DF70] array];
-    if ([v15 promptingBehaviour])
+    array = [MEMORY[0x1E695DF70] array];
+    if ([destinationCopy promptingBehaviour])
     {
       v21 = getWFSecurityLogObject();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
-        v22 = [v15 identifier];
+        identifier2 = [destinationCopy identifier];
         *buf = 136315395;
         v163 = "[WFDatabase(SmartPrompts) approvalResultForContentAttributionSet:contentDestination:actionUUID:actionIdentifier:actionIndex:reference:allowedOnceStates:]";
         v164 = 2113;
-        v165 = v22;
+        v165 = identifier2;
         _os_log_impl(&dword_1CA256000, v21, OS_LOG_TYPE_DEFAULT, "%s Content destination %{private}@ requires first run approval, will prompt for special request", buf, 0x16u);
       }
 
-      v23 = [[WFSmartPromptState alloc] initWithMode:@"ActionWildcard" sourceContentAttribution:0 actionUUID:v16 contentDestination:v15 status:@"Undefined"];
-      [v116 addObject:v23];
+      v23 = [[WFSmartPromptState alloc] initWithMode:@"ActionWildcard" sourceContentAttribution:0 actionUUID:dCopy contentDestination:destinationCopy status:@"Undefined"];
+      [array addObject:v23];
     }
 
-    v112 = [[WFSmartPromptState alloc] initWithMode:@"UserWildcard" sourceContentAttribution:0 actionUUID:v16 contentDestination:v15 status:@"Allow"];
+    v112 = [[WFSmartPromptState alloc] initWithMode:@"UserWildcard" sourceContentAttribution:0 actionUUID:dCopy contentDestination:destinationCopy status:@"Allow"];
     [WFDatabase fetchFirstAllowedStateMatching:"fetchFirstAllowedStateMatching:actionUUID:forReference:" actionUUID:? forReference:?];
-    v127 = v15;
-    v129 = v16;
-    v130 = v17;
+    v127 = destinationCopy;
+    v129 = dCopy;
+    v130 = referenceCopy;
     v111 = v117 = v20;
     if (v111)
     {
@@ -6059,8 +6059,8 @@ LABEL_67:
       v158 = 0u;
       v155 = 0u;
       v156 = 0u;
-      v24 = [v114 attributions];
-      v25 = [v24 countByEnumeratingWithState:&v155 objects:v170 count:16];
+      attributions = [v114 attributions];
+      v25 = [attributions countByEnumeratingWithState:&v155 objects:v170 count:16];
       if (v25)
       {
         v26 = v25;
@@ -6071,15 +6071,15 @@ LABEL_67:
           {
             if (*v156 != v27)
             {
-              objc_enumerationMutation(v24);
+              objc_enumerationMutation(attributions);
             }
 
             v29 = *(*(&v155 + 1) + 8 * i);
             if ([v29 disclosureLevel] == 1)
             {
-              v30 = [[WFSmartPromptState alloc] initWithMode:@"Normal" sourceContentAttribution:v29 actionUUID:v16 contentDestination:v127 status:@"Allow"];
+              v30 = [[WFSmartPromptState alloc] initWithMode:@"Normal" sourceContentAttribution:v29 actionUUID:dCopy contentDestination:v127 status:@"Allow"];
               v154 = 0;
-              v31 = [(WFDatabase *)self saveSmartPromptState:v30 reference:v17 error:&v154];
+              v31 = [(WFDatabase *)self saveSmartPromptState:v30 reference:referenceCopy error:&v154];
               v32 = v154;
               if (!v31)
               {
@@ -6094,19 +6094,19 @@ LABEL_67:
                 }
               }
 
-              v16 = v129;
-              v17 = v130;
+              dCopy = v129;
+              referenceCopy = v130;
             }
           }
 
-          v26 = [v24 countByEnumeratingWithState:&v155 objects:v170 count:16];
+          v26 = [attributions countByEnumeratingWithState:&v155 objects:v170 count:16];
         }
 
         while (v26);
       }
 
       v34 = getWFSecurityLogObject();
-      v15 = v127;
+      destinationCopy = v127;
       if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 136315395;
@@ -6123,26 +6123,26 @@ LABEL_67:
     if (objc_opt_isKindOfClass())
     {
       v35 = [WFSmartPromptState alloc];
-      v36 = [MEMORY[0x1E6996F90] locationMatchingAnyHostname];
-      v37 = [(WFSmartPromptState *)v35 initWithMode:@"UserWildcard" sourceContentAttribution:0 actionUUID:v16 contentDestination:v36 status:@"Allow"];
+      locationMatchingAnyHostname = [MEMORY[0x1E6996F90] locationMatchingAnyHostname];
+      v37 = [(WFSmartPromptState *)v35 initWithMode:@"UserWildcard" sourceContentAttribution:0 actionUUID:dCopy contentDestination:locationMatchingAnyHostname status:@"Allow"];
 
-      v38 = [(WFDatabase *)self fetchFirstAllowedStateMatching:v37 actionUUID:v16 forReference:v17];
+      v38 = [(WFDatabase *)self fetchFirstAllowedStateMatching:v37 actionUUID:dCopy forReference:referenceCopy];
       if (v38)
       {
         obj = v38;
         v125 = v37;
         v39 = MEMORY[0x1E695DF70];
-        v40 = [v114 attributions];
-        v41 = [v39 arrayWithCapacity:{objc_msgSend(v40, "count") + 1}];
+        attributions2 = [v114 attributions];
+        v41 = [v39 arrayWithCapacity:{objc_msgSend(attributions2, "count") + 1}];
 
-        v121 = [[WFSmartPromptState alloc] initWithMode:@"ActionWildcard" sourceContentAttribution:0 actionUUID:v16 contentDestination:v15 status:@"Allow"];
+        v121 = [[WFSmartPromptState alloc] initWithMode:@"ActionWildcard" sourceContentAttribution:0 actionUUID:dCopy contentDestination:destinationCopy status:@"Allow"];
         [v41 addObject:?];
         v152 = 0u;
         v153 = 0u;
         v150 = 0u;
         v151 = 0u;
-        v42 = [v114 attributions];
-        v43 = [v42 countByEnumeratingWithState:&v150 objects:v169 count:16];
+        attributions3 = [v114 attributions];
+        v43 = [attributions3 countByEnumeratingWithState:&v150 objects:v169 count:16];
         if (v43)
         {
           v44 = v43;
@@ -6153,18 +6153,18 @@ LABEL_67:
             {
               if (*v151 != v45)
               {
-                objc_enumerationMutation(v42);
+                objc_enumerationMutation(attributions3);
               }
 
               v47 = *(*(&v150 + 1) + 8 * j);
               if ([v47 disclosureLevel] == 1)
               {
-                v48 = [[WFSmartPromptState alloc] initWithMode:@"Normal" sourceContentAttribution:v47 actionUUID:v129 contentDestination:v15 status:@"Allow"];
+                v48 = [[WFSmartPromptState alloc] initWithMode:@"Normal" sourceContentAttribution:v47 actionUUID:v129 contentDestination:destinationCopy status:@"Allow"];
                 [v41 addObject:v48];
               }
             }
 
-            v44 = [v42 countByEnumeratingWithState:&v150 objects:v169 count:16];
+            v44 = [attributions3 countByEnumeratingWithState:&v150 objects:v169 count:16];
           }
 
           while (v44);
@@ -6214,7 +6214,7 @@ LABEL_67:
         }
 
         v58 = getWFSecurityLogObject();
-        v15 = v127;
+        destinationCopy = v127;
         if (os_log_type_enabled(v58, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 136315650;
@@ -6226,14 +6226,14 @@ LABEL_67:
           _os_log_impl(&dword_1CA256000, v58, OS_LOG_TYPE_DEFAULT, "%s Flattened network wildcard with content destination: %@ into states %@", buf, 0x20u);
         }
 
-        v17 = v130;
+        referenceCopy = v130;
         v20 = v117;
         v38 = obj;
         v37 = v125;
       }
     }
 
-    if ([v15 promptingBehaviour] != 2)
+    if ([destinationCopy promptingBehaviour] != 2)
     {
       v143 = 0u;
       v144 = 0u;
@@ -6260,15 +6260,15 @@ LABEL_67:
             v63 = *(*(&v141 + 1) + 8 * v62);
             if ([v63 disclosureLevel] == 1)
             {
-              v64 = [v63 origin];
-              v65 = v15;
+              origin = [v63 origin];
+              v65 = destinationCopy;
               v126 = v63;
-              if (v64)
+              if (origin)
               {
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
-                  v66 = v64;
+                  v66 = origin;
                 }
 
                 else
@@ -6284,7 +6284,7 @@ LABEL_67:
 
               v67 = v66;
               v68 = v65;
-              if (v15)
+              if (destinationCopy)
               {
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
@@ -6308,19 +6308,19 @@ LABEL_67:
               v128 = v67;
               if (v67 && v70)
               {
-                v71 = [v67 appDescriptor];
-                v72 = [v71 bundleIdentifier];
-                v73 = [v70 appDescriptor];
-                v74 = [v73 bundleIdentifier];
-                if ([v72 isEqualToString:v74])
+                appDescriptor = [v67 appDescriptor];
+                bundleIdentifier = [appDescriptor bundleIdentifier];
+                appDescriptor2 = [v70 appDescriptor];
+                bundleIdentifier2 = [appDescriptor2 bundleIdentifier];
+                if ([bundleIdentifier isEqualToString:bundleIdentifier2])
                 {
-                  v75 = [v67 accountIdentifier];
+                  accountIdentifier = [v67 accountIdentifier];
                   [v70 accountIdentifier];
                   v76 = v118 = v70;
-                  v77 = [v75 isEqualToString:v76];
+                  v77 = [accountIdentifier isEqualToString:v76];
 
                   v70 = v118;
-                  v15 = v127;
+                  destinationCopy = v127;
                 }
 
                 else
@@ -6333,8 +6333,8 @@ LABEL_67:
 
               else
               {
-                v78 = v64;
-                if (v64)
+                v78 = origin;
+                if (origin)
                 {
                   objc_opt_class();
                   if (objc_opt_isKindOfClass())
@@ -6353,10 +6353,10 @@ LABEL_67:
                   v79 = 0;
                 }
 
-                v71 = v79;
+                appDescriptor = v79;
 
                 v80 = v68;
-                if (v15)
+                if (destinationCopy)
                 {
                   objc_opt_class();
                   if (objc_opt_isKindOfClass())
@@ -6375,18 +6375,18 @@ LABEL_67:
                   v81 = 0;
                 }
 
-                v72 = v81;
+                bundleIdentifier = v81;
 
-                if (v71 && v72)
+                if (appDescriptor && bundleIdentifier)
                 {
-                  [v71 appDescriptor];
+                  [appDescriptor appDescriptor];
                   v82 = v119 = v70;
-                  v83 = [v82 bundleIdentifier];
-                  v84 = [v72 appDescriptor];
-                  v85 = [v84 bundleIdentifier];
-                  v77 = [v83 isEqualToString:v85];
+                  bundleIdentifier3 = [v82 bundleIdentifier];
+                  appDescriptor3 = [bundleIdentifier appDescriptor];
+                  bundleIdentifier4 = [appDescriptor3 bundleIdentifier];
+                  v77 = [bundleIdentifier3 isEqualToString:bundleIdentifier4];
 
-                  v15 = v127;
+                  destinationCopy = v127;
                   v20 = v117;
 
                   v70 = v119;
@@ -6405,11 +6405,11 @@ LABEL_67:
                 v60 = v122;
                 if (os_log_type_enabled(&v86->super, OS_LOG_TYPE_DEFAULT))
                 {
-                  v87 = [v126 origin];
+                  origin2 = [v126 origin];
                   *buf = 136315395;
                   v163 = "[WFDatabase(SmartPrompts) approvalResultForContentAttributionSet:contentDestination:actionUUID:actionIdentifier:actionIndex:reference:allowedOnceStates:]";
                   v164 = 2113;
-                  v165 = v87;
+                  v165 = origin2;
                   _os_log_impl(&dword_1CA256000, &v86->super, OS_LOG_TYPE_DEFAULT, "%s Ignoring content attribution with origin %{private}@, as source and destination of content are the same", buf, 0x16u);
                 }
               }
@@ -6417,7 +6417,7 @@ LABEL_67:
               else
               {
                 v86 = [[WFSmartPromptState alloc] initWithMode:@"Normal" sourceContentAttribution:v126 actionUUID:v129 contentDestination:v68 status:@"Undefined"];
-                [v116 addObject:v86];
+                [array addObject:v86];
                 v61 = v120;
                 v60 = v122;
               }
@@ -6433,16 +6433,16 @@ LABEL_67:
         while (v60);
       }
 
-      v17 = v130;
+      referenceCopy = v130;
     }
 
-    if ([v115 count])
+    if ([statesCopy count])
     {
       v139 = 0u;
       v140 = 0u;
       v137 = 0u;
       v138 = 0u;
-      v88 = v116;
+      v88 = array;
       v89 = [v88 countByEnumeratingWithState:&v137 objects:v160 count:16];
       if (v89)
       {
@@ -6463,13 +6463,13 @@ LABEL_67:
             v136[2] = __154__WFDatabase_SmartPrompts__approvalResultForContentAttributionSet_contentDestination_actionUUID_actionIdentifier_actionIndex_reference_allowedOnceStates___block_invoke;
             v136[3] = &unk_1E8377F90;
             v136[4] = v93;
-            v94 = [v115 objectsPassingTest:v136];
+            v94 = [statesCopy objectsPassingTest:v136];
             v95 = [v94 count];
 
             if (!v95)
             {
 
-              v17 = v130;
+              referenceCopy = v130;
               v20 = v117;
               goto LABEL_108;
             }
@@ -6485,13 +6485,13 @@ LABEL_67:
         }
       }
 
-      v16 = v129;
+      dCopy = v129;
       v96 = [[WFSmartPromptApprovalResult alloc] initWithActionUUID:v129];
       v97 = [WFSmartPromptDatabaseLookupResult alloc];
       v98 = [(WFSmartPromptDatabaseLookupResult *)v97 initWithAllowedStates:v88 deniedStates:MEMORY[0x1E695E0F0] undefinedStates:MEMORY[0x1E695E0F0]];
       v99 = [(WFSmartPromptApprovalResult *)v96 resultByAddingDatabaseResult:v98];
 
-      v17 = v130;
+      referenceCopy = v130;
       v100 = v117;
     }
 
@@ -6502,13 +6502,13 @@ LABEL_108:
       v135 = 0u;
       v132 = 0u;
       v133 = 0u;
-      v101 = v116;
+      v101 = array;
       v102 = [v101 countByEnumeratingWithState:&v132 objects:v159 count:16];
       if (v102)
       {
         v103 = v102;
         v104 = *v133;
-        v16 = v129;
+        dCopy = v129;
         do
         {
           v105 = 0;
@@ -6520,7 +6520,7 @@ LABEL_108:
               objc_enumerationMutation(v101);
             }
 
-            v107 = [(WFDatabase *)self performDatabaseLookupForState:*(*(&v132 + 1) + 8 * v105) actionUUID:v129 reference:v17];
+            v107 = [(WFDatabase *)self performDatabaseLookupForState:*(*(&v132 + 1) + 8 * v105) actionUUID:v129 reference:referenceCopy];
             v20 = [(WFSmartPromptApprovalResult *)v106 resultByAddingDatabaseResult:v107];
 
             ++v105;
@@ -6536,7 +6536,7 @@ LABEL_108:
 
       else
       {
-        v16 = v129;
+        dCopy = v129;
       }
 
       v100 = v20;
@@ -6574,70 +6574,70 @@ uint64_t __154__WFDatabase_SmartPrompts__approvalResultForContentAttributionSet_
   return result;
 }
 
-- (void)saveOutputActionSmartPromtDataForWorkflowReference:(id)a3 error:(id *)a4
+- (void)saveOutputActionSmartPromtDataForWorkflowReference:(id)reference error:(id *)error
 {
   v20 = 0;
-  v5 = [WFWorkflow workflowWithReference:a3 database:self error:&v20];
+  v5 = [WFWorkflow workflowWithReference:reference database:self error:&v20];
   v6 = v20;
   v7 = v6;
-  if (a4)
+  if (error)
   {
     v8 = v6;
-    *a4 = v7;
+    *error = v7;
   }
 
-  v9 = [v5 actions];
-  v10 = [v9 lastObject];
+  actions = [v5 actions];
+  lastObject = [actions lastObject];
 
-  v11 = [v10 generateUUIDIfNecessaryWithUUIDProvider:0];
+  v11 = [lastObject generateUUIDIfNecessaryWithUUIDProvider:0];
   v12 = [WFActionOutputVariable alloc];
-  v13 = [v10 outputName];
-  v14 = [(WFActionOutputVariable *)v12 initWithOutputUUID:v11 outputName:v13 variableProvider:v10 aggrandizements:0];
+  outputName = [lastObject outputName];
+  v14 = [(WFActionOutputVariable *)v12 initWithOutputUUID:v11 outputName:outputName variableProvider:lastObject aggrandizements:0];
 
   v15 = +[WFActionRegistry sharedRegistry];
   v16 = [v15 createActionWithIdentifier:@"is.workflow.actions.output" serializedParameters:0];
 
-  v17 = [v16 inputParameter];
-  v18 = [objc_alloc(objc_msgSend(v17 "stateClass"))];
-  v19 = [v17 key];
+  inputParameter = [v16 inputParameter];
+  v18 = [objc_alloc(objc_msgSend(inputParameter "stateClass"))];
+  v19 = [inputParameter key];
   [v16 setParameterState:v18 forKey:v19];
 
   [v5 addAction:v16];
   [v5 save];
 }
 
-- (id)conflictForWorkflowReference:(id)a3
+- (id)conflictForWorkflowReference:(id)reference
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [(WFDatabase *)self conflictingReferenceForWorkflowID:v5];
+  referenceCopy = reference;
+  identifier = [referenceCopy identifier];
+  v6 = [(WFDatabase *)self conflictingReferenceForWorkflowID:identifier];
 
   if (v6)
   {
-    v7 = [(WFDatabase *)self recordWithDescriptor:v4 error:0];
+    v7 = [(WFDatabase *)self recordWithDescriptor:referenceCopy error:0];
     v8 = [(WFDatabase *)self recordWithDescriptor:v6 error:0];
     v9 = objc_opt_new();
     if ([v7 isConflictOfOtherWorkflow])
     {
-      v10 = [v6 identifier];
-      [v9 setLocalWorkflowID:v10];
+      identifier2 = [v6 identifier];
+      [v9 setLocalWorkflowID:identifier2];
 
       [v9 setLocalWorkflowRecord:v8];
-      v11 = [v4 identifier];
+      identifier3 = [referenceCopy identifier];
       v12 = v7;
     }
 
     else
     {
-      v13 = [v4 identifier];
-      [v9 setLocalWorkflowID:v13];
+      identifier4 = [referenceCopy identifier];
+      [v9 setLocalWorkflowID:identifier4];
 
       [v9 setLocalWorkflowRecord:v7];
-      v11 = [v6 identifier];
+      identifier3 = [v6 identifier];
       v12 = v8;
     }
 
-    [v9 setRemoteWorkflowID:v11];
+    [v9 setRemoteWorkflowID:identifier3];
 
     [v9 setRemoteWorkflowRecord:v12];
   }
@@ -6650,7 +6650,7 @@ uint64_t __154__WFDatabase_SmartPrompts__approvalResultForContentAttributionSet_
   return v9;
 }
 
-- (BOOL)setWalrusStateForTesting:(int64_t)a3 withError:(id *)a4
+- (BOOL)setWalrusStateForTesting:(int64_t)testing withError:(id *)error
 {
   v8 = 0;
   v9[0] = MEMORY[0x1E69E9820];
@@ -6658,13 +6658,13 @@ uint64_t __154__WFDatabase_SmartPrompts__approvalResultForContentAttributionSet_
   v9[2] = __49__WFDatabase_setWalrusStateForTesting_withError___block_invoke;
   v9[3] = &unk_1E837A280;
   v9[4] = self;
-  v9[5] = a3;
+  v9[5] = testing;
   [(WFDatabase *)self performTransactionWithReason:@"clearing Walrus state for testing" block:v9 error:&v8];
   v5 = v8;
-  if (a4)
+  if (error)
   {
     v5 = v5;
-    *a4 = v5;
+    *error = v5;
   }
 
   v6 = v5 == 0;
@@ -6753,8 +6753,8 @@ void __49__WFDatabase_setWalrusStateForTesting_withError___block_invoke(uint64_t
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(WFDatabase *)self fileURL];
-  v7 = [v3 stringWithFormat:@"<%@: %p, fileURL: %@>", v5, self, v6];
+  fileURL = [(WFDatabase *)self fileURL];
+  v7 = [v3 stringWithFormat:@"<%@: %p, fileURL: %@>", v5, self, fileURL];
 
   return v7;
 }
@@ -6767,14 +6767,14 @@ void __49__WFDatabase_setWalrusStateForTesting_withError___block_invoke(uint64_t
   v10 = __Block_byref_object_copy__43875;
   v11 = __Block_byref_object_dispose__43876;
   v12 = 0;
-  v3 = [(WFDatabase *)self context];
+  context = [(WFDatabase *)self context];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __27__WFDatabase_activeResults__block_invoke;
   v6[3] = &unk_1E837F898;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 performBlockAndWait:v6];
+  [context performBlockAndWait:v6];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -6794,40 +6794,40 @@ void __27__WFDatabase_activeResults__block_invoke(uint64_t a1)
 - (NSArray)activeObjectObservers
 {
   os_unfair_lock_lock(&self->_observersLock);
-  v3 = [(WFDatabase *)self observers];
-  v4 = [v3 allObjects];
+  observers = [(WFDatabase *)self observers];
+  allObjects = [observers allObjects];
 
   os_unfair_lock_unlock(&self->_observersLock);
 
-  return v4;
+  return allObjects;
 }
 
-- (void)updateAppDescriptor:(id)a3 atKey:(id)a4 actionUUID:(id)a5 actionIndex:(id)a6 actionIdentifier:(id)a7 workflowID:(id)a8
+- (void)updateAppDescriptor:(id)descriptor atKey:(id)key actionUUID:(id)d actionIndex:(id)index actionIdentifier:(id)identifier workflowID:(id)iD
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  descriptorCopy = descriptor;
+  keyCopy = key;
+  dCopy = d;
+  indexCopy = index;
+  identifierCopy = identifier;
+  iDCopy = iD;
   v27 = 0;
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __91__WFDatabase_updateAppDescriptor_atKey_actionUUID_actionIndex_actionIdentifier_workflowID___block_invoke;
   v28[3] = &unk_1E837A258;
-  v29 = v19;
-  v30 = self;
-  v31 = v16;
-  v32 = v18;
-  v33 = v17;
-  v34 = v14;
-  v35 = v15;
-  v20 = v15;
-  v21 = v14;
-  v22 = v17;
-  v23 = v18;
-  v24 = v16;
-  v25 = v19;
+  v29 = iDCopy;
+  selfCopy = self;
+  v31 = dCopy;
+  v32 = identifierCopy;
+  v33 = indexCopy;
+  v34 = descriptorCopy;
+  v35 = keyCopy;
+  v20 = keyCopy;
+  v21 = descriptorCopy;
+  v22 = indexCopy;
+  v23 = identifierCopy;
+  v24 = dCopy;
+  v25 = iDCopy;
   [(WFDatabase *)self performTransactionWithReason:@"update app descriptor for action" block:v28 error:&v27];
   v26 = v27;
 }
@@ -7116,10 +7116,10 @@ void __58__WFDatabase_addSpotlightSyncHashesToShortcutsIfNecessary__block_invoke
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)reloadRecord:(id)a3 withDescriptor:(id)a4 error:(id *)a5
+- (BOOL)reloadRecord:(id)record withDescriptor:(id)descriptor error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  recordCopy = record;
+  descriptorCopy = descriptor;
   v10 = getWFDatabaseLogObject();
   v11 = os_signpost_id_generate(v10);
 
@@ -7139,12 +7139,12 @@ void __58__WFDatabase_addSpotlightSyncHashesToShortcutsIfNecessary__block_invoke
   v21[1] = 3221225472;
   v21[2] = __48__WFDatabase_reloadRecord_withDescriptor_error___block_invoke;
   v21[3] = &unk_1E837A1E0;
-  v14 = v8;
+  v14 = recordCopy;
   v22 = v14;
-  v15 = v9;
+  v15 = descriptorCopy;
   v23 = v15;
   v24 = buf;
-  [(WFDatabase *)self accessStorageForDescriptor:v15 forWriting:0 readingRecordProperties:0 usingBlock:v21 withError:a5];
+  [(WFDatabase *)self accessStorageForDescriptor:v15 forWriting:0 readingRecordProperties:0 usingBlock:v21 withError:error];
   v16 = getWFDatabaseLogObject();
   v17 = v16;
   if (v11 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v16))
@@ -7181,10 +7181,10 @@ void __48__WFDatabase_reloadRecord_withDescriptor_error___block_invoke(uint64_t 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)saveRecord:(id)a3 withDescriptor:(id)a4 error:(id *)a5
+- (BOOL)saveRecord:(id)record withDescriptor:(id)descriptor error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  recordCopy = record;
+  descriptorCopy = descriptor;
   v10 = getWFDatabaseLogObject();
   v11 = os_signpost_id_generate(v10);
 
@@ -7205,13 +7205,13 @@ void __48__WFDatabase_reloadRecord_withDescriptor_error___block_invoke(uint64_t 
   v22[1] = 3221225472;
   v22[2] = __46__WFDatabase_saveRecord_withDescriptor_error___block_invoke;
   v22[3] = &unk_1E837A0A0;
-  v15 = v8;
+  v15 = recordCopy;
   v23 = v15;
-  v16 = v9;
-  v25 = self;
+  v16 = descriptorCopy;
+  selfCopy = self;
   v26 = buf;
   v24 = v16;
-  [(WFDatabase *)self accessStorageForDescriptor:v16 forWriting:1 readingRecordProperties:v14 usingBlock:v22 withError:a5];
+  [(WFDatabase *)self accessStorageForDescriptor:v16 forWriting:1 readingRecordProperties:v14 usingBlock:v22 withError:error];
 
   v17 = getWFDatabaseLogObject();
   v18 = v17;
@@ -7253,19 +7253,19 @@ void __46__WFDatabase_saveRecord_withDescriptor_error___block_invoke(uint64_t a1
   }
 }
 
-- (Class)recordClassForObjectType:(unint64_t)a3
+- (Class)recordClassForObjectType:(unint64_t)type
 {
   v4 = 0;
-  if (a3 > 2)
+  if (type > 2)
   {
-    if (a3 == 3)
+    if (type == 3)
     {
       v5 = off_1E836DF98;
     }
 
     else
     {
-      if (a3 != 10)
+      if (type != 10)
       {
         goto LABEL_11;
       }
@@ -7274,9 +7274,9 @@ void __46__WFDatabase_saveRecord_withDescriptor_error___block_invoke(uint64_t a1
     }
   }
 
-  else if (a3)
+  else if (type)
   {
-    if (a3 != 1)
+    if (type != 1)
     {
       goto LABEL_11;
     }
@@ -7296,16 +7296,16 @@ LABEL_11:
   return v4;
 }
 
-- (id)missingErrorForDescriptor:(id)a3
+- (id)missingErrorForDescriptor:(id)descriptor
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  descriptorCopy = descriptor;
+  if (descriptorCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = v3;
+      v4 = descriptorCopy;
     }
 
     else
@@ -7320,21 +7320,21 @@ LABEL_11:
   }
 
   v5 = v4;
-  v6 = [v5 name];
-  if (v6)
+  name = [v5 name];
+  if (name)
   {
-    v7 = v6;
+    name2 = name;
 
 LABEL_14:
     v11 = MEMORY[0x1E696AEC0];
     v12 = WFLocalizedString(@"“%@” does not exist.");
-    v13 = [v11 localizedStringWithFormat:v12, v7];
+    v13 = [v11 localizedStringWithFormat:v12, name2];
 
     goto LABEL_15;
   }
 
-  v8 = v3;
-  if (v3)
+  v8 = descriptorCopy;
+  if (descriptorCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -7355,9 +7355,9 @@ LABEL_14:
 
   v10 = v9;
 
-  v7 = [v10 name];
+  name2 = [v10 name];
 
-  if (v7)
+  if (name2)
   {
     goto LABEL_14;
   }
@@ -7375,18 +7375,18 @@ LABEL_15:
   return v16;
 }
 
-- (BOOL)startObservingChangesForResult:(id)a3
+- (BOOL)startObservingChangesForResult:(id)result
 {
-  v4 = a3;
-  v5 = [(WFDatabase *)self context];
+  resultCopy = result;
+  context = [(WFDatabase *)self context];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __45__WFDatabase_startObservingChangesForResult___block_invoke;
   v8[3] = &unk_1E837F870;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
-  [v5 performBlock:v8];
+  v9 = resultCopy;
+  v6 = resultCopy;
+  [context performBlock:v8];
 
   return 1;
 }
@@ -7397,10 +7397,10 @@ void __45__WFDatabase_startObservingChangesForResult___block_invoke(uint64_t a1)
   [v2 addObject:*(a1 + 40)];
 }
 
-- (unint64_t)countForResult:(id)a3
+- (unint64_t)countForResult:(id)result
 {
-  v4 = a3;
-  if (!v4)
+  resultCopy = result;
+  if (!resultCopy)
   {
     goto LABEL_9;
   }
@@ -7409,7 +7409,7 @@ void __45__WFDatabase_startObservingChangesForResult___block_invoke(uint64_t a1)
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
 
-    v9 = v4;
+    v9 = resultCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -7418,10 +7418,10 @@ void __45__WFDatabase_startObservingChangesForResult___block_invoke(uint64_t a1)
       v20[2] = __29__WFDatabase_countForResult___block_invoke_2;
       v20[3] = &unk_1E837F900;
       v21 = v9;
-      v22 = self;
-      v5 = v9;
+      selfCopy = self;
+      descriptors = v9;
       v10 = [(WFDatabase *)self performOperationWithReason:@"getting count for result" block:v20 error:0];
-      v7 = [v10 unsignedIntValue];
+      unsignedIntValue = [v10 unsignedIntValue];
 
       v8 = v21;
       goto LABEL_8;
@@ -7436,10 +7436,10 @@ void __45__WFDatabase_startObservingChangesForResult___block_invoke(uint64_t a1)
       v16 = __29__WFDatabase_countForResult___block_invoke_3;
       v17 = &unk_1E837F900;
       v18 = v11;
-      v19 = self;
-      v5 = v11;
+      selfCopy2 = self;
+      descriptors = v11;
       v12 = [(WFDatabase *)self performOperationWithReason:@"getting count for result" block:&v14 error:0];
-      v7 = [v12 unsignedIntValue];
+      unsignedIntValue = [v12 unsignedIntValue];
 
       v8 = v18;
       goto LABEL_8;
@@ -7447,8 +7447,8 @@ void __45__WFDatabase_startObservingChangesForResult___block_invoke(uint64_t a1)
 
 LABEL_9:
 
-    v5 = [v4 descriptors];
-    v7 = [v5 count];
+    descriptors = [resultCopy descriptors];
+    unsignedIntValue = [descriptors count];
     goto LABEL_10;
   }
 
@@ -7456,17 +7456,17 @@ LABEL_9:
   v23[1] = 3221225472;
   v23[2] = __29__WFDatabase_countForResult___block_invoke;
   v23[3] = &unk_1E837F900;
-  v24 = v4;
-  v25 = self;
-  v5 = v4;
+  v24 = resultCopy;
+  selfCopy3 = self;
+  descriptors = resultCopy;
   v6 = [(WFDatabase *)self performOperationWithReason:@"getting count for result" block:v23 error:0];
-  v7 = [v6 unsignedIntValue];
+  unsignedIntValue = [v6 unsignedIntValue];
 
   v8 = v24;
 LABEL_8:
 
 LABEL_10:
-  return v7;
+  return unsignedIntValue;
 }
 
 id __29__WFDatabase_countForResult___block_invoke(uint64_t a1, uint64_t a2)
@@ -7497,9 +7497,9 @@ id __29__WFDatabase_countForResult___block_invoke_3(uint64_t a1)
   return v4;
 }
 
-- (id)descriptorsForResult:(id)a3 state:(id *)a4 error:(id *)a5
+- (id)descriptorsForResult:(id)result state:(id *)state error:(id *)error
 {
-  v8 = a3;
+  resultCopy = result;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -7510,12 +7510,12 @@ id __29__WFDatabase_countForResult___block_invoke_3(uint64_t a1)
   v12[1] = 3221225472;
   v12[2] = __47__WFDatabase_descriptorsForResult_state_error___block_invoke;
   v12[3] = &unk_1E837A1B8;
-  v9 = v8;
+  v9 = resultCopy;
   v13 = v9;
-  v14 = self;
+  selfCopy = self;
   v15 = &v16;
-  v10 = [(WFDatabase *)self performOperationWithReason:@"getting descriptors for result" block:v12 error:a5];
-  *a4 = v17[5];
+  v10 = [(WFDatabase *)self performOperationWithReason:@"getting descriptors for result" block:v12 error:error];
+  *state = v17[5];
 
   _Block_object_dispose(&v16, 8);
 
@@ -7583,10 +7583,10 @@ LABEL_12:
   return v8;
 }
 
-- (id)descriptorsForFetchOperation:(id)a3 state:(id *)a4 error:(id *)a5
+- (id)descriptorsForFetchOperation:(id)operation state:(id *)state error:(id *)error
 {
   v58 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  operationCopy = operation;
   v9 = getWFDatabaseLogObject();
   v10 = os_signpost_id_generate(v9);
 
@@ -7595,12 +7595,12 @@ LABEL_12:
   if (v10 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v8;
+    *(&buf + 4) = operationCopy;
     _os_signpost_emit_with_name_impl(&dword_1CA256000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v10, "GetDescriptors", "operation=%{signpost.description:attribute}@", &buf, 0xCu);
   }
 
-  v13 = [(WFDatabase *)self context];
-  v14 = [v8 resultsWithContext:v13 error:a5];
+  context = [(WFDatabase *)self context];
+  v14 = [operationCopy resultsWithContext:context error:error];
 
   v15 = getWFDatabaseLogObject();
   v16 = v15;
@@ -7612,10 +7612,10 @@ LABEL_12:
 
   if (v14)
   {
-    v39 = self;
-    v41 = a4;
-    v17 = [v8 entity];
-    v43 = [v17 relationshipsByName];
+    selfCopy = self;
+    stateCopy = state;
+    entity = [operationCopy entity];
+    relationshipsByName = [entity relationshipsByName];
 
     v44 = objc_opt_new();
     v18 = objc_opt_new();
@@ -7641,23 +7641,23 @@ LABEL_12:
 
           v23 = *(*(&v49 + 1) + 8 * i);
           v24 = objc_autoreleasePoolPush();
-          v25 = [v23 descriptor];
+          descriptor = [v23 descriptor];
           v26 = objc_opt_class();
-          v27 = WFEnforceClass_44012(v25, v26);
+          v27 = WFEnforceClass_44012(descriptor, v26);
 
           if (v27)
           {
-            v28 = [v23 objectID];
-            [v18 addObject:v28];
+            objectID = [v23 objectID];
+            [v18 addObject:objectID];
 
             v45[0] = MEMORY[0x1E69E9820];
             v45[1] = 3221225472;
             v45[2] = __55__WFDatabase_descriptorsForFetchOperation_state_error___block_invoke;
             v45[3] = &unk_1E837A190;
-            v46 = v8;
+            v46 = operationCopy;
             v47 = v18;
             v48 = v23;
-            [v43 enumerateKeysAndObjectsUsingBlock:v45];
+            [relationshipsByName enumerateKeysAndObjectsUsingBlock:v45];
             [v44 addObject:v27];
           }
 
@@ -7670,17 +7670,17 @@ LABEL_12:
       while (v20);
     }
 
-    v29 = [v8 entity];
-    v30 = [v29 name];
-    v31 = WFDatabaseObjectTypeForEntityName(v30);
+    entity2 = [operationCopy entity];
+    name = [entity2 name];
+    v31 = WFDatabaseObjectTypeForEntityName(name);
 
-    v32 = [(WFDatabase *)v39 context];
+    context2 = [(WFDatabase *)selfCopy context];
     *&buf = MEMORY[0x1E69E9820];
     *(&buf + 1) = 3221225472;
     v55 = __WFDescriptorsForObjectIDs_block_invoke;
     v56 = &unk_1E837A2A8;
-    v57 = v32;
-    v33 = v32;
+    v57 = context2;
+    v33 = context2;
     v34 = [v18 if_compactMap:&buf];
 
     v35 = objc_alloc(MEMORY[0x1E69E0A70]);
@@ -7690,7 +7690,7 @@ LABEL_12:
       v36 = objc_opt_new();
     }
 
-    *v41 = [v35 initWithObjectType:v31 state:v36];
+    *stateCopy = [v35 initWithObjectType:v31 state:v36];
     if (!v34)
     {
     }
@@ -7724,14 +7724,14 @@ void __55__WFDatabase_descriptorsForFetchOperation_state_error___block_invoke(ui
   }
 }
 
-- (void)writeCapsuleDataAndUpdatedSyncHashToCoreDataLibrary:(id)a3
+- (void)writeCapsuleDataAndUpdatedSyncHashToCoreDataLibrary:(id)library
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  libraryCopy = library;
   if (!self->_library)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"WFDatabase.m" lineNumber:984 description:{@"Invalid parameter not satisfying: %@", @"_library"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFDatabase.m" lineNumber:984 description:{@"Invalid parameter not satisfying: %@", @"_library"}];
   }
 
   v6 = getWFCoherenceLogObject();
@@ -7748,12 +7748,12 @@ void __55__WFDatabase_descriptorsForFetchOperation_state_error___block_invoke(ui
   v9 = v16;
   if (v8)
   {
-    [v5 setData:v8];
-    [v5 setSyncHash:{+[WFLibraryRecord syncHashFromData:](WFLibraryRecord, "syncHashFromData:", v8)}];
-    self->_lastLoadedLibrarySyncHash = [v5 syncHash];
+    [libraryCopy setData:v8];
+    [libraryCopy setSyncHash:{+[WFLibraryRecord syncHashFromData:](WFLibraryRecord, "syncHashFromData:", v8)}];
+    self->_lastLoadedLibrarySyncHash = [libraryCopy syncHash];
     v10 = objc_alloc(MEMORY[0x1E69E0A68]);
-    v11 = [(WFLibrary *)self->_library identifier];
-    v12 = [v10 initWithIdentifier:v11 objectType:10];
+    identifier = [(WFLibrary *)self->_library identifier];
+    v12 = [v10 initWithIdentifier:identifier objectType:10];
     [(WFDatabase *)self addPendingUpdatedDescriptor:v12];
 
     [(WFDatabase *)self setLibraryNeedsSave:0];
@@ -7778,42 +7778,42 @@ void __55__WFDatabase_descriptorsForFetchOperation_state_error___block_invoke(ui
 - (void)saveLibraryToDatabase
 {
   v7 = self->_library;
-  v3 = [(WFDatabase *)self coreDataLibrary];
-  if (!v3)
+  coreDataLibrary = [(WFDatabase *)self coreDataLibrary];
+  if (!coreDataLibrary)
   {
     v4 = [WFCoreDataLibrary alloc];
-    v5 = [(WFDatabase *)self context];
-    v3 = [(WFCoreDataLibrary *)v4 initWithContext:v5];
+    context = [(WFDatabase *)self context];
+    coreDataLibrary = [(WFCoreDataLibrary *)v4 initWithContext:context];
 
-    v6 = [(WFLibrary *)v7 identifier];
-    [(WFCoreDataLibrary *)v3 setIdentifier:v6];
+    identifier = [(WFLibrary *)v7 identifier];
+    [(WFCoreDataLibrary *)coreDataLibrary setIdentifier:identifier];
   }
 
-  [(WFDatabase *)self writeCapsuleDataAndUpdatedSyncHashToCoreDataLibrary:v3];
+  [(WFDatabase *)self writeCapsuleDataAndUpdatedSyncHashToCoreDataLibrary:coreDataLibrary];
 }
 
 - (id)coreDataLibrary
 {
   v3 = +[WFCoreDataLibrary fetchRequest];
   [v3 setFetchLimit:1];
-  v4 = [(WFDatabase *)self context];
-  v5 = [v4 executeFetchRequest:v3 error:0];
+  context = [(WFDatabase *)self context];
+  v5 = [context executeFetchRequest:v3 error:0];
 
-  v6 = [v5 firstObject];
+  firstObject = [v5 firstObject];
 
-  return v6;
+  return firstObject;
 }
 
 - (WFLibrary)library
 {
   v40 = *MEMORY[0x1E69E9840];
-  v3 = [(WFDatabase *)self coreDataLibrary];
-  v4 = v3;
+  coreDataLibrary = [(WFDatabase *)self coreDataLibrary];
+  v4 = coreDataLibrary;
   p_library = &self->_library;
   if (self->_library)
   {
     lastLoadedLibrarySyncHash = self->_lastLoadedLibrarySyncHash;
-    if (lastLoadedLibrarySyncHash == [v3 syncHash])
+    if (lastLoadedLibrarySyncHash == [coreDataLibrary syncHash])
     {
       goto LABEL_35;
     }
@@ -7846,8 +7846,8 @@ void __55__WFDatabase_descriptorsForFetchOperation_state_error___block_invoke(ui
     self->_library = v20;
 
     [(WFDatabase *)self saveLibraryToDatabase];
-    v16 = [(WFDatabase *)self context];
-    [(WFLibrary *)v16 save:0];
+    context = [(WFDatabase *)self context];
+    [(WFLibrary *)context save:0];
     goto LABEL_31;
   }
 
@@ -7859,9 +7859,9 @@ void __55__WFDatabase_descriptorsForFetchOperation_state_error___block_invoke(ui
   }
 
   v13 = [WFLibrary alloc];
-  v14 = [v4 identifier];
-  v15 = [v4 data];
-  v16 = [(WFLibrary *)v13 initWithIdentifier:v14 data:v15];
+  identifier = [v4 identifier];
+  data = [v4 data];
+  context = [(WFLibrary *)v13 initWithIdentifier:identifier data:data];
 
   if (!-[WFDatabase persistenceMode](self, "persistenceMode") && [v4 resetVersion] <= 0)
   {
@@ -7873,21 +7873,21 @@ void __55__WFDatabase_descriptorsForFetchOperation_state_error___block_invoke(ui
       _os_log_impl(&dword_1CA256000, v24, OS_LOG_TYPE_DEFAULT, "%s Erasing change history and updating resetVersion", buf, 0xCu);
     }
 
-    v25 = [(WFLibrary *)v16 libraryByErasingChangeHistory];
+    libraryByErasingChangeHistory = [(WFLibrary *)context libraryByErasingChangeHistory];
 
     [v4 setResetVersion:1];
-    v26 = [(WFDatabase *)self fileURL];
-    if (v26)
+    fileURL = [(WFDatabase *)self fileURL];
+    if (fileURL)
     {
-      v27 = [MEMORY[0x1E696AC08] defaultManager];
-      v28 = [v26 URLByAppendingPathComponent:@"Coherence" isDirectory:1];
-      [v27 removeItemAtURL:v28 error:0];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      v28 = [fileURL URLByAppendingPathComponent:@"Coherence" isDirectory:1];
+      [defaultManager removeItemAtURL:v28 error:0];
     }
 
     v22 = 1;
-    v16 = v25;
+    context = libraryByErasingChangeHistory;
 LABEL_28:
-    objc_storeStrong(&self->_library, v16);
+    objc_storeStrong(&self->_library, context);
     self->_lastLoadedLibrarySyncHash = [v4 syncHash];
     if (!v22)
     {
@@ -7905,8 +7905,8 @@ LABEL_28:
   }
 
   v35 = 0;
-  v18 = [(WFLibrary *)v17 mergeWithOther:v16 error:&v35];
-  v19 = v35;
+  v18 = [(WFLibrary *)v17 mergeWithOther:context error:&v35];
+  context2 = v35;
   if (v18)
   {
     if ([v18 hasDeltaFromOther])
@@ -7914,8 +7914,8 @@ LABEL_28:
 
 LABEL_29:
       [(WFDatabase *)self writeCapsuleDataAndUpdatedSyncHashToCoreDataLibrary:v4];
-      v19 = [(WFDatabase *)self context];
-      [v19 save:0];
+      context2 = [(WFDatabase *)self context];
+      [context2 save:0];
       goto LABEL_30;
     }
   }
@@ -7928,11 +7928,11 @@ LABEL_29:
       *buf = 136315394;
       v37 = "[WFDatabase library]";
       v38 = 2112;
-      v39 = v19;
+      v39 = context2;
       _os_log_impl(&dword_1CA256000, v23, OS_LOG_TYPE_ERROR, "%s Could not merge libraries: %@", buf, 0x16u);
     }
 
-    objc_storeStrong(&self->_library, v16);
+    objc_storeStrong(&self->_library, context);
   }
 
   self->_lastLoadedLibrarySyncHash = [v4 syncHash];
@@ -7956,25 +7956,25 @@ LABEL_35:
   return v31;
 }
 
-- (void)notifyResultsAboutChange:(id)a3
+- (void)notifyResultsAboutChange:(id)change
 {
   v67 = *MEMORY[0x1E69E9840];
-  v46 = a3;
+  changeCopy = change;
   dispatch_assert_queue_V2(self->_changeNotificationQueue);
-  v45 = self;
-  v42 = [(WFDatabase *)self activeObjectObservers];
-  if ([v42 count])
+  selfCopy = self;
+  activeObjectObservers = [(WFDatabase *)self activeObjectObservers];
+  if ([activeObjectObservers count])
   {
-    v4 = [v46 updatedDescriptors];
-    v5 = [v46 insertedDescriptors];
-    v6 = [v46 deletedDescriptors];
-    if ([v4 count] || objc_msgSend(v5, "count") || objc_msgSend(v6, "count"))
+    updatedDescriptors = [changeCopy updatedDescriptors];
+    insertedDescriptors = [changeCopy insertedDescriptors];
+    deletedDescriptors = [changeCopy deletedDescriptors];
+    if ([updatedDescriptors count] || objc_msgSend(insertedDescriptors, "count") || objc_msgSend(deletedDescriptors, "count"))
     {
       v63 = 0u;
       v64 = 0u;
       v61 = 0u;
       v62 = 0u;
-      obj = v42;
+      obj = activeObjectObservers;
       v7 = [obj countByEnumeratingWithState:&v61 objects:v66 count:16];
       if (v7)
       {
@@ -7990,17 +7990,17 @@ LABEL_35:
             }
 
             v11 = *(*(&v61 + 1) + 8 * i);
-            v12 = [(WFDatabase *)self callbackQueue];
+            callbackQueue = [(WFDatabase *)self callbackQueue];
             block[0] = MEMORY[0x1E69E9820];
             block[1] = 3221225472;
             block[2] = __39__WFDatabase_notifyResultsAboutChange___block_invoke;
             block[3] = &unk_1E837C910;
             block[4] = v11;
             block[5] = self;
-            v58 = v4;
-            v59 = v5;
-            v60 = v6;
-            dispatch_async(v12, block);
+            v58 = updatedDescriptors;
+            v59 = insertedDescriptors;
+            v60 = deletedDescriptors;
+            dispatch_async(callbackQueue, block);
           }
 
           v8 = [obj countByEnumeratingWithState:&v61 objects:v66 count:16];
@@ -8018,8 +8018,8 @@ LABEL_35:
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v14 = [(WFDatabase *)self activeResults];
-  obja = [v14 countByEnumeratingWithState:&v53 objects:v65 count:16];
+  activeResults = [(WFDatabase *)self activeResults];
+  obja = [activeResults countByEnumeratingWithState:&v53 objects:v65 count:16];
   if (obja)
   {
     v15 = *v54;
@@ -8031,16 +8031,16 @@ LABEL_35:
       {
         if (*v54 != v15)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(activeResults);
         }
 
         v18 = *(*(&v53 + 1) + 8 * j);
-        v19 = [v18 state];
-        if (v19)
+        state = [v18 state];
+        if (state)
         {
-          v20 = v19;
-          v21 = [v18 state];
-          v22 = [v46 appliesToResultState:v21];
+          v20 = state;
+          state2 = [v18 state];
+          v22 = [changeCopy appliesToResultState:state2];
 
           if (!v22)
           {
@@ -8055,16 +8055,16 @@ LABEL_35:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v25 = [v23 fetchOperation];
-            v26 = [v44 objectForKeyedSubscript:v25];
+            fetchOperation = [v23 fetchOperation];
+            v26 = [v44 objectForKeyedSubscript:fetchOperation];
 
             if (!v26)
             {
               v27 = objc_opt_new();
-              [v44 setObject:v27 forKeyedSubscript:v25];
+              [v44 setObject:v27 forKeyedSubscript:fetchOperation];
             }
 
-            v28 = [v44 objectForKeyedSubscript:v25];
+            v28 = [v44 objectForKeyedSubscript:fetchOperation];
             [v28 addObject:v23];
 
             v29 = v23;
@@ -8073,23 +8073,23 @@ LABEL_35:
           else
           {
             v29 = 0;
-            v25 = v23;
+            fetchOperation = v23;
           }
 
           v31 = v23;
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v32 = [v31 libraryQuery];
-            v33 = [v13 objectForKeyedSubscript:v32];
+            libraryQuery = [v31 libraryQuery];
+            v33 = [v13 objectForKeyedSubscript:libraryQuery];
 
             if (!v33)
             {
               v34 = objc_opt_new();
-              [v13 setObject:v34 forKeyedSubscript:v32];
+              [v13 setObject:v34 forKeyedSubscript:libraryQuery];
             }
 
-            v35 = [v13 objectForKeyedSubscript:v32];
+            v35 = [v13 objectForKeyedSubscript:libraryQuery];
             [v35 addObject:v31];
 
             v30 = v31;
@@ -8098,23 +8098,23 @@ LABEL_35:
           else
           {
             v30 = 0;
-            v32 = v31;
+            libraryQuery = v31;
           }
 
           v36 = v31;
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v37 = [v36 libraryQuery];
-            v38 = [v43 objectForKeyedSubscript:v37];
+            libraryQuery2 = [v36 libraryQuery];
+            v38 = [v43 objectForKeyedSubscript:libraryQuery2];
 
             if (!v38)
             {
               v39 = objc_opt_new();
-              [v43 setObject:v39 forKeyedSubscript:v37];
+              [v43 setObject:v39 forKeyedSubscript:libraryQuery2];
             }
 
-            v40 = [v43 objectForKeyedSubscript:v37];
+            v40 = [v43 objectForKeyedSubscript:libraryQuery2];
             [v40 addObject:v36];
 
             v16 = &off_1E836E000;
@@ -8130,7 +8130,7 @@ LABEL_35:
         v13 = v47;
       }
 
-      obja = [v14 countByEnumeratingWithState:&v53 objects:v65 count:16];
+      obja = [activeResults countByEnumeratingWithState:&v53 objects:v65 count:16];
     }
 
     while (obja);
@@ -8140,19 +8140,19 @@ LABEL_35:
   v52[1] = 3221225472;
   v52[2] = __39__WFDatabase_notifyResultsAboutChange___block_invoke_2;
   v52[3] = &unk_1E837A110;
-  v52[4] = v45;
+  v52[4] = selfCopy;
   [v44 enumerateKeysAndObjectsUsingBlock:v52];
   v51[0] = MEMORY[0x1E69E9820];
   v51[1] = 3221225472;
   v51[2] = __39__WFDatabase_notifyResultsAboutChange___block_invoke_302;
   v51[3] = &unk_1E837A138;
-  v51[4] = v45;
+  v51[4] = selfCopy;
   [v13 enumerateKeysAndObjectsUsingBlock:v51];
   v50[0] = MEMORY[0x1E69E9820];
   v50[1] = 3221225472;
   v50[2] = __39__WFDatabase_notifyResultsAboutChange___block_invoke_308;
   v50[3] = &unk_1E837A160;
-  v50[4] = v45;
+  v50[4] = selfCopy;
   [v43 enumerateKeysAndObjectsUsingBlock:v50];
 
   v41 = *MEMORY[0x1E69E9840];
@@ -8423,8 +8423,8 @@ id __39__WFDatabase_notifyResultsAboutChange___block_invoke_3(void *a1, uint64_t
 - (void)remoteChangeDebouncerDidFire
 {
   dispatch_assert_queue_V2(self->_remoteChangeQueue);
-  v3 = [(WFDatabase *)self pendingRemoteChangeNotification];
-  if (v3)
+  pendingRemoteChangeNotification = [(WFDatabase *)self pendingRemoteChangeNotification];
+  if (pendingRemoteChangeNotification)
   {
     [(WFDatabase *)self setPendingRemoteChangeNotification:0];
     changeNotificationQueue = self->_changeNotificationQueue;
@@ -8433,23 +8433,23 @@ id __39__WFDatabase_notifyResultsAboutChange___block_invoke_3(void *a1, uint64_t
     v5[2] = __42__WFDatabase_remoteChangeDebouncerDidFire__block_invoke;
     v5[3] = &unk_1E837F870;
     v5[4] = self;
-    v6 = v3;
+    v6 = pendingRemoteChangeNotification;
     dispatch_async(changeNotificationQueue, v5);
   }
 }
 
-- (void)remoteContextDidSave:(id)a3
+- (void)remoteContextDidSave:(id)save
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  saveCopy = save;
   v5 = getWFDatabaseLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 userInfo];
+    userInfo = [saveCopy userInfo];
     *buf = 136315394;
     *&buf[4] = "[WFDatabase remoteContextDidSave:]";
     *&buf[12] = 2112;
-    *&buf[14] = v6;
+    *&buf[14] = userInfo;
     _os_log_impl(&dword_1CA256000, v5, OS_LOG_TYPE_INFO, "%s Received remote context save notification: %@", buf, 0x16u);
   }
 
@@ -8459,19 +8459,19 @@ id __39__WFDatabase_notifyResultsAboutChange___block_invoke_3(void *a1, uint64_t
   v15 = __Block_byref_object_copy__43875;
   v16 = __Block_byref_object_dispose__43876;
   v7 = objc_alloc(MEMORY[0x1E69E0A60]);
-  v8 = [v4 userInfo];
-  v17 = [v7 initWithDictionaryRepresentation:v8];
+  userInfo2 = [saveCopy userInfo];
+  v17 = [v7 initWithDictionaryRepresentation:userInfo2];
 
   if (([*(*&buf[8] + 40) originatedInCurrentProcess] & 1) == 0)
   {
-    v9 = [(WFDatabase *)self context];
+    context = [(WFDatabase *)self context];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __35__WFDatabase_remoteContextDidSave___block_invoke;
     v13[3] = &unk_1E837F898;
     v13[4] = self;
     v13[5] = buf;
-    [v9 performBlockAndWait:v13];
+    [context performBlockAndWait:v13];
 
     remoteChangeQueue = self->_remoteChangeQueue;
     v12[0] = MEMORY[0x1E69E9820];
@@ -8533,14 +8533,14 @@ BOOL __35__WFDatabase_remoteContextDidSave___block_invoke_2(uint64_t a1, void *a
 - (void)sendPendingChangeNotification
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = [(WFDatabase *)self pendingUpdatedDescriptors];
-  if (![v3 count])
+  pendingUpdatedDescriptors = [(WFDatabase *)self pendingUpdatedDescriptors];
+  if (![pendingUpdatedDescriptors count])
   {
-    v4 = [(WFDatabase *)self pendingInsertedDescriptors];
-    if (![v4 count])
+    pendingInsertedDescriptors = [(WFDatabase *)self pendingInsertedDescriptors];
+    if (![pendingInsertedDescriptors count])
     {
-      v24 = [(WFDatabase *)self pendingDeletedDescriptors];
-      v25 = [v24 count];
+      pendingDeletedDescriptors = [(WFDatabase *)self pendingDeletedDescriptors];
+      v25 = [pendingDeletedDescriptors count];
 
       if (!v25)
       {
@@ -8553,192 +8553,192 @@ BOOL __35__WFDatabase_remoteContextDidSave___block_invoke_2(uint64_t a1, void *a
 
 LABEL_5:
   v5 = objc_alloc(MEMORY[0x1E69E0A60]);
-  v6 = [(WFDatabase *)self pendingUpdatedDescriptors];
-  v7 = [(WFDatabase *)self pendingInsertedDescriptors];
-  v8 = [(WFDatabase *)self pendingDeletedDescriptors];
-  v9 = [v5 initWithInvalidatedAllObjects:0 updated:v6 inserted:v7 deleted:v8 processIdentifier:getpid()];
+  pendingUpdatedDescriptors2 = [(WFDatabase *)self pendingUpdatedDescriptors];
+  pendingInsertedDescriptors2 = [(WFDatabase *)self pendingInsertedDescriptors];
+  pendingDeletedDescriptors2 = [(WFDatabase *)self pendingDeletedDescriptors];
+  v9 = [v5 initWithInvalidatedAllObjects:0 updated:pendingUpdatedDescriptors2 inserted:pendingInsertedDescriptors2 deleted:pendingDeletedDescriptors2 processIdentifier:getpid()];
 
-  v10 = [(WFDatabase *)self pendingUpdatedDescriptors];
-  [v10 removeAllObjects];
+  pendingUpdatedDescriptors3 = [(WFDatabase *)self pendingUpdatedDescriptors];
+  [pendingUpdatedDescriptors3 removeAllObjects];
 
-  v11 = [(WFDatabase *)self pendingInsertedDescriptors];
-  [v11 removeAllObjects];
+  pendingInsertedDescriptors3 = [(WFDatabase *)self pendingInsertedDescriptors];
+  [pendingInsertedDescriptors3 removeAllObjects];
 
-  v12 = [(WFDatabase *)self pendingDeletedDescriptors];
-  [v12 removeAllObjects];
+  pendingDeletedDescriptors3 = [(WFDatabase *)self pendingDeletedDescriptors];
+  [pendingDeletedDescriptors3 removeAllObjects];
 
   changeNotificationQueue = self->_changeNotificationQueue;
   v26 = MEMORY[0x1E69E9820];
   v27 = 3221225472;
   v28 = __43__WFDatabase_sendPendingChangeNotification__block_invoke;
   v29 = &unk_1E837F870;
-  v30 = self;
+  selfCopy = self;
   v14 = v9;
   v31 = v14;
   dispatch_async(changeNotificationQueue, &v26);
-  LODWORD(v7) = [(WFDatabase *)self postDistributedNotifications:v26];
-  v15 = getWFDatabaseLogObject();
-  v16 = os_log_type_enabled(v15, OS_LOG_TYPE_INFO);
-  if (v7)
+  LODWORD(pendingInsertedDescriptors2) = [(WFDatabase *)self postDistributedNotifications:v26];
+  defaultCenter = getWFDatabaseLogObject();
+  v16 = os_log_type_enabled(defaultCenter, OS_LOG_TYPE_INFO);
+  if (pendingInsertedDescriptors2)
   {
     if (v16)
     {
       *buf = 136315138;
       v33 = "[WFDatabase sendPendingChangeNotification]";
-      _os_log_impl(&dword_1CA256000, v15, OS_LOG_TYPE_INFO, "%s Posting distributed notification.", buf, 0xCu);
+      _os_log_impl(&dword_1CA256000, defaultCenter, OS_LOG_TYPE_INFO, "%s Posting distributed notification.", buf, 0xCu);
     }
 
     v17 = getWFDatabaseLogObject();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
-      v18 = [v14 dictionaryRepresentation];
+      dictionaryRepresentation = [v14 dictionaryRepresentation];
       *buf = 136315394;
       v33 = "[WFDatabase sendPendingChangeNotification]";
       v34 = 2112;
-      v35 = v18;
+      v35 = dictionaryRepresentation;
       _os_log_impl(&dword_1CA256000, v17, OS_LOG_TYPE_DEBUG, "%s Change notification: %@", buf, 0x16u);
     }
 
-    v15 = [MEMORY[0x1E696ABB0] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
     v19 = *MEMORY[0x1E69E0FF0];
-    v20 = [(WFDatabase *)self fileURL];
-    v21 = [v20 path];
-    v22 = [v14 dictionaryRepresentation];
-    [v15 postNotificationName:v19 object:v21 userInfo:v22];
+    fileURL = [(WFDatabase *)self fileURL];
+    path = [fileURL path];
+    dictionaryRepresentation2 = [v14 dictionaryRepresentation];
+    [defaultCenter postNotificationName:v19 object:path userInfo:dictionaryRepresentation2];
   }
 
   else if (v16)
   {
     *buf = 136315138;
     v33 = "[WFDatabase sendPendingChangeNotification]";
-    _os_log_impl(&dword_1CA256000, v15, OS_LOG_TYPE_INFO, "%s Not posting distributed notification because it's explicitly disabled.", buf, 0xCu);
+    _os_log_impl(&dword_1CA256000, defaultCenter, OS_LOG_TYPE_INFO, "%s Not posting distributed notification because it's explicitly disabled.", buf, 0xCu);
   }
 
 LABEL_14:
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addPendingDeletedDescriptor:(id)a3
+- (void)addPendingDeletedDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v9 = [(WFDatabase *)self pendingDeletedDescriptors];
+  descriptorCopy = descriptor;
+  pendingDeletedDescriptors = [(WFDatabase *)self pendingDeletedDescriptors];
   v5 = objc_alloc(MEMORY[0x1E69E0A68]);
-  v6 = [v4 identifier];
-  v7 = [v4 objectType];
+  identifier = [descriptorCopy identifier];
+  objectType = [descriptorCopy objectType];
 
-  v8 = [v5 initWithIdentifier:v6 objectType:v7];
-  [v9 addObject:v8];
+  v8 = [v5 initWithIdentifier:identifier objectType:objectType];
+  [pendingDeletedDescriptors addObject:v8];
 }
 
-- (void)addPendingInsertedDescriptor:(id)a3
+- (void)addPendingInsertedDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v9 = [(WFDatabase *)self pendingInsertedDescriptors];
+  descriptorCopy = descriptor;
+  pendingInsertedDescriptors = [(WFDatabase *)self pendingInsertedDescriptors];
   v5 = objc_alloc(MEMORY[0x1E69E0A68]);
-  v6 = [v4 identifier];
-  v7 = [v4 objectType];
+  identifier = [descriptorCopy identifier];
+  objectType = [descriptorCopy objectType];
 
-  v8 = [v5 initWithIdentifier:v6 objectType:v7];
-  [v9 addObject:v8];
+  v8 = [v5 initWithIdentifier:identifier objectType:objectType];
+  [pendingInsertedDescriptors addObject:v8];
 }
 
-- (void)addPendingUpdatedDescriptor:(id)a3
+- (void)addPendingUpdatedDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v9 = [(WFDatabase *)self pendingUpdatedDescriptors];
+  descriptorCopy = descriptor;
+  pendingUpdatedDescriptors = [(WFDatabase *)self pendingUpdatedDescriptors];
   v5 = objc_alloc(MEMORY[0x1E69E0A68]);
-  v6 = [v4 identifier];
-  v7 = [v4 objectType];
+  identifier = [descriptorCopy identifier];
+  objectType = [descriptorCopy objectType];
 
-  v8 = [v5 initWithIdentifier:v6 objectType:v7];
-  [v9 addObject:v8];
+  v8 = [v5 initWithIdentifier:identifier objectType:objectType];
+  [pendingUpdatedDescriptors addObject:v8];
 }
 
-- (void)object:(id)a3 didUpdateProperties:(id)a4
+- (void)object:(id)object didUpdateProperties:(id)properties
 {
-  v9 = a3;
-  v7 = a4;
-  if (!v9)
+  objectCopy = object;
+  propertiesCopy = properties;
+  if (!objectCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"WFDatabase.m" lineNumber:676 description:{@"Invalid parameter not satisfying: %@", @"object"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFDatabase.m" lineNumber:676 description:{@"Invalid parameter not satisfying: %@", @"object"}];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v9 didUpdateProperties:v7];
+    [objectCopy didUpdateProperties:propertiesCopy];
   }
 }
 
-- (void)objectWasCreated:(id)a3 identifier:(id)a4
+- (void)objectWasCreated:(id)created identifier:(id)identifier
 {
-  v14 = a3;
-  v6 = a4;
+  createdCopy = created;
+  identifierCopy = identifier;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v7 = [WFCoreDataWorkflowActions alloc];
-    v8 = [(WFDatabase *)self context];
-    v9 = [(WFCoreDataWorkflowActions *)v7 initWithContext:v8];
+    context = [(WFDatabase *)self context];
+    v9 = [(WFCoreDataWorkflowActions *)v7 initWithContext:context];
 
-    [v14 setValue:v9 forKey:@"actions"];
+    [createdCopy setValue:v9 forKey:@"actions"];
   }
 
-  v10 = [v14 entity];
-  v11 = [v10 name];
-  v12 = WFDatabaseObjectTypeForEntityName(v11);
+  entity = [createdCopy entity];
+  name = [entity name];
+  v12 = WFDatabaseObjectTypeForEntityName(name);
 
   if (v12 != 12)
   {
-    v13 = [objc_alloc(MEMORY[0x1E69E0A68]) initWithIdentifier:v6 objectType:v12];
+    v13 = [objc_alloc(MEMORY[0x1E69E0A68]) initWithIdentifier:identifierCopy objectType:v12];
     [(WFDatabase *)self addPendingInsertedDescriptor:v13];
   }
 }
 
-- (id)objectOfClass:(Class)a3 withIdentifier:(id)a4 forKey:(id)a5 createIfNecessary:(BOOL)a6 properties:(id)a7
+- (id)objectOfClass:(Class)class withIdentifier:(id)identifier forKey:(id)key createIfNecessary:(BOOL)necessary properties:(id)properties
 {
-  v8 = a6;
+  necessaryCopy = necessary;
   v36 = *MEMORY[0x1E69E9840];
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
-  v15 = [(objc_class *)a3 fetchRequest];
-  v16 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", v13, v12];
-  [v15 setPredicate:v16];
+  identifierCopy = identifier;
+  keyCopy = key;
+  propertiesCopy = properties;
+  fetchRequest = [(objc_class *)class fetchRequest];
+  identifierCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", keyCopy, identifierCopy];
+  [fetchRequest setPredicate:identifierCopy];
 
-  [v15 setFetchLimit:1];
-  [v15 setPropertiesToFetch:v14];
+  [fetchRequest setFetchLimit:1];
+  [fetchRequest setPropertiesToFetch:propertiesCopy];
 
-  v17 = [(WFDatabase *)self context];
-  v18 = [v17 executeFetchRequest:v15 error:0];
+  context = [(WFDatabase *)self context];
+  v18 = [context executeFetchRequest:fetchRequest error:0];
 
-  v19 = [v18 firstObject];
-  v20 = WFEnforceClass_44012(v19, a3);
+  firstObject = [v18 firstObject];
+  v20 = WFEnforceClass_44012(firstObject, class);
 
-  if (!v20 && v8)
+  if (!v20 && necessaryCopy)
   {
-    v21 = [a3 alloc];
-    v22 = [(WFDatabase *)self context];
-    v20 = [v21 initWithContext:v22];
+    v21 = [class alloc];
+    context2 = [(WFDatabase *)self context];
+    v20 = [v21 initWithContext:context2];
 
-    [v20 setValue:v12 forKey:v13];
+    [v20 setValue:identifierCopy forKey:keyCopy];
     v23 = getWFDatabaseLogObject();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
     {
-      v24 = [(WFDatabase *)self fileURL];
-      v25 = NSStringFromClass(a3);
+      fileURL = [(WFDatabase *)self fileURL];
+      v25 = NSStringFromClass(class);
       *buf = 136315906;
       v29 = "[WFDatabase objectOfClass:withIdentifier:forKey:createIfNecessary:properties:]";
       v30 = 2112;
-      v31 = v24;
+      v31 = fileURL;
       v32 = 2112;
       v33 = v25;
       v34 = 2112;
-      v35 = v12;
+      v35 = identifierCopy;
       _os_log_impl(&dword_1CA256000, v23, OS_LOG_TYPE_DEBUG, "%s %@: Created object of class %@ with ID: %@", buf, 0x2Au);
     }
 
-    [(WFDatabase *)self objectWasCreated:v20 identifier:v12];
+    [(WFDatabase *)self objectWasCreated:v20 identifier:identifierCopy];
   }
 
   v26 = *MEMORY[0x1E69E9840];
@@ -8746,10 +8746,10 @@ LABEL_14:
   return v20;
 }
 
-- (id)recordWithDescriptor:(id)a3 properties:(id)a4 error:(id *)a5
+- (id)recordWithDescriptor:(id)descriptor properties:(id)properties error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  descriptorCopy = descriptor;
+  propertiesCopy = properties;
   v10 = getWFDatabaseLogObject();
   v11 = os_signpost_id_generate(v10);
 
@@ -8772,12 +8772,12 @@ LABEL_14:
   v21[2] = __52__WFDatabase_recordWithDescriptor_properties_error___block_invoke;
   v21[3] = &unk_1E837A0A0;
   v21[4] = self;
-  v14 = v8;
+  v14 = descriptorCopy;
   v22 = v14;
   v24 = buf;
-  v15 = v9;
+  v15 = propertiesCopy;
   v23 = v15;
-  [(WFDatabase *)self accessStorageForDescriptor:v14 forWriting:0 readingRecordProperties:v15 usingBlock:v21 withError:a5];
+  [(WFDatabase *)self accessStorageForDescriptor:v14 forWriting:0 readingRecordProperties:v15 usingBlock:v21 withError:error];
   v16 = getWFDatabaseLogObject();
   v17 = v16;
   if (v11 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v16))
@@ -8807,13 +8807,13 @@ void __52__WFDatabase_recordWithDescriptor_properties_error___block_invoke(void 
   }
 }
 
-- (void)accessStorageForDescriptor:(id)a3 forWriting:(BOOL)a4 readingRecordProperties:(id)a5 usingBlock:(id)a6 withError:(id *)a7
+- (void)accessStorageForDescriptor:(id)descriptor forWriting:(BOOL)writing readingRecordProperties:(id)properties usingBlock:(id)block withError:(id *)error
 {
-  v10 = a4;
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  if (!v13)
+  writingCopy = writing;
+  descriptorCopy = descriptor;
+  propertiesCopy = properties;
+  blockCopy = block;
+  if (!propertiesCopy)
   {
     v22 = 0;
 LABEL_15:
@@ -8822,29 +8822,29 @@ LABEL_15:
     aBlock[2] = __97__WFDatabase_accessStorageForDescriptor_forWriting_readingRecordProperties_usingBlock_withError___block_invoke_3;
     aBlock[3] = &unk_1E837A078;
     aBlock[4] = self;
-    v29 = v12;
+    v29 = descriptorCopy;
     v37 = v29;
     v30 = v22;
     v38 = v30;
-    v39 = v14;
+    v39 = blockCopy;
     v31 = _Block_copy(aBlock);
-    if (v10)
+    if (writingCopy)
     {
       v32 = [MEMORY[0x1E696AEC0] stringWithFormat:@"writing to storage for %@", v29];
-      v33 = [(WFDatabase *)self performSaveOperationWithReason:v32 block:v31 error:a7];
+      v33 = [(WFDatabase *)self performSaveOperationWithReason:v32 block:v31 error:error];
     }
 
     else
     {
       v32 = [MEMORY[0x1E696AEC0] stringWithFormat:@"reading storage for %@", v29];
-      v34 = [(WFDatabase *)self performOperationWithReason:v32 block:v31 error:a7];
+      v34 = [(WFDatabase *)self performOperationWithReason:v32 block:v31 error:error];
     }
 
     goto LABEL_19;
   }
 
-  v15 = WFCoreDataClassForObjectType([v12 objectType]);
-  v16 = WFCoreDataClassForObjectType([v12 objectType]);
+  v15 = WFCoreDataClassForObjectType([descriptorCopy objectType]);
+  v16 = WFCoreDataClassForObjectType([descriptorCopy objectType]);
   if (v15)
   {
     v17 = v16;
@@ -8852,41 +8852,41 @@ LABEL_15:
     {
       if (objc_opt_respondsToSelector())
       {
-        v18 = [v15 recordPropertyMap];
-        v19 = [v13 allObjects];
+        recordPropertyMap = [v15 recordPropertyMap];
+        allObjects = [propertiesCopy allObjects];
         v42[0] = MEMORY[0x1E69E9820];
         v42[1] = 3221225472;
         v42[2] = __97__WFDatabase_accessStorageForDescriptor_forWriting_readingRecordProperties_usingBlock_withError___block_invoke;
         v42[3] = &unk_1E837EB80;
-        v43 = v18;
-        v20 = v18;
-        v21 = [v19 if_map:v42];
+        v43 = recordPropertyMap;
+        v20 = recordPropertyMap;
+        allObjects2 = [allObjects if_map:v42];
       }
 
       else
       {
-        v21 = [v13 allObjects];
+        allObjects2 = [propertiesCopy allObjects];
       }
 
-      v23 = [v17 entity];
+      entity = [v17 entity];
       v40[0] = MEMORY[0x1E69E9820];
       v40[1] = 3221225472;
       v40[2] = __97__WFDatabase_accessStorageForDescriptor_forWriting_readingRecordProperties_usingBlock_withError___block_invoke_2;
       v40[3] = &unk_1E837AB68;
-      v41 = v23;
-      v24 = v23;
-      v22 = [v21 if_objectsPassingTest:v40];
+      v41 = entity;
+      v24 = entity;
+      v22 = [allObjects2 if_objectsPassingTest:v40];
 
-      v25 = [v12 objectType];
-      if (v25 >= 0xC)
+      objectType = [descriptorCopy objectType];
+      if (objectType >= 0xC)
       {
         v28 = 0;
       }
 
       else
       {
-        v26 = v25;
-        v27 = off_1E837A328[v25];
+        v26 = objectType;
+        v27 = off_1E837A328[objectType];
         if (v26 == 8)
         {
           v28 = 0;
@@ -8908,9 +8908,9 @@ LABEL_15:
     }
   }
 
-  if (a7)
+  if (error)
   {
-    *a7 = [MEMORY[0x1E696ABC0] errorWithDomain:@"WFDatabaseErrorDomain" code:0 userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"WFDatabaseErrorDomain" code:0 userInfo:0];
   }
 
 LABEL_19:
@@ -8959,28 +8959,28 @@ uint64_t __97__WFDatabase_accessStorageForDescriptor_forWriting_readingRecordPro
 {
   if ([(WFDatabase *)self transactionCount]<= 0)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   }
 
   [(WFDatabase *)self setLibraryNeedsSave:1];
 }
 
-- (id)performSaveOperationWithReason:(id)a3 block:(id)a4 error:(id *)a5
+- (id)performSaveOperationWithReason:(id)reason block:(id)block error:(id *)error
 {
-  v8 = a4;
+  blockCopy = block;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __57__WFDatabase_performSaveOperationWithReason_block_error___block_invoke;
   v12[3] = &unk_1E837A050;
-  if (!a3)
+  if (!reason)
   {
-    a3 = @"save";
+    reason = @"save";
   }
 
   v12[4] = self;
-  v13 = v8;
-  v9 = v8;
-  v10 = [(WFDatabase *)self performOperationWithReason:a3 block:v12 error:a5];
+  v13 = blockCopy;
+  v9 = blockCopy;
+  v10 = [(WFDatabase *)self performOperationWithReason:reason block:v12 error:error];
 
   return v10;
 }
@@ -9032,11 +9032,11 @@ LABEL_6:
   return v5;
 }
 
-- (id)performOperationWithReason:(id)a3 block:(id)a4 error:(id *)a5
+- (id)performOperationWithReason:(id)reason block:(id)block error:(id *)error
 {
   v39 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  reasonCopy = reason;
+  blockCopy = block;
   v10 = os_transaction_create();
   v11 = getWFDatabaseLogObject();
   v12 = os_signpost_id_generate(v11);
@@ -9046,9 +9046,9 @@ LABEL_6:
   if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v13))
   {
     v15 = @"none";
-    if (v8)
+    if (reasonCopy)
     {
-      v15 = v8;
+      v15 = reasonCopy;
     }
 
     LODWORD(buf) = 138412290;
@@ -9068,21 +9068,21 @@ LABEL_6:
   v31 = __Block_byref_object_copy__43875;
   v32 = __Block_byref_object_dispose__43876;
   v33 = 0;
-  v16 = [(WFDatabase *)self context];
+  context = [(WFDatabase *)self context];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __53__WFDatabase_performOperationWithReason_block_error___block_invoke;
   v24[3] = &unk_1E837A028;
   p_buf = &buf;
-  v17 = v9;
+  v17 = blockCopy;
   v27 = &v28;
   v24[4] = self;
   v25 = v17;
-  [v16 performBlockAndWait:v24];
+  [context performBlockAndWait:v24];
 
-  if (a5)
+  if (error)
   {
-    *a5 = v29[5];
+    *error = v29[5];
   }
 
   v18 = getWFDatabaseLogObject();
@@ -9122,47 +9122,47 @@ void __53__WFDatabase_performOperationWithReason_block_error___block_invoke(uint
   }
 }
 
-- (void)performTransactionWithReason:(id)a3 block:(id)a4 error:(id *)a5
+- (void)performTransactionWithReason:(id)reason block:(id)block error:(id *)error
 {
-  v8 = a4;
-  if (!a3)
+  blockCopy = block;
+  if (!reason)
   {
-    a3 = @"transaction";
+    reason = @"transaction";
   }
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __55__WFDatabase_performTransactionWithReason_block_error___block_invoke;
   v11[3] = &unk_1E837A000;
-  v12 = v8;
-  v9 = v8;
-  v10 = [(WFDatabase *)self performSaveOperationWithReason:a3 block:v11 error:a5];
+  v12 = blockCopy;
+  v9 = blockCopy;
+  v10 = [(WFDatabase *)self performSaveOperationWithReason:reason block:v11 error:error];
 }
 
-- (void)removeObjectObserver:(id)a3
+- (void)removeObjectObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_observersLock);
-  v5 = [(WFDatabase *)self observers];
-  [v5 removeObject:v4];
+  observers = [(WFDatabase *)self observers];
+  [observers removeObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_observersLock);
 }
 
-- (void)addObjectObserver:(id)a3
+- (void)addObjectObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_observersLock);
-  v5 = [(WFDatabase *)self observers];
-  [v5 addObject:v4];
+  observers = [(WFDatabase *)self observers];
+  [observers addObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_observersLock);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -9172,9 +9172,9 @@ void __53__WFDatabase_performOperationWithReason_block_error___block_invoke(uint
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(WFDatabase *)self context];
-      v6 = [(WFDatabase *)v4 context];
-      v7 = [v5 isEqual:v6];
+      context = [(WFDatabase *)self context];
+      context2 = [(WFDatabase *)equalCopy context];
+      v7 = [context isEqual:context2];
     }
 
     else
@@ -9186,25 +9186,25 @@ void __53__WFDatabase_performOperationWithReason_block_error___block_invoke(uint
   return v7;
 }
 
-- (WFDatabase)initWithPersistenceMode:(unint64_t)a3 fileURL:(id)a4 error:(id *)a5
+- (WFDatabase)initWithPersistenceMode:(unint64_t)mode fileURL:(id)l error:(id *)error
 {
   v101 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  if (!v7)
+  lCopy = l;
+  if (!lCopy)
   {
-    v77 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v77 handleFailureInMethod:a2 object:self file:@"WFDatabase.m" lineNumber:321 description:{@"Invalid parameter not satisfying: %@", @"fileURL"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFDatabase.m" lineNumber:321 description:{@"Invalid parameter not satisfying: %@", @"fileURL"}];
 
-    v7 = 0;
+    lCopy = 0;
   }
 
-  v82 = v7;
-  obj = [MEMORY[0x1E695D6C8] persistentStoreDescriptionWithURL:v7];
+  v82 = lCopy;
+  obj = [MEMORY[0x1E695D6C8] persistentStoreDescriptionWithURL:lCopy];
   v8 = [obj URL];
-  v9 = [v8 URLByDeletingLastPathComponent];
-  v86 = [v9 URLByAppendingPathComponent:@"Shortcuts.core_data_migration" isDirectory:0];
+  uRLByDeletingLastPathComponent = [v8 URLByDeletingLastPathComponent];
+  v86 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:@"Shortcuts.core_data_migration" isDirectory:0];
 
-  if (a3 == 1)
+  if (mode == 1)
   {
     v11 = -1;
   }
@@ -9214,18 +9214,18 @@ void __53__WFDatabase_performOperationWithReason_block_error___block_invoke(uint
     v10 = open([v86 fileSystemRepresentation], 512, 420);
     if (v10 == -1)
     {
-      if (a5)
+      if (error)
       {
 LABEL_20:
         [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:*__error() userInfo:0];
         v21 = 0;
-        *a5 = v22 = 0;
+        *error = selfCopy2 = 0;
         goto LABEL_56;
       }
 
 LABEL_40:
       v21 = 0;
-      v22 = 0;
+      selfCopy2 = 0;
       goto LABEL_56;
     }
 
@@ -9233,7 +9233,7 @@ LABEL_40:
     if (flock(v10, 2) == -1)
     {
       close(v11);
-      if (a5)
+      if (error)
       {
         goto LABEL_20;
       }
@@ -9246,15 +9246,15 @@ LABEL_40:
   aBlock[1] = 3221225472;
   aBlock[2] = __52__WFDatabase_initWithPersistenceMode_fileURL_error___block_invoke;
   aBlock[3] = &unk_1E8379FA8;
-  v96 = a3 != 1;
+  v96 = mode != 1;
   v95 = v11;
   v94 = v86;
   v83 = _Block_copy(aBlock);
-  if (!a3)
+  if (!mode)
   {
     v12 = [obj URL];
-    v13 = [v12 URLByDeletingLastPathComponent];
-    v14 = [v13 URLByAppendingPathComponent:@"CoherenceContext.db"];
+    uRLByDeletingLastPathComponent2 = [v12 URLByDeletingLastPathComponent];
+    v14 = [uRLByDeletingLastPathComponent2 URLByAppendingPathComponent:@"CoherenceContext.db"];
 
     [WFLibrary setSharedContextURL:v14];
   }
@@ -9297,14 +9297,14 @@ LABEL_40:
 
     v23 = v19;
 
-    v24 = [v23 firstObject];
+    firstObject = [v23 firstObject];
 
-    if (v24)
+    if (firstObject)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v25 = v24;
+        v25 = firstObject;
       }
 
       else
@@ -9320,15 +9320,15 @@ LABEL_40:
 
     v26 = v25;
 
-    v27 = [v79 versionIdentifiers];
-    v28 = [v27 anyObject];
+    versionIdentifiers = [v79 versionIdentifiers];
+    anyObject = [versionIdentifiers anyObject];
 
-    if (v28)
+    if (anyObject)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v29 = v28;
+        v29 = anyObject;
       }
 
       else
@@ -9371,10 +9371,10 @@ LABEL_40:
       *buf = MEMORY[0x1E695E118];
       *&buf[8] = MEMORY[0x1E695E118];
       v34 = [MEMORY[0x1E695DF20] dictionaryWithObjects:buf forKeys:v97 count:2];
-      v35 = [v15 type];
-      v36 = [v15 configuration];
+      type = [v15 type];
+      configuration = [v15 configuration];
       v37 = [v15 URL];
-      v38 = [v32 addPersistentStoreWithType:v35 configuration:v36 URL:v37 options:v34 error:&v92];
+      v38 = [v32 addPersistentStoreWithType:type configuration:configuration URL:v37 options:v34 error:&v92];
       v39 = v38 == 0;
 
       if (v39)
@@ -9396,10 +9396,10 @@ LABEL_40:
 
   v21 = v92;
   objc_autoreleasePoolPop(context);
-  if (a5)
+  if (error)
   {
     v40 = v21;
-    *a5 = v21;
+    *error = v21;
   }
 
   if (v20)
@@ -9422,17 +9422,17 @@ LABEL_40:
     self = v43;
     if (v43)
     {
-      v43->_persistenceMode = a3;
+      v43->_persistenceMode = mode;
       objc_storeStrong(&v43->_context, v41);
       objc_storeStrong(&self->_suggestionsContext, v42);
       objc_storeStrong(&self->_persistentStoreDescription, obj);
-      v44 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+      weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
       resultsToNotify = self->_resultsToNotify;
-      self->_resultsToNotify = v44;
+      self->_resultsToNotify = weakObjectsHashTable;
 
-      v46 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+      weakObjectsHashTable2 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
       observers = self->_observers;
-      self->_observers = v46;
+      self->_observers = weakObjectsHashTable2;
 
       self->_observersLock._os_unfair_lock_opaque = 0;
       v48 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -9445,7 +9445,7 @@ LABEL_40:
       changeNotificationQueue = self->_changeNotificationQueue;
       self->_changeNotificationQueue = v52;
 
-      self->_postDistributedNotifications = a3 == 0;
+      self->_postDistributedNotifications = mode == 0;
       v54 = objc_opt_new();
       pendingUpdatedDescriptors = self->_pendingUpdatedDescriptors;
       self->_pendingUpdatedDescriptors = v54;
@@ -9459,8 +9459,8 @@ LABEL_40:
       self->_pendingDeletedDescriptors = v58;
 
       v60 = [v15 URL];
-      v61 = [v60 path];
-      v62 = [v61 isEqualToString:@"/dev/null"];
+      path = [v60 path];
+      v62 = [path isEqualToString:@"/dev/null"];
 
       if ((v62 & 1) == 0)
       {
@@ -9479,37 +9479,37 @@ LABEL_40:
       self->_remoteChangeNotificationDebouncer = v68;
 
       [(WFDebouncer *)self->_remoteChangeNotificationDebouncer addTarget:self action:sel_remoteChangeDebouncerDidFire];
-      if (!a3)
+      if (!mode)
       {
-        v70 = [MEMORY[0x1E696ABB0] defaultCenter];
+        defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
         v71 = [v15 URL];
-        v72 = [v71 path];
-        [v70 addObserver:self selector:sel_remoteContextDidSave_ name:*MEMORY[0x1E69E0FF0] object:v72 suspensionBehavior:4];
+        path2 = [v71 path];
+        [defaultCenter addObserver:self selector:sel_remoteContextDidSave_ name:*MEMORY[0x1E69E0FF0] object:path2 suspensionBehavior:4];
       }
 
       v89[0] = MEMORY[0x1E69E9820];
       v89[1] = 3221225472;
       v89[2] = __52__WFDatabase_initWithPersistenceMode_fileURL_error___block_invoke_249;
       v89[3] = &unk_1E8379FD0;
-      v73 = self;
-      v90 = v73;
-      [(WFDatabase *)v73 performTransactionWithReason:@"initial setup" block:v89 error:0];
-      v74 = v73;
+      selfCopy = self;
+      v90 = selfCopy;
+      [(WFDatabase *)selfCopy performTransactionWithReason:@"initial setup" block:v89 error:0];
+      v74 = selfCopy;
     }
 
-    v22 = self;
+    selfCopy2 = self;
   }
 
   else
   {
-    v22 = 0;
+    selfCopy2 = 0;
   }
 
   v83[2]();
 LABEL_56:
 
   v75 = *MEMORY[0x1E69E9840];
-  return v22;
+  return selfCopy2;
 }
 
 void __52__WFDatabase_initWithPersistenceMode_fileURL_error___block_invoke(uint64_t a1)
@@ -9553,23 +9553,23 @@ uint64_t __52__WFDatabase_initWithPersistenceMode_fileURL_error___block_invoke_2
   return [v3 removePermissionsWithoutAssociatedShortcuts];
 }
 
-- (WFDatabase)initWithPersistenceMode:(unint64_t)a3 error:(id *)a4
+- (WFDatabase)initWithPersistenceMode:(unint64_t)mode error:(id *)error
 {
-  if (a3 == 1)
+  if (mode == 1)
   {
     v6 = [MEMORY[0x1E695DFF8] fileURLWithPath:@"/dev/null" isDirectory:0];
-    v7 = self;
+    selfCopy2 = self;
     v8 = 1;
     goto LABEL_5;
   }
 
-  if (!a3)
+  if (!mode)
   {
     v6 = WFShortcutsPersistentStoreURL();
-    v7 = self;
+    selfCopy2 = self;
     v8 = 0;
 LABEL_5:
-    self = [(WFDatabase *)v7 initWithPersistenceMode:v8 fileURL:v6 error:a4];
+    self = [(WFDatabase *)selfCopy2 initWithPersistenceMode:v8 fileURL:v6 error:error];
   }
 
   return self;
@@ -9594,17 +9594,17 @@ LABEL_5:
   dispatch_async(changeNotificationQueue, v10);
 }
 
-- (BOOL)replaceWithFileAtURL:(id)a3 error:(id *)a4
+- (BOOL)replaceWithFileAtURL:(id)l error:(id *)error
 {
   v42[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(WFDatabase *)self context];
-  v8 = [v7 persistentStoreCoordinator];
+  lCopy = l;
+  context = [(WFDatabase *)self context];
+  persistentStoreCoordinator = [context persistentStoreCoordinator];
 
-  v9 = [(WFDatabase *)self fileURL];
-  if (v9)
+  fileURL = [(WFDatabase *)self fileURL];
+  if (fileURL)
   {
-    [v6 startAccessingSecurityScopedResource];
+    [lCopy startAccessingSecurityScopedResource];
     v10 = *MEMORY[0x1E695D318];
     v41[0] = *MEMORY[0x1E695D380];
     v41[1] = v10;
@@ -9613,26 +9613,26 @@ LABEL_5:
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v42 forKeys:v41 count:2];
     v12 = *MEMORY[0x1E695D4A8];
     v36 = 0;
-    v13 = [v8 replacePersistentStoreAtURL:v9 destinationOptions:0 withPersistentStoreFromURL:v6 sourceOptions:v11 storeType:v12 error:&v36];
+    v13 = [persistentStoreCoordinator replacePersistentStoreAtURL:fileURL destinationOptions:0 withPersistentStoreFromURL:lCopy sourceOptions:v11 storeType:v12 error:&v36];
     v14 = v36;
     v15 = v14;
     if (v13)
     {
       v33 = v14;
-      [v6 stopAccessingSecurityScopedResource];
+      [lCopy stopAccessingSecurityScopedResource];
       v16 = MEMORY[0x1E695D6C8];
       v17 = WFShortcutsPersistentStoreURL();
       v18 = [v16 persistentStoreDescriptionWithURL:v17];
 
-      v19 = [v18 type];
+      type = [v18 type];
       [v18 configuration];
-      v21 = v20 = a4;
+      v21 = v20 = error;
       v22 = [v18 URL];
       v23 = v11;
       v24 = v22;
       v34 = v23;
-      v35 = v8;
-      v25 = [v8 addPersistentStoreWithType:v19 configuration:v21 URL:v22 options:? error:?];
+      v35 = persistentStoreCoordinator;
+      v25 = [persistentStoreCoordinator addPersistentStoreWithType:type configuration:v21 URL:v22 options:? error:?];
       v26 = v25 != 0;
 
       if (v25)
@@ -9655,7 +9655,7 @@ LABEL_5:
       }
 
       v11 = v34;
-      v8 = v35;
+      persistentStoreCoordinator = v35;
 
       v15 = v33;
     }
@@ -9674,14 +9674,14 @@ LABEL_5:
 
       v28 = v15;
       v26 = 0;
-      *a4 = v15;
+      *error = v15;
     }
   }
 
   else
   {
     [MEMORY[0x1E696ABC0] errorWithDomain:@"WFDatabaseErrorDomain" code:0 userInfo:MEMORY[0x1E695E0F8]];
-    *a4 = v26 = 0;
+    *error = v26 = 0;
   }
 
   v31 = *MEMORY[0x1E69E9840];
@@ -9695,18 +9695,18 @@ LABEL_5:
   v4 = NSTemporaryDirectory();
   v5 = [v3 fileURLWithPath:v4];
 
-  v33 = self;
-  v6 = [(WFDatabase *)self fileURL];
-  v7 = [v6 lastPathComponent];
+  selfCopy = self;
+  fileURL = [(WFDatabase *)self fileURL];
+  lastPathComponent = [fileURL lastPathComponent];
 
-  v48[0] = v7;
-  v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-shm", v7];
+  v48[0] = lastPathComponent;
+  v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-shm", lastPathComponent];
   v48[1] = v8;
-  v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-wal", v7];
+  v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-wal", lastPathComponent];
   v48[2] = v9;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v48 count:3];
 
-  v11 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
@@ -9727,13 +9727,13 @@ LABEL_5:
         }
 
         v17 = [v5 URLByAppendingPathComponent:*(*(&v37 + 1) + 8 * i)];
-        v18 = [v17 path];
-        v19 = [v11 fileExistsAtPath:v18];
+        path = [v17 path];
+        v19 = [defaultManager fileExistsAtPath:path];
 
         if (v19)
         {
           v36 = 0;
-          [v11 removeItemAtURL:v17 error:&v36];
+          [defaultManager removeItemAtURL:v17 error:&v36];
           v20 = v36;
           if (v20)
           {
@@ -9744,7 +9744,7 @@ LABEL_5:
               *buf = 136315650;
               v42 = "[WFDatabase exportableURL]";
               v43 = 2112;
-              v44 = v7;
+              v44 = lastPathComponent;
               v45 = 2112;
               v46 = v24;
               _os_log_impl(&dword_1CA256000, v25, OS_LOG_TYPE_ERROR, "%s Error removing the existing %@ database file: %@", buf, 0x20u);
@@ -9767,8 +9767,8 @@ LABEL_5:
   }
 
   ppDb = 0;
-  v21 = [(WFDatabase *)v33 fileURL];
-  v22 = sqlite3_open_v2([v21 fileSystemRepresentation], &ppDb, 1, 0);
+  fileURL2 = [(WFDatabase *)selfCopy fileURL];
+  v22 = sqlite3_open_v2([fileURL2 fileSystemRepresentation], &ppDb, 1, 0);
 
   if (v22)
   {
@@ -9783,9 +9783,9 @@ LABEL_5:
     goto LABEL_24;
   }
 
-  v27 = [(WFDatabase *)v33 fileURL];
-  v28 = [v27 lastPathComponent];
-  v23 = [v5 URLByAppendingPathComponent:v28];
+  fileURL3 = [(WFDatabase *)selfCopy fileURL];
+  lastPathComponent2 = [fileURL3 lastPathComponent];
+  v23 = [v5 URLByAppendingPathComponent:lastPathComponent2];
 
   [v23 fileSystemRepresentation];
   if (!_sqlite3_db_copy_compact())
@@ -9834,17 +9834,17 @@ LABEL_26:
 
 + (id)createDatabaseForTesting
 {
-  v2 = [[a1 alloc] initWithPersistenceMode:1 error:0];
+  v2 = [[self alloc] initWithPersistenceMode:1 error:0];
 
   return v2;
 }
 
-+ (void)setDefaultDatabase:(id)a3
++ (void)setDefaultDatabase:(id)database
 {
-  v3 = a3;
+  databaseCopy = database;
   os_unfair_lock_lock(&WFDefaultDatabaseLock);
   v4 = _defaultDatabase;
-  _defaultDatabase = v3;
+  _defaultDatabase = databaseCopy;
 
   os_unfair_lock_unlock(&WFDefaultDatabaseLock);
 }
@@ -9864,19 +9864,19 @@ LABEL_26:
   return v6;
 }
 
-- (BOOL)deleteAllBookmarksForWorkflowID:(id)a3 error:(id *)a4
+- (BOOL)deleteAllBookmarksForWorkflowID:(id)d error:(id *)error
 {
-  v6 = a3;
+  dCopy = d;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __63__WFDatabase_Bookmarks__deleteAllBookmarksForWorkflowID_error___block_invoke;
   v9[3] = &unk_1E837F978;
-  v10 = v6;
-  v11 = self;
-  v7 = v6;
-  [(WFDatabase *)self performTransactionWithReason:@"delete all bookmarks for shortcut" block:v9 error:a4];
+  v10 = dCopy;
+  selfCopy = self;
+  v7 = dCopy;
+  [(WFDatabase *)self performTransactionWithReason:@"delete all bookmarks for shortcut" block:v9 error:error];
 
-  return a4 == 0;
+  return error == 0;
 }
 
 void __63__WFDatabase_Bookmarks__deleteAllBookmarksForWorkflowID_error___block_invoke(uint64_t a1, uint64_t a2)
@@ -9890,17 +9890,17 @@ void __63__WFDatabase_Bookmarks__deleteAllBookmarksForWorkflowID_error___block_i
   v7 = [v6 executeRequest:v5 error:a2];
 }
 
-- (id)bookmarksForWorkflowID:(id)a3 error:(id *)a4
+- (id)bookmarksForWorkflowID:(id)d error:(id *)error
 {
-  v6 = a3;
+  dCopy = d;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __54__WFDatabase_Bookmarks__bookmarksForWorkflowID_error___block_invoke;
   v10[3] = &unk_1E837AA78;
-  v11 = v6;
-  v12 = self;
-  v7 = v6;
-  v8 = [(WFDatabase *)self performOperationWithReason:@"getting bookmarks for workflow" block:v10 error:a4];
+  v11 = dCopy;
+  selfCopy = self;
+  v7 = dCopy;
+  v8 = [(WFDatabase *)self performOperationWithReason:@"getting bookmarks for workflow" block:v10 error:error];
 
   return v8;
 }
@@ -9919,20 +9919,20 @@ id __54__WFDatabase_Bookmarks__bookmarksForWorkflowID_error___block_invoke(uint6
   return v8;
 }
 
-- (id)bookmarkDataForWorkflowID:(id)a3 path:(id)a4 error:(id *)a5
+- (id)bookmarkDataForWorkflowID:(id)d path:(id)path error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  pathCopy = path;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __62__WFDatabase_Bookmarks__bookmarkDataForWorkflowID_path_error___block_invoke;
   v14[3] = &unk_1E837AA30;
-  v15 = v8;
-  v16 = v9;
-  v17 = self;
-  v10 = v9;
-  v11 = v8;
-  v12 = [(WFDatabase *)self performOperationWithReason:@"getting bookmark data for workflow+path" block:v14 error:a5];
+  v15 = dCopy;
+  v16 = pathCopy;
+  selfCopy = self;
+  v10 = pathCopy;
+  v11 = dCopy;
+  v12 = [(WFDatabase *)self performOperationWithReason:@"getting bookmark data for workflow+path" block:v14 error:error];
 
   return v12;
 }
@@ -9952,23 +9952,23 @@ id __62__WFDatabase_Bookmarks__bookmarkDataForWorkflowID_path_error___block_invo
   return v9;
 }
 
-- (id)createBookmarkWithWorkflowID:(id)a3 path:(id)a4 bookmarkData:(id)a5 error:(id *)a6
+- (id)createBookmarkWithWorkflowID:(id)d path:(id)path bookmarkData:(id)data error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  dCopy = d;
+  pathCopy = path;
+  dataCopy = data;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __78__WFDatabase_Bookmarks__createBookmarkWithWorkflowID_path_bookmarkData_error___block_invoke;
   v18[3] = &unk_1E837AA08;
-  v19 = v10;
-  v20 = v11;
-  v21 = self;
-  v22 = v12;
-  v13 = v12;
-  v14 = v11;
-  v15 = v10;
-  v16 = [(WFDatabase *)self performSaveOperationWithReason:@"save bookmark for workflow+path (update if needed)" block:v18 error:a6];
+  v19 = dCopy;
+  v20 = pathCopy;
+  selfCopy = self;
+  v22 = dataCopy;
+  v13 = dataCopy;
+  v14 = pathCopy;
+  v15 = dCopy;
+  v16 = [(WFDatabase *)self performSaveOperationWithReason:@"save bookmark for workflow+path (update if needed)" block:v18 error:error];
 
   return v16;
 }
@@ -10015,27 +10015,27 @@ id __78__WFDatabase_Bookmarks__createBookmarkWithWorkflowID_path_bookmarkData_er
   return v10;
 }
 
-- (void)deleteDonationsForShortcutWithIdentifier:(id)a3
+- (void)deleteDonationsForShortcutWithIdentifier:(id)identifier
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"WFDatabase+Shortcuts.m" lineNumber:876 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFDatabase+Shortcuts.m" lineNumber:876 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
   }
 
-  v14[0] = v5;
+  v14[0] = identifierCopy;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-  v7 = [MEMORY[0x1E6964E78] defaultSearchableIndex];
+  defaultSearchableIndex = [MEMORY[0x1E6964E78] defaultSearchableIndex];
   v8 = *MEMORY[0x1E69E0FB0];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __66__WFDatabase_Shortcuts__deleteDonationsForShortcutWithIdentifier___block_invoke;
   v12[3] = &unk_1E837E5E0;
-  v13 = v5;
-  v9 = v5;
-  [v7 deleteInteractionsWithGroupIdentifiers:v6 bundleID:v8 protectionClass:0 completionHandler:v12];
+  v13 = identifierCopy;
+  v9 = identifierCopy;
+  [defaultSearchableIndex deleteInteractionsWithGroupIdentifiers:v6 bundleID:v8 protectionClass:0 completionHandler:v12];
 
   v10 = *MEMORY[0x1E69E9840];
 }
@@ -10066,15 +10066,15 @@ void __66__WFDatabase_Shortcuts__deleteDonationsForShortcutWithIdentifier___bloc
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (id)duplicateNameErrorWithName:(id)a3
+- (id)duplicateNameErrorWithName:(id)name
 {
   v14[2] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696ABC0];
   v13[0] = *MEMORY[0x1E696A588];
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
+  nameCopy = name;
   v6 = WFLocalizedString(@"You already have a shortcut named “%@”.");
-  v7 = [v4 localizedStringWithFormat:v6, v5, v13[0]];
+  v7 = [v4 localizedStringWithFormat:v6, nameCopy, v13[0]];
 
   v14[0] = v7;
   v13[1] = *MEMORY[0x1E696A578];
@@ -10088,13 +10088,13 @@ void __66__WFDatabase_Shortcuts__deleteDonationsForShortcutWithIdentifier___bloc
   return v10;
 }
 
-- (id)validateWorkflowName:(id)a3 forCreation:(BOOL)a4 overwriting:(BOOL)a5 error:(id *)a6
+- (id)validateWorkflowName:(id)name forCreation:(BOOL)creation overwriting:(BOOL)overwriting error:(id *)error
 {
   v29[2] = *MEMORY[0x1E69E9840];
-  v8 = [a3 wf_trimmedString];
-  if ([v8 wf_isEmpty])
+  wf_trimmedString = [name wf_trimmedString];
+  if ([wf_trimmedString wf_isEmpty])
   {
-    if (!a6)
+    if (!error)
     {
       goto LABEL_11;
     }
@@ -10107,15 +10107,15 @@ void __66__WFDatabase_Shortcuts__deleteDonationsForShortcutWithIdentifier___bloc
     v11 = WFLocalizedString(@"Please enter a name for this shortcut.");
     v29[1] = v11;
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:v28 count:2];
-    *a6 = [v9 errorWithDomain:@"WFWorkflowErrorDomain" code:0 userInfo:v12];
+    *error = [v9 errorWithDomain:@"WFWorkflowErrorDomain" code:0 userInfo:v12];
 
     goto LABEL_10;
   }
 
-  if (a5)
+  if (overwriting)
   {
 LABEL_5:
-    a6 = v8;
+    error = wf_trimmedString;
     goto LABEL_11;
   }
 
@@ -10124,11 +10124,11 @@ LABEL_5:
   v24[1] = 3221225472;
   v24[2] = __76__WFDatabase_Shortcuts__validateWorkflowName_forCreation_overwriting_error___block_invoke;
   v24[3] = &unk_1E837AB68;
-  v14 = v8;
+  v14 = wf_trimmedString;
   v25 = v14;
   v15 = [v13 if_firstObjectPassingTest:v24];
 
-  if (a6 && v15)
+  if (error && v15)
   {
     v16 = MEMORY[0x1E696ABC0];
     v26[0] = *MEMORY[0x1E696A588];
@@ -10140,7 +10140,7 @@ LABEL_5:
     v20 = [v18 localizedStringWithFormat:v19, v14];
     v27[1] = v20;
     v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:v26 count:2];
-    *a6 = [v16 errorWithDomain:@"WFWorkflowErrorDomain" code:1 userInfo:v21];
+    *error = [v16 errorWithDomain:@"WFWorkflowErrorDomain" code:1 userInfo:v21];
   }
 
   else
@@ -10153,23 +10153,23 @@ LABEL_5:
   }
 
 LABEL_10:
-  a6 = 0;
+  error = 0;
 LABEL_11:
 
   v22 = *MEMORY[0x1E69E9840];
 
-  return a6;
+  return error;
 }
 
-- (void)updateLibraryWithNewWorkflowID:(id)a3 adjacentToExistingWorkflowID:(id)a4
+- (void)updateLibraryWithNewWorkflowID:(id)d adjacentToExistingWorkflowID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WFDatabase *)self library];
-  [v8 insertShortcutWithId:v6];
+  dCopy = d;
+  iDCopy = iD;
+  library = [(WFDatabase *)self library];
+  [library insertShortcutWithId:dCopy];
 
-  v9 = [(WFDatabase *)self library];
-  v10 = [v9 collectionsAndFoldersContainingShortcut:v7 error:0];
+  library2 = [(WFDatabase *)self library];
+  v10 = [library2 collectionsAndFoldersContainingShortcut:iDCopy error:0];
 
   if (v10)
   {
@@ -10178,8 +10178,8 @@ LABEL_11:
     v11[2] = __85__WFDatabase_Shortcuts__updateLibraryWithNewWorkflowID_adjacentToExistingWorkflowID___block_invoke;
     v11[3] = &unk_1E837ACF8;
     v11[4] = self;
-    v12 = v7;
-    v13 = v6;
+    v12 = iDCopy;
+    v13 = dCopy;
     [v10 enumerateObjectsUsingBlock:v11];
     [(WFDatabase *)self libraryDidChange];
   }
@@ -10267,20 +10267,20 @@ void __85__WFDatabase_Shortcuts__updateLibraryWithNewWorkflowID_adjacentToExisti
   v29 = *MEMORY[0x1E69E9840];
 }
 
-- (id)duplicateReference:(id)a3 newName:(id)a4 error:(id *)a5
+- (id)duplicateReference:(id)reference newName:(id)name error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  referenceCopy = reference;
+  nameCopy = name;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __58__WFDatabase_Shortcuts__duplicateReference_newName_error___block_invoke;
   v14[3] = &unk_1E837ACD0;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v10 = v9;
-  v11 = v8;
-  v12 = [(WFDatabase *)self performSaveOperationWithReason:@"duplicate workflow" block:v14 error:a5];
+  v15 = referenceCopy;
+  v16 = nameCopy;
+  v10 = nameCopy;
+  v11 = referenceCopy;
+  v12 = [(WFDatabase *)self performSaveOperationWithReason:@"duplicate workflow" block:v14 error:error];
 
   return v12;
 }
@@ -10358,17 +10358,17 @@ id __58__WFDatabase_Shortcuts__duplicateReference_newName_error___block_invoke(u
   return v21;
 }
 
-- (id)_createWorkflowWithOptions:(id)a3 error:(id *)a4
+- (id)_createWorkflowWithOptions:(id)options error:(id *)error
 {
-  v6 = a3;
+  optionsCopy = options;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __58__WFDatabase_Shortcuts___createWorkflowWithOptions_error___block_invoke;
   v10[3] = &unk_1E837ACA8;
-  v11 = v6;
-  v12 = self;
-  v7 = v6;
-  v8 = [(WFDatabase *)self performSaveOperationWithReason:@"create workflow with options" block:v10 error:a4];
+  v11 = optionsCopy;
+  selfCopy = self;
+  v7 = optionsCopy;
+  v8 = [(WFDatabase *)self performSaveOperationWithReason:@"create workflow with options" block:v10 error:error];
 
   return v8;
 }
@@ -10484,25 +10484,25 @@ LABEL_3:
   return v23;
 }
 
-- (id)suggestedWorkflowNameForName:(id)a3
+- (id)suggestedWorkflowNameForName:(id)name
 {
-  v5 = a3;
-  if (!v5)
+  nameCopy = name;
+  if (!nameCopy)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"WFDatabase+Shortcuts.m" lineNumber:710 description:{@"Invalid parameter not satisfying: %@", @"name"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFDatabase+Shortcuts.m" lineNumber:710 description:{@"Invalid parameter not satisfying: %@", @"name"}];
   }
 
-  v6 = [v5 componentsSeparatedByString:@" "];
-  v7 = [v6 lastObject];
-  v8 = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
-  v9 = [v8 invertedSet];
-  v10 = [v7 rangeOfCharacterFromSet:v9];
+  v6 = [nameCopy componentsSeparatedByString:@" "];
+  lastObject = [v6 lastObject];
+  decimalDigitCharacterSet = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
+  invertedSet = [decimalDigitCharacterSet invertedSet];
+  v10 = [lastObject rangeOfCharacterFromSet:invertedSet];
 
   if (v10 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v11 = [v6 lastObject];
-    v12 = [v11 integerValue];
+    lastObject2 = [v6 lastObject];
+    integerValue = [lastObject2 integerValue];
 
     v13 = [v6 subarrayWithRange:{0, objc_msgSend(v6, "count") - 1}];
 
@@ -10511,21 +10511,21 @@ LABEL_3:
 
   else
   {
-    v12 = 1;
+    integerValue = 1;
   }
 
-  v14 = v5;
+  v14 = nameCopy;
   v20 = v14;
   if ([(WFDatabase *)self hasVisibleWorkflowsWithName:v14])
   {
     v15 = v14;
     do
     {
-      v16 = [MEMORY[0x1E696AEC0] localizedStringWithFormat:@"%lu", v12];
+      v16 = [MEMORY[0x1E696AEC0] localizedStringWithFormat:@"%lu", integerValue];
       v17 = [v6 arrayByAddingObject:v16];
       v14 = [v17 componentsJoinedByString:@" "];
 
-      ++v12;
+      ++integerValue;
       v15 = v14;
     }
 
@@ -10535,17 +10535,17 @@ LABEL_3:
   return v14;
 }
 
-- (id)applyConflictResolution:(id)a3
+- (id)applyConflictResolution:(id)resolution
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  resolutionCopy = resolution;
   v5 = getWFCloudKitSyncLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     *&buf[4] = "[WFDatabase(Shortcuts) applyConflictResolution:]";
     *&buf[12] = 2112;
-    *&buf[14] = v4;
+    *&buf[14] = resolutionCopy;
     _os_log_impl(&dword_1CA256000, v5, OS_LOG_TYPE_INFO, "%s applying conflict resolution: %@", buf, 0x16u);
   }
 
@@ -10559,9 +10559,9 @@ LABEL_3:
   v10[1] = 3221225472;
   v10[2] = __49__WFDatabase_Shortcuts__applyConflictResolution___block_invoke;
   v10[3] = &unk_1E837AC80;
-  v6 = v4;
+  v6 = resolutionCopy;
   v11 = v6;
-  v12 = self;
+  selfCopy = self;
   v13 = buf;
   [(WFDatabase *)self performTransactionWithReason:@"conflict resolution" block:v10 error:0];
   v7 = *(*&buf[8] + 40);
@@ -10896,20 +10896,20 @@ void __49__WFDatabase_Shortcuts__applyConflictResolution___block_invoke_295(uint
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)hasConflictingReferenceForWorkflowID:(id)a3
+- (BOOL)hasConflictingReferenceForWorkflowID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v9 = MEMORY[0x1E69E9820];
   v10 = 3221225472;
   v11 = __62__WFDatabase_Shortcuts__hasConflictingReferenceForWorkflowID___block_invoke;
   v12 = &unk_1E837F900;
-  v13 = self;
-  v14 = v4;
-  v5 = v4;
+  selfCopy = self;
+  v14 = dCopy;
+  v5 = dCopy;
   v6 = [(WFDatabase *)self performOperationWithReason:@"getting conflict status for shortcut" block:&v9 error:0];
-  v7 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
-  return v7;
+  return bOOLValue;
 }
 
 id __62__WFDatabase_Shortcuts__hasConflictingReferenceForWorkflowID___block_invoke(uint64_t a1)
@@ -10932,16 +10932,16 @@ id __62__WFDatabase_Shortcuts__hasConflictingReferenceForWorkflowID___block_invo
   return v4;
 }
 
-- (id)conflictingReferenceForWorkflowID:(id)a3
+- (id)conflictingReferenceForWorkflowID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __59__WFDatabase_Shortcuts__conflictingReferenceForWorkflowID___block_invoke;
   v8[3] = &unk_1E837AC08;
   v8[4] = self;
-  v9 = v4;
-  v5 = v4;
+  v9 = dCopy;
+  v5 = dCopy;
   v6 = [(WFDatabase *)self performOperationWithReason:@"getting conflicts for shortcut" block:v8 error:0];
 
   return v6;
@@ -10967,50 +10967,50 @@ id __59__WFDatabase_Shortcuts__conflictingReferenceForWorkflowID___block_invoke(
   return v4;
 }
 
-- (void)_deleteWorkflow:(id)a3 deleteConflict:(BOOL)a4
+- (void)_deleteWorkflow:(id)workflow deleteConflict:(BOOL)conflict
 {
-  v4 = a4;
+  conflictCopy = conflict;
   v30 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (!v7)
+  workflowCopy = workflow;
+  if (!workflowCopy)
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"WFDatabase+Shortcuts.m" lineNumber:553 description:{@"Invalid parameter not satisfying: %@", @"workflow"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFDatabase+Shortcuts.m" lineNumber:553 description:{@"Invalid parameter not satisfying: %@", @"workflow"}];
   }
 
-  if (v4)
+  if (conflictCopy)
   {
-    v8 = [v7 conflictOf];
-    if (v8)
+    conflictOf = [workflowCopy conflictOf];
+    if (conflictOf)
     {
-      v9 = v8;
+      anyObject = conflictOf;
     }
 
     else
     {
-      v10 = [v7 conflicts];
-      v9 = [v10 anyObject];
+      conflicts = [workflowCopy conflicts];
+      anyObject = [conflicts anyObject];
 
-      if (!v9)
+      if (!anyObject)
       {
         goto LABEL_8;
       }
     }
 
-    v11 = [(WFDatabase *)self context];
-    [v11 deleteObject:v9];
+    context = [(WFDatabase *)self context];
+    [context deleteObject:anyObject];
 
     v12 = objc_alloc(MEMORY[0x1E69E0A68]);
-    v13 = [v9 workflowID];
-    v14 = [v12 initWithIdentifier:v13 objectType:0];
+    workflowID = [anyObject workflowID];
+    v14 = [v12 initWithIdentifier:workflowID objectType:0];
     [(WFDatabase *)self addPendingDeletedDescriptor:v14];
   }
 
 LABEL_8:
-  v15 = [v7 workflowID];
-  [(WFDatabase *)self deleteDonationsForShortcutWithIdentifier:v15];
+  workflowID2 = [workflowCopy workflowID];
+  [(WFDatabase *)self deleteDonationsForShortcutWithIdentifier:workflowID2];
   v25 = 0;
-  v16 = [(WFDatabase *)self deleteAllBookmarksForWorkflowID:v15 error:&v25];
+  v16 = [(WFDatabase *)self deleteAllBookmarksForWorkflowID:workflowID2 error:&v25];
   v17 = v25;
   if (!v16)
   {
@@ -11025,25 +11025,25 @@ LABEL_8:
     }
   }
 
-  v19 = [MEMORY[0x1E695E000] systemShortcutsUserDefaults];
-  v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"WFCollapsedActions-%@", v15];
-  [v19 removeObjectForKey:v20];
+  systemShortcutsUserDefaults = [MEMORY[0x1E695E000] systemShortcutsUserDefaults];
+  v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"WFCollapsedActions-%@", workflowID2];
+  [systemShortcutsUserDefaults removeObjectForKey:v20];
 
-  v21 = [(WFDatabase *)self context];
-  [v21 deleteObject:v7];
+  context2 = [(WFDatabase *)self context];
+  [context2 deleteObject:workflowCopy];
 
-  v22 = [objc_alloc(MEMORY[0x1E69E0A68]) initWithIdentifier:v15 objectType:0];
+  v22 = [objc_alloc(MEMORY[0x1E69E0A68]) initWithIdentifier:workflowID2 objectType:0];
   [(WFDatabase *)self addPendingDeletedDescriptor:v22];
 
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)deleteWorkflowRecordWithIdentifier:(id)a3 error:(id *)a4
+- (BOOL)deleteWorkflowRecordWithIdentifier:(id)identifier error:(id *)error
 {
   v23 = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E69E0A68];
-  v7 = a3;
-  v8 = [[v6 alloc] initWithIdentifier:v7 objectType:0];
+  identifierCopy = identifier;
+  v8 = [[v6 alloc] initWithIdentifier:identifierCopy objectType:0];
 
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
@@ -11060,16 +11060,16 @@ LABEL_8:
     v11 = getWFDatabaseLogObject();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v12 = [v10 localizedDescription];
+      localizedDescription = [v10 localizedDescription];
       *buf = 136315394;
       v20 = "[WFDatabase(Shortcuts) deleteWorkflowRecordWithIdentifier:error:]";
       v21 = 2114;
-      v22 = v12;
+      v22 = localizedDescription;
       _os_log_impl(&dword_1CA256000, v11, OS_LOG_TYPE_ERROR, "%s Failed to delete workflow record: %{public}@", buf, 0x16u);
     }
 
     v13 = v10;
-    *a4 = v10;
+    *error = v10;
   }
 
   v14 = *MEMORY[0x1E69E9840];
@@ -11087,21 +11087,21 @@ void __66__WFDatabase_Shortcuts__deleteWorkflowRecordWithIdentifier_error___bloc
   }
 }
 
-- (BOOL)deleteReference:(id)a3 tombstone:(BOOL)a4 error:(id *)a5
+- (BOOL)deleteReference:(id)reference tombstone:(BOOL)tombstone error:(id *)error
 {
   v26 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = [v8 identifier];
+  referenceCopy = reference;
+  identifier = [referenceCopy identifier];
 
-  if (v9)
+  if (identifier)
   {
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __57__WFDatabase_Shortcuts__deleteReference_tombstone_error___block_invoke;
     v18[3] = &unk_1E837DDE8;
-    v19 = v8;
-    v20 = self;
-    v21 = a4;
+    v19 = referenceCopy;
+    selfCopy = self;
+    tombstoneCopy = tombstone;
     v17 = 0;
     [(WFDatabase *)self performTransactionWithReason:@"delete reference" block:v18 error:&v17];
     v10 = v17;
@@ -11111,16 +11111,16 @@ void __66__WFDatabase_Shortcuts__deleteWorkflowRecordWithIdentifier_error___bloc
       v12 = getWFDatabaseLogObject();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v13 = [v10 localizedDescription];
+        localizedDescription = [v10 localizedDescription];
         *buf = 136315394;
         v23 = "[WFDatabase(Shortcuts) deleteReference:tombstone:error:]";
         v24 = 2114;
-        v25 = v13;
+        v25 = localizedDescription;
         _os_log_impl(&dword_1CA256000, v12, OS_LOG_TYPE_ERROR, "%s Failed to delete reference: %{public}@", buf, 0x16u);
       }
 
       v14 = v10;
-      *a5 = v10;
+      *error = v10;
     }
   }
 
@@ -11315,31 +11315,31 @@ void __57__WFDatabase_Shortcuts__deleteReference_tombstone_error___block_invoke_
   [v2 addPendingUpdatedDescriptor:v6];
 }
 
-- (BOOL)deleteReference:(id)a3 error:(id *)a4
+- (BOOL)deleteReference:(id)reference error:(id *)error
 {
-  v6 = a3;
-  LOBYTE(a4) = [(WFDatabase *)self deleteReference:v6 tombstone:+[WFCloudKitSyncSession error:"isSyncEnabled"], a4];
+  referenceCopy = reference;
+  LOBYTE(error) = [(WFDatabase *)self deleteReference:referenceCopy tombstone:+[WFCloudKitSyncSession error:"isSyncEnabled"], error];
 
-  return a4;
+  return error;
 }
 
-- (id)renameReference:(id)a3 to:(id)a4 error:(id *)a5
+- (id)renameReference:(id)reference to:(id)to error:(id *)error
 {
   v46 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  if (!v9)
+  referenceCopy = reference;
+  toCopy = to;
+  if (!referenceCopy)
   {
-    v26 = a5;
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v27 handleFailureInMethod:a2 object:self file:@"WFDatabase+Shortcuts.m" lineNumber:366 description:{@"Invalid parameter not satisfying: %@", @"reference"}];
+    errorCopy = error;
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFDatabase+Shortcuts.m" lineNumber:366 description:{@"Invalid parameter not satisfying: %@", @"reference"}];
 
-    a5 = v26;
+    error = errorCopy;
   }
 
-  v28 = a5;
-  v29 = self;
-  v30 = [(WFDatabase *)self validateWorkflowName:v10 forCreation:0 overwriting:0 error:a5];
+  errorCopy2 = error;
+  selfCopy = self;
+  v30 = [(WFDatabase *)self validateWorkflowName:toCopy forCreation:0 overwriting:0 error:error];
 
   v11 = v30;
   if (v30)
@@ -11365,13 +11365,13 @@ void __57__WFDatabase_Shortcuts__deleteReference_tombstone_error___block_invoke_
           }
 
           v18 = *(*(&v41 + 1) + 8 * i);
-          v19 = [v18 identifier];
-          v20 = [v9 identifier];
-          v21 = [v19 isEqualToString:v20];
+          identifier = [v18 identifier];
+          identifier2 = [referenceCopy identifier];
+          v21 = [identifier isEqualToString:identifier2];
 
           if (v21)
           {
-            v22 = v9;
+            v22 = referenceCopy;
 
             goto LABEL_16;
           }
@@ -11391,10 +11391,10 @@ void __57__WFDatabase_Shortcuts__deleteReference_tombstone_error___block_invoke_
 
     if ([v13 count])
     {
-      if (v28)
+      if (errorCopy2)
       {
-        [(WFDatabase *)v29 duplicateNameErrorWithName:v30];
-        *v28 = v22 = 0;
+        [(WFDatabase *)selfCopy duplicateNameErrorWithName:v30];
+        *errorCopy2 = v22 = 0;
       }
 
       else
@@ -11416,10 +11416,10 @@ void __57__WFDatabase_Shortcuts__deleteReference_tombstone_error___block_invoke_
       v31[1] = 3221225472;
       v31[2] = __50__WFDatabase_Shortcuts__renameReference_to_error___block_invoke;
       v31[3] = &unk_1E837ABB8;
-      v33 = v29;
+      v33 = selfCopy;
       v34 = &v35;
       v32 = v30;
-      [(WFDatabase *)v29 accessStorageForDescriptor:v9 forWriting:1 readingRecordProperties:v25 usingBlock:v31 withError:v28];
+      [(WFDatabase *)selfCopy accessStorageForDescriptor:referenceCopy forWriting:1 readingRecordProperties:v25 usingBlock:v31 withError:errorCopy2];
 
       v22 = v36[5];
       _Block_object_dispose(&v35, 8);
@@ -11468,26 +11468,26 @@ void __50__WFDatabase_Shortcuts__renameReference_to_error___block_invoke(uint64_
   }
 }
 
-- (id)duplicateReference:(id)a3 error:(id *)a4
+- (id)duplicateReference:(id)reference error:(id *)error
 {
-  v7 = a3;
-  if (!v7)
+  referenceCopy = reference;
+  if (!referenceCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"WFDatabase+Shortcuts.m" lineNumber:359 description:{@"Invalid parameter not satisfying: %@", @"reference"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFDatabase+Shortcuts.m" lineNumber:359 description:{@"Invalid parameter not satisfying: %@", @"reference"}];
   }
 
-  v8 = [v7 name];
-  v9 = [(WFDatabase *)self suggestedWorkflowNameForName:v8];
+  name = [referenceCopy name];
+  v9 = [(WFDatabase *)self suggestedWorkflowNameForName:name];
 
-  v10 = [(WFDatabase *)self duplicateReference:v7 newName:v9 error:a4];
+  v10 = [(WFDatabase *)self duplicateReference:referenceCopy newName:v9 error:error];
 
   return v10;
 }
 
-- (id)createWorkflowWithOptions:(id)a3 nameCollisionBehavior:(unint64_t)a4 error:(id *)a5
+- (id)createWorkflowWithOptions:(id)options nameCollisionBehavior:(unint64_t)behavior error:(id *)error
 {
-  v8 = a3;
+  optionsCopy = options;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -11498,12 +11498,12 @@ void __50__WFDatabase_Shortcuts__renameReference_to_error___block_invoke(uint64_
   v12[1] = 3221225472;
   v12[2] = __79__WFDatabase_Shortcuts__createWorkflowWithOptions_nameCollisionBehavior_error___block_invoke;
   v12[3] = &unk_1E837AB90;
-  v9 = v8;
+  v9 = optionsCopy;
   v13 = v9;
-  v14 = self;
+  selfCopy = self;
   v15 = &v17;
-  v16 = a4;
-  [(WFDatabase *)self performTransactionWithReason:@"create shortcut" block:v12 error:a5];
+  behaviorCopy = behavior;
+  [(WFDatabase *)self performTransactionWithReason:@"create shortcut" block:v12 error:error];
   v10 = v18[5];
 
   _Block_object_dispose(&v17, 8);
@@ -11644,23 +11644,23 @@ LABEL_28:
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (id)createWorkflowWithError:(id *)a3
+- (id)createWorkflowWithError:(id *)error
 {
   v5 = objc_opt_new();
-  v6 = [(WFDatabase *)self createWorkflowWithOptions:v5 nameCollisionBehavior:0 error:a3];
+  v6 = [(WFDatabase *)self createWorkflowWithOptions:v5 nameCollisionBehavior:0 error:error];
 
   return v6;
 }
 
-- (BOOL)hasConflictWithName:(id)a3
+- (BOOL)hasConflictWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = +[WFHomeManager cachedHomeSceneNames];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __45__WFDatabase_Shortcuts__hasConflictWithName___block_invoke;
   v10[3] = &unk_1E837AB68;
-  v6 = v4;
+  v6 = nameCopy;
   v11 = v6;
   v7 = [v5 if_firstObjectPassingTest:v10];
 
@@ -11677,73 +11677,73 @@ LABEL_28:
   return v8;
 }
 
-- (BOOL)hasVisibleWorkflowsWithName:(id)a3
+- (BOOL)hasVisibleWorkflowsWithName:(id)name
 {
-  v3 = [(WFDatabase *)self visibleReferencesForWorkflowName:a3];
+  v3 = [(WFDatabase *)self visibleReferencesForWorkflowName:name];
   v4 = [v3 count] != 0;
 
   return v4;
 }
 
-- (id)uniqueVisibleReferenceForWorkflowName:(id)a3
+- (id)uniqueVisibleReferenceForWorkflowName:(id)name
 {
-  v3 = [(WFDatabase *)self visibleReferencesForWorkflowName:a3];
+  v3 = [(WFDatabase *)self visibleReferencesForWorkflowName:name];
   if ([v3 count] == 1)
   {
-    v4 = [v3 firstObject];
+    firstObject = [v3 firstObject];
   }
 
   else
   {
-    v4 = 0;
+    firstObject = 0;
   }
 
-  return v4;
+  return firstObject;
 }
 
-- (id)visibleReferencesForWorkflowIDs:(id)a3 sortBy:(unint64_t)a4 nameContaining:(id)a5 nameEqualing:(id)a6 hasAssociatedAppBundleIdentifier:(BOOL)a7 associatedAppBundleIdentifier:(id)a8 isRecentlyModified:(BOOL)a9 isRecentlyRun:(BOOL)a10 limitTo:(unint64_t)a11
+- (id)visibleReferencesForWorkflowIDs:(id)ds sortBy:(unint64_t)by nameContaining:(id)containing nameEqualing:(id)equaling hasAssociatedAppBundleIdentifier:(BOOL)identifier associatedAppBundleIdentifier:(id)bundleIdentifier isRecentlyModified:(BOOL)modified isRecentlyRun:(BOOL)self0 limitTo:(unint64_t)self1
 {
-  v27 = a7;
+  identifierCopy = identifier;
   v15 = MEMORY[0x1E695DFD8];
   v16 = MEMORY[0x1E696AD98];
-  v17 = a8;
-  v18 = a6;
-  v19 = a5;
-  v20 = a3;
-  v21 = [v16 numberWithUnsignedInteger:a4];
+  bundleIdentifierCopy = bundleIdentifier;
+  equalingCopy = equaling;
+  containingCopy = containing;
+  dsCopy = ds;
+  v21 = [v16 numberWithUnsignedInteger:by];
   v22 = [v15 setWithObject:v21];
-  LOWORD(v25) = __PAIR16__(a10, a9);
-  v23 = [(WFDatabase *)self visibleReferencesForWorkflowIDs:v20 sortByKeys:v22 nameContaining:v19 nameEqualing:v18 hasAssociatedAppBundleIdentifier:v27 associatedAppBundleIdentifier:v17 isRecentlyModified:v25 isRecentlyRun:a11 limitTo:?];
+  LOWORD(v25) = __PAIR16__(run, modified);
+  v23 = [(WFDatabase *)self visibleReferencesForWorkflowIDs:dsCopy sortByKeys:v22 nameContaining:containingCopy nameEqualing:equalingCopy hasAssociatedAppBundleIdentifier:identifierCopy associatedAppBundleIdentifier:bundleIdentifierCopy isRecentlyModified:v25 isRecentlyRun:to limitTo:?];
 
   return v23;
 }
 
-- (id)visibleReferencesForWorkflowIDs:(id)a3 sortByKeys:(id)a4 nameContaining:(id)a5 nameEqualing:(id)a6 hasAssociatedAppBundleIdentifier:(BOOL)a7 associatedAppBundleIdentifier:(id)a8 isRecentlyModified:(BOOL)a9 isRecentlyRun:(BOOL)a10 limitTo:(unint64_t)a11
+- (id)visibleReferencesForWorkflowIDs:(id)ds sortByKeys:(id)keys nameContaining:(id)containing nameEqualing:(id)equaling hasAssociatedAppBundleIdentifier:(BOOL)identifier associatedAppBundleIdentifier:(id)bundleIdentifier isRecentlyModified:(BOOL)modified isRecentlyRun:(BOOL)self0 limitTo:(unint64_t)self1
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a8;
+  dsCopy = ds;
+  keysCopy = keys;
+  containingCopy = containing;
+  equalingCopy = equaling;
+  bundleIdentifierCopy = bundleIdentifier;
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v29[2] = __200__WFDatabase_Shortcuts__visibleReferencesForWorkflowIDs_sortByKeys_nameContaining_nameEqualing_hasAssociatedAppBundleIdentifier_associatedAppBundleIdentifier_isRecentlyModified_isRecentlyRun_limitTo___block_invoke;
   v29[3] = &unk_1E837AB40;
-  v30 = v17;
-  v31 = self;
-  v32 = v19;
-  v33 = v20;
-  v37 = a7;
-  v38 = a9;
-  v39 = a10;
-  v34 = v21;
-  v35 = v18;
-  v36 = a11;
-  v22 = v18;
-  v23 = v21;
-  v24 = v20;
-  v25 = v19;
-  v26 = v17;
+  v30 = dsCopy;
+  selfCopy = self;
+  v32 = containingCopy;
+  v33 = equalingCopy;
+  identifierCopy = identifier;
+  modifiedCopy = modified;
+  runCopy = run;
+  v34 = bundleIdentifierCopy;
+  v35 = keysCopy;
+  toCopy = to;
+  v22 = keysCopy;
+  v23 = bundleIdentifierCopy;
+  v24 = equalingCopy;
+  v25 = containingCopy;
+  v26 = dsCopy;
   v27 = [(WFDatabase *)self performOperationWithReason:@"getting visible references for workflow ids" block:v29 error:0];
 
   return v27;
@@ -11852,14 +11852,14 @@ id __200__WFDatabase_Shortcuts__visibleReferencesForWorkflowIDs_sortByKeys_nameC
   return v27;
 }
 
-- (id)referenceForWorkflowID:(id)a3 includingTombstones:(BOOL)a4
+- (id)referenceForWorkflowID:(id)d includingTombstones:(BOOL)tombstones
 {
   v22 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (!v7)
+  dCopy = d;
+  if (!dCopy)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"WFDatabase+Shortcuts.m" lineNumber:135 description:{@"Invalid parameter not satisfying: %@", @"workflowID"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFDatabase+Shortcuts.m" lineNumber:135 description:{@"Invalid parameter not satisfying: %@", @"workflowID"}];
   }
 
   v8 = getWFControlMigrationLogObject();
@@ -11868,7 +11868,7 @@ id __200__WFDatabase_Shortcuts__visibleReferencesForWorkflowIDs_sortByKeys_nameC
     *buf = 136315394;
     v19 = "[WFDatabase(Shortcuts) referenceForWorkflowID:includingTombstones:]";
     v20 = 2112;
-    v21 = v7;
+    v21 = dCopy;
     _os_log_impl(&dword_1CA256000, v8, OS_LOG_TYPE_DEFAULT, "%s %@", buf, 0x16u);
   }
 
@@ -11876,10 +11876,10 @@ id __200__WFDatabase_Shortcuts__visibleReferencesForWorkflowIDs_sortByKeys_nameC
   v14[1] = 3221225472;
   v14[2] = __68__WFDatabase_Shortcuts__referenceForWorkflowID_includingTombstones___block_invoke;
   v14[3] = &unk_1E837AB18;
-  v15 = v7;
-  v16 = self;
-  v17 = a4;
-  v9 = v7;
+  v15 = dCopy;
+  selfCopy = self;
+  tombstonesCopy = tombstones;
+  v9 = dCopy;
   v10 = [(WFDatabase *)self performOperationWithReason:@"getting shortcut with id" block:v14 error:0];
 
   v11 = *MEMORY[0x1E69E9840];
@@ -11977,19 +11977,19 @@ id __68__WFDatabase_Shortcuts__referenceForWorkflowID_includingTombstones___bloc
   return v10;
 }
 
-- (id)recentlyRunShortcutsWithLimit:(int64_t)a3
+- (id)recentlyRunShortcutsWithLimit:(int64_t)limit
 {
   v20[2] = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v6 = [MEMORY[0x1E695DF00] date];
-  v7 = [v5 dateByAddingUnit:16 value:-30 toDate:v6 options:0];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  date = [MEMORY[0x1E695DF00] date];
+  v7 = [currentCalendar dateByAddingUnit:16 value:-30 toDate:date options:0];
 
   v8 = +[WFCoreDataWorkflow descriptorFetchRequest];
   v9 = MEMORY[0x1E696AB28];
   v10 = [MEMORY[0x1E696AE18] predicateWithFormat:@"ANY runEvents.date >= %@", v7];
   v20[0] = v10;
-  v11 = [(WFDatabase *)self visiblePredicate];
-  v20[1] = v11;
+  visiblePredicate = [(WFDatabase *)self visiblePredicate];
+  v20[1] = visiblePredicate;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:2];
   v13 = [v9 andPredicateWithSubpredicates:v12];
   [v8 setPredicate:v13];
@@ -11999,9 +11999,9 @@ id __68__WFDatabase_Shortcuts__referenceForWorkflowID_includingTombstones___bloc
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v19 count:1];
   [v8 setSortDescriptors:v15];
 
-  if ((a3 - 1) <= 0x7FFFFFFFFFFFFFFDLL)
+  if ((limit - 1) <= 0x7FFFFFFFFFFFFFFDLL)
   {
-    [v8 setFetchLimit:a3];
+    [v8 setFetchLimit:limit];
   }
 
   v16 = [(WFDatabase *)self workflowResultWithFetchRequest:v8];
@@ -12014,16 +12014,16 @@ id __68__WFDatabase_Shortcuts__referenceForWorkflowID_includingTombstones___bloc
 - (id)recentlyModifiedShortcuts
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v4 = [MEMORY[0x1E695DF00] date];
-  v5 = [v3 dateByAddingUnit:16 value:-30 toDate:v4 options:0];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  date = [MEMORY[0x1E695DF00] date];
+  v5 = [currentCalendar dateByAddingUnit:16 value:-30 toDate:date options:0];
 
   v6 = +[WFCoreDataWorkflow descriptorFetchRequest];
   v7 = MEMORY[0x1E696AB28];
   v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K >= %@", @"modificationDate", v5];
   v18[0] = v8;
-  v9 = [(WFDatabase *)self visiblePredicate];
-  v18[1] = v9;
+  visiblePredicate = [(WFDatabase *)self visiblePredicate];
+  v18[1] = visiblePredicate;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:2];
   v11 = [v7 andPredicateWithSubpredicates:v10];
   [v6 setPredicate:v11];
@@ -12040,17 +12040,17 @@ id __68__WFDatabase_Shortcuts__referenceForWorkflowID_includingTombstones___bloc
   return v14;
 }
 
-- (id)visibleReferencesForWorkflowName:(id)a3
+- (id)visibleReferencesForWorkflowName:(id)name
 {
   v4 = MEMORY[0x1E69E0E18];
-  v5 = a3;
+  nameCopy = name;
   v6 = [[v4 alloc] initWithLocation:0];
-  v7 = [WFLibraryWorkflowsQuery sortedWorkflowsWithQuery:v6 sortByName:1 nameEqualing:v5];
+  v7 = [WFLibraryWorkflowsQuery sortedWorkflowsWithQuery:v6 sortByName:1 nameEqualing:nameCopy];
 
   v8 = [(WFDatabase *)self workflowResultWithLibraryQuery:v7];
-  v9 = [v8 descriptors];
+  descriptors = [v8 descriptors];
 
-  return v9;
+  return descriptors;
 }
 
 - (id)invisibleWorkflows
@@ -12058,8 +12058,8 @@ id __68__WFDatabase_Shortcuts__referenceForWorkflowID_includingTombstones___bloc
   v12[1] = *MEMORY[0x1E69E9840];
   v3 = +[WFCoreDataWorkflow descriptorFetchRequest];
   v4 = MEMORY[0x1E696AB28];
-  v5 = [(WFDatabase *)self visiblePredicate];
-  v6 = [v4 notPredicateWithSubpredicate:v5];
+  visiblePredicate = [(WFDatabase *)self visiblePredicate];
+  v6 = [v4 notPredicateWithSubpredicate:visiblePredicate];
   [v3 setPredicate:v6];
 
   v7 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"modificationDate" ascending:0];
@@ -12074,63 +12074,63 @@ id __68__WFDatabase_Shortcuts__referenceForWorkflowID_includingTombstones___bloc
   return v9;
 }
 
-- (id)sortedVisibleWorkflowsNameContains:(id)a3 limit:(int64_t)a4
+- (id)sortedVisibleWorkflowsNameContains:(id)contains limit:(int64_t)limit
 {
   v6 = MEMORY[0x1E69E0E18];
-  v7 = a3;
+  containsCopy = contains;
   v8 = [[v6 alloc] initWithLocation:0];
-  v9 = [WFLibraryWorkflowsQuery sortedWorkflowsWithQuery:v8 sortByName:1 nameContaining:v7 limit:a4];
+  v9 = [WFLibraryWorkflowsQuery sortedWorkflowsWithQuery:v8 sortByName:1 nameContaining:containsCopy limit:limit];
 
   v10 = [(WFDatabase *)self workflowResultWithLibraryQuery:v9];
 
   return v10;
 }
 
-- (id)sortedVisibleWorkflowsWithAssociatedAppBundleIdentifier:(id)a3
+- (id)sortedVisibleWorkflowsWithAssociatedAppBundleIdentifier:(id)identifier
 {
   v4 = MEMORY[0x1E69E0E18];
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = [[v4 alloc] initWithLocation:0];
-  v7 = [WFLibraryWorkflowsQuery sortedWorkflowsWithQuery:v6 sortByName:1 associatedAppBundleIdentifier:v5];
+  v7 = [WFLibraryWorkflowsQuery sortedWorkflowsWithQuery:v6 sortByName:1 associatedAppBundleIdentifier:identifierCopy];
 
   v8 = [(WFDatabase *)self workflowResultWithLibraryQuery:v7];
 
   return v8;
 }
 
-- (id)sortedVisibleWorkflowsByLastRunOrModificationDateWithLimit:(int64_t)a3
+- (id)sortedVisibleWorkflowsByLastRunOrModificationDateWithLimit:(int64_t)limit
 {
   v5 = [objc_alloc(MEMORY[0x1E69E0E18]) initWithLocation:0];
-  v6 = [WFLibraryWorkflowsQuery sortedWorkflowsWithQuery:v5 sortByName:0 limit:a3];
+  v6 = [WFLibraryWorkflowsQuery sortedWorkflowsWithQuery:v5 sortByName:0 limit:limit];
 
   v7 = [(WFDatabase *)self workflowResultWithLibraryQuery:v6];
 
   return v7;
 }
 
-- (id)sortedVisibleWorkflowsByNameWithLimit:(int64_t)a3
+- (id)sortedVisibleWorkflowsByNameWithLimit:(int64_t)limit
 {
   v5 = [objc_alloc(MEMORY[0x1E69E0E18]) initWithLocation:0];
-  v6 = [WFLibraryWorkflowsQuery sortedWorkflowsWithQuery:v5 sortByName:1 limit:a3];
+  v6 = [WFLibraryWorkflowsQuery sortedWorkflowsWithQuery:v5 sortByName:1 limit:limit];
 
   v7 = [(WFDatabase *)self workflowResultWithLibraryQuery:v6];
 
   return v7;
 }
 
-- (id)sortedWorkflowsWithQuery:(id)a3
+- (id)sortedWorkflowsWithQuery:(id)query
 {
-  v4 = [WFLibraryWorkflowsQuery sortedWorkflowsWithQuery:a3];
+  v4 = [WFLibraryWorkflowsQuery sortedWorkflowsWithQuery:query];
   v5 = [(WFDatabase *)self workflowResultWithLibraryQuery:v4];
 
   return v5;
 }
 
-- (id)sortedVisibleWorkflowsWithType:(id)a3
+- (id)sortedVisibleWorkflowsWithType:(id)type
 {
   v4 = MEMORY[0x1E69E0E18];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithWorkflowType:v5];
+  typeCopy = type;
+  v6 = [[v4 alloc] initWithWorkflowType:typeCopy];
 
   v7 = [(WFDatabase *)self sortedWorkflowsWithQuery:v6];
 
@@ -12145,23 +12145,23 @@ id __68__WFDatabase_Shortcuts__referenceForWorkflowID_includingTombstones___bloc
   return v4;
 }
 
-- (id)workflowResultWithFetchRequest:(id)a3
+- (id)workflowResultWithFetchRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = [WFCoreDataDatabaseResult alloc];
   v6 = [WFCoreDataDatabaseResultFetchRequestOperation alloc];
-  v7 = [(WFDatabase *)self workflowRelationshipKeysAffectingDescriptors];
-  v8 = [(WFCoreDataDatabaseResultFetchRequestOperation *)v6 initWithFetchRequest:v4 relationshipKeysAffectingDescriptors:v7];
+  workflowRelationshipKeysAffectingDescriptors = [(WFDatabase *)self workflowRelationshipKeysAffectingDescriptors];
+  v8 = [(WFCoreDataDatabaseResultFetchRequestOperation *)v6 initWithFetchRequest:requestCopy relationshipKeysAffectingDescriptors:workflowRelationshipKeysAffectingDescriptors];
 
   v9 = [(WFCoreDataDatabaseResult *)v5 initWithDatabase:self fetchOperation:v8];
 
   return v9;
 }
 
-- (id)workflowResultWithLibraryQuery:(id)a3
+- (id)workflowResultWithLibraryQuery:(id)query
 {
-  v4 = a3;
-  v5 = [[WFCoherenceDatabaseWorkflowsResult alloc] initWithDatabase:self libraryQuery:v4];
+  queryCopy = query;
+  v5 = [[WFCoherenceDatabaseWorkflowsResult alloc] initWithDatabase:self libraryQuery:queryCopy];
 
   return v5;
 }
@@ -12193,13 +12193,13 @@ id __68__WFDatabase_Shortcuts__referenceForWorkflowID_includingTombstones___bloc
   return v12;
 }
 
-- (id)triggerEventsForTriggerIdentifier:(id)a3
+- (id)triggerEventsForTriggerIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[WFCoreDataTriggerEvent fetchRequest];
-  v6 = [MEMORY[0x1E696AE18] predicateWithFormat:@"trigger.identifier == %@", v4];
+  identifierCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"trigger.identifier == %@", identifierCopy];
 
-  [v5 setPredicate:v6];
+  [v5 setPredicate:identifierCopy];
   [v5 setFetchLimit:5];
   v7 = [WFCoreDataDatabaseResult alloc];
   v8 = [MEMORY[0x1E695DFD8] setWithObjects:{@"identifier", 0}];
@@ -12241,18 +12241,18 @@ id __68__WFDatabase_Shortcuts__referenceForWorkflowID_includingTombstones___bloc
   return v7;
 }
 
-- (void)setPausedForTriggerEventWithIdentifier:(id)a3 paused:(BOOL)a4 error:(id *)a5
+- (void)setPausedForTriggerEventWithIdentifier:(id)identifier paused:(BOOL)paused error:(id *)error
 {
-  v8 = a3;
+  identifierCopy = identifier;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __76__WFDatabase_Triggers__setPausedForTriggerEventWithIdentifier_paused_error___block_invoke;
   v10[3] = &unk_1E837DDE8;
   v10[4] = self;
-  v11 = v8;
-  v12 = a4;
-  v9 = v8;
-  [(WFDatabase *)self performTransactionWithReason:@"setting trigger paused" block:v10 error:a5];
+  v11 = identifierCopy;
+  pausedCopy = paused;
+  v9 = identifierCopy;
+  [(WFDatabase *)self performTransactionWithReason:@"setting trigger paused" block:v10 error:error];
 }
 
 void __76__WFDatabase_Triggers__setPausedForTriggerEventWithIdentifier_paused_error___block_invoke(uint64_t a1, void *a2)
@@ -12281,17 +12281,17 @@ void __76__WFDatabase_Triggers__setPausedForTriggerEventWithIdentifier_paused_er
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setConfirmedForTriggerEventWithIdentifier:(id)a3 error:(id *)a4
+- (void)setConfirmedForTriggerEventWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __72__WFDatabase_Triggers__setConfirmedForTriggerEventWithIdentifier_error___block_invoke;
   v8[3] = &unk_1E837F978;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  [(WFDatabase *)self performTransactionWithReason:@"set trigger confirmed" block:v8 error:a4];
+  v9 = identifierCopy;
+  v7 = identifierCopy;
+  [(WFDatabase *)self performTransactionWithReason:@"set trigger confirmed" block:v8 error:error];
 }
 
 void __72__WFDatabase_Triggers__setConfirmedForTriggerEventWithIdentifier_error___block_invoke(uint64_t a1, void *a2)
@@ -12320,10 +12320,10 @@ void __72__WFDatabase_Triggers__setConfirmedForTriggerEventWithIdentifier_error_
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (id)triggerEventForIdentifier:(id)a3 error:(id *)a4
+- (id)triggerEventForIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
-  v7 = [objc_alloc(MEMORY[0x1E69E0A68]) initWithIdentifier:v6 objectType:4];
+  identifierCopy = identifier;
+  v7 = [objc_alloc(MEMORY[0x1E69E0A68]) initWithIdentifier:identifierCopy objectType:4];
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -12335,7 +12335,7 @@ void __72__WFDatabase_Triggers__setConfirmedForTriggerEventWithIdentifier_error_
   v10[2] = __56__WFDatabase_Triggers__triggerEventForIdentifier_error___block_invoke;
   v10[3] = &unk_1E837DDC0;
   v10[4] = &v11;
-  [(WFDatabase *)self accessStorageForDescriptor:v7 forWriting:0 readingRecordProperties:0 usingBlock:v10 withError:a4];
+  [(WFDatabase *)self accessStorageForDescriptor:v7 forWriting:0 readingRecordProperties:0 usingBlock:v10 withError:error];
   v8 = v12[5];
   _Block_object_dispose(&v11, 8);
 
@@ -12350,22 +12350,22 @@ void __56__WFDatabase_Triggers__triggerEventForIdentifier_error___block_invoke(u
   *(v4 + 40) = v3;
 }
 
-- (id)createTriggerEventWithTriggerID:(id)a3 eventInfo:(id)a4 confirmed:(BOOL)a5 paused:(BOOL)a6 error:(id *)a7
+- (id)createTriggerEventWithTriggerID:(id)d eventInfo:(id)info confirmed:(BOOL)confirmed paused:(BOOL)paused error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
+  dCopy = d;
+  infoCopy = info;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __89__WFDatabase_Triggers__createTriggerEventWithTriggerID_eventInfo_confirmed_paused_error___block_invoke;
   v18[3] = &unk_1E837DD98;
   v18[4] = self;
-  v19 = v12;
-  v20 = v13;
-  v21 = a5;
-  v22 = a6;
-  v14 = v13;
-  v15 = v12;
-  v16 = [(WFDatabase *)self performSaveOperationWithReason:@"creating trigger event" block:v18 error:a7];
+  v19 = dCopy;
+  v20 = infoCopy;
+  confirmedCopy = confirmed;
+  pausedCopy = paused;
+  v14 = infoCopy;
+  v15 = dCopy;
+  v16 = [(WFDatabase *)self performSaveOperationWithReason:@"creating trigger event" block:v18 error:error];
 
   return v16;
 }
@@ -12412,10 +12412,10 @@ id __89__WFDatabase_Triggers__createTriggerEventWithTriggerID_eventInfo_confirme
   return v11;
 }
 
-- (id)configuredTriggerForTriggerID:(id)a3
+- (id)configuredTriggerForTriggerID:(id)d
 {
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E69E0A68]) initWithIdentifier:v4 objectType:1];
+  dCopy = d;
+  v5 = [objc_alloc(MEMORY[0x1E69E0A68]) initWithIdentifier:dCopy objectType:1];
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
@@ -12442,24 +12442,24 @@ void __54__WFDatabase_Triggers__configuredTriggerForTriggerID___block_invoke(uin
   *(v4 + 40) = v3;
 }
 
-- (id)triggerResultWithFetchRequest:(id)a3
+- (id)triggerResultWithFetchRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = [WFCoreDataDatabaseResult alloc];
   v6 = [MEMORY[0x1E695DFD8] setWithObject:@"shortcut"];
-  v7 = [(WFCoreDataDatabaseResult *)v5 initWithDatabase:self fetchRequest:v4 relationshipKeysAffectingDescriptors:v6];
+  v7 = [(WFCoreDataDatabaseResult *)v5 initWithDatabase:self fetchRequest:requestCopy relationshipKeysAffectingDescriptors:v6];
 
   return v7;
 }
 
-- (id)configuredTriggersForWorkflowID:(id)a3
+- (id)configuredTriggersForWorkflowID:(id)d
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v5 = +[WFCoreDataTrigger fetchRequest];
-  v6 = [MEMORY[0x1E696AE18] predicateWithFormat:@"shortcut.workflowID == %@", v4];
+  dCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"shortcut.workflowID == %@", dCopy];
 
-  [v5 setPredicate:v6];
+  [v5 setPredicate:dCopy];
   v7 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"identifier" ascending:1];
   v12[0] = v7;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
@@ -12472,20 +12472,20 @@ void __54__WFDatabase_Triggers__configuredTriggerForTriggerID___block_invoke(uin
   return v9;
 }
 
-- (id)associateWorkflowToTrigger:(id)a3 workflow:(id)a4 error:(id *)a5
+- (id)associateWorkflowToTrigger:(id)trigger workflow:(id)workflow error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  triggerCopy = trigger;
+  workflowCopy = workflow;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __66__WFDatabase_Triggers__associateWorkflowToTrigger_workflow_error___block_invoke;
   v14[3] = &unk_1E837DD48;
-  v15 = v9;
-  v16 = self;
-  v17 = v8;
-  v10 = v8;
-  v11 = v9;
-  v12 = [(WFDatabase *)self performSaveOperationWithReason:@"associating trigger with shortcut" block:v14 error:a5];
+  v15 = workflowCopy;
+  selfCopy = self;
+  v17 = triggerCopy;
+  v10 = triggerCopy;
+  v11 = workflowCopy;
+  v12 = [(WFDatabase *)self performSaveOperationWithReason:@"associating trigger with shortcut" block:v14 error:error];
 
   return v12;
 }
@@ -12525,20 +12525,20 @@ LABEL_6:
   return v8;
 }
 
-- (id)createTriggerWithRecord:(id)a3 workflow:(id)a4 error:(id *)a5
+- (id)createTriggerWithRecord:(id)record workflow:(id)workflow error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  recordCopy = record;
+  workflowCopy = workflow;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __63__WFDatabase_Triggers__createTriggerWithRecord_workflow_error___block_invoke;
   v14[3] = &unk_1E837DD48;
   v14[4] = self;
-  v15 = v9;
-  v16 = v8;
-  v10 = v8;
-  v11 = v9;
-  v12 = [(WFDatabase *)self performSaveOperationWithReason:@"creating trigger" block:v14 error:a5];
+  v15 = workflowCopy;
+  v16 = recordCopy;
+  v10 = recordCopy;
+  v11 = workflowCopy;
+  v12 = [(WFDatabase *)self performSaveOperationWithReason:@"creating trigger" block:v14 error:error];
 
   return v12;
 }
@@ -12581,17 +12581,17 @@ id __63__WFDatabase_Triggers__createTriggerWithRecord_workflow_error___block_inv
   return v12;
 }
 
-- (id)createTriggerWithRecord:(id)a3 error:(id *)a4
+- (id)createTriggerWithRecord:(id)record error:(id *)error
 {
-  v6 = a3;
+  recordCopy = record;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __54__WFDatabase_Triggers__createTriggerWithRecord_error___block_invoke;
   v10[3] = &unk_1E837DD20;
   v10[4] = self;
-  v11 = v6;
-  v7 = v6;
-  v8 = [(WFDatabase *)self performSaveOperationWithReason:@"creating trigger" block:v10 error:a4];
+  v11 = recordCopy;
+  v7 = recordCopy;
+  v8 = [(WFDatabase *)self performSaveOperationWithReason:@"creating trigger" block:v10 error:error];
 
   return v8;
 }
@@ -12620,13 +12620,13 @@ id __54__WFDatabase_Triggers__createTriggerWithRecord_error___block_invoke(uint6
   return v9;
 }
 
-- (id)visibleCollectionForFolderName:(id)a3
+- (id)visibleCollectionForFolderName:(id)name
 {
-  v5 = a3;
-  if (!v5)
+  nameCopy = name;
+  if (!nameCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"WFDatabase+Collections.m" lineNumber:374 description:{@"Invalid parameter not satisfying: %@", @"name"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFDatabase+Collections.m" lineNumber:374 description:{@"Invalid parameter not satisfying: %@", @"name"}];
   }
 
   v10[0] = MEMORY[0x1E69E9820];
@@ -12634,8 +12634,8 @@ id __54__WFDatabase_Triggers__createTriggerWithRecord_error___block_invoke(uint6
   v10[2] = __58__WFDatabase_Collections__visibleCollectionForFolderName___block_invoke;
   v10[3] = &unk_1E837F2F0;
   v10[4] = self;
-  v11 = v5;
-  v6 = v5;
+  v11 = nameCopy;
+  v6 = nameCopy;
   v7 = [(WFDatabase *)self performOperationWithReason:@"getting collection by name" block:v10 error:0];
 
   return v7;
@@ -12649,23 +12649,23 @@ id __58__WFDatabase_Collections__visibleCollectionForFolderName___block_invoke(u
   return v3;
 }
 
-- (id)validateFolderName:(id)a3 forCollection:(id)a4 error:(id *)a5
+- (id)validateFolderName:(id)name forCollection:(id)collection error:(id *)error
 {
   v31[2] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = [a3 wf_trimmedString];
-  v10 = v9;
-  if (v9 && ![v9 wf_isEmpty])
+  collectionCopy = collection;
+  wf_trimmedString = [name wf_trimmedString];
+  v10 = wf_trimmedString;
+  if (wf_trimmedString && ![wf_trimmedString wf_isEmpty])
   {
     v15 = [(WFDatabase *)self visibleCollectionForFolderName:v10];
     v12 = v15;
-    if (!v15 || ([v15 identifier], v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "identifier"), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v16, "isEqualToString:", v17), v17, v16, v18))
+    if (!v15 || ([v15 identifier], v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(collectionCopy, "identifier"), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v16, "isEqualToString:", v17), v17, v16, v18))
     {
-      a5 = v10;
+      error = v10;
       goto LABEL_9;
     }
 
-    if (!a5)
+    if (!error)
     {
       goto LABEL_9;
     }
@@ -12680,12 +12680,12 @@ id __58__WFDatabase_Collections__visibleCollectionForFolderName___block_invoke(u
     v25 = [v23 localizedStringWithFormat:v24, v10, v27, v28, v22];
     v29[1] = v25;
     v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:&v27 count:2];
-    *a5 = [v21 errorWithDomain:@"WFWorkflowErrorDomain" code:1 userInfo:v26];
+    *error = [v21 errorWithDomain:@"WFWorkflowErrorDomain" code:1 userInfo:v26];
   }
 
   else
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_10;
     }
@@ -12698,22 +12698,22 @@ id __58__WFDatabase_Collections__visibleCollectionForFolderName___block_invoke(u
     v13 = WFLocalizedString(@"Please enter a name for this folder.");
     v31[1] = v13;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:v30 count:2];
-    *a5 = [v11 errorWithDomain:@"WFWorkflowErrorDomain" code:0 userInfo:v14];
+    *error = [v11 errorWithDomain:@"WFWorkflowErrorDomain" code:0 userInfo:v14];
   }
 
-  a5 = 0;
+  error = 0;
 LABEL_9:
 
 LABEL_10:
   v19 = *MEMORY[0x1E69E9840];
 
-  return a5;
+  return error;
 }
 
-- (id)collectionResultWithLibraryQuery:(id)a3
+- (id)collectionResultWithLibraryQuery:(id)query
 {
-  v4 = a3;
-  v5 = [[WFCoherenceDatabaseCollectionsResult alloc] initWithDatabase:self libraryQuery:v4];
+  queryCopy = query;
+  v5 = [[WFCoherenceDatabaseCollectionsResult alloc] initWithDatabase:self libraryQuery:queryCopy];
 
   return v5;
 }
@@ -12739,25 +12739,25 @@ LABEL_10:
   return v9;
 }
 
-- (id)suggestedFolderNameForName:(id)a3
+- (id)suggestedFolderNameForName:(id)name
 {
-  v5 = a3;
-  if (!v5)
+  nameCopy = name;
+  if (!nameCopy)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"WFDatabase+Collections.m" lineNumber:310 description:{@"Invalid parameter not satisfying: %@", @"name"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFDatabase+Collections.m" lineNumber:310 description:{@"Invalid parameter not satisfying: %@", @"name"}];
   }
 
-  v6 = [v5 componentsSeparatedByString:@" "];
-  v7 = [v6 lastObject];
-  v8 = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
-  v9 = [v8 invertedSet];
-  v10 = [v7 rangeOfCharacterFromSet:v9];
+  v6 = [nameCopy componentsSeparatedByString:@" "];
+  lastObject = [v6 lastObject];
+  decimalDigitCharacterSet = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
+  invertedSet = [decimalDigitCharacterSet invertedSet];
+  v10 = [lastObject rangeOfCharacterFromSet:invertedSet];
 
   if (v10 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v11 = [v6 lastObject];
-    v12 = [v11 integerValue];
+    lastObject2 = [v6 lastObject];
+    integerValue = [lastObject2 integerValue];
 
     v13 = [v6 subarrayWithRange:{0, objc_msgSend(v6, "count") - 1}];
 
@@ -12766,10 +12766,10 @@ LABEL_10:
 
   else
   {
-    v12 = 1;
+    integerValue = 1;
   }
 
-  v14 = v5;
+  v14 = nameCopy;
   v15 = [(WFDatabase *)self visibleCollectionForFolderName:v14];
 
   v22 = v14;
@@ -12778,11 +12778,11 @@ LABEL_10:
     v16 = v14;
     do
     {
-      v17 = [MEMORY[0x1E696AEC0] localizedStringWithFormat:@"%lu", v12];
+      v17 = [MEMORY[0x1E696AEC0] localizedStringWithFormat:@"%lu", integerValue];
       v18 = [v6 arrayByAddingObject:v17];
       v14 = [v18 componentsJoinedByString:@" "];
 
-      ++v12;
+      ++integerValue;
       v19 = [(WFDatabase *)self visibleCollectionForFolderName:v14];
 
       v16 = v14;
@@ -12794,20 +12794,20 @@ LABEL_10:
   return v14;
 }
 
-- (BOOL)moveCollections:(id)a3 toIndex:(unint64_t)a4 ofCollectionWithIdentifier:(id)a5 error:(id *)a6
+- (BOOL)moveCollections:(id)collections toIndex:(unint64_t)index ofCollectionWithIdentifier:(id)identifier error:(id *)error
 {
-  v11 = a3;
-  v12 = a5;
-  if (!v11)
+  collectionsCopy = collections;
+  identifierCopy = identifier;
+  if (!collectionsCopy)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"WFDatabase+Collections.m" lineNumber:286 description:{@"Invalid parameter not satisfying: %@", @"collections"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFDatabase+Collections.m" lineNumber:286 description:{@"Invalid parameter not satisfying: %@", @"collections"}];
   }
 
   v13 = @"Root";
-  if (v12)
+  if (identifierCopy)
   {
-    v13 = v12;
+    v13 = identifierCopy;
   }
 
   v14 = v13;
@@ -12815,20 +12815,20 @@ LABEL_10:
   v23[1] = 3221225472;
   v23[2] = __84__WFDatabase_Collections__moveCollections_toIndex_ofCollectionWithIdentifier_error___block_invoke;
   v23[3] = &unk_1E837F3D8;
-  v27 = a4;
-  v15 = v11;
+  indexCopy = index;
+  v15 = collectionsCopy;
   v24 = v15;
-  v25 = self;
+  selfCopy = self;
   v16 = v14;
   v26 = v16;
   v22 = 0;
   [(WFDatabase *)self performTransactionWithReason:@"move collection(s)" block:v23 error:&v22];
   v17 = v22;
   v18 = v17;
-  if (a6)
+  if (error)
   {
     v19 = v17;
-    *a6 = v18;
+    *error = v18;
   }
 
   return v18 == 0;
@@ -12860,27 +12860,27 @@ void __84__WFDatabase_Collections__moveCollections_toIndex_ofCollectionWithIdent
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)removeReferences:(id)a3 fromCollectionWithIdentifier:(id)a4 error:(id *)a5
+- (BOOL)removeReferences:(id)references fromCollectionWithIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  referencesCopy = references;
+  identifierCopy = identifier;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __79__WFDatabase_Collections__removeReferences_fromCollectionWithIdentifier_error___block_invoke;
   v17[3] = &unk_1E837F390;
-  v10 = v8;
+  v10 = referencesCopy;
   v18 = v10;
-  v19 = self;
-  v11 = v9;
+  selfCopy = self;
+  v11 = identifierCopy;
   v20 = v11;
   v16 = 0;
   [(WFDatabase *)self performTransactionWithReason:@"remove shortcut from collection" block:v17 error:&v16];
   v12 = v16;
   v13 = v12;
-  if (a5)
+  if (error)
   {
     v14 = v12;
-    *a5 = v13;
+    *error = v13;
   }
 
   return v13 == 0;
@@ -12999,65 +12999,65 @@ LABEL_23:
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)prependReferences:(id)a3 toCollectionWithType:(id)a4 error:(id *)a5
+- (BOOL)prependReferences:(id)references toCollectionWithType:(id)type error:(id *)error
 {
-  v8 = a3;
-  v9 = WFWorkflowCollectionIdentifierForWorkflowType(a4);
-  v10 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{0, objc_msgSend(v8, "count")}];
-  LOBYTE(a5) = [(WFDatabase *)self _moveReferences:v8 toIndexes:v10 ofCollectionID:v9 error:a5];
+  referencesCopy = references;
+  v9 = WFWorkflowCollectionIdentifierForWorkflowType(type);
+  v10 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{0, objc_msgSend(referencesCopy, "count")}];
+  LOBYTE(error) = [(WFDatabase *)self _moveReferences:referencesCopy toIndexes:v10 ofCollectionID:v9 error:error];
 
-  return a5;
+  return error;
 }
 
-- (BOOL)prependReferences:(id)a3 toCollection:(id)a4 error:(id *)a5
+- (BOOL)prependReferences:(id)references toCollection:(id)collection error:(id *)error
 {
-  v8 = a3;
-  v9 = [a4 identifier];
-  v10 = v9;
+  referencesCopy = references;
+  identifier = [collection identifier];
+  v10 = identifier;
   v11 = @"Root";
-  if (v9)
+  if (identifier)
   {
-    v11 = v9;
+    v11 = identifier;
   }
 
   v12 = v11;
 
-  v13 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{0, objc_msgSend(v8, "count")}];
-  v14 = [(WFDatabase *)self _moveReferences:v8 toIndexes:v13 ofCollectionID:v12 error:a5];
+  v13 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{0, objc_msgSend(referencesCopy, "count")}];
+  v14 = [(WFDatabase *)self _moveReferences:referencesCopy toIndexes:v13 ofCollectionID:v12 error:error];
 
   return v14;
 }
 
-- (BOOL)_moveReferences:(id)a3 toIndexes:(id)a4 ofCollectionID:(id)a5 error:(id *)a6
+- (BOOL)_moveReferences:(id)references toIndexes:(id)indexes ofCollectionID:(id)d error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (!v13)
+  referencesCopy = references;
+  indexesCopy = indexes;
+  dCopy = d;
+  if (!dCopy)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"WFDatabase+Collections.m" lineNumber:164 description:{@"Invalid parameter not satisfying: %@", @"destinationID"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFDatabase+Collections.m" lineNumber:164 description:{@"Invalid parameter not satisfying: %@", @"destinationID"}];
   }
 
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __74__WFDatabase_Collections___moveReferences_toIndexes_ofCollectionID_error___block_invoke;
   v23[3] = &unk_1E837F368;
-  v14 = v11;
+  v14 = referencesCopy;
   v24 = v14;
-  v15 = v13;
+  v15 = dCopy;
   v25 = v15;
-  v26 = self;
-  v16 = v12;
+  selfCopy = self;
+  v16 = indexesCopy;
   v27 = v16;
   v22 = 0;
   [(WFDatabase *)self performTransactionWithReason:@"move shortcut" block:v23 error:&v22];
   v17 = v22;
   v18 = v17;
-  if (a6)
+  if (error)
   {
     v19 = v17;
-    *a6 = v18;
+    *error = v18;
   }
 
   return v18 == 0;
@@ -13301,64 +13301,64 @@ void __74__WFDatabase_Collections___moveReferences_toIndexes_ofCollectionID_erro
   [v2 addObject:v3];
 }
 
-- (BOOL)moveReferences:(id)a3 toIndexes:(id)a4 ofCollection:(id)a5 error:(id *)a6
+- (BOOL)moveReferences:(id)references toIndexes:(id)indexes ofCollection:(id)collection error:(id *)error
 {
-  v10 = a4;
-  v11 = a3;
-  v12 = [a5 identifier];
-  v13 = v12;
+  indexesCopy = indexes;
+  referencesCopy = references;
+  identifier = [collection identifier];
+  v13 = identifier;
   v14 = @"Root";
-  if (v12)
+  if (identifier)
   {
-    v14 = v12;
+    v14 = identifier;
   }
 
   v15 = v14;
 
-  v16 = [(WFDatabase *)self _moveReferences:v11 toIndexes:v10 ofCollectionID:v15 error:a6];
+  v16 = [(WFDatabase *)self _moveReferences:referencesCopy toIndexes:indexesCopy ofCollectionID:v15 error:error];
   return v16;
 }
 
-- (BOOL)moveReferences:(id)a3 toIndex:(int64_t)a4 ofCollection:(id)a5 error:(id *)a6
+- (BOOL)moveReferences:(id)references toIndex:(int64_t)index ofCollection:(id)collection error:(id *)error
 {
-  v10 = a3;
-  v11 = [a5 identifier];
-  v12 = v11;
+  referencesCopy = references;
+  identifier = [collection identifier];
+  v12 = identifier;
   v13 = @"Root";
-  if (v11)
+  if (identifier)
   {
-    v13 = v11;
+    v13 = identifier;
   }
 
   v14 = v13;
 
-  if (a4 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v15 = [(WFDatabase *)self _moveReferences:v10 toIndexes:0 ofCollectionID:v14 error:a6];
+    v15 = [(WFDatabase *)self _moveReferences:referencesCopy toIndexes:0 ofCollectionID:v14 error:error];
   }
 
   else
   {
-    v16 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{a4, objc_msgSend(v10, "count")}];
-    v15 = [(WFDatabase *)self _moveReferences:v10 toIndexes:v16 ofCollectionID:v14 error:a6];
+    v16 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{index, objc_msgSend(referencesCopy, "count")}];
+    v15 = [(WFDatabase *)self _moveReferences:referencesCopy toIndexes:v16 ofCollectionID:v14 error:error];
   }
 
   return v15;
 }
 
-- (id)sortedVisibleWorkflowsInCollection:(id)a3
+- (id)sortedVisibleWorkflowsInCollection:(id)collection
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  collectionCopy = collection;
+  v5 = collectionCopy;
+  if (collectionCopy)
   {
-    v6 = [v4 identifier];
-    v7 = [v6 isEqualToString:@"Root"];
+    identifier = [collectionCopy identifier];
+    v7 = [identifier isEqualToString:@"Root"];
 
     if (!v7)
     {
-      v11 = [v5 identifier];
-      v12 = WFWorkflowTypeForCollectionIdentifier(v11);
+      identifier2 = [v5 identifier];
+      v12 = WFWorkflowTypeForCollectionIdentifier(identifier2);
 
       v13 = objc_alloc(MEMORY[0x1E69E0E18]);
       v14 = v13;
@@ -13369,8 +13369,8 @@ void __74__WFDatabase_Collections___moveReferences_toIndexes_ofCollectionID_erro
 
       else
       {
-        v15 = [v5 identifier];
-        v10 = [v14 initWithFolderIdentifier:v15];
+        identifier3 = [v5 identifier];
+        v10 = [v14 initWithFolderIdentifier:identifier3];
       }
 
       goto LABEL_10;
@@ -13393,16 +13393,16 @@ LABEL_10:
   return v16;
 }
 
-- (id)collectionWithIdentifier:(id)a3
+- (id)collectionWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __52__WFDatabase_Collections__collectionWithIdentifier___block_invoke;
   v8[3] = &unk_1E837F2F0;
-  v9 = v4;
-  v10 = self;
-  v5 = v4;
+  v9 = identifierCopy;
+  selfCopy = self;
+  v5 = identifierCopy;
   v6 = [(WFDatabase *)self performOperationWithReason:@"getting collection for id" block:v8 error:0];
 
   return v6;
@@ -13430,9 +13430,9 @@ id __52__WFDatabase_Collections__collectionWithIdentifier___block_invoke(uint64_
   return v7;
 }
 
-- (id)collectionForWorkflowType:(id)a3
+- (id)collectionForWorkflowType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v5 = MEMORY[0x1E696AEC0];
   v6 = WFHumanReadableNameForWorkflowType();
   v7 = [v5 stringWithFormat:@"getting collection for workflow type %@", v6];
@@ -13441,8 +13441,8 @@ id __52__WFDatabase_Collections__collectionWithIdentifier___block_invoke(uint64_
   v11[2] = __53__WFDatabase_Collections__collectionForWorkflowType___block_invoke;
   v11[3] = &unk_1E837F2F0;
   v11[4] = self;
-  v12 = v4;
-  v8 = v4;
+  v12 = typeCopy;
+  v8 = typeCopy;
   v9 = [(WFDatabase *)self performOperationWithReason:v7 block:v11 error:0];
 
   return v9;
@@ -13456,16 +13456,16 @@ id __53__WFDatabase_Collections__collectionForWorkflowType___block_invoke(uint64
   return v3;
 }
 
-- (id)folderForWorkflowReference:(id)a3
+- (id)folderForWorkflowReference:(id)reference
 {
-  v4 = a3;
+  referenceCopy = reference;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __54__WFDatabase_Collections__folderForWorkflowReference___block_invoke;
   v8[3] = &unk_1E837F2F0;
   v8[4] = self;
-  v9 = v4;
-  v5 = v4;
+  v9 = referenceCopy;
+  v5 = referenceCopy;
   v6 = [(WFDatabase *)self performOperationWithReason:@"folder for workflow reference" block:v8 error:0];
 
   return v6;
@@ -13480,16 +13480,16 @@ id __54__WFDatabase_Collections__folderForWorkflowReference___block_invoke(uint6
   return v4;
 }
 
-- (id)collectionsForWorkflowReference:(id)a3
+- (id)collectionsForWorkflowReference:(id)reference
 {
-  v4 = a3;
+  referenceCopy = reference;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __59__WFDatabase_Collections__collectionsForWorkflowReference___block_invoke;
   v8[3] = &unk_1E837F2C8;
   v8[4] = self;
-  v9 = v4;
-  v5 = v4;
+  v9 = referenceCopy;
+  v5 = referenceCopy;
   v6 = [(WFDatabase *)self performOperationWithReason:@"getting collections for shortcut" block:v8 error:0];
 
   return v6;
@@ -13534,21 +13534,21 @@ id __59__WFDatabase_Collections__collectionsForWorkflowReference___block_invoke(
   return v9;
 }
 
-- (id)updateFolder:(id)a3 newName:(id)a4 newIcon:(unsigned __int16)a5 error:(id *)a6
+- (id)updateFolder:(id)folder newName:(id)name newIcon:(unsigned __int16)icon error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
+  folderCopy = folder;
+  nameCopy = name;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __62__WFDatabase_Collections__updateFolder_newName_newIcon_error___block_invoke;
   v16[3] = &unk_1E837F2A0;
   v16[4] = self;
-  v17 = v11;
-  v18 = v10;
-  v19 = a5;
-  v12 = v10;
-  v13 = v11;
-  v14 = [(WFDatabase *)self performSaveOperationWithReason:@"update folder" block:v16 error:a6];
+  v17 = nameCopy;
+  v18 = folderCopy;
+  iconCopy = icon;
+  v12 = folderCopy;
+  v13 = nameCopy;
+  v14 = [(WFDatabase *)self performSaveOperationWithReason:@"update folder" block:v16 error:error];
 
   return v14;
 }
@@ -13592,18 +13592,18 @@ id __62__WFDatabase_Collections__updateFolder_newName_newIcon_error___block_invo
   return v9;
 }
 
-- (id)createFolderWithName:(id)a3 icon:(unsigned __int16)a4 error:(id *)a5
+- (id)createFolderWithName:(id)name icon:(unsigned __int16)icon error:(id *)error
 {
-  v8 = a3;
+  nameCopy = name;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __59__WFDatabase_Collections__createFolderWithName_icon_error___block_invoke;
   v12[3] = &unk_1E837F278;
-  v13 = v8;
-  v14 = self;
-  v15 = a4;
-  v9 = v8;
-  v10 = [(WFDatabase *)self performSaveOperationWithReason:@"create folder" block:v12 error:a5];
+  v13 = nameCopy;
+  selfCopy = self;
+  iconCopy = icon;
+  v9 = nameCopy;
+  v10 = [(WFDatabase *)self performSaveOperationWithReason:@"create folder" block:v12 error:error];
 
   return v10;
 }
@@ -13691,9 +13691,9 @@ LABEL_13:
   v5[3] = &unk_1E837F248;
   v5[4] = self;
   v2 = [(WFDatabase *)self performOperationWithReason:@"count workflows in folder" block:v5 error:0];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 id __52__WFDatabase_Collections__countOfWorkflowsInAFolder__block_invoke(uint64_t a1)
@@ -13811,9 +13811,9 @@ id __39__WFDatabase_RunEvents__latestRunEvent__block_invoke(uint64_t a1, uint64_
 - (id)triggerRunEventsInTheLastWeek
 {
   v3 = +[WFCoreDataRunEvent fetchRequest];
-  v4 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v5 = [MEMORY[0x1E695DF00] date];
-  v6 = [v4 dateByAddingUnit:16 value:-7 toDate:v5 options:0];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  date = [MEMORY[0x1E695DF00] date];
+  v6 = [currentCalendar dateByAddingUnit:16 value:-7 toDate:date options:0];
 
   v7 = [MEMORY[0x1E696AE18] predicateWithFormat:@"trigger.identifier != nil && date > %@", v6];
   [v3 setPredicate:v7];
@@ -13823,14 +13823,14 @@ id __39__WFDatabase_RunEvents__latestRunEvent__block_invoke(uint64_t a1, uint64_
   return v8;
 }
 
-- (id)sortedRunEventsForTriggerID:(id)a3
+- (id)sortedRunEventsForTriggerID:(id)d
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v5 = +[WFCoreDataRunEvent fetchRequest];
-  v6 = [MEMORY[0x1E696AE18] predicateWithFormat:@"trigger.identifier == %@", v4];
+  dCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"trigger.identifier == %@", dCopy];
 
-  [v5 setPredicate:v6];
+  [v5 setPredicate:dCopy];
   v7 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"date" ascending:0];
   v12[0] = v7;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
@@ -13842,30 +13842,30 @@ id __39__WFDatabase_RunEvents__latestRunEvent__block_invoke(uint64_t a1, uint64_
   return v9;
 }
 
-- (id)sortedRunEventsWithSource:(id)a3 startDate:(id)a4 endDate:(id)a5
+- (id)sortedRunEventsWithSource:(id)source startDate:(id)date endDate:(id)endDate
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sourceCopy = source;
+  dateCopy = date;
+  endDateCopy = endDate;
   v11 = +[WFCoreDataRunEvent fetchRequest];
   v12 = objc_opt_new();
-  if (v8)
+  if (sourceCopy)
   {
-    v13 = [MEMORY[0x1E696AE18] predicateWithFormat:@"source == %@", v8];
-    [v12 addObject:v13];
+    sourceCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"source == %@", sourceCopy];
+    [v12 addObject:sourceCopy];
   }
 
-  if (v9)
+  if (dateCopy)
   {
-    v14 = [MEMORY[0x1E696AE18] predicateWithFormat:@"date >= %@", v9];
-    [v12 addObject:v14];
+    dateCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"date >= %@", dateCopy];
+    [v12 addObject:dateCopy];
   }
 
-  if (v10)
+  if (endDateCopy)
   {
-    v15 = [MEMORY[0x1E696AE18] predicateWithFormat:@"date <= %@", v10];
-    [v12 addObject:v15];
+    endDateCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"date <= %@", endDateCopy];
+    [v12 addObject:endDateCopy];
   }
 
   if ([v12 count])
@@ -13885,18 +13885,18 @@ id __39__WFDatabase_RunEvents__latestRunEvent__block_invoke(uint64_t a1, uint64_
   return v19;
 }
 
-- (void)setOutcome:(int64_t)a3 forRunEvent:(id)a4
+- (void)setOutcome:(int64_t)outcome forRunEvent:(id)event
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  eventCopy = event;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __48__WFDatabase_RunEvents__setOutcome_forRunEvent___block_invoke;
   v13[3] = &unk_1E837F428;
   v13[4] = self;
-  v7 = v6;
+  v7 = eventCopy;
   v14 = v7;
-  v15 = a3;
+  outcomeCopy = outcome;
   v12 = 0;
   [(WFDatabase *)self performTransactionWithReason:@"set run event outcome" block:v13 error:&v12];
   v8 = v12;
@@ -13905,11 +13905,11 @@ id __39__WFDatabase_RunEvents__latestRunEvent__block_invoke(uint64_t a1, uint64_
     v9 = getWFDatabaseLogObject();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v10 = [v8 localizedDescription];
+      localizedDescription = [v8 localizedDescription];
       *buf = 136315394;
       v17 = "[WFDatabase(RunEvents) setOutcome:forRunEvent:]";
       v18 = 2112;
-      v19 = v10;
+      v19 = localizedDescription;
       _os_log_impl(&dword_1CA256000, v9, OS_LOG_TYPE_ERROR, "%s Unable to set outcome for run event: %@", buf, 0x16u);
     }
   }
@@ -13936,28 +13936,28 @@ void __48__WFDatabase_RunEvents__setOutcome_forRunEvent___block_invoke(uint64_t 
   }
 }
 
-- (id)logRunOfWorkflow:(id)a3 atDate:(id)a4 withIdentifier:(id)a5 source:(id)a6 triggerID:(id)a7
+- (id)logRunOfWorkflow:(id)workflow atDate:(id)date withIdentifier:(id)identifier source:(id)source triggerID:(id)d
 {
   v39 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  workflowCopy = workflow;
+  dateCopy = date;
+  identifierCopy = identifier;
+  sourceCopy = source;
+  dCopy = d;
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v29[2] = __81__WFDatabase_RunEvents__logRunOfWorkflow_atDate_withIdentifier_source_triggerID___block_invoke;
   v29[3] = &unk_1E837F400;
   v29[4] = self;
-  v17 = v13;
+  v17 = dateCopy;
   v30 = v17;
-  v18 = v14;
+  v18 = identifierCopy;
   v31 = v18;
-  v19 = v15;
+  v19 = sourceCopy;
   v32 = v19;
-  v20 = v12;
+  v20 = workflowCopy;
   v33 = v20;
-  v21 = v16;
+  v21 = dCopy;
   v34 = v21;
   v28 = 0;
   v22 = [(WFDatabase *)self performSaveOperationWithReason:@"creating run event" block:v29 error:&v28];
@@ -13967,11 +13967,11 @@ void __48__WFDatabase_RunEvents__setOutcome_forRunEvent___block_invoke(uint64_t 
     v24 = getWFDatabaseLogObject();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
-      v25 = [v23 localizedDescription];
+      localizedDescription = [v23 localizedDescription];
       *buf = 136315394;
       v36 = "[WFDatabase(RunEvents) logRunOfWorkflow:atDate:withIdentifier:source:triggerID:]";
       v37 = 2112;
-      v38 = v25;
+      v38 = localizedDescription;
       _os_log_impl(&dword_1CA256000, v24, OS_LOG_TYPE_ERROR, "%s Unable to log workflow run event: %@", buf, 0x16u);
     }
   }
@@ -14032,31 +14032,31 @@ LABEL_7:
   return v11;
 }
 
-- (id)logRunOfWorkflow:(id)a3 withSource:(id)a4 triggerID:(id)a5
+- (id)logRunOfWorkflow:(id)workflow withSource:(id)source triggerID:(id)d
 {
   v8 = MEMORY[0x1E695DF00];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 date];
-  v13 = [MEMORY[0x1E696AFB0] UUID];
-  v14 = [v13 UUIDString];
-  v15 = [(WFDatabase *)self logRunOfWorkflow:v11 atDate:v12 withIdentifier:v14 source:v10 triggerID:v9];
+  dCopy = d;
+  sourceCopy = source;
+  workflowCopy = workflow;
+  date = [v8 date];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v15 = [(WFDatabase *)self logRunOfWorkflow:workflowCopy atDate:date withIdentifier:uUIDString source:sourceCopy triggerID:dCopy];
 
   return v15;
 }
 
-- (void)removeAllSerializedParametersForQueryName:(id)a3 error:(id *)a4
+- (void)removeAllSerializedParametersForQueryName:(id)name error:(id *)error
 {
-  v6 = a3;
+  nameCopy = name;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __93__WFDatabase_PersistedSerializedParameters__removeAllSerializedParametersForQueryName_error___block_invoke;
   v8[3] = &unk_1E837F978;
-  v9 = v6;
-  v10 = self;
-  v7 = v6;
-  [(WFDatabase *)self performTransactionWithReason:@"delete all serialized parameters for query" block:v8 error:a4];
+  v9 = nameCopy;
+  selfCopy = self;
+  v7 = nameCopy;
+  [(WFDatabase *)self performTransactionWithReason:@"delete all serialized parameters for query" block:v8 error:error];
 }
 
 void __93__WFDatabase_PersistedSerializedParameters__removeAllSerializedParametersForQueryName_error___block_invoke(uint64_t a1, uint64_t a2)
@@ -14070,24 +14070,24 @@ void __93__WFDatabase_PersistedSerializedParameters__removeAllSerializedParamete
   v7 = [v6 executeRequest:v5 error:a2];
 }
 
-- (void)storeSerializedParameters:(id)a3 forIdentifier:(id)a4 queryName:(id)a5 badgeType:(unint64_t)a6 error:(id *)a7
+- (void)storeSerializedParameters:(id)parameters forIdentifier:(id)identifier queryName:(id)name badgeType:(unint64_t)type error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  parametersCopy = parameters;
+  identifierCopy = identifier;
+  nameCopy = name;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __111__WFDatabase_PersistedSerializedParameters__storeSerializedParameters_forIdentifier_queryName_badgeType_error___block_invoke;
   v19[3] = &unk_1E837F950;
   v19[4] = self;
-  v20 = v13;
-  v21 = v12;
-  v22 = v14;
-  v23 = a6;
-  v15 = v14;
-  v16 = v12;
-  v17 = v13;
-  v18 = [(WFDatabase *)self performSaveOperationWithReason:@"save serialized parameters" block:v19 error:a7];
+  v20 = identifierCopy;
+  v21 = parametersCopy;
+  v22 = nameCopy;
+  typeCopy = type;
+  v15 = nameCopy;
+  v16 = parametersCopy;
+  v17 = identifierCopy;
+  v18 = [(WFDatabase *)self performSaveOperationWithReason:@"save serialized parameters" block:v19 error:error];
 }
 
 WFPersistedSerializedParameters *__111__WFDatabase_PersistedSerializedParameters__storeSerializedParameters_forIdentifier_queryName_badgeType_error___block_invoke(uint64_t a1)
@@ -14104,17 +14104,17 @@ WFPersistedSerializedParameters *__111__WFDatabase_PersistedSerializedParameters
   return v4;
 }
 
-- (id)serializedParametersForIdentifier:(id)a3 error:(id *)a4
+- (id)serializedParametersForIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __85__WFDatabase_PersistedSerializedParameters__serializedParametersForIdentifier_error___block_invoke;
   v10[3] = &unk_1E837F928;
-  v11 = v6;
-  v12 = self;
-  v7 = v6;
-  v8 = [(WFDatabase *)self performOperationWithReason:@"getting serialized parameters" block:v10 error:a4];
+  v11 = identifierCopy;
+  selfCopy = self;
+  v7 = identifierCopy;
+  v8 = [(WFDatabase *)self performOperationWithReason:@"getting serialized parameters" block:v10 error:error];
 
   return v8;
 }
@@ -14134,17 +14134,17 @@ id __85__WFDatabase_PersistedSerializedParameters__serializedParametersForIdenti
   return v9;
 }
 
-- (id)badgeTypeForEntityIdentifier:(id)a3 error:(id *)a4
+- (id)badgeTypeForEntityIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __80__WFDatabase_PersistedSerializedParameters__badgeTypeForEntityIdentifier_error___block_invoke;
   v10[3] = &unk_1E837F900;
-  v11 = v6;
-  v12 = self;
-  v7 = v6;
-  v8 = [(WFDatabase *)self performOperationWithReason:@"getting entity badge" block:v10 error:a4];
+  v11 = identifierCopy;
+  selfCopy = self;
+  v7 = identifierCopy;
+  v8 = [(WFDatabase *)self performOperationWithReason:@"getting entity badge" block:v10 error:error];
 
   return v8;
 }

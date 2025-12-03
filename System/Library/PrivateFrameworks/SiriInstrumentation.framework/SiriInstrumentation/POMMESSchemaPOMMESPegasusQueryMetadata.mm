@@ -1,73 +1,73 @@
 @interface POMMESSchemaPOMMESPegasusQueryMetadata
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (POMMESSchemaPOMMESPegasusQueryMetadata)initWithDictionary:(id)a3;
-- (POMMESSchemaPOMMESPegasusQueryMetadata)initWithJSON:(id)a3;
+- (POMMESSchemaPOMMESPegasusQueryMetadata)initWithDictionary:(id)dictionary;
+- (POMMESSchemaPOMMESPegasusQueryMetadata)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasHasCountryCode:(BOOL)a3;
-- (void)setHasHasLongitude:(BOOL)a3;
-- (void)setHasHasSiriLocale:(BOOL)a3;
-- (void)setHasHasStorefront:(BOOL)a3;
-- (void)setHasHeySiriEnabled:(BOOL)a3;
-- (void)setHasInstalledAppsSignatureLength:(BOOL)a3;
-- (void)setHasIsNavigationMode:(BOOL)a3;
-- (void)setHasLocationAgeInSeconds:(BOOL)a3;
-- (void)setHasLocationPreciseStatus:(BOOL)a3;
-- (void)setHasLocationSource:(BOOL)a3;
-- (void)setHasMeasurementSystem:(BOOL)a3;
-- (void)setHasTemperatureScale:(BOOL)a3;
-- (void)setHasUiScale:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasHasCountryCode:(BOOL)code;
+- (void)setHasHasLongitude:(BOOL)longitude;
+- (void)setHasHasSiriLocale:(BOOL)locale;
+- (void)setHasHasStorefront:(BOOL)storefront;
+- (void)setHasHeySiriEnabled:(BOOL)enabled;
+- (void)setHasInstalledAppsSignatureLength:(BOOL)length;
+- (void)setHasIsNavigationMode:(BOOL)mode;
+- (void)setHasLocationAgeInSeconds:(BOOL)seconds;
+- (void)setHasLocationPreciseStatus:(BOOL)status;
+- (void)setHasLocationSource:(BOOL)source;
+- (void)setHasMeasurementSystem:(BOOL)system;
+- (void)setHasTemperatureScale:(BOOL)scale;
+- (void)setHasUiScale:(BOOL)scale;
+- (void)writeTo:(id)to;
 @end
 
 @implementation POMMESSchemaPOMMESPegasusQueryMetadata
 
-- (POMMESSchemaPOMMESPegasusQueryMetadata)initWithDictionary:(id)a3
+- (POMMESSchemaPOMMESPegasusQueryMetadata)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v33.receiver = self;
   v33.super_class = POMMESSchemaPOMMESPegasusQueryMetadata;
   v5 = [(POMMESSchemaPOMMESPegasusQueryMetadata *)&v33 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"hasLatitude"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"hasLatitude"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[POMMESSchemaPOMMESPegasusQueryMetadata setHasLatitude:](v5, "setHasLatitude:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"hasLongitude"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"hasLongitude"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[POMMESSchemaPOMMESPegasusQueryMetadata setHasLongitude:](v5, "setHasLongitude:", [v7 BOOLValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"hasCountryCode"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"hasCountryCode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[POMMESSchemaPOMMESPegasusQueryMetadata setHasCountryCode:](v5, "setHasCountryCode:", [v8 BOOLValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"hasStorefront"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"hasStorefront"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[POMMESSchemaPOMMESPegasusQueryMetadata setHasStorefront:](v5, "setHasStorefront:", [v9 BOOLValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"hasSiriLocale"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"hasSiriLocale"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[POMMESSchemaPOMMESPegasusQueryMetadata setHasSiriLocale:](v5, "setHasSiriLocale:", [v10 BOOLValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"uiScale"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"uiScale"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -75,7 +75,7 @@
       [(POMMESSchemaPOMMESPegasusQueryMetadata *)v5 setUiScale:?];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"isNavigationMode"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"isNavigationMode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -83,7 +83,7 @@
     }
 
     v32 = v6;
-    v13 = [v4 objectForKeyedSubscript:@"temperatureScale"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"temperatureScale"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -91,7 +91,7 @@
     }
 
     v31 = v7;
-    v14 = [v4 objectForKeyedSubscript:@"measurementSystem"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"measurementSystem"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -100,14 +100,14 @@
 
     v29 = v9;
     v30 = v8;
-    v15 = [v4 objectForKeyedSubscript:{@"installedAppsSignatureLength", v14}];
+    v15 = [dictionaryCopy objectForKeyedSubscript:{@"installedAppsSignatureLength", v14}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[POMMESSchemaPOMMESPegasusQueryMetadata setInstalledAppsSignatureLength:](v5, "setInstalledAppsSignatureLength:", [v15 unsignedIntValue]);
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"storefrontValue"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"storefrontValue"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -116,7 +116,7 @@
     }
 
     v28 = v10;
-    v18 = [v4 objectForKeyedSubscript:@"heySiriEnabled"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"heySiriEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -125,7 +125,7 @@
 
     v26 = v13;
     v27 = v11;
-    v19 = [v4 objectForKeyedSubscript:@"locationAgeInSeconds"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"locationAgeInSeconds"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -133,14 +133,14 @@
     }
 
     v20 = v12;
-    v21 = [v4 objectForKeyedSubscript:@"locationSource"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"locationSource"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[POMMESSchemaPOMMESPegasusQueryMetadata setLocationSource:](v5, "setLocationSource:", [v21 intValue]);
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"locationPreciseStatus"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"locationPreciseStatus"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -153,30 +153,30 @@
   return v5;
 }
 
-- (POMMESSchemaPOMMESPegasusQueryMetadata)initWithJSON:(id)a3
+- (POMMESSchemaPOMMESPegasusQueryMetadata)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(POMMESSchemaPOMMESPegasusQueryMetadata *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(POMMESSchemaPOMMESPegasusQueryMetadata *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(POMMESSchemaPOMMESPegasusQueryMetadata *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -189,12 +189,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[POMMESSchemaPOMMESPegasusQueryMetadata hasCountryCode](self, "hasCountryCode")}];
-    [v3 setObject:v5 forKeyedSubscript:@"hasCountryCode"];
+    [dictionary setObject:v5 forKeyedSubscript:@"hasCountryCode"];
 
     has = self->_has;
     if ((has & 1) == 0)
@@ -215,7 +215,7 @@ LABEL_3:
   }
 
   v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[POMMESSchemaPOMMESPegasusQueryMetadata hasLatitude](self, "hasLatitude")}];
-  [v3 setObject:v6 forKeyedSubscript:@"hasLatitude"];
+  [dictionary setObject:v6 forKeyedSubscript:@"hasLatitude"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -231,7 +231,7 @@ LABEL_4:
 
 LABEL_16:
   v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[POMMESSchemaPOMMESPegasusQueryMetadata hasLongitude](self, "hasLongitude")}];
-  [v3 setObject:v7 forKeyedSubscript:@"hasLongitude"];
+  [dictionary setObject:v7 forKeyedSubscript:@"hasLongitude"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -247,7 +247,7 @@ LABEL_5:
 
 LABEL_17:
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[POMMESSchemaPOMMESPegasusQueryMetadata hasSiriLocale](self, "hasSiriLocale")}];
-  [v3 setObject:v8 forKeyedSubscript:@"hasSiriLocale"];
+  [dictionary setObject:v8 forKeyedSubscript:@"hasSiriLocale"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -263,7 +263,7 @@ LABEL_6:
 
 LABEL_18:
   v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[POMMESSchemaPOMMESPegasusQueryMetadata hasStorefront](self, "hasStorefront")}];
-  [v3 setObject:v9 forKeyedSubscript:@"hasStorefront"];
+  [dictionary setObject:v9 forKeyedSubscript:@"hasStorefront"];
 
   has = self->_has;
   if ((has & 0x400) == 0)
@@ -279,7 +279,7 @@ LABEL_7:
 
 LABEL_19:
   v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[POMMESSchemaPOMMESPegasusQueryMetadata heySiriEnabled](self, "heySiriEnabled")}];
-  [v3 setObject:v10 forKeyedSubscript:@"heySiriEnabled"];
+  [dictionary setObject:v10 forKeyedSubscript:@"heySiriEnabled"];
 
   has = self->_has;
   if ((has & 0x200) == 0)
@@ -295,7 +295,7 @@ LABEL_8:
 
 LABEL_20:
   v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[POMMESSchemaPOMMESPegasusQueryMetadata installedAppsSignatureLength](self, "installedAppsSignatureLength")}];
-  [v3 setObject:v11 forKeyedSubscript:@"installedAppsSignatureLength"];
+  [dictionary setObject:v11 forKeyedSubscript:@"installedAppsSignatureLength"];
 
   has = self->_has;
   if ((has & 0x40) == 0)
@@ -311,7 +311,7 @@ LABEL_9:
 
 LABEL_21:
   v12 = [MEMORY[0x1E696AD98] numberWithBool:{-[POMMESSchemaPOMMESPegasusQueryMetadata isNavigationMode](self, "isNavigationMode")}];
-  [v3 setObject:v12 forKeyedSubscript:@"isNavigationMode"];
+  [dictionary setObject:v12 forKeyedSubscript:@"isNavigationMode"];
 
   has = self->_has;
   if ((has & 0x800) == 0)
@@ -327,7 +327,7 @@ LABEL_10:
 
 LABEL_22:
   v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[POMMESSchemaPOMMESPegasusQueryMetadata locationAgeInSeconds](self, "locationAgeInSeconds")}];
-  [v3 setObject:v13 forKeyedSubscript:@"locationAgeInSeconds"];
+  [dictionary setObject:v13 forKeyedSubscript:@"locationAgeInSeconds"];
 
   has = self->_has;
   if ((has & 0x2000) == 0)
@@ -342,14 +342,14 @@ LABEL_11:
   }
 
 LABEL_23:
-  v14 = [(POMMESSchemaPOMMESPegasusQueryMetadata *)self locationPreciseStatus];
+  locationPreciseStatus = [(POMMESSchemaPOMMESPegasusQueryMetadata *)self locationPreciseStatus];
   v15 = @"POMMESPEGASUSREQUESTLOCATIONPRECISESTATUS_UNKNOWN";
-  if (v14 == 1)
+  if (locationPreciseStatus == 1)
   {
     v15 = @"POMMESPEGASUSREQUESTLOCATIONPRECISESTATUS_PRECISE";
   }
 
-  if (v14 == 2)
+  if (locationPreciseStatus == 2)
   {
     v16 = @"POMMESPEGASUSREQUESTLOCATIONPRECISESTATUS_NOT_PRECISE";
   }
@@ -359,7 +359,7 @@ LABEL_23:
     v16 = v15;
   }
 
-  [v3 setObject:v16 forKeyedSubscript:@"locationPreciseStatus"];
+  [dictionary setObject:v16 forKeyedSubscript:@"locationPreciseStatus"];
   has = self->_has;
   if ((has & 0x1000) == 0)
   {
@@ -384,7 +384,7 @@ LABEL_29:
     v18 = off_1E78E0EA8[v17];
   }
 
-  [v3 setObject:v18 forKeyedSubscript:@"locationSource"];
+  [dictionary setObject:v18 forKeyedSubscript:@"locationSource"];
   if ((*&self->_has & 0x100) != 0)
   {
 LABEL_33:
@@ -399,28 +399,28 @@ LABEL_33:
       v20 = off_1E78E0EE8[v19];
     }
 
-    [v3 setObject:v20 forKeyedSubscript:@"measurementSystem"];
+    [dictionary setObject:v20 forKeyedSubscript:@"measurementSystem"];
   }
 
 LABEL_37:
   if (self->_storefrontValue)
   {
-    v21 = [(POMMESSchemaPOMMESPegasusQueryMetadata *)self storefrontValue];
-    v22 = [v21 copy];
-    [v3 setObject:v22 forKeyedSubscript:@"storefrontValue"];
+    storefrontValue = [(POMMESSchemaPOMMESPegasusQueryMetadata *)self storefrontValue];
+    v22 = [storefrontValue copy];
+    [dictionary setObject:v22 forKeyedSubscript:@"storefrontValue"];
   }
 
   v23 = self->_has;
   if ((v23 & 0x80) != 0)
   {
-    v24 = [(POMMESSchemaPOMMESPegasusQueryMetadata *)self temperatureScale];
+    temperatureScale = [(POMMESSchemaPOMMESPegasusQueryMetadata *)self temperatureScale];
     v25 = @"TEMPERATURESCALE_UNKNOWN";
-    if (v24 == 1)
+    if (temperatureScale == 1)
     {
       v25 = @"TEMPERATURESCALE_CELSIUS";
     }
 
-    if (v24 == 2)
+    if (temperatureScale == 2)
     {
       v26 = @"TEMPERATURESCALE_FAHRENHEIT";
     }
@@ -430,7 +430,7 @@ LABEL_37:
       v26 = v25;
     }
 
-    [v3 setObject:v26 forKeyedSubscript:@"temperatureScale"];
+    [dictionary setObject:v26 forKeyedSubscript:@"temperatureScale"];
     v23 = self->_has;
   }
 
@@ -439,12 +439,12 @@ LABEL_37:
     v27 = MEMORY[0x1E696AD98];
     [(POMMESSchemaPOMMESPegasusQueryMetadata *)self uiScale];
     v28 = [v27 numberWithFloat:?];
-    [v3 setObject:v28 forKeyedSubscript:@"uiScale"];
+    [dictionary setObject:v28 forKeyedSubscript:@"uiScale"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -660,16 +660,16 @@ LABEL_31:
   return v24 ^ v25 ^ v23 ^ v6 ^ v7 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v18 ^ v19 ^ v20 ^ v21 ^ v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_63;
   }
 
   has = self->_has;
-  v6 = v4[32];
+  v6 = equalCopy[32];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_63;
@@ -678,13 +678,13 @@ LABEL_31:
   if (*&has)
   {
     hasLatitude = self->_hasLatitude;
-    if (hasLatitude != [v4 hasLatitude])
+    if (hasLatitude != [equalCopy hasLatitude])
     {
       goto LABEL_63;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -696,13 +696,13 @@ LABEL_31:
   if (v8)
   {
     hasLongitude = self->_hasLongitude;
-    if (hasLongitude != [v4 hasLongitude])
+    if (hasLongitude != [equalCopy hasLongitude])
     {
       goto LABEL_63;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v10 = (*&has >> 2) & 1;
@@ -714,13 +714,13 @@ LABEL_31:
   if (v10)
   {
     hasCountryCode = self->_hasCountryCode;
-    if (hasCountryCode != [v4 hasCountryCode])
+    if (hasCountryCode != [equalCopy hasCountryCode])
     {
       goto LABEL_63;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v12 = (*&has >> 3) & 1;
@@ -732,13 +732,13 @@ LABEL_31:
   if (v12)
   {
     hasStorefront = self->_hasStorefront;
-    if (hasStorefront != [v4 hasStorefront])
+    if (hasStorefront != [equalCopy hasStorefront])
     {
       goto LABEL_63;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v14 = (*&has >> 4) & 1;
@@ -750,13 +750,13 @@ LABEL_31:
   if (v14)
   {
     hasSiriLocale = self->_hasSiriLocale;
-    if (hasSiriLocale != [v4 hasSiriLocale])
+    if (hasSiriLocale != [equalCopy hasSiriLocale])
     {
       goto LABEL_63;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v16 = (*&has >> 5) & 1;
@@ -768,14 +768,14 @@ LABEL_31:
   if (v16)
   {
     uiScale = self->_uiScale;
-    [v4 uiScale];
+    [equalCopy uiScale];
     if (uiScale != v18)
     {
       goto LABEL_63;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v19 = (*&has >> 6) & 1;
@@ -787,13 +787,13 @@ LABEL_31:
   if (v19)
   {
     isNavigationMode = self->_isNavigationMode;
-    if (isNavigationMode != [v4 isNavigationMode])
+    if (isNavigationMode != [equalCopy isNavigationMode])
     {
       goto LABEL_63;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v21 = (*&has >> 7) & 1;
@@ -805,13 +805,13 @@ LABEL_31:
   if (v21)
   {
     temperatureScale = self->_temperatureScale;
-    if (temperatureScale != [v4 temperatureScale])
+    if (temperatureScale != [equalCopy temperatureScale])
     {
       goto LABEL_63;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v23 = (*&has >> 8) & 1;
@@ -823,13 +823,13 @@ LABEL_31:
   if (v23)
   {
     measurementSystem = self->_measurementSystem;
-    if (measurementSystem != [v4 measurementSystem])
+    if (measurementSystem != [equalCopy measurementSystem])
     {
       goto LABEL_63;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v25 = (*&has >> 9) & 1;
@@ -841,28 +841,28 @@ LABEL_31:
   if (v25)
   {
     installedAppsSignatureLength = self->_installedAppsSignatureLength;
-    if (installedAppsSignatureLength != [v4 installedAppsSignatureLength])
+    if (installedAppsSignatureLength != [equalCopy installedAppsSignatureLength])
     {
       goto LABEL_63;
     }
   }
 
-  v27 = [(POMMESSchemaPOMMESPegasusQueryMetadata *)self storefrontValue];
-  v28 = [v4 storefrontValue];
-  v29 = v28;
-  if ((v27 != 0) == (v28 == 0))
+  storefrontValue = [(POMMESSchemaPOMMESPegasusQueryMetadata *)self storefrontValue];
+  storefrontValue2 = [equalCopy storefrontValue];
+  v29 = storefrontValue2;
+  if ((storefrontValue != 0) == (storefrontValue2 == 0))
   {
 
     goto LABEL_63;
   }
 
-  v30 = [(POMMESSchemaPOMMESPegasusQueryMetadata *)self storefrontValue];
-  if (v30)
+  storefrontValue3 = [(POMMESSchemaPOMMESPegasusQueryMetadata *)self storefrontValue];
+  if (storefrontValue3)
   {
-    v31 = v30;
-    v32 = [(POMMESSchemaPOMMESPegasusQueryMetadata *)self storefrontValue];
-    v33 = [v4 storefrontValue];
-    v34 = [v32 isEqual:v33];
+    v31 = storefrontValue3;
+    storefrontValue4 = [(POMMESSchemaPOMMESPegasusQueryMetadata *)self storefrontValue];
+    storefrontValue5 = [equalCopy storefrontValue];
+    v34 = [storefrontValue4 isEqual:storefrontValue5];
 
     if (!v34)
     {
@@ -876,7 +876,7 @@ LABEL_31:
 
   v35 = self->_has;
   v36 = (*&v35 >> 10) & 1;
-  v37 = v4[32];
+  v37 = equalCopy[32];
   if (v36 != ((v37 >> 10) & 1))
   {
 LABEL_63:
@@ -887,13 +887,13 @@ LABEL_63:
   if (v36)
   {
     heySiriEnabled = self->_heySiriEnabled;
-    if (heySiriEnabled != [v4 heySiriEnabled])
+    if (heySiriEnabled != [equalCopy heySiriEnabled])
     {
       goto LABEL_63;
     }
 
     v35 = self->_has;
-    v37 = v4[32];
+    v37 = equalCopy[32];
   }
 
   v39 = (*&v35 >> 11) & 1;
@@ -905,13 +905,13 @@ LABEL_63:
   if (v39)
   {
     locationAgeInSeconds = self->_locationAgeInSeconds;
-    if (locationAgeInSeconds != [v4 locationAgeInSeconds])
+    if (locationAgeInSeconds != [equalCopy locationAgeInSeconds])
     {
       goto LABEL_63;
     }
 
     v35 = self->_has;
-    v37 = v4[32];
+    v37 = equalCopy[32];
   }
 
   v41 = (*&v35 >> 12) & 1;
@@ -923,10 +923,10 @@ LABEL_63:
   if (v41)
   {
     locationSource = self->_locationSource;
-    if (locationSource == [v4 locationSource])
+    if (locationSource == [equalCopy locationSource])
     {
       v35 = self->_has;
-      v37 = v4[32];
+      v37 = equalCopy[32];
       goto LABEL_59;
     }
 
@@ -943,7 +943,7 @@ LABEL_59:
   if (v43)
   {
     locationPreciseStatus = self->_locationPreciseStatus;
-    if (locationPreciseStatus != [v4 locationPreciseStatus])
+    if (locationPreciseStatus != [equalCopy locationPreciseStatus])
     {
       goto LABEL_63;
     }
@@ -955,9 +955,9 @@ LABEL_64:
   return v45;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -1086,9 +1086,9 @@ LABEL_11:
   }
 
 LABEL_12:
-  v5 = [(POMMESSchemaPOMMESPegasusQueryMetadata *)self storefrontValue];
+  storefrontValue = [(POMMESSchemaPOMMESPegasusQueryMetadata *)self storefrontValue];
 
-  if (v5)
+  if (storefrontValue)
   {
     PBDataWriterWriteStringField();
   }
@@ -1139,9 +1139,9 @@ LABEL_18:
 LABEL_19:
 }
 
-- (void)setHasLocationPreciseStatus:(BOOL)a3
+- (void)setHasLocationPreciseStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 0x2000;
   }
@@ -1154,9 +1154,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xDFFF | v3;
 }
 
-- (void)setHasLocationSource:(BOOL)a3
+- (void)setHasLocationSource:(BOOL)source
 {
-  if (a3)
+  if (source)
   {
     v3 = 4096;
   }
@@ -1169,9 +1169,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xEFFF | v3;
 }
 
-- (void)setHasLocationAgeInSeconds:(BOOL)a3
+- (void)setHasLocationAgeInSeconds:(BOOL)seconds
 {
-  if (a3)
+  if (seconds)
   {
     v3 = 2048;
   }
@@ -1184,9 +1184,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasHeySiriEnabled:(BOOL)a3
+- (void)setHasHeySiriEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 1024;
   }
@@ -1199,9 +1199,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasInstalledAppsSignatureLength:(BOOL)a3
+- (void)setHasInstalledAppsSignatureLength:(BOOL)length
 {
-  if (a3)
+  if (length)
   {
     v3 = 512;
   }
@@ -1214,9 +1214,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasMeasurementSystem:(BOOL)a3
+- (void)setHasMeasurementSystem:(BOOL)system
 {
-  if (a3)
+  if (system)
   {
     v3 = 256;
   }
@@ -1229,9 +1229,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasTemperatureScale:(BOOL)a3
+- (void)setHasTemperatureScale:(BOOL)scale
 {
-  if (a3)
+  if (scale)
   {
     v3 = 128;
   }
@@ -1244,9 +1244,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasIsNavigationMode:(BOOL)a3
+- (void)setHasIsNavigationMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 64;
   }
@@ -1259,9 +1259,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasUiScale:(BOOL)a3
+- (void)setHasUiScale:(BOOL)scale
 {
-  if (a3)
+  if (scale)
   {
     v3 = 32;
   }
@@ -1274,9 +1274,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasHasSiriLocale:(BOOL)a3
+- (void)setHasHasSiriLocale:(BOOL)locale
 {
-  if (a3)
+  if (locale)
   {
     v3 = 16;
   }
@@ -1289,9 +1289,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasHasStorefront:(BOOL)a3
+- (void)setHasHasStorefront:(BOOL)storefront
 {
-  if (a3)
+  if (storefront)
   {
     v3 = 8;
   }
@@ -1304,9 +1304,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasHasCountryCode:(BOOL)a3
+- (void)setHasHasCountryCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 4;
   }
@@ -1319,9 +1319,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasHasLongitude:(BOOL)a3
+- (void)setHasHasLongitude:(BOOL)longitude
 {
-  if (a3)
+  if (longitude)
   {
     v3 = 2;
   }

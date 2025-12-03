@@ -3,23 +3,23 @@
 + (id)allPortraitLayouts;
 + (id)sortDescriptors;
 - (BOOL)isComplete;
-- (HUCCMosaicLayout)initWithLayoutType:(unint64_t)a3;
+- (HUCCMosaicLayout)initWithLayoutType:(unint64_t)type;
 - (NSArray)arrangedItems;
 - (NSMutableArray)accessories;
 - (NSMutableArray)fillers;
 - (NSMutableArray)scenes;
 - (id)description;
-- (void)_addAccessoryItem:(id)a3;
-- (void)_addFillerItem:(id)a3;
-- (void)_addSceneItem:(id)a3;
+- (void)_addAccessoryItem:(id)item;
+- (void)_addFillerItem:(id)item;
+- (void)_addSceneItem:(id)item;
 - (void)_registerPossibleMiss;
 - (void)_sizeAllItems;
-- (void)addItem:(id)a3;
+- (void)addItem:(id)item;
 @end
 
 @implementation HUCCMosaicLayout
 
-- (HUCCMosaicLayout)initWithLayoutType:(unint64_t)a3
+- (HUCCMosaicLayout)initWithLayoutType:(unint64_t)type
 {
   v9.receiver = self;
   v9.super_class = HUCCMosaicLayout;
@@ -27,12 +27,12 @@
   v5 = v4;
   if (v4)
   {
-    v4->_layoutType = a3;
-    if (a3 <= 4)
+    v4->_layoutType = type;
+    if (type <= 4)
     {
-      if (a3 > 2)
+      if (type > 2)
       {
-        if (a3 == 3)
+        if (type == 3)
         {
           v4->_accessoriesNeeded = 2;
           *&v4->_priority = vdupq_n_s64(2uLL);
@@ -49,7 +49,7 @@
         goto LABEL_23;
       }
 
-      if (a3 == 1)
+      if (type == 1)
       {
         v4->_scenesNeeded = 0;
         v4->_accessoriesNeeded = 0;
@@ -59,7 +59,7 @@ LABEL_22:
         goto LABEL_23;
       }
 
-      if (a3 == 2)
+      if (type == 2)
       {
         v4->_accessoriesNeeded = 4;
         *&v4->_priority = xmmword_20D5CA450;
@@ -70,9 +70,9 @@ LABEL_22:
 
     else
     {
-      if (a3 <= 6)
+      if (type <= 6)
       {
-        if (a3 == 5)
+        if (type == 5)
         {
           v4->_accessoriesNeeded = 0;
           *&v4->_priority = xmmword_20D5CA460;
@@ -90,7 +90,7 @@ LABEL_22:
         goto LABEL_23;
       }
 
-      switch(a3)
+      switch(type)
       {
         case 7uLL:
           v4->_accessoriesNeeded = 0;
@@ -116,7 +116,7 @@ LABEL_23:
       }
     }
 
-    NSLog(&cfstr_UnknownGridLay.isa, a3);
+    NSLog(&cfstr_UnknownGridLay.isa, type);
     v5->_scenesNeeded = 0;
     v5->_accessoriesNeeded = 0;
     *&v5->_layoutType = vdupq_n_s64(1uLL);
@@ -129,8 +129,8 @@ LABEL_23:
 - (id)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HUCCMosaicLayout *)self layoutDescription];
-  v4 = [v2 stringWithFormat:@"HUCCMosaicLayout - %@", v3];
+  layoutDescription = [(HUCCMosaicLayout *)self layoutDescription];
+  v4 = [v2 stringWithFormat:@"HUCCMosaicLayout - %@", layoutDescription];
 
   return v4;
 }
@@ -140,9 +140,9 @@ LABEL_23:
   scenes = self->_scenes;
   if (!scenes)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v5 = self->_scenes;
-    self->_scenes = v4;
+    self->_scenes = array;
 
     scenes = self->_scenes;
   }
@@ -155,9 +155,9 @@ LABEL_23:
   accessories = self->_accessories;
   if (!accessories)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v5 = self->_accessories;
-    self->_accessories = v4;
+    self->_accessories = array;
 
     accessories = self->_accessories;
   }
@@ -170,9 +170,9 @@ LABEL_23:
   fillers = self->_fillers;
   if (!fillers)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v5 = self->_fillers;
-    self->_fillers = v4;
+    self->_fillers = array;
 
     fillers = self->_fillers;
   }
@@ -180,58 +180,58 @@ LABEL_23:
   return fillers;
 }
 
-- (void)addItem:(id)a3
+- (void)addItem:(id)item
 {
-  v7 = a3;
-  v4 = [v7 itemType];
-  if (v4 <= 1)
+  itemCopy = item;
+  itemType = [itemCopy itemType];
+  if (itemType <= 1)
   {
-    if (v4)
+    if (itemType)
     {
-      v5 = v4 == 1;
-      v6 = v7;
+      v5 = itemType == 1;
+      v6 = itemCopy;
       if (!v5)
       {
         goto LABEL_13;
       }
 
-      [(HUCCMosaicLayout *)self _addSceneItem:v7];
+      [(HUCCMosaicLayout *)self _addSceneItem:itemCopy];
     }
 
     else
     {
-      [(HUCCMosaicLayout *)self setHomeItem:v7];
+      [(HUCCMosaicLayout *)self setHomeItem:itemCopy];
     }
 
 LABEL_12:
-    v6 = v7;
+    v6 = itemCopy;
     goto LABEL_13;
   }
 
-  if (v4 == 2)
+  if (itemType == 2)
   {
-    [(HUCCMosaicLayout *)self _addAccessoryItem:v7];
+    [(HUCCMosaicLayout *)self _addAccessoryItem:itemCopy];
     goto LABEL_12;
   }
 
-  v5 = v4 == 3;
-  v6 = v7;
+  v5 = itemType == 3;
+  v6 = itemCopy;
   if (v5)
   {
-    [(HUCCMosaicLayout *)self _addFillerItem:v7];
+    [(HUCCMosaicLayout *)self _addFillerItem:itemCopy];
     goto LABEL_12;
   }
 
 LABEL_13:
 }
 
-- (void)_addSceneItem:(id)a3
+- (void)_addSceneItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   if ([(HUCCMosaicLayout *)self scenesNeeded])
   {
-    v4 = [(HUCCMosaicLayout *)self scenes];
-    [v4 addObject:v5];
+    scenes = [(HUCCMosaicLayout *)self scenes];
+    [scenes addObject:itemCopy];
 
     [(HUCCMosaicLayout *)self setScenesNeeded:[(HUCCMosaicLayout *)self scenesNeeded]- 1];
   }
@@ -242,13 +242,13 @@ LABEL_13:
   }
 }
 
-- (void)_addAccessoryItem:(id)a3
+- (void)_addAccessoryItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   if ([(HUCCMosaicLayout *)self accessoriesNeeded])
   {
-    v4 = [(HUCCMosaicLayout *)self accessories];
-    [v4 addObject:v5];
+    accessories = [(HUCCMosaicLayout *)self accessories];
+    [accessories addObject:itemCopy];
 
     [(HUCCMosaicLayout *)self setAccessoriesNeeded:[(HUCCMosaicLayout *)self accessoriesNeeded]- 1];
   }
@@ -259,11 +259,11 @@ LABEL_13:
   }
 }
 
-- (void)_addFillerItem:(id)a3
+- (void)_addFillerItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HUCCMosaicLayout *)self fillers];
-  [v5 addObject:v4];
+  itemCopy = item;
+  fillers = [(HUCCMosaicLayout *)self fillers];
+  [fillers addObject:itemCopy];
 
   v6 = [(HUCCMosaicLayout *)self accessoriesNeeded]- 1;
 
@@ -282,8 +282,8 @@ LABEL_13:
 
 - (BOOL)isComplete
 {
-  v3 = [(HUCCMosaicLayout *)self homeItem];
-  v4 = v3 && ![(HUCCMosaicLayout *)self scenesNeeded]&& [(HUCCMosaicLayout *)self accessoriesNeeded]== 0;
+  homeItem = [(HUCCMosaicLayout *)self homeItem];
+  v4 = homeItem && ![(HUCCMosaicLayout *)self scenesNeeded]&& [(HUCCMosaicLayout *)self accessoriesNeeded]== 0;
 
   return v4;
 }
@@ -291,16 +291,16 @@ LABEL_13:
 - (void)_sizeAllItems
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = [(HUCCMosaicLayout *)self layoutType];
-  v4 = [(HUCCMosaicLayout *)self homeItem];
-  v5 = v4;
+  layoutType = [(HUCCMosaicLayout *)self layoutType];
+  homeItem = [(HUCCMosaicLayout *)self homeItem];
+  v5 = homeItem;
   v6 = 2;
-  if (v3 == 6)
+  if (layoutType == 6)
   {
     v6 = 4;
   }
 
-  if (v3 == 1)
+  if (layoutType == 1)
   {
     v7 = 3;
   }
@@ -310,14 +310,14 @@ LABEL_13:
     v7 = v6;
   }
 
-  [v4 setItemSize:v7];
+  [homeItem setItemSize:v7];
 
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v8 = [(HUCCMosaicLayout *)self scenes];
-  v9 = [v8 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  scenes = [(HUCCMosaicLayout *)self scenes];
+  v9 = [scenes countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v9)
   {
     v10 = v9;
@@ -329,54 +329,54 @@ LABEL_13:
       {
         if (*v28 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(scenes);
         }
 
         [*(*(&v27 + 1) + 8 * v12++) setItemSize:2];
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v10 = [scenes countByEnumeratingWithState:&v27 objects:v31 count:16];
     }
 
     while (v10);
   }
 
-  v13 = [(HUCCMosaicLayout *)self accessories];
-  v14 = [v13 count];
+  accessories = [(HUCCMosaicLayout *)self accessories];
+  v14 = [accessories count];
 
   if (v14)
   {
     v15 = 0;
     do
     {
-      v16 = [(HUCCMosaicLayout *)self accessories];
-      v17 = [v16 objectAtIndexedSubscript:v15];
+      accessories2 = [(HUCCMosaicLayout *)self accessories];
+      v17 = [accessories2 objectAtIndexedSubscript:v15];
 
       [v17 setItemSize:1];
       ++v15;
-      v18 = [(HUCCMosaicLayout *)self accessories];
-      v19 = [v18 count];
+      accessories3 = [(HUCCMosaicLayout *)self accessories];
+      v19 = [accessories3 count];
     }
 
     while (v15 < v19);
   }
 
-  v20 = [(HUCCMosaicLayout *)self fillers];
-  v21 = [v20 count];
+  fillers = [(HUCCMosaicLayout *)self fillers];
+  v21 = [fillers count];
 
   if (v21)
   {
     v22 = 0;
     do
     {
-      v23 = [(HUCCMosaicLayout *)self fillers];
-      v24 = [v23 objectAtIndexedSubscript:v22];
+      fillers2 = [(HUCCMosaicLayout *)self fillers];
+      v24 = [fillers2 objectAtIndexedSubscript:v22];
 
       [v24 setItemSize:1];
       ++v22;
-      v25 = [(HUCCMosaicLayout *)self fillers];
-      v26 = [v25 count];
+      fillers3 = [(HUCCMosaicLayout *)self fillers];
+      v26 = [fillers3 count];
     }
 
     while (v22 < v26);
@@ -386,20 +386,20 @@ LABEL_13:
 - (NSArray)arrangedItems
 {
   [(HUCCMosaicLayout *)self _sizeAllItems];
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(HUCCMosaicLayout *)self homeItem];
-  [v3 na_safeAddObject:v4];
+  array = [MEMORY[0x277CBEB18] array];
+  homeItem = [(HUCCMosaicLayout *)self homeItem];
+  [array na_safeAddObject:homeItem];
 
-  v5 = [(HUCCMosaicLayout *)self scenes];
-  [v3 na_safeAddObjectsFromArray:v5];
+  scenes = [(HUCCMosaicLayout *)self scenes];
+  [array na_safeAddObjectsFromArray:scenes];
 
-  v6 = [(HUCCMosaicLayout *)self accessories];
-  [v3 na_safeAddObjectsFromArray:v6];
+  accessories = [(HUCCMosaicLayout *)self accessories];
+  [array na_safeAddObjectsFromArray:accessories];
 
-  v7 = [(HUCCMosaicLayout *)self fillers];
-  [v3 na_safeAddObjectsFromArray:v7];
+  fillers = [(HUCCMosaicLayout *)self fillers];
+  [array na_safeAddObjectsFromArray:fillers];
 
-  return v3;
+  return array;
 }
 
 + (id)sortDescriptors
@@ -462,41 +462,41 @@ uint64_t __35__HUCCMosaicLayout_sortDescriptors__block_invoke_2(uint64_t a1, voi
 
 + (id)allPortraitLayouts
 {
-  v2 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v3 = [[HUCCMosaicLayout alloc] initWithLayoutType:4];
-  [v2 addObject:v3];
+  [array addObject:v3];
 
   v4 = [[HUCCMosaicLayout alloc] initWithLayoutType:2];
-  [v2 addObject:v4];
+  [array addObject:v4];
 
   v5 = [[HUCCMosaicLayout alloc] initWithLayoutType:3];
-  [v2 addObject:v5];
+  [array addObject:v5];
 
   v6 = [[HUCCMosaicLayout alloc] initWithLayoutType:5];
-  [v2 addObject:v6];
+  [array addObject:v6];
 
   v7 = [[HUCCMosaicLayout alloc] initWithLayoutType:1];
-  [v2 addObject:v7];
+  [array addObject:v7];
 
-  return v2;
+  return array;
 }
 
 + (id)allLandscapeLayouts
 {
-  v2 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v3 = [[HUCCMosaicLayout alloc] initWithLayoutType:7];
-  [v2 addObject:v3];
+  [array addObject:v3];
 
   v4 = [[HUCCMosaicLayout alloc] initWithLayoutType:8];
-  [v2 addObject:v4];
+  [array addObject:v4];
 
   v5 = [[HUCCMosaicLayout alloc] initWithLayoutType:9];
-  [v2 addObject:v5];
+  [array addObject:v5];
 
   v6 = [[HUCCMosaicLayout alloc] initWithLayoutType:6];
-  [v2 addObject:v6];
+  [array addObject:v6];
 
-  return v2;
+  return array;
 }
 
 @end

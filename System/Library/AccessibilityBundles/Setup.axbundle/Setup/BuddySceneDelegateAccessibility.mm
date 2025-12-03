@@ -1,25 +1,25 @@
 @interface BuddySceneDelegateAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
 @end
 
 @implementation BuddySceneDelegateAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"BuddySceneDelegate"];
-  [v3 validateClass:@"BuddySceneDelegate" hasInstanceMethod:@"scene:willConnectToSession:options:" withFullSignature:{"v", "@", "@", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"BuddySceneDelegate"];
+  [validationsCopy validateClass:@"BuddySceneDelegate" hasInstanceMethod:@"scene:willConnectToSession:options:" withFullSignature:{"v", "@", "@", "@", 0}];
 }
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
   v13.receiver = self;
   v13.super_class = BuddySceneDelegateAccessibility;
-  [(BuddySceneDelegateAccessibility *)&v13 scene:v8 willConnectToSession:v9 options:v10];
+  [(BuddySceneDelegateAccessibility *)&v13 scene:sceneCopy willConnectToSession:sessionCopy options:optionsCopy];
   objc_opt_class();
   v11 = [NSClassFromString(&cfstr_Buddyapplicati.isa) safeValueForKey:@"setupController"];
   v12 = __UIAccessibilityCastAsClass();

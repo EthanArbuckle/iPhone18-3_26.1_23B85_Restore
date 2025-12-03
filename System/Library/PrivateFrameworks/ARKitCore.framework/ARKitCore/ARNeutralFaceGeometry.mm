@@ -41,7 +41,7 @@ void __46__ARNeutralFaceGeometry_sharedNeutralGeometry__block_invoke()
       v6 = [v5 objectForKeyedSubscript:*MEMORY[0x1E698C088]];
 
       v7 = [v6 length];
-      v8 = [v6 bytes];
+      bytes = [v6 bytes];
       _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEEC2B8ne200100Em(&v37, (v7 / 0xC));
       v10 = *(v3 + 1);
       if (v10)
@@ -59,7 +59,7 @@ void __46__ARNeutralFaceGeometry_sharedNeutralGeometry__block_invoke()
       if (*(v3 + 2) != v11)
       {
         v12 = 0;
-        v13 = (v8 + 8);
+        v13 = (bytes + 8);
         v14 = vdupq_n_s32(0x447A0000u);
         do
         {
@@ -92,12 +92,12 @@ void __46__ARNeutralFaceGeometry_sharedNeutralGeometry__block_invoke()
 
       *(v3 + 2) = v37;
       *(v3 + 6) = v38;
-      v19 = [v17 bytes];
+      bytes2 = [v17 bytes];
       v20 = *(v3 + 4);
       if (*(v3 + 5) != v20)
       {
         v21 = 0;
-        v22 = (v19 + 4);
+        v22 = (bytes2 + 4);
         do
         {
           *&v23 = *(v22 - 1);
@@ -114,7 +114,7 @@ void __46__ARNeutralFaceGeometry_sharedNeutralGeometry__block_invoke()
       v25 = [v24 objectForKeyedSubscript:*MEMORY[0x1E698C078]];
 
       v26 = [v25 length];
-      v27 = [v25 bytes];
+      bytes3 = [v25 bytes];
       v28 = v26 >> 4;
       std::vector<short>::vector[abi:ne200100](&v37, 6 * v28);
       v29 = *(v3 + 7);
@@ -136,7 +136,7 @@ void __46__ARNeutralFaceGeometry_sharedNeutralGeometry__block_invoke()
         v32 = (v30 + 10);
         do
         {
-          v33 = *v27++;
+          v33 = *bytes3++;
           v34 = vmovn_s32(v33);
           *(v32 - 1) = v34.i16[3];
           *(v32 - 5) = vext_s8(v34, v34, 6uLL);
@@ -150,15 +150,15 @@ void __46__ARNeutralFaceGeometry_sharedNeutralGeometry__block_invoke()
     }
 
     self = v3;
-    v35 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v35 = 0;
+    selfCopy = 0;
   }
 
-  return v35;
+  return selfCopy;
 }
 
 - (id).cxx_construct

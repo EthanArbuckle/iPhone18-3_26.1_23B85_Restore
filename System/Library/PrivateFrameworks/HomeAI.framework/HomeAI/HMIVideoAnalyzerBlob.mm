@@ -1,16 +1,16 @@
 @interface HMIVideoAnalyzerBlob
 - (CGRect)boundingBox;
-- (HMIVideoAnalyzerBlob)initWithBoundingBox:(CGRect)a3 timeStamp:(id *)a4 blobArea:(float)a5 blobID:(unsigned __int16)a6;
+- (HMIVideoAnalyzerBlob)initWithBoundingBox:(CGRect)box timeStamp:(id *)stamp blobArea:(float)area blobID:(unsigned __int16)d;
 @end
 
 @implementation HMIVideoAnalyzerBlob
 
-- (HMIVideoAnalyzerBlob)initWithBoundingBox:(CGRect)a3 timeStamp:(id *)a4 blobArea:(float)a5 blobID:(unsigned __int16)a6
+- (HMIVideoAnalyzerBlob)initWithBoundingBox:(CGRect)box timeStamp:(id *)stamp blobArea:(float)area blobID:(unsigned __int16)d
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
   v15.receiver = self;
   v15.super_class = HMIVideoAnalyzerBlob;
   result = [(HMIVideoAnalyzerBlob *)&v15 init];
@@ -20,11 +20,11 @@
     result->_boundingBox.origin.y = y;
     result->_boundingBox.size.width = width;
     result->_boundingBox.size.height = height;
-    v14 = *&a4->var0;
-    result->_timeStamp.epoch = a4->var3;
+    v14 = *&stamp->var0;
+    result->_timeStamp.epoch = stamp->var3;
     *&result->_timeStamp.value = v14;
-    result->_blobArea = a5;
-    result->_blobID = a6;
+    result->_blobArea = area;
+    result->_blobID = d;
   }
 
   return result;

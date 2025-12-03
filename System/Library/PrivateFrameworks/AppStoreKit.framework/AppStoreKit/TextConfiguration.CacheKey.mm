@@ -1,5 +1,5 @@
 @interface TextConfiguration.CacheKey
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_TtCV11AppStoreKit17TextConfigurationP33_4797A6AB10DD0F1B6476104D5B5EB22B8CacheKey)init;
 - (int64_t)hash;
 @end
@@ -9,21 +9,21 @@
 - (int64_t)hash
 {
   sub_1E1AF762C();
-  v3 = self;
+  selfCopy = self;
   FontSource.hash(into:)();
   v4 = sub_1E1AF767C();
-  v5 = MEMORY[0x1E68FED70](*(&v3->super.isa + OBJC_IVAR____TtCV11AppStoreKit17TextConfigurationP33_4797A6AB10DD0F1B6476104D5B5EB22B8CacheKey_text), *&v3->_anon_0[OBJC_IVAR____TtCV11AppStoreKit17TextConfigurationP33_4797A6AB10DD0F1B6476104D5B5EB22B8CacheKey_text]) ^ v4;
+  v5 = MEMORY[0x1E68FED70](*(&selfCopy->super.isa + OBJC_IVAR____TtCV11AppStoreKit17TextConfigurationP33_4797A6AB10DD0F1B6476104D5B5EB22B8CacheKey_text), *&selfCopy->_anon_0[OBJC_IVAR____TtCV11AppStoreKit17TextConfigurationP33_4797A6AB10DD0F1B6476104D5B5EB22B8CacheKey_text]) ^ v4;
   v6 = sub_1E1AF5DFC();
   v7 = MEMORY[0x1E68FED70](v6);
 
   return v5 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1E1AF6EBC();
     swift_unknownObjectRelease();
@@ -32,7 +32,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_1E19D7F74(v8);

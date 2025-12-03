@@ -1,18 +1,18 @@
 @interface WFDailyForecastRequest
-- (WFDailyForecastRequest)initWithLocation:(id)a3 completionHandler:(id)a4;
+- (WFDailyForecastRequest)initWithLocation:(id)location completionHandler:(id)handler;
 - (id)description;
-- (void)startWithService:(id)a3;
+- (void)startWithService:(id)service;
 @end
 
 @implementation WFDailyForecastRequest
 
-- (WFDailyForecastRequest)initWithLocation:(id)a3 completionHandler:(id)a4
+- (WFDailyForecastRequest)initWithLocation:(id)location completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  v9 = 0;
-  if (v6 && v7)
+  locationCopy = location;
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  selfCopy = 0;
+  if (locationCopy && handlerCopy)
   {
     v15.receiver = self;
     v15.super_class = WFDailyForecastRequest;
@@ -20,37 +20,37 @@
     v11 = v10;
     if (v10)
     {
-      [(WFAggregateForecastRequest *)v10 setLocation:v6];
+      [(WFAggregateForecastRequest *)v10 setLocation:locationCopy];
       [(WFAggregateForecastRequest *)v11 setCompletionHandler:v8];
-      v12 = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
+      autoupdatingCurrentLocale = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
       locale = v11->_locale;
-      v11->_locale = v12;
+      v11->_locale = autoupdatingCurrentLocale;
     }
 
     self = v11;
-    v9 = self;
+    selfCopy = self;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(WFAggregateForecastRequest *)self location];
-  v6 = [v3 stringWithFormat:@"<%@: %p, location = %@>", v4, self, v5];
+  location = [(WFAggregateForecastRequest *)self location];
+  v6 = [v3 stringWithFormat:@"<%@: %p, location = %@>", v4, self, location];
 
   return v6;
 }
 
-- (void)startWithService:(id)a3
+- (void)startWithService:(id)service
 {
-  v4 = a3;
-  v7 = [(WFAggregateForecastRequest *)self location];
-  v5 = [(WFDailyForecastRequest *)self locale];
-  v6 = [(WFTask *)self identifier];
-  [v4 dailyForecastForLocation:v7 locale:v5 taskIdentifier:v6];
+  serviceCopy = service;
+  location = [(WFAggregateForecastRequest *)self location];
+  locale = [(WFDailyForecastRequest *)self locale];
+  identifier = [(WFTask *)self identifier];
+  [serviceCopy dailyForecastForLocation:location locale:locale taskIdentifier:identifier];
 }
 
 @end

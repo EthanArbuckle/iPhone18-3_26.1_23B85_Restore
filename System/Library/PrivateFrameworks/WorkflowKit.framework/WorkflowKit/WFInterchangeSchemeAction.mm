@@ -2,10 +2,10 @@
 - (BOOL)isCallbackAction;
 - (NSString)formatString;
 - (WFInterchangeScheme)scheme;
-- (WFInterchangeSchemeAction)initWithDefinition:(id)a3 scheme:(id)a4;
+- (WFInterchangeSchemeAction)initWithDefinition:(id)definition scheme:(id)scheme;
 - (id)defersCompletionUntilReturn;
 - (id)formatKeys;
-- (void)performActionWithInput:(id)a3 parameters:(id)a4 userInterface:(id)a5 successHandler:(id)a6 errorHandler:(id)a7;
+- (void)performActionWithInput:(id)input parameters:(id)parameters userInterface:(id)interface successHandler:(id)handler errorHandler:(id)errorHandler;
 @end
 
 @implementation WFInterchangeSchemeAction
@@ -17,22 +17,22 @@
   return WeakRetained;
 }
 
-- (void)performActionWithInput:(id)a3 parameters:(id)a4 userInterface:(id)a5 successHandler:(id)a6 errorHandler:(id)a7
+- (void)performActionWithInput:(id)input parameters:(id)parameters userInterface:(id)interface successHandler:(id)handler errorHandler:(id)errorHandler
 {
   v46 = *MEMORY[0x1E69E9840];
-  v35 = a3;
-  v34 = a4;
-  v32 = a5;
-  v30 = a6;
-  v31 = a7;
+  inputCopy = input;
+  parametersCopy = parameters;
+  interfaceCopy = interface;
+  handlerCopy = handler;
+  errorHandlerCopy = errorHandler;
   v12 = objc_opt_new();
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v33 = self;
-  v13 = [(WFInterchangeActionDefinition *)self outputMapping];
-  v14 = [v13 countByEnumeratingWithState:&v41 objects:v45 count:16];
+  selfCopy = self;
+  outputMapping = [(WFInterchangeActionDefinition *)self outputMapping];
+  v14 = [outputMapping countByEnumeratingWithState:&v41 objects:v45 count:16];
   if (v14)
   {
     v15 = v14;
@@ -43,24 +43,24 @@
       {
         if (*v42 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(outputMapping);
         }
 
         v18 = *(*(&v41 + 1) + 8 * i);
-        v19 = [v18 sourceType];
-        v20 = [v19 isEqualToString:@"ResultPlaceholder"];
+        sourceType = [v18 sourceType];
+        v20 = [sourceType isEqualToString:@"ResultPlaceholder"];
 
         if (v20)
         {
-          v21 = [v18 sourceKey];
+          sourceKey = [v18 sourceKey];
           v22 = MEMORY[0x1E696AEC0];
-          v23 = [v18 destinationKey];
-          v24 = [v22 stringWithFormat:@"%@", v23];
-          [v12 setObject:v24 forKey:v21];
+          destinationKey = [v18 destinationKey];
+          v24 = [v22 stringWithFormat:@"%@", destinationKey];
+          [v12 setObject:v24 forKey:sourceKey];
         }
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v41 objects:v45 count:16];
+      v15 = [outputMapping countByEnumeratingWithState:&v41 objects:v45 count:16];
     }
 
     while (v15);
@@ -70,16 +70,16 @@
   v36[1] = 3221225472;
   v36[2] = __105__WFInterchangeSchemeAction_performActionWithInput_parameters_userInterface_successHandler_errorHandler___block_invoke;
   v36[3] = &unk_1E837DB88;
-  v36[4] = v33;
-  v37 = v32;
-  v39 = v31;
-  v40 = v30;
+  v36[4] = selfCopy;
+  v37 = interfaceCopy;
+  v39 = errorHandlerCopy;
+  v40 = handlerCopy;
   v38 = v12;
   v25 = v12;
-  v26 = v30;
-  v27 = v32;
-  v28 = v31;
-  [(WFInterchangeActionDefinition *)v33 processInput:v35 parameters:v34 completionHandler:v36];
+  v26 = handlerCopy;
+  v27 = interfaceCopy;
+  v28 = errorHandlerCopy;
+  [(WFInterchangeActionDefinition *)selfCopy processInput:inputCopy parameters:parametersCopy completionHandler:v36];
 
   v29 = *MEMORY[0x1E69E9840];
 }
@@ -277,19 +277,19 @@ void __105__WFInterchangeSchemeAction_performActionWithInput_parameters_userInte
 
 - (id)defersCompletionUntilReturn
 {
-  v2 = [(WFInterchangeActionDefinition *)self definition];
-  v3 = [v2 objectForKey:@"DeferCompletion"];
+  definition = [(WFInterchangeActionDefinition *)self definition];
+  v3 = [definition objectForKey:@"DeferCompletion"];
 
   return v3;
 }
 
 - (BOOL)isCallbackAction
 {
-  v3 = [(WFInterchangeSchemeAction *)self scheme];
-  if ([v3 isCallbackScheme])
+  scheme = [(WFInterchangeSchemeAction *)self scheme];
+  if ([scheme isCallbackScheme])
   {
-    v4 = [(WFInterchangeActionDefinition *)self definition];
-    v5 = [v4 objectForKey:@"CallbackUnsupported"];
+    definition = [(WFInterchangeActionDefinition *)self definition];
+    v5 = [definition objectForKey:@"CallbackUnsupported"];
     v6 = [v5 BOOLValue] ^ 1;
   }
 
@@ -303,15 +303,15 @@ void __105__WFInterchangeSchemeAction_performActionWithInput_parameters_userInte
 
 - (id)formatKeys
 {
-  v2 = [(WFInterchangeSchemeAction *)self formatString];
+  formatString = [(WFInterchangeSchemeAction *)self formatString];
   v3 = [MEMORY[0x1E696AE70] regularExpressionWithPattern:@"\\[\\[(.*?)\\]\\]" options:0 error:0];
-  v4 = [v3 matchesInString:v2 options:0 range:{0, objc_msgSend(v2, "length")}];
+  v4 = [v3 matchesInString:formatString options:0 range:{0, objc_msgSend(formatString, "length")}];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __39__WFInterchangeSchemeAction_formatKeys__block_invoke;
   v8[3] = &unk_1E837DAD8;
-  v9 = v2;
-  v5 = v2;
+  v9 = formatString;
+  v5 = formatString;
   v6 = [v4 if_map:v8];
 
   return v6;
@@ -327,20 +327,20 @@ uint64_t __39__WFInterchangeSchemeAction_formatKeys__block_invoke(uint64_t a1, v
 
 - (NSString)formatString
 {
-  v3 = [(WFInterchangeActionDefinition *)self definition];
-  v4 = [v3 objectForKey:@"Format"];
+  definition = [(WFInterchangeActionDefinition *)self definition];
+  v4 = [definition objectForKey:@"Format"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    if (v5)
+    definition2 = v4;
+    if (definition2)
     {
 LABEL_3:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v6 = v5;
+        v6 = definition2;
       }
 
       else
@@ -357,8 +357,8 @@ LABEL_3:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v5 = [(WFInterchangeActionDefinition *)self definition];
-      v9 = [v5 objectForKey:@"Format"];
+      definition2 = [(WFInterchangeActionDefinition *)self definition];
+      v9 = [definition2 objectForKey:@"Format"];
       goto LABEL_16;
     }
 
@@ -384,9 +384,9 @@ LABEL_3:
 
     v10 = v8;
 
-    v5 = [v10 objectForKey:@"Phone"];
+    definition2 = [v10 objectForKey:@"Phone"];
 
-    if (v5)
+    if (definition2)
     {
       goto LABEL_3;
     }
@@ -401,16 +401,16 @@ LABEL_16:
   return v11;
 }
 
-- (WFInterchangeSchemeAction)initWithDefinition:(id)a3 scheme:(id)a4
+- (WFInterchangeSchemeAction)initWithDefinition:(id)definition scheme:(id)scheme
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 app];
-  v9 = [(WFInterchangeActionDefinition *)self initWithDefinition:v7 app:v8];
+  schemeCopy = scheme;
+  definitionCopy = definition;
+  v8 = [schemeCopy app];
+  v9 = [(WFInterchangeActionDefinition *)self initWithDefinition:definitionCopy app:v8];
 
   if (v9)
   {
-    objc_storeWeak(&v9->_scheme, v6);
+    objc_storeWeak(&v9->_scheme, schemeCopy);
     v10 = v9;
   }
 

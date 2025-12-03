@@ -1,6 +1,6 @@
 @interface WFMPMediaLibraryFiltering
 + (Class)objectClass;
-+ (void)performCustomFilteringUsingComparisonPredicates:(id)a3 resultHandler:(id)a4;
++ (void)performCustomFilteringUsingComparisonPredicates:(id)predicates resultHandler:(id)handler;
 @end
 
 @implementation WFMPMediaLibraryFiltering
@@ -29,18 +29,18 @@
   return v3;
 }
 
-+ (void)performCustomFilteringUsingComparisonPredicates:(id)a3 resultHandler:(id)a4
++ (void)performCustomFilteringUsingComparisonPredicates:(id)predicates resultHandler:(id)handler
 {
   v51 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v34 = a4;
+  predicatesCopy = predicates;
+  handlerCopy = handler;
   v35 = objc_opt_new();
   v37 = objc_opt_new();
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  obj = v5;
+  obj = predicatesCopy;
   v6 = [obj countByEnumeratingWithState:&v38 objects:v47 count:16];
   if (v6)
   {
@@ -80,12 +80,12 @@
           v11 = 1;
         }
 
-        v12 = [v10 property];
-        v13 = [v12 userInfo];
+        property = [v10 property];
+        userInfo = [property userInfo];
 
-        v14 = [v10 value];
+        value = [v10 value];
         objc_opt_class();
-        if ((objc_opt_isKindOfClass() & (v14 != 0)) == 1)
+        if ((objc_opt_isKindOfClass() & (value != 0)) == 1)
         {
           v43 = 0;
           v44 = &v43;
@@ -109,20 +109,20 @@
           _Block_object_dispose(&v43, 8);
           if (!v15)
           {
-            v31 = [MEMORY[0x277CCA890] currentHandler];
+            currentHandler = [MEMORY[0x277CCA890] currentHandler];
             v32 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getMPMediaItemPropertyMediaType(void)"];
-            [v31 handleFailureInFunction:v32 file:@"WFMPMediaLibraryFiltering.m" lineNumber:19 description:{@"%s", dlerror(), v33}];
+            [currentHandler handleFailureInFunction:v32 file:@"WFMPMediaLibraryFiltering.m" lineNumber:19 description:{@"%s", dlerror(), v33}];
 
             __break(1u);
           }
 
-          if ([v13 isEqualToString:*v15])
+          if ([userInfo isEqualToString:*v15])
           {
             v18 = WFMPMediaTypeMapping();
-            v19 = [v18 allKeysForObject:v14];
-            v20 = [v19 firstObject];
+            v19 = [v18 allKeysForObject:value];
+            firstObject = [v19 firstObject];
 
-            v14 = v20;
+            value = firstObject;
           }
 
           *buf = 0;
@@ -143,7 +143,7 @@
 
           v22 = v21;
           _Block_object_dispose(buf, 8);
-          v23 = [v21 predicateWithValue:v14 forProperty:v13 comparisonType:v11];
+          v23 = [v21 predicateWithValue:value forProperty:userInfo comparisonType:v11];
         }
 
         else
@@ -201,12 +201,12 @@ LABEL_25:
     v26 = v25;
     _Block_object_dispose(&v43, 8);
     v27 = [[v25 alloc] initWithFilterPredicates:v35];
-    v28 = [v27 items];
+    items = [v27 items];
 
     v29 = getWFMediaLibraryFilteringLogObject();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
     {
-      v30 = [v28 count];
+      v30 = [items count];
       *buf = 136315394;
       *&buf[4] = "+[WFMPMediaLibraryFiltering performCustomFilteringUsingComparisonPredicates:resultHandler:]";
       *&buf[12] = 2048;
@@ -214,12 +214,12 @@ LABEL_25:
       _os_log_impl(&dword_21E1BD000, v29, OS_LOG_TYPE_INFO, "%s MPMediaQuery completed with %lu results", buf, 0x16u);
     }
 
-    v34[2](v34, v28, v37);
+    handlerCopy[2](handlerCopy, items, v37);
   }
 
   else
   {
-    v34[2](v34, 0, 0);
+    handlerCopy[2](handlerCopy, 0, 0);
   }
 }
 

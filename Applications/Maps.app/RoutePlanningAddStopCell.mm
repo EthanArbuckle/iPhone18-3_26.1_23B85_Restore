@@ -1,11 +1,11 @@
 @interface RoutePlanningAddStopCell
 - (RoutePlanningAddStopCell)init;
-- (void)_setEnabled:(BOOL)a3;
+- (void)_setEnabled:(BOOL)enabled;
 - (void)_updateConstraints;
 - (void)_updateFonts;
 - (void)_updateIconImage;
-- (void)setEnabled:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setEnabled:(BOOL)enabled;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation RoutePlanningAddStopCell
@@ -13,17 +13,17 @@
 - (void)_updateIconImage
 {
   v5 = +[GEOFeatureStyleAttributes addStopStyleAttributes];
-  v3 = [(RoutePlanningAddStopCell *)self traitCollection];
-  [v3 displayScale];
+  traitCollection = [(RoutePlanningAddStopCell *)self traitCollection];
+  [traitCollection displayScale];
   v4 = [MKIconManager imageForStyle:v5 size:0 forScale:0 format:?];
   [(UIImageView *)self->_iconView setImage:v4];
 }
 
 - (void)_updateConstraints
 {
-  v3 = [(RoutePlanningAddStopCell *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
-  v5 = UIContentSizeCategoryCompareToCategory(v4, UIContentSizeCategoryExtraExtraExtraLarge);
+  traitCollection = [(RoutePlanningAddStopCell *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  v5 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, UIContentSizeCategoryExtraExtraExtraLarge);
 
   v6 = sub_10000FA08(self);
   v7 = 30.0;
@@ -104,8 +104,8 @@
     }
 
     v5 = *v4;
-    v9 = [(RoutePlanningAddStopCell *)self traitCollection];
-    v6 = [v9 _maps_traitCollectionWithMaximumContentSizeCategory:UIContentSizeCategoryAccessibilityLarge];
+    traitCollection = [(RoutePlanningAddStopCell *)self traitCollection];
+    v6 = [traitCollection _maps_traitCollectionWithMaximumContentSizeCategory:UIContentSizeCategoryAccessibilityLarge];
     v7 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody compatibleWithTraitCollection:v6];
     v8 = [v7 _mapkit_fontWithWeight:v5];
     [(UILabel *)self->_titleLabel setFont:v8];
@@ -113,17 +113,17 @@
 
   else
   {
-    v9 = [(RoutePlanningAddStopCell *)self traitCollection];
-    v6 = [v9 _maps_traitCollectionWithMaximumContentSizeCategory:UIContentSizeCategoryAccessibilityLarge];
+    traitCollection = [(RoutePlanningAddStopCell *)self traitCollection];
+    v6 = [traitCollection _maps_traitCollectionWithMaximumContentSizeCategory:UIContentSizeCategoryAccessibilityLarge];
     v7 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody compatibleWithTraitCollection:v6];
     [(UILabel *)self->_titleLabel setFont:v7];
   }
 }
 
-- (void)_setEnabled:(BOOL)a3
+- (void)_setEnabled:(BOOL)enabled
 {
-  self->_enabled = a3;
-  if (a3)
+  self->_enabled = enabled;
+  if (enabled)
   {
     v4 = +[UIColor systemBlueColor];
     [(UIImageView *)self->_iconView setTintColor:v4];
@@ -142,34 +142,34 @@
   [(UILabel *)self->_titleLabel setTextColor:v6];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
     [(RoutePlanningAddStopCell *)self _setEnabled:?];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v13.receiver = self;
   v13.super_class = RoutePlanningAddStopCell;
-  [(RoutePlanningAddStopCell *)&v13 traitCollectionDidChange:v4];
-  v5 = [v4 preferredContentSizeCategory];
-  v6 = [(RoutePlanningAddStopCell *)self traitCollection];
-  v7 = [v6 preferredContentSizeCategory];
+  [(RoutePlanningAddStopCell *)&v13 traitCollectionDidChange:changeCopy];
+  preferredContentSizeCategory = [changeCopy preferredContentSizeCategory];
+  traitCollection = [(RoutePlanningAddStopCell *)self traitCollection];
+  preferredContentSizeCategory2 = [traitCollection preferredContentSizeCategory];
 
-  if (v5 != v7)
+  if (preferredContentSizeCategory != preferredContentSizeCategory2)
   {
     [(RoutePlanningAddStopCell *)self _updateFonts];
     [(RoutePlanningAddStopCell *)self _updateConstraints];
   }
 
-  [v4 displayScale];
+  [changeCopy displayScale];
   v9 = v8;
-  v10 = [(RoutePlanningAddStopCell *)self traitCollection];
-  [v10 displayScale];
+  traitCollection2 = [(RoutePlanningAddStopCell *)self traitCollection];
+  [traitCollection2 displayScale];
   v12 = vabdd_f64(v9, v11);
 
   if (v12 > 2.22044605e-16)
@@ -200,8 +200,8 @@
     [(RoutePlanningAddStopCell *)v2 setAccessibilityIdentifier:@"RoutePlanningAddStopCell"];
     v4 = objc_opt_new();
     [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v5 = [(RoutePlanningAddStopCell *)v2 contentView];
-    [v5 addSubview:v4];
+    contentView = [(RoutePlanningAddStopCell *)v2 contentView];
+    [contentView addSubview:v4];
 
     v6 = objc_opt_new();
     iconView = v2->_iconView;
@@ -209,8 +209,8 @@
 
     [(UIImageView *)v2->_iconView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIImageView *)v2->_iconView setContentMode:1];
-    v8 = [(RoutePlanningAddStopCell *)v2 traitCollection];
-    v9 = [UIFont _maps_fontWithTextStyle:UIFontTextStyleTitle2 weight:v8 compatibleWithTraitCollection:UIFontWeightBold];
+    traitCollection = [(RoutePlanningAddStopCell *)v2 traitCollection];
+    v9 = [UIFont _maps_fontWithTextStyle:UIFontTextStyleTitle2 weight:traitCollection compatibleWithTraitCollection:UIFontWeightBold];
     v10 = [UIImageSymbolConfiguration configurationWithFont:v9];
     [(UIImageView *)v2->_iconView setPreferredSymbolConfiguration:v10];
 
@@ -227,8 +227,8 @@
     [(UILabel *)v2->_titleLabel setText:v14];
 
     [(RoutePlanningAddStopCell *)v2 _updateFonts];
-    v15 = [(RoutePlanningAddStopCell *)v2 contentView];
-    [v15 addSubview:v2->_titleLabel];
+    contentView2 = [(RoutePlanningAddStopCell *)v2 contentView];
+    [contentView2 addSubview:v2->_titleLabel];
 
     if (sub_10000FA08(v2) == 5)
     {
@@ -284,66 +284,66 @@
     }
 
     v26 = v21 + v16 + v24;
-    v27 = [v4 widthAnchor];
-    v28 = [v27 constraintEqualToConstant:v26];
+    widthAnchor = [v4 widthAnchor];
+    v28 = [widthAnchor constraintEqualToConstant:v26];
     imageContainerViewWidthConstraint = v2->_imageContainerViewWidthConstraint;
     v2->_imageContainerViewWidthConstraint = v28;
 
-    v30 = [(UIImageView *)v2->_iconView widthAnchor];
-    v31 = [v30 constraintEqualToConstant:v16];
+    widthAnchor2 = [(UIImageView *)v2->_iconView widthAnchor];
+    v31 = [widthAnchor2 constraintEqualToConstant:v16];
     iconViewWidthConstraint = v2->_iconViewWidthConstraint;
     v2->_iconViewWidthConstraint = v31;
 
-    v33 = [(UIImageView *)v2->_iconView heightAnchor];
-    v34 = [v33 constraintEqualToConstant:v16];
+    heightAnchor = [(UIImageView *)v2->_iconView heightAnchor];
+    v34 = [heightAnchor constraintEqualToConstant:v16];
     iconViewHeightConstraint = v2->_iconViewHeightConstraint;
     v2->_iconViewHeightConstraint = v34;
 
-    v70 = [v4 leadingAnchor];
-    v71 = [(RoutePlanningAddStopCell *)v2 contentView];
-    v69 = [v71 leadingAnchor];
-    v68 = [v70 constraintEqualToAnchor:v69];
+    leadingAnchor = [v4 leadingAnchor];
+    contentView3 = [(RoutePlanningAddStopCell *)v2 contentView];
+    leadingAnchor2 = [contentView3 leadingAnchor];
+    v68 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v75[0] = v68;
-    v66 = [v4 topAnchor];
-    v67 = [(RoutePlanningAddStopCell *)v2 contentView];
-    v65 = [v67 topAnchor];
-    v63 = [v66 constraintEqualToAnchor:v65];
+    topAnchor = [v4 topAnchor];
+    contentView4 = [(RoutePlanningAddStopCell *)v2 contentView];
+    topAnchor2 = [contentView4 topAnchor];
+    v63 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v75[1] = v63;
-    v61 = [v4 bottomAnchor];
-    v62 = [(RoutePlanningAddStopCell *)v2 contentView];
-    v60 = [v62 bottomAnchor];
-    v59 = [v61 constraintEqualToAnchor:v60];
+    bottomAnchor = [v4 bottomAnchor];
+    contentView5 = [(RoutePlanningAddStopCell *)v2 contentView];
+    bottomAnchor2 = [contentView5 bottomAnchor];
+    v59 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v75[2] = v59;
     v75[3] = v2->_imageContainerViewWidthConstraint;
-    v58 = [(UIImageView *)v2->_iconView leadingAnchor];
-    v57 = [v4 leadingAnchor];
-    v56 = [v58 constraintEqualToAnchor:v57 constant:v21];
+    leadingAnchor3 = [(UIImageView *)v2->_iconView leadingAnchor];
+    leadingAnchor4 = [v4 leadingAnchor];
+    v56 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:v21];
     v75[4] = v56;
-    v55 = [(UIImageView *)v2->_iconView centerYAnchor];
+    centerYAnchor = [(UIImageView *)v2->_iconView centerYAnchor];
     v64 = v4;
-    v54 = [v4 centerYAnchor];
-    v53 = [v55 constraintEqualToAnchor:v54];
+    centerYAnchor2 = [v4 centerYAnchor];
+    v53 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v75[5] = v53;
     v75[6] = v2->_iconViewWidthConstraint;
     v75[7] = v2->_iconViewHeightConstraint;
-    v52 = [(UILabel *)v2->_titleLabel leadingAnchor];
-    v51 = [v4 trailingAnchor];
-    v50 = [v52 constraintEqualToAnchor:v51];
+    leadingAnchor5 = [(UILabel *)v2->_titleLabel leadingAnchor];
+    trailingAnchor = [v4 trailingAnchor];
+    v50 = [leadingAnchor5 constraintEqualToAnchor:trailingAnchor];
     v75[8] = v50;
-    v48 = [(UILabel *)v2->_titleLabel topAnchor];
-    v49 = [(RoutePlanningAddStopCell *)v2 contentView];
-    v47 = [v49 topAnchor];
-    v46 = [v48 constraintEqualToAnchor:v47];
+    topAnchor3 = [(UILabel *)v2->_titleLabel topAnchor];
+    contentView6 = [(RoutePlanningAddStopCell *)v2 contentView];
+    topAnchor4 = [contentView6 topAnchor];
+    v46 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v75[9] = v46;
-    v36 = [(UILabel *)v2->_titleLabel bottomAnchor];
-    v37 = [(RoutePlanningAddStopCell *)v2 contentView];
-    v38 = [v37 bottomAnchor];
-    v39 = [v36 constraintEqualToAnchor:v38];
+    bottomAnchor3 = [(UILabel *)v2->_titleLabel bottomAnchor];
+    contentView7 = [(RoutePlanningAddStopCell *)v2 contentView];
+    bottomAnchor4 = [contentView7 bottomAnchor];
+    v39 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v75[10] = v39;
-    v40 = [(UILabel *)v2->_titleLabel trailingAnchor];
-    v41 = [(RoutePlanningAddStopCell *)v2 contentView];
-    v42 = [v41 trailingAnchor];
-    v43 = [v40 constraintEqualToAnchor:v42 constant:-10.0];
+    trailingAnchor2 = [(UILabel *)v2->_titleLabel trailingAnchor];
+    contentView8 = [(RoutePlanningAddStopCell *)v2 contentView];
+    trailingAnchor3 = [contentView8 trailingAnchor];
+    v43 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:-10.0];
     v75[11] = v43;
     v44 = [NSArray arrayWithObjects:v75 count:12];
     [NSLayoutConstraint activateConstraints:v44];

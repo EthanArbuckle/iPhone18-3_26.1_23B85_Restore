@@ -1,19 +1,19 @@
 @interface RecentCallProvider
 - (_TtC16CallsAppServices18RecentCallProvider)init;
-- (void)recentsController:(id)a3 didChangeCalls:(id)a4;
-- (void)recentsControllerDidUpdateAcceptedContacts:(id)a3;
+- (void)recentsController:(id)controller didChangeCalls:(id)calls;
+- (void)recentsControllerDidUpdateAcceptedContacts:(id)contacts;
 @end
 
 @implementation RecentCallProvider
 
-- (void)recentsController:(id)a3 didChangeCalls:(id)a4
+- (void)recentsController:(id)controller didChangeCalls:(id)calls
 {
-  v5 = a3;
-  v6 = self;
-  sub_1D336D0E8(v5);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_1D336D0E8(controllerCopy);
 }
 
-- (void)recentsControllerDidUpdateAcceptedContacts:(id)a3
+- (void)recentsControllerDidUpdateAcceptedContacts:(id)contacts
 {
   if (qword_1EDEBFC40 != -1)
   {

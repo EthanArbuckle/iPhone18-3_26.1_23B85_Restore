@@ -1,59 +1,59 @@
 @interface MOAction
-+ (id)actionNameFromLifeEvent:(id)a3;
-+ (unint64_t)actionTypeFromLifeEvent:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (MOAction)initWithActionMO:(id)a3;
-- (MOAction)initWithActionName:(id)a3 actionType:(unint64_t)a4;
-- (MOAction)initWithActionName:(id)a3 actionType:(unint64_t)a4 actionSubtype:(int64_t)a5;
-- (MOAction)initWithActionName:(id)a3 actionType:(unint64_t)a4 actionSubtype:(int64_t)a5 actionMetaData:(id)a6;
-- (MOAction)initWithActionName:(id)a3 actionType:(unint64_t)a4 actionSubtype:(int64_t)a5 actionNameConfidence:(double)a6;
-- (MOAction)initWithCoder:(id)a3;
-- (MOAction)initWithIdentifier:(id)a3;
-- (MOAction)initWithIdentifier:(id)a3 actionName:(id)a4 actionType:(unint64_t)a5 actionSubtype:(int64_t)a6 actionNameConfidence:(double)a7 actionMetaData:(id)a8;
-- (MOAction)initWithLifeEvent:(id)a3;
++ (id)actionNameFromLifeEvent:(id)event;
++ (unint64_t)actionTypeFromLifeEvent:(id)event;
+- (BOOL)isEqual:(id)equal;
+- (MOAction)initWithActionMO:(id)o;
+- (MOAction)initWithActionName:(id)name actionType:(unint64_t)type;
+- (MOAction)initWithActionName:(id)name actionType:(unint64_t)type actionSubtype:(int64_t)subtype;
+- (MOAction)initWithActionName:(id)name actionType:(unint64_t)type actionSubtype:(int64_t)subtype actionMetaData:(id)data;
+- (MOAction)initWithActionName:(id)name actionType:(unint64_t)type actionSubtype:(int64_t)subtype actionNameConfidence:(double)confidence;
+- (MOAction)initWithCoder:(id)coder;
+- (MOAction)initWithIdentifier:(id)identifier;
+- (MOAction)initWithIdentifier:(id)identifier actionName:(id)name actionType:(unint64_t)type actionSubtype:(int64_t)subtype actionNameConfidence:(double)confidence actionMetaData:(id)data;
+- (MOAction)initWithLifeEvent:(id)event;
 - (id)bundleSourceType;
 - (id)description;
-- (unint64_t)accessTypeFromActionType:(unint64_t)a3 actionSubtype:(int64_t)a4;
+- (unint64_t)accessTypeFromActionType:(unint64_t)type actionSubtype:(int64_t)subtype;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MOAction
 
 - (id)description
 {
-  v3 = [(MOAction *)self identifier];
-  v4 = [(MOAction *)self actionName];
-  v5 = [v4 mask];
-  v6 = [(MOAction *)self actionType];
-  v7 = [(MOAction *)self actionSubtype];
+  identifier = [(MOAction *)self identifier];
+  actionName = [(MOAction *)self actionName];
+  mask = [actionName mask];
+  actionType = [(MOAction *)self actionType];
+  actionSubtype = [(MOAction *)self actionSubtype];
   [(MOAction *)self actionNameConfidence];
-  v9 = [NSString stringWithFormat:@"<MOAction identifier, %@, action, %@, type, %lu, subtype, %lu, confidence, %f>", v3, v5, v6, v7, v8];
+  v9 = [NSString stringWithFormat:@"<MOAction identifier, %@, action, %@, type, %lu, subtype, %lu, confidence, %f>", identifier, mask, actionType, actionSubtype, v8];
 
   return v9;
 }
 
-- (MOAction)initWithActionMO:(id)a3
+- (MOAction)initWithActionMO:(id)o
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  oCopy = o;
+  v5 = oCopy;
+  if (oCopy)
   {
-    v6 = [v4 identifier];
-    v7 = [v5 action];
-    v8 = [v5 actionType];
-    v9 = [v5 actionSubType];
+    identifier = [oCopy identifier];
+    action = [v5 action];
+    actionType = [v5 actionType];
+    actionSubType = [v5 actionSubType];
     [v5 actionNameConfidence];
     v11 = v10;
-    v12 = [v5 actionMetaData];
-    self = [(MOAction *)self initWithIdentifier:v6 actionName:v7 actionType:v8 actionSubtype:v9 actionNameConfidence:v12 actionMetaData:v11];
+    actionMetaData = [v5 actionMetaData];
+    self = [(MOAction *)self initWithIdentifier:identifier actionName:action actionType:actionType actionSubtype:actionSubType actionNameConfidence:actionMetaData actionMetaData:v11];
 
-    v13 = [v5 sourceEventIdentifier];
+    sourceEventIdentifier = [v5 sourceEventIdentifier];
 
-    if (v13)
+    if (sourceEventIdentifier)
     {
-      v14 = [v5 sourceEventIdentifier];
-      [(MOAction *)self setSourceEventIdentifier:v14];
+      sourceEventIdentifier2 = [v5 sourceEventIdentifier];
+      [(MOAction *)self setSourceEventIdentifier:sourceEventIdentifier2];
     }
 
     if ([v5 sourceEventAccessType])
@@ -61,34 +61,34 @@
       -[MOAction setSourceEventAccessType:](self, "setSourceEventAccessType:", [v5 sourceEventAccessType]);
     }
 
-    v15 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
 - (id)bundleSourceType
 {
-  v3 = [(MOAction *)self actionType];
+  actionType = [(MOAction *)self actionType];
   v4 = 0;
   v5 = MOEventBundleSourceTypeVisitLocation;
-  if (v3 > 6)
+  if (actionType > 6)
   {
-    if ((v3 - 9) >= 3)
+    if ((actionType - 9) >= 3)
     {
-      if (v3 == 7)
+      if (actionType == 7)
       {
         v5 = MOEventBundleSourceTypePhoto;
       }
 
       else
       {
-        if (v3 != 12)
+        if (actionType != 12)
         {
           goto LABEL_19;
         }
@@ -98,14 +98,14 @@
     }
   }
 
-  else if (v3 > 3)
+  else if (actionType > 3)
   {
-    if (v3 == 4)
+    if (actionType == 4)
     {
       v5 = &MOEventBundleSourceTypeActivity;
     }
 
-    else if (v3 == 5)
+    else if (actionType == 5)
     {
       v5 = MOEventBundleSourceTypeContact;
     }
@@ -116,22 +116,22 @@
     }
   }
 
-  else if ((v3 - 2) >= 2)
+  else if ((actionType - 2) >= 2)
   {
-    if (v3 != 1)
+    if (actionType != 1)
     {
       goto LABEL_19;
     }
 
-    v6 = [(MOAction *)self actionSubtype];
-    if ((v6 - 4) >= 6)
+    actionSubtype = [(MOAction *)self actionSubtype];
+    if ((actionSubtype - 4) >= 6)
     {
       v5 = MOEventBundleSourceTypeVisitLocation;
     }
 
     else
     {
-      v5 = off_100338C08[v6 - 4];
+      v5 = off_100338C08[actionSubtype - 4];
     }
   }
 
@@ -141,22 +141,22 @@ LABEL_19:
   return v4;
 }
 
-+ (id)actionNameFromLifeEvent:(id)a3
++ (id)actionNameFromLifeEvent:(id)event
 {
-  v3 = [a3 lifeEventCategory];
-  if (v3 == 1)
+  lifeEventCategory = [event lifeEventCategory];
+  if (lifeEventCategory == 1)
   {
     v4 = &kActionNameShopping;
     goto LABEL_7;
   }
 
-  if (v3 == 4)
+  if (lifeEventCategory == 4)
   {
     v4 = &kActionNameFlight;
     goto LABEL_7;
   }
 
-  if (v3 == 2)
+  if (lifeEventCategory == 2)
   {
     v4 = &kActionNameDining;
 LABEL_7:
@@ -170,27 +170,27 @@ LABEL_9:
   return v5;
 }
 
-+ (unint64_t)actionTypeFromLifeEvent:(id)a3
++ (unint64_t)actionTypeFromLifeEvent:(id)event
 {
-  v3 = [a3 lifeEventCategory];
-  if ((v3 - 1) > 3)
+  lifeEventCategory = [event lifeEventCategory];
+  if ((lifeEventCategory - 1) > 3)
   {
     return 0;
   }
 
   else
   {
-    return qword_100323038[(v3 - 1)];
+    return qword_100323038[(lifeEventCategory - 1)];
   }
 }
 
-- (MOAction)initWithLifeEvent:(id)a3
+- (MOAction)initWithLifeEvent:(id)event
 {
-  v4 = a3;
-  if ([v4 category] == 22)
+  eventCopy = event;
+  if ([eventCopy category] == 22)
   {
-    v5 = [MOAction actionNameFromLifeEvent:v4];
-    v6 = [MOAction actionTypeFromLifeEvent:v4];
+    v5 = [MOAction actionNameFromLifeEvent:eventCopy];
+    v6 = [MOAction actionTypeFromLifeEvent:eventCopy];
     if (v5)
     {
       v7 = v6 == 0;
@@ -203,32 +203,32 @@ LABEL_9:
 
     if (v7)
     {
-      v10 = 0;
+      selfCopy = 0;
     }
 
     else
     {
       v8 = v6;
       v9 = +[NSUUID UUID];
-      [v4 confidenceScore];
+      [eventCopy confidenceScore];
       self = [(MOAction *)self initWithIdentifier:v9 actionName:v5 actionType:v8 actionSubtype:0 actionNameConfidence:0 actionMetaData:?];
 
-      v10 = self;
+      selfCopy = self;
     }
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (MOAction)initWithIdentifier:(id)a3
+- (MOAction)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (!v5)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     v6 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -240,52 +240,52 @@ LABEL_9:
     [v7 handleFailureInMethod:a2 object:self file:@"MOAction.m" lineNumber:34 description:{@"Invalid parameter not satisfying: identifier (in %s:%d)", "-[MOAction initWithIdentifier:]", 34}];
   }
 
-  v8 = [(MOAction *)self initWithIdentifier:v5 actionName:@"action" actionType:0 actionSubtype:0 actionNameConfidence:0 actionMetaData:-1.0];
+  v8 = [(MOAction *)self initWithIdentifier:identifierCopy actionName:@"action" actionType:0 actionSubtype:0 actionNameConfidence:0 actionMetaData:-1.0];
 
   return v8;
 }
 
-- (MOAction)initWithActionName:(id)a3 actionType:(unint64_t)a4
+- (MOAction)initWithActionName:(id)name actionType:(unint64_t)type
 {
-  v6 = a3;
+  nameCopy = name;
   v7 = +[NSUUID UUID];
-  v8 = [(MOAction *)self initWithIdentifier:v7 actionName:v6 actionType:a4 actionSubtype:0 actionNameConfidence:0 actionMetaData:-1.0];
+  v8 = [(MOAction *)self initWithIdentifier:v7 actionName:nameCopy actionType:type actionSubtype:0 actionNameConfidence:0 actionMetaData:-1.0];
 
   return v8;
 }
 
-- (MOAction)initWithActionName:(id)a3 actionType:(unint64_t)a4 actionSubtype:(int64_t)a5
+- (MOAction)initWithActionName:(id)name actionType:(unint64_t)type actionSubtype:(int64_t)subtype
 {
-  v8 = a3;
+  nameCopy = name;
   v9 = +[NSUUID UUID];
-  v10 = [(MOAction *)self initWithIdentifier:v9 actionName:v8 actionType:a4 actionSubtype:a5 actionNameConfidence:0 actionMetaData:-1.0];
+  v10 = [(MOAction *)self initWithIdentifier:v9 actionName:nameCopy actionType:type actionSubtype:subtype actionNameConfidence:0 actionMetaData:-1.0];
 
   return v10;
 }
 
-- (MOAction)initWithActionName:(id)a3 actionType:(unint64_t)a4 actionSubtype:(int64_t)a5 actionNameConfidence:(double)a6
+- (MOAction)initWithActionName:(id)name actionType:(unint64_t)type actionSubtype:(int64_t)subtype actionNameConfidence:(double)confidence
 {
-  v10 = a3;
+  nameCopy = name;
   v11 = +[NSUUID UUID];
-  v12 = [(MOAction *)self initWithIdentifier:v11 actionName:v10 actionType:a4 actionSubtype:a5 actionNameConfidence:0 actionMetaData:a6];
+  v12 = [(MOAction *)self initWithIdentifier:v11 actionName:nameCopy actionType:type actionSubtype:subtype actionNameConfidence:0 actionMetaData:confidence];
 
   return v12;
 }
 
-- (MOAction)initWithActionName:(id)a3 actionType:(unint64_t)a4 actionSubtype:(int64_t)a5 actionMetaData:(id)a6
+- (MOAction)initWithActionName:(id)name actionType:(unint64_t)type actionSubtype:(int64_t)subtype actionMetaData:(id)data
 {
-  v10 = a6;
-  v11 = a3;
+  dataCopy = data;
+  nameCopy = name;
   v12 = +[NSUUID UUID];
-  v13 = [(MOAction *)self initWithIdentifier:v12 actionName:v11 actionType:a4 actionSubtype:a5 actionNameConfidence:v10 actionMetaData:-1.0];
+  v13 = [(MOAction *)self initWithIdentifier:v12 actionName:nameCopy actionType:type actionSubtype:subtype actionNameConfidence:dataCopy actionMetaData:-1.0];
 
   return v13;
 }
 
-- (MOAction)initWithIdentifier:(id)a3 actionName:(id)a4 actionType:(unint64_t)a5 actionSubtype:(int64_t)a6 actionNameConfidence:(double)a7 actionMetaData:(id)a8
+- (MOAction)initWithIdentifier:(id)identifier actionName:(id)name actionType:(unint64_t)type actionSubtype:(int64_t)subtype actionNameConfidence:(double)confidence actionMetaData:(id)data
 {
-  v14 = a4;
-  v15 = a8;
+  nameCopy = name;
+  dataCopy = data;
   v20.receiver = self;
   v20.super_class = MOAction;
   v16 = [(MOAction *)&v20 init];
@@ -295,34 +295,34 @@ LABEL_9:
     identifier = v16->_identifier;
     v16->_identifier = v17;
 
-    objc_storeStrong(&v16->_actionName, a4);
-    v16->_actionType = a5;
-    v16->_actionSubtype = a6;
-    v16->_actionNameConfidence = a7;
-    objc_storeStrong(&v16->_actionMetaData, a8);
-    v16->_sourceEventAccessType = [(MOAction *)v16 accessTypeFromActionType:a5 actionSubtype:a6];
+    objc_storeStrong(&v16->_actionName, name);
+    v16->_actionType = type;
+    v16->_actionSubtype = subtype;
+    v16->_actionNameConfidence = confidence;
+    objc_storeStrong(&v16->_actionMetaData, data);
+    v16->_sourceEventAccessType = [(MOAction *)v16 accessTypeFromActionType:type actionSubtype:subtype];
   }
 
   return v16;
 }
 
-- (unint64_t)accessTypeFromActionType:(unint64_t)a3 actionSubtype:(int64_t)a4
+- (unint64_t)accessTypeFromActionType:(unint64_t)type actionSubtype:(int64_t)subtype
 {
   result = 5;
-  if (a3 <= 3)
+  if (type <= 3)
   {
-    if (a3 - 2 < 2)
+    if (type - 2 < 2)
     {
       return result;
     }
 
-    if (a3 == 1)
+    if (type == 1)
     {
-      if (a4 != 6)
+      if (subtype != 6)
       {
-        if ((a4 - 3) >= 2)
+        if ((subtype - 3) >= 2)
         {
-          if (a4 <= 9 && ((1 << a4) & 0x302) != 0)
+          if (subtype <= 9 && ((1 << subtype) & 0x302) != 0)
           {
             return 5;
           }
@@ -339,16 +339,16 @@ LABEL_9:
     return 0;
   }
 
-  if (a3 <= 0xC)
+  if (type <= 0xC)
   {
-    if (((1 << a3) & 0xE00) != 0)
+    if (((1 << type) & 0xE00) != 0)
     {
       return result;
     }
 
-    if (((1 << a3) & 0x1180) == 0)
+    if (((1 << type) & 0x1180) == 0)
     {
-      if (a3 != 6)
+      if (type != 6)
       {
         goto LABEL_6;
       }
@@ -360,9 +360,9 @@ LABEL_9:
   }
 
 LABEL_6:
-  if (a3 != 4)
+  if (type != 4)
   {
-    if (a3 != 5)
+    if (type != 5)
     {
       return 0;
     }
@@ -373,79 +373,79 @@ LABEL_6:
   return 1;
 }
 
-- (MOAction)initWithCoder:(id)a3
+- (MOAction)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"actionName"];
-  v7 = [v4 decodeInt64ForKey:@"actionType"];
-  v8 = [v4 decodeInt64ForKey:@"actionSubtype"];
-  [v4 decodeDoubleForKey:@"actionNameConfidence"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"actionName"];
+  v7 = [coderCopy decodeInt64ForKey:@"actionType"];
+  v8 = [coderCopy decodeInt64ForKey:@"actionSubtype"];
+  [coderCopy decodeDoubleForKey:@"actionNameConfidence"];
   v10 = v9;
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"actionMetaData"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"actionMetaData"];
   v12 = [MODictionaryEncoder decodeToDictionary:v11];
   v13 = [(MOAction *)self initWithIdentifier:v5 actionName:v6 actionType:v7 actionSubtype:v8 actionNameConfidence:v12 actionMetaData:v10];
 
   if (v13)
   {
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sourceEventIdentifier"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sourceEventIdentifier"];
     [(MOAction *)v13 setSourceEventIdentifier:v14];
 
-    -[MOAction setSourceEventAccessType:](v13, "setSourceEventAccessType:", [v4 decodeInt64ForKey:@"sourceEventAccessType"]);
+    -[MOAction setSourceEventAccessType:](v13, "setSourceEventAccessType:", [coderCopy decodeInt64ForKey:@"sourceEventAccessType"]);
   }
 
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v6 = a3;
-  [v6 encodeObject:identifier forKey:@"identifier"];
-  [v6 encodeInt64:self->_actionType forKey:@"actionType"];
-  [v6 encodeInt64:self->_actionSubtype forKey:@"actionSubtype"];
-  [v6 encodeObject:self->_actionName forKey:@"actionName"];
-  [v6 encodeDouble:@"actionNameConfidence" forKey:self->_actionNameConfidence];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeInt64:self->_actionType forKey:@"actionType"];
+  [coderCopy encodeInt64:self->_actionSubtype forKey:@"actionSubtype"];
+  [coderCopy encodeObject:self->_actionName forKey:@"actionName"];
+  [coderCopy encodeDouble:@"actionNameConfidence" forKey:self->_actionNameConfidence];
   v5 = [MODictionaryEncoder encodeDictionary:self->_actionMetaData];
-  [v6 encodeObject:v5 forKey:@"actionMetaData"];
+  [coderCopy encodeObject:v5 forKey:@"actionMetaData"];
 
-  [v6 encodeInt64:self->_sourceEventAccessType forKey:@"sourceEventAccessType"];
-  [v6 encodeObject:self->_sourceEventIdentifier forKey:@"sourceEventIdentifier"];
+  [coderCopy encodeInt64:self->_sourceEventAccessType forKey:@"sourceEventAccessType"];
+  [coderCopy encodeObject:self->_sourceEventIdentifier forKey:@"sourceEventIdentifier"];
 }
 
 - (unint64_t)hash
 {
-  v2 = [(MOAction *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(MOAction *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  v6 = v5;
-  if (self == v5)
+  equalCopy = equal;
+  v6 = equalCopy;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if (v5)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v7 = v6;
-        v8 = [(MOAction *)self identifier];
-        if (v8 || ([(MOAction *)v7 identifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+        identifier = [(MOAction *)self identifier];
+        if (identifier || ([(MOAction *)v7 identifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
         {
-          v9 = [(MOAction *)self identifier];
-          v10 = [(MOAction *)v7 identifier];
-          v11 = [v9 isEqual:v10];
+          identifier2 = [(MOAction *)self identifier];
+          identifier3 = [(MOAction *)v7 identifier];
+          v11 = [identifier2 isEqual:identifier3];
 
-          if (v8)
+          if (identifier)
           {
 LABEL_12:
 

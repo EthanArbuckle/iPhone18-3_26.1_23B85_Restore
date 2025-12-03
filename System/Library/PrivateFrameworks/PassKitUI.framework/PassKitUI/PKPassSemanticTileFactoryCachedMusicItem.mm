@@ -1,15 +1,15 @@
 @interface PKPassSemanticTileFactoryCachedMusicItem
 - (BOOL)beginContentAccess;
-- (PKPassSemanticTileFactoryCachedMusicItem)initWithMusicLookupItem:(id)a3;
+- (PKPassSemanticTileFactoryCachedMusicItem)initWithMusicLookupItem:(id)item;
 - (void)discardContentIfPossible;
 @end
 
 @implementation PKPassSemanticTileFactoryCachedMusicItem
 
-- (PKPassSemanticTileFactoryCachedMusicItem)initWithMusicLookupItem:(id)a3
+- (PKPassSemanticTileFactoryCachedMusicItem)initWithMusicLookupItem:(id)item
 {
-  v5 = a3;
-  if (v5)
+  itemCopy = item;
+  if (itemCopy)
   {
     v10.receiver = self;
     v10.super_class = PKPassSemanticTileFactoryCachedMusicItem;
@@ -17,19 +17,19 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_musicItem, a3);
+      objc_storeStrong(&v6->_musicItem, item);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (BOOL)beginContentAccess

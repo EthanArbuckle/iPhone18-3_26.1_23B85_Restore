@@ -1,15 +1,15 @@
 @interface SUUtility
 + (BOOL)currentReleaseTypeIsInternal;
-+ (BOOL)deleteKeepAliveFilePath:(id)a3;
++ (BOOL)deleteKeepAliveFilePath:(id)path;
 + (BOOL)isLockdownModeEnabled;
 + (BOOL)isProductionFused;
 + (BOOL)isReturnToServiceModeActive;
 + (BOOL)isSplatOnlyUpdateInstalled;
 + (BOOL)isSplatRollbackDirectoryPresent;
 + (BOOL)isVirtualDevice;
-+ (BOOL)writeKeepAliveFilePath:(id)a3;
++ (BOOL)writeKeepAliveFilePath:(id)path;
 + (double)autoDownloadTimeInterval;
-+ (id)addToDate:(id)a3 numberOfDays:(int64_t)a4;
++ (id)addToDate:(id)date numberOfDays:(int64_t)days;
 + (id)bootTime;
 + (id)currentDeviceName;
 + (id)currentHWModelStr;
@@ -19,29 +19,29 @@
 + (id)currentProductVersion;
 + (id)currentProductVersionExtra;
 + (id)currentReleaseType;
-+ (id)errorRemovingUserInfoKey:(id)a3 originalError:(id)a4;
-+ (id)errorWithCode:(int64_t)a3 originalError:(id)a4;
++ (id)errorRemovingUserInfoKey:(id)key originalError:(id)error;
++ (id)errorWithCode:(int64_t)code originalError:(id)error;
 + (id)fastWorkQueue;
 + (id)gregorianCalendar;
-+ (id)internalRecoveryStringForErrorCode:(int64_t)a3;
++ (id)internalRecoveryStringForErrorCode:(int64_t)code;
 + (id)mainWorkQueue;
-+ (id)prettyPrintDate:(id)a3;
++ (id)prettyPrintDate:(id)date;
 + (id)serialNumber;
 + (id)systemContainerURL;
 + (id)taskQueue;
-+ (id)translateError:(id)a3 withAddedUserInfo:(id)a4;
-+ (id)updateError:(id)a3 withAdditionalUserInfo:(id)a4;
-+ (int64_t)MADownloadErrorCodeToSUDownloadErrorCode:(int64_t)a3;
-+ (int64_t)compareRestoreVersion:(id)a3 withRestoreVersion:(id)a4;
-+ (int64_t)compareVersionExtra:(id)a3 withVersionExtra:(id)a4;
-+ (int64_t)translateErrorCodeFromError:(id)a3;
-+ (unint64_t)devicePadding:(id)a3;
-+ (unint64_t)systemPartitionGrowth:(id)a3;
-+ (unint64_t)totalDiskSpaceForUpdate:(id)a3;
-+ (void)assignError:(id *)a3 withCode:(int64_t)a4;
-+ (void)assignError:(id *)a3 withError:(id)a4 translate:(BOOL)a5;
++ (id)translateError:(id)error withAddedUserInfo:(id)info;
++ (id)updateError:(id)error withAdditionalUserInfo:(id)info;
++ (int64_t)MADownloadErrorCodeToSUDownloadErrorCode:(int64_t)code;
++ (int64_t)compareRestoreVersion:(id)version withRestoreVersion:(id)restoreVersion;
++ (int64_t)compareVersionExtra:(id)extra withVersionExtra:(id)versionExtra;
++ (int64_t)translateErrorCodeFromError:(id)error;
++ (unint64_t)devicePadding:(id)padding;
++ (unint64_t)systemPartitionGrowth:(id)growth;
++ (unint64_t)totalDiskSpaceForUpdate:(id)update;
++ (void)assignError:(id *)error withCode:(int64_t)code;
++ (void)assignError:(id *)error withError:(id)withError translate:(BOOL)translate;
 + (void)purgeV1SUAssets;
-+ (void)systemRootStatus:(BOOL *)a3 rootsFound:(BOOL *)a4;
++ (void)systemRootStatus:(BOOL *)status rootsFound:(BOOL *)found;
 @end
 
 @implementation SUUtility
@@ -471,27 +471,27 @@ void __40__SUUtility_randomIntWithMinVal_maxVal___block_invoke()
 
 + (BOOL)isLockdownModeEnabled
 {
-  v2 = [MEMORY[0x277D243A0] shared];
-  v3 = [v2 enabled];
+  mEMORY[0x277D243A0] = [MEMORY[0x277D243A0] shared];
+  enabled = [mEMORY[0x277D243A0] enabled];
 
-  return v3;
+  return enabled;
 }
 
-+ (id)errorWithCode:(int64_t)a3 originalError:(id)a4
++ (id)errorWithCode:(int64_t)code originalError:(id)error
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  errorCopy = error;
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v7 = v6;
-  if (v5)
+  if (errorCopy)
   {
-    [v6 setSafeObject:v5 forKey:*MEMORY[0x277CCA7E8]];
+    [v6 setSafeObject:errorCopy forKey:*MEMORY[0x277CCA7E8]];
   }
 
   v8 = +[SUUtility currentReleaseTypeIsInternal];
-  if ((a3 - 1) <= 0xFFFFFFFFFFFFFFFDLL && v8)
+  if ((code - 1) <= 0xFFFFFFFFFFFFFFFDLL && v8)
   {
-    v9 = [SUUtility internalRecoveryStringForErrorCode:a3];
+    v9 = [SUUtility internalRecoveryStringForErrorCode:code];
     v10 = v9;
     if (v9)
     {
@@ -502,47 +502,47 @@ void __40__SUUtility_randomIntWithMinVal_maxVal___block_invoke()
     }
   }
 
-  v12 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.softwareupdateservices.errors" code:a3 userInfo:v7];
+  v12 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.softwareupdateservices.errors" code:code userInfo:v7];
 
   v13 = *MEMORY[0x277D85DE8];
 
   return v12;
 }
 
-+ (id)updateError:(id)a3 withAdditionalUserInfo:(id)a4
++ (id)updateError:(id)error withAdditionalUserInfo:(id)info
 {
-  v5 = a3;
-  v6 = v5;
-  v7 = v5;
-  if (v5)
+  errorCopy = error;
+  v6 = errorCopy;
+  v7 = errorCopy;
+  if (errorCopy)
   {
-    v7 = v5;
-    if (a4)
+    v7 = errorCopy;
+    if (info)
     {
       v8 = MEMORY[0x277CBEB38];
-      v9 = a4;
-      v10 = [v6 userInfo];
-      v11 = [v8 dictionaryWithDictionary:v10];
+      infoCopy = info;
+      userInfo = [v6 userInfo];
+      v11 = [v8 dictionaryWithDictionary:userInfo];
 
-      [v11 addEntriesFromDictionary:v9];
+      [v11 addEntriesFromDictionary:infoCopy];
       v12 = MEMORY[0x277CCA9B8];
-      v13 = [v6 domain];
-      v7 = [v12 errorWithDomain:v13 code:objc_msgSend(v6 userInfo:{"code"), v11}];
+      domain = [v6 domain];
+      v7 = [v12 errorWithDomain:domain code:objc_msgSend(v6 userInfo:{"code"), v11}];
     }
   }
 
   return v7;
 }
 
-+ (id)errorRemovingUserInfoKey:(id)a3 originalError:(id)a4
++ (id)errorRemovingUserInfoKey:(id)key originalError:(id)error
 {
-  v5 = a3;
-  if (a4)
+  keyCopy = key;
+  if (error)
   {
     v6 = MEMORY[0x277CBEB38];
-    v7 = a4;
-    v8 = [v7 userInfo];
-    v9 = [v6 dictionaryWithDictionary:v8];
+    errorCopy = error;
+    userInfo = [errorCopy userInfo];
+    v9 = [v6 dictionaryWithDictionary:userInfo];
 
     if (v9)
     {
@@ -550,18 +550,18 @@ void __40__SUUtility_randomIntWithMinVal_maxVal___block_invoke()
       v11 = [v9 objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
       if (v11)
       {
-        v12 = [SUUtility errorRemovingUserInfoKey:v5 originalError:v11];
+        v12 = [SUUtility errorRemovingUserInfoKey:keyCopy originalError:v11];
         [v9 setObject:v12 forKeyedSubscript:v10];
       }
 
-      [v9 setObject:0 forKeyedSubscript:v5];
+      [v9 setObject:0 forKeyedSubscript:keyCopy];
     }
 
     v13 = MEMORY[0x277CCA9B8];
-    v14 = [v7 domain];
-    v15 = [v7 code];
+    domain = [errorCopy domain];
+    code = [errorCopy code];
 
-    v16 = [v13 errorWithDomain:v14 code:v15 userInfo:v9];
+    v16 = [v13 errorWithDomain:domain code:code userInfo:v9];
   }
 
   else
@@ -572,57 +572,57 @@ void __40__SUUtility_randomIntWithMinVal_maxVal___block_invoke()
   return v16;
 }
 
-+ (void)assignError:(id *)a3 withCode:(int64_t)a4
++ (void)assignError:(id *)error withCode:(int64_t)code
 {
-  v5 = [SUUtility errorWithCode:a4];
-  [SUUtility assignError:a3 withError:v5 translate:0];
+  v5 = [SUUtility errorWithCode:code];
+  [SUUtility assignError:error withError:v5 translate:0];
 }
 
-+ (void)assignError:(id *)a3 withError:(id)a4 translate:(BOOL)a5
++ (void)assignError:(id *)error withError:(id)withError translate:(BOOL)translate
 {
-  v7 = a4;
-  v8 = v7;
-  if (a3 && v7)
+  withErrorCopy = withError;
+  v8 = withErrorCopy;
+  if (error && withErrorCopy)
   {
-    v11 = v7;
-    if (a5)
+    v11 = withErrorCopy;
+    if (translate)
     {
-      v9 = [SUUtility translateError:v7];
+      v9 = [SUUtility translateError:withErrorCopy];
     }
 
     else
     {
-      v9 = v7;
+      v9 = withErrorCopy;
     }
 
     v10 = v9;
-    *a3 = v10;
+    *error = v10;
 
     v8 = v11;
   }
 
-  MEMORY[0x2821F96F8](v7, v8);
+  MEMORY[0x2821F96F8](withErrorCopy, v8);
 }
 
-+ (id)translateError:(id)a3 withAddedUserInfo:(id)a4
++ (id)translateError:(id)error withAddedUserInfo:(id)info
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  errorCopy = error;
+  infoCopy = info;
+  if (!errorCopy)
   {
     v13 = 0;
     goto LABEL_13;
   }
 
-  v8 = [v6 domain];
-  v9 = [v8 isEqualToString:@"com.apple.softwareupdateservices.errors"];
+  domain = [errorCopy domain];
+  v9 = [domain isEqualToString:@"com.apple.softwareupdateservices.errors"];
 
   if (!v9)
   {
-    v14 = [a1 translateErrorCodeFromError:v6];
-    v12 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:v7];
-    [v12 setSafeObject:v6 forKey:*MEMORY[0x277CCA7E8]];
+    v14 = [self translateErrorCodeFromError:errorCopy];
+    v12 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:infoCopy];
+    [v12 setSafeObject:errorCopy forKey:*MEMORY[0x277CCA7E8]];
     if (+[SUUtility currentReleaseTypeIsInternal]&& (v14 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
     {
       v15 = [SUUtility internalRecoveryStringForErrorCode:v14];
@@ -642,20 +642,20 @@ void __40__SUUtility_randomIntWithMinVal_maxVal___block_invoke()
     goto LABEL_12;
   }
 
-  if (v7)
+  if (infoCopy)
   {
     v10 = objc_alloc(MEMORY[0x277CBEB38]);
-    v11 = [v6 userInfo];
-    v12 = [v10 initWithDictionary:v11];
+    userInfo = [errorCopy userInfo];
+    v12 = [v10 initWithDictionary:userInfo];
 
-    [v12 addEntriesFromDictionary:v7];
-    v13 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.softwareupdateservices.errors" code:objc_msgSend(v6 userInfo:{"code"), v12}];
+    [v12 addEntriesFromDictionary:infoCopy];
+    v13 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.softwareupdateservices.errors" code:objc_msgSend(errorCopy userInfo:{"code"), v12}];
 LABEL_12:
 
     goto LABEL_13;
   }
 
-  v13 = v6;
+  v13 = errorCopy;
 LABEL_13:
 
   v19 = *MEMORY[0x277D85DE8];
@@ -663,29 +663,29 @@ LABEL_13:
   return v13;
 }
 
-+ (int64_t)translateErrorCodeFromError:(id)a3
++ (int64_t)translateErrorCodeFromError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  v5 = [v4 isEqualToString:@"com.apple.softwareupdateservices.errors"];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v5 = [domain isEqualToString:@"com.apple.softwareupdateservices.errors"];
 
-  v6 = [v3 code];
+  code = [errorCopy code];
   if (v5)
   {
 LABEL_2:
-    v7 = v6;
+    v7 = code;
     goto LABEL_30;
   }
 
   v8 = *MEMORY[0x277D28980];
-  v9 = [v3 domain];
-  LODWORD(v8) = [v8 isEqualToString:v9];
+  domain2 = [errorCopy domain];
+  LODWORD(v8) = [v8 isEqualToString:domain2];
 
   if (v8)
   {
-    if ((v6 - 1) < 0x16)
+    if ((code - 1) < 0x16)
     {
-      v7 = qword_26ABF8EE8[v6 - 1];
+      v7 = qword_26ABF8EE8[code - 1];
       goto LABEL_30;
     }
 
@@ -695,13 +695,13 @@ LABEL_29:
   }
 
   v10 = *MEMORY[0x277D292C8];
-  v11 = [v3 domain];
-  LODWORD(v10) = [v10 isEqualToString:v11];
+  domain3 = [errorCopy domain];
+  LODWORD(v10) = [v10 isEqualToString:domain3];
 
   if (!v10)
   {
-    v12 = [v3 domain];
-    v13 = [v12 isEqualToString:*MEMORY[0x277D646E0]];
+    domain4 = [errorCopy domain];
+    v13 = [domain4 isEqualToString:*MEMORY[0x277D646E0]];
 
     if (!v13)
     {
@@ -709,17 +709,17 @@ LABEL_29:
     }
 
     v7 = -1;
-    if (v6 <= 8402)
+    if (code <= 8402)
     {
-      if (v6 <= 8399)
+      if (code <= 8399)
       {
-        if ((v6 - 8102) <= 0xE && ((1 << (v6 + 90)) & 0x5001) != 0)
+        if ((code - 8102) <= 0xE && ((1 << (code + 90)) & 0x5001) != 0)
         {
           v7 = 22;
           goto LABEL_30;
         }
 
-        if (v6)
+        if (code)
         {
           goto LABEL_30;
         }
@@ -727,7 +727,7 @@ LABEL_29:
         goto LABEL_2;
       }
 
-      if (v6 == 8401)
+      if (code == 8401)
       {
         v7 = 58;
         goto LABEL_30;
@@ -736,15 +736,15 @@ LABEL_29:
       goto LABEL_32;
     }
 
-    if (v6 <= 8410)
+    if (code <= 8410)
     {
-      if (v6 == 8403)
+      if (code == 8403)
       {
         v7 = 80;
         goto LABEL_30;
       }
 
-      if (v6 == 8406)
+      if (code == 8406)
       {
         v7 = 3;
         goto LABEL_30;
@@ -755,11 +755,11 @@ LABEL_29:
 
     else
     {
-      if (v6 <= 8699)
+      if (code <= 8699)
       {
-        if (v6 != 8411)
+        if (code != 8411)
         {
-          if (v6 == 8600)
+          if (code == 8600)
           {
             v7 = 43;
           }
@@ -772,7 +772,7 @@ LABEL_32:
         goto LABEL_30;
       }
 
-      if (v6 == 8700)
+      if (code == 8700)
       {
         v7 = 59;
         goto LABEL_30;
@@ -781,7 +781,7 @@ LABEL_32:
       v19 = 9009;
     }
 
-    if (v6 == v19)
+    if (code == v19)
     {
       v7 = 38;
     }
@@ -789,15 +789,15 @@ LABEL_32:
     goto LABEL_30;
   }
 
-  if (v6 != 812)
+  if (code != 812)
   {
-    if (v6 == 26)
+    if (code == 26)
     {
       v7 = 47;
       goto LABEL_30;
     }
 
-    if (v6 == 2)
+    if (code == 2)
     {
       v7 = 19;
       goto LABEL_30;
@@ -806,19 +806,19 @@ LABEL_32:
     goto LABEL_29;
   }
 
-  v14 = [v3 userInfo];
-  v15 = [v14 objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
+  userInfo = [errorCopy userInfo];
+  v15 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
 
-  v16 = [v15 domain];
-  if (![v16 isEqualToString:@"com.apple.MobileAssetError.Download"])
+  domain5 = [v15 domain];
+  if (![domain5 isEqualToString:@"com.apple.MobileAssetError.Download"])
   {
 
     goto LABEL_29;
   }
 
-  v17 = [v15 code];
+  code2 = [v15 code];
 
-  if (v17 == 59)
+  if (code2 == 59)
   {
     v7 = 57;
   }
@@ -832,19 +832,19 @@ LABEL_30:
   return v7;
 }
 
-+ (int64_t)MADownloadErrorCodeToSUDownloadErrorCode:(int64_t)a3
++ (int64_t)MADownloadErrorCodeToSUDownloadErrorCode:(int64_t)code
 {
-  v8 = a3 - 1;
-  if (a3 - 1) < 0x1C && ((0x8001DFFu >> v8))
+  v8 = code - 1;
+  if (code - 1) < 0x1C && ((0x8001DFFu >> v8))
   {
     return qword_26ABF8F98[v8];
   }
 
-  SULogInfo(@"Unknown MAError code: %ld", a2, a3, v3, v4, v5, v6, v7, a3);
+  SULogInfo(@"Unknown MAError code: %ld", a2, code, v3, v4, v5, v6, v7, code);
   return 59;
 }
 
-+ (id)internalRecoveryStringForErrorCode:(int64_t)a3
++ (id)internalRecoveryStringForErrorCode:(int64_t)code
 {
   v4 = CFPreferencesCopyValue(@"EnableSso", @"com.apple.MobileSoftwareUpdate", @"mobile", *MEMORY[0x277CBF010]);
   if (v4)
@@ -860,16 +860,16 @@ LABEL_30:
     v7 = 0;
   }
 
-  if (a3 > 83)
+  if (code > 83)
   {
-    if (a3 > 108)
+    if (code > 108)
     {
-      if (a3 == 109)
+      if (code == 109)
       {
         return @"Some testing defaults are detected";
       }
 
-      if (a3 == 111)
+      if (code == 111)
       {
         return @"Lost download task. Please try again.";
       }
@@ -877,12 +877,12 @@ LABEL_30:
 
     else
     {
-      if (a3 == 84)
+      if (code == 84)
       {
         return @"client is not authorised, SoftwareUpdateServicesd is in exclusive mode";
       }
 
-      if (a3 == 107)
+      if (code == 107)
       {
         return @"Failed to load the update brain. Please try again.";
       }
@@ -894,7 +894,7 @@ LABEL_30:
   else
   {
     result = @"Insufficient space for update. Please free up space on the device and try again.";
-    switch(a3)
+    switch(code)
     {
       case -1:
         result = @"Unknown Error.";
@@ -1002,14 +1002,14 @@ LABEL_30:
   return result;
 }
 
-+ (unint64_t)systemPartitionGrowth:(id)a3
++ (unint64_t)systemPartitionGrowth:(id)growth
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  growthCopy = growth;
   memset(&v24, 0, 512);
-  v4 = [v3 minimumSystemPartitionSize];
-  v5 = [v3 systemPartitionPadding];
-  v6 = [SUUtility devicePadding:v5];
+  minimumSystemPartitionSize = [growthCopy minimumSystemPartitionSize];
+  systemPartitionPadding = [growthCopy systemPartitionPadding];
+  v6 = [SUUtility devicePadding:systemPartitionPadding];
 
   if (statfs("/", &v24))
   {
@@ -1018,7 +1018,7 @@ LABEL_30:
 
   else
   {
-    v8 = v4 + 75497472 + v6;
+    v8 = minimumSystemPartitionSize + 75497472 + v6;
     v22[2] = 0;
     memset(v23, 0, 12);
     v22[0] = 5;
@@ -1046,28 +1046,28 @@ LABEL_30:
     }
   }
 
-  v12 = [v3 humanReadableUpdateName];
-  SULogInfo(@"Sytem partition growth for [%@] <%p> = %llu bytes", v13, v14, v15, v16, v17, v18, v19, v12);
+  humanReadableUpdateName = [growthCopy humanReadableUpdateName];
+  SULogInfo(@"Sytem partition growth for [%@] <%p> = %llu bytes", v13, v14, v15, v16, v17, v18, v19, humanReadableUpdateName);
 
   v20 = *MEMORY[0x277D85DE8];
   return v7;
 }
 
-+ (unint64_t)totalDiskSpaceForUpdate:(id)a3
++ (unint64_t)totalDiskSpaceForUpdate:(id)update
 {
-  v3 = a3;
-  v4 = [v3 totalRequiredFreeSpace];
-  v5 = [SUUtility systemPartitionGrowth:v3];
+  updateCopy = update;
+  totalRequiredFreeSpace = [updateCopy totalRequiredFreeSpace];
+  v5 = [SUUtility systemPartitionGrowth:updateCopy];
 
-  return v4 + 104857600 + v5;
+  return totalRequiredFreeSpace + 104857600 + v5;
 }
 
-+ (unint64_t)devicePadding:(id)a3
++ (unint64_t)devicePadding:(id)padding
 {
   v79 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  paddingCopy = padding;
   valuePtr = 0;
-  if (!v3)
+  if (!paddingCopy)
   {
     goto LABEL_39;
   }
@@ -1114,7 +1114,7 @@ LABEL_43:
     v32 = valuePtr + 0x3FFFFFFF;
   }
 
-  Count = CFDictionaryGetCount(v3);
+  Count = CFDictionaryGetCount(paddingCopy);
   if (!Count)
   {
     SULogInfo(@"No padding entries, returning default padding value %llu\n", v34, v35, v36, v37, v38, v39, v40, 0);
@@ -1137,7 +1137,7 @@ LABEL_43:
     goto LABEL_49;
   }
 
-  CFDictionaryGetKeysAndValues(v3, v42, v43);
+  CFDictionaryGetKeysAndValues(paddingCopy, v42, v43);
   if (v41 < 1)
   {
     v60 = 0;
@@ -1260,33 +1260,33 @@ LABEL_44:
 {
   v2 = objc_alloc(MEMORY[0x277CBEA80]);
   v3 = [v2 initWithCalendarIdentifier:*MEMORY[0x277CBEE80]];
-  v4 = [MEMORY[0x277CBEBB0] systemTimeZone];
-  [v3 setTimeZone:v4];
+  systemTimeZone = [MEMORY[0x277CBEBB0] systemTimeZone];
+  [v3 setTimeZone:systemTimeZone];
 
   return v3;
 }
 
-+ (id)addToDate:(id)a3 numberOfDays:(int64_t)a4
++ (id)addToDate:(id)date numberOfDays:(int64_t)days
 {
-  [a3 timeIntervalSinceReferenceDate];
+  [date timeIntervalSinceReferenceDate];
   at = v5;
-  if (CFCalendarAddComponents(+[SUUtility gregorianCalendar], &at, 0, "d", a4))
+  if (CFCalendarAddComponents(+[SUUtility gregorianCalendar], &at, 0, "d", days))
   {
     v13 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:at];
   }
 
   else
   {
-    SULogDebug(@"addToDate:numberOfDays: unable to add %ld days to date: %f", v6, v7, v8, v9, v10, v11, v12, a4);
+    SULogDebug(@"addToDate:numberOfDays: unable to add %ld days to date: %f", v6, v7, v8, v9, v10, v11, v12, days);
     v13 = 0;
   }
 
   return v13;
 }
 
-+ (id)prettyPrintDate:(id)a3
++ (id)prettyPrintDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   v4 = prettyPrintDate____dateFormatter;
   if (!prettyPrintDate____dateFormatter)
   {
@@ -1296,14 +1296,14 @@ LABEL_44:
 
     [prettyPrintDate____dateFormatter setDateStyle:1];
     v7 = prettyPrintDate____dateFormatter;
-    v8 = [MEMORY[0x277CBEBB0] localTimeZone];
-    [v7 setTimeZone:v8];
+    localTimeZone = [MEMORY[0x277CBEBB0] localTimeZone];
+    [v7 setTimeZone:localTimeZone];
 
     [prettyPrintDate____dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss"];
     v4 = prettyPrintDate____dateFormatter;
   }
 
-  v9 = [v4 stringFromDate:v3];
+  v9 = [v4 stringFromDate:dateCopy];
 
   return v9;
 }
@@ -1352,12 +1352,12 @@ LABEL_8:
   return v2;
 }
 
-+ (BOOL)writeKeepAliveFilePath:(id)a3
++ (BOOL)writeKeepAliveFilePath:(id)path
 {
   v3 = MEMORY[0x277CCAA00];
-  v4 = a3;
-  v5 = [v3 defaultManager];
-  v6 = [v5 createFileAtPath:v4 contents:0 attributes:0];
+  pathCopy = path;
+  defaultManager = [v3 defaultManager];
+  v6 = [defaultManager createFileAtPath:pathCopy contents:0 attributes:0];
 
   if (v6)
   {
@@ -1369,28 +1369,28 @@ LABEL_8:
     v14 = @"Failed to write keep alive file:%@";
   }
 
-  SULogDebug(v14, v7, v8, v9, v10, v11, v12, v13, v4);
+  SULogDebug(v14, v7, v8, v9, v10, v11, v12, v13, pathCopy);
 
   return v6;
 }
 
-+ (BOOL)deleteKeepAliveFilePath:(id)a3
++ (BOOL)deleteKeepAliveFilePath:(id)path
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  if ([v4 fileExistsAtPath:v3 isDirectory:0])
+  pathCopy = path;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  if ([defaultManager fileExistsAtPath:pathCopy isDirectory:0])
   {
     v29 = 0;
-    v12 = [v4 removeItemAtPath:v3 error:&v29];
+    v12 = [defaultManager removeItemAtPath:pathCopy error:&v29];
     v20 = v29;
     if (v12)
     {
-      SULogDebug(@"Successfully deleted keep alive file:%@", v13, v14, v15, v16, v17, v18, v19, v3);
+      SULogDebug(@"Successfully deleted keep alive file:%@", v13, v14, v15, v16, v17, v18, v19, pathCopy);
     }
 
     else
     {
-      SULogDebug(@"Failed to delete keep alive file:%@", v13, v14, v15, v16, v17, v18, v19, v3);
+      SULogDebug(@"Failed to delete keep alive file:%@", v13, v14, v15, v16, v17, v18, v19, pathCopy);
       if (v20)
       {
         SULogDebug(@"Delete error: %@", v21, v22, v23, v24, v25, v26, v27, v20);
@@ -1400,7 +1400,7 @@ LABEL_8:
 
   else
   {
-    SULogDebug(@"No keep alive file found at:%@", v5, v6, v7, v8, v9, v10, v11, v3);
+    SULogDebug(@"No keep alive file found at:%@", v5, v6, v7, v8, v9, v10, v11, pathCopy);
     LOBYTE(v12) = 1;
   }
 
@@ -1428,16 +1428,16 @@ LABEL_8:
 
 + (BOOL)isSplatRollbackDirectoryPresent
 {
-  v2 = [MEMORY[0x277D25710] sharedDataAccessor];
+  mEMORY[0x277D25710] = [MEMORY[0x277D25710] sharedDataAccessor];
   v17 = 0;
-  v3 = [v2 copyPathForPersistentData:112 error:&v17];
+  v3 = [mEMORY[0x277D25710] copyPathForPersistentData:112 error:&v17];
   v4 = v17;
 
   if (v3)
   {
     v16 = 0;
-    v12 = [MEMORY[0x277CCAA00] defaultManager];
-    v13 = [v12 fileExistsAtPath:v3 isDirectory:&v16];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v13 = [defaultManager fileExistsAtPath:v3 isDirectory:&v16];
     v14 = v13 & v16;
   }
 
@@ -1453,9 +1453,9 @@ LABEL_8:
 + (BOOL)isSplatOnlyUpdateInstalled
 {
   v2 = +[SUPreferences sharedInstance];
-  v3 = [v2 fakeSplatInstalled];
+  fakeSplatInstalled = [v2 fakeSplatInstalled];
 
-  if (v3)
+  if (fakeSplatInstalled)
   {
     SULogInfo(@"Fake splat installed", v4, v5, v6, v7, v8, v9, v10, v14);
     return 1;
@@ -1463,21 +1463,21 @@ LABEL_8:
 
   else
   {
-    v12 = [MEMORY[0x277D64420] sharedDevice];
-    v13 = [v12 hasSplatOnlyUpdateInstalled];
+    mEMORY[0x277D64420] = [MEMORY[0x277D64420] sharedDevice];
+    hasSplatOnlyUpdateInstalled = [mEMORY[0x277D64420] hasSplatOnlyUpdateInstalled];
 
-    return v13;
+    return hasSplatOnlyUpdateInstalled;
   }
 }
 
-+ (int64_t)compareRestoreVersion:(id)a3 withRestoreVersion:(id)a4
++ (int64_t)compareRestoreVersion:(id)version withRestoreVersion:(id)restoreVersion
 {
   v5 = MEMORY[0x277D64498];
-  v6 = a4;
-  v7 = a3;
-  v8 = [[v5 alloc] initWithRestoreVersion:v7];
+  restoreVersionCopy = restoreVersion;
+  versionCopy = version;
+  v8 = [[v5 alloc] initWithRestoreVersion:versionCopy];
 
-  v9 = [objc_alloc(MEMORY[0x277D64498]) initWithRestoreVersion:v6];
+  v9 = [objc_alloc(MEMORY[0x277D64498]) initWithRestoreVersion:restoreVersionCopy];
   if (v8 | v9)
   {
     if (v8)
@@ -1514,18 +1514,18 @@ LABEL_8:
   return v11;
 }
 
-+ (int64_t)compareVersionExtra:(id)a3 withVersionExtra:(id)a4
++ (int64_t)compareVersionExtra:(id)extra withVersionExtra:(id)versionExtra
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 | v6)
+  extraCopy = extra;
+  versionExtraCopy = versionExtra;
+  v7 = versionExtraCopy;
+  if (extraCopy | versionExtraCopy)
   {
-    if (v5 || !v6)
+    if (extraCopy || !versionExtraCopy)
     {
-      if (!v5 || v6)
+      if (!extraCopy || versionExtraCopy)
       {
-        v8 = [v5 compare:v6];
+        v8 = [extraCopy compare:versionExtraCopy];
       }
 
       else
@@ -1554,9 +1554,9 @@ LABEL_8:
   if ([v2 isEqualToString:@"Internal"])
   {
     v3 = +[SUPreferences sharedInstance];
-    v4 = [v3 scanWeeklyInternally];
+    scanWeeklyInternally = [v3 scanWeeklyInternally];
 
-    if (!v4)
+    if (!scanWeeklyInternally)
     {
       v12 = @"[Auto download] Apple Internal: Downloading every 1 day";
       v13 = 86400.0;
@@ -1568,9 +1568,9 @@ LABEL_8:
   {
   }
 
-  v14 = [objc_opt_class() isLockdownModeEnabled];
-  v15 = v14 == 0;
-  if (v14)
+  isLockdownModeEnabled = [objc_opt_class() isLockdownModeEnabled];
+  v15 = isLockdownModeEnabled == 0;
+  if (isLockdownModeEnabled)
   {
     v12 = @"[Auto download]: Lockdown mode enabled: Downloading every 1 day";
   }
@@ -1595,11 +1595,11 @@ LABEL_11:
   return v13;
 }
 
-+ (void)systemRootStatus:(BOOL *)a3 rootsFound:(BOOL *)a4
++ (void)systemRootStatus:(BOOL *)status rootsFound:(BOOL *)found
 {
   if (systemRootStatus_rootsFound__onceToken == -1)
   {
-    if (!a3)
+    if (!status)
     {
       goto LABEL_4;
     }
@@ -1608,16 +1608,16 @@ LABEL_11:
   }
 
   +[SUUtility systemRootStatus:rootsFound:];
-  if (a3)
+  if (status)
   {
 LABEL_3:
-    *a3 = systemRootStatus_rootsFound__is_live_fs;
+    *status = systemRootStatus_rootsFound__is_live_fs;
   }
 
 LABEL_4:
-  if (a4)
+  if (found)
   {
-    *a4 = systemRootStatus_rootsFound__darwinup;
+    *found = systemRootStatus_rootsFound__darwinup;
   }
 }
 
@@ -1652,11 +1652,11 @@ void __41__SUUtility_systemRootStatus_rootsFound___block_invoke()
 
 + (BOOL)isReturnToServiceModeActive
 {
-  v2 = [MEMORY[0x277D24648] isRapidReturnToService];
+  isRapidReturnToService = [MEMORY[0x277D24648] isRapidReturnToService];
   v3 = +[SUPreferences sharedInstance];
-  v4 = [v3 enableRapidReturnToService];
+  enableRapidReturnToService = [v3 enableRapidReturnToService];
 
-  return (v2 | v4) & 1;
+  return (isRapidReturnToService | enableRapidReturnToService) & 1;
 }
 
 @end

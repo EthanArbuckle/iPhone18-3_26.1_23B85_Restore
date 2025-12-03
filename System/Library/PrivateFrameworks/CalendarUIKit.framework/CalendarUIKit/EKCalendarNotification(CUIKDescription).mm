@@ -22,24 +22,24 @@
     v8 = 0;
   }
 
-  if ([a1 couldBeJunk])
+  if ([self couldBeJunk])
   {
-    v9 = [a1 emailAddress];
+    emailAddress = [self emailAddress];
 
-    if (v9)
+    if (emailAddress)
     {
-      v10 = [a1 emailAddress];
+      emailAddress2 = [self emailAddress];
 LABEL_23:
-      v14 = v10;
+      v14 = emailAddress2;
       goto LABEL_24;
     }
   }
 
-  if ([a1 couldBeJunk] && (objc_msgSend(a1, "phoneNumber"), v11 = objc_claimAutoreleasedReturnValue(), v11, v11))
+  if ([self couldBeJunk] && (objc_msgSend(self, "phoneNumber"), v11 = objc_claimAutoreleasedReturnValue(), v11, v11))
   {
     v12 = +[CUIKPhoneNumberDescriptionGenerator sharedGenerator];
-    v13 = [a1 phoneNumber];
-    v14 = [v12 formattedStringForPhoneNumber:v13];
+    phoneNumber = [self phoneNumber];
+    v14 = [v12 formattedStringForPhoneNumber:phoneNumber];
   }
 
   else
@@ -63,21 +63,21 @@ LABEL_23:
         v16 = @"somebody";
       }
 
-      v10 = [v15 localizedStringForKey:v16 value:&stru_1F4AA8958 table:0];
+      emailAddress2 = [v15 localizedStringForKey:v16 value:&stru_1F4AA8958 table:0];
       goto LABEL_23;
     }
 
     if (v8)
     {
-      v10 = v8;
+      emailAddress2 = v8;
       goto LABEL_23;
     }
 
-    v17 = [a1 firstName];
-    v12 = v17;
-    if (v17)
+    firstName = [self firstName];
+    v12 = firstName;
+    if (firstName)
     {
-      v18 = v17;
+      v18 = firstName;
     }
 
     else
@@ -99,7 +99,7 @@ LABEL_25:
 
 - (id)timeSensitiveDescriptionString
 {
-  if ([a1 cuik_isTimeSensitive])
+  if ([self cuik_isTimeSensitive])
   {
     v1 = +[CUIKNotificationDescriptionGenerator timeSensitiveString];
   }
@@ -116,7 +116,7 @@ LABEL_25:
 {
   if (a3)
   {
-    if (([a1 containsCachedBlockedAttendee] & 1) == 0)
+    if (([self containsCachedBlockedAttendee] & 1) == 0)
     {
 LABEL_3:
       v3 = 0;
@@ -124,7 +124,7 @@ LABEL_3:
     }
   }
 
-  else if (![a1 containsBlockedAttendee])
+  else if (![self containsBlockedAttendee])
   {
     goto LABEL_3;
   }

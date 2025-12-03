@@ -2,43 +2,43 @@
 - (BOOL)_haveInviteesToDraw;
 - (BOOL)_shouldAlwaysDrawSingleColumn;
 - (CGSize)intrinsicContentSize;
-- (EKEventDetailAttendeesListView)initWithFrame:(CGRect)a3;
-- (double)_calculateHeightForItemCounts:(int64_t)a3[4];
+- (EKEventDetailAttendeesListView)initWithFrame:(CGRect)frame;
+- (double)_calculateHeightForItemCounts:(int64_t)counts[4];
 - (double)_calculateHeightForSpinnerDisplayMode;
 - (double)calculatedHeight;
-- (id)generateAttributedStringsFromDisplayParticipants:(id)a3 glyph:(id)a4 displayCount:(int64_t)a5;
+- (id)generateAttributedStringsFromDisplayParticipants:(id)participants glyph:(id)glyph displayCount:(int64_t)count;
 - (void)_createSpinnerViewIfNeeded;
 - (void)_layoutSpinner;
-- (void)_setShowingSpinner:(BOOL)a3;
+- (void)_setShowingSpinner:(BOOL)spinner;
 - (void)contentSizeCategoryChanged;
 - (void)dealloc;
-- (void)drawNames:(id)a3;
-- (void)drawRect:(CGRect)a3;
+- (void)drawNames:(id)names;
+- (void)drawRect:(CGRect)rect;
 - (void)finalizeInviteNames;
 - (void)layoutSubviews;
 - (void)refreshNames;
-- (void)setInvitees:(id)a3 forStatus:(int64_t)a4;
+- (void)setInvitees:(id)invitees forStatus:(int64_t)status;
 @end
 
 @implementation EKEventDetailAttendeesListView
 
-- (EKEventDetailAttendeesListView)initWithFrame:(CGRect)a3
+- (EKEventDetailAttendeesListView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = EKEventDetailAttendeesListView;
-  v3 = [(EKEventDetailAttendeesListView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(EKEventDetailAttendeesListView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [MEMORY[0x1E695DF70] arrayWithArray:&unk_1F4F321D0];
     inviteeNames = v3->_inviteeNames;
     v3->_inviteeNames = v4;
 
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 addObserver:v3 selector:sel_contentSizeCategoryChanged name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel_contentSizeCategoryChanged name:*MEMORY[0x1E69DDC48] object:0];
 
-    v7 = [(EKEventDetailAttendeesListView *)v3 layer];
-    [v7 setValue:MEMORY[0x1E695E118] forKeyPath:@"separatedOptions.enableContext"];
-    [v7 setNeedsDisplay];
+    layer = [(EKEventDetailAttendeesListView *)v3 layer];
+    [layer setValue:MEMORY[0x1E695E118] forKeyPath:@"separatedOptions.enableContext"];
+    [layer setNeedsDisplay];
   }
 
   return v3;
@@ -46,8 +46,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = EKEventDetailAttendeesListView;
@@ -60,14 +60,14 @@
   self->_finalizedNames = 0;
 }
 
-- (void)setInvitees:(id)a3 forStatus:(int64_t)a4
+- (void)setInvitees:(id)invitees forStatus:(int64_t)status
 {
-  v6 = a3;
-  v7 = [(EKEventDetailAttendeesListView *)self _haveInviteesToDraw];
-  [(NSMutableArray *)self->_inviteeNames setObject:v6 atIndexedSubscript:a4];
-  v8 = [v6 count];
+  inviteesCopy = invitees;
+  _haveInviteesToDraw = [(EKEventDetailAttendeesListView *)self _haveInviteesToDraw];
+  [(NSMutableArray *)self->_inviteeNames setObject:inviteesCopy atIndexedSubscript:status];
+  v8 = [inviteesCopy count];
 
-  if (v8 && !v7)
+  if (v8 && !_haveInviteesToDraw)
   {
     self->_actualHeight = 0.0;
     [(EKEventDetailAttendeesListView *)self invalidateIntrinsicContentSize];
@@ -148,13 +148,13 @@ LABEL_11:
 
 - (BOOL)_shouldAlwaysDrawSingleColumn
 {
-  v2 = [(EKEventDetailAttendeesListView *)self traitCollection];
-  v3 = EKUIPrefersLargerTextThanDefault(v2);
+  traitCollection = [(EKEventDetailAttendeesListView *)self traitCollection];
+  v3 = EKUIPrefersLargerTextThanDefault(traitCollection);
 
   return v3;
 }
 
-- (double)_calculateHeightForItemCounts:(int64_t)a3[4]
+- (double)_calculateHeightForItemCounts:(int64_t)counts[4]
 {
   v5 = 0;
   v6 = 0;
@@ -162,7 +162,7 @@ LABEL_11:
   v8 = 0;
   do
   {
-    v9 = a3[v5];
+    v9 = counts[v5];
     v6 += v9;
     if (v9)
     {
@@ -218,7 +218,7 @@ LABEL_11:
   self->_firstColumnBType = 4;
   do
   {
-    v15 = a3[v13];
+    v15 = counts[v13];
     if (!v15)
     {
       goto LABEL_44;
@@ -557,19 +557,19 @@ LABEL_48:
   self->_finalizedNames = v3;
 }
 
-- (id)generateAttributedStringsFromDisplayParticipants:(id)a3 glyph:(id)a4 displayCount:(int64_t)a5
+- (id)generateAttributedStringsFromDisplayParticipants:(id)participants glyph:(id)glyph displayCount:(int64_t)count
 {
-  v7 = a3;
-  v8 = a4;
+  participantsCopy = participants;
+  glyphCopy = glyph;
   v9 = objc_opt_new();
   v17 = MEMORY[0x1E69E9820];
   v18 = 3221225472;
   v19 = __102__EKEventDetailAttendeesListView_generateAttributedStringsFromDisplayParticipants_glyph_displayCount___block_invoke;
   v20 = &unk_1E84410F0;
-  v10 = v7;
+  v10 = participantsCopy;
   v21 = v10;
-  v24 = a5;
-  v11 = v8;
+  countCopy = count;
+  v11 = glyphCopy;
   v22 = v11;
   v12 = v9;
   v23 = v12;
@@ -671,9 +671,9 @@ void __102__EKEventDetailAttendeesListView_generateAttributedStringsFromDisplayP
   [*(a1 + 48) addObject:v8];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  if ([(EKEventDetailAttendeesListView *)self _haveContentToDraw:a3.origin.x])
+  if ([(EKEventDetailAttendeesListView *)self _haveContentToDraw:rect.origin.x])
   {
     if (![(NSArray *)self->_finalizedNames count])
     {
@@ -686,9 +686,9 @@ void __102__EKEventDetailAttendeesListView_generateAttributedStringsFromDisplayP
   }
 }
 
-- (void)drawNames:(id)a3
+- (void)drawNames:(id)names
 {
-  v4 = a3;
+  namesCopy = names;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3010000000;
@@ -736,7 +736,7 @@ void __102__EKEventDetailAttendeesListView_generateAttributedStringsFromDisplayP
   v9[5] = &v16;
   *&v9[7] = v7;
   v9[6] = &v10;
-  [v4 enumerateObjectsUsingBlock:v9];
+  [namesCopy enumerateObjectsUsingBlock:v9];
   _Block_object_dispose(&v10, 8);
 
   _Block_object_dispose(&v16, 8);
@@ -861,14 +861,14 @@ LABEL_17:
   [(UIActivityIndicatorView *)spinnerView setFrame:?];
 }
 
-- (void)_setShowingSpinner:(BOOL)a3
+- (void)_setShowingSpinner:(BOOL)spinner
 {
-  if (a3)
+  if (spinner)
   {
     [(EKEventDetailAttendeesListView *)self _createSpinnerViewIfNeeded];
-    v5 = [(UIActivityIndicatorView *)self->_spinnerView superview];
+    superview = [(UIActivityIndicatorView *)self->_spinnerView superview];
 
-    if (!v5)
+    if (!superview)
     {
       [(EKEventDetailAttendeesListView *)self addSubview:self->_spinnerView];
       [(EKEventDetailAttendeesListView *)self _layoutSpinner];
@@ -885,7 +885,7 @@ LABEL_17:
     [(UIActivityIndicatorView *)self->_spinnerView removeFromSuperview];
   }
 
-  self->_showingSpinner = a3;
+  self->_showingSpinner = spinner;
 }
 
 @end

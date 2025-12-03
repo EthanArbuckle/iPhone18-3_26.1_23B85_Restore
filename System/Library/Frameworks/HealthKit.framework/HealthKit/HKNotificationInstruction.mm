@@ -1,30 +1,30 @@
 @interface HKNotificationInstruction
-- (BOOL)isEqual:(id)a3;
-- (HKNotificationInstruction)initWithAction:(int64_t)a3 categoryIdentifier:(id)a4 expirationDate:(id)a5;
-- (HKNotificationInstruction)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HKNotificationInstruction)initWithAction:(int64_t)action categoryIdentifier:(id)identifier expirationDate:(id)date;
+- (HKNotificationInstruction)initWithCoder:(id)coder;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKNotificationInstruction
 
-- (HKNotificationInstruction)initWithAction:(int64_t)a3 categoryIdentifier:(id)a4 expirationDate:(id)a5
+- (HKNotificationInstruction)initWithAction:(int64_t)action categoryIdentifier:(id)identifier expirationDate:(id)date
 {
-  v8 = a4;
-  v9 = a5;
+  identifierCopy = identifier;
+  dateCopy = date;
   v17.receiver = self;
   v17.super_class = HKNotificationInstruction;
   v10 = [(HKNotificationInstruction *)&v17 init];
   v11 = v10;
   if (v10)
   {
-    v10->_action = a3;
-    v12 = [v8 copy];
+    v10->_action = action;
+    v12 = [identifierCopy copy];
     categoryIdentifier = v11->_categoryIdentifier;
     v11->_categoryIdentifier = v12;
 
-    v14 = [v9 copy];
+    v14 = [dateCopy copy];
     expirationDate = v11->_expirationDate;
     v11->_expirationDate = v14;
   }
@@ -42,10 +42,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -55,7 +55,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if (self->_action != v5->_action)
       {
         goto LABEL_12;
@@ -107,12 +107,12 @@ LABEL_14:
   return v4 ^ [(NSDate *)self->_expirationDate hash];
 }
 
-- (HKNotificationInstruction)initWithCoder:(id)a3
+- (HKNotificationInstruction)initWithCoder:(id)coder
 {
-  v5 = a3;
-  v6 = [v5 decodeIntegerForKey:@"action"];
-  v7 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"categoryIdentifier"];
-  v8 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
+  coderCopy = coder;
+  v6 = [coderCopy decodeIntegerForKey:@"action"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"categoryIdentifier"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
 
   if (!v7)
   {
@@ -138,13 +138,13 @@ LABEL_3:
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   action = self->_action;
-  v5 = a3;
-  [v5 encodeInteger:action forKey:@"action"];
-  [v5 encodeObject:self->_categoryIdentifier forKey:@"categoryIdentifier"];
-  [v5 encodeObject:self->_expirationDate forKey:@"expirationDate"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:action forKey:@"action"];
+  [coderCopy encodeObject:self->_categoryIdentifier forKey:@"categoryIdentifier"];
+  [coderCopy encodeObject:self->_expirationDate forKey:@"expirationDate"];
 }
 
 - (void)initWithCoder:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)

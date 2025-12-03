@@ -1,11 +1,11 @@
 @interface PRBSTActivityManager
 - (BOOL)proceedWithPowerStatsQuery;
 - (PRBSTActivityManager)init;
-- (PRBSTActivityManager)initWithQueue:(id)a3;
+- (PRBSTActivityManager)initWithQueue:(id)queue;
 - (void)cleanupPowerState;
-- (void)registerForActivityWithIdentifier:(id)a3;
-- (void)runActivityWithIdentifier:(id)a3;
-- (void)sendAnalyticsHeartbeatWasSuccessful:(BOOL)a3;
+- (void)registerForActivityWithIdentifier:(id)identifier;
+- (void)runActivityWithIdentifier:(id)identifier;
+- (void)sendAnalyticsHeartbeatWasSuccessful:(BOOL)successful;
 - (void)setupActivityInterval;
 @end
 
@@ -18,16 +18,16 @@
   return 0;
 }
 
-- (PRBSTActivityManager)initWithQueue:(id)a3
+- (PRBSTActivityManager)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v18.receiver = self;
   v18.super_class = PRBSTActivityManager;
   v6 = [(PRBSTActivityManager *)&v18 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
     v8 = objc_alloc_init(NSMutableDictionary);
     activities = v7->_activities;
     v7->_activities = v8;
@@ -106,16 +106,16 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)registerForActivityWithIdentifier:(id)a3
+- (void)registerForActivityWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"com.apple.Proximity.LogPowerStatistics"])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:@"com.apple.Proximity.LogPowerStatistics"])
   {
     v5 = qword_1009F9820;
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v26 = v4;
+      v26 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "registering for activity: %@", buf, 0xCu);
     }
 
@@ -125,9 +125,9 @@ LABEL_8:
     v22[1] = 3221225472;
     v22[2] = sub_10003B0A0;
     v22[3] = &unk_10098AEB0;
-    v8 = v4;
+    v8 = identifierCopy;
     v23 = v8;
-    v24 = self;
+    selfCopy = self;
     [v6 registerForTaskWithIdentifier:v8 usingQueue:queue launchHandler:v22];
 
     v9 = +[BGSystemTaskScheduler sharedScheduler];
@@ -190,18 +190,18 @@ LABEL_14:
   }
 }
 
-- (void)runActivityWithIdentifier:(id)a3
+- (void)runActivityWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    *&buf[4] = v4;
+    *&buf[4] = identifierCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "running activity with identifier: %@", buf, 0xCu);
   }
 
-  if ([v4 isEqualToString:@"com.apple.Proximity.LogPowerStatistics"])
+  if ([identifierCopy isEqualToString:@"com.apple.Proximity.LogPowerStatistics"])
   {
     if (![(PRBSTActivityManager *)self proceedWithPowerStatsQuery])
     {
@@ -245,7 +245,7 @@ LABEL_14:
     v15 = qword_1009F9820;
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_FAULT))
     {
-      sub_10049CAF0(v4, v15);
+      sub_10049CAF0(identifierCopy, v15);
     }
   }
 }
@@ -305,9 +305,9 @@ LABEL_14:
   }
 }
 
-- (void)sendAnalyticsHeartbeatWasSuccessful:(BOOL)a3
+- (void)sendAnalyticsHeartbeatWasSuccessful:(BOOL)successful
 {
-  v3 = a3;
+  successfulCopy = successful;
   v5 = objc_alloc_init(NSMutableDictionary);
   v6 = v5;
   if (self->_enableDeepSleepHeartbeat)
@@ -321,7 +321,7 @@ LABEL_14:
   }
 
   [v5 setObject:v7 forKey:@"HeartbeatIsEnabled"];
-  if (v3)
+  if (successfulCopy)
   {
     v8 = &__kCFBooleanTrue;
   }
@@ -332,7 +332,7 @@ LABEL_14:
   }
 
   [v6 setObject:v8 forKey:@"HeartbeatStatus"];
-  if (v3)
+  if (successfulCopy)
   {
     v9 = &off_1009C3D58;
   }
@@ -343,7 +343,7 @@ LABEL_14:
   }
 
   [v6 setObject:v9 forKey:@"HeartbeatFailure"];
-  if (v3)
+  if (successfulCopy)
   {
     v10 = &off_1009C3D70;
   }
@@ -356,7 +356,7 @@ LABEL_14:
   [v6 setObject:v10 forKey:@"HeartbeatSuccess"];
   v11 = [v6 mutableCopy];
   AnalyticsSendEventLazy();
-  sub_1001EA6FC(v3);
+  sub_1001EA6FC(successfulCopy);
 }
 
 @end

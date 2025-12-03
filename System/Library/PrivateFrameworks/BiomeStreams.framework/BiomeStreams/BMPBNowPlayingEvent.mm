@@ -1,26 +1,26 @@
 @interface BMPBNowPlayingEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsItemMediaSubtype:(id)a3;
-- (int)StringAsItemMediaType:(id)a3;
-- (int)StringAsPlaybackState:(id)a3;
+- (int)StringAsItemMediaSubtype:(id)subtype;
+- (int)StringAsItemMediaType:(id)type;
+- (int)StringAsPlaybackState:(id)state;
 - (int)itemMediaSubtype;
 - (int)itemMediaType;
 - (int)playbackState;
 - (unint64_t)hash;
-- (void)addOutputDevices:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDuration:(BOOL)a3;
-- (void)setHasElapsed:(BOOL)a3;
-- (void)setHasIsAirPlayVideo:(BOOL)a3;
-- (void)setHasIsRemoteControl:(BOOL)a3;
-- (void)setHasItemMediaSubtype:(BOOL)a3;
-- (void)setHasItemMediaType:(BOOL)a3;
-- (void)setHasPlaybackState:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addOutputDevices:(id)devices;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDuration:(BOOL)duration;
+- (void)setHasElapsed:(BOOL)elapsed;
+- (void)setHasIsAirPlayVideo:(BOOL)video;
+- (void)setHasIsRemoteControl:(BOOL)control;
+- (void)setHasItemMediaSubtype:(BOOL)subtype;
+- (void)setHasItemMediaType:(BOOL)type;
+- (void)setHasPlaybackState:(BOOL)state;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMPBNowPlayingEvent
@@ -38,9 +38,9 @@
   }
 }
 
-- (void)setHasPlaybackState:(BOOL)a3
+- (void)setHasPlaybackState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 32;
   }
@@ -53,35 +53,35 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (int)StringAsPlaybackState:(id)a3
+- (int)StringAsPlaybackState:(id)state
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  stateCopy = state;
+  if ([stateCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Playing"])
+  else if ([stateCopy isEqualToString:@"Playing"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Paused"])
+  else if ([stateCopy isEqualToString:@"Paused"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Stopped"])
+  else if ([stateCopy isEqualToString:@"Stopped"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Interrupted"])
+  else if ([stateCopy isEqualToString:@"Interrupted"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"Seeking"])
+  else if ([stateCopy isEqualToString:@"Seeking"])
   {
     v4 = 5;
   }
@@ -94,9 +94,9 @@
   return v4;
 }
 
-- (void)setHasDuration:(BOOL)a3
+- (void)setHasDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 2;
   }
@@ -109,9 +109,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasElapsed:(BOOL)a3
+- (void)setHasElapsed:(BOOL)elapsed
 {
-  if (a3)
+  if (elapsed)
   {
     v3 = 4;
   }
@@ -124,9 +124,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasIsAirPlayVideo:(BOOL)a3
+- (void)setHasIsAirPlayVideo:(BOOL)video
 {
-  if (a3)
+  if (video)
   {
     v3 = 64;
   }
@@ -139,27 +139,27 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)addOutputDevices:(id)a3
+- (void)addOutputDevices:(id)devices
 {
-  v4 = a3;
+  devicesCopy = devices;
   outputDevices = self->_outputDevices;
-  v8 = v4;
+  v8 = devicesCopy;
   if (!outputDevices)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_outputDevices;
     self->_outputDevices = v6;
 
-    v4 = v8;
+    devicesCopy = v8;
     outputDevices = self->_outputDevices;
   }
 
-  [(NSMutableArray *)outputDevices addObject:v4];
+  [(NSMutableArray *)outputDevices addObject:devicesCopy];
 }
 
-- (void)setHasIsRemoteControl:(BOOL)a3
+- (void)setHasIsRemoteControl:(BOOL)control
 {
-  if (a3)
+  if (control)
   {
     v3 = 0x80;
   }
@@ -185,9 +185,9 @@
   }
 }
 
-- (void)setHasItemMediaType:(BOOL)a3
+- (void)setHasItemMediaType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 16;
   }
@@ -200,20 +200,20 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (int)StringAsItemMediaType:(id)a3
+- (int)StringAsItemMediaType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Audio"])
+  else if ([typeCopy isEqualToString:@"Audio"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Video"])
+  else if ([typeCopy isEqualToString:@"Video"])
   {
     v4 = 2;
   }
@@ -239,9 +239,9 @@
   }
 }
 
-- (void)setHasItemMediaSubtype:(BOOL)a3
+- (void)setHasItemMediaSubtype:(BOOL)subtype
 {
-  if (a3)
+  if (subtype)
   {
     v3 = 8;
   }
@@ -254,45 +254,45 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (int)StringAsItemMediaSubtype:(id)a3
+- (int)StringAsItemMediaSubtype:(id)subtype
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  subtypeCopy = subtype;
+  if ([subtypeCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Music"])
+  else if ([subtypeCopy isEqualToString:@"Music"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"TVShow"])
+  else if ([subtypeCopy isEqualToString:@"TVShow"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Movie"])
+  else if ([subtypeCopy isEqualToString:@"Movie"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Podcast"])
+  else if ([subtypeCopy isEqualToString:@"Podcast"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"Audiobook"])
+  else if ([subtypeCopy isEqualToString:@"Audiobook"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"ITunesU"])
+  else if ([subtypeCopy isEqualToString:@"ITunesU"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"HomeMedia"])
+  else if ([subtypeCopy isEqualToString:@"HomeMedia"])
   {
     v4 = 7;
   }
@@ -311,8 +311,8 @@
   v8.receiver = self;
   v8.super_class = BMPBNowPlayingEvent;
   v4 = [(BMPBNowPlayingEvent *)&v8 description];
-  v5 = [(BMPBNowPlayingEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BMPBNowPlayingEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -320,12 +320,12 @@
 - (id)dictionaryRepresentation
 {
   v44 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   uniqueId = self->_uniqueId;
   if (uniqueId)
   {
-    [v3 setObject:uniqueId forKey:@"uniqueId"];
+    [dictionary setObject:uniqueId forKey:@"uniqueId"];
   }
 
   has = self->_has;
@@ -435,8 +435,8 @@
             objc_enumerationMutation(v21);
           }
 
-          v26 = [*(*(&v39 + 1) + 8 * i) dictionaryRepresentation];
-          [v20 addObject:v26];
+          dictionaryRepresentation = [*(*(&v39 + 1) + 8 * i) dictionaryRepresentation];
+          [v20 addObject:dictionaryRepresentation];
         }
 
         v23 = [(NSMutableArray *)v21 countByEnumeratingWithState:&v39 objects:v43 count:16];
@@ -535,10 +535,10 @@ LABEL_60:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_uniqueId)
   {
     PBDataWriterWriteStringField();
@@ -692,97 +692,97 @@ LABEL_45:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v12 = v4;
+  toCopy = to;
+  v12 = toCopy;
   if (self->_uniqueId)
   {
-    [v4 setUniqueId:?];
-    v4 = v12;
+    [toCopy setUniqueId:?];
+    toCopy = v12;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 1) = *&self->_absoluteTimestamp;
-    *(v4 + 148) |= 1u;
+    *(toCopy + 1) = *&self->_absoluteTimestamp;
+    *(toCopy + 148) |= 1u;
     has = self->_has;
   }
 
   if ((has & 0x20) != 0)
   {
-    *(v4 + 30) = self->_playbackState;
-    *(v4 + 148) |= 0x20u;
+    *(toCopy + 30) = self->_playbackState;
+    *(toCopy + 148) |= 0x20u;
   }
 
   if (self->_album)
   {
     [v12 setAlbum:?];
-    v4 = v12;
+    toCopy = v12;
   }
 
   if (self->_artist)
   {
     [v12 setArtist:?];
-    v4 = v12;
+    toCopy = v12;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 10) = self->_duration;
-    *(v4 + 148) |= 2u;
+    *(toCopy + 10) = self->_duration;
+    *(toCopy + 148) |= 2u;
   }
 
   if (self->_genre)
   {
     [v12 setGenre:?];
-    v4 = v12;
+    toCopy = v12;
   }
 
   if (self->_title)
   {
     [v12 setTitle:?];
-    v4 = v12;
+    toCopy = v12;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    *(v4 + 11) = self->_elapsed;
-    *(v4 + 148) |= 4u;
+    *(toCopy + 11) = self->_elapsed;
+    *(toCopy + 148) |= 4u;
   }
 
   if (self->_mediaType)
   {
     [v12 setMediaType:?];
-    v4 = v12;
+    toCopy = v12;
   }
 
   if (self->_iTunesStoreIdentifier)
   {
     [v12 setITunesStoreIdentifier:?];
-    v4 = v12;
+    toCopy = v12;
   }
 
   if (self->_iTunesSubscriptionIdentifier)
   {
     [v12 setITunesSubscriptionIdentifier:?];
-    v4 = v12;
+    toCopy = v12;
   }
 
   if ((*&self->_has & 0x40) != 0)
   {
-    *(v4 + 144) = self->_isAirPlayVideo;
-    *(v4 + 148) |= 0x40u;
+    *(toCopy + 144) = self->_isAirPlayVideo;
+    *(toCopy + 148) |= 0x40u;
   }
 
   if ([(BMPBNowPlayingEvent *)self outputDevicesCount])
   {
     [v12 clearOutputDevices];
-    v6 = [(BMPBNowPlayingEvent *)self outputDevicesCount];
-    if (v6)
+    outputDevicesCount = [(BMPBNowPlayingEvent *)self outputDevicesCount];
+    if (outputDevicesCount)
     {
-      v7 = v6;
+      v7 = outputDevicesCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(BMPBNowPlayingEvent *)self outputDevicesAtIndex:i];
@@ -845,11 +845,11 @@ LABEL_42:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v45 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_uniqueId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_uniqueId copyWithZone:zone];
   v7 = *(v5 + 136);
   *(v5 + 136) = v6;
 
@@ -867,11 +867,11 @@ LABEL_42:
     *(v5 + 148) |= 0x20u;
   }
 
-  v9 = [(NSString *)self->_album copyWithZone:a3];
+  v9 = [(NSString *)self->_album copyWithZone:zone];
   v10 = *(v5 + 16);
   *(v5 + 16) = v9;
 
-  v11 = [(NSString *)self->_artist copyWithZone:a3];
+  v11 = [(NSString *)self->_artist copyWithZone:zone];
   v12 = *(v5 + 24);
   *(v5 + 24) = v11;
 
@@ -881,11 +881,11 @@ LABEL_42:
     *(v5 + 148) |= 2u;
   }
 
-  v13 = [(NSString *)self->_genre copyWithZone:a3];
+  v13 = [(NSString *)self->_genre copyWithZone:zone];
   v14 = *(v5 + 48);
   *(v5 + 48) = v13;
 
-  v15 = [(NSString *)self->_title copyWithZone:a3];
+  v15 = [(NSString *)self->_title copyWithZone:zone];
   v16 = *(v5 + 128);
   *(v5 + 128) = v15;
 
@@ -895,15 +895,15 @@ LABEL_42:
     *(v5 + 148) |= 4u;
   }
 
-  v17 = [(NSString *)self->_mediaType copyWithZone:a3];
+  v17 = [(NSString *)self->_mediaType copyWithZone:zone];
   v18 = *(v5 + 104);
   *(v5 + 104) = v17;
 
-  v19 = [(NSString *)self->_iTunesStoreIdentifier copyWithZone:a3];
+  v19 = [(NSString *)self->_iTunesStoreIdentifier copyWithZone:zone];
   v20 = *(v5 + 80);
   *(v5 + 80) = v19;
 
-  v21 = [(NSString *)self->_iTunesSubscriptionIdentifier copyWithZone:a3];
+  v21 = [(NSString *)self->_iTunesSubscriptionIdentifier copyWithZone:zone];
   v22 = *(v5 + 88);
   *(v5 + 88) = v21;
 
@@ -932,7 +932,7 @@ LABEL_42:
           objc_enumerationMutation(v23);
         }
 
-        v28 = [*(*(&v40 + 1) + 8 * i) copyWithZone:{a3, v40}];
+        v28 = [*(*(&v40 + 1) + 8 * i) copyWithZone:{zone, v40}];
         [v5 addOutputDevices:v28];
       }
 
@@ -942,19 +942,19 @@ LABEL_42:
     while (v25);
   }
 
-  v29 = [(NSString *)self->_bundleId copyWithZone:a3];
+  v29 = [(NSString *)self->_bundleId copyWithZone:zone];
   v30 = *(v5 + 32);
   *(v5 + 32) = v29;
 
-  v31 = [(NSString *)self->_iTunesArtistIdentifier copyWithZone:a3];
+  v31 = [(NSString *)self->_iTunesArtistIdentifier copyWithZone:zone];
   v32 = *(v5 + 72);
   *(v5 + 72) = v31;
 
-  v33 = [(NSString *)self->_iTunesAlbumIdentifier copyWithZone:a3];
+  v33 = [(NSString *)self->_iTunesAlbumIdentifier copyWithZone:zone];
   v34 = *(v5 + 64);
   *(v5 + 64) = v33;
 
-  v35 = [(NSString *)self->_groupIdentifier copyWithZone:a3];
+  v35 = [(NSString *)self->_groupIdentifier copyWithZone:zone];
   v36 = *(v5 + 56);
   *(v5 + 56) = v35;
 
@@ -991,16 +991,16 @@ LABEL_21:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_56;
   }
 
   uniqueId = self->_uniqueId;
-  if (uniqueId | *(v4 + 17))
+  if (uniqueId | *(equalCopy + 17))
   {
     if (![(NSString *)uniqueId isEqual:?])
     {
@@ -1008,41 +1008,41 @@ LABEL_21:
     }
   }
 
-  v6 = *(v4 + 148);
+  v6 = *(equalCopy + 148);
   if (*&self->_has)
   {
-    if ((*(v4 + 148) & 1) == 0 || self->_absoluteTimestamp != *(v4 + 1))
+    if ((*(equalCopy + 148) & 1) == 0 || self->_absoluteTimestamp != *(equalCopy + 1))
     {
       goto LABEL_56;
     }
   }
 
-  else if (*(v4 + 148))
+  else if (*(equalCopy + 148))
   {
     goto LABEL_56;
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 148) & 0x20) == 0 || self->_playbackState != *(v4 + 30))
+    if ((*(equalCopy + 148) & 0x20) == 0 || self->_playbackState != *(equalCopy + 30))
     {
       goto LABEL_56;
     }
   }
 
-  else if ((*(v4 + 148) & 0x20) != 0)
+  else if ((*(equalCopy + 148) & 0x20) != 0)
   {
     goto LABEL_56;
   }
 
   album = self->_album;
-  if (album | *(v4 + 2) && ![(NSString *)album isEqual:?])
+  if (album | *(equalCopy + 2) && ![(NSString *)album isEqual:?])
   {
     goto LABEL_56;
   }
 
   artist = self->_artist;
-  if (artist | *(v4 + 3))
+  if (artist | *(equalCopy + 3))
   {
     if (![(NSString *)artist isEqual:?])
     {
@@ -1050,28 +1050,28 @@ LABEL_21:
     }
   }
 
-  v9 = *(v4 + 148);
+  v9 = *(equalCopy + 148);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 148) & 2) == 0 || self->_duration != *(v4 + 10))
+    if ((*(equalCopy + 148) & 2) == 0 || self->_duration != *(equalCopy + 10))
     {
       goto LABEL_56;
     }
   }
 
-  else if ((*(v4 + 148) & 2) != 0)
+  else if ((*(equalCopy + 148) & 2) != 0)
   {
     goto LABEL_56;
   }
 
   genre = self->_genre;
-  if (genre | *(v4 + 6) && ![(NSString *)genre isEqual:?])
+  if (genre | *(equalCopy + 6) && ![(NSString *)genre isEqual:?])
   {
     goto LABEL_56;
   }
 
   title = self->_title;
-  if (title | *(v4 + 16))
+  if (title | *(equalCopy + 16))
   {
     if (![(NSString *)title isEqual:?])
     {
@@ -1079,28 +1079,28 @@ LABEL_21:
     }
   }
 
-  v12 = *(v4 + 148);
+  v12 = *(equalCopy + 148);
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 148) & 4) == 0 || self->_elapsed != *(v4 + 11))
+    if ((*(equalCopy + 148) & 4) == 0 || self->_elapsed != *(equalCopy + 11))
     {
       goto LABEL_56;
     }
   }
 
-  else if ((*(v4 + 148) & 4) != 0)
+  else if ((*(equalCopy + 148) & 4) != 0)
   {
     goto LABEL_56;
   }
 
   mediaType = self->_mediaType;
-  if (mediaType | *(v4 + 13) && ![(NSString *)mediaType isEqual:?])
+  if (mediaType | *(equalCopy + 13) && ![(NSString *)mediaType isEqual:?])
   {
     goto LABEL_56;
   }
 
   iTunesStoreIdentifier = self->_iTunesStoreIdentifier;
-  if (iTunesStoreIdentifier | *(v4 + 10))
+  if (iTunesStoreIdentifier | *(equalCopy + 10))
   {
     if (![(NSString *)iTunesStoreIdentifier isEqual:?])
     {
@@ -1109,7 +1109,7 @@ LABEL_21:
   }
 
   iTunesSubscriptionIdentifier = self->_iTunesSubscriptionIdentifier;
-  if (iTunesSubscriptionIdentifier | *(v4 + 11))
+  if (iTunesSubscriptionIdentifier | *(equalCopy + 11))
   {
     if (![(NSString *)iTunesSubscriptionIdentifier isEqual:?])
     {
@@ -1117,42 +1117,42 @@ LABEL_21:
     }
   }
 
-  v16 = *(v4 + 148);
+  v16 = *(equalCopy + 148);
   if ((*&self->_has & 0x40) != 0)
   {
-    if ((*(v4 + 148) & 0x40) == 0)
+    if ((*(equalCopy + 148) & 0x40) == 0)
     {
       goto LABEL_56;
     }
 
-    v25 = *(v4 + 144);
+    v25 = *(equalCopy + 144);
     if (self->_isAirPlayVideo)
     {
-      if ((*(v4 + 144) & 1) == 0)
+      if ((*(equalCopy + 144) & 1) == 0)
       {
         goto LABEL_56;
       }
     }
 
-    else if (*(v4 + 144))
+    else if (*(equalCopy + 144))
     {
       goto LABEL_56;
     }
   }
 
-  else if ((*(v4 + 148) & 0x40) != 0)
+  else if ((*(equalCopy + 148) & 0x40) != 0)
   {
     goto LABEL_56;
   }
 
   outputDevices = self->_outputDevices;
-  if (outputDevices | *(v4 + 14) && ![(NSMutableArray *)outputDevices isEqual:?])
+  if (outputDevices | *(equalCopy + 14) && ![(NSMutableArray *)outputDevices isEqual:?])
   {
     goto LABEL_56;
   }
 
   bundleId = self->_bundleId;
-  if (bundleId | *(v4 + 4))
+  if (bundleId | *(equalCopy + 4))
   {
     if (![(NSString *)bundleId isEqual:?])
     {
@@ -1161,7 +1161,7 @@ LABEL_21:
   }
 
   iTunesArtistIdentifier = self->_iTunesArtistIdentifier;
-  if (iTunesArtistIdentifier | *(v4 + 9))
+  if (iTunesArtistIdentifier | *(equalCopy + 9))
   {
     if (![(NSString *)iTunesArtistIdentifier isEqual:?])
     {
@@ -1170,7 +1170,7 @@ LABEL_21:
   }
 
   iTunesAlbumIdentifier = self->_iTunesAlbumIdentifier;
-  if (iTunesAlbumIdentifier | *(v4 + 8))
+  if (iTunesAlbumIdentifier | *(equalCopy + 8))
   {
     if (![(NSString *)iTunesAlbumIdentifier isEqual:?])
     {
@@ -1179,7 +1179,7 @@ LABEL_21:
   }
 
   groupIdentifier = self->_groupIdentifier;
-  if (groupIdentifier | *(v4 + 7))
+  if (groupIdentifier | *(equalCopy + 7))
   {
     if (![(NSString *)groupIdentifier isEqual:?])
     {
@@ -1190,51 +1190,51 @@ LABEL_21:
   has = self->_has;
   if ((*&has & 0x80000000) != 0)
   {
-    if ((*(v4 + 148) & 0x80) == 0)
+    if ((*(equalCopy + 148) & 0x80) == 0)
     {
       goto LABEL_56;
     }
 
-    v26 = *(v4 + 145);
+    v26 = *(equalCopy + 145);
     if (self->_isRemoteControl)
     {
-      if ((*(v4 + 145) & 1) == 0)
+      if ((*(equalCopy + 145) & 1) == 0)
       {
         goto LABEL_56;
       }
     }
 
-    else if (*(v4 + 145))
+    else if (*(equalCopy + 145))
     {
       goto LABEL_56;
     }
   }
 
-  else if ((*(v4 + 148) & 0x80) != 0)
+  else if ((*(equalCopy + 148) & 0x80) != 0)
   {
     goto LABEL_56;
   }
 
   if ((*&has & 0x10) != 0)
   {
-    if ((*(v4 + 148) & 0x10) == 0 || self->_itemMediaType != *(v4 + 25))
+    if ((*(equalCopy + 148) & 0x10) == 0 || self->_itemMediaType != *(equalCopy + 25))
     {
       goto LABEL_56;
     }
   }
 
-  else if ((*(v4 + 148) & 0x10) != 0)
+  else if ((*(equalCopy + 148) & 0x10) != 0)
   {
     goto LABEL_56;
   }
 
   if ((*&has & 8) == 0)
   {
-    v23 = (*(v4 + 148) & 8) == 0;
+    v23 = (*(equalCopy + 148) & 8) == 0;
     goto LABEL_57;
   }
 
-  if ((*(v4 + 148) & 8) != 0 && self->_itemMediaSubtype == *(v4 + 24))
+  if ((*(equalCopy + 148) & 8) != 0 && self->_itemMediaSubtype == *(equalCopy + 24))
   {
     v23 = 1;
     goto LABEL_57;
@@ -1374,79 +1374,79 @@ LABEL_24:
   return v29 ^ v30 ^ v28 ^ v27 ^ v26 ^ v25 ^ v24 ^ v23 ^ v22 ^ v21 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18 ^ v19;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 17))
+  fromCopy = from;
+  if (*(fromCopy + 17))
   {
     [(BMPBNowPlayingEvent *)self setUniqueId:?];
   }
 
-  v5 = v4[148];
+  v5 = fromCopy[148];
   if (v5)
   {
-    self->_absoluteTimestamp = *(v4 + 1);
+    self->_absoluteTimestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = v4[148];
+    v5 = fromCopy[148];
   }
 
   if ((v5 & 0x20) != 0)
   {
-    self->_playbackState = *(v4 + 30);
+    self->_playbackState = *(fromCopy + 30);
     *&self->_has |= 0x20u;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(BMPBNowPlayingEvent *)self setAlbum:?];
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(BMPBNowPlayingEvent *)self setArtist:?];
   }
 
-  if ((v4[148] & 2) != 0)
+  if ((fromCopy[148] & 2) != 0)
   {
-    self->_duration = *(v4 + 10);
+    self->_duration = *(fromCopy + 10);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(BMPBNowPlayingEvent *)self setGenre:?];
   }
 
-  if (*(v4 + 16))
+  if (*(fromCopy + 16))
   {
     [(BMPBNowPlayingEvent *)self setTitle:?];
   }
 
-  if ((v4[148] & 4) != 0)
+  if ((fromCopy[148] & 4) != 0)
   {
-    self->_elapsed = *(v4 + 11);
+    self->_elapsed = *(fromCopy + 11);
     *&self->_has |= 4u;
   }
 
-  if (*(v4 + 13))
+  if (*(fromCopy + 13))
   {
     [(BMPBNowPlayingEvent *)self setMediaType:?];
   }
 
-  if (*(v4 + 10))
+  if (*(fromCopy + 10))
   {
     [(BMPBNowPlayingEvent *)self setITunesStoreIdentifier:?];
   }
 
-  if (*(v4 + 11))
+  if (*(fromCopy + 11))
   {
     [(BMPBNowPlayingEvent *)self setITunesSubscriptionIdentifier:?];
   }
 
-  if ((v4[148] & 0x40) != 0)
+  if ((fromCopy[148] & 0x40) != 0)
   {
-    self->_isAirPlayVideo = v4[144];
+    self->_isAirPlayVideo = fromCopy[144];
     *&self->_has |= 0x40u;
   }
 
@@ -1454,7 +1454,7 @@ LABEL_24:
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = *(v4 + 14);
+  v6 = *(fromCopy + 14);
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -1478,27 +1478,27 @@ LABEL_24:
     while (v8);
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(BMPBNowPlayingEvent *)self setBundleId:?];
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(BMPBNowPlayingEvent *)self setITunesArtistIdentifier:?];
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(BMPBNowPlayingEvent *)self setITunesAlbumIdentifier:?];
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(BMPBNowPlayingEvent *)self setGroupIdentifier:?];
   }
 
-  v11 = v4[148];
+  v11 = fromCopy[148];
   if ((v11 & 0x80000000) == 0)
   {
     if ((v11 & 0x10) == 0)
@@ -1509,21 +1509,21 @@ LABEL_24:
     goto LABEL_44;
   }
 
-  self->_isRemoteControl = v4[145];
+  self->_isRemoteControl = fromCopy[145];
   *&self->_has |= 0x80u;
-  LOBYTE(v11) = v4[148];
+  LOBYTE(v11) = fromCopy[148];
   if ((v11 & 0x10) != 0)
   {
 LABEL_44:
-    self->_itemMediaType = *(v4 + 25);
+    self->_itemMediaType = *(fromCopy + 25);
     *&self->_has |= 0x10u;
-    LOBYTE(v11) = v4[148];
+    LOBYTE(v11) = fromCopy[148];
   }
 
 LABEL_45:
   if ((v11 & 8) != 0)
   {
-    self->_itemMediaSubtype = *(v4 + 24);
+    self->_itemMediaSubtype = *(fromCopy + 24);
     *&self->_has |= 8u;
   }
 

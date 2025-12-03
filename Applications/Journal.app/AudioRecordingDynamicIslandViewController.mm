@@ -3,28 +3,28 @@
 - (SBUISystemApertureAccessoryView)minimalView;
 - (SBUISystemApertureAccessoryView)trailingView;
 - (UIColor)keyColor;
-- (void)setActiveLayoutMode:(int64_t)a3;
+- (void)setActiveLayoutMode:(int64_t)mode;
 - (void)viewDidLoad;
-- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)a3;
+- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation AudioRecordingDynamicIslandViewController
 
-- (void)setActiveLayoutMode:(int64_t)a3
+- (void)setActiveLayoutMode:(int64_t)mode
 {
-  v4 = self;
-  sub_1007DFF2C(a3);
+  selfCopy = self;
+  sub_1007DFF2C(mode);
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1007E07E4();
 }
 
 - (SBUISystemApertureAccessoryView)leadingView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1007E05A4(&OBJC_IVAR____TtC7Journal41AudioRecordingDynamicIslandViewController____lazy_storage___leadingWaveformView, sub_1007E0098);
 
   return v3;
@@ -32,7 +32,7 @@
 
 - (SBUISystemApertureAccessoryView)trailingView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1007E05A4(&OBJC_IVAR____TtC7Journal41AudioRecordingDynamicIslandViewController____lazy_storage___trailingAccessoryView, sub_1007E0288);
 
   return v3;
@@ -40,7 +40,7 @@
 
 - (SBUISystemApertureAccessoryView)minimalView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1007E05A4(&OBJC_IVAR____TtC7Journal41AudioRecordingDynamicIslandViewController____lazy_storage___minimalAccessoryView, sub_1007E0608);
 
   return v3;
@@ -54,7 +54,7 @@
   v6 = &v14 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1000065A8(0, &qword_100AD4C70);
   v7 = qword_100AD0CB0;
-  v8 = self;
+  selfCopy = self;
   if (v7 != -1)
   {
     swift_once();
@@ -63,13 +63,13 @@
   v9 = sub_10000617C(v3, qword_100B31520);
   (*(v4 + 16))(v6, v9, v3);
   v10 = UIColor.init(resource:)();
-  v11 = [(AudioRecordingDynamicIslandViewController *)v8 traitCollection];
-  v12 = [v10 resolvedColorWithTraitCollection:v11];
+  traitCollection = [(AudioRecordingDynamicIslandViewController *)selfCopy traitCollection];
+  v12 = [v10 resolvedColorWithTraitCollection:traitCollection];
 
   return v12;
 }
 
-- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)a3
+- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)coordinator
 {
   v5 = swift_allocObject();
   swift_unknownObjectWeakInit();
@@ -81,9 +81,9 @@
   v8[3] = &unk_100A7F990;
   v6 = _Block_copy(v8);
   swift_unknownObjectRetain();
-  v7 = self;
+  selfCopy = self;
 
-  [a3 animateAlongsideTransition:v6 completion:0];
+  [coordinator animateAlongsideTransition:v6 completion:0];
   _Block_release(v6);
   swift_unknownObjectRelease();
 }

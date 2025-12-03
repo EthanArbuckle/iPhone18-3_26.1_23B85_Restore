@@ -13,16 +13,16 @@
   v16 = __Block_byref_object_copy__36;
   v17 = __Block_byref_object_dispose__36;
   v18 = 0;
-  v5 = [a1 managedObjectContext];
+  managedObjectContext = [self managedObjectContext];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __52__ICNote_SearchIndexable_UI__dataForTypeIdentifier___block_invoke;
   v9[3] = &unk_1E8469190;
   v6 = v4;
   v10 = v6;
-  v11 = a1;
+  selfCopy = self;
   v12 = &v13;
-  [v5 performBlockAndWait:v9];
+  [managedObjectContext performBlockAndWait:v9];
 
   v7 = v14[5];
   _Block_object_dispose(&v13, 8);

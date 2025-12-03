@@ -1,17 +1,17 @@
 @interface DMCBackgroundTask
 - (DMCBackgroundTask)init;
-- (DMCBackgroundTask)initWithName:(id)a3 queue:(id)a4 launchHandler:(id)a5;
+- (DMCBackgroundTask)initWithName:(id)name queue:(id)queue launchHandler:(id)handler;
 - (NSString)name;
 - (NSString)targetDateString;
 - (id)completion;
 - (id)targetDate;
 - (void)cancel;
-- (void)infuseRequest:(id)a3 interval:(double)a4 tolerance:(double)a5 requirements:(unint64_t)a6;
-- (void)setCompletion:(id)a3;
-- (void)setTargetDateString:(id)a3;
-- (void)submitNewRequestWithInterval:(double)a3 tolerance:(double)a4 requirements:(unint64_t)a5;
-- (void)submitRequestWithInterval:(double)a3 tolerance:(double)a4 requirements:(unint64_t)a5 completion:(id)a6;
-- (void)updateExistingRequest:(id)a3 interval:(double)a4 tolerance:(double)a5 requirements:(unint64_t)a6;
+- (void)infuseRequest:(id)request interval:(double)interval tolerance:(double)tolerance requirements:(unint64_t)requirements;
+- (void)setCompletion:(id)completion;
+- (void)setTargetDateString:(id)string;
+- (void)submitNewRequestWithInterval:(double)interval tolerance:(double)tolerance requirements:(unint64_t)requirements;
+- (void)submitRequestWithInterval:(double)interval tolerance:(double)tolerance requirements:(unint64_t)requirements completion:(id)completion;
+- (void)updateExistingRequest:(id)request interval:(double)interval tolerance:(double)tolerance requirements:(unint64_t)requirements;
 @end
 
 @implementation DMCBackgroundTask
@@ -44,9 +44,9 @@
   return v4;
 }
 
-- (void)setTargetDateString:(id)a3
+- (void)setTargetDateString:(id)string
 {
-  if (a3)
+  if (string)
   {
     v4 = sub_247F23F3C();
   }
@@ -85,9 +85,9 @@
   return v3;
 }
 
-- (void)setCompletion:(id)a3
+- (void)setCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   if (v4)
   {
     v5 = v4;
@@ -106,13 +106,13 @@
   v9 = *(self + OBJC_IVAR___DMCBackgroundTask_completion + 8);
   *v7 = v6;
   v7[1] = v4;
-  v10 = self;
+  selfCopy = self;
   sub_247F081EC(v8);
 }
 
-- (DMCBackgroundTask)initWithName:(id)a3 queue:(id)a4 launchHandler:(id)a5
+- (DMCBackgroundTask)initWithName:(id)name queue:(id)queue launchHandler:(id)handler
 {
-  v6 = _Block_copy(a5);
+  v6 = _Block_copy(handler);
   v7 = sub_247F23F3C();
   v9 = v8;
   if (v6)
@@ -127,8 +127,8 @@
     v10 = 0;
   }
 
-  v11 = a4;
-  return DMCBackgroundTask.init(name:queue:launchHandler:)(v7, v9, a4, v6, v10);
+  queueCopy = queue;
+  return DMCBackgroundTask.init(name:queue:launchHandler:)(v7, v9, queue, v6, v10);
 }
 
 - (id)targetDate
@@ -136,11 +136,11 @@
   v3 = (*(*(__swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EE7EC68, &unk_247F25BC0) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x28223BE20]();
   v5 = &v16 - v4;
-  v6 = self;
-  v7 = [(DMCBackgroundTask *)v6 targetDateString];
-  if (v7)
+  selfCopy = self;
+  targetDateString = [(DMCBackgroundTask *)selfCopy targetDateString];
+  if (targetDateString)
   {
-    v8 = v7;
+    v8 = targetDateString;
     sub_247F23F3C();
 
     String.DMCDate.getter(v5);
@@ -166,40 +166,40 @@
   return v13;
 }
 
-- (void)submitRequestWithInterval:(double)a3 tolerance:(double)a4 requirements:(unint64_t)a5 completion:(id)a6
+- (void)submitRequestWithInterval:(double)interval tolerance:(double)tolerance requirements:(unint64_t)requirements completion:(id)completion
 {
-  v10 = _Block_copy(a6);
+  v10 = _Block_copy(completion);
   v11 = swift_allocObject();
   v11[2] = v10;
-  v12 = self;
-  DMCBackgroundTask.submitRequest(withInterval:tolerance:requirements:completion:)(a5, sub_247F08AC4, v11, a3, a4);
+  selfCopy = self;
+  DMCBackgroundTask.submitRequest(withInterval:tolerance:requirements:completion:)(requirements, sub_247F08AC4, v11, interval, tolerance);
 }
 
 - (void)cancel
 {
-  v2 = self;
+  selfCopy = self;
   DMCBackgroundTask.cancel()();
 }
 
-- (void)submitNewRequestWithInterval:(double)a3 tolerance:(double)a4 requirements:(unint64_t)a5
+- (void)submitNewRequestWithInterval:(double)interval tolerance:(double)tolerance requirements:(unint64_t)requirements
 {
-  v8 = self;
-  sub_247F06C3C(a5, a3, a4);
+  selfCopy = self;
+  sub_247F06C3C(requirements, interval, tolerance);
 }
 
-- (void)updateExistingRequest:(id)a3 interval:(double)a4 tolerance:(double)a5 requirements:(unint64_t)a6
+- (void)updateExistingRequest:(id)request interval:(double)interval tolerance:(double)tolerance requirements:(unint64_t)requirements
 {
-  v10 = a3;
-  v11 = self;
-  sub_247F072C4(v10, a6, a4, a5);
+  requestCopy = request;
+  selfCopy = self;
+  sub_247F072C4(requestCopy, requirements, interval, tolerance);
 }
 
-- (void)infuseRequest:(id)a3 interval:(double)a4 tolerance:(double)a5 requirements:(unint64_t)a6
+- (void)infuseRequest:(id)request interval:(double)interval tolerance:(double)tolerance requirements:(unint64_t)requirements
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = self;
-  sub_247F089A0(v10, v6, a4, a5);
+  requirementsCopy = requirements;
+  requestCopy = request;
+  selfCopy = self;
+  sub_247F089A0(requestCopy, requirementsCopy, interval, tolerance);
 }
 
 - (DMCBackgroundTask)init

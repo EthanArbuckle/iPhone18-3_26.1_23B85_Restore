@@ -2,9 +2,9 @@
 - ($1A23BB056C565A410801C90FE7234890)styleOptions;
 - (BOOL)focusedStyleIsCurrentStyle;
 - (PXStoryStyleManager)init;
-- (PXStoryStyleManager)initWithRecipeManager:(id)a3 errorReporter:(id)a4;
+- (PXStoryStyleManager)initWithRecipeManager:(id)manager errorReporter:(id)reporter;
 - (int64_t)focusedStyleIndex;
-- (void)_handleCueSource:(id)a3 error:(id)a4 requestID:(int64_t)a5;
+- (void)_handleCueSource:(id)source error:(id)error requestID:(int64_t)d;
 - (void)_invalidateCueSource;
 - (void)_invalidateCurrentStyle;
 - (void)_invalidateCurrentStyleAttributes;
@@ -24,28 +24,28 @@
 - (void)_updateStyleConfigurationList;
 - (void)_updateStylesAttributes;
 - (void)applyFocusedStyle;
-- (void)applyFocusedStyleWithCustomizedColorGradeKind:(int64_t)a3;
-- (void)applyFocusedStyleWithCustomizedSongResource:(id)a3;
-- (void)applyStyleAtIndex:(int64_t)a3 fromDataSource:(id)a4;
-- (void)collectTapToRadarDiagnosticsIntoContainer:(id)a3;
+- (void)applyFocusedStyleWithCustomizedColorGradeKind:(int64_t)kind;
+- (void)applyFocusedStyleWithCustomizedSongResource:(id)resource;
+- (void)applyStyleAtIndex:(int64_t)index fromDataSource:(id)source;
+- (void)collectTapToRadarDiagnosticsIntoContainer:(id)container;
 - (void)didEndChangeHandling;
 - (void)didPerformChanges;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)performChanges:(id)a3;
-- (void)performChanges:(id)a3 origin:(unint64_t)a4;
-- (void)setAreSelectionDataSourceStylesFinal:(BOOL)a3;
-- (void)setAreStylesFinal:(BOOL)a3;
-- (void)setCueSource:(id)a3;
-- (void)setCurrentStyle:(id)a3;
-- (void)setCurrentStyleAttributes:(unint64_t)a3;
-- (void)setCurrentStyleInfo:(id)a3;
-- (void)setIsCurrentStyleFinal:(BOOL)a3;
-- (void)setPredefinedStyleInfos:(id)a3;
-- (void)setSelectionDataSource:(id)a3;
-- (void)setSelectionDataSourceStylesAttributes:(unint64_t)a3;
-- (void)setSelectionFocus:(double)a3;
-- (void)setStyleConfigurationList:(id)a3;
-- (void)setStylesAttributes:(unint64_t)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)performChanges:(id)changes;
+- (void)performChanges:(id)changes origin:(unint64_t)origin;
+- (void)setAreSelectionDataSourceStylesFinal:(BOOL)final;
+- (void)setAreStylesFinal:(BOOL)final;
+- (void)setCueSource:(id)source;
+- (void)setCurrentStyle:(id)style;
+- (void)setCurrentStyleAttributes:(unint64_t)attributes;
+- (void)setCurrentStyleInfo:(id)info;
+- (void)setIsCurrentStyleFinal:(BOOL)final;
+- (void)setPredefinedStyleInfos:(id)infos;
+- (void)setSelectionDataSource:(id)source;
+- (void)setSelectionDataSourceStylesAttributes:(unint64_t)attributes;
+- (void)setSelectionFocus:(double)focus;
+- (void)setStyleConfigurationList:(id)list;
+- (void)setStylesAttributes:(unint64_t)attributes;
 @end
 
 @implementation PXStoryStyleManager
@@ -60,22 +60,22 @@
   return result;
 }
 
-- (void)collectTapToRadarDiagnosticsIntoContainer:(id)a3
+- (void)collectTapToRadarDiagnosticsIntoContainer:(id)container
 {
-  v4 = a3;
-  v5 = [(PXStoryStyleManager *)self recipeManager];
-  [v4 addSubprovider:v5];
+  containerCopy = container;
+  recipeManager = [(PXStoryStyleManager *)self recipeManager];
+  [containerCopy addSubprovider:recipeManager];
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __52__PXStoryStyleManager_observable_didChange_context___block_invoke;
   v5[3] = &unk_1E7746748;
   v5[4] = self;
-  v5[5] = a5;
-  v5[6] = a4;
+  v5[5] = context;
+  v5[6] = change;
   v5[7] = a2;
   [(PXStoryStyleManager *)self performChanges:v5 origin:1];
 }
@@ -111,10 +111,10 @@ void __52__PXStoryStyleManager_observable_didChange_context___block_invoke(uint6
 
 - (void)_updateSelectionDataSourceStylesAttributes
 {
-  v3 = [(PXStoryStyleManager *)self recipeManager];
-  v4 = [v3 isRecipeFinal];
+  recipeManager = [(PXStoryStyleManager *)self recipeManager];
+  isRecipeFinal = [recipeManager isRecipeFinal];
 
-  if (v4)
+  if (isRecipeFinal)
   {
     v5 = 2;
   }
@@ -129,31 +129,31 @@ void __52__PXStoryStyleManager_observable_didChange_context___block_invoke(uint6
 
 - (void)_invalidateSelectionDataSourceAttributes
 {
-  v2 = [(PXStoryStyleManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateSelectionDataSourceStylesAttributes];
+  updater = [(PXStoryStyleManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateSelectionDataSourceStylesAttributes];
 }
 
 - (void)_updateSelectionDataSource
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PXStoryStyleManager *)self predefinedStyleInfos];
-  v4 = [(PXStoryStyleManager *)self recipeManager];
-  v5 = [v4 configuration];
+  predefinedStyleInfos = [(PXStoryStyleManager *)self predefinedStyleInfos];
+  recipeManager = [(PXStoryStyleManager *)self recipeManager];
+  configuration = [recipeManager configuration];
 
-  if (([v5 options] & 0x10) != 0)
+  if (([configuration options] & 0x10) != 0)
   {
-    v17 = [v5 songsConfiguration];
-    v7 = [v17 currentAsset];
+    songsConfiguration = [configuration songsConfiguration];
+    currentAsset = [songsConfiguration currentAsset];
 
     v18 = 0;
-    if (v7 && v3)
+    if (currentAsset && predefinedStyleInfos)
     {
       v26[0] = MEMORY[0x1E69E9820];
       v26[1] = 3221225472;
       v26[2] = __49__PXStoryStyleManager__updateSelectionDataSource__block_invoke;
       v26[3] = &unk_1E773CD20;
-      v27 = v7;
-      v19 = [v3 indexOfObjectPassingTest:v26];
+      v27 = currentAsset;
+      v19 = [predefinedStyleInfos indexOfObjectPassingTest:v26];
       if (v19 == 0x7FFFFFFFFFFFFFFFLL)
       {
         v18 = 0;
@@ -166,25 +166,25 @@ void __52__PXStoryStyleManager_observable_didChange_context___block_invoke(uint6
     }
 
     v13 = [PXStoryStyleSelectionDataSource alloc];
-    v14 = v3;
+    v14 = predefinedStyleInfos;
     v15 = v18;
     v16 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
   {
-    v6 = [(PXStoryStyleManager *)self currentStyleInfo];
-    v7 = v6;
+    currentStyleInfo = [(PXStoryStyleManager *)self currentStyleInfo];
+    currentAsset = currentStyleInfo;
     v8 = 0x7FFFFFFFFFFFFFFFLL;
     v9 = 0x7FFFFFFFFFFFFFFFLL;
-    if (v6 && v3)
+    if (currentStyleInfo && predefinedStyleInfos)
     {
       v21 = MEMORY[0x1E69E9820];
       v22 = 3221225472;
       v23 = __49__PXStoryStyleManager__updateSelectionDataSource__block_invoke_2;
       v24 = &unk_1E773CD20;
-      v25 = v6;
-      v9 = [v3 indexOfObjectPassingTest:&v21];
+      v25 = currentStyleInfo;
+      v9 = [predefinedStyleInfos indexOfObjectPassingTest:&v21];
     }
 
     if (v9 == 0x7FFFFFFFFFFFFFFFLL)
@@ -197,19 +197,19 @@ void __52__PXStoryStyleManager_observable_didChange_context___block_invoke(uint6
       v10 = v9;
     }
 
-    if (v7 && v9 == 0x7FFFFFFFFFFFFFFFLL)
+    if (currentAsset && v9 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v28[0] = v7;
+      v28[0] = currentAsset;
       v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:1];
-      v12 = [v11 arrayByAddingObjectsFromArray:v3];
+      v12 = [v11 arrayByAddingObjectsFromArray:predefinedStyleInfos];
 
       v10 = 0;
       v8 = 0;
-      v3 = v12;
+      predefinedStyleInfos = v12;
     }
 
     v13 = [PXStoryStyleSelectionDataSource alloc];
-    v14 = v3;
+    v14 = predefinedStyleInfos;
     v15 = v10;
     v16 = v8;
   }
@@ -266,21 +266,21 @@ uint64_t __49__PXStoryStyleManager__updateSelectionDataSource__block_invoke_2(ui
 
 - (void)_invalidateSelectionDataSource
 {
-  v2 = [(PXStoryStyleManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateSelectionDataSource];
+  updater = [(PXStoryStyleManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateSelectionDataSource];
 }
 
 - (void)_updateCurrentStyleAttributes
 {
-  v3 = [(PXStoryStyleManager *)self recipeManager];
-  v4 = [v3 recipeAttributes];
+  recipeManager = [(PXStoryStyleManager *)self recipeManager];
+  recipeAttributes = [recipeManager recipeAttributes];
 
-  v5 = v4 & 1;
-  if ((v4 & 3) != 0)
+  v5 = recipeAttributes & 1;
+  if ((recipeAttributes & 3) != 0)
   {
-    v6 = [(PXStoryStyleManager *)self cueSource];
+    cueSource = [(PXStoryStyleManager *)self cueSource];
 
-    if (v6)
+    if (cueSource)
     {
       v5 |= 2uLL;
     }
@@ -291,117 +291,117 @@ uint64_t __49__PXStoryStyleManager__updateSelectionDataSource__block_invoke_2(ui
 
 - (void)_invalidateCurrentStyleAttributes
 {
-  v2 = [(PXStoryStyleManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateCurrentStyleAttributes];
+  updater = [(PXStoryStyleManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateCurrentStyleAttributes];
 }
 
 - (void)_updateCurrentStyle
 {
-  v14 = [(PXStoryStyleManager *)self currentStyleInfo];
-  v3 = [(PXStoryStyleManager *)self styleProducer];
-  v4 = [v14 customColorGradeKind];
-  v5 = [v14 originalColorGradeCategory];
-  v6 = [v14 songResource];
-  v7 = [(PXStoryStyleManager *)self cueSource];
-  v8 = [v14 autoEditDecisionList];
-  v9 = [(PXStoryStyleManager *)self styleOptions];
+  currentStyleInfo = [(PXStoryStyleManager *)self currentStyleInfo];
+  styleProducer = [(PXStoryStyleManager *)self styleProducer];
+  customColorGradeKind = [currentStyleInfo customColorGradeKind];
+  originalColorGradeCategory = [currentStyleInfo originalColorGradeCategory];
+  songResource = [currentStyleInfo songResource];
+  cueSource = [(PXStoryStyleManager *)self cueSource];
+  autoEditDecisionList = [currentStyleInfo autoEditDecisionList];
+  styleOptions = [(PXStoryStyleManager *)self styleOptions];
   v11 = v10;
-  LOBYTE(v13) = [v14 isCustomized];
-  v12 = [v3 styleWithCustomColorGradeKind:v4 originalColorGradeCategory:v5 songResource:v6 cueSource:v7 autoEditDecisionList:v8 styleOptions:v9 isCustomized:{v11, v13}];
+  LOBYTE(v13) = [currentStyleInfo isCustomized];
+  v12 = [styleProducer styleWithCustomColorGradeKind:customColorGradeKind originalColorGradeCategory:originalColorGradeCategory songResource:songResource cueSource:cueSource autoEditDecisionList:autoEditDecisionList styleOptions:styleOptions isCustomized:{v11, v13}];
   [(PXStoryStyleManager *)self setCurrentStyle:v12];
 }
 
 - (void)_updateCurrentStyleInfo
 {
-  v23 = [(PXStoryStyleManager *)self currentStyleInfo];
-  v3 = [(PXStoryStyleManager *)self styleConfigurationList];
-  if (v3)
+  currentStyleInfo = [(PXStoryStyleManager *)self currentStyleInfo];
+  styleConfigurationList = [(PXStoryStyleManager *)self styleConfigurationList];
+  if (styleConfigurationList)
   {
-    v4 = [v23 songResource];
-    v5 = v4;
-    if (v4 && !PXStorySongResourceIsNullResource(v4))
+    songResource = [currentStyleInfo songResource];
+    v5 = songResource;
+    if (songResource && !PXStorySongResourceIsNullResource(songResource))
     {
-      v7 = [v5 px_storyResourceSongAsset];
-      if (!v7)
+      px_storyResourceSongAsset = [v5 px_storyResourceSongAsset];
+      if (!px_storyResourceSongAsset)
       {
         goto LABEL_12;
       }
 
-      v19 = [(PXStoryStyleManager *)self recipeManager];
-      v20 = [v19 recipe];
-      v21 = [v20 autoEditDecisionListsBySong];
-      v16 = [v21 objectForKeyedSubscript:v7];
+      recipeManager = [(PXStoryStyleManager *)self recipeManager];
+      recipe = [recipeManager recipe];
+      autoEditDecisionListsBySong = [recipe autoEditDecisionListsBySong];
+      v16 = [autoEditDecisionListsBySong objectForKeyedSubscript:px_storyResourceSongAsset];
 
       if (!v16)
       {
         goto LABEL_12;
       }
 
-      v17 = [v23 copyWithAutoEditDecisionList:v16];
-      v18 = v23;
+      v17 = [currentStyleInfo copyWithAutoEditDecisionList:v16];
+      v18 = currentStyleInfo;
     }
 
     else
     {
-      v6 = [v3 initialStyleConfiguration];
-      v7 = v6;
-      if (!v6)
+      initialStyleConfiguration = [styleConfigurationList initialStyleConfiguration];
+      px_storyResourceSongAsset = initialStyleConfiguration;
+      if (!initialStyleConfiguration)
       {
 LABEL_12:
 
         goto LABEL_13;
       }
 
-      v22 = [v6 songResource];
-      v8 = [v7 originalColorGradeCategory];
-      v9 = [v7 autoEditDecisionList];
-      v10 = [v7 customColorGradeKind];
-      v11 = [v7 isCustomized];
-      if (!v10)
+      songResource2 = [initialStyleConfiguration songResource];
+      originalColorGradeCategory = [px_storyResourceSongAsset originalColorGradeCategory];
+      autoEditDecisionList = [px_storyResourceSongAsset autoEditDecisionList];
+      customColorGradeKind = [px_storyResourceSongAsset customColorGradeKind];
+      isCustomized = [px_storyResourceSongAsset isCustomized];
+      if (!customColorGradeKind)
       {
-        v12 = [(PXStoryStyleManager *)self colorGradingRepository];
-        v10 = [v12 colorGradeKindForColorGradeCategory:v8];
+        colorGradingRepository = [(PXStoryStyleManager *)self colorGradingRepository];
+        customColorGradeKind = [colorGradingRepository colorGradeKindForColorGradeCategory:originalColorGradeCategory];
       }
 
       v13 = [PXStoryStyleConfiguration alloc];
-      v14 = [v7 originalColorGradeCategory];
-      v15 = v10;
-      v16 = v22;
-      v17 = [(PXStoryStyleConfiguration *)v13 initWithOriginalColorGradeCategory:v14 customColorGradeKind:v15 songResource:v22 autoEditDecisionList:v9 isCustomized:v11];
+      originalColorGradeCategory2 = [px_storyResourceSongAsset originalColorGradeCategory];
+      v15 = customColorGradeKind;
+      v16 = songResource2;
+      v17 = [(PXStoryStyleConfiguration *)v13 initWithOriginalColorGradeCategory:originalColorGradeCategory2 customColorGradeKind:v15 songResource:songResource2 autoEditDecisionList:autoEditDecisionList isCustomized:isCustomized];
 
-      v18 = v8;
+      v18 = originalColorGradeCategory;
     }
 
-    v23 = v17;
+    currentStyleInfo = v17;
     goto LABEL_12;
   }
 
 LABEL_13:
-  [(PXStoryStyleManager *)self setCurrentStyleInfo:v23];
+  [(PXStoryStyleManager *)self setCurrentStyleInfo:currentStyleInfo];
 }
 
 - (void)_invalidateCurrentStyleInfo
 {
-  v2 = [(PXStoryStyleManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateCurrentStyleInfo];
+  updater = [(PXStoryStyleManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateCurrentStyleInfo];
 }
 
-- (void)_handleCueSource:(id)a3 error:(id)a4 requestID:(int64_t)a5
+- (void)_handleCueSource:(id)source error:(id)error requestID:(int64_t)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(PXStoryStyleManager *)self storyQueue];
+  sourceCopy = source;
+  errorCopy = error;
+  storyQueue = [(PXStoryStyleManager *)self storyQueue];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __56__PXStoryStyleManager__handleCueSource_error_requestID___block_invoke;
   v13[3] = &unk_1E774A768;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a5;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, v13);
+  v14 = sourceCopy;
+  v15 = errorCopy;
+  dCopy = d;
+  v11 = errorCopy;
+  v12 = sourceCopy;
+  dispatch_async(storyQueue, v13);
 }
 
 void __56__PXStoryStyleManager__handleCueSource_error_requestID___block_invoke(uint64_t a1)
@@ -436,30 +436,30 @@ void __56__PXStoryStyleManager__handleCueSource_error_requestID___block_invoke(u
 
 - (void)_updateCueSource
 {
-  v3 = [(PXStoryStyleManager *)self currentStyleInfo];
-  v4 = [v3 songResource];
-  if ((PXStorySongResourceIsNullResource(v4) & 1) != 0 || (-[PXStoryStyleManager recipeManager](self, "recipeManager"), v5 = objc_claimAutoreleasedReturnValue(), [v5 configuration], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "options"), v6, v5, (v7 & 2) != 0))
+  currentStyleInfo = [(PXStoryStyleManager *)self currentStyleInfo];
+  songResource = [currentStyleInfo songResource];
+  if ((PXStorySongResourceIsNullResource(songResource) & 1) != 0 || (-[PXStoryStyleManager recipeManager](self, "recipeManager"), v5 = objc_claimAutoreleasedReturnValue(), [v5 configuration], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "options"), v6, v5, (v7 & 2) != 0))
   {
-    v8 = objc_alloc_init(PXConcreteAudioCueSource);
-    [(PXStoryStyleManager *)self setCueSource:v8];
+    px_storyResourceSongAsset = objc_alloc_init(PXConcreteAudioCueSource);
+    [(PXStoryStyleManager *)self setCueSource:px_storyResourceSongAsset];
   }
 
   else
   {
-    v8 = [v4 px_storyResourceSongAsset];
-    if (v8)
+    px_storyResourceSongAsset = [songResource px_storyResourceSongAsset];
+    if (px_storyResourceSongAsset)
     {
       [(PXStoryStyleManager *)self setCueRequestID:[(PXStoryStyleManager *)self cueRequestID]+ 1];
-      v9 = [(PXStoryStyleManager *)self cueRequestID];
+      cueRequestID = [(PXStoryStyleManager *)self cueRequestID];
       objc_initWeak(&location, self);
-      v10 = [(PXStoryStyleManager *)self cueProvider];
+      cueProvider = [(PXStoryStyleManager *)self cueProvider];
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __39__PXStoryStyleManager__updateCueSource__block_invoke;
       v12[3] = &unk_1E773CCF8;
       objc_copyWeak(v13, &location);
-      v13[1] = v9;
-      v11 = [v10 requestCuesForAudioAsset:v8 resultHandler:v12];
+      v13[1] = cueRequestID;
+      v11 = [cueProvider requestCuesForAudioAsset:px_storyResourceSongAsset resultHandler:v12];
 
       objc_destroyWeak(v13);
       objc_destroyWeak(&location);
@@ -508,49 +508,49 @@ void __39__PXStoryStyleManager__updateCueSource__block_invoke_2(uint64_t a1)
 
 - (void)_invalidateCueSource
 {
-  v2 = [(PXStoryStyleManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateCueSource];
+  updater = [(PXStoryStyleManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateCueSource];
 }
 
 - (void)_invalidateCurrentStyle
 {
-  v2 = [(PXStoryStyleManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateCurrentStyle];
+  updater = [(PXStoryStyleManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateCurrentStyle];
 }
 
 - (void)_updateStylesAttributes
 {
-  v3 = [(PXStoryStyleManager *)self recipeManager];
-  -[PXStoryStyleManager setStylesAttributes:](self, "setStylesAttributes:", [v3 recipeAttributes]);
+  recipeManager = [(PXStoryStyleManager *)self recipeManager];
+  -[PXStoryStyleManager setStylesAttributes:](self, "setStylesAttributes:", [recipeManager recipeAttributes]);
 }
 
 - (void)_invalidateStylesAttributes
 {
-  v2 = [(PXStoryStyleManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateStylesAttributes];
+  updater = [(PXStoryStyleManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateStylesAttributes];
 }
 
 - (void)_updatePredefinedStyleInfos
 {
-  v4 = [(PXStoryStyleManager *)self styleConfigurationList];
-  v5 = [v4 autoEditStyleConfigurations];
-  v6 = [(PXStoryStyleManager *)self recipeManager];
-  v7 = [v6 configuration];
+  styleConfigurationList = [(PXStoryStyleManager *)self styleConfigurationList];
+  autoEditStyleConfigurations = [styleConfigurationList autoEditStyleConfigurations];
+  recipeManager = [(PXStoryStyleManager *)self recipeManager];
+  configuration = [recipeManager configuration];
 
-  v8 = ([v7 options] & 0x10) == 0;
-  if ([v5 count])
+  v8 = ([configuration options] & 0x10) == 0;
+  if ([autoEditStyleConfigurations count])
   {
-    v9 = [(PXStoryStyleManager *)self colorGradingRepository];
-    v10 = [(PXStoryStyleManager *)self currentStyleInfo];
-    v11 = [v10 customColorGradeKind];
-    if (!v11)
+    colorGradingRepository = [(PXStoryStyleManager *)self colorGradingRepository];
+    currentStyleInfo = [(PXStoryStyleManager *)self currentStyleInfo];
+    customColorGradeKind = [currentStyleInfo customColorGradeKind];
+    if (!customColorGradeKind)
     {
-      v12 = [v10 originalColorGradeCategory];
-      v11 = [v9 colorGradeKindForColorGradeCategory:v12 excludingKinds:0];
+      originalColorGradeCategory = [currentStyleInfo originalColorGradeCategory];
+      customColorGradeKind = [colorGradingRepository colorGradeKindForColorGradeCategory:originalColorGradeCategory excludingKinds:0];
     }
 
-    v13 = [objc_alloc(MEMORY[0x1E696AD50]) initWithIndex:v11];
-    v14 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v5, "count")}];
+    v13 = [objc_alloc(MEMORY[0x1E696AD50]) initWithIndex:customColorGradeKind];
+    v14 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(autoEditStyleConfigurations, "count")}];
     v19 = MEMORY[0x1E69E9820];
     v20 = 3221225472;
     v21 = __50__PXStoryStyleManager__updatePredefinedStyleInfos__block_invoke;
@@ -558,13 +558,13 @@ void __39__PXStoryStyleManager__updateCueSource__block_invoke_2(uint64_t a1)
     v28 = v8;
     v26 = v14;
     v27 = a2;
-    v23 = self;
-    v24 = v9;
+    selfCopy = self;
+    v24 = colorGradingRepository;
     v25 = v13;
     v15 = v14;
     v16 = v13;
-    v17 = v9;
-    [v5 enumerateObjectsUsingBlock:&v19];
+    v17 = colorGradingRepository;
+    [autoEditStyleConfigurations enumerateObjectsUsingBlock:&v19];
     v18 = [v15 copy];
   }
 
@@ -628,31 +628,31 @@ LABEL_10:
 
 - (void)_invalidatePredefinedStyleInfos
 {
-  v2 = [(PXStoryStyleManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updatePredefinedStyleInfos];
+  updater = [(PXStoryStyleManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updatePredefinedStyleInfos];
 }
 
 - (void)_updateStyleConfigurationList
 {
-  v5 = [(PXStoryStyleManager *)self recipeManager];
-  v3 = [v5 recipe];
-  v4 = [v3 styleConfigurationList];
-  [(PXStoryStyleManager *)self setStyleConfigurationList:v4];
+  recipeManager = [(PXStoryStyleManager *)self recipeManager];
+  recipe = [recipeManager recipe];
+  styleConfigurationList = [recipe styleConfigurationList];
+  [(PXStoryStyleManager *)self setStyleConfigurationList:styleConfigurationList];
 }
 
 - (void)_invalidateStyleConfigurationList
 {
-  v2 = [(PXStoryStyleManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateStyleConfigurationList];
+  updater = [(PXStoryStyleManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateStyleConfigurationList];
 }
 
-- (void)setCueSource:(id)a3
+- (void)setCueSource:(id)source
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_cueSource != v5 && ([(PXAudioCueSource *)v5 isEqual:?]& 1) == 0)
+  sourceCopy = source;
+  v6 = sourceCopy;
+  if (self->_cueSource != sourceCopy && ([(PXAudioCueSource *)sourceCopy isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_cueSource, a3);
+    objc_storeStrong(&self->_cueSource, source);
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __36__PXStoryStyleManager_setCueSource___block_invoke;
@@ -670,19 +670,19 @@ uint64_t __36__PXStoryStyleManager_setCueSource___block_invoke(uint64_t a1)
   return [v2 _invalidateCurrentStyleAttributes];
 }
 
-- (void)setSelectionFocus:(double)a3
+- (void)setSelectionFocus:(double)focus
 {
-  if (self->_selectionFocus != a3)
+  if (self->_selectionFocus != focus)
   {
-    self->_selectionFocus = a3;
+    self->_selectionFocus = focus;
     [(PXStoryStyleManager *)self signalChange:256];
   }
 }
 
-- (void)applyStyleAtIndex:(int64_t)a3 fromDataSource:(id)a4
+- (void)applyStyleAtIndex:(int64_t)index fromDataSource:(id)source
 {
-  v7 = [a4 styleInfos];
-  v13 = [v7 objectAtIndexedSubscript:a3];
+  styleInfos = [source styleInfos];
+  v13 = [styleInfos objectAtIndexedSubscript:index];
 
   if (v13)
   {
@@ -692,19 +692,19 @@ uint64_t __36__PXStoryStyleManager_setCueSource___block_invoke(uint64_t a1)
       goto LABEL_3;
     }
 
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v11 = objc_opt_class();
     v10 = NSStringFromClass(v11);
-    v12 = [v13 px_descriptionForAssertionMessage];
-    [v8 handleFailureInMethod:a2 object:self file:@"PXStoryStyleManager.m" lineNumber:275 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"dataSource.styleInfos[index]", v10, v12}];
+    px_descriptionForAssertionMessage = [v13 px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryStyleManager.m" lineNumber:275 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"dataSource.styleInfos[index]", v10, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
-    [v8 handleFailureInMethod:a2 object:self file:@"PXStoryStyleManager.m" lineNumber:275 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"dataSource.styleInfos[index]", v10}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryStyleManager.m" lineNumber:275 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"dataSource.styleInfos[index]", v10}];
   }
 
 LABEL_3:
@@ -713,17 +713,17 @@ LABEL_3:
 
 - (void)applyFocusedStyle
 {
-  v3 = [(PXStoryStyleManager *)self focusedStyleIndex];
-  v4 = [(PXStoryStyleManager *)self selectionDataSource];
-  [(PXStoryStyleManager *)self applyStyleAtIndex:v3 fromDataSource:v4];
+  focusedStyleIndex = [(PXStoryStyleManager *)self focusedStyleIndex];
+  selectionDataSource = [(PXStoryStyleManager *)self selectionDataSource];
+  [(PXStoryStyleManager *)self applyStyleAtIndex:focusedStyleIndex fromDataSource:selectionDataSource];
 }
 
-- (void)applyFocusedStyleWithCustomizedSongResource:(id)a3
+- (void)applyFocusedStyleWithCustomizedSongResource:(id)resource
 {
-  v5 = a3;
-  v6 = [(PXStoryStyleManager *)self selectionDataSource];
-  v7 = [v6 styleInfos];
-  v8 = [v7 objectAtIndexedSubscript:{-[PXStoryStyleManager focusedStyleIndex](self, "focusedStyleIndex")}];
+  resourceCopy = resource;
+  selectionDataSource = [(PXStoryStyleManager *)self selectionDataSource];
+  styleInfos = [selectionDataSource styleInfos];
+  v8 = [styleInfos objectAtIndexedSubscript:{-[PXStoryStyleManager focusedStyleIndex](self, "focusedStyleIndex")}];
 
   if (v8)
   {
@@ -733,43 +733,43 @@ LABEL_3:
       goto LABEL_3;
     }
 
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v15 = objc_opt_class();
     v14 = NSStringFromClass(v15);
-    v16 = [v8 px_descriptionForAssertionMessage];
-    [v12 handleFailureInMethod:a2 object:self file:@"PXStoryStyleManager.m" lineNumber:260 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.selectionDataSource.styleInfos[self.focusedStyleIndex]", v14, v16}];
+    px_descriptionForAssertionMessage = [v8 px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryStyleManager.m" lineNumber:260 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.selectionDataSource.styleInfos[self.focusedStyleIndex]", v14, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v13 = objc_opt_class();
     v14 = NSStringFromClass(v13);
-    [v12 handleFailureInMethod:a2 object:self file:@"PXStoryStyleManager.m" lineNumber:260 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.selectionDataSource.styleInfos[self.focusedStyleIndex]", v14}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryStyleManager.m" lineNumber:260 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.selectionDataSource.styleInfos[self.focusedStyleIndex]", v14}];
   }
 
 LABEL_3:
-  v9 = [v5 px_storyResourceSongAsset];
-  if (v9)
+  px_storyResourceSongAsset = [resourceCopy px_storyResourceSongAsset];
+  if (px_storyResourceSongAsset)
   {
-    v10 = [(PXStoryStyleManager *)self recipeManager];
+    recipeManager = [(PXStoryStyleManager *)self recipeManager];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __67__PXStoryStyleManager_applyFocusedStyleWithCustomizedSongResource___block_invoke;
     v17[3] = &unk_1E773CCA8;
-    v18 = v9;
-    [v10 performChanges:v17];
+    v18 = px_storyResourceSongAsset;
+    [recipeManager performChanges:v17];
   }
 
-  v11 = [v8 copyWithCustomizedSongResource:v5];
+  v11 = [v8 copyWithCustomizedSongResource:resourceCopy];
   [(PXStoryStyleManager *)self setCurrentStyleInfo:v11];
 }
 
-- (void)applyFocusedStyleWithCustomizedColorGradeKind:(int64_t)a3
+- (void)applyFocusedStyleWithCustomizedColorGradeKind:(int64_t)kind
 {
-  v6 = [(PXStoryStyleManager *)self selectionDataSource];
-  v7 = [v6 styleInfos];
-  v14 = [v7 objectAtIndexedSubscript:{-[PXStoryStyleManager focusedStyleIndex](self, "focusedStyleIndex")}];
+  selectionDataSource = [(PXStoryStyleManager *)self selectionDataSource];
+  styleInfos = [selectionDataSource styleInfos];
+  v14 = [styleInfos objectAtIndexedSubscript:{-[PXStoryStyleManager focusedStyleIndex](self, "focusedStyleIndex")}];
 
   if (v14)
   {
@@ -779,23 +779,23 @@ LABEL_3:
       goto LABEL_3;
     }
 
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v12 = objc_opt_class();
     v11 = NSStringFromClass(v12);
-    v13 = [v14 px_descriptionForAssertionMessage];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXStoryStyleManager.m" lineNumber:255 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.selectionDataSource.styleInfos[self.focusedStyleIndex]", v11, v13}];
+    px_descriptionForAssertionMessage = [v14 px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryStyleManager.m" lineNumber:255 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.selectionDataSource.styleInfos[self.focusedStyleIndex]", v11, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
-    [v9 handleFailureInMethod:a2 object:self file:@"PXStoryStyleManager.m" lineNumber:255 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.selectionDataSource.styleInfos[self.focusedStyleIndex]", v11}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryStyleManager.m" lineNumber:255 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.selectionDataSource.styleInfos[self.focusedStyleIndex]", v11}];
   }
 
 LABEL_3:
-  v8 = [v14 copyWithCustomizedColorGradeKind:a3];
+  v8 = [v14 copyWithCustomizedColorGradeKind:kind];
   [(PXStoryStyleManager *)self setCurrentStyleInfo:v8];
 }
 
@@ -804,25 +804,25 @@ LABEL_3:
   v4.receiver = self;
   v4.super_class = PXStoryStyleManager;
   [(PXStoryStyleManager *)&v4 didPerformChanges];
-  v3 = [(PXStoryStyleManager *)self updater];
-  [v3 updateIfNeeded];
+  updater = [(PXStoryStyleManager *)self updater];
+  [updater updateIfNeeded];
 }
 
 - (BOOL)focusedStyleIsCurrentStyle
 {
-  v3 = [(PXStoryStyleManager *)self focusedStyleIndex];
-  v4 = [(PXStoryStyleManager *)self selectionDataSource];
-  LOBYTE(v3) = v3 == [v4 indexOfCurrentStyle];
+  focusedStyleIndex = [(PXStoryStyleManager *)self focusedStyleIndex];
+  selectionDataSource = [(PXStoryStyleManager *)self selectionDataSource];
+  LOBYTE(focusedStyleIndex) = focusedStyleIndex == [selectionDataSource indexOfCurrentStyle];
 
-  return v3;
+  return focusedStyleIndex;
 }
 
 - (int64_t)focusedStyleIndex
 {
   [(PXStoryStyleManager *)self selectionFocus];
   v4 = round(v3);
-  v5 = [(PXStoryStyleManager *)self selectionDataSource];
-  v6 = [v5 numberOfStyles] - 1;
+  selectionDataSource = [(PXStoryStyleManager *)self selectionDataSource];
+  v6 = [selectionDataSource numberOfStyles] - 1;
 
   v7 = v6;
   if (v4 < v6)
@@ -833,18 +833,18 @@ LABEL_3:
   return fmax(v7, 0.0);
 }
 
-- (void)setSelectionDataSource:(id)a3
+- (void)setSelectionDataSource:(id)source
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_selectionDataSource != v5)
+  sourceCopy = source;
+  v6 = sourceCopy;
+  if (self->_selectionDataSource != sourceCopy)
   {
-    v8 = v5;
-    v7 = [(PXStoryStyleSelectionDataSource *)v5 isEqual:?];
+    v8 = sourceCopy;
+    v7 = [(PXStoryStyleSelectionDataSource *)sourceCopy isEqual:?];
     v6 = v8;
     if (!v7)
     {
-      objc_storeStrong(&self->_selectionDataSource, a3);
+      objc_storeStrong(&self->_selectionDataSource, source);
       [(PXStoryStyleManager *)self setSelectionFocus:[(PXStoryStyleSelectionDataSource *)v8 indexOfCurrentStyle]];
       [(PXStoryStyleManager *)self _invalidateSelectionDataSourceAttributes];
       [(PXStoryStyleManager *)self signalChange:32];
@@ -853,32 +853,32 @@ LABEL_3:
   }
 }
 
-- (void)setAreSelectionDataSourceStylesFinal:(BOOL)a3
+- (void)setAreSelectionDataSourceStylesFinal:(BOOL)final
 {
-  if (self->_areSelectionDataSourceStylesFinal != a3)
+  if (self->_areSelectionDataSourceStylesFinal != final)
   {
-    self->_areSelectionDataSourceStylesFinal = a3;
+    self->_areSelectionDataSourceStylesFinal = final;
     [(PXStoryStyleManager *)self signalChange:128];
   }
 }
 
-- (void)setSelectionDataSourceStylesAttributes:(unint64_t)a3
+- (void)setSelectionDataSourceStylesAttributes:(unint64_t)attributes
 {
   selectionDataSourceStylesAttributes = self->_selectionDataSourceStylesAttributes;
-  if (selectionDataSourceStylesAttributes != a3)
+  if (selectionDataSourceStylesAttributes != attributes)
   {
-    if ((selectionDataSourceStylesAttributes & 2) != 0 && ((self->_selectionDataSourceStylesAttributes & 1) == 0) | a3 & 1)
+    if ((selectionDataSourceStylesAttributes & 2) != 0 && ((self->_selectionDataSourceStylesAttributes & 1) == 0) | attributes & 1)
     {
-      if ((a3 & 2) != 0)
+      if ((attributes & 2) != 0)
       {
         goto LABEL_8;
       }
     }
 
-    else if ((((self->_selectionDataSourceStylesAttributes & 2) == 0) & (((self->_selectionDataSourceStylesAttributes & 1) == 0) | a3)) != 0)
+    else if ((((self->_selectionDataSourceStylesAttributes & 2) == 0) & (((self->_selectionDataSourceStylesAttributes & 1) == 0) | attributes)) != 0)
     {
 LABEL_8:
-      self->_selectionDataSourceStylesAttributes = a3;
+      self->_selectionDataSourceStylesAttributes = attributes;
       [(PXStoryStyleManager *)self signalChange:64];
       [(PXStoryStyleManager *)self setAreSelectionDataSourceStylesFinal:(self->_selectionDataSourceStylesAttributes >> 1) & 1];
       return;
@@ -888,32 +888,32 @@ LABEL_8:
   }
 }
 
-- (void)setIsCurrentStyleFinal:(BOOL)a3
+- (void)setIsCurrentStyleFinal:(BOOL)final
 {
-  if (self->_isCurrentStyleFinal != a3)
+  if (self->_isCurrentStyleFinal != final)
   {
-    self->_isCurrentStyleFinal = a3;
+    self->_isCurrentStyleFinal = final;
     [(PXStoryStyleManager *)self signalChange:16];
   }
 }
 
-- (void)setCurrentStyleAttributes:(unint64_t)a3
+- (void)setCurrentStyleAttributes:(unint64_t)attributes
 {
   currentStyleAttributes = self->_currentStyleAttributes;
-  if (currentStyleAttributes != a3)
+  if (currentStyleAttributes != attributes)
   {
-    if ((currentStyleAttributes & 2) != 0 && ((self->_currentStyleAttributes & 1) == 0) | a3 & 1)
+    if ((currentStyleAttributes & 2) != 0 && ((self->_currentStyleAttributes & 1) == 0) | attributes & 1)
     {
-      if ((a3 & 2) != 0)
+      if ((attributes & 2) != 0)
       {
         goto LABEL_8;
       }
     }
 
-    else if ((((self->_currentStyleAttributes & 2) == 0) & (((self->_currentStyleAttributes & 1) == 0) | a3)) != 0)
+    else if ((((self->_currentStyleAttributes & 2) == 0) & (((self->_currentStyleAttributes & 1) == 0) | attributes)) != 0)
     {
 LABEL_8:
-      self->_currentStyleAttributes = a3;
+      self->_currentStyleAttributes = attributes;
       [(PXStoryStyleManager *)self signalChange:8];
       [(PXStoryStyleManager *)self setIsCurrentStyleFinal:(self->_currentStyleAttributes >> 1) & 1];
       return;
@@ -923,36 +923,36 @@ LABEL_8:
   }
 }
 
-- (void)setCurrentStyle:(id)a3
+- (void)setCurrentStyle:(id)style
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_currentStyle != v5)
+  styleCopy = style;
+  v6 = styleCopy;
+  if (self->_currentStyle != styleCopy)
   {
-    v8 = v5;
-    v7 = [(PXStoryStyle *)v5 isEqual:?];
+    v8 = styleCopy;
+    v7 = [(PXStoryStyle *)styleCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_currentStyle, a3);
+      objc_storeStrong(&self->_currentStyle, style);
       [(PXStoryStyleManager *)self signalChange:4];
       v6 = v8;
     }
   }
 }
 
-- (void)setCurrentStyleInfo:(id)a3
+- (void)setCurrentStyleInfo:(id)info
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_currentStyleInfo != v5)
+  infoCopy = info;
+  v6 = infoCopy;
+  if (self->_currentStyleInfo != infoCopy)
   {
-    v8 = v5;
-    v7 = [(PXStoryStyleConfiguration *)v5 isEqual:?];
+    v8 = infoCopy;
+    v7 = [(PXStoryStyleConfiguration *)infoCopy isEqual:?];
     v6 = v8;
     if (!v7)
     {
-      objc_storeStrong(&self->_currentStyleInfo, a3);
+      objc_storeStrong(&self->_currentStyleInfo, info);
       [(PXStoryStyleManager *)self _invalidateCueSource];
       [(PXStoryStyleManager *)self _invalidateCurrentStyle];
       [(PXStoryStyleManager *)self _invalidatePredefinedStyleInfos];
@@ -963,18 +963,18 @@ LABEL_8:
   }
 }
 
-- (void)setAreStylesFinal:(BOOL)a3
+- (void)setAreStylesFinal:(BOOL)final
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (self->_areStylesFinal != a3)
+  if (self->_areStylesFinal != final)
   {
-    self->_areStylesFinal = a3;
+    self->_areStylesFinal = final;
     v4 = PLStoryGetLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       areStylesFinal = self->_areStylesFinal;
       v6 = 138412546;
-      v7 = self;
+      selfCopy = self;
       v8 = 1024;
       v9 = areStylesFinal;
       _os_log_impl(&dword_1A3C1C000, v4, OS_LOG_TYPE_INFO, "%@ areStylesFinal: %i", &v6, 0x12u);
@@ -982,24 +982,24 @@ LABEL_8:
   }
 }
 
-- (void)setStylesAttributes:(unint64_t)a3
+- (void)setStylesAttributes:(unint64_t)attributes
 {
   stylesAttributes = self->_stylesAttributes;
-  if (stylesAttributes != a3)
+  if (stylesAttributes != attributes)
   {
-    if ((stylesAttributes & 2) != 0 && ((self->_stylesAttributes & 1) == 0) | a3 & 1)
+    if ((stylesAttributes & 2) != 0 && ((self->_stylesAttributes & 1) == 0) | attributes & 1)
     {
-      if ((a3 & 2) != 0)
+      if ((attributes & 2) != 0)
       {
         goto LABEL_8;
       }
     }
 
-    else if ((((self->_stylesAttributes & 2) == 0) & (((self->_stylesAttributes & 1) == 0) | a3)) != 0)
+    else if ((((self->_stylesAttributes & 2) == 0) & (((self->_stylesAttributes & 1) == 0) | attributes)) != 0)
     {
 LABEL_8:
-      self->_stylesAttributes = a3;
-      [(PXStoryStyleManager *)self setAreStylesFinal:(a3 >> 1) & 1];
+      self->_stylesAttributes = attributes;
+      [(PXStoryStyleManager *)self setAreStylesFinal:(attributes >> 1) & 1];
       return;
     }
 
@@ -1007,14 +1007,14 @@ LABEL_8:
   }
 }
 
-- (void)setPredefinedStyleInfos:(id)a3
+- (void)setPredefinedStyleInfos:(id)infos
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_predefinedStyleInfos != v4)
+  infosCopy = infos;
+  v5 = infosCopy;
+  if (self->_predefinedStyleInfos != infosCopy)
   {
-    v9 = v4;
-    v6 = [(NSArray *)v4 isEqual:?];
+    v9 = infosCopy;
+    v6 = [(NSArray *)infosCopy isEqual:?];
     v5 = v9;
     if ((v6 & 1) == 0)
     {
@@ -1029,18 +1029,18 @@ LABEL_8:
   }
 }
 
-- (void)setStyleConfigurationList:(id)a3
+- (void)setStyleConfigurationList:(id)list
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_styleConfigurationList != v5)
+  listCopy = list;
+  v6 = listCopy;
+  if (self->_styleConfigurationList != listCopy)
   {
-    v8 = v5;
-    v7 = [(PXStoryStyleConfigurationList *)v5 isEqual:?];
+    v8 = listCopy;
+    v7 = [(PXStoryStyleConfigurationList *)listCopy isEqual:?];
     v6 = v8;
     if (!v7)
     {
-      objc_storeStrong(&self->_styleConfigurationList, a3);
+      objc_storeStrong(&self->_styleConfigurationList, list);
       [(PXStoryStyleManager *)self _invalidatePredefinedStyleInfos];
       [(PXStoryStyleManager *)self _invalidateCurrentStyleInfo];
       v6 = v8;
@@ -1056,67 +1056,67 @@ LABEL_8:
   self->_changesOrigin = 0;
 }
 
-- (void)performChanges:(id)a3 origin:(unint64_t)a4
+- (void)performChanges:(id)changes origin:(unint64_t)origin
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(PXStoryStyleManager *)self storyQueue];
-  dispatch_assert_queue_V2(v7);
+  changesCopy = changes;
+  storyQueue = [(PXStoryStyleManager *)self storyQueue];
+  dispatch_assert_queue_V2(storyQueue);
 
-  self->_changesOrigin |= a4;
+  self->_changesOrigin |= origin;
   v8 = PLStoryGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412546;
-    v11 = self;
+    selfCopy = self;
     v12 = 2048;
-    v13 = a4;
+    originCopy = origin;
     _os_log_impl(&dword_1A3C1C000, v8, OS_LOG_TYPE_DEBUG, "%@ performChanges with origin: %lu", buf, 0x16u);
   }
 
   v9.receiver = self;
   v9.super_class = PXStoryStyleManager;
-  [(PXStoryStyleManager *)&v9 performChanges:v6];
+  [(PXStoryStyleManager *)&v9 performChanges:changesCopy];
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PXStoryStyleManager.m" lineNumber:111 description:@"Code which should be unreachable has been reached"];
+  changesCopy = changes;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryStyleManager.m" lineNumber:111 description:@"Code which should be unreachable has been reached"];
 
   abort();
 }
 
-- (PXStoryStyleManager)initWithRecipeManager:(id)a3 errorReporter:(id)a4
+- (PXStoryStyleManager)initWithRecipeManager:(id)manager errorReporter:(id)reporter
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  reporterCopy = reporter;
   v26.receiver = self;
   v26.super_class = PXStoryStyleManager;
   v9 = [(PXStoryStyleManager *)&v26 init];
   v10 = v9;
   if (v9)
   {
-    [(PXStoryStyleManager *)v9 copyLogConfigurationFrom:v7];
-    objc_storeStrong(&v10->_recipeManager, a3);
-    objc_storeStrong(&v10->_errorReporter, a4);
+    [(PXStoryStyleManager *)v9 copyLogConfigurationFrom:managerCopy];
+    objc_storeStrong(&v10->_recipeManager, manager);
+    objc_storeStrong(&v10->_errorReporter, reporter);
     v11 = +[PXStoryColorGradingRepositoryFactory sharedRepository];
     colorGradingRepository = v10->_colorGradingRepository;
     v10->_colorGradingRepository = v11;
 
     [(PXStoryRecipeManager *)v10->_recipeManager registerChangeObserver:v10 context:RecipeManagerObservationContext_138985];
-    v13 = [v7 configuration];
-    v14 = PXStoryDefaultStyleProducerForConfiguration(v13);
+    configuration = [managerCopy configuration];
+    v14 = PXStoryDefaultStyleProducerForConfiguration(configuration);
     styleProducer = v10->_styleProducer;
     v10->_styleProducer = v14;
 
-    v16 = [v13 options];
+    options = [configuration options];
     v10->_styleOptions.croppingOptions = 0;
-    *&v10->_styleOptions.preferStillKeySegment = (v16 & 2) == 0;
-    v17 = [(PXStoryRecipeManager *)v10->_recipeManager storyQueue];
+    *&v10->_styleOptions.preferStillKeySegment = (options & 2) == 0;
+    storyQueue = [(PXStoryRecipeManager *)v10->_recipeManager storyQueue];
     storyQueue = v10->_storyQueue;
-    v10->_storyQueue = v17;
+    v10->_storyQueue = storyQueue;
 
     v19 = objc_alloc_init(_PXDefaultAudioCueProvider);
     cueProvider = v10->_cueProvider;
@@ -1160,8 +1160,8 @@ uint64_t __59__PXStoryStyleManager_initWithRecipeManager_errorReporter___block_i
 
 - (PXStoryStyleManager)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryStyleManager.m" lineNumber:54 description:{@"%s is not available as initializer", "-[PXStoryStyleManager init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryStyleManager.m" lineNumber:54 description:{@"%s is not available as initializer", "-[PXStoryStyleManager init]"}];
 
   abort();
 }

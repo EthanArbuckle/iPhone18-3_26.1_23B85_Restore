@@ -1,31 +1,31 @@
 @interface NMArgument
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NMLocation)locationValue;
 - (id)_nm_arrayValue;
-- (id)_nm_compressedArgument:(int)a3;
+- (id)_nm_compressedArgument:(int)argument;
 - (id)_nm_dictionaryValue;
 - (id)_nm_errorValue;
 - (id)_nm_locationValue;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsTag:(id)a3;
+- (int)StringAsTag:(id)tag;
 - (int)tag;
 - (unint64_t)hash;
-- (unint64_t)unsignedIntListValueAtIndex:(unint64_t)a3;
-- (void)addDataListValue:(id)a3;
-- (void)addStringListValue:(id)a3;
-- (void)addStringToObjectMap:(id)a3;
-- (void)addTileRequestValue:(id)a3;
-- (void)copyTo:(id)a3;
+- (unint64_t)unsignedIntListValueAtIndex:(unint64_t)index;
+- (void)addDataListValue:(id)value;
+- (void)addStringListValue:(id)value;
+- (void)addStringToObjectMap:(id)map;
+- (void)addTileRequestValue:(id)value;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasBoolValue:(BOOL)a3;
-- (void)setHasDoubleValue:(BOOL)a3;
-- (void)setHasIntValue:(BOOL)a3;
-- (void)setHasTag:(BOOL)a3;
-- (void)setLocationValue:(NMLocation *)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasBoolValue:(BOOL)value;
+- (void)setHasDoubleValue:(BOOL)value;
+- (void)setHasIntValue:(BOOL)value;
+- (void)setHasTag:(BOOL)tag;
+- (void)setLocationValue:(NMLocation *)value;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NMArgument
@@ -51,9 +51,9 @@
   [(NMArgument *)&v3 dealloc];
 }
 
-- (void)setHasTag:(BOOL)a3
+- (void)setHasTag:(BOOL)tag
 {
-  if (a3)
+  if (tag)
   {
     v3 = 8;
   }
@@ -66,245 +66,245 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (int)StringAsTag:(id)a3
+- (int)StringAsTag:(id)tag
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"DATA"])
+  tagCopy = tag;
+  if ([tagCopy isEqualToString:@"DATA"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"USER_INFO"])
+  else if ([tagCopy isEqualToString:@"USER_INFO"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"ERROR"])
+  else if ([tagCopy isEqualToString:@"ERROR"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"BUNDLE_IDENTIFIER"])
+  else if ([tagCopy isEqualToString:@"BUNDLE_IDENTIFIER"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"FLAG"])
+  else if ([tagCopy isEqualToString:@"FLAG"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"SHA256_HASH"])
+  else if ([tagCopy isEqualToString:@"SHA256_HASH"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"OFFLINE_COHORT_ID"])
+  else if ([tagCopy isEqualToString:@"OFFLINE_COHORT_ID"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"TILE_KEY"])
+  else if ([tagCopy isEqualToString:@"TILE_KEY"])
   {
     v4 = 100;
   }
 
-  else if ([v3 isEqualToString:@"ETAG"])
+  else if ([tagCopy isEqualToString:@"ETAG"])
   {
     v4 = 101;
   }
 
-  else if ([v3 isEqualToString:@"TILE_REQUESTS"])
+  else if ([tagCopy isEqualToString:@"TILE_REQUESTS"])
   {
     v4 = 102;
   }
 
-  else if ([v3 isEqualToString:@"REQUEST_IDENTIFIER"])
+  else if ([tagCopy isEqualToString:@"REQUEST_IDENTIFIER"])
   {
     v4 = 103;
   }
 
-  else if ([v3 isEqualToString:@"BASE_TILE_DATA"])
+  else if ([tagCopy isEqualToString:@"BASE_TILE_DATA"])
   {
     v4 = 104;
   }
 
-  else if ([v3 isEqualToString:@"BASE_TILE_ETAG"])
+  else if ([tagCopy isEqualToString:@"BASE_TILE_ETAG"])
   {
     v4 = 105;
   }
 
-  else if ([v3 isEqualToString:@"LOCALIZATION_TILE_DATA"])
+  else if ([tagCopy isEqualToString:@"LOCALIZATION_TILE_DATA"])
   {
     v4 = 106;
   }
 
-  else if ([v3 isEqualToString:@"LOCALIZATION_TILE_ETAG"])
+  else if ([tagCopy isEqualToString:@"LOCALIZATION_TILE_ETAG"])
   {
     v4 = 107;
   }
 
-  else if ([v3 isEqualToString:@"TILE_GROUP_IDENTIFIER"])
+  else if ([tagCopy isEqualToString:@"TILE_GROUP_IDENTIFIER"])
   {
     v4 = 200;
   }
 
-  else if ([v3 isEqualToString:@"CURRENT_RESOURCES"])
+  else if ([tagCopy isEqualToString:@"CURRENT_RESOURCES"])
   {
     v4 = 201;
   }
 
-  else if ([v3 isEqualToString:@"BUNDLED_RESOURCES_IN_FRAMEWORK"])
+  else if ([tagCopy isEqualToString:@"BUNDLED_RESOURCES_IN_FRAMEWORK"])
   {
     v4 = 202;
   }
 
-  else if ([v3 isEqualToString:@"RESOURCE_NAME"])
+  else if ([tagCopy isEqualToString:@"RESOURCE_NAME"])
   {
     v4 = 205;
   }
 
-  else if ([v3 isEqualToString:@"RESOURCE_IS_REGIONAL"])
+  else if ([tagCopy isEqualToString:@"RESOURCE_IS_REGIONAL"])
   {
     v4 = 206;
   }
 
-  else if ([v3 isEqualToString:@"URL"])
+  else if ([tagCopy isEqualToString:@"URL"])
   {
     v4 = 302;
   }
 
-  else if ([v3 isEqualToString:@"DIRECTIONS_TRANSPORT_TYPE"])
+  else if ([tagCopy isEqualToString:@"DIRECTIONS_TRANSPORT_TYPE"])
   {
     v4 = 400;
   }
 
-  else if ([v3 isEqualToString:@"DIRECTIONS_ROUTE_DETAILS"])
+  else if ([tagCopy isEqualToString:@"DIRECTIONS_ROUTE_DETAILS"])
   {
     v4 = 401;
   }
 
-  else if ([v3 isEqualToString:@"DIRECTIONS_ROUTE_STATUS"])
+  else if ([tagCopy isEqualToString:@"DIRECTIONS_ROUTE_STATUS"])
   {
     v4 = 402;
   }
 
-  else if ([v3 isEqualToString:@"DIRECTIONS_SAFETY_WARNING_TYPE"])
+  else if ([tagCopy isEqualToString:@"DIRECTIONS_SAFETY_WARNING_TYPE"])
   {
     v4 = 403;
   }
 
-  else if ([v3 isEqualToString:@"DIRECTIONS_SOURCE"])
+  else if ([tagCopy isEqualToString:@"DIRECTIONS_SOURCE"])
   {
     v4 = 404;
   }
 
-  else if ([v3 isEqualToString:@"DIRECTIONS_DESTINATION"])
+  else if ([tagCopy isEqualToString:@"DIRECTIONS_DESTINATION"])
   {
     v4 = 405;
   }
 
-  else if ([v3 isEqualToString:@"DIRECTIONS_ROUTE_CONTEXT"])
+  else if ([tagCopy isEqualToString:@"DIRECTIONS_ROUTE_CONTEXT"])
   {
     v4 = 406;
   }
 
-  else if ([v3 isEqualToString:@"DIRECTIONS_START_DATE"])
+  else if ([tagCopy isEqualToString:@"DIRECTIONS_START_DATE"])
   {
     v4 = 407;
   }
 
-  else if ([v3 isEqualToString:@"DIRECTIONS_END_DATE"])
+  else if ([tagCopy isEqualToString:@"DIRECTIONS_END_DATE"])
   {
     v4 = 408;
   }
 
-  else if ([v3 isEqualToString:@"DIRECTIONS_ROUTE_INDEX"])
+  else if ([tagCopy isEqualToString:@"DIRECTIONS_ROUTE_INDEX"])
   {
     v4 = 409;
   }
 
-  else if ([v3 isEqualToString:@"DIRECTIONS_NUMBER_OF_ROUTES"])
+  else if ([tagCopy isEqualToString:@"DIRECTIONS_NUMBER_OF_ROUTES"])
   {
     v4 = 410;
   }
 
-  else if ([v3 isEqualToString:@"DIRECTIONS_ROUTE_ID"])
+  else if ([tagCopy isEqualToString:@"DIRECTIONS_ROUTE_ID"])
   {
     v4 = 411;
   }
 
-  else if ([v3 isEqualToString:@"DIRECTIONS_ROUTE_UPDATE"])
+  else if ([tagCopy isEqualToString:@"DIRECTIONS_ROUTE_UPDATE"])
   {
     v4 = 412;
   }
 
-  else if ([v3 isEqualToString:@"DIRECTIONS_AUTOMOBILE_OPTIONS"])
+  else if ([tagCopy isEqualToString:@"DIRECTIONS_AUTOMOBILE_OPTIONS"])
   {
     v4 = 413;
   }
 
-  else if ([v3 isEqualToString:@"DIRECTIONS_TRANSIT_OPTIONS"])
+  else if ([tagCopy isEqualToString:@"DIRECTIONS_TRANSIT_OPTIONS"])
   {
     v4 = 414;
   }
 
-  else if ([v3 isEqualToString:@"DIRECTIONS_WALKING_OPTIONS"])
+  else if ([tagCopy isEqualToString:@"DIRECTIONS_WALKING_OPTIONS"])
   {
     v4 = 415;
   }
 
-  else if ([v3 isEqualToString:@"DIRECTIONS_CYCLING_OPTIONS"])
+  else if ([tagCopy isEqualToString:@"DIRECTIONS_CYCLING_OPTIONS"])
   {
     v4 = 416;
   }
 
-  else if ([v3 isEqualToString:@"DIRECTIONS_WAYPOINTS"])
+  else if ([tagCopy isEqualToString:@"DIRECTIONS_WAYPOINTS"])
   {
     v4 = 417;
   }
 
-  else if ([v3 isEqualToString:@"DIRECTIONS_DISPLAYED_STEP"])
+  else if ([tagCopy isEqualToString:@"DIRECTIONS_DISPLAYED_STEP"])
   {
     v4 = 418;
   }
 
-  else if ([v3 isEqualToString:@"DIRECTIONS_ROUTE_PERSISTENT_DATA"])
+  else if ([tagCopy isEqualToString:@"DIRECTIONS_ROUTE_PERSISTENT_DATA"])
   {
     v4 = 419;
   }
 
-  else if ([v3 isEqualToString:@"MUIDs"])
+  else if ([tagCopy isEqualToString:@"MUIDs"])
   {
     v4 = 500;
   }
 
-  else if ([v3 isEqualToString:@"TRAITS"])
+  else if ([tagCopy isEqualToString:@"TRAITS"])
   {
     v4 = 501;
   }
 
-  else if ([v3 isEqualToString:@"IDENTIFIERS"])
+  else if ([tagCopy isEqualToString:@"IDENTIFIERS"])
   {
     v4 = 502;
   }
 
-  else if ([v3 isEqualToString:@"REQUEST"])
+  else if ([tagCopy isEqualToString:@"REQUEST"])
   {
     v4 = 503;
   }
 
-  else if ([v3 isEqualToString:@"REQUEST_TYPE"])
+  else if ([tagCopy isEqualToString:@"REQUEST_TYPE"])
   {
     v4 = 504;
   }
 
-  else if ([v3 isEqualToString:@"TRANSIENT_CL_AUTH_INFO"])
+  else if ([tagCopy isEqualToString:@"TRANSIENT_CL_AUTH_INFO"])
   {
     v4 = 600;
   }
 
-  else if ([v3 isEqualToString:@"PING_REQUIRE_MAPS_RUNNING"])
+  else if ([tagCopy isEqualToString:@"PING_REQUIRE_MAPS_RUNNING"])
   {
     v4 = 1000;
   }
@@ -317,9 +317,9 @@
   return v4;
 }
 
-- (void)setHasIntValue:(BOOL)a3
+- (void)setHasIntValue:(BOOL)value
 {
-  if (a3)
+  if (value)
   {
     v3 = 4;
   }
@@ -332,9 +332,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasBoolValue:(BOOL)a3
+- (void)setHasBoolValue:(BOOL)value
 {
-  if (a3)
+  if (value)
   {
     v3 = 16;
   }
@@ -347,114 +347,114 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)addStringToObjectMap:(id)a3
+- (void)addStringToObjectMap:(id)map
 {
-  v4 = a3;
+  mapCopy = map;
   stringToObjectMaps = self->_stringToObjectMaps;
-  v8 = v4;
+  v8 = mapCopy;
   if (!stringToObjectMaps)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_stringToObjectMaps;
     self->_stringToObjectMaps = v6;
 
-    v4 = v8;
+    mapCopy = v8;
     stringToObjectMaps = self->_stringToObjectMaps;
   }
 
-  [(NSMutableArray *)stringToObjectMaps addObject:v4];
+  [(NSMutableArray *)stringToObjectMaps addObject:mapCopy];
 }
 
-- (void)addStringListValue:(id)a3
+- (void)addStringListValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   stringListValues = self->_stringListValues;
-  v8 = v4;
+  v8 = valueCopy;
   if (!stringListValues)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_stringListValues;
     self->_stringListValues = v6;
 
-    v4 = v8;
+    valueCopy = v8;
     stringListValues = self->_stringListValues;
   }
 
-  [(NSMutableArray *)stringListValues addObject:v4];
+  [(NSMutableArray *)stringListValues addObject:valueCopy];
 }
 
-- (void)setLocationValue:(NMLocation *)a3
+- (void)setLocationValue:(NMLocation *)value
 {
   *&self->_has |= 1u;
-  v3 = *&a3->_longitude;
-  v5 = *&a3->_altitude;
-  v4 = *&a3->_courseAccuracy;
-  *&self->_locationValue._latitude = *&a3->_latitude;
+  v3 = *&value->_longitude;
+  v5 = *&value->_altitude;
+  v4 = *&value->_courseAccuracy;
+  *&self->_locationValue._latitude = *&value->_latitude;
   *&self->_locationValue._longitude = v3;
   *&self->_locationValue._altitude = v5;
   *&self->_locationValue._courseAccuracy = v4;
-  v6 = *&a3->_confidence;
-  v8 = *&a3->_rawLatitude;
-  v7 = *&a3->_speed;
-  *&self->_locationValue._timestamp = *&a3->_timestamp;
+  v6 = *&value->_confidence;
+  v8 = *&value->_rawLatitude;
+  v7 = *&value->_speed;
+  *&self->_locationValue._timestamp = *&value->_timestamp;
   *&self->_locationValue._confidence = v6;
   *&self->_locationValue._rawLatitude = v8;
   *&self->_locationValue._speed = v7;
 }
 
-- (unint64_t)unsignedIntListValueAtIndex:(unint64_t)a3
+- (unint64_t)unsignedIntListValueAtIndex:(unint64_t)index
 {
   p_unsignedIntListValues = &self->_unsignedIntListValues;
   count = self->_unsignedIntListValues.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_unsignedIntListValues->list[a3];
+  return p_unsignedIntListValues->list[index];
 }
 
-- (void)addDataListValue:(id)a3
+- (void)addDataListValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   dataListValues = self->_dataListValues;
-  v8 = v4;
+  v8 = valueCopy;
   if (!dataListValues)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_dataListValues;
     self->_dataListValues = v6;
 
-    v4 = v8;
+    valueCopy = v8;
     dataListValues = self->_dataListValues;
   }
 
-  [(NSMutableArray *)dataListValues addObject:v4];
+  [(NSMutableArray *)dataListValues addObject:valueCopy];
 }
 
-- (void)addTileRequestValue:(id)a3
+- (void)addTileRequestValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   tileRequestValues = self->_tileRequestValues;
-  v8 = v4;
+  v8 = valueCopy;
   if (!tileRequestValues)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_tileRequestValues;
     self->_tileRequestValues = v6;
 
-    v4 = v8;
+    valueCopy = v8;
     tileRequestValues = self->_tileRequestValues;
   }
 
-  [(NSMutableArray *)tileRequestValues addObject:v4];
+  [(NSMutableArray *)tileRequestValues addObject:valueCopy];
 }
 
-- (void)setHasDoubleValue:(BOOL)a3
+- (void)setHasDoubleValue:(BOOL)value
 {
-  if (a3)
+  if (value)
   {
     v3 = 2;
   }
@@ -472,8 +472,8 @@
   v7.receiver = self;
   v7.super_class = NMArgument;
   v3 = [(NMArgument *)&v7 description];
-  v4 = [(NMArgument *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(NMArgument *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -805,8 +805,8 @@ LABEL_88:
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v35 + 1) + 8 * i) dictionaryRepresentation];
-          [v11 addObject:v17];
+          dictionaryRepresentation = [*(*(&v35 + 1) + 8 * i) dictionaryRepresentation];
+          [v11 addObject:dictionaryRepresentation];
         }
 
         v14 = [(NSMutableArray *)v12 countByEnumeratingWithState:&v35 objects:v40 count:16];
@@ -861,8 +861,8 @@ LABEL_88:
             objc_enumerationMutation(v23);
           }
 
-          v28 = [*(*(&v31 + 1) + 8 * j) dictionaryRepresentation];
-          [v22 addObject:v28];
+          dictionaryRepresentation2 = [*(*(&v31 + 1) + 8 * j) dictionaryRepresentation];
+          [v22 addObject:dictionaryRepresentation2];
         }
 
         v25 = [(NSMutableArray *)v23 countByEnumeratingWithState:&v31 objects:v39 count:16];
@@ -883,9 +883,9 @@ LABEL_88:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 8) != 0)
   {
     tag = self->_tag;
@@ -978,7 +978,7 @@ LABEL_88:
   {
     v44 = 0;
     PBDataWriterPlaceMark();
-    NMLocationWriteTo(&self->_locationValue, v4);
+    NMLocationWriteTo(&self->_locationValue, toCopy);
     PBDataWriterRecallMark();
   }
 
@@ -1060,34 +1060,34 @@ LABEL_88:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 8) != 0)
   {
-    v4[54] = self->_tag;
-    *(v4 + 236) |= 8u;
+    toCopy[54] = self->_tag;
+    *(toCopy + 236) |= 8u;
   }
 
-  v31 = v4;
+  v31 = toCopy;
   if (self->_stringValue)
   {
-    [v4 setStringValue:?];
-    v4 = v31;
+    [toCopy setStringValue:?];
+    toCopy = v31;
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(v4 + 21) = self->_intValue;
-    *(v4 + 236) |= 4u;
+    *(toCopy + 21) = self->_intValue;
+    *(toCopy + 236) |= 4u;
     has = self->_has;
   }
 
   if ((has & 0x10) != 0)
   {
-    *(v4 + 232) = self->_BOOLValue;
-    *(v4 + 236) |= 0x10u;
+    *(toCopy + 232) = self->_BOOLValue;
+    *(toCopy + 236) |= 0x10u;
   }
 
   if (self->_dataValue)
@@ -1098,10 +1098,10 @@ LABEL_88:
   if ([(NMArgument *)self stringToObjectMapsCount])
   {
     [v31 clearStringToObjectMaps];
-    v6 = [(NMArgument *)self stringToObjectMapsCount];
-    if (v6)
+    stringToObjectMapsCount = [(NMArgument *)self stringToObjectMapsCount];
+    if (stringToObjectMapsCount)
     {
-      v7 = v6;
+      v7 = stringToObjectMapsCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(NMArgument *)self stringToObjectMapAtIndex:i];
@@ -1113,10 +1113,10 @@ LABEL_88:
   if ([(NMArgument *)self stringListValuesCount])
   {
     [v31 clearStringListValues];
-    v10 = [(NMArgument *)self stringListValuesCount];
-    if (v10)
+    stringListValuesCount = [(NMArgument *)self stringListValuesCount];
+    if (stringListValuesCount)
     {
-      v11 = v10;
+      v11 = stringListValuesCount;
       for (j = 0; j != v11; ++j)
       {
         v13 = [(NMArgument *)self stringListValueAtIndex:j];
@@ -1147,10 +1147,10 @@ LABEL_88:
   if ([(NMArgument *)self unsignedIntListValuesCount])
   {
     [v31 clearUnsignedIntListValues];
-    v20 = [(NMArgument *)self unsignedIntListValuesCount];
-    if (v20)
+    unsignedIntListValuesCount = [(NMArgument *)self unsignedIntListValuesCount];
+    if (unsignedIntListValuesCount)
     {
-      v21 = v20;
+      v21 = unsignedIntListValuesCount;
       for (k = 0; k != v21; ++k)
       {
         [v31 addUnsignedIntListValue:{-[NMArgument unsignedIntListValueAtIndex:](self, "unsignedIntListValueAtIndex:", k)}];
@@ -1161,10 +1161,10 @@ LABEL_88:
   if ([(NMArgument *)self dataListValuesCount])
   {
     [v31 clearDataListValues];
-    v23 = [(NMArgument *)self dataListValuesCount];
-    if (v23)
+    dataListValuesCount = [(NMArgument *)self dataListValuesCount];
+    if (dataListValuesCount)
     {
-      v24 = v23;
+      v24 = dataListValuesCount;
       for (m = 0; m != v24; ++m)
       {
         v26 = [(NMArgument *)self dataListValueAtIndex:m];
@@ -1176,10 +1176,10 @@ LABEL_88:
   if ([(NMArgument *)self tileRequestValuesCount])
   {
     [v31 clearTileRequestValues];
-    v27 = [(NMArgument *)self tileRequestValuesCount];
-    if (v27)
+    tileRequestValuesCount = [(NMArgument *)self tileRequestValuesCount];
+    if (tileRequestValuesCount)
     {
-      v28 = v27;
+      v28 = tileRequestValuesCount;
       for (n = 0; n != v28; ++n)
       {
         v30 = [(NMArgument *)self tileRequestValueAtIndex:n];
@@ -1195,9 +1195,9 @@ LABEL_88:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 8) != 0)
   {
@@ -1205,7 +1205,7 @@ LABEL_88:
     v5[236] |= 8u;
   }
 
-  v7 = [(NSString *)self->_stringValue copyWithZone:a3];
+  v7 = [(NSString *)self->_stringValue copyWithZone:zone];
   v8 = *(v6 + 26);
   *(v6 + 26) = v7;
 
@@ -1223,7 +1223,7 @@ LABEL_88:
     v6[236] |= 0x10u;
   }
 
-  v10 = [(NSData *)self->_dataValue copyWithZone:a3];
+  v10 = [(NSData *)self->_dataValue copyWithZone:zone];
   v11 = *(v6 + 23);
   *(v6 + 23) = v10;
 
@@ -1246,7 +1246,7 @@ LABEL_88:
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v55 + 1) + 8 * i) copyWithZone:a3];
+        v17 = [*(*(&v55 + 1) + 8 * i) copyWithZone:zone];
         [v6 addStringToObjectMap:v17];
       }
 
@@ -1275,7 +1275,7 @@ LABEL_88:
           objc_enumerationMutation(v18);
         }
 
-        v23 = [*(*(&v51 + 1) + 8 * j) copyWithZone:a3];
+        v23 = [*(*(&v51 + 1) + 8 * j) copyWithZone:zone];
         [v6 addStringListValue:v23];
       }
 
@@ -1324,7 +1324,7 @@ LABEL_88:
           objc_enumerationMutation(v30);
         }
 
-        v35 = [*(*(&v47 + 1) + 8 * k) copyWithZone:a3];
+        v35 = [*(*(&v47 + 1) + 8 * k) copyWithZone:zone];
         [v6 addDataListValue:v35];
       }
 
@@ -1353,7 +1353,7 @@ LABEL_88:
           objc_enumerationMutation(v36);
         }
 
-        v41 = [*(*(&v43 + 1) + 8 * m) copyWithZone:{a3, v43}];
+        v41 = [*(*(&v43 + 1) + 8 * m) copyWithZone:{zone, v43}];
         [v6 addTileRequestValue:v41];
       }
 
@@ -1372,31 +1372,31 @@ LABEL_88:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_39;
   }
 
   has = self->_has;
-  v6 = v4[236];
+  v6 = equalCopy[236];
   if ((has & 8) != 0)
   {
-    if ((v4[236] & 8) == 0 || self->_tag != *(v4 + 54))
+    if ((equalCopy[236] & 8) == 0 || self->_tag != *(equalCopy + 54))
     {
       goto LABEL_39;
     }
   }
 
-  else if ((v4[236] & 8) != 0)
+  else if ((equalCopy[236] & 8) != 0)
   {
     goto LABEL_39;
   }
 
   stringValue = self->_stringValue;
-  if (stringValue | *(v4 + 26))
+  if (stringValue | *(equalCopy + 26))
   {
     if (![(NSString *)stringValue isEqual:?])
     {
@@ -1406,23 +1406,23 @@ LABEL_88:
     has = self->_has;
   }
 
-  v8 = v4[236];
+  v8 = equalCopy[236];
   if ((has & 4) != 0)
   {
-    if ((v4[236] & 4) == 0 || self->_intValue != *(v4 + 21))
+    if ((equalCopy[236] & 4) == 0 || self->_intValue != *(equalCopy + 21))
     {
       goto LABEL_39;
     }
   }
 
-  else if ((v4[236] & 4) != 0)
+  else if ((equalCopy[236] & 4) != 0)
   {
     goto LABEL_39;
   }
 
   if ((has & 0x10) == 0)
   {
-    if ((v4[236] & 0x10) == 0)
+    if ((equalCopy[236] & 0x10) == 0)
     {
       goto LABEL_17;
     }
@@ -1432,34 +1432,34 @@ LABEL_39:
     goto LABEL_40;
   }
 
-  if ((v4[236] & 0x10) == 0)
+  if ((equalCopy[236] & 0x10) == 0)
   {
     goto LABEL_39;
   }
 
-  v17 = v4[232];
+  v17 = equalCopy[232];
   if (self->_BOOLValue)
   {
-    if ((v4[232] & 1) == 0)
+    if ((equalCopy[232] & 1) == 0)
     {
       goto LABEL_39;
     }
   }
 
-  else if (v4[232])
+  else if (equalCopy[232])
   {
     goto LABEL_39;
   }
 
 LABEL_17:
   dataValue = self->_dataValue;
-  if (dataValue | *(v4 + 23) && ![(NSData *)dataValue isEqual:?])
+  if (dataValue | *(equalCopy + 23) && ![(NSData *)dataValue isEqual:?])
   {
     goto LABEL_39;
   }
 
   stringToObjectMaps = self->_stringToObjectMaps;
-  if (stringToObjectMaps | *(v4 + 25))
+  if (stringToObjectMaps | *(equalCopy + 25))
   {
     if (![(NSMutableArray *)stringToObjectMaps isEqual:?])
     {
@@ -1468,7 +1468,7 @@ LABEL_17:
   }
 
   stringListValues = self->_stringListValues;
-  if (stringListValues | *(v4 + 24))
+  if (stringListValues | *(equalCopy + 24))
   {
     if (![(NSMutableArray *)stringListValues isEqual:?])
     {
@@ -1477,9 +1477,9 @@ LABEL_17:
   }
 
   v12 = self->_has;
-  if (v12 & 1) != 0 && (v4[236])
+  if (v12 & 1) != 0 && (equalCopy[236])
   {
-    if (NMLocationEquals(&self->_locationValue, v4 + 8))
+    if (NMLocationEquals(&self->_locationValue, equalCopy + 8))
     {
       goto LABEL_29;
     }
@@ -1487,7 +1487,7 @@ LABEL_17:
     v12 = self->_has;
   }
 
-  if (v12 & 1) != 0 || (v4[236])
+  if (v12 & 1) != 0 || (equalCopy[236])
   {
     goto LABEL_39;
   }
@@ -1499,7 +1499,7 @@ LABEL_29:
   }
 
   dataListValues = self->_dataListValues;
-  if (dataListValues | *(v4 + 22))
+  if (dataListValues | *(equalCopy + 22))
   {
     if (![(NSMutableArray *)dataListValues isEqual:?])
     {
@@ -1508,7 +1508,7 @@ LABEL_29:
   }
 
   tileRequestValues = self->_tileRequestValues;
-  if (tileRequestValues | *(v4 + 28))
+  if (tileRequestValues | *(equalCopy + 28))
   {
     if (![(NSMutableArray *)tileRequestValues isEqual:?])
     {
@@ -1516,10 +1516,10 @@ LABEL_29:
     }
   }
 
-  v15 = (v4[236] & 2) == 0;
+  v15 = (equalCopy[236] & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((v4[236] & 2) == 0 || self->_doubleValue != *(v4 + 20))
+    if ((equalCopy[236] & 2) == 0 || self->_doubleValue != *(equalCopy + 20))
     {
       goto LABEL_39;
     }
@@ -1619,17 +1619,17 @@ LABEL_9:
   return v20 ^ v21 ^ v3 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v14;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if ((v4[236] & 8) != 0)
+  fromCopy = from;
+  v5 = fromCopy;
+  if ((fromCopy[236] & 8) != 0)
   {
-    self->_tag = *(v4 + 54);
+    self->_tag = *(fromCopy + 54);
     *&self->_has |= 8u;
   }
 
-  if (*(v4 + 26))
+  if (*(fromCopy + 26))
   {
     [(NMArgument *)self setStringValue:?];
   }
@@ -1728,10 +1728,10 @@ LABEL_9:
     *&self->_has |= 1u;
   }
 
-  v23 = [v5 unsignedIntListValuesCount];
-  if (v23)
+  unsignedIntListValuesCount = [v5 unsignedIntListValuesCount];
+  if (unsignedIntListValuesCount)
   {
-    v24 = v23;
+    v24 = unsignedIntListValuesCount;
     for (k = 0; k != v24; ++k)
     {
       -[NMArgument addUnsignedIntListValue:](self, "addUnsignedIntListValue:", [v5 unsignedIntListValueAtIndex:k]);
@@ -1818,20 +1818,20 @@ LABEL_9:
   return self;
 }
 
-- (id)_nm_compressedArgument:(int)a3
+- (id)_nm_compressedArgument:(int)argument
 {
-  v4 = [(NMArgument *)self data];
-  v5 = v4;
-  if (a3 == 1)
+  data = [(NMArgument *)self data];
+  v5 = data;
+  if (argument == 1)
   {
-    [v4 bytes];
+    [data bytes];
     [v5 length];
     GEOZlibCompress();
   }
 
-  else if (a3 == 2)
+  else if (argument == 2)
   {
-    [v4 bytes];
+    [data bytes];
     [v5 length];
     GEOBZ2Compress();
   }
@@ -1841,25 +1841,25 @@ LABEL_9:
 
 - (id)_nm_dictionaryValue
 {
-  v3 = [(NMArgument *)self dataValue];
-  if (v3)
+  dataValue = [(NMArgument *)self dataValue];
+  if (dataValue)
   {
 
 LABEL_4:
     if (![(NMArgument *)self stringToObjectMapsCount])
     {
       v16 = [NSKeyedUnarchiver alloc];
-      v17 = [(NMArgument *)self dataValue];
-      v5 = [v16 initForReadingFromData:v17 error:0];
+      dataValue2 = [(NMArgument *)self dataValue];
+      stringToObjectMaps = [v16 initForReadingFromData:dataValue2 error:0];
 
       v18 = objc_opt_class();
       v19 = objc_opt_class();
       v20 = objc_opt_class();
       v21 = objc_opt_class();
       v22 = [NSSet setWithObjects:v18, v19, v20, v21, objc_opt_class(), 0];
-      v4 = [v5 decodeObjectOfClasses:v22 forKey:@"d"];
+      v4 = [stringToObjectMaps decodeObjectOfClasses:v22 forKey:@"d"];
 
-      [v5 finishDecoding];
+      [stringToObjectMaps finishDecoding];
       goto LABEL_27;
     }
 
@@ -1868,8 +1868,8 @@ LABEL_4:
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v5 = [(NMArgument *)self stringToObjectMaps];
-    v6 = [v5 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    stringToObjectMaps = [(NMArgument *)self stringToObjectMaps];
+    v6 = [stringToObjectMaps countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (!v6)
     {
       goto LABEL_27;
@@ -1884,23 +1884,23 @@ LABEL_4:
       {
         if (*v25 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(stringToObjectMaps);
         }
 
         v10 = *(*(&v24 + 1) + 8 * v9);
         if ([v10 hasStringValue])
         {
-          v11 = [v10 stringValue];
+          stringValue = [v10 stringValue];
         }
 
         else if ([v10 hasDataValue])
         {
-          v11 = [v10 dataValue];
+          stringValue = [v10 dataValue];
         }
 
         else if ([v10 hasBoolValue])
         {
-          v11 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v10 BOOLValue]);
+          stringValue = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v10 BOOLValue]);
         }
 
         else
@@ -1911,11 +1911,11 @@ LABEL_4:
             goto LABEL_21;
           }
 
-          v11 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v10 intValue]);
+          stringValue = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v10 intValue]);
         }
 
-        v12 = v11;
-        if (v11)
+        v12 = stringValue;
+        if (stringValue)
         {
           v13 = [v10 key];
 
@@ -1932,7 +1932,7 @@ LABEL_21:
       }
 
       while (v7 != v9);
-      v15 = [v5 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v15 = [stringToObjectMaps countByEnumeratingWithState:&v24 objects:v28 count:16];
       v7 = v15;
       if (!v15)
       {
@@ -1956,46 +1956,46 @@ LABEL_28:
 
 - (id)_nm_arrayValue
 {
-  v3 = [(NMArgument *)self dataValue];
-  if (v3)
+  dataValue = [(NMArgument *)self dataValue];
+  if (dataValue)
   {
   }
 
   else if (![(NMArgument *)self stringListValuesCount])
   {
-    v4 = 0;
+    stringListValues = 0;
     goto LABEL_8;
   }
 
   if ([(NMArgument *)self stringListValuesCount])
   {
-    v4 = [(NMArgument *)self stringListValues];
+    stringListValues = [(NMArgument *)self stringListValues];
   }
 
   else
   {
     v5 = [NSKeyedUnarchiver alloc];
-    v6 = [(NMArgument *)self dataValue];
-    v7 = [v5 initForReadingFromData:v6 error:0];
+    dataValue2 = [(NMArgument *)self dataValue];
+    v7 = [v5 initForReadingFromData:dataValue2 error:0];
 
-    v4 = [v7 decodeObjectOfClass:objc_opt_class() forKey:@"d"];
+    stringListValues = [v7 decodeObjectOfClass:objc_opt_class() forKey:@"d"];
     [v7 finishDecoding];
   }
 
 LABEL_8:
 
-  return v4;
+  return stringListValues;
 }
 
 - (id)_nm_errorValue
 {
-  v3 = [(NMArgument *)self dataValue];
+  dataValue = [(NMArgument *)self dataValue];
 
-  if (v3)
+  if (dataValue)
   {
     v4 = [NSKeyedUnarchiver alloc];
-    v5 = [(NMArgument *)self dataValue];
-    v6 = [v4 initForReadingFromData:v5 error:0];
+    dataValue2 = [(NMArgument *)self dataValue];
+    v6 = [v4 initForReadingFromData:dataValue2 error:0];
 
     v7 = objc_opt_class();
     v8 = [NSSet setWithObjects:v7, objc_opt_class(), 0];

@@ -1,22 +1,22 @@
 @interface OpaqueDataService
-+ (id)serializedHPKEWithData:(id)a3 publicKey:(id)a4 scheme:(id)a5 error:(id *)a6;
++ (id)serializedHPKEWithData:(id)data publicKey:(id)key scheme:(id)scheme error:(id *)error;
 - (_TtC24AppletTranslationLibrary17OpaqueDataService)init;
 @end
 
 @implementation OpaqueDataService
 
-+ (id)serializedHPKEWithData:(id)a3 publicKey:(id)a4 scheme:(id)a5 error:(id *)a6
++ (id)serializedHPKEWithData:(id)data publicKey:(id)key scheme:(id)scheme error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  keyCopy = key;
+  schemeCopy = scheme;
   v11 = sub_22EFB61DC();
   v13 = v12;
 
   v14 = sub_22EFB61DC();
   v16 = v15;
 
-  if (v10)
+  if (schemeCopy)
   {
     sub_22EFB648C();
   }

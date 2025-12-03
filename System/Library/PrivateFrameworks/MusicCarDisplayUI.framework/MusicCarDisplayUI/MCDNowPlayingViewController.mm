@@ -1,101 +1,101 @@
 @interface MCDNowPlayingViewController
-- (MCDNowPlayingViewController)initWithBundleID:(id)a3 appName:(id)a4;
-- (MCDNowPlayingViewController)initWithPlayableBundleID:(id)a3 appName:(id)a4;
+- (MCDNowPlayingViewController)initWithBundleID:(id)d appName:(id)name;
+- (MCDNowPlayingViewController)initWithPlayableBundleID:(id)d appName:(id)name;
 - (void)_adjustRightTitleLabelToFit;
 - (void)_handleWillAppear;
 - (void)_invalidateActivityTimer;
 - (void)_popViewControllerAnimated;
 - (void)_setupActivityTimer;
 - (void)_updateBackButton;
-- (void)contentManager:(id)a3 displayItemIndex:(int64_t)a4 totalItemCount:(int64_t)a5;
-- (void)contentManager:(id)a3 presentViewController:(id)a4;
-- (void)contentManager:(id)a3 processResponse:(id)a4 error:(id)a5;
-- (void)contentManager:(id)a3 pushViewController:(id)a4;
-- (void)contentManager:(id)a3 sectionName:(id)a4;
-- (void)contentManager:(id)a3 setAdditionalBarButtonItems:(id)a4;
-- (void)contentManagerCompletedAllPlayback:(id)a3;
-- (void)contentManagerInitiatedPlaybackFromPlaybackQueue:(id)a3;
-- (void)contentManagerReloadData:(id)a3;
+- (void)contentManager:(id)manager displayItemIndex:(int64_t)index totalItemCount:(int64_t)count;
+- (void)contentManager:(id)manager presentViewController:(id)controller;
+- (void)contentManager:(id)manager processResponse:(id)response error:(id)error;
+- (void)contentManager:(id)manager pushViewController:(id)controller;
+- (void)contentManager:(id)manager sectionName:(id)name;
+- (void)contentManager:(id)manager setAdditionalBarButtonItems:(id)items;
+- (void)contentManagerCompletedAllPlayback:(id)playback;
+- (void)contentManagerInitiatedPlaybackFromPlaybackQueue:(id)queue;
+- (void)contentManagerReloadData:(id)data;
 - (void)dealloc;
-- (void)setContentManager:(id)a3;
-- (void)setRightTitle:(id)a3;
-- (void)upNextButtonTapped:(id)a3;
+- (void)setContentManager:(id)manager;
+- (void)setRightTitle:(id)title;
+- (void)upNextButtonTapped:(id)tapped;
 - (void)updateBarButtonItems;
 - (void)viewDidLoad;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)willMoveToParentViewController:(id)a3;
+- (void)willMoveToParentViewController:(id)controller;
 @end
 
 @implementation MCDNowPlayingViewController
 
-- (MCDNowPlayingViewController)initWithBundleID:(id)a3 appName:(id)a4
+- (MCDNowPlayingViewController)initWithBundleID:(id)d appName:(id)name
 {
-  v7 = a4;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = MCDNowPlayingViewController;
-  v8 = [(CPUINowPlayingViewController *)&v11 initWithBundleIdentifier:a3 dataSource:0 delegate:0];
+  v8 = [(CPUINowPlayingViewController *)&v11 initWithBundleIdentifier:d dataSource:0 delegate:0];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_appName, a4);
+    objc_storeStrong(&v8->_appName, name);
   }
 
   return v9;
 }
 
-- (MCDNowPlayingViewController)initWithPlayableBundleID:(id)a3 appName:(id)a4
+- (MCDNowPlayingViewController)initWithPlayableBundleID:(id)d appName:(id)name
 {
-  v6 = a3;
-  v7 = [(MCDNowPlayingViewController *)self initWithBundleID:v6 appName:a4];
+  dCopy = d;
+  v7 = [(MCDNowPlayingViewController *)self initWithBundleID:dCopy appName:name];
   if (v7)
   {
     v8 = [MCDPlayableContentPlaybackManager alloc];
     v9 = objc_opt_new();
-    v10 = [(_MCDNowPlayingContentManager *)v8 initWithDelegate:v7 dataSource:v9 bundleID:v6];
+    v10 = [(_MCDNowPlayingContentManager *)v8 initWithDelegate:v7 dataSource:v9 bundleID:dCopy];
     [(MCDNowPlayingViewController *)v7 setContentManager:v10];
 
     v11 = [MCDPlayableContentQueueTableViewController alloc];
-    v12 = [(MCDNowPlayingViewController *)v7 contentManager];
-    v13 = [(MCDPlayableContentQueueTableViewController *)v11 initWithContentManager:v12];
+    contentManager = [(MCDNowPlayingViewController *)v7 contentManager];
+    v13 = [(MCDPlayableContentQueueTableViewController *)v11 initWithContentManager:contentManager];
     [(MCDNowPlayingViewController *)v7 setPlaybackQueueViewController:v13];
   }
 
   return v7;
 }
 
-- (void)setContentManager:(id)a3
+- (void)setContentManager:(id)manager
 {
-  v5 = a3;
-  if (self->_contentManager != v5)
+  managerCopy = manager;
+  if (self->_contentManager != managerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_contentManager, a3);
+    v6 = managerCopy;
+    objc_storeStrong(&self->_contentManager, manager);
     [(CPUINowPlayingViewController *)self setDataSource:v6];
-    v5 = [(CPUINowPlayingViewController *)self setDelegate:v6];
+    managerCopy = [(CPUINowPlayingViewController *)self setDelegate:v6];
   }
 
-  MEMORY[0x2821F9730](v5);
+  MEMORY[0x2821F9730](managerCopy);
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
-  v4 = [(MCDNowPlayingViewController *)self contentManager];
-  v5 = v4;
-  if (a3)
+  contentManager = [(MCDNowPlayingViewController *)self contentManager];
+  v5 = contentManager;
+  if (controller)
   {
-    [v4 beginRequestObservation];
+    [contentManager beginRequestObservation];
   }
 
   else
   {
-    [v4 endRequestObservation];
+    [contentManager endRequestObservation];
   }
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = MCDNowPlayingViewController;
@@ -108,22 +108,22 @@
   v46.receiver = self;
   v46.super_class = MCDNowPlayingViewController;
   [(CPUINowPlayingViewController *)&v46 viewDidLoad];
-  v3 = [(MCDNowPlayingViewController *)self navigationItem];
+  navigationItem = [(MCDNowPlayingViewController *)self navigationItem];
   v4 = objc_alloc(MEMORY[0x277D75D18]);
   v5 = *MEMORY[0x277CBF3A0];
   v6 = *(MEMORY[0x277CBF3A0] + 8);
   v7 = *(MEMORY[0x277CBF3A0] + 16);
   v8 = *(MEMORY[0x277CBF3A0] + 24);
   v9 = [v4 initWithFrame:{*MEMORY[0x277CBF3A0], v6, v7, v8}];
-  [v3 setTitleView:v9];
+  [navigationItem setTitleView:v9];
 
-  v10 = [(CPUINowPlayingViewController *)self bundleIdentifier];
+  bundleIdentifier = [(CPUINowPlayingViewController *)self bundleIdentifier];
   v11 = MRMediaRemoteApplicationSupportsBrowsableContent();
 
   if (v11)
   {
-    v12 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v12 addObserver:self selector:sel__updateBackButton name:*MEMORY[0x277D27A50] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__updateBackButton name:*MEMORY[0x277D27A50] object:0];
   }
 
   [(MCDNowPlayingViewController *)self _updateBackButton];
@@ -131,19 +131,19 @@
   [(MCDNowPlayingViewController *)self setRightTitleLabel:v13];
 
   v14 = [MEMORY[0x277D74300] systemFontOfSize:12.0];
-  v15 = [(MCDNowPlayingViewController *)self rightTitleLabel];
-  [v15 setFont:v14];
+  rightTitleLabel = [(MCDNowPlayingViewController *)self rightTitleLabel];
+  [rightTitleLabel setFont:v14];
 
-  v16 = [(MCDNowPlayingViewController *)self rightTitleLabel];
-  [v16 setLineBreakMode:4];
+  rightTitleLabel2 = [(MCDNowPlayingViewController *)self rightTitleLabel];
+  [rightTitleLabel2 setLineBreakMode:4];
 
-  v17 = [MEMORY[0x277D75348] _labelColor];
-  v18 = [v17 colorWithAlphaComponent:0.5];
-  v19 = [(MCDNowPlayingViewController *)self rightTitleLabel];
-  [v19 setTextColor:v18];
+  _labelColor = [MEMORY[0x277D75348] _labelColor];
+  v18 = [_labelColor colorWithAlphaComponent:0.5];
+  rightTitleLabel3 = [(MCDNowPlayingViewController *)self rightTitleLabel];
+  [rightTitleLabel3 setTextColor:v18];
 
-  v20 = [(MCDNowPlayingViewController *)self rightTitleLabel];
-  [v20 setTextAlignment:2];
+  rightTitleLabel4 = [(MCDNowPlayingViewController *)self rightTitleLabel];
+  [rightTitleLabel4 setTextAlignment:2];
 
   [(MCDNowPlayingViewController *)self _adjustRightTitleLabelToFit];
   v21 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
@@ -152,17 +152,17 @@
   v22 = [objc_alloc(MEMORY[0x277D751E0]) initWithCustomView:self->_activityIndicator];
   [(MCDNowPlayingViewController *)self setActivityIndicatorBarButtonItem:v22];
 
-  v23 = [(MCDNowPlayingViewController *)self activityIndicatorBarButtonItem];
-  [v23 plastify];
+  activityIndicatorBarButtonItem = [(MCDNowPlayingViewController *)self activityIndicatorBarButtonItem];
+  [activityIndicatorBarButtonItem plastify];
 
   [(MCDNowPlayingViewController *)self _setupActivityTimer];
   v24 = objc_alloc(MEMORY[0x277D751E0]);
-  v25 = [(MCDNowPlayingViewController *)self rightTitleLabel];
-  v26 = [v24 initWithCustomView:v25];
+  rightTitleLabel5 = [(MCDNowPlayingViewController *)self rightTitleLabel];
+  v26 = [v24 initWithCustomView:rightTitleLabel5];
   [(MCDNowPlayingViewController *)self setRightTitleLabelBarButtonItem:v26];
 
-  v27 = [(MCDNowPlayingViewController *)self rightTitleLabelBarButtonItem];
-  [v27 plastify];
+  rightTitleLabelBarButtonItem = [(MCDNowPlayingViewController *)self rightTitleLabelBarButtonItem];
+  [rightTitleLabelBarButtonItem plastify];
 
   if (_os_feature_enabled_impl())
   {
@@ -178,16 +178,16 @@
     v34 = [v33 localizedStringForKey:@"ACCESSIBILITY_LIST" value:&stru_286C2B080 table:@"MusicCarDisplayUI"];
     v47[1] = v34;
     v35 = [MEMORY[0x277CBEA60] arrayWithObjects:v47 count:2];
-    v36 = [(MCDNowPlayingViewController *)self queueBarButtonItem];
-    [v36 setAccessibilityUserInputLabels:v35];
+    queueBarButtonItem = [(MCDNowPlayingViewController *)self queueBarButtonItem];
+    [queueBarButtonItem setAccessibilityUserInputLabels:v35];
   }
 
   else
   {
     v31 = objc_opt_new();
     v37 = [MEMORY[0x277D74300] systemFontOfSize:16.0];
-    v38 = [v31 titleLabel];
-    [v38 setFont:v37];
+    titleLabel = [v31 titleLabel];
+    [titleLabel setFont:v37];
 
     v39 = MCDCarDisplayBundle();
     v40 = [v39 localizedStringForKey:@"PLAYBACK_QUEUE_TITLE" value:&stru_286C2B080 table:@"MusicCarDisplayUI"];
@@ -202,11 +202,11 @@
   }
 
   [(MCDNowPlayingViewController *)self setRightTitle:0];
-  v41 = [(CPUINowPlayingViewController *)self delegate];
+  delegate = [(CPUINowPlayingViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v42 = [(CPUINowPlayingViewController *)self delegate];
-    v43 = [v42 nowPlayingViewControllerCanShowUpNext:self];
+    delegate2 = [(CPUINowPlayingViewController *)self delegate];
+    v43 = [delegate2 nowPlayingViewControllerCanShowUpNext:self];
   }
 
   else
@@ -214,29 +214,29 @@
     v43 = 0;
   }
 
-  v44 = [(MCDNowPlayingViewController *)self contentManager];
-  [(MCDNowPlayingViewController *)self contentManager:v44 shouldShowPlaybackQueue:v43];
+  contentManager = [(MCDNowPlayingViewController *)self contentManager];
+  [(MCDNowPlayingViewController *)self contentManager:contentManager shouldShowPlaybackQueue:v43];
 
   v45 = *MEMORY[0x277D85DE8];
 }
 
-- (void)upNextButtonTapped:(id)a3
+- (void)upNextButtonTapped:(id)tapped
 {
-  v4 = [(MCDNowPlayingViewController *)self navigationController];
-  v5 = [v4 viewControllers];
-  v6 = [(MCDNowPlayingViewController *)self playbackQueueViewController];
-  v7 = [v5 containsObject:v6];
+  navigationController = [(MCDNowPlayingViewController *)self navigationController];
+  viewControllers = [navigationController viewControllers];
+  playbackQueueViewController = [(MCDNowPlayingViewController *)self playbackQueueViewController];
+  v7 = [viewControllers containsObject:playbackQueueViewController];
 
-  v10 = [(MCDNowPlayingViewController *)self navigationController];
-  v8 = [(MCDNowPlayingViewController *)self playbackQueueViewController];
+  navigationController2 = [(MCDNowPlayingViewController *)self navigationController];
+  playbackQueueViewController2 = [(MCDNowPlayingViewController *)self playbackQueueViewController];
   if (v7)
   {
-    v9 = [v10 popToViewController:v8 animated:1];
+    v9 = [navigationController2 popToViewController:playbackQueueViewController2 animated:1];
   }
 
   else
   {
-    [v10 pushViewController:v8 animated:1];
+    [navigationController2 pushViewController:playbackQueueViewController2 animated:1];
   }
 }
 
@@ -244,8 +244,8 @@
 {
   if (self->_showNavigationBar)
   {
-    v3 = [(MCDNowPlayingViewController *)self navigationController];
-    [v3 setNavigationBarHidden:0 animated:1];
+    navigationController = [(MCDNowPlayingViewController *)self navigationController];
+    [navigationController setNavigationBarHidden:0 animated:1];
   }
 
   [(MCDNowPlayingViewController *)self setHandledWillAppear:1];
@@ -256,19 +256,19 @@
   v6.receiver = self;
   v6.super_class = MCDNowPlayingViewController;
   [(MCDNowPlayingViewController *)&v6 viewSafeAreaInsetsDidChange];
-  v3 = [(MCDNowPlayingViewController *)self contentManager];
+  contentManager = [(MCDNowPlayingViewController *)self contentManager];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(MCDNowPlayingViewController *)self contentManager];
-    [v5 updateNoContentViewFrameIfNeeded];
+    contentManager2 = [(MCDNowPlayingViewController *)self contentManager];
+    [contentManager2 updateNoContentViewFrameIfNeeded];
   }
 }
 
 - (void)_updateBackButton
 {
-  v2 = [(CPUINowPlayingViewController *)self bundleIdentifier];
+  bundleIdentifier = [(CPUINowPlayingViewController *)self bundleIdentifier];
   MRMediaRemoteGetSupportedBrowsableContentAPIs();
 }
 
@@ -304,49 +304,49 @@ uint64_t __48__MCDNowPlayingViewController__updateBackButton__block_invoke_2(uin
   return [v4 reloadData];
 }
 
-- (void)setRightTitle:(id)a3
+- (void)setRightTitle:(id)title
 {
-  v18 = a3;
-  v4 = [(MCDNowPlayingViewController *)self appName];
+  titleCopy = title;
+  appName = [(MCDNowPlayingViewController *)self appName];
 
-  if (v4)
+  if (appName)
   {
     v5 = +[MCDBrowsableContentUtilities sharedInstance];
-    v6 = [v5 firstPartyAppBundleIDs];
-    v7 = [(CPUINowPlayingViewController *)self bundleIdentifier];
-    v8 = [v6 containsObject:v7];
+    firstPartyAppBundleIDs = [v5 firstPartyAppBundleIDs];
+    bundleIdentifier = [(CPUINowPlayingViewController *)self bundleIdentifier];
+    v8 = [firstPartyAppBundleIDs containsObject:bundleIdentifier];
 
     if (v8)
     {
-      v9 = v18;
+      appName3 = titleCopy;
     }
 
     else
     {
-      if (v18)
+      if (titleCopy)
       {
         v10 = MEMORY[0x277CCACA8];
         v11 = MCDCarDisplayBundle();
         v12 = [v11 localizedStringForKey:@"AppName_PlaybackQueue" value:&stru_286C2B080 table:@"MusicCarDisplayUI"];
-        v13 = [(MCDNowPlayingViewController *)self appName];
-        v4 = [v10 localizedStringWithFormat:v12, v13, v18];
+        appName2 = [(MCDNowPlayingViewController *)self appName];
+        appName = [v10 localizedStringWithFormat:v12, appName2, titleCopy];
 
         goto LABEL_8;
       }
 
-      v9 = [(MCDNowPlayingViewController *)self appName];
+      appName3 = [(MCDNowPlayingViewController *)self appName];
     }
 
-    v4 = v9;
+    appName = appName3;
   }
 
 LABEL_8:
-  v14 = [(MCDNowPlayingViewController *)self rightTitleLabel];
-  v15 = [v14 text];
-  v16 = [v4 isEqualToString:v15];
+  rightTitleLabel = [(MCDNowPlayingViewController *)self rightTitleLabel];
+  text = [rightTitleLabel text];
+  v16 = [appName isEqualToString:text];
 
-  v17 = [(MCDNowPlayingViewController *)self rightTitleLabel];
-  [v17 setText:v4];
+  rightTitleLabel2 = [(MCDNowPlayingViewController *)self rightTitleLabel];
+  [rightTitleLabel2 setText:appName];
 
   if ((v16 & 1) == 0)
   {
@@ -357,11 +357,11 @@ LABEL_8:
 
 - (void)_adjustRightTitleLabelToFit
 {
-  v3 = [(MCDNowPlayingViewController *)self rightTitleLabel];
-  [v3 sizeToFit];
+  rightTitleLabel = [(MCDNowPlayingViewController *)self rightTitleLabel];
+  [rightTitleLabel sizeToFit];
 
-  v4 = [(MCDNowPlayingViewController *)self rightTitleLabel];
-  [v4 frame];
+  rightTitleLabel2 = [(MCDNowPlayingViewController *)self rightTitleLabel];
+  [rightTitleLabel2 frame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -372,8 +372,8 @@ LABEL_8:
   v24.size.width = v10;
   v24.size.height = v12;
   Width = CGRectGetWidth(v24);
-  v14 = [(MCDNowPlayingViewController *)self view];
-  [v14 frame];
+  view = [(MCDNowPlayingViewController *)self view];
+  [view frame];
   v15 = CGRectGetWidth(v25) * 0.6;
 
   if (Width > v15)
@@ -381,8 +381,8 @@ LABEL_8:
     Width = v15;
   }
 
-  v16 = [(MCDNowPlayingViewController *)self rightTitleLabel];
-  [v16 frame];
+  rightTitleLabel3 = [(MCDNowPlayingViewController *)self rightTitleLabel];
+  [rightTitleLabel3 frame];
   v27.origin.x = v17;
   v27.origin.y = v18;
   v27.size.width = v19;
@@ -395,14 +395,14 @@ LABEL_8:
 
   if (!v21)
   {
-    v22 = [(MCDNowPlayingViewController *)self rightTitleLabel];
-    [v22 setFrame:{v6, v8, Width, v12}];
+    rightTitleLabel4 = [(MCDNowPlayingViewController *)self rightTitleLabel];
+    [rightTitleLabel4 setFrame:{v6, v8, Width, v12}];
   }
 }
 
 - (void)updateBarButtonItems
 {
-  v11 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if ([(MCDNowPlayingViewController *)self shouldShowPlaybackQueue])
   {
     v3 = &OBJC_IVAR___MCDNowPlayingViewController__queueBarButtonItem;
@@ -410,8 +410,8 @@ LABEL_8:
 
   else
   {
-    v4 = [(UILabel *)self->_rightTitleLabel text];
-    v5 = [v4 length];
+    text = [(UILabel *)self->_rightTitleLabel text];
+    v5 = [text length];
 
     if (!v5)
     {
@@ -425,40 +425,40 @@ LABEL_8:
   v6 = *(&self->super.super.super.super.isa + *v3);
   if (v6)
   {
-    [v11 addObject:v6];
+    [array addObject:v6];
   }
 
 LABEL_8:
   if (self->_additionalBarButtonItems)
   {
-    [v11 addObjectsFromArray:?];
+    [array addObjectsFromArray:?];
   }
 
   if (self->_activityIndicatorBarButtonItem)
   {
-    [v11 addObject:?];
+    [array addObject:?];
   }
 
-  v7 = [(MCDNowPlayingViewController *)self navigationItem];
-  v8 = [v7 rightBarButtonItems];
-  v9 = [v8 isEqualToArray:v11];
+  navigationItem = [(MCDNowPlayingViewController *)self navigationItem];
+  rightBarButtonItems = [navigationItem rightBarButtonItems];
+  v9 = [rightBarButtonItems isEqualToArray:array];
 
   if ((v9 & 1) == 0)
   {
-    v10 = [(MCDNowPlayingViewController *)self navigationItem];
-    [v10 setRightBarButtonItems:v11];
+    navigationItem2 = [(MCDNowPlayingViewController *)self navigationItem];
+    [navigationItem2 setRightBarButtonItems:array];
   }
 }
 
-- (void)contentManager:(id)a3 processResponse:(id)a4 error:(id)a5
+- (void)contentManager:(id)manager processResponse:(id)response error:(id)error
 {
-  v10 = a4;
-  v8 = a5;
-  objc_storeStrong(&self->_playerResponse, a4);
+  responseCopy = response;
+  errorCopy = error;
+  objc_storeStrong(&self->_playerResponse, response);
   playbackQueueViewController = self->_playbackQueueViewController;
   if (objc_opt_respondsToSelector())
   {
-    [(PlaybackQueueViewControllerProtocol *)self->_playbackQueueViewController _processResponse:v10 error:v8];
+    [(PlaybackQueueViewControllerProtocol *)self->_playbackQueueViewController _processResponse:responseCopy error:errorCopy];
   }
 }
 
@@ -484,7 +484,7 @@ void __60__MCDNowPlayingViewController_contentManager_bufferingItem___block_invo
   }
 }
 
-- (void)contentManagerReloadData:(id)a3
+- (void)contentManagerReloadData:(id)data
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -494,29 +494,29 @@ void __60__MCDNowPlayingViewController_contentManager_bufferingItem___block_invo
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)contentManager:(id)a3 presentViewController:(id)a4
+- (void)contentManager:(id)manager presentViewController:(id)controller
 {
-  v5 = a4;
+  controllerCopy = controller;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __68__MCDNowPlayingViewController_contentManager_presentViewController___block_invoke;
   v7[3] = &unk_279923AB8;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = controllerCopy;
+  v6 = controllerCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
-- (void)contentManager:(id)a3 pushViewController:(id)a4
+- (void)contentManager:(id)manager pushViewController:(id)controller
 {
-  v5 = a4;
+  controllerCopy = controller;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __65__MCDNowPlayingViewController_contentManager_pushViewController___block_invoke;
   v7[3] = &unk_279923AB8;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = controllerCopy;
+  v6 = controllerCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
@@ -526,28 +526,28 @@ void __65__MCDNowPlayingViewController_contentManager_pushViewController___block
   [v2 pushViewController:*(a1 + 40) animated:1];
 }
 
-- (void)contentManager:(id)a3 sectionName:(id)a4
+- (void)contentManager:(id)manager sectionName:(id)name
 {
-  v5 = a4;
+  nameCopy = name;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __58__MCDNowPlayingViewController_contentManager_sectionName___block_invoke;
   v7[3] = &unk_279923AB8;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = nameCopy;
+  v6 = nameCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
-- (void)contentManager:(id)a3 displayItemIndex:(int64_t)a4 totalItemCount:(int64_t)a5
+- (void)contentManager:(id)manager displayItemIndex:(int64_t)index totalItemCount:(int64_t)count
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __78__MCDNowPlayingViewController_contentManager_displayItemIndex_totalItemCount___block_invoke;
   block[3] = &unk_279923DD0;
   block[4] = self;
-  block[5] = a4;
-  block[6] = a5;
+  block[5] = index;
+  block[6] = count;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -565,7 +565,7 @@ void __78__MCDNowPlayingViewController_contentManager_displayItemIndex_totalItem
   [v2 setRightTitle:v9];
 }
 
-- (void)contentManagerInitiatedPlaybackFromPlaybackQueue:(id)a3
+- (void)contentManagerInitiatedPlaybackFromPlaybackQueue:(id)queue
 {
   v4 = MCDGeneralLogging();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -577,7 +577,7 @@ void __78__MCDNowPlayingViewController_contentManager_displayItemIndex_totalItem
   [(MCDNowPlayingViewController *)self _popViewControllerAnimated];
 }
 
-- (void)contentManagerCompletedAllPlayback:(id)a3
+- (void)contentManagerCompletedAllPlayback:(id)playback
 {
   v4 = MCDGeneralLogging();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -589,9 +589,9 @@ void __78__MCDNowPlayingViewController_contentManager_displayItemIndex_totalItem
   [(MCDNowPlayingViewController *)self _popViewControllerAnimated];
 }
 
-- (void)contentManager:(id)a3 setAdditionalBarButtonItems:(id)a4
+- (void)contentManager:(id)manager setAdditionalBarButtonItems:(id)items
 {
-  [(MCDNowPlayingViewController *)self setAdditionalBarButtonItems:a4];
+  [(MCDNowPlayingViewController *)self setAdditionalBarButtonItems:items];
 
   [(MCDNowPlayingViewController *)self updateBarButtonItems];
 }
@@ -655,12 +655,12 @@ void __50__MCDNowPlayingViewController__setupActivityTimer__block_invoke(uint64_
 
 - (void)_invalidateActivityTimer
 {
-  v3 = [(MCDNowPlayingViewController *)self activityTimer];
+  activityTimer = [(MCDNowPlayingViewController *)self activityTimer];
 
-  if (v3)
+  if (activityTimer)
   {
-    v4 = [(MCDNowPlayingViewController *)self activityTimer];
-    [v4 invalidate];
+    activityTimer2 = [(MCDNowPlayingViewController *)self activityTimer];
+    [activityTimer2 invalidate];
 
     [(MCDNowPlayingViewController *)self setActivityTimer:0];
   }

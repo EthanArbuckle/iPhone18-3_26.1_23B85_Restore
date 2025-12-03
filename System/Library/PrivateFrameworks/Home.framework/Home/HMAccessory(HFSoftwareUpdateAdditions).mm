@@ -29,42 +29,42 @@
 
 - (uint64_t)hf_supportsSoftwareUpdate
 {
-  if ([a1 supportsSoftwareUpdateV2])
+  if ([self supportsSoftwareUpdateV2])
   {
     return 1;
   }
 
-  v3 = [a1 softwareUpdateController];
-  v2 = v3 != 0;
+  softwareUpdateController = [self softwareUpdateController];
+  v2 = softwareUpdateController != 0;
 
   return v2;
 }
 
 - (uint64_t)hf_hasValidSoftwareOrFirmwareUpdate
 {
-  if ([a1 isFirmwareUpdateAvailable])
+  if ([self isFirmwareUpdateAvailable])
   {
     return 1;
   }
 
-  return [a1 hf_hasValidSoftwareUpdate];
+  return [self hf_hasValidSoftwareUpdate];
 }
 
 - (uint64_t)hf_hasNewValidSoftwareOrFirmwareUpdate
 {
-  if ([a1 isFirmwareUpdateAvailable])
+  if ([self isFirmwareUpdateAvailable])
   {
     return 1;
   }
 
-  return [a1 hf_hasNewValidSoftwareUpdate];
+  return [self hf_hasNewValidSoftwareUpdate];
 }
 
 - (uint64_t)hf_hasSoftwareUpdate
 {
   v2 = +[HFHomeKitDispatcher sharedDispatcher];
-  v3 = [v2 softwareUpdateManager];
-  v4 = [v3 hasSoftwareUpdate:a1];
+  softwareUpdateManager = [v2 softwareUpdateManager];
+  v4 = [softwareUpdateManager hasSoftwareUpdate:self];
 
   return v4;
 }
@@ -72,8 +72,8 @@
 - (uint64_t)hf_hasValidSoftwareUpdate
 {
   v2 = +[HFHomeKitDispatcher sharedDispatcher];
-  v3 = [v2 softwareUpdateManager];
-  v4 = [v3 hasValidSoftwareUpdate:a1];
+  softwareUpdateManager = [v2 softwareUpdateManager];
+  v4 = [softwareUpdateManager hasValidSoftwareUpdate:self];
 
   return v4;
 }
@@ -81,8 +81,8 @@
 - (uint64_t)hf_hasNewValidSoftwareUpdate
 {
   v2 = +[HFHomeKitDispatcher sharedDispatcher];
-  v3 = [v2 softwareUpdateManager];
-  v4 = [v3 hasNewValidSoftwareUpdate:a1];
+  softwareUpdateManager = [v2 softwareUpdateManager];
+  v4 = [softwareUpdateManager hasNewValidSoftwareUpdate:self];
 
   return v4;
 }
@@ -90,8 +90,8 @@
 - (uint64_t)hf_hasRequestedSoftwareUpdate
 {
   v2 = +[HFHomeKitDispatcher sharedDispatcher];
-  v3 = [v2 softwareUpdateManager];
-  v4 = [v3 hasRequestedSoftwareUpdate:a1];
+  softwareUpdateManager = [v2 softwareUpdateManager];
+  v4 = [softwareUpdateManager hasRequestedSoftwareUpdate:self];
 
   return v4;
 }
@@ -99,8 +99,8 @@
 - (uint64_t)hf_isReadyToInstallSoftwareUpdate
 {
   v2 = +[HFHomeKitDispatcher sharedDispatcher];
-  v3 = [v2 softwareUpdateManager];
-  v4 = [v3 isReadyToInstallSoftwareUpdate:a1];
+  softwareUpdateManager = [v2 softwareUpdateManager];
+  v4 = [softwareUpdateManager isReadyToInstallSoftwareUpdate:self];
 
   return v4;
 }
@@ -108,8 +108,8 @@
 - (uint64_t)hf_isDownloadingSoftwareUpdate
 {
   v2 = +[HFHomeKitDispatcher sharedDispatcher];
-  v3 = [v2 softwareUpdateManager];
-  v4 = [v3 isDownloadingSoftwareUpdate:a1];
+  softwareUpdateManager = [v2 softwareUpdateManager];
+  v4 = [softwareUpdateManager isDownloadingSoftwareUpdate:self];
 
   return v4;
 }
@@ -117,8 +117,8 @@
 - (uint64_t)hf_isInstallingSoftwareUpdate
 {
   v2 = +[HFHomeKitDispatcher sharedDispatcher];
-  v3 = [v2 softwareUpdateManager];
-  v4 = [v3 isInstallingSoftwareUpdate:a1];
+  softwareUpdateManager = [v2 softwareUpdateManager];
+  v4 = [softwareUpdateManager isInstallingSoftwareUpdate:self];
 
   return v4;
 }
@@ -126,8 +126,8 @@
 - (uint64_t)hf_isSoftwareUpdateInProgress
 {
   v2 = +[HFHomeKitDispatcher sharedDispatcher];
-  v3 = [v2 softwareUpdateManager];
-  v4 = [v3 isSoftwareUpdateInProgress:a1];
+  softwareUpdateManager = [v2 softwareUpdateManager];
+  v4 = [softwareUpdateManager isSoftwareUpdateInProgress:self];
 
   return v4;
 }
@@ -135,8 +135,8 @@
 - (uint64_t)hf_isSoftwareUpdateInstalled
 {
   v2 = +[HFHomeKitDispatcher sharedDispatcher];
-  v3 = [v2 softwareUpdateManager];
-  v4 = [v3 isSoftwareUpdateInstalled:a1];
+  softwareUpdateManager = [v2 softwareUpdateManager];
+  v4 = [softwareUpdateManager isSoftwareUpdateInstalled:self];
 
   return v4;
 }
@@ -144,8 +144,8 @@
 - (uint64_t)hf_softwareUpdatePossessesNecessaryDocumentation
 {
   v2 = +[HFHomeKitDispatcher sharedDispatcher];
-  v3 = [v2 softwareUpdateManager];
-  v4 = [v3 softwareUpdatePossessesNecessaryDocumentation:a1];
+  softwareUpdateManager = [v2 softwareUpdateManager];
+  v4 = [softwareUpdateManager softwareUpdatePossessesNecessaryDocumentation:self];
 
   return v4;
 }
@@ -153,8 +153,8 @@
 - (id)hf_softwareUpdateDocumentation
 {
   v2 = +[HFHomeKitDispatcher sharedDispatcher];
-  v3 = [v2 softwareUpdateManager];
-  v4 = [v3 softwareUpdateDocumentation:a1];
+  softwareUpdateManager = [v2 softwareUpdateManager];
+  v4 = [softwareUpdateManager softwareUpdateDocumentation:self];
 
   return v4;
 }
@@ -162,8 +162,8 @@
 - (id)hf_softwareUpdateVersion
 {
   v2 = +[HFHomeKitDispatcher sharedDispatcher];
-  v3 = [v2 softwareUpdateManager];
-  v4 = [v3 softwareUpdateVersion:a1];
+  softwareUpdateManager = [v2 softwareUpdateManager];
+  v4 = [softwareUpdateManager softwareUpdateVersion:self];
 
   return v4;
 }
@@ -171,8 +171,8 @@
 - (id)hf_softwareUpdateDisplayableVersion
 {
   v2 = +[HFHomeKitDispatcher sharedDispatcher];
-  v3 = [v2 softwareUpdateManager];
-  v4 = [v3 softwareUpdateDisplayableVersion:a1];
+  softwareUpdateManager = [v2 softwareUpdateManager];
+  v4 = [softwareUpdateManager softwareUpdateDisplayableVersion:self];
 
   return v4;
 }
@@ -180,8 +180,8 @@
 - (id)hf_softwareUpdateReleaseDate
 {
   v2 = +[HFHomeKitDispatcher sharedDispatcher];
-  v3 = [v2 softwareUpdateManager];
-  v4 = [v3 softwareUpdateReleaseDate:a1];
+  softwareUpdateManager = [v2 softwareUpdateManager];
+  v4 = [softwareUpdateManager softwareUpdateReleaseDate:self];
 
   return v4;
 }
@@ -189,8 +189,8 @@
 - (uint64_t)hf_softwareUpdateDownloadSize
 {
   v2 = +[HFHomeKitDispatcher sharedDispatcher];
-  v3 = [v2 softwareUpdateManager];
-  v4 = [v3 softwareUpdateDownloadSize:a1];
+  softwareUpdateManager = [v2 softwareUpdateManager];
+  v4 = [softwareUpdateManager softwareUpdateDownloadSize:self];
 
   return v4;
 }
@@ -198,8 +198,8 @@
 - (id)hf_softwareUpdatePortionComplete
 {
   v2 = +[HFHomeKitDispatcher sharedDispatcher];
-  v3 = [v2 softwareUpdateManager];
-  v4 = [v3 softwareUpdatePortionComplete:a1];
+  softwareUpdateManager = [v2 softwareUpdateManager];
+  v4 = [softwareUpdateManager softwareUpdatePortionComplete:self];
 
   return v4;
 }
@@ -207,8 +207,8 @@
 - (id)hf_fetchAvailableSoftwareUpdateWithOptions:()HFSoftwareUpdateAdditions
 {
   v5 = +[HFHomeKitDispatcher sharedDispatcher];
-  v6 = [v5 softwareUpdateManager];
-  v7 = [v6 fetchAvailableSoftwareUpdate:a1 options:a3];
+  softwareUpdateManager = [v5 softwareUpdateManager];
+  v7 = [softwareUpdateManager fetchAvailableSoftwareUpdate:self options:a3];
 
   return v7;
 }
@@ -216,8 +216,8 @@
 - (id)hf_startSoftwareUpdate
 {
   v2 = +[HFHomeKitDispatcher sharedDispatcher];
-  v3 = [v2 softwareUpdateManager];
-  v4 = [v3 startSoftwareUpdate:a1];
+  softwareUpdateManager = [v2 softwareUpdateManager];
+  v4 = [softwareUpdateManager startSoftwareUpdate:self];
 
   return v4;
 }
@@ -225,11 +225,11 @@
 - (id)hf_softwareUpdateHash
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [a1 category];
-  v4 = [v3 categoryType];
-  v5 = [a1 manufacturer];
-  v6 = [a1 hf_softwareUpdateVersion];
-  v7 = [v2 stringWithFormat:@"%@-%@-%@", v4, v5, v6];
+  category = [self category];
+  categoryType = [category categoryType];
+  manufacturer = [self manufacturer];
+  hf_softwareUpdateVersion = [self hf_softwareUpdateVersion];
+  v7 = [v2 stringWithFormat:@"%@-%@-%@", categoryType, manufacturer, hf_softwareUpdateVersion];
 
   return v7;
 }
@@ -237,14 +237,14 @@
 - (id)hf_softwareUpdateDependentObjects
 {
   v2 = objc_opt_new();
-  if (([a1 supportsSoftwareUpdateV2] & 1) == 0)
+  if (([self supportsSoftwareUpdateV2] & 1) == 0)
   {
-    v3 = [a1 softwareUpdateController];
-    [v2 na_safeAddObject:v3];
+    softwareUpdateController = [self softwareUpdateController];
+    [v2 na_safeAddObject:softwareUpdateController];
 
-    v4 = [a1 softwareUpdateController];
-    v5 = [v4 availableUpdate];
-    [v2 na_safeAddObject:v5];
+    softwareUpdateController2 = [self softwareUpdateController];
+    availableUpdate = [softwareUpdateController2 availableUpdate];
+    [v2 na_safeAddObject:availableUpdate];
   }
 
   return v2;
@@ -254,7 +254,7 @@
 {
   v6[2] = *MEMORY[0x277D85DE8];
   v2 = objc_opt_new();
-  if (([a1 supportsSoftwareUpdateV2] & 1) == 0)
+  if (([self supportsSoftwareUpdateV2] & 1) == 0)
   {
     v6[0] = objc_opt_class();
     v6[1] = objc_opt_class();

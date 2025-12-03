@@ -1,22 +1,22 @@
 @interface UISelectionGrabberDot
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (CGRect)_extendedHitTestingRectWithEvent:(id)a3 includingCalloutBarAdjustments:(BOOL)a4;
-- (CGRect)_extendedHitTestingRectWithPrecision:(unint64_t)a3 includingCalloutBarAdjustments:(BOOL)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (CGRect)_extendedHitTestingRectWithEvent:(id)event includingCalloutBarAdjustments:(BOOL)adjustments;
+- (CGRect)_extendedHitTestingRectWithPrecision:(unint64_t)precision includingCalloutBarAdjustments:(BOOL)adjustments;
 - (UISelectionGrabber)grabber;
-- (UISelectionGrabberDot)initWithFrame:(CGRect)a3 container:(id)a4;
-- (id)_rasterizedDotImageForScale:(double)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)redrawRasterizedImageForScale:(double)a3;
-- (void)setFrame:(CGRect)a3;
+- (UISelectionGrabberDot)initWithFrame:(CGRect)frame container:(id)container;
+- (id)_rasterizedDotImageForScale:(double)scale;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)redrawRasterizedImageForScale:(double)scale;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation UISelectionGrabberDot
 
-- (UISelectionGrabberDot)initWithFrame:(CGRect)a3 container:(id)a4
+- (UISelectionGrabberDot)initWithFrame:(CGRect)frame container:(id)container
 {
   v8.receiver = self;
   v8.super_class = UISelectionGrabberDot;
-  v4 = [(UIImageView *)&v8 initWithFrame:a4, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(UIImageView *)&v8 initWithFrame:container, frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v5 = v4;
   if (v4)
   {
@@ -27,7 +27,7 @@
   return v5;
 }
 
-- (id)_rasterizedDotImageForScale:(double)a3
+- (id)_rasterizedDotImageForScale:(double)scale
 {
   [(UIView *)self bounds];
   v6 = v5;
@@ -39,15 +39,15 @@
     goto LABEL_18;
   }
 
-  _UIGraphicsBeginImageContextWithOptions(0, 0, v6, v7, a3);
+  _UIGraphicsBeginImageContextWithOptions(0, 0, v6, v7, scale);
   v10 = [UIBezierPath bezierPathWithOvalInRect:0.0, 0.0, v6, v8];
-  v11 = [(UISelectionGrabberDot *)self grabber];
-  v12 = [v11 hostView];
-  v13 = [v12 container];
+  grabber = [(UISelectionGrabberDot *)self grabber];
+  hostView = [grabber hostView];
+  container = [hostView container];
 
   if (objc_opt_respondsToSelector())
   {
-    [v13 selectionBarColor];
+    [container selectionBarColor];
   }
 
   else
@@ -57,31 +57,31 @@
   v14 = ;
   [v14 set];
   [v10 fill];
-  v15 = [(UISelectionGrabberDot *)self grabber];
-  v16 = [v15 customPath];
+  grabber2 = [(UISelectionGrabberDot *)self grabber];
+  customPath = [grabber2 customPath];
 
-  if (!v16)
+  if (!customPath)
   {
-    v17 = [(UISelectionGrabberDot *)self grabber];
-    v18 = [v17 window];
-    v19 = [(UIView *)self window];
+    grabber3 = [(UISelectionGrabberDot *)self grabber];
+    window = [grabber3 window];
+    window2 = [(UIView *)self window];
 
-    v20 = [(UISelectionGrabberDot *)self grabber];
-    [v20 frame];
+    grabber4 = [(UISelectionGrabberDot *)self grabber];
+    [grabber4 frame];
     v22 = v21;
     v24 = v23;
     v26 = v25;
     v28 = v27;
-    v29 = [(UISelectionGrabberDot *)self grabber];
-    v30 = [v29 superview];
-    if (v18 == v19)
+    grabber5 = [(UISelectionGrabberDot *)self grabber];
+    superview = [grabber5 superview];
+    if (window == window2)
     {
-      [(UIView *)self convertRect:v30 fromView:v22, v24, v26, v28];
+      [(UIView *)self convertRect:superview fromView:v22, v24, v26, v28];
     }
 
     else
     {
-      [(UIView *)self convertRect:v30 fromCoordinateSpace:v22, v24, v26, v28];
+      [(UIView *)self convertRect:superview fromCoordinateSpace:v22, v24, v26, v28];
     }
 
     v35 = v31;
@@ -89,10 +89,10 @@
     v37 = v33;
     v38 = v34;
 
-    v39 = [(UISelectionGrabberDot *)self grabber];
-    v40 = [v39 isPointedDown];
+    grabber6 = [(UISelectionGrabberDot *)self grabber];
+    isPointedDown = [grabber6 isPointedDown];
 
-    if (v40)
+    if (isPointedDown)
     {
       [(UIView *)self frame];
       v36 = v41 + -1.0;
@@ -100,15 +100,15 @@
 
     else
     {
-      v42 = [(UISelectionGrabberDot *)self grabber];
-      v43 = [v42 isPointedUp];
+      grabber7 = [(UISelectionGrabberDot *)self grabber];
+      isPointedUp = [grabber7 isPointedUp];
 
-      if (!v43)
+      if (!isPointedUp)
       {
-        v45 = [(UISelectionGrabberDot *)self grabber];
-        v46 = [v45 isPointedRight];
+        grabber8 = [(UISelectionGrabberDot *)self grabber];
+        isPointedRight = [grabber8 isPointedRight];
 
-        if (v46)
+        if (isPointedRight)
         {
           [(UIView *)self frame];
           v35 = v47 + -1.0;
@@ -116,10 +116,10 @@
 
         else
         {
-          v48 = [(UISelectionGrabberDot *)self grabber];
-          v49 = [v48 isPointedLeft];
+          grabber9 = [(UISelectionGrabberDot *)self grabber];
+          isPointedLeft = [grabber9 isPointedLeft];
 
-          if (!v49)
+          if (!isPointedLeft)
           {
             v35 = *MEMORY[0x1E695F058];
             v36 = *(MEMORY[0x1E695F058] + 8);
@@ -153,23 +153,23 @@ LABEL_18:
   return v9;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  [(UISelectionGrabberDot *)self _extendedHitTestingRectWithEvent:a4 includingCalloutBarAdjustments:0];
+  y = inside.y;
+  x = inside.x;
+  [(UISelectionGrabberDot *)self _extendedHitTestingRectWithEvent:event includingCalloutBarAdjustments:0];
   v10 = x;
   v11 = y;
 
   return CGRectContainsPoint(*&v6, *&v10);
 }
 
-- (CGRect)_extendedHitTestingRectWithEvent:(id)a3 includingCalloutBarAdjustments:(BOOL)a4
+- (CGRect)_extendedHitTestingRectWithEvent:(id)event includingCalloutBarAdjustments:(BOOL)adjustments
 {
-  v4 = a4;
-  v6 = [a3 _inputPrecision];
+  adjustmentsCopy = adjustments;
+  _inputPrecision = [event _inputPrecision];
 
-  [(UISelectionGrabberDot *)self _extendedHitTestingRectWithPrecision:v6 includingCalloutBarAdjustments:v4];
+  [(UISelectionGrabberDot *)self _extendedHitTestingRectWithPrecision:_inputPrecision includingCalloutBarAdjustments:adjustmentsCopy];
   result.size.height = v10;
   result.size.width = v9;
   result.origin.y = v8;
@@ -177,15 +177,15 @@ LABEL_18:
   return result;
 }
 
-- (CGRect)_extendedHitTestingRectWithPrecision:(unint64_t)a3 includingCalloutBarAdjustments:(BOOL)a4
+- (CGRect)_extendedHitTestingRectWithPrecision:(unint64_t)precision includingCalloutBarAdjustments:(BOOL)adjustments
 {
-  v4 = a4;
+  adjustmentsCopy = adjustments;
   [(UIView *)self bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  if (a3 == 2)
+  if (precision == 2)
   {
     v15 = -6.0;
   }
@@ -217,19 +217,19 @@ LABEL_18:
   y = v35.origin.y;
   width = v35.size.width;
   height = v35.size.height;
-  if (v4)
+  if (adjustmentsCopy)
   {
-    v24 = [(UISelectionGrabberDot *)self grabber];
-    v25 = [v24 isVertical];
+    grabber = [(UISelectionGrabberDot *)self grabber];
+    isVertical = [grabber isVertical];
 
-    v26 = [(UISelectionGrabberDot *)self grabber];
-    v27 = v26;
-    if (v25)
+    grabber2 = [(UISelectionGrabberDot *)self grabber];
+    v27 = grabber2;
+    if (isVertical)
     {
       height = height + v19;
-      v28 = [v26 isPointedDown];
+      isPointedDown = [grabber2 isPointedDown];
 
-      if (v28)
+      if (isPointedDown)
       {
         y = y - v19;
       }
@@ -238,9 +238,9 @@ LABEL_18:
     else
     {
       width = width + v18;
-      v29 = [v26 isPointedLeft];
+      isPointedLeft = [grabber2 isPointedLeft];
 
-      if (v29)
+      if (isPointedLeft)
       {
         x = x - v18;
       }
@@ -258,27 +258,27 @@ LABEL_18:
   return result;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  [(UISelectionGrabberDot *)self _extendedHitTestingRectWithEvent:a4 includingCalloutBarAdjustments:1];
+  y = test.y;
+  x = test.x;
+  [(UISelectionGrabberDot *)self _extendedHitTestingRectWithEvent:event includingCalloutBarAdjustments:1];
   v12.x = x;
   v12.y = y;
   if (CGRectContainsPoint(v13, v12))
   {
-    v7 = [(UISelectionGrabberDot *)self grabber];
-    v8 = [v7 hostView];
+    grabber = [(UISelectionGrabberDot *)self grabber];
+    hostView = [grabber hostView];
   }
 
   else
   {
-    v8 = 0;
+    hostView = 0;
   }
 
-  if ([v8 isUserInteractionEnabled])
+  if ([hostView isUserInteractionEnabled])
   {
-    v9 = v8;
+    v9 = hostView;
   }
 
   else
@@ -291,23 +291,23 @@ LABEL_18:
   return v9;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(UIView *)self frame];
   v9 = v8;
   v11 = v10;
-  v12 = [(UIView *)self window];
-  [v12 convertRect:self toView:{0.0, 0.0, 1.0, 1.0}];
+  window = [(UIView *)self window];
+  [window convertRect:self toView:{0.0, 0.0, 1.0, 1.0}];
   v14 = v13;
 
   if (v14 == 1.0)
   {
-    v15 = [(UIView *)self window];
-    x = pixelAlignedRectForRect(v15);
+    window2 = [(UIView *)self window];
+    x = pixelAlignedRectForRect(window2);
     y = v16;
     width = v17;
     height = v18;
@@ -322,11 +322,11 @@ LABEL_18:
   }
 }
 
-- (void)redrawRasterizedImageForScale:(double)a3
+- (void)redrawRasterizedImageForScale:(double)scale
 {
   [(UIView *)self _currentScreenScale];
-  v6 = [(UISelectionGrabberDot *)self _rasterizedDotImageForScale:v5 * a3];
-  [(UIImageView *)self setImage:v6];
+  scale = [(UISelectionGrabberDot *)self _rasterizedDotImageForScale:v5 * scale];
+  [(UIImageView *)self setImage:scale];
 
   [(UIImageView *)self setContentScaleFactor:1.0];
 }

@@ -1,7 +1,7 @@
 @interface BKLibraryDataSourceJaliscoPreorders
 - (BKLibraryDataSourceJaliscoPreorders)init;
-- (void)fetchAssetIDsWithCompletion:(id)a3;
-- (void)resolveLibraryAsset:(id)a3 options:(id)a4 completion:(id)a5;
+- (void)fetchAssetIDsWithCompletion:(id)completion;
+- (void)resolveLibraryAsset:(id)asset options:(id)options completion:(id)completion;
 @end
 
 @implementation BKLibraryDataSourceJaliscoPreorders
@@ -13,9 +13,9 @@
   return [(BKLibraryDataSourceJalisco *)&v3 initWithIdentifier:@"com.apple.ibooks.datasource.jalisco.preorders"];
 }
 
-- (void)fetchAssetIDsWithCompletion:(id)a3
+- (void)fetchAssetIDsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   kdebug_trace();
   v5 = +[BLJaliscoDAAPClient sharedClient];
 
@@ -51,7 +51,7 @@
     v25[2] = sub_1001E6044;
     v25[3] = &unk_100A05E68;
     v26 = v12;
-    v27 = v4;
+    v27 = completionCopy;
     v24.receiver = v23;
     v24.super_class = BKLibraryDataSourceJaliscoPreorders;
     v20 = v12;
@@ -70,7 +70,7 @@
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "BKLibraryDataSourceJaliscoPreorders fetchAssets NO CLIENT error%@", buf, 0xCu);
     }
 
-    v22 = objc_retainBlock(v4);
+    v22 = objc_retainBlock(completionCopy);
     v9 = v22;
     if (v22)
     {
@@ -79,9 +79,9 @@
   }
 }
 
-- (void)resolveLibraryAsset:(id)a3 options:(id)a4 completion:(id)a5
+- (void)resolveLibraryAsset:(id)asset options:(id)options completion:(id)completion
 {
-  v5 = objc_retainBlock(a5);
+  v5 = objc_retainBlock(completion);
   if (v5)
   {
     v6 = v5;

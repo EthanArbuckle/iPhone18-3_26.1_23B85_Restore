@@ -6,7 +6,7 @@
 
 - (__CFString)ma_normalizedString
 {
-  v1 = [MEMORY[0x277CCAB68] stringWithString:a1];
+  v1 = [MEMORY[0x277CCAB68] stringWithString:self];
   CFStringNormalize(v1, kCFStringNormalizationFormD);
   CFStringFold(v1, 0x181uLL, 0);
 

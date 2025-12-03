@@ -1,34 +1,34 @@
 @interface MessageListCellView
 + (OS_os_log)log;
-- (BOOL)_hasPastReminderForReadLaterDate:(id)a3 displayDate:(id)a4;
-- (BOOL)_isLabelValid:(id)a3;
+- (BOOL)_hasPastReminderForReadLaterDate:(id)date displayDate:(id)displayDate;
+- (BOOL)_isLabelValid:(id)valid;
 - (BOOL)shouldShowBlockedSenderLabel;
 - (BOOL)shouldShowCategorizationInformation;
-- (BOOL)verifyContentVisibility:(id *)a3;
-- (CGPoint)_dateOriginAlignedWithAddressBaselineForBounds:(CGRect)a3;
-- (CGPoint)_dateOriginUnderSummary:(CGRect)a3;
-- (CGPoint)_originForChevronBoxWithBounds:(CGRect)a3 addressRect:(CGRect)a4 sizeForChevron:(CGSize)a5;
-- (CGRect)_adjustRect:(CGRect)a3 forTrailingRect:(CGRect)a4 padding:(double)a5;
-- (CGRect)_rectForAddressWithBounds:(CGRect)a3;
-- (CGRect)_rectForAvatarWithBounds:(CGRect)a3;
-- (CGRect)_rectForBlockedSenderLabelWithBounds:(CGRect)a3;
-- (CGRect)_rectForCategoriesStackViewWithBounds:(CGRect)a3;
-- (CGRect)_rectForChevronBoxWithBounds:(CGRect)a3 addressRect:(CGRect)a4 type:(int64_t)a5;
-- (CGRect)_rectForChevronWithBounds:(CGRect)a3 addressRect:(CGRect)a4;
-- (CGRect)_rectForDateWithBounds:(CGRect)a3 chevronRect:(CGRect)a4;
-- (CGRect)_rectForDisclosureButtonWithFrame:(CGRect)a3 boxFrame:(CGRect)a4;
-- (CGRect)_rectForMultipleSubjectWithBounds:(CGRect)a3 position:(int64_t)a4;
-- (CGRect)_rectForRecipientLabelWithBounds:(CGRect)a3;
-- (CGRect)_rectForStatusIndicatorViewsWithPrimaryStatusIndicatorImage:(id)a3;
-- (CGRect)_rectForSubjectWithBounds:(CGRect)a3;
-- (CGRect)_rectForSummaryWithBounds:(CGRect)a3;
+- (BOOL)verifyContentVisibility:(id *)visibility;
+- (CGPoint)_dateOriginAlignedWithAddressBaselineForBounds:(CGRect)bounds;
+- (CGPoint)_dateOriginUnderSummary:(CGRect)summary;
+- (CGPoint)_originForChevronBoxWithBounds:(CGRect)bounds addressRect:(CGRect)rect sizeForChevron:(CGSize)chevron;
+- (CGRect)_adjustRect:(CGRect)rect forTrailingRect:(CGRect)trailingRect padding:(double)padding;
+- (CGRect)_rectForAddressWithBounds:(CGRect)bounds;
+- (CGRect)_rectForAvatarWithBounds:(CGRect)bounds;
+- (CGRect)_rectForBlockedSenderLabelWithBounds:(CGRect)bounds;
+- (CGRect)_rectForCategoriesStackViewWithBounds:(CGRect)bounds;
+- (CGRect)_rectForChevronBoxWithBounds:(CGRect)bounds addressRect:(CGRect)rect type:(int64_t)type;
+- (CGRect)_rectForChevronWithBounds:(CGRect)bounds addressRect:(CGRect)rect;
+- (CGRect)_rectForDateWithBounds:(CGRect)bounds chevronRect:(CGRect)rect;
+- (CGRect)_rectForDisclosureButtonWithFrame:(CGRect)frame boxFrame:(CGRect)boxFrame;
+- (CGRect)_rectForMultipleSubjectWithBounds:(CGRect)bounds position:(int64_t)position;
+- (CGRect)_rectForRecipientLabelWithBounds:(CGRect)bounds;
+- (CGRect)_rectForStatusIndicatorViewsWithPrimaryStatusIndicatorImage:(id)image;
+- (CGRect)_rectForSubjectWithBounds:(CGRect)bounds;
+- (CGRect)_rectForSummaryWithBounds:(CGRect)bounds;
 - (CGSize)_sizeForChevron;
-- (CGSize)_sizeForChevronWithType:(int64_t)a3;
+- (CGSize)_sizeForChevronWithType:(int64_t)type;
 - (LayoutStatusIndicatorInfo)_layoutStatusIndicatorViews;
-- (LayoutStatusIndicatorInfo)_layoutStatusIndicatorViewsWithChevronRect:(SEL)a3;
+- (LayoutStatusIndicatorInfo)_layoutStatusIndicatorViewsWithChevronRect:(SEL)rect;
 - (MUIAvatarViewController)avatarController;
 - (MessageListCellLayoutValues)layoutValues;
-- (MessageListCellView)initWithFrame:(CGRect)a3;
+- (MessageListCellView)initWithFrame:(CGRect)frame;
 - (MessageListStatusIndicatorManager)statusIndicatorManager;
 - (UIButton)disclosureButton;
 - (UIImageView)avatarImageView;
@@ -42,59 +42,59 @@
 - (UILabel)tertiaryLabel;
 - (UIStackView)categoriesStackView;
 - (UIView)avatarView;
-- (id)_addressAttributesWithColor:(id)a3;
+- (id)_addressAttributesWithColor:(id)color;
 - (id)_baselineLabelForIndicator;
-- (id)_bodyAttributesWithColor:(id)a3;
-- (id)_dateForViewModel:(id)a3;
-- (id)_defaultAttributesWithFont:(id)a3 color:(id)a4;
-- (id)_formatTertiaryString:(id)a3;
-- (id)_highlightedPrimaryString:(id)a3;
-- (id)_highlightedSender:(id)a3;
-- (id)_highlightedSubject:(id)a3;
-- (id)_highlightedSummarySnippet:(id)a3;
-- (id)_labelForVerticalPosition:(unint64_t)a3 font:(id *)a4;
+- (id)_bodyAttributesWithColor:(id)color;
+- (id)_dateForViewModel:(id)model;
+- (id)_defaultAttributesWithFont:(id)font color:(id)color;
+- (id)_formatTertiaryString:(id)string;
+- (id)_highlightedPrimaryString:(id)string;
+- (id)_highlightedSender:(id)sender;
+- (id)_highlightedSubject:(id)subject;
+- (id)_highlightedSummarySnippet:(id)snippet;
+- (id)_labelForVerticalPosition:(unint64_t)position font:(id *)font;
 - (id)_primaryLabelString;
-- (id)_secondaryStringAttributesWithColor:(id)a3;
-- (id)_statusIndicatorVeritcalPositionForLabel:(id)a3 font:(id)a4 shouldAlignWithCenter:(BOOL)a5;
-- (id)_statusIndicatorVerticalPositionAvatarForItem:(unint64_t)a3 verticalIndicatorCount:(int64_t)a4;
-- (void)_animateIndicator:(unint64_t)a3 toState:(BOOL)a4;
-- (void)_dynamicTypeDidChange:(id)a3;
+- (id)_secondaryStringAttributesWithColor:(id)color;
+- (id)_statusIndicatorVeritcalPositionForLabel:(id)label font:(id)font shouldAlignWithCenter:(BOOL)center;
+- (id)_statusIndicatorVerticalPositionAvatarForItem:(unint64_t)item verticalIndicatorCount:(int64_t)count;
+- (void)_animateIndicator:(unint64_t)indicator toState:(BOOL)state;
+- (void)_dynamicTypeDidChange:(id)change;
 - (void)_invalidateCachedValues;
-- (void)_layoutChevronForDisclosureStateAnimated:(BOOL)a3;
+- (void)_layoutChevronForDisclosureStateAnimated:(BOOL)animated;
 - (void)_layoutDisclosureButton;
-- (void)_layoutValuesDidChange:(id)a3;
+- (void)_layoutValuesDidChange:(id)change;
 - (void)_recalculateAttributedStrings;
-- (void)_recalculatePrimaryAttributedStringShouldRehighlight:(BOOL)a3;
-- (void)_recalculateSecondaryAttributedStringShouldRehighlight:(BOOL)a3;
-- (void)_recalculateTertiaryAttributedStringShouldRehighlight:(BOOL)a3;
+- (void)_recalculatePrimaryAttributedStringShouldRehighlight:(BOOL)rehighlight;
+- (void)_recalculateSecondaryAttributedStringShouldRehighlight:(BOOL)rehighlight;
+- (void)_recalculateTertiaryAttributedStringShouldRehighlight:(BOOL)rehighlight;
 - (void)_resetAttributedStrings;
 - (void)_resetDateLabel;
 - (void)_setupAvatarImageView;
 - (void)_setupDisclosureButtonImageIfNecessary;
 - (void)_updateAvatarView;
-- (void)_updateAvatarViewWithView:(id)a3;
-- (void)_updateDateLabelWithDateStyle:(int64_t)a3;
-- (void)applyIndicatorPreviewChangeAction:(id)a3;
+- (void)_updateAvatarViewWithView:(id)view;
+- (void)_updateDateLabelWithDateStyle:(int64_t)style;
+- (void)applyIndicatorPreviewChangeAction:(id)action;
 - (void)dealloc;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setAnnotatedRelationshipType:(int64_t)a3;
-- (void)setBackgroundConfiguration:(id)a3;
-- (void)setChevronType:(int64_t)a3;
-- (void)setCompact:(BOOL)a3;
-- (void)setConfigurationState:(id)a3;
-- (void)setContentConfiguration:(id)a3;
-- (void)setDisclosureEnabled:(BOOL)a3 animated:(BOOL)a4;
-- (void)setDisplayUnreadDot:(BOOL)a3;
-- (void)setDisplayVIP:(BOOL)a3;
-- (void)setEditing:(BOOL)a3;
-- (void)setHasGeneratedSummary:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setRecipientLabelType:(int64_t)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setShouldAnnotateReplyOrForward:(BOOL)a3;
-- (void)setSummary:(id)a3;
-- (void)setViewModel:(id)a3;
+- (void)setAnnotatedRelationshipType:(int64_t)type;
+- (void)setBackgroundConfiguration:(id)configuration;
+- (void)setChevronType:(int64_t)type;
+- (void)setCompact:(BOOL)compact;
+- (void)setConfigurationState:(id)state;
+- (void)setContentConfiguration:(id)configuration;
+- (void)setDisclosureEnabled:(BOOL)enabled animated:(BOOL)animated;
+- (void)setDisplayUnreadDot:(BOOL)dot;
+- (void)setDisplayVIP:(BOOL)p;
+- (void)setEditing:(BOOL)editing;
+- (void)setHasGeneratedSummary:(BOOL)summary;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setRecipientLabelType:(int64_t)type;
+- (void)setSelected:(BOOL)selected;
+- (void)setShouldAnnotateReplyOrForward:(BOOL)forward;
+- (void)setSummary:(id)summary;
+- (void)setViewModel:(id)model;
 @end
 
 @implementation MessageListCellView
@@ -130,10 +130,10 @@
     v189 = 0u;
     v186 = 0u;
     v187 = 0u;
-    v3 = [(MessageListCellView *)self statusIndicatorManager];
-    v4 = [v3 statusIndicatorViews];
+    statusIndicatorManager = [(MessageListCellView *)self statusIndicatorManager];
+    statusIndicatorViews = [statusIndicatorManager statusIndicatorViews];
 
-    v5 = [v4 countByEnumeratingWithState:&v186 objects:v191 count:16];
+    v5 = [statusIndicatorViews countByEnumeratingWithState:&v186 objects:v191 count:16];
     if (v5)
     {
       v6 = *v187;
@@ -143,13 +143,13 @@
         {
           if (*v187 != v6)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(statusIndicatorViews);
           }
 
           [(MessageListCellView *)self addSubview:*(*(&v186 + 1) + 8 * i)];
         }
 
-        v5 = [v4 countByEnumeratingWithState:&v186 objects:v191 count:16];
+        v5 = [statusIndicatorViews countByEnumeratingWithState:&v186 objects:v191 count:16];
       }
 
       while (v5);
@@ -157,48 +157,48 @@
   }
 
   [(MessageListCellView *)self _recalculateAttributedStrings];
-  v8 = [UIApp preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v8);
+  preferredContentSizeCategory = [UIApp preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
-  v9 = [(MessageListCellView *)self viewModel];
-  v174 = [(MessageListCellView *)self _dateForViewModel:v9];
+  viewModel = [(MessageListCellView *)self viewModel];
+  v174 = [(MessageListCellView *)self _dateForViewModel:viewModel];
   if ([(MessageListCellView *)self isSelected])
   {
-    v10 = 1;
+    isHighlighted = 1;
   }
 
   else
   {
-    v10 = [(MessageListCellView *)self isHighlighted];
+    isHighlighted = [(MessageListCellView *)self isHighlighted];
   }
 
-  v178 = [(MessageListCellView *)self dateLabel];
-  v11 = [(MessageListCellView *)self dateStyle];
-  if (v11 > 1)
+  dateLabel = [(MessageListCellView *)self dateLabel];
+  dateStyle = [(MessageListCellView *)self dateStyle];
+  if (dateStyle > 1)
   {
-    if (v11 == 2)
+    if (dateStyle == 2)
     {
-      if (v10)
+      if (isHighlighted)
       {
 LABEL_23:
         sub_10014A83C();
         v14 = LABEL_25:;
-        [v178 _setTextEncapsulation:v14];
+        [dateLabel _setTextEncapsulation:v14];
 
         v12 = _EFLocalizedString();
-        [v178 setText:v12];
+        [dateLabel setText:v12];
         goto LABEL_26;
       }
     }
 
     else
     {
-      if (v11 != 3)
+      if (dateStyle != 3)
       {
         goto LABEL_27;
       }
 
-      if (v10)
+      if (isHighlighted)
       {
         goto LABEL_23;
       }
@@ -208,20 +208,20 @@ LABEL_23:
     goto LABEL_25;
   }
 
-  if (!v11)
+  if (!dateStyle)
   {
     [v174 timeIntervalSince1970];
-    [v178 setTimeInterval:v13 + -978307200.0];
+    [dateLabel setTimeInterval:v13 + -978307200.0];
     goto LABEL_27;
   }
 
-  if (v11 != 1)
+  if (dateStyle != 1)
   {
     goto LABEL_27;
   }
 
   v12 = [NSDateFormatter ef_formatDate:v174 style:2];
-  [v178 setText:v12];
+  [dateLabel setText:v12];
 LABEL_26:
 
 LABEL_27:
@@ -246,32 +246,32 @@ LABEL_27:
 
   if (v18 == 1)
   {
-    v20 = [v9 style];
+    style = [viewModel style];
     v19 = 0.0;
-    if (v20 != 2)
+    if (style != 2)
     {
       v19 = 1.0;
     }
   }
 
-  [v178 mf_setAlpha:v19];
-  v21 = [(MessageListCellView *)self layoutValues];
-  v22 = [(MessageListCellView *)self configurationState];
-  v23 = [(MessageListCellView *)self contentConfiguration];
-  v24 = [(MessageListCellView *)self backgroundConfiguration];
-  v25 = [v21 dateColorForConfigurationState:v22 contentConfiguration:v23 backgroundConfiguration:v24];
-  [v178 setTextColor:v25];
+  [dateLabel mf_setAlpha:v19];
+  layoutValues = [(MessageListCellView *)self layoutValues];
+  configurationState = [(MessageListCellView *)self configurationState];
+  contentConfiguration = [(MessageListCellView *)self contentConfiguration];
+  backgroundConfiguration = [(MessageListCellView *)self backgroundConfiguration];
+  v25 = [layoutValues dateColorForConfigurationState:configurationState contentConfiguration:contentConfiguration backgroundConfiguration:backgroundConfiguration];
+  [dateLabel setTextColor:v25];
 
-  v26 = [v9 hintsBySnippetZone];
-  v27 = [v26 objectForKeyedSubscript:EMMessageSnippetHintZoneAuthor];
+  hintsBySnippetZone = [viewModel hintsBySnippetZone];
+  v27 = [hintsBySnippetZone objectForKeyedSubscript:EMMessageSnippetHintZoneAuthor];
   if ([v27 count])
   {
   }
 
   else
   {
-    v28 = [v9 hintsBySnippetZone];
-    v29 = [v28 objectForKeyedSubscript:EMMessageSnippetHintZoneAuthorEmailAddresses];
+    hintsBySnippetZone2 = [viewModel hintsBySnippetZone];
+    v29 = [hintsBySnippetZone2 objectForKeyedSubscript:EMMessageSnippetHintZoneAuthorEmailAddresses];
     v30 = [v29 count] == 0;
 
     if (v30)
@@ -282,68 +282,68 @@ LABEL_27:
 
   [(MessageListCellView *)self _recalculatePrimaryAttributedStringShouldRehighlight:1];
 LABEL_42:
-  v31 = [(MessageListCellView *)self attributedPrimaryString];
-  v32 = [(MessageListCellView *)self primaryLabel];
-  [v32 setAttributedText:v31];
+  attributedPrimaryString = [(MessageListCellView *)self attributedPrimaryString];
+  primaryLabel = [(MessageListCellView *)self primaryLabel];
+  [primaryLabel setAttributedText:attributedPrimaryString];
 
-  v176 = [(MessageListCellView *)self blockedSenderLabelImageView];
+  blockedSenderLabelImageView = [(MessageListCellView *)self blockedSenderLabelImageView];
   if ([(MessageListCellView *)self shouldShowBlockedSenderLabel])
   {
-    [v176 mf_setAlpha:1.0];
+    [blockedSenderLabelImageView mf_setAlpha:1.0];
     v33 = [UIImage mf_systemImageNamed:MFImageGlyphStatusIndicatorBlockSender forView:9];
-    [v176 setImage:v33];
+    [blockedSenderLabelImageView setImage:v33];
 
     v34 = +[UIColor systemRedColor];
-    [v176 setTintColor:v34];
+    [blockedSenderLabelImageView setTintColor:v34];
   }
 
   else
   {
-    [v176 mf_setAlpha:0.0];
+    [blockedSenderLabelImageView mf_setAlpha:0.0];
   }
 
-  v175 = [(MessageListCellView *)self secondaryLabel];
-  v35 = [(MessageListCellView *)self layoutValues];
-  v36 = [v35 isSubjectVisible];
-  v37 = [(MessageListCellView *)self attributedSecondaryString];
-  v38 = [(MessageListCellView *)self accessibilitySecondaryLabel];
-  sub_10014CEB0(self, v175, v36, v37, v38);
+  secondaryLabel = [(MessageListCellView *)self secondaryLabel];
+  layoutValues2 = [(MessageListCellView *)self layoutValues];
+  isSubjectVisible = [layoutValues2 isSubjectVisible];
+  attributedSecondaryString = [(MessageListCellView *)self attributedSecondaryString];
+  accessibilitySecondaryLabel = [(MessageListCellView *)self accessibilitySecondaryLabel];
+  sub_10014CEB0(self, secondaryLabel, isSubjectVisible, attributedSecondaryString, accessibilitySecondaryLabel);
 
-  v177 = [(MessageListCellView *)self recipientLabelImageView];
+  recipientLabelImageView = [(MessageListCellView *)self recipientLabelImageView];
   if ([(MessageListCellView *)self recipientLabelType])
   {
-    [v177 mf_setAlpha:1.0];
+    [recipientLabelImageView mf_setAlpha:1.0];
     recipientLabelType = self->_recipientLabelType;
-    v40 = [(MessageListCellView *)self traitCollection];
-    v41 = sub_10014CFBC(recipientLabelType, [v40 userInterfaceStyle]);
+    traitCollection = [(MessageListCellView *)self traitCollection];
+    v41 = sub_10014CFBC(recipientLabelType, [traitCollection userInterfaceStyle]);
     v42 = [v41 imageWithRenderingMode:2];
-    [v177 setImage:v42];
+    [recipientLabelImageView setImage:v42];
 
-    v43 = [(MessageListCellView *)self layoutValues];
-    v44 = [(MessageListCellView *)self configurationState];
-    v45 = [(MessageListCellView *)self contentConfiguration];
-    v46 = [(MessageListCellView *)self backgroundConfiguration];
-    v47 = [v43 recipientColorForConfigurationState:v44 contentConfiguration:v45 backgroundConfiguration:v46];
-    [v177 setTintColor:v47];
+    layoutValues3 = [(MessageListCellView *)self layoutValues];
+    configurationState2 = [(MessageListCellView *)self configurationState];
+    contentConfiguration2 = [(MessageListCellView *)self contentConfiguration];
+    backgroundConfiguration2 = [(MessageListCellView *)self backgroundConfiguration];
+    v47 = [layoutValues3 recipientColorForConfigurationState:configurationState2 contentConfiguration:contentConfiguration2 backgroundConfiguration:backgroundConfiguration2];
+    [recipientLabelImageView setTintColor:v47];
   }
 
   else
   {
-    [v177 mf_setAlpha:0.0];
+    [recipientLabelImageView mf_setAlpha:0.0];
   }
 
   if ([(MessageListCellView *)self chevronType]== 1)
   {
-    v48 = [(MessageListCellView *)self chevron];
-    [v48 mf_setAlpha:1.0];
+    chevron = [(MessageListCellView *)self chevron];
+    [chevron mf_setAlpha:1.0];
     v49 = [UIImage mf_imageForChevronType:1];
-    [v48 setImage:v49];
+    [chevron setImage:v49];
 
     v50 = [UIImage mf_symbolConfigurationForView:10];
-    [v48 setPreferredSymbolConfiguration:v50];
+    [chevron setPreferredSymbolConfiguration:v50];
 
     v51 = +[UIColor tertiaryLabelColor];
-    [v48 setTintColor:v51];
+    [chevron setTintColor:v51];
   }
 
   else
@@ -351,13 +351,13 @@ LABEL_42:
     [(UIImageView *)self->_chevron mf_setAlpha:0.0];
   }
 
-  v172 = [(MessageListCellView *)self layoutValues];
-  [v172 padding];
+  layoutValues4 = [(MessageListCellView *)self layoutValues];
+  [layoutValues4 padding];
   if (MUISolariumFeatureEnabled())
   {
-    [v172 indicatorMaxWidth];
+    [layoutValues4 indicatorMaxWidth];
     v54 = v53;
-    [v172 horizontalSpacing];
+    [layoutValues4 horizontalSpacing];
     v52 = v54 + v55;
   }
 
@@ -376,7 +376,7 @@ LABEL_42:
   v184[1] = 3221225472;
   v184[2] = sub_100023AD0;
   v184[3] = &unk_100651740;
-  v185 = v10;
+  v185 = isHighlighted;
   v72 = objc_retainBlock(v184);
   if (MUISolariumFeatureEnabled())
   {
@@ -389,8 +389,8 @@ LABEL_42:
   }
   v173 = ;
 
-  v73 = [UIApp preferredContentSizeCategory];
-  v74 = UIContentSizeCategoryIsAccessibilityCategory(v73);
+  preferredContentSizeCategory2 = [UIApp preferredContentSizeCategory];
+  v74 = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory2);
 
   v181 = v69 - (v59 + v63);
   v182 = v59 + v65;
@@ -411,11 +411,11 @@ LABEL_42:
   {
     [(MessageListCellView *)self _rectForAvatarWithBounds:v182, v180, v181, v179];
     [v173 setFrame:?];
-    v75 = [(MessageListCellView *)self viewModel];
-    if ([v75 style] == 2)
+    viewModel2 = [(MessageListCellView *)self viewModel];
+    if ([viewModel2 style] == 2)
     {
-      v76 = [(MessageListCellView *)self layoutValues];
-      [v76 standardAvatarSize];
+      layoutValues5 = [(MessageListCellView *)self layoutValues];
+      [layoutValues5 standardAvatarSize];
       v78 = v77;
     }
 
@@ -431,14 +431,14 @@ LABEL_42:
       {
         if (MUISolariumFeatureEnabled())
         {
-          [v172 avatarTrailingSpacing];
+          [layoutValues4 avatarTrailingSpacing];
           v154 = v78 + v153;
         }
 
         else
         {
-          v157 = [(MessageListCellView *)self layoutValues];
-          [v157 horizontalSpacing];
+          layoutValues6 = [(MessageListCellView *)self layoutValues];
+          [layoutValues6 horizontalSpacing];
           v159 = v158;
 
           v154 = v78 + v159;
@@ -451,14 +451,14 @@ LABEL_42:
       {
         if (MUISolariumFeatureEnabled())
         {
-          [v172 avatarTrailingSpacing];
+          [layoutValues4 avatarTrailingSpacing];
           v156 = v78 + v155;
         }
 
         else
         {
-          v160 = [(MessageListCellView *)self layoutValues];
-          [v160 horizontalSpacing];
+          layoutValues7 = [(MessageListCellView *)self layoutValues];
+          [layoutValues7 horizontalSpacing];
           v162 = v161;
 
           v156 = v78 + v162;
@@ -474,8 +474,8 @@ LABEL_42:
     [(MessageListCellView *)self _updateAvatarView];
   }
 
-  v79 = [v9 hintsBySnippetZone];
-  v80 = [v79 objectForKeyedSubscript:EMMessageSnippetHintZoneTextContent];
+  hintsBySnippetZone3 = [viewModel hintsBySnippetZone];
+  v80 = [hintsBySnippetZone3 objectForKeyedSubscript:EMMessageSnippetHintZoneTextContent];
   if ([v80 count])
   {
 
@@ -486,9 +486,9 @@ LABEL_65:
 
   if (_os_feature_enabled_impl() && EMIsGreymatterAvailable())
   {
-    v81 = [(MessageListCellView *)self hasGeneratedSummary];
+    hasGeneratedSummary = [(MessageListCellView *)self hasGeneratedSummary];
 
-    if (v81)
+    if (hasGeneratedSummary)
     {
       goto LABEL_65;
     }
@@ -499,14 +499,14 @@ LABEL_65:
   }
 
 LABEL_71:
-  v82 = [(MessageListCellView *)self tertiaryLabel];
-  v83 = [(MessageListCellView *)self attributedTertiaryString];
-  [v82 setAttributedText:v83];
+  tertiaryLabel = [(MessageListCellView *)self tertiaryLabel];
+  attributedTertiaryString = [(MessageListCellView *)self attributedTertiaryString];
+  [tertiaryLabel setAttributedText:attributedTertiaryString];
 
-  v84 = [v82 text];
-  v85 = [v84 _isNaturallyRTL];
+  text = [tertiaryLabel text];
+  _isNaturallyRTL = [text _isNaturallyRTL];
 
-  if (v85)
+  if (_isNaturallyRTL)
   {
     v86 = 2;
   }
@@ -516,16 +516,16 @@ LABEL_71:
     v86 = 0;
   }
 
-  [v82 setTextAlignment:v86];
+  [tertiaryLabel setTextAlignment:v86];
   [(MessageListCellView *)self _rectForSummaryWithBounds:v182, v180, v181, v179];
-  (v72[2])(v72, v82);
+  (v72[2])(v72, tertiaryLabel);
   if (EMBlackPearlIsFeatureEnabled())
   {
-    v87 = [(MessageListCellView *)self categorizationStateLabel];
-    v88 = [v9 categorizationState];
-    [v87 setText:v88];
+    categorizationStateLabel = [(MessageListCellView *)self categorizationStateLabel];
+    categorizationState = [viewModel categorizationState];
+    [categorizationStateLabel setText:categorizationState];
 
-    if (v10)
+    if (isHighlighted)
     {
       sub_10014A83C();
     }
@@ -535,16 +535,16 @@ LABEL_71:
       sub_100023C80();
     }
     v89 = ;
-    [v87 _setTextEncapsulation:v89];
+    [categorizationStateLabel _setTextEncapsulation:v89];
   }
 
-  v90 = [(MessageListCellView *)self primaryLabel];
+  primaryLabel2 = [(MessageListCellView *)self primaryLabel];
   [(MessageListCellView *)self _rectForAddressWithBounds:v182, v180, v181, v179];
   v92 = v91;
   v94 = v93;
   v96 = v95;
   v98 = v97;
-  (v72[2])(v72, v90);
+  (v72[2])(v72, primaryLabel2);
   v163 = v92;
   v164 = v94;
   v165 = v96;
@@ -557,19 +557,19 @@ LABEL_71:
   if (self->_chevronType == 2)
   {
     [(MessageListCellView *)self _setupDisclosureButtonImageIfNecessary];
-    v107 = [(MessageListCellView *)self disclosureButton];
-    [(MessageListCellView *)self addSubview:v107];
+    disclosureButton = [(MessageListCellView *)self disclosureButton];
+    [(MessageListCellView *)self addSubview:disclosureButton];
 
-    v108 = [(MessageListCellView *)self disclosureButton];
-    [v108 setFrame:{v100, v102, v104, v106}];
+    disclosureButton2 = [(MessageListCellView *)self disclosureButton];
+    [disclosureButton2 setFrame:{v100, v102, v104, v106}];
 
     [(MessageListCellView *)self _layoutChevronForDisclosureStateAnimated:0];
   }
 
   else
   {
-    v109 = [(MessageListCellView *)self disclosureButton];
-    [v109 removeFromSuperview];
+    disclosureButton3 = [(MessageListCellView *)self disclosureButton];
+    [disclosureButton3 removeFromSuperview];
   }
 
   (v72[2])(v72, self->_chevron, v100, v102, v104, v106);
@@ -578,11 +578,11 @@ LABEL_71:
   v171 = v110.n128_f64[0];
   v168 = v113.n128_f64[0];
   v169 = v112.n128_f64[0];
-  (v72[2])(v72, v178, v110, v111, v112, v113);
+  (v72[2])(v72, dateLabel, v110, v111, v112, v113);
   [(MessageListCellView *)self _rectForSubjectWithBounds:v182, v180, v181, v179];
-  (v72[2])(v72, v175);
+  (v72[2])(v72, secondaryLabel);
   [(MessageListCellView *)self _rectForRecipientLabelWithBounds:v182, v180, v181, v179];
-  (v72[2])(v72, v177);
+  (v72[2])(v72, recipientLabelImageView);
   if (EMBlackPearlIsFeatureEnabled() && [(MessageListCellView *)self shouldShowCategorizationInformation])
   {
     [(MessageListCellView *)self _rectForCategoriesStackViewWithBounds:v182, v180, v181, v179];
@@ -590,26 +590,26 @@ LABEL_71:
     v117 = v116;
     v119 = v118;
     v121 = v120;
-    v122 = [(MessageListCellView *)self categoriesStackView];
-    [v122 setFrame:{v115, v117, v119, v121}];
+    categoriesStackView = [(MessageListCellView *)self categoriesStackView];
+    [categoriesStackView setFrame:{v115, v117, v119, v121}];
   }
 
-  v123 = [v9 hintsBySnippetZone];
-  v124 = [v123 objectForKeyedSubscript:EMMessageSnippetHintZoneSubject];
+  hintsBySnippetZone4 = [viewModel hintsBySnippetZone];
+  v124 = [hintsBySnippetZone4 objectForKeyedSubscript:EMMessageSnippetHintZoneSubject];
   v125 = [v124 count];
 
   if (v125)
   {
     [(MessageListCellView *)self _recalculateSecondaryAttributedStringShouldRehighlight:1];
-    v126 = [(MessageListCellView *)self layoutValues];
-    v127 = [v126 isSubjectVisible];
-    v128 = [(MessageListCellView *)self attributedSecondaryString];
-    v129 = [(MessageListCellView *)self accessibilitySecondaryLabel];
-    sub_10014CEB0(self, v175, v127, v128, v129);
+    layoutValues8 = [(MessageListCellView *)self layoutValues];
+    isSubjectVisible2 = [layoutValues8 isSubjectVisible];
+    attributedSecondaryString2 = [(MessageListCellView *)self attributedSecondaryString];
+    accessibilitySecondaryLabel2 = [(MessageListCellView *)self accessibilitySecondaryLabel];
+    sub_10014CEB0(self, secondaryLabel, isSubjectVisible2, attributedSecondaryString2, accessibilitySecondaryLabel2);
   }
 
-  v130 = [UIApp preferredContentSizeCategory];
-  v131 = UIContentSizeCategoryIsAccessibilityCategory(v130);
+  preferredContentSizeCategory3 = [UIApp preferredContentSizeCategory];
+  v131 = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory3);
 
   if (v131)
   {
@@ -622,8 +622,8 @@ LABEL_71:
 
   else
   {
-    v140 = [(MessageListCellView *)self layoutValues];
-    [v140 horizontalSpacing];
+    layoutValues9 = [(MessageListCellView *)self layoutValues];
+    [layoutValues9 horizontalSpacing];
     [(MessageListCellView *)self _adjustRect:v163 forTrailingRect:v164 padding:v165, v166, v171, v170, v169, v168, v141];
     v133 = v142;
     v135 = v143;
@@ -631,9 +631,9 @@ LABEL_71:
     v139 = v145;
   }
 
-  (v72[2])(v72, v90, v133, v135, v137, v139);
+  (v72[2])(v72, primaryLabel2, v133, v135, v137, v139);
   [(MessageListCellView *)self _rectForBlockedSenderLabelWithBounds:v182, v180, v181, v179];
-  (v72[2])(v72, v176);
+  (v72[2])(v72, blockedSenderLabelImageView);
   v146.width = NAN;
   v146.height = NAN;
   v183.origin = v146;
@@ -648,8 +648,8 @@ LABEL_71:
     goto LABEL_91;
   }
 
-  v148 = [(MessageListCellView *)self secondaryLabel];
-  v149 = [(MessageListCellView *)self _isLabelValid:v148];
+  secondaryLabel2 = [(MessageListCellView *)self secondaryLabel];
+  v149 = [(MessageListCellView *)self _isLabelValid:secondaryLabel2];
 
   if (v149)
   {
@@ -658,23 +658,23 @@ LABEL_71:
       goto LABEL_91;
     }
 
-    v150 = [(MessageListCellView *)self secondaryLabel];
+    secondaryLabel3 = [(MessageListCellView *)self secondaryLabel];
   }
 
   else
   {
-    if (![(MessageListCellView *)self _isLabelValid:v82])
+    if (![(MessageListCellView *)self _isLabelValid:tertiaryLabel])
     {
       goto LABEL_91;
     }
 
-    v150 = v82;
+    secondaryLabel3 = tertiaryLabel;
   }
 
-  v151 = v150;
-  if (v150)
+  v151 = secondaryLabel3;
+  if (secondaryLabel3)
   {
-    [v150 frame];
+    [secondaryLabel3 frame];
     [MessageListCellView _adjustRect:"_adjustRect:forTrailingRect:padding:" forTrailingRect:0x4030000000000000 padding:?];
     (v72[2])(v72, v151);
     v147 = v151;
@@ -693,7 +693,7 @@ LABEL_92:
   block[1] = 3221225472;
   block[2] = sub_100022440;
   block[3] = &unk_10064C4F8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1006DD2C0 != -1)
   {
     dispatch_once(&qword_1006DD2C0, block);
@@ -706,8 +706,8 @@ LABEL_92:
 
 - (UILabel)tertiaryLabel
 {
-  v3 = [(MessageListCellView *)self layoutValues];
-  v4 = [v3 linesOfSummaryForCompactHeight:self->_compact];
+  layoutValues = [(MessageListCellView *)self layoutValues];
+  v4 = [layoutValues linesOfSummaryForCompactHeight:self->_compact];
 
   tertiaryLabel = self->_tertiaryLabel;
   if (tertiaryLabel)
@@ -747,9 +747,9 @@ LABEL_92:
     [(UILabel *)self->_tertiaryLabel setAccessibilityIdentifier:MSAccessibilityIdentifierMailMessageCellViewSummaryLabel];
     [(UILabel *)self->_tertiaryLabel setNumberOfLines:0];
     [(UILabel *)self->_tertiaryLabel setAdjustsFontForContentSizeCategory:1];
-    v11 = [(MessageListCellView *)self layoutValues];
-    v12 = [v11 summaryFont];
-    [(UILabel *)self->_tertiaryLabel setFont:v12];
+    layoutValues2 = [(MessageListCellView *)self layoutValues];
+    summaryFont = [layoutValues2 summaryFont];
+    [(UILabel *)self->_tertiaryLabel setFont:summaryFont];
 
     [(MessageListCellView *)self addSubview:self->_tertiaryLabel];
   }
@@ -761,9 +761,9 @@ LABEL_92:
 
 - (MessageListCellLayoutValues)layoutValues
 {
-  v3 = [(MessageListCellView *)self layoutValuesHelper];
-  v4 = [(MessageListCellView *)self viewModel];
-  v5 = [v3 layoutValuesForStyle:{objc_msgSend(v4, "style")}];
+  layoutValuesHelper = [(MessageListCellView *)self layoutValuesHelper];
+  viewModel = [(MessageListCellView *)self viewModel];
+  v5 = [layoutValuesHelper layoutValuesForStyle:{objc_msgSend(viewModel, "style")}];
 
   return v5;
 }
@@ -787,8 +787,8 @@ LABEL_92:
     v6 = +[UIColor clearColor];
     [(UILabel *)self->_secondaryLabel setBackgroundColor:v6];
 
-    v7 = [(MessageListCellView *)self layoutValues];
-    -[UILabel setNumberOfLines:](self->_secondaryLabel, "setNumberOfLines:", [v7 subjectNumberOfLines]);
+    layoutValues = [(MessageListCellView *)self layoutValues];
+    -[UILabel setNumberOfLines:](self->_secondaryLabel, "setNumberOfLines:", [layoutValues subjectNumberOfLines]);
 
     [(UILabel *)self->_secondaryLabel setAccessibilityIdentifier:MSAccessibilityIdentifierMailMessageCellViewSubjectLabel];
     [(MessageListCellView *)self addSubview:self->_secondaryLabel];
@@ -855,17 +855,17 @@ LABEL_92:
 
 - (id)_primaryLabelString
 {
-  v3 = [(MessageListCellView *)self isSenderSpecificCell];
-  v4 = [(MessageListCellView *)self viewModel];
-  v5 = v4;
-  if (v3)
+  isSenderSpecificCell = [(MessageListCellView *)self isSenderSpecificCell];
+  viewModel = [(MessageListCellView *)self viewModel];
+  v5 = viewModel;
+  if (isSenderSpecificCell)
   {
-    [v4 subject];
+    [viewModel subject];
   }
 
   else
   {
-    [v4 address];
+    [viewModel address];
   }
   v6 = ;
 
@@ -959,10 +959,10 @@ LABEL_92:
 
 - (BOOL)shouldShowBlockedSenderLabel
 {
-  v2 = [(MessageListCellView *)self viewModel];
-  v3 = [v2 isBlockedSender];
+  viewModel = [(MessageListCellView *)self viewModel];
+  isBlockedSender = [viewModel isBlockedSender];
 
-  return v3;
+  return isBlockedSender;
 }
 
 - (void)_resetAttributedStrings
@@ -1007,10 +1007,10 @@ LABEL_92:
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v3 = [(MessageListCellView *)self avatarView];
-    v4 = [v3 subviews];
+    avatarView = [(MessageListCellView *)self avatarView];
+    subviews = [avatarView subviews];
 
-    v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    v5 = [subviews countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v5)
     {
       v6 = *v17;
@@ -1020,16 +1020,16 @@ LABEL_92:
         {
           if (*v17 != v6)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(subviews);
           }
 
           v8 = *(*(&v16 + 1) + 8 * i);
-          v9 = [(MessageListCellView *)self avatarView];
-          [v9 bounds];
+          avatarView2 = [(MessageListCellView *)self avatarView];
+          [avatarView2 bounds];
           [v8 setFrame:?];
         }
 
-        v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v5 = [subviews countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v5);
@@ -1038,15 +1038,15 @@ LABEL_92:
 
   else
   {
-    v10 = [(MessageListCellView *)self avatarResult];
-    v11 = [(MessageListCellView *)self avatarView];
-    v12 = [v11 traitCollection];
-    v13 = [v10 needsBorderFor:{objc_msgSend(v12, "userInterfaceStyle")}];
+    avatarResult = [(MessageListCellView *)self avatarResult];
+    avatarView3 = [(MessageListCellView *)self avatarView];
+    traitCollection = [avatarView3 traitCollection];
+    v13 = [avatarResult needsBorderFor:{objc_msgSend(traitCollection, "userInterfaceStyle")}];
 
-    v15 = [(MessageListCellView *)self avatarImageView];
-    v14 = [(MessageListCellView *)self layoutValues];
-    [v14 avatarSize];
-    [MUIAvatarImageGenerator roundAvatarView:v15 withBorder:v13 size:?];
+    avatarImageView = [(MessageListCellView *)self avatarImageView];
+    layoutValues = [(MessageListCellView *)self layoutValues];
+    [layoutValues avatarSize];
+    [MUIAvatarImageGenerator roundAvatarView:avatarImageView withBorder:v13 size:?];
   }
 }
 
@@ -1059,8 +1059,8 @@ LABEL_92:
     v5 = self->_categorizationStateLabel;
     self->_categorizationStateLabel = v4;
 
-    v6 = [(MessageListCellView *)self categoriesStackView];
-    [v6 insertArrangedSubview:self->_categorizationStateLabel atIndex:0];
+    categoriesStackView = [(MessageListCellView *)self categoriesStackView];
+    [categoriesStackView insertArrangedSubview:self->_categorizationStateLabel atIndex:0];
 
     categorizationStateLabel = self->_categorizationStateLabel;
   }
@@ -1096,17 +1096,17 @@ LABEL_92:
 
 - (BOOL)shouldShowCategorizationInformation
 {
-  v2 = [(MessageListCellView *)self viewModel];
-  v3 = [v2 categorizationState];
-  v4 = [v3 length] != 0;
+  viewModel = [(MessageListCellView *)self viewModel];
+  categorizationState = [viewModel categorizationState];
+  v4 = [categorizationState length] != 0;
 
   return v4;
 }
 
 - (LayoutStatusIndicatorInfo)_layoutStatusIndicatorViews
 {
-  v4 = [(MessageListCellView *)self layoutValues];
-  [v4 padding];
+  layoutValues = [(MessageListCellView *)self layoutValues];
+  [layoutValues padding];
 
   [(MessageListCellView *)self chevronType];
   [(MessageListCellView *)self bounds];
@@ -1128,28 +1128,28 @@ LABEL_92:
 
 - (void)_setupDisclosureButtonImageIfNecessary
 {
-  v7 = [(MessageListCellView *)self disclosureButton];
-  v3 = [v7 imageView];
-  v4 = [v3 image];
+  disclosureButton = [(MessageListCellView *)self disclosureButton];
+  imageView = [disclosureButton imageView];
+  image = [imageView image];
 
-  if (!v4)
+  if (!image)
   {
     [(MessageListCellView *)self _layoutDisclosureButton];
-    v8 = [(MessageListCellView *)self disclosureButton];
+    disclosureButton2 = [(MessageListCellView *)self disclosureButton];
     v5 = [UIImage systemImageNamed:MFImageGlyphMessageListChevronThread];
-    [v8 setImage:v5 forState:0];
+    [disclosureButton2 setImage:v5 forState:0];
 
-    v9 = [(MessageListCellView *)self disclosureButton];
-    v6 = [v9 imageView];
-    [v6 setContentMode:1];
+    disclosureButton3 = [(MessageListCellView *)self disclosureButton];
+    imageView2 = [disclosureButton3 imageView];
+    [imageView2 setContentMode:1];
   }
 }
 
-- (MessageListCellView)initWithFrame:(CGRect)a3
+- (MessageListCellView)initWithFrame:(CGRect)frame
 {
   v18.receiver = self;
   v18.super_class = MessageListCellView;
-  v3 = [(MessageListCellView *)&v18 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MessageListCellView *)&v18 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -1175,8 +1175,8 @@ LABEL_92:
     [(MessageListCellView *)v4 setMessageListAvatarUserDefaultObserver:v9];
 
     v10 = +[UIApplication sharedApplication];
-    v11 = [v10 avatarGenerator];
-    [(MessageListCellView *)v4 setAvatarGenerator:v11];
+    avatarGenerator = [v10 avatarGenerator];
+    [(MessageListCellView *)v4 setAvatarGenerator:avatarGenerator];
 
     v12 = +[NSNotificationCenter defaultCenter];
     [v12 addObserver:v4 selector:"_layoutValuesDidChange:" name:kMessageListCellLayoutValuesDidChangeNotification object:0];
@@ -1194,20 +1194,20 @@ LABEL_92:
   v3 = +[NSNotificationCenter defaultCenter];
   [v3 removeObserver:self];
 
-  v4 = [(MessageListCellView *)self messageListAvatarUserDefaultObserver];
-  [v4 cancel];
+  messageListAvatarUserDefaultObserver = [(MessageListCellView *)self messageListAvatarUserDefaultObserver];
+  [messageListAvatarUserDefaultObserver cancel];
 
   v5.receiver = self;
   v5.super_class = MessageListCellView;
   [(MessageListCellView *)&v5 dealloc];
 }
 
-- (void)_layoutValuesDidChange:(id)a3
+- (void)_layoutValuesDidChange:(id)change
 {
-  v4 = [a3 object];
-  v5 = [(MessageListCellView *)self layoutValues];
+  object = [change object];
+  layoutValues = [(MessageListCellView *)self layoutValues];
 
-  if (v4 == v5)
+  if (object == layoutValues)
   {
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
@@ -1219,7 +1219,7 @@ LABEL_92:
   }
 }
 
-- (void)_dynamicTypeDidChange:(id)a3
+- (void)_dynamicTypeDidChange:(id)change
 {
   [(MessageListCellView *)self _resetDateLabel];
   [objc_opt_class() clearCache];
@@ -1227,11 +1227,11 @@ LABEL_92:
   [(MessageListCellView *)self setNeedsLayout];
 }
 
-- (void)setRecipientLabelType:(int64_t)a3
+- (void)setRecipientLabelType:(int64_t)type
 {
-  if (self->_recipientLabelType != a3)
+  if (self->_recipientLabelType != type)
   {
-    self->_recipientLabelType = a3;
+    self->_recipientLabelType = type;
     [(MessageListCellView *)self setNeedsLayout];
   }
 }
@@ -1253,7 +1253,7 @@ LABEL_92:
   self->_annotatedRelationshipType = 0;
 }
 
-- (void)_updateDateLabelWithDateStyle:(int64_t)a3
+- (void)_updateDateLabelWithDateStyle:(int64_t)style
 {
   v4 = objc_opt_class();
   if (([(UILabel *)self->_dateLabel isMemberOfClass:v4]& 1) == 0)
@@ -1267,9 +1267,9 @@ LABEL_92:
     [(UILabel *)self->_dateLabel setBackgroundColor:v7];
 
     [(UILabel *)self->_dateLabel setTextAlignment:2];
-    v8 = [(MessageListCellView *)self layoutValues];
-    v9 = [v8 dateFont];
-    [(UILabel *)self->_dateLabel setFont:v9];
+    layoutValues = [(MessageListCellView *)self layoutValues];
+    dateFont = [layoutValues dateFont];
+    [(UILabel *)self->_dateLabel setFont:dateFont];
 
     [(UILabel *)self->_dateLabel setAccessibilityIdentifier:MSAccessibilityIdentifierMailMessageCellViewDateLabel];
     v10 = self->_dateLabel;
@@ -1300,21 +1300,21 @@ LABEL_92:
   [(MessageListCellView *)self addSubview:self->_avatarImageView];
 }
 
-- (void)setChevronType:(int64_t)a3
+- (void)setChevronType:(int64_t)type
 {
-  if (self->_chevronType != a3)
+  if (self->_chevronType != type)
   {
-    self->_chevronType = a3;
+    self->_chevronType = type;
     [(MessageListCellView *)self setNeedsLayout];
   }
 }
 
-- (void)setViewModel:(id)a3
+- (void)setViewModel:(id)model
 {
-  v6 = a3;
-  if (self->_viewModel != v6)
+  modelCopy = model;
+  if (self->_viewModel != modelCopy)
   {
-    objc_storeStrong(&self->_viewModel, a3);
+    objc_storeStrong(&self->_viewModel, model);
     attributedPrimaryString = self->_attributedPrimaryString;
     self->_attributedPrimaryString = 0;
 
@@ -1327,37 +1327,37 @@ LABEL_92:
     attributedTertiaryString = self->_attributedTertiaryString;
     self->_attributedTertiaryString = 0;
 
-    v11 = [(MessageListCellViewModel *)v6 readLaterDate];
-    [(MessageListCellView *)self setRead:[(MessageListCellViewModel *)v6 isRead]];
-    [(MessageListCellView *)self setFlagged:[(MessageListCellViewModel *)v6 isFlagged]];
-    v12 = [(MessageListCellViewModel *)v6 flagColors];
-    [(MessageListCellView *)self setFlagColors:v12];
+    readLaterDate = [(MessageListCellViewModel *)modelCopy readLaterDate];
+    [(MessageListCellView *)self setRead:[(MessageListCellViewModel *)modelCopy isRead]];
+    [(MessageListCellView *)self setFlagged:[(MessageListCellViewModel *)modelCopy isFlagged]];
+    flagColors = [(MessageListCellViewModel *)modelCopy flagColors];
+    [(MessageListCellView *)self setFlagColors:flagColors];
 
-    [(MessageListCellView *)self setNotify:[(MessageListCellViewModel *)v6 isNotify]];
-    [(MessageListCellView *)self setMute:[(MessageListCellViewModel *)v6 isMute]];
-    [(MessageListCellView *)self setReadLaterDate:v11];
-    [(MessageListCellView *)self setIsReadLater:v11 != 0];
+    [(MessageListCellView *)self setNotify:[(MessageListCellViewModel *)modelCopy isNotify]];
+    [(MessageListCellView *)self setMute:[(MessageListCellViewModel *)modelCopy isMute]];
+    [(MessageListCellView *)self setReadLaterDate:readLaterDate];
+    [(MessageListCellView *)self setIsReadLater:readLaterDate != 0];
     v13 = +[MessageListCellView log];
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [(MessageListCellViewModel *)v6 itemID];
+      itemID = [(MessageListCellViewModel *)modelCopy itemID];
       *buf = 134218498;
-      v45 = self;
+      selfCopy2 = self;
       v46 = 2114;
-      v47 = v14;
+      v47 = itemID;
       v48 = 1024;
-      LODWORD(v49) = [(MessageListCellViewModel *)v6 isRead];
+      LODWORD(v49) = [(MessageListCellViewModel *)modelCopy isRead];
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%p: Updating view model for cell with ID %{public}@, read status: %{BOOL}d", buf, 0x1Cu);
     }
 
-    v15 = [(MessageListCellViewModel *)v6 recipientType];
+    recipientType = [(MessageListCellViewModel *)modelCopy recipientType];
     v16 = 3;
-    if (v15 != 2)
+    if (recipientType != 2)
     {
       v16 = 0;
     }
 
-    if (v15 == 1)
+    if (recipientType == 1)
     {
       v17 = 2;
     }
@@ -1368,18 +1368,18 @@ LABEL_92:
     }
 
     [(MessageListCellView *)self setRecipientLabelType:v17];
-    v18 = [(MessageListCellViewModel *)v6 sendLaterDate];
+    sendLaterDate = [(MessageListCellViewModel *)modelCopy sendLaterDate];
 
-    if (v18)
+    if (sendLaterDate)
     {
       v19 = 1;
     }
 
-    else if (v11)
+    else if (readLaterDate)
     {
-      v20 = [(MessageListCellView *)self readLaterDate];
-      v21 = [(MessageListCellViewModel *)v6 displayDate];
-      v22 = [(MessageListCellView *)self _hasPastReminderForReadLaterDate:v20 displayDate:v21];
+      readLaterDate2 = [(MessageListCellView *)self readLaterDate];
+      displayDate = [(MessageListCellViewModel *)modelCopy displayDate];
+      v22 = [(MessageListCellView *)self _hasPastReminderForReadLaterDate:readLaterDate2 displayDate:displayDate];
 
       if (v22)
       {
@@ -1394,12 +1394,12 @@ LABEL_92:
 
     else
     {
-      v23 = [(MessageListCellViewModel *)v6 followUp];
-      if ([v23 isActive])
+      followUp = [(MessageListCellViewModel *)modelCopy followUp];
+      if ([followUp isActive])
       {
-        v24 = [(MessageListCellViewModel *)v6 hideFollowUp];
+        hideFollowUp = [(MessageListCellViewModel *)modelCopy hideFollowUp];
 
-        if (v24)
+        if (hideFollowUp)
         {
           v19 = 0;
         }
@@ -1422,11 +1422,11 @@ LABEL_92:
     [(MessageListCellView *)self setNeedsLayout];
     if (![(MessageListCellView *)self hideMessageListAvatar])
     {
-      v25 = [(MessageListCellViewModel *)v6 addressList];
-      v26 = [v25 firstObject];
+      addressList = [(MessageListCellViewModel *)modelCopy addressList];
+      firstObject = [addressList firstObject];
 
       objc_initWeak(&location, self);
-      v27 = [(MessageListCellViewModel *)v6 avatarContext];
+      avatarContext = [(MessageListCellViewModel *)modelCopy avatarContext];
       if (MUISolariumFeatureEnabled())
       {
         v28 = +[MessageListCellView log];
@@ -1434,42 +1434,42 @@ LABEL_92:
         {
           v29 = NSStringFromSelector(a2);
           *buf = 134218498;
-          v45 = self;
+          selfCopy2 = self;
           v46 = 2114;
           v47 = v29;
           v48 = 2048;
-          v49 = v27;
+          v49 = avatarContext;
           _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "%p: %{public}@ - generating avatar for context %p", buf, 0x20u);
         }
 
-        v30 = [(MessageListCellView *)self avatarGenerator];
+        avatarGenerator = [(MessageListCellView *)self avatarGenerator];
         v39[0] = _NSConcreteStackBlock;
         v39[1] = 3221225472;
         v39[2] = sub_10014B7B4;
         v39[3] = &unk_1006516F8;
         v31 = v42;
         objc_copyWeak(v42, &location);
-        v40 = v26;
+        v40 = firstObject;
         v42[1] = a2;
-        v41 = v27;
-        v32 = [v30 contactForContext:v41 handler:v39];
+        v41 = avatarContext;
+        v32 = [avatarGenerator contactForContext:v41 handler:v39];
         [(MessageListCellView *)self setAvatarToken:v32];
 
         v33 = &v40;
-        v34 = v41;
+        avatarGenerator2 = v41;
       }
 
       else
       {
-        v34 = [(MessageListCellView *)self avatarGenerator];
+        avatarGenerator2 = [(MessageListCellView *)self avatarGenerator];
         v36[0] = _NSConcreteStackBlock;
         v36[1] = 3221225472;
         v36[2] = sub_10014BBB8;
         v36[3] = &unk_100651720;
         v31 = &v38;
         objc_copyWeak(&v38, &location);
-        v37 = v26;
-        v35 = [v34 contactForContext:v27 handler:v36];
+        v37 = firstObject;
+        v35 = [avatarGenerator2 contactForContext:avatarContext handler:v36];
         [(MessageListCellView *)self setAvatarToken:v35];
 
         v33 = &v37;
@@ -1481,32 +1481,32 @@ LABEL_92:
   }
 }
 
-- (void)_updateAvatarViewWithView:(id)a3
+- (void)_updateAvatarViewWithView:(id)view
 {
-  v7 = a3;
-  v4 = [(MessageListCellView *)self avatarView];
+  viewCopy = view;
+  avatarView = [(MessageListCellView *)self avatarView];
   if (MUISolariumFeatureEnabled())
   {
-    v5 = [v7 superview];
+    superview = [viewCopy superview];
 
-    if (v5 != v4)
+    if (superview != avatarView)
     {
-      v6 = [v4 subviews];
-      [v6 makeObjectsPerformSelector:"removeFromSuperview"];
+      subviews = [avatarView subviews];
+      [subviews makeObjectsPerformSelector:"removeFromSuperview"];
 
-      [v4 addSubview:v7];
-      [v4 bounds];
-      [v7 setFrame:?];
+      [avatarView addSubview:viewCopy];
+      [avatarView bounds];
+      [viewCopy setFrame:?];
     }
   }
 }
 
-- (void)setSummary:(id)a3
+- (void)setSummary:(id)summary
 {
-  v7 = a3;
-  if (self->_summary != v7)
+  summaryCopy = summary;
+  if (self->_summary != summaryCopy)
   {
-    v4 = [(NSString *)v7 copy];
+    v4 = [(NSString *)summaryCopy copy];
     summary = self->_summary;
     self->_summary = v4;
 
@@ -1517,11 +1517,11 @@ LABEL_92:
   }
 }
 
-- (void)setAnnotatedRelationshipType:(int64_t)a3
+- (void)setAnnotatedRelationshipType:(int64_t)type
 {
-  if (self->_annotatedRelationshipType != a3)
+  if (self->_annotatedRelationshipType != type)
   {
-    self->_annotatedRelationshipType = a3;
+    self->_annotatedRelationshipType = type;
     attributedPrimaryString = self->_attributedPrimaryString;
     self->_attributedPrimaryString = 0;
 
@@ -1529,11 +1529,11 @@ LABEL_92:
   }
 }
 
-- (void)setShouldAnnotateReplyOrForward:(BOOL)a3
+- (void)setShouldAnnotateReplyOrForward:(BOOL)forward
 {
-  if (self->_shouldAnnotateReplyOrForward != a3)
+  if (self->_shouldAnnotateReplyOrForward != forward)
   {
-    self->_shouldAnnotateReplyOrForward = a3;
+    self->_shouldAnnotateReplyOrForward = forward;
     attributedPrimaryString = self->_attributedPrimaryString;
     self->_attributedPrimaryString = 0;
 
@@ -1541,23 +1541,23 @@ LABEL_92:
   }
 }
 
-- (void)setCompact:(BOOL)a3
+- (void)setCompact:(BOOL)compact
 {
-  if (self->_compact != a3)
+  if (self->_compact != compact)
   {
-    self->_compact = a3;
+    self->_compact = compact;
     [(MessageListCellView *)self setNeedsLayout];
   }
 }
 
-- (void)setHasGeneratedSummary:(BOOL)a3
+- (void)setHasGeneratedSummary:(BOOL)summary
 {
-  if (self->_hasGeneratedSummary != a3)
+  if (self->_hasGeneratedSummary != summary)
   {
-    self->_hasGeneratedSummary = a3;
+    self->_hasGeneratedSummary = summary;
     tertiaryLabel = self->_tertiaryLabel;
     v4 = &MSAccessibilityIdentifierMailMessageCellViewGeneratedSummaryLabel;
-    if (!a3)
+    if (!summary)
     {
       v4 = &MSAccessibilityIdentifierMailMessageCellViewSummaryLabel;
     }
@@ -1566,77 +1566,77 @@ LABEL_92:
   }
 }
 
-- (void)setConfigurationState:(id)a3
+- (void)setConfigurationState:(id)state
 {
-  v5 = a3;
+  stateCopy = state;
   if (([(UICellConfigurationState *)self->_configurationState isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_configurationState, a3);
+    objc_storeStrong(&self->_configurationState, state);
     [(MessageListCellView *)self _resetAttributedStrings];
     [(MessageListCellView *)self setNeedsLayout];
   }
 }
 
-- (void)setContentConfiguration:(id)a3
+- (void)setContentConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   if (([(UIListContentConfiguration *)self->_contentConfiguration isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_contentConfiguration, a3);
+    objc_storeStrong(&self->_contentConfiguration, configuration);
     [(MessageListCellView *)self _resetAttributedStrings];
     [(MessageListCellView *)self setNeedsLayout];
   }
 }
 
-- (void)setBackgroundConfiguration:(id)a3
+- (void)setBackgroundConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   if (([(UIBackgroundConfiguration *)self->_backgroundConfiguration isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_backgroundConfiguration, a3);
+    objc_storeStrong(&self->_backgroundConfiguration, configuration);
     [(MessageListCellView *)self _resetAttributedStrings];
     [(MessageListCellView *)self setNeedsLayout];
   }
 }
 
-- (void)setDisclosureEnabled:(BOOL)a3 animated:(BOOL)a4
+- (void)setDisclosureEnabled:(BOOL)enabled animated:(BOOL)animated
 {
-  if (self->_disclosureEnabled != a3)
+  if (self->_disclosureEnabled != enabled)
   {
-    v4 = a4;
-    v5 = a3;
-    self->_disclosureEnabled = a3;
-    v7 = [(MessageListCellView *)self disclosureButton];
-    [v7 setSelected:v5];
+    animatedCopy = animated;
+    enabledCopy = enabled;
+    self->_disclosureEnabled = enabled;
+    disclosureButton = [(MessageListCellView *)self disclosureButton];
+    [disclosureButton setSelected:enabledCopy];
 
     [(MessageListCellView *)self setNeedsLayout];
 
-    [(MessageListCellView *)self _layoutChevronForDisclosureStateAnimated:v4];
+    [(MessageListCellView *)self _layoutChevronForDisclosureStateAnimated:animatedCopy];
   }
 }
 
-- (void)applyIndicatorPreviewChangeAction:(id)a3
+- (void)applyIndicatorPreviewChangeAction:(id)action
 {
-  v10 = a3;
-  v4 = [v10 action];
+  actionCopy = action;
+  action = [actionCopy action];
   v5 = 0;
-  v6 = 0;
-  if (v4 <= 5)
+  isReadLater = 0;
+  if (action <= 5)
   {
-    if (v4 == 2)
+    if (action == 2)
     {
-      -[MessageListCellView setRead:](self, "setRead:", [v10 flagState]);
-      v6 = [(MessageListCellView *)self isRead]^ 1;
+      -[MessageListCellView setRead:](self, "setRead:", [actionCopy flagState]);
+      isReadLater = [(MessageListCellView *)self isRead]^ 1;
       v5 = 1;
     }
 
-    else if (v4 == 3)
+    else if (action == 3)
     {
-      -[MessageListCellView setIsReadLater:](self, "setIsReadLater:", [v10 flagState]);
-      v7 = [v10 readLaterDate];
-      [(MessageListCellView *)self setReadLaterDate:v7];
+      -[MessageListCellView setIsReadLater:](self, "setIsReadLater:", [actionCopy flagState]);
+      readLaterDate = [actionCopy readLaterDate];
+      [(MessageListCellView *)self setReadLaterDate:readLaterDate];
 
-      v6 = [(MessageListCellView *)self isReadLater];
+      isReadLater = [(MessageListCellView *)self isReadLater];
       [(MessageListCellView *)self setDateStyle:[(MessageListCellView *)self isReadLater]];
       [(MessageListCellView *)self _updateDateLabelWithDateStyle:[(MessageListCellView *)self dateStyle]];
       v5 = 512;
@@ -1645,42 +1645,42 @@ LABEL_92:
 
   else
   {
-    switch(v4)
+    switch(action)
     {
       case 6:
-        v8 = [v10 flagColors];
-        v6 = v8 != 0;
+        flagColors = [actionCopy flagColors];
+        isReadLater = flagColors != 0;
 
-        [(MessageListCellView *)self setFlagged:v6];
-        v9 = [v10 flagColors];
-        [(MessageListCellView *)self setFlagColors:v9];
+        [(MessageListCellView *)self setFlagged:isReadLater];
+        flagColors2 = [actionCopy flagColors];
+        [(MessageListCellView *)self setFlagColors:flagColors2];
 
         v5 = 4;
         break;
       case 10:
-        -[MessageListCellView setNotify:](self, "setNotify:", [v10 flagState]);
-        v6 = [(MessageListCellView *)self isNotify]^ 1;
+        -[MessageListCellView setNotify:](self, "setNotify:", [actionCopy flagState]);
+        isReadLater = [(MessageListCellView *)self isNotify]^ 1;
         v5 = 64;
         break;
       case 11:
-        -[MessageListCellView setMute:](self, "setMute:", [v10 flagState]);
-        v6 = [(MessageListCellView *)self isMute]^ 1;
+        -[MessageListCellView setMute:](self, "setMute:", [actionCopy flagState]);
+        isReadLater = [(MessageListCellView *)self isMute]^ 1;
         v5 = 128;
         break;
     }
   }
 
-  [(MessageListCellView *)self _animateIndicator:v5 toState:v6];
+  [(MessageListCellView *)self _animateIndicator:v5 toState:isReadLater];
 }
 
-- (void)_animateIndicator:(unint64_t)a3 toState:(BOOL)a4
+- (void)_animateIndicator:(unint64_t)indicator toState:(BOOL)state
 {
-  v4 = a4;
-  v7 = [(MessageListCellView *)self statusIndicatorManager];
-  v8 = [v7 statusIndicatorViews];
+  stateCopy = state;
+  statusIndicatorManager = [(MessageListCellView *)self statusIndicatorManager];
+  statusIndicatorViews = [statusIndicatorManager statusIndicatorViews];
 
-  v9 = [(MessageListCellView *)self statusIndicatorManager];
-  v10 = [v9 tierForIndicator:a3];
+  statusIndicatorManager2 = [(MessageListCellView *)self statusIndicatorManager];
+  v10 = [statusIndicatorManager2 tierForIndicator:indicator];
 
   if (v10 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -1688,20 +1688,20 @@ LABEL_92:
     v24 = &v32;
     v25 = v29;
     v12 = MFMailboxUid_ptr;
-    while (v11 < [v8 count])
+    while (v11 < [statusIndicatorViews count])
     {
       if (v10 == v11)
       {
-        v13 = [v8 objectAtIndex:v10];
-        v14 = [v13 superview];
+        v13 = [statusIndicatorViews objectAtIndex:v10];
+        superview = [v13 superview];
 
-        if (v14 != self)
+        if (superview != self)
         {
           [(MessageListCellView *)self addSubview:v13];
         }
 
         v15 = objc_alloc(v12[402]);
-        if (v4)
+        if (stateCopy)
         {
           v31[0] = _NSConcreteStackBlock;
           v31[1] = 3221225472;
@@ -1742,8 +1742,8 @@ LABEL_92:
     }
 
     [(MessageListCellView *)self _layoutStatusIndicatorViews];
-    v22 = [UIApp preferredContentSizeCategory];
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v22);
+    preferredContentSizeCategory = [UIApp preferredContentSizeCategory];
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
     if (IsAccessibilityCategory)
     {
@@ -1752,63 +1752,63 @@ LABEL_92:
   }
 }
 
-- (void)setDisplayUnreadDot:(BOOL)a3
+- (void)setDisplayUnreadDot:(BOOL)dot
 {
-  v3 = a3;
-  v4 = [(MessageListCellView *)self statusIndicatorManager];
-  [v4 setHidesUnreadIndicator:!v3];
+  dotCopy = dot;
+  statusIndicatorManager = [(MessageListCellView *)self statusIndicatorManager];
+  [statusIndicatorManager setHidesUnreadIndicator:!dotCopy];
 }
 
-- (void)setDisplayVIP:(BOOL)a3
+- (void)setDisplayVIP:(BOOL)p
 {
-  v3 = a3;
-  v4 = [(MessageListCellView *)self statusIndicatorManager];
-  [v4 setHidesVIPIndicator:!v3];
+  pCopy = p;
+  statusIndicatorManager = [(MessageListCellView *)self statusIndicatorManager];
+  [statusIndicatorManager setHidesVIPIndicator:!pCopy];
 }
 
-- (void)setEditing:(BOOL)a3
+- (void)setEditing:(BOOL)editing
 {
-  if (self->_editing != a3)
+  if (self->_editing != editing)
   {
-    self->_editing = a3;
+    self->_editing = editing;
     [(MessageListCellView *)self setNeedsLayout];
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  if (self->_selected != a3)
+  if (self->_selected != selected)
   {
-    self->_selected = a3;
+    self->_selected = selected;
     [(MessageListCellView *)self setNeedsLayout];
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  if (self->_highlighted != a3)
+  if (self->_highlighted != highlighted)
   {
-    self->_highlighted = a3;
+    self->_highlighted = highlighted;
     [(MessageListCellView *)self setNeedsLayout];
   }
 }
 
-- (id)_dateForViewModel:(id)a3
+- (id)_dateForViewModel:(id)model
 {
-  v4 = a3;
-  v5 = [v4 sendLaterDate];
-  v6 = v5;
-  if (v5)
+  modelCopy = model;
+  sendLaterDate = [modelCopy sendLaterDate];
+  v6 = sendLaterDate;
+  if (sendLaterDate)
   {
-    v7 = v5;
+    v7 = sendLaterDate;
   }
 
   else
   {
-    v8 = [v4 date];
-    v9 = [v4 displayDate];
+    date = [modelCopy date];
+    displayDate = [modelCopy displayDate];
     v10 = +[NSDate now];
-    v11 = [v10 ef_isEarlierThanDate:v9];
+    v11 = [v10 ef_isEarlierThanDate:displayDate];
 
     if (v11)
     {
@@ -1816,26 +1816,26 @@ LABEL_92:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
       {
         v19 = 134218498;
-        v20 = self;
+        selfCopy = self;
         v21 = 2114;
-        v22 = v9;
+        v22 = displayDate;
         v23 = 2114;
-        v24 = v4;
+        v24 = modelCopy;
         _os_log_fault_impl(&_mh_execute_header, v12, OS_LOG_TYPE_FAULT, "%p: Display date (%{public}@) should not be earlier than present for view model: %{public}@", &v19, 0x20u);
       }
 
-      v7 = v9;
+      v7 = displayDate;
     }
 
     else
     {
-      v13 = [(MessageListCellView *)self readLaterDate];
-      v14 = v13;
-      if (v13)
+      readLaterDate = [(MessageListCellView *)self readLaterDate];
+      v14 = readLaterDate;
+      if (readLaterDate)
       {
-        if ([v13 ef_isEarlierThanOrEqualDate:v9])
+        if ([readLaterDate ef_isEarlierThanOrEqualDate:displayDate])
         {
-          v15 = v9;
+          v15 = displayDate;
         }
 
         else
@@ -1848,15 +1848,15 @@ LABEL_92:
 
       else
       {
-        v16 = [v4 followUp];
-        if (v16)
+        followUp = [modelCopy followUp];
+        if (followUp)
         {
-          v17 = v8;
+          v17 = date;
         }
 
         else
         {
-          v17 = v9;
+          v17 = displayDate;
         }
 
         v7 = v17;
@@ -1867,54 +1867,54 @@ LABEL_92:
   return v7;
 }
 
-- (LayoutStatusIndicatorInfo)_layoutStatusIndicatorViewsWithChevronRect:(SEL)a3
+- (LayoutStatusIndicatorInfo)_layoutStatusIndicatorViewsWithChevronRect:(SEL)rect
 {
   height = a4.size.height;
   width = a4.size.width;
   y = a4.origin.y;
   x = a4.origin.x;
-  v9 = [(MessageListCellView *)self viewModel];
-  v10 = [v9 isVIP];
-  v11 = [(MessageListCellView *)self isRead];
-  v12 = [v9 isReplied];
-  v13 = [v9 isForwarded];
-  if (!v9)
+  viewModel = [(MessageListCellView *)self viewModel];
+  isVIP = [viewModel isVIP];
+  isRead = [(MessageListCellView *)self isRead];
+  isReplied = [viewModel isReplied];
+  isForwarded = [viewModel isForwarded];
+  if (!viewModel)
   {
-    v11 = 1;
+    isRead = 1;
   }
 
-  v14 = v10;
+  v14 = isVIP;
   v15 = 1;
-  if (v10)
+  if (isVIP)
   {
     v15 = 2;
   }
 
-  if (!v11)
+  if (!isRead)
   {
     v14 = v15;
   }
 
   v74 = v14;
-  v16 = [(MessageListCellView *)self isNotify];
+  isNotify = [(MessageListCellView *)self isNotify];
   v17 = 2;
-  if (!v10)
+  if (!isVIP)
   {
     v17 = 0;
   }
 
-  v18 = v17 | v11 ^ 1;
-  if (v12)
+  v18 = v17 | isRead ^ 1;
+  if (isReplied)
   {
     v18 |= 8uLL;
   }
 
-  if (v13)
+  if (isForwarded)
   {
     v18 |= 0x10uLL;
   }
 
-  if (v16)
+  if (isNotify)
   {
     v19 = v18 | 0x40;
   }
@@ -1926,9 +1926,9 @@ LABEL_92:
 
   if ([(MessageListCellView *)self isReadLater])
   {
-    v20 = [(MessageListCellView *)self readLaterDate];
-    v21 = [v9 displayDate];
-    v22 = [(MessageListCellView *)self _hasPastReminderForReadLaterDate:v20 displayDate:v21];
+    readLaterDate = [(MessageListCellView *)self readLaterDate];
+    displayDate = [viewModel displayDate];
+    v22 = [(MessageListCellView *)self _hasPastReminderForReadLaterDate:readLaterDate displayDate:displayDate];
 
     if ((v22 & 1) == 0)
     {
@@ -1936,21 +1936,21 @@ LABEL_92:
     }
   }
 
-  v23 = [(MessageListCellView *)self isMute];
-  v24 = [v9 hasAttachments];
-  v25 = [(MessageListCellView *)self isFlagged];
+  isMute = [(MessageListCellView *)self isMute];
+  hasAttachments = [viewModel hasAttachments];
+  isFlagged = [(MessageListCellView *)self isFlagged];
   v26 = v19 | 0x80;
-  if (!v23)
+  if (!isMute)
   {
     v26 = v19;
   }
 
-  if (v24)
+  if (hasAttachments)
   {
     v26 |= 0x20uLL;
   }
 
-  if (v25)
+  if (isFlagged)
   {
     v27 = v26 | 4;
   }
@@ -1960,25 +1960,25 @@ LABEL_92:
     v27 = v26;
   }
 
-  v28 = [(MessageListCellView *)self category];
-  v75 = v9;
-  v76 = v28;
-  if ([v28 isHighImpact] && -[MessageListCellView shouldShowHighImpact](self, "shouldShowHighImpact"))
+  category = [(MessageListCellView *)self category];
+  v75 = viewModel;
+  v76 = category;
+  if ([category isHighImpact] && -[MessageListCellView shouldShowHighImpact](self, "shouldShowHighImpact"))
   {
-    v29 = [v28 type];
+    type = [category type];
     v30 = v27 | 0x1000;
     v31 = v27 | 0x800;
-    if (v29 != 3)
+    if (type != 3)
     {
       v31 = v27;
     }
 
-    if (v29 != 2)
+    if (type != 2)
     {
       v30 = v31;
     }
 
-    if (v29 == 1)
+    if (type == 1)
     {
       v27 |= 0x400uLL;
     }
@@ -1989,24 +1989,24 @@ LABEL_92:
     }
   }
 
-  v77 = [(MessageListCellView *)self statusIndicatorManager];
-  v32 = [(MessageListCellView *)self flagColors];
-  [v77 setFlagColors:v32];
+  statusIndicatorManager = [(MessageListCellView *)self statusIndicatorManager];
+  flagColors = [(MessageListCellView *)self flagColors];
+  [statusIndicatorManager setFlagColors:flagColors];
 
-  [v77 setIndicatorOptions:v27];
-  v33 = [(MessageListCellView *)self layoutValues];
-  v34 = [(MessageListCellView *)self configurationState];
-  v35 = [(MessageListCellView *)self backgroundConfiguration];
-  [v77 setUseSelectedColors:{objc_msgSend(v33, "useSelectedColorForConfigurationState:backgroundConfiguration:", v34, v35)}];
+  [statusIndicatorManager setIndicatorOptions:v27];
+  layoutValues = [(MessageListCellView *)self layoutValues];
+  configurationState = [(MessageListCellView *)self configurationState];
+  backgroundConfiguration = [(MessageListCellView *)self backgroundConfiguration];
+  [statusIndicatorManager setUseSelectedColors:{objc_msgSend(layoutValues, "useSelectedColorForConfigurationState:backgroundConfiguration:", configurationState, backgroundConfiguration)}];
 
-  v73 = [v77 primaryStatusIndicatorImage];
-  [(MessageListCellView *)self _rectForStatusIndicatorViewsWithPrimaryStatusIndicatorImage:v73];
+  primaryStatusIndicatorImage = [statusIndicatorManager primaryStatusIndicatorImage];
+  [(MessageListCellView *)self _rectForStatusIndicatorViewsWithPrimaryStatusIndicatorImage:primaryStatusIndicatorImage];
   v37 = v36;
   v39 = v38;
   v41 = v40;
   v43 = v42;
-  v44 = [UIApp preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v44);
+  preferredContentSizeCategory = [UIApp preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   v46 = [NSMutableArray arrayWithCapacity:3];
   if (!EMBlackPearlIsFeatureEnabled() || -[MessageListCellView hideMessageListAvatar](self, "hideMessageListAvatar") || ([UIApp preferredContentSizeCategory], v47 = objc_claimAutoreleasedReturnValue(), v48 = UIContentSizeCategoryIsAccessibilityCategory(v47), v47, v48))
@@ -2022,7 +2022,7 @@ LABEL_92:
   }
 
   v51 = 0;
-  v52 = v74 + v12 + v13;
+  v52 = v74 + isReplied + isForwarded;
   do
   {
     v79 = 0;
@@ -2058,8 +2058,8 @@ LABEL_92:
     v59 = v61;
   }
 
-  v62 = [UIApp preferredContentSizeCategory];
-  v63 = UIContentSizeCategoryIsAccessibilityCategory(v62);
+  preferredContentSizeCategory2 = [UIApp preferredContentSizeCategory];
+  v63 = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory2);
 
   if (v63)
   {
@@ -2082,9 +2082,9 @@ LABEL_92:
   retstr->var0.origin = v70;
   retstr->var0.size = v70;
   retstr->var1 = 0xAAAAAAAAAAAAAAAALL;
-  if (v77)
+  if (statusIndicatorManager)
   {
-    [v77 layoutStatusIndicatorViewsInRect:self contentView:v46 verticalPositions:v49 avatarVerticalPostions:IsAccessibilityCategory horizontalPoint:v37 shouldAlignWithCenter:{v39, v41, v43, MidX, v59}];
+    [statusIndicatorManager layoutStatusIndicatorViewsInRect:self contentView:v46 verticalPositions:v49 avatarVerticalPostions:IsAccessibilityCategory horizontalPoint:v37 shouldAlignWithCenter:{v39, v41, v43, MidX, v59}];
   }
 
   else
@@ -2097,20 +2097,20 @@ LABEL_92:
   return result;
 }
 
-- (id)_statusIndicatorVeritcalPositionForLabel:(id)a3 font:(id)a4 shouldAlignWithCenter:(BOOL)a5
+- (id)_statusIndicatorVeritcalPositionForLabel:(id)label font:(id)font shouldAlignWithCenter:(BOOL)center
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
+  centerCopy = center;
+  labelCopy = label;
+  fontCopy = font;
+  v9 = fontCopy;
   v10 = &off_1006742B8;
-  if (v7 && v8)
+  if (labelCopy && fontCopy)
   {
-    if (v5)
+    if (centerCopy)
     {
-      [v7 frame];
+      [labelCopy frame];
       CGRectGetMinY(v17);
-      [v7 _firstBaselineOffsetFromTop];
+      [labelCopy _firstBaselineOffsetFromTop];
       [v9 capHeight];
       UIRoundToViewScale();
       v12 = v11;
@@ -2120,14 +2120,14 @@ LABEL_92:
     {
       if (MUISolariumFeatureEnabled())
       {
-        [v7 frame];
+        [labelCopy frame];
         CGRectGetMinY(v18);
-        [v7 _firstLineBaseline];
+        [labelCopy _firstLineBaseline];
       }
 
       else
       {
-        [v7 frame];
+        [labelCopy frame];
         [v9 mf_baselinePointFromOriginPoint:?];
       }
 
@@ -2143,7 +2143,7 @@ LABEL_92:
   return v10;
 }
 
-- (id)_statusIndicatorVerticalPositionAvatarForItem:(unint64_t)a3 verticalIndicatorCount:(int64_t)a4
+- (id)_statusIndicatorVerticalPositionAvatarForItem:(unint64_t)item verticalIndicatorCount:(int64_t)count
 {
   if (MUISolariumFeatureEnabled())
   {
@@ -2156,7 +2156,7 @@ LABEL_92:
   }
   v7 = ;
   v8 = v7;
-  if (a4 == 1)
+  if (count == 1)
   {
     [v7 frame];
     v10 = v9;
@@ -2170,14 +2170,14 @@ LABEL_92:
     [v8 frame];
     UIRoundToViewScale();
     v14 = v13;
-    v15 = [(MessageListCellView *)self layoutValues];
-    [v15 indicatorMaxWidth];
+    layoutValues = [(MessageListCellView *)self layoutValues];
+    [layoutValues indicatorMaxWidth];
     v17 = v16;
 
-    v18 = [(MessageListCellView *)self layoutValues];
-    if (a3)
+    layoutValues2 = [(MessageListCellView *)self layoutValues];
+    if (item)
     {
-      if (a3 == 1)
+      if (item == 1)
       {
         MaxY = v14;
       }
@@ -2185,11 +2185,11 @@ LABEL_92:
       else
       {
         MaxY = 0.0;
-        if (a3 == 2)
+        if (item == 2)
         {
           if (MUISolariumFeatureEnabled())
           {
-            [v18 indicatorVerticalSpacing];
+            [layoutValues2 indicatorVerticalSpacing];
             MaxY = v17 * 0.5 + v14 + v17 * 0.5 + v20;
           }
 
@@ -2204,7 +2204,7 @@ LABEL_92:
 
     else if (MUISolariumFeatureEnabled())
     {
-      [v18 indicatorVerticalSpacing];
+      [layoutValues2 indicatorVerticalSpacing];
       MaxY = v14 - v17 * 0.5 - v21 - v17 * 0.5;
     }
 
@@ -2220,52 +2220,52 @@ LABEL_92:
   return v12;
 }
 
-- (id)_labelForVerticalPosition:(unint64_t)a3 font:(id *)a4
+- (id)_labelForVerticalPosition:(unint64_t)position font:(id *)font
 {
-  v27 = [(MessageListCellView *)self layoutValues];
-  v6 = [(MessageListCellView *)self secondaryLabel];
-  v7 = [(MessageListCellView *)self tertiaryLabel];
-  v8 = [v27 subjectFont];
-  v9 = [v27 summaryFont];
-  v10 = [(MessageListCellView *)self _isLabelValid:v6];
+  layoutValues = [(MessageListCellView *)self layoutValues];
+  secondaryLabel = [(MessageListCellView *)self secondaryLabel];
+  tertiaryLabel = [(MessageListCellView *)self tertiaryLabel];
+  subjectFont = [layoutValues subjectFont];
+  summaryFont = [layoutValues summaryFont];
+  v10 = [(MessageListCellView *)self _isLabelValid:secondaryLabel];
   if (v10)
   {
-    v11 = v6;
+    v11 = secondaryLabel;
   }
 
   else
   {
-    v11 = v7;
+    v11 = tertiaryLabel;
   }
 
   if (v10)
   {
-    v12 = v8;
+    v12 = subjectFont;
   }
 
   else
   {
-    v12 = v9;
+    v12 = summaryFont;
   }
 
   if (v10)
   {
-    v13 = v7;
+    v13 = tertiaryLabel;
   }
 
   else
   {
-    v13 = v6;
+    v13 = secondaryLabel;
   }
 
   if (v10)
   {
-    v14 = v9;
+    v14 = summaryFont;
   }
 
   else
   {
-    v14 = v8;
+    v14 = subjectFont;
   }
 
   v28 = v11;
@@ -2279,100 +2279,100 @@ LABEL_92:
     v16 = 0;
   }
 
-  v17 = 0;
-  if (a3 <= 1)
+  primaryLabel = 0;
+  if (position <= 1)
   {
-    if (a3)
+    if (position)
     {
-      if (a3 == 1)
+      if (position == 1)
       {
-        v17 = v28;
-        if (a4)
+        primaryLabel = v28;
+        if (font)
         {
-          *a4 = v26;
+          *font = v26;
         }
       }
     }
 
     else
     {
-      v17 = [(MessageListCellView *)self primaryLabel];
-      if (a4)
+      primaryLabel = [(MessageListCellView *)self primaryLabel];
+      if (font)
       {
-        *a4 = [v27 addressFont];
+        *font = [layoutValues addressFont];
       }
     }
 
     goto LABEL_34;
   }
 
-  if (a3 != 2)
+  if (position != 2)
   {
-    if (a3 != 3)
+    if (position != 3)
     {
       goto LABEL_34;
     }
 
-    v18 = [UIApp preferredContentSizeCategory];
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v18);
+    preferredContentSizeCategory = [UIApp preferredContentSizeCategory];
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
     if (IsAccessibilityCategory)
     {
-      v20 = [(MessageListCellView *)self dateLabel];
-      if ([(MessageListCellView *)self _isLabelValid:v20])
+      dateLabel = [(MessageListCellView *)self dateLabel];
+      if ([(MessageListCellView *)self _isLabelValid:dateLabel])
       {
-        v21 = [(MessageListCellView *)self dateLabel];
+        dateLabel2 = [(MessageListCellView *)self dateLabel];
 
-        if (a4 && v21)
+        if (font && dateLabel2)
         {
-          *a4 = [v27 dateFont];
+          *font = [layoutValues dateFont];
         }
 
-        v17 = v21;
+        primaryLabel = dateLabel2;
         goto LABEL_34;
       }
     }
 
-    v17 = 0;
+    primaryLabel = 0;
     goto LABEL_34;
   }
 
-  v17 = v15;
-  if (a4)
+  primaryLabel = v15;
+  if (font)
   {
     v22 = v16;
-    *a4 = v16;
+    *font = v16;
   }
 
 LABEL_34:
-  v23 = v17;
+  v23 = primaryLabel;
 
-  return v17;
+  return primaryLabel;
 }
 
-- (CGRect)_rectForStatusIndicatorViewsWithPrimaryStatusIndicatorImage:(id)a3
+- (CGRect)_rectForStatusIndicatorViewsWithPrimaryStatusIndicatorImage:(id)image
 {
-  v4 = a3;
-  v5 = [(MessageListCellView *)self layoutValues];
-  v6 = [v5 addressFont];
+  imageCopy = image;
+  layoutValues = [(MessageListCellView *)self layoutValues];
+  addressFont = [layoutValues addressFont];
   [(UILabel *)self->_primaryLabel frame];
-  [v6 mf_baselinePointFromOriginPoint:?];
+  [addressFont mf_baselinePointFromOriginPoint:?];
 
-  v7 = [v5 addressFont];
-  [v7 capHeight];
+  addressFont2 = [layoutValues addressFont];
+  [addressFont2 capHeight];
 
-  [v4 size];
+  [imageCopy size];
   UIRoundToViewScale();
   [(MessageListCellView *)self bounds];
   UIRectInset();
   v9 = v8;
   v11 = v10;
-  [v5 padding];
+  [layoutValues padding];
   v13 = v12;
   v14 = v12;
   if (MUISolariumFeatureEnabled())
   {
-    [v5 indicatorMaxWidth];
+    [layoutValues indicatorMaxWidth];
     v14 = v15;
   }
 
@@ -2382,7 +2382,7 @@ LABEL_34:
     {
       [(MessageListCellView *)self bounds];
       MaxX = CGRectGetMaxX(v22);
-      [v5 indicatorMaxWidth];
+      [layoutValues indicatorMaxWidth];
       v13 = MaxX - v13 - v17;
     }
 
@@ -2409,17 +2409,17 @@ LABEL_34:
   return result;
 }
 
-- (id)_bodyAttributesWithColor:(id)a3
+- (id)_bodyAttributesWithColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   v5 = +[NSParagraphStyle defaultParagraphStyle];
   v6 = [v5 mutableCopy];
 
-  v7 = [(MessageListCellView *)self layoutValues];
-  v8 = [v7 summaryFont];
+  layoutValues = [(MessageListCellView *)self layoutValues];
+  summaryFont = [layoutValues summaryFont];
 
-  v9 = [UIApp preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v9);
+  preferredContentSizeCategory = [UIApp preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (IsAccessibilityCategory)
   {
@@ -2429,59 +2429,59 @@ LABEL_34:
 
   v14[0] = NSFontAttributeName;
   v14[1] = NSParagraphStyleAttributeName;
-  v15[0] = v8;
+  v15[0] = summaryFont;
   v15[1] = v6;
   v14[2] = NSForegroundColorAttributeName;
-  v15[2] = v4;
+  v15[2] = colorCopy;
   v12 = [NSDictionary dictionaryWithObjects:v15 forKeys:v14 count:3];
 
   return v12;
 }
 
-- (id)_defaultAttributesWithFont:(id)a3 color:(id)a4
+- (id)_defaultAttributesWithFont:(id)font color:(id)color
 {
-  v5 = a3;
-  v6 = a4;
+  fontCopy = font;
+  colorCopy = color;
   v7 = +[NSParagraphStyle defaultParagraphStyle];
   v8 = [v7 mutableCopy];
 
   [v8 setLineBreakMode:4];
   v11[0] = NSFontAttributeName;
   v11[1] = NSParagraphStyleAttributeName;
-  v12[0] = v5;
+  v12[0] = fontCopy;
   v12[1] = v8;
   v11[2] = NSForegroundColorAttributeName;
-  v12[2] = v6;
+  v12[2] = colorCopy;
   v9 = [NSDictionary dictionaryWithObjects:v12 forKeys:v11 count:3];
 
   return v9;
 }
 
-- (id)_addressAttributesWithColor:(id)a3
+- (id)_addressAttributesWithColor:(id)color
 {
-  v4 = a3;
-  v5 = [(MessageListCellView *)self layoutValues];
-  v6 = [v5 addressFont];
-  v7 = [(MessageListCellView *)self _defaultAttributesWithFont:v6 color:v4];
+  colorCopy = color;
+  layoutValues = [(MessageListCellView *)self layoutValues];
+  addressFont = [layoutValues addressFont];
+  v7 = [(MessageListCellView *)self _defaultAttributesWithFont:addressFont color:colorCopy];
 
   return v7;
 }
 
-- (id)_secondaryStringAttributesWithColor:(id)a3
+- (id)_secondaryStringAttributesWithColor:(id)color
 {
-  v4 = a3;
-  v5 = [(MessageListCellView *)self layoutValues];
-  v6 = [v5 subjectFont];
-  v7 = [(MessageListCellView *)self _defaultAttributesWithFont:v6 color:v4];
+  colorCopy = color;
+  layoutValues = [(MessageListCellView *)self layoutValues];
+  subjectFont = [layoutValues subjectFont];
+  v7 = [(MessageListCellView *)self _defaultAttributesWithFont:subjectFont color:colorCopy];
 
   return v7;
 }
 
-- (void)_recalculatePrimaryAttributedStringShouldRehighlight:(BOOL)a3
+- (void)_recalculatePrimaryAttributedStringShouldRehighlight:(BOOL)rehighlight
 {
-  v3 = a3;
-  v5 = [(MessageListCellView *)self _primaryLabelString];
-  v40 = v5;
+  rehighlightCopy = rehighlight;
+  _primaryLabelString = [(MessageListCellView *)self _primaryLabelString];
+  v40 = _primaryLabelString;
   if (self->_attributedPrimaryString)
   {
     v6 = 1;
@@ -2489,20 +2489,20 @@ LABEL_34:
 
   else
   {
-    v6 = v5 == 0;
+    v6 = _primaryLabelString == 0;
   }
 
-  if (!v6 || [v5 length] && v3)
+  if (!v6 || [_primaryLabelString length] && rehighlightCopy)
   {
-    v7 = [(MessageListCellView *)self layoutValues];
-    v8 = [(MessageListCellView *)self contentConfiguration];
-    v9 = [v7 addressColorForContentConfiguration:v8];
+    layoutValues = [(MessageListCellView *)self layoutValues];
+    contentConfiguration = [(MessageListCellView *)self contentConfiguration];
+    v9 = [layoutValues addressColorForContentConfiguration:contentConfiguration];
 
-    v10 = [(MessageListCellView *)self layoutValues];
-    v11 = [(MessageListCellView *)self configurationState];
-    v12 = [(MessageListCellView *)self contentConfiguration];
-    v13 = [(MessageListCellView *)self backgroundConfiguration];
-    v14 = [v10 annotationColorForConfigurationState:v11 contentConfiguration:v12 backgroundConfiguration:v13];
+    layoutValues2 = [(MessageListCellView *)self layoutValues];
+    configurationState = [(MessageListCellView *)self configurationState];
+    contentConfiguration2 = [(MessageListCellView *)self contentConfiguration];
+    backgroundConfiguration = [(MessageListCellView *)self backgroundConfiguration];
+    v14 = [layoutValues2 annotationColorForConfigurationState:configurationState contentConfiguration:contentConfiguration2 backgroundConfiguration:backgroundConfiguration];
 
     if (self->_shouldAnnotateReplyOrForward && self->_annotatedRelationshipType)
     {
@@ -2529,14 +2529,14 @@ LABEL_21:
           goto LABEL_22;
       }
 
-      v31 = v19;
+      attributedAddress = v19;
 
-      if (!v31)
+      if (!attributedAddress)
       {
         goto LABEL_21;
       }
 
-      v34 = [NSString stringWithFormat:v31, v40];
+      v34 = [NSString stringWithFormat:attributedAddress, v40];
       v35 = [[NSMutableAttributedString alloc] initWithString:v34 attributes:v16];
       v36 = [v34 rangeOfString:v40];
       [v35 setAttributes:v15 range:{v36, v37}];
@@ -2548,16 +2548,16 @@ LABEL_21:
     else
     {
       v15 = v9;
-      v20 = [(MessageListCellView *)self viewModel];
-      v21 = [v20 addressIsPresent];
+      viewModel = [(MessageListCellView *)self viewModel];
+      addressIsPresent = [viewModel addressIsPresent];
 
-      if ((v21 & 1) == 0)
+      if ((addressIsPresent & 1) == 0)
       {
-        v22 = [(MessageListCellView *)self layoutValues];
-        v23 = [(MessageListCellView *)self configurationState];
-        v24 = [(MessageListCellView *)self contentConfiguration];
-        v25 = [(MessageListCellView *)self backgroundConfiguration];
-        v26 = [v22 absentDataColorForConfigurationState:v23 contentConfiguration:v24 backgroundConfiguration:v25];
+        layoutValues3 = [(MessageListCellView *)self layoutValues];
+        configurationState2 = [(MessageListCellView *)self configurationState];
+        contentConfiguration3 = [(MessageListCellView *)self contentConfiguration];
+        backgroundConfiguration2 = [(MessageListCellView *)self backgroundConfiguration];
+        v26 = [layoutValues3 absentDataColorForConfigurationState:configurationState2 contentConfiguration:contentConfiguration3 backgroundConfiguration:backgroundConfiguration2];
 
         v15 = v26;
       }
@@ -2566,12 +2566,12 @@ LABEL_21:
       v28 = [(MessageListCellView *)self _addressAttributesWithColor:v15];
       v29 = [v27 initWithString:v40 attributes:v28];
 
-      v30 = [(MessageListCellView *)self viewModel];
-      v31 = [v30 attributedAddress];
+      viewModel2 = [(MessageListCellView *)self viewModel];
+      attributedAddress = [viewModel2 attributedAddress];
 
-      if (v31)
+      if (attributedAddress)
       {
-        v16 = [[NSMutableAttributedString alloc] initWithAttributedString:v31];
+        v16 = [[NSMutableAttributedString alloc] initWithAttributedString:attributedAddress];
         v32 = [(MessageListCellView *)self _addressAttributesWithColor:v15];
         [v16 addAttributes:v32 range:{0, objc_msgSend(v16, "length")}];
       }
@@ -2592,11 +2592,11 @@ LABEL_21:
 LABEL_22:
 }
 
-- (void)_recalculateSecondaryAttributedStringShouldRehighlight:(BOOL)a3
+- (void)_recalculateSecondaryAttributedStringShouldRehighlight:(BOOL)rehighlight
 {
-  v3 = a3;
-  v5 = [(MessageListCellView *)self viewModel];
-  v23 = [v5 subject];
+  rehighlightCopy = rehighlight;
+  viewModel = [(MessageListCellView *)self viewModel];
+  subject = [viewModel subject];
 
   if (self->_attributedSecondaryString)
   {
@@ -2605,36 +2605,36 @@ LABEL_22:
 
   else
   {
-    v6 = v23 == 0;
+    v6 = subject == 0;
   }
 
-  if (!v6 || [v23 length] && v3)
+  if (!v6 || [subject length] && rehighlightCopy)
   {
-    v7 = [(MessageListCellView *)self layoutValues];
-    v8 = [(MessageListCellView *)self contentConfiguration];
-    v9 = [v7 subjectColorForContentConfiguration:v8];
+    layoutValues = [(MessageListCellView *)self layoutValues];
+    contentConfiguration = [(MessageListCellView *)self contentConfiguration];
+    v9 = [layoutValues subjectColorForContentConfiguration:contentConfiguration];
 
-    v10 = [(MessageListCellView *)self viewModel];
-    LOBYTE(v8) = [v10 subjectIsPresent];
+    viewModel2 = [(MessageListCellView *)self viewModel];
+    LOBYTE(contentConfiguration) = [viewModel2 subjectIsPresent];
 
-    if ((v8 & 1) == 0)
+    if ((contentConfiguration & 1) == 0)
     {
-      v11 = [(MessageListCellView *)self layoutValues];
-      v12 = [(MessageListCellView *)self configurationState];
-      v13 = [(MessageListCellView *)self contentConfiguration];
-      v14 = [(MessageListCellView *)self backgroundConfiguration];
-      v15 = [v11 absentDataColorForConfigurationState:v12 contentConfiguration:v13 backgroundConfiguration:v14];
+      layoutValues2 = [(MessageListCellView *)self layoutValues];
+      configurationState = [(MessageListCellView *)self configurationState];
+      contentConfiguration2 = [(MessageListCellView *)self contentConfiguration];
+      backgroundConfiguration = [(MessageListCellView *)self backgroundConfiguration];
+      v15 = [layoutValues2 absentDataColorForConfigurationState:configurationState contentConfiguration:contentConfiguration2 backgroundConfiguration:backgroundConfiguration];
 
       v9 = v15;
     }
 
     v16 = [NSAttributedString alloc];
     v17 = [(MessageListCellView *)self _secondaryStringAttributesWithColor:v9];
-    v18 = [v16 initWithString:v23 attributes:v17];
+    v18 = [v16 initWithString:subject attributes:v17];
 
-    v19 = [v18 string];
+    string = [v18 string];
     accessibilitySecondaryLabel = self->_accessibilitySecondaryLabel;
-    self->_accessibilitySecondaryLabel = v19;
+    self->_accessibilitySecondaryLabel = string;
 
     v21 = [(MessageListCellView *)self _highlightedSubject:v18];
     attributedSecondaryString = self->_attributedSecondaryString;
@@ -2642,11 +2642,11 @@ LABEL_22:
   }
 }
 
-- (void)_recalculateTertiaryAttributedStringShouldRehighlight:(BOOL)a3
+- (void)_recalculateTertiaryAttributedStringShouldRehighlight:(BOOL)rehighlight
 {
-  v3 = a3;
-  v5 = [(MessageListCellView *)self summary];
-  v6 = v5;
+  rehighlightCopy = rehighlight;
+  summary = [(MessageListCellView *)self summary];
+  v6 = summary;
   if (self->_attributedTertiaryString)
   {
     v7 = 1;
@@ -2654,11 +2654,11 @@ LABEL_22:
 
   else
   {
-    v7 = v5 == 0;
+    v7 = summary == 0;
   }
 
-  v12 = v5;
-  if (!v7 || (v8 = [v5 length], v6 = v12, v8) && v3)
+  v12 = summary;
+  if (!v7 || (v8 = [summary length], v6 = v12, v8) && rehighlightCopy)
   {
     v9 = [(MessageListCellView *)self _formatTertiaryString:v6];
     v10 = [(MessageListCellView *)self _highlightedSummarySnippet:v9];
@@ -2669,62 +2669,62 @@ LABEL_22:
   }
 }
 
-- (id)_formatTertiaryString:(id)a3
+- (id)_formatTertiaryString:(id)string
 {
-  v27 = a3;
-  v4 = [(MessageListCellView *)self layoutValues];
-  v5 = [(MessageListCellView *)self configurationState];
-  v6 = [(MessageListCellView *)self contentConfiguration];
-  v7 = [(MessageListCellView *)self backgroundConfiguration];
-  v8 = [v4 summaryColorForConfigurationState:v5 contentConfiguration:v6 backgroundConfiguration:v7];
+  stringCopy = string;
+  layoutValues = [(MessageListCellView *)self layoutValues];
+  configurationState = [(MessageListCellView *)self configurationState];
+  contentConfiguration = [(MessageListCellView *)self contentConfiguration];
+  backgroundConfiguration = [(MessageListCellView *)self backgroundConfiguration];
+  v8 = [layoutValues summaryColorForConfigurationState:configurationState contentConfiguration:contentConfiguration backgroundConfiguration:backgroundConfiguration];
 
-  LODWORD(v6) = [(MessageListCellView *)self hasGeneratedSummary];
+  LODWORD(contentConfiguration) = [(MessageListCellView *)self hasGeneratedSummary];
   v9 = objc_opt_new();
   v10 = [(MessageListCellView *)self _bodyAttributesWithColor:v8];
-  if (v6)
+  if (contentConfiguration)
   {
     v11 = objc_alloc_init(NSTextAttachment);
     [(MessageListCellView *)self setSummarySymbolTextAttachment:v11];
 
-    v12 = [(MessageListCellView *)self layoutValues];
-    v13 = [v12 summarySymbolFont];
-    v14 = [UIImage mf_imageForSummarySymbolWithFont:v13];
-    v15 = [(MessageListCellView *)self summarySymbolTextAttachment];
-    [v15 setImage:v14];
+    layoutValues2 = [(MessageListCellView *)self layoutValues];
+    summarySymbolFont = [layoutValues2 summarySymbolFont];
+    v14 = [UIImage mf_imageForSummarySymbolWithFont:summarySymbolFont];
+    summarySymbolTextAttachment = [(MessageListCellView *)self summarySymbolTextAttachment];
+    [summarySymbolTextAttachment setImage:v14];
 
-    v16 = [(MessageListCellView *)self layoutValues];
-    v17 = [(MessageListCellView *)self configurationState];
-    v18 = [(MessageListCellView *)self contentConfiguration];
-    v19 = [(MessageListCellView *)self backgroundConfiguration];
-    v20 = [v16 summarySymbolColorForConfigurationState:v17 contentConfiguration:v18 backgroundConfiguration:v19];
+    layoutValues3 = [(MessageListCellView *)self layoutValues];
+    configurationState2 = [(MessageListCellView *)self configurationState];
+    contentConfiguration2 = [(MessageListCellView *)self contentConfiguration];
+    backgroundConfiguration2 = [(MessageListCellView *)self backgroundConfiguration];
+    v20 = [layoutValues3 summarySymbolColorForConfigurationState:configurationState2 contentConfiguration:contentConfiguration2 backgroundConfiguration:backgroundConfiguration2];
 
-    v21 = [(MessageListCellView *)self summarySymbolTextAttachment];
+    summarySymbolTextAttachment2 = [(MessageListCellView *)self summarySymbolTextAttachment];
     v28 = NSForegroundColorAttributeName;
     v29 = v20;
     v22 = [NSDictionary dictionaryWithObjects:&v29 forKeys:&v28 count:1];
-    v23 = [NSAttributedString attributedStringWithAttachment:v21 attributes:v22];
+    v23 = [NSAttributedString attributedStringWithAttachment:summarySymbolTextAttachment2 attributes:v22];
     [v9 appendAttributedString:v23];
 
     v24 = [[NSAttributedString alloc] initWithString:@" "];
     [v9 appendAttributedString:v24];
   }
 
-  v25 = [[NSAttributedString alloc] initWithString:v27 attributes:v10];
+  v25 = [[NSAttributedString alloc] initWithString:stringCopy attributes:v10];
   [v9 appendAttributedString:v25];
 
   return v9;
 }
 
-- (id)_highlightedSender:(id)a3
+- (id)_highlightedSender:(id)sender
 {
-  v4 = a3;
-  v5 = [(MessageListCellView *)self viewModel];
-  v6 = [v5 hintsBySnippetZone];
-  v7 = [v6 objectForKeyedSubscript:EMMessageSnippetHintZoneAuthor];
+  senderCopy = sender;
+  viewModel = [(MessageListCellView *)self viewModel];
+  hintsBySnippetZone = [viewModel hintsBySnippetZone];
+  v7 = [hintsBySnippetZone objectForKeyedSubscript:EMMessageSnippetHintZoneAuthor];
 
-  v8 = [(MessageListCellView *)self viewModel];
-  v9 = [v8 hintsBySnippetZone];
-  v10 = [v9 objectForKeyedSubscript:EMMessageSnippetHintZoneAuthorEmailAddresses];
+  viewModel2 = [(MessageListCellView *)self viewModel];
+  hintsBySnippetZone2 = [viewModel2 hintsBySnippetZone];
+  v10 = [hintsBySnippetZone2 objectForKeyedSubscript:EMMessageSnippetHintZoneAuthorEmailAddresses];
 
   if ([v7 count] || objc_msgSend(v10, "count"))
   {
@@ -2733,36 +2733,36 @@ LABEL_22:
     {
       v15 = [EFPrivacy partiallyRedactedStringFromArray:v7];
       v16 = [EFPrivacy partiallyRedactedStringFromArray:v10];
-      v17 = [v4 string];
+      string = [senderCopy string];
       v18 = 134218754;
-      v19 = self;
+      selfCopy = self;
       v20 = 2112;
       v21 = v15;
       v22 = 2112;
       v23 = v16;
       v24 = 2112;
-      v25 = v17;
+      v25 = string;
       _os_log_debug_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "%p: [Snippet Hints] Highlighting: %@ and %@ in %@", &v18, 0x2Au);
     }
 
     v12 = sub_1004899C8(self);
-    v13 = [MUISnippetGenerator highlightingAuthorTokens:v7 authorEmailTokens:v10 inEmailAttributedString:v4 highlighting:v12 error:0];
+    v13 = [MUISnippetGenerator highlightingAuthorTokens:v7 authorEmailTokens:v10 inEmailAttributedString:senderCopy highlighting:v12 error:0];
   }
 
   else
   {
-    v13 = v4;
+    v13 = senderCopy;
   }
 
   return v13;
 }
 
-- (id)_highlightedSubject:(id)a3
+- (id)_highlightedSubject:(id)subject
 {
-  v4 = a3;
-  v5 = [(MessageListCellView *)self viewModel];
-  v6 = [v5 hintsBySnippetZone];
-  v7 = [v6 objectForKeyedSubscript:EMMessageSnippetHintZoneSubject];
+  subjectCopy = subject;
+  viewModel = [(MessageListCellView *)self viewModel];
+  hintsBySnippetZone = [viewModel hintsBySnippetZone];
+  v7 = [hintsBySnippetZone objectForKeyedSubscript:EMMessageSnippetHintZoneSubject];
 
   if ([v7 count])
   {
@@ -2770,40 +2770,40 @@ LABEL_22:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
       v21 = [EFPrivacy partiallyRedactedStringFromArray:v7];
-      v22 = [v4 string];
+      string = [subjectCopy string];
       v23 = 134218498;
-      v24 = self;
+      selfCopy = self;
       v25 = 2112;
       v26 = v21;
       v27 = 2112;
-      v28 = v22;
+      v28 = string;
       _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "%p: [Snippet Hints] Highlighting: %@ in %@", &v23, 0x20u);
     }
 
-    v9 = [(MessageListCellView *)self secondaryLabel];
-    [v9 bounds];
+    secondaryLabel = [(MessageListCellView *)self secondaryLabel];
+    [secondaryLabel bounds];
     v11 = v10;
     v13 = v12;
     v15 = v14;
     v17 = v16;
     v18 = sub_1004899C8(self);
-    v19 = [MUISnippetGenerator highlightedSnippetUsingTokens:v7 attributedString:v4 frame:v18 highlighting:0 error:v11, v13, v15, v17];
+    v19 = [MUISnippetGenerator highlightedSnippetUsingTokens:v7 attributedString:subjectCopy frame:v18 highlighting:0 error:v11, v13, v15, v17];
   }
 
   else
   {
-    v19 = v4;
+    v19 = subjectCopy;
   }
 
   return v19;
 }
 
-- (id)_highlightedSummarySnippet:(id)a3
+- (id)_highlightedSummarySnippet:(id)snippet
 {
-  v4 = a3;
-  v5 = [(MessageListCellView *)self viewModel];
-  v6 = [v5 hintsBySnippetZone];
-  v7 = [v6 objectForKeyedSubscript:EMMessageSnippetHintZoneTextContent];
+  snippetCopy = snippet;
+  viewModel = [(MessageListCellView *)self viewModel];
+  hintsBySnippetZone = [viewModel hintsBySnippetZone];
+  v7 = [hintsBySnippetZone objectForKeyedSubscript:EMMessageSnippetHintZoneTextContent];
 
   if ([v7 count])
   {
@@ -2811,56 +2811,56 @@ LABEL_22:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
       v12 = [EFPrivacy partiallyRedactedStringFromArray:v7];
-      v13 = [v4 string];
+      string = [snippetCopy string];
       v14 = 134218498;
-      v15 = self;
+      selfCopy = self;
       v16 = 2112;
       v17 = v12;
       v18 = 2112;
-      v19 = v13;
+      v19 = string;
       _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "%p: [Snippet Hints] Highlighting: %@ in %@", &v14, 0x20u);
     }
 
     v9 = sub_1004899C8(self);
-    v10 = [MUISnippetGenerator highlightedSnippetUsingTokens:v7 attributedString:v4 maxNumberOfWordsBeforeOrAfterToken:2 maxNumberOfRanges:2 highlighting:v9 error:0];
+    v10 = [MUISnippetGenerator highlightedSnippetUsingTokens:v7 attributedString:snippetCopy maxNumberOfWordsBeforeOrAfterToken:2 maxNumberOfRanges:2 highlighting:v9 error:0];
   }
 
   else
   {
-    v10 = v4;
+    v10 = snippetCopy;
   }
 
   return v10;
 }
 
-- (id)_highlightedPrimaryString:(id)a3
+- (id)_highlightedPrimaryString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   if ([(MessageListCellView *)self isSenderSpecificCell])
   {
-    [(MessageListCellView *)self _highlightedSubject:v4];
+    [(MessageListCellView *)self _highlightedSubject:stringCopy];
   }
 
   else
   {
-    [(MessageListCellView *)self _highlightedSender:v4];
+    [(MessageListCellView *)self _highlightedSender:stringCopy];
   }
   v5 = ;
 
   return v5;
 }
 
-- (CGRect)_rectForChevronBoxWithBounds:(CGRect)a3 addressRect:(CGRect)a4 type:(int64_t)a5
+- (CGRect)_rectForChevronBoxWithBounds:(CGRect)bounds addressRect:(CGRect)rect type:(int64_t)type
 {
-  width = a4.size.width;
-  height = a4.size.height;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v7 = a3.size.height;
-  v8 = a3.size.width;
-  v9 = a3.origin.y;
-  v10 = a3.origin.x;
-  [(MessageListCellView *)self _sizeForChevronWithType:a5];
+  width = rect.size.width;
+  height = rect.size.height;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v7 = bounds.size.height;
+  v8 = bounds.size.width;
+  v9 = bounds.origin.y;
+  v10 = bounds.origin.x;
+  [(MessageListCellView *)self _sizeForChevronWithType:type];
   [(MessageListCellView *)self _originForChevronBoxWithBounds:v10 addressRect:v9 sizeForChevron:v8, v7, x, y, width, height, v12, v13];
 
   MFIntegralRectToViewScale();
@@ -2871,42 +2871,42 @@ LABEL_22:
   return result;
 }
 
-- (CGPoint)_originForChevronBoxWithBounds:(CGRect)a3 addressRect:(CGRect)a4 sizeForChevron:(CGSize)a5
+- (CGPoint)_originForChevronBoxWithBounds:(CGRect)bounds addressRect:(CGRect)rect sizeForChevron:(CGSize)chevron
 {
-  y = a4.origin.y;
-  x = a4.origin.x;
-  height = a3.size.height;
-  width = a3.size.width;
-  v9 = a3.origin.y;
-  v10 = a3.origin.x;
-  v12 = [(MessageListCellView *)self layoutValues:*&a5.width];
-  v13 = [v12 addressFont];
+  y = rect.origin.y;
+  x = rect.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  v9 = bounds.origin.y;
+  v10 = bounds.origin.x;
+  v12 = [(MessageListCellView *)self layoutValues:*&chevron.width];
+  addressFont = [v12 addressFont];
 
-  [v13 mf_baselinePointFromOriginPoint:{x, y}];
-  v14 = [UIApp preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v14);
+  [addressFont mf_baselinePointFromOriginPoint:{x, y}];
+  preferredContentSizeCategory = [UIApp preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (!IsAccessibilityCategory)
   {
     if (MUISolariumFeatureEnabled())
     {
-      v16 = [(MessageListCellView *)self layoutValues];
-      [v16 addressCapHeight];
+      layoutValues = [(MessageListCellView *)self layoutValues];
+      [layoutValues addressCapHeight];
     }
 
     else
     {
-      v16 = [(MessageListCellView *)self layoutValues];
-      v17 = [v16 addressFont];
-      [v17 capHeight];
+      layoutValues = [(MessageListCellView *)self layoutValues];
+      addressFont2 = [layoutValues addressFont];
+      [addressFont2 capHeight];
     }
   }
 
-  v18 = [(MessageListCellView *)self mf_prefersRightToLeftInterfaceLayout];
-  v19 = [(MessageListCellView *)self traitCollection];
-  [v19 mf_useSplitViewStyling];
+  mf_prefersRightToLeftInterfaceLayout = [(MessageListCellView *)self mf_prefersRightToLeftInterfaceLayout];
+  traitCollection = [(MessageListCellView *)self traitCollection];
+  [traitCollection mf_useSplitViewStyling];
 
-  if (v18)
+  if (mf_prefersRightToLeftInterfaceLayout)
   {
     v27.origin.x = v10;
     v27.origin.y = v9;
@@ -2946,18 +2946,18 @@ LABEL_22:
   return result;
 }
 
-- (CGSize)_sizeForChevronWithType:(int64_t)a3
+- (CGSize)_sizeForChevronWithType:(int64_t)type
 {
   width = CGSizeZero.width;
   height = CGSizeZero.height;
-  if (a3)
+  if (type)
   {
-    if (a3 == 3)
+    if (type == 3)
     {
-      a3 = 2;
+      type = 2;
     }
 
-    v5 = [UIImage mf_imageForChevronType:a3];
+    v5 = [UIImage mf_imageForChevronType:type];
     v6 = v5;
     if (v5)
     {
@@ -2974,21 +2974,21 @@ LABEL_22:
   return result;
 }
 
-- (CGRect)_rectForChevronWithBounds:(CGRect)a3 addressRect:(CGRect)a4
+- (CGRect)_rectForChevronWithBounds:(CGRect)bounds addressRect:(CGRect)rect
 {
   x = CGRectZero.origin.x;
   y = CGRectZero.origin.y;
   if (self->_chevronType)
   {
-    height = a4.size.height;
-    width = a4.size.width;
-    v8 = a4.origin.y;
-    v9 = a4.origin.x;
-    v10 = a3.size.height;
-    v11 = a3.size.width;
-    v30 = a3.origin.x;
-    v29 = a3.origin.y;
-    v13 = [(MessageListCellView *)self mf_prefersRightToLeftInterfaceLayout];
+    height = rect.size.height;
+    width = rect.size.width;
+    v8 = rect.origin.y;
+    v9 = rect.origin.x;
+    v10 = bounds.size.height;
+    v11 = bounds.size.width;
+    v30 = bounds.origin.x;
+    v29 = bounds.origin.y;
+    mf_prefersRightToLeftInterfaceLayout = [(MessageListCellView *)self mf_prefersRightToLeftInterfaceLayout];
     if ([(MessageListCellView *)self swiped]|| ![(MessageListCellView *)self isEditing]|| [(MessageListCellView *)self chevronType]== 2)
     {
       v14 = v9;
@@ -3000,14 +3000,14 @@ LABEL_22:
     else
     {
       v24 = [UIImage mf_imageForChevronType:2];
-      v25 = [(MessageListCellView *)self layoutValues];
-      [v25 padding];
+      layoutValues = [(MessageListCellView *)self layoutValues];
+      [layoutValues padding];
       v28 = v26;
 
       [v24 size];
       v14 = v9;
       v15 = v8;
-      if (v13)
+      if (mf_prefersRightToLeftInterfaceLayout)
       {
         v30 = v30 - (v28 + v27);
       }
@@ -3043,31 +3043,31 @@ LABEL_22:
   return result;
 }
 
-- (CGPoint)_dateOriginUnderSummary:(CGRect)a3
+- (CGPoint)_dateOriginUnderSummary:(CGRect)summary
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(MessageListCellView *)self layoutValues];
-  v9 = [v8 summaryFont];
+  height = summary.size.height;
+  width = summary.size.width;
+  y = summary.origin.y;
+  x = summary.origin.x;
+  layoutValues = [(MessageListCellView *)self layoutValues];
+  summaryFont = [layoutValues summaryFont];
 
-  v10 = [(MessageListCellView *)self layoutValues];
-  [v10 addressAndSubjectHeight];
+  layoutValues2 = [(MessageListCellView *)self layoutValues];
+  [layoutValues2 addressAndSubjectHeight];
   v12 = v11;
 
-  v13 = [(MessageListCellView *)self tertiaryLabel];
-  v14 = [(MessageListCellView *)self _isLabelValid:v13];
+  tertiaryLabel = [(MessageListCellView *)self tertiaryLabel];
+  v14 = [(MessageListCellView *)self _isLabelValid:tertiaryLabel];
 
   if (v14)
   {
-    v15 = [(MessageListCellView *)self layoutValues];
-    v16 = [(MessageListCellView *)self summary];
-    [v15 actualLineCountForSummary:v16 hasGeneratedSummary:-[MessageListCellView hasGeneratedSummary](self bounds:{"hasGeneratedSummary"), x, y, width, height}];
+    layoutValues3 = [(MessageListCellView *)self layoutValues];
+    summary = [(MessageListCellView *)self summary];
+    [layoutValues3 actualLineCountForSummary:summary hasGeneratedSummary:-[MessageListCellView hasGeneratedSummary](self bounds:{"hasGeneratedSummary"), x, y, width, height}];
   }
 
-  [v9 _bodyLeading];
-  [v9 descender];
+  [summaryFont _bodyLeading];
+  [summaryFont descender];
   UIRoundToViewScale();
   v18 = y + v12 + v17;
 
@@ -3078,17 +3078,17 @@ LABEL_22:
   return result;
 }
 
-- (CGPoint)_dateOriginAlignedWithAddressBaselineForBounds:(CGRect)a3
+- (CGPoint)_dateOriginAlignedWithAddressBaselineForBounds:(CGRect)bounds
 {
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v5 = [(MessageListCellView *)self layoutValues:a3.origin.x];
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v5 = [(MessageListCellView *)self layoutValues:bounds.origin.x];
   if (MUISolariumFeatureEnabled())
   {
-    v6 = [v5 addressFont];
-    [v6 ascender];
-    v7 = [v5 subjectFont];
-    [v7 ascender];
+    addressFont = [v5 addressFont];
+    [addressFont ascender];
+    subjectFont = [v5 subjectFont];
+    [subjectFont ascender];
 
     UICeilToViewScale();
     v9 = y + v8;
@@ -3098,8 +3098,8 @@ LABEL_22:
   {
     [v5 addressCapHeight];
     v11 = v10;
-    v12 = [v5 dateFont];
-    [v12 mf_originPointFromBaselinePoint:{x, y + v11}];
+    dateFont = [v5 dateFont];
+    [dateFont mf_originPointFromBaselinePoint:{x, y + v11}];
     x = v13;
     v9 = v14;
   }
@@ -3111,25 +3111,25 @@ LABEL_22:
   return result;
 }
 
-- (CGRect)_rectForDateWithBounds:(CGRect)a3 chevronRect:(CGRect)a4
+- (CGRect)_rectForDateWithBounds:(CGRect)bounds chevronRect:(CGRect)rect
 {
-  height = a4.size.height;
-  y = a4.origin.y;
-  width = a4.size.width;
-  x = a4.origin.x;
-  v6 = a3.size.height;
-  v7 = a3.size.width;
-  v8 = a3.origin.y;
-  v9 = a3.origin.x;
-  v11 = [(MessageListCellView *)self mf_prefersRightToLeftInterfaceLayout];
-  v12 = [UIApp preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v12);
+  height = rect.size.height;
+  y = rect.origin.y;
+  width = rect.size.width;
+  x = rect.origin.x;
+  v6 = bounds.size.height;
+  v7 = bounds.size.width;
+  v8 = bounds.origin.y;
+  v9 = bounds.origin.x;
+  mf_prefersRightToLeftInterfaceLayout = [(MessageListCellView *)self mf_prefersRightToLeftInterfaceLayout];
+  preferredContentSizeCategory = [UIApp preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   [(UILabel *)self->_dateLabel sizeThatFits:v7, v6];
   if (IsAccessibilityCategory)
   {
     [(MessageListCellView *)self _dateOriginUnderSummary:v9, v8, v7, v6];
-    if (v11)
+    if (mf_prefersRightToLeftInterfaceLayout)
     {
 LABEL_3:
       v25.origin.x = v9;
@@ -3146,7 +3146,7 @@ LABEL_3:
   [(MessageListCellView *)self _dateOriginAlignedWithAddressBaselineForBounds:v9, v8, v7, v6];
   if (!self->_chevronType || [(MessageListCellView *)self isEditing]&& self->_chevronType != 2)
   {
-    if ((v11 & 1) == 0)
+    if ((mf_prefersRightToLeftInterfaceLayout & 1) == 0)
     {
       goto LABEL_3;
     }
@@ -3164,7 +3164,7 @@ LABEL_10:
   v15 = y;
   v16 = width;
   v17 = height;
-  if (v11)
+  if (mf_prefersRightToLeftInterfaceLayout)
   {
     CGRectGetMaxX(*&v14);
   }
@@ -3184,16 +3184,16 @@ LABEL_12:
   return result;
 }
 
-- (void)_layoutChevronForDisclosureStateAnimated:(BOOL)a3
+- (void)_layoutChevronForDisclosureStateAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(MessageListCellView *)self layoutValues];
-  v6 = [(MessageListCellView *)self configurationState];
-  v7 = [(MessageListCellView *)self contentConfiguration];
-  v8 = [(MessageListCellView *)self backgroundConfiguration];
-  v9 = [v5 threadDisclosureColorForConfigurationState:v6 contentConfiguration:v7 backgroundConfiguration:v8];
-  v10 = [(MessageListCellView *)self disclosureButton];
-  [v10 setTintColor:v9];
+  animatedCopy = animated;
+  layoutValues = [(MessageListCellView *)self layoutValues];
+  configurationState = [(MessageListCellView *)self configurationState];
+  contentConfiguration = [(MessageListCellView *)self contentConfiguration];
+  backgroundConfiguration = [(MessageListCellView *)self backgroundConfiguration];
+  v9 = [layoutValues threadDisclosureColorForConfigurationState:configurationState contentConfiguration:contentConfiguration backgroundConfiguration:backgroundConfiguration];
+  disclosureButton = [(MessageListCellView *)self disclosureButton];
+  [disclosureButton setTintColor:v9];
 
   if ([(MessageListCellView *)self disclosureEnabled])
   {
@@ -3238,7 +3238,7 @@ LABEL_12:
   v18[3] = &unk_10064C570;
   v18[4] = self;
   v17 = objc_retainBlock(v18);
-  if (v3)
+  if (animatedCopy)
   {
     [UIView animateWithDuration:v16 animations:v17 completion:0.333];
   }
@@ -3250,24 +3250,24 @@ LABEL_12:
   }
 }
 
-- (CGRect)_rectForDisclosureButtonWithFrame:(CGRect)a3 boxFrame:(CGRect)a4
+- (CGRect)_rectForDisclosureButtonWithFrame:(CGRect)frame boxFrame:(CGRect)boxFrame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
-  v12 = [(MessageListCellView *)self mf_prefersRightToLeftInterfaceLayout];
+  height = boxFrame.size.height;
+  width = boxFrame.size.width;
+  y = boxFrame.origin.y;
+  x = boxFrame.origin.x;
+  v8 = frame.size.height;
+  v9 = frame.size.width;
+  v10 = frame.origin.y;
+  v11 = frame.origin.x;
+  mf_prefersRightToLeftInterfaceLayout = [(MessageListCellView *)self mf_prefersRightToLeftInterfaceLayout];
   v24.origin.x = x;
   v24.origin.y = y;
   v24.size.width = width;
   v24.size.height = height;
   MinY = CGRectGetMinY(v24);
   v22 = v10;
-  if (v12)
+  if (mf_prefersRightToLeftInterfaceLayout)
   {
     v13 = v8;
     v25.origin.x = x;
@@ -3303,7 +3303,7 @@ LABEL_12:
   v29.size.height = height;
   v17 = CGRectGetHeight(v29);
   v18 = 0.0;
-  if ((v12 & 1) == 0)
+  if ((mf_prefersRightToLeftInterfaceLayout & 1) == 0)
   {
     v30.origin.x = v11;
     v30.origin.y = v22;
@@ -3322,17 +3322,17 @@ LABEL_12:
   return result;
 }
 
-- (CGRect)_adjustRect:(CGRect)a3 forTrailingRect:(CGRect)a4 padding:(double)a5
+- (CGRect)_adjustRect:(CGRect)rect forTrailingRect:(CGRect)trailingRect padding:(double)padding
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3.size.height;
-  v10 = a3.size.width;
-  v11 = a3.origin.y;
-  v12 = a3.origin.x;
-  if (CGRectGetWidth(a4) > 0.0)
+  height = trailingRect.size.height;
+  width = trailingRect.size.width;
+  y = trailingRect.origin.y;
+  x = trailingRect.origin.x;
+  v9 = rect.size.height;
+  v10 = rect.size.width;
+  v11 = rect.origin.y;
+  v12 = rect.origin.x;
+  if (CGRectGetWidth(trailingRect) > 0.0)
   {
     v27.origin.x = x;
     v27.origin.y = y;
@@ -3340,17 +3340,17 @@ LABEL_12:
     v27.size.height = height;
     if (CGRectGetMinX(v27) > 0.0)
     {
-      v14 = [(MessageListCellView *)self mf_prefersRightToLeftInterfaceLayout];
+      mf_prefersRightToLeftInterfaceLayout = [(MessageListCellView *)self mf_prefersRightToLeftInterfaceLayout];
       bottom = UIEdgeInsetsZero.bottom;
       right = UIEdgeInsetsZero.right;
       left = UIEdgeInsetsZero.left;
-      if (v14)
+      if (mf_prefersRightToLeftInterfaceLayout)
       {
         v28.origin.x = x;
         v28.origin.y = y;
         v28.size.width = width;
         v28.size.height = height;
-        v15 = CGRectGetMaxX(v28) + a5;
+        v15 = CGRectGetMaxX(v28) + padding;
         v29.origin.x = v12;
         v29.origin.y = v11;
         v29.size.width = v10;
@@ -3366,7 +3366,7 @@ LABEL_12:
         v30.origin.y = v11;
         v30.size.width = v10;
         v30.size.height = v9;
-        v23 = CGRectGetMaxX(v30) + a5;
+        v23 = CGRectGetMaxX(v30) + padding;
         v31.origin.x = x;
         v31.origin.y = y;
         v31.size.width = width;
@@ -3393,22 +3393,22 @@ LABEL_12:
   return result;
 }
 
-- (CGRect)_rectForAvatarWithBounds:(CGRect)a3
+- (CGRect)_rectForAvatarWithBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [UIApp preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v8);
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  preferredContentSizeCategory = [UIApp preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (IsAccessibilityCategory)
   {
     goto LABEL_5;
   }
 
-  v10 = [(MessageListCellView *)self layoutValues];
-  [v10 avatarSize];
+  layoutValues = [(MessageListCellView *)self layoutValues];
+  [layoutValues avatarSize];
   v12 = v11;
 
   v13 = -v12;
@@ -3432,8 +3432,8 @@ LABEL_5:
     UIRoundToViewScale();
     if ([(MessageListCellView *)self numberOfPreviewLines])
     {
-      v18 = [(MessageListCellView *)self viewModel];
-      [v18 style];
+      viewModel = [(MessageListCellView *)self viewModel];
+      [viewModel style];
     }
 
     if ([(MessageListCellView *)self effectiveUserInterfaceLayoutDirection]== 1)
@@ -3447,13 +3447,13 @@ LABEL_5:
 
     else
     {
-      v19 = [(MessageListCellView *)self viewModel];
-      v20 = [v19 style];
+      viewModel2 = [(MessageListCellView *)self viewModel];
+      style = [viewModel2 style];
 
-      if (v20 == 2)
+      if (style == 2)
       {
-        v21 = [(MessageListCellView *)self layoutValues];
-        [v21 standardAvatarSize];
+        layoutValues2 = [(MessageListCellView *)self layoutValues];
+        [layoutValues2 standardAvatarSize];
       }
     }
 
@@ -3467,11 +3467,11 @@ LABEL_5:
   return result;
 }
 
-- (CGRect)_rectForAddressWithBounds:(CGRect)a3
+- (CGRect)_rectForAddressWithBounds:(CGRect)bounds
 {
-  v4 = [(MessageListCellView *)self mf_prefersRightToLeftInterfaceLayout];
-  v5 = [(MessageListCellView *)self layoutValues];
-  [v5 horizontalSpacing];
+  mf_prefersRightToLeftInterfaceLayout = [(MessageListCellView *)self mf_prefersRightToLeftInterfaceLayout];
+  layoutValues = [(MessageListCellView *)self layoutValues];
+  [layoutValues horizontalSpacing];
 
   UIRectInset();
   v7 = v6;
@@ -3482,16 +3482,16 @@ LABEL_5:
   v50 = v8;
   v51 = v10;
   v52 = v12;
-  v14 = [(MessageListCellView *)self layoutValues];
-  v15 = [v14 addressFont];
+  layoutValues2 = [(MessageListCellView *)self layoutValues];
+  addressFont = [layoutValues2 addressFont];
 
   if ((MUISolariumFeatureEnabled() & 1) == 0)
   {
-    v16 = [(MessageListCellView *)self layoutValues];
-    [v16 addressCapHeight];
+    layoutValues3 = [(MessageListCellView *)self layoutValues];
+    [layoutValues3 addressCapHeight];
     v18 = v9 + v17;
 
-    [v15 mf_originPointFromBaselinePoint:{v7, v18}];
+    [addressFont mf_originPointFromBaselinePoint:{v7, v18}];
     v49 = v19;
     v50 = v20;
   }
@@ -3500,7 +3500,7 @@ LABEL_5:
   v47[1] = 3221225472;
   v47[2] = sub_100150DF0;
   v47[3] = &unk_1006517B0;
-  v48 = v4 ^ 1;
+  v48 = mf_prefersRightToLeftInterfaceLayout ^ 1;
   v21 = objc_retainBlock(v47);
   if ([(MessageListCellView *)self shouldShowBlockedSenderLabel])
   {
@@ -3532,12 +3532,12 @@ LABEL_5:
     }
   }
 
-  [v15 lineHeight];
+  [addressFont lineHeight];
   UIRoundToViewScale();
   v52 = v33;
   if (!MUISolariumFeatureEnabled())
   {
-    [v15 descender];
+    [addressFont descender];
     v52 = v52 - v34;
   }
 
@@ -3558,24 +3558,24 @@ LABEL_5:
   return result;
 }
 
-- (CGRect)_rectForSubjectWithBounds:(CGRect)a3
+- (CGRect)_rectForSubjectWithBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(MessageListCellView *)self layoutValues];
-  v9 = [v8 isSubjectVisible];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  layoutValues = [(MessageListCellView *)self layoutValues];
+  isSubjectVisible = [layoutValues isSubjectVisible];
 
-  if (v9)
+  if (isSubjectVisible)
   {
-    v10 = [(MessageListCellView *)self mf_prefersRightToLeftInterfaceLayout];
+    mf_prefersRightToLeftInterfaceLayout = [(MessageListCellView *)self mf_prefersRightToLeftInterfaceLayout];
     left = UIEdgeInsetsZero.left;
     if (self->_recipientLabelType)
     {
       [(MessageListCellView *)self _rectForRecipientLabelWithBounds:x, y, width, height];
       v12 = left + CGRectGetWidth(v39) + 2.5;
-      if (!v10)
+      if (!mf_prefersRightToLeftInterfaceLayout)
       {
         left = v12;
       }
@@ -3587,35 +3587,35 @@ LABEL_5:
       if (v15 != 0.0)
       {
         v17 = left + CGRectGetWidth(*&v13) + 2.5;
-        if (!v10)
+        if (!mf_prefersRightToLeftInterfaceLayout)
         {
           left = v17;
         }
       }
     }
 
-    v18 = [(MessageListCellView *)self layoutValues];
-    v19 = [v18 subjectFont];
+    layoutValues2 = [(MessageListCellView *)self layoutValues];
+    subjectFont = [layoutValues2 subjectFont];
 
     v20 = x + left;
     v21 = y + UIEdgeInsetsZero.top;
     if (MUISolariumFeatureEnabled())
     {
-      v22 = [(MessageListCellView *)self layoutValues];
-      [v22 addressCapHeight];
+      layoutValues3 = [(MessageListCellView *)self layoutValues];
+      [layoutValues3 addressCapHeight];
     }
 
     else
     {
-      v27 = [(MessageListCellView *)self layoutValues];
-      [v27 addressAndSubjectHeight];
+      layoutValues4 = [(MessageListCellView *)self layoutValues];
+      [layoutValues4 addressAndSubjectHeight];
       v29 = v21 + v28;
 
-      [v19 mf_originPointFromBaselinePoint:{v20, v29}];
+      [subjectFont mf_originPointFromBaselinePoint:{v20, v29}];
     }
 
-    v30 = [(MessageListCellView *)self layoutValues];
-    [v30 subjectHeight];
+    layoutValues5 = [(MessageListCellView *)self layoutValues];
+    [layoutValues5 subjectHeight];
 
     MFIntegralRectToViewScale();
     v23 = v31;
@@ -3643,18 +3643,18 @@ LABEL_5:
   return result;
 }
 
-- (CGRect)_rectForMultipleSubjectWithBounds:(CGRect)a3 position:(int64_t)a4
+- (CGRect)_rectForMultipleSubjectWithBounds:(CGRect)bounds position:(int64_t)position
 {
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(MessageListCellView *)self layoutValues];
-  [v7 addressCapHeight];
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  layoutValues = [(MessageListCellView *)self layoutValues];
+  [layoutValues addressCapHeight];
   v9 = v8;
-  v10 = [v7 summaryFont];
-  [v10 lineHeight];
-  [v10 mf_originPointFromBaselinePoint:{x + UIEdgeInsetsZero.left, y + UIEdgeInsetsZero.top + v9 + 2.0 + v11 * (a4 + 1) + (2 * a4)}];
-  [v10 lineHeight];
-  [v10 descender];
+  summaryFont = [layoutValues summaryFont];
+  [summaryFont lineHeight];
+  [summaryFont mf_originPointFromBaselinePoint:{x + UIEdgeInsetsZero.left, y + UIEdgeInsetsZero.top + v9 + 2.0 + v11 * (position + 1) + (2 * position)}];
+  [summaryFont lineHeight];
+  [summaryFont descender];
   UIRoundToViewScale();
   MFIntegralRectToViewScale();
   v13 = v12;
@@ -3673,39 +3673,39 @@ LABEL_5:
   return result;
 }
 
-- (CGRect)_rectForSummaryWithBounds:(CGRect)a3
+- (CGRect)_rectForSummaryWithBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(MessageListCellView *)self mf_prefersRightToLeftInterfaceLayout];
-  v9 = [(MessageListCellView *)self hasGeneratedSummary];
-  v10 = [(MessageListCellView *)self layoutValues];
-  v11 = [v10 linesOfSummaryForCompactHeight:self->_compact];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  mf_prefersRightToLeftInterfaceLayout = [(MessageListCellView *)self mf_prefersRightToLeftInterfaceLayout];
+  hasGeneratedSummary = [(MessageListCellView *)self hasGeneratedSummary];
+  layoutValues = [(MessageListCellView *)self layoutValues];
+  v11 = [layoutValues linesOfSummaryForCompactHeight:self->_compact];
 
-  v12 = [(MessageListCellView *)self summary];
+  summary = [(MessageListCellView *)self summary];
   if (v11 >= 1)
   {
-    v13 = [(MessageListCellView *)self layoutValues];
-    v14 = [v13 summaryFont];
+    layoutValues2 = [(MessageListCellView *)self layoutValues];
+    summaryFont = [layoutValues2 summaryFont];
 
-    v15 = [(MessageListCellView *)self viewModel];
-    v16 = [v15 style];
+    viewModel = [(MessageListCellView *)self viewModel];
+    style = [viewModel style];
 
-    if (v16 != 2)
+    if (style != 2)
     {
-      v17 = [(MessageListCellView *)self layoutValues];
-      [v17 actualLineCountForSummary:v12 hasGeneratedSummary:v9 bounds:{x, y, width, height}];
+      layoutValues3 = [(MessageListCellView *)self layoutValues];
+      [layoutValues3 actualLineCountForSummary:summary hasGeneratedSummary:hasGeneratedSummary bounds:{x, y, width, height}];
     }
 
-    v18 = [(MessageListCellView *)self layoutValues];
-    [v18 addressAndSubjectHeight];
+    layoutValues4 = [(MessageListCellView *)self layoutValues];
+    [layoutValues4 addressAndSubjectHeight];
 
-    [v14 lineHeight];
-    [v14 leading];
+    [summaryFont lineHeight];
+    [summaryFont leading];
     UICeilToViewScale();
-    if (v16 == 2 && [(MessageListCellView *)self recipientLabelType])
+    if (style == 2 && [(MessageListCellView *)self recipientLabelType])
     {
       [(MessageListCellView *)self _rectForRecipientLabelWithBounds:x, y, width, height];
       v19 = v40.origin.x;
@@ -3713,7 +3713,7 @@ LABEL_5:
       v21 = v40.size.width;
       v22 = v40.size.height;
       CGRectGetWidth(v40);
-      if ((v8 & 1) == 0)
+      if ((mf_prefersRightToLeftInterfaceLayout & 1) == 0)
       {
         v41.origin.x = v19;
         v41.origin.y = v20;
@@ -3726,7 +3726,7 @@ LABEL_5:
     else
     {
       v23 = EMBlackPearlIsFeatureEnabled() ^ 1;
-      if (v16 != 2)
+      if (style != 2)
       {
         LOBYTE(v23) = 1;
       }
@@ -3741,7 +3741,7 @@ LABEL_5:
           v26 = v42.size.width;
           v27 = v42.size.height;
           CGRectGetWidth(v42);
-          if ((v8 & 1) == 0)
+          if ((mf_prefersRightToLeftInterfaceLayout & 1) == 0)
           {
             v43.origin.x = v24;
             v43.origin.y = v25;
@@ -3771,17 +3771,17 @@ LABEL_5:
   return result;
 }
 
-- (CGRect)_rectForRecipientLabelWithBounds:(CGRect)a3
+- (CGRect)_rectForRecipientLabelWithBounds:(CGRect)bounds
 {
   recipientLabelType = self->_recipientLabelType;
   if (recipientLabelType)
   {
-    height = a3.size.height;
-    width = a3.size.width;
-    y = a3.origin.y;
-    x = a3.origin.x;
-    v9 = [(MessageListCellView *)self traitCollection];
-    v10 = sub_10014CFBC(recipientLabelType, [v9 userInterfaceStyle]);
+    height = bounds.size.height;
+    width = bounds.size.width;
+    y = bounds.origin.y;
+    x = bounds.origin.x;
+    traitCollection = [(MessageListCellView *)self traitCollection];
+    v10 = sub_10014CFBC(recipientLabelType, [traitCollection userInterfaceStyle]);
 
     if (v10)
     {
@@ -3800,17 +3800,17 @@ LABEL_5:
         v15 = MaxX - v17;
       }
 
-      v18 = [(MessageListCellView *)self _baselineLabelForIndicator];
-      [v18 frame];
+      _baselineLabelForIndicator = [(MessageListCellView *)self _baselineLabelForIndicator];
+      [_baselineLabelForIndicator frame];
       CGRectGetMinY(v26);
-      [v18 _firstBaselineOffsetFromTop];
+      [_baselineLabelForIndicator _firstBaselineOffsetFromTop];
       v27.origin.x = v15;
       v27.origin.y = y;
       v27.size.width = v12;
       v27.size.height = v14;
       CGRectGetHeight(v27);
-      v19 = [v18 font];
-      [v19 capHeight];
+      font = [_baselineLabelForIndicator font];
+      [font capHeight];
       v28.origin.x = v15;
       v28.origin.y = y;
       v28.size.width = v12;
@@ -3827,20 +3827,20 @@ LABEL_5:
   return result;
 }
 
-- (CGRect)_rectForBlockedSenderLabelWithBounds:(CGRect)a3
+- (CGRect)_rectForBlockedSenderLabelWithBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   if ([(MessageListCellView *)self shouldShowBlockedSenderLabel])
   {
-    v8 = [(MessageListCellView *)self blockedSenderLabelImageView];
-    v9 = [v8 image];
+    blockedSenderLabelImageView = [(MessageListCellView *)self blockedSenderLabelImageView];
+    image = [blockedSenderLabelImageView image];
 
-    if (v9)
+    if (image)
     {
-      [v9 size];
+      [image size];
       v11 = v10;
       v13 = v12;
       v14 = x;
@@ -3851,21 +3851,21 @@ LABEL_5:
         v24.size.width = width;
         v24.size.height = height;
         MaxX = CGRectGetMaxX(v24);
-        [v9 size];
+        [image size];
         v14 = MaxX - v16;
       }
 
-      v17 = [(MessageListCellView *)self primaryLabel];
-      [v17 frame];
+      primaryLabel = [(MessageListCellView *)self primaryLabel];
+      [primaryLabel frame];
       CGRectGetMinY(v25);
-      [v17 _firstBaselineOffsetFromTop];
+      [primaryLabel _firstBaselineOffsetFromTop];
       v26.origin.x = v14;
       v26.origin.y = y;
       v26.size.width = v11;
       v26.size.height = v13;
       CGRectGetHeight(v26);
-      v18 = [v17 font];
-      [v18 capHeight];
+      font = [primaryLabel font];
+      [font capHeight];
       v27.origin.x = v14;
       v27.origin.y = y;
       v27.size.width = v11;
@@ -3891,11 +3891,11 @@ LABEL_5:
 
   else
   {
-    v4 = [(MessageListCellView *)self viewModel];
-    v5 = [v4 style];
+    viewModel = [(MessageListCellView *)self viewModel];
+    style = [viewModel style];
 
     v3 = &OBJC_IVAR___MessageListCellView__secondaryLabel;
-    if (v5 == 2)
+    if (style == 2)
     {
       v3 = &OBJC_IVAR___MessageListCellView__tertiaryLabel;
     }
@@ -3906,10 +3906,10 @@ LABEL_5:
   return v6;
 }
 
-- (BOOL)_isLabelValid:(id)a3
+- (BOOL)_isLabelValid:(id)valid
 {
-  v3 = a3;
-  [v3 alpha];
+  validCopy = valid;
+  [validCopy alpha];
   if (v4 <= 0.0)
   {
     LOBYTE(v5) = 0;
@@ -3917,7 +3917,7 @@ LABEL_5:
 
   else
   {
-    [v3 frame];
+    [validCopy frame];
     v8.origin.x = CGRectZero.origin.x;
     v8.origin.y = CGRectZero.origin.y;
     v8.size.width = CGRectZero.size.width;
@@ -3928,36 +3928,36 @@ LABEL_5:
   return v5;
 }
 
-- (BOOL)_hasPastReminderForReadLaterDate:(id)a3 displayDate:(id)a4
+- (BOOL)_hasPastReminderForReadLaterDate:(id)date displayDate:(id)displayDate
 {
-  v5 = a3;
-  v6 = a4;
+  dateCopy = date;
+  displayDateCopy = displayDate;
   v7 = +[NSDate now];
-  if ([v5 ef_isEarlierThanOrEqualDate:v7])
+  if ([dateCopy ef_isEarlierThanOrEqualDate:v7])
   {
     v8 = 1;
   }
 
   else
   {
-    v8 = [v5 ef_isEarlierThanOrEqualDate:v6];
+    v8 = [dateCopy ef_isEarlierThanOrEqualDate:displayDateCopy];
   }
 
   return v8;
 }
 
-- (CGRect)_rectForCategoriesStackViewWithBounds:(CGRect)a3
+- (CGRect)_rectForCategoriesStackViewWithBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   if (EMBlackPearlIsFeatureEnabled())
   {
     if ([(MessageListCellView *)self recipientLabelType])
     {
-      v8 = [(MessageListCellView *)self recipientLabelImageView];
-      [v8 frame];
+      recipientLabelImageView = [(MessageListCellView *)self recipientLabelImageView];
+      [recipientLabelImageView frame];
       v10 = x + v9 + 2.5;
     }
 
@@ -3978,17 +3978,17 @@ LABEL_5:
       v10 = CGRectGetMaxX(v29) - v16;
     }
 
-    v19 = [(MessageListCellView *)self _baselineLabelForIndicator];
-    [v19 frame];
+    _baselineLabelForIndicator = [(MessageListCellView *)self _baselineLabelForIndicator];
+    [_baselineLabelForIndicator frame];
     CGRectGetMinY(v30);
-    [v19 _firstBaselineOffsetFromTop];
+    [_baselineLabelForIndicator _firstBaselineOffsetFromTop];
     v31.origin.x = v10;
     v31.origin.y = y;
     v31.size.width = v16;
     v31.size.height = v18;
     CGRectGetHeight(v31);
-    v20 = [v19 font];
-    [v20 capHeight];
+    font = [_baselineLabelForIndicator font];
+    [font capHeight];
     v32.origin.x = v10;
     v32.origin.y = y;
     v32.size.width = v16;
@@ -4036,56 +4036,56 @@ LABEL_5:
   [(MessageListCellView *)self setRecipientLabelType:0];
   [(MessageListCellView *)self setAttributedSecondaryString:0];
   [(MessageListCellView *)self setAccessibilitySecondaryLabel:0];
-  v5 = [(MessageListCellView *)self secondaryLabel];
-  [v5 setText:0];
+  secondaryLabel = [(MessageListCellView *)self secondaryLabel];
+  [secondaryLabel setText:0];
 
   [(MessageListCellView *)self setAttributedPrimaryString:0];
-  v6 = [(MessageListCellView *)self primaryLabel];
-  [v6 setText:0];
+  primaryLabel = [(MessageListCellView *)self primaryLabel];
+  [primaryLabel setText:0];
 
   [(MessageListCellView *)self setAttributedTertiaryString:0];
-  v7 = [(MessageListCellView *)self tertiaryLabel];
-  [v7 setText:0];
+  tertiaryLabel = [(MessageListCellView *)self tertiaryLabel];
+  [tertiaryLabel setText:0];
 
   [(MessageListCellView *)self setSummary:&stru_100662A88];
   [(MessageListCellView *)self setHasGeneratedSummary:0];
   [(MessageListCellView *)self setSummarySymbolTextAttachment:0];
-  v8 = [(MessageListCellView *)self avatarImageView];
-  [v8 setImage:0];
+  avatarImageView = [(MessageListCellView *)self avatarImageView];
+  [avatarImageView setImage:0];
 
   [(MessageListCellView *)self setAvatarResult:0];
   [(MessageListCellView *)self _updateAvatarView];
-  v9 = [(MessageListCellView *)self avatarToken];
-  [v9 cancel];
+  avatarToken = [(MessageListCellView *)self avatarToken];
+  [avatarToken cancel];
 
   [(MessageListCellView *)self setAvatarToken:0];
-  v10 = [(MessageListCellView *)self categorizationStateLabel];
-  [v10 setText:0];
+  categorizationStateLabel = [(MessageListCellView *)self categorizationStateLabel];
+  [categorizationStateLabel setText:0];
 
   [(MessageListCellView *)self setCompact:0];
-  v11 = [(MessageListCellView *)self dateLabel];
-  [v11 _setTextEncapsulation:0];
-  [v11 setAttributedText:0];
-  [v11 setText:0];
+  dateLabel = [(MessageListCellView *)self dateLabel];
+  [dateLabel _setTextEncapsulation:0];
+  [dateLabel setAttributedText:0];
+  [dateLabel setText:0];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v11 setDate:0];
+    [dateLabel setDate:0];
   }
 
-  v4 = [(MessageListCellView *)self statusIndicatorManager];
-  [v4 prepareForReuse];
+  statusIndicatorManager = [(MessageListCellView *)self statusIndicatorManager];
+  [statusIndicatorManager prepareForReuse];
 }
 
-- (BOOL)verifyContentVisibility:(id *)a3
+- (BOOL)verifyContentVisibility:(id *)visibility
 {
-  v4 = [(MessageListCellView *)self primaryLabel];
-  if (!v4)
+  primaryLabel = [(MessageListCellView *)self primaryLabel];
+  if (!primaryLabel)
   {
     return 1;
   }
 
-  v5 = v4;
+  v5 = primaryLabel;
   while (1)
   {
     if ([v5 isHidden])
@@ -4104,9 +4104,9 @@ LABEL_5:
 LABEL_12:
       v10 = objc_opt_class();
       v11 = NSStringFromClass(v10);
-      v12 = [v5 isHidden];
+      isHidden = [v5 isHidden];
       [v5 alpha];
-      v14 = [NSString stringWithFormat:@"%@ is unexpectedly hidden (hidden=%d, alpha=%.2f)", v11, v12, v13];
+      v14 = [NSString stringWithFormat:@"%@ is unexpectedly hidden (hidden=%d, alpha=%.2f)", v11, isHidden, v13];
       v15 = [NSError em_internalErrorWithReason:v14];
       goto LABEL_14;
     }
@@ -4117,17 +4117,17 @@ LABEL_12:
       goto LABEL_10;
     }
 
-    v7 = [v5 superview];
+    superview = [v5 superview];
 
-    if (!v7)
+    if (!superview)
     {
       break;
     }
 
-    v8 = [v5 superview];
+    superview2 = [v5 superview];
 
-    v5 = v8;
-    if (!v8)
+    v5 = superview2;
+    if (!superview2)
     {
 LABEL_10:
       v9 = 1;
@@ -4140,7 +4140,7 @@ LABEL_10:
   v14 = [NSString stringWithFormat:@"%@ is missing its superview", v11];
   v15 = [NSError em_internalErrorWithReason:v14];
 LABEL_14:
-  *a3 = v15;
+  *visibility = v15;
 
   v9 = 0;
 LABEL_15:

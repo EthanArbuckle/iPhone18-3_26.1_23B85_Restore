@@ -1,34 +1,34 @@
 @interface PRDeviceMotionRenderer
-- (PRDeviceMotionRenderer)initWithIdentifier:(id)a3 renderingServiceEndpoint:(id)a4 motionUpdateHandler:(id)a5;
+- (PRDeviceMotionRenderer)initWithIdentifier:(id)identifier renderingServiceEndpoint:(id)endpoint motionUpdateHandler:(id)handler;
 - (void)dealloc;
 - (void)deviceMotionEventGenerationDidStop;
 - (void)deviceMotionEventGenerationWillStart;
 - (void)invalidate;
-- (void)serverDidUpdateMotionWithRotation:(_OWORD *)a3;
-- (void)setDeviceMotionUpdateInterval:(double)a3;
-- (void)setupMotionUpdateRenderingTimerForceReset:(BOOL)a3;
+- (void)serverDidUpdateMotionWithRotation:(_OWORD *)rotation;
+- (void)setDeviceMotionUpdateInterval:(double)interval;
+- (void)setupMotionUpdateRenderingTimerForceReset:(BOOL)reset;
 @end
 
 @implementation PRDeviceMotionRenderer
 
-- (PRDeviceMotionRenderer)initWithIdentifier:(id)a3 renderingServiceEndpoint:(id)a4 motionUpdateHandler:(id)a5
+- (PRDeviceMotionRenderer)initWithIdentifier:(id)identifier renderingServiceEndpoint:(id)endpoint motionUpdateHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  endpointCopy = endpoint;
+  handlerCopy = handler;
   v19.receiver = self;
   v19.super_class = PRDeviceMotionRenderer;
   v12 = [(PRDeviceMotionRenderer *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_identifier, a3);
-    objc_storeStrong(&v13->_renderingServiceEndpoint, a4);
-    v14 = [[PRRenderingServiceClient alloc] initWithEndpoint:v10];
+    objc_storeStrong(&v12->_identifier, identifier);
+    objc_storeStrong(&v13->_renderingServiceEndpoint, endpoint);
+    v14 = [[PRRenderingServiceClient alloc] initWithEndpoint:endpointCopy];
     renderingServiceClient = v13->_renderingServiceClient;
     v13->_renderingServiceClient = v14;
 
-    v16 = MEMORY[0x1AC574C60](v11);
+    v16 = MEMORY[0x1AC574C60](handlerCopy);
     motionUpdateHandler = v13->_motionUpdateHandler;
     v13->_motionUpdateHandler = v16;
 
@@ -58,11 +58,11 @@
   self->_motionUpdateHandler = 0;
 }
 
-- (void)setDeviceMotionUpdateInterval:(double)a3
+- (void)setDeviceMotionUpdateInterval:(double)interval
 {
-  if (self->_deviceMotionUpdateInterval == a3)
+  if (self->_deviceMotionUpdateInterval == interval)
   {
-    self->_deviceMotionUpdateInterval = a3;
+    self->_deviceMotionUpdateInterval = interval;
     if (self->_motionUpdateRenderingTimer)
     {
       [(PRDeviceMotionRenderer *)self setupMotionUpdateRenderingTimerForceReset:1];
@@ -70,9 +70,9 @@
   }
 }
 
-- (void)setupMotionUpdateRenderingTimerForceReset:(BOOL)a3
+- (void)setupMotionUpdateRenderingTimerForceReset:(BOOL)reset
 {
-  if (a3)
+  if (reset)
   {
     [(BSAbsoluteMachTimer *)self->_motionUpdateRenderingTimer invalidate];
     motionUpdateRenderingTimer = self->_motionUpdateRenderingTimer;
@@ -154,7 +154,7 @@ void __68__PRDeviceMotionRenderer_setupMotionUpdateRenderingTimerForceReset___bl
   }
 }
 
-- (void)serverDidUpdateMotionWithRotation:(_OWORD *)a3
+- (void)serverDidUpdateMotionWithRotation:(_OWORD *)rotation
 {
   v5 = PRLogRenderingService();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -162,7 +162,7 @@ void __68__PRDeviceMotionRenderer_setupMotionUpdateRenderingTimerForceReset___bl
     [PRDeviceMotionRenderer serverDidUpdateMotionWithRotation:];
   }
 
-  if (*(a1 + 8))
+  if (*(self + 8))
   {
     v6 = PRLogRenderingService();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -170,17 +170,17 @@ void __68__PRDeviceMotionRenderer_setupMotionUpdateRenderingTimerForceReset___bl
       [PRDeviceMotionRenderer serverDidUpdateMotionWithRotation:];
     }
 
-    v7 = *(a1 + 8);
-    v8 = a3[1];
-    v14[0] = *a3;
+    v7 = *(self + 8);
+    v8 = rotation[1];
+    v14[0] = *rotation;
     v14[1] = v8;
     [v7 writeRotation:v14];
   }
 
   else
   {
-    v9 = [*(a1 + 64) copy];
-    v10 = [*(a1 + 48) copy];
+    v9 = [*(self + 64) copy];
+    v10 = [*(self + 48) copy];
     if (v9)
     {
       v11 = PRLogRenderingService();

@@ -2,20 +2,20 @@
 + (id)sharedInstance;
 - (BOOL)isEmulatedDatagramChannelEnabledViaDefaults;
 - (VCDatagramChannelManager)init;
-- (id)addDatagramChannelWithDescriptor:(int)a3 eventHandler:(id)a4 writeCompletionHandler:(id)a5 error:(id *)a6;
-- (id)addDatagramChannelWithDestination:(id)a3 eventHandler:(id)a4 writeCompletionHandler:(id)a5 dataPath:(int)a6 error:(id *)a7;
-- (id)addDatagramChannelWithNWConnections:(id)a3 eventHandler:(id)a4 error:(id *)a5;
-- (id)datagramChannelWithChannelToken:(unsigned int)a3;
-- (id)setupEmulatedDatagramChannelWithDestination:(id)a3 datagramChannel:(id)a4;
-- (unsigned)tokenForDatgramChannel:(id)a3;
+- (id)addDatagramChannelWithDescriptor:(int)descriptor eventHandler:(id)handler writeCompletionHandler:(id)completionHandler error:(id *)error;
+- (id)addDatagramChannelWithDestination:(id)destination eventHandler:(id)handler writeCompletionHandler:(id)completionHandler dataPath:(int)path error:(id *)error;
+- (id)addDatagramChannelWithNWConnections:(id)connections eventHandler:(id)handler error:(id *)error;
+- (id)datagramChannelWithChannelToken:(unsigned int)token;
+- (id)setupEmulatedDatagramChannelWithDestination:(id)destination datagramChannel:(id)channel;
+- (unsigned)tokenForDatgramChannel:(id)channel;
 - (void)dealloc;
-- (void)executeBlockForIDSDestination:(id)a3 blockToExecute:(id)a4;
-- (void)removeDatagramChannel:(id)a3;
+- (void)executeBlockForIDSDestination:(id)destination blockToExecute:(id)execute;
+- (void)removeDatagramChannel:(id)channel;
 - (void)removeDatagramChannels;
-- (void)removeDestionationIfIDSDatagramChannel:(id)a3;
-- (void)setIDSReadHandler:(id)a3;
-- (void)setMultiLinkReadHandler:(id)a3;
-- (void)setUpDatagramChannel:(id)a3 eventHandler:(id)a4 writeCompletionHandler:(id)a5;
+- (void)removeDestionationIfIDSDatagramChannel:(id)channel;
+- (void)setIDSReadHandler:(id)handler;
+- (void)setMultiLinkReadHandler:(id)handler;
+- (void)setUpDatagramChannel:(id)channel eventHandler:(id)handler writeCompletionHandler:(id)completionHandler;
 @end
 
 @implementation VCDatagramChannelManager
@@ -65,9 +65,9 @@ VCDatagramChannelManager *__42__VCDatagramChannelManager_sharedInstance__block_i
   [(VCDatagramChannelManager *)&v3 dealloc];
 }
 
-- (id)addDatagramChannelWithDescriptor:(int)a3 eventHandler:(id)a4 writeCompletionHandler:(id)a5 error:(id *)a6
+- (id)addDatagramChannelWithDescriptor:(int)descriptor eventHandler:(id)handler writeCompletionHandler:(id)completionHandler error:(id *)error
 {
-  if (!a4)
+  if (!handler)
   {
     [VCDatagramChannelManager addDatagramChannelWithDescriptor:eventHandler:writeCompletionHandler:error:];
 LABEL_7:
@@ -75,15 +75,15 @@ LABEL_7:
     goto LABEL_4;
   }
 
-  v10 = *&a3;
+  v10 = *&descriptor;
   pthread_mutex_lock(&self->_stateLock);
   nextToken = self->_nextToken;
   self->_nextToken = nextToken + 1;
   pthread_mutex_unlock(&self->_stateLock);
-  v12 = [[VCDatagramChannelIDS alloc] initWithSocketDescriptor:v10 token:nextToken error:a6];
+  v12 = [[VCDatagramChannelIDS alloc] initWithSocketDescriptor:v10 token:nextToken error:error];
   if (!v12)
   {
-    [VCDatagramChannelManager addDatagramChannelWithDescriptor:a6 eventHandler:? writeCompletionHandler:? error:?];
+    [VCDatagramChannelManager addDatagramChannelWithDescriptor:error eventHandler:? writeCompletionHandler:? error:?];
     goto LABEL_7;
   }
 
@@ -91,44 +91,44 @@ LABEL_7:
   pthread_mutex_lock(&self->_stateLock);
   -[NSMutableDictionary setObject:forKeyedSubscript:](self->_datagramChannels, "setObject:forKeyedSubscript:", v13, [MEMORY[0x1E696AD98] numberWithUnsignedInt:nextToken]);
   pthread_mutex_unlock(&self->_stateLock);
-  [(VCDatagramChannelManager *)self setUpDatagramChannel:v13 eventHandler:a4 writeCompletionHandler:a5];
+  [(VCDatagramChannelManager *)self setUpDatagramChannel:v13 eventHandler:handler writeCompletionHandler:completionHandler];
 LABEL_4:
   [(VCDatagramChannelManager *)self removeDatagramChannel:0];
   return v13;
 }
 
-- (id)addDatagramChannelWithDestination:(id)a3 eventHandler:(id)a4 writeCompletionHandler:(id)a5 dataPath:(int)a6 error:(id *)a7
+- (id)addDatagramChannelWithDestination:(id)destination eventHandler:(id)handler writeCompletionHandler:(id)completionHandler dataPath:(int)path error:(id *)error
 {
   v30 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!destination)
   {
     [VCDatagramChannelManager addDatagramChannelWithDestination:eventHandler:writeCompletionHandler:dataPath:error:];
     goto LABEL_15;
   }
 
-  if (!a4)
+  if (!handler)
   {
     [VCDatagramChannelManager addDatagramChannelWithDestination:eventHandler:writeCompletionHandler:dataPath:error:];
     goto LABEL_15;
   }
 
-  v10 = *&a6;
+  v10 = *&path;
   pthread_mutex_lock(&self->_stateLock);
-  if (![(NSMutableDictionary *)self->_destinations objectForKeyedSubscript:a3])
+  if (![(NSMutableDictionary *)self->_destinations objectForKeyedSubscript:destination])
   {
     nextToken = self->_nextToken;
     self->_nextToken = nextToken + 1;
-    v18 = [[VCDatagramChannelIDS alloc] initWithDestination:a3 token:nextToken dataPath:v10 error:a7];
+    v18 = [[VCDatagramChannelIDS alloc] initWithDestination:destination token:nextToken dataPath:v10 error:error];
     if (v18)
     {
-      v19 = [(VCDatagramChannelManager *)self setupEmulatedDatagramChannelWithDestination:a3 datagramChannel:v18];
+      v19 = [(VCDatagramChannelManager *)self setupEmulatedDatagramChannelWithDestination:destination datagramChannel:v18];
       if (v19)
       {
         v14 = v19;
-        -[NSMutableDictionary setObject:forKeyedSubscript:](self->_destinations, "setObject:forKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedInt:nextToken], a3);
+        -[NSMutableDictionary setObject:forKeyedSubscript:](self->_destinations, "setObject:forKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedInt:nextToken], destination);
         -[NSMutableDictionary setObject:forKeyedSubscript:](self->_datagramChannels, "setObject:forKeyedSubscript:", v14, [MEMORY[0x1E696AD98] numberWithUnsignedInt:nextToken]);
         pthread_mutex_unlock(&self->_stateLock);
-        [(VCDatagramChannelManager *)self setUpDatagramChannel:v14 eventHandler:a4 writeCompletionHandler:a5];
+        [(VCDatagramChannelManager *)self setUpDatagramChannel:v14 eventHandler:handler writeCompletionHandler:completionHandler];
         goto LABEL_10;
       }
 
@@ -137,7 +137,7 @@ LABEL_4:
 
     else
     {
-      [VCDatagramChannelManager addDatagramChannelWithDestination:a7 eventHandler:? writeCompletionHandler:? dataPath:? error:?];
+      [VCDatagramChannelManager addDatagramChannelWithDestination:error eventHandler:? writeCompletionHandler:? dataPath:? error:?];
     }
 
 LABEL_15:
@@ -145,7 +145,7 @@ LABEL_15:
     goto LABEL_10;
   }
 
-  v13 = [-[NSMutableDictionary objectForKeyedSubscript:](self->_destinations objectForKeyedSubscript:{a3), "unsignedIntegerValue"}];
+  v13 = [-[NSMutableDictionary objectForKeyedSubscript:](self->_destinations objectForKeyedSubscript:{destination), "unsignedIntegerValue"}];
   v14 = -[NSMutableDictionary objectForKeyedSubscript:](self->_datagramChannels, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedInt:v13]);
   pthread_mutex_unlock(&self->_stateLock);
   if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -163,7 +163,7 @@ LABEL_15:
       v26 = 1024;
       v27 = v13;
       v28 = 2080;
-      v29 = [objc_msgSend(a3 "description")];
+      v29 = [objc_msgSend(destination "description")];
       _os_log_impl(&dword_1DB56E000, v16, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d VCDatagramChannelManager: found existing datagram channel with token %d for destination %s", v21, 0x2Cu);
     }
   }
@@ -173,10 +173,10 @@ LABEL_10:
   return v14;
 }
 
-- (id)addDatagramChannelWithNWConnections:(id)a3 eventHandler:(id)a4 error:(id *)a5
+- (id)addDatagramChannelWithNWConnections:(id)connections eventHandler:(id)handler error:(id *)error
 {
   pthread_mutex_lock(&self->_stateLock);
-  if (![a3 count])
+  if (![connections count])
   {
     [VCDatagramChannelManager addDatagramChannelWithNWConnections:eventHandler:error:];
 LABEL_7:
@@ -186,16 +186,16 @@ LABEL_7:
 
   nextToken = self->_nextToken;
   self->_nextToken = nextToken + 1;
-  v10 = [[VCDatagramChannelMultiLink alloc] initWithNWConnections:a3 token:nextToken options:0 error:a5];
+  v10 = [[VCDatagramChannelMultiLink alloc] initWithNWConnections:connections token:nextToken options:0 error:error];
   if (!v10)
   {
-    [VCDatagramChannelManager addDatagramChannelWithNWConnections:a5 eventHandler:? error:?];
+    [VCDatagramChannelManager addDatagramChannelWithNWConnections:error eventHandler:? error:?];
     goto LABEL_7;
   }
 
   v11 = v10;
   -[NSMutableDictionary setObject:forKeyedSubscript:](self->_datagramChannels, "setObject:forKeyedSubscript:", v10, [MEMORY[0x1E696AD98] numberWithUnsignedInt:nextToken]);
-  [(VCDatagramChannelManager *)self setUpDatagramChannel:v11 eventHandler:a4 writeCompletionHandler:0];
+  [(VCDatagramChannelManager *)self setUpDatagramChannel:v11 eventHandler:handler writeCompletionHandler:0];
   v12 = v11;
 LABEL_4:
   pthread_mutex_unlock(&self->_stateLock);
@@ -203,13 +203,13 @@ LABEL_4:
   return v12;
 }
 
-- (id)setupEmulatedDatagramChannelWithDestination:(id)a3 datagramChannel:(id)a4
+- (id)setupEmulatedDatagramChannelWithDestination:(id)destination datagramChannel:(id)channel
 {
   v21 = *MEMORY[0x1E69E9840];
   if ([+[VCTestMonitorManager sharedManager](VCTestMonitorManager "sharedManager")])
   {
     v7 = [objc_msgSend(+[VCTestMonitorManager sharedManager](VCTestMonitorManager "sharedManager")];
-    if ([a3 hasPrefix:@"loopback:"] && (v7 & 1) == 0)
+    if ([destination hasPrefix:@"loopback:"] && (v7 & 1) == 0)
     {
       if (VRTraceGetErrorLogLevelForModule() >= 7)
       {
@@ -229,18 +229,18 @@ LABEL_4:
         }
       }
 
-      return [[VCDatagramChannelIDSEmulated alloc] initWithIDSDatagramChannel:a4 mode:0];
+      return [[VCDatagramChannelIDSEmulated alloc] initWithIDSDatagramChannel:channel mode:0];
     }
   }
 
   else
   {
-    [a3 hasPrefix:@"loopback:"];
+    [destination hasPrefix:@"loopback:"];
   }
 
   if ([(VCDatagramChannelManager *)self isEmulatedDatagramChannelEnabledViaDefaults])
   {
-    return [[VCDatagramChannelIDSEmulated alloc] initWithIDSDatagramChannel:a4 mode:0];
+    return [[VCDatagramChannelIDSEmulated alloc] initWithIDSDatagramChannel:channel mode:0];
   }
 
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -259,7 +259,7 @@ LABEL_4:
     }
   }
 
-  return a4;
+  return channel;
 }
 
 - (BOOL)isEmulatedDatagramChannelEnabledViaDefaults
@@ -337,7 +337,7 @@ LABEL_16:
   return v6;
 }
 
-- (void)setIDSReadHandler:(id)a3
+- (void)setIDSReadHandler:(id)handler
 {
   v3[6] = *MEMORY[0x1E69E9840];
   v3[0] = MEMORY[0x1E69E9820];
@@ -345,8 +345,8 @@ LABEL_16:
   v3[2] = __46__VCDatagramChannelManager_setIDSReadHandler___block_invoke;
   v3[3] = &unk_1E85F5418;
   v3[4] = self;
-  v3[5] = a3;
-  [a3 setReadHandler:v3];
+  v3[5] = handler;
+  [handler setReadHandler:v3];
 }
 
 uint64_t __46__VCDatagramChannelManager_setIDSReadHandler___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4, unsigned __int16 a5, uint64_t a6, uint64_t a7)
@@ -360,7 +360,7 @@ uint64_t __46__VCDatagramChannelManager_setIDSReadHandler___block_invoke(uint64_
   return result;
 }
 
-- (void)setMultiLinkReadHandler:(id)a3
+- (void)setMultiLinkReadHandler:(id)handler
 {
   v3[6] = *MEMORY[0x1E69E9840];
   v3[0] = MEMORY[0x1E69E9820];
@@ -368,8 +368,8 @@ uint64_t __46__VCDatagramChannelManager_setIDSReadHandler___block_invoke(uint64_
   v3[2] = __52__VCDatagramChannelManager_setMultiLinkReadHandler___block_invoke;
   v3[3] = &unk_1E85F5440;
   v3[4] = self;
-  v3[5] = a3;
-  [a3 setReadHandler:v3];
+  v3[5] = handler;
+  [handler setReadHandler:v3];
 }
 
 uint64_t __52__VCDatagramChannelManager_setMultiLinkReadHandler___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4, uint64_t a5, uint64_t a6)
@@ -383,7 +383,7 @@ uint64_t __52__VCDatagramChannelManager_setMultiLinkReadHandler___block_invoke(u
   return result;
 }
 
-- (void)setUpDatagramChannel:(id)a3 eventHandler:(id)a4 writeCompletionHandler:(id)a5
+- (void)setUpDatagramChannel:(id)channel eventHandler:(id)handler writeCompletionHandler:(id)completionHandler
 {
   v20 = *MEMORY[0x1E69E9840];
   v9 = [(VCDatagramChannelManager *)self tokenForDatgramChannel:?];
@@ -405,10 +405,10 @@ uint64_t __52__VCDatagramChannelManager_setMultiLinkReadHandler___block_invoke(u
     }
   }
 
-  if ([(VCDatagramChannelManager *)self isIDSDatagramChannel:a3])
+  if ([(VCDatagramChannelManager *)self isIDSDatagramChannel:channel])
   {
-    [(VCDatagramChannelManager *)self setIDSReadHandler:a3];
-    if (!a5)
+    [(VCDatagramChannelManager *)self setIDSReadHandler:channel];
+    if (!completionHandler)
     {
       goto LABEL_9;
     }
@@ -416,74 +416,74 @@ uint64_t __52__VCDatagramChannelManager_setMultiLinkReadHandler___block_invoke(u
     goto LABEL_8;
   }
 
-  [(VCDatagramChannelManager *)self setMultiLinkReadHandler:a3];
-  if (a5)
+  [(VCDatagramChannelManager *)self setMultiLinkReadHandler:channel];
+  if (completionHandler)
   {
 LABEL_8:
-    [a3 setWriteCompletionHandler:a5];
+    [channel setWriteCompletionHandler:completionHandler];
   }
 
 LABEL_9:
-  [a3 setEventHandler:a4];
+  [channel setEventHandler:handler];
 }
 
-- (id)datagramChannelWithChannelToken:(unsigned int)a3
+- (id)datagramChannelWithChannelToken:(unsigned int)token
 {
-  v3 = *&a3;
+  v3 = *&token;
   pthread_mutex_lock(&self->_stateLock);
   v5 = -[NSMutableDictionary objectForKeyedSubscript:](self->_datagramChannels, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedInt:v3]);
   pthread_mutex_unlock(&self->_stateLock);
   return v5;
 }
 
-- (void)executeBlockForIDSDestination:(id)a3 blockToExecute:(id)a4
+- (void)executeBlockForIDSDestination:(id)destination blockToExecute:(id)execute
 {
-  if (a4)
+  if (execute)
   {
     pthread_mutex_lock(&self->_stateLock);
-    v7 = [-[NSMutableDictionary objectForKeyedSubscript:](self->_destinations objectForKeyedSubscript:{a3), "unsignedIntegerValue"}];
+    v7 = [-[NSMutableDictionary objectForKeyedSubscript:](self->_destinations objectForKeyedSubscript:{destination), "unsignedIntegerValue"}];
     v8 = -[NSMutableDictionary objectForKeyedSubscript:](self->_datagramChannels, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedInt:v7]);
     pthread_mutex_unlock(&self->_stateLock);
     [v8 lock];
-    (*(a4 + 2))(a4, v8);
+    (*(execute + 2))(execute, v8);
     [v8 unlock];
   }
 }
 
-- (unsigned)tokenForDatgramChannel:(id)a3
+- (unsigned)tokenForDatgramChannel:(id)channel
 {
   if ([(VCDatagramChannelManager *)self isMultiLinkDatagramChannel:?])
   {
 
-    return VCDatagramChannelMultiLink_Token(a3);
+    return VCDatagramChannelMultiLink_Token(channel);
   }
 
   else
   {
 
-    return VCDatagramChannelIDS_Token(a3);
+    return VCDatagramChannelIDS_Token(channel);
   }
 }
 
-- (void)removeDestionationIfIDSDatagramChannel:(id)a3
+- (void)removeDestionationIfIDSDatagramChannel:(id)channel
 {
   v16 = *MEMORY[0x1E69E9840];
   if ([(VCDatagramChannelManager *)self isIDSDatagramChannel:?])
   {
-    if ([a3 destination])
+    if ([channel destination])
     {
-      if (-[NSMutableDictionary objectForKeyedSubscript:](self->_destinations, "objectForKeyedSubscript:", [a3 destination]))
+      if (-[NSMutableDictionary objectForKeyedSubscript:](self->_destinations, "objectForKeyedSubscript:", [channel destination]))
       {
-        -[NSMutableDictionary removeObjectForKey:](self->_destinations, "removeObjectForKey:", [a3 destination]);
+        -[NSMutableDictionary removeObjectForKey:](self->_destinations, "removeObjectForKey:", [channel destination]);
         if (VRTraceGetErrorLogLevelForModule() >= 7)
         {
           v5 = VRTraceErrorLogLevelToCSTR();
           v6 = *MEMORY[0x1E6986650];
           if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
           {
-            if ([a3 destination])
+            if ([channel destination])
             {
-              v7 = [objc_msgSend(objc_msgSend(a3 "destination")];
+              v7 = [objc_msgSend(objc_msgSend(channel "destination")];
             }
 
             else
@@ -507,16 +507,16 @@ LABEL_9:
   }
 }
 
-- (void)removeDatagramChannel:(id)a3
+- (void)removeDatagramChannel:(id)channel
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (channel)
   {
     pthread_mutex_lock(&self->_stateLock);
-    v5 = [(VCDatagramChannelManager *)self tokenForDatgramChannel:a3];
+    v5 = [(VCDatagramChannelManager *)self tokenForDatgramChannel:channel];
     if (-[NSMutableDictionary objectForKeyedSubscript:](self->_datagramChannels, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedInt:v5]))
     {
-      v6 = a3;
+      channelCopy = channel;
       -[NSMutableDictionary removeObjectForKey:](self->_datagramChannels, "removeObjectForKey:", [MEMORY[0x1E696AD98] numberWithUnsignedInt:v5]);
       if (VRTraceGetErrorLogLevelForModule() >= 6)
       {
@@ -536,9 +536,9 @@ LABEL_9:
         }
       }
 
-      [(VCDatagramChannelManager *)self removeDestionationIfIDSDatagramChannel:a3];
+      [(VCDatagramChannelManager *)self removeDestionationIfIDSDatagramChannel:channel];
       pthread_mutex_unlock(&self->_stateLock);
-      [a3 invalidate];
+      [channel invalidate];
     }
 
     else
@@ -560,8 +560,8 @@ LABEL_9:
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v4 = [(NSMutableDictionary *)datagramChannels allKeys];
-    v5 = [v4 countByEnumeratingWithState:&v27 objects:v26 count:16];
+    allKeys = [(NSMutableDictionary *)datagramChannels allKeys];
+    v5 = [allKeys countByEnumeratingWithState:&v27 objects:v26 count:16];
     if (v5)
     {
       v7 = v5;
@@ -574,7 +574,7 @@ LABEL_9:
         {
           if (*v28 != v8)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allKeys);
           }
 
           v10 = *(*(&v27 + 1) + 8 * i);
@@ -591,7 +591,7 @@ LABEL_9:
               v14 = *MEMORY[0x1E6986650];
               if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
               {
-                v15 = [v10 intValue];
+                intValue = [v10 intValue];
                 *buf = v23;
                 *&buf[4] = v13;
                 *&buf[12] = 2080;
@@ -599,7 +599,7 @@ LABEL_9:
                 *&buf[22] = 1024;
                 LODWORD(v25) = 346;
                 WORD2(v25) = 1024;
-                *(&v25 + 6) = v15;
+                *(&v25 + 6) = intValue;
                 v16 = v14;
                 v17 = " [%s] %s:%d VCDatagramChannelManager: removed datagram channel with token=%d";
                 v18 = 34;
@@ -632,7 +632,7 @@ LABEL_14:
           }
         }
 
-        v7 = [v4 countByEnumeratingWithState:&v27 objects:v26 count:16];
+        v7 = [allKeys countByEnumeratingWithState:&v27 objects:v26 count:16];
       }
 
       while (v7);

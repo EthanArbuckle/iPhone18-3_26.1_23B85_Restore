@@ -1,35 +1,35 @@
 @interface CLSensorMonitor
 + (id)getSilo;
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4;
-- (BOOL)deferXpcActivityIfNecessary:(id)a3;
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index;
+- (BOOL)deferXpcActivityIfNecessary:(id)necessary;
 - (CLSensorMonitor)init;
-- (Class)classForSensorIdentifier:(id)a3;
+- (Class)classForSensorIdentifier:(id)identifier;
 - (id).cxx_construct;
 - (void)beginService;
-- (void)clearConfigurationsForUninstalledApps:(id)a3;
+- (void)clearConfigurationsForUninstalledApps:(id)apps;
 - (void)endService;
-- (void)onAppUninstallationCheckActivity:(id)a3;
-- (void)onCatherineNotification:(int)a3 data:(NotificationData *)a4;
-- (void)onDaemonStatusNotification:(const int *)a3 data:(const NotificationData *)a4;
-- (void)onFallSnippetNotification:(int)a3 data:(ImpactStreamData *)a4;
-- (void)onMotionStateMediatorNotification:(const int *)a3 data:(const NotificationData *)a4;
-- (void)onOdometerNotification:(int)a3 data:(NotificationData *)a4;
-- (void)onStepNotification:(int)a3 data:(NotificationData *)a4;
+- (void)onAppUninstallationCheckActivity:(id)activity;
+- (void)onCatherineNotification:(int)notification data:(NotificationData *)data;
+- (void)onDaemonStatusNotification:(const int *)notification data:(const NotificationData *)data;
+- (void)onFallSnippetNotification:(int)notification data:(ImpactStreamData *)data;
+- (void)onMotionStateMediatorNotification:(const int *)notification data:(const NotificationData *)data;
+- (void)onOdometerNotification:(int)notification data:(NotificationData *)data;
+- (void)onStepNotification:(int)notification data:(NotificationData *)data;
 - (void)scheduleAppUninstallationCheck;
-- (void)sensorWriter:(id)a3 didReceiveUpdateToConfigurationRequests:(id)a4;
-- (void)sensorWriterDidStopMonitoring:(id)a3;
-- (void)sensorWriterWillStartMonitoring:(id)a3;
-- (void)simulateMotionSensorDataForType:(unint64_t)a3 payload:(id)a4;
+- (void)sensorWriter:(id)writer didReceiveUpdateToConfigurationRequests:(id)requests;
+- (void)sensorWriterDidStopMonitoring:(id)monitoring;
+- (void)sensorWriterWillStartMonitoring:(id)monitoring;
+- (void)simulateMotionSensorDataForType:(unint64_t)type payload:(id)payload;
 @end
 
 @implementation CLSensorMonitor
 
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index
 {
-  v5 = a4 + 1;
-  if (a4 + 1 < [a3 count])
+  v5 = index + 1;
+  if (index + 1 < [blocked count])
   {
-    [objc_msgSend(a3 objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", a3, v5}];
+    [objc_msgSend(blocked objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", blocked, v5}];
   }
 }
 
@@ -168,11 +168,11 @@
   }
 }
 
-- (void)onAppUninstallationCheckActivity:(id)a3
+- (void)onAppUninstallationCheckActivity:(id)activity
 {
-  if (a3)
+  if (activity)
   {
-    state = xpc_activity_get_state(a3);
+    state = xpc_activity_get_state(activity);
     if (state == 4 || (v6 = state, state == 2))
     {
       if (qword_1025D44B0 != -1)
@@ -192,7 +192,7 @@
         sub_101922728();
       }
 
-      [(CLSensorMonitor *)self clearConfigurationsForUninstalledApps:a3];
+      [(CLSensorMonitor *)self clearConfigurationsForUninstalledApps:activity];
     }
 
     else
@@ -240,7 +240,7 @@
   }
 }
 
-- (void)simulateMotionSensorDataForType:(unint64_t)a3 payload:(id)a4
+- (void)simulateMotionSensorDataForType:(unint64_t)type payload:(id)payload
 {
   if (qword_1025D4820 != -1)
   {
@@ -251,47 +251,47 @@
   if (os_log_type_enabled(qword_1025D4828, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    *&buf[4] = a3;
+    *&buf[4] = type;
     *&buf[12] = 2112;
-    *&buf[14] = a4;
+    *&buf[14] = payload;
     _os_log_impl(dword_100000000, v7, OS_LOG_TYPE_DEFAULT, "Simulate motion sensor data for type : %lu, data : %@", buf, 0x16u);
   }
 
   if (sub_10000A100(121, 2))
   {
-    sub_101922A08(a4, a3);
+    sub_101922A08(payload, type);
   }
 
-  if (a3 <= 2)
+  if (type <= 2)
   {
-    if (!a3)
+    if (!type)
     {
-      [CLSensorMonitorSimulatedDataGenerator generateSimulatedPedometerData:a4];
+      [CLSensorMonitorSimulatedDataGenerator generateSimulatedPedometerData:payload];
       memcpy(v15, buf, 0x148uLL);
       v9 = v15;
-      v10 = self;
+      selfCopy2 = self;
       v11 = 0;
       goto LABEL_17;
     }
 
-    if (a3 != 1)
+    if (type != 1)
     {
-      if (a3 == 2)
+      if (type == 2)
       {
-        *buf = [CLSensorMonitorSimulatedDataGenerator generateSimulatedOdometerSuitabilityData:a4];
+        *buf = [CLSensorMonitorSimulatedDataGenerator generateSimulatedOdometerSuitabilityData:payload];
         *&buf[8] = v8;
         v9 = buf;
-        v10 = self;
+        selfCopy2 = self;
         v11 = 3;
 LABEL_17:
-        [(CLSensorMonitor *)v10 onStepNotification:v11 data:v9];
+        [(CLSensorMonitor *)selfCopy2 onStepNotification:v11 data:v9];
         return;
       }
 
       goto LABEL_19;
     }
 
-    [CLSensorMonitorSimulatedDataGenerator generateSimulatedOdometerData:a4];
+    [CLSensorMonitorSimulatedDataGenerator generateSimulatedOdometerData:payload];
     v15[8] = *&buf[128];
     v15[9] = *&buf[144];
     v15[10] = *&buf[160];
@@ -304,17 +304,17 @@ LABEL_17:
     v15[1] = *&buf[16];
     v15[2] = *&buf[32];
     v15[3] = *&buf[48];
-    v12 = self;
+    selfCopy4 = self;
     v13 = 4;
 LABEL_26:
-    [(CLSensorMonitor *)v12 onOdometerNotification:v13 data:v15, v15[0], v15[1], v15[2], v15[3], v15[4], v15[5], v15[6], v15[7], v15[8], v15[9], v15[10], v15[11]];
+    [(CLSensorMonitor *)selfCopy4 onOdometerNotification:v13 data:v15, v15[0], v15[1], v15[2], v15[3], v15[4], v15[5], v15[6], v15[7], v15[8], v15[9], v15[10], v15[11]];
     return;
   }
 
-  switch(a3)
+  switch(type)
   {
     case 3uLL:
-      [CLSensorMonitorSimulatedDataGenerator generateSimulatedElevationData:a4];
+      [CLSensorMonitorSimulatedDataGenerator generateSimulatedElevationData:payload];
       v15[8] = *&buf[128];
       v15[9] = *&buf[144];
       v15[10] = *&buf[160];
@@ -327,11 +327,11 @@ LABEL_26:
       v15[1] = *&buf[16];
       v15[2] = *&buf[32];
       v15[3] = *&buf[48];
-      v12 = self;
+      selfCopy4 = self;
       v13 = 3;
       goto LABEL_26;
     case 4uLL:
-      [CLSensorMonitorSimulatedDataGenerator generateHighFrequencyHeartRateData:a4];
+      [CLSensorMonitorSimulatedDataGenerator generateHighFrequencyHeartRateData:payload];
       v15[8] = *&buf[128];
       v15[9] = *&buf[144];
       v15[10] = *&buf[160];
@@ -346,7 +346,7 @@ LABEL_26:
       [(CLSensorMonitor *)self onCatherineNotification:10 data:v15];
       return;
     case 5uLL:
-      [CLSensorMonitorSimulatedDataGenerator generateSimulatedPhysicalActivityEventsData:a4];
+      [CLSensorMonitorSimulatedDataGenerator generateSimulatedPhysicalActivityEventsData:payload];
       LODWORD(v15[0]) = 4;
       [(CLSensorMonitor *)self onMotionStateMediatorNotification:v15 data:buf];
       return;
@@ -362,7 +362,7 @@ LABEL_19:
   if (os_log_type_enabled(qword_1025D4828, OS_LOG_TYPE_ERROR))
   {
     *buf = 134217984;
-    *&buf[4] = a3;
+    *&buf[4] = type;
     _os_log_impl(dword_100000000, v14, OS_LOG_TYPE_ERROR, "Unhandled motion sensor type %lu", buf, 0xCu);
   }
 
@@ -408,12 +408,12 @@ LABEL_19:
   xpc_release(v4);
 }
 
-- (void)clearConfigurationsForUninstalledApps:(id)a3
+- (void)clearConfigurationsForUninstalledApps:(id)apps
 {
   v5 = +[NSMutableArray array];
   v6 = sub_100E4F678();
   sub_100E51600(v6, v5);
-  if (![(CLSensorMonitor *)self deferXpcActivityIfNecessary:a3])
+  if (![(CLSensorMonitor *)self deferXpcActivityIfNecessary:apps])
   {
     sub_10001A3E8();
     if (sub_10001CF3C() && [v5 count])
@@ -465,14 +465,14 @@ LABEL_19:
     v11[2] = sub_100736008;
     v11[3] = &unk_10246E0C0;
     v11[4] = self;
-    v11[5] = a3;
+    v11[5] = apps;
     [objc_msgSend(objc_msgSend(-[CLSensorMonitor universe](self "universe")];
   }
 }
 
-- (BOOL)deferXpcActivityIfNecessary:(id)a3
+- (BOOL)deferXpcActivityIfNecessary:(id)necessary
 {
-  should_defer = xpc_activity_should_defer(a3);
+  should_defer = xpc_activity_should_defer(necessary);
   if (should_defer)
   {
     if (qword_1025D44B0 != -1)
@@ -493,7 +493,7 @@ LABEL_19:
       sub_101923044();
     }
 
-    if (xpc_activity_set_state(a3, 3))
+    if (xpc_activity_set_state(necessary, 3))
     {
       LOBYTE(should_defer) = 1;
     }
@@ -508,7 +508,7 @@ LABEL_19:
       v6 = qword_1025D44B8;
       if (os_log_type_enabled(qword_1025D44B8, OS_LOG_TYPE_FAULT))
       {
-        state = xpc_activity_get_state(a3);
+        state = xpc_activity_get_state(necessary);
         v9 = 136446466;
         v10 = "com.apple.locationd.AppUninstallationCheck";
         v11 = 2050;
@@ -528,12 +528,12 @@ LABEL_19:
   return should_defer;
 }
 
-- (void)onStepNotification:(int)a3 data:(NotificationData *)a4
+- (void)onStepNotification:(int)notification data:(NotificationData *)data
 {
   [-[CLSensorMonitor universe](self "universe")];
-  if (a3 == 3)
+  if (notification == 3)
   {
-    v19 = [[NSDate alloc] initWithTimeIntervalSinceReferenceDate:*a4];
+    v19 = [[NSDate alloc] initWithTimeIntervalSinceReferenceDate:*data];
     if (qword_1025D4820 != -1)
     {
       sub_1019229F4();
@@ -542,9 +542,9 @@ LABEL_19:
     v20 = qword_1025D4828;
     if (os_log_type_enabled(qword_1025D4828, OS_LOG_TYPE_DEBUG))
     {
-      v21 = *a4;
-      v22 = *(a4 + 8);
-      v23 = *(a4 + 9);
+      v21 = *data;
+      v22 = *(data + 8);
+      v23 = *(data + 9);
       *buf = 134349568;
       v45 = v21;
       v46 = 1026;
@@ -559,7 +559,7 @@ LABEL_19:
       sub_101923250();
     }
 
-    v24 = [[CMOdometerSuitability alloc] initWithStartDate:v19 suitableForRunning:*(a4 + 8) suitableForWalking:*(a4 + 9)];
+    v24 = [[CMOdometerSuitability alloc] initWithStartDate:v19 suitableForRunning:*(data + 8) suitableForWalking:*(data + 9)];
     [(SRSensorWriter *)self->_odometerSuitabilityWriter provideSample:v24];
     if (qword_1025D4820 != -1)
     {
@@ -581,29 +581,29 @@ LABEL_19:
 
   else
   {
-    if (a3)
+    if (notification)
     {
       return;
     }
 
-    v8 = *(a4 + 1);
-    v7 = *(a4 + 2);
-    v9 = *(a4 + 6);
-    v10 = *(a4 + 4);
-    v12 = *(a4 + 18);
-    v11 = *(a4 + 19);
-    v14 = *(a4 + 10);
-    v13 = *(a4 + 11);
-    v15 = *(a4 + 12);
-    v16 = *(a4 + 26);
-    v17 = *(a4 + 14);
-    v18 = *(a4 + 121);
-    v42 = *(a4 + 39);
-    v43 = *(a4 + 38);
-    v38 = *(a4 + 120);
-    v39 = *(a4 + 41);
-    v40 = *(a4 + 42);
-    v41 = *(a4 + 174);
+    v8 = *(data + 1);
+    v7 = *(data + 2);
+    v9 = *(data + 6);
+    v10 = *(data + 4);
+    v12 = *(data + 18);
+    v11 = *(data + 19);
+    v14 = *(data + 10);
+    v13 = *(data + 11);
+    v15 = *(data + 12);
+    v16 = *(data + 26);
+    v17 = *(data + 14);
+    v18 = *(data + 121);
+    v42 = *(data + 39);
+    v43 = *(data + 38);
+    v38 = *(data + 120);
+    v39 = *(data + 41);
+    v40 = *(data + 42);
+    v41 = *(data + 174);
     if (v17)
     {
       v35 = [[NSUUID alloc] initWithUUIDString:v17];
@@ -725,10 +725,10 @@ LABEL_19:
   }
 }
 
-- (void)onFallSnippetNotification:(int)a3 data:(ImpactStreamData *)a4
+- (void)onFallSnippetNotification:(int)notification data:(ImpactStreamData *)data
 {
   [-[CLSensorMonitor universe](self universe];
-  v6 = [[CMFallStats alloc] initWithBufferAndLength:*(&a4->var5 + 7) length:*(&a4->var6 + 7) - *(&a4->var5 + 7)];
+  v6 = [[CMFallStats alloc] initWithBufferAndLength:*(&data->var5 + 7) length:*(&data->var6 + 7) - *(&data->var5 + 7)];
   v12 = 0;
   sub_100126E84(buf, "SensorMonitorFallFileDump", &v12, 0);
   if (buf[1] == 1)
@@ -778,14 +778,14 @@ LABEL_19:
   [(SRSensorWriter *)self->_fallStatsWriter provideSample:v6];
 }
 
-- (void)onOdometerNotification:(int)a3 data:(NotificationData *)a4
+- (void)onOdometerNotification:(int)notification data:(NotificationData *)data
 {
   [-[CLSensorMonitor universe](self "universe")];
-  if (a3 != 7)
+  if (notification != 7)
   {
-    if (a3 != 4)
+    if (notification != 4)
     {
-      if (a3 != 3)
+      if (notification != 3)
       {
         return;
       }
@@ -793,26 +793,26 @@ LABEL_19:
       goto LABEL_4;
     }
 
-    v41 = *(a4 + 1);
-    v16 = *(a4 + 5);
-    v18 = *(a4 + 6);
-    v17 = *(a4 + 7);
-    v19 = *(a4 + 8);
-    v47 = *(a4 + 9);
-    v20 = *(a4 + 21);
-    v48 = *(a4 + 20);
-    v21 = *(a4 + 11);
-    v22 = *(a4 + 13);
-    v39 = *(a4 + 4);
-    v40 = *(a4 + 12);
-    v45 = *(a4 + 7);
-    v46 = *(a4 + 8);
-    v23 = *(a4 + 18);
-    v24 = *(a4 + 19);
-    v43 = *(a4 + 10);
-    v44 = *(a4 + 11);
-    v42 = *a4;
-    v25 = [NSDate dateWithTimeIntervalSinceReferenceDate:*a4];
+    v41 = *(data + 1);
+    v16 = *(data + 5);
+    v18 = *(data + 6);
+    v17 = *(data + 7);
+    v19 = *(data + 8);
+    v47 = *(data + 9);
+    v20 = *(data + 21);
+    v48 = *(data + 20);
+    v21 = *(data + 11);
+    v22 = *(data + 13);
+    v39 = *(data + 4);
+    v40 = *(data + 12);
+    v45 = *(data + 7);
+    v46 = *(data + 8);
+    v23 = *(data + 18);
+    v24 = *(data + 19);
+    v43 = *(data + 10);
+    v44 = *(data + 11);
+    v42 = *data;
+    v25 = [NSDate dateWithTimeIntervalSinceReferenceDate:*data];
     if (v20 == 2)
     {
       v26 = 2;
@@ -953,8 +953,8 @@ LABEL_29:
   }
 
 LABEL_4:
-  v7 = [[NSDate alloc] initWithTimeIntervalSinceReferenceDate:*(a4 + 1)];
-  v8 = *(a4 + 10);
+  v7 = [[NSDate alloc] initWithTimeIntervalSinceReferenceDate:*(data + 1)];
+  v8 = *(data + 10);
   if (qword_1025D4820 != -1)
   {
     sub_1019229F4();
@@ -963,10 +963,10 @@ LABEL_4:
   v9 = qword_1025D4828;
   if (os_log_type_enabled(qword_1025D4828, OS_LOG_TYPE_DEBUG))
   {
-    v10 = *(a4 + 1);
-    v11 = *(a4 + 4);
-    v12 = *(a4 + 5);
-    v13 = *(a4 + 10);
+    v10 = *(data + 1);
+    v11 = *(data + 4);
+    v12 = *(data + 5);
+    v13 = *(data + 10);
     *buf = 134349824;
     v50 = v10;
     v51 = 1026;
@@ -994,7 +994,7 @@ LABEL_4:
     }
   }
 
-  v14 = [[CMElevationData alloc] initWithStartDate:v7 endDate:v7 elevationAscended:*(a4 + 4) elevationDescended:*(a4 + 5) source:v8 recordId:0 sourceId:0];
+  v14 = [[CMElevationData alloc] initWithStartDate:v7 endDate:v7 elevationAscended:*(data + 4) elevationDescended:*(data + 5) source:v8 recordId:0 sourceId:0];
   [(SRSensorWriter *)self->_elevationWriter provideSample:v14];
   if (qword_1025D4820 != -1)
   {
@@ -1016,12 +1016,12 @@ LABEL_4:
 LABEL_41:
 }
 
-- (void)onCatherineNotification:(int)a3 data:(NotificationData *)a4
+- (void)onCatherineNotification:(int)notification data:(NotificationData *)data
 {
   [-[CLSensorMonitor universe](self "universe")];
-  if (a3 == 10)
+  if (notification == 10)
   {
-    v7 = [[NSDate alloc] initWithTimeIntervalSinceReferenceDate:*(a4 + 5)];
+    v7 = [[NSDate alloc] initWithTimeIntervalSinceReferenceDate:*(data + 5)];
     if (qword_1025D4820 != -1)
     {
       sub_1019229F4();
@@ -1030,13 +1030,13 @@ LABEL_41:
     v8 = qword_1025D4828;
     if (os_log_type_enabled(qword_1025D4828, OS_LOG_TYPE_DEBUG))
     {
-      v9 = *(a4 + 1);
-      v10 = *(a4 + 2);
-      v11 = *(a4 + 24);
-      v12 = *a4;
-      v14 = *(a4 + 4);
-      v13 = *(a4 + 5);
-      v15 = *(a4 + 14);
+      v9 = *(data + 1);
+      v10 = *(data + 2);
+      v11 = *(data + 24);
+      v12 = *data;
+      v14 = *(data + 4);
+      v13 = *(data + 5);
+      v15 = *(data + 14);
       v19 = 134351105;
       v20 = v13;
       v21 = 2049;
@@ -1060,12 +1060,12 @@ LABEL_41:
 
     if (sub_10000A100(121, 2))
     {
-      sub_101923A1C(a4 + 40, a4);
+      sub_101923A1C(data + 40, data);
     }
 
-    if (*(a4 + 2) >= 0.4 && *a4 == 3)
+    if (*(data + 2) >= 0.4 && *data == 3)
     {
-      v16 = [[CMHeartRateData alloc] initWithHeartRate:v7 confidence:*(a4 + 24) timestamp:3 startDate:*(a4 + 14) == 5 error:*(a4 + 1) dataSource:*(a4 + 2) mode:*(a4 + 4)];
+      v16 = [[CMHeartRateData alloc] initWithHeartRate:v7 confidence:*(data + 24) timestamp:3 startDate:*(data + 14) == 5 error:*(data + 1) dataSource:*(data + 2) mode:*(data + 4)];
       [v16 setFrequency:1.0];
       v17 = [[CMHighFrequencyHeartRateData alloc] initWithHeartRateData:v16];
       if (v17)
@@ -1092,12 +1092,12 @@ LABEL_41:
   }
 }
 
-- (void)onMotionStateMediatorNotification:(const int *)a3 data:(const NotificationData *)a4
+- (void)onMotionStateMediatorNotification:(const int *)notification data:(const NotificationData *)data
 {
   [-[CLSensorMonitor universe](self universe];
-  if (*a3 == 4)
+  if (*notification == 4)
   {
-    v10 = [[NSDate alloc] initWithTimeIntervalSinceReferenceDate:*a4];
+    v10 = [[NSDate alloc] initWithTimeIntervalSinceReferenceDate:*data];
     if (qword_1025D4820 != -1)
     {
       sub_1019229F4();
@@ -1106,13 +1106,13 @@ LABEL_41:
     v11 = qword_1025D4828;
     if (os_log_type_enabled(qword_1025D4828, OS_LOG_TYPE_DEBUG))
     {
-      v12 = *a4;
-      v13 = *(a4 + 1);
-      v14 = *(a4 + 2);
-      v15 = *(a4 + 3);
-      v16 = *(a4 + 4);
-      v17 = *(a4 + 5);
-      v18 = *(a4 + 6);
+      v12 = *data;
+      v13 = *(data + 1);
+      v14 = *(data + 2);
+      v15 = *(data + 3);
+      v16 = *(data + 4);
+      v17 = *(data + 5);
+      v18 = *(data + 6);
       v21 = 134350593;
       v22 = v12;
       v23 = 2049;
@@ -1132,12 +1132,12 @@ LABEL_41:
 
     if (sub_10000A100(121, 2))
     {
-      sub_101923C68(a4);
+      sub_101923C68(data);
     }
 
-    v19 = [[CMActivityEventData alloc] initWithStartDate:v10 eventType:*(a4 + 1) action:*(a4 + 2) reason:*(a4 + 3) workoutType:*(a4 + 4)];
-    [v19 setHeartRateRecoveryStartTime:*(a4 + 5)];
-    [v19 setHeartRateRecoveryEndTime:*(a4 + 6)];
+    v19 = [[CMActivityEventData alloc] initWithStartDate:v10 eventType:*(data + 1) action:*(data + 2) reason:*(data + 3) workoutType:*(data + 4)];
+    [v19 setHeartRateRecoveryStartTime:*(data + 5)];
+    [v19 setHeartRateRecoveryEndTime:*(data + 6)];
     [(SRSensorWriter *)self->_physicalActivityEventWriter provideSample:v19];
     if (qword_1025D4820 != -1)
     {
@@ -1158,10 +1158,10 @@ LABEL_41:
   }
 }
 
-- (void)onDaemonStatusNotification:(const int *)a3 data:(const NotificationData *)a4
+- (void)onDaemonStatusNotification:(const int *)notification data:(const NotificationData *)data
 {
   [-[CLSensorMonitor universe](self universe];
-  if (*a3 == 17 || *a3 == 11)
+  if (*notification == 17 || *notification == 11)
   {
     ptr = self->_daemonStatusClient.__ptr_;
     if (ptr)
@@ -1183,7 +1183,7 @@ LABEL_41:
       v9 = qword_1025D4828;
       if (os_log_type_enabled(qword_1025D4828, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = *a3;
+        v10 = *notification;
         v11[0] = 67109120;
         v11[1] = v10;
         _os_log_impl(dword_100000000, v9, OS_LOG_TYPE_DEFAULT, "Received %d notification from daemon status", v11, 8u);
@@ -1191,7 +1191,7 @@ LABEL_41:
 
       if (sub_10000A100(121, 2))
       {
-        sub_101923E88(a3);
+        sub_101923E88(notification);
       }
 
       [(CLSensorMonitor *)self scheduleAppUninstallationCheck];
@@ -1199,9 +1199,9 @@ LABEL_41:
   }
 }
 
-- (Class)classForSensorIdentifier:(id)a3
+- (Class)classForSensorIdentifier:(id)identifier
 {
-  if (([a3 isEqualToString:off_1025D81A8()] & 1) == 0 && (objc_msgSend(a3, "isEqualToString:", off_1025D81B0()) & 1) == 0 && (objc_msgSend(a3, "isEqualToString:", off_1025D81B8()) & 1) == 0 && (objc_msgSend(a3, "isEqualToString:", off_1025D81C0()) & 1) == 0 && (objc_msgSend(a3, "isEqualToString:", off_1025D81C8()) & 1) == 0 && (objc_msgSend(a3, "isEqualToString:", off_1025D81D0()) & 1) == 0 && !objc_msgSend(a3, "isEqualToString:", off_1025D81D8()))
+  if (([identifier isEqualToString:off_1025D81A8()] & 1) == 0 && (objc_msgSend(identifier, "isEqualToString:", off_1025D81B0()) & 1) == 0 && (objc_msgSend(identifier, "isEqualToString:", off_1025D81B8()) & 1) == 0 && (objc_msgSend(identifier, "isEqualToString:", off_1025D81C0()) & 1) == 0 && (objc_msgSend(identifier, "isEqualToString:", off_1025D81C8()) & 1) == 0 && (objc_msgSend(identifier, "isEqualToString:", off_1025D81D0()) & 1) == 0 && !objc_msgSend(identifier, "isEqualToString:", off_1025D81D8()))
   {
     return 0;
   }
@@ -1209,9 +1209,9 @@ LABEL_41:
   return objc_opt_class();
 }
 
-- (void)sensorWriterWillStartMonitoring:(id)a3
+- (void)sensorWriterWillStartMonitoring:(id)monitoring
 {
-  if (self->_pedometerWriter == a3 && self->_stepCountClient.__ptr_)
+  if (self->_pedometerWriter == monitoring && self->_stepCountClient.__ptr_)
   {
     if (qword_1025D4820 != -1)
     {
@@ -1237,7 +1237,7 @@ LABEL_41:
     goto LABEL_68;
   }
 
-  if (self->_odometerSuitabilityWriter == a3 && self->_stepCountClient.__ptr_)
+  if (self->_odometerSuitabilityWriter == monitoring && self->_stepCountClient.__ptr_)
   {
     if (qword_1025D4820 != -1)
     {
@@ -1263,7 +1263,7 @@ LABEL_41:
     goto LABEL_68;
   }
 
-  if (self->_fallStatsWriter == a3)
+  if (self->_fallStatsWriter == monitoring)
   {
     if (qword_1025D4330 != -1)
     {
@@ -1289,7 +1289,7 @@ LABEL_41:
     goto LABEL_68;
   }
 
-  if (self->_elevationWriter == a3 && self->_odometerClient.__ptr_)
+  if (self->_elevationWriter == monitoring && self->_odometerClient.__ptr_)
   {
     if (qword_1025D4820 != -1)
     {
@@ -1315,7 +1315,7 @@ LABEL_41:
     goto LABEL_68;
   }
 
-  if (self->_odometerWriter == a3)
+  if (self->_odometerWriter == monitoring)
   {
     v16 = 24;
     if (self->_odometerClient.__ptr_)
@@ -1348,7 +1348,7 @@ LABEL_68:
     }
   }
 
-  if (self->_heartRateWriter == a3 && self->_heartRateClient.__ptr_)
+  if (self->_heartRateWriter == monitoring && self->_heartRateClient.__ptr_)
   {
     if (qword_1025D4820 != -1)
     {
@@ -1374,7 +1374,7 @@ LABEL_68:
     goto LABEL_68;
   }
 
-  if (self->_physicalActivityEventWriter == a3)
+  if (self->_physicalActivityEventWriter == monitoring)
   {
     v16 = 40;
     if (self->_motionStateMediatorClient.__ptr_)
@@ -1418,9 +1418,9 @@ LABEL_68:
   }
 }
 
-- (void)sensorWriterDidStopMonitoring:(id)a3
+- (void)sensorWriterDidStopMonitoring:(id)monitoring
 {
-  if (self->_pedometerWriter == a3 && self->_stepCountClient.__ptr_)
+  if (self->_pedometerWriter == monitoring && self->_stepCountClient.__ptr_)
   {
     if (qword_1025D4820 != -1)
     {
@@ -1446,7 +1446,7 @@ LABEL_68:
     goto LABEL_68;
   }
 
-  if (self->_odometerSuitabilityWriter == a3 && self->_stepCountClient.__ptr_)
+  if (self->_odometerSuitabilityWriter == monitoring && self->_stepCountClient.__ptr_)
   {
     if (qword_1025D4820 != -1)
     {
@@ -1472,7 +1472,7 @@ LABEL_68:
     goto LABEL_68;
   }
 
-  if (self->_fallStatsWriter == a3)
+  if (self->_fallStatsWriter == monitoring)
   {
     if (qword_1025D4330 != -1)
     {
@@ -1498,7 +1498,7 @@ LABEL_68:
     goto LABEL_68;
   }
 
-  if (self->_elevationWriter == a3 && self->_odometerClient.__ptr_)
+  if (self->_elevationWriter == monitoring && self->_odometerClient.__ptr_)
   {
     if (qword_1025D4820 != -1)
     {
@@ -1524,7 +1524,7 @@ LABEL_68:
     goto LABEL_68;
   }
 
-  if (self->_odometerWriter == a3)
+  if (self->_odometerWriter == monitoring)
   {
     v16 = 24;
     if (self->_odometerClient.__ptr_)
@@ -1557,7 +1557,7 @@ LABEL_68:
     }
   }
 
-  if (self->_heartRateWriter == a3 && self->_heartRateClient.__ptr_)
+  if (self->_heartRateWriter == monitoring && self->_heartRateClient.__ptr_)
   {
     if (qword_1025D4820 != -1)
     {
@@ -1583,7 +1583,7 @@ LABEL_68:
     goto LABEL_68;
   }
 
-  if (self->_physicalActivityEventWriter == a3)
+  if (self->_physicalActivityEventWriter == monitoring)
   {
     v16 = 40;
     if (self->_motionStateMediatorClient.__ptr_)
@@ -1627,13 +1627,13 @@ LABEL_68:
   }
 }
 
-- (void)sensorWriter:(id)a3 didReceiveUpdateToConfigurationRequests:(id)a4
+- (void)sensorWriter:(id)writer didReceiveUpdateToConfigurationRequests:(id)requests
 {
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [a4 countByEnumeratingWithState:&v14 objects:v22 count:16];
+  v5 = [requests countByEnumeratingWithState:&v14 objects:v22 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1645,7 +1645,7 @@ LABEL_68:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(a4);
+          objc_enumerationMutation(requests);
         }
 
         v9 = *(*(&v14 + 1) + 8 * v8);
@@ -1677,7 +1677,7 @@ LABEL_68:
       }
 
       while (v6 != v8);
-      v6 = [a4 countByEnumeratingWithState:&v14 objects:v22 count:16];
+      v6 = [requests countByEnumeratingWithState:&v14 objects:v22 count:16];
     }
 
     while (v6);

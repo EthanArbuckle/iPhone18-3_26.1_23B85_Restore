@@ -3,58 +3,58 @@
 + (UIEdgeInsets)initialAlignmentRectInsets;
 + (id)_highlightOpacityAnimation;
 + (id)_highlightSizeAnimation;
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (BOOL)pointMostlyInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event;
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event;
+- (BOOL)pointMostlyInside:(CGPoint)inside withEvent:(id)event;
 - (CGRect)_leftHighlightFrame;
 - (CGRect)_leftHighlightInsetFrame;
 - (CGRect)_rightHighlightFrame;
 - (CGRect)_rightHighlightInsetFrame;
-- (CGSize)_intrinsicSizeWithinSize:(CGSize)a3;
-- (UIEdgeInsets)alignmentRectInsetsForControl:(id)a3;
+- (CGSize)_intrinsicSizeWithinSize:(CGSize)size;
+- (UIEdgeInsets)alignmentRectInsetsForControl:(id)control;
 - (UIStepperControl)stepperControl;
-- (UIStepperHorizontalVisualElement)initWithFrame:(CGRect)a3;
-- (id)_alphaAnimator:(BOOL)a3;
-- (id)dividerImageForLeftSegmentState:(unint64_t)a3 rightSegmentState:(unint64_t)a4;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)incrementImageForState:(unint64_t)a3;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
+- (UIStepperHorizontalVisualElement)initWithFrame:(CGRect)frame;
+- (id)_alphaAnimator:(BOOL)animator;
+- (id)dividerImageForLeftSegmentState:(unint64_t)state rightSegmentState:(unint64_t)segmentState;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)incrementImageForState:(unint64_t)state;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
 - (void)_commonStepperInit;
 - (void)_dynamicUserInterfaceTraitDidChange;
 - (void)_startTimer;
 - (void)_stopTimer;
 - (void)_updateBackgroundForButtonState;
-- (void)_updateButton:(id)a3 backgroundView:(id)a4 highlightView:(id)a5 backgroundImage:(id)a6 highlightImage:(id)a7 onRight:(BOOL)a8;
+- (void)_updateButton:(id)button backgroundView:(id)view highlightView:(id)highlightView backgroundImage:(id)image highlightImage:(id)highlightImage onRight:(BOOL)right;
 - (void)_updateButtonEnabled;
-- (void)_updateCount:(id)a3;
+- (void)_updateCount:(id)count;
 - (void)_updateDividerImageForButtonState;
-- (void)_updateHighlight:(id)a3 button:(id)a4 onRight:(BOOL)a5;
-- (void)_updateHighlightingAtPoint:(CGPoint)a3 withEvent:(id)a4;
-- (void)cancelTrackingWithEvent:(id)a3;
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (void)_updateHighlight:(id)highlight button:(id)button onRight:(BOOL)right;
+- (void)_updateHighlightingAtPoint:(CGPoint)point withEvent:(id)event;
+- (void)cancelTrackingWithEvent:(id)event;
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event;
 - (void)layoutSubviews;
-- (void)pointerInteraction:(id)a3 willEnterRegion:(id)a4 animator:(id)a5;
-- (void)pointerInteraction:(id)a3 willExitRegion:(id)a4 animator:(id)a5;
-- (void)setBackgroundImage:(id)a3 forState:(unint64_t)a4;
-- (void)setDecrementImage:(id)a3 forState:(unint64_t)a4;
-- (void)setDividerImage:(id)a3 forLeftSegmentState:(unint64_t)a4 rightSegmentState:(unint64_t)a5;
-- (void)setEnabled:(BOOL)a3;
-- (void)setIncrementImage:(id)a3 forState:(unint64_t)a4;
-- (void)setMaximumValue:(double)a3;
-- (void)setMinimumValue:(double)a3;
-- (void)setStepValue:(double)a3;
-- (void)setTintColor:(id)a3;
+- (void)pointerInteraction:(id)interaction willEnterRegion:(id)region animator:(id)animator;
+- (void)pointerInteraction:(id)interaction willExitRegion:(id)region animator:(id)animator;
+- (void)setBackgroundImage:(id)image forState:(unint64_t)state;
+- (void)setDecrementImage:(id)image forState:(unint64_t)state;
+- (void)setDividerImage:(id)image forLeftSegmentState:(unint64_t)state rightSegmentState:(unint64_t)segmentState;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setIncrementImage:(id)image forState:(unint64_t)state;
+- (void)setMaximumValue:(double)value;
+- (void)setMinimumValue:(double)value;
+- (void)setStepValue:(double)value;
+- (void)setTintColor:(id)color;
 - (void)setValue:(double)minimumValue;
 @end
 
 @implementation UIStepperHorizontalVisualElement
 
-- (UIStepperHorizontalVisualElement)initWithFrame:(CGRect)a3
+- (UIStepperHorizontalVisualElement)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = UIStepperHorizontalVisualElement;
-  v3 = [(UIView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -81,25 +81,25 @@
   {
     self->_value = minimumValue;
     [(UIStepperHorizontalVisualElement *)self _updateButtonEnabled];
-    v5 = [(UIStepperHorizontalVisualElement *)self stepperControl];
-    [v5 visualElementDidSetValue:self];
+    stepperControl = [(UIStepperHorizontalVisualElement *)self stepperControl];
+    [stepperControl visualElementDidSetValue:self];
   }
 }
 
-- (void)setMinimumValue:(double)a3
+- (void)setMinimumValue:(double)value
 {
-  if (self->_minimumValue != a3)
+  if (self->_minimumValue != value)
   {
-    if (self->_maximumValue < a3)
+    if (self->_maximumValue < value)
     {
-      [(UIStepperHorizontalVisualElement *)self setMaximumValue:a3];
+      [(UIStepperHorizontalVisualElement *)self setMaximumValue:value];
     }
 
-    self->_minimumValue = a3;
+    self->_minimumValue = value;
     value = self->_value;
-    if (value < a3)
+    if (value < value)
     {
-      value = a3;
+      value = value;
     }
 
     [(UIStepperHorizontalVisualElement *)self setValue:value];
@@ -108,20 +108,20 @@
   }
 }
 
-- (void)setMaximumValue:(double)a3
+- (void)setMaximumValue:(double)value
 {
-  if (self->_maximumValue != a3)
+  if (self->_maximumValue != value)
   {
-    if (self->_minimumValue > a3)
+    if (self->_minimumValue > value)
     {
-      [(UIStepperHorizontalVisualElement *)self setMinimumValue:a3];
+      [(UIStepperHorizontalVisualElement *)self setMinimumValue:value];
     }
 
-    self->_maximumValue = a3;
+    self->_maximumValue = value;
     value = self->_value;
-    if (value >= a3)
+    if (value >= value)
     {
-      value = a3;
+      value = value;
     }
 
     [(UIStepperHorizontalVisualElement *)self setValue:value];
@@ -130,27 +130,27 @@
   }
 }
 
-- (void)setStepValue:(double)a3
+- (void)setStepValue:(double)value
 {
-  if (self->_stepValue != a3)
+  if (self->_stepValue != value)
   {
-    if (a3 <= 0.0)
+    if (value <= 0.0)
     {
       [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"stepValue must be greater than 0"];
     }
 
-    self->_stepValue = a3;
+    self->_stepValue = value;
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if ([(UIStepperHorizontalVisualElement *)self isEnabled]!= a3)
+  if ([(UIStepperHorizontalVisualElement *)self isEnabled]!= enabled)
   {
-    self->_enabled = a3;
+    self->_enabled = enabled;
     [(UIStepperHorizontalVisualElement *)self _updateButtonEnabled];
     v5 = 1.0;
-    if (a3 || ([(UIView *)self alpha], v7 = v6, v5 = 0.5, v7 > 0.5))
+    if (enabled || ([(UIView *)self alpha], v7 = v6, v5 = 0.5, v7 > 0.5))
     {
 
       [(UIView *)self setAlpha:v5];
@@ -181,9 +181,9 @@
   return result;
 }
 
-- (CGSize)_intrinsicSizeWithinSize:(CGSize)a3
+- (CGSize)_intrinsicSizeWithinSize:(CGSize)size
 {
-  v4 = [(UIButton *)self->_plusButton backgroundImageForState:0, a3.width, a3.height];
+  v4 = [(UIButton *)self->_plusButton backgroundImageForState:0, size.width, size.height];
   [v4 size];
   v6 = v5;
   v8 = v7;
@@ -215,8 +215,8 @@
   if (dyld_program_sdk_at_least())
   {
     [(UIView *)self setClipsToBounds:1];
-    v3 = [(UIView *)self traitCollection];
-    [UISegmentedControl _cornerRadiusForTraitCollection:v3 size:0];
+    traitCollection = [(UIView *)self traitCollection];
+    [UISegmentedControl _cornerRadiusForTraitCollection:traitCollection size:0];
     [(UIView *)self _setCornerRadius:?];
   }
 
@@ -294,10 +294,10 @@
   [(UIStepperHorizontalVisualElement *)self _updateDividerImageForButtonState];
 }
 
-- (void)_updateHighlightingAtPoint:(CGPoint)a3 withEvent:(id)a4
+- (void)_updateHighlightingAtPoint:(CGPoint)point withEvent:(id)event
 {
-  x = a3.x;
-  if ([(UIStepperHorizontalVisualElement *)self pointMostlyInside:a4 withEvent:a3.x, a3.y])
+  x = point.x;
+  if ([(UIStepperHorizontalVisualElement *)self pointMostlyInside:event withEvent:point.x, point.y])
   {
     [(UIView *)self bounds];
     MidX = CGRectGetMidX(v13);
@@ -446,11 +446,11 @@
   return CGRectInset(*&v2, 4.0, 4.0);
 }
 
-- (id)_alphaAnimator:(BOOL)a3
+- (id)_alphaAnimator:(BOOL)animator
 {
-  v3 = a3;
+  animatorCopy = animator;
   v5 = 11;
-  if (a3)
+  if (animator)
   {
     v5 = 10;
   }
@@ -468,7 +468,7 @@
   else
   {
     v7 = +[UIStepperHorizontalVisualElement _highlightOpacityAnimation];
-    if (v3)
+    if (animatorCopy)
     {
       v8 = 504;
     }
@@ -484,19 +484,19 @@
   return v7;
 }
 
-- (void)_updateHighlight:(id)a3 button:(id)a4 onRight:(BOOL)a5
+- (void)_updateHighlight:(id)highlight button:(id)button onRight:(BOOL)right
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = [a4 state];
-  [v8 alpha];
-  if (v9 == 1)
+  rightCopy = right;
+  highlightCopy = highlight;
+  state = [button state];
+  [highlightCopy alpha];
+  if (state == 1)
   {
     if (v10 != 1.0)
     {
-      v11 = [(UIStepperHorizontalVisualElement *)self _alphaAnimator:v5];
+      v11 = [(UIStepperHorizontalVisualElement *)self _alphaAnimator:rightCopy];
       v12 = 13;
-      if (v5)
+      if (rightCopy)
       {
         v12 = 12;
       }
@@ -505,7 +505,7 @@
       if (v13)
       {
         v14 = v13;
-        if (!v5)
+        if (!rightCopy)
         {
           goto LABEL_14;
         }
@@ -514,7 +514,7 @@
       else
       {
         v14 = +[UIStepperHorizontalVisualElement _highlightSizeAnimation];
-        if (!v5)
+        if (!rightCopy)
         {
           objc_storeStrong(&self->_leftFrameAnimator, v14);
 LABEL_14:
@@ -535,7 +535,7 @@ LABEL_15:
       v34[1] = 3221225472;
       v34[2] = __68__UIStepperHorizontalVisualElement__updateHighlight_button_onRight___block_invoke_3;
       v34[3] = &unk_1E70F3590;
-      v24 = v8;
+      v24 = highlightCopy;
       v35 = v24;
       [v11 addAnimations:v34];
       v25 = MEMORY[0x1E69E9820];
@@ -557,19 +557,19 @@ LABEL_15:
 
   else if (v10 != 0.0)
   {
-    v11 = [(UIStepperHorizontalVisualElement *)self _alphaAnimator:v5];
+    v11 = [(UIStepperHorizontalVisualElement *)self _alphaAnimator:rightCopy];
     v39[0] = MEMORY[0x1E69E9820];
     v39[1] = 3221225472;
     v39[2] = __68__UIStepperHorizontalVisualElement__updateHighlight_button_onRight___block_invoke;
     v39[3] = &unk_1E70F3590;
-    v15 = v8;
+    v15 = highlightCopy;
     v40 = v15;
     [v11 addAnimations:v39 delayFactor:0.566969897];
     v36[0] = MEMORY[0x1E69E9820];
     v36[1] = 3221225472;
     v36[2] = __68__UIStepperHorizontalVisualElement__updateHighlight_button_onRight___block_invoke_2;
     v36[3] = &unk_1E71049E0;
-    v38 = v5;
+    v38 = rightCopy;
     v36[4] = self;
     v37 = v15;
     [v11 addCompletion:v36];
@@ -606,14 +606,14 @@ uint64_t __68__UIStepperHorizontalVisualElement__updateHighlight_button_onRight_
   return result;
 }
 
-- (void)_updateButton:(id)a3 backgroundView:(id)a4 highlightView:(id)a5 backgroundImage:(id)a6 highlightImage:(id)a7 onRight:(BOOL)a8
+- (void)_updateButton:(id)button backgroundView:(id)view highlightView:(id)highlightView backgroundImage:(id)image highlightImage:(id)highlightImage onRight:(BOOL)right
 {
-  v8 = a8;
-  v35 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  if (v8)
+  rightCopy = right;
+  buttonCopy = button;
+  viewCopy = view;
+  highlightViewCopy = highlightView;
+  imageCopy = image;
+  if (rightCopy)
   {
     v17 = @"right";
   }
@@ -623,40 +623,40 @@ uint64_t __68__UIStepperHorizontalVisualElement__updateHighlight_button_onRight_
     v17 = @"left";
   }
 
-  v18 = a7;
-  v26 = __UIImageCacheKeyWithSentinel(v16, v19, v20, v21, v22, v23, v24, v25, v17, @"__UIImageCacheKeySentinel");
+  highlightImageCopy = highlightImage;
+  v26 = __UIImageCacheKeyWithSentinel(imageCopy, v19, v20, v21, v22, v23, v24, v25, v17, @"__UIImageCacheKeySentinel");
   v36[0] = MEMORY[0x1E69E9820];
   v36[1] = 3221225472;
   v36[2] = __118__UIStepperHorizontalVisualElement__updateButton_backgroundView_highlightView_backgroundImage_highlightImage_onRight___block_invoke;
   v36[3] = &unk_1E71282E8;
-  v27 = v16;
+  v27 = imageCopy;
   v37 = v27;
-  v38 = v8;
+  v38 = rightCopy;
   v28 = [UIImage _cachedImageForKey:v26 fromBlock:v36];
 
-  if (v14)
+  if (viewCopy)
   {
-    [(UIImageView *)v14 setImage:v28];
-    [(UIImageView *)v15 setImage:v18];
-    v29 = v35;
+    [(UIImageView *)viewCopy setImage:v28];
+    [(UIImageView *)highlightViewCopy setImage:highlightImageCopy];
+    v29 = buttonCopy;
   }
 
   else
   {
     v30 = [UIImageView alloc];
-    v29 = v35;
-    [v35 frame];
-    v14 = [(UIImageView *)v30 initWithFrame:?];
-    [(UIImageView *)v14 setImage:v28];
+    v29 = buttonCopy;
+    [buttonCopy frame];
+    viewCopy = [(UIImageView *)v30 initWithFrame:?];
+    [(UIImageView *)viewCopy setImage:v28];
     v31 = [UIImageView alloc];
-    [v35 frame];
+    [buttonCopy frame];
     v32 = [(UIImageView *)v31 initWithFrame:?];
 
-    [(UIImageView *)v32 setImage:v18];
+    [(UIImageView *)v32 setImage:highlightImageCopy];
     [(UIView *)v32 setAlpha:0.0];
-    [(UIView *)self insertSubview:v14 atIndex:0];
+    [(UIView *)self insertSubview:viewCopy atIndex:0];
     [(UIView *)self insertSubview:v32 aboveSubview:self->_middleView];
-    if (v8)
+    if (rightCopy)
     {
       v33 = &OBJC_IVAR___UIStepperHorizontalVisualElement__rightBackground;
     }
@@ -666,14 +666,14 @@ uint64_t __68__UIStepperHorizontalVisualElement__updateHighlight_button_onRight_
       v33 = &OBJC_IVAR___UIStepperHorizontalVisualElement__leftBackground;
     }
 
-    objc_storeStrong((&self->super.super.super.isa + *v33), v14);
+    objc_storeStrong((&self->super.super.super.isa + *v33), viewCopy);
     v34 = v33[1];
-    v15 = v32;
-    v18 = *(&self->super.super.super.isa + v34);
-    *(&self->super.super.super.isa + v34) = v15;
+    highlightViewCopy = v32;
+    highlightImageCopy = *(&self->super.super.super.isa + v34);
+    *(&self->super.super.super.isa + v34) = highlightViewCopy;
   }
 
-  [(UIStepperHorizontalVisualElement *)self _updateHighlight:v15 button:v29 onRight:v8];
+  [(UIStepperHorizontalVisualElement *)self _updateHighlight:highlightViewCopy button:v29 onRight:rightCopy];
 }
 
 id __118__UIStepperHorizontalVisualElement__updateButton_backgroundView_highlightView_backgroundImage_highlightImage_onRight___block_invoke(uint64_t a1)
@@ -745,15 +745,15 @@ id __118__UIStepperHorizontalVisualElement__updateButton_backgroundView_highligh
 
     +[UISegmentedControl _defaultHeight];
     v10 = v9;
-    v11 = [(UIView *)self traitCollection];
+    traitCollection = [(UIView *)self traitCollection];
     LODWORD(v17) = 0;
-    v12 = [UISegmentedControl _modernBackgroundSelected:0 shadow:0 maximumSize:0 highlighted:0 hasMaterial:v11 traitCollection:0 tintColor:94.0 size:v10, v17];
+    v12 = [UISegmentedControl _modernBackgroundSelected:0 shadow:0 maximumSize:0 highlighted:0 hasMaterial:traitCollection traitCollection:0 tintColor:94.0 size:v10, v17];
 
     +[UISegmentedControl _defaultHeight];
     v14 = v13;
-    v15 = [(UIView *)self traitCollection];
+    traitCollection2 = [(UIView *)self traitCollection];
     LODWORD(v18) = 0;
-    v16 = [UISegmentedControl _modernBackgroundSelected:0 shadow:0 maximumSize:1 highlighted:0 hasMaterial:v15 traitCollection:0 tintColor:94.0 size:v14, v18];
+    v16 = [UISegmentedControl _modernBackgroundSelected:0 shadow:0 maximumSize:1 highlighted:0 hasMaterial:traitCollection2 traitCollection:0 tintColor:94.0 size:v14, v18];
 
     if (v6)
     {
@@ -803,15 +803,15 @@ id __118__UIStepperHorizontalVisualElement__updateButton_backgroundView_highligh
   }
 
   v5 = *(&self->super.super.super.isa + OBJC_IVAR___UIStepperHorizontalVisualElement__minimumValue[v4]);
-  v6 = [(UIView *)self->_middleView subviews];
-  v7 = [v6 firstObject];
+  subviews = [(UIView *)self->_middleView subviews];
+  firstObject = [subviews firstObject];
 
   v8 = -[UIStepperHorizontalVisualElement dividerImageForLeftSegmentState:rightSegmentState:](self, "dividerImageForLeftSegmentState:rightSegmentState:", [v14 state], objc_msgSend(v5, "state"));
   if (v8 || (dyld_program_sdk_at_least() & 1) == 0)
   {
-    if (v7)
+    if (firstObject)
     {
-      [(UIView *)v7 removeFromSuperview];
+      [(UIView *)firstObject removeFromSuperview];
     }
 
     [(UIImageView *)self->_middleView setImage:v8];
@@ -819,35 +819,35 @@ id __118__UIStepperHorizontalVisualElement__updateButton_backgroundView_highligh
 
   else
   {
-    v9 = [(UIView *)self traitCollection];
-    v10 = [UISegmentedControl _modernDividerImageBackground:1 traitCollection:v9 tintColor:0 size:0];
+    traitCollection = [(UIView *)self traitCollection];
+    v10 = [UISegmentedControl _modernDividerImageBackground:1 traitCollection:traitCollection tintColor:0 size:0];
 
-    v11 = [(UIView *)self traitCollection];
-    v12 = [UISegmentedControl _modernDividerImageBackground:0 traitCollection:v11 tintColor:0 size:0];
+    traitCollection2 = [(UIView *)self traitCollection];
+    v12 = [UISegmentedControl _modernDividerImageBackground:0 traitCollection:traitCollection2 tintColor:0 size:0];
 
     [(UIImageView *)self->_middleView setImage:v10];
-    if (v7)
+    if (firstObject)
     {
-      [(UIImageView *)v7 setImage:v12];
+      [(UIImageView *)firstObject setImage:v12];
     }
 
     else
     {
       v13 = [UIImageView alloc];
       [(UIView *)self->_middleView bounds];
-      v7 = [(UIImageView *)v13 initWithFrame:?];
-      [(UIView *)v7 setAutoresizingMask:18];
-      [(UIImageView *)v7 setImage:v12];
-      [(UIView *)self->_middleView insertSubview:v7 atIndex:0];
+      firstObject = [(UIImageView *)v13 initWithFrame:?];
+      [(UIView *)firstObject setAutoresizingMask:18];
+      [(UIImageView *)firstObject setImage:v12];
+      [(UIView *)self->_middleView insertSubview:firstObject atIndex:0];
     }
   }
 }
 
-- (BOOL)pointMostlyInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointMostlyInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
   [(UIView *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -867,53 +867,53 @@ id __118__UIStepperHorizontalVisualElement__updateButton_backgroundView_highligh
   v33.size.width = v28;
   v32.x = x;
   v32.y = y;
-  v30 = CGRectContainsPoint(v33, v32) || [(UIView *)self pointInside:v7 withEvent:x, y];
+  v30 = CGRectContainsPoint(v33, v32) || [(UIView *)self pointInside:eventCopy withEvent:x, y];
 
   return v30;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  v4 = self;
+  selfCopy = self;
   v9.receiver = self;
   v9.super_class = UIStepperHorizontalVisualElement;
-  v5 = [(UIView *)&v9 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(UIView *)&v9 hitTest:event withEvent:test.x, test.y];
   v6 = v5;
-  if (v5 != v4->_plusButton && v5 != v4->_minusButton)
+  if (v5 != selfCopy->_plusButton && v5 != selfCopy->_minusButton)
   {
-    v4 = v5;
+    selfCopy = v5;
   }
 
-  v7 = v4;
+  v7 = selfCopy;
 
   return v7;
 }
 
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
+  eventCopy = event;
+  touchCopy = touch;
   [(UIStepperHorizontalVisualElement *)self _startTimer];
-  [v7 locationInView:self];
+  [touchCopy locationInView:self];
   v9 = v8;
   v11 = v10;
 
-  [(UIStepperHorizontalVisualElement *)self _updateHighlightingAtPoint:v6 withEvent:v9, v11];
+  [(UIStepperHorizontalVisualElement *)self _updateHighlightingAtPoint:eventCopy withEvent:v9, v11];
   return 1;
 }
 
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v6 = a4;
-  [a3 locationInView:self];
-  [(UIStepperHorizontalVisualElement *)self _updateHighlightingAtPoint:v6 withEvent:?];
+  eventCopy = event;
+  [touch locationInView:self];
+  [(UIStepperHorizontalVisualElement *)self _updateHighlightingAtPoint:eventCopy withEvent:?];
 
   return 1;
 }
 
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  [(UIStepperHorizontalVisualElement *)self _updateCount:self, a4];
+  [(UIStepperHorizontalVisualElement *)self _updateCount:self, event];
   [(UIButton *)self->_plusButton setHighlighted:0];
   [(UIButton *)self->_minusButton setHighlighted:0];
   [(UIStepperHorizontalVisualElement *)self _stopTimer];
@@ -922,7 +922,7 @@ id __118__UIStepperHorizontalVisualElement__updateButton_backgroundView_highligh
   [(UIStepperHorizontalVisualElement *)self _updateDividerImageForButtonState];
 }
 
-- (void)cancelTrackingWithEvent:(id)a3
+- (void)cancelTrackingWithEvent:(id)event
 {
   [(UIButton *)self->_plusButton setHighlighted:0];
   [(UIButton *)self->_minusButton setHighlighted:0];
@@ -932,7 +932,7 @@ id __118__UIStepperHorizontalVisualElement__updateButton_backgroundView_highligh
   [(UIStepperHorizontalVisualElement *)self _updateDividerImageForButtonState];
 }
 
-- (UIEdgeInsets)alignmentRectInsetsForControl:(id)a3
+- (UIEdgeInsets)alignmentRectInsetsForControl:(id)control
 {
   v7.receiver = self;
   v7.super_class = UIStepperHorizontalVisualElement;
@@ -963,32 +963,32 @@ id __118__UIStepperHorizontalVisualElement__updateButton_backgroundView_highligh
   self->_repeatTimer = 0;
 }
 
-- (void)_updateCount:(id)a3
+- (void)_updateCount:(id)count
 {
   repeatTimer = self->_repeatTimer;
   if ([(UIControl *)self->_plusButton isHighlighted])
   {
-    v6 = [(UIControl *)self->_plusButton isEnabled];
+    isEnabled = [(UIControl *)self->_plusButton isEnabled];
   }
 
   else
   {
-    v6 = 0;
+    isEnabled = 0;
   }
 
   if ([(UIControl *)self->_minusButton isHighlighted])
   {
-    v7 = [(UIControl *)self->_minusButton isEnabled];
+    isEnabled2 = [(UIControl *)self->_minusButton isEnabled];
   }
 
   else
   {
-    v7 = 0;
+    isEnabled2 = 0;
   }
 
-  if (repeatTimer == a3)
+  if (repeatTimer == count)
   {
-    if (!v6 && !v7)
+    if (!isEnabled && !isEnabled2)
     {
 LABEL_30:
       if (self->_repeatCount >= 1)
@@ -1003,16 +1003,16 @@ LABEL_30:
   else
   {
     repeatCount = self->_repeatCount;
-    if (repeatCount || !v6 && !v7)
+    if (repeatCount || !isEnabled && !isEnabled2)
     {
-      if (v6 || v7)
+      if (isEnabled || isEnabled2)
       {
         self->_repeatCount = repeatCount + 1;
 LABEL_25:
-        if (![(UIStepperHorizontalVisualElement *)self isContinuous]&& repeatTimer != a3)
+        if (![(UIStepperHorizontalVisualElement *)self isContinuous]&& repeatTimer != count)
         {
-          v16 = [(UIStepperHorizontalVisualElement *)self stepperControl];
-          [v16 visualElementSendValueChangedEvent:self];
+          stepperControl = [(UIStepperHorizontalVisualElement *)self stepperControl];
+          [stepperControl visualElementSendValueChangedEvent:self];
         }
 
         return;
@@ -1023,7 +1023,7 @@ LABEL_25:
   }
 
   stepValue = self->_stepValue;
-  if (!v6)
+  if (!isEnabled)
   {
     stepValue = -stepValue;
   }
@@ -1048,18 +1048,18 @@ LABEL_25:
   [(UIStepperHorizontalVisualElement *)self setValue:maximumValue];
   if (self->_continuous)
   {
-    v11 = [(UIStepperHorizontalVisualElement *)self stepperControl];
-    [v11 visualElementSendValueChangedEvent:self];
+    stepperControl2 = [(UIStepperHorizontalVisualElement *)self stepperControl];
+    [stepperControl2 visualElementSendValueChangedEvent:self];
   }
 
-  if (!v6 && !v7)
+  if (!isEnabled && !isEnabled2)
   {
     goto LABEL_30;
   }
 
   v12 = self->_repeatCount;
   self->_repeatCount = v12 + 1;
-  if (repeatTimer != a3)
+  if (repeatTimer != count)
   {
     goto LABEL_25;
   }
@@ -1079,9 +1079,9 @@ LABEL_36:
   [(UIStepperHorizontalVisualElement *)self isContinuous];
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
-  v6 = a4;
+  requestCopy = request;
   if (!dyld_program_sdk_at_least())
   {
     v24 = 0;
@@ -1115,7 +1115,7 @@ LABEL_36:
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  [v6 location];
+  [requestCopy location];
   v28.x = v19;
   v28.y = v20;
   v29.origin.x = v12;
@@ -1157,7 +1157,7 @@ LABEL_19:
   return v24;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
   if (self->_isRtoL)
   {
@@ -1181,8 +1181,8 @@ LABEL_19:
   }
 
   v9 = *(&self->super.super.super.isa + OBJC_IVAR___UIStepperHorizontalVisualElement__minimumValue[v8]);
-  v10 = [a4 identifier];
-  v11 = [v10 isEqual:@"UIStepperLeftPointerRegion"];
+  identifier = [region identifier];
+  v11 = [identifier isEqual:@"UIStepperLeftPointerRegion"];
 
   if (v11)
   {
@@ -1195,8 +1195,8 @@ LABEL_19:
   }
 
   v13 = v12;
-  v14 = [(UIView *)self traitCollection];
-  [UISegmentedControl _cornerRadiusForTraitCollection:v14 size:0];
+  traitCollection = [(UIView *)self traitCollection];
+  [UISegmentedControl _cornerRadiusForTraitCollection:traitCollection size:0];
 
   [v13 frame];
   v15 = [UIPointerShape shapeWithRoundedRect:"shapeWithRoundedRect:cornerRadius:" cornerRadius:?];
@@ -1207,34 +1207,34 @@ LABEL_19:
   return v18;
 }
 
-- (void)pointerInteraction:(id)a3 willEnterRegion:(id)a4 animator:(id)a5
+- (void)pointerInteraction:(id)interaction willEnterRegion:(id)region animator:(id)animator
 {
-  v5 = [(UIView *)self->_middleView subviews:a3];
-  v6 = [v5 firstObject];
+  v5 = [(UIView *)self->_middleView subviews:interaction];
+  firstObject = [v5 firstObject];
 
-  if (v6)
+  if (firstObject)
   {
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __80__UIStepperHorizontalVisualElement_pointerInteraction_willEnterRegion_animator___block_invoke;
     v7[3] = &unk_1E70F3590;
-    v8 = v6;
+    v8 = firstObject;
     [UIView animateWithDuration:327716 delay:v7 options:0 animations:0.41 completion:0.0];
   }
 }
 
-- (void)pointerInteraction:(id)a3 willExitRegion:(id)a4 animator:(id)a5
+- (void)pointerInteraction:(id)interaction willExitRegion:(id)region animator:(id)animator
 {
-  v5 = [(UIView *)self->_middleView subviews:a3];
-  v6 = [v5 firstObject];
+  v5 = [(UIView *)self->_middleView subviews:interaction];
+  firstObject = [v5 firstObject];
 
-  if (v6)
+  if (firstObject)
   {
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __79__UIStepperHorizontalVisualElement_pointerInteraction_willExitRegion_animator___block_invoke;
     v7[3] = &unk_1E70F3590;
-    v8 = v6;
+    v8 = firstObject;
     [UIView animateWithDuration:327716 delay:v7 options:0 animations:0.41 completion:0.0];
   }
 }
@@ -1244,9 +1244,9 @@ LABEL_19:
   isRtoL = self->_isRtoL;
   if (isRtoL != [(UIView *)self _shouldReverseLayoutDirection])
   {
-    v4 = [(UIView *)self _shouldReverseLayoutDirection];
-    self->_isRtoL = v4;
-    if (v4)
+    _shouldReverseLayoutDirection = [(UIView *)self _shouldReverseLayoutDirection];
+    self->_isRtoL = _shouldReverseLayoutDirection;
+    if (_shouldReverseLayoutDirection)
     {
       v5 = 4;
     }
@@ -1256,7 +1256,7 @@ LABEL_19:
       v5 = 5;
     }
 
-    if (v4)
+    if (_shouldReverseLayoutDirection)
     {
       v6 = 5;
     }
@@ -1304,8 +1304,8 @@ LABEL_19:
 
   else
   {
-    v15 = [(UIView *)self traitCollection];
-    [UISegmentedControl _dividerWidthForTraitCollection:v15 size:0];
+    traitCollection = [(UIView *)self traitCollection];
+    [UISegmentedControl _dividerWidthForTraitCollection:traitCollection size:0];
     v14 = v16;
   }
 
@@ -1381,19 +1381,19 @@ LABEL_19:
   [(UIView *)self setSize:v20, v22];
 }
 
-- (void)setBackgroundImage:(id)a3 forState:(unint64_t)a4
+- (void)setBackgroundImage:(id)image forState:(unint64_t)state
 {
-  v6 = a3;
-  if (!v6)
+  imageCopy = image;
+  if (!imageCopy)
   {
     v7 = dyld_program_sdk_at_least();
-    if (a4 <= 3 && (v7 & 1) == 0)
+    if (state <= 3 && (v7 & 1) == 0)
     {
       +[UISegmentedControl _defaultHeight];
       v9 = v8;
-      v10 = [(UIView *)self traitCollection];
+      traitCollection = [(UIView *)self traitCollection];
       LODWORD(v33) = 0;
-      v6 = [UISegmentedControl _modernBackgroundSelected:0 shadow:0 maximumSize:(2u >> (a4 & 0xF)) & 1 highlighted:0 hasMaterial:v10 traitCollection:0 tintColor:94.0 size:v9, v33];
+      imageCopy = [UISegmentedControl _modernBackgroundSelected:0 shadow:0 maximumSize:(2u >> (state & 0xF)) & 1 highlighted:0 hasMaterial:traitCollection traitCollection:0 tintColor:94.0 size:v9, v33];
     }
   }
 
@@ -1419,28 +1419,28 @@ LABEL_19:
   }
 
   v13 = *(&self->super.super.super.isa + OBJC_IVAR___UIStepperHorizontalVisualElement__minimumValue[v12]);
-  if (v6)
+  if (imageCopy)
   {
-    if (([v6 _isResizable] & 1) == 0)
+    if (([imageCopy _isResizable] & 1) == 0)
     {
-      [v6 size];
+      [imageCopy size];
       v15 = v14 * 0.5;
-      [v6 size];
+      [imageCopy size];
       v17 = v15;
       v18 = (v16 * 0.5 + -1.0);
-      [v6 size];
+      [imageCopy size];
       v20 = v19 - v17 + -1.0;
-      [v6 size];
-      v22 = [v6 resizableImageWithCapInsets:{v17, v18, v20, v21 - v18 + -1.0}];
+      [imageCopy size];
+      v22 = [imageCopy resizableImageWithCapInsets:{v17, v18, v20, v21 - v18 + -1.0}];
 
-      v6 = v22;
+      imageCopy = v22;
     }
 
     +[UISegmentedControl _defaultHeight];
     v24 = v23;
-    [v6 size];
+    [imageCopy size];
     v26 = fmax(v25, 94.0);
-    [v6 size];
+    [imageCopy size];
     if (v24 < v27)
     {
       v24 = v27;
@@ -1448,25 +1448,25 @@ LABEL_19:
 
     v28 = v26 * 0.5;
     _UIGraphicsBeginImageContextWithOptions(0, 0, v26 * 0.5, v24, 0.0);
-    [v6 drawInRect:{0.0, 0.0, v28 + v28, v24}];
+    [imageCopy drawInRect:{0.0, 0.0, v28 + v28, v24}];
     v29 = _UIGraphicsGetImageFromCurrentImageContext(0);
-    v30 = [v29 imageWithRenderingMode:{objc_msgSend(v6, "renderingMode")}];
+    v30 = [v29 imageWithRenderingMode:{objc_msgSend(imageCopy, "renderingMode")}];
 
-    [v34 setBackgroundImage:v30 forState:a4];
+    [v34 setBackgroundImage:v30 forState:state];
     UIGraphicsEndImageContext();
     _UIGraphicsBeginImageContextWithOptions(0, 0, v26 * 0.5, v24, 0.0);
-    [v6 drawInRect:{-(v26 * 0.5), 0.0, v28 + v28, v24}];
+    [imageCopy drawInRect:{-(v26 * 0.5), 0.0, v28 + v28, v24}];
     v31 = _UIGraphicsGetImageFromCurrentImageContext(0);
-    v32 = [v31 imageWithRenderingMode:{objc_msgSend(v6, "renderingMode")}];
+    v32 = [v31 imageWithRenderingMode:{objc_msgSend(imageCopy, "renderingMode")}];
 
-    [v13 setBackgroundImage:v32 forState:a4];
+    [v13 setBackgroundImage:v32 forState:state];
     UIGraphicsEndImageContext();
   }
 
   else
   {
-    [v34 setBackgroundImage:0 forState:a4];
-    [v13 setBackgroundImage:0 forState:a4];
+    [v34 setBackgroundImage:0 forState:state];
+    [v13 setBackgroundImage:0 forState:state];
   }
 
   if (dyld_program_sdk_at_least())
@@ -1474,82 +1474,82 @@ LABEL_19:
     [(UIStepperHorizontalVisualElement *)self _updateBackgroundForButtonState];
   }
 
-  if (!a4)
+  if (!state)
   {
     [(UIView *)self setNeedsLayout];
   }
 }
 
-- (void)setDividerImage:(id)a3 forLeftSegmentState:(unint64_t)a4 rightSegmentState:(unint64_t)a5
+- (void)setDividerImage:(id)image forLeftSegmentState:(unint64_t)state rightSegmentState:(unint64_t)segmentState
 {
-  v11 = a3;
-  if (!v11)
+  imageCopy = image;
+  if (!imageCopy)
   {
     if (dyld_program_sdk_at_least())
     {
-      v11 = 0;
+      imageCopy = 0;
     }
 
     else
     {
-      v8 = [(UIView *)self traitCollection];
-      v11 = [UISegmentedControl _modernDividerImageBackground:1 traitCollection:v8 tintColor:0 size:0];
+      traitCollection = [(UIView *)self traitCollection];
+      imageCopy = [UISegmentedControl _modernDividerImageBackground:1 traitCollection:traitCollection tintColor:0 size:0];
     }
   }
 
   dividerImages = self->_dividerImages;
-  v10 = _UIStepperDividerKey(a4, a5);
-  [(NSMutableDictionary *)dividerImages setObject:v11 forKeyedSubscript:v10];
+  v10 = _UIStepperDividerKey(state, segmentState);
+  [(NSMutableDictionary *)dividerImages setObject:imageCopy forKeyedSubscript:v10];
 
   [(UIStepperHorizontalVisualElement *)self _updateDividerImageForButtonState];
-  if (!(a5 | a4))
+  if (!(segmentState | state))
   {
     [(UIView *)self setNeedsLayout];
   }
 }
 
-- (id)dividerImageForLeftSegmentState:(unint64_t)a3 rightSegmentState:(unint64_t)a4
+- (id)dividerImageForLeftSegmentState:(unint64_t)state rightSegmentState:(unint64_t)segmentState
 {
   dividerImages = self->_dividerImages;
-  v8 = _UIStepperDividerKey(a3, a4);
+  v8 = _UIStepperDividerKey(state, segmentState);
   v9 = [(NSMutableDictionary *)dividerImages objectForKey:v8];
 
   if (!v9)
   {
-    if ((a3 & 2) != 0)
+    if ((state & 2) != 0)
     {
-      v10 = 0;
+      stateCopy = 0;
     }
 
     else
     {
-      v10 = a3;
+      stateCopy = state;
     }
 
-    if ((a4 & 2) != 0)
+    if ((segmentState & 2) != 0)
     {
-      v11 = 0;
+      segmentStateCopy = 0;
     }
 
     else
     {
-      v11 = a4;
+      segmentStateCopy = segmentState;
     }
 
     v12 = self->_dividerImages;
-    v13 = _UIStepperDividerKey(v10, v11);
+    v13 = _UIStepperDividerKey(stateCopy, segmentStateCopy);
     v9 = [(NSMutableDictionary *)v12 objectForKey:v13];
   }
 
   return v9;
 }
 
-- (void)setIncrementImage:(id)a3 forState:(unint64_t)a4
+- (void)setIncrementImage:(id)image forState:(unint64_t)state
 {
-  v6 = a3;
-  if (v6 || a4)
+  imageCopy = image;
+  if (imageCopy || state)
   {
-    v9 = v6;
+    v9 = imageCopy;
     if (dyld_program_sdk_at_least())
     {
       [(UIButton *)self->_plusButton setTintColor:0];
@@ -1567,10 +1567,10 @@ LABEL_19:
     }
   }
 
-  [(UIButton *)self->_plusButton setImage:v9 forState:a4];
+  [(UIButton *)self->_plusButton setImage:v9 forState:state];
 }
 
-- (id)incrementImageForState:(unint64_t)a3
+- (id)incrementImageForState:(unint64_t)state
 {
   v4 = 5;
   if (self->_isRtoL)
@@ -1580,17 +1580,17 @@ LABEL_19:
 
   plusButton = self->_plusButton;
   v6 = *(&self->super.super.super.isa + OBJC_IVAR___UIStepperHorizontalVisualElement__minimumValue[v4]);
-  v7 = [(UIButton *)plusButton imageForState:a3];
+  v7 = [(UIButton *)plusButton imageForState:state];
 
   return v7;
 }
 
-- (void)setDecrementImage:(id)a3 forState:(unint64_t)a4
+- (void)setDecrementImage:(id)image forState:(unint64_t)state
 {
-  v6 = a3;
-  if (v6 || a4)
+  imageCopy = image;
+  if (imageCopy || state)
   {
-    v9 = v6;
+    v9 = imageCopy;
     if (dyld_program_sdk_at_least())
     {
       [(UIButton *)self->_minusButton setTintColor:0];
@@ -1608,14 +1608,14 @@ LABEL_19:
     }
   }
 
-  [(UIButton *)self->_minusButton setImage:v9 forState:a4];
+  [(UIButton *)self->_minusButton setImage:v9 forState:state];
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
   v4.receiver = self;
   v4.super_class = UIStepperHorizontalVisualElement;
-  [(UIView *)&v4 setTintColor:a3];
+  [(UIView *)&v4 setTintColor:color];
   [(UIStepperHorizontalVisualElement *)self _updateBackgroundForButtonState];
   [(UIStepperHorizontalVisualElement *)self _updateDividerImageForButtonState];
 }

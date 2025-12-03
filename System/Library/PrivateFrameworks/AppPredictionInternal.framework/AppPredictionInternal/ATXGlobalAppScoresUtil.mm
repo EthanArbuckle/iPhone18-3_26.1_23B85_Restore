@@ -1,16 +1,16 @@
 @interface ATXGlobalAppScoresUtil
-+ (id)initializeTrieAtPath:(id)a3;
-+ (id)normalizeValues:(id)a3;
-+ (int)dayOfWeekIndexFromDate:(id)a3;
-+ (int)locationTypeIndexFromRTLocationOfInterestType:(int64_t)a3;
-+ (int)timeOfDayIndexFromDate:(id)a3;
++ (id)initializeTrieAtPath:(id)path;
++ (id)normalizeValues:(id)values;
++ (int)dayOfWeekIndexFromDate:(id)date;
++ (int)locationTypeIndexFromRTLocationOfInterestType:(int64_t)type;
++ (int)timeOfDayIndexFromDate:(id)date;
 @end
 
 @implementation ATXGlobalAppScoresUtil
 
-+ (int)locationTypeIndexFromRTLocationOfInterestType:(int64_t)a3
++ (int)locationTypeIndexFromRTLocationOfInterestType:(int64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     v3 = 3;
   }
@@ -20,7 +20,7 @@
     v3 = 1;
   }
 
-  if (a3)
+  if (type)
   {
     return v3;
   }
@@ -31,31 +31,31 @@
   }
 }
 
-+ (int)dayOfWeekIndexFromDate:(id)a3
++ (int)dayOfWeekIndexFromDate:(id)date
 {
   v3 = MEMORY[0x277CBEA80];
-  v4 = a3;
-  v5 = [v3 currentCalendar];
-  v6 = [v5 components:544 fromDate:v4];
+  dateCopy = date;
+  currentCalendar = [v3 currentCalendar];
+  v6 = [currentCalendar components:544 fromDate:dateCopy];
 
-  LODWORD(v4) = [v6 weekday];
-  return v4;
+  LODWORD(dateCopy) = [v6 weekday];
+  return dateCopy;
 }
 
-+ (int)timeOfDayIndexFromDate:(id)a3
++ (int)timeOfDayIndexFromDate:(id)date
 {
   v3 = MEMORY[0x277CBEA80];
-  v4 = a3;
-  v5 = [v3 currentCalendar];
-  v6 = [v5 components:544 fromDate:v4];
+  dateCopy = date;
+  currentCalendar = [v3 currentCalendar];
+  v6 = [currentCalendar components:544 fromDate:dateCopy];
 
-  LODWORD(v4) = [v6 hour] / 4;
-  return v4 + 1;
+  LODWORD(dateCopy) = [v6 hour] / 4;
+  return dateCopy + 1;
 }
 
-+ (id)initializeTrieAtPath:(id)a3
++ (id)initializeTrieAtPath:(id)path
 {
-  v3 = [MEMORY[0x277CEB3C0] pathForResource:a3 ofType:@"trie" isDirectory:0];
+  v3 = [MEMORY[0x277CEB3C0] pathForResource:path ofType:@"trie" isDirectory:0];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x277D42558]) initWithPath:v3];
@@ -75,9 +75,9 @@
   return v4;
 }
 
-+ (id)normalizeValues:(id)a3
++ (id)normalizeValues:(id)values
 {
-  v3 = a3;
+  valuesCopy = values;
   v11[0] = 0;
   v11[1] = v11;
   v11[2] = 0x2020000000;
@@ -87,12 +87,12 @@
   v10[2] = __42__ATXGlobalAppScoresUtil_normalizeValues___block_invoke;
   v10[3] = &unk_27859DAB8;
   v10[4] = v11;
-  [v3 enumerateKeysAndObjectsUsingBlock:v10];
+  [valuesCopy enumerateKeysAndObjectsUsingBlock:v10];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__ATXGlobalAppScoresUtil_normalizeValues___block_invoke_2;
   v7[3] = &unk_27859DAE0;
-  v4 = v3;
+  v4 = valuesCopy;
   v8 = v4;
   v9 = v11;
   [v4 enumerateKeysAndObjectsUsingBlock:v7];

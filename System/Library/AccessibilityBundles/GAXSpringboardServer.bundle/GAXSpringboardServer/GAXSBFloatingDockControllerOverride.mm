@@ -1,16 +1,16 @@
 @interface GAXSBFloatingDockControllerOverride
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_canPresentFloatingDock;
-- (void)handlePresentFloatingDockHoverGesture:(id)a3;
+- (void)handlePresentFloatingDockHoverGesture:(id)gesture;
 @end
 
 @implementation GAXSBFloatingDockControllerOverride
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBFloatingDockController" hasInstanceMethod:@"_canPresentFloatingDock" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBFloatingDockController" hasInstanceMethod:@"handlePresentFloatingDockHoverGesture:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBFloatingDockController" hasInstanceMethod:@"_canPresentFloatingDock" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBFloatingDockController" hasInstanceMethod:@"handlePresentFloatingDockHoverGesture:" withFullSignature:{"v", "@", 0}];
 }
 
 - (BOOL)_canPresentFloatingDock
@@ -18,22 +18,22 @@
   v3 = +[GAXSpringboard sharedInstance];
   if ([v3 isActive])
   {
-    v4 = 0;
+    _canPresentFloatingDock = 0;
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = GAXSBFloatingDockControllerOverride;
-    v4 = [(GAXSBFloatingDockControllerOverride *)&v6 _canPresentFloatingDock];
+    _canPresentFloatingDock = [(GAXSBFloatingDockControllerOverride *)&v6 _canPresentFloatingDock];
   }
 
-  return v4;
+  return _canPresentFloatingDock;
 }
 
-- (void)handlePresentFloatingDockHoverGesture:(id)a3
+- (void)handlePresentFloatingDockHoverGesture:(id)gesture
 {
-  v4 = a3;
+  gestureCopy = gesture;
   v5 = +[GAXSpringboard sharedInstance];
   if ([v5 isActive])
   {
@@ -42,13 +42,13 @@
   else
   {
     v6 = +[GAXSpringboard sharedInstance];
-    v7 = [v6 isInWorkspace];
+    isInWorkspace = [v6 isInWorkspace];
 
-    if ((v7 & 1) == 0)
+    if ((isInWorkspace & 1) == 0)
     {
       v8.receiver = self;
       v8.super_class = GAXSBFloatingDockControllerOverride;
-      [(GAXSBFloatingDockControllerOverride *)&v8 handlePresentFloatingDockHoverGesture:v4];
+      [(GAXSBFloatingDockControllerOverride *)&v8 handlePresentFloatingDockHoverGesture:gestureCopy];
     }
   }
 }

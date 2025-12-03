@@ -1,15 +1,15 @@
 @interface CKSettingsSharedWithYouController
 - (CKSettingsSharedWithYouController)init;
-- (id)appIsEnabled:(id)a3;
+- (id)appIsEnabled:(id)enabled;
 - (id)getAppBundleIDsFromDefaults;
 - (id)getAppSpecifiers;
-- (id)sharedWithYouEnabled:(id)a3;
+- (id)sharedWithYouEnabled:(id)enabled;
 - (id)specifiers;
 - (void)postNotificationForAppEnablementChanges;
-- (void)setAppIsEnabled:(id)a3 specifier:(id)a4 shouldPostNotification:(id)a5;
-- (void)setSharedWithYouEnabled:(id)a3 specifier:(id)a4;
+- (void)setAppIsEnabled:(id)enabled specifier:(id)specifier shouldPostNotification:(id)notification;
+- (void)setSharedWithYouEnabled:(id)enabled specifier:(id)specifier;
 - (void)setupDefaultAppsIfRequired;
-- (void)updateAppPreferencesWith:(id)a3;
+- (void)updateAppPreferencesWith:(id)with;
 @end
 
 @implementation CKSettingsSharedWithYouController
@@ -52,23 +52,23 @@
     if (_os_feature_enabled_impl())
     {
       v11 = [MEMORY[0x277CEBE80] applicationWithBundleIdentifier:@"com.apple.MobileSMS"];
-      v12 = [v11 isLocked];
+      isLocked = [v11 isLocked];
 
-      if (v12)
+      if (isLocked)
       {
         [v9 setProperty:&unk_286A181E8 forKey:*MEMORY[0x277D3FF38]];
       }
     }
 
     [v5 addObject:v9];
-    v13 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
-    [v5 addObject:v13];
+    emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+    [v5 addObject:emptyGroupSpecifier];
 
     [(CKSettingsSharedWithYouController *)self setupDefaultAppsIfRequired];
-    v14 = [(CKSettingsSharedWithYouController *)self getAppSpecifiers];
-    if (v14)
+    getAppSpecifiers = [(CKSettingsSharedWithYouController *)self getAppSpecifiers];
+    if (getAppSpecifiers)
     {
-      [v5 addObjectsFromArray:v14];
+      [v5 addObjectsFromArray:getAppSpecifiers];
     }
 
     v15 = *(&self->super.super.super.super.super.isa + v3);
@@ -80,20 +80,20 @@
   return v4;
 }
 
-- (void)setSharedWithYouEnabled:(id)a3 specifier:(id)a4
+- (void)setSharedWithYouEnabled:(id)enabled specifier:(id)specifier
 {
   v5 = MEMORY[0x277D1A990];
-  v6 = a3;
-  v7 = [v5 sharedInstance];
-  [v7 setBool:objc_msgSend(v6 forDomain:"BOOLValue") forKey:{@"com.apple.SocialLayer", @"SharedWithYouEnabled"}];
+  enabledCopy = enabled;
+  sharedInstance = [v5 sharedInstance];
+  [sharedInstance setBool:objc_msgSend(enabledCopy forDomain:"BOOLValue") forKey:{@"com.apple.SocialLayer", @"SharedWithYouEnabled"}];
 
-  [(CKSettingsSharedWithYouController *)self updateAppPreferencesWith:v6];
-  v8 = [@"SLSharedWithYouSettingHasChanged" UTF8String];
+  [(CKSettingsSharedWithYouController *)self updateAppPreferencesWith:enabledCopy];
+  uTF8String = [@"SLSharedWithYouSettingHasChanged" UTF8String];
 
-  notify_post(v8);
+  notify_post(uTF8String);
 }
 
-- (id)sharedWithYouEnabled:(id)a3
+- (id)sharedWithYouEnabled:(id)enabled
 {
   if ([MEMORY[0x277D1A9A0] deviceIsLockedDown] & 1) != 0 || _os_feature_enabled_impl() && (objc_msgSend(MEMORY[0x277CEBE80], "applicationWithBundleIdentifier:", @"com.apple.MobileSMS"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "isLocked"), v4, (v5))
   {
@@ -102,8 +102,8 @@
 
   else
   {
-    v6 = [MEMORY[0x277D1A990] sharedInstance];
-    v7 = [v6 getBoolFromDomain:@"com.apple.SocialLayer" forKey:@"SharedWithYouEnabled"];
+    mEMORY[0x277D1A990] = [MEMORY[0x277D1A990] sharedInstance];
+    v7 = [mEMORY[0x277D1A990] getBoolFromDomain:@"com.apple.SocialLayer" forKey:@"SharedWithYouEnabled"];
 
     v3 = [MEMORY[0x277CCABB0] numberWithBool:v7];
   }
@@ -111,11 +111,11 @@
   return v3;
 }
 
-- (void)updateAppPreferencesWith:(id)a3
+- (void)updateAppPreferencesWith:(id)with
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D1A990] sharedInstance];
-  v6 = [v5 getValueFromDomain:@"com.apple.SocialLayer" forKey:@"SharedWithYouApps"];
+  withCopy = with;
+  mEMORY[0x277D1A990] = [MEMORY[0x277D1A990] sharedInstance];
+  v6 = [mEMORY[0x277D1A990] getValueFromDomain:@"com.apple.SocialLayer" forKey:@"SharedWithYouApps"];
   v7 = [v6 mutableCopy];
 
   v11 = 0;
@@ -123,7 +123,7 @@
   v13 = 0x3032000000;
   v14 = __Block_byref_object_copy_;
   v15 = __Block_byref_object_dispose_;
-  v16 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if (v7)
   {
     v8[0] = MEMORY[0x277D85DD0];
@@ -131,7 +131,7 @@
     v8[2] = __62__CKSettingsSharedWithYouController_updateAppPreferencesWith___block_invoke;
     v8[3] = &unk_2798C4840;
     v8[4] = self;
-    v9 = v4;
+    v9 = withCopy;
     v10 = &v11;
     [v7 enumerateKeysAndObjectsUsingBlock:v8];
   }
@@ -170,22 +170,22 @@ void __62__CKSettingsSharedWithYouController_updateAppPreferencesWith___block_in
 - (void)setupDefaultAppsIfRequired
 {
   v55 = *MEMORY[0x277D85DE8];
-  v3 = [(CKSettingsSharedWithYouController *)self getAppBundleIDsFromDefaults];
-  v4 = [MEMORY[0x277D1AC40] sharedManager];
-  v5 = [objc_msgSend(v4 performSelector:{sel_defaultAppBundleIDs), "mutableCopy"}];
+  getAppBundleIDsFromDefaults = [(CKSettingsSharedWithYouController *)self getAppBundleIDsFromDefaults];
+  mEMORY[0x277D1AC40] = [MEMORY[0x277D1AC40] sharedManager];
+  v5 = [objc_msgSend(mEMORY[0x277D1AC40] performSelector:{sel_defaultAppBundleIDs), "mutableCopy"}];
 
-  v6 = [MEMORY[0x277D1A990] sharedInstance];
-  v7 = [v6 getBoolFromDomain:@"com.apple.SocialLayer" forKey:@"SharedWithYouEnabled"];
+  mEMORY[0x277D1A990] = [MEMORY[0x277D1A990] sharedInstance];
+  v7 = [mEMORY[0x277D1A990] getBoolFromDomain:@"com.apple.SocialLayer" forKey:@"SharedWithYouEnabled"];
 
-  if (![v3 count])
+  if (![getAppBundleIDsFromDefaults count])
   {
     v8 = v5;
     v50 = 0u;
     v51 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v9 = [MEMORY[0x277D1AC40] onboardingAppBundleIDs];
-    v10 = [v9 countByEnumeratingWithState:&v48 objects:v54 count:16];
+    onboardingAppBundleIDs = [MEMORY[0x277D1AC40] onboardingAppBundleIDs];
+    v10 = [onboardingAppBundleIDs countByEnumeratingWithState:&v48 objects:v54 count:16];
     if (v10)
     {
       v11 = v10;
@@ -196,13 +196,13 @@ void __62__CKSettingsSharedWithYouController_updateAppPreferencesWith___block_in
         {
           if (*v49 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(onboardingAppBundleIDs);
           }
 
           [MEMORY[0x277D1AC40] setSharedWithYouEnabled:v7 forApplicationWithBundleID:*(*(&v48 + 1) + 8 * i)];
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v48 objects:v54 count:16];
+        v11 = [onboardingAppBundleIDs countByEnumeratingWithState:&v48 objects:v54 count:16];
       }
 
       while (v11);
@@ -211,9 +211,9 @@ void __62__CKSettingsSharedWithYouController_updateAppPreferencesWith___block_in
     v5 = v8;
   }
 
-  v14 = [(CKSettingsSharedWithYouController *)self getAppBundleIDsFromDefaults];
+  getAppBundleIDsFromDefaults2 = [(CKSettingsSharedWithYouController *)self getAppBundleIDsFromDefaults];
 
-  v15 = [MEMORY[0x277CBEB98] setWithArray:v14];
+  v15 = [MEMORY[0x277CBEB98] setWithArray:getAppBundleIDsFromDefaults2];
   v16 = [v15 count];
   v39 = v5;
   v17 = [MEMORY[0x277CBEB98] setWithArray:v5];
@@ -222,12 +222,12 @@ void __62__CKSettingsSharedWithYouController_updateAppPreferencesWith___block_in
   if (v16 < v18)
   {
     NSLog(&cfstr_MessagesSettin.isa);
-    v19 = [MEMORY[0x277D1AC40] collaborationAppBundleIDs];
+    collaborationAppBundleIDs = [MEMORY[0x277D1AC40] collaborationAppBundleIDs];
     v44 = 0u;
     v45 = 0u;
     v46 = 0u;
     v47 = 0u;
-    v20 = [v19 countByEnumeratingWithState:&v44 objects:v53 count:16];
+    v20 = [collaborationAppBundleIDs countByEnumeratingWithState:&v44 objects:v53 count:16];
     if (v20)
     {
       v21 = v20;
@@ -238,29 +238,29 @@ void __62__CKSettingsSharedWithYouController_updateAppPreferencesWith___block_in
         {
           if (*v45 != v22)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(collaborationAppBundleIDs);
           }
 
           [MEMORY[0x277D1AC40] setSharedWithYouEnabled:v7 forApplicationWithBundleID:*(*(&v44 + 1) + 8 * j)];
         }
 
-        v21 = [v19 countByEnumeratingWithState:&v44 objects:v53 count:16];
+        v21 = [collaborationAppBundleIDs countByEnumeratingWithState:&v44 objects:v53 count:16];
       }
 
       while (v21);
     }
   }
 
-  v24 = [(CKSettingsSharedWithYouController *)self getAppBundleIDsFromDefaults];
+  getAppBundleIDsFromDefaults3 = [(CKSettingsSharedWithYouController *)self getAppBundleIDsFromDefaults];
 
-  v25 = [v24 count];
+  v25 = [getAppBundleIDsFromDefaults3 count];
   v26 = v39;
   if (v25 < [v39 count])
   {
-    [v39 removeObjectsInArray:v24];
+    [v39 removeObjectsInArray:getAppBundleIDsFromDefaults3];
     if ([v39 count])
     {
-      v38 = v24;
+      v38 = getAppBundleIDsFromDefaults3;
       v42 = 0u;
       v43 = 0u;
       v40 = 0u;
@@ -283,13 +283,13 @@ void __62__CKSettingsSharedWithYouController_updateAppPreferencesWith___block_in
             v32 = *(*(&v40 + 1) + 8 * k);
             if (v7)
             {
-              v33 = [MEMORY[0x277D1A990] sharedInstance];
-              v34 = [v33 getValueFromDomain:@"com.apple.SocialLayer" forKey:@"SharedWithYouApps"];
+              mEMORY[0x277D1A990]2 = [MEMORY[0x277D1A990] sharedInstance];
+              v34 = [mEMORY[0x277D1A990]2 getValueFromDomain:@"com.apple.SocialLayer" forKey:@"SharedWithYouApps"];
 
               v35 = [v34 valueForKey:v32];
-              v36 = [v35 BOOLValue];
+              bOOLValue = [v35 BOOLValue];
 
-              [MEMORY[0x277D1AC40] setSharedWithYouEnabled:v36 forApplicationWithBundleID:v32];
+              [MEMORY[0x277D1AC40] setSharedWithYouEnabled:bOOLValue forApplicationWithBundleID:v32];
             }
 
             else
@@ -304,7 +304,7 @@ void __62__CKSettingsSharedWithYouController_updateAppPreferencesWith___block_in
         while (v29);
       }
 
-      v24 = v38;
+      getAppBundleIDsFromDefaults3 = v38;
       v26 = v39;
     }
   }
@@ -322,12 +322,12 @@ void __62__CKSettingsSharedWithYouController_updateAppPreferencesWith___block_in
 
   v26 = v2;
   [v2 addObject:v5];
-  v6 = [MEMORY[0x277D1AC40] sharedManager];
-  v7 = [v6 performSelector:sel_sharedWithYouApps];
+  mEMORY[0x277D1AC40] = [MEMORY[0x277D1AC40] sharedManager];
+  v7 = [mEMORY[0x277D1AC40] performSelector:sel_sharedWithYouApps];
 
   v25 = v7;
-  v8 = [v7 allKeys];
-  v9 = [v8 sortedArrayUsingSelector:sel_localizedCaseInsensitiveCompare_];
+  allKeys = [v7 allKeys];
+  v9 = [allKeys sortedArrayUsingSelector:sel_localizedCaseInsensitiveCompare_];
 
   if ([v9 count])
   {
@@ -388,85 +388,85 @@ void __62__CKSettingsSharedWithYouController_updateAppPreferencesWith___block_in
 
 - (id)getAppBundleIDsFromDefaults
 {
-  v2 = [MEMORY[0x277D1A990] sharedInstance];
-  v3 = [v2 getValueFromDomain:@"com.apple.SocialLayer" forKey:@"SharedWithYouApps"];
+  mEMORY[0x277D1A990] = [MEMORY[0x277D1A990] sharedInstance];
+  v3 = [mEMORY[0x277D1A990] getValueFromDomain:@"com.apple.SocialLayer" forKey:@"SharedWithYouApps"];
   v4 = [v3 mutableCopy];
 
-  v5 = [v4 allKeys];
+  allKeys = [v4 allKeys];
 
-  return v5;
+  return allKeys;
 }
 
-- (void)setAppIsEnabled:(id)a3 specifier:(id)a4 shouldPostNotification:(id)a5
+- (void)setAppIsEnabled:(id)enabled specifier:(id)specifier shouldPostNotification:(id)notification
 {
-  v22 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x277D1A990] sharedInstance];
-  v11 = [v10 getValueFromDomain:@"com.apple.SocialLayer" forKey:@"SharedWithYouApps"];
-  v12 = [v11 mutableCopy];
+  enabledCopy = enabled;
+  specifierCopy = specifier;
+  notificationCopy = notification;
+  mEMORY[0x277D1A990] = [MEMORY[0x277D1A990] sharedInstance];
+  v11 = [mEMORY[0x277D1A990] getValueFromDomain:@"com.apple.SocialLayer" forKey:@"SharedWithYouApps"];
+  dictionary = [v11 mutableCopy];
 
-  if (!v12)
+  if (!dictionary)
   {
-    v12 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
   }
 
-  v13 = [v8 identifier];
-  v14 = [v13 length];
+  identifier = [specifierCopy identifier];
+  v14 = [identifier length];
 
   if (v14)
   {
-    v15 = [v8 identifier];
-    [v12 setValue:v22 forKey:v15];
+    identifier2 = [specifierCopy identifier];
+    [dictionary setValue:enabledCopy forKey:identifier2];
   }
 
-  v16 = [MEMORY[0x277D1A990] sharedInstance];
-  v17 = [v12 copy];
-  [v16 setValue:v17 forDomain:@"com.apple.SocialLayer" forKey:@"SharedWithYouApps"];
+  mEMORY[0x277D1A990]2 = [MEMORY[0x277D1A990] sharedInstance];
+  v17 = [dictionary copy];
+  [mEMORY[0x277D1A990]2 setValue:v17 forDomain:@"com.apple.SocialLayer" forKey:@"SharedWithYouApps"];
 
   v18 = *MEMORY[0x277D3FF38];
-  v19 = [v8 propertyForKey:*MEMORY[0x277D3FF38]];
+  v19 = [specifierCopy propertyForKey:*MEMORY[0x277D3FF38]];
   v20 = v19;
-  if (!v19 || (v21 = [v19 BOOLValue], v21 != objc_msgSend(v22, "BOOLValue")))
+  if (!v19 || (v21 = [v19 BOOLValue], v21 != objc_msgSend(enabledCopy, "BOOLValue")))
   {
-    [v8 setProperty:v22 forKey:v18];
+    [specifierCopy setProperty:enabledCopy forKey:v18];
   }
 
-  if (!v9 || [v9 BOOLValue])
+  if (!notificationCopy || [notificationCopy BOOLValue])
   {
     [(CKSettingsSharedWithYouController *)self postNotificationForAppEnablementChanges];
   }
 }
 
-- (id)appIsEnabled:(id)a3
+- (id)appIsEnabled:(id)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v4 = [MEMORY[0x277CCABB0] numberWithBool:0];
   if ([MEMORY[0x277D1A9A0] deviceIsLockedDown] || _os_feature_enabled_impl() && (objc_msgSend(MEMORY[0x277CEBE80], "applicationWithBundleIdentifier:", @"com.apple.MobileSMS"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isLocked"), v5, v6))
   {
-    [v3 setProperty:&unk_286A181E8 forKey:*MEMORY[0x277D3FF38]];
+    [enabledCopy setProperty:&unk_286A181E8 forKey:*MEMORY[0x277D3FF38]];
   }
 
   else
   {
-    v7 = [MEMORY[0x277D1A990] sharedInstance];
-    v8 = [v7 getBoolFromDomain:@"com.apple.SocialLayer" forKey:@"SharedWithYouEnabled"];
+    mEMORY[0x277D1A990] = [MEMORY[0x277D1A990] sharedInstance];
+    v8 = [mEMORY[0x277D1A990] getBoolFromDomain:@"com.apple.SocialLayer" forKey:@"SharedWithYouEnabled"];
 
     if (v8)
     {
-      v9 = [v3 identifier];
-      v10 = [MEMORY[0x277D1A990] sharedInstance];
-      v11 = [v10 getValueFromDomain:@"com.apple.SocialLayer" forKey:@"SharedWithYouApps"];
+      identifier = [enabledCopy identifier];
+      mEMORY[0x277D1A990]2 = [MEMORY[0x277D1A990] sharedInstance];
+      v11 = [mEMORY[0x277D1A990]2 getValueFromDomain:@"com.apple.SocialLayer" forKey:@"SharedWithYouApps"];
 
-      v12 = [v11 valueForKey:v9];
+      v12 = [v11 valueForKey:identifier];
 
       v4 = v12;
     }
 
     else
     {
-      v9 = [MEMORY[0x277CCABB0] numberWithBool:0];
-      [v3 setProperty:v9 forKey:*MEMORY[0x277D3FF38]];
+      identifier = [MEMORY[0x277CCABB0] numberWithBool:0];
+      [enabledCopy setProperty:identifier forKey:*MEMORY[0x277D3FF38]];
     }
   }
 
@@ -477,9 +477,9 @@ void __62__CKSettingsSharedWithYouController_updateAppPreferencesWith___block_in
 
 - (void)postNotificationForAppEnablementChanges
 {
-  v2 = [@"SLSharedWithYouAppSettingHasChanged" UTF8String];
+  uTF8String = [@"SLSharedWithYouAppSettingHasChanged" UTF8String];
 
-  notify_post(v2);
+  notify_post(uTF8String);
 }
 
 @end

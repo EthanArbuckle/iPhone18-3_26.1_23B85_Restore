@@ -1,8 +1,8 @@
 @interface HMAccessorySettingFetchResult
-+ (id)fetchResultsWithKeyPaths:(id)a3 failureType:(int64_t)a4;
++ (id)fetchResultsWithKeyPaths:(id)paths failureType:(int64_t)type;
 + (id)shortDescription;
-- (HMAccessorySettingFetchResult)initWithKeyPath:(id)a3 setting:(id)a4 failureType:(int64_t)a5;
-- (HMAccessorySettingFetchResult)initWithSetting:(id)a3;
+- (HMAccessorySettingFetchResult)initWithKeyPath:(id)path setting:(id)setting failureType:(int64_t)type;
+- (HMAccessorySettingFetchResult)initWithSetting:(id)setting;
 - (NSArray)attributeDescriptions;
 - (NSError)error;
 - (NSString)shortDescription;
@@ -14,11 +14,11 @@
 {
   v15[3] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v4 = [(HMAccessorySettingFetchResult *)self keyPath];
-  v5 = [v3 initWithName:@"keyPath" value:v4];
+  keyPath = [(HMAccessorySettingFetchResult *)self keyPath];
+  v5 = [v3 initWithName:@"keyPath" value:keyPath];
   v6 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v7 = [(HMAccessorySettingFetchResult *)self setting];
-  v8 = [v6 initWithName:@"setting" value:v7];
+  setting = [(HMAccessorySettingFetchResult *)self setting];
+  v8 = [v6 initWithName:@"setting" value:setting];
   v15[1] = v8;
   v9 = objc_alloc(MEMORY[0x1E69A29C8]);
   v10 = HMAccessorySettingsPartialFetchFailureTypeToString([(HMAccessorySettingFetchResult *)self failureType]);
@@ -40,24 +40,24 @@
 
 - (NSError)error
 {
-  v3 = [(HMAccessorySettingFetchResult *)self setting];
+  setting = [(HMAccessorySettingFetchResult *)self setting];
 
-  if (v3)
+  if (setting)
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(HMAccessorySettingFetchResult *)self failureType];
-    if (v5 > 3)
+    failureType = [(HMAccessorySettingFetchResult *)self failureType];
+    if (failureType > 3)
     {
       v6 = 15;
     }
 
     else
     {
-      v6 = qword_19BE37740[v5];
+      v6 = qword_19BE37740[failureType];
     }
 
     v4 = [MEMORY[0x1E696ABC0] hmfErrorWithCode:v6];
@@ -66,22 +66,22 @@
   return v4;
 }
 
-- (HMAccessorySettingFetchResult)initWithKeyPath:(id)a3 setting:(id)a4 failureType:(int64_t)a5
+- (HMAccessorySettingFetchResult)initWithKeyPath:(id)path setting:(id)setting failureType:(int64_t)type
 {
-  v9 = a3;
-  v10 = a4;
-  if (v9)
+  pathCopy = path;
+  settingCopy = setting;
+  if (pathCopy)
   {
-    v11 = v10;
+    v11 = settingCopy;
     v19.receiver = self;
     v19.super_class = HMAccessorySettingFetchResult;
     v12 = [(HMAccessorySettingFetchResult *)&v19 init];
     v13 = v12;
     if (v12)
     {
-      objc_storeStrong(&v12->_keyPath, a3);
-      objc_storeStrong(&v13->_setting, a4);
-      v13->_failureType = a5;
+      objc_storeStrong(&v12->_keyPath, path);
+      objc_storeStrong(&v13->_setting, setting);
+      v13->_failureType = type;
     }
 
     return v13;
@@ -94,14 +94,14 @@
   }
 }
 
-- (HMAccessorySettingFetchResult)initWithSetting:(id)a3
+- (HMAccessorySettingFetchResult)initWithSetting:(id)setting
 {
-  v4 = a3;
-  if (v4)
+  settingCopy = setting;
+  if (settingCopy)
   {
-    v5 = v4;
-    v6 = [v4 keyPath];
-    v7 = [(HMAccessorySettingFetchResult *)self initWithKeyPath:v6 setting:v5 failureType:0];
+    v5 = settingCopy;
+    keyPath = [settingCopy keyPath];
+    v7 = [(HMAccessorySettingFetchResult *)self initWithKeyPath:keyPath setting:v5 failureType:0];
 
     return v7;
   }
@@ -120,14 +120,14 @@
   return NSStringFromClass(v2);
 }
 
-+ (id)fetchResultsWithKeyPaths:(id)a3 failureType:(int64_t)a4
++ (id)fetchResultsWithKeyPaths:(id)paths failureType:(int64_t)type
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __70__HMAccessorySettingFetchResult_fetchResultsWithKeyPaths_failureType___block_invoke;
   v6[3] = &__block_descriptor_40_e49___HMAccessorySettingFetchResult_16__0__NSString_8l;
-  v6[4] = a4;
-  v4 = [a3 na_map:v6];
+  v6[4] = type;
+  v4 = [paths na_map:v6];
 
   return v4;
 }

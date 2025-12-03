@@ -1,7 +1,7 @@
 @interface MSUBrainDelegateImpl_softwareupdated
 + (id)sharedInstance;
 - (MSUBrainDelegateImpl_softwareupdated)init;
-- (void)_nsxpcInvoke:(id)a3 args:(id)a4 options:(id)a5 completion:(id)a6;
+- (void)_nsxpcInvoke:(id)invoke args:(id)args options:(id)options completion:(id)completion;
 - (void)connectionInterrupted;
 - (void)connectionInvalidated;
 @end
@@ -50,12 +50,12 @@
   }
 }
 
-- (void)_nsxpcInvoke:(id)a3 args:(id)a4 options:(id)a5 completion:(id)a6
+- (void)_nsxpcInvoke:(id)invoke args:(id)args options:(id)options completion:(id)completion
 {
-  if (a6)
+  if (completion)
   {
-    v8 = [NSString stringWithFormat:@"%s not implemented", a4, a5, "[MSUBrainDelegateImpl_softwareupdated _nsxpcInvoke:args:options:completion:]", NSDebugDescriptionErrorKey];
-    (*(a6 + 2))(a6, [NSError errorWithDomain:@"MobileSoftwareUpdateErrorDomain" code:1300 userInfo:[NSDictionary dictionaryWithObjects:&v8 forKeys:&v7 count:1]], 0);
+    nSDebugDescriptionErrorKey = [NSString stringWithFormat:@"%s not implemented", args, options, "[MSUBrainDelegateImpl_softwareupdated _nsxpcInvoke:args:options:completion:]", NSDebugDescriptionErrorKey];
+    (*(completion + 2))(completion, [NSError errorWithDomain:@"MobileSoftwareUpdateErrorDomain" code:1300 userInfo:[NSDictionary dictionaryWithObjects:&nSDebugDescriptionErrorKey forKeys:&v7 count:1]], 0);
   }
 }
 

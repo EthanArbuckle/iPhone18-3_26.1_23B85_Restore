@@ -6,7 +6,7 @@
 
 - (id)timerManagerServiceConnection
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1D1846088();
 
   return v3;

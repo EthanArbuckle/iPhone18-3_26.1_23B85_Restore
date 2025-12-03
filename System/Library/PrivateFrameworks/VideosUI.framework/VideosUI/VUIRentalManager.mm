@@ -2,16 +2,16 @@
 + (id)sharedInstance;
 - (BOOL)_areDownloadManagersInitialized;
 - (id)_init;
-- (void)_activeAccountDidChange:(id)a3;
+- (void)_activeAccountDidChange:(id)change;
 - (void)_checkInRentalsNeedingCheckIn;
-- (void)_didFetchInitialStoreDownloads:(id)a3;
-- (void)_networkReachbilityDidChange:(id)a3;
+- (void)_didFetchInitialStoreDownloads:(id)downloads;
+- (void)_networkReachbilityDidChange:(id)change;
 - (void)_sendPlaybackStartDatesToServerIfNecessary;
-- (void)checkInRentalWithID:(id)a3 dsid:(id)a4 completion:(id)a5;
-- (void)checkOutRentalWithID:(id)a3 dsid:(id)a4 checkoutType:(unint64_t)a5 startPlaybackClock:(BOOL)a6 completion:(id)a7;
+- (void)checkInRentalWithID:(id)d dsid:(id)dsid completion:(id)completion;
+- (void)checkOutRentalWithID:(id)d dsid:(id)dsid checkoutType:(unint64_t)type startPlaybackClock:(BOOL)clock completion:(id)completion;
 - (void)dealloc;
-- (void)downloadManager:(id)a3 downloadDidFinish:(id)a4;
-- (void)downloadManagerDidBecomeInitialized:(id)a3;
+- (void)downloadManager:(id)manager downloadDidFinish:(id)finish;
+- (void)downloadManagerDidBecomeInitialized:(id)initialized;
 - (void)initializeRentals;
 @end
 
@@ -63,15 +63,15 @@ void __34__VUIRentalManager_sharedInstance__block_invoke()
     v16 = &unk_1E872E4B8;
     objc_copyWeak(&v17, &location);
     dispatch_async(v7, &v13);
-    v8 = [MEMORY[0x1E69709A8] sharedManager];
-    [v8 addObserver:v2 forDownloads:0];
+    mEMORY[0x1E69709A8] = [MEMORY[0x1E69709A8] sharedManager];
+    [mEMORY[0x1E69709A8] addObserver:v2 forDownloads:0];
 
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v10 = +[_TtC8VideosUI38VUINetworkReachabilityMonitorObjCProxy networkReachabilityDidChangeNotificationName];
-    [v9 addObserver:v2 selector:sel__networkReachbilityDidChange_ name:v10 object:0];
+    [defaultCenter addObserver:v2 selector:sel__networkReachbilityDidChange_ name:v10 object:0];
 
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v11 addObserver:v2 selector:sel__activeAccountDidChange_ name:*MEMORY[0x1E69D4A40] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel__activeAccountDidChange_ name:*MEMORY[0x1E69D4A40] object:0];
 
     objc_destroyWeak(&v17);
     objc_destroyWeak(&location);
@@ -132,8 +132,8 @@ void __25__VUIRentalManager__init__block_invoke(uint64_t a1)
     v4 = +[VUIDownloadManager sharedInstance];
     [v4 addDelegate:self];
 
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:self selector:sel__didFetchInitialStoreDownloads_ name:*MEMORY[0x1E69703A8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__didFetchInitialStoreDownloads_ name:*MEMORY[0x1E69703A8] object:0];
 
     if ([(VUIRentalManager *)self _areDownloadManagersInitialized])
     {
@@ -157,12 +157,12 @@ void __25__VUIRentalManager__init__block_invoke(uint64_t a1)
 {
   if ([(VUIRentalManager *)self needToSendPlaybackStartDatesToServer]&& +[_TtC8VideosUI38VUINetworkReachabilityMonitorObjCProxy isNetworkReachable])
   {
-    v3 = [MEMORY[0x1E69D5920] activeAccount];
-    v4 = [v3 ams_DSID];
+    activeAccount = [MEMORY[0x1E69D5920] activeAccount];
+    ams_DSID = [activeAccount ams_DSID];
 
-    if (v4 && [v4 unsignedLongLongValue])
+    if (ams_DSID && [ams_DSID unsignedLongLongValue])
     {
-      v5 = [objc_alloc(MEMORY[0x1E69D49D0]) initWithAccountIdentifier:v4];
+      v5 = [objc_alloc(MEMORY[0x1E69D49D0]) initWithAccountIdentifier:ams_DSID];
       objc_initWeak(location, self);
       v6 = sLogObject_21;
       if (os_log_type_enabled(sLogObject_21, OS_LOG_TYPE_DEFAULT))
@@ -205,29 +205,29 @@ void __25__VUIRentalManager__init__block_invoke(uint64_t a1)
 
 - (BOOL)_areDownloadManagersInitialized
 {
-  v2 = [MEMORY[0x1E69709A8] sharedManager];
-  if ([v2 hasFetchedInitialDownloads])
+  mEMORY[0x1E69709A8] = [MEMORY[0x1E69709A8] sharedManager];
+  if ([mEMORY[0x1E69709A8] hasFetchedInitialDownloads])
   {
     v3 = +[VUIDownloadManager sharedInstance];
-    v4 = [v3 isInitialized];
+    isInitialized = [v3 isInitialized];
   }
 
   else
   {
-    v4 = 0;
+    isInitialized = 0;
   }
 
-  return v4;
+  return isInitialized;
 }
 
 - (void)_checkInRentalsNeedingCheckIn
 {
   v57 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69D5920] activeAccount];
+  activeAccount = [MEMORY[0x1E69D5920] activeAccount];
 
   v4 = sLogObject_21;
   v5 = os_log_type_enabled(sLogObject_21, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (activeAccount)
   {
     if (v5)
     {
@@ -235,29 +235,29 @@ void __25__VUIRentalManager__init__block_invoke(uint64_t a1)
       _os_log_impl(&dword_1E323F000, v4, OS_LOG_TYPE_DEFAULT, "Looking for rentals that should not be checked out", &buf, 2u);
     }
 
-    v32 = [MEMORY[0x1E6970618] movieRentalsQuery];
-    [v32 setIgnoreSystemFilterPredicates:1];
-    v33 = [MEMORY[0x1E695DF70] array];
+    movieRentalsQuery = [MEMORY[0x1E6970618] movieRentalsQuery];
+    [movieRentalsQuery setIgnoreSystemFilterPredicates:1];
+    array = [MEMORY[0x1E695DF70] array];
     [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
     v6 = MEMORY[0x1E6970610];
     v7 = [MEMORY[0x1E696AD98] numberWithDouble:?];
     v31 = [v6 predicateWithValue:v7 forProperty:*MEMORY[0x1E696FAE8] comparisonType:101];
 
-    [v33 addObject:v31];
+    [array addObject:v31];
     v30 = [MEMORY[0x1E6970610] predicateWithValue:MEMORY[0x1E695E110] forProperty:*MEMORY[0x1E696FA48] comparisonType:0];
-    [v33 addObject:v30];
+    [array addObject:v30];
     v8 = MEMORY[0x1E6970598];
-    v9 = [v33 copy];
+    v9 = [array copy];
     v29 = [v8 predicateMatchingPredicates:v9];
 
-    [v32 addFilterPredicate:v29];
-    v10 = [MEMORY[0x1E695DF70] array];
-    v11 = [v32 items];
+    [movieRentalsQuery addFilterPredicate:v29];
+    array2 = [MEMORY[0x1E695DF70] array];
+    items = [movieRentalsQuery items];
     v12 = sLogObject_21;
     if (os_log_type_enabled(sLogObject_21, OS_LOG_TYPE_DEFAULT))
     {
       v13 = v12;
-      v14 = [v11 count];
+      v14 = [items count];
       LODWORD(buf) = 134217984;
       *(&buf + 4) = v14;
       _os_log_impl(&dword_1E323F000, v13, OS_LOG_TYPE_DEFAULT, "Found %lu unexpired rentals", &buf, 0xCu);
@@ -267,7 +267,7 @@ void __25__VUIRentalManager__init__block_invoke(uint64_t a1)
     v51 = 0u;
     v48 = 0u;
     v49 = 0u;
-    obj = v11;
+    obj = items;
     v15 = [obj countByEnumeratingWithState:&v48 objects:v56 count:16];
     if (v15)
     {
@@ -284,7 +284,7 @@ void __25__VUIRentalManager__init__block_invoke(uint64_t a1)
           v18 = *(*(&v48 + 1) + 8 * i);
           if (([v18 vui_isDownloadedOrDownloadingOrEnqueued] & 1) == 0)
           {
-            [v10 addObject:v18];
+            [array2 addObject:v18];
           }
         }
 
@@ -304,7 +304,7 @@ void __25__VUIRentalManager__init__block_invoke(uint64_t a1)
     v46 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v34 = v10;
+    v34 = array2;
     v20 = [v34 countByEnumeratingWithState:&v43 objects:v52 count:16];
     if (v20)
     {
@@ -388,27 +388,27 @@ void __25__VUIRentalManager__init__block_invoke_2(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = VUIRentalManager;
   [(VUIRentalManager *)&v4 dealloc];
 }
 
-- (void)checkOutRentalWithID:(id)a3 dsid:(id)a4 checkoutType:(unint64_t)a5 startPlaybackClock:(BOOL)a6 completion:(id)a7
+- (void)checkOutRentalWithID:(id)d dsid:(id)dsid checkoutType:(unint64_t)type startPlaybackClock:(BOOL)clock completion:(id)completion
 {
-  v8 = a6;
+  clockCopy = clock;
   v29 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
-  if (!v13 || ![v13 unsignedLongLongValue])
+  dCopy = d;
+  dsidCopy = dsid;
+  completionCopy = completion;
+  if (!dsidCopy || ![dsidCopy unsignedLongLongValue])
   {
     if (os_log_type_enabled(sLogObject_21, OS_LOG_TYPE_ERROR))
     {
       [VUIRentalManager checkOutRentalWithID:dsid:checkoutType:startPlaybackClock:completion:];
-      if (!v14)
+      if (!completionCopy)
       {
         goto LABEL_19;
       }
@@ -419,12 +419,12 @@ void __25__VUIRentalManager__init__block_invoke_2(uint64_t a1)
     goto LABEL_17;
   }
 
-  if (!v12 || ![v12 unsignedLongLongValue])
+  if (!dCopy || ![dCopy unsignedLongLongValue])
   {
     if (os_log_type_enabled(sLogObject_21, OS_LOG_TYPE_ERROR))
     {
       [VUIRentalManager checkOutRentalWithID:dsid:checkoutType:startPlaybackClock:completion:];
-      if (!v14)
+      if (!completionCopy)
       {
         goto LABEL_19;
       }
@@ -433,7 +433,7 @@ void __25__VUIRentalManager__init__block_invoke_2(uint64_t a1)
     }
 
 LABEL_17:
-    if (!v14)
+    if (!completionCopy)
     {
       goto LABEL_19;
     }
@@ -441,7 +441,7 @@ LABEL_17:
 LABEL_18:
     v19 = objc_alloc(MEMORY[0x1E696ABC0]);
     v20 = [v19 initWithDomain:VUIStoreMediaItemErrorDomain code:-123008 userInfo:0];
-    v14[2](v14, 0, v20);
+    completionCopy[2](completionCopy, 0, v20);
 
     goto LABEL_19;
   }
@@ -452,13 +452,13 @@ LABEL_18:
     if (os_log_type_enabled(sLogObject_21, OS_LOG_TYPE_DEFAULT))
     {
       v16 = @"Download";
-      if (a5 == 2)
+      if (type == 2)
       {
         v16 = @"Streaming";
       }
 
       v17 = @"YES";
-      if (!v8)
+      if (!clockCopy)
       {
         v17 = @"NO";
       }
@@ -470,20 +470,20 @@ LABEL_18:
       _os_log_impl(&dword_1E323F000, v15, OS_LOG_TYPE_DEFAULT, "Checking out rental with type %@; using play param: %@", buf, 0x16u);
     }
 
-    v18 = [objc_alloc(MEMORY[0x1E69D49C0]) initWithAccountIdentifier:v13 rentalKeyIdentifier:v12];
-    [v18 setCheckoutType:a5];
-    [v18 setCheckoutWithPlay:v8];
+    v18 = [objc_alloc(MEMORY[0x1E69D49C0]) initWithAccountIdentifier:dsidCopy rentalKeyIdentifier:dCopy];
+    [v18 setCheckoutType:type];
+    [v18 setCheckoutWithPlay:clockCopy];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __89__VUIRentalManager_checkOutRentalWithID_dsid_checkoutType_startPlaybackClock_completion___block_invoke;
     v23[3] = &unk_1E8736060;
-    v24 = v14;
+    v24 = completionCopy;
     [v18 startWithConnectionResponseBlock:v23];
   }
 
   else
   {
-    if (v8)
+    if (clockCopy)
     {
       v21 = sLogObject_21;
       if (os_log_type_enabled(sLogObject_21, OS_LOG_TYPE_DEFAULT))
@@ -502,9 +502,9 @@ LABEL_18:
       _os_log_impl(&dword_1E323F000, v22, OS_LOG_TYPE_DEFAULT, "Not checking out rental because network is not available.  Return YES for success anyway so playback can proceed", buf, 2u);
     }
 
-    if (v14)
+    if (completionCopy)
     {
-      v14[2](v14, 1, 0);
+      completionCopy[2](completionCopy, 1, 0);
     }
   }
 
@@ -589,15 +589,15 @@ uint64_t __89__VUIRentalManager_checkOutRentalWithID_dsid_checkoutType_startPlay
   return result;
 }
 
-- (void)checkInRentalWithID:(id)a3 dsid:(id)a4 completion:(id)a5
+- (void)checkInRentalWithID:(id)d dsid:(id)dsid completion:(id)completion
 {
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v9 && [v9 unsignedLongLongValue])
+  dCopy = d;
+  dsidCopy = dsid;
+  completionCopy = completion;
+  if (dsidCopy && [dsidCopy unsignedLongLongValue])
   {
-    if (v8 && [v8 unsignedLongLongValue])
+    if (dCopy && [dCopy unsignedLongLongValue])
     {
       v11 = +[_TtC8VideosUI38VUINetworkReachabilityMonitorObjCProxy isNetworkReachable];
       v12 = sLogObject_21;
@@ -607,19 +607,19 @@ uint64_t __89__VUIRentalManager_checkOutRentalWithID_dsid_checkoutType_startPlay
         if (v13)
         {
           *buf = 138412290;
-          v23 = v8;
+          v23 = dCopy;
           _os_log_impl(&dword_1E323F000, v12, OS_LOG_TYPE_DEFAULT, "Checking in rental with ID %@", buf, 0xCu);
         }
 
-        v14 = [objc_alloc(MEMORY[0x1E69D49B8]) initWithAccountIdentifier:v9 rentalKeyIdentifier:v8];
+        v14 = [objc_alloc(MEMORY[0x1E69D49B8]) initWithAccountIdentifier:dsidCopy rentalKeyIdentifier:dCopy];
         v17[0] = MEMORY[0x1E69E9820];
         v17[1] = 3221225472;
         v17[2] = __56__VUIRentalManager_checkInRentalWithID_dsid_completion___block_invoke;
         v17[3] = &unk_1E8736088;
-        v18 = v8;
-        v19 = v9;
-        v20 = self;
-        v21 = v10;
+        v18 = dCopy;
+        v19 = dsidCopy;
+        selfCopy = self;
+        v21 = completionCopy;
         [(VUIRentalCheckInContext *)v14 startWithConnectionResponseBlock:v17];
       }
 
@@ -631,9 +631,9 @@ uint64_t __89__VUIRentalManager_checkOutRentalWithID_dsid_checkoutType_startPlay
           _os_log_impl(&dword_1E323F000, v12, OS_LOG_TYPE_DEFAULT, "Network is not reachable.  Will check in rental when network becomes available.", buf, 2u);
         }
 
-        v14 = [[VUIRentalCheckInContext alloc] initWithRentalID:v8 dsid:v9];
-        v16 = [(VUIRentalManager *)self deferredRentalCheckinContexts];
-        [v16 addObject:v14];
+        v14 = [[VUIRentalCheckInContext alloc] initWithRentalID:dCopy dsid:dsidCopy];
+        deferredRentalCheckinContexts = [(VUIRentalManager *)self deferredRentalCheckinContexts];
+        [deferredRentalCheckinContexts addObject:v14];
       }
 
       goto LABEL_15;
@@ -642,7 +642,7 @@ uint64_t __89__VUIRentalManager_checkOutRentalWithID_dsid_checkoutType_startPlay
     if (os_log_type_enabled(sLogObject_21, OS_LOG_TYPE_ERROR))
     {
       [VUIRentalManager checkInRentalWithID:dsid:completion:];
-      if (!v10)
+      if (!completionCopy)
       {
         goto LABEL_16;
       }
@@ -654,7 +654,7 @@ uint64_t __89__VUIRentalManager_checkOutRentalWithID_dsid_checkoutType_startPlay
   else if (os_log_type_enabled(sLogObject_21, OS_LOG_TYPE_ERROR))
   {
     [VUIRentalManager checkInRentalWithID:dsid:completion:];
-    if (!v10)
+    if (!completionCopy)
     {
       goto LABEL_16;
     }
@@ -662,12 +662,12 @@ uint64_t __89__VUIRentalManager_checkOutRentalWithID_dsid_checkoutType_startPlay
     goto LABEL_14;
   }
 
-  if (v10)
+  if (completionCopy)
   {
 LABEL_14:
     v15 = objc_alloc(MEMORY[0x1E696ABC0]);
     v14 = [v15 initWithDomain:VUIStoreMediaItemErrorDomain code:-123008 userInfo:0];
-    (*(v10 + 2))(v10, 0, v14);
+    (*(completionCopy + 2))(completionCopy, 0, v14);
 LABEL_15:
   }
 
@@ -725,15 +725,15 @@ uint64_t __56__VUIRentalManager_checkInRentalWithID_dsid_completion___block_invo
   return result;
 }
 
-- (void)downloadManager:(id)a3 downloadDidFinish:(id)a4
+- (void)downloadManager:(id)manager downloadDidFinish:(id)finish
 {
-  v5 = a4;
-  v6 = [v5 phaseIdentifier];
-  if (([v6 isEqualToString:*MEMORY[0x1E69703B0]] & 1) != 0 || objc_msgSend(v6, "isEqualToString:", *MEMORY[0x1E69703C0]))
+  finishCopy = finish;
+  phaseIdentifier = [finishCopy phaseIdentifier];
+  if (([phaseIdentifier isEqualToString:*MEMORY[0x1E69703B0]] & 1) != 0 || objc_msgSend(phaseIdentifier, "isEqualToString:", *MEMORY[0x1E69703C0]))
   {
-    v7 = [v5 storeItemIdentifier];
+    storeItemIdentifier = [finishCopy storeItemIdentifier];
     v8 = MEMORY[0x1E6970610];
-    v9 = [MEMORY[0x1E696AD98] numberWithLongLong:v7];
+    v9 = [MEMORY[0x1E696AD98] numberWithLongLong:storeItemIdentifier];
     v10 = [v8 predicateWithValue:v9 forProperty:*MEMORY[0x1E696FB60]];
 
     v11 = [MEMORY[0x1E6970610] predicateWithValue:&unk_1F5E5DD40 forProperty:*MEMORY[0x1E696FA88]];
@@ -743,13 +743,13 @@ uint64_t __56__VUIRentalManager_checkInRentalWithID_dsid_completion___block_invo
 
     [v14 setEntityLimit:1];
     [v14 setIgnoreSystemFilterPredicates:1];
-    v15 = [v14 items];
-    v16 = [v15 firstObject];
+    items = [v14 items];
+    firstObject = [items firstObject];
 
-    if ([v16 isRental])
+    if ([firstObject isRental])
     {
-      v17 = [v16 valueForProperty:*MEMORY[0x1E696FB78]];
-      v18 = [v16 valueForProperty:*MEMORY[0x1E696FB38]];
+      v17 = [firstObject valueForProperty:*MEMORY[0x1E696FB78]];
+      v18 = [firstObject valueForProperty:*MEMORY[0x1E696FB38]];
       v19 = sLogObject_21;
       if (os_log_type_enabled(sLogObject_21, OS_LOG_TYPE_DEFAULT))
       {
@@ -771,7 +771,7 @@ uint64_t __56__VUIRentalManager_checkInRentalWithID_dsid_completion___block_invo
   }
 }
 
-- (void)downloadManagerDidBecomeInitialized:(id)a3
+- (void)downloadManagerDidBecomeInitialized:(id)initialized
 {
   if ([(VUIRentalManager *)self _areDownloadManagersInitialized])
   {
@@ -786,10 +786,10 @@ uint64_t __56__VUIRentalManager_checkInRentalWithID_dsid_completion___block_invo
   }
 }
 
-- (void)_networkReachbilityDidChange:(id)a3
+- (void)_networkReachbilityDidChange:(id)change
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   v5 = sLogObject_21;
   if (os_log_type_enabled(sLogObject_21, OS_LOG_TYPE_DEFAULT))
   {
@@ -811,15 +811,15 @@ uint64_t __56__VUIRentalManager_checkInRentalWithID_dsid_completion___block_invo
   if (os_log_type_enabled(sLogObject_21, OS_LOG_TYPE_DEFAULT))
   {
     v10 = v9;
-    v11 = [(VUIRentalManager *)self deferredRentalCheckinContexts];
-    v12 = [v11 count];
+    deferredRentalCheckinContexts = [(VUIRentalManager *)self deferredRentalCheckinContexts];
+    v12 = [deferredRentalCheckinContexts count];
     v19 = 134217984;
     v20 = v12;
     _os_log_impl(&dword_1E323F000, v10, OS_LOG_TYPE_DEFAULT, "%lu rental checkins have been deferred", &v19, 0xCu);
   }
 
-  v13 = [(VUIRentalManager *)self deferredRentalCheckinContexts];
-  v14 = [v13 count];
+  deferredRentalCheckinContexts2 = [(VUIRentalManager *)self deferredRentalCheckinContexts];
+  v14 = [deferredRentalCheckinContexts2 count];
 
   if (v14)
   {
@@ -834,8 +834,8 @@ uint64_t __56__VUIRentalManager_checkInRentalWithID_dsid_completion___block_invo
         _os_log_impl(&dword_1E323F000, v16, OS_LOG_TYPE_DEFAULT, "Validating that deferred checkins are still okay to check in", &v19, 2u);
       }
 
-      v18 = [(VUIRentalManager *)self deferredRentalCheckinContexts];
-      [v18 removeAllObjects];
+      deferredRentalCheckinContexts3 = [(VUIRentalManager *)self deferredRentalCheckinContexts];
+      [deferredRentalCheckinContexts3 removeAllObjects];
 
       [(VUIRentalManager *)self _checkInRentalsNeedingCheckIn];
     }
@@ -848,7 +848,7 @@ uint64_t __56__VUIRentalManager_checkInRentalWithID_dsid_completion___block_invo
   }
 }
 
-- (void)_activeAccountDidChange:(id)a3
+- (void)_activeAccountDidChange:(id)change
 {
   objc_initWeak(&location, self);
   v3 = sLogObject_21;
@@ -959,7 +959,7 @@ void __49__VUIRentalManager__checkInRentalsNeedingCheckIn__block_invoke_88(uint6
   }
 }
 
-- (void)_didFetchInitialStoreDownloads:(id)a3
+- (void)_didFetchInitialStoreDownloads:(id)downloads
 {
   if ([(VUIRentalManager *)self _areDownloadManagersInitialized])
   {

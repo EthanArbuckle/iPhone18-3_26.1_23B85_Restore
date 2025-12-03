@@ -1,7 +1,7 @@
 @interface SASWallpaperPosterSnapshotRequestFetcher
 - (SASFetchesWallpaperDelegate)delegate;
 - (float)_delayBetweenRetries;
-- (id)_imageFromSnapshot:(id)a3;
+- (id)_imageFromSnapshot:(id)snapshot;
 - (int)_maximumNumberOfLoadingAttempts;
 - (void)fetch;
 @end
@@ -11,7 +11,7 @@
 - (void)fetch
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [(SASWallpaperPosterSnapshotRequestFetcher *)self interfaceOrientation];
+  interfaceOrientation = [(SASWallpaperPosterSnapshotRequestFetcher *)self interfaceOrientation];
   v17 = 0;
   v18 = &v17;
   v19 = 0x2050000000;
@@ -42,9 +42,9 @@
     v8 = 37;
   }
 
-  if (v3 > 1)
+  if (interfaceOrientation > 1)
   {
-    if (v3 != 2 && v3 != 3 && v3 != 4)
+    if (interfaceOrientation != 2 && interfaceOrientation != 3 && interfaceOrientation != 4)
     {
       goto LABEL_11;
     }
@@ -52,15 +52,15 @@
     goto LABEL_10;
   }
 
-  if (!v3)
+  if (!interfaceOrientation)
   {
     goto LABEL_20;
   }
 
-  if (v3 == 1)
+  if (interfaceOrientation == 1)
   {
 LABEL_10:
-    v7 = v3;
+    v7 = interfaceOrientation;
   }
 
 LABEL_11:
@@ -74,15 +74,15 @@ LABEL_11:
 
   v10 = [getPRSPosterSnapshotRequestClass() instancesRespondToSelector:sel_initWithConfigurationType_variantType_options_orientation_requestOptions_];
   v11 = objc_alloc(getPRSPosterSnapshotRequestClass());
-  v12 = [(SASWallpaperPosterSnapshotRequestFetcher *)self variant];
+  variant = [(SASWallpaperPosterSnapshotRequestFetcher *)self variant];
   if (v10)
   {
-    v13 = [v11 initWithConfigurationType:1 variantType:v12 options:v8 orientation:v7 requestOptions:&unk_287761798];
+    v13 = [v11 initWithConfigurationType:1 variantType:variant options:v8 orientation:v7 requestOptions:&unk_287761798];
   }
 
   else
   {
-    v13 = [v11 initWithConfigurationType:1 variantType:v12 options:v8];
+    v13 = [v11 initWithConfigurationType:1 variantType:variant options:v8];
   }
 
   v14 = v13;
@@ -221,19 +221,19 @@ void __49__SASWallpaperPosterSnapshotRequestFetcher_fetch__block_invoke_7(uint64
   [v4 wallpaperFetcher:v2 didFinishWithImage:v3];
 }
 
-- (id)_imageFromSnapshot:(id)a3
+- (id)_imageFromSnapshot:(id)snapshot
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  snapshotCopy = snapshot;
   v4 = +[SASUILogging bookendFacility];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 134217984;
-    v8 = [v3 imageOrientation];
+    imageOrientation = [snapshotCopy imageOrientation];
     _os_log_impl(&dword_265A4C000, v4, OS_LOG_TYPE_DEFAULT, "PosterSnapshotRequestFetcher: imageFromSnapshot with orientation: %ld", &v7, 0xCu);
   }
 
-  v5 = [MEMORY[0x277D755B8] imageWithCGImage:objc_msgSend(v3 scale:"image") orientation:{objc_msgSend(v3, "imageOrientation"), 1.0}];
+  v5 = [MEMORY[0x277D755B8] imageWithCGImage:objc_msgSend(snapshotCopy scale:"image") orientation:{objc_msgSend(snapshotCopy, "imageOrientation"), 1.0}];
 
   return v5;
 }
@@ -245,15 +245,15 @@ void __49__SASWallpaperPosterSnapshotRequestFetcher_fetch__block_invoke_7(uint64
 
   if (v3)
   {
-    v4 = [v3 intValue];
+    intValue = [v3 intValue];
   }
 
   else
   {
-    v4 = 3;
+    intValue = 3;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (float)_delayBetweenRetries

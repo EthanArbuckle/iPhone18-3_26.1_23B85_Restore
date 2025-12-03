@@ -1,27 +1,27 @@
 @interface MPStoreItemOffer
-- (BOOL)isEqual:(id)a3;
-- (MPStoreItemOffer)initWithCoder:(id)a3;
-- (MPStoreItemOffer)initWithLookupDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MPStoreItemOffer)initWithCoder:(id)coder;
+- (MPStoreItemOffer)initWithLookupDictionary:(id)dictionary;
 - (NSArray)assets;
 - (NSNumber)price;
 - (NSString)buyParameters;
 - (NSString)formattedPrice;
 - (NSString)offerType;
-- (id)actionTextForType:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)actionTextForType:(id)type;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPStoreItemOffer
 
-- (id)actionTextForType:(id)a3
+- (id)actionTextForType:(id)type
 {
-  v4 = a3;
-  if (v4)
+  typeCopy = type;
+  if (typeCopy)
   {
     v5 = [(NSDictionary *)self->_lookupDictionary objectForKey:@"actionText"];
     if (_NSIsNSDictionary())
     {
-      v6 = [v5 objectForKey:v4];
+      v6 = [v5 objectForKey:typeCopy];
       if (_NSIsNSString())
       {
 LABEL_6:
@@ -161,12 +161,12 @@ LABEL_8:
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 allowsKeyedCoding])
+  coderCopy = coder;
+  if ([coderCopy allowsKeyedCoding])
   {
-    [v4 encodeObject:self->_lookupDictionary forKey:@"MPStoreItemOfferLookupDictionary"];
+    [coderCopy encodeObject:self->_lookupDictionary forKey:@"MPStoreItemOfferLookupDictionary"];
   }
 
   else
@@ -175,15 +175,15 @@ LABEL_8:
   }
 }
 
-- (MPStoreItemOffer)initWithCoder:(id)a3
+- (MPStoreItemOffer)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = MPStoreItemOffer;
   v5 = [(MPStoreItemOffer *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodePropertyListForKey:@"MPStoreItemOfferLookupDictionary"];
+    v6 = [coderCopy decodePropertyListForKey:@"MPStoreItemOfferLookupDictionary"];
     if (_NSIsNSDictionary())
     {
       v7 = [v6 copy];
@@ -195,10 +195,10 @@ LABEL_8:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     goto LABEL_5;
   }
@@ -211,7 +211,7 @@ LABEL_8:
   }
 
   lookupDictionary = self->_lookupDictionary;
-  if (lookupDictionary == v4->_lookupDictionary)
+  if (lookupDictionary == equalCopy->_lookupDictionary)
   {
 LABEL_5:
     v6 = 1;
@@ -227,15 +227,15 @@ LABEL_7:
   return v6;
 }
 
-- (MPStoreItemOffer)initWithLookupDictionary:(id)a3
+- (MPStoreItemOffer)initWithLookupDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = MPStoreItemOffer;
   v5 = [(MPStoreItemOffer *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dictionaryCopy copy];
     lookupDictionary = v5->_lookupDictionary;
     v5->_lookupDictionary = v6;
   }

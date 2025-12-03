@@ -1,10 +1,10 @@
 @interface SBAppSwitcherSettings
 + (id)settingsControllerModule;
 - (double)_spacingBetweenLeadingEdgeAndIcon;
-- (id)archiveValueForKey:(id)a3;
+- (id)archiveValueForKey:(id)key;
 - (int64_t)effectiveSwitcherStyle;
 - (void)setDefaultValues;
-- (void)setSimplicityOptions:(int64_t)a3;
+- (void)setSimplicityOptions:(int64_t)options;
 @end
 
 @implementation SBAppSwitcherSettings
@@ -14,10 +14,10 @@
   result = [(SBAppSwitcherSettings *)self switcherStyle];
   if (!result)
   {
-    v3 = [MEMORY[0x277D75418] currentDevice];
-    v4 = [v3 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if ((v4 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       return 2;
     }
@@ -33,20 +33,20 @@
 
 - (void)setDefaultValues
 {
-  v4 = [(SBAppSwitcherSettings *)self animationSettings];
-  [v4 setDefaultValues];
+  animationSettings = [(SBAppSwitcherSettings *)self animationSettings];
+  [animationSettings setDefaultValues];
 
-  v5 = [(SBAppSwitcherSettings *)self windowingSettings];
-  [v5 setDefaultValues];
+  windowingSettings = [(SBAppSwitcherSettings *)self windowingSettings];
+  [windowingSettings setDefaultValues];
 
-  v6 = [(SBAppSwitcherSettings *)self floatingSwitcherSettings];
-  [v6 setDefaultValues];
+  floatingSwitcherSettings = [(SBAppSwitcherSettings *)self floatingSwitcherSettings];
+  [floatingSwitcherSettings setDefaultValues];
 
-  v7 = [(SBAppSwitcherSettings *)self centerWindowSizingSettings];
-  [v7 setDefaultValues];
+  centerWindowSizingSettings = [(SBAppSwitcherSettings *)self centerWindowSizingSettings];
+  [centerWindowSizingSettings setDefaultValues];
 
-  v8 = [(SBAppSwitcherSettings *)self sceneRelevancySettings];
-  [v8 setDefaultValues];
+  sceneRelevancySettings = [(SBAppSwitcherSettings *)self sceneRelevancySettings];
+  [sceneRelevancySettings setDefaultValues];
 
   [(SBAppSwitcherSettings *)self setMScale:0.45];
   [(SBAppSwitcherSettings *)self setCenterPoint:0.4];
@@ -63,8 +63,8 @@
 
   else
   {
-    v9 = [MEMORY[0x277D75418] currentDevice];
-    -[SBAppSwitcherSettings setSwitcherCardScaleWhileTouched:](self, "setSwitcherCardScaleWhileTouched:", dbl_21F8A8120[[v9 userInterfaceIdiom] == 1]);
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    -[SBAppSwitcherSettings setSwitcherCardScaleWhileTouched:](self, "setSwitcherCardScaleWhileTouched:", dbl_21F8A8120[[currentDevice userInterfaceIdiom] == 1]);
   }
 
   [(SBAppSwitcherSettings *)self setSwitcherCardScaleWhileCursorHovered:1.0154];
@@ -82,10 +82,10 @@
 
   else
   {
-    v12 = [MEMORY[0x277D75418] currentDevice];
-    v13 = [v12 userInterfaceIdiom];
+    currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice2 userInterfaceIdiom];
     v14 = 30.0;
-    if (v13 == 1)
+    if (userInterfaceIdiom == 1)
     {
       v14 = 16.0;
     }
@@ -100,8 +100,8 @@
 
   else
   {
-    v15 = [MEMORY[0x277D75418] currentDevice];
-    -[SBAppSwitcherSettings setSwitcherCardShadowOpacity:](self, "setSwitcherCardShadowOpacity:", dbl_21F8A8130[[v15 userInterfaceIdiom] == 1]);
+    currentDevice3 = [MEMORY[0x277D75418] currentDevice];
+    -[SBAppSwitcherSettings setSwitcherCardShadowOpacity:](self, "setSwitcherCardShadowOpacity:", dbl_21F8A8130[[currentDevice3 userInterfaceIdiom] == 1]);
   }
 
   [(SBAppSwitcherSettings *)self setSwitcherCardShadowOffsetHorizontal:0.0];
@@ -119,10 +119,10 @@
 
   else
   {
-    v18 = [MEMORY[0x277D75418] currentDevice];
-    v19 = [v18 userInterfaceIdiom];
+    currentDevice4 = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom2 = [currentDevice4 userInterfaceIdiom];
     v20 = 8.0;
-    if (v19 != 1)
+    if (userInterfaceIdiom2 != 1)
     {
       v20 = 0.0;
     }
@@ -130,7 +130,7 @@
     [(SBAppSwitcherSettings *)self setSwitcherCardShadowOffsetVertical:v20];
   }
 
-  v21 = qword_21F8A6000;
+  currentDevice6 = qword_21F8A6000;
   if (__sb__runningInSpringBoard())
   {
     v22 = SBFEffectiveDeviceClass();
@@ -145,10 +145,10 @@
 
   else
   {
-    v24 = [MEMORY[0x277D75418] currentDevice];
-    v25 = [v24 userInterfaceIdiom];
+    currentDevice5 = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom3 = [currentDevice5 userInterfaceIdiom];
     v26 = -0.01;
-    if (v25 == 1)
+    if (userInterfaceIdiom3 == 1)
     {
       v26 = 0.0;
     }
@@ -185,8 +185,8 @@
 
   else
   {
-    v21 = [MEMORY[0x277D75418] currentDevice];
-    if ([v21 userInterfaceIdiom] != 1)
+    currentDevice6 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice6 userInterfaceIdiom] != 1)
     {
 
       goto LABEL_42;
@@ -202,8 +202,8 @@
 
   else
   {
-    v2 = [MEMORY[0x277D759A0] mainScreen];
-    [v2 _referenceBounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen _referenceBounds];
   }
 
   BSSizeRoundForScale();
@@ -240,8 +240,8 @@ LABEL_42:
 
   else
   {
-    v21 = [MEMORY[0x277D75418] currentDevice];
-    if ([v21 userInterfaceIdiom] != 1)
+    currentDevice6 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice6 userInterfaceIdiom] != 1)
     {
 
 LABEL_56:
@@ -263,8 +263,8 @@ LABEL_56:
 
   else
   {
-    v2 = [MEMORY[0x277D759A0] mainScreen];
-    [v2 _referenceBounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen _referenceBounds];
   }
 
   BSSizeRoundForScale();
@@ -317,10 +317,10 @@ LABEL_65:
     goto LABEL_79;
   }
 
-  v49 = [MEMORY[0x277D75418] currentDevice];
-  v21 = [v49 userInterfaceIdiom];
+  currentDevice7 = [MEMORY[0x277D75418] currentDevice];
+  currentDevice6 = [currentDevice7 userInterfaceIdiom];
 
-  if (v21 == 1)
+  if (currentDevice6 == 1)
   {
     goto LABEL_65;
   }
@@ -339,12 +339,12 @@ LABEL_60:
 
   else
   {
-    v21 = [MEMORY[0x277D75418] currentDevice];
-    if ([v21 userInterfaceIdiom])
+    currentDevice6 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice6 userInterfaceIdiom])
     {
 
 LABEL_77:
-      v55 = self;
+      selfCopy2 = self;
       v56 = 9;
       goto LABEL_78;
     }
@@ -359,8 +359,8 @@ LABEL_77:
 
   else
   {
-    v2 = [MEMORY[0x277D759A0] mainScreen];
-    [v2 _referenceBounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen _referenceBounds];
   }
 
   BSSizeRoundForScale();
@@ -379,10 +379,10 @@ LABEL_77:
     goto LABEL_77;
   }
 
-  v55 = self;
+  selfCopy2 = self;
   v56 = 7;
 LABEL_78:
-  [(SBAppSwitcherSettings *)v55 setNumberOfSnapshotsToCacheInSwitcher:v56];
+  [(SBAppSwitcherSettings *)selfCopy2 setNumberOfSnapshotsToCacheInSwitcher:v56];
 LABEL_79:
   [(SBAppSwitcherSettings *)self _spacingBetweenLeadingEdgeAndIcon];
   [(SBAppSwitcherSettings *)self setSpacingBetweenLeadingEdgeAndIcon:?];
@@ -401,10 +401,10 @@ LABEL_98:
     goto LABEL_99;
   }
 
-  v57 = [MEMORY[0x277D75418] currentDevice];
-  v21 = [v57 userInterfaceIdiom];
+  currentDevice8 = [MEMORY[0x277D75418] currentDevice];
+  currentDevice6 = [currentDevice8 userInterfaceIdiom];
 
-  if (v21 == 1)
+  if (currentDevice6 == 1)
   {
     goto LABEL_87;
   }
@@ -412,16 +412,16 @@ LABEL_98:
 LABEL_81:
   if (!__sb__runningInSpringBoard())
   {
-    v59 = [MEMORY[0x277D75418] currentDevice];
-    if ([v59 userInterfaceIdiom])
+    currentDevice9 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice9 userInterfaceIdiom])
     {
     }
 
     else
     {
-      v21 = SBFEffectiveHomeButtonType();
+      currentDevice6 = SBFEffectiveHomeButtonType();
 
-      if (v21 == 2)
+      if (currentDevice6 == 2)
       {
         goto LABEL_91;
       }
@@ -462,8 +462,8 @@ LABEL_91:
 
   else
   {
-    v21 = [MEMORY[0x277D75418] currentDevice];
-    if ([v21 userInterfaceIdiom] || SBFEffectiveHomeButtonType() != 2)
+    currentDevice6 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice6 userInterfaceIdiom] || SBFEffectiveHomeButtonType() != 2)
     {
 LABEL_122:
 
@@ -480,8 +480,8 @@ LABEL_122:
 
   else
   {
-    v2 = [MEMORY[0x277D759A0] mainScreen];
-    [v2 _referenceBounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen _referenceBounds];
   }
 
   BSSizeRoundForScale();
@@ -537,11 +537,11 @@ LABEL_100:
 
   else
   {
-    v66 = [MEMORY[0x277D75418] currentDevice];
-    v67 = [v66 userInterfaceIdiom];
+    currentDevice10 = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom4 = [currentDevice10 userInterfaceIdiom];
 
     v63 = 0.0;
-    if (v67 == 1)
+    if (userInterfaceIdiom4 == 1)
     {
       goto LABEL_100;
     }
@@ -583,8 +583,8 @@ LABEL_114:
     goto LABEL_115;
   }
 
-  v65 = [MEMORY[0x277D75418] currentDevice];
-  if ([v65 userInterfaceIdiom])
+  currentDevice11 = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice11 userInterfaceIdiom])
   {
 
     goto LABEL_115;
@@ -1372,10 +1372,10 @@ id __49__SBAppSwitcherSettings_settingsControllerModule__block_invoke_8(uint64_t
   return v4;
 }
 
-- (id)archiveValueForKey:(id)a3
+- (id)archiveValueForKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"simplicityOptionNoSnapshots"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"simplicityOptionNoCrossfade") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"simplicityOptionNoLabels") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"simplicityOptionNoIcons") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"simplicityOptionNoBlurs") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"simplicityOptionNoShadows") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"simplicityOptionNoControlCenter") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"simplicityOptionNoSnapshotBkg"))
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"simplicityOptionNoSnapshots"] & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"simplicityOptionNoCrossfade") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"simplicityOptionNoLabels") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"simplicityOptionNoIcons") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"simplicityOptionNoBlurs") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"simplicityOptionNoShadows") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"simplicityOptionNoControlCenter") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"simplicityOptionNoSnapshotBkg"))
   {
     v5 = 0;
   }
@@ -1384,25 +1384,25 @@ id __49__SBAppSwitcherSettings_settingsControllerModule__block_invoke_8(uint64_t
   {
     v7.receiver = self;
     v7.super_class = SBAppSwitcherSettings;
-    v5 = [(PTSettings *)&v7 archiveValueForKey:v4];
+    v5 = [(PTSettings *)&v7 archiveValueForKey:keyCopy];
   }
 
   return v5;
 }
 
-- (void)setSimplicityOptions:(int64_t)a3
+- (void)setSimplicityOptions:(int64_t)options
 {
-  if (self->_simplicityOptions != a3)
+  if (self->_simplicityOptions != options)
   {
-    self->_simplicityOptions = a3;
-    [(SBAppSwitcherSettings *)self setSimplicityOptionNoSnapshots:a3 & 1];
-    [(SBAppSwitcherSettings *)self setSimplicityOptionNoCrossfade:(a3 >> 1) & 1];
-    [(SBAppSwitcherSettings *)self setSimplicityOptionNoLabels:(a3 >> 2) & 1];
-    [(SBAppSwitcherSettings *)self setSimplicityOptionNoIcons:(a3 >> 3) & 1];
-    [(SBAppSwitcherSettings *)self setSimplicityOptionNoBlurs:(a3 >> 4) & 1];
-    [(SBAppSwitcherSettings *)self setSimplicityOptionNoShadows:(a3 >> 5) & 1];
+    self->_simplicityOptions = options;
+    [(SBAppSwitcherSettings *)self setSimplicityOptionNoSnapshots:options & 1];
+    [(SBAppSwitcherSettings *)self setSimplicityOptionNoCrossfade:(options >> 1) & 1];
+    [(SBAppSwitcherSettings *)self setSimplicityOptionNoLabels:(options >> 2) & 1];
+    [(SBAppSwitcherSettings *)self setSimplicityOptionNoIcons:(options >> 3) & 1];
+    [(SBAppSwitcherSettings *)self setSimplicityOptionNoBlurs:(options >> 4) & 1];
+    [(SBAppSwitcherSettings *)self setSimplicityOptionNoShadows:(options >> 5) & 1];
 
-    [(SBAppSwitcherSettings *)self setSimplicityOptionNoControlCenter:(a3 >> 6) & 1];
+    [(SBAppSwitcherSettings *)self setSimplicityOptionNoControlCenter:(options >> 6) & 1];
   }
 }
 
@@ -1420,11 +1420,11 @@ id __49__SBAppSwitcherSettings_settingsControllerModule__block_invoke_8(uint64_t
 
   else
   {
-    v4 = [MEMORY[0x277D75418] currentDevice];
-    v5 = [v4 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
     result = 8.0;
-    if (v5 == 1)
+    if (userInterfaceIdiom == 1)
     {
       return result;
     }
@@ -1460,8 +1460,8 @@ LABEL_13:
     return result;
   }
 
-  v8 = [MEMORY[0x277D75418] currentDevice];
-  if ([v8 userInterfaceIdiom])
+  currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice2 userInterfaceIdiom])
   {
 
     return 14.0;

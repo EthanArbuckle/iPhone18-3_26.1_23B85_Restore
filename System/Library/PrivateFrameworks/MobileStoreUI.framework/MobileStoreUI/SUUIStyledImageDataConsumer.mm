@@ -1,23 +1,23 @@
 @interface SUUIStyledImageDataConsumer
 + (BOOL)isImageCompressionEnabled;
-+ (id)appIconConsumerWithSize:(CGSize)a3;
++ (id)appIconConsumerWithSize:(CGSize)size;
 + (id)applePackIconConsumer;
 + (id)brickConsumer;
-+ (id)brickConsumerWithBrickSize:(CGSize)a3;
++ (id)brickConsumerWithBrickSize:(CGSize)size;
 + (id)cardIconConsumer;
 + (id)cardProductImageConsumer;
 + (id)categoriesMessagesConsumer;
 + (id)giftComposeProductImageConsumer;
 + (id)giftResultIconConsumer;
 + (id)giftResultProductImageConsumer;
-+ (id)lockupIconConsumerWithSize:(int64_t)a3;
-+ (id)lockupProductImageConsumerWithSize:(int64_t)a3;
++ (id)lockupIconConsumerWithSize:(int64_t)size;
++ (id)lockupProductImageConsumerWithSize:(int64_t)size;
 + (id)manageMessagesConsumer;
 + (id)mixedTopChartsNewsstandConsumer;
 + (id)newsstandRoomNewsstandConsumer;
 + (id)newsstandSwooshNewsstandConsumer;
 + (id)parentBundleIconConsumer;
-+ (id)productImageConsumerWithSize:(CGSize)a3;
++ (id)productImageConsumerWithSize:(CGSize)size;
 + (id)productPageProductImageConsumer;
 + (id)purchasedMessagesConsumer;
 + (id)purchasedProductImageConsumer;
@@ -31,27 +31,27 @@
 - (CGSize)imageSize;
 - (CGSize)shadowOffset;
 - (SUUIStyledImageDataConsumer)init;
-- (SUUIStyledImageDataConsumer)initWithSize:(CGSize)a3 treatment:(int64_t)a4;
-- (SUUIStyledImageDataConsumer)initWithViewElement:(id)a3;
+- (SUUIStyledImageDataConsumer)initWithSize:(CGSize)size treatment:(int64_t)treatment;
+- (SUUIStyledImageDataConsumer)initWithViewElement:(id)element;
 - (UIEdgeInsets)borderMargins;
 - (UIEdgeInsets)borderWidths;
 - (UIEdgeInsets)imagePadding;
-- (id)_arcRoundedImageWithBounds:(CGRect)a3 contentRect:(CGRect)a4 cornerRadius:(double)a5 drawBlock:(id)a6;
+- (id)_arcRoundedImageWithBounds:(CGRect)bounds contentRect:(CGRect)rect cornerRadius:(double)radius drawBlock:(id)block;
 - (id)_defaultPlaceholderColor;
-- (id)_dynamicUberImageWithBounds:(CGRect)a3 inputSize:(CGSize)a4 drawBlock:(id)a5;
-- (id)_imageWithSize:(CGSize)a3 isOpaque:(BOOL)a4 drawBlock:(id)a5;
-- (id)_leftToRightGradient:(CGRect)a3 contentRect:(CGRect)a4 drawBlock:(id)a5;
-- (id)_outputImageWithInputSize:(CGSize)a3 outputSize:(CGSize)a4 drawBlock:(id)a5;
+- (id)_dynamicUberImageWithBounds:(CGRect)bounds inputSize:(CGSize)size drawBlock:(id)block;
+- (id)_imageWithSize:(CGSize)size isOpaque:(BOOL)opaque drawBlock:(id)block;
+- (id)_leftToRightGradient:(CGRect)gradient contentRect:(CGRect)rect drawBlock:(id)block;
+- (id)_outputImageWithInputSize:(CGSize)size outputSize:(CGSize)outputSize drawBlock:(id)block;
 - (id)_placeholderCornerPathBlock;
-- (id)_radialBlurImageWithBounds:(CGRect)a3 contentRect:(CGRect)a4 drawBlock:(id)a5;
-- (id)_roundedBorderWithBounds:(CGRect)a3 contentRect:(CGRect)a4 drawBlock:(id)a5;
-- (id)_scaledImageWithBounds:(CGRect)a3 contentRect:(CGRect)a4 drawBlock:(id)a5;
-- (id)_uberBannerImageWithBounds:(CGRect)a3 inputSize:(CGSize)a4 drawBlock:(id)a5;
-- (id)_uberImageWithBounds:(CGRect)a3 inputSize:(CGSize)a4 backgroundColor:(id)a5 drawBlock:(id)a6;
-- (id)imageForColor:(id)a3 size:(CGSize)a4;
-- (id)imageForImage:(id)a3;
-- (id)imagePlaceholderForColor:(id)a3;
-- (void)_drawBordersWithImageRect:(CGRect)a3 bounds:(CGRect)a4;
+- (id)_radialBlurImageWithBounds:(CGRect)bounds contentRect:(CGRect)rect drawBlock:(id)block;
+- (id)_roundedBorderWithBounds:(CGRect)bounds contentRect:(CGRect)rect drawBlock:(id)block;
+- (id)_scaledImageWithBounds:(CGRect)bounds contentRect:(CGRect)rect drawBlock:(id)block;
+- (id)_uberBannerImageWithBounds:(CGRect)bounds inputSize:(CGSize)size drawBlock:(id)block;
+- (id)_uberImageWithBounds:(CGRect)bounds inputSize:(CGSize)size backgroundColor:(id)color drawBlock:(id)block;
+- (id)imageForColor:(id)color size:(CGSize)size;
+- (id)imageForImage:(id)image;
+- (id)imagePlaceholderForColor:(id)color;
+- (void)_drawBordersWithImageRect:(CGRect)rect bounds:(CGRect)bounds;
 @end
 
 @implementation SUUIStyledImageDataConsumer
@@ -82,24 +82,24 @@ uint64_t __56__SUUIStyledImageDataConsumer_isImageCompressionEnabled__block_invo
   if (v2)
   {
     v2->_imageContentMode = 0;
-    v4 = [MEMORY[0x277D75C80] _currentTraitCollection];
+    _currentTraitCollection = [MEMORY[0x277D75C80] _currentTraitCollection];
     startingTraitCollection = v3->_startingTraitCollection;
-    v3->_startingTraitCollection = v4;
+    v3->_startingTraitCollection = _currentTraitCollection;
   }
 
   return v3;
 }
 
-- (SUUIStyledImageDataConsumer)initWithSize:(CGSize)a3 treatment:(int64_t)a4
+- (SUUIStyledImageDataConsumer)initWithSize:(CGSize)size treatment:(int64_t)treatment
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v10.receiver = self;
   v10.super_class = SUUIStyledImageDataConsumer;
   v7 = [(SUUIStyledImageDataConsumer *)&v10 init];
   if (v7)
   {
-    if (a4 <= 0xF && ((1 << a4) & 0x8026) != 0)
+    if (treatment <= 0xF && ((1 << treatment) & 0x8026) != 0)
     {
       v8 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.2];
       [(SUUIStyledImageDataConsumer *)v7 setBorderColor:v8];
@@ -108,37 +108,37 @@ uint64_t __56__SUUIStyledImageDataConsumer_isImageCompressionEnabled__block_invo
     }
 
     [(SUUIStyledImageDataConsumer *)v7 setImageSize:width, height];
-    [(SUUIStyledImageDataConsumer *)v7 setImageTreatment:a4];
+    [(SUUIStyledImageDataConsumer *)v7 setImageTreatment:treatment];
     [(SUUIStyledImageDataConsumer *)v7 setImageContentMode:0];
   }
 
   return v7;
 }
 
-- (SUUIStyledImageDataConsumer)initWithViewElement:(id)a3
+- (SUUIStyledImageDataConsumer)initWithViewElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v5 = [(SUUIStyledImageDataConsumer *)self init];
   if (v5)
   {
-    v6 = [v4 style];
-    v5->_imageContentMode = [v6 fillImage] == 1;
-    [v6 elementPadding];
+    style = [elementCopy style];
+    v5->_imageContentMode = [style fillImage] == 1;
+    [style elementPadding];
     v5->_imagePadding.top = v7;
     v5->_imagePadding.left = v8;
     v5->_imagePadding.bottom = v9;
     v5->_imagePadding.right = v10;
-    v11 = [v6 ikBackgroundColor];
+    ikBackgroundColor = [style ikBackgroundColor];
     iKBackgroundColor = v5->_iKBackgroundColor;
-    v5->_iKBackgroundColor = v11;
+    v5->_iKBackgroundColor = ikBackgroundColor;
 
-    v13 = [v6 ikBackgroundColor];
-    v14 = [v13 color];
+    ikBackgroundColor2 = [style ikBackgroundColor];
+    color = [ikBackgroundColor2 color];
     backgroundColor = v5->_backgroundColor;
-    v5->_backgroundColor = v14;
+    v5->_backgroundColor = color;
 
-    v16 = [v6 imageTreatment];
-    v5->_imageTreatment = SUUIImageTreatmentForString(v16);
+    imageTreatment = [style imageTreatment];
+    v5->_imageTreatment = SUUIImageTreatmentForString(imageTreatment);
 
     imageTreatment = v5->_imageTreatment;
     if (imageTreatment > 0x10)
@@ -170,7 +170,7 @@ uint64_t __56__SUUIStyledImageDataConsumer_isImageCompressionEnabled__block_invo
     {
 LABEL_14:
       p_borderWidths = &v5->_borderWidths;
-      [v6 borderWidths];
+      [style borderWidths];
       v5->_borderWidths.top = v34;
       v5->_borderWidths.left = v35;
       v5->_borderWidths.bottom = v36;
@@ -178,7 +178,7 @@ LABEL_14:
 
 LABEL_5:
     p_borderWidths->right = v24;
-    [v6 borderMargins];
+    [style borderMargins];
     v5->_borderMargins.top = v25;
     v5->_borderMargins.left = v26;
     v5->_borderMargins.bottom = v27;
@@ -186,23 +186,23 @@ LABEL_5:
     if (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&v5->_borderWidths.top, *MEMORY[0x277D768C8]), vceqq_f64(*&v5->_borderWidths.bottom, *(MEMORY[0x277D768C8] + 16))))))
     {
 LABEL_21:
-      v47 = [v4 shadowColor];
+      shadowColor = [elementCopy shadowColor];
       shadowColor = v5->_shadowColor;
-      v5->_shadowColor = v47;
+      v5->_shadowColor = shadowColor;
 
-      [v4 shadowOffset];
+      [elementCopy shadowOffset];
       v5->_shadowOffset.width = v49;
       v5->_shadowOffset.height = v50;
-      [v4 shadowRadius];
+      [elementCopy shadowRadius];
       v5->_shadowRadius = v51;
 
       goto LABEL_22;
     }
 
-    v29 = [v6 ikBorderColor];
-    v30 = [v29 color];
+    ikBorderColor = [style ikBorderColor];
+    color2 = [ikBorderColor color];
     borderColor = v5->_borderColor;
-    v5->_borderColor = v30;
+    v5->_borderColor = color2;
 
     if (!v5->_borderColor)
     {
@@ -251,8 +251,8 @@ LABEL_19:
     }
 
 LABEL_20:
-    v42 = [v6 borderRadius];
-    [v42 edgeInsetsValue];
+    borderRadius = [style borderRadius];
+    [borderRadius edgeInsetsValue];
     v5->_borderRadii.top = v43;
     v5->_borderRadii.left = v44;
     v5->_borderRadii.bottom = v45;
@@ -266,15 +266,15 @@ LABEL_22:
   return v5;
 }
 
-- (id)imageForColor:(id)a3 size:(CGSize)a4
+- (id)imageForColor:(id)color size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
-  v8 = v7;
+  height = size.height;
+  width = size.width;
+  colorCopy = color;
+  v8 = colorCopy;
   if (width < 0.00000011920929 || height < 0.00000011920929)
   {
-    v10 = 0;
+    height = 0;
   }
 
   else
@@ -283,12 +283,12 @@ LABEL_22:
     v12[1] = 3221225472;
     v12[2] = __50__SUUIStyledImageDataConsumer_imageForColor_size___block_invoke;
     v12[3] = &unk_2798F7D08;
-    v13 = v7;
-    v14 = self;
-    v10 = [(SUUIStyledImageDataConsumer *)self _outputImageWithInputSize:v12 outputSize:width drawBlock:height, width, height];
+    v13 = colorCopy;
+    selfCopy = self;
+    height = [(SUUIStyledImageDataConsumer *)self _outputImageWithInputSize:v12 outputSize:width drawBlock:height, width, height];
   }
 
-  return v10;
+  return height;
 }
 
 void __50__SUUIStyledImageDataConsumer_imageForColor_size___block_invoke(uint64_t a1, double a2, double a3, double a4, double a5)
@@ -312,23 +312,23 @@ void __50__SUUIStyledImageDataConsumer_imageForColor_size___block_invoke(uint64_
   UIRectFill(*&v10);
 }
 
-- (id)imageForImage:(id)a3
+- (id)imageForImage:(id)image
 {
-  v4 = a3;
-  [v4 size];
+  imageCopy = image;
+  [imageCopy size];
   v6 = v5;
   v8 = v7;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __45__SUUIStyledImageDataConsumer_imageForImage___block_invoke;
   v14[3] = &unk_2798F6690;
-  v15 = v4;
+  v15 = imageCopy;
   width = self->_imageSize.width;
   height = self->_imageSize.height;
-  v11 = v4;
-  v12 = [(SUUIStyledImageDataConsumer *)self _outputImageWithInputSize:v14 outputSize:v6 drawBlock:v8, width, height];
+  v11 = imageCopy;
+  height = [(SUUIStyledImageDataConsumer *)self _outputImageWithInputSize:v14 outputSize:v6 drawBlock:v8, width, height];
 
-  return v12;
+  return height;
 }
 
 - (BOOL)isImagePlaceholderAvailable
@@ -360,12 +360,12 @@ void __50__SUUIStyledImageDataConsumer_imageForColor_size___block_invoke(uint64_
   return left == top && v6;
 }
 
-- (id)imagePlaceholderForColor:(id)a3
+- (id)imagePlaceholderForColor:(id)color
 {
-  v4 = a3;
-  if (!v4)
+  colorCopy = color;
+  if (!colorCopy)
   {
-    v4 = [(SUUIStyledImageDataConsumer *)self _defaultPlaceholderColor];
+    colorCopy = [(SUUIStyledImageDataConsumer *)self _defaultPlaceholderColor];
   }
 
   v5 = 0;
@@ -403,13 +403,13 @@ LABEL_12:
       v8 = [SUUIImagePlaceholder alloc];
       borderColor = self->_borderColor;
       top = self->_borderWidths.top;
-      v11 = [(SUUIStyledImageDataConsumer *)self _placeholderCornerPathBlock];
+      _placeholderCornerPathBlock = [(SUUIStyledImageDataConsumer *)self _placeholderCornerPathBlock];
       v12 = v8;
-      v13 = v4;
+      v13 = colorCopy;
       v14 = borderColor;
       v15 = top;
 LABEL_13:
-      v5 = [(SUUIImagePlaceholder *)v12 initWithBackgroundColor:v13 borderColor:v14 borderWidth:v11 cornerPathBlock:v15];
+      v5 = [(SUUIImagePlaceholder *)v12 initWithBackgroundColor:v13 borderColor:v14 borderWidth:_placeholderCornerPathBlock cornerPathBlock:v15];
 
       goto LABEL_33;
     }
@@ -418,7 +418,7 @@ LABEL_13:
     {
       v23 = [SUUIImagePlaceholder alloc];
       v25 = 0.0;
-      v26 = v4;
+      v26 = colorCopy;
       v24 = 0;
       goto LABEL_32;
     }
@@ -427,7 +427,7 @@ LABEL_13:
     {
       v16 = [SUUIImagePlaceholder alloc];
       v17 = self->_borderColor;
-      v11 = [(SUUIStyledImageDataConsumer *)self _placeholderCornerPathBlock];
+      _placeholderCornerPathBlock = [(SUUIStyledImageDataConsumer *)self _placeholderCornerPathBlock];
       v15 = 0.0;
       v12 = v16;
       v13 = v17;
@@ -453,7 +453,7 @@ LABEL_22:
   v23 = [SUUIImagePlaceholder alloc];
   v24 = self->_borderColor;
   v25 = self->_borderWidths.left;
-  v26 = v4;
+  v26 = colorCopy;
 LABEL_32:
   v5 = [(SUUIImagePlaceholder *)v23 initWithBackgroundColor:v26 borderColor:v24 borderWidth:v25 cornerRadius:0.0];
 LABEL_33:
@@ -604,19 +604,19 @@ LABEL_12:
   return v5;
 }
 
-- (void)_drawBordersWithImageRect:(CGRect)a3 bounds:(CGRect)a4
+- (void)_drawBordersWithImageRect:(CGRect)rect bounds:(CGRect)bounds
 {
   borderColor = self->_borderColor;
   if (borderColor)
   {
-    height = a4.size.height;
-    width = a4.size.width;
-    y = a4.origin.y;
-    x = a4.origin.x;
-    v10 = a3.size.height;
-    v11 = a3.size.width;
-    v12 = a3.origin.y;
-    v13 = a3.origin.x;
+    height = bounds.size.height;
+    width = bounds.size.width;
+    y = bounds.origin.y;
+    x = bounds.origin.x;
+    v10 = rect.size.height;
+    v11 = rect.size.width;
+    v12 = rect.origin.y;
+    v13 = rect.origin.x;
     [(UIColor *)borderColor set];
     if (x >= v13)
     {
@@ -655,8 +655,8 @@ LABEL_12:
     }
 
     v33 = v16;
-    v17 = [MEMORY[0x277D759A0] mainScreen];
-    [v17 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v19 = v18;
 
     left = self->_borderWidths.left;
@@ -697,23 +697,23 @@ LABEL_12:
 
     if (v27 > 0.00000011920929)
     {
-      v29 = rect;
+      rectCopy = rect;
       v30 = v23;
       v31 = v27;
 
       v28 = v25 - v26;
-      UIRectFillUsingBlendMode(*&v29, kCGBlendModeNormal);
+      UIRectFillUsingBlendMode(*&rectCopy, kCGBlendModeNormal);
     }
   }
 }
 
-- (id)_outputImageWithInputSize:(CGSize)a3 outputSize:(CGSize)a4 drawBlock:(id)a5
+- (id)_outputImageWithInputSize:(CGSize)size outputSize:(CGSize)outputSize drawBlock:(id)block
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3.height;
-  v8 = a3.width;
-  v10 = a5;
+  height = outputSize.height;
+  width = outputSize.width;
+  v7 = size.height;
+  v8 = size.width;
+  blockCopy = block;
   v11 = objc_autoreleasePoolPush();
   switch(self->_imageTreatment)
   {
@@ -725,7 +725,7 @@ LABEL_12:
       v16 = v15;
       v18 = v17;
       v20 = v19;
-      v21 = self;
+      selfCopy4 = self;
       v22 = width;
       v23 = height;
       goto LABEL_3;
@@ -755,19 +755,19 @@ LABEL_12:
       goto LABEL_19;
     case 4:
       v54 = SUUIImageRectForBoundsAndPadding(self->_imageContentMode, v8, v7, 0.0, 0.0, width, height, v12, v13, self->_imagePadding.top, self->_imagePadding.left, self->_imagePadding.bottom, self->_imagePadding.right);
-      v24 = [(SUUIStyledImageDataConsumer *)self _leftToRightGradient:v10 contentRect:0.0 drawBlock:0.0, width, height, v54, v55, v56, v57];
+      v24 = [(SUUIStyledImageDataConsumer *)self _leftToRightGradient:blockCopy contentRect:0.0 drawBlock:0.0, width, height, v54, v55, v56, v57];
       goto LABEL_24;
     case 6:
       v43 = SUUIImageRectForBoundsAndPadding(self->_imageContentMode, v8, v7, 0.0, 0.0, width, height, v12, v13, self->_imagePadding.top, self->_imagePadding.left, self->_imagePadding.bottom, self->_imagePadding.right);
-      v47 = [(SUUIStyledImageDataConsumer *)self _scaledImageWithBounds:v10 contentRect:0.0 drawBlock:0.0, width, height, v43, v44, v45, v46];
+      v47 = [(SUUIStyledImageDataConsumer *)self _scaledImageWithBounds:blockCopy contentRect:0.0 drawBlock:0.0, width, height, v43, v44, v45, v46];
       v48 = [v47 imageWithRenderingMode:2];
 
       break;
     case 8:
-      v24 = [(SUUIStyledImageDataConsumer *)self _dynamicUberImageWithBounds:v10 inputSize:0.0 drawBlock:0.0, width, height, v8, v7];
+      v24 = [(SUUIStyledImageDataConsumer *)self _dynamicUberImageWithBounds:blockCopy inputSize:0.0 drawBlock:0.0, width, height, v8, v7];
       goto LABEL_24;
     case 9:
-      v24 = [(SUUIStyledImageDataConsumer *)self _uberBannerImageWithBounds:v10 inputSize:0.0 drawBlock:0.0, width, height, v8, v7];
+      v24 = [(SUUIStyledImageDataConsumer *)self _uberBannerImageWithBounds:blockCopy inputSize:0.0 drawBlock:0.0, width, height, v8, v7];
       goto LABEL_24;
     case 0xALL:
     case 0xBLL:
@@ -787,14 +787,14 @@ LABEL_12:
         v30 = v29;
       }
 
-      [(SUUIStyledImageDataConsumer *)self _arcRoundedImageWithBounds:v10 contentRect:0.0 cornerRadius:0.0 drawBlock:width, height, x, y, v27, v28, *&v30];
+      [(SUUIStyledImageDataConsumer *)self _arcRoundedImageWithBounds:blockCopy contentRect:0.0 cornerRadius:0.0 drawBlock:width, height, x, y, v27, v28, *&v30];
       goto LABEL_23;
     case 0xCLL:
       v14 = SUUIImageRectForBoundsAndPadding(self->_imageContentMode, v8, v7, 0.0, 0.0, width, height, v12, v13, self->_imagePadding.top, self->_imagePadding.left, self->_imagePadding.bottom, self->_imagePadding.right);
       v16 = v58;
       v18 = v59;
       v20 = v60;
-      v61 = self;
+      selfCopy3 = self;
       v62 = width;
       v63 = height;
       goto LABEL_37;
@@ -807,26 +807,26 @@ LABEL_12:
       v20 = v91;
       if (self->_imagePadding.bottom >= 0.00000011920929)
       {
-        v61 = self;
+        selfCopy3 = self;
         v62 = v87;
         v63 = v88;
 LABEL_37:
-        v24 = [(SUUIStyledImageDataConsumer *)v61 _radialBlurImageWithBounds:v10 contentRect:0.0 drawBlock:0.0, v62, v63, v14, v16, v18, v20];
+        v24 = [(SUUIStyledImageDataConsumer *)selfCopy3 _radialBlurImageWithBounds:blockCopy contentRect:0.0 drawBlock:0.0, v62, v63, v14, v16, v18, v20];
       }
 
       else
       {
-        v21 = self;
+        selfCopy4 = self;
         v22 = v87;
         v23 = v88;
 LABEL_3:
-        v24 = [(SUUIStyledImageDataConsumer *)v21 _scaledImageWithBounds:v10 contentRect:0.0 drawBlock:0.0, v22, v23, v14, v16, v18, v20];
+        v24 = [(SUUIStyledImageDataConsumer *)selfCopy4 _scaledImageWithBounds:blockCopy contentRect:0.0 drawBlock:0.0, v22, v23, v14, v16, v18, v20];
       }
 
       goto LABEL_24;
     case 0xELL:
       v39 = SUUIImageRectForBoundsAndPadding(self->_imageContentMode, v8, v7, 0.0, 0.0, width, height, v12, v13, self->_borderWidths.top, self->_borderWidths.left, self->_borderWidths.bottom, self->_borderWidths.right);
-      v24 = [(SUUIStyledImageDataConsumer *)self _roundedBorderWithBounds:v10 contentRect:0.0 drawBlock:0.0, width, height, v39, v40, v41, v42];
+      v24 = [(SUUIStyledImageDataConsumer *)self _roundedBorderWithBounds:blockCopy contentRect:0.0 drawBlock:0.0, width, height, v39, v40, v41, v42];
       goto LABEL_24;
     case 0xFLL:
       v31 = SUUIImageRectForBoundsAndPadding(self->_imageContentMode, v8, v7, 0.0, 0.0, width, height, v12, v13, self->_imagePadding.top, self->_imagePadding.left, self->_imagePadding.bottom, self->_imagePadding.right);
@@ -846,7 +846,7 @@ LABEL_21:
 LABEL_19:
       v92 = *&v38;
 LABEL_22:
-      [(SUUIStyledImageDataConsumer *)self _arcRoundedImageWithBounds:v10 contentRect:0.0 cornerRadius:0.0 drawBlock:width, height, v31, v33, v35, v37, *&v92];
+      [(SUUIStyledImageDataConsumer *)self _arcRoundedImageWithBounds:blockCopy contentRect:0.0 cornerRadius:0.0 drawBlock:width, height, v31, v33, v35, v37, *&v92];
       v24 = LABEL_23:;
 LABEL_24:
       v48 = v24;
@@ -866,8 +866,8 @@ LABEL_24:
     v75 = fabs(self->_shadowOffset.height) + shadowRadius;
     v77 = v76 + v75 * 2.0;
     v78 = shadowRadius + fabs(p_shadowOffset->width);
-    v79 = [MEMORY[0x277D759A0] mainScreen];
-    [v79 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v81 = v80;
     v94.width = v73;
     v94.height = v77;
@@ -876,10 +876,10 @@ LABEL_24:
     CurrentContext = UIGraphicsGetCurrentContext();
     CGContextSetBlendMode(CurrentContext, kCGBlendModeMultiply);
     v83 = self->_shadowRadius;
-    v84 = [(UIColor *)self->_shadowColor CGColor];
+    cGColor = [(UIColor *)self->_shadowColor CGColor];
     v95.width = p_shadowOffset->width;
     v95.height = self->_shadowOffset.height;
-    CGContextSetShadowWithColor(CurrentContext, v95, v83, v84);
+    CGContextSetShadowWithColor(CurrentContext, v95, v83, cGColor);
     [v48 drawAtPoint:{v78, v75}];
     v85 = UIGraphicsGetImageFromCurrentImageContext();
 
@@ -892,22 +892,22 @@ LABEL_24:
   return v48;
 }
 
-- (id)_imageWithSize:(CGSize)a3 isOpaque:(BOOL)a4 drawBlock:(id)a5
+- (id)_imageWithSize:(CGSize)size isOpaque:(BOOL)opaque drawBlock:(id)block
 {
-  height = a3.height;
-  width = a3.width;
-  v8 = a5;
-  v9 = [MEMORY[0x277D759A0] mainScreen];
-  [v9 scale];
+  height = size.height;
+  width = size.width;
+  blockCopy = block;
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v11 = v10;
 
   v17.width = width;
   v17.height = height;
-  UIGraphicsBeginImageContextWithOptions(v17, a4, v11);
+  UIGraphicsBeginImageContextWithOptions(v17, opaque, v11);
   if (+[SUUIStyledImageDataConsumer isImageCompressionEnabled])
   {
     HasASTCSupport = SUUIGraphicsDeviceHasASTCSupport();
-    v8[2](v8, HasASTCSupport);
+    blockCopy[2](blockCopy, HasASTCSupport);
     if (HasASTCSupport)
     {
       v13 = SUUIGraphicsGetASTCImageFromCurrentImageContext(v11);
@@ -917,7 +917,7 @@ LABEL_24:
 
   else
   {
-    v8[2](v8, 0);
+    blockCopy[2](blockCopy, 0);
   }
 
   v13 = UIGraphicsGetImageFromCurrentImageContext();
@@ -928,15 +928,15 @@ LABEL_6:
   return v14;
 }
 
-- (id)_arcRoundedImageWithBounds:(CGRect)a3 contentRect:(CGRect)a4 cornerRadius:(double)a5 drawBlock:(id)a6
+- (id)_arcRoundedImageWithBounds:(CGRect)bounds contentRect:(CGRect)rect cornerRadius:(double)radius drawBlock:(id)block
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a3.size.height;
-  v11 = a3.size.width;
-  v13 = a6;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v10 = bounds.size.height;
+  v11 = bounds.size.width;
+  blockCopy = block;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __93__SUUIStyledImageDataConsumer__arcRoundedImageWithBounds_contentRect_cornerRadius_drawBlock___block_invoke;
@@ -945,8 +945,8 @@ LABEL_6:
   v21 = y;
   v22 = width;
   v23 = height;
-  v24 = a5;
-  v14 = v13;
+  radiusCopy = radius;
+  v14 = blockCopy;
   v18[4] = self;
   v19 = v14;
   v15 = [(SUUIStyledImageDataConsumer *)self _imageWithSize:0 isOpaque:v18 drawBlock:v11, v10];
@@ -954,7 +954,7 @@ LABEL_6:
   if (objc_opt_isKindOfClass())
   {
     v16 = v15;
-    [v16 setCornerRadius:a5];
+    [v16 setCornerRadius:radius];
     [v16 setCornerType:1];
     if (self->_borderColor)
     {
@@ -983,18 +983,18 @@ void __93__SUUIStyledImageDataConsumer__arcRoundedImageWithBounds_contentRect_co
   }
 }
 
-- (id)_scaledImageWithBounds:(CGRect)a3 contentRect:(CGRect)a4 drawBlock:(id)a5
+- (id)_scaledImageWithBounds:(CGRect)bounds contentRect:(CGRect)rect drawBlock:(id)block
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3.size.height;
-  v10 = a3.size.width;
-  v11 = a3.origin.y;
-  v12 = a3.origin.x;
-  v14 = a5;
-  v15 = [(SUUIStyledImageDataConsumer *)self _backgroundIsOpaque];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v9 = bounds.size.height;
+  v10 = bounds.size.width;
+  v11 = bounds.origin.y;
+  v12 = bounds.origin.x;
+  blockCopy = block;
+  _backgroundIsOpaque = [(SUUIStyledImageDataConsumer *)self _backgroundIsOpaque];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __76__SUUIStyledImageDataConsumer__scaledImageWithBounds_contentRect_drawBlock___block_invoke;
@@ -1004,13 +1004,13 @@ void __93__SUUIStyledImageDataConsumer__arcRoundedImageWithBounds_contentRect_co
   v23 = v10;
   v24 = v9;
   v19[4] = self;
-  v20 = v14;
+  v20 = blockCopy;
   v25 = x;
   v26 = y;
   v27 = width;
   v28 = height;
-  v16 = v14;
-  v17 = [(SUUIStyledImageDataConsumer *)self _imageWithSize:v15 isOpaque:v19 drawBlock:v10, v9];
+  v16 = blockCopy;
+  v17 = [(SUUIStyledImageDataConsumer *)self _imageWithSize:_backgroundIsOpaque isOpaque:v19 drawBlock:v10, v9];
 
   return v17;
 }
@@ -1038,18 +1038,18 @@ uint64_t __76__SUUIStyledImageDataConsumer__scaledImageWithBounds_contentRect_dr
   return [v3 _drawBordersWithImageRect:v4 bounds:{v5, v6, v7, v8, v9, v10, v11}];
 }
 
-- (id)_radialBlurImageWithBounds:(CGRect)a3 contentRect:(CGRect)a4 drawBlock:(id)a5
+- (id)_radialBlurImageWithBounds:(CGRect)bounds contentRect:(CGRect)rect drawBlock:(id)block
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3.size.height;
-  v10 = a3.size.width;
-  v11 = a3.origin.y;
-  v12 = a3.origin.x;
-  v14 = a5;
-  v15 = [(SUUIStyledImageDataConsumer *)self _backgroundIsOpaque];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v9 = bounds.size.height;
+  v10 = bounds.size.width;
+  v11 = bounds.origin.y;
+  v12 = bounds.origin.x;
+  blockCopy = block;
+  _backgroundIsOpaque = [(SUUIStyledImageDataConsumer *)self _backgroundIsOpaque];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __80__SUUIStyledImageDataConsumer__radialBlurImageWithBounds_contentRect_drawBlock___block_invoke;
@@ -1059,13 +1059,13 @@ uint64_t __76__SUUIStyledImageDataConsumer__scaledImageWithBounds_contentRect_dr
   v23 = v10;
   v24 = v9;
   v19[4] = self;
-  v20 = v14;
+  v20 = blockCopy;
   v25 = x;
   v26 = y;
   v27 = width;
   v28 = height;
-  v16 = v14;
-  v17 = [(SUUIStyledImageDataConsumer *)self _imageWithSize:v15 isOpaque:v19 drawBlock:v10, v9];
+  v16 = blockCopy;
+  v17 = [(SUUIStyledImageDataConsumer *)self _imageWithSize:_backgroundIsOpaque isOpaque:v19 drawBlock:v10, v9];
 
   return v17;
 }
@@ -1139,18 +1139,18 @@ void __80__SUUIStyledImageDataConsumer__radialBlurImageWithBounds_contentRect_dr
   }
 }
 
-- (id)_roundedBorderWithBounds:(CGRect)a3 contentRect:(CGRect)a4 drawBlock:(id)a5
+- (id)_roundedBorderWithBounds:(CGRect)bounds contentRect:(CGRect)rect drawBlock:(id)block
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3.size.height;
-  v10 = a3.size.width;
-  v11 = a3.origin.y;
-  v12 = a3.origin.x;
-  v14 = a5;
-  v15 = [(SUUIStyledImageDataConsumer *)self _backgroundIsOpaque];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v9 = bounds.size.height;
+  v10 = bounds.size.width;
+  v11 = bounds.origin.y;
+  v12 = bounds.origin.x;
+  blockCopy = block;
+  _backgroundIsOpaque = [(SUUIStyledImageDataConsumer *)self _backgroundIsOpaque];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __78__SUUIStyledImageDataConsumer__roundedBorderWithBounds_contentRect_drawBlock___block_invoke;
@@ -1164,9 +1164,9 @@ void __80__SUUIStyledImageDataConsumer__radialBlurImageWithBounds_contentRect_dr
   v27 = width;
   v28 = height;
   v19[4] = self;
-  v20 = v14;
-  v16 = v14;
-  v17 = [(SUUIStyledImageDataConsumer *)self _imageWithSize:v15 isOpaque:v19 drawBlock:v10, v9];
+  v20 = blockCopy;
+  v16 = blockCopy;
+  v17 = [(SUUIStyledImageDataConsumer *)self _imageWithSize:_backgroundIsOpaque isOpaque:v19 drawBlock:v10, v9];
 
   return v17;
 }
@@ -1185,16 +1185,16 @@ void __78__SUUIStyledImageDataConsumer__roundedBorderWithBounds_contentRect_draw
   (*(*(a1 + 40) + 16))(v3, v5, v6, v7);
 }
 
-- (id)_uberBannerImageWithBounds:(CGRect)a3 inputSize:(CGSize)a4 drawBlock:(id)a5
+- (id)_uberBannerImageWithBounds:(CGRect)bounds inputSize:(CGSize)size drawBlock:(id)block
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3.size.height;
-  v8 = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v12 = a5;
-  v13 = [(SUUIStyledImageDataConsumer *)self _backgroundIsOpaque];
+  height = size.height;
+  width = size.width;
+  v7 = bounds.size.height;
+  v8 = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  blockCopy = block;
+  _backgroundIsOpaque = [(SUUIStyledImageDataConsumer *)self _backgroundIsOpaque];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __78__SUUIStyledImageDataConsumer__uberBannerImageWithBounds_inputSize_drawBlock___block_invoke;
@@ -1206,9 +1206,9 @@ void __78__SUUIStyledImageDataConsumer__roundedBorderWithBounds_contentRect_draw
   v23 = width;
   v24 = height;
   v17[4] = self;
-  v18 = v12;
-  v14 = v12;
-  v15 = [(SUUIStyledImageDataConsumer *)self _imageWithSize:v13 isOpaque:v17 drawBlock:v8, v7];
+  v18 = blockCopy;
+  v14 = blockCopy;
+  v15 = [(SUUIStyledImageDataConsumer *)self _imageWithSize:_backgroundIsOpaque isOpaque:v17 drawBlock:v8, v7];
 
   return v15;
 }
@@ -1262,16 +1262,16 @@ uint64_t __78__SUUIStyledImageDataConsumer__uberBannerImageWithBounds_inputSize_
   return (*(*(a1 + 40) + 16))(15.0, v16, ceilf(v17));
 }
 
-- (id)_dynamicUberImageWithBounds:(CGRect)a3 inputSize:(CGSize)a4 drawBlock:(id)a5
+- (id)_dynamicUberImageWithBounds:(CGRect)bounds inputSize:(CGSize)size drawBlock:(id)block
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3.size.height;
-  v8 = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = size.height;
+  width = size.width;
+  v7 = bounds.size.height;
+  v8 = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v35[2] = *MEMORY[0x277D85DE8];
-  v12 = a5;
+  blockCopy = block;
   v13 = [MEMORY[0x277D75C80] traitCollectionWithUserInterfaceLevel:{-[UITraitCollection userInterfaceLevel](self->_startingTraitCollection, "userInterfaceLevel")}];
   v14 = MEMORY[0x277D75C80];
   v35[0] = v13;
@@ -1288,45 +1288,45 @@ uint64_t __78__SUUIStyledImageDataConsumer__uberBannerImageWithBounds_inputSize_
   v21 = [v18 traitCollectionWithTraitsFromCollections:v20];
 
   v22 = [(UIColor *)self->_backgroundColor resolvedColorWithTraitCollection:v17];
-  v23 = [(SUUIStyledImageDataConsumer *)self _uberImageWithBounds:v22 inputSize:v12 backgroundColor:x drawBlock:y, v8, v7, width, height];
+  height = [(SUUIStyledImageDataConsumer *)self _uberImageWithBounds:v22 inputSize:blockCopy backgroundColor:x drawBlock:y, v8, v7, width, height];
   v24 = [(UIColor *)self->_backgroundColor resolvedColorWithTraitCollection:v21];
   if ([v24 isEqual:v22])
   {
-    v25 = v23;
+    v25 = height;
   }
 
   else
   {
     v25 = objc_alloc_init(MEMORY[0x277D755B8]);
-    v26 = [(SUUIStyledImageDataConsumer *)self _uberImageWithBounds:v24 inputSize:v12 backgroundColor:x drawBlock:y, v8, v7, width, height];
+    height2 = [(SUUIStyledImageDataConsumer *)self _uberImageWithBounds:v24 inputSize:blockCopy backgroundColor:x drawBlock:y, v8, v7, width, height];
     [v25 imageAsset];
     v33 = v17;
-    v28 = v27 = v12;
+    v28 = v27 = blockCopy;
     v29 = [MEMORY[0x277D75C80] traitCollectionWithUserInterfaceStyle:1];
-    [v28 registerImage:v23 withTraitCollection:v29];
+    [v28 registerImage:height withTraitCollection:v29];
 
-    v30 = [v25 imageAsset];
+    imageAsset = [v25 imageAsset];
     v31 = [MEMORY[0x277D75C80] traitCollectionWithUserInterfaceStyle:2];
-    [v30 registerImage:v26 withTraitCollection:v31];
+    [imageAsset registerImage:height2 withTraitCollection:v31];
 
-    v12 = v27;
+    blockCopy = v27;
     v17 = v33;
   }
 
   return v25;
 }
 
-- (id)_uberImageWithBounds:(CGRect)a3 inputSize:(CGSize)a4 backgroundColor:(id)a5 drawBlock:(id)a6
+- (id)_uberImageWithBounds:(CGRect)bounds inputSize:(CGSize)size backgroundColor:(id)color drawBlock:(id)block
 {
-  height = a4.height;
-  width = a4.width;
-  v9 = a3.size.height;
-  v10 = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v14 = a5;
-  v15 = a6;
-  v16 = [(SUUIStyledImageDataConsumer *)self _backgroundIsOpaque];
+  height = size.height;
+  width = size.width;
+  v9 = bounds.size.height;
+  v10 = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  colorCopy = color;
+  blockCopy = block;
+  _backgroundIsOpaque = [(SUUIStyledImageDataConsumer *)self _backgroundIsOpaque];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __88__SUUIStyledImageDataConsumer__uberImageWithBounds_inputSize_backgroundColor_drawBlock___block_invoke;
@@ -1337,11 +1337,11 @@ uint64_t __78__SUUIStyledImageDataConsumer__uberBannerImageWithBounds_inputSize_
   v27 = v9;
   v28 = width;
   v29 = height;
-  v22 = v14;
-  v23 = v15;
-  v17 = v15;
-  v18 = v14;
-  v19 = [(SUUIStyledImageDataConsumer *)self _imageWithSize:v16 isOpaque:v21 drawBlock:v10, v9];
+  v22 = colorCopy;
+  v23 = blockCopy;
+  v17 = blockCopy;
+  v18 = colorCopy;
+  v19 = [(SUUIStyledImageDataConsumer *)self _imageWithSize:_backgroundIsOpaque isOpaque:v21 drawBlock:v10, v9];
 
   return v19;
 }
@@ -1385,20 +1385,20 @@ void __88__SUUIStyledImageDataConsumer__uberImageWithBounds_inputSize_background
   }
 }
 
-- (id)_leftToRightGradient:(CGRect)a3 contentRect:(CGRect)a4 drawBlock:(id)a5
+- (id)_leftToRightGradient:(CGRect)gradient contentRect:(CGRect)rect drawBlock:(id)block
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3.size.height;
-  v10 = a3.size.width;
-  v11 = a3.origin.y;
-  v12 = a3.origin.x;
-  v14 = a5;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v9 = gradient.size.height;
+  v10 = gradient.size.width;
+  v11 = gradient.origin.y;
+  v12 = gradient.origin.x;
+  blockCopy = block;
   if ([(IKColor *)self->_iKBackgroundColor colorType]== 3)
   {
-    v15 = [(SUUIStyledImageDataConsumer *)self _backgroundIsOpaque];
+    _backgroundIsOpaque = [(SUUIStyledImageDataConsumer *)self _backgroundIsOpaque];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __74__SUUIStyledImageDataConsumer__leftToRightGradient_contentRect_drawBlock___block_invoke;
@@ -1408,12 +1408,12 @@ void __88__SUUIStyledImageDataConsumer__uberImageWithBounds_inputSize_background
     v21 = v11;
     v22 = v10;
     v23 = v9;
-    v19 = v14;
+    v19 = blockCopy;
     v24 = x;
     v25 = y;
     v26 = width;
     v27 = height;
-    v16 = [(SUUIStyledImageDataConsumer *)self _imageWithSize:v15 isOpaque:v18 drawBlock:v10, v9];
+    v16 = [(SUUIStyledImageDataConsumer *)self _imageWithSize:_backgroundIsOpaque isOpaque:v18 drawBlock:v10, v9];
   }
 
   else
@@ -1533,35 +1533,35 @@ void __74__SUUIStyledImageDataConsumer__leftToRightGradient_contentRect_drawBloc
   return result;
 }
 
-+ (id)appIconConsumerWithSize:(CGSize)a3
++ (id)appIconConsumerWithSize:(CGSize)size
 {
-  v3 = [[a1 alloc] initWithSize:1 treatment:{a3.width, a3.height}];
+  v3 = [[self alloc] initWithSize:1 treatment:{size.width, size.height}];
 
   return v3;
 }
 
 + (id)applePackIconConsumer
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v5 = 36.0;
-  if (v4 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v5 = 47.0;
   }
 
-  v6 = [a1 appIconConsumerWithSize:{v5, v5}];
+  v6 = [self appIconConsumerWithSize:{v5, v5}];
 
   return v6;
 }
 
 + (id)brickConsumer
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v4 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v5 = 103.0;
     v6 = 210.0;
@@ -1569,14 +1569,14 @@ void __74__SUUIStyledImageDataConsumer__leftToRightGradient_contentRect_drawBloc
 
   else
   {
-    v7 = [MEMORY[0x277D759A0] mainScreen];
-    [v7 bounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen bounds];
     v9 = v8;
 
     if (v9 <= 375.0)
     {
-      v10 = [MEMORY[0x277D759A0] mainScreen];
-      [v10 bounds];
+      mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen2 bounds];
       v12 = v11;
 
       v5 = 100.0;
@@ -1595,300 +1595,300 @@ void __74__SUUIStyledImageDataConsumer__leftToRightGradient_contentRect_drawBloc
     }
   }
 
-  v13 = [a1 brickConsumerWithBrickSize:{v6, v5}];
+  v13 = [self brickConsumerWithBrickSize:{v6, v5}];
 
   return v13;
 }
 
-+ (id)brickConsumerWithBrickSize:(CGSize)a3
++ (id)brickConsumerWithBrickSize:(CGSize)size
 {
-  v3 = [[a1 alloc] initWithSize:2 treatment:{a3.width, a3.height}];
+  v3 = [[self alloc] initWithSize:2 treatment:{size.width, size.height}];
 
   return v3;
 }
 
 + (id)cardIconConsumer
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v5 = 64.0;
-  if (v4 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v5 = 72.0;
   }
 
-  v6 = [a1 appIconConsumerWithSize:{v5, v5}];
+  v6 = [self appIconConsumerWithSize:{v5, v5}];
 
   return v6;
 }
 
 + (id)cardProductImageConsumer
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v5 = 64.0;
-  if (v4 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v5 = 72.0;
   }
 
-  v6 = [a1 productImageConsumerWithSize:{v5, v5}];
+  v6 = [self productImageConsumerWithSize:{v5, v5}];
 
   return v6;
 }
 
 + (id)giftComposeProductImageConsumer
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v5 = 64.0;
-  if (v4 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v5 = 75.0;
   }
 
-  v6 = [a1 productImageConsumerWithSize:{v5, v5}];
+  v6 = [self productImageConsumerWithSize:{v5, v5}];
 
   return v6;
 }
 
 + (id)giftResultIconConsumer
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v5 = 72.0;
-  if (v4 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v5 = 144.0;
   }
 
-  v6 = [a1 appIconConsumerWithSize:{v5, v5}];
+  v6 = [self appIconConsumerWithSize:{v5, v5}];
 
   return v6;
 }
 
 + (id)giftResultProductImageConsumer
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v5 = 72.0;
-  if (v4 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v5 = 144.0;
   }
 
-  v6 = [a1 productImageConsumerWithSize:{v5, v5}];
+  v6 = [self productImageConsumerWithSize:{v5, v5}];
 
   return v6;
 }
 
-+ (id)lockupIconConsumerWithSize:(int64_t)a3
++ (id)lockupIconConsumerWithSize:(int64_t)size
 {
-  v4 = SUUILockupImageSizeForLockupSize(a3, 12);
+  v4 = SUUILockupImageSizeForLockupSize(size, 12);
 
-  return [a1 appIconConsumerWithSize:v4];
+  return [self appIconConsumerWithSize:v4];
 }
 
-+ (id)lockupProductImageConsumerWithSize:(int64_t)a3
++ (id)lockupProductImageConsumerWithSize:(int64_t)size
 {
-  v4 = SUUILockupImageSizeForLockupSize(a3, 12);
+  v4 = SUUILockupImageSizeForLockupSize(size, 12);
 
-  return [a1 productImageConsumerWithSize:v4];
+  return [self productImageConsumerWithSize:v4];
 }
 
 + (id)mixedTopChartsNewsstandConsumer
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v5 = 64.0;
-  if (v4 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v5 = 67.0;
   }
 
-  v6 = [a1 productImageConsumerWithSize:{v5, v5}];
+  v6 = [self productImageConsumerWithSize:{v5, v5}];
 
   return v6;
 }
 
 + (id)newsstandRoomNewsstandConsumer
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom] == 1;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  v4 = [currentDevice userInterfaceIdiom] == 1;
 
-  v5 = [a1 productImageConsumerWithSize:{dbl_259FCC010[v4], dbl_259FCC020[v4]}];
+  v5 = [self productImageConsumerWithSize:{dbl_259FCC010[v4], dbl_259FCC020[v4]}];
 
   return v5;
 }
 
 + (id)newsstandSwooshNewsstandConsumer
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v5 = 107.0;
-  if (v4 != 1)
+  if (userInterfaceIdiom != 1)
   {
     v5 = 100.0;
   }
 
-  v6 = [a1 productImageConsumerWithSize:{dbl_259FCC030[v4 == 1], v5}];
+  v6 = [self productImageConsumerWithSize:{dbl_259FCC030[userInterfaceIdiom == 1], v5}];
 
   return v6;
 }
 
 + (id)parentBundleIconConsumer
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v5 = 64.0;
-  if (v4 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v5 = 72.0;
   }
 
-  v6 = [a1 appIconConsumerWithSize:{v5, v5}];
+  v6 = [self appIconConsumerWithSize:{v5, v5}];
 
   return v6;
 }
 
-+ (id)productImageConsumerWithSize:(CGSize)a3
++ (id)productImageConsumerWithSize:(CGSize)size
 {
-  v3 = [[a1 alloc] initWithSize:5 treatment:{a3.width, a3.height}];
+  v3 = [[self alloc] initWithSize:5 treatment:{size.width, size.height}];
 
   return v3;
 }
 
 + (id)productPageProductImageConsumer
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v5 = 100.0;
-  if (v4 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v5 = 170.0;
   }
 
-  v6 = [a1 productImageConsumerWithSize:{v5, v5}];
+  v6 = [self productImageConsumerWithSize:{v5, v5}];
 
   return v6;
 }
 
 + (id)purchasedProductImageConsumer
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v5 = 57.0;
-  if (v4 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v5 = 72.0;
   }
 
-  v6 = [a1 productImageConsumerWithSize:{v5, v5}];
+  v6 = [self productImageConsumerWithSize:{v5, v5}];
 
   return v6;
 }
 
 + (id)roomIconConsumer
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v5 = 64.0;
-  if (v4 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v5 = 75.0;
   }
 
-  v6 = [a1 appIconConsumerWithSize:{v5, v5}];
+  v6 = [self appIconConsumerWithSize:{v5, v5}];
 
   return v6;
 }
 
 + (id)roomProductImageConsumer
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v5 = 64.0;
-  if (v4 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v5 = 75.0;
   }
 
-  v6 = [a1 productImageConsumerWithSize:{v5, v5}];
+  v6 = [self productImageConsumerWithSize:{v5, v5}];
 
   return v6;
 }
 
 + (id)swooshNewsstandConsumer
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v5 = 200.0;
-  if (v4 != 1)
+  if (userInterfaceIdiom != 1)
   {
     v5 = 107.0;
   }
 
-  v6 = [a1 productImageConsumerWithSize:{dbl_259FCC040[v4 == 1], v5}];
+  v6 = [self productImageConsumerWithSize:{dbl_259FCC040[userInterfaceIdiom == 1], v5}];
 
   return v6;
 }
 
 + (id)topChartsIconConsumer
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v5 = 64.0;
-  if (v4 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v5 = 75.0;
   }
 
-  v6 = [a1 appIconConsumerWithSize:{v5, v5}];
+  v6 = [self appIconConsumerWithSize:{v5, v5}];
 
   return v6;
 }
 
 + (id)topChartsNewsstandConsumer
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom] == 1;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  v4 = [currentDevice userInterfaceIdiom] == 1;
 
-  v5 = [a1 productImageConsumerWithSize:{dbl_259FCC010[v4], dbl_259FCC020[v4]}];
+  v5 = [self productImageConsumerWithSize:{dbl_259FCC010[v4], dbl_259FCC020[v4]}];
 
   return v5;
 }
 
 + (id)manageMessagesConsumer
 {
-  v2 = [[a1 alloc] initWithSize:15 treatment:{29.0, 22.0}];
+  v2 = [[self alloc] initWithSize:15 treatment:{29.0, 22.0}];
 
   return v2;
 }
 
 + (id)categoriesMessagesConsumer
 {
-  v2 = [[a1 alloc] initWithSize:15 treatment:{35.0, 26.0}];
+  v2 = [[self alloc] initWithSize:15 treatment:{35.0, 26.0}];
 
   return v2;
 }
 
 + (id)purchasedMessagesConsumer
 {
-  v2 = [[a1 alloc] initWithSize:15 treatment:{64.0, 48.0}];
+  v2 = [[self alloc] initWithSize:15 treatment:{64.0, 48.0}];
 
   return v2;
 }

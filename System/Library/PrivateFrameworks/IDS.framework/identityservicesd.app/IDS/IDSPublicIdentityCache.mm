@@ -1,14 +1,14 @@
 @interface IDSPublicIdentityCache
 + (id)sharedInstance;
-- (BOOL)addIdentity:(id)a3 forToken:(id)a4 uri:(id)a5 service:(id)a6 error:(id *)a7;
-- (BOOL)addIdentityData:(id)a3 forToken:(id)a4 uri:(id)a5 service:(id)a6 error:(id *)a7;
-- (BOOL)cleanupWithError:(id *)a3;
+- (BOOL)addIdentity:(id)identity forToken:(id)token uri:(id)uri service:(id)service error:(id *)error;
+- (BOOL)addIdentityData:(id)data forToken:(id)token uri:(id)uri service:(id)service error:(id *)error;
+- (BOOL)cleanupWithError:(id *)error;
 - (IDSPublicIdentityCache)init;
-- (IDSPublicIdentityCache)initWithPath:(id)a3 withPersistenceManager:(id)a4;
-- (id)identityDataForToken:(id)a3 uri:(id)a4 service:(id)a5 error:(id *)a6;
-- (id)identityForToken:(id)a3 uri:(id)a4 service:(id)a5 error:(id *)a6;
-- (id)keyForToken:(id)a3 uri:(id)a4 service:(id)a5;
-- (id)recentURIsWithinTimeInterval:(double)a3 forService:(id)a4 error:(id *)a5;
+- (IDSPublicIdentityCache)initWithPath:(id)path withPersistenceManager:(id)manager;
+- (id)identityDataForToken:(id)token uri:(id)uri service:(id)service error:(id *)error;
+- (id)identityForToken:(id)token uri:(id)uri service:(id)service error:(id *)error;
+- (id)keyForToken:(id)token uri:(id)uri service:(id)service;
+- (id)recentURIsWithinTimeInterval:(double)interval forService:(id)service error:(id *)error;
 @end
 
 @implementation IDSPublicIdentityCache
@@ -48,126 +48,126 @@
   }
 
   v7 = +[IDSDaemon sharedInstance];
-  v8 = [v7 persistenceManager];
-  v9 = [(IDSPublicIdentityCache *)self initWithPath:v6 withPersistenceManager:v8];
+  persistenceManager = [v7 persistenceManager];
+  v9 = [(IDSPublicIdentityCache *)self initWithPath:v6 withPersistenceManager:persistenceManager];
 
   return v9;
 }
 
-- (IDSPublicIdentityCache)initWithPath:(id)a3 withPersistenceManager:(id)a4
+- (IDSPublicIdentityCache)initWithPath:(id)path withPersistenceManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  managerCopy = manager;
   v12.receiver = self;
   v12.super_class = IDSPublicIdentityCache;
   v8 = [(IDSPublicIdentityCache *)&v12 init];
   if (v8)
   {
-    v9 = [[IDSKVStore alloc] initWithPath:v6 storeName:@"PublicIdentityCache" dataProtectionClass:0];
+    v9 = [[IDSKVStore alloc] initWithPath:pathCopy storeName:@"PublicIdentityCache" dataProtectionClass:0];
     kvStore = v8->_kvStore;
     v8->_kvStore = v9;
 
-    objc_storeStrong(&v8->_persistenceManager, a4);
+    objc_storeStrong(&v8->_persistenceManager, manager);
   }
 
   return v8;
 }
 
-- (id)keyForToken:(id)a3 uri:(id)a4 service:(id)a5
+- (id)keyForToken:(id)token uri:(id)uri service:(id)service
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [a3 __imHexString];
-  v10 = [NSString stringWithFormat:@"%@-%@-%@", v9, v8, v7];
+  serviceCopy = service;
+  uriCopy = uri;
+  __imHexString = [token __imHexString];
+  serviceCopy = [NSString stringWithFormat:@"%@-%@-%@", __imHexString, uriCopy, serviceCopy];
 
-  return v10;
+  return serviceCopy;
 }
 
-- (BOOL)addIdentityData:(id)a3 forToken:(id)a4 uri:(id)a5 service:(id)a6 error:(id *)a7
+- (BOOL)addIdentityData:(id)data forToken:(id)token uri:(id)uri service:(id)service error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a5;
+  dataCopy = data;
+  tokenCopy = token;
+  serviceCopy = service;
+  uriCopy = uri;
   if (_os_feature_enabled_impl())
   {
-    [(IDSQuerySDPersistenceManager *)self->_persistenceManager savePublicIdentityData:v12 token:v13 uri:v15 service:v14 completion:&stru_100BD7508];
+    [(IDSQuerySDPersistenceManager *)self->_persistenceManager savePublicIdentityData:dataCopy token:tokenCopy uri:uriCopy service:serviceCopy completion:&stru_100BD7508];
     v16 = 1;
   }
 
   else
   {
-    v17 = [v15 prefixedURI];
+    prefixedURI = [uriCopy prefixedURI];
 
-    v15 = [(IDSPublicIdentityCache *)self keyForToken:v13 uri:v17 service:v14];
+    uriCopy = [(IDSPublicIdentityCache *)self keyForToken:tokenCopy uri:prefixedURI service:serviceCopy];
 
-    v16 = [(IDSKVStore *)self->_kvStore persistData:v12 forKey:v15 error:a7];
+    v16 = [(IDSKVStore *)self->_kvStore persistData:dataCopy forKey:uriCopy error:error];
   }
 
   return v16;
 }
 
-- (id)identityDataForToken:(id)a3 uri:(id)a4 service:(id)a5 error:(id *)a6
+- (id)identityDataForToken:(id)token uri:(id)uri service:(id)service error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a4;
+  tokenCopy = token;
+  serviceCopy = service;
+  uriCopy = uri;
   if (_os_feature_enabled_impl())
   {
-    [(IDSQuerySDPersistenceManager *)self->_persistenceManager publicIdentityDataFor:v10 uri:v12 service:v11];
+    [(IDSQuerySDPersistenceManager *)self->_persistenceManager publicIdentityDataFor:tokenCopy uri:uriCopy service:serviceCopy];
   }
 
   else
   {
-    v13 = [v12 prefixedURI];
+    prefixedURI = [uriCopy prefixedURI];
 
-    v12 = [(IDSPublicIdentityCache *)self keyForToken:v10 uri:v13 service:v11];
+    uriCopy = [(IDSPublicIdentityCache *)self keyForToken:tokenCopy uri:prefixedURI service:serviceCopy];
 
-    [(IDSKVStore *)self->_kvStore dataForKey:v12 error:a6];
+    [(IDSKVStore *)self->_kvStore dataForKey:uriCopy error:error];
   }
   v14 = ;
 
   return v14;
 }
 
-- (BOOL)addIdentity:(id)a3 forToken:(id)a4 uri:(id)a5 service:(id)a6 error:(id *)a7
+- (BOOL)addIdentity:(id)identity forToken:(id)token uri:(id)uri service:(id)service error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [v11 dataRepresentationWithError:a7];
+  identityCopy = identity;
+  tokenCopy = token;
+  uriCopy = uri;
+  serviceCopy = service;
+  v15 = [identityCopy dataRepresentationWithError:error];
   if (v15)
   {
     v16 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       v17 = IDSLoggableDescriptionForTokenOnService();
-      v18 = [v13 prefixedURI];
+      prefixedURI = [uriCopy prefixedURI];
       v19 = IDSLoggableDescriptionForHandleOnService();
       *buf = 138413058;
-      v30 = v11;
+      v30 = identityCopy;
       v31 = 2112;
       v32 = v17;
       v33 = 2112;
       v34 = v19;
       v35 = 2112;
-      v36 = v14;
+      v36 = serviceCopy;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Adding identity to last resort DB { identity: %@, token: %@, uri: %@, service: %@ }", buf, 0x2Au);
     }
 
     if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
     {
       v20 = IDSLoggableDescriptionForTokenOnService();
-      v21 = [v13 prefixedURI];
+      prefixedURI2 = [uriCopy prefixedURI];
       v26 = IDSLoggableDescriptionForHandleOnService();
-      v27 = v14;
-      v24 = v11;
+      v27 = serviceCopy;
+      v24 = identityCopy;
       v25 = v20;
       _IDSLogV();
     }
 
-    v22 = [(IDSPublicIdentityCache *)self addIdentityData:v15 forToken:v12 uri:v13 service:v14 error:a7, v24, v25, v26, v27];
+    v22 = [(IDSPublicIdentityCache *)self addIdentityData:v15 forToken:tokenCopy uri:uriCopy service:serviceCopy error:error, v24, v25, v26, v27];
   }
 
   else
@@ -178,11 +178,11 @@
   return v22;
 }
 
-- (id)identityForToken:(id)a3 uri:(id)a4 service:(id)a5 error:(id *)a6
+- (id)identityForToken:(id)token uri:(id)uri service:(id)service error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  tokenCopy = token;
+  uriCopy = uri;
+  serviceCopy = service;
   v13 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
@@ -193,7 +193,7 @@
     v30 = 2112;
     v31 = v15;
     v32 = 2112;
-    v33 = v12;
+    v33 = serviceCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Checking last resort DB for identity { token: %@, uri: %@, service: %@ }", buf, 0x20u);
   }
 
@@ -201,15 +201,15 @@
   {
     v16 = IDSLoggableDescriptionForTokenOnService();
     v25 = IDSLoggableDescriptionForTokenOnService();
-    v26 = v12;
+    v26 = serviceCopy;
     v24 = v16;
     _IDSLogV();
   }
 
-  v17 = [(IDSPublicIdentityCache *)self identityDataForToken:v10 uri:v11 service:v12 error:a6, v24, v25, v26];
+  v17 = [(IDSPublicIdentityCache *)self identityDataForToken:tokenCopy uri:uriCopy service:serviceCopy error:error, v24, v25, v26];
   if (v17)
   {
-    v18 = [IDSMPPublicDeviceIdentityContainer identityWithDataRepresentation:v17 error:a6];
+    v18 = [IDSMPPublicDeviceIdentityContainer identityWithDataRepresentation:v17 error:error];
     if (v18)
     {
       v19 = OSLogHandleForIDSCategory();
@@ -224,7 +224,7 @@
         v32 = 2112;
         v33 = v21;
         v34 = 2112;
-        v35 = v12;
+        v35 = serviceCopy;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Found identity in last resort DB { identity: %@, token: %@, uri: %@, service: %@ }", buf, 0x2Au);
       }
 
@@ -245,7 +245,7 @@
   return v18;
 }
 
-- (BOOL)cleanupWithError:(id *)a3
+- (BOOL)cleanupWithError:(id *)error
 {
   v5 = +[IDSServerBag sharedInstance];
   v6 = [v5 objectForKey:@"public-identity-clear-time-seconds"];
@@ -306,19 +306,19 @@
 
   else
   {
-    v15 = [(IDSKVStore *)self->_kvStore deleteEntriesBeforeDate:v11 afterDate:v12 error:a3];
+    v15 = [(IDSKVStore *)self->_kvStore deleteEntriesBeforeDate:v11 afterDate:v12 error:error];
   }
 
   return v15;
 }
 
-- (id)recentURIsWithinTimeInterval:(double)a3 forService:(id)a4 error:(id *)a5
+- (id)recentURIsWithinTimeInterval:(double)interval forService:(id)service error:(id *)error
 {
-  v8 = a4;
-  v9 = [NSDate dateWithTimeIntervalSinceNow:-a3];
+  serviceCopy = service;
+  v9 = [NSDate dateWithTimeIntervalSinceNow:-interval];
   if (_os_feature_enabled_impl())
   {
-    v10 = [(IDSQuerySDPersistenceManager *)self->_persistenceManager recentURIsSinceDate:v9 service:v8];
+    v10 = [(IDSQuerySDPersistenceManager *)self->_persistenceManager recentURIsSinceDate:v9 service:serviceCopy];
     v11 = v10;
     if (!v10 || ![v10 count])
     {
@@ -326,7 +326,7 @@
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v28 = v8;
+        v28 = serviceCopy;
         v29 = 2112;
         v30 = v9;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Found no recent URIs for service: %@ in last resort cache since date %@", buf, 0x16u);
@@ -334,7 +334,7 @@
 
       if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
       {
-        v23 = v8;
+        v23 = serviceCopy;
         v24 = v9;
         _IDSLogV();
       }
@@ -347,7 +347,7 @@ LABEL_26:
 
   else
   {
-    v13 = [(IDSKVStore *)self->_kvStore storedKeysAfterDate:v9 error:a5];
+    v13 = [(IDSKVStore *)self->_kvStore storedKeysAfterDate:v9 error:error];
     v11 = v13;
     if (!v13 || ![v13 count])
     {
@@ -355,7 +355,7 @@ LABEL_26:
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v28 = v8;
+        v28 = serviceCopy;
         v29 = 2112;
         v30 = v9;
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Found no recent URIs for service: %@ in last resort cache since date %@", buf, 0x16u);
@@ -363,7 +363,7 @@ LABEL_26:
 
       if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
       {
-        v23 = v8;
+        v23 = serviceCopy;
         v24 = v9;
         _IDSLogV();
       }
@@ -375,7 +375,7 @@ LABEL_26:
     v25[1] = 3221225472;
     v25[2] = sub_10032517C;
     v25[3] = &unk_100BD7530;
-    v26 = v8;
+    v26 = serviceCopy;
     v14 = [v11 __imArrayByApplyingBlock:v25];
 
     v11 = v14;
@@ -396,7 +396,7 @@ LABEL_26:
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v28 = v8;
+    v28 = serviceCopy;
     v29 = 2112;
     v30 = v9;
     v31 = 2112;

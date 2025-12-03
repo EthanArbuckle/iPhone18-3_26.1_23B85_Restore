@@ -1,11 +1,11 @@
 @interface PKAutoFillHeroAnimationView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKAutoFillHeroAnimationView)initWithCoder:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKAutoFillHeroAnimationView)initWithCoder:(id)coder;
 @end
 
 @implementation PKAutoFillHeroAnimationView
 
-- (PKAutoFillHeroAnimationView)initWithCoder:(id)a3
+- (PKAutoFillHeroAnimationView)initWithCoder:(id)coder
 {
   v3 = OBJC_IVAR___PKAutoFillHeroAnimationView_layerColorConfigurationSets;
   *(&self->super.super.super.super.super.isa + v3) = sub_1BD93C878(self, a2);
@@ -14,11 +14,11 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = [objc_opt_self() mainScreen];
-  [v4 bounds];
+  width = fits.width;
+  mainScreen = [objc_opt_self() mainScreen];
+  [mainScreen bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;

@@ -1,91 +1,91 @@
 @interface RCOverrideRule
-- (RCOverrideRule)initWithCoder:(id)a3;
-- (RCOverrideRule)initWithEmailAddress:(id)a3 displayName:(id)a4 overrideIdentifier:(id)a5 category:(id)a6 categoryUpdateTime:(double)a7;
-- (RCOverrideRule)initWithEmailAddress:(id)a3 overrideIdentifier:(id)a4 category:(id)a5 categoryUpdateTime:(double)a6;
-- (RCOverrideRule)initWithMessageIdHeader:(id)a3 appleRequestHeader:(id)a4 overrideIdentifier:(id)a5 category:(id)a6 categoryUpdateTime:(double)a7;
-- (id)copyWithZone:(_NSZone *)a3;
+- (RCOverrideRule)initWithCoder:(id)coder;
+- (RCOverrideRule)initWithEmailAddress:(id)address displayName:(id)name overrideIdentifier:(id)identifier category:(id)category categoryUpdateTime:(double)time;
+- (RCOverrideRule)initWithEmailAddress:(id)address overrideIdentifier:(id)identifier category:(id)category categoryUpdateTime:(double)time;
+- (RCOverrideRule)initWithMessageIdHeader:(id)header appleRequestHeader:(id)requestHeader overrideIdentifier:(id)identifier category:(id)category categoryUpdateTime:(double)time;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RCOverrideRule
 
-- (RCOverrideRule)initWithEmailAddress:(id)a3 overrideIdentifier:(id)a4 category:(id)a5 categoryUpdateTime:(double)a6
+- (RCOverrideRule)initWithEmailAddress:(id)address overrideIdentifier:(id)identifier category:(id)category categoryUpdateTime:(double)time
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  addressCopy = address;
+  identifierCopy = identifier;
+  categoryCopy = category;
   v19.receiver = self;
   v19.super_class = RCOverrideRule;
   v14 = [(RCOverrideRule *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_category, a5);
-    v16 = [MEMORY[0x1E696AD98] numberWithDouble:a6];
+    objc_storeStrong(&v14->_category, category);
+    v16 = [MEMORY[0x1E696AD98] numberWithDouble:time];
     categoryUpdateTime = v15->_categoryUpdateTime;
     v15->_categoryUpdateTime = v16;
 
-    objc_storeStrong(&v15->_address, a3);
-    objc_storeStrong(&v15->_overrideIdentifier, a4);
+    objc_storeStrong(&v15->_address, address);
+    objc_storeStrong(&v15->_overrideIdentifier, identifier);
   }
 
   return v15;
 }
 
-- (RCOverrideRule)initWithEmailAddress:(id)a3 displayName:(id)a4 overrideIdentifier:(id)a5 category:(id)a6 categoryUpdateTime:(double)a7
+- (RCOverrideRule)initWithEmailAddress:(id)address displayName:(id)name overrideIdentifier:(id)identifier category:(id)category categoryUpdateTime:(double)time
 {
-  v12 = a5;
-  v13 = a6;
-  v14 = a4;
-  v15 = a3;
-  v16 = [[RCAddress alloc] initWithAddress:v15 displayName:v14];
+  identifierCopy = identifier;
+  categoryCopy = category;
+  nameCopy = name;
+  addressCopy = address;
+  v16 = [[RCAddress alloc] initWithAddress:addressCopy displayName:nameCopy];
 
   if (v16)
   {
-    self = [(RCOverrideRule *)self initWithEmailAddress:v16 overrideIdentifier:v12 category:v13 categoryUpdateTime:a7];
-    v17 = self;
+    self = [(RCOverrideRule *)self initWithEmailAddress:v16 overrideIdentifier:identifierCopy category:categoryCopy categoryUpdateTime:time];
+    selfCopy = self;
   }
 
   else
   {
-    v17 = 0;
+    selfCopy = 0;
   }
 
-  return v17;
+  return selfCopy;
 }
 
-- (RCOverrideRule)initWithMessageIdHeader:(id)a3 appleRequestHeader:(id)a4 overrideIdentifier:(id)a5 category:(id)a6 categoryUpdateTime:(double)a7
+- (RCOverrideRule)initWithMessageIdHeader:(id)header appleRequestHeader:(id)requestHeader overrideIdentifier:(id)identifier category:(id)category categoryUpdateTime:(double)time
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  headerCopy = header;
+  requestHeaderCopy = requestHeader;
+  identifierCopy = identifier;
+  categoryCopy = category;
   v23.receiver = self;
   v23.super_class = RCOverrideRule;
   v17 = [(RCOverrideRule *)&v23 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_category, a6);
-    v19 = [MEMORY[0x1E696AD98] numberWithDouble:a7];
+    objc_storeStrong(&v17->_category, category);
+    v19 = [MEMORY[0x1E696AD98] numberWithDouble:time];
     categoryUpdateTime = v18->_categoryUpdateTime;
     v18->_categoryUpdateTime = v19;
 
     address = v18->_address;
     v18->_address = 0;
 
-    objc_storeStrong(&v18->_messageIdHeader, a3);
-    objc_storeStrong(&v18->_xAppleRequestHeader, a4);
-    objc_storeStrong(&v18->_overrideIdentifier, a5);
+    objc_storeStrong(&v18->_messageIdHeader, header);
+    objc_storeStrong(&v18->_xAppleRequestHeader, requestHeader);
+    objc_storeStrong(&v18->_overrideIdentifier, identifier);
   }
 
   return v18;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(NSString *)self->_category copy];
   [v4 setCategory:v5];
 
@@ -103,45 +103,45 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   address = self->_address;
-  v5 = a3;
-  [v5 encodeObject:address forKey:@"_address"];
-  [v5 encodeObject:self->_category forKey:@"_category"];
-  [v5 encodeObject:self->_categoryUpdateTime forKey:@"_categoryUpdateTime"];
-  [v5 encodeObject:self->_xAppleRequestHeader forKey:@"_appleRequestHeader"];
-  [v5 encodeObject:self->_messageIdHeader forKey:@"_messageIdHeader"];
-  [v5 encodeObject:self->_overrideIdentifier forKey:@"_overrideIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:address forKey:@"_address"];
+  [coderCopy encodeObject:self->_category forKey:@"_category"];
+  [coderCopy encodeObject:self->_categoryUpdateTime forKey:@"_categoryUpdateTime"];
+  [coderCopy encodeObject:self->_xAppleRequestHeader forKey:@"_appleRequestHeader"];
+  [coderCopy encodeObject:self->_messageIdHeader forKey:@"_messageIdHeader"];
+  [coderCopy encodeObject:self->_overrideIdentifier forKey:@"_overrideIdentifier"];
 }
 
-- (RCOverrideRule)initWithCoder:(id)a3
+- (RCOverrideRule)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(RCOverrideRule *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_address"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_address"];
     address = v5->_address;
     v5->_address = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_category"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_category"];
     category = v5->_category;
     v5->_category = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_categoryUpdateTime"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_categoryUpdateTime"];
     categoryUpdateTime = v5->_categoryUpdateTime;
     v5->_categoryUpdateTime = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_appleRequestHeader"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_appleRequestHeader"];
     xAppleRequestHeader = v5->_xAppleRequestHeader;
     v5->_xAppleRequestHeader = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_messageIdHeader"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_messageIdHeader"];
     messageIdHeader = v5->_messageIdHeader;
     v5->_messageIdHeader = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_overrideIdentifier"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_overrideIdentifier"];
     overrideIdentifier = v5->_overrideIdentifier;
     v5->_overrideIdentifier = v16;
   }
@@ -154,12 +154,12 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(RCAddress *)self->_address displayName];
-  v7 = [(RCAddress *)self->_address emailAddress];
+  displayName = [(RCAddress *)self->_address displayName];
+  emailAddress = [(RCAddress *)self->_address emailAddress];
   v12 = *&self->_xAppleRequestHeader;
   category = self->_category;
   v9 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSince1970:{-[NSNumber longLongValue](self->_categoryUpdateTime, "longLongValue")}];
-  v10 = [v3 stringWithFormat:@"[%@ email:%@<%@> uuid:%@ msgId:%@ cat:%@ lastmod:%@ iungoID:%@]", v5, v6, v7, v12, category, v9, self->_overrideIdentifier];
+  v10 = [v3 stringWithFormat:@"[%@ email:%@<%@> uuid:%@ msgId:%@ cat:%@ lastmod:%@ iungoID:%@]", v5, displayName, emailAddress, v12, category, v9, self->_overrideIdentifier];
 
   return v10;
 }

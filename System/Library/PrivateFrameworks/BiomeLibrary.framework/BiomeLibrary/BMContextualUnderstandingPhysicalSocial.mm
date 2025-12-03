@@ -1,16 +1,16 @@
 @interface BMContextualUnderstandingPhysicalSocial
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMContextualUnderstandingPhysicalSocial)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMContextualUnderstandingPhysicalSocial)initWithLocalIdentifier:(id)a3 discoveredPeople:(id)a4 startTimeInSecondsSinceReferenceDate:(id)a5 endTimeInSecondsSinceReferenceDate:(id)a6;
-- (BOOL)isEqual:(id)a3;
+- (BMContextualUnderstandingPhysicalSocial)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMContextualUnderstandingPhysicalSocial)initWithLocalIdentifier:(id)identifier discoveredPeople:(id)people startTimeInSecondsSinceReferenceDate:(id)date endTimeInSecondsSinceReferenceDate:(id)referenceDate;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)_discoveredPeopleJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMContextualUnderstandingPhysicalSocial
@@ -33,25 +33,25 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMContextualUnderstandingPhysicalSocial *)self localIdentifier];
-    v7 = [v5 localIdentifier];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    localIdentifier = [(BMContextualUnderstandingPhysicalSocial *)self localIdentifier];
+    localIdentifier2 = [v5 localIdentifier];
+    v8 = localIdentifier2;
+    if (localIdentifier == localIdentifier2)
     {
     }
 
     else
     {
-      v9 = [(BMContextualUnderstandingPhysicalSocial *)self localIdentifier];
-      v10 = [v5 localIdentifier];
-      v11 = [v9 isEqual:v10];
+      localIdentifier3 = [(BMContextualUnderstandingPhysicalSocial *)self localIdentifier];
+      localIdentifier4 = [v5 localIdentifier];
+      v11 = [localIdentifier3 isEqual:localIdentifier4];
 
       if (!v11)
       {
@@ -59,18 +59,18 @@
       }
     }
 
-    v13 = [(BMContextualUnderstandingPhysicalSocial *)self discoveredPeople];
-    v14 = [v5 discoveredPeople];
-    v15 = v14;
-    if (v13 == v14)
+    discoveredPeople = [(BMContextualUnderstandingPhysicalSocial *)self discoveredPeople];
+    discoveredPeople2 = [v5 discoveredPeople];
+    v15 = discoveredPeople2;
+    if (discoveredPeople == discoveredPeople2)
     {
     }
 
     else
     {
-      v16 = [(BMContextualUnderstandingPhysicalSocial *)self discoveredPeople];
-      v17 = [v5 discoveredPeople];
-      v18 = [v16 isEqual:v17];
+      discoveredPeople3 = [(BMContextualUnderstandingPhysicalSocial *)self discoveredPeople];
+      discoveredPeople4 = [v5 discoveredPeople];
+      v18 = [discoveredPeople3 isEqual:discoveredPeople4];
 
       if (!v18)
       {
@@ -112,8 +112,8 @@ LABEL_23:
 - (id)jsonDictionary
 {
   v19[4] = *MEMORY[0x1E69E9840];
-  v3 = [(BMContextualUnderstandingPhysicalSocial *)self localIdentifier];
-  v4 = [(BMContextualUnderstandingPhysicalSocial *)self _discoveredPeopleJSONArray];
+  localIdentifier = [(BMContextualUnderstandingPhysicalSocial *)self localIdentifier];
+  _discoveredPeopleJSONArray = [(BMContextualUnderstandingPhysicalSocial *)self _discoveredPeopleJSONArray];
   if (![(BMContextualUnderstandingPhysicalSocial *)self hasStartTimeInSecondsSinceReferenceDate]|| ([(BMContextualUnderstandingPhysicalSocial *)self startTimeInSecondsSinceReferenceDate], fabs(v5) == INFINITY))
   {
     v7 = 0;
@@ -141,37 +141,37 @@ LABEL_23:
   }
 
   v18[0] = @"localIdentifier";
-  v11 = v3;
-  if (!v3)
+  null = localIdentifier;
+  if (!localIdentifier)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19[0] = v11;
+  v19[0] = null;
   v18[1] = @"discoveredPeople";
-  v12 = v4;
-  if (!v4)
+  null2 = _discoveredPeopleJSONArray;
+  if (!_discoveredPeopleJSONArray)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19[1] = v12;
+  v19[1] = null2;
   v18[2] = @"startTimeInSecondsSinceReferenceDate";
-  v13 = v7;
+  null3 = v7;
   if (!v7)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19[2] = v13;
+  v19[2] = null3;
   v18[3] = @"endTimeInSecondsSinceReferenceDate";
-  v14 = v10;
+  null4 = v10;
   if (!v10)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19[3] = v14;
+  v19[3] = null4;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:v18 count:4];
   if (v10)
   {
@@ -187,14 +187,14 @@ LABEL_23:
     if (v7)
     {
 LABEL_19:
-      if (v4)
+      if (_discoveredPeopleJSONArray)
       {
         goto LABEL_20;
       }
 
 LABEL_26:
 
-      if (v3)
+      if (localIdentifier)
       {
         goto LABEL_21;
       }
@@ -203,13 +203,13 @@ LABEL_26:
     }
   }
 
-  if (!v4)
+  if (!_discoveredPeopleJSONArray)
   {
     goto LABEL_26;
   }
 
 LABEL_20:
-  if (v3)
+  if (localIdentifier)
   {
     goto LABEL_21;
   }
@@ -230,8 +230,8 @@ LABEL_21:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(BMContextualUnderstandingPhysicalSocial *)self discoveredPeople];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  discoveredPeople = [(BMContextualUnderstandingPhysicalSocial *)self discoveredPeople];
+  v5 = [discoveredPeople countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -242,14 +242,14 @@ LABEL_21:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(discoveredPeople);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
-        [v3 addObject:v9];
+        jsonDictionary = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
+        [v3 addObject:jsonDictionary];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [discoveredPeople countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -260,17 +260,17 @@ LABEL_21:
   return v3;
 }
 
-- (BMContextualUnderstandingPhysicalSocial)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMContextualUnderstandingPhysicalSocial)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v70[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"localIdentifier"];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"localIdentifier"];
   if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v21 = objc_alloc(MEMORY[0x1E696ABC0]);
         v22 = *MEMORY[0x1E698F240];
@@ -279,14 +279,14 @@ LABEL_21:
         v70[0] = v8;
         v52 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v70 forKeys:&v69 count:1];
         v7 = 0;
-        v23 = 0;
-        *a4 = [v21 initWithDomain:v22 code:2 userInfo:?];
+        selfCopy2 = 0;
+        *error = [v21 initWithDomain:v22 code:2 userInfo:?];
 
         goto LABEL_50;
       }
 
       v7 = 0;
-      v23 = 0;
+      selfCopy2 = 0;
       goto LABEL_51;
     }
 
@@ -298,15 +298,15 @@ LABEL_21:
     v7 = 0;
   }
 
-  v8 = [v5 objectForKeyedSubscript:@"discoveredPeople"];
-  v9 = [MEMORY[0x1E695DFB0] null];
-  v10 = [v8 isEqual:v9];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"discoveredPeople"];
+  null = [MEMORY[0x1E695DFB0] null];
+  v10 = [v8 isEqual:null];
 
   v49 = v6;
   if (v10)
   {
     v45 = v7;
-    v47 = self;
+    selfCopy3 = self;
 
     v8 = 0;
 LABEL_9:
@@ -324,7 +324,7 @@ LABEL_9:
 
     v12 = v11;
     v13 = *v55;
-    v44 = v5;
+    v44 = dictionaryCopy;
 LABEL_11:
     v14 = 0;
     while (1)
@@ -344,8 +344,8 @@ LABEL_11:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v24 = a4;
-        if (a4)
+        errorCopy2 = error;
+        if (error)
         {
           v25 = objc_alloc(MEMORY[0x1E696ABC0]);
           v26 = *MEMORY[0x1E698F240];
@@ -369,13 +369,13 @@ LABEL_11:
       if (v19)
       {
         v30 = v19;
-        if (a4)
+        if (error)
         {
           v32 = v19;
-          *a4 = v30;
+          *error = v30;
         }
 
-        v23 = 0;
+        selfCopy2 = 0;
         goto LABEL_34;
       }
 
@@ -384,7 +384,7 @@ LABEL_11:
       if (v12 == ++v14)
       {
         v12 = [v8 countByEnumeratingWithState:&v54 objects:v66 count:16];
-        v5 = v44;
+        dictionaryCopy = v44;
         if (v12)
         {
           goto LABEL_11;
@@ -392,23 +392,23 @@ LABEL_11:
 
 LABEL_19:
 
-        v16 = [v5 objectForKeyedSubscript:@"startTimeInSecondsSinceReferenceDate"];
+        v16 = [dictionaryCopy objectForKeyedSubscript:@"startTimeInSecondsSinceReferenceDate"];
         if (!v16)
         {
           v20 = 0;
           v7 = v45;
-          self = v47;
+          self = selfCopy3;
           goto LABEL_41;
         }
 
         objc_opt_class();
         v7 = v45;
-        self = v47;
+        self = selfCopy3;
         if (objc_opt_isKindOfClass())
         {
           v20 = 0;
 LABEL_41:
-          v36 = [v5 objectForKeyedSubscript:@"endTimeInSecondsSinceReferenceDate"];
+          v36 = [dictionaryCopy objectForKeyedSubscript:@"endTimeInSecondsSinceReferenceDate"];
           if (!v36 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
           {
             v30 = 0;
@@ -421,12 +421,12 @@ LABEL_41:
             v30 = v36;
 LABEL_44:
             self = [(BMContextualUnderstandingPhysicalSocial *)self initWithLocalIdentifier:v7 discoveredPeople:v51 startTimeInSecondsSinceReferenceDate:v20 endTimeInSecondsSinceReferenceDate:v30];
-            v23 = self;
+            selfCopy2 = self;
           }
 
           else
           {
-            if (a4)
+            if (error)
             {
               v48 = objc_alloc(MEMORY[0x1E696ABC0]);
               v46 = *MEMORY[0x1E698F240];
@@ -434,11 +434,11 @@ LABEL_44:
               v41 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"endTimeInSecondsSinceReferenceDate"];
               v59 = v41;
               v42 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v59 forKeys:&v58 count:1];
-              *a4 = [v48 initWithDomain:v46 code:2 userInfo:v42];
+              *error = [v48 initWithDomain:v46 code:2 userInfo:v42];
             }
 
             v30 = 0;
-            v23 = 0;
+            selfCopy2 = 0;
           }
 
 LABEL_45:
@@ -455,7 +455,7 @@ LABEL_46:
             goto LABEL_41;
           }
 
-          if (a4)
+          if (error)
           {
             v43 = objc_alloc(MEMORY[0x1E696ABC0]);
             v39 = *MEMORY[0x1E698F240];
@@ -465,13 +465,13 @@ LABEL_46:
             v36 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v61 forKeys:&v60 count:1];
             v40 = [v43 initWithDomain:v39 code:2 userInfo:v36];
             v20 = 0;
-            v23 = 0;
-            *a4 = v40;
+            selfCopy2 = 0;
+            *error = v40;
             goto LABEL_45;
           }
 
           v20 = 0;
-          v23 = 0;
+          selfCopy2 = 0;
         }
 
 LABEL_48:
@@ -481,8 +481,8 @@ LABEL_48:
       }
     }
 
-    v24 = a4;
-    if (a4)
+    errorCopy2 = error;
+    if (error)
     {
       v25 = objc_alloc(MEMORY[0x1E696ABC0]);
       v26 = *MEMORY[0x1E698F240];
@@ -495,33 +495,33 @@ LABEL_48:
 LABEL_30:
       v30 = [v27 dictionaryWithObjects:v28 forKeys:v29 count:1];
       v31 = [v25 initWithDomain:v26 code:2 userInfo:v30];
-      v23 = 0;
-      *v24 = v31;
+      selfCopy2 = 0;
+      *errorCopy2 = v31;
 LABEL_34:
       v20 = v8;
-      v5 = v44;
+      dictionaryCopy = v44;
       v7 = v45;
-      self = v47;
+      self = selfCopy3;
       goto LABEL_46;
     }
 
 LABEL_37:
-    v23 = 0;
+    selfCopy2 = 0;
     v20 = v8;
-    v5 = v44;
+    dictionaryCopy = v44;
     v7 = v45;
-    self = v47;
+    self = selfCopy3;
     goto LABEL_48;
   }
 
   if (!v8 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v45 = v7;
-    v47 = self;
+    selfCopy3 = self;
     goto LABEL_9;
   }
 
-  if (a4)
+  if (error)
   {
     v33 = objc_alloc(MEMORY[0x1E696ABC0]);
     v34 = *MEMORY[0x1E698F240];
@@ -530,32 +530,32 @@ LABEL_37:
     v68 = v51;
     v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v68 forKeys:&v67 count:1];
     v35 = [v33 initWithDomain:v34 code:2 userInfo:v20];
-    v23 = 0;
-    *a4 = v35;
+    selfCopy2 = 0;
+    *error = v35;
     goto LABEL_48;
   }
 
-  v23 = 0;
+  selfCopy2 = 0;
 LABEL_50:
 
 LABEL_51:
   v37 = *MEMORY[0x1E69E9840];
-  return v23;
+  return selfCopy2;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMContextualUnderstandingPhysicalSocial *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_localIdentifier)
   {
     PBDataWriterWriteStringField();
@@ -582,7 +582,7 @@ LABEL_51:
 
         v10 = *(*(&v14 + 1) + 8 * i);
         PBDataWriterPlaceMark();
-        [v10 writeTo:v4];
+        [v10 writeTo:toCopy];
         PBDataWriterRecallMark();
       }
 
@@ -607,9 +607,9 @@ LABEL_51:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v35.receiver = self;
   v35.super_class = BMContextualUnderstandingPhysicalSocial;
   v5 = [(BMEventBase *)&v35 init];
@@ -619,12 +619,12 @@ LABEL_51:
   }
 
   v6 = objc_opt_new();
-  v7 = [v4 position];
-  if (v7 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_41;
       }
@@ -635,18 +635,18 @@ LABEL_51:
       while (1)
       {
         LOBYTE(v36[0]) = 0;
-        v11 = [v4 position] + 1;
-        if (v11 >= [v4 position] && (v12 = objc_msgSend(v4, "position") + 1, v12 <= objc_msgSend(v4, "length")))
+        v11 = [fromCopy position] + 1;
+        if (v11 >= [fromCopy position] && (v12 = objc_msgSend(fromCopy, "position") + 1, v12 <= objc_msgSend(fromCopy, "length")))
         {
-          v13 = [v4 data];
-          [v13 getBytes:v36 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:v36 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v10 |= (v36[0] & 0x7F) << v8;
@@ -663,9 +663,9 @@ LABEL_51:
         }
       }
 
-      v15 = [v4 hasError] ? 0 : v10;
+      v15 = [fromCopy hasError] ? 0 : v10;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v15 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v15 & 7) == 4)
       {
         goto LABEL_41;
       }
@@ -692,7 +692,7 @@ LABEL_16:
 
       v36[0] = 0;
       v36[1] = 0;
-      if (!PBReaderPlaceMark() || (v17 = [[BMContextualUnderstandingPhysicalSocialPerson alloc] initByReadFrom:v4]) == 0)
+      if (!PBReaderPlaceMark() || (v17 = [[BMContextualUnderstandingPhysicalSocialPerson alloc] initByReadFrom:fromCopy]) == 0)
       {
 LABEL_45:
 
@@ -704,8 +704,8 @@ LABEL_45:
       PBReaderRecallMark();
 
 LABEL_40:
-      v29 = [v4 position];
-      if (v29 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_41;
       }
@@ -715,18 +715,18 @@ LABEL_40:
     {
       v5->_hasStartTimeInSecondsSinceReferenceDate = 1;
       v36[0] = 0;
-      v23 = [v4 position] + 8;
-      if (v23 >= [v4 position] && (v24 = objc_msgSend(v4, "position") + 8, v24 <= objc_msgSend(v4, "length")))
+      v23 = [fromCopy position] + 8;
+      if (v23 >= [fromCopy position] && (v24 = objc_msgSend(fromCopy, "position") + 8, v24 <= objc_msgSend(fromCopy, "length")))
       {
-        v28 = [v4 data];
-        [v28 getBytes:v36 range:{objc_msgSend(v4, "position"), 8}];
+        data2 = [fromCopy data];
+        [data2 getBytes:v36 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-        [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+        [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
       }
 
       else
       {
-        [v4 _setError];
+        [fromCopy _setError];
       }
 
       v26 = v36[0];
@@ -738,18 +738,18 @@ LABEL_40:
     {
       v5->_hasEndTimeInSecondsSinceReferenceDate = 1;
       v36[0] = 0;
-      v19 = [v4 position] + 8;
-      if (v19 >= [v4 position] && (v20 = objc_msgSend(v4, "position") + 8, v20 <= objc_msgSend(v4, "length")))
+      v19 = [fromCopy position] + 8;
+      if (v19 >= [fromCopy position] && (v20 = objc_msgSend(fromCopy, "position") + 8, v20 <= objc_msgSend(fromCopy, "length")))
       {
-        v25 = [v4 data];
-        [v25 getBytes:v36 range:{objc_msgSend(v4, "position"), 8}];
+        data3 = [fromCopy data];
+        [data3 getBytes:v36 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-        [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+        [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
       }
 
       else
       {
-        [v4 _setError];
+        [fromCopy _setError];
       }
 
       v26 = v36[0];
@@ -773,8 +773,8 @@ LABEL_41:
   discoveredPeople = v5->_discoveredPeople;
   v5->_discoveredPeople = v30;
 
-  v32 = [v4 hasError];
-  if (v32)
+  hasError = [fromCopy hasError];
+  if (hasError)
   {
 LABEL_42:
     v33 = 0;
@@ -792,37 +792,37 @@ LABEL_43:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMContextualUnderstandingPhysicalSocial *)self localIdentifier];
-  v5 = [(BMContextualUnderstandingPhysicalSocial *)self discoveredPeople];
+  localIdentifier = [(BMContextualUnderstandingPhysicalSocial *)self localIdentifier];
+  discoveredPeople = [(BMContextualUnderstandingPhysicalSocial *)self discoveredPeople];
   v6 = MEMORY[0x1E696AD98];
   [(BMContextualUnderstandingPhysicalSocial *)self startTimeInSecondsSinceReferenceDate];
   v7 = [v6 numberWithDouble:?];
   v8 = MEMORY[0x1E696AD98];
   [(BMContextualUnderstandingPhysicalSocial *)self endTimeInSecondsSinceReferenceDate];
   v9 = [v8 numberWithDouble:?];
-  v10 = [v3 initWithFormat:@"BMContextualUnderstandingPhysicalSocial with localIdentifier: %@, discoveredPeople: %@, startTimeInSecondsSinceReferenceDate: %@, endTimeInSecondsSinceReferenceDate: %@", v4, v5, v7, v9];
+  v10 = [v3 initWithFormat:@"BMContextualUnderstandingPhysicalSocial with localIdentifier: %@, discoveredPeople: %@, startTimeInSecondsSinceReferenceDate: %@, endTimeInSecondsSinceReferenceDate: %@", localIdentifier, discoveredPeople, v7, v9];
 
   return v10;
 }
 
-- (BMContextualUnderstandingPhysicalSocial)initWithLocalIdentifier:(id)a3 discoveredPeople:(id)a4 startTimeInSecondsSinceReferenceDate:(id)a5 endTimeInSecondsSinceReferenceDate:(id)a6
+- (BMContextualUnderstandingPhysicalSocial)initWithLocalIdentifier:(id)identifier discoveredPeople:(id)people startTimeInSecondsSinceReferenceDate:(id)date endTimeInSecondsSinceReferenceDate:(id)referenceDate
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  identifierCopy = identifier;
+  peopleCopy = people;
+  dateCopy = date;
+  referenceDateCopy = referenceDate;
   v19.receiver = self;
   v19.super_class = BMContextualUnderstandingPhysicalSocial;
   v15 = [(BMEventBase *)&v19 init];
   if (v15)
   {
     v15->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v15->_localIdentifier, a3);
-    objc_storeStrong(&v15->_discoveredPeople, a4);
-    if (v13)
+    objc_storeStrong(&v15->_localIdentifier, identifier);
+    objc_storeStrong(&v15->_discoveredPeople, people);
+    if (dateCopy)
     {
       v15->_hasStartTimeInSecondsSinceReferenceDate = 1;
-      [v13 doubleValue];
+      [dateCopy doubleValue];
     }
 
     else
@@ -832,10 +832,10 @@ LABEL_43:
     }
 
     v15->_startTimeInSecondsSinceReferenceDate = v16;
-    if (v14)
+    if (referenceDateCopy)
     {
       v15->_hasEndTimeInSecondsSinceReferenceDate = 1;
-      [v14 doubleValue];
+      [referenceDateCopy doubleValue];
     }
 
     else
@@ -877,9 +877,9 @@ id __50__BMContextualUnderstandingPhysicalSocial_columns__block_invoke(uint64_t 
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -887,8 +887,8 @@ id __50__BMContextualUnderstandingPhysicalSocial_columns__block_invoke(uint64_t 
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMContextualUnderstandingPhysicalSocial alloc] initByReadFrom:v7];
     v4 = v8;

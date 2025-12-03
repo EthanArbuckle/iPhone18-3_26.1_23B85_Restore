@@ -4,7 +4,7 @@
 - (id)devices;
 - (void)__sendBluetoothStatusChangeEvent;
 - (void)dealloc;
-- (void)setUpdatedBluetoothCallback:(id)a3;
+- (void)setUpdatedBluetoothCallback:(id)callback;
 - (void)startEventMonitoring;
 - (void)stopEventMonitoring;
 @end
@@ -44,12 +44,12 @@
   return v2;
 }
 
-- (void)setUpdatedBluetoothCallback:(id)a3
+- (void)setUpdatedBluetoothCallback:(id)callback
 {
   if (dispatch_get_specific(&self->_queue))
   {
 
-    self->_updatedBluetoothCallback = [a3 copy];
+    self->_updatedBluetoothCallback = [callback copy];
   }
 
   else
@@ -60,7 +60,7 @@
     v6[2] = sub_1000573E4;
     v6[3] = &unk_1000E1C70;
     v6[4] = self;
-    v6[5] = a3;
+    v6[5] = callback;
     dispatch_sync(queue, v6);
   }
 }

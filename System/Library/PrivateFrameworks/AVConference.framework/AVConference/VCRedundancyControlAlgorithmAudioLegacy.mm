@@ -1,16 +1,16 @@
 @interface VCRedundancyControlAlgorithmAudioLegacy
 - (void)computeRedundancyInfo;
-- (void)updateRedundancyStrategyWithNetworkStatistics:(tagVCStatisticsMessage *)a3;
+- (void)updateRedundancyStrategyWithNetworkStatistics:(tagVCStatisticsMessage *)statistics;
 @end
 
 @implementation VCRedundancyControlAlgorithmAudioLegacy
 
-- (void)updateRedundancyStrategyWithNetworkStatistics:(tagVCStatisticsMessage *)a3
+- (void)updateRedundancyStrategyWithNetworkStatistics:(tagVCStatisticsMessage *)statistics
 {
-  if (a3->type == 3)
+  if (statistics->type == 3)
   {
-    self->_packetLossPercentage = a3->var0.network.packetLossPercentage;
-    self->_isUplinkRecentlyCongested = a3->var0.feedback.videoReceivedPackets != 0;
+    self->_packetLossPercentage = statistics->var0.network.packetLossPercentage;
+    self->_isUplinkRecentlyCongested = statistics->var0.feedback.videoReceivedPackets != 0;
 
     [(VCRedundancyControlAlgorithmAudioLegacy *)self computeRedundancyInfo];
   }
@@ -31,7 +31,7 @@
   v12 = *MEMORY[0x1E69E9840];
   v3 = *a2;
   v4 = 136315906;
-  v5 = a1;
+  selfCopy = self;
   v6 = 2080;
   v7 = "[VCRedundancyControlAlgorithmAudioLegacy computeRedundancyInfo]";
   v8 = 1024;

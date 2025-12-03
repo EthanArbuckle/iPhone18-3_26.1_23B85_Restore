@@ -1,20 +1,20 @@
 @interface SMScreenLockMonitor
-- (SMScreenLockMonitor)initWithQueue:(id)a3 handler:(id)a4;
+- (SMScreenLockMonitor)initWithQueue:(id)queue handler:(id)handler;
 - (void)_registerForLockNotifications;
 - (void)_unregisterForLockNotification;
 @end
 
 @implementation SMScreenLockMonitor
 
-- (SMScreenLockMonitor)initWithQueue:(id)a3 handler:(id)a4
+- (SMScreenLockMonitor)initWithQueue:(id)queue handler:(id)handler
 {
   v25 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  queueCopy = queue;
+  handlerCopy = handler;
+  v9 = handlerCopy;
+  if (queueCopy)
   {
-    if (v8)
+    if (handlerCopy)
     {
       goto LABEL_10;
     }
@@ -53,7 +53,7 @@ LABEL_10:
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_queue, a3);
+    objc_storeStrong(&v12->_queue, queue);
     v14 = [v9 copy];
     handler = v13->_handler;
     v13->_handler = v14;
@@ -86,13 +86,13 @@ LABEL_10:
 
   out_token = 0;
   objc_initWeak(&location, self);
-  v4 = [(SMScreenLockMonitor *)self queue];
+  queue = [(SMScreenLockMonitor *)self queue];
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __52__SMScreenLockMonitor__registerForLockNotifications__block_invoke;
   handler[3] = &unk_2788CA130;
   objc_copyWeak(&v11, &location);
-  v5 = notify_register_dispatch(*MEMORY[0x277D67770], &out_token, v4, handler);
+  v5 = notify_register_dispatch(*MEMORY[0x277D67770], &out_token, queue, handler);
 
   [(SMScreenLockMonitor *)self setScreenLockNotificationToken:out_token];
   if (v5)
@@ -118,12 +118,12 @@ LABEL_10:
   }
 
   v7 = +[SMScreenLockMonitor isDeviceLocked];
-  v8 = [(SMScreenLockMonitor *)self handler];
+  handler = [(SMScreenLockMonitor *)self handler];
 
-  if (v8)
+  if (handler)
   {
-    v9 = [(SMScreenLockMonitor *)self handler];
-    v9[2](v9, v7);
+    handler2 = [(SMScreenLockMonitor *)self handler];
+    handler2[2](handler2, v7);
   }
 
   objc_destroyWeak(&v11);

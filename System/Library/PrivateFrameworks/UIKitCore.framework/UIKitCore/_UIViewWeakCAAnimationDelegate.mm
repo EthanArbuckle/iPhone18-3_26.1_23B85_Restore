@@ -1,23 +1,23 @@
 @interface _UIViewWeakCAAnimationDelegate
-+ (id)weakAnimationDelegate:(id)a3;
++ (id)weakAnimationDelegate:(id)delegate;
 - (CAAnimationDelegate)animationDelegate;
-- (_UIViewWeakCAAnimationDelegate)initWithAnimationDelegate:(id)a3;
-- (void)animationDidStart:(id)a3;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (_UIViewWeakCAAnimationDelegate)initWithAnimationDelegate:(id)delegate;
+- (void)animationDidStart:(id)start;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 @end
 
 @implementation _UIViewWeakCAAnimationDelegate
 
-- (_UIViewWeakCAAnimationDelegate)initWithAnimationDelegate:(id)a3
+- (_UIViewWeakCAAnimationDelegate)initWithAnimationDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v9.receiver = self;
   v9.super_class = _UIViewWeakCAAnimationDelegate;
   v5 = [(_UIViewWeakCAAnimationDelegate *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_animationDelegate, v4);
+    objc_storeWeak(&v5->_animationDelegate, delegateCopy);
     *&v6->_flags = *&v6->_flags & 0xFE | objc_opt_respondsToSelector() & 1;
     if (objc_opt_respondsToSelector())
     {
@@ -35,32 +35,32 @@
   return v6;
 }
 
-+ (id)weakAnimationDelegate:(id)a3
++ (id)weakAnimationDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithAnimationDelegate:v4];
+  delegateCopy = delegate;
+  v5 = [[self alloc] initWithAnimationDelegate:delegateCopy];
 
   return v5;
 }
 
-- (void)animationDidStart:(id)a3
+- (void)animationDidStart:(id)start
 {
   if (*&self->_flags)
   {
-    v5 = a3;
+    startCopy = start;
     WeakRetained = objc_loadWeakRetained(&self->_animationDelegate);
-    [WeakRetained animationDidStart:v5];
+    [WeakRetained animationDidStart:startCopy];
   }
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
   if ((*&self->_flags & 2) != 0)
   {
-    v5 = a4;
-    v7 = a3;
+    finishedCopy = finished;
+    stopCopy = stop;
     WeakRetained = objc_loadWeakRetained(&self->_animationDelegate);
-    [WeakRetained animationDidStop:v7 finished:v5];
+    [WeakRetained animationDidStop:stopCopy finished:finishedCopy];
   }
 }
 

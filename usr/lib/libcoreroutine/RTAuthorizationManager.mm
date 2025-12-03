@@ -1,44 +1,44 @@
 @interface RTAuthorizationManager
-+ (BOOL)supportsNotificationName:(id)a3;
-+ (id)allocWithZone:(_NSZone *)a3;
++ (BOOL)supportsNotificationName:(id)name;
++ (id)allocWithZone:(_NSZone *)zone;
 - (BOOL)isCoreRoutineLocationClientEnabled;
 - (BOOL)shouldPersistLocations;
-- (RTAuthorizationManager)initWithPlatform:(id)a3 userSessionMonitor:(id)a4;
-- (id)_getMetrics:(BOOL)a3;
-- (void)_onDailyMetricsNotification:(id)a3;
+- (RTAuthorizationManager)initWithPlatform:(id)platform userSessionMonitor:(id)monitor;
+- (id)_getMetrics:(BOOL)metrics;
+- (void)_onDailyMetricsNotification:(id)notification;
 - (void)_registerForNotifications;
 - (void)_setup;
-- (void)_shutdownWithHandler:(id)a3;
+- (void)_shutdownWithHandler:(id)handler;
 - (void)_unregisterForNotifications;
 - (void)dealloc;
-- (void)fetchRoutineEnabledWithHandler:(id)a3;
-- (void)fetchRoutineSupportedWithHandler:(id)a3;
+- (void)fetchRoutineEnabledWithHandler:(id)handler;
+- (void)fetchRoutineSupportedWithHandler:(id)handler;
 - (void)handleAppResetChangeNotification;
-- (void)internalAddObserver:(id)a3 name:(id)a4;
-- (void)internalRemoveObserver:(id)a3 name:(id)a4;
-- (void)onDailyMetricsNotification:(id)a3;
-- (void)onUserSessionChangeNotification:(id)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setRoutineEnabled:(BOOL)a3 withHandler:(id)a4;
+- (void)internalAddObserver:(id)observer name:(id)name;
+- (void)internalRemoveObserver:(id)observer name:(id)name;
+- (void)onDailyMetricsNotification:(id)notification;
+- (void)onUserSessionChangeNotification:(id)notification;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setRoutineEnabled:(BOOL)enabled withHandler:(id)handler;
 - (void)setup;
-- (void)updateRoutineEnabled:(BOOL)a3;
+- (void)updateRoutineEnabled:(BOOL)enabled;
 @end
 
 @implementation RTAuthorizationManager
 
-- (RTAuthorizationManager)initWithPlatform:(id)a3 userSessionMonitor:(id)a4
+- (RTAuthorizationManager)initWithPlatform:(id)platform userSessionMonitor:(id)monitor
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  platformCopy = platform;
+  monitorCopy = monitor;
+  v9 = monitorCopy;
+  if (!platformCopy)
   {
     v16 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
 LABEL_9:
 
-      v15 = 0;
+      selfCopy = 0;
       goto LABEL_10;
     }
 
@@ -49,7 +49,7 @@ LABEL_12:
     goto LABEL_9;
   }
 
-  if (!v8)
+  if (!monitorCopy)
   {
     v16 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -68,21 +68,21 @@ LABEL_12:
   if (v10)
   {
     v11 = [RTInvocationDispatcher alloc];
-    v12 = [(RTNotifier *)v10 queue];
-    v13 = [(RTInvocationDispatcher *)v11 initWithQueue:v12];
+    queue = [(RTNotifier *)v10 queue];
+    v13 = [(RTInvocationDispatcher *)v11 initWithQueue:queue];
     dispatcher = v10->_dispatcher;
     v10->_dispatcher = v13;
 
-    objc_storeStrong(&v10->_platform, a3);
-    objc_storeStrong(&v10->_userSessionMonitor, a4);
+    objc_storeStrong(&v10->_platform, platform);
+    objc_storeStrong(&v10->_userSessionMonitor, monitor);
     [(RTAuthorizationManager *)v10 setup];
   }
 
   self = v10;
-  v15 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v15;
+  return selfCopy;
 }
 
 - (void)_registerForNotifications
@@ -100,32 +100,32 @@ LABEL_10:
     }
   }
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 addObserver:self selector:sel_onDailyMetricsNotification_ name:@"RTMetricManagerDailyMetricNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_onDailyMetricsNotification_ name:@"RTMetricManagerDailyMetricNotification" object:0];
 }
 
 - (void)_unregisterForNotifications
 {
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveEveryObserver(DarwinNotifyCenter, self);
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 }
 
-- (id)_getMetrics:(BOOL)a3
+- (id)_getMetrics:(BOOL)metrics
 {
-  v3 = a3;
-  v5 = [(RTAuthorizationManager *)self isLocationServicesEnabled];
-  v6 = [(RTAuthorizationManager *)self isCoreRoutineLocationClientEnabled];
+  metricsCopy = metrics;
+  isLocationServicesEnabled = [(RTAuthorizationManager *)self isLocationServicesEnabled];
+  isCoreRoutineLocationClientEnabled = [(RTAuthorizationManager *)self isCoreRoutineLocationClientEnabled];
   v7 = objc_opt_new();
-  v8 = [MEMORY[0x277CCABB0] numberWithBool:v6];
+  v8 = [MEMORY[0x277CCABB0] numberWithBool:isCoreRoutineLocationClientEnabled];
   [v7 setObject:v8 forKeyedSubscript:@"coreRoutineSystemServiceEnabled"];
 
-  v9 = [MEMORY[0x277CCABB0] numberWithBool:v5];
+  v9 = [MEMORY[0x277CCABB0] numberWithBool:isLocationServicesEnabled];
   [v7 setObject:v9 forKeyedSubscript:@"locationServicesEnabled"];
 
   v10 = [MEMORY[0x277CCABB0] numberWithBool:self->_enabled];
-  if (v3)
+  if (metricsCopy)
   {
     v11 = @"authorizationStateChange";
   }
@@ -140,21 +140,21 @@ LABEL_10:
   return v7;
 }
 
-- (void)_onDailyMetricsNotification:(id)a3
+- (void)_onDailyMetricsNotification:(id)notification
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 name];
-  v7 = [v6 isEqualToString:@"RTMetricManagerDailyMetricNotification"];
+  notificationCopy = notification;
+  name = [notificationCopy name];
+  v7 = [name isEqualToString:@"RTMetricManagerDailyMetricNotification"];
 
   if ((v7 & 1) == 0)
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v17 = [v5 name];
+      name2 = [notificationCopy name];
       *buf = 138412802;
-      v19 = v17;
+      v19 = name2;
       v20 = 2080;
       v21 = "[RTAuthorizationManager _onDailyMetricsNotification:]";
       v22 = 1024;
@@ -172,21 +172,21 @@ LABEL_10:
       *buf = 138412546;
       v19 = v10;
       v20 = 2112;
-      v21 = v5;
+      v21 = notificationCopy;
       _os_log_impl(&dword_2304B3000, v9, OS_LOG_TYPE_INFO, "%@, received notification, %@", buf, 0x16u);
     }
   }
 
-  v11 = [v5 name];
-  v12 = [v11 isEqualToString:@"RTMetricManagerDailyMetricNotification"];
+  name3 = [notificationCopy name];
+  v12 = [name3 isEqualToString:@"RTMetricManagerDailyMetricNotification"];
 
   if (v12)
   {
     v13 = [(RTAuthorizationManager *)self _getMetrics:0];
     v14 = objc_alloc(MEMORY[0x277CCACA8]);
-    v15 = [v14 initWithCString:RTAnalyticsEventAuthorizationState encoding:1];
-    log_analytics_submission(v15, v13);
-    v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.%@", v15];
+    name4 = [v14 initWithCString:RTAnalyticsEventAuthorizationState encoding:1];
+    log_analytics_submission(name4, v13);
+    v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.%@", name4];
     AnalyticsSendEvent();
   }
 
@@ -198,54 +198,54 @@ LABEL_10:
       goto LABEL_13;
     }
 
-    v15 = [v5 name];
+    name4 = [notificationCopy name];
     *buf = 138412290;
-    v19 = v15;
+    v19 = name4;
     _os_log_error_impl(&dword_2304B3000, v13, OS_LOG_TYPE_ERROR, "unknown notification name, %@", buf, 0xCu);
   }
 
 LABEL_13:
 }
 
-- (void)onDailyMetricsNotification:(id)a3
+- (void)onDailyMetricsNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  notificationCopy = notification;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__RTAuthorizationManager_onDailyMetricsNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    return [RTAuthorizationManager_Embedded allocWithZone:a3];
+    return [RTAuthorizationManager_Embedded allocWithZone:zone];
   }
 
   else
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___RTAuthorizationManager;
-    return objc_msgSendSuper2(&v6, sel_allocWithZone_, a3);
+    return objc_msgSendSuper2(&v6, sel_allocWithZone_, zone);
   }
 }
 
 - (void)setup
 {
-  v3 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __31__RTAuthorizationManager_setup__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 uint64_t __31__RTAuthorizationManager_setup__block_invoke(uint64_t a1)
@@ -294,13 +294,13 @@ uint64_t __31__RTAuthorizationManager_setup__block_invoke(uint64_t a1)
     }
   }
 
-  v8 = [(RTAuthorizationManager *)self isLocationServicesEnabled];
-  if (v8)
+  isLocationServicesEnabled = [(RTAuthorizationManager *)self isLocationServicesEnabled];
+  if (isLocationServicesEnabled)
   {
-    LOBYTE(v8) = [(RTAuthorizationManager *)self isCoreRoutineLocationClientEnabled];
+    LOBYTE(isLocationServicesEnabled) = [(RTAuthorizationManager *)self isCoreRoutineLocationClientEnabled];
   }
 
-  self->_enabled = v8;
+  self->_enabled = isLocationServicesEnabled;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityAuthorization);
@@ -325,18 +325,18 @@ uint64_t __31__RTAuthorizationManager_setup__block_invoke(uint64_t a1)
   [(RTAuthorizationManager *)self _registerForNotifications];
 }
 
-- (void)_shutdownWithHandler:(id)a3
+- (void)_shutdownWithHandler:(id)handler
 {
-  v6 = a3;
-  v4 = [(RTAuthorizationManager *)self dispatcher];
-  [v4 shutdown];
+  handlerCopy = handler;
+  dispatcher = [(RTAuthorizationManager *)self dispatcher];
+  [dispatcher shutdown];
 
   [(RTAuthorizationManager *)self _unregisterForNotifications];
-  v5 = v6;
-  if (v6)
+  v5 = handlerCopy;
+  if (handlerCopy)
   {
-    (*(v6 + 2))(v6, 0);
-    v5 = v6;
+    (*(handlerCopy + 2))(handlerCopy, 0);
+    v5 = handlerCopy;
   }
 }
 
@@ -344,8 +344,8 @@ uint64_t __31__RTAuthorizationManager_setup__block_invoke(uint64_t a1)
 {
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveEveryObserver(DarwinNotifyCenter, self);
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v5.receiver = self;
   v5.super_class = RTAuthorizationManager;
@@ -414,18 +414,18 @@ LABEL_11:
   return v3;
 }
 
-- (void)fetchRoutineEnabledWithHandler:(id)a3
+- (void)fetchRoutineEnabledWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__RTAuthorizationManager_fetchRoutineEnabledWithHandler___block_invoke;
   v7[3] = &unk_2788C4938;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(queue, v7);
 }
 
 uint64_t __57__RTAuthorizationManager_fetchRoutineEnabledWithHandler___block_invoke(uint64_t a1)
@@ -461,18 +461,18 @@ uint64_t __57__RTAuthorizationManager_fetchRoutineEnabledWithHandler___block_inv
   return (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchRoutineSupportedWithHandler:(id)a3
+- (void)fetchRoutineSupportedWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __59__RTAuthorizationManager_fetchRoutineSupportedWithHandler___block_invoke;
   v7[3] = &unk_2788C4D38;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(queue, v7);
 }
 
 uint64_t __59__RTAuthorizationManager_fetchRoutineSupportedWithHandler___block_invoke(uint64_t a1)
@@ -486,25 +486,25 @@ uint64_t __59__RTAuthorizationManager_fetchRoutineSupportedWithHandler___block_i
 
 - (BOOL)shouldPersistLocations
 {
-  v2 = [(RTAuthorizationManager *)self userSessionMonitor];
-  v3 = [v2 activeUser];
+  userSessionMonitor = [(RTAuthorizationManager *)self userSessionMonitor];
+  activeUser = [userSessionMonitor activeUser];
 
-  return v3;
+  return activeUser;
 }
 
-- (void)setRoutineEnabled:(BOOL)a3 withHandler:(id)a4
+- (void)setRoutineEnabled:(BOOL)enabled withHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(RTNotifier *)self queue];
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__RTAuthorizationManager_setRoutineEnabled_withHandler___block_invoke;
   block[3] = &unk_2788C5048;
-  v11 = a3;
+  enabledCopy = enabled;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = handlerCopy;
+  v8 = handlerCopy;
+  dispatch_async(queue, block);
 }
 
 void __56__RTAuthorizationManager_setRoutineEnabled_withHandler___block_invoke(uint64_t a1)
@@ -579,11 +579,11 @@ LABEL_18:
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    self->_enabled = a3;
+    self->_enabled = enabled;
     v8 = [[RTAuthorizationManagerNotificationRoutineEnabled alloc] initWithEnabled:self->_enabled];
     [(RTNotifier *)self postNotification:v8];
     v4 = [(RTAuthorizationManager *)self _getMetrics:1];
@@ -595,16 +595,16 @@ LABEL_18:
   }
 }
 
-- (void)updateRoutineEnabled:(BOOL)a3
+- (void)updateRoutineEnabled:(BOOL)enabled
 {
-  v5 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __47__RTAuthorizationManager_updateRoutineEnabled___block_invoke;
   v6[3] = &unk_2788C5070;
-  v7 = a3;
+  enabledCopy = enabled;
   v6[4] = self;
-  dispatch_async(v5, v6);
+  dispatch_async(queue, v6);
 }
 
 uint64_t __47__RTAuthorizationManager_updateRoutineEnabled___block_invoke(uint64_t a1)
@@ -636,13 +636,13 @@ uint64_t __47__RTAuthorizationManager_updateRoutineEnabled___block_invoke(uint64
 
 - (void)handleAppResetChangeNotification
 {
-  v3 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__RTAuthorizationManager_handleAppResetChangeNotification__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 void __58__RTAuthorizationManager_handleAppResetChangeNotification__block_invoke(uint64_t a1)
@@ -668,24 +668,24 @@ void __58__RTAuthorizationManager_handleAppResetChangeNotification__block_invoke
   }
 }
 
-- (void)internalAddObserver:(id)a3 name:(id)a4
+- (void)internalAddObserver:(id)observer name:(id)name
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (([objc_opt_class() supportsNotificationName:v7] & 1) == 0)
+  observerCopy = observer;
+  nameCopy = name;
+  if (([objc_opt_class() supportsNotificationName:nameCopy] & 1) == 0)
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilityAuthorization);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       v16 = 138412290;
-      v17 = v7;
+      v17 = nameCopy;
       _os_log_error_impl(&dword_2304B3000, v8, OS_LOG_TYPE_ERROR, "unsupported notification, %@", &v16, 0xCu);
     }
   }
 
   v9 = +[(RTNotification *)RTAuthorizationManagerNotificationRoutineEnabled];
-  v10 = [v7 isEqualToString:v9];
+  v10 = [nameCopy isEqualToString:v9];
 
   if (v10)
   {
@@ -694,13 +694,13 @@ void __58__RTAuthorizationManager_handleAppResetChangeNotification__block_invoke
   }
 
   v12 = +[(RTNotification *)RTAuthorizationManagerNotificationConsoleUserDidChange];
-  v13 = [v7 isEqualToString:v12];
+  v13 = [nameCopy isEqualToString:v12];
 
   if (v13)
   {
     v14 = [RTAuthorizationManagerNotificationConsoleUserDidChange alloc];
-    v15 = [(RTAuthorizationManager *)self userSessionMonitor];
-    v11 = -[RTAuthorizationManagerNotificationConsoleUserDidChange initWithactiveUser:](v14, "initWithactiveUser:", [v15 activeUser]);
+    userSessionMonitor = [(RTAuthorizationManager *)self userSessionMonitor];
+    v11 = -[RTAuthorizationManagerNotificationConsoleUserDidChange initWithactiveUser:](v14, "initWithactiveUser:", [userSessionMonitor activeUser]);
 
     if (!v11)
     {
@@ -710,34 +710,34 @@ LABEL_10:
     }
 
 LABEL_9:
-    [(RTNotifier *)self postNotification:v11 toObserver:v6];
+    [(RTNotifier *)self postNotification:v11 toObserver:observerCopy];
     goto LABEL_10;
   }
 
 LABEL_11:
 }
 
-- (void)internalRemoveObserver:(id)a3 name:(id)a4
+- (void)internalRemoveObserver:(id)observer name:(id)name
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a4;
-  if (([objc_opt_class() supportsNotificationName:v4] & 1) == 0)
+  nameCopy = name;
+  if (([objc_opt_class() supportsNotificationName:nameCopy] & 1) == 0)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityAuthorization);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       v6 = 138412290;
-      v7 = v4;
+      v7 = nameCopy;
       _os_log_error_impl(&dword_2304B3000, v5, OS_LOG_TYPE_ERROR, "unsupported notification, %@", &v6, 0xCu);
     }
   }
 }
 
-+ (BOOL)supportsNotificationName:(id)a3
++ (BOOL)supportsNotificationName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = +[(RTNotification *)RTAuthorizationManagerNotificationRoutineEnabled];
-  if ([v3 isEqualToString:v4])
+  if ([nameCopy isEqualToString:v4])
   {
     v5 = 1;
   }
@@ -745,24 +745,24 @@ LABEL_11:
   else
   {
     v6 = +[(RTNotification *)RTAuthorizationManagerNotificationConsoleUserDidChange];
-    v5 = [v3 isEqualToString:v6];
+    v5 = [nameCopy isEqualToString:v6];
   }
 
   return v5;
 }
 
-- (void)onUserSessionChangeNotification:(id)a3
+- (void)onUserSessionChangeNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  notificationCopy = notification;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __58__RTAuthorizationManager_onUserSessionChangeNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
 void __58__RTAuthorizationManager_onUserSessionChangeNotification___block_invoke(uint64_t a1)

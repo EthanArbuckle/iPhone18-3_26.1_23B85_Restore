@@ -1,30 +1,30 @@
 @interface CKDistributedTimestampVector
-- (BOOL)_isGreaterThanOrEqualToTimestamp:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (CKDistributedTimestampVector)initWithCoder:(id)a3;
-- (CKDistributedTimestampVector)initWithTimestampClockVector:(id)a3 fillingInGaps:(BOOL)a4;
-- (CKDistributedTimestampVector)initWithTimestamps:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)_isGreaterThanOrEqualToTimestamp:(id)timestamp;
+- (BOOL)isEqual:(id)equal;
+- (CKDistributedTimestampVector)initWithCoder:(id)coder;
+- (CKDistributedTimestampVector)initWithTimestampClockVector:(id)vector fillingInGaps:(BOOL)gaps;
+- (CKDistributedTimestampVector)initWithTimestamps:(id)timestamps;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)minimalTimestampWith:(id)a3;
+- (id)minimalTimestampWith:(id)with;
 - (id)sequentialSiteIdentifiers;
-- (id)timestampAtIndex:(unint64_t)a3;
-- (id)timestampForSiteIdentifier:(id)a3;
+- (id)timestampAtIndex:(unint64_t)index;
+- (id)timestampForSiteIdentifier:(id)identifier;
 - (id)timestamps;
-- (int64_t)compareToTimestampVector:(id)a3;
-- (int64_t)indexForTimestampForSiteIdentifier:(id)a3;
+- (int64_t)compareToTimestampVector:(id)vector;
+- (int64_t)indexForTimestampForSiteIdentifier:(id)identifier;
 - (unint64_t)hash;
 - (unint64_t)timestampCount;
-- (void)addTimestamp:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)mergeFrom:(id)a3;
+- (void)addTimestamp:(id)timestamp;
+- (void)encodeWithCoder:(id)coder;
+- (void)mergeFrom:(id)from;
 @end
 
 @implementation CKDistributedTimestampVector
 
-- (CKDistributedTimestampVector)initWithTimestamps:(id)a3
+- (CKDistributedTimestampVector)initWithTimestamps:(id)timestamps
 {
-  v4 = a3;
+  timestampsCopy = timestamps;
   v12.receiver = self;
   v12.super_class = CKDistributedTimestampVector;
   v5 = [(CKDistributedTimestampVector *)&v12 init];
@@ -39,23 +39,23 @@
     v10[2] = sub_1885541DC;
     v10[3] = &unk_1E70BD1D8;
     v11 = v5;
-    objc_msgSend_enumerateObjectsUsingBlock_(v4, v8, v10);
+    objc_msgSend_enumerateObjectsUsingBlock_(timestampsCopy, v8, v10);
   }
 
   return v5;
 }
 
-- (CKDistributedTimestampVector)initWithTimestampClockVector:(id)a3 fillingInGaps:(BOOL)a4
+- (CKDistributedTimestampVector)initWithTimestampClockVector:(id)vector fillingInGaps:(BOOL)gaps
 {
   v45 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  vectorCopy = vector;
   v37 = objc_msgSend_initWithTimestamps_(self, v7, 0);
   v42 = 0u;
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v8 = v6;
-  v11 = objc_msgSend_allSiteIdentifiers(v6, v9, v10);
+  v8 = vectorCopy;
+  v11 = objc_msgSend_allSiteIdentifiers(vectorCopy, v9, v10);
   obj = v11;
   v14 = objc_msgSend_countByEnumeratingWithState_objects_count_(v11, v12, &v40, v44, 16);
   if (v14)
@@ -74,7 +74,7 @@
         v17 = *(*(&v40 + 1) + 8 * i);
         v18 = objc_msgSend_clockValuesForSiteIdentifier_(v8, v13, v17);
         v21 = v18;
-        if (!a4 && objc_msgSend_count(v18, v19, v20))
+        if (!gaps && objc_msgSend_count(v18, v19, v20))
         {
           Index = objc_msgSend_firstIndex(v21, v22, v23);
           v27 = objc_msgSend_lastIndex(v21, v25, v26);
@@ -104,9 +104,9 @@
   return v37;
 }
 
-- (CKDistributedTimestampVector)initWithCoder:(id)a3
+- (CKDistributedTimestampVector)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = CKDistributedTimestampVector;
   v5 = [(CKDistributedTimestampVector *)&v18 init];
@@ -117,7 +117,7 @@
     v8 = objc_opt_class();
     v10 = objc_msgSend_setWithObjects_(v6, v9, v7, v8, 0);
     v11 = NSStringFromSelector(sel_timestamps);
-    v13 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v12, v10, v11);
+    v13 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v12, v10, v11);
 
     v15 = objc_msgSend_arrayWithArray_(MEMORY[0x1E695DF70], v14, v13);
     timestampArray = v5->_timestampArray;
@@ -127,13 +127,13 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v10 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
   v7 = objc_msgSend_timestampArray(self, v5, v6);
   v8 = NSStringFromSelector(sel_timestamps);
-  objc_msgSend_encodeObject_forKey_(v10, v9, v7, v8);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v9, v7, v8);
 
   objc_autoreleasePoolPop(v4);
 }
@@ -146,17 +146,17 @@
   return v6;
 }
 
-- (id)timestampAtIndex:(unint64_t)a3
+- (id)timestampAtIndex:(unint64_t)index
 {
-  v4 = objc_msgSend_timestampArray(self, a2, a3);
-  v6 = objc_msgSend_objectAtIndexedSubscript_(v4, v5, a3);
+  v4 = objc_msgSend_timestampArray(self, a2, index);
+  v6 = objc_msgSend_objectAtIndexedSubscript_(v4, v5, index);
 
   return v6;
 }
 
-- (int64_t)indexForTimestampForSiteIdentifier:(id)a3
+- (int64_t)indexForTimestampForSiteIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -166,7 +166,7 @@
   v12[1] = 3221225472;
   v12[2] = sub_188554910;
   v12[3] = &unk_1E70BD228;
-  v8 = v4;
+  v8 = identifierCopy;
   v13 = v8;
   v14 = &v15;
   objc_msgSend_enumerateObjectsUsingBlock_(v7, v9, v12);
@@ -177,10 +177,10 @@
   return v10;
 }
 
-- (id)timestampForSiteIdentifier:(id)a3
+- (id)timestampForSiteIdentifier:(id)identifier
 {
-  v4 = a3;
-  v8 = objc_msgSend_indexForTimestampForSiteIdentifier_(self, v5, v4);
+  identifierCopy = identifier;
+  v8 = objc_msgSend_indexForTimestampForSiteIdentifier_(self, v5, identifierCopy);
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = 0;
@@ -218,18 +218,18 @@
   return v6;
 }
 
-- (BOOL)_isGreaterThanOrEqualToTimestamp:(id)a3
+- (BOOL)_isGreaterThanOrEqualToTimestamp:(id)timestamp
 {
-  v4 = a3;
+  timestampCopy = timestamp;
   v7 = objc_msgSend_sequentialSiteIdentifiers(self, v5, v6);
-  v10 = objc_msgSend_sequentialSiteIdentifiers(v4, v8, v9);
+  v10 = objc_msgSend_sequentialSiteIdentifiers(timestampCopy, v8, v9);
   if (objc_msgSend_isSubsetOfSet_(v10, v11, v7))
   {
     v19 = 0;
     v20 = &v19;
     v21 = 0x2020000000;
     v22 = 0;
-    v14 = objc_msgSend_timestamps(v4, v12, v13);
+    v14 = objc_msgSend_timestamps(timestampCopy, v12, v13);
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = sub_188554D50;
@@ -250,20 +250,20 @@
   return v16 & 1;
 }
 
-- (int64_t)compareToTimestampVector:(id)a3
+- (int64_t)compareToTimestampVector:(id)vector
 {
-  v4 = a3;
-  if (objc_msgSend__isGreaterThanOrEqualToTimestamp_(v4, v5, self) && (objc_msgSend__isGreaterThanOrEqualToTimestamp_(self, v6, v4) & 1) != 0)
+  vectorCopy = vector;
+  if (objc_msgSend__isGreaterThanOrEqualToTimestamp_(vectorCopy, v5, self) && (objc_msgSend__isGreaterThanOrEqualToTimestamp_(self, v6, vectorCopy) & 1) != 0)
   {
     v7 = 0;
   }
 
-  else if (objc_msgSend__isGreaterThanOrEqualToTimestamp_(v4, v6, self))
+  else if (objc_msgSend__isGreaterThanOrEqualToTimestamp_(vectorCopy, v6, self))
   {
     v7 = -1;
   }
 
-  else if (objc_msgSend__isGreaterThanOrEqualToTimestamp_(self, v8, v4))
+  else if (objc_msgSend__isGreaterThanOrEqualToTimestamp_(self, v8, vectorCopy))
   {
     v7 = 1;
   }
@@ -276,27 +276,27 @@
   return v7;
 }
 
-- (void)addTimestamp:(id)a3
+- (void)addTimestamp:(id)timestamp
 {
-  v30 = a3;
-  if (objc_msgSend_modifier(v30, v5, v6))
+  timestampCopy = timestamp;
+  if (objc_msgSend_modifier(timestampCopy, v5, v6))
   {
     v28 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], v7, v8);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v28, v29, a2, self, @"CKDistributedTime.mm", 373, @"Non-zero modifiers for ordered timestamps not yet supported");
   }
 
-  v9 = objc_msgSend_siteIdentifier(v30, v7, v8);
+  v9 = objc_msgSend_siteIdentifier(timestampCopy, v7, v8);
   v11 = objc_msgSend_indexForTimestampForSiteIdentifier_(self, v10, v9);
 
   if (v11 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v14 = objc_msgSend_timestampArray(self, v12, v13);
-    objc_msgSend_addObject_(v14, v15, v30);
+    objc_msgSend_addObject_(v14, v15, timestampCopy);
   }
 
   else
   {
-    v16 = objc_msgSend_clockValue(v30, v12, v13);
+    v16 = objc_msgSend_clockValue(timestampCopy, v12, v13);
     v19 = objc_msgSend_timestampArray(self, v17, v18);
     v21 = objc_msgSend_objectAtIndexedSubscript_(v19, v20, v11);
     v24 = objc_msgSend_clockValue(v21, v22, v23);
@@ -307,19 +307,19 @@
     }
 
     v14 = objc_msgSend_timestampArray(self, v25, v26);
-    objc_msgSend_setObject_atIndexedSubscript_(v14, v27, v30, v11);
+    objc_msgSend_setObject_atIndexedSubscript_(v14, v27, timestampCopy, v11);
   }
 
 LABEL_8:
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v7 = v4;
-  if (v4)
+  fromCopy = from;
+  v7 = fromCopy;
+  if (fromCopy)
   {
-    v8 = objc_msgSend_timestamps(v4, v5, v6);
+    v8 = objc_msgSend_timestamps(fromCopy, v5, v6);
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = sub_18855512C;
@@ -330,9 +330,9 @@ LABEL_8:
   }
 }
 
-- (id)minimalTimestampWith:(id)a3
+- (id)minimalTimestampWith:(id)with
 {
-  v5 = a3;
+  withCopy = with;
   v6 = [CKDistributedTimestampVector alloc];
   v8 = objc_msgSend_initWithTimestamps_(v6, v7, 0);
   v11 = objc_msgSend_timestamps(v8, v9, v10);
@@ -349,7 +349,7 @@ LABEL_8:
   v26[1] = 3221225472;
   v26[2] = sub_188555330;
   v26[3] = &unk_1E70BD250;
-  v18 = v5;
+  v18 = withCopy;
   v27 = v18;
   v19 = v8;
   v28 = v19;
@@ -361,11 +361,11 @@ LABEL_8:
   return v19;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v9 = ((v4 != 0) & objc_opt_isKindOfClass()) != 0 && (v6 = objc_msgSend_compareToTimestampVector_(self, v5, v4), v6 == objc_msgSend_compareToTimestampVector_(v4, v7, self)) && objc_msgSend_compareToTimestampVector_(self, v8, v4) == 0;
+  v9 = ((equalCopy != 0) & objc_opt_isKindOfClass()) != 0 && (v6 = objc_msgSend_compareToTimestampVector_(self, v5, equalCopy), v6 == objc_msgSend_compareToTimestampVector_(equalCopy, v7, self)) && objc_msgSend_compareToTimestampVector_(self, v8, equalCopy) == 0;
 
   return v9;
 }
@@ -418,9 +418,9 @@ LABEL_8:
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = objc_msgSend_timestampArray(self, a2, a3);
+  v3 = objc_msgSend_timestampArray(self, a2, zone);
   v6 = objc_msgSend_CKDeepCopy(v3, v4, v5);
 
   v7 = objc_alloc(objc_opt_class());

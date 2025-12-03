@@ -1,24 +1,24 @@
 @interface HSProxy
-+ (BOOL)resolveInstanceMethod:(SEL)a3;
-- (BOOL)conformsToProtocol:(id)a3;
++ (BOOL)resolveInstanceMethod:(SEL)method;
+- (BOOL)conformsToProtocol:(id)protocol;
 - (BOOL)hsProxyAlive;
 - (BOOL)hsProxyAsync;
-- (BOOL)isKindOfClass:(Class)a3;
-- (BOOL)respondsToSelector:(SEL)a3;
+- (BOOL)isKindOfClass:(Class)class;
+- (BOOL)respondsToSelector:(SEL)selector;
 - (id).cxx_construct;
 @end
 
 @implementation HSProxy
 
-+ (BOOL)resolveInstanceMethod:(SEL)a3
++ (BOOL)resolveInstanceMethod:(SEL)method
 {
-  if (!a3)
+  if (!method)
   {
     v11 = +[NSAssertionHandler currentHandler];
-    [v11 handleFailureInMethod:a2 object:a1 file:@"HSRemoteObject.mm" lineNumber:744 description:{@"Invalid parameter not satisfying: %@", @"sel"}];
+    [v11 handleFailureInMethod:a2 object:self file:@"HSRemoteObject.mm" lineNumber:744 description:{@"Invalid parameter not satisfying: %@", @"sel"}];
   }
 
-  Name = sel_getName(a3);
+  Name = sel_getName(method);
   if (Name)
   {
     v6 = 0;
@@ -48,7 +48,7 @@
         abort();
       }
 
-      LOBYTE(Name) = class_addMethod(v9, a3, *(&off_10A2F0 + v6), types);
+      LOBYTE(Name) = class_addMethod(v9, method, *(&off_10A2F0 + v6), types);
     }
 
     else
@@ -121,7 +121,7 @@
   return v6 & 1;
 }
 
-- (BOOL)isKindOfClass:(Class)a3
+- (BOOL)isKindOfClass:(Class)class
 {
   v9.receiver = self;
   v9.super_class = HSProxy;
@@ -130,23 +130,23 @@
     return 1;
   }
 
-  v6 = NSStringFromClass(a3);
+  v6 = NSStringFromClass(class);
   v7 = proxyFn1(self, "HSProxy_isKindOfClass:", v6);
 
   if (v7)
   {
-    v5 = [v7 BOOLValue];
+    bOOLValue = [v7 BOOLValue];
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v9.receiver = self;
   v9.super_class = HSProxy;
@@ -155,49 +155,49 @@
     return 1;
   }
 
-  v6 = NSStringFromSelector(a3);
+  v6 = NSStringFromSelector(selector);
   v7 = proxyFn1(self, "HSProxy_respondsToSelector:", v6);
 
   if (v7)
   {
-    v5 = [v7 BOOLValue];
+    bOOLValue = [v7 BOOLValue];
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
-  v4 = a3;
+  protocolCopy = protocol;
   v9.receiver = self;
   v9.super_class = HSProxy;
-  if ([(HSProxy *)&v9 conformsToProtocol:v4])
+  if ([(HSProxy *)&v9 conformsToProtocol:protocolCopy])
   {
-    v5 = 1;
+    bOOLValue = 1;
   }
 
   else
   {
-    v6 = NSStringFromProtocol(v4);
+    v6 = NSStringFromProtocol(protocolCopy);
     v7 = proxyFn1(self, "HSProxy_conformsToProtocol:", v6);
 
     if (v7)
     {
-      v5 = [v7 BOOLValue];
+      bOOLValue = [v7 BOOLValue];
     }
 
     else
     {
-      v5 = 0;
+      bOOLValue = 0;
     }
   }
 
-  return v5;
+  return bOOLValue;
 }
 
 - (id).cxx_construct

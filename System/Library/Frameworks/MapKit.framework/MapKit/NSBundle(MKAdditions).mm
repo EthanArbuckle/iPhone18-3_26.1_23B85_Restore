@@ -8,18 +8,18 @@
 
 + (uint64_t)_mapkit_shouldShowAppleLogo
 {
-  v0 = [MEMORY[0x1E696AAE8] mainBundle];
-  v1 = [v0 bundleIdentifier];
-  v2 = [v1 lowercaseString];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  lowercaseString = [bundleIdentifier lowercaseString];
 
-  if (([v2 isEqualToString:@"com.apple.mapkit.private.remoteui"] & 1) != 0 || !objc_msgSend(v2, "hasPrefix:", @"com.apple."))
+  if (([lowercaseString isEqualToString:@"com.apple.mapkit.private.remoteui"] & 1) != 0 || !objc_msgSend(lowercaseString, "hasPrefix:", @"com.apple."))
   {
     v3 = 1;
   }
 
   else
   {
-    v3 = [v2 hasPrefix:@"com.apple.mapkittest"];
+    v3 = [lowercaseString hasPrefix:@"com.apple.mapkittest"];
   }
 
   return v3;
@@ -45,12 +45,12 @@
   v11 = a3;
   if ([v8 _navigation_isRunningInSiri])
   {
-    [a1 siriUILocalizedStringForKey:v11 value:v10 table:v9];
+    [self siriUILocalizedStringForKey:v11 value:v10 table:v9];
   }
 
   else
   {
-    [a1 localizedStringForKey:v11 value:v10 table:v9];
+    [self localizedStringForKey:v11 value:v10 table:v9];
   }
   v12 = ;
 

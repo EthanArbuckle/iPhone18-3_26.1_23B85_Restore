@@ -1,29 +1,29 @@
 @interface NTKTimeTravelModuleViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
-- (NTKTimeTravelModuleViewAccessibility)initWithMaximumWidth:(double)a3;
-- (id)_axRoundedDateForDate:(id)a3;
+- (NTKTimeTravelModuleViewAccessibility)initWithMaximumWidth:(double)width;
+- (id)_axRoundedDateForDate:(id)date;
 - (id)accessibilityLabel;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation NTKTimeTravelModuleViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"NTKTimeTravelModuleView" hasInstanceVariable:@"_timeScrubDifferenceLabel" withType:"UILabel"];
-  [v3 validateClass:@"NTKTimeTravelModuleView" hasInstanceVariable:@"_timeScrubNowLabel" withType:"UILabel"];
-  [v3 validateClass:@"NTKTimeTravelModuleView" hasInstanceMethod:@"initWithMaximumWidth:" withFullSignature:{"@", "d", 0}];
-  [v3 validateClass:@"CLKDate" hasClassMethod:@"complicationDate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NTKTimeTravelModuleView" hasInstanceVariable:@"_date" withType:"NSDate"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"NTKTimeTravelModuleView" hasInstanceVariable:@"_timeScrubDifferenceLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"NTKTimeTravelModuleView" hasInstanceVariable:@"_timeScrubNowLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"NTKTimeTravelModuleView" hasInstanceMethod:@"initWithMaximumWidth:" withFullSignature:{"@", "d", 0}];
+  [validationsCopy validateClass:@"CLKDate" hasClassMethod:@"complicationDate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NTKTimeTravelModuleView" hasInstanceVariable:@"_date" withType:"NSDate"];
 }
 
-- (NTKTimeTravelModuleViewAccessibility)initWithMaximumWidth:(double)a3
+- (NTKTimeTravelModuleViewAccessibility)initWithMaximumWidth:(double)width
 {
   v5.receiver = self;
   v5.super_class = NTKTimeTravelModuleViewAccessibility;
-  v3 = [(NTKTimeTravelModuleViewAccessibility *)&v5 initWithMaximumWidth:a3];
+  v3 = [(NTKTimeTravelModuleViewAccessibility *)&v5 initWithMaximumWidth:width];
   [(NTKTimeTravelModuleViewAccessibility *)v3 _accessibilityLoadAccessibilityInformation];
   return v3;
 }
@@ -46,25 +46,25 @@
   v3 = [(NTKTimeTravelModuleViewAccessibility *)self safeValueForKey:@"_timeScrubDifferenceLabel"];
   if ([v3 _accessibilityViewIsVisible])
   {
-    v4 = 1;
+    _accessibilityViewIsVisible = 1;
   }
 
   else
   {
     v5 = [(NTKTimeTravelModuleViewAccessibility *)self safeValueForKey:@"_timeScrubNowLabel"];
-    v4 = [v5 _accessibilityViewIsVisible];
+    _accessibilityViewIsVisible = [v5 _accessibilityViewIsVisible];
   }
 
-  return v4;
+  return _accessibilityViewIsVisible;
 }
 
-- (id)_axRoundedDateForDate:(id)a3
+- (id)_axRoundedDateForDate:(id)date
 {
-  if (a3)
+  if (date)
   {
-    v3 = a3;
+    dateCopy = date;
     v4 = +[NSCalendar currentCalendar];
-    v5 = [v4 components:126 fromDate:v3];
+    v5 = [v4 components:126 fromDate:dateCopy];
 
     v6 = [v4 dateFromComponents:v5];
   }
@@ -85,7 +85,7 @@
 
   if ([v4 _accessibilityViewIsVisible])
   {
-    v5 = [v4 accessibilityLabel];
+    accessibilityLabel = [v4 accessibilityLabel];
   }
 
   else
@@ -95,10 +95,10 @@
 
     v8 = [(NTKTimeTravelModuleViewAccessibility *)self safeValueForKey:@"_date"];
     [v8 timeIntervalSinceDate:v7];
-    v5 = AXDurationStringForDurationWithSeconds();
+    accessibilityLabel = AXDurationStringForDurationWithSeconds();
   }
 
-  return v5;
+  return accessibilityLabel;
 }
 
 @end

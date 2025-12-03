@@ -1,59 +1,59 @@
 @interface CLKComplicationTemplateModularSmallDate
-+ (id)templateWithWeekdayTextProvider:(id)a3 dayTextProvider:(id)a4;
-- (CLKComplicationTemplateModularSmallDate)initWithWeekdayTextProvider:(id)a3 dayTextProvider:(id)a4;
-- (id)JSONObjectRepresentationWritingResourcesToBundlePath:(id)a3;
-- (id)initPrivateWithJSONObjectRepresentation:(id)a3 bundle:(id)a4;
-- (void)_enumerateTextProviderKeysWithBlock:(id)a3;
++ (id)templateWithWeekdayTextProvider:(id)provider dayTextProvider:(id)textProvider;
+- (CLKComplicationTemplateModularSmallDate)initWithWeekdayTextProvider:(id)provider dayTextProvider:(id)textProvider;
+- (id)JSONObjectRepresentationWritingResourcesToBundlePath:(id)path;
+- (id)initPrivateWithJSONObjectRepresentation:(id)representation bundle:(id)bundle;
+- (void)_enumerateTextProviderKeysWithBlock:(id)block;
 @end
 
 @implementation CLKComplicationTemplateModularSmallDate
 
-- (CLKComplicationTemplateModularSmallDate)initWithWeekdayTextProvider:(id)a3 dayTextProvider:(id)a4
+- (CLKComplicationTemplateModularSmallDate)initWithWeekdayTextProvider:(id)provider dayTextProvider:(id)textProvider
 {
-  v6 = a3;
-  v7 = a4;
+  providerCopy = provider;
+  textProviderCopy = textProvider;
   v11.receiver = self;
   v11.super_class = CLKComplicationTemplateModularSmallDate;
-  v8 = [(CLKComplicationTemplate *)&v11 initPrivate];
-  v9 = v8;
-  if (v8)
+  initPrivate = [(CLKComplicationTemplate *)&v11 initPrivate];
+  v9 = initPrivate;
+  if (initPrivate)
   {
-    [(CLKComplicationTemplateModularSmallDate *)v8 setWeekdayTextProvider:v6];
-    [(CLKComplicationTemplateModularSmallDate *)v9 setDayTextProvider:v7];
+    [(CLKComplicationTemplateModularSmallDate *)initPrivate setWeekdayTextProvider:providerCopy];
+    [(CLKComplicationTemplateModularSmallDate *)v9 setDayTextProvider:textProviderCopy];
   }
 
   return v9;
 }
 
-+ (id)templateWithWeekdayTextProvider:(id)a3 dayTextProvider:(id)a4
++ (id)templateWithWeekdayTextProvider:(id)provider dayTextProvider:(id)textProvider
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithWeekdayTextProvider:v7 dayTextProvider:v6];
+  textProviderCopy = textProvider;
+  providerCopy = provider;
+  v8 = [[self alloc] initWithWeekdayTextProvider:providerCopy dayTextProvider:textProviderCopy];
 
   return v8;
 }
 
-- (void)_enumerateTextProviderKeysWithBlock:(id)a3
+- (void)_enumerateTextProviderKeysWithBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = 0;
-  v3[2](v3, @"weekdayTextProvider", 0, 1, &v4);
+  blockCopy[2](blockCopy, @"weekdayTextProvider", 0, 1, &v4);
   if ((v4 & 1) == 0)
   {
-    v3[2](v3, @"dayTextProvider", 0, 1, &v4);
+    blockCopy[2](blockCopy, @"dayTextProvider", 0, 1, &v4);
   }
 }
 
-- (id)initPrivateWithJSONObjectRepresentation:(id)a3 bundle:(id)a4
+- (id)initPrivateWithJSONObjectRepresentation:(id)representation bundle:(id)bundle
 {
-  v6 = a3;
+  representationCopy = representation;
   v10.receiver = self;
   v10.super_class = CLKComplicationTemplateModularSmallDate;
-  v7 = [(CLKComplicationTemplate *)&v10 initPrivateWithJSONObjectRepresentation:v6 bundle:a4];
+  v7 = [(CLKComplicationTemplate *)&v10 initPrivateWithJSONObjectRepresentation:representationCopy bundle:bundle];
   if (v7)
   {
-    v8 = [v6 objectForKeyedSubscript:@"highlightLine2"];
+    v8 = [representationCopy objectForKeyedSubscript:@"highlightLine2"];
     if (v8)
     {
       objc_opt_class();
@@ -69,11 +69,11 @@
   return v7;
 }
 
-- (id)JSONObjectRepresentationWritingResourcesToBundlePath:(id)a3
+- (id)JSONObjectRepresentationWritingResourcesToBundlePath:(id)path
 {
   v7.receiver = self;
   v7.super_class = CLKComplicationTemplateModularSmallDate;
-  v4 = [(CLKComplicationTemplate *)&v7 JSONObjectRepresentationWritingResourcesToBundlePath:a3 purpose:0];
+  v4 = [(CLKComplicationTemplate *)&v7 JSONObjectRepresentationWritingResourcesToBundlePath:path purpose:0];
   v5 = [MEMORY[0x277CCABB0] numberWithBool:{-[CLKComplicationTemplateModularSmallDate highlightLine2](self, "highlightLine2")}];
   [v4 setObject:v5 forKeyedSubscript:@"highlightLine2"];
 

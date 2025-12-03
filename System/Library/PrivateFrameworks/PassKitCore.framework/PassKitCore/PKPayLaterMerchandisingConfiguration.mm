@@ -1,35 +1,35 @@
 @interface PKPayLaterMerchandisingConfiguration
 + (id)_numberFormatter;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToConfiguration:(id)a3;
-- (PKPayLaterMerchandisingConfiguration)initWithAmount:(id)a3 currency:(id)a4 displayStyle:(int64_t)a5 action:(int64_t)a6 theme:(unint64_t)a7 environmentType:(unint64_t)a8;
-- (PKPayLaterMerchandisingConfiguration)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToConfiguration:(id)configuration;
+- (PKPayLaterMerchandisingConfiguration)initWithAmount:(id)amount currency:(id)currency displayStyle:(int64_t)style action:(int64_t)action theme:(unint64_t)theme environmentType:(unint64_t)type;
+- (PKPayLaterMerchandisingConfiguration)initWithCoder:(id)coder;
 - (id)amountString;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)localeString;
 - (id)region;
-- (id)stringValueForProperty:(unint64_t)a3;
+- (id)stringValueForProperty:(unint64_t)property;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPayLaterMerchandisingConfiguration
 
-- (PKPayLaterMerchandisingConfiguration)initWithAmount:(id)a3 currency:(id)a4 displayStyle:(int64_t)a5 action:(int64_t)a6 theme:(unint64_t)a7 environmentType:(unint64_t)a8
+- (PKPayLaterMerchandisingConfiguration)initWithAmount:(id)amount currency:(id)currency displayStyle:(int64_t)style action:(int64_t)action theme:(unint64_t)theme environmentType:(unint64_t)type
 {
-  v15 = a3;
-  v16 = a4;
+  amountCopy = amount;
+  currencyCopy = currency;
   v17 = [(PKPayLaterMerchandisingConfiguration *)self init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_amount, a3);
-    objc_storeStrong(&v18->_currency, a4);
-    v18->_displayStyle = a5;
-    v18->_action = a6;
-    v18->_environmentType = a8;
-    v18->_theme = a7;
+    objc_storeStrong(&v17->_amount, amount);
+    objc_storeStrong(&v18->_currency, currency);
+    v18->_displayStyle = style;
+    v18->_action = action;
+    v18->_environmentType = type;
+    v18->_theme = theme;
   }
 
   return v18;
@@ -37,120 +37,120 @@
 
 - (id)amountString
 {
-  v3 = [objc_opt_class() _numberFormatter];
-  v4 = [v3 stringFromNumber:self->_amount];
+  _numberFormatter = [objc_opt_class() _numberFormatter];
+  v4 = [_numberFormatter stringFromNumber:self->_amount];
 
   return v4;
 }
 
 - (id)localeString
 {
-  v2 = [MEMORY[0x1E695DF58] currentLocale];
-  v3 = [v2 localeIdentifier];
-  v4 = [v3 stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
+  v4 = [localeIdentifier stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
 
   return v4;
 }
 
 - (id)region
 {
-  v2 = [MEMORY[0x1E695DF58] currentLocale];
-  v3 = [v2 regionCode];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  regionCode = [currentLocale regionCode];
 
-  return v3;
+  return regionCode;
 }
 
-- (id)stringValueForProperty:(unint64_t)a3
+- (id)stringValueForProperty:(unint64_t)property
 {
-  v4 = 0;
-  if (a3 <= 7)
+  region = 0;
+  if (property <= 7)
   {
-    if (a3 > 1)
+    if (property > 1)
     {
-      if (a3 == 2)
+      if (property == 2)
       {
-        v4 = self->_currency;
+        region = self->_currency;
       }
 
-      else if (a3 == 4)
+      else if (property == 4)
       {
-        v4 = [(PKPayLaterMerchandisingConfiguration *)self region];
+        region = [(PKPayLaterMerchandisingConfiguration *)self region];
       }
     }
 
-    else if (a3)
+    else if (property)
     {
-      if (a3 == 1)
+      if (property == 1)
       {
-        v4 = [(PKPayLaterMerchandisingConfiguration *)self amountString];
+        region = [(PKPayLaterMerchandisingConfiguration *)self amountString];
       }
     }
 
     else
     {
-      v4 = &stru_1F227FD28;
+      region = &stru_1F227FD28;
     }
   }
 
-  else if (a3 <= 31)
+  else if (property <= 31)
   {
-    if (a3 == 8)
+    if (property == 8)
     {
-      v4 = [(PKPayLaterMerchandisingConfiguration *)self localeString];
+      region = [(PKPayLaterMerchandisingConfiguration *)self localeString];
     }
 
-    else if (a3 == 16)
+    else if (property == 16)
     {
-      v4 = PKPayLaterDisplayStyleToString(self->_displayStyle);
+      region = PKPayLaterDisplayStyleToString(self->_displayStyle);
     }
   }
 
   else
   {
-    switch(a3)
+    switch(property)
     {
       case 0x20uLL:
-        v4 = PKPayLaterThemeToString(self->_theme);
+        region = PKPayLaterThemeToString(self->_theme);
         break;
       case 0x40uLL:
-        v4 = PKPayLaterActionToString(self->_action);
+        region = PKPayLaterActionToString(self->_action);
         break;
       case 0x80uLL:
-        v4 = PKPayLaterEnvironmentTypeToString(self->_environmentType);
+        region = PKPayLaterEnvironmentTypeToString(self->_environmentType);
         break;
     }
   }
 
-  return v4;
+  return region;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPayLaterMerchandisingConfiguration *)self isEqualToConfiguration:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPayLaterMerchandisingConfiguration *)self isEqualToConfiguration:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToConfiguration:(id)a3
+- (BOOL)isEqualToConfiguration:(id)configuration
 {
-  v4 = a3;
-  if (!v4)
+  configurationCopy = configuration;
+  if (!configurationCopy)
   {
     goto LABEL_21;
   }
 
   amount = self->_amount;
-  v6 = v4[1];
+  v6 = configurationCopy[1];
   if (amount)
   {
     v7 = v6 == 0;
@@ -180,7 +180,7 @@ LABEL_21:
     }
   }
 
-  v9 = v4[2];
+  v9 = configurationCopy[2];
   v10 = self->_currency;
   v11 = v9;
   v12 = v11;
@@ -204,12 +204,12 @@ LABEL_21:
   }
 
 LABEL_16:
-  if (self->_displayStyle != v4[3] || self->_theme != v4[6] || self->_action != v4[4])
+  if (self->_displayStyle != configurationCopy[3] || self->_theme != configurationCopy[6] || self->_action != configurationCopy[4])
   {
     goto LABEL_21;
   }
 
-  v14 = self->_environmentType == v4[5];
+  v14 = self->_environmentType == configurationCopy[5];
 LABEL_22:
 
   return v14;
@@ -233,15 +233,15 @@ LABEL_22:
 {
   v3 = objc_alloc_init(MEMORY[0x1E696AD60]);
   [v3 appendFormat:@"<%@: %p; ", objc_opt_class(), self];
-  v4 = [(PKPayLaterMerchandisingConfiguration *)self amount];
-  [v3 appendFormat:@"amount: '%@'; ", v4];
+  amount = [(PKPayLaterMerchandisingConfiguration *)self amount];
+  [v3 appendFormat:@"amount: '%@'; ", amount];
 
   [v3 appendFormat:@"currency: '%@'; ", self->_currency];
-  v5 = [(PKPayLaterMerchandisingConfiguration *)self region];
-  [v3 appendFormat:@"region: '%@'; ", v5];
+  region = [(PKPayLaterMerchandisingConfiguration *)self region];
+  [v3 appendFormat:@"region: '%@'; ", region];
 
-  v6 = [(PKPayLaterMerchandisingConfiguration *)self localeString];
-  [v3 appendFormat:@"locale: '%@'; ", v6];
+  localeString = [(PKPayLaterMerchandisingConfiguration *)self localeString];
+  [v3 appendFormat:@"locale: '%@'; ", localeString];
 
   v7 = PKPayLaterDisplayStyleToString(self->_displayStyle);
   [v3 appendFormat:@"displayStyle: '%@'; ", v7];
@@ -260,14 +260,14 @@ LABEL_22:
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKPayLaterMerchandisingConfiguration allocWithZone:](PKPayLaterMerchandisingConfiguration init];
-  v6 = [(NSDecimalNumber *)self->_amount copyWithZone:a3];
+  v6 = [(NSDecimalNumber *)self->_amount copyWithZone:zone];
   amount = v5->_amount;
   v5->_amount = v6;
 
-  v8 = [(NSString *)self->_currency copyWithZone:a3];
+  v8 = [(NSString *)self->_currency copyWithZone:zone];
   currency = v5->_currency;
   v5->_currency = v8;
 
@@ -278,41 +278,41 @@ LABEL_22:
   return v5;
 }
 
-- (PKPayLaterMerchandisingConfiguration)initWithCoder:(id)a3
+- (PKPayLaterMerchandisingConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PKPayLaterMerchandisingConfiguration;
   v5 = [(PKPayLaterMerchandisingConfiguration *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"amount"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"amount"];
     amount = v5->_amount;
     v5->_amount = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currency"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currency"];
     currency = v5->_currency;
     v5->_currency = v8;
 
-    v5->_displayStyle = [v4 decodeIntegerForKey:@"displayStyle"];
-    v5->_theme = [v4 decodeIntegerForKey:@"theme"];
-    v5->_action = [v4 decodeIntegerForKey:@"action"];
-    v5->_environmentType = [v4 decodeIntegerForKey:@"environmentType"];
+    v5->_displayStyle = [coderCopy decodeIntegerForKey:@"displayStyle"];
+    v5->_theme = [coderCopy decodeIntegerForKey:@"theme"];
+    v5->_action = [coderCopy decodeIntegerForKey:@"action"];
+    v5->_environmentType = [coderCopy decodeIntegerForKey:@"environmentType"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   amount = self->_amount;
-  v5 = a3;
-  [v5 encodeObject:amount forKey:@"amount"];
-  [v5 encodeObject:self->_currency forKey:@"currency"];
-  [v5 encodeInteger:self->_displayStyle forKey:@"displayStyle"];
-  [v5 encodeInteger:self->_theme forKey:@"theme"];
-  [v5 encodeInteger:self->_action forKey:@"action"];
-  [v5 encodeInteger:self->_environmentType forKey:@"environmentType"];
+  coderCopy = coder;
+  [coderCopy encodeObject:amount forKey:@"amount"];
+  [coderCopy encodeObject:self->_currency forKey:@"currency"];
+  [coderCopy encodeInteger:self->_displayStyle forKey:@"displayStyle"];
+  [coderCopy encodeInteger:self->_theme forKey:@"theme"];
+  [coderCopy encodeInteger:self->_action forKey:@"action"];
+  [coderCopy encodeInteger:self->_environmentType forKey:@"environmentType"];
 }
 
 + (id)_numberFormatter

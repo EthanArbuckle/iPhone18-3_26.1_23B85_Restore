@@ -2,35 +2,35 @@
 - ($0AC6E346AE4835514AAA8AC86D8F4844)morningIndexRange;
 - (BOOL)_didMeetSleepDurationGoalLastNight;
 - (BOOL)hasSufficientSleepData;
-- (HDSPWakeUpResultsNotificationBuilder)initWithDaySummaries:(id)a3 morningIndexRange:(id)a4 userFirstName:(id)a5;
-- (id)_notificationForCategory:(unint64_t)a3 morningIndexRange:(id)a4 goalAchieved:(id)a5;
+- (HDSPWakeUpResultsNotificationBuilder)initWithDaySummaries:(id)summaries morningIndexRange:(id)range userFirstName:(id)name;
+- (id)_notificationForCategory:(unint64_t)category morningIndexRange:(id)range goalAchieved:(id)achieved;
 - (id)_sleepDurationGoalAchievedLastNightNotification;
 - (id)_sleepDurationGoalAchievedShortWeekNotification;
 - (id)_sleepDurationGoalAchievedTwoWeekNotification;
 - (id)buildNotification;
-- (int64_t)_randomNotificationVariantForCategory:(unint64_t)a3;
+- (int64_t)_randomNotificationVariantForCategory:(unint64_t)category;
 @end
 
 @implementation HDSPWakeUpResultsNotificationBuilder
 
-- (HDSPWakeUpResultsNotificationBuilder)initWithDaySummaries:(id)a3 morningIndexRange:(id)a4 userFirstName:(id)a5
+- (HDSPWakeUpResultsNotificationBuilder)initWithDaySummaries:(id)summaries morningIndexRange:(id)range userFirstName:(id)name
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
-  v9 = a3;
-  v10 = a5;
+  var1 = range.var1;
+  var0 = range.var0;
+  summariesCopy = summaries;
+  nameCopy = name;
   v16.receiver = self;
   v16.super_class = HDSPWakeUpResultsNotificationBuilder;
   v11 = [(HDSPWakeUpResultsNotificationBuilder *)&v16 init];
   if (v11)
   {
-    v12 = [v9 copy];
+    v12 = [summariesCopy copy];
     daySummaries = v11->_daySummaries;
     v11->_daySummaries = v12;
 
     v11->_morningIndexRange.start = var0;
     v11->_morningIndexRange.duration = var1;
-    objc_storeStrong(&v11->_userFirstName, a5);
+    objc_storeStrong(&v11->_userFirstName, name);
     v14 = v11;
   }
 
@@ -65,8 +65,8 @@
   {
     if ([(NSArray *)daySummaries count])
     {
-      v5 = [(NSArray *)self->_daySummaries lastObject];
-      v6 = [v5 morningIndex];
+      lastObject = [(NSArray *)self->_daySummaries lastObject];
+      morningIndex = [lastObject morningIndex];
       v7 = self->_morningIndexRange.duration;
       if (v7 <= 0)
       {
@@ -78,10 +78,10 @@
         v8 = self->_morningIndexRange.start + v7 - 1;
       }
 
-      if (v6 == v8)
+      if (morningIndex == v8)
       {
-        v9 = [(NSArray *)self->_daySummaries lastObject];
-        [v9 sleepDuration];
+        lastObject2 = [(NSArray *)self->_daySummaries lastObject];
+        [lastObject2 sleepDuration];
         v11 = v10;
 
         if (v11 > 0.0)
@@ -200,13 +200,13 @@ LABEL_24:
           v18 = HKSPLogForCategory();
           if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
           {
-            v19 = self;
+            selfCopy = self;
             v20 = objc_opt_class();
             v21 = v20;
             v22 = HKSensitiveLogItem();
             *buf = v29;
             v36 = v20;
-            self = v19;
+            self = selfCopy;
             v37 = 2114;
             v38 = v22;
             _os_log_impl(&dword_269B11000, v18, OS_LOG_TYPE_DEFAULT, "[%{public}@] Summary: %{public}@", buf, 0x16u);
@@ -222,13 +222,13 @@ LABEL_24:
 
   if ([(HDSPWakeUpResultsNotificationBuilder *)self _didMeetSleepDurationGoalLastNight:v29])
   {
-    v23 = [(HDSPWakeUpResultsNotificationBuilder *)self _sleepDurationGoalAchievedTwoWeekNotification];
-    if (!v23)
+    _sleepDurationGoalAchievedTwoWeekNotification = [(HDSPWakeUpResultsNotificationBuilder *)self _sleepDurationGoalAchievedTwoWeekNotification];
+    if (!_sleepDurationGoalAchievedTwoWeekNotification)
     {
-      v23 = [(HDSPWakeUpResultsNotificationBuilder *)self _sleepDurationGoalAchievedShortWeekNotification];
-      if (!v23)
+      _sleepDurationGoalAchievedTwoWeekNotification = [(HDSPWakeUpResultsNotificationBuilder *)self _sleepDurationGoalAchievedShortWeekNotification];
+      if (!_sleepDurationGoalAchievedTwoWeekNotification)
       {
-        v23 = [(HDSPWakeUpResultsNotificationBuilder *)self _sleepDurationGoalAchievedLastNightNotification];
+        _sleepDurationGoalAchievedTwoWeekNotification = [(HDSPWakeUpResultsNotificationBuilder *)self _sleepDurationGoalAchievedLastNightNotification];
       }
     }
   }
@@ -245,12 +245,12 @@ LABEL_24:
       _os_log_impl(&dword_269B11000, v24, OS_LOG_TYPE_DEFAULT, "[%{public}@] Did not meet sleep duration goal last night; this is required for all notifications", buf, 0xCu);
     }
 
-    v23 = 0;
+    _sleepDurationGoalAchievedTwoWeekNotification = 0;
   }
 
   v27 = *MEMORY[0x277D85DE8];
 
-  return v23;
+  return _sleepDurationGoalAchievedTwoWeekNotification;
 }
 
 - (BOOL)_didMeetSleepDurationGoalLastNight
@@ -278,8 +278,8 @@ LABEL_24:
   start = self->_morningIndexRange.start;
   duration = self->_morningIndexRange.duration;
   v5 = [MEMORY[0x277CCD9D0] sleepMetricsForDaySummaries:self->_daySummaries inMorningIndexRange:{start, duration}];
-  v6 = [v5 sleepDurationGoalAchievedCount];
-  if (v6 <= 9)
+  sleepDurationGoalAchievedCount = [v5 sleepDurationGoalAchievedCount];
+  if (sleepDurationGoalAchievedCount <= 9)
   {
     v7 = HKSPLogForCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -297,8 +297,8 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v10 = v6;
-  if (v6 >= 0xF)
+  v10 = sleepDurationGoalAchievedCount;
+  if (sleepDurationGoalAchievedCount >= 0xF)
   {
     v7 = HKSPLogForCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -317,8 +317,8 @@ LABEL_8:
   }
 
   v12 = MEMORY[0x277CCD7E8];
-  v13 = [MEMORY[0x277CCDAB0] dayUnit];
-  v14 = [v12 quantityWithUnit:v13 doubleValue:v10];
+  dayUnit = [MEMORY[0x277CCDAB0] dayUnit];
+  v14 = [v12 quantityWithUnit:dayUnit doubleValue:v10];
 
   v11 = [(HDSPWakeUpResultsNotificationBuilder *)self _notificationForCategory:2 morningIndexRange:start goalAchieved:duration, v14];
 
@@ -333,8 +333,8 @@ LABEL_10:
   v18 = *MEMORY[0x277D85DE8];
   start = self->_morningIndexRange.start;
   v4 = [MEMORY[0x277CCD9D0] sleepMetricsForDaySummaries:self->_daySummaries inMorningIndexRange:{start + 10, 4}];
-  v5 = [v4 sleepDurationGoalAchievedCount];
-  if (v5 <= 2)
+  sleepDurationGoalAchievedCount = [v4 sleepDurationGoalAchievedCount];
+  if (sleepDurationGoalAchievedCount <= 2)
   {
     v6 = HKSPLogForCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -352,8 +352,8 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v9 = v5;
-  if (v5 >= 5)
+  v9 = sleepDurationGoalAchievedCount;
+  if (sleepDurationGoalAchievedCount >= 5)
   {
     v6 = HKSPLogForCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -372,8 +372,8 @@ LABEL_8:
   }
 
   v11 = MEMORY[0x277CCD7E8];
-  v12 = [MEMORY[0x277CCDAB0] dayUnit];
-  v13 = [v11 quantityWithUnit:v12 doubleValue:v9];
+  dayUnit = [MEMORY[0x277CCDAB0] dayUnit];
+  v13 = [v11 quantityWithUnit:dayUnit doubleValue:v9];
 
   v10 = [(HDSPWakeUpResultsNotificationBuilder *)self _notificationForCategory:1 morningIndexRange:start + 10 goalAchieved:4, v13];
 
@@ -398,8 +398,8 @@ LABEL_10:
   }
 
   v5 = [MEMORY[0x277CCD9D0] sleepMetricsForDaySummaries:self->_daySummaries inMorningIndexRange:{v4, 1}];
-  v6 = [v5 sleepDurationGoalAchievedCount];
-  if (v6 <= 0)
+  sleepDurationGoalAchievedCount = [v5 sleepDurationGoalAchievedCount];
+  if (sleepDurationGoalAchievedCount <= 0)
   {
     v10 = HKSPLogForCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -415,12 +415,12 @@ LABEL_11:
 
   else
   {
-    if (v6 == 1)
+    if (sleepDurationGoalAchievedCount == 1)
     {
-      v7 = [(NSArray *)self->_daySummaries lastObject];
-      v8 = [v7 sleepDurationGoal];
+      lastObject = [(NSArray *)self->_daySummaries lastObject];
+      sleepDurationGoal = [lastObject sleepDurationGoal];
 
-      v9 = [(HDSPWakeUpResultsNotificationBuilder *)self _notificationForCategory:0 morningIndexRange:v4 goalAchieved:1, v8];
+      v9 = [(HDSPWakeUpResultsNotificationBuilder *)self _notificationForCategory:0 morningIndexRange:v4 goalAchieved:1, sleepDurationGoal];
 
       goto LABEL_13;
     }
@@ -444,26 +444,26 @@ LABEL_13:
   return v9;
 }
 
-- (int64_t)_randomNotificationVariantForCategory:(unint64_t)a3
+- (int64_t)_randomNotificationVariantForCategory:(unint64_t)category
 {
-  if (a3 > 2)
+  if (category > 2)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = dword_269B98330[a3];
+    v3 = dword_269B98330[category];
   }
 
   return arc4random_uniform(v3) + 1;
 }
 
-- (id)_notificationForCategory:(unint64_t)a3 morningIndexRange:(id)a4 goalAchieved:(id)a5
+- (id)_notificationForCategory:(unint64_t)category morningIndexRange:(id)range goalAchieved:(id)achieved
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
-  v9 = a5;
+  var1 = range.var1;
+  var0 = range.var0;
+  achievedCopy = achieved;
   v10 = [HDSPWakeUpResultsNotification alloc];
   if (var1 <= 0)
   {
@@ -475,9 +475,9 @@ LABEL_13:
     v11 = var1 + var0 - 1;
   }
 
-  v12 = [(HDSPWakeUpResultsNotificationBuilder *)self _randomNotificationVariantForCategory:a3];
-  v13 = [(HDSPWakeUpResultsNotificationBuilder *)self userFirstName];
-  v14 = [(HDSPWakeUpResultsNotification *)v10 initWithCategory:a3 endMorningIndex:v11 goalAchieved:v9 notificationVariant:v12 userFirstName:v13];
+  v12 = [(HDSPWakeUpResultsNotificationBuilder *)self _randomNotificationVariantForCategory:category];
+  userFirstName = [(HDSPWakeUpResultsNotificationBuilder *)self userFirstName];
+  v14 = [(HDSPWakeUpResultsNotification *)v10 initWithCategory:category endMorningIndex:v11 goalAchieved:achievedCopy notificationVariant:v12 userFirstName:userFirstName];
 
   return v14;
 }

@@ -1,26 +1,26 @@
 @interface MFMessageLibrary
-- (MFMessageLibrary)initWithPath:(id)a3;
-- (id)accountForMessage:(id)a3;
+- (MFMessageLibrary)initWithPath:(id)path;
+- (id)accountForMessage:(id)message;
 - (id)dataProvider;
-- (id)duplicateMessages:(id)a3 newRemoteIDs:(id)a4 forMailbox:(id)a5 setFlags:(unint64_t)a6 clearFlags:(unint64_t)a7 messageFlagsForMessages:(id)a8 createNewCacheFiles:(BOOL)a9;
-- (id)getDetailsForMessages:(unint64_t)a3 absoluteBottom:(unint64_t)a4 topOfDesiredRange:(unint64_t)a5 range:(_NSRange *)a6 fromMailbox:(id)a7;
+- (id)duplicateMessages:(id)messages newRemoteIDs:(id)ds forMailbox:(id)mailbox setFlags:(unint64_t)flags clearFlags:(unint64_t)clearFlags messageFlagsForMessages:(id)forMessages createNewCacheFiles:(BOOL)files;
+- (id)getDetailsForMessages:(unint64_t)messages absoluteBottom:(unint64_t)bottom topOfDesiredRange:(unint64_t)range range:(_NSRange *)a6 fromMailbox:(id)mailbox;
 - (void)dealloc;
-- (void)postFlagsChangedForMessages:(id)a3 flags:(id)a4 oldFlagsByMessage:(id)a5;
-- (void)postOldFlags:(unint64_t)a3 newFlags:(unint64_t)a4 forMessage:(id)a5;
+- (void)postFlagsChangedForMessages:(id)messages flags:(id)flags oldFlagsByMessage:(id)message;
+- (void)postOldFlags:(unint64_t)flags newFlags:(unint64_t)newFlags forMessage:(id)message;
 @end
 
 @implementation MFMessageLibrary
 
-- (MFMessageLibrary)initWithPath:(id)a3
+- (MFMessageLibrary)initWithPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = MFMessageLibrary;
   v6 = [(MFMessageLibrary *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_path, a3);
+    objc_storeStrong(&v6->_path, path);
   }
 
   return v7;
@@ -33,59 +33,59 @@
   [(MFMessageLibrary *)&v2 dealloc];
 }
 
-- (id)duplicateMessages:(id)a3 newRemoteIDs:(id)a4 forMailbox:(id)a5 setFlags:(unint64_t)a6 clearFlags:(unint64_t)a7 messageFlagsForMessages:(id)a8 createNewCacheFiles:(BOOL)a9
+- (id)duplicateMessages:(id)messages newRemoteIDs:(id)ds forMailbox:(id)mailbox setFlags:(unint64_t)flags clearFlags:(unint64_t)clearFlags messageFlagsForMessages:(id)forMessages createNewCacheFiles:(BOOL)files
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a8;
-  v19 = [MEMORY[0x277CBEB38] dictionary];
-  LOWORD(v22) = a9;
-  v20 = [(MFMessageLibrary *)self addMessages:v15 withMailbox:v17 fetchBodies:0 newMessagesByOldMessage:v19 remoteIDs:v16 setFlags:a6 clearFlags:a7 messageFlagsForMessages:v18 copyFiles:v22 addPOPUIDs:0 dataSectionsByMessage:?];
+  messagesCopy = messages;
+  dsCopy = ds;
+  mailboxCopy = mailbox;
+  forMessagesCopy = forMessages;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  LOWORD(v22) = files;
+  v20 = [(MFMessageLibrary *)self addMessages:messagesCopy withMailbox:mailboxCopy fetchBodies:0 newMessagesByOldMessage:dictionary remoteIDs:dsCopy setFlags:flags clearFlags:clearFlags messageFlagsForMessages:forMessagesCopy copyFiles:v22 addPOPUIDs:0 dataSectionsByMessage:?];
 
-  return v19;
+  return dictionary;
 }
 
-- (id)getDetailsForMessages:(unint64_t)a3 absoluteBottom:(unint64_t)a4 topOfDesiredRange:(unint64_t)a5 range:(_NSRange *)a6 fromMailbox:(id)a7
+- (id)getDetailsForMessages:(unint64_t)messages absoluteBottom:(unint64_t)bottom topOfDesiredRange:(unint64_t)range range:(_NSRange *)a6 fromMailbox:(id)mailbox
 {
   if (a6)
   {
-    a6->location = a4;
-    a6->length = a5 - a4;
+    a6->location = bottom;
+    a6->length = range - bottom;
   }
 
   return 0;
 }
 
-- (void)postFlagsChangedForMessages:(id)a3 flags:(id)a4 oldFlagsByMessage:(id)a5
+- (void)postFlagsChangedForMessages:(id)messages flags:(id)flags oldFlagsByMessage:(id)message
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v12 count])
+  messagesCopy = messages;
+  flagsCopy = flags;
+  messageCopy = message;
+  if ([messagesCopy count])
   {
     v10 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    [v10 setObject:v12 forKey:@"messages"];
-    if (v9)
+    [v10 setObject:messagesCopy forKey:@"messages"];
+    if (messageCopy)
     {
-      [v10 setObject:v9 forKey:@"oldFlagsByMessage"];
+      [v10 setObject:messageCopy forKey:@"oldFlagsByMessage"];
     }
 
-    if (v8)
+    if (flagsCopy)
     {
-      [v10 setObject:v8 forKey:@"flags"];
+      [v10 setObject:flagsCopy forKey:@"flags"];
     }
 
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v11 postNotificationName:@"MailMessageStoreMessageFlagsChanged" object:self userInfo:v10];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"MailMessageStoreMessageFlagsChanged" object:self userInfo:v10];
   }
 }
 
-- (void)postOldFlags:(unint64_t)a3 newFlags:(unint64_t)a4 forMessage:(id)a5
+- (void)postOldFlags:(unint64_t)flags newFlags:(unint64_t)newFlags forMessage:(id)message
 {
   v34[1] = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  if (a3 == a4)
+  messageCopy = message;
+  if (flags == newFlags)
   {
     v9 = objc_alloc_init(MEMORY[0x277CBEAC0]);
     if (!v9)
@@ -98,9 +98,9 @@
   {
     v10 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v11 = v10;
-    if ((a3 & 1) != (a4 & 1))
+    if ((flags & 1) != (newFlags & 1))
     {
-      if (a4)
+      if (newFlags)
       {
         v12 = @"YES";
       }
@@ -113,15 +113,15 @@
       [v10 setObject:v12 forKey:@"MessageIsRead"];
     }
 
-    v13 = a4 ^ a3;
-    if ((a4 ^ a3) < 2)
+    v13 = newFlags ^ flags;
+    if ((newFlags ^ flags) < 2)
     {
       goto LABEL_71;
     }
 
-    if (((a3 >> 1) & 1) != ((a4 >> 1) & 1))
+    if (((flags >> 1) & 1) != ((newFlags >> 1) & 1))
     {
-      if ((a4 & 2) != 0)
+      if ((newFlags & 2) != 0)
       {
         v14 = @"YES";
       }
@@ -139,9 +139,9 @@
       goto LABEL_71;
     }
 
-    if (((a3 >> 2) & 1) != ((a4 >> 2) & 1))
+    if (((flags >> 2) & 1) != ((newFlags >> 2) & 1))
     {
-      if ((a4 & 4) != 0)
+      if ((newFlags & 4) != 0)
       {
         v15 = @"YES";
       }
@@ -159,9 +159,9 @@
       goto LABEL_71;
     }
 
-    if (((a3 >> 3) & 1) != ((a4 >> 3) & 1))
+    if (((flags >> 3) & 1) != ((newFlags >> 3) & 1))
     {
-      if ((a4 & 8) != 0)
+      if ((newFlags & 8) != 0)
       {
         v16 = @"YES";
       }
@@ -179,9 +179,9 @@
       goto LABEL_71;
     }
 
-    if (((a3 >> 23) & 1) != ((a4 >> 23) & 1))
+    if (((flags >> 23) & 1) != ((newFlags >> 23) & 1))
     {
-      if ((a4 & 0x800000) != 0)
+      if ((newFlags & 0x800000) != 0)
       {
         v17 = @"YES";
       }
@@ -199,9 +199,9 @@
       goto LABEL_71;
     }
 
-    if (((a3 >> 24) & 1) != ((a4 >> 24) & 1))
+    if (((flags >> 24) & 1) != ((newFlags >> 24) & 1))
     {
-      if ((a4 & 0x1000000) != 0)
+      if ((newFlags & 0x1000000) != 0)
       {
         v18 = @"YES";
       }
@@ -219,9 +219,9 @@
       goto LABEL_71;
     }
 
-    if (((a3 >> 8) & 1) != ((a4 >> 8) & 1))
+    if (((flags >> 8) & 1) != ((newFlags >> 8) & 1))
     {
-      if ((a4 & 0x100) != 0)
+      if ((newFlags & 0x100) != 0)
       {
         v19 = @"YES";
       }
@@ -239,9 +239,9 @@
       goto LABEL_71;
     }
 
-    if (((a3 >> 9) & 1) != ((a4 >> 9) & 1))
+    if (((flags >> 9) & 1) != ((newFlags >> 9) & 1))
     {
-      if ((a4 & 0x200) != 0)
+      if ((newFlags & 0x200) != 0)
       {
         v20 = @"YES";
       }
@@ -259,9 +259,9 @@
       goto LABEL_71;
     }
 
-    if (((a3 >> 4) & 1) != ((a4 >> 4) & 1))
+    if (((flags >> 4) & 1) != ((newFlags >> 4) & 1))
     {
-      if ((a4 & 0x10) != 0)
+      if ((newFlags & 0x10) != 0)
       {
         v21 = @"YES";
       }
@@ -279,9 +279,9 @@
       goto LABEL_71;
     }
 
-    if (((a3 >> 30) & 1) != ((a4 >> 30) & 1))
+    if (((flags >> 30) & 1) != ((newFlags >> 30) & 1))
     {
-      if ((a4 & 0x40000000) != 0)
+      if ((newFlags & 0x40000000) != 0)
       {
         v22 = @"YES";
       }
@@ -299,19 +299,19 @@
       goto LABEL_71;
     }
 
-    if ((WORD1(a3) & 7) != (WORD1(a4) & 7))
+    if ((WORD1(flags) & 7) != (WORD1(newFlags) & 7))
     {
       v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:?];
       [v11 setObject:v23 forKey:@"MessagePriorityLevel"];
     }
 
-    v24 = a4 & 0xFFFFFFFFBE78FCE0;
-    if ((a3 & 0xFFFFFFFFBE78FCE0) == v24)
+    v24 = newFlags & 0xFFFFFFFFBE78FCE0;
+    if ((flags & 0xFFFFFFFFBE78FCE0) == v24)
     {
       goto LABEL_71;
     }
 
-    v25 = IMAPMessageFlagsFontSizeDelta(a3 & 0xFFFFFFFFBE78FCE0);
+    v25 = IMAPMessageFlagsFontSizeDelta(flags & 0xFFFFFFFFBE78FCE0);
     v26 = IMAPMessageFlagsFontSizeDelta(v24);
     if (v25 != v26)
     {
@@ -339,9 +339,9 @@ LABEL_71:
   if ([v9 count])
   {
 LABEL_74:
-    v34[0] = v8;
+    v34[0] = messageCopy;
     v28 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:1];
-    v29 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{a3, v8}];
+    v29 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{flags, messageCopy}];
     v33 = v29;
     v30 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v33 forKeys:&v32 count:1];
     [(MFMessageLibrary *)self postFlagsChangedForMessages:v28 flags:v9 oldFlagsByMessage:v30];
@@ -350,12 +350,12 @@ LABEL_74:
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (id)accountForMessage:(id)a3
+- (id)accountForMessage:(id)message
 {
-  v3 = [(MFMessageLibrary *)self mailboxUidForMessage:a3];
-  v4 = [v3 account];
+  v3 = [(MFMessageLibrary *)self mailboxUidForMessage:message];
+  account = [v3 account];
 
-  return v4;
+  return account;
 }
 
 - (id)dataProvider

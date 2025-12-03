@@ -1,8 +1,8 @@
 @interface SBApplicationLaunchAlertEvaluatorForNetworkBasedAlertItems
-- (SBApplicationLaunchAlertEvaluatorForNetworkBasedAlertItems)initWithAirplaneModeController:(id)a3 telephonyManager:(id)a4;
+- (SBApplicationLaunchAlertEvaluatorForNetworkBasedAlertItems)initWithAirplaneModeController:(id)controller telephonyManager:(id)manager;
 - (id)_airplaneModeController;
 - (id)_telephonyManager;
-- (unint64_t)shouldShowLaunchAlertForApplication:(id)a3;
+- (unint64_t)shouldShowLaunchAlertForApplication:(id)application;
 @end
 
 @implementation SBApplicationLaunchAlertEvaluatorForNetworkBasedAlertItems
@@ -39,38 +39,38 @@
   return v3;
 }
 
-- (SBApplicationLaunchAlertEvaluatorForNetworkBasedAlertItems)initWithAirplaneModeController:(id)a3 telephonyManager:(id)a4
+- (SBApplicationLaunchAlertEvaluatorForNetworkBasedAlertItems)initWithAirplaneModeController:(id)controller telephonyManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  managerCopy = manager;
   v12.receiver = self;
   v12.super_class = SBApplicationLaunchAlertEvaluatorForNetworkBasedAlertItems;
   v9 = [(SBApplicationLaunchAlertEvaluatorForNetworkBasedAlertItems *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_airplaneModeController, a3);
-    objc_storeStrong(&v10->_telephonyManager, a4);
+    objc_storeStrong(&v9->_airplaneModeController, controller);
+    objc_storeStrong(&v10->_telephonyManager, manager);
   }
 
   return v10;
 }
 
-- (unint64_t)shouldShowLaunchAlertForApplication:(id)a3
+- (unint64_t)shouldShowLaunchAlertForApplication:(id)application
 {
-  v4 = a3;
-  v5 = [(SBApplicationLaunchAlertEvaluatorForNetworkBasedAlertItems *)self _telephonyManager];
-  v6 = [(SBApplicationLaunchAlertEvaluatorForNetworkBasedAlertItems *)self _airplaneModeController];
-  v7 = [v4 bundleIdentifier];
-  v8 = [v4 dataUsage];
-  if (([@"com.apple.InCallService" isEqualToString:v7] & 1) != 0 || (v8 & 4) == 0 && (v8 & 1) == 0 && (v8 & 2) == 0)
+  applicationCopy = application;
+  _telephonyManager = [(SBApplicationLaunchAlertEvaluatorForNetworkBasedAlertItems *)self _telephonyManager];
+  _airplaneModeController = [(SBApplicationLaunchAlertEvaluatorForNetworkBasedAlertItems *)self _airplaneModeController];
+  bundleIdentifier = [applicationCopy bundleIdentifier];
+  dataUsage = [applicationCopy dataUsage];
+  if (([@"com.apple.InCallService" isEqualToString:bundleIdentifier] & 1) != 0 || (dataUsage & 4) == 0 && (dataUsage & 1) == 0 && (dataUsage & 2) == 0)
   {
     goto LABEL_5;
   }
 
-  if (![v6 isInAirplaneMode])
+  if (![_airplaneModeController isInAirplaneMode])
   {
-    if ((v8 & 1) == 0)
+    if ((dataUsage & 1) == 0)
     {
 LABEL_5:
       v9 = 0;
@@ -78,17 +78,17 @@ LABEL_5:
     }
 
 LABEL_18:
-    if (([@"com.apple.MobileSMS" isEqualToString:v7] & 1) == 0)
+    if (([@"com.apple.MobileSMS" isEqualToString:bundleIdentifier] & 1) == 0)
     {
-      v13 = [v5 dataConnectionAvailabilityWithCurrentCalls];
-      if (v13 == 1)
+      dataConnectionAvailabilityWithCurrentCalls = [_telephonyManager dataConnectionAvailabilityWithCurrentCalls];
+      if (dataConnectionAvailabilityWithCurrentCalls == 1)
       {
         v9 = 1;
       }
 
       else
       {
-        v9 = 4 * (v13 == 2);
+        v9 = 4 * (dataConnectionAvailabilityWithCurrentCalls == 2);
       }
 
       goto LABEL_6;
@@ -97,7 +97,7 @@ LABEL_18:
     goto LABEL_5;
   }
 
-  v12 = [v5 hasNonCellularNetworkConnection] ^ 1 | ((v8 & 4) >> 2);
+  v12 = [_telephonyManager hasNonCellularNetworkConnection] ^ 1 | ((dataUsage & 4) >> 2);
   if (v12)
   {
     v9 = 2;
@@ -108,13 +108,13 @@ LABEL_18:
     v9 = 0;
   }
 
-  if (v12 & 1) == 0 && (v8)
+  if (v12 & 1) == 0 && (dataUsage)
   {
     goto LABEL_18;
   }
 
 LABEL_6:
-  if ([v4 hasDisplayedLaunchAlertForType:v9])
+  if ([applicationCopy hasDisplayedLaunchAlertForType:v9])
   {
     v10 = 0;
   }

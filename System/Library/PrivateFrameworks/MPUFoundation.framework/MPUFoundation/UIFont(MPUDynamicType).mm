@@ -6,8 +6,8 @@
 
 - (double)MPU_scaledValueForValue:()MPUDynamicType
 {
-  v4 = [a1 fontDescriptor];
-  v5 = [v4 objectForKey:*MEMORY[0x277D74378]];
+  fontDescriptor = [self fontDescriptor];
+  v5 = [fontDescriptor objectForKey:*MEMORY[0x277D74378]];
 
   if (!v5)
   {
@@ -67,7 +67,7 @@ LABEL_14:
 
   if ((v11 & 1) == 0)
   {
-    [a1 _scaledValueForValue:a2];
+    [self _scaledValueForValue:a2];
     a2 = v12;
   }
 

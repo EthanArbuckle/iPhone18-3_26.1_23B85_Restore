@@ -1,16 +1,16 @@
 @interface HKDataMetadataWorkoutEventSection
-- (HKDataMetadataWorkoutEventSection)initWithSample:(id)a3;
-- (id)cellForIndex:(unint64_t)a3 tableView:(id)a4;
+- (HKDataMetadataWorkoutEventSection)initWithSample:(id)sample;
+- (id)cellForIndex:(unint64_t)index tableView:(id)view;
 - (id)sectionTitle;
 - (unint64_t)numberOfRowsInSection;
-- (void)selectCellForIndex:(unint64_t)a3 navigationController:(id)a4 animated:(BOOL)a5;
+- (void)selectCellForIndex:(unint64_t)index navigationController:(id)controller animated:(BOOL)animated;
 @end
 
 @implementation HKDataMetadataWorkoutEventSection
 
-- (HKDataMetadataWorkoutEventSection)initWithSample:(id)a3
+- (HKDataMetadataWorkoutEventSection)initWithSample:(id)sample
 {
-  v5 = a3;
+  sampleCopy = sample;
   v15.receiver = self;
   v15.super_class = HKDataMetadataWorkoutEventSection;
   v6 = [(HKDataMetadataWorkoutEventSection *)&v15 init];
@@ -23,16 +23,16 @@
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
 LABEL_7:
-    v7 = 0;
+    workoutEvents = 0;
     goto LABEL_8;
   }
 
-  objc_storeStrong(&v6->_workout, a3);
-  v7 = [(HKWorkout *)v6->_workout workoutEvents];
-  if (v7)
+  objc_storeStrong(&v6->_workout, sample);
+  workoutEvents = [(HKWorkout *)v6->_workout workoutEvents];
+  if (workoutEvents)
   {
-    v8 = [(HKWorkout *)v6->_workout workoutEvents];
-    v9 = [v8 count];
+    workoutEvents2 = [(HKWorkout *)v6->_workout workoutEvents];
+    v9 = [workoutEvents2 count];
 
     if (v9)
     {
@@ -48,7 +48,7 @@ LABEL_7:
 
       [(HKTimePeriodWithSecondsNumberFormatter *)v6->_durationFormatter setAllowMillisecondPrecision:1];
 LABEL_6:
-      v7 = v6;
+      workoutEvents = v6;
       goto LABEL_8;
     }
 
@@ -57,7 +57,7 @@ LABEL_6:
 
 LABEL_8:
 
-  return v7;
+  return workoutEvents;
 }
 
 - (id)sectionTitle
@@ -70,39 +70,39 @@ LABEL_8:
 
 - (unint64_t)numberOfRowsInSection
 {
-  v2 = [(HKWorkout *)self->_workout workoutEvents];
-  v3 = [v2 count];
+  workoutEvents = [(HKWorkout *)self->_workout workoutEvents];
+  v3 = [workoutEvents count];
 
   return v3;
 }
 
-- (id)cellForIndex:(unint64_t)a3 tableView:(id)a4
+- (id)cellForIndex:(unint64_t)index tableView:(id)view
 {
-  v6 = [a4 dequeueReusableCellWithIdentifier:@"eventCell"];
+  v6 = [view dequeueReusableCellWithIdentifier:@"eventCell"];
   if (!v6)
   {
     v6 = [[HKDataMetadataSimpleTableViewCell alloc] initWithReuseIdentifier:@"eventCell"];
     [(HKDataMetadataSimpleTableViewCell *)v6 setAccessoryType:1];
   }
 
-  v7 = [(HKWorkout *)self->_workout workoutEvents];
-  v8 = [v7 objectAtIndexedSubscript:a3];
+  workoutEvents = [(HKWorkout *)self->_workout workoutEvents];
+  v8 = [workoutEvents objectAtIndexedSubscript:index];
 
   v9 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   [v8 type];
   v10 = _HKWorkoutEventTypeName();
   v11 = [v9 localizedStringForKey:v10 value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
 
-  v12 = [v8 dateInterval];
-  [v12 duration];
+  dateInterval = [v8 dateInterval];
+  [dateInterval duration];
   v14 = v13;
 
   if (v14 > 0.0)
   {
     durationFormatter = self->_durationFormatter;
     v16 = MEMORY[0x1E696AD98];
-    v17 = [v8 dateInterval];
-    [v17 duration];
+    dateInterval2 = [v8 dateInterval];
+    [dateInterval2 duration];
     v18 = [v16 numberWithDouble:?];
     v19 = [(HKTimePeriodWithSecondsNumberFormatter *)durationFormatter stringFromNumber:v18 displayType:0 unitController:0];
 
@@ -111,31 +111,31 @@ LABEL_8:
     v11 = v20;
   }
 
-  v21 = [v8 dateInterval];
-  v22 = [v21 startDate];
-  v23 = [(HKWorkout *)self->_workout startDate];
-  [v22 timeIntervalSinceDate:v23];
+  dateInterval3 = [v8 dateInterval];
+  startDate = [dateInterval3 startDate];
+  startDate2 = [(HKWorkout *)self->_workout startDate];
+  [startDate timeIntervalSinceDate:startDate2];
   v25 = v24;
 
-  v26 = [(HKDataMetadataSimpleTableViewCell *)v6 titleTextLabel];
-  [v26 setText:v11];
+  titleTextLabel = [(HKDataMetadataSimpleTableViewCell *)v6 titleTextLabel];
+  [titleTextLabel setText:v11];
 
-  v27 = [(HKDataMetadataSimpleTableViewCell *)v6 subtitleTextLabel];
+  subtitleTextLabel = [(HKDataMetadataSimpleTableViewCell *)v6 subtitleTextLabel];
   v28 = [(NSDateComponentsFormatter *)self->_dateFormatter stringFromTimeInterval:v25];
-  [v27 setText:v28];
+  [subtitleTextLabel setText:v28];
 
   return v6;
 }
 
-- (void)selectCellForIndex:(unint64_t)a3 navigationController:(id)a4 animated:(BOOL)a5
+- (void)selectCellForIndex:(unint64_t)index navigationController:(id)controller animated:(BOOL)animated
 {
   workout = self->_workout;
-  v7 = a4;
-  v8 = [(HKWorkout *)workout workoutEvents];
-  v10 = [v8 objectAtIndexedSubscript:a3];
+  controllerCopy = controller;
+  workoutEvents = [(HKWorkout *)workout workoutEvents];
+  v10 = [workoutEvents objectAtIndexedSubscript:index];
 
   v9 = [[HKWorkoutEventDetailViewController alloc] initWithEvent:v10];
-  [v7 pushViewController:v9 animated:1];
+  [controllerCopy pushViewController:v9 animated:1];
 }
 
 @end

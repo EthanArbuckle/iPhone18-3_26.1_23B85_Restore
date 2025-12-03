@@ -1,9 +1,9 @@
 @interface SSUIService
 - (SSUIService)init;
-- (void)_runPPTNamed:(id)a3 numberOfRequiredScreenshots:(unint64_t)a4;
+- (void)_runPPTNamed:(id)named numberOfRequiredScreenshots:(unint64_t)screenshots;
 - (void)showScreenshotUI;
-- (void)showScreenshotUIForImage:(id)a3 options:(id)a4 withCompletion:(id)a5;
-- (void)takeScreenshotWithOptions:(id)a3;
+- (void)showScreenshotUIForImage:(id)image options:(id)options withCompletion:(id)completion;
+- (void)takeScreenshotWithOptions:(id)options;
 @end
 
 @implementation SSUIService
@@ -26,34 +26,34 @@
   [(SSUIServiceClient *)self->_client sendRequest:v3 withCompletion:0];
 }
 
-- (void)takeScreenshotWithOptions:(id)a3
+- (void)takeScreenshotWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v5 = objc_alloc_init(SSUIShowScreenshotServiceRequest);
-  [(SSUIShowScreenshotServiceRequest *)v5 setOptions:v4];
+  [(SSUIShowScreenshotServiceRequest *)v5 setOptions:optionsCopy];
 
   [(SSUIServiceClient *)self->_client sendRequest:v5 withCompletion:0];
 }
 
-- (void)showScreenshotUIForImage:(id)a3 options:(id)a4 withCompletion:(id)a5
+- (void)showScreenshotUIForImage:(id)image options:(id)options withCompletion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  optionsCopy = options;
+  imageCopy = image;
   v11 = objc_alloc_init(SSUIShowScreenshotUIWithImageServiceRequest);
-  [(SSUIShowScreenshotUIWithImageServiceRequest *)v11 setImage:v10];
+  [(SSUIShowScreenshotUIWithImageServiceRequest *)v11 setImage:imageCopy];
 
-  [(SSUIShowScreenshotUIWithImageServiceRequest *)v11 setOptions:v9];
-  [(SSUIServiceClient *)self->_client sendRequest:v11 withCompletion:v8];
+  [(SSUIShowScreenshotUIWithImageServiceRequest *)v11 setOptions:optionsCopy];
+  [(SSUIServiceClient *)self->_client sendRequest:v11 withCompletion:completionCopy];
 }
 
-- (void)_runPPTNamed:(id)a3 numberOfRequiredScreenshots:(unint64_t)a4
+- (void)_runPPTNamed:(id)named numberOfRequiredScreenshots:(unint64_t)screenshots
 {
-  v6 = a3;
+  namedCopy = named;
   v7 = objc_alloc_init(SSUIRunPPTServiceRequest);
-  [(SSUIRunPPTServiceRequest *)v7 setTestName:v6];
+  [(SSUIRunPPTServiceRequest *)v7 setTestName:namedCopy];
 
-  [(SSUIRunPPTServiceRequest *)v7 setNumberOfRequiredScreenshots:a4];
+  [(SSUIRunPPTServiceRequest *)v7 setNumberOfRequiredScreenshots:screenshots];
   [(SSUIServiceClient *)self->_client sendRequest:v7 withCompletion:0];
 }
 

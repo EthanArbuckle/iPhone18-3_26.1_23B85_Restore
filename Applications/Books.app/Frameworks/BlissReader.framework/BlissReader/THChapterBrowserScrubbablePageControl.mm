@@ -1,31 +1,31 @@
 @interface THChapterBrowserScrubbablePageControl
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (CGPoint)p_indicatorCenterAtIndex:(unint64_t)a3;
-- (THChapterBrowserScrubbablePageControl)initWithFrame:(CGRect)a3;
-- (id)p_layerForPageIndex:(unint64_t)a3;
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event;
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event;
+- (CGPoint)p_indicatorCenterAtIndex:(unint64_t)index;
+- (THChapterBrowserScrubbablePageControl)initWithFrame:(CGRect)frame;
+- (id)p_layerForPageIndex:(unint64_t)index;
 - (id)p_layerForSelectingPage;
-- (unint64_t)p_pageIndexForPoint:(CGPoint)a3;
-- (void)_selectDotAtIndex:(unint64_t)a3 animated:(BOOL)a4;
-- (void)cancelTrackingWithEvent:(id)a3;
+- (unint64_t)p_pageIndexForPoint:(CGPoint)point;
+- (void)_selectDotAtIndex:(unint64_t)index animated:(BOOL)animated;
+- (void)cancelTrackingWithEvent:(id)event;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)p_selectDotClosestToPageIndex:(int64_t)a3 animated:(BOOL)a4;
-- (void)p_setCurrentPage:(unint64_t)a3;
-- (void)p_updateWithNewPageIndex:(unint64_t)a3 animated:(BOOL)a4;
-- (void)p_updateWithTouch:(id)a3 animated:(BOOL)a4 lastTouch:(BOOL)a5;
-- (void)setCurrentPage:(unint64_t)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setNumberOfPages:(unint64_t)a3;
+- (void)p_selectDotClosestToPageIndex:(int64_t)index animated:(BOOL)animated;
+- (void)p_setCurrentPage:(unint64_t)page;
+- (void)p_updateWithNewPageIndex:(unint64_t)index animated:(BOOL)animated;
+- (void)p_updateWithTouch:(id)touch animated:(BOOL)animated lastTouch:(BOOL)lastTouch;
+- (void)setCurrentPage:(unint64_t)page;
+- (void)setFrame:(CGRect)frame;
+- (void)setNumberOfPages:(unint64_t)pages;
 @end
 
 @implementation THChapterBrowserScrubbablePageControl
 
-- (THChapterBrowserScrubbablePageControl)initWithFrame:(CGRect)a3
+- (THChapterBrowserScrubbablePageControl)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = THChapterBrowserScrubbablePageControl;
-  v3 = [(THChapterBrowserScrubbablePageControl *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(THChapterBrowserScrubbablePageControl *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -49,9 +49,9 @@
   [(THChapterBrowserScrubbablePageControl *)&v3 dealloc];
 }
 
-- (void)setNumberOfPages:(unint64_t)a3
+- (void)setNumberOfPages:(unint64_t)pages
 {
-  if (self->_numberOfPages != a3)
+  if (self->_numberOfPages != pages)
   {
     [(THChapterBrowserScrubbablePageControl *)self bounds];
     if (CGRectIsEmpty(v17))
@@ -59,30 +59,30 @@
       [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
     }
 
-    self->_numberOfPages = a3;
+    self->_numberOfPages = pages;
     [(THChapterBrowserScrubbablePageControl *)self bounds];
     TSUClamp();
     self->_dotWidth = v5;
     [(THChapterBrowserScrubbablePageControl *)self bounds];
     v7 = fmax(v6 / self->_dotWidth, 1.0);
-    if (v7 >= a3)
+    if (v7 >= pages)
     {
-      v8 = a3;
+      pagesCopy = pages;
     }
 
     else
     {
-      v8 = v7;
+      pagesCopy = v7;
     }
 
     [(THChapterBrowserScrubbablePageControl *)self bounds];
-    self->_leftMargin = (v9 - (v8 * self->_dotWidth)) * 0.5;
-    if ([(NSMutableArray *)self->_indicators count]>= v8)
+    self->_leftMargin = (v9 - (pagesCopy * self->_dotWidth)) * 0.5;
+    if ([(NSMutableArray *)self->_indicators count]>= pagesCopy)
     {
       indicators = self->_indicators;
-      if (v8)
+      if (pagesCopy)
       {
-        for (i = [(NSMutableArray *)indicators count]- 1; i >= v8; --i)
+        for (i = [(NSMutableArray *)indicators count]- 1; i >= pagesCopy; --i)
         {
           [-[NSMutableArray objectAtIndex:](self->_indicators objectAtIndex:{i), "removeFromSuperlayer"}];
           [(NSMutableArray *)self->_indicators removeObjectAtIndex:i];
@@ -99,7 +99,7 @@
     else
     {
       v10 = [(NSMutableArray *)self->_indicators count];
-      if (v10 < v8)
+      if (v10 < pagesCopy)
       {
         v11 = v10;
         do
@@ -110,11 +110,11 @@
           ++v11;
         }
 
-        while (v8 != v11);
+        while (pagesCopy != v11);
       }
     }
 
-    v15 = a3 - 1;
+    v15 = pages - 1;
     if ([(THChapterBrowserScrubbablePageControl *)self currentPage]> v15)
     {
       [(THChapterBrowserScrubbablePageControl *)self setCurrentPage:v15];
@@ -124,28 +124,28 @@
   }
 }
 
-- (void)setCurrentPage:(unint64_t)a3
+- (void)setCurrentPage:(unint64_t)page
 {
-  [(THChapterBrowserScrubbablePageControl *)self p_setCurrentPage:a3];
-  v4 = [(THChapterBrowserScrubbablePageControl *)self currentPage];
+  [(THChapterBrowserScrubbablePageControl *)self p_setCurrentPage:page];
+  currentPage = [(THChapterBrowserScrubbablePageControl *)self currentPage];
 
-  [(THChapterBrowserScrubbablePageControl *)self p_selectDotClosestToPageIndex:v4 animated:0];
+  [(THChapterBrowserScrubbablePageControl *)self p_selectDotClosestToPageIndex:currentPage animated:0];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   dotWidth = self->_dotWidth;
-  numberOfPages = fmax(a3.size.width / dotWidth, 1.0);
+  numberOfPages = fmax(frame.size.width / dotWidth, 1.0);
   if (self->_numberOfPages < numberOfPages)
   {
     numberOfPages = self->_numberOfPages;
   }
 
-  self->_leftMargin = (a3.size.width - (numberOfPages * dotWidth)) * 0.5;
+  self->_leftMargin = (frame.size.width - (numberOfPages * dotWidth)) * 0.5;
   self->_numberOfPages = 0;
   [(THChapterBrowserScrubbablePageControl *)self setNumberOfPages:?];
   v10.receiver = self;
@@ -203,28 +203,28 @@
   +[CATransaction commit];
 }
 
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event
 {
   v8.receiver = self;
   v8.super_class = THChapterBrowserScrubbablePageControl;
-  v6 = [(THChapterBrowserScrubbablePageControl *)&v8 beginTrackingWithTouch:a3 withEvent:a4];
+  v6 = [(THChapterBrowserScrubbablePageControl *)&v8 beginTrackingWithTouch:touch withEvent:event];
   if (v6)
   {
     self->_startingPage = [(THChapterBrowserScrubbablePageControl *)self currentPage];
   }
 
-  [(THChapterBrowserScrubbablePageControl *)self p_updateWithTouch:a3 animated:1 lastTouch:0];
+  [(THChapterBrowserScrubbablePageControl *)self p_updateWithTouch:touch animated:1 lastTouch:0];
   return v6;
 }
 
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event
 {
   self->_dragging = 1;
-  [(THChapterBrowserScrubbablePageControl *)self p_updateWithTouch:a3 animated:0 lastTouch:0];
+  [(THChapterBrowserScrubbablePageControl *)self p_updateWithTouch:touch animated:0 lastTouch:0];
   return 1;
 }
 
-- (void)cancelTrackingWithEvent:(id)a3
+- (void)cancelTrackingWithEvent:(id)event
 {
   if ([(THChapterBrowserScrubbablePageControl *)self currentPage]!= self->_startingPage)
   {
@@ -245,10 +245,10 @@
   return v2;
 }
 
-- (id)p_layerForPageIndex:(unint64_t)a3
+- (id)p_layerForPageIndex:(unint64_t)index
 {
   v3 = 6.0;
-  if (a3 || (![(THChapterBrowserScrubbablePageControl *)self firstDotSpecialRendering]? (v3 = 6.0) : (v3 = 7.0), ![(THChapterBrowserScrubbablePageControl *)self firstDotSpecialRendering]))
+  if (index || (![(THChapterBrowserScrubbablePageControl *)self firstDotSpecialRendering]? (v3 = 6.0) : (v3 = 7.0), ![(THChapterBrowserScrubbablePageControl *)self firstDotSpecialRendering]))
   {
     v5 = +[CALayer layer];
     [(CALayer *)v5 setBounds:0.0, 0.0, 6.0, v3];
@@ -275,25 +275,25 @@
   return v5;
 }
 
-- (void)p_setCurrentPage:(unint64_t)a3
+- (void)p_setCurrentPage:(unint64_t)page
 {
   numberOfPages = self->_numberOfPages;
-  if (numberOfPages <= a3)
+  if (numberOfPages <= page)
   {
-    v4 = numberOfPages - 1;
+    pageCopy = numberOfPages - 1;
   }
 
   else
   {
-    v4 = a3;
+    pageCopy = page;
   }
 
-  self->_currentPage = v4;
+  self->_currentPage = pageCopy;
 }
 
-- (void)_selectDotAtIndex:(unint64_t)a3 animated:(BOOL)a4
+- (void)_selectDotAtIndex:(unint64_t)index animated:(BOOL)animated
 {
-  if ([(NSMutableArray *)self->_indicators count]> a3)
+  if ([(NSMutableArray *)self->_indicators count]> index)
   {
     if (!self->_currentPageIndicator)
     {
@@ -301,10 +301,10 @@
       [-[THChapterBrowserScrubbablePageControl layer](self "layer")];
     }
 
-    self->_currentPageIndicatorIndex = a3;
+    self->_currentPageIndicatorIndex = index;
     +[CATransaction begin];
     [CATransaction setAnimationDuration:0.15];
-    if (!a4)
+    if (!animated)
     {
       [CATransaction setDisableActions:1];
     }
@@ -316,17 +316,17 @@
   }
 }
 
-- (void)p_selectDotClosestToPageIndex:(int64_t)a3 animated:(BOOL)a4
+- (void)p_selectDotClosestToPageIndex:(int64_t)index animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = vcvtas_u32_f32(([(NSMutableArray *)self->_indicators count]/ self->_numberOfPages) * a3);
+  animatedCopy = animated;
+  v6 = vcvtas_u32_f32(([(NSMutableArray *)self->_indicators count]/ self->_numberOfPages) * index);
 
-  [(THChapterBrowserScrubbablePageControl *)self _selectDotAtIndex:v6 animated:v4];
+  [(THChapterBrowserScrubbablePageControl *)self _selectDotAtIndex:v6 animated:animatedCopy];
 }
 
-- (CGPoint)p_indicatorCenterAtIndex:(unint64_t)a3
+- (CGPoint)p_indicatorCenterAtIndex:(unint64_t)index
 {
-  if ([(NSMutableArray *)self->_indicators count]<= a3)
+  if ([(NSMutableArray *)self->_indicators count]<= index)
   {
     x = CGPointZero.x;
     y = CGPointZero.y;
@@ -334,7 +334,7 @@
 
   else
   {
-    [-[NSMutableArray objectAtIndex:](self->_indicators objectAtIndex:{a3), "position"}];
+    [-[NSMutableArray objectAtIndex:](self->_indicators objectAtIndex:{index), "position"}];
   }
 
   result.y = y;
@@ -342,37 +342,37 @@
   return result;
 }
 
-- (void)p_updateWithTouch:(id)a3 animated:(BOOL)a4 lastTouch:(BOOL)a5
+- (void)p_updateWithTouch:(id)touch animated:(BOOL)animated lastTouch:(BOOL)lastTouch
 {
-  v5 = a5;
-  v6 = a4;
-  [a3 locationInView:self];
+  lastTouchCopy = lastTouch;
+  animatedCopy = animated;
+  [touch locationInView:self];
   v8 = [(THChapterBrowserScrubbablePageControl *)self p_pageIndexForPoint:?];
   [(TSKFidgetResolver *)[(THChapterBrowserScrubbablePageControl *)self fidgetResolver] pushValue:[NSNumber numberWithUnsignedInteger:v8]];
-  if (v5)
+  if (lastTouchCopy)
   {
     v8 = [-[TSKFidgetResolver nonFidgetValue](-[THChapterBrowserScrubbablePageControl fidgetResolver](self "fidgetResolver")];
   }
 
-  [(THChapterBrowserScrubbablePageControl *)self p_updateWithNewPageIndex:v8 animated:v6];
+  [(THChapterBrowserScrubbablePageControl *)self p_updateWithNewPageIndex:v8 animated:animatedCopy];
 }
 
-- (void)p_updateWithNewPageIndex:(unint64_t)a3 animated:(BOOL)a4
+- (void)p_updateWithNewPageIndex:(unint64_t)index animated:(BOOL)animated
 {
-  if (self->_currentPage != a3)
+  if (self->_currentPage != index)
   {
-    v5 = a4;
+    animatedCopy = animated;
     [(THChapterBrowserScrubbablePageControl *)self p_setCurrentPage:?];
-    [(THChapterBrowserScrubbablePageControl *)self p_selectDotClosestToPageIndex:[(THChapterBrowserScrubbablePageControl *)self currentPage] animated:v5];
+    [(THChapterBrowserScrubbablePageControl *)self p_selectDotClosestToPageIndex:[(THChapterBrowserScrubbablePageControl *)self currentPage] animated:animatedCopy];
 
     [(THChapterBrowserScrubbablePageControl *)self sendActionsForControlEvents:4096];
   }
 }
 
-- (unint64_t)p_pageIndexForPoint:(CGPoint)a3
+- (unint64_t)p_pageIndexForPoint:(CGPoint)point
 {
-  x = a3.x;
-  [(THChapterBrowserScrubbablePageControl *)self bounds:a3.x];
+  x = point.x;
+  [(THChapterBrowserScrubbablePageControl *)self bounds:point.x];
   v6 = v5 + self->_leftMargin * -2.0;
   v7 = ((x - self->_leftMargin) / (v6 / [(THChapterBrowserScrubbablePageControl *)self numberOfPages]));
   if ((v7 & 0x8000000000000000) != 0)

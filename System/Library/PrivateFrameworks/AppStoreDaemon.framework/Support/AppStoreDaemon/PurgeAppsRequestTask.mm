@@ -27,7 +27,7 @@
     }
 
     v9 = client;
-    v10 = [(XPCClient *)v9 clientID];
+    clientID = [(XPCClient *)v9 clientID];
     *buf = 138544130;
     v50 = v5;
     v51 = 2114;
@@ -35,7 +35,7 @@
     v53 = 2114;
     v54 = v6;
     v55 = 2114;
-    v56 = v10;
+    v56 = clientID;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "[%{public}@] [%{public}@] Purge request with options: %{public}@ client: %{public}@", buf, 0x2Au);
   }
 
@@ -81,26 +81,26 @@
     }
 
     v20 = v19;
-    v21 = [(XPCClient *)v20 clientID];
-    v22 = sub_1001EC7EC(v17, v18, v3, v21);
+    clientID2 = [(XPCClient *)v20 clientID];
+    v22 = sub_1001EC7EC(v17, v18, v3, clientID2);
 
-    v23 = [v22 error];
+    error = [v22 error];
 
     v24 = ASDLogHandleForCategory();
     v25 = v24;
-    if (v23)
+    if (error)
     {
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
       {
         v26 = objc_opt_class();
         v27 = v26;
-        v28 = [v22 error];
+        error2 = [v22 error];
         *buf = 138543874;
         v50 = v26;
         v51 = 2114;
         v52 = v3;
         v53 = 2114;
-        v54 = v28;
+        v54 = error2;
         _os_log_error_impl(&_mh_execute_header, v25, OS_LOG_TYPE_ERROR, "[%{public}@] [%{public}@] Purge app request resulted in error: %{public}@", buf, 0x20u);
       }
     }
@@ -120,7 +120,7 @@
       }
 
       v46 = v32;
-      v45 = [(XPCClient *)v46 clientID];
+      clientID3 = [(XPCClient *)v46 clientID];
       if (self)
       {
         options = self->super._options;
@@ -132,33 +132,33 @@
       }
 
       v44 = options;
-      v34 = [(ASDRequestOptions *)v44 desiredPurgeAmount];
-      v35 = [v22 purgedApps];
-      v36 = [v35 count];
-      v37 = [v22 purgedSize];
+      desiredPurgeAmount = [(ASDRequestOptions *)v44 desiredPurgeAmount];
+      purgedApps = [v22 purgedApps];
+      v36 = [purgedApps count];
+      purgedSize = [v22 purgedSize];
       *buf = 138544642;
       v50 = v31;
       v51 = 2114;
       v52 = v3;
       v53 = 2114;
-      v54 = v45;
+      v54 = clientID3;
       v55 = 2114;
-      v56 = v34;
+      v56 = desiredPurgeAmount;
       v57 = 2048;
       v58 = v36;
       v59 = 2048;
-      v60 = v37;
+      v60 = purgedSize;
       _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "[%{public}@] [%{public}@] Purged request for client: %{public}@ with desired amount: %{public}@ purged %ld app(s) with a total purge amount: %ld", buf, 0x3Eu);
     }
 
     sub_10020F258(self, v22);
-    v38 = [v22 success];
+    success = [v22 success];
     if (self)
     {
-      self->super.super._success = v38;
+      self->super.super._success = success;
     }
 
-    v39 = [v22 error];
+    error3 = [v22 error];
     v41 = ASDErrorWithSafeUserInfo();
     if (self)
     {

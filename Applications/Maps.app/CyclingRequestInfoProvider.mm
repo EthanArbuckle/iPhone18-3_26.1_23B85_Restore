@@ -1,38 +1,38 @@
 @interface CyclingRequestInfoProvider
-- (CyclingRequestInfoProvider)initWithPreferences:(id)a3 timing:(id)a4;
-- (id)makeRouteAttributesBuilderWithNavigationMode:(unint64_t)a3;
+- (CyclingRequestInfoProvider)initWithPreferences:(id)preferences timing:(id)timing;
+- (id)makeRouteAttributesBuilderWithNavigationMode:(unint64_t)mode;
 - (unint64_t)maximumRouteCount;
-- (void)updateWithRefinedWaypoints:(id)a3;
+- (void)updateWithRefinedWaypoints:(id)waypoints;
 @end
 
 @implementation CyclingRequestInfoProvider
 
 - (unint64_t)maximumRouteCount
 {
-  v3 = [(CyclingRequestInfoProvider *)self maximumRouteCountOverride];
+  maximumRouteCountOverride = [(CyclingRequestInfoProvider *)self maximumRouteCountOverride];
 
-  if (!v3)
+  if (!maximumRouteCountOverride)
   {
     return 3;
   }
 
-  v4 = [(CyclingRequestInfoProvider *)self maximumRouteCountOverride];
-  v5 = [v4 unsignedIntegerValue];
+  maximumRouteCountOverride2 = [(CyclingRequestInfoProvider *)self maximumRouteCountOverride];
+  unsignedIntegerValue = [maximumRouteCountOverride2 unsignedIntegerValue];
 
-  return v5;
+  return unsignedIntegerValue;
 }
 
-- (void)updateWithRefinedWaypoints:(id)a3
+- (void)updateWithRefinedWaypoints:(id)waypoints
 {
-  v4 = a3;
-  v5 = [v4 origin];
-  v6 = [v5 geoMapItem];
-  v7 = [v6 timezone];
+  waypointsCopy = waypoints;
+  origin = [waypointsCopy origin];
+  geoMapItem = [origin geoMapItem];
+  timezone = [geoMapItem timezone];
 
-  v8 = [v4 destination];
+  destination = [waypointsCopy destination];
 
-  v9 = [v8 geoMapItem];
-  v10 = [v9 timezone];
+  geoMapItem2 = [destination geoMapItem];
+  timezone2 = [geoMapItem2 timezone];
 
   timing = self->_timing;
   if (timing)
@@ -45,32 +45,32 @@
     memset(v14, 0, sizeof(v14));
   }
 
-  v12 = [RoutePlanningTiming timingWithTimePoint:v14 departureTimeZone:v7 arrivalTimeZone:v10];
+  v12 = [RoutePlanningTiming timingWithTimePoint:v14 departureTimeZone:timezone arrivalTimeZone:timezone2];
   v13 = self->_timing;
   self->_timing = v12;
 }
 
-- (id)makeRouteAttributesBuilderWithNavigationMode:(unint64_t)a3
+- (id)makeRouteAttributesBuilderWithNavigationMode:(unint64_t)mode
 {
   v4 = [CyclingRouteAttributesBuilder alloc];
-  v5 = [(CyclingRequestInfoProvider *)self cyclePreferences];
-  v6 = [(CyclingRouteAttributesBuilder *)v4 initWihCyclePreferences:v5];
+  cyclePreferences = [(CyclingRequestInfoProvider *)self cyclePreferences];
+  v6 = [(CyclingRouteAttributesBuilder *)v4 initWihCyclePreferences:cyclePreferences];
 
   return v6;
 }
 
-- (CyclingRequestInfoProvider)initWithPreferences:(id)a3 timing:(id)a4
+- (CyclingRequestInfoProvider)initWithPreferences:(id)preferences timing:(id)timing
 {
-  v7 = a3;
-  v8 = a4;
+  preferencesCopy = preferences;
+  timingCopy = timing;
   v12.receiver = self;
   v12.super_class = CyclingRequestInfoProvider;
   v9 = [(CyclingRequestInfoProvider *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_preferences, a3);
-    objc_storeStrong(&v10->_timing, a4);
+    objc_storeStrong(&v9->_preferences, preferences);
+    objc_storeStrong(&v10->_timing, timing);
   }
 
   return v10;

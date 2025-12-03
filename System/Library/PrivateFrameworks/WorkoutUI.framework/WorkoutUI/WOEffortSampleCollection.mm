@@ -2,19 +2,19 @@
 - (HKQuantity)preferredQuantity;
 - (HKQuantitySample)preferredSample;
 - (WOEffortSampleCollection)init;
-- (WOEffortSampleCollection)initWithEffortSample:(id)a3 estimatedEffortSample:(id)a4;
+- (WOEffortSampleCollection)initWithEffortSample:(id)sample estimatedEffortSample:(id)effortSample;
 @end
 
 @implementation WOEffortSampleCollection
 
-- (WOEffortSampleCollection)initWithEffortSample:(id)a3 estimatedEffortSample:(id)a4
+- (WOEffortSampleCollection)initWithEffortSample:(id)sample estimatedEffortSample:(id)effortSample
 {
-  *(&self->super.isa + OBJC_IVAR___WOEffortSampleCollection_effortSample) = a3;
-  *(&self->super.isa + OBJC_IVAR___WOEffortSampleCollection_estimatedEffortSample) = a4;
+  *(&self->super.isa + OBJC_IVAR___WOEffortSampleCollection_effortSample) = sample;
+  *(&self->super.isa + OBJC_IVAR___WOEffortSampleCollection_estimatedEffortSample) = effortSample;
   v9.receiver = self;
   v9.super_class = type metadata accessor for EffortSampleCollection();
-  v6 = a3;
-  v7 = a4;
+  sampleCopy = sample;
+  effortSampleCopy = effortSample;
   return [(WOEffortSampleCollection *)&v9 init];
 }
 
@@ -44,7 +44,7 @@
     v3 = *(&self->super.isa + OBJC_IVAR___WOEffortSampleCollection_effortSample);
 LABEL_5:
     v5 = v2;
-    v6 = [v3 quantity];
+    quantity = [v3 quantity];
 
     goto LABEL_6;
   }
@@ -57,10 +57,10 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v6 = 0;
+  quantity = 0;
 LABEL_6:
 
-  return v6;
+  return quantity;
 }
 
 - (WOEffortSampleCollection)init

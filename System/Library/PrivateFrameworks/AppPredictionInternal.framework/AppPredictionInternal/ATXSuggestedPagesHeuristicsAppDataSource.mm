@@ -1,17 +1,17 @@
 @interface ATXSuggestedPagesHeuristicsAppDataSource
-- (id)provideAppsForSuggestedPageType:(int64_t)a3 environment:(id)a4;
+- (id)provideAppsForSuggestedPageType:(int64_t)type environment:(id)environment;
 @end
 
 @implementation ATXSuggestedPagesHeuristicsAppDataSource
 
-- (id)provideAppsForSuggestedPageType:(int64_t)a3 environment:(id)a4
+- (id)provideAppsForSuggestedPageType:(int64_t)type environment:(id)environment
 {
   v39[3] = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  environmentCopy = environment;
   v6 = 0;
-  if (a3 <= 6)
+  if (type <= 6)
   {
-    switch(a3)
+    switch(type)
     {
       case 4:
         v7 = [objc_alloc(MEMORY[0x277CEB560]) initWithBundleId:@"com.apple.Home" predictionSource:@"Heuristic"];
@@ -52,9 +52,9 @@
 
   else
   {
-    if (a3 <= 8)
+    if (type <= 8)
     {
-      if (a3 == 7)
+      if (type == 7)
       {
         v7 = [objc_alloc(MEMORY[0x277CEB560]) initWithBundleId:@"com.apple.mobilecal" predictionSource:@"Heuristic"];
         v33[0] = v7;
@@ -113,7 +113,7 @@
       goto LABEL_19;
     }
 
-    if (a3 == 9)
+    if (type == 9)
     {
       v7 = [objc_alloc(MEMORY[0x277CEB560]) initWithBundleId:@"com.apple.iBooks" predictionSource:@"Heuristic"];
       v37[0] = v7;
@@ -123,7 +123,7 @@
       goto LABEL_18;
     }
 
-    if (a3 != 11)
+    if (type != 11)
     {
       goto LABEL_20;
     }

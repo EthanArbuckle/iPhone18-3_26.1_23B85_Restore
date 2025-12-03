@@ -1,28 +1,28 @@
 @interface PKAccountEnhancedMerchantBehavior
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAccountEnhancedMerchantBehavior:(id)a3;
-- (PKAccountEnhancedMerchantBehavior)initWithCoder:(id)a3;
-- (PKAccountEnhancedMerchantBehavior)initWithDictionary:(id)a3;
-- (PKAccountEnhancedMerchantBehavior)initWithMinRefreshPeriod:(id)a3;
-- (double)cooldownPeriodForLevel:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAccountEnhancedMerchantBehavior:(id)behavior;
+- (PKAccountEnhancedMerchantBehavior)initWithCoder:(id)coder;
+- (PKAccountEnhancedMerchantBehavior)initWithDictionary:(id)dictionary;
+- (PKAccountEnhancedMerchantBehavior)initWithMinRefreshPeriod:(id)period;
+- (double)cooldownPeriodForLevel:(unint64_t)level;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKAccountEnhancedMerchantBehavior
 
-- (PKAccountEnhancedMerchantBehavior)initWithMinRefreshPeriod:(id)a3
+- (PKAccountEnhancedMerchantBehavior)initWithMinRefreshPeriod:(id)period
 {
-  v4 = a3;
+  periodCopy = period;
   v8.receiver = self;
   v8.super_class = PKAccountEnhancedMerchantBehavior;
   v5 = [(PKAccountEnhancedMerchantBehavior *)&v8 init];
   if (v5)
   {
-    if (v4)
+    if (periodCopy)
     {
-      [v4 doubleValue];
+      [periodCopy doubleValue];
     }
 
     else
@@ -37,25 +37,25 @@
   return v5;
 }
 
-- (PKAccountEnhancedMerchantBehavior)initWithDictionary:(id)a3
+- (PKAccountEnhancedMerchantBehavior)initWithDictionary:(id)dictionary
 {
-  v4 = [a3 PKNumberForKey:@"minRefreshPeriod"];
+  v4 = [dictionary PKNumberForKey:@"minRefreshPeriod"];
   v5 = [(PKAccountEnhancedMerchantBehavior *)self initWithMinRefreshPeriod:v4];
 
   return v5;
 }
 
-- (double)cooldownPeriodForLevel:(unint64_t)a3
+- (double)cooldownPeriodForLevel:(unint64_t)level
 {
-  if (a3 <= 1)
+  if (level <= 1)
   {
     result = 0.0;
-    if (!a3)
+    if (!level)
     {
       return result;
     }
 
-    if (a3 == 1)
+    if (level == 1)
     {
       v3 = 16;
       return *(&self->super.isa + v3);
@@ -66,7 +66,7 @@ LABEL_7:
     return *(&self->super.isa + v3);
   }
 
-  if (a3 != 3)
+  if (level != 3)
   {
     goto LABEL_7;
   }
@@ -86,62 +86,62 @@ LABEL_7:
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKAccountEnhancedMerchantBehavior *)self isEqualToAccountEnhancedMerchantBehavior:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKAccountEnhancedMerchantBehavior *)self isEqualToAccountEnhancedMerchantBehavior:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToAccountEnhancedMerchantBehavior:(id)a3
+- (BOOL)isEqualToAccountEnhancedMerchantBehavior:(id)behavior
 {
-  v4 = a3;
-  v5 = v4 && self->_minRefreshPeriod == v4[1] && self->_shortMinRefreshPeriod == v4[2] && self->_longMinRefreshPeriod == v4[3];
+  behaviorCopy = behavior;
+  v5 = behaviorCopy && self->_minRefreshPeriod == behaviorCopy[1] && self->_shortMinRefreshPeriod == behaviorCopy[2] && self->_longMinRefreshPeriod == behaviorCopy[3];
 
   return v5;
 }
 
-- (PKAccountEnhancedMerchantBehavior)initWithCoder:(id)a3
+- (PKAccountEnhancedMerchantBehavior)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = PKAccountEnhancedMerchantBehavior;
   v5 = [(PKAccountEnhancedMerchantBehavior *)&v10 init];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"minRefreshPeriod"];
+    [coderCopy decodeDoubleForKey:@"minRefreshPeriod"];
     v5->_minRefreshPeriod = v6;
-    [v4 decodeDoubleForKey:@"shortMinRefreshPeriod"];
+    [coderCopy decodeDoubleForKey:@"shortMinRefreshPeriod"];
     v5->_shortMinRefreshPeriod = v7;
-    [v4 decodeDoubleForKey:@"longMinRefreshPeriod"];
+    [coderCopy decodeDoubleForKey:@"longMinRefreshPeriod"];
     v5->_longMinRefreshPeriod = v8;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   minRefreshPeriod = self->_minRefreshPeriod;
-  v5 = a3;
-  [v5 encodeDouble:@"minRefreshPeriod" forKey:minRefreshPeriod];
-  [v5 encodeDouble:@"shortMinRefreshPeriod" forKey:self->_shortMinRefreshPeriod];
-  [v5 encodeDouble:@"longMinRefreshPeriod" forKey:self->_longMinRefreshPeriod];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"minRefreshPeriod" forKey:minRefreshPeriod];
+  [coderCopy encodeDouble:@"shortMinRefreshPeriod" forKey:self->_shortMinRefreshPeriod];
+  [coderCopy encodeDouble:@"longMinRefreshPeriod" forKey:self->_longMinRefreshPeriod];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 1) = *&self->_minRefreshPeriod;
   *(result + 2) = *&self->_shortMinRefreshPeriod;
   *(result + 3) = *&self->_longMinRefreshPeriod;

@@ -7,10 +7,10 @@
 
 - (double)timeIntervalSince1970WithBucket:()SFAnalytics
 {
-  [a1 bucketToRoundingFactor:?];
+  [self bucketToRoundingFactor:?];
   v2 = v1;
-  v3 = [MEMORY[0x1E695DF00] date];
-  [v3 timeIntervalSince1970];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSince1970];
   v5 = v4;
 
   return v5 + v2 - (v5 % v2);

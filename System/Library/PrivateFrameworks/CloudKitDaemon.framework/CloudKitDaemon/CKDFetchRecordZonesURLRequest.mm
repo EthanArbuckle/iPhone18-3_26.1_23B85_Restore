@@ -1,26 +1,26 @@
 @interface CKDFetchRecordZonesURLRequest
 - (BOOL)requiresCKAnonymousUserIDs;
-- (CKDFetchRecordZonesURLRequest)initWithOperation:(id)a3 recordZoneIDs:(id)a4;
+- (CKDFetchRecordZonesURLRequest)initWithOperation:(id)operation recordZoneIDs:(id)ds;
 - (id)generateRequestOperations;
-- (id)requestDidParseProtobufObject:(id)a3;
+- (id)requestDidParseProtobufObject:(id)object;
 - (id)requestOperationClasses;
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3;
-- (void)fillOutRequestProperties:(id)a3;
-- (void)requestDidParseNodeFailure:(id)a3;
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder;
+- (void)fillOutRequestProperties:(id)properties;
+- (void)requestDidParseNodeFailure:(id)failure;
 @end
 
 @implementation CKDFetchRecordZonesURLRequest
 
-- (CKDFetchRecordZonesURLRequest)initWithOperation:(id)a3 recordZoneIDs:(id)a4
+- (CKDFetchRecordZonesURLRequest)initWithOperation:(id)operation recordZoneIDs:(id)ds
 {
-  v7 = a4;
+  dsCopy = ds;
   v17.receiver = self;
   v17.super_class = CKDFetchRecordZonesURLRequest;
-  v8 = [(CKDURLRequest *)&v17 initWithOperation:a3];
+  v8 = [(CKDURLRequest *)&v17 initWithOperation:operation];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_zoneIDs, a4);
+    objc_storeStrong(&v8->_zoneIDs, ds);
     v12 = objc_msgSend_array(MEMORY[0x277CBEB18], v10, v11);
     recordZones = v9->_recordZones;
     v9->_recordZones = v12;
@@ -33,29 +33,29 @@
   return v9;
 }
 
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder
 {
   v15.receiver = self;
   v15.super_class = CKDFetchRecordZonesURLRequest;
-  v4 = a3;
-  [(CKDURLRequest *)&v15 fillOutEquivalencyPropertiesBuilder:v4];
+  builderCopy = builder;
+  [(CKDURLRequest *)&v15 fillOutEquivalencyPropertiesBuilder:builderCopy];
   v5 = MEMORY[0x277CBEB98];
   v8 = objc_msgSend_zoneIDs(self, v6, v7, v15.receiver, v15.super_class);
   v11 = objc_msgSend_ckEquivalencyProperties(v8, v9, v10);
   v13 = objc_msgSend_setWithArray_(v5, v12, v11);
 
-  objc_msgSend_setObject_forKeyedSubscript_(v4, v14, v13, @"zoneIDs");
+  objc_msgSend_setObject_forKeyedSubscript_(builderCopy, v14, v13, @"zoneIDs");
 }
 
-- (void)fillOutRequestProperties:(id)a3
+- (void)fillOutRequestProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v7 = objc_msgSend_zoneIDs(self, v5, v6);
-  objc_msgSend_setFetchRecordZoneIDs_(v4, v8, v7);
+  objc_msgSend_setFetchRecordZoneIDs_(propertiesCopy, v8, v7);
 
   v9.receiver = self;
   v9.super_class = CKDFetchRecordZonesURLRequest;
-  [(CKDURLRequest *)&v9 fillOutRequestProperties:v4];
+  [(CKDURLRequest *)&v9 fillOutRequestProperties:propertiesCopy];
 }
 
 - (id)requestOperationClasses
@@ -193,18 +193,18 @@ LABEL_18:
   return v73;
 }
 
-- (id)requestDidParseProtobufObject:(id)a3
+- (id)requestDidParseProtobufObject:(id)object
 {
   v311 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  objectCopy = object;
   v7 = objc_msgSend_zoneIDByRequestID(self, v5, v6);
-  v10 = objc_msgSend_response(v4, v8, v9);
+  v10 = objc_msgSend_response(objectCopy, v8, v9);
   v13 = objc_msgSend_operationUUID(v10, v11, v12);
   v15 = objc_msgSend_objectForKeyedSubscript_(v7, v14, v13);
 
-  if (!objc_msgSend_hasZoneRetrieveResponse(v4, v16, v17))
+  if (!objc_msgSend_hasZoneRetrieveResponse(objectCopy, v16, v17))
   {
-    v190 = objc_msgSend_result(v4, v18, v19);
+    v190 = objc_msgSend_result(objectCopy, v18, v19);
     hasError = objc_msgSend_hasError(v190, v191, v192);
 
     if (hasError)
@@ -219,7 +219,7 @@ LABEL_18:
         if (v202)
         {
           v205 = objc_msgSend_recordZoneFetchedBlock(self, v203, v204);
-          v208 = objc_msgSend_result(v4, v206, v207);
+          v208 = objc_msgSend_result(objectCopy, v206, v207);
           (v205)[2](v205, 0, v15, v208, 0);
 LABEL_74:
         }
@@ -232,7 +232,7 @@ LABEL_74:
         if (v274)
         {
           v205 = objc_msgSend_errorFetchingAllRecordZonesBlock(self, v275, v276);
-          v208 = objc_msgSend_result(v4, v277, v278);
+          v208 = objc_msgSend_result(objectCopy, v277, v278);
           (v205[2])(v205, v208);
           goto LABEL_74;
         }
@@ -247,7 +247,7 @@ LABEL_74:
   v306 = 0u;
   v303 = 0u;
   v304 = 0u;
-  v20 = objc_msgSend_zoneRetrieveResponse(v4, v18, v19);
+  v20 = objc_msgSend_zoneRetrieveResponse(objectCopy, v18, v19);
   v23 = objc_msgSend_zoneSummarys(v20, v21, v22);
 
   obj = v23;
@@ -306,31 +306,31 @@ LABEL_74:
               _os_log_error_impl(&dword_22506F000, v210, OS_LOG_TYPE_ERROR, "Failed to convert record zone: %@", buf, 0xCu);
             }
 
-            v213 = objc_msgSend_result(v4, v211, v212);
+            v213 = objc_msgSend_result(objectCopy, v211, v212);
             objc_msgSend_setCode_(v213, v214, 3);
 
             v215 = objc_opt_new();
-            v218 = objc_msgSend_result(v4, v216, v217);
+            v218 = objc_msgSend_result(objectCopy, v216, v217);
             objc_msgSend_setError_(v218, v219, v215);
 
             v220 = objc_opt_new();
-            v223 = objc_msgSend_result(v4, v221, v222);
+            v223 = objc_msgSend_result(objectCopy, v221, v222);
             v226 = objc_msgSend_error(v223, v224, v225);
             objc_msgSend_setClientError_(v226, v227, v220);
 
-            v230 = objc_msgSend_result(v4, v228, v229);
+            v230 = objc_msgSend_result(objectCopy, v228, v229);
             v233 = objc_msgSend_error(v230, v231, v232);
             v236 = objc_msgSend_clientError(v233, v234, v235);
             objc_msgSend_setType_(v236, v237, 7);
 
-            v240 = objc_msgSend_result(v4, v238, v239);
+            v240 = objc_msgSend_result(objectCopy, v238, v239);
             v243 = objc_msgSend_error(v240, v241, v242);
             objc_msgSend_setErrorKey_(v243, v244, @"Invalid record zone");
 
             v245 = MEMORY[0x277CCACA8];
             v248 = objc_msgSend_localizedDescription(v293, v246, v247);
             v250 = objc_msgSend_stringWithFormat_(v245, v249, @"The record zone could not be converted because it is invalid: %@", v248);
-            v253 = objc_msgSend_result(v4, v251, v252);
+            v253 = objc_msgSend_result(objectCopy, v251, v252);
             v256 = objc_msgSend_error(v253, v254, v255);
             objc_msgSend_setErrorDescription_(v256, v257, v250);
 
@@ -354,7 +354,7 @@ LABEL_68:
               if (v266)
               {
                 v269 = objc_msgSend_recordZoneFetchedBlock(self, v267, v268);
-                v272 = objc_msgSend_result(v4, v270, v271);
+                v272 = objc_msgSend_result(objectCopy, v270, v271);
                 (v269)[2](v269, 0, v15, v272, v260);
                 goto LABEL_70;
               }
@@ -367,7 +367,7 @@ LABEL_68:
               if (v281)
               {
                 v269 = objc_msgSend_errorFetchingAllRecordZonesBlock(self, v282, v283);
-                v272 = objc_msgSend_result(v4, v284, v285);
+                v272 = objc_msgSend_result(objectCopy, v284, v285);
                 (v269[2])(v269, v272);
                 v15 = 0;
 LABEL_70:
@@ -391,8 +391,8 @@ LABEL_70:
           {
             v289 = v42;
             v290 = v32;
-            v52 = self;
-            v53 = v4;
+            selfCopy = self;
+            v53 = objectCopy;
             v54 = objc_msgSend_ownerName(v15, v50, v51);
             isEqualToString = objc_msgSend_isEqualToString_(v54, v55, v286);
 
@@ -410,9 +410,9 @@ LABEL_70:
             {
 
               v77 = isEqualToString == v63;
-              v4 = v53;
+              objectCopy = v53;
               v15 = v72;
-              self = v52;
+              self = selfCopy;
               v42 = v289;
               v32 = v290;
               if (!v77)
@@ -424,9 +424,9 @@ LABEL_70:
             else
             {
 
-              v4 = v53;
+              objectCopy = v53;
               v15 = v72;
-              self = v52;
+              self = selfCopy;
               v42 = v289;
               v32 = v290;
             }
@@ -532,7 +532,7 @@ LABEL_70:
         if (v151)
         {
           v154 = objc_msgSend_recordZoneFetchedBlock(self, v152, v153);
-          v157 = objc_msgSend_result(v4, v155, v156);
+          v157 = objc_msgSend_result(objectCopy, v155, v156);
           (v154)[2](v154, v41, v15, v157, 0);
         }
       }
@@ -547,11 +547,11 @@ LABEL_70:
     }
   }
 
-  v158 = self;
+  selfCopy2 = self;
   v159 = v15;
 
   v160 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v163 = objc_msgSend_zoneRetrieveResponse(v4, v161, v162);
+  v163 = objc_msgSend_zoneRetrieveResponse(objectCopy, v161, v162);
   v166 = objc_msgSend_anonymousZoneInfos(v163, v164, v165);
 
   v296 = 0u;
@@ -583,7 +583,7 @@ LABEL_70:
     while (v172);
   }
 
-  v179 = objc_msgSend_anonymousRecordZoneTuplesFetchedBlock(v158, v177, v178);
+  v179 = objc_msgSend_anonymousRecordZoneTuplesFetchedBlock(selfCopy2, v177, v178);
   if (v179)
   {
     v182 = v179;
@@ -591,8 +591,8 @@ LABEL_70:
 
     if (v183)
     {
-      v186 = objc_msgSend_anonymousRecordZoneTuplesFetchedBlock(v158, v184, v185);
-      v189 = objc_msgSend_result(v4, v187, v188);
+      v186 = objc_msgSend_anonymousRecordZoneTuplesFetchedBlock(selfCopy2, v184, v185);
+      v189 = objc_msgSend_result(objectCopy, v187, v188);
       (v186)[2](v186, v160, v189);
     }
   }
@@ -607,11 +607,11 @@ LABEL_77:
   return v273;
 }
 
-- (void)requestDidParseNodeFailure:(id)a3
+- (void)requestDidParseNodeFailure:(id)failure
 {
-  v35 = a3;
+  failureCopy = failure;
   v6 = objc_msgSend_zoneIDByRequestID(self, v4, v5);
-  v9 = objc_msgSend_response(v35, v7, v8);
+  v9 = objc_msgSend_response(failureCopy, v7, v8);
   v12 = objc_msgSend_operationUUID(v9, v10, v11);
   v14 = objc_msgSend_objectForKeyedSubscript_(v6, v13, v12);
 
@@ -628,7 +628,7 @@ LABEL_77:
     }
 
     v26 = objc_msgSend_recordZoneFetchedBlock(self, v24, v25);
-    v29 = objc_msgSend_result(v35, v27, v28);
+    v29 = objc_msgSend_result(failureCopy, v27, v28);
     (v26)[2](v26, 0, v14, v29, 0);
   }
 
@@ -642,7 +642,7 @@ LABEL_77:
     }
 
     v26 = objc_msgSend_errorFetchingAllRecordZonesBlock(self, v31, v32);
-    v29 = objc_msgSend_result(v35, v33, v34);
+    v29 = objc_msgSend_result(failureCopy, v33, v34);
     (v26[2])(v26, v29);
   }
 

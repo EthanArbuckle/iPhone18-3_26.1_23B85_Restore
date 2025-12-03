@@ -1,30 +1,30 @@
 @interface VCPHomeKitFragmentProcessingTask
-+ (id)taskForAssetData:(id)a3 withAnalyzer:(id)a4 withOptions:(id)a5 andCompletionHandler:(id)a6;
-- (VCPHomeKitFragmentProcessingTask)initWithAssetData:(id)a3 analyzer:(id)a4 options:(id)a5 completionHandler:(id)a6;
++ (id)taskForAssetData:(id)data withAnalyzer:(id)analyzer withOptions:(id)options andCompletionHandler:(id)handler;
+- (VCPHomeKitFragmentProcessingTask)initWithAssetData:(id)data analyzer:(id)analyzer options:(id)options completionHandler:(id)handler;
 - (int)run;
 - (void)dealloc;
 @end
 
 @implementation VCPHomeKitFragmentProcessingTask
 
-- (VCPHomeKitFragmentProcessingTask)initWithAssetData:(id)a3 analyzer:(id)a4 options:(id)a5 completionHandler:(id)a6
+- (VCPHomeKitFragmentProcessingTask)initWithAssetData:(id)data analyzer:(id)analyzer options:(id)options completionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  dataCopy = data;
+  analyzerCopy = analyzer;
+  optionsCopy = options;
+  handlerCopy = handler;
   v21.receiver = self;
   v21.super_class = VCPHomeKitFragmentProcessingTask;
   v15 = [(VCPHomeKitFragmentProcessingTask *)&v21 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_assetData, a3);
+    objc_storeStrong(&v15->_assetData, data);
     atomic_store(0, &v16->_started);
     atomic_store(0, &v16->_cancel);
-    objc_storeStrong(&v16->_analyzer, a4);
-    objc_storeStrong(&v16->_options, a5);
-    v17 = objc_retainBlock(v14);
+    objc_storeStrong(&v16->_analyzer, analyzer);
+    objc_storeStrong(&v16->_options, options);
+    v17 = objc_retainBlock(handlerCopy);
     completionHandler = v16->_completionHandler;
     v16->_completionHandler = v17;
 
@@ -34,15 +34,15 @@
   return v16;
 }
 
-+ (id)taskForAssetData:(id)a3 withAnalyzer:(id)a4 withOptions:(id)a5 andCompletionHandler:(id)a6
++ (id)taskForAssetData:(id)data withAnalyzer:(id)analyzer withOptions:(id)options andCompletionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (v9)
+  dataCopy = data;
+  analyzerCopy = analyzer;
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (dataCopy)
   {
-    v13 = [objc_alloc(objc_opt_class()) initWithAssetData:v9 analyzer:v10 options:v11 completionHandler:v12];
+    v13 = [objc_alloc(objc_opt_class()) initWithAssetData:dataCopy analyzer:analyzerCopy options:optionsCopy completionHandler:handlerCopy];
   }
 
   else
@@ -140,7 +140,7 @@
       v20 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-23804 userInfo:v19];
       v17[2](v17, 0, v20);
 
-      v8 = -23804;
+      code = -23804;
     }
 
     else
@@ -148,12 +148,12 @@
       v21 = v31[5];
       if (v21)
       {
-        v8 = [v21 code];
+        code = [v21 code];
       }
 
       else
       {
-        v8 = 0;
+        code = 0;
       }
 
       (*(self->_completionHandler + 2))();
@@ -163,7 +163,7 @@
     _Block_object_dispose(&v30, 8);
   }
 
-  return v8;
+  return code;
 }
 
 @end

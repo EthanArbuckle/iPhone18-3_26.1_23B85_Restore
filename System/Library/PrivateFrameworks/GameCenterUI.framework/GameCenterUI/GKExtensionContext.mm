@@ -1,23 +1,23 @@
 @interface GKExtensionContext
 - (void)dealloc;
-- (void)hostApp:(id)a3 grantingAccessExtensionSandbox:(id)a4 replyWithEndpoint:(id)a5;
-- (void)messageFromClient:(id)a3;
-- (void)openURL:(id)a3 completionHandler:(id)a4;
-- (void)setInitialState:(id)a3 withReply:(id)a4;
-- (void)tearDownExtensionWithReply:(id)a3;
+- (void)hostApp:(id)app grantingAccessExtensionSandbox:(id)sandbox replyWithEndpoint:(id)endpoint;
+- (void)messageFromClient:(id)client;
+- (void)openURL:(id)l completionHandler:(id)handler;
+- (void)setInitialState:(id)state withReply:(id)reply;
+- (void)tearDownExtensionWithReply:(id)reply;
 @end
 
 @implementation GKExtensionContext
 
-- (void)openURL:(id)a3 completionHandler:(id)a4
+- (void)openURL:(id)l completionHandler:(id)handler
 {
   v5 = MEMORY[0x277D0BFE0];
-  v8 = a4;
-  v6 = a3;
-  v7 = [v5 defaultWorkspace];
-  [v7 openURL:v6];
+  handlerCopy = handler;
+  lCopy = l;
+  defaultWorkspace = [v5 defaultWorkspace];
+  [defaultWorkspace openURL:lCopy];
 
-  v8[2](v8, 1);
+  handlerCopy[2](handlerCopy, 1);
 }
 
 - (void)dealloc
@@ -32,16 +32,16 @@
   [(GKExtensionContext *)&v3 dealloc];
 }
 
-- (void)messageFromClient:(id)a3
+- (void)messageFromClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __40__GKExtensionContext_messageFromClient___block_invoke;
   v6[3] = &unk_279669E48;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = clientCopy;
+  v5 = clientCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -51,11 +51,11 @@ void __40__GKExtensionContext_messageFromClient___block_invoke(uint64_t a1)
   [v2 messageFromClient:*(a1 + 40)];
 }
 
-- (void)setInitialState:(id)a3 withReply:(id)a4
+- (void)setInitialState:(id)state withReply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(GKExtensionContext *)self _principalObject];
+  replyCopy = reply;
+  stateCopy = state;
+  _principalObject = [(GKExtensionContext *)self _principalObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -73,25 +73,25 @@ void __40__GKExtensionContext_messageFromClient___block_invoke(uint64_t a1)
     }
   }
 
-  v12 = [(GKExtensionContext *)self _principalObject];
-  [v12 setInitialState:v7 withReply:v6];
+  _principalObject2 = [(GKExtensionContext *)self _principalObject];
+  [_principalObject2 setInitialState:stateCopy withReply:replyCopy];
 }
 
-- (void)tearDownExtensionWithReply:(id)a3
+- (void)tearDownExtensionWithReply:(id)reply
 {
-  v5 = a3;
-  v4 = [(GKExtensionContext *)self _principalObject];
+  replyCopy = reply;
+  _principalObject = [(GKExtensionContext *)self _principalObject];
   if (objc_opt_respondsToSelector())
   {
-    [v4 tearDownExtensionWithReply:v5];
+    [_principalObject tearDownExtensionWithReply:replyCopy];
   }
 }
 
-- (void)hostApp:(id)a3 grantingAccessExtensionSandbox:(id)a4 replyWithEndpoint:(id)a5
+- (void)hostApp:(id)app grantingAccessExtensionSandbox:(id)sandbox replyWithEndpoint:(id)endpoint
 {
-  v8 = a3;
-  v9 = a5;
-  [a4 UTF8String];
+  appCopy = app;
+  endpointCopy = endpoint;
+  [sandbox UTF8String];
   v10 = sandbox_extension_consume();
   self->_sandboxToken = v10;
   if (v10 < 0)
@@ -109,7 +109,7 @@ void __40__GKExtensionContext_messageFromClient___block_invoke(uint64_t a1)
     }
 
     v15 = 0;
-    if (v9)
+    if (endpointCopy)
     {
       goto LABEL_3;
     }
@@ -117,16 +117,16 @@ void __40__GKExtensionContext_messageFromClient___block_invoke(uint64_t a1)
 
   else
   {
-    v11 = [MEMORY[0x277D0BFE0] defaultWorkspace];
-    v12 = [v11 applicationProxyForBundleID:v8];
+    defaultWorkspace = [MEMORY[0x277D0BFE0] defaultWorkspace];
+    v12 = [defaultWorkspace applicationProxyForBundleID:appCopy];
     v13 = MEMORY[0x277CCA8E0];
-    v14 = [v12 bundle];
-    v15 = [v13 _extensionEndpointForMainBundleOfHostApplication:v14];
+    bundle = [v12 bundle];
+    v15 = [v13 _extensionEndpointForMainBundleOfHostApplication:bundle];
 
-    if (v9)
+    if (endpointCopy)
     {
 LABEL_3:
-      v9[2](v9, v15);
+      endpointCopy[2](endpointCopy, v15);
     }
   }
 }

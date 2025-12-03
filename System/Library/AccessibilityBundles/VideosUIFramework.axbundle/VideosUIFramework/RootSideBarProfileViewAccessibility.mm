@@ -11,7 +11,7 @@
   v4 = [v3 ax_mappedArrayUsingBlock:&__block_literal_global_296];
   v5 = [v2 orderedSetWithArray:v4];
 
-  v6 = [v5 array];
+  array = [v5 array];
   v7 = AXLabelForElements();
 
   return v7;

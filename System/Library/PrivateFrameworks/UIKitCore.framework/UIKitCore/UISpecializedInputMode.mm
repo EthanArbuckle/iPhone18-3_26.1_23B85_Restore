@@ -1,5 +1,5 @@
 @interface UISpecializedInputMode
-- (UISpecializedInputMode)initWithIdentifier:(id)a3;
+- (UISpecializedInputMode)initWithIdentifier:(id)identifier;
 - (id)hardwareLayout;
 - (void)clearViewControllerClass;
 - (void)dealloc;
@@ -7,19 +7,19 @@
 
 @implementation UISpecializedInputMode
 
-- (UISpecializedInputMode)initWithIdentifier:(id)a3
+- (UISpecializedInputMode)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v8.receiver = self;
   v8.super_class = UISpecializedInputMode;
   v5 = [(UISpecializedInputMode *)&v8 init];
   v6 = v5;
-  if (v4 && v5)
+  if (identifierCopy && v5)
   {
-    [(UIKeyboardInputMode *)v5 setIdentifier:v4];
-    [(UIKeyboardInputMode *)v6 setNormalizedIdentifier:v4];
-    [(UIKeyboardInputMode *)v6 setLanguageWithRegion:v4];
-    [(UIKeyboardInputMode *)v6 setPrimaryLanguage:v4];
+    [(UIKeyboardInputMode *)v5 setIdentifier:identifierCopy];
+    [(UIKeyboardInputMode *)v6 setNormalizedIdentifier:identifierCopy];
+    [(UIKeyboardInputMode *)v6 setLanguageWithRegion:identifierCopy];
+    [(UIKeyboardInputMode *)v6 setPrimaryLanguage:identifierCopy];
   }
 
   else
@@ -49,22 +49,22 @@
 
 - (id)hardwareLayout
 {
-  v3 = [(UIKeyboardInputMode *)self identifier];
-  v4 = [v3 isEqualToString:@"autofillsignup"];
+  identifier = [(UIKeyboardInputMode *)self identifier];
+  v4 = [identifier isEqualToString:@"autofillsignup"];
 
   if (v4)
   {
-    v5 = 0;
+    hardwareLayout = 0;
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = UISpecializedInputMode;
-    v5 = [(UIKeyboardInputMode *)&v7 hardwareLayout];
+    hardwareLayout = [(UIKeyboardInputMode *)&v7 hardwareLayout];
   }
 
-  return v5;
+  return hardwareLayout;
 }
 
 @end

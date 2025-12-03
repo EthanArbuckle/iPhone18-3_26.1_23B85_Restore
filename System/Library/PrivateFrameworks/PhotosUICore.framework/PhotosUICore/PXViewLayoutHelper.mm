@@ -1,42 +1,42 @@
 @interface PXViewLayoutHelper
 + (void)initialize;
-+ (void)performLayoutWithinView:(id)a3 usingBlock:(id)a4;
-- (CGRect)_orientedFrameOfView:(id)a3;
++ (void)performLayoutWithinView:(id)view usingBlock:(id)block;
+- (CGRect)_orientedFrameOfView:(id)view;
 - (PXViewLayoutHelper)init;
-- (double)bottomOfView:(id)a3;
-- (double)firstBaselineOfView:(id)a3;
-- (double)horizontalCenterOfView:(id)a3;
-- (double)lastBaselineOfView:(id)a3;
-- (double)leadingOfView:(id)a3;
-- (double)topOfView:(id)a3;
-- (double)trailingOfView:(id)a3;
-- (double)verticalCenterOfView:(id)a3;
+- (double)bottomOfView:(id)view;
+- (double)firstBaselineOfView:(id)view;
+- (double)horizontalCenterOfView:(id)view;
+- (double)lastBaselineOfView:(id)view;
+- (double)leadingOfView:(id)view;
+- (double)topOfView:(id)view;
+- (double)trailingOfView:(id)view;
+- (double)verticalCenterOfView:(id)view;
 - (id)_init;
-- (void)_getFirstBaseline:(double *)a3 lastBaseline:(double *)a4 forView:(id)a5 withSize:(CGSize)a6;
-- (void)_setOrientedFrame:(CGRect)a3 forView:(id)a4;
-- (void)_setUpWithView:(id)a3;
+- (void)_getFirstBaseline:(double *)baseline lastBaseline:(double *)lastBaseline forView:(id)view withSize:(CGSize)size;
+- (void)_setOrientedFrame:(CGRect)frame forView:(id)view;
+- (void)_setUpWithView:(id)view;
 - (void)_tearDown;
-- (void)layoutView:(id)a3 withAttributes:(id *)a4;
+- (void)layoutView:(id)view withAttributes:(id *)attributes;
 @end
 
 @implementation PXViewLayoutHelper
 
-- (void)_getFirstBaseline:(double *)a3 lastBaseline:(double *)a4 forView:(id)a5 withSize:(CGSize)a6
+- (void)_getFirstBaseline:(double *)baseline lastBaseline:(double *)lastBaseline forView:(id)view withSize:(CGSize)size
 {
-  height = a6.height;
-  width = a6.width;
-  v10 = a5;
+  height = size.height;
+  width = size.width;
+  viewCopy = view;
   v12 = *MEMORY[0x1E695EFF8];
   v11 = *(MEMORY[0x1E695EFF8] + 8);
   objc_opt_class();
   rect = width;
   if (objc_opt_isKindOfClass())
   {
-    v13 = [v10 font];
+    font = [viewCopy font];
     v20 = height;
     v19 = v11;
     v18 = v12;
-    if (a3)
+    if (baseline)
     {
 LABEL_10:
       v32.origin.x = v12;
@@ -44,13 +44,13 @@ LABEL_10:
       v32.size.width = width;
       v32.size.height = height;
       MinY = CGRectGetMinY(v32);
-      [v13 ascender];
+      [font ascender];
       v27 = MinY + v26;
       v33.origin.x = v18;
       v33.origin.y = v19;
       v33.size.width = rect;
       v33.size.height = v20;
-      *a3 = v27 - CGRectGetMinY(v33);
+      *baseline = v27 - CGRectGetMinY(v33);
     }
   }
 
@@ -62,15 +62,15 @@ LABEL_10:
       PXAssertGetLog();
     }
 
-    v14 = v10;
+    v14 = viewCopy;
     v15 = [v14 attributedTitleForState:0];
-    v13 = [v15 attribute:*MEMORY[0x1E69DB648] atIndex:0 effectiveRange:0];
+    font = [v15 attribute:*MEMORY[0x1E69DB648] atIndex:0 effectiveRange:0];
 
-    v16 = [v14 titleLabel];
-    v17 = v16;
-    if (!v13)
+    titleLabel = [v14 titleLabel];
+    v17 = titleLabel;
+    if (!font)
     {
-      v13 = [v16 font];
+      font = [titleLabel font];
     }
 
     v18 = v12;
@@ -83,37 +83,37 @@ LABEL_10:
     width = v23;
     height = v24;
 
-    if (a3)
+    if (baseline)
     {
       goto LABEL_10;
     }
   }
 
-  if (a4)
+  if (lastBaseline)
   {
     v34.origin.x = v12;
     v34.origin.y = v11;
     v34.size.width = width;
     v34.size.height = height;
     MaxY = CGRectGetMaxY(v34);
-    [v13 descender];
+    [font descender];
     v30 = v20 + MaxY + v29;
     v35.origin.x = v18;
     v35.origin.y = v19;
     v35.size.width = rect;
     v35.size.height = v20;
-    *a4 = v30 - CGRectGetMaxY(v35);
+    *lastBaseline = v30 - CGRectGetMaxY(v35);
   }
 }
 
-- (void)_setOrientedFrame:(CGRect)a3 forView:(id)a4
+- (void)_setOrientedFrame:(CGRect)frame forView:(id)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v25 = *MEMORY[0x1E69E9840];
-  v9 = a4;
+  viewCopy = view;
   v10 = *&self->_transform.c;
   *&v24.a = *&self->_transform.a;
   *&v24.c = v10;
@@ -127,41 +127,41 @@ LABEL_10:
   v15 = v26.origin.y;
   v16 = v26.size.width;
   v17 = v26.size.height;
-  v18 = [v9 superview];
+  superview = [viewCopy superview];
   coordinateSpace = self->_coordinateSpace;
-  if (v18 != coordinateSpace)
+  if (superview != coordinateSpace)
   {
-    if (!v18)
+    if (!superview)
     {
       PXAssertGetLog();
     }
 
-    [(UICoordinateSpace *)coordinateSpace convertRect:v18 toCoordinateSpace:v14, v15, v16, v17];
+    [(UICoordinateSpace *)coordinateSpace convertRect:superview toCoordinateSpace:v14, v15, v16, v17];
     v14 = v20;
     v15 = v21;
     v16 = v22;
     v17 = v23;
   }
 
-  [v9 setFrame:{v14, v15, v16, v17}];
+  [viewCopy setFrame:{v14, v15, v16, v17}];
 }
 
-- (CGRect)_orientedFrameOfView:(id)a3
+- (CGRect)_orientedFrameOfView:(id)view
 {
-  v4 = a3;
-  v5 = [v4 superview];
+  viewCopy = view;
+  superview = [viewCopy superview];
   coordinateSpace = self->_coordinateSpace;
 
-  if (v5 == coordinateSpace)
+  if (superview == coordinateSpace)
   {
-    [v4 frame];
+    [viewCopy frame];
   }
 
   else
   {
     v20 = self->_coordinateSpace;
-    [v4 bounds];
-    [(UICoordinateSpace *)v20 convertRect:v4 fromCoordinateSpace:?];
+    [viewCopy bounds];
+    [(UICoordinateSpace *)v20 convertRect:viewCopy fromCoordinateSpace:?];
   }
 
   v11 = *&self->_reverseTransform.c;
@@ -191,17 +191,17 @@ LABEL_10:
   self->_coordinateSpace = 0;
 }
 
-- (void)_setUpWithView:(id)a3
+- (void)_setUpWithView:(id)view
 {
-  v4 = a3;
-  [v4 bounds];
+  viewCopy = view;
+  [viewCopy bounds];
   self->_containerBounds.origin.x = v5;
   self->_containerBounds.origin.y = v6;
   self->_containerBounds.size.width = v7;
   self->_containerBounds.size.height = v8;
   coordinateSpace = self->_coordinateSpace;
-  self->_coordinateSpace = v4;
-  v10 = v4;
+  self->_coordinateSpace = viewCopy;
+  v10 = viewCopy;
 
   v11 = +[PXViewLayoutHelper userInterfaceLayoutDirection];
   if (v11 == 1)
@@ -255,89 +255,89 @@ LABEL_10:
   *&self->_reverseTransform.tx = *&v25.tx;
 }
 
-- (double)lastBaselineOfView:(id)a3
+- (double)lastBaselineOfView:(id)view
 {
-  v4 = a3;
-  [(PXViewLayoutHelper *)self _orientedFrameOfView:v4];
+  viewCopy = view;
+  [(PXViewLayoutHelper *)self _orientedFrameOfView:viewCopy];
   v6 = v5;
   v10 = 0.0;
-  [(PXViewLayoutHelper *)self _getFirstBaseline:0 lastBaseline:&v10 forView:v4 withSize:v7, v8];
+  [(PXViewLayoutHelper *)self _getFirstBaseline:0 lastBaseline:&v10 forView:viewCopy withSize:v7, v8];
 
   return v6 + v10;
 }
 
-- (double)firstBaselineOfView:(id)a3
+- (double)firstBaselineOfView:(id)view
 {
-  v4 = a3;
-  [(PXViewLayoutHelper *)self _orientedFrameOfView:v4];
+  viewCopy = view;
+  [(PXViewLayoutHelper *)self _orientedFrameOfView:viewCopy];
   v6 = v5;
   v10 = 0.0;
-  [(PXViewLayoutHelper *)self _getFirstBaseline:&v10 lastBaseline:0 forView:v4 withSize:v7, v8];
+  [(PXViewLayoutHelper *)self _getFirstBaseline:&v10 lastBaseline:0 forView:viewCopy withSize:v7, v8];
 
   return v6 + v10;
 }
 
-- (double)bottomOfView:(id)a3
+- (double)bottomOfView:(id)view
 {
-  [(PXViewLayoutHelper *)self _orientedFrameOfView:a3];
+  [(PXViewLayoutHelper *)self _orientedFrameOfView:view];
 
   return CGRectGetMaxY(*&v3);
 }
 
-- (double)verticalCenterOfView:(id)a3
+- (double)verticalCenterOfView:(id)view
 {
-  [(PXViewLayoutHelper *)self _orientedFrameOfView:a3];
+  [(PXViewLayoutHelper *)self _orientedFrameOfView:view];
 
   return CGRectGetMidY(*&v3);
 }
 
-- (double)topOfView:(id)a3
+- (double)topOfView:(id)view
 {
-  [(PXViewLayoutHelper *)self _orientedFrameOfView:a3];
+  [(PXViewLayoutHelper *)self _orientedFrameOfView:view];
 
   return CGRectGetMinY(*&v3);
 }
 
-- (double)trailingOfView:(id)a3
+- (double)trailingOfView:(id)view
 {
-  [(PXViewLayoutHelper *)self _orientedFrameOfView:a3];
+  [(PXViewLayoutHelper *)self _orientedFrameOfView:view];
 
   return CGRectGetMaxX(*&v3);
 }
 
-- (double)horizontalCenterOfView:(id)a3
+- (double)horizontalCenterOfView:(id)view
 {
-  [(PXViewLayoutHelper *)self _orientedFrameOfView:a3];
+  [(PXViewLayoutHelper *)self _orientedFrameOfView:view];
 
   return CGRectGetMidX(*&v3);
 }
 
-- (double)leadingOfView:(id)a3
+- (double)leadingOfView:(id)view
 {
-  [(PXViewLayoutHelper *)self _orientedFrameOfView:a3];
+  [(PXViewLayoutHelper *)self _orientedFrameOfView:view];
 
   return CGRectGetMinX(*&v3);
 }
 
-- (void)layoutView:(id)a3 withAttributes:(id *)a4
+- (void)layoutView:(id)view withAttributes:(id *)attributes
 {
   v92 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
-  if (!a4)
+  viewCopy = view;
+  v7 = viewCopy;
+  if (!attributes)
   {
     goto LABEL_147;
   }
 
-  v82 = v6;
-  v83 = self;
-  [(PXViewLayoutHelper *)self _orientedFrameOfView:v6];
+  v82 = viewCopy;
+  selfCopy = self;
+  [(PXViewLayoutHelper *)self _orientedFrameOfView:viewCopy];
   x = v93.origin.x;
   y = v93.origin.y;
   width = v93.size.width;
   height = v93.size.height;
-  var0 = a4->var0;
-  v13 = a4->var0;
+  var0 = attributes->var0;
+  v13 = attributes->var0;
   MinX = CGRectGetMinX(v93);
   v16 = var0 != -INFINITY && (*&v13 & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FEFFFFFFFFFFFFFLL;
   if ((*&v13 & 0x7FFFFFFFFFFFFFFFuLL) >= 0x7FF0000000000000)
@@ -350,7 +350,7 @@ LABEL_10:
     v17 = var0;
   }
 
-  var2 = a4->var2;
+  var2 = attributes->var2;
   v94.origin.x = x;
   v94.origin.y = y;
   v94.size.width = width;
@@ -363,7 +363,7 @@ LABEL_10:
   }
 
   v84 = MaxX;
-  var3 = a4->var3;
+  var3 = attributes->var3;
   v95.origin.x = x;
   v95.origin.y = y;
   v95.size.width = width;
@@ -377,7 +377,7 @@ LABEL_10:
   }
 
   v88 = MinY;
-  var5 = a4->var5;
+  var5 = attributes->var5;
   v96.origin.x = x;
   v96.origin.y = y;
   v96.size.width = width;
@@ -391,7 +391,7 @@ LABEL_10:
   }
 
   v87 = MaxY;
-  var8 = a4->var8;
+  var8 = attributes->var8;
   v97.origin.x = x;
   v97.origin.y = y;
   v97.size.width = width;
@@ -404,7 +404,7 @@ LABEL_10:
   }
 
   v90 = v29;
-  var9 = a4->var9;
+  var9 = attributes->var9;
   v98.origin.x = x;
   v98.origin.y = y;
   v98.size.width = width;
@@ -417,7 +417,7 @@ LABEL_10:
   }
 
   v89 = v32;
-  var10 = a4->var10;
+  var10 = attributes->var10;
   v99.origin.x = x;
   v99.origin.y = y;
   v99.size.width = width;
@@ -430,7 +430,7 @@ LABEL_10:
   }
 
   v78 = v35;
-  var11 = a4->var11;
+  var11 = attributes->var11;
   v100.origin.x = x;
   v100.origin.y = y;
   v100.size.width = width;
@@ -443,7 +443,7 @@ LABEL_10:
   }
 
   v81 = v39;
-  var12 = a4->var12;
+  var12 = attributes->var12;
   v101.origin.x = x;
   v101.origin.y = y;
   v101.size.width = width;
@@ -457,7 +457,7 @@ LABEL_10:
   }
 
   v79 = v43;
-  var13 = a4->var13;
+  var13 = attributes->var13;
   v102.origin.x = x;
   v102.origin.y = y;
   v102.size.width = width;
@@ -474,8 +474,8 @@ LABEL_10:
     v50 = var13;
   }
 
-  v52 = a4->var8;
-  v51 = a4->var9;
+  v52 = attributes->var8;
+  v51 = attributes->var9;
   v76 = v50;
   if (v52 == INFINITY || v51 == INFINITY)
   {
@@ -510,7 +510,7 @@ LABEL_10:
 
     v57 = v89;
     v7 = v82;
-    v53 = v83;
+    v53 = selfCopy;
     if (!v33)
     {
       v58 = -1.79769313e307;
@@ -563,14 +563,14 @@ LABEL_10:
   else
   {
     v7 = v82;
-    v53 = v83;
+    v53 = selfCopy;
   }
 
   v65 = v87;
   v64 = v88;
   if (v16 || v21)
   {
-    var1 = a4->var1;
+    var1 = attributes->var1;
     v103.origin.x = x;
     v103.origin.y = y;
     v103.size.width = width;
@@ -692,18 +692,18 @@ LABEL_10:
   v69 = v84;
 LABEL_139:
   v74 = v69 - v17;
-  if (!v85 && a4->var6 != -INFINITY)
+  if (!v85 && attributes->var6 != -INFINITY)
   {
     *buf = 0;
     [(PXViewLayoutHelper *)v53 _getFirstBaseline:buf lastBaseline:0 forView:v7 withSize:v69 - v17, v72];
-    v64 = a4->var6 - *buf;
+    v64 = attributes->var6 - *buf;
   }
 
-  if (!v86 && a4->var7 != -INFINITY)
+  if (!v86 && attributes->var7 != -INFINITY)
   {
     *buf = 0;
     [(PXViewLayoutHelper *)v53 _getFirstBaseline:0 lastBaseline:buf forView:v7 withSize:v69 - v17, v72];
-    v75 = a4->var7 - *buf;
+    v75 = attributes->var7 - *buf;
     v104.origin.x = v17;
     v104.origin.y = y;
     v104.size.width = v74;
@@ -724,19 +724,19 @@ LABEL_147:
 
 - (PXViewLayoutHelper)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXViewLayoutHelper.m" lineNumber:132 description:{@"%s is not available as initializer", "-[PXViewLayoutHelper init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXViewLayoutHelper.m" lineNumber:132 description:{@"%s is not available as initializer", "-[PXViewLayoutHelper init]"}];
 
   abort();
 }
 
-+ (void)performLayoutWithinView:(id)a3 usingBlock:(id)a4
++ (void)performLayoutWithinView:(id)view usingBlock:(id)block
 {
-  v8 = a3;
-  v5 = a4;
+  viewCopy = view;
+  blockCopy = block;
   if (performLayoutWithinView_usingBlock__reentryCount)
   {
-    v6 = [[PXViewLayoutHelper alloc] _init];
+    _init = [[PXViewLayoutHelper alloc] _init];
   }
 
   else
@@ -746,13 +746,13 @@ LABEL_147:
       dispatch_once(&performLayoutWithinView_usingBlock__onceToken, &__block_literal_global_39_106972);
     }
 
-    v6 = performLayoutWithinView_usingBlock__defaultHelper;
+    _init = performLayoutWithinView_usingBlock__defaultHelper;
   }
 
-  v7 = v6;
+  v7 = _init;
   ++performLayoutWithinView_usingBlock__reentryCount;
-  [v6 _setUpWithView:v8];
-  v5[2](v5, v7);
+  [_init _setUpWithView:viewCopy];
+  blockCopy[2](blockCopy, v7);
   [v7 _tearDown];
   --performLayoutWithinView_usingBlock__reentryCount;
 }
@@ -766,10 +766,10 @@ void __57__PXViewLayoutHelper_performLayoutWithinView_usingBlock___block_invoke(
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
-    v2 = [MEMORY[0x1E69DC668] sharedApplication];
-    _userInterfaceLayoutDirection = [v2 userInterfaceLayoutDirection];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    _userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
   }
 }
 

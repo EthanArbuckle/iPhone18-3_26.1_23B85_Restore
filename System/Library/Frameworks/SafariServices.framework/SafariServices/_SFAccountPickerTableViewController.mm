@@ -1,91 +1,91 @@
 @interface _SFAccountPickerTableViewController
 - (BOOL)_shouldShowAutoFillPasskeys;
 - (BOOL)_shouldShowPasswordsMatchingHintStringsSection;
-- (BOOL)_shouldUseEmptyHeaderFooterHeightInSection:(int64_t)a3;
-- (BOOL)tableView:(id)a3 canPerformAction:(SEL)a4 forRowAtIndexPath:(id)a5 withSender:(id)a6;
-- (BOOL)tableView:(id)a3 shouldShowMenuForRowAtIndexPath:(id)a4;
-- (_SFAccountPickerTableViewController)initWithConfiguration:(id)a3;
+- (BOOL)_shouldUseEmptyHeaderFooterHeightInSection:(int64_t)section;
+- (BOOL)tableView:(id)view canPerformAction:(SEL)action forRowAtIndexPath:(id)path withSender:(id)sender;
+- (BOOL)tableView:(id)view shouldShowMenuForRowAtIndexPath:(id)path;
+- (_SFAccountPickerTableViewController)initWithConfiguration:(id)configuration;
 - (_SFAccountPickerTableViewControllerDelegate)delegate;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (id)_appIconForVerificationCode:(id)a3;
-- (id)_bundleIdentifierForVerificationCode:(id)a3;
-- (id)_cellConfigurationForVerificationCodeAtIndexPath:(id)a3;
-- (id)_detailViewControllerForSavedAccount:(id)a3;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (id)_appIconForVerificationCode:(id)code;
+- (id)_bundleIdentifierForVerificationCode:(id)code;
+- (id)_cellConfigurationForVerificationCodeAtIndexPath:(id)path;
+- (id)_detailViewControllerForSavedAccount:(id)account;
 - (id)_generatedPasswordsDomainHintString;
-- (id)_indexPathForSavedAccount:(id)a3;
-- (id)_savedAccountForIndexPath:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (int64_t)_rowTypeForIndexPath:(id)a3;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)_indexPathForSavedAccount:(id)account;
+- (id)_savedAccountForIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (int64_t)_rowTypeForIndexPath:(id)path;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_accountStoreDidChange;
 - (void)_cancel;
-- (void)_consumeAndFillVerificationCode:(id)a3;
-- (void)_deleteSavedAccountAtIndexPath:(id)a3;
-- (void)_didPickSavedAccountForPassword:(id)a3;
-- (void)_didPickSavedAccountForPasswordButPresentAlertToAddAdditionalSiteIfApplicable:(id)a3;
-- (void)_fillPasswordForSavedAccount:(id)a3;
-- (void)_fillUsernameForSavedAccount:(id)a3;
-- (void)_fillVerificationCodeForSavedAccount:(id)a3;
+- (void)_consumeAndFillVerificationCode:(id)code;
+- (void)_deleteSavedAccountAtIndexPath:(id)path;
+- (void)_didPickSavedAccountForPassword:(id)password;
+- (void)_didPickSavedAccountForPasswordButPresentAlertToAddAdditionalSiteIfApplicable:(id)applicable;
+- (void)_fillPasswordForSavedAccount:(id)account;
+- (void)_fillUsernameForSavedAccount:(id)account;
+- (void)_fillVerificationCodeForSavedAccount:(id)account;
 - (void)_presentAddPasswordViewController;
-- (void)_presentAlertToConfirmDeletingAccountsAtIndexPath:(id)a3;
-- (void)_presentErrorAlertWithString:(id)a3;
+- (void)_presentAlertToConfirmDeletingAccountsAtIndexPath:(id)path;
+- (void)_presentErrorAlertWithString:(id)string;
 - (void)_presentGeneratedPasswordsViewController;
-- (void)_reloadSavedAccountsWithCompletionHandler:(id)a3;
+- (void)_reloadSavedAccountsWithCompletionHandler:(id)handler;
 - (void)_reloadVerificationCodesIfNeeded;
-- (void)_removeSavedAccount:(id)a3 shouldPerformDeletionInAccountStore:(BOOL)a4;
-- (void)_showAccountDetailsForSavedAccount:(id)a3;
-- (void)_showAccountDetailsForSavedAccountAtIndexPath:(id)a3;
+- (void)_removeSavedAccount:(id)account shouldPerformDeletionInAccountStore:(BOOL)store;
+- (void)_showAccountDetailsForSavedAccount:(id)account;
+- (void)_showAccountDetailsForSavedAccountAtIndexPath:(id)path;
 - (void)_updateMatchingGeneratedPasswordsState;
 - (void)_updateMatchingPasswords;
 - (void)_updateNavigationItemTitleAndPrompt;
 - (void)_updateSections;
-- (void)addSavedAccountViewControllerDidFinish:(id)a3 withSavedAccount:(id)a4;
+- (void)addSavedAccountViewControllerDidFinish:(id)finish withSavedAccount:(id)account;
 - (void)dealloc;
-- (void)handleIconDidUpdateForDomain:(id)a3;
-- (void)linkableFooterViewDidInteractWithLink:(id)a3;
-- (void)newAutoFillablePasskeysAvailable:(id)a3;
+- (void)handleIconDidUpdateForDomain:(id)domain;
+- (void)linkableFooterViewDidInteractWithLink:(id)link;
+- (void)newAutoFillablePasskeysAvailable:(id)available;
 - (void)passwordManagerLogViewControllerWantsToDismiss;
-- (void)passwordManagerLogViewControllerWantsToSaveGeneratedPassword:(id)a3;
+- (void)passwordManagerLogViewControllerWantsToSaveGeneratedPassword:(id)password;
 - (void)reloadTable;
 - (void)searchPatternDidUpdate;
-- (void)tableView:(id)a3 accessoryButtonTappedForRowWithIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)tableView:(id)view accessoryButtonTappedForRowWithIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation _SFAccountPickerTableViewController
 
-- (_SFAccountPickerTableViewController)initWithConfiguration:(id)a3
+- (_SFAccountPickerTableViewController)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v6 = objc_alloc_init(_SFAccountTableConfiguration);
   [(_SFAccountTableConfiguration *)v6 setShouldShowSearchBar:1];
   [(_SFAccountTableConfiguration *)v6 setSupportsDelete:1];
   [(_SFAccountTableConfiguration *)v6 setShouldConfigureMultipleSelectionDuringEditing:0];
   [(_SFAccountTableConfiguration *)v6 setSupportsShare:0];
-  -[_SFAccountTableConfiguration setIsForFillingIndividualAccountFields:](v6, "setIsForFillingIndividualAccountFields:", [v5 isForFillingIndividualAccountFields]);
-  v7 = [MEMORY[0x1E69B1C68] sharedSiteMetadataManager];
+  -[_SFAccountTableConfiguration setIsForFillingIndividualAccountFields:](v6, "setIsForFillingIndividualAccountFields:", [configurationCopy isForFillingIndividualAccountFields]);
+  mEMORY[0x1E69B1C68] = [MEMORY[0x1E69B1C68] sharedSiteMetadataManager];
   v28.receiver = self;
   v28.super_class = _SFAccountPickerTableViewController;
-  v8 = [(_SFAccountTableViewController *)&v28 initWithSiteMetadataManager:v7 configuration:v6];
+  v8 = [(_SFAccountTableViewController *)&v28 initWithSiteMetadataManager:mEMORY[0x1E69B1C68] configuration:v6];
 
   if (v8)
   {
-    objc_storeStrong(&v8->_configuration, a3);
-    v9 = [(_SFAccountPickerTableViewController *)v8 navigationItem];
+    objc_storeStrong(&v8->_configuration, configuration);
+    navigationItem = [(_SFAccountPickerTableViewController *)v8 navigationItem];
     v10 = _WBSLocalizedString();
-    [v9 setBackButtonTitle:v10];
+    [navigationItem setBackButtonTitle:v10];
 
-    v11 = [(SFAccountPickerConfiguration *)v8->_configuration prompt];
-    [v9 setPrompt:v11];
+    prompt = [(SFAccountPickerConfiguration *)v8->_configuration prompt];
+    [navigationItem setPrompt:prompt];
 
     if ([(SFAccountPickerConfiguration *)v8->_configuration shouldAllowAddingNewPasswords])
     {
@@ -94,28 +94,28 @@
       v8->_addNavigationBarItem = v12;
 
       [(UIBarButtonItem *)v8->_addNavigationBarItem setAccessibilityIdentifier:@"Passwords List Navigation Bar Add Button"];
-      [v9 setRightBarButtonItem:v8->_addNavigationBarItem];
+      [navigationItem setRightBarButtonItem:v8->_addNavigationBarItem];
     }
 
     v14 = objc_alloc_init(MEMORY[0x1E69C8818]);
     authenticationServicesAgentProxy = v8->_authenticationServicesAgentProxy;
     v8->_authenticationServicesAgentProxy = v14;
 
-    v16 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v16 addObserver:v8 selector:sel_newAutoFillablePasskeysAvailable_ name:*MEMORY[0x1E69C8D58] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v8 selector:sel_newAutoFillablePasskeysAvailable_ name:*MEMORY[0x1E69C8D58] object:0];
 
-    v17 = [(_SFAccountPickerTableViewController *)v8 tableView];
-    [v17 setAccessibilityIdentifier:@"AutoFillPasswordTable"];
+    tableView = [(_SFAccountPickerTableViewController *)v8 tableView];
+    [tableView setAccessibilityIdentifier:@"AutoFillPasswordTable"];
 
-    v18 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
     v19 = *MEMORY[0x1E69C8D50];
-    v20 = [MEMORY[0x1E69C8A38] sharedStore];
-    [v18 addObserver:v8 selector:sel__accountStoreDidChange name:v19 object:v20];
+    mEMORY[0x1E69C8A38] = [MEMORY[0x1E69C8A38] sharedStore];
+    [defaultCenter2 addObserver:v8 selector:sel__accountStoreDidChange name:v19 object:mEMORY[0x1E69C8A38]];
 
-    v21 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
     v22 = *MEMORY[0x1E69C8BF0];
-    v23 = [MEMORY[0x1E69C8898] sharedStore];
-    [v21 addObserver:v8 selector:sel__generatedPasswordsStoreDidChange name:v22 object:v23];
+    mEMORY[0x1E69C8898] = [MEMORY[0x1E69C8898] sharedStore];
+    [defaultCenter3 addObserver:v8 selector:sel__generatedPasswordsStoreDidChange name:v22 object:mEMORY[0x1E69C8898]];
 
     if ([(SFAccountPickerConfiguration *)v8->_configuration shouldShowReceivedVerificationCodes])
     {
@@ -135,10 +135,10 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v4 = *MEMORY[0x1E69C8D50];
-  v5 = [MEMORY[0x1E69C8A38] sharedStore];
-  [v3 removeObserver:self name:v4 object:v5];
+  mEMORY[0x1E69C8A38] = [MEMORY[0x1E69C8A38] sharedStore];
+  [defaultCenter removeObserver:self name:v4 object:mEMORY[0x1E69C8A38]];
 
   v6.receiver = self;
   v6.super_class = _SFAccountPickerTableViewController;
@@ -150,24 +150,24 @@
   v4.receiver = self;
   v4.super_class = _SFAccountPickerTableViewController;
   [(_SFAccountTableViewController *)&v4 viewDidLoad];
-  v3 = [(_SFAccountPickerTableViewController *)self tableView];
-  [v3 setKeyboardDismissMode:1];
+  tableView = [(_SFAccountPickerTableViewController *)self tableView];
+  [tableView setKeyboardDismissMode:1];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = _SFAccountPickerTableViewController;
-  [(_SFAccountTableViewController *)&v8 viewWillAppear:a3];
+  [(_SFAccountTableViewController *)&v8 viewWillAppear:appear];
   v4 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:self action:sel__cancel];
-  v5 = [(_SFAccountPickerTableViewController *)self navigationItem];
-  [v5 setLeftBarButtonItem:v4];
+  navigationItem = [(_SFAccountPickerTableViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v4];
 
   [(_SFAccountPickerTableViewController *)self _updateNavigationItemTitleAndPrompt];
   if (self->_indexPathOfRowShowingDetailView)
   {
-    v6 = [(_SFAccountPickerTableViewController *)self tableView];
-    [v6 deselectRowAtIndexPath:self->_indexPathOfRowShowingDetailView animated:1];
+    tableView = [(_SFAccountPickerTableViewController *)self tableView];
+    [tableView deselectRowAtIndexPath:self->_indexPathOfRowShowingDetailView animated:1];
 
     indexPathOfRowShowingDetailView = self->_indexPathOfRowShowingDetailView;
     self->_indexPathOfRowShowingDetailView = 0;
@@ -189,25 +189,25 @@
   [(_SFAccountPickerTableViewController *)self _reloadSavedAccountsWithCompletionHandler:v2];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v6.receiver = self;
   v6.super_class = _SFAccountPickerTableViewController;
   [(_SFAccountTableViewController *)&v6 viewWillDisappear:?];
-  v5 = [(_SFAccountPickerTableViewController *)self navigationController];
-  [v5 setNavigationBarHidden:0 animated:v3];
+  navigationController = [(_SFAccountPickerTableViewController *)self navigationController];
+  [navigationController setNavigationBarHidden:0 animated:disappearCopy];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v10.receiver = self;
   v10.super_class = _SFAccountPickerTableViewController;
-  [(_SFAccountTableViewController *)&v10 viewDidDisappear:a3];
+  [(_SFAccountTableViewController *)&v10 viewDidDisappear:disappear];
   if (!self->_indexPathOfRowShowingDetailView)
   {
-    v4 = [MEMORY[0x1E69C8A38] sharedStore];
-    [v4 reset];
+    mEMORY[0x1E69C8A38] = [MEMORY[0x1E69C8A38] sharedStore];
+    [mEMORY[0x1E69C8A38] reset];
 
     savedAccounts = self->_savedAccounts;
     self->_savedAccounts = 0;
@@ -226,7 +226,7 @@
   }
 }
 
-- (void)newAutoFillablePasskeysAvailable:(id)a3
+- (void)newAutoFillablePasskeysAvailable:(id)available
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -238,34 +238,34 @@
 
 - (void)_updateNavigationItemTitleAndPrompt
 {
-  v8 = [(_SFAccountPickerTableViewController *)self navigationItem];
+  navigationItem = [(_SFAccountPickerTableViewController *)self navigationItem];
   if ([(NSMutableArray *)self->_savedAccountsWithUsablePasskeys count]|| self->_passkeyNearbyDeviceOptions)
   {
     v3 = _WBSLocalizedString();
-    [v8 setTitle:v3];
+    [navigationItem setTitle:v3];
 
-    v4 = [(SFAccountPickerConfiguration *)self->_configuration promptWhenPasskeysAreAvailable];
+    promptWhenPasskeysAreAvailable = [(SFAccountPickerConfiguration *)self->_configuration promptWhenPasskeysAreAvailable];
   }
 
   else
   {
-    v6 = [(SFAccountPickerConfiguration *)self->_configuration title];
-    if (v6)
+    title = [(SFAccountPickerConfiguration *)self->_configuration title];
+    if (title)
     {
-      [v8 setTitle:v6];
+      [navigationItem setTitle:title];
     }
 
     else
     {
       v7 = _WBSLocalizedString();
-      [v8 setTitle:v7];
+      [navigationItem setTitle:v7];
     }
 
-    v4 = [(SFAccountPickerConfiguration *)self->_configuration prompt];
+    promptWhenPasskeysAreAvailable = [(SFAccountPickerConfiguration *)self->_configuration prompt];
   }
 
-  v5 = v4;
-  [v8 setPrompt:v4];
+  v5 = promptWhenPasskeysAreAvailable;
+  [navigationItem setPrompt:promptWhenPasskeysAreAvailable];
 }
 
 - (void)_cancel
@@ -277,34 +277,34 @@
   }
 }
 
-- (void)handleIconDidUpdateForDomain:(id)a3
+- (void)handleIconDidUpdateForDomain:(id)domain
 {
-  v7 = a3;
+  domainCopy = domain;
   addPasswordViewController = self->_addPasswordViewController;
   if (addPasswordViewController)
   {
-    [(SFAddSavedAccountViewController *)addPasswordViewController updatedIconIsAvailableForDomain:v7];
+    [(SFAddSavedAccountViewController *)addPasswordViewController updatedIconIsAvailableForDomain:domainCopy];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_detailViewController);
   v6 = WeakRetained;
   if (WeakRetained)
   {
-    [WeakRetained updatedIconIsAvailableForDomain:v7];
+    [WeakRetained updatedIconIsAvailableForDomain:domainCopy];
   }
 }
 
-- (void)_reloadSavedAccountsWithCompletionHandler:(id)a3
+- (void)_reloadSavedAccountsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E69C8A38] sharedStore];
-  v6 = [v5 savedAccounts];
+  handlerCopy = handler;
+  mEMORY[0x1E69C8A38] = [MEMORY[0x1E69C8A38] sharedStore];
+  savedAccounts = [mEMORY[0x1E69C8A38] savedAccounts];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __81___SFAccountPickerTableViewController__reloadSavedAccountsWithCompletionHandler___block_invoke;
   v18[3] = &unk_1E8495728;
   v18[4] = self;
-  v7 = [v6 safari_filterObjectsUsingBlock:v18];
+  v7 = [savedAccounts safari_filterObjectsUsingBlock:v18];
   v8 = [v7 mutableCopy];
   savedAccounts = self->_savedAccounts;
   self->_savedAccounts = v8;
@@ -316,11 +316,11 @@
     aBlock[2] = __81___SFAccountPickerTableViewController__reloadSavedAccountsWithCompletionHandler___block_invoke_2;
     aBlock[3] = &unk_1E8495750;
     aBlock[4] = self;
-    v17 = v4;
+    v17 = handlerCopy;
     v10 = _Block_copy(aBlock);
-    v11 = [(SFAccountPickerConfiguration *)self->_configuration hasAuditToken];
+    hasAuditToken = [(SFAccountPickerConfiguration *)self->_configuration hasAuditToken];
     authenticationServicesAgentProxy = self->_authenticationServicesAgentProxy;
-    if (v11)
+    if (hasAuditToken)
     {
       configuration = self->_configuration;
       if (configuration)
@@ -328,21 +328,21 @@
         [(SFAccountPickerConfiguration *)configuration connectedAppAuditToken];
       }
 
-      v14 = WBSApplicationIdentifierFromAuditToken();
-      [(WBSAuthenticationServicesAgentProxy *)authenticationServicesAgentProxy getPasskeysForRunningAssertionWithApplicationIdentifier:v14 withCompletionHandler:v10];
+      mainBundle = WBSApplicationIdentifierFromAuditToken();
+      [(WBSAuthenticationServicesAgentProxy *)authenticationServicesAgentProxy getPasskeysForRunningAssertionWithApplicationIdentifier:mainBundle withCompletionHandler:v10];
     }
 
     else
     {
-      v14 = [MEMORY[0x1E696AAE8] mainBundle];
-      v15 = [v14 bundleIdentifier];
-      [(WBSAuthenticationServicesAgentProxy *)authenticationServicesAgentProxy getPasskeysForRunningAssertionWithApplicationIdentifier:v15 withCompletionHandler:v10];
+      mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+      bundleIdentifier = [mainBundle bundleIdentifier];
+      [(WBSAuthenticationServicesAgentProxy *)authenticationServicesAgentProxy getPasskeysForRunningAssertionWithApplicationIdentifier:bundleIdentifier withCompletionHandler:v10];
     }
   }
 
   else
   {
-    v4[2](v4);
+    handlerCopy[2](handlerCopy);
   }
 }
 
@@ -356,59 +356,59 @@
   [(_SFAccountPickerTableViewController *)self _reloadSavedAccountsWithCompletionHandler:v2];
 }
 
-- (void)_didPickSavedAccountForPassword:(id)a3
+- (void)_didPickSavedAccountForPassword:(id)password
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  passwordCopy = password;
   if (![(SFAccountPickerConfiguration *)self->_configuration isForFillingIndividualAccountFields])
   {
-    v5 = [(SFAccountPickerConfiguration *)self->_configuration addPasswordSuggestedDomain];
-    v6 = [v5 safari_highLevelDomainForPasswordManager];
-    v7 = [v4 highLevelDomain];
-    v8 = [v6 isEqualToString:v7];
+    addPasswordSuggestedDomain = [(SFAccountPickerConfiguration *)self->_configuration addPasswordSuggestedDomain];
+    safari_highLevelDomainForPasswordManager = [addPasswordSuggestedDomain safari_highLevelDomainForPasswordManager];
+    highLevelDomain = [passwordCopy highLevelDomain];
+    v8 = [safari_highLevelDomainForPasswordManager isEqualToString:highLevelDomain];
 
     if (v8)
     {
       v9 = MEMORY[0x1E695AC58];
-      v10 = [@"https://" stringByAppendingString:v5];
-      v11 = [v10 safari_bestURLForUserTypedString];
-      v12 = [v9 safari_HTMLFormProtectionSpaceForURL:v11];
+      v10 = [@"https://" stringByAppendingString:addPasswordSuggestedDomain];
+      safari_bestURLForUserTypedString = [v10 safari_bestURLForUserTypedString];
+      v12 = [v9 safari_HTMLFormProtectionSpaceForURL:safari_bestURLForUserTypedString];
 
-      v13 = [MEMORY[0x1E69C8A38] sharedStore];
-      v14 = [(SFAccountPickerConfiguration *)self->_configuration savedAccountContext];
+      mEMORY[0x1E69C8A38] = [MEMORY[0x1E69C8A38] sharedStore];
+      savedAccountContext = [(SFAccountPickerConfiguration *)self->_configuration savedAccountContext];
       v15 = +[_SFFormDataController sharedController];
-      v16 = [v15 autoFillQuirksManager];
-      v17 = [v16 associatedDomainsManager];
-      [v13 setSavedAccountAsDefault:v4 forProtectionSpace:v12 context:v14 associatedDomainsManager:v17 completionHandler:&__block_literal_global_97_0];
+      autoFillQuirksManager = [v15 autoFillQuirksManager];
+      associatedDomainsManager = [autoFillQuirksManager associatedDomainsManager];
+      [mEMORY[0x1E69C8A38] setSavedAccountAsDefault:passwordCopy forProtectionSpace:v12 context:savedAccountContext associatedDomainsManager:associatedDomainsManager completionHandler:&__block_literal_global_97_0];
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (objc_opt_respondsToSelector())
     {
-      v20[0] = v4;
+      v20[0] = passwordCopy;
       v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1];
       [WeakRetained accountPickerTableViewController:self didPickSavedAccounts:v19];
     }
   }
 }
 
-- (void)_didPickSavedAccountForPasswordButPresentAlertToAddAdditionalSiteIfApplicable:(id)a3
+- (void)_didPickSavedAccountForPasswordButPresentAlertToAddAdditionalSiteIfApplicable:(id)applicable
 {
   v57[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SFAccountPickerConfiguration *)self->_configuration addPasswordSuggestedDomain];
-  v6 = [v4 highLevelDomain];
-  v57[0] = v6;
+  applicableCopy = applicable;
+  addPasswordSuggestedDomain = [(SFAccountPickerConfiguration *)self->_configuration addPasswordSuggestedDomain];
+  highLevelDomain = [applicableCopy highLevelDomain];
+  v57[0] = highLevelDomain;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v57 count:1];
 
-  v8 = [v4 additionalSites];
-  v9 = [v8 safari_mapObjectsUsingBlock:&__block_literal_global_101];
+  additionalSites = [applicableCopy additionalSites];
+  v9 = [additionalSites safari_mapObjectsUsingBlock:&__block_literal_global_101];
   v10 = [v7 arrayByAddingObjectsFromArray:v9];
 
-  if ([v5 length])
+  if ([addPasswordSuggestedDomain length])
   {
-    v11 = [v5 safari_highLevelDomainForPasswordManager];
-    v12 = [v11 isEqualToString:@"apple.com"];
+    safari_highLevelDomainForPasswordManager = [addPasswordSuggestedDomain safari_highLevelDomainForPasswordManager];
+    v12 = [safari_highLevelDomainForPasswordManager isEqualToString:@"apple.com"];
   }
 
   else
@@ -417,55 +417,55 @@
   }
 
   v13 = MEMORY[0x1E69C8DE8];
-  v14 = [MEMORY[0x1E69C8DE8] domainByStrippingSubdomainWildcardPrefixIfNecessary:v5];
+  v14 = [MEMORY[0x1E69C8DE8] domainByStrippingSubdomainWildcardPrefixIfNecessary:addPasswordSuggestedDomain];
   v15 = [v13 domainIsProhibitedForSavingCredentials:v14];
 
-  if ([v5 length] && (objc_msgSend(v5, "safari_highLevelDomainForPasswordManager"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v10, "containsObject:", v16) | v12 | v15, v16, (v17 & 1) == 0))
+  if ([addPasswordSuggestedDomain length] && (objc_msgSend(addPasswordSuggestedDomain, "safari_highLevelDomainForPasswordManager"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v10, "containsObject:", v16) | v12 | v15, v16, (v17 & 1) == 0))
   {
-    v18 = [(SFAccountPickerConfiguration *)self->_configuration appID];
-    v48 = v18;
-    if (v18)
+    appID = [(SFAccountPickerConfiguration *)self->_configuration appID];
+    v48 = appID;
+    if (appID)
     {
-      v19 = v18;
+      v19 = appID;
       if ([(SFAccountPickerConfiguration *)self->_configuration isConnectedAppAWebBrowser])
       {
-        v18 = 0;
+        appID = 0;
       }
 
       else
       {
-        v18 = [MEMORY[0x1E69635F8] bundleRecordWithApplicationIdentifier:v19 error:0];
+        appID = [MEMORY[0x1E69635F8] bundleRecordWithApplicationIdentifier:v19 error:0];
       }
     }
 
     v49 = v10;
-    v47 = v18;
-    v20 = [v18 localizedName];
-    v21 = [v20 length];
+    v47 = appID;
+    localizedName = [appID localizedName];
+    v21 = [localizedName length];
     v22 = MEMORY[0x1E696AEC0];
     if (v21)
     {
       v23 = _WBSLocalizedString();
-      v24 = [v4 effectiveTitle];
-      v25 = [v22 stringWithFormat:v23, v24, v20];
+      effectiveTitle = [applicableCopy effectiveTitle];
+      v25 = [v22 stringWithFormat:v23, effectiveTitle, localizedName];
 
       v26 = MEMORY[0x1E696AEC0];
       v27 = _WBSLocalizedString();
-      [v26 stringWithFormat:v27, v20];
+      [v26 stringWithFormat:v27, localizedName];
     }
 
     else
     {
       v28 = _WBSLocalizedString();
-      v29 = [v4 effectiveTitle];
-      v25 = [v22 stringWithFormat:v28, v29, v5];
+      effectiveTitle2 = [applicableCopy effectiveTitle];
+      v25 = [v22 stringWithFormat:v28, effectiveTitle2, addPasswordSuggestedDomain];
 
       v30 = MEMORY[0x1E696AEC0];
       v27 = _WBSLocalizedString();
-      [v30 stringWithFormat:v27, v5];
+      [v30 stringWithFormat:v27, addPasswordSuggestedDomain];
     }
     v31 = ;
-    v32 = v20;
+    v32 = localizedName;
 
     v33 = v25;
     v45 = v31;
@@ -477,7 +477,7 @@
     v55[2] = __117___SFAccountPickerTableViewController__didPickSavedAccountForPasswordButPresentAlertToAddAdditionalSiteIfApplicable___block_invoke_2;
     v55[3] = &unk_1E848F780;
     v55[4] = self;
-    v37 = v4;
+    v37 = applicableCopy;
     v56 = v37;
     v38 = [v35 actionWithTitle:v36 style:0 handler:v55];
 
@@ -491,9 +491,9 @@
     v51[1] = 3221225472;
     v51[2] = __117___SFAccountPickerTableViewController__didPickSavedAccountForPasswordButPresentAlertToAddAdditionalSiteIfApplicable___block_invoke_3;
     v51[3] = &unk_1E848FE00;
-    v52 = v5;
+    v52 = addPasswordSuggestedDomain;
     v53 = v37;
-    v54 = self;
+    selfCopy = self;
     v41 = [v40 actionWithTitle:v39 style:0 handler:v51];
     [v34 addAction:v41];
     v42 = MEMORY[0x1E69DC648];
@@ -512,49 +512,49 @@
 
   else
   {
-    [(_SFAccountPickerTableViewController *)self _didPickSavedAccountForPassword:v4];
+    [(_SFAccountPickerTableViewController *)self _didPickSavedAccountForPassword:applicableCopy];
   }
 }
 
 - (void)_presentAddPasswordViewController
 {
-  v18 = [(WBSGeneratedPassword *)self->_generatedPasswordBeingTransformedIntoSavedAccount password];
+  password = [(WBSGeneratedPassword *)self->_generatedPasswordBeingTransformedIntoSavedAccount password];
   v3 = [SFAddSavedAccountViewController alloc];
-  v4 = [(SFAccountPickerConfiguration *)self->_configuration addPasswordSuggestedDomain];
-  v5 = v4;
-  if (!v4)
+  addPasswordSuggestedDomain = [(SFAccountPickerConfiguration *)self->_configuration addPasswordSuggestedDomain];
+  addPasswordSuggestedLabel = addPasswordSuggestedDomain;
+  if (!addPasswordSuggestedDomain)
   {
-    v5 = [(SFAccountPickerConfiguration *)self->_configuration addPasswordSuggestedLabel];
+    addPasswordSuggestedLabel = [(SFAccountPickerConfiguration *)self->_configuration addPasswordSuggestedLabel];
   }
 
-  v6 = [(SFAddSavedAccountViewController *)v3 initWithSuggestedDomain:v5 password:v18];
+  v6 = [(SFAddSavedAccountViewController *)v3 initWithSuggestedDomain:addPasswordSuggestedLabel password:password];
   addPasswordViewController = self->_addPasswordViewController;
   self->_addPasswordViewController = v6;
 
-  if (!v4)
+  if (!addPasswordSuggestedDomain)
   {
   }
 
-  v8 = [(SFAccountPickerConfiguration *)self->_configuration appID];
+  appID = [(SFAccountPickerConfiguration *)self->_configuration appID];
 
-  if (v8)
+  if (appID)
   {
-    v9 = [(SFAccountPickerConfiguration *)self->_configuration appID];
-    [(SFAddSavedAccountViewController *)self->_addPasswordViewController setAppIDForFallbackIcon:v9];
+    appID2 = [(SFAccountPickerConfiguration *)self->_configuration appID];
+    [(SFAddSavedAccountViewController *)self->_addPasswordViewController setAppIDForFallbackIcon:appID2];
   }
 
   [(SFAddSavedAccountViewController *)self->_addPasswordViewController setDelegate:self];
-  v10 = [MEMORY[0x1E69C88B8] sharedMonitor];
-  v11 = [v10 keychainSyncSettingValue];
+  mEMORY[0x1E69C88B8] = [MEMORY[0x1E69C88B8] sharedMonitor];
+  keychainSyncSettingValue = [mEMORY[0x1E69C88B8] keychainSyncSettingValue];
 
-  if (v11 >= 2)
+  if (keychainSyncSettingValue >= 2)
   {
-    if (v11 != 2)
+    if (keychainSyncSettingValue != 2)
     {
       goto LABEL_12;
     }
 
-    v12 = [v18 length] == 0;
+    v12 = [password length] == 0;
   }
 
   else
@@ -568,134 +568,134 @@ LABEL_12:
   [v13 setModalPresentationStyle:2];
   +[_SFAccountManagerAppearanceValues preferredFormSheetContentSize];
   [v13 setPreferredContentSize:?];
-  v14 = [(_SFAccountPickerTableViewController *)self presentedViewController];
-  v15 = v14;
-  if (v14)
+  presentedViewController = [(_SFAccountPickerTableViewController *)self presentedViewController];
+  v15 = presentedViewController;
+  if (presentedViewController)
   {
-    v16 = v14;
+    selfCopy = presentedViewController;
   }
 
   else
   {
-    v16 = self;
+    selfCopy = self;
   }
 
-  v17 = v16;
+  v17 = selfCopy;
 
   [(_SFAccountPickerTableViewController *)v17 presentViewController:v13 animated:1 completion:0];
 }
 
-- (void)_fillUsernameForSavedAccount:(id)a3
+- (void)_fillUsernameForSavedAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained accountPickerTableViewController:self fillUsernameForSavedAccount:v5];
+    [WeakRetained accountPickerTableViewController:self fillUsernameForSavedAccount:accountCopy];
   }
 }
 
-- (void)_fillPasswordForSavedAccount:(id)a3
+- (void)_fillPasswordForSavedAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained accountPickerTableViewController:self fillPasswordForSavedAccount:v5];
+    [WeakRetained accountPickerTableViewController:self fillPasswordForSavedAccount:accountCopy];
   }
 }
 
-- (void)_fillVerificationCodeForSavedAccount:(id)a3
+- (void)_fillVerificationCodeForSavedAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained accountPickerTableViewController:self fillVerificationCodeForSavedAccount:v5];
+    [WeakRetained accountPickerTableViewController:self fillVerificationCodeForSavedAccount:accountCopy];
   }
 }
 
 - (void)_reloadVerificationCodesIfNeeded
 {
-  v3 = [(SFAccountPickerConfiguration *)self->_configuration appID];
-  v4 = [v3 length];
+  appID = [(SFAccountPickerConfiguration *)self->_configuration appID];
+  v4 = [appID length];
 
   if (v4)
   {
     verificationCodeProvider = self->_verificationCodeProvider;
-    v6 = [(SFAccountPickerConfiguration *)self->_configuration appID];
-    v7 = [(SFAccountPickerConfiguration *)self->_configuration websiteURLForReceivedVerificationCodes];
-    v8 = [(SFAppAutoFillOneTimeCodeProvider *)verificationCodeProvider currentOneTimeCodesWithAppIdentifier:v6 website:v7 usernameHint:0 fieldClassification:2];
+    appID2 = [(SFAccountPickerConfiguration *)self->_configuration appID];
+    websiteURLForReceivedVerificationCodes = [(SFAccountPickerConfiguration *)self->_configuration websiteURLForReceivedVerificationCodes];
+    v8 = [(SFAppAutoFillOneTimeCodeProvider *)verificationCodeProvider currentOneTimeCodesWithAppIdentifier:appID2 website:websiteURLForReceivedVerificationCodes usernameHint:0 fieldClassification:2];
     v9 = [v8 safari_filterObjectsUsingBlock:&__block_literal_global_161];
     verificationCodes = self->_verificationCodes;
     self->_verificationCodes = v9;
 
     if ([(_SFAccountPickerTableViewController *)self isViewLoaded])
     {
-      v11 = [(_SFAccountPickerTableViewController *)self tableView];
-      [v11 reloadData];
+      tableView = [(_SFAccountPickerTableViewController *)self tableView];
+      [tableView reloadData];
     }
   }
 }
 
-- (id)_cellConfigurationForVerificationCodeAtIndexPath:(id)a3
+- (id)_cellConfigurationForVerificationCodeAtIndexPath:(id)path
 {
-  v4 = -[NSArray objectAtIndexedSubscript:](self->_verificationCodes, "objectAtIndexedSubscript:", [a3 row]);
-  v5 = [MEMORY[0x1E69DCC28] cellConfiguration];
+  v4 = -[NSArray objectAtIndexedSubscript:](self->_verificationCodes, "objectAtIndexedSubscript:", [path row]);
+  cellConfiguration = [MEMORY[0x1E69DCC28] cellConfiguration];
   v6 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD80]];
-  v7 = [v5 secondaryTextProperties];
-  [v7 setFont:v6];
+  secondaryTextProperties = [cellConfiguration secondaryTextProperties];
+  [secondaryTextProperties setFont:v6];
 
-  v8 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  v9 = [v5 secondaryTextProperties];
-  [v9 setColor:v8];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  secondaryTextProperties2 = [cellConfiguration secondaryTextProperties];
+  [secondaryTextProperties2 setColor:secondaryLabelColor];
 
   v10 = [v4 localizedTitleForContext:3];
-  [v5 setText:v10];
+  [cellConfiguration setText:v10];
 
   v11 = [v4 localizedSubtitleForContext:3];
-  [v5 setSecondaryText:v11];
+  [cellConfiguration setSecondaryText:v11];
 
   v12 = [(_SFAccountPickerTableViewController *)self _appIconForVerificationCode:v4];
-  [v5 setImage:v12];
+  [cellConfiguration setImage:v12];
 
-  return v5;
+  return cellConfiguration;
 }
 
-- (id)_bundleIdentifierForVerificationCode:(id)a3
+- (id)_bundleIdentifierForVerificationCode:(id)code
 {
-  v3 = a3;
-  v4 = [v3 source];
-  if (v4 == 2)
+  codeCopy = code;
+  source = [codeCopy source];
+  if (source == 2)
   {
-    v6 = [v3 sourceApplicationIdentifier];
+    sourceApplicationIdentifier = [codeCopy sourceApplicationIdentifier];
   }
 
   else
   {
     v5 = @"com.apple.MobileSMS";
-    if (v4)
+    if (source)
     {
       v5 = 0;
     }
 
-    if (v4 == 1)
+    if (source == 1)
     {
-      v6 = @"com.apple.mobilemail";
+      sourceApplicationIdentifier = @"com.apple.mobilemail";
     }
 
     else
     {
-      v6 = v5;
+      sourceApplicationIdentifier = v5;
     }
   }
 
-  return v6;
+  return sourceApplicationIdentifier;
 }
 
-- (id)_appIconForVerificationCode:(id)a3
+- (id)_appIconForVerificationCode:(id)code
 {
-  v3 = [(_SFAccountPickerTableViewController *)self _bundleIdentifierForVerificationCode:a3];
+  v3 = [(_SFAccountPickerTableViewController *)self _bundleIdentifierForVerificationCode:code];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x1E69A8A00]) initWithBundleIdentifier:v3];
@@ -714,9 +714,9 @@ LABEL_12:
     else
     {
       v14 = objc_alloc(MEMORY[0x1E69DCAB8]);
-      v15 = [v12 CGImage];
+      cGImage = [v12 CGImage];
       [v12 scale];
-      v16 = [v14 initWithCGImage:v15 scale:0 orientation:?];
+      v16 = [v14 initWithCGImage:cGImage scale:0 orientation:?];
       v17 = MEMORY[0x1E69C97E0];
       [MEMORY[0x1E695A9A8] tableViewIconSize];
       v13 = [v17 resizedImage:v16 withSize:?];
@@ -731,23 +731,23 @@ LABEL_12:
   return v13;
 }
 
-- (void)_consumeAndFillVerificationCode:(id)a3
+- (void)_consumeAndFillVerificationCode:(id)code
 {
-  v5 = a3;
+  codeCopy = code;
   [(SFAppAutoFillOneTimeCodeProvider *)self->_verificationCodeProvider consumeOneTimeCode:?];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained accountPickerTableViewController:self fillVerificationCode:v5];
+    [WeakRetained accountPickerTableViewController:self fillVerificationCode:codeCopy];
   }
 }
 
-- (void)addSavedAccountViewControllerDidFinish:(id)a3 withSavedAccount:(id)a4
+- (void)addSavedAccountViewControllerDidFinish:(id)finish withSavedAccount:(id)account
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v7)
+  finishCopy = finish;
+  accountCopy = account;
+  v8 = accountCopy;
+  if (!accountCopy)
   {
     addPasswordViewController = self;
 LABEL_11:
@@ -757,14 +757,14 @@ LABEL_11:
 
   if (self->_didPresentAddAccountViewControllerFromGeneratedPasswords)
   {
-    v9 = [v7 password];
-    v10 = [(WBSGeneratedPassword *)self->_generatedPasswordBeingTransformedIntoSavedAccount password];
-    v11 = [v9 isEqualToString:v10];
+    password = [accountCopy password];
+    password2 = [(WBSGeneratedPassword *)self->_generatedPasswordBeingTransformedIntoSavedAccount password];
+    v11 = [password isEqualToString:password2];
 
     if (v11)
     {
-      v12 = [MEMORY[0x1E69C8898] sharedStore];
-      [v12 removeGeneratedPassword:self->_generatedPasswordBeingTransformedIntoSavedAccount completionHandler:0];
+      mEMORY[0x1E69C8898] = [MEMORY[0x1E69C8898] sharedStore];
+      [mEMORY[0x1E69C8898] removeGeneratedPassword:self->_generatedPasswordBeingTransformedIntoSavedAccount completionHandler:0];
     }
 
     else
@@ -805,16 +805,16 @@ LABEL_12:
   self->_addPasswordViewController = 0;
 }
 
-- (int64_t)_rowTypeForIndexPath:(id)a3
+- (int64_t)_rowTypeForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 row];
-  if ([v4 section] == self->_sectionForPasswordsMatchingHintStrings)
+  pathCopy = path;
+  v5 = [pathCopy row];
+  if ([pathCopy section] == self->_sectionForPasswordsMatchingHintStrings)
   {
-    v6 = [(SFAccountPickerConfiguration *)self->_configuration shouldAllowAddingNewPasswords];
+    shouldAllowAddingNewPasswords = [(SFAccountPickerConfiguration *)self->_configuration shouldAllowAddingNewPasswords];
     if ([(SFAccountPickerConfiguration *)self->_configuration shouldShowGeneratedPasswordsForDomain])
     {
-      if (self->_hasMatchingGeneratedPasswords && v6)
+      if (self->_hasMatchingGeneratedPasswords && shouldAllowAddingNewPasswords)
       {
         if (v5 != [(NSMutableArray *)self->_savedAccountsMatchingHintStrings count])
         {
@@ -839,19 +839,19 @@ LABEL_9:
       }
     }
 
-    if (v6 && v5 == [(NSMutableArray *)self->_savedAccountsMatchingHintStrings count])
+    if (shouldAllowAddingNewPasswords && v5 == [(NSMutableArray *)self->_savedAccountsMatchingHintStrings count])
     {
       goto LABEL_12;
     }
   }
 
 LABEL_13:
-  if (-[SFAccountPickerConfiguration shouldShowAutoFillPasskeys](self->_configuration, "shouldShowAutoFillPasskeys") && [v4 section] == self->_sectionForPasskeys && (v8 = objc_msgSend(v4, "row"), v8 == -[NSMutableArray count](self->_savedAccountsWithUsablePasskeys, "count")))
+  if (-[SFAccountPickerConfiguration shouldShowAutoFillPasskeys](self->_configuration, "shouldShowAutoFillPasskeys") && [pathCopy section] == self->_sectionForPasskeys && (v8 = objc_msgSend(pathCopy, "row"), v8 == -[NSMutableArray count](self->_savedAccountsWithUsablePasskeys, "count")))
   {
     v7 = 2;
   }
 
-  else if ([v4 section] == self->_sectionForVerificationCodes)
+  else if ([pathCopy section] == self->_sectionForVerificationCodes)
   {
     v7 = 3;
   }
@@ -866,7 +866,7 @@ LABEL_20:
   return v7;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   [(_SFAccountPickerTableViewController *)self _updateSections];
   v4 = 1;
@@ -901,10 +901,10 @@ LABEL_20:
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = a3;
-  if (self->_sectionForPasskeys == a4)
+  viewCopy = view;
+  if (self->_sectionForPasskeys == section)
   {
     v7 = [(NSMutableArray *)self->_savedAccountsWithUsablePasskeys count];
     if (self->_passkeyNearbyDeviceOptions)
@@ -918,7 +918,7 @@ LABEL_20:
     }
   }
 
-  else if (self->_sectionForPasswordsMatchingHintStrings == a4)
+  else if (self->_sectionForPasswordsMatchingHintStrings == section)
   {
     v9 = [(NSMutableArray *)self->_savedAccountsMatchingHintStrings count];
     v8 = v9 + [(SFAccountPickerConfiguration *)self->_configuration shouldAllowAddingNewPasswords];
@@ -930,14 +930,14 @@ LABEL_20:
 
   else
   {
-    if (self->_sectionForAllPasswords == a4)
+    if (self->_sectionForAllPasswords == section)
     {
       v10 = 1104;
     }
 
     else
     {
-      if (self->_sectionForVerificationCodes != a4)
+      if (self->_sectionForVerificationCodes != section)
       {
         v8 = 0;
         goto LABEL_14;
@@ -954,10 +954,10 @@ LABEL_14:
   return v8;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  if (self->_sectionForPasskeys == a4)
+  viewCopy = view;
+  if (self->_sectionForPasskeys == section)
   {
     if ([(NSMutableArray *)self->_savedAccountsWithUsablePasskeys count])
     {
@@ -967,19 +967,19 @@ LABEL_10:
     }
   }
 
-  else if (self->_sectionForAllPasswords == a4)
+  else if (self->_sectionForAllPasswords == section)
   {
     if ([(NSMutableArray *)self->_savedAccountsMatchingHintStrings count])
     {
-      v7 = [(_SFAccountTableViewController *)self searchPattern];
-      [v7 length];
+      searchPattern = [(_SFAccountTableViewController *)self searchPattern];
+      [searchPattern length];
       v8 = _WBSLocalizedString();
 
       goto LABEL_12;
     }
   }
 
-  else if (self->_sectionForVerificationCodes == a4 || [(_SFAccountPickerTableViewController *)self _shouldShowAutoFillPasskeys]|| [(NSMutableArray *)self->_savedAccountsMatchingHintStrings count])
+  else if (self->_sectionForVerificationCodes == section || [(_SFAccountPickerTableViewController *)self _shouldShowAutoFillPasskeys]|| [(NSMutableArray *)self->_savedAccountsMatchingHintStrings count])
   {
     goto LABEL_10;
   }
@@ -990,22 +990,22 @@ LABEL_12:
   return v8;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_SFAccountPickerTableViewController *)self _rowTypeForIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(_SFAccountPickerTableViewController *)self _rowTypeForIndexPath:pathCopy];
   if (v8 <= 2)
   {
     if (v8 == 1)
     {
-      v9 = [v6 dequeueReusableCellWithIdentifier:@"addPassword"];
+      v9 = [viewCopy dequeueReusableCellWithIdentifier:@"addPassword"];
       if (!v9)
       {
         v10 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:0 reuseIdentifier:@"addPassword"];
         v27 = +[_SFAccountManagerAppearanceValues buttonCellTextColor];
-        v28 = [(SFAccountTableViewCell *)v10 textLabel];
-        [v28 setTextColor:v27];
+        textLabel = [(SFAccountTableViewCell *)v10 textLabel];
+        [textLabel setTextColor:v27];
 
         goto LABEL_30;
       }
@@ -1017,18 +1017,18 @@ LABEL_18:
 
     if (v8 == 2)
     {
-      v9 = [v6 dequeueReusableCellWithIdentifier:@"useNearbyDevice"];
+      v9 = [viewCopy dequeueReusableCellWithIdentifier:@"useNearbyDevice"];
       if (!v9)
       {
         v10 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:0 reuseIdentifier:@"useNearbyDevice"];
         v11 = +[_SFAccountManagerAppearanceValues buttonCellTextColor];
-        v12 = [(SFAccountTableViewCell *)v10 textLabel];
-        [v12 setTextColor:v11];
+        textLabel2 = [(SFAccountTableViewCell *)v10 textLabel];
+        [textLabel2 setTextColor:v11];
 
 LABEL_30:
         v15 = _WBSLocalizedString();
-        v16 = [(SFAccountTableViewCell *)v10 textLabel];
-        [v16 setText:v15];
+        textLabel3 = [(SFAccountTableViewCell *)v10 textLabel];
+        [textLabel3 setText:v15];
         goto LABEL_31;
       }
 
@@ -1036,7 +1036,7 @@ LABEL_30:
     }
 
 LABEL_10:
-    v10 = [v6 dequeueReusableCellWithIdentifier:@"savedAccount"];
+    v10 = [viewCopy dequeueReusableCellWithIdentifier:@"savedAccount"];
     if (!v10)
     {
       v10 = [[SFAccountTableViewCell alloc] initWithStyle:3 reuseIdentifier:@"savedAccount"];
@@ -1054,42 +1054,42 @@ LABEL_10:
 
     [(SFAccountTableViewCell *)v10 setAccessoryType:v17];
     [(SFAccountTableViewCell *)v10 setDelegate:self];
-    v18 = [v7 section] == self->_sectionForPasswordsMatchingHintStrings || objc_msgSend(v7, "section") == self->_sectionForPasskeys;
-    v15 = [(_SFAccountPickerTableViewController *)self _savedAccountForIndexPath:v7];
-    v22 = [(_SFAccountTableViewController *)self searchPattern];
-    -[SFAccountTableViewCell setSavedAccount:searchPattern:emphasizeUserName:shouldDifferentiateWithGroupName:](v10, "setSavedAccount:searchPattern:emphasizeUserName:shouldDifferentiateWithGroupName:", v15, v22, v18, [v15 hasSameUsernameAndHighLevelDomainAsOtherSharedSavedAccounts]);
+    v18 = [pathCopy section] == self->_sectionForPasswordsMatchingHintStrings || objc_msgSend(pathCopy, "section") == self->_sectionForPasskeys;
+    v15 = [(_SFAccountPickerTableViewController *)self _savedAccountForIndexPath:pathCopy];
+    searchPattern = [(_SFAccountTableViewController *)self searchPattern];
+    -[SFAccountTableViewCell setSavedAccount:searchPattern:emphasizeUserName:shouldDifferentiateWithGroupName:](v10, "setSavedAccount:searchPattern:emphasizeUserName:shouldDifferentiateWithGroupName:", v15, searchPattern, v18, [v15 hasSameUsernameAndHighLevelDomainAsOtherSharedSavedAccounts]);
 
-    v23 = [v7 section] == self->_sectionForPasskeys || objc_msgSend(v15, "credentialTypes") != 2;
+    v23 = [pathCopy section] == self->_sectionForPasskeys || objc_msgSend(v15, "credentialTypes") != 2;
     v24 = [(NSMutableArray *)self->_savedAccountsWithUsablePasskeys containsObject:v15];
     v25 = v24;
     if (v23 || (v24 & 1) != 0 || [(SFAccountPickerConfiguration *)self->_configuration forUserNamesOnly])
     {
       [(SFAccountTableViewCell *)v10 setUserInteractionEnabled:1];
-      v26 = [MEMORY[0x1E69DC888] labelColor];
+      labelColor = [MEMORY[0x1E69DC888] labelColor];
     }
 
     else
     {
       v29 = _WBSLocalizedString();
-      v30 = [(SFAccountTableViewCell *)v10 detailTextLabel];
-      [v30 setText:v29];
+      detailTextLabel = [(SFAccountTableViewCell *)v10 detailTextLabel];
+      [detailTextLabel setText:v29];
 
       [(SFAccountTableViewCell *)v10 setUserInteractionEnabled:0];
-      v26 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+      labelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
     }
 
-    v31 = v26;
-    v32 = [(SFAccountTableViewCell *)v10 textLabel];
-    [v32 setTextColor:v31];
+    v31 = labelColor;
+    textLabel4 = [(SFAccountTableViewCell *)v10 textLabel];
+    [textLabel4 setTextColor:v31];
 
-    v33 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    v34 = [(SFAccountTableViewCell *)v10 detailTextLabel];
-    [v34 setTextColor:v33];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    detailTextLabel2 = [(SFAccountTableViewCell *)v10 detailTextLabel];
+    [detailTextLabel2 setTextColor:secondaryLabelColor];
 
     if (v25)
     {
-      v35 = [v15 passkeyRelyingPartyID];
-      v36 = [v35 isEqualToString:@"apple.com"];
+      passkeyRelyingPartyID = [v15 passkeyRelyingPartyID];
+      v36 = [passkeyRelyingPartyID isEqualToString:@"apple.com"];
 
       if (v36)
       {
@@ -1102,7 +1102,7 @@ LABEL_10:
 
   if (v8 == 3)
   {
-    v19 = [v6 dequeueReusableCellWithIdentifier:@"verificationCode"];
+    v19 = [viewCopy dequeueReusableCellWithIdentifier:@"verificationCode"];
     v20 = v19;
     if (v19)
     {
@@ -1116,7 +1116,7 @@ LABEL_10:
 
     v10 = v21;
 
-    v15 = [(_SFAccountPickerTableViewController *)self _cellConfigurationForVerificationCodeAtIndexPath:v7];
+    v15 = [(_SFAccountPickerTableViewController *)self _cellConfigurationForVerificationCodeAtIndexPath:pathCopy];
     [(SFAccountTableViewCell *)v10 setContentConfiguration:v15];
     goto LABEL_38;
   }
@@ -1126,7 +1126,7 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v9 = [v6 dequeueReusableCellWithIdentifier:@"generatedPasswords"];
+  v9 = [viewCopy dequeueReusableCellWithIdentifier:@"generatedPasswords"];
   if (v9)
   {
     goto LABEL_18;
@@ -1134,12 +1134,12 @@ LABEL_10:
 
   v10 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:0 reuseIdentifier:@"generatedPasswords"];
   v13 = _WBSLocalizedString();
-  v14 = [(SFAccountTableViewCell *)v10 textLabel];
-  [v14 setText:v13];
+  textLabel5 = [(SFAccountTableViewCell *)v10 textLabel];
+  [textLabel5 setText:v13];
 
   v15 = +[_SFAccountManagerAppearanceValues buttonCellTextColor];
-  v16 = [(SFAccountTableViewCell *)v10 textLabel];
-  [v16 setTextColor:v15];
+  textLabel3 = [(SFAccountTableViewCell *)v10 textLabel];
+  [textLabel3 setTextColor:v15];
 LABEL_31:
 
 LABEL_38:
@@ -1148,9 +1148,9 @@ LABEL_39:
   return v10;
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
-  if (self->_sectionForPasswordsMatchingHintStrings == a4 && [(SFAccountPickerConfiguration *)self->_configuration shouldAllowAddingNewPasswords]&& ![(SFAccountPickerConfiguration *)self->_configuration shouldHideCreatePasswordsInSettingsHint])
+  if (self->_sectionForPasswordsMatchingHintStrings == section && [(SFAccountPickerConfiguration *)self->_configuration shouldAllowAddingNewPasswords]&& ![(SFAccountPickerConfiguration *)self->_configuration shouldHideCreatePasswordsInSettingsHint])
   {
     v5 = objc_alloc_init(_SFTableLinkableFooterView);
     [(_SFTableLinkableFooterView *)v5 setDelegate:self];
@@ -1174,32 +1174,32 @@ LABEL_39:
   return v5;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_SFAccountPickerTableViewController *)self _rowTypeForIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(_SFAccountPickerTableViewController *)self _rowTypeForIndexPath:pathCopy];
   if (v8 > 2)
   {
     if (v8 == 3)
     {
-      v12 = -[NSArray objectAtIndexedSubscript:](self->_verificationCodes, "objectAtIndexedSubscript:", [v7 row]);
+      v12 = -[NSArray objectAtIndexedSubscript:](self->_verificationCodes, "objectAtIndexedSubscript:", [pathCopy row]);
       [(_SFAccountPickerTableViewController *)self _consumeAndFillVerificationCode:v12];
     }
 
     else if (v8 == 4)
     {
       [(_SFAccountPickerTableViewController *)self _presentGeneratedPasswordsViewController];
-      v11 = [(_SFAccountPickerTableViewController *)self tableView];
-      [v11 deselectRowAtIndexPath:v7 animated:1];
+      tableView = [(_SFAccountPickerTableViewController *)self tableView];
+      [tableView deselectRowAtIndexPath:pathCopy animated:1];
 
       goto LABEL_22;
     }
 
 LABEL_10:
-    if ([v7 section] == self->_sectionForPasskeys)
+    if ([pathCopy section] == self->_sectionForPasskeys)
     {
-      v13 = [(_SFAccountPickerTableViewController *)self _savedAccountForIndexPath:v7];
+      v13 = [(_SFAccountPickerTableViewController *)self _savedAccountForIndexPath:pathCopy];
       v14 = v13;
       if (v13)
       {
@@ -1215,8 +1215,8 @@ LABEL_10:
         v19 = [(SFAccountPickerConfiguration *)self->_configuration savedAccountContext:v23];
         [(WBSAuthenticationServicesAgentProxy *)authenticationServicesAgentProxy userSelectedAutoFillPasskey:v16 authenticatedLAContext:authenticatedContext savedAccountContext:v19 completionHandler:&__block_literal_global_250_0];
 
-        v20 = [(_SFAccountPickerTableViewController *)self delegate];
-        [v20 accountPickerTableViewControllerDidCancel:self];
+        delegate = [(_SFAccountPickerTableViewController *)self delegate];
+        [delegate accountPickerTableViewControllerDidCancel:self];
       }
 
       else
@@ -1233,11 +1233,11 @@ LABEL_10:
     {
       if ([(SFAccountPickerConfiguration *)self->_configuration isForFillingIndividualAccountFields])
       {
-        [(_SFAccountPickerTableViewController *)self _showAccountDetailsForSavedAccountAtIndexPath:v7];
+        [(_SFAccountPickerTableViewController *)self _showAccountDetailsForSavedAccountAtIndexPath:pathCopy];
         goto LABEL_22;
       }
 
-      v14 = [(_SFAccountPickerTableViewController *)self _savedAccountForIndexPath:v7];
+      v14 = [(_SFAccountPickerTableViewController *)self _savedAccountForIndexPath:pathCopy];
       if (v14)
       {
         [(_SFAccountPickerTableViewController *)self _didPickSavedAccountForPasswordButPresentAlertToAddAdditionalSiteIfApplicable:v14];
@@ -1258,7 +1258,7 @@ LABEL_10:
 
   if (v8 == 1)
   {
-    [v6 deselectRowAtIndexPath:v7 animated:1];
+    [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
     self->_didPresentAddAccountViewControllerFromGeneratedPasswords = 0;
     [(_SFAccountPickerTableViewController *)self _presentAddPasswordViewController];
     goto LABEL_22;
@@ -1280,21 +1280,21 @@ LABEL_10:
 LABEL_22:
 }
 
-- (void)linkableFooterViewDidInteractWithLink:(id)a3
+- (void)linkableFooterViewDidInteractWithLink:(id)link
 {
-  v4 = [MEMORY[0x1E69C8978] passwordManagerURL];
-  v3 = [MEMORY[0x1E6963608] defaultWorkspace];
-  [v3 openSensitiveURL:v4 withOptions:0];
+  passwordManagerURL = [MEMORY[0x1E69C8978] passwordManagerURL];
+  defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
+  [defaultWorkspace openSensitiveURL:passwordManagerURL withOptions:0];
 }
 
 - (void)_presentGeneratedPasswordsViewController
 {
   v3 = MEMORY[0x1E69BC7A8];
-  v4 = [(_SFAccountPickerTableViewController *)self _generatedPasswordsDomainHintString];
-  v5 = v4;
-  if (v4)
+  _generatedPasswordsDomainHintString = [(_SFAccountPickerTableViewController *)self _generatedPasswordsDomainHintString];
+  v5 = _generatedPasswordsDomainHintString;
+  if (_generatedPasswordsDomainHintString)
   {
-    v6 = v4;
+    v6 = _generatedPasswordsDomainHintString;
   }
 
   else
@@ -1309,36 +1309,36 @@ LABEL_22:
   [(_SFAccountPickerTableViewController *)self presentViewController:v7 animated:1 completion:0];
 }
 
-- (void)tableView:(id)a3 accessoryButtonTappedForRowWithIndexPath:(id)a4
+- (void)tableView:(id)view accessoryButtonTappedForRowWithIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   if (![(SFAccountPickerConfiguration *)self->_configuration isForFillingIndividualAccountFields])
   {
-    [(_SFAccountPickerTableViewController *)self _showAccountDetailsForSavedAccountAtIndexPath:v5];
+    [(_SFAccountPickerTableViewController *)self _showAccountDetailsForSavedAccountAtIndexPath:pathCopy];
   }
 }
 
-- (void)_showAccountDetailsForSavedAccountAtIndexPath:(id)a3
+- (void)_showAccountDetailsForSavedAccountAtIndexPath:(id)path
 {
-  v4 = a3;
-  v9 = [(_SFAccountPickerTableViewController *)self _savedAccountForIndexPath:v4];
+  pathCopy = path;
+  v9 = [(_SFAccountPickerTableViewController *)self _savedAccountForIndexPath:pathCopy];
   v5 = [(_SFAccountPickerTableViewController *)self _detailViewControllerForSavedAccount:v9];
-  v6 = [(_SFAccountPickerTableViewController *)self tableView];
-  [v6 selectRowAtIndexPath:v4 animated:1 scrollPosition:0];
+  tableView = [(_SFAccountPickerTableViewController *)self tableView];
+  [tableView selectRowAtIndexPath:pathCopy animated:1 scrollPosition:0];
 
-  v7 = [(_SFAccountPickerTableViewController *)self navigationController];
-  [v7 pushViewController:v5 animated:1];
+  navigationController = [(_SFAccountPickerTableViewController *)self navigationController];
+  [navigationController pushViewController:v5 animated:1];
 
   indexPathOfRowShowingDetailView = self->_indexPathOfRowShowingDetailView;
-  self->_indexPathOfRowShowingDetailView = v4;
+  self->_indexPathOfRowShowingDetailView = pathCopy;
 
   objc_storeWeak(&self->_detailViewController, v5);
   [(_SFAccountPickerTableViewController *)self reloadTable];
 }
 
-- (void)_showAccountDetailsForSavedAccount:(id)a3
+- (void)_showAccountDetailsForSavedAccount:(id)account
 {
-  v7 = a3;
+  accountCopy = account;
   v4 = [(_SFAccountPickerTableViewController *)self _indexPathForSavedAccount:?];
   if (v4)
   {
@@ -1347,18 +1347,18 @@ LABEL_22:
 
   else
   {
-    v5 = [(_SFAccountPickerTableViewController *)self _detailViewControllerForSavedAccount:v7];
-    v6 = [(_SFAccountPickerTableViewController *)self navigationController];
-    [v6 pushViewController:v5 animated:1];
+    v5 = [(_SFAccountPickerTableViewController *)self _detailViewControllerForSavedAccount:accountCopy];
+    navigationController = [(_SFAccountPickerTableViewController *)self navigationController];
+    [navigationController pushViewController:v5 animated:1];
 
     objc_storeWeak(&self->_detailViewController, v5);
   }
 }
 
-- (id)_detailViewControllerForSavedAccount:(id)a3
+- (id)_detailViewControllerForSavedAccount:(id)account
 {
-  v4 = a3;
-  v5 = [[SFAccountDetailViewController alloc] initWithSavedAccount:v4 passwordWarning:0 options:0];
+  accountCopy = account;
+  v5 = [[SFAccountDetailViewController alloc] initWithSavedAccount:accountCopy passwordWarning:0 options:0];
 
   [(SFAccountDetailViewController *)v5 setDelegate:self];
   [(SFAccountDetailViewController *)v5 setIsForFillingIndividualAccountFields:[(SFAccountPickerConfiguration *)self->_configuration isForFillingIndividualAccountFields]];
@@ -1366,29 +1366,29 @@ LABEL_22:
   return v5;
 }
 
-- (BOOL)tableView:(id)a3 shouldShowMenuForRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldShowMenuForRowAtIndexPath:(id)path
 {
   v5.receiver = self;
   v5.super_class = _SFAccountPickerTableViewController;
-  return [(_SFAccountPickerTableViewController *)&v5 tableView:a3 shouldShowMenuForRowAtIndexPath:a4];
+  return [(_SFAccountPickerTableViewController *)&v5 tableView:view shouldShowMenuForRowAtIndexPath:path];
 }
 
-- (BOOL)tableView:(id)a3 canPerformAction:(SEL)a4 forRowAtIndexPath:(id)a5 withSender:(id)a6
+- (BOOL)tableView:(id)view canPerformAction:(SEL)action forRowAtIndexPath:(id)path withSender:(id)sender
 {
   v7.receiver = self;
   v7.super_class = _SFAccountPickerTableViewController;
-  return [(_SFAccountPickerTableViewController *)&v7 tableView:a3 canPerformAction:a4 forRowAtIndexPath:a5 withSender:a6];
+  return [(_SFAccountPickerTableViewController *)&v7 tableView:view canPerformAction:action forRowAtIndexPath:path withSender:sender];
 }
 
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  if (([(_SFAccountPickerTableViewController *)self _rowTypeForIndexPath:v5]- 1) >= 4)
+  pathCopy = path;
+  if (([(_SFAccountPickerTableViewController *)self _rowTypeForIndexPath:pathCopy]- 1) >= 4)
   {
-    v7 = [(_SFAccountPickerTableViewController *)self _savedAccountForIndexPath:v5];
-    v8 = [v7 passkeyRelyingPartyID];
-    v9 = [v8 isEqualToString:@"apple.com"];
+    v7 = [(_SFAccountPickerTableViewController *)self _savedAccountForIndexPath:pathCopy];
+    passkeyRelyingPartyID = [v7 passkeyRelyingPartyID];
+    v9 = [passkeyRelyingPartyID isEqualToString:@"apple.com"];
 
     if (v9)
     {
@@ -1403,12 +1403,12 @@ LABEL_22:
       v17 = 3221225472;
       v18 = __100___SFAccountPickerTableViewController_tableView_trailingSwipeActionsConfigurationForRowAtIndexPath___block_invoke;
       v19 = &unk_1E84957A0;
-      v20 = self;
-      v21 = v5;
+      selfCopy = self;
+      v21 = pathCopy;
       v12 = [v11 contextualActionWithStyle:1 title:v10 handler:&v16];
       v13 = MEMORY[0x1E69DCFC0];
       v22[0] = v12;
-      v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:{1, v16, v17, v18, v19, v20}];
+      v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:{1, v16, v17, v18, v19, selfCopy}];
       v6 = [v13 configurationWithActions:v14];
 
       [v6 setPerformsFirstActionWithFullSwipe:0];
@@ -1423,35 +1423,35 @@ LABEL_22:
   return v6;
 }
 
-- (void)_presentAlertToConfirmDeletingAccountsAtIndexPath:(id)a3
+- (void)_presentAlertToConfirmDeletingAccountsAtIndexPath:(id)path
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_SFAccountPickerTableViewController *)self _savedAccountForIndexPath:v4];
+  pathCopy = path;
+  v5 = [(_SFAccountPickerTableViewController *)self _savedAccountForIndexPath:pathCopy];
   v6 = MEMORY[0x1E695A9A0];
   v25[0] = v5;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:1];
   v8 = [v6 configurationForDeletingSavedAccounts:v7];
 
   v9 = MEMORY[0x1E69DC650];
-  v10 = [v8 title];
-  v11 = [v8 subtitle];
-  v12 = [v9 alertControllerWithTitle:v10 message:v11 preferredStyle:_SFDeviceAlertStyle()];
+  title = [v8 title];
+  subtitle = [v8 subtitle];
+  v12 = [v9 alertControllerWithTitle:title message:subtitle preferredStyle:_SFDeviceAlertStyle()];
 
-  v13 = [v12 view];
-  [v13 setAccessibilityIdentifier:@"DeleteCredentialConfirmation"];
+  view = [v12 view];
+  [view setAccessibilityIdentifier:@"DeleteCredentialConfirmation"];
 
   objc_initWeak(&location, self);
   v14 = MEMORY[0x1E69DC648];
-  v15 = [v8 buttonTitle];
+  buttonTitle = [v8 buttonTitle];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __89___SFAccountPickerTableViewController__presentAlertToConfirmDeletingAccountsAtIndexPath___block_invoke;
   v21[3] = &unk_1E848FCE8;
   objc_copyWeak(&v23, &location);
-  v16 = v4;
+  v16 = pathCopy;
   v22 = v16;
-  v17 = [v14 actionWithTitle:v15 style:2 handler:v21];
+  v17 = [v14 actionWithTitle:buttonTitle style:2 handler:v21];
   [v12 addAction:v17];
 
   v18 = MEMORY[0x1E69DC648];
@@ -1464,19 +1464,19 @@ LABEL_22:
   objc_destroyWeak(&location);
 }
 
-- (void)_deleteSavedAccountAtIndexPath:(id)a3
+- (void)_deleteSavedAccountAtIndexPath:(id)path
 {
-  v4 = [(_SFAccountPickerTableViewController *)self _savedAccountForIndexPath:a3];
+  v4 = [(_SFAccountPickerTableViewController *)self _savedAccountForIndexPath:path];
   [(_SFAccountPickerTableViewController *)self _removeSavedAccount:v4 shouldPerformDeletionInAccountStore:1];
 }
 
-- (void)_removeSavedAccount:(id)a3 shouldPerformDeletionInAccountStore:(BOOL)a4
+- (void)_removeSavedAccount:(id)account shouldPerformDeletionInAccountStore:(BOOL)store
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [MEMORY[0x1E695DF70] array];
-  v8 = [(NSMutableArray *)self->_savedAccountsMatchingHintStrings indexOfObject:v6];
-  if (v8 == 0x7FFFFFFFFFFFFFFFLL || (v9 = v8, [(NSMutableArray *)self->_savedAccountsMatchingHintStrings removeObject:v6], self->_sectionForPasswordsMatchingHintStrings == 0x7FFFFFFFFFFFFFFFLL))
+  storeCopy = store;
+  accountCopy = account;
+  array = [MEMORY[0x1E695DF70] array];
+  v8 = [(NSMutableArray *)self->_savedAccountsMatchingHintStrings indexOfObject:accountCopy];
+  if (v8 == 0x7FFFFFFFFFFFFFFFLL || (v9 = v8, [(NSMutableArray *)self->_savedAccountsMatchingHintStrings removeObject:accountCopy], self->_sectionForPasswordsMatchingHintStrings == 0x7FFFFFFFFFFFFFFFLL))
   {
     v10 = 0;
   }
@@ -1484,32 +1484,32 @@ LABEL_22:
   else
   {
     v11 = [MEMORY[0x1E696AC88] indexPathForRow:v9 inSection:?];
-    [v7 addObject:v11];
+    [array addObject:v11];
     v10 = [(NSMutableArray *)self->_savedAccountsMatchingHintStrings count]== 0;
   }
 
-  v12 = [(NSMutableArray *)self->_savedAccountsWithUsablePasskeys indexOfObject:v6];
+  v12 = [(NSMutableArray *)self->_savedAccountsWithUsablePasskeys indexOfObject:accountCopy];
   if (v12 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v13 = v12;
-    [(NSMutableArray *)self->_savedAccountsWithUsablePasskeys removeObject:v6];
+    [(NSMutableArray *)self->_savedAccountsWithUsablePasskeys removeObject:accountCopy];
     if (self->_sectionForPasskeys != 0x7FFFFFFFFFFFFFFFLL)
     {
       v14 = [MEMORY[0x1E696AC88] indexPathForRow:v13 inSection:?];
-      [v7 addObject:v14];
+      [array addObject:v14];
       v10 |= [(NSMutableArray *)self->_savedAccountsWithUsablePasskeys count]== 0;
     }
   }
 
-  v15 = [(NSMutableArray *)self->_matchingSavedAccounts indexOfObject:v6];
+  v15 = [(NSMutableArray *)self->_matchingSavedAccounts indexOfObject:accountCopy];
   if (v15 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v16 = v15;
-    [(NSMutableArray *)self->_matchingSavedAccounts removeObject:v6];
+    [(NSMutableArray *)self->_matchingSavedAccounts removeObject:accountCopy];
     if (self->_sectionForAllPasswords != 0x7FFFFFFFFFFFFFFFLL)
     {
       v17 = [MEMORY[0x1E696AC88] indexPathForRow:v16 inSection:?];
-      [v7 addObject:v17];
+      [array addObject:v17];
       v10 |= [(NSMutableArray *)self->_matchingSavedAccounts count]== 0;
     }
   }
@@ -1520,39 +1520,39 @@ LABEL_22:
   v33 = 0;
   v18 = dispatch_group_create();
   v19 = v18;
-  if (v4)
+  if (storeCopy)
   {
     dispatch_group_enter(v18);
-    v20 = [MEMORY[0x1E69C8A38] sharedStore];
+    mEMORY[0x1E69C8A38] = [MEMORY[0x1E69C8A38] sharedStore];
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
     v29[2] = __95___SFAccountPickerTableViewController__removeSavedAccount_shouldPerformDeletionInAccountStore___block_invoke;
     v29[3] = &unk_1E84957C8;
     v31 = v32;
     v30 = v19;
-    [v20 _moveCredentialTypesToRecentlyDeleted:3 fromSavedAccount:v6 completionHandler:v29];
+    [mEMORY[0x1E69C8A38] _moveCredentialTypesToRecentlyDeleted:3 fromSavedAccount:accountCopy completionHandler:v29];
   }
 
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __95___SFAccountPickerTableViewController__removeSavedAccount_shouldPerformDeletionInAccountStore___block_invoke_2;
   block[3] = &unk_1E84957F0;
-  v27 = v4;
+  v27 = storeCopy;
   v28 = v10 & 1;
   block[4] = self;
-  v24 = v7;
-  v25 = v6;
+  v24 = array;
+  v25 = accountCopy;
   v26 = v32;
-  v21 = v6;
-  v22 = v7;
+  v21 = accountCopy;
+  v22 = array;
   dispatch_group_notify(v19, MEMORY[0x1E69E96A0], block);
 
   _Block_object_dispose(v32, 8);
 }
 
-- (void)_presentErrorAlertWithString:(id)a3
+- (void)_presentErrorAlertWithString:(id)string
 {
-  v7 = [MEMORY[0x1E69DC650] alertControllerWithTitle:a3 message:0 preferredStyle:1];
+  v7 = [MEMORY[0x1E69DC650] alertControllerWithTitle:string message:0 preferredStyle:1];
   v4 = MEMORY[0x1E69DC648];
   v5 = _WBSLocalizedString();
   v6 = [v4 actionWithTitle:v5 style:0 handler:0];
@@ -1561,9 +1561,9 @@ LABEL_22:
   [(_SFAccountPickerTableViewController *)self presentViewController:v7 animated:1 completion:0];
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  if ([(_SFAccountPickerTableViewController *)self _shouldUseEmptyHeaderFooterHeightInSection:a4])
+  if ([(_SFAccountPickerTableViewController *)self _shouldUseEmptyHeaderFooterHeightInSection:section])
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DD250]);
   }
@@ -1576,9 +1576,9 @@ LABEL_22:
   return v4;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  v4 = [(_SFAccountPickerTableViewController *)self _shouldUseEmptyHeaderFooterHeightInSection:a4];
+  v4 = [(_SFAccountPickerTableViewController *)self _shouldUseEmptyHeaderFooterHeightInSection:section];
   v5 = &SFAccountListEmptyHeaderFooterHeight;
   if (!v4)
   {
@@ -1588,15 +1588,15 @@ LABEL_22:
   return *v5;
 }
 
-- (BOOL)_shouldUseEmptyHeaderFooterHeightInSection:(int64_t)a3
+- (BOOL)_shouldUseEmptyHeaderFooterHeightInSection:(int64_t)section
 {
-  if (a3)
+  if (section)
   {
     return 0;
   }
 
-  v5 = [(_SFAccountPickerTableViewController *)self tableView];
-  v6 = [(_SFAccountPickerTableViewController *)self tableView:v5 titleForHeaderInSection:0];
+  tableView = [(_SFAccountPickerTableViewController *)self tableView];
+  v6 = [(_SFAccountPickerTableViewController *)self tableView:tableView titleForHeaderInSection:0];
   v3 = v6 == 0;
 
   return v3;
@@ -1605,14 +1605,14 @@ LABEL_22:
 - (void)searchPatternDidUpdate
 {
   [(_SFAccountPickerTableViewController *)self _updateMatchingPasswords];
-  v3 = [(_SFAccountPickerTableViewController *)self tableView];
-  [v3 reloadData];
+  tableView = [(_SFAccountPickerTableViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (void)_updateMatchingPasswords
 {
-  v3 = [(_SFAccountTableViewController *)self searchPattern];
-  v4 = [v3 length];
+  searchPattern = [(_SFAccountTableViewController *)self searchPattern];
+  v4 = [searchPattern length];
 
   if (v4)
   {
@@ -1658,37 +1658,37 @@ LABEL_22:
 
 - (id)_generatedPasswordsDomainHintString
 {
-  v3 = [(SFAccountPickerConfiguration *)self->_configuration addPasswordSuggestedDomain];
-  v4 = v3;
-  if (v3)
+  addPasswordSuggestedDomain = [(SFAccountPickerConfiguration *)self->_configuration addPasswordSuggestedDomain];
+  v4 = addPasswordSuggestedDomain;
+  if (addPasswordSuggestedDomain)
   {
-    v5 = [v3 safari_highLevelDomainForPasswordManager];
+    safari_highLevelDomainForPasswordManager = [addPasswordSuggestedDomain safari_highLevelDomainForPasswordManager];
   }
 
   else
   {
-    v6 = [(SFAccountPickerConfiguration *)self->_configuration domainHintStrings];
-    v7 = [v6 firstObject];
-    v5 = [v7 safari_highLevelDomainForPasswordManager];
+    domainHintStrings = [(SFAccountPickerConfiguration *)self->_configuration domainHintStrings];
+    firstObject = [domainHintStrings firstObject];
+    safari_highLevelDomainForPasswordManager = [firstObject safari_highLevelDomainForPasswordManager];
   }
 
-  return v5;
+  return safari_highLevelDomainForPasswordManager;
 }
 
 - (void)_updateMatchingGeneratedPasswordsState
 {
-  v3 = [(_SFAccountPickerTableViewController *)self _generatedPasswordsDomainHintString];
+  _generatedPasswordsDomainHintString = [(_SFAccountPickerTableViewController *)self _generatedPasswordsDomainHintString];
 
-  if (v3)
+  if (_generatedPasswordsDomainHintString)
   {
     v4 = MEMORY[0x1E695AC58];
-    v5 = [(_SFAccountPickerTableViewController *)self _generatedPasswordsDomainHintString];
-    v6 = [@"https://" stringByAppendingString:v5];
-    v7 = [v6 safari_bestURLForUserTypedString];
-    v10 = [v4 safari_HTMLFormProtectionSpaceForURL:v7];
+    _generatedPasswordsDomainHintString2 = [(_SFAccountPickerTableViewController *)self _generatedPasswordsDomainHintString];
+    v6 = [@"https://" stringByAppendingString:_generatedPasswordsDomainHintString2];
+    safari_bestURLForUserTypedString = [v6 safari_bestURLForUserTypedString];
+    v10 = [v4 safari_HTMLFormProtectionSpaceForURL:safari_bestURLForUserTypedString];
 
-    v8 = [MEMORY[0x1E69C8898] sharedStore];
-    v9 = [v8 generatedPasswordsForProtectionSpace:v10 options:1];
+    mEMORY[0x1E69C8898] = [MEMORY[0x1E69C8898] sharedStore];
+    v9 = [mEMORY[0x1E69C8898] generatedPasswordsForProtectionSpace:v10 options:1];
     self->_hasMatchingGeneratedPasswords = [v9 count] != 0;
   }
 
@@ -1700,27 +1700,27 @@ LABEL_22:
 
 - (BOOL)_shouldShowAutoFillPasskeys
 {
-  v3 = [(SFAccountPickerConfiguration *)self->_configuration shouldShowAutoFillPasskeys];
-  if (v3)
+  shouldShowAutoFillPasskeys = [(SFAccountPickerConfiguration *)self->_configuration shouldShowAutoFillPasskeys];
+  if (shouldShowAutoFillPasskeys)
   {
     if ([(NSMutableArray *)self->_savedAccountsWithUsablePasskeys count])
     {
-      LOBYTE(v3) = 1;
+      LOBYTE(shouldShowAutoFillPasskeys) = 1;
     }
 
     else
     {
-      LOBYTE(v3) = self->_passkeyNearbyDeviceOptions != 0;
+      LOBYTE(shouldShowAutoFillPasskeys) = self->_passkeyNearbyDeviceOptions != 0;
     }
   }
 
-  return v3;
+  return shouldShowAutoFillPasskeys;
 }
 
 - (BOOL)_shouldShowPasswordsMatchingHintStringsSection
 {
-  v3 = [(_SFAccountTableViewController *)self searchPattern];
-  v4 = [v3 length];
+  searchPattern = [(_SFAccountTableViewController *)self searchPattern];
+  v4 = [searchPattern length];
 
   if (v4)
   {
@@ -1765,13 +1765,13 @@ LABEL_22:
   self->_sectionForAllPasswords = v3;
 }
 
-- (id)_savedAccountForIndexPath:(id)a3
+- (id)_savedAccountForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 section];
-  v6 = [v4 row];
+  pathCopy = path;
+  section = [pathCopy section];
+  v6 = [pathCopy row];
 
-  if (v5 == self->_sectionForPasskeys)
+  if (section == self->_sectionForPasskeys)
   {
     if (v6 < 0 || (v7 = 1120, v6 >= [(NSMutableArray *)self->_savedAccountsWithUsablePasskeys count]))
     {
@@ -1789,7 +1789,7 @@ LABEL_14:
     goto LABEL_18;
   }
 
-  if (v5 == self->_sectionForPasswordsMatchingHintStrings)
+  if (section == self->_sectionForPasswordsMatchingHintStrings)
   {
     if (v6 < 0 || (v7 = 1088, v6 >= [(NSMutableArray *)self->_savedAccountsMatchingHintStrings count]))
     {
@@ -1805,7 +1805,7 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  if (v5 == self->_sectionForAllPasswords)
+  if (section == self->_sectionForAllPasswords)
   {
     if (v6 < 0 || (v7 = 1104, v6 >= [(NSMutableArray *)self->_matchingSavedAccounts count]))
     {
@@ -1828,9 +1828,9 @@ LABEL_18:
   return v10;
 }
 
-- (id)_indexPathForSavedAccount:(id)a3
+- (id)_indexPathForSavedAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v5 = [(NSMutableArray *)self->_savedAccountsWithUsablePasskeys count];
   if (v5 < 1)
   {
@@ -1853,7 +1853,7 @@ LABEL_13:
       while (1)
       {
         v17 = [(NSMutableArray *)self->_matchingSavedAccounts objectAtIndexedSubscript:v7];
-        v18 = [v4 isEqual:v17];
+        v18 = [accountCopy isEqual:v17];
 
         if (v18)
         {
@@ -1875,7 +1875,7 @@ LABEL_13:
       while (1)
       {
         v13 = [(NSMutableArray *)self->_savedAccountsMatchingHintStrings objectAtIndexedSubscript:v7];
-        v14 = [v4 isEqual:v13];
+        v14 = [accountCopy isEqual:v13];
 
         if (v14)
         {
@@ -1898,7 +1898,7 @@ LABEL_13:
     while (1)
     {
       v9 = [(NSMutableArray *)self->_savedAccountsWithUsablePasskeys objectAtIndexedSubscript:v7];
-      v10 = [v4 isEqual:v9];
+      v10 = [accountCopy isEqual:v9];
 
       if (v10)
       {
@@ -1918,18 +1918,18 @@ LABEL_15:
   return v19;
 }
 
-- (void)passwordManagerLogViewControllerWantsToSaveGeneratedPassword:(id)a3
+- (void)passwordManagerLogViewControllerWantsToSaveGeneratedPassword:(id)password
 {
   self->_didPresentAddAccountViewControllerFromGeneratedPasswords = 1;
-  objc_storeStrong(&self->_generatedPasswordBeingTransformedIntoSavedAccount, a3);
+  objc_storeStrong(&self->_generatedPasswordBeingTransformedIntoSavedAccount, password);
 
   [(_SFAccountPickerTableViewController *)self _presentAddPasswordViewController];
 }
 
 - (void)passwordManagerLogViewControllerWantsToDismiss
 {
-  v2 = [(_SFAccountPickerTableViewController *)self presentedViewController];
-  [v2 dismissViewControllerAnimated:1 completion:0];
+  presentedViewController = [(_SFAccountPickerTableViewController *)self presentedViewController];
+  [presentedViewController dismissViewControllerAnimated:1 completion:0];
 }
 
 - (_SFAccountPickerTableViewControllerDelegate)delegate

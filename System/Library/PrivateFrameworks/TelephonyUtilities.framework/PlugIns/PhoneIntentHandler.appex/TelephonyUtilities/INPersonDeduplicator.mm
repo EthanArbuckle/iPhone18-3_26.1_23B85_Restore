@@ -1,20 +1,20 @@
 @interface INPersonDeduplicator
-+ (id)dedupeINPersons:(id)a3;
++ (id)dedupeINPersons:(id)persons;
 @end
 
 @implementation INPersonDeduplicator
 
-+ (id)dedupeINPersons:(id)a3
++ (id)dedupeINPersons:(id)persons
 {
-  v3 = a3;
-  if ([v3 count] > 1)
+  personsCopy = persons;
+  if ([personsCopy count] > 1)
   {
     v5 = objc_alloc_init(NSMutableOrderedSet);
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v6 = v3;
+    v6 = personsCopy;
     v7 = [v6 countByEnumeratingWithState:&v42 objects:v53 count:16];
     if (v7)
     {
@@ -51,8 +51,8 @@
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Before deduping: %ld, After deduping: %ld", buf, 0x16u);
     }
 
-    v15 = [v5 firstObject];
-    v16 = [v15 tuHandle];
+    firstObject = [v5 firstObject];
+    tuHandle = [firstObject tuHandle];
 
     v40 = 0u;
     v41 = 0u;
@@ -73,13 +73,13 @@
             objc_enumerationMutation(v17);
           }
 
-          v22 = [*(*(&v38 + 1) + 8 * j) tuHandle];
+          tuHandle2 = [*(*(&v38 + 1) + 8 * j) tuHandle];
           v23 = TUHandlesAreCanonicallyEqual();
 
           if (!v23)
           {
 
-            v25 = objc_alloc_init(NSMutableArray);
+            firstObject2 = objc_alloc_init(NSMutableArray);
             v34 = 0u;
             v35 = 0u;
             v36 = 0u;
@@ -99,8 +99,8 @@
                     objc_enumerationMutation(v27);
                   }
 
-                  v32 = [*(*(&v34 + 1) + 8 * k) inPerson];
-                  [v25 addObject:v32];
+                  inPerson = [*(*(&v34 + 1) + 8 * k) inPerson];
+                  [firstObject2 addObject:inPerson];
                 }
 
                 v29 = [v27 countByEnumeratingWithState:&v34 objects:v46 count:16];
@@ -109,7 +109,7 @@
               while (v29);
             }
 
-            v4 = [v25 copy];
+            v4 = [firstObject2 copy];
             goto LABEL_31;
           }
         }
@@ -131,9 +131,9 @@
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "All persons have equivalent handle values", buf, 2u);
     }
 
-    v25 = [v17 firstObject];
-    v26 = [v25 inPerson];
-    v47 = v26;
+    firstObject2 = [v17 firstObject];
+    inPerson2 = [firstObject2 inPerson];
+    v47 = inPerson2;
     v4 = [NSArray arrayWithObjects:&v47 count:1];
 
 LABEL_31:
@@ -141,7 +141,7 @@ LABEL_31:
 
   else
   {
-    v4 = v3;
+    v4 = personsCopy;
   }
 
   return v4;

@@ -1,34 +1,34 @@
 @interface WiFiUsageConnectionQualityRecord
-- (WiFiUsageConnectionQualityRecord)initWithUsageSession:(id)a3 andNeighborBssList:(id)a4 andOtherBssList:(id)a5;
+- (WiFiUsageConnectionQualityRecord)initWithUsageSession:(id)session andNeighborBssList:(id)list andOtherBssList:(id)bssList;
 - (void)queryNetworkPerformanceFeedAndSubmitToGeoWiFi;
 @end
 
 @implementation WiFiUsageConnectionQualityRecord
 
-- (WiFiUsageConnectionQualityRecord)initWithUsageSession:(id)a3 andNeighborBssList:(id)a4 andOtherBssList:(id)a5
+- (WiFiUsageConnectionQualityRecord)initWithUsageSession:(id)session andNeighborBssList:(id)list andOtherBssList:(id)bssList
 {
   v159 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sessionCopy = session;
+  listCopy = list;
+  bssListCopy = bssList;
   if (!objc_opt_class())
   {
-    v66 = 0;
+    selfCopy = 0;
     goto LABEL_72;
   }
 
-  v139 = v10;
-  v141 = v9;
+  v139 = bssListCopy;
+  v141 = listCopy;
   v155.receiver = self;
   v155.super_class = WiFiUsageConnectionQualityRecord;
   v11 = [(WiFiUsageConnectionQualityRecord *)&v155 init];
   v12 = MEMORY[0x277CCACA8];
-  v13 = [v8 networkDetails];
-  v14 = [v13 networkName];
-  v15 = [v8 networkDetails];
-  v16 = [v15 connectedBss];
-  v17 = [v16 bssid];
-  v18 = [v12 stringWithFormat:@"%@-%@", v14, v17];
+  networkDetails = [sessionCopy networkDetails];
+  networkName = [networkDetails networkName];
+  networkDetails2 = [sessionCopy networkDetails];
+  connectedBss = [networkDetails2 connectedBss];
+  bssid = [connectedBss bssid];
+  v18 = [v12 stringWithFormat:@"%@-%@", networkName, bssid];
   identifier = v11->_identifier;
   v11->_identifier = v18;
 
@@ -36,69 +36,69 @@
   geoMessage = v11->_geoMessage;
   v11->_geoMessage = v20;
 
-  -[GEOWiFiConnectionQuality setPacketsIn:](v11->_geoMessage, "setPacketsIn:", [v8 totalRxFrames]);
-  -[GEOWiFiConnectionQuality setPacketsOut:](v11->_geoMessage, "setPacketsOut:", [v8 totalTxFrames]);
+  -[GEOWiFiConnectionQuality setPacketsIn:](v11->_geoMessage, "setPacketsIn:", [sessionCopy totalRxFrames]);
+  -[GEOWiFiConnectionQuality setPacketsOut:](v11->_geoMessage, "setPacketsOut:", [sessionCopy totalTxFrames]);
   v22 = v11->_geoMessage;
-  v23 = +[WiFiUsagePrivacyFilter numberWithByteCount:](WiFiUsagePrivacyFilter, "numberWithByteCount:", [v8 netInterfaceRxBytes]);
+  v23 = +[WiFiUsagePrivacyFilter numberWithByteCount:](WiFiUsagePrivacyFilter, "numberWithByteCount:", [sessionCopy netInterfaceRxBytes]);
   -[GEOWiFiConnectionQuality setBytesInTotal:](v22, "setBytesInTotal:", [v23 unsignedLongLongValue]);
 
   v24 = v11->_geoMessage;
-  v25 = +[WiFiUsagePrivacyFilter numberWithByteCount:](WiFiUsagePrivacyFilter, "numberWithByteCount:", [v8 netInterfaceTxBytes]);
+  v25 = +[WiFiUsagePrivacyFilter numberWithByteCount:](WiFiUsagePrivacyFilter, "numberWithByteCount:", [sessionCopy netInterfaceTxBytes]);
   -[GEOWiFiConnectionQuality setBytesOutTotal:](v24, "setBytesOutTotal:", [v25 unsignedLongLongValue]);
 
-  -[GEOWiFiConnectionQuality setCca:](v11->_geoMessage, "setCca:", [v8 averageCca]);
-  -[GEOWiFiConnectionQuality setRssi:](v11->_geoMessage, "setRssi:", [v8 lastRssi]);
-  -[GEOWiFiConnectionQuality setSnr:](v11->_geoMessage, "setSnr:", [v8 averageSnr]);
+  -[GEOWiFiConnectionQuality setCca:](v11->_geoMessage, "setCca:", [sessionCopy averageCca]);
+  -[GEOWiFiConnectionQuality setRssi:](v11->_geoMessage, "setRssi:", [sessionCopy lastRssi]);
+  -[GEOWiFiConnectionQuality setSnr:](v11->_geoMessage, "setSnr:", [sessionCopy averageSnr]);
   v26 = v11->_geoMessage;
-  v27 = [v8 networkDetails];
-  v28 = [v27 connectedBss];
-  v29 = [v28 bssid];
-  [(GEOWiFiConnectionQuality *)v26 setUniqueID:v29];
+  networkDetails3 = [sessionCopy networkDetails];
+  connectedBss2 = [networkDetails3 connectedBss];
+  bssid2 = [connectedBss2 bssid];
+  [(GEOWiFiConnectionQuality *)v26 setUniqueID:bssid2];
 
   v30 = v11->_geoMessage;
-  v31 = [v8 networkDetails];
-  -[GEOWiFiConnectionQuality setHotspot20:](v30, "setHotspot20:", [v31 isPasspoint]);
+  networkDetails4 = [sessionCopy networkDetails];
+  -[GEOWiFiConnectionQuality setHotspot20:](v30, "setHotspot20:", [networkDetails4 isPasspoint]);
 
   v32 = v11->_geoMessage;
-  v33 = [v8 networkDetails];
-  v34 = [v33 connectedBss];
-  -[GEOWiFiConnectionQuality setBand:](v32, "setBand:", [v34 band]);
+  networkDetails5 = [sessionCopy networkDetails];
+  connectedBss3 = [networkDetails5 connectedBss];
+  -[GEOWiFiConnectionQuality setBand:](v32, "setBand:", [connectedBss3 band]);
 
   v35 = v11->_geoMessage;
-  v36 = [v8 networkDetails];
-  v37 = [v36 connectedBss];
-  -[GEOWiFiConnectionQuality setChannel:](v35, "setChannel:", [v37 channel]);
+  networkDetails6 = [sessionCopy networkDetails];
+  connectedBss4 = [networkDetails6 connectedBss];
+  -[GEOWiFiConnectionQuality setChannel:](v35, "setChannel:", [connectedBss4 channel]);
 
   v38 = v11->_geoMessage;
-  v39 = [v8 networkDetails];
-  v40 = [v39 connectedBss];
-  -[GEOWiFiConnectionQuality setChannelWidth:](v38, "setChannelWidth:", [v40 channelWidth]);
+  networkDetails7 = [sessionCopy networkDetails];
+  connectedBss5 = [networkDetails7 connectedBss];
+  -[GEOWiFiConnectionQuality setChannelWidth:](v38, "setChannelWidth:", [connectedBss5 channelWidth]);
 
   v41 = v11->_geoMessage;
-  v42 = [v8 networkDetails];
-  v43 = [v42 connectedBss];
-  -[GEOWiFiConnectionQuality setPhyMode:](v41, "setPhyMode:", [v43 phyMode]);
+  networkDetails8 = [sessionCopy networkDetails];
+  connectedBss6 = [networkDetails8 connectedBss];
+  -[GEOWiFiConnectionQuality setPhyMode:](v41, "setPhyMode:", [connectedBss6 phyMode]);
 
   v44 = v11->_geoMessage;
-  v45 = [v8 networkDetails];
-  v46 = [v45 connectedBss];
-  -[GEOWiFiConnectionQuality setIsEdgeBSS:](v44, "setIsEdgeBSS:", [v46 isEdgeBss]);
+  networkDetails9 = [sessionCopy networkDetails];
+  connectedBss7 = [networkDetails9 connectedBss];
+  -[GEOWiFiConnectionQuality setIsEdgeBSS:](v44, "setIsEdgeBSS:", [connectedBss7 isEdgeBss]);
 
   v47 = v11->_geoMessage;
-  v48 = [v8 responsivenessScore];
-  [v48 doubleValue];
+  responsivenessScore = [sessionCopy responsivenessScore];
+  [responsivenessScore doubleValue];
   [(GEOWiFiConnectionQuality *)v47 setResponsivenessScore:?];
 
   v49 = v11->_geoMessage;
-  v50 = [v8 networkDetails];
-  v51 = [v50 connectedBss];
-  -[GEOWiFiConnectionQuality setNetworkType:](v49, "setNetworkType:", [v51 networkAccessCode] + 1);
+  networkDetails10 = [sessionCopy networkDetails];
+  connectedBss8 = [networkDetails10 connectedBss];
+  -[GEOWiFiConnectionQuality setNetworkType:](v49, "setNetworkType:", [connectedBss8 networkAccessCode] + 1);
 
   v52 = v11;
-  v53 = [v8 networkDetails];
-  LODWORD(v50) = [v53 isAdhoc];
+  networkDetails11 = [sessionCopy networkDetails];
+  LODWORD(networkDetails10) = [networkDetails11 isAdhoc];
 
-  if (v50)
+  if (networkDetails10)
   {
     v54 = 1;
   }
@@ -110,22 +110,22 @@
 
   [(GEOWiFiConnectionQuality *)v11->_geoMessage setApMode:v54];
   v55 = v11->_geoMessage;
-  v56 = [v8 sessionStartTime];
-  [v56 timeIntervalSinceReferenceDate];
+  sessionStartTime = [sessionCopy sessionStartTime];
+  [sessionStartTime timeIntervalSinceReferenceDate];
   [(GEOWiFiConnectionQuality *)v55 setTimeOfDay:v57];
 
-  v58 = [v8 networkDetails];
-  v59 = [v58 captiveStatus];
+  networkDetails12 = [sessionCopy networkDetails];
+  captiveStatus = [networkDetails12 captiveStatus];
 
-  if (v59 <= 2)
+  if (captiveStatus <= 2)
   {
-    [(GEOWiFiConnectionQuality *)v11->_geoMessage setCaptiveDetermination:v59];
+    [(GEOWiFiConnectionQuality *)v11->_geoMessage setCaptiveDetermination:captiveStatus];
   }
 
-  v60 = [v8 networkDetails];
-  v61 = [v60 isAutoJoined];
+  networkDetails13 = [sessionCopy networkDetails];
+  isAutoJoined = [networkDetails13 isAutoJoined];
 
-  if (v61)
+  if (isAutoJoined)
   {
     v62 = 1;
   }
@@ -136,20 +136,20 @@
   }
 
   [(GEOWiFiConnectionQuality *)v11->_geoMessage setAssociationReason:v62];
-  -[GEOWiFiConnectionQuality setDisassociationReason:](v11->_geoMessage, "setDisassociationReason:", WiFiUsageConnectionQualityRecordConvertDisconnectReasonToGEOReason([v8 lastDisconnectReason]));
-  [v8 sessionDuration];
+  -[GEOWiFiConnectionQuality setDisassociationReason:](v11->_geoMessage, "setDisassociationReason:", WiFiUsageConnectionQualityRecordConvertDisconnectReasonToGEOReason([sessionCopy lastDisconnectReason]));
+  [sessionCopy sessionDuration];
   if (v63 >= 60.0)
   {
-    [v8 sessionDuration];
+    [sessionCopy sessionDuration];
     if (v67 >= 300.0)
     {
-      [v8 sessionDuration];
+      [sessionCopy sessionDuration];
       if (v68 >= 1200.0)
       {
-        [v8 sessionDuration];
+        [sessionCopy sessionDuration];
         if (v69 >= 3600.0)
         {
-          [v8 sessionDuration];
+          [sessionCopy sessionDuration];
           v64 = v11->_geoMessage;
           if (v70 >= 3600.0)
           {
@@ -190,12 +190,12 @@
   }
 
   [(GEOWiFiConnectionQuality *)v64 setAssociationLength:v65];
-  v71 = [v8 networkDetails];
+  networkDetails14 = [sessionCopy networkDetails];
   p_isa = &v11->super.isa;
-  if (([v71 isPublic] & 1) == 0)
+  if (([networkDetails14 isPublic] & 1) == 0)
   {
-    v73 = [v8 networkDetails];
-    if (![v73 isCarrierBased])
+    networkDetails15 = [sessionCopy networkDetails];
+    if (![networkDetails15 isCarrierBased])
     {
 LABEL_28:
 
@@ -211,9 +211,9 @@ LABEL_28:
 
 LABEL_27:
     v75 = v11->_geoMessage;
-    v71 = [v8 networkDetails];
-    v73 = [v71 networkName];
-    [(GEOWiFiConnectionQuality *)v75 setIdentifier:v73];
+    networkDetails14 = [sessionCopy networkDetails];
+    networkDetails15 = [networkDetails14 networkName];
+    [(GEOWiFiConnectionQuality *)v75 setIdentifier:networkDetails15];
     goto LABEL_28;
   }
 
@@ -226,24 +226,24 @@ LABEL_27:
 
 LABEL_29:
   v76 = objc_alloc_init(MEMORY[0x277D0EB50]);
-  v77 = [v8 networkDetails];
-  v78 = [v77 connectedBss];
-  [v78 locationLatitude];
+  networkDetails16 = [sessionCopy networkDetails];
+  connectedBss9 = [networkDetails16 connectedBss];
+  [connectedBss9 locationLatitude];
   [v76 setLat:?];
 
-  v79 = [v8 networkDetails];
-  v80 = [v79 connectedBss];
-  [v80 locationLongitude];
+  networkDetails17 = [sessionCopy networkDetails];
+  connectedBss10 = [networkDetails17 connectedBss];
+  [connectedBss10 locationLongitude];
   [v76 setLng:?];
 
   v81 = objc_alloc_init(MEMORY[0x277D0EB78]);
   [v81 setLatLng:v76];
   v82 = &v52->super.isa;
   [(GEOWiFiConnectionQuality *)v52->_geoMessage setLocation:v81];
-  v83 = [v8 networkDetails];
+  networkDetails18 = [sessionCopy networkDetails];
   v137 = v81;
   v138 = v76;
-  if ([v83 addedFromUI])
+  if ([networkDetails18 addedFromUI])
   {
 
     v84 = v141;
@@ -253,19 +253,19 @@ LABEL_32:
     goto LABEL_33;
   }
 
-  v85 = [v8 networkDetails];
-  v86 = [v85 addedViaATJ];
+  networkDetails19 = [sessionCopy networkDetails];
+  addedViaATJ = [networkDetails19 addedViaATJ];
 
   v84 = v141;
-  if (v86)
+  if (addedViaATJ)
   {
     goto LABEL_32;
   }
 
-  v95 = [v8 networkDetails];
-  v96 = [v95 addedFromApp];
+  networkDetails20 = [sessionCopy networkDetails];
+  addedFromApp = [networkDetails20 addedFromApp];
 
-  if (v96)
+  if (addedFromApp)
   {
     v87 = p_isa[1];
     v88 = 2;
@@ -273,11 +273,11 @@ LABEL_32:
 
   else
   {
-    v99 = [v8 networkDetails];
-    v100 = [v99 isCarrierBased];
+    networkDetails21 = [sessionCopy networkDetails];
+    isCarrierBased = [networkDetails21 isCarrierBased];
 
     v87 = p_isa[1];
-    if (v100)
+    if (isCarrierBased)
     {
       v88 = 3;
     }
@@ -290,10 +290,10 @@ LABEL_32:
 
 LABEL_33:
   [v87 setNetworkOrigin:v88];
-  v89 = [v8 networkDetails];
-  v90 = [v89 isOpen];
+  networkDetails22 = [sessionCopy networkDetails];
+  isOpen = [networkDetails22 isOpen];
 
-  if (v90)
+  if (isOpen)
   {
     v91 = p_isa[1];
     v92 = 1;
@@ -301,10 +301,10 @@ LABEL_33:
 
   else
   {
-    v93 = [v8 networkDetails];
-    v94 = [v93 hasEnterpriseSecurity];
+    networkDetails23 = [sessionCopy networkDetails];
+    hasEnterpriseSecurity = [networkDetails23 hasEnterpriseSecurity];
 
-    if (v94)
+    if (hasEnterpriseSecurity)
     {
       v91 = p_isa[1];
       v92 = 4;
@@ -312,11 +312,11 @@ LABEL_33:
 
     else
     {
-      v97 = [v8 networkDetails];
-      v98 = [v97 hasWep];
+      networkDetails24 = [sessionCopy networkDetails];
+      hasWep = [networkDetails24 hasWep];
 
       v91 = p_isa[1];
-      if (v98)
+      if (hasWep)
       {
         v92 = 2;
       }
@@ -329,18 +329,18 @@ LABEL_33:
   }
 
   [v91 addAuthTraits:v92];
-  v101 = [v8 networkDetails];
-  v102 = [v101 isMoving];
+  networkDetails25 = [sessionCopy networkDetails];
+  isMoving = [networkDetails25 isMoving];
 
-  if (v102)
+  if (isMoving)
   {
     [p_isa[1] addTraits:1];
   }
 
-  v103 = [v8 networkDetails];
-  v104 = [v103 isWidelyDeployed];
+  networkDetails26 = [sessionCopy networkDetails];
+  isWidelyDeployed = [networkDetails26 isWidelyDeployed];
 
-  if (v104)
+  if (isWidelyDeployed)
   {
     [p_isa[1] addTraits:2];
   }
@@ -349,10 +349,10 @@ LABEL_33:
   v154 = 0u;
   v151 = 0u;
   v152 = 0u;
-  v105 = [v8 networkDetails];
-  v106 = [v105 downloadSpeedResults];
+  networkDetails27 = [sessionCopy networkDetails];
+  downloadSpeedResults = [networkDetails27 downloadSpeedResults];
 
-  v107 = [v106 countByEnumeratingWithState:&v151 objects:v158 count:16];
+  v107 = [downloadSpeedResults countByEnumeratingWithState:&v151 objects:v158 count:16];
   if (v107)
   {
     v108 = v107;
@@ -363,7 +363,7 @@ LABEL_33:
       {
         if (*v152 != v109)
         {
-          objc_enumerationMutation(v106);
+          objc_enumerationMutation(downloadSpeedResults);
         }
 
         v111 = *(*(&v151 + 1) + 8 * i);
@@ -373,13 +373,13 @@ LABEL_33:
         [p_isa[1] addSpeedTest:v112];
       }
 
-      v108 = [v106 countByEnumeratingWithState:&v151 objects:v158 count:16];
+      v108 = [downloadSpeedResults countByEnumeratingWithState:&v151 objects:v158 count:16];
     }
 
     while (v108);
   }
 
-  v140 = v8;
+  v140 = sessionCopy;
 
   v149 = 0u;
   v150 = 0u;
@@ -405,20 +405,20 @@ LABEL_33:
         v120 = objc_alloc_init(MEMORY[0x277D0EE40]);
         [v120 setRssi:{objc_msgSend(v119, "rssi")}];
         [v120 setChannel:{objc_msgSend(v119, "channel")}];
-        v121 = [v119 bssid];
-        [v120 setUniqueID:v121];
+        bssid3 = [v119 bssid];
+        [v120 setUniqueID:bssid3];
 
         [v82[1] addEssMembers:v120];
         if ((v116 & 1) == 0)
         {
-          v122 = [v119 networkAccessCode];
-          v123 = [v119 venueGroup];
-          v124 = [v119 venueCode];
+          networkAccessCode = [v119 networkAccessCode];
+          venueGroup = [v119 venueGroup];
+          venueCode = [v119 venueCode];
           v125 = objc_alloc_init(MEMORY[0x277D0EE70]);
           [v125 setVenueName:&stru_28487EF20];
-          [v125 setNetworkType:v122];
-          [v125 setVenueType:v124];
-          v126 = v123;
+          [v125 setNetworkType:networkAccessCode];
+          [v125 setVenueType:venueCode];
+          v126 = venueGroup;
           v82 = p_isa;
           [v125 setVenueGroup:v126];
           [p_isa[1] setPasspointInfo:v125];
@@ -437,10 +437,10 @@ LABEL_33:
   v146 = 0u;
   v143 = 0u;
   v144 = 0u;
-  v10 = v139;
+  bssListCopy = v139;
   v127 = v139;
   v128 = [v127 countByEnumeratingWithState:&v143 objects:v156 count:16];
-  v8 = v140;
+  sessionCopy = v140;
   if (v128)
   {
     v129 = v128;
@@ -458,8 +458,8 @@ LABEL_33:
         v133 = objc_alloc_init(MEMORY[0x277D0EE40]);
         [v133 setRssi:{objc_msgSend(v132, "rssi")}];
         [v133 setChannel:{objc_msgSend(v132, "channel")}];
-        v134 = [v132 bssid];
-        [v133 setUniqueID:v134];
+        bssid4 = [v132 bssid];
+        [v133 setUniqueID:bssid4];
 
         [p_isa[1] addNearbyBSS:v133];
       }
@@ -471,12 +471,12 @@ LABEL_33:
   }
 
   self = p_isa;
-  v66 = self;
-  v9 = v141;
+  selfCopy = self;
+  listCopy = v141;
 LABEL_72:
 
   v135 = *MEMORY[0x277D85DE8];
-  return v66;
+  return selfCopy;
 }
 
 - (void)queryNetworkPerformanceFeedAndSubmitToGeoWiFi

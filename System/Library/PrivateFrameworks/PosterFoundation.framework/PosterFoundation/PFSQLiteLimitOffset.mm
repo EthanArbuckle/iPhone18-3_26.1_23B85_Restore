@@ -1,12 +1,12 @@
 @interface PFSQLiteLimitOffset
-+ (id)limit:(unint64_t)a3;
-+ (id)limit:(unint64_t)a3 offset:(unint64_t)a4;
-+ (id)offset:(unint64_t)a3;
-- (BOOL)pf_bindToStatement:(sqlite3_stmt *)a3 index:(unint64_t)a4 offset:(unint64_t)a5;
++ (id)limit:(unint64_t)limit;
++ (id)limit:(unint64_t)limit offset:(unint64_t)offset;
++ (id)offset:(unint64_t)offset;
+- (BOOL)pf_bindToStatement:(sqlite3_stmt *)statement index:(unint64_t)index offset:(unint64_t)offset;
 - (NSString)description;
 - (PFSQLiteLimitOffset)init;
-- (id)pf_toSQLWithBindings:(unint64_t *)a3;
-- (void)initWithLimit:(uint64_t)a3 offset:;
+- (id)pf_toSQLWithBindings:(unint64_t *)bindings;
+- (void)initWithLimit:(uint64_t)limit offset:;
 @end
 
 @implementation PFSQLiteLimitOffset
@@ -27,9 +27,9 @@
     v8 = [v4 appendUnsignedInteger:offset withName:@"offset"];
   }
 
-  v9 = [v4 build];
+  build = [v4 build];
 
-  return v9;
+  return build;
 }
 
 - (PFSQLiteLimitOffset)init
@@ -39,7 +39,7 @@
   return 0;
 }
 
-- (id)pf_toSQLWithBindings:(unint64_t *)a3
+- (id)pf_toSQLWithBindings:(unint64_t *)bindings
 {
   v5 = objc_opt_new();
   v6 = v5;
@@ -50,7 +50,7 @@
 
   else
   {
-    if (!a3)
+    if (!bindings)
     {
       [v5 appendFormat:@" LIMIT %lu", self->_limit];
       offset = self->_offset;
@@ -76,7 +76,7 @@ LABEL_10:
     goto LABEL_12;
   }
 
-  if (!a3)
+  if (!bindings)
   {
     goto LABEL_10;
   }
@@ -86,9 +86,9 @@ LABEL_11:
   [v6 appendFormat:v9, v11];
   ++v7;
 LABEL_12:
-  if (a3)
+  if (bindings)
   {
-    *a3 = v7;
+    *bindings = v7;
   }
 
 LABEL_14:
@@ -96,34 +96,34 @@ LABEL_14:
   return v6;
 }
 
-- (BOOL)pf_bindToStatement:(sqlite3_stmt *)a3 index:(unint64_t)a4 offset:(unint64_t)a5
+- (BOOL)pf_bindToStatement:(sqlite3_stmt *)statement index:(unint64_t)index offset:(unint64_t)offset
 {
   limit = self->_limit;
   offset = self->_offset;
   if (limit != 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (offset != 0x7FFFFFFFFFFFFFFFLL && a4 != 0)
+    if (offset != 0x7FFFFFFFFFFFFFFFLL && index != 0)
     {
       limit = self->_offset;
-      if (a4 != 1)
+      if (index != 1)
       {
         return 0;
       }
     }
 
-    return sqlite3_bind_int(a3, a4 + a5 + 1, limit) == 0;
+    return sqlite3_bind_int(statement, index + offset + 1, limit) == 0;
   }
 
   limit = self->_offset;
   if (offset != 0x7FFFFFFFFFFFFFFFLL)
   {
-    return sqlite3_bind_int(a3, a4 + a5 + 1, limit) == 0;
+    return sqlite3_bind_int(statement, index + offset + 1, limit) == 0;
   }
 
   return 0;
 }
 
-+ (id)limit:(unint64_t)a3
++ (id)limit:(unint64_t)limit
 {
   v4 = [PFSQLiteLimitOffset alloc];
   if (v4)
@@ -133,7 +133,7 @@ LABEL_14:
     v4 = objc_msgSendSuper2(&v6, sel_init);
     if (v4)
     {
-      v4->_limit = a3;
+      v4->_limit = limit;
       v4->_offset = 0x7FFFFFFFFFFFFFFFLL;
     }
   }
@@ -141,7 +141,7 @@ LABEL_14:
   return v4;
 }
 
-- (void)initWithLimit:(uint64_t)a3 offset:
+- (void)initWithLimit:(uint64_t)limit offset:
 {
   if (result)
   {
@@ -151,14 +151,14 @@ LABEL_14:
     if (result)
     {
       result[1] = a2;
-      result[2] = a3;
+      result[2] = limit;
     }
   }
 
   return result;
 }
 
-+ (id)offset:(unint64_t)a3
++ (id)offset:(unint64_t)offset
 {
   v4 = [PFSQLiteLimitOffset alloc];
   if (v4)
@@ -169,14 +169,14 @@ LABEL_14:
     if (v4)
     {
       v4->_limit = 0x7FFFFFFFFFFFFFFFLL;
-      v4->_offset = a3;
+      v4->_offset = offset;
     }
   }
 
   return v4;
 }
 
-+ (id)limit:(unint64_t)a3 offset:(unint64_t)a4
++ (id)limit:(unint64_t)limit offset:(unint64_t)offset
 {
   v6 = [PFSQLiteLimitOffset alloc];
   if (v6)
@@ -186,8 +186,8 @@ LABEL_14:
     v6 = objc_msgSendSuper2(&v8, sel_init);
     if (v6)
     {
-      v6->_limit = a3;
-      v6->_offset = a4;
+      v6->_limit = limit;
+      v6->_offset = offset;
     }
   }
 

@@ -1,21 +1,21 @@
 @interface VCEmulatedNetworkQueue
-- (VCEmulatedNetworkQueue)initWithPolicies:(id)a3;
-- (int)dequeuePacket:(id)a3 time:(double)a4;
-- (int)enqueuePacket:(id)a3;
-- (int)write:(id)a3;
+- (VCEmulatedNetworkQueue)initWithPolicies:(id)policies;
+- (int)dequeuePacket:(id)packet time:(double)time;
+- (int)enqueuePacket:(id)packet;
+- (int)write:(id)write;
 - (void)dealloc;
-- (void)runUntilTime:(double)a3;
-- (void)updateSettingsAtTime:(double)a3;
+- (void)runUntilTime:(double)time;
+- (void)updateSettingsAtTime:(double)time;
 @end
 
 @implementation VCEmulatedNetworkQueue
 
-- (VCEmulatedNetworkQueue)initWithPolicies:(id)a3
+- (VCEmulatedNetworkQueue)initWithPolicies:(id)policies
 {
   v17 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
   v8.super_class = VCEmulatedNetworkQueue;
-  v3 = [(VCEmulatedNetworkElement *)&v8 initWithPolicies:a3];
+  v3 = [(VCEmulatedNetworkElement *)&v8 initWithPolicies:policies];
   if (v3)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -32,7 +32,7 @@
         v13 = 1024;
         v14 = 22;
         v15 = 2112;
-        v16 = policies;
+        policiesCopy = policies;
         _os_log_impl(&dword_1DB56E000, v5, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Network queue policies: %@", buf, 0x26u);
       }
     }
@@ -54,34 +54,34 @@
   [(VCEmulatedNetworkElement *)&v3 dealloc];
 }
 
-- (void)updateSettingsAtTime:(double)a3
+- (void)updateSettingsAtTime:(double)time
 {
-  if (a3 - self->_lastPolicyLoadingTime >= 0.1)
+  if (time - self->_lastPolicyLoadingTime >= 0.1)
   {
-    self->_lastPolicyLoadingTime = a3;
-    [(VCEmulatedNetworkAlgorithmQueueBandwidth *)self->_queueBandwidthAlgorithm updateSettingsAtTime:self->super._policies impairments:a3];
-    [(VCEmulatedNetworkAlgorithmQueueLoss *)self->_queueLossAlgorithm updateSettingsAtTime:self->super._policies impairments:a3];
+    self->_lastPolicyLoadingTime = time;
+    [(VCEmulatedNetworkAlgorithmQueueBandwidth *)self->_queueBandwidthAlgorithm updateSettingsAtTime:self->super._policies impairments:time];
+    [(VCEmulatedNetworkAlgorithmQueueLoss *)self->_queueLossAlgorithm updateSettingsAtTime:self->super._policies impairments:time];
     queueDelayAlgorithm = self->_queueDelayAlgorithm;
     policies = self->super._policies;
 
-    [(VCEmulatedNetworkAlgorithmQueueDelay *)queueDelayAlgorithm updateSettingsAtTime:policies impairments:a3];
+    [(VCEmulatedNetworkAlgorithmQueueDelay *)queueDelayAlgorithm updateSettingsAtTime:policies impairments:time];
   }
 }
 
-- (int)write:(id)a3
+- (int)write:(id)write
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (a3 && (v5 = self->super._networkElementQueue) != 0)
+  if (write && (v5 = self->super._networkElementQueue) != 0)
   {
     if (!CMSimpleQueueGetCount(v5))
     {
-      [a3 arrivalTime];
-      [a3 setNetworkServiceTime:?];
+      [write arrivalTime];
+      [write setNetworkServiceTime:?];
     }
 
-    [(VCEmulatedNetworkQueue *)self markPacketLoss:a3];
+    [(VCEmulatedNetworkQueue *)self markPacketLoss:write];
 
-    return [(VCEmulatedNetworkQueue *)self enqueuePacket:a3];
+    return [(VCEmulatedNetworkQueue *)self enqueuePacket:write];
   }
 
   else
@@ -102,7 +102,7 @@
         v16 = 2048;
         v17 = networkElementQueue;
         v18 = 2048;
-        v19 = a3;
+        writeCopy = write;
         _os_log_error_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_ERROR, " [%s] %s:%d networkElementQueue %p and packet %p cannot not be nil!", &v10, 0x30u);
       }
     }
@@ -111,15 +111,15 @@
   }
 }
 
-- (int)enqueuePacket:(id)a3
+- (int)enqueuePacket:(id)packet
 {
-  if (([a3 isLost] & 1) == 0)
+  if (([packet isLost] & 1) == 0)
   {
     [(VCEmulatedNetworkAlgorithmQueueLoss *)self->_queueLossAlgorithm setPacketCountInNetworkQueue:[(VCEmulatedNetworkAlgorithmQueueLoss *)self->_queueLossAlgorithm packetCountInNetworkQueue]+ 1];
-    -[VCEmulatedNetworkAlgorithmQueueLoss setPacketCountBytesInNetworkQueue:](self->_queueLossAlgorithm, "setPacketCountBytesInNetworkQueue:", -[VCEmulatedNetworkAlgorithmQueueLoss packetCountBytesInNetworkQueue](self->_queueLossAlgorithm, "packetCountBytesInNetworkQueue") + [a3 size]);
+    -[VCEmulatedNetworkAlgorithmQueueLoss setPacketCountBytesInNetworkQueue:](self->_queueLossAlgorithm, "setPacketCountBytesInNetworkQueue:", -[VCEmulatedNetworkAlgorithmQueueLoss packetCountBytesInNetworkQueue](self->_queueLossAlgorithm, "packetCountBytesInNetworkQueue") + [packet size]);
   }
 
-  result = CMSimpleQueueEnqueue(self->super._networkElementQueue, a3);
+  result = CMSimpleQueueEnqueue(self->super._networkElementQueue, packet);
   if (result)
   {
     v6 = result;
@@ -139,7 +139,7 @@
   return result;
 }
 
-- (void)runUntilTime:(double)a3
+- (void)runUntilTime:(double)time
 {
   v28 = *MEMORY[0x1E69E9840];
   [(VCEmulatedNetworkQueue *)self updateSettingsAtTime:?];
@@ -170,7 +170,7 @@
       [(VCEmulatedNetworkAlgorithmQueueBandwidth *)self->_queueBandwidthAlgorithm process:v7];
       [(VCEmulatedNetworkAlgorithmQueueDelay *)self->_queueDelayAlgorithm process:v7];
       [(VCEmulatedNetworkAlgorithmQueueDelay *)self->_queueDelayAlgorithm expectedProcessEndTime];
-      if (v13 >= a3)
+      if (v13 >= time)
       {
         break;
       }
@@ -182,7 +182,7 @@
         v15 = *v9;
         if (os_log_type_enabled(*v9, OS_LOG_TYPE_ERROR))
         {
-          v16 = [v7 packetID];
+          packetID = [v7 packetID];
           *buf = v17;
           v19 = v14;
           v20 = 2080;
@@ -190,9 +190,9 @@
           v22 = 1024;
           v23 = 105;
           v24 = 1024;
-          v25 = v16;
+          v25 = packetID;
           v26 = 2048;
-          v27 = a3;
+          timeCopy = time;
           _os_log_error_impl(&dword_1DB56E000, v15, OS_LOG_TYPE_ERROR, " [%s] %s:%d Failed to dequeue the packet ID %u at time: %f!", buf, 0x2Cu);
         }
       }
@@ -204,21 +204,21 @@
   }
 }
 
-- (int)dequeuePacket:(id)a3 time:(double)a4
+- (int)dequeuePacket:(id)packet time:(double)time
 {
   v26 = *MEMORY[0x1E69E9840];
-  [a3 setDepartureTime:a4];
+  [packet setDepartureTime:time];
   processCompleteHandler = self->super._processCompleteHandler;
   if (processCompleteHandler)
   {
     v7 = CMSimpleQueueDequeue(self->super._networkElementQueue);
     processCompleteHandler[2](processCompleteHandler, v7);
-    if (([a3 isLost] & 1) == 0 || objc_msgSend(a3, "isDroppedByAQM"))
+    if (([packet isLost] & 1) == 0 || objc_msgSend(packet, "isDroppedByAQM"))
     {
       if ([(VCEmulatedNetworkAlgorithmQueueLoss *)self->_queueLossAlgorithm packetCountInNetworkQueue])
       {
         [(VCEmulatedNetworkAlgorithmQueueLoss *)self->_queueLossAlgorithm setPacketCountInNetworkQueue:[(VCEmulatedNetworkAlgorithmQueueLoss *)self->_queueLossAlgorithm packetCountInNetworkQueue]- 1];
-        -[VCEmulatedNetworkAlgorithmQueueLoss setPacketCountBytesInNetworkQueue:](self->_queueLossAlgorithm, "setPacketCountBytesInNetworkQueue:", -[VCEmulatedNetworkAlgorithmQueueLoss packetCountBytesInNetworkQueue](self->_queueLossAlgorithm, "packetCountBytesInNetworkQueue") - [a3 size]);
+        -[VCEmulatedNetworkAlgorithmQueueLoss setPacketCountBytesInNetworkQueue:](self->_queueLossAlgorithm, "setPacketCountBytesInNetworkQueue:", -[VCEmulatedNetworkAlgorithmQueueLoss packetCountBytesInNetworkQueue](self->_queueLossAlgorithm, "packetCountBytesInNetworkQueue") - [packet size]);
       }
 
       else
@@ -239,9 +239,9 @@
             v20 = 1024;
             v21 = Count;
             v22 = 1024;
-            v23 = [a3 isLost];
+            isLost = [packet isLost];
             v24 = 1024;
-            v25 = [a3 sequenceNumber];
+            sequenceNumber = [packet sequenceNumber];
             _os_log_error_impl(&dword_1DB56E000, v13, OS_LOG_TYPE_ERROR, " [%s] %s:%d PacketCountInQueue is bad, size=%d, isLost=%d, seq=%u ", &v14, 0x2Eu);
           }
         }

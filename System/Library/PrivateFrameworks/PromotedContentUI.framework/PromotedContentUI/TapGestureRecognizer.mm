@@ -1,6 +1,6 @@
 @interface TapGestureRecognizer
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (_TtC17PromotedContentUI20TapGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (_TtC17PromotedContentUI20TapGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 - (void)reset;
 @end
 
@@ -16,7 +16,7 @@
   if (v3)
   {
 
-    v4 = [v2 view];
+    view = [v2 view];
     [v2 locationInView_];
     v6 = v5;
     v8 = v7;
@@ -30,20 +30,20 @@
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1C19CA29C(v7);
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  selfCopy = self;
+  sub_1C19CA29C(touchCopy);
   v10 = v9;
 
   return v10 & 1;
 }
 
-- (_TtC17PromotedContentUI20TapGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (_TtC17PromotedContentUI20TapGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
-  if (a3)
+  if (target)
   {
     swift_unknownObjectRetain();
     sub_1C1A6F92C();

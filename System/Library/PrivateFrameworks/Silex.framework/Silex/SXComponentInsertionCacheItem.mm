@@ -1,29 +1,29 @@
 @interface SXComponentInsertionCacheItem
-- (id)initWithInserter:(void *)a3 validator:(void *)a4 results:;
+- (id)initWithInserter:(void *)inserter validator:(void *)validator results:;
 @end
 
 @implementation SXComponentInsertionCacheItem
 
-- (id)initWithInserter:(void *)a3 validator:(void *)a4 results:
+- (id)initWithInserter:(void *)inserter validator:(void *)validator results:
 {
   v8 = a2;
-  v9 = a3;
-  v10 = a4;
-  if (a1)
+  inserterCopy = inserter;
+  validatorCopy = validator;
+  if (self)
   {
-    v13.receiver = a1;
+    v13.receiver = self;
     v13.super_class = SXComponentInsertionCacheItem;
     v11 = objc_msgSendSuper2(&v13, sel_init);
-    a1 = v11;
+    self = v11;
     if (v11)
     {
       objc_storeStrong(v11 + 1, a2);
-      objc_storeStrong(a1 + 2, a3);
-      objc_storeStrong(a1 + 3, a4);
+      objc_storeStrong(self + 2, inserter);
+      objc_storeStrong(self + 3, validator);
     }
   }
 
-  return a1;
+  return self;
 }
 
 @end

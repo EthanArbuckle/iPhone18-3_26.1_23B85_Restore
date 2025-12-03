@@ -1,22 +1,22 @@
 @interface TSDGuidedPanController
 - ($F5A7A7B85D6989FBEC7A5CF4432B5A5E)centerPlusMovementContentPlacement;
 - ($F5A7A7B85D6989FBEC7A5CF4432B5A5E)touchContentPlacement;
-- (CATransform3D)p_transformForContentLocation:(SEL)a3 placement:(id)a4;
+- (CATransform3D)p_transformForContentLocation:(SEL)location placement:(id)placement;
 - (CGPoint)movement;
-- (CGPoint)p_boundsOffsetForContentLocation:(id)a3 placement:(id)a4;
+- (CGPoint)p_boundsOffsetForContentLocation:(id)location placement:(id)placement;
 - (CGPoint)startPoint;
 - (CGPoint)velocity;
-- (TSDGuidedPanController)initWithInteractiveCanvasController:(id)a3;
-- (id)p_currentContentLocationWithPlacement:(id)a3;
+- (TSDGuidedPanController)initWithInteractiveCanvasController:(id)controller;
+- (id)p_currentContentLocationWithPlacement:(id)placement;
 - (void)dealloc;
-- (void)handlePanGesture:(id)a3;
-- (void)p_scrollToContentLocation:(id)a3 placement:(id)a4;
+- (void)handlePanGesture:(id)gesture;
+- (void)p_scrollToContentLocation:(id)location placement:(id)placement;
 - (void)p_willBegin;
 @end
 
 @implementation TSDGuidedPanController
 
-- (TSDGuidedPanController)initWithInteractiveCanvasController:(id)a3
+- (TSDGuidedPanController)initWithInteractiveCanvasController:(id)controller
 {
   v7.receiver = self;
   v7.super_class = TSDGuidedPanController;
@@ -24,9 +24,9 @@
   v5 = v4;
   if (v4)
   {
-    v4->_interactiveCanvasController = a3;
-    v4->_canvasView = [objc_msgSend(a3 "layerHost")];
-    v5->_canvasLayer = [objc_msgSend(a3 "layerHost")];
+    v4->_interactiveCanvasController = controller;
+    v4->_canvasView = [objc_msgSend(controller "layerHost")];
+    v5->_canvasLayer = [objc_msgSend(controller "layerHost")];
     v5->_canvasScrollView = [(TSDCanvasView *)v5->_canvasView enclosingScrollView];
   }
 
@@ -40,19 +40,19 @@
   [(TSDGuidedPanController *)&v3 dealloc];
 }
 
-- (void)handlePanGesture:(id)a3
+- (void)handlePanGesture:(id)gesture
 {
-  [a3 translationInView:{-[TSDCanvasView superview](self->_canvasView, "superview")}];
+  [gesture translationInView:{-[TSDCanvasView superview](self->_canvasView, "superview")}];
   self->_movement.x = v5;
   self->_movement.y = v6;
-  [a3 velocityInView:{-[TSDCanvasView superview](self->_canvasView, "superview")}];
+  [gesture velocityInView:{-[TSDCanvasView superview](self->_canvasView, "superview")}];
   self->_velocity.x = v7;
   self->_velocity.y = v8;
   v9 = [(TSDGuidedPanController *)self p_currentContentLocationWithPlacement:0.5, 0.5];
-  v10 = [a3 state];
-  if (v10 > 2)
+  state = [gesture state];
+  if (state > 2)
   {
-    if (v10 == 3)
+    if (state == 3)
     {
       canvasLayer = self->_canvasLayer;
       v23 = *(MEMORY[0x277CD9DE8] + 80);
@@ -93,7 +93,7 @@
 
     else
     {
-      if (v10 != 4)
+      if (state != 4)
       {
         return;
       }
@@ -117,16 +117,16 @@
     [(TSDGuidedPanController *)self p_didEnd];
   }
 
-  else if (v10 == 1)
+  else if (state == 1)
   {
-    [a3 locationInView:self->_canvasView];
+    [gesture locationInView:self->_canvasView];
     self->_startPoint.x = v20;
     self->_startPoint.y = v21;
 
     [(TSDGuidedPanController *)self p_willBegin];
   }
 
-  else if (v10 == 2)
+  else if (state == 2)
   {
     [(TSDGuidedPanController *)self touchContentPlacement];
     v50 = v11;
@@ -150,9 +150,9 @@
 
     else
     {
-      v30 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v31 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDGuidedPanController handlePanGesture:]"];
-      [v30 handleFailureInFunction:v31 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGuidedPanController.m"), 100, @"invalid nil value for '%s'", "contentLocation"}];
+      [currentHandler handleFailureInFunction:v31 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGuidedPanController.m"), 100, @"invalid nil value for '%s'", "contentLocation"}];
     }
   }
 }
@@ -203,11 +203,11 @@ uint64_t __43__TSDGuidedPanController_handlePanGesture___block_invoke_2(uint64_t
   v8 = v7;
   [(UIScrollView *)self->_canvasScrollView bounds];
   v10 = v6 / v9;
-  v11 = [(UIScrollView *)self->_canvasScrollView bounds];
+  bounds = [(UIScrollView *)self->_canvasScrollView bounds];
   v14.n128_f64[0] = v10;
 
   v12.n128_f64[0] = v8 / v13;
-  TSDContentPlacementWithAnchorPoint(v11, v14, v12);
+  TSDContentPlacementWithAnchorPoint(bounds, v14, v12);
   result.var0.y = v16;
   result.var0.x = v15;
   return result;
@@ -219,23 +219,23 @@ uint64_t __43__TSDGuidedPanController_handlePanGesture___block_invoke_2(uint64_t
   y = self->_movement.y;
   [(UIScrollView *)self->_canvasScrollView bounds];
   v6 = x / v5;
-  v7 = [(UIScrollView *)self->_canvasScrollView bounds];
+  bounds = [(UIScrollView *)self->_canvasScrollView bounds];
 
   v8.n128_f64[0] = v6 + 0.5;
   v9.n128_f64[0] = y / v10 + 0.5;
-  TSDContentPlacementWithAnchorPoint(v7, v8, v9);
+  TSDContentPlacementWithAnchorPoint(bounds, v8, v9);
   result.var0.y = v12;
   result.var0.x = v11;
   return result;
 }
 
-- (id)p_currentContentLocationWithPlacement:(id)a3
+- (id)p_currentContentLocationWithPlacement:(id)placement
 {
-  y = a3.var0.y;
-  x = a3.var0.x;
-  v6 = [(UIScrollView *)self->_canvasScrollView layer];
+  y = placement.var0.y;
+  x = placement.var0.x;
+  layer = [(UIScrollView *)self->_canvasScrollView layer];
   [(UIScrollView *)self->_canvasScrollView bounds];
-  [v6 convertRect:self->_canvasLayer toLayer:?];
+  [layer convertRect:self->_canvasLayer toLayer:?];
   v8 = v7;
   [(TSDInteractiveCanvasController *)self->_interactiveCanvasController convertBoundsToUnscaledPoint:?];
   v10 = v9;
@@ -248,12 +248,12 @@ uint64_t __43__TSDGuidedPanController_handlePanGesture___block_invoke_2(uint64_t
   return [(TSDGuidedPanController *)self p_convertContentLocation:v16 fromPlacement:0.0 toPlacement:0.0, x, y];
 }
 
-- (CGPoint)p_boundsOffsetForContentLocation:(id)a3 placement:(id)a4
+- (CGPoint)p_boundsOffsetForContentLocation:(id)location placement:(id)placement
 {
-  y = a4.var0.y;
-  x = a4.var0.x;
+  y = placement.var0.y;
+  x = placement.var0.x;
   interactiveCanvasController = self->_interactiveCanvasController;
-  [a3 unscaledPoint];
+  [location unscaledPoint];
   [(TSDInteractiveCanvasController *)interactiveCanvasController convertUnscaledToBoundsPoint:?];
   v9 = v8;
   v11 = v10;
@@ -270,17 +270,17 @@ uint64_t __43__TSDGuidedPanController_handlePanGesture___block_invoke_2(uint64_t
   return result;
 }
 
-- (CATransform3D)p_transformForContentLocation:(SEL)a3 placement:(id)a4
+- (CATransform3D)p_transformForContentLocation:(SEL)location placement:(id)placement
 {
   [(TSDGuidedPanController *)self p_boundsOffsetForContentLocation:a5.var0.x placement:a5.var0.y];
   v9 = v8;
   v11 = v10;
   interactiveCanvasController = self->_interactiveCanvasController;
-  [a4 unscaledPoint];
+  [placement unscaledPoint];
   [(TSDInteractiveCanvasController *)interactiveCanvasController convertUnscaledToBoundsPoint:?];
   v14 = v13;
   v16 = v15;
-  [a4 viewScale];
+  [placement viewScale];
   v18 = v17;
   [(TSDCanvasLayer *)self->_canvasLayer viewScale];
   result = self->_canvasLayer;
@@ -306,11 +306,11 @@ uint64_t __43__TSDGuidedPanController_handlePanGesture___block_invoke_2(uint64_t
   return result;
 }
 
-- (void)p_scrollToContentLocation:(id)a3 placement:(id)a4
+- (void)p_scrollToContentLocation:(id)location placement:(id)placement
 {
-  if (a3)
+  if (location)
   {
-    v5 = [(TSDGuidedPanController *)self p_convertContentLocation:a4.var0.x fromPlacement:a4.var0.y toPlacement:0.0, 0.0];
+    v5 = [(TSDGuidedPanController *)self p_convertContentLocation:placement.var0.x fromPlacement:placement.var0.y toPlacement:0.0, 0.0];
     interactiveCanvasController = self->_interactiveCanvasController;
     [v5 viewScale];
     v8 = v7;
@@ -321,9 +321,9 @@ uint64_t __43__TSDGuidedPanController_handlePanGesture___block_invoke_2(uint64_t
 
   else
   {
-    v11 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDGuidedPanController p_scrollToContentLocation:placement:]"];
-    [v11 handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGuidedPanController.m"), 239, @"invalid nil value for '%s'", "contentLocation"}];
+    [currentHandler handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGuidedPanController.m"), 239, @"invalid nil value for '%s'", "contentLocation"}];
   }
 }
 

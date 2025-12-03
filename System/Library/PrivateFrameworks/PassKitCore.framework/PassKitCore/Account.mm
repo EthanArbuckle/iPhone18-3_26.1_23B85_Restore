@@ -54,7 +54,7 @@
 {
   v3 = objc_alloc_init(PKAccount);
   v4 = +[Account _propertySettersForAccount];
-  v5 = [v4 allKeys];
+  allKeys = [v4 allKeys];
   v33[0] = _NSConcreteStackBlock;
   v33[1] = 3221225472;
   v33[2] = sub_10000789C;
@@ -63,34 +63,34 @@
   v34 = v6;
   v7 = v3;
   v35 = v7;
-  [(SQLiteEntity *)self getValuesForProperties:v5 withApplier:v33];
+  [(SQLiteEntity *)self getValuesForProperties:allKeys withApplier:v33];
 
-  v8 = [(SQLiteEntity *)self persistentID];
-  v9 = [(SQLiteEntity *)self database];
-  v10 = [AccountAdditionalPushTopics accountAdditionalPushTopicsForAccountPID:v8 inDatabase:v9];
+  persistentID = [(SQLiteEntity *)self persistentID];
+  database = [(SQLiteEntity *)self database];
+  v10 = [AccountAdditionalPushTopics accountAdditionalPushTopicsForAccountPID:persistentID inDatabase:database];
   [v7 setAdditionalPushTopics:v10];
-  v11 = [AccountFetchPeriods accountFetchPeriodsForAccountPID:v8 inDatabase:v9];
+  v11 = [AccountFetchPeriods accountFetchPeriodsForAccountPID:persistentID inDatabase:database];
   [v7 setFetchPeriods:v11];
-  v12 = [v7 type];
-  if (v12 == 4)
+  type = [v7 type];
+  if (type == 4)
   {
-    v26 = [SavingsAccountDetails accountDetailsForAccountPID:v8 inDatabase:v9];
+    v26 = [SavingsAccountDetails accountDetailsForAccountPID:persistentID inDatabase:database];
     [v7 setDetails:v26];
 
-    v27 = [(SQLiteEntity *)self persistentID];
-    v24 = [(SQLiteEntity *)self database];
-    v25 = [SavingsAccountFeatureDescriptor savingsAccountFeatureDescriptorsForAccountPID:v27 inDatabase:v24];
+    persistentID2 = [(SQLiteEntity *)self persistentID];
+    database2 = [(SQLiteEntity *)self database];
+    v25 = [SavingsAccountFeatureDescriptor savingsAccountFeatureDescriptorsForAccountPID:persistentID2 inDatabase:database2];
     goto LABEL_8;
   }
 
-  if (v12 == 3)
+  if (type == 3)
   {
-    v22 = [AppleBalanceAccountDetails accountDetailsForAccountPID:v8 inDatabase:v9];
+    v22 = [AppleBalanceAccountDetails accountDetailsForAccountPID:persistentID inDatabase:database];
     [v7 setDetails:v22];
 
-    v23 = [(SQLiteEntity *)self persistentID];
-    v24 = [(SQLiteEntity *)self database];
-    v25 = [AppleBalanceAccountFeatureDescriptor appleBalanceAccountFeatureDescriptorsForAccountPID:v23 inDatabase:v24];
+    persistentID3 = [(SQLiteEntity *)self persistentID];
+    database2 = [(SQLiteEntity *)self database];
+    v25 = [AppleBalanceAccountFeatureDescriptor appleBalanceAccountFeatureDescriptorsForAccountPID:persistentID3 inDatabase:database2];
 LABEL_8:
     v16 = v25;
 
@@ -98,27 +98,27 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (v12 != 1)
+  if (type != 1)
   {
     goto LABEL_10;
   }
 
-  v13 = [CreditAccountDetails creditAccountDetailsForAccountPID:v8 inDatabase:v9];
+  v13 = [CreditAccountDetails creditAccountDetailsForAccountPID:persistentID inDatabase:database];
   [v7 setDetails:v13];
 
-  v14 = [(SQLiteEntity *)self persistentID];
-  v15 = [(SQLiteEntity *)self database];
-  v16 = [CreditAccountFeatureDescriptor creditAccountFeatureDescriptorsForAccountPID:v14 inDatabase:v15];
+  persistentID4 = [(SQLiteEntity *)self persistentID];
+  database3 = [(SQLiteEntity *)self database];
+  v16 = [CreditAccountFeatureDescriptor creditAccountFeatureDescriptorsForAccountPID:persistentID4 inDatabase:database3];
 
   [v7 setSupportedFeatures:v16];
   v17 = [(SQLiteEntity *)self valueForProperty:@"e"];
-  v18 = [v17 integerValue];
+  integerValue = [v17 integerValue];
 
-  if (v18 == 1)
+  if (integerValue == 1)
   {
-    v19 = [(SQLiteEntity *)self persistentID];
-    v20 = [(SQLiteEntity *)self database];
-    v21 = [AccountUser countOfActivePrimaryUsersForAccountPID:v19 inDatabase:v20];
+    persistentID5 = [(SQLiteEntity *)self persistentID];
+    database4 = [(SQLiteEntity *)self database];
+    v21 = [AccountUser countOfActivePrimaryUsersForAccountPID:persistentID5 inDatabase:database4];
 
     [v7 setCoOwner:v21 > 1];
   }
@@ -126,9 +126,9 @@ LABEL_8:
 LABEL_9:
 
 LABEL_10:
-  v28 = [v7 accountIdentifier];
+  accountIdentifier = [v7 accountIdentifier];
 
-  if (v28)
+  if (accountIdentifier)
   {
     v29 = v7;
   }

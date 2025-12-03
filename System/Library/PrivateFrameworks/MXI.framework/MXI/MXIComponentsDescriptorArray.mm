@@ -1,6 +1,6 @@
 @interface MXIComponentsDescriptorArray
 - (MXIComponentsDescriptorArray)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation MXIComponentsDescriptorArray
@@ -38,7 +38,7 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MXIComponentsDescriptorArray);
   v9 = objc_msgSend_copy(self->_components, v5, v6, v7, v8);

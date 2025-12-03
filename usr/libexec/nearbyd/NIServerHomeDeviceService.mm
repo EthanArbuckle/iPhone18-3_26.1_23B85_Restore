@@ -4,8 +4,8 @@
 - (id)_internalPrintableState;
 - (id)printableState;
 - (void)_processCommonConfiguration;
-- (void)addServiceClient:(id)a3 identifier:(id)a4 configuration:(id)a5;
-- (void)removeServiceClientWithIdentifier:(id)a3;
+- (void)addServiceClient:(id)client identifier:(id)identifier configuration:(id)configuration;
+- (void)removeServiceClientWithIdentifier:(id)identifier;
 @end
 
 @implementation NIServerHomeDeviceService
@@ -53,12 +53,12 @@
   return v2;
 }
 
-- (void)addServiceClient:(id)a3 identifier:(id)a4 configuration:(id)a5
+- (void)addServiceClient:(id)client identifier:(id)identifier configuration:(id)configuration
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  clientCopy = client;
+  identifierCopy = identifier;
+  configurationCopy = configuration;
+  if (clientCopy)
   {
     queue = self->_queue;
     v12[0] = _NSConcreteStackBlock;
@@ -66,24 +66,24 @@
     v12[2] = sub_100231D10;
     v12[3] = &unk_10099C2A0;
     v12[4] = self;
-    v13 = v9;
-    v14 = v10;
-    v15 = v8;
+    v13 = identifierCopy;
+    v14 = configurationCopy;
+    v15 = clientCopy;
     dispatch_sync(queue, v12);
   }
 }
 
-- (void)removeServiceClientWithIdentifier:(id)a3
+- (void)removeServiceClientWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100231F48;
   v7[3] = &unk_10098A2E8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = identifierCopy;
+  selfCopy = self;
+  v6 = identifierCopy;
   dispatch_async(queue, v7);
 }
 
@@ -136,22 +136,22 @@
   v7[3] = &unk_10099FAD8;
   v7[4] = &v8;
   [(NSMutableDictionary *)configurations enumerateKeysAndObjectsUsingBlock:v7];
-  v4 = [(NSMapTable *)self->_clients objectEnumerator];
+  objectEnumerator = [(NSMapTable *)self->_clients objectEnumerator];
   v5 = 0;
   while (1)
   {
-    v6 = [v4 nextObject];
+    nextObject = [objectEnumerator nextObject];
 
-    if (!v6)
+    if (!nextObject)
     {
       break;
     }
 
-    v5 = v6;
+    v5 = nextObject;
     if (objc_opt_respondsToSelector())
     {
-      v5 = v6;
-      [v6 didUpdateMinimumPreferredUpdateRate:v9[3]];
+      v5 = nextObject;
+      [nextObject didUpdateMinimumPreferredUpdateRate:v9[3]];
     }
   }
 

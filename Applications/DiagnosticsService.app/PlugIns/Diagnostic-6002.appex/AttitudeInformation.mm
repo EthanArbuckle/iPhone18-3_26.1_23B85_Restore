@@ -1,27 +1,27 @@
 @interface AttitudeInformation
 - (AttitudeInformation)init;
 - (double)l2Norm;
-- (id)init:(id)a3;
-- (id)subtract:(id)a3;
+- (id)init:(id)init;
+- (id)subtract:(id)subtract;
 @end
 
 @implementation AttitudeInformation
 
-- (id)init:(id)a3
+- (id)init:(id)init
 {
-  v4 = a3;
+  initCopy = init;
   v12.receiver = self;
   v12.super_class = AttitudeInformation;
   v5 = [(AttitudeInformation *)&v12 init];
   v6 = v5;
   v7 = 0;
-  if (v4 && v5)
+  if (initCopy && v5)
   {
-    [v4 pitch];
+    [initCopy pitch];
     v6->information[0] = v8;
-    [v4 roll];
+    [initCopy roll];
     v6->information[1] = v9;
-    [v4 yaw];
+    [initCopy yaw];
     v6->information[2] = v10;
     v7 = v6;
   }
@@ -43,14 +43,14 @@
   return v3;
 }
 
-- (id)subtract:(id)a3
+- (id)subtract:(id)subtract
 {
-  v4 = a3;
+  subtractCopy = subtract;
   v5 = objc_opt_new();
   v6 = v5;
   for (i = 8; i != 32; i += 8)
   {
-    *(v5 + i) = *(&self->super.isa + i) - *&v4[i];
+    *(v5 + i) = *(&self->super.isa + i) - *&subtractCopy[i];
   }
 
   return v6;

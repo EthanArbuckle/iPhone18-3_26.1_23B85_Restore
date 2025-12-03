@@ -1,16 +1,16 @@
 @interface CRLNSObjectAccessibility_iOS
-+ (id)crlaxCastFrom:(id)a3;
++ (id)crlaxCastFrom:(id)from;
 - (BOOL)_accessibilityServesAsFirstElement;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation CRLNSObjectAccessibility_iOS
 
-+ (id)crlaxCastFrom:(id)a3
++ (id)crlaxCastFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 0, 0);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, fromCopy, 0, 0);
 
   return v5;
 }
@@ -18,9 +18,9 @@
 - (BOOL)_accessibilityServesAsFirstElement
 {
   v3 = +[CRLAccessibility sharedInstance];
-  v4 = [v3 _firstElementForUpcomingScreenChange];
+  _firstElementForUpcomingScreenChange = [v3 _firstElementForUpcomingScreenChange];
 
-  if (v4 == self)
+  if (_firstElementForUpcomingScreenChange == self)
   {
     return 1;
   }

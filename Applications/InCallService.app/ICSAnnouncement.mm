@@ -2,11 +2,11 @@
 - (AVSpeechSynthesizer)speechSynthesizer;
 - (ICSAnnouncement)init;
 - (void)pause;
-- (void)speechSynthesizer:(id)a3 didCancelSpeechUtterance:(id)a4;
-- (void)speechSynthesizer:(id)a3 didContinueSpeechUtterance:(id)a4;
-- (void)speechSynthesizer:(id)a3 didFinishSpeechUtterance:(id)a4;
-- (void)speechSynthesizer:(id)a3 didPauseSpeechUtterance:(id)a4;
-- (void)speechSynthesizer:(id)a3 didStartSpeechUtterance:(id)a4;
+- (void)speechSynthesizer:(id)synthesizer didCancelSpeechUtterance:(id)utterance;
+- (void)speechSynthesizer:(id)synthesizer didContinueSpeechUtterance:(id)utterance;
+- (void)speechSynthesizer:(id)synthesizer didFinishSpeechUtterance:(id)utterance;
+- (void)speechSynthesizer:(id)synthesizer didPauseSpeechUtterance:(id)utterance;
+- (void)speechSynthesizer:(id)synthesizer didStartSpeechUtterance:(id)utterance;
 - (void)start;
 - (void)stop;
 @end
@@ -28,30 +28,30 @@
 
 - (void)pause
 {
-  v2 = [(ICSAnnouncement *)self speechSynthesizer];
-  [v2 pauseSpeakingAtBoundary:1];
+  speechSynthesizer = [(ICSAnnouncement *)self speechSynthesizer];
+  [speechSynthesizer pauseSpeakingAtBoundary:1];
 }
 
 - (void)start
 {
-  v3 = [(ICSAnnouncement *)self text];
-  v4 = [AVSpeechUtterance speechUtteranceWithString:v3];
+  text = [(ICSAnnouncement *)self text];
+  v4 = [AVSpeechUtterance speechUtteranceWithString:text];
   [(ICSAnnouncement *)self setSpeechUtterance:v4];
 
   [(ICSAnnouncement *)self delay];
   v6 = v5;
-  v7 = [(ICSAnnouncement *)self speechUtterance];
-  [v7 setPreUtteranceDelay:v6];
+  speechUtterance = [(ICSAnnouncement *)self speechUtterance];
+  [speechUtterance setPreUtteranceDelay:v6];
 
-  v9 = [(ICSAnnouncement *)self speechSynthesizer];
-  v8 = [(ICSAnnouncement *)self speechUtterance];
-  [v9 speakUtterance:v8];
+  speechSynthesizer = [(ICSAnnouncement *)self speechSynthesizer];
+  speechUtterance2 = [(ICSAnnouncement *)self speechUtterance];
+  [speechSynthesizer speakUtterance:speechUtterance2];
 }
 
 - (void)stop
 {
-  v2 = [(ICSAnnouncement *)self speechSynthesizer];
-  [v2 stopSpeakingAtBoundary:1];
+  speechSynthesizer = [(ICSAnnouncement *)self speechSynthesizer];
+  [speechSynthesizer stopSpeakingAtBoundary:1];
 }
 
 - (AVSpeechSynthesizer)speechSynthesizer
@@ -70,7 +70,7 @@
   return speechSynthesizer;
 }
 
-- (void)speechSynthesizer:(id)a3 didStartSpeechUtterance:(id)a4
+- (void)speechSynthesizer:(id)synthesizer didStartSpeechUtterance:(id)utterance
 {
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -79,31 +79,31 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "", v9, 2u);
   }
 
-  v6 = [(ICSAnnouncement *)self delegate];
+  delegate = [(ICSAnnouncement *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(ICSAnnouncement *)self delegate];
-    [v8 announcementDidStart:self];
+    delegate2 = [(ICSAnnouncement *)self delegate];
+    [delegate2 announcementDidStart:self];
   }
 }
 
-- (void)speechSynthesizer:(id)a3 didFinishSpeechUtterance:(id)a4
+- (void)speechSynthesizer:(id)synthesizer didFinishSpeechUtterance:(id)utterance
 {
-  [(ICSAnnouncement *)self setSpeechUtterance:0, a4];
+  [(ICSAnnouncement *)self setSpeechUtterance:0, utterance];
   [(ICSAnnouncement *)self setText:0];
-  v5 = [(ICSAnnouncement *)self delegate];
+  delegate = [(ICSAnnouncement *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(ICSAnnouncement *)self delegate];
-    [v7 announcementDidFinish:self];
+    delegate2 = [(ICSAnnouncement *)self delegate];
+    [delegate2 announcementDidFinish:self];
   }
 }
 
-- (void)speechSynthesizer:(id)a3 didPauseSpeechUtterance:(id)a4
+- (void)speechSynthesizer:(id)synthesizer didPauseSpeechUtterance:(id)utterance
 {
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -112,17 +112,17 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "", v9, 2u);
   }
 
-  v6 = [(ICSAnnouncement *)self delegate];
+  delegate = [(ICSAnnouncement *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(ICSAnnouncement *)self delegate];
-    [v8 announcementDidPause:self];
+    delegate2 = [(ICSAnnouncement *)self delegate];
+    [delegate2 announcementDidPause:self];
   }
 }
 
-- (void)speechSynthesizer:(id)a3 didContinueSpeechUtterance:(id)a4
+- (void)speechSynthesizer:(id)synthesizer didContinueSpeechUtterance:(id)utterance
 {
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -131,20 +131,20 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "", v9, 2u);
   }
 
-  v6 = [(ICSAnnouncement *)self delegate];
+  delegate = [(ICSAnnouncement *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(ICSAnnouncement *)self delegate];
-    [v8 announcementDidContinue:self];
+    delegate2 = [(ICSAnnouncement *)self delegate];
+    [delegate2 announcementDidContinue:self];
   }
 }
 
-- (void)speechSynthesizer:(id)a3 didCancelSpeechUtterance:(id)a4
+- (void)speechSynthesizer:(id)synthesizer didCancelSpeechUtterance:(id)utterance
 {
-  v6 = a4;
-  v7 = a3;
+  utteranceCopy = utterance;
+  synthesizerCopy = synthesizer;
   v8 = sub_100004F84();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -152,7 +152,7 @@
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "", v9, 2u);
   }
 
-  [(ICSAnnouncement *)self speechSynthesizer:v7 didFinishSpeechUtterance:v6];
+  [(ICSAnnouncement *)self speechSynthesizer:synthesizerCopy didFinishSpeechUtterance:utteranceCopy];
 }
 
 @end

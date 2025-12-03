@@ -1,55 +1,55 @@
 @interface RMStoreUnresolvedKeychainAsset
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToUnresolvedKeychainAsset:(id)a3;
-- (RMStoreUnresolvedKeychainAsset)initWithAsset:(id)a3 assetKey:(id)a4 configurationKey:(id)a5 group:(id)a6 defaultAccessibility:(id)a7;
-- (RMStoreUnresolvedKeychainAsset)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToUnresolvedKeychainAsset:(id)asset;
+- (RMStoreUnresolvedKeychainAsset)initWithAsset:(id)asset assetKey:(id)key configurationKey:(id)configurationKey group:(id)group defaultAccessibility:(id)accessibility;
+- (RMStoreUnresolvedKeychainAsset)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RMStoreUnresolvedKeychainAsset
 
-- (RMStoreUnresolvedKeychainAsset)initWithAsset:(id)a3 assetKey:(id)a4 configurationKey:(id)a5 group:(id)a6 defaultAccessibility:(id)a7
+- (RMStoreUnresolvedKeychainAsset)initWithAsset:(id)asset assetKey:(id)key configurationKey:(id)configurationKey group:(id)group defaultAccessibility:(id)accessibility
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  keyCopy = key;
+  configurationKeyCopy = configurationKey;
+  groupCopy = group;
+  accessibilityCopy = accessibility;
   v20.receiver = self;
   v20.super_class = RMStoreUnresolvedKeychainAsset;
-  v17 = [(RMStoreUnresolvedAsset *)&v20 initWithAsset:a3 queryParameters:0 useCache:0];
+  v17 = [(RMStoreUnresolvedAsset *)&v20 initWithAsset:asset queryParameters:0 useCache:0];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_assetKey, a4);
-    objc_storeStrong(&v18->_configurationKey, a5);
-    objc_storeStrong(&v18->_keychainGroup, a6);
-    objc_storeStrong(&v18->_keychainDefaultAccessibility, a7);
+    objc_storeStrong(&v17->_assetKey, key);
+    objc_storeStrong(&v18->_configurationKey, configurationKey);
+    objc_storeStrong(&v18->_keychainGroup, group);
+    objc_storeStrong(&v18->_keychainDefaultAccessibility, accessibility);
   }
 
   return v18;
 }
 
-- (RMStoreUnresolvedKeychainAsset)initWithCoder:(id)a3
+- (RMStoreUnresolvedKeychainAsset)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = RMStoreUnresolvedKeychainAsset;
-  v5 = [(RMStoreUnresolvedAsset *)&v15 initWithCoder:v4];
+  v5 = [(RMStoreUnresolvedAsset *)&v15 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"asset-key"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"asset-key"];
     assetKey = v5->_assetKey;
     v5->_assetKey = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"configuration-key"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"configuration-key"];
     configurationKey = v5->_configurationKey;
     v5->_configurationKey = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"keychain-group"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"keychain-group"];
     keychainGroup = v5->_keychainGroup;
     v5->_keychainGroup = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"keychain-default-accessibility"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"keychain-default-accessibility"];
     keychainDefaultAccessibility = v5->_keychainDefaultAccessibility;
     v5->_keychainDefaultAccessibility = v12;
   }
@@ -57,42 +57,42 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = RMStoreUnresolvedKeychainAsset;
-  v4 = a3;
-  [(RMStoreUnresolvedAsset *)&v9 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(RMStoreUnresolvedAsset *)&v9 encodeWithCoder:coderCopy];
   v5 = [(RMStoreUnresolvedKeychainAsset *)self assetKey:v9.receiver];
-  [v4 encodeObject:v5 forKey:@"asset-key"];
+  [coderCopy encodeObject:v5 forKey:@"asset-key"];
 
-  v6 = [(RMStoreUnresolvedKeychainAsset *)self configurationKey];
-  [v4 encodeObject:v6 forKey:@"configuration-key"];
+  configurationKey = [(RMStoreUnresolvedKeychainAsset *)self configurationKey];
+  [coderCopy encodeObject:configurationKey forKey:@"configuration-key"];
 
-  v7 = [(RMStoreUnresolvedKeychainAsset *)self keychainGroup];
-  [v4 encodeObject:v7 forKey:@"keychain-group"];
+  keychainGroup = [(RMStoreUnresolvedKeychainAsset *)self keychainGroup];
+  [coderCopy encodeObject:keychainGroup forKey:@"keychain-group"];
 
-  v8 = [(RMStoreUnresolvedKeychainAsset *)self keychainDefaultAccessibility];
-  [v4 encodeObject:v8 forKey:@"keychain-default-accessibility"];
+  keychainDefaultAccessibility = [(RMStoreUnresolvedKeychainAsset *)self keychainDefaultAccessibility];
+  [coderCopy encodeObject:keychainDefaultAccessibility forKey:@"keychain-default-accessibility"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = RMStoreUnresolvedKeychainAsset;
-  v5 = [(RMStoreUnresolvedAsset *)&v7 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(RMStoreUnresolvedKeychainAsset *)self isEqualToUnresolvedKeychainAsset:v4];
+  v5 = [(RMStoreUnresolvedAsset *)&v7 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(RMStoreUnresolvedKeychainAsset *)self isEqualToUnresolvedKeychainAsset:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToUnresolvedKeychainAsset:(id)a3
+- (BOOL)isEqualToUnresolvedKeychainAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [(RMStoreUnresolvedKeychainAsset *)self assetKey];
-  v6 = [v4 assetKey];
-  v7 = v5;
-  v8 = v6;
+  assetCopy = asset;
+  assetKey = [(RMStoreUnresolvedKeychainAsset *)self assetKey];
+  assetKey2 = [assetCopy assetKey];
+  v7 = assetKey;
+  v8 = assetKey2;
   v9 = v8;
   if (v7 == v8)
   {
@@ -113,10 +113,10 @@
   if (v13)
   {
 LABEL_7:
-    v14 = [(RMStoreUnresolvedKeychainAsset *)self configurationKey];
-    v15 = [v4 configurationKey];
-    v12 = v14;
-    v16 = v15;
+    configurationKey = [(RMStoreUnresolvedKeychainAsset *)self configurationKey];
+    configurationKey2 = [assetCopy configurationKey];
+    v12 = configurationKey;
+    v16 = configurationKey2;
     v11 = v16;
     if (v12 == v16)
     {
@@ -143,12 +143,12 @@ LABEL_27:
       }
     }
 
-    v20 = [(RMStoreUnresolvedKeychainAsset *)self keychainGroup];
-    v21 = [v4 keychainGroup];
-    v18 = v20;
-    v22 = v21;
+    keychainGroup = [(RMStoreUnresolvedKeychainAsset *)self keychainGroup];
+    keychainGroup2 = [assetCopy keychainGroup];
+    v18 = keychainGroup;
+    v22 = keychainGroup2;
     v17 = v22;
-    v30 = v4;
+    v30 = assetCopy;
     if (v18 == v22)
     {
     }
@@ -162,13 +162,13 @@ LABEL_27:
       {
 LABEL_25:
 
-        v4 = v30;
+        assetCopy = v30;
         goto LABEL_26;
       }
 
       v25 = [v18 isEqual:v22];
 
-      v4 = v30;
+      assetCopy = v30;
       if (!v25)
       {
         v10 = 0;
@@ -178,10 +178,10 @@ LABEL_26:
       }
     }
 
-    v26 = [(RMStoreUnresolvedKeychainAsset *)self keychainDefaultAccessibility];
-    v27 = [v4 keychainDefaultAccessibility];
-    v24 = v26;
-    v28 = v27;
+    keychainDefaultAccessibility = [(RMStoreUnresolvedKeychainAsset *)self keychainDefaultAccessibility];
+    keychainDefaultAccessibility2 = [assetCopy keychainDefaultAccessibility];
+    v24 = keychainDefaultAccessibility;
+    v28 = keychainDefaultAccessibility2;
     v23 = v28;
     if (v24 == v28)
     {

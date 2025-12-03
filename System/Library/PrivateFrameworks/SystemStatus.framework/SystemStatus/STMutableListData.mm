@@ -1,54 +1,54 @@
 @interface STMutableListData
-- (BOOL)applyDiff:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setObjects:(id)a3;
+- (BOOL)applyDiff:(id)diff;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setObjects:(id)objects;
 @end
 
 @implementation STMutableListData
 
-- (void)setObjects:(id)a3
+- (void)setObjects:(id)objects
 {
-  v10 = a3;
-  v4 = [(NSMutableArray *)self->super._objects isEqual:v10];
-  v5 = v10;
+  objectsCopy = objects;
+  v4 = [(NSMutableArray *)self->super._objects isEqual:objectsCopy];
+  v5 = objectsCopy;
   if ((v4 & 1) == 0)
   {
-    v6 = [v10 mutableCopy];
+    v6 = [objectsCopy mutableCopy];
     v7 = v6;
     if (v6)
     {
-      v8 = v6;
+      array = v6;
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
     }
 
     objects = self->super._objects;
-    self->super._objects = v8;
+    self->super._objects = array;
 
-    v5 = v10;
+    v5 = objectsCopy;
   }
 
   MEMORY[0x1EEE66BB8](v4, v5);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [STListData allocWithZone:a3];
+  v4 = [STListData allocWithZone:zone];
 
   return [(STListData *)v4 initWithListData:?];
 }
 
-- (BOOL)applyDiff:(id)a3
+- (BOOL)applyDiff:(id)diff
 {
-  v4 = a3;
+  diffCopy = diff;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
   {
-    [v4 applyToMutableListData:self];
+    [diffCopy applyToMutableListData:self];
   }
 
   return isKindOfClass & 1;

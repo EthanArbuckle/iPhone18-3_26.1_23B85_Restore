@@ -1,20 +1,20 @@
 @interface HeadphoneMovieBatteryViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityOverridesInvalidFrames;
 - (CGRect)accessibilityFrame;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axSetupLabels;
-- (void)willMoveToSuperview:(id)a3;
+- (void)willMoveToSuperview:(id)superview;
 @end
 
 @implementation HeadphoneMovieBatteryViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HeadphoneProxService.HeadphoneMovieBatteryView"];
-  [v3 validateClass:@"HeadphoneProxService.HeadphoneMovieBatteryView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"HeadphoneProxService.HeadphoneMovieBatteryView" hasSwiftField:@"batteryViews" withSwiftType:"Array<LabelledBatteryView>"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HeadphoneProxService.HeadphoneMovieBatteryView"];
+  [validationsCopy validateClass:@"HeadphoneProxService.HeadphoneMovieBatteryView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"HeadphoneProxService.HeadphoneMovieBatteryView" hasSwiftField:@"batteryViews" withSwiftType:"Array<LabelledBatteryView>"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -54,11 +54,11 @@
   {
     objc_opt_class();
     v10 = __UIAccessibilityCastAsClass();
-    v11 = [v10 superview];
-    v12 = v11;
-    if (v11)
+    superview = [v10 superview];
+    v12 = superview;
+    if (superview)
     {
-      [v11 accessibilityFrame];
+      [superview accessibilityFrame];
       v5 = v13;
       v7 = v14;
       v8 = v15;
@@ -77,11 +77,11 @@
   return result;
 }
 
-- (void)willMoveToSuperview:(id)a3
+- (void)willMoveToSuperview:(id)superview
 {
   v4.receiver = self;
   v4.super_class = HeadphoneMovieBatteryViewAccessibility;
-  [(HeadphoneMovieBatteryViewAccessibility *)&v4 willMoveToSuperview:a3];
+  [(HeadphoneMovieBatteryViewAccessibility *)&v4 willMoveToSuperview:superview];
   [(HeadphoneMovieBatteryViewAccessibility *)self _axSetupLabels];
 }
 

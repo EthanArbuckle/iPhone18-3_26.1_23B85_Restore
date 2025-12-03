@@ -4,25 +4,25 @@
 - (BOOL)isMicLocal;
 - (BOOL)isMicStreaming;
 - (CSShieldManager)init;
-- (id)_requestClient:(BOOL)a3;
+- (id)_requestClient:(BOOL)client;
 - (id)observersCopy;
 - (void)_bootstrapRequestClientIfNeededAndAvailable;
 - (void)_finishLoading;
-- (void)_handleCallNotification:(id)a3;
+- (void)_handleCallNotification:(id)notification;
 - (void)_invalidateRequestClient;
 - (void)_notifyDisconnect;
-- (void)_requestInitialSessionStateWithCompletion:(id)a3;
+- (void)_requestInitialSessionStateWithCompletion:(id)completion;
 - (void)_setupCallNotificationsListener;
 - (void)_setupPlaybackManager;
-- (void)_updateSessionState:(id)a3;
-- (void)addObserver:(id)a3;
+- (void)_updateSessionState:(id)state;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
 - (void)exitRapportSession;
 - (void)exitSingSession;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)removeObserver:(id)a3;
-- (void)requestMicrophoneActivationWithCompletion:(id)a3;
-- (void)updateReverbLevel:(int64_t)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)removeObserver:(id)observer;
+- (void)requestMicrophoneActivationWithCompletion:(id)completion;
+- (void)updateReverbLevel:(int64_t)level;
 @end
 
 @implementation CSShieldManager
@@ -53,13 +53,13 @@ uint64_t __32__CSShieldManager_sharedManager__block_invoke()
   v2 = [(CSShieldManager *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v2->_observers;
-    v2->_observers = v3;
+    v2->_observers = weakObjectsHashTable;
 
     v2->_loading = 1;
-    v5 = [MEMORY[0x277CF6C50] sharedInstance];
-    [v5 addObserver:v2 forKeyPath:*MEMORY[0x277CF6C30] options:0 context:0];
+    mEMORY[0x277CF6C50] = [MEMORY[0x277CF6C50] sharedInstance];
+    [mEMORY[0x277CF6C50] addObserver:v2 forKeyPath:*MEMORY[0x277CF6C30] options:0 context:0];
 
     v6 = objc_alloc_init(MEMORY[0x277D441E0]);
     remoteDisplayDiscovery = v2->_remoteDisplayDiscovery;
@@ -76,20 +76,20 @@ uint64_t __32__CSShieldManager_sharedManager__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = CSShieldManager;
   [(CSShieldManager *)&v4 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([v10 isEqualToString:*MEMORY[0x277CF6C30]])
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if ([pathCopy isEqualToString:*MEMORY[0x277CF6C30]])
   {
     [(CSShieldManager *)self _bootstrapRequestClientIfNeededAndAvailable];
   }
@@ -98,38 +98,38 @@ uint64_t __32__CSShieldManager_sharedManager__block_invoke()
   {
     v13.receiver = self;
     v13.super_class = CSShieldManager;
-    [(CSShieldManager *)&v13 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(CSShieldManager *)&v13 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSHashTable *)v4->_observers addObject:v5];
-  objc_sync_exit(v4);
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSHashTable *)selfCopy->_observers addObject:observerCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSHashTable *)v4->_observers removeObject:v5];
-  objc_sync_exit(v4);
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSHashTable *)selfCopy->_observers removeObject:observerCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)updateReverbLevel:(int64_t)a3
+- (void)updateReverbLevel:(int64_t)level
 {
-  if ([(CSSingSessionState *)self->_sessionState reverbLevel]!= a3)
+  if ([(CSSingSessionState *)self->_sessionState reverbLevel]!= level)
   {
     v5 = [CSSingSessionState alloc];
     [(CSSingSessionState *)self->_sessionState micVolume];
     v7 = v6;
-    v8 = [(CSSingSessionState *)self->_sessionState activeMicRemoteDisplayID];
-    v9 = [(CSSingSessionState *)self->_sessionState participants];
-    v10 = [(CSSingSessionState *)v5 initWithMicVolume:a3 reverbLevel:v8 activeMicRemoteDisplayID:v9 participants:[(CSSingSessionState *)self->_sessionState sdrMode] sdrMode:v7];
+    activeMicRemoteDisplayID = [(CSSingSessionState *)self->_sessionState activeMicRemoteDisplayID];
+    participants = [(CSSingSessionState *)self->_sessionState participants];
+    v10 = [(CSSingSessionState *)v5 initWithMicVolume:level reverbLevel:activeMicRemoteDisplayID activeMicRemoteDisplayID:participants participants:[(CSSingSessionState *)self->_sessionState sdrMode] sdrMode:v7];
 
     [(CSShieldManager *)self _updateSessionState:v10];
   }
@@ -137,26 +137,26 @@ uint64_t __32__CSShieldManager_sharedManager__block_invoke()
 
 - (void)_setupCallNotificationsListener
 {
-  v3 = [MEMORY[0x277D6EDF8] sharedInstance];
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 addObserver:self selector:sel__handleCallNotification_ name:*MEMORY[0x277D6EFF0] object:0];
+  mEMORY[0x277D6EDF8] = [MEMORY[0x277D6EDF8] sharedInstance];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__handleCallNotification_ name:*MEMORY[0x277D6EFF0] object:0];
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 addObserver:self selector:sel__handleCallNotification_ name:*MEMORY[0x277D6F038] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel__handleCallNotification_ name:*MEMORY[0x277D6F038] object:0];
 }
 
-- (void)_handleCallNotification:(id)a3
+- (void)_handleCallNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v5 = [v4 object];
+  object = [notificationCopy object];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [v4 object];
-    if ([v7 status] == 1 && (objc_msgSend(v7, "isScreening") & 1) == 0)
+    object2 = [notificationCopy object];
+    if ([object2 status] == 1 && (objc_msgSend(object2, "isScreening") & 1) == 0)
     {
       v8 = ContinuitySingLog();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -164,9 +164,9 @@ uint64_t __32__CSShieldManager_sharedManager__block_invoke()
         v9 = 136315650;
         v10 = "[CSShieldManager _handleCallNotification:]";
         v11 = 2112;
-        v12 = self;
+        selfCopy = self;
         v13 = 2112;
-        v14 = v7;
+        v14 = object2;
         _os_log_impl(&dword_2441FB000, v8, OS_LOG_TYPE_DEFAULT, "%s: %@ User answered call, lets disconnect Sing %@", &v9, 0x20u);
       }
 
@@ -177,64 +177,64 @@ uint64_t __32__CSShieldManager_sharedManager__block_invoke()
 
 - (id)observersCopy
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSHashTable *)v2->_observers copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSHashTable *)selfCopy->_observers copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (id)_requestClient:(BOOL)a3
+- (id)_requestClient:(BOOL)client
 {
-  if (a3)
+  if (client)
   {
     [(CSShieldManager *)self _bootstrapRequestClientIfNeededAndAvailable];
   }
 
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = v4->_requestClient;
-  objc_sync_exit(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = selfCopy->_requestClient;
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
 
 - (void)_invalidateRequestClient
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = ContinuitySingLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    requestClient = v2->_requestClient;
+    requestClient = selfCopy->_requestClient;
     v6 = 136315650;
     v7 = "[CSShieldManager _invalidateRequestClient]";
     v8 = 2112;
-    v9 = v2;
+    v9 = selfCopy;
     v10 = 2112;
     v11 = requestClient;
     _os_log_impl(&dword_2441FB000, v3, OS_LOG_TYPE_DEFAULT, "%s: %@ _invalidateRequestClient %@", &v6, 0x20u);
   }
 
-  v5 = v2->_requestClient;
-  v2->_requestClient = 0;
+  v5 = selfCopy->_requestClient;
+  selfCopy->_requestClient = 0;
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)_bootstrapRequestClientIfNeededAndAvailable
 {
   v3 = [(CSShieldManager *)self _requestClient:0];
-  v4 = [MEMORY[0x277CF6C50] sharedInstance];
-  v5 = [v4 activeConfiguration];
+  mEMORY[0x277CF6C50] = [MEMORY[0x277CF6C50] sharedInstance];
+  activeConfiguration = [mEMORY[0x277CF6C50] activeConfiguration];
 
-  v6 = [v5 remoteDisplayIdentifier];
-  v7 = [v5 participantInfo];
-  v8 = v7;
-  if (v6)
+  remoteDisplayIdentifier = [activeConfiguration remoteDisplayIdentifier];
+  participantInfo = [activeConfiguration participantInfo];
+  v8 = participantInfo;
+  if (remoteDisplayIdentifier)
   {
-    v9 = v7 == 0;
+    v9 = participantInfo == 0;
   }
 
   else
@@ -250,9 +250,9 @@ uint64_t __32__CSShieldManager_sharedManager__block_invoke()
       *buf = 136315906;
       v22 = "[CSShieldManager _bootstrapRequestClientIfNeededAndAvailable]";
       v23 = 2112;
-      v24 = self;
+      selfCopy = self;
       v25 = 2112;
-      v26 = v6;
+      v26 = remoteDisplayIdentifier;
       v27 = 2112;
       v28 = v8;
       _os_log_impl(&dword_2441FB000, v11, OS_LOG_TYPE_DEFAULT, "%s: %@ bootstrapping continuity sing client link with remote display identifier %@; local participant info %@", buf, 0x2Au);
@@ -272,11 +272,11 @@ uint64_t __32__CSShieldManager_sharedManager__block_invoke()
     v17[3] = &unk_278E0AFB0;
     objc_copyWeak(&v18, buf);
     v17[4] = self;
-    v3 = [(CSRemoteRequestClient *)v13 initWithRemoteDisplayIdentifier:v6 participantInfo:v8 disconnectHandler:v12 connectionCompletionHandler:v17];
-    v14 = self;
-    objc_sync_enter(v14);
-    objc_storeStrong(&v14->_requestClient, v3);
-    objc_sync_exit(v14);
+    v3 = [(CSRemoteRequestClient *)v13 initWithRemoteDisplayIdentifier:remoteDisplayIdentifier participantInfo:v8 disconnectHandler:v12 connectionCompletionHandler:v17];
+    selfCopy2 = self;
+    objc_sync_enter(selfCopy2);
+    objc_storeStrong(&selfCopy2->_requestClient, v3);
+    objc_sync_exit(selfCopy2);
 
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
@@ -420,8 +420,8 @@ void __36__CSShieldManager__notifyDisconnect__block_invoke(uint64_t a1)
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(CSShieldManager *)self observersCopy];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v9 count:16];
+  observersCopy = [(CSShieldManager *)self observersCopy];
+  v4 = [observersCopy countByEnumeratingWithState:&v10 objects:v9 count:16];
   if (v4)
   {
     v5 = v4;
@@ -433,7 +433,7 @@ void __36__CSShieldManager__notifyDisconnect__block_invoke(uint64_t a1)
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(observersCopy);
         }
 
         v8 = *(*(&v10 + 1) + 8 * v7);
@@ -446,7 +446,7 @@ void __36__CSShieldManager__notifyDisconnect__block_invoke(uint64_t a1)
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v9 count:16];
+      v5 = [observersCopy countByEnumeratingWithState:&v10 objects:v9 count:16];
     }
 
     while (v5);
@@ -462,17 +462,17 @@ void __36__CSShieldManager__notifyDisconnect__block_invoke(uint64_t a1)
   MEMORY[0x2821F96F8]();
 }
 
-- (void)_requestInitialSessionStateWithCompletion:(id)a3
+- (void)_requestInitialSessionStateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [(CSShieldManager *)self _requestClient:0];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __61__CSShieldManager__requestInitialSessionStateWithCompletion___block_invoke;
   v7[3] = &unk_278E0B4E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [v5 retrieveSessionState:v7];
 }
 
@@ -514,42 +514,42 @@ uint64_t __61__CSShieldManager__requestInitialSessionStateWithCompletion___block
   return (*(*(a1 + 56) + 16))();
 }
 
-- (void)_updateSessionState:(id)a3
+- (void)_updateSessionState:(id)state
 {
-  v5 = a3;
+  stateCopy = state;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  objc_storeStrong(&self->_sessionState, a3);
+  objc_storeStrong(&self->_sessionState, state);
   v6 = ContinuitySingLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 activeMicRemoteDisplayID];
-    v8 = NSStringFromCSReverbLevel([v5 reverbLevel]);
+    activeMicRemoteDisplayID = [stateCopy activeMicRemoteDisplayID];
+    v8 = NSStringFromCSReverbLevel([stateCopy reverbLevel]);
     *buf = 136315906;
     v25 = "[CSShieldManager _updateSessionState:]";
     v26 = 2112;
-    v27 = v5;
+    v27 = stateCopy;
     v28 = 2112;
-    v29 = v7;
+    v29 = activeMicRemoteDisplayID;
     v30 = 2112;
     v31 = v8;
     _os_log_impl(&dword_2441FB000, v6, OS_LOG_TYPE_DEFAULT, "%s: Session State updated to %@.\nActive mic remote display identifier %@\nReverb:%@", buf, 0x2Au);
   }
 
-  v9 = [v5 activeMicRemoteDisplayID];
-  if (v9 && ![(CSShieldManager *)self isMicLocal])
+  activeMicRemoteDisplayID2 = [stateCopy activeMicRemoteDisplayID];
+  if (activeMicRemoteDisplayID2 && ![(CSShieldManager *)self isMicLocal])
   {
-    v16 = [(CSShieldManager *)self isInSession];
+    isInSession = [(CSShieldManager *)self isInSession];
 
-    if (v16)
+    if (isInSession)
     {
       v17 = ContinuitySingLog();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
-        v18 = [v5 activeMicRemoteDisplayID];
+        activeMicRemoteDisplayID3 = [stateCopy activeMicRemoteDisplayID];
         *buf = 136315394;
         v25 = "[CSShieldManager _updateSessionState:]";
         v26 = 2112;
-        v27 = v18;
+        v27 = activeMicRemoteDisplayID3;
         _os_log_impl(&dword_2441FB000, v17, OS_LOG_TYPE_DEFAULT, "%s: Device %@ took the mic, exiting session", buf, 0x16u);
       }
 
@@ -565,8 +565,8 @@ uint64_t __61__CSShieldManager__requestInitialSessionStateWithCompletion___block
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v10 = [(CSShieldManager *)self observersCopy];
-  v11 = [v10 countByEnumeratingWithState:&v20 objects:v19 count:16];
+  observersCopy = [(CSShieldManager *)self observersCopy];
+  v11 = [observersCopy countByEnumeratingWithState:&v20 objects:v19 count:16];
   if (v11)
   {
     v12 = v11;
@@ -578,20 +578,20 @@ uint64_t __61__CSShieldManager__requestInitialSessionStateWithCompletion___block
       {
         if (*v21 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(observersCopy);
         }
 
         v15 = *(*(&v20 + 1) + 8 * v14);
         if (objc_opt_respondsToSelector())
         {
-          [v15 shieldManager:self didUpdateSessionState:v5];
+          [v15 shieldManager:self didUpdateSessionState:stateCopy];
         }
 
         ++v14;
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v20 objects:v19 count:16];
+      v12 = [observersCopy countByEnumeratingWithState:&v20 objects:v19 count:16];
     }
 
     while (v12);
@@ -601,20 +601,20 @@ uint64_t __61__CSShieldManager__requestInitialSessionStateWithCompletion___block
 - (BOOL)isMicLocal
 {
   requestClient = self->_requestClient;
-  v3 = [(CSShieldManager *)self sessionState];
-  v4 = [v3 activeMicRemoteDisplayID];
-  LOBYTE(requestClient) = [(CSRemoteRequestClient *)requestClient remoteDisplayIdentifierIsLocal:v4];
+  sessionState = [(CSShieldManager *)self sessionState];
+  activeMicRemoteDisplayID = [sessionState activeMicRemoteDisplayID];
+  LOBYTE(requestClient) = [(CSRemoteRequestClient *)requestClient remoteDisplayIdentifierIsLocal:activeMicRemoteDisplayID];
 
   return requestClient;
 }
 
 - (BOOL)isMicStreaming
 {
-  v2 = [MEMORY[0x277CF6C50] sharedInstance];
-  v3 = [v2 activeConfiguration];
-  v4 = [v3 compositeState];
+  mEMORY[0x277CF6C50] = [MEMORY[0x277CF6C50] sharedInstance];
+  activeConfiguration = [mEMORY[0x277CF6C50] activeConfiguration];
+  compositeState = [activeConfiguration compositeState];
 
-  return (v4 & 0x3B) == 2;
+  return (compositeState & 0x3B) == 2;
 }
 
 - (void)exitRapportSession
@@ -654,16 +654,16 @@ void __34__CSShieldManager_exitSingSession__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)requestMicrophoneActivationWithCompletion:(id)a3
+- (void)requestMicrophoneActivationWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = MEMORY[0x277CD5D40];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __61__CSShieldManager_requestMicrophoneActivationWithCompletion___block_invoke;
   v6[3] = &unk_278E0B530;
-  v7 = v3;
-  v5 = v3;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [v4 getActiveRouteWithCompletion:v6];
 }
 

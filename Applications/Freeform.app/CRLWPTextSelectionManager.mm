@@ -1,8 +1,8 @@
 @interface CRLWPTextSelectionManager
-- (BOOL)isSelectingCaret:(CGPoint)a3;
-- (CGRect)caretRectFor:(id)a3;
-- (CGRect)firstRectFor:(id)a3;
-- (CGRect)firstRectForCharacterRange:(_NSRange)a3 actualRange:(_NSRange *)a4;
+- (BOOL)isSelectingCaret:(CGPoint)caret;
+- (CGRect)caretRectFor:(id)for;
+- (CGRect)firstRectFor:(id)for;
+- (CGRect)firstRectForCharacterRange:(_NSRange)range actualRange:(_NSRange *)actualRange;
 - (NSString)selectedText;
 - (_NSRange)selectedRange;
 - (_TtC8Freeform11CRLWPLayout)layout;
@@ -11,28 +11,28 @@
 - (_TtC8Freeform15CRLTextPosition)beginningOfDocument;
 - (_TtC8Freeform15CRLTextPosition)endOfDocument;
 - (_TtC8Freeform25CRLWPTextSelectionManager)init;
-- (id)characterRangeAt:(CGPoint)a3;
-- (id)characterRangeByExtending:(id)a3 in:(int64_t)a4;
-- (id)closestPositionTo:(CGPoint)a3;
-- (id)closestPositionTo:(CGPoint)a3 within:(id)a4;
-- (id)positionFrom:(id)a3 in:(int64_t)a4 offset:(int64_t)a5;
-- (id)positionFrom:(id)a3 offset:(int64_t)a4;
-- (id)positionWithin:(id)a3 farthestIn:(int64_t)a4;
-- (id)selectWordAt:(CGPoint)a3;
-- (id)selectionRectsFor:(id)a3;
-- (id)textIn:(id)a3;
-- (id)textRangeFrom:(id)a3 to:(id)a4;
-- (int64_t)characterIndexForPoint:(CGPoint)a3;
-- (int64_t)compare:(id)a3 to:(id)a4;
-- (int64_t)offsetFrom:(id)a3 to:(id)a4;
-- (void)beginLoupeSessionAt:(CGPoint)a3;
+- (id)characterRangeAt:(CGPoint)at;
+- (id)characterRangeByExtending:(id)extending in:(int64_t)in;
+- (id)closestPositionTo:(CGPoint)to;
+- (id)closestPositionTo:(CGPoint)to within:(id)within;
+- (id)positionFrom:(id)from in:(int64_t)in offset:(int64_t)offset;
+- (id)positionFrom:(id)from offset:(int64_t)offset;
+- (id)positionWithin:(id)within farthestIn:(int64_t)in;
+- (id)selectWordAt:(CGPoint)at;
+- (id)selectionRectsFor:(id)for;
+- (id)textIn:(id)in;
+- (id)textRangeFrom:(id)from to:(id)to;
+- (int64_t)characterIndexForPoint:(CGPoint)point;
+- (int64_t)compare:(id)compare to:(id)to;
+- (int64_t)offsetFrom:(id)from to:(id)to;
+- (void)beginLoupeSessionAt:(CGPoint)at;
 - (void)endLoupeSession;
-- (void)moveLoupeTo:(CGPoint)a3;
+- (void)moveLoupeTo:(CGPoint)to;
 - (void)refresh;
-- (void)setSelectedRange:(_NSRange)a3;
-- (void)setSelectedTextRange:(id)a3;
-- (void)setSelectedTextRangeFor:(CGPoint)a3;
-- (void)setSelectionViewController:(id)a3;
+- (void)setSelectedRange:(_NSRange)range;
+- (void)setSelectedTextRange:(id)range;
+- (void)setSelectedTextRangeFor:(CGPoint)for;
+- (void)setSelectionViewController:(id)controller;
 - (void)updateSelectionViews;
 @end
 
@@ -40,7 +40,7 @@
 
 - (_TtC8Freeform11CRLWPLayout)layout
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100753708();
 
   return v3;
@@ -48,7 +48,7 @@
 
 - (_TtC8Freeform12CRLTextRange)markedTextSelection
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1007537F8();
 
   return v3;
@@ -56,25 +56,25 @@
 
 - (_TtC8Freeform12CRLTextRange)selectedTextRange
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1007539C4();
 
   return v3;
 }
 
-- (void)setSelectedTextRange:(id)a3
+- (void)setSelectedTextRange:(id)range
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC8Freeform25CRLWPTextSelectionManager__selectedTextRange);
-  *(&self->super.isa + OBJC_IVAR____TtC8Freeform25CRLWPTextSelectionManager__selectedTextRange) = a3;
-  v5 = a3;
-  v6 = self;
+  *(&self->super.isa + OBJC_IVAR____TtC8Freeform25CRLWPTextSelectionManager__selectedTextRange) = range;
+  rangeCopy = range;
+  selfCopy = self;
 
-  (*((swift_isaMask & v6->super.isa) + 0x268))();
+  (*((swift_isaMask & selfCopy->super.isa) + 0x268))();
 }
 
 - (_NSRange)selectedRange
 {
-  v2 = self;
+  selfCopy = self;
   sub_100753B78();
   v4 = v3;
   v6 = v5;
@@ -86,18 +86,18 @@
   return result;
 }
 
-- (void)setSelectedRange:(_NSRange)a3
+- (void)setSelectedRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v6 = objc_allocWithZone(type metadata accessor for CRLTextRange());
-  v11 = self;
+  selfCopy = self;
   v7 = sub_10078CDF0(location, length);
-  v8 = *(&v11->super.isa + OBJC_IVAR____TtC8Freeform25CRLWPTextSelectionManager__selectedTextRange);
-  *(&v11->super.isa + OBJC_IVAR____TtC8Freeform25CRLWPTextSelectionManager__selectedTextRange) = v7;
+  v8 = *(&selfCopy->super.isa + OBJC_IVAR____TtC8Freeform25CRLWPTextSelectionManager__selectedTextRange);
+  *(&selfCopy->super.isa + OBJC_IVAR____TtC8Freeform25CRLWPTextSelectionManager__selectedTextRange) = v7;
   v9 = v7;
 
-  v10 = *((swift_isaMask & v11->super.isa) + 0x268);
+  v10 = *((swift_isaMask & selfCopy->super.isa) + 0x268);
   v10();
 
   v10();
@@ -105,7 +105,7 @@
 
 - (NSString)selectedText
 {
-  v2 = self;
+  selfCopy = self;
   sub_100753E00();
   v4 = v3;
 
@@ -125,21 +125,21 @@
 - (_TtC8Freeform15CRLTextPosition)beginningOfDocument
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC8Freeform25CRLWPTextSelectionManager_textStorage);
-  v3 = self;
+  selfCopy = self;
   v4 = v2;
   sub_100A28D8C();
   v6 = v5;
 
   v7 = sub_1007570BC();
-  v8 = [v7 start];
+  start = [v7 start];
 
-  return v8;
+  return start;
 }
 
 - (_TtC8Freeform15CRLTextPosition)endOfDocument
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC8Freeform25CRLWPTextSelectionManager_textStorage);
-  v3 = self;
+  selfCopy = self;
   v4 = v2;
   sub_100A28D8C();
   v6 = v5;
@@ -147,26 +147,26 @@
   v7 = v6;
   v8 = sub_100756EC0(v7);
 
-  v9 = [v8 start];
+  start = [v8 start];
 
-  return v9;
+  return start;
 }
 
-- (id)selectWordAt:(CGPoint)a3
+- (id)selectWordAt:(CGPoint)at
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = self;
+  y = at.y;
+  x = at.x;
+  selfCopy = self;
   v6 = sub_1007543E8(x, y);
 
   return v6;
 }
 
-- (id)textIn:(id)a3
+- (id)textIn:(id)in
 {
-  v4 = a3;
-  v5 = self;
-  sub_100754D24(v4);
+  inCopy = in;
+  selfCopy = self;
+  sub_100754D24(inCopy);
   v7 = v6;
 
   if (v7)
@@ -182,24 +182,24 @@
   return v8;
 }
 
-- (id)textRangeFrom:(id)a3 to:(id)a4
+- (id)textRangeFrom:(id)from to:(id)to
 {
-  v4 = sub_10078E988(a3, a4);
+  v4 = sub_10078E988(from, to);
 
   return v4;
 }
 
-- (id)positionFrom:(id)a3 offset:(int64_t)a4
+- (id)positionFrom:(id)from offset:(int64_t)offset
 {
   v6 = qword_1019F1570;
-  v7 = a3;
-  v8 = self;
+  fromCopy = from;
+  selfCopy = self;
   if (v6 != -1)
   {
     swift_once();
   }
 
-  v9 = *&v7[OBJC_IVAR____TtC8Freeform15CRLTextPosition_location];
+  v9 = *&fromCopy[OBJC_IVAR____TtC8Freeform15CRLTextPosition_location];
   if (v9 == NSNotFound.getter())
   {
 
@@ -208,31 +208,31 @@
 
   else
   {
-    v11 = *(&v8->super.isa + OBJC_IVAR____TtC8Freeform25CRLWPTextSelectionManager_textStorage);
+    v11 = *(&selfCopy->super.isa + OBJC_IVAR____TtC8Freeform25CRLWPTextSelectionManager_textStorage);
     sub_100A28D8C();
     v13 = v12;
 
-    v14 = sub_100B7FBAC(a4, v13);
+    v14 = sub_100B7FBAC(offset, v13);
     v10 = v14;
   }
 
   return v10;
 }
 
-- (int64_t)offsetFrom:(id)a3 to:(id)a4
+- (int64_t)offsetFrom:(id)from to:(id)to
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_100757198(v6, v7);
+  fromCopy = from;
+  toCopy = to;
+  selfCopy = self;
+  v9 = sub_100757198(fromCopy, toCopy);
 
   return v9;
 }
 
-- (int64_t)compare:(id)a3 to:(id)a4
+- (int64_t)compare:(id)compare to:(id)to
 {
-  v4 = *(a3 + OBJC_IVAR____TtC8Freeform15CRLTextPosition_location);
-  v5 = *(a4 + OBJC_IVAR____TtC8Freeform15CRLTextPosition_location);
+  v4 = *(compare + OBJC_IVAR____TtC8Freeform15CRLTextPosition_location);
+  v5 = *(to + OBJC_IVAR____TtC8Freeform15CRLTextPosition_location);
   if (v4 >= v5)
   {
     v6 = 0;
@@ -254,9 +254,9 @@
   }
 }
 
-- (CGRect)firstRectFor:(id)a3
+- (CGRect)firstRectFor:(id)for
 {
-  v3 = sub_100755D94(self, a2, a3, type metadata accessor for CRLTextRange, sub_1007553C8);
+  v3 = sub_100755D94(self, a2, for, type metadata accessor for CRLTextRange, sub_1007553C8);
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -264,18 +264,18 @@
   return result;
 }
 
-- (CGRect)firstRectForCharacterRange:(_NSRange)a3 actualRange:(_NSRange *)a4
+- (CGRect)firstRectForCharacterRange:(_NSRange)range actualRange:(_NSRange *)actualRange
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v7 = qword_1019F1570;
-  v8 = self;
+  selfCopy = self;
   if (v7 != -1)
   {
     swift_once();
   }
 
-  sub_10075553C(v8, location, length, a4, &v13);
+  sub_10075553C(selfCopy, location, length, actualRange, &v13);
 
   v10 = *(&v13 + 1);
   v9 = *&v13;
@@ -288,9 +288,9 @@
   return result;
 }
 
-- (CGRect)caretRectFor:(id)a3
+- (CGRect)caretRectFor:(id)for
 {
-  v3 = sub_100755D94(self, a2, a3, type metadata accessor for CRLTextPosition, sub_100755C68);
+  v3 = sub_100755D94(self, a2, for, type metadata accessor for CRLTextPosition, sub_100755C68);
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -298,29 +298,29 @@
   return result;
 }
 
-- (id)closestPositionTo:(CGPoint)a3
+- (id)closestPositionTo:(CGPoint)to
 {
   v3 = qword_1019F1570;
-  v4 = self;
+  selfCopy = self;
   if (v3 != -1)
   {
     swift_once();
   }
 
-  sub_100755E80(v4, &v7);
+  sub_100755E80(selfCopy, &v7);
 
   v5 = v7;
 
   return v5;
 }
 
-- (id)closestPositionTo:(CGPoint)a3 within:(id)a4
+- (id)closestPositionTo:(CGPoint)to within:(id)within
 {
-  y = a3.y;
-  x = a3.x;
+  y = to.y;
+  x = to.x;
   v7 = qword_1019F1570;
-  v8 = a4;
-  v9 = self;
+  withinCopy = within;
+  selfCopy = self;
   if (v7 != -1)
   {
     swift_once();
@@ -331,21 +331,21 @@
   *&v14[5] = x;
   *&v14[6] = y;
   v14[12] = type metadata accessor for CRLTextRange();
-  v14[9] = v8;
-  v11 = v8;
-  sub_10075603C(v9, v14);
+  v14[9] = withinCopy;
+  v11 = withinCopy;
+  sub_10075603C(selfCopy, v14);
   swift_arrayDestroy();
   v12 = v14[0];
 
   return v12;
 }
 
-- (int64_t)characterIndexForPoint:(CGPoint)a3
+- (int64_t)characterIndexForPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v5 = qword_1019F1570;
-  v6 = self;
+  selfCopy = self;
   if (v5 != -1)
   {
     swift_once();
@@ -356,33 +356,33 @@
   return v7;
 }
 
-- (id)characterRangeAt:(CGPoint)a3
+- (id)characterRangeAt:(CGPoint)at
 {
-  v3 = self;
-  sub_100C0A2A4(v3, &_mh_execute_header, "characterRange(at:)", 19, 2, "/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLWP/Editor/CRLWPTextSelectionManager.swift", 98, 2, 272);
+  selfCopy = self;
+  sub_100C0A2A4(selfCopy, &_mh_execute_header, "characterRange(at:)", 19, 2, "/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLWP/Editor/CRLWPTextSelectionManager.swift", 98, 2, 272);
 
   return 0;
 }
 
-- (void)setSelectedTextRangeFor:(CGPoint)a3
+- (void)setSelectedTextRangeFor:(CGPoint)for
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = self;
+  y = for.y;
+  x = for.x;
+  selfCopy = self;
   sub_1007564CC(x, y);
 }
 
-- (void)setSelectionViewController:(id)a3
+- (void)setSelectionViewController:(id)controller
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC8Freeform25CRLWPTextSelectionManager_selectionViewController);
-  *(&self->super.isa + OBJC_IVAR____TtC8Freeform25CRLWPTextSelectionManager_selectionViewController) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC8Freeform25CRLWPTextSelectionManager_selectionViewController) = controller;
+  controllerCopy = controller;
 }
 
 - (void)refresh
 {
   v2 = *((swift_isaMask & self->super.isa) + 0x268);
-  v3 = self;
+  selfCopy = self;
   v2();
 }
 
@@ -392,16 +392,16 @@
   if (v2)
   {
     v3 = *((swift_isaMask & *v2) + 0x190);
-    v5 = self;
+    selfCopy = self;
     v4 = v2;
     v3();
   }
 }
 
-- (id)selectionRectsFor:(id)a3
+- (id)selectionRectsFor:(id)for
 {
-  v3 = self;
-  sub_100C0A2A4(v3, &_mh_execute_header, "selectionRects(for:)", 20, 2, "/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLWP/Editor/CRLWPTextSelectionManager.swift", 98, 2, 396);
+  selfCopy = self;
+  sub_100C0A2A4(selfCopy, &_mh_execute_header, "selectionRects(for:)", 20, 2, "/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLWP/Editor/CRLWPTextSelectionManager.swift", 98, 2, 396);
 
   sub_100006370(0, &qword_101A012B0);
   v4.super.isa = Array._bridgeToObjectiveC()().super.isa;
@@ -409,54 +409,54 @@
   return v4.super.isa;
 }
 
-- (id)positionWithin:(id)a3 farthestIn:(int64_t)a4
+- (id)positionWithin:(id)within farthestIn:(int64_t)in
 {
-  v4 = self;
-  sub_100C0A2A4(v4, &_mh_execute_header, "position(within:farthestIn:)", 28, 2, "/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLWP/Editor/CRLWPTextSelectionManager.swift", 98, 2, 401);
+  selfCopy = self;
+  sub_100C0A2A4(selfCopy, &_mh_execute_header, "position(within:farthestIn:)", 28, 2, "/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLWP/Editor/CRLWPTextSelectionManager.swift", 98, 2, 401);
 
   return 0;
 }
 
-- (id)characterRangeByExtending:(id)a3 in:(int64_t)a4
+- (id)characterRangeByExtending:(id)extending in:(int64_t)in
 {
-  v4 = self;
-  sub_100C0A2A4(v4, &_mh_execute_header, "characterRange(byExtending:in:)", 31, 2, "/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLWP/Editor/CRLWPTextSelectionManager.swift", 98, 2, 406);
+  selfCopy = self;
+  sub_100C0A2A4(selfCopy, &_mh_execute_header, "characterRange(byExtending:in:)", 31, 2, "/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLWP/Editor/CRLWPTextSelectionManager.swift", 98, 2, 406);
 
   return 0;
 }
 
-- (id)positionFrom:(id)a3 in:(int64_t)a4 offset:(int64_t)a5
+- (id)positionFrom:(id)from in:(int64_t)in offset:(int64_t)offset
 {
-  v5 = self;
-  sub_100C0A2A4(v5, &_mh_execute_header, "position(from:in:offset:)", 25, 2, "/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLWP/Editor/CRLWPTextSelectionManager.swift", 98, 2, 411);
+  selfCopy = self;
+  sub_100C0A2A4(selfCopy, &_mh_execute_header, "position(from:in:offset:)", 25, 2, "/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLWP/Editor/CRLWPTextSelectionManager.swift", 98, 2, 411);
 
   return 0;
 }
 
-- (BOOL)isSelectingCaret:(CGPoint)a3
+- (BOOL)isSelectingCaret:(CGPoint)caret
 {
-  v3 = self;
-  sub_100C0A2A4(v3, &_mh_execute_header, "isSelectingCaret(_:)", 20, 2, "/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLWP/Editor/CRLWPTextSelectionManager.swift", 98, 2, 416);
+  selfCopy = self;
+  sub_100C0A2A4(selfCopy, &_mh_execute_header, "isSelectingCaret(_:)", 20, 2, "/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLWP/Editor/CRLWPTextSelectionManager.swift", 98, 2, 416);
 
   return 0;
 }
 
-- (void)beginLoupeSessionAt:(CGPoint)a3
+- (void)beginLoupeSessionAt:(CGPoint)at
 {
-  v3 = self;
-  sub_100C0A2A4(v3, &_mh_execute_header, "beginLoupeSession(at:)", 22, 2, "/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLWP/Editor/CRLWPTextSelectionManager.swift", 98, 2, 421);
+  selfCopy = self;
+  sub_100C0A2A4(selfCopy, &_mh_execute_header, "beginLoupeSession(at:)", 22, 2, "/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLWP/Editor/CRLWPTextSelectionManager.swift", 98, 2, 421);
 }
 
-- (void)moveLoupeTo:(CGPoint)a3
+- (void)moveLoupeTo:(CGPoint)to
 {
-  v3 = self;
-  sub_100C0A2A4(v3, &_mh_execute_header, "moveLoupe(to:)", 14, 2, "/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLWP/Editor/CRLWPTextSelectionManager.swift", 98, 2, 425);
+  selfCopy = self;
+  sub_100C0A2A4(selfCopy, &_mh_execute_header, "moveLoupe(to:)", 14, 2, "/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLWP/Editor/CRLWPTextSelectionManager.swift", 98, 2, 425);
 }
 
 - (void)endLoupeSession
 {
-  v2 = self;
-  sub_100C0A2A4(v2, &_mh_execute_header, "endLoupeSession()", 17, 2, "/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLWP/Editor/CRLWPTextSelectionManager.swift", 98, 2, 429);
+  selfCopy = self;
+  sub_100C0A2A4(selfCopy, &_mh_execute_header, "endLoupeSession()", 17, 2, "/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLWP/Editor/CRLWPTextSelectionManager.swift", 98, 2, 429);
 }
 
 - (_TtC8Freeform25CRLWPTextSelectionManager)init

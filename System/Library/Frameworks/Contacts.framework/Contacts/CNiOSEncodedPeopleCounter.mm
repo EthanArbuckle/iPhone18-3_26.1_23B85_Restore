@@ -1,9 +1,9 @@
 @interface CNiOSEncodedPeopleCounter
 + (id)os_log;
 - (BOOL)supportsCounting;
-- (CNiOSEncodedPeopleCounter)initWithFetchRequest:(id)a3 addressBook:(id)a4 managedConfiguration:(id)a5;
-- (id)fetchContactCountWithError:(id *)a3;
-- (void)setPrivatePredicate:(uint64_t)a1;
+- (CNiOSEncodedPeopleCounter)initWithFetchRequest:(id)request addressBook:(id)book managedConfiguration:(id)configuration;
+- (id)fetchContactCountWithError:(id *)error;
+- (void)setPrivatePredicate:(uint64_t)predicate;
 @end
 
 @implementation CNiOSEncodedPeopleCounter
@@ -30,20 +30,20 @@ uint64_t __35__CNiOSEncodedPeopleCounter_os_log__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (CNiOSEncodedPeopleCounter)initWithFetchRequest:(id)a3 addressBook:(id)a4 managedConfiguration:(id)a5
+- (CNiOSEncodedPeopleCounter)initWithFetchRequest:(id)request addressBook:(id)book managedConfiguration:(id)configuration
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  requestCopy = request;
+  bookCopy = book;
+  configurationCopy = configuration;
   v16.receiver = self;
   v16.super_class = CNiOSEncodedPeopleCounter;
   v12 = [(CNiOSEncodedPeopleCounter *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_addressBook, a4);
-    objc_storeStrong(&v13->_contactFetchRequest, a3);
-    objc_storeStrong(&v13->_managedConfiguration, a5);
+    objc_storeStrong(&v12->_addressBook, book);
+    objc_storeStrong(&v13->_contactFetchRequest, request);
+    objc_storeStrong(&v13->_managedConfiguration, configuration);
     v14 = v13;
   }
 
@@ -52,7 +52,7 @@ uint64_t __35__CNiOSEncodedPeopleCounter_os_log__block_invoke()
 
 - (BOOL)supportsCounting
 {
-  v2 = self;
+  selfCopy = self;
   v17 = *MEMORY[0x1E69E9840];
   if (self)
   {
@@ -61,9 +61,9 @@ uint64_t __35__CNiOSEncodedPeopleCounter_os_log__block_invoke()
 
   if (([(CNiOSEncodedPeopleCounter *)self disallowsEncodedFetch]& 1) == 0)
   {
-    if (v2)
+    if (selfCopy)
     {
-      contactFetchRequest = v2->_contactFetchRequest;
+      contactFetchRequest = selfCopy->_contactFetchRequest;
     }
 
     else
@@ -71,10 +71,10 @@ uint64_t __35__CNiOSEncodedPeopleCounter_os_log__block_invoke()
       contactFetchRequest = 0;
     }
 
-    v5 = [(CNContactFetchRequest *)contactFetchRequest effectivePredicate];
-    if ([v5 conformsToProtocol:&unk_1F0989B60])
+    effectivePredicate = [(CNContactFetchRequest *)contactFetchRequest effectivePredicate];
+    if ([effectivePredicate conformsToProtocol:&unk_1F0989B60])
     {
-      v6 = v5;
+      v6 = effectivePredicate;
     }
 
     else
@@ -88,7 +88,7 @@ uint64_t __35__CNiOSEncodedPeopleCounter_os_log__block_invoke()
     {
       if ([v7 cn_supportsEncodedFetching])
       {
-        [(CNiOSEncodedPeopleCounter *)v2 setPrivatePredicate:v7];
+        [(CNiOSEncodedPeopleCounter *)selfCopy setPrivatePredicate:v7];
         v3 = 1;
         goto LABEL_17;
       }
@@ -116,15 +116,15 @@ LABEL_17:
   return 0;
 }
 
-- (void)setPrivatePredicate:(uint64_t)a1
+- (void)setPrivatePredicate:(uint64_t)predicate
 {
-  if (a1)
+  if (predicate)
   {
-    objc_storeStrong((a1 + 48), a2);
+    objc_storeStrong((predicate + 48), a2);
   }
 }
 
-- (id)fetchContactCountWithError:(id *)a3
+- (id)fetchContactCountWithError:(id *)error
 {
   v16 = 0;
   v17 = &v16;
@@ -151,20 +151,20 @@ LABEL_17:
   v15[5] = &v16;
   v7 = [(CNiOSAddressBook *)v6 resultWithInvalidatedAddressBook:v15];
 
-  v8 = [v7 value];
+  value = [v7 value];
   v9 = v17[5];
-  v10 = v9;
+  error = v9;
   if (!v9)
   {
-    v10 = [v7 error];
+    error = [v7 error];
   }
 
-  v11 = v8;
+  v11 = value;
   v12 = v11;
-  if (a3 && !v11)
+  if (error && !v11)
   {
-    v13 = v10;
-    *a3 = v10;
+    v13 = error;
+    *error = error;
   }
 
   if (!v9)

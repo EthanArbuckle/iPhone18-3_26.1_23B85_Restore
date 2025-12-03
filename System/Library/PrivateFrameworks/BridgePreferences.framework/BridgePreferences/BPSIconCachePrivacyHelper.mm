@@ -1,7 +1,7 @@
 @interface BPSIconCachePrivacyHelper
-+ (id)_naiveHashForString:(id)a3;
++ (id)_naiveHashForString:(id)string;
 + (id)_perDeviceSalt;
-+ (id)saltedHashForString:(id)a3;
++ (id)saltedHashForString:(id)string;
 @end
 
 @implementation BPSIconCachePrivacyHelper
@@ -108,7 +108,7 @@ void __43__BPSIconCachePrivacyHelper__perDeviceSalt__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __43__BPSIconCachePrivacyHelper__perDeviceSalt__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_perDeviceSalt_onceToken != -1)
   {
     dispatch_once(&_perDeviceSalt_onceToken, block);
@@ -119,10 +119,10 @@ void __43__BPSIconCachePrivacyHelper__perDeviceSalt__block_invoke(uint64_t a1)
   return v2;
 }
 
-+ (id)_naiveHashForString:(id)a3
++ (id)_naiveHashForString:(id)string
 {
   v8 = *MEMORY[0x277D85DE8];
-  v3 = [a3 dataUsingEncoding:4];
+  v3 = [string dataUsingEncoding:4];
   CC_SHA1([v3 bytes], objc_msgSend(v3, "length"), md);
   v4 = [MEMORY[0x277CCAB68] stringWithCapacity:40];
   for (i = 0; i != 20; ++i)
@@ -133,13 +133,13 @@ void __43__BPSIconCachePrivacyHelper__perDeviceSalt__block_invoke(uint64_t a1)
   return v4;
 }
 
-+ (id)saltedHashForString:(id)a3
++ (id)saltedHashForString:(id)string
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _perDeviceSalt];
-  v6 = [v4 stringByAppendingString:v5];
+  stringCopy = string;
+  _perDeviceSalt = [objc_opt_class() _perDeviceSalt];
+  v6 = [stringCopy stringByAppendingString:_perDeviceSalt];
 
-  v7 = [a1 _naiveHashForString:v6];
+  v7 = [self _naiveHashForString:v6];
 
   return v7;
 }

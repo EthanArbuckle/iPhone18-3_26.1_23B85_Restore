@@ -1,25 +1,25 @@
 @interface HMIRemovePersonsModelOperation
-- (HMIRemovePersonsModelOperation)initWithSourceUUID:(id)a3 homeUUID:(id)a4 external:(BOOL)a5;
+- (HMIRemovePersonsModelOperation)initWithSourceUUID:(id)d homeUUID:(id)iD external:(BOOL)external;
 - (id)logIdentifier;
 - (void)main;
-- (void)removePersonsModelWithRetryOnError:(BOOL)a3;
+- (void)removePersonsModelWithRetryOnError:(BOOL)error;
 @end
 
 @implementation HMIRemovePersonsModelOperation
 
-- (HMIRemovePersonsModelOperation)initWithSourceUUID:(id)a3 homeUUID:(id)a4 external:(BOOL)a5
+- (HMIRemovePersonsModelOperation)initWithSourceUUID:(id)d homeUUID:(id)iD external:(BOOL)external
 {
-  v9 = a3;
-  v10 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v14.receiver = self;
   v14.super_class = HMIRemovePersonsModelOperation;
   v11 = [(HMFOperation *)&v14 initWithTimeout:10.0];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_sourceUUID, a3);
-    objc_storeStrong(&v12->_homeUUID, a4);
-    v12->_external = a5;
+    objc_storeStrong(&v11->_sourceUUID, d);
+    objc_storeStrong(&v12->_homeUUID, iD);
+    v12->_external = external;
   }
 
   return v12;
@@ -33,18 +33,18 @@
   objc_autoreleasePoolPop(v3);
 }
 
-- (void)removePersonsModelWithRetryOnError:(BOOL)a3
+- (void)removePersonsModelWithRetryOnError:(BOOL)error
 {
   v26[3] = *MEMORY[0x277D85DE8];
   v5 = +[HMITaskService taskServiceClient];
   v26[0] = HMITaskTypeRemovePersonsModelTask;
   v25[0] = @"taskType";
   v25[1] = @"homeUUID";
-  v6 = [(HMIRemovePersonsModelOperation *)self homeUUID];
-  v26[1] = v6;
+  homeUUID = [(HMIRemovePersonsModelOperation *)self homeUUID];
+  v26[1] = homeUUID;
   v25[2] = @"sourceUUID";
-  v7 = [(HMIRemovePersonsModelOperation *)self sourceUUID];
-  v26[2] = v7;
+  sourceUUID = [(HMIRemovePersonsModelOperation *)self sourceUUID];
+  v26[2] = sourceUUID;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:v25 count:3];
 
   objc_initWeak(&location, self);
@@ -53,10 +53,10 @@
   v15[2] = __69__HMIRemovePersonsModelOperation_removePersonsModelWithRetryOnError___block_invoke;
   v15[3] = &unk_278754F08;
   objc_copyWeak(&v16, &location);
-  v17 = a3;
+  errorCopy = error;
   v9 = [v5 submitTaskWithOptions:v8 progressHandler:0 completionHandler:v15];
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
@@ -150,15 +150,15 @@ void __69__HMIRemovePersonsModelOperation_removePersonsModelWithRetryOnError___b
 - (id)logIdentifier
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMIRemovePersonsModelOperation *)self sourceUUID];
-  v5 = [(HMIRemovePersonsModelOperation *)self external];
+  sourceUUID = [(HMIRemovePersonsModelOperation *)self sourceUUID];
+  external = [(HMIRemovePersonsModelOperation *)self external];
   v6 = @"home";
-  if (v5)
+  if (external)
   {
     v6 = @"external";
   }
 
-  v7 = [v3 stringWithFormat:@"%@ (%@)", v4, v6];
+  v7 = [v3 stringWithFormat:@"%@ (%@)", sourceUUID, v6];
 
   return v7;
 }

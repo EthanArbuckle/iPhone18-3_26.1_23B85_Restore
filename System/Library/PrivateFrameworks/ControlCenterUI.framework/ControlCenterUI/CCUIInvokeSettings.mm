@@ -10,68 +10,68 @@
   v21.receiver = self;
   v21.super_class = CCUIInvokeSettings;
   [(PTSettings *)&v21 setDefaultValues];
-  v3 = [(CCUIInvokeSettings *)self scrollAnimationSettings];
-  [v3 setDefaultValues];
+  scrollAnimationSettings = [(CCUIInvokeSettings *)self scrollAnimationSettings];
+  [scrollAnimationSettings setDefaultValues];
 
-  v4 = [(CCUIInvokeSettings *)self scrollAnimationSettings];
-  [v4 setDampingRatio:0.7];
+  scrollAnimationSettings2 = [(CCUIInvokeSettings *)self scrollAnimationSettings];
+  [scrollAnimationSettings2 setDampingRatio:0.7];
 
-  v5 = [(CCUIInvokeSettings *)self scrollAnimationSettings];
-  [v5 setResponse:0.4];
+  scrollAnimationSettings3 = [(CCUIInvokeSettings *)self scrollAnimationSettings];
+  [scrollAnimationSettings3 setResponse:0.4];
 
-  v6 = [(CCUIInvokeSettings *)self scrollAnimationSettings];
-  [v6 setTrackingDampingRatio:1.0];
+  scrollAnimationSettings4 = [(CCUIInvokeSettings *)self scrollAnimationSettings];
+  [scrollAnimationSettings4 setTrackingDampingRatio:1.0];
 
-  v7 = [(CCUIInvokeSettings *)self scrollAnimationSettings];
-  [v7 setTrackingResponse:0.1];
+  scrollAnimationSettings5 = [(CCUIInvokeSettings *)self scrollAnimationSettings];
+  [scrollAnimationSettings5 setTrackingResponse:0.1];
 
-  v8 = [(CCUIInvokeSettings *)self scrollAnimationSettings];
+  scrollAnimationSettings6 = [(CCUIInvokeSettings *)self scrollAnimationSettings];
   v22 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v8 setFrameRateRange:2031617 highFrameRateReason:{*&v22.minimum, *&v22.maximum, *&v22.preferred}];
+  [scrollAnimationSettings6 setFrameRateRange:2031617 highFrameRateReason:{*&v22.minimum, *&v22.maximum, *&v22.preferred}];
 
-  v9 = [(CCUIInvokeSettings *)self baseOverscrollSettlingAnimationSettings];
-  [v9 setDefaultValues];
+  baseOverscrollSettlingAnimationSettings = [(CCUIInvokeSettings *)self baseOverscrollSettlingAnimationSettings];
+  [baseOverscrollSettlingAnimationSettings setDefaultValues];
 
-  v10 = [(CCUIInvokeSettings *)self baseOverscrollSettlingAnimationSettings];
-  [v10 setDampingRatio:0.8];
+  baseOverscrollSettlingAnimationSettings2 = [(CCUIInvokeSettings *)self baseOverscrollSettlingAnimationSettings];
+  [baseOverscrollSettlingAnimationSettings2 setDampingRatio:0.8];
 
-  v11 = [(CCUIInvokeSettings *)self baseOverscrollSettlingAnimationSettings];
-  [v11 setResponse:0.55];
+  baseOverscrollSettlingAnimationSettings3 = [(CCUIInvokeSettings *)self baseOverscrollSettlingAnimationSettings];
+  [baseOverscrollSettlingAnimationSettings3 setResponse:0.55];
 
-  v12 = [(CCUIInvokeSettings *)self baseOverscrollSettlingAnimationSettings];
+  baseOverscrollSettlingAnimationSettings4 = [(CCUIInvokeSettings *)self baseOverscrollSettlingAnimationSettings];
   v23 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v12 setFrameRateRange:2031617 highFrameRateReason:{*&v23.minimum, *&v23.maximum, *&v23.preferred}];
+  [baseOverscrollSettlingAnimationSettings4 setFrameRateRange:2031617 highFrameRateReason:{*&v23.minimum, *&v23.maximum, *&v23.preferred}];
 
   [(CCUIInvokeSettings *)self setMaxOverscrollDampingRatioAdjustment:0.3];
   [(CCUIInvokeSettings *)self setMaxOverscrollResponseAdjustment:0.2];
-  v13 = [(CCUIInvokeSettings *)self overscrollRubberbandAnimationSettings];
-  [v13 setDefaultValues];
+  overscrollRubberbandAnimationSettings = [(CCUIInvokeSettings *)self overscrollRubberbandAnimationSettings];
+  [overscrollRubberbandAnimationSettings setDefaultValues];
 
-  v14 = [(CCUIInvokeSettings *)self overscrollRubberbandAnimationSettings];
-  [v14 setDampingRatio:0.5];
+  overscrollRubberbandAnimationSettings2 = [(CCUIInvokeSettings *)self overscrollRubberbandAnimationSettings];
+  [overscrollRubberbandAnimationSettings2 setDampingRatio:0.5];
 
-  v15 = [(CCUIInvokeSettings *)self overscrollRubberbandAnimationSettings];
-  [v15 setResponse:0.44];
+  overscrollRubberbandAnimationSettings3 = [(CCUIInvokeSettings *)self overscrollRubberbandAnimationSettings];
+  [overscrollRubberbandAnimationSettings3 setResponse:0.44];
 
-  v16 = [(CCUIInvokeSettings *)self overscrollRubberbandAnimationSettings];
+  overscrollRubberbandAnimationSettings4 = [(CCUIInvokeSettings *)self overscrollRubberbandAnimationSettings];
   v24 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v16 setFrameRateRange:2031617 highFrameRateReason:{*&v24.minimum, *&v24.maximum, *&v24.preferred}];
+  [overscrollRubberbandAnimationSettings4 setFrameRateRange:2031617 highFrameRateReason:{*&v24.minimum, *&v24.maximum, *&v24.preferred}];
 
   [(CCUIInvokeSettings *)self setOverscrollRubberbandDistance:184.0];
   [(CCUIInvokeSettings *)self setLandscapeOverscrollRubberbandDistance:24.0];
   [(CCUIInvokeSettings *)self setMaxOverscrollRubberbandModuleSpreadDistance:15.0];
-  v17 = [(CCUIInvokeSettings *)self stretchAnimationSettings];
-  [v17 setDefaultValues];
+  stretchAnimationSettings = [(CCUIInvokeSettings *)self stretchAnimationSettings];
+  [stretchAnimationSettings setDefaultValues];
 
-  v18 = [(CCUIInvokeSettings *)self stretchAnimationSettings];
-  [v18 setDampingRatio:0.75];
+  stretchAnimationSettings2 = [(CCUIInvokeSettings *)self stretchAnimationSettings];
+  [stretchAnimationSettings2 setDampingRatio:0.75];
 
-  v19 = [(CCUIInvokeSettings *)self stretchAnimationSettings];
-  [v19 setResponse:0.35];
+  stretchAnimationSettings3 = [(CCUIInvokeSettings *)self stretchAnimationSettings];
+  [stretchAnimationSettings3 setResponse:0.35];
 
-  v20 = [(CCUIInvokeSettings *)self stretchAnimationSettings];
+  stretchAnimationSettings4 = [(CCUIInvokeSettings *)self stretchAnimationSettings];
   v25 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v20 setFrameRateRange:2031617 highFrameRateReason:{*&v25.minimum, *&v25.maximum, *&v25.preferred}];
+  [stretchAnimationSettings4 setFrameRateRange:2031617 highFrameRateReason:{*&v25.minimum, *&v25.maximum, *&v25.preferred}];
 
   [(CCUIInvokeSettings *)self setMaxOverscrollStretchScaleMagnitudeForPages:0.03];
   [(CCUIInvokeSettings *)self setMaxOverscrollStretchScaleMagnitudeForModules:0.05];
@@ -167,8 +167,8 @@
 
   v33 = [MEMORY[0x277D43218] sectionWithRows:v32 title:@"Velocity Injection"];
   v34 = MEMORY[0x277D431A8];
-  v35 = [MEMORY[0x277D43238] action];
-  v36 = [v34 rowWithTitle:@"Restore Defaults" action:v35];
+  action = [MEMORY[0x277D43238] action];
+  v36 = [v34 rowWithTitle:@"Restore Defaults" action:action];
 
   v37 = MEMORY[0x277D43218];
   v69 = v36;

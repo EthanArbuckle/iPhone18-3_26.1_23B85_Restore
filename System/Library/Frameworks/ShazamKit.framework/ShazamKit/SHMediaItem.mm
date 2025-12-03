@@ -1,34 +1,34 @@
 @interface SHMediaItem
 + (SHMediaItem)mediaItemWithProperties:(NSDictionary *)properties;
 + (id)sh_uiServerConnection;
-+ (id)transformedPropertiesFromProperties:(id)a3;
-+ (void)presentMediaItem:(id)a3 completionHandler:(id)a4;
-+ (void)presentMediaItem:(id)a3 presentationSettings:(id)a4 completionHandler:(id)a5;
-- (BOOL)describesFrequencySkew:(double)a3;
-- (BOOL)describesOffset:(double)a3;
++ (id)transformedPropertiesFromProperties:(id)properties;
++ (void)presentMediaItem:(id)item completionHandler:(id)handler;
++ (void)presentMediaItem:(id)item presentationSettings:(id)settings completionHandler:(id)handler;
+- (BOOL)describesFrequencySkew:(double)skew;
+- (BOOL)describesOffset:(double)offset;
 - (BOOL)explicitContent;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualMediaItem:(id)a3;
-- (CGSize)targetArtworkImageSizeFromTargetSize:(CGSize)a3 aspectRatio:(double)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualMediaItem:(id)item;
+- (CGSize)targetArtworkImageSizeFromTargetSize:(CGSize)size aspectRatio:(double)ratio;
 - (CLLocation)matchLocation;
 - (NSArray)genres;
 - (NSString)fuzzyRepresentation;
 - (NSURL)artworkURL;
 - (NSUUID)identifier;
 - (SHArtwork)artwork;
-- (SHMediaItem)initWithCoder:(id)a3;
-- (SHMediaItem)initWithProperties:(id)a3;
+- (SHMediaItem)initWithCoder:(id)coder;
+- (SHMediaItem)initWithProperties:(id)properties;
 - (double)duration;
-- (id)artworkURLForSize:(CGSize)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)artworkURLForSize:(CGSize)size;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)fetchRawSongResponseData;
 - (id)objectForKeyedSubscript:(SHMediaItemProperty)key;
-- (id)validValueForProperty:(id)a3;
+- (id)validValueForProperty:(id)property;
 - (id)valueForProperty:(SHMediaItemProperty)property;
 - (int64_t)shazamCount;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SHMediaItem
@@ -54,19 +54,19 @@ void __50__SHMediaItem_Presentation__sh_uiServerConnection__block_invoke()
   sh_uiServerConnection_serverConnection_0 = v1;
 }
 
-+ (void)presentMediaItem:(id)a3 completionHandler:(id)a4
++ (void)presentMediaItem:(id)item completionHandler:(id)handler
 {
-  v6 = a4;
-  if (v6)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v7 = a3;
-    v8 = [a1 sh_uiServerConnection];
+    itemCopy = item;
+    sh_uiServerConnection = [self sh_uiServerConnection];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __64__SHMediaItem_Presentation__presentMediaItem_completionHandler___block_invoke;
     v9[3] = &unk_2788F7C10;
-    v10 = v6;
-    [v8 presentMediaItem:v7 completionHandler:v9];
+    v10 = handlerCopy;
+    [sh_uiServerConnection presentMediaItem:itemCopy completionHandler:v9];
   }
 }
 
@@ -76,20 +76,20 @@ void __64__SHMediaItem_Presentation__presentMediaItem_completionHandler___block_
   (*(*(a1 + 32) + 16))();
 }
 
-+ (void)presentMediaItem:(id)a3 presentationSettings:(id)a4 completionHandler:(id)a5
++ (void)presentMediaItem:(id)item presentationSettings:(id)settings completionHandler:(id)handler
 {
-  v8 = a5;
-  if (v8)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v9 = a4;
-    v10 = a3;
-    v11 = [a1 sh_uiServerConnection];
+    settingsCopy = settings;
+    itemCopy = item;
+    sh_uiServerConnection = [self sh_uiServerConnection];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __85__SHMediaItem_Presentation__presentMediaItem_presentationSettings_completionHandler___block_invoke;
     v12[3] = &unk_2788F7C58;
-    v13 = v8;
-    [v11 presentMediaItem:v10 presentationSettings:v9 completionHandler:v12];
+    v13 = handlerCopy;
+    [sh_uiServerConnection presentMediaItem:itemCopy presentationSettings:settingsCopy completionHandler:v12];
   }
 }
 
@@ -108,21 +108,21 @@ void __85__SHMediaItem_Presentation__presentMediaItem_presentationSettings_compl
   return v4;
 }
 
-- (SHMediaItem)initWithProperties:(id)a3
+- (SHMediaItem)initWithProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v11.receiver = self;
   v11.super_class = SHMediaItem;
   v5 = [(SHMediaItem *)&v11 init];
   if (v5)
   {
-    v6 = [SHMediaItem transformedPropertiesFromProperties:v4];
+    v6 = [SHMediaItem transformedPropertiesFromProperties:propertiesCopy];
     properties = v5->_properties;
     v5->_properties = v6;
 
-    v8 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     underlyingIdentifier = v5->_underlyingIdentifier;
-    v5->_underlyingIdentifier = v8;
+    v5->_underlyingIdentifier = uUID;
   }
 
   return v5;
@@ -131,8 +131,8 @@ void __85__SHMediaItem_Presentation__presentMediaItem_presentationSettings_compl
 - (id)valueForProperty:(SHMediaItemProperty)property
 {
   v4 = property;
-  v5 = [(SHMediaItem *)self properties];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  properties = [(SHMediaItem *)self properties];
+  v6 = [properties objectForKeyedSubscript:v4];
 
   return v6;
 }
@@ -140,78 +140,78 @@ void __85__SHMediaItem_Presentation__presentMediaItem_presentationSettings_compl
 - (id)objectForKeyedSubscript:(SHMediaItemProperty)key
 {
   v4 = key;
-  v5 = [(SHMediaItem *)self properties];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  properties = [(SHMediaItem *)self properties];
+  v6 = [properties objectForKeyedSubscript:v4];
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [SHMediaItem alloc];
-  v6 = [(SHMediaItem *)self properties];
-  v7 = [v6 copyWithZone:a3];
+  properties = [(SHMediaItem *)self properties];
+  v7 = [properties copyWithZone:zone];
   v8 = [(SHMediaItem *)v5 initWithProperties:v7];
 
-  v9 = [(SHMediaItem *)self _rawResponseSongsData];
-  v10 = [v9 copyWithZone:a3];
+  _rawResponseSongsData = [(SHMediaItem *)self _rawResponseSongsData];
+  v10 = [_rawResponseSongsData copyWithZone:zone];
   [(SHMediaItem *)v8 set_rawResponseSongsData:v10];
 
-  v11 = [(SHMediaItem *)self underlyingIdentifier];
-  v12 = [v11 copyWithZone:a3];
+  underlyingIdentifier = [(SHMediaItem *)self underlyingIdentifier];
+  v12 = [underlyingIdentifier copyWithZone:zone];
   [(SHMediaItem *)v8 setUnderlyingIdentifier:v12];
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v18 = a3;
-  v4 = [(SHMediaItem *)self properties];
-  v5 = [v4 objectForKeyedSubscript:@"sh_matchLocationCoordinate"];
+  coderCopy = coder;
+  properties = [(SHMediaItem *)self properties];
+  v5 = [properties objectForKeyedSubscript:@"sh_matchLocationCoordinate"];
 
   if (v5)
   {
-    v6 = [(SHMediaItem *)self matchLocation];
-    v7 = v6;
-    if (v6)
+    matchLocation = [(SHMediaItem *)self matchLocation];
+    properties3 = matchLocation;
+    if (matchLocation)
     {
       v8 = MEMORY[0x277CCABB0];
-      [v6 coordinate];
+      [matchLocation coordinate];
       v9 = [v8 numberWithDouble:?];
-      [v18 encodeObject:v9 forKey:@"matchLocationLatitude"];
+      [coderCopy encodeObject:v9 forKey:@"matchLocationLatitude"];
 
       v10 = MEMORY[0x277CCABB0];
-      [v7 coordinate];
+      [properties3 coordinate];
       v12 = [v10 numberWithDouble:v11];
-      [v18 encodeObject:v12 forKey:@"matchLocationLongitude"];
+      [coderCopy encodeObject:v12 forKey:@"matchLocationLongitude"];
     }
 
-    v13 = [(SHMediaItem *)self properties];
-    v14 = [v13 mutableCopy];
+    properties2 = [(SHMediaItem *)self properties];
+    v14 = [properties2 mutableCopy];
 
     [v14 removeObjectForKey:@"sh_matchLocationCoordinate"];
     v15 = [v14 copy];
-    [v18 encodeObject:v15 forKey:@"properties"];
+    [coderCopy encodeObject:v15 forKey:@"properties"];
   }
 
   else
   {
-    v7 = [(SHMediaItem *)self properties];
-    [v18 encodeObject:v7 forKey:@"properties"];
+    properties3 = [(SHMediaItem *)self properties];
+    [coderCopy encodeObject:properties3 forKey:@"properties"];
   }
 
-  v16 = [(SHMediaItem *)self _rawResponseSongsData];
-  [v18 encodeObject:v16 forKey:@"SHMediaItemRawResponseData"];
+  _rawResponseSongsData = [(SHMediaItem *)self _rawResponseSongsData];
+  [coderCopy encodeObject:_rawResponseSongsData forKey:@"SHMediaItemRawResponseData"];
 
-  v17 = [(SHMediaItem *)self underlyingIdentifier];
-  [v18 encodeObject:v17 forKey:@"underlyingIdentifier"];
+  underlyingIdentifier = [(SHMediaItem *)self underlyingIdentifier];
+  [coderCopy encodeObject:underlyingIdentifier forKey:@"underlyingIdentifier"];
 }
 
-- (SHMediaItem)initWithCoder:(id)a3
+- (SHMediaItem)initWithCoder:(id)coder
 {
   v25[11] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v24.receiver = self;
   v24.super_class = SHMediaItem;
   v5 = [(SHMediaItem *)&v24 init];
@@ -232,11 +232,11 @@ void __85__SHMediaItem_Presentation__presentMediaItem_presentationSettings_compl
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:11];
     v8 = [v6 setWithArray:v7];
 
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"properties"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"properties"];
     v10 = [v9 mutableCopy];
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"matchLocationLatitude"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"matchLocationLongitude"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"matchLocationLatitude"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"matchLocationLongitude"];
     v13 = [SHLocationTransformer coordinateValueFromLatitude:v11 longitude:v12];
     [v10 setValue:v13 forKey:@"sh_matchLocationCoordinate"];
 
@@ -244,34 +244,34 @@ void __85__SHMediaItem_Presentation__presentMediaItem_presentationSettings_compl
     properties = v5->_properties;
     v5->_properties = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SHMediaItemRawResponseData"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SHMediaItemRawResponseData"];
     rawResponseSongsData = v5->__rawResponseSongsData;
     v5->__rawResponseSongsData = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"underlyingIdentifier"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"underlyingIdentifier"];
     v19 = v18;
     if (v18)
     {
-      v20 = v18;
+      uUID = v18;
     }
 
     else
     {
-      v20 = [MEMORY[0x277CCAD78] UUID];
+      uUID = [MEMORY[0x277CCAD78] UUID];
     }
 
     underlyingIdentifier = v5->_underlyingIdentifier;
-    v5->_underlyingIdentifier = v20;
+    v5->_underlyingIdentifier = uUID;
   }
 
   v22 = *MEMORY[0x277D85DE8];
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -279,34 +279,34 @@ void __85__SHMediaItem_Presentation__presentMediaItem_presentationSettings_compl
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(SHMediaItem *)self isEqualMediaItem:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(SHMediaItem *)self isEqualMediaItem:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualMediaItem:(id)a3
+- (BOOL)isEqualMediaItem:(id)item
 {
-  v4 = a3;
-  v5 = [(SHMediaItem *)self identifier];
-  v6 = [v4 identifier];
+  itemCopy = item;
+  identifier = [(SHMediaItem *)self identifier];
+  identifier2 = [itemCopy identifier];
 
-  LOBYTE(v4) = [v5 isEqual:v6];
-  return v4;
+  LOBYTE(itemCopy) = [identifier isEqual:identifier2];
+  return itemCopy;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(SHMediaItem *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(SHMediaItem *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
 - (id)debugDescription
 {
-  v2 = [(SHMediaItem *)self properties];
-  v3 = [v2 debugDescription];
+  properties = [(SHMediaItem *)self properties];
+  v3 = [properties debugDescription];
 
   return v3;
 }
@@ -333,20 +333,20 @@ void __85__SHMediaItem_Presentation__presentMediaItem_presentationSettings_compl
 - (SHArtwork)artwork
 {
   v3 = [SHArtwork alloc];
-  v4 = [(SHMediaItem *)self artworkDictionary];
-  v5 = [(SHArtwork *)v3 initWithDictionary:v4 error:0];
+  artworkDictionary = [(SHMediaItem *)self artworkDictionary];
+  v5 = [(SHArtwork *)v3 initWithDictionary:artworkDictionary error:0];
 
   return v5;
 }
 
-- (id)artworkURLForSize:(CGSize)a3
+- (id)artworkURLForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6 = [SHArtwork alloc];
-  v7 = [(SHMediaItem *)self artworkDictionary];
+  artworkDictionary = [(SHMediaItem *)self artworkDictionary];
   v19 = 0;
-  v8 = [(SHArtwork *)v6 initWithDictionary:v7 error:&v19];
+  v8 = [(SHArtwork *)v6 initWithDictionary:artworkDictionary error:&v19];
 
   if (!v8)
   {
@@ -361,10 +361,10 @@ void __85__SHMediaItem_Presentation__presentMediaItem_presentationSettings_compl
     v8 = [[SHArtwork alloc] initWithURL:v9];
   }
 
-  v11 = [(SHArtwork *)v8 maximumWidth];
-  if (v11)
+  maximumWidth = [(SHArtwork *)v8 maximumWidth];
+  if (maximumWidth)
   {
-    v12 = v11;
+    v12 = maximumWidth;
   }
 
   else
@@ -372,9 +372,9 @@ void __85__SHMediaItem_Presentation__presentMediaItem_presentationSettings_compl
     v12 = width;
   }
 
-  v13 = [(SHArtwork *)v8 maximumHeight];
-  v14 = v13;
-  if (!v13)
+  maximumHeight = [(SHArtwork *)v8 maximumHeight];
+  v14 = maximumHeight;
+  if (!maximumHeight)
   {
     v14 = height;
   }
@@ -387,23 +387,23 @@ LABEL_10:
   return v17;
 }
 
-- (CGSize)targetArtworkImageSizeFromTargetSize:(CGSize)a3 aspectRatio:(double)a4
+- (CGSize)targetArtworkImageSizeFromTargetSize:(CGSize)size aspectRatio:(double)ratio
 {
-  if (a3.width < a3.height)
+  if (size.width < size.height)
   {
-    a3.width = a3.height;
+    size.width = size.height;
   }
 
-  v4 = fmin(a3.width, 800.0);
-  if (a4 <= 1.0)
+  v4 = fmin(size.width, 800.0);
+  if (ratio <= 1.0)
   {
-    v5 = v4 * a4;
+    v5 = v4 * ratio;
   }
 
   else
   {
     v5 = v4;
-    v4 = v4 / a4;
+    v4 = v4 / ratio;
   }
 
   result.height = v4;
@@ -414,9 +414,9 @@ LABEL_10:
 - (BOOL)explicitContent
 {
   v2 = [(SHMediaItem *)self validValueForProperty:@"sh_explicitContent"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (NSArray)genres
@@ -441,9 +441,9 @@ LABEL_10:
 - (int64_t)shazamCount
 {
   v2 = [(SHMediaItem *)self validValueForProperty:@"sh_shazamCount"];
-  v3 = [v2 longLongValue];
+  longLongValue = [v2 longLongValue];
 
-  return v3;
+  return longLongValue;
 }
 
 - (NSUUID)identifier
@@ -452,15 +452,15 @@ LABEL_10:
   v4 = v3;
   if (v3)
   {
-    v5 = v3;
+    underlyingIdentifier = v3;
   }
 
   else
   {
-    v5 = [(SHMediaItem *)self underlyingIdentifier];
+    underlyingIdentifier = [(SHMediaItem *)self underlyingIdentifier];
   }
 
-  v6 = v5;
+  v6 = underlyingIdentifier;
 
   return v6;
 }
@@ -484,26 +484,26 @@ LABEL_10:
 
 - (id)fetchRawSongResponseData
 {
-  v3 = [(SHMediaItem *)self _rawResponseSongsData];
+  _rawResponseSongsData = [(SHMediaItem *)self _rawResponseSongsData];
 
-  if (!v3)
+  if (!_rawResponseSongsData)
   {
-    v4 = [(SHMediaItem *)self identifier];
-    v5 = [SHMediaItemDaemonConnection fetchRawSongResponseDataUsingMediaItemIdentifier:v4];
+    identifier = [(SHMediaItem *)self identifier];
+    v5 = [SHMediaItemDaemonConnection fetchRawSongResponseDataUsingMediaItemIdentifier:identifier];
     [(SHMediaItem *)self set_rawResponseSongsData:v5];
   }
 
   return [(SHMediaItem *)self _rawResponseSongsData];
 }
 
-- (id)validValueForProperty:(id)a3
+- (id)validValueForProperty:(id)property
 {
-  v4 = a3;
-  v5 = [(SHMediaItem *)self properties];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  propertyCopy = property;
+  properties = [(SHMediaItem *)self properties];
+  v6 = [properties objectForKeyedSubscript:propertyCopy];
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [SHMediaItemPropertyUtilities isShazamKitDefinedMediaItemProperty:v4])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [SHMediaItemPropertyUtilities isShazamKitDefinedMediaItemProperty:propertyCopy])
   {
     v7 = 0;
   }
@@ -512,14 +512,14 @@ LABEL_10:
   {
     if (v6)
     {
-      if ([SHMediaItemPropertyUtilities isShazamKitDefinedMediaItemProperty:v4])
+      if ([SHMediaItemPropertyUtilities isShazamKitDefinedMediaItemProperty:propertyCopy])
       {
-        [SHMediaItemPropertyUtilities typeForShazamKitProperty:v4];
+        [SHMediaItemPropertyUtilities typeForShazamKitProperty:propertyCopy];
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
           v9 = MEMORY[0x277CBEAD8];
           v10 = *MEMORY[0x277CBE658];
-          v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Value for %@ is not of the correct type: %@", v4, v6];
+          v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Value for %@ is not of the correct type: %@", propertyCopy, v6];
           v12 = [v9 exceptionWithName:v10 reason:v11 userInfo:0];
           v13 = v12;
 
@@ -539,29 +539,29 @@ LABEL_10:
   fuzzyRepresentation = self->_fuzzyRepresentation;
   if (!fuzzyRepresentation)
   {
-    v4 = [(SHMediaItem *)self title];
+    title = [(SHMediaItem *)self title];
     v5 = objc_msgSend(MEMORY[0x277CCA900], "characterSetWithCharactersInString:", @"([");
-    v6 = [v4 rangeOfCharacterFromSet:v5];
+    v6 = [title rangeOfCharacterFromSet:v5];
 
-    v7 = [MEMORY[0x277CCA900] alphanumericCharacterSet];
-    v8 = [v7 invertedSet];
+    alphanumericCharacterSet = [MEMORY[0x277CCA900] alphanumericCharacterSet];
+    invertedSet = [alphanumericCharacterSet invertedSet];
 
-    v9 = [(SHMediaItem *)self title];
-    v10 = v9;
+    title2 = [(SHMediaItem *)self title];
+    v10 = title2;
     if (v6 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v11 = [v9 lowercaseString];
-      v12 = [v11 componentsSeparatedByCharactersInSet:v8];
-      v13 = [v12 componentsJoinedByString:&stru_2845C78F0];
+      lowercaseString = [title2 lowercaseString];
+      v11LowercaseString = [lowercaseString componentsSeparatedByCharactersInSet:invertedSet];
+      v13 = [v11LowercaseString componentsJoinedByString:&stru_2845C78F0];
       v14 = self->_fuzzyRepresentation;
       self->_fuzzyRepresentation = v13;
     }
 
     else
     {
-      v11 = [v9 substringToIndex:v6];
-      v12 = [v11 lowercaseString];
-      v14 = [v12 componentsSeparatedByCharactersInSet:v8];
+      lowercaseString = [title2 substringToIndex:v6];
+      v11LowercaseString = [lowercaseString lowercaseString];
+      v14 = [v11LowercaseString componentsSeparatedByCharactersInSet:invertedSet];
       v15 = [v14 componentsJoinedByString:&stru_2845C78F0];
       v16 = self->_fuzzyRepresentation;
       self->_fuzzyRepresentation = v15;
@@ -573,11 +573,11 @@ LABEL_10:
   return fuzzyRepresentation;
 }
 
-- (BOOL)describesFrequencySkew:(double)a3
+- (BOOL)describesFrequencySkew:(double)skew
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = [(SHMediaItem *)self frequencySkewRanges];
-  v6 = [v5 count];
+  frequencySkewRanges = [(SHMediaItem *)self frequencySkewRanges];
+  v6 = [frequencySkewRanges count];
 
   if (v6)
   {
@@ -585,8 +585,8 @@ LABEL_10:
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v7 = [(SHMediaItem *)self frequencySkewRanges];
-    v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    frequencySkewRanges2 = [(SHMediaItem *)self frequencySkewRanges];
+    v8 = [frequencySkewRanges2 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v8)
     {
       v9 = *v14;
@@ -596,17 +596,17 @@ LABEL_10:
         {
           if (*v14 != v9)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(frequencySkewRanges2);
           }
 
-          if ([*(*(&v13 + 1) + 8 * i) contains:a3])
+          if ([*(*(&v13 + 1) + 8 * i) contains:skew])
           {
             LOBYTE(v8) = 1;
             goto LABEL_12;
           }
         }
 
-        v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v8 = [frequencySkewRanges2 countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v8)
         {
           continue;
@@ -628,11 +628,11 @@ LABEL_12:
   return v8;
 }
 
-- (BOOL)describesOffset:(double)a3
+- (BOOL)describesOffset:(double)offset
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = [(SHMediaItem *)self timeRanges];
-  v6 = [v5 count];
+  timeRanges = [(SHMediaItem *)self timeRanges];
+  v6 = [timeRanges count];
 
   if (v6)
   {
@@ -640,19 +640,19 @@ LABEL_12:
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v7 = [(SHMediaItem *)self timeRanges];
-    v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    timeRanges2 = [(SHMediaItem *)self timeRanges];
+    v8 = [timeRanges2 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v8)
     {
       v9 = *v15;
-      v10 = a3 + 0.01;
+      v10 = offset + 0.01;
       while (2)
       {
         for (i = 0; i != v8; ++i)
         {
           if (*v15 != v9)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(timeRanges2);
           }
 
           if ([*(*(&v14 + 1) + 8 * i) contains:v10])
@@ -662,7 +662,7 @@ LABEL_12:
           }
         }
 
-        v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v8 = [timeRanges2 countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v8)
         {
           continue;
@@ -684,13 +684,13 @@ LABEL_12:
   return v8;
 }
 
-+ (id)transformedPropertiesFromProperties:(id)a3
++ (id)transformedPropertiesFromProperties:(id)properties
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"sh_matchLocationCoordinate_Swift"];
+  propertiesCopy = properties;
+  v4 = [propertiesCopy objectForKeyedSubscript:@"sh_matchLocationCoordinate_Swift"];
   if ([SHLocationTransformer isValidCoordinateValue:v4])
   {
-    v5 = [v3 mutableCopy];
+    v5 = [propertiesCopy mutableCopy];
     [v5 setValue:v4 forKey:@"sh_matchLocationCoordinate"];
     [v5 removeObjectForKey:@"sh_matchLocationCoordinate_Swift"];
     v6 = [v5 copy];
@@ -698,7 +698,7 @@ LABEL_12:
 
   else
   {
-    v6 = v3;
+    v6 = propertiesCopy;
   }
 
   return v6;

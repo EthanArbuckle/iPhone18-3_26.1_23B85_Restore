@@ -1,37 +1,37 @@
 @interface TRIUserAdjustableSettings
-+ (BOOL)getExperimentOptOut:(id)a3;
++ (BOOL)getExperimentOptOut:(id)out;
 + (unsigned)_optOutSoftwareUpdatePreferenceForAnyUser;
-+ (void)_deactivateAllActiveExperimentsWithServerContext:(id)a3;
-+ (void)updateExperimentOptOutStateWithServerContext:(id)a3;
++ (void)_deactivateAllActiveExperimentsWithServerContext:(id)context;
++ (void)updateExperimentOptOutStateWithServerContext:(id)context;
 @end
 
 @implementation TRIUserAdjustableSettings
 
-+ (void)updateExperimentOptOutStateWithServerContext:(id)a3
++ (void)updateExperimentOptOutStateWithServerContext:(id)context
 {
-  v5 = a3;
-  if (!v5)
+  contextCopy = context;
+  if (!contextCopy)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:a1 file:@"TRIUserAdjustableSettings.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"serverContext"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIUserAdjustableSettings.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"serverContext"}];
   }
 
-  v6 = [v5 keyValueStore];
+  keyValueStore = [contextCopy keyValueStore];
 
-  if (!v6)
+  if (!keyValueStore)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"TRIUserAdjustableSettings.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"serverContext.keyValueStore"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIUserAdjustableSettings.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"serverContext.keyValueStore"}];
   }
 
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __74__TRIUserAdjustableSettings_updateExperimentOptOutStateWithServerContext___block_invoke;
   block[3] = &unk_279DDEE68;
-  v14 = v5;
-  v15 = a1;
+  v14 = contextCopy;
+  selfCopy = self;
   v7 = qword_2815978A0;
-  v8 = v5;
+  v8 = contextCopy;
   if (v7 != -1)
   {
     dispatch_once(&qword_2815978A0, block);
@@ -90,36 +90,36 @@ void __74__TRIUserAdjustableSettings_updateExperimentOptOutStateWithServerContex
   v7 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)getExperimentOptOut:(id)a3
++ (BOOL)getExperimentOptOut:(id)out
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  outCopy = out;
+  if (!outCopy)
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:a1 file:@"TRIUserAdjustableSettings.m" lineNumber:70 description:{@"Invalid parameter not satisfying: %@", @"serverContext"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIUserAdjustableSettings.m" lineNumber:70 description:{@"Invalid parameter not satisfying: %@", @"serverContext"}];
   }
 
-  v6 = [v5 keyValueStore];
+  keyValueStore = [outCopy keyValueStore];
 
-  if (!v6)
+  if (!keyValueStore)
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:a1 file:@"TRIUserAdjustableSettings.m" lineNumber:71 description:{@"Invalid parameter not satisfying: %@", @"serverContext.keyValueStore"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIUserAdjustableSettings.m" lineNumber:71 description:{@"Invalid parameter not satisfying: %@", @"serverContext.keyValueStore"}];
   }
 
-  v7 = [v5 keyValueStore];
-  v8 = [TRIPersistentUserSettings settingsWithKeyValueStore:v7];
+  keyValueStore2 = [outCopy keyValueStore];
+  v8 = [TRIPersistentUserSettings settingsWithKeyValueStore:keyValueStore2];
 
-  v9 = [v8 persistedOptOutStatus];
-  if (v9)
+  persistedOptOutStatus = [v8 persistedOptOutStatus];
+  if (persistedOptOutStatus)
   {
-    v10 = v9;
+    _optOutSoftwareUpdatePreferenceForAnyUser = persistedOptOutStatus;
     v11 = TRILogCategory_Server();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      v18 = v10 == 1;
+      v18 = _optOutSoftwareUpdatePreferenceForAnyUser == 1;
       v12 = "Using persisted experiment opt-out: '%d'";
 LABEL_10:
       _os_log_impl(&dword_26F567000, v11, OS_LOG_TYPE_DEFAULT, v12, buf, 8u);
@@ -128,35 +128,35 @@ LABEL_10:
 
   else
   {
-    v10 = [a1 _optOutSoftwareUpdatePreferenceForAnyUser];
+    _optOutSoftwareUpdatePreferenceForAnyUser = [self _optOutSoftwareUpdatePreferenceForAnyUser];
     v11 = TRILogCategory_Server();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      v18 = v10 == 1;
+      v18 = _optOutSoftwareUpdatePreferenceForAnyUser == 1;
       v12 = "No persisted opt-out state, returning current setting: '%d'";
       goto LABEL_10;
     }
   }
 
   v13 = *MEMORY[0x277D85DE8];
-  return v10 == 1;
+  return _optOutSoftwareUpdatePreferenceForAnyUser == 1;
 }
 
-+ (void)_deactivateAllActiveExperimentsWithServerContext:(id)a3
++ (void)_deactivateAllActiveExperimentsWithServerContext:(id)context
 {
-  v5 = a3;
-  if (!v5)
+  contextCopy = context;
+  if (!contextCopy)
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:a1 file:@"TRIUserAdjustableSettings.m" lineNumber:88 description:{@"Invalid parameter not satisfying: %@", @"serverContext"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIUserAdjustableSettings.m" lineNumber:88 description:{@"Invalid parameter not satisfying: %@", @"serverContext"}];
   }
 
-  v6 = [v5 taskQueue];
+  taskQueue = [contextCopy taskQueue];
 
   v7 = TRILogCategory_Server();
   v8 = v7;
-  if (v6)
+  if (taskQueue)
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
@@ -170,13 +170,13 @@ LABEL_10:
     v24 = __Block_byref_object_copy__62;
     v25 = __Block_byref_object_dispose__62;
     v26 = +[TRISequenceTask task];
-    v9 = [v5 experimentDatabase];
+    experimentDatabase = [contextCopy experimentDatabase];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __78__TRIUserAdjustableSettings__deactivateAllActiveExperimentsWithServerContext___block_invoke;
     v20[3] = &unk_279DE18E8;
     v20[4] = buf;
-    v10 = [v9 enumerateExperimentRecordsWithBlock:v20];
+    v10 = [experimentDatabase enumerateExperimentRecordsWithBlock:v20];
 
     if ((v10 & 1) == 0)
     {
@@ -189,12 +189,12 @@ LABEL_10:
     }
 
     v12 = +[TRITaskQueuingOptions defaultOptionsWithIgnoreDuplicates];
-    v13 = [v5 taskQueue];
-    v14 = [v13 addTask:*(v22 + 5) options:v12];
+    taskQueue2 = [contextCopy taskQueue];
+    v14 = [taskQueue2 addTask:*(v22 + 5) options:v12];
 
-    v15 = [v5 taskQueue];
+    taskQueue3 = [contextCopy taskQueue];
     v16 = [[TRIRunningXPCActivityDescriptor alloc] initForImmediateWorkWithCapabilities:0];
-    [v15 resumeWithXPCActivityDescriptor:v16 executeWhenSuspended:0];
+    [taskQueue3 resumeWithXPCActivityDescriptor:v16 executeWhenSuspended:0];
 
     if (v14 == 2)
     {

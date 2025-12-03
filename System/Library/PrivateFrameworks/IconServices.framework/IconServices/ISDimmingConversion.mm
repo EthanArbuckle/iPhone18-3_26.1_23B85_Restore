@@ -3,21 +3,21 @@
 - (BOOL)_prepareSamplesIfNeeded;
 - (BOOL)isDimmable;
 - (CGImage)createDimmedImage;
-- (ISDimmingConversion)initWithCGImage:(CGImage *)a3;
+- (ISDimmingConversion)initWithCGImage:(CGImage *)image;
 - (void)_computeDimmingParameters;
 - (void)dealloc;
 @end
 
 @implementation ISDimmingConversion
 
-- (ISDimmingConversion)initWithCGImage:(CGImage *)a3
+- (ISDimmingConversion)initWithCGImage:(CGImage *)image
 {
   v6.receiver = self;
   v6.super_class = ISDimmingConversion;
   v4 = [(ISDimmingConversion *)&v6 init];
   if (v4)
   {
-    v4->_cgImage = CGImageRetain(a3);
+    v4->_cgImage = CGImageRetain(image);
     *&v4->_targetHighlightBrightnessLevel = 0x3EE666663F6CCCCDLL;
     v4->_minMeanBrightnessAdjustmentFactor = 0.65;
   }
@@ -257,8 +257,8 @@ LABEL_13:
 
 - (BOOL)_computeDimmedImage
 {
-  v3 = [(ISDimmingConversion *)self isDimmable];
-  if (v3)
+  isDimmable = [(ISDimmingConversion *)self isDimmable];
+  if (isDimmable)
   {
     v4 = *&self->_ucharDimmed[3];
     if (!v4)
@@ -331,7 +331,7 @@ LABEL_13:
     }
   }
 
-  return v3;
+  return isDimmable;
 }
 
 - (CGImage)createDimmedImage

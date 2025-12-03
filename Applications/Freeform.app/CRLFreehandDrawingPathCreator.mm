@@ -1,36 +1,36 @@
 @interface CRLFreehandDrawingPathCreator
-- ($EB457B8D156C558632463A5C38AABCB2)p_drawingInputPoint:(SEL)a3 atTime:(CGPoint)a4 predicted:(double)a5;
+- ($EB457B8D156C558632463A5C38AABCB2)p_drawingInputPoint:(SEL)point atTime:(CGPoint)time predicted:(double)predicted;
 - (BOOL)p_shouldSaveAllPoints;
 - (CGRect)takeDirtyRect;
-- (CRLFreehandDrawingPathCreator)initWithPencilKitSmoothing:(BOOL)a3;
+- (CRLFreehandDrawingPathCreator)initWithPencilKitSmoothing:(BOOL)smoothing;
 - (id).cxx_construct;
 - (id)commitAllAvailablePoints;
 - (id)copyOfEntirePath;
 - (id)copyOfUncommittedPath;
 - (id)handoffToNewPathCreator;
-- (id)p_pathWithLength:(double)a3 fromPoint:(CGPoint)a4;
+- (id)p_pathWithLength:(double)length fromPoint:(CGPoint)point;
 - (unint64_t)p_immutableUncommittedCountNotAdjustedForLastPoint;
 - (unint64_t)pointCountAvailableToCommit;
-- (void)beginDrawingWithViewScale:(double)a3 inputType:(int64_t)a4;
-- (void)drawToPoint:(CGPoint)a3 atTime:(double)a4 predicted:(BOOL)a5;
+- (void)beginDrawingWithViewScale:(double)scale inputType:(int64_t)type;
+- (void)drawToPoint:(CGPoint)point atTime:(double)time predicted:(BOOL)predicted;
 - (void)endDrawing;
-- (void)p_nonUpdatingDrawToPoint:(CGPoint)a3 atTime:(double)a4 predicted:(BOOL)a5;
+- (void)p_nonUpdatingDrawToPoint:(CGPoint)point atTime:(double)time predicted:(BOOL)predicted;
 - (void)p_updatePath;
-- (void)setPointReductionFilterThresholdMultiplier:(double)a3;
-- (void)setSmoothingThresholdMultiplier:(double)a3;
+- (void)setPointReductionFilterThresholdMultiplier:(double)multiplier;
+- (void)setSmoothingThresholdMultiplier:(double)multiplier;
 @end
 
 @implementation CRLFreehandDrawingPathCreator
 
-- (CRLFreehandDrawingPathCreator)initWithPencilKitSmoothing:(BOOL)a3
+- (CRLFreehandDrawingPathCreator)initWithPencilKitSmoothing:(BOOL)smoothing
 {
-  v3 = a3;
+  smoothingCopy = smoothing;
   v15.receiver = self;
   v15.super_class = CRLFreehandDrawingPathCreator;
   v4 = [(CRLFreehandDrawingPathCreator *)&v15 init];
   if (v4)
   {
-    if (v3)
+    if (smoothingCopy)
     {
       v5 = objc_alloc_init(CRLPKStrokeGenerator);
       strokeGenerator = v4->_strokeGenerator;
@@ -65,7 +65,7 @@
   return v4;
 }
 
-- (void)setSmoothingThresholdMultiplier:(double)a3
+- (void)setSmoothingThresholdMultiplier:(double)multiplier
 {
   p_creatorState = &self->_creatorState;
   if (self->_creatorState)
@@ -133,10 +133,10 @@
     strokeGenerator = self->_strokeGenerator;
   }
 
-  [(CRLPKStrokeGenerator *)strokeGenerator setSmoothingThresholdMultiplier:a3];
+  [(CRLPKStrokeGenerator *)strokeGenerator setSmoothingThresholdMultiplier:multiplier];
 }
 
-- (void)setPointReductionFilterThresholdMultiplier:(double)a3
+- (void)setPointReductionFilterThresholdMultiplier:(double)multiplier
 {
   p_creatorState = &self->_creatorState;
   if (self->_creatorState)
@@ -204,10 +204,10 @@
     strokeGenerator = self->_strokeGenerator;
   }
 
-  [(CRLPKStrokeGenerator *)strokeGenerator setPointReductionFilterThresholdMultiplier:a3];
+  [(CRLPKStrokeGenerator *)strokeGenerator setPointReductionFilterThresholdMultiplier:multiplier];
 }
 
-- (void)beginDrawingWithViewScale:(double)a3 inputType:(int64_t)a4
+- (void)beginDrawingWithViewScale:(double)scale inputType:(int64_t)type
 {
   if (self->_creatorState)
   {
@@ -241,8 +241,8 @@
   }
 
   self->_creatorState = 1;
-  self->_viewScale = a3;
-  self->_inputType = a4;
+  self->_viewScale = scale;
+  self->_inputType = type;
   if (self->_strokeGenerator)
   {
     v10 = objc_alloc_init(CRLPKStroke);
@@ -250,13 +250,13 @@
     [v11 systemUptime];
     [(CRLPKStroke *)v10 setTimestamp:?];
 
-    [(CRLPKStrokeGenerator *)self->_strokeGenerator drawingBeganWithStroke:v10 inputType:a4 == 2 inputScale:&stru_10186EFA0 start:1.0 / a3];
+    [(CRLPKStrokeGenerator *)self->_strokeGenerator drawingBeganWithStroke:v10 inputType:type == 2 inputScale:&stru_10186EFA0 start:1.0 / scale];
   }
 }
 
-- (void)drawToPoint:(CGPoint)a3 atTime:(double)a4 predicted:(BOOL)a5
+- (void)drawToPoint:(CGPoint)point atTime:(double)time predicted:(BOOL)predicted
 {
-  [(CRLFreehandDrawingPathCreator *)self p_nonUpdatingDrawToPoint:a5 atTime:a3.x predicted:a3.y, a4];
+  [(CRLFreehandDrawingPathCreator *)self p_nonUpdatingDrawToPoint:predicted atTime:point.x predicted:point.y, time];
 
   [(CRLFreehandDrawingPathCreator *)self p_updatePath];
 }
@@ -314,12 +314,12 @@
     v23 = v8;
     [(CRLPKStrokeGenerator *)strokeGenerator drawingEndedWithCompletion:&v19];
     dispatch_semaphore_wait(v8, 0xFFFFFFFFFFFFFFFFLL);
-    v9 = [v26[5] newPathRepresentation];
-    v10 = [CRLBezierPath bezierPathWithCGPath:v9];
+    newPathRepresentation = [v26[5] newPathRepresentation];
+    v10 = [CRLBezierPath bezierPathWithCGPath:newPathRepresentation];
     immutableBezierPath = self->_immutableBezierPath;
     self->_immutableBezierPath = v10;
 
-    CGPathRelease(v9);
+    CGPathRelease(newPathRepresentation);
     if ([(CRLBezierPath *)self->_immutableBezierPath isEmpty]|| ([(CRLBezierPath *)self->_immutableBezierPath length], v13 = v12, [(CRLFreehandDrawingPathCreator *)self minimumLengthForFinalCreatedPath], v13 < v14))
     {
       if (self->_initialPoint.x != INFINITY || self->_initialPoint.y != INFINITY)
@@ -545,8 +545,8 @@
 
 - (unint64_t)p_immutableUncommittedCountNotAdjustedForLastPoint
 {
-  v3 = [(CRLBezierPath *)self->_immutableBezierPath elementCount];
-  result = v3 - [(CRLBezierPath *)self->_committedPath elementCount];
+  elementCount = [(CRLBezierPath *)self->_immutableBezierPath elementCount];
+  result = elementCount - [(CRLBezierPath *)self->_committedPath elementCount];
   if ((result & 0x8000000000000000) != 0)
   {
     v5 = sub_1013931B8(&v9, &v10);
@@ -568,11 +568,11 @@
   return result;
 }
 
-- (void)p_nonUpdatingDrawToPoint:(CGPoint)a3 atTime:(double)a4 predicted:(BOOL)a5
+- (void)p_nonUpdatingDrawToPoint:(CGPoint)point atTime:(double)time predicted:(BOOL)predicted
 {
-  v5 = a5;
-  y = a3.y;
-  x = a3.x;
+  predictedCopy = predicted;
+  y = point.y;
+  x = point.x;
   if (self->_creatorState != 1)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -616,7 +616,7 @@
   v39 = 0u;
   v40 = 0u;
   v38 = 0u;
-  [(CRLFreehandDrawingPathCreator *)self p_drawingInputPoint:v5 atTime:x predicted:y, a4];
+  [(CRLFreehandDrawingPathCreator *)self p_drawingInputPoint:predictedCopy atTime:x predicted:y, time];
   if ([(CRLFreehandDrawingPathCreator *)self p_shouldSaveAllPoints])
   {
     end = self->_allInputPoints.__end_;
@@ -906,7 +906,7 @@
   }
 }
 
-- ($EB457B8D156C558632463A5C38AABCB2)p_drawingInputPoint:(SEL)a3 atTime:(CGPoint)a4 predicted:(double)a5
+- ($EB457B8D156C558632463A5C38AABCB2)p_drawingInputPoint:(SEL)point atTime:(CGPoint)time predicted:(double)predicted
 {
   retstr->var0 = xmmword_101463560;
   *&retstr->var1 = *algn_101463570;
@@ -914,21 +914,21 @@
   *&retstr->var7 = unk_1014635A0;
   *&retstr->var9 = 0;
   *&retstr->var3 = xmmword_101463580;
-  retstr->var0 = a4;
+  retstr->var0 = time;
   retstr->var1 = -1.0;
-  retstr->var5 = a5;
+  retstr->var5 = predicted;
   retstr->var6 = a6;
   retstr->var7 = -1;
   return self;
 }
 
-- (id)p_pathWithLength:(double)a3 fromPoint:(CGPoint)a4
+- (id)p_pathWithLength:(double)length fromPoint:(CGPoint)point
 {
-  y = a4.y;
-  v6 = a4.x + a3 * -0.5;
+  y = point.y;
+  v6 = point.x + length * -0.5;
   v7 = +[CRLBezierPath bezierPath];
   [v7 moveToPoint:{v6, y}];
-  [v7 curveToPoint:v6 + a3 controlPoint1:y controlPoint2:{a3 / 3.0 + v6, y, v6 + a3 / 3.0 * 2.0, y}];
+  [v7 curveToPoint:v6 + length controlPoint1:y controlPoint2:{length / 3.0 + v6, y, v6 + length / 3.0 * 2.0, y}];
 
   return v7;
 }

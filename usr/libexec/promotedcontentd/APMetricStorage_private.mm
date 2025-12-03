@@ -1,24 +1,24 @@
 @interface APMetricStorage_private
 + (id)metricsFileManager;
-+ (id)pathsToExpiredBatchesWithFileManager:(id)a3 closedPathPrefix:(id)a4;
-+ (id)preparedDataPathForDestination:(id)a3 purpose:(int64_t)a4 containsSignature:(BOOL)a5;
-+ (id)signedPathFromUnsigned:(id)a3;
-+ (int64_t)_countEventsInBatch:(id)a3;
-+ (int64_t)batchPathToPurpose:(id)a3;
-+ (void)moveExistingOpenFilesToClosed:(id)a3 closedPrefix:(id)a4;
-+ (void)removeExpiredBatchesFromClosedPrefix:(id)a3;
-+ (void)shelveClosedForChannel:(id)a3;
++ (id)pathsToExpiredBatchesWithFileManager:(id)manager closedPathPrefix:(id)prefix;
++ (id)preparedDataPathForDestination:(id)destination purpose:(int64_t)purpose containsSignature:(BOOL)signature;
++ (id)signedPathFromUnsigned:(id)unsigned;
++ (int64_t)_countEventsInBatch:(id)batch;
++ (int64_t)batchPathToPurpose:(id)purpose;
++ (void)moveExistingOpenFilesToClosed:(id)closed closedPrefix:(id)prefix;
++ (void)removeExpiredBatchesFromClosedPrefix:(id)prefix;
++ (void)shelveClosedForChannel:(id)channel;
 @end
 
 @implementation APMetricStorage_private
 
-+ (void)moveExistingOpenFilesToClosed:(id)a3 closedPrefix:(id)a4
++ (void)moveExistingOpenFilesToClosed:(id)closed closedPrefix:(id)prefix
 {
-  v6 = a3;
-  v7 = a4;
+  closedCopy = closed;
+  prefixCopy = prefix;
   v8 = [[APStorageManager alloc] initWithPathPrefix:@"m"];
   v102 = 0;
-  v9 = [v8 directoryExistsAtPath:v6 error:&v102];
+  v9 = [v8 directoryExistsAtPath:closedCopy error:&v102];
   v10 = v102;
   if (v10)
   {
@@ -27,7 +27,7 @@
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138740227;
-      v104 = v6;
+      v104 = closedCopy;
       v105 = 2114;
       v106 = v64;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Error determining status of open storage directory (%{sensitive}@)! %{public}@", buf, 0x16u);
@@ -44,7 +44,7 @@ LABEL_81:
   if (v9)
   {
     v101 = 0;
-    v12 = [v8 contentsOfDirectoryAtPath:v6 error:&v101];
+    v12 = [v8 contentsOfDirectoryAtPath:closedCopy error:&v101];
     v13 = v101;
     if (v13)
     {
@@ -54,7 +54,7 @@ LABEL_81:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138740227;
-        v104 = v6;
+        v104 = closedCopy;
         v105 = 2114;
         v106 = v11;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Error getting contents of open storage directory (%{sensitive}@)! %{public}@", buf, 0x16u);
@@ -76,8 +76,8 @@ LABEL_79:
       goto LABEL_81;
     }
 
-    v69 = v7;
-    v70 = a1;
+    v69 = prefixCopy;
+    selfCopy = self;
     v16 = +[NSMutableArray array];
     v97 = 0u;
     v98 = 0u;
@@ -99,7 +99,7 @@ LABEL_79:
             objc_enumerationMutation(v17);
           }
 
-          v22 = [v6 stringByAppendingPathComponent:*(*(&v97 + 1) + 8 * i)];
+          v22 = [closedCopy stringByAppendingPathComponent:*(*(&v97 + 1) + 8 * i)];
           [v16 addObject:v22];
         }
 
@@ -109,7 +109,7 @@ LABEL_79:
       while (v19);
     }
 
-    v63 = v6;
+    v63 = closedCopy;
 
     v23 = +[NSMutableArray array];
     v93 = 0u;
@@ -123,14 +123,14 @@ LABEL_79:
     if (!v25)
     {
       v27 = 0;
-      v7 = v69;
+      prefixCopy = v69;
       goto LABEL_48;
     }
 
     v26 = v25;
     v27 = 0;
     v28 = *v94;
-    v7 = v69;
+    prefixCopy = v69;
     while (1)
     {
       v29 = 0;
@@ -214,7 +214,7 @@ LABEL_29:
             }
 
             v30 = 0;
-            v7 = v69;
+            prefixCopy = v69;
           }
 
           else
@@ -247,14 +247,14 @@ LABEL_48:
         v44 = [v43 countByEnumeratingWithState:&v83 objects:v110 count:16];
         if (!v44)
         {
-          v6 = v63;
+          closedCopy = v63;
           v11 = v27;
           goto LABEL_78;
         }
 
         v45 = v44;
         v46 = *v84;
-        v6 = v63;
+        closedCopy = v63;
         v11 = v27;
         v61 = *v84;
         v62 = v43;
@@ -323,10 +323,10 @@ LABEL_48:
 
                     v54 = [v74 stringByAppendingPathComponent:*(*(&v78 + 1) + 8 * k)];
                     v55 = [v54 substringFromIndex:{objc_msgSend(v54, "rangeOfString:", @"/"}];
-                    v56 = [v7 stringByAppendingPathComponent:v55];
+                    v56 = [prefixCopy stringByAppendingPathComponent:v55];
 
                     v57 = sub_10032CDB8(APMetricsObservability, v54, v8);
-                    v58 = [v70 _countEventsInBatch:v54];
+                    v58 = [selfCopy _countEventsInBatch:v54];
 
                     v77 = 0;
                     LOBYTE(v55) = [v8 moveItemAtPath:v54 toPath:v56 error:&v77];
@@ -334,8 +334,8 @@ LABEL_48:
                     if (v55)
                     {
                       v59 = sub_100007F08();
-                      v60 = [v54 lastPathComponent];
-                      sub_100394B50(v59, v57, v60, [v70 batchPathToPurpose:v54], v58, v73, v7);
+                      lastPathComponent = [v54 lastPathComponent];
+                      sub_100394B50(v59, v57, lastPathComponent, [selfCopy batchPathToPurpose:v54], v58, v73, prefixCopy);
 
                       v8 = v73;
                     }
@@ -354,7 +354,7 @@ LABEL_48:
                         _os_log_impl(&_mh_execute_header, v59, OS_LOG_TYPE_DEFAULT, "Error moving file from (%{sensitive}@) to (%{sensitive}@)! %{public}@", buf, 0x20u);
                       }
 
-                      v7 = v69;
+                      prefixCopy = v69;
                     }
 
                     v52 = v72;
@@ -365,7 +365,7 @@ LABEL_48:
 
                 while (v75);
                 v43 = v62;
-                v6 = v63;
+                closedCopy = v63;
                 v11 = v76;
                 v46 = v61;
                 v45 = v65;
@@ -398,12 +398,12 @@ LABEL_78:
 LABEL_82:
 }
 
-+ (void)removeExpiredBatchesFromClosedPrefix:(id)a3
++ (void)removeExpiredBatchesFromClosedPrefix:(id)prefix
 {
-  v4 = a3;
+  prefixCopy = prefix;
   v5 = [[APStorageManager alloc] initWithPathPrefix:@"m"];
-  v19 = v4;
-  [a1 pathsToExpiredBatchesWithFileManager:v5 closedPathPrefix:v4];
+  v19 = prefixCopy;
+  [self pathsToExpiredBatchesWithFileManager:v5 closedPathPrefix:prefixCopy];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -425,10 +425,10 @@ LABEL_82:
         }
 
         v10 = *(*(&v23 + 1) + 8 * i);
-        v11 = [v10 lastPathComponent];
-        v12 = [a1 batchPathToPurpose:v10];
+        lastPathComponent = [v10 lastPathComponent];
+        v12 = [self batchPathToPurpose:v10];
         v13 = sub_100007F08();
-        sub_1003948B0(v13, v11, v10, v12);
+        sub_1003948B0(v13, lastPathComponent, v10, v12);
 
         v14 = sub_10032CE6C(APMetricsObservability, v10, v5);
         v15 = APLogForCategory();
@@ -458,7 +458,7 @@ LABEL_82:
         else
         {
           v17 = sub_100007F08();
-          sub_100394D3C(v17, v14, v11, v12, v5, v19);
+          sub_100394D3C(v17, v14, lastPathComponent, v12, v5, v19);
         }
       }
 
@@ -469,12 +469,12 @@ LABEL_82:
   }
 }
 
-+ (id)pathsToExpiredBatchesWithFileManager:(id)a3 closedPathPrefix:(id)a4
++ (id)pathsToExpiredBatchesWithFileManager:(id)manager closedPathPrefix:(id)prefix
 {
-  v5 = a3;
-  v6 = a4;
+  managerCopy = manager;
+  prefixCopy = prefix;
   v79 = 0;
-  v7 = [v5 directoryExistsAtPath:v6 error:&v79];
+  v7 = [managerCopy directoryExistsAtPath:prefixCopy error:&v79];
   v8 = v79;
   if (v8)
   {
@@ -489,7 +489,7 @@ LABEL_82:
   }
 
   v78 = 0;
-  v9 = [v5 contentsOfDirectoryAtPath:v6 error:&v78];
+  v9 = [managerCopy contentsOfDirectoryAtPath:prefixCopy error:&v78];
   v12 = v78;
   if (v12)
   {
@@ -498,7 +498,7 @@ LABEL_82:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138740227;
-      v85 = v6;
+      v85 = prefixCopy;
       v86 = 2114;
       v87 = v13;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Error getting contents of closed storage directory (%{sensitive}@)! %{public}@", buf, 0x16u);
@@ -536,7 +536,7 @@ LABEL_3:
           objc_enumerationMutation(v16);
         }
 
-        v21 = [v6 stringByAppendingPathComponent:*(*(&v74 + 1) + 8 * i)];
+        v21 = [prefixCopy stringByAppendingPathComponent:*(*(&v74 + 1) + 8 * i)];
         [v15 addObject:v21];
       }
 
@@ -546,7 +546,7 @@ LABEL_3:
     while (v18);
   }
 
-  v51 = v6;
+  v51 = prefixCopy;
 
   v22 = +[NSMutableArray array];
   v70 = 0u;
@@ -555,7 +555,7 @@ LABEL_3:
   v73 = 0u;
   v23 = v15;
   v24 = [v23 countByEnumeratingWithState:&v70 objects:v82 count:16];
-  v54 = v5;
+  v54 = managerCopy;
   v52 = v23;
   if (!v24)
   {
@@ -578,7 +578,7 @@ LABEL_3:
       v28 = *(*(&v70 + 1) + 8 * j);
 
       v69 = 0;
-      v29 = [v5 directoryExistsAtPath:v28 error:&v69];
+      v29 = [managerCopy directoryExistsAtPath:v28 error:&v69];
       v30 = v69;
       if (v30)
       {
@@ -603,7 +603,7 @@ LABEL_3:
         }
 
         v68 = 0;
-        v31 = [v5 contentsOfDirectoryAtPath:v28 error:&v68];
+        v31 = [managerCopy contentsOfDirectoryAtPath:v28 error:&v68];
         v32 = v68;
         if (v32)
         {
@@ -642,7 +642,7 @@ LABEL_3:
           }
 
           v13 = 0;
-          v5 = v54;
+          managerCopy = v54;
           v23 = v52;
         }
 
@@ -709,7 +709,7 @@ LABEL_52:
   {
     v47 = APLogForCategory();
     v9 = v50;
-    v6 = v51;
+    prefixCopy = v51;
     if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138740227;
@@ -723,14 +723,14 @@ LABEL_52:
 LABEL_63:
     v14 = v52;
 
-    v5 = v54;
+    managerCopy = v54;
   }
 
   else
   {
-    v5 = v54;
+    managerCopy = v54;
     v9 = v50;
-    v6 = v51;
+    prefixCopy = v51;
     if (v38 && [v38 count])
     {
       v48 = +[NSDate date];
@@ -760,28 +760,28 @@ LABEL_5:
   return v10;
 }
 
-+ (void)shelveClosedForChannel:(id)a3
++ (void)shelveClosedForChannel:(id)channel
 {
-  v3 = a3;
+  channelCopy = channel;
   v4 = [[APStorageManager alloc] initWithPathPrefix:@"m"];
   v46[0] = @"c";
-  v5 = [v3 destination];
-  v6 = [v5 value];
-  v46[1] = v6;
-  v7 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v3 purpose]);
-  v8 = [v7 stringValue];
-  v46[2] = v8;
+  destination = [channelCopy destination];
+  value = [destination value];
+  v46[1] = value;
+  v7 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [channelCopy purpose]);
+  stringValue = [v7 stringValue];
+  v46[2] = stringValue;
   v9 = [NSArray arrayWithObjects:v46 count:3];
   v10 = [NSString pathWithComponents:v9];
 
   v45[0] = @"s";
-  v11 = [v3 destination];
-  v12 = [v11 value];
-  v45[1] = v12;
-  v32 = v3;
-  v13 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v3 purpose]);
-  v14 = [v13 stringValue];
-  v45[2] = v14;
+  destination2 = [channelCopy destination];
+  value2 = [destination2 value];
+  v45[1] = value2;
+  v32 = channelCopy;
+  v13 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [channelCopy purpose]);
+  stringValue2 = [v13 stringValue];
+  v45[2] = stringValue2;
   v15 = [NSArray arrayWithObjects:v45 count:3];
   v16 = [NSString pathWithComponents:v15];
 
@@ -873,7 +873,7 @@ LABEL_24:
 
         while (v24);
         v20 = v31;
-        v3 = v32;
+        channelCopy = v32;
       }
 
       else
@@ -896,33 +896,33 @@ LABEL_25:
   return v2;
 }
 
-+ (id)signedPathFromUnsigned:(id)a3
++ (id)signedPathFromUnsigned:(id)unsigned
 {
-  v3 = a3;
+  unsignedCopy = unsigned;
   v4 = [NSString stringWithFormat:@"/%@/", @"ws"];
   v5 = [NSString stringWithFormat:@"/%@/", @"ns"];
-  v6 = [v3 stringByReplacingOccurrencesOfString:v5 withString:v4];
+  v6 = [unsignedCopy stringByReplacingOccurrencesOfString:v5 withString:v4];
 
   return v6;
 }
 
-+ (id)preparedDataPathForDestination:(id)a3 purpose:(int64_t)a4 containsSignature:(BOOL)a5
++ (id)preparedDataPathForDestination:(id)destination purpose:(int64_t)purpose containsSignature:(BOOL)signature
 {
   v5 = @"ns";
-  if (a5)
+  if (signature)
   {
     v5 = @"ws";
   }
 
-  return [NSString stringWithFormat:@"%@/%@/%@/%ld", @"p", a3, v5, a4];
+  return [NSString stringWithFormat:@"%@/%@/%@/%ld", @"p", destination, v5, purpose];
 }
 
-+ (int64_t)batchPathToPurpose:(id)a3
++ (int64_t)batchPathToPurpose:(id)purpose
 {
-  v3 = [a3 pathComponents];
-  if ([v3 count] >= 2)
+  pathComponents = [purpose pathComponents];
+  if ([pathComponents count] >= 2)
   {
-    v5 = [v3 objectAtIndexedSubscript:{objc_msgSend(v3, "count") - 2}];
+    v5 = [pathComponents objectAtIndexedSubscript:{objc_msgSend(pathComponents, "count") - 2}];
     v6 = [NSScanner scannerWithString:v5];
     v8 = 0;
     if (![v6 scanInt:&v8] || (objc_msgSend(v6, "isAtEnd") & 1) == 0 || (v4 = v8, v8 <= 0))
@@ -940,20 +940,20 @@ LABEL_25:
   return v4;
 }
 
-+ (int64_t)_countEventsInBatch:(id)a3
++ (int64_t)_countEventsInBatch:(id)batch
 {
-  v3 = a3;
+  batchCopy = batch;
   v4 = objc_autoreleasePoolPush();
   v5 = [objc_alloc(+[MetricsModuleClasses batchClass](MetricsModuleClasses "batchClass"))];
   v6 = -1;
   do
   {
-    v7 = [v5 nextMetric];
+    nextMetric = [v5 nextMetric];
 
     ++v6;
   }
 
-  while (v7);
+  while (nextMetric);
 
   objc_autoreleasePoolPop(v4);
   return v6;

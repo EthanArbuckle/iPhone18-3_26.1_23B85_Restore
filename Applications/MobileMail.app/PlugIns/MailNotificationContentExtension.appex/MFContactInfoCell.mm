@@ -1,14 +1,14 @@
 @interface MFContactInfoCell
-- (MFContactInfoCell)initWithFrame:(CGRect)a3;
+- (MFContactInfoCell)initWithFrame:(CGRect)frame;
 @end
 
 @implementation MFContactInfoCell
 
-- (MFContactInfoCell)initWithFrame:(CGRect)a3
+- (MFContactInfoCell)initWithFrame:(CGRect)frame
 {
   v51.receiver = self;
   v51.super_class = MFContactInfoCell;
-  v3 = [(MFContactInfoCell *)&v51 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MFContactInfoCell *)&v51 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [[MFAvatarView alloc] initWithFrame:0.0, 0.0, 32.0, 32.0];
@@ -24,15 +24,15 @@
     [(UILabel *)v3->_contactLabel setFont:v8];
 
     [(UILabel *)v3->_contactLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    v9 = [(MFContactInfoCell *)v3 contentView];
-    [v9 addSubview:v3->_avatarView];
+    contentView = [(MFContactInfoCell *)v3 contentView];
+    [contentView addSubview:v3->_avatarView];
 
-    v10 = [(MFContactInfoCell *)v3 contentView];
-    [v10 addSubview:v3->_contactLabel];
+    contentView2 = [(MFContactInfoCell *)v3 contentView];
+    [contentView2 addSubview:v3->_contactLabel];
 
     v11 = +[UIColor tableCellGroupedBackgroundColor];
-    v12 = [(MFContactInfoCell *)v3 contentView];
-    [v12 setBackgroundColor:v11];
+    contentView3 = [(MFContactInfoCell *)v3 contentView];
+    [contentView3 setBackgroundColor:v11];
 
     v13 = [UIImageView alloc];
     v14 = [UIImage systemImageNamed:MFImageGlyphExpandContact];
@@ -42,49 +42,49 @@
     v15 = +[UIColor systemWhiteColor];
     [v50 setTintColor:v15];
 
-    v16 = [(MFContactInfoCell *)v3 contentView];
-    [v16 addSubview:v50];
+    contentView4 = [(MFContactInfoCell *)v3 contentView];
+    [contentView4 addSubview:v50];
 
     [(MFContactInfoCell *)v3 setChevronView:v50];
-    v49 = [(MFAvatarView *)v3->_avatarView leadingAnchor];
-    v43 = [(MFContactInfoCell *)v3 contentView];
-    v42 = [v43 leadingAnchor];
-    v41 = [v49 constraintEqualToAnchor:20.0 constant:?];
+    leadingAnchor = [(MFAvatarView *)v3->_avatarView leadingAnchor];
+    contentView5 = [(MFContactInfoCell *)v3 contentView];
+    leadingAnchor2 = [contentView5 leadingAnchor];
+    v41 = [leadingAnchor constraintEqualToAnchor:20.0 constant:?];
     v52[0] = v41;
-    v48 = [(MFAvatarView *)v3->_avatarView bottomAnchor];
-    v40 = [(MFContactInfoCell *)v3 contentView];
-    v39 = [v40 bottomAnchor];
-    v38 = [v48 constraintEqualToAnchor:-20.0 constant:?];
+    bottomAnchor = [(MFAvatarView *)v3->_avatarView bottomAnchor];
+    contentView6 = [(MFContactInfoCell *)v3 contentView];
+    bottomAnchor2 = [contentView6 bottomAnchor];
+    v38 = [bottomAnchor constraintEqualToAnchor:-20.0 constant:?];
     v52[1] = v38;
-    v37 = [(MFAvatarView *)v3->_avatarView widthAnchor];
-    v36 = [v37 constraintEqualToConstant:32.0];
+    widthAnchor = [(MFAvatarView *)v3->_avatarView widthAnchor];
+    v36 = [widthAnchor constraintEqualToConstant:32.0];
     v52[2] = v36;
-    v35 = [(MFAvatarView *)v3->_avatarView heightAnchor];
-    v34 = [v35 constraintEqualToConstant:32.0];
+    heightAnchor = [(MFAvatarView *)v3->_avatarView heightAnchor];
+    v34 = [heightAnchor constraintEqualToConstant:32.0];
     v52[3] = v34;
-    v47 = [(MFAvatarView *)v3->_avatarView topAnchor];
-    v33 = [(MFContactInfoCell *)v3 contentView];
-    v32 = [v33 topAnchor];
-    v31 = [v47 constraintEqualToAnchor:20.0 constant:?];
+    topAnchor = [(MFAvatarView *)v3->_avatarView topAnchor];
+    contentView7 = [(MFContactInfoCell *)v3 contentView];
+    topAnchor2 = [contentView7 topAnchor];
+    v31 = [topAnchor constraintEqualToAnchor:20.0 constant:?];
     v52[4] = v31;
-    v46 = [(UILabel *)v3->_contactLabel leadingAnchor];
-    v30 = [(MFAvatarView *)v3->_avatarView trailingAnchor];
-    v29 = [v46 constraintEqualToAnchor:20.0 constant:?];
+    leadingAnchor3 = [(UILabel *)v3->_contactLabel leadingAnchor];
+    trailingAnchor = [(MFAvatarView *)v3->_avatarView trailingAnchor];
+    v29 = [leadingAnchor3 constraintEqualToAnchor:20.0 constant:?];
     v52[5] = v29;
-    v45 = [(UILabel *)v3->_contactLabel centerYAnchor];
-    v28 = [(MFContactInfoCell *)v3 contentView];
-    v27 = [v28 centerYAnchor];
-    v26 = [v45 constraintEqualToAnchor:?];
+    centerYAnchor = [(UILabel *)v3->_contactLabel centerYAnchor];
+    contentView8 = [(MFContactInfoCell *)v3 contentView];
+    centerYAnchor2 = [contentView8 centerYAnchor];
+    v26 = [centerYAnchor constraintEqualToAnchor:?];
     v52[6] = v26;
-    v44 = [(UIImageView *)v3->_chevronView centerYAnchor];
-    v17 = [(MFContactInfoCell *)v3 contentView];
-    v18 = [v17 centerYAnchor];
-    v19 = [v44 constraintEqualToAnchor:v18];
+    centerYAnchor3 = [(UIImageView *)v3->_chevronView centerYAnchor];
+    contentView9 = [(MFContactInfoCell *)v3 contentView];
+    centerYAnchor4 = [contentView9 centerYAnchor];
+    v19 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     v52[7] = v19;
-    v20 = [(UIImageView *)v3->_chevronView trailingAnchor];
-    v21 = [(MFContactInfoCell *)v3 contentView];
-    v22 = [v21 trailingAnchor];
-    v23 = [v20 constraintEqualToAnchor:v22 constant:-20.0];
+    trailingAnchor2 = [(UIImageView *)v3->_chevronView trailingAnchor];
+    contentView10 = [(MFContactInfoCell *)v3 contentView];
+    trailingAnchor3 = [contentView10 trailingAnchor];
+    v23 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:-20.0];
     v52[8] = v23;
     v24 = [NSArray arrayWithObjects:v52 count:9];
     [NSLayoutConstraint activateConstraints:v24];

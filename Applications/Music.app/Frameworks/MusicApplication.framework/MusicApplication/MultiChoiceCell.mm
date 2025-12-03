@@ -7,13 +7,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_C63D8();
 }
 
 - (void)tintColorDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_C6994();
 }
 

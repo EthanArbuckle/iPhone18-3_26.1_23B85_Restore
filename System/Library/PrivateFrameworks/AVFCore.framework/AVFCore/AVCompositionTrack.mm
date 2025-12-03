@@ -3,7 +3,7 @@
 - (BOOL)isEnabled;
 - (NSArray)formatDescriptionReplacements;
 - (NSArray)segments;
-- (id)_initWithAsset:(id)a3 trackID:(int)a4 trackIndex:(int64_t)a5;
+- (id)_initWithAsset:(id)asset trackID:(int)d trackIndex:(int64_t)index;
 - (id)description;
 - (void)dealloc;
 @end
@@ -40,15 +40,15 @@
 {
   cf = 0;
   v13 = [[AVTelemetryInterval alloc] initAndStartWith:34];
-  v3 = [(AVCompositionTrack *)self _mutableComposition];
-  v4 = [(AVAssetTrack *)self trackID];
+  _mutableComposition = [(AVCompositionTrack *)self _mutableComposition];
+  trackID = [(AVAssetTrack *)self trackID];
   v5 = *(*(CMBaseObjectGetVTable() + 16) + 72);
   if (!v5)
   {
     goto LABEL_9;
   }
 
-  v6 = v5(v3, v4, *MEMORY[0x1E6971FE0], *MEMORY[0x1E695E480], &cf);
+  v6 = v5(_mutableComposition, trackID, *MEMORY[0x1E6971FE0], *MEMORY[0x1E695E480], &cf);
   v7 = cf;
   if (v6)
   {
@@ -94,9 +94,9 @@ LABEL_10:
   v4.receiver = self;
   v4.super_class = AVCompositionTrack;
   v5 = [[AVTelemetryInterval alloc] initAndStartWith:35];
-  v2 = [(AVAssetTrack *)&v4 segments];
+  segments = [(AVAssetTrack *)&v4 segments];
   AVTelemetryIntervalEnd(&v5);
-  return v2;
+  return segments;
 }
 
 - (AVCompositionTrackSegment)segmentForTrackTime:(CMTime *)trackTime
@@ -115,12 +115,12 @@ LABEL_10:
   v29 = *MEMORY[0x1E69E9840];
   theArray = 0;
   v27 = [[AVTelemetryInterval alloc] initAndStartWith:37];
-  v3 = [(AVCompositionTrack *)self _mutableComposition];
-  v4 = [(AVAssetTrack *)self trackID];
+  _mutableComposition = [(AVCompositionTrack *)self _mutableComposition];
+  trackID = [(AVAssetTrack *)self trackID];
   v5 = *(*(CMBaseObjectGetVTable() + 16) + 72);
   if (v5)
   {
-    v6 = v5(v3, v4, *MEMORY[0x1E6971FE8], *MEMORY[0x1E695E480], &theArray);
+    v6 = v5(_mutableComposition, trackID, *MEMORY[0x1E6971FE8], *MEMORY[0x1E695E480], &theArray);
     v7 = theArray;
     if (v6)
     {
@@ -139,7 +139,7 @@ LABEL_10:
 
     if (CFArrayGetCount(theArray))
     {
-      v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:{-[__CFArray count](theArray, "count")}];
+      array = [MEMORY[0x1E695DF70] arrayWithCapacity:{-[__CFArray count](theArray, "count")}];
       v24 = 0u;
       v25 = 0u;
       v22 = 0u;
@@ -176,7 +176,7 @@ LABEL_10:
             if (!v19)
             {
               v20 = [[AVCompositionTrackFormatDescriptionReplacement alloc] initWithOriginalFormatDescription:v17 andReplacementFormatDescription:v18];
-              [(NSArray *)v9 addObject:v20];
+              [(NSArray *)array addObject:v20];
             }
           }
 
@@ -202,24 +202,24 @@ LABEL_22:
     CFRelease(v7);
   }
 
-  v9 = [MEMORY[0x1E695DEC8] array];
+  array = [MEMORY[0x1E695DEC8] array];
 LABEL_25:
   AVTelemetryIntervalEnd(&v27);
-  return v9;
+  return array;
 }
 
-- (id)_initWithAsset:(id)a3 trackID:(int)a4 trackIndex:(int64_t)a5
+- (id)_initWithAsset:(id)asset trackID:(int)d trackIndex:(int64_t)index
 {
   v10.receiver = self;
   v10.super_class = AVCompositionTrack;
-  v6 = [(AVAssetTrack *)&v10 _initWithAsset:a3 trackID:*&a4 trackIndex:a5];
+  v6 = [(AVAssetTrack *)&v10 _initWithAsset:asset trackID:*&d trackIndex:index];
   if (v6)
   {
     v7 = objc_alloc_init(AVCompositionTrackInternal);
     v6[2] = v7;
     if (v7)
     {
-      *(v6[2] + 8) = [a3 _mutableComposition];
+      *(v6[2] + 8) = [asset _mutableComposition];
       v8 = *(v6[2] + 8);
       if (v8)
       {

@@ -1,51 +1,51 @@
 @interface _KSTextReplacementEntry
-+ (id)localEntryFromCloudEntry:(id)a3;
-- (BOOL)isEquivalentTo:(id)a3;
++ (id)localEntryFromCloudEntry:(id)entry;
+- (BOOL)isEquivalentTo:(id)to;
 - (NSString)cloudID;
 - (_KSTextReplacementEntry)init;
-- (_KSTextReplacementEntry)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_KSTextReplacementEntry)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)encryptedFields;
 - (id)unEncryptedFields;
 - (id)uniqueID;
 - (id)uniqueRecordName;
 - (id)uniqueRecordNameVer0;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _KSTextReplacementEntry
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v5)
   {
-    v6 = [(NSString *)self->_phrase copyWithZone:a3];
+    v6 = [(NSString *)self->_phrase copyWithZone:zone];
     v7 = v5[2];
     v5[2] = v6;
 
-    v8 = [(NSString *)self->_shortcut copyWithZone:a3];
+    v8 = [(NSString *)self->_shortcut copyWithZone:zone];
     v9 = v5[3];
     v5[3] = v8;
 
-    v10 = [(NSDate *)self->_timestamp copyWithZone:a3];
+    v10 = [(NSDate *)self->_timestamp copyWithZone:zone];
     v11 = v5[4];
     v5[4] = v10;
 
-    v12 = [(_KSTextReplacementEntry *)self->_priorValue copyWithZone:a3];
+    v12 = [(_KSTextReplacementEntry *)self->_priorValue copyWithZone:zone];
     v13 = v5[6];
     v5[6] = v12;
 
-    v14 = [(NSString *)self->_cloudID copyWithZone:a3];
+    v14 = [(NSString *)self->_cloudID copyWithZone:zone];
     v15 = v5[5];
     v5[5] = v14;
 
     if (!v5[5])
     {
-      v16 = [(_KSTextReplacementEntry *)self uniqueID];
+      uniqueID = [(_KSTextReplacementEntry *)self uniqueID];
       v17 = v5[5];
-      v5[5] = v16;
+      v5[5] = uniqueID;
     }
   }
 
@@ -59,13 +59,13 @@
   v2 = [(_KSTextReplacementEntry *)&v10 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     timestamp = v2->_timestamp;
-    v2->_timestamp = v3;
+    v2->_timestamp = date;
 
-    v5 = [(_KSTextReplacementEntry *)v2 uniqueID];
+    uniqueID = [(_KSTextReplacementEntry *)v2 uniqueID];
     cloudID = v2->_cloudID;
-    v2->_cloudID = v5;
+    v2->_cloudID = uniqueID;
 
     shortcut = v2->_shortcut;
     v2->_shortcut = &stru_286796E30;
@@ -77,62 +77,62 @@
   return v2;
 }
 
-- (_KSTextReplacementEntry)initWithCoder:(id)a3
+- (_KSTextReplacementEntry)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = _KSTextReplacementEntry;
   v5 = [(_KSTextReplacementEntry *)&v19 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"phrase"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"phrase"];
     phrase = v5->_phrase;
     v5->_phrase = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shortcut"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shortcut"];
     shortcut = v5->_shortcut;
     v5->_shortcut = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timestamp"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timestamp"];
     timestamp = v5->_timestamp;
     v5->_timestamp = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"priorValue"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"priorValue"];
     priorValue = v5->_priorValue;
     v5->_priorValue = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cloudID"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cloudID"];
     cloudID = v5->_cloudID;
     v5->_cloudID = v14;
 
     if (!v5->_cloudID)
     {
-      v16 = [(_KSTextReplacementEntry *)v5 uniqueID];
+      uniqueID = [(_KSTextReplacementEntry *)v5 uniqueID];
       v17 = v5->_cloudID;
-      v5->_cloudID = v16;
+      v5->_cloudID = uniqueID;
     }
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   phrase = self->_phrase;
-  v5 = a3;
-  [v5 encodeObject:phrase forKey:@"phrase"];
-  [v5 encodeObject:self->_shortcut forKey:@"shortcut"];
-  [v5 encodeObject:self->_timestamp forKey:@"timestamp"];
-  [v5 encodeObject:self->_priorValue forKey:@"priorValue"];
-  [v5 encodeObject:self->_cloudID forKey:@"cloudID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:phrase forKey:@"phrase"];
+  [coderCopy encodeObject:self->_shortcut forKey:@"shortcut"];
+  [coderCopy encodeObject:self->_timestamp forKey:@"timestamp"];
+  [coderCopy encodeObject:self->_priorValue forKey:@"priorValue"];
+  [coderCopy encodeObject:self->_cloudID forKey:@"cloudID"];
 }
 
 - (id)uniqueRecordNameVer0
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(_KSTextReplacementEntry *)self shortcut];
-  v5 = [(_KSTextReplacementEntry *)self phrase];
-  v6 = [v3 stringWithFormat:@"%@-%@", v4, v5];
+  shortcut = [(_KSTextReplacementEntry *)self shortcut];
+  phrase = [(_KSTextReplacementEntry *)self phrase];
+  v6 = [v3 stringWithFormat:@"%@-%@", shortcut, phrase];
 
   return v6;
 }
@@ -140,18 +140,18 @@
 - (id)uniqueRecordName
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(_KSTextReplacementEntry *)self shortcut];
-  v5 = [(_KSTextReplacementEntry *)self phrase];
-  v6 = [v3 stringWithFormat:@"%@%@", v4, v5];
+  shortcut = [(_KSTextReplacementEntry *)self shortcut];
+  phrase = [(_KSTextReplacementEntry *)self phrase];
+  v6 = [v3 stringWithFormat:@"%@%@", shortcut, phrase];
 
-  v7 = [MEMORY[0x277CCA900] illegalCharacterSet];
-  v8 = [v6 stringByTrimmingCharactersInSet:v7];
+  illegalCharacterSet = [MEMORY[0x277CCA900] illegalCharacterSet];
+  v8 = [v6 stringByTrimmingCharactersInSet:illegalCharacterSet];
 
-  v9 = [MEMORY[0x277CCA900] controlCharacterSet];
-  v10 = [v8 stringByTrimmingCharactersInSet:v9];
+  controlCharacterSet = [MEMORY[0x277CCA900] controlCharacterSet];
+  v10 = [v8 stringByTrimmingCharactersInSet:controlCharacterSet];
 
-  v11 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v12 = [v10 stringByTrimmingCharactersInSet:v11];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v12 = [v10 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   return v12;
 }
@@ -161,9 +161,9 @@
   cloudID = self->_cloudID;
   if (!cloudID)
   {
-    v4 = [(_KSTextReplacementEntry *)self uniqueID];
+    uniqueID = [(_KSTextReplacementEntry *)self uniqueID];
     v5 = self->_cloudID;
-    self->_cloudID = v4;
+    self->_cloudID = uniqueID;
 
     cloudID = self->_cloudID;
   }
@@ -173,18 +173,18 @@
 
 - (id)uniqueID
 {
-  v2 = [MEMORY[0x277CCAD78] UUID];
-  v3 = [v2 UUIDString];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
 - (id)unEncryptedFields
 {
   v7[1] = *MEMORY[0x277D85DE8];
   v6 = @"timestamp";
-  v2 = [(_KSTextReplacementEntry *)self timestamp];
-  v7[0] = v2;
+  timestamp = [(_KSTextReplacementEntry *)self timestamp];
+  v7[0] = timestamp;
   v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:&v6 count:1];
 
   v4 = *MEMORY[0x277D85DE8];
@@ -194,32 +194,32 @@
 
 - (id)encryptedFields
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(_KSTextReplacementEntry *)self shortcut];
-  v5 = [v4 dataUsingEncoding:4];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  shortcut = [(_KSTextReplacementEntry *)self shortcut];
+  v5 = [shortcut dataUsingEncoding:4];
 
   if (v5)
   {
-    [v3 setObject:v5 forKeyedSubscript:@"shortcutE"];
+    [dictionary setObject:v5 forKeyedSubscript:@"shortcutE"];
   }
 
-  v6 = [(_KSTextReplacementEntry *)self phrase];
-  v7 = [v6 dataUsingEncoding:4];
+  phrase = [(_KSTextReplacementEntry *)self phrase];
+  v7 = [phrase dataUsingEncoding:4];
 
   if (v7)
   {
-    [v3 setObject:v7 forKeyedSubscript:@"phraseE"];
+    [dictionary setObject:v7 forKeyedSubscript:@"phraseE"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-+ (id)localEntryFromCloudEntry:(id)a3
++ (id)localEntryFromCloudEntry:(id)entry
 {
-  v3 = a3;
+  entryCopy = entry;
   v4 = objc_alloc_init(_KSTextReplacementEntry);
-  v5 = [v3 encryptedValuesByKey];
-  v6 = [v5 objectForKey:@"shortcutE"];
+  encryptedValuesByKey = [entryCopy encryptedValuesByKey];
+  v6 = [encryptedValuesByKey objectForKey:@"shortcutE"];
 
   if (v6)
   {
@@ -228,14 +228,14 @@
 
   else
   {
-    v7 = [v3 objectForKey:@"shortcut"];
+    v7 = [entryCopy objectForKey:@"shortcut"];
   }
 
   v8 = v7;
   [(_KSTextReplacementEntry *)v4 setShortcut:v7];
 
-  v9 = [v3 encryptedValuesByKey];
-  v10 = [v9 objectForKey:@"phraseE"];
+  encryptedValuesByKey2 = [entryCopy encryptedValuesByKey];
+  v10 = [encryptedValuesByKey2 objectForKey:@"phraseE"];
 
   if (v10)
   {
@@ -244,38 +244,38 @@
 
   else
   {
-    v11 = [v3 objectForKey:@"phrase"];
+    v11 = [entryCopy objectForKey:@"phrase"];
   }
 
   v12 = v11;
   [(_KSTextReplacementEntry *)v4 setPhrase:v11];
 
-  v13 = [v3 objectForKey:@"timestamp"];
+  v13 = [entryCopy objectForKey:@"timestamp"];
   [(_KSTextReplacementEntry *)v4 setTimestamp:v13];
 
-  v14 = [v3 recordID];
-  v15 = [v14 recordName];
-  [(_KSTextReplacementEntry *)v4 setCloudID:v15];
+  recordID = [entryCopy recordID];
+  recordName = [recordID recordName];
+  [(_KSTextReplacementEntry *)v4 setCloudID:recordName];
 
-  v16 = [(_KSTextReplacementEntry *)v4 shortcut];
+  shortcut = [(_KSTextReplacementEntry *)v4 shortcut];
 
-  if (!v16)
+  if (!shortcut)
   {
     [(_KSTextReplacementEntry *)v4 setShortcut:&stru_286796E30];
   }
 
-  v17 = [(_KSTextReplacementEntry *)v4 phrase];
+  phrase = [(_KSTextReplacementEntry *)v4 phrase];
 
-  if (!v17)
+  if (!phrase)
   {
     [(_KSTextReplacementEntry *)v4 setPhrase:&stru_286796E30];
   }
 
   v18 = [objc_alloc(MEMORY[0x277CCAAB0]) initRequiringSecureCoding:1];
-  [v3 encodeSystemFieldsWithCoder:v18];
+  [entryCopy encodeSystemFieldsWithCoder:v18];
   [v18 finishEncoding];
-  v19 = [v18 encodedData];
-  v20 = [MEMORY[0x277CBEA90] dataWithData:v19];
+  encodedData = [v18 encodedData];
+  v20 = [MEMORY[0x277CBEA90] dataWithData:encodedData];
   [(_KSTextReplacementEntry *)v4 setCloudData:v20];
 
   return v4;
@@ -284,23 +284,23 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(_KSTextReplacementEntry *)self shortcut];
-  v5 = [(_KSTextReplacementEntry *)self phrase];
-  v6 = [v3 stringWithFormat:@"%@, %@", v4, v5];
+  shortcut = [(_KSTextReplacementEntry *)self shortcut];
+  phrase = [(_KSTextReplacementEntry *)self phrase];
+  v6 = [v3 stringWithFormat:@"%@, %@", shortcut, phrase];
 
   return v6;
 }
 
-- (BOOL)isEquivalentTo:(id)a3
+- (BOOL)isEquivalentTo:(id)to
 {
-  v4 = a3;
-  v5 = [(_KSTextReplacementEntry *)self shortcut];
-  v6 = [v4 shortcut];
-  if ([v5 isEqualToString:v6])
+  toCopy = to;
+  shortcut = [(_KSTextReplacementEntry *)self shortcut];
+  shortcut2 = [toCopy shortcut];
+  if ([shortcut isEqualToString:shortcut2])
   {
-    v7 = [(_KSTextReplacementEntry *)self phrase];
-    v8 = [v4 phrase];
-    v9 = [v7 isEqualToString:v8];
+    phrase = [(_KSTextReplacementEntry *)self phrase];
+    phrase2 = [toCopy phrase];
+    v9 = [phrase isEqualToString:phrase2];
   }
 
   else

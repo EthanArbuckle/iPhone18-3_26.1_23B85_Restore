@@ -1,38 +1,38 @@
 @interface SKSetupBase
 - (BOOL)_runSteps;
 - (CUMessageSession)messageSessionTemplate;
-- (SKSetupBase)initWithLogCategory:(LogCategory *)a3;
-- (id)descriptionWithLevel:(int)a3;
-- (void)_addStep:(id)a3;
-- (void)_completeWithError:(id)a3;
-- (void)_completedStep:(id)a3 error:(id)a4;
+- (SKSetupBase)initWithLogCategory:(LogCategory *)category;
+- (id)descriptionWithLevel:(int)level;
+- (void)_addStep:(id)step;
+- (void)_completeWithError:(id)error;
+- (void)_completedStep:(id)step error:(id)error;
 - (void)_invalidate;
 - (void)_invalidateSteps;
 - (void)_invalidated;
-- (void)_pairSetupConfig:(id)a3;
-- (void)_postEvent:(id)a3;
-- (void)_receivedEventID:(id)a3 event:(id)a4 options:(id)a5;
-- (void)_receivedRequestID:(id)a3 request:(id)a4 options:(id)a5 responseHandler:(id)a6;
-- (void)_reportEvent:(id)a3;
+- (void)_pairSetupConfig:(id)config;
+- (void)_postEvent:(id)event;
+- (void)_receivedEventID:(id)d event:(id)event options:(id)options;
+- (void)_receivedRequestID:(id)d request:(id)request options:(id)options responseHandler:(id)handler;
+- (void)_reportEvent:(id)event;
 - (void)_setupMessageSession;
 - (void)_tearDownMessageSession;
 - (void)activate;
-- (void)addStep:(id)a3;
+- (void)addStep:(id)step;
 - (void)dealloc;
-- (void)deregisterEventID:(id)a3 completionHandler:(id)a4;
-- (void)deregisterRequestID:(id)a3 completionHandler:(id)a4;
+- (void)deregisterEventID:(id)d completionHandler:(id)handler;
+- (void)deregisterRequestID:(id)d completionHandler:(id)handler;
 - (void)invalidate;
-- (void)postEvent:(id)a3;
-- (void)postEventType:(int)a3;
-- (void)receivedData:(id)a3;
-- (void)registerEventID:(id)a3 options:(id)a4 eventHandler:(id)a5 completionHandler:(id)a6;
-- (void)registerRequestID:(id)a3 options:(id)a4 requestHandler:(id)a5 completionHandler:(id)a6;
-- (void)reportEvent:(id)a3;
-- (void)reportEventType:(int)a3;
-- (void)sendEventID:(id)a3 eventMessage:(id)a4 options:(id)a5 completionHandler:(id)a6;
-- (void)sendRequestID:(id)a3 requestMessage:(id)a4 options:(id)a5 responseHandler:(id)a6;
-- (void)setLabel:(id)a3;
-- (void)setPasswordType:(int)a3;
+- (void)postEvent:(id)event;
+- (void)postEventType:(int)type;
+- (void)receivedData:(id)data;
+- (void)registerEventID:(id)d options:(id)options eventHandler:(id)handler completionHandler:(id)completionHandler;
+- (void)registerRequestID:(id)d options:(id)options requestHandler:(id)handler completionHandler:(id)completionHandler;
+- (void)reportEvent:(id)event;
+- (void)reportEventType:(int)type;
+- (void)sendEventID:(id)d eventMessage:(id)message options:(id)options completionHandler:(id)handler;
+- (void)sendRequestID:(id)d requestMessage:(id)message options:(id)options responseHandler:(id)handler;
+- (void)setLabel:(id)label;
+- (void)setPasswordType:(int)type;
 @end
 
 @implementation SKSetupBase
@@ -45,12 +45,12 @@
     return 0;
   }
 
-  v4 = [(NSMutableArray *)self->_stepArray popFirstObject];
-  v3 = v4 == 0;
-  if (v4)
+  popFirstObject = [(NSMutableArray *)self->_stepArray popFirstObject];
+  v3 = popFirstObject == 0;
+  if (popFirstObject)
   {
-    objc_storeStrong(p_stepCurrent, v4);
-    [v4 activate];
+    objc_storeStrong(p_stepCurrent, popFirstObject);
+    [popFirstObject activate];
   }
 
   return v3;
@@ -101,13 +101,13 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_completedStep:(id)a3 error:(id)a4
+- (void)_completedStep:(id)step error:(id)error
 {
-  v19 = a3;
-  v6 = a4;
-  if (self->_stepCurrent == v19)
+  stepCopy = step;
+  errorCopy = error;
+  if (self->_stepCurrent == stepCopy)
   {
-    v8 = v6;
+    v8 = errorCopy;
     var0 = self->_ucat->var0;
     if (v8)
     {
@@ -127,12 +127,12 @@
         v13 = self->_ucat;
 LABEL_8:
         v18 = CUPrintNSError();
-        v17 = v19;
+        v17 = stepCopy;
         LogPrintF();
       }
 
 LABEL_17:
-      [(SKStepable *)v19 invalidate:v17];
+      [(SKStepable *)stepCopy invalidate:v17];
       stepCurrent = self->_stepCurrent;
       self->_stepCurrent = 0;
 
@@ -165,7 +165,7 @@ LABEL_17:
       v16 = self->_ucat;
     }
 
-    v17 = v19;
+    v17 = stepCopy;
     LogPrintF();
     goto LABEL_17;
   }
@@ -194,24 +194,24 @@ LABEL_20:
 LABEL_21:
 }
 
-- (void)_addStep:(id)a3
+- (void)_addStep:(id)step
 {
-  v4 = a3;
+  stepCopy = step;
   var0 = self->_ucat->var0;
-  v13 = v4;
+  v13 = stepCopy;
   if (var0 <= 30)
   {
     if (var0 != -1)
     {
 LABEL_3:
-      v12 = v4;
+      v12 = stepCopy;
       LogPrintF();
-      v4 = v13;
+      stepCopy = v13;
       goto LABEL_5;
     }
 
     v6 = _LogCategory_Initialize();
-    v4 = v13;
+    stepCopy = v13;
     if (v6)
     {
       ucat = self->_ucat;
@@ -220,9 +220,9 @@ LABEL_3:
   }
 
 LABEL_5:
-  v7 = [v4 skSetupObject];
+  skSetupObject = [stepCopy skSetupObject];
 
-  if (!v7)
+  if (!skSetupObject)
   {
     [v13 setSkSetupObject:self];
   }
@@ -240,17 +240,17 @@ LABEL_5:
   [(NSMutableArray *)stepArray addObject:v13];
 }
 
-- (void)addStep:(id)a3
+- (void)addStep:(id)step
 {
-  v4 = a3;
+  stepCopy = step;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __23__SKSetupBase_addStep___block_invoke;
   v7[3] = &unk_279BB8648;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = stepCopy;
+  v6 = stepCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -317,9 +317,9 @@ LABEL_6:
   v15[4] = self;
   [(CUMessageSessionServer *)self->_messageSessionServer setSendRequestHandler:v15];
   [(CUMessageSessionServer *)self->_messageSessionServer activate];
-  v10 = [(CUMessageSessionServer *)self->_messageSessionServer templateSession];
+  templateSession = [(CUMessageSessionServer *)self->_messageSessionServer templateSession];
   messageSessionTemplate = self->_messageSessionTemplate;
-  self->_messageSessionTemplate = v10;
+  self->_messageSessionTemplate = templateSession;
 
   if (!self->_messageSessionTemplate)
   {
@@ -486,26 +486,26 @@ void __35__SKSetupBase__setupMessageSession__block_invoke_3(uint64_t a1, int a2,
   return messageSessionTemplate;
 }
 
-- (void)sendRequestID:(id)a3 requestMessage:(id)a4 options:(id)a5 responseHandler:(id)a6
+- (void)sendRequestID:(id)d requestMessage:(id)message options:(id)options responseHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  messageCopy = message;
+  optionsCopy = options;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __68__SKSetupBase_sendRequestID_requestMessage_options_responseHandler___block_invoke;
   block[3] = &unk_279BB8068;
   block[4] = self;
-  v20 = v10;
-  v22 = v12;
-  v23 = v13;
-  v21 = v11;
-  v15 = v12;
-  v16 = v11;
-  v17 = v13;
-  v18 = v10;
+  v20 = dCopy;
+  v22 = optionsCopy;
+  v23 = handlerCopy;
+  v21 = messageCopy;
+  v15 = optionsCopy;
+  v16 = messageCopy;
+  v17 = handlerCopy;
+  v18 = dCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -545,20 +545,20 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)deregisterRequestID:(id)a3 completionHandler:(id)a4
+- (void)deregisterRequestID:(id)d completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __53__SKSetupBase_deregisterRequestID_completionHandler___block_invoke;
   block[3] = &unk_279BB8040;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = dCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -593,26 +593,26 @@ LABEL_5:
   return v5();
 }
 
-- (void)registerRequestID:(id)a3 options:(id)a4 requestHandler:(id)a5 completionHandler:(id)a6
+- (void)registerRequestID:(id)d options:(id)options requestHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  optionsCopy = options;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __74__SKSetupBase_registerRequestID_options_requestHandler_completionHandler___block_invoke;
   block[3] = &unk_279BB8018;
   block[4] = self;
-  v20 = v10;
-  v22 = v13;
-  v23 = v12;
-  v21 = v11;
-  v15 = v11;
-  v16 = v12;
-  v17 = v13;
-  v18 = v10;
+  v20 = dCopy;
+  v22 = completionHandlerCopy;
+  v23 = handlerCopy;
+  v21 = optionsCopy;
+  v15 = optionsCopy;
+  v16 = handlerCopy;
+  v17 = completionHandlerCopy;
+  v18 = dCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -684,48 +684,48 @@ LABEL_11:
 LABEL_14:
 }
 
-- (void)_receivedRequestID:(id)a3 request:(id)a4 options:(id)a5 responseHandler:(id)a6
+- (void)_receivedRequestID:(id)d request:(id)request options:(id)options responseHandler:(id)handler
 {
-  v18 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(NSMutableDictionary *)self->_registeredRequests objectForKeyedSubscript:v18];
-  v14 = [v13 handler];
-  v15 = v14;
-  if (v14)
+  dCopy = d;
+  requestCopy = request;
+  optionsCopy = options;
+  handlerCopy = handler;
+  v13 = [(NSMutableDictionary *)self->_registeredRequests objectForKeyedSubscript:dCopy];
+  handler = [v13 handler];
+  v15 = handler;
+  if (handler)
   {
-    (*(v14 + 16))(v14, v18, v10, v11, v12);
+    (*(handler + 16))(handler, dCopy, requestCopy, optionsCopy, handlerCopy);
   }
 
   else
   {
     v16 = *MEMORY[0x277CCA590];
     v17 = NSErrorF_safe();
-    (*(v12 + 2))(v12, 0, 0, v17, &__block_literal_global_892);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, v17, &__block_literal_global_892);
   }
 }
 
-- (void)sendEventID:(id)a3 eventMessage:(id)a4 options:(id)a5 completionHandler:(id)a6
+- (void)sendEventID:(id)d eventMessage:(id)message options:(id)options completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  messageCopy = message;
+  optionsCopy = options;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __66__SKSetupBase_sendEventID_eventMessage_options_completionHandler___block_invoke;
   block[3] = &unk_279BB8068;
   block[4] = self;
-  v20 = v10;
-  v22 = v12;
-  v23 = v13;
-  v21 = v11;
-  v15 = v12;
-  v16 = v11;
-  v17 = v13;
-  v18 = v10;
+  v20 = dCopy;
+  v22 = optionsCopy;
+  v23 = handlerCopy;
+  v21 = messageCopy;
+  v15 = optionsCopy;
+  v16 = messageCopy;
+  v17 = handlerCopy;
+  v18 = dCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -765,20 +765,20 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)deregisterEventID:(id)a3 completionHandler:(id)a4
+- (void)deregisterEventID:(id)d completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__SKSetupBase_deregisterEventID_completionHandler___block_invoke;
   block[3] = &unk_279BB8040;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = dCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -813,26 +813,26 @@ LABEL_5:
   return v5();
 }
 
-- (void)registerEventID:(id)a3 options:(id)a4 eventHandler:(id)a5 completionHandler:(id)a6
+- (void)registerEventID:(id)d options:(id)options eventHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  optionsCopy = options;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __70__SKSetupBase_registerEventID_options_eventHandler_completionHandler___block_invoke;
   block[3] = &unk_279BB8018;
   block[4] = self;
-  v20 = v10;
-  v22 = v13;
-  v23 = v12;
-  v21 = v11;
-  v15 = v11;
-  v16 = v12;
-  v17 = v13;
-  v18 = v10;
+  v20 = dCopy;
+  v22 = completionHandlerCopy;
+  v23 = handlerCopy;
+  v21 = optionsCopy;
+  v15 = optionsCopy;
+  v16 = handlerCopy;
+  v17 = completionHandlerCopy;
+  v18 = dCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -904,21 +904,21 @@ LABEL_11:
 LABEL_14:
 }
 
-- (void)_receivedEventID:(id)a3 event:(id)a4 options:(id)a5
+- (void)_receivedEventID:(id)d event:(id)event options:(id)options
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(NSMutableDictionary *)self->_registeredEvents objectForKeyedSubscript:v12];
-  v11 = [v10 handler];
+  dCopy = d;
+  eventCopy = event;
+  optionsCopy = options;
+  v10 = [(NSMutableDictionary *)self->_registeredEvents objectForKeyedSubscript:dCopy];
+  handler = [v10 handler];
 
-  if (v11)
+  if (handler)
   {
-    (v11)[2](v11, v12, v8, v9);
+    (handler)[2](handler, dCopy, eventCopy, optionsCopy);
   }
 }
 
-- (void)_pairSetupConfig:(id)a3
+- (void)_pairSetupConfig:(id)config
 {
   CFDictionaryGetInt64Ranged();
   passwordTypeChangedHandler = self->_passwordTypeChangedHandler;
@@ -1240,21 +1240,21 @@ LABEL_19:
 LABEL_20:
 }
 
-- (void)receivedData:(id)a3
+- (void)receivedData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __28__SKSetupBase_receivedData___block_invoke;
   v7[3] = &unk_279BB8648;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dataCopy;
+  v6 = dataCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)reportEventType:(int)a3
+- (void)reportEventType:(int)type
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -1262,13 +1262,13 @@ LABEL_20:
   v4[2] = __31__SKSetupBase_reportEventType___block_invoke;
   v4[3] = &unk_279BB7FA0;
   v4[4] = self;
-  v5 = a3;
+  typeCopy = type;
   dispatch_async(dispatchQueue, v4);
 }
 
-- (void)_reportEvent:(id)a3
+- (void)_reportEvent:(id)event
 {
-  v8 = a3;
+  eventCopy = event;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   var0 = self->_ucat->var0;
   if (var0 <= 30)
@@ -1292,42 +1292,42 @@ LABEL_5:
   v6 = v5;
   if (v5)
   {
-    (*(v5 + 16))(v5, v8);
+    (*(v5 + 16))(v5, eventCopy);
   }
 }
 
-- (void)reportEvent:(id)a3
+- (void)reportEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __27__SKSetupBase_reportEvent___block_invoke;
   v7[3] = &unk_279BB8648;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = eventCopy;
+  v6 = eventCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_postEvent:(id)a3
+- (void)_postEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   var0 = self->_ucat->var0;
-  v16 = v4;
+  v16 = eventCopy;
   if (var0 <= 30)
   {
     if (var0 != -1)
     {
 LABEL_3:
-      v15 = v4;
+      v15 = eventCopy;
       LogPrintF();
-      v4 = v16;
+      eventCopy = v16;
       goto LABEL_5;
     }
 
     v6 = _LogCategory_Initialize();
-    v4 = v16;
+    eventCopy = v16;
     if (v6)
     {
       ucat = self->_ucat;
@@ -1336,7 +1336,7 @@ LABEL_3:
   }
 
 LABEL_5:
-  if ([v4 eventType] != 130)
+  if ([eventCopy eventType] != 130)
   {
     goto LABEL_10;
   }
@@ -1345,10 +1345,10 @@ LABEL_5:
   if (objc_opt_isKindOfClass())
   {
     v7 = v16;
-    v8 = [v7 password];
-    if (v8)
+    password = [v7 password];
+    if (password)
     {
-      [(SKConnection *)self->_skCnx tryPassword:v8];
+      [(SKConnection *)self->_skCnx tryPassword:password];
     }
 
     else
@@ -1397,7 +1397,7 @@ LABEL_15:
 LABEL_10:
 }
 
-- (void)postEventType:(int)a3
+- (void)postEventType:(int)type
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -1405,7 +1405,7 @@ LABEL_10:
   v4[2] = __29__SKSetupBase_postEventType___block_invoke;
   v4[3] = &unk_279BB7FA0;
   v4[4] = self;
-  v5 = a3;
+  typeCopy = type;
   dispatch_async(dispatchQueue, v4);
 }
 
@@ -1416,26 +1416,26 @@ void __29__SKSetupBase_postEventType___block_invoke(uint64_t a1)
   [v1 _postEvent:v2];
 }
 
-- (void)postEvent:(id)a3
+- (void)postEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __25__SKSetupBase_postEvent___block_invoke;
   v7[3] = &unk_279BB8648;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = eventCopy;
+  v6 = eventCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_completeWithError:(id)a3
+- (void)_completeWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   var0 = self->_ucat->var0;
-  v11 = v4;
-  if (v4)
+  v11 = errorCopy;
+  if (errorCopy)
   {
     if (var0 <= 60)
     {
@@ -1639,11 +1639,11 @@ LABEL_6:
   return LogPrintF();
 }
 
-- (void)setPasswordType:(int)a3
+- (void)setPasswordType:(int)type
 {
   passwordType = self->_passwordType;
-  self->_passwordType = a3;
-  if (passwordType != a3 && self->_activateCalled)
+  self->_passwordType = type;
+  if (passwordType != type && self->_activateCalled)
   {
     v9 = v3;
     v10 = v4;
@@ -1653,24 +1653,24 @@ LABEL_6:
     v7[2] = __31__SKSetupBase_setPasswordType___block_invoke;
     v7[3] = &unk_279BB7FA0;
     v7[4] = self;
-    v8 = a3;
+    typeCopy = type;
     dispatch_async(dispatchQueue, v7);
   }
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  objc_storeStrong(&self->_label, a3);
-  v7 = a3;
+  objc_storeStrong(&self->_label, label);
+  labelCopy = label;
   var4 = self->_ucatBase->var4;
-  v6 = v7;
-  [v7 UTF8String];
+  v6 = labelCopy;
+  [labelCopy UTF8String];
   LogCategoryReplaceF();
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
-  if ((a3 & 0x8000000) != 0)
+  if ((level & 0x8000000) != 0)
   {
     v4 = 0;
   }
@@ -1727,7 +1727,7 @@ LABEL_6:
   [(SKSetupBase *)&v4 dealloc];
 }
 
-- (SKSetupBase)initWithLogCategory:(LogCategory *)a3
+- (SKSetupBase)initWithLogCategory:(LogCategory *)category
 {
   v8.receiver = self;
   v8.super_class = SKSetupBase;
@@ -1736,8 +1736,8 @@ LABEL_6:
   if (v4)
   {
     objc_storeStrong(&v4->_dispatchQueue, MEMORY[0x277D85CD0]);
-    v5->_ucat = a3;
-    v5->_ucatBase = a3;
+    v5->_ucat = category;
+    v5->_ucatBase = category;
     v6 = v5;
   }
 

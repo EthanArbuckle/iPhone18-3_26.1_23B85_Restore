@@ -1,5 +1,5 @@
 @interface NSNumber
-+ (NSNumber)allocWithZone:(_NSZone *)a3;
++ (NSNumber)allocWithZone:(_NSZone *)zone;
 + (NSNumber)numberWithBool:(BOOL)value;
 + (NSNumber)numberWithChar:(char)value;
 + (NSNumber)numberWithDouble:(double)value;
@@ -17,8 +17,8 @@
 + (NSNumber)numberWithUnsignedShort:(unsigned __int16)value;
 + (void)initialize;
 - (BOOL)BOOLValue;
-- (BOOL)_getCString:(char *)a3 length:(int)a4 multiplier:(double)a5;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)_getCString:(char *)string length:(int)length multiplier:(double)multiplier;
+- (BOOL)isEqual:(id)equal;
 - (NSComparisonResult)compare:(NSNumber *)otherNumber;
 - (NSDecimal)decimalValue;
 - (NSNumber)initWithCoder:(NSCoder *)coder;
@@ -27,20 +27,20 @@
 - (char)charValue;
 - (double)doubleValue;
 - (float)floatValue;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int)intValue;
 - (int64_t)_cfNumberType;
-- (int64_t)_reverseCompare:(id)a3;
+- (int64_t)_reverseCompare:(id)compare;
 - (uint64_t)longLongValue;
 - (uint64_t)longValue;
 - (unint64_t)hash;
 - (unint64_t)unsignedLongLongValue;
 - (unint64_t)unsignedLongValue;
-- (unsigned)_getValue:(void *)a3 forType:(int64_t)a4;
+- (unsigned)_getValue:(void *)value forType:(int64_t)type;
 - (unsigned)unsignedCharValue;
 - (unsigned)unsignedIntValue;
 - (unsigned)unsignedShortValue;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSNumber
@@ -71,9 +71,9 @@ LABEL_17:
       {
         if (v3 == 81)
         {
-          v12 = [(NSNumber *)self unsignedLongLongValue];
+          unsignedLongLongValue = [(NSNumber *)self unsignedLongLongValue];
 LABEL_22:
-          v8 = v12;
+          v8 = unsignedLongLongValue;
 LABEL_25:
           *v6.i64 = floor(v8 + 0.5);
           v13 = (v8 - *v6.i64) * 1.84467441e19;
@@ -108,10 +108,10 @@ LABEL_23:
       }
 
 LABEL_20:
-      v12 = [(NSNumber *)self unsignedIntegerValue];
-      if ((v12 & 0x8000000000000000) == 0)
+      unsignedLongLongValue = [(NSNumber *)self unsignedIntegerValue];
+      if ((unsignedLongLongValue & 0x8000000000000000) == 0)
       {
-        return 2654435761u * v12;
+        return 2654435761u * unsignedLongLongValue;
       }
 
       goto LABEL_22;
@@ -126,11 +126,11 @@ LABEL_20:
 
       if (v4 == 30)
       {
-        v5 = [(NSNumber *)self longLongValue];
-        v8 = v5;
-        if (v5 < 0)
+        longLongValue = [(NSNumber *)self longLongValue];
+        v8 = longLongValue;
+        if (longLongValue < 0)
         {
-          v8 = -v5;
+          v8 = -longLongValue;
         }
 
         goto LABEL_25;
@@ -140,15 +140,15 @@ LABEL_20:
     }
   }
 
-  v9 = [(NSNumber *)self integerValue];
-  if (v9 >= 0)
+  integerValue = [(NSNumber *)self integerValue];
+  if (integerValue >= 0)
   {
-    v10 = v9;
+    v10 = integerValue;
   }
 
   else
   {
-    v10 = -v9;
+    v10 = -integerValue;
   }
 
   return 2654435761 * v10;
@@ -156,7 +156,7 @@ LABEL_20:
 
 + (void)initialize
 {
-  if (NSNumber == a1 && (!*MEMORY[0x1E69E5908] || !_CFExecutableLinkedOnOrAfter()))
+  if (NSNumber == self && (!*MEMORY[0x1E69E5908] || !_CFExecutableLinkedOnOrAfter()))
   {
     _NSNumberTaggedPointersDisabled = 1;
   }
@@ -301,38 +301,38 @@ LABEL_32:
   return _CFAutoreleasePoolPop();
 }
 
-- (unsigned)_getValue:(void *)a3 forType:(int64_t)a4
+- (unsigned)_getValue:(void *)value forType:(int64_t)type
 {
-  if (a4 > 3)
+  if (type > 3)
   {
-    if (a4 <= 5)
+    if (type <= 5)
     {
-      if (a4 == 4)
+      if (type == 4)
       {
-        *a3 = [(NSNumber *)self longLongValue];
+        *value = [(NSNumber *)self longLongValue];
       }
 
       else
       {
         [(NSNumber *)self floatValue];
-        *a3 = v5;
+        *value = v5;
       }
 
       goto LABEL_16;
     }
 
-    if (a4 == 6)
+    if (type == 6)
     {
       [(NSNumber *)self doubleValue];
-      *a3 = v7;
+      *value = v7;
       goto LABEL_16;
     }
 
-    if (a4 == 17)
+    if (type == 17)
     {
-      v6 = [(NSNumber *)self longLongValue];
-      *a3 = v6 >> 63;
-      *(a3 + 1) = v6;
+      longLongValue = [(NSNumber *)self longLongValue];
+      *value = longLongValue >> 63;
+      *(value + 1) = longLongValue;
       goto LABEL_16;
     }
 
@@ -341,32 +341,32 @@ LABEL_17:
     return self;
   }
 
-  if (a4 == 1)
+  if (type == 1)
   {
-    *a3 = [(NSNumber *)self charValue];
+    *value = [(NSNumber *)self charValue];
     goto LABEL_16;
   }
 
-  if (a4 == 2)
+  if (type == 2)
   {
-    *a3 = [(NSNumber *)self shortValue];
+    *value = [(NSNumber *)self shortValue];
     goto LABEL_16;
   }
 
-  if (a4 != 3)
+  if (type != 3)
   {
     goto LABEL_17;
   }
 
-  *a3 = [(NSNumber *)self intValue];
+  *value = [(NSNumber *)self intValue];
 LABEL_16:
   LOBYTE(self) = 1;
   return self;
 }
 
-- (int64_t)_reverseCompare:(id)a3
+- (int64_t)_reverseCompare:(id)compare
 {
-  v3 = [(NSNumber *)self compare:a3];
+  v3 = [(NSNumber *)self compare:compare];
   if (v3 == NSOrderedDescending)
   {
     v4 = -1;
@@ -388,22 +388,22 @@ LABEL_16:
   }
 }
 
-+ (NSNumber)allocWithZone:(_NSZone *)a3
++ (NSNumber)allocWithZone:(_NSZone *)zone
 {
-  if (NSNumber == a1)
+  if (NSNumber == self)
   {
     return &__placeholderNumber;
   }
 
   else
   {
-    return NSAllocateObject(a1, 0, a3);
+    return NSAllocateObject(self, 0, zone);
   }
 }
 
 + (NSNumber)numberWithChar:(char)value
 {
-  if (NSNumber == a1 && (_NSNumberTaggedPointersDisabled & 1) == 0)
+  if (NSNumber == self && (_NSNumberTaggedPointersDisabled & 1) == 0)
   {
     result = ((value << 7) | 0x8000000000000003);
     v5 = *MEMORY[0x1E69E5910] ^ result;
@@ -415,7 +415,7 @@ LABEL_16:
 
   else
   {
-    v3 = [objc_allocWithZone(a1) initWithChar:value];
+    v3 = [objc_allocWithZone(self) initWithChar:value];
 
     return v3;
   }
@@ -425,7 +425,7 @@ LABEL_16:
 
 + (NSNumber)numberWithUnsignedChar:(unsigned __int8)value
 {
-  if (NSNumber == a1 && (_NSNumberTaggedPointersDisabled & 1) == 0)
+  if (NSNumber == self && (_NSNumberTaggedPointersDisabled & 1) == 0)
   {
     result = ((value << 7) | 0x800000000000000BLL);
     v5 = *MEMORY[0x1E69E5910] ^ result;
@@ -437,7 +437,7 @@ LABEL_16:
 
   else
   {
-    v3 = [objc_allocWithZone(a1) initWithUnsignedChar:value];
+    v3 = [objc_allocWithZone(self) initWithUnsignedChar:value];
 
     return v3;
   }
@@ -447,7 +447,7 @@ LABEL_16:
 
 + (NSNumber)numberWithShort:(__int16)value
 {
-  if (NSNumber == a1 && (_NSNumberTaggedPointersDisabled & 1) == 0)
+  if (NSNumber == self && (_NSNumberTaggedPointersDisabled & 1) == 0)
   {
     result = ((value << 7) | 0x800000000000000BLL);
     v5 = *MEMORY[0x1E69E5910] ^ result;
@@ -459,7 +459,7 @@ LABEL_16:
 
   else
   {
-    v3 = [objc_allocWithZone(a1) initWithShort:value];
+    v3 = [objc_allocWithZone(self) initWithShort:value];
 
     return v3;
   }
@@ -469,7 +469,7 @@ LABEL_16:
 
 + (NSNumber)numberWithUnsignedShort:(unsigned __int16)value
 {
-  if (NSNumber == a1 && (_NSNumberTaggedPointersDisabled & 1) == 0)
+  if (NSNumber == self && (_NSNumberTaggedPointersDisabled & 1) == 0)
   {
     result = ((value << 7) | 0x8000000000000013);
     v5 = *MEMORY[0x1E69E5910] ^ result;
@@ -481,7 +481,7 @@ LABEL_16:
 
   else
   {
-    v3 = [objc_allocWithZone(a1) initWithUnsignedShort:value];
+    v3 = [objc_allocWithZone(self) initWithUnsignedShort:value];
 
     return v3;
   }
@@ -491,7 +491,7 @@ LABEL_16:
 
 + (NSNumber)numberWithInt:(int)value
 {
-  if (NSNumber == a1 && (_NSNumberTaggedPointersDisabled & 1) == 0)
+  if (NSNumber == self && (_NSNumberTaggedPointersDisabled & 1) == 0)
   {
     result = ((value << 7) | 0x8000000000000013);
     v5 = *MEMORY[0x1E69E5910] ^ result;
@@ -503,7 +503,7 @@ LABEL_16:
 
   else
   {
-    v3 = [objc_allocWithZone(a1) initWithInt:*&value];
+    v3 = [objc_allocWithZone(self) initWithInt:*&value];
 
     return v3;
   }
@@ -513,7 +513,7 @@ LABEL_16:
 
 + (NSNumber)numberWithUnsignedInt:(unsigned int)value
 {
-  if (NSNumber == a1 && (_NSNumberTaggedPointersDisabled & 1) == 0)
+  if (NSNumber == self && (_NSNumberTaggedPointersDisabled & 1) == 0)
   {
     result = ((value << 7) | 0x800000000000001BLL);
     v5 = *MEMORY[0x1E69E5910] ^ result;
@@ -525,7 +525,7 @@ LABEL_16:
 
   else
   {
-    v3 = [objc_allocWithZone(a1) initWithUnsignedInt:*&value];
+    v3 = [objc_allocWithZone(self) initWithUnsignedInt:*&value];
 
     return v3;
   }
@@ -535,9 +535,9 @@ LABEL_16:
 
 + (NSNumber)numberWithInteger:(NSInteger)value
 {
-  if (NSNumber != a1 || (value - 0x80000000000000) < 0xFF00000000000001 || (_NSNumberTaggedPointersDisabled & 1) != 0)
+  if (NSNumber != self || (value - 0x80000000000000) < 0xFF00000000000001 || (_NSNumberTaggedPointersDisabled & 1) != 0)
   {
-    v3 = [objc_allocWithZone(a1) initWithInteger:value];
+    v3 = [objc_allocWithZone(self) initWithInteger:value];
 
     return v3;
   }
@@ -557,9 +557,9 @@ LABEL_16:
 
 + (NSNumber)numberWithUnsignedInteger:(NSUInteger)value
 {
-  if (NSNumber != a1 || value >> 55 || (_NSNumberTaggedPointersDisabled & 1) != 0)
+  if (NSNumber != self || value >> 55 || (_NSNumberTaggedPointersDisabled & 1) != 0)
   {
-    v3 = [objc_allocWithZone(a1) initWithUnsignedInteger:value];
+    v3 = [objc_allocWithZone(self) initWithUnsignedInteger:value];
 
     return v3;
   }
@@ -579,9 +579,9 @@ LABEL_16:
 
 + (NSNumber)numberWithLong:(uint64_t)value
 {
-  if (NSNumber != a1 || (value - 0x80000000000000) < 0xFF00000000000001 || (_NSNumberTaggedPointersDisabled & 1) != 0)
+  if (NSNumber != self || (value - 0x80000000000000) < 0xFF00000000000001 || (_NSNumberTaggedPointersDisabled & 1) != 0)
   {
-    v3 = [objc_allocWithZone(a1) initWithLong:value];
+    v3 = [objc_allocWithZone(self) initWithLong:value];
 
     return v3;
   }
@@ -601,9 +601,9 @@ LABEL_16:
 
 + (NSNumber)numberWithUnsignedLong:(unint64_t)value
 {
-  if (NSNumber != a1 || value >> 55 || (_NSNumberTaggedPointersDisabled & 1) != 0)
+  if (NSNumber != self || value >> 55 || (_NSNumberTaggedPointersDisabled & 1) != 0)
   {
-    v3 = [objc_allocWithZone(a1) initWithUnsignedLong:value];
+    v3 = [objc_allocWithZone(self) initWithUnsignedLong:value];
 
     return v3;
   }
@@ -623,9 +623,9 @@ LABEL_16:
 
 + (NSNumber)numberWithLongLong:(uint64_t)value
 {
-  if (NSNumber != a1 || (value - 0x80000000000000) < 0xFF00000000000001 || (_NSNumberTaggedPointersDisabled & 1) != 0)
+  if (NSNumber != self || (value - 0x80000000000000) < 0xFF00000000000001 || (_NSNumberTaggedPointersDisabled & 1) != 0)
   {
-    v3 = [objc_allocWithZone(a1) initWithLongLong:value];
+    v3 = [objc_allocWithZone(self) initWithLongLong:value];
 
     return v3;
   }
@@ -645,9 +645,9 @@ LABEL_16:
 
 + (NSNumber)numberWithUnsignedLongLong:(unint64_t)value
 {
-  if (NSNumber != a1 || value >> 55 || (_NSNumberTaggedPointersDisabled & 1) != 0)
+  if (NSNumber != self || value >> 55 || (_NSNumberTaggedPointersDisabled & 1) != 0)
   {
-    v3 = [objc_allocWithZone(a1) initWithUnsignedLongLong:value];
+    v3 = [objc_allocWithZone(self) initWithUnsignedLongLong:value];
 
     return v3;
   }
@@ -667,7 +667,7 @@ LABEL_16:
 
 + (NSNumber)numberWithFloat:(float)value
 {
-  if (NSNumber == a1 && (_NSNumberTaggedPointersDisabled & 1) == 0)
+  if (NSNumber == self && (_NSNumberTaggedPointersDisabled & 1) == 0)
   {
     v8 = value;
     if (value == value)
@@ -695,7 +695,7 @@ LABEL_11:
     }
   }
 
-  v4 = objc_allocWithZone(a1);
+  v4 = objc_allocWithZone(self);
   *&v5 = value;
   v6 = [v4 initWithFloat:v5];
 
@@ -704,7 +704,7 @@ LABEL_11:
 
 + (NSNumber)numberWithDouble:(double)value
 {
-  if (NSNumber == a1 && (_NSNumberTaggedPointersDisabled & 1) == 0)
+  if (NSNumber == self && (_NSNumberTaggedPointersDisabled & 1) == 0)
   {
     v5 = value;
     if (value == value)
@@ -732,7 +732,7 @@ LABEL_11:
     }
   }
 
-  v3 = [objc_allocWithZone(a1) initWithDouble:value];
+  v3 = [objc_allocWithZone(self) initWithDouble:value];
 
   return v3;
 }
@@ -758,9 +758,9 @@ LABEL_11:
 
   if (((1 << v4) & 0x2048200020483) != 0)
   {
-    v5 = [(NSNumber *)self longValue];
+    longValue = [(NSNumber *)self longValue];
 LABEL_4:
-    v6 = v5 == 0;
+    v6 = longValue == 0;
     return !v6;
   }
 
@@ -768,7 +768,7 @@ LABEL_4:
   {
     if (((1 << v4) & 0x800000008000) != 0)
     {
-      v5 = [(NSNumber *)self longLongValue];
+      longValue = [(NSNumber *)self longLongValue];
       goto LABEL_4;
     }
 
@@ -2006,8 +2006,8 @@ LABEL_40:
   }
 
   v5 = *[(NSValue *)otherNumber objCType];
-  v6 = [(NSValue *)self objCType];
-  if ((v5 & 0xFFFFFFFD) == 0x64 || (v7 = *v6, (v7 & 0xFFFFFFFD) == 0x64))
+  objCType = [(NSValue *)self objCType];
+  if ((v5 & 0xFFFFFFFD) == 0x64 || (v7 = *objCType, (v7 & 0xFFFFFFFD) == 0x64))
   {
     [(NSNumber *)self doubleValue];
     v13 = v12;
@@ -2022,9 +2022,9 @@ LABEL_40:
 
   if (v5 == 81 && v7 == 81)
   {
-    v8 = [(NSNumber *)self unsignedLongLongValue];
-    v9 = [(NSNumber *)otherNumber unsignedLongLongValue];
-    if (v8 >= v9)
+    unsignedLongLongValue = [(NSNumber *)self unsignedLongLongValue];
+    unsignedLongLongValue2 = [(NSNumber *)otherNumber unsignedLongLongValue];
+    if (unsignedLongLongValue >= unsignedLongLongValue2)
     {
       v10 = NSOrderedSame;
     }
@@ -2034,7 +2034,7 @@ LABEL_40:
       v10 = NSOrderedAscending;
     }
 
-    if (v8 > v9)
+    if (unsignedLongLongValue > unsignedLongLongValue2)
     {
       return 1;
     }
@@ -2055,9 +2055,9 @@ LABEL_40:
     return -1;
   }
 
-  v15 = [(NSNumber *)self longLongValue];
-  v16 = [(NSNumber *)otherNumber longLongValue];
-  if (v15 >= v16)
+  longLongValue = [(NSNumber *)self longLongValue];
+  longLongValue2 = [(NSNumber *)otherNumber longLongValue];
+  if (longLongValue >= longLongValue2)
   {
     v17 = NSOrderedSame;
   }
@@ -2067,7 +2067,7 @@ LABEL_40:
     v17 = NSOrderedAscending;
   }
 
-  if (v15 > v16)
+  if (longLongValue > longLongValue2)
   {
     return 1;
   }
@@ -2078,9 +2078,9 @@ LABEL_40:
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v5) = 1;
   }
@@ -2091,7 +2091,7 @@ LABEL_40:
     if (v5)
     {
 
-      LOBYTE(v5) = [(NSNumber *)self isEqualToNumber:a3];
+      LOBYTE(v5) = [(NSNumber *)self isEqualToNumber:equal];
     }
   }
 
@@ -2109,7 +2109,7 @@ LABEL_40:
       {
         case 'L':
           v12 = objc_allocWithZone(NSString);
-          v18 = [(NSNumber *)self unsignedLongValue];
+          unsignedLongValue = [(NSNumber *)self unsignedLongValue];
           v13 = @"%lu";
           goto LABEL_32;
         case 'Q':
@@ -2130,7 +2130,7 @@ LABEL_40:
       if (v6 == 67)
       {
         v8 = objc_allocWithZone(NSString);
-        v9 = [(NSNumber *)self unsignedCharValue];
+        unsignedCharValue = [(NSNumber *)self unsignedCharValue];
       }
 
       else
@@ -2141,20 +2141,20 @@ LABEL_40:
         }
 
         v8 = objc_allocWithZone(NSString);
-        v9 = [(NSNumber *)self unsignedIntValue];
+        unsignedCharValue = [(NSNumber *)self unsignedIntValue];
       }
 
-      v7 = [v8 initWithFormat:@"%u" locale:locale, v9];
+      v7 = [v8 initWithFormat:@"%u" locale:locale, unsignedCharValue];
       goto LABEL_33;
     }
 
 LABEL_23:
     v12 = objc_allocWithZone(NSString);
-    v18 = [(NSNumber *)self charValue];
+    unsignedLongValue = [(NSNumber *)self charValue];
 LABEL_25:
     v13 = @"%d";
 LABEL_32:
-    v7 = [v12 initWithFormat:v13 locale:locale, v18];
+    v7 = [v12 initWithFormat:v13 locale:locale, unsignedLongValue];
     goto LABEL_33;
   }
 
@@ -2203,7 +2203,7 @@ LABEL_36:
     }
 
     v12 = objc_allocWithZone(NSString);
-    v18 = [(NSNumber *)self intValue];
+    unsignedLongValue = [(NSNumber *)self intValue];
     goto LABEL_25;
   }
 
@@ -2230,9 +2230,9 @@ LABEL_33:
 - (NSNumber)initWithCoder:(NSCoder *)coder
 {
   [(NSNumber *)self zone];
-  v5 = [(NSCoder *)coder allowsKeyedCoding];
+  allowsKeyedCoding = [(NSCoder *)coder allowsKeyedCoding];
 
-  if (v5)
+  if (allowsKeyedCoding)
   {
     v6 = objc_opt_class();
     if (v6 == objc_opt_self() || [(NSCoder *)coder containsValueForKey:@"NS.number"])
@@ -2286,16 +2286,16 @@ LABEL_33:
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   sizep[128] = *MEMORY[0x1E69E9840];
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
-    v7 = [(NSValue *)self objCType];
-    v8 = v7;
-    v16 = v7;
-    v9 = *v7;
-    if (*v7 && !v7[1])
+    objCType = [(NSValue *)self objCType];
+    v8 = objCType;
+    v16 = objCType;
+    v9 = *objCType;
+    if (*objCType && !objCType[1])
     {
       if (v9 == 76)
       {
@@ -2331,8 +2331,8 @@ LABEL_22:
     }
 
     [(NSValue *)self getValue:v14];
-    [a3 encodeValueOfObjCType:"*" at:&v16];
-    [a3 encodeValueOfObjCType:v16 at:v14];
+    [coder encodeValueOfObjCType:"*" at:&v16];
+    [coder encodeValueOfObjCType:v16 at:v14];
     if (v13 > 0x400)
     {
       free(v14);
@@ -2341,10 +2341,10 @@ LABEL_22:
     return;
   }
 
-  if (object_getClass(a3) == NSKeyedArchiver)
+  if (object_getClass(coder) == NSKeyedArchiver)
   {
 
-    [a3 _encodePropertyList:self forKey:@"NS.number"];
+    [coder _encodePropertyList:self forKey:@"NS.number"];
   }
 
   else
@@ -2352,15 +2352,15 @@ LABEL_22:
     TypeID = CFBooleanGetTypeID();
     if (TypeID == CFGetTypeID(self))
     {
-      v6 = CFBooleanGetValue(self) != 0;
+      bOOLValue = CFBooleanGetValue(self) != 0;
 LABEL_5:
 
-      [a3 encodeBool:v6 forKey:@"NS.BOOLval"];
+      [coder encodeBool:bOOLValue forKey:@"NS.BOOLval"];
       return;
     }
 
-    v10 = [(NSValue *)self objCType];
-    v11 = *v10 - 66;
+    objCType2 = [(NSValue *)self objCType];
+    v11 = *objCType2 - 66;
     if (v11 > 0x31)
     {
       return;
@@ -2368,37 +2368,37 @@ LABEL_5:
 
     if (((1 << v11) & 0x2848200028482) != 0)
     {
-      v12 = [(NSNumber *)self longLongValue];
+      longLongValue = [(NSNumber *)self longLongValue];
 
-      [a3 encodeInt64:v12 forKey:@"NS.intval"];
+      [coder encodeInt64:longLongValue forKey:@"NS.intval"];
     }
 
     else
     {
       if (((1 << v11) & 0x1400000000) == 0)
       {
-        if (*v10 != 66)
+        if (*objCType2 != 66)
         {
           return;
         }
 
-        v6 = [(NSNumber *)self BOOLValue];
+        bOOLValue = [(NSNumber *)self BOOLValue];
         goto LABEL_5;
       }
 
       [(NSNumber *)self doubleValue];
 
-      [a3 encodeDouble:@"NS.dblval" forKey:?];
+      [coder encodeDouble:@"NS.dblval" forKey:?];
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   sizep[128] = *MEMORY[0x1E69E9840];
-  v5 = [(NSValue *)self objCType];
+  objCType = [(NSValue *)self objCType];
   sizep[0] = 0;
-  NSGetSizeAndAlignment(v5, sizep, 0);
+  NSGetSizeAndAlignment(objCType, sizep, 0);
   v6 = sizep[0];
   if (sizep[0] < 0x401)
   {
@@ -2411,10 +2411,10 @@ LABEL_5:
   }
 
   [(NSValue *)self getValue:v7];
-  v9 = newNumber(*v5, v7, v8);
+  v9 = newNumber(*objCType, v7, v8);
   if (!v9)
   {
-    v11 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: bad objCType: %s", _NSMethodExceptionProem(self, a2), v5), 0}];
+    v11 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: bad objCType: %s", _NSMethodExceptionProem(self, a2), objCType), 0}];
     objc_exception_throw(v11);
   }
 
@@ -2426,7 +2426,7 @@ LABEL_5:
   return v9;
 }
 
-- (BOOL)_getCString:(char *)a3 length:(int)a4 multiplier:(double)a5
+- (BOOL)_getCString:(char *)string length:(int)length multiplier:(double)multiplier
 {
   v9 = *[(NSValue *)self objCType];
   if (v9 <= 0x62)
@@ -2437,16 +2437,16 @@ LABEL_5:
       {
         case 'L':
           [(NSNumber *)self unsignedLongValue];
-          v10 = snprintf(a3, a4, "%lu");
-          return v10 < a4;
+          v10 = snprintf(string, length, "%lu");
+          return v10 < length;
         case 'Q':
           [(NSNumber *)self unsignedLongLongValue];
-          v10 = snprintf(a3, a4, "%llu");
-          return v10 < a4;
+          v10 = snprintf(string, length, "%llu");
+          return v10 < length;
         case 'S':
           [(NSNumber *)self unsignedShortValue];
-          v10 = snprintf(a3, a4, "%hu");
-          return v10 < a4;
+          v10 = snprintf(string, length, "%hu");
+          return v10 < length;
       }
 
 LABEL_33:
@@ -2471,16 +2471,16 @@ LABEL_33:
         [(NSNumber *)self unsignedIntValue];
       }
 
-      v10 = snprintf(a3, a4, "%u");
-      return v10 < a4;
+      v10 = snprintf(string, length, "%u");
+      return v10 < length;
     }
 
 LABEL_23:
     [(NSNumber *)self charValue];
-    v11 = a4;
+    lengthCopy2 = length;
 LABEL_25:
-    v10 = snprintf(a3, v11, "%d");
-    return v10 < a4;
+    v10 = snprintf(string, lengthCopy2, "%d");
+    return v10 < length;
   }
 
   if (v9 <= 104)
@@ -2490,15 +2490,15 @@ LABEL_25:
       if (v9 == 100)
       {
         [(NSNumber *)self doubleValue];
-        v10 = snprintf(a3, a4, "%0.16g");
-        return v10 < a4;
+        v10 = snprintf(string, length, "%0.16g");
+        return v10 < length;
       }
 
       if (v9 == 102)
       {
         [(NSNumber *)self floatValue];
-        v10 = snprintf(a3, a4, "%0.7g");
-        return v10 < a4;
+        v10 = snprintf(string, length, "%0.7g");
+        return v10 < length;
       }
 
       goto LABEL_33;
@@ -2512,15 +2512,15 @@ LABEL_25:
     if (v9 == 113)
     {
       [(NSNumber *)self longLongValue];
-      v10 = snprintf(a3, a4, "%lld");
-      return v10 < a4;
+      v10 = snprintf(string, length, "%lld");
+      return v10 < length;
     }
 
     if (v9 == 115)
     {
       [(NSNumber *)self shortValue];
-      v10 = snprintf(a3, a4, "%hi");
-      return v10 < a4;
+      v10 = snprintf(string, length, "%hi");
+      return v10 < length;
     }
 
     goto LABEL_33;
@@ -2529,7 +2529,7 @@ LABEL_25:
   if (v9 == 105)
   {
     [(NSNumber *)self intValue];
-    v11 = a4;
+    lengthCopy2 = length;
     goto LABEL_25;
   }
 
@@ -2539,8 +2539,8 @@ LABEL_25:
   }
 
   [(NSNumber *)self longValue];
-  v10 = snprintf(a3, a4, "%ld");
-  return v10 < a4;
+  v10 = snprintf(string, length, "%ld");
+  return v10 < length;
 }
 
 @end

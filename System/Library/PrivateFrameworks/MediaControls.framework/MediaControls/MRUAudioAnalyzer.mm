@@ -1,23 +1,23 @@
 @interface MRUAudioAnalyzer
-+ (id)audioAnalyzerForPID:(int)a3;
-- (MRUAudioAnalyzer)initWithPID:(int)a3;
++ (id)audioAnalyzerForPID:(int)d;
+- (MRUAudioAnalyzer)initWithPID:(int)d;
 - (NSString)description;
-- (id)binSamples:(float *)a3 count:(int)a4;
-- (void)addObserver:(id)a3;
-- (void)computeFFTWithSamples:(float *)a3;
+- (id)binSamples:(float *)samples count:(int)count;
+- (void)addObserver:(id)observer;
+- (void)computeFFTWithSamples:(float *)samples;
 - (void)dealloc;
-- (void)processAudioTapDidReceiveAudioSamples:(void *)a3 numberOfSamples:(unsigned int)a4;
+- (void)processAudioTapDidReceiveAudioSamples:(void *)samples numberOfSamples:(unsigned int)ofSamples;
 - (void)processAudioTapDidStop;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation MRUAudioAnalyzer
 
-+ (id)audioAnalyzerForPID:(int)a3
++ (id)audioAnalyzerForPID:(int)d
 {
-  v3 = *&a3;
+  v3 = *&d;
   v18 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   if (audioAnalyzerForPID__onceToken != -1)
@@ -36,7 +36,7 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138412802;
-      v13 = a1;
+      selfCopy = self;
       v14 = 1024;
       v15 = v3;
       v16 = 2112;
@@ -61,7 +61,7 @@ uint64_t __40__MRUAudioAnalyzer_audioAnalyzerForPID___block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (MRUAudioAnalyzer)initWithPID:(int)a3
+- (MRUAudioAnalyzer)initWithPID:(int)d
 {
   v22.receiver = self;
   v22.super_class = MRUAudioAnalyzer;
@@ -69,7 +69,7 @@ uint64_t __40__MRUAudioAnalyzer_audioAnalyzerForPID___block_invoke()
   v5 = v4;
   if (v4)
   {
-    v4->_pid = a3;
+    v4->_pid = d;
     v6 = +[MRUWaveformSettings currentSettings];
     settings = v5->_settings;
     v5->_settings = v6;
@@ -84,9 +84,9 @@ uint64_t __40__MRUAudioAnalyzer_audioAnalyzerForPID___block_invoke()
     v5->_tapQueue = v10;
 
     v5->_lock._os_unfair_lock_opaque = 0;
-    v12 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v5->_observers;
-    v5->_observers = v12;
+    v5->_observers = weakObjectsHashTable;
 
     v14 = v5->_tapQueue;
     v19[0] = MEMORY[0x1E69E9820];
@@ -95,7 +95,7 @@ uint64_t __40__MRUAudioAnalyzer_audioAnalyzerForPID___block_invoke()
     v19[3] = &unk_1E7664308;
     v15 = v5;
     v20 = v15;
-    v21 = a3;
+    dCopy = d;
     dispatch_async(v14, v19);
     v16 = (ceilf(v5->_sampleRate / v5->_refreshRate) * 0.5);
     *(v15 + 2) = v16;
@@ -154,7 +154,7 @@ void __32__MRUAudioAnalyzer_initWithPID___block_invoke(uint64_t a1)
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1A20FC000, v3, OS_LOG_TYPE_DEFAULT, "%@ Dealloc", buf, 0xCu);
   }
 
@@ -172,21 +172,21 @@ void __32__MRUAudioAnalyzer_initWithPID___block_invoke(uint64_t a1)
   [(MRUAudioAnalyzer *)&v4 dealloc];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  if (![(NSHashTable *)self->_observers containsObject:v4])
+  if (![(NSHashTable *)self->_observers containsObject:observerCopy])
   {
-    [(NSHashTable *)self->_observers addObject:v4];
+    [(NSHashTable *)self->_observers addObject:observerCopy];
     v5 = MCLogCategoryWaveform();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 138412546;
-      v7 = self;
+      selfCopy = self;
       v8 = 2112;
-      v9 = v4;
+      v9 = observerCopy;
       _os_log_impl(&dword_1A20FC000, v5, OS_LOG_TYPE_DEFAULT, "%@ Registered observer: %@", &v6, 0x16u);
     }
 
@@ -196,19 +196,19 @@ void __32__MRUAudioAnalyzer_initWithPID___block_invoke(uint64_t a1)
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_observers removeObject:v4];
+  [(NSHashTable *)self->_observers removeObject:observerCopy];
   v5 = MCLogCategoryWaveform();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412546;
-    v7 = self;
+    selfCopy = self;
     v8 = 2112;
-    v9 = v4;
+    v9 = observerCopy;
     _os_log_impl(&dword_1A20FC000, v5, OS_LOG_TYPE_DEFAULT, "%@ Unregistered observer: %@", &v6, 0x16u);
   }
 
@@ -233,7 +233,7 @@ void __32__MRUAudioAnalyzer_initWithPID___block_invoke(uint64_t a1)
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v8 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1A20FC000, v4, OS_LOG_TYPE_DEFAULT, "%@ Starting audio analyzer", buf, 0xCu);
     }
 
@@ -272,7 +272,7 @@ void __25__MRUAudioAnalyzer_start__block_invoke(uint64_t a1)
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v11 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1A20FC000, v4, OS_LOG_TYPE_DEFAULT, "%@ Stopping audio analyzer", buf, 0xCu);
     }
 
@@ -307,19 +307,19 @@ void __24__MRUAudioAnalyzer_stop__block_invoke_21(uint64_t a1)
   [v1 stop];
 }
 
-- (id)binSamples:(float *)a3 count:(int)a4
+- (id)binSamples:(float *)samples count:(int)count
 {
-  v4 = *&a4;
+  v4 = *&count;
   v7 = [MRUWaveformData alloc];
   *&v8 = self->_sampleRate;
-  v9 = [(MRUWaveformData *)v7 initWithFFTSamples:a3 count:v4 sampleRate:self->_settings settings:v8];
+  v9 = [(MRUWaveformData *)v7 initWithFFTSamples:samples count:v4 sampleRate:self->_settings settings:v8];
 
   return v9;
 }
 
-- (void)processAudioTapDidReceiveAudioSamples:(void *)a3 numberOfSamples:(unsigned int)a4
+- (void)processAudioTapDidReceiveAudioSamples:(void *)samples numberOfSamples:(unsigned int)ofSamples
 {
-  [(MRUAudioAnalyzer *)self computeFFTWithSamples:a3, *&a4];
+  [(MRUAudioAnalyzer *)self computeFFTWithSamples:samples, *&ofSamples];
   v5 = [(MRUAudioAnalyzer *)self binSamples:self->_magnitudes count:self->_complexCount];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
@@ -385,19 +385,19 @@ void __42__MRUAudioAnalyzer_processAudioTapDidStop__block_invoke(uint64_t a1)
   [v2 releaseForTaskToken:*(a1 + 32)];
 }
 
-- (void)computeFFTWithSamples:(float *)a3
+- (void)computeFFTWithSamples:(float *)samples
 {
-  v3 = self;
+  selfCopy = self;
   v6 = *&self->_realBuffer;
-  MEMORY[0x1A58DCEF0](a3, 1, self->_hannWindow, 1, self->_transferBuffer, 1, self->_bufferSizePowerOf2);
-  transferBuffer = v3->_transferBuffer;
-  complexCount = v3->_complexCount;
-  v3 = (v3 + 20);
+  MEMORY[0x1A58DCEF0](samples, 1, self->_hannWindow, 1, self->_transferBuffer, 1, self->_bufferSizePowerOf2);
+  transferBuffer = selfCopy->_transferBuffer;
+  complexCount = selfCopy->_complexCount;
+  selfCopy = (selfCopy + 20);
   vDSP_ctoz(transferBuffer, 2, &v6, 1, complexCount);
-  vDSP_fft_zrip(*(&v3->_leftSamples + 4), &v6, 1, LODWORD(v3[-1]._tapQueue), 1);
-  vDSP_zvmags(&v6, 1, *(&v3->_realBuffer + 4), 1, SLODWORD(v3->super.isa));
-  vvsqrtf(*(&v3->_realBuffer + 4), *(&v3->_realBuffer + 4), v3);
-  MEMORY[0x1A58DCF00](*(&v3->_realBuffer + 4), 1, &v3->super.isa + 4, *(&v3->_realBuffer + 4), 1, SLODWORD(v3->super.isa));
+  vDSP_fft_zrip(*(&selfCopy->_leftSamples + 4), &v6, 1, LODWORD(selfCopy[-1]._tapQueue), 1);
+  vDSP_zvmags(&v6, 1, *(&selfCopy->_realBuffer + 4), 1, SLODWORD(selfCopy->super.isa));
+  vvsqrtf(*(&selfCopy->_realBuffer + 4), *(&selfCopy->_realBuffer + 4), selfCopy);
+  MEMORY[0x1A58DCF00](*(&selfCopy->_realBuffer + 4), 1, &selfCopy->super.isa + 4, *(&selfCopy->_realBuffer + 4), 1, SLODWORD(selfCopy->super.isa));
 }
 
 @end

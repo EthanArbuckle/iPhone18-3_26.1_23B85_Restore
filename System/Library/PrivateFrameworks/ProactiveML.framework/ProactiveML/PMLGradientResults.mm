@@ -1,17 +1,17 @@
 @interface PMLGradientResults
-- (PMLGradientResults)initWithGradient:(id)a3 loss:(id)a4;
+- (PMLGradientResults)initWithGradient:(id)gradient loss:(id)loss;
 @end
 
 @implementation PMLGradientResults
 
-- (PMLGradientResults)initWithGradient:(id)a3 loss:(id)a4
+- (PMLGradientResults)initWithGradient:(id)gradient loss:(id)loss
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  gradientCopy = gradient;
+  lossCopy = loss;
+  if (!gradientCopy)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PMLGradientSolver.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"gradient"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PMLGradientSolver.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"gradient"}];
   }
 
   v14.receiver = self;
@@ -20,8 +20,8 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_gradient, a3);
-    objc_storeStrong(&v11->_loss, a4);
+    objc_storeStrong(&v10->_gradient, gradient);
+    objc_storeStrong(&v11->_loss, loss);
   }
 
   return v11;

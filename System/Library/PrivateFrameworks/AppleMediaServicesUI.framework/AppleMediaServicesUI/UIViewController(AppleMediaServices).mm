@@ -18,51 +18,51 @@
 
 - (id)ams_backgroundColor
 {
-  v1 = [a1 view];
-  v2 = [v1 ams_backgroundColor];
+  view = [self view];
+  ams_backgroundColor = [view ams_backgroundColor];
 
-  return v2;
+  return ams_backgroundColor;
 }
 
 - (id)ams_frontmostController
 {
-  v1 = a1;
-  v2 = [v1 presentedViewController];
+  selfCopy = self;
+  presentedViewController = [selfCopy presentedViewController];
 
-  if (v2)
+  if (presentedViewController)
   {
     do
     {
-      v3 = [v1 presentedViewController];
+      presentedViewController2 = [selfCopy presentedViewController];
 
-      v4 = [v3 presentedViewController];
+      v3PresentedViewController = [presentedViewController2 presentedViewController];
 
-      v1 = v3;
+      selfCopy = presentedViewController2;
     }
 
-    while (v4);
+    while (v3PresentedViewController);
   }
 
   else
   {
-    v3 = v1;
+    presentedViewController2 = selfCopy;
   }
 
-  return v3;
+  return presentedViewController2;
 }
 
 - (id)ams_navigationController
 {
-  v2 = [a1 navigationController];
+  navigationController = [self navigationController];
 
-  if (v2)
+  if (navigationController)
   {
-    [a1 navigationController];
+    [self navigationController];
   }
 
   else
   {
-    [a1 ams_parentViewControllerOfClass:objc_opt_class()];
+    [self ams_parentViewControllerOfClass:objc_opt_class()];
   }
   v3 = ;
 
@@ -71,13 +71,13 @@
 
 - (uint64_t)ams_navigationIndex
 {
-  v1 = [a1 ams_navigationItemViewController];
-  v2 = v1;
-  if (v1)
+  ams_navigationItemViewController = [self ams_navigationItemViewController];
+  v2 = ams_navigationItemViewController;
+  if (ams_navigationItemViewController)
   {
-    v3 = [v1 ams_navigationController];
-    v4 = [v3 viewControllers];
-    v5 = [v4 indexOfObject:v2];
+    ams_navigationController = [ams_navigationItemViewController ams_navigationController];
+    viewControllers = [ams_navigationController viewControllers];
+    v5 = [viewControllers indexOfObject:v2];
   }
 
   else
@@ -92,13 +92,13 @@
 {
   v2 = objc_opt_class();
 
-  return [a1 ams_parentViewControllerOfClass:v2];
+  return [self ams_parentViewControllerOfClass:v2];
 }
 
 - (id)ams_parentViewControllerOfClass:()AppleMediaServices
 {
-  v1 = a1;
-  if (v1)
+  selfCopy = self;
+  if (selfCopy)
   {
     do
     {
@@ -108,20 +108,20 @@
         break;
       }
 
-      v2 = [v1 parentViewController];
+      parentViewController = [selfCopy parentViewController];
 
-      v1 = v2;
+      selfCopy = parentViewController;
     }
 
-    while (v2);
+    while (parentViewController);
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (id)ams_navigationItemViewController
 {
-  v1 = a1;
+  selfCopy = self;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -130,36 +130,36 @@
 
   else
   {
-    if (v1)
+    if (selfCopy)
     {
-      v3 = [v1 parentViewController];
-      if (v3)
+      parentViewController = [selfCopy parentViewController];
+      if (parentViewController)
       {
         while (1)
         {
-          v4 = v3;
+          v4 = parentViewController;
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
             break;
           }
 
-          v3 = [v4 parentViewController];
-          v1 = v4;
-          if (!v3)
+          parentViewController = [v4 parentViewController];
+          selfCopy = v4;
+          if (!parentViewController)
           {
             goto LABEL_9;
           }
         }
 
-        v3 = v4;
+        parentViewController = v4;
       }
 
 LABEL_9:
     }
 
-    v1 = v1;
-    v2 = v1;
+    selfCopy = selfCopy;
+    v2 = selfCopy;
   }
 
   return v2;
@@ -168,20 +168,20 @@ LABEL_9:
 - (void)ams_setBackgroundColor:()AppleMediaServices
 {
   v4 = a3;
-  v5 = [a1 view];
-  [v5 ams_setBackgroundColor:v4];
+  view = [self view];
+  [view ams_setBackgroundColor:v4];
 }
 
 - (void)ams_dismissViewControllerAnimated:()AppleMediaServices includePresented:completion:
 {
   v8 = a5;
-  v9 = a1;
+  selfCopy = self;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __102__UIViewController_AppleMediaServices__ams_dismissViewControllerAnimated_includePresented_completion___block_invoke;
   aBlock[3] = &unk_1E7F27240;
   v22 = a3;
-  v10 = v9;
+  v10 = selfCopy;
   v20 = v10;
   v11 = v8;
   v21 = v11;
@@ -190,19 +190,19 @@ LABEL_9:
   [v13 addObject:v10];
   if (a4)
   {
-    v14 = [v10 presentedViewController];
-    if (v14)
+    presentedViewController = [v10 presentedViewController];
+    if (presentedViewController)
     {
-      v15 = v14;
+      v15 = presentedViewController;
       do
       {
         [v13 addObject:v15];
-        v16 = [v15 presentedViewController];
+        presentedViewController2 = [v15 presentedViewController];
 
-        v15 = v16;
+        v15 = presentedViewController2;
       }
 
-      while (v16);
+      while (presentedViewController2);
     }
   }
 
@@ -229,8 +229,8 @@ LABEL_9:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [a1 childViewControllers];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  childViewControllers = [self childViewControllers];
+  v6 = [childViewControllers countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -241,7 +241,7 @@ LABEL_9:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(childViewControllers);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
@@ -252,7 +252,7 @@ LABEL_9:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [childViewControllers countByEnumeratingWithState:&v14 objects:v18 count:16];
       v11 = 0;
       if (v7)
       {
@@ -276,15 +276,15 @@ LABEL_13:
 
 - (void)ams_removeFromParentViewController
 {
-  v2 = [a1 parentViewController];
+  parentViewController = [self parentViewController];
 
-  if (v2)
+  if (parentViewController)
   {
-    [a1 ams_willMoveToParentViewController:0];
-    v3 = [a1 view];
-    [v3 removeFromSuperview];
+    [self ams_willMoveToParentViewController:0];
+    view = [self view];
+    [view removeFromSuperview];
 
-    [a1 removeFromParentViewController];
+    [self removeFromParentViewController];
   }
 }
 
@@ -292,12 +292,12 @@ LABEL_13:
 {
   v6 = a3;
   [v6 ams_removeFromParentViewController];
-  [a1 addChildViewController:v6];
-  v4 = [a1 view];
-  v5 = [v6 view];
-  [v4 addSubview:v5];
+  [self addChildViewController:v6];
+  view = [self view];
+  view2 = [v6 view];
+  [view addSubview:view2];
 
-  [v6 ams_didMoveToParentViewController:a1];
+  [v6 ams_didMoveToParentViewController:self];
 }
 
 - (void)ams_transitionFromViewController:()AppleMediaServices toViewController:completionHandler:
@@ -309,7 +309,7 @@ LABEL_13:
   v10[3] = &unk_1E7F258D8;
   v11 = v8;
   v9 = v8;
-  [a1 transitionFromViewController:a3 toViewController:a4 duration:5242880 options:&__block_literal_global_38 animations:v10 completion:0.3];
+  [self transitionFromViewController:a3 toViewController:a4 duration:5242880 options:&__block_literal_global_38 animations:v10 completion:0.3];
 }
 
 @end

@@ -1,23 +1,23 @@
 @interface RTPersistenceMirroringPolicy
-- (RTPersistenceMirroringPolicy)initWithQualityOfService:(int64_t)a3;
-- (RTPersistenceMirroringPolicy)initWithQualityOfService:(int64_t)a3 tokenBucket:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (RTPersistenceMirroringPolicy)initWithQualityOfService:(int64_t)service;
+- (RTPersistenceMirroringPolicy)initWithQualityOfService:(int64_t)service tokenBucket:(id)bucket;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)qualityOfServiceToString:(int64_t)a3;
+- (id)qualityOfServiceToString:(int64_t)string;
 @end
 
 @implementation RTPersistenceMirroringPolicy
 
-- (RTPersistenceMirroringPolicy)initWithQualityOfService:(int64_t)a3
+- (RTPersistenceMirroringPolicy)initWithQualityOfService:(int64_t)service
 {
-  if (a3 == 3)
+  if (service == 3)
   {
     v9 = [objc_alloc(MEMORY[0x277D01358]) initWithFillRate:INFINITY capacity:INFINITY];
   }
 
   else
   {
-    if (a3 == 2)
+    if (service == 2)
     {
       v5 = objc_alloc(MEMORY[0x277D01358]);
       v6 = 0.0166666667;
@@ -27,7 +27,7 @@
 
     else
     {
-      if (a3 != 1)
+      if (service != 1)
       {
         v10 = 0;
         goto LABEL_10;
@@ -44,24 +44,24 @@
 
   v10 = v9;
 LABEL_10:
-  v11 = [(RTPersistenceMirroringPolicy *)self initWithQualityOfService:a3 tokenBucket:v10];
+  v11 = [(RTPersistenceMirroringPolicy *)self initWithQualityOfService:service tokenBucket:v10];
 
   return v11;
 }
 
-- (RTPersistenceMirroringPolicy)initWithQualityOfService:(int64_t)a3 tokenBucket:(id)a4
+- (RTPersistenceMirroringPolicy)initWithQualityOfService:(int64_t)service tokenBucket:(id)bucket
 {
-  v6 = a4;
+  bucketCopy = bucket;
   v12.receiver = self;
   v12.super_class = RTPersistenceMirroringPolicy;
   v7 = [(RTPersistenceMirroringPolicy *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_qualityOfService = a3;
-    if (v6)
+    v7->_qualityOfService = service;
+    if (bucketCopy)
     {
-      v9 = v6;
+      v9 = bucketCopy;
     }
 
     else
@@ -76,12 +76,12 @@ LABEL_10:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(RTPersistenceMirroringPolicy *)self qualityOfService];
-  v6 = [(RTPersistenceMirroringPolicy *)self tokenBucket];
-  v7 = [v4 initWithQualityOfService:v5 tokenBucket:v6];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  qualityOfService = [(RTPersistenceMirroringPolicy *)self qualityOfService];
+  tokenBucket = [(RTPersistenceMirroringPolicy *)self tokenBucket];
+  v7 = [v4 initWithQualityOfService:qualityOfService tokenBucket:tokenBucket];
 
   return v7;
 }
@@ -92,9 +92,9 @@ LABEL_10:
   v4 = [(RTPersistenceMirroringPolicy *)self qualityOfServiceToString:self->_qualityOfService];
   [(RTPersistenceMirroringPolicy *)self timeIntervalUntilOperationAllowed];
   v6 = v5;
-  v7 = [(RTPersistenceMirroringPolicy *)self allowsMirroringViaCellular];
+  allowsMirroringViaCellular = [(RTPersistenceMirroringPolicy *)self allowsMirroringViaCellular];
   v8 = @"NO";
-  if (v7)
+  if (allowsMirroringViaCellular)
   {
     v8 = @"YES";
   }
@@ -104,16 +104,16 @@ LABEL_10:
   return v9;
 }
 
-- (id)qualityOfServiceToString:(int64_t)a3
+- (id)qualityOfServiceToString:(int64_t)string
 {
-  if (a3 > 3)
+  if (string > 3)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_2788D0290[a3];
+    return off_2788D0290[string];
   }
 }
 

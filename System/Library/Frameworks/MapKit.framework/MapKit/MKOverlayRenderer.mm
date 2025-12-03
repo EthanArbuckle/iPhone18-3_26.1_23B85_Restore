@@ -1,11 +1,11 @@
 @interface MKOverlayRenderer
 - ($9433BFB5400FDC760880D1BFD6845728)_boundingMapRect;
 - ($F24F406B2B787EFB06265DBA3D28CBD5)_originMapPoint;
-- (BOOL)_canPossiblyDrawMapRect:(id)a3 zoomScale:(double)a4;
+- (BOOL)_canPossiblyDrawMapRect:(id)rect zoomScale:(double)scale;
 - (BOOL)_mayExtendOutsideBounds;
 - (BOOL)canDrawMapRect:(MKMapRect)mapRect zoomScale:(MKZoomScale)zoomScale;
-- (BOOL)overlay:(id)a3 canDrawKey:(id *)a4;
-- (BOOL)overlay:(id)a3 canPossiblyDrawKey:(id *)a4;
+- (BOOL)overlay:(id)overlay canDrawKey:(id *)key;
+- (BOOL)overlay:(id)overlay canPossiblyDrawKey:(id *)key;
 - (CGPoint)pointForMapPoint:(MKMapPoint)mapPoint;
 - (CGRect)rectForMapRect:(MKMapRect)mapRect;
 - (MKMapPoint)mapPointForPoint:(CGPoint)point;
@@ -13,29 +13,29 @@
 - (MKOverlayRenderer)initWithOverlay:(id)overlay;
 - (id)_mapView;
 - (int64_t)_extendedBlendMode;
-- (void)_animateIfNecessaryForKey:(id)a3 withStepHandler:(id)a4;
-- (void)_decodePropertiesWithCoder:(id)a3;
-- (void)_encodePropertiesWithCoder:(id)a3;
-- (void)_forEachMapRectForKey:(id *)a3 withContext:(CGContext *)a4 performBlock:(id)a5;
-- (void)_setExtendedBlendMode:(int64_t)a3;
-- (void)_setMapView:(id)a3;
+- (void)_animateIfNecessaryForKey:(id)key withStepHandler:(id)handler;
+- (void)_decodePropertiesWithCoder:(id)coder;
+- (void)_encodePropertiesWithCoder:(id)coder;
+- (void)_forEachMapRectForKey:(id *)key withContext:(CGContext *)context performBlock:(id)block;
+- (void)_setExtendedBlendMode:(int64_t)mode;
+- (void)_setMapView:(id)view;
 - (void)dealloc;
-- (void)overlay:(id)a3 drawKey:(id *)a4 inContext:(CGContext *)a5;
+- (void)overlay:(id)overlay drawKey:(id *)key inContext:(CGContext *)context;
 - (void)setAlpha:(CGFloat)alpha;
 - (void)setBlendMode:(CGBlendMode)blendMode;
 - (void)setNeedsDisplayInMapRect:(MKMapRect)mapRect zoomScale:(MKZoomScale)zoomScale;
-- (void)set_renderer:(id)a3;
+- (void)set_renderer:(id)set_renderer;
 @end
 
 @implementation MKOverlayRenderer
 
-- (BOOL)_canPossiblyDrawMapRect:(id)a3 zoomScale:(double)a4
+- (BOOL)_canPossiblyDrawMapRect:(id)rect zoomScale:(double)scale
 {
-  var1 = a3.var1.var1;
-  var0 = a3.var1.var0;
-  v6 = a3.var0.var1;
-  v7 = a3.var0.var0;
-  [(MKOverlayRenderer *)self _boundingMapRect:a3.var0.var0];
+  var1 = rect.var1.var1;
+  var0 = rect.var1.var0;
+  v6 = rect.var0.var1;
+  v7 = rect.var0.var0;
+  [(MKOverlayRenderer *)self _boundingMapRect:rect.var0.var0];
   v12 = v7;
   v13 = v6;
   v14 = var0;
@@ -61,7 +61,7 @@
   return v9;
 }
 
-- (void)overlay:(id)a3 drawKey:(id *)a4 inContext:(CGContext *)a5
+- (void)overlay:(id)overlay drawKey:(id *)key inContext:(CGContext *)context
 {
   v17 = 0u;
   v15 = 0u;
@@ -74,15 +74,15 @@
   v11[2] = __47__MKOverlayRenderer_overlay_drawKey_inContext___block_invoke;
   v11[3] = &unk_1E76CCE90;
   v11[4] = self;
-  v11[5] = a4;
-  v11[6] = a5;
+  v11[5] = key;
+  v11[6] = context;
   v14 = 0u;
   v8 = MEMORY[0x1A58E9F30](v11);
-  v9 = [(MKOverlayRenderer *)self _mapView];
-  v10 = v9;
-  if (v9)
+  _mapView = [(MKOverlayRenderer *)self _mapView];
+  v10 = _mapView;
+  if (_mapView)
   {
-    [v9 _withEffectiveTraitCollection:v8];
+    [_mapView _withEffectiveTraitCollection:v8];
   }
 
   else
@@ -139,14 +139,14 @@ void __47__MKOverlayRenderer_overlay_drawKey_inContext___block_invoke_2(uint64_t
   CGContextRestoreGState(*(a1 + 40));
 }
 
-- (BOOL)overlay:(id)a3 canDrawKey:(id *)a4
+- (BOOL)overlay:(id)overlay canDrawKey:(id *)key
 {
-  v6 = a3;
+  overlayCopy = overlay;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  v7 = exp2((21 - (a4->var3 + a4->var2)));
+  v7 = exp2((21 - (key->var3 + key->var2)));
   objc_opt_class();
   v8 = 1.0 / v7;
   if ((objc_opt_isKindOfClass() & 1) == 0 || ([(MKOverlayRenderer *)self lineWidth], v10 = v9 / v8, v10 == 0.0))
@@ -173,8 +173,8 @@ void __47__MKOverlayRenderer_overlay_drawKey_inContext___block_invoke_2(uint64_t
   *&v15[7] = v8;
   v15[4] = self;
   v15[5] = &v16;
-  v15[8] = a4;
-  [(MKOverlayRenderer *)self _forEachMapRectForKey:a4 withContext:0 performBlock:v15];
+  v15[8] = key;
+  [(MKOverlayRenderer *)self _forEachMapRectForKey:key withContext:0 performBlock:v15];
   v13 = *(v17 + 24);
   _Block_object_dispose(&v16, 8);
 
@@ -241,9 +241,9 @@ uint64_t __40__MKOverlayRenderer_overlay_canDrawKey___block_invoke(uint64_t a1, 
   return result;
 }
 
-- (BOOL)overlay:(id)a3 canPossiblyDrawKey:(id *)a4
+- (BOOL)overlay:(id)overlay canPossiblyDrawKey:(id *)key
 {
-  v6 = a3;
+  overlayCopy = overlay;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
@@ -253,13 +253,13 @@ uint64_t __40__MKOverlayRenderer_overlay_canDrawKey___block_invoke(uint64_t a1, 
   v8[2] = __48__MKOverlayRenderer_overlay_canPossiblyDrawKey___block_invoke;
   v8[3] = &unk_1E76CCE18;
   v8[5] = &v9;
-  v8[6] = a4;
+  v8[6] = key;
   v8[4] = self;
-  [(MKOverlayRenderer *)self _forEachMapRectForKey:a4 withContext:0 performBlock:v8];
-  LOBYTE(a4) = *(v10 + 24);
+  [(MKOverlayRenderer *)self _forEachMapRectForKey:key withContext:0 performBlock:v8];
+  LOBYTE(key) = *(v10 + 24);
   _Block_object_dispose(&v9, 8);
 
-  return a4;
+  return key;
 }
 
 uint64_t __48__MKOverlayRenderer_overlay_canPossiblyDrawKey___block_invoke(uint64_t a1, double a2, double a3, double a4, double a5)
@@ -285,9 +285,9 @@ uint64_t __48__MKOverlayRenderer_overlay_canPossiblyDrawKey___block_invoke(uint6
   return result;
 }
 
-- (void)_forEachMapRectForKey:(id *)a3 withContext:(CGContext *)a4 performBlock:(id)a5
+- (void)_forEachMapRectForKey:(id *)key withContext:(CGContext *)context performBlock:(id)block
 {
-  v7 = a5;
+  blockCopy = block;
   [(MKOverlayRenderer *)self _boundingMapRect];
   v9 = v8;
   v11 = v10;
@@ -295,15 +295,15 @@ uint64_t __48__MKOverlayRenderer_overlay_canPossiblyDrawKey___block_invoke(uint6
   v16[1] = 3221225472;
   v17 = __68__MKOverlayRenderer__forEachMapRectForKey_withContext_performBlock___block_invoke;
   v18 = &unk_1E76CCDF0;
-  v20 = a3;
-  v21 = a4;
-  v12 = v7;
+  keyCopy = key;
+  contextCopy = context;
+  v12 = blockCopy;
   v19 = v12;
-  LODWORD(a3) = vcvtmd_s64_f64(v9 * 0.0000000037252903);
+  LODWORD(key) = vcvtmd_s64_f64(v9 * 0.0000000037252903);
   v14 = vcvtpd_s64_f64((v9 + v11) * 0.0000000037252903);
-  if (a3 + 1 > v14)
+  if (key + 1 > v14)
   {
-    v15 = a3 + 1;
+    v15 = key + 1;
   }
 
   else
@@ -313,11 +313,11 @@ uint64_t __48__MKOverlayRenderer_overlay_canPossiblyDrawKey___block_invoke(uint6
 
   do
   {
-    v17(v16, a3);
-    a3 = (a3 + 1);
+    v17(v16, key);
+    key = (key + 1);
   }
 
-  while (v15 != a3);
+  while (v15 != key);
 }
 
 void __68__MKOverlayRenderer__forEachMapRectForKey_withContext_performBlock___block_invoke(uint64_t a1, int a2)
@@ -523,17 +523,17 @@ BOOL __44__MKOverlayRenderer__mayExtendOutsideBounds__block_invoke()
   return result;
 }
 
-- (void)_setMapView:(id)a3
+- (void)_setMapView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   isolationQueue = self->_isolationQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __33__MKOverlayRenderer__setMapView___block_invoke;
   v7[3] = &unk_1E76CD810;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = viewCopy;
+  v6 = viewCopy;
   dispatch_sync(isolationQueue, v7);
 }
 
@@ -567,22 +567,22 @@ void __29__MKOverlayRenderer__mapView__block_invoke(uint64_t a1)
   *(v3 + 40) = WeakRetained;
 }
 
-- (void)_encodePropertiesWithCoder:(id)a3
+- (void)_encodePropertiesWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
   alpha = self->_alpha;
-  v6 = a3;
+  coderCopy = coder;
   v7 = [v4 numberWithDouble:alpha];
-  [v6 encodeObject:v7 forKey:@"MKOverlayRendererAlpha"];
+  [coderCopy encodeObject:v7 forKey:@"MKOverlayRendererAlpha"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithInt:self->_blendMode];
-  [v6 encodeObject:v8 forKey:@"MKOverlayRendererBlendMode"];
+  [coderCopy encodeObject:v8 forKey:@"MKOverlayRendererBlendMode"];
 }
 
-- (void)_decodePropertiesWithCoder:(id)a3
+- (void)_decodePropertiesWithCoder:(id)coder
 {
-  v9 = a3;
-  v4 = [v9 decodeObjectOfClass:objc_opt_class() forKey:@"MKOverlayRendererAlpha"];
+  coderCopy = coder;
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MKOverlayRendererAlpha"];
   v5 = v4;
   if (v4)
   {
@@ -590,7 +590,7 @@ void __29__MKOverlayRenderer__mapView__block_invoke(uint64_t a1)
     self->_alpha = v6;
   }
 
-  v7 = [v9 decodeObjectOfClass:objc_opt_class() forKey:@"MKOverlayRendererBlendMode"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MKOverlayRendererBlendMode"];
   v8 = v7;
   if (v7)
   {
@@ -598,39 +598,39 @@ void __29__MKOverlayRenderer__mapView__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_animateIfNecessaryForKey:(id)a3 withStepHandler:(id)a4
+- (void)_animateIfNecessaryForKey:(id)key withStepHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MKOverlayRenderer *)self _mapView];
-  v9 = [v8 _mapLayer];
-  if (v9)
+  keyCopy = key;
+  handlerCopy = handler;
+  _mapView = [(MKOverlayRenderer *)self _mapView];
+  _mapLayer = [_mapView _mapLayer];
+  if (_mapLayer)
   {
     os_unfair_lock_lock(&self->_runningAnimationsLock);
-    v10 = [(NSMutableDictionary *)self->_runningAnimations objectForKey:v6];
-    [(NSMutableDictionary *)self->_runningAnimations removeObjectForKey:v6];
-    v11 = [MEMORY[0x1E69DF4A0] animationMatchingCurrentAnimationParametersWithName:v6];
+    v10 = [(NSMutableDictionary *)self->_runningAnimations objectForKey:keyCopy];
+    [(NSMutableDictionary *)self->_runningAnimations removeObjectForKey:keyCopy];
+    v11 = [MEMORY[0x1E69DF4A0] animationMatchingCurrentAnimationParametersWithName:keyCopy];
     if (v11)
     {
       runningAnimations = self->_runningAnimations;
       if (!runningAnimations)
       {
-        v13 = [MEMORY[0x1E695DF90] dictionary];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
         v14 = self->_runningAnimations;
-        self->_runningAnimations = v13;
+        self->_runningAnimations = dictionary;
 
         runningAnimations = self->_runningAnimations;
       }
 
-      [(NSMutableDictionary *)runningAnimations setObject:v11 forKey:v6];
-      [v11 setStepHandler:v7];
+      [(NSMutableDictionary *)runningAnimations setObject:v11 forKey:keyCopy];
+      [v11 setStepHandler:handlerCopy];
       objc_initWeak(&location, v11);
       v15 = MEMORY[0x1E69E9820];
       v16 = 3221225472;
       v17 = __63__MKOverlayRenderer__animateIfNecessaryForKey_withStepHandler___block_invoke;
       v18 = &unk_1E76CCDC8;
-      v19 = self;
-      v20 = v6;
+      selfCopy = self;
+      v20 = keyCopy;
       objc_copyWeak(&v21, &location);
       [v11 setCompletionHandler:&v15];
       objc_destroyWeak(&v21);
@@ -638,20 +638,20 @@ void __29__MKOverlayRenderer__mapView__block_invoke(uint64_t a1)
       objc_destroyWeak(&location);
       os_unfair_lock_unlock(&self->_runningAnimationsLock);
       [v10 stop];
-      [v9 runAnimation:v11];
+      [_mapLayer runAnimation:v11];
     }
 
     else
     {
       os_unfair_lock_unlock(&self->_runningAnimationsLock);
       [v10 stop];
-      v7[2](v7, 1.0);
+      handlerCopy[2](handlerCopy, 1.0);
     }
   }
 
   else
   {
-    v7[2](v7, 1.0);
+    handlerCopy[2](handlerCopy, 1.0);
   }
 }
 
@@ -678,10 +678,10 @@ void __63__MKOverlayRenderer__animateIfNecessaryForKey_withStepHandler___block_i
   return result;
 }
 
-- (void)set_renderer:(id)a3
+- (void)set_renderer:(id)set_renderer
 {
-  v7 = a3;
-  objc_storeStrong(&self->_renderer, a3);
+  set_rendererCopy = set_renderer;
+  objc_storeStrong(&self->_renderer, set_renderer);
   v5 = self->_blendMode - 1;
   if (v5 > 0x1A)
   {
@@ -709,9 +709,9 @@ void __63__MKOverlayRenderer__animateIfNecessaryForKey_withStepHandler___block_i
   }
 }
 
-- (void)_setExtendedBlendMode:(int64_t)a3
+- (void)_setExtendedBlendMode:(int64_t)mode
 {
-  if (a3 == 1000)
+  if (mode == 1000)
   {
     v3 = 26;
   }
@@ -722,7 +722,7 @@ void __63__MKOverlayRenderer__animateIfNecessaryForKey_withStepHandler___block_i
   }
 
   self->_blendMode = v3;
-  [(VKOverlay *)self->_renderer setBlendMode:16 * (a3 == 1000)];
+  [(VKOverlay *)self->_renderer setBlendMode:16 * (mode == 1000)];
 }
 
 - (void)setBlendMode:(CGBlendMode)blendMode

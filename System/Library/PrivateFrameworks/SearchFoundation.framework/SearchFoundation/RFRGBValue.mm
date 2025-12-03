@@ -1,12 +1,12 @@
 @interface RFRGBValue
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (RFRGBValue)initWithCoder:(id)a3;
-- (RFRGBValue)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (RFRGBValue)initWithCoder:(id)coder;
+- (RFRGBValue)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RFRGBValue
@@ -15,27 +15,27 @@
 {
   v3 = [(RFRGBValue *)self red];
   v4 = [v3 hash];
-  v5 = [(RFRGBValue *)self green];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(RFRGBValue *)self blue];
-  v8 = [v7 hash];
+  green = [(RFRGBValue *)self green];
+  v6 = [green hash] ^ v4;
+  blue = [(RFRGBValue *)self blue];
+  v8 = [blue hash];
 
   return v6 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(RFRGBValue *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(RFRGBValue *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v6 = v5;
+      v6 = equalCopy;
       v7 = [(RFRGBValue *)self red];
       v8 = [(RFRGBValue *)v6 red];
       if ((v7 != 0) == (v8 == 0))
@@ -60,33 +60,33 @@ LABEL_30:
         v31 = v10;
       }
 
-      v12 = [(RFRGBValue *)self green];
-      v13 = [(RFRGBValue *)v6 green];
-      v14 = v13;
-      if ((v12 != 0) == (v13 == 0))
+      green = [(RFRGBValue *)self green];
+      green2 = [(RFRGBValue *)v6 green];
+      v14 = green2;
+      if ((green != 0) == (green2 == 0))
       {
 
         v11 = 0;
         goto LABEL_27;
       }
 
-      v15 = [(RFRGBValue *)self green];
-      if (v15)
+      green3 = [(RFRGBValue *)self green];
+      if (green3)
       {
-        v25 = v12;
-        v16 = [(RFRGBValue *)self green];
-        v27 = [(RFRGBValue *)v6 green];
-        v28 = v16;
-        if (![v16 isEqual:?])
+        v25 = green;
+        green4 = [(RFRGBValue *)self green];
+        green5 = [(RFRGBValue *)v6 green];
+        v28 = green4;
+        if (![green4 isEqual:?])
         {
           v11 = 0;
-          v12 = v25;
+          green = v25;
           goto LABEL_25;
         }
 
-        v29 = v15;
+        v29 = green3;
         v30 = v3;
-        v12 = v25;
+        green = v25;
       }
 
       else
@@ -95,13 +95,13 @@ LABEL_30:
         v30 = v3;
       }
 
-      v17 = [(RFRGBValue *)self blue];
-      v18 = [(RFRGBValue *)v6 blue];
-      if ((v17 != 0) == (v18 == 0))
+      blue = [(RFRGBValue *)self blue];
+      blue2 = [(RFRGBValue *)v6 blue];
+      if ((blue != 0) == (blue2 == 0))
       {
 
         v11 = 0;
-        v15 = v29;
+        green3 = v29;
         v3 = v30;
         if (!v29)
         {
@@ -111,16 +111,16 @@ LABEL_30:
 
       else
       {
-        v24 = v17;
-        v26 = v18;
-        v19 = [(RFRGBValue *)self blue];
-        v15 = v29;
-        if (v19)
+        v24 = blue;
+        v26 = blue2;
+        blue3 = [(RFRGBValue *)self blue];
+        green3 = v29;
+        if (blue3)
         {
-          v23 = v19;
-          v22 = [(RFRGBValue *)self blue];
-          v20 = [(RFRGBValue *)v6 blue];
-          v11 = [v22 isEqual:?];
+          v23 = blue3;
+          blue4 = [(RFRGBValue *)self blue];
+          blue5 = [(RFRGBValue *)v6 blue];
+          v11 = [blue4 isEqual:?];
         }
 
         else
@@ -161,19 +161,19 @@ LABEL_31:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(RFRGBValue *)self red];
   v6 = [v5 copy];
   [v4 setRed:v6];
 
-  v7 = [(RFRGBValue *)self green];
-  v8 = [v7 copy];
+  green = [(RFRGBValue *)self green];
+  v8 = [green copy];
   [v4 setGreen:v8];
 
-  v9 = [(RFRGBValue *)self blue];
-  v10 = [v9 copy];
+  blue = [(RFRGBValue *)self blue];
+  v10 = [blue copy];
   [v4 setBlue:v10];
 
   return v4;
@@ -182,31 +182,31 @@ LABEL_31:
 - (NSData)jsonData
 {
   v2 = [[_SFPBRFRGBValue alloc] initWithFacade:self];
-  v3 = [(_SFPBRFRGBValue *)v2 jsonData];
+  jsonData = [(_SFPBRFRGBValue *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBRFRGBValue alloc] initWithFacade:self];
-  v3 = [(_SFPBRFRGBValue *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBRFRGBValue *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBRFRGBValue alloc] initWithFacade:self];
-  v5 = [(_SFPBRFRGBValue *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBRFRGBValue *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (RFRGBValue)initWithCoder:(id)a3
+- (RFRGBValue)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBRFRGBValue alloc] initWithData:v5];
   v7 = [(RFRGBValue *)self initWithProtobuf:v6];
@@ -214,37 +214,37 @@ LABEL_31:
   return v7;
 }
 
-- (RFRGBValue)initWithProtobuf:(id)a3
+- (RFRGBValue)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v17.receiver = self;
   v17.super_class = RFRGBValue;
   v5 = [(RFRGBValue *)&v17 init];
   if (v5)
   {
-    [v4 red];
+    [protobufCopy red];
     if (v6 != 0.0)
     {
       v7 = MEMORY[0x1E696AD98];
-      [v4 red];
+      [protobufCopy red];
       v8 = [v7 numberWithFloat:?];
       [(RFRGBValue *)v5 setRed:v8];
     }
 
-    [v4 green];
+    [protobufCopy green];
     if (v9 != 0.0)
     {
       v10 = MEMORY[0x1E696AD98];
-      [v4 green];
+      [protobufCopy green];
       v11 = [v10 numberWithFloat:?];
       [(RFRGBValue *)v5 setGreen:v11];
     }
 
-    [v4 blue];
+    [protobufCopy blue];
     if (v12 != 0.0)
     {
       v13 = MEMORY[0x1E696AD98];
-      [v4 blue];
+      [protobufCopy blue];
       v14 = [v13 numberWithFloat:?];
       [(RFRGBValue *)v5 setBlue:v14];
     }

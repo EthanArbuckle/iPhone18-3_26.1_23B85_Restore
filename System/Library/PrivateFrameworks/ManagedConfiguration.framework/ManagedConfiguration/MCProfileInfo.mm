@@ -1,98 +1,98 @@
 @interface MCProfileInfo
-- (MCProfileInfo)initWithCoder:(id)a3;
-- (MCProfileInfo)initWithProfile:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (MCProfileInfo)initWithCoder:(id)coder;
+- (MCProfileInfo)initWithProfile:(id)profile;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MCProfileInfo
 
-- (MCProfileInfo)initWithProfile:(id)a3
+- (MCProfileInfo)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v21.receiver = self;
   v21.super_class = MCProfileInfo;
   v5 = [(MCProfileInfo *)&v21 init];
   if (v5)
   {
-    v6 = [v4 friendlyName];
+    friendlyName = [profileCopy friendlyName];
     friendlyName = v5->_friendlyName;
-    v5->_friendlyName = v6;
+    v5->_friendlyName = friendlyName;
 
-    v8 = [v4 profileDescription];
+    profileDescription = [profileCopy profileDescription];
     profileDescription = v5->_profileDescription;
-    v5->_profileDescription = v8;
+    v5->_profileDescription = profileDescription;
 
-    v10 = [v4 identifier];
+    identifier = [profileCopy identifier];
     identifier = v5->_identifier;
-    v5->_identifier = v10;
+    v5->_identifier = identifier;
 
-    v12 = [v4 UUID];
+    uUID = [profileCopy UUID];
     UUID = v5->_UUID;
-    v5->_UUID = v12;
+    v5->_UUID = uUID;
 
-    v14 = [v4 organization];
+    organization = [profileCopy organization];
     organization = v5->_organization;
-    v5->_organization = v14;
+    v5->_organization = organization;
 
-    v16 = [v4 expiryDate];
+    expiryDate = [profileCopy expiryDate];
     expiryDate = v5->_expiryDate;
-    v5->_expiryDate = v16;
+    v5->_expiryDate = expiryDate;
 
-    v18 = [v4 installOptions];
-    v19 = [v18 objectForKeyedSubscript:@"isInstalledByDeclarativeManagement"];
+    installOptions = [profileCopy installOptions];
+    v19 = [installOptions objectForKeyedSubscript:@"isInstalledByDeclarativeManagement"];
     v5->_isInstalledByDeclarativeManagement = [v19 BOOLValue];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   friendlyName = self->_friendlyName;
-  v5 = a3;
-  [v5 encodeObject:friendlyName forKey:@"friendlyName"];
-  [v5 encodeObject:self->_profileDescription forKey:@"profileDescription"];
-  [v5 encodeObject:self->_identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_UUID forKey:@"UUID"];
-  [v5 encodeObject:self->_organization forKey:@"organization"];
-  [v5 encodeObject:self->_expiryDate forKey:@"expiryDate"];
+  coderCopy = coder;
+  [coderCopy encodeObject:friendlyName forKey:@"friendlyName"];
+  [coderCopy encodeObject:self->_profileDescription forKey:@"profileDescription"];
+  [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_UUID forKey:@"UUID"];
+  [coderCopy encodeObject:self->_organization forKey:@"organization"];
+  [coderCopy encodeObject:self->_expiryDate forKey:@"expiryDate"];
   v6 = [MEMORY[0x1E696AD98] numberWithBool:self->_isInstalledByDeclarativeManagement];
-  [v5 encodeObject:v6 forKey:@"isInstalledByDeclarativeManagement"];
+  [coderCopy encodeObject:v6 forKey:@"isInstalledByDeclarativeManagement"];
 }
 
-- (MCProfileInfo)initWithCoder:(id)a3
+- (MCProfileInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = MCProfileInfo;
   v5 = [(MCProfileInfo *)&v20 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"friendlyName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"friendlyName"];
     friendlyName = v5->_friendlyName;
     v5->_friendlyName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"profileDescription"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"profileDescription"];
     profileDescription = v5->_profileDescription;
     v5->_profileDescription = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
     UUID = v5->_UUID;
     v5->_UUID = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"organization"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"organization"];
     organization = v5->_organization;
     v5->_organization = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"expiryDate"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"expiryDate"];
     expiryDate = v5->_expiryDate;
     v5->_expiryDate = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"isInstalledByDeclarativeManagement"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isInstalledByDeclarativeManagement"];
     v5->_isInstalledByDeclarativeManagement = [v18 BOOLValue];
   }
 

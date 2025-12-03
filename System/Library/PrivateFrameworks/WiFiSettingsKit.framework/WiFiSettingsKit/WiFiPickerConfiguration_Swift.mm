@@ -2,15 +2,15 @@
 - (NSString)accessoryName;
 - (NSString)description;
 - (WiFiPickerConfiguration_Swift)init;
-- (WiFiPickerConfiguration_Swift)initWithNetworks:(id)a3 currentNetwork:(id)a4;
-- (WiFiPickerConfiguration_Swift)initWithNetworksInfo:(id)a3 currentNetwork:(id)a4;
+- (WiFiPickerConfiguration_Swift)initWithNetworks:(id)networks currentNetwork:(id)network;
+- (WiFiPickerConfiguration_Swift)initWithNetworksInfo:(id)info currentNetwork:(id)network;
 - (int64_t)displayOption;
 - (int64_t)interactionStyle;
 - (int64_t)presentationStyle;
-- (void)setAccessoryName:(id)a3;
-- (void)setDisplayOption:(int64_t)a3;
-- (void)setInteractionStyle:(int64_t)a3;
-- (void)setPresentationStyle:(int64_t)a3;
+- (void)setAccessoryName:(id)name;
+- (void)setDisplayOption:(int64_t)option;
+- (void)setInteractionStyle:(int64_t)style;
+- (void)setPresentationStyle:(int64_t)style;
 @end
 
 @implementation WiFiPickerConfiguration_Swift
@@ -22,11 +22,11 @@
   return *(self + v3);
 }
 
-- (void)setPresentationStyle:(int64_t)a3
+- (void)setPresentationStyle:(int64_t)style
 {
   v5 = OBJC_IVAR___WiFiPickerConfiguration_Swift_presentationStyle;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = style;
 }
 
 - (int64_t)interactionStyle
@@ -36,11 +36,11 @@
   return *(self + v3);
 }
 
-- (void)setInteractionStyle:(int64_t)a3
+- (void)setInteractionStyle:(int64_t)style
 {
   v5 = OBJC_IVAR___WiFiPickerConfiguration_Swift_interactionStyle;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = style;
 }
 
 - (int64_t)displayOption
@@ -50,11 +50,11 @@
   return *(self + v3);
 }
 
-- (void)setDisplayOption:(int64_t)a3
+- (void)setDisplayOption:(int64_t)option
 {
   v5 = OBJC_IVAR___WiFiPickerConfiguration_Swift_displayOption;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = option;
 }
 
 - (NSString)accessoryName
@@ -76,9 +76,9 @@
   return v4;
 }
 
-- (void)setAccessoryName:(id)a3
+- (void)setAccessoryName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v4 = sub_2741C7E7C();
     v6 = v5;
@@ -97,11 +97,11 @@
   v7[1] = v6;
 }
 
-- (WiFiPickerConfiguration_Swift)initWithNetworksInfo:(id)a3 currentNetwork:(id)a4
+- (WiFiPickerConfiguration_Swift)initWithNetworksInfo:(id)info currentNetwork:(id)network
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_2809385B8, &qword_2741CD5E0);
   v5 = sub_2741C7FEC();
-  if (a4)
+  if (network)
   {
     v6 = v5;
     v7 = sub_2741C7D6C();
@@ -116,7 +116,7 @@
   return WiFiPickerConfiguration.init(networks:currentNetwork:)(v5, v7);
 }
 
-- (WiFiPickerConfiguration_Swift)initWithNetworks:(id)a3 currentNetwork:(id)a4
+- (WiFiPickerConfiguration_Swift)initWithNetworks:(id)networks currentNetwork:(id)network
 {
   type metadata accessor for WiFiNetwork();
   v6 = sub_2741C7FEC();
@@ -127,16 +127,16 @@
   *v7 = 0;
   v7[1] = 0;
   *(self + OBJC_IVAR___WiFiPickerConfiguration_Swift_networks) = v6;
-  *(self + OBJC_IVAR___WiFiPickerConfiguration_Swift_currentNetwork) = a4;
+  *(self + OBJC_IVAR___WiFiPickerConfiguration_Swift_currentNetwork) = network;
   v10.receiver = self;
   v10.super_class = type metadata accessor for WiFiPickerConfiguration();
-  v8 = a4;
+  networkCopy = network;
   return [(WiFiPickerConfiguration_Swift *)&v10 init];
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_2740CA1C4();
 
   v3 = sub_2741C7E3C();

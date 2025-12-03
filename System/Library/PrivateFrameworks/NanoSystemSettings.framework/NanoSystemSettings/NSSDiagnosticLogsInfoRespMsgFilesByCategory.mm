@@ -1,42 +1,42 @@
 @interface NSSDiagnosticLogsInfoRespMsgFilesByCategory
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsFilesType:(id)a3;
+- (int)StringAsFilesType:(id)type;
 - (unint64_t)hash;
-- (void)addFilePaths:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addFilePaths:(id)paths;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NSSDiagnosticLogsInfoRespMsgFilesByCategory
 
-- (int)StringAsFilesType:(id)a3
+- (int)StringAsFilesType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"FilesTypeDiagnosticLogs"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"FilesTypeDiagnosticLogs"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"FilesTypeSysdiagnoseLogs"])
+  else if ([typeCopy isEqualToString:@"FilesTypeSysdiagnoseLogs"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"FilesTypeScreenshots"])
+  else if ([typeCopy isEqualToString:@"FilesTypeScreenshots"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"FilesTypeScreenCaptures"])
+  else if ([typeCopy isEqualToString:@"FilesTypeScreenCaptures"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"FilesTypeAppPrivacyReports"])
+  else if ([typeCopy isEqualToString:@"FilesTypeAppPrivacyReports"])
   {
     v4 = 5;
   }
@@ -49,22 +49,22 @@
   return v4;
 }
 
-- (void)addFilePaths:(id)a3
+- (void)addFilePaths:(id)paths
 {
-  v4 = a3;
+  pathsCopy = paths;
   filePaths = self->_filePaths;
-  v8 = v4;
+  v8 = pathsCopy;
   if (!filePaths)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_filePaths;
     self->_filePaths = v6;
 
-    v4 = v8;
+    pathsCopy = v8;
     filePaths = self->_filePaths;
   }
 
-  [(NSMutableArray *)filePaths addObject:v4];
+  [(NSMutableArray *)filePaths addObject:pathsCopy];
 }
 
 - (id)description
@@ -73,15 +73,15 @@
   v8.receiver = self;
   v8.super_class = NSSDiagnosticLogsInfoRespMsgFilesByCategory;
   v4 = [(NSSDiagnosticLogsInfoRespMsgFilesByCategory *)&v8 description];
-  v5 = [(NSSDiagnosticLogsInfoRespMsgFilesByCategory *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NSSDiagnosticLogsInfoRespMsgFilesByCategory *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = self->_filesType - 1;
   if (v4 >= 5)
   {
@@ -93,27 +93,27 @@
     v5 = off_27995D288[v4];
   }
 
-  [v3 setObject:v5 forKey:@"filesType"];
+  [dictionary setObject:v5 forKey:@"filesType"];
 
   directoryPath = self->_directoryPath;
   if (directoryPath)
   {
-    [v3 setObject:directoryPath forKey:@"directoryPath"];
+    [dictionary setObject:directoryPath forKey:@"directoryPath"];
   }
 
   filePaths = self->_filePaths;
   if (filePaths)
   {
-    [v3 setObject:filePaths forKey:@"filePaths"];
+    [dictionary setObject:filePaths forKey:@"filePaths"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   filesType = self->_filesType;
   PBDataWriterWriteInt32Field();
   directoryPath = self->_directoryPath;
@@ -153,19 +153,19 @@
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v4[6] = self->_filesType;
-  v9 = v4;
-  [v4 setDirectoryPath:self->_directoryPath];
+  toCopy = to;
+  toCopy[6] = self->_filesType;
+  v9 = toCopy;
+  [toCopy setDirectoryPath:self->_directoryPath];
   if ([(NSSDiagnosticLogsInfoRespMsgFilesByCategory *)self filePathsCount])
   {
     [v9 clearFilePaths];
-    v5 = [(NSSDiagnosticLogsInfoRespMsgFilesByCategory *)self filePathsCount];
-    if (v5)
+    filePathsCount = [(NSSDiagnosticLogsInfoRespMsgFilesByCategory *)self filePathsCount];
+    if (filePathsCount)
     {
-      v6 = v5;
+      v6 = filePathsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(NSSDiagnosticLogsInfoRespMsgFilesByCategory *)self filePathsAtIndex:i];
@@ -175,12 +175,12 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 24) = self->_filesType;
-  v6 = [(NSString *)self->_directoryPath copyWithZone:a3];
+  v6 = [(NSString *)self->_directoryPath copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
@@ -204,7 +204,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{a3, v16}];
+        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{zone, v16}];
         [v5 addFilePaths:v13];
 
         ++v12;
@@ -221,13 +221,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && self->_filesType == *(v4 + 6) && ((directoryPath = self->_directoryPath, !(directoryPath | v4[1])) || -[NSString isEqual:](directoryPath, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && self->_filesType == *(equalCopy + 6) && ((directoryPath = self->_directoryPath, !(directoryPath | equalCopy[1])) || -[NSString isEqual:](directoryPath, "isEqual:")))
   {
     filePaths = self->_filePaths;
-    if (filePaths | v4[2])
+    if (filePaths | equalCopy[2])
     {
       v7 = [(NSMutableArray *)filePaths isEqual:?];
     }
@@ -253,12 +253,12 @@
   return v4 ^ [(NSMutableArray *)self->_filePaths hash]^ v3;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  self->_filesType = *(v4 + 6);
-  if (*(v4 + 1))
+  fromCopy = from;
+  self->_filesType = *(fromCopy + 6);
+  if (*(fromCopy + 1))
   {
     [(NSSDiagnosticLogsInfoRespMsgFilesByCategory *)self setDirectoryPath:?];
   }
@@ -267,7 +267,7 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(v4 + 2);
+  v5 = *(fromCopy + 2);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {

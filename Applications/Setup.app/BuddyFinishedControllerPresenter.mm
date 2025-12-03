@@ -1,6 +1,6 @@
 @interface BuddyFinishedControllerPresenter
 - (_TtC5Setup32BuddyFinishedControllerPresenter)init;
-- (_TtC5Setup32BuddyFinishedControllerPresenter)initWithDeviceProvider:(id)a3 animationData:(id)a4;
+- (_TtC5Setup32BuddyFinishedControllerPresenter)initWithDeviceProvider:(id)provider animationData:(id)data;
 - (void)animateToWelcomeScreen;
 - (void)animationSnapshotResultReceived;
 - (void)continueAnimation;
@@ -9,11 +9,11 @@
 
 @implementation BuddyFinishedControllerPresenter
 
-- (_TtC5Setup32BuddyFinishedControllerPresenter)initWithDeviceProvider:(id)a3 animationData:(id)a4
+- (_TtC5Setup32BuddyFinishedControllerPresenter)initWithDeviceProvider:(id)provider animationData:(id)data
 {
   swift_unknownObjectRetain();
-  v6 = a4;
-  v7 = sub_100021878(a3, v6);
+  dataCopy = data;
+  v7 = sub_100021878(provider, dataCopy);
   swift_unknownObjectRelease();
 
   return v7;
@@ -21,7 +21,7 @@
 
 - (void)animateToWelcomeScreen
 {
-  v2 = self;
+  selfCopy = self;
   sub_10001CD64();
 }
 
@@ -30,14 +30,14 @@
   v3 = OBJC_IVAR____TtC5Setup32BuddyFinishedControllerPresenter_fallbackWorkItem;
   if (*(&self->super.isa + OBJC_IVAR____TtC5Setup32BuddyFinishedControllerPresenter_fallbackWorkItem))
   {
-    v4 = self;
+    selfCopy = self;
 
     dispatch thunk of DispatchWorkItem.cancel()();
   }
 
   else
   {
-    v5 = self;
+    selfCopy2 = self;
   }
 
   *(&self->super.isa + v3) = 0;
@@ -45,13 +45,13 @@
 
 - (void)continueAnimation
 {
-  v2 = self;
+  selfCopy = self;
   sub_10001D59C();
 }
 
 - (void)pauseAnimation
 {
-  v2 = self;
+  selfCopy = self;
   sub_10001D894();
 }
 

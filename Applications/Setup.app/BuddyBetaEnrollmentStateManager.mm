@@ -1,7 +1,7 @@
 @interface BuddyBetaEnrollmentStateManager
-- (BOOL)isRestorableSeedEnrolled:(id)a3;
+- (BOOL)isRestorableSeedEnrolled:(id)enrolled;
 - (BuddyBetaEnrollmentStateManager)init;
-- (void)loadSeedEnrollmentStateForRestorables:(id)a3 incompatibleWithUpdateVersion:(id)a4 completion:(id)a5;
+- (void)loadSeedEnrollmentStateForRestorables:(id)restorables incompatibleWithUpdateVersion:(id)version completion:(id)completion;
 @end
 
 @implementation BuddyBetaEnrollmentStateManager
@@ -34,16 +34,16 @@
   return v8;
 }
 
-- (void)loadSeedEnrollmentStateForRestorables:(id)a3 incompatibleWithUpdateVersion:(id)a4 completion:(id)a5
+- (void)loadSeedEnrollmentStateForRestorables:(id)restorables incompatibleWithUpdateVersion:(id)version completion:(id)completion
 {
-  v42 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, restorables);
   v40 = 0;
-  objc_storeStrong(&v40, a4);
+  objc_storeStrong(&v40, version);
   v39 = 0;
-  objc_storeStrong(&v39, a5);
+  objc_storeStrong(&v39, completion);
   v38 = objc_alloc_init(NSMutableArray);
   memset(__b, 0, sizeof(__b));
   v7 = location[0];
@@ -63,16 +63,16 @@
         v37 = *(__b[1] + 8 * i);
         if (([v37 isCompatible] & 1) == 0 && (objc_msgSend(v37, "isCompatibleWithUpdateToSystemVersion:", v40) & 1) == 0)
         {
-          v11 = [(BuddyBetaEnrollmentStateManager *)v42 backupUDIDToSeedEnrolledMapAccessQueue];
+          backupUDIDToSeedEnrolledMapAccessQueue = [(BuddyBetaEnrollmentStateManager *)selfCopy backupUDIDToSeedEnrolledMapAccessQueue];
           block = _NSConcreteStackBlock;
           v29 = -1073741824;
           v30 = 0;
           v31 = sub_10014E43C;
           v32 = &unk_10032BB10;
-          v33 = v42;
+          v33 = selfCopy;
           v34 = v37;
           v35 = v38;
-          dispatch_sync(v11, &block);
+          dispatch_sync(backupUDIDToSeedEnrolledMapAccessQueue, &block);
 
           objc_storeStrong(&v35, 0);
           objc_storeStrong(&v34, 0);
@@ -104,7 +104,7 @@
     v18 = sub_10014E4DC;
     v19 = &unk_10032BC78;
     v20 = v38;
-    v21 = v42;
+    v21 = selfCopy;
     v22 = v39;
     dispatch_async(v14, &v15);
 
@@ -135,34 +135,34 @@
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)isRestorableSeedEnrolled:(id)a3
+- (BOOL)isRestorableSeedEnrolled:(id)enrolled
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, enrolled);
   v12 = 0;
   v13 = &v12;
   v14 = 0x20000000;
   v15 = 32;
   v16 = 0;
-  v3 = [(BuddyBetaEnrollmentStateManager *)v18 backupUDIDToSeedEnrolledMapAccessQueue];
+  backupUDIDToSeedEnrolledMapAccessQueue = [(BuddyBetaEnrollmentStateManager *)selfCopy backupUDIDToSeedEnrolledMapAccessQueue];
   v5 = _NSConcreteStackBlock;
   v6 = -1073741824;
   v7 = 0;
   v8 = sub_10014EB14;
   v9 = &unk_10032C920;
   v11[1] = &v12;
-  v10 = v18;
+  v10 = selfCopy;
   v11[0] = location[0];
-  dispatch_sync(v3, &v5);
+  dispatch_sync(backupUDIDToSeedEnrolledMapAccessQueue, &v5);
 
-  LOBYTE(v3) = *(v13 + 24);
+  LOBYTE(backupUDIDToSeedEnrolledMapAccessQueue) = *(v13 + 24);
   objc_storeStrong(v11, 0);
   objc_storeStrong(&v10, 0);
   _Block_object_dispose(&v12, 8);
   objc_storeStrong(location, 0);
-  return v3 & 1;
+  return backupUDIDToSeedEnrolledMapAccessQueue & 1;
 }
 
 @end

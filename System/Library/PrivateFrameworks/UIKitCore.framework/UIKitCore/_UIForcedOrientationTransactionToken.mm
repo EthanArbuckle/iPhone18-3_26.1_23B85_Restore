@@ -1,38 +1,38 @@
 @interface _UIForcedOrientationTransactionToken
 - (_UIForcedOrientationTransactionHandler)transactionHandler;
-- (_UIForcedOrientationTransactionToken)initWithOriginalOrientation:(int64_t)a3 handler:(id)a4 reason:(id)a5 disablingInterfaceAutorotation:(BOOL)a6;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (_UIForcedOrientationTransactionToken)initWithOriginalOrientation:(int64_t)orientation handler:(id)handler reason:(id)reason disablingInterfaceAutorotation:(BOOL)autorotation;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (void)cancel;
-- (void)commitAnimated:(BOOL)a3 completionBlock:(id)a4;
+- (void)commitAnimated:(BOOL)animated completionBlock:(id)block;
 - (void)dealloc;
 - (void)didCommitOrientation;
 @end
 
 @implementation _UIForcedOrientationTransactionToken
 
-- (_UIForcedOrientationTransactionToken)initWithOriginalOrientation:(int64_t)a3 handler:(id)a4 reason:(id)a5 disablingInterfaceAutorotation:(BOOL)a6
+- (_UIForcedOrientationTransactionToken)initWithOriginalOrientation:(int64_t)orientation handler:(id)handler reason:(id)reason disablingInterfaceAutorotation:(BOOL)autorotation
 {
   v22 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
+  handlerCopy = handler;
+  reasonCopy = reason;
   v19.receiver = self;
   v19.super_class = _UIForcedOrientationTransactionToken;
   v12 = [(_UIForcedOrientationTransactionToken *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    v12->_originalInterfaceOrientation = a3;
-    objc_storeWeak(&v12->_transactionHandler, v10);
-    v14 = [v11 copy];
+    v12->_originalInterfaceOrientation = orientation;
+    objc_storeWeak(&v12->_transactionHandler, handlerCopy);
+    v14 = [reasonCopy copy];
     transactionReason = v13->_transactionReason;
     v13->_transactionReason = v14;
 
     v13->_state = 1;
-    v13->_disablesInterfaceAutorotation = a6;
+    v13->_disablesInterfaceAutorotation = autorotation;
   }
 
   CategoryCachedImpl = __UILogGetCategoryCachedImpl("OrientationTransaction", &initWithOriginalOrientation_handler_reason_disablingInterfaceAutorotation____s_category);
@@ -50,15 +50,15 @@
   return v13;
 }
 
-- (void)commitAnimated:(BOOL)a3 completionBlock:(id)a4
+- (void)commitAnimated:(BOOL)animated completionBlock:(id)block
 {
-  v4 = a3;
+  animatedCopy = animated;
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  blockCopy = block;
   if ([(_UIForcedOrientationTransactionToken *)self state]== 1)
   {
     self->_state = 2;
-    [(_UIForcedOrientationTransactionToken *)self setCommitCompletionBlock:v6];
+    [(_UIForcedOrientationTransactionToken *)self setCommitCompletionBlock:blockCopy];
     CategoryCachedImpl = __UILogGetCategoryCachedImpl("OrientationTransaction", &_MergedGlobals_1179);
     if (*CategoryCachedImpl)
     {
@@ -66,21 +66,21 @@
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
         v11 = @"non-animated";
-        if (v4)
+        if (animatedCopy)
         {
           v11 = @"animated";
         }
 
         v13 = 138412546;
-        v14 = v11;
+        selfCopy2 = v11;
         v15 = 2112;
-        v16 = self;
+        selfCopy = self;
         _os_log_impl(&dword_188A29000, v10, OS_LOG_TYPE_ERROR, "Beginning %@ commit of orientation transaction token: %@", &v13, 0x16u);
       }
     }
 
-    v8 = [(_UIForcedOrientationTransactionToken *)self transactionHandler];
-    [v8 commitOrientationTransaction:self animated:v4];
+    transactionHandler = [(_UIForcedOrientationTransactionToken *)self transactionHandler];
+    [transactionHandler commitOrientationTransaction:self animated:animatedCopy];
   }
 
   else
@@ -92,7 +92,7 @@
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
         v13 = 138412290;
-        v14 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_188A29000, v12, OS_LOG_TYPE_ERROR, "Commit called on an inactive orientation transaction token: %@", &v13, 0xCu);
       }
     }
@@ -112,16 +112,16 @@
       if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
       {
         v6 = 138412290;
-        v7 = self;
+        selfCopy = self;
         _os_log_impl(&dword_188A29000, v5, OS_LOG_TYPE_ERROR, "Commit finished for orientation transaction token: %@", &v6, 0xCu);
       }
     }
 
-    v4 = [(_UIForcedOrientationTransactionToken *)self commitCompletionBlock];
+    commitCompletionBlock = [(_UIForcedOrientationTransactionToken *)self commitCompletionBlock];
     [(_UIForcedOrientationTransactionToken *)self setCommitCompletionBlock:0];
-    if (v4)
+    if (commitCompletionBlock)
     {
-      v4[2](v4);
+      commitCompletionBlock[2](commitCompletionBlock);
     }
   }
 }
@@ -139,13 +139,13 @@
       if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
       {
         v6 = 138412290;
-        v7 = self;
+        selfCopy = self;
         _os_log_impl(&dword_188A29000, v5, OS_LOG_TYPE_ERROR, "Cancelling orientation transaction token: %@", &v6, 0xCu);
       }
     }
 
-    v4 = [(_UIForcedOrientationTransactionToken *)self transactionHandler];
-    [v4 cancelOrientationTransaction:self];
+    transactionHandler = [(_UIForcedOrientationTransactionToken *)self transactionHandler];
+    [transactionHandler cancelOrientationTransaction:self];
   }
 }
 
@@ -159,24 +159,24 @@
 
 - (id)succinctDescription
 {
-  v2 = [(_UIForcedOrientationTransactionToken *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(_UIForcedOrientationTransactionToken *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
-  v4 = [(_UIForcedOrientationTransactionToken *)self state];
-  if (v4 > 2)
+  state = [(_UIForcedOrientationTransactionToken *)self state];
+  if (state > 2)
   {
     v5 = @"unknown";
   }
 
   else
   {
-    v5 = off_1E7114708[v4];
+    v5 = off_1E7114708[state];
   }
 
   [v3 appendString:v5 withName:@"state"];
@@ -185,38 +185,38 @@
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(_UIForcedOrientationTransactionToken *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(_UIForcedOrientationTransactionToken *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(_UIForcedOrientationTransactionToken *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(_UIForcedOrientationTransactionToken *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = MEMORY[0x1E698E680];
-  v5 = a3;
+  prefixCopy = prefix;
   v6 = [v4 builderWithObject:self];
-  [v6 setActiveMultilinePrefix:v5];
+  [v6 setActiveMultilinePrefix:prefixCopy];
 
-  v7 = [v6 activeMultilinePrefix];
+  activeMultilinePrefix = [v6 activeMultilinePrefix];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __78___UIForcedOrientationTransactionToken_descriptionBuilderWithMultilinePrefix___block_invoke;
   v11[3] = &unk_1E70F35B8;
   v8 = v6;
   v12 = v8;
-  v13 = self;
-  [v8 appendBodySectionWithName:0 multilinePrefix:v7 block:v11];
+  selfCopy = self;
+  [v8 appendBodySectionWithName:0 multilinePrefix:activeMultilinePrefix block:v11];
 
   v9 = v8;
   return v8;

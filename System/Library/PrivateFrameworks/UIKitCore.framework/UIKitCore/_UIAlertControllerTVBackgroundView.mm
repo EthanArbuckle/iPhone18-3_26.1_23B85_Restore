@@ -1,19 +1,19 @@
 @interface _UIAlertControllerTVBackgroundView
 + (CGSize)backgroundInsetAmount;
 - (CGSize)_shadowOffset;
-- (_UIAlertControllerTVBackgroundView)initWithFrame:(CGRect)a3;
-- (double)_alphaForHighlighted:(BOOL)a3 pressed:(BOOL)a4;
-- (double)alphaForState:(unint64_t)a3;
-- (void)_setContinuousCornerRadius:(double)a3;
+- (_UIAlertControllerTVBackgroundView)initWithFrame:(CGRect)frame;
+- (double)_alphaForHighlighted:(BOOL)highlighted pressed:(BOOL)pressed;
+- (double)alphaForState:(unint64_t)state;
+- (void)_setContinuousCornerRadius:(double)radius;
 - (void)_updateBackgroundColor;
 - (void)layoutSubviews;
-- (void)setAlpha:(double)a3 forState:(unint64_t)a4;
-- (void)setCornerRadius:(double)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setPressed:(BOOL)a3;
-- (void)setRoundedCornerPosition:(unint64_t)a3;
-- (void)setShouldShowShadow:(BOOL)a3;
-- (void)setShouldUseTintColorAsBackgroundColor:(BOOL)a3;
+- (void)setAlpha:(double)alpha forState:(unint64_t)state;
+- (void)setCornerRadius:(double)radius;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setPressed:(BOOL)pressed;
+- (void)setRoundedCornerPosition:(unint64_t)position;
+- (void)setShouldShowShadow:(BOOL)shadow;
+- (void)setShouldUseTintColorAsBackgroundColor:(BOOL)color;
 - (void)tintColorDidChange;
 @end
 
@@ -28,11 +28,11 @@
   return result;
 }
 
-- (_UIAlertControllerTVBackgroundView)initWithFrame:(CGRect)a3
+- (_UIAlertControllerTVBackgroundView)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = _UIAlertControllerTVBackgroundView;
-  v3 = [(UIView *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -106,15 +106,15 @@
 - (void)_updateBackgroundColor
 {
   backgroundView = self->_backgroundView;
-  v3 = [(UIView *)self tintColor];
-  [(UIView *)backgroundView setBackgroundColor:v3];
+  tintColor = [(UIView *)self tintColor];
+  [(UIView *)backgroundView setBackgroundColor:tintColor];
 }
 
-- (void)setShouldUseTintColorAsBackgroundColor:(BOOL)a3
+- (void)setShouldUseTintColorAsBackgroundColor:(BOOL)color
 {
-  if (self->_shouldUseTintColorAsBackgroundColor != a3)
+  if (self->_shouldUseTintColorAsBackgroundColor != color)
   {
-    if (a3)
+    if (color)
     {
       [(_UIAlertControllerTVBackgroundView *)self _updateBackgroundColor];
     }
@@ -124,13 +124,13 @@
       [(UIView *)self->_backgroundView setBackgroundColor:0];
     }
 
-    self->_shouldUseTintColorAsBackgroundColor = a3;
+    self->_shouldUseTintColorAsBackgroundColor = color;
   }
 }
 
-- (void)setAlpha:(double)a3 forState:(unint64_t)a4
+- (void)setAlpha:(double)alpha forState:(unint64_t)state
 {
-  v5 = a3;
+  alphaCopy = alpha;
   alphas = self->_alphas;
   if (!alphas)
   {
@@ -141,16 +141,16 @@
     alphas = self->_alphas;
   }
 
-  *&a3 = v5;
-  v11 = [MEMORY[0x1E696AD98] numberWithFloat:a3];
-  v10 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  *&alpha = alphaCopy;
+  v11 = [MEMORY[0x1E696AD98] numberWithFloat:alpha];
+  v10 = [MEMORY[0x1E696AD98] numberWithInteger:state];
   [(NSMutableDictionary *)alphas setObject:v11 forKey:v10];
 }
 
-- (double)alphaForState:(unint64_t)a3
+- (double)alphaForState:(unint64_t)state
 {
   alphas = self->_alphas;
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:state];
   v5 = [(NSMutableDictionary *)alphas objectForKey:v4];
   [v5 floatValue];
   v7 = v6;
@@ -158,53 +158,53 @@
   return v7;
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  v5 = [(UIView *)self->_backgroundView layer];
-  [v5 setCornerRadius:a3];
+  layer = [(UIView *)self->_backgroundView layer];
+  [layer setCornerRadius:radius];
 
   shadowView = self->_shadowView;
 
-  [(_UIFloatingShadowView *)shadowView setCornerRadius:a3];
+  [(_UIFloatingShadowView *)shadowView setCornerRadius:radius];
 }
 
-- (void)_setContinuousCornerRadius:(double)a3
+- (void)_setContinuousCornerRadius:(double)radius
 {
   [(UIView *)self->_backgroundView _setContinuousCornerRadius:?];
   shadowView = self->_shadowView;
 
-  [(UIView *)shadowView _setContinuousCornerRadius:a3];
+  [(UIView *)shadowView _setContinuousCornerRadius:radius];
 }
 
-- (void)setRoundedCornerPosition:(unint64_t)a3
+- (void)setRoundedCornerPosition:(unint64_t)position
 {
-  v5 = [(UIView *)self->_backgroundView layer];
-  [v5 setMaskedCorners:a3];
+  layer = [(UIView *)self->_backgroundView layer];
+  [layer setMaskedCorners:position];
 
-  v6 = [(UIView *)self->_shadowView layer];
-  [v6 setMaskedCorners:a3];
+  layer2 = [(UIView *)self->_shadowView layer];
+  [layer2 setMaskedCorners:position];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   isHighlighted = self->_isHighlighted;
-  if (isHighlighted != v3)
+  if (isHighlighted != highlightedCopy)
   {
     [(_UIAlertControllerTVBackgroundView *)self _alphaForHighlighted:isHighlighted pressed:self->_isPressed];
     v7 = v6;
-    [(_UIAlertControllerTVBackgroundView *)self _alphaForHighlighted:v3 pressed:self->_isPressed];
+    [(_UIAlertControllerTVBackgroundView *)self _alphaForHighlighted:highlightedCopy pressed:self->_isPressed];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __53___UIAlertControllerTVBackgroundView_setHighlighted___block_invoke;
     aBlock[3] = &unk_1E7101F90;
     aBlock[4] = self;
     aBlock[5] = v8;
-    v14 = v3;
+    v14 = highlightedCopy;
     v9 = _Block_copy(aBlock);
     if (+[UIView areAnimationsEnabled])
     {
-      if (v3)
+      if (highlightedCopy)
       {
         v10 = 0.1;
       }
@@ -228,18 +228,18 @@
       v9[2](v9);
     }
 
-    self->_isHighlighted = v3;
+    self->_isHighlighted = highlightedCopy;
   }
 }
 
-- (void)setPressed:(BOOL)a3
+- (void)setPressed:(BOOL)pressed
 {
-  if (self->_isPressed != a3)
+  if (self->_isPressed != pressed)
   {
-    v3 = a3;
+    pressedCopy = pressed;
     [(_UIAlertControllerTVBackgroundView *)self _alphaForHighlighted:self->_isHighlighted pressed:?];
     v6 = v5;
-    [(_UIAlertControllerTVBackgroundView *)self _alphaForHighlighted:self->_isHighlighted pressed:v3];
+    [(_UIAlertControllerTVBackgroundView *)self _alphaForHighlighted:self->_isHighlighted pressed:pressedCopy];
     v8 = v7;
     [(_UIAlertControllerTVBackgroundView *)self _shadowOpacity];
     v10 = v9;
@@ -247,7 +247,7 @@
     v12 = v11;
     v14 = v13;
     [(_UIAlertControllerTVBackgroundView *)self _shadowRadius];
-    if (v3)
+    if (pressedCopy)
     {
       v16 = 0.1;
     }
@@ -257,7 +257,7 @@
       v16 = v10;
     }
 
-    if (v3)
+    if (pressedCopy)
     {
       v17 = v14;
     }
@@ -267,7 +267,7 @@
       v17 = 5.0;
     }
 
-    if (v3)
+    if (pressedCopy)
     {
       v18 = 5.0;
     }
@@ -282,7 +282,7 @@
     aBlock[2] = __49___UIAlertControllerTVBackgroundView_setPressed___block_invoke;
     aBlock[3] = &unk_1E7116870;
     v19 = 0.0;
-    if (v3)
+    if (pressedCopy)
     {
       v20 = v15;
     }
@@ -296,7 +296,7 @@
     aBlock[4] = self;
     aBlock[5] = v8;
     *&aBlock[6] = v16;
-    if (v3)
+    if (pressedCopy)
     {
       v15 = 5.0;
     }
@@ -307,7 +307,7 @@
     v21 = _Block_copy(aBlock);
     if (+[UIView areAnimationsEnabled])
     {
-      if (!v3)
+      if (!pressedCopy)
       {
         v10 = 0.1;
       }
@@ -333,39 +333,39 @@
       v21[2](v21);
     }
 
-    self->_isPressed = v3;
+    self->_isPressed = pressedCopy;
   }
 }
 
-- (void)setShouldShowShadow:(BOOL)a3
+- (void)setShouldShowShadow:(BOOL)shadow
 {
-  if (self->_shouldShowShadow != a3)
+  if (self->_shouldShowShadow != shadow)
   {
     shadowView = self->_shadowView;
     v6 = 0.0;
-    if (a3)
+    if (shadow)
     {
       [(_UIAlertControllerTVBackgroundView *)self _shadowOpacity];
     }
 
     [(_UIFloatingShadowView *)shadowView setShadowOpacity:v6];
-    self->_shouldShowShadow = a3;
+    self->_shouldShowShadow = shadow;
   }
 }
 
-- (double)_alphaForHighlighted:(BOOL)a3 pressed:(BOOL)a4
+- (double)_alphaForHighlighted:(BOOL)highlighted pressed:(BOOL)pressed
 {
-  if (a4)
+  if (pressed)
   {
-    *&a3 = 4;
+    *&highlighted = 4;
   }
 
   else
   {
-    *&a3 = a3;
+    *&highlighted = highlighted;
   }
 
-  [(_UIAlertControllerTVBackgroundView *)self alphaForState:a3];
+  [(_UIAlertControllerTVBackgroundView *)self alphaForState:highlighted];
   return result;
 }
 

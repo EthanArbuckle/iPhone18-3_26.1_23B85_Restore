@@ -1,17 +1,17 @@
 @interface AWDIMessageCloudKitAttachmentDownloadFailed
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAttachmentSize:(BOOL)a3;
-- (void)setHasConnectionType:(BOOL)a3;
-- (void)setHasErrorCode:(BOOL)a3;
-- (void)setHasLinkQuality:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasAttachmentSize:(BOOL)size;
+- (void)setHasConnectionType:(BOOL)type;
+- (void)setHasErrorCode:(BOOL)code;
+- (void)setHasLinkQuality:(BOOL)quality;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDIMessageCloudKitAttachmentDownloadFailed
@@ -26,9 +26,9 @@
   [(AWDIMessageCloudKitAttachmentDownloadFailed *)&v3 dealloc];
 }
 
-- (void)setHasErrorCode:(BOOL)a3
+- (void)setHasErrorCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 8;
   }
@@ -41,9 +41,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasLinkQuality:(BOOL)a3
+- (void)setHasLinkQuality:(BOOL)quality
 {
-  if (a3)
+  if (quality)
   {
     v3 = 16;
   }
@@ -56,9 +56,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasConnectionType:(BOOL)a3
+- (void)setHasConnectionType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -71,9 +71,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasAttachmentSize:(BOOL)a3
+- (void)setHasAttachmentSize:(BOOL)size
 {
-  if (a3)
+  if (size)
   {
     v3 = 2;
   }
@@ -95,34 +95,34 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if (*&self->_has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
   messageGuid = self->_messageGuid;
   if (messageGuid)
   {
-    [v3 setObject:messageGuid forKey:@"messageGuid"];
+    [dictionary setObject:messageGuid forKey:@"messageGuid"];
   }
 
   attachmentGuid = self->_attachmentGuid;
   if (attachmentGuid)
   {
-    [v3 setObject:attachmentGuid forKey:@"attachmentGuid"];
+    [dictionary setObject:attachmentGuid forKey:@"attachmentGuid"];
   }
 
   errorDomain = self->_errorDomain;
   if (errorDomain)
   {
-    [v3 setObject:errorDomain forKey:@"errorDomain"];
+    [dictionary setObject:errorDomain forKey:@"errorDomain"];
   }
 
   has = self->_has;
   if ((has & 8) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_errorCode), @"errorCode"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_errorCode), @"errorCode"}];
     has = self->_has;
     if ((has & 0x10) == 0)
     {
@@ -133,10 +133,10 @@ LABEL_11:
       }
 
 LABEL_17:
-      [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_connectionType), @"connectionType"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_connectionType), @"connectionType"}];
       if ((*&self->_has & 2) == 0)
       {
-        return v3;
+        return dictionary;
       }
 
       goto LABEL_13;
@@ -148,7 +148,7 @@ LABEL_17:
     goto LABEL_11;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_linkQuality), @"linkQuality"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_linkQuality), @"linkQuality"}];
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -159,13 +159,13 @@ LABEL_12:
   if ((has & 2) != 0)
   {
 LABEL_13:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_attachmentSize), @"attachmentSize"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_attachmentSize), @"attachmentSize"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {
@@ -239,34 +239,34 @@ LABEL_17:
   PBDataWriterWriteUint32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 64) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 64) |= 1u;
   }
 
   if (self->_messageGuid)
   {
-    [a3 setMessageGuid:?];
+    [to setMessageGuid:?];
   }
 
   if (self->_attachmentGuid)
   {
-    [a3 setAttachmentGuid:?];
+    [to setAttachmentGuid:?];
   }
 
   if (self->_errorDomain)
   {
-    [a3 setErrorDomain:?];
+    [to setErrorDomain:?];
   }
 
   has = self->_has;
   if ((has & 8) != 0)
   {
-    *(a3 + 8) = self->_errorCode;
-    *(a3 + 64) |= 8u;
+    *(to + 8) = self->_errorCode;
+    *(to + 64) |= 8u;
     has = self->_has;
     if ((has & 0x10) == 0)
     {
@@ -285,8 +285,8 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  *(a3 + 12) = self->_linkQuality;
-  *(a3 + 64) |= 0x10u;
+  *(to + 12) = self->_linkQuality;
+  *(to + 64) |= 0x10u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -300,21 +300,21 @@ LABEL_12:
   }
 
 LABEL_17:
-  *(a3 + 7) = self->_connectionType;
-  *(a3 + 64) |= 4u;
+  *(to + 7) = self->_connectionType;
+  *(to + 64) |= 4u;
   if ((*&self->_has & 2) == 0)
   {
     return;
   }
 
 LABEL_13:
-  *(a3 + 6) = self->_attachmentSize;
-  *(a3 + 64) |= 2u;
+  *(to + 6) = self->_attachmentSize;
+  *(to + 64) |= 2u;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -322,10 +322,10 @@ LABEL_13:
     *(v5 + 64) |= 1u;
   }
 
-  *(v6 + 56) = [(NSString *)self->_messageGuid copyWithZone:a3];
-  *(v6 + 16) = [(NSString *)self->_attachmentGuid copyWithZone:a3];
+  *(v6 + 56) = [(NSString *)self->_messageGuid copyWithZone:zone];
+  *(v6 + 16) = [(NSString *)self->_attachmentGuid copyWithZone:zone];
 
-  *(v6 + 40) = [(NSString *)self->_errorDomain copyWithZone:a3];
+  *(v6 + 40) = [(NSString *)self->_errorDomain copyWithZone:zone];
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -376,21 +376,21 @@ LABEL_7:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
-    v6 = *(a3 + 64);
+    v6 = *(equal + 64);
     if (*&self->_has)
     {
-      if ((*(a3 + 64) & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((*(equal + 64) & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_32;
       }
     }
 
-    else if (*(a3 + 64))
+    else if (*(equal + 64))
     {
 LABEL_32:
       LOBYTE(v5) = 0;
@@ -398,57 +398,57 @@ LABEL_32:
     }
 
     messageGuid = self->_messageGuid;
-    if (!(messageGuid | *(a3 + 7)) || (v5 = [(NSString *)messageGuid isEqual:?]) != 0)
+    if (!(messageGuid | *(equal + 7)) || (v5 = [(NSString *)messageGuid isEqual:?]) != 0)
     {
       attachmentGuid = self->_attachmentGuid;
-      if (!(attachmentGuid | *(a3 + 2)) || (v5 = [(NSString *)attachmentGuid isEqual:?]) != 0)
+      if (!(attachmentGuid | *(equal + 2)) || (v5 = [(NSString *)attachmentGuid isEqual:?]) != 0)
       {
         errorDomain = self->_errorDomain;
-        if (!(errorDomain | *(a3 + 5)) || (v5 = [(NSString *)errorDomain isEqual:?]) != 0)
+        if (!(errorDomain | *(equal + 5)) || (v5 = [(NSString *)errorDomain isEqual:?]) != 0)
         {
           if ((*&self->_has & 8) != 0)
           {
-            if ((*(a3 + 64) & 8) == 0 || self->_errorCode != *(a3 + 8))
+            if ((*(equal + 64) & 8) == 0 || self->_errorCode != *(equal + 8))
             {
               goto LABEL_32;
             }
           }
 
-          else if ((*(a3 + 64) & 8) != 0)
+          else if ((*(equal + 64) & 8) != 0)
           {
             goto LABEL_32;
           }
 
           if ((*&self->_has & 0x10) != 0)
           {
-            if ((*(a3 + 64) & 0x10) == 0 || self->_linkQuality != *(a3 + 12))
+            if ((*(equal + 64) & 0x10) == 0 || self->_linkQuality != *(equal + 12))
             {
               goto LABEL_32;
             }
           }
 
-          else if ((*(a3 + 64) & 0x10) != 0)
+          else if ((*(equal + 64) & 0x10) != 0)
           {
             goto LABEL_32;
           }
 
           if ((*&self->_has & 4) != 0)
           {
-            if ((*(a3 + 64) & 4) == 0 || self->_connectionType != *(a3 + 7))
+            if ((*(equal + 64) & 4) == 0 || self->_connectionType != *(equal + 7))
             {
               goto LABEL_32;
             }
           }
 
-          else if ((*(a3 + 64) & 4) != 0)
+          else if ((*(equal + 64) & 4) != 0)
           {
             goto LABEL_32;
           }
 
-          LOBYTE(v5) = (*(a3 + 64) & 2) == 0;
+          LOBYTE(v5) = (*(equal + 64) & 2) == 0;
           if ((*&self->_has & 2) != 0)
           {
-            if ((*(a3 + 64) & 2) == 0 || self->_attachmentSize != *(a3 + 6))
+            if ((*(equal + 64) & 2) == 0 || self->_attachmentSize != *(equal + 6))
             {
               goto LABEL_32;
             }
@@ -530,35 +530,35 @@ LABEL_8:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 64))
+  if (*(from + 64))
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(a3 + 7))
+  if (*(from + 7))
   {
     [(AWDIMessageCloudKitAttachmentDownloadFailed *)self setMessageGuid:?];
   }
 
-  if (*(a3 + 2))
+  if (*(from + 2))
   {
     [(AWDIMessageCloudKitAttachmentDownloadFailed *)self setAttachmentGuid:?];
   }
 
-  if (*(a3 + 5))
+  if (*(from + 5))
   {
     [(AWDIMessageCloudKitAttachmentDownloadFailed *)self setErrorDomain:?];
   }
 
-  v5 = *(a3 + 64);
+  v5 = *(from + 64);
   if ((v5 & 8) != 0)
   {
-    self->_errorCode = *(a3 + 8);
+    self->_errorCode = *(from + 8);
     *&self->_has |= 8u;
-    v5 = *(a3 + 64);
+    v5 = *(from + 64);
     if ((v5 & 0x10) == 0)
     {
 LABEL_11:
@@ -571,14 +571,14 @@ LABEL_11:
     }
   }
 
-  else if ((*(a3 + 64) & 0x10) == 0)
+  else if ((*(from + 64) & 0x10) == 0)
   {
     goto LABEL_11;
   }
 
-  self->_linkQuality = *(a3 + 12);
+  self->_linkQuality = *(from + 12);
   *&self->_has |= 0x10u;
-  v5 = *(a3 + 64);
+  v5 = *(from + 64);
   if ((v5 & 4) == 0)
   {
 LABEL_12:
@@ -591,15 +591,15 @@ LABEL_12:
   }
 
 LABEL_17:
-  self->_connectionType = *(a3 + 7);
+  self->_connectionType = *(from + 7);
   *&self->_has |= 4u;
-  if ((*(a3 + 64) & 2) == 0)
+  if ((*(from + 64) & 2) == 0)
   {
     return;
   }
 
 LABEL_13:
-  self->_attachmentSize = *(a3 + 6);
+  self->_attachmentSize = *(from + 6);
   *&self->_has |= 2u;
 }
 

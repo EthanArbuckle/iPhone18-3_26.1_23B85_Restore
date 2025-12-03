@@ -1,17 +1,17 @@
 @interface HUSafetyAndSecuritySettingsNotificationsViewController
-- (HUSafetyAndSecuritySettingsNotificationsViewController)initWithHome:(id)a3;
-- (id)buildItemModuleControllerForModule:(id)a3;
+- (HUSafetyAndSecuritySettingsNotificationsViewController)initWithHome:(id)home;
+- (id)buildItemModuleControllerForModule:(id)module;
 @end
 
 @implementation HUSafetyAndSecuritySettingsNotificationsViewController
 
-- (HUSafetyAndSecuritySettingsNotificationsViewController)initWithHome:(id)a3
+- (HUSafetyAndSecuritySettingsNotificationsViewController)initWithHome:(id)home
 {
-  v5 = a3;
-  if (!v5)
+  homeCopy = home;
+  if (!homeCopy)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"HUSafetyAndSecuritySettingsNotificationsViewController.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"home != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUSafetyAndSecuritySettingsNotificationsViewController.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"home != nil"}];
   }
 
   v6 = [objc_alloc(MEMORY[0x277D14B08]) initWithDelegate:self];
@@ -19,7 +19,7 @@
   v13[1] = 3221225472;
   v13[2] = __71__HUSafetyAndSecuritySettingsNotificationsViewController_initWithHome___block_invoke;
   v13[3] = &unk_277DB7478;
-  v7 = v5;
+  v7 = homeCopy;
   v14 = v7;
   [v6 setHomeCreator:v13];
   [v6 setItemModuleCreator:&__block_literal_global_87];
@@ -48,21 +48,21 @@ id __71__HUSafetyAndSecuritySettingsNotificationsViewController_initWithHome___b
   return v7;
 }
 
-- (id)buildItemModuleControllerForModule:(id)a3
+- (id)buildItemModuleControllerForModule:(id)module
 {
-  v4 = a3;
+  moduleCopy = module;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    NSLog(&cfstr_UnexpectedModu.isa, v4);
+    NSLog(&cfstr_UnexpectedModu.isa, moduleCopy);
   }
 
-  v5 = [(HUItemModuleController *)[HUSafetyAndSecuritySettingsNotificationsItemModuleController alloc] initWithModule:v4];
+  v5 = [(HUItemModuleController *)[HUSafetyAndSecuritySettingsNotificationsItemModuleController alloc] initWithModule:moduleCopy];
   [(HUSafetyAndSecuritySettingsNotificationsViewController *)self setModuleController:v5];
 
-  v6 = [(HUSafetyAndSecuritySettingsNotificationsViewController *)self moduleController];
+  moduleController = [(HUSafetyAndSecuritySettingsNotificationsViewController *)self moduleController];
 
-  return v6;
+  return moduleController;
 }
 
 @end

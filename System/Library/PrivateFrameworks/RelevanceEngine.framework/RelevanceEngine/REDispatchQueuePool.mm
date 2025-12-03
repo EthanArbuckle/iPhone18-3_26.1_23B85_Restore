@@ -1,13 +1,13 @@
 @interface REDispatchQueuePool
-- (REDispatchQueuePool)initWithQueueCount:(unint64_t)a3 prefix:(id)a4;
+- (REDispatchQueuePool)initWithQueueCount:(unint64_t)count prefix:(id)prefix;
 - (id)nextAvailableQueue;
 @end
 
 @implementation REDispatchQueuePool
 
-- (REDispatchQueuePool)initWithQueueCount:(unint64_t)a3 prefix:(id)a4
+- (REDispatchQueuePool)initWithQueueCount:(unint64_t)count prefix:(id)prefix
 {
-  v6 = a4;
+  prefixCopy = prefix;
   v18.receiver = self;
   v18.super_class = REDispatchQueuePool;
   v7 = [(REDispatchQueuePool *)&v18 init];
@@ -15,22 +15,22 @@
   if (v7)
   {
     v7->_currentIndex = 0;
-    v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:a3];
-    if (a3)
+    v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:count];
+    if (count)
     {
       v10 = 0;
       do
       {
-        v11 = [v6 stringByAppendingFormat:@".%ld", v10];
-        v12 = [v11 UTF8String];
+        v11 = [prefixCopy stringByAppendingFormat:@".%ld", v10];
+        uTF8String = [v11 UTF8String];
         v13 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-        v14 = dispatch_queue_create(v12, v13);
+        v14 = dispatch_queue_create(uTF8String, v13);
         [v9 addObject:v14];
 
         ++v10;
       }
 
-      while (a3 != v10);
+      while (count != v10);
     }
 
     v15 = [v9 copy];

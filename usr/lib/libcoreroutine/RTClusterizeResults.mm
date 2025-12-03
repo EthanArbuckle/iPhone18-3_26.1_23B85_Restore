@@ -1,22 +1,22 @@
 @interface RTClusterizeResults
-- (RTClusterizeResults)initWithClusters:(id)a3 objectIDs:(id)a4;
+- (RTClusterizeResults)initWithClusters:(id)clusters objectIDs:(id)ds;
 @end
 
 @implementation RTClusterizeResults
 
-- (RTClusterizeResults)initWithClusters:(id)a3 objectIDs:(id)a4
+- (RTClusterizeResults)initWithClusters:(id)clusters objectIDs:(id)ds
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  clustersCopy = clusters;
+  dsCopy = ds;
+  v9 = dsCopy;
+  if (!clustersCopy)
   {
     v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
 LABEL_9:
 
-      v12 = 0;
+      selfCopy = 0;
       goto LABEL_10;
     }
 
@@ -27,7 +27,7 @@ LABEL_12:
     goto LABEL_9;
   }
 
-  if (!v8)
+  if (!dsCopy)
   {
     v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -46,15 +46,15 @@ LABEL_12:
   p_isa = &v10->super.isa;
   if (v10)
   {
-    objc_storeStrong(&v10->_clusters, a3);
-    objc_storeStrong(p_isa + 2, a4);
+    objc_storeStrong(&v10->_clusters, clusters);
+    objc_storeStrong(p_isa + 2, ds);
   }
 
   self = p_isa;
-  v12 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v12;
+  return selfCopy;
 }
 
 @end

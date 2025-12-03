@@ -2,40 +2,40 @@
 - (BOOL)isJumpAnimationInProgress;
 - (CGAffineTransform)wrapperViewTransform;
 - (CGSize)_widgetPadding;
-- (SBHAddWidgetDetailsSheetPageViewController)initWithWidgetWrapperViewController:(id)a3;
+- (SBHAddWidgetDetailsSheetPageViewController)initWithWidgetWrapperViewController:(id)controller;
 - (SBHAddWidgetDetailsSheetPageViewControllerDelegate)delegate;
 - (SBHPadAddWidgetSheetMetrics)addWidgetSheetMetrics;
 - (SBHWidgetDragHandling)widgetDragHandler;
-- (id)backgroundViewMatchingMaterialBeneathWrapperViewController:(id)a3;
+- (id)backgroundViewMatchingMaterialBeneathWrapperViewController:(id)controller;
 - (void)_createConstraints;
-- (void)_createSizeConstraintsForWrapperView:(id)a3;
+- (void)_createSizeConstraintsForWrapperView:(id)view;
 - (void)_createViews;
-- (void)_pauseLayer:(id)a3;
-- (void)_resumeLayer:(id)a3;
+- (void)_pauseLayer:(id)layer;
+- (void)_resumeLayer:(id)layer;
 - (void)_updateWidgetScale;
-- (void)configureBackgroundView:(id)a3 matchingMaterialBeneathWrapperViewController:(id)a4;
+- (void)configureBackgroundView:(id)view matchingMaterialBeneathWrapperViewController:(id)controller;
 - (void)loadView;
-- (void)setAddWidgetSheetMetrics:(SBHPadAddWidgetSheetMetrics *)a3;
-- (void)setContentVisibility:(unint64_t)a3;
-- (void)setJumpAnimationInProgress:(BOOL)a3;
-- (void)setScale:(double)a3;
-- (void)updateParallaxEffectInReferenceView:(id)a3;
+- (void)setAddWidgetSheetMetrics:(SBHPadAddWidgetSheetMetrics *)metrics;
+- (void)setContentVisibility:(unint64_t)visibility;
+- (void)setJumpAnimationInProgress:(BOOL)progress;
+- (void)setScale:(double)scale;
+- (void)updateParallaxEffectInReferenceView:(id)view;
 - (void)viewDidLayoutSubviews;
 @end
 
 @implementation SBHAddWidgetDetailsSheetPageViewController
 
-- (SBHAddWidgetDetailsSheetPageViewController)initWithWidgetWrapperViewController:(id)a3
+- (SBHAddWidgetDetailsSheetPageViewController)initWithWidgetWrapperViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = SBHAddWidgetDetailsSheetPageViewController;
   v6 = [(SBHAddWidgetDetailsSheetPageViewController *)&v9 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_widgetWrapperViewController, a3);
-    [v5 setDelegate:v7];
+    objc_storeStrong(&v6->_widgetWrapperViewController, controller);
+    [controllerCopy setDelegate:v7];
   }
 
   return v7;
@@ -52,15 +52,15 @@
 
 - (void)_createViews
 {
-  v3 = [(SBHAddWidgetDetailsSheetPageViewController *)self view];
+  view = [(SBHAddWidgetDetailsSheetPageViewController *)self view];
   widgetWrapperViewController = self->_widgetWrapperViewController;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __58__SBHAddWidgetDetailsSheetPageViewController__createViews__block_invoke;
   v6[3] = &unk_1E8092288;
   v6[4] = self;
-  v7 = v3;
-  v5 = v3;
+  v7 = view;
+  v5 = view;
   [(SBHAddWidgetDetailsSheetPageViewController *)self bs_addChildViewController:widgetWrapperViewController animated:0 transitionBlock:v6];
 }
 
@@ -80,48 +80,48 @@ void __58__SBHAddWidgetDetailsSheetPageViewController__createViews__block_invoke
 - (void)_createConstraints
 {
   v28[6] = *MEMORY[0x1E69E9840];
-  v3 = [(SBHAddWidgetDetailsSheetPageViewController *)self view];
-  v4 = [(SBHWidgetWrapperViewController *)self->_widgetWrapperViewController view];
+  view = [(SBHAddWidgetDetailsSheetPageViewController *)self view];
+  view2 = [(SBHWidgetWrapperViewController *)self->_widgetWrapperViewController view];
   v5 = objc_alloc_init(MEMORY[0x1E69DCC20]);
   layoutGuide = self->_layoutGuide;
   self->_layoutGuide = v5;
 
-  [v3 addLayoutGuide:self->_layoutGuide];
+  [view addLayoutGuide:self->_layoutGuide];
   v20 = MEMORY[0x1E696ACD8];
-  v27 = [(UILayoutGuide *)self->_layoutGuide topAnchor];
-  v26 = [v3 topAnchor];
-  v25 = [v27 constraintEqualToAnchor:v26];
+  topAnchor = [(UILayoutGuide *)self->_layoutGuide topAnchor];
+  topAnchor2 = [view topAnchor];
+  v25 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v28[0] = v25;
-  v24 = [(UILayoutGuide *)self->_layoutGuide bottomAnchor];
-  v23 = [v3 bottomAnchor];
-  v22 = [v24 constraintEqualToAnchor:v23 constant:0.0];
+  bottomAnchor = [(UILayoutGuide *)self->_layoutGuide bottomAnchor];
+  bottomAnchor2 = [view bottomAnchor];
+  v22 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:0.0];
   v28[1] = v22;
-  v21 = [(UILayoutGuide *)self->_layoutGuide leadingAnchor];
-  v19 = [v3 leadingAnchor];
-  v18 = [v21 constraintEqualToAnchor:v19];
+  leadingAnchor = [(UILayoutGuide *)self->_layoutGuide leadingAnchor];
+  leadingAnchor2 = [view leadingAnchor];
+  v18 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v28[2] = v18;
-  v16 = [(UILayoutGuide *)self->_layoutGuide trailingAnchor];
-  v7 = [v3 trailingAnchor];
-  v8 = [v16 constraintEqualToAnchor:v7 constant:0.0];
+  trailingAnchor = [(UILayoutGuide *)self->_layoutGuide trailingAnchor];
+  trailingAnchor2 = [view trailingAnchor];
+  v8 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:0.0];
   v28[3] = v8;
-  v17 = v4;
-  v9 = [v4 centerXAnchor];
-  v10 = [v3 centerXAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  v17 = view2;
+  centerXAnchor = [view2 centerXAnchor];
+  centerXAnchor2 = [view centerXAnchor];
+  v11 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v28[4] = v11;
-  v12 = [v4 centerYAnchor];
-  v13 = [(UILayoutGuide *)self->_layoutGuide centerYAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13];
+  centerYAnchor = [view2 centerYAnchor];
+  centerYAnchor2 = [(UILayoutGuide *)self->_layoutGuide centerYAnchor];
+  v14 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v28[5] = v14;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:6];
   [v20 activateConstraints:v15];
 }
 
-- (void)setContentVisibility:(unint64_t)a3
+- (void)setContentVisibility:(unint64_t)visibility
 {
-  if (self->_contentVisibility != a3)
+  if (self->_contentVisibility != visibility)
   {
-    self->_contentVisibility = a3;
+    self->_contentVisibility = visibility;
     [(SBHWidgetWrapperViewController *)self->_widgetWrapperViewController setContentVisibility:?];
   }
 }
@@ -135,62 +135,62 @@ void __58__SBHAddWidgetDetailsSheetPageViewController__createViews__block_invoke
   [(SBHAddWidgetDetailsSheetPageViewController *)self updateParallaxEffectInReferenceView:self->_referenceView];
 }
 
-- (void)setJumpAnimationInProgress:(BOOL)a3
+- (void)setJumpAnimationInProgress:(BOOL)progress
 {
-  v3 = a3;
-  v6 = [(SBHWidgetWrapperViewController *)self->_widgetWrapperViewController view];
-  v5 = [v6 layer];
-  if (v3)
+  progressCopy = progress;
+  view = [(SBHWidgetWrapperViewController *)self->_widgetWrapperViewController view];
+  layer = [view layer];
+  if (progressCopy)
   {
-    [(SBHAddWidgetDetailsSheetPageViewController *)self _pauseLayer:v5];
+    [(SBHAddWidgetDetailsSheetPageViewController *)self _pauseLayer:layer];
   }
 
   else
   {
-    [(SBHAddWidgetDetailsSheetPageViewController *)self _resumeLayer:v5];
+    [(SBHAddWidgetDetailsSheetPageViewController *)self _resumeLayer:layer];
   }
 
-  [v6 setHidden:v3];
+  [view setHidden:progressCopy];
 }
 
 - (BOOL)isJumpAnimationInProgress
 {
-  v2 = [(SBHAddWidgetDetailsSheetPageViewController *)self widgetWrapperViewController];
-  v3 = [v2 view];
-  v4 = [v3 isHidden];
+  widgetWrapperViewController = [(SBHAddWidgetDetailsSheetPageViewController *)self widgetWrapperViewController];
+  view = [widgetWrapperViewController view];
+  isHidden = [view isHidden];
 
-  return v4;
+  return isHidden;
 }
 
-- (void)updateParallaxEffectInReferenceView:(id)a3
+- (void)updateParallaxEffectInReferenceView:(id)view
 {
-  v5 = a3;
-  objc_storeStrong(&self->_referenceView, a3);
+  viewCopy = view;
+  objc_storeStrong(&self->_referenceView, view);
   if (self->_referenceView)
   {
-    v6 = [(SBHAddWidgetDetailsSheetPageViewController *)self view];
-    v7 = [(SBHWidgetWrapperViewController *)self->_widgetWrapperViewController view];
-    [v6 bounds];
-    [v5 convertRect:v6 fromView:?];
+    view = [(SBHAddWidgetDetailsSheetPageViewController *)self view];
+    view2 = [(SBHWidgetWrapperViewController *)self->_widgetWrapperViewController view];
+    [view bounds];
+    [viewCopy convertRect:view fromView:?];
     v10 = (v8 + v9 + v8 + v9) / (v9 + v9) + -1.0;
-    v11 = [(SBHAddWidgetDetailsSheetPageViewController *)self addWidgetSheetStyle];
+    addWidgetSheetStyle = [(SBHAddWidgetDetailsSheetPageViewController *)self addWidgetSheetStyle];
     scale = self->_scale;
-    if (v11 == 1)
+    if (addWidgetSheetStyle == 1)
     {
       scale = fmin(fmax(scale * (1.0 - fabs(v10)), 0.00000001), 1.0);
     }
 
     memset(&v22, 0, sizeof(v22));
     CGAffineTransformMakeScale(&v22, scale, scale);
-    [v7 bounds];
+    [view2 bounds];
     v21 = v22;
     v24 = CGRectApplyAffineTransform(v23, &v21);
     width = v24.size.width;
-    [v7 center];
+    [view2 center];
     v15 = v14 + width * -0.5;
     [(SBHAddWidgetDetailsSheetPageViewController *)self _widgetPadding];
     v17 = width - v16;
-    if (v11 != 1)
+    if (addWidgetSheetStyle != 1)
     {
       v17 = 10.0;
     }
@@ -202,18 +202,18 @@ void __58__SBHAddWidgetDetailsSheetPageViewController__createViews__block_invoke
     v18 = v22;
     CGAffineTransformConcat(&v20, &t1, &v18);
     t1 = v20;
-    [v7 setTransform:&t1];
+    [view2 setTransform:&t1];
   }
 }
 
 - (CGAffineTransform)wrapperViewTransform
 {
-  v4 = [(SBHWidgetWrapperViewController *)self->_widgetWrapperViewController view];
-  if (v4)
+  view = [(SBHWidgetWrapperViewController *)self->_widgetWrapperViewController view];
+  if (view)
   {
-    v6 = v4;
-    [v4 transform];
-    v4 = v6;
+    v6 = view;
+    [view transform];
+    view = v6;
   }
 
   else
@@ -226,11 +226,11 @@ void __58__SBHAddWidgetDetailsSheetPageViewController__createViews__block_invoke
   return result;
 }
 
-- (void)setScale:(double)a3
+- (void)setScale:(double)scale
 {
-  if (self->_scale != a3)
+  if (self->_scale != scale)
   {
-    self->_scale = a3;
+    self->_scale = scale;
     [(SBHAddWidgetDetailsSheetPageViewController *)self updateParallaxEffectInReferenceView:self->_referenceView];
   }
 }
@@ -267,17 +267,17 @@ void __58__SBHAddWidgetDetailsSheetPageViewController__createViews__block_invoke
     v3 = 0.9;
   }
 
-  v16 = [(SBHWidgetWrapperViewController *)self->_widgetWrapperViewController view];
+  view = [(SBHWidgetWrapperViewController *)self->_widgetWrapperViewController view];
   [(SBHAddWidgetDetailsSheetPageViewController *)self _widgetPadding];
   v5 = v4;
   v7 = v6;
   [(UILayoutGuide *)self->_layoutGuide layoutFrame];
   v9 = v8 + v7 * -2.0;
-  [v16 bounds];
+  [view bounds];
   v11 = v9 / v10;
   [(UILayoutGuide *)self->_layoutGuide layoutFrame];
   v13 = v12 + v5 * -2.0;
-  [v16 bounds];
+  [view bounds];
   v15 = v13 / v14;
   if (v11 < v13 / v14)
   {
@@ -292,36 +292,36 @@ void __58__SBHAddWidgetDetailsSheetPageViewController__createViews__block_invoke
   [(SBHAddWidgetDetailsSheetPageViewController *)self setScale:v15];
 }
 
-- (void)_createSizeConstraintsForWrapperView:(id)a3
+- (void)_createSizeConstraintsForWrapperView:(id)view
 {
   v27[4] = *MEMORY[0x1E69E9840];
   widgetWrapperViewController = self->_widgetWrapperViewController;
-  v5 = a3;
-  v6 = [(SBHWidgetWrapperViewController *)widgetWrapperViewController listLayoutProvider];
-  v7 = [v6 layoutForIconLocation:@"SBIconLocationRoot"];
+  viewCopy = view;
+  listLayoutProvider = [(SBHWidgetWrapperViewController *)widgetWrapperViewController listLayoutProvider];
+  v7 = [listLayoutProvider layoutForIconLocation:@"SBIconLocationRoot"];
 
   v8 = SBHIconGridSizeClassForCHSWidgetFamily([(SBHWidgetWrapperViewController *)self->_widgetWrapperViewController selectedSizeClass]);
   v9 = SBHIconListLayoutIconImageInfoForGridSizeClass(v7, v8);
   v11 = v10;
   v12 = SBHIconListLayoutIconImageInfoForGridSizeClass(v7, @"SBHIconGridSizeClassLarge");
   v14 = v13;
-  v15 = [v5 widthAnchor];
-  v16 = [v15 constraintEqualToConstant:v12];
+  widthAnchor = [viewCopy widthAnchor];
+  v16 = [widthAnchor constraintEqualToConstant:v12];
 
   LODWORD(v17) = 1132068864;
   [v16 setPriority:v17];
-  v18 = [v5 heightAnchor];
-  v19 = [v18 constraintEqualToConstant:v14];
+  heightAnchor = [viewCopy heightAnchor];
+  v19 = [heightAnchor constraintEqualToConstant:v14];
 
   LODWORD(v20) = 1132068864;
   [v19 setPriority:v20];
   v21 = MEMORY[0x1E696ACD8];
-  v22 = [v5 widthAnchor];
-  v23 = [v22 constraintGreaterThanOrEqualToConstant:v9];
+  widthAnchor2 = [viewCopy widthAnchor];
+  v23 = [widthAnchor2 constraintGreaterThanOrEqualToConstant:v9];
   v27[0] = v23;
-  v24 = [v5 heightAnchor];
+  heightAnchor2 = [viewCopy heightAnchor];
 
-  v25 = [v24 constraintGreaterThanOrEqualToConstant:v11];
+  v25 = [heightAnchor2 constraintGreaterThanOrEqualToConstant:v11];
   v27[1] = v25;
   v27[2] = v16;
   v27[3] = v19;
@@ -329,49 +329,49 @@ void __58__SBHAddWidgetDetailsSheetPageViewController__createViews__block_invoke
   [v21 activateConstraints:v26];
 }
 
-- (void)_pauseLayer:(id)a3
+- (void)_pauseLayer:(id)layer
 {
-  v5 = a3;
-  [v5 convertTime:0 fromLayer:CACurrentMediaTime()];
+  layerCopy = layer;
+  [layerCopy convertTime:0 fromLayer:CACurrentMediaTime()];
   v4 = v3;
-  [v5 setSpeed:0.0];
-  [v5 setTimeOffset:v4];
+  [layerCopy setSpeed:0.0];
+  [layerCopy setTimeOffset:v4];
 }
 
-- (void)_resumeLayer:(id)a3
+- (void)_resumeLayer:(id)layer
 {
-  v6 = a3;
-  [v6 timeOffset];
+  layerCopy = layer;
+  [layerCopy timeOffset];
   v4 = v3;
   LODWORD(v3) = 1.0;
-  [v6 setSpeed:v3];
-  [v6 setTimeOffset:0.0];
-  [v6 setBeginTime:0.0];
-  [v6 convertTime:0 fromLayer:CACurrentMediaTime()];
-  [v6 setBeginTime:v5 - v4];
+  [layerCopy setSpeed:v3];
+  [layerCopy setTimeOffset:0.0];
+  [layerCopy setBeginTime:0.0];
+  [layerCopy convertTime:0 fromLayer:CACurrentMediaTime()];
+  [layerCopy setBeginTime:v5 - v4];
 }
 
 - (SBHWidgetDragHandling)widgetDragHandler
 {
-  v2 = [(SBHAddWidgetDetailsSheetPageViewController *)self delegate];
-  v3 = [v2 widgetDragHandler];
+  delegate = [(SBHAddWidgetDetailsSheetPageViewController *)self delegate];
+  widgetDragHandler = [delegate widgetDragHandler];
 
-  return v3;
+  return widgetDragHandler;
 }
 
-- (id)backgroundViewMatchingMaterialBeneathWrapperViewController:(id)a3
+- (id)backgroundViewMatchingMaterialBeneathWrapperViewController:(id)controller
 {
-  v4 = [(SBHAddWidgetDetailsSheetPageViewController *)self delegate];
-  v5 = [v4 backgroundViewMatchingMaterialBeneathPageViewController:self];
+  delegate = [(SBHAddWidgetDetailsSheetPageViewController *)self delegate];
+  v5 = [delegate backgroundViewMatchingMaterialBeneathPageViewController:self];
 
   return v5;
 }
 
-- (void)configureBackgroundView:(id)a3 matchingMaterialBeneathWrapperViewController:(id)a4
+- (void)configureBackgroundView:(id)view matchingMaterialBeneathWrapperViewController:(id)controller
 {
-  v5 = a3;
-  v6 = [(SBHAddWidgetDetailsSheetPageViewController *)self delegate];
-  [v6 configureBackgroundView:v5 matchingMaterialBeneathPageViewController:self];
+  viewCopy = view;
+  delegate = [(SBHAddWidgetDetailsSheetPageViewController *)self delegate];
+  [delegate configureBackgroundView:viewCopy matchingMaterialBeneathPageViewController:self];
 }
 
 - (SBHAddWidgetDetailsSheetPageViewControllerDelegate)delegate
@@ -400,22 +400,22 @@ void __58__SBHAddWidgetDetailsSheetPageViewController__createViews__block_invoke
   return self;
 }
 
-- (void)setAddWidgetSheetMetrics:(SBHPadAddWidgetSheetMetrics *)a3
+- (void)setAddWidgetSheetMetrics:(SBHPadAddWidgetSheetMetrics *)metrics
 {
-  v3 = *&a3->sidebarWidth;
-  *&self->_addWidgetSheetMetrics.sheetMargin = *&a3->sheetMargin;
+  v3 = *&metrics->sidebarWidth;
+  *&self->_addWidgetSheetMetrics.sheetMargin = *&metrics->sheetMargin;
   *&self->_addWidgetSheetMetrics.sidebarWidth = v3;
-  detailWidgetPadding = a3->detailWidgetPadding;
-  v6 = *&a3->trailingPadding;
-  v5 = *&a3->widgetScaleFactor;
-  *&self->_addWidgetSheetMetrics.scaledWidgetSize.height = *&a3->scaledWidgetSize.height;
+  detailWidgetPadding = metrics->detailWidgetPadding;
+  v6 = *&metrics->trailingPadding;
+  v5 = *&metrics->widgetScaleFactor;
+  *&self->_addWidgetSheetMetrics.scaledWidgetSize.height = *&metrics->scaledWidgetSize.height;
   self->_addWidgetSheetMetrics.detailWidgetPadding = detailWidgetPadding;
   *&self->_addWidgetSheetMetrics.trailingPadding = v6;
   *&self->_addWidgetSheetMetrics.widgetScaleFactor = v5;
-  v8 = *&a3->detailPageControlTopSpacing;
-  v7 = *&a3->sidebarPadding.leading;
-  v9 = *&a3->detailAddButtonTopSpacing;
-  self->_addWidgetSheetMetrics.sidebarPadding.trailing = a3->sidebarPadding.trailing;
+  v8 = *&metrics->detailPageControlTopSpacing;
+  v7 = *&metrics->sidebarPadding.leading;
+  v9 = *&metrics->detailAddButtonTopSpacing;
+  self->_addWidgetSheetMetrics.sidebarPadding.trailing = metrics->sidebarPadding.trailing;
   *&self->_addWidgetSheetMetrics.detailPageControlTopSpacing = v8;
   *&self->_addWidgetSheetMetrics.sidebarPadding.leading = v7;
   *&self->_addWidgetSheetMetrics.detailAddButtonTopSpacing = v9;

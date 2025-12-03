@@ -1,31 +1,31 @@
 @interface ASTOnDeviceEyeTrackingSettingsController
 - (ASTOnDeviceEyeTrackingSettingsController)init;
-- (double)valueForSpecifier:(id)a3;
-- (id)_calibrationStrategyName:(id)a3;
+- (double)valueForSpecifier:(id)specifier;
+- (id)_calibrationStrategyName:(id)name;
 - (id)createGazeTrackingIntroductionGroupSpecifier;
-- (id)dwellControlEnabled:(id)a3;
-- (id)onDeviceEyeTrackingEnabled:(id)a3;
-- (id)shouldShowFaceGuidance:(id)a3;
-- (id)shouldShowUncalibratedPoints:(id)a3;
-- (id)shouldUseGaussianBlur:(id)a3;
-- (id)shouldUseMotionFilter:(id)a3;
-- (id)shouldUseWeightedAverages:(id)a3;
+- (id)dwellControlEnabled:(id)enabled;
+- (id)onDeviceEyeTrackingEnabled:(id)enabled;
+- (id)shouldShowFaceGuidance:(id)guidance;
+- (id)shouldShowUncalibratedPoints:(id)points;
+- (id)shouldUseGaussianBlur:(id)blur;
+- (id)shouldUseMotionFilter:(id)filter;
+- (id)shouldUseWeightedAverages:(id)averages;
 - (id)specifiers;
-- (id)stringValueForSpecifier:(id)a3;
-- (void)_configureDwellControlFooter:(id)a3;
-- (void)_resetButtonTapped:(id)a3;
+- (id)stringValueForSpecifier:(id)specifier;
+- (void)_configureDwellControlFooter:(id)footer;
+- (void)_resetButtonTapped:(id)tapped;
 - (void)_updateOnDeviceEyeTrackingSwitchForOneness;
 - (void)_updateSpecifiersForAutoHide;
 - (void)dealloc;
-- (void)setDwellControlEnabled:(id)a3 specifier:(id)a4;
-- (void)setOnDeviceEyeTrackingEnabled:(id)a3 specifier:(id)a4;
-- (void)setShouldShowFaceGuidance:(id)a3 specifier:(id)a4;
-- (void)setShouldShowUncalibratedPoints:(id)a3 specifier:(id)a4;
-- (void)setShouldUseGaussianBlur:(id)a3 specifier:(id)a4;
-- (void)setShouldUseMotionFilter:(id)a3 specifier:(id)a4;
-- (void)setShouldUseWeightedAverages:(id)a3 specifier:(id)a4;
+- (void)setDwellControlEnabled:(id)enabled specifier:(id)specifier;
+- (void)setOnDeviceEyeTrackingEnabled:(id)enabled specifier:(id)specifier;
+- (void)setShouldShowFaceGuidance:(id)guidance specifier:(id)specifier;
+- (void)setShouldShowUncalibratedPoints:(id)points specifier:(id)specifier;
+- (void)setShouldUseGaussianBlur:(id)blur specifier:(id)specifier;
+- (void)setShouldUseMotionFilter:(id)filter specifier:(id)specifier;
+- (void)setShouldUseWeightedAverages:(id)averages specifier:(id)specifier;
 - (void)showMoreDwellControlOptions;
-- (void)specifier:(id)a3 setValue:(double)a4;
+- (void)specifier:(id)specifier setValue:(double)value;
 - (void)viewDidLoad;
 - (void)willBecomeActive;
 @end
@@ -207,10 +207,10 @@ void __48__ASTOnDeviceEyeTrackingSettingsController_init__block_invoke_9(uint64_
   v6.receiver = self;
   v6.super_class = ASTOnDeviceEyeTrackingSettingsController;
   [(ASTOnDeviceEyeTrackingSettingsController *)&v6 viewDidLoad];
-  v3 = [(ASTOnDeviceEyeTrackingSettingsController *)self table];
+  table = [(ASTOnDeviceEyeTrackingSettingsController *)self table];
   v4 = objc_opt_class();
   v5 = +[AXUISettingsEditableTableCellWithStepper cellReuseIdentifier];
-  [v3 registerClass:v4 forCellReuseIdentifier:v5];
+  [table registerClass:v4 forCellReuseIdentifier:v5];
 }
 
 - (void)willBecomeActive
@@ -220,9 +220,9 @@ void __48__ASTOnDeviceEyeTrackingSettingsController_init__block_invoke_9(uint64_
   [(ASTOnDeviceEyeTrackingSettingsController *)&v5 willBecomeActive];
   if ([(ASTOnDeviceEyeTrackingSettingsController *)self showingAutoHideSettings])
   {
-    v3 = [(ASTOnDeviceEyeTrackingSettingsController *)self eyeTrackingSettingsHelper];
-    v4 = [v3 autoHideTimeoutAndSliderContiguousSpecs];
-    [(ASTOnDeviceEyeTrackingSettingsController *)self removeContiguousSpecifiers:v4 animated:0];
+    eyeTrackingSettingsHelper = [(ASTOnDeviceEyeTrackingSettingsController *)self eyeTrackingSettingsHelper];
+    autoHideTimeoutAndSliderContiguousSpecs = [eyeTrackingSettingsHelper autoHideTimeoutAndSliderContiguousSpecs];
+    [(ASTOnDeviceEyeTrackingSettingsController *)self removeContiguousSpecifiers:autoHideTimeoutAndSliderContiguousSpecs animated:0];
 
     [(ASTOnDeviceEyeTrackingSettingsController *)self setShowingAutoHideSettings:0];
     [(ASTOnDeviceEyeTrackingSettingsController *)self _updateSpecifiersForAutoHide];
@@ -231,26 +231,26 @@ void __48__ASTOnDeviceEyeTrackingSettingsController_init__block_invoke_9(uint64_
 
 - (id)specifiers
 {
-  v3 = [(ASTOnDeviceEyeTrackingSettingsController *)self eyeTracker];
+  eyeTracker = [(ASTOnDeviceEyeTrackingSettingsController *)self eyeTracker];
 
-  if (!v3)
+  if (!eyeTracker)
   {
     v96 = 0;
     objc_opt_class();
-    v4 = [*&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSViewController__specifier] userInfo];
+    userInfo = [*&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSViewController__specifier] userInfo];
     v5 = __UIAccessibilityCastAsClass();
 
     v6 = [v5 objectForKeyedSubscript:@"AX_ON_DEVICE_EYE_TRACKER_KEY"];
     [(ASTOnDeviceEyeTrackingSettingsController *)self setEyeTracker:v6];
   }
 
-  v7 = [(ASTOnDeviceEyeTrackingSettingsController *)self eyeTrackingSettingsHelper];
+  eyeTrackingSettingsHelper = [(ASTOnDeviceEyeTrackingSettingsController *)self eyeTrackingSettingsHelper];
 
-  if (!v7)
+  if (!eyeTrackingSettingsHelper)
   {
     v8 = [ASTOnDeviceEyeTrackingSettingsHelper alloc];
-    v9 = [(ASTOnDeviceEyeTrackingSettingsController *)self eyeTracker];
-    v10 = [(ASTOnDeviceEyeTrackingSettingsHelper *)v8 initWithEyeTracker:v9];
+    eyeTracker2 = [(ASTOnDeviceEyeTrackingSettingsController *)self eyeTracker];
+    v10 = [(ASTOnDeviceEyeTrackingSettingsHelper *)v8 initWithEyeTracker:eyeTracker2];
     [(ASTOnDeviceEyeTrackingSettingsController *)self setEyeTrackingSettingsHelper:v10];
   }
 
@@ -265,11 +265,11 @@ void __48__ASTOnDeviceEyeTrackingSettingsController_init__block_invoke_9(uint64_
     v15 = NSStringFromClass(v14);
     [v13 setObject:v15 forKeyedSubscript:PSFooterCellClassGroupKey];
 
-    v87 = self;
+    selfCopy = self;
     v16 = [NSBundle bundleForClass:objc_opt_class()];
-    v17 = [v16 bundlePath];
+    bundlePath = [v16 bundlePath];
     v91 = v13;
-    [v13 setObject:v17 forKeyedSubscript:@"bundlePath"];
+    [v13 setObject:bundlePath forKeyedSubscript:@"bundlePath"];
 
     v18 = +[NSLocale currentLocale];
     v19 = [v18 objectForKey:NSLocaleMeasurementSystem];
@@ -395,12 +395,12 @@ void __48__ASTOnDeviceEyeTrackingSettingsController_init__block_invoke_9(uint64_
 
             v46 = *(*(&v92 + 1) + 8 * i);
             v97[0] = @"headerLabel";
-            v47 = [v46 itemTitle];
-            v98[0] = v47;
+            itemTitle = [v46 itemTitle];
+            v98[0] = itemTitle;
             v97[1] = @"contentLabel";
-            v48 = [v46 itemDescription];
+            itemDescription = [v46 itemDescription];
             v97[2] = @"alreadyLocalized";
-            v98[1] = v48;
+            v98[1] = itemDescription;
             v98[2] = &__kCFBooleanTrue;
             v49 = [NSDictionary dictionaryWithObjects:v98 forKeys:v97 count:3];
             [v38 addObject:v49];
@@ -421,27 +421,27 @@ void __48__ASTOnDeviceEyeTrackingSettingsController_init__block_invoke_9(uint64_
     v50 = v89;
     [v89 addObject:v91];
     v51 = settingsLocString(@"ON_DEVICE_EYE_TRACKING_TOGGLE_TITLE", @"HandSettings");
-    v52 = [PSSpecifier preferenceSpecifierNamed:v51 target:v87 set:"setOnDeviceEyeTrackingEnabled:specifier:" get:"onDeviceEyeTrackingEnabled:" detail:0 cell:6 edit:0];
+    v52 = [PSSpecifier preferenceSpecifierNamed:v51 target:selfCopy set:"setOnDeviceEyeTrackingEnabled:specifier:" get:"onDeviceEyeTrackingEnabled:" detail:0 cell:6 edit:0];
 
     [v52 setIdentifier:@"OnDeviceEyeTrackingEnabledSpecifier"];
     [v89 addObject:v52];
-    v53 = [(ASTOnDeviceEyeTrackingSettingsController *)v87 eyeTrackingSettingsHelper];
-    v54 = [v53 specifiers];
-    [v89 axSafelyAddObjectsFromArray:v54];
+    eyeTrackingSettingsHelper2 = [(ASTOnDeviceEyeTrackingSettingsController *)selfCopy eyeTrackingSettingsHelper];
+    specifiers = [eyeTrackingSettingsHelper2 specifiers];
+    [v89 axSafelyAddObjectsFromArray:specifiers];
 
     v55 = +[PSSpecifier emptyGroupSpecifier];
-    [(ASTOnDeviceEyeTrackingSettingsController *)v87 _configureDwellControlFooter:v55];
+    [(ASTOnDeviceEyeTrackingSettingsController *)selfCopy _configureDwellControlFooter:v55];
     v82 = v55;
     [v89 axSafelyAddObject:v55];
     v56 = settingsLocString(@"MOUSE_POINTER_DWELL_CONTROL", @"HandSettings");
-    v57 = [PSSpecifier preferenceSpecifierNamed:v56 target:v87 set:"setDwellControlEnabled:specifier:" get:"dwellControlEnabled:" detail:0 cell:6 edit:0];
+    v57 = [PSSpecifier preferenceSpecifierNamed:v56 target:selfCopy set:"setDwellControlEnabled:specifier:" get:"dwellControlEnabled:" detail:0 cell:6 edit:0];
 
     [v57 setProperty:@"DWELL_CONTROL" forKey:PSIDKey];
     [v89 axSafelyAddObject:v57];
     v58 = +[PSSpecifier emptyGroupSpecifier];
     [v89 axSafelyAddObject:v58];
     v59 = settingsLocString(@"ON_DEVICE_EYE_TRACKING_SHOW_FACE_GUIDANCE", @"HandSettings");
-    v60 = [PSSpecifier preferenceSpecifierNamed:v59 target:v87 set:"setShouldShowFaceGuidance:specifier:" get:"shouldShowFaceGuidance:" detail:0 cell:6 edit:0];
+    v60 = [PSSpecifier preferenceSpecifierNamed:v59 target:selfCopy set:"setShouldShowFaceGuidance:specifier:" get:"shouldShowFaceGuidance:" detail:0 cell:6 edit:0];
 
     [v60 setIdentifier:@"OnDeviceEyeTrackingShowFaceGuidanceSpecifier"];
     [v89 addObject:v60];
@@ -452,36 +452,36 @@ void __48__ASTOnDeviceEyeTrackingSettingsController_init__block_invoke_9(uint64_
       v78 = [PSSpecifier groupSpecifierWithName:@"Internal Settings"];
       [v61 addObject:v78];
       v62 = settingsLocString(@"ON_DEVICE_EYE_TRACKING_SHOW_UNCALIBRATED_POINTS", @"HandSettings");
-      v77 = [PSSpecifier preferenceSpecifierNamed:v62 target:v87 set:"setShouldShowUncalibratedPoints:specifier:" get:"shouldShowUncalibratedPoints:" detail:0 cell:6 edit:0];
+      v77 = [PSSpecifier preferenceSpecifierNamed:v62 target:selfCopy set:"setShouldShowUncalibratedPoints:specifier:" get:"shouldShowUncalibratedPoints:" detail:0 cell:6 edit:0];
 
       [v77 setIdentifier:@"OnDeviceEyeTrackingShowUncalibratedPointsSpecifier"];
       [v61 addObject:v77];
       v63 = settingsLocString(@"ON_DEVICE_EYE_TRACKING_USE_WEIGHTED_AVERAGES", @"HandSettings");
-      v76 = [PSSpecifier preferenceSpecifierNamed:v63 target:v87 set:"setShouldUseWeightedAverages:specifier:" get:"shouldUseWeightedAverages:" detail:0 cell:6 edit:0];
+      v76 = [PSSpecifier preferenceSpecifierNamed:v63 target:selfCopy set:"setShouldUseWeightedAverages:specifier:" get:"shouldUseWeightedAverages:" detail:0 cell:6 edit:0];
 
       [v76 setIdentifier:@"OnDeviceEyeTrackingShouldUseWeightedAvergesSpecifier"];
       [v61 addObject:v76];
       v64 = settingsLocString(@"ON_DEVICE_EYE_TRACKING_USE_MOTION_FILTER", @"HandSettings");
-      v65 = [PSSpecifier preferenceSpecifierNamed:v64 target:v87 set:"setShouldUseMotionFilter:specifier:" get:"shouldUseMotionFilter:" detail:0 cell:6 edit:0];
+      v65 = [PSSpecifier preferenceSpecifierNamed:v64 target:selfCopy set:"setShouldUseMotionFilter:specifier:" get:"shouldUseMotionFilter:" detail:0 cell:6 edit:0];
 
       [v65 setIdentifier:@"OnDeviceEyeTrackingShouldUseMotionFilterSpecifier"];
       [v61 addObject:v65];
       v66 = settingsLocString(@"ON_DEVICE_EYE_TRACKING_USE_GAUSIAN_BLUR", @"HandSettings");
-      v67 = [PSSpecifier preferenceSpecifierNamed:v66 target:v87 set:"setShouldUseGaussianBlur:specifier:" get:"shouldUseGaussianBlur:" detail:0 cell:6 edit:0];
+      v67 = [PSSpecifier preferenceSpecifierNamed:v66 target:selfCopy set:"setShouldUseGaussianBlur:specifier:" get:"shouldUseGaussianBlur:" detail:0 cell:6 edit:0];
 
       [v67 setIdentifier:@"OnDeviceEyeTrackingShouldUseGaussianBlurSpecifier"];
       [v61 addObject:v67];
       settingsLocString(@"ON_DEVICE_EYE_TRACKING_STRATEGY", @"HandSettings");
       v68 = v80 = v52;
-      v69 = [PSSpecifier preferenceSpecifierNamed:v68 target:v87 set:0 get:"_calibrationStrategyName:" detail:objc_opt_class() cell:2 edit:0];
+      v69 = [PSSpecifier preferenceSpecifierNamed:v68 target:selfCopy set:0 get:"_calibrationStrategyName:" detail:objc_opt_class() cell:2 edit:0];
 
       [v69 setIdentifier:@"OnDeviceEyeTrackingCalibrationStrategySpecifier"];
       [v61 addObject:v69];
-      v70 = [PSSpecifier ax_stepperSpecifierWithDelegate:v87];
+      v70 = [PSSpecifier ax_stepperSpecifierWithDelegate:selfCopy];
       [v70 setIdentifier:@"OnDeviceEyeTrackingCalibrationDotActivationTimeoutSpecifier"];
       [v61 addObject:v70];
       v71 = settingsLocString(@"ON_DEVICE_EYE_TRACKING_RESET", @"HandSettings");
-      v72 = [PSSpecifier deleteButtonSpecifierWithName:v71 target:v87 action:"_resetButtonTapped:"];
+      v72 = [PSSpecifier deleteButtonSpecifierWithName:v71 target:selfCopy action:"_resetButtonTapped:"];
 
       v50 = v89;
       [v72 setProperty:&__kCFBooleanTrue forKey:PSAllowMultilineTitleKey];
@@ -495,13 +495,13 @@ void __48__ASTOnDeviceEyeTrackingSettingsController_init__block_invoke_9(uint64_
     }
 
     v73 = [v50 copy];
-    v74 = *&v87->AXUISettingsBaseListController_opaque[v86];
-    *&v87->AXUISettingsBaseListController_opaque[v86] = v73;
+    v74 = *&selfCopy->AXUISettingsBaseListController_opaque[v86];
+    *&selfCopy->AXUISettingsBaseListController_opaque[v86] = v73;
 
-    [(ASTOnDeviceEyeTrackingSettingsController *)v87 _updateSpecifiersForAutoHide];
-    [(ASTOnDeviceEyeTrackingSettingsController *)v87 _updateOnDeviceEyeTrackingSwitchForOneness];
+    [(ASTOnDeviceEyeTrackingSettingsController *)selfCopy _updateSpecifiersForAutoHide];
+    [(ASTOnDeviceEyeTrackingSettingsController *)selfCopy _updateOnDeviceEyeTrackingSwitchForOneness];
 
-    v11 = *&v87->AXUISettingsBaseListController_opaque[v86];
+    v11 = *&selfCopy->AXUISettingsBaseListController_opaque[v86];
   }
 
   return v11;
@@ -511,15 +511,15 @@ void __48__ASTOnDeviceEyeTrackingSettingsController_init__block_invoke_9(uint64_
 {
   v6 = [(ASTOnDeviceEyeTrackingSettingsController *)self specifierForID:@"OnDeviceEyeTrackingEnabledSpecifier"];
   v3 = +[AXSpringBoardServer server];
-  v4 = [v3 isContinuitySessionActive];
+  isContinuitySessionActive = [v3 isContinuitySessionActive];
 
-  v5 = [NSNumber numberWithBool:v4 ^ 1];
+  v5 = [NSNumber numberWithBool:isContinuitySessionActive ^ 1];
   [v6 setProperty:v5 forKey:PSEnabledKey];
 
   [(ASTOnDeviceEyeTrackingSettingsController *)self reloadSpecifier:v6];
 }
 
-- (void)_resetButtonTapped:(id)a3
+- (void)_resetButtonTapped:(id)tapped
 {
   v4 = +[AXSettings sharedInstance];
   [v4 setAssistiveTouchMouseOnDeviceEyeTrackingEnabled:0];
@@ -555,26 +555,26 @@ void __48__ASTOnDeviceEyeTrackingSettingsController_init__block_invoke_9(uint64_
   return v2;
 }
 
-- (void)_configureDwellControlFooter:(id)a3
+- (void)_configureDwellControlFooter:(id)footer
 {
-  v4 = a3;
+  footerCopy = footer;
   v12 = settingsLocString(@"ON_DEVICE_EYE_TRACKING_DWELL_CONTROL_FOOTER", @"Accessibility");
   v5 = settingsLocString(@"AIR_TOUCH_TITLE", @"Accessibility");
   v6 = [NSString stringWithFormat:v12, v5];
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  [v4 setProperty:v8 forKey:PSFooterCellClassGroupKey];
+  [footerCopy setProperty:v8 forKey:PSFooterCellClassGroupKey];
 
-  [v4 setProperty:v6 forKey:PSFooterHyperlinkViewTitleKey];
+  [footerCopy setProperty:v6 forKey:PSFooterHyperlinkViewTitleKey];
   v14.location = [v6 rangeOfString:v5];
   v9 = NSStringFromRange(v14);
-  [v4 setProperty:v9 forKey:PSFooterHyperlinkViewLinkRangeKey];
+  [footerCopy setProperty:v9 forKey:PSFooterHyperlinkViewLinkRangeKey];
 
   v10 = [NSValue valueWithNonretainedObject:self];
-  [v4 setProperty:v10 forKey:PSFooterHyperlinkViewTargetKey];
+  [footerCopy setProperty:v10 forKey:PSFooterHyperlinkViewTargetKey];
 
   v11 = NSStringFromSelector("showMoreDwellControlOptions");
-  [v4 setProperty:v11 forKey:PSFooterHyperlinkViewActionKey];
+  [footerCopy setProperty:v11 forKey:PSFooterHyperlinkViewActionKey];
 }
 
 - (void)showMoreDwellControlOptions
@@ -589,19 +589,19 @@ void __48__ASTOnDeviceEyeTrackingSettingsController_init__block_invoke_9(uint64_
   v3 = +[AXSettings sharedInstance];
   if ([v3 assistiveTouchOnDeviceEyeTrackingAutoHideEnabled])
   {
-    v4 = [(ASTOnDeviceEyeTrackingSettingsController *)self showingAutoHideSettings];
+    showingAutoHideSettings = [(ASTOnDeviceEyeTrackingSettingsController *)self showingAutoHideSettings];
 
-    if ((v4 & 1) == 0)
+    if ((showingAutoHideSettings & 1) == 0)
     {
-      v5 = [(ASTOnDeviceEyeTrackingSettingsController *)self eyeTrackingSettingsHelper];
-      v6 = [v5 autoHideTimeoutAndSliderContiguousSpecs];
-      [(ASTOnDeviceEyeTrackingSettingsController *)self insertContiguousSpecifiers:v6 afterSpecifierID:@"AUTO_HIDE" animated:1];
+      eyeTrackingSettingsHelper = [(ASTOnDeviceEyeTrackingSettingsController *)self eyeTrackingSettingsHelper];
+      autoHideTimeoutAndSliderContiguousSpecs = [eyeTrackingSettingsHelper autoHideTimeoutAndSliderContiguousSpecs];
+      [(ASTOnDeviceEyeTrackingSettingsController *)self insertContiguousSpecifiers:autoHideTimeoutAndSliderContiguousSpecs afterSpecifierID:@"AUTO_HIDE" animated:1];
 
-      v7 = self;
+      selfCopy2 = self;
       v8 = 1;
 LABEL_11:
 
-      [(ASTOnDeviceEyeTrackingSettingsController *)v7 setShowingAutoHideSettings:v8];
+      [(ASTOnDeviceEyeTrackingSettingsController *)selfCopy2 setShowingAutoHideSettings:v8];
       return;
     }
   }
@@ -613,32 +613,32 @@ LABEL_11:
   v12 = +[AXSettings sharedInstance];
   if (([v12 assistiveTouchOnDeviceEyeTrackingAutoHideEnabled] & 1) == 0)
   {
-    v9 = [(ASTOnDeviceEyeTrackingSettingsController *)self showingAutoHideSettings];
+    showingAutoHideSettings2 = [(ASTOnDeviceEyeTrackingSettingsController *)self showingAutoHideSettings];
 
-    if (!v9)
+    if (!showingAutoHideSettings2)
     {
       return;
     }
 
-    v10 = [(ASTOnDeviceEyeTrackingSettingsController *)self eyeTrackingSettingsHelper];
-    v11 = [v10 autoHideTimeoutAndSliderContiguousSpecs];
-    [(ASTOnDeviceEyeTrackingSettingsController *)self removeContiguousSpecifiers:v11 animated:1];
+    eyeTrackingSettingsHelper2 = [(ASTOnDeviceEyeTrackingSettingsController *)self eyeTrackingSettingsHelper];
+    autoHideTimeoutAndSliderContiguousSpecs2 = [eyeTrackingSettingsHelper2 autoHideTimeoutAndSliderContiguousSpecs];
+    [(ASTOnDeviceEyeTrackingSettingsController *)self removeContiguousSpecifiers:autoHideTimeoutAndSliderContiguousSpecs2 animated:1];
 
-    v7 = self;
+    selfCopy2 = self;
     v8 = 0;
     goto LABEL_11;
   }
 }
 
-- (id)_calibrationStrategyName:(id)a3
+- (id)_calibrationStrategyName:(id)name
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 assistiveTouchMouseOnDeviceEyeTrackingCalibrationStrategy];
+  assistiveTouchMouseOnDeviceEyeTrackingCalibrationStrategy = [v3 assistiveTouchMouseOnDeviceEyeTrackingCalibrationStrategy];
 
-  return [ASTCalibrationStrategyListController nameForCalibrationStrategy:v4];
+  return [ASTCalibrationStrategyListController nameForCalibrationStrategy:assistiveTouchMouseOnDeviceEyeTrackingCalibrationStrategy];
 }
 
-- (id)onDeviceEyeTrackingEnabled:(id)a3
+- (id)onDeviceEyeTrackingEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 assistiveTouchMouseOnDeviceEyeTrackingEnabled]);
@@ -646,17 +646,17 @@ LABEL_11:
   return v4;
 }
 
-- (void)setOnDeviceEyeTrackingEnabled:(id)a3 specifier:(id)a4
+- (void)setOnDeviceEyeTrackingEnabled:(id)enabled specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 BOOLValue];
+  enabledCopy = enabled;
+  specifierCopy = specifier;
+  bOOLValue = [enabledCopy BOOLValue];
   v9 = +[AXSettings sharedInstance];
-  v10 = [v9 assistiveTouchMouseOnDeviceEyeTrackingEnabled];
+  assistiveTouchMouseOnDeviceEyeTrackingEnabled = [v9 assistiveTouchMouseOnDeviceEyeTrackingEnabled];
 
-  if (v8 != v10)
+  if (bOOLValue != assistiveTouchMouseOnDeviceEyeTrackingEnabled)
   {
-    if (v8)
+    if (bOOLValue)
     {
       v11 = +[AXSettings sharedInstance];
       [v11 setAssistiveTouchMouseOnDeviceEyeTrackingEnabled:1];
@@ -673,7 +673,7 @@ LABEL_11:
       v22[1] = 3221225472;
       v22[2] = __84__ASTOnDeviceEyeTrackingSettingsController_setOnDeviceEyeTrackingEnabled_specifier___block_invoke;
       v22[3] = &__block_descriptor_33_e23_v16__0__UIAlertAction_8l;
-      v23 = v8;
+      v23 = bOOLValue;
       v16 = [UIAlertAction actionWithTitle:v15 style:0 handler:v22];
 
       objc_initWeak(&location, self);
@@ -707,7 +707,7 @@ void __84__ASTOnDeviceEyeTrackingSettingsController_setOnDeviceEyeTrackingEnable
   [WeakRetained reloadSpecifiers];
 }
 
-- (id)dwellControlEnabled:(id)a3
+- (id)dwellControlEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 assistiveTouchMouseDwellControlEnabled]);
@@ -715,11 +715,11 @@ void __84__ASTOnDeviceEyeTrackingSettingsController_setOnDeviceEyeTrackingEnable
   return v4;
 }
 
-- (void)setDwellControlEnabled:(id)a3 specifier:(id)a4
+- (void)setDwellControlEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  v6 = [v5 assistiveTouchAlwaysShowMenuEnabled] | v4;
+  v6 = [v5 assistiveTouchAlwaysShowMenuEnabled] | bOOLValue;
   v7 = +[AXSettings sharedInstance];
   [v7 setAssistiveTouchAlwaysShowMenuEnabled:v6 & 1];
 
@@ -727,10 +727,10 @@ void __84__ASTOnDeviceEyeTrackingSettingsController_setOnDeviceEyeTrackingEnable
   [v8 setAssistiveTouchMouseDwellControlShowPrompt:1];
 
   v9 = +[AXSettings sharedInstance];
-  [v9 setAssistiveTouchMouseDwellControlEnabled:v4];
+  [v9 setAssistiveTouchMouseDwellControlEnabled:bOOLValue];
 }
 
-- (id)shouldShowUncalibratedPoints:(id)a3
+- (id)shouldShowUncalibratedPoints:(id)points
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 assistiveTouchMouseOnDeviceEyeTrackingShouldShowUncalibratedPoints]);
@@ -738,14 +738,14 @@ void __84__ASTOnDeviceEyeTrackingSettingsController_setOnDeviceEyeTrackingEnable
   return v4;
 }
 
-- (void)setShouldShowUncalibratedPoints:(id)a3 specifier:(id)a4
+- (void)setShouldShowUncalibratedPoints:(id)points specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [points BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setAssistiveTouchMouseOnDeviceEyeTrackingShouldShowUncalibratedPoints:v4];
+  [v5 setAssistiveTouchMouseOnDeviceEyeTrackingShouldShowUncalibratedPoints:bOOLValue];
 }
 
-- (id)shouldShowFaceGuidance:(id)a3
+- (id)shouldShowFaceGuidance:(id)guidance
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 assistiveTouchOnDeviceEyeTrackingFaceGuidanceEnabled]);
@@ -753,14 +753,14 @@ void __84__ASTOnDeviceEyeTrackingSettingsController_setOnDeviceEyeTrackingEnable
   return v4;
 }
 
-- (void)setShouldShowFaceGuidance:(id)a3 specifier:(id)a4
+- (void)setShouldShowFaceGuidance:(id)guidance specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [guidance BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setAssistiveTouchOnDeviceEyeTrackingFaceGuidanceEnabled:v4];
+  [v5 setAssistiveTouchOnDeviceEyeTrackingFaceGuidanceEnabled:bOOLValue];
 }
 
-- (id)shouldUseWeightedAverages:(id)a3
+- (id)shouldUseWeightedAverages:(id)averages
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 assistiveTouchOnDeviceEyeTrackingShouldUseWeightedAverages]);
@@ -768,14 +768,14 @@ void __84__ASTOnDeviceEyeTrackingSettingsController_setOnDeviceEyeTrackingEnable
   return v4;
 }
 
-- (void)setShouldUseWeightedAverages:(id)a3 specifier:(id)a4
+- (void)setShouldUseWeightedAverages:(id)averages specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [averages BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setAssistiveTouchOnDeviceEyeTrackingShouldUseWeightedAverages:v4];
+  [v5 setAssistiveTouchOnDeviceEyeTrackingShouldUseWeightedAverages:bOOLValue];
 }
 
-- (id)shouldUseMotionFilter:(id)a3
+- (id)shouldUseMotionFilter:(id)filter
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 assistiveTouchOnDeviceEyeTrackingShouldUseMotionFilter]);
@@ -783,14 +783,14 @@ void __84__ASTOnDeviceEyeTrackingSettingsController_setOnDeviceEyeTrackingEnable
   return v4;
 }
 
-- (void)setShouldUseMotionFilter:(id)a3 specifier:(id)a4
+- (void)setShouldUseMotionFilter:(id)filter specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [filter BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setAssistiveTouchOnDeviceEyeTrackingShouldUseMotionFilter:v4];
+  [v5 setAssistiveTouchOnDeviceEyeTrackingShouldUseMotionFilter:bOOLValue];
 }
 
-- (id)shouldUseGaussianBlur:(id)a3
+- (id)shouldUseGaussianBlur:(id)blur
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 assistiveTouchOnDeviceEyeTrackingShouldUseGaussianBlur]);
@@ -798,14 +798,14 @@ void __84__ASTOnDeviceEyeTrackingSettingsController_setOnDeviceEyeTrackingEnable
   return v4;
 }
 
-- (void)setShouldUseGaussianBlur:(id)a3 specifier:(id)a4
+- (void)setShouldUseGaussianBlur:(id)blur specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [blur BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setAssistiveTouchOnDeviceEyeTrackingShouldUseGaussianBlur:v4];
+  [v5 setAssistiveTouchOnDeviceEyeTrackingShouldUseGaussianBlur:bOOLValue];
 }
 
-- (double)valueForSpecifier:(id)a3
+- (double)valueForSpecifier:(id)specifier
 {
   v3 = +[AXSettings sharedInstance];
   [v3 assistiveTouchOnDeviceEyeTrackingCalibrationDotActivationTimeout];
@@ -814,15 +814,15 @@ void __84__ASTOnDeviceEyeTrackingSettingsController_setOnDeviceEyeTrackingEnable
   return v5;
 }
 
-- (void)specifier:(id)a3 setValue:(double)a4
+- (void)specifier:(id)specifier setValue:(double)value
 {
   v5 = +[AXSettings sharedInstance];
-  [v5 setAssistiveTouchOnDeviceEyeTrackingCalibrationDotActivationTimeout:a4];
+  [v5 setAssistiveTouchOnDeviceEyeTrackingCalibrationDotActivationTimeout:value];
 }
 
-- (id)stringValueForSpecifier:(id)a3
+- (id)stringValueForSpecifier:(id)specifier
 {
-  [(ASTOnDeviceEyeTrackingSettingsController *)self valueForSpecifier:a3];
+  [(ASTOnDeviceEyeTrackingSettingsController *)self valueForSpecifier:specifier];
   v3 = [NSNumber numberWithDouble:?];
   v4 = AXFormatNumberWithOptions();
 

@@ -1,13 +1,13 @@
 @interface SiriMatchRecommendation
-- (BOOL)contactsAvailableInPool:(id)a3;
-- (SiriMatchRecommendation)initWithType:(int64_t)a3 contactIdentifiers:(id)a4;
+- (BOOL)contactsAvailableInPool:(id)pool;
+- (SiriMatchRecommendation)initWithType:(int64_t)type contactIdentifiers:(id)identifiers;
 @end
 
 @implementation SiriMatchRecommendation
 
-- (SiriMatchRecommendation)initWithType:(int64_t)a3 contactIdentifiers:(id)a4
+- (SiriMatchRecommendation)initWithType:(int64_t)type contactIdentifiers:(id)identifiers
 {
-  v7 = a4;
+  identifiersCopy = identifiers;
   v12.receiver = self;
   v12.super_class = SiriMatchRecommendation;
   v11.receiver = [(SiriMatchRecommendation *)&v12 init];
@@ -16,23 +16,23 @@
   v9 = v8;
   if (v8)
   {
-    v8->_type = a3;
-    objc_storeStrong(&v8->_contactIdentifiers, a4);
+    v8->_type = type;
+    objc_storeStrong(&v8->_contactIdentifiers, identifiers);
   }
 
   return v9;
 }
 
-- (BOOL)contactsAvailableInPool:(id)a3
+- (BOOL)contactsAvailableInPool:(id)pool
 {
-  v4 = a3;
-  v5 = [(SiriMatchRecommendation *)self contactIdentifiers];
-  v6 = [NSSet setWithArray:v5];
+  poolCopy = pool;
+  contactIdentifiers = [(SiriMatchRecommendation *)self contactIdentifiers];
+  v6 = [NSSet setWithArray:contactIdentifiers];
 
-  v7 = [v4 allContactIds];
+  allContactIds = [poolCopy allContactIds];
 
-  LOBYTE(v4) = [v6 isSubsetOfSet:v7];
-  return v4;
+  LOBYTE(poolCopy) = [v6 isSubsetOfSet:allContactIds];
+  return poolCopy;
 }
 
 @end

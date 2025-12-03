@@ -1,15 +1,15 @@
 @interface PUPhotoViewContentHelper
-+ (CGRect)_imageContentFrameForBounds:(CGRect)result imageSize:(CGSize)a4 fillMode:(int64_t)a5;
-+ (CGSize)sizeThatFits:(CGSize)a3 imageSize:(CGSize)a4 fillMode:(int64_t)a5;
++ (CGRect)_imageContentFrameForBounds:(CGRect)result imageSize:(CGSize)size fillMode:(int64_t)mode;
++ (CGSize)sizeThatFits:(CGSize)fits imageSize:(CGSize)size fillMode:(int64_t)mode;
 - (BOOL)isImageViewEdgeAntialiasingEnabled;
 - (CGAffineTransform)imageTransform;
 - (CGRect)imageContentFrame;
-- (CGRect)imageContentFrameForBounds:(CGRect)a3;
-- (CGRect)photoDecorationBorderViewFrameForImageContentFrame:(CGRect)a3;
-- (CGSize)contentViewSizeThatFits:(CGSize)a3;
+- (CGRect)imageContentFrameForBounds:(CGRect)bounds;
+- (CGRect)photoDecorationBorderViewFrameForImageContentFrame:(CGRect)frame;
+- (CGSize)contentViewSizeThatFits:(CGSize)fits;
 - (CGSize)customPaddingForBadgeElements;
 - (CGSize)photoSize;
-- (PUPhotoViewContentHelper)initWithContentView:(id)a3;
+- (PUPhotoViewContentHelper)initWithContentView:(id)view;
 - (PUPhotoViewContentHelperDelegate)delegate;
 - (PXAssetBadgeInfo)badgeInfo;
 - (UIView)contentView;
@@ -19,7 +19,7 @@
 - (void)_invalidateTitleSubtitleUILabel;
 - (void)_removeAvalancheStackViewIfNecessary;
 - (void)_removePhotoImageViewIfNecessary;
-- (void)_setAudioSession:(id)a3;
+- (void)_setAudioSession:(id)session;
 - (void)_updateAnimatedImageViewIfNeeded;
 - (void)_updateBadgeView;
 - (void)_updateContentViewClipsToBounds;
@@ -36,49 +36,49 @@
 - (void)_updateTextBannerView;
 - (void)_updateTitleSubtitleUILabelIfNeeded;
 - (void)_updateUnderlyingImageViewDynamicRange;
-- (void)animateCrossfadeToImage:(id)a3 duration:(double)a4;
+- (void)animateCrossfadeToImage:(id)image duration:(double)duration;
 - (void)layoutSubviewsOfContentView;
-- (void)livePhotoView:(id)a3 willBeginPlaybackWithStyle:(int64_t)a4;
-- (void)setAnimatedImage:(id)a3;
-- (void)setAnimatingRoundedCorners:(BOOL)a3;
-- (void)setAvoidsPhotoDecoration:(BOOL)a3;
-- (void)setBackgroundColor:(id)a3;
-- (void)setBadgeInfo:(PXAssetBadgeInfo *)a3;
-- (void)setBadgeStyle:(int64_t)a3;
-- (void)setCollectionTileLayoutTemplate:(id)a3;
-- (void)setContentAlpha:(double)a3;
-- (void)setCornerRadius:(double)a3;
-- (void)setCornerRadius:(double)a3 cornersToRound:(unint64_t)a4 useOverlay:(BOOL)a5 overlayColor:(id)a6 continuousCorners:(BOOL)a7;
-- (void)setCornersToRound:(unint64_t)a3;
-- (void)setCustomPaddingForBadgeElements:(CGSize)a3;
-- (void)setDarkContentOverlayAlpha:(double)a3;
-- (void)setDelegate:(id)a3;
-- (void)setFeatureSpec:(id)a3;
-- (void)setFillMode:(int64_t)a3;
-- (void)setFlattensBadgeView:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setImageTransform:(CGAffineTransform *)a3;
-- (void)setImageViewEdgeAntialiasingEnabled:(BOOL)a3;
-- (void)setLivePhoto:(id)a3;
-- (void)setLivePhotoHidden:(BOOL)a3;
-- (void)setLoopingPlaybackAllowed:(BOOL)a3;
-- (void)setLoopingVideoAsset:(id)a3;
-- (void)setOverlayColor:(id)a3;
-- (void)setPhotoDecoration:(id)a3;
-- (void)setPhotoImage:(id)a3;
-- (void)setPhotoSize:(CGSize)a3;
-- (void)setPlaceHolderImage:(id)a3;
-- (void)setPreferredImageDynamicRange:(int64_t)a3;
-- (void)setShouldPrepareForPlayback:(BOOL)a3;
-- (void)setShowsLivePhoto:(BOOL)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setTextBannerVisible:(BOOL)a3;
-- (void)setTitle:(id)a3;
-- (void)setTitleFontName:(id)a3;
-- (void)setTransitionSnapshotView:(id)a3;
-- (void)setUseOverlay:(BOOL)a3;
-- (void)startPlaybackWithStyle:(int64_t)a3;
-- (void)updatePhotoImageWithoutReconfiguring:(id)a3;
+- (void)livePhotoView:(id)view willBeginPlaybackWithStyle:(int64_t)style;
+- (void)setAnimatedImage:(id)image;
+- (void)setAnimatingRoundedCorners:(BOOL)corners;
+- (void)setAvoidsPhotoDecoration:(BOOL)decoration;
+- (void)setBackgroundColor:(id)color;
+- (void)setBadgeInfo:(PXAssetBadgeInfo *)info;
+- (void)setBadgeStyle:(int64_t)style;
+- (void)setCollectionTileLayoutTemplate:(id)template;
+- (void)setContentAlpha:(double)alpha;
+- (void)setCornerRadius:(double)radius;
+- (void)setCornerRadius:(double)radius cornersToRound:(unint64_t)round useOverlay:(BOOL)overlay overlayColor:(id)color continuousCorners:(BOOL)corners;
+- (void)setCornersToRound:(unint64_t)round;
+- (void)setCustomPaddingForBadgeElements:(CGSize)elements;
+- (void)setDarkContentOverlayAlpha:(double)alpha;
+- (void)setDelegate:(id)delegate;
+- (void)setFeatureSpec:(id)spec;
+- (void)setFillMode:(int64_t)mode;
+- (void)setFlattensBadgeView:(BOOL)view;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setImageTransform:(CGAffineTransform *)transform;
+- (void)setImageViewEdgeAntialiasingEnabled:(BOOL)enabled;
+- (void)setLivePhoto:(id)photo;
+- (void)setLivePhotoHidden:(BOOL)hidden;
+- (void)setLoopingPlaybackAllowed:(BOOL)allowed;
+- (void)setLoopingVideoAsset:(id)asset;
+- (void)setOverlayColor:(id)color;
+- (void)setPhotoDecoration:(id)decoration;
+- (void)setPhotoImage:(id)image;
+- (void)setPhotoSize:(CGSize)size;
+- (void)setPlaceHolderImage:(id)image;
+- (void)setPreferredImageDynamicRange:(int64_t)range;
+- (void)setShouldPrepareForPlayback:(BOOL)playback;
+- (void)setShowsLivePhoto:(BOOL)photo;
+- (void)setSubtitle:(id)subtitle;
+- (void)setTextBannerVisible:(BOOL)visible;
+- (void)setTitle:(id)title;
+- (void)setTitleFontName:(id)name;
+- (void)setTransitionSnapshotView:(id)view;
+- (void)setUseOverlay:(BOOL)overlay;
+- (void)startPlaybackWithStyle:(int64_t)style;
+- (void)updatePhotoImageWithoutReconfiguring:(id)reconfiguring;
 @end
 
 @implementation PUPhotoViewContentHelper
@@ -132,9 +132,9 @@
   return WeakRetained;
 }
 
-- (void)animateCrossfadeToImage:(id)a3 duration:(double)a4
+- (void)animateCrossfadeToImage:(id)image duration:(double)duration
 {
-  v6 = a3;
+  imageCopy = image;
   if (!self->__crossfadeImageView)
   {
     v7 = objc_alloc(MEMORY[0x1E69DCAE0]);
@@ -146,8 +146,8 @@
     [(PUPhotoViewContentHelper *)self _updateUnderlyingImageViewDynamicRange];
     [(UIImageView *)self->__crossfadeImageView setContentMode:[(UIImageView *)self->_photoImageView contentMode]];
     v10 = self->__crossfadeImageView;
-    v11 = [(UIImageView *)self->_photoImageView backgroundColor];
-    [(UIImageView *)v10 setBackgroundColor:v11];
+    backgroundColor = [(UIImageView *)self->_photoImageView backgroundColor];
+    [(UIImageView *)v10 setBackgroundColor:backgroundColor];
 
     WeakRetained = objc_loadWeakRetained(&self->_contentView);
     [WeakRetained insertSubview:self->__crossfadeImageView belowSubview:self->_photoImageView];
@@ -156,13 +156,13 @@
   }
 
   [(UIImageView *)self->_photoImageView setAlpha:1.0];
-  [(UIImageView *)self->__crossfadeImageView setImage:v6];
+  [(UIImageView *)self->__crossfadeImageView setImage:imageCopy];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __61__PUPhotoViewContentHelper_animateCrossfadeToImage_duration___block_invoke;
   v13[3] = &unk_1E7B80DD0;
   v13[4] = self;
-  [MEMORY[0x1E69DD250] animateWithDuration:v13 animations:a4];
+  [MEMORY[0x1E69DD250] animateWithDuration:v13 animations:duration];
 }
 
 - (void)layoutSubviewsOfContentView
@@ -200,9 +200,9 @@
   v40.size.width = v17;
   v40.size.height = v19;
   y = CGRectGetMaxY(v40) + -24.0;
-  v22 = [(PUPhotoViewContentHelper *)self _badgeView];
+  _badgeView = [(PUPhotoViewContentHelper *)self _badgeView];
   height = 24.0;
-  [v22 setFrame:{v13, y, v17, 24.0}];
+  [_badgeView setFrame:{v13, y, v17, 24.0}];
 
   textBannerView = self->_textBannerView;
   if (textBannerView && self->_isTextBannerVisible)
@@ -237,16 +237,16 @@
     [(PXTextBannerView *)self->_textBannerView setFrame:v41.origin.x, y, v41.size.width, height];
   }
 
-  v30 = [(PUPhotoViewContentHelper *)self _highlightOverlayView];
-  [v30 setFrame:{v13, v15, v17, v19}];
+  _highlightOverlayView = [(PUPhotoViewContentHelper *)self _highlightOverlayView];
+  [_highlightOverlayView setFrame:{v13, v15, v17, v19}];
 
   [(PXRoundedCornerOverlayView *)self->_roundedCornerOverlayView setFrame:v13, v15, v17, v19];
   [(PXCollectionTileLayoutTemplate *)self->_collectionTileLayoutTemplate setBounds:v13, v15, v17, v19];
   [(PXCollectionTileLayoutTemplate *)self->_collectionTileLayoutTemplate prepare];
   [(PUPhotoViewContentHelper *)self _updateIfNeeded];
-  v31 = [(PUPhotoViewContentHelper *)self _titleSubtitleLabel];
-  v32 = v31;
-  if (v31 && ([v31 isHidden] & 1) == 0)
+  _titleSubtitleLabel = [(PUPhotoViewContentHelper *)self _titleSubtitleLabel];
+  v32 = _titleSubtitleLabel;
+  if (_titleSubtitleLabel && ([_titleSubtitleLabel isHidden] & 1) == 0)
   {
     featureSpec = self->_featureSpec;
     v34 = PXViewSpecContextForMemoryTile();
@@ -263,17 +263,17 @@
   }
 }
 
-- (CGSize)contentViewSizeThatFits:(CGSize)a3
+- (CGSize)contentViewSizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(PUPhotoViewContentHelper *)self fillMode];
+  height = fits.height;
+  width = fits.width;
+  fillMode = [(PUPhotoViewContentHelper *)self fillMode];
   [(PUPhotoViewContentHelper *)self photoSize];
   v8 = v7;
   v10 = v9;
   v11 = objc_opt_class();
 
-  [v11 sizeThatFits:v6 imageSize:width fillMode:{height, v8, v10}];
+  [v11 sizeThatFits:fillMode imageSize:width fillMode:{height, v8, v10}];
   result.height = v13;
   result.width = v12;
   return result;
@@ -290,10 +290,10 @@
   if (([(NSString *)self->_title length]|| [(NSString *)self->_subtitle length]) && self->_featureSpec && self->_collectionTileLayoutTemplate)
   {
     photoImage = self->_photoImage;
-    v5 = [(PUPhotoViewContentHelper *)self _titleSubtitleLabel];
+    _titleSubtitleLabel = [(PUPhotoViewContentHelper *)self _titleSubtitleLabel];
     if (photoImage)
     {
-      if (!v5)
+      if (!_titleSubtitleLabel)
       {
         v6 = objc_alloc(MEMORY[0x1E69C3BB8]);
         [(PXCollectionTileLayoutTemplate *)self->_collectionTileLayoutTemplate titleSubtitleRect];
@@ -303,11 +303,11 @@
 
         [(PUPhotoViewContentHelper *)self _setTitleSubtitleUILabel:v8];
         [(PUPhotoViewContentHelper *)self _updateSubviewOrdering];
-        v5 = v8;
+        _titleSubtitleLabel = v8;
       }
 
-      v9 = v5;
-      [v5 setTitleText:self->_title];
+      v9 = _titleSubtitleLabel;
+      [_titleSubtitleLabel setTitleText:self->_title];
       [v9 setSubtitleText:self->_subtitle];
       goto LABEL_13;
     }
@@ -315,11 +315,11 @@
 
   else
   {
-    v5 = [(PUPhotoViewContentHelper *)self _titleSubtitleLabel];
+    _titleSubtitleLabel = [(PUPhotoViewContentHelper *)self _titleSubtitleLabel];
   }
 
-  v9 = v5;
-  [v5 removeFromSuperview];
+  v9 = _titleSubtitleLabel;
+  [_titleSubtitleLabel removeFromSuperview];
   [(PUPhotoViewContentHelper *)self _setTitleSubtitleUILabel:0];
 LABEL_13:
 }
@@ -336,10 +336,10 @@ LABEL_13:
   if (self->_needsUpdateFlags.animatedImageView)
   {
     self->_needsUpdateFlags.animatedImageView = 0;
-    v4 = [(PUPhotoViewContentHelper *)self animatedImage];
+    animatedImage = [(PUPhotoViewContentHelper *)self animatedImage];
 
     animatedImageView = self->_animatedImageView;
-    if (v4)
+    if (animatedImage)
     {
       if (!animatedImageView)
       {
@@ -356,9 +356,9 @@ LABEL_13:
         [(PUPhotoViewContentHelper *)self _updateSubviewOrdering];
       }
 
-      v10 = [(PUPhotoViewContentHelper *)self animatedImage];
-      v11 = [v10 pf_animatedImage];
-      [(ISAnimatedImageView *)self->_animatedImageView setImage:v11];
+      animatedImage2 = [(PUPhotoViewContentHelper *)self animatedImage];
+      pf_animatedImage = [animatedImage2 pf_animatedImage];
+      [(ISAnimatedImageView *)self->_animatedImageView setImage:pf_animatedImage];
 
       v12 = objc_loadWeakRetained(&self->_contentView);
       [v12 bounds];
@@ -375,7 +375,7 @@ LABEL_13:
 
     photoImageView = self->_photoImageView;
 
-    [(UIImageView *)photoImageView setHidden:v4 != 0];
+    [(UIImageView *)photoImageView setHidden:animatedImage != 0];
   }
 }
 
@@ -395,9 +395,9 @@ LABEL_13:
     v34[7] = v2;
     v34[8] = v3;
     self->_needsUpdateFlags.loopingVideoView = 0;
-    v7 = [(PUPhotoViewContentHelper *)self loopingVideoAsset];
+    loopingVideoAsset = [(PUPhotoViewContentHelper *)self loopingVideoAsset];
 
-    if (v7)
+    if (loopingVideoAsset)
     {
       if (!self->_loopingVideoPlayer)
       {
@@ -437,8 +437,8 @@ LABEL_13:
         [(PUPhotoViewContentHelper *)self _updateSubviewOrdering];
         v16 = self->_loopingVideoPlayer;
         v17 = MEMORY[0x1E69880B0];
-        v18 = [(PUPhotoViewContentHelper *)self loopingVideoAsset];
-        v19 = [v17 playerItemWithAsset:v18];
+        loopingVideoAsset2 = [(PUPhotoViewContentHelper *)self loopingVideoAsset];
+        v19 = [v17 playerItemWithAsset:loopingVideoAsset2];
         [(ISWrappedAVPlayer *)v16 setLoopingEnabled:1 withTemplateItem:v19];
 
         [(PXVideoPlayerView *)self->_loopingVideoView setPlayer:self->_loopingVideoPlayer];
@@ -450,10 +450,10 @@ LABEL_13:
         [MEMORY[0x1E69DD250] animateWithDuration:2 delay:v31 options:0 animations:0.3 completion:0.0];
       }
 
-      v20 = [(PUPhotoViewContentHelper *)self _audioSession];
-      if (v20)
+      _audioSession = [(PUPhotoViewContentHelper *)self _audioSession];
+      if (_audioSession)
       {
-        [(ISWrappedAVPlayer *)self->_loopingVideoPlayer setWrappedAudioSession:v20];
+        [(ISWrappedAVPlayer *)self->_loopingVideoPlayer setWrappedAudioSession:_audioSession];
         LODWORD(v21) = 1.0;
         [(ISWrappedAVPlayer *)self->_loopingVideoPlayer setRate:v21];
       }
@@ -467,18 +467,18 @@ LABEL_13:
       }
 
       v22 = objc_loadWeakRetained(&self->_contentView);
-      v23 = [v22 window];
+      window = [v22 window];
 
-      if (v23)
+      if (window)
       {
-        v20 = [(PXVideoPlayerView *)self->_loopingVideoView snapshotViewAfterScreenUpdates:0];
+        _audioSession = [(PXVideoPlayerView *)self->_loopingVideoView snapshotViewAfterScreenUpdates:0];
         v24 = objc_loadWeakRetained(&self->_contentView);
-        [v24 insertSubview:v20 aboveSubview:self->_loopingVideoView];
+        [v24 insertSubview:_audioSession aboveSubview:self->_loopingVideoView];
       }
 
       else
       {
-        v20 = 0;
+        _audioSession = 0;
       }
 
       [(ISWrappedAVPlayer *)self->_loopingVideoPlayer setLoopingEnabled:0];
@@ -486,20 +486,20 @@ LABEL_13:
       v25 = self->_loopingVideoView;
       self->_loopingVideoView = 0;
 
-      if (v20)
+      if (_audioSession)
       {
         v26 = MEMORY[0x1E69DD250];
         v29[0] = MEMORY[0x1E69E9820];
         v29[1] = 3221225472;
         v29[2] = __59__PUPhotoViewContentHelper__updateLoopingVideoViewIfNeeded__block_invoke_4;
         v29[3] = &unk_1E7B80DD0;
-        v30 = v20;
+        v30 = _audioSession;
         v27[0] = MEMORY[0x1E69E9820];
         v27[1] = 3221225472;
         v27[2] = __59__PUPhotoViewContentHelper__updateLoopingVideoViewIfNeeded__block_invoke_5;
         v27[3] = &unk_1E7B7F020;
-        v20 = v30;
-        v28 = v20;
+        _audioSession = v30;
+        v28 = _audioSession;
         [v26 animateWithDuration:2 delay:v29 options:v27 animations:0.3 completion:0.0];
       }
     }
@@ -530,86 +530,86 @@ void __59__PUPhotoViewContentHelper__updateLoopingVideoViewIfNeeded__block_invok
   [WeakRetained setNeedsLayout];
 }
 
-- (void)_setAudioSession:(id)a3
+- (void)_setAudioSession:(id)session
 {
-  v5 = a3;
-  if (self->__audioSession != v5)
+  sessionCopy = session;
+  if (self->__audioSession != sessionCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->__audioSession, a3);
+    v6 = sessionCopy;
+    objc_storeStrong(&self->__audioSession, session);
     [(PUPhotoViewContentHelper *)self _invalidateLoopingVideoView];
-    v5 = v6;
+    sessionCopy = v6;
   }
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  v5 = a3;
-  if (self->_subtitle != v5)
+  subtitleCopy = subtitle;
+  if (self->_subtitle != subtitleCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_subtitle, a3);
+    v6 = subtitleCopy;
+    objc_storeStrong(&self->_subtitle, subtitle);
     [(PUPhotoViewContentHelper *)self _invalidateTitleSubtitleUILabel];
-    v5 = v6;
+    subtitleCopy = v6;
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v5 = a3;
-  if (self->_title != v5)
+  titleCopy = title;
+  if (self->_title != titleCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_title, a3);
+    v6 = titleCopy;
+    objc_storeStrong(&self->_title, title);
     [(PUPhotoViewContentHelper *)self _invalidateTitleSubtitleUILabel];
-    v5 = v6;
+    titleCopy = v6;
   }
 }
 
-- (void)setTitleFontName:(id)a3
+- (void)setTitleFontName:(id)name
 {
-  v5 = a3;
-  if (self->_titleFontName != v5)
+  nameCopy = name;
+  if (self->_titleFontName != nameCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_titleFontName, a3);
+    v6 = nameCopy;
+    objc_storeStrong(&self->_titleFontName, name);
     [(PUPhotoViewContentHelper *)self _invalidateTitleSubtitleUILabel];
-    v5 = v6;
+    nameCopy = v6;
   }
 }
 
-- (void)setCollectionTileLayoutTemplate:(id)a3
+- (void)setCollectionTileLayoutTemplate:(id)template
 {
-  v5 = a3;
-  if (self->_collectionTileLayoutTemplate != v5)
+  templateCopy = template;
+  if (self->_collectionTileLayoutTemplate != templateCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_collectionTileLayoutTemplate, a3);
+    v6 = templateCopy;
+    objc_storeStrong(&self->_collectionTileLayoutTemplate, template);
     [(PUPhotoViewContentHelper *)self _invalidateTitleSubtitleUILabel];
-    v5 = v6;
+    templateCopy = v6;
   }
 }
 
-- (void)setFeatureSpec:(id)a3
+- (void)setFeatureSpec:(id)spec
 {
-  v5 = a3;
+  specCopy = spec;
   p_featureSpec = &self->_featureSpec;
-  if (self->_featureSpec != v5)
+  if (self->_featureSpec != specCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_featureSpec, a3);
+    v7 = specCopy;
+    objc_storeStrong(p_featureSpec, spec);
     p_featureSpec = [(PUPhotoViewContentHelper *)self _invalidateTitleSubtitleUILabel];
-    v5 = v7;
+    specCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](p_featureSpec, v5);
+  MEMORY[0x1EEE66BB8](p_featureSpec, specCopy);
 }
 
 - (void)_updateHighlight
 {
-  v3 = [(PUPhotoViewContentHelper *)self isHighlighted];
-  v4 = [(PUPhotoViewContentHelper *)self _highlightOverlayView];
-  if (v3 && !v4)
+  isHighlighted = [(PUPhotoViewContentHelper *)self isHighlighted];
+  _highlightOverlayView = [(PUPhotoViewContentHelper *)self _highlightOverlayView];
+  if (isHighlighted && !_highlightOverlayView)
   {
     v5 = objc_alloc(MEMORY[0x1E69DD250]);
     WeakRetained = objc_loadWeakRetained(&self->_contentView);
@@ -617,8 +617,8 @@ void __59__PUPhotoViewContentHelper__updateLoopingVideoViewIfNeeded__block_invok
     v9 = [v5 initWithFrame:?];
 
     [v9 setUserInteractionEnabled:0];
-    v7 = [MEMORY[0x1E69DC888] labelColor];
-    [v9 setBackgroundColor:v7];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [v9 setBackgroundColor:labelColor];
 
     [v9 setAlpha:0.5];
     v8 = objc_loadWeakRetained(&self->_contentView);
@@ -626,11 +626,11 @@ void __59__PUPhotoViewContentHelper__updateLoopingVideoViewIfNeeded__block_invok
 
     [(PUPhotoViewContentHelper *)self _setHighlightOverlayView:v9];
     [(PUPhotoViewContentHelper *)self _updateSubviewOrdering];
-    v4 = v9;
+    _highlightOverlayView = v9;
   }
 
-  v10 = v4;
-  [v4 setHidden:!v3];
+  v10 = _highlightOverlayView;
+  [_highlightOverlayView setHidden:!isHighlighted];
 }
 
 - (void)_updateRoundedCornersOverlayView
@@ -638,17 +638,17 @@ void __59__PUPhotoViewContentHelper__updateLoopingVideoViewIfNeeded__block_invok
   if (self->_cornerRadius > 0.0 && self->_useOverlay)
   {
     overlayColor = self->_overlayColor;
-    v4 = [(PUPhotoViewContentHelper *)self roundedCornerOverlayView];
-    v5 = v4;
+    roundedCornerOverlayView = [(PUPhotoViewContentHelper *)self roundedCornerOverlayView];
+    roundedCornerOverlayView2 = roundedCornerOverlayView;
     if (overlayColor)
     {
-      if (!v4)
+      if (!roundedCornerOverlayView)
       {
-        v5 = objc_alloc_init(MEMORY[0x1E69C3978]);
+        roundedCornerOverlayView2 = objc_alloc_init(MEMORY[0x1E69C3978]);
         WeakRetained = objc_loadWeakRetained(&self->_contentView);
-        [WeakRetained addSubview:v5];
+        [WeakRetained addSubview:roundedCornerOverlayView2];
 
-        [(PUPhotoViewContentHelper *)self setRoundedCornerOverlayView:v5];
+        [(PUPhotoViewContentHelper *)self setRoundedCornerOverlayView:roundedCornerOverlayView2];
         [(PUPhotoViewContentHelper *)self _updateSubviewOrdering];
       }
 
@@ -657,22 +657,22 @@ void __59__PUPhotoViewContentHelper__updateLoopingVideoViewIfNeeded__block_invok
       v7[2] = __60__PUPhotoViewContentHelper__updateRoundedCornersOverlayView__block_invoke;
       v7[3] = &unk_1E7B7C3C0;
       v7[4] = self;
-      [v5 performChanges:v7];
+      [roundedCornerOverlayView2 performChanges:v7];
       goto LABEL_10;
     }
   }
 
   else
   {
-    v5 = [(PUPhotoViewContentHelper *)self roundedCornerOverlayView];
+    roundedCornerOverlayView2 = [(PUPhotoViewContentHelper *)self roundedCornerOverlayView];
   }
 
-  if (!v5)
+  if (!roundedCornerOverlayView2)
   {
     return;
   }
 
-  [v5 removeFromSuperview];
+  [roundedCornerOverlayView2 removeFromSuperview];
   [(PUPhotoViewContentHelper *)self setRoundedCornerOverlayView:0];
 LABEL_10:
 }
@@ -698,8 +698,8 @@ void __60__PUPhotoViewContentHelper__updateRoundedCornersOverlayView__block_invo
 
 - (void)_updateLayerCornerRadius
 {
-  v7 = [(PUPhotoViewContentHelper *)self contentView];
-  v3 = [v7 layer];
+  contentView = [(PUPhotoViewContentHelper *)self contentView];
+  layer = [contentView layer];
   v4 = 0.0;
   if (!self->_useOverlay)
   {
@@ -707,21 +707,21 @@ void __60__PUPhotoViewContentHelper__updateRoundedCornersOverlayView__block_invo
     v4 = v5;
   }
 
-  [v3 cornerRadius];
+  [layer cornerRadius];
   if (v6 != v4)
   {
-    [v3 setCornerRadius:v4];
-    [v3 setCornerCurve:*MEMORY[0x1E69796E8]];
+    [layer setCornerRadius:v4];
+    [layer setCornerCurve:*MEMORY[0x1E69796E8]];
     [(PUPhotoViewContentHelper *)self _updateContentViewClipsToBounds];
-    [v7 setNeedsLayout];
+    [contentView setNeedsLayout];
   }
 }
 
 - (void)_updatePhotoDecoration
 {
-  v28 = [(PUPhotoViewContentHelper *)self photoDecoration];
-  v3 = [(PUPhotoViewContentHelper *)self avoidsPhotoDecoration];
-  if (v3)
+  photoDecoration = [(PUPhotoViewContentHelper *)self photoDecoration];
+  avoidsPhotoDecoration = [(PUPhotoViewContentHelper *)self avoidsPhotoDecoration];
+  if (avoidsPhotoDecoration)
   {
     photoDecorationBorderView = self->_photoDecorationBorderView;
     if (photoDecorationBorderView)
@@ -731,7 +731,7 @@ void __60__PUPhotoViewContentHelper__updateRoundedCornersOverlayView__block_invo
       WeakRetained = self->_photoDecorationBorderView;
       self->_photoDecorationBorderView = 0;
 LABEL_13:
-      v13 = !v3;
+      v13 = !avoidsPhotoDecoration;
 
       v14 = 1;
       goto LABEL_14;
@@ -742,25 +742,25 @@ LABEL_8:
     v13 = 0;
     v14 = 0;
 LABEL_14:
-    v12 = v28;
+    v12 = photoDecoration;
     goto LABEL_15;
   }
 
-  [v28 borderWidth];
+  [photoDecoration borderWidth];
   v8 = v7;
-  v9 = [v28 foregroundColor];
-  if (v9)
+  foregroundColor = [photoDecoration foregroundColor];
+  if (foregroundColor)
   {
-    v10 = v9;
-    v11 = [v28 foregroundColor];
-    v5 = CGColorGetAlpha([v11 CGColor]) > 0.0;
+    v10 = foregroundColor;
+    foregroundColor2 = [photoDecoration foregroundColor];
+    v5 = CGColorGetAlpha([foregroundColor2 CGColor]) > 0.0;
 
     if (v8 <= 0.0)
     {
       goto LABEL_8;
     }
 
-    v12 = v28;
+    v12 = photoDecoration;
   }
 
   else
@@ -768,7 +768,7 @@ LABEL_14:
     v5 = 0;
     v13 = 0;
     v14 = 0;
-    v12 = v28;
+    v12 = photoDecoration;
     if (v8 <= 0.0)
     {
       goto LABEL_15;
@@ -790,8 +790,8 @@ LABEL_14:
   v13 = 1;
 LABEL_15:
   v17 = self->_photoDecorationBorderView;
-  v18 = [v12 borderColor];
-  [(PUBackgroundColorView *)v17 _puSetBackgroundColor:v18];
+  borderColor = [v12 borderColor];
+  [(PUBackgroundColorView *)v17 _puSetBackgroundColor:borderColor];
 
   if (v5 && !self->_photoDecorationOverlayView)
   {
@@ -804,7 +804,7 @@ LABEL_15:
     goto LABEL_21;
   }
 
-  if (v3)
+  if (avoidsPhotoDecoration)
   {
     v19 = self->_photoDecorationOverlayView;
     if (v19)
@@ -819,8 +819,8 @@ LABEL_21:
   }
 
   v23 = self->_photoDecorationOverlayView;
-  v24 = [v28 foregroundColor];
-  [(PUBackgroundColorView *)v23 _puSetBackgroundColor:v24];
+  foregroundColor3 = [photoDecoration foregroundColor];
+  [(PUBackgroundColorView *)v23 _puSetBackgroundColor:foregroundColor3];
 
   v25 = self->_photoDecorationBorderView;
   if (v25 && v13 == [(PUBackgroundColorView *)v25 isHidden])
@@ -851,7 +851,7 @@ LABEL_30:
   v10 = 0u;
   v11 = 0u;
   [(PUPhotoViewContentHelper *)self badgeInfo];
-  v3 = [(PUPhotoViewContentHelper *)self flattensBadgeView];
+  flattensBadgeView = [(PUPhotoViewContentHelper *)self flattensBadgeView];
   IsNull = PXAssetBadgeInfoIsNull();
   v5 = [(PUPhotoViewContentHelper *)self _badgeView:0];
   if (IsNull)
@@ -860,7 +860,7 @@ LABEL_30:
   }
 
   v6 = objc_opt_class();
-  if ((v3 ^ (v6 != objc_opt_class())))
+  if ((flattensBadgeView ^ (v6 != objc_opt_class())))
   {
     if (v5)
     {
@@ -906,8 +906,8 @@ LABEL_9:
     [(PUPhotoViewContentHelper *)self _updateAnimatedImageViewIfNeeded];
     if ([(PUPhotoViewContentHelper *)self _needsUpdate])
     {
-      v4 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v4 handleFailureInMethod:a2 object:self file:@"PUPhotoView.m" lineNumber:886 description:{@"%@: update still needed at end of update pass", self}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUPhotoView.m" lineNumber:886 description:{@"%@: update still needed at end of update pass", self}];
     }
   }
 }
@@ -927,9 +927,9 @@ LABEL_9:
       textBannerView = self->_textBannerView;
     }
 
-    v7 = [(PXTextBannerView *)textBannerView superview];
+    superview = [(PXTextBannerView *)textBannerView superview];
 
-    if (!v7)
+    if (!superview)
     {
       WeakRetained = objc_loadWeakRetained(&self->_contentView);
       [WeakRetained addSubview:self->_textBannerView];
@@ -1003,9 +1003,9 @@ LABEL_9:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_contentView);
-  v6 = [WeakRetained clipsToBounds];
+  clipsToBounds = [WeakRetained clipsToBounds];
 
-  if (v3 != v6)
+  if (v3 != clipsToBounds)
   {
     v7 = objc_loadWeakRetained(&self->_contentView);
     [v7 setClipsToBounds:v3];
@@ -1017,29 +1017,29 @@ LABEL_9:
   if (self->_hasLayerBackgroundColor)
   {
     WeakRetained = objc_loadWeakRetained(&self->_contentView);
-    v9 = [WeakRetained layer];
+    layer = [WeakRetained layer];
 
-    v5 = [(PUPhotoViewContentHelper *)self backgroundColor];
-    layerDefaultBackgroundColor = v5;
-    if (!v5)
+    backgroundColor = [(PUPhotoViewContentHelper *)self backgroundColor];
+    layerDefaultBackgroundColor = backgroundColor;
+    if (!backgroundColor)
     {
       layerDefaultBackgroundColor = self->_layerDefaultBackgroundColor;
     }
 
     v7 = layerDefaultBackgroundColor;
 
-    v8 = [(UIColor *)v7 CGColor];
-    [v9 setBackgroundColor:v8];
+    cGColor = [(UIColor *)v7 CGColor];
+    [layer setBackgroundColor:cGColor];
   }
 }
 
 - (void)_updateUnderlyingImageViewDynamicRange
 {
   [(UIImageView *)self->_photoImageView setPreferredImageDynamicRange:[(PUPhotoViewContentHelper *)self preferredImageDynamicRange]];
-  v3 = [(PUPhotoViewContentHelper *)self preferredImageDynamicRange];
+  preferredImageDynamicRange = [(PUPhotoViewContentHelper *)self preferredImageDynamicRange];
   crossfadeImageView = self->__crossfadeImageView;
 
-  [(UIImageView *)crossfadeImageView setPreferredImageDynamicRange:v3];
+  [(UIImageView *)crossfadeImageView setPreferredImageDynamicRange:preferredImageDynamicRange];
 }
 
 - (void)_updateImageView
@@ -1089,8 +1089,8 @@ LABEL_9:
       [(PUPhotoViewContentHelper *)self setPhotoImageView:v8];
       [(PUPhotoViewContentHelper *)self _updateUnderlyingImageViewDynamicRange];
       [v8 setClipsToBounds:1];
-      v9 = [v8 layer];
-      [v9 setAllowsGroupOpacity:0];
+      layer = [v8 layer];
+      [layer setAllowsGroupOpacity:0];
 
       WeakRetained = objc_loadWeakRetained(&self->_contentView);
       [WeakRetained addSubview:v8];
@@ -1103,17 +1103,17 @@ LABEL_9:
 
     [(PUPhotoViewContentHelper *)self _updateContentViewClipsToBounds];
     v12 = objc_loadWeakRetained(&self->_contentView);
-    v13 = [v12 layer];
-    [v13 setContents:0];
+    layer2 = [v12 layer];
+    [layer2 setContents:0];
 
     v14 = objc_loadWeakRetained(&self->_contentView);
-    v15 = [v14 layer];
-    [v15 setBackgroundColor:0];
+    layer3 = [v14 layer];
+    [layer3 setBackgroundColor:0];
 
     [(UIImageView *)self->_photoImageView setImage:v38];
     photoImageView = self->_photoImageView;
-    v17 = [(PUPhotoViewContentHelper *)self backgroundColor];
-    [(UIImageView *)photoImageView setBackgroundColor:v17];
+    backgroundColor = [(PUPhotoViewContentHelper *)self backgroundColor];
+    [(UIImageView *)photoImageView setBackgroundColor:backgroundColor];
 
     v18 = self->_photoImageView;
     [(PUPhotoViewContentHelper *)self contentAlpha];
@@ -1133,8 +1133,8 @@ LABEL_9:
       self->_darkContentOverlay = v20;
 
       v22 = self->_darkContentOverlay;
-      v23 = [MEMORY[0x1E69DC888] blackColor];
-      [(UIView *)v22 setBackgroundColor:v23];
+      blackColor = [MEMORY[0x1E69DC888] blackColor];
+      [(UIView *)v22 setBackgroundColor:blackColor];
 
       v24 = objc_loadWeakRetained(&self->_contentView);
       [v24 addSubview:self->_darkContentOverlay];
@@ -1160,24 +1160,24 @@ LABEL_9:
 
   else
   {
-    v27 = [(PUPhotoViewContentHelper *)self needsAvalancheStack];
+    needsAvalancheStack = [(PUPhotoViewContentHelper *)self needsAvalancheStack];
     [(PUPhotoViewContentHelper *)self _removePhotoImageViewIfNecessary];
-    if (v27)
+    if (needsAvalancheStack)
     {
       [(PUPhotoViewContentHelper *)self _addAvalancheStackViewIfNecessary];
       [(PUPhotoViewContentHelper *)self _updateContentViewClipsToBounds];
       v28 = objc_loadWeakRetained(&self->_contentView);
-      v29 = [v28 layer];
-      [v29 setContents:0];
+      layer4 = [v28 layer];
+      [layer4 setContents:0];
 
       v30 = objc_loadWeakRetained(&self->_contentView);
-      v31 = [v30 layer];
-      [v31 setBackgroundColor:0];
+      layer5 = [v30 layer];
+      [layer5 setBackgroundColor:0];
 
       [(PUAvalancheStackView *)self->_avalancheStackView setImage:v38];
       avalancheStackView = self->_avalancheStackView;
-      v33 = [(PUPhotoViewContentHelper *)self backgroundColor];
-      [(PUAvalancheStackView *)avalancheStackView setBackgroundColor:v33];
+      backgroundColor2 = [(PUPhotoViewContentHelper *)self backgroundColor];
+      [(PUAvalancheStackView *)avalancheStackView setBackgroundColor:backgroundColor2];
     }
 
     else
@@ -1185,15 +1185,15 @@ LABEL_9:
       [(PUPhotoViewContentHelper *)self _removeAvalancheStackViewIfNecessary];
       [(PUPhotoViewContentHelper *)self _updateContentViewClipsToBounds];
       v34 = objc_loadWeakRetained(&self->_contentView);
-      v35 = [v34 layer];
+      layer6 = [v34 layer];
 
-      [v35 setContents:{-[UIImage CGImage](v38, "CGImage")}];
+      [layer6 setContents:{-[UIImage CGImage](v38, "CGImage")}];
       if (PUMainScreenScale_onceToken != -1)
       {
         dispatch_once(&PUMainScreenScale_onceToken, &__block_literal_global_27106);
       }
 
-      [v35 setContentsScale:*&PUMainScreenScale_screenScale];
+      [layer6 setContentsScale:*&PUMainScreenScale_screenScale];
       self->_hasLayerBackgroundColor = 1;
       [(PUPhotoViewContentHelper *)self _updateLayerBackgroundColorIfNeeded];
       v36 = self->_fillMode;
@@ -1207,7 +1207,7 @@ LABEL_9:
         v37 = **(&unk_1E7B7C3E0 + v36);
       }
 
-      [v35 setContentsGravity:v37];
+      [layer6 setContentsGravity:v37];
     }
   }
 }
@@ -1257,8 +1257,8 @@ LABEL_9:
       self->_hasPendingPlaybackRequest = 0;
       if (!self->_pendingPlaybackRequestStyle)
       {
-        v15 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v15 handleFailureInMethod:a2 object:self file:@"PUPhotoView.m" lineNumber:695 description:@"Trying to start playback with PHLivePhotoViewPlaybackStyleUndefined"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PUPhotoView.m" lineNumber:695 description:@"Trying to start playback with PHLivePhotoViewPlaybackStyleUndefined"];
       }
 
       [(PUPhotoViewContentHelper *)self startPlaybackWithStyle:?];
@@ -1293,9 +1293,9 @@ LABEL_9:
     self->_avalancheStackView = v4;
 
     [(PUAvalancheStackView *)self->_avalancheStackView setContentMode:[(PUPhotoViewContentHelper *)self fillMode]];
-    v6 = [(PUPhotoViewContentHelper *)self avalancheStackBackgroundColor];
-    v7 = [(PUAvalancheStackView *)self->_avalancheStackView layer];
-    [v7 setBackgroundColor:v6];
+    avalancheStackBackgroundColor = [(PUPhotoViewContentHelper *)self avalancheStackBackgroundColor];
+    layer = [(PUAvalancheStackView *)self->_avalancheStackView layer];
+    [layer setBackgroundColor:avalancheStackBackgroundColor];
 
     WeakRetained = objc_loadWeakRetained(&self->_contentView);
     [WeakRetained addSubview:self->_avalancheStackView];
@@ -1317,44 +1317,44 @@ LABEL_9:
   }
 }
 
-- (void)livePhotoView:(id)a3 willBeginPlaybackWithStyle:(int64_t)a4
+- (void)livePhotoView:(id)view willBeginPlaybackWithStyle:(int64_t)style
 {
   if (self->_delegateFlags.respondsToLivePhotoWillBeginPlaybackWithStyle)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained photoViewContentHelper:self livePhotoWillBeginPlaybackWithStyle:a4];
+    [WeakRetained photoViewContentHelper:self livePhotoWillBeginPlaybackWithStyle:style];
   }
 }
 
-- (void)setLoopingPlaybackAllowed:(BOOL)a3
+- (void)setLoopingPlaybackAllowed:(BOOL)allowed
 {
-  if (self->_loopingPlaybackAllowed != a3)
+  if (self->_loopingPlaybackAllowed != allowed)
   {
-    self->_loopingPlaybackAllowed = a3;
+    self->_loopingPlaybackAllowed = allowed;
     [(PUPhotoViewContentHelper *)self _invalidateAnimatedImageView];
   }
 }
 
-- (void)setAnimatedImage:(id)a3
+- (void)setAnimatedImage:(id)image
 {
-  v5 = a3;
+  imageCopy = image;
   p_animatedImage = &self->_animatedImage;
-  if (self->_animatedImage != v5)
+  if (self->_animatedImage != imageCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_animatedImage, a3);
+    v7 = imageCopy;
+    objc_storeStrong(p_animatedImage, image);
     p_animatedImage = [(PUPhotoViewContentHelper *)self _invalidateAnimatedImageView];
-    v5 = v7;
+    imageCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](p_animatedImage, v5);
+  MEMORY[0x1EEE66BB8](p_animatedImage, imageCopy);
 }
 
-- (void)setLoopingVideoAsset:(id)a3
+- (void)setLoopingVideoAsset:(id)asset
 {
-  if (self->_loopingVideoAsset != a3)
+  if (self->_loopingVideoAsset != asset)
   {
-    v5 = [a3 copy];
+    v5 = [asset copy];
     loopingVideoAsset = self->_loopingVideoAsset;
     self->_loopingVideoAsset = v5;
 
@@ -1362,9 +1362,9 @@ LABEL_9:
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -1374,14 +1374,14 @@ LABEL_9:
   }
 }
 
-- (void)startPlaybackWithStyle:(int64_t)a3
+- (void)startPlaybackWithStyle:(int64_t)style
 {
   if (self->_livePhotoView)
   {
     [(PUPhotoViewContentHelper *)self setShouldPrepareForPlayback:1];
     livePhotoView = self->_livePhotoView;
 
-    [(PHLivePhotoView *)livePhotoView startPlaybackWithStyle:a3];
+    [(PHLivePhotoView *)livePhotoView startPlaybackWithStyle:style];
   }
 
   else
@@ -1391,200 +1391,200 @@ LABEL_9:
   }
 }
 
-- (void)setLivePhoto:(id)a3
+- (void)setLivePhoto:(id)photo
 {
-  v5 = a3;
+  photoCopy = photo;
   livePhoto = self->_livePhoto;
-  if (livePhoto != v5)
+  if (livePhoto != photoCopy)
   {
-    v7 = v5;
-    livePhoto = [livePhoto isEqual:v5];
-    v5 = v7;
+    v7 = photoCopy;
+    livePhoto = [livePhoto isEqual:photoCopy];
+    photoCopy = v7;
     if ((livePhoto & 1) == 0)
     {
-      objc_storeStrong(&self->_livePhoto, a3);
+      objc_storeStrong(&self->_livePhoto, photo);
       livePhoto = [(PUPhotoViewContentHelper *)self _updateLivePhotoView];
-      v5 = v7;
+      photoCopy = v7;
     }
   }
 
-  MEMORY[0x1EEE66BB8](livePhoto, v5);
+  MEMORY[0x1EEE66BB8](livePhoto, photoCopy);
 }
 
-- (void)setShowsLivePhoto:(BOOL)a3
+- (void)setShowsLivePhoto:(BOOL)photo
 {
-  if (self->_showsLivePhoto != a3)
+  if (self->_showsLivePhoto != photo)
   {
-    self->_showsLivePhoto = a3;
+    self->_showsLivePhoto = photo;
     [(PUPhotoViewContentHelper *)self _updateLivePhotoView];
   }
 }
 
-- (void)setShouldPrepareForPlayback:(BOOL)a3
+- (void)setShouldPrepareForPlayback:(BOOL)playback
 {
-  if (self->_shouldPrepareForPlayback != a3)
+  if (self->_shouldPrepareForPlayback != playback)
   {
-    self->_shouldPrepareForPlayback = a3;
+    self->_shouldPrepareForPlayback = playback;
     [(PUPhotoViewContentHelper *)self _updateLivePhotoViewPreparing];
   }
 }
 
-- (void)setLivePhotoHidden:(BOOL)a3
+- (void)setLivePhotoHidden:(BOOL)hidden
 {
-  if (self->_livePhotoHidden != a3)
+  if (self->_livePhotoHidden != hidden)
   {
-    self->_livePhotoHidden = a3;
+    self->_livePhotoHidden = hidden;
     [(PUPhotoViewContentHelper *)self _updateLivePhotoViewVisibility];
   }
 }
 
-- (void)setDarkContentOverlayAlpha:(double)a3
+- (void)setDarkContentOverlayAlpha:(double)alpha
 {
-  if (self->_darkContentOverlayAlpha != a3)
+  if (self->_darkContentOverlayAlpha != alpha)
   {
-    self->_darkContentOverlayAlpha = a3;
+    self->_darkContentOverlayAlpha = alpha;
     [(PUPhotoViewContentHelper *)self _updateImageView];
   }
 }
 
-- (void)setContentAlpha:(double)a3
+- (void)setContentAlpha:(double)alpha
 {
-  if (self->_contentAlpha != a3)
+  if (self->_contentAlpha != alpha)
   {
-    self->_contentAlpha = a3;
+    self->_contentAlpha = alpha;
     [(PUPhotoViewContentHelper *)self _updateImageView];
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   p_backgroundColor = &self->_backgroundColor;
-  if (self->_backgroundColor != v5)
+  if (self->_backgroundColor != colorCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_backgroundColor, a3);
+    v7 = colorCopy;
+    objc_storeStrong(p_backgroundColor, color);
     p_backgroundColor = [(PUPhotoViewContentHelper *)self _updateImageView];
-    v5 = v7;
+    colorCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](p_backgroundColor, v5);
+  MEMORY[0x1EEE66BB8](p_backgroundColor, colorCopy);
 }
 
-- (void)setCornerRadius:(double)a3 cornersToRound:(unint64_t)a4 useOverlay:(BOOL)a5 overlayColor:(id)a6 continuousCorners:(BOOL)a7
+- (void)setCornerRadius:(double)radius cornersToRound:(unint64_t)round useOverlay:(BOOL)overlay overlayColor:(id)color continuousCorners:(BOOL)corners
 {
-  v7 = a7;
-  v9 = a5;
-  v13 = a6;
-  if (self->_cornerRadius != a3 || self->_cornersToRound != a4 || self->_useOverlay != v9 || self->_overlayColor != v13 || self->_continuousCorners != v7)
+  cornersCopy = corners;
+  overlayCopy = overlay;
+  colorCopy = color;
+  if (self->_cornerRadius != radius || self->_cornersToRound != round || self->_useOverlay != overlayCopy || self->_overlayColor != colorCopy || self->_continuousCorners != cornersCopy)
   {
-    self->_cornerRadius = a3;
-    self->_cornersToRound = a4;
-    self->_useOverlay = v9;
-    v14 = v13;
-    objc_storeStrong(&self->_overlayColor, a6);
-    self->_continuousCorners = v7;
+    self->_cornerRadius = radius;
+    self->_cornersToRound = round;
+    self->_useOverlay = overlayCopy;
+    v14 = colorCopy;
+    objc_storeStrong(&self->_overlayColor, color);
+    self->_continuousCorners = cornersCopy;
     [(PUPhotoViewContentHelper *)self _updateLayerCornerRadius];
     [(PUPhotoViewContentHelper *)self _updateRoundedCornersOverlayView];
-    v13 = v14;
+    colorCopy = v14;
   }
 }
 
-- (void)setOverlayColor:(id)a3
+- (void)setOverlayColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   [(PUPhotoViewContentHelper *)self cornerRadius];
-  [(PUPhotoViewContentHelper *)self setCornerRadius:[(PUPhotoViewContentHelper *)self cornersToRound] cornersToRound:[(PUPhotoViewContentHelper *)self useOverlay] useOverlay:v5 overlayColor:1 continuousCorners:v4];
+  [(PUPhotoViewContentHelper *)self setCornerRadius:[(PUPhotoViewContentHelper *)self cornersToRound] cornersToRound:[(PUPhotoViewContentHelper *)self useOverlay] useOverlay:colorCopy overlayColor:1 continuousCorners:v4];
 }
 
-- (void)setUseOverlay:(BOOL)a3
+- (void)setUseOverlay:(BOOL)overlay
 {
-  v3 = a3;
-  [(PUPhotoViewContentHelper *)self cornerRadius];
-  v6 = v5;
-  v7 = [(PUPhotoViewContentHelper *)self cornersToRound];
-  v8 = [(PUPhotoViewContentHelper *)self overlayColor];
-  [(PUPhotoViewContentHelper *)self setCornerRadius:v7 cornersToRound:v3 useOverlay:v8 overlayColor:1 continuousCorners:v6];
-}
-
-- (void)setCornersToRound:(unint64_t)a3
-{
+  overlayCopy = overlay;
   [(PUPhotoViewContentHelper *)self cornerRadius];
   v6 = v5;
-  v7 = [(PUPhotoViewContentHelper *)self useOverlay];
-  v8 = [(PUPhotoViewContentHelper *)self overlayColor];
-  [(PUPhotoViewContentHelper *)self setCornerRadius:a3 cornersToRound:v7 useOverlay:v8 overlayColor:1 continuousCorners:v6];
+  cornersToRound = [(PUPhotoViewContentHelper *)self cornersToRound];
+  overlayColor = [(PUPhotoViewContentHelper *)self overlayColor];
+  [(PUPhotoViewContentHelper *)self setCornerRadius:cornersToRound cornersToRound:overlayCopy useOverlay:overlayColor overlayColor:1 continuousCorners:v6];
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornersToRound:(unint64_t)round
 {
-  v5 = [(PUPhotoViewContentHelper *)self cornersToRound];
-  v6 = [(PUPhotoViewContentHelper *)self overlayColor];
-  [(PUPhotoViewContentHelper *)self setCornerRadius:v5 cornersToRound:0 useOverlay:v6 overlayColor:1 continuousCorners:a3];
+  [(PUPhotoViewContentHelper *)self cornerRadius];
+  v6 = v5;
+  useOverlay = [(PUPhotoViewContentHelper *)self useOverlay];
+  overlayColor = [(PUPhotoViewContentHelper *)self overlayColor];
+  [(PUPhotoViewContentHelper *)self setCornerRadius:round cornersToRound:useOverlay useOverlay:overlayColor overlayColor:1 continuousCorners:v6];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setCornerRadius:(double)radius
 {
-  if (self->_highlighted != a3)
+  cornersToRound = [(PUPhotoViewContentHelper *)self cornersToRound];
+  overlayColor = [(PUPhotoViewContentHelper *)self overlayColor];
+  [(PUPhotoViewContentHelper *)self setCornerRadius:cornersToRound cornersToRound:0 useOverlay:overlayColor overlayColor:1 continuousCorners:radius];
+}
+
+- (void)setHighlighted:(BOOL)highlighted
+{
+  if (self->_highlighted != highlighted)
   {
-    self->_highlighted = a3;
+    self->_highlighted = highlighted;
     [(PUPhotoViewContentHelper *)self _updateHighlight];
   }
 }
 
-- (void)setAnimatingRoundedCorners:(BOOL)a3
+- (void)setAnimatingRoundedCorners:(BOOL)corners
 {
-  if (self->_animatingRoundedCorners != a3)
+  if (self->_animatingRoundedCorners != corners)
   {
-    self->_animatingRoundedCorners = a3;
+    self->_animatingRoundedCorners = corners;
     [(PUPhotoViewContentHelper *)self _updateContentViewClipsToBounds];
   }
 }
 
-- (void)setAvoidsPhotoDecoration:(BOOL)a3
+- (void)setAvoidsPhotoDecoration:(BOOL)decoration
 {
-  if (self->_avoidsPhotoDecoration != a3)
+  if (self->_avoidsPhotoDecoration != decoration)
   {
-    self->_avoidsPhotoDecoration = a3;
+    self->_avoidsPhotoDecoration = decoration;
     [(PUPhotoViewContentHelper *)self _updatePhotoDecoration];
   }
 }
 
-- (void)setFlattensBadgeView:(BOOL)a3
+- (void)setFlattensBadgeView:(BOOL)view
 {
-  if (self->_flattensBadgeView != a3)
+  if (self->_flattensBadgeView != view)
   {
-    self->_flattensBadgeView = a3;
+    self->_flattensBadgeView = view;
     [(PUPhotoViewContentHelper *)self _invalidateBadgeView];
   }
 }
 
-- (void)setImageViewEdgeAntialiasingEnabled:(BOOL)a3
+- (void)setImageViewEdgeAntialiasingEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(PUPhotoViewContentHelper *)self photoImageView];
-  v4 = [v5 layer];
-  [v4 setAllowsEdgeAntialiasing:v3];
+  enabledCopy = enabled;
+  photoImageView = [(PUPhotoViewContentHelper *)self photoImageView];
+  layer = [photoImageView layer];
+  [layer setAllowsEdgeAntialiasing:enabledCopy];
 }
 
 - (BOOL)isImageViewEdgeAntialiasingEnabled
 {
-  v2 = [(PUPhotoViewContentHelper *)self photoImageView];
-  v3 = [v2 layer];
-  v4 = [v3 allowsEdgeAntialiasing];
+  photoImageView = [(PUPhotoViewContentHelper *)self photoImageView];
+  layer = [photoImageView layer];
+  allowsEdgeAntialiasing = [layer allowsEdgeAntialiasing];
 
-  return v4;
+  return allowsEdgeAntialiasing;
 }
 
-- (void)setPhotoDecoration:(id)a3
+- (void)setPhotoDecoration:(id)decoration
 {
-  v4 = a3;
+  decorationCopy = decoration;
   photoDecoration = self->_photoDecoration;
-  if (photoDecoration != v4)
+  if (photoDecoration != decorationCopy)
   {
-    v8 = v4;
-    photoDecoration = [photoDecoration isEqual:v4];
-    v4 = v8;
+    v8 = decorationCopy;
+    photoDecoration = [photoDecoration isEqual:decorationCopy];
+    decorationCopy = v8;
     if ((photoDecoration & 1) == 0)
     {
       v6 = [v8 copy];
@@ -1592,20 +1592,20 @@ LABEL_9:
       self->_photoDecoration = v6;
 
       photoDecoration = [(PUPhotoViewContentHelper *)self _updatePhotoDecoration];
-      v4 = v8;
+      decorationCopy = v8;
     }
   }
 
-  MEMORY[0x1EEE66BB8](photoDecoration, v4);
+  MEMORY[0x1EEE66BB8](photoDecoration, decorationCopy);
 }
 
-- (void)updatePhotoImageWithoutReconfiguring:(id)a3
+- (void)updatePhotoImageWithoutReconfiguring:(id)reconfiguring
 {
-  v5 = a3;
-  if (self->_photoImage != v5)
+  reconfiguringCopy = reconfiguring;
+  if (self->_photoImage != reconfiguringCopy)
   {
-    v11 = v5;
-    objc_storeStrong(&self->_photoImage, a3);
+    v11 = reconfiguringCopy;
+    objc_storeStrong(&self->_photoImage, reconfiguring);
     photoImageView = self->_photoImageView;
     if (photoImageView)
     {
@@ -1617,93 +1617,93 @@ LABEL_9:
       [(PUPhotoViewContentHelper *)self _addAvalancheStackViewIfNecessary];
       [(PUAvalancheStackView *)self->_avalancheStackView setImage:self->_photoImage];
       WeakRetained = objc_loadWeakRetained(&self->_contentView);
-      v8 = [WeakRetained layer];
-      [v8 setContents:0];
+      layer = [WeakRetained layer];
+      [layer setContents:0];
     }
 
     else
     {
       [(PUPhotoViewContentHelper *)self _removeAvalancheStackViewIfNecessary];
       v9 = objc_loadWeakRetained(&self->_contentView);
-      v10 = [v9 layer];
-      [v10 setContents:{-[UIImage CGImage](self->_photoImage, "CGImage")}];
+      layer2 = [v9 layer];
+      [layer2 setContents:{-[UIImage CGImage](self->_photoImage, "CGImage")}];
     }
 
-    v5 = v11;
+    reconfiguringCopy = v11;
   }
 }
 
-- (void)setPreferredImageDynamicRange:(int64_t)a3
+- (void)setPreferredImageDynamicRange:(int64_t)range
 {
-  if (self->_preferredImageDynamicRange == a3)
+  if (self->_preferredImageDynamicRange == range)
   {
     [(PUPhotoViewContentHelper *)self _updateUnderlyingImageViewDynamicRange];
   }
 }
 
-- (void)setPlaceHolderImage:(id)a3
+- (void)setPlaceHolderImage:(id)image
 {
-  v5 = a3;
+  imageCopy = image;
   p_placeHolderImage = &self->_placeHolderImage;
-  if (self->_placeHolderImage != v5)
+  if (self->_placeHolderImage != imageCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_placeHolderImage, a3);
+    v7 = imageCopy;
+    objc_storeStrong(p_placeHolderImage, image);
     p_placeHolderImage = [(PUPhotoViewContentHelper *)self _updateImageView];
-    v5 = v7;
+    imageCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](p_placeHolderImage, v5);
+  MEMORY[0x1EEE66BB8](p_placeHolderImage, imageCopy);
 }
 
-- (void)setPhotoImage:(id)a3
+- (void)setPhotoImage:(id)image
 {
-  v5 = a3;
+  imageCopy = image;
   p_photoImage = &self->_photoImage;
-  if (self->_photoImage != v5)
+  if (self->_photoImage != imageCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_photoImage, a3);
+    v7 = imageCopy;
+    objc_storeStrong(p_photoImage, image);
     [(PUPhotoViewContentHelper *)self _updateImageView];
     p_photoImage = [(PUPhotoViewContentHelper *)self _invalidateTitleSubtitleUILabel];
-    v5 = v7;
+    imageCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](p_photoImage, v5);
+  MEMORY[0x1EEE66BB8](p_photoImage, imageCopy);
 }
 
-- (void)setTransitionSnapshotView:(id)a3
+- (void)setTransitionSnapshotView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   transitionSnapshotView = self->_transitionSnapshotView;
-  if (transitionSnapshotView != v5)
+  if (transitionSnapshotView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UIView *)transitionSnapshotView removeFromSuperview];
-    objc_storeStrong(&self->_transitionSnapshotView, a3);
+    objc_storeStrong(&self->_transitionSnapshotView, view);
     transitionSnapshotView = [(PUPhotoViewContentHelper *)self _updateImageView];
-    v5 = v7;
+    viewCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](transitionSnapshotView, v5);
+  MEMORY[0x1EEE66BB8](transitionSnapshotView, viewCopy);
 }
 
-- (void)setImageTransform:(CGAffineTransform *)a3
+- (void)setImageTransform:(CGAffineTransform *)transform
 {
   p_imageTransform = &self->_imageTransform;
   v6 = *&self->_imageTransform.c;
   *&t1.a = *&self->_imageTransform.a;
   *&t1.c = v6;
   *&t1.tx = *&self->_imageTransform.tx;
-  v7 = *&a3->c;
-  *&t2.a = *&a3->a;
+  v7 = *&transform->c;
+  *&t2.a = *&transform->a;
   *&t2.c = v7;
-  *&t2.tx = *&a3->tx;
+  *&t2.tx = *&transform->tx;
   if (!CGAffineTransformEqualToTransform(&t1, &t2))
   {
-    v8 = *&a3->a;
-    v9 = *&a3->tx;
-    *&p_imageTransform->c = *&a3->c;
+    v8 = *&transform->a;
+    v9 = *&transform->tx;
+    *&p_imageTransform->c = *&transform->c;
     *&p_imageTransform->tx = v9;
     *&p_imageTransform->a = v8;
     v10[0] = MEMORY[0x1E69E9820];
@@ -1734,21 +1734,21 @@ uint64_t __46__PUPhotoViewContentHelper_setImageTransform___block_invoke(uint64_
   return [v5 setTransform:&v8];
 }
 
-- (void)setPhotoSize:(CGSize)a3
+- (void)setPhotoSize:(CGSize)size
 {
-  if (self->_photoSize.width != a3.width || self->_photoSize.height != a3.height)
+  if (self->_photoSize.width != size.width || self->_photoSize.height != size.height)
   {
-    self->_photoSize = a3;
+    self->_photoSize = size;
     WeakRetained = objc_loadWeakRetained(&self->_contentView);
     [WeakRetained setNeedsLayout];
   }
 }
 
-- (void)setFillMode:(int64_t)a3
+- (void)setFillMode:(int64_t)mode
 {
-  if (self->_fillMode != a3)
+  if (self->_fillMode != mode)
   {
-    self->_fillMode = a3;
+    self->_fillMode = mode;
     [(PUPhotoViewContentHelper *)self _updateImageView];
     [(PUPhotoViewContentHelper *)self _updateLivePhotoView];
     WeakRetained = objc_loadWeakRetained(&self->_contentView);
@@ -1756,42 +1756,42 @@ uint64_t __46__PUPhotoViewContentHelper_setImageTransform___block_invoke(uint64_
   }
 }
 
-- (void)setTextBannerVisible:(BOOL)a3
+- (void)setTextBannerVisible:(BOOL)visible
 {
-  if (self->_isTextBannerVisible != a3)
+  if (self->_isTextBannerVisible != visible)
   {
-    self->_isTextBannerVisible = a3;
+    self->_isTextBannerVisible = visible;
     [(PUPhotoViewContentHelper *)self _updateTextBannerView];
   }
 }
 
-- (void)setCustomPaddingForBadgeElements:(CGSize)a3
+- (void)setCustomPaddingForBadgeElements:(CGSize)elements
 {
-  if (a3.width != self->_customPaddingForBadgeElements.width || a3.height != self->_customPaddingForBadgeElements.height)
+  if (elements.width != self->_customPaddingForBadgeElements.width || elements.height != self->_customPaddingForBadgeElements.height)
   {
-    self->_customPaddingForBadgeElements = a3;
+    self->_customPaddingForBadgeElements = elements;
     [(PUPhotoViewContentHelper *)self _invalidateBadgeView];
   }
 }
 
-- (void)setBadgeStyle:(int64_t)a3
+- (void)setBadgeStyle:(int64_t)style
 {
-  if (self->_badgeStyle != a3)
+  if (self->_badgeStyle != style)
   {
-    self->_badgeStyle = a3;
+    self->_badgeStyle = style;
     [(PUPhotoViewContentHelper *)self _invalidateBadgeView];
   }
 }
 
-- (void)setBadgeInfo:(PXAssetBadgeInfo *)a3
+- (void)setBadgeInfo:(PXAssetBadgeInfo *)info
 {
   p_badgeInfo = &self->_badgeInfo;
-  v8 = *a3;
+  v8 = *info;
   badgeInfo = self->_badgeInfo;
   if ((PXAssetBadgeInfoEqualToBadgeInfo() & 1) == 0)
   {
-    v6 = *&a3->count;
-    *&p_badgeInfo->badges = *&a3->badges;
+    v6 = *&info->count;
+    *&p_badgeInfo->badges = *&info->badges;
     *&p_badgeInfo->count = v6;
     [(PUPhotoViewContentHelper *)self _invalidateBadgeView:*&badgeInfo.badges];
   }
@@ -1814,19 +1814,19 @@ uint64_t __46__PUPhotoViewContentHelper_setImageTransform___block_invoke(uint64_
   return result;
 }
 
-- (CGRect)imageContentFrameForBounds:(CGRect)a3
+- (CGRect)imageContentFrameForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(PUPhotoViewContentHelper *)self fillMode];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  fillMode = [(PUPhotoViewContentHelper *)self fillMode];
   [(PUPhotoViewContentHelper *)self photoSize];
   v10 = v9;
   v12 = v11;
   v13 = objc_opt_class();
 
-  [v13 _imageContentFrameForBounds:v8 imageSize:x fillMode:{y, width, height, v10, v12}];
+  [v13 _imageContentFrameForBounds:fillMode imageSize:x fillMode:{y, width, height, v10, v12}];
   result.size.height = v17;
   result.size.width = v16;
   result.origin.y = v15;
@@ -1834,14 +1834,14 @@ uint64_t __46__PUPhotoViewContentHelper_setImageTransform___block_invoke(uint64_
   return result;
 }
 
-- (CGRect)photoDecorationBorderViewFrameForImageContentFrame:(CGRect)a3
+- (CGRect)photoDecorationBorderViewFrameForImageContentFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(PUPhotoViewContentHelper *)self photoDecoration];
-  [v7 borderWidth];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  photoDecoration = [(PUPhotoViewContentHelper *)self photoDecoration];
+  [photoDecoration borderWidth];
   v9 = v8;
 
   v10 = x - v9;
@@ -1856,20 +1856,20 @@ uint64_t __46__PUPhotoViewContentHelper_setImageTransform___block_invoke(uint64_
   return result;
 }
 
-- (PUPhotoViewContentHelper)initWithContentView:(id)a3
+- (PUPhotoViewContentHelper)initWithContentView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v10.receiver = self;
   v10.super_class = PUPhotoViewContentHelper;
   v5 = [(PUPhotoViewContentHelper *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_contentView, v4);
+    objc_storeWeak(&v5->_contentView, viewCopy);
     v6->_fillMode = 0;
-    v7 = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
     layerDefaultBackgroundColor = v6->_layerDefaultBackgroundColor;
-    v6->_layerDefaultBackgroundColor = v7;
+    v6->_layerDefaultBackgroundColor = systemBackgroundColor;
 
     v6->_badgeStyle = 1;
     v6->_customPaddingForBadgeElements = *MEMORY[0x1E69C48F0];
@@ -1880,9 +1880,9 @@ uint64_t __46__PUPhotoViewContentHelper_setImageTransform___block_invoke(uint64_
   return v6;
 }
 
-+ (CGSize)sizeThatFits:(CGSize)a3 imageSize:(CGSize)a4 fillMode:(int64_t)a5
++ (CGSize)sizeThatFits:(CGSize)fits imageSize:(CGSize)size fillMode:(int64_t)mode
 {
-  [a1 _imageContentFrameForBounds:a5 imageSize:0.0 fillMode:{0.0, a3.width, a3.height, a4.width, a4.height}];
+  [self _imageContentFrameForBounds:mode imageSize:0.0 fillMode:{0.0, fits.width, fits.height, size.width, size.height}];
   v6 = v5;
   v8 = v7;
   result.height = v8;
@@ -1890,21 +1890,21 @@ uint64_t __46__PUPhotoViewContentHelper_setImageTransform___block_invoke(uint64_
   return result;
 }
 
-+ (CGRect)_imageContentFrameForBounds:(CGRect)result imageSize:(CGSize)a4 fillMode:(int64_t)a5
++ (CGRect)_imageContentFrameForBounds:(CGRect)result imageSize:(CGSize)size fillMode:(int64_t)mode
 {
   height = result.size.height;
   width = result.size.width;
   y = result.origin.y;
   x = result.origin.x;
-  if (a5 >= 2)
+  if (mode >= 2)
   {
     result.size.height = 0.0;
     result.size.width = 0.0;
     result.origin.y = 0.0;
     result.origin.x = 0.0;
-    if (a5 == 2)
+    if (mode == 2)
     {
-      result.origin.x = PURectWithSizeThatFitsInRect(a4.width, a4.height, x, y, width, height);
+      result.origin.x = PURectWithSizeThatFitsInRect(size.width, size.height, x, y, width, height);
     }
   }
 

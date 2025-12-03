@@ -2,10 +2,10 @@
 + (id)sharedMonitor;
 - (NSArray)observers;
 - (id)_init;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)removeObserver:(id)a3;
-- (void)setDeviceLocked:(BOOL)a3;
+- (void)removeObserver:(id)observer;
+- (void)setDeviceLocked:(BOOL)locked;
 - (void)updateDeviceLocked;
 @end
 
@@ -26,12 +26,12 @@ void __42__MRULockScreenMonitor_updateDeviceLocked__block_invoke_2(uint64_t a1)
 
 - (NSArray)observers
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSHashTable *)v2->_weakObservers allObjects];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  allObjects = [(NSHashTable *)selfCopy->_weakObservers allObjects];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return allObjects;
 }
 
 + (id)sharedMonitor
@@ -62,9 +62,9 @@ uint64_t __37__MRULockScreenMonitor_sharedMonitor__block_invoke()
   v2 = [(MRULockScreenMonitor *)&v16 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     weakObservers = v2->_weakObservers;
-    v2->_weakObservers = v3;
+    v2->_weakObservers = weakObjectsHashTable;
 
     objc_initWeak(&location, v2);
     v5 = *MEMORY[0x1E69B1A70];
@@ -101,37 +101,37 @@ void __29__MRULockScreenMonitor__init__block_invoke(uint64_t a1)
   [(MRULockScreenMonitor *)&v3 dealloc];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSHashTable *)v4->_weakObservers addObject:v5];
-  objc_sync_exit(v4);
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSHashTable *)selfCopy->_weakObservers addObject:observerCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSHashTable *)v4->_weakObservers removeObject:v5];
-  objc_sync_exit(v4);
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSHashTable *)selfCopy->_weakObservers removeObject:observerCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setDeviceLocked:(BOOL)a3
+- (void)setDeviceLocked:(BOOL)locked
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (self->_deviceLocked != a3)
+  if (self->_deviceLocked != locked)
   {
-    v3 = a3;
-    self->_deviceLocked = a3;
+    lockedCopy = locked;
+    self->_deviceLocked = locked;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = [(MRULockScreenMonitor *)self observers];
-    v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    observers = [(MRULockScreenMonitor *)self observers];
+    v6 = [observers countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
       v7 = v6;
@@ -143,20 +143,20 @@ void __29__MRULockScreenMonitor__init__block_invoke(uint64_t a1)
         {
           if (*v12 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(observers);
           }
 
           v10 = *(*(&v11 + 1) + 8 * v9);
           if (objc_opt_respondsToSelector())
           {
-            [v10 lockscreenMonitor:self didUpdateDeviceLocked:v3];
+            [v10 lockscreenMonitor:self didUpdateDeviceLocked:lockedCopy];
           }
 
           ++v9;
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v7 = [observers countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v7);

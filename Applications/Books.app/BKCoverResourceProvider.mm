@@ -1,7 +1,7 @@
 @interface BKCoverResourceProvider
 + (id)sharedInstance;
 - (BKCoverResourceProvider)init;
-- (id)imageResourceForNaturalSize:(CGSize)a3 contentsScale:(double)a4 instance:(id)a5 options:(id)a6;
+- (id)imageResourceForNaturalSize:(CGSize)size contentsScale:(double)scale instance:(id)instance options:(id)options;
 @end
 
 @implementation BKCoverResourceProvider
@@ -39,12 +39,12 @@
   return v2;
 }
 
-- (id)imageResourceForNaturalSize:(CGSize)a3 contentsScale:(double)a4 instance:(id)a5 options:(id)a6
+- (id)imageResourceForNaturalSize:(CGSize)size contentsScale:(double)scale instance:(id)instance options:(id)options
 {
-  height = a3.height;
-  width = a3.width;
-  v11 = a6;
-  v12 = a5;
+  height = size.height;
+  width = size.width;
+  optionsCopy = options;
+  instanceCopy = instance;
   objc_opt_class();
   v13 = BUDynamicCast();
 
@@ -69,15 +69,15 @@
       _os_log_error_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "BKCoverResourceProvider: Can't generate image resource for assetID %@ with option %@ and size %@", &v21, 0x20u);
     }
 
-    v16 = 0;
+    scale = 0;
   }
 
   else
   {
-    v16 = [[_BKCoverResource alloc] initWithQueue:self->_resourceQueue notifyQueue:self->_notifyQueue assetID:v13 resourceOptions:v14 naturalSize:width contentsScale:height, a4];
+    scale = [[_BKCoverResource alloc] initWithQueue:self->_resourceQueue notifyQueue:self->_notifyQueue assetID:v13 resourceOptions:v14 naturalSize:width contentsScale:height, scale];
   }
 
-  return v16;
+  return scale;
 }
 
 @end

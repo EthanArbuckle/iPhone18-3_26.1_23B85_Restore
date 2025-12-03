@@ -2,29 +2,29 @@
 + (ML3AccountStore)defaultStore;
 - (ACAccount)activeAccount;
 - (NSString)accountDSID;
-- (id)_accountsWithAccountTypeIdentifier:(id)a3 options:(unint64_t)a4 error:(id *)a5;
+- (id)_accountsWithAccountTypeIdentifier:(id)identifier options:(unint64_t)options error:(id *)error;
 - (id)_init;
-- (id)altDSIDForAccountWithDSID:(int64_t)a3 options:(unint64_t)a4 error:(id *)a5;
+- (id)altDSIDForAccountWithDSID:(int64_t)d options:(unint64_t)options error:(id *)error;
 @end
 
 @implementation ML3AccountStore
 
-- (id)_accountsWithAccountTypeIdentifier:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (id)_accountsWithAccountTypeIdentifier:(id)identifier options:(unint64_t)options error:(id *)error
 {
   v23 = *MEMORY[0x277D85DE8];
   v8 = MEMORY[0x277CB8F48];
-  v9 = a3;
-  v10 = [v8 defaultStore];
-  v11 = [v10 accountTypeWithAccountTypeIdentifier:v9 error:a5];
+  identifierCopy = identifier;
+  defaultStore = [v8 defaultStore];
+  v11 = [defaultStore accountTypeWithAccountTypeIdentifier:identifierCopy error:error];
 
-  if (*a5)
+  if (*error)
   {
     v12 = os_log_create("com.apple.amp.medialibrary", "Default");
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = *a5;
+      v13 = *error;
       v19 = 138543618;
-      v20 = self;
+      selfCopy2 = self;
       v21 = 2114;
       v22 = v13;
       _os_log_impl(&dword_22D2FA000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ Failed to retrieve itunes account type. err=%{public}@", &v19, 0x16u);
@@ -35,16 +35,16 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v14 = [v10 accountsWithAccountType:v11 options:a4 error:a5];
+  v14 = [defaultStore accountsWithAccountType:v11 options:options error:error];
   v12 = v14;
-  if (*a5)
+  if (*error)
   {
     v15 = os_log_create("com.apple.amp.medialibrary", "Default");
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = *a5;
+      v16 = *error;
       v19 = 138543618;
-      v20 = self;
+      selfCopy2 = self;
       v21 = 2114;
       v22 = v16;
       _os_log_impl(&dword_22D2FA000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ Failed to retrieve accounts for itunes account type. err=%{public}@", &v19, 0x16u);
@@ -70,24 +70,24 @@ LABEL_9:
 - (NSString)accountDSID
 {
   v15 = *MEMORY[0x277D85DE8];
-  v2 = [(ML3AccountStore *)self activeAccount];
-  v3 = [v2 accountPropertyForKey:@"dsid"];
+  activeAccount = [(ML3AccountStore *)self activeAccount];
+  v3 = [activeAccount accountPropertyForKey:@"dsid"];
 
   if (v3)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = [v3 stringValue];
+      stringValue = [v3 stringValue];
 LABEL_8:
-      v6 = v4;
+      v6 = stringValue;
       goto LABEL_12;
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = v3;
+      stringValue = v3;
       goto LABEL_8;
     }
 
@@ -122,7 +122,7 @@ LABEL_12:
   return v6;
 }
 
-- (id)altDSIDForAccountWithDSID:(int64_t)a3 options:(unint64_t)a4 error:(id *)a5
+- (id)altDSIDForAccountWithDSID:(int64_t)d options:(unint64_t)options error:(id *)error
 {
   v25 = *MEMORY[0x277D85DE8];
   v15 = 0;
@@ -131,16 +131,16 @@ LABEL_12:
   v18 = __Block_byref_object_copy_;
   v19 = __Block_byref_object_dispose_;
   v20 = 0;
-  v8 = [(ML3AccountStore *)self _accountsWithAccountTypeIdentifier:*MEMORY[0x277CB8D58] options:a4 error:?];
+  v8 = [(ML3AccountStore *)self _accountsWithAccountTypeIdentifier:*MEMORY[0x277CB8D58] options:options error:?];
   v9 = v8;
-  if (*a5)
+  if (*error)
   {
     v10 = os_log_create("com.apple.amp.medialibrary", "Default");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = *a5;
+      v11 = *error;
       *buf = 138543618;
-      v22 = self;
+      selfCopy = self;
       v23 = 2114;
       v24 = v11;
       _os_log_impl(&dword_22D2FA000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ Failed to retrieve active itunes account type. err=%{public}@", buf, 0x16u);
@@ -156,7 +156,7 @@ LABEL_12:
     v14[2] = __59__ML3AccountStore_altDSIDForAccountWithDSID_options_error___block_invoke;
     v14[3] = &unk_27875CD68;
     v14[4] = &v15;
-    v14[5] = a3;
+    v14[5] = d;
     [v8 enumerateObjectsUsingBlock:v14];
     v12 = v16[5];
   }

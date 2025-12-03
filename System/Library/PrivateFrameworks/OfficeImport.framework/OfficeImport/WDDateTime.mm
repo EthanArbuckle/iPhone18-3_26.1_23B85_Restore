@@ -1,25 +1,25 @@
 @interface WDDateTime
-- (WDDateTime)initWithParagraph:(id)a3 date:(id)a4;
+- (WDDateTime)initWithParagraph:(id)paragraph date:(id)date;
 - (id)description;
 @end
 
 @implementation WDDateTime
 
-- (WDDateTime)initWithParagraph:(id)a3 date:(id)a4
+- (WDDateTime)initWithParagraph:(id)paragraph date:(id)date
 {
-  v6 = a3;
-  v7 = a4;
+  paragraphCopy = paragraph;
+  dateCopy = date;
   v13.receiver = self;
   v13.super_class = WDDateTime;
-  v8 = [(WDRunWithCharacterProperties *)&v13 initWithParagraph:v6];
+  v8 = [(WDRunWithCharacterProperties *)&v13 initWithParagraph:paragraphCopy];
   if (v8)
   {
     v9 = [WDCharacterProperties alloc];
-    v10 = [v6 document];
-    v11 = [(WDCharacterProperties *)v9 initWithDocument:v10];
+    document = [paragraphCopy document];
+    v11 = [(WDCharacterProperties *)v9 initWithDocument:document];
     [(WDRunWithCharacterProperties *)v8 setProperties:v11];
 
-    objc_storeStrong(&v8->mDate, a4);
+    objc_storeStrong(&v8->mDate, date);
   }
 
   return v8;

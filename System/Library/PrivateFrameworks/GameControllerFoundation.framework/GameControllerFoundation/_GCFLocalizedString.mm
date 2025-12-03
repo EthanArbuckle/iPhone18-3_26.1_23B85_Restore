@@ -1,9 +1,9 @@
 @interface _GCFLocalizedString
-- (_GCFLocalizedString)initWithCoder:(id)a3;
-- (_GCFLocalizedString)initWithKey:(id)a3 sourceBundle:(id)a4 table:(id)a5 locale:(id)a6;
+- (_GCFLocalizedString)initWithCoder:(id)coder;
+- (_GCFLocalizedString)initWithKey:(id)key sourceBundle:(id)bundle table:(id)table locale:(id)locale;
 - (id)_realizedString;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _GCFLocalizedString
@@ -15,69 +15,69 @@
   [(_GCFLocalizedString *)&v3 dealloc];
 }
 
-- (_GCFLocalizedString)initWithCoder:(id)a3
+- (_GCFLocalizedString)initWithCoder:(id)coder
 {
   v16[2] = *MEMORY[0x1E69E9840];
-  if ([a3 allowsKeyedCoding])
+  if ([coder allowsKeyedCoding])
   {
-    v5 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"key"];
-    v6 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"bundle"];
-    v7 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"table"];
-    v8 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"locale"];
+    decodeObject = [coder decodeObjectOfClass:objc_opt_class() forKey:@"key"];
+    decodeObject2 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"bundle"];
+    decodeObject3 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"table"];
+    decodeObject4 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"locale"];
   }
 
   else
   {
-    v5 = [a3 decodeObject];
-    v6 = [a3 decodeObject];
-    v7 = [a3 decodeObject];
-    v8 = [a3 decodeObject];
+    decodeObject = [coder decodeObject];
+    decodeObject2 = [coder decodeObject];
+    decodeObject3 = [coder decodeObject];
+    decodeObject4 = [coder decodeObject];
   }
 
-  v9 = v8;
-  if (!v5)
+  v9 = decodeObject4;
+  if (!decodeObject)
   {
-    [(_GCFLocalizedString *)&v15 initWithCoder:a3, v16];
+    [(_GCFLocalizedString *)&v15 initWithCoder:coder, v16];
   }
 
-  if (!v6)
+  if (!decodeObject2)
   {
-    [(_GCFLocalizedString *)&v13 initWithCoder:a3, &v14];
+    [(_GCFLocalizedString *)&v13 initWithCoder:coder, &v14];
   }
 
-  v10 = [MEMORY[0x1E696AAE8] bundleWithURL:v6];
+  v10 = [MEMORY[0x1E696AAE8] bundleWithURL:decodeObject2];
   if (!v10)
   {
-    [(_GCFLocalizedString *)v5 initWithCoder:v6];
+    [(_GCFLocalizedString *)decodeObject initWithCoder:decodeObject2];
   }
 
-  result = [(_GCFLocalizedString *)self initWithKey:v5 sourceBundle:v10 table:v7 locale:v9];
+  result = [(_GCFLocalizedString *)self initWithKey:decodeObject sourceBundle:v10 table:decodeObject3 locale:v9];
   v12 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = [a3 allowsKeyedCoding];
+  allowsKeyedCoding = [coder allowsKeyedCoding];
   key = self->_key;
-  if (v5)
+  if (allowsKeyedCoding)
   {
-    [a3 encodeObject:key forKey:@"key"];
-    [a3 encodeObject:-[NSBundle bundleURL](self->_sourceBundle forKey:{"bundleURL"), @"bundle"}];
-    [a3 encodeObject:self->_localizationTable forKey:@"table"];
+    [coder encodeObject:key forKey:@"key"];
+    [coder encodeObject:-[NSBundle bundleURL](self->_sourceBundle forKey:{"bundleURL"), @"bundle"}];
+    [coder encodeObject:self->_localizationTable forKey:@"table"];
     localeOverride = self->_localeOverride;
 
-    [a3 encodeObject:localeOverride forKey:@"locale"];
+    [coder encodeObject:localeOverride forKey:@"locale"];
   }
 
   else
   {
-    [a3 encodeObject:key];
-    [a3 encodeObject:{-[NSBundle bundleURL](self->_sourceBundle, "bundleURL")}];
-    [a3 encodeObject:self->_localizationTable];
+    [coder encodeObject:key];
+    [coder encodeObject:{-[NSBundle bundleURL](self->_sourceBundle, "bundleURL")}];
+    [coder encodeObject:self->_localizationTable];
     v8 = self->_localeOverride;
 
-    [a3 encodeObject:v8];
+    [coder encodeObject:v8];
   }
 }
 
@@ -109,31 +109,31 @@
   return realizedString;
 }
 
-- (_GCFLocalizedString)initWithKey:(id)a3 sourceBundle:(id)a4 table:(id)a5 locale:(id)a6
+- (_GCFLocalizedString)initWithKey:(id)key sourceBundle:(id)bundle table:(id)table locale:(id)locale
 {
   v23 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!key)
   {
     self = 0;
     goto LABEL_16;
   }
 
-  v9 = a3;
+  keyCopy = key;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [v9 key];
-    v9 = v11;
-    if (a4)
+    v11 = [keyCopy key];
+    keyCopy = v11;
+    if (bundle)
     {
-      if (a5)
+      if (table)
       {
         goto LABEL_5;
       }
 
 LABEL_14:
-      a5 = [v9 table];
-      if (!a4)
+      table = [keyCopy table];
+      if (!bundle)
       {
         goto LABEL_6;
       }
@@ -141,20 +141,20 @@ LABEL_14:
       goto LABEL_15;
     }
 
-    a4 = [v11 bundle];
-    if (!a5)
+    bundle = [v11 bundle];
+    if (!table)
     {
       goto LABEL_14;
     }
   }
 
 LABEL_5:
-  if (!a4)
+  if (!bundle)
   {
 LABEL_6:
-    v12 = [v9 UTF8String];
+    uTF8String = [keyCopy UTF8String];
     v13 = dyld_image_path_containing_address();
-    if (!v13 || (a4 = [MEMORY[0x1E696AAE8] gc_bundleForExecutableAtPath:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithCString:encoding:", v13, 4)}]) == 0)
+    if (!v13 || (bundle = [MEMORY[0x1E696AAE8] gc_bundleForExecutableAtPath:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithCString:encoding:", v13, 4)}]) == 0)
     {
       if (qword_1EC72E4E8 != -1)
       {
@@ -165,23 +165,23 @@ LABEL_6:
       if (os_log_type_enabled(_MergedGlobals, OS_LOG_TYPE_DEBUG))
       {
         v17 = 138412802;
-        v18 = v9;
+        v18 = keyCopy;
         v19 = 2048;
-        v20 = v9;
+        v20 = keyCopy;
         v21 = 2048;
-        v22 = v12;
+        v22 = uTF8String;
         _os_log_debug_impl(&dword_1D2C3B000, v14, OS_LOG_TYPE_DEBUG, "#WARNING Could not determine source bundle of string '%@' %p %p.", &v17, 0x20u);
       }
 
-      a4 = 0;
+      bundle = 0;
     }
   }
 
 LABEL_15:
-  self->_key = [v9 copy];
-  self->_sourceBundle = a4;
-  self->_localizationTable = [a5 copy];
-  self->_localeOverride = [a6 copy];
+  self->_key = [keyCopy copy];
+  self->_sourceBundle = bundle;
+  self->_localizationTable = [table copy];
+  self->_localeOverride = [locale copy];
 LABEL_16:
   v15 = *MEMORY[0x1E69E9840];
   return self;

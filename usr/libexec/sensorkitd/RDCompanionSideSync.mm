@@ -2,12 +2,12 @@
 + (void)initialize;
 - (BOOL)isRemoteSupported;
 - (void)dealloc;
-- (void)decryptArchivesWithActivity:(id)a3;
-- (void)sendStateToPeer:(id)a3;
-- (void)service:(id)a3 connectedDevicesChanged:(id)a4;
-- (void)service:(id)a3 didReceiveArchive:(id)a4 sensor:(id)a5 gizmoSnapshotURL:(id)a6 metadata:(id)a7 fromID:(id)a8;
-- (void)service:(id)a3 didReceiveKeyServiceMessage:(id)a4 fromID:(id)a5 key:(id)a6 keyName:(id)a7 sensor:(id)a8 archiveURLPath:(id)a9 deviceID:(id)a10;
-- (void)service:(id)a3 didReceiveResourceServiceMessage:(id)a4 fromID:(id)a5 incomingResponseIdentifier:(id)a6 outgoingResponseIdentifier:(id)a7;
+- (void)decryptArchivesWithActivity:(id)activity;
+- (void)sendStateToPeer:(id)peer;
+- (void)service:(id)service connectedDevicesChanged:(id)changed;
+- (void)service:(id)service didReceiveArchive:(id)archive sensor:(id)sensor gizmoSnapshotURL:(id)l metadata:(id)metadata fromID:(id)d;
+- (void)service:(id)service didReceiveKeyServiceMessage:(id)message fromID:(id)d key:(id)key keyName:(id)name sensor:(id)sensor archiveURLPath:(id)path deviceID:(id)self0;
+- (void)service:(id)service didReceiveResourceServiceMessage:(id)message fromID:(id)d incomingResponseIdentifier:(id)identifier outgoingResponseIdentifier:(id)responseIdentifier;
 - (void)validatePreferWifiAssertion;
 @end
 
@@ -15,7 +15,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     qword_100071990 = os_log_create("com.apple.SensorKit", "RDCompanionSideSync");
   }
@@ -90,7 +90,7 @@
   }
 }
 
-- (void)decryptArchivesWithActivity:(id)a3
+- (void)decryptArchivesWithActivity:(id)activity
 {
   v5 = sub_10003A2C0(self->_fileURLs, self->_defaults);
   v32 = 0u;
@@ -115,7 +115,7 @@
 
         v7 = *(*(&v32 + 1) + 8 * v6);
         v8 = objc_autoreleasePoolPush();
-        if ([a3 deferIfNeeded])
+        if ([activity deferIfNeeded])
         {
           objc_autoreleasePoolPop(v8);
           goto LABEL_20;
@@ -146,7 +146,7 @@ LABEL_10:
             }
 
             v16 = *(*(&v28 + 1) + 8 * v15);
-            if ([a3 deferIfNeeded])
+            if ([activity deferIfNeeded])
             {
               break;
             }
@@ -155,7 +155,7 @@ LABEL_10:
             v27[1] = 3221225472;
             v27[2] = sub_100003494;
             v27[3] = &unk_100060A20;
-            v27[4] = a3;
+            v27[4] = activity;
             v36[0] = _NSConcreteStackBlock;
             v36[1] = 3221225472;
             v36[2] = sub_100004938;
@@ -200,26 +200,26 @@ LABEL_10:
 
 LABEL_20:
 
-  if (!a3 || (v19 = *(a3 + 3)) == 0 || xpc_activity_get_state(v19) != 3)
+  if (!activity || (v19 = *(activity + 3)) == 0 || xpc_activity_get_state(v19) != 3)
   {
-    [a3 markCompleted];
+    [activity markCompleted];
   }
 }
 
-- (void)service:(id)a3 didReceiveArchive:(id)a4 sensor:(id)a5 gizmoSnapshotURL:(id)a6 metadata:(id)a7 fromID:(id)a8
+- (void)service:(id)service didReceiveArchive:(id)archive sensor:(id)sensor gizmoSnapshotURL:(id)l metadata:(id)metadata fromID:(id)d
 {
   if (self)
   {
     gizmoSyncService = self->_gizmoSyncService;
     if (gizmoSyncService)
     {
-      v14 = sub_100023C20(gizmoSyncService, a8, [(IDSService *)gizmoSyncService->_resourceService devices:a3]);
+      v14 = sub_100023C20(gizmoSyncService, d, [(IDSService *)gizmoSyncService->_resourceService devices:service]);
       if (v14)
       {
         v15 = v14;
-        v16 = sub_10003A334(a5, v14, self->_fileURLs, self->_defaults);
+        v16 = sub_10003A334(sensor, v14, self->_fileURLs, self->_defaults);
         v17 = sub_10000E610([RDArchiveableDatastore alloc], &v16->super.isa);
-        v18 = sub_100010B60(v17, a4, [a6 lastPathComponent]);
+        v18 = sub_100010B60(v17, archive, [l lastPathComponent]);
 
         if (v18)
         {
@@ -229,20 +229,20 @@ LABEL_20:
           v37[3] = &unk_100060A48;
           v37[4] = self;
           v37[5] = v18;
-          v37[6] = a5;
+          v37[6] = sensor;
           *buf = _NSConcreteStackBlock;
           *&buf[8] = 3221225472;
           *&buf[16] = sub_100004938;
           v39 = &unk_100060AB0;
-          v40 = a5;
+          sensorCopy = sensor;
           v41 = v15;
-          v42 = self;
+          selfCopy = self;
           v43 = v37;
           v19 = objc_autoreleasePoolPush();
-          sub_100004B88(self, a5, v15, buf);
+          sub_100004B88(self, sensor, v15, buf);
           objc_autoreleasePoolPop(v19);
           v20 = objc_autoreleasePoolPush();
-          sub_100004EE8(&self->super.isa, a5, v15, buf);
+          sub_100004EE8(&self->super.isa, sensor, v15, buf);
           objc_autoreleasePoolPop(v20);
           sub_100023A24(&self->_gizmoSyncService->super.isa, 1);
           v21 = mach_continuous_time();
@@ -273,7 +273,7 @@ LABEL_20:
           return;
         }
 
-        v31 = -[NSFileManager fileExistsAtPath:](+[NSFileManager defaultManager](NSFileManager, "defaultManager"), "fileExistsAtPath:", [a4 path]);
+        v31 = -[NSFileManager fileExistsAtPath:](+[NSFileManager defaultManager](NSFileManager, "defaultManager"), "fileExistsAtPath:", [archive path]);
         v32 = qword_100071990;
         v33 = os_log_type_enabled(qword_100071990, OS_LOG_TYPE_ERROR);
         if (v31)
@@ -281,7 +281,7 @@ LABEL_20:
           if (v33)
           {
             *buf = 138543362;
-            *&buf[4] = a5;
+            *&buf[4] = sensor;
             v34 = "Failed to store the encrypted archive for %{public}@!";
             v35 = v32;
             v36 = 12;
@@ -293,16 +293,16 @@ LABEL_20:
         else if (v33)
         {
           *buf = 138543618;
-          *&buf[4] = a4;
+          *&buf[4] = archive;
           *&buf[12] = 2114;
-          *&buf[14] = a5;
+          *&buf[14] = sensor;
           v34 = "Got an incoming resource %{public}@ for %{public}@ but unable to locate the IDS resource";
           v35 = v32;
           v36 = 22;
           goto LABEL_20;
         }
 
-        -[RDAnalyticsEventDelegate gizmoSync:failedToStoreEncryptedArchive:key:sensor:fileExists:](-[RDCompanionSideSync analyticsDelegate](self, "analyticsDelegate"), "gizmoSync:failedToStoreEncryptedArchive:key:sensor:fileExists:", self, a4, sub_10002399C(self->_gizmoSyncService, [a4 path], a5), a5, v31);
+        -[RDAnalyticsEventDelegate gizmoSync:failedToStoreEncryptedArchive:key:sensor:fileExists:](-[RDCompanionSideSync analyticsDelegate](self, "analyticsDelegate"), "gizmoSync:failedToStoreEncryptedArchive:key:sensor:fileExists:", self, archive, sub_10002399C(self->_gizmoSyncService, [archive path], sensor), sensor, v31);
         return;
       }
     }
@@ -312,49 +312,49 @@ LABEL_20:
   if (os_log_type_enabled(qword_100071990, OS_LOG_TYPE_ERROR))
   {
     *buf = 138543362;
-    *&buf[4] = a8;
+    *&buf[4] = d;
     _os_log_error_impl(&_mh_execute_header, v30, OS_LOG_TYPE_ERROR, "Failed to find a device id from IDS id %{public}@", buf, 0xCu);
   }
 }
 
-- (void)service:(id)a3 didReceiveKeyServiceMessage:(id)a4 fromID:(id)a5 key:(id)a6 keyName:(id)a7 sensor:(id)a8 archiveURLPath:(id)a9 deviceID:(id)a10
+- (void)service:(id)service didReceiveKeyServiceMessage:(id)message fromID:(id)d key:(id)key keyName:(id)name sensor:(id)sensor archiveURLPath:(id)path deviceID:(id)self0
 {
   v15 = qword_100071990;
   if (os_log_type_enabled(qword_100071990, OS_LOG_TYPE_INFO))
   {
     *buf = 138543618;
-    *&buf[4] = a9;
+    *&buf[4] = path;
     *&buf[12] = 2114;
-    *&buf[14] = a8;
+    *&buf[14] = sensor;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "Key for %{public}@ received for %{public}@ adding to the keychain", buf, 0x16u);
   }
 
-  v16 = [a4 objectForKeyedSubscript:@"RDGizmoSyncIVKey"];
+  v16 = [message objectForKeyedSubscript:@"RDGizmoSyncIVKey"];
   if (v16 && (v17 = v16, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v18 = sub_10003A334(a8, a10, self->_fileURLs, self->_defaults);
+    v18 = sub_10003A334(sensor, iD, self->_fileURLs, self->_defaults);
     v19 = sub_100011CFC([RDEncryptingDatastore alloc], v18);
-    v20 = sub_1000120EC(v19, a6, v17, a9);
+    v20 = sub_1000120EC(v19, key, v17, path);
 
     if (v20)
     {
       fileURLs = self->_fileURLs;
-      v26 = a10;
+      iDCopy = iD;
       if ([+[NSFileManager defaultManager](NSFileManager fileExistsAtPath:"fileExistsAtPath:", [[NSURL fileURLWithPath:? isDirectory:? relativeToURL:?]]
       {
         *buf = _NSConcreteStackBlock;
         *&buf[8] = 3221225472;
         *&buf[16] = sub_100004938;
         v28 = &unk_100060AB0;
-        v29 = a8;
-        v30 = a10;
-        v31 = self;
+        sensorCopy = sensor;
+        iDCopy2 = iD;
+        selfCopy = self;
         v32 = 0;
         v22 = objc_autoreleasePoolPush();
-        sub_100004B88(self, a8, a10, buf);
+        sub_100004B88(self, sensor, iD, buf);
         objc_autoreleasePoolPop(v22);
         v23 = objc_autoreleasePoolPush();
-        sub_100004EE8(&self->super.isa, a8, a10, buf);
+        sub_100004EE8(&self->super.isa, sensor, iD, buf);
         objc_autoreleasePoolPop(v23);
       }
     }
@@ -365,13 +365,13 @@ LABEL_20:
       if (os_log_type_enabled(qword_100071990, OS_LOG_TYPE_INFO))
       {
         *buf = 138543618;
-        *&buf[4] = a9;
+        *&buf[4] = path;
         *&buf[12] = 2114;
-        *&buf[14] = a8;
+        *&buf[14] = sensor;
         _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_INFO, "Failed to add key for %{public}@ for %{public}@ to keychain. Registering to retry on next unlock.", buf, 0x16u);
       }
 
-      [(RDAnalyticsEventDelegate *)[(RDCompanionSideSync *)self analyticsDelegate] gizmoSync:self failedToAddKey:a7 toKeyChainForSensor:a8];
+      [(RDAnalyticsEventDelegate *)[(RDCompanionSideSync *)self analyticsDelegate] gizmoSync:self failedToAddKey:name toKeyChainForSensor:sensor];
     }
   }
 
@@ -386,20 +386,20 @@ LABEL_20:
   }
 }
 
-- (void)service:(id)a3 didReceiveResourceServiceMessage:(id)a4 fromID:(id)a5 incomingResponseIdentifier:(id)a6 outgoingResponseIdentifier:(id)a7
+- (void)service:(id)service didReceiveResourceServiceMessage:(id)message fromID:(id)d incomingResponseIdentifier:(id)identifier outgoingResponseIdentifier:(id)responseIdentifier
 {
-  v10 = [a4 objectForKeyedSubscript:@"RDGizmoSyncMessageTypeKey"];
+  v10 = [message objectForKeyedSubscript:@"RDGizmoSyncMessageTypeKey"];
   if (v10)
   {
-    v11 = [v10 integerValue];
-    if (v11 > 0xA)
+    integerValue = [v10 integerValue];
+    if (integerValue > 0xA)
     {
       goto LABEL_18;
     }
 
-    if (((1 << v11) & 0x6B0) != 0)
+    if (((1 << integerValue) & 0x6B0) != 0)
     {
-      v12 = v11;
+      v12 = integerValue;
       v13 = qword_100071990;
       if (os_log_type_enabled(qword_100071990, OS_LOG_TYPE_FAULT))
       {
@@ -411,37 +411,37 @@ LABEL_20:
       return;
     }
 
-    if (v11 != 3)
+    if (integerValue != 3)
     {
-      if (v11 == 8)
+      if (integerValue == 8)
       {
         if (self)
         {
           gizmoSyncService = self->_gizmoSyncService;
           if (gizmoSyncService)
           {
-            v16 = sub_100023C20(gizmoSyncService, a5, [(IDSService *)gizmoSyncService->_resourceService devices]);
+            v16 = sub_100023C20(gizmoSyncService, d, [(IDSService *)gizmoSyncService->_resourceService devices]);
             if (v16)
             {
               v17 = v16;
               selfa = objc_alloc_init(RDGizmoSyncState);
-              v18 = [objc_msgSend(a4 objectForKeyedSubscript:{@"RDGizmoSyncGizmoPrerequisitesKey", "integerValue"}];
+              v18 = [objc_msgSend(message objectForKeyedSubscript:{@"RDGizmoSyncGizmoPrerequisitesKey", "integerValue"}];
               if (selfa)
               {
                 selfa->_prerequisites = v18;
-                v19 = [a4 objectForKeyedSubscript:@"RDGizmoSyncGizmoRecordingStatesKey"];
+                v19 = [message objectForKeyedSubscript:@"RDGizmoSyncGizmoRecordingStatesKey"];
                 objc_setProperty_nonatomic(selfa, v20, v19, 16);
-                v21 = [a4 objectForKeyedSubscript:@"RDGizmoSyncGizmoServiceStartTimesKey"];
+                v21 = [message objectForKeyedSubscript:@"RDGizmoSyncGizmoServiceStartTimesKey"];
                 objc_setProperty_nonatomic(selfa, v22, v21, 24);
-                v23 = [a4 objectForKeyedSubscript:@"RDGizmoSyncSensorConfigurations"];
+                v23 = [message objectForKeyedSubscript:@"RDGizmoSyncSensorConfigurations"];
                 objc_setProperty_nonatomic(selfa, v24, v23, 40);
               }
 
               else
               {
-                [a4 objectForKeyedSubscript:@"RDGizmoSyncGizmoRecordingStatesKey"];
-                [a4 objectForKeyedSubscript:@"RDGizmoSyncGizmoServiceStartTimesKey"];
-                [a4 objectForKeyedSubscript:@"RDGizmoSyncSensorConfigurations"];
+                [message objectForKeyedSubscript:@"RDGizmoSyncGizmoRecordingStatesKey"];
+                [message objectForKeyedSubscript:@"RDGizmoSyncGizmoServiceStartTimesKey"];
+                [message objectForKeyedSubscript:@"RDGizmoSyncSensorConfigurations"];
               }
 
               [(RDGizmoSyncDelegate *)[(RDCompanionSideSync *)self delegate] gizmoSync:self didSyncState:selfa deviceID:v17];
@@ -468,9 +468,9 @@ LABEL_51:
       }
 
 LABEL_18:
-      if (v11 != 2)
+      if (integerValue != 2)
       {
-        if (v11 != 1)
+        if (integerValue != 1)
         {
           return;
         }
@@ -486,11 +486,11 @@ LABEL_18:
         goto LABEL_50;
       }
 
-      v27 = [a4 objectForKeyedSubscript:@"RDGizmoSyncCompanionAbsoluteTimeKey"];
+      v27 = [message objectForKeyedSubscript:@"RDGizmoSyncCompanionAbsoluteTimeKey"];
       if (v27)
       {
         v28 = v27;
-        v29 = [a4 objectForKeyedSubscript:@"RDGizmoSyncGizmoAbsoluteTimeKey"];
+        v29 = [message objectForKeyedSubscript:@"RDGizmoSyncGizmoAbsoluteTimeKey"];
         if (v29)
         {
           v30 = v29;
@@ -551,7 +551,7 @@ LABEL_50:
       goto LABEL_51;
     }
 
-    v35 = [objc_msgSend(a4 objectForKeyedSubscript:{@"RDGizmoSyncArchiveTransferStatusKey", "integerValue"}];
+    v35 = [objc_msgSend(message objectForKeyedSubscript:{@"RDGizmoSyncArchiveTransferStatusKey", "integerValue"}];
     if (v35 == 4)
     {
       v49 = qword_100071990;
@@ -624,18 +624,18 @@ LABEL_50:
   }
 }
 
-- (void)sendStateToPeer:(id)a3
+- (void)sendStateToPeer:(id)peer
 {
-  v4 = self;
+  selfCopy = self;
   [(RDCompanionSideSync *)self validatePreferWifiAssertion];
-  if (v4)
+  if (selfCopy)
   {
-    p_isa = &v4->_gizmoSyncService->super.isa;
-    if (p_isa && (v6 = sub_100023DB4(v4->_gizmoSyncService), (v44 = sub_100023C20(p_isa, v6, [p_isa[3] devices])) != 0))
+    p_isa = &selfCopy->_gizmoSyncService->super.isa;
+    if (p_isa && (v6 = sub_100023DB4(selfCopy->_gizmoSyncService), (v44 = sub_100023C20(p_isa, v6, [p_isa[3] devices])) != 0))
     {
-      v36 = a3;
-      v45 = &v4->super.isa;
-      v7 = sub_10003A2C0(v4->_fileURLs, v4->_defaults);
+      peerCopy = peer;
+      v45 = &selfCopy->super.isa;
+      v7 = sub_10003A2C0(selfCopy->_fileURLs, selfCopy->_defaults);
       v54 = 0u;
       v55 = 0u;
       v56 = 0u;
@@ -747,8 +747,8 @@ LABEL_50:
       }
 
       v27 = [NSDictionary dictionaryWithDictionary:v15];
-      a3 = v36;
-      v4 = v45;
+      peer = peerCopy;
+      selfCopy = v45;
       v28 = qword_100071990;
       if (os_log_type_enabled(qword_100071990, OS_LOG_TYPE_DEFAULT))
       {
@@ -787,17 +787,17 @@ LABEL_32:
     }
   }
 
-  if (v4)
+  if (selfCopy)
   {
-    v4 = v4->_gizmoSyncService;
+    selfCopy = selfCopy->_gizmoSyncService;
   }
 
   v63[0] = &off_1000651D8;
   v58[0] = @"RDGizmoSyncMessageTypeKey";
   v58[1] = @"RDGizmoSyncCompanionRecordingStatesKey";
-  if (a3)
+  if (peer)
   {
-    v30 = *(a3 + 2);
+    v30 = *(peer + 2);
   }
 
   else
@@ -809,17 +809,17 @@ LABEL_32:
   v63[2] = v27;
   v58[2] = @"RDGizmoSyncCompanionRequiredKeysKey";
   v58[3] = @"RDGizmoSyncCompanionPrerequisitesKey";
-  if (a3)
+  if (peer)
   {
-    v64 = [NSNumber numberWithUnsignedInteger:*(a3 + 4)];
+    v64 = [NSNumber numberWithUnsignedInteger:*(peer + 4)];
     v59 = @"RDGizmoSyncSensorConfigurations";
-    v31 = *(a3 + 5);
+    v31 = *(peer + 5);
     if (!v31)
     {
       v31 = &__NSDictionary0__struct;
     }
 
-    v32 = *(a3 + 8);
+    v32 = *(peer + 8);
   }
 
   else
@@ -834,10 +834,10 @@ LABEL_32:
   v60 = @"RDGizmoSyncCompanionRequiredAppInstalledKey";
   v66 = [NSNumber numberWithBool:v32 & 1];
   v61 = @"RDGizmoSyncCompanionServiceStartTimesKey";
-  if (a3)
+  if (peer)
   {
-    v33 = *(a3 + 3);
-    v34 = *(a3 + 6);
+    v33 = *(peer + 3);
+    v34 = *(peer + 6);
   }
 
   else
@@ -850,13 +850,13 @@ LABEL_32:
   v62 = @"RDGizmoSyncCapabilitiesKey";
   v68 = [NSNumber numberWithUnsignedInteger:v34];
   v35 = [NSDictionary dictionaryWithObjects:v63 forKeys:v58 count:8];
-  if (v4)
+  if (selfCopy)
   {
-    sub_100023F18(v4, v35, v4->_fileURLs, 0);
+    sub_100023F18(selfCopy, v35, selfCopy->_fileURLs, 0);
   }
 }
 
-- (void)service:(id)a3 connectedDevicesChanged:(id)a4
+- (void)service:(id)service connectedDevicesChanged:(id)changed
 {
   if (self)
   {
@@ -865,11 +865,11 @@ LABEL_32:
     {
       v7 = sub_100023DB4(self->_gizmoSyncService);
       v8 = sub_100023C20(gizmoSyncService, v7, [(IDSService *)gizmoSyncService->_resourceService devices]);
-      if (sub_100023C20(gizmoSyncService, v8, a4))
+      if (sub_100023C20(gizmoSyncService, v8, changed))
       {
-        v9 = [(RDCompanionSideSync *)self delegate];
+        delegate = [(RDCompanionSideSync *)self delegate];
 
-        [(RDGizmoSyncDelegate *)v9 gizmoSyncConnectedDevicesAdded:self];
+        [(RDGizmoSyncDelegate *)delegate gizmoSyncConnectedDevicesAdded:self];
       }
     }
   }

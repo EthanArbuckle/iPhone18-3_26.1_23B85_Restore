@@ -1,16 +1,16 @@
 @interface PIParallaxLuminanceCalculator
-- (id)_imageToAnalyzeForLayerStack:(id)a3 cropToClockArea:(BOOL)a4 error:(id *)a5;
-- (id)calculateClockLuminanceValuesForLayerStack:(id)a3 style:(id)a4 renderer:(id)a5 error:(id *)a6;
-- (id)calculateLuminanceValuesForBackdropLayerStack:(id)a3 style:(id)a4 renderer:(id)a5 error:(id *)a6;
-- (id)calculateLuminanceValuesForImage:(id)a3 renderer:(id)a4 error:(id *)a5;
+- (id)_imageToAnalyzeForLayerStack:(id)stack cropToClockArea:(BOOL)area error:(id *)error;
+- (id)calculateClockLuminanceValuesForLayerStack:(id)stack style:(id)style renderer:(id)renderer error:(id *)error;
+- (id)calculateLuminanceValuesForBackdropLayerStack:(id)stack style:(id)style renderer:(id)renderer error:(id *)error;
+- (id)calculateLuminanceValuesForImage:(id)image renderer:(id)renderer error:(id *)error;
 @end
 
 @implementation PIParallaxLuminanceCalculator
 
-- (id)calculateLuminanceValuesForBackdropLayerStack:(id)a3 style:(id)a4 renderer:(id)a5 error:(id *)a6
+- (id)calculateLuminanceValuesForBackdropLayerStack:(id)stack style:(id)style renderer:(id)renderer error:(id *)error
 {
-  v9 = a5;
-  v10 = [(PIParallaxLuminanceCalculator *)self _imageToAnalyzeForLayerStack:a3 cropToClockArea:0 error:a6];
+  rendererCopy = renderer;
+  v10 = [(PIParallaxLuminanceCalculator *)self _imageToAnalyzeForLayerStack:stack cropToClockArea:0 error:error];
   if (v10)
   {
     v11 = v10;
@@ -22,7 +22,7 @@
     CGAffineTransformMakeScale(&v19, v15, v15);
     v16 = [v11 imageByApplyingTransform:&v19];
 
-    v17 = [(PIParallaxLuminanceCalculator *)self calculateLuminanceValuesForImage:v16 renderer:v9 error:a6];
+    v17 = [(PIParallaxLuminanceCalculator *)self calculateLuminanceValuesForImage:v16 renderer:rendererCopy error:error];
   }
 
   else
@@ -33,18 +33,18 @@
   return v17;
 }
 
-- (id)calculateClockLuminanceValuesForLayerStack:(id)a3 style:(id)a4 renderer:(id)a5 error:(id *)a6
+- (id)calculateClockLuminanceValuesForLayerStack:(id)stack style:(id)style renderer:(id)renderer error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [v10 layout];
-  [v13 normalizedVisibleFrame];
+  stackCopy = stack;
+  styleCopy = style;
+  rendererCopy = renderer;
+  layout = [stackCopy layout];
+  [layout normalizedVisibleFrame];
   if (CGRectGetMaxY(v29) <= 1.0)
   {
 
 LABEL_8:
-    v19 = [(PIParallaxLuminanceCalculator *)self _imageToAnalyzeForLayerStack:v10 cropToClockArea:1 error:a6];
+    v19 = [(PIParallaxLuminanceCalculator *)self _imageToAnalyzeForLayerStack:stackCopy cropToClockArea:1 error:error];
     if (v19)
     {
       v20 = v19;
@@ -56,7 +56,7 @@ LABEL_8:
       CGAffineTransformMakeScale(&v27, v24, v24);
       v25 = [v20 imageByApplyingTransform:&v27];
 
-      v18 = [(PIParallaxLuminanceCalculator *)self calculateLuminanceValuesForImage:v25 renderer:v12 error:a6];
+      v18 = [(PIParallaxLuminanceCalculator *)self calculateLuminanceValuesForImage:v25 renderer:rendererCopy error:error];
     }
 
     else
@@ -67,17 +67,17 @@ LABEL_8:
     goto LABEL_11;
   }
 
-  v14 = [v10 layout];
-  v15 = [v14 canApplyHeadroom];
+  layout2 = [stackCopy layout];
+  canApplyHeadroom = [layout2 canApplyHeadroom];
 
-  if (!v15 || ![v11 hasTonalityMode])
+  if (!canApplyHeadroom || ![styleCopy hasTonalityMode])
   {
     goto LABEL_8;
   }
 
-  v16 = [v11 tonality];
+  tonality = [styleCopy tonality];
   v17 = 0.0;
-  if (v16 == 3)
+  if (tonality == 3)
   {
     v17 = 1.0;
   }
@@ -88,40 +88,40 @@ LABEL_11:
   return v18;
 }
 
-- (id)_imageToAnalyzeForLayerStack:(id)a3 cropToClockArea:(BOOL)a4 error:(id *)a5
+- (id)_imageToAnalyzeForLayerStack:(id)stack cropToClockArea:(BOOL)area error:(id *)error
 {
-  v7 = a3;
-  v8 = [v7 layout];
-  v9 = [v8 clockLayerOrder];
-  v10 = [v9 isEqualToString:*MEMORY[0x1E69C0BA0]];
+  stackCopy = stack;
+  layout = [stackCopy layout];
+  clockLayerOrder = [layout clockLayerOrder];
+  v10 = [clockLayerOrder isEqualToString:*MEMORY[0x1E69C0BA0]];
 
-  v11 = [v7 hasMainLayers];
-  if (v11)
+  hasMainLayers = [stackCopy hasMainLayers];
+  if (hasMainLayers)
   {
-    [v7 backgroundLayer];
+    [stackCopy backgroundLayer];
   }
 
   else
   {
-    [v7 backgroundBackfillLayer];
+    [stackCopy backgroundBackfillLayer];
   }
   v12 = ;
   if (!v12)
   {
-    [MEMORY[0x1E69B3A48] missingError:@"layer stack has no background layer" object:v7];
-    *a5 = v14 = 0;
+    [MEMORY[0x1E69B3A48] missingError:@"layer stack has no background layer" object:stackCopy];
+    *error = v14 = 0;
     goto LABEL_50;
   }
 
   v13 = [PISegmentationHelper imageFromImageLayer:v12];
-  if (v11)
+  if (hasMainLayers)
   {
-    [v7 foregroundLayer];
+    [stackCopy foregroundLayer];
   }
 
   else
   {
-    [v7 foregroundBackfillLayer];
+    [stackCopy foregroundBackfillLayer];
   }
   v15 = ;
   if (v15)
@@ -142,14 +142,14 @@ LABEL_11:
     v13 = v18;
   }
 
-  if (a4)
+  if (area)
   {
-    [v8 parallaxVisibleFrame];
+    [layout parallaxVisibleFrame];
     v20 = v19;
     v22 = v21;
     v24 = v23;
     v26 = v25;
-    [v8 parallaxInactiveFrame];
+    [layout parallaxInactiveFrame];
     v81.origin.x = v27;
     v81.origin.y = v28;
     v81.size.width = v29;
@@ -159,25 +159,25 @@ LABEL_11:
     v76.size.width = v24;
     v76.size.height = v26;
     CGRectUnion(v76, v81);
-    [v8 adaptiveTimeFrame];
-    if (!v11)
+    [layout adaptiveTimeFrame];
+    if (!hasMainLayers)
     {
-      [v8 extendedImageExtent];
+      [layout extendedImageExtent];
       NURectNormalize();
       NURectDenormalize();
       recta = v33;
       v35 = v34;
       v37 = v36;
       v39 = v38;
-      [v8 extendedImageSize];
+      [layout extendedImageSize];
       v41 = v40;
-      [v8 imageSize];
+      [layout imageSize];
       v43 = v41 - v42;
-      [v8 extendedImageSize];
+      [layout extendedImageSize];
       v45 = v44;
-      [v8 imageSize];
+      [layout imageSize];
       v47 = v45 - v46;
-      [v8 parallaxPadding];
+      [layout parallaxPadding];
       v49 = -(v47 - v48);
       v78.origin.x = recta;
       v78.origin.y = v35;
@@ -280,7 +280,7 @@ LABEL_11:
     if (CGRectIsEmpty(v80))
     {
       [MEMORY[0x1E69B3A48] invalidError:@"image extent is empty after cropping to text area" object:v72];
-      *a5 = v14 = 0;
+      *error = v14 = 0;
       v13 = v72;
       goto LABEL_49;
     }
@@ -303,7 +303,7 @@ LABEL_48:
   v32 = @"image extent is empty after rendering layers";
 LABEL_43:
   [v31 invalidError:v32 object:v13];
-  *a5 = v14 = 0;
+  *error = v14 = 0;
 LABEL_49:
 
 LABEL_50:
@@ -311,20 +311,20 @@ LABEL_50:
   return v14;
 }
 
-- (id)calculateLuminanceValuesForImage:(id)a3 renderer:(id)a4 error:(id *)a5
+- (id)calculateLuminanceValuesForImage:(id)image renderer:(id)renderer error:(id *)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E69B3BF0] BGRA8];
-  v9 = [MEMORY[0x1E69B3A10] sRGBColorSpace];
+  imageCopy = image;
+  rendererCopy = renderer;
+  bGRA8 = [MEMORY[0x1E69B3BF0] BGRA8];
+  sRGBColorSpace = [MEMORY[0x1E69B3A10] sRGBColorSpace];
   v65 = 0u;
   v64 = 0u;
-  [v6 extent];
+  [imageCopy extent];
   NUPixelRectFromCGRect();
-  v10 = [MEMORY[0x1E69B3A58] sharedFactory];
-  v11 = [v10 surfaceStoragePool];
+  mEMORY[0x1E69B3A58] = [MEMORY[0x1E69B3A58] sharedFactory];
+  surfaceStoragePool = [mEMORY[0x1E69B3A58] surfaceStoragePool];
 
-  v12 = [v11 newStorageWithSize:0 format:{0, v8}];
+  v12 = [surfaceStoragePool newStorageWithSize:0 format:{0, bGRA8}];
   v58 = 0;
   v59 = &v58;
   v60 = 0x3032000000;
@@ -341,12 +341,12 @@ LABEL_50:
   v44[1] = 3221225472;
   v44[2] = __81__PIParallaxLuminanceCalculator_calculateLuminanceValuesForImage_renderer_error___block_invoke;
   v44[3] = &unk_1E82AB338;
-  v13 = v9;
+  v13 = sRGBColorSpace;
   v45 = v13;
   v48 = &v52;
-  v14 = v7;
+  v14 = rendererCopy;
   v46 = v14;
-  v15 = v6;
+  v15 = imageCopy;
   v50 = v64;
   v51 = v65;
   v47 = v15;
@@ -387,8 +387,8 @@ LABEL_50:
       v23 = v38[5];
       if (v23)
       {
-        v24 = [v23 luminance];
-        [v24 median];
+        luminance = [v23 luminance];
+        [luminance median];
         v26 = v25;
 
         v27 = [MEMORY[0x1E696AD98] numberWithDouble:v26];
@@ -397,7 +397,7 @@ LABEL_50:
       else
       {
         v27 = 0;
-        *a5 = v59[5];
+        *error = v59[5];
       }
 
       _Block_object_dispose(&v37, 8);
@@ -406,7 +406,7 @@ LABEL_50:
     else
     {
       v27 = 0;
-      *a5 = v59[5];
+      *error = v59[5];
     }
   }
 
@@ -414,7 +414,7 @@ LABEL_50:
   {
     v28 = v18;
     v27 = 0;
-    *a5 = v18;
+    *error = v18;
   }
 
   _Block_object_dispose(&v52, 8);

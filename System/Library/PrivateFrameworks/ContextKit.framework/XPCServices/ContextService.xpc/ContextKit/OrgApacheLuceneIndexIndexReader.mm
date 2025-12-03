@@ -3,17 +3,17 @@
 - (id)ensureOpen;
 - (id)leaves;
 - (int)getRefCount;
-- (void)addReaderClosedListenerWithOrgApacheLuceneIndexIndexReader_ReaderClosedListener:(id)a3;
+- (void)addReaderClosedListenerWithOrgApacheLuceneIndexIndexReader_ReaderClosedListener:(id)listener;
 - (void)close;
 - (void)dealloc;
 - (void)incRef;
-- (void)registerParentReaderWithOrgApacheLuceneIndexIndexReader:(id)a3;
-- (void)removeReaderClosedListenerWithOrgApacheLuceneIndexIndexReader_ReaderClosedListener:(id)a3;
+- (void)registerParentReaderWithOrgApacheLuceneIndexIndexReader:(id)reader;
+- (void)removeReaderClosedListenerWithOrgApacheLuceneIndexIndexReader_ReaderClosedListener:(id)listener;
 @end
 
 @implementation OrgApacheLuceneIndexIndexReader
 
-- (void)addReaderClosedListenerWithOrgApacheLuceneIndexIndexReader_ReaderClosedListener:(id)a3
+- (void)addReaderClosedListenerWithOrgApacheLuceneIndexIndexReader_ReaderClosedListener:(id)listener
 {
   [OrgApacheLuceneIndexIndexReader ensureOpen]_0(self);
   readerClosedListeners = self->readerClosedListeners_;
@@ -22,12 +22,12 @@
     JreThrowNullPointerException();
   }
 
-  [(JavaUtilSet *)readerClosedListeners addWithId:a3];
+  [(JavaUtilSet *)readerClosedListeners addWithId:listener];
 }
 
 - (id)ensureOpen
 {
-  v2 = *(a1 + 16);
+  v2 = *(self + 16);
   if (!v2)
   {
     JreThrowNullPointerException();
@@ -40,7 +40,7 @@
     goto LABEL_8;
   }
 
-  if (*(a1 + 9) == 1)
+  if (*(self + 9) == 1)
   {
     v4 = @"this IndexReader cannot be used anymore as one of its child readers was closed";
 LABEL_8:
@@ -51,7 +51,7 @@ LABEL_8:
   return result;
 }
 
-- (void)removeReaderClosedListenerWithOrgApacheLuceneIndexIndexReader_ReaderClosedListener:(id)a3
+- (void)removeReaderClosedListenerWithOrgApacheLuceneIndexIndexReader_ReaderClosedListener:(id)listener
 {
   [OrgApacheLuceneIndexIndexReader ensureOpen]_0(self);
   readerClosedListeners = self->readerClosedListeners_;
@@ -60,10 +60,10 @@ LABEL_8:
     JreThrowNullPointerException();
   }
 
-  [(JavaUtilSet *)readerClosedListeners removeWithId:a3];
+  [(JavaUtilSet *)readerClosedListeners removeWithId:listener];
 }
 
-- (void)registerParentReaderWithOrgApacheLuceneIndexIndexReader:(id)a3
+- (void)registerParentReaderWithOrgApacheLuceneIndexIndexReader:(id)reader
 {
   [OrgApacheLuceneIndexIndexReader ensureOpen]_0(self);
   parentReaders = self->parentReaders_;
@@ -72,7 +72,7 @@ LABEL_8:
     JreThrowNullPointerException();
   }
 
-  [(JavaUtilSet *)parentReaders addWithId:a3];
+  [(JavaUtilSet *)parentReaders addWithId:reader];
 }
 
 - (int)getRefCount
@@ -99,7 +99,7 @@ LABEL_8:
 {
   do
   {
-    v2 = *(a1 + 16);
+    v2 = *(self + 16);
     if (!v2)
     {
       JreThrowNullPointerException();
@@ -108,7 +108,7 @@ LABEL_8:
     v3 = [v2 get];
   }
 
-  while (v3 >= 1 && ![*(a1 + 16) compareAndSetWithInt:v3 withInt:(v3 + 1)]);
+  while (v3 >= 1 && ![*(self + 16) compareAndSetWithInt:v3 withInt:(v3 + 1)]);
   return v3 > 0;
 }
 
@@ -126,13 +126,13 @@ LABEL_8:
 
 - (id)leaves
 {
-  v2 = [(OrgApacheLuceneIndexIndexReader *)self getContext];
-  if (!v2)
+  getContext = [(OrgApacheLuceneIndexIndexReader *)self getContext];
+  if (!getContext)
   {
     JreThrowNullPointerException();
   }
 
-  return [v2 leaves];
+  return [getContext leaves];
 }
 
 - (void)dealloc

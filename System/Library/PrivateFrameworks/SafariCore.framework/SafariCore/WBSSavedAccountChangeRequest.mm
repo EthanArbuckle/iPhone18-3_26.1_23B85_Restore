@@ -7,49 +7,49 @@
 - (BOOL)hasSitesChange;
 - (BOOL)hasTOTPGeneratorChange;
 - (BOOL)hasUserChange;
-- (void)setSavedAccount:(id)a3;
+- (void)setSavedAccount:(id)account;
 @end
 
 @implementation WBSSavedAccountChangeRequest
 
-- (void)setSavedAccount:(id)a3
+- (void)setSavedAccount:(id)account
 {
-  v26 = a3;
-  if ((WBSIsEqual(v26, self->_savedAccount) & 1) == 0)
+  accountCopy = account;
+  if ((WBSIsEqual(accountCopy, self->_savedAccount) & 1) == 0)
   {
-    objc_storeStrong(&self->_savedAccount, a3);
-    v5 = [v26 user];
-    v6 = [v5 copy];
+    objc_storeStrong(&self->_savedAccount, account);
+    user = [accountCopy user];
+    v6 = [user copy];
     user = self->_user;
     self->_user = v6;
 
-    v8 = [v26 password];
-    v9 = [v8 copy];
+    password = [accountCopy password];
+    v9 = [password copy];
     password = self->_password;
     self->_password = v9;
 
-    v11 = [v26 sites];
-    v12 = [v11 mutableCopy];
+    sites = [accountCopy sites];
+    v12 = [sites mutableCopy];
     sites = self->_sites;
     self->_sites = v12;
 
-    v14 = [v26 totpGenerators];
-    v15 = [v14 firstObject];
+    totpGenerators = [accountCopy totpGenerators];
+    firstObject = [totpGenerators firstObject];
     totpGenerator = self->_totpGenerator;
-    self->_totpGenerator = v15;
+    self->_totpGenerator = firstObject;
 
-    v17 = [v26 notesEntry];
-    v18 = [v17 copy];
+    notesEntry = [accountCopy notesEntry];
+    v18 = [notesEntry copy];
     notesEntry = self->_notesEntry;
     self->_notesEntry = v18;
 
-    v20 = [v26 customTitle];
-    v21 = [v20 copy];
+    customTitle = [accountCopy customTitle];
+    v21 = [customTitle copy];
     customTitle = self->_customTitle;
     self->_customTitle = v21;
 
-    v23 = [v26 additionalSites];
-    v24 = [v23 copy];
+    additionalSites = [accountCopy additionalSites];
+    v24 = [additionalSites copy];
     additionalSites = self->_additionalSites;
     self->_additionalSites = v24;
   }
@@ -88,8 +88,8 @@ void *__48__WBSSavedAccountChangeRequest_userVisibleSites__block_invoke(uint64_t
 - (BOOL)hasUserChange
 {
   user = self->_user;
-  v3 = [(WBSSavedAccount *)self->_savedAccount user];
-  LOBYTE(user) = WBSIsEqual(user, v3);
+  user = [(WBSSavedAccount *)self->_savedAccount user];
+  LOBYTE(user) = WBSIsEqual(user, user);
 
   return user ^ 1;
 }
@@ -99,8 +99,8 @@ void *__48__WBSSavedAccountChangeRequest_userVisibleSites__block_invoke(uint64_t
   if (([(WBSSavedAccount *)self->_savedAccount credentialTypes]& 1) != 0)
   {
     password = self->_password;
-    v5 = [(WBSSavedAccount *)self->_savedAccount password];
-    v3 = WBSIsEqual(password, v5) ^ 1;
+    password = [(WBSSavedAccount *)self->_savedAccount password];
+    v3 = WBSIsEqual(password, password) ^ 1;
   }
 
   else
@@ -116,8 +116,8 @@ void *__48__WBSSavedAccountChangeRequest_userVisibleSites__block_invoke(uint64_t
   if (-[NSMutableArray count](self->_sites, "count") || (-[WBSSavedAccount sites](self->_savedAccount, "sites"), v3 = objc_claimAutoreleasedReturnValue(), v4 = [v3 count], v3, v4))
   {
     sites = self->_sites;
-    v6 = [(WBSSavedAccount *)self->_savedAccount sites];
-    v7 = WBSIsEqual(sites, v6) ^ 1;
+    sites = [(WBSSavedAccount *)self->_savedAccount sites];
+    v7 = WBSIsEqual(sites, sites) ^ 1;
   }
 
   else
@@ -131,9 +131,9 @@ void *__48__WBSSavedAccountChangeRequest_userVisibleSites__block_invoke(uint64_t
 - (BOOL)hasTOTPGeneratorChange
 {
   totpGenerator = self->_totpGenerator;
-  v3 = [(WBSSavedAccount *)self->_savedAccount totpGenerators];
-  v4 = [v3 firstObject];
-  LOBYTE(totpGenerator) = WBSIsEqual(totpGenerator, v4);
+  totpGenerators = [(WBSSavedAccount *)self->_savedAccount totpGenerators];
+  firstObject = [totpGenerators firstObject];
+  LOBYTE(totpGenerator) = WBSIsEqual(totpGenerator, firstObject);
 
   return totpGenerator ^ 1;
 }
@@ -141,8 +141,8 @@ void *__48__WBSSavedAccountChangeRequest_userVisibleSites__block_invoke(uint64_t
 - (BOOL)hasNotesEntryChange
 {
   notesEntry = self->_notesEntry;
-  v4 = [(WBSSavedAccount *)self->_savedAccount notesEntry];
-  if (WBSIsEqual(notesEntry, v4))
+  notesEntry = [(WBSSavedAccount *)self->_savedAccount notesEntry];
+  if (WBSIsEqual(notesEntry, notesEntry))
   {
     v5 = 0;
   }
@@ -154,8 +154,8 @@ void *__48__WBSSavedAccountChangeRequest_userVisibleSites__block_invoke(uint64_t
 
   else
   {
-    v6 = [(WBSSavedAccount *)self->_savedAccount notesEntry];
-    v5 = [v6 length] != 0;
+    notesEntry2 = [(WBSSavedAccount *)self->_savedAccount notesEntry];
+    v5 = [notesEntry2 length] != 0;
   }
 
   return v5;
@@ -164,8 +164,8 @@ void *__48__WBSSavedAccountChangeRequest_userVisibleSites__block_invoke(uint64_t
 - (BOOL)hasCustomTitleChange
 {
   customTitle = self->_customTitle;
-  v4 = [(WBSSavedAccount *)self->_savedAccount customTitle];
-  if (WBSIsEqual(customTitle, v4))
+  customTitle = [(WBSSavedAccount *)self->_savedAccount customTitle];
+  if (WBSIsEqual(customTitle, customTitle))
   {
     v5 = 0;
   }
@@ -177,8 +177,8 @@ void *__48__WBSSavedAccountChangeRequest_userVisibleSites__block_invoke(uint64_t
 
   else
   {
-    v6 = [(WBSSavedAccount *)self->_savedAccount customTitle];
-    v5 = [v6 length] != 0;
+    customTitle2 = [(WBSSavedAccount *)self->_savedAccount customTitle];
+    v5 = [customTitle2 length] != 0;
   }
 
   return v5;
@@ -204,15 +204,15 @@ void *__47__WBSSavedAccountChangeRequest_additionalSites__block_invoke(uint64_t 
 
 - (BOOL)hasAdditionalSitesChange
 {
-  v3 = [(WBSSavedAccountChangeRequest *)self additionalSites];
-  if ([v3 count])
+  additionalSites = [(WBSSavedAccountChangeRequest *)self additionalSites];
+  if ([additionalSites count])
   {
   }
 
   else
   {
-    v4 = [(WBSSavedAccount *)self->_savedAccount additionalSites];
-    v5 = [v4 count];
+    additionalSites2 = [(WBSSavedAccount *)self->_savedAccount additionalSites];
+    v5 = [additionalSites2 count];
 
     if (!v5)
     {
@@ -221,9 +221,9 @@ void *__47__WBSSavedAccountChangeRequest_additionalSites__block_invoke(uint64_t 
     }
   }
 
-  v6 = [(WBSSavedAccountChangeRequest *)self additionalSites];
-  v7 = [(WBSSavedAccount *)self->_savedAccount additionalSites];
-  v8 = WBSIsEqual(v6, v7) ^ 1;
+  additionalSites3 = [(WBSSavedAccountChangeRequest *)self additionalSites];
+  additionalSites4 = [(WBSSavedAccount *)self->_savedAccount additionalSites];
+  v8 = WBSIsEqual(additionalSites3, additionalSites4) ^ 1;
 
   return v8;
 }

@@ -1,24 +1,24 @@
 @interface WFDeferredMenuElementGroup
 - (BOOL)shouldCollapse;
-- (WFDeferredMenuElementGroup)initWithProvider:(id)a3;
+- (WFDeferredMenuElementGroup)initWithProvider:(id)provider;
 @end
 
 @implementation WFDeferredMenuElementGroup
 
 - (BOOL)shouldCollapse
 {
-  v3 = [(WFDeferredMenuElementGroup *)self style];
-  if (v3 != 1)
+  style = [(WFDeferredMenuElementGroup *)self style];
+  if (style != 1)
   {
-    LOBYTE(v3) = [(WFDeferredMenuElementGroup *)self style]== 2;
+    LOBYTE(style) = [(WFDeferredMenuElementGroup *)self style]== 2;
   }
 
-  return v3;
+  return style;
 }
 
-- (WFDeferredMenuElementGroup)initWithProvider:(id)a3
+- (WFDeferredMenuElementGroup)initWithProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v11.receiver = self;
   v11.super_class = WFDeferredMenuElementGroup;
   v5 = [(WFDeferredMenuElementGroup *)&v11 init];
@@ -26,7 +26,7 @@
   if (v5)
   {
     [(WFDeferredMenuElementGroup *)v5 setStyle:0];
-    v7 = [v4 copy];
+    v7 = [providerCopy copy];
     itemProvider = v6->_itemProvider;
     v6->_itemProvider = v7;
 

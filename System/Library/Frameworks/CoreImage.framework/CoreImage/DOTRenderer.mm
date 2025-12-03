@@ -1,9 +1,9 @@
 @interface DOTRenderer
-- (BOOL)setCanvasWidth:(unsigned int)a3 height:(unsigned int)a4;
+- (BOOL)setCanvasWidth:(unsigned int)width height:(unsigned int)height;
 - (CGSize)separation;
 - (DOTRenderer)init;
 - (void)dealloc;
-- (void)drawNode:(id)a3;
+- (void)drawNode:(id)node;
 - (void)flushRender;
 @end
 
@@ -31,7 +31,7 @@
   [(DOTRenderer *)&v2 dealloc];
 }
 
-- (BOOL)setCanvasWidth:(unsigned int)a3 height:(unsigned int)a4
+- (BOOL)setCanvasWidth:(unsigned int)width height:(unsigned int)height
 {
   file = self->file;
   if (file)
@@ -39,7 +39,7 @@
     fclose(file);
   }
 
-  if (![(NSURL *)self->fileURL path:*&a3]|| (v6 = fopen([(NSString *)[(NSURL *)self->fileURL path] UTF8String], "w"), (self->file = v6) != 0))
+  if (![(NSURL *)self->fileURL path:*&width]|| (v6 = fopen([(NSString *)[(NSURL *)self->fileURL path] UTF8String], "w"), (self->file = v6) != 0))
   {
     self->contents = [MEMORY[0x1E696AD60] string];
     -[NSMutableString appendFormat:](self->contents, "appendFormat:", @"digraph %@ {\n", -[NSArray componentsJoinedByString:](-[NSString componentsSeparatedByCharactersInSet:](self->fileTitle, "componentsSeparatedByCharactersInSet:", [MEMORY[0x1E696AB08] whitespaceCharacterSet]), "componentsJoinedByString:", @"_"));
@@ -50,30 +50,30 @@
   return v6;
 }
 
-- (void)drawNode:(id)a3
+- (void)drawNode:(id)node
 {
-  [(NSMutableString *)self->contents appendFormat:@"n%p [", a3];
-  v5 = [a3 color];
-  if (v5 >= 0x10)
+  [(NSMutableString *)self->contents appendFormat:@"n%p [", node];
+  color = [node color];
+  if (color >= 0x10)
   {
     [DOTRenderer drawNode:];
   }
 
-  v6 = off_1E75C2BE0[v5];
-  v7 = [a3 shape];
-  if (v7 >= 4)
+  v6 = off_1E75C2BE0[color];
+  shape = [node shape];
+  if (shape >= 4)
   {
     [DOTRenderer drawNode:];
   }
 
-  [(NSMutableString *)self->contents appendFormat:@"style=filled, shape=%s, color=black, fillcolor=%s", off_1E75C2C60[v7], v6];
+  [(NSMutableString *)self->contents appendFormat:@"style=filled, shape=%s, color=black, fillcolor=%s", off_1E75C2C60[shape], v6];
   [(NSMutableString *)self->contents appendString:@"label=<<table border=0 cellborder=0 cellspacing=0>"];
-  if ([a3 title])
+  if ([node title])
   {
-    -[NSMutableString appendFormat:](self->contents, "appendFormat:", @"<tr><td valign='middle'><font face='Menlo'>[%@]</font></td></tr>", [a3 title]);
+    -[NSMutableString appendFormat:](self->contents, "appendFormat:", @"<tr><td valign='middle'><font face='Menlo'>[%@]</font></td></tr>", [node title]);
   }
 
-  -[NSMutableString appendFormat:](self->contents, "appendFormat:", @"<tr><td valign='middle' balign='left'><font face='Menlo'>%@</font></td></tr>", [objc_msgSend(a3 "label")]);
+  -[NSMutableString appendFormat:](self->contents, "appendFormat:", @"<tr><td valign='middle' balign='left'><font face='Menlo'>%@</font></td></tr>", [objc_msgSend(node "label")]);
   [(NSMutableString *)self->contents appendString:@"</table>>"];
   contents = self->contents;
 

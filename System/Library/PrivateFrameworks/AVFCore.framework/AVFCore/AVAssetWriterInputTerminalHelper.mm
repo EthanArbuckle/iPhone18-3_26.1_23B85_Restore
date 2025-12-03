@@ -1,22 +1,22 @@
 @interface AVAssetWriterInputTerminalHelper
-- (AVAssetWriterInputTerminalHelper)initWithConfigurationState:(id)a3 terminalStatus:(int64_t)a4;
-- (BOOL)canStartRespondingToEachPassDescriptionReturningReason:(id *)a3;
+- (AVAssetWriterInputTerminalHelper)initWithConfigurationState:(id)state terminalStatus:(int64_t)status;
+- (BOOL)canStartRespondingToEachPassDescriptionReturningReason:(id *)reason;
 - (BOOL)isReadyForMoreMediaData;
 - (BOOL)mediaDataRequesterShouldRequestMediaData;
 - (void)markCurrentPassAsFinished;
-- (void)requestMediaDataOnceIfNecessaryWithMediaDataRequester:(id)a3;
-- (void)requestMediaDataWhenReadyOnQueue:(id)a3 usingBlock:(id)a4;
+- (void)requestMediaDataOnceIfNecessaryWithMediaDataRequester:(id)requester;
+- (void)requestMediaDataWhenReadyOnQueue:(id)queue usingBlock:(id)block;
 - (void)stopRequestingMediaData;
 @end
 
 @implementation AVAssetWriterInputTerminalHelper
 
-- (AVAssetWriterInputTerminalHelper)initWithConfigurationState:(id)a3 terminalStatus:(int64_t)a4
+- (AVAssetWriterInputTerminalHelper)initWithConfigurationState:(id)state terminalStatus:(int64_t)status
 {
   v13.receiver = self;
   v13.super_class = AVAssetWriterInputTerminalHelper;
-  result = [(AVAssetWriterInputHelper *)&v13 initWithConfigurationState:a3];
-  if ((a4 - 2) >= 3)
+  result = [(AVAssetWriterInputHelper *)&v13 initWithConfigurationState:state];
+  if ((status - 2) >= 3)
   {
     v12 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(result userInfo:{a2, @"invalid parameter not satisfying: %s", v7, v8, v9, v10, v11, "(terminalStatus == AVAssetWriterStatusCompleted) || (terminalStatus == AVAssetWriterStatusCancelled) || (terminalStatus == AVAssetWriterStatusFailed)"), 0}];
     objc_exception_throw(v12);
@@ -24,7 +24,7 @@
 
   if (result)
   {
-    result->_terminalStatus = a4;
+    result->_terminalStatus = status;
   }
 
   return result;
@@ -42,13 +42,13 @@
   return [(AVAssetWriterInputHelper *)&v4 isReadyForMoreMediaData];
 }
 
-- (void)requestMediaDataWhenReadyOnQueue:(id)a3 usingBlock:(id)a4
+- (void)requestMediaDataWhenReadyOnQueue:(id)queue usingBlock:(id)block
 {
   if ([(AVAssetWriterInputTerminalHelper *)self status]!= 3)
   {
     v28.receiver = self;
     v28.super_class = AVAssetWriterInputTerminalHelper;
-    [(AVAssetWriterInputHelper *)&v28 requestMediaDataWhenReadyOnQueue:a3 usingBlock:a4];
+    [(AVAssetWriterInputHelper *)&v28 requestMediaDataWhenReadyOnQueue:queue usingBlock:block];
     return;
   }
 
@@ -64,7 +64,7 @@
   }
 
   self->_didRequestMediaDataOnce = 1;
-  if (!a3)
+  if (!queue)
   {
     v24 = MEMORY[0x1E695DF30];
     v25 = *MEMORY[0x1E695D940];
@@ -77,7 +77,7 @@ LABEL_13:
     objc_exception_throw([v22 exceptionWithName:v23 reason:v21 userInfo:0]);
   }
 
-  if (!a4)
+  if (!block)
   {
     v24 = MEMORY[0x1E695DF30];
     v25 = *MEMORY[0x1E695D940];
@@ -85,7 +85,7 @@ LABEL_13:
     goto LABEL_12;
   }
 
-  dispatch_async(a3, a4);
+  dispatch_async(queue, block);
 }
 
 - (void)stopRequestingMediaData
@@ -97,35 +97,35 @@ LABEL_13:
 
 - (BOOL)mediaDataRequesterShouldRequestMediaData
 {
-  v3 = [(AVWeakReference *)[(AVAssetWriterInputHelper *)self weakReferenceToAssetWriterInput] referencedObject];
-  v4 = [(AVAssetWriterInputTerminalHelper *)self status];
+  referencedObject = [(AVWeakReference *)[(AVAssetWriterInputHelper *)self weakReferenceToAssetWriterInput] referencedObject];
+  status = [(AVAssetWriterInputTerminalHelper *)self status];
   result = 0;
-  if (v4 == 3 && v3)
+  if (status == 3 && referencedObject)
   {
-    if ([v3 numberOfAppendFailures])
+    if ([referencedObject numberOfAppendFailures])
     {
       return 0;
     }
 
     else
     {
-      return [v3 _markAsFinishedCalled] ^ 1;
+      return [referencedObject _markAsFinishedCalled] ^ 1;
     }
   }
 
   return result;
 }
 
-- (void)requestMediaDataOnceIfNecessaryWithMediaDataRequester:(id)a3
+- (void)requestMediaDataOnceIfNecessaryWithMediaDataRequester:(id)requester
 {
-  v5 = [a3 requestQueue];
+  requestQueue = [requester requestQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __90__AVAssetWriterInputTerminalHelper_requestMediaDataOnceIfNecessaryWithMediaDataRequester___block_invoke;
   v6[3] = &unk_1E7460DF0;
-  v6[4] = a3;
+  v6[4] = requester;
   v6[5] = self;
-  dispatch_async(v5, v6);
+  dispatch_async(requestQueue, v6);
 }
 
 uint64_t __90__AVAssetWriterInputTerminalHelper_requestMediaDataOnceIfNecessaryWithMediaDataRequester___block_invoke(uint64_t a1)
@@ -137,15 +137,15 @@ uint64_t __90__AVAssetWriterInputTerminalHelper_requestMediaDataOnceIfNecessaryW
   return [v2 setDelegate:0];
 }
 
-- (BOOL)canStartRespondingToEachPassDescriptionReturningReason:(id *)a3
+- (BOOL)canStartRespondingToEachPassDescriptionReturningReason:(id *)reason
 {
-  v4 = [(AVAssetWriterInputTerminalHelper *)self status];
-  if (a3 && v4 != 3)
+  status = [(AVAssetWriterInputTerminalHelper *)self status];
+  if (reason && status != 3)
   {
-    *a3 = @"cannot be called after canceling or finishing writing";
+    *reason = @"cannot be called after canceling or finishing writing";
   }
 
-  return v4 == 3;
+  return status == 3;
 }
 
 - (void)markCurrentPassAsFinished

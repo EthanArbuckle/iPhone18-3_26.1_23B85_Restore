@@ -2,7 +2,7 @@
 + (_TtC7ChatKit20CKAppAudioController)sharedInstance;
 - (CKAudioController)audioController;
 - (_TtC7ChatKit20CKAppAudioController)init;
-- (void)setAudioController:(id)a3;
+- (void)setAudioController:(id)controller;
 @end
 
 @implementation CKAppAudioController
@@ -26,13 +26,13 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setAudioController:(id)a3
+- (void)setAudioController:(id)controller
 {
   v5 = OBJC_IVAR____TtC7ChatKit20CKAppAudioController_audioController;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = controller;
+  controllerCopy = controller;
 }
 
 - (_TtC7ChatKit20CKAppAudioController)init

@@ -1,14 +1,14 @@
 @interface SBFOverridableDateProvider
 - (SBFOverridableDateProvider)init;
-- (SBFOverridableDateProvider)initWithDateProvider:(id)a3;
+- (SBFOverridableDateProvider)initWithDateProvider:(id)provider;
 - (double)additionalOffset;
 - (id)date;
-- (id)observeMinuteUpdatesWithHandler:(id)a3;
-- (void)_fireHandlersForDate:(id)a3;
+- (id)observeMinuteUpdatesWithHandler:(id)handler;
+- (void)_fireHandlersForDate:(id)date;
 - (void)_updateForOverrides;
 - (void)_updateUnderlyingProvider;
-- (void)removeMinuteUpdateHandler:(id)a3;
-- (void)setAdditionalOffset:(double)a3;
+- (void)removeMinuteUpdateHandler:(id)handler;
+- (void)setAdditionalOffset:(double)offset;
 @end
 
 @implementation SBFOverridableDateProvider
@@ -38,18 +38,18 @@ void __55__SBFOverridableDateProvider__updateUnderlyingProvider__block_invoke(ui
   overrideDate = self->_overrideDate;
   if (overrideDate)
   {
-    v4 = overrideDate;
+    date = overrideDate;
   }
 
   else
   {
-    v4 = [(SBFDateProviding *)self->_underlyingProvider date];
+    date = [(SBFDateProviding *)self->_underlyingProvider date];
   }
 
-  v5 = v4;
+  v5 = date;
   if (self->_overrideDateOffset != 0.0)
   {
-    v6 = [(NSDate *)v4 dateByAddingTimeInterval:?];
+    v6 = [(NSDate *)date dateByAddingTimeInterval:?];
 
     v5 = v6;
   }
@@ -108,8 +108,8 @@ void __55__SBFOverridableDateProvider__updateUnderlyingProvider__block_invoke(ui
 
     if (!v7)
     {
-      v8 = [(SBFOverridableDateProvider *)self date];
-      [(SBFOverridableDateProvider *)self _fireHandlersForDate:v8];
+      date = [(SBFOverridableDateProvider *)self date];
+      [(SBFOverridableDateProvider *)self _fireHandlersForDate:date];
 
       underlyingToken = self->_underlyingToken;
     }
@@ -128,16 +128,16 @@ void __55__SBFOverridableDateProvider__updateUnderlyingProvider__block_invoke(ui
   return v4;
 }
 
-- (SBFOverridableDateProvider)initWithDateProvider:(id)a3
+- (SBFOverridableDateProvider)initWithDateProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v11.receiver = self;
   v11.super_class = SBFOverridableDateProvider;
   v6 = [(SBFOverridableDateProvider *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_underlyingProvider, a3);
+    objc_storeStrong(&v6->_underlyingProvider, provider);
     v8 = +[SBFDateTimeController sharedInstance];
     dateTimeController = v7->_dateTimeController;
     v7->_dateTimeController = v8;
@@ -149,9 +149,9 @@ void __55__SBFOverridableDateProvider__updateUnderlyingProvider__block_invoke(ui
   return v7;
 }
 
-- (id)observeMinuteUpdatesWithHandler:(id)a3
+- (id)observeMinuteUpdatesWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = MEMORY[0x1E696AD98];
   ++self->_nextToken;
   v6 = [v5 numberWithUnsignedInteger:?];
@@ -162,7 +162,7 @@ void __55__SBFOverridableDateProvider__updateUnderlyingProvider__block_invoke(ui
     self->_minuteHandlers = v7;
   }
 
-  v9 = [v4 copy];
+  v9 = [handlerCopy copy];
   v10 = MEMORY[0x1BFB4D9B0]();
   [(NSMutableDictionary *)self->_minuteHandlers setObject:v10 forKeyedSubscript:v6];
 
@@ -171,20 +171,20 @@ void __55__SBFOverridableDateProvider__updateUnderlyingProvider__block_invoke(ui
   return v6;
 }
 
-- (void)removeMinuteUpdateHandler:(id)a3
+- (void)removeMinuteUpdateHandler:(id)handler
 {
-  [(NSMutableDictionary *)self->_minuteHandlers removeObjectForKey:a3];
+  [(NSMutableDictionary *)self->_minuteHandlers removeObjectForKey:handler];
 
   [(SBFOverridableDateProvider *)self _updateUnderlyingProvider];
 }
 
-- (void)setAdditionalOffset:(double)a3
+- (void)setAdditionalOffset:(double)offset
 {
   if (objc_opt_respondsToSelector())
   {
     underlyingProvider = self->_underlyingProvider;
 
-    [(SBFDateProviding *)underlyingProvider setAdditionalOffset:a3];
+    [(SBFDateProviding *)underlyingProvider setAdditionalOffset:offset];
   }
 }
 
@@ -203,28 +203,28 @@ void __55__SBFOverridableDateProvider__updateUnderlyingProvider__block_invoke(ui
 
 - (void)_updateForOverrides
 {
-  v3 = [(SBFDateTimeController *)self->_dateTimeController overrideDate];
-  v4 = [v3 copy];
+  overrideDate = [(SBFDateTimeController *)self->_dateTimeController overrideDate];
+  v4 = [overrideDate copy];
   overrideDate = self->_overrideDate;
   self->_overrideDate = v4;
 
   [(SBFDateTimeController *)self->_dateTimeController overrideDateOffset];
   self->_overrideDateOffset = v6;
   [(SBFOverridableDateProvider *)self _updateUnderlyingProvider];
-  v7 = [(SBFOverridableDateProvider *)self date];
-  [(SBFOverridableDateProvider *)self _fireHandlersForDate:v7];
+  date = [(SBFOverridableDateProvider *)self date];
+  [(SBFOverridableDateProvider *)self _fireHandlersForDate:date];
 }
 
-- (void)_fireHandlersForDate:(id)a3
+- (void)_fireHandlersForDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   minuteHandlers = self->_minuteHandlers;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __51__SBFOverridableDateProvider__fireHandlersForDate___block_invoke;
   v7[3] = &unk_1E807F560;
-  v8 = v4;
-  v6 = v4;
+  v8 = dateCopy;
+  v6 = dateCopy;
   [(NSMutableDictionary *)minuteHandlers enumerateKeysAndObjectsUsingBlock:v7];
 }
 

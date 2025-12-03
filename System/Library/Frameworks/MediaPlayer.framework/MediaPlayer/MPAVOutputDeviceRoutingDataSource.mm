@@ -1,58 +1,58 @@
 @interface MPAVOutputDeviceRoutingDataSource
 + (id)_globalAudioSessionLock;
-- (BOOL)_isRemovingPredictedDevice:(id)a3;
-- (BOOL)_shouldAddPredictedDeviceToOuputDevices:(id)a3;
-- (BOOL)_shouldDetachOutputDevicesToGroup:(id)a3;
+- (BOOL)_isRemovingPredictedDevice:(id)device;
+- (BOOL)_shouldAddPredictedDeviceToOuputDevices:(id)devices;
+- (BOOL)_shouldDetachOutputDevicesToGroup:(id)group;
 - (BOOL)didReceiveDiscoveryResults;
-- (BOOL)routeIsLeaderOfEndpoint:(id)a3;
+- (BOOL)routeIsLeaderOfEndpoint:(id)endpoint;
 - (MPAVEndpointRoute)endpointRoute;
 - (MPMRAVOutputContextWrapper)applicationOutputContext;
 - (MRAVEndpoint)endpoint;
 - (MRAVOutputDevice)predictedDevice;
 - (MRAVRoutingDiscoverySessionConfiguration)discoverySessionConfiguration;
 - (NSString)routingContextUID;
-- (id)_detachableDevicesInOutputDevices:(id)a3;
-- (id)_initWithEndpointRoute:(id)a3;
-- (id)_outputDeviceRouteWithUID:(id)a3;
+- (id)_detachableDevicesInOutputDevices:(id)devices;
+- (id)_initWithEndpointRoute:(id)route;
+- (id)_outputDeviceRouteWithUID:(id)d;
 - (id)_stateDumpObject;
-- (id)getRoutesForCategory:(id)a3;
-- (id)outputDevicesForRoutes:(id)a3;
-- (void)_endpointsDidChangeNotification:(id)a3;
+- (id)getRoutesForCategory:(id)category;
+- (id)outputDevicesForRoutes:(id)routes;
+- (void)_endpointsDidChangeNotification:(id)notification;
 - (void)_generateDiscoverySession;
 - (void)_onDiscoverySessionQueue_generateCompanionDiscoverySession;
 - (void)_onDiscoverySessionQueue_generateDiscoverySession;
-- (void)_outputDevicesDidChange:(id)a3;
-- (void)_outputDevicesDidChangeNotification:(id)a3;
+- (void)_outputDevicesDidChange:(id)change;
+- (void)_outputDevicesDidChangeNotification:(id)notification;
 - (void)_personalRoutesDidChange;
 - (void)_registerNotifications;
 - (void)_resetPredictedOutputDevice;
-- (void)_routeStatusDidChangeNotification:(id)a3;
-- (void)_setShouldSourceOutputDevicesFromAVODDS:(BOOL)a3;
+- (void)_routeStatusDidChangeNotification:(id)notification;
+- (void)_setShouldSourceOutputDevicesFromAVODDS:(BOOL)s;
 - (void)_unregisterNotifications;
-- (void)addRouteToGroup:(id)a3 completion:(id)a4;
-- (void)addRoutesToGroup:(id)a3 completion:(id)a4;
-- (void)createGroupFromOutputDevices:(id)a3 queue:(id)a4 completion:(id)a5;
+- (void)addRouteToGroup:(id)group completion:(id)completion;
+- (void)addRoutesToGroup:(id)group completion:(id)completion;
+- (void)createGroupFromOutputDevices:(id)devices queue:(id)queue completion:(id)completion;
 - (void)dealloc;
-- (void)removeRouteFromGroup:(id)a3 completion:(id)a4;
-- (void)removeRoutesFromGroup:(id)a3 completion:(id)a4;
-- (void)setCompanionDiscoverySession:(id)a3;
-- (void)setDidReceiveDiscoveryResults:(BOOL)a3;
-- (void)setDiscoveryMode:(int64_t)a3;
-- (void)setDiscoverySession:(id)a3;
-- (void)setEndpointRoute:(id)a3;
-- (void)setPickedRoute:(id)a3 withPassword:(id)a4 completion:(id)a5;
-- (void)setPredictedDevice:(id)a3;
-- (void)setRoutingContextUID:(id)a3;
-- (void)setTargetSessionID:(unsigned int)a3;
+- (void)removeRouteFromGroup:(id)group completion:(id)completion;
+- (void)removeRoutesFromGroup:(id)group completion:(id)completion;
+- (void)setCompanionDiscoverySession:(id)session;
+- (void)setDidReceiveDiscoveryResults:(BOOL)results;
+- (void)setDiscoveryMode:(int64_t)mode;
+- (void)setDiscoverySession:(id)session;
+- (void)setEndpointRoute:(id)route;
+- (void)setPickedRoute:(id)route withPassword:(id)password completion:(id)completion;
+- (void)setPredictedDevice:(id)device;
+- (void)setRoutingContextUID:(id)d;
+- (void)setTargetSessionID:(unsigned int)d;
 @end
 
 @implementation MPAVOutputDeviceRoutingDataSource
 
 - (void)_registerNotifications
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__outputDevicesDidChangeNotification_ name:*MEMORY[0x1E69B0B60] object:0];
-  [v3 addObserver:self selector:sel__routeStatusDidChangeNotification_ name:*MEMORY[0x1E69B12E0] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__outputDevicesDidChangeNotification_ name:*MEMORY[0x1E69B0B60] object:0];
+  [defaultCenter addObserver:self selector:sel__routeStatusDidChangeNotification_ name:*MEMORY[0x1E69B12E0] object:0];
 }
 
 - (void)_generateDiscoverySession
@@ -69,10 +69,10 @@
 - (void)_onDiscoverySessionQueue_generateDiscoverySession
 {
   dispatch_assert_queue_V2(self->_discoverySessionQueue);
-  v6 = [(MPAVOutputDeviceRoutingDataSource *)self endpoint];
-  if ([v6 isCompanionEndpoint])
+  endpoint = [(MPAVOutputDeviceRoutingDataSource *)self endpoint];
+  if ([endpoint isCompanionEndpoint])
   {
-    v3 = v6;
+    v3 = endpoint;
   }
 
   else
@@ -80,8 +80,8 @@
     v3 = MEMORY[0x1E69B09C0];
   }
 
-  v4 = [(MPAVOutputDeviceRoutingDataSource *)self discoverySessionConfiguration];
-  v5 = [v3 discoverySessionWithConfiguration:v4];
+  discoverySessionConfiguration = [(MPAVOutputDeviceRoutingDataSource *)self discoverySessionConfiguration];
+  v5 = [v3 discoverySessionWithConfiguration:discoverySessionConfiguration];
   [(MPAVOutputDeviceRoutingDataSource *)self setDiscoverySession:v5];
 }
 
@@ -200,11 +200,11 @@ void __61__MPAVOutputDeviceRoutingDataSource_applicationOutputContext__block_inv
   v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@: %p>", objc_opt_class(), self];
   v18[0] = v3;
   v17[1] = @"predictedDevice";
-  v4 = [(MPAVOutputDeviceRoutingDataSource *)self predictedDevice];
-  v5 = v4;
-  if (v4)
+  predictedDevice = [(MPAVOutputDeviceRoutingDataSource *)self predictedDevice];
+  v5 = predictedDevice;
+  if (predictedDevice)
   {
-    v6 = v4;
+    v6 = predictedDevice;
   }
 
   else
@@ -214,8 +214,8 @@ void __61__MPAVOutputDeviceRoutingDataSource_applicationOutputContext__block_inv
 
   v18[1] = v6;
   v17[2] = @"AVOutputContext.predictedDevice";
-  v7 = [(MPAVOutputDeviceRoutingDataSource *)self applicationOutputContext];
-  [v7 unwrappedValue];
+  applicationOutputContext = [(MPAVOutputDeviceRoutingDataSource *)self applicationOutputContext];
+  [applicationOutputContext unwrappedValue];
   v8 = MRAVOutputContextCopyPredictedOutputDevice();
   v9 = v8;
   if (v8)
@@ -230,8 +230,8 @@ void __61__MPAVOutputDeviceRoutingDataSource_applicationOutputContext__block_inv
 
   v18[2] = v10;
   v17[3] = @"AVOutputContext.outputDeviceUIDs";
-  v11 = [(MPAVOutputDeviceRoutingDataSource *)self applicationOutputContext];
-  [v11 unwrappedValue];
+  applicationOutputContext2 = [(MPAVOutputDeviceRoutingDataSource *)self applicationOutputContext];
+  [applicationOutputContext2 unwrappedValue];
   v12 = MRAVOutputContextCopyOutputDevices();
   v13 = v12;
   if (v12)
@@ -259,11 +259,11 @@ void __61__MPAVOutputDeviceRoutingDataSource_applicationOutputContext__block_inv
     _os_log_impl(&dword_1A238D000, v3, OS_LOG_TYPE_DEFAULT, "Reset predicted outputDevice", v6, 2u);
   }
 
-  v4 = [(MPAVOutputDeviceRoutingDataSource *)self applicationOutputContext];
-  [v4 unwrappedValue];
+  applicationOutputContext = [(MPAVOutputDeviceRoutingDataSource *)self applicationOutputContext];
+  [applicationOutputContext unwrappedValue];
   MRAVOutputContextResetPredictedOutputDevice();
-  v5 = [(MRAVRoutingDiscoverySession *)self->_discoverySession availableOutputDevices];
-  [(MPAVOutputDeviceRoutingDataSource *)self _outputDevicesDidChange:v5];
+  availableOutputDevices = [(MRAVRoutingDiscoverySession *)self->_discoverySession availableOutputDevices];
+  [(MPAVOutputDeviceRoutingDataSource *)self _outputDevicesDidChange:availableOutputDevices];
 }
 
 - (void)_onDiscoverySessionQueue_generateCompanionDiscoverySession
@@ -274,17 +274,17 @@ void __61__MPAVOutputDeviceRoutingDataSource_applicationOutputContext__block_inv
   [(MPAVOutputDeviceRoutingDataSource *)self setCompanionDiscoverySession:v3];
 }
 
-- (void)_setShouldSourceOutputDevicesFromAVODDS:(BOOL)a3
+- (void)_setShouldSourceOutputDevicesFromAVODDS:(BOOL)s
 {
-  if (self->_shouldSourceOutputDevicesFromAVODDS != a3)
+  if (self->_shouldSourceOutputDevicesFromAVODDS != s)
   {
     v12 = v3;
     v13 = v4;
-    v5 = a3;
-    self->_shouldSourceOutputDevicesFromAVODDS = a3;
+    sCopy = s;
+    self->_shouldSourceOutputDevicesFromAVODDS = s;
     v6 = os_log_create("com.apple.amp.mediaplayer", "RemoteControl");
     v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-    if (v5)
+    if (sCopy)
     {
       if (v7)
       {
@@ -306,9 +306,9 @@ LABEL_7:
   }
 }
 
-- (id)_outputDeviceRouteWithUID:(id)a3
+- (id)_outputDeviceRouteWithUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -321,9 +321,9 @@ LABEL_7:
   block[2] = __63__MPAVOutputDeviceRoutingDataSource__outputDeviceRouteWithUID___block_invoke;
   block[3] = &unk_1E7681330;
   block[4] = self;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(serialQueue, block);
   v7 = v13[5];
 
@@ -378,33 +378,33 @@ void __63__MPAVOutputDeviceRoutingDataSource__outputDeviceRouteWithUID___block_i
 LABEL_11:
 }
 
-- (void)_outputDevicesDidChange:(id)a3
+- (void)_outputDevicesDidChange:(id)change
 {
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 postNotificationName:@"MPAVRoutingDataSourceRoutesDidChangeNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"MPAVRoutingDataSourceRoutesDidChangeNotification" object:self];
 }
 
 - (void)_personalRoutesDidChange
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 postNotificationName:@"MPAVRoutingDataSourceRoutesDidChangeNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"MPAVRoutingDataSourceRoutesDidChangeNotification" object:self];
 }
 
 - (void)_unregisterNotifications
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69B0B60] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x1E69B12E0] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69B0B60] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69B12E0] object:0];
 }
 
-- (BOOL)_isRemovingPredictedDevice:(id)a3
+- (BOOL)_isRemovingPredictedDevice:(id)device
 {
-  v4 = a3;
-  if ([v4 count] == 1)
+  deviceCopy = device;
+  if ([deviceCopy count] == 1)
   {
-    v5 = [v4 firstObject];
-    v6 = [(MPAVOutputDeviceRoutingDataSource *)self predictedDevice];
-    v7 = [v5 isEqual:v6];
+    firstObject = [deviceCopy firstObject];
+    predictedDevice = [(MPAVOutputDeviceRoutingDataSource *)self predictedDevice];
+    v7 = [firstObject isEqual:predictedDevice];
   }
 
   else
@@ -415,33 +415,33 @@ LABEL_11:
   return v7;
 }
 
-- (BOOL)_shouldAddPredictedDeviceToOuputDevices:(id)a3
+- (BOOL)_shouldAddPredictedDeviceToOuputDevices:(id)devices
 {
-  v4 = a3;
-  v5 = [v4 firstObject];
-  v6 = [v4 count];
+  devicesCopy = devices;
+  firstObject = [devicesCopy firstObject];
+  v6 = [devicesCopy count];
 
   if (v6 == 1)
   {
-    v7 = [v5 isSplitterCapable];
+    isSplitterCapable = [firstObject isSplitterCapable];
   }
 
   else
   {
-    v7 = 0;
+    isSplitterCapable = 0;
   }
 
-  v8 = [(MPAVOutputDeviceRoutingDataSource *)self predictedDevice];
-  v9 = [v8 supportsBluetoothSharing];
+  predictedDevice = [(MPAVOutputDeviceRoutingDataSource *)self predictedDevice];
+  supportsBluetoothSharing = [predictedDevice supportsBluetoothSharing];
 
-  v10 = [v5 routeUID];
-  v11 = [(MPAVOutputDeviceRoutingDataSource *)self predictedDevice];
-  v12 = [v11 uid];
-  v13 = [v10 isEqualToString:v12];
+  routeUID = [firstObject routeUID];
+  predictedDevice2 = [(MPAVOutputDeviceRoutingDataSource *)self predictedDevice];
+  v12 = [predictedDevice2 uid];
+  v13 = [routeUID isEqualToString:v12];
 
-  if (v7)
+  if (isSplitterCapable)
   {
-    v14 = v9 & (v13 ^ 1);
+    v14 = supportsBluetoothSharing & (v13 ^ 1);
   }
 
   else
@@ -452,24 +452,24 @@ LABEL_11:
   return v14;
 }
 
-- (BOOL)_shouldDetachOutputDevicesToGroup:(id)a3
+- (BOOL)_shouldDetachOutputDevicesToGroup:(id)group
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  groupCopy = group;
   if (self->_detachesRoutesToGroup)
   {
-    v5 = [(MPAVOutputDeviceRoutingDataSource *)self endpointRoute];
-    v6 = [v5 endpointWrapper];
-    [v6 unwrappedValue];
+    endpointRoute = [(MPAVOutputDeviceRoutingDataSource *)self endpointRoute];
+    endpointWrapper = [endpointRoute endpointWrapper];
+    [endpointWrapper unwrappedValue];
     v7 = MRAVEndpointGetDesignatedGroupLeader();
 
-    if (([v4 containsObject:v7] & 1) == 0)
+    if (([groupCopy containsObject:v7] & 1) == 0)
     {
       v18 = 0u;
       v19 = 0u;
       v16 = 0u;
       v17 = 0u;
-      v8 = v4;
+      v8 = groupCopy;
       v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v9)
       {
@@ -520,9 +520,9 @@ LABEL_16:
   return v14;
 }
 
-- (id)_detachableDevicesInOutputDevices:(id)a3
+- (id)_detachableDevicesInOutputDevices:(id)devices
 {
-  v4 = [a3 msv_filter:&__block_literal_global_61];
+  v4 = [devices msv_filter:&__block_literal_global_61];
   if ([(MPAVOutputDeviceRoutingDataSource *)self _shouldDetachOutputDevicesToGroup:v4])
   {
     v5 = v4;
@@ -538,16 +538,16 @@ LABEL_16:
   return v5;
 }
 
-- (id)outputDevicesForRoutes:(id)a3
+- (id)outputDevicesForRoutes:(id)routes
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  routesCopy = routes;
+  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(routesCopy, "count")}];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = routesCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -562,8 +562,8 @@ LABEL_16:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * i) outputDevices];
-        [v4 addObjectsFromArray:v10];
+        outputDevices = [*(*(&v12 + 1) + 8 * i) outputDevices];
+        [v4 addObjectsFromArray:outputDevices];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -575,16 +575,16 @@ LABEL_16:
   return v4;
 }
 
-- (void)_routeStatusDidChangeNotification:(id)a3
+- (void)_routeStatusDidChangeNotification:(id)notification
 {
   v4 = MEMORY[0x1E695DF90];
-  v5 = a3;
+  notificationCopy = notification;
   v17 = objc_alloc_init(v4);
-  v6 = [v5 userInfo];
+  userInfo = [notificationCopy userInfo];
 
-  v7 = [v6 objectForKey:*MEMORY[0x1E69B12D8]];
+  v7 = [userInfo objectForKey:*MEMORY[0x1E69B12D8]];
   v8 = [v7 objectForKey:@"RouteUID"];
-  v9 = [v6 objectForKey:*MEMORY[0x1E69B12E8]];
+  v9 = [userInfo objectForKey:*MEMORY[0x1E69B12E8]];
   v10 = [(MPAVOutputDeviceRoutingDataSource *)self _outputDeviceRouteWithUID:v8];
   v11 = v10;
   if (v9)
@@ -600,10 +600,10 @@ LABEL_16:
   if (!v12)
   {
     [v17 setObject:v10 forKey:@"Route"];
-    v13 = [v9 integerValue];
-    if ((v13 - 2) <= 3)
+    integerValue = [v9 integerValue];
+    if ((integerValue - 2) <= 3)
     {
-      v14 = [MEMORY[0x1E696ABC0] errorWithDomain:@"MPAVRoutingControllerErrorDomain" code:v13 userInfo:0];
+      v14 = [MEMORY[0x1E696ABC0] errorWithDomain:@"MPAVRoutingControllerErrorDomain" code:integerValue userInfo:0];
       if (v14)
       {
         v15 = v14;
@@ -614,47 +614,47 @@ LABEL_16:
 
   if ([v17 count])
   {
-    v16 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v16 postNotificationName:@"MPAVRoutingDataSourceFailureNotification" object:self userInfo:v17];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"MPAVRoutingDataSourceFailureNotification" object:self userInfo:v17];
   }
 }
 
-- (void)_outputDevicesDidChangeNotification:(id)a3
+- (void)_outputDevicesDidChangeNotification:(id)notification
 {
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 postNotificationName:@"MPAVRoutingDataSourceRoutesDidChangeNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"MPAVRoutingDataSourceRoutesDidChangeNotification" object:self];
 }
 
-- (void)_endpointsDidChangeNotification:(id)a3
+- (void)_endpointsDidChangeNotification:(id)notification
 {
   v4 = MEMORY[0x1E696AD88];
-  v5 = a3;
-  v7 = [v4 defaultCenter];
-  v6 = [v5 name];
+  notificationCopy = notification;
+  defaultCenter = [v4 defaultCenter];
+  name = [notificationCopy name];
 
-  [v7 postNotificationName:v6 object:self];
+  [defaultCenter postNotificationName:name object:self];
 }
 
-- (BOOL)routeIsLeaderOfEndpoint:(id)a3
+- (BOOL)routeIsLeaderOfEndpoint:(id)endpoint
 {
-  v5 = a3;
+  endpointCopy = endpoint;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"MPAVOutputDeviceRoutingDataSource.m" lineNumber:894 description:@"must be an MPAVOutputDeviceRoute"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPAVOutputDeviceRoutingDataSource.m" lineNumber:894 description:@"must be an MPAVOutputDeviceRoute"];
   }
 
-  if ([v5 isGroupLeader] && (-[MPAVOutputDeviceRoutingDataSource endpointRoute](self, "endpointRoute"), v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
+  if ([endpointCopy isGroupLeader] && (-[MPAVOutputDeviceRoutingDataSource endpointRoute](self, "endpointRoute"), v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
   {
     v7 = MEMORY[0x1E695DFD8];
-    v8 = [(MPAVOutputDeviceRoutingDataSource *)self endpoint];
-    v9 = [v8 outputDevices];
-    v10 = [v7 setWithArray:v9];
+    endpoint = [(MPAVOutputDeviceRoutingDataSource *)self endpoint];
+    outputDevices = [endpoint outputDevices];
+    v10 = [v7 setWithArray:outputDevices];
 
     v11 = MEMORY[0x1E695DFD8];
-    v12 = [v5 outputDevices];
-    v13 = [v11 setWithArray:v12];
+    outputDevices2 = [endpointCopy outputDevices];
+    v13 = [v11 setWithArray:outputDevices2];
 
     v14 = [v10 intersectsSet:v13];
   }
@@ -667,15 +667,15 @@ LABEL_16:
   return v14;
 }
 
-- (void)removeRoutesFromGroup:(id)a3 completion:(id)a4
+- (void)removeRoutesFromGroup:(id)group completion:(id)completion
 {
   v41 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(MPAVOutputDeviceRoutingDataSource *)self outputDevicesForRoutes:a3];
+  completionCopy = completion;
+  v7 = [(MPAVOutputDeviceRoutingDataSource *)self outputDevicesForRoutes:group];
   if ([(MPAVOutputDeviceRoutingDataSource *)self _isRemovingPredictedDevice:v7])
   {
     [(MPAVOutputDeviceRoutingDataSource *)self _resetPredictedOutputDevice];
-    v6[2](v6, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
@@ -684,11 +684,11 @@ LABEL_16:
     aBlock[1] = 3221225472;
     aBlock[2] = __70__MPAVOutputDeviceRoutingDataSource_removeRoutesFromGroup_completion___block_invoke;
     aBlock[3] = &unk_1E7676C60;
-    v28 = v6;
-    v39 = v6;
+    v28 = completionCopy;
+    v39 = completionCopy;
     v8 = _Block_copy(aBlock);
     v27 = dispatch_get_global_queue(21, 0);
-    v9 = [(MPAVOutputDeviceRoutingDataSource *)self endpoint];
+    endpoint = [(MPAVOutputDeviceRoutingDataSource *)self endpoint];
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
@@ -698,7 +698,7 @@ LABEL_16:
     if (v11)
     {
       v24 = v8;
-      v25 = self;
+      selfCopy = self;
       v26 = v7;
       v12 = *v35;
       while (2)
@@ -712,8 +712,8 @@ LABEL_16:
 
           v14 = *(*(&v34 + 1) + 8 * i);
           v15 = [v14 uid];
-          v16 = [v9 designatedGroupLeader];
-          v17 = [v16 uid];
+          designatedGroupLeader = [endpoint designatedGroupLeader];
+          v17 = [designatedGroupLeader uid];
           v18 = [v15 isEqualToString:v17];
 
           if (v18)
@@ -733,7 +733,7 @@ LABEL_16:
       }
 
 LABEL_13:
-      self = v25;
+      self = selfCopy;
       v7 = v26;
       v8 = v24;
     }
@@ -759,7 +759,7 @@ LABEL_13:
     v23 = v19;
     dispatch_async(v22, block);
 
-    v6 = v28;
+    completionCopy = v28;
   }
 }
 
@@ -804,57 +804,57 @@ void __70__MPAVOutputDeviceRoutingDataSource_removeRoutesFromGroup_completion___
   }
 }
 
-- (void)removeRouteFromGroup:(id)a3 completion:(id)a4
+- (void)removeRouteFromGroup:(id)group completion:(id)completion
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  groupCopy = group;
+  completionCopy = completion;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v11 = NSStringFromSelector(a2);
-    [v10 handleFailureInMethod:a2 object:self file:@"MPAVOutputDeviceRoutingDataSource.m" lineNumber:835 description:{@"invalid class for %@", v11}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPAVOutputDeviceRoutingDataSource.m" lineNumber:835 description:{@"invalid class for %@", v11}];
   }
 
-  v12[0] = v7;
+  v12[0] = groupCopy;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
-  [(MPAVOutputDeviceRoutingDataSource *)self removeRoutesFromGroup:v9 completion:v8];
+  [(MPAVOutputDeviceRoutingDataSource *)self removeRoutesFromGroup:v9 completion:completionCopy];
 }
 
-- (void)addRoutesToGroup:(id)a3 completion:(id)a4
+- (void)addRoutesToGroup:(id)group completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v18 = MEMORY[0x1E69E9820];
   v19 = 3221225472;
   v20 = __65__MPAVOutputDeviceRoutingDataSource_addRoutesToGroup_completion___block_invoke;
   v21 = &unk_1E7680CA8;
-  v22 = self;
-  v7 = v6;
+  selfCopy = self;
+  v7 = completionCopy;
   v23 = v7;
-  v8 = a3;
+  groupCopy = group;
   v9 = _Block_copy(&v18);
-  v10 = [(MPAVOutputDeviceRoutingDataSource *)self outputDevicesForRoutes:v8, v18, v19, v20, v21, v22];
-  v11 = [v10 mutableCopy];
+  selfCopy = [(MPAVOutputDeviceRoutingDataSource *)self outputDevicesForRoutes:groupCopy, v18, v19, v20, v21, selfCopy];
+  v11 = [selfCopy mutableCopy];
 
-  LODWORD(v10) = [(MPAVOutputDeviceRoutingDataSource *)self _shouldAddPredictedDeviceToOuputDevices:v8];
-  if (v10)
+  LODWORD(selfCopy) = [(MPAVOutputDeviceRoutingDataSource *)self _shouldAddPredictedDeviceToOuputDevices:groupCopy];
+  if (selfCopy)
   {
-    v12 = [(MPAVOutputDeviceRoutingDataSource *)self predictedDevice];
-    [v11 addObject:v12];
+    predictedDevice = [(MPAVOutputDeviceRoutingDataSource *)self predictedDevice];
+    [v11 addObject:predictedDevice];
   }
 
   v13 = dispatch_get_global_queue(21, 0);
   if (self->_supportsQueueHandoff || ([MEMORY[0x1E69B0A28] sharedManager], v14 = objc_claimAutoreleasedReturnValue(), -[MPAVOutputDeviceRoutingDataSource presentingAppBundleID](self, "presentingAppBundleID"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v14, "activeActivityExistsForBundle:", v15), v15, v14, v16))
   {
-    v17 = [(MPAVOutputDeviceRoutingDataSource *)self endpoint];
-    [v17 migrateToOrAddOutputDevices:v11 initiator:self->_initiator withReplyQueue:v13 completion:v9];
+    endpoint = [(MPAVOutputDeviceRoutingDataSource *)self endpoint];
+    [endpoint migrateToOrAddOutputDevices:v11 initiator:self->_initiator withReplyQueue:v13 completion:v9];
   }
 
   else
   {
-    v17 = [(MPAVOutputDeviceRoutingDataSource *)self endpoint];
-    [v17 addOutputDevices:v11 initiator:self->_initiator withReplyQueue:v13 completion:v9];
+    endpoint = [(MPAVOutputDeviceRoutingDataSource *)self endpoint];
+    [endpoint addOutputDevices:v11 initiator:self->_initiator withReplyQueue:v13 completion:v9];
   }
 }
 
@@ -871,36 +871,36 @@ void __65__MPAVOutputDeviceRoutingDataSource_addRoutesToGroup_completion___block
   }
 }
 
-- (void)addRouteToGroup:(id)a3 completion:(id)a4
+- (void)addRouteToGroup:(id)group completion:(id)completion
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  groupCopy = group;
+  completionCopy = completion;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v11 = NSStringFromSelector(a2);
-    [v10 handleFailureInMethod:a2 object:self file:@"MPAVOutputDeviceRoutingDataSource.m" lineNumber:804 description:{@"invalid class for %@", v11}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPAVOutputDeviceRoutingDataSource.m" lineNumber:804 description:{@"invalid class for %@", v11}];
   }
 
-  v12[0] = v7;
+  v12[0] = groupCopy;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
-  [(MPAVOutputDeviceRoutingDataSource *)self addRoutesToGroup:v9 completion:v8];
+  [(MPAVOutputDeviceRoutingDataSource *)self addRoutesToGroup:v9 completion:completionCopy];
 }
 
-- (void)createGroupFromOutputDevices:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)createGroupFromOutputDevices:(id)devices queue:(id)queue completion:(id)completion
 {
   v26 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  devicesCopy = devices;
+  queueCopy = queue;
+  completionCopy = completion;
   v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v11 = v7;
+  v11 = devicesCopy;
   v12 = [v11 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v12)
   {
@@ -934,24 +934,24 @@ void __65__MPAVOutputDeviceRoutingDataSource_addRoutesToGroup_completion___block
   v19[1] = 3221225472;
   v19[2] = __83__MPAVOutputDeviceRoutingDataSource_createGroupFromOutputDevices_queue_completion___block_invoke;
   v19[3] = &unk_1E7680D68;
-  v20 = v9;
-  v18 = v9;
-  [v17 createEndpointWithOutputDeviceUIDs:v10 queue:v8 completion:v19];
+  v20 = completionCopy;
+  v18 = completionCopy;
+  [v17 createEndpointWithOutputDeviceUIDs:v10 queue:queueCopy completion:v19];
 }
 
-- (void)setPickedRoute:(id)a3 withPassword:(id)a4 completion:(id)a5
+- (void)setPickedRoute:(id)route withPassword:(id)password completion:(id)completion
 {
   v64 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v44 = a4;
-  v10 = a5;
-  v45 = [(MPAVOutputDeviceRoutingDataSource *)self applicationOutputContext];
+  routeCopy = route;
+  passwordCopy = password;
+  completionCopy = completion;
+  applicationOutputContext = [(MPAVOutputDeviceRoutingDataSource *)self applicationOutputContext];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = v9;
-    v12 = [v11 outputDevices];
-    v41 = [v12 mutableCopy];
+    v11 = routeCopy;
+    outputDevices = [v11 outputDevices];
+    v41 = [outputDevices mutableCopy];
 
     objc_initWeak(&location, self);
     aBlock[0] = MEMORY[0x1E69E9820];
@@ -959,32 +959,32 @@ void __65__MPAVOutputDeviceRoutingDataSource_addRoutesToGroup_completion___block
     aBlock[2] = __76__MPAVOutputDeviceRoutingDataSource_setPickedRoute_withPassword_completion___block_invoke;
     aBlock[3] = &unk_1E76795E8;
     objc_copyWeak(&v61, &location);
-    v13 = v10;
+    v13 = completionCopy;
     v60 = v13;
     v14 = _Block_copy(aBlock);
     v15 = dispatch_get_global_queue(21, 0);
-    v16 = [(MPAVOutputDeviceRoutingDataSource *)self endpoint];
-    v42 = [v16 outputDevices];
+    endpoint = [(MPAVOutputDeviceRoutingDataSource *)self endpoint];
+    outputDevices2 = [endpoint outputDevices];
 
-    v17 = [(MPAVOutputDeviceRoutingDataSource *)self endpointRoute];
-    if (v17 && (-[MPAVOutputDeviceRoutingDataSource endpoint](self, "endpoint"), v18 = objc_claimAutoreleasedReturnValue(), v19 = [v18 isLocalEndpoint], v18, v17, (v19 & 1) == 0))
+    endpointRoute = [(MPAVOutputDeviceRoutingDataSource *)self endpointRoute];
+    if (endpointRoute && (-[MPAVOutputDeviceRoutingDataSource endpoint](self, "endpoint"), v18 = objc_claimAutoreleasedReturnValue(), v19 = [v18 isLocalEndpoint], v18, endpointRoute, (v19 & 1) == 0))
     {
       if (self->_supportsQueueHandoff || ([MEMORY[0x1E69B0A28] sharedManager], v35 = objc_claimAutoreleasedReturnValue(), -[MPAVOutputDeviceRoutingDataSource presentingAppBundleID](self, "presentingAppBundleID"), v36 = objc_claimAutoreleasedReturnValue(), v37 = objc_msgSend(v35, "activeActivityExistsForBundle:", v36), v36, v35, v37))
       {
-        v20 = [(MPAVOutputDeviceRoutingDataSource *)self endpoint];
-        v38 = [v11 outputDevices];
-        [v20 migrateToOrSetOutputDevices:v38 initiator:self->_initiator withReplyQueue:v15 completion:v14];
+        endpoint2 = [(MPAVOutputDeviceRoutingDataSource *)self endpoint];
+        outputDevices3 = [v11 outputDevices];
+        [endpoint2 migrateToOrSetOutputDevices:outputDevices3 initiator:self->_initiator withReplyQueue:v15 completion:v14];
       }
 
       else
       {
-        v20 = [(MPAVOutputDeviceRoutingDataSource *)self endpoint];
-        v40 = [v11 outputDevices];
-        [v20 setOutputDevices:v40 initiator:self->_initiator withReplyQueue:v15 completion:v14];
+        endpoint2 = [(MPAVOutputDeviceRoutingDataSource *)self endpoint];
+        outputDevices4 = [v11 outputDevices];
+        [endpoint2 setOutputDevices:outputDevices4 initiator:self->_initiator withReplyQueue:v15 completion:v14];
       }
     }
 
-    else if (v45)
+    else if (applicationOutputContext)
     {
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
@@ -992,14 +992,14 @@ void __65__MPAVOutputDeviceRoutingDataSource_addRoutesToGroup_completion___block
       block[3] = &unk_1E76767D0;
       v58 = v14;
       block[4] = self;
-      v53 = v42;
-      v54 = v45;
+      v53 = outputDevices2;
+      v54 = applicationOutputContext;
       v55 = v41;
       v56 = v15;
       v57 = v11;
       dispatch_async(v56, block);
 
-      v20 = v58;
+      endpoint2 = v58;
     }
 
     else
@@ -1014,8 +1014,8 @@ LABEL_29:
         goto LABEL_30;
       }
 
-      v20 = [MEMORY[0x1E696ABC0] errorWithDomain:@"MPAVRoutingControllerErrorDomain" code:5 userInfo:0];
-      (*(v13 + 2))(v13, v20);
+      endpoint2 = [MEMORY[0x1E696ABC0] errorWithDomain:@"MPAVRoutingControllerErrorDomain" code:5 userInfo:0];
+      (*(v13 + 2))(v13, endpoint2);
     }
 
     goto LABEL_29;
@@ -1024,12 +1024,12 @@ LABEL_29:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v21 = v45;
-    if (v45)
+    v21 = applicationOutputContext;
+    if (applicationOutputContext)
     {
-      v43 = v9;
-      v22 = [v43 endpointWrapper];
-      [v22 unwrappedValue];
+      v43 = routeCopy;
+      endpointWrapper = [v43 endpointWrapper];
+      [endpointWrapper unwrappedValue];
       v23 = MRAVEndpointCopyOutputDevices();
 
       v24 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -1067,35 +1067,35 @@ LABEL_29:
       }
 
       MRAVReconnaissanceSessionCreateWithEndpointFeatures();
-      v46 = v45;
-      v47 = v10;
+      v46 = applicationOutputContext;
+      v47 = completionCopy;
       MRAVReconnaissanceSessionBeginSearch();
 
       goto LABEL_30;
     }
 
-    if (v10)
+    if (completionCopy)
     {
       v39 = [MEMORY[0x1E696ABC0] errorWithDomain:@"MPAVRoutingControllerErrorDomain" code:5 userInfo:0];
-      (*(v10 + 2))(v10, v39);
+      (*(completionCopy + 2))(completionCopy, v39);
 
 LABEL_30:
-      v21 = v45;
+      v21 = applicationOutputContext;
     }
   }
 
   else
   {
-    v31 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v32 = NSStringFromSelector(a2);
     v33 = objc_opt_class();
     v34 = NSStringFromClass(v33);
-    [v31 handleFailureInMethod:a2 object:self file:@"MPAVOutputDeviceRoutingDataSource.m" lineNumber:783 description:{@"invalid class for %@ (%@)", v32, v34}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPAVOutputDeviceRoutingDataSource.m" lineNumber:783 description:{@"invalid class for %@ (%@)", v32, v34}];
 
-    v21 = v45;
-    if (v10)
+    v21 = applicationOutputContext;
+    if (completionCopy)
     {
-      (*(v10 + 2))(v10, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
@@ -1252,14 +1252,14 @@ void __76__MPAVOutputDeviceRoutingDataSource_setPickedRoute_withPassword_complet
   }
 }
 
-- (id)getRoutesForCategory:(id)a3
+- (id)getRoutesForCategory:(id)category
 {
   v188[1] = *MEMORY[0x1E69E9840];
-  v104 = a3;
+  categoryCopy = category;
   v105 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v109 = self;
-  v4 = [(MPAVOutputDeviceRoutingDataSource *)self endpointRoute];
-  v108 = [(MPAVOutputDeviceRoutingDataSource *)v109 applicationOutputContext];
+  selfCopy = self;
+  endpointRoute = [(MPAVOutputDeviceRoutingDataSource *)self endpointRoute];
+  applicationOutputContext = [(MPAVOutputDeviceRoutingDataSource *)selfCopy applicationOutputContext];
   v171 = 0;
   v172 = &v171;
   v173 = 0x3032000000;
@@ -1271,35 +1271,35 @@ void __76__MPAVOutputDeviceRoutingDataSource_setPickedRoute_withPassword_complet
   v166 = __58__MPAVOutputDeviceRoutingDataSource_getRoutesForCategory___block_invoke;
   v167 = &unk_1E7681330;
   v170 = &v171;
-  v168 = v109;
-  v5 = v4;
+  v168 = selfCopy;
+  v5 = endpointRoute;
   v169 = v5;
   msv_dispatch_sync_on_queue();
   v107 = v5;
   if (v5)
   {
-    v6 = [v5 endpointObject];
-    v7 = [v6 resolvedOutputDevices];
+    endpointObject = [v5 endpointObject];
+    resolvedOutputDevices = [endpointObject resolvedOutputDevices];
 
     v8 = [v107 isDeviceRoute] ^ 1;
   }
 
-  else if (v108)
+  else if (applicationOutputContext)
   {
-    v9 = v108;
-    [v108 unwrappedValue];
-    v7 = MRAVOutputContextCopyOutputDevices();
+    v9 = applicationOutputContext;
+    [applicationOutputContext unwrappedValue];
+    resolvedOutputDevices = MRAVOutputContextCopyOutputDevices();
     v8 = 0;
   }
 
   else
   {
-    v7 = 0;
+    resolvedOutputDevices = 0;
     v8 = 1;
   }
 
-  v10 = v108;
-  [v108 unwrappedValue];
+  v10 = applicationOutputContext;
+  [applicationOutputContext unwrappedValue];
   v11 = MRAVOutputContextCopyPredictedOutputDevice();
   v12 = v11;
   v106 = v11;
@@ -1308,12 +1308,12 @@ void __76__MPAVOutputDeviceRoutingDataSource_setPickedRoute_withPassword_complet
     v188[0] = v11;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v188 count:1];
 
-    v7 = v13;
+    resolvedOutputDevices = v13;
     v12 = v106;
   }
 
-  [(MPAVOutputDeviceRoutingDataSource *)v109 setPredictedDevice:v12];
-  v14 = [v7 count];
+  [(MPAVOutputDeviceRoutingDataSource *)selfCopy setPredictedDevice:v12];
+  v14 = [resolvedOutputDevices count];
   v113 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v103 = v14;
   if (v8)
@@ -1323,7 +1323,7 @@ void __76__MPAVOutputDeviceRoutingDataSource_setPickedRoute_withPassword_complet
     v163 = 0u;
     v160 = 0u;
     v161 = 0u;
-    v16 = v7;
+    v16 = resolvedOutputDevices;
     v17 = [v16 countByEnumeratingWithState:&v160 objects:v187 count:16];
     if (v17)
     {
@@ -1338,10 +1338,10 @@ void __76__MPAVOutputDeviceRoutingDataSource_setPickedRoute_withPassword_complet
           }
 
           v20 = *(*(&v160 + 1) + 8 * i);
-          v21 = [v20 logicalDeviceID];
-          if ([v20 isProxyGroupPlayer] && objc_msgSend(v21, "length"))
+          logicalDeviceID = [v20 logicalDeviceID];
+          if ([v20 isProxyGroupPlayer] && objc_msgSend(logicalDeviceID, "length"))
           {
-            [v15 addObject:v21];
+            [v15 addObject:logicalDeviceID];
           }
         }
 
@@ -1373,8 +1373,8 @@ void __76__MPAVOutputDeviceRoutingDataSource_setPickedRoute_withPassword_complet
           v27 = [v26 uid];
           v28 = MRComputeBaseRouteUID();
 
-          v29 = [v26 logicalDeviceID];
-          if (v28 && ([v26 isProxyGroupPlayer] & 1) == 0 && (!objc_msgSend(v29, "length") || (objc_msgSend(v15, "containsObject:", v29) & 1) == 0))
+          logicalDeviceID2 = [v26 logicalDeviceID];
+          if (v28 && ([v26 isProxyGroupPlayer] & 1) == 0 && (!objc_msgSend(logicalDeviceID2, "length") || (objc_msgSend(v15, "containsObject:", logicalDeviceID2) & 1) == 0))
           {
             [v113 addObject:v28];
           }
@@ -1393,7 +1393,7 @@ void __76__MPAVOutputDeviceRoutingDataSource_setPickedRoute_withPassword_complet
     v155 = 0u;
     v152 = 0u;
     v153 = 0u;
-    v15 = v7;
+    v15 = resolvedOutputDevices;
     v30 = [v15 countByEnumeratingWithState:&v152 objects:v185 count:16];
     if (v30)
     {
@@ -1427,7 +1427,7 @@ void __76__MPAVOutputDeviceRoutingDataSource_setPickedRoute_withPassword_complet
   v151 = 0u;
   v148 = 0u;
   v149 = 0u;
-  obj = v7;
+  obj = resolvedOutputDevices;
   v35 = [obj countByEnumeratingWithState:&v148 objects:v184 count:16];
   if (v35)
   {
@@ -1535,8 +1535,8 @@ LABEL_53:
     v115 = 0;
   }
 
-  -[MPAVOutputDeviceRoutingDataSource _setShouldSourceOutputDevicesFromAVODDS:](v109, "_setShouldSourceOutputDevicesFromAVODDS:", ([v172[5] count] != 0) & v41);
-  if (!v109->_shouldSourceOutputDevicesFromAVODDS)
+  -[MPAVOutputDeviceRoutingDataSource _setShouldSourceOutputDevicesFromAVODDS:](selfCopy, "_setShouldSourceOutputDevicesFromAVODDS:", ([v172[5] count] != 0) & v41);
+  if (!selfCopy->_shouldSourceOutputDevicesFromAVODDS)
   {
     v138 = 0u;
     v139 = 0u;
@@ -1650,7 +1650,7 @@ LABEL_95:
   v76 = v53;
   v77 = [v76 countByEnumeratingWithState:&v132 objects:v180 count:16];
   v111 = v71;
-  v78 = 0;
+  isPickedOnPairedDevice = 0;
   if (!v77)
   {
     goto LABEL_109;
@@ -1667,12 +1667,12 @@ LABEL_95:
       }
 
       v81 = *(*(&v132 + 1) + 8 * kk);
-      v82 = [v81 logicalDeviceID];
-      v83 = v82;
-      if (v78)
+      logicalDeviceID3 = [v81 logicalDeviceID];
+      v83 = logicalDeviceID3;
+      if (isPickedOnPairedDevice)
       {
-        v78 = 1;
-        if (!v82)
+        isPickedOnPairedDevice = 1;
+        if (!logicalDeviceID3)
         {
           goto LABEL_106;
         }
@@ -1680,7 +1680,7 @@ LABEL_95:
 
       else
       {
-        v78 = [v81 isPickedOnPairedDevice];
+        isPickedOnPairedDevice = [v81 isPickedOnPairedDevice];
         if (!v83)
         {
 LABEL_106:
@@ -1711,12 +1711,12 @@ LABEL_109:
   v86 = v85;
   if (v107)
   {
-    v87 = [v85 isDeviceRoute];
+    isDeviceRoute = [v85 isDeviceRoute];
   }
 
   else
   {
-    v87 = 1;
+    isDeviceRoute = 1;
   }
 
   *&buf = 0;
@@ -1727,9 +1727,9 @@ LABEL_109:
   aBlock[1] = 3221225472;
   aBlock[2] = __58__MPAVOutputDeviceRoutingDataSource_getRoutesForCategory___block_invoke_22;
   aBlock[3] = &unk_1E7676768;
-  aBlock[4] = v109;
-  v129 = v87;
-  v130 = v78;
+  aBlock[4] = selfCopy;
+  v129 = isDeviceRoute;
+  v130 = isPickedOnPairedDevice;
   p_buf = &buf;
   v128 = v103;
   v114 = v113;
@@ -1738,12 +1738,12 @@ LABEL_109:
   v88 = v105;
   v126 = v88;
   v89 = _Block_copy(aBlock);
-  serialQueue = v109->_serialQueue;
+  serialQueue = selfCopy->_serialQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __58__MPAVOutputDeviceRoutingDataSource_getRoutesForCategory___block_invoke_3;
   block[3] = &unk_1E767D688;
-  block[4] = v109;
+  block[4] = selfCopy;
   v91 = v88;
   v118 = v91;
   v92 = v73;
@@ -1752,12 +1752,12 @@ LABEL_109:
   v122 = v93;
   v94 = v75;
   v120 = v94;
-  v112 = v104;
+  v112 = categoryCopy;
   v121 = v112;
-  v123 = v87;
+  v123 = isDeviceRoute;
   dispatch_sync(serialQueue, block);
-  v95 = [(MPAVRoutingDataSource *)v109 filterMode];
-  switch(v95)
+  filterMode = [(MPAVRoutingDataSource *)selfCopy filterMode];
+  switch(filterMode)
   {
     case 1:
       v96 = [MEMORY[0x1E696AE18] predicateWithBlock:&__block_literal_global_29];
@@ -2094,7 +2094,7 @@ uint64_t __58__MPAVOutputDeviceRoutingDataSource_getRoutesForCategory___block_in
   return v12;
 }
 
-- (void)setDiscoveryMode:(int64_t)a3
+- (void)setDiscoveryMode:(int64_t)mode
 {
   discoverySessionQueue = self->_discoverySessionQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -2102,7 +2102,7 @@ uint64_t __58__MPAVOutputDeviceRoutingDataSource_getRoutesForCategory___block_in
   v4[2] = __54__MPAVOutputDeviceRoutingDataSource_setDiscoveryMode___block_invoke;
   v4[3] = &unk_1E7682398;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = mode;
   dispatch_async(discoverySessionQueue, v4);
 }
 
@@ -2127,12 +2127,12 @@ uint64_t __54__MPAVOutputDeviceRoutingDataSource_setDiscoveryMode___block_invoke
   return [v5 setDiscoveryMode:v4];
 }
 
-- (void)setCompanionDiscoverySession:(id)a3
+- (void)setCompanionDiscoverySession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   dispatch_assert_queue_V2(self->_discoverySessionQueue);
   [(MRAVRoutingDiscoverySession *)self->_companionDiscoverySession removeEndpointsChangedCallback:self->_companionCallbackToken];
-  objc_storeStrong(&self->_companionDiscoverySession, a3);
+  objc_storeStrong(&self->_companionDiscoverySession, session);
   self->_didFindCompanion = 0;
   objc_initWeak(&location, self);
   companionDiscoverySession = self->_companionDiscoverySession;
@@ -2207,9 +2207,9 @@ void __66__MPAVOutputDeviceRoutingDataSource_setCompanionDiscoverySession___bloc
   *(*(a1 + 32) + 96) = 1;
 }
 
-- (void)setDiscoverySession:(id)a3
+- (void)setDiscoverySession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   dispatch_assert_queue_V2(self->_discoverySessionQueue);
   [(MRAVRoutingDiscoverySession *)self->_discoverySession removeOutputDevicesChangedCallback:self->_callbackToken];
   [(MRAVRoutingDiscoverySession *)self->_discoverySession setDiscoveryMode:0];
@@ -2219,10 +2219,10 @@ void __66__MPAVOutputDeviceRoutingDataSource_setCompanionDiscoverySession___bloc
   block[2] = __57__MPAVOutputDeviceRoutingDataSource_setDiscoverySession___block_invoke;
   block[3] = &unk_1E76823C0;
   block[4] = self;
-  v7 = v5;
+  v7 = sessionCopy;
   v19 = v7;
   dispatch_sync(serialQueue, block);
-  objc_storeStrong(&self->_discoverySession, a3);
+  objc_storeStrong(&self->_discoverySession, session);
   self->_devicePresenceDetected = [(MRAVRoutingDiscoverySession *)self->_discoverySession devicePresenceDetected];
   self->_didReceiveDiscoveryResults = 0;
   objc_initWeak(&location, self);
@@ -2311,7 +2311,7 @@ void *__57__MPAVOutputDeviceRoutingDataSource_setDiscoverySession___block_invoke
   return result;
 }
 
-- (void)setDidReceiveDiscoveryResults:(BOOL)a3
+- (void)setDidReceiveDiscoveryResults:(BOOL)results
 {
   discoverySessionQueue = self->_discoverySessionQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -2319,21 +2319,21 @@ void *__57__MPAVOutputDeviceRoutingDataSource_setDiscoverySession___block_invoke
   v4[2] = __67__MPAVOutputDeviceRoutingDataSource_setDidReceiveDiscoveryResults___block_invoke;
   v4[3] = &unk_1E7682280;
   v4[4] = self;
-  v5 = a3;
+  resultsCopy = results;
   dispatch_sync(discoverySessionQueue, v4);
 }
 
-- (void)setPredictedDevice:(id)a3
+- (void)setPredictedDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __56__MPAVOutputDeviceRoutingDataSource_setPredictedDevice___block_invoke;
   v7[3] = &unk_1E76823C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = deviceCopy;
+  v6 = deviceCopy;
   dispatch_sync(serialQueue, v7);
 }
 
@@ -2392,40 +2392,40 @@ LABEL_6:
   return v2;
 }
 
-- (void)setTargetSessionID:(unsigned int)a3
+- (void)setTargetSessionID:(unsigned int)d
 {
-  if (self->_targetSessionID != a3)
+  if (self->_targetSessionID != d)
   {
     v8 = v3;
     v9 = v4;
-    self->_targetSessionID = a3;
+    self->_targetSessionID = d;
     discoverySessionQueue = self->_discoverySessionQueue;
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __56__MPAVOutputDeviceRoutingDataSource_setTargetSessionID___block_invoke;
     v6[3] = &unk_1E76811D8;
     v6[4] = self;
-    v7 = a3;
+    dCopy = d;
     dispatch_async(discoverySessionQueue, v6);
   }
 }
 
-- (void)setEndpointRoute:(id)a3
+- (void)setEndpointRoute:(id)route
 {
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v4 = a3;
+  routeCopy = route;
   msv_dispatch_sync_on_queue();
   if (*(v7 + 24) == 1)
   {
     [(MPAVOutputDeviceRoutingDataSource *)self setDidReceiveDiscoveryResults:0];
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 removeObserver:self name:@"MPAVRouteDidChangeNotification" object:0];
-    [v5 addObserver:self selector:sel__personalRoutesDidChange name:@"MPAVRouteDidChangeNotification" object:v4];
-    [v5 postNotificationName:@"MPAVRoutingDataSourceRoutesDidChangeNotification" object:self];
-    [v5 postNotificationName:@"MPAVRoutingDataSourceActiveAudioRouteDidChangeNotification" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:@"MPAVRouteDidChangeNotification" object:0];
+    [defaultCenter addObserver:self selector:sel__personalRoutesDidChange name:@"MPAVRouteDidChangeNotification" object:routeCopy];
+    [defaultCenter postNotificationName:@"MPAVRoutingDataSourceRoutesDidChangeNotification" object:self];
+    [defaultCenter postNotificationName:@"MPAVRoutingDataSourceActiveAudioRouteDidChangeNotification" object:self];
     [(MPAVOutputDeviceRoutingDataSource *)self _generateDiscoverySession];
   }
 
@@ -2453,14 +2453,14 @@ void __54__MPAVOutputDeviceRoutingDataSource_setEndpointRoute___block_invoke(uin
   }
 }
 
-- (void)setRoutingContextUID:(id)a3
+- (void)setRoutingContextUID:(id)d
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  dCopy = d;
+  if (!dCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"MPAVOutputDeviceRoutingDataSource.m" lineNumber:160 description:{@"Invalid parameter not satisfying: %@", @"routingContextUID"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPAVOutputDeviceRoutingDataSource.m" lineNumber:160 description:{@"Invalid parameter not satisfying: %@", @"routingContextUID"}];
   }
 
   v6 = os_log_create("com.apple.amp.mediaplayer", "RemoteControl");
@@ -2471,9 +2471,9 @@ void __54__MPAVOutputDeviceRoutingDataSource_setEndpointRoute___block_invoke(uin
     *buf = 138543874;
     v16 = v8;
     v17 = 2048;
-    v18 = self;
+    selfCopy = self;
     v19 = 2114;
-    v20 = v5;
+    v20 = dCopy;
     _os_log_impl(&dword_1A238D000, v6, OS_LOG_TYPE_DEFAULT, "<%{public}@:%p> setting routing context UID = %{public}@", buf, 0x20u);
   }
 
@@ -2483,12 +2483,12 @@ void __54__MPAVOutputDeviceRoutingDataSource_setEndpointRoute___block_invoke(uin
   block[2] = __58__MPAVOutputDeviceRoutingDataSource_setRoutingContextUID___block_invoke;
   block[3] = &unk_1E76823C0;
   block[4] = self;
-  v14 = v5;
-  v10 = v5;
+  v14 = dCopy;
+  v10 = dCopy;
   dispatch_sync(serialQueue, block);
-  v11 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v11 postNotificationName:@"MPAVRoutingDataSourceRoutesDidChangeNotification" object:self];
-  [v11 postNotificationName:@"MPAVRoutingDataSourceActiveAudioRouteDidChangeNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"MPAVRoutingDataSourceRoutesDidChangeNotification" object:self];
+  [defaultCenter postNotificationName:@"MPAVRoutingDataSourceActiveAudioRouteDidChangeNotification" object:self];
 }
 
 void __58__MPAVOutputDeviceRoutingDataSource_setRoutingContextUID___block_invoke(uint64_t a1)
@@ -2526,8 +2526,8 @@ void __58__MPAVOutputDeviceRoutingDataSource_setRoutingContextUID___block_invoke
 
 - (NSString)routingContextUID
 {
-  v2 = [(MPAVOutputDeviceRoutingDataSource *)self applicationOutputContext];
-  [v2 unwrappedValue];
+  applicationOutputContext = [(MPAVOutputDeviceRoutingDataSource *)self applicationOutputContext];
+  [applicationOutputContext unwrappedValue];
   v3 = MRAVOutputContextCopyUniqueIdentifier();
 
   return v3;
@@ -2539,7 +2539,7 @@ void __58__MPAVOutputDeviceRoutingDataSource_setRoutingContextUID___block_invoke
   v5 = 3221225472;
   v6 = __44__MPAVOutputDeviceRoutingDataSource_dealloc__block_invoke;
   v7 = &unk_1E7682518;
-  v8 = self;
+  selfCopy = self;
   msv_dispatch_sync_on_queue();
   [(MPAVOutputDeviceRoutingDataSource *)self _unregisterNotifications];
   v3.receiver = self;
@@ -2557,10 +2557,10 @@ uint64_t __44__MPAVOutputDeviceRoutingDataSource_dealloc__block_invoke(uint64_t 
   return [v2 setDiscoveryMode:0];
 }
 
-- (id)_initWithEndpointRoute:(id)a3
+- (id)_initWithEndpointRoute:(id)route
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  routeCopy = route;
   v16.receiver = self;
   v16.super_class = MPAVOutputDeviceRoutingDataSource;
   v6 = [(MPAVRoutingDataSource *)&v16 init];
@@ -2578,7 +2578,7 @@ uint64_t __44__MPAVOutputDeviceRoutingDataSource_dealloc__block_invoke(uint64_t 
     v6->_shouldSourceOutputDevicesFromAVODDS = 1;
     v6->_supportsMultipleSelection = 1;
     v6->_supportsQueueHandoff = 1;
-    objc_storeStrong(&v6->_endpointRoute, a3);
+    objc_storeStrong(&v6->_endpointRoute, route);
     SharedAudioPresentationContext = MRAVOutputContextGetSharedAudioPresentationContext();
     if (SharedAudioPresentationContext)
     {

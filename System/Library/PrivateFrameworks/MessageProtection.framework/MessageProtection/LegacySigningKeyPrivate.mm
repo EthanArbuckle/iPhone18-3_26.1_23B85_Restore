@@ -1,9 +1,9 @@
 @interface LegacySigningKeyPrivate
 - (LegacySigningKeyPrivate)init;
-- (LegacySigningKeyPrivate)initWithData:(id)a3 error:(id *)a4;
+- (LegacySigningKeyPrivate)initWithData:(id)data error:(id *)error;
 - (id)dataRepresentation;
 - (id)publicKey;
-- (id)signData:(id)a3 error:(id *)a4;
+- (id)signData:(id)data error:(id *)error;
 @end
 
 @implementation LegacySigningKeyPrivate
@@ -53,12 +53,12 @@
   return v9;
 }
 
-- (LegacySigningKeyPrivate)initWithData:(id)a3 error:(id *)a4
+- (LegacySigningKeyPrivate)initWithData:(id)data error:(id *)error
 {
   v18[4] = *MEMORY[0x277D85DE8];
   v16.receiver = self;
   v16.super_class = LegacySigningKeyPrivate;
-  v4 = a3;
+  dataCopy = data;
   v5 = [(LegacySigningKeyPrivate *)&v16 init];
   v6 = *MEMORY[0x277CDC040];
   v7 = *MEMORY[0x277CDBFE0];
@@ -72,7 +72,7 @@
   v17[3] = v9;
   v18[2] = &unk_283F13B08;
   v18[3] = MEMORY[0x277CBEC28];
-  v10 = SecKeyCreateWithData(v4, [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:4], 0);
+  v10 = SecKeyCreateWithData(dataCopy, [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:4], 0);
 
   secKeyRef = v5->_secKeyRef;
   v5->_secKeyRef = v10;
@@ -93,9 +93,9 @@
   return v13;
 }
 
-- (id)signData:(id)a3 error:(id *)a4
+- (id)signData:(id)data error:(id *)error
 {
-  Signature = SecKeyCreateSignature(self->_secKeyRef, *MEMORY[0x277CDC2E8], a3, 0);
+  Signature = SecKeyCreateSignature(self->_secKeyRef, *MEMORY[0x277CDC2E8], data, 0);
 
   return Signature;
 }

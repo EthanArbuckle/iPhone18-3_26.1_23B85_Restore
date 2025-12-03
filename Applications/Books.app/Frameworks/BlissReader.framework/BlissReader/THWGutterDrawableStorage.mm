@@ -1,41 +1,41 @@
 @interface THWGutterDrawableStorage
-- (THWGutterDrawableStorage)initWithContext:(id)a3;
+- (THWGutterDrawableStorage)initWithContext:(id)context;
 - (id)drawables;
 - (id)orderedDrawables;
-- (id)positioningOfDrawable:(id)a3;
-- (void)addDrawable:(id)a3 positioning:(id)a4 insertContext:(id)a5;
+- (id)positioningOfDrawable:(id)drawable;
+- (void)addDrawable:(id)drawable positioning:(id)positioning insertContext:(id)context;
 - (void)dealloc;
-- (void)setDrawablePositionings:(id)a3;
-- (void)setDrawableStorage:(id)a3;
-- (void)wasAddedToDocumentRoot:(id)a3 context:(id)a4;
-- (void)wasRemovedFromDocumentRoot:(id)a3;
-- (void)willBeAddedToDocumentRoot:(id)a3 context:(id)a4;
-- (void)willBeRemovedFromDocumentRoot:(id)a3;
+- (void)setDrawablePositionings:(id)positionings;
+- (void)setDrawableStorage:(id)storage;
+- (void)wasAddedToDocumentRoot:(id)root context:(id)context;
+- (void)wasRemovedFromDocumentRoot:(id)root;
+- (void)willBeAddedToDocumentRoot:(id)root context:(id)context;
+- (void)willBeRemovedFromDocumentRoot:(id)root;
 @end
 
 @implementation THWGutterDrawableStorage
 
-- (void)setDrawableStorage:(id)a3
+- (void)setDrawableStorage:(id)storage
 {
   [(THWGutterDrawableStorage *)self willModify];
-  v5 = a3;
+  storageCopy = storage;
 
-  self->mDrawableStorage = a3;
+  self->mDrawableStorage = storage;
 }
 
-- (void)setDrawablePositionings:(id)a3
+- (void)setDrawablePositionings:(id)positionings
 {
   [(THWGutterDrawableStorage *)self willModify];
-  v5 = a3;
+  positioningsCopy = positionings;
 
-  self->mDrawablePositionings = a3;
+  self->mDrawablePositionings = positionings;
 }
 
-- (THWGutterDrawableStorage)initWithContext:(id)a3
+- (THWGutterDrawableStorage)initWithContext:(id)context
 {
   v5.receiver = self;
   v5.super_class = THWGutterDrawableStorage;
-  v3 = [(THWGutterDrawableStorage *)&v5 initWithContext:a3];
+  v3 = [(THWGutterDrawableStorage *)&v5 initWithContext:context];
   if (v3)
   {
     [(THWGutterDrawableStorage *)v3 setDrawableStorage:[[THDrawableStorage alloc] initWithContext:[(THWGutterDrawableStorage *)v3 context]]];
@@ -57,19 +57,19 @@
 
 - (id)drawables
 {
-  v2 = [(THWGutterDrawableStorage *)self drawableStorage];
+  drawableStorage = [(THWGutterDrawableStorage *)self drawableStorage];
 
-  return [(THDrawableStorage *)v2 drawables];
+  return [(THDrawableStorage *)drawableStorage drawables];
 }
 
 - (id)orderedDrawables
 {
-  v3 = [(THWGutterDrawableStorage *)self shouldUseGutterOrder];
-  v4 = [(THWGutterDrawableStorage *)self drawables];
-  if (v3)
+  shouldUseGutterOrder = [(THWGutterDrawableStorage *)self shouldUseGutterOrder];
+  drawables = [(THWGutterDrawableStorage *)self drawables];
+  if (shouldUseGutterOrder)
   {
 
-    return [v4 sortedArrayUsingSelector:"gutterOrderCompare:"];
+    return [drawables sortedArrayUsingSelector:"gutterOrderCompare:"];
   }
 
   else
@@ -79,22 +79,22 @@
     v6[2] = sub_5D410;
     v6[3] = &unk_45BBC0;
     v6[4] = self;
-    return [v4 sortedArrayUsingComparator:v6];
+    return [drawables sortedArrayUsingComparator:v6];
   }
 }
 
-- (void)addDrawable:(id)a3 positioning:(id)a4 insertContext:(id)a5
+- (void)addDrawable:(id)drawable positioning:(id)positioning insertContext:(id)context
 {
   [(THWGutterDrawableStorage *)self willModify];
-  [(THDrawableStorage *)[(THWGutterDrawableStorage *)self drawableStorage] addDrawable:a3 insertContext:a5];
-  v9 = [(THWGutterDrawableStorage *)self drawablePositionings];
+  [(THDrawableStorage *)[(THWGutterDrawableStorage *)self drawableStorage] addDrawable:drawable insertContext:context];
+  drawablePositionings = [(THWGutterDrawableStorage *)self drawablePositionings];
 
-  [(TSUPointerKeyDictionary *)v9 setObject:a4 forUncopiedKey:a3];
+  [(TSUPointerKeyDictionary *)drawablePositionings setObject:positioning forUncopiedKey:drawable];
 }
 
-- (id)positioningOfDrawable:(id)a3
+- (id)positioningOfDrawable:(id)drawable
 {
-  if (!a3 || (result = [(TSUPointerKeyDictionary *)[(THWGutterDrawableStorage *)self drawablePositionings] objectForKey:a3]) == 0)
+  if (!drawable || (result = [(TSUPointerKeyDictionary *)[(THWGutterDrawableStorage *)self drawablePositionings] objectForKey:drawable]) == 0)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
     return 0;
@@ -103,32 +103,32 @@
   return result;
 }
 
-- (void)willBeAddedToDocumentRoot:(id)a3 context:(id)a4
+- (void)willBeAddedToDocumentRoot:(id)root context:(id)context
 {
-  v6 = [(THWGutterDrawableStorage *)self drawableStorage];
+  drawableStorage = [(THWGutterDrawableStorage *)self drawableStorage];
 
-  [(THDrawableStorage *)v6 willBeAddedToDocumentRoot:a3 context:a4];
+  [(THDrawableStorage *)drawableStorage willBeAddedToDocumentRoot:root context:context];
 }
 
-- (void)wasAddedToDocumentRoot:(id)a3 context:(id)a4
+- (void)wasAddedToDocumentRoot:(id)root context:(id)context
 {
-  v6 = [(THWGutterDrawableStorage *)self drawableStorage];
+  drawableStorage = [(THWGutterDrawableStorage *)self drawableStorage];
 
-  [(THDrawableStorage *)v6 wasAddedToDocumentRoot:a3 context:a4];
+  [(THDrawableStorage *)drawableStorage wasAddedToDocumentRoot:root context:context];
 }
 
-- (void)willBeRemovedFromDocumentRoot:(id)a3
+- (void)willBeRemovedFromDocumentRoot:(id)root
 {
-  v4 = [(THWGutterDrawableStorage *)self drawableStorage];
+  drawableStorage = [(THWGutterDrawableStorage *)self drawableStorage];
 
-  [(THDrawableStorage *)v4 willBeRemovedFromDocumentRoot:a3];
+  [(THDrawableStorage *)drawableStorage willBeRemovedFromDocumentRoot:root];
 }
 
-- (void)wasRemovedFromDocumentRoot:(id)a3
+- (void)wasRemovedFromDocumentRoot:(id)root
 {
-  v4 = [(THWGutterDrawableStorage *)self drawableStorage];
+  drawableStorage = [(THWGutterDrawableStorage *)self drawableStorage];
 
-  [(THDrawableStorage *)v4 wasRemovedFromDocumentRoot:a3];
+  [(THDrawableStorage *)drawableStorage wasRemovedFromDocumentRoot:root];
 }
 
 @end

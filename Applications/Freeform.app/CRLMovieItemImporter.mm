@@ -1,40 +1,40 @@
 @interface CRLMovieItemImporter
-+ (BOOL)p_canAnimate:(CGImageSource *)a3;
-+ (BOOL)protected_canImportFileAtURL:(id)a3 type:(id)a4;
-+ (BOOL)protected_canImportFileWithPreinsertionAsset:(id)a3 type:(id)a4;
-+ (void)p_setMovieProperties:(id)a3 fromLoadedAsset:(id)a4 containsVideoTrack:(BOOL)a5;
++ (BOOL)p_canAnimate:(CGImageSource *)animate;
++ (BOOL)protected_canImportFileAtURL:(id)l type:(id)type;
++ (BOOL)protected_canImportFileWithPreinsertionAsset:(id)asset type:(id)type;
++ (void)p_setMovieProperties:(id)properties fromLoadedAsset:(id)asset containsVideoTrack:(BOOL)track;
 - (BOOL)p_isURLRemote;
-- (BOOL)p_validateSizeOfImportWithBoardItem:(id)a3 error:(id *)a4;
-- (CRLMovieItemImporter)initWithData:(id)a3 boardItemFactory:(id)a4;
-- (CRLMovieItemImporter)initWithURL:(id)a3 boardItemFactory:(id)a4;
+- (BOOL)p_validateSizeOfImportWithBoardItem:(id)item error:(id *)error;
+- (CRLMovieItemImporter)initWithData:(id)data boardItemFactory:(id)factory;
+- (CRLMovieItemImporter)initWithURL:(id)l boardItemFactory:(id)factory;
 - (id)p_importErrorForLackOfAVTracks;
-- (id)p_makeMovieItemWithContainsVisibleTrack:(BOOL)a3 andIsURLRemote:(BOOL)a4;
+- (id)p_makeMovieItemWithContainsVisibleTrack:(BOOL)track andIsURLRemote:(BOOL)remote;
 - (unint64_t)embeddedDataLength;
 - (unint64_t)p_onlyMovieFileDataLength;
 - (unint64_t)uploadDataLength;
 - (void)cancel;
-- (void)importBoardItemWithCompletionHandler:(id)a3;
-- (void)p_asynchronouslyGeneratePosterImagesAndFinishImportingMovieItem:(id)a3;
+- (void)importBoardItemWithCompletionHandler:(id)handler;
+- (void)p_asynchronouslyGeneratePosterImagesAndFinishImportingMovieItem:(id)item;
 - (void)p_createAssetDataAndThenContinueImport;
-- (void)p_enableLoopingIfNeeded:(id)a3;
-- (void)p_finishImportingWithBoardItem:(id)a3 error:(id)a4;
+- (void)p_enableLoopingIfNeeded:(id)needed;
+- (void)p_finishImportingWithBoardItem:(id)item error:(id)error;
 - (void)p_importBoardItemFromAnimatedGIF;
 - (void)p_importBoardItemFromAsset;
-- (void)p_importBoardItemFromAssetConvertingIfNeededToRequiredCompatibilityLevel:(int64_t)a3 allowHEVCContent:(BOOL)a4 fromCompatibilityLevel:(int64_t)a5;
+- (void)p_importBoardItemFromAssetConvertingIfNeededToRequiredCompatibilityLevel:(int64_t)level allowHEVCContent:(BOOL)content fromCompatibilityLevel:(int64_t)compatibilityLevel;
 - (void)p_performMovieCompatibilityAnalysis;
-- (void)p_removeShadowIfNeeded:(id)a3;
+- (void)p_removeShadowIfNeeded:(id)needed;
 - (void)p_tellMovieCompatibilityProviderToIgnoreCompatibilityLevelIfNeeded;
 @end
 
 @implementation CRLMovieItemImporter
 
-+ (BOOL)protected_canImportFileAtURL:(id)a3 type:(id)a4
++ (BOOL)protected_canImportFileAtURL:(id)l type:(id)type
 {
-  v6 = a4;
-  v7 = a3;
-  if ([a1 isSupportedAnimatedImageFileType:v6])
+  typeCopy = type;
+  lCopy = l;
+  if ([self isSupportedAnimatedImageFileType:typeCopy])
   {
-    v8 = CGImageSourceCreateWithURL(v7, 0);
+    v8 = CGImageSourceCreateWithURL(lCopy, 0);
 
     if (v8)
     {
@@ -45,7 +45,7 @@
 
       else
       {
-        v9 = [a1 p_canImportImageSource:v8];
+        v9 = [self p_canImportImageSource:v8];
       }
 
       CFRelease(v8);
@@ -59,35 +59,35 @@
 
   else
   {
-    v11.receiver = a1;
+    v11.receiver = self;
     v11.super_class = &OBJC_METACLASS___CRLMovieItemImporter;
-    v9 = objc_msgSendSuper2(&v11, "protected_canImportFileAtURL:type:", v7, v6);
+    v9 = objc_msgSendSuper2(&v11, "protected_canImportFileAtURL:type:", lCopy, typeCopy);
   }
 
   return v9;
 }
 
-+ (BOOL)protected_canImportFileWithPreinsertionAsset:(id)a3 type:(id)a4
++ (BOOL)protected_canImportFileWithPreinsertionAsset:(id)asset type:(id)type
 {
-  v6 = a4;
-  v7 = a3;
-  if ([a1 isSupportedAnimatedImageFileType:v6])
+  typeCopy = type;
+  assetCopy = asset;
+  if ([self isSupportedAnimatedImageFileType:typeCopy])
   {
-    v8 = [v7 newCGImageSource];
+    newCGImageSource = [assetCopy newCGImageSource];
 
-    if (v8)
+    if (newCGImageSource)
     {
-      if (([PFImageMetadata imageSourceIsSpatial:v8]& 1) != 0)
+      if (([PFImageMetadata imageSourceIsSpatial:newCGImageSource]& 1) != 0)
       {
         v9 = 0;
       }
 
       else
       {
-        v9 = [a1 p_canImportImageSource:v8];
+        v9 = [self p_canImportImageSource:newCGImageSource];
       }
 
-      CFRelease(v8);
+      CFRelease(newCGImageSource);
     }
 
     else
@@ -98,22 +98,22 @@
 
   else
   {
-    v11.receiver = a1;
+    v11.receiver = self;
     v11.super_class = &OBJC_METACLASS___CRLMovieItemImporter;
-    v9 = objc_msgSendSuper2(&v11, "protected_canImportFileWithPreinsertionAsset:type:", v7, v6);
+    v9 = objc_msgSendSuper2(&v11, "protected_canImportFileWithPreinsertionAsset:type:", assetCopy, typeCopy);
   }
 
   return v9;
 }
 
-+ (BOOL)p_canAnimate:(CGImageSource *)a3
++ (BOOL)p_canAnimate:(CGImageSource *)animate
 {
-  if (!a3)
+  if (!animate)
   {
     return 1;
   }
 
-  v3 = CGImageSourceCopyProperties(a3, 0);
+  v3 = CGImageSourceCopyProperties(animate, 0);
   v4 = [(__CFDictionary *)v3 objectForKeyedSubscript:@"CanAnimate"];
   v5 = v4;
   if (v4)
@@ -129,11 +129,11 @@
   return v6;
 }
 
-- (CRLMovieItemImporter)initWithURL:(id)a3 boardItemFactory:(id)a4
+- (CRLMovieItemImporter)initWithURL:(id)l boardItemFactory:(id)factory
 {
   v7.receiver = self;
   v7.super_class = CRLMovieItemImporter;
-  v4 = [(CRLBoardItemImporter *)&v7 initWithURL:a3 boardItemFactory:a4];
+  v4 = [(CRLBoardItemImporter *)&v7 initWithURL:l boardItemFactory:factory];
   v5 = v4;
   if (v4)
   {
@@ -143,11 +143,11 @@
   return v5;
 }
 
-- (CRLMovieItemImporter)initWithData:(id)a3 boardItemFactory:(id)a4
+- (CRLMovieItemImporter)initWithData:(id)data boardItemFactory:(id)factory
 {
   v7.receiver = self;
   v7.super_class = CRLMovieItemImporter;
-  v4 = [(CRLBoardItemImporter *)&v7 initWithData:a3 boardItemFactory:a4];
+  v4 = [(CRLBoardItemImporter *)&v7 initWithData:data boardItemFactory:factory];
   v5 = v4;
   if (v4)
   {
@@ -174,9 +174,9 @@
   return v4;
 }
 
-- (void)importBoardItemWithCompletionHandler:(id)a3
+- (void)importBoardItemWithCompletionHandler:(id)handler
 {
-  v4 = [a3 copy];
+  v4 = [handler copy];
   completionHandler = self->_completionHandler;
   self->_completionHandler = v4;
 
@@ -203,9 +203,9 @@
     v5 = v4;
     if (v4)
     {
-      v6 = [v4 lastPathComponent];
-      v7 = [v6 pathExtension];
-      v8 = [v7 length];
+      lastPathComponent = [v4 lastPathComponent];
+      pathExtension = [lastPathComponent pathExtension];
+      v8 = [pathExtension length];
 
       if (!v8)
       {
@@ -245,20 +245,20 @@
             [CRLAssertionHandler handleFailureInFunction:v14 file:v15 lineNumber:185 isFatal:0 description:"invalid nil value for '%{public}s'", "extensionUTType"];
           }
 
-          v16 = [v12 preferredFilenameExtension];
-          if ([v16 length])
+          preferredFilenameExtension = [v12 preferredFilenameExtension];
+          if ([preferredFilenameExtension length])
           {
-            v17 = [v6 stringByAppendingPathExtension:v16];
+            v17 = [lastPathComponent stringByAppendingPathExtension:preferredFilenameExtension];
 
-            v6 = v17;
+            lastPathComponent = v17;
           }
         }
       }
 
       v18 = [_TtC8Freeform27CRLPreinsertionAssetWrapper alloc];
-      v19 = [(CRLBoardItemImporter *)self boardItemFactory];
-      v20 = [v19 assetOwner];
-      v21 = [(CRLPreinsertionAssetWrapper *)v18 initWithUrl:v5 filename:v6 owner:v20];
+      boardItemFactory = [(CRLBoardItemImporter *)self boardItemFactory];
+      assetOwner = [boardItemFactory assetOwner];
+      v21 = [(CRLPreinsertionAssetWrapper *)v18 initWithUrl:v5 filename:lastPathComponent owner:assetOwner];
 
       if (!v21)
       {
@@ -268,9 +268,9 @@
 
     else
     {
-      v22 = [(CRLBoardItemImporter *)self preinsertionAsset];
+      preinsertionAsset = [(CRLBoardItemImporter *)self preinsertionAsset];
 
-      if (!v22 || ([(CRLBoardItemImporter *)self preinsertionAsset], (v21 = objc_claimAutoreleasedReturnValue()) == 0))
+      if (!preinsertionAsset || ([(CRLBoardItemImporter *)self preinsertionAsset], (v21 = objc_claimAutoreleasedReturnValue()) == 0))
       {
 LABEL_31:
         [(CRLMovieItemImporter *)self p_performMovieCompatibilityAnalysis];
@@ -303,9 +303,9 @@ LABEL_32:
   if (!self->_isCancelled && ![(CRLMovieItemImporter *)self p_isURLRemote]&& self->_movieData)
   {
     v4 = objc_opt_class();
-    v5 = [(CRLAsset *)self->_movieData type];
-    v6 = [v5 identifier];
-    LODWORD(v4) = [v4 isSupportedAnimatedImageFileType:v6];
+    type = [(CRLAsset *)self->_movieData type];
+    identifier = [type identifier];
+    LODWORD(v4) = [v4 isSupportedAnimatedImageFileType:identifier];
 
     if (v4)
     {
@@ -318,9 +318,9 @@ LABEL_32:
       compatibilityChecker = self->_compatibilityChecker;
       self->_compatibilityChecker = v7;
 
-      v9 = [(CRLBoardItemImporter *)self delegate];
-      v10 = v9;
-      if (v9)
+      delegate = [(CRLBoardItemImporter *)self delegate];
+      v10 = delegate;
+      if (delegate)
       {
         v11 = 4;
       }
@@ -330,7 +330,7 @@ LABEL_32:
         v11 = 3;
       }
 
-      if (v9)
+      if (delegate)
       {
         v12 = 5;
       }
@@ -390,9 +390,9 @@ LABEL_32:
   }
 }
 
-- (void)p_importBoardItemFromAssetConvertingIfNeededToRequiredCompatibilityLevel:(int64_t)a3 allowHEVCContent:(BOOL)a4 fromCompatibilityLevel:(int64_t)a5
+- (void)p_importBoardItemFromAssetConvertingIfNeededToRequiredCompatibilityLevel:(int64_t)level allowHEVCContent:(BOOL)content fromCompatibilityLevel:(int64_t)compatibilityLevel
 {
-  v6 = a4;
+  contentCopy = content;
   v9 = self->_importQueue;
   if (v9 != &_dispatch_main_q || !+[NSThread isMainThread])
   {
@@ -428,7 +428,7 @@ LABEL_32:
     [CRLAssertionHandler handleFailureInFunction:v11 file:v12 lineNumber:342 isFatal:0 description:"This method must not be called if the importer has been canceled."];
   }
 
-  if (a5 >= a3)
+  if (compatibilityLevel >= level)
   {
     v23 = [[CRLBasicProgress alloc] initWithMaxValue:1.0];
     [(CRLScaledProgress *)self->_progress setMaxValue:1.0];
@@ -440,26 +440,26 @@ LABEL_32:
   {
     v13 = [CRLMovieCompatibilityConverter alloc];
     movieData = self->_movieData;
-    v15 = [(CRLBoardItemImporter *)self boardItemFactory];
-    v16 = [v15 assetOwner];
-    v17 = [(CRLMovieCompatibilityConverter *)v13 initWithMovieData:movieData desiredCompatibilityLevel:a3 initialCompatibilityLevel:a5 assetOwner:v16];
+    boardItemFactory = [(CRLBoardItemImporter *)self boardItemFactory];
+    assetOwner = [boardItemFactory assetOwner];
+    v17 = [(CRLMovieCompatibilityConverter *)v13 initWithMovieData:movieData desiredCompatibilityLevel:level initialCompatibilityLevel:compatibilityLevel assetOwner:assetOwner];
     compatibilityConverter = self->_compatibilityConverter;
     self->_compatibilityConverter = v17;
 
-    if (a3 == 4 && v6)
+    if (level == 4 && contentCopy)
     {
       v19 = +[CRLCapabilities currentCapabilities];
-      v20 = [v19 hasHEVCHardwareEncoding];
+      hasHEVCHardwareEncoding = [v19 hasHEVCHardwareEncoding];
 
-      if (v20)
+      if (hasHEVCHardwareEncoding)
       {
         [(CRLMovieCompatibilityConverter *)self->_compatibilityConverter setPlayableOnAllDevicesPreset:5];
       }
     }
 
     [(CRLScaledProgress *)self->_progress setMaxValue:100.0];
-    v21 = [(CRLMovieCompatibilityConverter *)self->_compatibilityConverter progress];
-    [(CRLScaledProgress *)self->_progress setProgress:v21];
+    progress = [(CRLMovieCompatibilityConverter *)self->_compatibilityConverter progress];
+    [(CRLScaledProgress *)self->_progress setProgress:progress];
 
     v22 = self->_compatibilityConverter;
     v24[0] = _NSConcreteStackBlock;
@@ -493,9 +493,9 @@ LABEL_32:
   return v8;
 }
 
-- (id)p_makeMovieItemWithContainsVisibleTrack:(BOOL)a3 andIsURLRemote:(BOOL)a4
+- (id)p_makeMovieItemWithContainsVisibleTrack:(BOOL)track andIsURLRemote:(BOOL)remote
 {
-  if (a3)
+  if (track)
   {
     [(AVAsset *)self->_asset naturalSizeWithPreferredTransforms];
     [_TtC8Freeform12CRLMovieItem defaultVideoItemSizeWithOriginalSize:?];
@@ -507,7 +507,7 @@ LABEL_32:
   }
 
   v8 = [[CRLCanvasInfoGeometry alloc] initWithSize:v6, v7];
-  if (a4)
+  if (remote)
   {
     v9 = 0;
   }
@@ -543,8 +543,8 @@ LABEL_32:
       [CRLAssertionHandler handleFailureInFunction:v11 file:v12 lineNumber:449 isFatal:0 description:"invalid nil value for '%{public}s'", "self->_movieData"];
     }
 
-    v13 = [(CRLBoardItemImporter *)self boardItemFactory];
-    v9 = [v13 makeMovieItemWithGeometry:v8 movieData:self->_movieData posterImageData:0 posterTime:0.0];
+    boardItemFactory = [(CRLBoardItemImporter *)self boardItemFactory];
+    v9 = [boardItemFactory makeMovieItemWithGeometry:v8 movieData:self->_movieData posterImageData:0 posterTime:0.0];
 
     [(CRLMovieItemImporter *)self p_removeShadowIfNeeded:v9];
   }
@@ -552,68 +552,68 @@ LABEL_32:
   return v9;
 }
 
-- (void)p_enableLoopingIfNeeded:(id)a3
+- (void)p_enableLoopingIfNeeded:(id)needed
 {
-  v3 = a3;
-  if ([v3 isAnimatedImage])
+  neededCopy = needed;
+  if ([neededCopy isAnimatedImage])
   {
-    [v3 setIsLooping:1];
+    [neededCopy setIsLooping:1];
   }
 }
 
-- (void)p_removeShadowIfNeeded:(id)a3
+- (void)p_removeShadowIfNeeded:(id)needed
 {
-  v6 = a3;
+  neededCopy = needed;
   v4 = [(AVAsset *)self->_asset tracksWithMediaCharacteristic:AVMediaCharacteristicContainsAlphaChannel];
   v5 = [v4 count];
-  if (([v6 isAnimatedImage] & 1) != 0 || v5)
+  if (([neededCopy isAnimatedImage] & 1) != 0 || v5)
   {
-    [v6 setShadow:0];
+    [neededCopy setShadow:0];
   }
 }
 
-+ (void)p_setMovieProperties:(id)a3 fromLoadedAsset:(id)a4 containsVideoTrack:(BOOL)a5
++ (void)p_setMovieProperties:(id)properties fromLoadedAsset:(id)asset containsVideoTrack:(BOOL)track
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 metadata];
-  v10 = [AVAsset crl_titleWithMetadataArray:v9];
+  propertiesCopy = properties;
+  assetCopy = asset;
+  metadata = [assetCopy metadata];
+  v10 = [AVAsset crl_titleWithMetadataArray:metadata];
   if (v10)
   {
-    v11 = v10;
+    stringByDeletingPathExtension = v10;
   }
 
   else
   {
-    v12 = [v7 movieAssetPayload];
-    v13 = [v12 filename];
-    v11 = [v13 stringByDeletingPathExtension];
+    movieAssetPayload = [propertiesCopy movieAssetPayload];
+    filename = [movieAssetPayload filename];
+    stringByDeletingPathExtension = [filename stringByDeletingPathExtension];
 
-    if (!v11)
+    if (!stringByDeletingPathExtension)
     {
       goto LABEL_5;
     }
   }
 
-  [v7 setTitle:v11];
+  [propertiesCopy setTitle:stringByDeletingPathExtension];
 
 LABEL_5:
-  v14 = [AVAsset crl_creatorArtistOrAuthorWithMetadataArray:v9];
-  [v7 setCreator:v14];
+  v14 = [AVAsset crl_creatorArtistOrAuthorWithMetadataArray:metadata];
+  [propertiesCopy setCreator:v14];
 
-  v15 = [v7 creator];
+  creator = [propertiesCopy creator];
 
-  if (!v15)
+  if (!creator)
   {
-    v16 = [v7 movieAssetPayload];
-    v17 = [v16 type];
+    movieAssetPayload2 = [propertiesCopy movieAssetPayload];
+    type = [movieAssetPayload2 type];
 
-    v18 = [v17 localizedDescription];
-    [v7 setCreator:v18];
+    localizedDescription = [type localizedDescription];
+    [propertiesCopy setCreator:localizedDescription];
   }
 
   memset(&v24[1], 0, sizeof(CMTime));
-  if (!v8 || ([v8 duration], (v24[1].flags & 1) == 0))
+  if (!assetCopy || ([assetCopy duration], (v24[1].flags & 1) == 0))
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -644,25 +644,25 @@ LABEL_5:
 
   v24[0] = v24[1];
   Seconds = CMTimeGetSeconds(v24);
-  [v7 setStartTime:0.0];
-  [v7 setEndTime:Seconds];
-  if (a5)
+  [propertiesCopy setStartTime:0.0];
+  [propertiesCopy setEndTime:Seconds];
+  if (track)
   {
-    v23 = 0;
+    crl_containsTracksWithVisualCharacteristics = 0;
   }
 
   else
   {
-    v23 = [v8 crl_containsTracksWithVisualCharacteristics];
+    crl_containsTracksWithVisualCharacteristics = [assetCopy crl_containsTracksWithVisualCharacteristics];
   }
 
-  [v7 setIsAudioOnly:v23];
+  [propertiesCopy setIsAudioOnly:crl_containsTracksWithVisualCharacteristics];
 }
 
-- (void)p_asynchronouslyGeneratePosterImagesAndFinishImportingMovieItem:(id)a3
+- (void)p_asynchronouslyGeneratePosterImagesAndFinishImportingMovieItem:(id)item
 {
-  v4 = a3;
-  [v4 posterTime];
+  itemCopy = item;
+  [itemCopy posterTime];
   v6 = v5;
   v7 = [[CRLMoviePosterImageGenerator alloc] initWithAsset:self->_asset];
   posterImageGenerator = self->_posterImageGenerator;
@@ -675,8 +675,8 @@ LABEL_5:
   v11[2] = sub_1003A0E44;
   v11[3] = &unk_10185B920;
   v11[4] = self;
-  v12 = v4;
-  v10 = v4;
+  v12 = itemCopy;
+  v10 = itemCopy;
   [(CRLMoviePosterImageGenerator *)v9 generateCGImageAsynchronouslyForTime:&v13 completionHandler:v11];
 }
 
@@ -705,9 +705,9 @@ LABEL_5:
     v7 = [CRLCanvasInfoGeometry alloc];
     [v6 naturalSize];
     v8 = [(CRLCanvasInfoGeometry *)v7 initWithSize:?];
-    v9 = [(CRLBoardItemImporter *)self boardItemFactory];
+    boardItemFactory = [(CRLBoardItemImporter *)self boardItemFactory];
     v45 = v8;
-    v10 = [v9 makeMovieItemWithGeometry:v8 movieData:self->_movieData posterImageData:0 posterTime:0.0];
+    v10 = [boardItemFactory makeMovieItemWithGeometry:v8 movieData:self->_movieData posterImageData:0 posterTime:0.0];
 
     v11 = objc_autoreleasePoolPush();
     v12 = [[CRLAnimatedGIFController alloc] initWithData:self->_movieData delegate:0];
@@ -717,10 +717,10 @@ LABEL_5:
       v13 = [_TtC8Freeform27CRLPreinsertionAssetWrapper alloc];
       [v10 startTime];
       v14 = sub_1005357BC([(CRLAnimatedGIFController *)v12 imageForTime:?]);
-      v15 = [(CRLBoardItemImporter *)self boardItemFactory];
-      v16 = [v15 assetOwner];
+      boardItemFactory2 = [(CRLBoardItemImporter *)self boardItemFactory];
+      assetOwner = [boardItemFactory2 assetOwner];
       v49 = 0;
-      v17 = [(CRLPreinsertionAssetWrapper *)v13 initWithData:v14 filename:@"posterImage.png" owner:v16 error:&v49];
+      v17 = [(CRLPreinsertionAssetWrapper *)v13 initWithData:v14 filename:@"posterImage.png" owner:assetOwner error:&v49];
       v18 = v49;
 
       v44 = v17;
@@ -774,14 +774,14 @@ LABEL_5:
     }
 
     objc_autoreleasePoolPop(v11);
-    v27 = [(CRLAsset *)self->_movieData newCGImageSource];
-    Count = CGImageSourceGetCount(v27);
+    newCGImageSource = [(CRLAsset *)self->_movieData newCGImageSource];
+    Count = CGImageSourceGetCount(newCGImageSource);
     if (Count)
     {
       v29 = Count;
       for (i = 0; i < v29; ++i)
       {
-        v31 = CGImageSourceCopyPropertiesAtIndex(v27, i, 0);
+        v31 = CGImageSourceCopyPropertiesAtIndex(newCGImageSource, i, 0);
         v32 = v31;
         if (v31)
         {
@@ -793,9 +793,9 @@ LABEL_5:
             if (v35)
             {
               v36 = v35;
-              v37 = [v35 integerValue];
+              integerValue = [v35 integerValue];
 
-              if (v37 == 1)
+              if (integerValue == 1)
               {
                 break;
               }
@@ -807,21 +807,21 @@ LABEL_5:
       }
     }
 
-    if (v27)
+    if (newCGImageSource)
     {
-      CFRelease(v27);
+      CFRelease(newCGImageSource);
     }
 
-    v38 = [v10 movieAssetPayload];
-    v39 = [v38 filename];
-    v40 = [v39 stringByDeletingPathExtension];
-    [v10 setTitle:v40];
+    movieAssetPayload = [v10 movieAssetPayload];
+    filename = [movieAssetPayload filename];
+    stringByDeletingPathExtension = [filename stringByDeletingPathExtension];
+    [v10 setTitle:stringByDeletingPathExtension];
 
-    v41 = [v10 movieAssetPayload];
-    v42 = [v41 type];
+    movieAssetPayload2 = [v10 movieAssetPayload];
+    type = [movieAssetPayload2 type];
 
-    v43 = [v42 localizedDescription];
-    [v10 setCreator:v43];
+    localizedDescription = [type localizedDescription];
+    [v10 setCreator:localizedDescription];
 
     [(CRLMovieItemImporter *)self p_removeShadowIfNeeded:v10];
     [(CRLMovieItemImporter *)self p_enableLoopingIfNeeded:v10];
@@ -880,10 +880,10 @@ LABEL_5:
   if (!self->_didMessageDelegateAboutMovieCompatibility)
   {
     self->_didMessageDelegateAboutMovieCompatibility = 1;
-    v4 = [(CRLBoardItemImporter *)self delegate];
-    if (v4)
+    delegate = [(CRLBoardItemImporter *)self delegate];
+    if (delegate)
     {
-      v5 = v4;
+      v5 = delegate;
       if (objc_opt_respondsToSelector())
       {
         [v5 boardItemImporterWillIgnoreMediaCompatibilityOnAllDevicesRequirement:self];
@@ -894,20 +894,20 @@ LABEL_5:
   }
 }
 
-- (BOOL)p_validateSizeOfImportWithBoardItem:(id)a3 error:(id *)a4
+- (BOOL)p_validateSizeOfImportWithBoardItem:(id)item error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   return 1;
 }
 
-- (void)p_finishImportingWithBoardItem:(id)a3 error:(id)a4
+- (void)p_finishImportingWithBoardItem:(id)item error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
+  itemCopy = item;
+  errorCopy = error;
   v9 = self->_importQueue;
   if (v9 != &_dispatch_main_q || !+[NSThread isMainThread])
   {
@@ -918,8 +918,8 @@ LABEL_5:
   if (!self->_isCancelled)
   {
     v10 = objc_opt_class();
-    v11 = [(CRLScaledProgress *)self->_progress progress];
-    v12 = sub_100014370(v10, v11);
+    progress = [(CRLScaledProgress *)self->_progress progress];
+    v12 = sub_100014370(v10, progress);
 
     if (v12)
     {
@@ -927,11 +927,11 @@ LABEL_5:
       [v12 setValue:?];
     }
 
-    if (v7)
+    if (itemCopy)
     {
-      objc_storeStrong(&self->_boardItem, a3);
+      objc_storeStrong(&self->_boardItem, item);
       v13 = objc_opt_class();
-      v14 = sub_100013F00(v13, v7);
+      v14 = sub_100013F00(v13, itemCopy);
       [v14 setPosterImageData:self->_posterImageData];
       v41 = 0;
       v15 = [(CRLMovieItemImporter *)self p_validateSizeOfImportWithBoardItem:v14 error:&v41];
@@ -957,27 +957,27 @@ LABEL_27:
       {
         v40 = 0;
         [v19 getResourceValue:&v40 forKey:NSURLLocalizedNameKey error:0];
-        v20 = v40;
-        if (!v20)
+        lastPathComponent = v40;
+        if (!lastPathComponent)
         {
-          v20 = [v14 lastPathComponent];
+          lastPathComponent = [v14 lastPathComponent];
         }
 
         v21 = +[NSBundle mainBundle];
         v22 = [v21 localizedStringForKey:@"The movie “%@” couldn’t be inserted." value:0 table:0];
-        v17 = [NSString stringWithFormat:v22, v20];
+        v17 = [NSString stringWithFormat:v22, lastPathComponent];
       }
 
       else
       {
-        v20 = +[NSBundle mainBundle];
-        v17 = [v20 localizedStringForKey:@"The movie couldn’t be inserted." value:0 table:0];
+        lastPathComponent = +[NSBundle mainBundle];
+        v17 = [lastPathComponent localizedStringForKey:@"The movie couldn’t be inserted." value:0 table:0];
       }
 
-      if (v8)
+      if (errorCopy)
       {
-        v23 = [v8 userInfo];
-        boardItem = [v23 mutableCopy];
+        userInfo = [errorCopy userInfo];
+        boardItem = [userInfo mutableCopy];
 
         if (v14)
         {
@@ -985,16 +985,16 @@ LABEL_27:
         }
 
         v24 = [boardItem objectForKeyedSubscript:NSLocalizedDescriptionKey];
-        if (!v24 || ([boardItem setObject:v24 forKeyedSubscript:NSLocalizedFailureReasonErrorKey], objc_msgSend(v8, "domain"), v25 = objc_claimAutoreleasedReturnValue(), v25, v25 != @"com.apple.freeform.CRLErrorDomainInfoImporter"))
+        if (!v24 || ([boardItem setObject:v24 forKeyedSubscript:NSLocalizedFailureReasonErrorKey], objc_msgSend(errorCopy, "domain"), v25 = objc_claimAutoreleasedReturnValue(), v25, v25 != @"com.apple.freeform.CRLErrorDomainInfoImporter"))
         {
           [boardItem setObject:v17 forKeyedSubscript:NSLocalizedDescriptionKey];
         }
 
         v26 = [NSError alloc];
-        v27 = [v8 domain];
-        v28 = [v8 code];
+        domain = [errorCopy domain];
+        code = [errorCopy code];
         v29 = v26;
-        v30 = v27;
+        v30 = domain;
         v31 = boardItem;
       }
 
@@ -1006,19 +1006,19 @@ LABEL_27:
         v43[1] = &off_1018E2C58;
         boardItem = [NSDictionary dictionaryWithObjects:v43 forKeys:v42 count:2];
         v24 = [boardItem mutableCopy];
-        v27 = [(CRLBoardItemImporter *)self URL];
-        if (v27)
+        domain = [(CRLBoardItemImporter *)self URL];
+        if (domain)
         {
-          [v24 setObject:v27 forKeyedSubscript:NSURLErrorKey];
+          [v24 setObject:domain forKeyedSubscript:NSURLErrorKey];
         }
 
         v29 = [NSError alloc];
         v30 = @"com.apple.freeform.CRLErrorDomainInfoImporter";
-        v28 = 100;
+        code = 100;
         v31 = v24;
       }
 
-      v32 = [v29 initWithDomain:v30 code:v28 userInfo:v31];
+      v32 = [v29 initWithDomain:v30 code:code userInfo:v31];
       error = self->_error;
       self->_error = v32;
     }
@@ -1063,8 +1063,8 @@ LABEL_28:
 {
   v3 = objc_opt_class();
   v4 = sub_100014370(v3, self->_boardItem);
-  v5 = [v4 movieAssetPayload];
-  v6 = [v5 length];
+  movieAssetPayload = [v4 movieAssetPayload];
+  v6 = [movieAssetPayload length];
 
   return v6;
 }
@@ -1073,11 +1073,11 @@ LABEL_28:
 {
   v3 = objc_opt_class();
   v4 = sub_100014370(v3, self->_boardItem);
-  v5 = [v4 posterImageAssetPayload];
-  v6 = [v5 length];
+  posterImageAssetPayload = [v4 posterImageAssetPayload];
+  v6 = [posterImageAssetPayload length];
 
-  v7 = [v4 movieAssetPayload];
-  v8 = [v7 length];
+  movieAssetPayload = [v4 movieAssetPayload];
+  v8 = [movieAssetPayload length];
 
   return v6 + v8;
 }
@@ -1086,8 +1086,8 @@ LABEL_28:
 {
   v3 = objc_opt_class();
   v4 = sub_100014370(v3, self->_boardItem);
-  v5 = [v4 movieAssetPayload];
-  v6 = [v5 length];
+  movieAssetPayload = [v4 movieAssetPayload];
+  v6 = [movieAssetPayload length];
 
   return v6;
 }

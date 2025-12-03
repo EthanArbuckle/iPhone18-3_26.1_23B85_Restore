@@ -1,67 +1,67 @@
 @interface _WTFinaleTextEffect
 - (void)_sweep;
-- (void)updateEffectWith:(id)a3;
+- (void)updateEffectWith:(id)with;
 @end
 
 @implementation _WTFinaleTextEffect
 
-- (void)updateEffectWith:(id)a3
+- (void)updateEffectWith:(id)with
 {
-  v4 = a3;
-  v5 = [(_WTTextEffect *)self rootLayer];
+  withCopy = with;
+  rootLayer = [(_WTTextEffect *)self rootLayer];
 
-  if (!v5)
+  if (!rootLayer)
   {
-    v6 = [MEMORY[0x1E6979398] layer];
-    [(_WTTextEffect *)self setRootLayer:v6];
+    layer = [MEMORY[0x1E6979398] layer];
+    [(_WTTextEffect *)self setRootLayer:layer];
 
-    v7 = [MEMORY[0x1E69794A0] layer];
-    [(_WTFinaleTextEffect *)self setMaskLayer:v7];
+    layer2 = [MEMORY[0x1E69794A0] layer];
+    [(_WTFinaleTextEffect *)self setMaskLayer:layer2];
 
-    v8 = [MEMORY[0x1E6979398] layer];
-    [(_WTFinaleTextEffect *)self setTextContentLayer:v8];
+    layer3 = [MEMORY[0x1E6979398] layer];
+    [(_WTFinaleTextEffect *)self setTextContentLayer:layer3];
 
-    v9 = [MEMORY[0x1E6979380] layer];
-    [(_WTFinaleTextEffect *)self setGradientLayer:v9];
+    layer4 = [MEMORY[0x1E6979380] layer];
+    [(_WTFinaleTextEffect *)self setGradientLayer:layer4];
 
-    v10 = [MEMORY[0x1E6979398] layer];
-    [(_WTFinaleTextEffect *)self setGradientHostLayer:v10];
+    layer5 = [MEMORY[0x1E6979398] layer];
+    [(_WTFinaleTextEffect *)self setGradientHostLayer:layer5];
 
     v11 = +[_WTLightEffectPalette finaleSweep];
-    v12 = [v11 CGColors];
-    v13 = [(_WTFinaleTextEffect *)self gradientLayer];
-    [v13 setColors:v12];
+    cGColors = [v11 CGColors];
+    gradientLayer = [(_WTFinaleTextEffect *)self gradientLayer];
+    [gradientLayer setColors:cGColors];
 
-    v14 = [(_WTFinaleTextEffect *)self gradientLayer];
-    [v14 setStartPoint:{0.0, 0.0}];
+    gradientLayer2 = [(_WTFinaleTextEffect *)self gradientLayer];
+    [gradientLayer2 setStartPoint:{0.0, 0.0}];
 
-    v15 = [(_WTFinaleTextEffect *)self gradientLayer];
-    [v15 setEndPoint:{0.0, 1.0}];
+    gradientLayer3 = [(_WTFinaleTextEffect *)self gradientLayer];
+    [gradientLayer3 setEndPoint:{0.0, 1.0}];
 
-    v16 = [(_WTFinaleTextEffect *)self gradientLayer];
+    gradientLayer4 = [(_WTFinaleTextEffect *)self gradientLayer];
     LODWORD(v17) = 0.5;
-    [v16 setOpacity:v17];
+    [gradientLayer4 setOpacity:v17];
 
-    v18 = [(_WTFinaleTextEffect *)self maskLayer];
-    v19 = [(_WTFinaleTextEffect *)self gradientHostLayer];
-    [v19 setMask:v18];
+    maskLayer = [(_WTFinaleTextEffect *)self maskLayer];
+    gradientHostLayer = [(_WTFinaleTextEffect *)self gradientHostLayer];
+    [gradientHostLayer setMask:maskLayer];
 
-    v20 = [(_WTFinaleTextEffect *)self gradientHostLayer];
-    v21 = [(_WTFinaleTextEffect *)self gradientLayer];
-    [v20 addSublayer:v21];
+    gradientHostLayer2 = [(_WTFinaleTextEffect *)self gradientHostLayer];
+    gradientLayer5 = [(_WTFinaleTextEffect *)self gradientLayer];
+    [gradientHostLayer2 addSublayer:gradientLayer5];
 
-    v22 = [(_WTTextEffect *)self rootLayer];
-    v23 = [(_WTFinaleTextEffect *)self gradientHostLayer];
-    [v22 addSublayer:v23];
+    rootLayer2 = [(_WTTextEffect *)self rootLayer];
+    gradientHostLayer3 = [(_WTFinaleTextEffect *)self gradientHostLayer];
+    [rootLayer2 addSublayer:gradientHostLayer3];
 
-    v24 = [(_WTTextEffect *)self rootLayer];
-    v25 = [(_WTFinaleTextEffect *)self textContentLayer];
-    [v24 addSublayer:v25];
+    rootLayer3 = [(_WTTextEffect *)self rootLayer];
+    textContentLayer = [(_WTFinaleTextEffect *)self textContentLayer];
+    [rootLayer3 addSublayer:textContentLayer];
 
-    v26 = [(_WTTextEffect *)self effectView];
-    v27 = [v26 layer];
-    v28 = [(_WTTextEffect *)self rootLayer];
-    [v27 addSublayer:v28];
+    effectView = [(_WTTextEffect *)self effectView];
+    layer6 = [effectView layer];
+    rootLayer4 = [(_WTTextEffect *)self rootLayer];
+    [layer6 addSublayer:rootLayer4];
 
     v34[0] = MEMORY[0x1E69E9820];
     v34[1] = 3221225472;
@@ -72,36 +72,36 @@
     [(_WTTextEffect *)self setTimer:v29];
   }
 
-  v30 = [(_WTTextEffect *)self effectView];
+  effectView2 = [(_WTTextEffect *)self effectView];
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
   v32[2] = __40___WTFinaleTextEffect_updateEffectWith___block_invoke_2;
   v32[3] = &unk_1E8480C70;
   v32[4] = self;
-  v33 = v4;
-  v31 = v4;
-  [v30 platformPerformWithoutAnimation:v32];
+  v33 = withCopy;
+  v31 = withCopy;
+  [effectView2 platformPerformWithoutAnimation:v32];
 
   [(_WTFinaleTextEffect *)self _sweep];
 }
 
 - (void)_sweep
 {
-  v3 = [(_WTTextEffect *)self rootLayer];
-  [v3 bounds];
+  rootLayer = [(_WTTextEffect *)self rootLayer];
+  [rootLayer bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
 
   v10 = v9 * -2.0;
   v11 = v9 * 4.0;
-  v12 = [(_WTTextEffect *)self rootLayer];
-  [v12 bounds];
+  rootLayer2 = [(_WTTextEffect *)self rootLayer];
+  [rootLayer2 bounds];
   v14 = v13;
   v16 = v15;
   v18 = v17;
 
-  v19 = [(_WTTextEffect *)self effectView];
+  effectView = [(_WTTextEffect *)self effectView];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __29___WTFinaleTextEffect__sweep__block_invoke;
@@ -111,7 +111,7 @@
   *&v22[6] = v10;
   v22[7] = v7;
   *&v22[8] = v11;
-  [v19 platformPerformWithoutAnimation:v22];
+  [effectView platformPerformWithoutAnimation:v22];
 
   [MEMORY[0x1E6979518] flush];
   [MEMORY[0x1E6979518] begin];
@@ -119,8 +119,8 @@
   v20 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979ED8]];
   [MEMORY[0x1E6979518] setAnimationTimingFunction:v20];
 
-  v21 = [(_WTFinaleTextEffect *)self gradientLayer];
-  [v21 setFrame:{v14, 0.0, v16, v18 * 4.0}];
+  gradientLayer = [(_WTFinaleTextEffect *)self gradientLayer];
+  [gradientLayer setFrame:{v14, 0.0, v16, v18 * 4.0}];
 
   [MEMORY[0x1E6979518] commit];
 }

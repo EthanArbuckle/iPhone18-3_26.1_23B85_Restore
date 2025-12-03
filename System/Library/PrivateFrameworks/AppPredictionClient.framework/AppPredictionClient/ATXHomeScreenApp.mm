@@ -1,11 +1,11 @@
 @interface ATXHomeScreenApp
-- (ATXHomeScreenApp)initWithBundleId:(id)a3 predictionSource:(id)a4 score:(double)a5 uniqueDaysLaunched:(unint64_t)a6 rawLaunchCount:(unint64_t)a7;
-- (ATXHomeScreenApp)initWithCoder:(id)a3;
+- (ATXHomeScreenApp)initWithBundleId:(id)id predictionSource:(id)source score:(double)score uniqueDaysLaunched:(unint64_t)launched rawLaunchCount:(unint64_t)count;
+- (ATXHomeScreenApp)initWithCoder:(id)coder;
 - (ATXHomeScreenPage)page;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXHomeScreenApp:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXHomeScreenApp:(id)app;
 - (id)dictionaryRepresentationForIntrospection;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXHomeScreenApp
@@ -17,53 +17,53 @@
   return WeakRetained;
 }
 
-- (ATXHomeScreenApp)initWithBundleId:(id)a3 predictionSource:(id)a4 score:(double)a5 uniqueDaysLaunched:(unint64_t)a6 rawLaunchCount:(unint64_t)a7
+- (ATXHomeScreenApp)initWithBundleId:(id)id predictionSource:(id)source score:(double)score uniqueDaysLaunched:(unint64_t)launched rawLaunchCount:(unint64_t)count
 {
-  v12 = a3;
-  v13 = a4;
+  idCopy = id;
+  sourceCopy = source;
   v20.receiver = self;
   v20.super_class = ATXHomeScreenApp;
   v14 = [(ATXHomeScreenApp *)&v20 init];
   if (v14)
   {
-    v15 = [v12 copy];
+    v15 = [idCopy copy];
     bundleId = v14->_bundleId;
     v14->_bundleId = v15;
 
-    v17 = [v13 copy];
+    v17 = [sourceCopy copy];
     predictionSource = v14->_predictionSource;
     v14->_predictionSource = v17;
 
-    v14->_score = a5;
-    v14->_numUniqueDays = a6;
-    v14->_numAppLaunches = a7;
+    v14->_score = score;
+    v14->_numUniqueDays = launched;
+    v14->_numAppLaunches = count;
   }
 
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXHomeScreenApp *)self isEqualToATXHomeScreenApp:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXHomeScreenApp *)self isEqualToATXHomeScreenApp:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXHomeScreenApp:(id)a3
+- (BOOL)isEqualToATXHomeScreenApp:(id)app
 {
   v4 = self->_bundleId;
   v5 = v4;
-  if (v4 == *(a3 + 1))
+  if (v4 == *(app + 1))
   {
     v6 = 1;
   }
@@ -76,37 +76,37 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   bundleId = self->_bundleId;
-  v5 = a3;
-  [v5 encodeObject:bundleId forKey:@"bundleId"];
-  [v5 encodeObject:self->_predictionSource forKey:@"predictionSource"];
-  [v5 encodeDouble:@"score" forKey:self->_score];
-  [v5 encodeInteger:self->_numUniqueDays forKey:@"numUniqueDays"];
-  [v5 encodeInteger:self->_numAppLaunches forKey:@"numAppLaunches"];
+  coderCopy = coder;
+  [coderCopy encodeObject:bundleId forKey:@"bundleId"];
+  [coderCopy encodeObject:self->_predictionSource forKey:@"predictionSource"];
+  [coderCopy encodeDouble:@"score" forKey:self->_score];
+  [coderCopy encodeInteger:self->_numUniqueDays forKey:@"numUniqueDays"];
+  [coderCopy encodeInteger:self->_numAppLaunches forKey:@"numAppLaunches"];
 }
 
-- (ATXHomeScreenApp)initWithCoder:(id)a3
+- (ATXHomeScreenApp)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = ATXHomeScreenApp;
   v5 = [(ATXHomeScreenApp *)&v12 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleId"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleId"];
     bundleId = v5->_bundleId;
     v5->_bundleId = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"predictionSource"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"predictionSource"];
     predictionSource = v5->_predictionSource;
     v5->_predictionSource = v8;
 
-    [v4 decodeDoubleForKey:@"score"];
+    [coderCopy decodeDoubleForKey:@"score"];
     v5->_score = v10;
-    v5->_numUniqueDays = [v4 decodeIntegerForKey:@"numUniqueDays"];
-    v5->_numAppLaunches = [v4 decodeIntegerForKey:@"numAppLaunches"];
+    v5->_numUniqueDays = [coderCopy decodeIntegerForKey:@"numUniqueDays"];
+    v5->_numAppLaunches = [coderCopy decodeIntegerForKey:@"numAppLaunches"];
   }
 
   return v5;

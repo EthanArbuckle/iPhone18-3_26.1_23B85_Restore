@@ -1,18 +1,18 @@
 @interface GDPersonTaggingOptions
-- (GDPersonTaggingOptions)initWithTagThresholds:(id)a3;
+- (GDPersonTaggingOptions)initWithTagThresholds:(id)thresholds;
 @end
 
 @implementation GDPersonTaggingOptions
 
-- (GDPersonTaggingOptions)initWithTagThresholds:(id)a3
+- (GDPersonTaggingOptions)initWithTagThresholds:(id)thresholds
 {
-  v4 = a3;
+  thresholdsCopy = thresholds;
   v9.receiver = self;
   v9.super_class = GDPersonTaggingOptions;
   v5 = [(GDPersonTaggingOptions *)&v9 init];
   if (v5)
   {
-    v6 = [[GDPersonEntityTaggingOptionsInner alloc] initWithTagNameThresholds:v4];
+    v6 = [[GDPersonEntityTaggingOptionsInner alloc] initWithTagNameThresholds:thresholdsCopy];
     inner = v5->inner;
     v5->inner = v6;
   }

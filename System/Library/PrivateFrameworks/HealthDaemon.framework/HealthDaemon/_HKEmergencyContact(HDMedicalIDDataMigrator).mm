@@ -6,23 +6,23 @@
 
 - (void)_migrateToSchemaVersion:()HDMedicalIDDataMigrator withAddressBook:
 {
-  v5 = a1;
+  selfCopy = self;
   v58[1] = *MEMORY[0x277D85DE8];
   if (a3 == 3)
   {
-    if (a1)
+    if (self)
     {
-      v19 = [a1 nameRecordID];
-      PersonWithRecordID = ABAddressBookGetPersonWithRecordID(a4, [v19 intValue]);
+      nameRecordID = [self nameRecordID];
+      PersonWithRecordID = ABAddressBookGetPersonWithRecordID(a4, [nameRecordID intValue]);
 
       if (PersonWithRecordID)
       {
         v21 = objc_alloc_init(MEMORY[0x277CBDAB8]);
-        v22 = [v5 nameRecordID];
-        v23 = [v22 stringValue];
+        nameRecordID2 = [selfCopy nameRecordID];
+        stringValue = [nameRecordID2 stringValue];
         v58[0] = *MEMORY[0x277CBD098];
         v24 = [MEMORY[0x277CBEA60] arrayWithObjects:v58 count:1];
-        v25 = [v21 unifiedContactWithIdentifier:v23 keysToFetch:v24 error:0];
+        v25 = [v21 unifiedContactWithIdentifier:stringValue keysToFetch:v24 error:0];
       }
 
       else
@@ -30,25 +30,25 @@
         v25 = 0;
       }
 
-      v26 = [v25 identifier];
-      [v5 setNameContactIdentifier:v26];
+      identifier = [v25 identifier];
+      [selfCopy setNameContactIdentifier:identifier];
 
-      v27 = [v25 linkedContacts];
-      v28 = [v25 phoneNumbers];
-      v52 = v27;
-      if ([v27 count])
+      linkedContacts = [v25 linkedContacts];
+      phoneNumbers = [v25 phoneNumbers];
+      v52 = linkedContacts;
+      if ([linkedContacts count])
       {
-        v29 = [MEMORY[0x277CBDA58] unifyContacts:v27];
-        v30 = [v29 phoneNumbers];
+        v29 = [MEMORY[0x277CBDA58] unifyContacts:linkedContacts];
+        phoneNumbers2 = [v29 phoneNumbers];
 
-        v28 = v30;
+        phoneNumbers = phoneNumbers2;
       }
 
       v55 = 0u;
       v56 = 0u;
       v53 = 0u;
       v54 = 0u;
-      v31 = v28;
+      v31 = phoneNumbers;
       v32 = [v31 countByEnumeratingWithState:&v53 objects:v57 count:16];
       if (v32)
       {
@@ -64,20 +64,20 @@
             }
 
             v36 = *(*(&v53 + 1) + 8 * i);
-            v37 = [v36 iOSLegacyIdentifier];
-            v38 = v5;
-            v39 = [v5 phoneNumberPropertyID];
-            v40 = [v39 intValue];
+            iOSLegacyIdentifier = [v36 iOSLegacyIdentifier];
+            v38 = selfCopy;
+            phoneNumberPropertyID = [selfCopy phoneNumberPropertyID];
+            intValue = [phoneNumberPropertyID intValue];
 
-            if (v37 == v40)
+            if (iOSLegacyIdentifier == intValue)
             {
-              v41 = [v36 identifier];
-              [v38 setPhoneNumberContactIdentifier:v41];
+              identifier2 = [v36 identifier];
+              [v38 setPhoneNumberContactIdentifier:identifier2];
 
               goto LABEL_35;
             }
 
-            v5 = v38;
+            selfCopy = v38;
           }
 
           v33 = [v31 countByEnumeratingWithState:&v53 objects:v57 count:16];
@@ -94,13 +94,13 @@ LABEL_36:
     return;
   }
 
-  if (a3 != 2 || !a1)
+  if (a3 != 2 || !self)
   {
     goto LABEL_36;
   }
 
-  v46 = [a1 name];
-  v6 = ABAddressBookCopyPeopleWithName(a4, v46);
+  name = [self name];
+  v6 = ABAddressBookCopyPeopleWithName(a4, name);
   Count = CFArrayGetCount(v6);
   if (Count <= 0)
   {
@@ -108,7 +108,7 @@ LABEL_36:
     goto LABEL_39;
   }
 
-  v48 = v5;
+  v48 = selfCopy;
   v7 = 0;
   property = *MEMORY[0x277CB98E0];
   v8 = 0xFFFFFFFFLL;
@@ -133,7 +133,7 @@ LABEL_16:
   }
 
   v12 = v11;
-  v13 = [v48 phoneNumber];
+  phoneNumber = [v48 phoneNumber];
   v14 = 1;
   v15 = v8;
   do
@@ -141,7 +141,7 @@ LABEL_16:
     v8 = v15;
     v16 = ABMultiValueCopyValueAtIndex(v10, v14 - 1);
     IdentifierAtIndex = ABMultiValueGetIdentifierAtIndex(v10, v14 - 1);
-    v18 = [v13 isEqualToString:v16];
+    v18 = [phoneNumber isEqualToString:v16];
     if (v18)
     {
       v15 = IdentifierAtIndex;

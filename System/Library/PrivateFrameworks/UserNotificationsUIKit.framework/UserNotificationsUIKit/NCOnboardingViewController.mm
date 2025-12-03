@@ -1,19 +1,19 @@
 @interface NCOnboardingViewController
-- (NCOnboardingViewController)initWithTitle:(id)a3 detailText:(id)a4 contentLayout:(int64_t)a5;
+- (NCOnboardingViewController)initWithTitle:(id)title detailText:(id)text contentLayout:(int64_t)layout;
 - (NCOnboardingViewControllerDelegate)delegate;
-- (void)_nextButtonPressed:(id)a3;
-- (void)setNextButtonEnabled:(BOOL)a3;
-- (void)setNextButtonText:(id)a3;
+- (void)_nextButtonPressed:(id)pressed;
+- (void)setNextButtonEnabled:(BOOL)enabled;
+- (void)setNextButtonText:(id)text;
 - (void)viewDidLoad;
 @end
 
 @implementation NCOnboardingViewController
 
-- (NCOnboardingViewController)initWithTitle:(id)a3 detailText:(id)a4 contentLayout:(int64_t)a5
+- (NCOnboardingViewController)initWithTitle:(id)title detailText:(id)text contentLayout:(int64_t)layout
 {
   v6.receiver = self;
   v6.super_class = NCOnboardingViewController;
-  result = [(NCOnboardingViewController *)&v6 initWithTitle:a3 detailText:a4 icon:0 contentLayout:a5];
+  result = [(NCOnboardingViewController *)&v6 initWithTitle:title detailText:text icon:0 contentLayout:layout];
   if (result)
   {
     result->_nextButtonEnabled = 1;
@@ -27,42 +27,42 @@
   v6.receiver = self;
   v6.super_class = NCOnboardingViewController;
   [(OBBaseWelcomeController *)&v6 viewDidLoad];
-  v3 = [MEMORY[0x277D37618] boldButton];
+  boldButton = [MEMORY[0x277D37618] boldButton];
   nextButton = self->_nextButton;
-  self->_nextButton = v3;
+  self->_nextButton = boldButton;
 
   [(OBTrayButton *)self->_nextButton setEnabled:self->_nextButtonEnabled];
   [(OBTrayButton *)self->_nextButton setTitle:self->_nextButtonText forState:0];
   [(OBTrayButton *)self->_nextButton addTarget:self action:sel__nextButtonPressed_ forControlEvents:64];
-  v5 = [(NCOnboardingViewController *)self buttonTray];
-  [v5 addButton:self->_nextButton];
+  buttonTray = [(NCOnboardingViewController *)self buttonTray];
+  [buttonTray addButton:self->_nextButton];
 }
 
-- (void)setNextButtonText:(id)a3
+- (void)setNextButtonText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   if (![(NSString *)self->_nextButtonText isEqualToString:?])
   {
-    objc_storeStrong(&self->_nextButtonText, a3);
+    objc_storeStrong(&self->_nextButtonText, text);
     [(OBTrayButton *)self->_nextButton setTitle:self->_nextButtonText forState:0];
   }
 }
 
-- (void)setNextButtonEnabled:(BOOL)a3
+- (void)setNextButtonEnabled:(BOOL)enabled
 {
-  if (self->_nextButtonEnabled != a3)
+  if (self->_nextButtonEnabled != enabled)
   {
-    self->_nextButtonEnabled = a3;
+    self->_nextButtonEnabled = enabled;
     [(OBTrayButton *)self->_nextButton setEnabled:?];
   }
 }
 
-- (void)_nextButtonPressed:(id)a3
+- (void)_nextButtonPressed:(id)pressed
 {
-  v4 = [(NCOnboardingViewController *)self delegate];
+  delegate = [(NCOnboardingViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 onboardingViewControllerNextButtonTapped:self];
+    [delegate onboardingViewControllerNextButtonTapped:self];
   }
 }
 

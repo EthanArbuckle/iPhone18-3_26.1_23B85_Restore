@@ -1,28 +1,28 @@
 @interface SFCatalogPlatterPresentationController
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
 - (CGRect)collapsedPlatterFrame;
 - (CGRect)collapsedURLFieldFrame;
 - (CGRect)expandedPlatterFrame;
 - (CGRect)expandedURLFieldFrame;
 - (CGSize)preferredPresentedViewContentSize;
 - (NSDirectionalEdgeInsets)expandedURLFieldPadding;
-- (SFCatalogPlatterPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4;
+- (SFCatalogPlatterPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController;
 - (SFCommandForwardingView)borrowedPlatter;
 - (SFTouchDownGestureRecognizer)dismissRecognizer;
 - (UIView)borrowedURLFieldView;
 - (UIView)innerContainerView;
 - (double)horizontalOutset;
 - (void)containerViewWillLayoutSubviews;
-- (void)dismiss:(id)a3;
-- (void)dismissalTransitionDidEnd:(BOOL)a3;
+- (void)dismiss:(id)dismiss;
+- (void)dismissalTransitionDidEnd:(BOOL)end;
 - (void)dismissalTransitionWillBegin;
 - (void)layoutPresentedView;
 - (void)presentationTransitionWillBegin;
-- (void)setBackgroundView:(id)a3;
-- (void)setDismissRecognizer:(id)a3;
-- (void)setInnerContainerViewController:(id)a3;
-- (void)setPreferredPresentedViewContentSize:(CGSize)a3;
-- (void)setPresentedSuperview:(id)a3;
+- (void)setBackgroundView:(id)view;
+- (void)setDismissRecognizer:(id)recognizer;
+- (void)setInnerContainerViewController:(id)controller;
+- (void)setPreferredPresentedViewContentSize:(CGSize)size;
+- (void)setPresentedSuperview:(id)superview;
 @end
 
 @implementation SFCatalogPlatterPresentationController
@@ -40,50 +40,50 @@
   return result;
 }
 
-- (void)setBackgroundView:(id)a3
+- (void)setBackgroundView:(id)view
 {
   v4 = *(self + OBJC_IVAR___SFCatalogPlatterPresentationController_backgroundView);
-  *(self + OBJC_IVAR___SFCatalogPlatterPresentationController_backgroundView) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___SFCatalogPlatterPresentationController_backgroundView) = view;
+  viewCopy = view;
 }
 
 - (UIView)borrowedURLFieldView
 {
-  v2 = self;
-  v3 = [(SFCatalogPlatterPresentationController *)v2 barItemView];
-  if (v3)
+  selfCopy = self;
+  barItemView = [(SFCatalogPlatterPresentationController *)selfCopy barItemView];
+  if (barItemView)
   {
-    v4 = v3;
-    v5 = [(SFUnifiedBarItemView *)v3 contentView];
+    v4 = barItemView;
+    contentView = [(SFUnifiedBarItemView *)barItemView contentView];
   }
 
   else
   {
-    v5 = 0;
+    contentView = 0;
   }
 
-  return v5;
+  return contentView;
 }
 
 - (SFCommandForwardingView)borrowedPlatter
 {
-  v2 = self;
-  v3 = [(SFCatalogPlatterPresentationController *)v2 barItemView];
-  if (!v3)
+  selfCopy = self;
+  barItemView = [(SFCatalogPlatterPresentationController *)selfCopy barItemView];
+  if (!barItemView)
   {
 LABEL_4:
 
     goto LABEL_5;
   }
 
-  v4 = v3;
-  v5 = [(SFUnifiedBarItemView *)v3 glassView];
+  v4 = barItemView;
+  glassView = [(SFUnifiedBarItemView *)barItemView glassView];
 
-  if (v5)
+  if (glassView)
   {
     objc_opt_self();
     v6 = swift_dynamicCastObjCClass();
-    v2 = v5;
+    selfCopy = glassView;
     if (v6)
     {
       goto LABEL_6;
@@ -99,37 +99,37 @@ LABEL_6:
   return v6;
 }
 
-- (void)setInnerContainerViewController:(id)a3
+- (void)setInnerContainerViewController:(id)controller
 {
   v4 = *(self + OBJC_IVAR___SFCatalogPlatterPresentationController_innerContainerViewController);
-  *(self + OBJC_IVAR___SFCatalogPlatterPresentationController_innerContainerViewController) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___SFCatalogPlatterPresentationController_innerContainerViewController) = controller;
+  controllerCopy = controller;
 }
 
 - (UIView)innerContainerView
 {
-  v2 = self;
-  v3 = [(SFCatalogPlatterPresentationController *)v2 innerContainerViewController];
-  v4 = [(UIViewController *)v3 view];
+  selfCopy = self;
+  innerContainerViewController = [(SFCatalogPlatterPresentationController *)selfCopy innerContainerViewController];
+  view = [(UIViewController *)innerContainerViewController view];
 
-  return v4;
+  return view;
 }
 
-- (void)setPresentedSuperview:(id)a3
+- (void)setPresentedSuperview:(id)superview
 {
   v4 = *(self + OBJC_IVAR___SFCatalogPlatterPresentationController_presentedSuperview);
-  *(self + OBJC_IVAR___SFCatalogPlatterPresentationController_presentedSuperview) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___SFCatalogPlatterPresentationController_presentedSuperview) = superview;
+  superviewCopy = superview;
 }
 
 - (CGRect)collapsedURLFieldFrame
 {
-  v2 = self;
-  v3 = [(SFCatalogPlatterPresentationController *)v2 barItemView];
-  if (v3)
+  selfCopy = self;
+  barItemView = [(SFCatalogPlatterPresentationController *)selfCopy barItemView];
+  if (barItemView)
   {
-    v4 = v3;
-    [(SFUnifiedBarItemView *)v3 bounds];
+    v4 = barItemView;
+    [(SFUnifiedBarItemView *)barItemView bounds];
     v6 = v5;
     v8 = v7;
     v10 = v9;
@@ -188,12 +188,12 @@ LABEL_6:
 
 - (double)horizontalOutset
 {
-  v2 = self;
-  [(SFCatalogPlatterPresentationController *)v2 minExpandedPlatterOutset];
+  selfCopy = self;
+  [(SFCatalogPlatterPresentationController *)selfCopy minExpandedPlatterOutset];
   v4 = v3;
-  [(SFCatalogPlatterPresentationController *)v2 preferredPresentedViewContentSize];
+  [(SFCatalogPlatterPresentationController *)selfCopy preferredPresentedViewContentSize];
   v6 = v5;
-  [(SFCatalogPlatterPresentationController *)v2 collapsedURLFieldFrame];
+  [(SFCatalogPlatterPresentationController *)selfCopy collapsedURLFieldFrame];
   Width = CGRectGetWidth(v9);
 
   result = (v6 - Width) * 0.5;
@@ -216,51 +216,51 @@ LABEL_6:
   return result;
 }
 
-- (void)setPreferredPresentedViewContentSize:(CGSize)a3
+- (void)setPreferredPresentedViewContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
   SFCatalogPlatterPresentationController.preferredPresentedViewContentSize.setter(width, height);
 }
 
 - (SFTouchDownGestureRecognizer)dismissRecognizer
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_18BAC8F78();
 
   return v3;
 }
 
-- (void)setDismissRecognizer:(id)a3
+- (void)setDismissRecognizer:(id)recognizer
 {
   v4 = *(self + OBJC_IVAR___SFCatalogPlatterPresentationController____lazy_storage___dismissRecognizer);
-  *(self + OBJC_IVAR___SFCatalogPlatterPresentationController____lazy_storage___dismissRecognizer) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___SFCatalogPlatterPresentationController____lazy_storage___dismissRecognizer) = recognizer;
+  recognizerCopy = recognizer;
 }
 
-- (void)dismiss:(id)a3
+- (void)dismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = self;
-  sub_18BAC9058(v4);
+  dismissCopy = dismiss;
+  selfCopy = self;
+  sub_18BAC9058(dismissCopy);
 }
 
 - (void)presentationTransitionWillBegin
 {
-  v2 = self;
+  selfCopy = self;
   SFCatalogPlatterPresentationController.presentationTransitionWillBegin()();
 }
 
 - (void)dismissalTransitionWillBegin
 {
-  v2 = self;
+  selfCopy = self;
   SFCatalogPlatterPresentationController.dismissalTransitionWillBegin()();
 }
 
-- (void)dismissalTransitionDidEnd:(BOOL)a3
+- (void)dismissalTransitionDidEnd:(BOOL)end
 {
-  v3 = self;
+  selfCopy = self;
   _sSo38SFCatalogPlatterPresentationControllerC12MobileSafariE25dismissalTransitionDidEndyySbF_0();
 }
 
@@ -268,32 +268,32 @@ LABEL_6:
 {
   v3.receiver = self;
   v3.super_class = SFCatalogPlatterPresentationController;
-  v2 = self;
+  selfCopy = self;
   [(SFCatalogPlatterPresentationController *)&v3 containerViewWillLayoutSubviews];
-  [(SFCatalogPlatterPresentationController *)v2 layoutPresentedView:v3.receiver];
+  [(SFCatalogPlatterPresentationController *)selfCopy layoutPresentedView:v3.receiver];
 }
 
 - (void)layoutPresentedView
 {
-  v2 = self;
+  selfCopy = self;
   sub_18BAC9CE8();
 }
 
-- (SFCatalogPlatterPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4
+- (SFCatalogPlatterPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = sub_18BACA3B4(v5, a4);
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  v7 = sub_18BACA3B4(controllerCopy, viewController);
 
   return v7;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v5 = a3;
-  v6 = [(SFCatalogPlatterPresentationController *)self dismissRecognizer];
+  recognizerCopy = recognizer;
+  dismissRecognizer = [(SFCatalogPlatterPresentationController *)self dismissRecognizer];
 
-  return v6 == v5;
+  return dismissRecognizer == recognizerCopy;
 }
 
 @end

@@ -1,30 +1,30 @@
 @interface NLXSchemaCDMMatchingSpan
-- (BOOL)isEqual:(id)a3;
-- (NLXSchemaCDMMatchingSpan)initWithDictionary:(id)a3;
-- (NLXSchemaCDMMatchingSpan)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NLXSchemaCDMMatchingSpan)initWithDictionary:(id)dictionary;
+- (NLXSchemaCDMMatchingSpan)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (int)matcherNamesAtIndex:(unint64_t)a3;
+- (int)matcherNamesAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)addMatcherNames:(int)a3;
-- (void)setHasEndTokenIndex:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addMatcherNames:(int)names;
+- (void)setHasEndTokenIndex:(BOOL)index;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NLXSchemaCDMMatchingSpan
 
-- (NLXSchemaCDMMatchingSpan)initWithDictionary:(id)a3
+- (NLXSchemaCDMMatchingSpan)initWithDictionary:(id)dictionary
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v33.receiver = self;
   v33.super_class = NLXSchemaCDMMatchingSpan;
   v5 = [(NLXSchemaCDMMatchingSpan *)&v33 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"label"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"label"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -32,7 +32,7 @@
       [(NLXSchemaCDMMatchingSpan *)v5 setLabel:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"linkId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"linkId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -40,14 +40,14 @@
       [(NLXSchemaCDMMatchingSpan *)v5 setLinkId:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"startTokenIndex"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"startTokenIndex"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[NLXSchemaCDMMatchingSpan setStartTokenIndex:](v5, "setStartTokenIndex:", [v10 unsignedIntValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"endTokenIndex"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"endTokenIndex"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -55,7 +55,7 @@
     }
 
     v28 = v11;
-    v12 = [v4 objectForKeyedSubscript:@"usoGraph"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"usoGraph"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -63,7 +63,7 @@
       [(NLXSchemaCDMMatchingSpan *)v5 setUsoGraph:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"matcherNames"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"matcherNames"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -112,7 +112,7 @@
       v10 = v25;
     }
 
-    v21 = [v4 objectForKeyedSubscript:{@"internalSpanData", v25, v26, v27}];
+    v21 = [dictionaryCopy objectForKeyedSubscript:{@"internalSpanData", v25, v26, v27}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -126,30 +126,30 @@
   return v5;
 }
 
-- (NLXSchemaCDMMatchingSpan)initWithJSON:(id)a3
+- (NLXSchemaCDMMatchingSpan)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(NLXSchemaCDMMatchingSpan *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(NLXSchemaCDMMatchingSpan *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(NLXSchemaCDMMatchingSpan *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -162,84 +162,84 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ((*&self->_has & 2) != 0)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[NLXSchemaCDMMatchingSpan endTokenIndex](self, "endTokenIndex")}];
-    [v3 setObject:v4 forKeyedSubscript:@"endTokenIndex"];
+    [dictionary setObject:v4 forKeyedSubscript:@"endTokenIndex"];
   }
 
   if (self->_internalSpanData)
   {
-    v5 = [(NLXSchemaCDMMatchingSpan *)self internalSpanData];
-    v6 = [v5 dictionaryRepresentation];
-    if (v6)
+    internalSpanData = [(NLXSchemaCDMMatchingSpan *)self internalSpanData];
+    dictionaryRepresentation = [internalSpanData dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v6 forKeyedSubscript:@"internalSpanData"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"internalSpanData"];
     }
 
     else
     {
-      v7 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v7 forKeyedSubscript:@"internalSpanData"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"internalSpanData"];
     }
   }
 
   if (self->_label)
   {
-    v8 = [(NLXSchemaCDMMatchingSpan *)self label];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"label"];
+    label = [(NLXSchemaCDMMatchingSpan *)self label];
+    v9 = [label copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"label"];
   }
 
   if (self->_linkId)
   {
-    v10 = [(NLXSchemaCDMMatchingSpan *)self linkId];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    linkId = [(NLXSchemaCDMMatchingSpan *)self linkId];
+    dictionaryRepresentation2 = [linkId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"linkId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"linkId"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"linkId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"linkId"];
     }
   }
 
   if ([(NSArray *)self->_matcherNames count])
   {
-    v13 = [(NLXSchemaCDMMatchingSpan *)self matcherNames];
-    v14 = [v13 copy];
-    [v3 setObject:v14 forKeyedSubscript:@"matcherNames"];
+    matcherNames = [(NLXSchemaCDMMatchingSpan *)self matcherNames];
+    v14 = [matcherNames copy];
+    [dictionary setObject:v14 forKeyedSubscript:@"matcherNames"];
   }
 
   if (*&self->_has)
   {
     v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[NLXSchemaCDMMatchingSpan startTokenIndex](self, "startTokenIndex")}];
-    [v3 setObject:v15 forKeyedSubscript:@"startTokenIndex"];
+    [dictionary setObject:v15 forKeyedSubscript:@"startTokenIndex"];
   }
 
   if (self->_usoGraph)
   {
-    v16 = [(NLXSchemaCDMMatchingSpan *)self usoGraph];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    usoGraph = [(NLXSchemaCDMMatchingSpan *)self usoGraph];
+    dictionaryRepresentation3 = [usoGraph dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"usoGraph"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"usoGraph"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"usoGraph"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"usoGraph"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -273,28 +273,28 @@ LABEL_6:
   return v7 ^ v8 ^ [(NLXSchemaCDMInternalSpanData *)self->_internalSpanData hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_34;
   }
 
-  v5 = [(NLXSchemaCDMMatchingSpan *)self label];
-  v6 = [v4 label];
-  if ((v5 != 0) == (v6 == 0))
+  label = [(NLXSchemaCDMMatchingSpan *)self label];
+  label2 = [equalCopy label];
+  if ((label != 0) == (label2 == 0))
   {
     goto LABEL_33;
   }
 
-  v7 = [(NLXSchemaCDMMatchingSpan *)self label];
-  if (v7)
+  label3 = [(NLXSchemaCDMMatchingSpan *)self label];
+  if (label3)
   {
-    v8 = v7;
-    v9 = [(NLXSchemaCDMMatchingSpan *)self label];
-    v10 = [v4 label];
-    v11 = [v9 isEqual:v10];
+    v8 = label3;
+    label4 = [(NLXSchemaCDMMatchingSpan *)self label];
+    label5 = [equalCopy label];
+    v11 = [label4 isEqual:label5];
 
     if (!v11)
     {
@@ -306,20 +306,20 @@ LABEL_6:
   {
   }
 
-  v5 = [(NLXSchemaCDMMatchingSpan *)self linkId];
-  v6 = [v4 linkId];
-  if ((v5 != 0) == (v6 == 0))
+  label = [(NLXSchemaCDMMatchingSpan *)self linkId];
+  label2 = [equalCopy linkId];
+  if ((label != 0) == (label2 == 0))
   {
     goto LABEL_33;
   }
 
-  v12 = [(NLXSchemaCDMMatchingSpan *)self linkId];
-  if (v12)
+  linkId = [(NLXSchemaCDMMatchingSpan *)self linkId];
+  if (linkId)
   {
-    v13 = v12;
-    v14 = [(NLXSchemaCDMMatchingSpan *)self linkId];
-    v15 = [v4 linkId];
-    v16 = [v14 isEqual:v15];
+    v13 = linkId;
+    linkId2 = [(NLXSchemaCDMMatchingSpan *)self linkId];
+    linkId3 = [equalCopy linkId];
+    v16 = [linkId2 isEqual:linkId3];
 
     if (!v16)
     {
@@ -332,7 +332,7 @@ LABEL_6:
   }
 
   has = self->_has;
-  v18 = v4[56];
+  v18 = equalCopy[56];
   if ((*&has & 1) != (v18 & 1))
   {
     goto LABEL_34;
@@ -341,13 +341,13 @@ LABEL_6:
   if (*&has)
   {
     startTokenIndex = self->_startTokenIndex;
-    if (startTokenIndex != [v4 startTokenIndex])
+    if (startTokenIndex != [equalCopy startTokenIndex])
     {
       goto LABEL_34;
     }
 
     has = self->_has;
-    v18 = v4[56];
+    v18 = equalCopy[56];
   }
 
   v20 = (*&has >> 1) & 1;
@@ -359,26 +359,26 @@ LABEL_6:
   if (v20)
   {
     endTokenIndex = self->_endTokenIndex;
-    if (endTokenIndex != [v4 endTokenIndex])
+    if (endTokenIndex != [equalCopy endTokenIndex])
     {
       goto LABEL_34;
     }
   }
 
-  v5 = [(NLXSchemaCDMMatchingSpan *)self usoGraph];
-  v6 = [v4 usoGraph];
-  if ((v5 != 0) == (v6 == 0))
+  label = [(NLXSchemaCDMMatchingSpan *)self usoGraph];
+  label2 = [equalCopy usoGraph];
+  if ((label != 0) == (label2 == 0))
   {
     goto LABEL_33;
   }
 
-  v22 = [(NLXSchemaCDMMatchingSpan *)self usoGraph];
-  if (v22)
+  usoGraph = [(NLXSchemaCDMMatchingSpan *)self usoGraph];
+  if (usoGraph)
   {
-    v23 = v22;
-    v24 = [(NLXSchemaCDMMatchingSpan *)self usoGraph];
-    v25 = [v4 usoGraph];
-    v26 = [v24 isEqual:v25];
+    v23 = usoGraph;
+    usoGraph2 = [(NLXSchemaCDMMatchingSpan *)self usoGraph];
+    usoGraph3 = [equalCopy usoGraph];
+    v26 = [usoGraph2 isEqual:usoGraph3];
 
     if (!v26)
     {
@@ -390,20 +390,20 @@ LABEL_6:
   {
   }
 
-  v5 = [(NLXSchemaCDMMatchingSpan *)self matcherNames];
-  v6 = [v4 matcherNames];
-  if ((v5 != 0) == (v6 == 0))
+  label = [(NLXSchemaCDMMatchingSpan *)self matcherNames];
+  label2 = [equalCopy matcherNames];
+  if ((label != 0) == (label2 == 0))
   {
     goto LABEL_33;
   }
 
-  v27 = [(NLXSchemaCDMMatchingSpan *)self matcherNames];
-  if (v27)
+  matcherNames = [(NLXSchemaCDMMatchingSpan *)self matcherNames];
+  if (matcherNames)
   {
-    v28 = v27;
-    v29 = [(NLXSchemaCDMMatchingSpan *)self matcherNames];
-    v30 = [v4 matcherNames];
-    v31 = [v29 isEqual:v30];
+    v28 = matcherNames;
+    matcherNames2 = [(NLXSchemaCDMMatchingSpan *)self matcherNames];
+    matcherNames3 = [equalCopy matcherNames];
+    v31 = [matcherNames2 isEqual:matcherNames3];
 
     if (!v31)
     {
@@ -415,17 +415,17 @@ LABEL_6:
   {
   }
 
-  v5 = [(NLXSchemaCDMMatchingSpan *)self internalSpanData];
-  v6 = [v4 internalSpanData];
-  if ((v5 != 0) == (v6 == 0))
+  label = [(NLXSchemaCDMMatchingSpan *)self internalSpanData];
+  label2 = [equalCopy internalSpanData];
+  if ((label != 0) == (label2 == 0))
   {
 LABEL_33:
 
     goto LABEL_34;
   }
 
-  v32 = [(NLXSchemaCDMMatchingSpan *)self internalSpanData];
-  if (!v32)
+  internalSpanData = [(NLXSchemaCDMMatchingSpan *)self internalSpanData];
+  if (!internalSpanData)
   {
 
 LABEL_37:
@@ -433,10 +433,10 @@ LABEL_37:
     goto LABEL_35;
   }
 
-  v33 = v32;
-  v34 = [(NLXSchemaCDMMatchingSpan *)self internalSpanData];
-  v35 = [v4 internalSpanData];
-  v36 = [v34 isEqual:v35];
+  v33 = internalSpanData;
+  internalSpanData2 = [(NLXSchemaCDMMatchingSpan *)self internalSpanData];
+  internalSpanData3 = [equalCopy internalSpanData];
+  v36 = [internalSpanData2 isEqual:internalSpanData3];
 
   if (v36)
   {
@@ -450,22 +450,22 @@ LABEL_35:
   return v37;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NLXSchemaCDMMatchingSpan *)self label];
+  toCopy = to;
+  label = [(NLXSchemaCDMMatchingSpan *)self label];
 
-  if (v5)
+  if (label)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(NLXSchemaCDMMatchingSpan *)self linkId];
+  linkId = [(NLXSchemaCDMMatchingSpan *)self linkId];
 
-  if (v6)
+  if (linkId)
   {
-    v7 = [(NLXSchemaCDMMatchingSpan *)self linkId];
+    linkId2 = [(NLXSchemaCDMMatchingSpan *)self linkId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -481,11 +481,11 @@ LABEL_35:
     PBDataWriterWriteUint32Field();
   }
 
-  v9 = [(NLXSchemaCDMMatchingSpan *)self usoGraph];
+  usoGraph = [(NLXSchemaCDMMatchingSpan *)self usoGraph];
 
-  if (v9)
+  if (usoGraph)
   {
-    v10 = [(NLXSchemaCDMMatchingSpan *)self usoGraph];
+    usoGraph2 = [(NLXSchemaCDMMatchingSpan *)self usoGraph];
     PBDataWriterWriteSubmessage();
   }
 
@@ -518,32 +518,32 @@ LABEL_35:
     while (v13);
   }
 
-  v16 = [(NLXSchemaCDMMatchingSpan *)self internalSpanData];
+  internalSpanData = [(NLXSchemaCDMMatchingSpan *)self internalSpanData];
 
-  if (v16)
+  if (internalSpanData)
   {
-    v17 = [(NLXSchemaCDMMatchingSpan *)self internalSpanData];
+    internalSpanData2 = [(NLXSchemaCDMMatchingSpan *)self internalSpanData];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (int)matcherNamesAtIndex:(unint64_t)a3
+- (int)matcherNamesAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_matcherNames objectAtIndexedSubscript:a3];
-  v4 = [v3 intValue];
+  v3 = [(NSArray *)self->_matcherNames objectAtIndexedSubscript:index];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (void)addMatcherNames:(int)a3
+- (void)addMatcherNames:(int)names
 {
-  v3 = *&a3;
+  v3 = *&names;
   matcherNames = self->_matcherNames;
   if (!matcherNames)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_matcherNames;
-    self->_matcherNames = v6;
+    self->_matcherNames = array;
 
     matcherNames = self->_matcherNames;
   }
@@ -552,9 +552,9 @@ LABEL_35:
   [(NSArray *)matcherNames addObject:v8];
 }
 
-- (void)setHasEndTokenIndex:(BOOL)a3
+- (void)setHasEndTokenIndex:(BOOL)index
 {
-  if (a3)
+  if (index)
   {
     v3 = 2;
   }
@@ -567,35 +567,35 @@ LABEL_35:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v16.receiver = self;
   v16.super_class = NLXSchemaCDMMatchingSpan;
-  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:v4];
-  v6 = [(NLXSchemaCDMMatchingSpan *)self linkId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:policyCopy];
+  linkId = [(NLXSchemaCDMMatchingSpan *)self linkId];
+  v7 = [linkId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(NLXSchemaCDMMatchingSpan *)self deleteLinkId];
   }
 
-  v9 = [(NLXSchemaCDMMatchingSpan *)self usoGraph];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  usoGraph = [(NLXSchemaCDMMatchingSpan *)self usoGraph];
+  v10 = [usoGraph applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(NLXSchemaCDMMatchingSpan *)self deleteUsoGraph];
   }
 
-  v12 = [(NLXSchemaCDMMatchingSpan *)self internalSpanData];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  internalSpanData = [(NLXSchemaCDMMatchingSpan *)self internalSpanData];
+  v13 = [internalSpanData applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(NLXSchemaCDMMatchingSpan *)self deleteInternalSpanData];
   }

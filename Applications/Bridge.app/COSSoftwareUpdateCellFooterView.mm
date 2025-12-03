@@ -1,21 +1,21 @@
 @interface COSSoftwareUpdateCellFooterView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (COSSoftwareUpdateCellFooterView)initWithSpecifier:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (COSSoftwareUpdateCellFooterView)initWithSpecifier:(id)specifier;
 - (PSSpecifier)specifier;
-- (double)preferredHeightForWidth:(double)a3;
+- (double)preferredHeightForWidth:(double)width;
 - (void)layoutSubviews;
 @end
 
 @implementation COSSoftwareUpdateCellFooterView
 
-- (COSSoftwareUpdateCellFooterView)initWithSpecifier:(id)a3
+- (COSSoftwareUpdateCellFooterView)initWithSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v5 = [(COSSoftwareUpdateCellFooterView *)self initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_specifier, v4);
+    objc_storeWeak(&v5->_specifier, specifierCopy);
     v7 = objc_alloc_init(UITextView);
     textView = v6->_textView;
     v6->_textView = v7;
@@ -70,10 +70,10 @@
   [(UITextView *)self->_textView setFrame:v19, v21, v23, v24];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v5 = [(COSSoftwareUpdateCellFooterView *)self text:a3.width];
+  width = fits.width;
+  v5 = [(COSSoftwareUpdateCellFooterView *)self text:fits.width];
   v6 = [v5 length];
 
   if (v6)
@@ -103,10 +103,10 @@
   return result;
 }
 
-- (double)preferredHeightForWidth:(double)a3
+- (double)preferredHeightForWidth:(double)width
 {
   [(COSSoftwareUpdateCellFooterView *)self layoutIfNeeded];
-  [(COSSoftwareUpdateCellFooterView *)self sizeThatFits:a3, 1.79769313e308];
+  [(COSSoftwareUpdateCellFooterView *)self sizeThatFits:width, 1.79769313e308];
   return v5;
 }
 

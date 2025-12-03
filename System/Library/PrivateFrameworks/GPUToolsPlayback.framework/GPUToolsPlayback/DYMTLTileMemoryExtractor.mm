@@ -1,44 +1,44 @@
 @interface DYMTLTileMemoryExtractor
-- (BOOL)encodeImageBlockDataReturn:(id)a3 isDrawCall:(BOOL)a4;
-- (BOOL)isArgumentExplicitImageBlock:(id)a3;
-- (DYMTLTileMemoryExtractor)initWithRenderEncoder:(id)a3 metalDevice:(id)a4 tileSize:(id *)a5 texSize:(id *)a6;
+- (BOOL)encodeImageBlockDataReturn:(id)return isDrawCall:(BOOL)call;
+- (BOOL)isArgumentExplicitImageBlock:(id)block;
+- (DYMTLTileMemoryExtractor)initWithRenderEncoder:(id)encoder metalDevice:(id)device tileSize:(id *)size texSize:(id *)texSize;
 - (id).cxx_construct;
-- (id)_generateFunctionFromImageBlockMember:(DYMTLImageBlockMember *)a3 WithIndex:(unint64_t)a4;
-- (id)_generateImageBlockShaderStringWithMember:(DYMTLImageBlockMember *)a3 index:(unint64_t)a4;
-- (id)_generateImageBlockStructMember:(DYMTLImageBlockMember *)a3 WithCurrentName:(id)a4 WithIndent:(unint64_t)a5;
-- (id)_generateIndentString:(unint64_t)a3;
-- (id)_generateKernelFunctionFromString:(id)a3 funcName:(id)a4;
-- (id)_generateStringForWritingDataToTexture:(unint64_t)a3;
-- (id)_generateTextureFromImageBlockMember:(DYMTLImageBlockMember *)a3;
-- (id)_generateThreadgroupShaderStringWithThreadgroupIndex:(unint64_t)a3 size:(unint64_t)a4;
-- (id)_generateTileRenderPipelineStateWithTileFunction:(id)a3 renderPassDescriptor:(id)a4 renderPipelineState:(id)a5;
-- (id)_processArrayType:(id)a3 WithProcessedArgument:(void *)a4 WithMemberName:(id)a5 WithCurrentName:(id)a6 WithIndent:(unint64_t)a7;
-- (id)_processStructMember:(id)a3 WithProcessedArgument:(void *)a4 WithMemberName:(id)a5 WithIndent:(unint64_t)a6;
-- (id)_processStructType:(id)a3 WithProcessedArgument:(void *)a4 WithMemberName:(id)a5 WithIndent:(unint64_t)a6;
-- (id)harvestThreadgroupAtIndex:(unint64_t)a3 size:(unint64_t)a4;
+- (id)_generateFunctionFromImageBlockMember:(DYMTLImageBlockMember *)member WithIndex:(unint64_t)index;
+- (id)_generateImageBlockShaderStringWithMember:(DYMTLImageBlockMember *)member index:(unint64_t)index;
+- (id)_generateImageBlockStructMember:(DYMTLImageBlockMember *)member WithCurrentName:(id)name WithIndent:(unint64_t)indent;
+- (id)_generateIndentString:(unint64_t)string;
+- (id)_generateKernelFunctionFromString:(id)string funcName:(id)name;
+- (id)_generateStringForWritingDataToTexture:(unint64_t)texture;
+- (id)_generateTextureFromImageBlockMember:(DYMTLImageBlockMember *)member;
+- (id)_generateThreadgroupShaderStringWithThreadgroupIndex:(unint64_t)index size:(unint64_t)size;
+- (id)_generateTileRenderPipelineStateWithTileFunction:(id)function renderPassDescriptor:(id)descriptor renderPipelineState:(id)state;
+- (id)_processArrayType:(id)type WithProcessedArgument:(void *)argument WithMemberName:(id)name WithCurrentName:(id)currentName WithIndent:(unint64_t)indent;
+- (id)_processStructMember:(id)member WithProcessedArgument:(void *)argument WithMemberName:(id)name WithIndent:(unint64_t)indent;
+- (id)_processStructType:(id)type WithProcessedArgument:(void *)argument WithMemberName:(id)name WithIndent:(unint64_t)indent;
+- (id)harvestThreadgroupAtIndex:(unint64_t)index size:(unint64_t)size;
 - (void)_createDataTypeToStringDictionary;
-- (void)harvestImageBlockData:(void *)a3;
+- (void)harvestImageBlockData:(void *)data;
 @end
 
 @implementation DYMTLTileMemoryExtractor
 
-- (DYMTLTileMemoryExtractor)initWithRenderEncoder:(id)a3 metalDevice:(id)a4 tileSize:(id *)a5 texSize:(id *)a6
+- (DYMTLTileMemoryExtractor)initWithRenderEncoder:(id)encoder metalDevice:(id)device tileSize:(id *)size texSize:(id *)texSize
 {
-  v11 = a3;
-  v12 = a4;
+  encoderCopy = encoder;
+  deviceCopy = device;
   v18.receiver = self;
   v18.super_class = DYMTLTileMemoryExtractor;
   v13 = [(DYMTLTileMemoryExtractor *)&v18 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_renderEncoder, a3);
-    objc_storeStrong(&v14->_device, a4);
-    v15 = *&a5->var0;
-    v14->_tileSize.depth = a5->var2;
+    objc_storeStrong(&v13->_renderEncoder, encoder);
+    objc_storeStrong(&v14->_device, device);
+    v15 = *&size->var0;
+    v14->_tileSize.depth = size->var2;
     *&v14->_tileSize.width = v15;
-    v16 = *&a6->var0;
-    v14->_textureSize.depth = a6->var2;
+    v16 = *&texSize->var0;
+    v14->_textureSize.depth = texSize->var2;
     *&v14->_textureSize.width = v16;
     *&v14->_aliasImplicitImageBlock = 0;
     v14->_aliasImplicitImageBlockColorIndex = 0;
@@ -94,37 +94,37 @@ void __57__DYMTLTileMemoryExtractor_processReflection_isDrawCall___block_invoke_
   }
 }
 
-- (BOOL)isArgumentExplicitImageBlock:(id)a3
+- (BOOL)isArgumentExplicitImageBlock:(id)block
 {
-  v3 = a3;
-  v4 = [v3 type];
-  v5 = v4 == 16 || v4 == 17 && [v3 imageBlockKind] == 1;
+  blockCopy = block;
+  type = [blockCopy type];
+  v5 = type == 16 || type == 17 && [blockCopy imageBlockKind] == 1;
 
   return v5;
 }
 
-- (BOOL)encodeImageBlockDataReturn:(id)a3 isDrawCall:(BOOL)a4
+- (BOOL)encodeImageBlockDataReturn:(id)return isDrawCall:(BOOL)call
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 imageBlockDataReturn];
-  if (v7 && [(DYMTLTileMemoryExtractor *)self isArgumentExplicitImageBlock:v7])
+  callCopy = call;
+  returnCopy = return;
+  imageBlockDataReturn = [returnCopy imageBlockDataReturn];
+  if (imageBlockDataReturn && [(DYMTLTileMemoryExtractor *)self isArgumentExplicitImageBlock:imageBlockDataReturn])
   {
     v19 = 0;
     v20 = &v19;
     v21 = 0x2020000000;
     v22 = 0;
-    if (v4)
+    if (callCopy)
     {
-      v8 = [v6 fragmentBindings];
+      fragmentBindings = [returnCopy fragmentBindings];
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;
       v16[2] = __66__DYMTLTileMemoryExtractor_encodeImageBlockDataReturn_isDrawCall___block_invoke;
       v16[3] = &unk_27930F620;
       v16[4] = self;
-      v17 = v7;
+      v17 = imageBlockDataReturn;
       v18 = &v19;
-      [v8 enumerateObjectsUsingBlock:v16];
+      [fragmentBindings enumerateObjectsUsingBlock:v16];
 
       v9 = *(v20 + 24) ^ 1;
       v10 = v17;
@@ -132,15 +132,15 @@ void __57__DYMTLTileMemoryExtractor_processReflection_isDrawCall___block_invoke_
 
     else
     {
-      v11 = [v6 tileBindings];
+      tileBindings = [returnCopy tileBindings];
       v13[0] = MEMORY[0x277D85DD0];
       v13[1] = 3221225472;
       v13[2] = __66__DYMTLTileMemoryExtractor_encodeImageBlockDataReturn_isDrawCall___block_invoke_2;
       v13[3] = &unk_27930F620;
       v13[4] = self;
-      v14 = v7;
+      v14 = imageBlockDataReturn;
       v15 = &v19;
-      [v11 enumerateObjectsUsingBlock:v13];
+      [tileBindings enumerateObjectsUsingBlock:v13];
 
       v9 = *(v20 + 24) ^ 1;
       v10 = v14;
@@ -179,10 +179,10 @@ uint64_t __66__DYMTLTileMemoryExtractor_encodeImageBlockDataReturn_isDrawCall___
   return result;
 }
 
-- (void)harvestImageBlockData:(void *)a3
+- (void)harvestImageBlockData:(void *)data
 {
-  v5 = [(DYMTLStatefulRenderCommandEncoder *)self->_renderEncoder renderPipelineState];
-  v6 = [(DYMTLStatefulRenderCommandEncoder *)self->_renderEncoder descriptor];
+  renderPipelineState = [(DYMTLStatefulRenderCommandEncoder *)self->_renderEncoder renderPipelineState];
+  descriptor = [(DYMTLStatefulRenderCommandEncoder *)self->_renderEncoder descriptor];
   if (self->_imageBlockStatus == 2)
   {
     std::vector<DYMTLImageBlockArgument *>::__assign_with_size[abi:ne200100]<DYMTLImageBlockArgument **,DYMTLImageBlockArgument **>(&self->_imageBlockArgumentsFromFragment.__begin_, self->_imageBlockArgumentsFromTile.__begin_, self->_imageBlockArgumentsFromTile.__end_, self->_imageBlockArgumentsFromTile.__end_ - self->_imageBlockArgumentsFromTile.__begin_);
@@ -207,7 +207,7 @@ uint64_t __66__DYMTLTileMemoryExtractor_encodeImageBlockDataReturn_isDrawCall___
         {
           v21 = [(DYMTLTileMemoryExtractor *)self _generateTextureFromImageBlockMember:v12 + v13];
           v15 = [(DYMTLTileMemoryExtractor *)self _generateFunctionFromImageBlockMember:v12 + v13 WithIndex:v9];
-          v16 = [(DYMTLTileMemoryExtractor *)self _generateTileRenderPipelineStateWithTileFunction:v15 renderPassDescriptor:v6 renderPipelineState:v5];
+          v16 = [(DYMTLTileMemoryExtractor *)self _generateTileRenderPipelineStateWithTileFunction:v15 renderPassDescriptor:descriptor renderPipelineState:renderPipelineState];
           [(DYMTLStatefulRenderCommandEncoder *)self->_renderEncoder pushDebugGroup:@"Dump Tile Data"];
           [(DYMTLStatefulRenderCommandEncoder *)self->_renderEncoder setRenderPipelineState:v16];
           [(DYMTLStatefulRenderCommandEncoder *)self->_renderEncoder setTileTexture:v21 atIndex:0];
@@ -216,7 +216,7 @@ uint64_t __66__DYMTLTileMemoryExtractor_encodeImageBlockDataReturn_isDrawCall___
           depth = self->_tileSize.depth;
           [(DYMTLStatefulRenderCommandEncoder *)renderEncoder dispatchThreadsPerTile:&v19];
           [(DYMTLStatefulRenderCommandEncoder *)self->_renderEncoder popDebugGroup];
-          std::vector<objc_object  {objcproto10MTLTexture}* {__strong}>::push_back[abi:ne200100](a3, &v21);
+          std::vector<objc_object  {objcproto10MTLTexture}* {__strong}>::push_back[abi:ne200100](data, &v21);
           ++v9;
 
           ++v14;
@@ -237,42 +237,42 @@ uint64_t __66__DYMTLTileMemoryExtractor_encodeImageBlockDataReturn_isDrawCall___
   }
 }
 
-- (id)harvestThreadgroupAtIndex:(unint64_t)a3 size:(unint64_t)a4
+- (id)harvestThreadgroupAtIndex:(unint64_t)index size:(unint64_t)size
 {
-  v7 = [(DYMTLStatefulRenderCommandEncoder *)self->_renderEncoder renderPipelineState];
-  v8 = [(DYMTLStatefulRenderCommandEncoder *)self->_renderEncoder descriptor];
-  v9 = DYMTLGetNullableAssociatedObject(v7, 0);
-  v10 = DYMTLGetNullableAssociatedObject(v7, 1u);
+  renderPipelineState = [(DYMTLStatefulRenderCommandEncoder *)self->_renderEncoder renderPipelineState];
+  descriptor = [(DYMTLStatefulRenderCommandEncoder *)self->_renderEncoder descriptor];
+  v9 = DYMTLGetNullableAssociatedObject(renderPipelineState, 0);
+  v10 = DYMTLGetNullableAssociatedObject(renderPipelineState, 1u);
   if (v9 | v10)
   {
     v27 = v10;
-    v28 = v7;
+    v28 = renderPipelineState;
     v29 = v9;
-    v26 = [(DYMTLTileMemoryExtractor *)self _generateThreadgroupShaderStringWithThreadgroupIndex:a3 size:a4];
+    v26 = [(DYMTLTileMemoryExtractor *)self _generateThreadgroupShaderStringWithThreadgroupIndex:index size:size];
     v31 = [(DYMTLTileMemoryExtractor *)self _generateKernelFunctionFromString:v26 funcName:@"dumpThreadgroupData"];
-    v30 = [(MTLDeviceSPI *)self->_device newBufferWithLength:vcvtps_u32_f32(self->_textureSize.width / self->_tileSize.width) * a4 * vcvtps_u32_f32(self->_textureSize.height / self->_tileSize.height) options:0];
+    v30 = [(MTLDeviceSPI *)self->_device newBufferWithLength:vcvtps_u32_f32(self->_textureSize.width / self->_tileSize.width) * size * vcvtps_u32_f32(self->_textureSize.height / self->_tileSize.height) options:0];
     v11 = objc_opt_new();
     [v11 setLabel:@"Tile Pipeline for dumping Threadgroup data"];
     if (v10)
     {
-      v12 = [v10 rasterSampleCount];
+      rasterSampleCount = [v10 rasterSampleCount];
     }
 
     else
     {
-      v12 = [v9 rasterSampleCount];
+      rasterSampleCount = [v9 rasterSampleCount];
     }
 
-    [v11 setRasterSampleCount:v12];
+    [v11 setRasterSampleCount:rasterSampleCount];
     for (i = 0; i != 8; ++i)
     {
-      v15 = [v8 colorAttachments];
-      v16 = [v15 objectAtIndexedSubscript:i];
-      v17 = [v16 texture];
-      v18 = [v17 pixelFormat];
-      v19 = [v11 colorAttachments];
-      v20 = [v19 objectAtIndexedSubscript:i];
-      [v20 setPixelFormat:v18];
+      colorAttachments = [descriptor colorAttachments];
+      v16 = [colorAttachments objectAtIndexedSubscript:i];
+      texture = [v16 texture];
+      pixelFormat = [texture pixelFormat];
+      colorAttachments2 = [v11 colorAttachments];
+      v20 = [colorAttachments2 objectAtIndexedSubscript:i];
+      [v20 setPixelFormat:pixelFormat];
     }
 
     v9 = v29;
@@ -293,7 +293,7 @@ uint64_t __66__DYMTLTileMemoryExtractor_encodeImageBlockDataReturn_isDrawCall___
     [(DYMTLStatefulRenderCommandEncoder *)renderEncoder dispatchThreadsPerTile:&v32];
     [(DYMTLStatefulRenderCommandEncoder *)self->_renderEncoder popDebugGroup];
 
-    v7 = v28;
+    renderPipelineState = v28;
     v13 = v30;
   }
 
@@ -305,17 +305,17 @@ uint64_t __66__DYMTLTileMemoryExtractor_encodeImageBlockDataReturn_isDrawCall___
   return v13;
 }
 
-- (id)_processStructType:(id)a3 WithProcessedArgument:(void *)a4 WithMemberName:(id)a5 WithIndent:(unint64_t)a6
+- (id)_processStructType:(id)type WithProcessedArgument:(void *)argument WithMemberName:(id)name WithIndent:(unint64_t)indent
 {
   v26 = *MEMORY[0x277D85DE8];
-  v20 = a5;
+  nameCopy = name;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v10 = [a3 members];
-  obj = v10;
-  v11 = [v10 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  members = [type members];
+  obj = members;
+  v11 = [members countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v11)
   {
     v12 = *v22;
@@ -331,7 +331,7 @@ uint64_t __66__DYMTLTileMemoryExtractor_encodeImageBlockDataReturn_isDrawCall___
           objc_enumerationMutation(obj);
         }
 
-        v16 = [(DYMTLTileMemoryExtractor *)self _processStructMember:*(*(&v21 + 1) + 8 * v14) WithProcessedArgument:a4 WithMemberName:v20 WithIndent:a6];
+        v16 = [(DYMTLTileMemoryExtractor *)self _processStructMember:*(*(&v21 + 1) + 8 * v14) WithProcessedArgument:argument WithMemberName:nameCopy WithIndent:indent];
         v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", v15, v16];
 
         ++v14;
@@ -339,7 +339,7 @@ uint64_t __66__DYMTLTileMemoryExtractor_encodeImageBlockDataReturn_isDrawCall___
       }
 
       while (v11 != v14);
-      v10 = obj;
+      members = obj;
       v11 = [obj countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
@@ -356,32 +356,32 @@ uint64_t __66__DYMTLTileMemoryExtractor_encodeImageBlockDataReturn_isDrawCall___
   return v13;
 }
 
-- (id)_processArrayType:(id)a3 WithProcessedArgument:(void *)a4 WithMemberName:(id)a5 WithCurrentName:(id)a6 WithIndent:(unint64_t)a7
+- (id)_processArrayType:(id)type WithProcessedArgument:(void *)argument WithMemberName:(id)name WithCurrentName:(id)currentName WithIndent:(unint64_t)indent
 {
-  v12 = a3;
-  v31 = a5;
-  v32 = a6;
-  v13 = [v12 elementStructType];
+  typeCopy = type;
+  nameCopy = name;
+  currentNameCopy = currentName;
+  elementStructType = [typeCopy elementStructType];
 
-  if (v13)
+  if (elementStructType)
   {
-    v29 = [(DYMTLTileMemoryExtractor *)self _generateIndentString:a7];
-    v14 = [v12 arrayLength];
-    if (v14)
+    v29 = [(DYMTLTileMemoryExtractor *)self _generateIndentString:indent];
+    arrayLength = [typeCopy arrayLength];
+    if (arrayLength)
     {
       v15 = 0;
       v16 = 0;
       do
       {
-        v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@[%ld].", v31, v32, v15];
-        v18 = [v12 elementStructType];
-        v19 = [(DYMTLTileMemoryExtractor *)self _processStructType:v18 WithProcessedArgument:a4 WithMemberName:v17 WithIndent:a7 + 1];
+        v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@[%ld].", nameCopy, currentNameCopy, v15];
+        elementStructType2 = [typeCopy elementStructType];
+        v19 = [(DYMTLTileMemoryExtractor *)self _processStructType:elementStructType2 WithProcessedArgument:argument WithMemberName:v17 WithIndent:indent + 1];
 
         ++v15;
         v16 = v19;
       }
 
-      while (v14 != v15);
+      while (arrayLength != v15);
     }
 
     else
@@ -389,44 +389,44 @@ uint64_t __66__DYMTLTileMemoryExtractor_encodeImageBlockDataReturn_isDrawCall___
       v19 = 0;
     }
 
-    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@struct\n%@{\n%@%@}%@[%ld]\n", v29, v29, v19, v29, v32, v14];;
+    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@struct\n%@{\n%@%@}%@[%ld]\n", v29, v29, v19, v29, currentNameCopy, arrayLength];;
   }
 
   else
   {
-    v20 = [v12 elementArrayType];
+    elementArrayType = [typeCopy elementArrayType];
 
-    if (!v20)
+    if (!elementArrayType)
     {
       v33 = &stru_2860B3350;
       v34[0] = &stru_2860B3350;
-      v34[1] = [v12 pixelFormat];
-      v34[2] = [v12 aluType];
-      v34[3] = [v12 arrayLength];
-      if ([v32 containsString:@"user("]
+      v34[1] = [typeCopy pixelFormat];
+      v34[2] = [typeCopy aluType];
+      v34[3] = [typeCopy arrayLength];
+      if ([currentNameCopy containsString:@"user("]
       {
-        v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@fragmentMember%ld", v31, self->_fragmentMemberIndex];
+        v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@fragmentMember%ld", nameCopy, self->_fragmentMemberIndex];
         v22 = v33;
         v33 = v21;
 
-        objc_storeStrong(v34, a6);
-        std::vector<DYMTLImageBlockMember>::push_back[abi:ne200100](a4 + 72, &v33);
+        objc_storeStrong(v34, currentName);
+        std::vector<DYMTLImageBlockMember>::push_back[abi:ne200100](argument + 72, &v33);
         v23 = MEMORY[0x277CCACA8];
         fragmentMemberIndex = self->_fragmentMemberIndex;
         self->_fragmentMemberIndex = fragmentMemberIndex + 1;
-        v25 = [v23 stringWithFormat:@"fragmentMember%ld", fragmentMemberIndex];
-        v7 = [(DYMTLTileMemoryExtractor *)self _generateImageBlockStructMember:&v33 WithCurrentName:v25 WithIndent:a7];
+        fragmentMemberIndex = [v23 stringWithFormat:@"fragmentMember%ld", fragmentMemberIndex];
+        v7 = [(DYMTLTileMemoryExtractor *)self _generateImageBlockStructMember:&v33 WithCurrentName:fragmentMemberIndex WithIndent:indent];
       }
 
       else
       {
         ++self->_fragmentMemberIndex;
-        v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", v31, v32];
+        currentNameCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", nameCopy, currentNameCopy];
         v28 = v33;
-        v33 = v27;
+        v33 = currentNameCopy;
 
-        std::vector<DYMTLImageBlockMember>::push_back[abi:ne200100](a4 + 72, &v33);
-        v7 = [(DYMTLTileMemoryExtractor *)self _generateImageBlockStructMember:&v33 WithCurrentName:v32 WithIndent:a7];
+        std::vector<DYMTLImageBlockMember>::push_back[abi:ne200100](argument + 72, &v33);
+        v7 = [(DYMTLTileMemoryExtractor *)self _generateImageBlockStructMember:&v33 WithCurrentName:currentNameCopy WithIndent:indent];
       }
     }
   }
@@ -434,78 +434,78 @@ uint64_t __66__DYMTLTileMemoryExtractor_encodeImageBlockDataReturn_isDrawCall___
   return v7;
 }
 
-- (id)_processStructMember:(id)a3 WithProcessedArgument:(void *)a4 WithMemberName:(id)a5 WithIndent:(unint64_t)a6
+- (id)_processStructMember:(id)member WithProcessedArgument:(void *)argument WithMemberName:(id)name WithIndent:(unint64_t)indent
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = [v10 structType];
+  memberCopy = member;
+  nameCopy = name;
+  structType = [memberCopy structType];
 
-  if (v12)
+  if (structType)
   {
-    v13 = [(DYMTLTileMemoryExtractor *)self _generateIndentString:a6];
+    arrayType2 = [(DYMTLTileMemoryExtractor *)self _generateIndentString:indent];
     v14 = MEMORY[0x277CCACA8];
-    v15 = [v10 name];
-    v16 = [v14 stringWithFormat:@"%@%@.", v11, v15];
+    name = [memberCopy name];
+    name6 = [v14 stringWithFormat:@"%@%@.", nameCopy, name];
 
-    v17 = [v10 structType];
-    v18 = [(DYMTLTileMemoryExtractor *)self _processStructType:v17 WithProcessedArgument:a4 WithMemberName:v16 WithIndent:a6 + 1];
+    structType2 = [memberCopy structType];
+    v18 = [(DYMTLTileMemoryExtractor *)self _processStructType:structType2 WithProcessedArgument:argument WithMemberName:name6 WithIndent:indent + 1];
 
     v19 = MEMORY[0x277CCACA8];
-    v20 = [v10 name];
-    v21 = [v19 stringWithFormat:@"%@struct\n%@{\n%@%@}%@\n", v13, v13, v18, v13, v20];;
+    name2 = [memberCopy name];
+    v21 = [v19 stringWithFormat:@"%@struct\n%@{\n%@%@}%@\n", arrayType2, arrayType2, v18, arrayType2, name2];;
   }
 
   else
   {
-    v22 = [v10 arrayType];
+    arrayType = [memberCopy arrayType];
 
-    if (!v22)
+    if (!arrayType)
     {
       v36 = &stru_2860B3350;
       v37 = &stru_2860B3350;
       v40 = 0;
-      v38 = [v10 pixelFormat];
-      v39 = [v10 aluType];
-      v24 = [v10 name];
-      v25 = objc_msgSend(v24, "containsString:", @"user(");
+      pixelFormat = [memberCopy pixelFormat];
+      aluType = [memberCopy aluType];
+      name3 = [memberCopy name];
+      v25 = objc_msgSend(name3, "containsString:", @"user(");
 
       v26 = MEMORY[0x277CCACA8];
       if (v25)
       {
         fragmentMemberIndex = self->_fragmentMemberIndex;
         self->_fragmentMemberIndex = fragmentMemberIndex + 1;
-        v28 = [v26 stringWithFormat:@"fragmentMember%ld", fragmentMemberIndex];
-        v29 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", v11, v28];
+        fragmentMemberIndex = [v26 stringWithFormat:@"fragmentMember%ld", fragmentMemberIndex];
+        v29 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", nameCopy, fragmentMemberIndex];
         v30 = v36;
         v36 = v29;
 
-        v31 = [v10 name];
+        name4 = [memberCopy name];
         v32 = v37;
-        v37 = v31;
+        v37 = name4;
 
-        std::vector<DYMTLImageBlockMember>::push_back[abi:ne200100](a4 + 72, &v36);
+        std::vector<DYMTLImageBlockMember>::push_back[abi:ne200100](argument + 72, &v36);
       }
 
       else
       {
-        v33 = [v10 name];
-        v34 = [v26 stringWithFormat:@"%@%@", v11, v33];
+        name5 = [memberCopy name];
+        v34 = [v26 stringWithFormat:@"%@%@", nameCopy, name5];
         v35 = v36;
         v36 = v34;
 
-        std::vector<DYMTLImageBlockMember>::push_back[abi:ne200100](a4 + 72, &v36);
+        std::vector<DYMTLImageBlockMember>::push_back[abi:ne200100](argument + 72, &v36);
         ++self->_fragmentMemberIndex;
-        v28 = [v10 name];
+        fragmentMemberIndex = [memberCopy name];
       }
 
-      v21 = [(DYMTLTileMemoryExtractor *)self _generateImageBlockStructMember:&v36 WithCurrentName:v28 WithIndent:a6];
+      v21 = [(DYMTLTileMemoryExtractor *)self _generateImageBlockStructMember:&v36 WithCurrentName:fragmentMemberIndex WithIndent:indent];
 
       goto LABEL_6;
     }
 
-    v13 = [v10 arrayType];
-    v16 = [v10 name];
-    v21 = [(DYMTLTileMemoryExtractor *)self _processArrayType:v13 WithProcessedArgument:a4 WithMemberName:v11 WithCurrentName:v16 WithIndent:a6];
+    arrayType2 = [memberCopy arrayType];
+    name6 = [memberCopy name];
+    v21 = [(DYMTLTileMemoryExtractor *)self _processArrayType:arrayType2 WithProcessedArgument:argument WithMemberName:nameCopy WithCurrentName:name6 WithIndent:indent];
   }
 
 LABEL_6:
@@ -513,18 +513,18 @@ LABEL_6:
   return v21;
 }
 
-- (id)_generateTextureFromImageBlockMember:(DYMTLImageBlockMember *)a3
+- (id)_generateTextureFromImageBlockMember:(DYMTLImageBlockMember *)member
 {
-  var2 = a3->var2;
+  var2 = member->var2;
   if (!var2)
   {
     dataTypeToTextureTypeForInvalidPixelFormatMap = self->_dataTypeToTextureTypeForInvalidPixelFormatMap;
-    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3->var3];
+    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:member->var3];
     v8 = [(NSDictionary *)dataTypeToTextureTypeForInvalidPixelFormatMap objectForKeyedSubscript:v7];
     var2 = [v8 unsignedIntegerValue];
   }
 
-  if (a3->var4)
+  if (member->var4)
   {
     v9 = objc_opt_new();
     [v9 setTextureType:3];
@@ -532,7 +532,7 @@ LABEL_6:
     [v9 setWidth:self->_textureSize.width];
     [v9 setHeight:self->_textureSize.height];
     [v9 setDepth:1];
-    [v9 setArrayLength:a3->var4];
+    [v9 setArrayLength:member->var4];
     [v9 setMipmapLevelCount:1];
     [v9 setSampleCount:1];
   }
@@ -550,26 +550,26 @@ LABEL_6:
   return v10;
 }
 
-- (id)_generateFunctionFromImageBlockMember:(DYMTLImageBlockMember *)a3 WithIndex:(unint64_t)a4
+- (id)_generateFunctionFromImageBlockMember:(DYMTLImageBlockMember *)member WithIndex:(unint64_t)index
 {
-  v5 = [(DYMTLTileMemoryExtractor *)self _generateImageBlockShaderStringWithMember:a3 index:a4];
+  v5 = [(DYMTLTileMemoryExtractor *)self _generateImageBlockShaderStringWithMember:member index:index];
   v6 = [(DYMTLTileMemoryExtractor *)self _generateKernelFunctionFromString:v5 funcName:@"dumpImageBlockData"];
 
   return v6;
 }
 
-- (id)_generateTileRenderPipelineStateWithTileFunction:(id)a3 renderPassDescriptor:(id)a4 renderPipelineState:(id)a5
+- (id)_generateTileRenderPipelineStateWithTileFunction:(id)function renderPassDescriptor:(id)descriptor renderPipelineState:(id)state
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = DYMTLGetNullableAssociatedObject(v10, 0);
-  v29 = v10;
-  v12 = DYMTLGetNullableAssociatedObject(v10, 1u);
+  functionCopy = function;
+  descriptorCopy = descriptor;
+  stateCopy = state;
+  v11 = DYMTLGetNullableAssociatedObject(stateCopy, 0);
+  v29 = stateCopy;
+  v12 = DYMTLGetNullableAssociatedObject(stateCopy, 1u);
   v13 = objc_opt_new();
   [v13 setLabel:@"Tile Pipeline for dumping Image Block data"];
   [v13 setThreadgroupSizeMatchesTileSize:1];
-  [v13 setTileFunction:v8];
+  [v13 setTileFunction:functionCopy];
   if (self->_imageBlockStatus == 1)
   {
     v14 = v11;
@@ -583,16 +583,16 @@ LABEL_6:
   [v13 setSampleCount:{objc_msgSend(v14, "sampleCount")}];
   v26 = v12;
   v27 = v11;
-  v28 = v8;
+  v28 = functionCopy;
   for (i = 0; i != 8; ++i)
   {
-    v16 = [v9 colorAttachments];
-    v17 = [v16 objectAtIndexedSubscript:i];
-    v18 = [v17 texture];
-    v19 = [v18 pixelFormat];
-    v20 = [v13 colorAttachments];
-    v21 = [v20 objectAtIndexedSubscript:i];
-    [v21 setPixelFormat:v19];
+    colorAttachments = [descriptorCopy colorAttachments];
+    v17 = [colorAttachments objectAtIndexedSubscript:i];
+    texture = [v17 texture];
+    pixelFormat = [texture pixelFormat];
+    colorAttachments2 = [v13 colorAttachments];
+    v21 = [colorAttachments2 objectAtIndexedSubscript:i];
+    [v21 setPixelFormat:pixelFormat];
   }
 
   device = self->_device;
@@ -604,45 +604,45 @@ LABEL_6:
   return v23;
 }
 
-- (id)_generateStringForWritingDataToTexture:(unint64_t)a3
+- (id)_generateStringForWritingDataToTexture:(unint64_t)texture
 {
   dataTypeToChannelCount = self->_dataTypeToChannelCount;
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:?];
   v7 = [(NSDictionary *)dataTypeToChannelCount objectForKeyedSubscript:v6];
-  v8 = [v7 unsignedIntegerValue];
+  unsignedIntegerValue = [v7 unsignedIntegerValue];
 
   dataTypeToTextureComponentTypeStringMap = self->_dataTypeToTextureComponentTypeStringMap;
-  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:texture];
   v11 = [(NSDictionary *)dataTypeToTextureComponentTypeStringMap objectForKeyedSubscript:v10];
 
-  if ((v8 - 1) >= 4)
+  if ((unsignedIntegerValue - 1) >= 4)
   {
     v12 = 0;
   }
 
   else
   {
-    v12 = [MEMORY[0x277CCACA8] stringWithFormat:off_27930F640[v8 - 1], v11];
+    v12 = [MEMORY[0x277CCACA8] stringWithFormat:off_27930F640[unsignedIntegerValue - 1], v11];
   }
 
   return v12;
 }
 
-- (id)_generateIndentString:(unint64_t)a3
+- (id)_generateIndentString:(unint64_t)string
 {
-  if (a3)
+  if (string)
   {
-    v3 = a3;
+    stringCopy = string;
     v4 = &stru_2860B3350;
     do
     {
       v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"    %@", v4];
 
       v4 = v5;
-      --v3;
+      --stringCopy;
     }
 
-    while (v3);
+    while (stringCopy);
   }
 
   else
@@ -653,15 +653,15 @@ LABEL_6:
   return v5;
 }
 
-- (id)_generateImageBlockStructMember:(DYMTLImageBlockMember *)a3 WithCurrentName:(id)a4 WithIndent:(unint64_t)a5
+- (id)_generateImageBlockStructMember:(DYMTLImageBlockMember *)member WithCurrentName:(id)name WithIndent:(unint64_t)indent
 {
-  v8 = a4;
-  v9 = [(DYMTLTileMemoryExtractor *)self _generateIndentString:a5];
+  nameCopy = name;
+  v9 = [(DYMTLTileMemoryExtractor *)self _generateIndentString:indent];
   dataTypeToImageBlockTypeStringMap = self->_dataTypeToImageBlockTypeStringMap;
-  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3->var3];
+  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:member->var3];
   v12 = [(NSDictionary *)dataTypeToImageBlockTypeStringMap objectForKeyedSubscript:v11];
 
-  if (a3->var2)
+  if (member->var2)
   {
     pixelFormatToDataTypeStringMap = self->_pixelFormatToDataTypeStringMap;
     v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:?];
@@ -676,38 +676,38 @@ LABEL_6:
     [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", v9, v12];
   }
   v16 = ;
-  v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", v16, v8];
+  nameCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", v16, nameCopy];
 
-  var4 = a3->var4;
+  var4 = member->var4;
   if (var4)
   {
-    v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@[%lu]", v17, var4];
+    var4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@[%lu]", nameCopy, var4];
 
-    v20 = v19;
+    v20 = var4;
   }
 
   else
   {
-    v20 = v17;
+    v20 = nameCopy;
   }
 
-  if ([a3->var1 isEqualToString:&stru_2860B3350])
+  if ([member->var1 isEqualToString:&stru_2860B3350])
   {
     [MEMORY[0x277CCACA8] stringWithFormat:@"%@;\n", v20];
   }
 
   else
   {
-    [MEMORY[0x277CCACA8] stringWithFormat:@"%@[[ %@ ]];\n", v20, a3->var1];
+    [MEMORY[0x277CCACA8] stringWithFormat:@"%@[[ %@ ]];\n", v20, member->var1];
   }
   v21 = ;
 
   return v21;
 }
 
-- (id)_generateImageBlockShaderStringWithMember:(DYMTLImageBlockMember *)a3 index:(unint64_t)a4
+- (id)_generateImageBlockShaderStringWithMember:(DYMTLImageBlockMember *)member index:(unint64_t)index
 {
-  var3 = a3->var3;
+  var3 = member->var3;
   v8 = 0x277CCA000uLL;
   if (self->_aliasImplicitImageBlock)
   {
@@ -730,31 +730,31 @@ LABEL_6:
 LABEL_7:
   v10 = *(v8 + 3240);
   dataTypeToTextureComponentTypeStringMap = self->_dataTypeToTextureComponentTypeStringMap;
-  if (!a3->var4)
+  if (!member->var4)
   {
     v29 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:var3];
     v30 = [(NSDictionary *)dataTypeToTextureComponentTypeStringMap objectForKeyedSubscript:v29];
     v14 = [v10 stringWithFormat:@"                               texture2d<%@, access::write> imageBlockData [[ texture(0) ]]\n"], v30);
 
-    v31 = [a3->var1 isEqualToString:&stru_2860B3350];
+    v31 = [member->var1 isEqualToString:&stru_2860B3350];
     v32 = MEMORY[0x277CCACA8];
     if ((v31 & 1) == 0)
     {
-      v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"fragmentMember%ld", a4];
+      index = [MEMORY[0x277CCACA8] stringWithFormat:@"fragmentMember%ld", index];
       v36 = MEMORY[0x277CCACA8];
       dataTypeToImageBlockTypeStringMap = self->_dataTypeToImageBlockTypeStringMap;
       v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:var3];
       v20 = [(NSDictionary *)dataTypeToImageBlockTypeStringMap objectForKeyedSubscript:v19];
       [(DYMTLTileMemoryExtractor *)self _generateStringForWritingDataToTexture:var3];
       v22 = v21 = 0x277CCA000uLL;
-      v23 = [v36 stringWithFormat:@"    threadgroup_imageblock ImageblockMaster* ib = imageBlock.data(lid)\n    %@ currData = ib->%@;\n    %@;\n"], v20, v15, v22);;
+      v23 = [v36 stringWithFormat:@"    threadgroup_imageblock ImageblockMaster* ib = imageBlock.data(lid)\n    %@ currData = ib->%@;\n    %@;\n"], v20, index, v22);;
       goto LABEL_16;
     }
 
     v33 = self->_dataTypeToImageBlockTypeStringMap;
-    v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:var3];
-    v19 = [(NSDictionary *)v33 objectForKeyedSubscript:v15];
-    var0 = a3->var0;
+    index = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:var3];
+    v19 = [(NSDictionary *)v33 objectForKeyedSubscript:index];
+    var0 = member->var0;
     [(DYMTLTileMemoryExtractor *)self _generateStringForWritingDataToTexture:var3];
     v20 = v21 = 0x277CCA000;
     v28 = [v32 stringWithFormat:@"    threadgroup_imageblock ImageblockMaster* ib = imageBlock.data(lid)\n    %@ currData = ib->%@;\n    %@;\n"], v19, var0, v20);;
@@ -767,29 +767,29 @@ LABEL_14:
   v13 = [(NSDictionary *)dataTypeToTextureComponentTypeStringMap objectForKeyedSubscript:v12];
   v14 = [v10 stringWithFormat:@"                               texture2d_array<%@, access::write> imageBlockData [[ texture(0) ]]\n"], v13);
 
-  if (self->_imageBlockStatus != 1 || ![a3->var1 length])
+  if (self->_imageBlockStatus != 1 || ![member->var1 length])
   {
     v24 = MEMORY[0x277CCACA8];
-    var4 = a3->var4;
+    var4 = member->var4;
     v26 = self->_dataTypeToImageBlockTypeStringMap;
-    v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:var3];
-    v19 = [(NSDictionary *)v26 objectForKeyedSubscript:v15];
-    v27 = a3->var0;
+    index = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:var3];
+    v19 = [(NSDictionary *)v26 objectForKeyedSubscript:index];
+    v27 = member->var0;
     [(DYMTLTileMemoryExtractor *)self _generateStringForWritingDataToTexture:var3];
     v20 = v21 = 0x277CCA000;
     v28 = [v24 stringWithFormat:@"    threadgroup_imageblock ImageblockMaster* ib = imageBlock.data(lid)\n    for (int i = 0; i < %ld; ++i)\n    {\n        %@ currData = ib->%@[i];\n        %@, i;\n    }\n"], var4, v19, v27, v20);;
     goto LABEL_14;
   }
 
-  v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@fragmentMember%ld", a3->var0, a4];
+  index = [MEMORY[0x277CCACA8] stringWithFormat:@"%@fragmentMember%ld", member->var0, index];
   v16 = MEMORY[0x277CCACA8];
-  v17 = a3->var4;
+  v17 = member->var4;
   v18 = self->_dataTypeToImageBlockTypeStringMap;
   v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:var3];
   v20 = [(NSDictionary *)v18 objectForKeyedSubscript:v19];
   [(DYMTLTileMemoryExtractor *)self _generateStringForWritingDataToTexture:var3];
   v22 = v21 = 0x277CCA000;
-  v23 = [v16 stringWithFormat:@"    threadgroup_imageblock ImageblockMaster* ib = imageBlock.data(lid)\n    for (int i = 0; i < %ld; ++i)\n    {\n        %@ currData = ib->%@[i];\n        %@, i;\n    }\n"], v17, v20, v15, v22);;
+  v23 = [v16 stringWithFormat:@"    threadgroup_imageblock ImageblockMaster* ib = imageBlock.data(lid)\n    for (int i = 0; i < %ld; ++i)\n    {\n        %@ currData = ib->%@[i];\n        %@, i;\n    }\n"], v17, v20, index, v22);;
 LABEL_16:
   v35 = v23;
 
@@ -799,21 +799,21 @@ LABEL_17:
   return v38;
 }
 
-- (id)_generateThreadgroupShaderStringWithThreadgroupIndex:(unint64_t)a3 size:(unint64_t)a4
+- (id)_generateThreadgroupShaderStringWithThreadgroupIndex:(unint64_t)index size:(unint64_t)size
 {
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"#include <metal_stdlib>\nusing namespace metal\n\n#define THREADGROUP_MEMORY_LENGTH %ld\n\nkernel void dumpThreadgroupData(uint2 threadgroupInGrid [[ threadgroup_position_in_grid ]], \n                                uint2 threadgroupsPerGrid [[ threadgroups_per_grid ]], \n                                device uint8_t* threadgroupBufferDump [[ buffer(0) ]], \n                                threadgroup uint8_t* threadgroupData [[ threadgroup(%ld) ]])\n{\n   uint tileIndex = (threadgroupInGrid.y * threadgroupsPerGrid.x) + threadgroupInGrid.x;\n   uint offset = THREADGROUP_MEMORY_LENGTH * tileIndex;\n\n   for (uint32_t i = 0; i < THREADGROUP_MEMORY_LENGTH; ++i)\n   {\n       threadgroupBufferDump[offset + i] = threadgroupData[i];\n   }\n}\n", a4, a3];;
+  index = [MEMORY[0x277CCACA8] stringWithFormat:@"#include <metal_stdlib>\nusing namespace metal\n\n#define THREADGROUP_MEMORY_LENGTH %ld\n\nkernel void dumpThreadgroupData(uint2 threadgroupInGrid [[ threadgroup_position_in_grid ]], \n                                uint2 threadgroupsPerGrid [[ threadgroups_per_grid ]], \n                                device uint8_t* threadgroupBufferDump [[ buffer(0) ]], \n                                threadgroup uint8_t* threadgroupData [[ threadgroup(%ld) ]])\n{\n   uint tileIndex = (threadgroupInGrid.y * threadgroupsPerGrid.x) + threadgroupInGrid.x;\n   uint offset = THREADGROUP_MEMORY_LENGTH * tileIndex;\n\n   for (uint32_t i = 0; i < THREADGROUP_MEMORY_LENGTH; ++i)\n   {\n       threadgroupBufferDump[offset + i] = threadgroupData[i];\n   }\n}\n", size, index];;
 
-  return v4;
+  return index;
 }
 
-- (id)_generateKernelFunctionFromString:(id)a3 funcName:(id)a4
+- (id)_generateKernelFunctionFromString:(id)string funcName:(id)name
 {
-  v6 = a4;
+  nameCopy = name;
   device = self->_device;
   v12 = 0;
-  v8 = [(MTLDeviceSPI *)device newLibraryWithSource:a3 options:0 error:&v12];
+  v8 = [(MTLDeviceSPI *)device newLibraryWithSource:string options:0 error:&v12];
   v9 = v12;
-  v10 = [v8 newFunctionWithName:v6];
+  v10 = [v8 newFunctionWithName:nameCopy];
 
   return v10;
 }

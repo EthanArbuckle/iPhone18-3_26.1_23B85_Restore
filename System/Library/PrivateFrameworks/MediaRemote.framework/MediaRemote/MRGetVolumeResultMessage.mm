@@ -1,11 +1,11 @@
 @interface MRGetVolumeResultMessage
-- (MRGetVolumeResultMessage)initWithVolume:(float)a3;
+- (MRGetVolumeResultMessage)initWithVolume:(float)volume;
 - (float)volume;
 @end
 
 @implementation MRGetVolumeResultMessage
 
-- (MRGetVolumeResultMessage)initWithVolume:(float)a3
+- (MRGetVolumeResultMessage)initWithVolume:(float)volume
 {
   v8.receiver = self;
   v8.super_class = MRGetVolumeResultMessage;
@@ -13,7 +13,7 @@
   if (v4)
   {
     v5 = objc_alloc_init(_MRGetVolumeResultMessageProtobuf);
-    *&v6 = a3;
+    *&v6 = volume;
     [(_MRGetVolumeResultMessageProtobuf *)v5 setVolume:v6];
     [(MRProtocolMessage *)v4 setUnderlyingCodableMessage:v5];
   }
@@ -23,8 +23,8 @@
 
 - (float)volume
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  [v2 volume];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  [underlyingCodableMessage volume];
   v4 = v3;
 
   return v4;

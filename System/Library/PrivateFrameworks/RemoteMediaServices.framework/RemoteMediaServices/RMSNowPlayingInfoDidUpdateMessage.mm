@@ -1,12 +1,12 @@
 @interface RMSNowPlayingInfoDidUpdateMessage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation RMSNowPlayingInfoDidUpdateMessage
@@ -17,68 +17,68 @@
   v8.receiver = self;
   v8.super_class = RMSNowPlayingInfoDidUpdateMessage;
   v4 = [(RMSNowPlayingInfoDidUpdateMessage *)&v8 description];
-  v5 = [(RMSNowPlayingInfoDidUpdateMessage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(RMSNowPlayingInfoDidUpdateMessage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithInt:self->_sessionIdentifier];
-    [v3 setObject:v4 forKey:@"sessionIdentifier"];
+    [dictionary setObject:v4 forKey:@"sessionIdentifier"];
   }
 
   nowPlayingInfo = self->_nowPlayingInfo;
   if (nowPlayingInfo)
   {
-    v6 = [(RMSNowPlayingInfoMessage *)nowPlayingInfo dictionaryRepresentation];
-    [v3 setObject:v6 forKey:@"nowPlayingInfo"];
+    dictionaryRepresentation = [(RMSNowPlayingInfoMessage *)nowPlayingInfo dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"nowPlayingInfo"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (*&self->_has)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_nowPlayingInfo)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[4] = self->_sessionIdentifier;
-    *(v4 + 20) |= 1u;
+    toCopy[4] = self->_sessionIdentifier;
+    *(toCopy + 20) |= 1u;
   }
 
   if (self->_nowPlayingInfo)
   {
-    v5 = v4;
-    [v4 setNowPlayingInfo:?];
-    v4 = v5;
+    v5 = toCopy;
+    [toCopy setNowPlayingInfo:?];
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -86,30 +86,30 @@
     *(v5 + 20) |= 1u;
   }
 
-  v7 = [(RMSNowPlayingInfoMessage *)self->_nowPlayingInfo copyWithZone:a3];
+  v7 = [(RMSNowPlayingInfoMessage *)self->_nowPlayingInfo copyWithZone:zone];
   v8 = v6[1];
   v6[1] = v7;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_9;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 20) & 1) == 0 || self->_sessionIdentifier != *(v4 + 4))
+    if ((*(equalCopy + 20) & 1) == 0 || self->_sessionIdentifier != *(equalCopy + 4))
     {
       goto LABEL_9;
     }
   }
 
-  else if (*(v4 + 20))
+  else if (*(equalCopy + 20))
   {
 LABEL_9:
     v6 = 0;
@@ -117,7 +117,7 @@ LABEL_9:
   }
 
   nowPlayingInfo = self->_nowPlayingInfo;
-  if (nowPlayingInfo | *(v4 + 1))
+  if (nowPlayingInfo | *(equalCopy + 1))
   {
     v6 = [(RMSNowPlayingInfoMessage *)nowPlayingInfo isEqual:?];
   }
@@ -147,13 +147,13 @@ LABEL_10:
   return [(RMSNowPlayingInfoMessage *)self->_nowPlayingInfo hash]^ v2;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[5])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[5])
   {
-    self->_sessionIdentifier = v4[4];
+    self->_sessionIdentifier = fromCopy[4];
     *&self->_has |= 1u;
   }
 

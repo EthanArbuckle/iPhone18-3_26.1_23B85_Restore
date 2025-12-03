@@ -1,15 +1,15 @@
 @interface _SBHIconLibraryTableView
-- (_SBHIconLibraryTableView)initWithFrame:(CGRect)a3 style:(int64_t)a4;
+- (_SBHIconLibraryTableView)initWithFrame:(CGRect)frame style:(int64_t)style;
 - (void)layoutSubviews;
 @end
 
 @implementation _SBHIconLibraryTableView
 
-- (_SBHIconLibraryTableView)initWithFrame:(CGRect)a3 style:(int64_t)a4
+- (_SBHIconLibraryTableView)initWithFrame:(CGRect)frame style:(int64_t)style
 {
   v9.receiver = self;
   v9.super_class = _SBHIconLibraryTableView;
-  v4 = [(_SBHIconLibraryTableView *)&v9 initWithFrame:a4 style:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(_SBHIconLibraryTableView *)&v9 initWithFrame:style style:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v4)
   {
     v5 = [objc_alloc(MEMORY[0x1E69D3FC0]) initWithRecipe:3];
@@ -62,13 +62,13 @@
   if ([(_SBHIconLibraryTableView *)self _headerAndFooterViewsFloat])
   {
     v11 = MEMORY[0x1E695DFA0];
-    v12 = [(_SBHIconLibraryTableView *)self indexPathsForVisibleRows];
+    indexPathsForVisibleRows = [(_SBHIconLibraryTableView *)self indexPathsForVisibleRows];
     v50[0] = MEMORY[0x1E69E9820];
     v50[1] = 3221225472;
     v50[2] = __42___SBHIconLibraryTableView_layoutSubviews__block_invoke;
     v50[3] = &unk_1E808C4E0;
     v50[4] = self;
-    v13 = [v12 bs_mapNoNulls:v50];
+    v13 = [indexPathsForVisibleRows bs_mapNoNulls:v50];
     v14 = [v11 orderedSetWithArray:v13];
 
     v48 = 0u;
@@ -173,11 +173,11 @@
 
   [(SBFFeatherBlurView *)self->_headerBlur setFrame:0.0, v45, v44, v8 + 12.0];
   v37 = MEMORY[0x1E69D3FC0];
-  v38 = [(SBFFeatherBlurView *)self->_headerBlur window];
-  v39 = [v37 matchMoveAnimationForFrame:v38 relativeToView:{0.0, v45 - v45, v44, v8 + 12.0}];
+  window = [(SBFFeatherBlurView *)self->_headerBlur window];
+  v39 = [v37 matchMoveAnimationForFrame:window relativeToView:{0.0, v45 - v45, v44, v8 + 12.0}];
 
-  v40 = [(SBFFeatherBlurView *)self->_headerBlur layer];
-  [v40 addAnimation:v39 forKey:@"SBHIconLibraryTableViewMatchMoveAnimation"];
+  layer = [(SBFFeatherBlurView *)self->_headerBlur layer];
+  [layer addAnimation:v39 forKey:@"SBHIconLibraryTableViewMatchMoveAnimation"];
 
   [(SBFFeatherBlurView *)self->_headerBlur setHidden:v10];
 }

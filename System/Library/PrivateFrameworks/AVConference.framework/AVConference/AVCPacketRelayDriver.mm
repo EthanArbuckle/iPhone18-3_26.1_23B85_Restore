@@ -3,8 +3,8 @@
 - (AVCPacketRelayDriver)init;
 - (void)dealloc;
 - (void)init;
-- (void)startMonitoringFileDescriptor:(int)a3 forConnection:(id)a4;
-- (void)stopMonitoringFileDescriptor:(int)a3;
+- (void)startMonitoringFileDescriptor:(int)descriptor forConnection:(id)connection;
+- (void)stopMonitoringFileDescriptor:(int)descriptor;
 @end
 
 @implementation AVCPacketRelayDriver
@@ -25,7 +25,7 @@
   return Weak;
 }
 
-- (void)startMonitoringFileDescriptor:(int)a3 forConnection:(id)a4
+- (void)startMonitoringFileDescriptor:(int)descriptor forConnection:(id)connection
 {
   v19 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -41,14 +41,14 @@
       v13 = 1024;
       v14 = 32;
       v15 = 1024;
-      v16 = a3;
+      descriptorCopy = descriptor;
       v17 = 2112;
-      v18 = a4;
+      connectionCopy = connection;
       _os_log_impl(&dword_1DB56E000, v7, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d fileDescriptor=%d, connection=%@", &v9, 0x2Cu);
     }
   }
 
-  if (a3 == -1)
+  if (descriptor == -1)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
     {
@@ -62,11 +62,11 @@
 
   else
   {
-    AVCPacketRelayDriverThreadAddFileDescriptorWithConnection(a3, a4);
+    AVCPacketRelayDriverThreadAddFileDescriptorWithConnection(descriptor, connection);
   }
 }
 
-- (void)stopMonitoringFileDescriptor:(int)a3
+- (void)stopMonitoringFileDescriptor:(int)descriptor
 {
   v15 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -82,12 +82,12 @@
       v11 = 1024;
       v12 = 42;
       v13 = 1024;
-      v14 = a3;
+      descriptorCopy = descriptor;
       _os_log_impl(&dword_1DB56E000, v5, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d fileDescriptor=%d", &v7, 0x22u);
     }
   }
 
-  if (a3 == -1)
+  if (descriptor == -1)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
     {
@@ -101,7 +101,7 @@
 
   else
   {
-    AVCPacketRelayDriverThreadRemoveFileDescriptor(a3);
+    AVCPacketRelayDriverThreadRemoveFileDescriptor(descriptor);
   }
 }
 
@@ -202,7 +202,7 @@
   v13 = *MEMORY[0x1E69E9840];
   v4 = *__error();
   v5 = 136315906;
-  v6 = a1;
+  selfCopy = self;
   v7 = 2080;
   v8 = "[AVCPacketRelayDriver init]";
   v9 = 1024;

@@ -1,5 +1,5 @@
 @interface _SVXUserFeedbackNodeMutation
-- (_SVXUserFeedbackNodeMutation)initWithBaseModel:(id)a3;
+- (_SVXUserFeedbackNodeMutation)initWithBaseModel:(id)model;
 - (id)generate;
 @end
 
@@ -18,15 +18,15 @@
   {
     if ((*&self->_mutationFlags & 2) != 0)
     {
-      v6 = self->_identifier;
+      identifier = self->_identifier;
     }
 
     else
     {
-      v6 = [(SVXUserFeedbackNode *)baseModel identifier];
+      identifier = [(SVXUserFeedbackNode *)baseModel identifier];
     }
 
-    v7 = v6;
+    v7 = identifier;
     if ((*&self->_mutationFlags & 4) != 0)
     {
       duration = self->_duration;
@@ -43,27 +43,27 @@
       if ((*&self->_mutationFlags & 8) != 0)
       {
 LABEL_11:
-        v10 = self->_feedback;
+        feedback = self->_feedback;
 LABEL_14:
-        v11 = v10;
+        v11 = feedback;
         if ((*&self->_mutationFlags & 0x10) != 0)
         {
-          v12 = self->_dependentNodes;
+          dependentNodes = self->_dependentNodes;
         }
 
         else
         {
-          v12 = [(SVXUserFeedbackNode *)self->_baseModel dependentNodes];
+          dependentNodes = [(SVXUserFeedbackNode *)self->_baseModel dependentNodes];
         }
 
-        v13 = v12;
-        v5 = [[SVXUserFeedbackNode alloc] initWithIdentifier:v7 duration:v11 feedback:v12 dependentNodes:duration];
+        v13 = dependentNodes;
+        v5 = [[SVXUserFeedbackNode alloc] initWithIdentifier:v7 duration:v11 feedback:dependentNodes dependentNodes:duration];
 
         goto LABEL_18;
       }
     }
 
-    v10 = [(SVXUserFeedbackNode *)self->_baseModel feedback];
+    feedback = [(SVXUserFeedbackNode *)self->_baseModel feedback];
     goto LABEL_14;
   }
 
@@ -75,16 +75,16 @@ LABEL_18:
   return v5;
 }
 
-- (_SVXUserFeedbackNodeMutation)initWithBaseModel:(id)a3
+- (_SVXUserFeedbackNodeMutation)initWithBaseModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = _SVXUserFeedbackNodeMutation;
   v6 = [(_SVXUserFeedbackNodeMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_baseModel, a3);
+    objc_storeStrong(&v6->_baseModel, model);
   }
 
   return v7;

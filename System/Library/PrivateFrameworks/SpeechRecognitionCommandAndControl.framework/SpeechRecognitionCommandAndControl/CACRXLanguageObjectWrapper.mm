@@ -1,11 +1,11 @@
 @interface CACRXLanguageObjectWrapper
-- (CACRXLanguageObjectWrapper)initWithRXLanguageObject:(__RXLanguageObject *)a3;
+- (CACRXLanguageObjectWrapper)initWithRXLanguageObject:(__RXLanguageObject *)object;
 - (void)dealloc;
 @end
 
 @implementation CACRXLanguageObjectWrapper
 
-- (CACRXLanguageObjectWrapper)initWithRXLanguageObject:(__RXLanguageObject *)a3
+- (CACRXLanguageObjectWrapper)initWithRXLanguageObject:(__RXLanguageObject *)object
 {
   v7.receiver = self;
   v7.super_class = CACRXLanguageObjectWrapper;
@@ -13,8 +13,8 @@
   v5 = v4;
   if (v4)
   {
-    v4->_rxLanguageObject = a3;
-    CFRetain(a3);
+    v4->_rxLanguageObject = object;
+    CFRetain(object);
   }
 
   return v5;

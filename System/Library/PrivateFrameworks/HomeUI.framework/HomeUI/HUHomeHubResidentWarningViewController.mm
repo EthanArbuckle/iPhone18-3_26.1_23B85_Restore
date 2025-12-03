@@ -1,30 +1,30 @@
 @interface HUHomeHubResidentWarningViewController
 - (HUConfigurationViewControllerDelegate)delegate;
-- (HUHomeHubResidentWarningViewController)initWithiPadOnlyHub:(BOOL)a3;
-- (void)_cancelFlow:(id)a3;
-- (void)_commitOrContinue:(id)a3;
-- (void)_openLink:(id)a3;
-- (void)_openURL:(id)a3;
+- (HUHomeHubResidentWarningViewController)initWithiPadOnlyHub:(BOOL)hub;
+- (void)_cancelFlow:(id)flow;
+- (void)_commitOrContinue:(id)continue;
+- (void)_openLink:(id)link;
+- (void)_openURL:(id)l;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation HUHomeHubResidentWarningViewController
 
-- (HUHomeHubResidentWarningViewController)initWithiPadOnlyHub:(BOOL)a3
+- (HUHomeHubResidentWarningViewController)initWithiPadOnlyHub:(BOOL)hub
 {
-  v3 = a3;
+  hubCopy = hub;
   v22 = *MEMORY[0x277D85DE8];
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v21 = v3;
+    v21 = hubCopy;
     _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "[HUHomeHubResidentWarningViewController:initWithiPadOnlyHub] hasiPadOnlyHub = %{BOOL}d", buf, 8u);
   }
 
-  if (v3)
+  if (hubCopy)
   {
     v6 = @"HUSoftwareUpdateMigrationiPadOnlyResidentTitle";
   }
@@ -34,7 +34,7 @@
     v6 = @"HUSoftwareUpdateMigrationNoResidentTitle";
   }
 
-  if (v3)
+  if (hubCopy)
   {
     v7 = @"HUSoftwareUpdateMigrationiPadOnlyResidentDescription";
   }
@@ -47,8 +47,8 @@
   v8 = _HULocalizedStringWithDefaultValue(v6, v6, 1);
   v9 = _HULocalizedStringWithDefaultValue(v7, v7, 1);
   v10 = MEMORY[0x277D755D0];
-  v11 = [MEMORY[0x277D75348] hf_keyColor];
-  v12 = [v10 configurationWithHierarchicalColor:v11];
+  hf_keyColor = [MEMORY[0x277D75348] hf_keyColor];
+  v12 = [v10 configurationWithHierarchicalColor:hf_keyColor];
 
   v13 = [MEMORY[0x277D755D0] configurationWithPointSize:100.0];
   v14 = [v13 configurationByApplyingConfiguration:v12];
@@ -75,54 +75,54 @@
     _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "[HUHomeHubResidentWarningViewController:viewDidLoad]", buf, 2u);
   }
 
-  v5 = [(HUHomeHubResidentWarningViewController *)self headerView];
-  v6 = [v5 subviews];
-  [HUAccessibilityIdentifierUtilities setAccessibilityIDForViews:v6 withIDDictionary:&unk_282493120];
+  headerView = [(HUHomeHubResidentWarningViewController *)self headerView];
+  subviews = [headerView subviews];
+  [HUAccessibilityIdentifierUtilities setAccessibilityIDForViews:subviews withIDDictionary:&unk_282493120];
 
-  v7 = [MEMORY[0x277D37638] accessoryButton];
-  [(HUHomeHubResidentWarningViewController *)self setLinkButton:v7];
+  accessoryButton = [MEMORY[0x277D37638] accessoryButton];
+  [(HUHomeHubResidentWarningViewController *)self setLinkButton:accessoryButton];
 
-  v8 = [(HUHomeHubResidentWarningViewController *)self linkButton];
+  linkButton = [(HUHomeHubResidentWarningViewController *)self linkButton];
   v9 = _HULocalizedStringWithDefaultValue(@"HUSoftwareUpdateMigrationResidentLearnMoreMessage", @"HUSoftwareUpdateMigrationResidentLearnMoreMessage", 1);
-  [v8 setTitle:v9 forState:0];
+  [linkButton setTitle:v9 forState:0];
 
-  v10 = [(HUHomeHubResidentWarningViewController *)self linkButton];
-  [v10 setAccessibilityIdentifier:@"Home.OnboardingView.HomeHubMigration.HUHomeHubResidentWarning.LearnMoreLink"];
+  linkButton2 = [(HUHomeHubResidentWarningViewController *)self linkButton];
+  [linkButton2 setAccessibilityIdentifier:@"Home.OnboardingView.HomeHubMigration.HUHomeHubResidentWarning.LearnMoreLink"];
 
-  v11 = [(HUHomeHubResidentWarningViewController *)self linkButton];
-  [v11 addTarget:self action:sel__openLink_ forControlEvents:64];
+  linkButton3 = [(HUHomeHubResidentWarningViewController *)self linkButton];
+  [linkButton3 addTarget:self action:sel__openLink_ forControlEvents:64];
 
-  v12 = [(HUHomeHubResidentWarningViewController *)self headerView];
-  v13 = [(HUHomeHubResidentWarningViewController *)self linkButton];
-  [v12 addAccessoryButton:v13];
+  headerView2 = [(HUHomeHubResidentWarningViewController *)self headerView];
+  linkButton4 = [(HUHomeHubResidentWarningViewController *)self linkButton];
+  [headerView2 addAccessoryButton:linkButton4];
 
-  v14 = [MEMORY[0x277D37618] boldButton];
-  [(HUHomeHubResidentWarningViewController *)self setCommitButton:v14];
+  boldButton = [MEMORY[0x277D37618] boldButton];
+  [(HUHomeHubResidentWarningViewController *)self setCommitButton:boldButton];
 
-  v15 = [(HUHomeHubResidentWarningViewController *)self commitButton];
-  [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
+  commitButton = [(HUHomeHubResidentWarningViewController *)self commitButton];
+  [commitButton setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v16 = [(HUHomeHubResidentWarningViewController *)self commitButton];
-  v17 = [(HUHomeHubResidentWarningViewController *)self _commitOrContinueButtonTitle];
-  [v16 setTitle:v17 forState:0];
+  commitButton2 = [(HUHomeHubResidentWarningViewController *)self commitButton];
+  _commitOrContinueButtonTitle = [(HUHomeHubResidentWarningViewController *)self _commitOrContinueButtonTitle];
+  [commitButton2 setTitle:_commitOrContinueButtonTitle forState:0];
 
-  v18 = [(HUHomeHubResidentWarningViewController *)self commitButton];
-  [v18 setAccessibilityIdentifier:@"Home.OnboardingView.HomeHubMigration.HUHomeHubResidentWarning.CommitOrContinueButton"];
+  commitButton3 = [(HUHomeHubResidentWarningViewController *)self commitButton];
+  [commitButton3 setAccessibilityIdentifier:@"Home.OnboardingView.HomeHubMigration.HUHomeHubResidentWarning.CommitOrContinueButton"];
 
-  v19 = [(HUHomeHubResidentWarningViewController *)self commitButton];
-  [v19 addTarget:self action:sel__commitOrContinue_ forControlEvents:64];
+  commitButton4 = [(HUHomeHubResidentWarningViewController *)self commitButton];
+  [commitButton4 addTarget:self action:sel__commitOrContinue_ forControlEvents:64];
 
-  v20 = [(HUHomeHubResidentWarningViewController *)self buttonTray];
-  v21 = [(HUHomeHubResidentWarningViewController *)self commitButton];
-  [v20 addButton:v21];
+  buttonTray = [(HUHomeHubResidentWarningViewController *)self buttonTray];
+  commitButton5 = [(HUHomeHubResidentWarningViewController *)self commitButton];
+  [buttonTray addButton:commitButton5];
 
   v22 = objc_alloc(MEMORY[0x277D751E0]);
   v23 = _HULocalizedStringWithDefaultValue(@"HUCancelTitle", @"HUCancelTitle", 1);
   v24 = [v22 initWithTitle:v23 style:0 target:self action:sel__cancelFlow_];
 
   [v24 setAccessibilityIdentifier:@"Home.OnboardingView.HomeHubMigration.HUHomeHubResidentWarning.CancelButton"];
-  v25 = [(OBBaseWelcomeController *)self navigationItem];
-  [v25 setRightBarButtonItem:v24];
+  navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v24];
 
   [(HUHomeHubResidentWarningViewController *)self setModalInPresentation:1];
   v26 = HFLogForCategory();
@@ -130,18 +130,18 @@
   {
     v27 = NSStringFromSelector(a2);
     *buf = 138412546;
-    v30 = self;
+    selfCopy = self;
     v31 = 2112;
     v32 = v27;
     _os_log_impl(&dword_20CEB6000, v26, OS_LOG_TYPE_DEFAULT, "%@:%@: presented: HUHomeHubSharedHomesWarningViewController", buf, 0x16u);
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = HUHomeHubResidentWarningViewController;
-  [(HUHomeHubResidentWarningViewController *)&v5 viewWillAppear:a3];
+  [(HUHomeHubResidentWarningViewController *)&v5 viewWillAppear:appear];
   v3 = HFLogForCategory();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
@@ -150,11 +150,11 @@
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = HUHomeHubResidentWarningViewController;
-  [(OBBaseWelcomeController *)&v5 viewWillDisappear:a3];
+  [(OBBaseWelcomeController *)&v5 viewWillDisappear:disappear];
   v3 = HFLogForCategory();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
@@ -163,7 +163,7 @@
   }
 }
 
-- (void)_commitOrContinue:(id)a3
+- (void)_commitOrContinue:(id)continue
 {
   v11[1] = *MEMORY[0x277D85DE8];
   v4 = HFLogForCategory();
@@ -183,15 +183,15 @@
     v5 = 5;
   }
 
-  v6 = [(HUHomeHubResidentWarningViewController *)self delegate];
+  delegate = [(HUHomeHubResidentWarningViewController *)self delegate];
   v10 = @"HUHomeHub2OnboardingKey_UserInput";
   v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v5];
   v11[0] = v7;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-  [v6 viewController:self didFinishWithConfigurationResults:v8];
+  [delegate viewController:self didFinishWithConfigurationResults:v8];
 }
 
-- (void)_cancelFlow:(id)a3
+- (void)_cancelFlow:(id)flow
 {
   v9[1] = *MEMORY[0x277D85DE8];
   v4 = HFLogForCategory();
@@ -201,14 +201,14 @@
     _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "[HUHomeHubResidentWarningViewController:_cancelFlow] User tapped cancel button", v7, 2u);
   }
 
-  v5 = [(HUHomeHubResidentWarningViewController *)self delegate];
+  delegate = [(HUHomeHubResidentWarningViewController *)self delegate];
   v8 = @"HUHomeHub2OnboardingKey_UserInput";
   v9[0] = &unk_282491E20;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:&v8 count:1];
-  [v5 viewController:self didFinishWithConfigurationResults:v6];
+  [delegate viewController:self didFinishWithConfigurationResults:v6];
 }
 
-- (void)_openLink:(id)a3
+- (void)_openLink:(id)link
 {
   v4 = HFLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -217,19 +217,19 @@
     _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "[HUHomeHubResidentWarningViewController:_openLink] User tapped open link button", v6, 2u);
   }
 
-  v5 = [MEMORY[0x277CBEBC0] hf_homeHubRequiredLearnMoreURL];
-  [(HUHomeHubResidentWarningViewController *)self _openURL:v5];
+  hf_homeHubRequiredLearnMoreURL = [MEMORY[0x277CBEBC0] hf_homeHubRequiredLearnMoreURL];
+  [(HUHomeHubResidentWarningViewController *)self _openURL:hf_homeHubRequiredLearnMoreURL];
 }
 
-- (void)_openURL:(id)a3
+- (void)_openURL:(id)l
 {
   v4 = MEMORY[0x277CDB700];
-  v5 = a3;
-  v7 = [[v4 alloc] initWithURL:v5];
+  lCopy = l;
+  v7 = [[v4 alloc] initWithURL:lCopy];
 
   [v7 setModalPresentationStyle:1];
-  v6 = [MEMORY[0x277D75348] hf_keyColor];
-  [v7 setPreferredControlTintColor:v6];
+  hf_keyColor = [MEMORY[0x277D75348] hf_keyColor];
+  [v7 setPreferredControlTintColor:hf_keyColor];
 
   [(HUHomeHubResidentWarningViewController *)self presentViewController:v7 animated:1 completion:0];
 }

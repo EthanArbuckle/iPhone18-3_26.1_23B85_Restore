@@ -1,16 +1,16 @@
 @interface NFSLAMShim
-- (void)log:(id)a3;
+- (void)log:(id)log;
 @end
 
 @implementation NFSLAMShim
 
-- (void)log:(id)a3
+- (void)log:(id)log
 {
-  v3 = a3;
+  logCopy = log;
   Logger = NFLogGetLogger();
   if (Logger)
   {
-    Logger(5, "%s:%i %s", "-[NFSLAMShim log:]", 57, [v3 UTF8String]);
+    Logger(5, "%s:%i %s", "-[NFSLAMShim log:]", 57, [logCopy UTF8String]);
   }
 
   v5 = NFSharedLogGetLogger();
@@ -21,7 +21,7 @@
     v8 = 1024;
     v9 = 57;
     v10 = 2080;
-    v11 = [v3 UTF8String];
+    uTF8String = [logCopy UTF8String];
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}s:%i %s", buf, 0x1Cu);
   }
 }

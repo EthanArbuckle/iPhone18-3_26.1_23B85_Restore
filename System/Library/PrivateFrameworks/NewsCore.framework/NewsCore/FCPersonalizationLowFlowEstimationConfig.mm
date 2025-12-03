@@ -1,9 +1,9 @@
 @interface FCPersonalizationLowFlowEstimationConfig
 - (FCPersonalizationLowFlowEstimationConfig)init;
-- (FCPersonalizationLowFlowEstimationConfig)initWithCoder:(id)a3;
-- (FCPersonalizationLowFlowEstimationConfig)initWithConfigDictionary:(id)a3;
-- (FCPersonalizationLowFlowEstimationConfig)initWithExponent:(double)a3 padding:(double)a4 prior:(double)a5;
-- (void)encodeWithCoder:(id)a3;
+- (FCPersonalizationLowFlowEstimationConfig)initWithCoder:(id)coder;
+- (FCPersonalizationLowFlowEstimationConfig)initWithConfigDictionary:(id)dictionary;
+- (FCPersonalizationLowFlowEstimationConfig)initWithExponent:(double)exponent padding:(double)padding prior:(double)prior;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FCPersonalizationLowFlowEstimationConfig
@@ -34,29 +34,29 @@
   objc_exception_throw(v6);
 }
 
-- (FCPersonalizationLowFlowEstimationConfig)initWithConfigDictionary:(id)a3
+- (FCPersonalizationLowFlowEstimationConfig)initWithConfigDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = FCPersonalizationLowFlowEstimationConfig;
   v5 = [(FCPersonalizationLowFlowEstimationConfig *)&v14 init];
   if (v5)
   {
     v6 = 0.5;
-    v7 = FCAppConfigurationDoubleValue(v4, @"exponent", 0.5);
+    v7 = FCAppConfigurationDoubleValue(dictionaryCopy, @"exponent", 0.5);
     if (v7 >= 0.0)
     {
       v6 = v7;
     }
 
     v8 = 10.0;
-    v9 = FCAppConfigurationDoubleValue(v4, @"padding", 10.0);
+    v9 = FCAppConfigurationDoubleValue(dictionaryCopy, @"padding", 10.0);
     if (v9 >= 0.0)
     {
       v8 = v9;
     }
 
-    v10 = FCAppConfigurationDoubleValue(v4, @"prior", 0.1);
+    v10 = FCAppConfigurationDoubleValue(dictionaryCopy, @"prior", 0.1);
     if (v10 > 1.0 || v10 < 0.0)
     {
       v12 = 0.1;
@@ -73,43 +73,43 @@
   return v5;
 }
 
-- (FCPersonalizationLowFlowEstimationConfig)initWithExponent:(double)a3 padding:(double)a4 prior:(double)a5
+- (FCPersonalizationLowFlowEstimationConfig)initWithExponent:(double)exponent padding:(double)padding prior:(double)prior
 {
   v9.receiver = self;
   v9.super_class = FCPersonalizationLowFlowEstimationConfig;
   result = [(FCPersonalizationLowFlowEstimationConfig *)&v9 init];
   if (result)
   {
-    result->_exponent = a3;
-    result->_padding = a4;
-    result->_prior = a5;
+    result->_exponent = exponent;
+    result->_padding = padding;
+    result->_prior = prior;
   }
 
   return result;
 }
 
-- (FCPersonalizationLowFlowEstimationConfig)initWithCoder:(id)a3
+- (FCPersonalizationLowFlowEstimationConfig)initWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 decodeDoubleForKey:@"exponent"];
+  coderCopy = coder;
+  [coderCopy decodeDoubleForKey:@"exponent"];
   v6 = v5;
-  [v4 decodeDoubleForKey:@"padding"];
+  [coderCopy decodeDoubleForKey:@"padding"];
   v8 = v7;
-  [v4 decodeDoubleForKey:@"prior"];
+  [coderCopy decodeDoubleForKey:@"prior"];
   v10 = v9;
 
   return [(FCPersonalizationLowFlowEstimationConfig *)self initWithExponent:v6 padding:v8 prior:v10];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   [(FCPersonalizationLowFlowEstimationConfig *)self exponent];
-  [v4 encodeDouble:@"exponent" forKey:?];
+  [coderCopy encodeDouble:@"exponent" forKey:?];
   [(FCPersonalizationLowFlowEstimationConfig *)self padding];
-  [v4 encodeDouble:@"padding" forKey:?];
+  [coderCopy encodeDouble:@"padding" forKey:?];
   [(FCPersonalizationLowFlowEstimationConfig *)self prior];
-  [v4 encodeDouble:@"prior" forKey:?];
+  [coderCopy encodeDouble:@"prior" forKey:?];
 }
 
 @end

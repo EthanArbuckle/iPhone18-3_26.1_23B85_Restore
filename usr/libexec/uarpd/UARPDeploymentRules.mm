@@ -1,16 +1,16 @@
 @interface UARPDeploymentRules
-+ (id)calculateDeploymentPercent:(id)a3;
-+ (id)calculateWeeklyDeploymentDay:(id)a3;
-- (BOOL)processCountryDeploymentRules:(id)a3;
-- (BOOL)processPercentageDeploymentRules:(id)a3;
-- (UARPDeploymentRules)initWithRulesDictionary:(id)a3;
++ (id)calculateDeploymentPercent:(id)percent;
++ (id)calculateWeeklyDeploymentDay:(id)day;
+- (BOOL)processCountryDeploymentRules:(id)rules;
+- (BOOL)processPercentageDeploymentRules:(id)rules;
+- (UARPDeploymentRules)initWithRulesDictionary:(id)dictionary;
 @end
 
 @implementation UARPDeploymentRules
 
-- (UARPDeploymentRules)initWithRulesDictionary:(id)a3
+- (UARPDeploymentRules)initWithRulesDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = UARPDeploymentRules;
   v5 = [(UARPDeploymentRules *)&v15 init];
@@ -27,14 +27,14 @@
   countryRules = v5->_countryRules;
   v5->_countryRules = v8;
 
-  v10 = [v4 objectForKeyedSubscript:@"Percentage Rules"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"Percentage Rules"];
   if (![(UARPDeploymentRules *)v5 processPercentageDeploymentRules:v10])
   {
 
     goto LABEL_6;
   }
 
-  v11 = [v4 objectForKeyedSubscript:@"Country Rules"];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"Country Rules"];
   v12 = [(UARPDeploymentRules *)v5 processCountryDeploymentRules:v11];
 
   if (!v12)
@@ -51,10 +51,10 @@ LABEL_7:
   return v13;
 }
 
-- (BOOL)processPercentageDeploymentRules:(id)a3
+- (BOOL)processPercentageDeploymentRules:(id)rules
 {
-  v4 = a3;
-  if (v4)
+  rulesCopy = rules;
+  if (rulesCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -67,7 +67,7 @@ LABEL_7:
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = v4;
+    v5 = rulesCopy;
     v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v6)
     {
@@ -104,10 +104,10 @@ LABEL_15:
   return v13;
 }
 
-- (BOOL)processCountryDeploymentRules:(id)a3
+- (BOOL)processCountryDeploymentRules:(id)rules
 {
-  v4 = a3;
-  if (v4)
+  rulesCopy = rules;
+  if (rulesCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -120,7 +120,7 @@ LABEL_15:
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = v4;
+    v5 = rulesCopy;
     v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v6)
     {
@@ -157,19 +157,19 @@ LABEL_15:
   return v13;
 }
 
-+ (id)calculateWeeklyDeploymentDay:(id)a3
++ (id)calculateWeeklyDeploymentDay:(id)day
 {
-  v3 = a3;
-  if ([v3 length])
+  dayCopy = day;
+  if ([dayCopy length])
   {
     v4 = 0;
     v5 = 0;
     do
     {
-      v4 += *([v3 UTF8String] + v5++);
+      v4 += *([dayCopy UTF8String] + v5++);
     }
 
-    while (v5 < [v3 length]);
+    while (v5 < [dayCopy length]);
     v6 = v4 % 7;
   }
 
@@ -183,23 +183,23 @@ LABEL_15:
   return v7;
 }
 
-+ (id)calculateDeploymentPercent:(id)a3
++ (id)calculateDeploymentPercent:(id)percent
 {
-  v3 = a3;
-  if ([v3 length])
+  percentCopy = percent;
+  if ([percentCopy length])
   {
     v4 = 0;
     v5 = 0;
     v6 = 3;
     do
     {
-      v7 = *([v3 UTF8String] + v5);
+      v7 = *([percentCopy UTF8String] + v5);
       v4 += v7;
       v6 *= v7;
       ++v5;
     }
 
-    while (v5 < [v3 length]);
+    while (v5 < [percentCopy length]);
     v8 = v6 % 0xA + 10 * (v4 % 0xA);
   }
 

@@ -1,5 +1,5 @@
 @interface AVSampleBufferDisplayLayer
-+ (CGRect)_destRectForAspectRatio:(CGSize)a3;
++ (CGRect)_destRectForAspectRatio:(CGSize)ratio;
 - (AVLayerVideoGravity)videoGravity;
 - (AVQueuedSampleBufferRenderingStatus)status;
 - (AVSampleBufferDisplayLayer)init;
@@ -14,7 +14,7 @@
 - (BOOL)preventsCapture;
 - (BOOL)preventsDisplaySleepDuringVideoPlayback;
 - (BOOL)requiresFlushToResumeDecoding;
-- (BOOL)setRenderSynchronizer:(id)a3 error:(id *)a4;
+- (BOOL)setRenderSynchronizer:(id)synchronizer error:(id *)error;
 - (CGRect)videoRect;
 - (CMTimebaseRef)controlTimebase;
 - (CMTimebaseRef)timebase;
@@ -24,49 +24,49 @@
 - (id)_loggingDescription;
 - (id)makeVideoRenderer;
 - (id)videoPerformanceMetrics;
-- (void)_setDisallowsVideoLayerDisplayCompositing:(BOOL)a3;
-- (void)_updateLayerTreeGeometryWithVideoGravity:(id)a3 presentationSize:(CGSize)a4 videoGravityShouldTriggerAnimation:(BOOL)a5;
-- (void)_updatePresentationSize:(CGSize)a3;
-- (void)copyFigSampleBufferAudioRenderer:(OpaqueFigSampleBufferAudioRenderer *)a3;
+- (void)_setDisallowsVideoLayerDisplayCompositing:(BOOL)compositing;
+- (void)_updateLayerTreeGeometryWithVideoGravity:(id)gravity presentationSize:(CGSize)size videoGravityShouldTriggerAnimation:(BOOL)animation;
+- (void)_updatePresentationSize:(CGSize)size;
+- (void)copyFigSampleBufferAudioRenderer:(OpaqueFigSampleBufferAudioRenderer *)renderer;
 - (void)dealloc;
 - (void)enqueueSampleBuffer:(CMSampleBufferRef)sampleBuffer;
-- (void)expectMinimumUpcomingSampleBufferPresentationTime:(id *)a3;
+- (void)expectMinimumUpcomingSampleBufferPresentationTime:(id *)time;
 - (void)expectMonotonicallyIncreasingUpcomingSampleBufferPresentationTimes;
 - (void)flush;
 - (void)flushAndRemoveImage;
-- (void)flushWithRemovalOfDisplayedImage:(BOOL)a3 completionHandler:(id)a4;
-- (void)layerDidBecomeVisible:(BOOL)a3;
+- (void)flushWithRemovalOfDisplayedImage:(BOOL)image completionHandler:(id)handler;
+- (void)layerDidBecomeVisible:(BOOL)visible;
 - (void)layoutSublayers;
 - (void)postVideoRectDidChangeNotification;
-- (void)prerollDecodeWithCompletionHandler:(id)a3;
+- (void)prerollDecodeWithCompletionHandler:(id)handler;
 - (void)requestMediaDataWhenReadyOnQueue:(dispatch_queue_t)queue usingBlock:(void *)block;
 - (void)resetUpcomingSampleBufferPresentationTimeExpectations;
-- (void)setBounds:(CGRect)a3;
+- (void)setBounds:(CGRect)bounds;
 - (void)setControlTimebase:(CMTimebaseRef)controlTimebase;
-- (void)setOutput:(id)a3;
-- (void)setOverridesPreferredDynamicRangeForVideo:(BOOL)a3;
-- (void)setPreferredDynamicRange:(id)a3;
+- (void)setOutput:(id)output;
+- (void)setOverridesPreferredDynamicRangeForVideo:(BOOL)video;
+- (void)setPreferredDynamicRange:(id)range;
 - (void)setPreventsAutomaticBackgroundingDuringVideoPlayback:(BOOL)preventsAutomaticBackgroundingDuringVideoPlayback;
 - (void)setPreventsCapture:(BOOL)preventsCapture;
 - (void)setPreventsDisplaySleepDuringVideoPlayback:(BOOL)preventsDisplaySleepDuringVideoPlayback;
-- (void)setSTSLabel:(id)a3;
-- (void)setToneMapToStandardDynamicRange:(BOOL)a3;
+- (void)setSTSLabel:(id)label;
+- (void)setToneMapToStandardDynamicRange:(BOOL)range;
 - (void)setVideoGravity:(AVLayerVideoGravity)videoGravity;
 - (void)stopRequestingMediaData;
 @end
 
 @implementation AVSampleBufferDisplayLayer
 
-- (void)_updateLayerTreeGeometryWithVideoGravity:(id)a3 presentationSize:(CGSize)a4 videoGravityShouldTriggerAnimation:(BOOL)a5
+- (void)_updateLayerTreeGeometryWithVideoGravity:(id)gravity presentationSize:(CGSize)size videoGravityShouldTriggerAnimation:(BOOL)animation
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __123__AVSampleBufferDisplayLayer__updateLayerTreeGeometryWithVideoGravity_presentationSize_videoGravityShouldTriggerAnimation___block_invoke;
   v6[3] = &unk_1E7460D08;
-  v7 = a4;
+  sizeCopy = size;
   v6[4] = self;
-  v6[5] = a3;
-  v8 = a5;
+  v6[5] = gravity;
+  animationCopy = animation;
   AVSerializeOnQueueAsyncIfNecessary(MEMORY[0x1E69E96A0], v6);
   [(AVSampleBufferDisplayLayer *)self postVideoRectDidChangeNotification];
 }
@@ -168,10 +168,10 @@ uint64_t __123__AVSampleBufferDisplayLayer__updateLayerTreeGeometryWithVideoGrav
   return [MEMORY[0x1E6979518] commit];
 }
 
-- (void)_updatePresentationSize:(CGSize)a3
+- (void)_updatePresentationSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -187,7 +187,7 @@ uint64_t __123__AVSampleBufferDisplayLayer__updateLayerTreeGeometryWithVideoGrav
   block[1] = 3221225472;
   block[2] = __54__AVSampleBufferDisplayLayer__updatePresentationSize___block_invoke;
   block[3] = &unk_1E74659C0;
-  v8 = a3;
+  sizeCopy = size;
   block[4] = self;
   block[5] = &v15;
   block[6] = &v9;
@@ -215,19 +215,19 @@ uint64_t __54__AVSampleBufferDisplayLayer__updatePresentationSize___block_invoke
   return result;
 }
 
-+ (CGRect)_destRectForAspectRatio:(CGSize)a3
++ (CGRect)_destRectForAspectRatio:(CGSize)ratio
 {
   v3 = *MEMORY[0x1E695F058];
   v4 = *(MEMORY[0x1E695F058] + 8);
   v5 = *(MEMORY[0x1E695F058] + 16);
   v6 = *(MEMORY[0x1E695F058] + 24);
-  if (a3.width > 0.0 && a3.height > 0.0)
+  if (ratio.width > 0.0 && ratio.height > 0.0)
   {
     v10.size.width = 1600.0;
     v10.origin.x = 0.0;
     v10.origin.y = 0.0;
     v10.size.height = 1600.0;
-    *(&v5 - 2) = AVMakeRectWithAspectRatioInsideRect(a3, v10);
+    *(&v5 - 2) = AVMakeRectWithAspectRatioInsideRect(ratio, v10);
   }
 
   v7 = v3;
@@ -274,9 +274,9 @@ uint64_t __54__AVSampleBufferDisplayLayer__updatePresentationSize___block_invoke
     v2->_bounds.size = v5;
     [(CALayer *)v2->_contentLayer setHidden:1];
     [(CALayer *)v2->_contentLayer setMasksToBounds:1];
-    v6 = [(AVSampleBufferDisplayLayer *)v2 makeVideoRenderer];
-    v2->_sampleBufferVideoRenderer = v6;
-    v2->_loggingIdentifier = [-[AVSampleBufferVideoRenderer _commonLoggingIdentifier](v6 "_commonLoggingIdentifier")];
+    makeVideoRenderer = [(AVSampleBufferDisplayLayer *)v2 makeVideoRenderer];
+    v2->_sampleBufferVideoRenderer = makeVideoRenderer;
+    v2->_loggingIdentifier = [-[AVSampleBufferVideoRenderer _commonLoggingIdentifier](makeVideoRenderer "_commonLoggingIdentifier")];
     sampleBufferVideoRenderer = v2->_sampleBufferVideoRenderer;
     if (!sampleBufferVideoRenderer)
     {
@@ -322,9 +322,9 @@ LABEL_6:
 
 - (CMTimebaseRef)controlTimebase
 {
-  v2 = [(AVSampleBufferDisplayLayer *)self _sampleBufferVideoRenderer];
+  _sampleBufferVideoRenderer = [(AVSampleBufferDisplayLayer *)self _sampleBufferVideoRenderer];
 
-  return [(AVSampleBufferVideoRenderer *)v2 controlTimebase];
+  return [(AVSampleBufferVideoRenderer *)_sampleBufferVideoRenderer controlTimebase];
 }
 
 - (void)setVideoGravity:(AVLayerVideoGravity)videoGravity
@@ -410,16 +410,16 @@ uint64_t __42__AVSampleBufferDisplayLayer_videoGravity__block_invoke(uint64_t a1
 
 - (BOOL)isReadyForDisplay
 {
-  v2 = [(AVSampleBufferDisplayLayer *)self _sampleBufferVideoRenderer];
+  _sampleBufferVideoRenderer = [(AVSampleBufferDisplayLayer *)self _sampleBufferVideoRenderer];
 
-  return [(AVSampleBufferVideoRenderer *)v2 isReadyForDisplay];
+  return [(AVSampleBufferVideoRenderer *)_sampleBufferVideoRenderer isReadyForDisplay];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   v4.receiver = self;
   v4.super_class = AVSampleBufferDisplayLayer;
-  [(AVSampleBufferDisplayLayer *)&v4 setBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(AVSampleBufferDisplayLayer *)&v4 setBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   [(AVSampleBufferDisplayLayer *)self postVideoRectDidChangeNotification];
 }
 
@@ -468,14 +468,14 @@ __n128 __45__AVSampleBufferDisplayLayer_layoutSublayers__block_invoke(void *a1)
   return result;
 }
 
-- (void)layerDidBecomeVisible:(BOOL)a3
+- (void)layerDidBecomeVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   v5.receiver = self;
   v5.super_class = AVSampleBufferDisplayLayer;
   [(AVSampleBufferDisplayLayer *)&v5 layerDidBecomeVisible:?];
   FigObjectRecordMethodCallsForObject();
-  [(AVSampleBufferVideoRenderer *)[(AVSampleBufferDisplayLayer *)self _sampleBufferVideoRenderer] setDisplayLayerVisibility:v3];
+  [(AVSampleBufferVideoRenderer *)[(AVSampleBufferDisplayLayer *)self _sampleBufferVideoRenderer] setDisplayLayerVisibility:visibleCopy];
 }
 
 - (CGRect)videoRect
@@ -536,36 +536,36 @@ uint64_t __39__AVSampleBufferDisplayLayer_videoRect__block_invoke(void *a1)
 
 - (void)postVideoRectDidChangeNotification
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
 
-  [v3 postNotificationName:@"AVSampleBufferDisplayLayerVideoRectDidChangeNotification" object:self];
+  [defaultCenter postNotificationName:@"AVSampleBufferDisplayLayerVideoRectDidChangeNotification" object:self];
 }
 
-- (BOOL)setRenderSynchronizer:(id)a3 error:(id *)a4
+- (BOOL)setRenderSynchronizer:(id)synchronizer error:(id *)error
 {
-  v6 = [(AVSampleBufferDisplayLayer *)self _sampleBufferVideoRenderer];
+  _sampleBufferVideoRenderer = [(AVSampleBufferDisplayLayer *)self _sampleBufferVideoRenderer];
 
-  return [(AVSampleBufferVideoRenderer *)v6 setRenderSynchronizer:a3 error:a4];
+  return [(AVSampleBufferVideoRenderer *)_sampleBufferVideoRenderer setRenderSynchronizer:synchronizer error:error];
 }
 
-- (void)copyFigSampleBufferAudioRenderer:(OpaqueFigSampleBufferAudioRenderer *)a3
+- (void)copyFigSampleBufferAudioRenderer:(OpaqueFigSampleBufferAudioRenderer *)renderer
 {
-  if (a3)
+  if (renderer)
   {
-    *a3 = 0;
+    *renderer = 0;
   }
 }
 
-- (void)setSTSLabel:(id)a3
+- (void)setSTSLabel:(id)label
 {
-  if ([(AVSampleBufferDisplayLayer *)self _STSLabel]!= a3)
+  if ([(AVSampleBufferDisplayLayer *)self _STSLabel]!= label)
   {
-    [(AVSampleBufferVideoRenderer *)[(AVSampleBufferDisplayLayer *)self _sampleBufferVideoRenderer] setSTSLabel:a3];
+    [(AVSampleBufferVideoRenderer *)[(AVSampleBufferDisplayLayer *)self _sampleBufferVideoRenderer] setSTSLabel:label];
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __42__AVSampleBufferDisplayLayer_setSTSLabel___block_invoke;
     v5[3] = &unk_1E7460DF0;
-    v5[4] = a3;
+    v5[4] = label;
     v5[5] = self;
     AVSerializeOnQueueAsyncIfNecessary(MEMORY[0x1E69E96A0], v5);
   }
@@ -608,18 +608,18 @@ uint64_t __42__AVSampleBufferDisplayLayer_setSTSLabel___block_invoke(uint64_t a1
 
 - (id)_STSLabel
 {
-  v2 = [(AVSampleBufferDisplayLayer *)self _sampleBufferVideoRenderer];
+  _sampleBufferVideoRenderer = [(AVSampleBufferDisplayLayer *)self _sampleBufferVideoRenderer];
 
-  return [(AVSampleBufferVideoRenderer *)v2 _STSLabel];
+  return [(AVSampleBufferVideoRenderer *)_sampleBufferVideoRenderer _STSLabel];
 }
 
-- (void)setToneMapToStandardDynamicRange:(BOOL)a3
+- (void)setToneMapToStandardDynamicRange:(BOOL)range
 {
-  v3 = a3;
-  [(AVSampleBufferVideoRenderer *)[(AVSampleBufferDisplayLayer *)self _sampleBufferVideoRenderer] setToneMapToStandardDynamicRange:a3];
+  rangeCopy = range;
+  [(AVSampleBufferVideoRenderer *)[(AVSampleBufferDisplayLayer *)self _sampleBufferVideoRenderer] setToneMapToStandardDynamicRange:range];
   v5.receiver = self;
   v5.super_class = AVSampleBufferDisplayLayer;
-  [(AVSampleBufferDisplayLayer *)&v5 setToneMapToStandardDynamicRange:v3];
+  [(AVSampleBufferDisplayLayer *)&v5 setToneMapToStandardDynamicRange:rangeCopy];
 }
 
 - (id)makeVideoRenderer
@@ -631,30 +631,30 @@ uint64_t __42__AVSampleBufferDisplayLayer_setSTSLabel___block_invoke(uint64_t a1
 
 - (BOOL)isReadyForMoreMediaData
 {
-  v2 = [(AVSampleBufferDisplayLayer *)self _sampleBufferVideoRenderer];
+  _sampleBufferVideoRenderer = [(AVSampleBufferDisplayLayer *)self _sampleBufferVideoRenderer];
 
-  return [(AVSampleBufferVideoRenderer *)v2 isReadyForMoreMediaData];
+  return [(AVSampleBufferVideoRenderer *)_sampleBufferVideoRenderer isReadyForMoreMediaData];
 }
 
 - (AVQueuedSampleBufferRenderingStatus)status
 {
-  v2 = [(AVSampleBufferDisplayLayer *)self _sampleBufferVideoRenderer];
+  _sampleBufferVideoRenderer = [(AVSampleBufferDisplayLayer *)self _sampleBufferVideoRenderer];
 
-  return [(AVSampleBufferVideoRenderer *)v2 status];
+  return [(AVSampleBufferVideoRenderer *)_sampleBufferVideoRenderer status];
 }
 
 - (NSError)error
 {
-  v2 = [(AVSampleBufferDisplayLayer *)self _sampleBufferVideoRenderer];
+  _sampleBufferVideoRenderer = [(AVSampleBufferDisplayLayer *)self _sampleBufferVideoRenderer];
 
-  return [(AVSampleBufferVideoRenderer *)v2 error];
+  return [(AVSampleBufferVideoRenderer *)_sampleBufferVideoRenderer error];
 }
 
 - (CMTimebaseRef)timebase
 {
-  v2 = [(AVSampleBufferDisplayLayer *)self _sampleBufferVideoRenderer];
+  _sampleBufferVideoRenderer = [(AVSampleBufferDisplayLayer *)self _sampleBufferVideoRenderer];
 
-  return [(AVSampleBufferVideoRenderer *)v2 timebase];
+  return [(AVSampleBufferVideoRenderer *)_sampleBufferVideoRenderer timebase];
 }
 
 - (void)enqueueSampleBuffer:(CMSampleBufferRef)sampleBuffer
@@ -675,81 +675,81 @@ uint64_t __42__AVSampleBufferDisplayLayer_setSTSLabel___block_invoke(uint64_t a1
 
 - (void)flush
 {
-  v2 = [(AVSampleBufferDisplayLayer *)self _sampleBufferVideoRenderer];
+  _sampleBufferVideoRenderer = [(AVSampleBufferDisplayLayer *)self _sampleBufferVideoRenderer];
 
-  [(AVSampleBufferVideoRenderer *)v2 flush];
+  [(AVSampleBufferVideoRenderer *)_sampleBufferVideoRenderer flush];
 }
 
 - (void)flushAndRemoveImage
 {
-  v2 = [(AVSampleBufferDisplayLayer *)self _sampleBufferVideoRenderer];
+  _sampleBufferVideoRenderer = [(AVSampleBufferDisplayLayer *)self _sampleBufferVideoRenderer];
 
-  [(AVSampleBufferVideoRenderer *)v2 flushAndRemoveImage];
+  [(AVSampleBufferVideoRenderer *)_sampleBufferVideoRenderer flushAndRemoveImage];
 }
 
-- (void)flushWithRemovalOfDisplayedImage:(BOOL)a3 completionHandler:(id)a4
+- (void)flushWithRemovalOfDisplayedImage:(BOOL)image completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = [(AVSampleBufferDisplayLayer *)self _sampleBufferVideoRenderer];
+  imageCopy = image;
+  _sampleBufferVideoRenderer = [(AVSampleBufferDisplayLayer *)self _sampleBufferVideoRenderer];
 
-  [(AVSampleBufferVideoRenderer *)v6 flushWithRemovalOfDisplayedImage:v5 completionHandler:a4];
+  [(AVSampleBufferVideoRenderer *)_sampleBufferVideoRenderer flushWithRemovalOfDisplayedImage:imageCopy completionHandler:handler];
 }
 
-- (void)prerollDecodeWithCompletionHandler:(id)a3
+- (void)prerollDecodeWithCompletionHandler:(id)handler
 {
-  v4 = [(AVSampleBufferDisplayLayer *)self _sampleBufferVideoRenderer];
+  _sampleBufferVideoRenderer = [(AVSampleBufferDisplayLayer *)self _sampleBufferVideoRenderer];
 
-  [(AVSampleBufferVideoRenderer *)v4 prerollDecodeWithCompletionHandler:a3];
+  [(AVSampleBufferVideoRenderer *)_sampleBufferVideoRenderer prerollDecodeWithCompletionHandler:handler];
 }
 
 - (void)requestMediaDataWhenReadyOnQueue:(dispatch_queue_t)queue usingBlock:(void *)block
 {
-  v6 = [(AVSampleBufferDisplayLayer *)self _sampleBufferVideoRenderer];
+  _sampleBufferVideoRenderer = [(AVSampleBufferDisplayLayer *)self _sampleBufferVideoRenderer];
 
-  [(AVSampleBufferVideoRenderer *)v6 requestMediaDataWhenReadyOnQueue:queue usingBlock:block];
+  [(AVSampleBufferVideoRenderer *)_sampleBufferVideoRenderer requestMediaDataWhenReadyOnQueue:queue usingBlock:block];
 }
 
 - (void)stopRequestingMediaData
 {
-  v2 = [(AVSampleBufferDisplayLayer *)self _sampleBufferVideoRenderer];
+  _sampleBufferVideoRenderer = [(AVSampleBufferDisplayLayer *)self _sampleBufferVideoRenderer];
 
-  [(AVSampleBufferVideoRenderer *)v2 stopRequestingMediaData];
+  [(AVSampleBufferVideoRenderer *)_sampleBufferVideoRenderer stopRequestingMediaData];
 }
 
 - (BOOL)hasSufficientMediaDataForReliablePlaybackStart
 {
-  v2 = [(AVSampleBufferDisplayLayer *)self _sampleBufferVideoRenderer];
+  _sampleBufferVideoRenderer = [(AVSampleBufferDisplayLayer *)self _sampleBufferVideoRenderer];
 
-  return [(AVSampleBufferVideoRenderer *)v2 hasSufficientMediaDataForReliablePlaybackStart];
+  return [(AVSampleBufferVideoRenderer *)_sampleBufferVideoRenderer hasSufficientMediaDataForReliablePlaybackStart];
 }
 
 - (BOOL)requiresFlushToResumeDecoding
 {
-  v2 = [(AVSampleBufferDisplayLayer *)self _sampleBufferVideoRenderer];
+  _sampleBufferVideoRenderer = [(AVSampleBufferDisplayLayer *)self _sampleBufferVideoRenderer];
 
-  return [(AVSampleBufferVideoRenderer *)v2 requiresFlushToResumeDecoding];
+  return [(AVSampleBufferVideoRenderer *)_sampleBufferVideoRenderer requiresFlushToResumeDecoding];
 }
 
 - (id)videoPerformanceMetrics
 {
-  v2 = [(AVSampleBufferDisplayLayer *)self _sampleBufferVideoRenderer];
+  _sampleBufferVideoRenderer = [(AVSampleBufferDisplayLayer *)self _sampleBufferVideoRenderer];
 
-  return [(AVSampleBufferVideoRenderer *)v2 videoPerformanceMetrics];
+  return [(AVSampleBufferVideoRenderer *)_sampleBufferVideoRenderer videoPerformanceMetrics];
 }
 
 - (BOOL)outputObscuredDueToInsufficientExternalProtection
 {
-  v2 = [(AVSampleBufferDisplayLayer *)self _sampleBufferVideoRenderer];
+  _sampleBufferVideoRenderer = [(AVSampleBufferDisplayLayer *)self _sampleBufferVideoRenderer];
 
-  return [(AVSampleBufferVideoRenderer *)v2 outputObscuredDueToInsufficientExternalProtection];
+  return [(AVSampleBufferVideoRenderer *)_sampleBufferVideoRenderer outputObscuredDueToInsufficientExternalProtection];
 }
 
 - (void)setPreventsCapture:(BOOL)preventsCapture
 {
   v3 = preventsCapture;
-  v4 = [(AVSampleBufferDisplayLayer *)self _sampleBufferVideoRenderer];
+  _sampleBufferVideoRenderer = [(AVSampleBufferDisplayLayer *)self _sampleBufferVideoRenderer];
 
-  [(AVSampleBufferVideoRenderer *)v4 setPreventsCapture:v3];
+  [(AVSampleBufferVideoRenderer *)_sampleBufferVideoRenderer setPreventsCapture:v3];
 }
 
 - (BOOL)preventsCapture
@@ -792,40 +792,40 @@ uint64_t __42__AVSampleBufferDisplayLayer_setSTSLabel___block_invoke(uint64_t a1
   return self;
 }
 
-- (void)_setDisallowsVideoLayerDisplayCompositing:(BOOL)a3
+- (void)_setDisallowsVideoLayerDisplayCompositing:(BOOL)compositing
 {
-  v3 = a3;
-  v4 = [(AVSampleBufferDisplayLayer *)self _sampleBufferVideoRenderer];
+  compositingCopy = compositing;
+  _sampleBufferVideoRenderer = [(AVSampleBufferDisplayLayer *)self _sampleBufferVideoRenderer];
 
-  [(AVSampleBufferVideoRenderer *)v4 _setDisallowsVideoLayerDisplayCompositing:v3];
+  [(AVSampleBufferVideoRenderer *)_sampleBufferVideoRenderer _setDisallowsVideoLayerDisplayCompositing:compositingCopy];
 }
 
 - (BOOL)_disallowsVideoLayerDisplayCompositing
 {
-  v2 = [(AVSampleBufferDisplayLayer *)self _sampleBufferVideoRenderer];
+  _sampleBufferVideoRenderer = [(AVSampleBufferDisplayLayer *)self _sampleBufferVideoRenderer];
 
-  return [(AVSampleBufferVideoRenderer *)v2 _disallowsVideoLayerDisplayCompositing];
+  return [(AVSampleBufferVideoRenderer *)_sampleBufferVideoRenderer _disallowsVideoLayerDisplayCompositing];
 }
 
-- (void)expectMinimumUpcomingSampleBufferPresentationTime:(id *)a3
+- (void)expectMinimumUpcomingSampleBufferPresentationTime:(id *)time
 {
-  v4 = [(AVSampleBufferDisplayLayer *)self _sampleBufferVideoRenderer];
-  v5 = *a3;
-  [(AVSampleBufferVideoRenderer *)v4 expectMinimumUpcomingSampleBufferPresentationTime:&v5];
+  _sampleBufferVideoRenderer = [(AVSampleBufferDisplayLayer *)self _sampleBufferVideoRenderer];
+  v5 = *time;
+  [(AVSampleBufferVideoRenderer *)_sampleBufferVideoRenderer expectMinimumUpcomingSampleBufferPresentationTime:&v5];
 }
 
 - (void)expectMonotonicallyIncreasingUpcomingSampleBufferPresentationTimes
 {
-  v2 = [(AVSampleBufferDisplayLayer *)self _sampleBufferVideoRenderer];
+  _sampleBufferVideoRenderer = [(AVSampleBufferDisplayLayer *)self _sampleBufferVideoRenderer];
 
-  [(AVSampleBufferVideoRenderer *)v2 expectMonotonicallyIncreasingUpcomingSampleBufferPresentationTimes];
+  [(AVSampleBufferVideoRenderer *)_sampleBufferVideoRenderer expectMonotonicallyIncreasingUpcomingSampleBufferPresentationTimes];
 }
 
 - (void)resetUpcomingSampleBufferPresentationTimeExpectations
 {
-  v2 = [(AVSampleBufferDisplayLayer *)self _sampleBufferVideoRenderer];
+  _sampleBufferVideoRenderer = [(AVSampleBufferDisplayLayer *)self _sampleBufferVideoRenderer];
 
-  [(AVSampleBufferVideoRenderer *)v2 resetUpcomingSampleBufferPresentationTimeExpectations];
+  [(AVSampleBufferVideoRenderer *)_sampleBufferVideoRenderer resetUpcomingSampleBufferPresentationTimeExpectations];
 }
 
 - (AVSampleBufferVideoOutput)output
@@ -844,8 +844,8 @@ uint64_t __42__AVSampleBufferDisplayLayer_setSTSLabel___block_invoke(uint64_t a1
   v7[4] = self;
   v7[5] = &v8;
   dispatch_sync(serialQueue, v7);
-  v4 = [(AVSampleBufferVideoRenderer *)[(AVSampleBufferDisplayLayer *)self _sampleBufferVideoRenderer] outputs];
-  if ([(NSArray *)v4 containsObject:v9[5]])
+  outputs = [(AVSampleBufferVideoRenderer *)[(AVSampleBufferDisplayLayer *)self _sampleBufferVideoRenderer] outputs];
+  if ([(NSArray *)outputs containsObject:v9[5]])
   {
     v5 = v9[5];
   }
@@ -859,7 +859,7 @@ uint64_t __42__AVSampleBufferDisplayLayer_setSTSLabel___block_invoke(uint64_t a1
   return v5;
 }
 
-- (void)setOutput:(id)a3
+- (void)setOutput:(id)output
 {
   v9 = 0;
   v10 = &v9;
@@ -874,14 +874,14 @@ uint64_t __42__AVSampleBufferDisplayLayer_setSTSLabel___block_invoke(uint64_t a1
   block[3] = &unk_1E74658A8;
   block[5] = self;
   block[6] = &v9;
-  block[4] = a3;
+  block[4] = output;
   dispatch_sync(serialQueue, block);
   v6 = v10[5];
-  if (v6 != a3)
+  if (v6 != output)
   {
-    v7 = [(AVSampleBufferDisplayLayer *)self _sampleBufferVideoRenderer];
-    [(AVSampleBufferVideoRenderer *)v7 removeOutput:v10[5]];
-    [(AVSampleBufferVideoRenderer *)v7 addOutput:a3];
+    _sampleBufferVideoRenderer = [(AVSampleBufferDisplayLayer *)self _sampleBufferVideoRenderer];
+    [(AVSampleBufferVideoRenderer *)_sampleBufferVideoRenderer removeOutput:v10[5]];
+    [(AVSampleBufferVideoRenderer *)_sampleBufferVideoRenderer addOutput:output];
     v6 = v10[5];
   }
 
@@ -896,25 +896,25 @@ void __74__AVSampleBufferDisplayLayer_AVSampleBufferDisplayLayerOutput__setOutpu
   *(*(a1 + 40) + 128) = *(a1 + 32);
 }
 
-- (void)setPreferredDynamicRange:(id)a3
+- (void)setPreferredDynamicRange:(id)range
 {
-  v5 = [(AVSampleBufferDisplayLayer *)self overridesPreferredDynamicRangeForVideo];
+  overridesPreferredDynamicRangeForVideo = [(AVSampleBufferDisplayLayer *)self overridesPreferredDynamicRangeForVideo];
   sampleBufferVideoRenderer = self->_sampleBufferVideoRenderer;
-  v7 = a3;
-  if (v5)
+  rangeCopy = range;
+  if (overridesPreferredDynamicRangeForVideo)
   {
-    v7 = [(AVSampleBufferDisplayLayer *)self _preferredDynamicRangeForPiP];
+    rangeCopy = [(AVSampleBufferDisplayLayer *)self _preferredDynamicRangeForPiP];
   }
 
-  [(AVSampleBufferVideoRenderer *)sampleBufferVideoRenderer setPreferredDynamicRange:v7];
+  [(AVSampleBufferVideoRenderer *)sampleBufferVideoRenderer setPreferredDynamicRange:rangeCopy];
   v8.receiver = self;
   v8.super_class = AVSampleBufferDisplayLayer;
-  [(AVSampleBufferDisplayLayer *)&v8 setPreferredDynamicRange:a3];
+  [(AVSampleBufferDisplayLayer *)&v8 setPreferredDynamicRange:range];
 }
 
-- (void)setOverridesPreferredDynamicRangeForVideo:(BOOL)a3
+- (void)setOverridesPreferredDynamicRangeForVideo:(BOOL)video
 {
-  if (a3)
+  if (video)
   {
     [(AVSampleBufferVideoRenderer *)self->_sampleBufferVideoRenderer setPreferredDynamicRange:[(AVSampleBufferDisplayLayer *)self _preferredDynamicRangeForPiP]];
   }
@@ -925,9 +925,9 @@ void __74__AVSampleBufferDisplayLayer_AVSampleBufferDisplayLayerOutput__setOutpu
   v6[2] = __106__AVSampleBufferDisplayLayer_AVSampleBufferDisplayLayerOutput__setOverridesPreferredDynamicRangeForVideo___block_invoke;
   v6[3] = &unk_1E7460E40;
   v6[4] = self;
-  v7 = a3;
+  videoCopy = video;
   dispatch_sync(serialQueue, v6);
-  if (!a3)
+  if (!video)
   {
     [(AVSampleBufferVideoRenderer *)self->_sampleBufferVideoRenderer setPreferredDynamicRange:[(AVSampleBufferDisplayLayer *)self preferredDynamicRange]];
   }
@@ -954,9 +954,9 @@ void __74__AVSampleBufferDisplayLayer_AVSampleBufferDisplayLayerOutput__setOutpu
 
 - (__CVBuffer)copyDisplayedPixelBuffer
 {
-  v2 = [(AVSampleBufferDisplayLayer *)self _sampleBufferVideoRenderer];
+  _sampleBufferVideoRenderer = [(AVSampleBufferDisplayLayer *)self _sampleBufferVideoRenderer];
 
-  return [(AVSampleBufferVideoRenderer *)v2 copyDisplayedPixelBuffer];
+  return [(AVSampleBufferVideoRenderer *)_sampleBufferVideoRenderer copyDisplayedPixelBuffer];
 }
 
 @end

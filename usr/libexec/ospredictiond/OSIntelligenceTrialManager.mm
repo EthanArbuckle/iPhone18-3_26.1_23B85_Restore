@@ -1,15 +1,15 @@
 @interface OSIntelligenceTrialManager
 + (id)sharedChargePredictionInstance;
 - (OSIntelligenceTrialManager)init;
-- (double)doubleFactorForName:(id)a3;
+- (double)doubleFactorForName:(id)name;
 - (double)loadTrialAdjustedHours;
 - (double)loadTrialDRAModelLeeway;
 - (double)loadTrialDRAModelMinDuration;
 - (double)loadTrialMinInputChargeDuration;
 - (double)loadTrialThreshold;
-- (id)loadModelFromPath:(id)a3 deleteExistingFiles:(BOOL)a4;
-- (int64_t)longFactorForName:(id)a3;
-- (void)addUpdateHandler:(id)a3;
+- (id)loadModelFromPath:(id)path deleteExistingFiles:(BOOL)files;
+- (int64_t)longFactorForName:(id)name;
+- (void)addUpdateHandler:(id)handler;
 - (void)loadTrialUpdates;
 @end
 
@@ -41,9 +41,9 @@
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Trial Client %@", buf, 0xCu);
     }
 
-    v10 = [(TRIClient *)v3->_trialClient trackingId];
+    trackingId = [(TRIClient *)v3->_trialClient trackingId];
     trialTrackingID = v3->_trialTrackingID;
-    v3->_trialTrackingID = v10;
+    v3->_trialTrackingID = trackingId;
 
     v12 = [TRINamespace namespaceNameFromId:251];
     trialNamespaceName = v3->_trialNamespaceName;
@@ -98,7 +98,7 @@
   block[1] = 3221225472;
   block[2] = sub_10001555C;
   block[3] = &unk_100094818;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000B6A18 != -1)
   {
     dispatch_once(&qword_1000B6A18, block);
@@ -113,9 +113,9 @@
 {
   os_unfair_lock_lock(&self->_lock);
   [(TRIClient *)self->_trialClient refresh];
-  v3 = [(TRIClient *)self->_trialClient newTrackingId];
+  newTrackingId = [(TRIClient *)self->_trialClient newTrackingId];
   trialTrackingID = self->_trialTrackingID;
-  self->_trialTrackingID = v3;
+  self->_trialTrackingID = newTrackingId;
 
   v5 = [TRINamespace namespaceNameFromId:251];
   trialNamespaceName = self->_trialNamespaceName;
@@ -148,29 +148,29 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (int64_t)longFactorForName:(id)a3
+- (int64_t)longFactorForName:(id)name
 {
-  v3 = [(OSIntelligenceTrialManager *)self trialFactor:a3];
-  v4 = [v3 longValue];
+  v3 = [(OSIntelligenceTrialManager *)self trialFactor:name];
+  longValue = [v3 longValue];
 
-  return v4;
+  return longValue;
 }
 
-- (double)doubleFactorForName:(id)a3
+- (double)doubleFactorForName:(id)name
 {
-  v3 = [(OSIntelligenceTrialManager *)self trialFactor:a3];
+  v3 = [(OSIntelligenceTrialManager *)self trialFactor:name];
   [v3 doubleValue];
   v5 = v4;
 
   return v5;
 }
 
-- (void)addUpdateHandler:(id)a3
+- (void)addUpdateHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_lock);
   updateHandlers = self->_updateHandlers;
-  v6 = objc_retainBlock(v4);
+  v6 = objc_retainBlock(handlerCopy);
 
   [(NSMutableArray *)updateHandlers addObject:v6];
 
@@ -258,19 +258,19 @@
   return v8;
 }
 
-- (id)loadModelFromPath:(id)a3 deleteExistingFiles:(BOOL)a4
+- (id)loadModelFromPath:(id)path deleteExistingFiles:(BOOL)files
 {
-  v4 = a4;
-  v6 = a3;
+  filesCopy = files;
+  pathCopy = path;
   v7 = os_transaction_create();
   v8 = v7;
-  if (v6)
+  if (pathCopy)
   {
     v59 = v7;
-    if (([(__CFString *)v6 isAbsolutePath]& 1) == 0)
+    if (([(__CFString *)pathCopy isAbsolutePath]& 1) == 0)
     {
       v9 = [NSBundle bundleForClass:objc_opt_class()];
-      v10 = [v9 pathForResource:v6 ofType:0];
+      v10 = [v9 pathForResource:pathCopy ofType:0];
 
       log = self->_log;
       if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
@@ -284,33 +284,33 @@
       {
         v12 = v10;
 
-        v6 = v12;
+        pathCopy = v12;
       }
     }
 
     v13 = +[NSFileManager defaultManager];
     v68 = 0;
-    v14 = [(__CFString *)v6 lastPathComponent];
-    v15 = [NSString stringWithFormat:@"%@%@", v14, @"c"];
+    lastPathComponent = [(__CFString *)pathCopy lastPathComponent];
+    v15 = [NSString stringWithFormat:@"%@%@", lastPathComponent, @"c"];
 
     v78[0] = @"/var/mobile/Library/OSIntelligence";
     v78[1] = v15;
     v16 = [NSArray arrayWithObjects:v78 count:2];
     v17 = [NSURL fileURLWithPathComponents:v16];
 
-    if (v4)
+    if (filesCopy)
     {
-      v18 = [(__CFString *)v17 path];
+      path = [(__CFString *)v17 path];
       v19 = self->_log;
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v71 = v18;
+        v71 = path;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Removing existing files from %@", buf, 0xCu);
       }
 
       v67 = 0;
-      v20 = [v13 removeItemAtPath:v18 error:&v67];
+      v20 = [v13 removeItemAtPath:path error:&v67];
       v21 = v67;
       if ((v20 & 1) == 0)
       {
@@ -318,7 +318,7 @@
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
-          v71 = v18;
+          v71 = path;
           v72 = 2112;
           v73 = v21;
           _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Failed to clean up path: %@ -- %@", buf, 0x16u);
@@ -331,8 +331,8 @@
       v21 = 0;
     }
 
-    v25 = [(__CFString *)v17 path];
-    v26 = [v13 fileExistsAtPath:v25 isDirectory:&v68];
+    path2 = [(__CFString *)v17 path];
+    v26 = [v13 fileExistsAtPath:path2 isDirectory:&v68];
 
     if (v26)
     {
@@ -366,12 +366,12 @@
 
     v57 = v17;
     v58 = v15;
-    v30 = [v13 temporaryDirectory];
-    v31 = [v30 path];
-    v77[0] = v31;
+    temporaryDirectory = [v13 temporaryDirectory];
+    path3 = [temporaryDirectory path];
+    v77[0] = path3;
     v32 = +[NSUUID UUID];
-    v33 = [v32 UUIDString];
-    v77[1] = v33;
+    uUIDString = [v32 UUIDString];
+    v77[1] = uUIDString;
     v34 = [NSArray arrayWithObjects:v77 count:2];
     v27 = [NSString pathWithComponents:v34];
 
@@ -398,17 +398,17 @@
     }
 
     v76[0] = v27;
-    v35 = [(__CFString *)v6 lastPathComponent];
-    v76[1] = v35;
+    lastPathComponent2 = [(__CFString *)pathCopy lastPathComponent];
+    v76[1] = lastPathComponent2;
     v36 = [NSArray arrayWithObjects:v76 count:2];
     v37 = [NSURL fileURLWithPathComponents:v36];
 
-    v38 = [(__CFString *)v37 path];
+    path4 = [(__CFString *)v37 path];
     v64 = v28;
-    LOBYTE(v35) = [v13 copyItemAtPath:v6 toPath:v38 error:&v64];
+    LOBYTE(lastPathComponent2) = [v13 copyItemAtPath:pathCopy toPath:path4 error:&v64];
     v39 = v64;
 
-    if ((v35 & 1) == 0)
+    if ((lastPathComponent2 & 1) == 0)
     {
       v41 = self->_log;
       v17 = v57;
@@ -416,7 +416,7 @@
       if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412802;
-        v71 = v6;
+        v71 = pathCopy;
         v72 = 2112;
         v73 = v37;
         v74 = 2112;

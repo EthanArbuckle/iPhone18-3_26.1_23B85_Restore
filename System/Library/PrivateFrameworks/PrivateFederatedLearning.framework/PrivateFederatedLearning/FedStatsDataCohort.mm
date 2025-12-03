@@ -1,6 +1,6 @@
 @interface FedStatsDataCohort
-+ (BOOL)checkCohortField:(id)a3 forNamespaceID:(id)a4;
-+ (id)keysForCohorts:(id)a3 namespaceID:(id)a4 parameters:(id)a5 possibleError:(id *)a6;
++ (BOOL)checkCohortField:(id)field forNamespaceID:(id)d;
++ (id)keysForCohorts:(id)cohorts namespaceID:(id)d parameters:(id)parameters possibleError:(id *)error;
 + (id)sharedInstance;
 - (FedStatsDataCohort)init;
 @end
@@ -31,7 +31,7 @@
   block[1] = 3221225472;
   block[2] = __36__FedStatsDataCohort_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_224 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_224, block);
@@ -49,17 +49,17 @@ uint64_t __36__FedStatsDataCohort_sharedInstance__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-+ (BOOL)checkCohortField:(id)a3 forNamespaceID:(id)a4
++ (BOOL)checkCohortField:(id)field forNamespaceID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
+  fieldCopy = field;
+  dCopy = d;
   v7 = +[FedStatsDataCohort sharedInstance];
-  v8 = [v7 namespaceMap];
-  v9 = [v8 objectForKey:v6];
+  namespaceMap = [v7 namespaceMap];
+  v9 = [namespaceMap objectForKey:dCopy];
 
   if (v9)
   {
-    v10 = [v9 containsObject:v5];
+    v10 = [v9 containsObject:fieldCopy];
   }
 
   else
@@ -70,33 +70,33 @@ uint64_t __36__FedStatsDataCohort_sharedInstance__block_invoke(uint64_t a1)
   return v10;
 }
 
-+ (id)keysForCohorts:(id)a3 namespaceID:(id)a4 parameters:(id)a5 possibleError:(id *)a6
++ (id)keysForCohorts:(id)cohorts namespaceID:(id)d parameters:(id)parameters possibleError:(id *)error
 {
   v54 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v41 = a5;
+  cohortsCopy = cohorts;
+  dCopy = d;
+  parametersCopy = parameters;
   v11 = +[FedStatsDataCohort sharedInstance];
-  v12 = [v11 namespaceMap];
-  v13 = [v12 objectForKey:v10];
+  namespaceMap = [v11 namespaceMap];
+  v13 = [namespaceMap objectForKey:dCopy];
 
   if (v13)
   {
-    v38 = a6;
-    v39 = v10;
-    v14 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v9, "count")}];
+    errorCopy = error;
+    v39 = dCopy;
+    v14 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(cohortsCopy, "count")}];
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
     v46 = 0u;
-    obj = v9;
+    obj = cohortsCopy;
     v15 = [obj countByEnumeratingWithState:&v43 objects:v53 count:16];
     if (v15)
     {
       v16 = v15;
       v17 = *v44;
       v36 = v11;
-      v37 = v9;
+      v37 = cohortsCopy;
 LABEL_4:
       v18 = 0;
       while (1)
@@ -115,10 +115,10 @@ LABEL_4:
         v20 = [FedStatsCohortFactory cohortQueryFieldByName:v19];
         if (!v20)
         {
-          v9 = v37;
-          v29 = v38;
-          v10 = v39;
-          if (v38)
+          cohortsCopy = v37;
+          v29 = errorCopy;
+          dCopy = v39;
+          if (errorCopy)
           {
             [MEMORY[0x277CCACA8] stringWithFormat:@"%@ cohort is not implemented.", v19, v35];
             v30 = LABEL_25:;
@@ -132,7 +132,7 @@ LABEL_4:
 
         v21 = v20;
         v42 = 0;
-        v22 = [v20 cohortKeyForParameters:v41 possibleError:&v42];
+        v22 = [v20 cohortKeyForParameters:parametersCopy possibleError:&v42];
         v23 = +[_PFLLog framework];
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
         {
@@ -164,7 +164,7 @@ LABEL_4:
         {
           v16 = [obj countByEnumeratingWithState:&v43 objects:v53 count:16];
           v11 = v36;
-          v9 = v37;
+          cohortsCopy = v37;
           if (v16)
           {
             goto LABEL_4;
@@ -174,10 +174,10 @@ LABEL_4:
         }
       }
 
-      v9 = v37;
-      v29 = v38;
-      v10 = v39;
-      if (v38)
+      cohortsCopy = v37;
+      v29 = errorCopy;
+      dCopy = v39;
+      if (errorCopy)
       {
         [MEMORY[0x277CCACA8] stringWithFormat:@"%@ cohort is not approved for %@ namespace.", v19, v39];
         goto LABEL_25;
@@ -193,18 +193,18 @@ LABEL_26:
 LABEL_17:
 
     v25 = [MEMORY[0x277CBEA60] arrayWithArray:v14];
-    v10 = v39;
+    dCopy = v39;
 LABEL_27:
   }
 
   else
   {
-    if (a6)
+    if (error)
     {
-      v26 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ namespace is invalid.", v10];
-      v27 = [FedStatsError errorWithCode:900 description:v26];
-      v28 = *a6;
-      *a6 = v27;
+      dCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ namespace is invalid.", dCopy];
+      v27 = [FedStatsError errorWithCode:900 description:dCopy];
+      v28 = *error;
+      *error = v27;
     }
 
     v25 = 0;

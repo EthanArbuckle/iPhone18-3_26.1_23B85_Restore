@@ -1,47 +1,47 @@
 @interface TSDAngleGradient
-- (BOOL)isEqual:(id)a3;
-- (CGAffineTransform)p_gradientTransformForBounds:(SEL)a3;
-- (CGPoint)endPointForPath:(id)a3 andBounds:(CGRect)a4;
-- (CGPoint)startPointForPath:(id)a3 andBounds:(CGRect)a4;
-- (TSDAngleGradient)initWithArchive:(const void *)a3 unarchiver:(id)a4;
-- (TSDAngleGradient)initWithGradientStops:(id)a3 type:(unint64_t)a4 opacity:(double)a5 angle:(double)a6;
-- (TSDAngleGradient)initWithStartColor:(id)a3 endColor:(id)a4 type:(unint64_t)a5 angle:(double)a6;
-- (double)p_bestGradientLengthForRect:(CGRect)a3 atAngle:(double)a4;
+- (BOOL)isEqual:(id)equal;
+- (CGAffineTransform)p_gradientTransformForBounds:(SEL)bounds;
+- (CGPoint)endPointForPath:(id)path andBounds:(CGRect)bounds;
+- (CGPoint)startPointForPath:(id)path andBounds:(CGRect)bounds;
+- (TSDAngleGradient)initWithArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (TSDAngleGradient)initWithGradientStops:(id)stops type:(unint64_t)type opacity:(double)opacity angle:(double)angle;
+- (TSDAngleGradient)initWithStartColor:(id)color endColor:(id)endColor type:(unint64_t)type angle:(double)angle;
+- (double)p_bestGradientLengthForRect:(CGRect)rect atAngle:(double)angle;
 - (id)description;
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (int64_t)mixingTypeWithObject:(id)a3;
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (int64_t)mixingTypeWithObject:(id)object;
 - (unint64_t)hash;
-- (void)p_paintPath:(CGPath *)a3 inContext:(CGContext *)a4 naturalBounds:(CGRect)a5;
-- (void)paintPath:(CGPath *)a3 inContext:(CGContext *)a4;
-- (void)paintPath:(CGPath *)a3 naturalBounds:(CGRect)a4 inContext:(CGContext *)a5 isPDF:(BOOL)a6;
-- (void)paintRect:(CGRect)a3 inContext:(CGContext *)a4 atAngle:(double)a5;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
+- (void)p_paintPath:(CGPath *)path inContext:(CGContext *)context naturalBounds:(CGRect)bounds;
+- (void)paintPath:(CGPath *)path inContext:(CGContext *)context;
+- (void)paintPath:(CGPath *)path naturalBounds:(CGRect)bounds inContext:(CGContext *)context isPDF:(BOOL)f;
+- (void)paintRect:(CGRect)rect inContext:(CGContext *)context atAngle:(double)angle;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
 @end
 
 @implementation TSDAngleGradient
 
-- (TSDAngleGradient)initWithGradientStops:(id)a3 type:(unint64_t)a4 opacity:(double)a5 angle:(double)a6
+- (TSDAngleGradient)initWithGradientStops:(id)stops type:(unint64_t)type opacity:(double)opacity angle:(double)angle
 {
   v8.receiver = self;
   v8.super_class = TSDAngleGradient;
-  result = [(TSDGradient *)&v8 initWithGradientStops:a3 type:a4 opacity:a5];
+  result = [(TSDGradient *)&v8 initWithGradientStops:stops type:type opacity:opacity];
   if (result)
   {
-    result->_gradientAngle = a6;
+    result->_gradientAngle = angle;
   }
 
   return result;
 }
 
-- (TSDAngleGradient)initWithStartColor:(id)a3 endColor:(id)a4 type:(unint64_t)a5 angle:(double)a6
+- (TSDAngleGradient)initWithStartColor:(id)color endColor:(id)endColor type:(unint64_t)type angle:(double)angle
 {
   v8.receiver = self;
   v8.super_class = TSDAngleGradient;
-  result = [(TSDGradient *)&v8 initWithStartColor:a3 endColor:a4 type:a5];
+  result = [(TSDGradient *)&v8 initWithStartColor:color endColor:endColor type:type];
   if (result)
   {
-    result->_gradientAngle = a6;
+    result->_gradientAngle = angle;
   }
 
   return result;
@@ -70,10 +70,10 @@
   return TSUHashWithSeed();
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
@@ -82,7 +82,7 @@
   {
     objc_opt_class();
     v5 = TSUDynamicCast();
-    if (v5 && (v12.receiver = self, v12.super_class = TSDAngleGradient, [(TSDGradient *)&v12 isEqual:v4]))
+    if (v5 && (v12.receiver = self, v12.super_class = TSDAngleGradient, [(TSDGradient *)&v12 isEqual:equalCopy]))
     {
       objc_msgSend_gradientAngle(v5, v6, v7);
       gradientAngle = self->_gradientAngle;
@@ -98,9 +98,9 @@
   return v10;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = objc_msgSend_allocWithZone_(TSDMutableAngleGradient, a2, a3);
+  v4 = objc_msgSend_allocWithZone_(TSDMutableAngleGradient, a2, zone);
   v7 = objc_msgSend_gradientStops(self, v5, v6);
   v10 = objc_msgSend_gradientType(self, v8, v9);
   objc_msgSend_opacity(self, v11, v12);
@@ -113,13 +113,13 @@
   return v19;
 }
 
-- (double)p_bestGradientLengthForRect:(CGRect)a3 atAngle:(double)a4
+- (double)p_bestGradientLengthForRect:(CGRect)rect atAngle:(double)angle
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = CGRectGetWidth(a3) * 0.5;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v8 = CGRectGetWidth(rect) * 0.5;
   v16.origin.x = x;
   v16.origin.y = y;
   v16.size.width = width;
@@ -137,7 +137,7 @@
   *&v14.tx = *(MEMORY[0x277CBF2C0] + 32);
   CGAffineTransformTranslate(&v15, &v14, v8, v9);
   v13 = v15;
-  CGAffineTransformRotate(&v14, &v13, -a4);
+  CGAffineTransformRotate(&v14, &v13, -angle);
   v15 = v14;
   v13 = v14;
   CGAffineTransformTranslate(&v14, &v13, -v8, -v9);
@@ -146,9 +146,9 @@
   return result;
 }
 
-- (CGPoint)startPointForPath:(id)a3 andBounds:(CGRect)a4
+- (CGPoint)startPointForPath:(id)path andBounds:(CGRect)bounds
 {
-  objc_msgSend_bounds(a3, a2, a3);
+  objc_msgSend_bounds(path, a2, path);
   objc_msgSend_p_gradientTransformForBounds_(self, v5, v6);
   v7 = vaddq_f64(0, vmlaq_n_f64(vmulq_n_f64(0, *(MEMORY[0x277CBF348] + 8)), 0, *MEMORY[0x277CBF348]));
   v8 = v7.f64[1];
@@ -157,9 +157,9 @@
   return result;
 }
 
-- (CGPoint)endPointForPath:(id)a3 andBounds:(CGRect)a4
+- (CGPoint)endPointForPath:(id)path andBounds:(CGRect)bounds
 {
-  objc_msgSend_bounds(a3, a2, a3);
+  objc_msgSend_bounds(path, a2, path);
   objc_msgSend_p_gradientTransformForBounds_(self, v5, v6);
   v7 = vaddq_f64(0, vmlaq_f64(vmulq_f64(0, 0), vdupq_n_s64(0x4059000000000000uLL), 0));
   v8 = v7.f64[1];
@@ -168,29 +168,29 @@
   return result;
 }
 
-- (void)paintRect:(CGRect)a3 inContext:(CGContext *)a4 atAngle:(double)a5
+- (void)paintRect:(CGRect)rect inContext:(CGContext *)context atAngle:(double)angle
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v12 = objc_msgSend_p_CGGradient(self, a2, a4);
-  CGContextSaveGState(a4);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v12 = objc_msgSend_p_CGGradient(self, a2, context);
+  CGContextSaveGState(context);
   CGContextClipToRectSafe();
-  objc_msgSend_p_prepareForDrawingInContext_(self, v13, a4);
+  objc_msgSend_p_prepareForDrawingInContext_(self, v13, context);
   if (objc_msgSend_gradientType(self, v14, v15))
   {
     objc_msgSend_centeredRadialTransformInRect_(self, v16, v17, x, y, width, height);
-    CGContextConcatCTM(a4, &v26);
+    CGContextConcatCTM(context, &v26);
     v29 = **&MEMORY[0x277CBF348];
     v31.x = *MEMORY[0x277CBF348];
     v31.y = v29.y;
-    CGContextDrawRadialGradient(a4, v12, *MEMORY[0x277CBF348], 0.0, v31, 100.0, 3u);
+    CGContextDrawRadialGradient(context, v12, *MEMORY[0x277CBF348], 0.0, v31, 100.0, 3u);
   }
 
   else
   {
-    objc_msgSend_p_bestGradientLengthForRect_atAngle_(self, v16, v17, x, y, width, height, -a5);
+    objc_msgSend_p_bestGradientLengthForRect_atAngle_(self, v16, v17, x, y, width, height, -angle);
     TSUOriginRotate();
     TSUOriginRotate();
     TSUCenterOfRect();
@@ -204,62 +204,62 @@
     v26.b = v22;
     TSUDistance();
     v25 = v24;
-    CGContextTranslateCTM(a4, v21, v23);
-    CGContextRotateCTM(a4, -a5);
-    CGContextScaleCTM(a4, v25 / 100.0, v25 / 100.0);
+    CGContextTranslateCTM(context, v21, v23);
+    CGContextRotateCTM(context, -angle);
+    CGContextScaleCTM(context, v25 / 100.0, v25 / 100.0);
     v30.y = 0.0;
     v30.x = 100.0;
-    CGContextDrawLinearGradient(a4, v12, *MEMORY[0x277CBF348], v30, 3u);
+    CGContextDrawLinearGradient(context, v12, *MEMORY[0x277CBF348], v30, 3u);
   }
 
-  CGContextRestoreGState(a4);
+  CGContextRestoreGState(context);
 }
 
-- (void)paintPath:(CGPath *)a3 naturalBounds:(CGRect)a4 inContext:(CGContext *)a5 isPDF:(BOOL)a6
+- (void)paintPath:(CGPath *)path naturalBounds:(CGRect)bounds inContext:(CGContext *)context isPDF:(BOOL)f
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  CGContextSaveGState(a5);
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  CGContextSaveGState(context);
   CGContextAddPathSafe();
-  CGContextClip(a5);
-  ClipBoundingBox = CGContextGetClipBoundingBox(a5);
+  CGContextClip(context);
+  ClipBoundingBox = CGContextGetClipBoundingBox(context);
   v14 = ClipBoundingBox.size.width;
   v15 = ClipBoundingBox.size.height;
   if (TSURectIsFinite() && v15 > 0.0 && v14 > 0.0)
   {
-    if ((a6 || TSDCGContextIsPDFContext(a5)) && (objc_msgSend_p_stopsHaveAlpha(self, v16, v17) & 1) != 0 || TSDCGContextIsPrintContext(a5))
+    if ((f || TSDCGContextIsPDFContext(context)) && (objc_msgSend_p_stopsHaveAlpha(self, v16, v17) & 1) != 0 || TSDCGContextIsPrintContext(context))
     {
       v19 = *(MEMORY[0x277CBF3A0] + 16);
       v22 = *MEMORY[0x277CBF3A0];
       v23 = v19;
-      v21 = objc_msgSend_p_beginBitmapWrapperContextInContext_returningIntegralBounds_(self, v18, a5, &v22);
+      v21 = objc_msgSend_p_beginBitmapWrapperContextInContext_returningIntegralBounds_(self, v18, context, &v22);
       if (v21)
       {
-        objc_msgSend_p_paintPath_inContext_naturalBounds_(self, v20, a3, v21, x, y, width, height);
+        objc_msgSend_p_paintPath_inContext_naturalBounds_(self, v20, path, v21, x, y, width, height);
       }
 
-      objc_msgSend_p_endBitmapWrapperContext_inContext_withIntegralBounds_(self, v20, v21, a5, v22, v23);
+      objc_msgSend_p_endBitmapWrapperContext_inContext_withIntegralBounds_(self, v20, v21, context, v22, v23);
     }
 
     else
     {
-      objc_msgSend_p_paintPath_inContext_naturalBounds_(self, v18, a3, a5, x, y, width, height);
+      objc_msgSend_p_paintPath_inContext_naturalBounds_(self, v18, path, context, x, y, width, height);
     }
   }
 
-  CGContextRestoreGState(a5);
+  CGContextRestoreGState(context);
 }
 
-- (void)paintPath:(CGPath *)a3 inContext:(CGContext *)a4
+- (void)paintPath:(CGPath *)path inContext:(CGContext *)context
 {
-  PathBoundingBox = CGPathGetPathBoundingBox(a3);
+  PathBoundingBox = CGPathGetPathBoundingBox(path);
 
-  objc_msgSend_paintPath_naturalBounds_inContext_isPDF_(self, v7, a3, a4, 0, PathBoundingBox.origin.x, PathBoundingBox.origin.y, PathBoundingBox.size.width, PathBoundingBox.size.height);
+  objc_msgSend_paintPath_naturalBounds_inContext_isPDF_(self, v7, path, context, 0, PathBoundingBox.origin.x, PathBoundingBox.origin.y, PathBoundingBox.size.width, PathBoundingBox.size.height);
 }
 
-- (CGAffineTransform)p_gradientTransformForBounds:(SEL)a3
+- (CGAffineTransform)p_gradientTransformForBounds:(SEL)bounds
 {
   v61 = CGRectInset(a4, -1.0, -1.0);
   x = v61.origin.x;
@@ -427,46 +427,46 @@
   return result;
 }
 
-- (void)p_paintPath:(CGPath *)a3 inContext:(CGContext *)a4 naturalBounds:(CGRect)a5
+- (void)p_paintPath:(CGPath *)path inContext:(CGContext *)context naturalBounds:(CGRect)bounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  CGContextSaveGState(a4);
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  CGContextSaveGState(context);
   CGContextAddPathSafe();
-  CGContextClip(a4);
-  CGContextGetClipBoundingBox(a4);
+  CGContextClip(context);
+  CGContextGetClipBoundingBox(context);
   if (TSURectIsFinite())
   {
     memset(&v22[1], 0, sizeof(CGAffineTransform));
     objc_msgSend_p_gradientTransformForBounds_(self, v11, v12, x, y, width, height);
     v22[0] = v22[1];
-    CGContextConcatCTM(a4, v22);
+    CGContextConcatCTM(context, v22);
     v15 = objc_msgSend_p_CGGradient(self, v13, v14);
-    objc_msgSend_p_prepareForDrawingInContext_(self, v16, a4);
+    objc_msgSend_p_prepareForDrawingInContext_(self, v16, context);
     v19 = objc_msgSend_gradientType(self, v17, v18);
     v20 = *MEMORY[0x277CBF348];
     v21 = *(MEMORY[0x277CBF348] + 8);
     if (v19)
     {
-      CGContextDrawRadialGradient(a4, v15, *&v20, 0.0, *MEMORY[0x277CBF348], 100.0, 3u);
+      CGContextDrawRadialGradient(context, v15, *&v20, 0.0, *MEMORY[0x277CBF348], 100.0, 3u);
     }
 
     else
     {
       v23.x = 100.0;
       v23.y = 0.0;
-      CGContextDrawLinearGradient(a4, v15, *&v20, v23, 3u);
+      CGContextDrawLinearGradient(context, v15, *&v20, v23, 3u);
     }
   }
 
-  CGContextRestoreGState(a4);
+  CGContextRestoreGState(context);
 }
 
-- (int64_t)mixingTypeWithObject:(id)a3
+- (int64_t)mixingTypeWithObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   v5 = TSUDynamicCast();
 
@@ -518,9 +518,9 @@
   return v37;
 }
 
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object
 {
-  v6 = a4;
+  objectCopy = object;
   objc_opt_class();
   v7 = TSUDynamicCast();
   v8 = MEMORY[0x277CBEB18];
@@ -542,7 +542,7 @@
       v31 = objc_msgSend_gradientStops(v7, v29, v30);
       v33 = objc_msgSend_objectAtIndexedSubscript_(v31, v32, v25);
 
-      v35 = objc_msgSend_mixedObjectWithFraction_ofObject_(v28, v34, v33, a3);
+      v35 = objc_msgSend_mixedObjectWithFraction_ofObject_(v28, v34, v33, fraction);
       objc_msgSend_addObject_(v16, v36, v35);
 
       ++v25;
@@ -568,15 +568,15 @@
   return v58;
 }
 
-- (TSDAngleGradient)initWithArchive:(const void *)a3 unarchiver:(id)a4
+- (TSDAngleGradient)initWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
   v12.receiver = self;
   v12.super_class = TSDAngleGradient;
-  v5 = [(TSDGradient *)&v12 initWithArchive:a3 unarchiver:a4];
+  v5 = [(TSDGradient *)&v12 initWithArchive:archive unarchiver:unarchiver];
   v8 = v5;
   if (v5)
   {
-    v9 = *(a3 + 7);
+    v9 = *(archive + 7);
     if (!v9)
     {
       v9 = &TSD::_GradientArchive_default_instance_;
@@ -594,24 +594,24 @@
   return v8;
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v6 = a4;
+  archiverCopy = archiver;
   v14.receiver = self;
   v14.super_class = TSDAngleGradient;
-  [(TSDGradient *)&v14 saveToArchive:a3 archiver:v6];
-  *(a3 + 10) |= 2u;
-  v9 = *(a3 + 7);
+  [(TSDGradient *)&v14 saveToArchive:archive archiver:archiverCopy];
+  *(archive + 10) |= 2u;
+  v9 = *(archive + 7);
   if (!v9)
   {
-    v10 = *(a3 + 1);
+    v10 = *(archive + 1);
     if (v10)
     {
       v10 = *(v10 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v9 = google::protobuf::Arena::CreateMaybeMessage<TSD::GradientArchive>(v10);
-    *(a3 + 7) = v9;
+    *(archive + 7) = v9;
   }
 
   *(v9 + 16) |= 1u;

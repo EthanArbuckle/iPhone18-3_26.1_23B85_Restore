@@ -1,37 +1,37 @@
 @interface SingleValueCurrentValueViewDataSource
 - (_TtC15HealthRecordsUI37SingleValueCurrentValueViewDataSource)init;
-- (_TtC15HealthRecordsUI37SingleValueCurrentValueViewDataSource)initWithDateCache:(id)a3 healthStore:(id)a4 selectedRangeFormatter:(id)a5;
-- (id)titleFor:(id)a3;
-- (void)updateDataSourceWithGraphView:(id)a3 displayType:(id)a4 timeScope:(int64_t)a5;
+- (_TtC15HealthRecordsUI37SingleValueCurrentValueViewDataSource)initWithDateCache:(id)cache healthStore:(id)store selectedRangeFormatter:(id)formatter;
+- (id)titleFor:(id)for;
+- (void)updateDataSourceWithGraphView:(id)view displayType:(id)type timeScope:(int64_t)scope;
 @end
 
 @implementation SingleValueCurrentValueViewDataSource
 
-- (id)titleFor:(id)a3
+- (id)titleFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
+  forCopy = for;
+  selfCopy = self;
   v6 = sub_1D1301818();
 
   return v6;
 }
 
-- (void)updateDataSourceWithGraphView:(id)a3 displayType:(id)a4 timeScope:(int64_t)a5
+- (void)updateDataSourceWithGraphView:(id)view displayType:(id)type timeScope:(int64_t)scope
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  sub_1D1300AD4(v8, v9, a5);
+  viewCopy = view;
+  typeCopy = type;
+  selfCopy = self;
+  sub_1D1300AD4(viewCopy, typeCopy, scope);
 }
 
-- (_TtC15HealthRecordsUI37SingleValueCurrentValueViewDataSource)initWithDateCache:(id)a3 healthStore:(id)a4 selectedRangeFormatter:(id)a5
+- (_TtC15HealthRecordsUI37SingleValueCurrentValueViewDataSource)initWithDateCache:(id)cache healthStore:(id)store selectedRangeFormatter:(id)formatter
 {
   v8 = self + OBJC_IVAR____TtC15HealthRecordsUI37SingleValueCurrentValueViewDataSource_lastCachedNumberOfChartPoints;
   *v8 = 0;
   v8[8] = 1;
   v10.receiver = self;
   v10.super_class = type metadata accessor for SingleValueCurrentValueViewDataSource();
-  return [(HKCurrentValueViewDataSource *)&v10 initWithDateCache:a3 healthStore:a4 selectedRangeFormatter:a5];
+  return [(HKCurrentValueViewDataSource *)&v10 initWithDateCache:cache healthStore:store selectedRangeFormatter:formatter];
 }
 
 - (_TtC15HealthRecordsUI37SingleValueCurrentValueViewDataSource)init

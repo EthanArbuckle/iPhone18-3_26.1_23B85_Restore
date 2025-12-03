@@ -1,25 +1,25 @@
 @interface CKDPLocationCoordinate
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCourse:(BOOL)a3;
-- (void)setHasHorizontalAccuracy:(BOOL)a3;
-- (void)setHasLatitude:(BOOL)a3;
-- (void)setHasLongitude:(BOOL)a3;
-- (void)setHasSpeed:(BOOL)a3;
-- (void)setHasVerticalAccuracy:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCourse:(BOOL)course;
+- (void)setHasHorizontalAccuracy:(BOOL)accuracy;
+- (void)setHasLatitude:(BOOL)latitude;
+- (void)setHasLongitude:(BOOL)longitude;
+- (void)setHasSpeed:(BOOL)speed;
+- (void)setHasVerticalAccuracy:(BOOL)accuracy;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPLocationCoordinate
 
-- (void)setHasLatitude:(BOOL)a3
+- (void)setHasLatitude:(BOOL)latitude
 {
-  if (a3)
+  if (latitude)
   {
     v3 = 8;
   }
@@ -32,9 +32,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasLongitude:(BOOL)a3
+- (void)setHasLongitude:(BOOL)longitude
 {
-  if (a3)
+  if (longitude)
   {
     v3 = 16;
   }
@@ -47,9 +47,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasHorizontalAccuracy:(BOOL)a3
+- (void)setHasHorizontalAccuracy:(BOOL)accuracy
 {
-  if (a3)
+  if (accuracy)
   {
     v3 = 4;
   }
@@ -62,9 +62,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasVerticalAccuracy:(BOOL)a3
+- (void)setHasVerticalAccuracy:(BOOL)accuracy
 {
-  if (a3)
+  if (accuracy)
   {
     v3 = 64;
   }
@@ -77,9 +77,9 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasCourse:(BOOL)a3
+- (void)setHasCourse:(BOOL)course
 {
-  if (a3)
+  if (course)
   {
     v3 = 2;
   }
@@ -92,9 +92,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasSpeed:(BOOL)a3
+- (void)setHasSpeed:(BOOL)speed
 {
-  if (a3)
+  if (speed)
   {
     v3 = 32;
   }
@@ -231,16 +231,16 @@ LABEL_9:
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v13 = v4;
+  v13 = toCopy;
   if ((has & 8) != 0)
   {
     latitude = self->_latitude;
     PBDataWriterWriteDoubleField();
-    v4 = v13;
+    toCopy = v13;
     has = self->_has;
     if ((has & 0x10) == 0)
     {
@@ -261,7 +261,7 @@ LABEL_3:
 
   longitude = self->_longitude;
   PBDataWriterWriteDoubleField();
-  v4 = v13;
+  toCopy = v13;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -277,7 +277,7 @@ LABEL_4:
 LABEL_16:
   horizontalAccuracy = self->_horizontalAccuracy;
   PBDataWriterWriteDoubleField();
-  v4 = v13;
+  toCopy = v13;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -293,7 +293,7 @@ LABEL_5:
 LABEL_17:
   altitude = self->_altitude;
   PBDataWriterWriteDoubleField();
-  v4 = v13;
+  toCopy = v13;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -309,7 +309,7 @@ LABEL_6:
 LABEL_18:
   verticalAccuracy = self->_verticalAccuracy;
   PBDataWriterWriteDoubleField();
-  v4 = v13;
+  toCopy = v13;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -325,31 +325,31 @@ LABEL_7:
 LABEL_19:
   course = self->_course;
   PBDataWriterWriteDoubleField();
-  v4 = v13;
+  toCopy = v13;
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_8:
     speed = self->_speed;
     PBDataWriterWriteDoubleField();
-    v4 = v13;
+    toCopy = v13;
   }
 
 LABEL_9:
   if (self->_timestamp)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v13;
+    toCopy = v13;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 8) != 0)
   {
-    v4[4] = *&self->_latitude;
-    *(v4 + 72) |= 8u;
+    toCopy[4] = *&self->_latitude;
+    *(toCopy + 72) |= 8u;
     has = self->_has;
     if ((has & 0x10) == 0)
     {
@@ -368,8 +368,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[5] = *&self->_longitude;
-  *(v4 + 72) |= 0x10u;
+  toCopy[5] = *&self->_longitude;
+  *(toCopy + 72) |= 0x10u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -383,8 +383,8 @@ LABEL_4:
   }
 
 LABEL_16:
-  v4[3] = *&self->_horizontalAccuracy;
-  *(v4 + 72) |= 4u;
+  toCopy[3] = *&self->_horizontalAccuracy;
+  *(toCopy + 72) |= 4u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -398,8 +398,8 @@ LABEL_5:
   }
 
 LABEL_17:
-  v4[1] = *&self->_altitude;
-  *(v4 + 72) |= 1u;
+  toCopy[1] = *&self->_altitude;
+  *(toCopy + 72) |= 1u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -413,8 +413,8 @@ LABEL_6:
   }
 
 LABEL_18:
-  v4[7] = *&self->_verticalAccuracy;
-  *(v4 + 72) |= 0x40u;
+  toCopy[7] = *&self->_verticalAccuracy;
+  *(toCopy + 72) |= 0x40u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -428,29 +428,29 @@ LABEL_7:
   }
 
 LABEL_19:
-  v4[2] = *&self->_course;
-  *(v4 + 72) |= 2u;
+  toCopy[2] = *&self->_course;
+  *(toCopy + 72) |= 2u;
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_8:
-    v4[6] = *&self->_speed;
-    *(v4 + 72) |= 0x20u;
+    toCopy[6] = *&self->_speed;
+    *(toCopy + 72) |= 0x20u;
   }
 
 LABEL_9:
   timestamp = self->_timestamp;
   if (timestamp)
   {
-    v8 = v4;
-    objc_msgSend_setTimestamp_(v4, v5, timestamp);
-    v4 = v8;
+    v8 = toCopy;
+    objc_msgSend_setTimestamp_(toCopy, v5, timestamp);
+    toCopy = v8;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
   v12 = v10;
   has = self->_has;
@@ -546,32 +546,32 @@ LABEL_8:
   }
 
 LABEL_9:
-  v14 = objc_msgSend_copyWithZone_(self->_timestamp, v11, a3);
+  v14 = objc_msgSend_copyWithZone_(self->_timestamp, v11, zone);
   v15 = v12[8];
   v12[8] = v14;
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_39;
   }
 
-  v8 = *(v4 + 72);
+  v8 = *(equalCopy + 72);
   if ((*&self->_has & 8) != 0)
   {
-    if ((v4[9] & 8) == 0 || self->_latitude != *(v4 + 4))
+    if ((equalCopy[9] & 8) == 0 || self->_latitude != *(equalCopy + 4))
     {
       goto LABEL_39;
     }
   }
 
-  else if ((v4[9] & 8) != 0)
+  else if ((equalCopy[9] & 8) != 0)
   {
 LABEL_39:
     isEqual = 0;
@@ -580,84 +580,84 @@ LABEL_39:
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((v4[9] & 0x10) == 0 || self->_longitude != *(v4 + 5))
+    if ((equalCopy[9] & 0x10) == 0 || self->_longitude != *(equalCopy + 5))
     {
       goto LABEL_39;
     }
   }
 
-  else if ((v4[9] & 0x10) != 0)
+  else if ((equalCopy[9] & 0x10) != 0)
   {
     goto LABEL_39;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((v4[9] & 4) == 0 || self->_horizontalAccuracy != *(v4 + 3))
+    if ((equalCopy[9] & 4) == 0 || self->_horizontalAccuracy != *(equalCopy + 3))
     {
       goto LABEL_39;
     }
   }
 
-  else if ((v4[9] & 4) != 0)
+  else if ((equalCopy[9] & 4) != 0)
   {
     goto LABEL_39;
   }
 
   if (*&self->_has)
   {
-    if ((v4[9] & 1) == 0 || self->_altitude != *(v4 + 1))
+    if ((equalCopy[9] & 1) == 0 || self->_altitude != *(equalCopy + 1))
     {
       goto LABEL_39;
     }
   }
 
-  else if (v4[9])
+  else if (equalCopy[9])
   {
     goto LABEL_39;
   }
 
   if ((*&self->_has & 0x40) != 0)
   {
-    if ((v4[9] & 0x40) == 0 || self->_verticalAccuracy != *(v4 + 7))
+    if ((equalCopy[9] & 0x40) == 0 || self->_verticalAccuracy != *(equalCopy + 7))
     {
       goto LABEL_39;
     }
   }
 
-  else if ((v4[9] & 0x40) != 0)
+  else if ((equalCopy[9] & 0x40) != 0)
   {
     goto LABEL_39;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((v4[9] & 2) == 0 || self->_course != *(v4 + 2))
+    if ((equalCopy[9] & 2) == 0 || self->_course != *(equalCopy + 2))
     {
       goto LABEL_39;
     }
   }
 
-  else if ((v4[9] & 2) != 0)
+  else if ((equalCopy[9] & 2) != 0)
   {
     goto LABEL_39;
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((v4[9] & 0x20) == 0 || self->_speed != *(v4 + 6))
+    if ((equalCopy[9] & 0x20) == 0 || self->_speed != *(equalCopy + 6))
     {
       goto LABEL_39;
     }
   }
 
-  else if ((v4[9] & 0x20) != 0)
+  else if ((equalCopy[9] & 0x20) != 0)
   {
     goto LABEL_39;
   }
 
   timestamp = self->_timestamp;
-  v10 = v4[8];
+  v10 = equalCopy[8];
   if (timestamp | v10)
   {
     isEqual = objc_msgSend_isEqual_(timestamp, v7, v10);
@@ -915,16 +915,16 @@ LABEL_40:
   return v9 ^ v5 ^ v13 ^ v17 ^ v21 ^ v25 ^ v29 ^ objc_msgSend_hash(self->_timestamp, a2, v2);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 72);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 72);
   if ((v6 & 8) != 0)
   {
-    self->_latitude = v4[4];
+    self->_latitude = fromCopy[4];
     *&self->_has |= 8u;
-    v6 = *(v4 + 72);
+    v6 = *(fromCopy + 72);
     if ((v6 & 0x10) == 0)
     {
 LABEL_3:
@@ -937,14 +937,14 @@ LABEL_3:
     }
   }
 
-  else if ((v4[9] & 0x10) == 0)
+  else if ((fromCopy[9] & 0x10) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_longitude = v4[5];
+  self->_longitude = fromCopy[5];
   *&self->_has |= 0x10u;
-  v6 = *(v4 + 72);
+  v6 = *(fromCopy + 72);
   if ((v6 & 4) == 0)
   {
 LABEL_4:
@@ -957,9 +957,9 @@ LABEL_4:
   }
 
 LABEL_14:
-  self->_horizontalAccuracy = v4[3];
+  self->_horizontalAccuracy = fromCopy[3];
   *&self->_has |= 4u;
-  v6 = *(v4 + 72);
+  v6 = *(fromCopy + 72);
   if ((v6 & 1) == 0)
   {
 LABEL_5:
@@ -972,9 +972,9 @@ LABEL_5:
   }
 
 LABEL_15:
-  self->_altitude = v4[1];
+  self->_altitude = fromCopy[1];
   *&self->_has |= 1u;
-  v6 = *(v4 + 72);
+  v6 = *(fromCopy + 72);
   if ((v6 & 0x40) == 0)
   {
 LABEL_6:
@@ -987,9 +987,9 @@ LABEL_6:
   }
 
 LABEL_16:
-  self->_verticalAccuracy = v4[7];
+  self->_verticalAccuracy = fromCopy[7];
   *&self->_has |= 0x40u;
-  v6 = *(v4 + 72);
+  v6 = *(fromCopy + 72);
   if ((v6 & 2) == 0)
   {
 LABEL_7:
@@ -1002,12 +1002,12 @@ LABEL_7:
   }
 
 LABEL_17:
-  self->_course = v4[2];
+  self->_course = fromCopy[2];
   *&self->_has |= 2u;
-  if ((v4[9] & 0x20) != 0)
+  if ((fromCopy[9] & 0x20) != 0)
   {
 LABEL_8:
-    self->_speed = v4[6];
+    self->_speed = fromCopy[6];
     *&self->_has |= 0x20u;
   }
 

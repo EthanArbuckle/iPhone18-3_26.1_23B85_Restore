@@ -1,17 +1,17 @@
 @interface AudiobookTOCViewController
-- (_TtC5Books26AudiobookTOCViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_traitCollectionDidChangeWithSender:(id)a3 previousTraitCollection:(id)a4;
+- (_TtC5Books26AudiobookTOCViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_traitCollectionDidChangeWithSender:(id)sender previousTraitCollection:(id)collection;
 - (void)dealloc;
-- (void)onAppWillEnterForegroundWithNotification:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)onAppWillEnterForegroundWithNotification:(id)notification;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)updateTimeRemaining;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation AudiobookTOCViewController
@@ -19,52 +19,52 @@
 - (void)dealloc
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 defaultCenter];
-  [v5 removeObserver:v4];
+  selfCopy = self;
+  defaultCenter = [v3 defaultCenter];
+  [defaultCenter removeObserver:selfCopy];
 
-  v6.receiver = v4;
+  v6.receiver = selfCopy;
   v6.super_class = type metadata accessor for AudiobookTOCViewController();
   [(AudiobookTOCViewController *)&v6 dealloc];
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1003DF128();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1003DFD80(a3);
+  selfCopy = self;
+  sub_1003DFD80(appear);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = type metadata accessor for AudiobookTOCViewController();
   v4 = v5.receiver;
-  [(AudiobookTOCViewController *)&v5 viewDidAppear:v3];
+  [(AudiobookTOCViewController *)&v5 viewDidAppear:appearCopy];
   sub_10042C670();
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = type metadata accessor for AudiobookTOCViewController();
   v4 = v5.receiver;
-  [(AudiobookTOCViewController *)&v5 viewWillDisappear:v3];
+  [(AudiobookTOCViewController *)&v5 viewWillDisappear:disappearCopy];
   sub_1003E1ADC();
 }
 
-- (void)_traitCollectionDidChangeWithSender:(id)a3 previousTraitCollection:(id)a4
+- (void)_traitCollectionDidChangeWithSender:(id)sender previousTraitCollection:(id)collection
 {
   swift_unknownObjectRetain();
-  v6 = a4;
-  v7 = self;
+  collectionCopy = collection;
+  selfCopy = self;
   sub_1007A3504();
   swift_unknownObjectRelease();
   sub_1003E3740();
@@ -74,25 +74,25 @@
 
 - (void)updateTimeRemaining
 {
-  v2 = self;
+  selfCopy = self;
   sub_1003E1FC0();
 }
 
-- (void)onAppWillEnterForegroundWithNotification:(id)a3
+- (void)onAppWillEnterForegroundWithNotification:(id)notification
 {
-  v7 = self;
-  v3 = [(AudiobookTOCViewController *)v7 view];
-  if (v3)
+  selfCopy = self;
+  view = [(AudiobookTOCViewController *)selfCopy view];
+  if (view)
   {
-    v4 = v3;
-    v5 = [v3 window];
+    v4 = view;
+    window = [view window];
 
-    v6 = v7;
-    if (v5)
+    v6 = selfCopy;
+    if (window)
     {
 
       sub_10042C670();
-      v6 = v7;
+      v6 = selfCopy;
     }
   }
 
@@ -102,18 +102,18 @@
   }
 }
 
-- (_TtC5Books26AudiobookTOCViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC5Books26AudiobookTOCViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v5 = self;
+  selfCopy = self;
   sub_10079B9A4();
 
   if (v8 >> 62)
@@ -129,41 +129,41 @@
   return v6;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = sub_100796E74();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_100796E14();
-  v10 = a3;
-  v11 = self;
-  v12 = sub_1003E2770(v10);
+  viewCopy = view;
+  selfCopy = self;
+  v12 = sub_1003E2770(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 
   return v12;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v6 = sub_100796E74();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_100796E14();
-  v10 = a3;
-  v11 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_1003E3A34();
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
-  sub_1003E2FC4(v4);
+  scrollCopy = scroll;
+  selfCopy = self;
+  sub_1003E2FC4(scrollCopy);
 }
 
 @end

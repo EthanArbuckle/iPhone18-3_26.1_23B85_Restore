@@ -9,17 +9,17 @@
 - (id)serviceSettingsChangedNotificationToken;
 - (id)serviceSettingsConfiguration;
 - (void)_invalidate;
-- (void)beginRefreshingServiceStateWithBlock:(id)a3;
+- (void)beginRefreshingServiceStateWithBlock:(id)block;
 - (void)dealloc;
-- (void)setServiceState:(id)a3 completion:(id)a4;
+- (void)setServiceState:(id)state completion:(id)completion;
 @end
 
 @implementation SPSettingsConfiguration
 
 - (NSDate)beaconZoneCreationDate
 {
-  v2 = [(SPSettingsConfiguration *)self sharedDefaults];
-  v3 = [v2 objectForKey:@"SPBeaconZoneCreationDateKey"];
+  sharedDefaults = [(SPSettingsConfiguration *)self sharedDefaults];
+  v3 = [sharedDefaults objectForKey:@"SPBeaconZoneCreationDateKey"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -37,8 +37,8 @@
 
 - (NSNumber)beaconZoneCreationErrorCode
 {
-  v2 = [(SPSettingsConfiguration *)self sharedDefaults];
-  v3 = [v2 objectForKey:@"SPBeaconZoneCreationDateKey"];
+  sharedDefaults = [(SPSettingsConfiguration *)self sharedDefaults];
+  v3 = [sharedDefaults objectForKey:@"SPBeaconZoneCreationDateKey"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -56,8 +56,8 @@
 
 - (NSDate)lastKeyRollDate
 {
-  v2 = [(SPSettingsConfiguration *)self sharedDefaults];
-  v3 = [v2 objectForKey:@"SPLastKeyRollDateKey"];
+  sharedDefaults = [(SPSettingsConfiguration *)self sharedDefaults];
+  v3 = [sharedDefaults objectForKey:@"SPLastKeyRollDateKey"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -179,7 +179,7 @@ LABEL_12:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_2643D0000, v3, OS_LOG_TYPE_DEFAULT, "SPSettingsConfiguration: Dealloc %@", buf, 0xCu);
   }
 
@@ -192,27 +192,27 @@ LABEL_12:
 
 - (void)_invalidate
 {
-  v3 = [(SPSettingsConfiguration *)self session];
-  [v3 invalidate];
+  session = [(SPSettingsConfiguration *)self session];
+  [session invalidate];
 
   [(SPSettingsConfiguration *)self setSession:0];
-  v5 = [(SPSettingsConfiguration *)self serviceSettingsChangedNotificationToken];
+  serviceSettingsChangedNotificationToken = [(SPSettingsConfiguration *)self serviceSettingsChangedNotificationToken];
   [(SPSettingsConfiguration *)self setServiceSettingsChangedNotificationToken:0];
-  if (v5)
+  if (serviceSettingsChangedNotificationToken)
   {
-    [(SPSettingsConfiguration *)self fm_removeNotificationBlockObserver:v5];
+    [(SPSettingsConfiguration *)self fm_removeNotificationBlockObserver:serviceSettingsChangedNotificationToken];
   }
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, @"com.apple.icloud.searchparty.ServiceSettingsChanged", 0);
 }
 
-- (void)beginRefreshingServiceStateWithBlock:(id)a3
+- (void)beginRefreshingServiceStateWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(SPSettingsConfiguration *)self serviceSettingsChangedNotificationToken];
+  blockCopy = block;
+  serviceSettingsChangedNotificationToken = [(SPSettingsConfiguration *)self serviceSettingsChangedNotificationToken];
 
-  if (v5)
+  if (serviceSettingsChangedNotificationToken)
   {
     v6 = LogCategory_ServiceState();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -235,17 +235,17 @@ LABEL_12:
     aBlock[2] = __64__SPSettingsConfiguration_beginRefreshingServiceStateWithBlock___block_invoke_2;
     aBlock[3] = &unk_279B59398;
     aBlock[4] = self;
-    v18 = v4;
+    v18 = blockCopy;
     v7 = _Block_copy(aBlock);
     v8 = SPServiceSettingsChangedLocalNotification;
-    v9 = [(SPSettingsConfiguration *)self notificationQueue];
+    notificationQueue = [(SPSettingsConfiguration *)self notificationQueue];
     v12 = MEMORY[0x277D85DD0];
     v13 = 3221225472;
     v14 = __64__SPSettingsConfiguration_beginRefreshingServiceStateWithBlock___block_invoke_3;
     v15 = &unk_279B5A7B0;
     v16 = v7;
     v10 = v7;
-    v11 = [(SPSettingsConfiguration *)self fm_addNotificationBlockObserverForName:v8 object:self queue:v9 usingBlock:&v12];
+    v11 = [(SPSettingsConfiguration *)self fm_addNotificationBlockObserverForName:v8 object:self queue:notificationQueue usingBlock:&v12];
     [(SPSettingsConfiguration *)self setServiceSettingsChangedNotificationToken:v11, v12, v13, v14, v15];
 
     v10[2](v10);
@@ -268,22 +268,22 @@ void __64__SPSettingsConfiguration_beginRefreshingServiceStateWithBlock___block_
   (*(v2 + 16))(v2, v4, v3);
 }
 
-- (void)setServiceState:(id)a3 completion:(id)a4
+- (void)setServiceState:(id)state completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  stateCopy = state;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v8 = [(SPSettingsConfiguration *)self queue];
+  queue = [(SPSettingsConfiguration *)self queue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __54__SPSettingsConfiguration_setServiceState_completion___block_invoke;
   v11[3] = &unk_279B58BA8;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, v11);
+  v12 = stateCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = stateCopy;
+  dispatch_async(queue, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -298,8 +298,8 @@ void __54__SPSettingsConfiguration_setServiceState_completion___block_invoke(uin
 
 - (NSString)serviceState
 {
-  v2 = [(SPSettingsConfiguration *)self sharedDefaults];
-  v3 = [v2 stringForKey:@"SPSettingsServiceStateKey"];
+  sharedDefaults = [(SPSettingsConfiguration *)self sharedDefaults];
+  v3 = [sharedDefaults stringForKey:@"SPSettingsServiceStateKey"];
   v4 = v3;
   if (v3)
   {
@@ -319,8 +319,8 @@ void __54__SPSettingsConfiguration_setServiceState_completion___block_invoke(uin
 - (NSSet)serviceDisabledReasons
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(SPSettingsConfiguration *)self sharedDefaults];
-  v4 = [v3 arrayForKey:@"SPSettingsServiceDisabledReasonsKey"];
+  sharedDefaults = [(SPSettingsConfiguration *)self sharedDefaults];
+  v4 = [sharedDefaults arrayForKey:@"SPSettingsServiceDisabledReasonsKey"];
   v5 = [v2 setWithArray:v4];
   v6 = v5;
   if (v5)
@@ -341,38 +341,38 @@ void __54__SPSettingsConfiguration_setServiceState_completion___block_invoke(uin
 - (SPBeaconManagerXPCProtocol)proxy
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(SPSettingsConfiguration *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(SPSettingsConfiguration *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(SPSettingsConfiguration *)self session];
+  session = [(SPSettingsConfiguration *)self session];
 
-  if (!v4)
+  if (!session)
   {
     v5 = objc_alloc(MEMORY[0x277D07BA8]);
-    v6 = [(SPSettingsConfiguration *)self serviceDescription];
-    v7 = [v5 initWithServiceDescription:v6];
+    serviceDescription = [(SPSettingsConfiguration *)self serviceDescription];
+    v7 = [v5 initWithServiceDescription:serviceDescription];
     [(SPSettingsConfiguration *)self setSession:v7];
 
     v8 = LogCategory_ServiceState();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(SPSettingsConfiguration *)self serviceDescription];
-      v10 = [v9 machService];
+      serviceDescription2 = [(SPSettingsConfiguration *)self serviceDescription];
+      machService = [serviceDescription2 machService];
       v16 = 138412290;
-      v17 = v10;
+      v17 = machService;
       _os_log_impl(&dword_2643D0000, v8, OS_LOG_TYPE_DEFAULT, "SPSettingsConfiguration: Establishing XPC connection to %@", &v16, 0xCu);
     }
 
-    v11 = [(SPSettingsConfiguration *)self session];
-    [v11 resume];
+    session2 = [(SPSettingsConfiguration *)self session];
+    [session2 resume];
   }
 
-  v12 = [(SPSettingsConfiguration *)self session];
-  v13 = [v12 proxy];
+  session3 = [(SPSettingsConfiguration *)self session];
+  proxy = [session3 proxy];
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v13;
+  return proxy;
 }
 
 - (id)serviceSettingsChangedNotificationToken

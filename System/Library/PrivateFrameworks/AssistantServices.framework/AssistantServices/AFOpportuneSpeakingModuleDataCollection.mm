@@ -1,25 +1,25 @@
 @interface AFOpportuneSpeakingModuleDataCollection
 + (id)sharedCollector;
 - (AFOpportuneSpeakingModuleDataCollection)init;
-- (void)_deleteSpeakablesOlderThan:(id)a3;
-- (void)logFeedbackOfType:(int64_t)a3 forSpeakableId:(id)a4 withModelId:(id)a5;
-- (void)logInteractionEvents:(id)a3 forSpeakableId:(id)a4;
-- (void)logRecommendedAction:(id)a3 forSpeakableId:(id)a4 withModelId:(id)a5;
-- (void)logSpeakable:(id)a3 forContact:(id)a4 withModelId:(id)a5 withFeatures:(id)a6 withScore:(float)a7;
+- (void)_deleteSpeakablesOlderThan:(id)than;
+- (void)logFeedbackOfType:(int64_t)type forSpeakableId:(id)id withModelId:(id)modelId;
+- (void)logInteractionEvents:(id)events forSpeakableId:(id)id;
+- (void)logRecommendedAction:(id)action forSpeakableId:(id)id withModelId:(id)modelId;
+- (void)logSpeakable:(id)speakable forContact:(id)contact withModelId:(id)id withFeatures:(id)features withScore:(float)score;
 @end
 
 @implementation AFOpportuneSpeakingModuleDataCollection
 
-- (void)_deleteSpeakablesOlderThan:(id)a3
+- (void)_deleteSpeakablesOlderThan:(id)than
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  thanCopy = than;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = [(NSMutableDictionary *)self->_speakableMap allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v20 objects:v30 count:16];
+  allKeys = [(NSMutableDictionary *)self->_speakableMap allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v20 objects:v30 count:16];
   if (v6)
   {
     v8 = v6;
@@ -33,25 +33,25 @@
       {
         if (*v21 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v12 = *(*(&v20 + 1) + 8 * i);
         v13 = [(NSMutableDictionary *)self->_speakableMap objectForKey:v12, v18];
-        if ([v13 isOlderThan:v4])
+        if ([v13 isOlderThan:thanCopy])
         {
           v14 = p_superclass[270];
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
           {
             log = v14;
-            v15 = [v13 identifier];
-            v16 = [v13 date];
+            identifier = [v13 identifier];
+            date = [v13 date];
             *buf = v18;
             v25 = "[AFOpportuneSpeakingModuleDataCollection _deleteSpeakablesOlderThan:]";
             v26 = 2112;
-            v27 = v15;
+            v27 = identifier;
             v28 = 2112;
-            v29 = v16;
+            v29 = date;
             _os_log_debug_impl(&dword_1912FE000, log, OS_LOG_TYPE_DEBUG, "%s Deleting sanitized speakable:%@ date:%@", buf, 0x20u);
 
             p_superclass = (AFSpeechPackage + 8);
@@ -61,7 +61,7 @@
         }
       }
 
-      v8 = [v5 countByEnumeratingWithState:&v20 objects:v30 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v20 objects:v30 count:16];
     }
 
     while (v8);
@@ -70,20 +70,20 @@
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)logInteractionEvents:(id)a3 forSpeakableId:(id)a4
+- (void)logInteractionEvents:(id)events forSpeakableId:(id)id
 {
-  v6 = a3;
-  v7 = a4;
+  eventsCopy = events;
+  idCopy = id;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __79__AFOpportuneSpeakingModuleDataCollection_logInteractionEvents_forSpeakableId___block_invoke;
   block[3] = &unk_1E73494B0;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = idCopy;
+  v13 = eventsCopy;
+  v9 = eventsCopy;
+  v10 = idCopy;
   dispatch_async(queue, block);
 }
 
@@ -111,23 +111,23 @@ void __79__AFOpportuneSpeakingModuleDataCollection_logInteractionEvents_forSpeak
   }
 }
 
-- (void)logRecommendedAction:(id)a3 forSpeakableId:(id)a4 withModelId:(id)a5
+- (void)logRecommendedAction:(id)action forSpeakableId:(id)id withModelId:(id)modelId
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  actionCopy = action;
+  idCopy = id;
+  modelIdCopy = modelId;
   queue = self->_queue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __91__AFOpportuneSpeakingModuleDataCollection_logRecommendedAction_forSpeakableId_withModelId___block_invoke;
   v15[3] = &unk_1E7349398;
   v15[4] = self;
-  v16 = v9;
-  v17 = v8;
-  v18 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v16 = idCopy;
+  v17 = actionCopy;
+  v18 = modelIdCopy;
+  v12 = modelIdCopy;
+  v13 = actionCopy;
+  v14 = idCopy;
   dispatch_async(queue, v15);
 }
 
@@ -156,21 +156,21 @@ void __91__AFOpportuneSpeakingModuleDataCollection_logRecommendedAction_forSpeak
   }
 }
 
-- (void)logFeedbackOfType:(int64_t)a3 forSpeakableId:(id)a4 withModelId:(id)a5
+- (void)logFeedbackOfType:(int64_t)type forSpeakableId:(id)id withModelId:(id)modelId
 {
-  v8 = a4;
-  v9 = a5;
+  idCopy = id;
+  modelIdCopy = modelId;
   queue = self->_queue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __88__AFOpportuneSpeakingModuleDataCollection_logFeedbackOfType_forSpeakableId_withModelId___block_invoke;
   v13[3] = &unk_1E73464F0;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a3;
-  v11 = v9;
-  v12 = v8;
+  v14 = idCopy;
+  v15 = modelIdCopy;
+  typeCopy = type;
+  v11 = modelIdCopy;
+  v12 = idCopy;
   dispatch_async(queue, v13);
 }
 
@@ -203,27 +203,27 @@ void __88__AFOpportuneSpeakingModuleDataCollection_logFeedbackOfType_forSpeakabl
   }
 }
 
-- (void)logSpeakable:(id)a3 forContact:(id)a4 withModelId:(id)a5 withFeatures:(id)a6 withScore:(float)a7
+- (void)logSpeakable:(id)speakable forContact:(id)contact withModelId:(id)id withFeatures:(id)features withScore:(float)score
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  speakableCopy = speakable;
+  contactCopy = contact;
+  idCopy = id;
+  featuresCopy = features;
   queue = self->_queue;
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __102__AFOpportuneSpeakingModuleDataCollection_logSpeakable_forContact_withModelId_withFeatures_withScore___block_invoke;
   v21[3] = &unk_1E7343648;
   v21[4] = self;
-  v22 = v12;
-  v23 = v13;
-  v24 = v14;
-  v25 = v15;
-  v26 = a7;
-  v17 = v15;
-  v18 = v14;
-  v19 = v13;
-  v20 = v12;
+  v22 = speakableCopy;
+  v23 = contactCopy;
+  v24 = idCopy;
+  v25 = featuresCopy;
+  scoreCopy = score;
+  v17 = featuresCopy;
+  v18 = idCopy;
+  v19 = contactCopy;
+  v20 = speakableCopy;
   dispatch_async(queue, v21);
 }
 
@@ -312,40 +312,40 @@ void __102__AFOpportuneSpeakingModuleDataCollection_logSpeakable_forContact_with
       {
         v22 = MEMORY[0x1E696AE30];
         v23 = v8;
-        v24 = [v22 processInfo];
-        v25 = [v24 processName];
+        processInfo = [v22 processInfo];
+        processName = [processInfo processName];
         *buf = 136315394;
         v28 = "[AFOpportuneSpeakingModuleDataCollection init]";
         v29 = 2112;
-        v30 = v25;
+        v30 = processName;
         _os_log_debug_impl(&dword_1912FE000, v23, OS_LOG_TYPE_DEBUG, "%s Configuring data collection manager for process: %@", buf, 0x16u);
       }
 
-      v9 = [getDCConfigurationClass() sharedConfiguration];
-      [v9 setPrimaryProcess:@"assistantd"];
-      [v9 setPackingPolicy:getDCPackingPolicyTypeOnTimer()];
-      [v9 setPackagingTimeInterval:3600.0];
-      [v9 setLogWriteTimeInterval:300.0];
-      [v9 setOutputDirectoryPath:@"/tmp/OSM/"];
-      [v9 setUploadUrl:@"https://osmdatacollectionproxy.usspk02.orchard.apple.com/upload"];
-      v10 = [getDCLongRunningLogClass() sharedInstance];
-      [v9 addLogger:v10 toProcess:@"assistantd"];
+      sharedConfiguration = [getDCConfigurationClass() sharedConfiguration];
+      [sharedConfiguration setPrimaryProcess:@"assistantd"];
+      [sharedConfiguration setPackingPolicy:getDCPackingPolicyTypeOnTimer()];
+      [sharedConfiguration setPackagingTimeInterval:3600.0];
+      [sharedConfiguration setLogWriteTimeInterval:300.0];
+      [sharedConfiguration setOutputDirectoryPath:@"/tmp/OSM/"];
+      [sharedConfiguration setUploadUrl:@"https://osmdatacollectionproxy.usspk02.orchard.apple.com/upload"];
+      sharedInstance = [getDCLongRunningLogClass() sharedInstance];
+      [sharedConfiguration addLogger:sharedInstance toProcess:@"assistantd"];
 
-      v11 = [getDCLongRunningLogClass() sharedInstance];
-      [v9 addLogger:v11 toProcess:@"OpportuneSpeakingModelService"];
+      sharedInstance2 = [getDCLongRunningLogClass() sharedInstance];
+      [sharedConfiguration addLogger:sharedInstance2 toProcess:@"OpportuneSpeakingModelService"];
 
       DCRuleClass = getDCRuleClass();
       v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"process-%@", @"assistantd"];
       v14 = [DCRuleClass getNearestFileAfterMarkWithPrefix:v13];
-      [v9 addPackingRule:v14];
+      [sharedConfiguration addPackingRule:v14];
 
       v15 = getDCRuleClass();
       v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"process-%@", @"OpportuneSpeakingModelService"];
       v17 = [v15 getNearestFileAfterMarkWithPrefix:v16];
-      [v9 addPackingRule:v17];
+      [sharedConfiguration addPackingRule:v17];
 
-      v18 = [getDCManagerClass() sharedInstance];
-      [v18 setupWithConfiguration:v9];
+      sharedInstance3 = [getDCManagerClass() sharedInstance];
+      [sharedInstance3 setupWithConfiguration:sharedConfiguration];
 
       v19 = _AFPreferencesOpportuneSpeakingModuleEnabled();
       AFSetSpokenNotificationDataCollectionEnabled(v19);

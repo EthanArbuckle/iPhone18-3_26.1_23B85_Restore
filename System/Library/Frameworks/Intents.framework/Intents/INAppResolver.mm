@@ -1,31 +1,31 @@
 @interface INAppResolver
 + (id)sharedResolver;
 + (void)initialize;
-- (BOOL)cacheHasResultForDescriptor:(id)a3;
+- (BOOL)cacheHasResultForDescriptor:(id)descriptor;
 - (INAppResolver)init;
 - (INExecutionCounterpartMapper)_counterpartMapper;
 - (INExecutionFrameworkMapper)_frameworkMapper;
 - (INSystemAppMapper)_systemAppMapper;
-- (id)_optionsForIntentClassName:(id)a3;
-- (id)_resolvedAppIntentMatchingDescriptor:(id)a3 availableActions:(id)a4 availableEntities:(id)a5;
-- (id)_resolvedAppMatchingDescriptor:(id)a3;
-- (id)_resolvedIntentMatchingDescriptor:(id)a3;
-- (id)_resolvedUserActivityMatchingDescriptor:(id)a3;
-- (id)cachedResultForKey:(id)a3;
-- (id)counterpartIdentifiersForLocalIdentifier:(id)a3;
-- (id)localIdentifiersForCounterpartIdentifier:(id)a3;
-- (id)optionsForCurrentContextWithIntentClassName:(id)a3;
-- (id)resolveDescriptorByLinkingFileProvidersToFilesApp:(id)a3;
-- (id)resolveDescriptorBySwappingIdentifiersWithExtensionIfApplicable:(id)a3;
-- (id)resolvedAppIntentMatchingDescriptor:(id)a3 availableActions:(id)a4 availableEntities:(id)a5;
-- (id)resolvedAppMatchingDescriptor:(id)a3;
-- (id)resolvedIntentMatchingDescriptor:(id)a3;
-- (id)resolvedUserActivityMatchingDescriptor:(id)a3;
-- (void)cacheResult:(id)a3 forDescriptor:(id)a4;
+- (id)_optionsForIntentClassName:(id)name;
+- (id)_resolvedAppIntentMatchingDescriptor:(id)descriptor availableActions:(id)actions availableEntities:(id)entities;
+- (id)_resolvedAppMatchingDescriptor:(id)descriptor;
+- (id)_resolvedIntentMatchingDescriptor:(id)descriptor;
+- (id)_resolvedUserActivityMatchingDescriptor:(id)descriptor;
+- (id)cachedResultForKey:(id)key;
+- (id)counterpartIdentifiersForLocalIdentifier:(id)identifier;
+- (id)localIdentifiersForCounterpartIdentifier:(id)identifier;
+- (id)optionsForCurrentContextWithIntentClassName:(id)name;
+- (id)resolveDescriptorByLinkingFileProvidersToFilesApp:(id)app;
+- (id)resolveDescriptorBySwappingIdentifiersWithExtensionIfApplicable:(id)applicable;
+- (id)resolvedAppIntentMatchingDescriptor:(id)descriptor availableActions:(id)actions availableEntities:(id)entities;
+- (id)resolvedAppMatchingDescriptor:(id)descriptor;
+- (id)resolvedIntentMatchingDescriptor:(id)descriptor;
+- (id)resolvedUserActivityMatchingDescriptor:(id)descriptor;
+- (void)cacheResult:(id)result forDescriptor:(id)descriptor;
 - (void)dealloc;
-- (void)installedApplicationsDidChange:(id)a3;
+- (void)installedApplicationsDidChange:(id)change;
 - (void)invalidateCache;
-- (void)setOptions:(id)a3 forIntentClassName:(id)a4;
+- (void)setOptions:(id)options forIntentClassName:(id)name;
 @end
 
 @implementation INAppResolver
@@ -89,9 +89,9 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696ABB0] defaultCenter];
-  [v3 removeObserver:self name:@"com.apple.LaunchServices.applicationRegistered" object:0];
-  [v3 removeObserver:self name:@"com.apple.LaunchServices.applicationUnregistered" object:0];
+  defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+  [defaultCenter removeObserver:self name:@"com.apple.LaunchServices.applicationRegistered" object:0];
+  [defaultCenter removeObserver:self name:@"com.apple.LaunchServices.applicationUnregistered" object:0];
 
   v4.receiver = self;
   v4.super_class = INAppResolver;
@@ -119,23 +119,23 @@
     v2->_intentClassNameToResolverOptions = v7;
 
     v2->_resolverOptionsLock._os_unfair_lock_opaque = 0;
-    v9 = [MEMORY[0x1E696ABB0] defaultCenter];
-    [v9 addObserver:v2 selector:sel_installedApplicationsDidChange_ name:@"com.apple.LaunchServices.applicationRegistered" object:0];
-    [v9 addObserver:v2 selector:sel_installedApplicationsDidChange_ name:@"com.apple.LaunchServices.applicationUnregistered" object:0];
+    defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_installedApplicationsDidChange_ name:@"com.apple.LaunchServices.applicationRegistered" object:0];
+    [defaultCenter addObserver:v2 selector:sel_installedApplicationsDidChange_ name:@"com.apple.LaunchServices.applicationUnregistered" object:0];
     v10 = v2;
   }
 
   return v2;
 }
 
-- (id)_optionsForIntentClassName:(id)a3
+- (id)_optionsForIntentClassName:(id)name
 {
-  if (a3)
+  if (name)
   {
-    v4 = a3;
+    nameCopy = name;
     os_unfair_lock_lock(&self->_resolverOptionsLock);
-    v5 = [(INAppResolver *)self intentClassNameToResolverOptions];
-    v6 = [v5 objectForKey:v4];
+    intentClassNameToResolverOptions = [(INAppResolver *)self intentClassNameToResolverOptions];
+    v6 = [intentClassNameToResolverOptions objectForKey:nameCopy];
 
     os_unfair_lock_unlock(&self->_resolverOptionsLock);
   }
@@ -148,52 +148,52 @@
   return v6;
 }
 
-- (void)setOptions:(id)a3 forIntentClassName:(id)a4
+- (void)setOptions:(id)options forIntentClassName:(id)name
 {
-  v9 = a3;
-  v6 = a4;
-  if (v6)
+  optionsCopy = options;
+  nameCopy = name;
+  if (nameCopy)
   {
     os_unfair_lock_lock(&self->_resolverOptionsLock);
-    v7 = [(INAppResolver *)self intentClassNameToResolverOptions];
-    v8 = v7;
-    if (v9)
+    intentClassNameToResolverOptions = [(INAppResolver *)self intentClassNameToResolverOptions];
+    v8 = intentClassNameToResolverOptions;
+    if (optionsCopy)
     {
-      [v7 setObject:v9 forKey:v6];
+      [intentClassNameToResolverOptions setObject:optionsCopy forKey:nameCopy];
     }
 
     else
     {
-      [v7 removeObjectForKey:v6];
+      [intentClassNameToResolverOptions removeObjectForKey:nameCopy];
     }
 
     os_unfair_lock_unlock(&self->_resolverOptionsLock);
   }
 }
 
-- (id)optionsForCurrentContextWithIntentClassName:(id)a3
+- (id)optionsForCurrentContextWithIntentClassName:(id)name
 {
-  v4 = [(INAppResolver *)self _optionsForIntentClassName:a3];
+  v4 = [(INAppResolver *)self _optionsForIntentClassName:name];
   v5 = v4;
   if (v4)
   {
-    v6 = v4;
+    globalOptions = v4;
   }
 
   else
   {
-    v6 = [(INAppResolver *)self globalOptions];
+    globalOptions = [(INAppResolver *)self globalOptions];
   }
 
-  v7 = v6;
+  v7 = globalOptions;
 
   return v7;
 }
 
-- (void)installedApplicationsDidChange:(id)a3
+- (void)installedApplicationsDidChange:(id)change
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:@"isPlaceholder"];
+  userInfo = [change userInfo];
+  v5 = [userInfo objectForKey:@"isPlaceholder"];
 
   if (v5)
   {
@@ -216,30 +216,30 @@
 
   v7 = v6;
 
-  v8 = [v7 BOOLValue];
-  if ((v8 & 1) == 0)
+  bOOLValue = [v7 BOOLValue];
+  if ((bOOLValue & 1) == 0)
   {
     [(INAppResolver *)self invalidateCache];
-    v9 = [(INAppResolver *)self linkActionProvider];
-    [v9 evictCache];
+    linkActionProvider = [(INAppResolver *)self linkActionProvider];
+    [linkActionProvider evictCache];
   }
 }
 
 - (void)invalidateCache
 {
   os_unfair_lock_lock(&self->_cacheLock);
-  v3 = [(INAppResolver *)self cachedResults];
-  [v3 removeAllObjects];
+  cachedResults = [(INAppResolver *)self cachedResults];
+  [cachedResults removeAllObjects];
 
   os_unfair_lock_unlock(&self->_cacheLock);
 }
 
-- (id)cachedResultForKey:(id)a3
+- (id)cachedResultForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_cacheLock);
-  v5 = [(INAppResolver *)self cachedResults];
-  v6 = [v5 objectForKey:v4];
+  cachedResults = [(INAppResolver *)self cachedResults];
+  v6 = [cachedResults objectForKey:keyCopy];
 
   os_unfair_lock_unlock(&self->_cacheLock);
   objc_opt_class();
@@ -256,33 +256,33 @@
   return v7;
 }
 
-- (void)cacheResult:(id)a3 forDescriptor:(id)a4
+- (void)cacheResult:(id)result forDescriptor:(id)descriptor
 {
-  v10 = a3;
-  v6 = a4;
+  resultCopy = result;
+  descriptorCopy = descriptor;
   os_unfair_lock_lock(&self->_cacheLock);
-  v7 = [(INAppResolver *)self cachedResults];
-  v8 = v7;
-  if (v10)
+  cachedResults = [(INAppResolver *)self cachedResults];
+  v8 = cachedResults;
+  if (resultCopy)
   {
-    [v7 setObject:v10 forKey:v6];
+    [cachedResults setObject:resultCopy forKey:descriptorCopy];
   }
 
   else
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
-    [v8 setObject:v9 forKey:v6];
+    null = [MEMORY[0x1E695DFB0] null];
+    [v8 setObject:null forKey:descriptorCopy];
   }
 
   os_unfair_lock_unlock(&self->_cacheLock);
 }
 
-- (BOOL)cacheHasResultForDescriptor:(id)a3
+- (BOOL)cacheHasResultForDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   os_unfair_lock_lock(&self->_cacheLock);
-  v5 = [(INAppResolver *)self cachedResults];
-  v6 = [v5 objectForKey:v4];
+  cachedResults = [(INAppResolver *)self cachedResults];
+  v6 = [cachedResults objectForKey:descriptorCopy];
 
   if (v6)
   {
@@ -308,60 +308,60 @@
   return isKindOfClass & 1;
 }
 
-- (id)_resolvedAppIntentMatchingDescriptor:(id)a3 availableActions:(id)a4 availableEntities:(id)a5
+- (id)_resolvedAppIntentMatchingDescriptor:(id)descriptor availableActions:(id)actions availableEntities:(id)entities
 {
   v152 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v9)
+  descriptorCopy = descriptor;
+  actionsCopy = actions;
+  entitiesCopy = entities;
+  if (actionsCopy)
   {
-    v11 = [(INAppResolver *)self linkActionProvider];
-    [v11 cacheActions:v9];
+    linkActionProvider = [(INAppResolver *)self linkActionProvider];
+    [linkActionProvider cacheActions:actionsCopy];
   }
 
-  if (v10)
+  if (entitiesCopy)
   {
-    v12 = [(INAppResolver *)self linkActionProvider];
-    [v12 cacheEntities:v10];
+    linkActionProvider2 = [(INAppResolver *)self linkActionProvider];
+    [linkActionProvider2 cacheEntities:entitiesCopy];
   }
 
-  v124 = v10;
+  v124 = entitiesCopy;
   context = objc_autoreleasePoolPush();
-  v132 = self;
-  v13 = [(INAppResolver *)self resolveDescriptorBySwappingIdentifiersWithExtensionIfApplicable:v8];
+  selfCopy = self;
+  v13 = [(INAppResolver *)self resolveDescriptorBySwappingIdentifiersWithExtensionIfApplicable:descriptorCopy];
   v121 = v13;
   if (v13)
   {
     v14 = v13;
     obja = [INAppIntentDescriptor alloc];
-    v130 = [v8 intentIdentifier];
-    v126 = [v14 localizedName];
+    intentIdentifier = [descriptorCopy intentIdentifier];
+    localizedName = [v14 localizedName];
     [v14 bundleIdentifier];
-    v15 = v118 = v9;
-    v16 = [v14 extensionBundleIdentifier];
-    v17 = [v14 counterpartIdentifiers];
-    v18 = [v14 teamIdentifier];
-    v19 = [v14 supportedIntents];
-    v20 = [v8 supportedEntities];
-    v21 = [v14 bundleURL];
-    v22 = [v14 documentTypes];
-    v23 = [(INAppIntentDescriptor *)obja initWithIntentIdentifier:v130 localizedName:v126 bundleIdentifier:v15 extensionBundleIdentifier:v16 counterpartIdentifiers:v17 teamIdentifier:v18 supportedIntents:v19 supportedEntities:v20 bundleURL:v21 documentTypes:v22];
+    v15 = v118 = actionsCopy;
+    extensionBundleIdentifier = [v14 extensionBundleIdentifier];
+    counterpartIdentifiers = [v14 counterpartIdentifiers];
+    teamIdentifier = [v14 teamIdentifier];
+    supportedIntents = [v14 supportedIntents];
+    supportedEntities = [descriptorCopy supportedEntities];
+    bundleURL = [v14 bundleURL];
+    documentTypes = [v14 documentTypes];
+    v23 = [(INAppIntentDescriptor *)obja initWithIntentIdentifier:intentIdentifier localizedName:localizedName bundleIdentifier:v15 extensionBundleIdentifier:extensionBundleIdentifier counterpartIdentifiers:counterpartIdentifiers teamIdentifier:teamIdentifier supportedIntents:supportedIntents supportedEntities:supportedEntities bundleURL:bundleURL documentTypes:documentTypes];
 
-    v9 = v118;
-    v8 = v23;
+    actionsCopy = v118;
+    descriptorCopy = v23;
   }
 
-  v24 = [v8 bundleIdentifier];
-  v123 = v24;
-  if (v24)
+  bundleIdentifier = [descriptorCopy bundleIdentifier];
+  v123 = bundleIdentifier;
+  if (bundleIdentifier)
   {
-    v25 = v24;
-    if ([v24 length])
+    v25 = bundleIdentifier;
+    if ([bundleIdentifier length])
     {
-      v26 = [(INAppResolver *)v132 _systemAppMapper];
-      v27 = [v8 intentIdentifier];
-      v28 = [v26 matchForBundleIdentifier:v25 intentName:v27];
+      _systemAppMapper = [(INAppResolver *)selfCopy _systemAppMapper];
+      intentIdentifier2 = [descriptorCopy intentIdentifier];
+      v28 = [_systemAppMapper matchForBundleIdentifier:v25 intentName:intentIdentifier2];
 
       v117 = v28;
       if (v28)
@@ -369,30 +369,30 @@
         v29 = v124;
         if ([v28 appIsUnavailableOnCurrentPlatform])
         {
-          v30 = v8;
+          v30 = descriptorCopy;
         }
 
         else
         {
-          v119 = v9;
-          v43 = [v28 bundleIdentifierForCurrentPlatform];
-          v44 = v43;
-          if (v43 && [v43 length])
+          v119 = actionsCopy;
+          bundleIdentifierForCurrentPlatform = [v28 bundleIdentifierForCurrentPlatform];
+          v44 = bundleIdentifierForCurrentPlatform;
+          if (bundleIdentifierForCurrentPlatform && [bundleIdentifierForCurrentPlatform length])
           {
             v45 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:v44 allowPlaceholder:0 error:0];
-            v46 = [(INAppResolver *)v132 linkActionProvider];
-            v47 = [v46 supportedActionIdentifiersForBundleIdentifier:v44];
+            linkActionProvider3 = [(INAppResolver *)selfCopy linkActionProvider];
+            v47 = [linkActionProvider3 supportedActionIdentifiersForBundleIdentifier:v44];
 
-            v48 = [(INAppResolver *)v132 linkActionProvider];
-            v49 = [v48 supportedEntityIdentifiersForBundleIdentifier:v44];
+            linkActionProvider4 = [(INAppResolver *)selfCopy linkActionProvider];
+            v49 = [linkActionProvider4 supportedEntityIdentifiersForBundleIdentifier:v44];
 
             v50 = [INAppIntentDescriptor alloc];
-            v51 = [v8 intentIdentifier];
+            intentIdentifier3 = [descriptorCopy intentIdentifier];
             v52 = [MEMORY[0x1E695DFD8] setWithArray:v47];
             v53 = [MEMORY[0x1E695DFD8] setWithArray:v49];
             v54 = v50;
             v29 = v124;
-            v55 = [(INAppIntentDescriptor *)v54 initWithIntentIdentifier:v51 applicationRecord:v45 supportedAppIntents:v52 supportedEntities:v53];
+            v55 = [(INAppIntentDescriptor *)v54 initWithIntentIdentifier:intentIdentifier3 applicationRecord:v45 supportedAppIntents:v52 supportedEntities:v53];
 
             v30 = v55;
           }
@@ -403,33 +403,33 @@
             if (os_log_type_enabled(INSiriLogContextIntents, OS_LOG_TYPE_FAULT))
             {
               v111 = v56;
-              v112 = [v8 intentIdentifier];
+              intentIdentifier4 = [descriptorCopy intentIdentifier];
               *buf = 136315394;
               v149 = "[INAppResolver _resolvedAppIntentMatchingDescriptor:availableActions:availableEntities:]";
               v150 = 2112;
-              v151 = v112;
+              v151 = intentIdentifier4;
               _os_log_fault_impl(&dword_18E991000, v111, OS_LOG_TYPE_FAULT, "%s Platform bundle identifier unexpectedly nil: %@", buf, 0x16u);
 
               v29 = v124;
             }
 
-            v30 = v8;
+            v30 = descriptorCopy;
           }
 
-          v9 = v119;
+          actionsCopy = v119;
         }
 
         goto LABEL_83;
       }
 
-      v34 = [(INAppResolver *)v132 linkActionProvider];
-      v35 = [v34 supportedActionIdentifiersForBundleIdentifier:v25];
+      linkActionProvider5 = [(INAppResolver *)selfCopy linkActionProvider];
+      v35 = [linkActionProvider5 supportedActionIdentifiersForBundleIdentifier:v25];
 
       v116 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:v25 allowPlaceholder:0 error:0];
       if (v116)
       {
-        v36 = [v116 applicationState];
-        if ([v36 isInstalled])
+        applicationState = [v116 applicationState];
+        if ([applicationState isInstalled])
         {
           v37 = [v35 count];
 
@@ -438,21 +438,21 @@
             goto LABEL_31;
           }
 
-          v38 = [(INAppResolver *)v132 linkActionProvider];
-          v36 = [v38 supportedEntityIdentifiersForBundleIdentifier:v123];
+          linkActionProvider6 = [(INAppResolver *)selfCopy linkActionProvider];
+          applicationState = [linkActionProvider6 supportedEntityIdentifiersForBundleIdentifier:v123];
 
-          if (INActionsAndApplicationRecordMatchesRequirementsFromDescriptor(v35, v36, v116, v8))
+          if (INActionsAndApplicationRecordMatchesRequirementsFromDescriptor(v35, applicationState, v116, descriptorCopy))
           {
             v39 = [INAppIntentDescriptor alloc];
-            v40 = [v8 intentIdentifier];
+            intentIdentifier5 = [descriptorCopy intentIdentifier];
             v41 = [MEMORY[0x1E695DFD8] setWithArray:v35];
-            v42 = [MEMORY[0x1E695DFD8] setWithArray:v36];
-            v131 = [(INAppIntentDescriptor *)v39 initWithIntentIdentifier:v40 applicationRecord:v116 supportedAppIntents:v41 supportedEntities:v42];
+            v42 = [MEMORY[0x1E695DFD8] setWithArray:applicationState];
+            anyObject = [(INAppIntentDescriptor *)v39 initWithIntentIdentifier:intentIdentifier5 applicationRecord:v116 supportedAppIntents:v41 supportedEntities:v42];
 
             v29 = v124;
 LABEL_82:
 
-            v30 = v131;
+            v30 = anyObject;
 LABEL_83:
 
             goto LABEL_84;
@@ -461,19 +461,19 @@ LABEL_83:
       }
 
 LABEL_31:
-      v57 = [v8 counterpartIdentifiers];
-      v58 = v57;
-      v127 = v8;
-      v120 = v9;
-      if (v57)
+      counterpartIdentifiers2 = [descriptorCopy counterpartIdentifiers];
+      v58 = counterpartIdentifiers2;
+      v127 = descriptorCopy;
+      v120 = actionsCopy;
+      if (counterpartIdentifiers2)
       {
-        v59 = v57;
+        v59 = counterpartIdentifiers2;
       }
 
       else
       {
-        v60 = [v8 bundleIdentifier];
-        v59 = [(INAppResolver *)v132 localIdentifiersForCounterpartIdentifier:v60];
+        bundleIdentifier2 = [descriptorCopy bundleIdentifier];
+        v59 = [(INAppResolver *)selfCopy localIdentifiersForCounterpartIdentifier:bundleIdentifier2];
       }
 
       v144 = 0u;
@@ -502,32 +502,32 @@ LABEL_36:
           v68 = v67;
           if (v67)
           {
-            v69 = [v67 applicationState];
-            v70 = [v69 isInstalled];
+            applicationState2 = [v67 applicationState];
+            isInstalled = [applicationState2 isInstalled];
 
-            if (v70)
+            if (isInstalled)
             {
-              v71 = [(INAppResolver *)v132 linkActionProvider];
-              v72 = [v71 supportedActionIdentifiersForBundleIdentifier:v66];
+              linkActionProvider7 = [(INAppResolver *)selfCopy linkActionProvider];
+              v72 = [linkActionProvider7 supportedActionIdentifiersForBundleIdentifier:v66];
 
               if ([v72 count])
               {
-                v73 = [(INAppResolver *)v132 linkActionProvider];
-                v74 = [v73 supportedEntityIdentifiersForBundleIdentifier:v66];
+                linkActionProvider8 = [(INAppResolver *)selfCopy linkActionProvider];
+                v74 = [linkActionProvider8 supportedEntityIdentifiersForBundleIdentifier:v66];
 
                 if (INActionsAndApplicationRecordMatchesRequirementsFromDescriptor(v72, v74, v68, v127))
                 {
                   v81 = [INAppIntentDescriptor alloc];
-                  v8 = v127;
-                  v82 = [v127 intentIdentifier];
+                  descriptorCopy = v127;
+                  intentIdentifier6 = [v127 intentIdentifier];
                   v83 = [MEMORY[0x1E695DFD8] setWithArray:v72];
                   v84 = [MEMORY[0x1E695DFD8] setWithArray:v74];
-                  v131 = [(INAppIntentDescriptor *)v81 initWithIntentIdentifier:v82 applicationRecord:v68 supportedAppIntents:v83 supportedEntities:v84];
+                  anyObject = [(INAppIntentDescriptor *)v81 initWithIntentIdentifier:intentIdentifier6 applicationRecord:v68 supportedAppIntents:v83 supportedEntities:v84];
 
                   v29 = v124;
                   v85 = v125;
                   v86 = v125;
-                  v9 = v120;
+                  actionsCopy = v120;
                   v35 = v115;
                   goto LABEL_81;
                 }
@@ -550,20 +550,20 @@ LABEL_36:
         }
       }
 
-      v75 = [(INAppResolver *)v132 linkActionProvider];
-      v76 = [v75 bundleIdentifiers];
+      linkActionProvider9 = [(INAppResolver *)selfCopy linkActionProvider];
+      bundleIdentifiers = [linkActionProvider9 bundleIdentifiers];
 
       v77 = MEMORY[0x1E695DFD8];
       v140[0] = MEMORY[0x1E69E9820];
       v140[1] = 3221225472;
       v140[2] = __89__INAppResolver__resolvedAppIntentMatchingDescriptor_availableActions_availableEntities___block_invoke;
       v140[3] = &unk_1E727F6A8;
-      v140[4] = v132;
-      v8 = v127;
+      v140[4] = selfCopy;
+      descriptorCopy = v127;
       v78 = v127;
       v141 = v78;
-      v114 = v76;
-      v79 = [v76 if_compactMap:v140];
+      v114 = bundleIdentifiers;
+      v79 = [bundleIdentifiers if_compactMap:v140];
       v80 = [v77 setWithArray:v79];
 
       v113 = v80;
@@ -572,32 +572,32 @@ LABEL_36:
         v35 = v115;
         if ([v80 count] == 1)
         {
-          v131 = [v80 anyObject];
-          v9 = v120;
+          anyObject = [v80 anyObject];
+          actionsCopy = v120;
           v29 = v124;
           goto LABEL_77;
         }
 
-        v104 = [v80 allObjects];
+        allObjects = [v80 allObjects];
         v138[0] = MEMORY[0x1E69E9820];
         v138[1] = 3221225472;
         v138[2] = __89__INAppResolver__resolvedAppIntentMatchingDescriptor_availableActions_availableEntities___block_invoke_2;
         v138[3] = &unk_1E727F6D0;
         v139 = v123;
-        v105 = [v104 if_firstObjectPassingTest:v138];
+        v105 = [allObjects if_firstObjectPassingTest:v138];
 
-        v9 = v120;
+        actionsCopy = v120;
         if (v105)
         {
-          v106 = v105;
+          anyObject2 = v105;
         }
 
         else
         {
-          v106 = [v80 anyObject];
+          anyObject2 = [v80 anyObject];
         }
 
-        v131 = v106;
+        anyObject = anyObject2;
         v29 = v124;
         v85 = v125;
         v86 = v114;
@@ -621,7 +621,7 @@ LABEL_81:
       }
 
       v89 = v88;
-      v131 = 0;
+      anyObject = 0;
       v133 = *v135;
       v90 = 0x7FFFFFFFFFFFFFFFLL;
       obj = v87;
@@ -635,34 +635,34 @@ LABEL_53:
         }
 
         v92 = *(*(&v134 + 1) + 8 * v91);
-        v93 = [v78 localizedName];
+        localizedName2 = [v78 localizedName];
 
-        if (v93)
+        if (localizedName2)
         {
           break;
         }
 
-        v98 = [v78 bundleIdentifier];
+        bundleIdentifier3 = [v78 bundleIdentifier];
 
-        if (!v98)
+        if (!bundleIdentifier3)
         {
           goto LABEL_68;
         }
 
-        v99 = [v78 bundleIdentifier];
-        v100 = [v92 bundleIdentifier];
-        v94 = [v99 commonPrefixWithString:v100 options:0];
+        bundleIdentifier4 = [v78 bundleIdentifier];
+        bundleIdentifier5 = [v92 bundleIdentifier];
+        localizedName3 = [bundleIdentifier4 commonPrefixWithString:bundleIdentifier5 options:0];
 
-        if ([v94 length])
+        if ([localizedName3 length])
         {
-          v101 = [v78 bundleIdentifier];
-          v95 = [v101 substringFromIndex:{objc_msgSend(v94, "length")}];
+          bundleIdentifier6 = [v78 bundleIdentifier];
+          localizedName4 = [bundleIdentifier6 substringFromIndex:{objc_msgSend(localizedName3, "length")}];
 
-          v102 = [v92 bundleIdentifier];
-          v103 = [v102 substringFromIndex:{objc_msgSend(v94, "length")}];
+          bundleIdentifier7 = [v92 bundleIdentifier];
+          v103 = [bundleIdentifier7 substringFromIndex:{objc_msgSend(localizedName3, "length")}];
 
-          v96 = INEditDistanceBetweenStrings(v95, v103);
-          v8 = v127;
+          v96 = INEditDistanceBetweenStrings(localizedName4, v103);
+          descriptorCopy = v127;
           goto LABEL_58;
         }
 
@@ -675,16 +675,16 @@ LABEL_68:
           if (!v89)
           {
 
-            if (v131)
+            if (anyObject)
             {
-              [(INAppDescriptor *)v131 setRequiresUserConfirmation:v90 > 0];
+              [(INAppDescriptor *)anyObject setRequiresUserConfirmation:v90 > 0];
               goto LABEL_76;
             }
 
 LABEL_75:
-            v131 = v78;
+            anyObject = v78;
 LABEL_76:
-            v9 = v120;
+            actionsCopy = v120;
             v29 = v124;
             v35 = v115;
 LABEL_77:
@@ -697,9 +697,9 @@ LABEL_77:
         }
       }
 
-      v94 = [v78 localizedName];
-      v95 = [v92 localizedName];
-      v96 = INEditDistanceBetweenStrings(v94, v95);
+      localizedName3 = [v78 localizedName];
+      localizedName4 = [v92 localizedName];
+      v96 = INEditDistanceBetweenStrings(localizedName3, localizedName4);
 LABEL_58:
 
       if (v96 >= v90 || v96 > 5)
@@ -707,15 +707,15 @@ LABEL_58:
         goto LABEL_68;
       }
 
-      v94 = v131;
-      v131 = v92;
+      localizedName3 = anyObject;
+      anyObject = v92;
       v90 = v96;
       goto LABEL_64;
     }
   }
 
-  v31 = [v8 intentIdentifier];
-  v32 = [v31 isEqualToString:@"MTUpdateAlarmIntent"];
+  intentIdentifier7 = [descriptorCopy intentIdentifier];
+  v32 = [intentIdentifier7 isEqualToString:@"MTUpdateAlarmIntent"];
 
   v33 = INSiriLogContextIntents;
   if (v32)
@@ -731,15 +731,15 @@ LABEL_58:
   else if (os_log_type_enabled(INSiriLogContextIntents, OS_LOG_TYPE_ERROR))
   {
     v107 = v33;
-    v108 = [v8 intentIdentifier];
+    intentIdentifier8 = [descriptorCopy intentIdentifier];
     *buf = 136315394;
     v149 = "[INAppResolver _resolvedAppIntentMatchingDescriptor:availableActions:availableEntities:]";
     v150 = 2112;
-    v151 = v108;
+    v151 = intentIdentifier8;
     _os_log_error_impl(&dword_18E991000, v107, OS_LOG_TYPE_ERROR, "%s Resolved bundleIdentifier unexpectedly nil for %@", buf, 0x16u);
   }
 
-  v30 = v8;
+  v30 = descriptorCopy;
   v29 = v124;
 LABEL_84:
 
@@ -802,14 +802,14 @@ uint64_t __89__INAppResolver__resolvedAppIntentMatchingDescriptor_availableActio
   return v5;
 }
 
-- (id)resolvedAppIntentMatchingDescriptor:(id)a3 availableActions:(id)a4 availableEntities:(id)a5
+- (id)resolvedAppIntentMatchingDescriptor:(id)descriptor availableActions:(id)actions availableEntities:(id)entities
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (INDescriptorContainsBundleIdentifiers(v8))
+  descriptorCopy = descriptor;
+  actionsCopy = actions;
+  entitiesCopy = entities;
+  if (INDescriptorContainsBundleIdentifiers(descriptorCopy))
   {
-    v11 = v8;
+    v11 = descriptorCopy;
     if ([(INAppResolver *)self cacheHasResultForDescriptor:v11])
     {
       v12 = [(INAppResolver *)self cachedResultForKey:v11];
@@ -817,7 +817,7 @@ uint64_t __89__INAppResolver__resolvedAppIntentMatchingDescriptor_availableActio
 
     else
     {
-      v12 = [(INAppResolver *)self _resolvedAppIntentMatchingDescriptor:v11 availableActions:v9 availableEntities:v10];
+      v12 = [(INAppResolver *)self _resolvedAppIntentMatchingDescriptor:v11 availableActions:actionsCopy availableEntities:entitiesCopy];
       [(INAppResolver *)self cacheResult:v12 forDescriptor:v11];
     }
   }
@@ -830,51 +830,51 @@ uint64_t __89__INAppResolver__resolvedAppIntentMatchingDescriptor_availableActio
   return v12;
 }
 
-- (id)counterpartIdentifiersForLocalIdentifier:(id)a3
+- (id)counterpartIdentifiersForLocalIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(INAppResolver *)self _counterpartMapper];
-  v6 = [v5 counterpartIdentifiersForLocalIdentifier:v4];
+  identifierCopy = identifier;
+  _counterpartMapper = [(INAppResolver *)self _counterpartMapper];
+  v6 = [_counterpartMapper counterpartIdentifiersForLocalIdentifier:identifierCopy];
 
   return v6;
 }
 
-- (id)localIdentifiersForCounterpartIdentifier:(id)a3
+- (id)localIdentifiersForCounterpartIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(INAppResolver *)self _counterpartMapper];
-  v6 = [v5 localIdentifiersForCounterpartIdentifier:v4];
+  identifierCopy = identifier;
+  _counterpartMapper = [(INAppResolver *)self _counterpartMapper];
+  v6 = [_counterpartMapper localIdentifiersForCounterpartIdentifier:identifierCopy];
 
   return v6;
 }
 
-- (id)resolveDescriptorByLinkingFileProvidersToFilesApp:(id)a3
+- (id)resolveDescriptorByLinkingFileProvidersToFilesApp:(id)app
 {
-  v3 = a3;
-  v4 = [v3 extensionBundleIdentifier];
+  appCopy = app;
+  extensionBundleIdentifier = [appCopy extensionBundleIdentifier];
 
-  if (v4)
+  if (extensionBundleIdentifier)
   {
     v5 = objc_alloc(MEMORY[0x1E69635D0]);
-    v6 = [v3 extensionBundleIdentifier];
-    v7 = [v5 initWithBundleIdentifier:v6 error:0];
+    extensionBundleIdentifier2 = [appCopy extensionBundleIdentifier];
+    v7 = [v5 initWithBundleIdentifier:extensionBundleIdentifier2 error:0];
 
-    v8 = [v7 extensionPointRecord];
-    v9 = [v8 name];
-    v10 = [v9 isEqualToString:@"com.apple.fileprovider-nonui"];
+    extensionPointRecord = [v7 extensionPointRecord];
+    name = [extensionPointRecord name];
+    v10 = [name isEqualToString:@"com.apple.fileprovider-nonui"];
 
     v11 = 0;
     if (v10)
     {
       v12 = [INUserActivityDescriptor alloc];
-      v13 = [v3 userActivityType];
-      v14 = [v3 localizedName];
-      v15 = [v3 extensionBundleIdentifier];
-      v16 = [v3 counterpartIdentifiers];
-      v17 = [v3 teamIdentifier];
-      v18 = [v3 supportedIntents];
-      v19 = [v3 bundleURL];
-      v11 = [(INUserActivityDescriptor *)v12 initWithUserActivityType:v13 localizedName:v14 bundleIdentifier:@"com.apple.DocumentsApp" extensionBundleIdentifier:v15 counterpartIdentifiers:v16 teamIdentifier:v17 supportedIntents:v18 bundleURL:v19];
+      userActivityType = [appCopy userActivityType];
+      localizedName = [appCopy localizedName];
+      extensionBundleIdentifier3 = [appCopy extensionBundleIdentifier];
+      counterpartIdentifiers = [appCopy counterpartIdentifiers];
+      teamIdentifier = [appCopy teamIdentifier];
+      supportedIntents = [appCopy supportedIntents];
+      bundleURL = [appCopy bundleURL];
+      v11 = [(INUserActivityDescriptor *)v12 initWithUserActivityType:userActivityType localizedName:localizedName bundleIdentifier:@"com.apple.DocumentsApp" extensionBundleIdentifier:extensionBundleIdentifier3 counterpartIdentifiers:counterpartIdentifiers teamIdentifier:teamIdentifier supportedIntents:supportedIntents bundleURL:bundleURL];
     }
   }
 
@@ -886,27 +886,27 @@ uint64_t __89__INAppResolver__resolvedAppIntentMatchingDescriptor_availableActio
   return v11;
 }
 
-- (id)resolveDescriptorBySwappingIdentifiersWithExtensionIfApplicable:(id)a3
+- (id)resolveDescriptorBySwappingIdentifiersWithExtensionIfApplicable:(id)applicable
 {
-  v3 = a3;
-  v4 = [v3 bundleIdentifier];
+  applicableCopy = applicable;
+  bundleIdentifier = [applicableCopy bundleIdentifier];
 
-  if (v4)
+  if (bundleIdentifier)
   {
     v5 = objc_alloc(MEMORY[0x1E69635D0]);
-    v6 = [v3 bundleIdentifier];
-    v7 = [v5 initWithBundleIdentifier:v6 error:0];
+    bundleIdentifier2 = [applicableCopy bundleIdentifier];
+    v7 = [v5 initWithBundleIdentifier:bundleIdentifier2 error:0];
 
     if (v7)
     {
-      v8 = [v7 containingBundleRecord];
+      containingBundleRecord = [v7 containingBundleRecord];
       v22 = v7;
-      if (v8)
+      if (containingBundleRecord)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v9 = v8;
+          v9 = containingBundleRecord;
         }
 
         else
@@ -923,16 +923,16 @@ uint64_t __89__INAppResolver__resolvedAppIntentMatchingDescriptor_availableActio
       v11 = v9;
 
       v21 = [INAppDescriptor alloc];
-      v12 = [v11 localizedName];
-      v13 = [v11 bundleIdentifier];
-      v14 = [v3 bundleIdentifier];
-      v15 = [v11 in_counterpartIdentifiers];
-      v16 = [v11 teamIdentifier];
-      v17 = [v11 in_supportedIntents];
+      localizedName = [v11 localizedName];
+      bundleIdentifier3 = [v11 bundleIdentifier];
+      bundleIdentifier4 = [applicableCopy bundleIdentifier];
+      in_counterpartIdentifiers = [v11 in_counterpartIdentifiers];
+      teamIdentifier = [v11 teamIdentifier];
+      in_supportedIntents = [v11 in_supportedIntents];
       v18 = [v11 URL];
-      v19 = [v11 in_documentTypes];
+      in_documentTypes = [v11 in_documentTypes];
 
-      v10 = [(INAppDescriptor *)v21 initWithLocalizedName:v12 bundleIdentifier:v13 extensionBundleIdentifier:v14 counterpartIdentifiers:v15 teamIdentifier:v16 supportedIntents:v17 bundleURL:v18 documentTypes:v19];
+      v10 = [(INAppDescriptor *)v21 initWithLocalizedName:localizedName bundleIdentifier:bundleIdentifier3 extensionBundleIdentifier:bundleIdentifier4 counterpartIdentifiers:in_counterpartIdentifiers teamIdentifier:teamIdentifier supportedIntents:in_supportedIntents bundleURL:v18 documentTypes:in_documentTypes];
       v7 = v22;
     }
 
@@ -950,100 +950,100 @@ uint64_t __89__INAppResolver__resolvedAppIntentMatchingDescriptor_availableActio
   return v10;
 }
 
-- (id)_resolvedUserActivityMatchingDescriptor:(id)a3
+- (id)_resolvedUserActivityMatchingDescriptor:(id)descriptor
 {
   v161 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  descriptorCopy = descriptor;
   context = objc_autoreleasePoolPush();
   v131 = [(INAppResolver *)self optionsForCurrentContextWithIntentClassName:0];
-  v5 = [(INAppResolver *)self resolveDescriptorBySwappingIdentifiersWithExtensionIfApplicable:v4];
+  v5 = [(INAppResolver *)self resolveDescriptorBySwappingIdentifiersWithExtensionIfApplicable:descriptorCopy];
   v120 = v5;
   if (v5)
   {
     v6 = v5;
     v7 = [INUserActivityDescriptor alloc];
-    v8 = [v4 userActivityType];
+    userActivityType = [descriptorCopy userActivityType];
     [v6 localizedName];
-    v129 = v4;
+    v129 = descriptorCopy;
     v10 = v9 = v6;
-    v11 = [v6 bundleIdentifier];
-    v12 = [v9 extensionBundleIdentifier];
-    v13 = [v9 counterpartIdentifiers];
-    v14 = [v9 teamIdentifier];
+    bundleIdentifier = [v6 bundleIdentifier];
+    extensionBundleIdentifier = [v9 extensionBundleIdentifier];
+    counterpartIdentifiers = [v9 counterpartIdentifiers];
+    teamIdentifier = [v9 teamIdentifier];
     [v9 supportedIntents];
     v16 = v15 = self;
-    v17 = [v9 bundleURL];
-    v18 = [(INUserActivityDescriptor *)v7 initWithUserActivityType:v8 localizedName:v10 bundleIdentifier:v11 extensionBundleIdentifier:v12 counterpartIdentifiers:v13 teamIdentifier:v14 supportedIntents:v16 bundleURL:v17];
+    bundleURL = [v9 bundleURL];
+    v18 = [(INUserActivityDescriptor *)v7 initWithUserActivityType:userActivityType localizedName:v10 bundleIdentifier:bundleIdentifier extensionBundleIdentifier:extensionBundleIdentifier counterpartIdentifiers:counterpartIdentifiers teamIdentifier:teamIdentifier supportedIntents:v16 bundleURL:bundleURL];
 
     self = v15;
-    v4 = v18;
+    descriptorCopy = v18;
   }
 
-  v19 = [(INAppResolver *)self resolveDescriptorByLinkingFileProvidersToFilesApp:v4];
+  v19 = [(INAppResolver *)self resolveDescriptorByLinkingFileProvidersToFilesApp:descriptorCopy];
   v119 = v19;
   if (v19)
   {
     v20 = v19;
 
-    v4 = v20;
+    descriptorCopy = v20;
   }
 
   v21 = off_1E727B000;
-  v22 = [v4 extensionBundleIdentifier];
+  extensionBundleIdentifier2 = [descriptorCopy extensionBundleIdentifier];
 
-  v130 = v4;
-  if (v22)
+  v130 = descriptorCopy;
+  if (extensionBundleIdentifier2)
   {
-    v23 = [(INAppResolver *)self _systemAppMapper];
-    v24 = [v4 extensionBundleIdentifier];
-    v25 = [v23 resolvedAppMatchingExtensionBundleIdentifier:v24];
+    _systemAppMapper = [(INAppResolver *)self _systemAppMapper];
+    extensionBundleIdentifier3 = [descriptorCopy extensionBundleIdentifier];
+    counterpartIdentifiers3 = [_systemAppMapper resolvedAppMatchingExtensionBundleIdentifier:extensionBundleIdentifier3];
 
-    if (v25)
+    if (counterpartIdentifiers3)
     {
       v26 = [INUserActivityDescriptor alloc];
-      v27 = [v4 userActivityType];
-      v28 = [v25 localizedName];
-      v29 = [v25 bundleIdentifier];
-      v30 = [v25 extensionBundleIdentifier];
-      v31 = [v25 counterpartIdentifiers];
-      v32 = [v25 teamIdentifier];
-      v33 = [v25 supportedIntents];
-      v34 = v25;
+      userActivityType2 = [descriptorCopy userActivityType];
+      localizedName = [counterpartIdentifiers3 localizedName];
+      bundleIdentifier2 = [counterpartIdentifiers3 bundleIdentifier];
+      extensionBundleIdentifier4 = [counterpartIdentifiers3 extensionBundleIdentifier];
+      counterpartIdentifiers2 = [counterpartIdentifiers3 counterpartIdentifiers];
+      teamIdentifier2 = [counterpartIdentifiers3 teamIdentifier];
+      supportedIntents = [counterpartIdentifiers3 supportedIntents];
+      v34 = counterpartIdentifiers3;
 LABEL_8:
-      v35 = [v34 bundleURL];
-      v36 = [(INUserActivityDescriptor *)v26 initWithUserActivityType:v27 localizedName:v28 bundleIdentifier:v29 extensionBundleIdentifier:v30 counterpartIdentifiers:v31 teamIdentifier:v32 supportedIntents:v33 bundleURL:v35];
+      bundleURL2 = [v34 bundleURL];
+      anyObject = [(INUserActivityDescriptor *)v26 initWithUserActivityType:userActivityType2 localizedName:localizedName bundleIdentifier:bundleIdentifier2 extensionBundleIdentifier:extensionBundleIdentifier4 counterpartIdentifiers:counterpartIdentifiers2 teamIdentifier:teamIdentifier2 supportedIntents:supportedIntents bundleURL:bundleURL2];
 
-      v4 = v130;
+      descriptorCopy = v130;
 LABEL_36:
 
       goto LABEL_87;
     }
   }
 
-  v37 = [v4 bundleIdentifier];
+  bundleIdentifier3 = [descriptorCopy bundleIdentifier];
 
-  if (v37)
+  if (bundleIdentifier3)
   {
     v38 = objc_alloc(MEMORY[0x1E69635F8]);
-    v39 = [v4 bundleIdentifier];
-    v25 = [v38 initWithBundleIdentifier:v39 allowPlaceholder:0 error:0];
+    bundleIdentifier4 = [descriptorCopy bundleIdentifier];
+    counterpartIdentifiers3 = [v38 initWithBundleIdentifier:bundleIdentifier4 allowPlaceholder:0 error:0];
 
-    v40 = [v25 applicationState];
-    if ([v40 isInstalled])
+    applicationState = [counterpartIdentifiers3 applicationState];
+    if ([applicationState isInstalled])
     {
-      v41 = INApplicationRecordMatchesRequirementsFromUserActivityDescriptor(v25, v4, v131);
+      v41 = INApplicationRecordMatchesRequirementsFromUserActivityDescriptor(counterpartIdentifiers3, descriptorCopy, v131);
 
       if (v41)
       {
         v26 = [INUserActivityDescriptor alloc];
-        v27 = [v4 userActivityType];
-        v28 = [v25 localizedName];
-        v29 = [v25 bundleIdentifier];
-        v30 = [v4 extensionBundleIdentifier];
-        v31 = [v25 in_counterpartIdentifiers];
-        v32 = [v25 teamIdentifier];
-        v33 = [v25 in_supportedIntents];
-        v34 = v4;
+        userActivityType2 = [descriptorCopy userActivityType];
+        localizedName = [counterpartIdentifiers3 localizedName];
+        bundleIdentifier2 = [counterpartIdentifiers3 bundleIdentifier];
+        extensionBundleIdentifier4 = [descriptorCopy extensionBundleIdentifier];
+        counterpartIdentifiers2 = [counterpartIdentifiers3 in_counterpartIdentifiers];
+        teamIdentifier2 = [counterpartIdentifiers3 teamIdentifier];
+        supportedIntents = [counterpartIdentifiers3 in_supportedIntents];
+        v34 = descriptorCopy;
         goto LABEL_8;
       }
     }
@@ -1053,13 +1053,13 @@ LABEL_36:
     }
   }
 
-  v135 = self;
+  selfCopy = self;
   v155 = 0u;
   v156 = 0u;
   v153 = 0u;
   v154 = 0u;
-  v25 = [v4 counterpartIdentifiers];
-  v42 = [v25 countByEnumeratingWithState:&v153 objects:v160 count:16];
+  counterpartIdentifiers3 = [descriptorCopy counterpartIdentifiers];
+  v42 = [counterpartIdentifiers3 countByEnumeratingWithState:&v153 objects:v160 count:16];
   if (!v42)
   {
     goto LABEL_26;
@@ -1073,29 +1073,29 @@ LABEL_36:
     {
       if (*v154 != v44)
       {
-        objc_enumerationMutation(v25);
+        objc_enumerationMutation(counterpartIdentifiers3);
       }
 
-      v27 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:*(*(&v153 + 1) + 8 * i) allowPlaceholder:0 error:0];
-      v46 = [v27 applicationState];
-      if ([v46 isInstalled])
+      userActivityType2 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:*(*(&v153 + 1) + 8 * i) allowPlaceholder:0 error:0];
+      applicationState2 = [userActivityType2 applicationState];
+      if ([applicationState2 isInstalled])
       {
-        v47 = INApplicationRecordMatchesRequirementsFromUserActivityDescriptor(v27, v4, v131);
+        v47 = INApplicationRecordMatchesRequirementsFromUserActivityDescriptor(userActivityType2, descriptorCopy, v131);
 
         if (v47)
         {
           v136 = [INUserActivityDescriptor alloc];
-          v132 = [v4 userActivityType];
-          v62 = [v27 localizedName];
-          v63 = [v27 bundleIdentifier];
-          v64 = [v4 extensionBundleIdentifier];
-          v65 = [v27 in_counterpartIdentifiers];
-          v66 = [v27 teamIdentifier];
-          v67 = [v27 in_supportedIntents];
-          v68 = [v130 bundleURL];
-          v36 = [(INUserActivityDescriptor *)v136 initWithUserActivityType:v132 localizedName:v62 bundleIdentifier:v63 extensionBundleIdentifier:v64 counterpartIdentifiers:v65 teamIdentifier:v66 supportedIntents:v67 bundleURL:v68];
+          userActivityType3 = [descriptorCopy userActivityType];
+          localizedName2 = [userActivityType2 localizedName];
+          bundleIdentifier5 = [userActivityType2 bundleIdentifier];
+          extensionBundleIdentifier5 = [descriptorCopy extensionBundleIdentifier];
+          in_counterpartIdentifiers = [userActivityType2 in_counterpartIdentifiers];
+          teamIdentifier3 = [userActivityType2 teamIdentifier];
+          in_supportedIntents = [userActivityType2 in_supportedIntents];
+          bundleURL3 = [v130 bundleURL];
+          anyObject = [(INUserActivityDescriptor *)v136 initWithUserActivityType:userActivityType3 localizedName:localizedName2 bundleIdentifier:bundleIdentifier5 extensionBundleIdentifier:extensionBundleIdentifier5 counterpartIdentifiers:in_counterpartIdentifiers teamIdentifier:teamIdentifier3 supportedIntents:in_supportedIntents bundleURL:bundleURL3];
 
-          v4 = v130;
+          descriptorCopy = v130;
           goto LABEL_36;
         }
       }
@@ -1105,16 +1105,16 @@ LABEL_36:
       }
     }
 
-    v43 = [v25 countByEnumeratingWithState:&v153 objects:v160 count:16];
+    v43 = [counterpartIdentifiers3 countByEnumeratingWithState:&v153 objects:v160 count:16];
   }
 
   while (v43);
 LABEL_26:
 
   v48 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v49 = [(INAppResolver *)v135 _counterpartMapper];
-  v50 = [v4 bundleIdentifier];
-  v51 = [v49 localIdentifiersForCounterpartIdentifier:v50];
+  _counterpartMapper = [(INAppResolver *)selfCopy _counterpartMapper];
+  bundleIdentifier6 = [descriptorCopy bundleIdentifier];
+  v51 = [_counterpartMapper localIdentifiersForCounterpartIdentifier:bundleIdentifier6];
 
   v151 = 0u;
   v152 = 0u;
@@ -1145,22 +1145,22 @@ LABEL_26:
     while (v54);
   }
 
-  v58 = [(INAppResolver *)v135 _systemAppMapper];
-  v59 = [v4 bundleIdentifier];
-  v60 = [v58 matchForBundleIdentifier:v59];
+  _systemAppMapper2 = [(INAppResolver *)selfCopy _systemAppMapper];
+  bundleIdentifier7 = [descriptorCopy bundleIdentifier];
+  v60 = [_systemAppMapper2 matchForBundleIdentifier:bundleIdentifier7];
 
   v61 = v60;
   if (v60)
   {
     if ([v60 appIsUnavailableOnCurrentPlatform])
     {
-      v36 = v4;
+      anyObject = descriptorCopy;
       goto LABEL_86;
     }
 
     v69 = [INUserActivityDescriptor alloc];
-    v70 = [v60 bundleIdentifierForCurrentPlatform];
-    v71 = [(INUserActivityDescriptor *)v69 initWithUserActivityType:0 localizedName:0 bundleIdentifier:v70 extensionBundleIdentifier:0 counterpartIdentifiers:0 teamIdentifier:0 supportedIntents:0 bundleURL:0];
+    bundleIdentifierForCurrentPlatform = [v60 bundleIdentifierForCurrentPlatform];
+    v71 = [(INUserActivityDescriptor *)v69 initWithUserActivityType:0 localizedName:0 bundleIdentifier:bundleIdentifierForCurrentPlatform extensionBundleIdentifier:0 counterpartIdentifiers:0 teamIdentifier:0 supportedIntents:0 bundleURL:0];
 
     [v48 addObject:v71];
     v61 = v60;
@@ -1170,7 +1170,7 @@ LABEL_26:
   v146[1] = 3221225472;
   v146[2] = __57__INAppResolver__resolvedUserActivityMatchingDescriptor___block_invoke;
   v146[3] = &unk_1E727F680;
-  v128 = v4;
+  v128 = descriptorCopy;
   v147 = v128;
   v72 = v131;
   v148 = v72;
@@ -1178,7 +1178,7 @@ LABEL_26:
   [v48 removeAllObjects];
   if ([v73 count] == 1)
   {
-    v36 = [v73 anyObject];
+    anyObject = [v73 anyObject];
     goto LABEL_85;
   }
 
@@ -1197,7 +1197,7 @@ LABEL_26:
     v94 = [v73 count];
     if (v61 && !v94)
     {
-      v93 = v128;
+      anyObject2 = v128;
       goto LABEL_59;
     }
   }
@@ -1237,18 +1237,18 @@ LABEL_26:
           {
             v133 = v82;
             v83 = objc_alloc(v21[359]);
-            v84 = [v77 userActivityType];
-            v85 = [v81 localizedName];
-            v86 = [v81 bundleIdentifier];
-            v87 = [v77 extensionBundleIdentifier];
-            v88 = [v81 in_counterpartIdentifiers];
-            v89 = [v81 teamIdentifier];
-            v90 = [v81 in_supportedIntents];
-            v91 = [v77 bundleURL];
-            v92 = [v83 initWithUserActivityType:v84 localizedName:v85 bundleIdentifier:v86 extensionBundleIdentifier:v87 counterpartIdentifiers:v88 teamIdentifier:v89 supportedIntents:v90 bundleURL:v91];
+            userActivityType4 = [v77 userActivityType];
+            localizedName3 = [v81 localizedName];
+            bundleIdentifier8 = [v81 bundleIdentifier];
+            extensionBundleIdentifier6 = [v77 extensionBundleIdentifier];
+            in_counterpartIdentifiers2 = [v81 in_counterpartIdentifiers];
+            teamIdentifier4 = [v81 teamIdentifier];
+            in_supportedIntents2 = [v81 in_supportedIntents];
+            bundleURL4 = [v77 bundleURL];
+            v92 = [v83 initWithUserActivityType:userActivityType4 localizedName:localizedName3 bundleIdentifier:bundleIdentifier8 extensionBundleIdentifier:extensionBundleIdentifier6 counterpartIdentifiers:in_counterpartIdentifiers2 teamIdentifier:teamIdentifier4 supportedIntents:in_supportedIntents2 bundleURL:bundleURL4];
 
             v77 = v128;
-            v4 = v130;
+            descriptorCopy = v130;
 
             v48 = v124;
             v21 = off_1E727B000;
@@ -1279,9 +1279,9 @@ LABEL_26:
 
   if ([v48 count] == 1)
   {
-    v93 = [v48 anyObject];
+    anyObject2 = [v48 anyObject];
 LABEL_59:
-    v36 = v93;
+    anyObject = anyObject2;
     goto LABEL_84;
   }
 
@@ -1301,7 +1301,7 @@ LABEL_59:
 
   v97 = v96;
   v125 = v48;
-  v36 = 0;
+  anyObject = 0;
   v98 = *v139;
   v99 = 0x7FFFFFFFFFFFFFFFLL;
   v100 = v128;
@@ -1317,33 +1317,33 @@ LABEL_59:
       }
 
       v102 = *(*(&v138 + 1) + 8 * v101);
-      v103 = [v100 localizedName];
+      localizedName4 = [v100 localizedName];
 
-      if (v103)
+      if (localizedName4)
       {
-        v104 = [v100 localizedName];
-        v105 = [v102 localizedName];
-        v106 = INEditDistanceBetweenStrings(v104, v105);
+        localizedName5 = [v100 localizedName];
+        localizedName6 = [v102 localizedName];
+        v106 = INEditDistanceBetweenStrings(localizedName5, localizedName6);
         goto LABEL_67;
       }
 
-      v108 = [v100 bundleIdentifier];
+      bundleIdentifier9 = [v100 bundleIdentifier];
 
-      if (v108)
+      if (bundleIdentifier9)
       {
-        v109 = [v100 bundleIdentifier];
-        v110 = [v102 bundleIdentifier];
-        v104 = [v109 commonPrefixWithString:v110 options:0];
+        bundleIdentifier10 = [v100 bundleIdentifier];
+        bundleIdentifier11 = [v102 bundleIdentifier];
+        localizedName5 = [bundleIdentifier10 commonPrefixWithString:bundleIdentifier11 options:0];
 
-        if ([v104 length])
+        if ([localizedName5 length])
         {
-          v111 = [v100 bundleIdentifier];
-          v105 = [v111 substringFromIndex:{objc_msgSend(v104, "length")}];
+          bundleIdentifier12 = [v100 bundleIdentifier];
+          localizedName6 = [bundleIdentifier12 substringFromIndex:{objc_msgSend(localizedName5, "length")}];
 
-          v112 = [v102 bundleIdentifier];
-          v113 = [v112 substringFromIndex:{objc_msgSend(v104, "length")}];
+          bundleIdentifier13 = [v102 bundleIdentifier];
+          v113 = [bundleIdentifier13 substringFromIndex:{objc_msgSend(localizedName5, "length")}];
 
-          v106 = INEditDistanceBetweenStrings(v105, v113);
+          v106 = INEditDistanceBetweenStrings(localizedName6, v113);
           v100 = v128;
 LABEL_67:
 
@@ -1352,8 +1352,8 @@ LABEL_67:
             goto LABEL_77;
           }
 
-          v104 = v36;
-          v36 = v102;
+          localizedName5 = anyObject;
+          anyObject = v102;
           v99 = v106;
         }
       }
@@ -1378,16 +1378,16 @@ LABEL_77:
   }
 
   v48 = v125;
-  if (v36)
+  if (anyObject)
   {
-    [(INAppDescriptor *)v36 setRequiresUserConfirmation:v99 > 0];
+    [(INAppDescriptor *)anyObject setRequiresUserConfirmation:v99 > 0];
     goto LABEL_83;
   }
 
 LABEL_82:
-  v36 = v100;
+  anyObject = v100;
 LABEL_83:
-  v4 = v130;
+  descriptorCopy = v130;
   v61 = v117;
 LABEL_84:
   v73 = v118;
@@ -1399,7 +1399,7 @@ LABEL_87:
   objc_autoreleasePoolPop(context);
   v114 = *MEMORY[0x1E69E9840];
 
-  return v36;
+  return anyObject;
 }
 
 INUserActivityDescriptor *__57__INAppResolver__resolvedUserActivityMatchingDescriptor___block_invoke(uint64_t a1, void *a2)
@@ -1448,12 +1448,12 @@ LABEL_8:
   return v17;
 }
 
-- (id)resolvedUserActivityMatchingDescriptor:(id)a3
+- (id)resolvedUserActivityMatchingDescriptor:(id)descriptor
 {
-  v4 = a3;
-  if (INDescriptorContainsBundleIdentifiers(v4))
+  descriptorCopy = descriptor;
+  if (INDescriptorContainsBundleIdentifiers(descriptorCopy))
   {
-    v5 = v4;
+    v5 = descriptorCopy;
     if ([(INAppResolver *)self cacheHasResultForDescriptor:v5])
     {
       v6 = [(INAppResolver *)self cachedResultForKey:v5];
@@ -1474,59 +1474,59 @@ LABEL_8:
   return v6;
 }
 
-- (id)_resolvedIntentMatchingDescriptor:(id)a3
+- (id)_resolvedIntentMatchingDescriptor:(id)descriptor
 {
   v210 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  descriptorCopy = descriptor;
   context = objc_autoreleasePoolPush();
-  v5 = [(INAppResolver *)self resolveDescriptorBySwappingIdentifiersWithExtensionIfApplicable:v4];
+  v5 = [(INAppResolver *)self resolveDescriptorBySwappingIdentifiersWithExtensionIfApplicable:descriptorCopy];
   v165 = v5;
-  v173 = self;
+  selfCopy = self;
   if (v5)
   {
     v6 = v5;
     objc = [INIntentDescriptor alloc];
-    v169 = [(INIntentDescriptor *)v4 intentClassName];
-    v167 = [v6 localizedName];
-    v7 = [v6 bundleIdentifier];
-    v8 = [v6 bundleIdentifier];
-    v161 = [v6 extensionBundleIdentifier];
-    v9 = [(INIntentDescriptor *)v4 uiExtensionBundleIdentifier];
-    v157 = [v6 counterpartIdentifiers];
-    v152 = [v6 teamIdentifier];
-    v10 = [(INIntentDescriptor *)v4 preferredCallProvider];
+    intentClassName = [(INIntentDescriptor *)descriptorCopy intentClassName];
+    localizedName = [v6 localizedName];
+    bundleIdentifier = [v6 bundleIdentifier];
+    bundleIdentifier2 = [v6 bundleIdentifier];
+    extensionBundleIdentifier = [v6 extensionBundleIdentifier];
+    uiExtensionBundleIdentifier = [(INIntentDescriptor *)descriptorCopy uiExtensionBundleIdentifier];
+    counterpartIdentifiers = [v6 counterpartIdentifiers];
+    teamIdentifier = [v6 teamIdentifier];
+    preferredCallProvider = [(INIntentDescriptor *)descriptorCopy preferredCallProvider];
     [v6 supportedIntents];
     v12 = v11 = v6;
     [v11 bundleURL];
-    v14 = v13 = v4;
-    v15 = [v11 documentTypes];
-    objd = [(INIntentDescriptor *)objc initWithIntentClassName:v169 localizedName:v167 bundleIdentifier:v7 displayableBundleIdentifier:v8 extensionBundleIdentifier:v161 uiExtensionBundleIdentifier:v9 counterpartIdentifiers:v157 teamIdentifier:v152 preferredCallProvider:v10 supportedIntents:v12 bundleURL:v14 documentTypes:v15];
+    v14 = v13 = descriptorCopy;
+    documentTypes = [v11 documentTypes];
+    objd = [(INIntentDescriptor *)objc initWithIntentClassName:intentClassName localizedName:localizedName bundleIdentifier:bundleIdentifier displayableBundleIdentifier:bundleIdentifier2 extensionBundleIdentifier:extensionBundleIdentifier uiExtensionBundleIdentifier:uiExtensionBundleIdentifier counterpartIdentifiers:counterpartIdentifiers teamIdentifier:teamIdentifier preferredCallProvider:preferredCallProvider supportedIntents:v12 bundleURL:v14 documentTypes:documentTypes];
 
-    v4 = objd;
+    descriptorCopy = objd;
   }
 
-  v16 = [(INAppDescriptor *)v4 extensionBundleIdentifier];
+  extensionBundleIdentifier2 = [(INAppDescriptor *)descriptorCopy extensionBundleIdentifier];
 
-  if (v16)
+  if (extensionBundleIdentifier2)
   {
-    v17 = v173;
-    v18 = [(INAppResolver *)v173 _systemAppMapper];
-    v19 = [(INAppDescriptor *)v4 extensionBundleIdentifier];
+    v17 = selfCopy;
+    _systemAppMapper = [(INAppResolver *)selfCopy _systemAppMapper];
+    extensionBundleIdentifier3 = [(INAppDescriptor *)descriptorCopy extensionBundleIdentifier];
     goto LABEL_7;
   }
 
-  v20 = [(INAppDescriptor *)v4 bundleIdentifier];
+  bundleIdentifier3 = [(INAppDescriptor *)descriptorCopy bundleIdentifier];
 
-  v17 = v173;
-  if (v20)
+  v17 = selfCopy;
+  if (bundleIdentifier3)
   {
-    v18 = [(INAppResolver *)v173 _systemAppMapper];
-    v19 = [(INAppDescriptor *)v4 bundleIdentifier];
+    _systemAppMapper = [(INAppResolver *)selfCopy _systemAppMapper];
+    extensionBundleIdentifier3 = [(INAppDescriptor *)descriptorCopy bundleIdentifier];
 LABEL_7:
-    v21 = v19;
-    v22 = [(INIntentDescriptor *)v4 preferredCallProvider];
-    v23 = [(INIntentDescriptor *)v4 intentClassName];
-    v24 = [v18 resolvedIntentMatchingExtensionBundleIdentifier:v21 preferredCallProvider:v22 intentClassName:v23];
+    v21 = extensionBundleIdentifier3;
+    preferredCallProvider2 = [(INIntentDescriptor *)descriptorCopy preferredCallProvider];
+    intentClassName2 = [(INIntentDescriptor *)descriptorCopy intentClassName];
+    v24 = [_systemAppMapper resolvedIntentMatchingExtensionBundleIdentifier:v21 preferredCallProvider:preferredCallProvider2 intentClassName:intentClassName2];
 
     if (v24)
     {
@@ -1534,78 +1534,78 @@ LABEL_7:
     }
   }
 
-  v25 = [(INIntentDescriptor *)v4 intentClassName];
-  v168 = [(INAppResolver *)v17 optionsForCurrentContextWithIntentClassName:v25];
+  intentClassName3 = [(INIntentDescriptor *)descriptorCopy intentClassName];
+  v168 = [(INAppResolver *)v17 optionsForCurrentContextWithIntentClassName:intentClassName3];
 
-  v26 = [(INAppDescriptor *)v4 bundleIdentifier];
+  bundleIdentifier4 = [(INAppDescriptor *)descriptorCopy bundleIdentifier];
 
-  if (v26)
+  if (bundleIdentifier4)
   {
     v27 = objc_alloc(MEMORY[0x1E69635F8]);
-    v28 = [(INAppDescriptor *)v4 bundleIdentifier];
-    v29 = [v27 initWithBundleIdentifier:v28 allowPlaceholder:0 error:0];
+    bundleIdentifier5 = [(INAppDescriptor *)descriptorCopy bundleIdentifier];
+    counterpartIdentifiers2 = [v27 initWithBundleIdentifier:bundleIdentifier5 allowPlaceholder:0 error:0];
 
-    v30 = [v29 applicationState];
-    if ([v30 isInstalled])
+    applicationState = [counterpartIdentifiers2 applicationState];
+    if ([applicationState isInstalled])
     {
-      v31 = INApplicationRecordMatchesRequirementsFromIntentDescriptor(v29, v4, v168);
+      v31 = INApplicationRecordMatchesRequirementsFromIntentDescriptor(counterpartIdentifiers2, descriptorCopy, v168);
 
       if (v31)
       {
-        v32 = [v29 localizedName];
-        v33 = [(INIntentDescriptor *)v4 displayableBundleIdentifier];
-        v34 = v33;
-        if (v33)
+        localizedName2 = [counterpartIdentifiers2 localizedName];
+        displayableBundleIdentifier = [(INIntentDescriptor *)descriptorCopy displayableBundleIdentifier];
+        v34 = displayableBundleIdentifier;
+        if (displayableBundleIdentifier)
         {
-          v35 = v33;
+          bundleIdentifier6 = displayableBundleIdentifier;
         }
 
         else
         {
-          v35 = [v29 bundleIdentifier];
+          bundleIdentifier6 = [counterpartIdentifiers2 bundleIdentifier];
         }
 
-        v112 = v35;
+        v112 = bundleIdentifier6;
 
-        v113 = [v29 bundleIdentifier];
-        v114 = [v113 isEqualToString:v112];
+        bundleIdentifier7 = [counterpartIdentifiers2 bundleIdentifier];
+        v114 = [bundleIdentifier7 isEqualToString:v112];
 
         v175 = v112;
         if (v114)
         {
-          objb = v32;
+          objb = localizedName2;
         }
 
         else
         {
           v115 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:v112 allowPlaceholder:0 error:0];
-          v116 = [v115 localizedName];
+          localizedName3 = [v115 localizedName];
 
-          if (v116)
+          if (localizedName3)
           {
-            v117 = [v115 localizedName];
+            localizedName4 = [v115 localizedName];
 
-            objb = v117;
+            objb = localizedName4;
           }
 
           else
           {
-            objb = v32;
+            objb = localizedName2;
           }
         }
 
         v172 = [INIntentDescriptor alloc];
-        v156 = [(INIntentDescriptor *)v4 intentClassName];
-        v164 = [v29 bundleIdentifier];
-        v160 = [(INAppDescriptor *)v4 extensionBundleIdentifier];
-        v137 = [(INIntentDescriptor *)v4 uiExtensionBundleIdentifier];
-        v151 = [v29 in_counterpartIdentifiers];
-        v147 = [v29 teamIdentifier];
-        v138 = [(INIntentDescriptor *)v4 preferredCallProvider];
-        v139 = [v29 in_supportedIntents];
-        v140 = [(INAppDescriptor *)v4 bundleURL];
-        v141 = [v29 in_documentTypes];
-        v142 = [(INIntentDescriptor *)v172 initWithIntentClassName:v156 localizedName:objb bundleIdentifier:v164 displayableBundleIdentifier:v175 extensionBundleIdentifier:v160 uiExtensionBundleIdentifier:v137 counterpartIdentifiers:v151 teamIdentifier:v147 preferredCallProvider:v138 supportedIntents:v139 bundleURL:v140 documentTypes:v141];
+        intentClassName4 = [(INIntentDescriptor *)descriptorCopy intentClassName];
+        bundleIdentifier8 = [counterpartIdentifiers2 bundleIdentifier];
+        extensionBundleIdentifier4 = [(INAppDescriptor *)descriptorCopy extensionBundleIdentifier];
+        uiExtensionBundleIdentifier2 = [(INIntentDescriptor *)descriptorCopy uiExtensionBundleIdentifier];
+        in_counterpartIdentifiers = [counterpartIdentifiers2 in_counterpartIdentifiers];
+        teamIdentifier2 = [counterpartIdentifiers2 teamIdentifier];
+        preferredCallProvider3 = [(INIntentDescriptor *)descriptorCopy preferredCallProvider];
+        in_supportedIntents = [counterpartIdentifiers2 in_supportedIntents];
+        bundleURL = [(INAppDescriptor *)descriptorCopy bundleURL];
+        in_documentTypes = [counterpartIdentifiers2 in_documentTypes];
+        v142 = [(INIntentDescriptor *)v172 initWithIntentClassName:intentClassName4 localizedName:objb bundleIdentifier:bundleIdentifier8 displayableBundleIdentifier:v175 extensionBundleIdentifier:extensionBundleIdentifier4 uiExtensionBundleIdentifier:uiExtensionBundleIdentifier2 counterpartIdentifiers:in_counterpartIdentifiers teamIdentifier:teamIdentifier2 preferredCallProvider:preferredCallProvider3 supportedIntents:in_supportedIntents bundleURL:bundleURL documentTypes:in_documentTypes];
 
         v24 = v142;
 LABEL_110:
@@ -1623,8 +1623,8 @@ LABEL_110:
   v204 = 0u;
   v201 = 0u;
   v202 = 0u;
-  v29 = [(INAppDescriptor *)v4 counterpartIdentifiers];
-  v36 = [v29 countByEnumeratingWithState:&v201 objects:v209 count:16];
+  counterpartIdentifiers2 = [(INAppDescriptor *)descriptorCopy counterpartIdentifiers];
+  v36 = [counterpartIdentifiers2 countByEnumeratingWithState:&v201 objects:v209 count:16];
   if (v36)
   {
     v37 = v36;
@@ -1635,74 +1635,74 @@ LABEL_110:
       {
         if (*v202 != v38)
         {
-          objc_enumerationMutation(v29);
+          objc_enumerationMutation(counterpartIdentifiers2);
         }
 
         v40 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:*(*(&v201 + 1) + 8 * i) allowPlaceholder:0 error:0];
-        v41 = [v40 applicationState];
-        if ([v41 isInstalled])
+        applicationState2 = [v40 applicationState];
+        if ([applicationState2 isInstalled])
         {
-          v42 = INApplicationRecordMatchesRequirementsFromIntentDescriptor(v40, v4, v168);
+          v42 = INApplicationRecordMatchesRequirementsFromIntentDescriptor(v40, descriptorCopy, v168);
 
           if (v42)
           {
-            v85 = [v40 localizedName];
-            v86 = [(INIntentDescriptor *)v4 displayableBundleIdentifier];
-            v87 = v86;
-            if (v86)
+            localizedName5 = [v40 localizedName];
+            displayableBundleIdentifier2 = [(INIntentDescriptor *)descriptorCopy displayableBundleIdentifier];
+            v87 = displayableBundleIdentifier2;
+            if (displayableBundleIdentifier2)
             {
-              v88 = v86;
+              bundleIdentifier9 = displayableBundleIdentifier2;
             }
 
             else
             {
-              v88 = [v40 bundleIdentifier];
+              bundleIdentifier9 = [v40 bundleIdentifier];
             }
 
-            v89 = v88;
+            v89 = bundleIdentifier9;
 
-            v90 = [v40 bundleIdentifier];
-            v91 = [v90 isEqualToString:v89];
+            bundleIdentifier10 = [v40 bundleIdentifier];
+            v91 = [bundleIdentifier10 isEqualToString:v89];
 
             obja = v89;
             if (v91)
             {
-              v174 = v85;
+              v174 = localizedName5;
             }
 
             else
             {
               v92 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:v89 allowPlaceholder:0 error:0];
-              v93 = [v92 localizedName];
+              localizedName6 = [v92 localizedName];
 
-              if (v93)
+              if (localizedName6)
               {
-                v94 = [v92 localizedName];
+                localizedName7 = [v92 localizedName];
 
-                v174 = v94;
+                v174 = localizedName7;
               }
 
               else
               {
-                v174 = v85;
+                v174 = localizedName5;
               }
             }
 
             v170 = [INIntentDescriptor alloc];
-            v149 = [(INIntentDescriptor *)v4 intentClassName];
-            v162 = [v40 bundleIdentifier];
-            v159 = [(INAppDescriptor *)v4 extensionBundleIdentifier];
-            v154 = [(INIntentDescriptor *)v4 uiExtensionBundleIdentifier];
-            v146 = [v40 in_counterpartIdentifiers];
-            v145 = [v40 teamIdentifier];
-            v106 = [(INIntentDescriptor *)v4 preferredCallProvider];
-            v107 = [v40 in_supportedIntents];
-            v108 = [(INAppDescriptor *)v4 bundleURL];
+            intentClassName5 = [(INIntentDescriptor *)descriptorCopy intentClassName];
+            bundleIdentifier11 = [v40 bundleIdentifier];
+            extensionBundleIdentifier5 = [(INAppDescriptor *)descriptorCopy extensionBundleIdentifier];
+            uiExtensionBundleIdentifier3 = [(INIntentDescriptor *)descriptorCopy uiExtensionBundleIdentifier];
+            in_counterpartIdentifiers2 = [v40 in_counterpartIdentifiers];
+            teamIdentifier3 = [v40 teamIdentifier];
+            preferredCallProvider4 = [(INIntentDescriptor *)descriptorCopy preferredCallProvider];
+            in_supportedIntents2 = [v40 in_supportedIntents];
+            bundleURL2 = [(INAppDescriptor *)descriptorCopy bundleURL];
             [v40 in_documentTypes];
-            v110 = v109 = v4;
-            v111 = [(INIntentDescriptor *)v170 initWithIntentClassName:v149 localizedName:v174 bundleIdentifier:v162 displayableBundleIdentifier:obja extensionBundleIdentifier:v159 uiExtensionBundleIdentifier:v154 counterpartIdentifiers:v146 teamIdentifier:v145 preferredCallProvider:v106 supportedIntents:v107 bundleURL:v108 documentTypes:v110];
+            v110 = v109 = descriptorCopy;
+            v111 = [(INIntentDescriptor *)v170 initWithIntentClassName:intentClassName5 localizedName:v174 bundleIdentifier:bundleIdentifier11 displayableBundleIdentifier:obja extensionBundleIdentifier:extensionBundleIdentifier5 uiExtensionBundleIdentifier:uiExtensionBundleIdentifier3 counterpartIdentifiers:in_counterpartIdentifiers2 teamIdentifier:teamIdentifier3 preferredCallProvider:preferredCallProvider4 supportedIntents:in_supportedIntents2 bundleURL:bundleURL2 documentTypes:v110];
 
-            v4 = v109;
+            descriptorCopy = v109;
             v24 = v111;
 
             goto LABEL_110;
@@ -1714,22 +1714,22 @@ LABEL_110:
         }
       }
 
-      v37 = [v29 countByEnumeratingWithState:&v201 objects:v209 count:16];
+      v37 = [counterpartIdentifiers2 countByEnumeratingWithState:&v201 objects:v209 count:16];
     }
 
     while (v37);
   }
 
-  v43 = [(INAppDescriptor *)v4 bundleIdentifier];
+  bundleIdentifier12 = [(INAppDescriptor *)descriptorCopy bundleIdentifier];
 
-  v44 = v173;
-  if (v43)
+  v44 = selfCopy;
+  if (bundleIdentifier12)
   {
-    v45 = [(INAppResolver *)v173 _systemAppMapper];
-    v46 = [(INAppDescriptor *)v4 bundleIdentifier];
-    v47 = [(INIntentDescriptor *)v4 preferredCallProvider];
-    v48 = [(INIntentDescriptor *)v4 intentClassName];
-    v24 = [v45 resolvedIntentMatchingAppBundleIdentifier:v46 preferredCallProvider:v47 intentClassName:v48];
+    _systemAppMapper2 = [(INAppResolver *)selfCopy _systemAppMapper];
+    bundleIdentifier13 = [(INAppDescriptor *)descriptorCopy bundleIdentifier];
+    preferredCallProvider5 = [(INIntentDescriptor *)descriptorCopy preferredCallProvider];
+    intentClassName6 = [(INIntentDescriptor *)descriptorCopy intentClassName];
+    v24 = [_systemAppMapper2 resolvedIntentMatchingAppBundleIdentifier:bundleIdentifier13 preferredCallProvider:preferredCallProvider5 intentClassName:intentClassName6];
 
     if (v24)
     {
@@ -1738,41 +1738,41 @@ LABEL_110:
   }
 
   v49 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v50 = [(INAppDescriptor *)v4 extensionBundleIdentifier];
+  extensionBundleIdentifier6 = [(INAppDescriptor *)descriptorCopy extensionBundleIdentifier];
 
-  if (v50)
+  if (extensionBundleIdentifier6)
   {
-    v51 = [(INAppDescriptor *)v4 extensionBundleIdentifier];
-    v52 = [(INAppResolver *)v173 _frameworkMapper];
-    v53 = [v52 launchableAppBundleIdentifierForSystemExtensionBundleIdentifier:v51];
+    extensionBundleIdentifier7 = [(INAppDescriptor *)descriptorCopy extensionBundleIdentifier];
+    _frameworkMapper = [(INAppResolver *)selfCopy _frameworkMapper];
+    v53 = [_frameworkMapper launchableAppBundleIdentifierForSystemExtensionBundleIdentifier:extensionBundleIdentifier7];
 
-    v54 = [(INAppResolver *)v173 _frameworkMapper];
-    v55 = [v54 displayableAppBundleIdentifierForSystemExtensionBundleIdentifier:v51];
+    _frameworkMapper2 = [(INAppResolver *)selfCopy _frameworkMapper];
+    v55 = [_frameworkMapper2 displayableAppBundleIdentifierForSystemExtensionBundleIdentifier:extensionBundleIdentifier7];
 
     if (v53 | v55)
     {
-      if ([(INIntentDescriptor *)v4 preferredCallProvider]== 2)
+      if ([(INIntentDescriptor *)descriptorCopy preferredCallProvider]== 2)
       {
-        v56 = [(INAppResolver *)v173 _systemAppMapper];
-        v57 = [v56 bundleIdentifiersForIntentExecutionMatchingBundleIdentifier:@"com.apple.facetime"];
-        v58 = [v57 firstObject];
+        _systemAppMapper3 = [(INAppResolver *)selfCopy _systemAppMapper];
+        v57 = [_systemAppMapper3 bundleIdentifiersForIntentExecutionMatchingBundleIdentifier:@"com.apple.facetime"];
+        firstObject = [v57 firstObject];
 
-        v55 = v58;
+        v55 = firstObject;
       }
 
       v59 = [INIntentDescriptor alloc];
-      v60 = [(INAppDescriptor *)v4 extensionBundleIdentifier];
-      v61 = [(INIntentDescriptor *)v59 initWithIntentClassName:0 localizedName:0 bundleIdentifier:v53 displayableBundleIdentifier:v55 extensionBundleIdentifier:v60 uiExtensionBundleIdentifier:0 counterpartIdentifiers:0 teamIdentifier:0 preferredCallProvider:[(INIntentDescriptor *)v4 preferredCallProvider] supportedIntents:0 bundleURL:0 documentTypes:0];
+      extensionBundleIdentifier8 = [(INAppDescriptor *)descriptorCopy extensionBundleIdentifier];
+      v61 = [(INIntentDescriptor *)v59 initWithIntentClassName:0 localizedName:0 bundleIdentifier:v53 displayableBundleIdentifier:v55 extensionBundleIdentifier:extensionBundleIdentifier8 uiExtensionBundleIdentifier:0 counterpartIdentifiers:0 teamIdentifier:0 preferredCallProvider:[(INIntentDescriptor *)descriptorCopy preferredCallProvider] supportedIntents:0 bundleURL:0 documentTypes:0];
 
       [v49 addObject:v61];
-      v44 = v173;
+      v44 = selfCopy;
     }
   }
 
   v62 = v44;
-  v63 = [(INAppResolver *)v44 _systemAppMapper];
-  v64 = [(INAppDescriptor *)v4 bundleIdentifier];
-  v65 = [v63 bundleIdentifiersForIntentExecutionMatchingBundleIdentifier:v64];
+  _systemAppMapper4 = [(INAppResolver *)v44 _systemAppMapper];
+  bundleIdentifier14 = [(INAppDescriptor *)descriptorCopy bundleIdentifier];
+  v65 = [_systemAppMapper4 bundleIdentifiersForIntentExecutionMatchingBundleIdentifier:bundleIdentifier14];
 
   v199 = 0u;
   v200 = 0u;
@@ -1804,9 +1804,9 @@ LABEL_110:
     while (v69);
   }
 
-  v72 = [(INAppResolver *)v62 _counterpartMapper];
-  v73 = [(INAppDescriptor *)v4 bundleIdentifier];
-  v74 = [v72 localIdentifiersForCounterpartIdentifier:v73];
+  _counterpartMapper = [(INAppResolver *)v62 _counterpartMapper];
+  bundleIdentifier15 = [(INAppDescriptor *)descriptorCopy bundleIdentifier];
+  v74 = [_counterpartMapper localIdentifiersForCounterpartIdentifier:bundleIdentifier15];
 
   v195 = 0u;
   v196 = 0u;
@@ -1841,8 +1841,8 @@ LABEL_110:
   v190[1] = 3221225472;
   v190[2] = __51__INAppResolver__resolvedIntentMatchingDescriptor___block_invoke;
   v190[3] = &unk_1E727F658;
-  v158 = v4;
-  v81 = v4;
+  v158 = descriptorCopy;
+  v81 = descriptorCopy;
   v191 = v81;
   v82 = v168;
   v192 = v82;
@@ -1852,9 +1852,9 @@ LABEL_110:
   {
     v84 = v83;
 LABEL_72:
-    v105 = [v84 anyObject];
+    anyObject = [v84 anyObject];
 LABEL_73:
-    v24 = v105;
+    v24 = anyObject;
     goto LABEL_74;
   }
 
@@ -1863,15 +1863,15 @@ LABEL_73:
     v118 = [v83 count];
     if (v67 && !v118)
     {
-      v105 = v81;
+      anyObject = v81;
       goto LABEL_73;
     }
   }
 
   else
   {
-    v95 = [v83 allObjects];
-    [v49 addObjectsFromArray:v95];
+    allObjects = [v83 allObjects];
+    [v49 addObjectsFromArray:allObjects];
   }
 
   if (![v83 count])
@@ -1953,43 +1953,43 @@ LABEL_73:
       }
 
       v122 = *(*(&v182 + 1) + 8 * n);
-      v123 = [(INAppDescriptor *)v81 localizedName];
+      localizedName8 = [(INAppDescriptor *)v81 localizedName];
 
-      if (v123)
+      if (localizedName8)
       {
-        v124 = [(INAppDescriptor *)v81 localizedName];
-        v125 = [v122 localizedName];
-        v126 = INEditDistanceBetweenStrings(v124, v125);
+        localizedName9 = [(INAppDescriptor *)v81 localizedName];
+        localizedName10 = [v122 localizedName];
+        v126 = INEditDistanceBetweenStrings(localizedName9, localizedName10);
       }
 
       else
       {
-        v128 = [(INAppDescriptor *)v81 bundleIdentifier];
+        bundleIdentifier16 = [(INAppDescriptor *)v81 bundleIdentifier];
 
-        if (!v128)
+        if (!bundleIdentifier16)
         {
           continue;
         }
 
-        v129 = [(INAppDescriptor *)v81 bundleIdentifier];
-        v130 = [v122 bundleIdentifier];
-        v124 = [v129 commonPrefixWithString:v130 options:0];
+        bundleIdentifier17 = [(INAppDescriptor *)v81 bundleIdentifier];
+        bundleIdentifier18 = [v122 bundleIdentifier];
+        localizedName9 = [bundleIdentifier17 commonPrefixWithString:bundleIdentifier18 options:0];
 
-        if (![v124 length])
+        if (![localizedName9 length])
         {
           goto LABEL_99;
         }
 
-        v131 = [(INAppDescriptor *)v81 bundleIdentifier];
-        v125 = [v131 substringFromIndex:{objc_msgSend(v124, "length")}];
+        bundleIdentifier19 = [(INAppDescriptor *)v81 bundleIdentifier];
+        localizedName10 = [bundleIdentifier19 substringFromIndex:{objc_msgSend(localizedName9, "length")}];
 
-        v132 = [v122 bundleIdentifier];
-        [v132 substringFromIndex:{objc_msgSend(v124, "length")}];
+        bundleIdentifier20 = [v122 bundleIdentifier];
+        [bundleIdentifier20 substringFromIndex:{objc_msgSend(localizedName9, "length")}];
         v133 = v120;
         v134 = v119;
         v136 = v135 = v24;
 
-        v126 = INEditDistanceBetweenStrings(v125, v136);
+        v126 = INEditDistanceBetweenStrings(localizedName10, v136);
         v24 = v135;
         v119 = v134;
         v120 = v133;
@@ -1998,7 +1998,7 @@ LABEL_73:
 
       if (v126 < v176 && v126 <= 5)
       {
-        v124 = v24;
+        localizedName9 = v24;
         v24 = v122;
         v176 = v126;
 LABEL_99:
@@ -2025,7 +2025,7 @@ LABEL_117:
   v75 = v155;
 LABEL_74:
 
-  v4 = v158;
+  descriptorCopy = v158;
 LABEL_111:
 
 LABEL_112:
@@ -2074,12 +2074,12 @@ LABEL_8:
   return v10;
 }
 
-- (id)resolvedIntentMatchingDescriptor:(id)a3
+- (id)resolvedIntentMatchingDescriptor:(id)descriptor
 {
-  v4 = a3;
-  if (INDescriptorContainsBundleIdentifiers(v4))
+  descriptorCopy = descriptor;
+  if (INDescriptorContainsBundleIdentifiers(descriptorCopy))
   {
-    v5 = v4;
+    v5 = descriptorCopy;
     if ([(INAppResolver *)self cacheHasResultForDescriptor:v5])
     {
       v6 = [(INAppResolver *)self cachedResultForKey:v5];
@@ -2100,28 +2100,28 @@ LABEL_8:
   return v6;
 }
 
-- (id)_resolvedAppMatchingDescriptor:(id)a3
+- (id)_resolvedAppMatchingDescriptor:(id)descriptor
 {
   v124 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  descriptorCopy = descriptor;
   v5 = objc_autoreleasePoolPush();
   v100 = [(INAppResolver *)self optionsForCurrentContextWithIntentClassName:0];
-  v6 = [v4 bundleIdentifier];
+  bundleIdentifier = [descriptorCopy bundleIdentifier];
 
-  if (v6)
+  if (bundleIdentifier)
   {
     v7 = objc_alloc(MEMORY[0x1E69635F8]);
-    v8 = [v4 bundleIdentifier];
-    v9 = [v7 initWithBundleIdentifier:v8 allowPlaceholder:0 error:0];
+    bundleIdentifier2 = [descriptorCopy bundleIdentifier];
+    v9 = [v7 initWithBundleIdentifier:bundleIdentifier2 allowPlaceholder:0 error:0];
 
-    v10 = [v9 applicationState];
-    if ([v10 isInstalled])
+    applicationState = [v9 applicationState];
+    if ([applicationState isInstalled])
     {
-      v11 = INApplicationRecordMatchesRequirementsFromDescriptor(v9, v4, v100);
+      v11 = INApplicationRecordMatchesRequirementsFromDescriptor(v9, descriptorCopy, v100);
 
       if (v11)
       {
-        v12 = [v4 descriptorWithRecord:v9];
+        v12 = [descriptorCopy descriptorWithRecord:v9];
 
         goto LABEL_66;
       }
@@ -2137,8 +2137,8 @@ LABEL_8:
   v119 = 0u;
   v116 = 0u;
   v117 = 0u;
-  v13 = [v4 counterpartIdentifiers];
-  v14 = [v13 countByEnumeratingWithState:&v116 objects:v123 count:16];
+  counterpartIdentifiers = [descriptorCopy counterpartIdentifiers];
+  v14 = [counterpartIdentifiers countByEnumeratingWithState:&v116 objects:v123 count:16];
   if (v14)
   {
     v15 = v14;
@@ -2149,18 +2149,18 @@ LABEL_8:
       {
         if (*v117 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(counterpartIdentifiers);
         }
 
         v18 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:*(*(&v116 + 1) + 8 * i) allowPlaceholder:0 error:0];
-        v19 = [v18 applicationState];
-        if ([v19 isInstalled])
+        applicationState2 = [v18 applicationState];
+        if ([applicationState2 isInstalled])
         {
-          v20 = INApplicationRecordMatchesRequirementsFromDescriptor(v18, v4, v100);
+          v20 = INApplicationRecordMatchesRequirementsFromDescriptor(v18, descriptorCopy, v100);
 
           if (v20)
           {
-            v12 = [v4 descriptorWithRecord:v18];
+            v12 = [descriptorCopy descriptorWithRecord:v18];
 
             goto LABEL_65;
           }
@@ -2171,27 +2171,27 @@ LABEL_8:
         }
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v116 objects:v123 count:16];
+      v15 = [counterpartIdentifiers countByEnumeratingWithState:&v116 objects:v123 count:16];
     }
 
     while (v15);
   }
 
-  v13 = [(INAppResolver *)self resolveDescriptorBySwappingIdentifiersWithExtensionIfApplicable:v4];
-  if (v13)
+  counterpartIdentifiers = [(INAppResolver *)self resolveDescriptorBySwappingIdentifiersWithExtensionIfApplicable:descriptorCopy];
+  if (counterpartIdentifiers)
   {
     v21 = objc_alloc(MEMORY[0x1E69635F8]);
-    v22 = [v13 bundleURL];
-    v23 = [v21 initWithURL:v22 allowPlaceholder:0 error:0];
+    bundleURL = [counterpartIdentifiers bundleURL];
+    v23 = [v21 initWithURL:bundleURL allowPlaceholder:0 error:0];
 
-    v24 = [v23 applicationState];
-    if ([v24 isInstalled])
+    applicationState3 = [v23 applicationState];
+    if ([applicationState3 isInstalled])
     {
-      v25 = INApplicationRecordMatchesRequirementsFromDescriptor(v23, v4, v100);
+      v25 = INApplicationRecordMatchesRequirementsFromDescriptor(v23, descriptorCopy, v100);
 
       if (v25)
       {
-        v12 = [v4 descriptorWithRecord:v23];
+        v12 = [descriptorCopy descriptorWithRecord:v23];
         goto LABEL_64;
       }
     }
@@ -2200,30 +2200,30 @@ LABEL_8:
     {
     }
 
-    v26 = v13;
+    v26 = counterpartIdentifiers;
 
-    v4 = v26;
+    descriptorCopy = v26;
   }
 
-  v27 = [v4 extensionBundleIdentifier];
+  extensionBundleIdentifier = [descriptorCopy extensionBundleIdentifier];
 
-  if (!v27)
+  if (!extensionBundleIdentifier)
   {
     goto LABEL_26;
   }
 
-  v28 = [(INAppResolver *)self _systemAppMapper];
-  v29 = [v4 extensionBundleIdentifier];
-  v12 = [v28 resolvedAppMatchingExtensionBundleIdentifier:v29];
+  _systemAppMapper = [(INAppResolver *)self _systemAppMapper];
+  extensionBundleIdentifier2 = [descriptorCopy extensionBundleIdentifier];
+  v12 = [_systemAppMapper resolvedAppMatchingExtensionBundleIdentifier:extensionBundleIdentifier2];
 
   if (!v12)
   {
 LABEL_26:
-    v94 = v13;
+    v94 = counterpartIdentifiers;
     v23 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-    v30 = [(INAppResolver *)self _counterpartMapper];
-    v31 = [v4 bundleIdentifier];
-    v32 = [v30 localIdentifiersForCounterpartIdentifier:v31];
+    _counterpartMapper = [(INAppResolver *)self _counterpartMapper];
+    bundleIdentifier3 = [descriptorCopy bundleIdentifier];
+    v32 = [_counterpartMapper localIdentifiersForCounterpartIdentifier:bundleIdentifier3];
 
     v114 = 0u;
     v115 = 0u;
@@ -2254,38 +2254,38 @@ LABEL_26:
       while (v35);
     }
 
-    v39 = [(INAppResolver *)self _systemAppMapper];
-    v40 = [v4 bundleIdentifier];
-    v41 = [v39 matchForBundleIdentifier:v40];
+    _systemAppMapper2 = [(INAppResolver *)self _systemAppMapper];
+    bundleIdentifier4 = [descriptorCopy bundleIdentifier];
+    v41 = [_systemAppMapper2 matchForBundleIdentifier:bundleIdentifier4];
 
     v42 = v41;
     if (v41)
     {
       if ([v41 appIsUnavailableOnCurrentPlatform])
       {
-        v12 = v4;
+        v12 = descriptorCopy;
         goto LABEL_63;
       }
 
       v43 = [INAppDescriptor alloc];
-      v44 = [v41 bundleIdentifierForCurrentPlatform];
-      v45 = [(INAppDescriptor *)v43 initWithBundleIdentifier:v44];
+      bundleIdentifierForCurrentPlatform = [v41 bundleIdentifierForCurrentPlatform];
+      v45 = [(INAppDescriptor *)v43 initWithBundleIdentifier:bundleIdentifierForCurrentPlatform];
 
       v42 = v41;
       [v23 addObject:v45];
     }
 
-    v46 = [v4 extensionBundleIdentifier];
+    extensionBundleIdentifier3 = [descriptorCopy extensionBundleIdentifier];
 
-    if (v46)
+    if (extensionBundleIdentifier3)
     {
       v47 = v42;
-      v48 = [v4 extensionBundleIdentifier];
-      v49 = [(INAppResolver *)self _frameworkMapper];
-      v50 = [v49 launchableAppBundleIdentifierForSystemExtensionBundleIdentifier:v48];
+      extensionBundleIdentifier4 = [descriptorCopy extensionBundleIdentifier];
+      _frameworkMapper = [(INAppResolver *)self _frameworkMapper];
+      v50 = [_frameworkMapper launchableAppBundleIdentifierForSystemExtensionBundleIdentifier:extensionBundleIdentifier4];
 
-      v51 = [(INAppResolver *)self _frameworkMapper];
-      v52 = [v51 displayableAppBundleIdentifierForSystemExtensionBundleIdentifier:v48];
+      _frameworkMapper2 = [(INAppResolver *)self _frameworkMapper];
+      v52 = [_frameworkMapper2 displayableAppBundleIdentifierForSystemExtensionBundleIdentifier:extensionBundleIdentifier4];
 
       if (v50)
       {
@@ -2306,8 +2306,8 @@ LABEL_26:
     v109[1] = 3221225472;
     v109[2] = __48__INAppResolver__resolvedAppMatchingDescriptor___block_invoke;
     v109[3] = &unk_1E727F630;
-    v93 = v4;
-    v55 = v4;
+    v93 = descriptorCopy;
+    v55 = descriptorCopy;
     v110 = v55;
     v56 = v100;
     v111 = v56;
@@ -2317,9 +2317,9 @@ LABEL_26:
     {
       v58 = v57;
 LABEL_60:
-      v68 = [v58 anyObject];
+      anyObject = [v58 anyObject];
 LABEL_61:
-      v12 = v68;
+      v12 = anyObject;
       goto LABEL_62;
     }
 
@@ -2328,15 +2328,15 @@ LABEL_61:
       v71 = [v57 count];
       if (v42 && !v71)
       {
-        v68 = v55;
+        anyObject = v55;
         goto LABEL_61;
       }
     }
 
     else
     {
-      v59 = [v57 allObjects];
-      [v23 addObjectsFromArray:v59];
+      allObjects = [v57 allObjects];
+      [v23 addObjectsFromArray:allObjects];
     }
 
     if (![v57 count])
@@ -2417,36 +2417,36 @@ LABEL_74:
       }
 
       v74 = *(*(&v101 + 1) + 8 * v73);
-      v75 = [v55 localizedName];
+      localizedName = [v55 localizedName];
 
-      if (v75)
+      if (localizedName)
       {
         break;
       }
 
-      v80 = [v55 bundleIdentifier];
+      bundleIdentifier5 = [v55 bundleIdentifier];
 
-      if (!v80)
+      if (!bundleIdentifier5)
       {
         goto LABEL_89;
       }
 
-      v81 = [v55 bundleIdentifier];
-      v82 = [v74 bundleIdentifier];
-      v76 = [v81 commonPrefixWithString:v82 options:0];
+      bundleIdentifier6 = [v55 bundleIdentifier];
+      bundleIdentifier7 = [v74 bundleIdentifier];
+      localizedName2 = [bundleIdentifier6 commonPrefixWithString:bundleIdentifier7 options:0];
 
-      if ([v76 length])
+      if ([localizedName2 length])
       {
-        v83 = [v55 bundleIdentifier];
-        v77 = [v83 substringFromIndex:{objc_msgSend(v76, "length")}];
+        bundleIdentifier8 = [v55 bundleIdentifier];
+        localizedName3 = [bundleIdentifier8 substringFromIndex:{objc_msgSend(localizedName2, "length")}];
 
-        v84 = [v74 bundleIdentifier];
-        [v84 substringFromIndex:{objc_msgSend(v76, "length")}];
+        bundleIdentifier9 = [v74 bundleIdentifier];
+        [bundleIdentifier9 substringFromIndex:{objc_msgSend(localizedName2, "length")}];
         v85 = v33;
         v86 = v72;
         v88 = v87 = v12;
 
-        v78 = INEditDistanceBetweenStrings(v77, v88);
+        v78 = INEditDistanceBetweenStrings(localizedName3, v88);
         v12 = v87;
         v72 = v86;
         v33 = v85;
@@ -2476,10 +2476,10 @@ LABEL_95:
           v42 = v92;
 LABEL_62:
 
-          v4 = v93;
+          descriptorCopy = v93;
 LABEL_63:
 
-          v13 = v94;
+          counterpartIdentifiers = v94;
 LABEL_64:
 
           goto LABEL_65;
@@ -2489,9 +2489,9 @@ LABEL_64:
       }
     }
 
-    v76 = [v55 localizedName];
-    v77 = [v74 localizedName];
-    v78 = INEditDistanceBetweenStrings(v76, v77);
+    localizedName2 = [v55 localizedName];
+    localizedName3 = [v74 localizedName];
+    v78 = INEditDistanceBetweenStrings(localizedName2, localizedName3);
 LABEL_79:
 
     if (v78 >= v99 || v78 > 5)
@@ -2499,7 +2499,7 @@ LABEL_79:
       goto LABEL_89;
     }
 
-    v76 = v12;
+    localizedName2 = v12;
     v12 = v74;
     v99 = v78;
     goto LABEL_85;
@@ -2549,12 +2549,12 @@ LABEL_7:
   return v10;
 }
 
-- (id)resolvedAppMatchingDescriptor:(id)a3
+- (id)resolvedAppMatchingDescriptor:(id)descriptor
 {
-  v4 = a3;
-  if (INDescriptorContainsBundleIdentifiers(v4))
+  descriptorCopy = descriptor;
+  if (INDescriptorContainsBundleIdentifiers(descriptorCopy))
   {
-    v5 = v4;
+    v5 = descriptorCopy;
     if ([(INAppResolver *)self cacheHasResultForDescriptor:v5])
     {
       v6 = [(INAppResolver *)self cachedResultForKey:v5];
@@ -2577,7 +2577,7 @@ LABEL_7:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1 && INAppResolverLogInitIfNeeded_once != -1)
+  if (objc_opt_class() == self && INAppResolverLogInitIfNeeded_once != -1)
   {
 
     dispatch_once(&INAppResolverLogInitIfNeeded_once, &__block_literal_global_6_72047);

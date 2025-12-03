@@ -1,6 +1,6 @@
 @interface JavaUtilPropertyResourceBundle
 - (id)getKeys;
-- (id)handleGetObjectWithNSString:(id)a3;
+- (id)handleGetObjectWithNSString:(id)string;
 - (id)handleKeySet;
 - (void)dealloc;
 @end
@@ -35,7 +35,7 @@
   }
 }
 
-- (id)handleGetObjectWithNSString:(id)a3
+- (id)handleGetObjectWithNSString:(id)string
 {
   resources = self->resources_;
   if (!resources)
@@ -43,7 +43,7 @@
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilHashtable *)resources getWithId:a3];
+  return [(JavaUtilHashtable *)resources getWithId:string];
 }
 
 - (void)dealloc

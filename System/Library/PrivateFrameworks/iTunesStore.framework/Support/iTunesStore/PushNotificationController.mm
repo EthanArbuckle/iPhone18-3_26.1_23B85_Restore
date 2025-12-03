@@ -1,50 +1,50 @@
 @interface PushNotificationController
-+ (BOOL)_amsHandleNotification:(id)a3 urlBag:(id)a4;
-+ (id)_newPushHandlerWithURLBag:(id)a3;
++ (BOOL)_amsHandleNotification:(id)notification urlBag:(id)bag;
++ (id)_newPushHandlerWithURLBag:(id)bag;
 + (id)sharedInstance;
 + (id)soundFilesDirectoryPath;
-- (BOOL)_isValidEnvironment:(id)a3;
+- (BOOL)_isValidEnvironment:(id)environment;
 - (PushNotificationController)init;
 - (id)_bag;
-- (id)_clientForIdentifier:(id)a3 createIfNeeded:(BOOL)a4 inContext:(id)a5;
+- (id)_clientForIdentifier:(id)identifier createIfNeeded:(BOOL)needed inContext:(id)context;
 - (id)_enabledTopics;
-- (id)_environmentForName:(id)a3 createIfNeeded:(BOOL)a4 inContext:(id)a5;
-- (id)_environmentNameForConnection:(id)a3;
-- (id)_newAPSConnectionWithEnvironment:(id)a3;
-- (id)_newPostTokenOperationForEnvironment:(id)a3 account:(id)a4;
-- (id)_portNameForEnvironmentName:(id)a3;
-- (int64_t)_numberOfClientsInContext:(id)a3;
-- (void)_accountStoreChangedNotification:(id)a3;
-- (void)_addNotificationWithUserInfo:(id)a3 client:(id)a4 context:(id)a5;
-- (void)_closeEnvironment:(id)a3 inContext:(id)a4;
+- (id)_environmentForName:(id)name createIfNeeded:(BOOL)needed inContext:(id)context;
+- (id)_environmentNameForConnection:(id)connection;
+- (id)_newAPSConnectionWithEnvironment:(id)environment;
+- (id)_newPostTokenOperationForEnvironment:(id)environment account:(id)account;
+- (id)_portNameForEnvironmentName:(id)name;
+- (int64_t)_numberOfClientsInContext:(id)context;
+- (void)_accountStoreChangedNotification:(id)notification;
+- (void)_addNotificationWithUserInfo:(id)info client:(id)client context:(id)context;
+- (void)_closeEnvironment:(id)environment inContext:(id)context;
 - (void)_deviceNameChanged;
-- (void)_fireRegisterBlocksAfterOperation:(id)a3;
-- (void)_handleMessage:(id)a3 connection:(id)a4 usingBlock:(id)a5;
-- (void)_loadConnectionsInContext:(id)a3;
-- (void)_networkTypeChanged:(id)a3;
-- (void)_openConnectionForEnvironment:(id)a3;
-- (void)_postNotificationsAvailableForClient:(id)a3 inContext:(id)a4;
-- (void)_postTokenForEnvironment:(id)a3;
-- (void)_postTokensInContext:(id)a3 force:(BOOL)a4;
-- (void)_reloadActiveEnvironmentInContext:(id)a3;
-- (void)_reloadDaemonClientInContext:(id)a3;
-- (void)_reloadPushStateInContext:(id)a3;
-- (void)_setShouldAggressivelySendToken:(BOOL)a3;
-- (void)_storeFrontChangedNotification:(id)a3;
-- (void)_updateEnvironmentAfterTokenPost:(id)a3;
+- (void)_fireRegisterBlocksAfterOperation:(id)operation;
+- (void)_handleMessage:(id)message connection:(id)connection usingBlock:(id)block;
+- (void)_loadConnectionsInContext:(id)context;
+- (void)_networkTypeChanged:(id)changed;
+- (void)_openConnectionForEnvironment:(id)environment;
+- (void)_postNotificationsAvailableForClient:(id)client inContext:(id)context;
+- (void)_postTokenForEnvironment:(id)environment;
+- (void)_postTokensInContext:(id)context force:(BOOL)force;
+- (void)_reloadActiveEnvironmentInContext:(id)context;
+- (void)_reloadDaemonClientInContext:(id)context;
+- (void)_reloadPushStateInContext:(id)context;
+- (void)_setShouldAggressivelySendToken:(BOOL)token;
+- (void)_storeFrontChangedNotification:(id)notification;
+- (void)_updateEnvironmentAfterTokenPost:(id)post;
 - (void)_updatePushEnabledState;
-- (void)_urlBagDidLoadNotification:(id)a3;
-- (void)connection:(id)a3 didReceiveMessageForTopic:(id)a4 userInfo:(id)a5;
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4;
+- (void)_urlBagDidLoadNotification:(id)notification;
+- (void)connection:(id)connection didReceiveMessageForTopic:(id)topic userInfo:(id)info;
+- (void)connection:(id)connection didReceivePublicToken:(id)token;
 - (void)dealloc;
-- (void)observeXPCServer:(id)a3;
-- (void)popRemoteNotificationWithMessage:(id)a3 connection:(id)a4;
-- (void)postClientNotificationWithUserInfo:(id)a3;
+- (void)observeXPCServer:(id)server;
+- (void)popRemoteNotificationWithMessage:(id)message connection:(id)connection;
+- (void)postClientNotificationWithUserInfo:(id)info;
 - (void)postPushTokens;
-- (void)registerNotificationClientWithMessage:(id)a3 connection:(id)a4;
-- (void)registerTokenForEnvironmentName:(id)a3 accountIdentifier:(id)a4 completionBlock:(id)a5;
-- (void)showLocalNotificationWithMessage:(id)a3 connection:(id)a4;
-- (void)unregisterNotificationClientWithMessage:(id)a3 connection:(id)a4;
+- (void)registerNotificationClientWithMessage:(id)message connection:(id)connection;
+- (void)registerTokenForEnvironmentName:(id)name accountIdentifier:(id)identifier completionBlock:(id)block;
+- (void)showLocalNotificationWithMessage:(id)message connection:(id)connection;
+- (void)unregisterNotificationClientWithMessage:(id)message connection:(id)connection;
 @end
 
 @implementation PushNotificationController
@@ -160,7 +160,7 @@
   block[1] = 3221225472;
   block[2] = sub_10010E730;
   block[3] = &unk_100327170;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100383EB0 != -1)
   {
     dispatch_once(&qword_100383EB0, block);
@@ -174,25 +174,25 @@
 + (id)soundFilesDirectoryPath
 {
   v2 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, 1uLL, 1);
-  v3 = [v2 lastObject];
+  lastObject = [v2 lastObject];
 
-  v4 = [[NSArray alloc] initWithObjects:{v3, @"com.apple.itunesstored", @"APNS_Sounds", 0}];
+  v4 = [[NSArray alloc] initWithObjects:{lastObject, @"com.apple.itunesstored", @"APNS_Sounds", 0}];
   v5 = [NSString pathWithComponents:v4];
 
   return v5;
 }
 
-- (void)postClientNotificationWithUserInfo:(id)a3
+- (void)postClientNotificationWithUserInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10010E8BC;
   v7[3] = &unk_100327238;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = infoCopy;
+  selfCopy = self;
+  v6 = infoCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -207,66 +207,66 @@
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)registerTokenForEnvironmentName:(id)a3 accountIdentifier:(id)a4 completionBlock:(id)a5
+- (void)registerTokenForEnvironmentName:(id)name accountIdentifier:(id)identifier completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  identifierCopy = identifier;
+  blockCopy = block;
   dispatchQueue = self->_dispatchQueue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10010F0DC;
   v15[3] = &unk_100328E58;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = nameCopy;
+  v17 = identifierCopy;
+  v18 = blockCopy;
+  v12 = blockCopy;
+  v13 = identifierCopy;
+  v14 = nameCopy;
   dispatch_async(dispatchQueue, v15);
 }
 
-- (void)observeXPCServer:(id)a3
+- (void)observeXPCServer:(id)server
 {
-  v4 = a3;
-  [v4 addObserver:self selector:"popRemoteNotificationWithMessage:connection:" forMessage:79];
-  [v4 addObserver:self selector:"registerNotificationClientWithMessage:connection:" forMessage:80];
-  [v4 addObserver:self selector:"showLocalNotificationWithMessage:connection:" forMessage:78];
-  [v4 addObserver:self selector:"unregisterNotificationClientWithMessage:connection:" forMessage:81];
+  serverCopy = server;
+  [serverCopy addObserver:self selector:"popRemoteNotificationWithMessage:connection:" forMessage:79];
+  [serverCopy addObserver:self selector:"registerNotificationClientWithMessage:connection:" forMessage:80];
+  [serverCopy addObserver:self selector:"showLocalNotificationWithMessage:connection:" forMessage:78];
+  [serverCopy addObserver:self selector:"unregisterNotificationClientWithMessage:connection:" forMessage:81];
 }
 
-- (void)popRemoteNotificationWithMessage:(id)a3 connection:(id)a4
+- (void)popRemoteNotificationWithMessage:(id)message connection:(id)connection
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10010F4D4;
   v7[3] = &unk_100328E80;
-  v8 = self;
-  v9 = a3;
-  v10 = a4;
-  v5 = v10;
-  v6 = v9;
-  [(PushNotificationController *)v8 _handleMessage:v6 connection:v5 usingBlock:v7];
+  selfCopy = self;
+  messageCopy = message;
+  connectionCopy = connection;
+  v5 = connectionCopy;
+  v6 = messageCopy;
+  [(PushNotificationController *)selfCopy _handleMessage:v6 connection:v5 usingBlock:v7];
 }
 
-- (void)registerNotificationClientWithMessage:(id)a3 connection:(id)a4
+- (void)registerNotificationClientWithMessage:(id)message connection:(id)connection
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10010F7E0;
   v7[3] = &unk_100328E80;
-  v8 = self;
-  v9 = a3;
-  v10 = a4;
-  v5 = v10;
-  v6 = v9;
-  [(PushNotificationController *)v8 _handleMessage:v6 connection:v5 usingBlock:v7];
+  selfCopy = self;
+  messageCopy = message;
+  connectionCopy = connection;
+  v5 = connectionCopy;
+  v6 = messageCopy;
+  [(PushNotificationController *)selfCopy _handleMessage:v6 connection:v5 usingBlock:v7];
 }
 
-- (void)showLocalNotificationWithMessage:(id)a3 connection:(id)a4
+- (void)showLocalNotificationWithMessage:(id)message connection:(id)connection
 {
-  v7 = a3;
+  messageCopy = message;
   if (SSXPCConnectionHasEntitlement())
   {
     objc_opt_class();
@@ -276,55 +276,55 @@
   }
 }
 
-- (void)unregisterNotificationClientWithMessage:(id)a3 connection:(id)a4
+- (void)unregisterNotificationClientWithMessage:(id)message connection:(id)connection
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10010FB9C;
   v7[3] = &unk_100328E80;
-  v8 = self;
-  v9 = a3;
-  v10 = a4;
-  v5 = v10;
-  v6 = v9;
-  [(PushNotificationController *)v8 _handleMessage:v6 connection:v5 usingBlock:v7];
+  selfCopy = self;
+  messageCopy = message;
+  connectionCopy = connection;
+  v5 = connectionCopy;
+  v6 = messageCopy;
+  [(PushNotificationController *)selfCopy _handleMessage:v6 connection:v5 usingBlock:v7];
 }
 
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4
+- (void)connection:(id)connection didReceivePublicToken:(id)token
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  tokenCopy = token;
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10010FFD4;
   block[3] = &unk_1003281A0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = connectionCopy;
+  v13 = tokenCopy;
+  v9 = tokenCopy;
+  v10 = connectionCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)connection:(id)a3 didReceiveMessageForTopic:(id)a4 userInfo:(id)a5
+- (void)connection:(id)connection didReceiveMessageForTopic:(id)topic userInfo:(id)info
 {
-  v7 = a4;
-  v8 = a5;
+  topicCopy = topic;
+  infoCopy = info;
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10011030C;
   block[3] = &unk_1003281A0;
   block[4] = self;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = topicCopy;
+  v14 = infoCopy;
+  v10 = infoCopy;
+  v11 = topicCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_accountStoreChangedNotification:(id)a3
+- (void)_accountStoreChangedNotification:(id)notification
 {
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
@@ -346,12 +346,12 @@
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_networkTypeChanged:(id)a3
+- (void)_networkTypeChanged:(id)changed
 {
   v4 = +[ISNetworkObserver sharedInstance];
-  v5 = [v4 networkType];
+  networkType = [v4 networkType];
 
-  if (v5)
+  if (networkType)
   {
     dispatchQueue = self->_dispatchQueue;
     block[0] = _NSConcreteStackBlock;
@@ -363,7 +363,7 @@
   }
 }
 
-- (void)_storeFrontChangedNotification:(id)a3
+- (void)_storeFrontChangedNotification:(id)notification
 {
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
@@ -374,7 +374,7 @@
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_urlBagDidLoadNotification:(id)a3
+- (void)_urlBagDidLoadNotification:(id)notification
 {
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
@@ -388,44 +388,44 @@
   [v5 addOperation:v4];
 }
 
-- (void)_addNotificationWithUserInfo:(id)a3 client:(id)a4 context:(id)a5
+- (void)_addNotificationWithUserInfo:(id)info client:(id)client context:(id)context
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v12 = [PushNotification entityFromContext:v7];
-  v10 = [[PushNotification alloc] initWithEntity:v12 insertIntoManagedObjectContext:v7];
+  contextCopy = context;
+  clientCopy = client;
+  infoCopy = info;
+  v12 = [PushNotification entityFromContext:contextCopy];
+  v10 = [[PushNotification alloc] initWithEntity:v12 insertIntoManagedObjectContext:contextCopy];
 
-  [(PushNotification *)v10 setClient:v8];
-  v11 = [NSPropertyListSerialization dataWithPropertyList:v9 format:200 options:0 error:0];
+  [(PushNotification *)v10 setClient:clientCopy];
+  v11 = [NSPropertyListSerialization dataWithPropertyList:infoCopy format:200 options:0 error:0];
 
   [(PushNotification *)v10 setUserInfo:v11];
 }
 
-+ (BOOL)_amsHandleNotification:(id)a3 urlBag:(id)a4
++ (BOOL)_amsHandleNotification:(id)notification urlBag:(id)bag
 {
-  v6 = a3;
-  if (!a4)
+  notificationCopy = notification;
+  if (!bag)
   {
-    a4 = +[SSLogConfig sharedDaemonConfig];
-    if (!a4)
+    bag = +[SSLogConfig sharedDaemonConfig];
+    if (!bag)
     {
-      a4 = +[SSLogConfig sharedConfig];
+      bag = +[SSLogConfig sharedConfig];
     }
 
-    v8 = [a4 shouldLog];
-    if ([a4 shouldLogToDisk])
+    shouldLog = [bag shouldLog];
+    if ([bag shouldLogToDisk])
     {
-      v9 = v8 | 2;
+      v9 = shouldLog | 2;
     }
 
     else
     {
-      v9 = v8;
+      v9 = shouldLog;
     }
 
-    v10 = [a4 OSLogObject];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [bag OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v11 = v9;
     }
@@ -438,7 +438,7 @@
     if (v11)
     {
       v15 = 138412290;
-      v16 = a1;
+      selfCopy = self;
       LODWORD(v14) = 12;
       v12 = _os_log_send_and_compose_impl();
 
@@ -446,11 +446,11 @@
       {
 LABEL_17:
 
-        LOBYTE(a4) = 0;
+        LOBYTE(bag) = 0;
         goto LABEL_18;
       }
 
-      v10 = [NSString stringWithCString:v12 encoding:4, &v15, v14];
+      oSLogObject = [NSString stringWithCString:v12 encoding:4, &v15, v14];
       free(v12);
       SSFileLog();
     }
@@ -458,15 +458,15 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v7 = [a1 _newPushHandlerWithURLBag:a4];
-  LODWORD(a4) = [v7 shouldHandleNotification:v6];
-  if (a4)
+  v7 = [self _newPushHandlerWithURLBag:bag];
+  LODWORD(bag) = [v7 shouldHandleNotification:notificationCopy];
+  if (bag)
   {
-    [v7 handleNotification:v6];
+    [v7 handleNotification:notificationCopy];
   }
 
 LABEL_18:
-  return a4;
+  return bag;
 }
 
 - (id)_bag
@@ -476,29 +476,29 @@ LABEL_18:
   v4 = [v2 initWithBagContext:v3];
 
   [v4 run];
-  v5 = [v4 URLBag];
+  uRLBag = [v4 URLBag];
 
-  return v5;
+  return uRLBag;
 }
 
-- (id)_clientForIdentifier:(id)a3 createIfNeeded:(BOOL)a4 inContext:(id)a5
+- (id)_clientForIdentifier:(id)identifier createIfNeeded:(BOOL)needed inContext:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = a5;
-  v9 = [PushNotificationClient entityFromContext:v8];
+  neededCopy = needed;
+  identifierCopy = identifier;
+  contextCopy = context;
+  v9 = [PushNotificationClient entityFromContext:contextCopy];
   v10 = objc_alloc_init(NSFetchRequest);
   [v10 setEntity:v9];
-  v11 = [NSPredicate predicateWithFormat:@"clientIdentifier=%@", v7];
-  [v10 setPredicate:v11];
+  identifierCopy = [NSPredicate predicateWithFormat:@"clientIdentifier=%@", identifierCopy];
+  [v10 setPredicate:identifierCopy];
 
   v38 = 0;
-  v12 = [v8 executeFetchRequest:v10 error:&v38];
+  v12 = [contextCopy executeFetchRequest:v10 error:&v38];
   v13 = v38;
   v14 = v13;
   if (!v12)
   {
-    v32 = v7;
+    v32 = identifierCopy;
     v16 = v13;
     v17 = +[SSLogConfig sharedDaemonConfig];
     if (!v17)
@@ -506,19 +506,19 @@ LABEL_18:
       v17 = +[SSLogConfig sharedConfig];
     }
 
-    v18 = [v17 shouldLog];
+    shouldLog = [v17 shouldLog];
     if ([v17 shouldLogToDisk])
     {
-      v19 = v18 | 2;
+      v19 = shouldLog | 2;
     }
 
     else
     {
-      v19 = v18;
+      v19 = shouldLog;
     }
 
-    v20 = [v17 OSLogObject];
-    if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v17 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v21 = v19;
     }
@@ -540,7 +540,7 @@ LABEL_18:
       v24 = _os_log_send_and_compose_impl();
 
       v14 = v16;
-      v7 = v32;
+      identifierCopy = v32;
       if (!v24)
       {
 LABEL_28:
@@ -549,7 +549,7 @@ LABEL_28:
         goto LABEL_29;
       }
 
-      v20 = [NSString stringWithCString:v24 encoding:4, &v40, v31];
+      oSLogObject = [NSString stringWithCString:v24 encoding:4, &v40, v31];
       free(v24);
       SSFileLog();
     }
@@ -557,7 +557,7 @@ LABEL_28:
     else
     {
       v14 = v16;
-      v7 = v32;
+      identifierCopy = v32;
     }
 
     goto LABEL_28;
@@ -590,7 +590,7 @@ LABEL_28:
             objc_enumerationMutation(v25);
           }
 
-          [v8 deleteObject:*(*(&v34 + 1) + 8 * i)];
+          [contextCopy deleteObject:*(*(&v34 + 1) + 8 * i)];
         }
 
         v27 = [v25 countByEnumeratingWithState:&v34 objects:v39 count:16];
@@ -599,10 +599,10 @@ LABEL_28:
       while (v27);
     }
 
-    if (v6)
+    if (neededCopy)
     {
-      v15 = [[PushNotificationClient alloc] initWithEntity:v9 insertIntoManagedObjectContext:v8];
-      [(PushNotificationClient *)v15 setClientIdentifier:v7];
+      v15 = [[PushNotificationClient alloc] initWithEntity:v9 insertIntoManagedObjectContext:contextCopy];
+      [(PushNotificationClient *)v15 setClientIdentifier:identifierCopy];
     }
 
     else
@@ -611,7 +611,7 @@ LABEL_28:
     }
 
     v14 = v33;
-    sub_1000CE00C(v8);
+    sub_1000CE00C(contextCopy);
   }
 
 LABEL_29:
@@ -619,30 +619,30 @@ LABEL_29:
   return v15;
 }
 
-- (void)_closeEnvironment:(id)a3 inContext:(id)a4
+- (void)_closeEnvironment:(id)environment inContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 environmentName];
+  environmentCopy = environment;
+  contextCopy = context;
+  environmentName = [environmentCopy environmentName];
   v9 = +[SSLogConfig sharedDaemonConfig];
   if (!v9)
   {
     v9 = +[SSLogConfig sharedConfig];
   }
 
-  v10 = [v9 shouldLog];
+  shouldLog = [v9 shouldLog];
   if ([v9 shouldLogToDisk])
   {
-    v11 = v10 | 2;
+    v11 = shouldLog | 2;
   }
 
   else
   {
-    v11 = v10;
+    v11 = shouldLog;
   }
 
-  v12 = [v9 OSLogObject];
-  if (!os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
+  oSLogObject = [v9 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     v11 &= 2u;
   }
@@ -652,7 +652,7 @@ LABEL_29:
     *v25 = 138412546;
     *&v25[4] = objc_opt_class();
     *&v25[12] = 2112;
-    *&v25[14] = v6;
+    *&v25[14] = environmentCopy;
     v13 = *&v25[4];
     LODWORD(v24) = 22;
     v23 = v25;
@@ -663,16 +663,16 @@ LABEL_29:
       goto LABEL_12;
     }
 
-    v12 = [NSString stringWithCString:v14 encoding:4, v25, v24, *v25, *&v25[16]];
+    oSLogObject = [NSString stringWithCString:v14 encoding:4, v25, v24, *v25, *&v25[16]];
     free(v14);
-    v23 = v12;
+    v23 = oSLogObject;
     SSFileLog();
   }
 
 LABEL_12:
-  [v7 deleteObject:v6];
+  [contextCopy deleteObject:environmentCopy];
 
-  v15 = [(NSMutableDictionary *)self->_connections objectForKey:v8];
+  v15 = [(NSMutableDictionary *)self->_connections objectForKey:environmentName];
   if (v15)
   {
     v16 = +[SSLogConfig sharedDaemonConfig];
@@ -681,19 +681,19 @@ LABEL_12:
       v16 = +[SSLogConfig sharedConfig];
     }
 
-    v17 = [v16 shouldLog];
+    shouldLog2 = [v16 shouldLog];
     if ([v16 shouldLogToDisk])
     {
-      v18 = v17 | 2;
+      v18 = shouldLog2 | 2;
     }
 
     else
     {
-      v18 = v17;
+      v18 = shouldLog2;
     }
 
-    v19 = [v16 OSLogObject];
-    if (!os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
+    oSLogObject2 = [v16 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_INFO))
     {
       v18 &= 2u;
     }
@@ -704,7 +704,7 @@ LABEL_12:
       *v25 = 138412546;
       *&v25[4] = v20;
       *&v25[12] = 2112;
-      *&v25[14] = v8;
+      *&v25[14] = environmentName;
       v21 = v20;
       LODWORD(v24) = 22;
       v22 = _os_log_send_and_compose_impl();
@@ -716,11 +716,11 @@ LABEL_24:
         [v15 setDelegate:0];
         [v15 setEnabledTopics:0];
         [v15 removeFromRunLoop];
-        [(NSMutableDictionary *)self->_connections removeObjectForKey:v8];
+        [(NSMutableDictionary *)self->_connections removeObjectForKey:environmentName];
         goto LABEL_25;
       }
 
-      v19 = [NSString stringWithCString:v22 encoding:4, v25, v24];
+      oSLogObject2 = [NSString stringWithCString:v22 encoding:4, v25, v24];
       free(v22);
       SSFileLog();
     }
@@ -746,19 +746,19 @@ LABEL_25:
   return v2;
 }
 
-- (id)_environmentForName:(id)a3 createIfNeeded:(BOOL)a4 inContext:(id)a5
+- (id)_environmentForName:(id)name createIfNeeded:(BOOL)needed inContext:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = a5;
-  v9 = [PushNotificationEnvironment entityFromContext:v8];
+  neededCopy = needed;
+  nameCopy = name;
+  contextCopy = context;
+  v9 = [PushNotificationEnvironment entityFromContext:contextCopy];
   v10 = objc_alloc_init(NSFetchRequest);
   [v10 setEntity:v9];
-  v11 = [NSPredicate predicateWithFormat:@"environmentName = %@", v7];
-  [v10 setPredicate:v11];
+  nameCopy = [NSPredicate predicateWithFormat:@"environmentName = %@", nameCopy];
+  [v10 setPredicate:nameCopy];
 
   v38 = 0;
-  v12 = [v8 executeFetchRequest:v10 error:&v38];
+  v12 = [contextCopy executeFetchRequest:v10 error:&v38];
   v13 = v38;
   v14 = v13;
   if (!v12)
@@ -770,19 +770,19 @@ LABEL_25:
       v16 = +[SSLogConfig sharedConfig];
     }
 
-    v17 = [v16 shouldLog];
+    shouldLog = [v16 shouldLog];
     if ([v16 shouldLogToDisk])
     {
-      v18 = v17 | 2;
+      v18 = shouldLog | 2;
     }
 
     else
     {
-      v18 = v17;
+      v18 = shouldLog;
     }
 
-    v19 = [v16 OSLogObject];
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v16 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v20 = v18;
     }
@@ -812,7 +812,7 @@ LABEL_16:
         goto LABEL_28;
       }
 
-      v19 = [NSString stringWithCString:v23 encoding:4, &v40, v31];
+      oSLogObject = [NSString stringWithCString:v23 encoding:4, &v40, v31];
       free(v23);
       SSFileLog();
     }
@@ -847,7 +847,7 @@ LABEL_16:
             objc_enumerationMutation(v24);
           }
 
-          [v8 deleteObject:*(*(&v34 + 1) + 8 * i)];
+          [contextCopy deleteObject:*(*(&v34 + 1) + 8 * i)];
         }
 
         v26 = [v24 countByEnumeratingWithState:&v34 objects:v39 count:16];
@@ -856,10 +856,10 @@ LABEL_16:
       while (v26);
     }
 
-    if (v6)
+    if (neededCopy)
     {
-      v15 = [[PushNotificationEnvironment alloc] initWithEntity:v9 insertIntoManagedObjectContext:v8];
-      [(PushNotificationEnvironment *)v15 setEnvironmentName:v7];
+      v15 = [[PushNotificationEnvironment alloc] initWithEntity:v9 insertIntoManagedObjectContext:contextCopy];
+      [(PushNotificationEnvironment *)v15 setEnvironmentName:nameCopy];
       v29 = [NSNumber numberWithInteger:0];
       [(PushNotificationEnvironment *)v15 setLastAccountIdentifier:v29];
     }
@@ -870,7 +870,7 @@ LABEL_16:
     }
 
     v14 = v33;
-    sub_1000CE00C(v8);
+    sub_1000CE00C(contextCopy);
   }
 
 LABEL_28:
@@ -878,9 +878,9 @@ LABEL_28:
   return v15;
 }
 
-- (id)_environmentNameForConnection:(id)a3
+- (id)_environmentNameForConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -903,7 +903,7 @@ LABEL_28:
         v10 = *(*(&v14 + 1) + 8 * i);
         v11 = [(NSMutableDictionary *)self->_connections objectForKey:v10, v14];
 
-        if (v11 == v4)
+        if (v11 == connectionCopy)
         {
           v12 = v10;
           goto LABEL_11;
@@ -926,15 +926,15 @@ LABEL_11:
   return v12;
 }
 
-- (void)_fireRegisterBlocksAfterOperation:(id)a3
+- (void)_fireRegisterBlocksAfterOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   v5 = objc_alloc_init(NSMutableArray);
-  v6 = [v4 authenticationContext];
-  v7 = [v6 requiredUniqueIdentifier];
+  authenticationContext = [operationCopy authenticationContext];
+  requiredUniqueIdentifier = [authenticationContext requiredUniqueIdentifier];
 
-  v26 = v4;
-  v8 = [v4 environmentName];
+  v26 = operationCopy;
+  environmentName = [operationCopy environmentName];
   v9 = [(NSMutableArray *)self->_registerBlocks count];
   if (v9 >= 1)
   {
@@ -942,16 +942,16 @@ LABEL_11:
     do
     {
       v11 = [(NSMutableArray *)self->_registerBlocks objectAtIndex:v10 - 2];
-      v12 = [v11 accountIdentifier];
-      if ([v12 isEqualToNumber:v7])
+      accountIdentifier = [v11 accountIdentifier];
+      if ([accountIdentifier isEqualToNumber:requiredUniqueIdentifier])
       {
-        v13 = [v11 environmentName];
-        v14 = [v13 isEqualToString:v8];
+        environmentName2 = [v11 environmentName];
+        v14 = [environmentName2 isEqualToString:environmentName];
 
         if (v14)
         {
-          v15 = [v11 block];
-          [v5 insertObject:v15 atIndex:0];
+          block = [v11 block];
+          [v5 insertObject:block atIndex:0];
 
           [(NSMutableArray *)self->_registerBlocks removeObjectAtIndex:v10 - 2];
         }
@@ -975,19 +975,19 @@ LABEL_11:
       v16 = +[SSLogConfig sharedConfig];
     }
 
-    v17 = [v16 shouldLog];
+    shouldLog = [v16 shouldLog];
     if ([v16 shouldLogToDisk])
     {
-      v18 = v17 | 2;
+      v18 = shouldLog | 2;
     }
 
     else
     {
-      v18 = v17;
+      v18 = shouldLog;
     }
 
-    v19 = [v16 OSLogObject];
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
+    oSLogObject = [v16 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
       v20 = v18;
     }
@@ -1023,7 +1023,7 @@ LABEL_21:
         goto LABEL_22;
       }
 
-      v19 = [NSString stringWithCString:v23 encoding:4, &v29, v25];
+      oSLogObject = [NSString stringWithCString:v23 encoding:4, &v29, v25];
       free(v23);
       SSFileLog();
     }
@@ -1034,12 +1034,12 @@ LABEL_21:
 LABEL_22:
 }
 
-- (void)_handleMessage:(id)a3 connection:(id)a4 usingBlock:(id)a5
+- (void)_handleMessage:(id)message connection:(id)connection usingBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [[XPCClient alloc] initWithInputConnection:v9];
+  messageCopy = message;
+  connectionCopy = connection;
+  blockCopy = block;
+  v11 = [[XPCClient alloc] initWithInputConnection:connectionCopy];
   if ([(XPCClient *)v11 hasEntitlements])
   {
     v12 = +[Daemon daemon];
@@ -1050,32 +1050,32 @@ LABEL_22:
     v15[1] = 3221225472;
     v15[2] = sub_100112450;
     v15[3] = &unk_100328EA8;
-    v17 = v10;
+    v17 = blockCopy;
     v16 = v11;
     dispatch_async(dispatchQueue, v15);
   }
 
   else
   {
-    reply = xpc_dictionary_create_reply(v8);
-    xpc_connection_send_message(v9, reply);
+    reply = xpc_dictionary_create_reply(messageCopy);
+    xpc_connection_send_message(connectionCopy, reply);
   }
 }
 
-- (BOOL)_isValidEnvironment:(id)a3
+- (BOOL)_isValidEnvironment:(id)environment
 {
-  v3 = a3;
+  environmentCopy = environment;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if ([v3 isEqualToString:APSEnvironmentProduction])
+    if ([environmentCopy isEqualToString:APSEnvironmentProduction])
     {
       v4 = 1;
     }
 
     else
     {
-      v4 = [v3 isEqualToString:APSEnvironmentDevelopment];
+      v4 = [environmentCopy isEqualToString:APSEnvironmentDevelopment];
     }
   }
 
@@ -1087,28 +1087,28 @@ LABEL_22:
   return v4;
 }
 
-- (void)_loadConnectionsInContext:(id)a3
+- (void)_loadConnectionsInContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = +[SSLogConfig sharedDaemonConfig];
   if (!v5)
   {
     v5 = +[SSLogConfig sharedConfig];
   }
 
-  v6 = [v5 shouldLog];
+  shouldLog = [v5 shouldLog];
   if ([v5 shouldLogToDisk])
   {
-    v7 = v6 | 2;
+    v7 = shouldLog | 2;
   }
 
   else
   {
-    v7 = v6;
+    v7 = shouldLog;
   }
 
-  v8 = [v5 OSLogObject];
-  if (!os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
+  oSLogObject = [v5 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     v7 &= 2u;
   }
@@ -1127,19 +1127,19 @@ LABEL_22:
       goto LABEL_12;
     }
 
-    v8 = [NSString stringWithCString:v10 encoding:4, v54, v46];
+    oSLogObject = [NSString stringWithCString:v10 encoding:4, v54, v46];
     free(v10);
-    v44 = v8;
+    v44 = oSLogObject;
     SSFileLog();
   }
 
 LABEL_12:
   v11 = objc_alloc_init(NSFetchRequest);
-  v12 = [PushNotificationEnvironment entityFromContext:v4];
+  v12 = [PushNotificationEnvironment entityFromContext:contextCopy];
   [v11 setEntity:v12];
 
   v52 = 0;
-  v13 = [v4 executeFetchRequest:v11 error:&v52];
+  v13 = [contextCopy executeFetchRequest:v11 error:&v52];
   v14 = v52;
   v15 = +[SSLogConfig sharedDaemonConfig];
   v16 = v15;
@@ -1151,19 +1151,19 @@ LABEL_12:
       v16 = +[SSLogConfig sharedConfig];
     }
 
-    v29 = [v16 shouldLog];
+    shouldLog2 = [v16 shouldLog];
     if ([v16 shouldLogToDisk])
     {
-      v30 = v29 | 2;
+      v30 = shouldLog2 | 2;
     }
 
     else
     {
-      v30 = v29;
+      v30 = shouldLog2;
     }
 
-    v31 = [v16 OSLogObject];
-    if (!os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v16 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v30 &= 2u;
     }
@@ -1187,9 +1187,9 @@ LABEL_43:
         goto LABEL_44;
       }
 
-      v31 = [NSString stringWithCString:v34 encoding:4, v54, v46];
+      oSLogObject2 = [NSString stringWithCString:v34 encoding:4, v54, v46];
       free(v34);
-      v45 = v31;
+      v45 = oSLogObject2;
       SSFileLog();
     }
 
@@ -1201,19 +1201,19 @@ LABEL_43:
     v16 = +[SSLogConfig sharedConfig];
   }
 
-  v17 = [v16 shouldLog];
+  shouldLog3 = [v16 shouldLog];
   if ([v16 shouldLogToDisk])
   {
-    v18 = v17 | 2;
+    v18 = shouldLog3 | 2;
   }
 
   else
   {
-    v18 = v17;
+    v18 = shouldLog3;
   }
 
-  v19 = [v16 OSLogObject];
-  if (!os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
+  oSLogObject3 = [v16 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_INFO))
   {
     v18 &= 2u;
   }
@@ -1236,9 +1236,9 @@ LABEL_43:
 
   if (v23)
   {
-    v19 = [NSString stringWithCString:v23 encoding:4, v54, v46];
+    oSLogObject3 = [NSString stringWithCString:v23 encoding:4, v54, v46];
     free(v23);
-    v45 = v19;
+    v45 = oSLogObject3;
     SSFileLog();
 LABEL_23:
   }
@@ -1271,7 +1271,7 @@ LABEL_23:
     while (v26);
   }
 
-  sub_1000CE00C(v4);
+  sub_1000CE00C(contextCopy);
 LABEL_44:
   *v54 = APSEnvironmentProduction;
   *&v54[8] = APSEnvironmentDevelopment;
@@ -1302,16 +1302,16 @@ LABEL_44:
   }
 }
 
-- (id)_newAPSConnectionWithEnvironment:(id)a3
+- (id)_newAPSConnectionWithEnvironment:(id)environment
 {
-  v4 = a3;
+  environmentCopy = environment;
   v5 = [APSConnection alloc];
-  v6 = [(PushNotificationController *)self _portNameForEnvironmentName:v4];
-  v7 = [v5 initWithEnvironmentName:v4 namedDelegatePort:v6];
+  v6 = [(PushNotificationController *)self _portNameForEnvironmentName:environmentCopy];
+  v7 = [v5 initWithEnvironmentName:environmentCopy namedDelegatePort:v6];
 
   [v7 setDelegate:self];
-  v8 = [(PushNotificationController *)self _enabledTopics];
-  [v7 setEnabledTopics:v8];
+  _enabledTopics = [(PushNotificationController *)self _enabledTopics];
+  [v7 setEnabledTopics:_enabledTopics];
 
   v9 = +[NSRunLoop mainRunLoop];
   [v7 scheduleInRunLoop:v9];
@@ -1319,59 +1319,59 @@ LABEL_44:
   return v7;
 }
 
-- (id)_newPostTokenOperationForEnvironment:(id)a3 account:(id)a4
+- (id)_newPostTokenOperationForEnvironment:(id)environment account:(id)account
 {
-  v5 = a4;
-  v6 = a3;
+  accountCopy = account;
+  environmentCopy = environment;
   v7 = [PostPushNotificationTokenOperation alloc];
-  v8 = [v6 environmentName];
-  v9 = [v6 tokenData];
+  environmentName = [environmentCopy environmentName];
+  tokenData = [environmentCopy tokenData];
 
-  v10 = [(PostPushNotificationTokenOperation *)v7 initWithEnvironmentName:v8 tokenData:v9];
-  v11 = [[SSAuthenticationContext alloc] initWithAccount:v5];
+  v10 = [(PostPushNotificationTokenOperation *)v7 initWithEnvironmentName:environmentName tokenData:tokenData];
+  v11 = [[SSAuthenticationContext alloc] initWithAccount:accountCopy];
 
   [(PostPushNotificationTokenOperation *)v10 setAuthenticationContext:v11];
   return v10;
 }
 
-+ (id)_newPushHandlerWithURLBag:(id)a3
++ (id)_newPushHandlerWithURLBag:(id)bag
 {
   v10 = @"4";
   v11 = @"22";
   v12 = @"25";
-  v3 = a3;
+  bagCopy = bag;
   v4 = [NSArray arrayWithObjects:&v10 count:3];
   v5 = [NSSet setWithArray:v4, v10, v11, v12];
 
   v6 = [[AMSPushConfiguration alloc] initWithEnabledActionTypes:v5];
   [v6 setUserNotificationExtensionId:@"mst-notification-category"];
-  v7 = [[ISAMSBagShim alloc] initWithURLBag:v3];
+  v7 = [[ISAMSBagShim alloc] initWithURLBag:bagCopy];
 
   v8 = [[AMSPushHandler alloc] initWithConfiguration:v6 bag:v7];
   return v8;
 }
 
-- (int64_t)_numberOfClientsInContext:(id)a3
+- (int64_t)_numberOfClientsInContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = objc_alloc_init(NSFetchRequest);
-  v5 = [PushNotificationClient entityFromContext:v3];
+  v5 = [PushNotificationClient entityFromContext:contextCopy];
   [v4 setEntity:v5];
 
-  v6 = [v3 countForFetchRequest:v4 error:0];
+  v6 = [contextCopy countForFetchRequest:v4 error:0];
   return v6;
 }
 
-- (void)_openConnectionForEnvironment:(id)a3
+- (void)_openConnectionForEnvironment:(id)environment
 {
-  v4 = a3;
-  v5 = [v4 environmentName];
-  if (![(PushNotificationController *)self _isValidEnvironment:v5])
+  environmentCopy = environment;
+  environmentName = [environmentCopy environmentName];
+  if (![(PushNotificationController *)self _isValidEnvironment:environmentName])
   {
     goto LABEL_18;
   }
 
-  v6 = [(NSMutableDictionary *)self->_connections objectForKey:v5];
+  v6 = [(NSMutableDictionary *)self->_connections objectForKey:environmentName];
   if (!v6)
   {
     v7 = +[SSLogConfig sharedDaemonConfig];
@@ -1380,19 +1380,19 @@ LABEL_44:
       v7 = +[SSLogConfig sharedConfig];
     }
 
-    v8 = [v7 shouldLog];
+    shouldLog = [v7 shouldLog];
     if ([v7 shouldLogToDisk])
     {
-      v9 = v8 | 2;
+      v9 = shouldLog | 2;
     }
 
     else
     {
-      v9 = v8;
+      v9 = shouldLog;
     }
 
-    v10 = [v7 OSLogObject];
-    if (!os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+    oSLogObject = [v7 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
       v9 &= 2u;
     }
@@ -1402,7 +1402,7 @@ LABEL_44:
       *v20 = 138412546;
       *&v20[4] = objc_opt_class();
       *&v20[12] = 2112;
-      *&v20[14] = v4;
+      *&v20[14] = environmentCopy;
       v11 = *&v20[4];
       LODWORD(v19) = 22;
       v18 = v20;
@@ -1412,14 +1412,14 @@ LABEL_44:
       {
 LABEL_14:
 
-        v6 = [(PushNotificationController *)self _newAPSConnectionWithEnvironment:v5];
-        [(NSMutableDictionary *)self->_connections setObject:v6 forKey:v5];
+        v6 = [(PushNotificationController *)self _newAPSConnectionWithEnvironment:environmentName];
+        [(NSMutableDictionary *)self->_connections setObject:v6 forKey:environmentName];
         goto LABEL_15;
       }
 
-      v10 = [NSString stringWithCString:v12 encoding:4, v20, v19, *v20, *&v20[16]];
+      oSLogObject = [NSString stringWithCString:v12 encoding:4, v20, v19, *v20, *&v20[16]];
       free(v12);
-      v18 = v10;
+      v18 = oSLogObject;
       SSFileLog();
     }
 
@@ -1427,31 +1427,31 @@ LABEL_14:
   }
 
 LABEL_15:
-  v13 = [v6 publicToken];
-  v14 = [v4 tokenData];
-  v15 = [v13 isEqual:v14];
+  publicToken = [v6 publicToken];
+  tokenData = [environmentCopy tokenData];
+  v15 = [publicToken isEqual:tokenData];
 
   if ((v15 & 1) == 0)
   {
     v16 = [NSNumber numberWithInteger:0];
-    [v4 setLastAccountIdentifier:v16];
+    [environmentCopy setLastAccountIdentifier:v16];
 
-    v17 = [v6 publicToken];
-    [v4 setTokenData:v17];
+    publicToken2 = [v6 publicToken];
+    [environmentCopy setTokenData:publicToken2];
   }
 
 LABEL_18:
 }
 
-- (id)_portNameForEnvironmentName:(id)a3
+- (id)_portNameForEnvironmentName:(id)name
 {
-  v3 = a3;
-  if ([v3 isEqualToString:APSEnvironmentProduction])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:APSEnvironmentProduction])
   {
     v4 = @"com.apple.itunesstored.aps";
   }
 
-  else if ([v3 isEqualToString:APSEnvironmentDevelopment])
+  else if ([nameCopy isEqualToString:APSEnvironmentDevelopment])
   {
     v4 = @"com.apple.itunesstored.aps.dev";
   }
@@ -1464,37 +1464,37 @@ LABEL_18:
   return v4;
 }
 
-- (void)_postNotificationsAvailableForClient:(id)a3 inContext:(id)a4
+- (void)_postNotificationsAvailableForClient:(id)client inContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
+  clientCopy = client;
+  contextCopy = context;
   v7 = objc_alloc_init(NSFetchRequest);
-  v8 = [PushNotification entityFromContext:v6];
+  v8 = [PushNotification entityFromContext:contextCopy];
   [v7 setEntity:v8];
 
-  v9 = [NSPredicate predicateWithFormat:@"client=%@", v5];
-  [v7 setPredicate:v9];
+  clientCopy = [NSPredicate predicateWithFormat:@"client=%@", clientCopy];
+  [v7 setPredicate:clientCopy];
 
-  v10 = [v6 countForFetchRequest:v7 error:0];
+  v10 = [contextCopy countForFetchRequest:v7 error:0];
   v11 = +[SSLogConfig sharedDaemonConfig];
   if (!v11)
   {
     v11 = +[SSLogConfig sharedConfig];
   }
 
-  v12 = [v11 shouldLog];
+  shouldLog = [v11 shouldLog];
   if ([v11 shouldLogToDisk])
   {
-    v13 = v12 | 2;
+    v13 = shouldLog | 2;
   }
 
   else
   {
-    v13 = v12;
+    v13 = shouldLog;
   }
 
-  v14 = [v11 OSLogObject];
-  if (!os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
+  oSLogObject = [v11 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     v13 &= 2u;
   }
@@ -1503,7 +1503,7 @@ LABEL_18:
   {
     v15 = objc_opt_class();
     v16 = v15;
-    [v5 clientIdentifier];
+    [clientCopy clientIdentifier];
     v19 = 138412802;
     v20 = v15;
     v21 = 2048;
@@ -1517,7 +1517,7 @@ LABEL_18:
       goto LABEL_12;
     }
 
-    v14 = [NSString stringWithCString:v17 encoding:4, &v19, v18];
+    oSLogObject = [NSString stringWithCString:v17 encoding:4, &v19, v18];
     free(v17);
     SSFileLog();
   }
@@ -1529,13 +1529,13 @@ LABEL_12:
   }
 }
 
-- (void)_postTokenForEnvironment:(id)a3
+- (void)_postTokenForEnvironment:(id)environment
 {
-  v4 = a3;
+  environmentCopy = environment;
   if ([(PushNotificationController *)self _isPushEnabled])
   {
     [(PushNotificationController *)self _setShouldAggressivelySendToken:1];
-    v5 = [v4 environmentName];
+    environmentName = [environmentCopy environmentName];
     v34 = 0u;
     v35 = 0u;
     v32 = 0u;
@@ -1555,8 +1555,8 @@ LABEL_4:
         }
 
         v10 = *(*(&v32 + 1) + 8 * v9);
-        v11 = [v10 environmentName];
-        v12 = [v11 isEqualToString:v5];
+        environmentName2 = [v10 environmentName];
+        v12 = [environmentName2 isEqualToString:environmentName];
 
         if (v12)
         {
@@ -1589,8 +1589,8 @@ LABEL_10:
     }
 
     v22 = +[SSAccountStore defaultStore];
-    v23 = [v22 activeAccount];
-    v21 = [(PushNotificationController *)self _newPostTokenOperationForEnvironment:v4 account:v23];
+    activeAccount = [v22 activeAccount];
+    v21 = [(PushNotificationController *)self _newPostTokenOperationForEnvironment:environmentCopy account:activeAccount];
 
     objc_initWeak(location, v21);
     v30[0] = _NSConcreteStackBlock;
@@ -1622,25 +1622,25 @@ LABEL_25:
 
   else
   {
-    v5 = +[SSLogConfig sharedDaemonConfig];
-    if (!v5)
+    environmentName = +[SSLogConfig sharedDaemonConfig];
+    if (!environmentName)
     {
-      v5 = +[SSLogConfig sharedConfig];
+      environmentName = +[SSLogConfig sharedConfig];
     }
 
-    v13 = [v5 shouldLog];
-    if ([v5 shouldLogToDisk])
+    shouldLog = [environmentName shouldLog];
+    if ([environmentName shouldLogToDisk])
     {
-      v14 = v13 | 2;
+      v14 = shouldLog | 2;
     }
 
     else
     {
-      v14 = v13;
+      v14 = shouldLog;
     }
 
-    v15 = [v5 OSLogObject];
-    if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+    oSLogObject = [environmentName OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v14 &= 2u;
     }
@@ -1671,10 +1671,10 @@ LABEL_25:
   }
 }
 
-- (void)_postTokensInContext:(id)a3 force:(BOOL)a4
+- (void)_postTokensInContext:(id)context force:(BOOL)force
 {
-  v4 = a4;
-  v6 = a3;
+  forceCopy = force;
+  contextCopy = context;
   if ([(PushNotificationController *)self _shouldAggressivelySendToken])
   {
     v7 = +[SSLogConfig sharedDaemonConfig];
@@ -1683,19 +1683,19 @@ LABEL_25:
       v7 = +[SSLogConfig sharedConfig];
     }
 
-    v8 = [v7 shouldLog];
+    shouldLog = [v7 shouldLog];
     if ([v7 shouldLogToDisk])
     {
-      v9 = v8 | 2;
+      v9 = shouldLog | 2;
     }
 
     else
     {
-      v9 = v8;
+      v9 = shouldLog;
     }
 
-    v10 = [v7 OSLogObject];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v7 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v11 = v9;
     }
@@ -1718,13 +1718,13 @@ LABEL_25:
       {
 LABEL_14:
 
-        v4 = 1;
+        forceCopy = 1;
         goto LABEL_15;
       }
 
-      v10 = [NSString stringWithCString:v13 encoding:4, &v61, v52];
+      oSLogObject = [NSString stringWithCString:v13 encoding:4, &v61, v52];
       free(v13);
-      v50 = v10;
+      v50 = oSLogObject;
       SSFileLog();
     }
 
@@ -1735,45 +1735,45 @@ LABEL_15:
   if ([(PushNotificationController *)self _isPushEnabled])
   {
     v14 = +[SSAccountStore defaultStore];
-    v15 = [v14 activeAccount];
+    activeAccount = [v14 activeAccount];
 
-    v16 = objc_alloc_init(NSFetchRequest);
-    v17 = [PushNotificationEnvironment entityFromContext:v6];
-    [v16 setEntity:v17];
+    oSLogObject4 = objc_alloc_init(NSFetchRequest);
+    v17 = [PushNotificationEnvironment entityFromContext:contextCopy];
+    [oSLogObject4 setEntity:v17];
 
-    if (!v4)
+    if (!forceCopy)
     {
-      v18 = [v15 uniqueIdentifier];
-      v19 = [NSPredicate predicateWithFormat:@"(tokenData != nil) AND (lastAccountIdentifier != %@)", v18];
-      [v16 setPredicate:v19];
+      uniqueIdentifier = [activeAccount uniqueIdentifier];
+      v19 = [NSPredicate predicateWithFormat:@"(tokenData != nil) AND (lastAccountIdentifier != %@)", uniqueIdentifier];
+      [oSLogObject4 setPredicate:v19];
     }
 
     v59 = 0;
-    v20 = [v6 executeFetchRequest:v16 error:&v59];
+    v20 = [contextCopy executeFetchRequest:oSLogObject4 error:&v59];
     v21 = v59;
     v22 = +[SSLogConfig sharedDaemonConfig];
     v23 = v22;
     if (v20)
     {
-      v54 = v6;
+      v54 = contextCopy;
       if (!v22)
       {
         v23 = +[SSLogConfig sharedConfig];
       }
 
-      v24 = [v23 shouldLog];
+      shouldLog2 = [v23 shouldLog];
       if ([v23 shouldLogToDisk])
       {
-        v25 = v24 | 2;
+        v25 = shouldLog2 | 2;
       }
 
       else
       {
-        v25 = v24;
+        v25 = shouldLog2;
       }
 
-      v26 = [v23 OSLogObject];
-      if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
+      oSLogObject2 = [v23 OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_INFO))
       {
         v27 = v25;
       }
@@ -1795,26 +1795,26 @@ LABEL_15:
         v63 = 2048;
         v64 = v30;
         v65 = 1024;
-        v66 = v4;
+        v66 = forceCopy;
         LODWORD(v52) = 28;
         v51 = &v61;
         v31 = _os_log_send_and_compose_impl();
 
-        v6 = v54;
+        contextCopy = v54;
         if (!v31)
         {
           goto LABEL_54;
         }
 
-        v26 = [NSString stringWithCString:v31 encoding:4, &v61, v52];
+        oSLogObject2 = [NSString stringWithCString:v31 encoding:4, &v61, v52];
         free(v31);
-        v51 = v26;
+        v51 = oSLogObject2;
         SSFileLog();
       }
 
       else
       {
-        v6 = v54;
+        contextCopy = v54;
       }
 
 LABEL_54:
@@ -1856,19 +1856,19 @@ LABEL_54:
       v23 = +[SSLogConfig sharedConfig];
     }
 
-    v37 = [v23 shouldLog];
+    shouldLog3 = [v23 shouldLog];
     if ([v23 shouldLogToDisk])
     {
-      v38 = v37 | 2;
+      v38 = shouldLog3 | 2;
     }
 
     else
     {
-      v38 = v37;
+      v38 = shouldLog3;
     }
 
-    v39 = [v23 OSLogObject];
-    if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
+    oSLogObject3 = [v23 OSLogObject];
+    if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
     {
       v40 = v38;
     }
@@ -1880,7 +1880,7 @@ LABEL_54:
 
     if (v40)
     {
-      v41 = v6;
+      v41 = contextCopy;
       v42 = objc_opt_class();
       v61 = 138412546;
       v62 = v42;
@@ -1892,41 +1892,41 @@ LABEL_54:
 
       if (!v44)
       {
-        v6 = v41;
+        contextCopy = v41;
         goto LABEL_62;
       }
 
-      v39 = [NSString stringWithCString:v44 encoding:4, &v61, v52];
+      oSLogObject3 = [NSString stringWithCString:v44 encoding:4, &v61, v52];
       free(v44);
       SSFileLog();
-      v6 = v41;
+      contextCopy = v41;
     }
 
 LABEL_62:
     goto LABEL_63;
   }
 
-  v15 = +[SSLogConfig sharedDaemonConfig];
-  if (!v15)
+  activeAccount = +[SSLogConfig sharedDaemonConfig];
+  if (!activeAccount)
   {
-    v15 = +[SSLogConfig sharedConfig];
+    activeAccount = +[SSLogConfig sharedConfig];
   }
 
-  v32 = [v15 shouldLog];
-  if ([v15 shouldLogToDisk])
+  shouldLog4 = [activeAccount shouldLog];
+  if ([activeAccount shouldLogToDisk])
   {
-    v32 |= 2u;
+    shouldLog4 |= 2u;
   }
 
-  v16 = [v15 OSLogObject];
-  if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+  oSLogObject4 = [activeAccount OSLogObject];
+  if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_ERROR))
   {
-    v33 = v32;
+    v33 = shouldLog4;
   }
 
   else
   {
-    v33 = v32 & 2;
+    v33 = shouldLog4 & 2;
   }
 
   if (!v33)
@@ -1943,23 +1943,23 @@ LABEL_62:
 
   if (v36)
   {
-    v16 = [NSString stringWithCString:v36 encoding:4, &v61, v52];
+    oSLogObject4 = [NSString stringWithCString:v36 encoding:4, &v61, v52];
     free(v36);
     SSFileLog();
 LABEL_63:
   }
 }
 
-- (void)_reloadActiveEnvironmentInContext:(id)a3
+- (void)_reloadActiveEnvironmentInContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   pushEnabledState = self->_pushEnabledState;
   if (pushEnabledState != -1)
   {
     if (pushEnabledState == 1)
     {
-      v6 = [(PushNotificationController *)self _bag];
-      v7 = [v6 valueForKey:@"push-notifications"];
+      _bag = [(PushNotificationController *)self _bag];
+      v7 = [_bag valueForKey:@"push-notifications"];
       v8 = [v7 objectForKey:@"environment"];
       if (![(PushNotificationController *)self _isValidEnvironment:v8])
       {
@@ -1974,7 +1974,7 @@ LABEL_63:
       v8 = 0;
     }
 
-    if (![(PushNotificationController *)self _numberOfClientsInContext:v4])
+    if (![(PushNotificationController *)self _numberOfClientsInContext:contextCopy])
     {
 
       v8 = 0;
@@ -1986,19 +1986,19 @@ LABEL_63:
       v10 = +[SSLogConfig sharedConfig];
     }
 
-    v11 = [v10 shouldLog];
+    shouldLog = [v10 shouldLog];
     if ([v10 shouldLogToDisk])
     {
-      v12 = v11 | 2;
+      v12 = shouldLog | 2;
     }
 
     else
     {
-      v12 = v11;
+      v12 = shouldLog;
     }
 
-    v13 = [v10 OSLogObject];
-    if (!os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
+    oSLogObject = [v10 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
       v12 &= 2u;
     }
@@ -2018,14 +2018,14 @@ LABEL_63:
         goto LABEL_20;
       }
 
-      v13 = [NSString stringWithCString:v15 encoding:4, &v48, v41];
+      oSLogObject = [NSString stringWithCString:v15 encoding:4, &v48, v41];
       free(v15);
       SSFileLog();
     }
 
 LABEL_20:
     v16 = objc_alloc_init(NSFetchRequest);
-    v17 = [PushNotificationEnvironment entityFromContext:v4];
+    v17 = [PushNotificationEnvironment entityFromContext:contextCopy];
     [v16 setEntity:v17];
 
     v18 = @"nil";
@@ -2038,7 +2038,7 @@ LABEL_20:
     [v16 setPredicate:v19];
 
     v46 = 0;
-    v20 = [v4 executeFetchRequest:v16 error:&v46];
+    v20 = [contextCopy executeFetchRequest:v16 error:&v46];
     v21 = v46;
     if (v20)
     {
@@ -2061,7 +2061,7 @@ LABEL_20:
               objc_enumerationMutation(v22);
             }
 
-            [(PushNotificationController *)self _closeEnvironment:*(*(&v42 + 1) + 8 * i) inContext:v4];
+            [(PushNotificationController *)self _closeEnvironment:*(*(&v42 + 1) + 8 * i) inContext:contextCopy];
           }
 
           v24 = [v22 countByEnumeratingWithState:&v42 objects:v47 count:16];
@@ -2074,9 +2074,9 @@ LABEL_42:
 
       if (v8)
       {
-        v33 = [(PushNotificationController *)self _environmentForName:v8 createIfNeeded:1 inContext:v4];
+        v33 = [(PushNotificationController *)self _environmentForName:v8 createIfNeeded:1 inContext:contextCopy];
         [(PushNotificationController *)self _openConnectionForEnvironment:v33];
-        [(PushNotificationController *)self _postTokensIfNecessaryInContext:v4];
+        [(PushNotificationController *)self _postTokensIfNecessaryInContext:contextCopy];
 LABEL_55:
 
         goto LABEL_56;
@@ -2088,19 +2088,19 @@ LABEL_55:
         v33 = +[SSLogConfig sharedConfig];
       }
 
-      v34 = [v33 shouldLog];
+      shouldLog2 = [v33 shouldLog];
       if ([v33 shouldLogToDisk])
       {
-        v35 = v34 | 2;
+        v35 = shouldLog2 | 2;
       }
 
       else
       {
-        v35 = v34;
+        v35 = shouldLog2;
       }
 
-      v36 = [v33 OSLogObject];
-      if (!os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
+      oSLogObject2 = [v33 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_INFO))
       {
         v35 &= 2u;
       }
@@ -2119,7 +2119,7 @@ LABEL_55:
           goto LABEL_55;
         }
 
-        v36 = [NSString stringWithCString:v39 encoding:4, &v48, v41];
+        oSLogObject2 = [NSString stringWithCString:v39 encoding:4, &v48, v41];
         free(v39);
         SSFileLog();
       }
@@ -2133,19 +2133,19 @@ LABEL_55:
       v22 = +[SSLogConfig sharedConfig];
     }
 
-    v27 = [v22 shouldLog];
+    shouldLog3 = [v22 shouldLog];
     if ([v22 shouldLogToDisk])
     {
-      v28 = v27 | 2;
+      v28 = shouldLog3 | 2;
     }
 
     else
     {
-      v28 = v27;
+      v28 = shouldLog3;
     }
 
-    v29 = [v22 OSLogObject];
-    if (!os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
+    oSLogObject3 = [v22 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
     {
       v28 &= 2u;
     }
@@ -2167,9 +2167,9 @@ LABEL_55:
         goto LABEL_42;
       }
 
-      v29 = [NSString stringWithCString:v32 encoding:4, &v48, v41];
+      oSLogObject3 = [NSString stringWithCString:v32 encoding:4, &v48, v41];
       free(v32);
-      v40 = v29;
+      v40 = oSLogObject3;
       SSFileLog();
     }
 
@@ -2179,21 +2179,21 @@ LABEL_55:
 LABEL_56:
 }
 
-- (void)_reloadDaemonClientInContext:(id)a3
+- (void)_reloadDaemonClientInContext:(id)context
 {
-  v4 = a3;
-  v5 = [(PushNotificationController *)self _bag];
-  v6 = [v5 valueForKey:@"automatic-downloads2"];
+  contextCopy = context;
+  _bag = [(PushNotificationController *)self _bag];
+  v6 = [_bag valueForKey:@"automatic-downloads2"];
   if (!v6)
   {
-    v6 = [v5 valueForKey:@"automatic-downloads"];
+    v6 = [_bag valueForKey:@"automatic-downloads"];
   }
 
   v7 = [v6 objectForKey:@"downloads-url"];
 
   if (!v7)
   {
-    v15 = [(PushNotificationController *)self _clientForIdentifier:@"com.apple.itunesstored" createIfNeeded:0 inContext:v4];
+    v15 = [(PushNotificationController *)self _clientForIdentifier:@"com.apple.itunesstored" createIfNeeded:0 inContext:contextCopy];
     if (!v15)
     {
 LABEL_29:
@@ -2207,19 +2207,19 @@ LABEL_29:
       v16 = +[SSLogConfig sharedConfig];
     }
 
-    v17 = [v16 shouldLog];
+    shouldLog = [v16 shouldLog];
     if ([v16 shouldLogToDisk])
     {
-      v18 = v17 | 2;
+      v18 = shouldLog | 2;
     }
 
     else
     {
-      v18 = v17;
+      v18 = shouldLog;
     }
 
-    v19 = [v16 OSLogObject];
-    if (!os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
+    oSLogObject = [v16 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
       v18 &= 2u;
     }
@@ -2236,11 +2236,11 @@ LABEL_29:
       {
 LABEL_28:
 
-        [v4 deleteObject:v15];
+        [contextCopy deleteObject:v15];
         goto LABEL_29;
       }
 
-      v19 = [NSString stringWithCString:v21 encoding:4, &v23, v22, v23];
+      oSLogObject = [NSString stringWithCString:v21 encoding:4, &v23, v22, v23];
       free(v21);
       SSFileLog();
     }
@@ -2254,19 +2254,19 @@ LABEL_28:
     v8 = +[SSLogConfig sharedConfig];
   }
 
-  v9 = [v8 shouldLog];
+  shouldLog2 = [v8 shouldLog];
   if ([v8 shouldLogToDisk])
   {
-    v10 = v9 | 2;
+    v10 = shouldLog2 | 2;
   }
 
   else
   {
-    v10 = v9;
+    v10 = shouldLog2;
   }
 
-  v11 = [v8 OSLogObject];
-  if (!os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
+  oSLogObject2 = [v8 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_INFO))
   {
     v10 &= 2u;
   }
@@ -2284,49 +2284,49 @@ LABEL_28:
 
   if (v13)
   {
-    v11 = [NSString stringWithCString:v13 encoding:4, &v23, v22, v23];
+    oSLogObject2 = [NSString stringWithCString:v13 encoding:4, &v23, v22, v23];
     free(v13);
     SSFileLog();
 LABEL_14:
   }
 
-  v14 = [(PushNotificationController *)self _clientForIdentifier:@"com.apple.itunesstored" createIfNeeded:1 inContext:v4];
+  v14 = [(PushNotificationController *)self _clientForIdentifier:@"com.apple.itunesstored" createIfNeeded:1 inContext:contextCopy];
 LABEL_30:
 }
 
-- (void)_reloadPushStateInContext:(id)a3
+- (void)_reloadPushStateInContext:(id)context
 {
-  v4 = a3;
-  v5 = [(PushNotificationController *)self _isPushEnabled];
+  contextCopy = context;
+  _isPushEnabled = [(PushNotificationController *)self _isPushEnabled];
   [(PushNotificationController *)self _updatePushEnabledState];
-  [(PushNotificationController *)self _reloadDaemonClientInContext:v4];
-  [(PushNotificationController *)self _reloadActiveEnvironmentInContext:v4];
-  v6 = [(PushNotificationController *)self _isPushEnabled];
-  if (v5 == v6)
+  [(PushNotificationController *)self _reloadDaemonClientInContext:contextCopy];
+  [(PushNotificationController *)self _reloadActiveEnvironmentInContext:contextCopy];
+  _isPushEnabled2 = [(PushNotificationController *)self _isPushEnabled];
+  if (_isPushEnabled == _isPushEnabled2)
   {
     goto LABEL_31;
   }
 
-  v7 = v6;
+  v7 = _isPushEnabled2;
   v8 = +[SSLogConfig sharedDaemonConfig];
   if (!v8)
   {
     v8 = +[SSLogConfig sharedConfig];
   }
 
-  v9 = [v8 shouldLog];
+  shouldLog = [v8 shouldLog];
   if ([v8 shouldLogToDisk])
   {
-    v10 = v9 | 2;
+    v10 = shouldLog | 2;
   }
 
   else
   {
-    v10 = v9;
+    v10 = shouldLog;
   }
 
-  v11 = [v8 OSLogObject];
-  if (!os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
+  oSLogObject = [v8 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     v10 &= 2u;
   }
@@ -2349,14 +2349,14 @@ LABEL_30:
 
   if (v15)
   {
-    v11 = [NSString stringWithCString:v15 encoding:4, &v44, v33];
+    oSLogObject = [NSString stringWithCString:v15 encoding:4, &v44, v33];
     free(v15);
-    v32 = v11;
+    v32 = oSLogObject;
     SSFileLog();
 LABEL_12:
   }
 
-  v16 = [(PushNotificationController *)self _enabledTopics];
+  _enabledTopics = [(PushNotificationController *)self _enabledTopics];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
@@ -2377,7 +2377,7 @@ LABEL_12:
         }
 
         v22 = [(NSMutableDictionary *)self->_connections objectForKey:*(*(&v38 + 1) + 8 * i), v32];
-        [v22 setEnabledTopics:v16];
+        [v22 setEnabledTopics:_enabledTopics];
       }
 
       v19 = [(NSMutableDictionary *)v17 countByEnumeratingWithState:&v38 objects:v43 count:16];
@@ -2388,16 +2388,16 @@ LABEL_12:
 
   if (v7)
   {
-    [(PushNotificationController *)self _postTokensIfNecessaryInContext:v4];
+    [(PushNotificationController *)self _postTokensIfNecessaryInContext:contextCopy];
   }
 
   else
   {
     v23 = objc_alloc_init(NSFetchRequest);
-    v24 = [PushNotificationEnvironment entityFromContext:v4];
+    v24 = [PushNotificationEnvironment entityFromContext:contextCopy];
     [v23 setEntity:v24];
 
-    v25 = [v4 executeFetchRequest:v23 error:0];
+    v25 = [contextCopy executeFetchRequest:v23 error:0];
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
@@ -2431,10 +2431,10 @@ LABEL_12:
 LABEL_31:
 }
 
-- (void)_setShouldAggressivelySendToken:(BOOL)a3
+- (void)_setShouldAggressivelySendToken:(BOOL)token
 {
   v3 = &kCFBooleanTrue;
-  if (!a3)
+  if (!token)
   {
     v3 = &kCFBooleanFalse;
   }
@@ -2445,17 +2445,17 @@ LABEL_31:
   CFPreferencesAppSynchronize(v4);
 }
 
-- (void)_updateEnvironmentAfterTokenPost:(id)a3
+- (void)_updateEnvironmentAfterTokenPost:(id)post
 {
-  v4 = a3;
+  postCopy = post;
   v5 = +[NSThread beginPrivateManagedContextSession];
-  v6 = [v4 environmentName];
-  v7 = [(PushNotificationController *)self _environmentForName:v6 createIfNeeded:0 inContext:v5];
+  environmentName = [postCopy environmentName];
+  v7 = [(PushNotificationController *)self _environmentForName:environmentName createIfNeeded:0 inContext:v5];
 
   if (v7)
   {
-    v8 = [v4 authenticationContext];
-    v9 = [v8 requiredUniqueIdentifier];
+    authenticationContext = [postCopy authenticationContext];
+    requiredUniqueIdentifier = [authenticationContext requiredUniqueIdentifier];
 
     v10 = +[SSLogConfig sharedDaemonConfig];
     if (!v10)
@@ -2463,19 +2463,19 @@ LABEL_31:
       v10 = +[SSLogConfig sharedConfig];
     }
 
-    v11 = [v10 shouldLog];
+    shouldLog = [v10 shouldLog];
     if ([v10 shouldLogToDisk])
     {
-      v12 = v11 | 2;
+      v12 = shouldLog | 2;
     }
 
     else
     {
-      v12 = v11;
+      v12 = shouldLog;
     }
 
-    v13 = [v10 OSLogObject];
-    if (!os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
+    oSLogObject = [v10 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
       v12 &= 2u;
     }
@@ -2484,13 +2484,13 @@ LABEL_31:
     {
       v14 = objc_opt_class();
       v15 = v14;
-      v16 = [v4 environmentName];
+      environmentName2 = [postCopy environmentName];
       v20 = 138412802;
       v21 = v14;
       v22 = 2112;
-      v23 = v16;
+      v23 = environmentName2;
       v24 = 2112;
-      v25 = v9;
+      v25 = requiredUniqueIdentifier;
       LODWORD(v19) = 32;
       v18 = &v20;
       v17 = _os_log_send_and_compose_impl();
@@ -2499,15 +2499,15 @@ LABEL_31:
       {
 LABEL_13:
 
-        [v7 setLastAccountIdentifier:v9];
+        [v7 setLastAccountIdentifier:requiredUniqueIdentifier];
         sub_1000CE00C(v5);
 
         goto LABEL_14;
       }
 
-      v13 = [NSString stringWithCString:v17 encoding:4, &v20, v19];
+      oSLogObject = [NSString stringWithCString:v17 encoding:4, &v20, v19];
       free(v17);
-      v18 = v13;
+      v18 = oSLogObject;
       SSFileLog();
     }
 
@@ -2520,15 +2520,15 @@ LABEL_14:
 
 - (void)_updatePushEnabledState
 {
-  v3 = [(PushNotificationController *)self _bag];
+  _bag = [(PushNotificationController *)self _bag];
   v4 = +[SSAccountStore defaultStore];
-  v5 = [v4 activeAccount];
+  activeAccount = [v4 activeAccount];
 
-  if (v5)
+  if (activeAccount)
   {
-    if (v3)
+    if (_bag)
     {
-      v6 = [v3 valueForKey:@"push-notifications"];
+      v6 = [_bag valueForKey:@"push-notifications"];
 
       if (v6)
       {
@@ -2539,19 +2539,19 @@ LABEL_14:
           v7 = +[SSLogConfig sharedConfig];
         }
 
-        v8 = [v7 shouldLog];
+        shouldLog = [v7 shouldLog];
         if ([v7 shouldLogToDisk])
         {
-          v9 = v8 | 2;
+          v9 = shouldLog | 2;
         }
 
         else
         {
-          v9 = v8;
+          v9 = shouldLog;
         }
 
-        v10 = [v7 OSLogObject];
-        if (!os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+        oSLogObject = [v7 OSLogObject];
+        if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
         {
           v9 &= 2u;
         }
@@ -2571,19 +2571,19 @@ LABEL_14:
           v7 = +[SSLogConfig sharedConfig];
         }
 
-        v15 = [v7 shouldLog];
+        shouldLog2 = [v7 shouldLog];
         if ([v7 shouldLogToDisk])
         {
-          v16 = v15 | 2;
+          v16 = shouldLog2 | 2;
         }
 
         else
         {
-          v16 = v15;
+          v16 = shouldLog2;
         }
 
-        v10 = [v7 OSLogObject];
-        if (!os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+        oSLogObject = [v7 OSLogObject];
+        if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
         {
           v16 &= 2u;
         }
@@ -2604,19 +2604,19 @@ LABEL_14:
         v7 = +[SSLogConfig sharedConfig];
       }
 
-      v13 = [v7 shouldLog];
+      shouldLog3 = [v7 shouldLog];
       if ([v7 shouldLogToDisk])
       {
-        v14 = v13 | 2;
+        v14 = shouldLog3 | 2;
       }
 
       else
       {
-        v14 = v13;
+        v14 = shouldLog3;
       }
 
-      v10 = [v7 OSLogObject];
-      if (!os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+      oSLogObject = [v7 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
       {
         v14 &= 2u;
       }
@@ -2637,19 +2637,19 @@ LABEL_14:
       v7 = +[SSLogConfig sharedConfig];
     }
 
-    v11 = [v7 shouldLog];
+    shouldLog4 = [v7 shouldLog];
     if ([v7 shouldLogToDisk])
     {
-      v12 = v11 | 2;
+      v12 = shouldLog4 | 2;
     }
 
     else
     {
-      v12 = v11;
+      v12 = shouldLog4;
     }
 
-    v10 = [v7 OSLogObject];
-    if (!os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+    oSLogObject = [v7 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
       v12 &= 2u;
     }
@@ -2672,7 +2672,7 @@ LABEL_14:
 
   if (v20)
   {
-    v10 = [NSString stringWithCString:v20 encoding:4, v22, v21, *v22, *&v22[16]];
+    oSLogObject = [NSString stringWithCString:v20 encoding:4, v22, v21, *v22, *&v22[16]];
     free(v20);
     SSFileLog();
 LABEL_41:

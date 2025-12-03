@@ -1,11 +1,11 @@
 @interface RMModelAppSettingsDeclaration_Marketplaces
 + (NSSet)allowedPayloadKeys;
 + (id)buildRequiredOnly;
-+ (id)buildWithEnabled:(id)a3 allowedMarketplaceApps:(id)a4 deniedMarketplaceApps:(id)a5;
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithType:(signed __int16)a3;
-- (void)combineWithOther:(id)a3;
++ (id)buildWithEnabled:(id)enabled allowedMarketplaceApps:(id)apps deniedMarketplaceApps:(id)marketplaceApps;
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithType:(signed __int16)type;
+- (void)combineWithOther:(id)other;
 @end
 
 @implementation RMModelAppSettingsDeclaration_Marketplaces
@@ -25,16 +25,16 @@
   return v4;
 }
 
-+ (id)buildWithEnabled:(id)a3 allowedMarketplaceApps:(id)a4 deniedMarketplaceApps:(id)a5
++ (id)buildWithEnabled:(id)enabled allowedMarketplaceApps:(id)apps deniedMarketplaceApps:(id)marketplaceApps
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  marketplaceAppsCopy = marketplaceApps;
+  appsCopy = apps;
+  enabledCopy = enabled;
   v10 = objc_opt_new();
   v11 = v10;
-  if (v9)
+  if (enabledCopy)
   {
-    v12 = v9;
+    v12 = enabledCopy;
   }
 
   else
@@ -44,8 +44,8 @@
 
   [v10 setPayloadEnabled:v12];
 
-  [v11 setPayloadAllowedMarketplaceApps:v8];
-  [v11 setPayloadDeniedMarketplaceApps:v7];
+  [v11 setPayloadAllowedMarketplaceApps:appsCopy];
+  [v11 setPayloadDeniedMarketplaceApps:marketplaceAppsCopy];
 
   return v11;
 }
@@ -57,12 +57,12 @@
   return v2;
 }
 
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v7 = a3;
+  dictionaryCopy = dictionary;
   v8 = MEMORY[0x277CBEB58];
-  v9 = [v7 allKeys];
-  v10 = [v8 setWithArray:v9];
+  allKeys = [dictionaryCopy allKeys];
+  v10 = [v8 setWithArray:allKeys];
 
   v11 = +[RMModelAppSettingsDeclaration_Marketplaces allowedPayloadKeys];
   [v10 minusSet:v11];
@@ -70,52 +70,52 @@
   v12 = [v10 copy];
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v12];
 
-  v13 = [(RMModelPayloadBase *)self loadBooleanFromDictionary:v7 usingKey:@"Enabled" forKeyPath:@"payloadEnabled" isRequired:0 defaultValue:MEMORY[0x277CBEC38] error:a5]&& [(RMModelPayloadBase *)self loadArrayFromDictionary:v7 usingKey:@"AllowedMarketplaceApps" forKeyPath:@"payloadAllowedMarketplaceApps" validator:&__block_literal_global_9 isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadArrayFromDictionary:v7 usingKey:@"DeniedMarketplaceApps" forKeyPath:@"payloadDeniedMarketplaceApps" validator:&__block_literal_global_136 isRequired:0 defaultValue:0 error:a5];
+  v13 = [(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"Enabled" forKeyPath:@"payloadEnabled" isRequired:0 defaultValue:MEMORY[0x277CBEC38] error:error]&& [(RMModelPayloadBase *)self loadArrayFromDictionary:dictionaryCopy usingKey:@"AllowedMarketplaceApps" forKeyPath:@"payloadAllowedMarketplaceApps" validator:&__block_literal_global_9 isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadArrayFromDictionary:dictionaryCopy usingKey:@"DeniedMarketplaceApps" forKeyPath:@"payloadDeniedMarketplaceApps" validator:&__block_literal_global_136 isRequired:0 defaultValue:0 error:error];
   return v13;
 }
 
-- (id)serializeWithType:(signed __int16)a3
+- (id)serializeWithType:(signed __int16)type
 {
   v4 = objc_opt_new();
-  v5 = [(RMModelAppSettingsDeclaration_Marketplaces *)self payloadEnabled];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"Enabled" value:v5 isRequired:0 defaultValue:MEMORY[0x277CBEC38]];
+  payloadEnabled = [(RMModelAppSettingsDeclaration_Marketplaces *)self payloadEnabled];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"Enabled" value:payloadEnabled isRequired:0 defaultValue:MEMORY[0x277CBEC38]];
 
-  v6 = [(RMModelAppSettingsDeclaration_Marketplaces *)self payloadAllowedMarketplaceApps];
-  [(RMModelPayloadBase *)self serializeArrayIntoDictionary:v4 usingKey:@"AllowedMarketplaceApps" value:v6 itemSerializer:&__block_literal_global_139 isRequired:0 defaultValue:0];
+  payloadAllowedMarketplaceApps = [(RMModelAppSettingsDeclaration_Marketplaces *)self payloadAllowedMarketplaceApps];
+  [(RMModelPayloadBase *)self serializeArrayIntoDictionary:v4 usingKey:@"AllowedMarketplaceApps" value:payloadAllowedMarketplaceApps itemSerializer:&__block_literal_global_139 isRequired:0 defaultValue:0];
 
-  v7 = [(RMModelAppSettingsDeclaration_Marketplaces *)self payloadDeniedMarketplaceApps];
-  [(RMModelPayloadBase *)self serializeArrayIntoDictionary:v4 usingKey:@"DeniedMarketplaceApps" value:v7 itemSerializer:&__block_literal_global_141 isRequired:0 defaultValue:0];
+  payloadDeniedMarketplaceApps = [(RMModelAppSettingsDeclaration_Marketplaces *)self payloadDeniedMarketplaceApps];
+  [(RMModelPayloadBase *)self serializeArrayIntoDictionary:v4 usingKey:@"DeniedMarketplaceApps" value:payloadDeniedMarketplaceApps itemSerializer:&__block_literal_global_141 isRequired:0 defaultValue:0];
 
   v8 = [v4 copy];
 
   return v8;
 }
 
-- (void)combineWithOther:(id)a3
+- (void)combineWithOther:(id)other
 {
-  v4 = a3;
-  v5 = [(RMModelAppSettingsDeclaration_Marketplaces *)self payloadEnabled];
-  v6 = [v4 payloadEnabled];
-  v7 = [RMModelConfigurationBase combineFirst:v5 other:v6];
+  otherCopy = other;
+  payloadEnabled = [(RMModelAppSettingsDeclaration_Marketplaces *)self payloadEnabled];
+  payloadEnabled2 = [otherCopy payloadEnabled];
+  v7 = [RMModelConfigurationBase combineFirst:payloadEnabled other:payloadEnabled2];
   [(RMModelAppSettingsDeclaration_Marketplaces *)self setPayloadEnabled:v7];
 
-  v8 = [(RMModelAppSettingsDeclaration_Marketplaces *)self payloadAllowedMarketplaceApps];
-  v9 = [v4 payloadAllowedMarketplaceApps];
-  v10 = [RMModelConfigurationBase combineSetIntersection:v8 other:v9];
+  payloadAllowedMarketplaceApps = [(RMModelAppSettingsDeclaration_Marketplaces *)self payloadAllowedMarketplaceApps];
+  payloadAllowedMarketplaceApps2 = [otherCopy payloadAllowedMarketplaceApps];
+  v10 = [RMModelConfigurationBase combineSetIntersection:payloadAllowedMarketplaceApps other:payloadAllowedMarketplaceApps2];
   [(RMModelAppSettingsDeclaration_Marketplaces *)self setPayloadAllowedMarketplaceApps:v10];
 
-  v13 = [(RMModelAppSettingsDeclaration_Marketplaces *)self payloadDeniedMarketplaceApps];
-  v11 = [v4 payloadDeniedMarketplaceApps];
+  payloadDeniedMarketplaceApps = [(RMModelAppSettingsDeclaration_Marketplaces *)self payloadDeniedMarketplaceApps];
+  payloadDeniedMarketplaceApps2 = [otherCopy payloadDeniedMarketplaceApps];
 
-  v12 = [RMModelConfigurationBase combineSetUnion:v13 other:v11];
+  v12 = [RMModelConfigurationBase combineSetUnion:payloadDeniedMarketplaceApps other:payloadDeniedMarketplaceApps2];
   [(RMModelAppSettingsDeclaration_Marketplaces *)self setPayloadDeniedMarketplaceApps:v12];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = RMModelAppSettingsDeclaration_Marketplaces;
-  v4 = [(RMModelPayloadBase *)&v12 copyWithZone:a3];
+  v4 = [(RMModelPayloadBase *)&v12 copyWithZone:zone];
   v5 = [(NSNumber *)self->_payloadEnabled copy];
   v6 = v4[2];
   v4[2] = v5;

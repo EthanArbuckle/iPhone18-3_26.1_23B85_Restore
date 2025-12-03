@@ -1,6 +1,6 @@
 @interface LikingCommandHandler
 - (_TtC8NewsFeed20LikingCommandHandler)init;
-- (void)readingHistory:(id)a3 didChangeFeaturesForArticles:(id)a4;
+- (void)readingHistory:(id)history didChangeFeaturesForArticles:(id)articles;
 @end
 
 @implementation LikingCommandHandler
@@ -12,13 +12,13 @@
   return result;
 }
 
-- (void)readingHistory:(id)a3 didChangeFeaturesForArticles:(id)a4
+- (void)readingHistory:(id)history didChangeFeaturesForArticles:(id)articles
 {
   sub_1D5BAFAD8();
   v6 = sub_1D7261D3C();
-  v7 = a3;
-  v8 = self;
-  sub_1D7223544(v7, v6);
+  historyCopy = history;
+  selfCopy = self;
+  sub_1D7223544(historyCopy, v6);
 }
 
 @end

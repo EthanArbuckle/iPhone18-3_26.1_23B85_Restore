@@ -85,7 +85,7 @@
 
   if (v6)
   {
-    v7 = [a1 mt_identityValueForFilter:v6];
+    v7 = [self mt_identityValueForFilter:v6];
     goto LABEL_19;
   }
 
@@ -130,7 +130,7 @@ LABEL_19:
   v4 = a3;
   v5 = [objc_opt_class() mt_identityValueForFilter:v4];
 
-  v6 = [a1 isEqual:v5];
+  v6 = [self isEqual:v5];
   return v6;
 }
 
@@ -139,7 +139,7 @@ LABEL_19:
   v4 = a3;
   v5 = [objc_opt_class() mt_identityValueForMaterialSettingsProperty:v4];
 
-  v6 = [a1 isEqual:v5];
+  v6 = [self isEqual:v5];
   return v6;
 }
 

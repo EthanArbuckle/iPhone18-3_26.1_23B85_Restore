@@ -1,15 +1,15 @@
 @interface IDSBagUtilities
-+ (double)timeToCacheNegativeResultsForService:(id)a3;
-+ (double)timeToCacheResultsForIDStatus:(unsigned int)a3 forService:(id)a4;
-+ (double)timeToCacheUnknownResultsForService:(id)a3;
++ (double)timeToCacheNegativeResultsForService:(id)service;
++ (double)timeToCacheResultsForIDStatus:(unsigned int)status forService:(id)service;
++ (double)timeToCacheUnknownResultsForService:(id)service;
 @end
 
 @implementation IDSBagUtilities
 
-+ (double)timeToCacheNegativeResultsForService:(id)a3
++ (double)timeToCacheNegativeResultsForService:(id)service
 {
-  v3 = a3;
-  if (![v3 length] || (+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"md-peer-lookup-negative-cache-time-%@", v3), v4 = objc_claimAutoreleasedReturnValue(), +[IDSServerBag sharedInstanceForBagType:](IDSServerBag, "sharedInstanceForBagType:", 1), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "objectForKey:", v4), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "doubleValue"), v8 = v7, v6, v5, v4, v8 <= 0.0))
+  serviceCopy = service;
+  if (![serviceCopy length] || (+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"md-peer-lookup-negative-cache-time-%@", serviceCopy), v4 = objc_claimAutoreleasedReturnValue(), +[IDSServerBag sharedInstanceForBagType:](IDSServerBag, "sharedInstanceForBagType:", 1), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "objectForKey:", v4), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "doubleValue"), v8 = v7, v6, v5, v4, v8 <= 0.0))
   {
     v9 = [IDSServerBag sharedInstanceForBagType:1];
     v10 = [v9 objectForKey:@"md-peer-lookup-negative-cache-time"];
@@ -25,10 +25,10 @@
   return v8;
 }
 
-+ (double)timeToCacheUnknownResultsForService:(id)a3
++ (double)timeToCacheUnknownResultsForService:(id)service
 {
-  v3 = a3;
-  if (![v3 length] || (+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"md-peer-lookup-unknown-cache-time-%@", v3), v4 = objc_claimAutoreleasedReturnValue(), +[IDSServerBag sharedInstanceForBagType:](IDSServerBag, "sharedInstanceForBagType:", 1), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "objectForKey:", v4), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "doubleValue"), v8 = v7, v6, v5, v4, v8 <= 0.0))
+  serviceCopy = service;
+  if (![serviceCopy length] || (+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"md-peer-lookup-unknown-cache-time-%@", serviceCopy), v4 = objc_claimAutoreleasedReturnValue(), +[IDSServerBag sharedInstanceForBagType:](IDSServerBag, "sharedInstanceForBagType:", 1), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "objectForKey:", v4), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "doubleValue"), v8 = v7, v6, v5, v4, v8 <= 0.0))
   {
     v9 = [IDSServerBag sharedInstanceForBagType:1];
     v10 = [v9 objectForKey:@"md-peer-lookup-unknown-cache-time"];
@@ -44,17 +44,17 @@
   return v8;
 }
 
-+ (double)timeToCacheResultsForIDStatus:(unsigned int)a3 forService:(id)a4
++ (double)timeToCacheResultsForIDStatus:(unsigned int)status forService:(id)service
 {
-  v6 = a4;
-  if (a3 == 2)
+  serviceCopy = service;
+  if (status == 2)
   {
-    [a1 timeToCacheNegativeResultsForService:v6];
+    [self timeToCacheNegativeResultsForService:serviceCopy];
   }
 
   else
   {
-    [a1 timeToCacheUnknownResultsForService:v6];
+    [self timeToCacheUnknownResultsForService:serviceCopy];
   }
 
   v8 = v7;

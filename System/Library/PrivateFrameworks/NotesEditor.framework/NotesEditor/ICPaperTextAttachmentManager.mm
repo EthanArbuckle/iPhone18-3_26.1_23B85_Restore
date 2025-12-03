@@ -1,38 +1,38 @@
 @interface ICPaperTextAttachmentManager
 - (ICPaperTextAttachmentManager)init;
-- (ICPaperTextAttachmentManager)initWithNote:(id)a3 textView:(id)a4 delegate:(id)a5;
+- (ICPaperTextAttachmentManager)initWithNote:(id)note textView:(id)view delegate:(id)delegate;
 - (void)insertMagicGenerativePlaygroundWithAutomaticContent;
-- (void)insertMagicGenerativePlaygroundWithImage:(CGImage *)a3;
-- (void)insertMagicGenerativePlaygroundWithText:(id)a3;
-- (void)noteDidChangeCalculatePreviewBehavior:(id)a3;
-- (void)paperKitViewDidAppear:(id)a3;
+- (void)insertMagicGenerativePlaygroundWithImage:(CGImage *)image;
+- (void)insertMagicGenerativePlaygroundWithText:(id)text;
+- (void)noteDidChangeCalculatePreviewBehavior:(id)behavior;
+- (void)paperKitViewDidAppear:(id)appear;
 @end
 
 @implementation ICPaperTextAttachmentManager
 
-- (ICPaperTextAttachmentManager)initWithNote:(id)a3 textView:(id)a4 delegate:(id)a5
+- (ICPaperTextAttachmentManager)initWithNote:(id)note textView:(id)view delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  noteCopy = note;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  return PaperTextAttachmentManager.init(note:textView:delegate:)(v6, v7);
+  return PaperTextAttachmentManager.init(note:textView:delegate:)(noteCopy, viewCopy);
 }
 
-- (void)paperKitViewDidAppear:(id)a3
+- (void)paperKitViewDidAppear:(id)appear
 {
-  v4 = a3;
-  v5 = self;
-  sub_2153BC53C(v4);
+  appearCopy = appear;
+  selfCopy = self;
+  sub_2153BC53C(appearCopy);
 }
 
-- (void)noteDidChangeCalculatePreviewBehavior:(id)a3
+- (void)noteDidChangeCalculatePreviewBehavior:(id)behavior
 {
   v4 = sub_21549E19C();
   v5 = *(v4 - 8);
   MEMORY[0x28223BE20](v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_21549E16C();
-  v8 = self;
+  selfCopy = self;
   sub_2153BC12C();
 
   (*(v5 + 8))(v7, v4);
@@ -40,25 +40,25 @@
 
 - (void)insertMagicGenerativePlaygroundWithAutomaticContent
 {
-  v2 = self;
+  selfCopy = self;
   PaperTextAttachmentManager.insertMagicGenerativePlaygroundWithAutomaticContent()();
 }
 
-- (void)insertMagicGenerativePlaygroundWithText:(id)a3
+- (void)insertMagicGenerativePlaygroundWithText:(id)text
 {
   v4 = sub_2154A1D6C();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8._countAndFlagsBits = v4;
   v8._object = v6;
   PaperTextAttachmentManager.insertMagicGenerativePlaygroundWithText(_:)(v8);
 }
 
-- (void)insertMagicGenerativePlaygroundWithImage:(CGImage *)a3
+- (void)insertMagicGenerativePlaygroundWithImage:(CGImage *)image
 {
-  v4 = a3;
-  v5 = self;
-  PaperTextAttachmentManager.insertMagicGenerativePlaygroundWithImage(_:)(v4);
+  imageCopy = image;
+  selfCopy = self;
+  PaperTextAttachmentManager.insertMagicGenerativePlaygroundWithImage(_:)(imageCopy);
 }
 
 - (ICPaperTextAttachmentManager)init

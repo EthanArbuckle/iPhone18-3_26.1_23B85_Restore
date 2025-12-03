@@ -1,12 +1,12 @@
 @interface SearchResultCollectionViewCell
-- (_TtC8AppStore30SearchResultCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC8AppStore30SearchResultCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation SearchResultCollectionViewCell
 
-- (_TtC8AppStore30SearchResultCollectionViewCell)initWithCoder:(id)a3
+- (_TtC8AppStore30SearchResultCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC8AppStore30SearchResultCollectionViewCell_itemLayoutContext;
   v5 = type metadata accessor for ItemLayoutContext();
@@ -25,7 +25,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100107E88();
 }
 

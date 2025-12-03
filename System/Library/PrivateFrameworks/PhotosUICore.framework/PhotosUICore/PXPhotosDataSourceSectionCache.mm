@@ -1,27 +1,27 @@
 @interface PXPhotosDataSourceSectionCache
-- (PXPhotosDataSourceSectionCache)initWithCollectionListFetchResult:(id)a3;
+- (PXPhotosDataSourceSectionCache)initWithCollectionListFetchResult:(id)result;
 @end
 
 @implementation PXPhotosDataSourceSectionCache
 
-- (PXPhotosDataSourceSectionCache)initWithCollectionListFetchResult:(id)a3
+- (PXPhotosDataSourceSectionCache)initWithCollectionListFetchResult:(id)result
 {
   v40 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  resultCopy = result;
   v38.receiver = self;
   v38.super_class = PXPhotosDataSourceSectionCache;
   v6 = [(PXPhotosDataSourceSectionCache *)&v38 init];
   if (v6)
   {
-    v30 = a3;
-    v33 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v5, "count")}];
-    v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v5, "count")}];
+    resultCopy2 = result;
+    v33 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(resultCopy, "count")}];
+    v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(resultCopy, "count")}];
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v31 = v5;
-    obj = v5;
+    v31 = resultCopy;
+    obj = resultCopy;
     v8 = [obj countByEnumeratingWithState:&v34 objects:v39 count:16];
     if (!v8)
     {
@@ -44,46 +44,46 @@
         v13 = *(*(&v34 + 1) + 8 * v12);
         if ([v13 alwaysRecalculateCounts])
         {
-          v14 = 0;
+          estimatedAssetCount = 0;
           v15 = 0;
           v16 = 0;
         }
 
         else
         {
-          v14 = [v13 estimatedAssetCount];
-          v17 = [v13 estimatedPhotosCount];
-          if (v17 == 0x7FFFFFFFFFFFFFFFLL)
+          estimatedAssetCount = [v13 estimatedAssetCount];
+          estimatedPhotosCount = [v13 estimatedPhotosCount];
+          if (estimatedPhotosCount == 0x7FFFFFFFFFFFFFFFLL)
           {
             v15 = 0;
           }
 
           else
           {
-            v15 = v17;
+            v15 = estimatedPhotosCount;
           }
 
-          v18 = [v13 estimatedVideosCount];
-          if (v18 == 0x7FFFFFFFFFFFFFFFLL)
+          estimatedVideosCount = [v13 estimatedVideosCount];
+          if (estimatedVideosCount == 0x7FFFFFFFFFFFFFFFLL)
           {
             v16 = 0;
           }
 
           else
           {
-            v16 = v18;
+            v16 = estimatedVideosCount;
           }
 
-          if (v14 == 0x7FFFFFFFFFFFFFFFLL)
+          if (estimatedAssetCount == 0x7FFFFFFFFFFFFFFFLL)
           {
-            v14 = 0;
+            estimatedAssetCount = 0;
           }
         }
 
         v19 = v6->_estimatedVideosCount + v16;
         v6->_estimatedPhotosCount += v15;
         v6->_estimatedVideosCount = v19;
-        if (v14 < 1)
+        if (estimatedAssetCount < 1)
         {
           if ([v13 isRecent])
           {
@@ -95,29 +95,29 @@ LABEL_25:
           p_numberOfEnrichmentStateCompleteAssetCollections = &v6->_numberOfEnrichmentStateCompleteAssetCollections;
 LABEL_26:
           ++*p_numberOfEnrichmentStateCompleteAssetCollections;
-          *p_estimatedAssetCountWithEnrichmentStateComplete += v14;
+          *p_estimatedAssetCountWithEnrichmentStateComplete += estimatedAssetCount;
           goto LABEL_27;
         }
 
-        v6->_estimatedOtherCount += v14 - (v15 + v16);
+        v6->_estimatedOtherCount += estimatedAssetCount - (v15 + v16);
         if ([v13 isRecent])
         {
           goto LABEL_27;
         }
 
-        v20 = [v13 px_highlightEnrichmentState];
-        if (v20 <= 1)
+        px_highlightEnrichmentState = [v13 px_highlightEnrichmentState];
+        if (px_highlightEnrichmentState <= 1)
         {
           p_estimatedAssetCountWithEnrichmentStateComplete = &v6->_estimatedAssetCountWithEnrichmentStateNotEnriched;
           p_numberOfEnrichmentStateCompleteAssetCollections = &v6->_numberOfEnrichmentStateNotEnrichedAssetCollections;
-          if (!v20)
+          if (!px_highlightEnrichmentState)
           {
             goto LABEL_26;
           }
 
           p_estimatedAssetCountWithEnrichmentStateComplete = &v6->_estimatedAssetCountWithEnrichmentStateAssetMetadataOnly;
           p_numberOfEnrichmentStateCompleteAssetCollections = &v6->_numberOfEnrichmentStateAssetMetadataOnlyAssetCollections;
-          if (v20 == 1)
+          if (px_highlightEnrichmentState == 1)
           {
             goto LABEL_26;
           }
@@ -127,19 +127,19 @@ LABEL_26:
         {
           p_estimatedAssetCountWithEnrichmentStateComplete = &v6->_estimatedAssetCountWithEnrichmentStateAssetMetadataAndScore;
           p_numberOfEnrichmentStateCompleteAssetCollections = &v6->_numberOfEnrichmentStateAssetMetadataAndScoreAssetCollections;
-          if (v20 == 2)
+          if (px_highlightEnrichmentState == 2)
           {
             goto LABEL_26;
           }
 
           p_estimatedAssetCountWithEnrichmentStateComplete = &v6->_estimatedAssetCountWithEnrichmentStateAssetMetadataAndScenesProcessed;
           p_numberOfEnrichmentStateCompleteAssetCollections = &v6->_numberOfEnrichmentStateAssetMetadataAndScenesProcessedAssetCollections;
-          if (v20 == 3)
+          if (px_highlightEnrichmentState == 3)
           {
             goto LABEL_26;
           }
 
-          if (v20 == 4)
+          if (px_highlightEnrichmentState == 4)
           {
             goto LABEL_25;
           }
@@ -169,8 +169,8 @@ LABEL_33:
         v6->_assetCollectionToSection = v33;
         v28 = v33;
 
-        objc_storeStrong(&v6->_collectionListFetchResult, v30);
-        v5 = v31;
+        objc_storeStrong(&v6->_collectionListFetchResult, resultCopy2);
+        resultCopy = v31;
         break;
       }
     }

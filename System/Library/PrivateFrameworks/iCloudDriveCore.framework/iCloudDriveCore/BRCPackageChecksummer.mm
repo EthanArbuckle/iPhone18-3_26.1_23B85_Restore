@@ -1,5 +1,5 @@
 @interface BRCPackageChecksummer
-- (BOOL)addItem:(id)a3 error:(id *)a4;
+- (BOOL)addItem:(id)item error:(id *)error;
 - (BRCPackageChecksummer)init;
 @end
 
@@ -23,11 +23,11 @@
   return v2;
 }
 
-- (BOOL)addItem:(id)a3 error:(id *)a4
+- (BOOL)addItem:(id)item error:(id *)error
 {
   v52 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if ([v6 type] == 4)
+  itemCopy = item;
+  if ([itemCopy type] == 4)
   {
 LABEL_43:
     v36 = 1;
@@ -36,12 +36,12 @@ LABEL_43:
 
   stream = self->_stream;
   p_stream = &self->_stream;
-  if (-[BRCChecksummingOutputStream write:maxLength:](stream, "write:maxLength:", &addItem_error__tags + [v6 type], 1) != -1 && -[BRCChecksummingOutputStream write:maxLength:](*p_stream, "write:maxLength:", &addItem_error__nul, 1) != -1)
+  if (-[BRCChecksummingOutputStream write:maxLength:](stream, "write:maxLength:", &addItem_error__tags + [itemCopy type], 1) != -1 && -[BRCChecksummingOutputStream write:maxLength:](*p_stream, "write:maxLength:", &addItem_error__nul, 1) != -1)
   {
-    v9 = [v6 path];
-    v10 = [v9 fileSystemRepresentation];
+    path = [itemCopy path];
+    fileSystemRepresentation = [path fileSystemRepresentation];
 
-    if (!v10)
+    if (!fileSystemRepresentation)
     {
       v16 = brc_bread_crumbs();
       v17 = brc_default_log();
@@ -50,8 +50,8 @@ LABEL_43:
         [BRCPackageChecksummer addItem:error:];
       }
 
-      v18 = [MEMORY[0x277CCA9B8] br_errorWithPOSIXCode:22 description:{@"NULL path for item: %@", v6}];
-      if (!v18)
+      streamError = [MEMORY[0x277CCA9B8] br_errorWithPOSIXCode:22 description:{@"NULL path for item: %@", itemCopy}];
+      if (!streamError)
       {
         goto LABEL_17;
       }
@@ -67,7 +67,7 @@ LABEL_43:
       *buf = 136315906;
       *&buf[4] = "[BRCPackageChecksummer addItem:error:]";
       v46 = 2080;
-      if (!a4)
+      if (!error)
       {
         v42 = "(ignored by caller)";
       }
@@ -75,31 +75,31 @@ LABEL_43:
       goto LABEL_57;
     }
 
-    if ([(BRCChecksummingOutputStream *)*p_stream write:v10 maxLength:strlen(v10) + 1]!= -1)
+    if ([(BRCChecksummingOutputStream *)*p_stream write:fileSystemRepresentation maxLength:strlen(fileSystemRepresentation) + 1]!= -1)
     {
-      v11 = [v6 quarantineInfo];
-      v12 = [v11 br_qtnFlags];
+      quarantineInfo = [itemCopy quarantineInfo];
+      br_qtnFlags = [quarantineInfo br_qtnFlags];
 
-      v44 = v12;
-      if (!v12 || [(BRCChecksummingOutputStream *)*p_stream write:&v44 maxLength:4]!= -1 && [(BRCChecksummingOutputStream *)*p_stream write:&addItem_error__nul maxLength:1]!= -1)
+      v44 = br_qtnFlags;
+      if (!br_qtnFlags || [(BRCChecksummingOutputStream *)*p_stream write:&v44 maxLength:4]!= -1 && [(BRCChecksummingOutputStream *)*p_stream write:&addItem_error__nul maxLength:1]!= -1)
       {
-        if ([v6 type] == 3)
+        if ([itemCopy type] == 3)
         {
-          v13 = [v6 symlinkContent];
-          v14 = [v13 br_pathSafeFileSystemRepresentation];
-          if (v14)
+          symlinkContent = [itemCopy symlinkContent];
+          br_pathSafeFileSystemRepresentation = [symlinkContent br_pathSafeFileSystemRepresentation];
+          if (br_pathSafeFileSystemRepresentation)
           {
-            v15 = v14;
+            uTF8String = br_pathSafeFileSystemRepresentation;
 
 LABEL_31:
-            v30 = [(BRCChecksummingOutputStream *)*p_stream write:v15 maxLength:strlen(v15) + 1];
+            v30 = [(BRCChecksummingOutputStream *)*p_stream write:uTF8String maxLength:strlen(uTF8String) + 1];
             goto LABEL_32;
           }
 
-          v31 = [v6 symlinkContent];
-          v15 = [v31 UTF8String];
+          symlinkContent2 = [itemCopy symlinkContent];
+          uTF8String = [symlinkContent2 UTF8String];
 
-          if (v15)
+          if (uTF8String)
           {
             goto LABEL_31;
           }
@@ -111,14 +111,14 @@ LABEL_31:
             [BRCPackageChecksummer addItem:error:];
           }
 
-          v18 = [MEMORY[0x277CCA9B8] br_errorWithPOSIXCode:22 description:{@"NULL path for item symlink: %@", v6}];
-          if (!v18)
+          streamError = [MEMORY[0x277CCA9B8] br_errorWithPOSIXCode:22 description:{@"NULL path for item symlink: %@", itemCopy}];
+          if (!streamError)
           {
 LABEL_17:
-            if (a4)
+            if (error)
             {
-              v21 = v18;
-              *a4 = v18;
+              v21 = streamError;
+              *error = streamError;
             }
 
             goto LABEL_42;
@@ -137,7 +137,7 @@ LABEL_16:
           *buf = 136315906;
           *&buf[4] = "[BRCPackageChecksummer addItem:error:]";
           v46 = 2080;
-          if (!a4)
+          if (!error)
           {
             v42 = "(ignored by caller)";
           }
@@ -145,27 +145,27 @@ LABEL_16:
 LABEL_57:
           v47 = v42;
           v48 = 2112;
-          v49 = v18;
+          v49 = streamError;
           v50 = 2112;
           v51 = v19;
           _os_log_error_impl(&dword_223E7A000, v20, 0x90u, "[ERROR] %s: %s error: %@%@", buf, 0x2Au);
           goto LABEL_16;
         }
 
-        if ([v6 type] != 2)
+        if ([itemCopy type] != 2)
         {
 LABEL_33:
           [(BRCChecksummingOutputStream *)*p_stream write:&addItem_error__nl maxLength:1];
           goto LABEL_34;
         }
 
-        if ((![v6 isWritable] || -[BRCChecksummingOutputStream write:maxLength:](*p_stream, "write:maxLength:", &addItem_error__w, 1) != -1) && (!objc_msgSend(v6, "isExecutable") || -[BRCChecksummingOutputStream write:maxLength:](*p_stream, "write:maxLength:", &addItem_error__x, 1) != -1) && -[BRCChecksummingOutputStream write:maxLength:](*p_stream, "write:maxLength:", &addItem_error__nul, 1) != -1)
+        if ((![itemCopy isWritable] || -[BRCChecksummingOutputStream write:maxLength:](*p_stream, "write:maxLength:", &addItem_error__w, 1) != -1) && (!objc_msgSend(itemCopy, "isExecutable") || -[BRCChecksummingOutputStream write:maxLength:](*p_stream, "write:maxLength:", &addItem_error__x, 1) != -1) && -[BRCChecksummingOutputStream write:maxLength:](*p_stream, "write:maxLength:", &addItem_error__nul, 1) != -1)
         {
-          v22 = [v6 signature];
-          v23 = [v22 length];
+          signature = [itemCopy signature];
+          v23 = [signature length];
 
-          v24 = [v6 signature];
-          v25 = [v24 bytes];
+          signature2 = [itemCopy signature];
+          bytes = [signature2 bytes];
 
           v26 = 2 * v23;
           v27 = &v43 - ((2 * v23 + 16) & 0xFFFFFFFFFFFFFFF0);
@@ -174,7 +174,7 @@ LABEL_33:
             v28 = v27 + 1;
             do
             {
-              v29 = *v25++;
+              v29 = *bytes++;
               *(v28 - 1) = a0123456789abcd[v29 >> 4];
               *v28 = a0123456789abcd[v29 & 0xF];
               v28 += 2;
@@ -211,8 +211,8 @@ LABEL_34:
     goto LABEL_43;
   }
 
-  v18 = [(BRCChecksummingOutputStream *)*p_stream streamError];
-  if (v18)
+  streamError = [(BRCChecksummingOutputStream *)*p_stream streamError];
+  if (streamError)
   {
     v33 = brc_bread_crumbs();
     v34 = brc_default_log();
@@ -222,24 +222,24 @@ LABEL_34:
       *buf = 136315906;
       *&buf[4] = "[BRCPackageChecksummer addItem:error:]";
       v46 = 2080;
-      if (!a4)
+      if (!error)
       {
         v39 = "(ignored by caller)";
       }
 
       v47 = v39;
       v48 = 2112;
-      v49 = v18;
+      v49 = streamError;
       v50 = 2112;
       v51 = v33;
       _os_log_error_impl(&dword_223E7A000, v34, 0x90u, "[ERROR] %s: %s error: %@%@", buf, 0x2Au);
     }
   }
 
-  if (a4)
+  if (error)
   {
-    v35 = v18;
-    *a4 = v18;
+    v35 = streamError;
+    *error = streamError;
   }
 
 LABEL_42:

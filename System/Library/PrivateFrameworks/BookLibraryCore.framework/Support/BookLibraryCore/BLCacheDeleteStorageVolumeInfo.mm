@@ -1,44 +1,44 @@
 @interface BLCacheDeleteStorageVolumeInfo
-- (void)setPurgeableHighPriority:(int64_t)a3;
-- (void)setPurgeableLowPriority:(int64_t)a3;
-- (void)setPurgeableMediumPriority:(int64_t)a3;
-- (void)setPurgeableSpecialCasePriority:(int64_t)a3;
+- (void)setPurgeableHighPriority:(int64_t)priority;
+- (void)setPurgeableLowPriority:(int64_t)priority;
+- (void)setPurgeableMediumPriority:(int64_t)priority;
+- (void)setPurgeableSpecialCasePriority:(int64_t)priority;
 @end
 
 @implementation BLCacheDeleteStorageVolumeInfo
 
-- (void)setPurgeableLowPriority:(int64_t)a3
+- (void)setPurgeableLowPriority:(int64_t)priority
 {
-  if (self->_purgeableLowPriority != a3)
+  if (self->_purgeableLowPriority != priority)
   {
-    self->_purgeableLowPriority = a3;
+    self->_purgeableLowPriority = priority;
     self->_purgeableValueChanged = 1;
   }
 }
 
-- (void)setPurgeableMediumPriority:(int64_t)a3
+- (void)setPurgeableMediumPriority:(int64_t)priority
 {
-  if (self->_purgeableMediumPriority != a3)
+  if (self->_purgeableMediumPriority != priority)
   {
-    self->_purgeableMediumPriority = a3;
+    self->_purgeableMediumPriority = priority;
     self->_purgeableValueChanged = 1;
   }
 }
 
-- (void)setPurgeableHighPriority:(int64_t)a3
+- (void)setPurgeableHighPriority:(int64_t)priority
 {
-  if (self->_purgeableHighPriority != a3)
+  if (self->_purgeableHighPriority != priority)
   {
-    self->_purgeableHighPriority = a3;
+    self->_purgeableHighPriority = priority;
     self->_purgeableValueChanged = 1;
   }
 }
 
-- (void)setPurgeableSpecialCasePriority:(int64_t)a3
+- (void)setPurgeableSpecialCasePriority:(int64_t)priority
 {
-  if (self->_purgeableSpecialCasePriority != a3)
+  if (self->_purgeableSpecialCasePriority != priority)
   {
-    self->_purgeableSpecialCasePriority = a3;
+    self->_purgeableSpecialCasePriority = priority;
     self->_purgeableValueChanged = 1;
   }
 }

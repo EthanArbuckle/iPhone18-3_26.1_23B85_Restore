@@ -1,12 +1,12 @@
 @interface DCStandardMapsLink
-+ (BOOL)isMapsURL:(id)a3;
-+ (BOOL)isStandardAppleMapsURL:(id)a3;
-+ (BOOL)isStandardGoogleMapsURL:(id)a3;
-+ (id)mapsLinkWithURL:(id)a3;
++ (BOOL)isMapsURL:(id)l;
++ (BOOL)isStandardAppleMapsURL:(id)l;
++ (BOOL)isStandardGoogleMapsURL:(id)l;
++ (id)mapsLinkWithURL:(id)l;
 - (BOOL)showsStreetView;
 - (BOOL)showsTraffic;
 - (BOOL)showsTransit;
-- (DCStandardMapsLink)initWithURL:(id)a3;
+- (DCStandardMapsLink)initWithURL:(id)l;
 - (NSDictionary)queryDictionary;
 - (id)centerLocation;
 - (id)destinationAddress;
@@ -22,12 +22,12 @@
 
 @implementation DCStandardMapsLink
 
-+ (id)mapsLinkWithURL:(id)a3
++ (id)mapsLinkWithURL:(id)l
 {
-  v4 = a3;
-  if ([a1 isMapsURL:v4])
+  lCopy = l;
+  if ([self isMapsURL:lCopy])
   {
-    v5 = [[a1 alloc] initWithURL:v4];
+    v5 = [[self alloc] initWithURL:lCopy];
   }
 
   else
@@ -38,32 +38,32 @@
   return v5;
 }
 
-+ (BOOL)isMapsURL:(id)a3
++ (BOOL)isMapsURL:(id)l
 {
-  v4 = a3;
-  if ([a1 isStandardAppleMapsURL:v4])
+  lCopy = l;
+  if ([self isStandardAppleMapsURL:lCopy])
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [a1 isStandardGoogleMapsURL:v4];
+    v5 = [self isStandardGoogleMapsURL:lCopy];
   }
 
   return v5;
 }
 
-+ (BOOL)isStandardGoogleMapsURL:(id)a3
++ (BOOL)isStandardGoogleMapsURL:(id)l
 {
-  v3 = a3;
-  v4 = [v3 query];
-  v5 = [v4 length];
+  lCopy = l;
+  query = [lCopy query];
+  v5 = [query length];
 
   if (v5)
   {
-    v6 = [v3 host];
-    v7 = [v6 componentsSeparatedByString:@"."];
+    host = [lCopy host];
+    v7 = [host componentsSeparatedByString:@"."];
 
     if (([v7 count] - 5) >= 0xFFFFFFFFFFFFFFFDLL)
     {
@@ -72,8 +72,8 @@
       v8 = 1;
       if (![v9 isEqualToString:@"maps"] || (objc_msgSend(v10, "isEqualToString:", @"google") & 1) == 0)
       {
-        v11 = [v3 path];
-        v12 = [v11 hasPrefix:@"/maps"];
+        path = [lCopy path];
+        v12 = [path hasPrefix:@"/maps"];
 
         if (!v12 || ([v9 isEqualToString:@"google"] & 1) == 0 && (!objc_msgSend(v9, "isEqualToString:", @"www") || (objc_msgSend(v10, "isEqualToString:", @"google") & 1) == 0))
         {
@@ -96,22 +96,22 @@
   return v8;
 }
 
-+ (BOOL)isStandardAppleMapsURL:(id)a3
++ (BOOL)isStandardAppleMapsURL:(id)l
 {
-  v3 = a3;
-  v4 = [v3 host];
-  if ([v4 isEqualToString:@"maps.apple.com"])
+  lCopy = l;
+  host = [lCopy host];
+  if ([host isEqualToString:@"maps.apple.com"])
   {
-    v5 = [v3 pathComponents];
-    if ([v5 count] > 2)
+    pathComponents = [lCopy pathComponents];
+    if ([pathComponents count] > 2)
     {
       v7 = 0;
     }
 
     else
     {
-      v6 = [v3 query];
-      v7 = [v6 length] != 0;
+      query = [lCopy query];
+      v7 = [query length] != 0;
     }
   }
 
@@ -129,9 +129,9 @@
   if (!queryDictionary)
   {
     v4 = [(DCStandardMapsLink *)self URL];
-    v5 = [v4 dc_queryDictionary];
+    dc_queryDictionary = [v4 dc_queryDictionary];
     v6 = self->_queryDictionary;
-    self->_queryDictionary = v5;
+    self->_queryDictionary = dc_queryDictionary;
 
     queryDictionary = self->_queryDictionary;
   }
@@ -141,16 +141,16 @@
 
 - (id)streetViewLocation
 {
-  v2 = [(DCStandardMapsLink *)self queryDictionary];
-  v3 = [v2 objectForKey:@"cbll"];
+  queryDictionary = [(DCStandardMapsLink *)self queryDictionary];
+  v3 = [queryDictionary objectForKey:@"cbll"];
 
   return v3;
 }
 
 - (BOOL)showsStreetView
 {
-  v2 = [(DCStandardMapsLink *)self queryDictionary];
-  v3 = [v2 objectForKey:@"cbp"];
+  queryDictionary = [(DCStandardMapsLink *)self queryDictionary];
+  v3 = [queryDictionary objectForKey:@"cbp"];
   v4 = v3 != 0;
 
   return v4;
@@ -158,28 +158,28 @@
 
 - (BOOL)showsTransit
 {
-  v2 = [(DCStandardMapsLink *)self queryDictionary];
-  v3 = [v2 objectForKey:@"lci"];
+  queryDictionary = [(DCStandardMapsLink *)self queryDictionary];
+  v3 = [queryDictionary objectForKey:@"lci"];
   v4 = [v3 componentsSeparatedByString:{@", "}];
 
-  LOBYTE(v2) = [v4 containsObject:@"transit"];
-  return v2;
+  LOBYTE(queryDictionary) = [v4 containsObject:@"transit"];
+  return queryDictionary;
 }
 
 - (BOOL)showsTraffic
 {
-  v2 = [(DCStandardMapsLink *)self queryDictionary];
-  v3 = [v2 objectForKey:@"layer"];
+  queryDictionary = [(DCStandardMapsLink *)self queryDictionary];
+  v3 = [queryDictionary objectForKey:@"layer"];
   v4 = [v3 componentsSeparatedByString:{@", "}];
 
-  LOBYTE(v2) = [v4 containsObject:@"t"];
-  return v2;
+  LOBYTE(queryDictionary) = [v4 containsObject:@"t"];
+  return queryDictionary;
 }
 
 - (unint64_t)mapType
 {
-  v2 = [(DCStandardMapsLink *)self queryDictionary];
-  v3 = [v2 objectForKey:@"t"];
+  queryDictionary = [(DCStandardMapsLink *)self queryDictionary];
+  v3 = [queryDictionary objectForKey:@"t"];
 
   if ([v3 isEqualToString:@"m"])
   {
@@ -211,25 +211,25 @@
 
 - (int64_t)zoomLevel
 {
-  v2 = [(DCStandardMapsLink *)self queryDictionary];
-  v3 = [v2 objectForKey:@"z"];
-  v4 = [v3 integerValue];
+  queryDictionary = [(DCStandardMapsLink *)self queryDictionary];
+  v3 = [queryDictionary objectForKey:@"z"];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 - (id)centerLocation
 {
-  v2 = [(DCStandardMapsLink *)self queryDictionary];
-  v3 = [v2 objectForKey:@"ll"];
+  queryDictionary = [(DCStandardMapsLink *)self queryDictionary];
+  v3 = [queryDictionary objectForKey:@"ll"];
 
   return v3;
 }
 
 - (unint64_t)directionsMode
 {
-  v2 = [(DCStandardMapsLink *)self queryDictionary];
-  v3 = [v2 objectForKey:@"dirflg"];
+  queryDictionary = [(DCStandardMapsLink *)self queryDictionary];
+  v3 = [queryDictionary objectForKey:@"dirflg"];
 
   if ([v3 isEqualToString:@"d"])
   {
@@ -266,40 +266,40 @@
 
 - (id)destinationAddress
 {
-  v2 = [(DCStandardMapsLink *)self queryDictionary];
-  v3 = [v2 objectForKey:@"daddr"];
+  queryDictionary = [(DCStandardMapsLink *)self queryDictionary];
+  v3 = [queryDictionary objectForKey:@"daddr"];
 
   return v3;
 }
 
 - (id)startAddress
 {
-  v2 = [(DCStandardMapsLink *)self queryDictionary];
-  v3 = [v2 objectForKey:@"saddr"];
+  queryDictionary = [(DCStandardMapsLink *)self queryDictionary];
+  v3 = [queryDictionary objectForKey:@"saddr"];
 
   return v3;
 }
 
 - (id)searchLocation
 {
-  v2 = [(DCStandardMapsLink *)self queryDictionary];
-  v3 = [v2 objectForKey:@"sll"];
+  queryDictionary = [(DCStandardMapsLink *)self queryDictionary];
+  v3 = [queryDictionary objectForKey:@"sll"];
 
   return v3;
 }
 
 - (id)searchNearQuery
 {
-  v2 = [(DCStandardMapsLink *)self queryDictionary];
-  v3 = [v2 objectForKey:@"near"];
+  queryDictionary = [(DCStandardMapsLink *)self queryDictionary];
+  v3 = [queryDictionary objectForKey:@"near"];
 
   return v3;
 }
 
 - (id)searchQuery
 {
-  v3 = [(DCStandardMapsLink *)self queryDictionary];
-  v4 = [v3 objectForKey:@"q"];
+  queryDictionary = [(DCStandardMapsLink *)self queryDictionary];
+  v4 = [queryDictionary objectForKey:@"q"];
   v5 = v4;
   if (v4)
   {
@@ -308,21 +308,21 @@
 
   else
   {
-    v7 = [(DCStandardMapsLink *)self queryDictionary];
-    v6 = [v7 objectForKey:@"address"];
+    queryDictionary2 = [(DCStandardMapsLink *)self queryDictionary];
+    v6 = [queryDictionary2 objectForKey:@"address"];
   }
 
   return v6;
 }
 
-- (DCStandardMapsLink)initWithURL:(id)a3
+- (DCStandardMapsLink)initWithURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v6 = [(DCStandardMapsLink *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_URL, a3);
+    objc_storeStrong(&v6->_URL, l);
     v8 = v7;
   }
 

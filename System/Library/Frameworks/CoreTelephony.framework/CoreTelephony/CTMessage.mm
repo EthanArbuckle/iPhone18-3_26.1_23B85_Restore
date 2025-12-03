@@ -1,20 +1,20 @@
 @interface CTMessage
 - (CTMessage)init;
-- (CTMessage)initWithDate:(id)a3;
-- (id)addData:(id)a3 withContentType:(id)a4;
-- (id)addPart:(id)a3;
-- (id)addText:(id)a3;
+- (CTMessage)initWithDate:(id)date;
+- (id)addData:(id)data withContentType:(id)type;
+- (id)addPart:(id)part;
+- (id)addText:(id)text;
 - (id)description;
-- (void)addContentTypeParameterWithName:(id)a3 value:(id)a4;
-- (void)addEmailRecipient:(id)a3;
-- (void)addPhoneRecipient:(id)a3;
-- (void)addRecipient:(id)a3;
-- (void)removePartAtIndex:(unint64_t)a3;
-- (void)removeRecipient:(id)a3;
-- (void)removeRecipientsInArray:(id)a3;
-- (void)setRawHeaders:(id)a3;
-- (void)setRecipient:(id)a3;
-- (void)setRecipients:(id)a3;
+- (void)addContentTypeParameterWithName:(id)name value:(id)value;
+- (void)addEmailRecipient:(id)recipient;
+- (void)addPhoneRecipient:(id)recipient;
+- (void)addRecipient:(id)recipient;
+- (void)removePartAtIndex:(unint64_t)index;
+- (void)removeRecipient:(id)recipient;
+- (void)removeRecipientsInArray:(id)array;
+- (void)setRawHeaders:(id)headers;
+- (void)setRecipient:(id)recipient;
+- (void)setRecipients:(id)recipients;
 @end
 
 @implementation CTMessage
@@ -72,13 +72,13 @@
   return v2;
 }
 
-- (CTMessage)initWithDate:(id)a3
+- (CTMessage)initWithDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = [(CTMessage *)self init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dateCopy copy];
     date = v5->_date;
     v5->_date = v6;
   }
@@ -86,45 +86,45 @@
   return v5;
 }
 
-- (void)setRawHeaders:(id)a3
+- (void)setRawHeaders:(id)headers
 {
-  v5 = a3;
+  headersCopy = headers;
   rawHeaders = self->_rawHeaders;
   p_rawHeaders = &self->_rawHeaders;
-  if (rawHeaders != v5)
+  if (rawHeaders != headersCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_rawHeaders, a3);
-    v5 = v8;
+    v8 = headersCopy;
+    objc_storeStrong(p_rawHeaders, headers);
+    headersCopy = v8;
   }
 }
 
-- (void)addRecipient:(id)a3
+- (void)addRecipient:(id)recipient
 {
-  v7 = a3;
-  if ([v7 isMemberOfClass:objc_opt_class()])
+  recipientCopy = recipient;
+  if ([recipientCopy isMemberOfClass:objc_opt_class()])
   {
-    [(CTMessage *)self addPhoneRecipient:v7];
+    [(CTMessage *)self addPhoneRecipient:recipientCopy];
   }
 
-  else if ([v7 rangeOfString:@"@"] == 0x7FFFFFFFFFFFFFFFLL)
+  else if ([recipientCopy rangeOfString:@"@"] == 0x7FFFFFFFFFFFFFFFLL)
   {
     v4 = [CTPhoneNumber alloc];
-    v5 = [(CTMessage *)self context];
-    v6 = -[CTPhoneNumber initWithDigits:digits:countryCode:](v4, "initWithDigits:digits:countryCode:", [v5 slotID], v7, @"1");
+    context = [(CTMessage *)self context];
+    v6 = -[CTPhoneNumber initWithDigits:digits:countryCode:](v4, "initWithDigits:digits:countryCode:", [context slotID], recipientCopy, @"1");
 
     [(CTMessage *)self addPhoneRecipient:v6];
   }
 
   else
   {
-    [(CTMessage *)self addEmailRecipient:v7];
+    [(CTMessage *)self addEmailRecipient:recipientCopy];
   }
 }
 
-- (void)removeRecipient:(id)a3
+- (void)removeRecipient:(id)recipient
 {
-  v4 = [(NSMutableArray *)self->_recipients indexOfObject:a3];
+  v4 = [(NSMutableArray *)self->_recipients indexOfObject:recipient];
   if (v4 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = v4;
@@ -134,57 +134,57 @@
   }
 }
 
-- (void)removeRecipientsInArray:(id)a3
+- (void)removeRecipientsInArray:(id)array
 {
-  if (a3)
+  if (array)
   {
     [(NSMutableArray *)self->_recipients removeObjectsInArray:?];
   }
 }
 
-- (void)setRecipient:(id)a3
+- (void)setRecipient:(id)recipient
 {
-  if (a3)
+  if (recipient)
   {
     recipients = self->_recipients;
-    v5 = a3;
+    recipientCopy = recipient;
     [(NSMutableArray *)recipients removeAllObjects];
-    [(NSMutableArray *)self->_recipients addObject:v5];
+    [(NSMutableArray *)self->_recipients addObject:recipientCopy];
   }
 }
 
-- (void)setRecipients:(id)a3
+- (void)setRecipients:(id)recipients
 {
-  v5 = a3;
+  recipientsCopy = recipients;
   [(NSMutableArray *)self->_recipients removeAllObjects];
-  v4 = v5;
-  if (v5)
+  v4 = recipientsCopy;
+  if (recipientsCopy)
   {
-    [(NSMutableArray *)self->_recipients addObjectsFromArray:v5];
-    v4 = v5;
+    [(NSMutableArray *)self->_recipients addObjectsFromArray:recipientsCopy];
+    v4 = recipientsCopy;
   }
 }
 
-- (void)addPhoneRecipient:(id)a3
+- (void)addPhoneRecipient:(id)recipient
 {
-  v4 = [a3 copy];
+  v4 = [recipient copy];
   [(NSMutableArray *)self->_recipients addObject:v4];
 }
 
-- (void)addEmailRecipient:(id)a3
+- (void)addEmailRecipient:(id)recipient
 {
-  v4 = a3;
-  v5 = [[CTEmailAddress alloc] initWithAddress:v4];
+  recipientCopy = recipient;
+  v5 = [[CTEmailAddress alloc] initWithAddress:recipientCopy];
 
   [(NSMutableArray *)self->_recipients addObject:v5];
   self->_messageType = 2;
 }
 
-- (id)addText:(id)a3
+- (id)addText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v5 = [CTMessagePart alloc];
-  v6 = [v4 dataUsingEncoding:4];
+  v6 = [textCopy dataUsingEncoding:4];
 
   v7 = [(CTMessagePart *)v5 initWithData:v6 contentType:@"text/plain"];
   [(NSMutableArray *)self->_items addObject:v7];
@@ -192,42 +192,42 @@
   return v7;
 }
 
-- (id)addData:(id)a3 withContentType:(id)a4
+- (id)addData:(id)data withContentType:(id)type
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[CTMessagePart alloc] initWithData:v7 contentType:v6];
+  typeCopy = type;
+  dataCopy = data;
+  v8 = [[CTMessagePart alloc] initWithData:dataCopy contentType:typeCopy];
 
   [(NSMutableArray *)self->_items addObject:v8];
 
   return v8;
 }
 
-- (id)addPart:(id)a3
+- (id)addPart:(id)part
 {
-  v4 = a3;
-  [(NSMutableArray *)self->_items addObject:v4];
+  partCopy = part;
+  [(NSMutableArray *)self->_items addObject:partCopy];
 
-  return v4;
+  return partCopy;
 }
 
-- (void)removePartAtIndex:(unint64_t)a3
+- (void)removePartAtIndex:(unint64_t)index
 {
-  if ([(NSMutableArray *)self->_items count]> a3)
+  if ([(NSMutableArray *)self->_items count]> index)
   {
     items = self->_items;
 
-    [(NSMutableArray *)items removeObjectAtIndex:a3];
+    [(NSMutableArray *)items removeObjectAtIndex:index];
   }
 }
 
-- (void)addContentTypeParameterWithName:(id)a3 value:(id)a4
+- (void)addContentTypeParameterWithName:(id)name value:(id)value
 {
-  if (a3)
+  if (name)
   {
-    if (a4)
+    if (value)
     {
-      [(NSMutableDictionary *)self->_contentTypeParams setObject:a4 forKey:a3];
+      [(NSMutableDictionary *)self->_contentTypeParams setObject:value forKey:name];
     }
   }
 }
@@ -235,8 +235,8 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(CTMessageAddress *)self->_sender encodedString];
-  [v3 appendFormat:@", CTMessageAddress=%@", v4];
+  encodedString = [(CTMessageAddress *)self->_sender encodedString];
+  [v3 appendFormat:@", CTMessageAddress=%@", encodedString];
 
   [v3 appendFormat:@", Recipients=%@", self->_recipients];
   [v3 appendFormat:@", Items=%@", self->_items];

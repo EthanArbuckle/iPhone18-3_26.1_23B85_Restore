@@ -1,31 +1,31 @@
 @interface CNUINavigationListViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)_accessibilityToggleItemForCell:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)_accessibilityToggleItemForCell:(id)cell;
 @end
 
 @implementation CNUINavigationListViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CNUINavigationListViewController" hasInstanceMethod:@"itemAtIndexPath:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"CNUINavigationListViewController" hasInstanceMethod:@"navigationListView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNUINavigationListViewController" hasInstanceMethod:@"toggleItem:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CNUINavigationListViewController" hasInstanceMethod:@"itemAtIndexPath:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"CNUINavigationListViewController" hasInstanceMethod:@"navigationListView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNUINavigationListViewController" hasInstanceMethod:@"toggleItem:" withFullSignature:{"v", "@", 0}];
 }
 
-- (BOOL)_accessibilityToggleItemForCell:(id)a3
+- (BOOL)_accessibilityToggleItemForCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   objc_opt_class();
   v5 = [(CNUINavigationListViewControllerAccessibility *)self safeValueForKey:@"navigationListView"];
   v6 = __UIAccessibilityCastAsClass();
 
   if (v6)
   {
-    v7 = [v4 safeBoolForKey:@"accessoryControlExpanded"];
+    v7 = [cellCopy safeBoolForKey:@"accessoryControlExpanded"];
     v10 = MEMORY[0x29EDCA5F8];
     v11 = v6;
-    v12 = v4;
+    v12 = cellCopy;
     AXPerformSafeBlock();
     v8 = v7 ^ [v12 safeBoolForKey:{@"accessoryControlExpanded", v10, 3221225472, __81__CNUINavigationListViewControllerAccessibility__accessibilityToggleItemForCell___block_invoke, &unk_29F2B5BD8}];
   }

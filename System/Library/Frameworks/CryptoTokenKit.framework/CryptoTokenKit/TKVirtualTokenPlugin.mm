@@ -32,9 +32,9 @@
     v2->_uuid = v3;
 
     v5 = [NSBundle bundleForClass:objc_opt_class()];
-    v6 = [v5 bundleURL];
+    bundleURL = [v5 bundleURL];
     url = v2->_url;
-    v2->_url = v6;
+    v2->_url = bundleURL;
 
     v8 = sub_100009FD8();
     identifier = v2->_identifier;

@@ -1,18 +1,18 @@
 @interface PFParallaxLayoutAlphabeticalTextOverlapParameters
 - (double)bottomAreaHeight;
 - (double)maxBottomOverlap;
-- (double)maxTopOverlapForTopRect:(CGRect)a3 isInteractive:(BOOL)a4;
+- (double)maxTopOverlapForTopRect:(CGRect)rect isInteractive:(BOOL)interactive;
 - (double)targetBottomOverlap;
 @end
 
 @implementation PFParallaxLayoutAlphabeticalTextOverlapParameters
 
-- (double)maxTopOverlapForTopRect:(CGRect)a3 isInteractive:(BOOL)a4
+- (double)maxTopOverlapForTopRect:(CGRect)rect isInteractive:(BOOL)interactive
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  v6 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v7 = [v6 objectForKey:@"PFAlphabeticalTextMaxTopAreaOverlap"];
+  height = rect.size.height;
+  width = rect.size.width;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v7 = [standardUserDefaults objectForKey:@"PFAlphabeticalTextMaxTopAreaOverlap"];
 
   if (v7)
   {
@@ -30,8 +30,8 @@
 
 - (double)maxBottomOverlap
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 objectForKey:@"PFAlphabeticalTextMaxBottomAreaOverlap"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"PFAlphabeticalTextMaxBottomAreaOverlap"];
 
   if (v3)
   {
@@ -49,8 +49,8 @@
 
 - (double)targetBottomOverlap
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 objectForKey:@"PFAlphabeticalTextTargetBottomAreaOverlap"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"PFAlphabeticalTextTargetBottomAreaOverlap"];
 
   if (v3)
   {
@@ -68,8 +68,8 @@
 
 - (double)bottomAreaHeight
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 objectForKey:@"PFAlphabeticalTextBottomAreaHeight"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"PFAlphabeticalTextBottomAreaHeight"];
 
   if (v3)
   {

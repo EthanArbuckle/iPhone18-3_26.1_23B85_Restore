@@ -23,22 +23,22 @@
 - (void)setContentSubtitle:()AVKitAdditionsPrivate
 {
   v8 = [a3 copy];
-  v4 = [a1 contentSubtitle];
-  v5 = [v8 isEqual:v4];
+  contentSubtitle = [self contentSubtitle];
+  v5 = [v8 isEqual:contentSubtitle];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [a1 avkit_data];
-    v7 = [v6 customPropertyStorage];
-    [v7 setObject:v8 forKeyedSubscript:@"contentSubtitle"];
+    avkit_data = [self avkit_data];
+    customPropertyStorage = [avkit_data customPropertyStorage];
+    [customPropertyStorage setObject:v8 forKeyedSubscript:@"contentSubtitle"];
   }
 }
 
 - (id)contentSubtitle
 {
-  v1 = [a1 avkit_dataOrNil];
-  v2 = [v1 customPropertyStorage];
-  v3 = [v2 objectForKeyedSubscript:@"contentSubtitle"];
+  avkit_dataOrNil = [self avkit_dataOrNil];
+  customPropertyStorage = [avkit_dataOrNil customPropertyStorage];
+  v3 = [customPropertyStorage objectForKeyedSubscript:@"contentSubtitle"];
 
   return v3;
 }
@@ -46,86 +46,86 @@
 - (void)setContentTitle:()AVKitAdditionsPrivate
 {
   v8 = [a3 copy];
-  v4 = [a1 contentTitle];
-  v5 = [v8 isEqual:v4];
+  contentTitle = [self contentTitle];
+  v5 = [v8 isEqual:contentTitle];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [a1 avkit_data];
-    v7 = [v6 customPropertyStorage];
-    [v7 setObject:v8 forKeyedSubscript:@"contentTitle"];
+    avkit_data = [self avkit_data];
+    customPropertyStorage = [avkit_data customPropertyStorage];
+    [customPropertyStorage setObject:v8 forKeyedSubscript:@"contentTitle"];
   }
 }
 
 - (id)contentTitle
 {
-  v1 = [a1 avkit_dataOrNil];
-  v2 = [v1 customPropertyStorage];
-  v3 = [v2 objectForKeyedSubscript:@"contentTitle"];
+  avkit_dataOrNil = [self avkit_dataOrNil];
+  customPropertyStorage = [avkit_dataOrNil customPropertyStorage];
+  v3 = [customPropertyStorage objectForKeyedSubscript:@"contentTitle"];
 
   return v3;
 }
 
 - (id)avkit_data
 {
-  v2 = [a1 avkit_dataOrNil];
-  if (!v2)
+  avkit_dataOrNil = [self avkit_dataOrNil];
+  if (!avkit_dataOrNil)
   {
-    v2 = objc_alloc_init(AVPlayerItemAVKitData);
-    [a1 setAVKitData:v2];
+    avkit_dataOrNil = objc_alloc_init(AVPlayerItemAVKitData);
+    [self setAVKitData:avkit_dataOrNil];
   }
 
-  v3 = [a1 AVKitData];
+  aVKitData = [self AVKitData];
 
-  return v3;
+  return aVKitData;
 }
 
 - (id)avkit_dataOrNil
 {
-  v2 = [a1 AVKitData];
+  aVKitData = [self AVKitData];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v4 = [a1 AVKitData];
+    aVKitData2 = [self AVKitData];
   }
 
   else
   {
-    v4 = 0;
+    aVKitData2 = 0;
   }
 
-  return v4;
+  return aVKitData2;
 }
 
 - (void)setExternalMetadata:()AVKitAdditionsPrivate
 {
   v9 = [a3 copy];
-  v4 = [a1 externalMetadata];
-  v5 = [v9 isEqualToArray:v4];
+  externalMetadata = [self externalMetadata];
+  v5 = [v9 isEqualToArray:externalMetadata];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [a1 avkit_data];
-    v7 = [v6 customPropertyStorage];
-    [v7 setObject:v9 forKeyedSubscript:@"externalMetadata"];
+    avkit_data = [self avkit_data];
+    customPropertyStorage = [avkit_data customPropertyStorage];
+    [customPropertyStorage setObject:v9 forKeyedSubscript:@"externalMetadata"];
 
     v8 = +[AVAirMessageDispatcher shared];
-    LODWORD(v7) = [v8 haveAirPlayService];
+    LODWORD(customPropertyStorage) = [v8 haveAirPlayService];
 
-    if (v7)
+    if (customPropertyStorage)
     {
-      [a1 avkit_airMessageSendExternalMetadata];
+      [self avkit_airMessageSendExternalMetadata];
     }
   }
 }
 
 - (void)externalMetadata
 {
-  v1 = [a1 avkit_dataOrNil];
-  v2 = [v1 customPropertyStorage];
-  v3 = [v2 objectForKeyedSubscript:@"externalMetadata"];
+  avkit_dataOrNil = [self avkit_dataOrNil];
+  customPropertyStorage = [avkit_dataOrNil customPropertyStorage];
+  v3 = [customPropertyStorage objectForKeyedSubscript:@"externalMetadata"];
   v4 = v3;
   if (v3)
   {
@@ -144,10 +144,10 @@
 
 - (id)interstitialTimeRanges
 {
-  v1 = [a1 avkit_dataOrNil];
-  v2 = [v1 customPropertyStorage];
+  avkit_dataOrNil = [self avkit_dataOrNil];
+  customPropertyStorage = [avkit_dataOrNil customPropertyStorage];
 
-  v3 = [v2 objectForKeyedSubscript:@"interstitialTimeRanges"];
+  v3 = [customPropertyStorage objectForKeyedSubscript:@"interstitialTimeRanges"];
   if (v3)
   {
     v4 = v3;
@@ -174,60 +174,60 @@
     _os_log_impl(&dword_18B49C000, v2, OS_LOG_TYPE_DEFAULT, "%s %d", &v5, 0x12u);
   }
 
-  v3 = [a1 avkit_data];
-  v4 = [v3 customPropertyStorage];
-  [v4 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"isAVKitIntegratedTimelineDisabled"];
+  avkit_data = [self avkit_data];
+  customPropertyStorage = [avkit_data customPropertyStorage];
+  [customPropertyStorage setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"isAVKitIntegratedTimelineDisabled"];
 }
 
 - (uint64_t)isAVKitIntegratedTimelineDisabled
 {
-  v1 = [a1 avkit_dataOrNil];
-  v2 = [v1 customPropertyStorage];
+  avkit_dataOrNil = [self avkit_dataOrNil];
+  customPropertyStorage = [avkit_dataOrNil customPropertyStorage];
 
-  v3 = [v2 objectForKeyedSubscript:@"isAVKitIntegratedTimelineDisabled"];
+  v3 = [customPropertyStorage objectForKeyedSubscript:@"isAVKitIntegratedTimelineDisabled"];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
 - (void)setInterstitialTimeRanges:()AVKitAdditionsPrivate
 {
   v8 = [a3 copy];
-  v4 = [a1 interstitialTimeRanges];
-  v5 = [v8 isEqualToArray:v4];
+  interstitialTimeRanges = [self interstitialTimeRanges];
+  v5 = [v8 isEqualToArray:interstitialTimeRanges];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [a1 avkit_data];
-    v7 = [v6 customPropertyStorage];
-    [v7 setObject:v8 forKeyedSubscript:@"interstitialTimeRanges"];
+    avkit_data = [self avkit_data];
+    customPropertyStorage = [avkit_data customPropertyStorage];
+    [customPropertyStorage setObject:v8 forKeyedSubscript:@"interstitialTimeRanges"];
   }
 }
 
 - (uint64_t)interstitialPolicyEnforcement
 {
-  v1 = [a1 avkit_data];
-  v2 = [v1 interstitialPolicyEnforcement];
+  avkit_data = [self avkit_data];
+  interstitialPolicyEnforcement = [avkit_data interstitialPolicyEnforcement];
 
-  return v2;
+  return interstitialPolicyEnforcement;
 }
 
 - (void)avkit_airMessageSendToAppleTV
 {
   v9 = *MEMORY[0x1E69E9840];
   v2 = +[AVAirMessageDispatcher shared];
-  v3 = [v2 haveAirPlayService];
+  haveAirPlayService = [v2 haveAirPlayService];
 
-  if (v3)
+  if (haveAirPlayService)
   {
     v4 = _avairlog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -237,12 +237,12 @@
       _os_log_impl(&dword_18B49C000, v4, OS_LOG_TYPE_DEFAULT, "%s Sending all available information for this player item.", &v7, 0xCu);
     }
 
-    v5 = [a1 externalMetadata];
-    v6 = [v5 count];
+    externalMetadata = [self externalMetadata];
+    v6 = [externalMetadata count];
 
     if (v6)
     {
-      [a1 avkit_airMessageSendExternalMetadata];
+      [self avkit_airMessageSendExternalMetadata];
     }
   }
 }
@@ -250,9 +250,9 @@
 - (void)avkit_airMessageSendExternalMetadata
 {
   v11 = *MEMORY[0x1E69E9840];
-  v2 = [a1 externalMetadata];
-  v3 = [a1 avkitACMIdentifier];
-  v4 = [AVAirMessage messageWithExternalMetadata:v2 itemIdentifier:v3];
+  externalMetadata = [self externalMetadata];
+  avkitACMIdentifier = [self avkitACMIdentifier];
+  v4 = [AVAirMessage messageWithExternalMetadata:externalMetadata itemIdentifier:avkitACMIdentifier];
 
   if (v4)
   {
@@ -262,7 +262,7 @@
       v7 = 136315394;
       v8 = "[AVPlayerItem(AVKitAdditionsPrivate) avkit_airMessageSendExternalMetadata]";
       v9 = 2048;
-      v10 = [v2 count];
+      v10 = [externalMetadata count];
       _os_log_impl(&dword_18B49C000, v5, OS_LOG_TYPE_DEFAULT, "%s Sending external metadata (%ld items)", &v7, 0x16u);
     }
 
@@ -274,9 +274,9 @@
 - (id)avkit_valueForAVKitProperty:()AVKitAdditionsPrivate
 {
   v4 = a3;
-  v5 = [a1 avkit_dataOrNil];
-  v6 = [v5 customPropertyStorage];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  avkit_dataOrNil = [self avkit_dataOrNil];
+  customPropertyStorage = [avkit_dataOrNil customPropertyStorage];
+  v7 = [customPropertyStorage objectForKeyedSubscript:v4];
 
   return v7;
 }
@@ -285,14 +285,14 @@
 {
   v6 = a4;
   v7 = a3;
-  [a1 willChangeValueForKey:v6];
-  v8 = [a1 avkit_data];
-  v9 = [v8 customPropertyStorage];
-  [v9 setObject:v7 forKeyedSubscript:v6];
+  [self willChangeValueForKey:v6];
+  avkit_data = [self avkit_data];
+  customPropertyStorage = [avkit_data customPropertyStorage];
+  [customPropertyStorage setObject:v7 forKeyedSubscript:v6];
 
-  [a1 didChangeValueForKey:v6];
-  v10 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v10 postNotificationName:@"AVPlayerItemAVKitDataDidChangeNotification" object:a1];
+  [self didChangeValueForKey:v6];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"AVPlayerItemAVKitDataDidChangeNotification" object:self];
 }
 
 @end

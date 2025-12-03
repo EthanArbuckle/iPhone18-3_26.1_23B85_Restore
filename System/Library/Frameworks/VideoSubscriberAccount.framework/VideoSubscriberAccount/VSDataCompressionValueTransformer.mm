@@ -1,17 +1,17 @@
 @interface VSDataCompressionValueTransformer
-- (id)_dataByPerformingOperation:(int)a3 onData:(id)a4;
-- (id)reverseTransformedValue:(id)a3;
-- (id)transformedValue:(id)a3;
+- (id)_dataByPerformingOperation:(int)operation onData:(id)data;
+- (id)reverseTransformedValue:(id)value;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation VSDataCompressionValueTransformer
 
-- (id)_dataByPerformingOperation:(int)a3 onData:(id)a4
+- (id)_dataByPerformingOperation:(int)operation onData:(id)data
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  dataCopy = data;
   memset(&v17, 0, sizeof(v17));
-  if (compression_stream_init(&v17, a3, COMPRESSION_ZLIB))
+  if (compression_stream_init(&v17, operation, COMPRESSION_ZLIB))
   {
     v6 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:*__error() userInfo:0];
     v7 = VSErrorLogObject();
@@ -23,14 +23,14 @@
     goto LABEL_5;
   }
 
-  v17.src_ptr = [v5 bytes];
-  v17.src_size = [v5 length];
+  v17.src_ptr = [dataCopy bytes];
+  v17.src_size = [dataCopy length];
   v10 = objc_alloc_init(MEMORY[0x277CBEB28]);
   v11 = malloc_type_malloc(0x1000uLL, 0xEA2F9226uLL);
   if (v11)
   {
     v12 = v11;
-    v13 = a3 == 0;
+    v13 = operation == 0;
     v17.dst_ptr = v11;
     v17.dst_size = 4096;
     v14 = *MEMORY[0x277CCA590];
@@ -113,15 +113,15 @@ LABEL_9:
   return v8;
 }
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
   v24 = __Block_byref_object_copy__0;
   v25 = __Block_byref_object_dispose__0;
-  v4 = a3;
-  v26 = v4;
+  valueCopy = value;
+  v26 = valueCopy;
   v5 = v22[5];
   if (!v5)
   {
@@ -188,15 +188,15 @@ LABEL_11:
   return v18;
 }
 
-- (id)reverseTransformedValue:(id)a3
+- (id)reverseTransformedValue:(id)value
 {
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
   v24 = __Block_byref_object_copy__0;
   v25 = __Block_byref_object_dispose__0;
-  v4 = a3;
-  v26 = v4;
+  valueCopy = value;
+  v26 = valueCopy;
   v5 = v22[5];
   if (!v5)
   {

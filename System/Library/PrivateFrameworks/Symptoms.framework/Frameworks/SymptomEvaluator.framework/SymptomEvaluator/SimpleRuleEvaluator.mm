@@ -1,9 +1,9 @@
 @interface SimpleRuleEvaluator
-+ (id)configureClass:(id)a3;
-+ (id)objectWithName:(id)a3;
++ (id)configureClass:(id)class;
++ (id)objectWithName:(id)name;
 - (NSString)description;
-- (int)configureInstance:(id)a3;
-- (void)evaluateSignatureForEvent:(id)a3;
+- (int)configureInstance:(id)instance;
+- (void)evaluateSignatureForEvent:(id)event;
 @end
 
 @implementation SimpleRuleEvaluator
@@ -12,25 +12,25 @@
 {
   v3 = MEMORY[0x277CCACA8];
   signatureName = self->_signatureName;
-  v5 = [(SimpleSyndromeHandler *)self->_syndromeToCall syndromeName];
-  v6 = [v3 stringWithFormat:@"signature handler %@ for syndrome %@ with conditions %@", signatureName, v5, self->_conditionsToCheck];
+  syndromeName = [(SimpleSyndromeHandler *)self->_syndromeToCall syndromeName];
+  v6 = [v3 stringWithFormat:@"signature handler %@ for syndrome %@ with conditions %@", signatureName, syndromeName, self->_conditionsToCheck];
 
   return v6;
 }
 
-+ (id)objectWithName:(id)a3
++ (id)objectWithName:(id)name
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [ConfigurationHandler objectForName:v3];
+  nameCopy = name;
+  v4 = [ConfigurationHandler objectForName:nameCopy];
   if (!v4)
   {
     v9 = objc_alloc_init(SimpleRuleEvaluator);
     v4 = v9;
     if (v9)
     {
-      [(SimpleRuleEvaluator *)v9 setSignatureName:v3];
-      [ConfigurationHandler setConfigurationObject:v4 forName:v3];
+      [(SimpleRuleEvaluator *)v9 setSignatureName:nameCopy];
+      [ConfigurationHandler setConfigurationObject:v4 forName:nameCopy];
     }
 
     goto LABEL_8;
@@ -48,10 +48,10 @@ LABEL_8:
   v5 = configurationLogHandle;
   if (os_log_type_enabled(configurationLogHandle, OS_LOG_TYPE_ERROR))
   {
-    v6 = v3;
+    v6 = nameCopy;
     v7 = v5;
     v12 = 136315138;
-    v13 = [v3 UTF8String];
+    uTF8String = [nameCopy UTF8String];
     _os_log_impl(&dword_23255B000, v7, OS_LOG_TYPE_ERROR, "Attempted reuse of name %s", &v12, 0xCu);
   }
 
@@ -63,16 +63,16 @@ LABEL_9:
   return v8;
 }
 
-+ (id)configureClass:(id)a3
++ (id)configureClass:(id)class
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKey:@"SIGNATURE_NAME"];
+  classCopy = class;
+  v5 = [classCopy objectForKey:@"SIGNATURE_NAME"];
   if (v5)
   {
-    v6 = [a1 objectWithName:v5];
+    v6 = [self objectWithName:v5];
     v7 = v6;
-    if (v6 && ![v6 configureInstance:v4])
+    if (v6 && ![v6 configureInstance:classCopy])
     {
       v8 = v7;
     }
@@ -89,9 +89,9 @@ LABEL_9:
     if (os_log_type_enabled(configurationLogHandle, OS_LOG_TYPE_ERROR))
     {
       v10 = v9;
-      v11 = [v4 description];
+      v11 = [classCopy description];
       v14 = 136315138;
-      v15 = [v11 UTF8String];
+      uTF8String = [v11 UTF8String];
       _os_log_impl(&dword_23255B000, v10, OS_LOG_TYPE_ERROR, "Can't find name in configuration directory %s", &v14, 0xCu);
     }
 
@@ -103,18 +103,18 @@ LABEL_9:
   return v8;
 }
 
-- (int)configureInstance:(id)a3
+- (int)configureInstance:(id)instance
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKey:@"SYNDROME_NAME"];
+  instanceCopy = instance;
+  v5 = [instanceCopy objectForKey:@"SYNDROME_NAME"];
   if (v5)
   {
     v6 = [SimpleSyndromeHandler objectWithName:v5];
     syndromeToCall = self->_syndromeToCall;
     self->_syndromeToCall = v6;
 
-    if ([(SimpleSyndromeHandler *)self->_syndromeToCall configureInstance:v4])
+    if ([(SimpleSyndromeHandler *)self->_syndromeToCall configureInstance:instanceCopy])
     {
       v8 = 0;
       v9 = 0;
@@ -125,14 +125,14 @@ LABEL_9:
     }
   }
 
-  v13 = [v4 objectForKey:@"RULE_AWD_CODE"];
+  v13 = [instanceCopy objectForKey:@"RULE_AWD_CODE"];
   v9 = v13;
   if (v13)
   {
     self->_awd_code = [v13 unsignedLongLongValue];
   }
 
-  v14 = [v4 objectForKey:@"SIGNATURE_DESCRIPTION"];
+  v14 = [instanceCopy objectForKey:@"SIGNATURE_DESCRIPTION"];
   if (v14)
   {
     v15 = v14;
@@ -145,13 +145,13 @@ LABEL_9:
       self->_stringToLog = 0;
     }
 
-    v17 = [v10 UTF8String];
-    if (!v17)
+    uTF8String = [v10 UTF8String];
+    if (!uTF8String)
     {
       [ManagedEventHandler initWithName:buf];
     }
 
-    v18 = strdup(v17);
+    v18 = strdup(uTF8String);
     if (!v18)
     {
       [EventDescription initWithType:buf length:? data:? fromPid:? named:? bundleId:?];
@@ -166,13 +166,13 @@ LABEL_9:
       goto LABEL_14;
     }
 
-    v38 = [(SimpleSyndromeHandler *)self->_syndromeToCall syndromeUTF8Name];
-    if (!v38)
+    syndromeUTF8Name = [(SimpleSyndromeHandler *)self->_syndromeToCall syndromeUTF8Name];
+    if (!syndromeUTF8Name)
     {
       [ManagedEventHandler initWithName:buf];
     }
 
-    v18 = strdup(v38);
+    v18 = strdup(syndromeUTF8Name);
     if (!v18)
     {
       [EventDescription initWithType:buf length:? data:? fromPid:? named:? bundleId:?];
@@ -183,7 +183,7 @@ LABEL_9:
 
   self->_stringToLog = v18;
 LABEL_14:
-  v8 = [v4 objectForKey:@"ADDITIONAL_INFO_GENERATOR"];
+  v8 = [instanceCopy objectForKey:@"ADDITIONAL_INFO_GENERATOR"];
   if (v8)
   {
     v19 = [ConfigurationHandler classRepresentativeForName:v8];
@@ -193,7 +193,7 @@ LABEL_14:
     if (self->_additionalInfoGenerator)
     {
       v21 = v8;
-      v22 = [v4 objectForKey:@"ADDITIONAL_INFO_SELECTOR"];
+      v22 = [instanceCopy objectForKey:@"ADDITIONAL_INFO_SELECTOR"];
       if (v22)
       {
         v23 = v22;
@@ -233,7 +233,7 @@ LABEL_25:
   conditionsToCheck = self->_conditionsToCheck;
   self->_conditionsToCheck = v28;
 
-  v30 = [v4 objectForKey:@"REQUIRED_ITEMS"];
+  v30 = [instanceCopy objectForKey:@"REQUIRED_ITEMS"];
   v11 = v30;
   if (!v30 || ![v30 count])
   {
@@ -261,9 +261,9 @@ LABEL_25:
       {
         v35 = v34;
         v36 = [v32 description];
-        v37 = [v36 UTF8String];
+        uTF8String2 = [v36 UTF8String];
         *buf = 136315138;
-        v43 = v37;
+        v43 = uTF8String2;
         _os_log_impl(&dword_23255B000, v35, OS_LOG_TYPE_ERROR, "Configuration failure to configure condition %s", buf, 0xCu);
       }
 
@@ -283,16 +283,16 @@ LABEL_26:
   return v12;
 }
 
-- (void)evaluateSignatureForEvent:(id)a3
+- (void)evaluateSignatureForEvent:(id)event
 {
   *&v28[5] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v6 = evaluationLogHandle;
   if (os_log_type_enabled(evaluationLogHandle, OS_LOG_TYPE_DEBUG))
   {
     v7 = v6;
-    v8 = [v4 description];
+    v8 = [eventCopy description];
     v27 = 136315138;
     *v28 = [v8 UTF8String];
     _os_log_impl(&dword_23255B000, v7, OS_LOG_TYPE_DEBUG, "evaluateSignatureForEvent: Entry, event %s", &v27, 0xCu);
@@ -321,7 +321,7 @@ LABEL_26:
     do
     {
       v11 = [(NSMutableArray *)self->_conditionsToCheck objectAtIndex:v9];
-      v10 += [v11 evaluate:v4 showingWorkAt:v5];
+      v10 += [v11 evaluate:eventCopy showingWorkAt:v5];
 
       ++v9;
     }
@@ -365,7 +365,7 @@ LABEL_16:
         additionalInfoSelector = 0;
       }
 
-      v25 = [(AdditionalInfoProtocol *)additionalInfoGenerator performSelector:additionalInfoSelector withObject:v4];
+      v25 = [(AdditionalInfoProtocol *)additionalInfoGenerator performSelector:additionalInfoSelector withObject:eventCopy];
       if (v25)
       {
         [v20 setAdditionalInfo:v25];

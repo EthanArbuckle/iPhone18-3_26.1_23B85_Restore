@@ -1,23 +1,23 @@
 @interface ICValueHistory
-- (BOOL)isEqual:(id)a3;
-- (ICValueHistory)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)firstValueAfterOrEqualToTimestamp:(unint64_t)a3;
-- (id)firstValueBeforeOrEqualToTimestamp:(unint64_t)a3;
-- (id)firstValueBeforeTimestamp:(unint64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (ICValueHistory)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)firstValueAfterOrEqualToTimestamp:(unint64_t)timestamp;
+- (id)firstValueBeforeOrEqualToTimestamp:(unint64_t)timestamp;
+- (id)firstValueBeforeTimestamp:(unint64_t)timestamp;
 - (id)lastValue;
-- (id)lastValueAndTimestamp:(unint64_t *)a3;
-- (void)addValue:(id)a3 timestamp:(unint64_t)a4;
-- (void)addValuesFromHistory:(id)a3;
-- (void)enumerateValuesUsingBlock:(id)a3;
-- (void)removeValuesBeforeTimestamp:(unint64_t)a3;
+- (id)lastValueAndTimestamp:(unint64_t *)timestamp;
+- (void)addValue:(id)value timestamp:(unint64_t)timestamp;
+- (void)addValuesFromHistory:(id)history;
+- (void)enumerateValuesUsingBlock:(id)block;
+- (void)removeValuesBeforeTimestamp:(unint64_t)timestamp;
 @end
 
 @implementation ICValueHistory
 
-- (ICValueHistory)initWithCoder:(id)a3
+- (ICValueHistory)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = ICValueHistory;
   v5 = [(ICValueHistory *)&v12 init];
@@ -26,7 +26,7 @@
     v6 = objc_alloc(MEMORY[0x1E695DFD8]);
     v7 = objc_opt_class();
     v8 = [v6 initWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"items"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"items"];
     items = v5->_items;
     v5->_items = v9;
   }
@@ -34,14 +34,14 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     items = self->_items;
-    v6 = v4[1];
+    v6 = equalCopy[1];
     if (items == v6)
     {
       v7 = 1;
@@ -65,17 +65,17 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSMutableArray *)self->_items mutableCopyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSMutableArray *)self->_items mutableCopyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
   return v5;
 }
 
-- (void)removeValuesBeforeTimestamp:(unint64_t)a3
+- (void)removeValuesBeforeTimestamp:(unint64_t)timestamp
 {
   v5 = [(NSMutableArray *)self->_items count];
   if (v5 >= 1)
@@ -84,9 +84,9 @@
     do
     {
       v7 = [(NSMutableArray *)self->_items objectAtIndex:v6 - 2];
-      v8 = [v7 timestamp];
+      timestamp = [v7 timestamp];
 
-      if (v8 < a3)
+      if (timestamp < timestamp)
       {
         [(NSMutableArray *)self->_items removeObjectAtIndex:v6 - 2];
       }
@@ -98,36 +98,36 @@
   }
 }
 
-- (id)lastValueAndTimestamp:(unint64_t *)a3
+- (id)lastValueAndTimestamp:(unint64_t *)timestamp
 {
-  v4 = [(NSMutableArray *)self->_items lastObject];
-  v5 = v4;
-  if (v4)
+  lastObject = [(NSMutableArray *)self->_items lastObject];
+  v5 = lastObject;
+  if (lastObject)
   {
-    v6 = [v4 value];
-    if (a3)
+    value = [lastObject value];
+    if (timestamp)
     {
-      *a3 = [v5 timestamp];
+      *timestamp = [v5 timestamp];
     }
   }
 
   else
   {
-    v6 = 0;
+    value = 0;
   }
 
-  return v6;
+  return value;
 }
 
 - (id)lastValue
 {
-  v2 = [(NSMutableArray *)self->_items lastObject];
-  v3 = [v2 value];
+  lastObject = [(NSMutableArray *)self->_items lastObject];
+  value = [lastObject value];
 
-  return v3;
+  return value;
 }
 
-- (id)firstValueBeforeOrEqualToTimestamp:(unint64_t)a3
+- (id)firstValueBeforeOrEqualToTimestamp:(unint64_t)timestamp
 {
   v7 = 0;
   v8 = &v7;
@@ -141,7 +141,7 @@
   v6[2] = __53__ICValueHistory_firstValueBeforeOrEqualToTimestamp___block_invoke;
   v6[3] = &unk_1E7BF5E90;
   v6[4] = &v7;
-  v6[5] = a3;
+  v6[5] = timestamp;
   [(NSMutableArray *)items enumerateObjectsWithOptions:2 usingBlock:v6];
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -163,7 +163,7 @@ void __53__ICValueHistory_firstValueBeforeOrEqualToTimestamp___block_invoke(uint
   }
 }
 
-- (id)firstValueBeforeTimestamp:(unint64_t)a3
+- (id)firstValueBeforeTimestamp:(unint64_t)timestamp
 {
   v7 = 0;
   v8 = &v7;
@@ -177,7 +177,7 @@ void __53__ICValueHistory_firstValueBeforeOrEqualToTimestamp___block_invoke(uint
   v6[2] = __44__ICValueHistory_firstValueBeforeTimestamp___block_invoke;
   v6[3] = &unk_1E7BF5E90;
   v6[4] = &v7;
-  v6[5] = a3;
+  v6[5] = timestamp;
   [(NSMutableArray *)items enumerateObjectsWithOptions:2 usingBlock:v6];
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -199,7 +199,7 @@ void __44__ICValueHistory_firstValueBeforeTimestamp___block_invoke(uint64_t a1, 
   }
 }
 
-- (id)firstValueAfterOrEqualToTimestamp:(unint64_t)a3
+- (id)firstValueAfterOrEqualToTimestamp:(unint64_t)timestamp
 {
   v7 = 0;
   v8 = &v7;
@@ -213,7 +213,7 @@ void __44__ICValueHistory_firstValueBeforeTimestamp___block_invoke(uint64_t a1, 
   v6[2] = __52__ICValueHistory_firstValueAfterOrEqualToTimestamp___block_invoke;
   v6[3] = &unk_1E7BF5E90;
   v6[4] = &v7;
-  v6[5] = a3;
+  v6[5] = timestamp;
   [(NSMutableArray *)items enumerateObjectsUsingBlock:v6];
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -235,16 +235,16 @@ void __52__ICValueHistory_firstValueAfterOrEqualToTimestamp___block_invoke(uint6
   }
 }
 
-- (void)enumerateValuesUsingBlock:(id)a3
+- (void)enumerateValuesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   items = self->_items;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__ICValueHistory_enumerateValuesUsingBlock___block_invoke;
   v7[3] = &unk_1E7BF5E68;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(NSMutableArray *)items enumerateObjectsUsingBlock:v7];
 }
 
@@ -258,20 +258,20 @@ void __44__ICValueHistory_enumerateValuesUsingBlock___block_invoke(uint64_t a1, 
   (*(v6 + 16))(v6, v9, v8, a3, a4);
 }
 
-- (void)addValuesFromHistory:(id)a3
+- (void)addValuesFromHistory:(id)history
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __39__ICValueHistory_addValuesFromHistory___block_invoke;
   v3[3] = &unk_1E7BF5E40;
   v3[4] = self;
-  [a3 enumerateValuesUsingBlock:v3];
+  [history enumerateValuesUsingBlock:v3];
 }
 
-- (void)addValue:(id)a3 timestamp:(unint64_t)a4
+- (void)addValue:(id)value timestamp:(unint64_t)timestamp
 {
-  v18 = a3;
-  v6 = [[_ICValueHistoryItem alloc] initWithValue:v18 timestamp:a4];
+  valueCopy = value;
+  v6 = [[_ICValueHistoryItem alloc] initWithValue:valueCopy timestamp:timestamp];
   v7 = [(NSMutableArray *)self->_items count];
   if (!v7)
   {
@@ -298,15 +298,15 @@ void __44__ICValueHistory_enumerateValuesUsingBlock___block_invoke(uint64_t a1, 
   while (1)
   {
     v9 = [(NSMutableArray *)self->_items objectAtIndex:v8];
-    v10 = [v9 timestamp];
+    timestamp = [v9 timestamp];
 
-    if (v10 == a4)
+    if (timestamp == timestamp)
     {
       [(NSMutableArray *)self->_items replaceObjectAtIndex:v8 withObject:v6];
       goto LABEL_8;
     }
 
-    if (v10 < a4)
+    if (timestamp < timestamp)
     {
       v15 = self->_items;
       v16 = v8 + 1;

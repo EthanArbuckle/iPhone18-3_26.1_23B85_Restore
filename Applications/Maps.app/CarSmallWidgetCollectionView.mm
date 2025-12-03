@@ -1,22 +1,22 @@
 @interface CarSmallWidgetCollectionView
 - (CGSize)_cellSize;
-- (CarSmallWidgetCollectionView)initWithCoder:(id)a3;
-- (CarSmallWidgetCollectionView)initWithFrame:(CGRect)a3;
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
+- (CarSmallWidgetCollectionView)initWithCoder:(id)coder;
+- (CarSmallWidgetCollectionView)initWithFrame:(CGRect)frame;
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
 - (void)_commonInit;
 - (void)_updateHeightConstraint;
-- (void)didSelectFocusableCollectionCell:(id)a3;
+- (void)didSelectFocusableCollectionCell:(id)cell;
 - (void)layoutSubviews;
 - (void)refreshData;
 @end
 
 @implementation CarSmallWidgetCollectionView
 
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index
 {
-  [(CarShortcutCollectionViewCell *)CarSmallWidgetCollectionViewCell focusRingTopOverhang:a3];
+  [(CarShortcutCollectionViewCell *)CarSmallWidgetCollectionViewCell focusRingTopOverhang:view];
   v6 = 10.0;
   v7 = 0.0;
   v8 = 10.0;
@@ -27,35 +27,35 @@
   return result;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   v8 = sub_100799D40();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v13 = 134217984;
-    v14 = [v6 row];
+    v14 = [pathCopy row];
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "CarSmallWidgetCollectionView cellForItemAtIndexPath %ld", &v13, 0xCu);
   }
 
   v9 = +[(ShortcutsRowCollectionViewCell *)CarSmallWidgetCollectionViewCell];
-  v10 = [v7 dequeueReusableCellWithReuseIdentifier:v9 forIndexPath:v6];
+  v10 = [viewCopy dequeueReusableCellWithReuseIdentifier:v9 forIndexPath:pathCopy];
 
   [v10 setDelegate:self];
-  v11 = [(CarSmallWidgetCollectionView *)self modelForItemAtIndexPath:v6];
+  v11 = [(CarSmallWidgetCollectionView *)self modelForItemAtIndexPath:pathCopy];
   [v10 setModel:v11];
 
   return v10;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v5 = a3;
-  v6 = [(CarSmallWidgetCollectionView *)self data];
-  v7 = [v6 count];
+  viewCopy = view;
+  data = [(CarSmallWidgetCollectionView *)self data];
+  v7 = [data count];
 
-  [v5 bounds];
+  [viewCopy bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -91,18 +91,18 @@
   v21 = sub_100799D40();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
   {
-    v22 = [(CarSmallWidgetCollectionView *)self data];
+    data2 = [(CarSmallWidgetCollectionView *)self data];
     v24 = 138412290;
-    v25 = v22;
+    v25 = data2;
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "CarSmallWidgetCollectionView Data: %@", &v24, 0xCu);
   }
 
   return v19;
 }
 
-- (void)didSelectFocusableCollectionCell:(id)a3
+- (void)didSelectFocusableCollectionCell:(id)cell
 {
-  v4 = [(CarReloadWithCompletionCollectionView *)self->_collectionView indexPathForCell:a3];
+  v4 = [(CarReloadWithCompletionCollectionView *)self->_collectionView indexPathForCell:cell];
   [(CarSmallWidgetCollectionView *)self didSelectItemAtIndexPath:v4];
 }
 
@@ -126,8 +126,8 @@
 
 - (CGSize)_cellSize
 {
-  v3 = [(CarSmallWidgetCollectionView *)self traitCollection];
-  [(ShortcutsRowCollectionViewCell *)CarSmallWidgetCollectionViewCell cellSizeWithTraitCollection:v3];
+  traitCollection = [(CarSmallWidgetCollectionView *)self traitCollection];
+  [(ShortcutsRowCollectionViewCell *)CarSmallWidgetCollectionViewCell cellSizeWithTraitCollection:traitCollection];
   v5 = v4;
   v7 = v6;
 
@@ -147,11 +147,11 @@
   }
 
   v13 = (v12 / v5);
-  v14 = [(CarSmallWidgetCollectionView *)self data];
-  if ([v14 count] < v13)
+  data = [(CarSmallWidgetCollectionView *)self data];
+  if ([data count] < v13)
   {
-    v15 = [(CarSmallWidgetCollectionView *)self data];
-    v13 = [v15 count];
+    data2 = [(CarSmallWidgetCollectionView *)self data];
+    v13 = [data2 count];
   }
 
   v16 = (v13 - 1);
@@ -267,33 +267,33 @@
   [(CarReloadWithCompletionCollectionView *)v5 registerClass:v7 forCellWithReuseIdentifier:v8];
 
   [(CarSmallWidgetCollectionView *)self addSubview:v5];
-  v9 = [(CarReloadWithCompletionCollectionView *)v5 heightAnchor];
-  v10 = [v9 constraintEqualToConstant:0.0];
+  heightAnchor = [(CarReloadWithCompletionCollectionView *)v5 heightAnchor];
+  v10 = [heightAnchor constraintEqualToConstant:0.0];
   heightConstraint = self->_heightConstraint;
   self->_heightConstraint = v10;
 
-  v29 = [(CarReloadWithCompletionCollectionView *)v5 leadingAnchor];
-  v28 = [(CarSmallWidgetCollectionView *)self leadingAnchor];
-  v27 = [v29 constraintEqualToAnchor:v28];
+  leadingAnchor = [(CarReloadWithCompletionCollectionView *)v5 leadingAnchor];
+  leadingAnchor2 = [(CarSmallWidgetCollectionView *)self leadingAnchor];
+  v27 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v32[0] = v27;
-  v26 = [(CarSmallWidgetCollectionView *)self trailingAnchor];
-  v25 = [(CarReloadWithCompletionCollectionView *)v5 trailingAnchor];
-  v24 = [v26 constraintEqualToAnchor:v25];
+  trailingAnchor = [(CarSmallWidgetCollectionView *)self trailingAnchor];
+  trailingAnchor2 = [(CarReloadWithCompletionCollectionView *)v5 trailingAnchor];
+  v24 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v32[1] = v24;
-  v23 = [(CarReloadWithCompletionCollectionView *)v5 topAnchor];
-  v22 = [(CarSmallWidgetCollectionView *)self topAnchor];
+  topAnchor = [(CarReloadWithCompletionCollectionView *)v5 topAnchor];
+  topAnchor2 = [(CarSmallWidgetCollectionView *)self topAnchor];
   +[(CarShortcutCollectionViewCell *)CarSmallWidgetCollectionViewCell];
-  v12 = [v23 constraintGreaterThanOrEqualToAnchor:v22 constant:?];
+  v12 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2 constant:?];
   v32[2] = v12;
-  v13 = [(CarSmallWidgetCollectionView *)self bottomAnchor];
-  v14 = [(CarReloadWithCompletionCollectionView *)v5 bottomAnchor];
-  v15 = [v13 constraintGreaterThanOrEqualToAnchor:v14];
+  bottomAnchor = [(CarSmallWidgetCollectionView *)self bottomAnchor];
+  bottomAnchor2 = [(CarReloadWithCompletionCollectionView *)v5 bottomAnchor];
+  v15 = [bottomAnchor constraintGreaterThanOrEqualToAnchor:bottomAnchor2];
   v16 = self->_heightConstraint;
   v32[3] = v15;
   v32[4] = v16;
-  v17 = [(CarReloadWithCompletionCollectionView *)v5 centerYAnchor];
-  v18 = [(CarSmallWidgetCollectionView *)self centerYAnchor];
-  v19 = [v17 constraintEqualToAnchor:v18];
+  centerYAnchor = [(CarReloadWithCompletionCollectionView *)v5 centerYAnchor];
+  centerYAnchor2 = [(CarSmallWidgetCollectionView *)self centerYAnchor];
+  v19 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v32[5] = v19;
   v20 = [NSArray arrayWithObjects:v32 count:6];
   [NSLayoutConstraint activateConstraints:v20];
@@ -305,11 +305,11 @@
   self->_collectionView = v5;
 }
 
-- (CarSmallWidgetCollectionView)initWithCoder:(id)a3
+- (CarSmallWidgetCollectionView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = CarSmallWidgetCollectionView;
-  v3 = [(CarSmallWidgetCollectionView *)&v6 initWithCoder:a3];
+  v3 = [(CarSmallWidgetCollectionView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -319,11 +319,11 @@
   return v4;
 }
 
-- (CarSmallWidgetCollectionView)initWithFrame:(CGRect)a3
+- (CarSmallWidgetCollectionView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = CarSmallWidgetCollectionView;
-  v3 = [(CarSmallWidgetCollectionView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CarSmallWidgetCollectionView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

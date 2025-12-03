@@ -1,19 +1,19 @@
 @interface CKTextEffectCoordinatorConfiguration
 - (CKTextEffectCoordinatorConfiguration)init;
-- (CKTextEffectCoordinatorConfiguration)initWithLogIdentifier:(id)a3;
-- (CKTextEffectCoordinatorConfiguration)initWithLogIdentifier:(id)a3 timeAfterLastAnimationInSeconds:(double)a4;
+- (CKTextEffectCoordinatorConfiguration)initWithLogIdentifier:(id)identifier;
+- (CKTextEffectCoordinatorConfiguration)initWithLogIdentifier:(id)identifier timeAfterLastAnimationInSeconds:(double)seconds;
 @end
 
 @implementation CKTextEffectCoordinatorConfiguration
 
-- (CKTextEffectCoordinatorConfiguration)initWithLogIdentifier:(id)a3 timeAfterLastAnimationInSeconds:(double)a4
+- (CKTextEffectCoordinatorConfiguration)initWithLogIdentifier:(id)identifier timeAfterLastAnimationInSeconds:(double)seconds
 {
   v5 = sub_190D56F10();
-  CKTextEffectCoordinator.Configuration.init(logIdentifier:timeAfterLastAnimationInSeconds:)(v5, v6, a4);
+  CKTextEffectCoordinator.Configuration.init(logIdentifier:timeAfterLastAnimationInSeconds:)(v5, v6, seconds);
   return result;
 }
 
-- (CKTextEffectCoordinatorConfiguration)initWithLogIdentifier:(id)a3
+- (CKTextEffectCoordinatorConfiguration)initWithLogIdentifier:(id)identifier
 {
   v3 = sub_190D56760();
   v4 = *(v3 - 8);

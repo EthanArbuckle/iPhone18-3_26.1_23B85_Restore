@@ -1,9 +1,9 @@
 @interface TRDefaults
-+ (double)getDoubleForKey:(id)a3 defaultValue:(double)a4;
++ (double)getDoubleForKey:(id)key defaultValue:(double)value;
 + (id)sharedDefaults;
 + (id)sharedInstance;
-+ (int64_t)getBoolForKey:(id)a3 defaultValue:(BOOL)a4;
-+ (int64_t)getIntegerForKey:(id)a3 defaultValue:(int64_t)a4;
++ (int64_t)getBoolForKey:(id)key defaultValue:(BOOL)value;
++ (int64_t)getIntegerForKey:(id)key defaultValue:(int64_t)value;
 - (TRDefaults)init;
 @end
 
@@ -46,53 +46,53 @@ uint64_t __28__TRDefaults_sharedInstance__block_invoke()
 + (id)sharedDefaults
 {
   v2 = +[TRDefaults sharedInstance];
-  v3 = [v2 defaults];
+  defaults = [v2 defaults];
 
-  return v3;
+  return defaults;
 }
 
-+ (int64_t)getIntegerForKey:(id)a3 defaultValue:(int64_t)a4
++ (int64_t)getIntegerForKey:(id)key defaultValue:(int64_t)value
 {
-  v6 = a3;
-  v7 = [a1 sharedDefaults];
-  v8 = [v7 objectForKey:v6];
+  keyCopy = key;
+  sharedDefaults = [self sharedDefaults];
+  v8 = [sharedDefaults objectForKey:keyCopy];
 
   if (v8)
   {
-    a4 = [v7 integerForKey:v6];
+    value = [sharedDefaults integerForKey:keyCopy];
   }
 
-  return a4;
+  return value;
 }
 
-+ (double)getDoubleForKey:(id)a3 defaultValue:(double)a4
++ (double)getDoubleForKey:(id)key defaultValue:(double)value
 {
-  v6 = a3;
-  v7 = [a1 sharedDefaults];
-  v8 = [v7 objectForKey:v6];
+  keyCopy = key;
+  sharedDefaults = [self sharedDefaults];
+  v8 = [sharedDefaults objectForKey:keyCopy];
 
   if (v8)
   {
-    [v7 doubleForKey:v6];
-    a4 = v9;
+    [sharedDefaults doubleForKey:keyCopy];
+    value = v9;
   }
 
-  return a4;
+  return value;
 }
 
-+ (int64_t)getBoolForKey:(id)a3 defaultValue:(BOOL)a4
++ (int64_t)getBoolForKey:(id)key defaultValue:(BOOL)value
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [a1 sharedDefaults];
-  v8 = [v7 objectForKey:v6];
+  valueCopy = value;
+  keyCopy = key;
+  sharedDefaults = [self sharedDefaults];
+  v8 = [sharedDefaults objectForKey:keyCopy];
 
   if (v8)
   {
-    v4 = [v7 BOOLForKey:v6];
+    valueCopy = [sharedDefaults BOOLForKey:keyCopy];
   }
 
-  return v4;
+  return valueCopy;
 }
 
 @end

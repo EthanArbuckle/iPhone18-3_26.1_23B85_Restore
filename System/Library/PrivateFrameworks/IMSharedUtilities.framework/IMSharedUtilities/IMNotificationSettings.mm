@@ -30,17 +30,17 @@
 
 + (BOOL)isTextMessageExtensionEnabled
 {
-  v2 = [a1 isFilterUnknownSendersEnabled];
-  if (v2)
+  isFilterUnknownSendersEnabled = [self isFilterUnknownSendersEnabled];
+  if (isFilterUnknownSendersEnabled)
   {
     v3 = sub_1A88C82A8();
     v4 = sub_1A88C82A8();
     v5 = IMGetDomainBoolForKey();
 
-    LOBYTE(v2) = v5;
+    LOBYTE(isFilterUnknownSendersEnabled) = v5;
   }
 
-  return v2;
+  return isFilterUnknownSendersEnabled;
 }
 
 + (BOOL)hideUnknownSenders

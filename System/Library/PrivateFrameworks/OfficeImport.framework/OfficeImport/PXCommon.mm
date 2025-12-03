@@ -6,7 +6,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [[CXNamespace alloc] initWithUri:"urn:schemas-microsoft-com:office:powerpoint"];
     v3 = PXVmlNamespace;

@@ -1,16 +1,16 @@
 @interface CSIBitmapWrapper
 - (CGContext)bitmapContext;
 - (CGImageRef)destImage;
-- (CSIBitmapWrapper)initWithCGImage:(CGImage *)a3 width:(unsigned int)a4 height:(unsigned int)a5 texturePixelFormat:(int64_t)a6;
-- (CSIBitmapWrapper)initWithPixelWidth:(unsigned int)a3 pixelHeight:(unsigned int)a4;
+- (CSIBitmapWrapper)initWithCGImage:(CGImage *)image width:(unsigned int)width height:(unsigned int)height texturePixelFormat:(int64_t)format;
+- (CSIBitmapWrapper)initWithPixelWidth:(unsigned int)width pixelHeight:(unsigned int)height;
 - (id)bitmapContext;
-- (id)compressedData:(BOOL)a3 usedEncoding:(int *)a4 andRowChunkSize:(unsigned int *)a5;
+- (id)compressedData:(BOOL)data usedEncoding:(int *)encoding andRowChunkSize:(unsigned int *)size;
 - (id)pixelData;
 - (void)dealloc;
-- (void)setAllowsCompactCompression:(BOOL)a3;
-- (void)setAllowsMultiPassEncoding:(BOOL)a3;
-- (void)setAllowsOptimalRowbytesPacking:(BOOL)a3;
-- (void)setPixelData:(id)a3;
+- (void)setAllowsCompactCompression:(BOOL)compression;
+- (void)setAllowsMultiPassEncoding:(BOOL)encoding;
+- (void)setAllowsOptimalRowbytesPacking:(BOOL)packing;
+- (void)setPixelData:(id)data;
 @end
 
 @implementation CSIBitmapWrapper
@@ -99,10 +99,10 @@ LABEL_35:
             v22 = 16;
 LABEL_41:
             v23 = CGColorSpaceCreateWithName(v16);
-            v24 = [(CSIBitmapWrapper *)self allowsOptimalRowbytesPacking];
+            allowsOptimalRowbytesPacking = [(CSIBitmapWrapper *)self allowsOptimalRowbytesPacking];
             width = self->_width;
             AlignedBytesPerRow = width * v17;
-            if (v24)
+            if (allowsOptimalRowbytesPacking)
             {
               AlignedBytesPerRow = CGBitmapGetAlignedBytesPerRow();
               width = self->_width;
@@ -116,9 +116,9 @@ LABEL_41:
             }
 
             CGColorSpaceRelease(v23);
-            v28 = [(CSIBitmapWrapper *)self flipped];
+            flipped = [(CSIBitmapWrapper *)self flipped];
             result = self->_bitmapContext;
-            if (v28)
+            if (flipped)
             {
               LODWORD(v29) = self->_height;
               CGContextTranslateCTM(result, 0.0, v29);
@@ -200,17 +200,17 @@ LABEL_32:
     return self->_pixelData;
   }
 
-  v7 = [(CSIBitmapWrapper *)self bitmapContext];
-  if (!v7)
+  bitmapContext = [(CSIBitmapWrapper *)self bitmapContext];
+  if (!bitmapContext)
   {
     return self->_pixelData;
   }
 
-  v8 = v7;
+  v8 = bitmapContext;
   pixelFormat = self->_pixelFormat;
   if (pixelFormat != 1195456544 && pixelFormat != 1195454774)
   {
-    BytesPerRow = CGBitmapContextGetBytesPerRow(v7);
+    BytesPerRow = CGBitmapContextGetBytesPerRow(bitmapContext);
     v30 = CGBitmapContextGetHeight(v8) * BytesPerRow;
     self->_pixelData = [[NSData alloc] initWithBytesNoCopy:CGBitmapContextGetData(v8) length:v30 freeWhenDone:0];
     self->_rowbytes = CGBitmapContextGetBytesPerRow(v8);
@@ -218,7 +218,7 @@ LABEL_32:
   }
 
   v34.data = 0;
-  Image = CGBitmapContextCreateImage(v7);
+  Image = CGBitmapContextCreateImage(bitmapContext);
   BitmapInfo = CGImageGetBitmapInfo(Image);
   BitsPerComponent = CGImageGetBitsPerComponent(Image);
   v13 = &kCGColorSpaceExtendedGray;
@@ -336,7 +336,7 @@ LABEL_32:
   [(CSIBitmapWrapper *)&v6 dealloc];
 }
 
-- (CSIBitmapWrapper)initWithPixelWidth:(unsigned int)a3 pixelHeight:(unsigned int)a4
+- (CSIBitmapWrapper)initWithPixelWidth:(unsigned int)width pixelHeight:(unsigned int)height
 {
   v7.receiver = self;
   v7.super_class = CSIBitmapWrapper;
@@ -345,8 +345,8 @@ LABEL_32:
   {
     result->_colorSpaceID = 1;
     result->_pixelFormat = 1095911234;
-    result->_width = a3;
-    result->_height = a4;
+    result->_width = width;
+    result->_height = height;
     *&result->_allowsMultiPassEncoding = 257;
     *&result->_allowsPaletteImageCompression = 0;
     result->_imageAlpha = 2;
@@ -355,7 +355,7 @@ LABEL_32:
   return result;
 }
 
-- (CSIBitmapWrapper)initWithCGImage:(CGImage *)a3 width:(unsigned int)a4 height:(unsigned int)a5 texturePixelFormat:(int64_t)a6
+- (CSIBitmapWrapper)initWithCGImage:(CGImage *)image width:(unsigned int)width height:(unsigned int)height texturePixelFormat:(int64_t)format
 {
   v14.receiver = self;
   v14.super_class = CSIBitmapWrapper;
@@ -363,67 +363,67 @@ LABEL_32:
   v11 = v10;
   if (v10)
   {
-    *(v10 + 7) = a4;
-    *(v10 + 8) = a5;
+    *(v10 + 7) = width;
+    *(v10 + 8) = height;
     *(v10 + 24) = 257;
     *(v10 + 51) = 0;
-    v12 = CGImageRetain(a3);
+    v12 = CGImageRetain(image);
     v11->_sourceImage = v12;
     v11->_destImage = 0;
-    v11->_texturePixelFormat = a6;
+    v11->_texturePixelFormat = format;
     v11->_imageAlpha = CGImageGetAlphaInfo(v12);
   }
 
   return v11;
 }
 
-- (void)setPixelData:(id)a3
+- (void)setPixelData:(id)data
 {
   pixelData = self->_pixelData;
-  if (pixelData != a3)
+  if (pixelData != data)
   {
 
-    self->_pixelData = a3;
+    self->_pixelData = data;
   }
 }
 
-- (void)setAllowsMultiPassEncoding:(BOOL)a3
+- (void)setAllowsMultiPassEncoding:(BOOL)encoding
 {
-  self->_allowsMultiPassEncoding = a3;
+  self->_allowsMultiPassEncoding = encoding;
   if (__coreThemeLoggingEnabled == 1)
   {
-    _CUILog(1, "CoreUI(DEBUG) setting allowsMultiPassEncoding to %d", a3, v3, v4, v5, v6, v7, a3);
+    _CUILog(1, "CoreUI(DEBUG) setting allowsMultiPassEncoding to %d", encoding, v3, v4, v5, v6, v7, encoding);
   }
 }
 
-- (void)setAllowsOptimalRowbytesPacking:(BOOL)a3
+- (void)setAllowsOptimalRowbytesPacking:(BOOL)packing
 {
-  self->_allowsOptimalRowbytesPacking = a3;
+  self->_allowsOptimalRowbytesPacking = packing;
   if (__coreThemeLoggingEnabled == 1)
   {
-    _CUILog(1, "CoreUI(DEBUG) setting allowsOptimalRowbytesPacking to %d", a3, v3, v4, v5, v6, v7, a3);
+    _CUILog(1, "CoreUI(DEBUG) setting allowsOptimalRowbytesPacking to %d", packing, v3, v4, v5, v6, v7, packing);
   }
 }
 
-- (void)setAllowsCompactCompression:(BOOL)a3
+- (void)setAllowsCompactCompression:(BOOL)compression
 {
-  self->_allowsCompactCompression = a3;
+  self->_allowsCompactCompression = compression;
   if (__coreThemeLoggingEnabled == 1)
   {
-    _CUILog(1, "CoreUI(DEBUG) setting allowsCompactCompression to %d", a3, v3, v4, v5, v6, v7, a3);
+    _CUILog(1, "CoreUI(DEBUG) setting allowsCompactCompression to %d", compression, v3, v4, v5, v6, v7, compression);
   }
 }
 
-- (id)compressedData:(BOOL)a3 usedEncoding:(int *)a4 andRowChunkSize:(unsigned int *)a5
+- (id)compressedData:(BOOL)data usedEncoding:(int *)encoding andRowChunkSize:(unsigned int *)size
 {
   if ([(CSIBitmapWrapper *)self width]|| [(CSIBitmapWrapper *)self width]|| ![(CSIBitmapWrapper *)self pixelData]|| [(CSIBitmapWrapper *)self pixelFormat]!= 1346651680)
   {
-    v9 = [(CSIBitmapWrapper *)self pixelData];
-    v170 = [(NSData *)v9 length];
-    v10 = [(CSIBitmapWrapper *)self height];
-    v11 = [(CSIBitmapWrapper *)self width];
-    v12 = [(NSData *)v9 length];
-    Data = [(NSData *)v9 bytes];
+    pixelData = [(CSIBitmapWrapper *)self pixelData];
+    v170 = [(NSData *)pixelData length];
+    height = [(CSIBitmapWrapper *)self height];
+    width = [(CSIBitmapWrapper *)self width];
+    v12 = [(NSData *)pixelData length];
+    Data = [(NSData *)pixelData bytes];
     rowbytes = self->_rowbytes;
     if (!rowbytes)
     {
@@ -431,9 +431,9 @@ LABEL_32:
       rowbytes = self->_rowbytes;
     }
 
-    v14 = v10;
-    v15 = v11;
-    if (!a3)
+    v14 = height;
+    v15 = width;
+    if (!data)
     {
       [(CSIBitmapWrapper *)self setCompressionType:1];
     }
@@ -442,18 +442,18 @@ LABEL_32:
     v180 = 0;
     v179 = 0;
     v178 = 0;
-    v16 = [(CSIBitmapWrapper *)self compressionType];
+    compressionType = [(CSIBitmapWrapper *)self compressionType];
     v19 = 0;
-    if (v16 <= 2)
+    if (compressionType <= 2)
     {
-      if (!v16)
+      if (!compressionType)
       {
         goto LABEL_21;
       }
 
-      if (v16 != 1)
+      if (compressionType != 1)
       {
-        if (v16 != 2)
+        if (compressionType != 2)
         {
           goto LABEL_110;
         }
@@ -462,8 +462,8 @@ LABEL_21:
         if ([(CSIBitmapWrapper *)self allowsPaletteImageCompression]&& ![(CSIBitmapWrapper *)self allowsDeepmap2ImageCompression]&& [(CSIBitmapWrapper *)self colorSpaceID]!= 2 && [(CSIBitmapWrapper *)self colorSpaceID]!= 6 && [(CSIBitmapWrapper *)self compressionType]!= 7)
         {
           v181 = 8;
-          v127 = [(CSIBitmapWrapper *)self destImage];
-          if (!v127 || (v134 = v127, !CGImageGetWidth(v127)) || !CGImageGetHeight(v134))
+          destImage = [(CSIBitmapWrapper *)self destImage];
+          if (!destImage || (v134 = destImage, !CGImageGetWidth(destImage)) || !CGImageGetHeight(v134))
           {
             _CUILog(4, "CoreUI: Invalid image for lossless compression, fallback to Deepmap lossless compression...", v128, v129, v130, v131, v132, v133, v160);
             goto LABEL_26;
@@ -476,9 +476,9 @@ LABEL_21:
           pixelData = self->_pixelData;
           if (pixelData)
           {
-            v136 = [(NSData *)pixelData bytes];
+            bytes = [(NSData *)pixelData bytes];
             v139 = self->_rowbytes;
-            v177.data = v136;
+            v177.data = bytes;
             v177.rowBytes = v139;
           }
 
@@ -509,7 +509,7 @@ LABEL_21:
             [(CSIBitmapWrapper *)self setPixelFormat:v179];
             [(CSIBitmapWrapper *)self setColorSpaceID:v180];
             self->_rowbytes = v178;
-            *a5 = v10;
+            *size = height;
             v19 = [NSArray arrayWithObject:v159];
 
             if (!pixelData)
@@ -566,7 +566,7 @@ LABEL_29:
                   free(v71);
                 }
 
-                v72 = a5;
+                sizeCopy3 = size;
               }
 
               else
@@ -585,7 +585,7 @@ LABEL_29:
                 if (v123 < 1 || v170 <= v123)
                 {
                   v181 = 0;
-                  v72 = a5;
+                  sizeCopy3 = size;
                   if (v69 >= 0x800)
                   {
                     free(v71);
@@ -595,7 +595,7 @@ LABEL_29:
                 else
                 {
                   v181 = 1;
-                  v72 = a5;
+                  sizeCopy3 = size;
                   if (v69 > 0x7FF)
                   {
                     v124 = [NSData dataWithBytesNoCopy:v71 length:v123 freeWhenDone:1];
@@ -606,12 +606,12 @@ LABEL_29:
                     v124 = [NSData dataWithBytes:v71 length:v123];
                   }
 
-                  v9 = v124;
+                  pixelData = v124;
                 }
               }
 
-              *v72 = v10;
-              v19 = [NSArray arrayWithObject:v9];
+              *sizeCopy3 = height;
+              v19 = [NSArray arrayWithObject:pixelData];
               goto LABEL_110;
             }
           }
@@ -633,10 +633,10 @@ LABEL_29:
             if (__environmentRequestedCompression)
             {
 LABEL_48:
-              v34 = [(CSIBitmapWrapper *)self allowsMultiPassEncoding];
+              allowsMultiPassEncoding = [(CSIBitmapWrapper *)self allowsMultiPassEncoding];
               if (v15 > 1)
               {
-                v41 = v34;
+                v41 = allowsMultiPassEncoding;
               }
 
               else
@@ -663,22 +663,22 @@ LABEL_48:
 
                 if (v27 < 0x5000)
                 {
-                  v10 >>= 1;
+                  height >>= 1;
                 }
 
-                else if (v10 >= 3)
+                else if (height >= 3)
                 {
-                  v10 /= 3u;
+                  height /= 3u;
                 }
               }
 
-              v171 = a4;
-              *a5 = v10;
+              encodingCopy = encoding;
+              *size = height;
               if (v12 >= 1)
               {
                 v19 = 0;
                 v43 = 0;
-                v44 = rowbytes * v10;
+                v44 = rowbytes * height;
                 propertyNamea = kCFStreamPropertyDataWritten;
                 v45 = v12;
                 while (1)
@@ -769,7 +769,7 @@ LABEL_76:
 
                 else
                 {
-                  v56 = rowbytes * v10;
+                  v56 = rowbytes * height;
                 }
 
                 while (1)
@@ -798,7 +798,7 @@ LABEL_76:
               v19 = 0;
 LABEL_88:
               v68 = v19;
-              a4 = v171;
+              encoding = encodingCopy;
 LABEL_110:
               if (__loggingEnabled == 1)
               {
@@ -807,9 +807,9 @@ LABEL_110:
                 _CUILog(1, "CSI: %s Compressed [%lu x %lu]\t\t%lu\trowbytes %lu\t to size %@\twith compressionFactor:\t%.2f", v77, v78, v79, v80, v81, v82, v76);
               }
 
-              if (a4)
+              if (encoding)
               {
-                *a4 = v181;
+                *encoding = v181;
               }
 
               return v19;
@@ -825,19 +825,19 @@ LABEL_110:
         if ([(CSIBitmapWrapper *)self allowsDeepmap2ImageCompression])
         {
           v181 = 11;
-          v87 = [(CSIBitmapWrapper *)self destImage];
-          if (v87)
+          destImage2 = [(CSIBitmapWrapper *)self destImage];
+          if (destImage2)
           {
-            v94 = v87;
-            if (CGImageGetWidth(v87))
+            v94 = destImage2;
+            if (CGImageGetWidth(destImage2))
             {
               if (CGImageGetHeight(v94))
               {
                 v172 = v12;
                 v167 = v15;
                 v169 = v14;
-                v95 = a4;
-                v165 = [(NSData *)self->_pixelData bytes];
+                encodingCopy3 = encoding;
+                bytes2 = [(NSData *)self->_pixelData bytes];
                 Height = CGImageGetHeight(v94);
                 Width = CGImageGetWidth(v94);
                 v96 = self->_rowbytes;
@@ -850,11 +850,11 @@ LABEL_110:
                 *(&v182[0] + 1) = ColorSpace;
                 LODWORD(v182[1]) = BitmapInfo;
                 memset(&v182[1] + 4, 0, 20);
-                v177.data = v165;
+                v177.data = bytes2;
                 v177.height = Height;
                 v177.width = Width;
                 v177.rowBytes = v96;
-                v103 = CUIImageCompressedWithDeepmap2(v182, &v177, v101, &v179, &v180, &v178, a5, v102);
+                v103 = CUIImageCompressedWithDeepmap2(v182, &v177, v101, &v179, &v180, &v178, size, v102);
                 if (v103)
                 {
 LABEL_127:
@@ -863,7 +863,7 @@ LABEL_127:
                   [(CSIBitmapWrapper *)self setColorSpaceID:v180];
                   self->_rowbytes = v178;
                   v19 = v121;
-                  a4 = v95;
+                  encoding = encodingCopy3;
                   goto LABEL_110;
                 }
 
@@ -885,19 +885,19 @@ LABEL_127:
           }
 
           v181 = 10;
-          v112 = [(CSIBitmapWrapper *)self destImage];
-          if (v112)
+          destImage3 = [(CSIBitmapWrapper *)self destImage];
+          if (destImage3)
           {
-            v113 = v112;
-            if (CGImageGetWidth(v112))
+            v113 = destImage3;
+            if (CGImageGetWidth(destImage3))
             {
               if (CGImageGetHeight(v113))
               {
                 v172 = v12;
                 v167 = v15;
                 v169 = v14;
-                v95 = a4;
-                v166 = [(NSData *)self->_pixelData bytes];
+                encodingCopy3 = encoding;
+                bytes3 = [(NSData *)self->_pixelData bytes];
                 v164 = CGImageGetHeight(v113);
                 v162 = CGImageGetWidth(v113);
                 v114 = self->_rowbytes;
@@ -910,11 +910,11 @@ LABEL_127:
                 *(&v182[0] + 1) = v117;
                 LODWORD(v182[1]) = v118;
                 memset(&v182[1] + 4, 0, 20);
-                v177.data = v166;
+                v177.data = bytes3;
                 v177.height = v164;
                 v177.width = v162;
                 v177.rowBytes = v114;
-                v103 = CUIImageCompressedWithDeepmap(v182, &v177, v119, &v179, &v180, &v178, a5, v120);
+                v103 = CUIImageCompressedWithDeepmap(v182, &v177, v119, &v179, &v180, &v178, size, v120);
                 if (v103)
                 {
                   goto LABEL_127;
@@ -924,7 +924,7 @@ LABEL_127:
                 v111 = 3;
 LABEL_159:
                 _CUILog(v111, v110, v104, v105, v106, v107, v108, v109, v160);
-                a4 = v95;
+                encoding = encodingCopy3;
                 v15 = v167;
                 v14 = v169;
                 goto LABEL_160;
@@ -939,15 +939,15 @@ LABEL_159:
         goto LABEL_29;
       }
 
-      v20 = a5;
-      *a5 = v10;
-      v19 = [NSArray arrayWithObject:v9];
+      sizeCopy5 = size;
+      *size = height;
+      v19 = [NSArray arrayWithObject:pixelData];
 LABEL_37:
       v181 = 6;
       *&v182[0] = 0;
       v177.data = 0;
-      *v20 = v10;
-      if ((encodeRadiosity(v15, v10, rowbytes, Data, v182, &v177, v17, v18, 40.0) & 0x80000000) == 0)
+      *sizeCopy5 = height;
+      if ((encodeRadiosity(v15, height, rowbytes, Data, v182, &v177, v17, v18, 40.0) & 0x80000000) == 0)
       {
         v30 = [NSData alloc];
         v31 = [v30 initWithBytesNoCopy:*&v182[0] length:v177.data freeWhenDone:1];
@@ -957,9 +957,9 @@ LABEL_37:
       goto LABEL_110;
     }
 
-    if (v16 > 6)
+    if (compressionType > 6)
     {
-      if (v16 != 7)
+      if (compressionType != 7)
       {
         goto LABEL_110;
       }
@@ -971,9 +971,9 @@ LABEL_37:
         CGBitmapContextGetBitsPerPixel([(CSIBitmapWrapper *)self bitmapContext]);
         Image = CGBitmapContextCreateImage([(CSIBitmapWrapper *)self bitmapContext]);
         v22 = CGBitmapContextGetColorSpace([(CSIBitmapWrapper *)self bitmapContext]);
-        v23 = CGBitmapContextCreate(0, v11, v10, 5uLL, 0, v22, 0x1006u);
-        v184.size.width = v11;
-        v184.size.height = v10;
+        v23 = CGBitmapContextCreate(0, width, height, 5uLL, 0, v22, 0x1006u);
+        v184.size.width = width;
+        v184.size.height = height;
         v184.origin.x = 0.0;
         v184.origin.y = 0.0;
         CGContextDrawImage(v23, v184, Image);
@@ -982,14 +982,14 @@ LABEL_37:
         CFRelease(self->_bitmapContext);
         self->_bitmapContext = v23;
         v24 = v23;
-        v15 = v11;
-        v14 = v10;
+        v15 = width;
+        v14 = height;
         BytesPerRow = CGBitmapContextGetBytesPerRow(v24);
         self->_rowbytes = BytesPerRow;
         rowbytes = BytesPerRow;
-        v12 = BytesPerRow * v10;
-        v9 = [[NSData alloc] initWithBytesNoCopy:Data length:v12 freeWhenDone:0];
-        [(CSIBitmapWrapper *)self setPixelData:v9];
+        v12 = BytesPerRow * height;
+        pixelData = [[NSData alloc] initWithBytesNoCopy:Data length:v12 freeWhenDone:0];
+        [(CSIBitmapWrapper *)self setPixelData:pixelData];
 
         [(CSIBitmapWrapper *)self setPixelFormat:1380401717];
         v170 = v12;
@@ -999,40 +999,40 @@ LABEL_37:
 
     else
     {
-      if (v16 == 6)
+      if (compressionType == 6)
       {
-        v20 = a5;
+        sizeCopy5 = size;
         goto LABEL_37;
       }
 
       v172 = v12;
-      if ((v16 - 4) < 2)
+      if ((compressionType - 4) < 2)
       {
-        v73 = [(CSIBitmapWrapper *)self destImage];
-        v74 = CUIImageCompressedWithATECompression(v73, [(CSIBitmapWrapper *)self compressionType], [(CSIBitmapWrapper *)self targetPlatform], &v181, &v179, &v180);
+        destImage4 = [(CSIBitmapWrapper *)self destImage];
+        v74 = CUIImageCompressedWithATECompression(destImage4, [(CSIBitmapWrapper *)self compressionType], [(CSIBitmapWrapper *)self targetPlatform], &v181, &v179, &v180);
         if (v74)
         {
           v75 = v74;
           [(CSIBitmapWrapper *)self setPixelFormat:v179];
           [(CSIBitmapWrapper *)self setColorSpaceID:v180];
-          *a5 = v10;
+          *size = height;
           v19 = [NSArray arrayWithObject:v75];
 
           goto LABEL_110;
         }
       }
 
-      else if (v16 != 3)
+      else if (compressionType != 3)
       {
         goto LABEL_110;
       }
     }
 
-    v83 = [(CSIBitmapWrapper *)self destImage];
+    destImage5 = [(CSIBitmapWrapper *)self destImage];
     if ([(CSIBitmapWrapper *)self allowsHevcCompression])
     {
       [(CSIBitmapWrapper *)self compressionQuality];
-      v85 = CUIImageCompressedWithHEVC(v83, &v179, &v180, &v178, v84);
+      v85 = CUIImageCompressedWithHEVC(destImage5, &v179, &v180, &v178, v84);
       if (v85)
       {
         v86 = v85;
@@ -1042,27 +1042,27 @@ LABEL_37:
 
       if ([(CSIBitmapWrapper *)self name])
       {
-        v126 = [(NSString *)[(CSIBitmapWrapper *)self name] UTF8String];
+        uTF8String = [(NSString *)[(CSIBitmapWrapper *)self name] UTF8String];
       }
 
       else
       {
-        v126 = "a rendition";
+        uTF8String = "a rendition";
       }
 
       if ([(CSIBitmapWrapper *)self pixelFormat]== 1195456544)
       {
-        _CUILog(4, "CoreUI: HEVC lossy compression failed for %s. Re-try again with default lossless fallback.", v140, v141, v142, v143, v144, v145, v126);
+        _CUILog(4, "CoreUI: HEVC lossy compression failed for %s. Re-try again with default lossless fallback.", v140, v141, v142, v143, v144, v145, uTF8String);
 LABEL_160:
         v12 = v172;
         goto LABEL_29;
       }
 
-      _CUILog(4, "CoreUI: HEVC lossy compression failed for %s. Re-try again with jpeg+lzfse fallback.", v140, v141, v142, v143, v144, v145, v126);
+      _CUILog(4, "CoreUI: HEVC lossy compression failed for %s. Re-try again with jpeg+lzfse fallback.", v140, v141, v142, v143, v144, v145, uTF8String);
     }
 
     [(CSIBitmapWrapper *)self compressionQuality];
-    v86 = CUIImageCompressedWithJPEGandLZFSE(v83, &v179, &v180, &v178, v146);
+    v86 = CUIImageCompressedWithJPEGandLZFSE(destImage5, &v179, &v180, &v178, v146);
     v181 = 5;
     v12 = v172;
     if (!v86)
@@ -1075,17 +1075,17 @@ LABEL_155:
     [(CSIBitmapWrapper *)self setPixelFormat:v179];
     [(CSIBitmapWrapper *)self setColorSpaceID:v180];
     self->_rowbytes = v178;
-    *a5 = v10;
+    *size = height;
     v19 = [NSArray arrayWithObject:v86];
 
     goto LABEL_110;
   }
 
-  *a5 = 0;
-  *a4 = 0;
-  v32 = [(CSIBitmapWrapper *)self pixelData];
+  *size = 0;
+  *encoding = 0;
+  pixelData2 = [(CSIBitmapWrapper *)self pixelData];
 
-  return [NSArray arrayWithObject:v32];
+  return [NSArray arrayWithObject:pixelData2];
 }
 
 - (id)bitmapContext

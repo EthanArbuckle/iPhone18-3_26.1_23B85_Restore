@@ -1,10 +1,10 @@
 @interface ULKeychainMock
-+ (id)retrieveSymmetricKey:(id)a3;
++ (id)retrieveSymmetricKey:(id)key;
 @end
 
 @implementation ULKeychainMock
 
-+ (id)retrieveSymmetricKey:(id)a3
++ (id)retrieveSymmetricKey:(id)key
 {
   v3 = sub_259212840();
   static ULKeychainMock.retrieveSymmetricKey(_:)(v3, v4, v14);

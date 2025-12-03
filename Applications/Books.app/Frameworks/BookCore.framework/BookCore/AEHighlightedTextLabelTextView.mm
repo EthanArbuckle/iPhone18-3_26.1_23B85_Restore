@@ -1,17 +1,17 @@
 @interface AEHighlightedTextLabelTextView
-- (AEHighlightedTextLabelTextView)initWithFrame:(CGRect)a3;
+- (AEHighlightedTextLabelTextView)initWithFrame:(CGRect)frame;
 - (AEHighlightedTextLabelTextViewDelegate)delegate;
-- (void)drawRect:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation AEHighlightedTextLabelTextView
 
-- (AEHighlightedTextLabelTextView)initWithFrame:(CGRect)a3
+- (AEHighlightedTextLabelTextView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = AEHighlightedTextLabelTextView;
-  v3 = [(AEHighlightedTextLabelTextView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AEHighlightedTextLabelTextView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -21,26 +21,26 @@
   return v4;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [objc_opt_class() areAnimationsEnabled];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  areAnimationsEnabled = [objc_opt_class() areAnimationsEnabled];
   [objc_opt_class() setAnimationsEnabled:0];
   v9.receiver = self;
   v9.super_class = AEHighlightedTextLabelTextView;
   [(AEHighlightedTextLabelTextView *)&v9 setFrame:x, y, width, height];
-  [objc_opt_class() setAnimationsEnabled:v8];
+  [objc_opt_class() setAnimationsEnabled:areAnimationsEnabled];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v9.receiver = self;
   v9.super_class = AEHighlightedTextLabelTextView;
   [(AEHighlightedTextLabelTextView *)&v9 drawRect:?];

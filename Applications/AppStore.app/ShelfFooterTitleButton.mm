@@ -1,19 +1,19 @@
 @interface ShelfFooterTitleButton
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC8AppStore22ShelfFooterTitleButton)initWithCoder:(id)a3;
-- (_TtC8AppStore22ShelfFooterTitleButton)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC8AppStore22ShelfFooterTitleButton)initWithCoder:(id)coder;
+- (_TtC8AppStore22ShelfFooterTitleButton)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)updateConfiguration;
 @end
 
 @implementation ShelfFooterTitleButton
 
-- (_TtC8AppStore22ShelfFooterTitleButton)initWithFrame:(CGRect)a3
+- (_TtC8AppStore22ShelfFooterTitleButton)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   v8 = type metadata accessor for ShelfFooterTitleButton.Style(0);
   __chkstk_darwin(v8);
@@ -34,7 +34,7 @@
   return v14;
 }
 
-- (_TtC8AppStore22ShelfFooterTitleButton)initWithCoder:(id)a3
+- (_TtC8AppStore22ShelfFooterTitleButton)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC8AppStore22ShelfFooterTitleButton_leadingIconView;
   *(&self->super.super.super.super.super.isa + v4) = [objc_allocWithZone(UIImageView) init];
@@ -47,7 +47,7 @@
 
 - (void)updateConfiguration
 {
-  v2 = self;
+  selfCopy = self;
   sub_10048DE88();
 }
 
@@ -60,17 +60,17 @@
   sub_10048DCD0(v4);
   sub_10002A400(v4, v4[3]);
   LayoutMarginsAware<>.layoutFrame.getter();
-  v3 = [v2 traitCollection];
+  traitCollection = [v2 traitCollection];
   dispatch thunk of Placeable.place(at:with:)();
 
   sub_100007000(v4);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   v6 = sub_10048E9B4(width, height);
   v8 = v7;
 

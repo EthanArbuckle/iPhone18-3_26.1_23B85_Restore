@@ -1,22 +1,22 @@
 @interface SBINAppIntent
-- (BOOL)isEqual:(id)a3;
-- (SBINAppIntent)initWithIdentifier:(id)a3 systemContext:(id)a4;
-- (void)appendDescriptionToFormatter:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (SBINAppIntent)initWithIdentifier:(id)identifier systemContext:(id)context;
+- (void)appendDescriptionToFormatter:(id)formatter;
 @end
 
 @implementation SBINAppIntent
 
-- (SBINAppIntent)initWithIdentifier:(id)a3 systemContext:(id)a4
+- (SBINAppIntent)initWithIdentifier:(id)identifier systemContext:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  identifierCopy = identifier;
+  contextCopy = context;
+  if (!identifierCopy)
   {
     [SBINAppIntent initWithIdentifier:a2 systemContext:?];
   }
 
-  v10 = v9;
-  if (!v9)
+  v10 = contextCopy;
+  if (!contextCopy)
   {
     [SBINAppIntent initWithIdentifier:a2 systemContext:?];
   }
@@ -27,24 +27,24 @@
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_identifier, a3);
-    objc_storeStrong(&v12->_systemContext, a4);
+    objc_storeStrong(&v11->_identifier, identifier);
+    objc_storeStrong(&v12->_systemContext, context);
   }
 
   return v12;
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v5 = a3;
-  [v5 appendString:self->_identifier withName:@"identifier"];
-  v4 = [v5 appendObject:self->_systemContext withName:@"systemContext"];
+  formatterCopy = formatter;
+  [formatterCopy appendString:self->_identifier withName:@"identifier"];
+  v4 = [formatterCopy appendObject:self->_systemContext withName:@"systemContext"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -56,7 +56,7 @@
 
     if (isKindOfClass)
     {
-      v7 = v4;
+      v7 = equalCopy;
       identifier = self->_identifier;
       v9 = v7->_identifier;
       if (BSEqualStrings())

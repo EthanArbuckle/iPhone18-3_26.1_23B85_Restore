@@ -1,24 +1,24 @@
 @interface CKAttachmentSearchResultCell
 - (CGPoint)avatarOffsetLTR;
 - (CGPoint)avatarOffsetRTL;
-- (CKAttachmentSearchResultCell)initWithFrame:(CGRect)a3;
+- (CKAttachmentSearchResultCell)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)marginInsets;
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3;
-- (void)_thumbnailGenerated:(id)a3;
-- (void)configureWithQueryResult:(id)a3 searchText:(id)a4 mode:(unint64_t)a5;
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes;
+- (void)_thumbnailGenerated:(id)generated;
+- (void)configureWithQueryResult:(id)result searchText:(id)text mode:(unint64_t)mode;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setSelected:(BOOL)a3;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation CKAttachmentSearchResultCell
 
-- (CKAttachmentSearchResultCell)initWithFrame:(CGRect)a3
+- (CKAttachmentSearchResultCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v30.receiver = self;
   v30.super_class = CKAttachmentSearchResultCell;
   v7 = [(CKAttachmentSearchResultCell *)&v30 initWithFrame:?];
@@ -27,8 +27,8 @@
     v8 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithFrame:{x, y, width, height}];
     [v8 setContentMode:1];
     [(CKEditableSearchResultCell *)v7 setImageView:v8];
-    v9 = [(CKAttachmentSearchResultCell *)v7 contentView];
-    [v9 addSubview:v8];
+    contentView = [(CKAttachmentSearchResultCell *)v7 contentView];
+    [contentView addSubview:v8];
 
     v10 = objc_alloc(MEMORY[0x1E69DCC10]);
     v11 = *MEMORY[0x1E695F058];
@@ -37,39 +37,39 @@
     v14 = *(MEMORY[0x1E695F058] + 24);
     v15 = [v10 initWithFrame:{*MEMORY[0x1E695F058], v12, v13, v14}];
     v16 = +[CKUIBehavior sharedBehaviors];
-    v17 = [v16 searchAttachmentResultLabelFont];
-    [v15 setFont:v17];
+    searchAttachmentResultLabelFont = [v16 searchAttachmentResultLabelFont];
+    [v15 setFont:searchAttachmentResultLabelFont];
 
     [v15 setNumberOfLines:2];
     [v15 setTextAlignment:1];
     [(CKAttachmentSearchResultCell *)v7 setTitleLabel:v15];
-    v18 = [(CKAttachmentSearchResultCell *)v7 contentView];
-    [v18 addSubview:v15];
+    contentView2 = [(CKAttachmentSearchResultCell *)v7 contentView];
+    [contentView2 addSubview:v15];
 
     v19 = [objc_alloc(MEMORY[0x1E69DC918]) initWithFrame:{v11, v12, v13, v14}];
     v20 = +[CKUIBehavior sharedBehaviors];
-    v21 = [v20 searchAttachmentResultDateLabelFont];
-    [v19 setFont:v21];
+    searchAttachmentResultDateLabelFont = [v20 searchAttachmentResultDateLabelFont];
+    [v19 setFont:searchAttachmentResultDateLabelFont];
 
     v22 = +[CKUIBehavior sharedBehaviors];
-    v23 = [v22 theme];
-    v24 = [v23 spotlightAttachmentSecondaryColor];
-    [v19 setTextColor:v24];
+    theme = [v22 theme];
+    spotlightAttachmentSecondaryColor = [theme spotlightAttachmentSecondaryColor];
+    [v19 setTextColor:spotlightAttachmentSecondaryColor];
 
     [v19 setNumberOfLines:1];
     [v19 setTextAlignment:1];
     [(CKAttachmentSearchResultCell *)v7 setDateLabel:v19];
-    v25 = [(CKAttachmentSearchResultCell *)v7 contentView];
-    [v25 addSubview:v19];
+    contentView3 = [(CKAttachmentSearchResultCell *)v7 contentView];
+    [contentView3 addSubview:v19];
 
     v26 = [[CKSearchAvatarSupplementryView alloc] initWithFrame:v11, v12, v13, v14];
     [(CKSearchAvatarSupplementryView *)v26 setParentContentType:3];
     [(CKAttachmentSearchResultCell *)v7 setAvatarView:v26];
-    v27 = [(CKAttachmentSearchResultCell *)v7 contentView];
-    [v27 addSubview:v26];
+    contentView4 = [(CKAttachmentSearchResultCell *)v7 contentView];
+    [contentView4 addSubview:v26];
 
-    v28 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v28 addObserver:v7 selector:sel__thumbnailGenerated_ name:@"CKSearchThumbnailDidChange" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__thumbnailGenerated_ name:@"CKSearchThumbnailDidChange" object:0];
   }
 
   return v7;
@@ -98,29 +98,29 @@
   v130.receiver = self;
   v130.super_class = CKAttachmentSearchResultCell;
   [(CKEditableSearchResultCell *)&v130 layoutSubviews];
-  v3 = [(CKAttachmentSearchResultCell *)self contentView];
-  [v3 bounds];
+  contentView = [(CKAttachmentSearchResultCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(CKAttachmentSearchResultCell *)self _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(CKAttachmentSearchResultCell *)self _shouldReverseLayoutDirection];
   v13 = +[CKUIBehavior sharedBehaviors];
   [v13 searchAttachmentsImageTopPadding];
   v15 = v14;
 
-  v16 = [(CKEditableSearchResultCell *)self imageView];
-  v17 = [v16 image];
+  imageView = [(CKEditableSearchResultCell *)self imageView];
+  image = [imageView image];
 
   v129 = v9;
-  if (!v17)
+  if (!image)
   {
-    v50 = [(CKEditableSearchResultCell *)self checkmarkView];
-    [v50 setHidden:1];
+    checkmarkView = [(CKEditableSearchResultCell *)self checkmarkView];
+    [checkmarkView setHidden:1];
 
-    v51 = [(CKAttachmentSearchResultCell *)self avatarView];
-    [v51 setHidden:1];
+    avatarView = [(CKAttachmentSearchResultCell *)self avatarView];
+    [avatarView setHidden:1];
 LABEL_19:
 
     goto LABEL_20;
@@ -128,11 +128,11 @@ LABEL_19:
 
   v128 = v5;
   v18 = *MEMORY[0x1E695F058];
-  v19 = [(CKEditableSearchResultCell *)self imageView];
-  [v19 sizeToFit];
+  imageView2 = [(CKEditableSearchResultCell *)self imageView];
+  [imageView2 sizeToFit];
 
-  v20 = [(CKEditableSearchResultCell *)self imageView];
-  [v20 frame];
+  imageView3 = [(CKEditableSearchResultCell *)self imageView];
+  [imageView3 frame];
   v22 = v21;
   v24 = v23;
 
@@ -180,11 +180,11 @@ LABEL_19:
   v132.size.height = v28;
   v38 = v37 - CGRectGetHeight(v132);
 
-  v39 = [(CKEditableSearchResultCell *)self imageView];
-  [v39 setFrame:{v30, v38, v127, v28}];
+  imageView4 = [(CKEditableSearchResultCell *)self imageView];
+  [imageView4 setFrame:{v30, v38, v127, v28}];
 
-  v40 = [(CKAttachmentSearchResultCell *)self avatarView];
-  [v40 setHidden:{-[CKAttachmentSearchResultCell suppressAvatars](self, "suppressAvatars")}];
+  avatarView2 = [(CKAttachmentSearchResultCell *)self avatarView];
+  [avatarView2 setHidden:{-[CKAttachmentSearchResultCell suppressAvatars](self, "suppressAvatars")}];
 
   v41 = +[CKUIBehavior sharedBehaviors];
   [v41 searchResultAvatarSize];
@@ -193,7 +193,7 @@ LABEL_19:
   [v44 searchResultAvatarSize];
   v46 = v45;
 
-  if (v12)
+  if (_shouldReverseLayoutDirection)
   {
     [(CKAttachmentSearchResultCell *)self avatarOffsetRTL];
     v48 = v30 + v47;
@@ -218,29 +218,29 @@ LABEL_19:
   }
 
   v55 = v38 + v49;
-  v56 = [(CKAttachmentSearchResultCell *)self avatarView];
-  [v56 setFrame:{v48, v55, v43, v46}];
+  avatarView3 = [(CKAttachmentSearchResultCell *)self avatarView];
+  [avatarView3 setFrame:{v48, v55, v43, v46}];
 
-  v57 = [(CKEditableSearchResultCell *)self checkmarkView];
+  checkmarkView2 = [(CKEditableSearchResultCell *)self checkmarkView];
 
   v5 = v128;
-  if (v57)
+  if (checkmarkView2)
   {
     [(CKAttachmentSearchResultCell *)self editModeHorizontalOffset];
     v126 = v58;
-    v59 = [(CKEditableSearchResultCell *)self checkmarkView];
-    [v59 setHidden:0];
+    checkmarkView3 = [(CKEditableSearchResultCell *)self checkmarkView];
+    [checkmarkView3 setHidden:0];
 
-    LODWORD(v59) = [(CKAttachmentSearchResultCell *)self _shouldReverseLayoutDirection];
-    v60 = [(CKAttachmentSearchResultCell *)self contentView];
-    v61 = [(CKEditableSearchResultCell *)self checkmarkView];
-    [v60 bringSubviewToFront:v61];
+    LODWORD(checkmarkView3) = [(CKAttachmentSearchResultCell *)self _shouldReverseLayoutDirection];
+    contentView2 = [(CKAttachmentSearchResultCell *)self contentView];
+    checkmarkView4 = [(CKEditableSearchResultCell *)self checkmarkView];
+    [contentView2 bringSubviewToFront:checkmarkView4];
 
-    v62 = [(CKEditableSearchResultCell *)self checkmarkView];
-    [v62 sizeToFit];
+    checkmarkView5 = [(CKEditableSearchResultCell *)self checkmarkView];
+    [checkmarkView5 sizeToFit];
 
-    v63 = [(CKEditableSearchResultCell *)self checkmarkView];
-    [v63 frame];
+    checkmarkView6 = [(CKEditableSearchResultCell *)self checkmarkView];
+    [checkmarkView6 frame];
     v65 = v64;
     v67 = v66;
     v69 = v68;
@@ -250,7 +250,7 @@ LABEL_19:
     v73 = v38;
     v74 = v127;
     v75 = v36;
-    if (v59)
+    if (checkmarkView3)
     {
       v76 = v126 + CGRectGetMinX(*&v72);
     }
@@ -277,42 +277,42 @@ LABEL_19:
     v137.size.width = v69;
     v137.size.height = v71;
     v80 = MaxY - CGRectGetHeight(v137) + -4.0;
-    v51 = [(CKEditableSearchResultCell *)self checkmarkView];
-    [v51 setFrame:{v76, v80, v69, v71}];
+    avatarView = [(CKEditableSearchResultCell *)self checkmarkView];
+    [avatarView setFrame:{v76, v80, v69, v71}];
     v5 = v128;
     goto LABEL_19;
   }
 
 LABEL_20:
   v81 = +[CKUIBehavior sharedBehaviors];
-  v82 = [v81 theme];
-  v83 = [v82 attachmentBalloonRichIconOutlineColor];
+  theme = [v81 theme];
+  attachmentBalloonRichIconOutlineColor = [theme attachmentBalloonRichIconOutlineColor];
 
-  v84 = [(CKEditableSearchResultCell *)self imageView];
-  v85 = [v84 layer];
+  imageView5 = [(CKEditableSearchResultCell *)self imageView];
+  layer = [imageView5 layer];
 
-  [v85 setBorderColor:{objc_msgSend(v83, "CGColor")}];
+  [layer setBorderColor:{objc_msgSend(attachmentBalloonRichIconOutlineColor, "CGColor")}];
   if (CKPixelWidth_once_5 != -1)
   {
     [CKAttachmentSearchResultCell layoutSubviews];
   }
 
-  [v85 setBorderWidth:*&CKPixelWidth_sPixel_5];
+  [layer setBorderWidth:*&CKPixelWidth_sPixel_5];
   [(CKAttachmentSearchResultCell *)self bounds];
   v87 = v86;
   v88 = +[CKUIBehavior sharedBehaviors];
   [v88 searchAttachmentsCellPadding];
   v90 = v87 + v89 * -2.0;
 
-  v91 = [(CKAttachmentSearchResultCell *)self titleLabel];
-  [v91 sizeThatFits:{v90, 1.79769313e308}];
+  titleLabel = [(CKAttachmentSearchResultCell *)self titleLabel];
+  [titleLabel sizeThatFits:{v90, 1.79769313e308}];
   v93 = v92;
   v95 = v94;
 
-  v96 = [(CKAttachmentSearchResultCell *)self titleLabel];
+  titleLabel2 = [(CKAttachmentSearchResultCell *)self titleLabel];
   v97 = +[CKUIBehavior sharedBehaviors];
   [v97 searchAttachmentsTitleTopPadding];
-  [v96 drawTextInRect:{0.0, 0.0, v93 + v98, v95}];
+  [titleLabel2 drawTextInRect:{0.0, 0.0, v93 + v98, v95}];
 
   v99 = +[CKUIBehavior sharedBehaviors];
   [v99 searchAttachmentsTitleTopPadding];
@@ -330,18 +330,18 @@ LABEL_20:
   }
 
   v103 = floor((v5 + (v129 - v101) * 0.5) * v102) / v102;
-  v104 = [(CKEditableSearchResultCell *)self imageView];
-  [v104 frame];
+  imageView6 = [(CKEditableSearchResultCell *)self imageView];
+  [imageView6 frame];
   v105 = CGRectGetMaxY(v138);
   v106 = +[CKUIBehavior sharedBehaviors];
   [v106 searchAttachmentsTitleTopPadding];
   v108 = v105 + v107;
 
-  v109 = [(CKAttachmentSearchResultCell *)self titleLabel];
-  [v109 setFrame:{v103, v108, v101, v95}];
+  titleLabel3 = [(CKAttachmentSearchResultCell *)self titleLabel];
+  [titleLabel3 setFrame:{v103, v108, v101, v95}];
 
-  v110 = [(CKAttachmentSearchResultCell *)self dateLabel];
-  [v110 sizeThatFits:{v90, 1.79769313e308}];
+  dateLabel = [(CKAttachmentSearchResultCell *)self dateLabel];
+  [dateLabel sizeThatFits:{v90, 1.79769313e308}];
   v112 = v111;
   v114 = v113;
 
@@ -366,10 +366,10 @@ LABEL_20:
   [v118 searchAttachmentsCellDatePadding];
   v120 = v117 + v119;
 
-  v121 = [(CKAttachmentSearchResultCell *)self dateLabel];
-  [v121 setFrame:{v116, v120, v112, v114}];
+  dateLabel2 = [(CKAttachmentSearchResultCell *)self dateLabel];
+  [dateLabel2 setFrame:{v116, v120, v112, v114}];
 
-  v122 = [(CKAttachmentSearchResultCell *)self dateLabel];
+  dateLabel3 = [(CKAttachmentSearchResultCell *)self dateLabel];
   v140.origin.x = v103;
   v140.origin.y = v108;
   v140.size.width = v101;
@@ -377,7 +377,7 @@ LABEL_20:
   v123 = CGRectGetMaxY(v140);
   v124 = +[CKUIBehavior sharedBehaviors];
   [v124 searchAttachmentsCellDatePadding];
-  [v122 _setFirstLineCapFrameOriginY:v123 + v125];
+  [dateLabel3 _setFirstLineCapFrameOriginY:v123 + v125];
 }
 
 - (void)prepareForReuse
@@ -385,34 +385,34 @@ LABEL_20:
   v7.receiver = self;
   v7.super_class = CKAttachmentSearchResultCell;
   [(CKEditableSearchResultCell *)&v7 prepareForReuse];
-  v3 = [(CKAttachmentSearchResultCell *)self avatarView];
-  [v3 prepareForReuse];
+  avatarView = [(CKAttachmentSearchResultCell *)self avatarView];
+  [avatarView prepareForReuse];
 
   [(CKAttachmentSearchResultCell *)self setResultIdentifier:0];
-  v4 = [(CKEditableSearchResultCell *)self imageView];
-  [v4 setImage:0];
+  imageView = [(CKEditableSearchResultCell *)self imageView];
+  [imageView setImage:0];
 
-  v5 = [(CKAttachmentSearchResultCell *)self titleLabel];
-  [v5 setText:0];
+  titleLabel = [(CKAttachmentSearchResultCell *)self titleLabel];
+  [titleLabel setText:0];
 
-  v6 = [(CKAttachmentSearchResultCell *)self dateLabel];
-  [v6 setDate:0];
+  dateLabel = [(CKAttachmentSearchResultCell *)self dateLabel];
+  [dateLabel setDate:0];
 }
 
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes
 {
-  v4 = a3;
-  [v4 frame];
+  attributesCopy = attributes;
+  [attributesCopy frame];
   x = v23.origin.x;
   y = v23.origin.y;
   width = v23.size.width;
   v8 = CGRectGetWidth(v23);
-  v9 = [(CKAttachmentSearchResultCell *)self titleLabel];
-  [v9 sizeThatFits:{v8, 1.79769313e308}];
+  titleLabel = [(CKAttachmentSearchResultCell *)self titleLabel];
+  [titleLabel sizeThatFits:{v8, 1.79769313e308}];
   v11 = v10;
 
-  v12 = [(CKAttachmentSearchResultCell *)self dateLabel];
-  [v12 sizeThatFits:{v8, 1.79769313e308}];
+  dateLabel = [(CKAttachmentSearchResultCell *)self dateLabel];
+  [dateLabel sizeThatFits:{v8, 1.79769313e308}];
   v14 = v13;
 
   v15 = +[CKUIBehavior sharedBehaviors];
@@ -422,127 +422,127 @@ LABEL_20:
   [v18 searchAttachmentsTitleTopPadding];
   v20 = v17 + v19 * 3.0;
 
-  [v4 setFrame:{x, y, width, v20}];
+  [attributesCopy setFrame:{x, y, width, v20}];
 
-  return v4;
+  return attributesCopy;
 }
 
-- (void)configureWithQueryResult:(id)a3 searchText:(id)a4 mode:(unint64_t)a5
+- (void)configureWithQueryResult:(id)result searchText:(id)text mode:(unint64_t)mode
 {
-  v44 = a3;
-  v7 = a4;
-  v8 = [v44 identifier];
-  [(CKAttachmentSearchResultCell *)self setResultIdentifier:v8];
+  resultCopy = result;
+  textCopy = text;
+  identifier = [resultCopy identifier];
+  [(CKAttachmentSearchResultCell *)self setResultIdentifier:identifier];
 
   v9 = +[CKSearchThumbnailPreviewGenerator sharedInstance];
-  v10 = [v9 hasCachedPreviewForQueryResult:v44];
+  v10 = [v9 hasCachedPreviewForQueryResult:resultCopy];
 
   v11 = +[CKSearchThumbnailPreviewGenerator sharedInstance];
-  v12 = v11;
+  imageView3 = v11;
   if ((v10 & 1) == 0)
   {
-    [v11 generatePreviewForQueryResult:v44];
+    [v11 generatePreviewForQueryResult:resultCopy];
     v13 = 0;
     goto LABEL_6;
   }
 
-  v13 = [v11 cachedPreviewForQueryResult:v44];
+  v13 = [v11 cachedPreviewForQueryResult:resultCopy];
 
   if (v13)
   {
-    v14 = [(CKEditableSearchResultCell *)self imageView];
-    [v14 setImage:v13];
+    imageView = [(CKEditableSearchResultCell *)self imageView];
+    [imageView setImage:v13];
 
     if (CKIsRunningInMacCatalyst())
     {
-      v15 = [(CKEditableSearchResultCell *)self imageView];
-      [v15 setContentMode:2];
+      imageView2 = [(CKEditableSearchResultCell *)self imageView];
+      [imageView2 setContentMode:2];
 
-      v12 = [(CKEditableSearchResultCell *)self imageView];
-      [v12 setClipsToBounds:1];
+      imageView3 = [(CKEditableSearchResultCell *)self imageView];
+      [imageView3 setClipsToBounds:1];
 LABEL_6:
     }
   }
 
-  v16 = [v44 item];
-  v17 = [v16 attributeSet];
+  item = [resultCopy item];
+  attributeSet = [item attributeSet];
 
-  v18 = [v17 __ck_spotlightItemSnippet];
-  v19 = [v18 stringByDeletingPathExtension];
+  __ck_spotlightItemSnippet = [attributeSet __ck_spotlightItemSnippet];
+  stringByDeletingPathExtension = [__ck_spotlightItemSnippet stringByDeletingPathExtension];
 
-  if ([v19 length])
+  if ([stringByDeletingPathExtension length])
   {
     v41 = +[CKUIBehavior sharedBehaviors];
-    v40 = [v41 theme];
-    v38 = [v40 searchAttachmentsTitleTextColor];
+    theme = [v41 theme];
+    searchAttachmentsTitleTextColor = [theme searchAttachmentsTitleTextColor];
     v39 = +[CKUIBehavior sharedBehaviors];
-    v20 = [v39 searchResultLabelFont];
+    searchResultLabelFont = [v39 searchResultLabelFont];
     v21 = +[CKUIBehavior sharedBehaviors];
     [v21 theme];
-    v43 = v17;
-    v23 = v22 = v7;
+    v43 = attributeSet;
+    v23 = v22 = textCopy;
     [v23 conversationListSenderColor];
-    v42 = self;
+    selfCopy = self;
     v25 = v24 = v13;
     v26 = +[CKUIBehavior sharedBehaviors];
-    v27 = [v26 searchResultLabelFont];
-    v28 = [CKSpotlightQueryUtilities annotatedResultStringWithSearchText:v22 resultText:v19 primaryTextColor:v38 primaryFont:v20 annotatedTextColor:v25 annotatedFont:v27];
+    searchResultLabelFont2 = [v26 searchResultLabelFont];
+    v28 = [CKSpotlightQueryUtilities annotatedResultStringWithSearchText:v22 resultText:stringByDeletingPathExtension primaryTextColor:searchAttachmentsTitleTextColor primaryFont:searchResultLabelFont annotatedTextColor:v25 annotatedFont:searchResultLabelFont2];
 
     v13 = v24;
-    self = v42;
+    self = selfCopy;
 
-    v7 = v22;
-    v17 = v43;
+    textCopy = v22;
+    attributeSet = v43;
 
-    v29 = [(CKAttachmentSearchResultCell *)v42 titleLabel];
-    [v29 setAttributedText:v28];
+    titleLabel = [(CKAttachmentSearchResultCell *)selfCopy titleLabel];
+    [titleLabel setAttributedText:v28];
   }
 
-  v30 = [v17 contentCreationDate];
-  v31 = [(CKAttachmentSearchResultCell *)self dateLabel];
-  [v31 setDate:v30];
+  contentCreationDate = [attributeSet contentCreationDate];
+  dateLabel = [(CKAttachmentSearchResultCell *)self dateLabel];
+  [dateLabel setDate:contentCreationDate];
 
-  v32 = [CKSpotlightQueryResultUtilities contactForResult:v44];
-  v33 = [(CKAttachmentSearchResultCell *)self avatarView];
-  [v33 setContact:v32];
+  v32 = [CKSpotlightQueryResultUtilities contactForResult:resultCopy];
+  avatarView = [(CKAttachmentSearchResultCell *)self avatarView];
+  [avatarView setContact:v32];
 
-  v34 = [(CKEditableSearchResultCell *)self imageView];
-  v35 = [v34 layer];
+  imageView4 = [(CKEditableSearchResultCell *)self imageView];
+  layer = [imageView4 layer];
 
   v36 = +[CKUIBehavior sharedBehaviors];
   [v36 searchAttachmentsCellCornerRadius];
-  [v35 setCornerRadius:?];
+  [layer setCornerRadius:?];
 
-  v37 = [(CKEditableSearchResultCell *)self imageView];
-  [v37 setClipsToBounds:1];
+  imageView5 = [(CKEditableSearchResultCell *)self imageView];
+  [imageView5 setClipsToBounds:1];
 
   [(CKAttachmentSearchResultCell *)self setNeedsLayout];
 }
 
-- (void)_thumbnailGenerated:(id)a3
+- (void)_thumbnailGenerated:(id)generated
 {
-  v12 = [a3 object];
-  v4 = [v12 identifier];
-  v5 = [(CKAttachmentSearchResultCell *)self resultIdentifier];
-  v6 = [v4 isEqualToString:v5];
+  object = [generated object];
+  identifier = [object identifier];
+  resultIdentifier = [(CKAttachmentSearchResultCell *)self resultIdentifier];
+  v6 = [identifier isEqualToString:resultIdentifier];
 
   if (v6)
   {
     v7 = +[CKSearchThumbnailPreviewGenerator sharedInstance];
-    v8 = [v7 cachedPreviewForQueryResult:v12];
+    v8 = [v7 cachedPreviewForQueryResult:object];
 
     if (v8)
     {
-      v9 = [(CKEditableSearchResultCell *)self imageView];
-      [v9 setImage:v8];
+      imageView = [(CKEditableSearchResultCell *)self imageView];
+      [imageView setImage:v8];
 
       if (CKIsRunningInMacCatalyst())
       {
-        v10 = [(CKEditableSearchResultCell *)self imageView];
-        [v10 setContentMode:2];
+        imageView2 = [(CKEditableSearchResultCell *)self imageView];
+        [imageView2 setContentMode:2];
 
-        v11 = [(CKEditableSearchResultCell *)self imageView];
-        [v11 setClipsToBounds:1];
+        imageView3 = [(CKEditableSearchResultCell *)self imageView];
+        [imageView3 setClipsToBounds:1];
       }
     }
 
@@ -551,11 +551,11 @@ LABEL_6:
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
   v3.receiver = self;
   v3.super_class = CKAttachmentSearchResultCell;
-  [(CKEditableSearchResultCell *)&v3 setSelected:a3];
+  [(CKEditableSearchResultCell *)&v3 setSelected:selected];
 }
 
 - (UIEdgeInsets)marginInsets

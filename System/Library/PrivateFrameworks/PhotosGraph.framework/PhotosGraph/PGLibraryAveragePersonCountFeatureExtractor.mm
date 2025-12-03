@@ -1,16 +1,16 @@
 @interface PGLibraryAveragePersonCountFeatureExtractor
 - (NSArray)featureNames;
 - (PGLibraryAveragePersonCountFeatureExtractor)init;
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4;
+- (id)floatVectorWithEntity:(id)entity error:(id *)error;
 @end
 
 @implementation PGLibraryAveragePersonCountFeatureExtractor
 
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4
+- (id)floatVectorWithEntity:(id)entity error:(id *)error
 {
-  v5 = a3;
-  v6 = self;
-  sub_22F1F5C18(v5);
+  entityCopy = entity;
+  selfCopy = self;
+  sub_22F1F5C18(entityCopy);
   v8 = v7;
 
   return v8;

@@ -1,25 +1,25 @@
 @interface FPPreflightUserInteraction
-+ (id)evaluationObjectsForAction:(id)a3 sourceItems:(id)a4 destinationItem:(id)a5 domainUserInfo:(id)a6 sourceItemKeysAllowList:(id)a7 destinationItemKeysAllowList:(id)a8;
-+ (id)gatherErrorsForInteractions:(id)a3 evaluationObjects:(id)a4 suppressionDelegate:(id)a5;
-+ (id)interactionFromDictionary:(id)a3 localizationLookup:(id)a4 providerIdentifier:(id)a5 domainIdentifier:(id)a6;
-+ (id)interactionsForArray:(id)a3 localizationLookup:(id)a4 providerIdentifier:(id)a5 domainIdentifier:(id)a6;
-+ (id)interactionsForBundle:(id)a3 providerIdentifier:(id)a4 domainIdentifier:(id)a5;
-+ (id)interactionsForProviderItem:(id)a3 error:(id *)a4;
-+ (id)userInteractionErrorsInInfoPlistDict:(id)a3 forAction:(id)a4 bundleID:(id)a5 hierarchyServicer:(id)a6 sourceNSFPItems:(id)a7 destinationNSFPItem:(id)a8 localizationLookup:(id)a9 provider:(id)a10 domain:(id)a11 extensionCapabilities:(unint64_t)a12 useFPFS:(BOOL)a13;
-+ (void)propagateConfigurationKeysDownInteractionTreeWithObject:(id)a3 key:(id)a4 value:(id)a5;
-- (id)_evaluateWithObjectsByName:(id)a3 sourceItems:(id)a4 suppressionDelegate:(id)a5 errorIndex:(unint64_t *)a6;
++ (id)evaluationObjectsForAction:(id)action sourceItems:(id)items destinationItem:(id)item domainUserInfo:(id)info sourceItemKeysAllowList:(id)list destinationItemKeysAllowList:(id)allowList;
++ (id)gatherErrorsForInteractions:(id)interactions evaluationObjects:(id)objects suppressionDelegate:(id)delegate;
++ (id)interactionFromDictionary:(id)dictionary localizationLookup:(id)lookup providerIdentifier:(id)identifier domainIdentifier:(id)domainIdentifier;
++ (id)interactionsForArray:(id)array localizationLookup:(id)lookup providerIdentifier:(id)identifier domainIdentifier:(id)domainIdentifier;
++ (id)interactionsForBundle:(id)bundle providerIdentifier:(id)identifier domainIdentifier:(id)domainIdentifier;
++ (id)interactionsForProviderItem:(id)item error:(id *)error;
++ (id)userInteractionErrorsInInfoPlistDict:(id)dict forAction:(id)action bundleID:(id)d hierarchyServicer:(id)servicer sourceNSFPItems:(id)items destinationNSFPItem:(id)item localizationLookup:(id)lookup provider:(id)self0 domain:(id)self1 extensionCapabilities:(unint64_t)self2 useFPFS:(BOOL)self3;
++ (void)propagateConfigurationKeysDownInteractionTreeWithObject:(id)object key:(id)key value:(id)value;
+- (id)_evaluateWithObjectsByName:(id)name sourceItems:(id)items suppressionDelegate:(id)delegate errorIndex:(unint64_t *)index;
 - (id)description;
-- (id)evaluateWithObjectsByName:(id)a3 suppressionDelegate:(id)a4;
+- (id)evaluateWithObjectsByName:(id)name suppressionDelegate:(id)delegate;
 @end
 
 @implementation FPPreflightUserInteraction
 
-+ (id)interactionFromDictionary:(id)a3 localizationLookup:(id)a4 providerIdentifier:(id)a5 domainIdentifier:(id)a6
++ (id)interactionFromDictionary:(id)dictionary localizationLookup:(id)lookup providerIdentifier:(id)identifier domainIdentifier:(id)domainIdentifier
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  dictionaryCopy = dictionary;
+  lookupCopy = lookup;
+  identifierCopy = identifier;
+  domainIdentifierCopy = domainIdentifier;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -27,11 +27,11 @@
     goto LABEL_34;
   }
 
-  v13 = [v9 objectForKey:@"ActivationRule"];
+  v13 = [dictionaryCopy objectForKey:@"ActivationRule"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = [v9 objectForKey:@"SuppressionIdentifier"];
+    v14 = [dictionaryCopy objectForKey:@"SuppressionIdentifier"];
     if (v14)
     {
       objc_opt_class();
@@ -55,7 +55,7 @@
       v15 = 0;
     }
 
-    v17 = [v9 objectForKey:@"HelpURL"];
+    v17 = [dictionaryCopy objectForKey:@"HelpURL"];
     if (v17)
     {
       objc_opt_class();
@@ -79,9 +79,9 @@
       }
     }
 
-    v19 = [v9 objectForKey:@"Alert"];
-    v28 = [FPPreflightUserInteractionAlert alertFromDictionary:v19 localizationLookup:v10];
-    v20 = [v9 objectForKey:@"SubInteractions"];
+    v19 = [dictionaryCopy objectForKey:@"Alert"];
+    v28 = [FPPreflightUserInteractionAlert alertFromDictionary:v19 localizationLookup:lookupCopy];
+    v20 = [dictionaryCopy objectForKey:@"SubInteractions"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -95,8 +95,8 @@
       if (![v13 containsString:@"%"])
       {
         v23 = objc_opt_new();
-        [v23 setProviderIdentifier:v11];
-        [v23 setDomainIdentifier:v12];
+        [v23 setProviderIdentifier:identifierCopy];
+        [v23 setDomainIdentifier:domainIdentifierCopy];
         [v23 setAlert:v28];
         [v23 setHasSuppressionIdentifier:v15];
         [v23 setHelpURL:v17];
@@ -109,9 +109,9 @@
         v29[3] = &unk_1E793BE20;
         v30 = v14;
         v31 = v17;
-        v32 = v10;
-        v33 = v11;
-        v34 = v12;
+        v32 = lookupCopy;
+        v33 = identifierCopy;
+        v34 = domainIdentifierCopy;
         v24 = [v20 fp_map:v29];
         [v23 setSubInteractions:v24];
 
@@ -175,34 +175,34 @@ id __111__FPPreflightUserInteraction_interactionFromDictionary_localizationLooku
   return v6;
 }
 
-+ (void)propagateConfigurationKeysDownInteractionTreeWithObject:(id)a3 key:(id)a4 value:(id)a5
++ (void)propagateConfigurationKeysDownInteractionTreeWithObject:(id)object key:(id)key value:(id)value
 {
-  v10 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = [v10 objectForKey:v7];
+  objectCopy = object;
+  keyCopy = key;
+  valueCopy = value;
+  v9 = [objectCopy objectForKey:keyCopy];
 
   if (!v9)
   {
-    [v10 setValue:v8 forKey:v7];
+    [objectCopy setValue:valueCopy forKey:keyCopy];
   }
 }
 
-+ (id)interactionsForBundle:(id)a3 providerIdentifier:(id)a4 domainIdentifier:(id)a5
++ (id)interactionsForBundle:(id)bundle providerIdentifier:(id)identifier domainIdentifier:(id)domainIdentifier
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [v10 objectForInfoDictionaryKey:@"NSExtension"];
+  identifierCopy = identifier;
+  domainIdentifierCopy = domainIdentifier;
+  bundleCopy = bundle;
+  v11 = [bundleCopy objectForInfoDictionaryKey:@"NSExtension"];
   v12 = objc_opt_new();
   [v12 setTableNames:&unk_1F1FC9BC0];
-  [v12 setBundle:v10];
+  [v12 setBundle:bundleCopy];
 
   v13 = [v11 objectForKeyedSubscript:@"NSFileProviderUserInteractions"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = [a1 interactionsForArray:v13 localizationLookup:v12 providerIdentifier:v8 domainIdentifier:v9];
+    v14 = [self interactionsForArray:v13 localizationLookup:v12 providerIdentifier:identifierCopy domainIdentifier:domainIdentifierCopy];
   }
 
   else
@@ -219,22 +219,22 @@ id __111__FPPreflightUserInteraction_interactionFromDictionary_localizationLooku
   return v14;
 }
 
-+ (id)interactionsForArray:(id)a3 localizationLookup:(id)a4 providerIdentifier:(id)a5 domainIdentifier:(id)a6
++ (id)interactionsForArray:(id)array localizationLookup:(id)lookup providerIdentifier:(id)identifier domainIdentifier:(id)domainIdentifier
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  lookupCopy = lookup;
+  identifierCopy = identifier;
+  domainIdentifierCopy = domainIdentifier;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __106__FPPreflightUserInteraction_interactionsForArray_localizationLookup_providerIdentifier_domainIdentifier___block_invoke;
   v17[3] = &unk_1E793BE48;
-  v18 = v9;
-  v19 = v10;
-  v20 = v11;
-  v12 = v11;
-  v13 = v10;
-  v14 = v9;
-  v15 = [a3 fp_map:v17];
+  v18 = lookupCopy;
+  v19 = identifierCopy;
+  v20 = domainIdentifierCopy;
+  v12 = domainIdentifierCopy;
+  v13 = identifierCopy;
+  v14 = lookupCopy;
+  v15 = [array fp_map:v17];
 
   return v15;
 }
@@ -262,37 +262,37 @@ id __106__FPPreflightUserInteraction_interactionsForArray_localizationLookup_pro
   return v4;
 }
 
-- (id)evaluateWithObjectsByName:(id)a3 suppressionDelegate:(id)a4
+- (id)evaluateWithObjectsByName:(id)name suppressionDelegate:(id)delegate
 {
   v11 = 0;
-  v6 = a4;
-  v7 = [a3 mutableCopy];
+  delegateCopy = delegate;
+  v7 = [name mutableCopy];
   v8 = [v7 objectForKey:@"sourceItems"];
   [v7 removeObjectForKey:@"sourceItems"];
-  v9 = [(FPPreflightUserInteraction *)self _evaluateWithObjectsByName:v7 sourceItems:v8 suppressionDelegate:v6 errorIndex:&v11];
+  v9 = [(FPPreflightUserInteraction *)self _evaluateWithObjectsByName:v7 sourceItems:v8 suppressionDelegate:delegateCopy errorIndex:&v11];
 
   return v9;
 }
 
-- (id)_evaluateWithObjectsByName:(id)a3 sourceItems:(id)a4 suppressionDelegate:(id)a5 errorIndex:(unint64_t *)a6
+- (id)_evaluateWithObjectsByName:(id)name sourceItems:(id)items suppressionDelegate:(id)delegate errorIndex:(unint64_t *)index
 {
   v102 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v82 = a4;
-  v81 = a5;
-  v78 = a6;
-  ++*a6;
+  nameCopy = name;
+  itemsCopy = items;
+  delegateCopy = delegate;
+  indexCopy = index;
+  ++*index;
   v83 = objc_opt_new();
-  v80 = v9;
-  v10 = [v9 mutableCopy];
-  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v82, "count")}];
+  v80 = nameCopy;
+  v10 = [nameCopy mutableCopy];
+  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(itemsCopy, "count")}];
   [v10 setObject:v11 forKeyedSubscript:@"sourceItemsCount"];
 
   v97 = 0u;
   v98 = 0u;
   v95 = 0u;
   v96 = 0u;
-  v12 = v82;
+  v12 = itemsCopy;
   v13 = 0;
   v14 = [v12 countByEnumeratingWithState:&v95 objects:v101 count:16];
   if (v14)
@@ -309,8 +309,8 @@ id __106__FPPreflightUserInteraction_interactionsForArray_localizationLookup_pro
 
         v17 = *(*(&v95 + 1) + 8 * i);
         [v10 setObject:v17 forKeyedSubscript:@"sourceItem"];
-        v18 = [(FPPreflightUserInteraction *)self predicate];
-        v19 = [v18 evaluateWithObject:v10];
+        predicate = [(FPPreflightUserInteraction *)self predicate];
+        v19 = [predicate evaluateWithObject:v10];
 
         if (v19)
         {
@@ -332,32 +332,32 @@ id __106__FPPreflightUserInteraction_interactionsForArray_localizationLookup_pro
     {
 LABEL_12:
       v20 = objc_opt_new();
-      v21 = [(FPPreflightUserInteraction *)self subInteractions];
-      v22 = [v21 count];
+      subInteractions = [(FPPreflightUserInteraction *)self subInteractions];
+      v22 = [subInteractions count];
 
       if (v22)
       {
-        v23 = [(FPPreflightUserInteraction *)self subInteractions];
+        subInteractions2 = [(FPPreflightUserInteraction *)self subInteractions];
         v89[0] = MEMORY[0x1E69E9820];
         v89[1] = 3221225472;
         v89[2] = __100__FPPreflightUserInteraction__evaluateWithObjectsByName_sourceItems_suppressionDelegate_errorIndex___block_invoke;
         v89[3] = &unk_1E793BE70;
         v90 = v80;
         v91 = v83;
-        v92 = v81;
-        v94 = v78;
+        v92 = delegateCopy;
+        v94 = indexCopy;
         v93 = v20;
-        [v23 enumerateObjectsUsingBlock:v89];
+        [subInteractions2 enumerateObjectsUsingBlock:v89];
       }
 
-      v24 = [(FPPreflightUserInteraction *)self alert];
-      if (v24)
+      alert = [(FPPreflightUserInteraction *)self alert];
+      if (alert)
       {
         v79 = [v80 mutableCopy];
         if ([v83 count])
         {
-          v25 = [v83 firstObject];
-          [v79 setObject:v25 forKeyedSubscript:@"firstMatchingItem"];
+          firstObject = [v83 firstObject];
+          [v79 setObject:firstObject forKeyedSubscript:@"firstMatchingItem"];
 
           v26 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v83, "count")}];
           [v79 setObject:v26 forKeyedSubscript:@"matchingItemsCount"];
@@ -378,9 +378,9 @@ LABEL_12:
           }
         }
 
-        v30 = [v24 cancelCaptionFormat];
+        cancelCaptionFormat = [alert cancelCaptionFormat];
         v88 = 0;
-        v77 = [v30 evaluateWithValuesByName:v79 error:&v88];
+        v77 = [cancelCaptionFormat evaluateWithValuesByName:v79 error:&v88];
         v31 = v88;
 
         if (!v77)
@@ -397,15 +397,15 @@ LABEL_12:
           v77 = FPLocalizedErrorStringForKey(@"Preflight-Cancel");
         }
 
-        v33 = [(FPPreflightUserInteraction *)self alert];
-        v34 = [v33 enableContinue];
+        alert2 = [(FPPreflightUserInteraction *)self alert];
+        enableContinue = [alert2 enableContinue];
 
-        if (v34)
+        if (enableContinue)
         {
 
-          v35 = [v24 continueCaptionFormat];
+          continueCaptionFormat = [alert continueCaptionFormat];
           v87 = 0;
-          v36 = [v35 evaluateWithValuesByName:v79 error:&v87];
+          v36 = [continueCaptionFormat evaluateWithValuesByName:v79 error:&v87];
           v31 = v87;
 
           if (!v36)
@@ -433,10 +433,10 @@ LABEL_12:
           v38 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v99 count:1];
         }
 
-        v42 = [(FPPreflightUserInteraction *)self hasSuppressionIdentifier];
-        if (v81)
+        hasSuppressionIdentifier = [(FPPreflightUserInteraction *)self hasSuppressionIdentifier];
+        if (delegateCopy)
         {
-          v43 = v42;
+          v43 = hasSuppressionIdentifier;
         }
 
         else
@@ -445,7 +445,7 @@ LABEL_12:
         }
 
         v44 = ![(FPPreflightUserInteraction *)self hasSuppressionIdentifier];
-        if (v81)
+        if (delegateCopy)
         {
           LOBYTE(v44) = 1;
         }
@@ -461,9 +461,9 @@ LABEL_12:
 
         v46 = objc_opt_new();
 
-        v47 = [v24 titleFormat];
+        titleFormat = [alert titleFormat];
         v86 = 0;
-        v48 = [v47 evaluateWithValuesByName:v79 error:&v86];
+        v48 = [titleFormat evaluateWithValuesByName:v79 error:&v86];
         v49 = v86;
         v50 = *MEMORY[0x1E696A578];
         [v46 setObject:v48 forKeyedSubscript:*MEMORY[0x1E696A578]];
@@ -490,9 +490,9 @@ LABEL_12:
           }
         }
 
-        v55 = [v24 subtitleFormat];
+        subtitleFormat = [alert subtitleFormat];
         v85 = 0;
-        v56 = [v55 evaluateWithValuesByName:v79 error:&v85];
+        v56 = [subtitleFormat evaluateWithValuesByName:v79 error:&v85];
         v57 = v85;
         v58 = *MEMORY[0x1E696A598];
         [v46 setObject:v56 forKeyedSubscript:*MEMORY[0x1E696A598]];
@@ -520,34 +520,34 @@ LABEL_12:
         }
 
         [v46 setObject:v38 forKeyedSubscript:*MEMORY[0x1E696A590]];
-        v63 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v24, "continueIsDestructive")}];
+        v63 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(alert, "continueIsDestructive")}];
         [v46 setObject:v63 forKeyedSubscript:@"NSFileProviderDestructiveRecoveryKey"];
 
-        v64 = [(FPPreflightUserInteraction *)self providerIdentifier];
-        [v46 setObject:v64 forKeyedSubscript:@"ProviderIdentifier"];
+        providerIdentifier = [(FPPreflightUserInteraction *)self providerIdentifier];
+        [v46 setObject:providerIdentifier forKeyedSubscript:@"ProviderIdentifier"];
 
-        v65 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:*v78];
+        v65 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:*indexCopy];
         [v46 setObject:v65 forKeyedSubscript:@"PreflightIndex"];
 
         v66 = [MEMORY[0x1E696AD98] numberWithBool:v43];
         [v46 setObject:v66 forKeyedSubscript:@"FPCanBeSuppressed"];
 
-        v67 = [(FPPreflightUserInteraction *)self helpURL];
-        [v46 setObject:v67 forKeyedSubscript:@"FPHelpURL"];
+        helpURL = [(FPPreflightUserInteraction *)self helpURL];
+        [v46 setObject:helpURL forKeyedSubscript:@"FPHelpURL"];
 
         if ([(FPPreflightUserInteraction *)self hasSuppressionIdentifier])
         {
           v68 = MEMORY[0x1E696AD98];
-          v69 = [(FPPreflightUserInteraction *)self userInteractionIdentifier];
-          v70 = [v68 numberWithBool:{objc_msgSend(v81, "isInteractionSuppressedForIdentifier:", v69)}];
+          userInteractionIdentifier = [(FPPreflightUserInteraction *)self userInteractionIdentifier];
+          v70 = [v68 numberWithBool:{objc_msgSend(delegateCopy, "isInteractionSuppressedForIdentifier:", userInteractionIdentifier)}];
           [v46 setObject:v70 forKeyedSubscript:@"FPIsSuppressed"];
 
-          v71 = [(FPPreflightUserInteraction *)self userInteractionIdentifier];
-          [v46 setObject:v71 forKeyedSubscript:@"FPUserInteractionIdentifier"];
+          userInteractionIdentifier2 = [(FPPreflightUserInteraction *)self userInteractionIdentifier];
+          [v46 setObject:userInteractionIdentifier2 forKeyedSubscript:@"FPUserInteractionIdentifier"];
         }
 
-        v72 = [(FPPreflightUserInteraction *)self domainIdentifier];
-        [v46 setObject:v72 forKeyedSubscript:@"DomainIdentifier"];
+        domainIdentifier = [(FPPreflightUserInteraction *)self domainIdentifier];
+        [v46 setObject:domainIdentifier forKeyedSubscript:@"DomainIdentifier"];
 
         v73 = [MEMORY[0x1E696ABC0] errorWithDomain:@"NSFileProviderInternalErrorDomain" code:13 userInfo:v46];
         [v20 addObject:v73];
@@ -560,8 +560,8 @@ LABEL_12:
 
   else
   {
-    v39 = [(FPPreflightUserInteraction *)self predicate];
-    v40 = [v39 evaluateWithObject:v10];
+    predicate2 = [(FPPreflightUserInteraction *)self predicate];
+    v40 = [predicate2 evaluateWithObject:v10];
 
     if (v40)
     {
@@ -589,34 +589,34 @@ void __100__FPPreflightUserInteraction__evaluateWithObjectsByName_sourceItems_su
   [*(a1 + 56) addObjectsFromArray:v3];
 }
 
-+ (id)evaluationObjectsForAction:(id)a3 sourceItems:(id)a4 destinationItem:(id)a5 domainUserInfo:(id)a6 sourceItemKeysAllowList:(id)a7 destinationItemKeysAllowList:(id)a8
++ (id)evaluationObjectsForAction:(id)action sourceItems:(id)items destinationItem:(id)item domainUserInfo:(id)info sourceItemKeysAllowList:(id)list destinationItemKeysAllowList:(id)allowList
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  v16 = a8;
+  itemsCopy = items;
+  itemCopy = item;
+  listCopy = list;
+  allowListCopy = allowList;
   v17 = MEMORY[0x1E695DF90];
-  v18 = a6;
-  v19 = a3;
-  v20 = [v17 dictionary];
-  [v20 setObject:v19 forKeyedSubscript:@"action"];
+  infoCopy = info;
+  actionCopy = action;
+  dictionary = [v17 dictionary];
+  [dictionary setObject:actionCopy forKeyedSubscript:@"action"];
 
-  if (v13)
+  if (itemsCopy)
   {
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __153__FPPreflightUserInteraction_evaluationObjectsForAction_sourceItems_destinationItem_domainUserInfo_sourceItemKeysAllowList_destinationItemKeysAllowList___block_invoke;
     v24[3] = &unk_1E793BE98;
     v17 = &v25;
-    v25 = v15;
-    v21 = [v13 fp_map:v24];
-    [v20 setObject:v21 forKeyedSubscript:@"sourceItems"];
+    v25 = listCopy;
+    v21 = [itemsCopy fp_map:v24];
+    [dictionary setObject:v21 forKeyedSubscript:@"sourceItems"];
 
-    if (v14)
+    if (itemCopy)
     {
 LABEL_3:
-      v22 = FPExtensionMatchingDictionaryForItem(v14, v16);
-      [v20 setObject:v22 forKeyedSubscript:@"destinationItem"];
+      v22 = FPExtensionMatchingDictionaryForItem(itemCopy, allowListCopy);
+      [dictionary setObject:v22 forKeyedSubscript:@"destinationItem"];
 
       goto LABEL_6;
     }
@@ -624,44 +624,44 @@ LABEL_3:
 
   else
   {
-    [v20 setObject:0 forKeyedSubscript:@"sourceItems"];
-    if (v14)
+    [dictionary setObject:0 forKeyedSubscript:@"sourceItems"];
+    if (itemCopy)
     {
       goto LABEL_3;
     }
   }
 
-  [v20 setObject:0 forKeyedSubscript:@"destinationItem"];
+  [dictionary setObject:0 forKeyedSubscript:@"destinationItem"];
 LABEL_6:
-  [v20 setObject:v18 forKeyedSubscript:@"domainUserInfo"];
+  [dictionary setObject:infoCopy forKeyedSubscript:@"domainUserInfo"];
 
-  if (v13)
+  if (itemsCopy)
   {
   }
 
-  return v20;
+  return dictionary;
 }
 
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(FPPreflightUserInteraction *)self predicate];
-  v6 = [v3 stringWithFormat:@"<%@: %p %@>", v4, self, v5];
+  predicate = [(FPPreflightUserInteraction *)self predicate];
+  v6 = [v3 stringWithFormat:@"<%@: %p %@>", v4, self, predicate];
 
   return v6;
 }
 
-+ (id)interactionsForProviderItem:(id)a3 error:(id *)a4
++ (id)interactionsForProviderItem:(id)item error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 providerID];
-  v7 = [objc_alloc(MEMORY[0x1E69635D0]) initWithBundleIdentifier:v6 error:a4];
+  itemCopy = item;
+  providerID = [itemCopy providerID];
+  v7 = [objc_alloc(MEMORY[0x1E69635D0]) initWithBundleIdentifier:providerID error:error];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 infoDictionary];
-    v10 = [v9 objectForKey:@"NSExtension" ofClass:objc_opt_class()];
+    infoDictionary = [v7 infoDictionary];
+    v10 = [infoDictionary objectForKey:@"NSExtension" ofClass:objc_opt_class()];
 
     v11 = [v10 objectForKey:@"NSFileProviderUserInteractions"];
     objc_opt_class();
@@ -678,8 +678,8 @@ LABEL_6:
       v18[2] = __77__FPPreflightUserInteraction_Convenience__interactionsForProviderItem_error___block_invoke;
       v18[3] = &unk_1E793BE48;
       v19 = v12;
-      v20 = v6;
-      v21 = v5;
+      v20 = providerID;
+      v21 = itemCopy;
       v15 = v12;
       v16 = [v11 fp_map:v18];
     }
@@ -710,18 +710,18 @@ id __77__FPPreflightUserInteraction_Convenience__interactionsForProviderItem_err
   return v7;
 }
 
-+ (id)gatherErrorsForInteractions:(id)a3 evaluationObjects:(id)a4 suppressionDelegate:(id)a5
++ (id)gatherErrorsForInteractions:(id)interactions evaluationObjects:(id)objects suppressionDelegate:(id)delegate
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x1E695DF70] array];
+  interactionsCopy = interactions;
+  objectsCopy = objects;
+  delegateCopy = delegate;
+  array = [MEMORY[0x1E695DF70] array];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v11 = v7;
+  v11 = interactionsCopy;
   v12 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v12)
   {
@@ -736,8 +736,8 @@ id __77__FPPreflightUserInteraction_Convenience__interactionsForProviderItem_err
           objc_enumerationMutation(v11);
         }
 
-        v16 = [*(*(&v19 + 1) + 8 * i) evaluateWithObjectsByName:v8 suppressionDelegate:{v9, v19}];
-        [v10 addObjectsFromArray:v16];
+        v16 = [*(*(&v19 + 1) + 8 * i) evaluateWithObjectsByName:objectsCopy suppressionDelegate:{delegateCopy, v19}];
+        [array addObjectsFromArray:v16];
       }
 
       v13 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -748,26 +748,26 @@ id __77__FPPreflightUserInteraction_Convenience__interactionsForProviderItem_err
 
   v17 = *MEMORY[0x1E69E9840];
 
-  return v10;
+  return array;
 }
 
-+ (id)userInteractionErrorsInInfoPlistDict:(id)a3 forAction:(id)a4 bundleID:(id)a5 hierarchyServicer:(id)a6 sourceNSFPItems:(id)a7 destinationNSFPItem:(id)a8 localizationLookup:(id)a9 provider:(id)a10 domain:(id)a11 extensionCapabilities:(unint64_t)a12 useFPFS:(BOOL)a13
++ (id)userInteractionErrorsInInfoPlistDict:(id)dict forAction:(id)action bundleID:(id)d hierarchyServicer:(id)servicer sourceNSFPItems:(id)items destinationNSFPItem:(id)item localizationLookup:(id)lookup provider:(id)self0 domain:(id)self1 extensionCapabilities:(unint64_t)self2 useFPFS:(BOOL)self3
 {
   v58 = *MEMORY[0x1E69E9840];
-  v44 = a3;
-  v43 = a4;
-  v42 = a5;
-  v17 = a7;
-  v45 = a8;
-  v41 = a9;
-  v47 = a10;
-  v46 = a11;
+  dictCopy = dict;
+  actionCopy = action;
+  dCopy = d;
+  itemsCopy = items;
+  itemCopy = item;
+  lookupCopy = lookup;
+  providerCopy = provider;
+  domainCopy = domain;
   v18 = objc_opt_new();
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v19 = v17;
+  v19 = itemsCopy;
   v20 = [(FPItem *)v19 countByEnumeratingWithState:&v52 objects:v57 count:16];
   if (v20)
   {
@@ -782,7 +782,7 @@ id __77__FPPreflightUserInteraction_Convenience__interactionsForProviderItem_err
           objc_enumerationMutation(v19);
         }
 
-        v24 = [[FPItem alloc] initWithVendorItem:*(*(&v52 + 1) + 8 * i) provider:v47 domain:v46 spotlightDomainIdentifier:0 extensionCapabilities:a12 useFPFS:a13];
+        v24 = [[FPItem alloc] initWithVendorItem:*(*(&v52 + 1) + 8 * i) provider:providerCopy domain:domainCopy spotlightDomainIdentifier:0 extensionCapabilities:capabilities useFPFS:s];
         if (!v24)
         {
           v27 = fp_current_or_default_log();
@@ -791,7 +791,7 @@ id __77__FPPreflightUserInteraction_Convenience__interactionsForProviderItem_err
             +[FPPreflightUserInteraction(CloudDocs) userInteractionErrorsInInfoPlistDict:forAction:bundleID:hierarchyServicer:sourceNSFPItems:destinationNSFPItem:localizationLookup:provider:domain:extensionCapabilities:useFPFS:];
           }
 
-          v28 = MEMORY[0x1E695E0F0];
+          array = MEMORY[0x1E695E0F0];
           v26 = v19;
           goto LABEL_23;
         }
@@ -810,9 +810,9 @@ id __77__FPPreflightUserInteraction_Convenience__interactionsForProviderItem_err
     }
   }
 
-  if (v45)
+  if (itemCopy)
   {
-    v26 = [[FPItem alloc] initWithVendorItem:v45 provider:v47 domain:v46 spotlightDomainIdentifier:0 extensionCapabilities:a12 useFPFS:a13];
+    v26 = [[FPItem alloc] initWithVendorItem:itemCopy provider:providerCopy domain:domainCopy spotlightDomainIdentifier:0 extensionCapabilities:capabilities useFPFS:s];
   }
 
   else
@@ -820,11 +820,11 @@ id __77__FPPreflightUserInteraction_Convenience__interactionsForProviderItem_err
     v26 = 0;
   }
 
-  v29 = [v44 objectForKeyedSubscript:{@"NSFileProviderUserInteractions", a1}];
-  v30 = [v40 interactionsForArray:v29 localizationLookup:v41 providerIdentifier:v42 domainIdentifier:0];
+  v29 = [dictCopy objectForKeyedSubscript:{@"NSFileProviderUserInteractions", self}];
+  v30 = [v40 interactionsForArray:v29 localizationLookup:lookupCopy providerIdentifier:dCopy domainIdentifier:0];
 
-  v31 = [FPPreflightUserInteraction evaluationObjectsForAction:v43 sourceItems:v18 destinationItem:v26 domainUserInfo:0 sourceItemKeysAllowList:0 destinationItemKeysAllowList:0];
-  v28 = [MEMORY[0x1E695DF70] array];
+  v31 = [FPPreflightUserInteraction evaluationObjectsForAction:actionCopy sourceItems:v18 destinationItem:v26 domainUserInfo:0 sourceItemKeysAllowList:0 destinationItemKeysAllowList:0];
+  array = [MEMORY[0x1E695DF70] array];
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
@@ -845,7 +845,7 @@ id __77__FPPreflightUserInteraction_Convenience__interactionsForProviderItem_err
         }
 
         v36 = [*(*(&v48 + 1) + 8 * j) evaluateWithObjectsByName:v31 suppressionDelegate:0];
-        [v28 addObjectsFromArray:v36];
+        [array addObjectsFromArray:v36];
       }
 
       v33 = [v27 countByEnumeratingWithState:&v48 objects:v56 count:16];
@@ -857,7 +857,7 @@ id __77__FPPreflightUserInteraction_Convenience__interactionsForProviderItem_err
 LABEL_23:
   v37 = *MEMORY[0x1E69E9840];
 
-  return v28;
+  return array;
 }
 
 + (void)interactionFromDictionary:localizationLookup:providerIdentifier:domainIdentifier:.cold.3()

@@ -1,19 +1,19 @@
 @interface OfflineMapsSuggestionsDataProvider
 - (BOOL)_homeAreaTipWasDismissed;
 - (BOOL)_tripTipWasDismissed;
-- (BOOL)isTrip:(id)a3 nearAtLeastOneShortcut:(id)a4;
+- (BOOL)isTrip:(id)trip nearAtLeastOneShortcut:(id)shortcut;
 - (NSString)uniqueName;
-- (OfflineMapsSuggestionsDataProvider)initWithClientType:(int)a3 callbackQueue:(id)a4;
-- (id)_filterEntriesWithOverLappingRects:(id)a3;
+- (OfflineMapsSuggestionsDataProvider)initWithClientType:(int)type callbackQueue:(id)queue;
+- (id)_filterEntriesWithOverLappingRects:(id)rects;
 - (id)fetchHomeLocationsAsShortCuts;
-- (void)_buildMapRegionForLatitude:(double)a3 longitude:(double)a4 handler:(id)a5;
-- (void)_fetchAirportArrivalModelDataFromFlightEntry:(id)a3 usingCurrentLocation:(id)a4 completion:(id)a5;
-- (void)_fetchHomeAreaModelDataFromEntry:(id)a3 onQueue:(id)a4 completionHandler:(id)a5;
-- (void)_firstUpcomingTripOfflineSuggestion:(id)a3;
-- (void)_offlineSuggestionsUsingLocation:(id)a3 withCompletion:(id)a4;
-- (void)dismissedTipWithType:(int)a3;
-- (void)displayedTipWithType:(int)a3;
-- (void)offlineSuggestionsForLocation:(id)a3 completion:(id)a4;
+- (void)_buildMapRegionForLatitude:(double)latitude longitude:(double)longitude handler:(id)handler;
+- (void)_fetchAirportArrivalModelDataFromFlightEntry:(id)entry usingCurrentLocation:(id)location completion:(id)completion;
+- (void)_fetchHomeAreaModelDataFromEntry:(id)entry onQueue:(id)queue completionHandler:(id)handler;
+- (void)_firstUpcomingTripOfflineSuggestion:(id)suggestion;
+- (void)_offlineSuggestionsUsingLocation:(id)location withCompletion:(id)completion;
+- (void)dismissedTipWithType:(int)type;
+- (void)displayedTipWithType:(int)type;
+- (void)offlineSuggestionsForLocation:(id)location completion:(id)completion;
 - (void)showHomeAreaTipInFuture;
 @end
 
@@ -26,9 +26,9 @@
   return [v2 description];
 }
 
-- (void)_buildMapRegionForLatitude:(double)a3 longitude:(double)a4 handler:(id)a5
+- (void)_buildMapRegionForLatitude:(double)latitude longitude:(double)longitude handler:(id)handler
 {
-  v6 = a5;
+  handlerCopy = handler;
   GEOConfigGetInteger();
   GEOMapRectMakeWithRadialDistance();
   v11 = [[GEOMapRegion alloc] initWithMapRect:{v7, v8, v9, v10}];
@@ -45,7 +45,7 @@
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "Map Region that was built was already added, caling back with nil", buf, 2u);
     }
 
-    (*(v6 + 2))(v6, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 
   else
@@ -58,7 +58,7 @@
       v20[1] = 3221225472;
       v20[2] = sub_100C58700;
       v20[3] = &unk_10164EFC8;
-      v22 = v6;
+      v22 = handlerCopy;
       v21 = v11;
       v19 = [v18 determineEstimatedSizeForSubscriptionWithRegion:v21 completionHandler:v20];
     }
@@ -74,7 +74,7 @@
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "Purposely not fetching region size for this client type: %d", buf, 8u);
       }
 
-      (*(v6 + 2))(v6, v11, 0);
+      (*(handlerCopy + 2))(handlerCopy, v11, 0);
     }
   }
 }
@@ -252,12 +252,12 @@
   return v3;
 }
 
-- (void)_offlineSuggestionsUsingLocation:(id)a3 withCompletion:(id)a4
+- (void)_offlineSuggestionsUsingLocation:(id)location withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  locationCopy = location;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  LOBYTE(a4) = self->_clientType != 3;
+  LOBYTE(completion) = self->_clientType != 3;
   v17[0] = 0;
   v17[1] = v17;
   v17[2] = 0x2020000000;
@@ -269,11 +269,11 @@
   v11[3] = &unk_10164EFA0;
   objc_copyWeak(&v15, &location);
   v11[4] = self;
-  v16 = a4;
-  v9 = v6;
+  completionCopy2 = completion;
+  v9 = locationCopy;
   v12 = v9;
   v14 = v17;
-  v10 = v7;
+  v10 = completionCopy;
   v13 = v10;
   [(MapsSuggestionsEngine *)engine oneShotTopSuggestionsForSink:self count:10 transportType:4 callback:v11 onQueue:self->_msgEngineQueue];
 
@@ -282,15 +282,15 @@
   objc_destroyWeak(&location);
 }
 
-- (id)_filterEntriesWithOverLappingRects:(id)a3
+- (id)_filterEntriesWithOverLappingRects:(id)rects
 {
-  v3 = a3;
+  rectsCopy = rects;
   v4 = objc_alloc_init(NSMutableArray);
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  obj = v3;
+  obj = rectsCopy;
   v23 = [obj countByEnumeratingWithState:&v33 objects:v39 count:16];
   if (v23)
   {
@@ -395,43 +395,43 @@ LABEL_26:
   return v4;
 }
 
-- (void)_fetchHomeAreaModelDataFromEntry:(id)a3 onQueue:(id)a4 completionHandler:(id)a5
+- (void)_fetchHomeAreaModelDataFromEntry:(id)entry onQueue:(id)queue completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  entryCopy = entry;
+  queueCopy = queue;
+  handlerCopy = handler;
   v11 = GEOConfigGetDate();
   UInteger = GEOConfigGetUInteger();
-  if (self->_clientType != 1 || (v13 = UInteger, v11) && (v37 = v9, v14 = v11, v15 = v11, v16 = objc_alloc_init(NSDateComponents), [v16 setDay:-v13], +[NSCalendar currentCalendar](NSCalendar, "currentCalendar"), v17 = objc_claimAutoreleasedReturnValue(), +[NSDate now](NSDate, "now"), v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v17, "dateByAddingComponents:toDate:options:", v16, v18, 0), v19 = objc_claimAutoreleasedReturnValue(), v18, v17, v20 = objc_msgSend(v15, "compare:", v19), v15, v11 = v14, v9 = v37, v19, v16, v20 == -1))
+  if (self->_clientType != 1 || (v13 = UInteger, v11) && (v37 = queueCopy, v14 = v11, v15 = v11, v16 = objc_alloc_init(NSDateComponents), [v16 setDay:-v13], +[NSCalendar currentCalendar](NSCalendar, "currentCalendar"), v17 = objc_claimAutoreleasedReturnValue(), +[NSDate now](NSDate, "now"), v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v17, "dateByAddingComponents:toDate:options:", v16, v18, 0), v19 = objc_claimAutoreleasedReturnValue(), v18, v17, v20 = objc_msgSend(v15, "compare:", v19), v15, v11 = v14, queueCopy = v37, v19, v16, v20 == -1))
   {
     v24 = sub_10003D9F4();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
     {
-      v25 = [v8 geoMapItem];
-      [v25 coordinate];
+      geoMapItem = [entryCopy geoMapItem];
+      [geoMapItem coordinate];
       v28 = [NSString stringWithFormat:@"%+.8f, %+.8f", v26, v27];
       *buf = 138412290;
       v45 = v28;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_INFO, "Using home entry for the Offline Maps Home Area Tip with lat/long of %@", buf, 0xCu);
     }
 
-    v29 = [v8 geoMapItem];
-    [v29 coordinate];
+    geoMapItem2 = [entryCopy geoMapItem];
+    [geoMapItem2 coordinate];
     v31 = v30;
-    v32 = [v8 geoMapItem];
-    [v32 coordinate];
+    geoMapItem3 = [entryCopy geoMapItem];
+    [geoMapItem3 coordinate];
     v34 = v33;
     v38[0] = _NSConcreteStackBlock;
     v38[1] = 3221225472;
     v38[2] = sub_100C59D08;
     v38[3] = &unk_10164EF28;
     v22 = v39;
-    v35 = v9;
-    v41 = v10;
+    v35 = queueCopy;
+    v41 = handlerCopy;
     v39[0] = v35;
     v39[1] = self;
-    v40 = v8;
-    v36 = v10;
+    v40 = entryCopy;
+    v36 = handlerCopy;
     [(OfflineMapsSuggestionsDataProvider *)self _buildMapRegionForLatitude:v38 longitude:v31 handler:v34];
   }
 
@@ -450,21 +450,21 @@ LABEL_26:
     block[2] = sub_100C59CF4;
     block[3] = &unk_101661760;
     v22 = &v43;
-    v43 = v10;
-    v23 = v10;
-    dispatch_async(v9, block);
+    v43 = handlerCopy;
+    v23 = handlerCopy;
+    dispatch_async(queueCopy, block);
   }
 }
 
-- (void)_fetchAirportArrivalModelDataFromFlightEntry:(id)a3 usingCurrentLocation:(id)a4 completion:(id)a5
+- (void)_fetchAirportArrivalModelDataFromFlightEntry:(id)entry usingCurrentLocation:(id)location completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  entryCopy = entry;
+  locationCopy = location;
+  completionCopy = completion;
   v11 = +[GEONetworkObserver sharedNetworkObserver];
-  v12 = [v11 isCellConnection];
+  isCellConnection = [v11 isCellConnection];
 
-  if (v12)
+  if (isCellConnection)
   {
     v13 = sub_10003D9F4();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
@@ -480,14 +480,14 @@ LABEL_9:
   }
 
   v15 = +[GEONetworkObserver sharedNetworkObserver];
-  v16 = [v15 isNetworkReachable];
+  isNetworkReachable = [v15 isNetworkReachable];
 
-  if (v16)
+  if (isNetworkReachable)
   {
-    v17 = [v9 latLng];
-    [v17 lat];
-    v18 = [v9 latLng];
-    [v18 lng];
+    latLng = [locationCopy latLng];
+    [latLng lat];
+    latLng2 = [locationCopy latLng];
+    [latLng2 lng];
 
     v19 = CLLocationFromGEOLocationCoordinate2D();
     if (MapsSuggestionsIsValidLocation())
@@ -510,7 +510,7 @@ LABEL_9:
           _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "The location from DiscoverySource is nil AND MapsSuggestionsCurrentBestLocation() is nil too. Returning and not showing the tip.", buf, 2u);
         }
 
-        v10[2](v10, 0);
+        completionCopy[2](completionCopy, 0);
         goto LABEL_33;
       }
 
@@ -527,11 +527,11 @@ LABEL_9:
       }
     }
 
-    v27 = [v8 numberForKey:@"MapsSuggestionsFlightArrivalAirportLatitudeKey"];
+    v27 = [entryCopy numberForKey:@"MapsSuggestionsFlightArrivalAirportLatitudeKey"];
     [v27 doubleValue];
     v29 = v28;
 
-    v30 = [v8 numberForKey:@"MapsSuggestionsFlightArrivalAirportLongitudeKey"];
+    v30 = [entryCopy numberForKey:@"MapsSuggestionsFlightArrivalAirportLongitudeKey"];
     [v30 doubleValue];
     v32 = v31;
 
@@ -561,7 +561,7 @@ LABEL_9:
         _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_INFO, "Airport Arrival Tip: User is considered to be at the arrival airport, because they are %f meters from the airport lat/long.", buf, 0xCu);
       }
 
-      v41 = [v8 stringForKey:@"MapsSuggestionsFlightArrivalAirportLocalityKey"];
+      v41 = [entryCopy stringForKey:@"MapsSuggestionsFlightArrivalAirportLocalityKey"];
       if (v41)
       {
         v42 = +[NSBundle mainBundle];
@@ -572,7 +572,7 @@ LABEL_9:
         v46[2] = sub_100C5A9C0;
         v46[3] = &unk_10164EED8;
         v47 = [[NSString alloc] initWithFormat:v43, v41];
-        v48 = v10;
+        v48 = completionCopy;
         v44 = v47;
         [(OfflineMapsSuggestionsDataProvider *)self _buildMapRegionForLatitude:v46 longitude:v29 handler:v32];
       }
@@ -586,7 +586,7 @@ LABEL_9:
           _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_INFO, "Airport Arrival Tip: MapsSuggestionsFlightArrivalAirportLocalityKey is nil, not showing airport arrival tip.", buf, 2u);
         }
 
-        v10[2](v10, 0);
+        completionCopy[2](completionCopy, 0);
       }
     }
 
@@ -599,7 +599,7 @@ LABEL_9:
         _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_INFO, "Airport Arrival Tip: User is %f meters from the airport lat/long, which is too far for an airport arrival tip.", buf, 0xCu);
       }
 
-      v10[2](v10, 0);
+      completionCopy[2](completionCopy, 0);
     }
 
 LABEL_33:
@@ -616,13 +616,13 @@ LABEL_33:
 
 LABEL_10:
 
-  v10[2](v10, 0);
+  completionCopy[2](completionCopy, 0);
 LABEL_34:
 }
 
-- (void)_firstUpcomingTripOfflineSuggestion:(id)a3
+- (void)_firstUpcomingTripOfflineSuggestion:(id)suggestion
 {
-  v4 = a3;
+  suggestionCopy = suggestion;
   objc_initWeak(&location, self);
   insightsQueue = self->_insightsQueue;
   block[0] = _NSConcreteStackBlock;
@@ -630,23 +630,23 @@ LABEL_34:
   block[2] = sub_100C5ACE8;
   block[3] = &unk_101660648;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = suggestionCopy;
+  v6 = suggestionCopy;
   dispatch_async(insightsQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (BOOL)isTrip:(id)a3 nearAtLeastOneShortcut:(id)a4
+- (BOOL)isTrip:(id)trip nearAtLeastOneShortcut:(id)shortcut
 {
-  v5 = a3;
+  tripCopy = trip;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  shortcutCopy = shortcut;
+  v7 = [shortcutCopy countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v7)
   {
     v8 = v7;
@@ -657,15 +657,15 @@ LABEL_34:
       {
         if (*v23 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(shortcutCopy);
         }
 
         v11 = *(*(&v22 + 1) + 8 * i);
-        v12 = [v5 placemark];
-        v13 = [v12 location];
-        v14 = [v11 geoMapItem];
+        placemark = [tripCopy placemark];
+        location = [placemark location];
+        geoMapItem = [v11 geoMapItem];
         v15 = MapsSuggestionsLocationForMapItem();
-        [v13 distanceFromLocation:v15];
+        [location distanceFromLocation:v15];
         v17 = v16;
 
         Integer = GEOConfigGetInteger();
@@ -676,7 +676,7 @@ LABEL_34:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v8 = [shortcutCopy countByEnumeratingWithState:&v22 objects:v26 count:16];
       if (v8)
       {
         continue;
@@ -699,7 +699,7 @@ LABEL_14:
   dispatch_group_enter(v2);
   v3 = objc_alloc_init(NSMutableArray);
   v4 = MapsSuggestionsResourceDepotForMapsProcess();
-  v5 = [v4 oneFavorites];
+  oneFavorites = [v4 oneFavorites];
 
   v14 = _NSConcreteStackBlock;
   v15 = 3221225472;
@@ -710,12 +710,12 @@ LABEL_14:
   v6 = v3;
   v7 = v2;
   v8 = objc_retainBlock(&v14);
-  [v5 loadAllShortcutsWithHandler:{v8, v14, v15, v16, v17}];
+  [oneFavorites loadAllShortcutsWithHandler:{v8, v14, v15, v16, v17}];
   v9 = MapsSuggestionsResourceDepotForMapsProcess();
-  v10 = [v9 oneRoutine];
+  oneRoutine = [v9 oneRoutine];
 
   UInteger = GEOConfigGetUInteger();
-  [v10 fetchSuggestedShortcutsForType:2 minVisits:UInteger maxAge:v8 handler:GEOConfigGetUInteger()];
+  [oneRoutine fetchSuggestedShortcutsForType:2 minVisits:UInteger maxAge:v8 handler:GEOConfigGetUInteger()];
   dispatch_group_wait(v7, 0xFFFFFFFFFFFFFFFFLL);
   v12 = [v6 copy];
 
@@ -748,7 +748,7 @@ LABEL_14:
   }
 }
 
-- (void)displayedTipWithType:(int)a3
+- (void)displayedTipWithType:(int)type
 {
   clientType = self->_clientType;
   v5 = sub_10003D9F4();
@@ -758,11 +758,11 @@ LABEL_14:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v10[0] = 67109120;
-      v10[1] = a3;
+      v10[1] = type;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Offline Maps Tip with type %d was displayed", v10, 8u);
     }
 
-    if (a3 == 2)
+    if (type == 2)
     {
       v6 = GEOConfigGetDate();
       if (v6)
@@ -783,9 +783,9 @@ LABEL_20:
 
     else
     {
-      if (a3 != 1)
+      if (type != 1)
       {
-        if (a3)
+        if (type)
         {
           return;
         }
@@ -835,7 +835,7 @@ LABEL_18:
 LABEL_21:
 }
 
-- (void)dismissedTipWithType:(int)a3
+- (void)dismissedTipWithType:(int)type
 {
   clientType = self->_clientType;
   v6 = sub_10003D9F4();
@@ -858,15 +858,15 @@ LABEL_11:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v11[0] = 67109120;
-    v11[1] = a3;
+    v11[1] = type;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Setting dismissal date for Offline Maps tip type: %d", v11, 8u);
   }
 
-  if (a3 <= 1)
+  if (type <= 1)
   {
-    if (a3)
+    if (type)
     {
-      if (a3 != 1)
+      if (type != 1)
       {
         return;
       }
@@ -889,13 +889,13 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     self->_tripTipDismissedThisSession = 1;
     goto LABEL_18;
   }
 
-  if (a3 == 3)
+  if (type == 3)
   {
 LABEL_18:
     v10 = +[NSDate now];
@@ -906,13 +906,13 @@ LABEL_19:
   }
 }
 
-- (void)offlineSuggestionsForLocation:(id)a3 completion:(id)a4
+- (void)offlineSuggestionsForLocation:(id)location completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  locationCopy = location;
+  completionCopy = completion;
   if ((GEOSupportsOfflineMaps() & 1) == 0)
   {
-    v7[2](v7, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   v8 = dispatch_group_create();
@@ -1008,7 +1008,7 @@ LABEL_21:
     v26 = v31;
     v27 = v33;
     v25 = v8;
-    [(OfflineMapsSuggestionsDataProvider *)self _offlineSuggestionsUsingLocation:v6 withCompletion:v24];
+    [(OfflineMapsSuggestionsDataProvider *)self _offlineSuggestionsUsingLocation:locationCopy withCompletion:v24];
 
     goto LABEL_22;
   }
@@ -1034,9 +1034,9 @@ LABEL_22:
   objc_copyWeak(&v22, &buf);
   v20 = v35;
   v21 = v31;
-  v18 = v7;
+  v18 = completionCopy;
   v19 = v33;
-  v16 = v7;
+  v16 = completionCopy;
   dispatch_group_notify(v8, callbackQueue, block);
 
   objc_destroyWeak(&v22);
@@ -1047,9 +1047,9 @@ LABEL_22:
   _Block_object_dispose(v35, 8);
 }
 
-- (OfflineMapsSuggestionsDataProvider)initWithClientType:(int)a3 callbackQueue:(id)a4
+- (OfflineMapsSuggestionsDataProvider)initWithClientType:(int)type callbackQueue:(id)queue
 {
-  v7 = a4;
+  queueCopy = queue;
   v29.receiver = self;
   v29.super_class = OfflineMapsSuggestionsDataProvider;
   v8 = [(OfflineMapsSuggestionsDataProvider *)&v29 init];
@@ -1077,18 +1077,18 @@ LABEL_22:
 
     v23 = [v22 withLocationUpdater:v15];
 
-    v24 = [v23 withoutTracker];
+    withoutTracker = [v23 withoutTracker];
 
-    v25 = [v24 withoutPreFilters:v19];
+    v25 = [withoutTracker withoutPreFilters:v19];
 
-    v26 = [v25 build];
+    build = [v25 build];
 
     engine = v8->_engine;
-    v8->_engine = v26;
+    v8->_engine = build;
 
-    objc_storeStrong(&v8->_callbackQueue, a4);
+    objc_storeStrong(&v8->_callbackQueue, queue);
     *&v8->_tripTipDismissedThisSession = 0;
-    v8->_clientType = a3;
+    v8->_clientType = type;
   }
 
   return v8;

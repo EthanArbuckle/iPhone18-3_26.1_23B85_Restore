@@ -1,26 +1,26 @@
 @interface _UIPrototypingMenuSlider
 - (CGPoint)knobCenter;
-- (CGRect)thumbRectForBounds:(CGRect)a3 trackRect:(CGRect)a4 value:(float)a5;
+- (CGRect)thumbRectForBounds:(CGRect)bounds trackRect:(CGRect)rect value:(float)value;
 - (UIEdgeInsets)_thumbHitEdgeInsets;
-- (_UIPrototypingMenuSlider)initWithFrame:(CGRect)a3;
+- (_UIPrototypingMenuSlider)initWithFrame:(CGRect)frame;
 - (float)value;
-- (void)_setKnobViewProminent:(BOOL)a3 animated:(BOOL)a4;
+- (void)_setKnobViewProminent:(BOOL)prominent animated:(BOOL)animated;
 - (void)decrement;
 - (void)increment;
 - (void)layoutSubviews;
-- (void)setValue:(float)a3 animated:(BOOL)a4;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)setValue:(float)value animated:(BOOL)animated;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation _UIPrototypingMenuSlider
 
-- (_UIPrototypingMenuSlider)initWithFrame:(CGRect)a3
+- (_UIPrototypingMenuSlider)initWithFrame:(CGRect)frame
 {
   v22.receiver = self;
   v22.super_class = _UIPrototypingMenuSlider;
-  v3 = [(UISlider *)&v22 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UISlider *)&v22 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [UIView alloc];
@@ -61,8 +61,8 @@
 
     [(UISlider *)v3 setThumbImage:v19 forState:0];
     [(UISlider *)v3 _setSliderStyle:100];
-    v20 = [(UIView *)v3 layer];
-    [v20 setCreatesCompositingGroup:1];
+    layer = [(UIView *)v3 layer];
+    [layer setCreatesCompositingGroup:1];
   }
 
   return v3;
@@ -70,8 +70,8 @@
 
 - (CGPoint)knobCenter
 {
-  v2 = [(_UIPrototypingMenuSlider *)self knobView];
-  [v2 center];
+  knobView = [(_UIPrototypingMenuSlider *)self knobView];
+  [knobView center];
   v4 = v3;
   v6 = v5;
 
@@ -112,20 +112,20 @@
   if (!self->_didBringKnobToFront)
   {
     self->_didBringKnobToFront = 1;
-    v3 = [(_UIPrototypingMenuSlider *)self knobView];
-    [(UIView *)self bringSubviewToFront:v3];
+    knobView = [(_UIPrototypingMenuSlider *)self knobView];
+    [(UIView *)self bringSubviewToFront:knobView];
   }
 }
 
-- (void)setValue:(float)a3 animated:(BOOL)a4
+- (void)setValue:(float)value animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   [(_UIPrototypingMenuSlider *)self stepSize];
   v9 = v7;
   if (v9 > 0.0)
   {
     v12 = 0.0;
-    v10 = a3 / v9;
+    v10 = value / v9;
     modff(v10, &v12);
     *&v7 = v12;
     *&v8 = v10 - v12;
@@ -134,13 +134,13 @@
       *&v7 = v12 + 1.0;
     }
 
-    a3 = *&v7 * v9;
+    value = *&v7 * v9;
   }
 
   v11.receiver = self;
   v11.super_class = _UIPrototypingMenuSlider;
-  *&v7 = a3;
-  [(UISlider *)&v11 setValue:v4 animated:v7, v8];
+  *&v7 = value;
+  [(UISlider *)&v11 setValue:animatedCopy animated:v7, v8];
 }
 
 - (float)value
@@ -168,26 +168,26 @@
   return v4;
 }
 
-- (CGRect)thumbRectForBounds:(CGRect)a3 trackRect:(CGRect)a4 value:(float)a5
+- (CGRect)thumbRectForBounds:(CGRect)bounds trackRect:(CGRect)rect value:(float)value
 {
   v57.receiver = self;
   v57.super_class = _UIPrototypingMenuSlider;
-  x = a4.origin.x;
-  y = a4.origin.y;
-  width = a4.size.width;
-  height = a4.size.height;
-  [(UISlider *)&v57 thumbRectForBounds:a3.origin.x trackRect:a3.origin.y value:a3.size.width, a3.size.height, LODWORD(a5)];
+  x = rect.origin.x;
+  y = rect.origin.y;
+  width = rect.size.width;
+  height = rect.size.height;
+  [(UISlider *)&v57 thumbRectForBounds:bounds.origin.x trackRect:bounds.origin.y value:bounds.size.width, bounds.size.height, LODWORD(value)];
   v9 = v8;
   v47 = v10;
   v12 = v11;
   v14 = v13;
-  v15 = [(_UIPrototypingMenuSlider *)self knobView];
-  v16 = [(_UIPrototypingMenuSlider *)self knobBGView];
-  v17 = [v16 image];
+  knobView = [(_UIPrototypingMenuSlider *)self knobView];
+  knobBGView = [(_UIPrototypingMenuSlider *)self knobBGView];
+  image = [knobBGView image];
 
-  v18 = [v17 leftCapWidth];
-  v19 = [(_UIPrototypingMenuSlider *)self currentValueLabel];
-  v20 = [v19 text];
+  leftCapWidth = [image leftCapWidth];
+  currentValueLabel = [(_UIPrototypingMenuSlider *)self currentValueLabel];
+  text = [currentValueLabel text];
   [(_UIPrototypingMenuSlider *)self stepSize];
   *v22.i32 = *v22.i64;
   if (*v22.i32 <= 0.0)
@@ -217,20 +217,20 @@ LABEL_6:
   }
 
 LABEL_7:
-  v25 = v18;
-  v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.*f", v24, a5];
-  [v19 setText:v26];
+  v25 = leftCapWidth;
+  value = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.*f", v24, value];
+  [currentValueLabel setText:value];
 
-  v27 = [v20 length];
-  v28 = [v19 text];
-  v29 = [v28 length];
+  v27 = [text length];
+  text2 = [currentValueLabel text];
+  v29 = [text2 length];
 
   if (v27 != v29)
   {
-    [v19 sizeThatFits:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
+    [currentValueLabel sizeThatFits:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
     v31 = v30;
     v33 = v32;
-    [v17 size];
+    [image size];
     v48[0] = MEMORY[0x1E69E9820];
     v48[1] = 3221225472;
     v48[2] = __63___UIPrototypingMenuSlider_thumbRectForBounds_trackRect_value___block_invoke;
@@ -246,12 +246,12 @@ LABEL_7:
     v54 = 0;
     v55 = v34;
     v56 = v35;
-    v49 = v19;
-    v50 = v15;
+    v49 = currentValueLabel;
+    v50 = knobView;
     [UIView animateWithDuration:v48 animations:0 completion:0.15];
   }
 
-  [v15 bounds];
+  [knobView bounds];
   v36 = (CGRectGetWidth(v58) - v25) * 0.5;
   v59.origin.x = x;
   v59.origin.y = y;
@@ -263,9 +263,9 @@ LABEL_7:
   v60.size.width = width;
   v60.size.height = height;
   v38 = fmax(v37, fmin(v9 + v12 * 0.5, CGRectGetMaxX(v60) - v36));
-  v39 = [v15 superview];
-  [v39 convertPoint:self fromView:{v38, v47 + v14 * 0.5 + 3.0}];
-  [v15 setCenter:?];
+  superview = [knobView superview];
+  [superview convertPoint:self fromView:{v38, v47 + v14 * 0.5 + 3.0}];
+  [knobView setCenter:?];
 
   v40 = v9;
   v41 = v12;
@@ -278,63 +278,63 @@ LABEL_7:
   return result;
 }
 
-- (void)_setKnobViewProminent:(BOOL)a3 animated:(BOOL)a4
+- (void)_setKnobViewProminent:(BOOL)prominent animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(_UIPrototypingMenuSlider *)self knobView];
-  if (v5)
+  animatedCopy = animated;
+  prominentCopy = prominent;
+  knobView = [(_UIPrototypingMenuSlider *)self knobView];
+  if (prominentCopy)
   {
-    v8 = [(_UIPrototypingMenuSlider *)self knobPortal];
+    knobPortal = [(_UIPrototypingMenuSlider *)self knobPortal];
 
-    if (!v8)
+    if (!knobPortal)
     {
-      v9 = [[_UIPortalView alloc] initWithSourceView:v7];
+      v9 = [[_UIPortalView alloc] initWithSourceView:knobView];
       [(_UIPrototypingMenuSlider *)self setKnobPortal:v9];
 
-      v10 = [(_UIPrototypingMenuSlider *)self knobPortal];
-      [v10 setMatchesAlpha:1];
+      knobPortal2 = [(_UIPrototypingMenuSlider *)self knobPortal];
+      [knobPortal2 setMatchesAlpha:1];
 
-      v11 = [(_UIPrototypingMenuSlider *)self knobPortal];
-      [v11 setMatchesPosition:1];
+      knobPortal3 = [(_UIPrototypingMenuSlider *)self knobPortal];
+      [knobPortal3 setMatchesPosition:1];
 
-      v12 = [(_UIPrototypingMenuSlider *)self knobPortal];
-      [v12 setMatchesTransform:1];
+      knobPortal4 = [(_UIPrototypingMenuSlider *)self knobPortal];
+      [knobPortal4 setMatchesTransform:1];
 
-      v13 = [(_UIPrototypingMenuSlider *)self knobPortal];
-      [v13 setHidesSourceView:1];
+      knobPortal5 = [(_UIPrototypingMenuSlider *)self knobPortal];
+      [knobPortal5 setHidesSourceView:1];
     }
 
-    v14 = [(UIView *)self window];
-    v15 = [(_UIPrototypingMenuSlider *)self knobPortal];
-    [v14 addSubview:v15];
+    window = [(UIView *)self window];
+    knobPortal6 = [(_UIPrototypingMenuSlider *)self knobPortal];
+    [window addSubview:knobPortal6];
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __59___UIPrototypingMenuSlider__setKnobViewProminent_animated___block_invoke;
   aBlock[3] = &unk_1E70F35E0;
-  v26 = v5;
-  v16 = v7;
+  v26 = prominentCopy;
+  v16 = knobView;
   v25 = v16;
   v17 = _Block_copy(aBlock);
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __59___UIPrototypingMenuSlider__setKnobViewProminent_animated___block_invoke_2;
   v22[3] = &unk_1E7120C28;
-  v23 = v5;
+  v23 = prominentCopy;
   v22[4] = self;
   v18 = _Block_copy(v22);
-  if (v4)
+  if (animatedCopy)
   {
     v19 = 0.3;
-    if (!v5)
+    if (!prominentCopy)
     {
       v19 = 0.2;
     }
 
     v20 = 0.7;
-    if (!v5)
+    if (!prominentCopy)
     {
       v20 = 1.0;
     }
@@ -352,15 +352,15 @@ LABEL_7:
 
 - (UIEdgeInsets)_thumbHitEdgeInsets
 {
-  v3 = [(_UIPrototypingMenuSlider *)self knobView];
-  [v3 bounds];
+  knobView = [(_UIPrototypingMenuSlider *)self knobView];
+  [knobView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(UISlider *)self currentThumbImage];
-  [v12 size];
+  currentThumbImage = [(UISlider *)self currentThumbImage];
+  [currentThumbImage size];
   v14 = v13;
   v16 = v15;
 
@@ -384,27 +384,27 @@ LABEL_7:
   return result;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = _UIPrototypingMenuSlider;
-  [(UIControl *)&v5 touchesBegan:a3 withEvent:a4];
+  [(UIControl *)&v5 touchesBegan:began withEvent:event];
   [(_UIPrototypingMenuSlider *)self _setKnobViewProminent:1 animated:1];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = _UIPrototypingMenuSlider;
-  [(UIControl *)&v5 touchesEnded:a3 withEvent:a4];
+  [(UIControl *)&v5 touchesEnded:ended withEvent:event];
   [(_UIPrototypingMenuSlider *)self _setKnobViewProminent:0 animated:1];
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = _UIPrototypingMenuSlider;
-  [(UIControl *)&v5 touchesCancelled:a3 withEvent:a4];
+  [(UIControl *)&v5 touchesCancelled:cancelled withEvent:event];
   [(_UIPrototypingMenuSlider *)self _setKnobViewProminent:0 animated:1];
 }
 

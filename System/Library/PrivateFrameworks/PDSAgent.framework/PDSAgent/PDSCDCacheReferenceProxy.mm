@@ -1,28 +1,28 @@
 @interface PDSCDCacheReferenceProxy
-- (BOOL)conformsToProtocol:(id)a3;
-- (PDSCDCacheReferenceProxy)initWithCacheContainer:(id)a3 persistentContainer:(id)a4;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (PDSCDCacheReferenceProxy)initWithCacheContainer:(id)container persistentContainer:(id)persistentContainer;
 @end
 
 @implementation PDSCDCacheReferenceProxy
 
-- (PDSCDCacheReferenceProxy)initWithCacheContainer:(id)a3 persistentContainer:(id)a4
+- (PDSCDCacheReferenceProxy)initWithCacheContainer:(id)container persistentContainer:(id)persistentContainer
 {
-  v7 = a3;
-  v8 = a4;
+  containerCopy = container;
+  persistentContainerCopy = persistentContainer;
   if (self)
   {
-    objc_storeStrong(&self->_cacheContainer, a3);
-    objc_storeStrong(&self->_persistentContainer, a4);
+    objc_storeStrong(&self->_cacheContainer, container);
+    objc_storeStrong(&self->_persistentContainer, persistentContainer);
   }
 
   return self;
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
-  v4 = a3;
-  v5 = [(PDSCDCacheReferenceProxy *)self cacheContainer];
-  v6 = [v5 conformsToProtocol:v4];
+  protocolCopy = protocol;
+  cacheContainer = [(PDSCDCacheReferenceProxy *)self cacheContainer];
+  v6 = [cacheContainer conformsToProtocol:protocolCopy];
 
   return v6;
 }

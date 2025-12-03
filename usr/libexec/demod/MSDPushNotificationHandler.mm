@@ -1,8 +1,8 @@
 @interface MSDPushNotificationHandler
 + (id)sharedInstance;
 - (MSDPushNotificationHandler)init;
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4;
-- (void)connection:(id)a3 didReceiveToken:(id)a4 forTopic:(id)a5 identifier:(id)a6;
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message;
+- (void)connection:(id)connection didReceiveToken:(id)token forTopic:(id)topic identifier:(id)identifier;
 - (void)enablePushNotifications;
 @end
 
@@ -38,43 +38,43 @@
 
 - (void)enablePushNotifications
 {
-  v3 = [(MSDPushNotificationHandler *)self apsConnection];
+  apsConnection = [(MSDPushNotificationHandler *)self apsConnection];
 
-  if (!v3)
+  if (!apsConnection)
   {
     v4 = [APSConnection alloc];
     v5 = APSEnvironmentProduction;
     v6 = +[MSDWorkQueueSet sharedInstance];
-    v7 = [v6 pollingQueue];
-    v8 = [v4 initWithEnvironmentName:v5 namedDelegatePort:@"com.apple.aps.mobilestoredemoport" queue:v7];
+    pollingQueue = [v6 pollingQueue];
+    v8 = [v4 initWithEnvironmentName:v5 namedDelegatePort:@"com.apple.aps.mobilestoredemoport" queue:pollingQueue];
     [(MSDPushNotificationHandler *)self setApsConnection:v8];
 
-    v9 = [(MSDPushNotificationHandler *)self apsConnection];
-    [v9 setDelegate:self];
+    apsConnection2 = [(MSDPushNotificationHandler *)self apsConnection];
+    [apsConnection2 setDelegate:self];
 
-    v10 = [(MSDPushNotificationHandler *)self apsConnection];
-    [v10 requestTokenForTopic:@"com.apple.ist.demounit.demodevicenotifications" identifier:&stru_10016D9D8];
+    apsConnection3 = [(MSDPushNotificationHandler *)self apsConnection];
+    [apsConnection3 requestTokenForTopic:@"com.apple.ist.demounit.demodevicenotifications" identifier:&stru_10016D9D8];
 
-    v12 = [(MSDPushNotificationHandler *)self apsConnection];
+    apsConnection4 = [(MSDPushNotificationHandler *)self apsConnection];
     v11 = [NSArray arrayWithObject:@"com.apple.ist.demounit.demodevicenotifications"];
-    [v12 setEnabledTopics:v11];
+    [apsConnection4 setEnabledTopics:v11];
   }
 }
 
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message
 {
-  v4 = a4;
-  v5 = [v4 topic];
-  if ([v5 isEqualToString:@"com.apple.ist.demounit.demodevicenotifications"])
+  messageCopy = message;
+  topic = [messageCopy topic];
+  if ([topic isEqualToString:@"com.apple.ist.demounit.demodevicenotifications"])
   {
-    v6 = [v4 userInfo];
+    userInfo = [messageCopy userInfo];
     v7 = sub_100063A54();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      sub_1000CD058(v6, v7);
+      sub_1000CD058(userInfo, v7);
     }
 
-    v8 = [v6 objectForKey:@"action"];
+    v8 = [userInfo objectForKey:@"action"];
     v9 = [v8 isEqualToString:@"ping_hub"];
 
     if (v9)
@@ -91,24 +91,24 @@
       goto LABEL_27;
     }
 
-    v12 = [v6 objectForKey:@"action"];
+    v12 = [userInfo objectForKey:@"action"];
     v13 = [v12 isEqualToString:@"collect_logs"];
 
     if (v13)
     {
-      v14 = [v6 objectForKey:@"parameters"];
+      v14 = [userInfo objectForKey:@"parameters"];
       v15 = +[MSDTargetDevice sharedInstance];
       v11 = [v14 objectForKey:@"url"];
-      v16 = [v15 hubSuppliedSettings];
-      v17 = [v16 objectForKey:@"LogS3BucketUrl"];
+      hubSuppliedSettings = [v15 hubSuppliedSettings];
+      v17 = [hubSuppliedSettings objectForKey:@"LogS3BucketUrl"];
 
       if (v17 && ([v11 hasPrefix:v17]& 1) != 0)
       {
         v18 = [v14 objectForKey:@"retryAttempts"];
-        v19 = [v18 integerValue];
+        integerValue = [v18 integerValue];
 
         v20 = [v14 objectForKey:@"logType"];
-        v30 = [v20 unsignedIntegerValue];
+        unsignedIntegerValue = [v20 unsignedIntegerValue];
 
         v21 = [v14 objectForKey:@"headers"];
         v22 = sub_100063A54();
@@ -117,12 +117,12 @@
           *buf = 138543618;
           v32 = v11;
           v33 = 2048;
-          v34 = v19;
+          v34 = integerValue;
           _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Received request to collect MobileStoreDemo logs. Upload url: %{public}@, retry attempts: %ld", buf, 0x16u);
         }
 
         v23 = +[MSDS3UploadHandler sharedInstance];
-        [v23 uploadDemoLogsTo:v11 HttpHeaders:v21 andMaxAttempts:v19 ofType:v30];
+        [v23 uploadDemoLogsTo:v11 HttpHeaders:v21 andMaxAttempts:integerValue ofType:unsignedIntegerValue];
 
         goto LABEL_27;
       }
@@ -137,7 +137,7 @@
 
     else
     {
-      v24 = [v6 objectForKey:@"action"];
+      v24 = [userInfo objectForKey:@"action"];
       v25 = [v24 isEqualToString:@"demo_device_lock"];
 
       if (v25)
@@ -180,7 +180,7 @@ LABEL_26:
         goto LABEL_27;
       }
 
-      v27 = [v6 objectForKey:@"action"];
+      v27 = [userInfo objectForKey:@"action"];
       v28 = [v27 isEqualToString:@"discover"];
 
       v11 = sub_100063A54();
@@ -192,7 +192,7 @@ LABEL_26:
           goto LABEL_27;
         }
 
-        v14 = [v6 objectForKey:@"action"];
+        v14 = [userInfo objectForKey:@"action"];
         *buf = 138543362;
         v32 = v14;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Received invalid command from DU. %{public}@", buf, 0xCu);
@@ -207,7 +207,7 @@ LABEL_26:
       }
 
       v11 = +[MSDAVFlashlight sharedInstance];
-      v14 = [v6 objectForKey:@"parameters"];
+      v14 = [userInfo objectForKey:@"parameters"];
       v15 = [v14 objectForKey:@"flashDeviceDuration"];
       if (-[NSObject flash:](v11, "flash:", [v15 unsignedIntegerValue]))
       {
@@ -229,10 +229,10 @@ LABEL_25:
 LABEL_29:
 }
 
-- (void)connection:(id)a3 didReceiveToken:(id)a4 forTopic:(id)a5 identifier:(id)a6
+- (void)connection:(id)connection didReceiveToken:(id)token forTopic:(id)topic identifier:(id)identifier
 {
-  v7 = [a4 hexStringRepresentation];
-  [(MSDPushNotificationHandler *)self setApsToken:v7];
+  hexStringRepresentation = [token hexStringRepresentation];
+  [(MSDPushNotificationHandler *)self setApsToken:hexStringRepresentation];
 
   v8 = sub_100063A54();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))

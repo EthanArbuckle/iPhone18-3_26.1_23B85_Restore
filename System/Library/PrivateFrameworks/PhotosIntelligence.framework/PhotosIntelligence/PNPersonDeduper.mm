@@ -1,13 +1,13 @@
 @interface PNPersonDeduper
-- (PNPersonDeduper)initWithPersonClusterManager:(id)a3 andInvalidCandidatesMapping:(id)a4 profile:(id)a5;
+- (PNPersonDeduper)initWithPersonClusterManager:(id)manager andInvalidCandidatesMapping:(id)mapping profile:(id)profile;
 - (PNPersonPromoter)personPromoter;
 - (PNPersonPromoterDelegate)delegate;
 - (PNPetPromoter)petPromoter;
 - (id)basicSequence;
-- (id)dedupeNewVerifiedPersons:(id)a3 withExistingVerifiedPersons:(id)a4 updateBlock:(id)a5;
-- (id)dedupeUnverifiedPersons:(id)a3 updateBlock:(id)a4;
-- (id)dedupeUnverifiedPersons:(id)a3 withVerifiedPersons:(id)a4 updateBlock:(id)a5;
-- (void)_executeStepsInSequences:(id)a3 forPersons:(id)a4 andOtherPersons:(id)a5 updateBlock:(id)a6 resultBlock:(id)a7;
+- (id)dedupeNewVerifiedPersons:(id)persons withExistingVerifiedPersons:(id)verifiedPersons updateBlock:(id)block;
+- (id)dedupeUnverifiedPersons:(id)persons updateBlock:(id)block;
+- (id)dedupeUnverifiedPersons:(id)persons withVerifiedPersons:(id)verifiedPersons updateBlock:(id)block;
+- (void)_executeStepsInSequences:(id)sequences forPersons:(id)persons andOtherPersons:(id)otherPersons updateBlock:(id)block resultBlock:(id)resultBlock;
 @end
 
 @implementation PNPersonDeduper
@@ -33,24 +33,24 @@
   return WeakRetained;
 }
 
-- (id)dedupeNewVerifiedPersons:(id)a3 withExistingVerifiedPersons:(id)a4 updateBlock:(id)a5
+- (id)dedupeNewVerifiedPersons:(id)persons withExistingVerifiedPersons:(id)verifiedPersons updateBlock:(id)block
 {
   v35[2] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v10)
+  personsCopy = persons;
+  verifiedPersonsCopy = verifiedPersons;
+  blockCopy = block;
+  if (verifiedPersonsCopy)
   {
-    if (v9)
+    if (personsCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_10:
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"PNPersonDeduper.m" lineNumber:219 description:{@"Invalid parameter not satisfying: %@", @"newVerifiedPersons"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PNPersonDeduper.m" lineNumber:219 description:{@"Invalid parameter not satisfying: %@", @"newVerifiedPersons"}];
 
-    if (v11)
+    if (blockCopy)
     {
       goto LABEL_4;
     }
@@ -58,23 +58,23 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v23 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v23 handleFailureInMethod:a2 object:self file:@"PNPersonDeduper.m" lineNumber:218 description:{@"Invalid parameter not satisfying: %@", @"existingVerifiedPersons"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PNPersonDeduper.m" lineNumber:218 description:{@"Invalid parameter not satisfying: %@", @"existingVerifiedPersons"}];
 
-  if (!v9)
+  if (!personsCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_3:
-  if (v11)
+  if (blockCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_11:
-  v25 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v25 handleFailureInMethod:a2 object:self file:@"PNPersonDeduper.m" lineNumber:220 description:{@"Invalid parameter not satisfying: %@", @"updateBlock"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"PNPersonDeduper.m" lineNumber:220 description:{@"Invalid parameter not satisfying: %@", @"updateBlock"}];
 
 LABEL_4:
   v28 = 0;
@@ -82,12 +82,12 @@ LABEL_4:
   v30 = 0x3032000000;
   v31 = __Block_byref_object_copy__4025;
   v32 = __Block_byref_object_dispose__4026;
-  v33 = [v9 mutableCopy];
+  v33 = [personsCopy mutableCopy];
   v12 = [(PNPersonDeduperProfile *)self->_profile copy];
   [v12 setShouldRelaxThreshold:1];
   v13 = [(PNPersonDeduperStep *)[PNPersonDeduperSocialGroupTimeWarpingStep alloc] initWithPersonClusterManager:self->_personClusterManager invalidCandidatesMapping:self->_invalidCandidatesMapping profile:v12];
-  v14 = [(PNPersonDeduper *)self delegate];
-  [(PNPersonDeduperStep *)v13 setDelegate:v14];
+  delegate = [(PNPersonDeduper *)self delegate];
+  [(PNPersonDeduperStep *)v13 setDelegate:delegate];
 
   v35[0] = v13;
   v15 = [(PNPersonDeduperStep *)[PNPersonDeduperTimeStep alloc] initWithPersonClusterManager:self->_personClusterManager invalidCandidatesMapping:self->_invalidCandidatesMapping profile:v12];
@@ -100,7 +100,7 @@ LABEL_4:
   v27[2] = __84__PNPersonDeduper_dedupeNewVerifiedPersons_withExistingVerifiedPersons_updateBlock___block_invoke;
   v27[3] = &unk_1E82A2780;
   v27[4] = &v28;
-  [(PNPersonDeduper *)self _executeStepsInSequences:v16 forPersons:v10 andOtherPersons:v17 updateBlock:v11 resultBlock:v27];
+  [(PNPersonDeduper *)self _executeStepsInSequences:v16 forPersons:verifiedPersonsCopy andOtherPersons:v17 updateBlock:blockCopy resultBlock:v27];
   if ([v29[5] count] >= 2)
   {
     v18 = [(PNPersonDeduperStep *)[PNPersonDeduperTimeStep alloc] initWithPersonClusterManager:self->_personClusterManager invalidCandidatesMapping:self->_invalidCandidatesMapping profile:v12];
@@ -113,7 +113,7 @@ LABEL_4:
     v26[2] = __84__PNPersonDeduper_dedupeNewVerifiedPersons_withExistingVerifiedPersons_updateBlock___block_invoke_2;
     v26[3] = &unk_1E82A2780;
     v26[4] = &v28;
-    [(PNPersonDeduper *)self _executeStepsInSequences:v19 forPersons:v20 andOtherPersons:v20 updateBlock:v11 resultBlock:v26];
+    [(PNPersonDeduper *)self _executeStepsInSequences:v19 forPersons:v20 andOtherPersons:v20 updateBlock:blockCopy resultBlock:v26];
   }
 
   v21 = v29[5];
@@ -123,14 +123,14 @@ LABEL_4:
   return v21;
 }
 
-- (id)dedupeUnverifiedPersons:(id)a3 updateBlock:(id)a4
+- (id)dedupeUnverifiedPersons:(id)persons updateBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  personsCopy = persons;
+  blockCopy = block;
+  v9 = blockCopy;
+  if (personsCopy)
   {
-    if (v8)
+    if (blockCopy)
     {
       goto LABEL_3;
     }
@@ -138,8 +138,8 @@ LABEL_4:
 
   else
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PNPersonDeduper.m" lineNumber:204 description:{@"Invalid parameter not satisfying: %@", @"unverifiedPersons"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PNPersonDeduper.m" lineNumber:204 description:{@"Invalid parameter not satisfying: %@", @"unverifiedPersons"}];
 
     if (v9)
     {
@@ -147,8 +147,8 @@ LABEL_4:
     }
   }
 
-  v14 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v14 handleFailureInMethod:a2 object:self file:@"PNPersonDeduper.m" lineNumber:205 description:{@"Invalid parameter not satisfying: %@", @"updateBlock"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PNPersonDeduper.m" lineNumber:205 description:{@"Invalid parameter not satisfying: %@", @"updateBlock"}];
 
 LABEL_3:
   v16 = 0;
@@ -156,14 +156,14 @@ LABEL_3:
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy__4025;
   v20 = __Block_byref_object_dispose__4026;
-  v21 = [v7 mutableCopy];
-  v10 = [(PNPersonDeduper *)self basicSequence];
+  v21 = [personsCopy mutableCopy];
+  basicSequence = [(PNPersonDeduper *)self basicSequence];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __55__PNPersonDeduper_dedupeUnverifiedPersons_updateBlock___block_invoke;
   v15[3] = &unk_1E82A2780;
   v15[4] = &v16;
-  [(PNPersonDeduper *)self _executeStepsInSequences:v10 forPersons:v7 andOtherPersons:v7 updateBlock:v9 resultBlock:v15];
+  [(PNPersonDeduper *)self _executeStepsInSequences:basicSequence forPersons:personsCopy andOtherPersons:personsCopy updateBlock:v9 resultBlock:v15];
 
   v11 = v17[5];
   _Block_object_dispose(&v16, 8);
@@ -171,23 +171,23 @@ LABEL_3:
   return v11;
 }
 
-- (id)dedupeUnverifiedPersons:(id)a3 withVerifiedPersons:(id)a4 updateBlock:(id)a5
+- (id)dedupeUnverifiedPersons:(id)persons withVerifiedPersons:(id)verifiedPersons updateBlock:(id)block
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  personsCopy = persons;
+  verifiedPersonsCopy = verifiedPersons;
+  blockCopy = block;
+  if (personsCopy)
   {
-    if (v10)
+    if (verifiedPersonsCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_10:
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PNPersonDeduper.m" lineNumber:188 description:{@"Invalid parameter not satisfying: %@", @"verifiedPersons"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PNPersonDeduper.m" lineNumber:188 description:{@"Invalid parameter not satisfying: %@", @"verifiedPersons"}];
 
-    if (v11)
+    if (blockCopy)
     {
       goto LABEL_4;
     }
@@ -195,23 +195,23 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v15 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v15 handleFailureInMethod:a2 object:self file:@"PNPersonDeduper.m" lineNumber:187 description:{@"Invalid parameter not satisfying: %@", @"unverifiedPersons"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PNPersonDeduper.m" lineNumber:187 description:{@"Invalid parameter not satisfying: %@", @"unverifiedPersons"}];
 
-  if (!v10)
+  if (!verifiedPersonsCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_3:
-  if (v11)
+  if (blockCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_11:
-  v17 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v17 handleFailureInMethod:a2 object:self file:@"PNPersonDeduper.m" lineNumber:189 description:{@"Invalid parameter not satisfying: %@", @"updateBlock"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"PNPersonDeduper.m" lineNumber:189 description:{@"Invalid parameter not satisfying: %@", @"updateBlock"}];
 
 LABEL_4:
   v19 = 0;
@@ -219,16 +219,16 @@ LABEL_4:
   v21 = 0x3032000000;
   v22 = __Block_byref_object_copy__4025;
   v23 = __Block_byref_object_dispose__4026;
-  v24 = [v9 mutableCopy];
-  if ([v10 count])
+  v24 = [personsCopy mutableCopy];
+  if ([verifiedPersonsCopy count])
   {
-    v12 = [(PNPersonDeduper *)self basicSequence];
+    basicSequence = [(PNPersonDeduper *)self basicSequence];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __75__PNPersonDeduper_dedupeUnverifiedPersons_withVerifiedPersons_updateBlock___block_invoke;
     v18[3] = &unk_1E82A2780;
     v18[4] = &v19;
-    [(PNPersonDeduper *)self _executeStepsInSequences:v12 forPersons:v10 andOtherPersons:v9 updateBlock:v11 resultBlock:v18];
+    [(PNPersonDeduper *)self _executeStepsInSequences:basicSequence forPersons:verifiedPersonsCopy andOtherPersons:personsCopy updateBlock:blockCopy resultBlock:v18];
   }
 
   v13 = v20[5];
@@ -244,10 +244,10 @@ LABEL_4:
   v4 = [(PNPersonDeduperStep *)[PNPersonDeduperLocationStep alloc] initWithPersonClusterManager:self->_personClusterManager invalidCandidatesMapping:self->_invalidCandidatesMapping profile:self->_profile];
   v5 = [(PNPersonDeduperStep *)[PNPersonDeduperSocialGroupComplementStep alloc] initWithPersonClusterManager:self->_personClusterManager invalidCandidatesMapping:self->_invalidCandidatesMapping profile:self->_profile];
   v6 = [(PNPersonDeduperStep *)[PNPersonDeduperSocialGroupOverlaps alloc] initWithPersonClusterManager:self->_personClusterManager invalidCandidatesMapping:self->_invalidCandidatesMapping profile:self->_profile];
-  v7 = [(PNPersonDeduper *)self delegate];
-  [(PNPersonDeduperStep *)v4 setDelegate:v7];
-  [(PNPersonDeduperStep *)v5 setDelegate:v7];
-  [(PNPersonDeduperStep *)v6 setDelegate:v7];
+  delegate = [(PNPersonDeduper *)self delegate];
+  [(PNPersonDeduperStep *)v4 setDelegate:delegate];
+  [(PNPersonDeduperStep *)v5 setDelegate:delegate];
+  [(PNPersonDeduperStep *)v6 setDelegate:delegate];
   v10[0] = v3;
   v10[1] = v4;
   v10[2] = v5;
@@ -257,34 +257,34 @@ LABEL_4:
   return v8;
 }
 
-- (void)_executeStepsInSequences:(id)a3 forPersons:(id)a4 andOtherPersons:(id)a5 updateBlock:(id)a6 resultBlock:(id)a7
+- (void)_executeStepsInSequences:(id)sequences forPersons:(id)persons andOtherPersons:(id)otherPersons updateBlock:(id)block resultBlock:(id)resultBlock
 {
   v53 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v26 = a5;
-  v13 = a6;
-  v25 = a7;
+  sequencesCopy = sequences;
+  personsCopy = persons;
+  otherPersonsCopy = otherPersons;
+  blockCopy = block;
+  resultBlockCopy = resultBlock;
   v46 = 0;
   v47 = &v46;
   v48 = 0x3032000000;
   v49 = __Block_byref_object_copy__4025;
   v50 = __Block_byref_object_dispose__4026;
-  v24 = v12;
-  v51 = [v12 mutableCopy];
+  v24 = personsCopy;
+  v51 = [personsCopy mutableCopy];
   v40 = 0;
   v41 = &v40;
   v42 = 0x3032000000;
   v43 = __Block_byref_object_copy__4025;
   v44 = __Block_byref_object_dispose__4026;
-  v45 = [v26 mutableCopy];
-  v28 = [(PNPersonClusterManager *)self->_personClusterManager detectionType];
+  v45 = [otherPersonsCopy mutableCopy];
+  detectionType = [(PNPersonClusterManager *)self->_personClusterManager detectionType];
   v39 = 0;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v14 = v11;
+  v14 = sequencesCopy;
   v15 = [v14 countByEnumeratingWithState:&v35 objects:v52 count:16];
   if (v15)
   {
@@ -302,7 +302,7 @@ LABEL_4:
 
         v18 = *(*(&v35 + 1) + 8 * v17);
         v19 = objc_autoreleasePoolPush();
-        v20 = [MEMORY[0x1E695DF00] date];
+        date = [MEMORY[0x1E695DF00] date];
         v21 = v47[5];
         v22 = v41[5];
         v30[0] = MEMORY[0x1E69E9820];
@@ -311,13 +311,13 @@ LABEL_4:
         v30[3] = &unk_1E82A2758;
         v32 = &v46;
         v33 = &v40;
-        v34 = v28;
+        v34 = detectionType;
         v30[4] = self;
         v30[5] = v18;
-        v23 = v20;
+        v23 = date;
         v31 = v23;
-        [v18 dedupePersons:v21 withOtherPersons:v22 updateBlock:v13 resultBlock:v30];
-        v13[2](v13, &v39, v16 / [v14 count]);
+        [v18 dedupePersons:v21 withOtherPersons:v22 updateBlock:blockCopy resultBlock:v30];
+        blockCopy[2](blockCopy, &v39, v16 / [v14 count]);
         LOBYTE(v18) = v39;
 
         objc_autoreleasePoolPop(v19);
@@ -342,7 +342,7 @@ LABEL_4:
     }
   }
 
-  v25[2](v25, v47[5], v41[5]);
+  resultBlockCopy[2](resultBlockCopy, v47[5], v41[5]);
 LABEL_11:
   _Block_object_dispose(&v40, 8);
 
@@ -418,20 +418,20 @@ LABEL_6:
   *(v25 + 40) = v6;
 }
 
-- (PNPersonDeduper)initWithPersonClusterManager:(id)a3 andInvalidCandidatesMapping:(id)a4 profile:(id)a5
+- (PNPersonDeduper)initWithPersonClusterManager:(id)manager andInvalidCandidatesMapping:(id)mapping profile:(id)profile
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  managerCopy = manager;
+  mappingCopy = mapping;
+  profileCopy = profile;
   v15.receiver = self;
   v15.super_class = PNPersonDeduper;
   v12 = [(PNPersonDeduper *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_personClusterManager, a3);
-    objc_storeStrong(&v13->_invalidCandidatesMapping, a4);
-    objc_storeStrong(&v13->_profile, a5);
+    objc_storeStrong(&v12->_personClusterManager, manager);
+    objc_storeStrong(&v13->_invalidCandidatesMapping, mapping);
+    objc_storeStrong(&v13->_profile, profile);
   }
 
   return v13;

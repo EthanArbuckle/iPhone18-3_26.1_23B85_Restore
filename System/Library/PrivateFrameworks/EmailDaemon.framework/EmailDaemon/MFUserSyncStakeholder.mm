@@ -1,9 +1,9 @@
 @interface MFUserSyncStakeholder
 + (id)sharedStakeholder;
 - (MFUserSyncStakeholder)init;
-- (void)_networkConfigurationChanged:(id)a3;
-- (void)_processingDidFinish:(id)a3;
-- (void)_processingDidStart:(id)a3;
+- (void)_networkConfigurationChanged:(id)changed;
+- (void)_processingDidFinish:(id)finish;
+- (void)_processingDidStart:(id)start;
 - (void)createAndStartTask;
 - (void)endTask;
 - (void)printDeliveryQueue;
@@ -22,8 +22,8 @@
   if (v2)
   {
     v3 = +[UMUserManager sharedManager];
-    v4 = [v3 currentUser];
-    v5 = [v4 uid];
+    currentUser = [v3 currentUser];
+    v5 = [currentUser uid];
     v2->_runningInSyncBubble = v5 != getuid();
 
     if (v2->_runningInSyncBubble)
@@ -96,8 +96,8 @@
   else
   {
     v2 = +[MFDeliveryQueue sharedDeliveryQueue];
-    v4 = [v2 numberOfPendingMessages];
-    if (v4)
+    numberOfPendingMessages = [v2 numberOfPendingMessages];
+    if (numberOfPendingMessages)
     {
       v5 = MFLogGeneral();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -105,7 +105,7 @@
         v7 = 136315394;
         v8 = "[MFUserSyncStakeholder uploadContent]";
         v9 = 2048;
-        v10 = v4;
+        v10 = numberOfPendingMessages;
         _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s: creating sync task for %lu messages", &v7, 0x16u);
       }
 
@@ -148,9 +148,9 @@
 - (void)printDeliveryQueue
 {
   v3 = +[MFDeliveryQueue sharedDeliveryQueue];
-  v2 = [v3 copyDiagnosticInformation];
+  copyDiagnosticInformation = [v3 copyDiagnosticInformation];
 
-  puts([v2 UTF8String]);
+  puts([copyDiagnosticInformation UTF8String]);
 }
 
 - (void)processQueueAndExit
@@ -165,15 +165,15 @@
   [(MFUserSyncStakeholder *)self uploadContent];
 }
 
-- (void)_networkConfigurationChanged:(id)a3
+- (void)_networkConfigurationChanged:(id)changed
 {
   v3 = +[MFNetworkController sharedInstance];
   v4 = MFLogGeneral();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
-    v5 = [v3 isNetworkUp];
+    isNetworkUp = [v3 isNetworkUp];
     v6 = @"NO";
-    if (v5)
+    if (isNetworkUp)
     {
       v6 = @"YES";
     }
@@ -184,16 +184,16 @@
   }
 }
 
-- (void)_processingDidStart:(id)a3
+- (void)_processingDidStart:(id)start
 {
   v4 = [EFProcessTransaction transactionWithDescription:@"com.apple.mail.stakeholder-processing"];
   transaction = self->_transaction;
   self->_transaction = v4;
 }
 
-- (void)_processingDidFinish:(id)a3
+- (void)_processingDidFinish:(id)finish
 {
-  v5 = a3;
+  finishCopy = finish;
   [(MFUserSyncStakeholder *)self endTask];
   [(EFProcessTransaction *)self->_transaction invalidate];
   transaction = self->_transaction;

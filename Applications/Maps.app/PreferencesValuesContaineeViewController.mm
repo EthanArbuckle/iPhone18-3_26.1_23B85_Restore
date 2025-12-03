@@ -1,21 +1,21 @@
 @interface PreferencesValuesContaineeViewController
-- (NSDirectionalEdgeInsets)collectionViewListSectionContentInsetsForSection:(int64_t)a3;
+- (NSDirectionalEdgeInsets)collectionViewListSectionContentInsetsForSection:(int64_t)section;
 - (PreferenceValuesDataSource)dataSource;
 - (id)initialConstraints;
-- (void)addSection:(id)a3;
-- (void)addSectionWithTitle:(id)a3 content:(id)a4;
-- (void)dataSourceDidRebuildSections:(id)a3;
+- (void)addSection:(id)section;
+- (void)addSectionWithTitle:(id)title content:(id)content;
+- (void)dataSourceDidRebuildSections:(id)sections;
 - (void)loadContentNowIfNeeded;
 - (void)prepareContent;
 - (void)rebuildSections;
 - (void)setupSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation PreferencesValuesContaineeViewController
 
-- (void)dataSourceDidRebuildSections:(id)a3
+- (void)dataSourceDidRebuildSections:(id)sections
 {
   [(UITableView *)self->_tableView reloadData];
   collectionView = self->_collectionView;
@@ -25,35 +25,35 @@
 
 - (void)rebuildSections
 {
-  v2 = [(PreferencesValuesContaineeViewController *)self dataSource];
-  [v2 rebuildSections];
+  dataSource = [(PreferencesValuesContaineeViewController *)self dataSource];
+  [dataSource rebuildSections];
 }
 
 - (void)loadContentNowIfNeeded
 {
-  v2 = [(PreferencesValuesContaineeViewController *)self dataSource];
-  [v2 loadContentNowIfNeeded];
+  dataSource = [(PreferencesValuesContaineeViewController *)self dataSource];
+  [dataSource loadContentNowIfNeeded];
 }
 
-- (void)addSectionWithTitle:(id)a3 content:(id)a4
+- (void)addSectionWithTitle:(id)title content:(id)content
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PreferencesValuesContaineeViewController *)self dataSource];
-  [v8 addSectionWithTitle:v7 content:v6];
+  contentCopy = content;
+  titleCopy = title;
+  dataSource = [(PreferencesValuesContaineeViewController *)self dataSource];
+  [dataSource addSectionWithTitle:titleCopy content:contentCopy];
 }
 
-- (void)addSection:(id)a3
+- (void)addSection:(id)section
 {
-  v4 = a3;
-  v5 = [(PreferencesValuesContaineeViewController *)self dataSource];
-  [v5 addSection:v4];
+  sectionCopy = section;
+  dataSource = [(PreferencesValuesContaineeViewController *)self dataSource];
+  [dataSource addSection:sectionCopy];
 }
 
 - (void)prepareContent
 {
-  v2 = [(PreferencesValuesContaineeViewController *)self dataSource];
-  [v2 prepareContent];
+  dataSource = [(PreferencesValuesContaineeViewController *)self dataSource];
+  [dataSource prepareContent];
 }
 
 - (PreferenceValuesDataSource)dataSource
@@ -72,11 +72,11 @@
   return dataSource;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PreferencesValuesContaineeViewController;
-  [(ContaineeViewController *)&v4 viewWillAppear:a3];
+  [(ContaineeViewController *)&v4 viewWillAppear:appear];
   [(MapsThemeViewController *)self updateTheme];
 }
 
@@ -88,12 +88,12 @@
     tableView = self->_collectionView;
   }
 
-  v3 = [(ContaineeViewController *)self contentView];
+  contentView = [(ContaineeViewController *)self contentView];
   LODWORD(v4) = 1148846080;
-  v5 = [tableView _maps_constraintsEqualToEdgesOfView:v3 priority:v4];
-  v6 = [v5 allConstraints];
+  v5 = [tableView _maps_constraintsEqualToEdgesOfView:contentView priority:v4];
+  allConstraints = [v5 allConstraints];
 
-  return v6;
+  return allConstraints;
 }
 
 - (void)setupSubviews
@@ -107,63 +107,63 @@
     v28[4] = self;
     v3 = [[UICollectionViewCompositionalLayout alloc] initWithSectionProvider:v28];
     v4 = [UICollectionView alloc];
-    v5 = [(PreferencesValuesContaineeViewController *)self view];
-    [v5 bounds];
+    view = [(PreferencesValuesContaineeViewController *)self view];
+    [view bounds];
     v6 = [v4 initWithFrame:v3 collectionViewLayout:?];
     [(PreferencesValuesContaineeViewController *)self setCollectionView:v6];
 
-    v7 = [(PreferencesValuesContaineeViewController *)self collectionView];
-    [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+    collectionView = [(PreferencesValuesContaineeViewController *)self collectionView];
+    [collectionView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v8 = [(PreferencesValuesContaineeViewController *)self dataSource];
-    v9 = [(PreferencesValuesContaineeViewController *)self collectionView];
-    [v9 setDataSource:v8];
+    dataSource = [(PreferencesValuesContaineeViewController *)self dataSource];
+    collectionView2 = [(PreferencesValuesContaineeViewController *)self collectionView];
+    [collectionView2 setDataSource:dataSource];
 
-    v10 = [(PreferencesValuesContaineeViewController *)self dataSource];
-    v11 = [(PreferencesValuesContaineeViewController *)self collectionView];
-    [v11 setDelegate:v10];
+    dataSource2 = [(PreferencesValuesContaineeViewController *)self dataSource];
+    collectionView3 = [(PreferencesValuesContaineeViewController *)self collectionView];
+    [collectionView3 setDelegate:dataSource2];
 
-    v12 = [(PreferencesValuesContaineeViewController *)self collectionView];
-    [PreferenceValuesDataSource registerCellsInCollectionView:v12];
+    collectionView4 = [(PreferencesValuesContaineeViewController *)self collectionView];
+    [PreferenceValuesDataSource registerCellsInCollectionView:collectionView4];
 
-    v13 = [(ContaineeViewController *)self contentView];
-    v14 = [(PreferencesValuesContaineeViewController *)self collectionView];
-    [v13 addSubview:v14];
+    contentView = [(ContaineeViewController *)self contentView];
+    collectionView5 = [(PreferencesValuesContaineeViewController *)self collectionView];
+    [contentView addSubview:collectionView5];
   }
 
   else
   {
     v15 = [UITableView alloc];
-    v16 = [(PreferencesValuesContaineeViewController *)self view];
-    [v16 bounds];
+    view2 = [(PreferencesValuesContaineeViewController *)self view];
+    [view2 bounds];
     v17 = [v15 initWithFrame:1 style:?];
     [(PreferencesValuesContaineeViewController *)self setTableView:v17];
 
-    v18 = [(PreferencesValuesContaineeViewController *)self tableView];
-    [v18 setTranslatesAutoresizingMaskIntoConstraints:0];
+    tableView = [(PreferencesValuesContaineeViewController *)self tableView];
+    [tableView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v19 = [(PreferencesValuesContaineeViewController *)self dataSource];
-    v20 = [(PreferencesValuesContaineeViewController *)self tableView];
-    [v20 setDataSource:v19];
+    dataSource3 = [(PreferencesValuesContaineeViewController *)self dataSource];
+    tableView2 = [(PreferencesValuesContaineeViewController *)self tableView];
+    [tableView2 setDataSource:dataSource3];
 
-    v21 = [(PreferencesValuesContaineeViewController *)self dataSource];
-    v22 = [(PreferencesValuesContaineeViewController *)self tableView];
-    [v22 setDelegate:v21];
+    dataSource4 = [(PreferencesValuesContaineeViewController *)self dataSource];
+    tableView3 = [(PreferencesValuesContaineeViewController *)self tableView];
+    [tableView3 setDelegate:dataSource4];
 
-    v23 = [(PreferencesValuesContaineeViewController *)self tableView];
-    [v23 setBackgroundView:0];
+    tableView4 = [(PreferencesValuesContaineeViewController *)self tableView];
+    [tableView4 setBackgroundView:0];
 
     v24 = +[UIColor clearColor];
-    v25 = [(PreferencesValuesContaineeViewController *)self tableView];
-    [v25 setBackgroundColor:v24];
+    tableView5 = [(PreferencesValuesContaineeViewController *)self tableView];
+    [tableView5 setBackgroundColor:v24];
 
-    v27 = [(ContaineeViewController *)self contentView];
-    v26 = [(PreferencesValuesContaineeViewController *)self tableView];
-    [v27 addSubview:v26];
+    contentView2 = [(ContaineeViewController *)self contentView];
+    tableView6 = [(PreferencesValuesContaineeViewController *)self tableView];
+    [contentView2 addSubview:tableView6];
   }
 }
 
-- (NSDirectionalEdgeInsets)collectionViewListSectionContentInsetsForSection:(int64_t)a3
+- (NSDirectionalEdgeInsets)collectionViewListSectionContentInsetsForSection:(int64_t)section
 {
   if (([(PreferencesValuesContaineeViewController *)self collectionViewListLayoutAppearanceStyle]& 0xFFFFFFFFFFFFFFFBLL) != 0)
   {
@@ -194,8 +194,8 @@
   v4.super_class = PreferencesValuesContaineeViewController;
   [(ContaineeViewController *)&v4 viewDidLoad];
   [(PreferencesValuesContaineeViewController *)self setupSubviews];
-  v3 = [(PreferencesValuesContaineeViewController *)self initialConstraints];
-  [NSLayoutConstraint activateConstraints:v3];
+  initialConstraints = [(PreferencesValuesContaineeViewController *)self initialConstraints];
+  [NSLayoutConstraint activateConstraints:initialConstraints];
 }
 
 @end

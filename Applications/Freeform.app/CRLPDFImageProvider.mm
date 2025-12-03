@@ -7,7 +7,7 @@
 - (int64_t)pageAngle;
 - (unint64_t)i_flushableMemoryEstimate;
 - (void)dealloc;
-- (void)drawImageInContext:(CGContext *)a3 rect:(CGRect)a4;
+- (void)drawImageInContext:(CGContext *)context rect:(CGRect)rect;
 - (void)flush;
 - (void)i_commonInit;
 - (void)p_loadIfNecessary;
@@ -152,8 +152,8 @@
   result = [(CRLPDFImageProvider *)self CGPDFDocument];
   if (result)
   {
-    v4 = [(CRLImageProvider *)self imageData];
-    v5 = [v4 length];
+    imageData = [(CRLImageProvider *)self imageData];
+    v5 = [imageData length];
 
     return v5;
   }
@@ -163,21 +163,21 @@
 
 - (BOOL)isValid
 {
-  v2 = [(CRLPDFImageProvider *)self CGPDFDocument];
-  if (v2)
+  cGPDFDocument = [(CRLPDFImageProvider *)self CGPDFDocument];
+  if (cGPDFDocument)
   {
-    LOBYTE(v2) = CGPDFDocumentGetPage(v2, 1uLL) != 0;
+    LOBYTE(cGPDFDocument) = CGPDFDocumentGetPage(cGPDFDocument, 1uLL) != 0;
   }
 
-  return v2;
+  return cGPDFDocument;
 }
 
-- (void)drawImageInContext:(CGContext *)a3 rect:(CGRect)a4
+- (void)drawImageInContext:(CGContext *)context rect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   if (![(CRLPDFImageProvider *)self isValid])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -207,14 +207,14 @@
     [CRLAssertionHandler handleFailureInFunction:v11 file:v12 lineNumber:104 isFatal:0 description:"shouldn't be drawing an invalid image provider"];
   }
 
-  v13 = [(CRLPDFImageProvider *)self CGPDFDocument];
-  if (v13)
+  cGPDFDocument = [(CRLPDFImageProvider *)self CGPDFDocument];
+  if (cGPDFDocument)
   {
-    Page = CGPDFDocumentGetPage(v13, 1uLL);
+    Page = CGPDFDocumentGetPage(cGPDFDocument, 1uLL);
     if (Page)
     {
       v15 = Page;
-      CGContextSaveGState(a3);
+      CGContextSaveGState(context);
       v32.origin.x = x;
       v32.origin.y = y;
       v32.size.width = width;
@@ -225,8 +225,8 @@
       v33.size.width = width;
       v33.size.height = height;
       MaxY = CGRectGetMaxY(v33);
-      CGContextTranslateCTM(a3, 0.0, MinY + MaxY);
-      CGContextScaleCTM(a3, 1.0, -1.0);
+      CGContextTranslateCTM(context, 0.0, MinY + MaxY);
+      CGContextScaleCTM(context, 1.0, -1.0);
       memset(&v31, 0, sizeof(v31));
       v29 = 0.0;
       v30 = 0.0;
@@ -244,16 +244,16 @@
         *&v25.a = v26;
         *&v25.c = v27;
         *&v25.tx = v28;
-        CGContextConcatCTM(a3, &v25);
+        CGContextConcatCTM(context, &v25);
         v34.origin.x = v18;
         v34.origin.y = v20;
         v34.size.width = v22;
         v34.size.height = v24;
-        CGContextClipToRect(a3, v34);
-        CGContextDrawPDFPage(a3, v15);
+        CGContextClipToRect(context, v34);
+        CGContextDrawPDFPage(context, v15);
       }
 
-      CGContextRestoreGState(a3);
+      CGContextRestoreGState(context);
     }
   }
 }
@@ -282,15 +282,15 @@
 
 - (CGPDFDocument)p_load
 {
-  v3 = [(CRLImageProvider *)self imageData];
-  v4 = [v3 newCGDataProvider];
+  imageData = [(CRLImageProvider *)self imageData];
+  newCGDataProvider = [imageData newCGDataProvider];
 
-  if (!v4)
+  if (!newCGDataProvider)
   {
     return 0;
   }
 
-  v5 = CGPDFDocumentCreateWithProvider(v4);
+  v5 = CGPDFDocumentCreateWithProvider(newCGDataProvider);
   v6 = v5;
   if (v5)
   {
@@ -401,7 +401,7 @@
     }
   }
 
-  CGDataProviderRelease(v4);
+  CGDataProviderRelease(newCGDataProvider);
   return v6;
 }
 

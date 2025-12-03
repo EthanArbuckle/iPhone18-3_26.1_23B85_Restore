@@ -31,7 +31,7 @@
           objc_enumerationMutation(v3);
         }
 
-        v15 = [*(*(&v17 + 1) + 8 * v8) accessibilityLabel];
+        accessibilityLabel = [*(*(&v17 + 1) + 8 * v8) accessibilityLabel];
         v16 = @"__AXStringForVariablesSentinel";
         v7 = __UIAXStringForVariables();
 
@@ -40,7 +40,7 @@
       }
 
       while (v5 != v8);
-      v5 = [v3 countByEnumeratingWithState:&v17 objects:v21 count:{16, v15, @"__AXStringForVariablesSentinel"}];
+      v5 = [v3 countByEnumeratingWithState:&v17 objects:v21 count:{16, accessibilityLabel, @"__AXStringForVariablesSentinel"}];
     }
 
     while (v5);

@@ -1,19 +1,19 @@
 @interface GKSignInOriginManager
-+ (id)stringForOrigin:(unint64_t)a3;
++ (id)stringForOrigin:(unint64_t)origin;
 @end
 
 @implementation GKSignInOriginManager
 
-+ (id)stringForOrigin:(unint64_t)a3
++ (id)stringForOrigin:(unint64_t)origin
 {
-  if (a3 - 1 > 6)
+  if (origin - 1 > 6)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_2785E06D8[a3 - 1];
+    return off_2785E06D8[origin - 1];
   }
 }
 

@@ -1,38 +1,38 @@
 @interface PDFPageBackgroundManager
-- (BOOL)_expectedQualityIndexForPageIndex:(unint64_t)a3 forQuality:(int *)a4;
-- (BOOL)_findPageIndexNeedingUpdate:(unint64_t *)a3 forQuality:(int *)a4;
-- (PDFPageBackgroundManager)initWithDelegate:(id)a3 andRenderingProperties:(id)a4;
-- (id)backgroundImageForPageIndex:(unint64_t)a3 withFoundQuality:(int *)a4;
+- (BOOL)_expectedQualityIndexForPageIndex:(unint64_t)index forQuality:(int *)quality;
+- (BOOL)_findPageIndexNeedingUpdate:(unint64_t *)update forQuality:(int *)quality;
+- (PDFPageBackgroundManager)initWithDelegate:(id)delegate andRenderingProperties:(id)properties;
+- (id)backgroundImageForPageIndex:(unint64_t)index withFoundQuality:(int *)quality;
 - (void)_cleanup;
 - (void)_clear;
-- (void)_drawPageImage:(unint64_t)a3 forQuality:(int)a4;
-- (void)_shiftImagesAtIndex:(unint64_t)a3 downwards:(BOOL)a4;
+- (void)_drawPageImage:(unint64_t)image forQuality:(int)quality;
+- (void)_shiftImagesAtIndex:(unint64_t)index downwards:(BOOL)downwards;
 - (void)_update;
 - (void)dealloc;
-- (void)didInsertPageAtIndex:(unint64_t)a3;
-- (void)didRemovePageAtIndex:(unint64_t)a3;
-- (void)didSwapPageAtIndex:(unint64_t)a3 withIndex:(unint64_t)a4;
-- (void)forceSetBackgroundImage:(id)a3 forPageIndex:(unint64_t)a4;
-- (void)forceUpdateActivePageIndex:(unint64_t)a3 withMaxDuration:(double)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)updateActivePageIndex:(unint64_t)a3;
+- (void)didInsertPageAtIndex:(unint64_t)index;
+- (void)didRemovePageAtIndex:(unint64_t)index;
+- (void)didSwapPageAtIndex:(unint64_t)index withIndex:(unint64_t)withIndex;
+- (void)forceSetBackgroundImage:(id)image forPageIndex:(unint64_t)index;
+- (void)forceUpdateActivePageIndex:(unint64_t)index withMaxDuration:(double)duration;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)updateActivePageIndex:(unint64_t)index;
 - (void)willForceUpdate;
 @end
 
 @implementation PDFPageBackgroundManager
 
-- (PDFPageBackgroundManager)initWithDelegate:(id)a3 andRenderingProperties:(id)a4
+- (PDFPageBackgroundManager)initWithDelegate:(id)delegate andRenderingProperties:(id)properties
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  propertiesCopy = properties;
   v21.receiver = self;
   v21.super_class = PDFPageBackgroundManager;
   v8 = [(PDFPageBackgroundManager *)&v21 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_documentDelegate, v6);
-    objc_storeWeak(&v9->_renderingProperties, v7);
+    objc_storeWeak(&v8->_documentDelegate, delegateCopy);
+    objc_storeWeak(&v9->_renderingProperties, propertiesCopy);
     v9->_activePageIndex = -1;
     for (i = 32; i != 56; i += 8)
     {
@@ -48,17 +48,17 @@
 
     *&v9->_isCancled = 0;
     v9->_willForceUpdate = 0;
-    v16 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v17 = [v16 persistentDomainForName:@"com.apple.universalaccess"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v17 = [standardUserDefaults persistentDomainForName:@"com.apple.universalaccess"];
 
     v18 = [v17 objectForKey:@"reduceTransparency"];
     v19 = v18;
-    if (v18 && ([v18 BOOLValue] & 1) != 0 || (objc_msgSend(v7, "enableBackgroundImages") & 1) == 0)
+    if (v18 && ([v18 BOOLValue] & 1) != 0 || (objc_msgSend(propertiesCopy, "enableBackgroundImages") & 1) == 0)
     {
       v9->_isCancled = 1;
     }
 
-    [v7 addObserver:v9 forKeyPath:@"darkMode" options:0 context:objc_opt_class()];
+    [propertiesCopy addObserver:v9 forKeyPath:@"darkMode" options:0 context:objc_opt_class()];
   }
 
   return v9;
@@ -71,13 +71,13 @@
   [WeakRetained removeObserver:self forKeyPath:@"darkMode" context:objc_opt_class()];
 
   self->_isCancled = 1;
-  v4 = self;
-  objc_sync_enter(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v5 = 0;
-  v4->_isWorking = 1;
+  selfCopy->_isWorking = 1;
   do
   {
-    v6 = v4->_backgroundImageCache[v5];
+    v6 = selfCopy->_backgroundImageCache[v5];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
@@ -98,9 +98,9 @@
           }
 
           v11 = *(*(&v16 + 1) + 8 * v10);
-          v12 = objc_loadWeakRetained(&v4->_documentDelegate);
-          v13 = [v12 document];
-          v14 = [v13 pageAtIndex:{objc_msgSend(v11, "unsignedIntegerValue")}];
+          v12 = objc_loadWeakRetained(&selfCopy->_documentDelegate);
+          document = [v12 document];
+          v14 = [document pageAtIndex:{objc_msgSend(v11, "unsignedIntegerValue")}];
 
           [v12 recieveBackgroundImage:0 atBackgroundQuality:v5 forPage:v14];
           ++v10;
@@ -117,19 +117,19 @@
   }
 
   while (v5 != 3);
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
-  v15.receiver = v4;
+  v15.receiver = selfCopy;
   v15.super_class = PDFPageBackgroundManager;
   [(PDFPageBackgroundManager *)&v15 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (objc_opt_class() == a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (objc_opt_class() == context)
   {
     objc_initWeak(&location, self);
     workQueue = self->_workQueue;
@@ -147,7 +147,7 @@
   {
     v14.receiver = self;
     v14.super_class = PDFPageBackgroundManager;
-    [(PDFPageBackgroundManager *)&v14 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(PDFPageBackgroundManager *)&v14 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
@@ -167,13 +167,13 @@ void __75__PDFPageBackgroundManager_observeValueForKeyPath_ofObject_change_conte
   }
 }
 
-- (void)updateActivePageIndex:(unint64_t)a3
+- (void)updateActivePageIndex:(unint64_t)index
 {
   obj = self;
   objc_sync_enter(obj);
-  if (obj->_activePageIndex != a3)
+  if (obj->_activePageIndex != index)
   {
-    obj->_activePageIndex = a3;
+    obj->_activePageIndex = index;
     [(PDFPageBackgroundManager *)obj _update];
   }
 
@@ -188,32 +188,32 @@ void __75__PDFPageBackgroundManager_observeValueForKeyPath_ofObject_change_conte
   objc_sync_exit(obj);
 }
 
-- (void)forceUpdateActivePageIndex:(unint64_t)a3 withMaxDuration:(double)a4
+- (void)forceUpdateActivePageIndex:(unint64_t)index withMaxDuration:(double)duration
 {
-  v6 = self;
-  objc_sync_enter(v6);
-  v6->_isWorking = 1;
-  objc_sync_exit(v6);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_isWorking = 1;
+  objc_sync_exit(selfCopy);
 
-  v6->_activePageIndex = a3;
+  selfCopy->_activePageIndex = index;
   v7 = dispatch_group_create();
-  objc_initWeak(&location, v6);
-  workQueue = v6->_workQueue;
+  objc_initWeak(&location, selfCopy);
+  workQueue = selfCopy->_workQueue;
   block = MEMORY[0x1E69E9820];
   v12 = 3221225472;
   v13 = __71__PDFPageBackgroundManager_forceUpdateActivePageIndex_withMaxDuration___block_invoke;
   v14 = &unk_1E8151650;
   objc_copyWeak(v16, &location);
-  v15 = v6;
-  v16[1] = a3;
+  v15 = selfCopy;
+  v16[1] = index;
   dispatch_group_async(v7, workQueue, &block);
-  if (a4 > 0.0)
+  if (duration > 0.0)
   {
-    v9 = dispatch_time(0, (a4 * 1000000000.0));
+    v9 = dispatch_time(0, (duration * 1000000000.0));
     if (dispatch_group_wait(v7, v9))
     {
-      v10 = a4;
-      NSLog(&cfstr_WarningUnableT.isa, a3, v10, block, v12, v13, v14);
+      durationCopy = duration;
+      NSLog(&cfstr_WarningUnableT.isa, index, durationCopy, block, v12, v13, v14);
     }
   }
 
@@ -234,15 +234,15 @@ void __71__PDFPageBackgroundManager_forceUpdateActivePageIndex_withMaxDuration__
   }
 }
 
-- (id)backgroundImageForPageIndex:(unint64_t)a3 withFoundQuality:(int *)a4
+- (id)backgroundImageForPageIndex:(unint64_t)index withFoundQuality:(int *)quality
 {
-  v6 = self;
-  objc_sync_enter(v6);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v7 = 0;
   while (1)
   {
-    v8 = v6->_backgroundImageCache[v7];
-    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+    v8 = selfCopy->_backgroundImageCache[v7];
+    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
     v10 = [(NSMutableDictionary *)v8 objectForKey:v9];
 
     if (v10)
@@ -256,41 +256,41 @@ void __71__PDFPageBackgroundManager_forceUpdateActivePageIndex_withMaxDuration__
     }
   }
 
-  *a4 = v7;
+  *quality = v7;
 LABEL_6:
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 
   return v10;
 }
 
-- (void)didInsertPageAtIndex:(unint64_t)a3
+- (void)didInsertPageAtIndex:(unint64_t)index
 {
-  [(PDFPageBackgroundManager *)self _shiftImagesAtIndex:a3 downwards:1];
+  [(PDFPageBackgroundManager *)self _shiftImagesAtIndex:index downwards:1];
 
   [(PDFPageBackgroundManager *)self _update];
 }
 
-- (void)didRemovePageAtIndex:(unint64_t)a3
+- (void)didRemovePageAtIndex:(unint64_t)index
 {
-  [(PDFPageBackgroundManager *)self _shiftImagesAtIndex:a3 + 1 downwards:0];
+  [(PDFPageBackgroundManager *)self _shiftImagesAtIndex:index + 1 downwards:0];
 
   [(PDFPageBackgroundManager *)self _update];
 }
 
-- (void)didSwapPageAtIndex:(unint64_t)a3 withIndex:(unint64_t)a4
+- (void)didSwapPageAtIndex:(unint64_t)index withIndex:(unint64_t)withIndex
 {
-  v6 = self;
-  objc_sync_enter(v6);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   for (i = 32; i != 56; i += 8)
   {
-    v8 = *(&v6->super.isa + i);
-    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+    v8 = *(&selfCopy->super.isa + i);
+    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
     v10 = [v8 objectForKey:v9];
 
-    v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+    v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:withIndex];
     v12 = [v8 objectForKey:v11];
 
-    v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+    v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:withIndex];
     if (v10)
     {
       [v8 setObject:v10 forKey:v13];
@@ -301,7 +301,7 @@ LABEL_6:
       [v8 removeObjectForKey:v13];
     }
 
-    v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+    v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
     if (v12)
     {
       [v8 setObject:v12 forKey:v14];
@@ -313,40 +313,40 @@ LABEL_6:
     }
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 
-  [(PDFPageBackgroundManager *)v6 _update];
+  [(PDFPageBackgroundManager *)selfCopy _update];
 }
 
-- (void)forceSetBackgroundImage:(id)a3 forPageIndex:(unint64_t)a4
+- (void)forceSetBackgroundImage:(id)image forPageIndex:(unint64_t)index
 {
-  v12 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = v6->_backgroundImageCache[0];
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
-  [(NSMutableDictionary *)v7 setObject:v12 forKey:v8];
+  imageCopy = image;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v7 = selfCopy->_backgroundImageCache[0];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
+  [(NSMutableDictionary *)v7 setObject:imageCopy forKey:v8];
 
-  objc_sync_exit(v6);
-  WeakRetained = objc_loadWeakRetained(&v6->_documentDelegate);
-  v10 = [WeakRetained document];
-  v11 = [v10 pageAtIndex:a4];
-  [WeakRetained recieveBackgroundImage:v12 atBackgroundQuality:0 forPage:v11];
+  objc_sync_exit(selfCopy);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_documentDelegate);
+  document = [WeakRetained document];
+  v11 = [document pageAtIndex:index];
+  [WeakRetained recieveBackgroundImage:imageCopy atBackgroundQuality:0 forPage:v11];
 }
 
 - (void)_update
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_isCancled && !v2->_isWorking && !v2->_willForceUpdate)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_isCancled && !selfCopy->_isWorking && !selfCopy->_willForceUpdate)
   {
-    v2->_isWorking = 1;
+    selfCopy->_isWorking = 1;
     v10 = 0;
     v9 = 0;
-    if ([(PDFPageBackgroundManager *)v2 _findPageIndexNeedingUpdate:&v10 forQuality:&v9])
+    if ([(PDFPageBackgroundManager *)selfCopy _findPageIndexNeedingUpdate:&v10 forQuality:&v9])
     {
-      objc_initWeak(&location, v2);
-      workQueue = v2->_workQueue;
+      objc_initWeak(&location, selfCopy);
+      workQueue = selfCopy->_workQueue;
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __35__PDFPageBackgroundManager__update__block_invoke;
@@ -354,7 +354,7 @@ LABEL_6:
       objc_copyWeak(v6, &location);
       v7 = v9;
       v6[1] = v10;
-      block[4] = v2;
+      block[4] = selfCopy;
       dispatch_async(workQueue, block);
       objc_destroyWeak(v6);
       objc_destroyWeak(&location);
@@ -362,15 +362,15 @@ LABEL_6:
 
     else
     {
-      [(PDFPageBackgroundManager *)v2 _cleanup];
-      v4 = v2;
+      [(PDFPageBackgroundManager *)selfCopy _cleanup];
+      v4 = selfCopy;
       objc_sync_enter(v4);
-      v2->_isWorking = 0;
+      selfCopy->_isWorking = 0;
       objc_sync_exit(v4);
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 void __35__PDFPageBackgroundManager__update__block_invoke(uint64_t a1)
@@ -391,7 +391,7 @@ void __35__PDFPageBackgroundManager__update__block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)_findPageIndexNeedingUpdate:(unint64_t *)a3 forQuality:(int *)a4
+- (BOOL)_findPageIndexNeedingUpdate:(unint64_t *)update forQuality:(int *)quality
 {
   if (self->_activePageIndex == -1)
   {
@@ -399,7 +399,7 @@ void __35__PDFPageBackgroundManager__update__block_invoke(uint64_t a1)
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_documentDelegate);
-  v7 = [WeakRetained document];
+  document = [WeakRetained document];
 
   activePageIndex = self->_activePageIndex;
   if (activePageIndex <= 1)
@@ -408,15 +408,15 @@ void __35__PDFPageBackgroundManager__update__block_invoke(uint64_t a1)
   }
 
   v9 = (activePageIndex - 1);
-  v10 = [v7 pageCount];
-  if (v10 - 1 >= (LODWORD(self->_activePageIndex) + 1))
+  pageCount = [document pageCount];
+  if (pageCount - 1 >= (LODWORD(self->_activePageIndex) + 1))
   {
     v11 = LODWORD(self->_activePageIndex) + 1;
   }
 
   else
   {
-    v11 = v10 - 1;
+    v11 = pageCount - 1;
   }
 
   for (i = objc_alloc_init(MEMORY[0x1E695DF70]); v9 <= v11; ++v9)
@@ -446,10 +446,10 @@ void __35__PDFPageBackgroundManager__update__block_invoke(uint64_t a1)
     v22[3] = &unk_1E81516A0;
     v22[4] = self;
     [i sortUsingComparator:v22];
-    v19 = [i firstObject];
-    *a3 = [v19 unsignedIntegerValue];
+    firstObject = [i firstObject];
+    *update = [firstObject unsignedIntegerValue];
 
-    [(PDFPageBackgroundManager *)self _expectedQualityIndexForPageIndex:*a3 forQuality:a4];
+    [(PDFPageBackgroundManager *)self _expectedQualityIndexForPageIndex:*update forQuality:quality];
   }
 
   return v18;
@@ -481,35 +481,35 @@ BOOL __67__PDFPageBackgroundManager__findPageIndexNeedingUpdate_forQuality___blo
   return v7 > v9;
 }
 
-- (void)_drawPageImage:(unint64_t)a3 forQuality:(int)a4
+- (void)_drawPageImage:(unint64_t)image forQuality:(int)quality
 {
-  v4 = *&a4;
+  v4 = *&quality;
   v69[3] = *MEMORY[0x1E69E9840];
   WeakRetained = objc_loadWeakRetained(&self->_documentDelegate);
-  v8 = [WeakRetained document];
-  v9 = [v8 pageAtIndex:a3];
+  document = [WeakRetained document];
+  v9 = [document pageAtIndex:image];
   if (v9)
   {
     v65 = 0;
     v10 = [WeakRetained backgroundImageForPage:v9 withQuality:&v65];
     v11 = v65;
-    v12 = self;
-    objc_sync_enter(v12);
-    v13 = v12->_backgroundImageCache[v4];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v13 = selfCopy->_backgroundImageCache[v4];
     if (v10 && v11 == v4)
     {
-      v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+      v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:image];
       [(NSMutableDictionary *)v13 setObject:v10 forKey:v14];
 
-      objc_sync_exit(v12);
+      objc_sync_exit(selfCopy);
     }
 
     else
     {
-      v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+      v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:image];
       v16 = [(NSMutableDictionary *)v13 objectForKey:v15];
 
-      objc_sync_exit(v12);
+      objc_sync_exit(selfCopy);
       if (v16)
       {
         [WeakRetained recieveBackgroundImage:v16 atBackgroundQuality:v4 forPage:v9];
@@ -518,9 +518,9 @@ BOOL __67__PDFPageBackgroundManager__findPageIndexNeedingUpdate_forQuality___blo
 
       else
       {
-        v63 = objc_loadWeakRetained(&v12->_renderingProperties);
-        v17 = [v63 displayBox];
-        [v9 boundsForBox:v17];
+        v63 = objc_loadWeakRetained(&selfCopy->_renderingProperties);
+        displayBox = [v63 displayBox];
+        [v9 boundsForBox:displayBox];
         v19 = v18;
         v21 = v20;
         v22 = kPDFPageBackgroundQualityFactors[v4];
@@ -555,8 +555,8 @@ BOOL __67__PDFPageBackgroundManager__findPageIndexNeedingUpdate_forQuality___blo
 
         MachSeconds = GetMachSeconds();
         v68[0] = @"PDFPageImageProperty_BackgroundColor";
-        v44 = [v63 pageBackgroundColor];
-        v69[0] = v44;
+        pageBackgroundColor = [v63 pageBackgroundColor];
+        v69[0] = pageBackgroundColor;
         v68[1] = @"PDFPageImageProperty_DarkModeRendering";
         v45 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v63, "isDarkMode")}];
         v69[1] = v45;
@@ -564,13 +564,13 @@ BOOL __67__PDFPageBackgroundManager__findPageIndexNeedingUpdate_forQuality___blo
         v69[2] = MEMORY[0x1E695E110];
         v62 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v69 forKeys:v68 count:3];
 
-        v10 = [v9 imageOfSize:v17 forBox:v62 withOptions:{ceil(v27), ceil(v28)}];
-        if (v10 && !v12->_isCancled)
+        v10 = [v9 imageOfSize:displayBox forBox:v62 withOptions:{ceil(v27), ceil(v28)}];
+        if (v10 && !selfCopy->_isCancled)
         {
           if (GetDefaultsWriteLogPerfTimes())
           {
-            v46 = [MEMORY[0x1E695DF00] date];
-            [v46 timeIntervalSince1970];
+            date = [MEMORY[0x1E695DF00] date];
+            [date timeIntervalSince1970];
             v48 = v47;
 
             [v10 size];
@@ -578,60 +578,60 @@ BOOL __67__PDFPageBackgroundManager__findPageIndexNeedingUpdate_forQuality___blo
             [v10 size];
             v52 = v51;
             v53 = GetMachSeconds();
-            NSLog(&cfstr_Pdfkit2Logperf_3.isa, a3, v50, v52, (v48 * 1000.0), v53 - MachSeconds);
+            NSLog(&cfstr_Pdfkit2Logperf_3.isa, image, v50, v52, (v48 * 1000.0), v53 - MachSeconds);
           }
 
-          v54 = v12;
+          v54 = selfCopy;
           objc_sync_enter(v54);
-          v55 = v12->_backgroundImageCache[v4];
-          v56 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+          v55 = selfCopy->_backgroundImageCache[v4];
+          v56 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:image];
           [(NSMutableDictionary *)v55 setObject:v10 forKey:v56];
 
           objc_sync_exit(v54);
           v64 = 0;
-          v57 = [(PDFPageBackgroundManager *)v54 _expectedQualityIndexForPageIndex:a3 forQuality:&v64];
+          v57 = [(PDFPageBackgroundManager *)v54 _expectedQualityIndexForPageIndex:image forQuality:&v64];
           if (v64 == v4 && v57)
           {
             [WeakRetained recieveBackgroundImage:v10 atBackgroundQuality:v4 forPage:v9];
           }
 
-          v59 = [MEMORY[0x1E696AD88] defaultCenter];
+          defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
           v66[0] = @"page";
           v66[1] = @"quality";
           v67[0] = v9;
           v60 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v4];
           v67[1] = v60;
           v61 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v67 forKeys:v66 count:2];
-          [v59 postNotificationName:@"PDFPageBackgroundComplete" object:v54 userInfo:v61];
+          [defaultCenter postNotificationName:@"PDFPageBackgroundComplete" object:v54 userInfo:v61];
         }
       }
     }
   }
 }
 
-- (BOOL)_expectedQualityIndexForPageIndex:(unint64_t)a3 forQuality:(int *)a4
+- (BOOL)_expectedQualityIndexForPageIndex:(unint64_t)index forQuality:(int *)quality
 {
-  v5 = self;
-  objc_sync_enter(v5);
-  WeakRetained = objc_loadWeakRetained(&v5->_documentDelegate);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_documentDelegate);
   v7 = 0;
   v8 = 0;
   v9 = 1;
   while (1)
   {
-    activePageIndex = v5->_activePageIndex;
-    v11 = [WeakRetained document];
-    v12 = [v11 pageCount];
+    activePageIndex = selfCopy->_activePageIndex;
+    document = [WeakRetained document];
+    pageCount = [document pageCount];
 
-    if (((activePageIndex - v7) & ~((activePageIndex - v7) >> 31)) <= a3)
+    if (((activePageIndex - v7) & ~((activePageIndex - v7) >> 31)) <= index)
     {
-      v13 = v12 - 1;
-      if (v12 - 1 >= v7 + LODWORD(v5->_activePageIndex))
+      v13 = pageCount - 1;
+      if (pageCount - 1 >= v7 + LODWORD(selfCopy->_activePageIndex))
       {
-        v13 = v7 + LODWORD(v5->_activePageIndex);
+        v13 = v7 + LODWORD(selfCopy->_activePageIndex);
       }
 
-      if (v13 >= a3)
+      if (v13 >= index)
       {
         break;
       }
@@ -646,48 +646,48 @@ BOOL __67__PDFPageBackgroundManager__findPageIndexNeedingUpdate_forQuality___blo
     }
   }
 
-  *a4 = v8;
+  *quality = v8;
 LABEL_9:
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   return v9;
 }
 
 - (void)_cleanup
 {
   v47 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_activePageIndex != -1)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_activePageIndex != -1)
   {
-    WeakRetained = objc_loadWeakRetained(&v2->_documentDelegate);
-    v36 = v2;
-    v3 = [WeakRetained document];
-    v4 = v3;
-    if (SLODWORD(v2->_activePageIndex) <= 1)
+    WeakRetained = objc_loadWeakRetained(&selfCopy->_documentDelegate);
+    v36 = selfCopy;
+    document = [WeakRetained document];
+    v4 = document;
+    if (SLODWORD(selfCopy->_activePageIndex) <= 1)
     {
       activePageIndex = 1;
     }
 
     else
     {
-      activePageIndex = v2->_activePageIndex;
+      activePageIndex = selfCopy->_activePageIndex;
     }
 
-    v6 = [v3 pageCount];
+    pageCount = [document pageCount];
     v7 = 0;
     v8 = (activePageIndex - 1);
-    if (v6 - 1 >= (LODWORD(v2->_activePageIndex) + 1))
+    if (pageCount - 1 >= (LODWORD(selfCopy->_activePageIndex) + 1))
     {
-      v9 = LODWORD(v2->_activePageIndex) + 1;
+      v9 = LODWORD(selfCopy->_activePageIndex) + 1;
     }
 
     else
     {
-      v9 = v6 - 1;
+      v9 = pageCount - 1;
     }
 
-    backgroundImageCache = v2->_backgroundImageCache;
+    backgroundImageCache = selfCopy->_backgroundImageCache;
     v38 = v9;
     do
     {
@@ -829,10 +829,10 @@ LABEL_35:
 
 LABEL_38:
 
-    v2 = v36;
+    selfCopy = v36;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)_clear
@@ -847,14 +847,14 @@ LABEL_38:
   while (v2 != 3);
 }
 
-- (void)_shiftImagesAtIndex:(unint64_t)a3 downwards:(BOOL)a4
+- (void)_shiftImagesAtIndex:(unint64_t)index downwards:(BOOL)downwards
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = self;
-  objc_sync_enter(v5);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v6 = 0;
-  obj = v5;
-  backgroundImageCache = v5->_backgroundImageCache;
+  obj = selfCopy;
+  backgroundImageCache = selfCopy->_backgroundImageCache;
   do
   {
     v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -878,16 +878,16 @@ LABEL_38:
           }
 
           v13 = *(*(&v22 + 1) + 8 * i);
-          v14 = [v13 intValue];
+          intValue = [v13 intValue];
           v15 = [(NSMutableDictionary *)v9 objectForKey:v13];
-          if (v14 < a3)
+          if (intValue < index)
           {
-            v16 = v14;
+            v16 = intValue;
           }
 
           else
           {
-            v16 = v14 + 1;
+            v16 = intValue + 1;
           }
 
           v17 = [MEMORY[0x1E696AD98] numberWithInt:v16];

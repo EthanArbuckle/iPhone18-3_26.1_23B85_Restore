@@ -1,26 +1,26 @@
 @interface AMDJSDebugDataSync
-+ (id)testEventDeltaAlgorithm:(id *)a3;
-+ (id)testNewDevicePayloadCreation:(id *)a3;
-+ (id)testfullSyncDataIngestion:(id *)a3;
-+ (id)testfullSyncInitiation:(id *)a3;
-+ (id)testfullSyncRequestCompletion:(id *)a3;
++ (id)testEventDeltaAlgorithm:(id *)algorithm;
++ (id)testNewDevicePayloadCreation:(id *)creation;
++ (id)testfullSyncDataIngestion:(id *)ingestion;
++ (id)testfullSyncInitiation:(id *)initiation;
++ (id)testfullSyncRequestCompletion:(id *)completion;
 @end
 
 @implementation AMDJSDebugDataSync
 
-+ (id)testNewDevicePayloadCreation:(id *)a3
++ (id)testNewDevicePayloadCreation:(id *)creation
 {
-  v11 = a1;
+  selfCopy = self;
   v10 = a2;
-  v9 = a3;
+  creationCopy = creation;
   v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v7 = MEMORY[0x277D82BE0](&unk_2852BBEE8);
-  location = [AMDDataSync processDataReplicationPayload:v7 error:v9];
-  if (*v9)
+  location = [AMDDataSync processDataReplicationPayload:v7 error:creationCopy];
+  if (*creationCopy)
   {
-    v5 = [*v9 localizedDescription];
+    localizedDescription = [*creationCopy localizedDescription];
     [v8 setObject:? forKey:?];
-    MEMORY[0x277D82BD8](v5);
+    MEMORY[0x277D82BD8](localizedDescription);
     v12 = MEMORY[0x277D82BE0](v8);
   }
 
@@ -47,12 +47,12 @@
   return v3;
 }
 
-+ (id)testEventDeltaAlgorithm:(id *)a3
++ (id)testEventDeltaAlgorithm:(id *)algorithm
 {
   v52[3] = *MEMORY[0x277D85DE8];
-  v33 = a1;
+  selfCopy = self;
   v32 = a2;
-  v31 = a3;
+  algorithmCopy = algorithm;
   v30 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v51[0] = @"drConfig";
   v52[0] = &unk_2852BBF10;
@@ -192,12 +192,12 @@
   MEMORY[0x277D82BD8](v25);
   MEMORY[0x277D82BD8](v26);
   MEMORY[0x277D82BD8](v27);
-  location = [AMDDataSync processDataReplicationPayload:v29 error:v31];
-  if (*v31)
+  location = [AMDDataSync processDataReplicationPayload:v29 error:algorithmCopy];
+  if (*algorithmCopy)
   {
-    v6 = [*v31 localizedDescription];
+    localizedDescription = [*algorithmCopy localizedDescription];
     [v30 setObject:? forKey:?];
-    MEMORY[0x277D82BD8](v6);
+    MEMORY[0x277D82BD8](localizedDescription);
     v34 = MEMORY[0x277D82BE0](v30);
   }
 
@@ -225,12 +225,12 @@
   return v4;
 }
 
-+ (id)testfullSyncInitiation:(id *)a3
++ (id)testfullSyncInitiation:(id *)initiation
 {
   v23[3] = *MEMORY[0x277D85DE8];
-  v16 = a1;
+  selfCopy = self;
   v15 = a2;
-  v14 = a3;
+  initiationCopy = initiation;
   v13 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v22[0] = @"drConfig";
   v23[0] = &unk_2852BBF88;
@@ -258,12 +258,12 @@
   MEMORY[0x277D82BD8](v8);
   MEMORY[0x277D82BD8](v9);
   MEMORY[0x277D82BD8](v10);
-  location = [AMDDataSync processDataReplicationPayload:v12 error:v14];
-  if (*v14)
+  location = [AMDDataSync processDataReplicationPayload:v12 error:initiationCopy];
+  if (*initiationCopy)
   {
-    v5 = [*v14 localizedDescription];
+    localizedDescription = [*initiationCopy localizedDescription];
     [v13 setObject:? forKey:?];
-    MEMORY[0x277D82BD8](v5);
+    MEMORY[0x277D82BD8](localizedDescription);
     v17 = MEMORY[0x277D82BE0](v13);
   }
 
@@ -291,12 +291,12 @@
   return v3;
 }
 
-+ (id)testfullSyncDataIngestion:(id *)a3
++ (id)testfullSyncDataIngestion:(id *)ingestion
 {
   v67[3] = *MEMORY[0x277D85DE8];
-  v42 = a1;
+  selfCopy = self;
   v41 = a2;
-  v40 = a3;
+  ingestionCopy = ingestion;
   v39 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v66[0] = @"drConfig";
   v67[0] = &unk_2852BC050;
@@ -474,12 +474,12 @@
   MEMORY[0x277D82BD8](v34);
   MEMORY[0x277D82BD8](v35);
   MEMORY[0x277D82BD8](v36);
-  location = [AMDDataSync processDataReplicationPayload:v38 error:v40];
-  if (*v40)
+  location = [AMDDataSync processDataReplicationPayload:v38 error:ingestionCopy];
+  if (*ingestionCopy)
   {
-    v5 = [*v40 localizedDescription];
+    localizedDescription = [*ingestionCopy localizedDescription];
     [v39 setObject:? forKey:?];
-    MEMORY[0x277D82BD8](v5);
+    MEMORY[0x277D82BD8](localizedDescription);
     v43 = MEMORY[0x277D82BE0](v39);
   }
 
@@ -507,12 +507,12 @@
   return v3;
 }
 
-+ (id)testfullSyncRequestCompletion:(id *)a3
++ (id)testfullSyncRequestCompletion:(id *)completion
 {
   v47[3] = *MEMORY[0x277D85DE8];
-  v31 = a1;
+  selfCopy = self;
   v30 = a2;
-  v29 = a3;
+  completionCopy = completion;
   v28 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v46[0] = @"drConfig";
   v47[0] = &unk_2852BC118;
@@ -619,12 +619,12 @@
   MEMORY[0x277D82BD8](v23);
   MEMORY[0x277D82BD8](v24);
   MEMORY[0x277D82BD8](v25);
-  location = [AMDDataSync processDataReplicationPayload:v27 error:v29];
-  if (*v29)
+  location = [AMDDataSync processDataReplicationPayload:v27 error:completionCopy];
+  if (*completionCopy)
   {
-    v5 = [*v29 localizedDescription];
+    localizedDescription = [*completionCopy localizedDescription];
     [v28 setObject:? forKey:?];
-    MEMORY[0x277D82BD8](v5);
+    MEMORY[0x277D82BD8](localizedDescription);
     v32 = MEMORY[0x277D82BE0](v28);
   }
 

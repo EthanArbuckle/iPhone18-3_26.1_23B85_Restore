@@ -18,14 +18,14 @@
 - (unint64_t)accessibilityTraits;
 - (void)dealloc;
 - (void)p_buildSubviews;
-- (void)p_updateCellFromMetrics:(id)a3;
-- (void)p_updateTextEntryFromMetrics:(id)a3;
+- (void)p_updateCellFromMetrics:(id)metrics;
+- (void)p_updateTextEntryFromMetrics:(id)metrics;
 - (void)prepareForReuse;
 - (void)removeTextEntryField;
-- (void)setDimmed:(BOOL)a3;
-- (void)setMetrics:(id)a3;
-- (void)setupTextEntryField:(id)a3;
-- (void)willTransitionToState:(unint64_t)a3;
+- (void)setDimmed:(BOOL)dimmed;
+- (void)setMetrics:(id)metrics;
+- (void)setupTextEntryField:(id)field;
+- (void)willTransitionToState:(unint64_t)state;
 @end
 
 @implementation BKLibraryCollectionsListCell
@@ -42,7 +42,7 @@
 {
   if (!self->_imageView)
   {
-    v3 = [(BKLibraryCollectionsListCell *)self contentView];
+    contentView = [(BKLibraryCollectionsListCell *)self contentView];
     v4 = [UIImageView alloc];
     y = CGRectZero.origin.y;
     width = CGRectZero.size.width;
@@ -80,59 +80,59 @@
     self->_chevron = v13;
     v21 = v13;
 
-    v22 = [(BKLibraryCollectionsListCell *)self metrics];
-    [(BKLibraryCollectionsListCell *)self p_updateCellFromMetrics:v22];
+    metrics = [(BKLibraryCollectionsListCell *)self metrics];
+    [(BKLibraryCollectionsListCell *)self p_updateCellFromMetrics:metrics];
 
-    [v3 addSubview:v15];
+    [contentView addSubview:v15];
     v44 = v17;
-    [v3 addSubview:v17];
+    [contentView addSubview:v17];
     v46 = v19;
-    [v3 addSubview:v19];
-    [v3 addSubview:v21];
+    [contentView addSubview:v19];
+    [contentView addSubview:v21];
     v42 = _NSDictionaryOfVariableBindings(@"contentsVerticalInset", &off_100A43ED8, 0);
     v43 = v15;
     v45 = v21;
     v41 = _NSDictionaryOfVariableBindings(@"imageView, textLabel, detailTextLabel, chevron", v15, v17, v19, v21, 0);
     v23 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"[imageView]-[textLabel]-[detailTextLabel]-[chevron]", 0, v42, v41);
-    [v3 addConstraints:v23];
+    [contentView addConstraints:v23];
 
-    v24 = [(UIImageView *)v15 leadingAnchor];
-    v25 = [v3 layoutMarginsGuide];
-    v26 = [v25 leadingAnchor];
-    v27 = [v24 constraintEqualToAnchor:v26];
+    leadingAnchor = [(UIImageView *)v15 leadingAnchor];
+    layoutMarginsGuide = [contentView layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v27 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v47[0] = v27;
-    v28 = [(UIImageView *)v21 trailingAnchor];
-    v29 = [v3 layoutMarginsGuide];
-    v30 = [v29 trailingAnchor];
-    v31 = [v28 constraintEqualToAnchor:v30];
+    trailingAnchor = [(UIImageView *)v21 trailingAnchor];
+    layoutMarginsGuide2 = [contentView layoutMarginsGuide];
+    trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+    v31 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v47[1] = v31;
     v32 = [NSArray arrayWithObjects:v47 count:2];
     [NSLayoutConstraint activateConstraints:v32];
 
     v33 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"V:|-(>=contentsVerticalInset)-[imageView]-(>=contentsVerticalInset)-|", 0, v42, v41);
-    [v3 addConstraints:v33];
+    [contentView addConstraints:v33];
 
-    v34 = [NSLayoutConstraint constraintWithItem:v43 attribute:10 relatedBy:0 toItem:v3 attribute:10 multiplier:1.0 constant:0.0];
-    [v3 addConstraint:v34];
+    v34 = [NSLayoutConstraint constraintWithItem:v43 attribute:10 relatedBy:0 toItem:contentView attribute:10 multiplier:1.0 constant:0.0];
+    [contentView addConstraint:v34];
 
     v35 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"V:|-(>=contentsVerticalInset)-[textLabel]-(>=contentsVerticalInset)-|", 0, v42, v41);
-    [v3 addConstraints:v35];
+    [contentView addConstraints:v35];
 
-    v36 = [NSLayoutConstraint constraintWithItem:v44 attribute:10 relatedBy:0 toItem:v3 attribute:10 multiplier:1.0 constant:0.0];
-    [v3 addConstraint:v36];
+    v36 = [NSLayoutConstraint constraintWithItem:v44 attribute:10 relatedBy:0 toItem:contentView attribute:10 multiplier:1.0 constant:0.0];
+    [contentView addConstraint:v36];
 
     v37 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"V:|-(>=contentsVerticalInset)-[detailTextLabel]-(>=contentsVerticalInset)-|", 0, v42, v41);
-    [v3 addConstraints:v37];
+    [contentView addConstraints:v37];
 
-    v38 = [NSLayoutConstraint constraintWithItem:v46 attribute:10 relatedBy:0 toItem:v3 attribute:10 multiplier:1.0 constant:0.0];
-    [v3 addConstraint:v38];
+    v38 = [NSLayoutConstraint constraintWithItem:v46 attribute:10 relatedBy:0 toItem:contentView attribute:10 multiplier:1.0 constant:0.0];
+    [contentView addConstraint:v38];
 
     v39 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"V:|-(>=contentsVerticalInset)-[chevron]-(>=contentsVerticalInset)-|", 0, v42, v41);
-    [v3 addConstraints:v39];
+    [contentView addConstraints:v39];
 
-    v40 = [NSLayoutConstraint constraintWithItem:v45 attribute:10 relatedBy:0 toItem:v3 attribute:10 multiplier:1.0 constant:0.0];
+    v40 = [NSLayoutConstraint constraintWithItem:v45 attribute:10 relatedBy:0 toItem:contentView attribute:10 multiplier:1.0 constant:0.0];
 
-    [v3 addConstraint:v40];
+    [contentView addConstraint:v40];
   }
 }
 
@@ -183,107 +183,107 @@
 
 - (void)removeTextEntryField
 {
-  v3 = [(BKLibraryCollectionsListCell *)self textEntryField];
-  if (v3)
+  textEntryField = [(BKLibraryCollectionsListCell *)self textEntryField];
+  if (textEntryField)
   {
-    v6 = v3;
-    v4 = [(BKLibraryCollectionsListCell *)self contentView];
-    v5 = [(BKLibraryCollectionsListCell *)self textEntryFieldConstraints];
-    [v4 removeConstraints:v5];
+    v6 = textEntryField;
+    contentView = [(BKLibraryCollectionsListCell *)self contentView];
+    textEntryFieldConstraints = [(BKLibraryCollectionsListCell *)self textEntryFieldConstraints];
+    [contentView removeConstraints:textEntryFieldConstraints];
 
     [(BKLibraryCollectionsListCell *)self setTextEntryFieldConstraints:0];
     [v6 removeFromSuperview];
     [v6 setDelegate:0];
     [(BKLibraryCollectionsListCell *)self setTextEntryField:0];
-    v3 = v6;
+    textEntryField = v6;
   }
 }
 
-- (void)setDimmed:(BOOL)a3
+- (void)setDimmed:(BOOL)dimmed
 {
-  if (self->_dimmed != a3)
+  if (self->_dimmed != dimmed)
   {
-    self->_dimmed = a3;
-    v5 = [(BKLibraryCollectionsListCell *)self metrics];
-    [(BKLibraryCollectionsListCell *)self p_updateCellFromMetrics:v5];
+    self->_dimmed = dimmed;
+    metrics = [(BKLibraryCollectionsListCell *)self metrics];
+    [(BKLibraryCollectionsListCell *)self p_updateCellFromMetrics:metrics];
   }
 }
 
-- (void)willTransitionToState:(unint64_t)a3
+- (void)willTransitionToState:(unint64_t)state
 {
-  v3 = a3;
+  stateCopy = state;
   v6.receiver = self;
   v6.super_class = BKLibraryCollectionsListCell;
   [(BKLibraryCollectionsListCell *)&v6 willTransitionToState:?];
-  v5 = [(BKLibraryCollectionsListCell *)self chevron];
-  [v5 setHidden:(v3 & 3) != 0];
+  chevron = [(BKLibraryCollectionsListCell *)self chevron];
+  [chevron setHidden:(stateCopy & 3) != 0];
 }
 
-- (void)setupTextEntryField:(id)a3
+- (void)setupTextEntryField:(id)field
 {
-  v4 = a3;
-  v5 = [(BKLibraryCollectionsListCell *)self textEntryField];
-  if (!v5)
+  fieldCopy = field;
+  textEntryField = [(BKLibraryCollectionsListCell *)self textEntryField];
+  if (!textEntryField)
   {
-    v5 = [[UITextField alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
-    [(BKLibraryCollectionsListCell *)self setTextEntryField:v5];
-    [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+    textEntryField = [[UITextField alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
+    [(BKLibraryCollectionsListCell *)self setTextEntryField:textEntryField];
+    [textEntryField setTranslatesAutoresizingMaskIntoConstraints:0];
     LODWORD(v6) = 1131413504;
-    [v5 setContentHuggingPriority:0 forAxis:v6];
+    [textEntryField setContentHuggingPriority:0 forAxis:v6];
     LODWORD(v7) = 1132068864;
-    [v5 setContentCompressionResistancePriority:0 forAxis:v7];
-    [v5 setKeyboardType:0];
-    [v5 setReturnKeyType:9];
-    [v5 setAutocapitalizationType:1];
-    [v5 setAdjustsFontSizeToFitWidth:0];
-    [v5 setTextAlignment:4];
-    [v5 setContentVerticalAlignment:0];
-    [v5 setOpaque:0];
+    [textEntryField setContentCompressionResistancePriority:0 forAxis:v7];
+    [textEntryField setKeyboardType:0];
+    [textEntryField setReturnKeyType:9];
+    [textEntryField setAutocapitalizationType:1];
+    [textEntryField setAdjustsFontSizeToFitWidth:0];
+    [textEntryField setTextAlignment:4];
+    [textEntryField setContentVerticalAlignment:0];
+    [textEntryField setOpaque:0];
     v8 = +[UIColor clearColor];
-    [v5 setBackgroundColor:v8];
+    [textEntryField setBackgroundColor:v8];
 
-    v9 = [(BKLibraryCollectionsListCell *)self contentView];
-    v10 = [(BKLibraryCollectionsListCell *)self textLabel];
-    v11 = [(BKLibraryCollectionsListCell *)self metrics];
-    [(BKLibraryCollectionsListCell *)self p_updateTextEntryFromMetrics:v11];
+    contentView = [(BKLibraryCollectionsListCell *)self contentView];
+    textLabel = [(BKLibraryCollectionsListCell *)self textLabel];
+    metrics = [(BKLibraryCollectionsListCell *)self metrics];
+    [(BKLibraryCollectionsListCell *)self p_updateTextEntryFromMetrics:metrics];
 
-    [v9 addSubview:v5];
-    v12 = [NSLayoutConstraint constraintWithItem:v5 attribute:3 relatedBy:0 toItem:v10 attribute:3 multiplier:1.0 constant:0.0];
+    [contentView addSubview:textEntryField];
+    v12 = [NSLayoutConstraint constraintWithItem:textEntryField attribute:3 relatedBy:0 toItem:textLabel attribute:3 multiplier:1.0 constant:0.0];
     v17[0] = v12;
-    v13 = [NSLayoutConstraint constraintWithItem:v5 attribute:4 relatedBy:0 toItem:v10 attribute:4 multiplier:1.0 constant:0.0];
+    v13 = [NSLayoutConstraint constraintWithItem:textEntryField attribute:4 relatedBy:0 toItem:textLabel attribute:4 multiplier:1.0 constant:0.0];
     v17[1] = v13;
-    v14 = [NSLayoutConstraint constraintWithItem:v5 attribute:5 relatedBy:0 toItem:v10 attribute:5 multiplier:1.0 constant:0.0];
+    v14 = [NSLayoutConstraint constraintWithItem:textEntryField attribute:5 relatedBy:0 toItem:textLabel attribute:5 multiplier:1.0 constant:0.0];
     v17[2] = v14;
-    v15 = [NSLayoutConstraint constraintWithItem:v5 attribute:6 relatedBy:0 toItem:v10 attribute:6 multiplier:1.0 constant:0.0];
+    v15 = [NSLayoutConstraint constraintWithItem:textEntryField attribute:6 relatedBy:0 toItem:textLabel attribute:6 multiplier:1.0 constant:0.0];
     v17[3] = v15;
     v16 = [NSArray arrayWithObjects:v17 count:4];
 
-    [v9 addConstraints:v16];
+    [contentView addConstraints:v16];
     [(BKLibraryCollectionsListCell *)self setTextEntryFieldConstraints:v16];
   }
 
-  [v5 setDelegate:v4];
+  [textEntryField setDelegate:fieldCopy];
 }
 
-- (void)p_updateCellFromMetrics:(id)a3
+- (void)p_updateCellFromMetrics:(id)metrics
 {
-  v4 = a3;
-  if (v4)
+  metricsCopy = metrics;
+  if (metricsCopy)
   {
-    v30 = v4;
+    v30 = metricsCopy;
     if ((_UISolariumEnabled() & 1) == 0)
     {
-      v5 = [v30 tableBackgroundColor];
-      [(BKLibraryCollectionsListCell *)self setBackgroundColor:v5];
+      tableBackgroundColor = [v30 tableBackgroundColor];
+      [(BKLibraryCollectionsListCell *)self setBackgroundColor:tableBackgroundColor];
     }
 
-    v6 = [v30 tableCellSelectedBackgroundColor];
+    tableCellSelectedBackgroundColor = [v30 tableCellSelectedBackgroundColor];
 
-    if (v6)
+    if (tableCellSelectedBackgroundColor)
     {
       v7 = objc_alloc_init(UIView);
-      v8 = [v30 tableCellSelectedBackgroundColor];
-      [v7 setBackgroundColor:v8];
+      tableCellSelectedBackgroundColor2 = [v30 tableCellSelectedBackgroundColor];
+      [v7 setBackgroundColor:tableCellSelectedBackgroundColor2];
 
       [(BKLibraryCollectionsListCell *)self setSelectedBackgroundView:v7];
     }
@@ -292,81 +292,81 @@
     {
       if ([(BKLibraryCollectionsListCell *)self dimmed])
       {
-        v9 = [v30 tableCellDimmedTextFontAttributes];
-        v10 = [v9 font];
+        tableCellDimmedTextFontAttributes = [v30 tableCellDimmedTextFontAttributes];
+        font = [tableCellDimmedTextFontAttributes font];
 
-        v11 = [v30 tableCellDimmedTextFontAttributes];
-        v12 = [v11 foregroundColor];
+        tableCellDimmedTextFontAttributes2 = [v30 tableCellDimmedTextFontAttributes];
+        foregroundColor = [tableCellDimmedTextFontAttributes2 foregroundColor];
 
-        v13 = [v30 tableCellDetailDimmedTextFontAttributes];
-        v14 = [v13 font];
+        tableCellDetailDimmedTextFontAttributes = [v30 tableCellDetailDimmedTextFontAttributes];
+        font2 = [tableCellDetailDimmedTextFontAttributes font];
 
-        v15 = [v30 tableCellDetailDimmedTextFontAttributes];
-        v16 = [v15 foregroundColor];
+        tableCellDetailDimmedTextFontAttributes2 = [v30 tableCellDetailDimmedTextFontAttributes];
+        foregroundColor2 = [tableCellDetailDimmedTextFontAttributes2 foregroundColor];
 
         [v30 collectionIconDimmedAlpha];
       }
 
       else
       {
-        v18 = [v30 tableCellNormalTextFontAttributes];
-        v10 = [v18 font];
+        tableCellNormalTextFontAttributes = [v30 tableCellNormalTextFontAttributes];
+        font = [tableCellNormalTextFontAttributes font];
 
-        v19 = [v30 tableCellNormalTextFontAttributes];
-        v12 = [v19 foregroundColor];
+        tableCellNormalTextFontAttributes2 = [v30 tableCellNormalTextFontAttributes];
+        foregroundColor = [tableCellNormalTextFontAttributes2 foregroundColor];
 
-        v20 = [v30 tableCellDetailNormalTextFontAttributes];
-        v14 = [v20 font];
+        tableCellDetailNormalTextFontAttributes = [v30 tableCellDetailNormalTextFontAttributes];
+        font2 = [tableCellDetailNormalTextFontAttributes font];
 
-        v21 = [v30 tableCellDetailNormalTextFontAttributes];
-        v16 = [v21 foregroundColor];
+        tableCellDetailNormalTextFontAttributes2 = [v30 tableCellDetailNormalTextFontAttributes];
+        foregroundColor2 = [tableCellDetailNormalTextFontAttributes2 foregroundColor];
 
         v17 = 1.0;
       }
 
       [(UIImageView *)self->_imageView setAlpha:v17];
-      [(UILabel *)self->_textLabel setFont:v10];
-      [(UILabel *)self->_textLabel setTextColor:v12];
-      [(UILabel *)self->_detailTextLabel setFont:v14];
-      [(UILabel *)self->_detailTextLabel setTextColor:v16];
+      [(UILabel *)self->_textLabel setFont:font];
+      [(UILabel *)self->_textLabel setTextColor:foregroundColor];
+      [(UILabel *)self->_detailTextLabel setFont:font2];
+      [(UILabel *)self->_detailTextLabel setTextColor:foregroundColor2];
     }
 
-    v22 = [v30 chevronFontAttributes];
-    v23 = [v22 font];
-    v24 = [UIImageSymbolConfiguration configurationWithFont:v23 scale:1];
+    chevronFontAttributes = [v30 chevronFontAttributes];
+    font3 = [chevronFontAttributes font];
+    v24 = [UIImageSymbolConfiguration configurationWithFont:font3 scale:1];
 
-    v25 = [v30 chevronName];
-    v26 = [UIImage systemImageNamed:v25];
+    chevronName = [v30 chevronName];
+    v26 = [UIImage systemImageNamed:chevronName];
     v27 = [v26 imageWithConfiguration:v24];
 
     [(UIImageView *)self->_chevron setImage:v27];
-    v28 = [v30 chevronFontAttributes];
-    v29 = [v28 foregroundColor];
-    [(UIImageView *)self->_chevron setTintColor:v29];
+    chevronFontAttributes2 = [v30 chevronFontAttributes];
+    foregroundColor3 = [chevronFontAttributes2 foregroundColor];
+    [(UIImageView *)self->_chevron setTintColor:foregroundColor3];
 
-    v4 = v30;
+    metricsCopy = v30;
   }
 }
 
-- (void)p_updateTextEntryFromMetrics:(id)a3
+- (void)p_updateTextEntryFromMetrics:(id)metrics
 {
-  if (a3)
+  if (metrics)
   {
     if (self->_textEntryField)
     {
-      v4 = a3;
-      v5 = [v4 tableCellNormalTextFontAttributes];
-      v6 = [v5 font];
-      [(UITextField *)self->_textEntryField setFont:v6];
+      metricsCopy = metrics;
+      tableCellNormalTextFontAttributes = [metricsCopy tableCellNormalTextFontAttributes];
+      font = [tableCellNormalTextFontAttributes font];
+      [(UITextField *)self->_textEntryField setFont:font];
 
-      v7 = [v4 tableCellNormalTextFontAttributes];
-      v8 = [v7 foregroundColor];
-      [(UITextField *)self->_textEntryField setTextColor:v8];
+      tableCellNormalTextFontAttributes2 = [metricsCopy tableCellNormalTextFontAttributes];
+      foregroundColor = [tableCellNormalTextFontAttributes2 foregroundColor];
+      [(UITextField *)self->_textEntryField setTextColor:foregroundColor];
 
-      v9 = [v4 darkAppearance];
-      if ([(UITextField *)self->_textEntryField keyboardAppearance]!= v9)
+      darkAppearance = [metricsCopy darkAppearance];
+      if ([(UITextField *)self->_textEntryField keyboardAppearance]!= darkAppearance)
       {
-        [(UITextField *)self->_textEntryField setKeyboardAppearance:v9];
+        [(UITextField *)self->_textEntryField setKeyboardAppearance:darkAppearance];
         textEntryField = self->_textEntryField;
 
         [(UITextField *)textEntryField reloadInputViews];
@@ -375,18 +375,18 @@
   }
 }
 
-- (void)setMetrics:(id)a3
+- (void)setMetrics:(id)metrics
 {
-  v5 = a3;
-  if (self->_metrics != v5)
+  metricsCopy = metrics;
+  if (self->_metrics != metricsCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_metrics, a3);
+    v6 = metricsCopy;
+    objc_storeStrong(&self->_metrics, metrics);
     [(BKLibraryCollectionsListCell *)self p_updateCellFromMetrics:v6];
-    v5 = [(BKLibraryCollectionsListCell *)self p_updateTextEntryFromMetrics:v6];
+    metricsCopy = [(BKLibraryCollectionsListCell *)self p_updateTextEntryFromMetrics:v6];
   }
 
-  _objc_release_x2(v5);
+  _objc_release_x2(metricsCopy);
 }
 
 - (id)accessibilityValue
@@ -440,8 +440,8 @@
   [v3 addObject:v8];
 
 LABEL_9:
-  v9 = [(BKLibraryCollectionsListCell *)self accessibilityDelegate];
-  v10 = [v9 bkaxIsCustomCollectionCell:self];
+  accessibilityDelegate = [(BKLibraryCollectionsListCell *)self accessibilityDelegate];
+  v10 = [accessibilityDelegate bkaxIsCustomCollectionCell:self];
 
   if (v10)
   {
@@ -467,15 +467,15 @@ LABEL_9:
 {
   v6.receiver = self;
   v6.super_class = BKLibraryCollectionsListCell;
-  v3 = [(BKLibraryCollectionsListCell *)&v6 accessibilityTraits];
+  accessibilityTraits = [(BKLibraryCollectionsListCell *)&v6 accessibilityTraits];
   if ([(BKLibraryCollectionsListCell *)self dimmed]&& ([(BKLibraryCollectionsListCell *)self isEditing]& 1) == 0)
   {
-    v4 = UIAccessibilityTraitNotEnabled | v3;
+    v4 = UIAccessibilityTraitNotEnabled | accessibilityTraits;
   }
 
   else
   {
-    v4 = v3 & ~UIAccessibilityTraitNotEnabled;
+    v4 = accessibilityTraits & ~UIAccessibilityTraitNotEnabled;
   }
 
   if ([(BKLibraryCollectionsListCell *)self isButton])
@@ -495,15 +495,15 @@ LABEL_9:
   {
     v5.receiver = self;
     v5.super_class = BKLibraryCollectionsListCell;
-    v3 = [(BKLibraryCollectionsListCell *)&v5 accessibilityDragSourceDescriptors];
+    accessibilityDragSourceDescriptors = [(BKLibraryCollectionsListCell *)&v5 accessibilityDragSourceDescriptors];
   }
 
   else
   {
-    v3 = &__NSArray0__struct;
+    accessibilityDragSourceDescriptors = &__NSArray0__struct;
   }
 
-  return v3;
+  return accessibilityDragSourceDescriptors;
 }
 
 - (id)accessibilityDropPointDescriptors
@@ -517,14 +517,14 @@ LABEL_9:
   v3 = [NSMutableArray alloc];
   v12.receiver = self;
   v12.super_class = BKLibraryCollectionsListCell;
-  v4 = [(BKLibraryCollectionsListCell *)&v12 accessibilityDropPointDescriptors];
-  v5 = [v3 initWithArray:v4];
+  accessibilityDropPointDescriptors = [(BKLibraryCollectionsListCell *)&v12 accessibilityDropPointDescriptors];
+  v5 = [v3 initWithArray:accessibilityDropPointDescriptors];
 
   if ([v5 count] == 3)
   {
     [v5 sortUsingComparator:&stru_100A09648];
-    v6 = [(BKLibraryCollectionsListCell *)self accessibilityDelegate];
-    v7 = [v6 bkaxIsLastCollection:self];
+    accessibilityDelegate = [(BKLibraryCollectionsListCell *)self accessibilityDelegate];
+    v7 = [accessibilityDelegate bkaxIsLastCollection:self];
 
     v8 = [v5 count];
     if (v7)
@@ -562,36 +562,36 @@ LABEL_11:
 {
   if ([(BKLibraryCollectionsListCell *)self isShownDefaultCollectionInEditMode]|| [(BKLibraryCollectionsListCell *)self isHiddenDefaultCollection])
   {
-    LOBYTE(v3) = 1;
+    LOBYTE(isEditing) = 1;
   }
 
   else
   {
-    v3 = [(BKLibraryCollectionsListCell *)self isEditing];
-    if (v3)
+    isEditing = [(BKLibraryCollectionsListCell *)self isEditing];
+    if (isEditing)
     {
-      v4 = [(BKLibraryCollectionsListCell *)self accessibilityDelegate];
-      v5 = [v4 bkaxIsCustomCollectionCell:self];
+      accessibilityDelegate = [(BKLibraryCollectionsListCell *)self accessibilityDelegate];
+      v5 = [accessibilityDelegate bkaxIsCustomCollectionCell:self];
 
-      LOBYTE(v3) = v5;
+      LOBYTE(isEditing) = v5;
     }
   }
 
-  return v3;
+  return isEditing;
 }
 
 - (BOOL)accessibilityActivate
 {
   if ([(BKLibraryCollectionsListCell *)self isShownDefaultCollectionInEditMode])
   {
-    v3 = [(BKLibraryCollectionsListCell *)self accessibilityDelegate];
-    [v3 bkaxPerformHide:self];
+    accessibilityDelegate = [(BKLibraryCollectionsListCell *)self accessibilityDelegate];
+    [accessibilityDelegate bkaxPerformHide:self];
   }
 
   else if ([(BKLibraryCollectionsListCell *)self isHiddenDefaultCollection])
   {
-    v3 = [(BKLibraryCollectionsListCell *)self accessibilityDelegate];
-    [v3 bkaxPerformShow:self];
+    accessibilityDelegate = [(BKLibraryCollectionsListCell *)self accessibilityDelegate];
+    [accessibilityDelegate bkaxPerformShow:self];
   }
 
   else
@@ -601,20 +601,20 @@ LABEL_11:
       return 0;
     }
 
-    v7 = [(BKLibraryCollectionsListCell *)self accessibilityDelegate];
-    v8 = [v7 bkaxIsCustomCollectionCell:self];
+    accessibilityDelegate2 = [(BKLibraryCollectionsListCell *)self accessibilityDelegate];
+    v8 = [accessibilityDelegate2 bkaxIsCustomCollectionCell:self];
 
     if (!v8)
     {
       return 0;
     }
 
-    v3 = [(BKLibraryCollectionsListCell *)self accessibilityDelegate];
-    [v3 bkaxPerformRename:self];
+    accessibilityDelegate = [(BKLibraryCollectionsListCell *)self accessibilityDelegate];
+    [accessibilityDelegate bkaxPerformRename:self];
   }
 
-  v4 = [(BKLibraryCollectionsListCell *)self accessibilityDelegate];
-  v5 = v4 != 0;
+  accessibilityDelegate3 = [(BKLibraryCollectionsListCell *)self accessibilityDelegate];
+  v5 = accessibilityDelegate3 != 0;
 
   return v5;
 }
@@ -625,8 +625,8 @@ LABEL_11:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(BKLibraryCollectionsListCell *)self subviews];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  subviews = [(BKLibraryCollectionsListCell *)self subviews];
+  v3 = [subviews countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -637,7 +637,7 @@ LABEL_11:
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(subviews);
         }
 
         v7 = *(*(&v10 + 1) + 8 * i);
@@ -649,7 +649,7 @@ LABEL_11:
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [subviews countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v4)
       {
         continue;
@@ -667,51 +667,51 @@ LABEL_11:
 
 - (BOOL)isButton
 {
-  v2 = self;
-  v3 = [(BKLibraryCollectionsListCell *)self accessibilityDelegate];
-  LOBYTE(v2) = [v3 bkaxIsButton:v2];
+  selfCopy = self;
+  accessibilityDelegate = [(BKLibraryCollectionsListCell *)self accessibilityDelegate];
+  LOBYTE(selfCopy) = [accessibilityDelegate bkaxIsButton:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)isHiddenDefaultCollection
 {
-  v3 = [(BKLibraryCollectionsListCell *)self dimmed];
-  if (v3)
+  dimmed = [(BKLibraryCollectionsListCell *)self dimmed];
+  if (dimmed)
   {
 
-    LOBYTE(v3) = [(BKLibraryCollectionsListCell *)self isEditing];
+    LOBYTE(dimmed) = [(BKLibraryCollectionsListCell *)self isEditing];
   }
 
-  return v3;
+  return dimmed;
 }
 
 - (BOOL)isShownDefaultCollectionInEditMode
 {
   if ([(BKLibraryCollectionsListCell *)self dimmed])
   {
-    LOBYTE(v3) = 0;
+    LOBYTE(isEditing) = 0;
   }
 
   else
   {
-    v3 = [(BKLibraryCollectionsListCell *)self isEditing];
-    if (v3)
+    isEditing = [(BKLibraryCollectionsListCell *)self isEditing];
+    if (isEditing)
     {
-      LOBYTE(v3) = [(BKLibraryCollectionsListCell *)self showsReorderControl]^ 1;
+      LOBYTE(isEditing) = [(BKLibraryCollectionsListCell *)self showsReorderControl]^ 1;
     }
   }
 
-  return v3;
+  return isEditing;
 }
 
 - (BOOL)accessibilityPerformEscape
 {
-  v2 = self;
-  v3 = [(BKLibraryCollectionsListCell *)self accessibilityDelegate];
-  LOBYTE(v2) = [v3 bkaxDidPerformEscape:v2];
+  selfCopy = self;
+  accessibilityDelegate = [(BKLibraryCollectionsListCell *)self accessibilityDelegate];
+  LOBYTE(selfCopy) = [accessibilityDelegate bkaxDidPerformEscape:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BKLibraryCollectionsListCellAccessibilityDelegate)accessibilityDelegate

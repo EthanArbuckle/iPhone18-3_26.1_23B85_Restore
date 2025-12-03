@@ -1,19 +1,19 @@
 @interface AAUIChooseContactController
 - (AAUIChooseContactController)init;
-- (AAUIChooseContactController)initWithAccountManager:(id)a3;
+- (AAUIChooseContactController)initWithAccountManager:(id)manager;
 - (AAUIChooseContactControllerDelegate)delegate;
-- (BOOL)_isHandleReachable:(id)a3;
-- (id)_idsReachabilityDictionaryForRecipient:(id)a3;
-- (id)searchController:(id)a3 composeRecipientForAddress:(id)a4;
-- (id)searchController:(id)a3 tintColorForRecipient:(id)a4;
+- (BOOL)_isHandleReachable:(id)reachable;
+- (id)_idsReachabilityDictionaryForRecipient:(id)recipient;
+- (id)searchController:(id)controller composeRecipientForAddress:(id)address;
+- (id)searchController:(id)controller tintColorForRecipient:(id)recipient;
 - (void)_prepareNextButton;
 - (void)_selectionCompleted;
 - (void)_setupViewController;
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4;
-- (void)contactPicker:(id)a3 didSelectContactProperty:(id)a4;
-- (void)didTapTextViewAccessoryButtonForSearchController:(id)a3;
-- (void)fetchIDSStatusForRecipient:(id)a3;
-- (void)searchController:(id)a3 didAddRecipient:(id)a4;
+- (void)contactPicker:(id)picker didSelectContact:(id)contact;
+- (void)contactPicker:(id)picker didSelectContactProperty:(id)property;
+- (void)didTapTextViewAccessoryButtonForSearchController:(id)controller;
+- (void)fetchIDSStatusForRecipient:(id)recipient;
+- (void)searchController:(id)controller didAddRecipient:(id)recipient;
 @end
 
 @implementation AAUIChooseContactController
@@ -32,9 +32,9 @@
   return v3;
 }
 
-- (AAUIChooseContactController)initWithAccountManager:(id)a3
+- (AAUIChooseContactController)initWithAccountManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = AAUIChooseContactController;
   v6 = [(AAUIChooseContactController *)&v9 init];
@@ -42,30 +42,30 @@
   if (v6)
   {
     [(AAUIChooseContactController *)v6 _setupViewController];
-    objc_storeStrong(&v7->_accountManager, a3);
+    objc_storeStrong(&v7->_accountManager, manager);
   }
 
   return v7;
 }
 
-- (id)searchController:(id)a3 composeRecipientForAddress:(id)a4
+- (id)searchController:(id)controller composeRecipientForAddress:(id)address
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a4;
+  addressCopy = address;
   v5 = _AAUILogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = addressCopy;
     _os_log_impl(&dword_1C5355000, v5, OS_LOG_TYPE_DEFAULT, "Composing contact for address: %@", &v9, 0xCu);
   }
 
-  if ([v4 aa_appearsToBeEmail])
+  if ([addressCopy aa_appearsToBeEmail])
   {
     v6 = 0;
   }
 
-  else if ([v4 aa_appearsToBePhoneNumber])
+  else if ([addressCopy aa_appearsToBePhoneNumber])
   {
     v6 = 1;
   }
@@ -75,18 +75,18 @@
     v6 = 5;
   }
 
-  v7 = [objc_alloc(MEMORY[0x1E6996408]) initWithContact:0 address:v4 kind:v6];
+  v7 = [objc_alloc(MEMORY[0x1E6996408]) initWithContact:0 address:addressCopy kind:v6];
 
   return v7;
 }
 
-- (id)searchController:(id)a3 tintColorForRecipient:(id)a4
+- (id)searchController:(id)controller tintColorForRecipient:(id)recipient
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 kind] > 1)
+  controllerCopy = controller;
+  recipientCopy = recipient;
+  if ([recipientCopy kind] > 1)
   {
-    v11 = [MEMORY[0x1E69DC888] grayColor];
+    grayColor = [MEMORY[0x1E69DC888] grayColor];
   }
 
   else if (objc_opt_respondsToSelector())
@@ -98,7 +98,7 @@
     block[2] = __70__AAUIChooseContactController_searchController_tintColorForRecipient___block_invoke;
     block[3] = &unk_1E820BE68;
     objc_copyWeak(&v26, &location);
-    v9 = v7;
+    v9 = recipientCopy;
     v25 = v9;
     dispatch_async(idsStatusAccessQueue, block);
     v20 = 0;
@@ -114,10 +114,10 @@
     v18 = &v20;
     v17 = v9;
     dispatch_sync(v10, &v13);
-    v11 = 0;
+    grayColor = 0;
     if (*(v21 + 24) == 1)
     {
-      v11 = [MEMORY[0x1E69DC888] tintColor];
+      grayColor = [MEMORY[0x1E69DC888] tintColor];
     }
 
     objc_destroyWeak(&v19);
@@ -129,10 +129,10 @@
 
   else
   {
-    v11 = 0;
+    grayColor = 0;
   }
 
-  return v11;
+  return grayColor;
 }
 
 void __70__AAUIChooseContactController_searchController_tintColorForRecipient___block_invoke(uint64_t a1)
@@ -147,68 +147,68 @@ void __70__AAUIChooseContactController_searchController_tintColorForRecipient___
   *(*(*(a1 + 40) + 8) + 24) = [WeakRetained _isHandleReachable:*(a1 + 32)];
 }
 
-- (void)didTapTextViewAccessoryButtonForSearchController:(id)a3
+- (void)didTapTextViewAccessoryButtonForSearchController:(id)controller
 {
   v6 = objc_opt_new();
   [v6 setDelegate:self];
-  v4 = [(AAUIChooseContactController *)self chooseContactViewController];
-  v5 = [v4 navigationController];
-  [v5 presentViewController:v6 animated:1 completion:0];
+  chooseContactViewController = [(AAUIChooseContactController *)self chooseContactViewController];
+  navigationController = [chooseContactViewController navigationController];
+  [navigationController presentViewController:v6 animated:1 completion:0];
 }
 
-- (void)searchController:(id)a3 didAddRecipient:(id)a4
+- (void)searchController:(id)controller didAddRecipient:(id)recipient
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 recipients];
-  v9 = [v8 count];
+  controllerCopy = controller;
+  recipientCopy = recipient;
+  recipients = [controllerCopy recipients];
+  v9 = [recipients count];
 
   if (v9 >= 2)
   {
-    v11[0] = v7;
+    v11[0] = recipientCopy;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
-    [v6 setRecipients:v10];
+    [controllerCopy setRecipients:v10];
   }
 
   [(AAUIChooseContactController *)self _prepareNextButton];
 }
 
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4
+- (void)contactPicker:(id)picker didSelectContact:(id)contact
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [AAUITrustedContactPickerViewController addressKindAndHandleForSingleAddressContact:v7];
+  pickerCopy = picker;
+  contactCopy = contact;
+  v8 = [AAUITrustedContactPickerViewController addressKindAndHandleForSingleAddressContact:contactCopy];
   v9 = objc_alloc(MEMORY[0x1E6996408]);
-  v10 = [v8 handle];
-  v11 = [v9 initWithContact:v7 address:v10 kind:{objc_msgSend(v8, "kind")}];
+  handle = [v8 handle];
+  v11 = [v9 initWithContact:contactCopy address:handle kind:{objc_msgSend(v8, "kind")}];
 
   v13[0] = v11;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
   [(CNAutocompleteSearchController *)self->_autocompleteSearchController setRecipients:v12];
 
-  if (self->_directPickerViewController == v6)
+  if (self->_directPickerViewController == pickerCopy)
   {
     [(AAUIChooseContactController *)self _selectionCompleted];
   }
 
   else
   {
-    [(CNContactPickerViewController *)v6 dismissViewControllerAnimated:1 completion:0];
+    [(CNContactPickerViewController *)pickerCopy dismissViewControllerAnimated:1 completion:0];
   }
 }
 
-- (void)contactPicker:(id)a3 didSelectContactProperty:(id)a4
+- (void)contactPicker:(id)picker didSelectContactProperty:(id)property
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 value];
+  pickerCopy = picker;
+  propertyCopy = property;
+  value = [propertyCopy value];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v8 stringValue];
+    stringValue = [value stringValue];
     v10 = 1;
   }
 
@@ -217,33 +217,33 @@ void __70__AAUIChooseContactController_searchController_tintColorForRecipient___
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = v8;
+      stringValue = value;
       v10 = 0;
     }
 
     else
     {
-      v9 = 0;
+      stringValue = 0;
       v10 = 5;
     }
   }
 
   v11 = objc_alloc(MEMORY[0x1E6996408]);
-  v12 = [v7 contact];
+  contact = [propertyCopy contact];
 
-  v13 = [v11 initWithContact:v12 address:v9 kind:v10];
+  v13 = [v11 initWithContact:contact address:stringValue kind:v10];
   v15[0] = v13;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
   [(CNAutocompleteSearchController *)self->_autocompleteSearchController setRecipients:v14];
 
-  if (self->_directPickerViewController == v6)
+  if (self->_directPickerViewController == pickerCopy)
   {
     [(AAUIChooseContactController *)self _selectionCompleted];
   }
 
   else
   {
-    [(CNContactPickerViewController *)v6 dismissViewControllerAnimated:1 completion:0];
+    [(CNContactPickerViewController *)pickerCopy dismissViewControllerAnimated:1 completion:0];
   }
 }
 
@@ -276,17 +276,17 @@ void __70__AAUIChooseContactController_searchController_tintColorForRecipient___
   self->_autocompleteSearchController = v14;
 
   [(CNAutocompleteSearchController *)self->_autocompleteSearchController setDelegate:self];
-  v16 = [v22 title];
-  [(CNAutocompleteSearchController *)self->_autocompleteSearchController setTitle:v16];
+  title = [v22 title];
+  [(CNAutocompleteSearchController *)self->_autocompleteSearchController setTitle:title];
 
   v17 = objc_opt_new();
-  v18 = [v22 selectButtonText];
-  [v17 setTitle:v18];
+  selectButtonText = [v22 selectButtonText];
+  [v17 setTitle:selectButtonText];
 
   [v17 setTarget:self];
   [v17 setAction:sel__selectionCompleted];
-  v19 = [(CNAutocompleteSearchController *)self->_autocompleteSearchController navigationItem];
-  [v19 setRightBarButtonItem:v17];
+  navigationItem = [(CNAutocompleteSearchController *)self->_autocompleteSearchController navigationItem];
+  [navigationItem setRightBarButtonItem:v17];
 
   [(AAUIChooseContactController *)self _prepareNextButton];
   v20 = objc_opt_new();
@@ -298,20 +298,20 @@ void __70__AAUIChooseContactController_searchController_tintColorForRecipient___
 
 - (void)_prepareNextButton
 {
-  v3 = [(CNAutocompleteSearchController *)self->_autocompleteSearchController recipients];
-  v4 = [v3 count] == 1;
+  recipients = [(CNAutocompleteSearchController *)self->_autocompleteSearchController recipients];
+  v4 = [recipients count] == 1;
 
-  v6 = [(CNAutocompleteSearchController *)self->_autocompleteSearchController navigationItem];
-  v5 = [v6 rightBarButtonItem];
-  [v5 setEnabled:v4];
+  navigationItem = [(CNAutocompleteSearchController *)self->_autocompleteSearchController navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:v4];
 }
 
 - (void)_selectionCompleted
 {
-  v3 = [(CNAutocompleteSearchController *)self->_autocompleteSearchController recipients];
-  v4 = [v3 firstObject];
+  recipients = [(CNAutocompleteSearchController *)self->_autocompleteSearchController recipients];
+  firstObject = [recipients firstObject];
 
-  if ([v4 kind] > 1)
+  if ([firstObject kind] > 1)
   {
     v10 = _AAUILogSystem();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -323,45 +323,45 @@ void __70__AAUIChooseContactController_searchController_tintColorForRecipient___
   else
   {
     v5 = objc_alloc(MEMORY[0x1E698B8F0]);
-    v6 = [v4 address];
-    v7 = [v4 contact];
-    v8 = [v5 initWithHandle:v6 contact:v7];
+    address = [firstObject address];
+    contact = [firstObject contact];
+    v8 = [v5 initWithHandle:address contact:contact];
 
-    v9 = [(AAUIChooseContactController *)self delegate];
-    [v9 chooseContactController:self didSelectContact:v8];
+    delegate = [(AAUIChooseContactController *)self delegate];
+    [delegate chooseContactController:self didSelectContact:v8];
   }
 }
 
-- (BOOL)_isHandleReachable:(id)a3
+- (BOOL)_isHandleReachable:(id)reachable
 {
-  v4 = a3;
-  v5 = [(AAUIChooseContactController *)self _idsReachabilityDictionaryForRecipient:v4];
-  v6 = [v4 address];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  reachableCopy = reachable;
+  v5 = [(AAUIChooseContactController *)self _idsReachabilityDictionaryForRecipient:reachableCopy];
+  address = [reachableCopy address];
+  v7 = [v5 objectForKeyedSubscript:address];
 
   if (!v7 || [v7 integerValue] == -1)
   {
-    v8 = 0;
+    bOOLValue = 0;
   }
 
   else
   {
-    v8 = [v7 BOOLValue];
+    bOOLValue = [v7 BOOLValue];
   }
 
   v9 = _AAUILogSystem();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    [(AAUIChooseContactController *)v4 _isHandleReachable:v8, v9];
+    [(AAUIChooseContactController *)reachableCopy _isHandleReachable:bOOLValue, v9];
   }
 
-  return v8;
+  return bOOLValue;
 }
 
-- (id)_idsReachabilityDictionaryForRecipient:(id)a3
+- (id)_idsReachabilityDictionaryForRecipient:(id)recipient
 {
-  v4 = [a3 children];
-  v5 = [v4 count];
+  children = [recipient children];
+  v5 = [children count];
   v6 = 24;
   if (!v5)
   {
@@ -374,20 +374,20 @@ void __70__AAUIChooseContactController_searchController_tintColorForRecipient___
   return v7;
 }
 
-- (void)fetchIDSStatusForRecipient:(id)a3
+- (void)fetchIDSStatusForRecipient:(id)recipient
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  recipientCopy = recipient;
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(AAUIChooseContactController *)self _idsReachabilityDictionaryForRecipient:v4];
-    v6 = [v4 address];
-    v7 = [v5 objectForKeyedSubscript:v6];
+    v5 = [(AAUIChooseContactController *)self _idsReachabilityDictionaryForRecipient:recipientCopy];
+    address = [recipientCopy address];
+    v7 = [v5 objectForKeyedSubscript:address];
 
     if (!v7)
     {
-      v8 = [v4 address];
-      v9 = [v5 objectForKeyedSubscript:v8];
+      address2 = [recipientCopy address];
+      v9 = [v5 objectForKeyedSubscript:address2];
 
       if (v9)
       {
@@ -399,12 +399,12 @@ void __70__AAUIChooseContactController_searchController_tintColorForRecipient___
 
       else
       {
-        v10 = [v4 address];
-        [v5 setObject:&unk_1F44C05B8 forKeyedSubscript:v10];
+        address3 = [recipientCopy address];
+        [v5 setObject:&unk_1F44C05B8 forKeyedSubscript:address3];
       }
 
-      v11 = [v4 children];
-      v12 = [v11 count];
+      children = [recipientCopy children];
+      v12 = [children count];
 
       if (v12)
       {
@@ -412,8 +412,8 @@ void __70__AAUIChooseContactController_searchController_tintColorForRecipient___
         v32 = 0u;
         v29 = 0u;
         v30 = 0u;
-        v13 = [v4 children];
-        v14 = [v13 countByEnumeratingWithState:&v29 objects:v33 count:16];
+        children2 = [recipientCopy children];
+        v14 = [children2 countByEnumeratingWithState:&v29 objects:v33 count:16];
         if (v14)
         {
           v15 = *v30;
@@ -424,14 +424,14 @@ void __70__AAUIChooseContactController_searchController_tintColorForRecipient___
             {
               if (*v30 != v15)
               {
-                objc_enumerationMutation(v13);
+                objc_enumerationMutation(children2);
               }
 
               [(AAUIChooseContactController *)self fetchIDSStatusForRecipient:*(*(&v29 + 1) + 8 * v16++)];
             }
 
             while (v14 != v16);
-            v14 = [v13 countByEnumeratingWithState:&v29 objects:v33 count:16];
+            v14 = [children2 countByEnumeratingWithState:&v29 objects:v33 count:16];
           }
 
           while (v14);
@@ -439,12 +439,12 @@ void __70__AAUIChooseContactController_searchController_tintColorForRecipient___
       }
 
       handleToRecipient = self->_handleToRecipient;
-      v18 = [v4 address];
-      v19 = [(NSMutableDictionary *)handleToRecipient objectForKeyedSubscript:v18];
+      address4 = [recipientCopy address];
+      v19 = [(NSMutableDictionary *)handleToRecipient objectForKeyedSubscript:address4];
 
-      if (!v19 || v19 == v4)
+      if (!v19 || v19 == recipientCopy)
       {
-        if (v19 && v19 == v4)
+        if (v19 && v19 == recipientCopy)
         {
           goto LABEL_26;
         }
@@ -455,25 +455,25 @@ void __70__AAUIChooseContactController_searchController_tintColorForRecipient___
         v20 = _AAUILogSystem();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
         {
-          [(AAUIChooseContactController *)v4 fetchIDSStatusForRecipient:v19, v20];
+          [(AAUIChooseContactController *)recipientCopy fetchIDSStatusForRecipient:v19, v20];
         }
       }
 
       v21 = self->_handleToRecipient;
-      v22 = [v4 address];
-      [(NSMutableDictionary *)v21 setObject:v4 forKeyedSubscript:v22];
+      address5 = [recipientCopy address];
+      [(NSMutableDictionary *)v21 setObject:recipientCopy forKeyedSubscript:address5];
 
       objc_initWeak(&location, self);
       contactsManager = self->_contactsManager;
-      v24 = [v4 address];
+      address6 = [recipientCopy address];
       v25[0] = MEMORY[0x1E69E9820];
       v25[1] = 3221225472;
       v25[2] = __58__AAUIChooseContactController_fetchIDSStatusForRecipient___block_invoke;
       v25[3] = &unk_1E820BF08;
       v25[4] = self;
       objc_copyWeak(&v27, &location);
-      v26 = v4;
-      [(AAContactsManager *)contactsManager idsStatusForHandle:v24 completion:v25];
+      v26 = recipientCopy;
+      [(AAContactsManager *)contactsManager idsStatusForHandle:address6 completion:v25];
 
       objc_destroyWeak(&v27);
       objc_destroyWeak(&location);
@@ -488,7 +488,7 @@ LABEL_27:
     v5 = _AAUILogSystem();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      [(AAUIChooseContactController *)v4 fetchIDSStatusForRecipient:v5];
+      [(AAUIChooseContactController *)recipientCopy fetchIDSStatusForRecipient:v5];
     }
   }
 }

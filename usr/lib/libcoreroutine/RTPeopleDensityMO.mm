@@ -1,16 +1,16 @@
 @interface RTPeopleDensityMO
-+ (id)managedObjectWithIdentifier:(id)a3 startDate:(id)a4 endDate:(id)a5 densityScore:(double)a6 scanDuration:(double)a7 rssiHistogram:(id)a8 inManagedObjectContext:(id)a9;
-+ (id)managedObjectWithPeopleDensity:(id)a3 inManagedObjectContext:(id)a4;
++ (id)managedObjectWithIdentifier:(id)identifier startDate:(id)date endDate:(id)endDate densityScore:(double)score scanDuration:(double)duration rssiHistogram:(id)histogram inManagedObjectContext:(id)context;
++ (id)managedObjectWithPeopleDensity:(id)density inManagedObjectContext:(id)context;
 @end
 
 @implementation RTPeopleDensityMO
 
-+ (id)managedObjectWithPeopleDensity:(id)a3 inManagedObjectContext:(id)a4
++ (id)managedObjectWithPeopleDensity:(id)density inManagedObjectContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  densityCopy = density;
+  contextCopy = context;
+  v7 = contextCopy;
+  if (!densityCopy)
   {
     v17 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -26,17 +26,17 @@ LABEL_12:
     goto LABEL_7;
   }
 
-  if (v6)
+  if (contextCopy)
   {
-    v8 = [v5 uuid];
-    v9 = [v5 startDate];
-    v10 = [v5 endDate];
-    [v5 densityScore];
+    uuid = [densityCopy uuid];
+    startDate = [densityCopy startDate];
+    endDate = [densityCopy endDate];
+    [densityCopy densityScore];
     v12 = v11;
-    [v5 scanDuration];
+    [densityCopy scanDuration];
     v14 = v13;
-    v15 = [v5 rssiHistogram];
-    v16 = [RTPeopleDensityMO managedObjectWithIdentifier:v8 startDate:v9 endDate:v10 densityScore:v15 scanDuration:v7 rssiHistogram:v12 inManagedObjectContext:v14];
+    rssiHistogram = [densityCopy rssiHistogram];
+    v16 = [RTPeopleDensityMO managedObjectWithIdentifier:uuid startDate:startDate endDate:endDate densityScore:rssiHistogram scanDuration:v7 rssiHistogram:v12 inManagedObjectContext:v14];
 
     goto LABEL_8;
   }
@@ -58,15 +58,15 @@ LABEL_8:
   return v16;
 }
 
-+ (id)managedObjectWithIdentifier:(id)a3 startDate:(id)a4 endDate:(id)a5 densityScore:(double)a6 scanDuration:(double)a7 rssiHistogram:(id)a8 inManagedObjectContext:(id)a9
++ (id)managedObjectWithIdentifier:(id)identifier startDate:(id)date endDate:(id)endDate densityScore:(double)score scanDuration:(double)duration rssiHistogram:(id)histogram inManagedObjectContext:(id)context
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a8;
-  v19 = a9;
-  v20 = v19;
-  if (v19)
+  identifierCopy = identifier;
+  dateCopy = date;
+  endDateCopy = endDate;
+  histogramCopy = histogram;
+  contextCopy = context;
+  v20 = contextCopy;
+  if (contextCopy)
   {
     v32 = 0;
     v33 = &v32;
@@ -79,13 +79,13 @@ LABEL_8:
     v23[2] = __130__RTPeopleDensityMO_managedObjectWithIdentifier_startDate_endDate_densityScore_scanDuration_rssiHistogram_inManagedObjectContext___block_invoke;
     v23[3] = &unk_2788C5E90;
     v29 = &v32;
-    v24 = v19;
-    v25 = v15;
-    v26 = v16;
-    v27 = v17;
-    v30 = a6;
-    v31 = a7;
-    v28 = v18;
+    v24 = contextCopy;
+    v25 = identifierCopy;
+    v26 = dateCopy;
+    v27 = endDateCopy;
+    scoreCopy = score;
+    durationCopy = duration;
+    v28 = histogramCopy;
     [v24 performBlockAndWait:v23];
     v21 = v33[5];
 

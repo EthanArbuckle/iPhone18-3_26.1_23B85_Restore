@@ -1,28 +1,28 @@
 @interface LPAnimatedImageTranscoder
 + (id)encodeQueue;
-- (LPAnimatedImageTranscoder)initWithAnimatedImage:(id)a3;
-- (void)_transcodeWithCompletionHandler:(id)a3;
+- (LPAnimatedImageTranscoder)initWithAnimatedImage:(id)image;
+- (void)_transcodeWithCompletionHandler:(id)handler;
 - (void)cancel;
 - (void)encodeNextFrame;
 - (void)encodeUntilNotReadyForMoreMediaData;
 - (void)failed;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)removeReadyForDataObserverIfNeeded;
-- (void)transcodeWithCompletionHandler:(id)a3;
+- (void)transcodeWithCompletionHandler:(id)handler;
 @end
 
 @implementation LPAnimatedImageTranscoder
 
-- (LPAnimatedImageTranscoder)initWithAnimatedImage:(id)a3
+- (LPAnimatedImageTranscoder)initWithAnimatedImage:(id)image
 {
-  v5 = a3;
+  imageCopy = image;
   v10.receiver = self;
   v10.super_class = LPAnimatedImageTranscoder;
   v6 = [(LPAnimatedImageTranscoder *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sourceImage, a3);
+    objc_storeStrong(&v6->_sourceImage, image);
     v7->_loggingID = ++initWithAnimatedImage__nextLoggingID;
     v8 = v7;
   }
@@ -50,29 +50,29 @@ void __40__LPAnimatedImageTranscoder_encodeQueue__block_invoke()
   encodeQueue_encodeQueue = v0;
 }
 
-- (void)transcodeWithCompletionHandler:(id)a3
+- (void)transcodeWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[LPAnimatedImageTranscoder encodeQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __60__LPAnimatedImageTranscoder_transcodeWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7A356A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(v5, v7);
 }
 
-- (void)_transcodeWithCompletionHandler:(id)a3
+- (void)_transcodeWithCompletionHandler:(id)handler
 {
   v72 = *MEMORY[0x1E69E9840];
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   completionHandler = self->_completionHandler;
   self->_completionHandler = v4;
 
-  v6 = [(LPImage *)self->_sourceImage data];
-  self->_imageSource = CGImageSourceCreateWithData(v6, MEMORY[0x1E695E0F8]);
+  data = [(LPImage *)self->_sourceImage data];
+  self->_imageSource = CGImageSourceCreateWithData(data, MEMORY[0x1E695E0F8]);
 
   self->_frameCount = CGImageSourceGetCount(self->_imageSource);
   v7 = LPLogChannelTranscoding();
@@ -80,13 +80,13 @@ void __40__LPAnimatedImageTranscoder_encodeQueue__block_invoke()
   {
     loggingID = self->_loggingID;
     frameCount = self->_frameCount;
-    v10 = [(LPImage *)self->_sourceImage data];
+    data2 = [(LPImage *)self->_sourceImage data];
     *buf = 67109632;
     *&buf[4] = loggingID;
     *&buf[8] = 2048;
     *&buf[10] = frameCount;
     *&buf[18] = 2048;
-    *&buf[20] = [v10 length];
+    *&buf[20] = [data2 length];
     _os_log_impl(&dword_1AE886000, v7, OS_LOG_TYPE_DEFAULT, "LPAnimatedImageTranscoder<%d>: beginning transcoding for image (frameCount=%zu, size=%zd)", buf, 0x1Cu);
   }
 
@@ -95,21 +95,21 @@ void __40__LPAnimatedImageTranscoder_encodeQueue__block_invoke()
     v18 = CGImageSourceCopyPropertiesAtIndex(self->_imageSource, 0, 0);
     v19 = MEMORY[0x1E695DFF8];
     v20 = NSTemporaryDirectory();
-    v21 = [MEMORY[0x1E696AFB0] UUID];
-    v22 = [v21 UUIDString];
-    v23 = [v20 stringByAppendingPathComponent:v22];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    v23 = [v20 stringByAppendingPathComponent:uUIDString];
     v24 = [v23 stringByAppendingPathExtension:@"mp4"];
     v25 = [v19 fileURLWithPath:v24];
     outputURL = self->_outputURL;
     self->_outputURL = v25;
 
     v27 = [(__CFDictionary *)v18 objectForKeyedSubscript:*MEMORY[0x1E696DED8]];
-    v28 = [v27 unsignedLongValue];
+    unsignedLongValue = [v27 unsignedLongValue];
 
     v29 = [(__CFDictionary *)v18 objectForKeyedSubscript:*MEMORY[0x1E696DEC8]];
-    v30 = [v29 unsignedLongValue];
+    unsignedLongValue2 = [v29 unsignedLongValue];
 
-    if (v28 && v30)
+    if (unsignedLongValue && unsignedLongValue2)
     {
       v31 = objc_alloc(MEMORY[0x1E6987ED8]);
       v32 = [v31 initWithURL:self->_outputURL fileType:*MEMORY[0x1E69874B8] error:0];
@@ -122,15 +122,15 @@ void __40__LPAnimatedImageTranscoder_encodeQueue__block_invoke()
       v36 = *MEMORY[0x1E6987E08];
       v69[0] = v35;
       v69[1] = v36;
-      v37 = [MEMORY[0x1E696AD98] numberWithDouble:v28];
-      v38 = v30;
+      v37 = [MEMORY[0x1E696AD98] numberWithDouble:unsignedLongValue];
+      v38 = unsignedLongValue2;
       v70[1] = v37;
       v69[2] = *MEMORY[0x1E6987D70];
-      v39 = [MEMORY[0x1E696AD98] numberWithDouble:v30];
+      v39 = [MEMORY[0x1E696AD98] numberWithDouble:unsignedLongValue2];
       v70[2] = v39;
       v69[3] = *MEMORY[0x1E6987D30];
       v67 = *MEMORY[0x1E6987C60];
-      v40 = [MEMORY[0x1E696AD98] numberWithDouble:v28 * v38 * 32.0 * (1.0 / v34) * 0.0175];
+      v40 = [MEMORY[0x1E696AD98] numberWithDouble:unsignedLongValue * v38 * 32.0 * (1.0 / v34) * 0.0175];
       v68 = v40;
       v41 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v68 forKeys:&v67 count:1];
       v70[3] = v41;
@@ -157,8 +157,8 @@ void __40__LPAnimatedImageTranscoder_encodeQueue__block_invoke()
         *buf = *MEMORY[0x1E6960CC0];
         *&buf[16] = *(MEMORY[0x1E6960CC0] + 16);
         [(AVAssetWriter *)v49 startSessionAtSourceTime:buf];
-        v50 = [(AVAssetWriterInputPixelBufferAdaptor *)self->_adaptor assetWriterInput];
-        [v50 addObserver:self forKeyPath:@"readyForMoreMediaData" options:5 context:readyForDataKVOContext];
+        assetWriterInput = [(AVAssetWriterInputPixelBufferAdaptor *)self->_adaptor assetWriterInput];
+        [assetWriterInput addObserver:self forKeyPath:@"readyForMoreMediaData" options:5 context:readyForDataKVOContext];
 
         self->_hasReadyForDataObserver = 1;
         [(LPAnimatedImageTranscoder *)self encodeUntilNotReadyForMoreMediaData];
@@ -215,12 +215,12 @@ void __40__LPAnimatedImageTranscoder_encodeQueue__block_invoke()
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (readyForDataKVOContext == a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (readyForDataKVOContext == context)
   {
     v13 = +[LPAnimatedImageTranscoder encodeQueue];
     block[0] = MEMORY[0x1E69E9820];
@@ -235,7 +235,7 @@ void __40__LPAnimatedImageTranscoder_encodeQueue__block_invoke()
   {
     v14.receiver = self;
     v14.super_class = LPAnimatedImageTranscoder;
-    [(LPAnimatedImageTranscoder *)&v14 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(LPAnimatedImageTranscoder *)&v14 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
@@ -243,8 +243,8 @@ void __40__LPAnimatedImageTranscoder_encodeQueue__block_invoke()
 {
   if (self->_hasReadyForDataObserver)
   {
-    v3 = [(AVAssetWriterInputPixelBufferAdaptor *)self->_adaptor assetWriterInput];
-    [v3 removeObserver:self forKeyPath:@"readyForMoreMediaData" context:readyForDataKVOContext];
+    assetWriterInput = [(AVAssetWriterInputPixelBufferAdaptor *)self->_adaptor assetWriterInput];
+    [assetWriterInput removeObserver:self forKeyPath:@"readyForMoreMediaData" context:readyForDataKVOContext];
   }
 
   self->_hasReadyForDataObserver = 0;
@@ -254,10 +254,10 @@ void __40__LPAnimatedImageTranscoder_encodeQueue__block_invoke()
 {
   while (!self->_stopEncoding)
   {
-    v3 = [(AVAssetWriterInputPixelBufferAdaptor *)self->_adaptor assetWriterInput];
-    v4 = [v3 isReadyForMoreMediaData];
+    assetWriterInput = [(AVAssetWriterInputPixelBufferAdaptor *)self->_adaptor assetWriterInput];
+    isReadyForMoreMediaData = [assetWriterInput isReadyForMoreMediaData];
 
-    if (!v4)
+    if (!isReadyForMoreMediaData)
     {
       break;
     }

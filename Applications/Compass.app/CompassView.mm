@@ -1,9 +1,9 @@
 @interface CompassView
-- (CompassView)initWithFrame:(CGRect)a3;
+- (CompassView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)setBearing;
-- (void)setCompassHeading:(double)a3;
-- (void)tappedCompass:(id)a3;
+- (void)setCompassHeading:(double)heading;
+- (void)tappedCompass:(id)compass;
 - (void)unsetBearing;
 @end
 
@@ -24,12 +24,12 @@
   [(CompassTriangleView *)self->_compassTriangleView setCenter:MidX, MidY];
 }
 
-- (CompassView)initWithFrame:(CGRect)a3
+- (CompassView)initWithFrame:(CGRect)frame
 {
-  width = a3.size.width;
+  width = frame.size.width;
   v22.receiver = self;
   v22.super_class = CompassView;
-  v4 = [(CompassView *)&v22 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(CompassView *)&v22 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v5 = v4;
   if (v4)
   {
@@ -93,7 +93,7 @@
   return v5;
 }
 
-- (void)tappedCompass:(id)a3
+- (void)tappedCompass:(id)compass
 {
   if (self->_hasBearing)
   {
@@ -127,16 +127,16 @@
   [(CompassBackgroundView *)compassBackground setBearing:1.79769313e308];
 }
 
-- (void)setCompassHeading:(double)a3
+- (void)setCompassHeading:(double)heading
 {
   +[CATransaction begin];
   [CATransaction setDisableActions:1];
-  [(CompassBackgroundView *)self->_compassBackground setCompassHeading:a3];
-  [(CompassLabelsView *)self->_compassLabelsView setCompassHeading:a3];
-  [(CompassTriangleView *)self->_compassTriangleView setCompassHeading:a3];
-  [(CompassBearingView *)self->_compassBearingView setCompassHeading:a3];
+  [(CompassBackgroundView *)self->_compassBackground setCompassHeading:heading];
+  [(CompassLabelsView *)self->_compassLabelsView setCompassHeading:heading];
+  [(CompassTriangleView *)self->_compassTriangleView setCompassHeading:heading];
+  [(CompassBearingView *)self->_compassBearingView setCompassHeading:heading];
   +[CATransaction commit];
-  self->_compassHeading = a3;
+  self->_compassHeading = heading;
   self->_needsDisplay = 1;
 }
 

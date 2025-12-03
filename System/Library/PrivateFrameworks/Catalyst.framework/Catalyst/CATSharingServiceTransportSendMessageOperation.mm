@@ -1,25 +1,25 @@
 @interface CATSharingServiceTransportSendMessageOperation
-- (CATSharingServiceTransportSendMessageOperation)initWithConnection:(id)a3 message:(id)a4;
+- (CATSharingServiceTransportSendMessageOperation)initWithConnection:(id)connection message:(id)message;
 - (void)cancel;
-- (void)didSendMessageWithError:(id)a3;
+- (void)didSendMessageWithError:(id)error;
 - (void)main;
 - (void)sendMessage;
 @end
 
 @implementation CATSharingServiceTransportSendMessageOperation
 
-- (CATSharingServiceTransportSendMessageOperation)initWithConnection:(id)a3 message:(id)a4
+- (CATSharingServiceTransportSendMessageOperation)initWithConnection:(id)connection message:(id)message
 {
-  v7 = a3;
-  v8 = a4;
+  connectionCopy = connection;
+  messageCopy = message;
   v12.receiver = self;
   v12.super_class = CATSharingServiceTransportSendMessageOperation;
   v9 = [(CATOperation *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->mConnection, a3);
-    objc_storeStrong(&v10->mMessage, a4);
+    objc_storeStrong(&v9->mConnection, connection);
+    objc_storeStrong(&v10->mMessage, message);
   }
 
   return v10;
@@ -130,17 +130,17 @@ void __61__CATSharingServiceTransportSendMessageOperation_sendMessage__block_inv
   [WeakRetained didSendMessageWithError:*(a1 + 32)];
 }
 
-- (void)didSendMessageWithError:(id)a3
+- (void)didSendMessageWithError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   v4 = CATGetCatalystQueue();
   CATAssertIsQueue(v4);
 
   if ([(CATOperation *)self isExecuting])
   {
-    if (v5)
+    if (errorCopy)
     {
-      [(CATOperation *)self endOperationWithError:v5];
+      [(CATOperation *)self endOperationWithError:errorCopy];
     }
 
     else

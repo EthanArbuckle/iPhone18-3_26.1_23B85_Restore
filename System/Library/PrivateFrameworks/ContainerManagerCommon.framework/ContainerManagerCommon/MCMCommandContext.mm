@@ -1,9 +1,9 @@
 @interface MCMCommandContext
 + (id)privileged;
-+ (id)privilegedWithUserIdentity:(id)a3 userIdentityCache:(id)a4;
++ (id)privilegedWithUserIdentity:(id)identity userIdentityCache:(id)cache;
 - (MCMClientFactory)clientFactory;
 - (MCMClientIdentity)clientIdentity;
-- (MCMCommandContext)initWithClientIdentity:(id)a3 containerCache:(id)a4 containerFactory:(id)a5 userIdentityCache:(id)a6 clientFactory:(id)a7 kernelPersonaID:(unsigned int)a8 globalConfiguration:(id)a9 classIterator:(id)a10;
+- (MCMCommandContext)initWithClientIdentity:(id)identity containerCache:(id)cache containerFactory:(id)factory userIdentityCache:(id)identityCache clientFactory:(id)clientFactory kernelPersonaID:(unsigned int)d globalConfiguration:(id)configuration classIterator:(id)self0;
 - (MCMContainerCache)containerCache;
 - (MCMContainerClassUserIdentityIterator)classIterator;
 - (MCMContainerFactory)containerFactory;
@@ -78,52 +78,52 @@
   return result;
 }
 
-- (MCMCommandContext)initWithClientIdentity:(id)a3 containerCache:(id)a4 containerFactory:(id)a5 userIdentityCache:(id)a6 clientFactory:(id)a7 kernelPersonaID:(unsigned int)a8 globalConfiguration:(id)a9 classIterator:(id)a10
+- (MCMCommandContext)initWithClientIdentity:(id)identity containerCache:(id)cache containerFactory:(id)factory userIdentityCache:(id)identityCache clientFactory:(id)clientFactory kernelPersonaID:(unsigned int)d globalConfiguration:(id)configuration classIterator:(id)self0
 {
   v29 = *MEMORY[0x1E69E9840];
-  v27 = a3;
-  v26 = a4;
-  v25 = a5;
-  v24 = a6;
-  v23 = a7;
-  v16 = a9;
-  v17 = a10;
+  identityCopy = identity;
+  cacheCopy = cache;
+  factoryCopy = factory;
+  identityCacheCopy = identityCache;
+  clientFactoryCopy = clientFactory;
+  configurationCopy = configuration;
+  iteratorCopy = iterator;
   v28.receiver = self;
   v28.super_class = MCMCommandContext;
   v18 = [(MCMCommandContext *)&v28 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_clientIdentity, a3);
-    objc_storeStrong(&v19->_containerCache, a4);
-    objc_storeStrong(&v19->_containerFactory, a5);
-    objc_storeStrong(&v19->_userIdentityCache, a6);
-    objc_storeStrong(&v19->_clientFactory, a7);
-    v19->_kernelPersonaID = a8;
-    objc_storeStrong(&v19->_globalConfiguration, a9);
-    objc_storeStrong(&v19->_classIterator, a10);
+    objc_storeStrong(&v18->_clientIdentity, identity);
+    objc_storeStrong(&v19->_containerCache, cache);
+    objc_storeStrong(&v19->_containerFactory, factory);
+    objc_storeStrong(&v19->_userIdentityCache, identityCache);
+    objc_storeStrong(&v19->_clientFactory, clientFactory);
+    v19->_kernelPersonaID = d;
+    objc_storeStrong(&v19->_globalConfiguration, configuration);
+    objc_storeStrong(&v19->_classIterator, iterator);
   }
 
   v20 = *MEMORY[0x1E69E9840];
   return v19;
 }
 
-+ (id)privilegedWithUserIdentity:(id)a3 userIdentityCache:(id)a4
++ (id)privilegedWithUserIdentity:(id)identity userIdentityCache:(id)cache
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [MCMClientIdentity anonymousPrivilegedClientIdentityWithUserIdentity:a3];
+  cacheCopy = cache;
+  v6 = [MCMClientIdentity anonymousPrivilegedClientIdentityWithUserIdentity:identity];
   v7 = [MCMContainerFactory alloc];
-  v8 = [(MCMContainerFactory *)v7 initWithContainerCache:gContainerCache clientIdentity:v6 userIdentityCache:v5];
+  v8 = [(MCMContainerFactory *)v7 initWithContainerCache:gContainerCache clientIdentity:v6 userIdentityCache:cacheCopy];
   v9 = [MCMContainerClassIterator alloc];
   v10 = containermanager_copy_global_configuration();
-  v11 = [v10 staticConfig];
-  v12 = [(MCMContainerClassIterator *)v9 initWithStaticConfig:v11 userIdentityCache:v5];
+  staticConfig = [v10 staticConfig];
+  v12 = [(MCMContainerClassIterator *)v9 initWithStaticConfig:staticConfig userIdentityCache:cacheCopy];
 
   v13 = [MCMCommandContext alloc];
   v14 = gContainerCache;
   v15 = containermanager_copy_global_configuration();
-  v16 = [(MCMCommandContext *)v13 initWithClientIdentity:v6 containerCache:v14 containerFactory:v8 userIdentityCache:v5 clientFactory:0 kernelPersonaID:0 globalConfiguration:v15 classIterator:v12];
+  v16 = [(MCMCommandContext *)v13 initWithClientIdentity:v6 containerCache:v14 containerFactory:v8 userIdentityCache:cacheCopy clientFactory:0 kernelPersonaID:0 globalConfiguration:v15 classIterator:v12];
 
   v17 = *MEMORY[0x1E69E9840];
 
@@ -137,7 +137,7 @@
   v5[1] = 3221225472;
   v5[2] = __31__MCMCommandContext_privileged__block_invoke;
   v5[3] = &__block_descriptor_40_e5_v8__0l;
-  v5[4] = a1;
+  v5[4] = self;
   if (privileged_token != -1)
   {
     dispatch_once(&privileged_token, v5);

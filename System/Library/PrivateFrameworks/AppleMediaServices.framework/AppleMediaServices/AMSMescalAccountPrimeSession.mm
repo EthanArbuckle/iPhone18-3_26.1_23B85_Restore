@@ -1,22 +1,22 @@
 @interface AMSMescalAccountPrimeSession
-- (AMSMescalAccountPrimeSession)initWithBag:(id)a3;
-- (id)primeSignatureForData:(id)a3;
-- (id)signData:(id)a3;
-- (id)verifyPrimeSignature:(id)a3;
+- (AMSMescalAccountPrimeSession)initWithBag:(id)bag;
+- (id)primeSignatureForData:(id)data;
+- (id)signData:(id)data;
+- (id)verifyPrimeSignature:(id)signature;
 @end
 
 @implementation AMSMescalAccountPrimeSession
 
-- (AMSMescalAccountPrimeSession)initWithBag:(id)a3
+- (AMSMescalAccountPrimeSession)initWithBag:(id)bag
 {
-  v5 = a3;
+  bagCopy = bag;
   v11.receiver = self;
   v11.super_class = AMSMescalAccountPrimeSession;
   v6 = [(AMSMescalAccountPrimeSession *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_bag, a3);
+    objc_storeStrong(&v6->_bag, bag);
     v8 = [[AMSMescalSession alloc] initWithType:2];
     session = v7->_session;
     v7->_session = v8;
@@ -25,35 +25,35 @@
   return v7;
 }
 
-- (id)primeSignatureForData:(id)a3
+- (id)primeSignatureForData:(id)data
 {
-  v4 = a3;
-  v5 = [(AMSMescalAccountPrimeSession *)self session];
+  dataCopy = data;
+  session = [(AMSMescalAccountPrimeSession *)self session];
   v6 = [(AMSMescalAccountPrimeSession *)self bag];
-  v7 = [v5 primeSignatureForData:v4 bag:v6];
+  v7 = [session primeSignatureForData:dataCopy bag:v6];
 
   return v7;
 }
 
-- (id)signData:(id)a3
+- (id)signData:(id)data
 {
-  v4 = a3;
-  v5 = [(AMSMescalAccountPrimeSession *)self session];
+  dataCopy = data;
+  session = [(AMSMescalAccountPrimeSession *)self session];
   v6 = [(AMSMescalAccountPrimeSession *)self bag];
-  v7 = [v5 signData:v4 bag:v6];
+  v7 = [session signData:dataCopy bag:v6];
 
   return v7;
 }
 
-- (id)verifyPrimeSignature:(id)a3
+- (id)verifyPrimeSignature:(id)signature
 {
-  v4 = a3;
-  v5 = [(AMSMescalAccountPrimeSession *)self session];
-  v6 = [v5 verifyPrimeSignature:v4];
+  signatureCopy = signature;
+  session = [(AMSMescalAccountPrimeSession *)self session];
+  v6 = [session verifyPrimeSignature:signatureCopy];
 
-  v7 = [v6 promiseAdapter];
+  promiseAdapter = [v6 promiseAdapter];
 
-  return v7;
+  return promiseAdapter;
 }
 
 @end

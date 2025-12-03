@@ -1,43 +1,43 @@
 @interface SKUIProductLockupCollectionViewCell
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5;
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5;
-+ (double)maximumPerspectiveHeightForSize:(CGSize)a3;
-+ (id)_attributedStringForButton:(id)a3 context:(id)a4;
-+ (id)_attributedStringForLabel:(id)a3 context:(id)a4;
-+ (void)_requestLayoutForViewElements:(id)a3 width:(double)a4 context:(id)a5;
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (BOOL)setImage:(id)a3 forArtworkRequest:(id)a4 context:(id)a5;
-- (BOOL)updateWithItemState:(id)a3 context:(id)a4 animated:(BOOL)a5;
-- (CGRect)_frameForSection:(int64_t)a3;
-- (CGRect)_stackBottomRightElements:(id)a3 inRect:(CGRect)a4;
-- (CGRect)_stackElements:(id)a3 alignment:(int64_t)a4 inRect:(CGRect)a5;
-- (SKUIProductLockupCollectionViewCell)initWithFrame:(CGRect)a3;
-- (id)_viewElementForView:(id)a3;
-- (id)viewForElementIdentifier:(id)a3;
-- (void)_buttonAction:(id)a3;
-- (void)_cancelConfirmationAction:(id)a3;
-- (void)_imageTapAction:(id)a3;
-- (void)_layoutConfirmationGradientRelativeToSection:(int64_t)a3 alpha:(double)a4;
-- (void)_prepareOfferConfirmationGradientForView:(id)a3;
-- (void)_showConfirmationAction:(id)a3;
-- (void)_updateLayoutToAnimateOfferTransitionForView:(id)a3;
-- (void)itemOfferButtonDidAnimateTransition:(id)a3;
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context;
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context;
++ (double)maximumPerspectiveHeightForSize:(CGSize)size;
++ (id)_attributedStringForButton:(id)button context:(id)context;
++ (id)_attributedStringForLabel:(id)label context:(id)context;
++ (void)_requestLayoutForViewElements:(id)elements width:(double)width context:(id)context;
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context;
+- (BOOL)setImage:(id)image forArtworkRequest:(id)request context:(id)context;
+- (BOOL)updateWithItemState:(id)state context:(id)context animated:(BOOL)animated;
+- (CGRect)_frameForSection:(int64_t)section;
+- (CGRect)_stackBottomRightElements:(id)elements inRect:(CGRect)rect;
+- (CGRect)_stackElements:(id)elements alignment:(int64_t)alignment inRect:(CGRect)rect;
+- (SKUIProductLockupCollectionViewCell)initWithFrame:(CGRect)frame;
+- (id)_viewElementForView:(id)view;
+- (id)viewForElementIdentifier:(id)identifier;
+- (void)_buttonAction:(id)action;
+- (void)_cancelConfirmationAction:(id)action;
+- (void)_imageTapAction:(id)action;
+- (void)_layoutConfirmationGradientRelativeToSection:(int64_t)section alpha:(double)alpha;
+- (void)_prepareOfferConfirmationGradientForView:(id)view;
+- (void)_showConfirmationAction:(id)action;
+- (void)_updateLayoutToAnimateOfferTransitionForView:(id)view;
+- (void)itemOfferButtonDidAnimateTransition:(id)transition;
 - (void)layoutSubviews;
-- (void)offerViewDidAnimateTransition:(id)a3;
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (void)setPerspectiveTargetView:(id)a3;
-- (void)setVanishingPoint:(CGPoint)a3;
+- (void)offerViewDidAnimateTransition:(id)transition;
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context;
+- (void)setPerspectiveTargetView:(id)view;
+- (void)setVanishingPoint:(CGPoint)point;
 @end
 
 @implementation SKUIProductLockupCollectionViewCell
 
-- (SKUIProductLockupCollectionViewCell)initWithFrame:(CGRect)a3
+- (SKUIProductLockupCollectionViewCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -52,21 +52,21 @@
 
   v20.receiver = self;
   v20.super_class = SKUIProductLockupCollectionViewCell;
-  v16 = [(SKUIViewReuseCollectionViewCell *)&v20 initWithFrame:x, y, width, height];
-  if (v16)
+  height = [(SKUIViewReuseCollectionViewCell *)&v20 initWithFrame:x, y, width, height];
+  if (height)
   {
     v17 = [objc_alloc(MEMORY[0x277CCAB00]) initWithKeyOptions:517 valueOptions:0 capacity:0];
-    elementViews = v16->_elementViews;
-    v16->_elementViews = v17;
+    elementViews = height->_elementViews;
+    height->_elementViews = v17;
   }
 
-  return v16;
+  return height;
 }
 
-+ (double)maximumPerspectiveHeightForSize:(CGSize)a3
++ (double)maximumPerspectiveHeightForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -83,9 +83,9 @@
   return result;
 }
 
-- (void)setPerspectiveTargetView:(id)a3
+- (void)setPerspectiveTargetView:(id)view
 {
-  objc_initWeak(&location, a3);
+  objc_initWeak(&location, view);
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __64__SKUIProductLockupCollectionViewCell_setPerspectiveTargetView___block_invoke;
@@ -103,20 +103,20 @@ void __64__SKUIProductLockupCollectionViewCell_setPerspectiveTargetView___block_
   [v3 setPerspectiveTargetView:WeakRetained];
 }
 
-- (void)setVanishingPoint:(CGPoint)a3
+- (void)setVanishingPoint:(CGPoint)point
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __57__SKUIProductLockupCollectionViewCell_setVanishingPoint___block_invoke;
   v3[3] = &__block_descriptor_48_e23_v32__0__UIView_8Q16_B24l;
-  v4 = a3;
+  pointCopy = point;
   [(SKUIViewReuseCollectionViewCell *)self enumerateExistingViewsForReuseIdentifier:0x28280C8C8 usingBlock:v3];
 }
 
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context
 {
-  v7 = a3;
-  v8 = a5;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -137,11 +137,11 @@ void __64__SKUIProductLockupCollectionViewCell_setPerspectiveTargetView___block_
   v20[1] = 3221225472;
   v20[2] = __86__SKUIProductLockupCollectionViewCell_prefetchResourcesForViewElement_reason_context___block_invoke;
   v20[3] = &unk_2781F95A0;
-  v17 = v8;
+  v17 = contextCopy;
   v22 = &v24;
-  v23 = a4;
+  reasonCopy = reason;
   v21 = v17;
-  [v7 enumerateChildrenUsingBlock:v20];
+  [elementCopy enumerateChildrenUsingBlock:v20];
   v18 = *(v25 + 24);
 
   _Block_object_dispose(&v24, 8);
@@ -155,10 +155,10 @@ uint64_t __86__SKUIProductLockupCollectionViewCell_prefetchResourcesForViewEleme
   return result;
 }
 
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
+  contextCopy = context;
+  elementCopy = element;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -171,8 +171,8 @@ uint64_t __86__SKUIProductLockupCollectionViewCell_prefetchResourcesForViewEleme
     }
   }
 
-  [v6 defaultItemWidthForViewElement:v7];
-  [a1 sizeThatFitsWidth:v7 viewElement:v6 context:?];
+  [contextCopy defaultItemWidthForViewElement:elementCopy];
+  [self sizeThatFitsWidth:elementCopy viewElement:contextCopy context:?];
   v17 = v16;
   v19 = v18;
 
@@ -183,10 +183,10 @@ uint64_t __86__SKUIProductLockupCollectionViewCell_prefetchResourcesForViewEleme
   return result;
 }
 
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a5;
-  v9 = a3;
+  contextCopy = context;
+  elementCopy = element;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -199,35 +199,35 @@ uint64_t __86__SKUIProductLockupCollectionViewCell_prefetchResourcesForViewEleme
     }
   }
 
-  v18 = [[SKUIProductLockupLayout alloc] initWithLockup:v9 width:v8 context:a4];
+  v18 = [[SKUIProductLockupLayout alloc] initWithLockup:elementCopy width:contextCopy context:width];
 
-  [(SKUIProductLockupLayout *)v18 metadataWidthForWidth:a4];
+  [(SKUIProductLockupLayout *)v18 metadataWidthForWidth:width];
   v20 = v19;
   v21 = [(SKUIProductLockupLayout *)v18 viewElementsForSection:5];
-  [a1 _requestLayoutForViewElements:v21 width:v8 context:v20];
+  [self _requestLayoutForViewElements:v21 width:contextCopy context:v20];
 
   v22 = [(SKUIProductLockupLayout *)v18 viewElementsForSection:1];
-  [a1 _requestLayoutForViewElements:v22 width:v8 context:v20];
+  [self _requestLayoutForViewElements:v22 width:contextCopy context:v20];
 
   if (v18)
   {
-    [(SKUIProductLockupLayout *)v18 layoutWidthsForWidth:a4];
+    [(SKUIProductLockupLayout *)v18 layoutWidthsForWidth:width];
   }
 
   v23 = [(SKUIProductLockupLayout *)v18 viewElementsForSection:4, 0, 0];
-  [a1 _requestLayoutForViewElements:v23 width:v8 context:0.0];
+  [self _requestLayoutForViewElements:v23 width:contextCopy context:0.0];
 
   v24 = [(SKUIProductLockupLayout *)v18 viewElementsForSection:2];
-  [a1 _requestLayoutForViewElements:v24 width:v8 context:0.0];
+  [self _requestLayoutForViewElements:v24 width:contextCopy context:0.0];
 
   v25 = [(SKUIProductLockupLayout *)v18 viewElementsForSection:0];
-  [a1 _requestLayoutForViewElements:v25 width:v8 context:v26];
+  [self _requestLayoutForViewElements:v25 width:contextCopy context:v26];
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context
 {
-  v7 = a5;
-  v8 = a4;
+  contextCopy = context;
+  elementCopy = element;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -240,21 +240,21 @@ uint64_t __86__SKUIProductLockupCollectionViewCell_prefetchResourcesForViewEleme
     }
   }
 
-  v17 = [[SKUIProductLockupLayout alloc] initWithLockup:v8 width:v7 context:a3];
+  v17 = [[SKUIProductLockupLayout alloc] initWithLockup:elementCopy width:contextCopy context:width];
 
   v18 = [(SKUIProductLockupLayout *)v17 viewElementsForSection:3];
-  v19 = [v18 firstObject];
+  firstObject = [v18 firstObject];
 
   v20 = 0.0;
-  if (v19)
+  if (firstObject)
   {
-    [v7 sizeForViewElement:v19 width:a3];
+    [contextCopy sizeForViewElement:firstObject width:width];
     v20 = v21;
   }
 
   if (v17)
   {
-    [(SKUIProductLockupLayout *)v17 sizingToFitWidth:a3, 0.0, 0.0, 0.0, 0];
+    [(SKUIProductLockupLayout *)v17 sizingToFitWidth:width, 0.0, 0.0, 0.0, 0];
   }
 
   v22 = 0.0 > 0.00000011920929;
@@ -285,21 +285,21 @@ uint64_t __86__SKUIProductLockupCollectionViewCell_prefetchResourcesForViewEleme
     v20 = v24;
   }
 
-  v25 = a3;
+  widthCopy = width;
   v26 = v20;
   result.height = v26;
-  result.width = v25;
+  result.width = widthCopy;
   return result;
 }
 
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a5;
+  contextCopy = context;
   buyButtonDescriptorToButton = self->_buyButtonDescriptorToButton;
-  v10 = a3;
+  elementCopy = element;
   [(NSMapTable *)buyButtonDescriptorToButton removeAllObjects];
   [(NSHashTable *)self->_offerViews removeAllObjects];
-  v11 = [[SKUIProductLockupLayout alloc] initWithLockup:v10 width:v8 context:a4];
+  v11 = [[SKUIProductLockupLayout alloc] initWithLockup:elementCopy width:contextCopy context:width];
 
   layout = self->_layout;
   self->_layout = v11;
@@ -319,10 +319,10 @@ uint64_t __86__SKUIProductLockupCollectionViewCell_prefetchResourcesForViewEleme
   v16[1] = 3221225472;
   v16[2] = __75__SKUIProductLockupCollectionViewCell_reloadWithViewElement_width_context___block_invoke;
   v16[3] = &unk_2781FC1C8;
-  v18 = a4;
+  widthCopy = width;
   v16[4] = self;
-  v17 = v8;
-  v15 = v8;
+  v17 = contextCopy;
+  v15 = contextCopy;
   [(SKUIViewReuseCollectionViewCell *)self modifyUsingBlock:v16];
 }
 
@@ -690,14 +690,14 @@ LABEL_56:
 LABEL_72:
 }
 
-- (BOOL)setImage:(id)a3 forArtworkRequest:(id)a4 context:(id)a5
+- (BOOL)setImage:(id)image forArtworkRequest:(id)request context:(id)context
 {
   v39 = *MEMORY[0x277D85DE8];
-  v27 = a3;
-  v8 = a4;
-  v9 = a5;
-  v26 = v8;
-  v10 = [v8 requestIdentifier];
+  imageCopy = image;
+  requestCopy = request;
+  contextCopy = context;
+  v26 = requestCopy;
+  requestIdentifier = [requestCopy requestIdentifier];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
@@ -719,25 +719,25 @@ LABEL_72:
 
         v15 = *(*(&v33 + 1) + 8 * i);
         v16 = [(NSMapTable *)self->_imageViewToImageResourceCacheKey objectForKey:v15];
-        v17 = [v9 requestIdentifierForResourceCacheKey:v16];
+        v17 = [contextCopy requestIdentifierForResourceCacheKey:v16];
         v18 = v17;
-        if (v17 && [v17 unsignedIntegerValue] == v10)
+        if (v17 && [v17 unsignedIntegerValue] == requestIdentifier)
         {
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v24 = [v15 imageView];
-            v21 = v27;
-            [v24 setImage:v27];
+            imageView = [v15 imageView];
+            v21 = imageCopy;
+            [imageView setImage:imageCopy];
           }
 
           else
           {
-            v21 = v27;
-            [v15 setImage:v27];
+            v21 = imageCopy;
+            [v15 setImage:imageCopy];
           }
 
-          v22 = v8;
+          v22 = requestCopy;
 
           goto LABEL_23;
         }
@@ -763,7 +763,7 @@ LABEL_72:
   {
     v20 = *v30;
     v22 = v26;
-    v21 = v27;
+    v21 = imageCopy;
 LABEL_12:
     v23 = 0;
     while (1)
@@ -773,7 +773,7 @@ LABEL_12:
         objc_enumerationMutation(obj);
       }
 
-      if ([*(*(&v29 + 1) + 8 * v23) setImage:v27 forArtworkRequest:v26 context:v9])
+      if ([*(*(&v29 + 1) + 8 * v23) setImage:imageCopy forArtworkRequest:v26 context:contextCopy])
       {
         break;
       }
@@ -796,8 +796,8 @@ LABEL_23:
 
   else
   {
-    v22 = v8;
-    v21 = v27;
+    v22 = requestCopy;
+    v21 = imageCopy;
   }
 
 LABEL_24:
@@ -805,14 +805,14 @@ LABEL_24:
   return v19;
 }
 
-- (BOOL)updateWithItemState:(id)a3 context:(id)a4 animated:(BOOL)a5
+- (BOOL)updateWithItemState:(id)state context:(id)context animated:(BOOL)animated
 {
-  v5 = a5;
+  animatedCopy = animated;
   v36 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v24 = [v9 clientContext];
-  v25 = self;
+  stateCopy = state;
+  contextCopy = context;
+  clientContext = [contextCopy clientContext];
+  selfCopy = self;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
@@ -834,10 +834,10 @@ LABEL_24:
         }
 
         v16 = *(*(&v30 + 1) + 8 * i);
-        if ([v16 canPersonalizeUsingItemState:v8])
+        if ([v16 canPersonalizeUsingItemState:stateCopy])
         {
-          v17 = [(NSMapTable *)v25->_buyButtonDescriptorToButton objectForKey:v16];
-          v13 |= [v17 setValuesUsingBuyButtonDescriptor:v16 itemState:v8 clientContext:v24 animated:v5];
+          v17 = [(NSMapTable *)selfCopy->_buyButtonDescriptorToButton objectForKey:v16];
+          v13 |= [v17 setValuesUsingBuyButtonDescriptor:v16 itemState:stateCopy clientContext:clientContext animated:animatedCopy];
         }
       }
 
@@ -856,7 +856,7 @@ LABEL_24:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v18 = v25->_offerViews;
+  v18 = selfCopy->_offerViews;
   v19 = [(NSHashTable *)v18 countByEnumeratingWithState:&v26 objects:v34 count:16];
   if (v19)
   {
@@ -871,7 +871,7 @@ LABEL_24:
           objc_enumerationMutation(v18);
         }
 
-        v13 |= [*(*(&v26 + 1) + 8 * j) updateWithItemState:v8 context:v9 animated:v5];
+        v13 |= [*(*(&v26 + 1) + 8 * j) updateWithItemState:stateCopy context:contextCopy animated:animatedCopy];
       }
 
       v20 = [(NSHashTable *)v18 countByEnumeratingWithState:&v26 objects:v34 count:16];
@@ -882,16 +882,16 @@ LABEL_24:
 
   if (v13)
   {
-    [(SKUIProductLockupCollectionViewCell *)v25 setNeedsLayout];
+    [(SKUIProductLockupCollectionViewCell *)selfCopy setNeedsLayout];
   }
 
   return v13 & 1;
 }
 
-- (id)viewForElementIdentifier:(id)a3
+- (id)viewForElementIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -912,8 +912,8 @@ LABEL_24:
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 itmlID];
-        v12 = [v11 isEqualToString:v4];
+        itmlID = [v10 itmlID];
+        v12 = [itmlID isEqualToString:identifierCopy];
 
         if (v12)
         {
@@ -943,8 +943,8 @@ LABEL_11:
   v141.receiver = self;
   v141.super_class = SKUIProductLockupCollectionViewCell;
   [(SKUICollectionViewCell *)&v141 layoutSubviews];
-  v3 = [(SKUIProductLockupCollectionViewCell *)self contentView];
-  [v3 bounds];
+  contentView = [(SKUIProductLockupCollectionViewCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -962,12 +962,12 @@ LABEL_11:
   v139 = v15;
   v140 = v14;
   v16 = [(SKUIProductLockupLayout *)self->_layout viewElementsForSection:3];
-  v17 = [v16 firstObject];
+  firstObject = [v16 firstObject];
 
-  if (v17)
+  if (firstObject)
   {
     v18 = v5;
-    v19 = [(NSMapTable *)self->_elementViews objectForKey:v17];
+    v19 = [(NSMapTable *)self->_elementViews objectForKey:firstObject];
     [v19 frame];
     v20 = v136[4];
     v21 = v136[5];
@@ -1075,15 +1075,15 @@ LABEL_11:
   v125 = v68;
   v57 = v36;
   v103 = v57;
-  v104 = self;
+  selfCopy = self;
   v126 = v42;
   v58 = _Block_copy(aBlock);
   v58[2](v76, v75, v74, v73, 0.0);
   v59 = [(SKUIProductLockupLayout *)self->_layout viewElementsForSection:0];
   if ([v59 count])
   {
-    v60 = [(SKUIProductLockupLayout *)self->_layout bottomLeftLayoutStyle];
-    if (v60 == 2)
+    bottomLeftLayoutStyle = [(SKUIProductLockupLayout *)self->_layout bottomLeftLayoutStyle];
+    if (bottomLeftLayoutStyle == 2)
     {
       v94 = 0;
       v95 = &v94;
@@ -1179,7 +1179,7 @@ LABEL_11:
       v85[7] = &v90;
       [v59 enumerateObjectsUsingBlock:v85];
       v66 = v95;
-      if (v60 && v95[4] < v65)
+      if (bottomLeftLayoutStyle && v95[4] < v65)
       {
         v65 = v95[4];
       }
@@ -1412,9 +1412,9 @@ void __53__SKUIProductLockupCollectionViewCell_layoutSubviews__block_invoke_4(ui
   }
 }
 
-- (void)itemOfferButtonDidAnimateTransition:(id)a3
+- (void)itemOfferButtonDidAnimateTransition:(id)transition
 {
-  if (([a3 isShowingConfirmation] & 1) == 0)
+  if (([transition isShowingConfirmation] & 1) == 0)
   {
     [(SKUIGradientView *)self->_offerConfirmationGradientView removeFromSuperview];
     offerConfirmationGradientView = self->_offerConfirmationGradientView;
@@ -1422,9 +1422,9 @@ void __53__SKUIProductLockupCollectionViewCell_layoutSubviews__block_invoke_4(ui
   }
 }
 
-- (void)offerViewDidAnimateTransition:(id)a3
+- (void)offerViewDidAnimateTransition:(id)transition
 {
-  if (([a3 isShowingConfirmation] & 1) == 0)
+  if (([transition isShowingConfirmation] & 1) == 0)
   {
     [(SKUIGradientView *)self->_offerConfirmationGradientView removeFromSuperview];
     offerConfirmationGradientView = self->_offerConfirmationGradientView;
@@ -1432,12 +1432,12 @@ void __53__SKUIProductLockupCollectionViewCell_layoutSubviews__block_invoke_4(ui
   }
 }
 
-- (void)_buttonAction:(id)a3
+- (void)_buttonAction:(id)action
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  actionCopy = action;
   v15 = SKUICollectionViewForView(self);
-  v5 = [v15 delegate];
+  delegate = [v15 delegate];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -1450,7 +1450,7 @@ void __53__SKUIProductLockupCollectionViewCell_layoutSubviews__block_invoke_4(ui
     v9 = *v17;
     while (2)
     {
-      v10 = v5;
+      v10 = delegate;
       for (i = 0; i != v8; ++i)
       {
         if (*v17 != v9)
@@ -1461,9 +1461,9 @@ void __53__SKUIProductLockupCollectionViewCell_layoutSubviews__block_invoke_4(ui
         v12 = *(*(&v16 + 1) + 8 * i);
         v13 = [(NSMapTable *)self->_elementViews objectForKey:v12];
 
-        if (v13 == v4)
+        if (v13 == actionCopy)
         {
-          v5 = v10;
+          delegate = v10;
           if (objc_opt_respondsToSelector())
           {
             v14 = [v15 indexPathForCell:self];
@@ -1480,7 +1480,7 @@ void __53__SKUIProductLockupCollectionViewCell_layoutSubviews__block_invoke_4(ui
       }
 
       v8 = [(NSMapTable *)v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
-      v5 = v10;
+      delegate = v10;
       if (v8)
       {
         continue;
@@ -1493,17 +1493,17 @@ void __53__SKUIProductLockupCollectionViewCell_layoutSubviews__block_invoke_4(ui
 LABEL_13:
 }
 
-- (void)_cancelConfirmationAction:(id)a3
+- (void)_cancelConfirmationAction:(id)action
 {
-  v4 = a3;
-  [(SKUIProductLockupCollectionViewCell *)self bringSubviewToFront:v4];
-  [v4 setShowingConfirmation:0 animated:1];
+  actionCopy = action;
+  [(SKUIProductLockupCollectionViewCell *)self bringSubviewToFront:actionCopy];
+  [actionCopy setShowingConfirmation:0 animated:1];
 }
 
-- (void)_imageTapAction:(id)a3
+- (void)_imageTapAction:(id)action
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = [a3 view];
+  view = [action view];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -1526,7 +1526,7 @@ LABEL_13:
         v10 = *(*(&v12 + 1) + 8 * i);
         v11 = [(NSMapTable *)self->_elementViews objectForKey:v10, v12];
 
-        if (v11 == v4)
+        if (v11 == view)
         {
           [v10 dispatchEventOfType:2 canBubble:1 isCancelable:1 extraInfo:0 completionBlock:0];
           goto LABEL_11;
@@ -1546,17 +1546,17 @@ LABEL_13:
 LABEL_11:
 }
 
-- (void)_showConfirmationAction:(id)a3
+- (void)_showConfirmationAction:(id)action
 {
-  v4 = a3;
-  [(SKUIProductLockupCollectionViewCell *)self _prepareOfferConfirmationGradientForView:v4];
-  [v4 setShowingConfirmation:1 animated:1];
+  actionCopy = action;
+  [(SKUIProductLockupCollectionViewCell *)self _prepareOfferConfirmationGradientForView:actionCopy];
+  [actionCopy setShowingConfirmation:1 animated:1];
 }
 
-+ (id)_attributedStringForButton:(id)a3 context:(id)a4
++ (id)_attributedStringForButton:(id)button context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
+  buttonCopy = button;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -1569,19 +1569,19 @@ LABEL_11:
     }
   }
 
-  v15 = [v5 buttonTitleStyle];
-  v16 = v15;
-  if (v15)
+  buttonTitleStyle = [buttonCopy buttonTitleStyle];
+  v16 = buttonTitleStyle;
+  if (buttonTitleStyle)
   {
-    v17 = v15;
+    style = buttonTitleStyle;
   }
 
   else
   {
-    v17 = [v5 style];
+    style = [buttonCopy style];
   }
 
-  v18 = v17;
+  v18 = style;
 
   v19 = SKUIViewElementFontWithStyle(v18);
   if (!v19)
@@ -1589,24 +1589,24 @@ LABEL_11:
     v19 = SKUIFontLimitedPreferredFontForTextStyle(21, 5);
   }
 
-  v20 = [v6 tintColor];
-  v21 = SKUIViewElementPlainColorWithStyle(v18, v20);
+  tintColor = [contextCopy tintColor];
+  v21 = SKUIViewElementPlainColorWithStyle(v18, tintColor);
 
   if (!v21)
   {
     v21 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.6];
   }
 
-  v22 = [v5 buttonText];
-  v23 = [v22 attributedStringWithDefaultFont:v19 foregroundColor:v21 style:v18];
+  buttonText = [buttonCopy buttonText];
+  v23 = [buttonText attributedStringWithDefaultFont:v19 foregroundColor:v21 style:v18];
 
   return v23;
 }
 
-+ (id)_attributedStringForLabel:(id)a3 context:(id)a4
++ (id)_attributedStringForLabel:(id)label context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
+  labelCopy = label;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -1619,16 +1619,16 @@ LABEL_11:
     }
   }
 
-  v15 = [v5 style];
-  v16 = SKUIViewElementFontWithStyle(v15);
-  v17 = [v6 tintColor];
+  style = [labelCopy style];
+  v16 = SKUIViewElementFontWithStyle(style);
+  tintColor = [contextCopy tintColor];
 
-  v18 = SKUIViewElementPlainColorWithStyle(v15, v17);
+  v18 = SKUIViewElementPlainColorWithStyle(style, tintColor);
 
-  v19 = [v5 labelViewStyle];
-  if (v19 <= 2)
+  labelViewStyle = [labelCopy labelViewStyle];
+  if (labelViewStyle <= 2)
   {
-    if (v19 < 2)
+    if (labelViewStyle < 2)
     {
       if (v16)
       {
@@ -1652,7 +1652,7 @@ LABEL_11:
       goto LABEL_28;
     }
 
-    if (v19 != 2)
+    if (labelViewStyle != 2)
     {
       goto LABEL_32;
     }
@@ -1675,11 +1675,11 @@ LABEL_15:
       }
     }
 
-    v22 = [MEMORY[0x277D75348] blackColor];
+    blackColor = [MEMORY[0x277D75348] blackColor];
     goto LABEL_31;
   }
 
-  switch(v19)
+  switch(labelViewStyle)
   {
     case 3:
       if (!v16)
@@ -1695,9 +1695,9 @@ LABEL_15:
       v20 = MEMORY[0x277D75348];
       v21 = 0.4;
 LABEL_28:
-      v22 = [v20 colorWithWhite:0.0 alpha:v21];
+      blackColor = [v20 colorWithWhite:0.0 alpha:v21];
 LABEL_31:
-      v18 = v22;
+      v18 = blackColor;
       break;
     case 4:
       if (!v16)
@@ -1718,17 +1718,17 @@ LABEL_31:
   }
 
 LABEL_32:
-  v23 = [v5 text];
-  v24 = [v23 attributedStringWithDefaultFont:v16 foregroundColor:v18 style:v15];
+  text = [labelCopy text];
+  v24 = [text attributedStringWithDefaultFont:v16 foregroundColor:v18 style:style];
 
   return v24;
 }
 
-+ (void)_requestLayoutForViewElements:(id)a3 width:(double)a4 context:(id)a5
++ (void)_requestLayoutForViewElements:(id)elements width:(double)width context:(id)context
 {
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  elementsCopy = elements;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -1741,12 +1741,12 @@ LABEL_32:
     }
   }
 
-  v18 = [v9 labelLayoutCache];
+  labelLayoutCache = [contextCopy labelLayoutCache];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v19 = v8;
+  v19 = elementsCopy;
   v20 = [v19 countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v20)
   {
@@ -1762,19 +1762,19 @@ LABEL_32:
         }
 
         v24 = *(*(&v28 + 1) + 8 * i);
-        v25 = [v24 elementType];
-        if (v25 > 130)
+        elementType = [v24 elementType];
+        if (elementType > 130)
         {
-          if (v25 <= 137)
+          if (elementType <= 137)
           {
-            if (v25 == 131)
+            if (elementType == 131)
             {
               v26 = SKUIStackListCollectionViewCell;
             }
 
             else
             {
-              if (v25 != 135)
+              if (elementType != 135)
               {
                 continue;
               }
@@ -1785,19 +1785,19 @@ LABEL_32:
 
           else
           {
-            if (v25 == 138)
+            if (elementType == 138)
             {
-              v27 = [a1 _attributedStringForLabel:v24 context:v9];
-              [v18 requestLayoutForLabel:v24 attributedString:v27 width:a4];
+              v27 = [self _attributedStringForLabel:v24 context:contextCopy];
+              [labelLayoutCache requestLayoutForLabel:v24 attributedString:v27 width:width];
               goto LABEL_31;
             }
 
-            if (v25 == 141)
+            if (elementType == 141)
             {
               goto LABEL_23;
             }
 
-            if (v25 != 144)
+            if (elementType != 144)
             {
               continue;
             }
@@ -1808,28 +1808,28 @@ LABEL_32:
 
         else
         {
-          if (v25 <= 47)
+          if (elementType <= 47)
           {
-            if (v25 == 8)
+            if (elementType == 8)
             {
-              [v18 requestLayoutForBadge:v24 width:a4];
+              [labelLayoutCache requestLayoutForBadge:v24 width:width];
               continue;
             }
 
-            if (v25 != 12)
+            if (elementType != 12)
             {
               continue;
             }
 
 LABEL_23:
-            v27 = [a1 _attributedStringForButton:v24 context:v9];
-            [v18 requestLayoutForButton:v24 attributedString:v27 width:a4];
+            v27 = [self _attributedStringForButton:v24 context:contextCopy];
+            [labelLayoutCache requestLayoutForButton:v24 attributedString:v27 width:width];
 LABEL_31:
 
             continue;
           }
 
-          switch(v25)
+          switch(elementType)
           {
             case '0':
               v26 = SKUISectionHeaderView;
@@ -1845,7 +1845,7 @@ LABEL_31:
           }
         }
 
-        [(__objc2_class *)v26 requestLayoutForViewElement:v24 width:v9 context:a4];
+        [(__objc2_class *)v26 requestLayoutForViewElement:v24 width:contextCopy context:width];
       }
 
       v21 = [v19 countByEnumeratingWithState:&v28 objects:v32 count:16];
@@ -1855,7 +1855,7 @@ LABEL_31:
   }
 }
 
-- (CGRect)_frameForSection:(int64_t)a3
+- (CGRect)_frameForSection:(int64_t)section
 {
   v15 = 0;
   v16 = &v15;
@@ -1864,7 +1864,7 @@ LABEL_31:
   v4 = *(MEMORY[0x277CBF3A0] + 16);
   v19 = *MEMORY[0x277CBF3A0];
   v20 = v4;
-  v5 = [(SKUIProductLockupLayout *)self->_layout viewElementsForSection:a3];
+  v5 = [(SKUIProductLockupLayout *)self->_layout viewElementsForSection:section];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __56__SKUIProductLockupCollectionViewCell__frameForSection___block_invoke;
@@ -1919,7 +1919,7 @@ void __56__SKUIProductLockupCollectionViewCell__frameForSection___block_invoke(u
   }
 }
 
-- (void)_layoutConfirmationGradientRelativeToSection:(int64_t)a3 alpha:(double)a4
+- (void)_layoutConfirmationGradientRelativeToSection:(int64_t)section alpha:(double)alpha
 {
   v34[3] = *MEMORY[0x277D85DE8];
   offerConfirmationGradientView = self->_offerConfirmationGradientView;
@@ -1936,14 +1936,14 @@ void __56__SKUIProductLockupCollectionViewCell__frameForSection___block_invoke(u
     *(&v31 + 1) = v9;
     *&v32 = v10;
     *(&v32 + 1) = v11;
-    v12 = [(SKUIGradientView *)self->_offerConfirmationGradientView layer];
-    [(SKUIProductLockupCollectionViewCell *)self _frameForSection:a3];
+    layer = [(SKUIGradientView *)self->_offerConfirmationGradientView layer];
+    [(SKUIProductLockupCollectionViewCell *)self _frameForSection:section];
     v15 = v13;
     v17 = v16;
     v18 = v14;
     v20 = v19;
     v21 = v28;
-    if (a3)
+    if (section)
     {
       v28[4] = v13 + -30.0;
       v21[6] = v14 + 30.0;
@@ -1965,10 +1965,10 @@ void __56__SKUIProductLockupCollectionViewCell__frameForSection___block_invoke(u
       [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:3];
     }
     v23 = ;
-    [v12 setLocations:v23];
+    [layer setLocations:v23];
 
-    v24 = [(SKUIGradientView *)self->_offerConfirmationGradientView superview];
-    v25 = [v24 subviews];
+    superview = [(SKUIGradientView *)self->_offerConfirmationGradientView superview];
+    subviews = [superview subviews];
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __90__SKUIProductLockupCollectionViewCell__layoutConfirmationGradientRelativeToSection_alpha___block_invoke;
@@ -1978,9 +1978,9 @@ void __56__SKUIProductLockupCollectionViewCell__frameForSection___block_invoke(u
     *&v26[7] = v18;
     v26[8] = v20;
     v26[4] = &v27;
-    [v25 enumerateObjectsUsingBlock:v26];
+    [subviews enumerateObjectsUsingBlock:v26];
 
-    [(SKUIGradientView *)self->_offerConfirmationGradientView setAlpha:a4];
+    [(SKUIGradientView *)self->_offerConfirmationGradientView setAlpha:alpha];
     [(SKUIGradientView *)self->_offerConfirmationGradientView setFrame:v28[4], v28[5], v28[6], v28[7]];
 
     _Block_object_dispose(&v27, 8);
@@ -2010,17 +2010,17 @@ void __90__SKUIProductLockupCollectionViewCell__layoutConfirmationGradientRelati
   }
 }
 
-- (void)_prepareOfferConfirmationGradientForView:(id)a3
+- (void)_prepareOfferConfirmationGradientForView:(id)view
 {
   v36[3] = *MEMORY[0x277D85DE8];
-  v23 = a3;
+  viewCopy = view;
   v24 = [(SKUIProductLockupCollectionViewCell *)self _viewElementForView:?];
   if (v24)
   {
     v4 = [(SKUIProductLockupLayout *)self->_layout viewElementsForSection:1];
     v5 = [v4 containsObject:v24];
 
-    v6 = [v23 superview];
+    superview = [viewCopy superview];
     v30 = 0;
     v31 = &v30;
     v32 = 0x3032000000;
@@ -2034,7 +2034,7 @@ void __90__SKUIProductLockupCollectionViewCell__layoutConfirmationGradientRelati
     v27[3] = &unk_2781FC428;
     v27[4] = self;
     v29 = &v30;
-    v8 = v6;
+    v8 = superview;
     v28 = v8;
     [v7 enumerateObjectsUsingBlock:v27];
 
@@ -2059,20 +2059,20 @@ void __90__SKUIProductLockupCollectionViewCell__layoutConfirmationGradientRelati
       v15 = self->_offerConfirmationGradientView;
       self->_offerConfirmationGradientView = v14;
 
-      v16 = [(SKUIProductLockupCollectionViewCell *)self backgroundColor];
-      v17 = [(SKUIGradientView *)self->_offerConfirmationGradientView layer];
-      v18 = [v16 colorWithAlphaComponent:0.0];
+      backgroundColor = [(SKUIProductLockupCollectionViewCell *)self backgroundColor];
+      layer = [(SKUIGradientView *)self->_offerConfirmationGradientView layer];
+      v18 = [backgroundColor colorWithAlphaComponent:0.0];
       v19 = v18;
       v36[0] = [v18 CGColor];
-      v20 = v16;
-      v36[1] = [v16 CGColor];
-      v21 = v16;
-      v36[2] = [v16 CGColor];
+      v20 = backgroundColor;
+      v36[1] = [backgroundColor CGColor];
+      v21 = backgroundColor;
+      v36[2] = [backgroundColor CGColor];
       v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v36 count:3];
-      [v17 setColors:v22];
+      [layer setColors:v22];
 
-      [v17 setEndPoint:{1.0, 0.5}];
-      [v17 setStartPoint:{0.0, 0.5}];
+      [layer setEndPoint:{1.0, 0.5}];
+      [layer setStartPoint:{0.0, 0.5}];
 
       offerConfirmationGradientView = self->_offerConfirmationGradientView;
     }
@@ -2106,13 +2106,13 @@ void __80__SKUIProductLockupCollectionViewCell__prepareOfferConfirmationGradient
   [*(a1 + 40) bringSubviewToFront:v3];
 }
 
-- (CGRect)_stackBottomRightElements:(id)a3 inRect:(CGRect)a4
+- (CGRect)_stackBottomRightElements:(id)elements inRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  elementsCopy = elements;
   v22 = 0;
   v23 = &v22;
   v24 = 0x4010000000;
@@ -2147,7 +2147,7 @@ void __80__SKUIProductLockupCollectionViewCell__prepareOfferConfirmationGradient
   v19[5] = &v22;
   v19[6] = v21;
   v19[7] = v20;
-  [v9 enumerateObjectsWithOptions:2 usingBlock:v19];
+  [elementsCopy enumerateObjectsWithOptions:2 usingBlock:v19];
   v11 = v23[4];
   v12 = v23[5];
   v13 = v23[6];
@@ -2216,13 +2216,13 @@ void __72__SKUIProductLockupCollectionViewCell__stackBottomRightElements_inRect_
   }
 }
 
-- (CGRect)_stackElements:(id)a3 alignment:(int64_t)a4 inRect:(CGRect)a5
+- (CGRect)_stackElements:(id)elements alignment:(int64_t)alignment inRect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  elementsCopy = elements;
   v25 = 0;
   v26 = &v25;
   v27 = 0x4010000000;
@@ -2252,11 +2252,11 @@ void __72__SKUIProductLockupCollectionViewCell__stackBottomRightElements_inRect_
   *&v21[12] = height;
   v21[4] = self;
   v21[5] = &v25;
-  v21[13] = a4;
+  v21[13] = alignment;
   v21[6] = v24;
   v21[7] = v22;
   v21[8] = v23;
-  [v11 enumerateObjectsUsingBlock:v21];
+  [elementsCopy enumerateObjectsUsingBlock:v21];
   v13 = v26[4];
   v14 = v26[5];
   v15 = v26[6];
@@ -2361,20 +2361,20 @@ void __71__SKUIProductLockupCollectionViewCell__stackElements_alignment_inRect__
   }
 }
 
-- (void)_updateLayoutToAnimateOfferTransitionForView:(id)a3
+- (void)_updateLayoutToAnimateOfferTransitionForView:(id)view
 {
-  v4 = a3;
-  v5 = [(SKUIProductLockupCollectionViewCell *)self _viewElementForView:v4];
+  viewCopy = view;
+  v5 = [(SKUIProductLockupCollectionViewCell *)self _viewElementForView:viewCopy];
   v6 = [(SKUIProductLockupLayout *)self->_layout viewElementsForSection:1];
   v7 = [v6 containsObject:v5];
 
   if (v7)
   {
-    [v4 frame];
+    [viewCopy frame];
     x = v41.origin.x;
     y = v41.origin.y;
     MaxX = CGRectGetMaxX(v41);
-    [v4 sizeThatFits:{*(MEMORY[0x277CBF390] + 16), *(MEMORY[0x277CBF390] + 24)}];
+    [viewCopy sizeThatFits:{*(MEMORY[0x277CBF390] + 16), *(MEMORY[0x277CBF390] + 24)}];
     v12 = v11;
     v14 = v13;
     ShouldReverseLayoutDirection = storeShouldReverseLayoutDirection();
@@ -2384,7 +2384,7 @@ void __71__SKUIProductLockupCollectionViewCell__stackElements_alignment_inRect__
       v16 = x;
     }
 
-    [v4 setFrame:{v16, y, v12, v14}];
+    [viewCopy setFrame:{v16, y, v12, v14}];
     v17 = 1;
   }
 
@@ -2397,8 +2397,8 @@ void __71__SKUIProductLockupCollectionViewCell__stackElements_alignment_inRect__
       v38 = &v37;
       v39 = 0x2020000000;
       elementViews = self->_elementViews;
-      v20 = [v18 firstObject];
-      v21 = [(NSMapTable *)elementViews objectForKey:v20];
+      firstObject = [v18 firstObject];
+      v21 = [(NSMapTable *)elementViews objectForKey:firstObject];
       [v21 frame];
       v23 = v22;
 
@@ -2406,8 +2406,8 @@ void __71__SKUIProductLockupCollectionViewCell__stackElements_alignment_inRect__
       if (storeShouldReverseLayoutDirection())
       {
         v24 = self->_elementViews;
-        v25 = [v18 firstObject];
-        v26 = [(NSMapTable *)v24 objectForKey:v25];
+        firstObject2 = [v18 firstObject];
+        v26 = [(NSMapTable *)v24 objectForKey:firstObject2];
         [v26 frame];
         v38[3] = CGRectGetMaxX(v42);
       }
@@ -2418,7 +2418,7 @@ void __71__SKUIProductLockupCollectionViewCell__stackElements_alignment_inRect__
       v34[3] = &unk_2781FC428;
       v34[4] = self;
       v36 = &v37;
-      v35 = v4;
+      v35 = viewCopy;
       [v18 enumerateObjectsUsingBlock:v34];
 
       _Block_object_dispose(&v37, 8);
@@ -2426,11 +2426,11 @@ void __71__SKUIProductLockupCollectionViewCell__stackElements_alignment_inRect__
 
     else
     {
-      [v4 frame];
+      [viewCopy frame];
       v27 = v43.origin.x;
       v28 = v43.origin.y;
       v29 = CGRectGetMaxX(v43);
-      [v4 sizeThatFits:{*(MEMORY[0x277CBF390] + 16), *(MEMORY[0x277CBF390] + 24)}];
+      [viewCopy sizeThatFits:{*(MEMORY[0x277CBF390] + 16), *(MEMORY[0x277CBF390] + 24)}];
       v31 = v30;
       v33 = v32;
       if (!self->_offerMetadataPosition && !storeShouldReverseLayoutDirection())
@@ -2438,7 +2438,7 @@ void __71__SKUIProductLockupCollectionViewCell__stackElements_alignment_inRect__
         v27 = v29 - v31;
       }
 
-      [v4 setFrame:{v27, v28, v31, v33}];
+      [viewCopy setFrame:{v27, v28, v31, v33}];
     }
 
     v17 = 0;
@@ -2520,10 +2520,10 @@ uint64_t __84__SKUIProductLockupCollectionViewCell__updateLayoutToAnimateOfferTr
   return MEMORY[0x2821F96F8](v3, v4);
 }
 
-- (id)_viewElementForView:(id)a3
+- (id)_viewElementForView:(id)view
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  viewCopy = view;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -2546,7 +2546,7 @@ uint64_t __84__SKUIProductLockupCollectionViewCell__updateLayoutToAnimateOfferTr
         v10 = *(*(&v14 + 1) + 8 * i);
         v11 = [(NSMapTable *)self->_elementViews objectForKey:v10, v14];
 
-        if (v11 == v4)
+        if (v11 == viewCopy)
         {
           v12 = v10;
           goto LABEL_11;

@@ -1,11 +1,11 @@
 @interface GEOMapRegion
-+ (id)_maps_offlineDownloadRegionForRouteBounds:(id)a3;
-+ (id)_mapstest_mapRegionWithCenterLatitude:(double)a3 longitude:(double)a4 size:(double)a5;
++ (id)_maps_offlineDownloadRegionForRouteBounds:(id)bounds;
++ (id)_mapstest_mapRegionWithCenterLatitude:(double)latitude longitude:(double)longitude size:(double)size;
 @end
 
 @implementation GEOMapRegion
 
-+ (id)_maps_offlineDownloadRegionForRouteBounds:(id)a3
++ (id)_maps_offlineDownloadRegionForRouteBounds:(id)bounds
 {
   GEOMapRectForMapRegion();
   v5 = v4;
@@ -26,19 +26,19 @@
   v20.size.width = v9;
   v20.size.height = v11;
   v21 = MKMapRectUnion(v20, v22);
-  v16 = [[a1 alloc] initWithMapRect:{v21.origin.x, v21.origin.y, v21.size.width, v21.size.height}];
+  v16 = [[self alloc] initWithMapRect:{v21.origin.x, v21.origin.y, v21.size.width, v21.size.height}];
 
   return v16;
 }
 
-+ (id)_mapstest_mapRegionWithCenterLatitude:(double)a3 longitude:(double)a4 size:(double)a5
++ (id)_mapstest_mapRegionWithCenterLatitude:(double)latitude longitude:(double)longitude size:(double)size
 {
   v8 = objc_alloc_init(GEOMapRegion);
-  v9 = a5 * 0.5;
-  [v8 setWestLng:{fmin(fmax(a4 - v9, -180.0), 180.0)}];
-  [v8 setEastLng:{fmin(fmax(v9 + a4, -180.0), 180.0)}];
-  [v8 setSouthLat:{fmin(fmax(a3 - v9, -90.0), 90.0)}];
-  [v8 setNorthLat:{fmin(fmax(v9 + a3, -90.0), 90.0)}];
+  v9 = size * 0.5;
+  [v8 setWestLng:{fmin(fmax(longitude - v9, -180.0), 180.0)}];
+  [v8 setEastLng:{fmin(fmax(v9 + longitude, -180.0), 180.0)}];
+  [v8 setSouthLat:{fmin(fmax(latitude - v9, -90.0), 90.0)}];
+  [v8 setNorthLat:{fmin(fmax(v9 + latitude, -90.0), 90.0)}];
 
   return v8;
 }

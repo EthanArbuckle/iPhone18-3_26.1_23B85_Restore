@@ -8,8 +8,8 @@
 - (id)cancelCallbackURL
 {
   v32 = *MEMORY[0x277D85DE8];
-  v2 = [(PSGResetNetworkSettingsController *)self specifier];
-  v3 = [v2 propertyForKey:@"deepLinkURL"];
+  specifier = [(PSGResetNetworkSettingsController *)self specifier];
+  v3 = [specifier propertyForKey:@"deepLinkURL"];
 
   v4 = 0x277CBE000uLL;
   objc_opt_class();
@@ -21,8 +21,8 @@
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v7 = [v6 queryItems];
-    v8 = [v7 countByEnumeratingWithState:&v27 objects:v31 count:16];
+    queryItems = [v6 queryItems];
+    v8 = [queryItems countByEnumeratingWithState:&v27 objects:v31 count:16];
     if (v8)
     {
       v9 = v8;
@@ -33,21 +33,21 @@
         {
           if (*v28 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(queryItems);
           }
 
           v12 = *(*(&v27 + 1) + 8 * i);
-          v13 = [v12 name];
-          v14 = [v13 isEqualToString:@"onCancel"];
+          name = [v12 name];
+          v14 = [name isEqualToString:@"onCancel"];
 
           if (v14)
           {
-            v15 = [v12 value];
+            value = [v12 value];
             goto LABEL_13;
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v27 objects:v31 count:16];
+        v9 = [queryItems countByEnumeratingWithState:&v27 objects:v31 count:16];
         if (v9)
         {
           continue;
@@ -56,7 +56,7 @@
         break;
       }
 
-      v15 = 0;
+      value = 0;
 LABEL_13:
       v4 = 0x277CBE000;
       v5 = 0x277CCA000;
@@ -64,20 +64,20 @@ LABEL_13:
 
     else
     {
-      v15 = 0;
+      value = 0;
     }
 
-    v17 = [v15 stringByRemovingPercentEncoding];
-    if (v17)
+    stringByRemovingPercentEncoding = [value stringByRemovingPercentEncoding];
+    if (stringByRemovingPercentEncoding)
     {
-      v18 = v17;
-      v19 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-      v20 = [v18 stringByTrimmingCharactersInSet:v19];
+      v18 = stringByRemovingPercentEncoding;
+      whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+      v20 = [v18 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
       v21 = [*(v4 + 3008) URLWithString:v20];
       v22 = [*(v5 + 3296) componentsWithURL:v21 resolvingAgainstBaseURL:0];
-      v23 = [v22 scheme];
-      v24 = [&unk_282E8FD70 containsObject:v23];
+      scheme = [v22 scheme];
+      v24 = [&unk_282E8FD70 containsObject:scheme];
 
       if (v24)
       {
@@ -109,8 +109,8 @@ LABEL_13:
 - (id)createListController
 {
   v3 = objc_alloc_init(PSGResetNetworkSettingsListController);
-  v4 = [(PSGResetNetworkSettingsController *)self cancelCallbackURL];
-  [(PSGResetNetworkSettingsListController *)v3 setCancelCallbackURL:v4];
+  cancelCallbackURL = [(PSGResetNetworkSettingsController *)self cancelCallbackURL];
+  [(PSGResetNetworkSettingsListController *)v3 setCancelCallbackURL:cancelCallbackURL];
 
   return v3;
 }

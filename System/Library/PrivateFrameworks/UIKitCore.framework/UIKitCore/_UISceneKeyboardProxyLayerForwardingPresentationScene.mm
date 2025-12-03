@@ -1,17 +1,17 @@
 @interface _UISceneKeyboardProxyLayerForwardingPresentationScene
 - (NSString)description;
 - (id)keyboardLayers;
-- (void)_presentationManager:(id)a3 willPrioritizePresenter:(id)a4;
-- (void)addObserver:(id)a3;
+- (void)_presentationManager:(id)manager willPrioritizePresenter:(id)presenter;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)initWithScene:(void *)a1;
-- (void)notifyObserversDidMoveToWindow:(id)a3;
+- (void)initWithScene:(void *)scene;
+- (void)notifyObserversDidMoveToWindow:(id)window;
 - (void)notifyObserversDidUpdateKeyboardLayers;
-- (void)presentationView:(id)a3 didMoveToWindow:(id)a4;
-- (void)removeObserver:(id)a3;
-- (void)scene:(id)a3 didUpdateClientSettings:(id)a4;
-- (void)sceneDidInvalidate:(id)a3 withContext:(id)a4;
-- (void)scenePresenter:(id)a3 didUpdateContext:(id)a4;
+- (void)presentationView:(id)view didMoveToWindow:(id)window;
+- (void)removeObserver:(id)observer;
+- (void)scene:(id)scene didUpdateClientSettings:(id)settings;
+- (void)sceneDidInvalidate:(id)invalidate withContext:(id)context;
+- (void)scenePresenter:(id)presenter didUpdateContext:(id)context;
 @end
 
 @implementation _UISceneKeyboardProxyLayerForwardingPresentationScene
@@ -21,28 +21,28 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   WeakRetained = objc_loadWeakRetained(&self->_scene);
-  v6 = [v3 stringWithFormat:@"<%@: %p> Tracking scene: %@", v4, self, WeakRetained];
+  weakRetained = [v3 stringWithFormat:@"<%@: %p> Tracking scene: %@", v4, self, WeakRetained];
 
-  return v6;
+  return weakRetained;
 }
 
 - (id)keyboardLayers
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [(_UIScenePresenter *)self->_prioritizedPresenter presentationContext];
-  v4 = [v3 _forwardsKeyboardLayersToHost];
+  presentationContext = [(_UIScenePresenter *)self->_prioritizedPresenter presentationContext];
+  _forwardsKeyboardLayersToHost = [presentationContext _forwardsKeyboardLayersToHost];
 
-  if (v4)
+  if (_forwardsKeyboardLayersToHost)
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
     WeakRetained = objc_loadWeakRetained(&self->_scene);
-    v6 = [WeakRetained clientSettings];
-    v7 = [v6 layers];
+    clientSettings = [WeakRetained clientSettings];
+    layers = [clientSettings layers];
 
-    v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    v8 = [layers countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v8)
     {
       v9 = v8;
@@ -54,7 +54,7 @@
         {
           if (*v17 != v11)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(layers);
           }
 
           v13 = *(*(&v16 + 1) + 8 * i);
@@ -69,7 +69,7 @@
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v9 = [layers countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v9);
@@ -96,130 +96,130 @@
   WeakRetained = objc_loadWeakRetained(&self->_scene);
   [WeakRetained removeObserver:self];
 
-  v4 = [(_UIScenePresenter *)self->_prioritizedPresenter presentationView];
-  [v4 removeObserver:self];
+  presentationView = [(_UIScenePresenter *)self->_prioritizedPresenter presentationView];
+  [presentationView removeObserver:self];
 
   v5.receiver = self;
   v5.super_class = _UISceneKeyboardProxyLayerForwardingPresentationScene;
   [(_UISceneKeyboardProxyLayerForwardingPresentationScene *)&v5 dealloc];
 }
 
-- (void)initWithScene:(void *)a1
+- (void)initWithScene:(void *)scene
 {
   v3 = a2;
-  if (a1)
+  if (scene)
   {
-    v8.receiver = a1;
+    v8.receiver = scene;
     v8.super_class = _UISceneKeyboardProxyLayerForwardingPresentationScene;
     v4 = objc_msgSendSuper2(&v8, sel_init);
-    a1 = v4;
+    scene = v4;
     if (v4)
     {
       objc_storeWeak(v4 + 4, v3);
-      v5 = [v3 identityToken];
-      v6 = a1[3];
-      a1[3] = v5;
+      identityToken = [v3 identityToken];
+      v6 = scene[3];
+      scene[3] = identityToken;
 
-      [v3 addObserver:a1];
+      [v3 addObserver:scene];
     }
   }
 
-  return a1;
+  return scene;
 }
 
-- (void)_presentationManager:(id)a3 willPrioritizePresenter:(id)a4
+- (void)_presentationManager:(id)manager willPrioritizePresenter:(id)presenter
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  presenterCopy = presenter;
   prioritizedPresenter = self->_prioritizedPresenter;
-  if (prioritizedPresenter != v6)
+  if (prioritizedPresenter != presenterCopy)
   {
     [(_UIScenePresenter *)prioritizedPresenter removeObserver:self];
-    v8 = [(_UIScenePresenter *)self->_prioritizedPresenter presentationView];
-    [v8 removeObserver:self];
+    presentationView = [(_UIScenePresenter *)self->_prioritizedPresenter presentationView];
+    [presentationView removeObserver:self];
 
-    objc_storeStrong(&self->_prioritizedPresenter, a4);
+    objc_storeStrong(&self->_prioritizedPresenter, presenter);
     v9 = *(__UILogGetCategoryCachedImpl("KBProxyForwarding", &_presentationManager_willPrioritizePresenter____s_category) + 8);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 134218242;
-      v13 = self;
+      selfCopy = self;
       v14 = 2112;
-      v15 = v6;
+      v15 = presenterCopy;
       _os_log_impl(&dword_188A29000, v9, OS_LOG_TYPE_DEFAULT, "<ForwardingPresentationScene:%p> Prioritized presenter: %@.", &v12, 0x16u);
     }
 
-    v10 = [(_UIScenePresenter *)self->_prioritizedPresenter presentationView];
-    [(_UIScenePresenter *)v6 addObserver:self];
-    [v10 addObserver:self];
-    v11 = [v10 window];
-    [(_UISceneKeyboardProxyLayerForwardingPresentationScene *)self notifyObserversDidMoveToWindow:v11];
+    presentationView2 = [(_UIScenePresenter *)self->_prioritizedPresenter presentationView];
+    [(_UIScenePresenter *)presenterCopy addObserver:self];
+    [presentationView2 addObserver:self];
+    window = [presentationView2 window];
+    [(_UISceneKeyboardProxyLayerForwardingPresentationScene *)self notifyObserversDidMoveToWindow:window];
 
     [(_UISceneKeyboardProxyLayerForwardingPresentationScene *)self notifyObserversDidUpdateKeyboardLayers];
   }
 }
 
-- (void)scenePresenter:(id)a3 didUpdateContext:(id)a4
+- (void)scenePresenter:(id)presenter didUpdateContext:(id)context
 {
-  v6 = a4;
-  v7 = [a3 presentationContext];
-  v8 = [v7 _forwardsKeyboardLayersToHost];
-  v9 = [v6 _forwardsKeyboardLayersToHost];
+  contextCopy = context;
+  presentationContext = [presenter presentationContext];
+  _forwardsKeyboardLayersToHost = [presentationContext _forwardsKeyboardLayersToHost];
+  _forwardsKeyboardLayersToHost2 = [contextCopy _forwardsKeyboardLayersToHost];
 
-  if (v8 != v9)
+  if (_forwardsKeyboardLayersToHost != _forwardsKeyboardLayersToHost2)
   {
 
     [(_UISceneKeyboardProxyLayerForwardingPresentationScene *)self notifyObserversDidUpdateKeyboardLayers];
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v9 = a3;
-  if (!v9)
+  observerCopy = observer;
+  if (!observerCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"_UISceneKeyboardProxyLayerForwardingPresentationScene.m" lineNumber:87 description:{@"Invalid parameter not satisfying: %@", @"observer"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UISceneKeyboardProxyLayerForwardingPresentationScene.m" lineNumber:87 description:{@"Invalid parameter not satisfying: %@", @"observer"}];
   }
 
   BSDispatchQueueAssertMain();
   observers = self->_observers;
   if (!observers)
   {
-    v6 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v7 = self->_observers;
-    self->_observers = v6;
+    self->_observers = weakObjectsHashTable;
 
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v9];
+  [(NSHashTable *)observers addObject:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v7 = a3;
+  observerCopy = observer;
   BSDispatchQueueAssertMain();
-  v4 = v7;
-  if (v7)
+  v4 = observerCopy;
+  if (observerCopy)
   {
-    [(NSHashTable *)self->_observers removeObject:v7];
+    [(NSHashTable *)self->_observers removeObject:observerCopy];
     v5 = [(NSHashTable *)self->_observers count];
-    v4 = v7;
+    v4 = observerCopy;
     if (!v5)
     {
       observers = self->_observers;
       self->_observers = 0;
 
-      v4 = v7;
+      v4 = observerCopy;
     }
   }
 }
 
-- (void)scene:(id)a3 didUpdateClientSettings:(id)a4
+- (void)scene:(id)scene didUpdateClientSettings:(id)settings
 {
-  v5 = [a4 settingsDiff];
-  v6 = [v5 containsProperty:sel_layers];
+  settingsDiff = [settings settingsDiff];
+  v6 = [settingsDiff containsProperty:sel_layers];
 
   if (v6)
   {
@@ -228,10 +228,10 @@
   }
 }
 
-- (void)sceneDidInvalidate:(id)a3 withContext:(id)a4
+- (void)sceneDidInvalidate:(id)invalidate withContext:(id)context
 {
   v16 = *MEMORY[0x1E69E9840];
-  [a3 removeObserver:{self, a4}];
+  [invalidate removeObserver:{self, context}];
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
@@ -269,26 +269,26 @@
   }
 }
 
-- (void)presentationView:(id)a3 didMoveToWindow:(id)a4
+- (void)presentationView:(id)view didMoveToWindow:(id)window
 {
-  v11 = a4;
+  windowCopy = window;
   prioritizedPresenter = self->_prioritizedPresenter;
-  v8 = a3;
-  v9 = [(_UIScenePresenter *)prioritizedPresenter presentationView];
+  viewCopy = view;
+  presentationView = [(_UIScenePresenter *)prioritizedPresenter presentationView];
 
-  if (v9 != v8)
+  if (presentationView != viewCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"_UISceneKeyboardProxyLayerForwardingPresentationScene.m" lineNumber:128 description:@"Presentation view mismatch."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UISceneKeyboardProxyLayerForwardingPresentationScene.m" lineNumber:128 description:@"Presentation view mismatch."];
   }
 
-  [(_UISceneKeyboardProxyLayerForwardingPresentationScene *)self notifyObserversDidMoveToWindow:v11];
+  [(_UISceneKeyboardProxyLayerForwardingPresentationScene *)self notifyObserversDidMoveToWindow:windowCopy];
 }
 
-- (void)notifyObserversDidMoveToWindow:(id)a3
+- (void)notifyObserversDidMoveToWindow:(id)window
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  windowCopy = window;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -312,7 +312,7 @@
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 presentationEnvironment:self didMoveToWindow:v4];
+          [v10 presentationEnvironment:self didMoveToWindow:windowCopy];
         }
 
         ++v9;

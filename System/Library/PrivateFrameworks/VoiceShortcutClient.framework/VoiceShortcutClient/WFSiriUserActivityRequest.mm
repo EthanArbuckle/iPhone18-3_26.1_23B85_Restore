@@ -1,8 +1,8 @@
 @interface WFSiriUserActivityRequest
 - (NSUserActivity)userActivity;
-- (WFSiriUserActivityRequest)initWithCoder:(id)a3;
-- (WFSiriUserActivityRequest)initWithUserActivityData:(id)a3 andBundleIdentifier:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (WFSiriUserActivityRequest)initWithCoder:(id)coder;
+- (WFSiriUserActivityRequest)initWithUserActivityData:(id)data andBundleIdentifier:(id)identifier;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFSiriUserActivityRequest
@@ -14,32 +14,32 @@
   return v2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = WFSiriUserActivityRequest;
-  v4 = a3;
-  [(WFSiriActionRequest *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(WFSiriActionRequest *)&v7 encodeWithCoder:coderCopy];
   v5 = [(WFSiriUserActivityRequest *)self userActivityData:v7.receiver];
-  [v4 encodeObject:v5 forKey:@"userActivityData"];
+  [coderCopy encodeObject:v5 forKey:@"userActivityData"];
 
-  v6 = [(WFSiriUserActivityRequest *)self bundleIdentifier];
-  [v4 encodeObject:v6 forKey:@"bundleIdentifier"];
+  bundleIdentifier = [(WFSiriUserActivityRequest *)self bundleIdentifier];
+  [coderCopy encodeObject:bundleIdentifier forKey:@"bundleIdentifier"];
 }
 
-- (WFSiriUserActivityRequest)initWithCoder:(id)a3
+- (WFSiriUserActivityRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = WFSiriUserActivityRequest;
-  v5 = [(WFSiriActionRequest *)&v12 initWithCoder:v4];
+  v5 = [(WFSiriActionRequest *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"userActivityData"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userActivityData"];
     userActivityData = v5->_userActivityData;
     v5->_userActivityData = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
     bundleIdentifier = v5->_bundleIdentifier;
     v5->_bundleIdentifier = v8;
 
@@ -49,18 +49,18 @@
   return v5;
 }
 
-- (WFSiriUserActivityRequest)initWithUserActivityData:(id)a3 andBundleIdentifier:(id)a4
+- (WFSiriUserActivityRequest)initWithUserActivityData:(id)data andBundleIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  dataCopy = data;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = WFSiriUserActivityRequest;
   v9 = [(WFSiriActionRequest *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_userActivityData, a3);
-    objc_storeStrong(&v10->_bundleIdentifier, a4);
+    objc_storeStrong(&v9->_userActivityData, data);
+    objc_storeStrong(&v10->_bundleIdentifier, identifier);
     v11 = v10;
   }
 

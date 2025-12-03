@@ -1,17 +1,17 @@
 @interface SearchResultsViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)viewDidLoad;
 @end
 
 @implementation SearchResultsViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SearchResultsViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"SearchResultsViewController" isKindOfClass:@"ListViewController"];
-  [v3 validateClass:@"ListViewController" hasInstanceMethod:@"tableView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SearchResultsViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"SearchResultsViewController" isKindOfClass:@"ListViewController"];
+  [validationsCopy validateClass:@"ListViewController" hasInstanceMethod:@"tableView" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

@@ -1,14 +1,14 @@
 @interface PMLHashingVectorizer
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToHashingVectorizer:(id)a3;
-- (PMLHashingVectorizer)initWithBucketSize:(int)a3 characterNGramRange:(_NSRange)a4 tokenNGramRange:(_NSRange)a5 shouldNormalizeTokens:(BOOL)a6 shouldNormalizeCharacters:(BOOL)a7 localeForNonwordTokens:(id)a8 tokenizeNewlines:(BOOL)a9 idVectorLength:(unint64_t)a10 extraIdOptions:(unint64_t)a11 vectorizerStrategy:(unint64_t)a12 vectorNormalization:(int64_t)a13 vocab:(id)a14;
-- (PMLHashingVectorizer)initWithPlist:(id)a3 chunks:(id)a4 context:(id)a5;
-- (id)toPlistWithChunks:(id)a3;
-- (id)transform:(id)a3;
-- (id)transformBatch:(id)a3;
-- (id)transformSequentialNGrams:(id)a3;
-- (id)transformWithFrequency:(id)a3 shouldDecrement:(BOOL)a4;
-- (id)transformWithWordPiece:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToHashingVectorizer:(id)vectorizer;
+- (PMLHashingVectorizer)initWithBucketSize:(int)size characterNGramRange:(_NSRange)range tokenNGramRange:(_NSRange)gramRange shouldNormalizeTokens:(BOOL)tokens shouldNormalizeCharacters:(BOOL)characters localeForNonwordTokens:(id)nonwordTokens tokenizeNewlines:(BOOL)newlines idVectorLength:(unint64_t)self0 extraIdOptions:(unint64_t)self1 vectorizerStrategy:(unint64_t)self2 vectorNormalization:(int64_t)self3 vocab:(id)self4;
+- (PMLHashingVectorizer)initWithPlist:(id)plist chunks:(id)chunks context:(id)context;
+- (id)toPlistWithChunks:(id)chunks;
+- (id)transform:(id)transform;
+- (id)transformBatch:(id)batch;
+- (id)transformSequentialNGrams:(id)grams;
+- (id)transformWithFrequency:(id)frequency shouldDecrement:(BOOL)decrement;
+- (id)transformWithWordPiece:(id)piece;
 - (unint64_t)hash;
 @end
 
@@ -30,41 +30,41 @@
   return self->_vectorNormalization - v13 + 32 * v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PMLHashingVectorizer *)self isEqualToHashingVectorizer:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PMLHashingVectorizer *)self isEqualToHashingVectorizer:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToHashingVectorizer:(id)a3
+- (BOOL)isEqualToHashingVectorizer:(id)vectorizer
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || self->_buckets != v4[2] || self->_vectorizerStrategy != *(v4 + 11))
+  vectorizerCopy = vectorizer;
+  v5 = vectorizerCopy;
+  if (!vectorizerCopy || self->_buckets != vectorizerCopy[2] || self->_vectorizerStrategy != *(vectorizerCopy + 11))
   {
     goto LABEL_8;
   }
 
-  if (self->_characterNGramRange.location != *(v4 + 2) || self->_characterNGramRange.length != *(v4 + 3))
+  if (self->_characterNGramRange.location != *(vectorizerCopy + 2) || self->_characterNGramRange.length != *(vectorizerCopy + 3))
   {
     goto LABEL_8;
   }
 
   v7 = 0;
-  if (self->_tokenNGramRange.location == *(v4 + 4) && self->_tokenNGramRange.length == *(v4 + 5))
+  if (self->_tokenNGramRange.location == *(vectorizerCopy + 4) && self->_tokenNGramRange.length == *(vectorizerCopy + 5))
   {
-    if (self->_shouldNormalizeTokens == *(v4 + 48) && self->_shouldNormalizeCharacters == *(v4 + 49))
+    if (self->_shouldNormalizeTokens == *(vectorizerCopy + 48) && self->_shouldNormalizeCharacters == *(vectorizerCopy + 49))
     {
       v9 = self->_localeForNonwordTokens;
       v10 = v9;
@@ -98,65 +98,65 @@ LABEL_9:
   return v7;
 }
 
-- (PMLHashingVectorizer)initWithPlist:(id)a3 chunks:(id)a4 context:(id)a5
+- (PMLHashingVectorizer)initWithPlist:(id)plist chunks:(id)chunks context:(id)context
 {
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"BUCKET_SIZE"];
-  v50 = [v6 intValue];
+  plistCopy = plist;
+  v6 = [plistCopy objectForKeyedSubscript:@"BUCKET_SIZE"];
+  intValue = [v6 intValue];
 
-  v7 = [v5 objectForKeyedSubscript:@"NGRAM_SIZE"];
-  v8 = [v7 intValue];
+  v7 = [plistCopy objectForKeyedSubscript:@"NGRAM_SIZE"];
+  intValue2 = [v7 intValue];
 
-  v9 = [v5 objectForKeyedSubscript:@"CHARACTER_NGRAM_LOCATION"];
+  v9 = [plistCopy objectForKeyedSubscript:@"CHARACTER_NGRAM_LOCATION"];
   v10 = v9;
   if (!v9)
   {
     v9 = &unk_2873581C0;
   }
 
-  v49 = [v9 intValue];
+  intValue3 = [v9 intValue];
 
-  v11 = [v5 objectForKeyedSubscript:@"CHARACTER_NGRAM_LENGTH"];
+  v11 = [plistCopy objectForKeyedSubscript:@"CHARACTER_NGRAM_LENGTH"];
   v12 = v11;
   if (!v11)
   {
     v11 = &unk_2873581C0;
   }
 
-  v48 = [v11 intValue];
+  intValue4 = [v11 intValue];
 
-  v13 = [v5 objectForKeyedSubscript:@"TOKEN_NGRAM_LOCATION"];
+  v13 = [plistCopy objectForKeyedSubscript:@"TOKEN_NGRAM_LOCATION"];
   v14 = v13;
   if (!v13)
   {
     v13 = &unk_2873581D8;
   }
 
-  v47 = [v13 intValue];
+  intValue5 = [v13 intValue];
 
-  v15 = [v5 objectForKeyedSubscript:@"TOKEN_NGRAM_LENGTH"];
+  v15 = [plistCopy objectForKeyedSubscript:@"TOKEN_NGRAM_LENGTH"];
   v16 = v15;
   if (v15)
   {
-    v46 = [v15 intValue];
+    intValue6 = [v15 intValue];
   }
 
   else
   {
-    v17 = [MEMORY[0x277CCABB0] numberWithInt:v8];
-    v46 = [v17 intValue];
+    v17 = [MEMORY[0x277CCABB0] numberWithInt:intValue2];
+    intValue6 = [v17 intValue];
   }
 
-  v18 = [v5 objectForKeyedSubscript:@"TOKEN_NORMALIZATION"];
+  v18 = [plistCopy objectForKeyedSubscript:@"TOKEN_NORMALIZATION"];
   v19 = v18;
   if (!v18)
   {
     v18 = MEMORY[0x277CBEC38];
   }
 
-  v20 = [v18 BOOLValue];
+  bOOLValue = [v18 BOOLValue];
 
-  v21 = [v5 objectForKeyedSubscript:@"CHARACTER_NORMALIZATION"];
+  v21 = [plistCopy objectForKeyedSubscript:@"CHARACTER_NORMALIZATION"];
   v22 = v21;
   v23 = MEMORY[0x277CBEC28];
   if (!v21)
@@ -164,54 +164,54 @@ LABEL_9:
     v21 = MEMORY[0x277CBEC28];
   }
 
-  v24 = [v21 BOOLValue];
+  bOOLValue2 = [v21 BOOLValue];
 
-  v25 = [v5 objectForKeyedSubscript:@"SHOULD_TOKENIZE_NEWLINES"];
+  v25 = [plistCopy objectForKeyedSubscript:@"SHOULD_TOKENIZE_NEWLINES"];
   v26 = v25;
   if (!v25)
   {
     v25 = v23;
   }
 
-  v27 = [v25 BOOLValue];
+  bOOLValue3 = [v25 BOOLValue];
 
-  v28 = [v5 objectForKeyedSubscript:@"ID_VECTOR_LENGTH"];
+  v28 = [plistCopy objectForKeyedSubscript:@"ID_VECTOR_LENGTH"];
   v29 = v28;
   if (!v28)
   {
     v28 = &unk_2873581C0;
   }
 
-  v30 = [v28 intValue];
+  intValue7 = [v28 intValue];
 
-  v31 = [v5 objectForKeyedSubscript:@"EXTRA_ID_OPTIONS"];
+  v31 = [plistCopy objectForKeyedSubscript:@"EXTRA_ID_OPTIONS"];
   v32 = v31;
   if (!v31)
   {
     v31 = &unk_2873581C0;
   }
 
-  v33 = [v31 intValue];
+  intValue8 = [v31 intValue];
 
-  v34 = [v5 objectForKeyedSubscript:@"VECTORIZER_STRATEGY"];
+  v34 = [plistCopy objectForKeyedSubscript:@"VECTORIZER_STRATEGY"];
   v35 = v34;
   if (!v34)
   {
     v34 = &unk_2873581F0;
   }
 
-  v36 = [v34 intValue];
+  intValue9 = [v34 intValue];
 
-  v37 = [v5 objectForKeyedSubscript:@"VECTOR_NORMALIZATION"];
+  v37 = [plistCopy objectForKeyedSubscript:@"VECTOR_NORMALIZATION"];
   v38 = v37;
   if (!v37)
   {
     v37 = &unk_287358208;
   }
 
-  v39 = [v37 intValue];
+  intValue10 = [v37 intValue];
 
-  v40 = [v5 objectForKeyedSubscript:@"NON_WORD_TOKENS_LOCALE"];
+  v40 = [plistCopy objectForKeyedSubscript:@"NON_WORD_TOKENS_LOCALE"];
   if (v40)
   {
     v41 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:v40];
@@ -222,14 +222,14 @@ LABEL_9:
     v41 = 0;
   }
 
-  LOBYTE(v45) = v27;
-  LOBYTE(v44) = v24;
-  v42 = [(PMLHashingVectorizer *)self initWithBucketSize:v50 characterNGramRange:v49 tokenNGramRange:v48 shouldNormalizeTokens:v47 shouldNormalizeCharacters:v46 localeForNonwordTokens:v20 tokenizeNewlines:v44 idVectorLength:v41 extraIdOptions:v45 vectorizerStrategy:v30 vectorNormalization:v33 vocab:v36, v39, 0];
+  LOBYTE(v45) = bOOLValue3;
+  LOBYTE(v44) = bOOLValue2;
+  v42 = [(PMLHashingVectorizer *)self initWithBucketSize:intValue characterNGramRange:intValue3 tokenNGramRange:intValue4 shouldNormalizeTokens:intValue5 shouldNormalizeCharacters:intValue6 localeForNonwordTokens:bOOLValue tokenizeNewlines:v44 idVectorLength:v41 extraIdOptions:v45 vectorizerStrategy:intValue7 vectorNormalization:intValue8 vocab:intValue9, intValue10, 0];
 
   return v42;
 }
 
-- (id)toPlistWithChunks:(id)a3
+- (id)toPlistWithChunks:(id)chunks
 {
   v24[13] = *MEMORY[0x277D85DE8];
   v23[0] = @"BUCKET_SIZE";
@@ -277,8 +277,8 @@ LABEL_9:
   localeForNonwordTokens = self->_localeForNonwordTokens;
   if (localeForNonwordTokens)
   {
-    v14 = [(NSLocale *)localeForNonwordTokens localeIdentifier];
-    [v12 setObject:v14 forKeyedSubscript:@"NON_WORD_TOKENS_LOCALE"];
+    localeIdentifier = [(NSLocale *)localeForNonwordTokens localeIdentifier];
+    [v12 setObject:localeIdentifier forKeyedSubscript:@"NON_WORD_TOKENS_LOCALE"];
   }
 
   v15 = *MEMORY[0x277D85DE8];
@@ -286,57 +286,57 @@ LABEL_9:
   return v12;
 }
 
-- (id)transformWithWordPiece:(id)a3
+- (id)transformWithWordPiece:(id)piece
 {
-  v4 = a3;
+  pieceCopy = piece;
   v5 = [[PMLWordPieceTokenizer alloc] initWithVocab:self->_vocab];
-  v6 = [(PMLWordPieceTokenizer *)v5 tokenize:v4 withLength:self->_idVectorLength];
+  v6 = [(PMLWordPieceTokenizer *)v5 tokenize:pieceCopy withLength:self->_idVectorLength];
 
   if (self->_startId)
   {
-    v7 = [(PMLWordPieceTokenizer *)v5 startId];
+    startId = [(PMLWordPieceTokenizer *)v5 startId];
   }
 
   else
   {
-    v7 = 0;
+    startId = 0;
   }
 
   if (self->_endId)
   {
-    v8 = [(PMLWordPieceTokenizer *)v5 endId];
+    endId = [(PMLWordPieceTokenizer *)v5 endId];
   }
 
   else
   {
-    v8 = 0;
+    endId = 0;
   }
 
   if (self->_paddingId)
   {
-    v9 = [(PMLWordPieceTokenizer *)v5 padId];
+    padId = [(PMLWordPieceTokenizer *)v5 padId];
   }
 
   else
   {
-    v9 = 0;
+    padId = 0;
   }
 
-  [v6 addStartId:v7 endId:v8 paddingId:v9 withMaxVectorLength:self->_idVectorLength];
+  [v6 addStartId:startId endId:endId paddingId:padId withMaxVectorLength:self->_idVectorLength];
 
   return v6;
 }
 
-- (id)transformBatch:(id)a3
+- (id)transformBatch:(id)batch
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  batchCopy = batch;
   v5 = objc_opt_new();
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = batchCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -366,20 +366,20 @@ LABEL_9:
   return v5;
 }
 
-- (id)transformSequentialNGrams:(id)a3
+- (id)transformSequentialNGrams:(id)grams
 {
-  v4 = a3;
-  v5 = v4;
+  gramsCopy = grams;
+  v5 = gramsCopy;
   v11 = 0uLL;
   vectorizerStrategy = self->_vectorizerStrategy;
   if (vectorizerStrategy == 3)
   {
-    hashingVectorizeCharacters(v4, &v11, self->_buckets, self->_characterNGramRange.location, LODWORD(self->_characterNGramRange.length) + LODWORD(self->_characterNGramRange.location), self->_shouldNormalizeTokens, 0, 1);
+    hashingVectorizeCharacters(gramsCopy, &v11, self->_buckets, self->_characterNGramRange.location, LODWORD(self->_characterNGramRange.length) + LODWORD(self->_characterNGramRange.location), self->_shouldNormalizeTokens, 0, 1);
   }
 
   else if (vectorizerStrategy == 2)
   {
-    hashingVectorizeTokens(v4, &v11, self->_buckets, self->_tokenNGramRange.location, LODWORD(self->_tokenNGramRange.length) + LODWORD(self->_tokenNGramRange.location), self->_localeForNonwordTokens, self->_tokenizeNewlines, self->_shouldNormalizeTokens, 0, 1);
+    hashingVectorizeTokens(gramsCopy, &v11, self->_buckets, self->_tokenNGramRange.location, LODWORD(self->_tokenNGramRange.length) + LODWORD(self->_tokenNGramRange.location), self->_localeForNonwordTokens, self->_tokenizeNewlines, self->_shouldNormalizeTokens, 0, 1);
   }
 
   v9[0] = MEMORY[0x277D85DD0];
@@ -417,12 +417,12 @@ float __50__PMLHashingVectorizer_transformSequentialNGrams___block_invoke(uint64
   return result;
 }
 
-- (id)transformWithFrequency:(id)a3 shouldDecrement:(BOOL)a4
+- (id)transformWithFrequency:(id)frequency shouldDecrement:(BOOL)decrement
 {
-  v6 = a3;
+  frequencyCopy = frequency;
   v16 = 0uLL;
-  hashingVectorizeTokens(v6, &v16, self->_buckets, self->_tokenNGramRange.location, LODWORD(self->_tokenNGramRange.length) + LODWORD(self->_tokenNGramRange.location), self->_localeForNonwordTokens, self->_tokenizeNewlines, self->_shouldNormalizeTokens, a4, 0);
-  hashingVectorizeCharacters(v6, &v16, self->_buckets, self->_characterNGramRange.location, LODWORD(self->_characterNGramRange.length) + LODWORD(self->_characterNGramRange.location), self->_shouldNormalizeCharacters, a4, 0);
+  hashingVectorizeTokens(frequencyCopy, &v16, self->_buckets, self->_tokenNGramRange.location, LODWORD(self->_tokenNGramRange.length) + LODWORD(self->_tokenNGramRange.location), self->_localeForNonwordTokens, self->_tokenizeNewlines, self->_shouldNormalizeTokens, decrement, 0);
+  hashingVectorizeCharacters(frequencyCopy, &v16, self->_buckets, self->_characterNGramRange.location, LODWORD(self->_characterNGramRange.length) + LODWORD(self->_characterNGramRange.location), self->_shouldNormalizeCharacters, decrement, 0);
   qsort(*(&v16 + 1), v16, 8uLL, compareHashAndCounts);
   v7 = v16;
   if (v16)
@@ -488,26 +488,26 @@ uint64_t __63__PMLHashingVectorizer_transformWithFrequency_shouldDecrement___blo
   return result;
 }
 
-- (id)transform:(id)a3
+- (id)transform:(id)transform
 {
-  v4 = a3;
+  transformCopy = transform;
   vectorizerStrategy = self->_vectorizerStrategy;
   if (vectorizerStrategy > 3)
   {
     switch(vectorizerStrategy)
     {
       case 4:
-        v10 = self;
-        v11 = v4;
+        selfCopy2 = self;
+        v11 = transformCopy;
         v12 = 1;
         break;
       case 5:
-        v10 = self;
-        v11 = v4;
+        selfCopy2 = self;
+        v11 = transformCopy;
         v12 = 0;
         break;
       case 6:
-        v9 = [(PMLHashingVectorizer *)self transformWithWordPiece:v4];
+        v9 = [(PMLHashingVectorizer *)self transformWithWordPiece:transformCopy];
 LABEL_19:
         v13 = v9;
         goto LABEL_20;
@@ -515,31 +515,31 @@ LABEL_19:
         goto LABEL_12;
     }
 
-    v9 = [(PMLHashingVectorizer *)v10 transformBagOfIds:v11 shouldDecrement:v12];
+    v9 = [(PMLHashingVectorizer *)selfCopy2 transformBagOfIds:v11 shouldDecrement:v12];
     goto LABEL_19;
   }
 
   if ((vectorizerStrategy - 2) < 2)
   {
-    v9 = [(PMLHashingVectorizer *)self transformSequentialNGrams:v4];
+    v9 = [(PMLHashingVectorizer *)self transformSequentialNGrams:transformCopy];
     goto LABEL_19;
   }
 
   if (!vectorizerStrategy)
   {
-    v6 = self;
-    v7 = v4;
+    selfCopy4 = self;
+    v7 = transformCopy;
     v8 = 1;
     goto LABEL_16;
   }
 
   if (vectorizerStrategy == 1)
   {
-    v6 = self;
-    v7 = v4;
+    selfCopy4 = self;
+    v7 = transformCopy;
     v8 = 0;
 LABEL_16:
-    v9 = [(PMLHashingVectorizer *)v6 transformWithFrequency:v7 shouldDecrement:v8];
+    v9 = [(PMLHashingVectorizer *)selfCopy4 transformWithFrequency:v7 shouldDecrement:v8];
     goto LABEL_19;
   }
 
@@ -556,48 +556,48 @@ LABEL_20:
   return v13;
 }
 
-- (PMLHashingVectorizer)initWithBucketSize:(int)a3 characterNGramRange:(_NSRange)a4 tokenNGramRange:(_NSRange)a5 shouldNormalizeTokens:(BOOL)a6 shouldNormalizeCharacters:(BOOL)a7 localeForNonwordTokens:(id)a8 tokenizeNewlines:(BOOL)a9 idVectorLength:(unint64_t)a10 extraIdOptions:(unint64_t)a11 vectorizerStrategy:(unint64_t)a12 vectorNormalization:(int64_t)a13 vocab:(id)a14
+- (PMLHashingVectorizer)initWithBucketSize:(int)size characterNGramRange:(_NSRange)range tokenNGramRange:(_NSRange)gramRange shouldNormalizeTokens:(BOOL)tokens shouldNormalizeCharacters:(BOOL)characters localeForNonwordTokens:(id)nonwordTokens tokenizeNewlines:(BOOL)newlines idVectorLength:(unint64_t)self0 extraIdOptions:(unint64_t)self1 vectorizerStrategy:(unint64_t)self2 vectorNormalization:(int64_t)self3 vocab:(id)self4
 {
-  length = a5.length;
-  location = a5.location;
-  v34 = a4.length;
-  v35 = a4.location;
-  v18 = a8;
-  v19 = a14;
-  if (a3 <= 0)
+  length = gramRange.length;
+  location = gramRange.location;
+  v34 = range.length;
+  v35 = range.location;
+  nonwordTokensCopy = nonwordTokens;
+  vocabCopy = vocab;
+  if (size <= 0)
   {
-    v26 = [MEMORY[0x277CCA890] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"PMLHashingVectorizer.m" lineNumber:377 description:{@"Invalid parameter not satisfying: %@", @"buckets > 0"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PMLHashingVectorizer.m" lineNumber:377 description:{@"Invalid parameter not satisfying: %@", @"buckets > 0"}];
   }
 
-  if (a11 >= 8)
+  if (options >= 8)
   {
-    v27 = [MEMORY[0x277CCA890] currentHandler];
-    [v27 handleFailureInMethod:a2 object:self file:@"PMLHashingVectorizer.m" lineNumber:378 description:{@"Invalid parameter not satisfying: %@", @"extraIdOptions < PMLHashingVectorizerIdOptionLimit"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PMLHashingVectorizer.m" lineNumber:378 description:{@"Invalid parameter not satisfying: %@", @"extraIdOptions < PMLHashingVectorizerIdOptionLimit"}];
   }
 
-  if (a12 >= 7)
+  if (strategy >= 7)
   {
-    v29 = [MEMORY[0x277CCA890] currentHandler];
-    [v29 handleFailureInMethod:a2 object:self file:@"PMLHashingVectorizer.m" lineNumber:379 description:{@"Invalid parameter not satisfying: %@", @"vectorizerStrategy < PMLHashingVectorizerStrategyLimit"}];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PMLHashingVectorizer.m" lineNumber:379 description:{@"Invalid parameter not satisfying: %@", @"vectorizerStrategy < PMLHashingVectorizerStrategyLimit"}];
   }
 
-  if ((a13 - 5) <= 0xFFFFFFFFFFFFFFF9)
+  if ((normalization - 5) <= 0xFFFFFFFFFFFFFFF9)
   {
-    v30 = [MEMORY[0x277CCA890] currentHandler];
-    [v30 handleFailureInMethod:a2 object:self file:@"PMLHashingVectorizer.m" lineNumber:380 description:{@"Invalid parameter not satisfying: %@", @"vectorNormalization >= PMLVectorNormalizationNone && vectorNormalization < PMLVectorNormalizationLimit"}];
+    currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler4 handleFailureInMethod:a2 object:self file:@"PMLHashingVectorizer.m" lineNumber:380 description:{@"Invalid parameter not satisfying: %@", @"vectorNormalization >= PMLVectorNormalizationNone && vectorNormalization < PMLVectorNormalizationLimit"}];
   }
 
   if ((!v35 || !v34) && (!location || !length))
   {
-    v31 = [MEMORY[0x277CCA890] currentHandler];
-    [v31 handleFailureInMethod:a2 object:self file:@"PMLHashingVectorizer.m" lineNumber:381 description:{@"Invalid parameter not satisfying: %@", @"(characterNGramRange.location && characterNGramRange.length) || (tokenNGramRange.location && tokenNGramRange.length)"}];
+    currentHandler5 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler5 handleFailureInMethod:a2 object:self file:@"PMLHashingVectorizer.m" lineNumber:381 description:{@"Invalid parameter not satisfying: %@", @"(characterNGramRange.location && characterNGramRange.length) || (tokenNGramRange.location && tokenNGramRange.length)"}];
   }
 
-  if (a12 == 6 && !v19)
+  if (strategy == 6 && !vocabCopy)
   {
-    v28 = [MEMORY[0x277CCA890] currentHandler];
-    [v28 handleFailureInMethod:a2 object:self file:@"PMLHashingVectorizer.m" lineNumber:382 description:{@"Invalid parameter not satisfying: %@", @"vectorizerStrategy != PMLHashingVectorizerStrategyWordPiece || vocab != nil"}];
+    currentHandler6 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler6 handleFailureInMethod:a2 object:self file:@"PMLHashingVectorizer.m" lineNumber:382 description:{@"Invalid parameter not satisfying: %@", @"vectorizerStrategy != PMLHashingVectorizerStrategyWordPiece || vocab != nil"}];
   }
 
   v36.receiver = self;
@@ -606,35 +606,35 @@ LABEL_20:
   v21 = v20;
   if (v20)
   {
-    v20->_buckets = a3;
+    v20->_buckets = size;
     v20->_characterNGramRange.location = v35;
     v20->_characterNGramRange.length = v34;
     v20->_tokenNGramRange.location = location;
     v20->_tokenNGramRange.length = length;
-    v20->_shouldNormalizeTokens = a6;
-    v20->_shouldNormalizeCharacters = a7;
-    objc_storeStrong(&v20->_localeForNonwordTokens, a8);
-    v21->_tokenizeNewlines = a9;
-    if (a10)
+    v20->_shouldNormalizeTokens = tokens;
+    v20->_shouldNormalizeCharacters = characters;
+    objc_storeStrong(&v20->_localeForNonwordTokens, nonwordTokens);
+    v21->_tokenizeNewlines = newlines;
+    if (length)
     {
-      v22 = a10;
+      sizeCopy = length;
     }
 
     else
     {
-      v22 = a3;
+      sizeCopy = size;
     }
 
-    v21->_idVectorLength = v22;
-    v21->_extraIdOptions = a11;
-    v21->_vectorizerStrategy = a12;
-    v21->_vectorNormalization = a13;
-    v21->_paddingId = ((a11 << 63) >> 63) & a3;
-    v23 = vadd_s32(vdup_n_s32(a3), 0x200000001);
+    v21->_idVectorLength = sizeCopy;
+    v21->_extraIdOptions = options;
+    v21->_vectorizerStrategy = strategy;
+    v21->_vectorNormalization = normalization;
+    v21->_paddingId = ((options << 63) >> 63) & size;
+    v23 = vadd_s32(vdup_n_s32(size), 0x200000001);
     v24.i64[0] = v23.i32[0];
     v24.i64[1] = v23.i32[1];
-    *&v21->_endId = vbicq_s8(v24, vceqzq_s64(vandq_s8(vdupq_n_s64(a11), xmmword_260DB2870)));
-    objc_storeStrong(&v21->_vocab, a14);
+    *&v21->_endId = vbicq_s8(v24, vceqzq_s64(vandq_s8(vdupq_n_s64(options), xmmword_260DB2870)));
+    objc_storeStrong(&v21->_vocab, vocab);
   }
 
   return v21;

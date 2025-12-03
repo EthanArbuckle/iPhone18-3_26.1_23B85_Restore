@@ -1,20 +1,20 @@
 @interface SKUIGiftThemePickerViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)loadView;
 @end
 
 @implementation SKUIGiftThemePickerViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SKUIGiftThemePickerViewController" hasInstanceMethod:@"loadView" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"SKUIGiftThemePickerViewController" hasInstanceMethod:@"collectionView: cellForItemAtIndexPath:" withFullSignature:{"@", "@", "@", 0}];
-  [v3 validateClass:@"SKUIGiftThemePickerViewController" hasInstanceVariable:@"_pageControl" withType:"UIPageControl"];
-  [v3 validateClass:@"SKUIGiftThemePickerViewController" hasInstanceVariable:@"_themes" withType:"NSArray"];
-  [v3 validateClass:@"SKUIGiftTheme" hasInstanceMethod:@"themeName" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SKUIGiftThemePickerViewController" hasInstanceMethod:@"loadView" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"SKUIGiftThemePickerViewController" hasInstanceMethod:@"collectionView: cellForItemAtIndexPath:" withFullSignature:{"@", "@", "@", 0}];
+  [validationsCopy validateClass:@"SKUIGiftThemePickerViewController" hasInstanceVariable:@"_pageControl" withType:"UIPageControl"];
+  [validationsCopy validateClass:@"SKUIGiftThemePickerViewController" hasInstanceVariable:@"_themes" withType:"NSArray"];
+  [validationsCopy validateClass:@"SKUIGiftTheme" hasInstanceMethod:@"themeName" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -34,21 +34,21 @@
   [(SKUIGiftThemePickerViewControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v18.receiver = self;
   v18.super_class = SKUIGiftThemePickerViewControllerAccessibility;
-  v8 = [(SKUIGiftThemePickerViewControllerAccessibility *)&v18 collectionView:v6 cellForItemAtIndexPath:v7];
+  v8 = [(SKUIGiftThemePickerViewControllerAccessibility *)&v18 collectionView:viewCopy cellForItemAtIndexPath:pathCopy];
   objc_opt_class();
   v9 = [(SKUIGiftThemePickerViewControllerAccessibility *)self safeValueForKey:@"_themes"];
   v10 = __UIAccessibilityCastAsClass();
 
-  v11 = [v7 item];
-  if (v11 < [v10 count])
+  item = [pathCopy item];
+  if (item < [v10 count])
   {
-    v12 = [v10 objectAtIndex:{objc_msgSend(v7, "item")}];
+    v12 = [v10 objectAtIndex:{objc_msgSend(pathCopy, "item")}];
     v13 = [v12 safeValueForKey:@"themeName"];
     v14 = [v13 stringByReplacingOccurrencesOfString:@" " withString:&stru_2A2323958];
 

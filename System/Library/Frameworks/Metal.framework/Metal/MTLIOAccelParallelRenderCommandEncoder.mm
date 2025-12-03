@@ -1,18 +1,18 @@
 @interface MTLIOAccelParallelRenderCommandEncoder
-- (MTLIOAccelParallelRenderCommandEncoder)initWithCommandBuffer:(id)a3 renderPassDescriptor:(id)a4;
+- (MTLIOAccelParallelRenderCommandEncoder)initWithCommandBuffer:(id)buffer renderPassDescriptor:(id)descriptor;
 - (void)endEncoding;
 - (void)popDebugGroup;
-- (void)pushDebugGroup:(id)a3;
-- (void)setLabel:(id)a3;
+- (void)pushDebugGroup:(id)group;
+- (void)setLabel:(id)label;
 @end
 
 @implementation MTLIOAccelParallelRenderCommandEncoder
 
-- (MTLIOAccelParallelRenderCommandEncoder)initWithCommandBuffer:(id)a3 renderPassDescriptor:(id)a4
+- (MTLIOAccelParallelRenderCommandEncoder)initWithCommandBuffer:(id)buffer renderPassDescriptor:(id)descriptor
 {
   v9.receiver = self;
   v9.super_class = MTLIOAccelParallelRenderCommandEncoder;
-  v5 = [(_MTLParallelRenderCommandEncoder *)&v9 initWithCommandBuffer:a3 renderPassDescriptor:a4];
+  v5 = [(_MTLParallelRenderCommandEncoder *)&v9 initWithCommandBuffer:buffer renderPassDescriptor:descriptor];
   v6 = v5;
   if (v5)
   {
@@ -21,7 +21,7 @@
     if (**MEMORY[0x1E69A8488])
     {
       [(MTLDevice *)v6->super._device deviceRef];
-      [a3 globalTraceObjectID];
+      [buffer globalTraceObjectID];
       globalTraceObjectID = v6->super._globalTraceObjectID;
       [(MTLIOAccelParallelRenderCommandEncoder *)v6 getType];
       IOAccelDeviceTraceEvent();
@@ -31,7 +31,7 @@
   return v6;
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
   v7.receiver = self;
   v7.super_class = MTLIOAccelParallelRenderCommandEncoder;
@@ -41,7 +41,7 @@
     [(MTLDevice *)self->super._device deviceRef];
     globalTraceObjectID = self->super._globalTraceObjectID;
     labelTraceID = self->super._labelTraceID;
-    [a3 cStringUsingEncoding:1];
+    [label cStringUsingEncoding:1];
     self->super._labelTraceID = IOAccelDeviceTraceObjectLabel();
   }
 }
@@ -62,19 +62,19 @@
   [(_MTLParallelRenderCommandEncoder *)&v4 endEncoding];
 }
 
-- (void)pushDebugGroup:(id)a3
+- (void)pushDebugGroup:(id)group
 {
   if (**MEMORY[0x1E69A8488])
   {
     [(MTLDevice *)self->super._device deviceRef];
     globalTraceObjectID = self->super._globalTraceObjectID;
-    [a3 cStringUsingEncoding:1];
+    [group cStringUsingEncoding:1];
     IOAccelDeviceTraceObjectLabel();
   }
 
   v6.receiver = self;
   v6.super_class = MTLIOAccelParallelRenderCommandEncoder;
-  [(_MTLParallelRenderCommandEncoder *)&v6 pushDebugGroup:a3];
+  [(_MTLParallelRenderCommandEncoder *)&v6 pushDebugGroup:group];
 }
 
 - (void)popDebugGroup

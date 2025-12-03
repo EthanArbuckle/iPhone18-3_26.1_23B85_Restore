@@ -1,12 +1,12 @@
 @interface NGMPBPublicDevicePrekey
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NGMPBPublicDevicePrekey
@@ -17,20 +17,20 @@
   v8.receiver = self;
   v8.super_class = NGMPBPublicDevicePrekey;
   v4 = [(NGMPBPublicDevicePrekey *)&v8 description];
-  v5 = [(NGMPBPublicDevicePrekey *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NGMPBPublicDevicePrekey *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   prekey = self->_prekey;
   if (prekey)
   {
-    [v3 setObject:prekey forKey:@"prekey"];
+    [dictionary setObject:prekey forKey:@"prekey"];
   }
 
   prekeySignature = self->_prekeySignature;
@@ -51,9 +51,9 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   if (!self->_prekey)
   {
     [NGMPBPublicDevicePrekey writeTo:];
@@ -74,46 +74,46 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v5 = a3;
-  [v5 setPrekey:self->_prekey];
-  [v5 setPrekeySignature:self->_prekeySignature];
-  v4 = v5;
-  v5[1] = self->_timestamp;
+  toCopy = to;
+  [toCopy setPrekey:self->_prekey];
+  [toCopy setPrekeySignature:self->_prekeySignature];
+  v4 = toCopy;
+  toCopy[1] = self->_timestamp;
   if (self->_tetraPreKey)
   {
-    [v5 setTetraPreKey:?];
-    v4 = v5;
+    [toCopy setTetraPreKey:?];
+    v4 = toCopy;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_prekey copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_prekey copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
-  v8 = [(NSData *)self->_prekeySignature copyWithZone:a3];
+  v8 = [(NSData *)self->_prekeySignature copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
   *(v5 + 8) = self->_timestamp;
-  v10 = [(NSData *)self->_tetraPreKey copyWithZone:a3];
+  v10 = [(NSData *)self->_tetraPreKey copyWithZone:zone];
   v11 = *(v5 + 32);
   *(v5 + 32) = v10;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((prekey = self->_prekey, !(prekey | v4[2])) || -[NSData isEqual:](prekey, "isEqual:")) && ((prekeySignature = self->_prekeySignature, !(prekeySignature | v4[3])) || -[NSData isEqual:](prekeySignature, "isEqual:")) && self->_timestamp == *(v4 + 1))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((prekey = self->_prekey, !(prekey | equalCopy[2])) || -[NSData isEqual:](prekey, "isEqual:")) && ((prekeySignature = self->_prekeySignature, !(prekeySignature | equalCopy[3])) || -[NSData isEqual:](prekeySignature, "isEqual:")) && self->_timestamp == *(equalCopy + 1))
   {
     tetraPreKey = self->_tetraPreKey;
-    if (tetraPreKey | v4[4])
+    if (tetraPreKey | equalCopy[4])
     {
       v8 = [(NSData *)tetraPreKey isEqual:?];
     }
@@ -169,27 +169,27 @@
   return v4 ^ v3 ^ [(NSData *)self->_tetraPreKey hash]^ v13;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 2))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(NGMPBPublicDevicePrekey *)self setPrekey:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(NGMPBPublicDevicePrekey *)self setPrekeySignature:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  self->_timestamp = v4[1];
-  if (*(v4 + 4))
+  self->_timestamp = fromCopy[1];
+  if (*(fromCopy + 4))
   {
     [(NGMPBPublicDevicePrekey *)self setTetraPreKey:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

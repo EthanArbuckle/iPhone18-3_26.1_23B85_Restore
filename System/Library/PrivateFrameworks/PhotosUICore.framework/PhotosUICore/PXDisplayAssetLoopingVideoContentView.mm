@@ -4,10 +4,10 @@
 - (double)loadingProgress;
 - (id)contentView;
 - (unint64_t)activityCoordinatorQueuePosition;
-- (void)_endLoadingInterval:(BOOL)a3;
+- (void)_endLoadingInterval:(BOOL)interval;
 - (void)_endPlaybackInterval;
-- (void)_handleDidShowPlaceholderForUnloadingPlayerItem:(id)a3;
-- (void)_handlePlayerItemResult:(id)a3 info:(id)a4 requestID:(int64_t)a5;
+- (void)_handleDidShowPlaceholderForUnloadingPlayerItem:(id)item;
+- (void)_handlePlayerItemResult:(id)result info:(id)info requestID:(int64_t)d;
 - (void)_loadVideo;
 - (void)_unloadVideo;
 - (void)_updateVideoPlayerPlayerItem;
@@ -22,31 +22,31 @@
 - (void)imageProgressDidChange;
 - (void)isDisplayingFullQualityContentDidChange;
 - (void)placeholderImageFiltersDidChange;
-- (void)setActivityCoordinatorQueuePosition:(unint64_t)a3;
-- (void)setAudioSession:(id)a3;
-- (void)setCanLoadVideo:(BOOL)a3;
-- (void)setVideoLoadingProgress:(double)a3;
-- (void)setVideoPlayer:(id)a3;
-- (void)setVideoPlayerItem:(id)a3;
+- (void)setActivityCoordinatorQueuePosition:(unint64_t)position;
+- (void)setAudioSession:(id)session;
+- (void)setCanLoadVideo:(BOOL)video;
+- (void)setVideoLoadingProgress:(double)progress;
+- (void)setVideoPlayer:(id)player;
+- (void)setVideoPlayerItem:(id)item;
 - (void)toneMapVideoToStandardDynamicRangeDidChange;
 - (void)updateContent;
 @end
 
 @implementation PXDisplayAssetLoopingVideoContentView
 
-- (void)_endLoadingInterval:(BOOL)a3
+- (void)_endLoadingInterval:(BOOL)interval
 {
   v9 = *MEMORY[0x1E69E9840];
   if (self->_loadingIntervalID)
   {
-    v3 = a3;
+    intervalCopy = interval;
     v5 = [(PXDisplayAssetContentView *)self log];
     v6 = v5;
     loadingIntervalID = self->_loadingIntervalID;
     if (loadingIntervalID - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v5))
     {
       v8[0] = 67109120;
-      v8[1] = v3;
+      v8[1] = intervalCopy;
       _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v6, OS_SIGNPOST_INTERVAL_END, loadingIntervalID, "Video Loading", "Success: %d", v8, 8u);
     }
 
@@ -82,8 +82,8 @@
 
   else
   {
-    v4 = [(PXDisplayAssetContentView *)self placeholderImageFilters];
-    [(PXVideoPlayerView *)self->_videoView setPlaceholderImageFilters:v4];
+    placeholderImageFilters = [(PXDisplayAssetContentView *)self placeholderImageFilters];
+    [(PXVideoPlayerView *)self->_videoView setPlaceholderImageFilters:placeholderImageFilters];
   }
 }
 
@@ -97,14 +97,14 @@
 
 - (void)_updateVideoPlayerPlayerItem
 {
-  v3 = [(PXDisplayAssetLoopingVideoContentView *)self audioSession];
+  audioSession = [(PXDisplayAssetLoopingVideoContentView *)self audioSession];
 
-  if (v3)
+  if (audioSession)
   {
-    v4 = [(PXDisplayAssetLoopingVideoContentView *)self videoPlayerItem];
-    v5 = [(PXVideoPlayerView *)self->_videoView player];
-    v6 = v5;
-    if (v4)
+    videoPlayerItem = [(PXDisplayAssetLoopingVideoContentView *)self videoPlayerItem];
+    player = [(PXVideoPlayerView *)self->_videoView player];
+    v6 = player;
+    if (videoPlayerItem)
     {
       v7 = [(PXDisplayAssetContentView *)self log];
       self->_playbackIntervalID = os_signpost_id_generate(v7);
@@ -117,7 +117,7 @@
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v9, OS_SIGNPOST_INTERVAL_BEGIN, playbackIntervalID, "Video Playback Latency", "", v12, 2u);
       }
 
-      [v6 setLoopingEnabled:1 withTemplateItem:v4];
+      [v6 setLoopingEnabled:1 withTemplateItem:videoPlayerItem];
       LODWORD(v11) = 1.0;
       [v6 setRate:v11];
       [(PXVideoPlayerView *)self->_videoView setPlaceholderDisplayMode:0];
@@ -125,7 +125,7 @@
 
     else
     {
-      [v5 setLoopingEnabled:0 withTemplateItem:0];
+      [player setLoopingEnabled:0 withTemplateItem:0];
       [v6 setRate:0.0];
       [v6 replaceCurrentItemWithPlayerItem:0];
     }
@@ -134,30 +134,30 @@
   }
 }
 
-- (void)_handlePlayerItemResult:(id)a3 info:(id)a4 requestID:(int64_t)a5
+- (void)_handlePlayerItemResult:(id)result info:(id)info requestID:(int64_t)d
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = [v8 objectForKeyedSubscript:*off_1E7722068];
-  v10 = [v9 BOOLValue];
+  resultCopy = result;
+  infoCopy = info;
+  v9 = [infoCopy objectForKeyedSubscript:*off_1E7722068];
+  bOOLValue = [v9 BOOLValue];
 
-  if ([(PXDisplayAssetContentView *)self requestID]!= a5 || v10)
+  if ([(PXDisplayAssetContentView *)self requestID]!= d || bOOLValue)
   {
     [(PXDisplayAssetLoopingVideoContentView *)self _endLoadingInterval:0];
   }
 
   else
   {
-    [(PXDisplayAssetLoopingVideoContentView *)self _endLoadingInterval:v12 != 0];
-    [(PXDisplayAssetLoopingVideoContentView *)self setVideoPlayerItem:v12];
-    if (v12)
+    [(PXDisplayAssetLoopingVideoContentView *)self _endLoadingInterval:resultCopy != 0];
+    [(PXDisplayAssetLoopingVideoContentView *)self setVideoPlayerItem:resultCopy];
+    if (resultCopy)
     {
       [(PXDisplayAssetLoopingVideoContentView *)self setVideoLoadingProgress:1.0];
     }
 
     else
     {
-      v11 = [v8 objectForKeyedSubscript:*off_1E7722070];
+      v11 = [infoCopy objectForKeyedSubscript:*off_1E7722070];
       [(PXDisplayAssetContentView *)self handleError:v11];
     }
   }
@@ -166,20 +166,20 @@
 - (void)_loadVideo
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = [(PXDisplayAssetContentView *)self asset];
+  asset = [(PXDisplayAssetContentView *)self asset];
   [(PXDisplayAssetLoopingVideoContentView *)self _endLoadingInterval:0];
   v4 = [(PXDisplayAssetContentView *)self log];
   self->_loadingIntervalID = os_signpost_id_generate(v4);
-  v5 = [v3 uuid];
-  v6 = v5;
-  if (v5)
+  uuid = [asset uuid];
+  v6 = uuid;
+  if (uuid)
   {
-    v7 = v5;
+    v7 = uuid;
   }
 
   else
   {
-    v7 = [v3 description];
+    v7 = [asset description];
   }
 
   v8 = v7;
@@ -207,14 +207,14 @@
   *(&buf + 1) = &buf;
   v25 = 0x2020000000;
   v26 = 0;
-  v13 = [(PXDisplayAssetContentView *)self mediaProvider];
+  mediaProvider = [(PXDisplayAssetContentView *)self mediaProvider];
   v15 = MEMORY[0x1E69E9820];
   v16 = 3221225472;
   v17 = __51__PXDisplayAssetLoopingVideoContentView__loadVideo__block_invoke_3;
   v18 = &unk_1E7735DD0;
   objc_copyWeak(&v20, &location);
   p_buf = &buf;
-  v14 = [v13 requestPlayerItemForVideo:v3 options:v12 resultHandler:&v15];
+  v14 = [mediaProvider requestPlayerItemForVideo:asset options:v12 resultHandler:&v15];
 
   *(*(&buf + 1) + 24) = v14;
   [(PXDisplayAssetContentView *)self setRequestID:v14, v15, v16, v17, v18];
@@ -256,12 +256,12 @@ void __51__PXDisplayAssetLoopingVideoContentView__loadVideo__block_invoke_2(uint
   [WeakRetained setVideoLoadingProgress:v1];
 }
 
-- (void)_handleDidShowPlaceholderForUnloadingPlayerItem:(id)a3
+- (void)_handleDidShowPlaceholderForUnloadingPlayerItem:(id)item
 {
-  v4 = a3;
-  v5 = [(PXDisplayAssetLoopingVideoContentView *)self videoPlayerItem];
+  itemCopy = item;
+  videoPlayerItem = [(PXDisplayAssetLoopingVideoContentView *)self videoPlayerItem];
 
-  if (v5 == v4)
+  if (videoPlayerItem == itemCopy)
   {
 
     [(PXDisplayAssetLoopingVideoContentView *)self setVideoPlayerItem:0];
@@ -272,7 +272,7 @@ void __51__PXDisplayAssetLoopingVideoContentView__loadVideo__block_invoke_2(uint
 {
   [(PXDisplayAssetLoopingVideoContentView *)self _endPlaybackInterval];
   [(PXDisplayAssetLoopingVideoContentView *)self _endLoadingInterval:0];
-  v3 = [(PXDisplayAssetLoopingVideoContentView *)self videoPlayerItem];
+  videoPlayerItem = [(PXDisplayAssetLoopingVideoContentView *)self videoPlayerItem];
   objc_initWeak(&location, self);
   videoView = self->_videoView;
   v6[0] = MEMORY[0x1E69E9820];
@@ -280,7 +280,7 @@ void __51__PXDisplayAssetLoopingVideoContentView__loadVideo__block_invoke_2(uint
   v6[2] = __53__PXDisplayAssetLoopingVideoContentView__unloadVideo__block_invoke;
   v6[3] = &unk_1E774B248;
   objc_copyWeak(&v8, &location);
-  v5 = v3;
+  v5 = videoPlayerItem;
   v7 = v5;
   [(PXVideoPlayerView *)videoView setPlaceholderDisplayMode:1 completion:v6];
   [(PXDisplayAssetContentView *)self setRequestID:0];
@@ -295,25 +295,25 @@ void __53__PXDisplayAssetLoopingVideoContentView__unloadVideo__block_invoke(uint
   [WeakRetained _handleDidShowPlaceholderForUnloadingPlayerItem:*(a1 + 32)];
 }
 
-- (void)setVideoPlayerItem:(id)a3
+- (void)setVideoPlayerItem:(id)item
 {
-  v5 = a3;
-  if (self->_videoPlayerItem != v5)
+  itemCopy = item;
+  if (self->_videoPlayerItem != itemCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_videoPlayerItem, a3);
+    v6 = itemCopy;
+    objc_storeStrong(&self->_videoPlayerItem, item);
     [(PXDisplayAssetLoopingVideoContentView *)self _updateVideoPlayerPlayerItem];
     [(PXDisplayAssetLoopingVideoContentView *)self isDisplayingFullQualityContentDidChange];
-    v5 = v6;
+    itemCopy = v6;
   }
 }
 
-- (void)setCanLoadVideo:(BOOL)a3
+- (void)setCanLoadVideo:(BOOL)video
 {
-  if (self->_canLoadVideo != a3)
+  if (self->_canLoadVideo != video)
   {
-    self->_canLoadVideo = a3;
-    if (a3)
+    self->_canLoadVideo = video;
+    if (video)
     {
       [(PXDisplayAssetLoopingVideoContentView *)self _loadVideo];
     }
@@ -327,51 +327,51 @@ void __53__PXDisplayAssetLoopingVideoContentView__unloadVideo__block_invoke(uint
 
 - (unint64_t)activityCoordinatorQueuePosition
 {
-  v2 = [(PXDisplayAssetLoopingVideoContentView *)self queuePosition];
-  v3 = [v2 unsignedIntegerValue];
+  queuePosition = [(PXDisplayAssetLoopingVideoContentView *)self queuePosition];
+  unsignedIntegerValue = [queuePosition unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
-- (void)setActivityCoordinatorQueuePosition:(unint64_t)a3
+- (void)setActivityCoordinatorQueuePosition:(unint64_t)position
 {
-  v5 = [(PXDisplayAssetLoopingVideoContentView *)self queuePosition];
-  if (!v5 || (v6 = v5, -[PXDisplayAssetLoopingVideoContentView queuePosition](self, "queuePosition"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 unsignedIntegerValue], v7, v6, v8 != a3))
+  queuePosition = [(PXDisplayAssetLoopingVideoContentView *)self queuePosition];
+  if (!queuePosition || (v6 = queuePosition, -[PXDisplayAssetLoopingVideoContentView queuePosition](self, "queuePosition"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 unsignedIntegerValue], v7, v6, v8 != position))
   {
-    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:position];
     [(PXDisplayAssetLoopingVideoContentView *)self setQueuePosition:v9];
 
     v10 = +[PXForYouSettings sharedInstance];
-    v11 = [v10 maxSimultaneousVideoCount];
+    maxSimultaneousVideoCount = [v10 maxSimultaneousVideoCount];
 
-    [(PXDisplayAssetLoopingVideoContentView *)self setCanLoadVideo:v11 > a3];
+    [(PXDisplayAssetLoopingVideoContentView *)self setCanLoadVideo:maxSimultaneousVideoCount > position];
   }
 }
 
-- (void)setVideoLoadingProgress:(double)a3
+- (void)setVideoLoadingProgress:(double)progress
 {
-  if (self->_videoLoadingProgress != a3)
+  if (self->_videoLoadingProgress != progress)
   {
-    self->_videoLoadingProgress = a3;
+    self->_videoLoadingProgress = progress;
     [(PXDisplayAssetContentView *)self invalidateLoadingProgress];
   }
 }
 
-- (void)setAudioSession:(id)a3
+- (void)setAudioSession:(id)session
 {
-  v5 = a3;
-  if (self->_audioSession != v5)
+  sessionCopy = session;
+  if (self->_audioSession != sessionCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_audioSession, a3);
+    v7 = sessionCopy;
+    objc_storeStrong(&self->_audioSession, session);
     if (v7)
     {
-      v6 = [(PXDisplayAssetLoopingVideoContentView *)self videoPlayer];
-      [v6 setWrappedAudioSession:v7];
+      videoPlayer = [(PXDisplayAssetLoopingVideoContentView *)self videoPlayer];
+      [videoPlayer setWrappedAudioSession:v7];
     }
 
     [(PXDisplayAssetLoopingVideoContentView *)self _updateVideoPlayerPlayerItem];
-    v5 = v7;
+    sessionCopy = v7;
   }
 }
 
@@ -400,8 +400,8 @@ void __53__PXDisplayAssetLoopingVideoContentView__unloadVideo__block_invoke(uint
 
 - (BOOL)isDisplayingFullQualityContent
 {
-  v2 = [(PXDisplayAssetLoopingVideoContentView *)self videoPlayerItem];
-  v3 = v2 != 0;
+  videoPlayerItem = [(PXDisplayAssetLoopingVideoContentView *)self videoPlayerItem];
+  v3 = videoPlayerItem != 0;
 
   return v3;
 }
@@ -443,17 +443,17 @@ void __53__PXDisplayAssetLoopingVideoContentView__unloadVideo__block_invoke(uint
   v4.receiver = self;
   v4.super_class = PXDisplayAssetLoopingVideoContentView;
   [(PXDisplayAssetContentView *)&v4 imageDidChange];
-  v3 = [(PXDisplayAssetContentView *)self image];
-  [(PXVideoPlayerView *)self->_videoView setPlaceholderImage:v3];
+  image = [(PXDisplayAssetContentView *)self image];
+  [(PXVideoPlayerView *)self->_videoView setPlaceholderImage:image];
 
   [(PXDisplayAssetLoopingVideoContentView *)self _updateVideoViewPlaceholderFilters];
 }
 
 - (double)loadingProgress
 {
-  v3 = [(PXDisplayAssetLoopingVideoContentView *)self videoPlayerItem];
+  videoPlayerItem = [(PXDisplayAssetLoopingVideoContentView *)self videoPlayerItem];
 
-  if (v3)
+  if (videoPlayerItem)
   {
     return 1.0;
   }
@@ -469,13 +469,13 @@ void __53__PXDisplayAssetLoopingVideoContentView__unloadVideo__block_invoke(uint
   v11.receiver = self;
   v11.super_class = PXDisplayAssetLoopingVideoContentView;
   [(PXDisplayAssetContentView *)&v11 updateContent];
-  v3 = [(PXDisplayAssetContentView *)self mediaProvider];
-  v4 = [(PXDisplayAssetContentView *)self asset];
+  mediaProvider = [(PXDisplayAssetContentView *)self mediaProvider];
+  asset = [(PXDisplayAssetContentView *)self asset];
   [(PXDisplayAssetContentView *)self targetSize];
   v6 = v5;
   v8 = v7;
   v9 = [PXActivityCoordinator coordinatorForActivity:@"PXDisplayAssetContentViewActivityVideo"];
-  if ([(PXDisplayAssetContentView *)self isAnimatedContentEnabled]&& ([(PXDisplayAssetLoopingVideoContentView *)self window], v10 = objc_claimAutoreleasedReturnValue(), v10, v10) && v3 && v4 && v6 > 0.0 && v8 > 0.0)
+  if ([(PXDisplayAssetContentView *)self isAnimatedContentEnabled]&& ([(PXDisplayAssetLoopingVideoContentView *)self window], v10 = objc_claimAutoreleasedReturnValue(), v10, v10) && mediaProvider && asset && v6 > 0.0 && v8 > 0.0)
   {
     [v9 registerItem:self];
   }
@@ -509,23 +509,23 @@ void __53__PXDisplayAssetLoopingVideoContentView__unloadVideo__block_invoke(uint
   return result;
 }
 
-- (void)setVideoPlayer:(id)a3
+- (void)setVideoPlayer:(id)player
 {
-  v5 = a3;
+  playerCopy = player;
   videoPlayer = self->_videoPlayer;
-  if (videoPlayer != v5)
+  if (videoPlayer != playerCopy)
   {
     [(ISWrappedAVPlayer *)videoPlayer removeTimeObserver:self->_timeObserver];
-    objc_storeStrong(&self->_videoPlayer, a3);
-    v7 = [(PXDisplayAssetLoopingVideoContentView *)self audioSession];
-    if (v7)
+    objc_storeStrong(&self->_videoPlayer, player);
+    audioSession = [(PXDisplayAssetLoopingVideoContentView *)self audioSession];
+    if (audioSession)
     {
-      [(ISWrappedAVPlayer *)v5 setWrappedAudioSession:v7];
+      [(ISWrappedAVPlayer *)playerCopy setWrappedAudioSession:audioSession];
     }
 
-    [(ISWrappedAVPlayer *)v5 setVolume:0.0];
-    [(ISWrappedAVPlayer *)v5 setPreventsSleepDuringVideoPlayback:0];
-    [(PXVideoPlayerView *)self->_videoView setPlayer:v5];
+    [(ISWrappedAVPlayer *)playerCopy setVolume:0.0];
+    [(ISWrappedAVPlayer *)playerCopy setPreventsSleepDuringVideoPlayback:0];
+    [(PXVideoPlayerView *)self->_videoView setPlayer:playerCopy];
     objc_initWeak(&location, self);
     CMTimeMakeWithSeconds(&v14, 0.1, 600);
     v8 = MEMORY[0x1E69E96A0];
@@ -535,7 +535,7 @@ void __53__PXDisplayAssetLoopingVideoContentView__unloadVideo__block_invoke(uint
     v12[2] = __56__PXDisplayAssetLoopingVideoContentView_setVideoPlayer___block_invoke;
     v12[3] = &unk_1E7748F40;
     objc_copyWeak(&v13, &location);
-    v10 = [(ISWrappedAVPlayer *)v5 addPeriodicTimeObserverForInterval:&v14 queue:v8 usingBlock:v12];
+    v10 = [(ISWrappedAVPlayer *)playerCopy addPeriodicTimeObserverForInterval:&v14 queue:v8 usingBlock:v12];
     timeObserver = self->_timeObserver;
     self->_timeObserver = v10;
 

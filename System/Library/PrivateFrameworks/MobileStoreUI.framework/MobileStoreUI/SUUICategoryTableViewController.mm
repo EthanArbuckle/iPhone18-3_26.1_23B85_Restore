@@ -1,22 +1,22 @@
 @interface SUUICategoryTableViewController
 - (SUUICategoryTableViewControllerDelegate)delegate;
-- (id)_categoryAtIndexPath:(id)a3;
-- (id)_metricsLocationsToPushIndexPath:(id)a3;
-- (id)metricsPageContextForCategoryTableView:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)_metricsLocationPostionForIndexPath:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_recordClickEventForIndexPath:(id)a3 category:(id)a4 actionType:(id)a5;
-- (void)categoryArtworkLoader:(id)a3 didLoadImage:(id)a4 forCategory:(id)a5;
-- (void)categoryTableView:(id)a3 didSelectCategory:(id)a4;
+- (id)_categoryAtIndexPath:(id)path;
+- (id)_metricsLocationsToPushIndexPath:(id)path;
+- (id)metricsPageContextForCategoryTableView:(id)view;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)_metricsLocationPostionForIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_recordClickEventForIndexPath:(id)path category:(id)category actionType:(id)type;
+- (void)categoryArtworkLoader:(id)loader didLoadImage:(id)image forCategory:(id)category;
+- (void)categoryTableView:(id)view didSelectCategory:(id)category;
 - (void)dealloc;
 - (void)loadView;
-- (void)setArtworkLoader:(id)a3;
-- (void)setCategory:(id)a3;
-- (void)setNumberOfHiddenRows:(int64_t)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)setArtworkLoader:(id)loader;
+- (void)setCategory:(id)category;
+- (void)setNumberOfHiddenRows:(int64_t)rows;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SUUICategoryTableViewController
@@ -29,36 +29,36 @@
   [(SUUICategoryTableViewController *)&v3 dealloc];
 }
 
-- (void)setArtworkLoader:(id)a3
+- (void)setArtworkLoader:(id)loader
 {
-  v5 = a3;
+  loaderCopy = loader;
   artworkLoader = self->_artworkLoader;
-  if (artworkLoader != v5)
+  if (artworkLoader != loaderCopy)
   {
-    v7 = v5;
+    v7 = loaderCopy;
     [(SUUICategoryArtworkLoader *)artworkLoader removeObserver:self];
-    objc_storeStrong(&self->_artworkLoader, a3);
+    objc_storeStrong(&self->_artworkLoader, loader);
     artworkLoader = [(SUUICategoryArtworkLoader *)self->_artworkLoader addObserver:self];
-    v5 = v7;
+    loaderCopy = v7;
   }
 
-  MEMORY[0x2821F96F8](artworkLoader, v5);
+  MEMORY[0x2821F96F8](artworkLoader, loaderCopy);
 }
 
-- (void)setCategory:(id)a3
+- (void)setCategory:(id)category
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (self->_category != v5)
+  categoryCopy = category;
+  if (self->_category != categoryCopy)
   {
-    objc_storeStrong(&self->_category, a3);
+    objc_storeStrong(&self->_category, category);
     self->_childrenHaveArtwork = 0;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = [(SUUICategory *)self->_category children];
-    v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    children = [(SUUICategory *)self->_category children];
+    v7 = [children countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
       v8 = v7;
@@ -69,19 +69,19 @@
         {
           if (*v15 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(children);
           }
 
-          v11 = [*(*(&v14 + 1) + 8 * i) artworkProvider];
+          artworkProvider = [*(*(&v14 + 1) + 8 * i) artworkProvider];
 
-          if (v11)
+          if (artworkProvider)
           {
             self->_childrenHaveArtwork = 1;
             goto LABEL_12;
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v8 = [children countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v8)
         {
           continue;
@@ -95,22 +95,22 @@ LABEL_12:
 
     if ([(SUUICategoryTableViewController *)self isViewLoaded])
     {
-      v12 = [(SUUICategoryTableViewController *)self tableView];
-      [v12 reloadData];
+      tableView = [(SUUICategoryTableViewController *)self tableView];
+      [tableView reloadData];
     }
 
-    v13 = [(SUUICategory *)self->_category name];
-    [(SUUICategoryTableViewController *)self setTitle:v13];
+    name = [(SUUICategory *)self->_category name];
+    [(SUUICategoryTableViewController *)self setTitle:name];
   }
 }
 
-- (void)setNumberOfHiddenRows:(int64_t)a3
+- (void)setNumberOfHiddenRows:(int64_t)rows
 {
-  if (self->_numberOfHiddenRows != a3)
+  if (self->_numberOfHiddenRows != rows)
   {
-    self->_numberOfHiddenRows = a3;
-    v4 = [(SUUICategoryTableViewController *)self tableView];
-    [v4 reloadData];
+    self->_numberOfHiddenRows = rows;
+    tableView = [(SUUICategoryTableViewController *)self tableView];
+    [tableView reloadData];
   }
 }
 
@@ -119,11 +119,11 @@ LABEL_12:
   v7.receiver = self;
   v7.super_class = SUUICategoryTableViewController;
   [(SUUICategoryTableViewController *)&v7 loadView];
-  v3 = [(SUUICategoryTableViewController *)self tableView];
-  v4 = [MEMORY[0x277D75418] currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  tableView = [(SUUICategoryTableViewController *)self tableView];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v5 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     [MEMORY[0x277D75348] whiteColor];
   }
@@ -133,18 +133,18 @@ LABEL_12:
     [MEMORY[0x277D75348] clearColor];
   }
   v6 = ;
-  [v3 setBackgroundColor:v6];
+  [tableView setBackgroundColor:v6];
 
-  [v3 registerClass:objc_opt_class() forCellReuseIdentifier:@"a"];
-  [v3 setSeparatorStyle:0];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"a"];
+  [tableView setSeparatorStyle:0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
-  v5 = [(SUUICategoryTableViewController *)self presentingViewController];
+  appearCopy = appear;
+  presentingViewController = [(SUUICategoryTableViewController *)self presentingViewController];
 
-  if (v5)
+  if (presentingViewController)
   {
     clientContext = self->_clientContext;
     if (clientContext)
@@ -158,37 +158,37 @@ LABEL_12:
     }
     v7 = ;
     v8 = [objc_alloc(MEMORY[0x277D751E0]) initWithTitle:v7 style:2 target:self action:sel__doneButtonAction_];
-    v9 = [(SUUICategoryTableViewController *)self navigationItem];
-    [v9 setRightBarButtonItem:v8];
+    navigationItem = [(SUUICategoryTableViewController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:v8];
   }
 
-  v10 = [(SUUICategoryTableViewController *)self tableView];
-  v11 = [v10 indexPathForSelectedRow];
+  tableView = [(SUUICategoryTableViewController *)self tableView];
+  indexPathForSelectedRow = [tableView indexPathForSelectedRow];
 
-  if (v11)
+  if (indexPathForSelectedRow)
   {
-    v12 = [(SUUICategoryTableViewController *)self tableView];
-    [v12 deselectRowAtIndexPath:v11 animated:1];
+    tableView2 = [(SUUICategoryTableViewController *)self tableView];
+    [tableView2 deselectRowAtIndexPath:indexPathForSelectedRow animated:1];
   }
 
   v13.receiver = self;
   v13.super_class = SUUICategoryTableViewController;
-  [(SUUICategoryTableViewController *)&v13 viewWillAppear:v3];
+  [(SUUICategoryTableViewController *)&v13 viewWillAppear:appearCopy];
 }
 
-- (void)categoryArtworkLoader:(id)a3 didLoadImage:(id)a4 forCategory:(id)a5
+- (void)categoryArtworkLoader:(id)loader didLoadImage:(id)image forCategory:(id)category
 {
   v27 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
-  v9 = [(SUUICategoryTableViewController *)self tableView];
-  v10 = [v9 indexPathsForVisibleRows];
+  imageCopy = image;
+  categoryCopy = category;
+  tableView = [(SUUICategoryTableViewController *)self tableView];
+  indexPathsForVisibleRows = [tableView indexPathsForVisibleRows];
 
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v11 = v10;
+  v11 = indexPathsForVisibleRows;
   v12 = [v11 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v12)
   {
@@ -206,13 +206,13 @@ LABEL_12:
         v16 = *(*(&v22 + 1) + 8 * i);
         v17 = [(SUUICategoryTableViewController *)self _categoryAtIndexPath:v16, v22];
         v18 = v17;
-        if (v17 == v8)
+        if (v17 == categoryCopy)
         {
-          v19 = [(SUUICategoryTableViewController *)self tableView];
-          v20 = [v19 cellForRowAtIndexPath:v16];
+          tableView2 = [(SUUICategoryTableViewController *)self tableView];
+          v20 = [tableView2 cellForRowAtIndexPath:v16];
 
-          v21 = [v20 imageView];
-          [v21 setImage:v7];
+          imageView = [v20 imageView];
+          [imageView setImage:imageCopy];
 
           goto LABEL_11;
         }
@@ -231,20 +231,20 @@ LABEL_12:
 LABEL_11:
 }
 
-- (void)categoryTableView:(id)a3 didSelectCategory:(id)a4
+- (void)categoryTableView:(id)view didSelectCategory:(id)category
 {
-  v8 = a4;
+  categoryCopy = category;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
     v7 = objc_loadWeakRetained(&self->_delegate);
-    [v7 categoryTableView:self didSelectCategory:v8];
+    [v7 categoryTableView:self didSelectCategory:categoryCopy];
   }
 }
 
-- (id)metricsPageContextForCategoryTableView:(id)a3
+- (id)metricsPageContextForCategoryTableView:(id)view
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
@@ -263,13 +263,13 @@ LABEL_11:
   return v7;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"a" forIndexPath:v6];
-  v8 = [(SUUICategoryTableViewController *)self _categoryAtIndexPath:v6];
-  v9 = [v7 textLabel];
-  if ([v6 section])
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"a" forIndexPath:pathCopy];
+  v8 = [(SUUICategoryTableViewController *)self _categoryAtIndexPath:pathCopy];
+  textLabel = [v7 textLabel];
+  if ([pathCopy section])
   {
     [(SUUICategory *)v8 name];
   }
@@ -279,12 +279,12 @@ LABEL_11:
     [(SUUICategory *)v8 parentLabel];
   }
   v10 = ;
-  [v9 setText:v10];
+  [textLabel setText:v10];
 
-  if ([v6 section] == 1)
+  if ([pathCopy section] == 1)
   {
-    v11 = [(SUUICategory *)v8 children];
-    v12 = [v11 count];
+    children = [(SUUICategory *)v8 children];
+    v12 = [children count];
 
     if (v12)
     {
@@ -319,8 +319,8 @@ LABEL_9:
   v13 = 0;
 LABEL_14:
   [v7 setAccessoryType:v13];
-  v15 = [MEMORY[0x277D75418] currentDevice];
-  if ([v15 userInterfaceIdiom])
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice userInterfaceIdiom])
   {
 
 LABEL_21:
@@ -338,39 +338,39 @@ LABEL_22:
     goto LABEL_21;
   }
 
-  v17 = [(SUUICategory *)v8 artworkProvider];
+  artworkProvider = [(SUUICategory *)v8 artworkProvider];
 
   artworkLoader = self->_artworkLoader;
-  if (!v17)
+  if (!artworkProvider)
   {
     [(SUUICategoryArtworkLoader *)artworkLoader imageSize];
     goto LABEL_22;
   }
 
-  v19 = [(SUUICategoryArtworkLoader *)artworkLoader cachedImageForCategory:v8];
-  if (!v19)
+  placeholderImage = [(SUUICategoryArtworkLoader *)artworkLoader cachedImageForCategory:v8];
+  if (!placeholderImage)
   {
     [(SUUICategoryArtworkLoader *)self->_artworkLoader loadImageForCategory:v8 reason:1];
-    v19 = [(SUUICategoryArtworkLoader *)self->_artworkLoader placeholderImage];
+    placeholderImage = [(SUUICategoryArtworkLoader *)self->_artworkLoader placeholderImage];
   }
 
-  v20 = [v7 imageView];
-  [v20 setImage:v19];
+  imageView = [v7 imageView];
+  [imageView setImage:placeholderImage];
 
 LABEL_23:
 
   return v7;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if (!a4)
+  if (!section)
   {
     return self->_numberOfHiddenRows == 0;
   }
 
-  v5 = [(SUUICategory *)self->_category children];
-  v6 = [v5 count];
+  children = [(SUUICategory *)self->_category children];
+  v6 = [children count];
   numberOfHiddenRows = self->_numberOfHiddenRows;
   v8 = numberOfHiddenRows != 0;
   v9 = numberOfHiddenRows - 1;
@@ -384,31 +384,31 @@ LABEL_23:
   return v10;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v13 = a4;
-  v5 = [(SUUICategoryTableViewController *)self _categoryAtIndexPath:v13];
-  if ([v13 section] == 1 && (objc_msgSend(v5, "children"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "count"), v6, v7))
+  pathCopy = path;
+  v5 = [(SUUICategoryTableViewController *)self _categoryAtIndexPath:pathCopy];
+  if ([pathCopy section] == 1 && (objc_msgSend(v5, "children"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "count"), v6, v7))
   {
-    [(SUUICategoryTableViewController *)self _recordClickEventForIndexPath:v13 category:v5 actionType:*MEMORY[0x277D6A460]];
+    [(SUUICategoryTableViewController *)self _recordClickEventForIndexPath:pathCopy category:v5 actionType:*MEMORY[0x277D6A460]];
     v8 = objc_alloc_init(SUUICategoryTableViewController);
     [(SUUICategoryTableViewController *)v8 setArtworkLoader:self->_artworkLoader];
     [(SUUICategoryTableViewController *)v8 setCategory:v5];
     [(SUUICategoryTableViewController *)v8 setClientContext:self->_clientContext];
     [(SUUICategoryTableViewController *)self preferredContentSize];
     [(SUUICategoryTableViewController *)v8 setPreferredContentSize:?];
-    v9 = [(SUUICategoryTableViewController *)self _metricsLocationsToPushIndexPath:v13];
+    v9 = [(SUUICategoryTableViewController *)self _metricsLocationsToPushIndexPath:pathCopy];
     [(SUUICategoryTableViewController *)v8 setMetricsLocations:v9];
 
     [(SUUICategoryTableViewController *)v8 setDelegate:self];
     [(SUUICategoryTableViewController *)v8 setSelectedURL:self->_selectedURL];
-    v10 = [(SUUICategoryTableViewController *)self navigationController];
-    [v10 pushViewController:v8 animated:1];
+    navigationController = [(SUUICategoryTableViewController *)self navigationController];
+    [navigationController pushViewController:v8 animated:1];
   }
 
   else
   {
-    [(SUUICategoryTableViewController *)self _recordClickEventForIndexPath:v13 category:v5 actionType:*MEMORY[0x277D6A458]];
+    [(SUUICategoryTableViewController *)self _recordClickEventForIndexPath:pathCopy category:v5 actionType:*MEMORY[0x277D6A458]];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v12 = objc_opt_respondsToSelector();
 
@@ -424,26 +424,26 @@ LABEL_23:
 LABEL_7:
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
   v5 = MEMORY[0x277D75348];
-  v6 = a4;
-  v7 = [v5 clearColor];
-  [v6 setBackgroundColor:v7];
+  cellCopy = cell;
+  clearColor = [v5 clearColor];
+  [cellCopy setBackgroundColor:clearColor];
 
   v8 = [MEMORY[0x277D75348] colorWithWhite:0.756 alpha:1.0];
-  [v6 setSelectionTintColor:v8];
+  [cellCopy setSelectionTintColor:v8];
 }
 
-- (id)_categoryAtIndexPath:(id)a3
+- (id)_categoryAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 section];
+  pathCopy = path;
+  section = [pathCopy section];
   category = self->_category;
-  if (v5)
+  if (section)
   {
-    v7 = [(SUUICategory *)category children];
-    v8 = [v4 row];
+    children = [(SUUICategory *)category children];
+    v8 = [pathCopy row];
     numberOfHiddenRows = self->_numberOfHiddenRows;
     v10 = numberOfHiddenRows != 0;
     v11 = numberOfHiddenRows - 1;
@@ -452,7 +452,7 @@ LABEL_7:
       v11 = 0;
     }
 
-    v12 = [v7 objectAtIndex:v11 + v8];
+    v12 = [children objectAtIndex:v11 + v8];
   }
 
   else
@@ -463,13 +463,13 @@ LABEL_7:
   return v12;
 }
 
-- (int64_t)_metricsLocationPostionForIndexPath:(id)a3
+- (int64_t)_metricsLocationPostionForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 row];
-  v6 = [v4 section];
+  pathCopy = path;
+  v5 = [pathCopy row];
+  section = [pathCopy section];
 
-  if (v6 == 1 && !self->_numberOfHiddenRows)
+  if (section == 1 && !self->_numberOfHiddenRows)
   {
     ++v5;
   }
@@ -477,12 +477,12 @@ LABEL_7:
   return v5;
 }
 
-- (id)_metricsLocationsToPushIndexPath:(id)a3
+- (id)_metricsLocationsToPushIndexPath:(id)path
 {
   v4 = MEMORY[0x277D69B90];
-  v5 = a3;
+  pathCopy = path;
   v6 = objc_alloc_init(v4);
-  v7 = [(SUUICategoryTableViewController *)self _metricsLocationPostionForIndexPath:v5];
+  v7 = [(SUUICategoryTableViewController *)self _metricsLocationPostionForIndexPath:pathCopy];
 
   [v6 setLocationPosition:v7];
   [v6 setLocationType:*MEMORY[0x277D6A4E8]];
@@ -501,15 +501,15 @@ LABEL_7:
   return v9;
 }
 
-- (void)_recordClickEventForIndexPath:(id)a3 category:(id)a4 actionType:(id)a5
+- (void)_recordClickEventForIndexPath:(id)path category:(id)category actionType:(id)type
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [v10 row];
-  v12 = [v10 section];
+  categoryCopy = category;
+  typeCopy = type;
+  pathCopy = path;
+  v11 = [pathCopy row];
+  section = [pathCopy section];
 
-  if (v12 == 1 && !self->_numberOfHiddenRows)
+  if (section == 1 && !self->_numberOfHiddenRows)
   {
     ++v11;
   }
@@ -528,20 +528,20 @@ LABEL_7:
     v16 = 0;
   }
 
-  v17 = [(SUUICategoryTableViewController *)self clientContext];
+  clientContext = [(SUUICategoryTableViewController *)self clientContext];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __85__SUUICategoryTableViewController__recordClickEventForIndexPath_category_actionType___block_invoke;
   v21[3] = &unk_2798FC278;
-  v22 = v9;
+  v22 = typeCopy;
   v23 = v16;
-  v25 = self;
+  selfCopy = self;
   v26 = v11;
-  v24 = v8;
-  v18 = v8;
+  v24 = categoryCopy;
+  v18 = categoryCopy;
   v19 = v16;
-  v20 = v9;
-  [v17 getDefaultMetricsControllerWithCompletionBlock:v21];
+  v20 = typeCopy;
+  [clientContext getDefaultMetricsControllerWithCompletionBlock:v21];
 }
 
 void __85__SUUICategoryTableViewController__recordClickEventForIndexPath_category_actionType___block_invoke(uint64_t a1, void *a2)

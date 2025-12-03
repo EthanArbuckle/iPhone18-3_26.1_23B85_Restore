@@ -1,20 +1,20 @@
 @interface VNClassificationCustomHierarchy
-+ (id)customHierarchyForRequest:(id)a3 error:(id *)a4;
-- (BOOL)_addRelationships:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (Class)requestClassAndReturnError:(id *)a3;
++ (id)customHierarchyForRequest:(id)request error:(id *)error;
+- (BOOL)_addRelationships:(id)relationships error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (Class)requestClassAndReturnError:(id *)error;
 - (NSString)requestClassName;
-- (VNClassificationCustomHierarchy)customHierarchyWithAdditionalParent:(id)a3 children:(id)a4 error:(id *)a5;
-- (VNClassificationCustomHierarchy)customHierarchyWithAdditionalRelationships:(id)a3 error:(id *)a4;
-- (VNClassificationCustomHierarchy)initWithCoder:(id)a3;
-- (VNClassificationCustomHierarchy)initWithOriginatingRequestSpecifier:(id)a3 detectionLevel:(unint64_t)a4;
+- (VNClassificationCustomHierarchy)customHierarchyWithAdditionalParent:(id)parent children:(id)children error:(id *)error;
+- (VNClassificationCustomHierarchy)customHierarchyWithAdditionalRelationships:(id)relationships error:(id *)error;
+- (VNClassificationCustomHierarchy)initWithCoder:(id)coder;
+- (VNClassificationCustomHierarchy)initWithOriginatingRequestSpecifier:(id)specifier detectionLevel:(unint64_t)level;
 - (id).cxx_construct;
 - (id)description;
-- (shared_ptr<vision::mod::ImageClassifier_HierarchicalModel>)hierarchicalModelAndReturnError:(id *)a3;
-- (shared_ptr<vision::mod::ImageClassifier_HierarchicalModel>)newHierarchicalModelAndReturnError:(id *)a3;
+- (shared_ptr<vision::mod::ImageClassifier_HierarchicalModel>)hierarchicalModelAndReturnError:(id *)error;
+- (shared_ptr<vision::mod::ImageClassifier_HierarchicalModel>)newHierarchicalModelAndReturnError:(id *)error;
 - (unint64_t)hash;
 - (unint64_t)requestRevision;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VNClassificationCustomHierarchy
@@ -28,40 +28,40 @@
 
 - (unint64_t)requestRevision
 {
-  v2 = [(VNClassificationCustomHierarchy *)self originatingRequestSpecifier];
-  v3 = [v2 requestRevision];
+  originatingRequestSpecifier = [(VNClassificationCustomHierarchy *)self originatingRequestSpecifier];
+  requestRevision = [originatingRequestSpecifier requestRevision];
 
-  return v3;
+  return requestRevision;
 }
 
-- (Class)requestClassAndReturnError:(id *)a3
+- (Class)requestClassAndReturnError:(id *)error
 {
-  v4 = [(VNClassificationCustomHierarchy *)self originatingRequestSpecifier];
-  v5 = [v4 requestClassAndReturnError:a3];
+  originatingRequestSpecifier = [(VNClassificationCustomHierarchy *)self originatingRequestSpecifier];
+  v5 = [originatingRequestSpecifier requestClassAndReturnError:error];
 
   return v5;
 }
 
 - (NSString)requestClassName
 {
-  v2 = [(VNClassificationCustomHierarchy *)self originatingRequestSpecifier];
-  v3 = [v2 requestClassName];
+  originatingRequestSpecifier = [(VNClassificationCustomHierarchy *)self originatingRequestSpecifier];
+  requestClassName = [originatingRequestSpecifier requestClassName];
 
-  return v3;
+  return requestClassName;
 }
 
-- (VNClassificationCustomHierarchy)initWithCoder:(id)a3
+- (VNClassificationCustomHierarchy)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Req"];
-  v6 = -[VNClassificationCustomHierarchy initWithOriginatingRequestSpecifier:detectionLevel:](self, "initWithOriginatingRequestSpecifier:detectionLevel:", v5, [v4 decodeIntegerForKey:@"SCRDL"]);
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Req"];
+  v6 = -[VNClassificationCustomHierarchy initWithOriginatingRequestSpecifier:detectionLevel:](self, "initWithOriginatingRequestSpecifier:detectionLevel:", v5, [coderCopy decodeIntegerForKey:@"SCRDL"]);
   if (v6)
   {
     v7 = objc_alloc(MEMORY[0x1E695DFD8]);
     v8 = objc_opt_class();
     v9 = objc_opt_class();
     v10 = [v7 initWithObjects:{v8, v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"AR"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"AR"];
     if (v11)
     {
       v17 = 0;
@@ -74,7 +74,7 @@
 
       else
       {
-        [v4 failWithError:v13];
+        [coderCopy failWithError:v13];
         v14 = 0;
       }
     }
@@ -82,7 +82,7 @@
     else
     {
       v15 = [VNError errorForInternalErrorWithLocalizedDescription:@"could not decode additional relationships"];
-      [v4 failWithError:v15];
+      [coderCopy failWithError:v15];
 
       v14 = 0;
     }
@@ -96,12 +96,12 @@
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_originatingRequestSpecifier forKey:@"Req"];
-  [v4 encodeInteger:self->_originatingRequestDetectionLevel forKey:@"SCRDL"];
-  [v4 encodeObject:self->_additionalRelationships forKey:@"AR"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_originatingRequestSpecifier forKey:@"Req"];
+  [coderCopy encodeInteger:self->_originatingRequestDetectionLevel forKey:@"SCRDL"];
+  [coderCopy encodeObject:self->_additionalRelationships forKey:@"AR"];
 }
 
 - (id)description
@@ -109,16 +109,16 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(VNClassificationCustomHierarchy *)self originatingRequestSpecifier];
-  v7 = [v3 stringWithFormat:@"%@: %@, %@", v5, v6, self->_additionalRelationships];
+  originatingRequestSpecifier = [(VNClassificationCustomHierarchy *)self originatingRequestSpecifier];
+  v7 = [v3 stringWithFormat:@"%@: %@, %@", v5, originatingRequestSpecifier, self->_additionalRelationships];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -128,13 +128,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(VNClassificationCustomHierarchy *)self requestRevision];
-      if (v6 == [(VNClassificationCustomHierarchy *)v5 requestRevision])
+      v5 = equalCopy;
+      requestRevision = [(VNClassificationCustomHierarchy *)self requestRevision];
+      if (requestRevision == [(VNClassificationCustomHierarchy *)v5 requestRevision])
       {
-        v7 = [(VNClassificationCustomHierarchy *)self relationships];
-        v8 = [(VNClassificationCustomHierarchy *)v5 relationships];
-        v9 = [v7 isEqualToDictionary:v8];
+        relationships = [(VNClassificationCustomHierarchy *)self relationships];
+        relationships2 = [(VNClassificationCustomHierarchy *)v5 relationships];
+        v9 = [relationships isEqualToDictionary:relationships2];
       }
 
       else
@@ -154,71 +154,71 @@
 
 - (unint64_t)hash
 {
-  v3 = [(VNClassificationCustomHierarchy *)self requestRevision];
-  v4 = [(VNClassificationCustomHierarchy *)self relationships];
-  v5 = [v4 hash] ^ __ROR8__(v3, 51);
+  requestRevision = [(VNClassificationCustomHierarchy *)self requestRevision];
+  relationships = [(VNClassificationCustomHierarchy *)self relationships];
+  v5 = [relationships hash] ^ __ROR8__(requestRevision, 51);
 
   return v5;
 }
 
-- (VNClassificationCustomHierarchy)customHierarchyWithAdditionalRelationships:(id)a3 error:(id *)a4
+- (VNClassificationCustomHierarchy)customHierarchyWithAdditionalRelationships:(id)relationships error:(id *)error
 {
-  v6 = a3;
-  if (![v6 count])
+  relationshipsCopy = relationships;
+  if (![relationshipsCopy count])
   {
-    v11 = self;
+    selfCopy = self;
     goto LABEL_10;
   }
 
-  v7 = [(VNClassificationCustomHierarchy *)self requestDetectionLevel];
+  requestDetectionLevel = [(VNClassificationCustomHierarchy *)self requestDetectionLevel];
   v8 = objc_alloc(objc_opt_class());
-  v9 = [(VNClassificationCustomHierarchy *)self originatingRequestSpecifier];
-  v10 = [v8 initWithOriginatingRequestSpecifier:v9 detectionLevel:v7];
+  originatingRequestSpecifier = [(VNClassificationCustomHierarchy *)self originatingRequestSpecifier];
+  v10 = [v8 initWithOriginatingRequestSpecifier:originatingRequestSpecifier detectionLevel:requestDetectionLevel];
 
   if (!v10)
   {
-    if (a4)
+    if (error)
     {
       +[VNError errorForMemoryAllocationFailure];
-      *a4 = v11 = 0;
+      *error = selfCopy = 0;
       goto LABEL_9;
     }
 
 LABEL_8:
-    v11 = 0;
+    selfCopy = 0;
     goto LABEL_9;
   }
 
-  if (![v10 _addRelationships:v6 error:a4])
+  if (![v10 _addRelationships:relationshipsCopy error:error])
   {
     goto LABEL_8;
   }
 
-  v11 = v10;
+  selfCopy = v10;
 LABEL_9:
 
 LABEL_10:
 
-  return v11;
+  return selfCopy;
 }
 
-- (VNClassificationCustomHierarchy)customHierarchyWithAdditionalParent:(id)a3 children:(id)a4 error:(id *)a5
+- (VNClassificationCustomHierarchy)customHierarchyWithAdditionalParent:(id)parent children:(id)children error:(id *)error
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if ([v9 count])
+  parentCopy = parent;
+  childrenCopy = children;
+  if ([childrenCopy count])
   {
-    v13 = v8;
-    v14[0] = v9;
+    v13 = parentCopy;
+    v14[0] = childrenCopy;
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
-    v11 = [(VNClassificationCustomHierarchy *)self customHierarchyWithAdditionalRelationships:v10 error:a5];
+    v11 = [(VNClassificationCustomHierarchy *)self customHierarchyWithAdditionalRelationships:v10 error:error];
   }
 
-  else if (a5)
+  else if (error)
   {
     [VNError errorForInvalidOperationWithLocalizedDescription:@"additional relationships must have at least one child identifier"];
-    *a5 = v11 = 0;
+    *error = v11 = 0;
   }
 
   else
@@ -229,19 +229,19 @@ LABEL_10:
   return v11;
 }
 
-- (BOOL)_addRelationships:(id)a3 error:(id *)a4
+- (BOOL)_addRelationships:(id)relationships error:(id *)error
 {
-  v6 = a3;
-  if (![v6 count])
+  relationshipsCopy = relationships;
+  if (![relationshipsCopy count])
   {
     v11 = 1;
     goto LABEL_11;
   }
 
-  [(VNClassificationCustomHierarchy *)self hierarchicalModelAndReturnError:a4];
+  [(VNClassificationCustomHierarchy *)self hierarchicalModelAndReturnError:error];
   if (v16)
   {
-    if (_addRelationshipsToHierarchicalModel(v16, v6, a4))
+    if (_addRelationshipsToHierarchicalModel(v16, relationshipsCopy, error))
     {
       v7 = [(NSDictionary *)self->_additionalRelationships mutableCopy];
       v14[0] = MEMORY[0x1E69E9820];
@@ -250,7 +250,7 @@ LABEL_10:
       v14[3] = &unk_1E77B5BB0;
       v8 = v7;
       v15 = v8;
-      [v6 enumerateKeysAndObjectsUsingBlock:v14];
+      [relationshipsCopy enumerateKeysAndObjectsUsingBlock:v14];
       v9 = [v8 copy];
       additionalRelationships = self->_additionalRelationships;
       self->_additionalRelationships = v9;
@@ -288,10 +288,10 @@ void __59__VNClassificationCustomHierarchy__addRelationships_error___block_invok
   [*(a1 + 32) setObject:v6 forKeyedSubscript:v7];
 }
 
-- (shared_ptr<vision::mod::ImageClassifier_HierarchicalModel>)newHierarchicalModelAndReturnError:(id *)a3
+- (shared_ptr<vision::mod::ImageClassifier_HierarchicalModel>)newHierarchicalModelAndReturnError:(id *)error
 {
   v4 = v3;
-  if (a3)
+  if (error)
   {
     v7 = MEMORY[0x1E696AEC0];
     v8 = objc_opt_class();
@@ -299,7 +299,7 @@ void __59__VNClassificationCustomHierarchy__addRelationships_error___block_invok
     v10 = NSStringFromSelector(a2);
     v11 = [v7 stringWithFormat:@"%@ must provide an implementation for %@", v9, v10];
 
-    *a3 = [VNError errorForUnimplementedFunctionWithLocalizedDescription:v11];
+    *error = [VNError errorForUnimplementedFunctionWithLocalizedDescription:v11];
   }
 
   *v4 = 0;
@@ -309,15 +309,15 @@ void __59__VNClassificationCustomHierarchy__addRelationships_error___block_invok
   return result;
 }
 
-- (shared_ptr<vision::mod::ImageClassifier_HierarchicalModel>)hierarchicalModelAndReturnError:(id *)a3
+- (shared_ptr<vision::mod::ImageClassifier_HierarchicalModel>)hierarchicalModelAndReturnError:(id *)error
 {
-  v4 = self;
+  selfCopy = self;
   v5 = v3;
   ptr = self->_hierarchicalModel_DO_NOT_ACCESS_DIRECTLY.__ptr_;
   if (ptr)
   {
 LABEL_14:
-    cntrl = v4->_hierarchicalModel_DO_NOT_ACCESS_DIRECTLY.__cntrl_;
+    cntrl = selfCopy->_hierarchicalModel_DO_NOT_ACCESS_DIRECTLY.__cntrl_;
     *v5 = ptr;
     v5[1] = cntrl;
     if (cntrl)
@@ -329,16 +329,16 @@ LABEL_14:
   }
 
   [(VNClassificationCustomHierarchy *)self newHierarchicalModelAndReturnError:?];
-  if (v11 && _addRelationshipsToHierarchicalModel(v11, v4->_additionalRelationships, a3))
+  if (v11 && _addRelationshipsToHierarchicalModel(v11, selfCopy->_additionalRelationships, error))
   {
     if (v12)
     {
       atomic_fetch_add_explicit((v12 + 8), 1uLL, memory_order_relaxed);
     }
 
-    v8 = v4->_hierarchicalModel_DO_NOT_ACCESS_DIRECTLY.__cntrl_;
-    v4->_hierarchicalModel_DO_NOT_ACCESS_DIRECTLY.__ptr_ = v11;
-    v4->_hierarchicalModel_DO_NOT_ACCESS_DIRECTLY.__cntrl_ = v12;
+    v8 = selfCopy->_hierarchicalModel_DO_NOT_ACCESS_DIRECTLY.__cntrl_;
+    selfCopy->_hierarchicalModel_DO_NOT_ACCESS_DIRECTLY.__ptr_ = v11;
+    selfCopy->_hierarchicalModel_DO_NOT_ACCESS_DIRECTLY.__cntrl_ = v12;
     if (v8)
     {
       std::__shared_weak_count::__release_shared[abi:ne200100](v8);
@@ -362,7 +362,7 @@ LABEL_14:
 
   if (v9)
   {
-    ptr = v4->_hierarchicalModel_DO_NOT_ACCESS_DIRECTLY.__ptr_;
+    ptr = selfCopy->_hierarchicalModel_DO_NOT_ACCESS_DIRECTLY.__ptr_;
     goto LABEL_14;
   }
 
@@ -372,17 +372,17 @@ LABEL_16:
   return result;
 }
 
-- (VNClassificationCustomHierarchy)initWithOriginatingRequestSpecifier:(id)a3 detectionLevel:(unint64_t)a4
+- (VNClassificationCustomHierarchy)initWithOriginatingRequestSpecifier:(id)specifier detectionLevel:(unint64_t)level
 {
-  v7 = a3;
+  specifierCopy = specifier;
   v13.receiver = self;
   v13.super_class = VNClassificationCustomHierarchy;
   v8 = [(VNClassificationCustomHierarchy *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_originatingRequestSpecifier, a3);
-    v9->_originatingRequestDetectionLevel = a4;
+    objc_storeStrong(&v8->_originatingRequestSpecifier, specifier);
+    v9->_originatingRequestDetectionLevel = level;
     v10 = objc_alloc_init(MEMORY[0x1E695DF20]);
     additionalRelationships = v9->_additionalRelationships;
     v9->_additionalRelationships = v10;
@@ -391,25 +391,25 @@ LABEL_16:
   return v9;
 }
 
-+ (id)customHierarchyForRequest:(id)a3 error:(id *)a4
++ (id)customHierarchyForRequest:(id)request error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 specifier];
-  if ([v6 specifiesRequestClass:objc_opt_class()])
+  requestCopy = request;
+  specifier = [requestCopy specifier];
+  if ([specifier specifiesRequestClass:objc_opt_class()])
   {
-    v7 = v5;
-    v8 = [v6 requestRevision];
-    if (v8 > 3737841663)
+    v7 = requestCopy;
+    requestRevision = [specifier requestRevision];
+    if (requestRevision > 3737841663)
     {
-      if (v8 != 3737841664)
+      if (requestRevision != 3737841664)
       {
-        if (v8 != 3737841665)
+        if (requestRevision != 3737841665)
         {
 LABEL_5:
-          if (a4)
+          if (error)
           {
-            v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unable to determine classification hierarchy for a given request revision: %lu", v8];
-            *a4 = [VNError errorForInternalErrorWithLocalizedDescription:v9];
+            v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unable to determine classification hierarchy for a given request revision: %lu", requestRevision];
+            *error = [VNError errorForInternalErrorWithLocalizedDescription:v9];
           }
 
           goto LABEL_16;
@@ -419,41 +419,41 @@ LABEL_5:
       }
     }
 
-    else if (v8 != 1)
+    else if (requestRevision != 1)
     {
-      if (v8 != 2)
+      if (requestRevision != 2)
       {
         goto LABEL_5;
       }
 
 LABEL_11:
-      v10 = [objc_alloc(objc_opt_class()) initWithOriginatingRequestSpecifier:v6 detectionLevel:{objc_msgSend(v7, "detectionLevel")}];
+      v10 = [objc_alloc(objc_opt_class()) initWithOriginatingRequestSpecifier:specifier detectionLevel:{objc_msgSend(v7, "detectionLevel")}];
       goto LABEL_17;
     }
 
-    if (!a4)
+    if (!error)
     {
 LABEL_16:
       v10 = 0;
       goto LABEL_17;
     }
 
-    [VNError errorForUnsupportedRevision:v8 ofRequest:v7];
-    *a4 = v10 = 0;
+    [VNError errorForUnsupportedRevision:requestRevision ofRequest:v7];
+    *error = v10 = 0;
 LABEL_17:
 
     goto LABEL_18;
   }
 
-  if ([v6 specifiesRequestClass:objc_opt_class()])
+  if ([specifier specifiesRequestClass:objc_opt_class()])
   {
-    v10 = -[VNClassificationCustomHierarchy initWithOriginatingRequestSpecifier:detectionLevel:]([_VNImageAnalyzerMultiDetectorClassificationCustomHierarchy alloc], "initWithOriginatingRequestSpecifier:detectionLevel:", v6, [v5 detectionLevel]);
+    v10 = -[VNClassificationCustomHierarchy initWithOriginatingRequestSpecifier:detectionLevel:]([_VNImageAnalyzerMultiDetectorClassificationCustomHierarchy alloc], "initWithOriginatingRequestSpecifier:detectionLevel:", specifier, [requestCopy detectionLevel]);
   }
 
-  else if (a4)
+  else if (error)
   {
-    [VNError errorForUnsupportedConfigurationOfRequest:v5];
-    *a4 = v10 = 0;
+    [VNError errorForUnsupportedConfigurationOfRequest:requestCopy];
+    *error = v10 = 0;
   }
 
   else

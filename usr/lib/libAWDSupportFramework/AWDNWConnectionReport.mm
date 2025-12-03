@@ -1,21 +1,21 @@
 @interface AWDNWConnectionReport
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsAppleApp:(id)a3;
-- (int)StringAsAppleHost:(id)a3;
-- (int)StringAsConnectedAddressFamily:(id)a3;
-- (int)StringAsConnectedInterfaceType:(id)a3;
-- (int)StringAsConnectionMode:(id)a3;
-- (int)StringAsDnsProtocol:(id)a3;
-- (int)StringAsDnsProvider:(id)a3;
-- (int)StringAsFailureReason:(id)a3;
-- (int)StringAsFirstAddressFamily:(id)a3;
-- (int)StringAsStackLevel:(id)a3;
-- (int)StringAsTlsVersion:(id)a3;
-- (int)StringAsTransportProtocol:(id)a3;
-- (int)StringAsUsedProxyType:(id)a3;
+- (int)StringAsAppleApp:(id)app;
+- (int)StringAsAppleHost:(id)host;
+- (int)StringAsConnectedAddressFamily:(id)family;
+- (int)StringAsConnectedInterfaceType:(id)type;
+- (int)StringAsConnectionMode:(id)mode;
+- (int)StringAsDnsProtocol:(id)protocol;
+- (int)StringAsDnsProvider:(id)provider;
+- (int)StringAsFailureReason:(id)reason;
+- (int)StringAsFirstAddressFamily:(id)family;
+- (int)StringAsStackLevel:(id)level;
+- (int)StringAsTlsVersion:(id)version;
+- (int)StringAsTransportProtocol:(id)protocol;
+- (int)StringAsUsedProxyType:(id)type;
 - (int)appleApp;
 - (int)appleHost;
 - (int)connectedAddressFamily;
@@ -30,80 +30,80 @@
 - (int)transportProtocol;
 - (int)usedProxyType;
 - (unint64_t)hash;
-- (void)addActivities:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addActivities:(id)activities;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAppleApp:(BOOL)a3;
-- (void)setHasAppleHost:(BOOL)a3;
-- (void)setHasBytesDuplicate:(BOOL)a3;
-- (void)setHasBytesIn:(BOOL)a3;
-- (void)setHasBytesOut:(BOOL)a3;
-- (void)setHasBytesOutOfOrder:(BOOL)a3;
-- (void)setHasBytesRetransmitted:(BOOL)a3;
-- (void)setHasConnectedAddressFamily:(BOOL)a3;
-- (void)setHasConnectedAddressIndex:(BOOL)a3;
-- (void)setHasConnectedInterfaceType:(BOOL)a3;
-- (void)setHasConnectionMode:(BOOL)a3;
-- (void)setHasConnectionReuseCount:(BOOL)a3;
-- (void)setHasCurrentRTT:(BOOL)a3;
-- (void)setHasCustomProxyConfigured:(BOOL)a3;
-- (void)setHasDataStallCount:(BOOL)a3;
-- (void)setHasDnsProtocol:(BOOL)a3;
-- (void)setHasDnsProvider:(BOOL)a3;
-- (void)setHasFailureReason:(BOOL)a3;
-- (void)setHasFallbackEligible:(BOOL)a3;
-- (void)setHasFirstAddressFamily:(BOOL)a3;
-- (void)setHasFirstParty:(BOOL)a3;
-- (void)setHasFlowConnectMilliseconds:(BOOL)a3;
-- (void)setHasFlowDurationMilliseconds:(BOOL)a3;
-- (void)setHasIpv4AddressCount:(BOOL)a3;
-- (void)setHasIpv4Available:(BOOL)a3;
-- (void)setHasIpv4DNSServerCount:(BOOL)a3;
-- (void)setHasIpv6AddressCount:(BOOL)a3;
-- (void)setHasIpv6Available:(BOOL)a3;
-- (void)setHasIpv6DNSServerCount:(BOOL)a3;
-- (void)setHasIsDaemon:(BOOL)a3;
-- (void)setHasIsPathConstrained:(BOOL)a3;
-- (void)setHasIsPathExpensive:(BOOL)a3;
-- (void)setHasMultipathBytesInCell:(BOOL)a3;
-- (void)setHasMultipathBytesInInitial:(BOOL)a3;
-- (void)setHasMultipathBytesInWiFi:(BOOL)a3;
-- (void)setHasMultipathBytesOutCell:(BOOL)a3;
-- (void)setHasMultipathBytesOutInitial:(BOOL)a3;
-- (void)setHasMultipathBytesOutWiFi:(BOOL)a3;
-- (void)setHasMultipathConfigured:(BOOL)a3;
-- (void)setHasMultipathServiceType:(BOOL)a3;
-- (void)setHasPacketsIn:(BOOL)a3;
-- (void)setHasPacketsOut:(BOOL)a3;
-- (void)setHasPathTriggerMilliseconds:(BOOL)a3;
-- (void)setHasProhibitsConstrained:(BOOL)a3;
-- (void)setHasProhibitsExpensive:(BOOL)a3;
-- (void)setHasProxyMilliseconds:(BOOL)a3;
-- (void)setHasRTTvariance:(BOOL)a3;
-- (void)setHasResolutionMilliseconds:(BOOL)a3;
-- (void)setHasResolutionRequired:(BOOL)a3;
-- (void)setHasSecondsSinceInterfaceChange:(BOOL)a3;
-- (void)setHasSmoothedRTT:(BOOL)a3;
-- (void)setHasStackLevel:(BOOL)a3;
-- (void)setHasSynRetransmissionCount:(BOOL)a3;
-- (void)setHasSynthesizedExtraIPv6Address:(BOOL)a3;
-- (void)setHasSynthesizedIPv6Address:(BOOL)a3;
-- (void)setHasSystemProxyConfigured:(BOOL)a3;
-- (void)setHasTfoConfigured:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)setHasTlsConfigured:(BOOL)a3;
-- (void)setHasTlsHandshakeTimedOut:(BOOL)a3;
-- (void)setHasTlsMilliseconds:(BOOL)a3;
-- (void)setHasTlsVersion:(BOOL)a3;
-- (void)setHasTlsVersionTimeout:(BOOL)a3;
-- (void)setHasTrafficClass:(BOOL)a3;
-- (void)setHasTransportProtocol:(BOOL)a3;
-- (void)setHasTriggeredPath:(BOOL)a3;
-- (void)setHasUsedFallback:(BOOL)a3;
-- (void)setHasUsedProxyType:(BOOL)a3;
-- (void)setHasWeakFallback:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasAppleApp:(BOOL)app;
+- (void)setHasAppleHost:(BOOL)host;
+- (void)setHasBytesDuplicate:(BOOL)duplicate;
+- (void)setHasBytesIn:(BOOL)in;
+- (void)setHasBytesOut:(BOOL)out;
+- (void)setHasBytesOutOfOrder:(BOOL)order;
+- (void)setHasBytesRetransmitted:(BOOL)retransmitted;
+- (void)setHasConnectedAddressFamily:(BOOL)family;
+- (void)setHasConnectedAddressIndex:(BOOL)index;
+- (void)setHasConnectedInterfaceType:(BOOL)type;
+- (void)setHasConnectionMode:(BOOL)mode;
+- (void)setHasConnectionReuseCount:(BOOL)count;
+- (void)setHasCurrentRTT:(BOOL)t;
+- (void)setHasCustomProxyConfigured:(BOOL)configured;
+- (void)setHasDataStallCount:(BOOL)count;
+- (void)setHasDnsProtocol:(BOOL)protocol;
+- (void)setHasDnsProvider:(BOOL)provider;
+- (void)setHasFailureReason:(BOOL)reason;
+- (void)setHasFallbackEligible:(BOOL)eligible;
+- (void)setHasFirstAddressFamily:(BOOL)family;
+- (void)setHasFirstParty:(BOOL)party;
+- (void)setHasFlowConnectMilliseconds:(BOOL)milliseconds;
+- (void)setHasFlowDurationMilliseconds:(BOOL)milliseconds;
+- (void)setHasIpv4AddressCount:(BOOL)count;
+- (void)setHasIpv4Available:(BOOL)available;
+- (void)setHasIpv4DNSServerCount:(BOOL)count;
+- (void)setHasIpv6AddressCount:(BOOL)count;
+- (void)setHasIpv6Available:(BOOL)available;
+- (void)setHasIpv6DNSServerCount:(BOOL)count;
+- (void)setHasIsDaemon:(BOOL)daemon;
+- (void)setHasIsPathConstrained:(BOOL)constrained;
+- (void)setHasIsPathExpensive:(BOOL)expensive;
+- (void)setHasMultipathBytesInCell:(BOOL)cell;
+- (void)setHasMultipathBytesInInitial:(BOOL)initial;
+- (void)setHasMultipathBytesInWiFi:(BOOL)fi;
+- (void)setHasMultipathBytesOutCell:(BOOL)cell;
+- (void)setHasMultipathBytesOutInitial:(BOOL)initial;
+- (void)setHasMultipathBytesOutWiFi:(BOOL)fi;
+- (void)setHasMultipathConfigured:(BOOL)configured;
+- (void)setHasMultipathServiceType:(BOOL)type;
+- (void)setHasPacketsIn:(BOOL)in;
+- (void)setHasPacketsOut:(BOOL)out;
+- (void)setHasPathTriggerMilliseconds:(BOOL)milliseconds;
+- (void)setHasProhibitsConstrained:(BOOL)constrained;
+- (void)setHasProhibitsExpensive:(BOOL)expensive;
+- (void)setHasProxyMilliseconds:(BOOL)milliseconds;
+- (void)setHasRTTvariance:(BOOL)tvariance;
+- (void)setHasResolutionMilliseconds:(BOOL)milliseconds;
+- (void)setHasResolutionRequired:(BOOL)required;
+- (void)setHasSecondsSinceInterfaceChange:(BOOL)change;
+- (void)setHasSmoothedRTT:(BOOL)t;
+- (void)setHasStackLevel:(BOOL)level;
+- (void)setHasSynRetransmissionCount:(BOOL)count;
+- (void)setHasSynthesizedExtraIPv6Address:(BOOL)address;
+- (void)setHasSynthesizedIPv6Address:(BOOL)address;
+- (void)setHasSystemProxyConfigured:(BOOL)configured;
+- (void)setHasTfoConfigured:(BOOL)configured;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)setHasTlsConfigured:(BOOL)configured;
+- (void)setHasTlsHandshakeTimedOut:(BOOL)out;
+- (void)setHasTlsMilliseconds:(BOOL)milliseconds;
+- (void)setHasTlsVersion:(BOOL)version;
+- (void)setHasTlsVersionTimeout:(BOOL)timeout;
+- (void)setHasTrafficClass:(BOOL)class;
+- (void)setHasTransportProtocol:(BOOL)protocol;
+- (void)setHasTriggeredPath:(BOOL)path;
+- (void)setHasUsedFallback:(BOOL)fallback;
+- (void)setHasUsedProxyType:(BOOL)type;
+- (void)setHasWeakFallback:(BOOL)fallback;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDNWConnectionReport
@@ -122,10 +122,10 @@
   [(AWDNWConnectionReport *)&v3 dealloc];
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
   v3 = 0x100000000;
-  if (!a3)
+  if (!timestamp)
   {
     v3 = 0;
   }
@@ -133,9 +133,9 @@
   *&self->_has = *&self->_has & 0xFFFFFFFEFFFFFFFFLL | v3;
 }
 
-- (void)setHasTriggeredPath:(BOOL)a3
+- (void)setHasTriggeredPath:(BOOL)path
 {
-  if (a3)
+  if (path)
   {
     v3 = 16;
   }
@@ -148,10 +148,10 @@
   *(&self->_has + 8) = *(&self->_has + 8) & 0xEF | v3;
 }
 
-- (void)setHasSystemProxyConfigured:(BOOL)a3
+- (void)setHasSystemProxyConfigured:(BOOL)configured
 {
   v3 = 0x4000000000000000;
-  if (!a3)
+  if (!configured)
   {
     v3 = 0;
   }
@@ -159,10 +159,10 @@
   *&self->_has = *&self->_has & 0xBFFFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasCustomProxyConfigured:(BOOL)a3
+- (void)setHasCustomProxyConfigured:(BOOL)configured
 {
   v3 = 0x1000000000000;
-  if (!a3)
+  if (!configured)
   {
     v3 = 0;
   }
@@ -183,10 +183,10 @@
   }
 }
 
-- (void)setHasUsedProxyType:(BOOL)a3
+- (void)setHasUsedProxyType:(BOOL)type
 {
   v3 = 0x800000000000;
-  if (!a3)
+  if (!type)
   {
     v3 = 0;
   }
@@ -194,29 +194,29 @@
   *&self->_has = *&self->_has & 0xFFFF7FFFFFFFFFFFLL | v3;
 }
 
-- (int)StringAsUsedProxyType:(id)a3
+- (int)StringAsUsedProxyType:(id)type
 {
-  if ([a3 isEqualToString:@"NW_PROXY_TYPE_NONE"])
+  if ([type isEqualToString:@"NW_PROXY_TYPE_NONE"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"NW_PROXY_TYPE_DIRECT"])
+  if ([type isEqualToString:@"NW_PROXY_TYPE_DIRECT"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"NW_PROXY_TYPE_HTTP"])
+  if ([type isEqualToString:@"NW_PROXY_TYPE_HTTP"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"NW_PROXY_TYPE_HTTPS"])
+  if ([type isEqualToString:@"NW_PROXY_TYPE_HTTPS"])
   {
     return 3;
   }
 
-  if ([a3 isEqualToString:@"NW_PROXY_TYPE_SOCKS"])
+  if ([type isEqualToString:@"NW_PROXY_TYPE_SOCKS"])
   {
     return 4;
   }
@@ -224,10 +224,10 @@
   return 0;
 }
 
-- (void)setHasFallbackEligible:(BOOL)a3
+- (void)setHasFallbackEligible:(BOOL)eligible
 {
   v3 = 0x2000000000000;
-  if (!a3)
+  if (!eligible)
   {
     v3 = 0;
   }
@@ -235,9 +235,9 @@
   *&self->_has = *&self->_has & 0xFFFDFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasWeakFallback:(BOOL)a3
+- (void)setHasWeakFallback:(BOOL)fallback
 {
-  if (a3)
+  if (fallback)
   {
     v3 = 64;
   }
@@ -250,9 +250,9 @@
   *(&self->_has + 8) = *(&self->_has + 8) & 0xBF | v3;
 }
 
-- (void)setHasUsedFallback:(BOOL)a3
+- (void)setHasUsedFallback:(BOOL)fallback
 {
-  if (a3)
+  if (fallback)
   {
     v3 = 32;
   }
@@ -265,10 +265,10 @@
   *(&self->_has + 8) = *(&self->_has + 8) & 0xDF | v3;
 }
 
-- (void)setHasResolutionRequired:(BOOL)a3
+- (void)setHasResolutionRequired:(BOOL)required
 {
   v3 = 0x800000000000000;
-  if (!a3)
+  if (!required)
   {
     v3 = 0;
   }
@@ -276,9 +276,9 @@
   *&self->_has = *&self->_has & 0xF7FFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasTlsConfigured:(BOOL)a3
+- (void)setHasTlsConfigured:(BOOL)configured
 {
-  if (a3)
+  if (configured)
   {
     v3 = 2;
   }
@@ -291,10 +291,10 @@
   *(&self->_has + 8) = *(&self->_has + 8) & 0xFD | v3;
 }
 
-- (void)setHasTfoConfigured:(BOOL)a3
+- (void)setHasTfoConfigured:(BOOL)configured
 {
   v3 = 0x8000000000000000;
-  if (!a3)
+  if (!configured)
   {
     v3 = 0;
   }
@@ -302,10 +302,10 @@
   *&self->_has = v3 & 0x8000000000000000 | *&self->_has & 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (void)setHasMultipathConfigured:(BOOL)a3
+- (void)setHasMultipathConfigured:(BOOL)configured
 {
   v3 = 0x100000000000000;
-  if (!a3)
+  if (!configured)
   {
     v3 = 0;
   }
@@ -313,10 +313,10 @@
   *&self->_has = *&self->_has & 0xFEFFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasTrafficClass:(BOOL)a3
+- (void)setHasTrafficClass:(BOOL)class
 {
   v3 = 0x400000000;
-  if (!a3)
+  if (!class)
   {
     v3 = 0;
   }
@@ -337,10 +337,10 @@
   }
 }
 
-- (void)setHasFailureReason:(BOOL)a3
+- (void)setHasFailureReason:(BOOL)reason
 {
   v3 = 0x40000000000;
-  if (!a3)
+  if (!reason)
   {
     v3 = 0;
   }
@@ -348,29 +348,29 @@
   *&self->_has = *&self->_has & 0xFFFFFBFFFFFFFFFFLL | v3;
 }
 
-- (int)StringAsFailureReason:(id)a3
+- (int)StringAsFailureReason:(id)reason
 {
-  if ([a3 isEqualToString:@"NW_FAILURE_REASON_NONE"])
+  if ([reason isEqualToString:@"NW_FAILURE_REASON_NONE"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"NW_FAILURE_REASON_PATH"])
+  if ([reason isEqualToString:@"NW_FAILURE_REASON_PATH"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"NW_FAILURE_REASON_RESOLVER"])
+  if ([reason isEqualToString:@"NW_FAILURE_REASON_RESOLVER"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"NW_FAILURE_REASON_FLOW"])
+  if ([reason isEqualToString:@"NW_FAILURE_REASON_FLOW"])
   {
     return 3;
   }
 
-  if ([a3 isEqualToString:@"NW_FAILURE_REASON_TLS"])
+  if ([reason isEqualToString:@"NW_FAILURE_REASON_TLS"])
   {
     return 4;
   }
@@ -378,10 +378,10 @@
   return 0;
 }
 
-- (void)setHasPathTriggerMilliseconds:(BOOL)a3
+- (void)setHasPathTriggerMilliseconds:(BOOL)milliseconds
 {
   v3 = 0x2000000;
-  if (!a3)
+  if (!milliseconds)
   {
     v3 = 0;
   }
@@ -389,10 +389,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFDFFFFFFLL | v3;
 }
 
-- (void)setHasResolutionMilliseconds:(BOOL)a3
+- (void)setHasResolutionMilliseconds:(BOOL)milliseconds
 {
   v3 = 0x10000000;
-  if (!a3)
+  if (!milliseconds)
   {
     v3 = 0;
   }
@@ -400,10 +400,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFEFFFFFFFLL | v3;
 }
 
-- (void)setHasProxyMilliseconds:(BOOL)a3
+- (void)setHasProxyMilliseconds:(BOOL)milliseconds
 {
   v3 = 0x4000000;
-  if (!a3)
+  if (!milliseconds)
   {
     v3 = 0;
   }
@@ -411,10 +411,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFBFFFFFFLL | v3;
 }
 
-- (void)setHasFlowConnectMilliseconds:(BOOL)a3
+- (void)setHasFlowConnectMilliseconds:(BOOL)milliseconds
 {
   v3 = 1024;
-  if (!a3)
+  if (!milliseconds)
   {
     v3 = 0;
   }
@@ -422,10 +422,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFFBFFLL | v3;
 }
 
-- (void)setHasTlsMilliseconds:(BOOL)a3
+- (void)setHasTlsMilliseconds:(BOOL)milliseconds
 {
   v3 = 0x200000000;
-  if (!a3)
+  if (!milliseconds)
   {
     v3 = 0;
   }
@@ -433,10 +433,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFDFFFFFFFFLL | v3;
 }
 
-- (void)setHasFlowDurationMilliseconds:(BOOL)a3
+- (void)setHasFlowDurationMilliseconds:(BOOL)milliseconds
 {
   v3 = 2048;
-  if (!a3)
+  if (!milliseconds)
   {
     v3 = 0;
   }
@@ -444,10 +444,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFF7FFLL | v3;
 }
 
-- (void)setHasIpv4AddressCount:(BOOL)a3
+- (void)setHasIpv4AddressCount:(BOOL)count
 {
   v3 = 4096;
-  if (!a3)
+  if (!count)
   {
     v3 = 0;
   }
@@ -455,10 +455,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFEFFFLL | v3;
 }
 
-- (void)setHasIpv6AddressCount:(BOOL)a3
+- (void)setHasIpv6AddressCount:(BOOL)count
 {
   v3 = 0x4000;
-  if (!a3)
+  if (!count)
   {
     v3 = 0;
   }
@@ -466,10 +466,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFBFFFLL | v3;
 }
 
-- (void)setHasSynthesizedIPv6Address:(BOOL)a3
+- (void)setHasSynthesizedIPv6Address:(BOOL)address
 {
   v3 = 0x2000000000000000;
-  if (!a3)
+  if (!address)
   {
     v3 = 0;
   }
@@ -490,10 +490,10 @@
   }
 }
 
-- (void)setHasFirstAddressFamily:(BOOL)a3
+- (void)setHasFirstAddressFamily:(BOOL)family
 {
   v3 = 0x80000000000;
-  if (!a3)
+  if (!family)
   {
     v3 = 0;
   }
@@ -501,19 +501,19 @@
   *&self->_has = *&self->_has & 0xFFFFF7FFFFFFFFFFLL | v3;
 }
 
-- (int)StringAsFirstAddressFamily:(id)a3
+- (int)StringAsFirstAddressFamily:(id)family
 {
-  if ([a3 isEqualToString:@"NW_ADDRESS_FAMILY_OTHER"])
+  if ([family isEqualToString:@"NW_ADDRESS_FAMILY_OTHER"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"NW_ADDRESS_FAMILY_IPV4"])
+  if ([family isEqualToString:@"NW_ADDRESS_FAMILY_IPV4"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"NW_ADDRESS_FAMILY_IPV6"])
+  if ([family isEqualToString:@"NW_ADDRESS_FAMILY_IPV6"])
   {
     return 2;
   }
@@ -534,10 +534,10 @@
   }
 }
 
-- (void)setHasConnectedAddressFamily:(BOOL)a3
+- (void)setHasConnectedAddressFamily:(BOOL)family
 {
   v3 = 0x2000000000;
-  if (!a3)
+  if (!family)
   {
     v3 = 0;
   }
@@ -545,19 +545,19 @@
   *&self->_has = *&self->_has & 0xFFFFFFDFFFFFFFFFLL | v3;
 }
 
-- (int)StringAsConnectedAddressFamily:(id)a3
+- (int)StringAsConnectedAddressFamily:(id)family
 {
-  if ([a3 isEqualToString:@"NW_ADDRESS_FAMILY_OTHER"])
+  if ([family isEqualToString:@"NW_ADDRESS_FAMILY_OTHER"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"NW_ADDRESS_FAMILY_IPV4"])
+  if ([family isEqualToString:@"NW_ADDRESS_FAMILY_IPV4"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"NW_ADDRESS_FAMILY_IPV6"])
+  if ([family isEqualToString:@"NW_ADDRESS_FAMILY_IPV6"])
   {
     return 2;
   }
@@ -565,10 +565,10 @@
   return 0;
 }
 
-- (void)setHasConnectedAddressIndex:(BOOL)a3
+- (void)setHasConnectedAddressIndex:(BOOL)index
 {
   v3 = 64;
-  if (!a3)
+  if (!index)
   {
     v3 = 0;
   }
@@ -589,10 +589,10 @@
   }
 }
 
-- (void)setHasConnectedInterfaceType:(BOOL)a3
+- (void)setHasConnectedInterfaceType:(BOOL)type
 {
   v3 = 0x4000000000;
-  if (!a3)
+  if (!type)
   {
     v3 = 0;
   }
@@ -600,24 +600,24 @@
   *&self->_has = *&self->_has & 0xFFFFFFBFFFFFFFFFLL | v3;
 }
 
-- (int)StringAsConnectedInterfaceType:(id)a3
+- (int)StringAsConnectedInterfaceType:(id)type
 {
-  if ([a3 isEqualToString:@"NW_INTERFACE_TYPE_OTHER"])
+  if ([type isEqualToString:@"NW_INTERFACE_TYPE_OTHER"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"NW_INTERFACE_TYPE_WIFI"])
+  if ([type isEqualToString:@"NW_INTERFACE_TYPE_WIFI"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"NW_INTERFACE_TYPE_CELLULAR"])
+  if ([type isEqualToString:@"NW_INTERFACE_TYPE_CELLULAR"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"NW_INTERFACE_TYPE_WIRED"])
+  if ([type isEqualToString:@"NW_INTERFACE_TYPE_WIRED"])
   {
     return 3;
   }
@@ -625,10 +625,10 @@
   return 0;
 }
 
-- (void)setHasConnectionReuseCount:(BOOL)a3
+- (void)setHasConnectionReuseCount:(BOOL)count
 {
   v3 = 128;
-  if (!a3)
+  if (!count)
   {
     v3 = 0;
   }
@@ -636,10 +636,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFFF7FLL | v3;
 }
 
-- (void)setHasDataStallCount:(BOOL)a3
+- (void)setHasDataStallCount:(BOOL)count
 {
   v3 = 512;
-  if (!a3)
+  if (!count)
   {
     v3 = 0;
   }
@@ -660,10 +660,10 @@
   }
 }
 
-- (void)setHasConnectionMode:(BOOL)a3
+- (void)setHasConnectionMode:(BOOL)mode
 {
   v3 = 0x8000000000;
-  if (!a3)
+  if (!mode)
   {
     v3 = 0;
   }
@@ -671,24 +671,24 @@
   *&self->_has = *&self->_has & 0xFFFFFF7FFFFFFFFFLL | v3;
 }
 
-- (int)StringAsConnectionMode:(id)a3
+- (int)StringAsConnectionMode:(id)mode
 {
-  if ([a3 isEqualToString:@"NW_CONNECTION_MODE_NONE"])
+  if ([mode isEqualToString:@"NW_CONNECTION_MODE_NONE"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"NW_CONNECTION_MODE_STREAM"])
+  if ([mode isEqualToString:@"NW_CONNECTION_MODE_STREAM"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"NW_CONNECTION_MODE_DATAGRAM"])
+  if ([mode isEqualToString:@"NW_CONNECTION_MODE_DATAGRAM"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"NW_CONNECTION_MODE_MESSAGE"])
+  if ([mode isEqualToString:@"NW_CONNECTION_MODE_MESSAGE"])
   {
     return 3;
   }
@@ -709,10 +709,10 @@
   }
 }
 
-- (void)setHasAppleHost:(BOOL)a3
+- (void)setHasAppleHost:(BOOL)host
 {
   v3 = 0x1000000000;
-  if (!a3)
+  if (!host)
   {
     v3 = 0;
   }
@@ -720,29 +720,29 @@
   *&self->_has = *&self->_has & 0xFFFFFFEFFFFFFFFFLL | v3;
 }
 
-- (int)StringAsAppleHost:(id)a3
+- (int)StringAsAppleHost:(id)host
 {
-  if ([a3 isEqualToString:@"NW_APPLE_HOST_NONE"])
+  if ([host isEqualToString:@"NW_APPLE_HOST_NONE"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"NW_APPLE_HOST_APPLE_COM"])
+  if ([host isEqualToString:@"NW_APPLE_HOST_APPLE_COM"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"NW_APPLE_HOST_ICLOUD_COM"])
+  if ([host isEqualToString:@"NW_APPLE_HOST_ICLOUD_COM"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"NW_APPLE_HOST_MZSTATIC_COM"])
+  if ([host isEqualToString:@"NW_APPLE_HOST_MZSTATIC_COM"])
   {
     return 3;
   }
 
-  if ([a3 isEqualToString:@"NW_APPLE_HOST_ME_COM"])
+  if ([host isEqualToString:@"NW_APPLE_HOST_ME_COM"])
   {
     return 4;
   }
@@ -763,10 +763,10 @@
   }
 }
 
-- (void)setHasAppleApp:(BOOL)a3
+- (void)setHasAppleApp:(BOOL)app
 {
   v3 = 0x800000000;
-  if (!a3)
+  if (!app)
   {
     v3 = 0;
   }
@@ -774,54 +774,54 @@
   *&self->_has = *&self->_has & 0xFFFFFFF7FFFFFFFFLL | v3;
 }
 
-- (int)StringAsAppleApp:(id)a3
+- (int)StringAsAppleApp:(id)app
 {
-  if ([a3 isEqualToString:@"NW_APPLE_APP_NONE"])
+  if ([app isEqualToString:@"NW_APPLE_APP_NONE"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"NW_APPLE_APP_MESSAGES"])
+  if ([app isEqualToString:@"NW_APPLE_APP_MESSAGES"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"NW_APPLE_APP_SAFARI"])
+  if ([app isEqualToString:@"NW_APPLE_APP_SAFARI"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"NW_APPLE_APP_MAIL"])
+  if ([app isEqualToString:@"NW_APPLE_APP_MAIL"])
   {
     return 3;
   }
 
-  if ([a3 isEqualToString:@"NW_APPLE_APP_MAPS"])
+  if ([app isEqualToString:@"NW_APPLE_APP_MAPS"])
   {
     return 4;
   }
 
-  if ([a3 isEqualToString:@"NW_APPLE_APP_PHOTOS"])
+  if ([app isEqualToString:@"NW_APPLE_APP_PHOTOS"])
   {
     return 5;
   }
 
-  if ([a3 isEqualToString:@"NW_APPLE_APP_MUSIC"])
+  if ([app isEqualToString:@"NW_APPLE_APP_MUSIC"])
   {
     return 6;
   }
 
-  if ([a3 isEqualToString:@"NW_APPLE_APP_APP_STORE"])
+  if ([app isEqualToString:@"NW_APPLE_APP_APP_STORE"])
   {
     return 7;
   }
 
-  if ([a3 isEqualToString:@"NW_APPLE_APP_ITUNES_STORE"])
+  if ([app isEqualToString:@"NW_APPLE_APP_ITUNES_STORE"])
   {
     return 8;
   }
 
-  if ([a3 isEqualToString:@"NW_APPLE_APP_SIRI"])
+  if ([app isEqualToString:@"NW_APPLE_APP_SIRI"])
   {
     return 9;
   }
@@ -842,10 +842,10 @@
   }
 }
 
-- (void)setHasTlsVersion:(BOOL)a3
+- (void)setHasTlsVersion:(BOOL)version
 {
   v3 = 0x200000000000;
-  if (!a3)
+  if (!version)
   {
     v3 = 0;
   }
@@ -853,39 +853,39 @@
   *&self->_has = *&self->_has & 0xFFFFDFFFFFFFFFFFLL | v3;
 }
 
-- (int)StringAsTlsVersion:(id)a3
+- (int)StringAsTlsVersion:(id)version
 {
-  if ([a3 isEqualToString:@"NW_TLS_VERSION_NONE"])
+  if ([version isEqualToString:@"NW_TLS_VERSION_NONE"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"NW_TLS_VERSION_SSL_3"])
+  if ([version isEqualToString:@"NW_TLS_VERSION_SSL_3"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"NW_TLS_VERSION_TLS_1_0"])
+  if ([version isEqualToString:@"NW_TLS_VERSION_TLS_1_0"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"NW_TLS_VERSION_TLS_1_1"])
+  if ([version isEqualToString:@"NW_TLS_VERSION_TLS_1_1"])
   {
     return 3;
   }
 
-  if ([a3 isEqualToString:@"NW_TLS_VERSION_TLS_1_2"])
+  if ([version isEqualToString:@"NW_TLS_VERSION_TLS_1_2"])
   {
     return 4;
   }
 
-  if ([a3 isEqualToString:@"NW_TLS_VERSION_TLS_1_3"])
+  if ([version isEqualToString:@"NW_TLS_VERSION_TLS_1_3"])
   {
     return 5;
   }
 
-  if ([a3 isEqualToString:@"NW_TLS_VERSION_DTLS_1_0"])
+  if ([version isEqualToString:@"NW_TLS_VERSION_DTLS_1_0"])
   {
     return 6;
   }
@@ -906,10 +906,10 @@
   }
 }
 
-- (void)setHasStackLevel:(BOOL)a3
+- (void)setHasStackLevel:(BOOL)level
 {
   v3 = 0x100000000000;
-  if (!a3)
+  if (!level)
   {
     v3 = 0;
   }
@@ -917,34 +917,34 @@
   *&self->_has = *&self->_has & 0xFFFFEFFFFFFFFFFFLL | v3;
 }
 
-- (int)StringAsStackLevel:(id)a3
+- (int)StringAsStackLevel:(id)level
 {
-  if ([a3 isEqualToString:@"NW_STACK_LEVEL_UNDEFINED"])
+  if ([level isEqualToString:@"NW_STACK_LEVEL_UNDEFINED"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"NW_STACK_LEVEL_APPLICATION_SOCKET"])
+  if ([level isEqualToString:@"NW_STACK_LEVEL_APPLICATION_SOCKET"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"NW_STACK_LEVEL_APPLICATION"])
+  if ([level isEqualToString:@"NW_STACK_LEVEL_APPLICATION"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"NW_STACK_LEVEL_TRANSPORT"])
+  if ([level isEqualToString:@"NW_STACK_LEVEL_TRANSPORT"])
   {
     return 3;
   }
 
-  if ([a3 isEqualToString:@"NW_STACK_LEVEL_INTERNET"])
+  if ([level isEqualToString:@"NW_STACK_LEVEL_INTERNET"])
   {
     return 4;
   }
 
-  if ([a3 isEqualToString:@"NW_STACK_LEVEL_LINK"])
+  if ([level isEqualToString:@"NW_STACK_LEVEL_LINK"])
   {
     return 5;
   }
@@ -952,10 +952,10 @@
   return 0;
 }
 
-- (void)setHasIpv4Available:(BOOL)a3
+- (void)setHasIpv4Available:(BOOL)available
 {
   v3 = 0x8000000000000;
-  if (!a3)
+  if (!available)
   {
     v3 = 0;
   }
@@ -963,10 +963,10 @@
   *&self->_has = *&self->_has & 0xFFF7FFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasIpv6Available:(BOOL)a3
+- (void)setHasIpv6Available:(BOOL)available
 {
   v3 = 0x10000000000000;
-  if (!a3)
+  if (!available)
   {
     v3 = 0;
   }
@@ -974,10 +974,10 @@
   *&self->_has = *&self->_has & 0xFFEFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasIpv4DNSServerCount:(BOOL)a3
+- (void)setHasIpv4DNSServerCount:(BOOL)count
 {
   v3 = 0x2000;
-  if (!a3)
+  if (!count)
   {
     v3 = 0;
   }
@@ -985,10 +985,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFDFFFLL | v3;
 }
 
-- (void)setHasIpv6DNSServerCount:(BOOL)a3
+- (void)setHasIpv6DNSServerCount:(BOOL)count
 {
   v3 = 0x8000;
-  if (!a3)
+  if (!count)
   {
     v3 = 0;
   }
@@ -996,9 +996,9 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFF7FFFLL | v3;
 }
 
-- (void)setHasTlsVersionTimeout:(BOOL)a3
+- (void)setHasTlsVersionTimeout:(BOOL)timeout
 {
-  if (a3)
+  if (timeout)
   {
     v3 = 8;
   }
@@ -1011,10 +1011,10 @@
   *(&self->_has + 8) = *(&self->_has + 8) & 0xF7 | v3;
 }
 
-- (void)setHasSynthesizedExtraIPv6Address:(BOOL)a3
+- (void)setHasSynthesizedExtraIPv6Address:(BOOL)address
 {
   v3 = 0x1000000000000000;
-  if (!a3)
+  if (!address)
   {
     v3 = 0;
   }
@@ -1022,10 +1022,10 @@
   *&self->_has = *&self->_has & 0xEFFFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasBytesIn:(BOOL)a3
+- (void)setHasBytesIn:(BOOL)in
 {
   v3 = 4;
-  if (!a3)
+  if (!in)
   {
     v3 = 0;
   }
@@ -1033,10 +1033,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFFFFBLL | v3;
 }
 
-- (void)setHasBytesOut:(BOOL)a3
+- (void)setHasBytesOut:(BOOL)out
 {
   v3 = 8;
-  if (!a3)
+  if (!out)
   {
     v3 = 0;
   }
@@ -1044,10 +1044,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFFFF7 | v3;
 }
 
-- (void)setHasBytesDuplicate:(BOOL)a3
+- (void)setHasBytesDuplicate:(BOOL)duplicate
 {
   v3 = 2;
-  if (!a3)
+  if (!duplicate)
   {
     v3 = 0;
   }
@@ -1055,10 +1055,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFFFFDLL | v3;
 }
 
-- (void)setHasBytesOutOfOrder:(BOOL)a3
+- (void)setHasBytesOutOfOrder:(BOOL)order
 {
   v3 = 16;
-  if (!a3)
+  if (!order)
   {
     v3 = 0;
   }
@@ -1066,10 +1066,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFFFEFLL | v3;
 }
 
-- (void)setHasBytesRetransmitted:(BOOL)a3
+- (void)setHasBytesRetransmitted:(BOOL)retransmitted
 {
   v3 = 32;
-  if (!a3)
+  if (!retransmitted)
   {
     v3 = 0;
   }
@@ -1077,10 +1077,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFFFDFLL | v3;
 }
 
-- (void)setHasPacketsIn:(BOOL)a3
+- (void)setHasPacketsIn:(BOOL)in
 {
   v3 = 0x800000;
-  if (!a3)
+  if (!in)
   {
     v3 = 0;
   }
@@ -1088,10 +1088,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFF7FFFFFLL | v3;
 }
 
-- (void)setHasPacketsOut:(BOOL)a3
+- (void)setHasPacketsOut:(BOOL)out
 {
   v3 = 0x1000000;
-  if (!a3)
+  if (!out)
   {
     v3 = 0;
   }
@@ -1099,10 +1099,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFEFFFFFFLL | v3;
 }
 
-- (void)setHasCurrentRTT:(BOOL)a3
+- (void)setHasCurrentRTT:(BOOL)t
 {
   v3 = 256;
-  if (!a3)
+  if (!t)
   {
     v3 = 0;
   }
@@ -1110,10 +1110,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFFEFFLL | v3;
 }
 
-- (void)setHasSmoothedRTT:(BOOL)a3
+- (void)setHasSmoothedRTT:(BOOL)t
 {
   v3 = 0x40000000;
-  if (!a3)
+  if (!t)
   {
     v3 = 0;
   }
@@ -1121,10 +1121,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFBFFFFFFFLL | v3;
 }
 
-- (void)setHasRTTvariance:(BOOL)a3
+- (void)setHasRTTvariance:(BOOL)tvariance
 {
   v3 = 0x8000000;
-  if (!a3)
+  if (!tvariance)
   {
     v3 = 0;
   }
@@ -1132,10 +1132,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFF7FFFFFFLL | v3;
 }
 
-- (void)setHasSynRetransmissionCount:(BOOL)a3
+- (void)setHasSynRetransmissionCount:(BOOL)count
 {
   v3 = 0x80000000;
-  if (!a3)
+  if (!count)
   {
     v3 = 0;
   }
@@ -1143,10 +1143,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFF7FFFFFFFLL | v3;
 }
 
-- (void)setHasMultipathServiceType:(BOOL)a3
+- (void)setHasMultipathServiceType:(BOOL)type
 {
   v3 = 0x400000;
-  if (!a3)
+  if (!type)
   {
     v3 = 0;
   }
@@ -1154,10 +1154,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFBFFFFFLL | v3;
 }
 
-- (void)setHasFirstParty:(BOOL)a3
+- (void)setHasFirstParty:(BOOL)party
 {
   v3 = 0x4000000000000;
-  if (!a3)
+  if (!party)
   {
     v3 = 0;
   }
@@ -1165,10 +1165,10 @@
   *&self->_has = *&self->_has & 0xFFFBFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasMultipathBytesInCell:(BOOL)a3
+- (void)setHasMultipathBytesInCell:(BOOL)cell
 {
   v3 = 0x10000;
-  if (!a3)
+  if (!cell)
   {
     v3 = 0;
   }
@@ -1176,10 +1176,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFEFFFFLL | v3;
 }
 
-- (void)setHasMultipathBytesOutCell:(BOOL)a3
+- (void)setHasMultipathBytesOutCell:(BOOL)cell
 {
   v3 = 0x80000;
-  if (!a3)
+  if (!cell)
   {
     v3 = 0;
   }
@@ -1187,10 +1187,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFF7FFFFLL | v3;
 }
 
-- (void)setHasMultipathBytesInWiFi:(BOOL)a3
+- (void)setHasMultipathBytesInWiFi:(BOOL)fi
 {
   v3 = 0x40000;
-  if (!a3)
+  if (!fi)
   {
     v3 = 0;
   }
@@ -1198,10 +1198,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFBFFFFLL | v3;
 }
 
-- (void)setHasMultipathBytesOutWiFi:(BOOL)a3
+- (void)setHasMultipathBytesOutWiFi:(BOOL)fi
 {
   v3 = 0x200000;
-  if (!a3)
+  if (!fi)
   {
     v3 = 0;
   }
@@ -1209,10 +1209,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFDFFFFFLL | v3;
 }
 
-- (void)setHasMultipathBytesInInitial:(BOOL)a3
+- (void)setHasMultipathBytesInInitial:(BOOL)initial
 {
   v3 = 0x20000;
-  if (!a3)
+  if (!initial)
   {
     v3 = 0;
   }
@@ -1220,10 +1220,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFDFFFFLL | v3;
 }
 
-- (void)setHasMultipathBytesOutInitial:(BOOL)a3
+- (void)setHasMultipathBytesOutInitial:(BOOL)initial
 {
   v3 = 0x100000;
-  if (!a3)
+  if (!initial)
   {
     v3 = 0;
   }
@@ -1231,10 +1231,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFEFFFFFLL | v3;
 }
 
-- (void)setHasSecondsSinceInterfaceChange:(BOOL)a3
+- (void)setHasSecondsSinceInterfaceChange:(BOOL)change
 {
   v3 = 0x20000000;
-  if (!a3)
+  if (!change)
   {
     v3 = 0;
   }
@@ -1242,10 +1242,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFDFFFFFFFLL | v3;
 }
 
-- (void)setHasIsDaemon:(BOOL)a3
+- (void)setHasIsDaemon:(BOOL)daemon
 {
   v3 = 0x20000000000000;
-  if (!a3)
+  if (!daemon)
   {
     v3 = 0;
   }
@@ -1253,7 +1253,7 @@
   *&self->_has = *&self->_has & 0xFFDFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)addActivities:(id)a3
+- (void)addActivities:(id)activities
 {
   activities = self->_activities;
   if (!activities)
@@ -1262,12 +1262,12 @@
     self->_activities = activities;
   }
 
-  [(NSMutableArray *)activities addObject:a3];
+  [(NSMutableArray *)activities addObject:activities];
 }
 
-- (void)setHasTlsHandshakeTimedOut:(BOOL)a3
+- (void)setHasTlsHandshakeTimedOut:(BOOL)out
 {
-  if (a3)
+  if (out)
   {
     v3 = 4;
   }
@@ -1280,10 +1280,10 @@
   *(&self->_has + 8) = *(&self->_has + 8) & 0xFB | v3;
 }
 
-- (void)setHasIsPathExpensive:(BOOL)a3
+- (void)setHasIsPathExpensive:(BOOL)expensive
 {
   v3 = 0x80000000000000;
-  if (!a3)
+  if (!expensive)
   {
     v3 = 0;
   }
@@ -1291,10 +1291,10 @@
   *&self->_has = *&self->_has & 0xFF7FFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasIsPathConstrained:(BOOL)a3
+- (void)setHasIsPathConstrained:(BOOL)constrained
 {
   v3 = 0x40000000000000;
-  if (!a3)
+  if (!constrained)
   {
     v3 = 0;
   }
@@ -1302,10 +1302,10 @@
   *&self->_has = *&self->_has & 0xFFBFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasProhibitsExpensive:(BOOL)a3
+- (void)setHasProhibitsExpensive:(BOOL)expensive
 {
   v3 = 0x400000000000000;
-  if (!a3)
+  if (!expensive)
   {
     v3 = 0;
   }
@@ -1313,10 +1313,10 @@
   *&self->_has = *&self->_has & 0xFBFFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasProhibitsConstrained:(BOOL)a3
+- (void)setHasProhibitsConstrained:(BOOL)constrained
 {
   v3 = 0x200000000000000;
-  if (!a3)
+  if (!constrained)
   {
     v3 = 0;
   }
@@ -1337,10 +1337,10 @@
   }
 }
 
-- (void)setHasTransportProtocol:(BOOL)a3
+- (void)setHasTransportProtocol:(BOOL)protocol
 {
   v3 = 0x400000000000;
-  if (!a3)
+  if (!protocol)
   {
     v3 = 0;
   }
@@ -1348,24 +1348,24 @@
   *&self->_has = *&self->_has & 0xFFFFBFFFFFFFFFFFLL | v3;
 }
 
-- (int)StringAsTransportProtocol:(id)a3
+- (int)StringAsTransportProtocol:(id)protocol
 {
-  if ([a3 isEqualToString:@"NW_TRANSPORT_PROTOCOL_UNKNOWN"])
+  if ([protocol isEqualToString:@"NW_TRANSPORT_PROTOCOL_UNKNOWN"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"NW_TRANSPORT_PROTOCOL_TCP"])
+  if ([protocol isEqualToString:@"NW_TRANSPORT_PROTOCOL_TCP"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"NW_TRANSPORT_PROTOCOL_UDP"])
+  if ([protocol isEqualToString:@"NW_TRANSPORT_PROTOCOL_UDP"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"NW_TRANSPORT_PROTOCOL_QUIC"])
+  if ([protocol isEqualToString:@"NW_TRANSPORT_PROTOCOL_QUIC"])
   {
     return 3;
   }
@@ -1386,10 +1386,10 @@
   }
 }
 
-- (void)setHasDnsProtocol:(BOOL)a3
+- (void)setHasDnsProtocol:(BOOL)protocol
 {
   v3 = 0x10000000000;
-  if (!a3)
+  if (!protocol)
   {
     v3 = 0;
   }
@@ -1397,29 +1397,29 @@
   *&self->_has = *&self->_has & 0xFFFFFEFFFFFFFFFFLL | v3;
 }
 
-- (int)StringAsDnsProtocol:(id)a3
+- (int)StringAsDnsProtocol:(id)protocol
 {
-  if ([a3 isEqualToString:@"NW_DNS_PROTOCOL_UNKNOWN"])
+  if ([protocol isEqualToString:@"NW_DNS_PROTOCOL_UNKNOWN"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"NW_DNS_PROTOCOL_UDP"])
+  if ([protocol isEqualToString:@"NW_DNS_PROTOCOL_UDP"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"NW_DNS_PROTOCOL_TCP"])
+  if ([protocol isEqualToString:@"NW_DNS_PROTOCOL_TCP"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"NW_DNS_PROTOCOL_TLS"])
+  if ([protocol isEqualToString:@"NW_DNS_PROTOCOL_TLS"])
   {
     return 3;
   }
 
-  if ([a3 isEqualToString:@"NW_DNS_PROTOCOL_HTTPS"])
+  if ([protocol isEqualToString:@"NW_DNS_PROTOCOL_HTTPS"])
   {
     return 4;
   }
@@ -1440,10 +1440,10 @@
   }
 }
 
-- (void)setHasDnsProvider:(BOOL)a3
+- (void)setHasDnsProvider:(BOOL)provider
 {
   v3 = 0x20000000000;
-  if (!a3)
+  if (!provider)
   {
     v3 = 0;
   }
@@ -1451,24 +1451,24 @@
   *&self->_has = *&self->_has & 0xFFFFFDFFFFFFFFFFLL | v3;
 }
 
-- (int)StringAsDnsProvider:(id)a3
+- (int)StringAsDnsProvider:(id)provider
 {
-  if ([a3 isEqualToString:@"NW_DNS_PROVIDER_UNKNOWN"])
+  if ([provider isEqualToString:@"NW_DNS_PROVIDER_UNKNOWN"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"NW_DNS_PROVIDER_CLOUDFLARE"])
+  if ([provider isEqualToString:@"NW_DNS_PROVIDER_CLOUDFLARE"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"NW_DNS_PROVIDER_GOOGLE"])
+  if ([provider isEqualToString:@"NW_DNS_PROVIDER_GOOGLE"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"NW_DNS_PROVIDER_QUAD9"])
+  if ([provider isEqualToString:@"NW_DNS_PROVIDER_QUAD9"])
   {
     return 3;
   }
@@ -1485,22 +1485,22 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   p_has = &self->_has;
   if (*(&self->_has + 4))
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
   if ((*(&self->_has + 8) & 0x10) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_triggeredPath), @"triggeredPath"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_triggeredPath), @"triggeredPath"}];
   }
 
   v5 = *p_has;
   if ((*p_has & 0x4000000000000000) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_systemProxyConfigured), @"systemProxyConfigured"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_systemProxyConfigured), @"systemProxyConfigured"}];
     v5 = *p_has;
     if ((*p_has & 0x1000000000000) == 0)
     {
@@ -1519,7 +1519,7 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_customProxyConfigured), @"customProxyConfigured"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_customProxyConfigured), @"customProxyConfigured"}];
   v5 = *p_has;
   if ((*p_has & 0x800000000000) == 0)
   {
@@ -1544,40 +1544,40 @@ LABEL_99:
     v18 = off_29EE327B0[usedProxyType];
   }
 
-  [v3 setObject:v18 forKey:@"usedProxyType"];
+  [dictionary setObject:v18 forKey:@"usedProxyType"];
   if ((*p_has & 0x2000000000000) != 0)
   {
 LABEL_9:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_fallbackEligible), @"fallbackEligible"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_fallbackEligible), @"fallbackEligible"}];
   }
 
 LABEL_10:
   v6 = *(&self->_has + 8);
   if ((v6 & 0x40) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_weakFallback), @"weakFallback"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_weakFallback), @"weakFallback"}];
     v6 = *(&self->_has + 8);
   }
 
   if ((v6 & 0x20) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_usedFallback), @"usedFallback"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_usedFallback), @"usedFallback"}];
   }
 
   if ((*(&self->_has + 7) & 8) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_resolutionRequired), @"resolutionRequired"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_resolutionRequired), @"resolutionRequired"}];
   }
 
   if ((*(&self->_has + 8) & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_tlsConfigured), @"tlsConfigured"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_tlsConfigured), @"tlsConfigured"}];
   }
 
   v7 = *p_has;
   if ((*p_has & 0x8000000000000000) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_tfoConfigured), @"tfoConfigured"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_tfoConfigured), @"tfoConfigured"}];
     v7 = *p_has;
     if ((*p_has & 0x100000000000000) == 0)
     {
@@ -1596,7 +1596,7 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_multipathConfigured), @"multipathConfigured"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_multipathConfigured), @"multipathConfigured"}];
   v7 = *p_has;
   if ((*p_has & 0x400000000) == 0)
   {
@@ -1610,7 +1610,7 @@ LABEL_21:
   }
 
 LABEL_132:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_trafficClass), @"trafficClass"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_trafficClass), @"trafficClass"}];
   v7 = *p_has;
   if ((*p_has & 0x40000000000) == 0)
   {
@@ -1635,7 +1635,7 @@ LABEL_133:
     v22 = off_29EE327D8[failureReason];
   }
 
-  [v3 setObject:v22 forKey:@"failureReason"];
+  [dictionary setObject:v22 forKey:@"failureReason"];
   v7 = *p_has;
   if ((*p_has & 0x2000000) == 0)
   {
@@ -1649,7 +1649,7 @@ LABEL_23:
   }
 
 LABEL_144:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_pathTriggerMilliseconds), @"pathTriggerMilliseconds"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_pathTriggerMilliseconds), @"pathTriggerMilliseconds"}];
   v7 = *p_has;
   if ((*p_has & 0x10000000) == 0)
   {
@@ -1663,7 +1663,7 @@ LABEL_24:
   }
 
 LABEL_145:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_resolutionMilliseconds), @"resolutionMilliseconds"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_resolutionMilliseconds), @"resolutionMilliseconds"}];
   v7 = *p_has;
   if ((*p_has & 0x4000000) == 0)
   {
@@ -1677,7 +1677,7 @@ LABEL_25:
   }
 
 LABEL_146:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_proxyMilliseconds), @"proxyMilliseconds"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_proxyMilliseconds), @"proxyMilliseconds"}];
   v7 = *p_has;
   if ((*p_has & 0x400) == 0)
   {
@@ -1691,7 +1691,7 @@ LABEL_26:
   }
 
 LABEL_147:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_flowConnectMilliseconds), @"flowConnectMilliseconds"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_flowConnectMilliseconds), @"flowConnectMilliseconds"}];
   v7 = *p_has;
   if ((*p_has & 0x200000000) == 0)
   {
@@ -1705,7 +1705,7 @@ LABEL_27:
   }
 
 LABEL_148:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_tlsMilliseconds), @"tlsMilliseconds"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_tlsMilliseconds), @"tlsMilliseconds"}];
   v7 = *p_has;
   if ((*p_has & 0x800) == 0)
   {
@@ -1719,7 +1719,7 @@ LABEL_28:
   }
 
 LABEL_149:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_flowDurationMilliseconds), @"flowDurationMilliseconds"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_flowDurationMilliseconds), @"flowDurationMilliseconds"}];
   v7 = *p_has;
   if ((*p_has & 0x1000) == 0)
   {
@@ -1733,7 +1733,7 @@ LABEL_29:
   }
 
 LABEL_150:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_ipv4AddressCount), @"ipv4AddressCount"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_ipv4AddressCount), @"ipv4AddressCount"}];
   v7 = *p_has;
   if ((*p_has & 0x4000) == 0)
   {
@@ -1747,7 +1747,7 @@ LABEL_30:
   }
 
 LABEL_151:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_ipv6AddressCount), @"ipv6AddressCount"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_ipv6AddressCount), @"ipv6AddressCount"}];
   v7 = *p_has;
   if ((*p_has & 0x2000000000000000) == 0)
   {
@@ -1761,7 +1761,7 @@ LABEL_31:
   }
 
 LABEL_152:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_synthesizedIPv6Address), @"synthesizedIPv6Address"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_synthesizedIPv6Address), @"synthesizedIPv6Address"}];
   v7 = *p_has;
   if ((*p_has & 0x80000000000) == 0)
   {
@@ -1786,7 +1786,7 @@ LABEL_153:
     v26 = off_29EE32800[firstAddressFamily];
   }
 
-  [v3 setObject:v26 forKey:@"firstAddressFamily"];
+  [dictionary setObject:v26 forKey:@"firstAddressFamily"];
   v7 = *p_has;
   if ((*p_has & 0x2000000000) == 0)
   {
@@ -1811,7 +1811,7 @@ LABEL_161:
     v30 = off_29EE32800[connectedAddressFamily];
   }
 
-  [v3 setObject:v30 forKey:@"connectedAddressFamily"];
+  [dictionary setObject:v30 forKey:@"connectedAddressFamily"];
   v7 = *p_has;
   if ((*p_has & 0x40) == 0)
   {
@@ -1825,7 +1825,7 @@ LABEL_34:
   }
 
 LABEL_172:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_connectedAddressIndex), @"connectedAddressIndex"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_connectedAddressIndex), @"connectedAddressIndex"}];
   v7 = *p_has;
   if ((*p_has & 0x4000000000) == 0)
   {
@@ -1850,7 +1850,7 @@ LABEL_173:
     v35 = off_29EE32818[connectedInterfaceType];
   }
 
-  [v3 setObject:v35 forKey:@"connectedInterfaceType"];
+  [dictionary setObject:v35 forKey:@"connectedInterfaceType"];
   v7 = *p_has;
   if ((*p_has & 0x80) == 0)
   {
@@ -1864,7 +1864,7 @@ LABEL_36:
   }
 
 LABEL_177:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_connectionReuseCount), @"connectionReuseCount"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_connectionReuseCount), @"connectionReuseCount"}];
   v7 = *p_has;
   if ((*p_has & 0x200) == 0)
   {
@@ -1878,7 +1878,7 @@ LABEL_37:
   }
 
 LABEL_178:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_dataStallCount), @"dataStallCount"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_dataStallCount), @"dataStallCount"}];
   v7 = *p_has;
   if ((*p_has & 0x8000000000) == 0)
   {
@@ -1903,7 +1903,7 @@ LABEL_179:
     v37 = off_29EE32838[connectionMode];
   }
 
-  [v3 setObject:v37 forKey:@"connectionMode"];
+  [dictionary setObject:v37 forKey:@"connectionMode"];
   v7 = *p_has;
   if ((*p_has & 0x1000000000) == 0)
   {
@@ -1928,7 +1928,7 @@ LABEL_183:
     v39 = off_29EE32858[appleHost];
   }
 
-  [v3 setObject:v39 forKey:@"appleHost"];
+  [dictionary setObject:v39 forKey:@"appleHost"];
   v7 = *p_has;
   if ((*p_has & 0x800000000) == 0)
   {
@@ -1953,7 +1953,7 @@ LABEL_187:
     v41 = off_29EE32880[appleApp];
   }
 
-  [v3 setObject:v41 forKey:@"appleApp"];
+  [dictionary setObject:v41 forKey:@"appleApp"];
   v7 = *p_has;
   if ((*p_has & 0x200000000000) == 0)
   {
@@ -1978,7 +1978,7 @@ LABEL_191:
     v43 = off_29EE328D0[tlsVersion];
   }
 
-  [v3 setObject:v43 forKey:@"tlsVersion"];
+  [dictionary setObject:v43 forKey:@"tlsVersion"];
   v7 = *p_has;
   if ((*p_has & 0x100000000000) == 0)
   {
@@ -2003,7 +2003,7 @@ LABEL_195:
     v45 = off_29EE32908[stackLevel];
   }
 
-  [v3 setObject:v45 forKey:@"stackLevel"];
+  [dictionary setObject:v45 forKey:@"stackLevel"];
   v7 = *p_has;
   if ((*p_has & 0x8000000000000) == 0)
   {
@@ -2017,7 +2017,7 @@ LABEL_43:
   }
 
 LABEL_199:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_ipv4Available), @"ipv4Available"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_ipv4Available), @"ipv4Available"}];
   v7 = *p_has;
   if ((*p_has & 0x10000000000000) == 0)
   {
@@ -2031,7 +2031,7 @@ LABEL_44:
   }
 
 LABEL_200:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_ipv6Available), @"ipv6Available"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_ipv6Available), @"ipv6Available"}];
   v7 = *p_has;
   if ((*p_has & 0x2000) == 0)
   {
@@ -2045,23 +2045,23 @@ LABEL_45:
   }
 
 LABEL_201:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_ipv4DNSServerCount), @"ipv4DNSServerCount"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_ipv4DNSServerCount), @"ipv4DNSServerCount"}];
   if ((*p_has & 0x8000) != 0)
   {
 LABEL_46:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_ipv6DNSServerCount), @"ipv6DNSServerCount"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_ipv6DNSServerCount), @"ipv6DNSServerCount"}];
   }
 
 LABEL_47:
   if ((*(&self->_has + 8) & 8) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_tlsVersionTimeout), @"tlsVersionTimeout"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_tlsVersionTimeout), @"tlsVersionTimeout"}];
   }
 
   v8 = *p_has;
   if ((*p_has & 0x1000000000000000) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_synthesizedExtraIPv6Address), @"synthesizedExtraIPv6Address"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_synthesizedExtraIPv6Address), @"synthesizedExtraIPv6Address"}];
     v8 = *p_has;
     if ((*p_has & 4) == 0)
     {
@@ -2080,7 +2080,7 @@ LABEL_51:
     goto LABEL_51;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_bytesIn), @"bytesIn"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_bytesIn), @"bytesIn"}];
   v8 = *p_has;
   if ((*p_has & 8) == 0)
   {
@@ -2094,7 +2094,7 @@ LABEL_52:
   }
 
 LABEL_103:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_bytesOut), @"bytesOut"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_bytesOut), @"bytesOut"}];
   v8 = *p_has;
   if ((*p_has & 2) == 0)
   {
@@ -2108,7 +2108,7 @@ LABEL_53:
   }
 
 LABEL_104:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_bytesDuplicate), @"bytesDuplicate"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_bytesDuplicate), @"bytesDuplicate"}];
   v8 = *p_has;
   if ((*p_has & 0x10) == 0)
   {
@@ -2122,7 +2122,7 @@ LABEL_54:
   }
 
 LABEL_105:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_bytesOutOfOrder), @"bytesOutOfOrder"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_bytesOutOfOrder), @"bytesOutOfOrder"}];
   v8 = *p_has;
   if ((*p_has & 0x20) == 0)
   {
@@ -2136,7 +2136,7 @@ LABEL_55:
   }
 
 LABEL_106:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_bytesRetransmitted), @"bytesRetransmitted"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_bytesRetransmitted), @"bytesRetransmitted"}];
   v8 = *p_has;
   if ((*p_has & 0x800000) == 0)
   {
@@ -2150,7 +2150,7 @@ LABEL_56:
   }
 
 LABEL_107:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_packetsIn), @"packetsIn"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_packetsIn), @"packetsIn"}];
   v8 = *p_has;
   if ((*p_has & 0x1000000) == 0)
   {
@@ -2164,7 +2164,7 @@ LABEL_57:
   }
 
 LABEL_108:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_packetsOut), @"packetsOut"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_packetsOut), @"packetsOut"}];
   v8 = *p_has;
   if ((*p_has & 0x100) == 0)
   {
@@ -2178,7 +2178,7 @@ LABEL_58:
   }
 
 LABEL_109:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_currentRTT), @"currentRTT"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_currentRTT), @"currentRTT"}];
   v8 = *p_has;
   if ((*p_has & 0x40000000) == 0)
   {
@@ -2192,7 +2192,7 @@ LABEL_59:
   }
 
 LABEL_110:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_smoothedRTT), @"smoothedRTT"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_smoothedRTT), @"smoothedRTT"}];
   v8 = *p_has;
   if ((*p_has & 1) == 0)
   {
@@ -2206,7 +2206,7 @@ LABEL_60:
   }
 
 LABEL_111:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_bestRTT), @"bestRTT"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_bestRTT), @"bestRTT"}];
   v8 = *p_has;
   if ((*p_has & 0x8000000) == 0)
   {
@@ -2220,23 +2220,23 @@ LABEL_61:
   }
 
 LABEL_112:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_rTTvariance), @"RTTvariance"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_rTTvariance), @"RTTvariance"}];
   if ((*p_has & 0x80000000) != 0)
   {
 LABEL_62:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_synRetransmissionCount), @"synRetransmissionCount"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_synRetransmissionCount), @"synRetransmissionCount"}];
   }
 
 LABEL_63:
   if (*(&self->_has + 8))
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_tfoUsed), @"tfoUsed"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_tfoUsed), @"tfoUsed"}];
   }
 
   v9 = *p_has;
   if ((*p_has & 0x400000) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_multipathServiceType), @"multipathServiceType"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_multipathServiceType), @"multipathServiceType"}];
     v9 = *p_has;
     if ((*p_has & 0x4000000000000) == 0)
     {
@@ -2255,7 +2255,7 @@ LABEL_67:
     goto LABEL_67;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_firstParty), @"firstParty"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_firstParty), @"firstParty"}];
   v9 = *p_has;
   if ((*p_has & 0x10000) == 0)
   {
@@ -2269,7 +2269,7 @@ LABEL_68:
   }
 
 LABEL_116:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_multipathBytesInCell), @"multipathBytesInCell"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_multipathBytesInCell), @"multipathBytesInCell"}];
   v9 = *p_has;
   if ((*p_has & 0x80000) == 0)
   {
@@ -2283,7 +2283,7 @@ LABEL_69:
   }
 
 LABEL_117:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_multipathBytesOutCell), @"multipathBytesOutCell"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_multipathBytesOutCell), @"multipathBytesOutCell"}];
   v9 = *p_has;
   if ((*p_has & 0x40000) == 0)
   {
@@ -2297,7 +2297,7 @@ LABEL_70:
   }
 
 LABEL_118:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_multipathBytesInWiFi), @"multipathBytesInWiFi"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_multipathBytesInWiFi), @"multipathBytesInWiFi"}];
   v9 = *p_has;
   if ((*p_has & 0x200000) == 0)
   {
@@ -2311,7 +2311,7 @@ LABEL_71:
   }
 
 LABEL_119:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_multipathBytesOutWiFi), @"multipathBytesOutWiFi"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_multipathBytesOutWiFi), @"multipathBytesOutWiFi"}];
   v9 = *p_has;
   if ((*p_has & 0x20000) == 0)
   {
@@ -2325,7 +2325,7 @@ LABEL_72:
   }
 
 LABEL_120:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_multipathBytesInInitial), @"multipathBytesInInitial"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_multipathBytesInInitial), @"multipathBytesInInitial"}];
   v9 = *p_has;
   if ((*p_has & 0x100000) == 0)
   {
@@ -2339,7 +2339,7 @@ LABEL_73:
   }
 
 LABEL_121:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_multipathBytesOutInitial), @"multipathBytesOutInitial"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_multipathBytesOutInitial), @"multipathBytesOutInitial"}];
   v9 = *p_has;
   if ((*p_has & 0x20000000) == 0)
   {
@@ -2353,41 +2353,41 @@ LABEL_74:
   }
 
 LABEL_122:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_secondsSinceInterfaceChange), @"secondsSinceInterfaceChange"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_secondsSinceInterfaceChange), @"secondsSinceInterfaceChange"}];
   if ((*p_has & 0x20000000000000) != 0)
   {
 LABEL_75:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_isDaemon), @"isDaemon"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_isDaemon), @"isDaemon"}];
   }
 
 LABEL_76:
   processName = self->_processName;
   if (processName)
   {
-    [v3 setObject:processName forKey:@"processName"];
+    [dictionary setObject:processName forKey:@"processName"];
   }
 
   activities = self->_activities;
   if (activities)
   {
-    [v3 setObject:activities forKey:@"activities"];
+    [dictionary setObject:activities forKey:@"activities"];
   }
 
   connectionUUID = self->_connectionUUID;
   if (connectionUUID)
   {
-    [v3 setObject:connectionUUID forKey:@"connectionUUID"];
+    [dictionary setObject:connectionUUID forKey:@"connectionUUID"];
   }
 
   if ((*(&self->_has + 8) & 4) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_tlsHandshakeTimedOut), @"tlsHandshakeTimedOut"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_tlsHandshakeTimedOut), @"tlsHandshakeTimedOut"}];
   }
 
   v13 = *p_has;
   if ((*p_has & 0x80000000000000) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_isPathExpensive), @"isPathExpensive"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_isPathExpensive), @"isPathExpensive"}];
     v13 = *p_has;
     if ((*p_has & 0x40000000000000) == 0)
     {
@@ -2406,7 +2406,7 @@ LABEL_86:
     goto LABEL_86;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_isPathConstrained), @"isPathConstrained"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_isPathConstrained), @"isPathConstrained"}];
   v13 = *p_has;
   if ((*p_has & 0x400000000000000) == 0)
   {
@@ -2420,24 +2420,24 @@ LABEL_87:
   }
 
 LABEL_126:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_prohibitsExpensive), @"prohibitsExpensive"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_prohibitsExpensive), @"prohibitsExpensive"}];
   if ((*p_has & 0x200000000000000) != 0)
   {
 LABEL_88:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_prohibitsConstrained), @"prohibitsConstrained"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_prohibitsConstrained), @"prohibitsConstrained"}];
   }
 
 LABEL_89:
   l2Report = self->_l2Report;
   if (l2Report)
   {
-    [v3 setObject:-[AWDNWL2Report dictionaryRepresentation](l2Report forKey:{"dictionaryRepresentation"), @"l2Report"}];
+    [dictionary setObject:-[AWDNWL2Report dictionaryRepresentation](l2Report forKey:{"dictionaryRepresentation"), @"l2Report"}];
   }
 
   deviceReport = self->_deviceReport;
   if (deviceReport)
   {
-    [v3 setObject:-[AWDNWDeviceReport dictionaryRepresentation](deviceReport forKey:{"dictionaryRepresentation"), @"deviceReport"}];
+    [dictionary setObject:-[AWDNWDeviceReport dictionaryRepresentation](deviceReport forKey:{"dictionaryRepresentation"), @"deviceReport"}];
   }
 
   v16 = *p_has;
@@ -2454,7 +2454,7 @@ LABEL_89:
       v20 = off_29EE32938[transportProtocol];
     }
 
-    [v3 setObject:v20 forKey:@"transportProtocol"];
+    [dictionary setObject:v20 forKey:@"transportProtocol"];
     v16 = *p_has;
     if ((*p_has & 0x10000000000) == 0)
     {
@@ -2484,7 +2484,7 @@ LABEL_95:
     v24 = off_29EE32958[dnsProtocol];
   }
 
-  [v3 setObject:v24 forKey:@"dnsProtocol"];
+  [dictionary setObject:v24 forKey:@"dnsProtocol"];
   if ((*p_has & 0x20000000000) != 0)
   {
 LABEL_157:
@@ -2499,26 +2499,26 @@ LABEL_157:
       v28 = off_29EE32980[dnsProvider];
     }
 
-    [v3 setObject:v28 forKey:@"dnsProvider"];
+    [dictionary setObject:v28 forKey:@"dnsProvider"];
   }
 
 LABEL_165:
   bundleID = self->_bundleID;
   if (bundleID)
   {
-    [v3 setObject:bundleID forKey:@"bundleID"];
+    [dictionary setObject:bundleID forKey:@"bundleID"];
   }
 
   effectiveBundleID = self->_effectiveBundleID;
   if (effectiveBundleID)
   {
-    [v3 setObject:effectiveBundleID forKey:@"effectiveBundleID"];
+    [dictionary setObject:effectiveBundleID forKey:@"effectiveBundleID"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v95 = *MEMORY[0x29EDCA608];
   p_has = &self->_has;
@@ -3498,26 +3498,26 @@ LABEL_102:
   v33 = *MEMORY[0x29EDCA608];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   p_has = &self->_has;
   if (*(&self->_has + 4))
   {
-    *(a3 + 33) = self->_timestamp;
-    *(a3 + 53) |= 0x100000000uLL;
+    *(to + 33) = self->_timestamp;
+    *(to + 53) |= 0x100000000uLL;
   }
 
   if ((*(&self->_has + 8) & 0x10) != 0)
   {
-    *(a3 + 420) = self->_triggeredPath;
-    *(a3 + 432) |= 0x10u;
+    *(to + 420) = self->_triggeredPath;
+    *(to + 432) |= 0x10u;
   }
 
   has = *p_has;
   if ((*p_has & 0x4000000000000000) != 0)
   {
-    *(a3 + 414) = self->_systemProxyConfigured;
-    *(a3 + 53) |= 0x4000000000000000uLL;
+    *(to + 414) = self->_systemProxyConfigured;
+    *(to + 53) |= 0x4000000000000000uLL;
     has = self->_has;
     if ((has & 0x1000000000000) == 0)
     {
@@ -3536,8 +3536,8 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  *(a3 + 400) = self->_customProxyConfigured;
-  *(a3 + 53) |= 0x1000000000000uLL;
+  *(to + 400) = self->_customProxyConfigured;
+  *(to + 53) |= 0x1000000000000uLL;
   has = self->_has;
   if ((has & 0x800000000000) == 0)
   {
@@ -3551,47 +3551,47 @@ LABEL_8:
   }
 
 LABEL_107:
-  *(a3 + 99) = self->_usedProxyType;
-  *(a3 + 53) |= 0x800000000000uLL;
+  *(to + 99) = self->_usedProxyType;
+  *(to + 53) |= 0x800000000000uLL;
   if ((*&self->_has & 0x2000000000000) != 0)
   {
 LABEL_9:
-    *(a3 + 401) = self->_fallbackEligible;
-    *(a3 + 53) |= 0x2000000000000uLL;
+    *(to + 401) = self->_fallbackEligible;
+    *(to + 53) |= 0x2000000000000uLL;
   }
 
 LABEL_10:
   v7 = *(&self->_has + 8);
   if ((v7 & 0x40) != 0)
   {
-    *(a3 + 422) = self->_weakFallback;
-    *(a3 + 432) |= 0x40u;
+    *(to + 422) = self->_weakFallback;
+    *(to + 432) |= 0x40u;
     v7 = *(&self->_has + 8);
   }
 
   if ((v7 & 0x20) != 0)
   {
-    *(a3 + 421) = self->_usedFallback;
-    *(a3 + 432) |= 0x20u;
+    *(to + 421) = self->_usedFallback;
+    *(to + 432) |= 0x20u;
   }
 
   if ((*(&self->_has + 7) & 8) != 0)
   {
-    *(a3 + 411) = self->_resolutionRequired;
-    *(a3 + 53) |= 0x800000000000000uLL;
+    *(to + 411) = self->_resolutionRequired;
+    *(to + 53) |= 0x800000000000000uLL;
   }
 
   if ((*(&self->_has + 8) & 2) != 0)
   {
-    *(a3 + 417) = self->_tlsConfigured;
-    *(a3 + 432) |= 2u;
+    *(to + 417) = self->_tlsConfigured;
+    *(to + 432) |= 2u;
   }
 
   v8 = *p_has;
   if ((*p_has & 0x8000000000000000) != 0)
   {
-    *(a3 + 415) = self->_tfoConfigured;
-    *(a3 + 53) |= 0x8000000000000000;
+    *(to + 415) = self->_tfoConfigured;
+    *(to + 53) |= 0x8000000000000000;
     v8 = self->_has;
     if ((v8 & 0x100000000000000) == 0)
     {
@@ -3610,8 +3610,8 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  *(a3 + 408) = self->_multipathConfigured;
-  *(a3 + 53) |= 0x100000000000000uLL;
+  *(to + 408) = self->_multipathConfigured;
+  *(to + 53) |= 0x100000000000000uLL;
   v8 = self->_has;
   if ((v8 & 0x400000000) == 0)
   {
@@ -3625,8 +3625,8 @@ LABEL_21:
   }
 
 LABEL_141:
-  *(a3 + 35) = self->_trafficClass;
-  *(a3 + 53) |= 0x400000000uLL;
+  *(to + 35) = self->_trafficClass;
+  *(to + 53) |= 0x400000000uLL;
   v8 = self->_has;
   if ((v8 & 0x40000000000) == 0)
   {
@@ -3640,8 +3640,8 @@ LABEL_22:
   }
 
 LABEL_142:
-  *(a3 + 90) = self->_failureReason;
-  *(a3 + 53) |= 0x40000000000uLL;
+  *(to + 90) = self->_failureReason;
+  *(to + 53) |= 0x40000000000uLL;
   v8 = self->_has;
   if ((v8 & 0x2000000) == 0)
   {
@@ -3655,8 +3655,8 @@ LABEL_23:
   }
 
 LABEL_143:
-  *(a3 + 26) = self->_pathTriggerMilliseconds;
-  *(a3 + 53) |= 0x2000000uLL;
+  *(to + 26) = self->_pathTriggerMilliseconds;
+  *(to + 53) |= 0x2000000uLL;
   v8 = self->_has;
   if ((v8 & 0x10000000) == 0)
   {
@@ -3670,8 +3670,8 @@ LABEL_24:
   }
 
 LABEL_144:
-  *(a3 + 29) = self->_resolutionMilliseconds;
-  *(a3 + 53) |= 0x10000000uLL;
+  *(to + 29) = self->_resolutionMilliseconds;
+  *(to + 53) |= 0x10000000uLL;
   v8 = self->_has;
   if ((v8 & 0x4000000) == 0)
   {
@@ -3685,8 +3685,8 @@ LABEL_25:
   }
 
 LABEL_145:
-  *(a3 + 27) = self->_proxyMilliseconds;
-  *(a3 + 53) |= 0x4000000uLL;
+  *(to + 27) = self->_proxyMilliseconds;
+  *(to + 53) |= 0x4000000uLL;
   v8 = self->_has;
   if ((v8 & 0x400) == 0)
   {
@@ -3700,8 +3700,8 @@ LABEL_26:
   }
 
 LABEL_146:
-  *(a3 + 11) = self->_flowConnectMilliseconds;
-  *(a3 + 53) |= 0x400uLL;
+  *(to + 11) = self->_flowConnectMilliseconds;
+  *(to + 53) |= 0x400uLL;
   v8 = self->_has;
   if ((v8 & 0x200000000) == 0)
   {
@@ -3715,8 +3715,8 @@ LABEL_27:
   }
 
 LABEL_147:
-  *(a3 + 34) = self->_tlsMilliseconds;
-  *(a3 + 53) |= 0x200000000uLL;
+  *(to + 34) = self->_tlsMilliseconds;
+  *(to + 53) |= 0x200000000uLL;
   v8 = self->_has;
   if ((v8 & 0x800) == 0)
   {
@@ -3730,8 +3730,8 @@ LABEL_28:
   }
 
 LABEL_148:
-  *(a3 + 12) = self->_flowDurationMilliseconds;
-  *(a3 + 53) |= 0x800uLL;
+  *(to + 12) = self->_flowDurationMilliseconds;
+  *(to + 53) |= 0x800uLL;
   v8 = self->_has;
   if ((v8 & 0x1000) == 0)
   {
@@ -3745,8 +3745,8 @@ LABEL_29:
   }
 
 LABEL_149:
-  *(a3 + 13) = self->_ipv4AddressCount;
-  *(a3 + 53) |= 0x1000uLL;
+  *(to + 13) = self->_ipv4AddressCount;
+  *(to + 53) |= 0x1000uLL;
   v8 = self->_has;
   if ((v8 & 0x4000) == 0)
   {
@@ -3760,8 +3760,8 @@ LABEL_30:
   }
 
 LABEL_150:
-  *(a3 + 15) = self->_ipv6AddressCount;
-  *(a3 + 53) |= 0x4000uLL;
+  *(to + 15) = self->_ipv6AddressCount;
+  *(to + 53) |= 0x4000uLL;
   v8 = self->_has;
   if ((v8 & 0x2000000000000000) == 0)
   {
@@ -3775,8 +3775,8 @@ LABEL_31:
   }
 
 LABEL_151:
-  *(a3 + 413) = self->_synthesizedIPv6Address;
-  *(a3 + 53) |= 0x2000000000000000uLL;
+  *(to + 413) = self->_synthesizedIPv6Address;
+  *(to + 53) |= 0x2000000000000000uLL;
   v8 = self->_has;
   if ((v8 & 0x80000000000) == 0)
   {
@@ -3790,8 +3790,8 @@ LABEL_32:
   }
 
 LABEL_152:
-  *(a3 + 91) = self->_firstAddressFamily;
-  *(a3 + 53) |= 0x80000000000uLL;
+  *(to + 91) = self->_firstAddressFamily;
+  *(to + 53) |= 0x80000000000uLL;
   v8 = self->_has;
   if ((v8 & 0x2000000000) == 0)
   {
@@ -3805,8 +3805,8 @@ LABEL_33:
   }
 
 LABEL_153:
-  *(a3 + 78) = self->_connectedAddressFamily;
-  *(a3 + 53) |= 0x2000000000uLL;
+  *(to + 78) = self->_connectedAddressFamily;
+  *(to + 53) |= 0x2000000000uLL;
   v8 = self->_has;
   if ((v8 & 0x40) == 0)
   {
@@ -3820,8 +3820,8 @@ LABEL_34:
   }
 
 LABEL_154:
-  *(a3 + 7) = self->_connectedAddressIndex;
-  *(a3 + 53) |= 0x40uLL;
+  *(to + 7) = self->_connectedAddressIndex;
+  *(to + 53) |= 0x40uLL;
   v8 = self->_has;
   if ((v8 & 0x4000000000) == 0)
   {
@@ -3835,8 +3835,8 @@ LABEL_35:
   }
 
 LABEL_155:
-  *(a3 + 79) = self->_connectedInterfaceType;
-  *(a3 + 53) |= 0x4000000000uLL;
+  *(to + 79) = self->_connectedInterfaceType;
+  *(to + 53) |= 0x4000000000uLL;
   v8 = self->_has;
   if ((v8 & 0x80) == 0)
   {
@@ -3850,8 +3850,8 @@ LABEL_36:
   }
 
 LABEL_156:
-  *(a3 + 8) = self->_connectionReuseCount;
-  *(a3 + 53) |= 0x80uLL;
+  *(to + 8) = self->_connectionReuseCount;
+  *(to + 53) |= 0x80uLL;
   v8 = self->_has;
   if ((v8 & 0x200) == 0)
   {
@@ -3865,8 +3865,8 @@ LABEL_37:
   }
 
 LABEL_157:
-  *(a3 + 10) = self->_dataStallCount;
-  *(a3 + 53) |= 0x200uLL;
+  *(to + 10) = self->_dataStallCount;
+  *(to + 53) |= 0x200uLL;
   v8 = self->_has;
   if ((v8 & 0x8000000000) == 0)
   {
@@ -3880,8 +3880,8 @@ LABEL_38:
   }
 
 LABEL_158:
-  *(a3 + 80) = self->_connectionMode;
-  *(a3 + 53) |= 0x8000000000uLL;
+  *(to + 80) = self->_connectionMode;
+  *(to + 53) |= 0x8000000000uLL;
   v8 = self->_has;
   if ((v8 & 0x1000000000) == 0)
   {
@@ -3895,8 +3895,8 @@ LABEL_39:
   }
 
 LABEL_159:
-  *(a3 + 75) = self->_appleHost;
-  *(a3 + 53) |= 0x1000000000uLL;
+  *(to + 75) = self->_appleHost;
+  *(to + 53) |= 0x1000000000uLL;
   v8 = self->_has;
   if ((v8 & 0x800000000) == 0)
   {
@@ -3910,8 +3910,8 @@ LABEL_40:
   }
 
 LABEL_160:
-  *(a3 + 74) = self->_appleApp;
-  *(a3 + 53) |= 0x800000000uLL;
+  *(to + 74) = self->_appleApp;
+  *(to + 53) |= 0x800000000uLL;
   v8 = self->_has;
   if ((v8 & 0x200000000000) == 0)
   {
@@ -3925,8 +3925,8 @@ LABEL_41:
   }
 
 LABEL_161:
-  *(a3 + 97) = self->_tlsVersion;
-  *(a3 + 53) |= 0x200000000000uLL;
+  *(to + 97) = self->_tlsVersion;
+  *(to + 53) |= 0x200000000000uLL;
   v8 = self->_has;
   if ((v8 & 0x100000000000) == 0)
   {
@@ -3940,8 +3940,8 @@ LABEL_42:
   }
 
 LABEL_162:
-  *(a3 + 96) = self->_stackLevel;
-  *(a3 + 53) |= 0x100000000000uLL;
+  *(to + 96) = self->_stackLevel;
+  *(to + 53) |= 0x100000000000uLL;
   v8 = self->_has;
   if ((v8 & 0x8000000000000) == 0)
   {
@@ -3955,8 +3955,8 @@ LABEL_43:
   }
 
 LABEL_163:
-  *(a3 + 403) = self->_ipv4Available;
-  *(a3 + 53) |= 0x8000000000000uLL;
+  *(to + 403) = self->_ipv4Available;
+  *(to + 53) |= 0x8000000000000uLL;
   v8 = self->_has;
   if ((v8 & 0x10000000000000) == 0)
   {
@@ -3970,8 +3970,8 @@ LABEL_44:
   }
 
 LABEL_164:
-  *(a3 + 404) = self->_ipv6Available;
-  *(a3 + 53) |= 0x10000000000000uLL;
+  *(to + 404) = self->_ipv6Available;
+  *(to + 53) |= 0x10000000000000uLL;
   v8 = self->_has;
   if ((v8 & 0x2000) == 0)
   {
@@ -3985,27 +3985,27 @@ LABEL_45:
   }
 
 LABEL_165:
-  *(a3 + 14) = self->_ipv4DNSServerCount;
-  *(a3 + 53) |= 0x2000uLL;
+  *(to + 14) = self->_ipv4DNSServerCount;
+  *(to + 53) |= 0x2000uLL;
   if ((*&self->_has & 0x8000) != 0)
   {
 LABEL_46:
-    *(a3 + 16) = self->_ipv6DNSServerCount;
-    *(a3 + 53) |= 0x8000uLL;
+    *(to + 16) = self->_ipv6DNSServerCount;
+    *(to + 53) |= 0x8000uLL;
   }
 
 LABEL_47:
   if ((*(&self->_has + 8) & 8) != 0)
   {
-    *(a3 + 419) = self->_tlsVersionTimeout;
-    *(a3 + 432) |= 8u;
+    *(to + 419) = self->_tlsVersionTimeout;
+    *(to + 432) |= 8u;
   }
 
   v9 = *p_has;
   if ((*p_has & 0x1000000000000000) != 0)
   {
-    *(a3 + 412) = self->_synthesizedExtraIPv6Address;
-    *(a3 + 53) |= 0x1000000000000000uLL;
+    *(to + 412) = self->_synthesizedExtraIPv6Address;
+    *(to + 53) |= 0x1000000000000000uLL;
     v9 = self->_has;
     if ((v9 & 4) == 0)
     {
@@ -4024,8 +4024,8 @@ LABEL_51:
     goto LABEL_51;
   }
 
-  *(a3 + 3) = self->_bytesIn;
-  *(a3 + 53) |= 4uLL;
+  *(to + 3) = self->_bytesIn;
+  *(to + 53) |= 4uLL;
   v9 = self->_has;
   if ((v9 & 8) == 0)
   {
@@ -4039,8 +4039,8 @@ LABEL_52:
   }
 
 LABEL_111:
-  *(a3 + 4) = self->_bytesOut;
-  *(a3 + 53) |= 8uLL;
+  *(to + 4) = self->_bytesOut;
+  *(to + 53) |= 8uLL;
   v9 = self->_has;
   if ((v9 & 2) == 0)
   {
@@ -4054,8 +4054,8 @@ LABEL_53:
   }
 
 LABEL_112:
-  *(a3 + 2) = self->_bytesDuplicate;
-  *(a3 + 53) |= 2uLL;
+  *(to + 2) = self->_bytesDuplicate;
+  *(to + 53) |= 2uLL;
   v9 = self->_has;
   if ((v9 & 0x10) == 0)
   {
@@ -4069,8 +4069,8 @@ LABEL_54:
   }
 
 LABEL_113:
-  *(a3 + 5) = self->_bytesOutOfOrder;
-  *(a3 + 53) |= 0x10uLL;
+  *(to + 5) = self->_bytesOutOfOrder;
+  *(to + 53) |= 0x10uLL;
   v9 = self->_has;
   if ((v9 & 0x20) == 0)
   {
@@ -4084,8 +4084,8 @@ LABEL_55:
   }
 
 LABEL_114:
-  *(a3 + 6) = self->_bytesRetransmitted;
-  *(a3 + 53) |= 0x20uLL;
+  *(to + 6) = self->_bytesRetransmitted;
+  *(to + 53) |= 0x20uLL;
   v9 = self->_has;
   if ((v9 & 0x800000) == 0)
   {
@@ -4099,8 +4099,8 @@ LABEL_56:
   }
 
 LABEL_115:
-  *(a3 + 24) = self->_packetsIn;
-  *(a3 + 53) |= 0x800000uLL;
+  *(to + 24) = self->_packetsIn;
+  *(to + 53) |= 0x800000uLL;
   v9 = self->_has;
   if ((v9 & 0x1000000) == 0)
   {
@@ -4114,8 +4114,8 @@ LABEL_57:
   }
 
 LABEL_116:
-  *(a3 + 25) = self->_packetsOut;
-  *(a3 + 53) |= 0x1000000uLL;
+  *(to + 25) = self->_packetsOut;
+  *(to + 53) |= 0x1000000uLL;
   v9 = self->_has;
   if ((v9 & 0x100) == 0)
   {
@@ -4129,8 +4129,8 @@ LABEL_58:
   }
 
 LABEL_117:
-  *(a3 + 9) = self->_currentRTT;
-  *(a3 + 53) |= 0x100uLL;
+  *(to + 9) = self->_currentRTT;
+  *(to + 53) |= 0x100uLL;
   v9 = self->_has;
   if ((v9 & 0x40000000) == 0)
   {
@@ -4144,8 +4144,8 @@ LABEL_59:
   }
 
 LABEL_118:
-  *(a3 + 31) = self->_smoothedRTT;
-  *(a3 + 53) |= 0x40000000uLL;
+  *(to + 31) = self->_smoothedRTT;
+  *(to + 53) |= 0x40000000uLL;
   v9 = self->_has;
   if ((v9 & 1) == 0)
   {
@@ -4159,8 +4159,8 @@ LABEL_60:
   }
 
 LABEL_119:
-  *(a3 + 1) = self->_bestRTT;
-  *(a3 + 53) |= 1uLL;
+  *(to + 1) = self->_bestRTT;
+  *(to + 53) |= 1uLL;
   v9 = self->_has;
   if ((v9 & 0x8000000) == 0)
   {
@@ -4174,27 +4174,27 @@ LABEL_61:
   }
 
 LABEL_120:
-  *(a3 + 28) = self->_rTTvariance;
-  *(a3 + 53) |= 0x8000000uLL;
+  *(to + 28) = self->_rTTvariance;
+  *(to + 53) |= 0x8000000uLL;
   if ((*&self->_has & 0x80000000) != 0)
   {
 LABEL_62:
-    *(a3 + 32) = self->_synRetransmissionCount;
-    *(a3 + 53) |= 0x80000000uLL;
+    *(to + 32) = self->_synRetransmissionCount;
+    *(to + 53) |= 0x80000000uLL;
   }
 
 LABEL_63:
   if (*(&self->_has + 8))
   {
-    *(a3 + 416) = self->_tfoUsed;
-    *(a3 + 432) |= 1u;
+    *(to + 416) = self->_tfoUsed;
+    *(to + 432) |= 1u;
   }
 
   v10 = *p_has;
   if ((*p_has & 0x400000) != 0)
   {
-    *(a3 + 23) = self->_multipathServiceType;
-    *(a3 + 53) |= 0x400000uLL;
+    *(to + 23) = self->_multipathServiceType;
+    *(to + 53) |= 0x400000uLL;
     v10 = self->_has;
     if ((v10 & 0x4000000000000) == 0)
     {
@@ -4213,8 +4213,8 @@ LABEL_67:
     goto LABEL_67;
   }
 
-  *(a3 + 402) = self->_firstParty;
-  *(a3 + 53) |= 0x4000000000000uLL;
+  *(to + 402) = self->_firstParty;
+  *(to + 53) |= 0x4000000000000uLL;
   v10 = self->_has;
   if ((v10 & 0x10000) == 0)
   {
@@ -4228,8 +4228,8 @@ LABEL_68:
   }
 
 LABEL_124:
-  *(a3 + 17) = self->_multipathBytesInCell;
-  *(a3 + 53) |= 0x10000uLL;
+  *(to + 17) = self->_multipathBytesInCell;
+  *(to + 53) |= 0x10000uLL;
   v10 = self->_has;
   if ((v10 & 0x80000) == 0)
   {
@@ -4243,8 +4243,8 @@ LABEL_69:
   }
 
 LABEL_125:
-  *(a3 + 20) = self->_multipathBytesOutCell;
-  *(a3 + 53) |= 0x80000uLL;
+  *(to + 20) = self->_multipathBytesOutCell;
+  *(to + 53) |= 0x80000uLL;
   v10 = self->_has;
   if ((v10 & 0x40000) == 0)
   {
@@ -4258,8 +4258,8 @@ LABEL_70:
   }
 
 LABEL_126:
-  *(a3 + 19) = self->_multipathBytesInWiFi;
-  *(a3 + 53) |= 0x40000uLL;
+  *(to + 19) = self->_multipathBytesInWiFi;
+  *(to + 53) |= 0x40000uLL;
   v10 = self->_has;
   if ((v10 & 0x200000) == 0)
   {
@@ -4273,8 +4273,8 @@ LABEL_71:
   }
 
 LABEL_127:
-  *(a3 + 22) = self->_multipathBytesOutWiFi;
-  *(a3 + 53) |= 0x200000uLL;
+  *(to + 22) = self->_multipathBytesOutWiFi;
+  *(to + 53) |= 0x200000uLL;
   v10 = self->_has;
   if ((v10 & 0x20000) == 0)
   {
@@ -4288,8 +4288,8 @@ LABEL_72:
   }
 
 LABEL_128:
-  *(a3 + 18) = self->_multipathBytesInInitial;
-  *(a3 + 53) |= 0x20000uLL;
+  *(to + 18) = self->_multipathBytesInInitial;
+  *(to + 53) |= 0x20000uLL;
   v10 = self->_has;
   if ((v10 & 0x100000) == 0)
   {
@@ -4303,8 +4303,8 @@ LABEL_73:
   }
 
 LABEL_129:
-  *(a3 + 21) = self->_multipathBytesOutInitial;
-  *(a3 + 53) |= 0x100000uLL;
+  *(to + 21) = self->_multipathBytesOutInitial;
+  *(to + 53) |= 0x100000uLL;
   v10 = self->_has;
   if ((v10 & 0x20000000) == 0)
   {
@@ -4318,51 +4318,51 @@ LABEL_74:
   }
 
 LABEL_130:
-  *(a3 + 30) = self->_secondsSinceInterfaceChange;
-  *(a3 + 53) |= 0x20000000uLL;
+  *(to + 30) = self->_secondsSinceInterfaceChange;
+  *(to + 53) |= 0x20000000uLL;
   if ((*&self->_has & 0x20000000000000) != 0)
   {
 LABEL_75:
-    *(a3 + 405) = self->_isDaemon;
-    *(a3 + 53) |= 0x20000000000000uLL;
+    *(to + 405) = self->_isDaemon;
+    *(to + 53) |= 0x20000000000000uLL;
   }
 
 LABEL_76:
   if (self->_processName)
   {
-    [a3 setProcessName:?];
+    [to setProcessName:?];
   }
 
   if ([(AWDNWConnectionReport *)self activitiesCount])
   {
-    [a3 clearActivities];
-    v11 = [(AWDNWConnectionReport *)self activitiesCount];
-    if (v11)
+    [to clearActivities];
+    activitiesCount = [(AWDNWConnectionReport *)self activitiesCount];
+    if (activitiesCount)
     {
-      v12 = v11;
+      v12 = activitiesCount;
       for (i = 0; i != v12; ++i)
       {
-        [a3 addActivities:{-[AWDNWConnectionReport activitiesAtIndex:](self, "activitiesAtIndex:", i)}];
+        [to addActivities:{-[AWDNWConnectionReport activitiesAtIndex:](self, "activitiesAtIndex:", i)}];
       }
     }
   }
 
   if (self->_connectionUUID)
   {
-    [a3 setConnectionUUID:?];
+    [to setConnectionUUID:?];
   }
 
   if ((*(p_has + 8) & 4) != 0)
   {
-    *(a3 + 418) = self->_tlsHandshakeTimedOut;
-    *(a3 + 432) |= 4u;
+    *(to + 418) = self->_tlsHandshakeTimedOut;
+    *(to + 432) |= 4u;
   }
 
   v14 = *p_has;
   if ((*p_has & 0x80000000000000) != 0)
   {
-    *(a3 + 407) = self->_isPathExpensive;
-    *(a3 + 53) |= 0x80000000000000uLL;
+    *(to + 407) = self->_isPathExpensive;
+    *(to + 53) |= 0x80000000000000uLL;
     v14 = self->_has;
     if ((v14 & 0x40000000000000) == 0)
     {
@@ -4381,8 +4381,8 @@ LABEL_88:
     goto LABEL_88;
   }
 
-  *(a3 + 406) = self->_isPathConstrained;
-  *(a3 + 53) |= 0x40000000000000uLL;
+  *(to + 406) = self->_isPathConstrained;
+  *(to + 53) |= 0x40000000000000uLL;
   v14 = self->_has;
   if ((v14 & 0x400000000000000) == 0)
   {
@@ -4396,31 +4396,31 @@ LABEL_89:
   }
 
 LABEL_134:
-  *(a3 + 410) = self->_prohibitsExpensive;
-  *(a3 + 53) |= 0x400000000000000uLL;
+  *(to + 410) = self->_prohibitsExpensive;
+  *(to + 53) |= 0x400000000000000uLL;
   if ((*&self->_has & 0x200000000000000) != 0)
   {
 LABEL_90:
-    *(a3 + 409) = self->_prohibitsConstrained;
-    *(a3 + 53) |= 0x200000000000000uLL;
+    *(to + 409) = self->_prohibitsConstrained;
+    *(to + 53) |= 0x200000000000000uLL;
   }
 
 LABEL_91:
   if (self->_l2Report)
   {
-    [a3 setL2Report:?];
+    [to setL2Report:?];
   }
 
   if (self->_deviceReport)
   {
-    [a3 setDeviceReport:?];
+    [to setDeviceReport:?];
   }
 
   v15 = *p_has;
   if ((*p_has & 0x400000000000) != 0)
   {
-    *(a3 + 98) = self->_transportProtocol;
-    *(a3 + 53) |= 0x400000000000uLL;
+    *(to + 98) = self->_transportProtocol;
+    *(to + 53) |= 0x400000000000uLL;
     v15 = self->_has;
     if ((v15 & 0x10000000000) == 0)
     {
@@ -4439,32 +4439,32 @@ LABEL_97:
     goto LABEL_97;
   }
 
-  *(a3 + 86) = self->_dnsProtocol;
-  *(a3 + 53) |= 0x10000000000uLL;
+  *(to + 86) = self->_dnsProtocol;
+  *(to + 53) |= 0x10000000000uLL;
   if ((*&self->_has & 0x20000000000) != 0)
   {
 LABEL_98:
-    *(a3 + 87) = self->_dnsProvider;
-    *(a3 + 53) |= 0x20000000000uLL;
+    *(to + 87) = self->_dnsProvider;
+    *(to + 53) |= 0x20000000000uLL;
   }
 
 LABEL_99:
   if (self->_bundleID)
   {
-    [a3 setBundleID:?];
+    [to setBundleID:?];
   }
 
   if (self->_effectiveBundleID)
   {
 
-    [a3 setEffectiveBundleID:?];
+    [to setEffectiveBundleID:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v28 = *MEMORY[0x29EDCA608];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   p_has = &self->_has;
   if (*(&self->_has + 4))
@@ -5295,7 +5295,7 @@ LABEL_75:
 
 LABEL_76:
 
-  *(v6 + 376) = [(NSString *)self->_processName copyWithZone:a3];
+  *(v6 + 376) = [(NSString *)self->_processName copyWithZone:zone];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -5315,7 +5315,7 @@ LABEL_76:
           objc_enumerationMutation(activities);
         }
 
-        v18 = [*(*(&v23 + 1) + 8 * i) copyWithZone:a3];
+        v18 = [*(*(&v23 + 1) + 8 * i) copyWithZone:zone];
         [v6 addActivities:v18];
       }
 
@@ -5325,7 +5325,7 @@ LABEL_76:
     while (v15);
   }
 
-  *(v6 + 328) = [(NSString *)self->_connectionUUID copyWithZone:a3];
+  *(v6 + 328) = [(NSString *)self->_connectionUUID copyWithZone:zone];
   if ((*(&self->_has + 8) & 4) != 0)
   {
     *(v6 + 418) = self->_tlsHandshakeTimedOut;
@@ -5381,8 +5381,8 @@ LABEL_89:
 
 LABEL_90:
 
-  *(v6 + 368) = [(AWDNWL2Report *)self->_l2Report copyWithZone:a3];
-  *(v6 + 336) = [(AWDNWDeviceReport *)self->_deviceReport copyWithZone:a3];
+  *(v6 + 368) = [(AWDNWL2Report *)self->_l2Report copyWithZone:zone];
+  *(v6 + 336) = [(AWDNWDeviceReport *)self->_deviceReport copyWithZone:zone];
   v20 = *p_has;
   if ((*p_has & 0x400000000000) == 0)
   {
@@ -5420,25 +5420,25 @@ LABEL_93:
 
 LABEL_94:
 
-  *(v6 + 304) = [(NSString *)self->_bundleID copyWithZone:a3];
-  *(v6 + 352) = [(NSString *)self->_effectiveBundleID copyWithZone:a3];
+  *(v6 + 304) = [(NSString *)self->_bundleID copyWithZone:zone];
+  *(v6 + 352) = [(NSString *)self->_effectiveBundleID copyWithZone:zone];
   v21 = *MEMORY[0x29EDCA608];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (!v5)
   {
     return v5;
   }
 
   has = self->_has;
-  v7 = *(a3 + 53);
+  v7 = *(equal + 53);
   if ((has & 0x100000000) != 0)
   {
-    if ((v7 & 0x100000000) == 0 || self->_timestamp != *(a3 + 33))
+    if ((v7 & 0x100000000) == 0 || self->_timestamp != *(equal + 33))
     {
       goto LABEL_440;
     }
@@ -5449,30 +5449,30 @@ LABEL_94:
     goto LABEL_440;
   }
 
-  v8 = *(a3 + 432);
+  v8 = *(equal + 432);
   if ((*(&self->_has + 8) & 0x10) != 0)
   {
-    if ((*(a3 + 432) & 0x10) == 0)
+    if ((*(equal + 432) & 0x10) == 0)
     {
       goto LABEL_440;
     }
 
-    v9 = *(a3 + 420);
+    v9 = *(equal + 420);
     if (self->_triggeredPath)
     {
-      if ((*(a3 + 420) & 1) == 0)
+      if ((*(equal + 420) & 1) == 0)
       {
         goto LABEL_440;
       }
     }
 
-    else if (*(a3 + 420))
+    else if (*(equal + 420))
     {
       goto LABEL_440;
     }
   }
 
-  else if ((*(a3 + 432) & 0x10) != 0)
+  else if ((*(equal + 432) & 0x10) != 0)
   {
     goto LABEL_440;
   }
@@ -5484,16 +5484,16 @@ LABEL_94:
       goto LABEL_440;
     }
 
-    v10 = *(a3 + 414);
+    v10 = *(equal + 414);
     if (self->_systemProxyConfigured)
     {
-      if ((*(a3 + 414) & 1) == 0)
+      if ((*(equal + 414) & 1) == 0)
       {
         goto LABEL_440;
       }
     }
 
-    else if (*(a3 + 414))
+    else if (*(equal + 414))
     {
       goto LABEL_440;
     }
@@ -5511,16 +5511,16 @@ LABEL_94:
       goto LABEL_440;
     }
 
-    v11 = *(a3 + 400);
+    v11 = *(equal + 400);
     if (self->_customProxyConfigured)
     {
-      if ((*(a3 + 400) & 1) == 0)
+      if ((*(equal + 400) & 1) == 0)
       {
         goto LABEL_440;
       }
     }
 
-    else if (*(a3 + 400))
+    else if (*(equal + 400))
     {
       goto LABEL_440;
     }
@@ -5533,7 +5533,7 @@ LABEL_94:
 
   if ((has & 0x800000000000) != 0)
   {
-    if ((v7 & 0x800000000000) == 0 || self->_usedProxyType != *(a3 + 99))
+    if ((v7 & 0x800000000000) == 0 || self->_usedProxyType != *(equal + 99))
     {
       goto LABEL_440;
     }
@@ -5551,16 +5551,16 @@ LABEL_94:
       goto LABEL_440;
     }
 
-    v12 = *(a3 + 401);
+    v12 = *(equal + 401);
     if (self->_fallbackEligible)
     {
-      if ((*(a3 + 401) & 1) == 0)
+      if ((*(equal + 401) & 1) == 0)
       {
         goto LABEL_440;
       }
     }
 
-    else if (*(a3 + 401))
+    else if (*(equal + 401))
     {
       goto LABEL_440;
     }
@@ -5573,60 +5573,60 @@ LABEL_94:
 
   if ((*(&self->_has + 8) & 0x40) != 0)
   {
-    if ((*(a3 + 432) & 0x40) == 0)
+    if ((*(equal + 432) & 0x40) == 0)
     {
       goto LABEL_440;
     }
 
-    v13 = *(a3 + 422);
+    v13 = *(equal + 422);
     if (self->_weakFallback)
     {
-      if ((*(a3 + 422) & 1) == 0)
+      if ((*(equal + 422) & 1) == 0)
       {
         goto LABEL_440;
       }
     }
 
-    else if (*(a3 + 422))
+    else if (*(equal + 422))
     {
       goto LABEL_440;
     }
   }
 
-  else if ((*(a3 + 432) & 0x40) != 0)
+  else if ((*(equal + 432) & 0x40) != 0)
   {
     goto LABEL_440;
   }
 
   if ((*(&self->_has + 8) & 0x20) != 0)
   {
-    if ((*(a3 + 432) & 0x20) == 0)
+    if ((*(equal + 432) & 0x20) == 0)
     {
       goto LABEL_440;
     }
 
-    v14 = *(a3 + 421);
+    v14 = *(equal + 421);
     if (self->_usedFallback)
     {
-      if ((*(a3 + 421) & 1) == 0)
+      if ((*(equal + 421) & 1) == 0)
       {
         goto LABEL_440;
       }
     }
 
-    else if (*(a3 + 421))
+    else if (*(equal + 421))
     {
       goto LABEL_440;
     }
   }
 
-  else if ((*(a3 + 432) & 0x20) != 0)
+  else if ((*(equal + 432) & 0x20) != 0)
   {
     goto LABEL_440;
   }
 
   p_has = &self->_has;
-  v48 = (a3 + 424);
+  v48 = (equal + 424);
   if ((has & 0x800000000000000) != 0)
   {
     if ((v7 & 0x800000000000000) == 0)
@@ -5634,16 +5634,16 @@ LABEL_94:
       goto LABEL_440;
     }
 
-    v15 = *(a3 + 411);
+    v15 = *(equal + 411);
     if (self->_resolutionRequired)
     {
-      if ((*(a3 + 411) & 1) == 0)
+      if ((*(equal + 411) & 1) == 0)
       {
         goto LABEL_440;
       }
     }
 
-    else if (*(a3 + 411))
+    else if (*(equal + 411))
     {
       goto LABEL_440;
     }
@@ -5656,27 +5656,27 @@ LABEL_94:
 
   if ((*(&self->_has + 8) & 2) != 0)
   {
-    if ((*(a3 + 432) & 2) == 0)
+    if ((*(equal + 432) & 2) == 0)
     {
       goto LABEL_440;
     }
 
-    v16 = *(a3 + 417);
+    v16 = *(equal + 417);
     if (self->_tlsConfigured)
     {
-      if ((*(a3 + 417) & 1) == 0)
+      if ((*(equal + 417) & 1) == 0)
       {
         goto LABEL_440;
       }
     }
 
-    else if (*(a3 + 417))
+    else if (*(equal + 417))
     {
       goto LABEL_440;
     }
   }
 
-  else if ((*(a3 + 432) & 2) != 0)
+  else if ((*(equal + 432) & 2) != 0)
   {
     goto LABEL_440;
   }
@@ -5688,16 +5688,16 @@ LABEL_94:
       goto LABEL_440;
     }
 
-    v17 = *(a3 + 415);
+    v17 = *(equal + 415);
     if (self->_tfoConfigured)
     {
-      if ((*(a3 + 415) & 1) == 0)
+      if ((*(equal + 415) & 1) == 0)
       {
         goto LABEL_440;
       }
     }
 
-    else if (*(a3 + 415))
+    else if (*(equal + 415))
     {
       goto LABEL_440;
     }
@@ -5715,16 +5715,16 @@ LABEL_94:
       goto LABEL_440;
     }
 
-    v18 = *(a3 + 408);
+    v18 = *(equal + 408);
     if (self->_multipathConfigured)
     {
-      if ((*(a3 + 408) & 1) == 0)
+      if ((*(equal + 408) & 1) == 0)
       {
         goto LABEL_440;
       }
     }
 
-    else if (*(a3 + 408))
+    else if (*(equal + 408))
     {
       goto LABEL_440;
     }
@@ -5737,7 +5737,7 @@ LABEL_94:
 
   if ((has & 0x400000000) != 0)
   {
-    if ((v7 & 0x400000000) == 0 || self->_trafficClass != *(a3 + 35))
+    if ((v7 & 0x400000000) == 0 || self->_trafficClass != *(equal + 35))
     {
       goto LABEL_440;
     }
@@ -5750,7 +5750,7 @@ LABEL_94:
 
   if ((has & 0x40000000000) != 0)
   {
-    if ((v7 & 0x40000000000) == 0 || self->_failureReason != *(a3 + 90))
+    if ((v7 & 0x40000000000) == 0 || self->_failureReason != *(equal + 90))
     {
       goto LABEL_440;
     }
@@ -5763,7 +5763,7 @@ LABEL_94:
 
   if ((has & 0x2000000) != 0)
   {
-    if ((v7 & 0x2000000) == 0 || self->_pathTriggerMilliseconds != *(a3 + 26))
+    if ((v7 & 0x2000000) == 0 || self->_pathTriggerMilliseconds != *(equal + 26))
     {
       goto LABEL_440;
     }
@@ -5776,7 +5776,7 @@ LABEL_94:
 
   if ((has & 0x10000000) != 0)
   {
-    if ((v7 & 0x10000000) == 0 || self->_resolutionMilliseconds != *(a3 + 29))
+    if ((v7 & 0x10000000) == 0 || self->_resolutionMilliseconds != *(equal + 29))
     {
       goto LABEL_440;
     }
@@ -5789,7 +5789,7 @@ LABEL_94:
 
   if ((has & 0x4000000) != 0)
   {
-    if ((v7 & 0x4000000) == 0 || self->_proxyMilliseconds != *(a3 + 27))
+    if ((v7 & 0x4000000) == 0 || self->_proxyMilliseconds != *(equal + 27))
     {
       goto LABEL_440;
     }
@@ -5802,7 +5802,7 @@ LABEL_94:
 
   if ((has & 0x400) != 0)
   {
-    if ((v7 & 0x400) == 0 || self->_flowConnectMilliseconds != *(a3 + 11))
+    if ((v7 & 0x400) == 0 || self->_flowConnectMilliseconds != *(equal + 11))
     {
       goto LABEL_440;
     }
@@ -5815,7 +5815,7 @@ LABEL_94:
 
   if ((has & 0x200000000) != 0)
   {
-    if ((v7 & 0x200000000) == 0 || self->_tlsMilliseconds != *(a3 + 34))
+    if ((v7 & 0x200000000) == 0 || self->_tlsMilliseconds != *(equal + 34))
     {
       goto LABEL_440;
     }
@@ -5828,7 +5828,7 @@ LABEL_94:
 
   if ((has & 0x800) != 0)
   {
-    if ((v7 & 0x800) == 0 || self->_flowDurationMilliseconds != *(a3 + 12))
+    if ((v7 & 0x800) == 0 || self->_flowDurationMilliseconds != *(equal + 12))
     {
       goto LABEL_440;
     }
@@ -5841,7 +5841,7 @@ LABEL_94:
 
   if ((has & 0x1000) != 0)
   {
-    if ((v7 & 0x1000) == 0 || self->_ipv4AddressCount != *(a3 + 13))
+    if ((v7 & 0x1000) == 0 || self->_ipv4AddressCount != *(equal + 13))
     {
       goto LABEL_440;
     }
@@ -5854,7 +5854,7 @@ LABEL_94:
 
   if ((has & 0x4000) != 0)
   {
-    if ((v7 & 0x4000) == 0 || self->_ipv6AddressCount != *(a3 + 15))
+    if ((v7 & 0x4000) == 0 || self->_ipv6AddressCount != *(equal + 15))
     {
       goto LABEL_440;
     }
@@ -5872,16 +5872,16 @@ LABEL_94:
       goto LABEL_440;
     }
 
-    v19 = *(a3 + 413);
+    v19 = *(equal + 413);
     if (self->_synthesizedIPv6Address)
     {
-      if ((*(a3 + 413) & 1) == 0)
+      if ((*(equal + 413) & 1) == 0)
       {
         goto LABEL_440;
       }
     }
 
-    else if (*(a3 + 413))
+    else if (*(equal + 413))
     {
       goto LABEL_440;
     }
@@ -5894,7 +5894,7 @@ LABEL_94:
 
   if ((has & 0x80000000000) != 0)
   {
-    if ((v7 & 0x80000000000) == 0 || self->_firstAddressFamily != *(a3 + 91))
+    if ((v7 & 0x80000000000) == 0 || self->_firstAddressFamily != *(equal + 91))
     {
       goto LABEL_440;
     }
@@ -5907,7 +5907,7 @@ LABEL_94:
 
   if ((has & 0x2000000000) != 0)
   {
-    if ((v7 & 0x2000000000) == 0 || self->_connectedAddressFamily != *(a3 + 78))
+    if ((v7 & 0x2000000000) == 0 || self->_connectedAddressFamily != *(equal + 78))
     {
       goto LABEL_440;
     }
@@ -5920,7 +5920,7 @@ LABEL_94:
 
   if ((has & 0x40) != 0)
   {
-    if ((v7 & 0x40) == 0 || self->_connectedAddressIndex != *(a3 + 7))
+    if ((v7 & 0x40) == 0 || self->_connectedAddressIndex != *(equal + 7))
     {
       goto LABEL_440;
     }
@@ -5933,7 +5933,7 @@ LABEL_94:
 
   if ((has & 0x4000000000) != 0)
   {
-    if ((v7 & 0x4000000000) == 0 || self->_connectedInterfaceType != *(a3 + 79))
+    if ((v7 & 0x4000000000) == 0 || self->_connectedInterfaceType != *(equal + 79))
     {
       goto LABEL_440;
     }
@@ -5946,7 +5946,7 @@ LABEL_94:
 
   if ((has & 0x80) != 0)
   {
-    if ((v7 & 0x80) == 0 || self->_connectionReuseCount != *(a3 + 8))
+    if ((v7 & 0x80) == 0 || self->_connectionReuseCount != *(equal + 8))
     {
       goto LABEL_440;
     }
@@ -5959,7 +5959,7 @@ LABEL_94:
 
   if ((has & 0x200) != 0)
   {
-    if ((v7 & 0x200) == 0 || self->_dataStallCount != *(a3 + 10))
+    if ((v7 & 0x200) == 0 || self->_dataStallCount != *(equal + 10))
     {
       goto LABEL_440;
     }
@@ -5972,7 +5972,7 @@ LABEL_94:
 
   if ((has & 0x8000000000) != 0)
   {
-    if ((v7 & 0x8000000000) == 0 || self->_connectionMode != *(a3 + 80))
+    if ((v7 & 0x8000000000) == 0 || self->_connectionMode != *(equal + 80))
     {
       goto LABEL_440;
     }
@@ -5985,7 +5985,7 @@ LABEL_94:
 
   if ((has & 0x1000000000) != 0)
   {
-    if ((v7 & 0x1000000000) == 0 || self->_appleHost != *(a3 + 75))
+    if ((v7 & 0x1000000000) == 0 || self->_appleHost != *(equal + 75))
     {
       goto LABEL_440;
     }
@@ -5998,7 +5998,7 @@ LABEL_94:
 
   if ((has & 0x800000000) != 0)
   {
-    if ((v7 & 0x800000000) == 0 || self->_appleApp != *(a3 + 74))
+    if ((v7 & 0x800000000) == 0 || self->_appleApp != *(equal + 74))
     {
       goto LABEL_440;
     }
@@ -6011,7 +6011,7 @@ LABEL_94:
 
   if ((has & 0x200000000000) != 0)
   {
-    if ((v7 & 0x200000000000) == 0 || self->_tlsVersion != *(a3 + 97))
+    if ((v7 & 0x200000000000) == 0 || self->_tlsVersion != *(equal + 97))
     {
       goto LABEL_440;
     }
@@ -6024,7 +6024,7 @@ LABEL_94:
 
   if ((has & 0x100000000000) != 0)
   {
-    if ((v7 & 0x100000000000) == 0 || self->_stackLevel != *(a3 + 96))
+    if ((v7 & 0x100000000000) == 0 || self->_stackLevel != *(equal + 96))
     {
       goto LABEL_440;
     }
@@ -6042,16 +6042,16 @@ LABEL_94:
       goto LABEL_440;
     }
 
-    v20 = *(a3 + 403);
+    v20 = *(equal + 403);
     if (self->_ipv4Available)
     {
-      if ((*(a3 + 403) & 1) == 0)
+      if ((*(equal + 403) & 1) == 0)
       {
         goto LABEL_440;
       }
     }
 
-    else if (*(a3 + 403))
+    else if (*(equal + 403))
     {
       goto LABEL_440;
     }
@@ -6069,16 +6069,16 @@ LABEL_94:
       goto LABEL_440;
     }
 
-    v21 = *(a3 + 404);
+    v21 = *(equal + 404);
     if (self->_ipv6Available)
     {
-      if ((*(a3 + 404) & 1) == 0)
+      if ((*(equal + 404) & 1) == 0)
       {
         goto LABEL_440;
       }
     }
 
-    else if (*(a3 + 404))
+    else if (*(equal + 404))
     {
       goto LABEL_440;
     }
@@ -6091,7 +6091,7 @@ LABEL_94:
 
   if ((has & 0x2000) != 0)
   {
-    if ((v7 & 0x2000) == 0 || self->_ipv4DNSServerCount != *(a3 + 14))
+    if ((v7 & 0x2000) == 0 || self->_ipv4DNSServerCount != *(equal + 14))
     {
       goto LABEL_440;
     }
@@ -6104,7 +6104,7 @@ LABEL_94:
 
   if ((has & 0x8000) != 0)
   {
-    if ((v7 & 0x8000) == 0 || self->_ipv6DNSServerCount != *(a3 + 16))
+    if ((v7 & 0x8000) == 0 || self->_ipv6DNSServerCount != *(equal + 16))
     {
       goto LABEL_440;
     }
@@ -6117,27 +6117,27 @@ LABEL_94:
 
   if ((*(&self->_has + 8) & 8) != 0)
   {
-    if ((*(a3 + 432) & 8) == 0)
+    if ((*(equal + 432) & 8) == 0)
     {
       goto LABEL_440;
     }
 
-    v22 = *(a3 + 419);
+    v22 = *(equal + 419);
     if (self->_tlsVersionTimeout)
     {
-      if ((*(a3 + 419) & 1) == 0)
+      if ((*(equal + 419) & 1) == 0)
       {
         goto LABEL_440;
       }
     }
 
-    else if (*(a3 + 419))
+    else if (*(equal + 419))
     {
       goto LABEL_440;
     }
   }
 
-  else if ((*(a3 + 432) & 8) != 0)
+  else if ((*(equal + 432) & 8) != 0)
   {
     goto LABEL_440;
   }
@@ -6149,16 +6149,16 @@ LABEL_94:
       goto LABEL_440;
     }
 
-    v23 = *(a3 + 412);
+    v23 = *(equal + 412);
     if (self->_synthesizedExtraIPv6Address)
     {
-      if ((*(a3 + 412) & 1) == 0)
+      if ((*(equal + 412) & 1) == 0)
       {
         goto LABEL_440;
       }
     }
 
-    else if (*(a3 + 412))
+    else if (*(equal + 412))
     {
       goto LABEL_440;
     }
@@ -6171,7 +6171,7 @@ LABEL_94:
 
   if ((has & 4) != 0)
   {
-    if ((v7 & 4) == 0 || self->_bytesIn != *(a3 + 3))
+    if ((v7 & 4) == 0 || self->_bytesIn != *(equal + 3))
     {
       goto LABEL_440;
     }
@@ -6184,7 +6184,7 @@ LABEL_94:
 
   if ((has & 8) != 0)
   {
-    if ((v7 & 8) == 0 || self->_bytesOut != *(a3 + 4))
+    if ((v7 & 8) == 0 || self->_bytesOut != *(equal + 4))
     {
       goto LABEL_440;
     }
@@ -6197,7 +6197,7 @@ LABEL_94:
 
   if ((has & 2) != 0)
   {
-    if ((v7 & 2) == 0 || self->_bytesDuplicate != *(a3 + 2))
+    if ((v7 & 2) == 0 || self->_bytesDuplicate != *(equal + 2))
     {
       goto LABEL_440;
     }
@@ -6211,7 +6211,7 @@ LABEL_94:
   v24 = *v48;
   if ((has & 0x10) != 0)
   {
-    if ((v24 & 0x10) == 0 || self->_bytesOutOfOrder != *(a3 + 5))
+    if ((v24 & 0x10) == 0 || self->_bytesOutOfOrder != *(equal + 5))
     {
       goto LABEL_440;
     }
@@ -6224,7 +6224,7 @@ LABEL_94:
 
   if ((has & 0x20) != 0)
   {
-    if ((v24 & 0x20) == 0 || self->_bytesRetransmitted != *(a3 + 6))
+    if ((v24 & 0x20) == 0 || self->_bytesRetransmitted != *(equal + 6))
     {
       goto LABEL_440;
     }
@@ -6237,7 +6237,7 @@ LABEL_94:
 
   if ((has & 0x800000) != 0)
   {
-    if ((v24 & 0x800000) == 0 || self->_packetsIn != *(a3 + 24))
+    if ((v24 & 0x800000) == 0 || self->_packetsIn != *(equal + 24))
     {
       goto LABEL_440;
     }
@@ -6250,7 +6250,7 @@ LABEL_94:
 
   if ((has & 0x1000000) != 0)
   {
-    if ((v24 & 0x1000000) == 0 || self->_packetsOut != *(a3 + 25))
+    if ((v24 & 0x1000000) == 0 || self->_packetsOut != *(equal + 25))
     {
       goto LABEL_440;
     }
@@ -6263,7 +6263,7 @@ LABEL_94:
 
   if ((has & 0x100) != 0)
   {
-    if ((v24 & 0x100) == 0 || self->_currentRTT != *(a3 + 9))
+    if ((v24 & 0x100) == 0 || self->_currentRTT != *(equal + 9))
     {
       goto LABEL_440;
     }
@@ -6276,7 +6276,7 @@ LABEL_94:
 
   if ((has & 0x40000000) != 0)
   {
-    if ((v24 & 0x40000000) == 0 || self->_smoothedRTT != *(a3 + 31))
+    if ((v24 & 0x40000000) == 0 || self->_smoothedRTT != *(equal + 31))
     {
       goto LABEL_440;
     }
@@ -6289,7 +6289,7 @@ LABEL_94:
 
   if (has)
   {
-    if ((v24 & 1) == 0 || self->_bestRTT != *(a3 + 1))
+    if ((v24 & 1) == 0 || self->_bestRTT != *(equal + 1))
     {
       goto LABEL_440;
     }
@@ -6302,7 +6302,7 @@ LABEL_94:
 
   if ((has & 0x8000000) != 0)
   {
-    if ((v24 & 0x8000000) == 0 || self->_rTTvariance != *(a3 + 28))
+    if ((v24 & 0x8000000) == 0 || self->_rTTvariance != *(equal + 28))
     {
       goto LABEL_440;
     }
@@ -6315,7 +6315,7 @@ LABEL_94:
 
   if ((has & 0x80000000) != 0)
   {
-    if ((v24 & 0x80000000) == 0 || self->_synRetransmissionCount != *(a3 + 32))
+    if ((v24 & 0x80000000) == 0 || self->_synRetransmissionCount != *(equal + 32))
     {
       goto LABEL_440;
     }
@@ -6326,37 +6326,37 @@ LABEL_94:
     goto LABEL_440;
   }
 
-  v25 = *(a3 + 432);
+  v25 = *(equal + 432);
   if (*(&self->_has + 8))
   {
-    if ((*(a3 + 432) & 1) == 0)
+    if ((*(equal + 432) & 1) == 0)
     {
       goto LABEL_440;
     }
 
-    v26 = *(a3 + 416);
+    v26 = *(equal + 416);
     if (self->_tfoUsed)
     {
-      if ((*(a3 + 416) & 1) == 0)
+      if ((*(equal + 416) & 1) == 0)
       {
         goto LABEL_440;
       }
     }
 
-    else if (*(a3 + 416))
+    else if (*(equal + 416))
     {
       goto LABEL_440;
     }
   }
 
-  else if (*(a3 + 432))
+  else if (*(equal + 432))
   {
     goto LABEL_440;
   }
 
   if ((has & 0x400000) != 0)
   {
-    if ((v24 & 0x400000) == 0 || self->_multipathServiceType != *(a3 + 23))
+    if ((v24 & 0x400000) == 0 || self->_multipathServiceType != *(equal + 23))
     {
       goto LABEL_440;
     }
@@ -6374,16 +6374,16 @@ LABEL_94:
       goto LABEL_440;
     }
 
-    v27 = *(a3 + 402);
+    v27 = *(equal + 402);
     if (self->_firstParty)
     {
-      if ((*(a3 + 402) & 1) == 0)
+      if ((*(equal + 402) & 1) == 0)
       {
         goto LABEL_440;
       }
     }
 
-    else if (*(a3 + 402))
+    else if (*(equal + 402))
     {
       goto LABEL_440;
     }
@@ -6396,7 +6396,7 @@ LABEL_94:
 
   if ((has & 0x10000) != 0)
   {
-    if ((v24 & 0x10000) == 0 || self->_multipathBytesInCell != *(a3 + 17))
+    if ((v24 & 0x10000) == 0 || self->_multipathBytesInCell != *(equal + 17))
     {
       goto LABEL_440;
     }
@@ -6409,7 +6409,7 @@ LABEL_94:
 
   if ((has & 0x80000) != 0)
   {
-    if ((v24 & 0x80000) == 0 || self->_multipathBytesOutCell != *(a3 + 20))
+    if ((v24 & 0x80000) == 0 || self->_multipathBytesOutCell != *(equal + 20))
     {
       goto LABEL_440;
     }
@@ -6422,7 +6422,7 @@ LABEL_94:
 
   if ((has & 0x40000) != 0)
   {
-    if ((v24 & 0x40000) == 0 || self->_multipathBytesInWiFi != *(a3 + 19))
+    if ((v24 & 0x40000) == 0 || self->_multipathBytesInWiFi != *(equal + 19))
     {
       goto LABEL_440;
     }
@@ -6435,7 +6435,7 @@ LABEL_94:
 
   if ((has & 0x200000) != 0)
   {
-    if ((v24 & 0x200000) == 0 || self->_multipathBytesOutWiFi != *(a3 + 22))
+    if ((v24 & 0x200000) == 0 || self->_multipathBytesOutWiFi != *(equal + 22))
     {
       goto LABEL_440;
     }
@@ -6448,7 +6448,7 @@ LABEL_94:
 
   if ((has & 0x20000) != 0)
   {
-    if ((v24 & 0x20000) == 0 || self->_multipathBytesInInitial != *(a3 + 18))
+    if ((v24 & 0x20000) == 0 || self->_multipathBytesInInitial != *(equal + 18))
     {
       goto LABEL_440;
     }
@@ -6461,7 +6461,7 @@ LABEL_94:
 
   if ((has & 0x100000) != 0)
   {
-    if ((v24 & 0x100000) == 0 || self->_multipathBytesOutInitial != *(a3 + 21))
+    if ((v24 & 0x100000) == 0 || self->_multipathBytesOutInitial != *(equal + 21))
     {
       goto LABEL_440;
     }
@@ -6474,7 +6474,7 @@ LABEL_94:
 
   if ((has & 0x20000000) != 0)
   {
-    if ((v24 & 0x20000000) == 0 || self->_secondsSinceInterfaceChange != *(a3 + 30))
+    if ((v24 & 0x20000000) == 0 || self->_secondsSinceInterfaceChange != *(equal + 30))
     {
       goto LABEL_440;
     }
@@ -6492,16 +6492,16 @@ LABEL_94:
       goto LABEL_440;
     }
 
-    v28 = *(a3 + 405);
+    v28 = *(equal + 405);
     if (self->_isDaemon)
     {
-      if ((*(a3 + 405) & 1) == 0)
+      if ((*(equal + 405) & 1) == 0)
       {
         goto LABEL_440;
       }
     }
 
-    else if (*(a3 + 405))
+    else if (*(equal + 405))
     {
       goto LABEL_440;
     }
@@ -6513,7 +6513,7 @@ LABEL_94:
   }
 
   processName = self->_processName;
-  if (processName | *(a3 + 47))
+  if (processName | *(equal + 47))
   {
     v5 = [(NSString *)processName isEqual:?];
     if (!v5)
@@ -6523,7 +6523,7 @@ LABEL_94:
   }
 
   activities = self->_activities;
-  if (activities | *(a3 + 36))
+  if (activities | *(equal + 36))
   {
     v5 = [(NSMutableArray *)activities isEqual:?];
     if (!v5)
@@ -6533,7 +6533,7 @@ LABEL_94:
   }
 
   connectionUUID = self->_connectionUUID;
-  if (connectionUUID | *(a3 + 41))
+  if (connectionUUID | *(equal + 41))
   {
     v5 = [(NSString *)connectionUUID isEqual:?];
     if (!v5)
@@ -6542,30 +6542,30 @@ LABEL_94:
     }
   }
 
-  v32 = *(a3 + 432);
+  v32 = *(equal + 432);
   if ((*(&self->_has + 8) & 4) != 0)
   {
-    if ((*(a3 + 432) & 4) == 0)
+    if ((*(equal + 432) & 4) == 0)
     {
       goto LABEL_440;
     }
 
-    v33 = *(a3 + 418);
+    v33 = *(equal + 418);
     if (self->_tlsHandshakeTimedOut)
     {
-      if ((*(a3 + 418) & 1) == 0)
+      if ((*(equal + 418) & 1) == 0)
       {
         goto LABEL_440;
       }
     }
 
-    else if (*(a3 + 418))
+    else if (*(equal + 418))
     {
       goto LABEL_440;
     }
   }
 
-  else if ((*(a3 + 432) & 4) != 0)
+  else if ((*(equal + 432) & 4) != 0)
   {
     goto LABEL_440;
   }
@@ -6579,16 +6579,16 @@ LABEL_94:
       goto LABEL_440;
     }
 
-    v36 = *(a3 + 407);
+    v36 = *(equal + 407);
     if (self->_isPathExpensive)
     {
-      if ((*(a3 + 407) & 1) == 0)
+      if ((*(equal + 407) & 1) == 0)
       {
         goto LABEL_440;
       }
     }
 
-    else if (*(a3 + 407))
+    else if (*(equal + 407))
     {
       goto LABEL_440;
     }
@@ -6606,16 +6606,16 @@ LABEL_94:
       goto LABEL_440;
     }
 
-    v37 = *(a3 + 406);
+    v37 = *(equal + 406);
     if (self->_isPathConstrained)
     {
-      if ((*(a3 + 406) & 1) == 0)
+      if ((*(equal + 406) & 1) == 0)
       {
         goto LABEL_440;
       }
     }
 
-    else if (*(a3 + 406))
+    else if (*(equal + 406))
     {
       goto LABEL_440;
     }
@@ -6633,16 +6633,16 @@ LABEL_94:
       goto LABEL_440;
     }
 
-    v38 = *(a3 + 410);
+    v38 = *(equal + 410);
     if (self->_prohibitsExpensive)
     {
-      if ((*(a3 + 410) & 1) == 0)
+      if ((*(equal + 410) & 1) == 0)
       {
         goto LABEL_440;
       }
     }
 
-    else if (*(a3 + 410))
+    else if (*(equal + 410))
     {
       goto LABEL_440;
     }
@@ -6660,16 +6660,16 @@ LABEL_94:
       goto LABEL_440;
     }
 
-    v39 = *(a3 + 409);
+    v39 = *(equal + 409);
     if (self->_prohibitsConstrained)
     {
-      if ((*(a3 + 409) & 1) == 0)
+      if ((*(equal + 409) & 1) == 0)
       {
         goto LABEL_440;
       }
     }
 
-    else if (*(a3 + 409))
+    else if (*(equal + 409))
     {
       goto LABEL_440;
     }
@@ -6681,7 +6681,7 @@ LABEL_94:
   }
 
   l2Report = self->_l2Report;
-  if (l2Report | *(a3 + 46))
+  if (l2Report | *(equal + 46))
   {
     v5 = [(AWDNWL2Report *)l2Report isEqual:?];
     if (!v5)
@@ -6691,7 +6691,7 @@ LABEL_94:
   }
 
   deviceReport = self->_deviceReport;
-  if (deviceReport | *(a3 + 42))
+  if (deviceReport | *(equal + 42))
   {
     v5 = [(AWDNWDeviceReport *)deviceReport isEqual:?];
     if (!v5)
@@ -6704,7 +6704,7 @@ LABEL_94:
   v43 = *v48;
   if ((*p_has & 0x400000000000) != 0)
   {
-    if ((v43 & 0x400000000000) == 0 || self->_transportProtocol != *(a3 + 98))
+    if ((v43 & 0x400000000000) == 0 || self->_transportProtocol != *(equal + 98))
     {
       goto LABEL_440;
     }
@@ -6717,7 +6717,7 @@ LABEL_94:
 
   if ((v42 & 0x10000000000) != 0)
   {
-    if ((v43 & 0x10000000000) == 0 || self->_dnsProtocol != *(a3 + 86))
+    if ((v43 & 0x10000000000) == 0 || self->_dnsProtocol != *(equal + 86))
     {
       goto LABEL_440;
     }
@@ -6730,7 +6730,7 @@ LABEL_94:
 
   if ((v42 & 0x20000000000) != 0)
   {
-    if ((v43 & 0x20000000000) == 0 || self->_dnsProvider != *(a3 + 87))
+    if ((v43 & 0x20000000000) == 0 || self->_dnsProvider != *(equal + 87))
     {
       goto LABEL_440;
     }
@@ -6747,10 +6747,10 @@ LABEL_440:
 
 LABEL_436:
   bundleID = self->_bundleID;
-  if (!(bundleID | *(a3 + 38)) || (v5 = [(NSString *)bundleID isEqual:?]) != 0)
+  if (!(bundleID | *(equal + 38)) || (v5 = [(NSString *)bundleID isEqual:?]) != 0)
   {
     effectiveBundleID = self->_effectiveBundleID;
-    if (effectiveBundleID | *(a3 + 44))
+    if (effectiveBundleID | *(equal + 44))
     {
 
       LOBYTE(v5) = [(NSString *)effectiveBundleID isEqual:?];
@@ -7749,28 +7749,28 @@ LABEL_148:
   return v18 ^ v19 ^ [(NSString *)self->_effectiveBundleID hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v28 = *MEMORY[0x29EDCA608];
-  v5 = a3 + 424;
-  if (*(a3 + 428))
+  v5 = from + 424;
+  if (*(from + 428))
   {
-    self->_timestamp = *(a3 + 33);
+    self->_timestamp = *(from + 33);
     *&self->_has |= 0x100000000uLL;
   }
 
-  if ((*(a3 + 432) & 0x10) != 0)
+  if ((*(from + 432) & 0x10) != 0)
   {
-    self->_triggeredPath = *(a3 + 420);
+    self->_triggeredPath = *(from + 420);
     *(&self->_has + 8) |= 0x10u;
   }
 
   v6 = *v5;
   if ((*v5 & 0x4000000000000000) != 0)
   {
-    self->_systemProxyConfigured = *(a3 + 414);
+    self->_systemProxyConfigured = *(from + 414);
     *&self->_has |= 0x4000000000000000uLL;
-    v6 = *(a3 + 53);
+    v6 = *(from + 53);
     if ((v6 & 0x1000000000000) == 0)
     {
 LABEL_7:
@@ -7788,9 +7788,9 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  self->_customProxyConfigured = *(a3 + 400);
+  self->_customProxyConfigured = *(from + 400);
   *&self->_has |= 0x1000000000000uLL;
-  v6 = *(a3 + 53);
+  v6 = *(from + 53);
   if ((v6 & 0x800000000000) == 0)
   {
 LABEL_8:
@@ -7803,48 +7803,48 @@ LABEL_8:
   }
 
 LABEL_99:
-  self->_usedProxyType = *(a3 + 99);
+  self->_usedProxyType = *(from + 99);
   *&self->_has |= 0x800000000000uLL;
-  if ((*(a3 + 53) & 0x2000000000000) != 0)
+  if ((*(from + 53) & 0x2000000000000) != 0)
   {
 LABEL_9:
-    self->_fallbackEligible = *(a3 + 401);
+    self->_fallbackEligible = *(from + 401);
     *&self->_has |= 0x2000000000000uLL;
   }
 
 LABEL_10:
-  v7 = *(a3 + 432);
+  v7 = *(from + 432);
   if ((v7 & 0x40) != 0)
   {
-    self->_weakFallback = *(a3 + 422);
+    self->_weakFallback = *(from + 422);
     *(&self->_has + 8) |= 0x40u;
-    v7 = *(a3 + 432);
+    v7 = *(from + 432);
   }
 
   if ((v7 & 0x20) != 0)
   {
-    self->_usedFallback = *(a3 + 421);
+    self->_usedFallback = *(from + 421);
     *(&self->_has + 8) |= 0x20u;
   }
 
-  if ((*(a3 + 431) & 8) != 0)
+  if ((*(from + 431) & 8) != 0)
   {
-    self->_resolutionRequired = *(a3 + 411);
+    self->_resolutionRequired = *(from + 411);
     *&self->_has |= 0x800000000000000uLL;
   }
 
-  if ((*(a3 + 432) & 2) != 0)
+  if ((*(from + 432) & 2) != 0)
   {
-    self->_tlsConfigured = *(a3 + 417);
+    self->_tlsConfigured = *(from + 417);
     *(&self->_has + 8) |= 2u;
   }
 
   v8 = *v5;
   if ((*v5 & 0x8000000000000000) != 0)
   {
-    self->_tfoConfigured = *(a3 + 415);
+    self->_tfoConfigured = *(from + 415);
     *&self->_has |= 0x8000000000000000;
-    v8 = *(a3 + 53);
+    v8 = *(from + 53);
     if ((v8 & 0x100000000000000) == 0)
     {
 LABEL_20:
@@ -7862,9 +7862,9 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  self->_multipathConfigured = *(a3 + 408);
+  self->_multipathConfigured = *(from + 408);
   *&self->_has |= 0x100000000000000uLL;
-  v8 = *(a3 + 53);
+  v8 = *(from + 53);
   if ((v8 & 0x400000000) == 0)
   {
 LABEL_21:
@@ -7877,9 +7877,9 @@ LABEL_21:
   }
 
 LABEL_130:
-  self->_trafficClass = *(a3 + 35);
+  self->_trafficClass = *(from + 35);
   *&self->_has |= 0x400000000uLL;
-  v8 = *(a3 + 53);
+  v8 = *(from + 53);
   if ((v8 & 0x40000000000) == 0)
   {
 LABEL_22:
@@ -7892,9 +7892,9 @@ LABEL_22:
   }
 
 LABEL_131:
-  self->_failureReason = *(a3 + 90);
+  self->_failureReason = *(from + 90);
   *&self->_has |= 0x40000000000uLL;
-  v8 = *(a3 + 53);
+  v8 = *(from + 53);
   if ((v8 & 0x2000000) == 0)
   {
 LABEL_23:
@@ -7907,9 +7907,9 @@ LABEL_23:
   }
 
 LABEL_132:
-  self->_pathTriggerMilliseconds = *(a3 + 26);
+  self->_pathTriggerMilliseconds = *(from + 26);
   *&self->_has |= 0x2000000uLL;
-  v8 = *(a3 + 53);
+  v8 = *(from + 53);
   if ((v8 & 0x10000000) == 0)
   {
 LABEL_24:
@@ -7922,9 +7922,9 @@ LABEL_24:
   }
 
 LABEL_133:
-  self->_resolutionMilliseconds = *(a3 + 29);
+  self->_resolutionMilliseconds = *(from + 29);
   *&self->_has |= 0x10000000uLL;
-  v8 = *(a3 + 53);
+  v8 = *(from + 53);
   if ((v8 & 0x4000000) == 0)
   {
 LABEL_25:
@@ -7937,9 +7937,9 @@ LABEL_25:
   }
 
 LABEL_134:
-  self->_proxyMilliseconds = *(a3 + 27);
+  self->_proxyMilliseconds = *(from + 27);
   *&self->_has |= 0x4000000uLL;
-  v8 = *(a3 + 53);
+  v8 = *(from + 53);
   if ((v8 & 0x400) == 0)
   {
 LABEL_26:
@@ -7952,9 +7952,9 @@ LABEL_26:
   }
 
 LABEL_135:
-  self->_flowConnectMilliseconds = *(a3 + 11);
+  self->_flowConnectMilliseconds = *(from + 11);
   *&self->_has |= 0x400uLL;
-  v8 = *(a3 + 53);
+  v8 = *(from + 53);
   if ((v8 & 0x200000000) == 0)
   {
 LABEL_27:
@@ -7967,9 +7967,9 @@ LABEL_27:
   }
 
 LABEL_136:
-  self->_tlsMilliseconds = *(a3 + 34);
+  self->_tlsMilliseconds = *(from + 34);
   *&self->_has |= 0x200000000uLL;
-  v8 = *(a3 + 53);
+  v8 = *(from + 53);
   if ((v8 & 0x800) == 0)
   {
 LABEL_28:
@@ -7982,9 +7982,9 @@ LABEL_28:
   }
 
 LABEL_137:
-  self->_flowDurationMilliseconds = *(a3 + 12);
+  self->_flowDurationMilliseconds = *(from + 12);
   *&self->_has |= 0x800uLL;
-  v8 = *(a3 + 53);
+  v8 = *(from + 53);
   if ((v8 & 0x1000) == 0)
   {
 LABEL_29:
@@ -7997,9 +7997,9 @@ LABEL_29:
   }
 
 LABEL_138:
-  self->_ipv4AddressCount = *(a3 + 13);
+  self->_ipv4AddressCount = *(from + 13);
   *&self->_has |= 0x1000uLL;
-  v8 = *(a3 + 53);
+  v8 = *(from + 53);
   if ((v8 & 0x4000) == 0)
   {
 LABEL_30:
@@ -8012,9 +8012,9 @@ LABEL_30:
   }
 
 LABEL_139:
-  self->_ipv6AddressCount = *(a3 + 15);
+  self->_ipv6AddressCount = *(from + 15);
   *&self->_has |= 0x4000uLL;
-  v8 = *(a3 + 53);
+  v8 = *(from + 53);
   if ((v8 & 0x2000000000000000) == 0)
   {
 LABEL_31:
@@ -8027,9 +8027,9 @@ LABEL_31:
   }
 
 LABEL_140:
-  self->_synthesizedIPv6Address = *(a3 + 413);
+  self->_synthesizedIPv6Address = *(from + 413);
   *&self->_has |= 0x2000000000000000uLL;
-  v8 = *(a3 + 53);
+  v8 = *(from + 53);
   if ((v8 & 0x80000000000) == 0)
   {
 LABEL_32:
@@ -8042,9 +8042,9 @@ LABEL_32:
   }
 
 LABEL_141:
-  self->_firstAddressFamily = *(a3 + 91);
+  self->_firstAddressFamily = *(from + 91);
   *&self->_has |= 0x80000000000uLL;
-  v8 = *(a3 + 53);
+  v8 = *(from + 53);
   if ((v8 & 0x2000000000) == 0)
   {
 LABEL_33:
@@ -8057,9 +8057,9 @@ LABEL_33:
   }
 
 LABEL_142:
-  self->_connectedAddressFamily = *(a3 + 78);
+  self->_connectedAddressFamily = *(from + 78);
   *&self->_has |= 0x2000000000uLL;
-  v8 = *(a3 + 53);
+  v8 = *(from + 53);
   if ((v8 & 0x40) == 0)
   {
 LABEL_34:
@@ -8072,9 +8072,9 @@ LABEL_34:
   }
 
 LABEL_143:
-  self->_connectedAddressIndex = *(a3 + 7);
+  self->_connectedAddressIndex = *(from + 7);
   *&self->_has |= 0x40uLL;
-  v8 = *(a3 + 53);
+  v8 = *(from + 53);
   if ((v8 & 0x4000000000) == 0)
   {
 LABEL_35:
@@ -8087,9 +8087,9 @@ LABEL_35:
   }
 
 LABEL_144:
-  self->_connectedInterfaceType = *(a3 + 79);
+  self->_connectedInterfaceType = *(from + 79);
   *&self->_has |= 0x4000000000uLL;
-  v8 = *(a3 + 53);
+  v8 = *(from + 53);
   if ((v8 & 0x80) == 0)
   {
 LABEL_36:
@@ -8102,9 +8102,9 @@ LABEL_36:
   }
 
 LABEL_145:
-  self->_connectionReuseCount = *(a3 + 8);
+  self->_connectionReuseCount = *(from + 8);
   *&self->_has |= 0x80uLL;
-  v8 = *(a3 + 53);
+  v8 = *(from + 53);
   if ((v8 & 0x200) == 0)
   {
 LABEL_37:
@@ -8117,9 +8117,9 @@ LABEL_37:
   }
 
 LABEL_146:
-  self->_dataStallCount = *(a3 + 10);
+  self->_dataStallCount = *(from + 10);
   *&self->_has |= 0x200uLL;
-  v8 = *(a3 + 53);
+  v8 = *(from + 53);
   if ((v8 & 0x8000000000) == 0)
   {
 LABEL_38:
@@ -8132,9 +8132,9 @@ LABEL_38:
   }
 
 LABEL_147:
-  self->_connectionMode = *(a3 + 80);
+  self->_connectionMode = *(from + 80);
   *&self->_has |= 0x8000000000uLL;
-  v8 = *(a3 + 53);
+  v8 = *(from + 53);
   if ((v8 & 0x1000000000) == 0)
   {
 LABEL_39:
@@ -8147,9 +8147,9 @@ LABEL_39:
   }
 
 LABEL_148:
-  self->_appleHost = *(a3 + 75);
+  self->_appleHost = *(from + 75);
   *&self->_has |= 0x1000000000uLL;
-  v8 = *(a3 + 53);
+  v8 = *(from + 53);
   if ((v8 & 0x800000000) == 0)
   {
 LABEL_40:
@@ -8162,9 +8162,9 @@ LABEL_40:
   }
 
 LABEL_149:
-  self->_appleApp = *(a3 + 74);
+  self->_appleApp = *(from + 74);
   *&self->_has |= 0x800000000uLL;
-  v8 = *(a3 + 53);
+  v8 = *(from + 53);
   if ((v8 & 0x200000000000) == 0)
   {
 LABEL_41:
@@ -8177,9 +8177,9 @@ LABEL_41:
   }
 
 LABEL_150:
-  self->_tlsVersion = *(a3 + 97);
+  self->_tlsVersion = *(from + 97);
   *&self->_has |= 0x200000000000uLL;
-  v8 = *(a3 + 53);
+  v8 = *(from + 53);
   if ((v8 & 0x100000000000) == 0)
   {
 LABEL_42:
@@ -8192,9 +8192,9 @@ LABEL_42:
   }
 
 LABEL_151:
-  self->_stackLevel = *(a3 + 96);
+  self->_stackLevel = *(from + 96);
   *&self->_has |= 0x100000000000uLL;
-  v8 = *(a3 + 53);
+  v8 = *(from + 53);
   if ((v8 & 0x8000000000000) == 0)
   {
 LABEL_43:
@@ -8207,9 +8207,9 @@ LABEL_43:
   }
 
 LABEL_152:
-  self->_ipv4Available = *(a3 + 403);
+  self->_ipv4Available = *(from + 403);
   *&self->_has |= 0x8000000000000uLL;
-  v8 = *(a3 + 53);
+  v8 = *(from + 53);
   if ((v8 & 0x10000000000000) == 0)
   {
 LABEL_44:
@@ -8222,9 +8222,9 @@ LABEL_44:
   }
 
 LABEL_153:
-  self->_ipv6Available = *(a3 + 404);
+  self->_ipv6Available = *(from + 404);
   *&self->_has |= 0x10000000000000uLL;
-  v8 = *(a3 + 53);
+  v8 = *(from + 53);
   if ((v8 & 0x2000) == 0)
   {
 LABEL_45:
@@ -8237,28 +8237,28 @@ LABEL_45:
   }
 
 LABEL_154:
-  self->_ipv4DNSServerCount = *(a3 + 14);
+  self->_ipv4DNSServerCount = *(from + 14);
   *&self->_has |= 0x2000uLL;
-  if ((*(a3 + 53) & 0x8000) != 0)
+  if ((*(from + 53) & 0x8000) != 0)
   {
 LABEL_46:
-    self->_ipv6DNSServerCount = *(a3 + 16);
+    self->_ipv6DNSServerCount = *(from + 16);
     *&self->_has |= 0x8000uLL;
   }
 
 LABEL_47:
-  if ((*(a3 + 432) & 8) != 0)
+  if ((*(from + 432) & 8) != 0)
   {
-    self->_tlsVersionTimeout = *(a3 + 419);
+    self->_tlsVersionTimeout = *(from + 419);
     *(&self->_has + 8) |= 8u;
   }
 
   v9 = *v5;
   if ((*v5 & 0x1000000000000000) != 0)
   {
-    self->_synthesizedExtraIPv6Address = *(a3 + 412);
+    self->_synthesizedExtraIPv6Address = *(from + 412);
     *&self->_has |= 0x1000000000000000uLL;
-    v9 = *(a3 + 53);
+    v9 = *(from + 53);
     if ((v9 & 4) == 0)
     {
 LABEL_51:
@@ -8276,9 +8276,9 @@ LABEL_51:
     goto LABEL_51;
   }
 
-  self->_bytesIn = *(a3 + 3);
+  self->_bytesIn = *(from + 3);
   *&self->_has |= 4uLL;
-  v9 = *(a3 + 53);
+  v9 = *(from + 53);
   if ((v9 & 8) == 0)
   {
 LABEL_52:
@@ -8291,9 +8291,9 @@ LABEL_52:
   }
 
 LABEL_103:
-  self->_bytesOut = *(a3 + 4);
+  self->_bytesOut = *(from + 4);
   *&self->_has |= 8uLL;
-  v9 = *(a3 + 53);
+  v9 = *(from + 53);
   if ((v9 & 2) == 0)
   {
 LABEL_53:
@@ -8306,9 +8306,9 @@ LABEL_53:
   }
 
 LABEL_104:
-  self->_bytesDuplicate = *(a3 + 2);
+  self->_bytesDuplicate = *(from + 2);
   *&self->_has |= 2uLL;
-  v9 = *(a3 + 53);
+  v9 = *(from + 53);
   if ((v9 & 0x10) == 0)
   {
 LABEL_54:
@@ -8321,9 +8321,9 @@ LABEL_54:
   }
 
 LABEL_105:
-  self->_bytesOutOfOrder = *(a3 + 5);
+  self->_bytesOutOfOrder = *(from + 5);
   *&self->_has |= 0x10uLL;
-  v9 = *(a3 + 53);
+  v9 = *(from + 53);
   if ((v9 & 0x20) == 0)
   {
 LABEL_55:
@@ -8336,9 +8336,9 @@ LABEL_55:
   }
 
 LABEL_106:
-  self->_bytesRetransmitted = *(a3 + 6);
+  self->_bytesRetransmitted = *(from + 6);
   *&self->_has |= 0x20uLL;
-  v9 = *(a3 + 53);
+  v9 = *(from + 53);
   if ((v9 & 0x800000) == 0)
   {
 LABEL_56:
@@ -8351,9 +8351,9 @@ LABEL_56:
   }
 
 LABEL_107:
-  self->_packetsIn = *(a3 + 24);
+  self->_packetsIn = *(from + 24);
   *&self->_has |= 0x800000uLL;
-  v9 = *(a3 + 53);
+  v9 = *(from + 53);
   if ((v9 & 0x1000000) == 0)
   {
 LABEL_57:
@@ -8366,9 +8366,9 @@ LABEL_57:
   }
 
 LABEL_108:
-  self->_packetsOut = *(a3 + 25);
+  self->_packetsOut = *(from + 25);
   *&self->_has |= 0x1000000uLL;
-  v9 = *(a3 + 53);
+  v9 = *(from + 53);
   if ((v9 & 0x100) == 0)
   {
 LABEL_58:
@@ -8381,9 +8381,9 @@ LABEL_58:
   }
 
 LABEL_109:
-  self->_currentRTT = *(a3 + 9);
+  self->_currentRTT = *(from + 9);
   *&self->_has |= 0x100uLL;
-  v9 = *(a3 + 53);
+  v9 = *(from + 53);
   if ((v9 & 0x40000000) == 0)
   {
 LABEL_59:
@@ -8396,9 +8396,9 @@ LABEL_59:
   }
 
 LABEL_110:
-  self->_smoothedRTT = *(a3 + 31);
+  self->_smoothedRTT = *(from + 31);
   *&self->_has |= 0x40000000uLL;
-  v9 = *(a3 + 53);
+  v9 = *(from + 53);
   if ((v9 & 1) == 0)
   {
 LABEL_60:
@@ -8411,9 +8411,9 @@ LABEL_60:
   }
 
 LABEL_111:
-  self->_bestRTT = *(a3 + 1);
+  self->_bestRTT = *(from + 1);
   *&self->_has |= 1uLL;
-  v9 = *(a3 + 53);
+  v9 = *(from + 53);
   if ((v9 & 0x8000000) == 0)
   {
 LABEL_61:
@@ -8426,28 +8426,28 @@ LABEL_61:
   }
 
 LABEL_112:
-  self->_rTTvariance = *(a3 + 28);
+  self->_rTTvariance = *(from + 28);
   *&self->_has |= 0x8000000uLL;
-  if ((*(a3 + 53) & 0x80000000) != 0)
+  if ((*(from + 53) & 0x80000000) != 0)
   {
 LABEL_62:
-    self->_synRetransmissionCount = *(a3 + 32);
+    self->_synRetransmissionCount = *(from + 32);
     *&self->_has |= 0x80000000uLL;
   }
 
 LABEL_63:
-  if (*(a3 + 432))
+  if (*(from + 432))
   {
-    self->_tfoUsed = *(a3 + 416);
+    self->_tfoUsed = *(from + 416);
     *(&self->_has + 8) |= 1u;
   }
 
   v10 = *v5;
   if ((*v5 & 0x400000) != 0)
   {
-    self->_multipathServiceType = *(a3 + 23);
+    self->_multipathServiceType = *(from + 23);
     *&self->_has |= 0x400000uLL;
-    v10 = *(a3 + 53);
+    v10 = *(from + 53);
     if ((v10 & 0x4000000000000) == 0)
     {
 LABEL_67:
@@ -8465,9 +8465,9 @@ LABEL_67:
     goto LABEL_67;
   }
 
-  self->_firstParty = *(a3 + 402);
+  self->_firstParty = *(from + 402);
   *&self->_has |= 0x4000000000000uLL;
-  v10 = *(a3 + 53);
+  v10 = *(from + 53);
   if ((v10 & 0x10000) == 0)
   {
 LABEL_68:
@@ -8480,9 +8480,9 @@ LABEL_68:
   }
 
 LABEL_116:
-  self->_multipathBytesInCell = *(a3 + 17);
+  self->_multipathBytesInCell = *(from + 17);
   *&self->_has |= 0x10000uLL;
-  v10 = *(a3 + 53);
+  v10 = *(from + 53);
   if ((v10 & 0x80000) == 0)
   {
 LABEL_69:
@@ -8495,9 +8495,9 @@ LABEL_69:
   }
 
 LABEL_117:
-  self->_multipathBytesOutCell = *(a3 + 20);
+  self->_multipathBytesOutCell = *(from + 20);
   *&self->_has |= 0x80000uLL;
-  v10 = *(a3 + 53);
+  v10 = *(from + 53);
   if ((v10 & 0x40000) == 0)
   {
 LABEL_70:
@@ -8510,9 +8510,9 @@ LABEL_70:
   }
 
 LABEL_118:
-  self->_multipathBytesInWiFi = *(a3 + 19);
+  self->_multipathBytesInWiFi = *(from + 19);
   *&self->_has |= 0x40000uLL;
-  v10 = *(a3 + 53);
+  v10 = *(from + 53);
   if ((v10 & 0x200000) == 0)
   {
 LABEL_71:
@@ -8525,9 +8525,9 @@ LABEL_71:
   }
 
 LABEL_119:
-  self->_multipathBytesOutWiFi = *(a3 + 22);
+  self->_multipathBytesOutWiFi = *(from + 22);
   *&self->_has |= 0x200000uLL;
-  v10 = *(a3 + 53);
+  v10 = *(from + 53);
   if ((v10 & 0x20000) == 0)
   {
 LABEL_72:
@@ -8540,9 +8540,9 @@ LABEL_72:
   }
 
 LABEL_120:
-  self->_multipathBytesInInitial = *(a3 + 18);
+  self->_multipathBytesInInitial = *(from + 18);
   *&self->_has |= 0x20000uLL;
-  v10 = *(a3 + 53);
+  v10 = *(from + 53);
   if ((v10 & 0x100000) == 0)
   {
 LABEL_73:
@@ -8555,9 +8555,9 @@ LABEL_73:
   }
 
 LABEL_121:
-  self->_multipathBytesOutInitial = *(a3 + 21);
+  self->_multipathBytesOutInitial = *(from + 21);
   *&self->_has |= 0x100000uLL;
-  v10 = *(a3 + 53);
+  v10 = *(from + 53);
   if ((v10 & 0x20000000) == 0)
   {
 LABEL_74:
@@ -8570,17 +8570,17 @@ LABEL_74:
   }
 
 LABEL_122:
-  self->_secondsSinceInterfaceChange = *(a3 + 30);
+  self->_secondsSinceInterfaceChange = *(from + 30);
   *&self->_has |= 0x20000000uLL;
-  if ((*(a3 + 53) & 0x20000000000000) != 0)
+  if ((*(from + 53) & 0x20000000000000) != 0)
   {
 LABEL_75:
-    self->_isDaemon = *(a3 + 405);
+    self->_isDaemon = *(from + 405);
     *&self->_has |= 0x20000000000000uLL;
   }
 
 LABEL_76:
-  if (*(a3 + 47))
+  if (*(from + 47))
   {
     [(AWDNWConnectionReport *)self setProcessName:?];
   }
@@ -8589,7 +8589,7 @@ LABEL_76:
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v11 = *(a3 + 36);
+  v11 = *(from + 36);
   v12 = [v11 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v12)
   {
@@ -8613,23 +8613,23 @@ LABEL_76:
     while (v13);
   }
 
-  if (*(a3 + 41))
+  if (*(from + 41))
   {
     [(AWDNWConnectionReport *)self setConnectionUUID:?];
   }
 
   if ((v5[8] & 4) != 0)
   {
-    self->_tlsHandshakeTimedOut = *(a3 + 418);
+    self->_tlsHandshakeTimedOut = *(from + 418);
     *(&self->_has + 8) |= 4u;
   }
 
   v16 = *v5;
   if ((*v5 & 0x80000000000000) != 0)
   {
-    self->_isPathExpensive = *(a3 + 407);
+    self->_isPathExpensive = *(from + 407);
     *&self->_has |= 0x80000000000000uLL;
-    v16 = *(a3 + 53);
+    v16 = *(from + 53);
     if ((v16 & 0x40000000000000) == 0)
     {
 LABEL_91:
@@ -8647,9 +8647,9 @@ LABEL_91:
     goto LABEL_91;
   }
 
-  self->_isPathConstrained = *(a3 + 406);
+  self->_isPathConstrained = *(from + 406);
   *&self->_has |= 0x40000000000000uLL;
-  v16 = *(a3 + 53);
+  v16 = *(from + 53);
   if ((v16 & 0x400000000000000) == 0)
   {
 LABEL_92:
@@ -8662,18 +8662,18 @@ LABEL_92:
   }
 
 LABEL_126:
-  self->_prohibitsExpensive = *(a3 + 410);
+  self->_prohibitsExpensive = *(from + 410);
   *&self->_has |= 0x400000000000000uLL;
-  if ((*(a3 + 53) & 0x200000000000000) != 0)
+  if ((*(from + 53) & 0x200000000000000) != 0)
   {
 LABEL_93:
-    self->_prohibitsConstrained = *(a3 + 409);
+    self->_prohibitsConstrained = *(from + 409);
     *&self->_has |= 0x200000000000000uLL;
   }
 
 LABEL_94:
   l2Report = self->_l2Report;
-  v18 = *(a3 + 46);
+  v18 = *(from + 46);
   if (l2Report)
   {
     if (v18)
@@ -8688,7 +8688,7 @@ LABEL_94:
   }
 
   deviceReport = self->_deviceReport;
-  v20 = *(a3 + 42);
+  v20 = *(from + 42);
   if (deviceReport)
   {
     if (v20)
@@ -8705,9 +8705,9 @@ LABEL_94:
   v21 = *v5;
   if ((*v5 & 0x400000000000) != 0)
   {
-    self->_transportProtocol = *(a3 + 98);
+    self->_transportProtocol = *(from + 98);
     *&self->_has |= 0x400000000000uLL;
-    v21 = *(a3 + 53);
+    v21 = *(from + 53);
     if ((v21 & 0x10000000000) == 0)
     {
 LABEL_165:
@@ -8725,22 +8725,22 @@ LABEL_165:
     goto LABEL_165;
   }
 
-  self->_dnsProtocol = *(a3 + 86);
+  self->_dnsProtocol = *(from + 86);
   *&self->_has |= 0x10000000000uLL;
-  if ((*(a3 + 53) & 0x20000000000) != 0)
+  if ((*(from + 53) & 0x20000000000) != 0)
   {
 LABEL_166:
-    self->_dnsProvider = *(a3 + 87);
+    self->_dnsProvider = *(from + 87);
     *&self->_has |= 0x20000000000uLL;
   }
 
 LABEL_167:
-  if (*(a3 + 38))
+  if (*(from + 38))
   {
     [(AWDNWConnectionReport *)self setBundleID:?];
   }
 
-  if (*(a3 + 44))
+  if (*(from + 44))
   {
     [(AWDNWConnectionReport *)self setEffectiveBundleID:?];
   }

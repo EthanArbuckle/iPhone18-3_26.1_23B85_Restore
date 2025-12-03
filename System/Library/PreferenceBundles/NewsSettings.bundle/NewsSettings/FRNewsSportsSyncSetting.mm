@@ -1,24 +1,24 @@
 @interface FRNewsSportsSyncSetting
 + (id)userDefaultSyncSetting;
-+ (void)updateUserDefaultsSyncSetting:(id)a3;
-- (FRNewsSportsSyncSetting)initWithSource:(unint64_t)a3 enabled:(BOOL)a4 dateModified:(id)a5;
++ (void)updateUserDefaultsSyncSetting:(id)setting;
+- (FRNewsSportsSyncSetting)initWithSource:(unint64_t)source enabled:(BOOL)enabled dateModified:(id)modified;
 - (id)description;
 @end
 
 @implementation FRNewsSportsSyncSetting
 
-- (FRNewsSportsSyncSetting)initWithSource:(unint64_t)a3 enabled:(BOOL)a4 dateModified:(id)a5
+- (FRNewsSportsSyncSetting)initWithSource:(unint64_t)source enabled:(BOOL)enabled dateModified:(id)modified
 {
-  v9 = a5;
+  modifiedCopy = modified;
   v13.receiver = self;
   v13.super_class = FRNewsSportsSyncSetting;
   v10 = [(FRNewsSportsSyncSetting *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    v10->_source = a3;
-    v10->_enabled = a4;
-    objc_storeStrong(&v10->_dateModified, a5);
+    v10->_source = source;
+    v10->_enabled = enabled;
+    objc_storeStrong(&v10->_dateModified, modified);
   }
 
   return v11;
@@ -27,17 +27,17 @@
 - (id)description
 {
   v3 = [NSString alloc];
-  v4 = [(FRNewsSportsSyncSetting *)self source];
+  source = [(FRNewsSportsSyncSetting *)self source];
   v5 = @"userDefaults";
-  if (v4 == 1)
+  if (source == 1)
   {
     v5 = @"watchlist";
   }
 
   v6 = v5;
-  v7 = [(FRNewsSportsSyncSetting *)self isEnabled];
-  v8 = [(FRNewsSportsSyncSetting *)self dateModified];
-  v9 = [v3 initWithFormat:@"{source=%@, enabled=%d, date=%@}", v6, v7, v8];
+  isEnabled = [(FRNewsSportsSyncSetting *)self isEnabled];
+  dateModified = [(FRNewsSportsSyncSetting *)self dateModified];
+  v9 = [v3 initWithFormat:@"{source=%@, enabled=%d, date=%@}", v6, isEnabled, dateModified];
 
   return v9;
 }
@@ -55,15 +55,15 @@
   return v6;
 }
 
-+ (void)updateUserDefaultsSyncSetting:(id)a3
++ (void)updateUserDefaultsSyncSetting:(id)setting
 {
-  v3 = a3;
+  settingCopy = setting;
   v6 = NewsCoreUserDefaults();
-  v4 = [v3 isEnabled];
-  [v6 setBool:v4 forKey:FCSportsFavoritesSyncSettingPreferenceKey];
-  v5 = [v3 dateModified];
+  isEnabled = [settingCopy isEnabled];
+  [v6 setBool:isEnabled forKey:FCSportsFavoritesSyncSettingPreferenceKey];
+  dateModified = [settingCopy dateModified];
 
-  [v6 setObject:v5 forKey:FCSportsFavoritesSyncSettingPreferenceDateModifiedKey];
+  [v6 setObject:dateModified forKey:FCSportsFavoritesSyncSettingPreferenceDateModifiedKey];
 }
 
 @end

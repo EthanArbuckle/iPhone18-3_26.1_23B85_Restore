@@ -1,6 +1,6 @@
 @interface PISliderNetAdjustmentsJob
-- (BOOL)networkProcessingWithResultingPixelBuffer:(__CVBuffer *)a3 error:(id *)a4;
-- (BOOL)prepare:(id *)a3;
+- (BOOL)networkProcessingWithResultingPixelBuffer:(__CVBuffer *)buffer error:(id *)error;
+- (BOOL)prepare:(id *)prepare;
 - (id)cacheKey;
 - (id)result;
 - (id)scalePolicy;
@@ -28,50 +28,50 @@
   return v3;
 }
 
-- (BOOL)networkProcessingWithResultingPixelBuffer:(__CVBuffer *)a3 error:(id *)a4
+- (BOOL)networkProcessingWithResultingPixelBuffer:(__CVBuffer *)buffer error:(id *)error
 {
-  v7 = [(NURenderJob *)self request];
-  v8 = [v7 sliderNetModel];
-  v9 = [v7 assetScenePrint];
+  request = [(NURenderJob *)self request];
+  sliderNetModel = [request sliderNetModel];
+  assetScenePrint = [request assetScenePrint];
   v36 = 0;
-  v10 = [v8 predictStylePrintForPixelBuffer:a3 scenePrint:v9 error:&v36];
+  v10 = [sliderNetModel predictStylePrintForPixelBuffer:buffer scenePrint:assetScenePrint error:&v36];
   v11 = v36;
 
   if (v10)
   {
-    v12 = [v7 sliderNetModel];
+    sliderNetModel2 = [request sliderNetModel];
     sourceStyleFeatureVector = self->_sourceStyleFeatureVector;
     v35 = 0;
-    [v12 gatingScoreToTransferStyleFrom:sourceStyleFeatureVector to:v10 error:&v35];
+    [sliderNetModel2 gatingScoreToTransferStyleFrom:sourceStyleFeatureVector to:v10 error:&v35];
     v15 = v14;
-    v16 = v35;
+    request3 = v35;
     self->_similarityScore = v15;
 
-    if (v16)
+    if (request3)
     {
       v17 = MEMORY[0x1E69B3A48];
       adjustments = [(NURenderJob *)self request];
-      [v17 errorWithCode:1 reason:@"Unable to get a gating score from from network" object:adjustments underlyingError:v16];
-      *a4 = v19 = 0;
+      [v17 errorWithCode:1 reason:@"Unable to get a gating score from from network" object:adjustments underlyingError:request3];
+      *error = v19 = 0;
 LABEL_13:
 
       goto LABEL_14;
     }
 
-    [v7 similarityGatingThreshold];
+    [request similarityGatingThreshold];
     if (v21 == -1.0)
     {
-      v24 = [v7 sliderNetModel];
+      sliderNetModel3 = [request sliderNetModel];
       v25 = self->_sourceStyleFeatureVector;
       v33 = 0;
-      v26 = [v24 predictSlidersToTransferStyleFrom:v25 to:v10 error:&v33];
+      v26 = [sliderNetModel3 predictSlidersToTransferStyleFrom:v25 to:v10 error:&v33];
       v27 = v33;
     }
 
     else
     {
       similarityScore = self->_similarityScore;
-      [v7 similarityGatingThreshold];
+      [request similarityGatingThreshold];
       if (v23 > similarityScore)
       {
         adjustments = self->_adjustments;
@@ -81,10 +81,10 @@ LABEL_11:
         goto LABEL_13;
       }
 
-      v24 = [v7 sliderNetModel];
+      sliderNetModel3 = [request sliderNetModel];
       v28 = self->_sourceStyleFeatureVector;
       v34 = 0;
-      v26 = [v24 predictSlidersToTransferStyleFrom:v28 to:v10 error:&v34];
+      v26 = [sliderNetModel3 predictSlidersToTransferStyleFrom:v28 to:v10 error:&v34];
       v27 = v34;
     }
 
@@ -95,8 +95,8 @@ LABEL_11:
     if (!self->_adjustments)
     {
       v30 = MEMORY[0x1E69B3A48];
-      v31 = [(NURenderJob *)self request];
-      *a4 = [v30 errorWithCode:1 reason:@"Unable to get sliders data from network" object:v31 underlyingError:adjustments];
+      request2 = [(NURenderJob *)self request];
+      *error = [v30 errorWithCode:1 reason:@"Unable to get sliders data from network" object:request2 underlyingError:adjustments];
 
       v19 = 0;
       goto LABEL_13;
@@ -106,15 +106,15 @@ LABEL_11:
   }
 
   v20 = MEMORY[0x1E69B3A48];
-  v16 = [(NURenderJob *)self request];
-  [v20 errorWithCode:1 reason:@"Unable to get a content feature Vector from network" object:v16 underlyingError:v11];
-  *a4 = v19 = 0;
+  request3 = [(NURenderJob *)self request];
+  [v20 errorWithCode:1 reason:@"Unable to get a content feature Vector from network" object:request3 underlyingError:v11];
+  *error = v19 = 0;
 LABEL_14:
 
   return v19;
 }
 
-- (BOOL)prepare:(id *)a3
+- (BOOL)prepare:(id *)prepare
 {
   v40 = *MEMORY[0x1E69E9840];
   v32.receiver = self;
@@ -124,8 +124,8 @@ LABEL_14:
     return 0;
   }
 
-  v5 = [(NURenderJob *)self prepareNode];
-  v6 = v5 == 0;
+  prepareNode = [(NURenderJob *)self prepareNode];
+  v6 = prepareNode == 0;
 
   if (v6)
   {
@@ -149,8 +149,8 @@ LABEL_14:
         v26 = dispatch_get_specific(*v20);
         v27 = MEMORY[0x1E696AF00];
         v28 = v26;
-        v29 = [v27 callStackSymbols];
-        v30 = [v29 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v27 callStackSymbols];
+        v30 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v26;
         *&buf[12] = 2114;
@@ -161,8 +161,8 @@ LABEL_14:
 
     else if (v23)
     {
-      v24 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v25 = [v24 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v25 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v25;
       _os_log_error_impl(&dword_1C7694000, v22, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -172,7 +172,7 @@ LABEL_14:
     __break(1u);
   }
 
-  v7 = [(NURenderJob *)self request];
+  request = [(NURenderJob *)self request];
   v8 = MEMORY[0x1E696ACD0];
   v33 = 0;
   v34 = &v33;
@@ -192,9 +192,9 @@ LABEL_14:
 
   v10 = v9;
   _Block_object_dispose(&v33, 8);
-  v11 = [v7 styleFeatureVectorData];
+  styleFeatureVectorData = [request styleFeatureVectorData];
   v31 = 0;
-  v12 = [v8 unarchivedObjectOfClass:v9 fromData:v11 error:&v31];
+  v12 = [v8 unarchivedObjectOfClass:v9 fromData:styleFeatureVectorData error:&v31];
   v13 = v31;
   sourceStyleFeatureVector = self->_sourceStyleFeatureVector;
   self->_sourceStyleFeatureVector = v12;
@@ -203,7 +203,7 @@ LABEL_14:
   v16 = v15 != 0;
   if (!v15)
   {
-    *a3 = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Unable to unarchive style feature vector data" object:v7 underlyingError:v13];
+    *prepare = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Unable to unarchive style feature vector data" object:request underlyingError:v13];
   }
 
   return v16;
@@ -212,21 +212,21 @@ LABEL_14:
 - (id)cacheKey
 {
   v3 = objc_alloc_init(MEMORY[0x1E69B3A38]);
-  v4 = [(NURenderJob *)self renderNode];
-  [v4 nu_updateDigest:v3];
+  renderNode = [(NURenderJob *)self renderNode];
+  [renderNode nu_updateDigest:v3];
 
   [v3 finalize];
-  v5 = [v3 stringValue];
+  stringValue = [v3 stringValue];
 
-  return v5;
+  return stringValue;
 }
 
 - (id)scalePolicy
 {
-  v2 = [(NURenderJob *)self request];
-  v3 = [v2 scalePolicy];
+  request = [(NURenderJob *)self request];
+  scalePolicy = [request scalePolicy];
 
-  return v3;
+  return scalePolicy;
 }
 
 @end

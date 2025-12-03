@@ -1,19 +1,19 @@
 @interface HMDCHIPHomeDataSource
 + (id)logCategory;
-- (BOOL)updateKeyValueStoreWithEntries:(id)a3;
-- (HMDCHIPHomeDataSource)initWithFabricID:(id)a3 home:(id)a4;
+- (BOOL)updateKeyValueStoreWithEntries:(id)entries;
+- (HMDCHIPHomeDataSource)initWithFabricID:(id)d home:(id)home;
 - (HMDHome)home;
 - (NSDictionary)keyValueStore;
 - (NSSet)allNodeIDs;
 - (NSUUID)fabricUUID;
-- (id)allStorageDataSourcesForDeviceWithNodeID:(id)a3;
+- (id)allStorageDataSourcesForDeviceWithNodeID:(id)d;
 - (id)identifier;
 - (id)logIdentifier;
-- (id)primaryAccessoryCategoryForNodeID:(id)a3;
-- (id)storageDataSourceForDeviceWithNodeID:(id)a3;
-- (void)_updateHomeModelWithLabel:(id)a3 completion:(id)a4 block:(id)a5;
-- (void)updateKeyValueStore:(id)a3 completion:(id)a4;
-- (void)updateKeyValueStoreWithBlock:(id)a3 completion:(id)a4;
+- (id)primaryAccessoryCategoryForNodeID:(id)d;
+- (id)storageDataSourceForDeviceWithNodeID:(id)d;
+- (void)_updateHomeModelWithLabel:(id)label completion:(id)completion block:(id)block;
+- (void)updateKeyValueStore:(id)store completion:(id)completion;
+- (void)updateKeyValueStoreWithBlock:(id)block completion:(id)completion;
 @end
 
 @implementation HMDCHIPHomeDataSource
@@ -28,10 +28,10 @@
 - (id)logIdentifier
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMDCHIPHomeDataSource *)self home];
-  v5 = [v4 logIdentifier];
-  v6 = [(HMDCHIPHomeDataSource *)self fabricID];
-  v7 = [v3 stringWithFormat:@"%@/%@", v5, v6];
+  home = [(HMDCHIPHomeDataSource *)self home];
+  logIdentifier = [home logIdentifier];
+  fabricID = [(HMDCHIPHomeDataSource *)self fabricID];
+  v7 = [v3 stringWithFormat:@"%@/%@", logIdentifier, fabricID];
 
   return v7;
 }
@@ -39,22 +39,22 @@
 - (id)identifier
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HMDCHIPHomeDataSource *)self home];
-  v4 = [v3 logIdentifier];
-  v5 = [v2 stringWithFormat:@"%@", v4];
+  home = [(HMDCHIPHomeDataSource *)self home];
+  logIdentifier = [home logIdentifier];
+  v5 = [v2 stringWithFormat:@"%@", logIdentifier];
 
   return v5;
 }
 
-- (id)primaryAccessoryCategoryForNodeID:(id)a3
+- (id)primaryAccessoryCategoryForNodeID:(id)d
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDCHIPHomeDataSource *)self home];
-  if (!v5)
+  dCopy = d;
+  home = [(HMDCHIPHomeDataSource *)self home];
+  if (!home)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
@@ -67,20 +67,20 @@
     objc_autoreleasePoolPop(v6);
   }
 
-  v10 = [v5 matterAccessories];
+  matterAccessories = [home matterAccessories];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __59__HMDCHIPHomeDataSource_primaryAccessoryCategoryForNodeID___block_invoke;
   v18[3] = &unk_27972B940;
-  v11 = v4;
+  v11 = dCopy;
   v19 = v11;
-  v12 = [v10 na_filter:v18];
-  v13 = [v12 firstObject];
-  v14 = [v13 category];
+  v12 = [matterAccessories na_filter:v18];
+  firstObject = [v12 firstObject];
+  category = [firstObject category];
 
-  if (v14)
+  if (category)
   {
-    v15 = [MEMORY[0x277CD1680] categoryIdentifierForCategory:v14];
+    v15 = [MEMORY[0x277CD1680] categoryIdentifierForCategory:category];
   }
 
   else
@@ -110,15 +110,15 @@ uint64_t __59__HMDCHIPHomeDataSource_primaryAccessoryCategoryForNodeID___block_i
   return v5;
 }
 
-- (id)allStorageDataSourcesForDeviceWithNodeID:(id)a3
+- (id)allStorageDataSourcesForDeviceWithNodeID:(id)d
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDCHIPHomeDataSource *)self home];
-  if (!v5)
+  dCopy = d;
+  home = [(HMDCHIPHomeDataSource *)self home];
+  if (!home)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
@@ -132,14 +132,14 @@ uint64_t __59__HMDCHIPHomeDataSource_primaryAccessoryCategoryForNodeID___block_i
   }
 
   v10 = MEMORY[0x277CBEB98];
-  v11 = [v5 matterAccessories];
+  matterAccessories = [home matterAccessories];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __66__HMDCHIPHomeDataSource_allStorageDataSourcesForDeviceWithNodeID___block_invoke;
   v24[3] = &unk_27972B968;
-  v12 = v4;
+  v12 = dCopy;
   v25 = v12;
-  v13 = [v11 na_map:v24];
+  v13 = [matterAccessories na_map:v24];
   v14 = v13;
   if (v13)
   {
@@ -161,7 +161,7 @@ uint64_t __59__HMDCHIPHomeDataSource_primaryAccessoryCategoryForNodeID___block_i
   else
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy2 = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
@@ -210,19 +210,19 @@ HMDCHIPAccessoryDataSource *__66__HMDCHIPHomeDataSource_allStorageDataSourcesFor
   return v7;
 }
 
-- (id)storageDataSourceForDeviceWithNodeID:(id)a3
+- (id)storageDataSourceForDeviceWithNodeID:(id)d
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDCHIPHomeDataSource *)self home];
-  v6 = [v5 matterAccessories];
+  dCopy = d;
+  home = [(HMDCHIPHomeDataSource *)self home];
+  matterAccessories = [home matterAccessories];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __62__HMDCHIPHomeDataSource_storageDataSourceForDeviceWithNodeID___block_invoke;
   v16[3] = &unk_27972B940;
-  v7 = v4;
+  v7 = dCopy;
   v17 = v7;
-  v8 = [v6 na_firstObjectPassingTest:v16];
+  v8 = [matterAccessories na_firstObjectPassingTest:v16];
 
   if (v8)
   {
@@ -232,7 +232,7 @@ HMDCHIPAccessoryDataSource *__66__HMDCHIPHomeDataSource_allStorageDataSourcesFor
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
@@ -265,11 +265,11 @@ uint64_t __62__HMDCHIPHomeDataSource_storageDataSourceForDeviceWithNodeID___bloc
 - (NSSet)allNodeIDs
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDCHIPHomeDataSource *)self home];
-  if (!v3)
+  home = [(HMDCHIPHomeDataSource *)self home];
+  if (!home)
   {
     v4 = objc_autoreleasePoolPush();
-    v5 = self;
+    selfCopy = self;
     v6 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
@@ -283,8 +283,8 @@ uint64_t __62__HMDCHIPHomeDataSource_storageDataSourceForDeviceWithNodeID___bloc
   }
 
   v8 = MEMORY[0x277CBEB98];
-  v9 = [v3 matterAccessories];
-  v10 = [v9 na_map:&__block_literal_global_115894];
+  matterAccessories = [home matterAccessories];
+  v10 = [matterAccessories na_map:&__block_literal_global_115894];
   v11 = v10;
   if (v10)
   {
@@ -320,17 +320,17 @@ id __35__HMDCHIPHomeDataSource_allNodeIDs__block_invoke(uint64_t a1, void *a2)
   return v4;
 }
 
-- (void)updateKeyValueStoreWithBlock:(id)a3 completion:(id)a4
+- (void)updateKeyValueStoreWithBlock:(id)block completion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDCHIPHomeDataSource *)self home];
+  blockCopy = block;
+  completionCopy = completion;
+  home = [(HMDCHIPHomeDataSource *)self home];
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   v12 = v11;
-  if (v8)
+  if (home)
   {
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
@@ -345,8 +345,8 @@ id __35__HMDCHIPHomeDataSource_allNodeIDs__block_invoke(uint64_t a1, void *a2)
     v18[1] = 3221225472;
     v18[2] = __65__HMDCHIPHomeDataSource_updateKeyValueStoreWithBlock_completion___block_invoke;
     v18[3] = &unk_27972B918;
-    v19 = v6;
-    [(HMDCHIPHomeDataSource *)v10 _updateHomeModelWithLabel:@"Update CHIP key-value store" completion:v7 block:v18];
+    v19 = blockCopy;
+    [(HMDCHIPHomeDataSource *)selfCopy _updateHomeModelWithLabel:@"Update CHIP key-value store" completion:completionCopy block:v18];
     v14 = v19;
   }
 
@@ -361,7 +361,7 @@ id __35__HMDCHIPHomeDataSource_allNodeIDs__block_invoke(uint64_t a1, void *a2)
     }
 
     objc_autoreleasePoolPop(v9);
-    v14 = _Block_copy(v7);
+    v14 = _Block_copy(completionCopy);
     if (v14)
     {
       v16 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
@@ -387,30 +387,30 @@ uint64_t __65__HMDCHIPHomeDataSource_updateKeyValueStoreWithBlock_completion___b
   return v8;
 }
 
-- (BOOL)updateKeyValueStoreWithEntries:(id)a3
+- (BOOL)updateKeyValueStoreWithEntries:(id)entries
 {
-  v4 = a3;
+  entriesCopy = entries;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__HMDCHIPHomeDataSource_updateKeyValueStoreWithEntries___block_invoke;
   v7[3] = &unk_27972B8F0;
-  v8 = v4;
-  v5 = v4;
+  v8 = entriesCopy;
+  v5 = entriesCopy;
   [(HMDCHIPHomeDataSource *)self updateKeyValueStoreWithBlock:v7 completion:0];
 
   return 1;
 }
 
-- (void)updateKeyValueStore:(id)a3 completion:(id)a4
+- (void)updateKeyValueStore:(id)store completion:(id)completion
 {
-  v6 = a3;
+  storeCopy = store;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __56__HMDCHIPHomeDataSource_updateKeyValueStore_completion___block_invoke;
   v8[3] = &unk_27972B8F0;
-  v9 = v6;
-  v7 = v6;
-  [(HMDCHIPHomeDataSource *)self updateKeyValueStoreWithBlock:v8 completion:a4];
+  v9 = storeCopy;
+  v7 = storeCopy;
+  [(HMDCHIPHomeDataSource *)self updateKeyValueStoreWithBlock:v8 completion:completion];
 }
 
 uint64_t __56__HMDCHIPHomeDataSource_updateKeyValueStore_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -440,63 +440,63 @@ BOOL __56__HMDCHIPHomeDataSource_updateKeyValueStore_completion___block_invoke_2
 
 - (NSDictionary)keyValueStore
 {
-  v2 = [(HMDCHIPHomeDataSource *)self home];
-  v3 = [v2 chipStorage];
-  v4 = [v3 keyValueStore];
+  home = [(HMDCHIPHomeDataSource *)self home];
+  chipStorage = [home chipStorage];
+  keyValueStore = [chipStorage keyValueStore];
 
-  return v4;
+  return keyValueStore;
 }
 
 - (NSUUID)fabricUUID
 {
-  v2 = [(HMDCHIPHomeDataSource *)self home];
-  v3 = [v2 targetFabricUUID];
+  home = [(HMDCHIPHomeDataSource *)self home];
+  targetFabricUUID = [home targetFabricUUID];
 
-  return v3;
+  return targetFabricUUID;
 }
 
-- (void)_updateHomeModelWithLabel:(id)a3 completion:(id)a4 block:(id)a5
+- (void)_updateHomeModelWithLabel:(id)label completion:(id)completion block:(id)block
 {
   v42 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HMDCHIPHomeDataSource *)self home];
-  v12 = v11;
-  if (v11)
+  labelCopy = label;
+  completionCopy = completion;
+  blockCopy = block;
+  home = [(HMDCHIPHomeDataSource *)self home];
+  v12 = home;
+  if (home)
   {
-    v13 = [v11 emptyModelObjectWithChangeType:2];
-    v14 = [(HMDCHIPHomeDataSource *)self lock];
-    [v14 lock];
+    v13 = [home emptyModelObjectWithChangeType:2];
+    lock = [(HMDCHIPHomeDataSource *)self lock];
+    [lock lock];
 
-    v15 = [(HMDCHIPHomeDataSource *)self pendingKeyValueStore];
+    pendingKeyValueStore = [(HMDCHIPHomeDataSource *)self pendingKeyValueStore];
 
-    if (!v15)
+    if (!pendingKeyValueStore)
     {
-      v16 = [(HMDCHIPHomeDataSource *)self keyValueStore];
-      if (v16)
+      keyValueStore = [(HMDCHIPHomeDataSource *)self keyValueStore];
+      if (keyValueStore)
       {
-        v17 = [(HMDCHIPHomeDataSource *)self keyValueStore];
-        v18 = [v17 mutableCopy];
+        keyValueStore2 = [(HMDCHIPHomeDataSource *)self keyValueStore];
+        v18 = [keyValueStore2 mutableCopy];
         [(HMDCHIPHomeDataSource *)self setPendingKeyValueStore:v18];
       }
 
       else
       {
-        v17 = [MEMORY[0x277CBEB38] dictionary];
-        [(HMDCHIPHomeDataSource *)self setPendingKeyValueStore:v17];
+        keyValueStore2 = [MEMORY[0x277CBEB38] dictionary];
+        [(HMDCHIPHomeDataSource *)self setPendingKeyValueStore:keyValueStore2];
       }
     }
 
     [(HMDCHIPHomeDataSource *)self setPendingKeyValueStoreTransactionsCount:[(HMDCHIPHomeDataSource *)self pendingKeyValueStoreTransactionsCount]+ 1];
-    v24 = [(HMDCHIPHomeDataSource *)self pendingKeyValueStore];
-    v25 = (*(v10 + 2))(v10, v13, v24);
+    pendingKeyValueStore2 = [(HMDCHIPHomeDataSource *)self pendingKeyValueStore];
+    v25 = (*(blockCopy + 2))(blockCopy, v13, pendingKeyValueStore2);
 
     if (v25)
     {
-      v26 = [v12 backingStore];
+      backingStore = [v12 backingStore];
       v27 = +[HMDBackingStoreTransactionOptions defaultXPCOptions];
-      v28 = [v26 transaction:v8 options:v27];
+      v28 = [backingStore transaction:labelCopy options:v27];
 
       [v28 add:v13];
       if (v28)
@@ -505,8 +505,8 @@ BOOL __56__HMDCHIPHomeDataSource_updateKeyValueStore_completion___block_invoke_2
         v35 = 3221225472;
         v36 = __68__HMDCHIPHomeDataSource__updateHomeModelWithLabel_completion_block___block_invoke;
         v37 = &unk_279733F30;
-        v38 = self;
-        v39 = v9;
+        selfCopy = self;
+        v39 = completionCopy;
         [v28 run:&v34];
         v29 = [(HMDCHIPHomeDataSource *)self lock:v34];
         [v29 unlock];
@@ -525,10 +525,10 @@ BOOL __56__HMDCHIPHomeDataSource_updateKeyValueStore_completion___block_invoke_2
       }
     }
 
-    v31 = [(HMDCHIPHomeDataSource *)self lock];
-    [v31 unlock];
+    lock2 = [(HMDCHIPHomeDataSource *)self lock];
+    [lock2 unlock];
 
-    v32 = _Block_copy(v9);
+    v32 = _Block_copy(completionCopy);
     v23 = v32;
     if (v32)
     {
@@ -541,7 +541,7 @@ LABEL_18:
   }
 
   v19 = objc_autoreleasePoolPush();
-  v20 = self;
+  selfCopy2 = self;
   v21 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
   {
@@ -552,7 +552,7 @@ LABEL_18:
   }
 
   objc_autoreleasePoolPop(v19);
-  v13 = _Block_copy(v9);
+  v13 = _Block_copy(completionCopy);
   if (v13)
   {
     v23 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
@@ -595,18 +595,18 @@ void __68__HMDCHIPHomeDataSource__updateHomeModelWithLabel_completion_block___bl
   }
 }
 
-- (HMDCHIPHomeDataSource)initWithFabricID:(id)a3 home:(id)a4
+- (HMDCHIPHomeDataSource)initWithFabricID:(id)d home:(id)home
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  dCopy = d;
+  homeCopy = home;
+  if (!dCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_7;
   }
 
-  v9 = v8;
-  if (!v8)
+  v9 = homeCopy;
+  if (!homeCopy)
   {
 LABEL_7:
     v15 = _HMFPreconditionFailure();
@@ -619,7 +619,7 @@ LABEL_7:
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_fabricID, a3);
+    objc_storeStrong(&v10->_fabricID, d);
     objc_storeWeak(&v11->_home, v9);
     v12 = objc_alloc_init(MEMORY[0x277CCAC60]);
     lock = v11->_lock;

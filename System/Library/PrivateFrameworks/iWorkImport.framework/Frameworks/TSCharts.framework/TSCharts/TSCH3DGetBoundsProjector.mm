@@ -1,13 +1,13 @@
 @interface TSCH3DGetBoundsProjector
 - (TSCH3DGetBoundsProjector)init;
-- (box<glm::detail::tvec3<float>>)projectBounds:(SEL)a3 type:(void *)a4;
+- (box<glm::detail::tvec3<float>>)projectBounds:(SEL)bounds type:(void *)type;
 - (id).cxx_construct;
-- (tvec3<float>)backProjectModelViewPoint:(void *)a3;
+- (tvec3<float>)backProjectModelViewPoint:(void *)point;
 - (void)dealloc;
 - (void)reset;
 - (void)resetTransformsForLayoutBounds;
 - (void)resetTransformsForRenderBounds;
-- (void)setCamera:(id)a3 accessor:(id)a4;
+- (void)setCamera:(id)camera accessor:(id)accessor;
 @end
 
 @implementation TSCH3DGetBoundsProjector
@@ -91,11 +91,11 @@
   self->_accessor = 0;
 }
 
-- (void)setCamera:(id)a3 accessor:(id)a4
+- (void)setCamera:(id)camera accessor:(id)accessor
 {
-  obj = a3;
-  v7 = a4;
-  if (!v7)
+  obj = camera;
+  accessorCopy = accessor;
+  if (!accessorCopy)
   {
     v11 = MEMORY[0x277D81150];
     v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, v8, v9, v10, "[TSCH3DGetBoundsProjector setCamera:accessor:]");
@@ -107,7 +107,7 @@
 
   objc_storeWeak(&self->_camera, obj);
   accessor = self->_accessor;
-  self->_accessor = v7;
+  self->_accessor = accessorCopy;
 }
 
 - (void)resetTransformsForLayoutBounds
@@ -351,7 +351,7 @@
   *&self->_constantDepthModelView.value[3].var2.var0 = v72.i64[0];
 }
 
-- (tvec3<float>)backProjectModelViewPoint:(void *)a3
+- (tvec3<float>)backProjectModelViewPoint:(void *)point
 {
   v7 = v3;
   WeakRetained = objc_loadWeakRetained(&self->_camera);
@@ -370,7 +370,7 @@
   v33 = v28;
   if (v28)
   {
-    objc_msgSend_backProjectCameraSpacePoint_(v28, v29, v30, v31, v32, a3);
+    objc_msgSend_backProjectCameraSpacePoint_(v28, v29, v30, v31, v32, point);
   }
 
   else
@@ -390,7 +390,7 @@
     v39 = objc_opt_class();
     v40 = NSStringFromSelector(a2);
     v41 = MEMORY[0x277CCACA8];
-    v42 = *a3;
+    v42 = *point;
     sub_276152FD4("vec3(%f, %f, %f)", v43, v44, v45, v46, v47, v48, v49, SLOBYTE(v42));
     if (v88 >= 0)
     {
@@ -454,7 +454,7 @@
   return result;
 }
 
-- (box<glm::detail::tvec3<float>>)projectBounds:(SEL)a3 type:(void *)a4
+- (box<glm::detail::tvec3<float>>)projectBounds:(SEL)bounds type:(void *)type
 {
   WeakRetained = objc_loadWeakRetained(&self->_camera);
 
@@ -477,15 +477,15 @@
   }
 
   v228 = v29;
-  result = sub_276155178(a4);
+  result = sub_276155178(type);
   if ((result & 1) == 0)
   {
     v31 = -1;
     v226 = retstr;
-    v227 = a4;
+    typeCopy = type;
     do
     {
-      sub_276154EAC(a4, v31 + 1, &v233);
+      sub_276154EAC(type, v31 + 1, &v233);
       sub_276154744(&v233, (self + v228), &v231, v32);
       *v33.i32 = self->_projection.value[3].var3.var0 + (((v231.f32[1] * self->_projection.value[1].var3.var0) + (self->_projection.value[0].var3.var0 * v231.f32[0])) + (self->_projection.value[2].var3.var0 * v232));
       v34 = (self->_projection.value[3].var2.var0 + (((v231.f32[1] * self->_projection.value[1].var2.var0) + (self->_projection.value[0].var2.var0 * v231.f32[0])) + (self->_projection.value[2].var2.var0 * v232))) / *v33.i32;
@@ -558,13 +558,13 @@
 
           objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v114, v115, v116, v117);
           retstr = v226;
-          a4 = v227;
+          type = typeCopy;
         }
 
         if (byte_280A46430 == 1)
         {
           v118 = objc_opt_class();
-          v119 = NSStringFromSelector(a3);
+          v119 = NSStringFromSelector(bounds);
           v120 = MEMORY[0x277CCACA8];
           v218 = v233;
           sub_276152FD4("vec3(%f, %f, %f)", v121, v122, v123, v124, v125, v126, v127, SLOBYTE(v218));
@@ -622,7 +622,7 @@
           NSLog(&cfstr_PBackProjectin.isa, v118, self, v119, v139, v152, v158);
 
           retstr = v226;
-          a4 = v227;
+          type = typeCopy;
         }
 
         objc_msgSend_backProjectModelViewPoint_(self, v73, v74, v75, v76, &v231);
@@ -674,7 +674,7 @@
 
           objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v199, v200, v201, v202);
           retstr = v226;
-          a4 = v227;
+          type = typeCopy;
         }
       }
 

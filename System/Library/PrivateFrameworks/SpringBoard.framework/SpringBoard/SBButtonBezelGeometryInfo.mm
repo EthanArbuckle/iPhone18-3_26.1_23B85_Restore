@@ -1,9 +1,9 @@
 @interface SBButtonBezelGeometryInfo
 + (id)buttonBezelGeometryInfoForCurrentEmbeddedDisplayBezel;
-- (CGRect)buttonHWRectForButton:(int64_t)a3 inView:(id)a4;
-- (CGRect)buttonHWRectForButton:(int64_t)a3 onEmbeddedDisplayBounds:(CGRect)a4;
-- (CGRect)normalizedButtonHWRectForButton:(int64_t)a3;
-- (unint64_t)buttonScreenEdgeForButton:(int64_t)a3;
+- (CGRect)buttonHWRectForButton:(int64_t)button inView:(id)view;
+- (CGRect)buttonHWRectForButton:(int64_t)button onEmbeddedDisplayBounds:(CGRect)bounds;
+- (CGRect)normalizedButtonHWRectForButton:(int64_t)button;
+- (unint64_t)buttonScreenEdgeForButton:(int64_t)button;
 @end
 
 @implementation SBButtonBezelGeometryInfo
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __82__SBButtonBezelGeometryInfo_buttonBezelGeometryInfoForCurrentEmbeddedDisplayBezel__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (buttonBezelGeometryInfoForCurrentEmbeddedDisplayBezel_onceToken != -1)
   {
     dispatch_once(&buttonBezelGeometryInfoForCurrentEmbeddedDisplayBezel_onceToken, block);
@@ -32,35 +32,35 @@ void __82__SBButtonBezelGeometryInfo_buttonBezelGeometryInfoForCurrentEmbeddedDi
   buttonBezelGeometryInfoForCurrentEmbeddedDisplayBezel___result = v1;
 }
 
-- (CGRect)normalizedButtonHWRectForButton:(int64_t)a3
+- (CGRect)normalizedButtonHWRectForButton:(int64_t)button
 {
   x = *MEMORY[0x277CBF3A0];
   v6 = *(MEMORY[0x277CBF3A0] + 8);
   v7 = *(MEMORY[0x277CBF3A0] + 16);
   v8 = *(MEMORY[0x277CBF3A0] + 24);
-  if (a3 <= 4)
+  if (button <= 4)
   {
-    if (a3 <= 1)
+    if (button <= 1)
     {
-      if (a3)
+      if (button)
       {
-        if (a3 != 1)
+        if (button != 1)
         {
           goto LABEL_24;
         }
 
 LABEL_15:
-        v13 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v14 = NSStringFromSBSHardwareButtonKind();
-        [v13 handleFailureInMethod:a2 object:self file:@"SBButtonBezelGeometryInfo.m" lineNumber:89 description:{@"We're currently not supporting getting the button position for the %@ button", v14}];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"SBButtonBezelGeometryInfo.m" lineNumber:89 description:{@"We're currently not supporting getting the button position for the %@ button", v14}];
 
         goto LABEL_24;
       }
     }
 
-    else if (a3 != 2)
+    else if (button != 2)
     {
-      if (a3 == 3)
+      if (button == 3)
       {
         v12 = @"VolumeUpButtonNormalizedCGRect";
       }
@@ -82,14 +82,14 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  if (a3 < 8)
+  if (button < 8)
   {
     goto LABEL_15;
   }
 
-  if (a3 <= 9)
+  if (button <= 9)
   {
-    if (a3 != 8)
+    if (button != 8)
     {
       x = 1.0;
       SBMGGetCGRectAnswer(@"CameraButtonNormalizedCGRect", 1.0);
@@ -104,7 +104,7 @@ LABEL_23:
     goto LABEL_20;
   }
 
-  if (a3 == 10)
+  if (button == 10)
   {
     v16 = SBMGGetCGRectAnswer(@"VolumeUpButtonNormalizedCGRect", 0.0);
     v18 = v17;
@@ -124,7 +124,7 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  if (a3 == 11)
+  if (button == 11)
   {
     goto LABEL_15;
   }
@@ -141,13 +141,13 @@ LABEL_24:
   return result;
 }
 
-- (CGRect)buttonHWRectForButton:(int64_t)a3 onEmbeddedDisplayBounds:(CGRect)a4
+- (CGRect)buttonHWRectForButton:(int64_t)button onEmbeddedDisplayBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  [(SBButtonBezelGeometryInfo *)self normalizedButtonHWRectForButton:a3];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  [(SBButtonBezelGeometryInfo *)self normalizedButtonHWRectForButton:button];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -192,13 +192,13 @@ LABEL_24:
   return result;
 }
 
-- (CGRect)buttonHWRectForButton:(int64_t)a3 inView:(id)a4
+- (CGRect)buttonHWRectForButton:(int64_t)button inView:(id)view
 {
-  v6 = a4;
-  v7 = [v6 window];
-  v8 = [v7 windowScene];
-  v9 = [v8 screen];
-  if ([v9 _isEmbeddedScreen])
+  viewCopy = view;
+  window = [viewCopy window];
+  windowScene = [window windowScene];
+  screen = [windowScene screen];
+  if ([screen _isEmbeddedScreen])
   {
   }
 
@@ -213,14 +213,14 @@ LABEL_24:
     }
   }
 
-  v12 = [v8 screen];
-  [v12 _referenceBounds];
+  screen2 = [windowScene screen];
+  [screen2 _referenceBounds];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
 
-  [(SBButtonBezelGeometryInfo *)self normalizedButtonHWRectForButton:a3];
+  [(SBButtonBezelGeometryInfo *)self normalizedButtonHWRectForButton:button];
   v22 = v21;
   v24 = v23;
   v26 = v25;
@@ -254,7 +254,7 @@ LABEL_24:
   v51.origin.y = v16;
   v51.size.width = v18;
   v51.size.height = v20;
-  [v6 convertRect:v7 fromView:{v29, v31, v32, v45 * CGRectGetHeight(v51) + (1.0 - v45) * 0.0}];
+  [viewCopy convertRect:window fromView:{v29, v31, v32, v45 * CGRectGetHeight(v51) + (1.0 - v45) * 0.0}];
   v34 = v33;
   v36 = v35;
   v38 = v37;
@@ -271,9 +271,9 @@ LABEL_24:
   return result;
 }
 
-- (unint64_t)buttonScreenEdgeForButton:(int64_t)a3
+- (unint64_t)buttonScreenEdgeForButton:(int64_t)button
 {
-  [(SBButtonBezelGeometryInfo *)self normalizedButtonHWRectForButton:a3];
+  [(SBButtonBezelGeometryInfo *)self normalizedButtonHWRectForButton:button];
   if (BSFloatIsZero() && (BSFloatIsZero() & 1) != 0)
   {
     return 2;
@@ -294,8 +294,8 @@ LABEL_24:
     return 4;
   }
 
-  v6 = [MEMORY[0x277CCA890] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"SBButtonBezelGeometryInfo.m" lineNumber:121 description:@"Button rect is not on edge of screen"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBButtonBezelGeometryInfo.m" lineNumber:121 description:@"Button rect is not on edge of screen"];
 
   return 0;
 }

@@ -1,27 +1,27 @@
 @interface AWDPowerBatteryMetrics
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCycleCountKey:(BOOL)a3;
-- (void)setHasDurationDispOn:(BOOL)a3;
-- (void)setHasDurationPartialDispOff:(BOOL)a3;
-- (void)setHasDurationPartialDispOn:(BOOL)a3;
-- (void)setHasEnergyChargedMicroWatt:(BOOL)a3;
-- (void)setHasEnergyConsumedDisplayOffMicroWatt:(BOOL)a3;
-- (void)setHasEnergyConsumedDisplayOnMicroWatt:(BOOL)a3;
-- (void)setHasEnergyConsumedPartailDispOnMicrowatt:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCycleCountKey:(BOOL)key;
+- (void)setHasDurationDispOn:(BOOL)on;
+- (void)setHasDurationPartialDispOff:(BOOL)off;
+- (void)setHasDurationPartialDispOn:(BOOL)on;
+- (void)setHasEnergyChargedMicroWatt:(BOOL)watt;
+- (void)setHasEnergyConsumedDisplayOffMicroWatt:(BOOL)watt;
+- (void)setHasEnergyConsumedDisplayOnMicroWatt:(BOOL)watt;
+- (void)setHasEnergyConsumedPartailDispOnMicrowatt:(BOOL)microwatt;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDPowerBatteryMetrics
 
-- (void)setHasEnergyConsumedDisplayOnMicroWatt:(BOOL)a3
+- (void)setHasEnergyConsumedDisplayOnMicroWatt:(BOOL)watt
 {
-  if (a3)
+  if (watt)
   {
     v3 = 128;
   }
@@ -34,9 +34,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasEnergyConsumedDisplayOffMicroWatt:(BOOL)a3
+- (void)setHasEnergyConsumedDisplayOffMicroWatt:(BOOL)watt
 {
-  if (a3)
+  if (watt)
   {
     v3 = 64;
   }
@@ -49,9 +49,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasEnergyChargedMicroWatt:(BOOL)a3
+- (void)setHasEnergyChargedMicroWatt:(BOOL)watt
 {
-  if (a3)
+  if (watt)
   {
     v3 = 32;
   }
@@ -64,9 +64,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasCycleCountKey:(BOOL)a3
+- (void)setHasCycleCountKey:(BOOL)key
 {
-  if (a3)
+  if (key)
   {
     v3 = 2;
   }
@@ -79,9 +79,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasEnergyConsumedPartailDispOnMicrowatt:(BOOL)a3
+- (void)setHasEnergyConsumedPartailDispOnMicrowatt:(BOOL)microwatt
 {
-  if (a3)
+  if (microwatt)
   {
     v3 = 256;
   }
@@ -94,9 +94,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasDurationDispOn:(BOOL)a3
+- (void)setHasDurationDispOn:(BOOL)on
 {
-  if (a3)
+  if (on)
   {
     v3 = 4;
   }
@@ -109,9 +109,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasDurationPartialDispOn:(BOOL)a3
+- (void)setHasDurationPartialDispOn:(BOOL)on
 {
-  if (a3)
+  if (on)
   {
     v3 = 16;
   }
@@ -124,9 +124,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasDurationPartialDispOff:(BOOL)a3
+- (void)setHasDurationPartialDispOff:(BOOL)off
 {
-  if (a3)
+  if (off)
   {
     v3 = 8;
   }
@@ -148,11 +148,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
     if ((has & 0x80) == 0)
     {
@@ -171,7 +171,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_energyConsumedDisplayOnMicroWatt), @"energyConsumedDisplayOnMicroWatt"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_energyConsumedDisplayOnMicroWatt), @"energyConsumedDisplayOnMicroWatt"}];
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -185,7 +185,7 @@ LABEL_4:
   }
 
 LABEL_14:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_energyConsumedDisplayOffMicroWatt), @"energyConsumedDisplayOffMicroWatt"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_energyConsumedDisplayOffMicroWatt), @"energyConsumedDisplayOffMicroWatt"}];
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -199,7 +199,7 @@ LABEL_5:
   }
 
 LABEL_15:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_energyChargedMicroWatt), @"energyChargedMicroWatt"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_energyChargedMicroWatt), @"energyChargedMicroWatt"}];
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -213,7 +213,7 @@ LABEL_6:
   }
 
 LABEL_16:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_cycleCountKey), @"cycleCountKey"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_cycleCountKey), @"cycleCountKey"}];
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -227,7 +227,7 @@ LABEL_7:
   }
 
 LABEL_17:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_energyConsumedPartailDispOnMicrowatt), @"energyConsumedPartailDispOnMicrowatt"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_energyConsumedPartailDispOnMicrowatt), @"energyConsumedPartailDispOnMicrowatt"}];
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -238,17 +238,17 @@ LABEL_8:
     }
 
 LABEL_19:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_durationPartialDispOn), @"durationPartialDispOn"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_durationPartialDispOn), @"durationPartialDispOn"}];
     if ((*&self->_has & 8) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_10;
   }
 
 LABEL_18:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_durationDispOn), @"durationDispOn"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_durationDispOn), @"durationDispOn"}];
   has = self->_has;
   if ((has & 0x10) != 0)
   {
@@ -259,13 +259,13 @@ LABEL_9:
   if ((has & 8) != 0)
   {
 LABEL_10:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_durationPartialDispOff), @"durationPartialDispOff"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_durationPartialDispOff), @"durationPartialDispOff"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if (has)
@@ -393,13 +393,13 @@ LABEL_19:
   PBDataWriterWriteUint32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if (has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 24) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 24) |= 1u;
     has = self->_has;
     if ((has & 0x80) == 0)
     {
@@ -418,8 +418,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 10) = self->_energyConsumedDisplayOnMicroWatt;
-  *(a3 + 24) |= 0x80u;
+  *(to + 10) = self->_energyConsumedDisplayOnMicroWatt;
+  *(to + 24) |= 0x80u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -433,8 +433,8 @@ LABEL_4:
   }
 
 LABEL_13:
-  *(a3 + 9) = self->_energyConsumedDisplayOffMicroWatt;
-  *(a3 + 24) |= 0x40u;
+  *(to + 9) = self->_energyConsumedDisplayOffMicroWatt;
+  *(to + 24) |= 0x40u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -448,8 +448,8 @@ LABEL_5:
   }
 
 LABEL_14:
-  *(a3 + 8) = self->_energyChargedMicroWatt;
-  *(a3 + 24) |= 0x20u;
+  *(to + 8) = self->_energyChargedMicroWatt;
+  *(to + 24) |= 0x20u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -463,8 +463,8 @@ LABEL_6:
   }
 
 LABEL_15:
-  *(a3 + 4) = self->_cycleCountKey;
-  *(a3 + 24) |= 2u;
+  *(to + 4) = self->_cycleCountKey;
+  *(to + 24) |= 2u;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -478,8 +478,8 @@ LABEL_7:
   }
 
 LABEL_16:
-  *(a3 + 11) = self->_energyConsumedPartailDispOnMicrowatt;
-  *(a3 + 24) |= 0x100u;
+  *(to + 11) = self->_energyConsumedPartailDispOnMicrowatt;
+  *(to + 24) |= 0x100u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -493,8 +493,8 @@ LABEL_8:
   }
 
 LABEL_17:
-  *(a3 + 5) = self->_durationDispOn;
-  *(a3 + 24) |= 4u;
+  *(to + 5) = self->_durationDispOn;
+  *(to + 24) |= 4u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -505,23 +505,23 @@ LABEL_9:
     }
 
 LABEL_19:
-    *(a3 + 6) = self->_durationPartialDispOff;
-    *(a3 + 24) |= 8u;
+    *(to + 6) = self->_durationPartialDispOff;
+    *(to + 24) |= 8u;
     return;
   }
 
 LABEL_18:
-  *(a3 + 7) = self->_durationPartialDispOn;
-  *(a3 + 24) |= 0x10u;
+  *(to + 7) = self->_durationPartialDispOn;
+  *(to + 24) |= 0x10u;
   if ((*&self->_has & 8) != 0)
   {
     goto LABEL_19;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -648,16 +648,16 @@ LABEL_10:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 24);
+    v7 = *(equal + 24);
     if (has)
     {
-      if ((v7 & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((v7 & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_46;
       }
@@ -672,7 +672,7 @@ LABEL_46:
 
     if ((has & 0x80) != 0)
     {
-      if ((v7 & 0x80) == 0 || self->_energyConsumedDisplayOnMicroWatt != *(a3 + 10))
+      if ((v7 & 0x80) == 0 || self->_energyConsumedDisplayOnMicroWatt != *(equal + 10))
       {
         goto LABEL_46;
       }
@@ -685,7 +685,7 @@ LABEL_46:
 
     if ((has & 0x40) != 0)
     {
-      if ((v7 & 0x40) == 0 || self->_energyConsumedDisplayOffMicroWatt != *(a3 + 9))
+      if ((v7 & 0x40) == 0 || self->_energyConsumedDisplayOffMicroWatt != *(equal + 9))
       {
         goto LABEL_46;
       }
@@ -698,7 +698,7 @@ LABEL_46:
 
     if ((has & 0x20) != 0)
     {
-      if ((v7 & 0x20) == 0 || self->_energyChargedMicroWatt != *(a3 + 8))
+      if ((v7 & 0x20) == 0 || self->_energyChargedMicroWatt != *(equal + 8))
       {
         goto LABEL_46;
       }
@@ -711,7 +711,7 @@ LABEL_46:
 
     if ((has & 2) != 0)
     {
-      if ((v7 & 2) == 0 || self->_cycleCountKey != *(a3 + 4))
+      if ((v7 & 2) == 0 || self->_cycleCountKey != *(equal + 4))
       {
         goto LABEL_46;
       }
@@ -724,20 +724,20 @@ LABEL_46:
 
     if ((*&self->_has & 0x100) != 0)
     {
-      if ((*(a3 + 24) & 0x100) == 0 || self->_energyConsumedPartailDispOnMicrowatt != *(a3 + 11))
+      if ((*(equal + 24) & 0x100) == 0 || self->_energyConsumedPartailDispOnMicrowatt != *(equal + 11))
       {
         goto LABEL_46;
       }
     }
 
-    else if ((*(a3 + 24) & 0x100) != 0)
+    else if ((*(equal + 24) & 0x100) != 0)
     {
       goto LABEL_46;
     }
 
     if ((has & 4) != 0)
     {
-      if ((v7 & 4) == 0 || self->_durationDispOn != *(a3 + 5))
+      if ((v7 & 4) == 0 || self->_durationDispOn != *(equal + 5))
       {
         goto LABEL_46;
       }
@@ -750,7 +750,7 @@ LABEL_46:
 
     if ((has & 0x10) != 0)
     {
-      if ((v7 & 0x10) == 0 || self->_durationPartialDispOn != *(a3 + 7))
+      if ((v7 & 0x10) == 0 || self->_durationPartialDispOn != *(equal + 7))
       {
         goto LABEL_46;
       }
@@ -764,7 +764,7 @@ LABEL_46:
     LOBYTE(v5) = (v7 & 8) == 0;
     if ((has & 8) != 0)
     {
-      if ((v7 & 8) == 0 || self->_durationPartialDispOff != *(a3 + 6))
+      if ((v7 & 8) == 0 || self->_durationPartialDispOff != *(equal + 6))
       {
         goto LABEL_46;
       }
@@ -901,14 +901,14 @@ LABEL_10:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 24);
+  v3 = *(from + 24);
   if (v3)
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
-    v3 = *(a3 + 24);
+    v3 = *(from + 24);
     if ((v3 & 0x80) == 0)
     {
 LABEL_3:
@@ -926,9 +926,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_energyConsumedDisplayOnMicroWatt = *(a3 + 10);
+  self->_energyConsumedDisplayOnMicroWatt = *(from + 10);
   *&self->_has |= 0x80u;
-  v3 = *(a3 + 24);
+  v3 = *(from + 24);
   if ((v3 & 0x40) == 0)
   {
 LABEL_4:
@@ -941,9 +941,9 @@ LABEL_4:
   }
 
 LABEL_13:
-  self->_energyConsumedDisplayOffMicroWatt = *(a3 + 9);
+  self->_energyConsumedDisplayOffMicroWatt = *(from + 9);
   *&self->_has |= 0x40u;
-  v3 = *(a3 + 24);
+  v3 = *(from + 24);
   if ((v3 & 0x20) == 0)
   {
 LABEL_5:
@@ -956,9 +956,9 @@ LABEL_5:
   }
 
 LABEL_14:
-  self->_energyChargedMicroWatt = *(a3 + 8);
+  self->_energyChargedMicroWatt = *(from + 8);
   *&self->_has |= 0x20u;
-  v3 = *(a3 + 24);
+  v3 = *(from + 24);
   if ((v3 & 2) == 0)
   {
 LABEL_6:
@@ -971,9 +971,9 @@ LABEL_6:
   }
 
 LABEL_15:
-  self->_cycleCountKey = *(a3 + 4);
+  self->_cycleCountKey = *(from + 4);
   *&self->_has |= 2u;
-  v3 = *(a3 + 24);
+  v3 = *(from + 24);
   if ((v3 & 0x100) == 0)
   {
 LABEL_7:
@@ -986,9 +986,9 @@ LABEL_7:
   }
 
 LABEL_16:
-  self->_energyConsumedPartailDispOnMicrowatt = *(a3 + 11);
+  self->_energyConsumedPartailDispOnMicrowatt = *(from + 11);
   *&self->_has |= 0x100u;
-  v3 = *(a3 + 24);
+  v3 = *(from + 24);
   if ((v3 & 4) == 0)
   {
 LABEL_8:
@@ -1001,9 +1001,9 @@ LABEL_8:
   }
 
 LABEL_17:
-  self->_durationDispOn = *(a3 + 5);
+  self->_durationDispOn = *(from + 5);
   *&self->_has |= 4u;
-  v3 = *(a3 + 24);
+  v3 = *(from + 24);
   if ((v3 & 0x10) == 0)
   {
 LABEL_9:
@@ -1013,15 +1013,15 @@ LABEL_9:
     }
 
 LABEL_19:
-    self->_durationPartialDispOff = *(a3 + 6);
+    self->_durationPartialDispOff = *(from + 6);
     *&self->_has |= 8u;
     return;
   }
 
 LABEL_18:
-  self->_durationPartialDispOn = *(a3 + 7);
+  self->_durationPartialDispOn = *(from + 7);
   *&self->_has |= 0x10u;
-  if ((*(a3 + 24) & 8) != 0)
+  if ((*(from + 24) & 8) != 0)
   {
     goto LABEL_19;
   }

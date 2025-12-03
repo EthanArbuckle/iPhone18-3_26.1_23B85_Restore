@@ -1,25 +1,25 @@
 @interface PUIProgressWindow
 + (BOOL)_usesPreBoardAppearance;
 + (void)setUsesPreBoardAppearance;
-- (CGColor)_copyCGColorRefWithComponents:(const double *)a3;
-- (CGImage)_createImageWithName:(const char *)a3 scale:(int)a4 displayHeight:(int)a5;
+- (CGColor)_copyCGColorRefWithComponents:(const double *)components;
+- (CGImage)_createImageWithName:(const char *)name scale:(int)scale displayHeight:(int)height;
 - (CGRect)appleLogoFrameWithinAsset;
-- (PUIProgressWindow)initWithOptions:(unint64_t)a3 contextLevel:(float)a4 appearance:(int64_t)a5;
+- (PUIProgressWindow)initWithOptions:(unint64_t)options contextLevel:(float)level appearance:(int64_t)appearance;
 - (const)_productSuffix;
-- (id)_initWithOptions:(unint64_t)a3 contextLevel:(float)a4 appearance:(int64_t)a5 environment:(id)a6;
-- (void)_appendErrorDescriptionWithString:(id)a3;
+- (id)_initWithOptions:(unint64_t)options contextLevel:(float)level appearance:(int64_t)appearance environment:(id)environment;
+- (void)_appendErrorDescriptionWithString:(id)string;
 - (void)_collectDisplayInfo;
 - (void)_createContext;
 - (void)_createLayer;
-- (void)_drawProgressLayerInContext:(CGContext *)a3;
+- (void)_drawProgressLayerInContext:(CGContext *)context;
 - (void)_layoutScreen;
 - (void)_unsupportedScreenClass;
 - (void)_updateIOSurface;
 - (void)dealloc;
-- (void)drawLayer:(id)a3 inContext:(CGContext *)a4;
-- (void)setProgressValue:(float)a3;
-- (void)setStatusText:(id)a3;
-- (void)setVisible:(BOOL)a3;
+- (void)drawLayer:(id)layer inContext:(CGContext *)context;
+- (void)setProgressValue:(float)value;
+- (void)setStatusText:(id)text;
+- (void)setVisible:(BOOL)visible;
 @end
 
 @implementation PUIProgressWindow
@@ -55,22 +55,22 @@
   return v3 != -1;
 }
 
-- (PUIProgressWindow)initWithOptions:(unint64_t)a3 contextLevel:(float)a4 appearance:(int64_t)a5
+- (PUIProgressWindow)initWithOptions:(unint64_t)options contextLevel:(float)level appearance:(int64_t)appearance
 {
   v9 = objc_alloc_init(PUIEnvironment);
-  *&v10 = a4;
-  v11 = [(PUIProgressWindow *)self _initWithOptions:a3 contextLevel:a5 appearance:v9 environment:v10];
+  *&v10 = level;
+  v11 = [(PUIProgressWindow *)self _initWithOptions:options contextLevel:appearance appearance:v9 environment:v10];
 
   return v11;
 }
 
-- (id)_initWithOptions:(unint64_t)a3 contextLevel:(float)a4 appearance:(int64_t)a5 environment:(id)a6
+- (id)_initWithOptions:(unint64_t)options contextLevel:(float)level appearance:(int64_t)appearance environment:(id)environment
 {
-  v11 = a6;
-  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  *&v13 = a4;
+  environmentCopy = environment;
+  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:options];
+  *&v13 = level;
   v14 = [MEMORY[0x277CCABB0] numberWithFloat:v13];
-  v29 = [MEMORY[0x277CCABB0] numberWithInteger:a5];
+  v29 = [MEMORY[0x277CCABB0] numberWithInteger:appearance];
   _DMLogFunc();
 
   v30.receiver = self;
@@ -79,13 +79,13 @@
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_environment, a6);
-    BYTE2(v16->_progressLayer) = a3 & 1;
-    LOWORD(v16->_progressLayer) = a5 == 1;
+    objc_storeStrong(&v15->_environment, environment);
+    BYTE2(v16->_progressLayer) = options & 1;
+    LOWORD(v16->_progressLayer) = appearance == 1;
     *&v16->_productType = [(PUIEnvironment *)v16->_environment productType];
-    v17 = [(PUIEnvironment *)v16->_environment deviceClass];
-    v16->_screenClass = v17;
-    v25 = [MEMORY[0x277CCABB0] numberWithInt:v17];
+    deviceClass = [(PUIEnvironment *)v16->_environment deviceClass];
+    v16->_screenClass = deviceClass;
+    v25 = [MEMORY[0x277CCABB0] numberWithInt:deviceClass];
     _DMLogFunc();
 
     if (v16->_screenClass == -1)
@@ -97,9 +97,9 @@
       [(PUIProgressWindow *)v16 _appendErrorDescriptionWithString:v18];
     }
 
-    v19 = [(PUIEnvironment *)v16->_environment mainScreenClass];
-    *&v16->_isSecurityResearchDevice = v19;
-    v27 = [MEMORY[0x277CCABB0] numberWithInt:v19];
+    mainScreenClass = [(PUIEnvironment *)v16->_environment mainScreenClass];
+    *&v16->_isSecurityResearchDevice = mainScreenClass;
+    v27 = [MEMORY[0x277CCABB0] numberWithInt:mainScreenClass];
     _DMLogFunc();
 
     v20 = MGGetBoolAnswer();
@@ -108,7 +108,7 @@
     _DMLogFunc();
 
     [(PUIProgressWindow *)v16 _collectDisplayInfo];
-    if ((a3 & 4) == 0)
+    if ((options & 4) == 0)
     {
       v16->_weCreatedTheContext = 0;
       context = v16->_context;
@@ -123,7 +123,7 @@ LABEL_8:
     v23 = v16->_context;
     if (v23)
     {
-      *&v22 = a4;
+      *&v22 = level;
       [(CAContext *)v23 setLevel:v22];
       goto LABEL_8;
     }
@@ -134,9 +134,9 @@ LABEL_9:
   return v16;
 }
 
-- (void)_appendErrorDescriptionWithString:(id)a3
+- (void)_appendErrorDescriptionWithString:(id)string
 {
-  v9 = a3;
+  stringCopy = string;
   if (![(PUIProgressWindow *)self _currentDeviceShouldMuteErrors])
   {
     layer = self->_layer;
@@ -153,7 +153,7 @@ LABEL_9:
     v6 = self->_layer;
     self->_layer = v5;
 
-    v7 = [(CALayer *)self->_layer stringByAppendingString:v9];
+    v7 = [(CALayer *)self->_layer stringByAppendingString:stringCopy];
     v8 = self->_layer;
     self->_layer = v7;
   }
@@ -206,9 +206,9 @@ LABEL_9:
   {
     *(&self->_renderWithIOSurface + 3) = 0;
     LOBYTE(self->_framebufferListenerToken) = 0;
-    v3 = [MEMORY[0x277CD9E40] mainDisplay];
-    v4 = v3;
-    if (!v3 || ([v3 bounds], v5 == 0.0) || (objc_msgSend(v4, "bounds"), v6 == 0.0))
+    mainDisplay = [MEMORY[0x277CD9E40] mainDisplay];
+    v4 = mainDisplay;
+    if (!mainDisplay || ([mainDisplay bounds], v5 == 0.0) || (objc_msgSend(v4, "bounds"), v6 == 0.0))
     {
       _DMLogFunc();
       *&self->_displaySize.height = xmmword_260E8DDC0;
@@ -253,11 +253,11 @@ LABEL_15:
   }
 
   LODWORD(valuePtr) = 0;
-  v11 = [(PUIEnvironment *)self->_environment mainScreenScale];
-  v12 = v11;
-  if (v11)
+  mainScreenScale = [(PUIEnvironment *)self->_environment mainScreenScale];
+  v12 = mainScreenScale;
+  if (mainScreenScale)
   {
-    [v11 floatValue];
+    [mainScreenScale floatValue];
     *&self->_sideways = v13;
   }
 
@@ -270,8 +270,8 @@ LABEL_15:
     CFRelease(v15);
   }
 
-  v16 = [MEMORY[0x277CD9E40] mainDisplay];
-  [v16 bounds];
+  mainDisplay2 = [MEMORY[0x277CD9E40] mainDisplay];
+  [mainDisplay2 bounds];
   self->_framebufferSize.height = v17;
   self->_layerPositioningSize.width = v18;
 
@@ -470,13 +470,13 @@ LABEL_8:
   }
 }
 
-- (CGColor)_copyCGColorRefWithComponents:(const double *)a3
+- (CGColor)_copyCGColorRefWithComponents:(const double *)components
 {
   result = CGColorSpaceCreateDeviceRGB();
   if (result)
   {
     v5 = result;
-    v6 = CGColorCreate(result, a3);
+    v6 = CGColorCreate(result, components);
     CFRelease(v5);
     return v6;
   }
@@ -486,67 +486,67 @@ LABEL_8:
 
 - (void)_createLayer
 {
-  v3 = [MEMORY[0x277CD9ED0] layer];
-  [v3 setDisableUpdateMask:16];
+  layer = [MEMORY[0x277CD9ED0] layer];
+  [layer setDisableUpdateMask:16];
   if (BYTE1(self->_progressLayer) == 1)
   {
-    v4 = [(PUIProgressWindow *)self _copyWhiteCGColorRef];
+    _copyWhiteCGColorRef = [(PUIProgressWindow *)self _copyWhiteCGColorRef];
   }
 
   else
   {
-    v4 = [(PUIProgressWindow *)self _copyBlackCGColorRef];
+    _copyWhiteCGColorRef = [(PUIProgressWindow *)self _copyBlackCGColorRef];
   }
 
-  v5 = v4;
-  if (v4)
+  v5 = _copyWhiteCGColorRef;
+  if (_copyWhiteCGColorRef)
   {
-    [v3 setBackgroundColor:v4];
+    [layer setBackgroundColor:_copyWhiteCGColorRef];
     CFRelease(v5);
   }
 
   CGAffineTransformMakeRotation(&v137, -*(&self->_renderWithIOSurface + 3));
   v136 = v137;
-  [v3 setAffineTransform:&v136];
+  [layer setAffineTransform:&v136];
   __asm { FMOV            V1.2D, #0.5 }
 
-  [v3 setPosition:{vmulq_f64(*&self->_layerPositioningSize.height, _Q1)}];
-  [v3 setBounds:{0.0, 0.0, self->_displaySize.height, self->_framebufferSize.width}];
+  [layer setPosition:{vmulq_f64(*&self->_layerPositioningSize.height, _Q1)}];
+  [layer setBounds:{0.0, 0.0, self->_displaySize.height, self->_framebufferSize.width}];
   v11 = MEMORY[0x277CCABB0];
-  [v3 position];
+  [layer position];
   v12 = [v11 numberWithDouble:?];
   v13 = MEMORY[0x277CCABB0];
-  [v3 position];
+  [layer position];
   v15 = [v13 numberWithDouble:v14];
   v16 = MEMORY[0x277CCABB0];
-  [v3 bounds];
+  [layer bounds];
   v17 = [v16 numberWithDouble:?];
   v18 = MEMORY[0x277CCABB0];
-  [v3 bounds];
+  [layer bounds];
   v20 = [v18 numberWithDouble:v19];
   v21 = MEMORY[0x277CCABB0];
-  [v3 bounds];
+  [layer bounds];
   v23 = [v21 numberWithDouble:v22];
   v24 = MEMORY[0x277CCABB0];
-  [v3 bounds];
+  [layer bounds];
   v93 = [v24 numberWithDouble:v25];
   _DMLogFunc();
 
-  [v3 setHidden:{1, v12, v15, v17, v20, v23, v93}];
-  objc_storeStrong(&self->_appleLogoAssetLayer, v3);
+  [layer setHidden:{1, v12, v15, v17, v20, v23, v93}];
+  objc_storeStrong(&self->_appleLogoAssetLayer, layer);
   context = self->_context;
   if (context)
   {
-    [(CAContext *)context setLayer:v3];
+    [(CAContext *)context setLayer:layer];
   }
 
   if (BYTE1(self->_framebufferListenerToken) == 1)
   {
     v27 = _IOSurfacePropertyDictionaryForRect(0.0, 0.0, self->_displaySize.height, self->_framebufferSize.width);
     self->_ioSurfaceLayer = IOSurfaceCreate(v27);
-    v28 = [MEMORY[0x277CD9ED0] layer];
+    layer2 = [MEMORY[0x277CD9ED0] layer];
     errorDescription = self->_errorDescription;
-    self->_errorDescription = v28;
+    self->_errorDescription = layer2;
 
     [(NSString *)self->_errorDescription setAllowsDisplayCompositing:1];
     CGAffineTransformMakeRotation(&v135, -*(&self->_renderWithIOSurface + 3));
@@ -836,10 +836,10 @@ LABEL_8:
     CGContextScaleCTM(v8, 1.0, -1.0);
     CGAffineTransformMakeScale(&v10, 1.0, -1.0);
     CGContextSetBaseCTM();
-    v9 = [(CALayer *)self->_appleLogoAssetLayer isHidden];
+    isHidden = [(CALayer *)self->_appleLogoAssetLayer isHidden];
     [(CALayer *)self->_appleLogoAssetLayer setHidden:0];
     [(CALayer *)self->_appleLogoAssetLayer renderInContext:v8];
-    [(CALayer *)self->_appleLogoAssetLayer setHidden:v9];
+    [(CALayer *)self->_appleLogoAssetLayer setHidden:isHidden];
     CGContextRelease(v8);
   }
 
@@ -848,19 +848,19 @@ LABEL_8:
   [(NSString *)self->_errorDescription setContents:self->_ioSurfaceLayer];
 }
 
-- (void)setVisible:(BOOL)a3
+- (void)setVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   [MEMORY[0x277CD9FF0] begin];
-  [(CALayer *)self->_appleLogoAssetLayer setHidden:!v3];
-  [(NSString *)self->_errorDescription setHidden:!v3];
+  [(CALayer *)self->_appleLogoAssetLayer setHidden:!visibleCopy];
+  [(NSString *)self->_errorDescription setHidden:!visibleCopy];
   [MEMORY[0x277CD9FF0] commit];
   _DMLogFunc();
 }
 
-- (void)setProgressValue:(float)a3
+- (void)setProgressValue:(float)value
 {
-  *&self->_appleLogo = a3;
+  *&self->_appleLogo = value;
   [(CATextLayer *)self->_statusTextLayer setNeedsDisplay];
   if (BYTE1(self->_framebufferListenerToken) == 1)
   {
@@ -869,13 +869,13 @@ LABEL_8:
   }
 }
 
-- (void)setStatusText:(id)a3
+- (void)setStatusText:(id)text
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && !self->_ioSurface)
+  textCopy = text;
+  v5 = textCopy;
+  if (textCopy && !self->_ioSurface)
   {
-    v16 = v4;
+    v16 = textCopy;
     v6 = objc_alloc_init(MEMORY[0x277CD9FC8]);
     ioSurface = self->_ioSurface;
     self->_ioSurface = v6;
@@ -894,18 +894,18 @@ LABEL_8:
     [(__IOSurface *)self->_ioSurface setAlignmentMode:@"center"];
     if (BYTE1(self->_progressLayer) == 1)
     {
-      v10 = [(PUIProgressWindow *)self _copyBlackCGColorRef];
+      _copyBlackCGColorRef = [(PUIProgressWindow *)self _copyBlackCGColorRef];
     }
 
     else
     {
-      v10 = [(PUIProgressWindow *)self _copyWhiteCGColorRef];
+      _copyBlackCGColorRef = [(PUIProgressWindow *)self _copyWhiteCGColorRef];
     }
 
-    v11 = v10;
-    if (v10)
+    v11 = _copyBlackCGColorRef;
+    if (_copyBlackCGColorRef)
     {
-      [(__IOSurface *)self->_ioSurface setForegroundColor:v10];
+      [(__IOSurface *)self->_ioSurface setForegroundColor:_copyBlackCGColorRef];
       CFRelease(v11);
     }
 
@@ -917,15 +917,15 @@ LABEL_8:
   if (v12)
   {
     v17 = v5;
-    v13 = [(__IOSurface *)v12 string];
-    if (v13 == v17)
+    string = [(__IOSurface *)v12 string];
+    if (string == v17)
     {
     }
 
     else
     {
-      v14 = [(__IOSurface *)self->_ioSurface string];
-      v15 = [v17 isEqualToString:v14];
+      string2 = [(__IOSurface *)self->_ioSurface string];
+      v15 = [v17 isEqualToString:string2];
 
       if ((v15 & 1) == 0)
       {
@@ -1466,9 +1466,9 @@ LABEL_96:
     [(CALayer *)self->_appleLogoAssetLayer addSublayer:self->_statusTextLayer];
   }
 
-  v50 = [MEMORY[0x277CD9ED0] layer];
+  layer = [MEMORY[0x277CD9ED0] layer];
   x = self->_appleLogoFrameWithinAsset.origin.x;
-  *&self->_appleLogoFrameWithinAsset.origin.x = v50;
+  *&self->_appleLogoFrameWithinAsset.origin.x = layer;
 
   [*&self->_appleLogoFrameWithinAsset.origin.x setContents:*&self->_progressXDelta];
   v52 = CGImageGetWidth(*&self->_progressXDelta);
@@ -1481,7 +1481,7 @@ LABEL_96:
   }
 }
 
-- (void)_drawProgressLayerInContext:(CGContext *)a3
+- (void)_drawProgressLayerInContext:(CGContext *)context
 {
   v35 = *MEMORY[0x277D85DE8];
   if (self->_screenClass == 6)
@@ -1497,38 +1497,38 @@ LABEL_96:
     }
 
     v11 = v5 - v7 * *&self->_sideways;
-    CGContextSaveGState(a3);
+    CGContextSaveGState(context);
     *components = xmmword_260E8DEA8;
     v34 = unk_260E8DEB8;
     v32[0] = xmmword_260E8DEC8;
     v32[1] = unk_260E8DED8;
-    CGContextSetLineWidth(a3, *&self->_sideways);
+    CGContextSetLineWidth(context, *&self->_sideways);
     [(CATextLayer *)self->_statusTextLayer bounds:xmmword_260E8DEC8];
     v13 = v12 * 0.5;
     [(CATextLayer *)self->_statusTextLayer bounds];
-    CGContextTranslateCTM(a3, v13, v14 * 0.5);
-    CGContextRotateCTM(a3, 3.14159265);
+    CGContextTranslateCTM(context, v13, v14 * 0.5);
+    CGContextRotateCTM(context, 3.14159265);
     v15 = llroundf(*&self->_appleLogo * 100.0);
-    CGContextSetStrokeColor(a3, components);
+    CGContextSetStrokeColor(context, components);
     v16 = 0;
     v17 = 0;
     do
     {
       if (v16 > v15 && (v17 & 1) == 0)
       {
-        CGContextSetStrokeColor(a3, v32);
+        CGContextSetStrokeColor(context, v32);
         v17 = 1;
       }
 
-      CGContextMoveToPoint(a3, 0.0, v11);
-      CGContextAddLineToPoint(a3, 0.0, v5);
-      CGContextStrokePath(a3);
-      CGContextRotateCTM(a3, 0.0628318531);
+      CGContextMoveToPoint(context, 0.0, v11);
+      CGContextAddLineToPoint(context, 0.0, v5);
+      CGContextStrokePath(context);
+      CGContextRotateCTM(context, 0.0628318531);
       ++v16;
     }
 
     while (v16 != 100);
-    CGContextRestoreGState(a3);
+    CGContextRestoreGState(context);
     v18 = *MEMORY[0x277D85DE8];
   }
 
@@ -1552,13 +1552,13 @@ LABEL_96:
       v23 = self->_progressHeight * *&self->_appleLogo;
     }
 
-    CGContextSaveGState(a3);
+    CGContextSaveGState(context);
     v38.origin.x = 0.0;
     v38.origin.y = 0.0;
     v38.size.width = v23;
     v38.size.height = v19;
-    CGContextClipToRect(a3, v38);
-    CGContextAddPath(a3, v21);
+    CGContextClipToRect(context, v38);
+    CGContextAddPath(context, v21);
     if (BYTE1(self->_progressLayer) == 1)
     {
       v24 = 0.0;
@@ -1573,15 +1573,15 @@ LABEL_96:
       v26 = 1.0;
     }
 
-    CGContextSetRGBFillColor(a3, v24, v25, v26, 1.0);
-    CGContextFillPath(a3);
-    CGContextRestoreGState(a3);
+    CGContextSetRGBFillColor(context, v24, v25, v26, 1.0);
+    CGContextFillPath(context);
+    CGContextRestoreGState(context);
     v39.size.width = progressHeight - v23;
     v39.origin.y = 0.0;
     v39.origin.x = v23;
     v39.size.height = v19;
-    CGContextClipToRect(a3, v39);
-    CGContextAddPath(a3, v21);
+    CGContextClipToRect(context, v39);
+    CGContextAddPath(context, v21);
     if (BYTE1(self->_progressLayer) == 1)
     {
       v27 = 0.2;
@@ -1598,29 +1598,29 @@ LABEL_96:
       v30 = 1.0;
     }
 
-    CGContextSetRGBFillColor(a3, v28, v29, v30, v27);
-    CGContextFillPath(a3);
+    CGContextSetRGBFillColor(context, v28, v29, v30, v27);
+    CGContextFillPath(context);
     v31 = *MEMORY[0x277D85DE8];
 
     CGPathRelease(v21);
   }
 }
 
-- (void)drawLayer:(id)a3 inContext:(CGContext *)a4
+- (void)drawLayer:(id)layer inContext:(CGContext *)context
 {
-  if (self->_statusTextLayer == a3)
+  if (self->_statusTextLayer == layer)
   {
-    [(PUIProgressWindow *)self _drawProgressLayerInContext:a4];
+    [(PUIProgressWindow *)self _drawProgressLayerInContext:context];
   }
 }
 
-- (CGImage)_createImageWithName:(const char *)a3 scale:(int)a4 displayHeight:(int)a5
+- (CGImage)_createImageWithName:(const char *)name scale:(int)scale displayHeight:(int)height
 {
   v24 = *MEMORY[0x277D85DE8];
-  v7 = [(PUIProgressWindow *)self _productSuffix];
-  if (v7)
+  _productSuffix = [(PUIProgressWindow *)self _productSuffix];
+  if (_productSuffix)
   {
-    v8 = strcmp(v7, [(PUIProgressWindow *)self _appleTVProductSuffix]) == 0;
+    v8 = strcmp(_productSuffix, [(PUIProgressWindow *)self _appleTVProductSuffix]) == 0;
   }
 
   else
@@ -1629,10 +1629,10 @@ LABEL_96:
   }
 
   v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v10 = [v9 resourcePath];
-  v11 = [v10 UTF8String];
+  resourcePath = [v9 resourcePath];
+  uTF8String = [resourcePath UTF8String];
 
-  if (!v7)
+  if (!_productSuffix)
   {
     goto LABEL_27;
   }
@@ -1664,7 +1664,7 @@ LABEL_27:
     _DMLogFunc();
     if (access(__str, 0))
     {
-      snprintf(__str, 0x400uLL, "%s/%s~%s.png", v11, a3, v7);
+      snprintf(__str, 0x400uLL, "%s/%s~%s.png", uTF8String, name, _productSuffix);
       _DMLogFunc();
       if (access(__str, 0))
       {

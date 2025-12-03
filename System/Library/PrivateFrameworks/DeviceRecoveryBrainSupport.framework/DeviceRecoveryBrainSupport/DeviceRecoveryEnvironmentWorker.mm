@@ -2,11 +2,11 @@
 + (id)sharedWorker;
 - (DeviceRecoveryEnvironmentWorker)init;
 - (id)DREEntryDescription;
-- (id)DREStringFromEntryReason:(int)a3;
-- (id)getObjectFromInternalCookie:(id)a3;
+- (id)DREStringFromEntryReason:(int)reason;
+- (id)getObjectFromInternalCookie:(id)cookie;
 - (int)DREEntryReasonEnum;
 - (void)CreateCookieAndCleanup;
-- (void)populateDREDescription:(id)a3;
+- (void)populateDREDescription:(id)description;
 - (void)populateDREReason;
 - (void)setupPopulateDREDescription;
 @end
@@ -94,7 +94,7 @@ id __39__DeviceRecoveryEnvironmentWorker_init__block_invoke(uint64_t a1)
     _os_log_error_impl(v10, v11, v12, v13, v14, 0x20u);
   }
 
-  *a1 = v1;
+  *self = v1;
 }
 
 - (void)setupPopulateDREDescription
@@ -143,9 +143,9 @@ void __62__DeviceRecoveryEnvironmentWorker_setupPopulateDREDescription__block_in
   *(v4 + 8) = v5 + 1;
 }
 
-- (void)populateDREDescription:(id)a3
+- (void)populateDREDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   v5 = DRECopyIORegAsString("IODeviceTree:/options", @"device-recovery-boot-reason");
   if (!v5)
   {
@@ -161,7 +161,7 @@ void __62__DeviceRecoveryEnvironmentWorker_setupPopulateDREDescription__block_in
       v5 = 0;
     }
 
-    if (v4)
+    if (descriptionCopy)
     {
       goto LABEL_3;
     }
@@ -171,13 +171,13 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (!v4)
+  if (!descriptionCopy)
   {
     goto LABEL_13;
   }
 
 LABEL_3:
-  v6 = [v4 objectForKey:@"PanicReason"];
+  v6 = [descriptionCopy objectForKey:@"PanicReason"];
   v7 = v6;
   if (v6)
   {
@@ -240,14 +240,14 @@ LABEL_14:
   dispatch_activate(self->_serviceQueue);
 }
 
-- (id)getObjectFromInternalCookie:(id)a3
+- (id)getObjectFromInternalCookie:(id)cookie
 {
-  v3 = a3;
+  cookieCopy = cookie;
   v4 = [NSDictionary dictionaryWithContentsOfFile:@"/var/db/com.apple.DeviceRecovery.entryInfo"];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 objectForKey:v3];
+    v6 = [v4 objectForKey:cookieCopy];
     if (v6)
     {
       goto LABEL_7;
@@ -307,12 +307,12 @@ LABEL_7:
   return v3;
 }
 
-- (id)DREStringFromEntryReason:(int)a3
+- (id)DREStringFromEntryReason:(int)reason
 {
   v4 = @"Unknown Entry Reason";
-  if ((a3 - 1) <= 4)
+  if ((reason - 1) <= 4)
   {
-    v5 = *off_2C1F0[a3 - 1];
+    v5 = *off_2C1F0[reason - 1];
 
     v4 = v5;
   }

@@ -1,33 +1,33 @@
 @interface SKWaitableAggregate
-- (BOOL)waitWithError:(id *)a3;
-- (SKWaitableAggregate)initWithWaitables:(id)a3;
+- (BOOL)waitWithError:(id *)error;
+- (SKWaitableAggregate)initWithWaitables:(id)waitables;
 @end
 
 @implementation SKWaitableAggregate
 
-- (SKWaitableAggregate)initWithWaitables:(id)a3
+- (SKWaitableAggregate)initWithWaitables:(id)waitables
 {
-  v5 = a3;
+  waitablesCopy = waitables;
   v9.receiver = self;
   v9.super_class = SKWaitableAggregate;
   v6 = [(SKWaitableAggregate *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_waitables, a3);
+    objc_storeStrong(&v6->_waitables, waitables);
   }
 
   return v7;
 }
 
-- (BOOL)waitWithError:(id *)a3
+- (BOOL)waitWithError:(id *)error
 {
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = [(SKWaitableAggregate *)self waitables];
-  v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  waitables = [(SKWaitableAggregate *)self waitables];
+  v5 = [waitables countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
     v6 = v5;
@@ -40,7 +40,7 @@
       {
         if (*v19 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(waitables);
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
@@ -56,7 +56,7 @@
         v9 &= v12;
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v6 = [waitables countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v6);
@@ -68,10 +68,10 @@
     v9 = 1;
   }
 
-  if (a3)
+  if (error)
   {
     v15 = v7;
-    *a3 = v7;
+    *error = v7;
   }
 
   return v9;

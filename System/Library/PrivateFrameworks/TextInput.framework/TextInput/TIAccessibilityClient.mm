@@ -1,14 +1,14 @@
 @interface TIAccessibilityClient
-+ (void)requestLabelForProactiveCandidateWithSlotID:(unsigned int)a3 completionHandler:(id)a4;
++ (void)requestLabelForProactiveCandidateWithSlotID:(unsigned int)d completionHandler:(id)handler;
 @end
 
 @implementation TIAccessibilityClient
 
-+ (void)requestLabelForProactiveCandidateWithSlotID:(unsigned int)a3 completionHandler:(id)a4
++ (void)requestLabelForProactiveCandidateWithSlotID:(unsigned int)d completionHandler:(id)handler
 {
-  v4 = *&a3;
-  v5 = a4;
-  if (v5)
+  v4 = *&d;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     if (requestLabelForProactiveCandidateWithSlotID_completionHandler__onceToken != -1)
     {
@@ -25,7 +25,7 @@
     v11[1] = 3221225472;
     v11[2] = __87__TIAccessibilityClient_requestLabelForProactiveCandidateWithSlotID_completionHandler___block_invoke_2;
     v11[3] = &unk_1E6F4CD38;
-    v8 = v5;
+    v8 = handlerCopy;
     v12 = v8;
     v9 = [v6 remoteObjectProxyWithErrorHandler:v11];
     v10 = v9;

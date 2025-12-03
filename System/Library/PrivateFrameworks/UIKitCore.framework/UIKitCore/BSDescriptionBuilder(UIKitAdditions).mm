@@ -31,15 +31,15 @@
     v12[2] = __93__BSDescriptionBuilder_UIKitAdditions__ui_appendObject_withName_usingLightweightDescription___block_invoke;
     v12[3] = &unk_1E70FA340;
     v13 = v8;
-    [a1 appendCustomFormatWithName:a4 block:v12];
+    [self appendCustomFormatWithName:a4 block:v12];
   }
 
   else
   {
-    v10 = [a1 appendObject:v8 withName:a4];
+    v10 = [self appendObject:v8 withName:a4];
   }
 
-  return a1;
+  return self;
 }
 
 - (void)ui_appendArray:()UIKitAdditions withName:skipIfEmpty:
@@ -48,10 +48,10 @@
   v9 = a4;
   if ([v8 count] || (a5 & 1) == 0)
   {
-    v10 = [a1 appendObject:v8 withName:v9];
+    v10 = [self appendObject:v8 withName:v9];
   }
 
-  return a1;
+  return self;
 }
 
 - (void)ui_appendSet:()UIKitAdditions withName:skipIfEmpty:
@@ -60,10 +60,10 @@
   v9 = a4;
   if ([v8 count] || (a5 & 1) == 0)
   {
-    v10 = [a1 appendObject:v8 withName:v9];
+    v10 = [self appendObject:v8 withName:v9];
   }
 
-  return a1;
+  return self;
 }
 
 - (void)ui_appendFloat:()UIKitAdditions withName:
@@ -73,17 +73,17 @@
   v6[2] = __64__BSDescriptionBuilder_UIKitAdditions__ui_appendFloat_withName___block_invoke;
   v6[3] = &__block_descriptor_40_e43_v16__0___BSDescriptionStringAppendTarget__8l;
   *&v6[4] = a2;
-  [a1 appendCustomFormatWithName:a4 block:v6];
-  return a1;
+  [self appendCustomFormatWithName:a4 block:v6];
+  return self;
 }
 
 - (void)ui_appendPoint3D:()UIKitAdditions withName:
 {
   v10 = a6;
   v11 = _NSStringFromCAPoint3D(a2, a3, a4);
-  v12 = [a1 appendObject:v11 withName:v10];
+  v12 = [self appendObject:v11 withName:v10];
 
-  return a1;
+  return self;
 }
 
 - (void)ui_appendVector:()UIKitAdditions withName:decimalPrecision:
@@ -94,7 +94,7 @@
     v15.dx = a2;
     v15.dy = a3;
     v11 = NSStringFromCGVector(v15);
-    v12 = [a1 appendObject:v11 withName:v10];
+    v12 = [self appendObject:v11 withName:v10];
   }
 
   else
@@ -106,10 +106,10 @@
     v14[4] = a6;
     *&v14[5] = a2;
     *&v14[6] = a3;
-    [a1 appendCustomFormatWithName:v10 block:v14];
+    [self appendCustomFormatWithName:v10 block:v14];
   }
 
-  return a1;
+  return self;
 }
 
 - (void)ui_appendEdgeInsets:()UIKitAdditions withName:
@@ -120,38 +120,38 @@
   v15.bottom = a4;
   v15.right = a5;
   v13 = NSStringFromUIEdgeInsets(v15);
-  [a1 appendString:v13 withName:v12];
+  [self appendString:v13 withName:v12];
 
-  return a1;
+  return self;
 }
 
 - (void)ui_appendCornerRadii:()UIKitAdditions withName:
 {
   v12 = a7;
   v13 = NSStringFromUIRectCornerRadii(a2, a3, a4, a5);
-  [a1 appendString:v13 withName:v12];
+  [self appendString:v13 withName:v12];
 
-  return a1;
+  return self;
 }
 
 - (void)ui_appendInteger:()UIKitAdditions withName:ifNotEqualTo:
 {
   if (a3 != a5)
   {
-    v6 = [a1 appendInteger:? withName:?];
+    v6 = [self appendInteger:? withName:?];
   }
 
-  return a1;
+  return self;
 }
 
 - (void)ui_appendFloat:()UIKitAdditions withName:ifNotEqualTo:
 {
   if (a2 != a3)
   {
-    v4 = [a1 ui_appendFloat:? withName:?];
+    v4 = [self ui_appendFloat:? withName:?];
   }
 
-  return a1;
+  return self;
 }
 
 - (void)ui_appendRect:()UIKitAdditions withName:ifNotEqualTo:
@@ -167,10 +167,10 @@
   v24.size.height = a9;
   if (!CGRectEqualToRect(v23, v24))
   {
-    v21 = [a1 appendRect:v20 withName:{a2, a3, a4, a5}];
+    v21 = [self appendRect:v20 withName:{a2, a3, a4, a5}];
   }
 
-  return a1;
+  return self;
 }
 
 - (id)ui_appendTransform:()UIKitAdditions withName:
@@ -179,7 +179,7 @@
   v7[0] = *a3;
   v7[1] = v4;
   v7[2] = a3[2];
-  v5 = [a1 ui_appendTransform:v7 withName:a4 skipIfIdentity:0];
+  v5 = [self ui_appendTransform:v7 withName:a4 skipIfIdentity:0];
 
   return v5;
 }
@@ -201,12 +201,12 @@
     v14 = *a3;
     v15 = v10;
     v16 = a3[2];
-    [a1 appendCustomFormatWithName:v8 block:v13];
+    [self appendCustomFormatWithName:v8 block:v13];
   }
 
-  v11 = a1;
+  selfCopy = self;
 
-  return a1;
+  return self;
 }
 
 - (id)ui_appendInterfaceOrientation:()UIKitAdditions withName:skipIfUnknown:
@@ -218,10 +218,10 @@
     v7[2] = __93__BSDescriptionBuilder_UIKitAdditions__ui_appendInterfaceOrientation_withName_skipIfUnknown___block_invoke;
     v7[3] = &__block_descriptor_40_e43_v16__0___BSDescriptionStringAppendTarget__8l;
     v7[4] = a3;
-    [a1 appendCustomFormatWithName:a4 block:v7];
+    [self appendCustomFormatWithName:a4 block:v7];
   }
 
-  return a1;
+  return self;
 }
 
 - (id)ui_appendInterfaceOrientationMask:()UIKitAdditions withName:skipIfEmpty:
@@ -233,10 +233,10 @@
     v7[2] = __95__BSDescriptionBuilder_UIKitAdditions__ui_appendInterfaceOrientationMask_withName_skipIfEmpty___block_invoke;
     v7[3] = &__block_descriptor_40_e43_v16__0___BSDescriptionStringAppendTarget__8l;
     v7[4] = a3;
-    [a1 appendCustomFormatWithName:a4 block:v7];
+    [self appendCustomFormatWithName:a4 block:v7];
   }
 
-  return a1;
+  return self;
 }
 
 - (id)ui_appendUserInterfaceIdiom:()UIKitAdditions withName:skipIfEmpty:
@@ -248,10 +248,10 @@
     v7[2] = __89__BSDescriptionBuilder_UIKitAdditions__ui_appendUserInterfaceIdiom_withName_skipIfEmpty___block_invoke;
     v7[3] = &__block_descriptor_40_e43_v16__0___BSDescriptionStringAppendTarget__8l;
     v7[4] = a3;
-    [a1 appendCustomFormatWithName:a4 block:v7];
+    [self appendCustomFormatWithName:a4 block:v7];
   }
 
-  return a1;
+  return self;
 }
 
 - (id)ui_appendReferenceDisplayModeStatus:()UIKitAdditions withName:skipIfNotSupported:
@@ -263,10 +263,10 @@
     v7[2] = __104__BSDescriptionBuilder_UIKitAdditions__ui_appendReferenceDisplayModeStatus_withName_skipIfNotSupported___block_invoke;
     v7[3] = &__block_descriptor_40_e43_v16__0___BSDescriptionStringAppendTarget__8l;
     v7[4] = a3;
-    [a1 appendCustomFormatWithName:a4 block:v7];
+    [self appendCustomFormatWithName:a4 block:v7];
   }
 
-  return a1;
+  return self;
 }
 
 @end

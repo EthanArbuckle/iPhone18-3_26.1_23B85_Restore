@@ -1,63 +1,63 @@
 @interface SMSafetyMonitorManagerExportedObject
 - (SMSafetyMonitorManager)safetyMonitorManager;
-- (SMSafetyMonitorManagerExportedObject)initWithSafetyMonitorManager:(id)a3;
-- (void)onInitiatorSafetyCacheChangeForSessionID:(id)a3 phoneCache:(id)a4 watchCache:(id)a5 cacheExpiryDate:(id)a6 cacheReleaseDate:(id)a7;
-- (void)onLocalSessionStateChanged:(id)a3 withError:(id)a4;
-- (void)onReceiverSafetyCacheChangeForSessionID:(id)a3 phoneCache:(id)a4 watchCache:(id)a5;
-- (void)onReceiverSessionStatusChangeForSessionID:(id)a3 sessionStatus:(id)a4;
+- (SMSafetyMonitorManagerExportedObject)initWithSafetyMonitorManager:(id)manager;
+- (void)onInitiatorSafetyCacheChangeForSessionID:(id)d phoneCache:(id)cache watchCache:(id)watchCache cacheExpiryDate:(id)date cacheReleaseDate:(id)releaseDate;
+- (void)onLocalSessionStateChanged:(id)changed withError:(id)error;
+- (void)onReceiverSafetyCacheChangeForSessionID:(id)d phoneCache:(id)cache watchCache:(id)watchCache;
+- (void)onReceiverSessionStatusChangeForSessionID:(id)d sessionStatus:(id)status;
 @end
 
 @implementation SMSafetyMonitorManagerExportedObject
 
-- (SMSafetyMonitorManagerExportedObject)initWithSafetyMonitorManager:(id)a3
+- (SMSafetyMonitorManagerExportedObject)initWithSafetyMonitorManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v8.receiver = self;
   v8.super_class = SMSafetyMonitorManagerExportedObject;
   v5 = [(SMSafetyMonitorManagerExportedObject *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_safetyMonitorManager, v4);
+    objc_storeWeak(&v5->_safetyMonitorManager, managerCopy);
   }
 
   return v6;
 }
 
-- (void)onLocalSessionStateChanged:(id)a3 withError:(id)a4
+- (void)onLocalSessionStateChanged:(id)changed withError:(id)error
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SMSafetyMonitorManagerExportedObject *)self safetyMonitorManager];
-  [v8 onLocalSessionStateChanged:v7 withError:v6];
+  errorCopy = error;
+  changedCopy = changed;
+  safetyMonitorManager = [(SMSafetyMonitorManagerExportedObject *)self safetyMonitorManager];
+  [safetyMonitorManager onLocalSessionStateChanged:changedCopy withError:errorCopy];
 }
 
-- (void)onInitiatorSafetyCacheChangeForSessionID:(id)a3 phoneCache:(id)a4 watchCache:(id)a5 cacheExpiryDate:(id)a6 cacheReleaseDate:(id)a7
+- (void)onInitiatorSafetyCacheChangeForSessionID:(id)d phoneCache:(id)cache watchCache:(id)watchCache cacheExpiryDate:(id)date cacheReleaseDate:(id)releaseDate
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [(SMSafetyMonitorManagerExportedObject *)self safetyMonitorManager];
-  [v17 onInitiatorSafetyCacheChangeForSessionID:v16 phoneCache:v15 watchCache:v14 cacheExpiryDate:v13 cacheReleaseDate:v12];
+  releaseDateCopy = releaseDate;
+  dateCopy = date;
+  watchCacheCopy = watchCache;
+  cacheCopy = cache;
+  dCopy = d;
+  safetyMonitorManager = [(SMSafetyMonitorManagerExportedObject *)self safetyMonitorManager];
+  [safetyMonitorManager onInitiatorSafetyCacheChangeForSessionID:dCopy phoneCache:cacheCopy watchCache:watchCacheCopy cacheExpiryDate:dateCopy cacheReleaseDate:releaseDateCopy];
 }
 
-- (void)onReceiverSessionStatusChangeForSessionID:(id)a3 sessionStatus:(id)a4
+- (void)onReceiverSessionStatusChangeForSessionID:(id)d sessionStatus:(id)status
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SMSafetyMonitorManagerExportedObject *)self safetyMonitorManager];
-  [v8 onReceiverSessionStatusChangeForSessionID:v7 sessionStatus:v6];
+  statusCopy = status;
+  dCopy = d;
+  safetyMonitorManager = [(SMSafetyMonitorManagerExportedObject *)self safetyMonitorManager];
+  [safetyMonitorManager onReceiverSessionStatusChangeForSessionID:dCopy sessionStatus:statusCopy];
 }
 
-- (void)onReceiverSafetyCacheChangeForSessionID:(id)a3 phoneCache:(id)a4 watchCache:(id)a5
+- (void)onReceiverSafetyCacheChangeForSessionID:(id)d phoneCache:(id)cache watchCache:(id)watchCache
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(SMSafetyMonitorManagerExportedObject *)self safetyMonitorManager];
-  [v11 onReceiverSafetyCacheChangeForSessionID:v10 phoneCache:v9 watchCache:v8];
+  watchCacheCopy = watchCache;
+  cacheCopy = cache;
+  dCopy = d;
+  safetyMonitorManager = [(SMSafetyMonitorManagerExportedObject *)self safetyMonitorManager];
+  [safetyMonitorManager onReceiverSafetyCacheChangeForSessionID:dCopy phoneCache:cacheCopy watchCache:watchCacheCopy];
 }
 
 - (SMSafetyMonitorManager)safetyMonitorManager

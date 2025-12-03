@@ -4,18 +4,18 @@
 - (CGAffineTransform)transformInParent;
 - (CGAffineTransform)transformInRoot;
 - (CGPoint)lastInterimPosition;
-- (CGPoint)offsetToApplyWhenComputingLayoutGeometryOfChild:(id)a3;
+- (CGPoint)offsetToApplyWhenComputingLayoutGeometryOfChild:(id)child;
 - (CGRect)alignmentFrame;
 - (CGRect)alignmentFrameInParent;
 - (CGRect)alignmentFrameInRoot;
 - (CGRect)clipRect;
-- (CGRect)clippedRectInRoot:(CGRect)a3;
+- (CGRect)clippedRectInRoot:(CGRect)root;
 - (CGRect)frame;
 - (CGRect)frameForCullingInRoot;
 - (CGRect)frameInParent;
 - (CGRect)frameInRoot;
-- (CGRect)rectInParent:(CGRect)a3;
-- (CGRect)rectInRoot:(CGRect)a3;
+- (CGRect)rectInParent:(CGRect)parent;
+- (CGRect)rectInRoot:(CGRect)root;
 - (CRLCanvasAbstractLayout)init;
 - (CRLCanvasAbstractLayout)parent;
 - (CRLCanvasAbstractLayout)parentLayoutForProvidingGuides;
@@ -24,20 +24,20 @@
 - (CRLCanvasLayoutGeometry)geometryInRoot;
 - (NSArray)layoutsForProvidingGuidesForChildLayouts;
 - (NSArray)visibleGeometries;
-- (id)childLayoutContainingPossibleDescendentLayout:(id)a3;
-- (id)geometryInRoot:(id)a3;
-- (void)addChild:(id)a3;
-- (void)addLayoutsInRect:(CGRect)a3 toArray:(id)a4 deep:(BOOL)a5;
-- (void)exchangeChildAtIndex:(unint64_t)a3 withChildAtIndex:(unint64_t)a4;
+- (id)childLayoutContainingPossibleDescendentLayout:(id)layout;
+- (id)geometryInRoot:(id)root;
+- (void)addChild:(id)child;
+- (void)addLayoutsInRect:(CGRect)rect toArray:(id)array deep:(BOOL)deep;
+- (void)exchangeChildAtIndex:(unint64_t)index withChildAtIndex:(unint64_t)atIndex;
 - (void)fixTransformFromInterimPosition;
-- (void)insertChild:(id)a3 above:(id)a4;
-- (void)insertChild:(id)a3 atIndex:(unint64_t)a4;
-- (void)insertChild:(id)a3 below:(id)a4;
-- (void)offsetGeometryBy:(CGPoint)a3;
-- (void)p_fixTransformFromInterimPosition:(CGPoint)a3 interimPositionXSet:(BOOL)a4 interimPositionYSet:(BOOL)a5;
+- (void)insertChild:(id)child above:(id)above;
+- (void)insertChild:(id)child atIndex:(unint64_t)index;
+- (void)insertChild:(id)child below:(id)below;
+- (void)offsetGeometryBy:(CGPoint)by;
+- (void)p_fixTransformFromInterimPosition:(CGPoint)position interimPositionXSet:(BOOL)set interimPositionYSet:(BOOL)ySet;
 - (void)removeFromParent;
-- (void)replaceChild:(id)a3 with:(id)a4;
-- (void)setChildren:(id)a3;
+- (void)replaceChild:(id)child with:(id)with;
+- (void)setChildren:(id)children;
 @end
 
 @implementation CRLCanvasAbstractLayout
@@ -63,18 +63,18 @@
 
 - (CRLCanvasLayoutGeometry)geometryInParent
 {
-  v3 = [(CRLCanvasAbstractLayout *)self geometry];
+  geometry = [(CRLCanvasAbstractLayout *)self geometry];
   WeakRetained = objc_loadWeakRetained(&self->_parent);
 
   if (WeakRetained)
   {
-    v5 = [v3 mutableCopy];
+    v5 = [geometry mutableCopy];
     v6 = objc_loadWeakRetained(&self->_parent);
-    v7 = [v6 geometry];
-    v8 = v7;
-    if (v7)
+    geometry2 = [v6 geometry];
+    v8 = geometry2;
+    if (geometry2)
     {
-      [v7 transform];
+      [geometry2 transform];
     }
 
     else
@@ -87,7 +87,7 @@
 
   else
   {
-    v5 = v3;
+    v5 = geometry;
   }
 
   return v5;
@@ -95,26 +95,26 @@
 
 - (CRLCanvasLayoutGeometry)geometryInRoot
 {
-  v3 = [(CRLCanvasAbstractLayout *)self geometry];
-  v4 = [(CRLCanvasAbstractLayout *)self geometryInRoot:v3];
+  geometry = [(CRLCanvasAbstractLayout *)self geometry];
+  v4 = [(CRLCanvasAbstractLayout *)self geometryInRoot:geometry];
 
   return v4;
 }
 
-- (id)geometryInRoot:(id)a3
+- (id)geometryInRoot:(id)root
 {
-  v4 = [a3 mutableCopy];
+  v4 = [root mutableCopy];
   WeakRetained = objc_loadWeakRetained(&self->_parent);
   if (WeakRetained)
   {
     v6 = WeakRetained;
     do
     {
-      v7 = [v6 geometry];
-      v8 = v7;
-      if (v7)
+      geometry = [v6 geometry];
+      v8 = geometry;
+      if (geometry)
       {
-        [v7 transform];
+        [geometry transform];
       }
 
       else
@@ -126,12 +126,12 @@
 
       [v4 transformBy:&v11];
 
-      v9 = [v6 parent];
+      parent = [v6 parent];
 
-      v6 = v9;
+      v6 = parent;
     }
 
-    while (v9);
+    while (parent);
   }
 
   return v4;
@@ -139,8 +139,8 @@
 
 - (NSArray)visibleGeometries
 {
-  v2 = [(CRLCanvasAbstractLayout *)self geometry];
-  v5 = v2;
+  geometry = [(CRLCanvasAbstractLayout *)self geometry];
+  v5 = geometry;
   v3 = [NSArray arrayWithObjects:&v5 count:1];
 
   return v3;
@@ -148,12 +148,12 @@
 
 - (CGAffineTransform)transform
 {
-  v4 = [(CRLCanvasAbstractLayout *)self geometry];
-  if (v4)
+  geometry = [(CRLCanvasAbstractLayout *)self geometry];
+  if (geometry)
   {
-    v6 = v4;
-    [v4 transform];
-    v4 = v6;
+    v6 = geometry;
+    [geometry transform];
+    geometry = v6;
   }
 
   else
@@ -171,11 +171,11 @@
   *&retstr->c = 0u;
   *&retstr->tx = 0u;
   *&retstr->a = 0u;
-  v5 = [(CRLCanvasAbstractLayout *)self geometry];
-  v6 = v5;
-  if (v5)
+  geometry = [(CRLCanvasAbstractLayout *)self geometry];
+  v6 = geometry;
+  if (geometry)
   {
-    [v5 transform];
+    [geometry transform];
   }
 
   else
@@ -189,11 +189,11 @@
   if (WeakRetained)
   {
     v9 = objc_loadWeakRetained(&self->_parent);
-    v10 = [v9 geometry];
-    v11 = v10;
-    if (v10)
+    geometry2 = [v9 geometry];
+    v11 = geometry2;
+    if (geometry2)
     {
-      [v10 transform];
+      [geometry2 transform];
     }
 
     else
@@ -220,11 +220,11 @@
   *&retstr->c = 0u;
   *&retstr->tx = 0u;
   *&retstr->a = 0u;
-  v5 = [(CRLCanvasAbstractLayout *)self geometry];
-  v6 = v5;
-  if (v5)
+  geometry = [(CRLCanvasAbstractLayout *)self geometry];
+  v6 = geometry;
+  if (geometry)
   {
-    [v5 transform];
+    [geometry transform];
   }
 
   else
@@ -240,15 +240,15 @@
     v8 = result;
     do
     {
-      v9 = [(CGAffineTransform *)v8 geometry];
-      v10 = v9;
-      if (v9)
+      geometry2 = [(CGAffineTransform *)v8 geometry];
+      v10 = geometry2;
+      if (geometry2)
       {
         v11 = *&retstr->c;
         v14[0] = *&retstr->a;
         v14[1] = v11;
         v14[2] = *&retstr->tx;
-        [v9 transformByConcatenatingTransformTo:v14];
+        [geometry2 transformByConcatenatingTransformTo:v14];
       }
 
       else
@@ -263,12 +263,12 @@
       *&retstr->c = v12;
       *&retstr->tx = v17;
 
-      v13 = [(CGAffineTransform *)v8 parent];
+      parent = [(CGAffineTransform *)v8 parent];
 
-      v8 = v13;
+      v8 = parent;
     }
 
-    while (v13);
+    while (parent);
   }
 
   return result;
@@ -276,8 +276,8 @@
 
 - (CGRect)frame
 {
-  v2 = [(CRLCanvasAbstractLayout *)self geometry];
-  [v2 frame];
+  geometry = [(CRLCanvasAbstractLayout *)self geometry];
+  [geometry frame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -296,8 +296,8 @@
 
 - (CGRect)frameInParent
 {
-  v3 = [(CRLCanvasAbstractLayout *)self geometry];
-  [v3 size];
+  geometry = [(CRLCanvasAbstractLayout *)self geometry];
+  [geometry size];
   [(CRLCanvasAbstractLayout *)self rectInParent:sub_10011ECB4()];
   v5 = v4;
   v7 = v6;
@@ -317,8 +317,8 @@
 
 - (CGRect)frameInRoot
 {
-  v3 = [(CRLCanvasAbstractLayout *)self geometry];
-  [v3 size];
+  geometry = [(CRLCanvasAbstractLayout *)self geometry];
+  [geometry size];
   [(CRLCanvasAbstractLayout *)self rectInRoot:sub_10011ECB4()];
   v5 = v4;
   v7 = v6;
@@ -336,12 +336,12 @@
   return result;
 }
 
-- (CGRect)rectInParent:(CGRect)a3
+- (CGRect)rectInParent:(CGRect)parent
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = parent.size.height;
+  width = parent.size.width;
+  y = parent.origin.y;
+  x = parent.origin.x;
   [(CRLCanvasAbstractLayout *)self transformInParent];
   v8.origin.x = x;
   v8.origin.y = y;
@@ -350,12 +350,12 @@
   return CGRectApplyAffineTransform(v8, &v7);
 }
 
-- (CGRect)rectInRoot:(CGRect)a3
+- (CGRect)rectInRoot:(CGRect)root
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = root.size.height;
+  width = root.size.width;
+  y = root.origin.y;
+  x = root.origin.x;
   [(CRLCanvasAbstractLayout *)self transformInRoot];
   v8.origin.x = x;
   v8.origin.y = y;
@@ -366,8 +366,8 @@
 
 - (CGRect)clipRect
 {
-  v2 = [(CRLCanvasAbstractLayout *)self geometry];
-  [v2 size];
+  geometry = [(CRLCanvasAbstractLayout *)self geometry];
+  [geometry size];
   v3 = sub_10011ECB4();
   v5 = v4;
   v7 = v6;
@@ -384,13 +384,13 @@
   return result;
 }
 
-- (CGRect)clippedRectInRoot:(CGRect)a3
+- (CGRect)clippedRectInRoot:(CGRect)root
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (!CGRectIsNull(a3))
+  height = root.size.height;
+  width = root.size.width;
+  y = root.origin.y;
+  x = root.origin.x;
+  if (!CGRectIsNull(root))
   {
     [(CRLCanvasAbstractLayout *)self clipRect];
     v33.origin.x = v8;
@@ -419,11 +419,11 @@
       if (!IsNull)
       {
         v15 = objc_loadWeakRetained(&self->_parent);
-        v16 = [(CRLCanvasAbstractLayout *)self geometry];
-        v17 = v16;
-        if (v16)
+        geometry = [(CRLCanvasAbstractLayout *)self geometry];
+        v17 = geometry;
+        if (geometry)
         {
-          [v16 transform];
+          [geometry transform];
         }
 
         else
@@ -458,18 +458,18 @@
 
 - (CRLCanvasAbstractLayout)parentLayoutForProvidingGuides
 {
-  v2 = [(CRLCanvasAbstractLayout *)self parent];
-  if ([v2 providesGuidesForChildLayouts])
+  parent = [(CRLCanvasAbstractLayout *)self parent];
+  if ([parent providesGuidesForChildLayouts])
   {
-    v3 = v2;
+    parentLayoutForProvidingGuides = parent;
   }
 
   else
   {
-    v3 = [v2 parentLayoutForProvidingGuides];
+    parentLayoutForProvidingGuides = [parent parentLayoutForProvidingGuides];
   }
 
-  v4 = v3;
+  v4 = parentLayoutForProvidingGuides;
 
   return v4;
 }
@@ -514,26 +514,26 @@
   if (WeakRetained)
   {
     v4 = objc_loadWeakRetained(&self->_parent);
-    v5 = [v4 root];
+    selfCopy = [v4 root];
   }
 
   else
   {
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (void)setChildren:(id)a3
+- (void)setChildren:(id)children
 {
-  v4 = a3;
+  childrenCopy = children;
   children = self->_children;
-  if (children != v4 && ([(NSMutableArray *)children isEqual:v4]& 1) == 0)
+  if (children != childrenCopy && ([(NSMutableArray *)children isEqual:childrenCopy]& 1) == 0)
   {
-    if (v4)
+    if (childrenCopy)
     {
-      v6 = [[NSSet alloc] initWithArray:v4];
+      v6 = [[NSSet alloc] initWithArray:childrenCopy];
     }
 
     else
@@ -587,7 +587,7 @@
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v14 = v4;
+    v14 = childrenCopy;
     v15 = [(NSMutableArray *)v14 countByEnumeratingWithState:&v22 objects:v30 count:16];
     if (v15)
     {
@@ -616,17 +616,17 @@
       while (v16);
     }
 
-    if (v4)
+    if (childrenCopy)
     {
-      v4 = v14;
+      childrenCopy = v14;
     }
 
     else
     {
-      v4 = &__NSArray0__struct;
+      childrenCopy = &__NSArray0__struct;
     }
 
-    v20 = [(NSMutableArray *)v4 mutableCopy];
+    v20 = [(NSMutableArray *)childrenCopy mutableCopy];
     v21 = self->_children;
     self->_children = v20;
   }
@@ -646,9 +646,9 @@
   }
 }
 
-- (void)addChild:(id)a3
+- (void)addChild:(id)child
 {
-  v6 = a3;
+  childCopy = child;
   children = self->_children;
   if (children)
   {
@@ -660,18 +660,18 @@
     v5 = 0;
   }
 
-  [(CRLCanvasAbstractLayout *)self insertChild:v6 atIndex:v5];
+  [(CRLCanvasAbstractLayout *)self insertChild:childCopy atIndex:v5];
 }
 
-- (void)insertChild:(id)a3 atIndex:(unint64_t)a4
+- (void)insertChild:(id)child atIndex:(unint64_t)index
 {
-  v6 = a3;
-  if (v6)
+  childCopy = child;
+  if (childCopy)
   {
-    v11 = v6;
-    v7 = [v6 parent];
+    v11 = childCopy;
+    parent = [childCopy parent];
 
-    if (v7)
+    if (parent)
     {
       [v11 removeFromParent];
     }
@@ -686,64 +686,64 @@
       children = self->_children;
     }
 
-    [(NSMutableArray *)children insertObject:v11 atIndex:a4];
+    [(NSMutableArray *)children insertObject:v11 atIndex:index];
     [v11 setParent:self];
-    v6 = v11;
+    childCopy = v11;
   }
 }
 
-- (void)insertChild:(id)a3 below:(id)a4
+- (void)insertChild:(id)child below:(id)below
 {
-  v9 = a3;
-  v6 = a4;
+  childCopy = child;
+  belowCopy = below;
   children = self->_children;
   if (children)
   {
-    v8 = [(NSMutableArray *)children indexOfObjectIdenticalTo:v6];
+    v8 = [(NSMutableArray *)children indexOfObjectIdenticalTo:belowCopy];
     if (v8 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      [(CRLCanvasAbstractLayout *)self insertChild:v9 atIndex:v8];
+      [(CRLCanvasAbstractLayout *)self insertChild:childCopy atIndex:v8];
     }
   }
 }
 
-- (void)insertChild:(id)a3 above:(id)a4
+- (void)insertChild:(id)child above:(id)above
 {
-  v9 = a3;
-  v6 = a4;
+  childCopy = child;
+  aboveCopy = above;
   children = self->_children;
   if (children)
   {
-    v8 = [(NSMutableArray *)children indexOfObjectIdenticalTo:v6];
+    v8 = [(NSMutableArray *)children indexOfObjectIdenticalTo:aboveCopy];
     if (v8 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      [(CRLCanvasAbstractLayout *)self insertChild:v9 atIndex:v8 + 1];
+      [(CRLCanvasAbstractLayout *)self insertChild:childCopy atIndex:v8 + 1];
     }
   }
 }
 
-- (void)replaceChild:(id)a3 with:(id)a4
+- (void)replaceChild:(id)child with:(id)with
 {
-  v10 = a3;
-  v6 = a4;
+  childCopy = child;
+  withCopy = with;
   children = self->_children;
   if (children)
   {
-    v8 = [(NSMutableArray *)children indexOfObjectIdenticalTo:v10];
+    v8 = [(NSMutableArray *)children indexOfObjectIdenticalTo:childCopy];
     if (v8 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v9 = v8;
       [(NSMutableArray *)self->_children removeObjectAtIndex:v8];
-      [v10 setParent:0];
-      if (v6)
+      [childCopy setParent:0];
+      if (withCopy)
       {
-        [(CRLCanvasAbstractLayout *)self insertChild:v6 atIndex:v9];
+        [(CRLCanvasAbstractLayout *)self insertChild:withCopy atIndex:v9];
       }
     }
   }
 }
 
-- (void)exchangeChildAtIndex:(unint64_t)a3 withChildAtIndex:(unint64_t)a4
+- (void)exchangeChildAtIndex:(unint64_t)index withChildAtIndex:(unint64_t)atIndex
 {
   children = self->_children;
   if (!children)
@@ -777,12 +777,12 @@
     children = self->_children;
   }
 
-  if (a3 != a4 && children)
+  if (index != atIndex && children)
   {
     v11 = [(NSMutableArray *)children count];
-    if (v11 > a3 && v11 > a4)
+    if (v11 > index && v11 > atIndex)
     {
-      [(NSMutableArray *)self->_children exchangeObjectAtIndex:a3 withObjectAtIndex:a4];
+      [(NSMutableArray *)self->_children exchangeObjectAtIndex:index withObjectAtIndex:atIndex];
     }
 
     else
@@ -816,19 +816,19 @@
   }
 }
 
-- (void)addLayoutsInRect:(CGRect)a3 toArray:(id)a4 deep:(BOOL)a5
+- (void)addLayoutsInRect:(CGRect)rect toArray:(id)array deep:(BOOL)deep
 {
-  v5 = a5;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a4;
+  deepCopy = deep;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  arrayCopy = array;
   [(CRLCanvasAbstractLayout *)self frameForCulling];
   if (sub_10011FF38(v12, v13, v14, v15, x, y, width, height))
   {
-    [v11 addObject:self];
-    if (v5)
+    [arrayCopy addObject:self];
+    if (deepCopy)
     {
       [(CRLCanvasAbstractLayout *)self frameForCulling];
       v42.origin.x = x;
@@ -841,11 +841,11 @@
       v18 = v39.size.width;
       v19 = v39.size.height;
       memset(&v36, 0, sizeof(v36));
-      v20 = [(CRLCanvasAbstractLayout *)self geometry];
-      v21 = v20;
-      if (v20)
+      geometry = [(CRLCanvasAbstractLayout *)self geometry];
+      v21 = geometry;
+      if (geometry)
       {
-        [v20 transform];
+        [geometry transform];
       }
 
       else
@@ -869,8 +869,8 @@
       v32 = 0u;
       v33 = 0u;
       v34 = 0u;
-      v26 = [(CRLCanvasAbstractLayout *)self children];
-      v27 = [v26 countByEnumeratingWithState:&v31 objects:v37 count:16];
+      children = [(CRLCanvasAbstractLayout *)self children];
+      v27 = [children countByEnumeratingWithState:&v31 objects:v37 count:16];
       if (v27)
       {
         v28 = v27;
@@ -881,13 +881,13 @@
           {
             if (*v32 != v29)
             {
-              objc_enumerationMutation(v26);
+              objc_enumerationMutation(children);
             }
 
-            [*(*(&v31 + 1) + 8 * i) addLayoutsInRect:v11 toArray:1 deep:{v22, v23, v24, v25}];
+            [*(*(&v31 + 1) + 8 * i) addLayoutsInRect:arrayCopy toArray:1 deep:{v22, v23, v24, v25}];
           }
 
-          v28 = [v26 countByEnumeratingWithState:&v31 objects:v37 count:16];
+          v28 = [children countByEnumeratingWithState:&v31 objects:v37 count:16];
         }
 
         while (v28);
@@ -903,11 +903,11 @@
   y = v5;
   width = v7;
   height = v9;
-  v11 = [(CRLCanvasAbstractLayout *)self parent];
-  v12 = v11;
-  if (v11)
+  parent = [(CRLCanvasAbstractLayout *)self parent];
+  v12 = parent;
+  if (parent)
   {
-    [v11 transformInRoot];
+    [parent transformInRoot];
     v18.origin.x = x;
     v18.origin.y = y;
     v18.size.width = width;
@@ -932,8 +932,8 @@
 
 - (CGRect)alignmentFrame
 {
-  v2 = [(CRLCanvasAbstractLayout *)self geometry];
-  [v2 frame];
+  geometry = [(CRLCanvasAbstractLayout *)self geometry];
+  [geometry frame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -952,8 +952,8 @@
 
 - (CGRect)alignmentFrameInParent
 {
-  v2 = [(CRLCanvasAbstractLayout *)self geometryInParent];
-  [v2 frame];
+  geometryInParent = [(CRLCanvasAbstractLayout *)self geometryInParent];
+  [geometryInParent frame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -972,20 +972,20 @@
 
 - (CGRect)alignmentFrameInRoot
 {
-  v3 = [(CRLCanvasAbstractLayout *)self parent];
+  parent = [(CRLCanvasAbstractLayout *)self parent];
 
   [(CRLCanvasAbstractLayout *)self alignmentFrame];
   x = v4;
   y = v6;
   width = v8;
   height = v10;
-  if (v3)
+  if (parent)
   {
-    v12 = [(CRLCanvasAbstractLayout *)self parent];
-    v13 = v12;
-    if (v12)
+    parent2 = [(CRLCanvasAbstractLayout *)self parent];
+    v13 = parent2;
+    if (parent2)
     {
-      [v12 transformInRoot];
+      [parent2 transformInRoot];
     }
 
     else
@@ -1018,8 +1018,8 @@
 - (BOOL)shouldSnapWhileResizing
 {
   [(CRLCanvasAbstractLayout *)self transformInRoot];
-  v3 = [(CRLCanvasAbstractLayout *)self geometry];
-  [v3 size];
+  geometry = [(CRLCanvasAbstractLayout *)self geometry];
+  [geometry size];
   v6 = sub_100139A98(&v8, v4, v5);
 
   return v6;
@@ -1034,20 +1034,20 @@
   *&self->_interimPositionXSet = 0;
 }
 
-- (void)p_fixTransformFromInterimPosition:(CGPoint)a3 interimPositionXSet:(BOOL)a4 interimPositionYSet:(BOOL)a5
+- (void)p_fixTransformFromInterimPosition:(CGPoint)position interimPositionXSet:(BOOL)set interimPositionYSet:(BOOL)ySet
 {
-  v5 = a5;
-  y = a3.y;
+  ySetCopy = ySet;
+  y = position.y;
   v8 = 0.0;
   v9 = 0.0;
-  if (a4)
+  if (set)
   {
-    x = a3.x;
+    x = position.x;
     [(CRLCanvasAbstractLayout *)self alignmentFrameOriginForFixingInterimPosition];
-    v9 = x - a3.x;
+    v9 = x - position.x;
   }
 
-  if (v5)
+  if (ySetCopy)
   {
     [(CRLCanvasAbstractLayout *)self alignmentFrameOriginForFixingInterimPosition];
     v8 = y - v11;
@@ -1056,19 +1056,19 @@
   [(CRLCanvasAbstractLayout *)self offsetGeometryBy:v9, v8];
 }
 
-- (void)offsetGeometryBy:(CGPoint)a3
+- (void)offsetGeometryBy:(CGPoint)by
 {
-  y = a3.y;
-  x = a3.x;
-  if (a3.x != CGPointZero.x || a3.y != CGPointZero.y)
+  y = by.y;
+  x = by.x;
+  if (by.x != CGPointZero.x || by.y != CGPointZero.y)
   {
-    v8 = [(CRLCanvasAbstractLayout *)self geometry];
-    v7 = [v8 geometryByTranslatingBy:{x, y}];
+    geometry = [(CRLCanvasAbstractLayout *)self geometry];
+    v7 = [geometry geometryByTranslatingBy:{x, y}];
     [(CRLCanvasAbstractLayout *)self setGeometry:v7];
   }
 }
 
-- (CGPoint)offsetToApplyWhenComputingLayoutGeometryOfChild:(id)a3
+- (CGPoint)offsetToApplyWhenComputingLayoutGeometryOfChild:(id)child
 {
   x = CGPointZero.x;
   y = CGPointZero.y;
@@ -1077,28 +1077,28 @@
   return result;
 }
 
-- (id)childLayoutContainingPossibleDescendentLayout:(id)a3
+- (id)childLayoutContainingPossibleDescendentLayout:(id)layout
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  layoutCopy = layout;
+  v5 = layoutCopy;
+  if (layoutCopy)
   {
-    v6 = v4;
+    v6 = layoutCopy;
     do
     {
-      v7 = [v6 parent];
+      parent = [v6 parent];
 
-      if (v7 == self)
+      if (parent == self)
       {
         break;
       }
 
-      v8 = [v6 parent];
+      parent2 = [v6 parent];
 
-      v6 = v8;
+      v6 = parent2;
     }
 
-    while (v8);
+    while (parent2);
   }
 
   else
@@ -1106,9 +1106,9 @@
     v6 = 0;
   }
 
-  v9 = [v6 parent];
+  parent3 = [v6 parent];
 
-  if (v9 == self)
+  if (parent3 == self)
   {
     v10 = v6;
   }

@@ -1,24 +1,24 @@
 @interface RTLocationDownsampler
-+ (id)_downsampleLocations:(id)a3 errorFunction:(id)a4 errorThreshold:(double)a5;
-+ (id)_downsampleLocations:(id)a3 errorFunction:(id)a4 outputSize:(int64_t)a5;
-+ (id)downsampleLocations:(id)a3 errorFunction:(id)a4 errorThreshold:(double)a5 outputSize:(unint64_t)a6;
-+ (id)downsampleLocations:(id)a3 outputSize:(unint64_t)a4;
-+ (id)filterConvergingLocations:(id)a3;
++ (id)_downsampleLocations:(id)locations errorFunction:(id)function errorThreshold:(double)threshold;
++ (id)_downsampleLocations:(id)locations errorFunction:(id)function outputSize:(int64_t)size;
++ (id)downsampleLocations:(id)locations errorFunction:(id)function errorThreshold:(double)threshold outputSize:(unint64_t)size;
++ (id)downsampleLocations:(id)locations outputSize:(unint64_t)size;
++ (id)filterConvergingLocations:(id)locations;
 @end
 
 @implementation RTLocationDownsampler
 
-+ (id)filterConvergingLocations:(id)a3
++ (id)filterConvergingLocations:(id)locations
 {
   v33 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  locationsCopy = locations;
   v4 = objc_opt_new();
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v5 = [v3 reverseObjectEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  reverseObjectEnumerator = [locationsCopy reverseObjectEnumerator];
+  v6 = [reverseObjectEnumerator countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (!v6)
   {
     v8 = 0;
@@ -35,7 +35,7 @@
     {
       if (*v29 != v9)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(reverseObjectEnumerator);
       }
 
       v11 = *(*(&v28 + 1) + 8 * v10);
@@ -44,9 +44,9 @@
         goto LABEL_10;
       }
 
-      v12 = [v8 timestamp];
-      v13 = [v11 timestamp];
-      [v12 timeIntervalSinceDate:v13];
+      timestamp = [v8 timestamp];
+      timestamp2 = [v11 timestamp];
+      [timestamp timeIntervalSinceDate:timestamp2];
       if (v14 > 20.0)
       {
 
@@ -82,51 +82,51 @@ LABEL_12:
     }
 
     while (v7 != v10);
-    v23 = [v5 countByEnumeratingWithState:&v28 objects:v32 count:16];
+    v23 = [reverseObjectEnumerator countByEnumeratingWithState:&v28 objects:v32 count:16];
     v7 = v23;
   }
 
   while (v23);
 LABEL_19:
 
-  v24 = [v4 reverseObjectEnumerator];
-  v25 = [v24 allObjects];
+  reverseObjectEnumerator2 = [v4 reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator2 allObjects];
 
   v26 = *MEMORY[0x1E69E9840];
 
-  return v25;
+  return allObjects;
 }
 
-+ (id)downsampleLocations:(id)a3 outputSize:(unint64_t)a4
++ (id)downsampleLocations:(id)locations outputSize:(unint64_t)size
 {
-  v5 = a3;
+  locationsCopy = locations;
   v6 = +[RTLocationDownsampler createErrorFunctionWithPerpendicularDistance];
-  v7 = [RTLocationDownsampler downsampleLocations:v5 errorFunction:v6 errorThreshold:a4 outputSize:0.0];
+  v7 = [RTLocationDownsampler downsampleLocations:locationsCopy errorFunction:v6 errorThreshold:size outputSize:0.0];
 
   return v7;
 }
 
-+ (id)downsampleLocations:(id)a3 errorFunction:(id)a4 errorThreshold:(double)a5 outputSize:(unint64_t)a6
++ (id)downsampleLocations:(id)locations errorFunction:(id)function errorThreshold:(double)threshold outputSize:(unint64_t)size
 {
   v23 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = MEMORY[0x1BFB54DD0](a4);
-  if (!a4)
+  locationsCopy = locations;
+  v10 = MEMORY[0x1BFB54DD0](function);
+  if (!function)
   {
     v11 = +[RTLocationDownsampler createErrorFunctionWithPerpendicularDistance];
 
     v10 = v11;
   }
 
-  v12 = v9;
-  if (a5 > 0.0)
+  v12 = locationsCopy;
+  if (threshold > 0.0)
   {
-    v12 = [RTLocationDownsampler _downsampleLocations:v9 errorFunction:v10 errorThreshold:a5];
+    v12 = [RTLocationDownsampler _downsampleLocations:locationsCopy errorFunction:v10 errorThreshold:threshold];
   }
 
-  if (a6)
+  if (size)
   {
-    v13 = [RTLocationDownsampler _downsampleLocations:v12 errorFunction:v10 outputSize:a6];
+    v13 = [RTLocationDownsampler _downsampleLocations:v12 errorFunction:v10 outputSize:size];
 
     v12 = v13;
   }
@@ -137,9 +137,9 @@ LABEL_19:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       v17 = 134218496;
-      v18 = a6;
+      sizeCopy = size;
       v19 = 2048;
-      v20 = [v9 count];
+      v20 = [locationsCopy count];
       v21 = 2048;
       v22 = [v12 count];
       _os_log_impl(&dword_1BF1C4000, v14, OS_LOG_TYPE_INFO, "RTLocationDownsampler: desired output size, %lu, input size, %lu, output size, %lu", &v17, 0x20u);
@@ -151,13 +151,13 @@ LABEL_19:
   return v12;
 }
 
-+ (id)_downsampleLocations:(id)a3 errorFunction:(id)a4 errorThreshold:(double)a5
++ (id)_downsampleLocations:(id)locations errorFunction:(id)function errorThreshold:(double)threshold
 {
   v26[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  locationsCopy = locations;
+  functionCopy = function;
+  v9 = functionCopy;
+  if (!locationsCopy)
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -172,7 +172,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (!v8)
+  if (!functionCopy)
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -185,7 +185,7 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  if (a5 <= 0.0)
+  if (threshold <= 0.0)
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -201,9 +201,9 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if ([v7 count] >= 3)
+  if ([locationsCopy count] >= 3)
   {
-    if (([v7 count] - 3) > 0xFFFFFFFFFFFFFFFDLL)
+    if (([locationsCopy count] - 3) > 0xFFFFFFFFFFFFFFFDLL)
     {
       v15 = 0;
       v16 = 0.0;
@@ -216,8 +216,8 @@ LABEL_13:
       v17 = 1;
       do
       {
-        v18 = [v7 objectAtIndex:v17];
-        v19 = (v9)[2](v9, v18, v7);
+        v18 = [locationsCopy objectAtIndex:v17];
+        v19 = (v9)[2](v9, v18, locationsCopy);
         if (v19 > v16)
         {
           v15 = v17;
@@ -227,37 +227,37 @@ LABEL_13:
         ++v17;
       }
 
-      while (v17 < [v7 count] - 1);
+      while (v17 < [locationsCopy count] - 1);
     }
 
-    if (v16 <= a5)
+    if (v16 <= threshold)
     {
-      v21 = [v7 firstObject];
-      v26[0] = v21;
-      v23 = [v7 lastObject];
-      v26[1] = v23;
+      firstObject = [locationsCopy firstObject];
+      v26[0] = firstObject;
+      lastObject = [locationsCopy lastObject];
+      v26[1] = lastObject;
       v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:2];
     }
 
     else
     {
-      v20 = [v7 subarrayWithRange:{0, v15 + 1}];
-      v21 = [RTLocationDownsampler _downsampleLocations:v20 errorFunction:v9 errorThreshold:a5];
+      v20 = [locationsCopy subarrayWithRange:{0, v15 + 1}];
+      firstObject = [RTLocationDownsampler _downsampleLocations:v20 errorFunction:v9 errorThreshold:threshold];
 
-      v22 = [v7 subarrayWithRange:{v15, objc_msgSend(v7, "count") - v15}];
-      v23 = [RTLocationDownsampler _downsampleLocations:v22 errorFunction:v9 errorThreshold:a5];
+      v22 = [locationsCopy subarrayWithRange:{v15, objc_msgSend(locationsCopy, "count") - v15}];
+      lastObject = [RTLocationDownsampler _downsampleLocations:v22 errorFunction:v9 errorThreshold:threshold];
 
       v10 = objc_opt_new();
-      v24 = [v21 subarrayWithRange:{0, objc_msgSend(v21, "count") - 1}];
+      v24 = [firstObject subarrayWithRange:{0, objc_msgSend(firstObject, "count") - 1}];
       [v10 addObjectsFromArray:v24];
 
-      [v10 addObjectsFromArray:v23];
+      [v10 addObjectsFromArray:lastObject];
     }
   }
 
   else
   {
-    v10 = v7;
+    v10 = locationsCopy;
   }
 
 LABEL_14:
@@ -267,13 +267,13 @@ LABEL_14:
   return v10;
 }
 
-+ (id)_downsampleLocations:(id)a3 errorFunction:(id)a4 outputSize:(int64_t)a5
++ (id)_downsampleLocations:(id)locations errorFunction:(id)function outputSize:(int64_t)size
 {
   v49 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  locationsCopy = locations;
+  functionCopy = function;
+  v9 = functionCopy;
+  if (!locationsCopy)
   {
     v29 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -288,7 +288,7 @@ LABEL_30:
     goto LABEL_31;
   }
 
-  if (!v8)
+  if (!functionCopy)
   {
     v29 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -301,7 +301,7 @@ LABEL_30:
     goto LABEL_30;
   }
 
-  if (a5 <= 0)
+  if (size <= 0)
   {
     v29 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -313,24 +313,24 @@ LABEL_30:
 
 LABEL_31:
 
-    v28 = 0;
+    sampledLocations = 0;
     goto LABEL_32;
   }
 
-  if ([v7 count] <= a5)
+  if ([locationsCopy count] <= size)
   {
-    v28 = v7;
+    sampledLocations = locationsCopy;
   }
 
   else
   {
-    v33 = a5;
+    sizeCopy = size;
     v10 = objc_opt_new();
     v44 = 0u;
     v45 = 0u;
     v46 = 0u;
     v47 = 0u;
-    v11 = v7;
+    v11 = locationsCopy;
     v12 = [v11 countByEnumeratingWithState:&v44 objects:v48 count:16];
     if (v12)
     {
@@ -399,9 +399,9 @@ LABEL_31:
       v24 = [v10 copy];
       v25 = [(RTLocationDownsamplerTree *)v23 initWithLocations:v24 errorFunction:v9];
 
-      if (v33 >= 3)
+      if (sizeCopy >= 3)
       {
-        v26 = v33 - 2;
+        v26 = sizeCopy - 2;
         do
         {
           [(RTLocationDownsamplerTree *)v25 maximumError];
@@ -417,12 +417,12 @@ LABEL_31:
         while (v26);
       }
 
-      v28 = [(RTLocationDownsamplerTree *)v25 sampledLocations];
+      sampledLocations = [(RTLocationDownsamplerTree *)v25 sampledLocations];
     }
 
     else
     {
-      v28 = v11;
+      sampledLocations = v11;
     }
   }
 
@@ -430,7 +430,7 @@ LABEL_32:
 
   v31 = *MEMORY[0x1E69E9840];
 
-  return v28;
+  return sampledLocations;
 }
 
 double __69__RTLocationDownsampler_createErrorFunctionWithPerpendicularDistance__block_invoke(uint64_t a1, void *a2, void *a3)

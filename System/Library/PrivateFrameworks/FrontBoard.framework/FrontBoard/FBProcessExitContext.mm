@@ -1,11 +1,11 @@
 @interface FBProcessExitContext
-- (FBProcessExitContext)initWithLaunchError:(id)a3;
-- (FBProcessExitContext)initWithTerminationError:(id)a3;
-- (FBProcessExitContext)initWithUnderlyingContext:(id)a3;
+- (FBProcessExitContext)initWithLaunchError:(id)error;
+- (FBProcessExitContext)initWithTerminationError:(id)error;
+- (FBProcessExitContext)initWithUnderlyingContext:(id)context;
 - (NSString)description;
 - (id)createError;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (int)terminationSignal;
@@ -19,63 +19,63 @@
   {
     v3 = [MEMORY[0x1E698E680] builderWithObject:objc_opt_class()];
     v4 = NSStringFromFBProcessExitReason(self->_exitReason);
-    v5 = [(FBSProcessTerminationRequest *)self->_terminationRequest label];
-    v6 = [v4 stringByAppendingFormat:@" (\"%@\"", v5];
+    label = [(FBSProcessTerminationRequest *)self->_terminationRequest label];
+    v6 = [v4 stringByAppendingFormat:@" (\"%@\"", label];
 
     v7 = [v3 appendObject:v6 withName:0];
-    v8 = [v3 build];
+    build = [v3 build];
   }
 
   else
   {
-    v8 = [(RBSProcessExitContext *)self->_underlyingContext description];
+    build = [(RBSProcessExitContext *)self->_underlyingContext description];
   }
 
-  return v8;
+  return build;
 }
 
-- (FBProcessExitContext)initWithUnderlyingContext:(id)a3
+- (FBProcessExitContext)initWithUnderlyingContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = FBProcessExitContext;
   v6 = [(FBProcessExitContext *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_underlyingContext, a3);
-    v8 = [v5 type];
-    if (v8 == 1)
+    objc_storeStrong(&v6->_underlyingContext, context);
+    type = [contextCopy type];
+    if (type == 1)
     {
       v7->_exitReason = 1;
     }
 
-    else if (v8 == 2)
+    else if (type == 2)
     {
-      v9 = [v5 status];
-      if ([v9 isValid])
+      status = [contextCopy status];
+      if ([status isValid])
       {
-        if ([v9 domain] == 10 && objc_msgSend(v9, "code") == 2343432205)
+        if ([status domain] == 10 && objc_msgSend(status, "code") == 2343432205)
         {
           v10 = 2;
         }
 
-        else if ([v9 isCrash])
+        else if ([status isCrash])
         {
           v10 = 4;
         }
 
-        else if ([v9 isJetsam])
+        else if ([status isJetsam])
         {
           v10 = 16;
         }
 
-        else if ([v9 isSignal])
+        else if ([status isSignal])
         {
           v10 = 8;
         }
 
-        else if ([v9 isFairPlayFailure])
+        else if ([status isFairPlayFailure])
         {
           v10 = 32;
         }
@@ -103,28 +103,28 @@
   return v7;
 }
 
-- (FBProcessExitContext)initWithLaunchError:(id)a3
+- (FBProcessExitContext)initWithLaunchError:(id)error
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  errorCopy = error;
+  if (!errorCopy)
   {
     [FBProcessExitContext initWithLaunchError:a2];
   }
 
-  v7 = v6;
+  v7 = errorCopy;
   v8 = [(FBProcessExitContext *)self initWithUnderlyingContext:0];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_launchError, a3);
+    objc_storeStrong(&v8->_launchError, error);
     v9->_exitReason = 64;
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v10 = [v7 underlyingErrors];
-    v11 = [v10 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    underlyingErrors = [v7 underlyingErrors];
+    v11 = [underlyingErrors countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v11)
     {
       v12 = v11;
@@ -136,16 +136,16 @@
         {
           if (*v22 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(underlyingErrors);
           }
 
           v16 = *(*(&v21 + 1) + 8 * i);
-          v17 = [v16 domain];
-          if ([v17 isEqual:v14])
+          domain = [v16 domain];
+          if ([domain isEqual:v14])
           {
-            v18 = [v16 code];
+            code = [v16 code];
 
-            if (v18 == 80)
+            if (code == 80)
             {
               v9->_exitReason = 32;
               goto LABEL_14;
@@ -157,7 +157,7 @@
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v12 = [underlyingErrors countByEnumeratingWithState:&v21 objects:v25 count:16];
       }
 
       while (v12);
@@ -170,20 +170,20 @@ LABEL_14:
   return v9;
 }
 
-- (FBProcessExitContext)initWithTerminationError:(id)a3
+- (FBProcessExitContext)initWithTerminationError:(id)error
 {
-  v6 = a3;
-  if (!v6)
+  errorCopy = error;
+  if (!errorCopy)
   {
     [FBProcessExitContext initWithTerminationError:a2];
   }
 
-  v7 = v6;
+  v7 = errorCopy;
   v8 = [(FBProcessExitContext *)self initWithUnderlyingContext:0];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_terminationError, a3);
+    objc_storeStrong(&v8->_terminationError, error);
     v9->_exitReason = 128;
   }
 
@@ -196,20 +196,20 @@ LABEL_14:
   v4 = NSStringFromFBProcessExitReason(self->_exitReason);
   [v3 setObject:v4 forKey:*MEMORY[0x1E698E5B8]];
 
-  v5 = [(RBSProcessExitContext *)self->_underlyingContext status];
-  v6 = v5;
+  status = [(RBSProcessExitContext *)self->_underlyingContext status];
+  v6 = status;
   launchError = self->_launchError;
   if (launchError || (launchError = self->_terminationError) != 0)
   {
     [v3 setObject:launchError forKey:*MEMORY[0x1E696AA08]];
   }
 
-  else if ([v5 isValid])
+  else if ([status isValid])
   {
-    v10 = [v6 error];
-    if (v10)
+    error = [v6 error];
+    if (error)
     {
-      [v3 setObject:v10 forKey:*MEMORY[0x1E696AA08]];
+      [v3 setObject:error forKey:*MEMORY[0x1E696AA08]];
     }
   }
 
@@ -302,10 +302,10 @@ LABEL_29:
     goto LABEL_32;
   }
 
-  v16 = [v6 code];
-  if (v16 <= 3735883979)
+  code = [v6 code];
+  if (code <= 3735883979)
   {
-    if (v16 == 732775916)
+    if (code == 732775916)
     {
       if (self->_terminationReason == 8)
       {
@@ -320,7 +320,7 @@ LABEL_29:
       goto LABEL_32;
     }
 
-    if (v16 == 3221229823)
+    if (code == 3221229823)
     {
       v9 = @"The process exited due to thermal pressure.";
       goto LABEL_32;
@@ -329,7 +329,7 @@ LABEL_29:
     goto LABEL_29;
   }
 
-  switch(v16)
+  switch(code)
   {
     case 3735883980:
       v9 = @"The process suspended while holding a shared file lock.";
@@ -363,10 +363,10 @@ LABEL_32:
 
 - (id)succinctDescription
 {
-  v2 = [(FBProcessExitContext *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(FBProcessExitContext *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -378,24 +378,24 @@ LABEL_32:
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(FBProcessExitContext *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(FBProcessExitContext *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(FBProcessExitContext *)self succinctDescriptionBuilder];
+  succinctDescriptionBuilder = [(FBProcessExitContext *)self succinctDescriptionBuilder];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __62__FBProcessExitContext_descriptionBuilderWithMultilinePrefix___block_invoke;
   v8[3] = &unk_1E783B240;
-  v5 = v4;
+  v5 = succinctDescriptionBuilder;
   v9 = v5;
-  v10 = self;
+  selfCopy = self;
   [v5 appendBodySectionWithName:0 multilinePrefix:0 block:v8];
   v6 = v5;
 
@@ -435,10 +435,10 @@ id __62__FBProcessExitContext_descriptionBuilderWithMultilinePrefix___block_invo
     return 0;
   }
 
-  v2 = [(RBSProcessExitContext *)self->_underlyingContext status];
-  v3 = [v2 code];
+  status = [(RBSProcessExitContext *)self->_underlyingContext status];
+  code = [status code];
 
-  return v3;
+  return code;
 }
 
 - (void)initWithLaunchError:(const char *)a1 .cold.1(const char *a1)

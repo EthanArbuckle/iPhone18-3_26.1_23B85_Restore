@@ -1,18 +1,18 @@
 @interface GeoRequestResponseLogDetailViewController
-- (GeoRequestResponseLogDetailViewController)initWithEvent:(id)a3;
+- (GeoRequestResponseLogDetailViewController)initWithEvent:(id)event;
 - (void)_showPlaceCard;
-- (void)_showPlaceCardAt:(unint64_t)a3;
+- (void)_showPlaceCardAt:(unint64_t)at;
 - (void)_showShareAction;
-- (void)searchBarCancelButtonClicked:(id)a3;
-- (void)searchFor:(id)a3;
-- (void)updateSearchResultsForSearchController:(id)a3;
+- (void)searchBarCancelButtonClicked:(id)clicked;
+- (void)searchFor:(id)for;
+- (void)updateSearchResultsForSearchController:(id)controller;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation GeoRequestResponseLogDetailViewController
 
-- (void)searchBarCancelButtonClicked:(id)a3
+- (void)searchBarCancelButtonClicked:(id)clicked
 {
   p_lastHighlightedRange = &self->_lastHighlightedRange;
   if (self->_lastHighlightedRange.length)
@@ -31,16 +31,16 @@
   [(UITextView *)textView scrollRangeToVisible:0, 1];
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
-  v5 = [a3 searchBar];
-  v4 = [v5 text];
-  [(GeoRequestResponseLogDetailViewController *)self searchFor:v4];
+  searchBar = [controller searchBar];
+  text = [searchBar text];
+  [(GeoRequestResponseLogDetailViewController *)self searchFor:text];
 }
 
-- (void)searchFor:(id)a3
+- (void)searchFor:(id)for
 {
-  v4 = [(NSString *)self->_text rangeOfString:a3 options:1];
+  v4 = [(NSString *)self->_text rangeOfString:for options:1];
   if (v5)
   {
     v6 = v4;
@@ -64,16 +64,16 @@
   }
 }
 
-- (void)_showPlaceCardAt:(unint64_t)a3
+- (void)_showPlaceCardAt:(unint64_t)at
 {
   v5 = [MUPlaceViewController alloc];
   v6 = [MKMapItem alloc];
-  v7 = [(NSArray *)self->_mapItems objectAtIndexedSubscript:a3];
+  v7 = [(NSArray *)self->_mapItems objectAtIndexedSubscript:at];
   v8 = [v6 initWithGeoMapItem:v7 isPlaceHolderPlace:0];
   v10 = [v5 initWithMapItem:v8];
 
-  v9 = [(GeoRequestResponseLogDetailViewController *)self navigationController];
-  [v9 pushViewController:v10 animated:1];
+  navigationController = [(GeoRequestResponseLogDetailViewController *)self navigationController];
+  [navigationController pushViewController:v10 animated:1];
 }
 
 - (void)_showShareAction
@@ -100,14 +100,14 @@
   v10[14] = UIActivityTypeAddToHomeScreen;
   v6 = [NSArray arrayWithObjects:v10 count:15];
   [v5 setExcludedActivityTypes:v6];
-  v7 = [(GEORequestResponsePersistedEvent *)self->_event identifier];
-  [v5 setTitle:v7];
+  identifier = [(GEORequestResponsePersistedEvent *)self->_event identifier];
+  [v5 setTitle:identifier];
 
   if (objc_opt_respondsToSelector())
   {
-    v8 = [(GeoRequestResponseLogDetailViewController *)self view];
-    v9 = [v5 popoverPresentationController];
-    [v9 setSourceView:v8];
+    view = [(GeoRequestResponseLogDetailViewController *)self view];
+    popoverPresentationController = [v5 popoverPresentationController];
+    [popoverPresentationController setSourceView:view];
   }
 
   [(GeoRequestResponseLogDetailViewController *)self presentViewController:v5 animated:1 completion:0];
@@ -130,7 +130,7 @@
     v9 = sub_1005C5374;
     v10 = &unk_10162C780;
     v11 = v3;
-    v12 = self;
+    selfCopy = self;
     v5 = v3;
     [(NSArray *)mapItems enumerateObjectsUsingBlock:&v7];
     v6 = [UIAlertAction actionWithTitle:@"Nevermind" style:1 handler:0, v7, v8, v9, v10];
@@ -140,15 +140,15 @@
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v15.receiver = self;
   v15.super_class = GeoRequestResponseLogDetailViewController;
-  [(GeoRequestResponseLogDetailViewController *)&v15 viewWillAppear:a3];
-  v4 = [(GEORequestResponsePersistedEvent *)self->_event decodedMessage];
-  v5 = [v4 jsonRepresentation];
+  [(GeoRequestResponseLogDetailViewController *)&v15 viewWillAppear:appear];
+  decodedMessage = [(GEORequestResponsePersistedEvent *)self->_event decodedMessage];
+  jsonRepresentation = [decodedMessage jsonRepresentation];
 
-  v6 = [NSJSONSerialization dataWithJSONObject:v5 options:3 error:0];
+  v6 = [NSJSONSerialization dataWithJSONObject:jsonRepresentation options:3 error:0];
   v7 = [[NSString alloc] initWithData:v6 encoding:4];
   text = self->_text;
   self->_text = v7;
@@ -171,8 +171,8 @@
   v32.receiver = self;
   v32.super_class = GeoRequestResponseLogDetailViewController;
   [(GeoRequestResponseLogDetailViewController *)&v32 viewDidLoad];
-  v3 = [(UISearchController *)self->_searchController searchBar];
-  [v3 setDelegate:self];
+  searchBar = [(UISearchController *)self->_searchController searchBar];
+  [searchBar setDelegate:self];
 
   v4 = objc_alloc_init(NSMutableArray);
   if ([(NSArray *)self->_mapItems count])
@@ -183,12 +183,12 @@
 
   v31 = [[UIBarButtonItem alloc] initWithTitle:@"Share" style:0 target:self action:"_showShareAction"];
   [v4 addObject:v31];
-  v6 = [(GeoRequestResponseLogDetailViewController *)self navigationItem];
-  [v6 setRightBarButtonItems:v4];
+  navigationItem = [(GeoRequestResponseLogDetailViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItems:v4];
 
   searchController = self->_searchController;
-  v8 = [(GeoRequestResponseLogDetailViewController *)self navigationItem];
-  [v8 setSearchController:searchController];
+  navigationItem2 = [(GeoRequestResponseLogDetailViewController *)self navigationItem];
+  [navigationItem2 setSearchController:searchController];
 
   v9 = objc_alloc_init(UITextView);
   textView = self->_textView;
@@ -197,60 +197,60 @@
   [(UITextView *)self->_textView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UITextView *)self->_textView setEditable:0];
   [(UITextView *)self->_textView setSelectable:1];
-  v11 = [(UISearchController *)self->_searchController searchBar];
-  [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
+  searchBar2 = [(UISearchController *)self->_searchController searchBar];
+  [searchBar2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v12 = [(GeoRequestResponseLogDetailViewController *)self view];
-  [v12 addSubview:self->_textView];
+  view = [(GeoRequestResponseLogDetailViewController *)self view];
+  [view addSubview:self->_textView];
 
-  v30 = [(GeoRequestResponseLogDetailViewController *)self view];
-  v29 = [v30 topAnchor];
-  v28 = [(UITextView *)self->_textView topAnchor];
-  v27 = [v29 constraintEqualToAnchor:v28];
+  view2 = [(GeoRequestResponseLogDetailViewController *)self view];
+  topAnchor = [view2 topAnchor];
+  topAnchor2 = [(UITextView *)self->_textView topAnchor];
+  v27 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v33[0] = v27;
-  v26 = [(GeoRequestResponseLogDetailViewController *)self view];
-  v24 = [v26 leadingAnchor];
-  v23 = [(UITextView *)self->_textView leadingAnchor];
-  v13 = [v24 constraintEqualToAnchor:v23];
+  view3 = [(GeoRequestResponseLogDetailViewController *)self view];
+  leadingAnchor = [view3 leadingAnchor];
+  leadingAnchor2 = [(UITextView *)self->_textView leadingAnchor];
+  v13 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v33[1] = v13;
-  v14 = [(GeoRequestResponseLogDetailViewController *)self view];
-  v15 = [v14 trailingAnchor];
+  view4 = [(GeoRequestResponseLogDetailViewController *)self view];
+  trailingAnchor = [view4 trailingAnchor];
   [(UITextView *)self->_textView trailingAnchor];
   v16 = v25 = v4;
-  v17 = [v15 constraintEqualToAnchor:v16];
+  v17 = [trailingAnchor constraintEqualToAnchor:v16];
   v33[2] = v17;
-  v18 = [(GeoRequestResponseLogDetailViewController *)self view];
-  v19 = [v18 bottomAnchor];
-  v20 = [(UITextView *)self->_textView bottomAnchor];
-  v21 = [v19 constraintEqualToAnchor:v20];
+  view5 = [(GeoRequestResponseLogDetailViewController *)self view];
+  bottomAnchor = [view5 bottomAnchor];
+  bottomAnchor2 = [(UITextView *)self->_textView bottomAnchor];
+  v21 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v33[3] = v21;
   v22 = [NSArray arrayWithObjects:v33 count:4];
   [NSLayoutConstraint activateConstraints:v22];
 }
 
-- (GeoRequestResponseLogDetailViewController)initWithEvent:(id)a3
+- (GeoRequestResponseLogDetailViewController)initWithEvent:(id)event
 {
-  v5 = a3;
+  eventCopy = event;
   v29.receiver = self;
   v29.super_class = GeoRequestResponseLogDetailViewController;
   v6 = [(GeoRequestResponseLogDetailViewController *)&v29 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_event, a3);
+    objc_storeStrong(&v6->_event, event);
     v7->_lastHighlightedRange = xmmword_1012127F0;
     if ([(GEORequestResponsePersistedEvent *)v7->_event eventType]== 2 && [(GEORequestResponsePersistedEvent *)v7->_event messageType]== 60)
     {
-      v24 = v5;
-      v8 = [(GEORequestResponsePersistedEvent *)v7->_event decodedMessage];
-      v9 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v8 mapsResultsCount]);
+      v24 = eventCopy;
+      decodedMessage = [(GEORequestResponsePersistedEvent *)v7->_event decodedMessage];
+      v9 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [decodedMessage mapsResultsCount]);
       v25 = 0u;
       v26 = 0u;
       v27 = 0u;
       v28 = 0u;
-      v23 = v8;
-      v10 = [v8 mapsResults];
-      v11 = [v10 countByEnumeratingWithState:&v25 objects:v30 count:16];
+      v23 = decodedMessage;
+      mapsResults = [decodedMessage mapsResults];
+      v11 = [mapsResults countByEnumeratingWithState:&v25 objects:v30 count:16];
       if (v11)
       {
         v12 = v11;
@@ -261,14 +261,14 @@
           {
             if (*v26 != v13)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(mapsResults);
             }
 
             v15 = *(*(&v25 + 1) + 8 * i);
             if ([v15 hasPlace])
             {
-              v16 = [v15 place];
-              v17 = [GEOMapItemStorage mapItemStorageForPlaceData:v16];
+              place = [v15 place];
+              v17 = [GEOMapItemStorage mapItemStorageForPlaceData:place];
 
               if (v17)
               {
@@ -277,7 +277,7 @@
             }
           }
 
-          v12 = [v10 countByEnumeratingWithState:&v25 objects:v30 count:16];
+          v12 = [mapsResults countByEnumeratingWithState:&v25 objects:v30 count:16];
         }
 
         while (v12);
@@ -290,7 +290,7 @@
         v7->_mapItems = v18;
       }
 
-      v5 = v24;
+      eventCopy = v24;
     }
 
     v20 = objc_alloc_init(UISearchController);

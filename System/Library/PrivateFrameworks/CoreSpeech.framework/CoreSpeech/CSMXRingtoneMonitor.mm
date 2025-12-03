@@ -5,11 +5,11 @@
 - (void)_handleEndRingtone;
 - (void)_handleStartRingtone;
 - (void)_notifyObserversOfRingtoneChange;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_startTimeoutTimer;
 - (void)_stopMonitoring;
 - (void)_timerCallback;
-- (void)mxSessionMonitorSomeClientWentActive:(id)a3;
+- (void)mxSessionMonitorSomeClientWentActive:(id)active;
 @end
 
 @implementation CSMXRingtoneMonitor
@@ -110,17 +110,17 @@
   [(CSMXRingtoneMonitor *)self _notifyObserversOfRingtoneChange];
 }
 
-- (void)mxSessionMonitorSomeClientWentActive:(id)a3
+- (void)mxSessionMonitorSomeClientWentActive:(id)active
 {
-  v4 = a3;
+  activeCopy = active;
   eventMonitorQueue = self->_eventMonitorQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100078288;
   v7[3] = &unk_100253C48;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = activeCopy;
+  selfCopy = self;
+  v6 = activeCopy;
   dispatch_async(eventMonitorQueue, v7);
 }
 
@@ -138,7 +138,7 @@
   [v4 removeObserver:self];
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
   v4 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEBUG))

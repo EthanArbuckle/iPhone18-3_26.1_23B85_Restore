@@ -1,37 +1,37 @@
 @interface BUSimpleFileCopier
-+ (BOOL)countFilesAndSizesInDirectory:(id)a3 totalFileSize:(unint64_t *)a4 totalFileCount:(unint64_t *)a5 totalFileCountExcludeDir:(unint64_t *)a6;
-- (BOOL)copyToURL:(id)a3 error:(id *)a4;
-- (BOOL)countTotalFileSize:(unint64_t *)a3 totalFileCount:(unint64_t *)a4;
-- (BOOL)fileManager:(id)a3 shouldCopyItemAtURL:(id)a4 toURL:(id)a5;
++ (BOOL)countFilesAndSizesInDirectory:(id)directory totalFileSize:(unint64_t *)size totalFileCount:(unint64_t *)count totalFileCountExcludeDir:(unint64_t *)dir;
+- (BOOL)copyToURL:(id)l error:(id *)error;
+- (BOOL)countTotalFileSize:(unint64_t *)size totalFileCount:(unint64_t *)count;
+- (BOOL)fileManager:(id)manager shouldCopyItemAtURL:(id)l toURL:(id)rL;
 - (BUFileCopierDelegate)delegate;
-- (BUSimpleFileCopier)initWithURL:(id)a3;
+- (BUSimpleFileCopier)initWithURL:(id)l;
 - (void)_finishCurrentCopyItem;
 @end
 
 @implementation BUSimpleFileCopier
 
-- (BUSimpleFileCopier)initWithURL:(id)a3
+- (BUSimpleFileCopier)initWithURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = BUSimpleFileCopier;
   v6 = [(BUSimpleFileCopier *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_fromURL, a3);
+    objc_storeStrong(&v6->_fromURL, l);
   }
 
   return v7;
 }
 
-- (BOOL)countTotalFileSize:(unint64_t *)a3 totalFileCount:(unint64_t *)a4
+- (BOOL)countTotalFileSize:(unint64_t *)size totalFileCount:(unint64_t *)count
 {
-  v6 = objc_msgSend_fromURL(self, a2, a3);
+  v6 = objc_msgSend_fromURL(self, a2, size);
   v9 = objc_msgSend_path(v6, v7, v8);
 
-  LOBYTE(a4) = objc_msgSend_countFilesAndSizesInDirectory_totalFileSize_totalFileCount_totalFileCountExcludeDir_(BUSimpleFileCopier, v10, v9, a3, 0, a4);
-  return a4;
+  LOBYTE(count) = objc_msgSend_countFilesAndSizesInDirectory_totalFileSize_totalFileCount_totalFileCountExcludeDir_(BUSimpleFileCopier, v10, v9, size, 0, count);
+  return count;
 }
 
 - (void)_finishCurrentCopyItem
@@ -70,37 +70,37 @@
   objc_msgSend_setCurrentCopyItemURL_(self, v5, 0);
 }
 
-- (BOOL)fileManager:(id)a3 shouldCopyItemAtURL:(id)a4 toURL:(id)a5
+- (BOOL)fileManager:(id)manager shouldCopyItemAtURL:(id)l toURL:(id)rL
 {
-  v6 = a5;
+  rLCopy = rL;
   objc_msgSend__finishCurrentCopyItem(self, v7, v8);
   v11 = objc_msgSend_delegate(self, v9, v10);
   v12 = objc_opt_respondsToSelector();
 
-  if ((v12 & 1) != 0 && (objc_msgSend_delegate(self, v13, v14), v15 = objc_claimAutoreleasedReturnValue(), shouldCopyItemToURL = objc_msgSend_shouldCopyItemToURL_(v15, v16, v6), v15, !shouldCopyItemToURL))
+  if ((v12 & 1) != 0 && (objc_msgSend_delegate(self, v13, v14), v15 = objc_claimAutoreleasedReturnValue(), shouldCopyItemToURL = objc_msgSend_shouldCopyItemToURL_(v15, v16, rLCopy), v15, !shouldCopyItemToURL))
   {
     v18 = 0;
   }
 
   else
   {
-    objc_msgSend_setCurrentCopyItemURL_(self, v13, v6);
+    objc_msgSend_setCurrentCopyItemURL_(self, v13, rLCopy);
     v18 = 1;
   }
 
   return v18;
 }
 
-- (BOOL)copyToURL:(id)a3 error:(id *)a4
+- (BOOL)copyToURL:(id)l error:(id *)error
 {
   v6 = MEMORY[0x277CCAA00];
-  v7 = a3;
+  lCopy = l;
   v8 = objc_alloc_init(v6);
   objc_msgSend_setDelegate_(v8, v9, self);
   v12 = objc_msgSend_fromURL(self, v10, v11);
   v15 = objc_msgSend_path(v12, v13, v14);
 
-  v18 = objc_msgSend_path(v7, v16, v17);
+  v18 = objc_msgSend_path(lCopy, v16, v17);
 
   v21 = objc_msgSend_fromURL(self, v19, v20);
   v39 = 0;
@@ -121,7 +121,7 @@
     {
       v32 = 1;
       v26 = v29;
-      if (!a4)
+      if (!error)
       {
         goto LABEL_13;
       }
@@ -148,11 +148,11 @@
   }
 
   v32 = 0;
-  if (a4)
+  if (error)
   {
 LABEL_12:
     v35 = v26;
-    *a4 = v26;
+    *error = v26;
   }
 
 LABEL_13:
@@ -160,18 +160,18 @@ LABEL_13:
   return v32;
 }
 
-+ (BOOL)countFilesAndSizesInDirectory:(id)a3 totalFileSize:(unint64_t *)a4 totalFileCount:(unint64_t *)a5 totalFileCountExcludeDir:(unint64_t *)a6
++ (BOOL)countFilesAndSizesInDirectory:(id)directory totalFileSize:(unint64_t *)size totalFileCount:(unint64_t *)count totalFileCountExcludeDir:(unint64_t *)dir
 {
-  v9 = a3;
+  directoryCopy = directory;
   v12 = objc_msgSend_defaultManager(MEMORY[0x277CCAA00], v10, v11);
-  v14 = objc_msgSend_enumeratorAtPath_(v12, v13, v9);
+  v14 = objc_msgSend_enumeratorAtPath_(v12, v13, directoryCopy);
 
   if (v14)
   {
-    v39 = a4;
-    v40 = a5;
-    v41 = a6;
-    v42 = v9;
+    sizeCopy = size;
+    countCopy = count;
+    dirCopy = dir;
+    v42 = directoryCopy;
     v17 = objc_msgSend_nextObject(v14, v15, v16);
 
     if (v17)
@@ -210,20 +210,20 @@ LABEL_13:
       v20 = 0;
     }
 
-    if (v39)
+    if (sizeCopy)
     {
-      *v39 = v20;
+      *sizeCopy = v20;
     }
 
-    if (v40)
+    if (countCopy)
     {
-      *v40 = v21;
+      *countCopy = v21;
     }
 
-    v9 = v42;
-    if (v41)
+    directoryCopy = v42;
+    if (dirCopy)
     {
-      *v41 = v22;
+      *dirCopy = v22;
     }
   }
 

@@ -1,9 +1,9 @@
 @interface MTRUnitTestingClusterTestEnumsResponseParams
-- (ChipError)_setFieldsFromDecodableStruct:(const DecodableType *)a3;
+- (ChipError)_setFieldsFromDecodableStruct:(const DecodableType *)struct;
 - (MTRUnitTestingClusterTestEnumsResponseParams)init;
-- (MTRUnitTestingClusterTestEnumsResponseParams)initWithDecodableStruct:(const DecodableType *)a3;
+- (MTRUnitTestingClusterTestEnumsResponseParams)initWithDecodableStruct:(const DecodableType *)struct;
 - (MTRUnitTestingClusterTestEnumsResponseParams)initWithResponseValue:(NSDictionary *)responseValue error:(NSError *)error;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -30,17 +30,17 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRUnitTestingClusterTestEnumsResponseParams);
-  v5 = [(MTRUnitTestingClusterTestEnumsResponseParams *)self arg1];
-  [(MTRUnitTestingClusterTestEnumsResponseParams *)v4 setArg1:v5];
+  arg1 = [(MTRUnitTestingClusterTestEnumsResponseParams *)self arg1];
+  [(MTRUnitTestingClusterTestEnumsResponseParams *)v4 setArg1:arg1];
 
-  v6 = [(MTRUnitTestingClusterTestEnumsResponseParams *)self arg2];
-  [(MTRUnitTestingClusterTestEnumsResponseParams *)v4 setArg2:v6];
+  arg2 = [(MTRUnitTestingClusterTestEnumsResponseParams *)self arg2];
+  [(MTRUnitTestingClusterTestEnumsResponseParams *)v4 setArg2:arg2];
 
-  v7 = [(MTRUnitTestingClusterTestEnumsResponseParams *)self timedInvokeTimeoutMs];
-  [(MTRUnitTestingClusterTestEnumsResponseParams *)v4 setTimedInvokeTimeoutMs:v7];
+  timedInvokeTimeoutMs = [(MTRUnitTestingClusterTestEnumsResponseParams *)self timedInvokeTimeoutMs];
+  [(MTRUnitTestingClusterTestEnumsResponseParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
   return v4;
 }
@@ -100,7 +100,7 @@ LABEL_10:
   return v10;
 }
 
-- (MTRUnitTestingClusterTestEnumsResponseParams)initWithDecodableStruct:(const DecodableType *)a3
+- (MTRUnitTestingClusterTestEnumsResponseParams)initWithDecodableStruct:(const DecodableType *)struct
 {
   v10.receiver = self;
   v10.super_class = MTRUnitTestingClusterTestEnumsResponseParams;
@@ -108,7 +108,7 @@ LABEL_10:
   v5 = v4;
   if (v4)
   {
-    v6 = [(MTRUnitTestingClusterTestEnumsResponseParams *)v4 _setFieldsFromDecodableStruct:a3];
+    v6 = [(MTRUnitTestingClusterTestEnumsResponseParams *)v4 _setFieldsFromDecodableStruct:struct];
     if (!v6)
     {
       v8 = v5;
@@ -124,12 +124,12 @@ LABEL_6:
   return v8;
 }
 
-- (ChipError)_setFieldsFromDecodableStruct:(const DecodableType *)a3
+- (ChipError)_setFieldsFromDecodableStruct:(const DecodableType *)struct
 {
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*&a3->var0];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*&struct->var0];
   [(MTRUnitTestingClusterTestEnumsResponseParams *)self setArg1:v5];
 
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:a3[2].var0];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:struct[2].var0];
   [(MTRUnitTestingClusterTestEnumsResponseParams *)self setArg2:v6];
 
   v7 = 0;

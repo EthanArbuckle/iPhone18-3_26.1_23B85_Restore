@@ -1,7 +1,7 @@
 @interface BRCChecksummingOutputStream
-- (BRCChecksummingOutputStream)initWithTag:(unsigned __int8)a3;
+- (BRCChecksummingOutputStream)initWithTag:(unsigned __int8)tag;
 - (NSData)signature;
-- (int64_t)write:(const char *)a3 maxLength:(unint64_t)a4;
+- (int64_t)write:(const char *)write maxLength:(unint64_t)length;
 - (unint64_t)streamStatus;
 - (void)close;
 - (void)open;
@@ -22,14 +22,14 @@
   return v3;
 }
 
-- (BRCChecksummingOutputStream)initWithTag:(unsigned __int8)a3
+- (BRCChecksummingOutputStream)initWithTag:(unsigned __int8)tag
 {
   v5.receiver = self;
   v5.super_class = BRCChecksummingOutputStream;
   result = [(BRCChecksummingOutputStream *)&v5 init];
   if (result)
   {
-    result->_sig[0] = a3;
+    result->_sig[0] = tag;
   }
 
   return result;
@@ -70,23 +70,23 @@
   }
 }
 
-- (int64_t)write:(const char *)a3 maxLength:(unint64_t)a4
+- (int64_t)write:(const char *)write maxLength:(unint64_t)length
 {
-  LODWORD(v7) = a4;
-  if (HIDWORD(a4))
+  LODWORD(lengthCopy) = length;
+  if (HIDWORD(length))
   {
-    v7 = a4;
+    lengthCopy = length;
     do
     {
-      CC_SHA1_Update(&self->_ctx, a3, 0xFFFFFFFF);
-      v7 -= 0xFFFFFFFFLL;
+      CC_SHA1_Update(&self->_ctx, write, 0xFFFFFFFF);
+      lengthCopy -= 0xFFFFFFFFLL;
     }
 
-    while (HIDWORD(v7));
+    while (HIDWORD(lengthCopy));
   }
 
-  CC_SHA1_Update(&self->_ctx, a3, v7);
-  return a4;
+  CC_SHA1_Update(&self->_ctx, write, lengthCopy);
+  return length;
 }
 
 - (void)signature

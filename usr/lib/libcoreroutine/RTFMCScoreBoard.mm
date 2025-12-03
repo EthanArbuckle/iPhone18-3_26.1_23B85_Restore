@@ -1,8 +1,8 @@
 @interface RTFMCScoreBoard
-- (RTFMCScoreBoard)initWithLocationType:(int)a3;
+- (RTFMCScoreBoard)initWithLocationType:(int)type;
 - (void)assistanceEvent;
 - (void)clearScoreBoard;
-- (void)copyToMetric:(id)a3;
+- (void)copyToMetric:(id)metric;
 - (void)engagementEvent;
 - (void)parkingEvent;
 - (void)suppressedEvent;
@@ -10,7 +10,7 @@
 
 @implementation RTFMCScoreBoard
 
-- (RTFMCScoreBoard)initWithLocationType:(int)a3
+- (RTFMCScoreBoard)initWithLocationType:(int)type
 {
   v7.receiver = self;
   v7.super_class = RTFMCScoreBoard;
@@ -18,7 +18,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_locationType = a3;
+    v4->_locationType = type;
     [(RTFMCScoreBoard *)v4 clearScoreBoard];
   }
 
@@ -27,8 +27,8 @@
 
 - (void)clearScoreBoard
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
-  [(RTFMCScoreBoard *)self setCreationDate:v3];
+  date = [MEMORY[0x277CBEAA8] date];
+  [(RTFMCScoreBoard *)self setCreationDate:date];
 
   [(RTFMCScoreBoard *)self setEngaged:0];
   [(RTFMCScoreBoard *)self setAssisted:0];
@@ -41,22 +41,22 @@
   [(RTFMCScoreBoard *)self setSuppressedEvents:0];
 }
 
-- (void)copyToMetric:(id)a3
+- (void)copyToMetric:(id)metric
 {
   v4 = MEMORY[0x277CBEAA8];
-  v8 = a3;
-  v5 = [v4 date];
-  v6 = [(RTFMCScoreBoard *)self creationDate];
-  [v5 timeIntervalSinceDate:v6];
-  [v8 setDuration:v7];
+  metricCopy = metric;
+  date = [v4 date];
+  creationDate = [(RTFMCScoreBoard *)self creationDate];
+  [date timeIntervalSinceDate:creationDate];
+  [metricCopy setDuration:v7];
 
-  [v8 setParkingEvents:{-[RTFMCScoreBoard parkingEvents](self, "parkingEvents")}];
-  [v8 setEngagedParkingEvents:{-[RTFMCScoreBoard engagedParkingEvents](self, "engagedParkingEvents")}];
-  [v8 setAssistedParkingEvents:{-[RTFMCScoreBoard assistedParkingEvents](self, "assistedParkingEvents")}];
-  [v8 setEngagements:{-[RTFMCScoreBoard engagements](self, "engagements")}];
-  [v8 setAssistances:{-[RTFMCScoreBoard assistances](self, "assistances")}];
-  [v8 setSuppressedParkingEvents:{-[RTFMCScoreBoard suppressedEvents](self, "suppressedEvents")}];
-  [v8 setLocationType:{-[RTFMCScoreBoard locationType](self, "locationType")}];
+  [metricCopy setParkingEvents:{-[RTFMCScoreBoard parkingEvents](self, "parkingEvents")}];
+  [metricCopy setEngagedParkingEvents:{-[RTFMCScoreBoard engagedParkingEvents](self, "engagedParkingEvents")}];
+  [metricCopy setAssistedParkingEvents:{-[RTFMCScoreBoard assistedParkingEvents](self, "assistedParkingEvents")}];
+  [metricCopy setEngagements:{-[RTFMCScoreBoard engagements](self, "engagements")}];
+  [metricCopy setAssistances:{-[RTFMCScoreBoard assistances](self, "assistances")}];
+  [metricCopy setSuppressedParkingEvents:{-[RTFMCScoreBoard suppressedEvents](self, "suppressedEvents")}];
+  [metricCopy setLocationType:{-[RTFMCScoreBoard locationType](self, "locationType")}];
 }
 
 - (void)parkingEvent

@@ -8,13 +8,13 @@
 - (void)WF_push:()WFStack
 {
   v4 = [[WFNodeWrapper alloc] initWithNode:a3];
-  [a1 addObject:v4];
+  [self addObject:v4];
 }
 
 - (uint64_t)WF_pop
 {
-  v2 = [objc_msgSend(a1 "lastObject")];
-  [a1 removeLastObject];
+  v2 = [objc_msgSend(self "lastObject")];
+  [self removeLastObject];
   return v2;
 }
 

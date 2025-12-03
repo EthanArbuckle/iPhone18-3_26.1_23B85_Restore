@@ -9,11 +9,11 @@
   v10[2] = *MEMORY[0x1E69E9840];
   v9.receiver = self;
   v9.super_class = SBUISystemApertureContinuitySceneSpecification;
-  v2 = [(UIApplicationSceneSpecification *)&v9 defaultExtensions];
-  v3 = v2;
-  if (v2)
+  defaultExtensions = [(UIApplicationSceneSpecification *)&v9 defaultExtensions];
+  v3 = defaultExtensions;
+  if (defaultExtensions)
   {
-    v4 = v2;
+    v4 = defaultExtensions;
   }
 
   else

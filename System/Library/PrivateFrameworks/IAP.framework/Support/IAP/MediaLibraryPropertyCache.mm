@@ -1,10 +1,10 @@
 @interface MediaLibraryPropertyCache
 - (id)description;
-- (id)initForProperty:(id)a3;
-- (id)itemNamesForRange:(_NSRange)a3;
+- (id)initForProperty:(id)property;
+- (id)itemNamesForRange:(_NSRange)range;
 - (void)dealloc;
 - (void)removeNonGlobalCache;
-- (void)setItemNames:(id)a3 forRange:(_NSRange)a4;
+- (void)setItemNames:(id)names forRange:(_NSRange)range;
 @end
 
 @implementation MediaLibraryPropertyCache
@@ -25,7 +25,7 @@
   return self;
 }
 
-- (id)initForProperty:(id)a3
+- (id)initForProperty:(id)property
 {
   v6.receiver = self;
   v6.super_class = MediaLibraryPropertyCache;
@@ -38,7 +38,7 @@
 
   if (((result + 16) & 7) == 0)
   {
-    *(result + 2) = a3;
+    *(result + 2) = property;
     if (((result + 32) & 7) == 0)
     {
       *(result + 4) = 0;
@@ -89,7 +89,7 @@
   }
 }
 
-- (id)itemNamesForRange:(_NSRange)a3
+- (id)itemNamesForRange:(_NSRange)range
 {
   v3 = (self + 32);
   if (((self + 32) & 7) != 0)
@@ -97,20 +97,20 @@
     goto LABEL_19;
   }
 
-  location = a3.location;
+  location = range.location;
   v5 = *v3;
-  if (a3.location < *v3)
+  if (range.location < *v3)
   {
     return 0;
   }
 
-  length = a3.length;
-  if (__CFADD__(a3.location, a3.length))
+  length = range.length;
+  if (__CFADD__(range.location, range.length))
   {
     goto LABEL_17;
   }
 
-  v7 = self;
+  selfCopy = self;
   if (((self + 40) & 7) != 0)
   {
     goto LABEL_19;
@@ -128,19 +128,19 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if (a3.location + a3.length > v10)
+  if (range.location + range.length > v10)
   {
     return 0;
   }
 
-  self = [NSMutableArray arrayWithCapacity:a3.length];
-  v11 = self;
+  self = [NSMutableArray arrayWithCapacity:range.length];
+  selfCopy2 = self;
   if (!length)
   {
-    return v11;
+    return selfCopy2;
   }
 
-  v12 = (v7 + 48);
+  v12 = (selfCopy + 48);
   if ((v12 & 7) == 0)
   {
     v13 = 0;
@@ -157,7 +157,7 @@ LABEL_18:
         goto LABEL_17;
       }
 
-      self = [v11 addObject:{objc_msgSend(*v12, "objectAtIndex:", v14 + v13)}];
+      self = [selfCopy2 addObject:{objc_msgSend(*v12, "objectAtIndex:", v14 + v13)}];
       v9 = __CFADD__(v13, 1);
       v13 = (v13 + 1);
       if (v9)
@@ -167,7 +167,7 @@ LABEL_18:
 
       if (length <= v13)
       {
-        return v11;
+        return selfCopy2;
       }
     }
   }
@@ -177,7 +177,7 @@ LABEL_19:
   return self;
 }
 
-- (void)setItemNames:(id)a3 forRange:(_NSRange)a4
+- (void)setItemNames:(id)names forRange:(_NSRange)range
 {
   p_itemNames = &self->_itemNames;
   if ((&self->_itemNames & 7) != 0)
@@ -185,16 +185,16 @@ LABEL_19:
     goto LABEL_25;
   }
 
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
-  v8 = self;
+  length = range.length;
+  location = range.location;
+  namesCopy = names;
+  selfCopy = self;
   self = [(NSMutableArray *)*p_itemNames count];
   if (self)
   {
-    v9 = v8->_itemNamesRange.location;
-    p_length = &v8->_itemNamesRange.length;
-    v11 = v8->_itemNamesRange.length;
+    v9 = selfCopy->_itemNamesRange.location;
+    p_length = &selfCopy->_itemNamesRange.length;
+    v11 = selfCopy->_itemNamesRange.length;
     v12 = __CFADD__(v9, v11);
     v13 = v9 + v11;
     if (v12)
@@ -204,7 +204,7 @@ LABEL_19:
 
     if (location == v13)
     {
-      if ((((v8 + 32) | p_length) & 7) == 0)
+      if ((((selfCopy + 32) | p_length) & 7) == 0)
       {
         v12 = __CFADD__(v11, length);
         v14 = v11 + length;
@@ -213,7 +213,7 @@ LABEL_19:
           *p_length = v14;
           v15 = *p_itemNames;
 
-          [(NSMutableArray *)v15 addObjectsFromArray:v7];
+          [(NSMutableArray *)v15 addObjectsFromArray:namesCopy];
           return;
         }
 
@@ -228,14 +228,14 @@ LABEL_19:
   if (!self)
   {
 LABEL_20:
-    if (((v8 + 32) & 7) == 0)
+    if (((selfCopy + 32) & 7) == 0)
     {
-      v8->_itemNamesRange.location = location;
-      if ((&v8->_itemNamesRange.length & 7) == 0)
+      selfCopy->_itemNamesRange.location = location;
+      if ((&selfCopy->_itemNamesRange.length & 7) == 0)
       {
-        v8->_itemNamesRange.length = length;
+        selfCopy->_itemNamesRange.length = length;
         self = *p_itemNames;
-        a3 = v7;
+        names = namesCopy;
 
         goto _objc_msgSend$setArray_;
       }
@@ -244,8 +244,8 @@ LABEL_20:
     goto LABEL_25;
   }
 
-  p_itemNamesRange = &v8->_itemNamesRange;
-  if ((&v8->_itemNamesRange & 7) != 0)
+  p_itemNamesRange = &selfCopy->_itemNamesRange;
+  if ((&selfCopy->_itemNamesRange & 7) != 0)
   {
 LABEL_25:
     __break(0x5516u);
@@ -264,8 +264,8 @@ LABEL_26:
     goto LABEL_20;
   }
 
-  v17 = &v8->_itemNamesRange.length;
-  if ((&v8->_itemNamesRange.length & 7) != 0)
+  v17 = &selfCopy->_itemNamesRange.length;
+  if ((&selfCopy->_itemNamesRange.length & 7) != 0)
   {
     goto LABEL_25;
   }
@@ -278,26 +278,10 @@ LABEL_26:
 
   p_itemNamesRange->location = location;
   *v17 = v18;
-  self = [v7 count];
+  self = [namesCopy count];
   v19 = &self[-1]._collections + 7;
   if (__OFSUB__(self, 1))
   {
 LABEL_27:
     __break(0x5515u);
-_objc_msgSend$setArray_:
-    [(MediaLibraryPropertyCache *)self setArray:a3];
-    return;
-  }
-
-  if ((v19 & 0x8000000000000000) == 0)
-  {
-    do
-    {
-      -[NSMutableArray insertObject:atIndex:](*p_itemNames, "insertObject:atIndex:", [v7 objectAtIndex:v19--], 0);
-    }
-
-    while (v19 != -1);
-  }
-}
-
 @end

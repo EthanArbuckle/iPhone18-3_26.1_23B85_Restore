@@ -1,17 +1,17 @@
 @interface BRNWPathMonitorWrapper
-+ (id)createPathMonitorWithQueue:(id)a3 changeHandler:(id)a4;
++ (id)createPathMonitorWithQueue:(id)queue changeHandler:(id)handler;
 @end
 
 @implementation BRNWPathMonitorWrapper
 
-+ (id)createPathMonitorWithQueue:(id)a3 changeHandler:(id)a4
++ (id)createPathMonitorWithQueue:(id)queue changeHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  queueCopy = queue;
   v7 = nw_path_monitor_create();
-  nw_path_monitor_set_queue(v7, v6);
+  nw_path_monitor_set_queue(v7, queueCopy);
 
-  nw_path_monitor_set_update_handler(v7, v5);
+  nw_path_monitor_set_update_handler(v7, handlerCopy);
   nw_path_monitor_start(v7);
 
   return v7;

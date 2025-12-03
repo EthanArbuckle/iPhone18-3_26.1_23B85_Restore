@@ -1,22 +1,22 @@
 @interface UIView
-- (CGAffineTransform)transformToAbutToEdge:(SEL)a3 ofView:(unint64_t)a4;
+- (CGAffineTransform)transformToAbutToEdge:(SEL)edge ofView:(unint64_t)view;
 - (double)xOriginForCenterOfSuperview;
 - (double)yOriginForCenterOfSuperview;
-- (void)dialer_applyClearGlassBackgroundWithTintColor:(id)a3;
+- (void)dialer_applyClearGlassBackgroundWithTintColor:(id)color;
 - (void)dialer_applySmallClearGlassBackground;
-- (void)dialer_applySmallClearGlassBackgroundWithTintColor:(id)a3;
+- (void)dialer_applySmallClearGlassBackgroundWithTintColor:(id)color;
 @end
 
 @implementation UIView
 
-- (CGAffineTransform)transformToAbutToEdge:(SEL)a3 ofView:(unint64_t)a4
+- (CGAffineTransform)transformToAbutToEdge:(SEL)edge ofView:(unint64_t)view
 {
   v21 = a5;
   v8 = *&CGAffineTransformIdentity.c;
   *&retstr->a = *&CGAffineTransformIdentity.a;
   *&retstr->c = v8;
   *&retstr->tx = *&CGAffineTransformIdentity.tx;
-  if (a4 == 8)
+  if (view == 8)
   {
     [(UIView *)self frame];
     [(UIView *)self convertPoint:0 toView:?];
@@ -29,7 +29,7 @@
 
   else
   {
-    if (a4 != 2)
+    if (view != 2)
     {
       goto LABEL_6;
     }
@@ -52,8 +52,8 @@ LABEL_6:
 
 - (double)xOriginForCenterOfSuperview
 {
-  v3 = [(UIView *)self superview];
-  [v3 bounds];
+  superview = [(UIView *)self superview];
+  [superview bounds];
   v5 = v4 * 0.5;
   [(UIView *)self bounds];
   v7 = v5 - v6 * 0.5;
@@ -64,8 +64,8 @@ LABEL_6:
 
 - (double)yOriginForCenterOfSuperview
 {
-  v3 = [(UIView *)self superview];
-  [v3 bounds];
+  superview = [(UIView *)self superview];
+  [superview bounds];
   v5 = v4 * 0.5;
   [(UIView *)self bounds];
   v7 = v5 - v6 * 0.5;
@@ -74,11 +74,11 @@ LABEL_6:
   return v8;
 }
 
-- (void)dialer_applyClearGlassBackgroundWithTintColor:(id)a3
+- (void)dialer_applyClearGlassBackgroundWithTintColor:(id)color
 {
-  v4 = a3;
-  v5 = self;
-  UIView.applyClearGlassBackgroundWithTintColor(_:)(v4);
+  colorCopy = color;
+  selfCopy = self;
+  UIView.applyClearGlassBackgroundWithTintColor(_:)(colorCopy);
 }
 
 - (void)dialer_applySmallClearGlassBackground
@@ -94,7 +94,7 @@ LABEL_6:
   v11 = off_50840(v8);
   v13 = &v16[-1] - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0);
   off_50840(v11);
-  v14 = self;
+  selfCopy = self;
   sub_2D6B8();
   (*(v4 + 104))(v7, enum case for _Glass._GlassVariant.Size.small(_:), v3);
   sub_2D6A8();
@@ -107,11 +107,11 @@ LABEL_6:
   sub_2D848();
 }
 
-- (void)dialer_applySmallClearGlassBackgroundWithTintColor:(id)a3
+- (void)dialer_applySmallClearGlassBackgroundWithTintColor:(id)color
 {
-  v4 = a3;
-  v5 = self;
-  UIView.applySmallClearGlassBackgroundWithTintColor(_:)(v4);
+  colorCopy = color;
+  selfCopy = self;
+  UIView.applySmallClearGlassBackgroundWithTintColor(_:)(colorCopy);
 }
 
 @end

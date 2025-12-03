@@ -1,32 +1,32 @@
 @interface CMMediaSession
 + (double)defaultFaceToDevicePitchAngle;
 - (AudioAccessorySample)_getLastAudioAccessorySample;
-- (BOOL)_disallowOpportunisticAnchorTrackingForFTClients:(int)a3 clientMode:(int)a4;
+- (BOOL)_disallowOpportunisticAnchorTrackingForFTClients:(int)clients clientMode:(int)mode;
 - (BOOL)_start;
-- (BOOL)_startPoseUpdatesToQueue:(id)a3 andHandler:(id)a4;
+- (BOOL)_startPoseUpdatesToQueue:(id)queue andHandler:(id)handler;
 - (id).cxx_construct;
-- (id)_initWithOptions:(id)a3;
-- (int)_createPoseFromListenerOrientation:(const ListenerOrientation *)a3 Pose:(id *)a4;
-- (int)_mapCMMediaSessionClientModeToRelDMClientMode:(int64_t)a3;
-- (unint64_t)_getAuxSampleTimestamp:(const void *)a3 currentTime:(double)a4;
+- (id)_initWithOptions:(id)options;
+- (int)_createPoseFromListenerOrientation:(const ListenerOrientation *)orientation Pose:(id *)pose;
+- (int)_mapCMMediaSessionClientModeToRelDMClientMode:(int64_t)mode;
+- (unint64_t)_getAuxSampleTimestamp:(const void *)timestamp currentTime:(double)time;
 - (void)_disableLoggingForReplay;
-- (void)_enableLoggingForReplayWithFilenamePrefix:(id)a3 filePath:(id)a4;
-- (void)_feedAccessoryConfig:(const Config *)a3;
-- (void)_feedAccessoryDeviceMotion:(const void *)a3;
-- (void)_feedAccessoryInEarStatus:(const int *)a3;
+- (void)_enableLoggingForReplayWithFilenamePrefix:(id)prefix filePath:(id)path;
+- (void)_feedAccessoryConfig:(const Config *)config;
+- (void)_feedAccessoryDeviceMotion:(const void *)motion;
+- (void)_feedAccessoryInEarStatus:(const int *)status;
 - (void)_feedActiveAudioRouteChangedEvent;
 - (void)_feedAdaptiveLatencyJitterBufferLevel;
-- (void)_feedDisplayCount:(unsigned int)a3;
-- (void)_feedFaceKitData:(id)a3 timestamp:(double)a4;
-- (void)_feedLidAngle:(double)a3;
-- (void)_feedPoseAnchor:(const Sample *)a3 facePoseError:(id *)a4 lidAngleDeg:(float)a5;
+- (void)_feedDisplayCount:(unsigned int)count;
+- (void)_feedFaceKitData:(id)data timestamp:(double)timestamp;
+- (void)_feedLidAngle:(double)angle;
+- (void)_feedPoseAnchor:(const Sample *)anchor facePoseError:(id *)error lidAngleDeg:(float)deg;
 - (void)_feedPredictorEstimates;
-- (void)_feedScreenUnlockedEvent:(BOOL)a3;
-- (void)_feedSourceDeviceIMU:(const Sample *)a3;
-- (void)_logEvent:(id)a3;
+- (void)_feedScreenUnlockedEvent:(BOOL)event;
+- (void)_feedSourceDeviceIMU:(const Sample *)u;
+- (void)_logEvent:(id)event;
 - (void)_notifyClientHandler;
 - (void)_readFrontCameraToDisplayCenterOffset;
-- (void)_setFixedTransforms:(const CMOQuaternion *)a3;
+- (void)_setFixedTransforms:(const CMOQuaternion *)transforms;
 - (void)_startDefaultsPreferenceUpdater;
 - (void)_startHeadTracking;
 - (void)_startJitterBufferLevelMonitor;
@@ -39,15 +39,15 @@
 - (void)_triggerUserInteractedWithDeviceEvent;
 - (void)_updateAnchorIntervalSettings;
 - (void)_updateCameraControllerParameters;
-- (void)_updateClientMode:(int64_t)a3;
+- (void)_updateClientMode:(int64_t)mode;
 - (void)_updateMinQuiescentPeriodForBTZ;
-- (void)_updateTrackingScheme:(int64_t)a3;
+- (void)_updateTrackingScheme:(int64_t)scheme;
 - (void)_updateTrackingSchemeSettings;
 - (void)_updateUseFwdPredictionUserSettings;
 - (void)_updateUseHeadToHeadsetTransformationEstimator;
 - (void)_updateUserSettings;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation CMMediaSession
@@ -71,7 +71,7 @@
   return *&qword_1ED71CB30;
 }
 
-- (void)_enableLoggingForReplayWithFilenamePrefix:(id)a3 filePath:(id)a4
+- (void)_enableLoggingForReplayWithFilenamePrefix:(id)prefix filePath:(id)path
 {
   v15 = *MEMORY[0x1E69E9840];
   self->_logForReplay = 1;
@@ -84,7 +84,7 @@
   if (os_log_type_enabled(off_1EAFE29A0, OS_LOG_TYPE_INFO))
   {
     *buf = 138477827;
-    v14 = a4;
+    pathCopy = path;
     _os_log_impl(&dword_19B41C000, v7, OS_LOG_TYPE_INFO, "[CMMediaSession] Logging to: %{private}@", buf, 0xCu);
   }
 
@@ -105,9 +105,9 @@
     }
   }
 
-  objc_msgSend_setMcLogPath_(self, v9, a4);
-  objc_msgSend_cStringUsingEncoding_(a3, v11, 1);
-  objc_msgSend_cStringUsingEncoding_(a4, v12, 1);
+  objc_msgSend_setMcLogPath_(self, v9, path);
+  objc_msgSend_cStringUsingEncoding_(prefix, v11, 1);
+  objc_msgSend_cStringUsingEncoding_(path, v12, 1);
   operator new();
 }
 
@@ -130,18 +130,18 @@
   sub_19B5C6594(&self->_logger, 0);
 }
 
-- (int)_createPoseFromListenerOrientation:(const ListenerOrientation *)a3 Pose:(id *)a4
+- (int)_createPoseFromListenerOrientation:(const ListenerOrientation *)orientation Pose:(id *)pose
 {
   v57 = *MEMORY[0x1E69E9840];
-  var1 = a3->var1;
+  var1 = orientation->var1;
   v6 = *(self->_headTrackingService.__ptr_ + 678);
   timestamp = self->_lastAudioAccessorySample.timestamp;
   lastListenerOrientationGenerationTimestampSeconds = self->_lastListenerOrientationGenerationTimestampSeconds;
   lastPresentationTimestamp = self->_lastPresentationTimestamp;
-  var2 = a3->var2;
+  var2 = orientation->var2;
   if (self->_inEarStatus == 4)
   {
-    v11 = a3->var2;
+    v11 = orientation->var2;
   }
 
   else
@@ -151,7 +151,7 @@
 
   if (v11)
   {
-    v12 = objc_msgSend_returnDefaultPose(self, a2, a3);
+    v12 = objc_msgSend_returnDefaultPose(self, a2, orientation);
   }
 
   else
@@ -159,7 +159,7 @@
     v12 = 1;
   }
 
-  if (objc_msgSend_returnRandomPose(self, a2, a3))
+  if (objc_msgSend_returnRandomPose(self, a2, orientation))
   {
     v15 = objc_msgSend_returnDefaultPose(self, v13, v14) ^ 1;
   }
@@ -279,15 +279,15 @@ LABEL_27:
   v54 = timestamp;
   v55 = lastListenerOrientationGenerationTimestampSeconds;
   v56 = lastPresentationTimestamp * 0.000001;
-  *a4 = objc_msgSend_initWithPose_timestamp_(v38, v39, buf, v11);
+  *pose = objc_msgSend_initWithPose_timestamp_(v38, v39, buf, v11);
   v40 = *MEMORY[0x1E69E9840];
   return v37;
 }
 
-- (BOOL)_disallowOpportunisticAnchorTrackingForFTClients:(int)a3 clientMode:(int)a4
+- (BOOL)_disallowOpportunisticAnchorTrackingForFTClients:(int)clients clientMode:(int)mode
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3 == 1 && (a4 & 0xFFFFFFFE) == 2;
+  v4 = clients == 1 && (mode & 0xFFFFFFFE) == 2;
   v5 = v4;
   if (v4)
   {
@@ -332,11 +332,11 @@ LABEL_27:
   return v5;
 }
 
-- (int)_mapCMMediaSessionClientModeToRelDMClientMode:(int64_t)a3
+- (int)_mapCMMediaSessionClientModeToRelDMClientMode:(int64_t)mode
 {
-  if ((a3 - 1) < 4)
+  if ((mode - 1) < 4)
   {
-    return a3;
+    return mode;
   }
 
   else
@@ -471,7 +471,7 @@ LABEL_38:
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_initWithOptions:(id)a3
+- (id)_initWithOptions:(id)options
 {
   v55 = *MEMORY[0x1E69E9840];
   v51.receiver = self;
@@ -505,7 +505,7 @@ LABEL_38:
     if (os_log_type_enabled(off_1EAFE29A0, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138477827;
-      *&buf[4] = a3;
+      *&buf[4] = options;
       _os_log_impl(&dword_19B41C000, v7, OS_LOG_TYPE_DEFAULT, "[CMMediaSession] Creating CMMediaSession with options: %{private}@", buf, 0xCu);
     }
 
@@ -519,7 +519,7 @@ LABEL_38:
       }
 
       v52 = 138477827;
-      v53 = a3;
+      optionsCopy = options;
       v10 = _os_log_send_and_compose_impl();
       sub_19B6BB7CC("Generic", 1, 0, 2, "[CMMediaSession _initWithOptions:]", "CoreLocation: %s\n", v10);
       if (v10 != buf)
@@ -528,41 +528,41 @@ LABEL_38:
       }
     }
 
-    if (a3)
+    if (options)
     {
-      if (objc_msgSend_valueForKey_(a3, v9, @"CMMediaSessionClientMode"))
+      if (objc_msgSend_valueForKey_(options, v9, @"CMMediaSessionClientMode"))
       {
-        v12 = objc_msgSend_objectForKeyedSubscript_(a3, v11, @"CMMediaSessionClientMode");
+        v12 = objc_msgSend_objectForKeyedSubscript_(options, v11, @"CMMediaSessionClientMode");
         v15 = objc_msgSend_intValue(v12, v13, v14);
         v17 = objc_msgSend__mapCMMediaSessionClientModeToRelDMClientMode_(v6, v16, v15);
         v6[86] = v17;
         v6[19] = v17;
       }
 
-      if (objc_msgSend_valueForKey_(a3, v11, @"AlwaysOnAnchor"))
+      if (objc_msgSend_valueForKey_(options, v11, @"AlwaysOnAnchor"))
       {
-        v19 = objc_msgSend_objectForKeyedSubscript_(a3, v18, @"AlwaysOnAnchor");
+        v19 = objc_msgSend_objectForKeyedSubscript_(options, v18, @"AlwaysOnAnchor");
         if (objc_msgSend_BOOLValue(v19, v20, v21))
         {
           v6[20] = 2;
         }
       }
 
-      if (objc_msgSend_valueForKey_(a3, v18, @"OpportunisticAnchor"))
+      if (objc_msgSend_valueForKey_(options, v18, @"OpportunisticAnchor"))
       {
-        v23 = objc_msgSend_objectForKeyedSubscript_(a3, v22, @"OpportunisticAnchor");
+        v23 = objc_msgSend_objectForKeyedSubscript_(options, v22, @"OpportunisticAnchor");
         if (objc_msgSend_BOOLValue(v23, v24, v25))
         {
           v6[20] = 1;
         }
       }
 
-      if (objc_msgSend_valueForKey_(a3, v22, @"TrackingScheme"))
+      if (objc_msgSend_valueForKey_(options, v22, @"TrackingScheme"))
       {
-        v27 = objc_msgSend_objectForKeyedSubscript_(a3, v26, @"TrackingScheme");
+        v27 = objc_msgSend_objectForKeyedSubscript_(options, v26, @"TrackingScheme");
         if (objc_msgSend_intValue(v27, v28, v29))
         {
-          v30 = objc_msgSend_objectForKeyedSubscript_(a3, v26, @"TrackingScheme");
+          v30 = objc_msgSend_objectForKeyedSubscript_(options, v26, @"TrackingScheme");
           v33 = objc_msgSend_intValue(v30, v31, v32);
           if (v33 <= 3)
           {
@@ -571,9 +571,9 @@ LABEL_38:
         }
       }
 
-      if (objc_msgSend_valueForKey_(a3, v26, @"AnchorRateHz"))
+      if (objc_msgSend_valueForKey_(options, v26, @"AnchorRateHz"))
       {
-        v35 = objc_msgSend_objectForKeyedSubscript_(a3, v34, @"AnchorRateHz");
+        v35 = objc_msgSend_objectForKeyedSubscript_(options, v34, @"AnchorRateHz");
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
@@ -585,9 +585,9 @@ LABEL_38:
         *(v6 + 83) = (1000000.0 / v38);
       }
 
-      if (objc_msgSend_valueForKey_(a3, v34, @"OnlineHeadToHeadsetTransformationEstimator"))
+      if (objc_msgSend_valueForKey_(options, v34, @"OnlineHeadToHeadsetTransformationEstimator"))
       {
-        v40 = objc_msgSend_objectForKeyedSubscript_(a3, v39, @"OnlineHeadToHeadsetTransformationEstimator");
+        v40 = objc_msgSend_objectForKeyedSubscript_(options, v39, @"OnlineHeadToHeadsetTransformationEstimator");
         if (objc_msgSend_BOOLValue(v40, v41, v42))
         {
           *(v6 + 100) = 1;
@@ -1050,7 +1050,7 @@ LABEL_69:
   sub_19B420C9C(v3, v4);
 }
 
-- (BOOL)_startPoseUpdatesToQueue:(id)a3 andHandler:(id)a4
+- (BOOL)_startPoseUpdatesToQueue:(id)queue andHandler:(id)handler
 {
   v26 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE2998 != -1)
@@ -1087,7 +1087,7 @@ LABEL_69:
     }
 
 LABEL_12:
-    if (!a3)
+    if (!queue)
     {
       if (qword_1EAFE2998 != -1)
       {
@@ -1095,7 +1095,7 @@ LABEL_12:
       }
 
       v14 = off_1EAFE29A0;
-      a4 = "queue";
+      handler = "queue";
       if (os_log_type_enabled(off_1EAFE29A0, OS_LOG_TYPE_FAULT))
       {
         *buf = 68289539;
@@ -1148,7 +1148,7 @@ LABEL_12:
       goto LABEL_36;
     }
 
-    if (a4)
+    if (handler)
     {
       break;
     }
@@ -1214,9 +1214,9 @@ LABEL_37:
     dispatch_once(&qword_1EAFE2998, &unk_1F0E292A0);
   }
 
-  self->_clientQueue = a3;
-  dispatch_retain(a3);
-  self->_clientHandler = _Block_copy(a4);
+  self->_clientQueue = queue;
+  dispatch_retain(queue);
+  self->_clientHandler = _Block_copy(handler);
   result = objc_msgSend__start(self, v10, v11);
   v13 = *MEMORY[0x1E69E9840];
   return result;
@@ -2573,12 +2573,12 @@ LABEL_37:
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (self->_motionDefaults == a6)
+  if (self->_motionDefaults == context)
   {
 
-    objc_msgSend__updateUserSettings(self, a2, a3, a4, a5);
+    objc_msgSend__updateUserSettings(self, a2, path, object, change);
   }
 
   else
@@ -2587,7 +2587,7 @@ LABEL_37:
     v10 = v7;
     v8.receiver = self;
     v8.super_class = CMMediaSession;
-    [(CMMediaSession *)&v8 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(CMMediaSession *)&v8 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
@@ -2941,7 +2941,7 @@ LABEL_82:
   v72 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_feedSourceDeviceIMU:(const Sample *)a3
+- (void)_feedSourceDeviceIMU:(const Sample *)u
 {
   v31 = *MEMORY[0x1E69E9840];
   if (self->_started)
@@ -2958,21 +2958,21 @@ LABEL_82:
 
     v28 = vdup_n_s32(0x37E5D90Du);
     v29 = 937810189;
-    v8.f32[0] = sub_19B420740(&a3->acceleration.x);
-    v10 = v9 + *&a3[2].timestamp;
+    v8.f32[0] = sub_19B420740(&u->acceleration.x);
+    v10 = v9 + *&u[2].timestamp;
     v8.i32[1] = v11;
-    v26 = vadd_f32(*&a3[1].acceleration.z, v8);
+    v26 = vadd_f32(*&u[1].acceleration.z, v8);
     v27 = v10;
-    v8.i32[0] = LODWORD(a3[2].acceleration.y);
-    v24 = *(&a3[2].timestamp + 4);
+    v8.i32[0] = LODWORD(u[2].acceleration.y);
+    v24 = *(&u[2].timestamp + 4);
     v25 = v8.i32[0];
-    v12 = vcvt_hight_f32_f64(vcvt_f32_f64(*&a3->acceleration.x), *&a3[1].timestamp);
+    v12 = vcvt_hight_f32_f64(vcvt_f32_f64(*&u->acceleration.x), *&u[1].timestamp);
     v23 = vextq_s8(v12, v12, 4uLL);
     sub_19B41E130(&v23, v23);
     objc_sync_enter(self);
-    if ((WORD1(a3[5].timestamp) & 0x100) != 0)
+    if ((WORD1(u[5].timestamp) & 0x100) != 0)
     {
-      v21 = (a3->timestamp * 1000000.0);
+      v21 = (u->timestamp * 1000000.0);
       self->_lastSourceTimestampMicroSeconds = v21;
       sub_19B693044(self->_headTrackingService.__ptr_, &v23, &v26, &v24, &v28, v21);
     }
@@ -3011,7 +3011,7 @@ LABEL_82:
 
     if (self->_logForReplay)
     {
-      sub_19B5E5DB4(self->_logger.__ptr_, &a3->timestamp);
+      sub_19B5E5DB4(self->_logger.__ptr_, &u->timestamp);
     }
 
     objc_msgSend__notifyClientHandler(self, v15, v16);
@@ -3054,12 +3054,12 @@ LABEL_82:
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_feedDisplayCount:(unsigned int)a3
+- (void)_feedDisplayCount:(unsigned int)count
 {
   v35 = *MEMORY[0x1E69E9840];
   if (self->_started)
   {
-    if (self->_displayCount != a3)
+    if (self->_displayCount != count)
     {
       if (qword_1EAFE2998 != -1)
       {
@@ -3073,7 +3073,7 @@ LABEL_82:
         *buf = 67240448;
         v32 = displayCount;
         v33 = 1026;
-        v34 = a3;
+        countCopy = count;
         _os_log_impl(&dword_19B41C000, v5, OS_LOG_TYPE_DEFAULT, "[CMMediaSession] Display count changed: from %{public}d, to %{public}u", buf, 0xEu);
       }
 
@@ -3101,12 +3101,12 @@ LABEL_82:
         goto LABEL_70;
       }
 
-      if (a3 <= 1)
+      if (count <= 1)
       {
-        if (a3 != 1)
+        if (count != 1)
         {
 LABEL_70:
-          self->_displayCount = a3;
+          self->_displayCount = count;
           goto LABEL_71;
         }
 
@@ -3200,7 +3200,7 @@ LABEL_70:
       if (v14)
       {
         maxDisplayCount = self->_maxDisplayCount;
-        if (maxDisplayCount < a3)
+        if (maxDisplayCount < count)
         {
           v16 = 0;
           v17 = *(v14 + 511);
@@ -3215,8 +3215,8 @@ LABEL_70:
             ++v16;
           }
 
-          while (v16 < a3 - maxDisplayCount);
-          self->_maxDisplayCount = a3;
+          while (v16 < count - maxDisplayCount);
+          self->_maxDisplayCount = count;
         }
 
         sub_19B6A7EE8(v14 + 52, @"externalScreenDuration");
@@ -3262,12 +3262,12 @@ LABEL_71:
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_feedLidAngle:(double)a3
+- (void)_feedLidAngle:(double)angle
 {
   v8 = *MEMORY[0x1E69E9840];
   if (self->_started)
   {
-    self->_lidAngle = a3;
+    self->_lidAngle = angle;
   }
 
   else
@@ -3377,7 +3377,7 @@ LABEL_71:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_feedFaceKitData:(id)a3 timestamp:(double)a4
+- (void)_feedFaceKitData:(id)data timestamp:(double)timestamp
 {
   v229 = *MEMORY[0x1E69E9840];
   if (!self->_started)
@@ -3412,9 +3412,9 @@ LABEL_71:
     goto LABEL_84;
   }
 
-  v200 = objc_msgSend_objectForKeyedSubscript_(a3, a2, @"rm_camera_id");
-  v7 = objc_msgSend_objectForKeyedSubscript_(a3, v6, @"rm_tracked_faces");
-  v9 = objc_msgSend_objectForKeyedSubscript_(a3, v8, @"rm_number_of_detected_faces");
+  v200 = objc_msgSend_objectForKeyedSubscript_(data, a2, @"rm_camera_id");
+  v7 = objc_msgSend_objectForKeyedSubscript_(data, v6, @"rm_tracked_faces");
+  v9 = objc_msgSend_objectForKeyedSubscript_(data, v8, @"rm_number_of_detected_faces");
   if (v9)
   {
     v12 = v9;
@@ -3659,7 +3659,7 @@ LABEL_28:
         *(v207 + 2) = v184;
         v228 = 0;
         *buf = CFAbsoluteTimeGetCurrent();
-        *&buf[8] = a4;
+        *&buf[8] = timestamp;
         *&buf[16] = 0x100000002;
         v216 = v203.f32[3];
         v217 = vcvtq_f64_f32(*v203.f32);
@@ -3764,38 +3764,38 @@ LABEL_84:
   v195 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_feedPoseAnchor:(const Sample *)a3 facePoseError:(id *)a4 lidAngleDeg:(float)a5
+- (void)_feedPoseAnchor:(const Sample *)anchor facePoseError:(id *)error lidAngleDeg:(float)deg
 {
   v152 = *MEMORY[0x1E69E9840];
   if (self->_started)
   {
-    if (a3 && a4)
+    if (anchor && error)
     {
-      v8 = *&a3[4].acceleration.z;
-      v137 = *&a3[4].timestamp;
+      v8 = *&anchor[4].acceleration.z;
+      v137 = *&anchor[4].timestamp;
       v138 = v8;
-      v139 = *&a3[5].acceleration.x;
-      timestamp = a3[6].timestamp;
-      v9 = *&a3[2].timestamp;
-      v133 = *&a3[1].acceleration.x;
+      v139 = *&anchor[5].acceleration.x;
+      timestamp = anchor[6].timestamp;
+      v9 = *&anchor[2].timestamp;
+      v133 = *&anchor[1].acceleration.x;
       v134 = v9;
-      v10 = *&a3[3].acceleration.x;
-      v135 = *&a3[2].acceleration.z;
+      v10 = *&anchor[3].acceleration.x;
+      v135 = *&anchor[2].acceleration.z;
       v136 = v10;
-      v11 = *&a3->acceleration.z;
-      v131 = *&a3->timestamp;
+      v11 = *&anchor->acceleration.z;
+      v131 = *&anchor->timestamp;
       v132 = v11;
       sub_19B421798();
       if (sub_19B4426E4())
       {
-        v13 = vcvt_hight_f32_f64(vcvt_f32_f64(*&a3[1].timestamp), *&a3[1].acceleration.z);
+        v13 = vcvt_hight_f32_f64(vcvt_f32_f64(*&anchor[1].timestamp), *&anchor[1].acceleration.z);
         *buf = vextq_s8(v13, v13, 4uLL);
         v14 = sub_19B41E130(buf, *buf);
         v15 = sub_19B66BF70(&self->_cameraToSourceAlignment, buf, v14);
         v17 = v16;
         v19 = v18;
         v21 = v20;
-        v24 = sub_19B66C1A4(self->_cameraToSourceAlignment.elements, a3[2].acceleration.x, a3[2].acceleration.y, a3[2].acceleration.z);
+        v24 = sub_19B66C1A4(self->_cameraToSourceAlignment.elements, anchor[2].acceleration.x, anchor[2].acceleration.y, anchor[2].acceleration.z);
         *v12.i64 = v15;
         v25 = v17;
         v26 = v19;
@@ -4124,7 +4124,7 @@ LABEL_84:
       objc_sync_enter(self);
       if (self->_logForReplay)
       {
-        sub_19B5E6104(self->_logger.__ptr_, &v131, a4, self->_lidAngle);
+        sub_19B5E6104(self->_logger.__ptr_, &v131, error, self->_lidAngle);
       }
 
       *&v90 = v122;
@@ -4135,8 +4135,8 @@ LABEL_84:
         goto LABEL_141;
       }
 
-      v93 = (*&a3->acceleration.x * 1000000.0);
-      if (a4->var3 || a4->var0 <= 0.799)
+      v93 = (*&anchor->acceleration.x * 1000000.0);
+      if (error->var3 || error->var0 <= 0.799)
       {
         if (qword_1EAFE2998 != -1)
         {
@@ -4146,8 +4146,8 @@ LABEL_84:
         v101 = off_1EAFE29A0;
         if (os_log_type_enabled(off_1EAFE29A0, OS_LOG_TYPE_DEFAULT))
         {
-          var3 = a4->var3;
-          var0 = a4->var0;
+          var3 = error->var3;
+          var0 = error->var0;
           *buf = 67109632;
           *&buf[4] = var3;
           *&buf[8] = 2048;
@@ -4166,8 +4166,8 @@ LABEL_84:
             dispatch_once(&qword_1EAFE2998, &unk_1F0E292A0);
           }
 
-          v105 = a4->var3;
-          v106 = a4->var0;
+          v105 = error->var3;
+          v106 = error->var0;
           v141 = 67109632;
           *v142 = v105;
           *&v142[4] = 2048;
@@ -4182,7 +4182,7 @@ LABEL_84:
           }
         }
 
-        if (a4->var3)
+        if (error->var3)
         {
           v97 = self->_analyticsTracker.__ptr_;
           if (v97)
@@ -4200,7 +4200,7 @@ LABEL_84:
         }
 
         v97 = self->_analyticsTracker.__ptr_;
-        if (a4->var0 <= 0.799)
+        if (error->var0 <= 0.799)
         {
           if (v97)
           {
@@ -4219,8 +4219,8 @@ LABEL_84:
 
       else
       {
-        *&v92 = a5;
-        objc_msgSend_feedPoseAnchorWithAttitude_position_lidAngleDeg_numberOfDetectedFaces_timestampUs_(self, v88, LODWORD(a3[6].timestamp), v93, v114, v115, v113, v112, v89, v90, v91, v92);
+        *&v92 = deg;
+        objc_msgSend_feedPoseAnchorWithAttitude_position_lidAngleDeg_numberOfDetectedFaces_timestampUs_(self, v88, LODWORD(anchor[6].timestamp), v93, v114, v115, v113, v112, v89, v90, v91, v92);
         v94 = mach_absolute_time();
         v95 = sub_19B41E070(v94);
         v96 = v93 * 0.000001;
@@ -4334,15 +4334,15 @@ LABEL_142:
   v111 = *MEMORY[0x1E69E9840];
 }
 
-- (unint64_t)_getAuxSampleTimestamp:(const void *)a3 currentTime:(double)a4
+- (unint64_t)_getAuxSampleTimestamp:(const void *)timestamp currentTime:(double)time
 {
   v41 = *MEMORY[0x1E69E9840];
-  if (*(a3 + 27) == 2)
+  if (*(timestamp + 27) == 2)
   {
-    v7 = (*(a3 + 8) * 1000000.0);
+    v7 = (*(timestamp + 8) * 1000000.0);
     if (self->_lastAudioAccessorySample.timeSyncStatus != 2)
     {
-      v8 = sub_19B73A068(&self->_unsyncedAuxHelper, *(a3 + 7), self->_lastSourceTimestampMicroSeconds);
+      v8 = sub_19B73A068(&self->_unsyncedAuxHelper, *(timestamp + 7), self->_lastSourceTimestampMicroSeconds);
       sub_19B644550(&self->_unsyncedAuxHelper, 1);
       v9 = (v7 - v8) * 0.001;
       if (qword_1EAFE2998 != -1)
@@ -4414,7 +4414,7 @@ LABEL_142:
         }
       }
 
-      v17 = a4 - self->_firstAccessoryDMTime;
+      v17 = time - self->_firstAccessoryDMTime;
       if (qword_1EAFE2998 != -1)
       {
         dispatch_once(&qword_1EAFE2998, &unk_1F0E292A0);
@@ -4550,10 +4550,10 @@ LABEL_142:
       }
     }
 
-    v7 = sub_19B73A068(&self->_unsyncedAuxHelper, *(a3 + 7), self->_lastSourceTimestampMicroSeconds);
+    v7 = sub_19B73A068(&self->_unsyncedAuxHelper, *(timestamp + 7), self->_lastSourceTimestampMicroSeconds);
     if (self->_lastAudioAccessorySample.timeSyncStatus == 2)
     {
-      self->_lastTimesyncLostTime = a4;
+      self->_lastTimesyncLostTime = time;
       if (qword_1EAFE2998 != -1)
       {
         dispatch_once(&qword_1EAFE2998, &unk_1F0E292A0);
@@ -4589,7 +4589,7 @@ LABEL_142:
   return v7;
 }
 
-- (void)_feedAccessoryDeviceMotion:(const void *)a3
+- (void)_feedAccessoryDeviceMotion:(const void *)motion
 {
   v356 = *MEMORY[0x1E69E9840];
   if (!self->_started)
@@ -4678,7 +4678,7 @@ LABEL_142:
   if (v13)
   {
     v14 = 0;
-    v15 = *(a3 + 7);
+    v15 = *(motion + 7);
     if (v15 < 0.0)
     {
       v15 = -v15;
@@ -4686,7 +4686,7 @@ LABEL_142:
 
     do
     {
-      v16 = *(a3 + v14 + 32);
+      v16 = *(motion + v14 + 32);
       if (v16 < 0.0)
       {
         v16 = -v16;
@@ -4741,7 +4741,7 @@ LABEL_142:
     v23 = 0;
   }
 
-  *&self->_unsyncedAuxHelper.auxAndSrcSensorTimeOffsetBuffer.fBuffer[8 * (fHead + fSize - v23)] = *(a3 + 9) + -0.0350000001 + *(a3 + 7) * -0.000001;
+  *&self->_unsyncedAuxHelper.auxAndSrcSensorTimeOffsetBuffer.fBuffer[8 * (fHead + fSize - v23)] = *(motion + 9) + -0.0350000001 + *(motion + 7) * -0.000001;
   if (fCapacity <= fSize)
   {
     if (fHead + 1 < fCapacity)
@@ -4757,22 +4757,22 @@ LABEL_142:
     self->_unsyncedAuxHelper.auxAndSrcSensorTimeOffsetBuffer.fHeadAndSize.fSize = fSize + 1;
   }
 
-  *v333 = *(a3 + 2);
-  *&v333[8] = *(a3 + 6);
-  v27.f32[0] = sub_19B447000(a3);
-  v29 = v28 + *(a3 + 12);
+  *v333 = *(motion + 2);
+  *&v333[8] = *(motion + 6);
+  v27.f32[0] = sub_19B447000(motion);
+  v29 = v28 + *(motion + 12);
   v27.i32[1] = v30;
-  v334 = vadd_f32(*(a3 + 40), v27);
+  v334 = vadd_f32(*(motion + 40), v27);
   v335 = v29;
-  v336 = *(a3 + 10);
-  v337 = *(a3 + 22);
-  v338 = *(a3 + 28);
-  v31 = *(a3 + 24);
-  v339 = *(a3 + 9);
+  v336 = *(motion + 10);
+  v337 = *(motion + 22);
+  v338 = *(motion + 28);
+  v31 = *(motion + 24);
+  v339 = *(motion + 9);
   v340 = v31;
-  v341 = *(a3 + 23);
-  v342 = *a3;
-  AuxSampleTimestamp_currentTime = objc_msgSend__getAuxSampleTimestamp_currentTime_(self, v32, a3, v6);
+  v341 = *(motion + 23);
+  v342 = *motion;
+  AuxSampleTimestamp_currentTime = objc_msgSend__getAuxSampleTimestamp_currentTime_(self, v32, motion, v6);
   objc_sync_enter(self);
   v34 = self->_headTrackingService.__ptr_;
   if (*(v34 + 14) == 1)
@@ -4954,7 +4954,7 @@ LABEL_100:
     *(v34 + 6942) = v54;
   }
 
-  if ((*(a3 + 26) & 0x100) != 0)
+  if ((*(motion + 26) & 0x100) != 0)
   {
     if (sub_19B6B00F0(v34 + 37776, v333, AuxSampleTimestamp_currentTime))
     {
@@ -5166,7 +5166,7 @@ LABEL_100:
 
   if (self->_logForReplay)
   {
-    sub_19B5E57B8(self->_logger.__ptr_, a3);
+    sub_19B5E57B8(self->_logger.__ptr_, motion);
     v99 = self->_headTrackingService.__ptr_;
     if (*(v99 + 16088) == 1)
     {
@@ -5210,22 +5210,22 @@ LABEL_100:
   }
 
   objc_sync_exit(self);
-  v104 = *(a3 + 1);
-  v103 = *(a3 + 2);
-  self->_lastAudioAccessorySample.auxDM.quaternion = *a3;
+  v104 = *(motion + 1);
+  v103 = *(motion + 2);
+  self->_lastAudioAccessorySample.auxDM.quaternion = *motion;
   *self->_lastAudioAccessorySample.auxDM.rotationRate.elements = v104;
   *&self->_lastAudioAccessorySample.auxDM.biasCovariance.elements[1] = v103;
-  v105 = *(a3 + 6);
-  v107 = *(a3 + 3);
-  v106 = *(a3 + 4);
-  *self->_lastAudioAccessorySample.filteredAcceleration.elements = *(a3 + 5);
+  v105 = *(motion + 6);
+  v107 = *(motion + 3);
+  v106 = *(motion + 4);
+  *self->_lastAudioAccessorySample.filteredAcceleration.elements = *(motion + 5);
   *&self->_lastAudioAccessorySample.quiescentMode = v105;
   *&self->_lastAudioAccessorySample.auxDM.userAcceleration.elements[2] = v107;
   *&self->_lastAudioAccessorySample.timestamp = v106;
-  v109 = *(a3 + 8);
-  v108 = *(a3 + 9);
-  v110 = *(a3 + 7);
-  *&self->_lastAudioAccessorySample.isIEDEnabled = *(a3 + 80);
+  v109 = *(motion + 8);
+  v108 = *(motion + 9);
+  v110 = *(motion + 7);
+  *&self->_lastAudioAccessorySample.isIEDEnabled = *(motion + 80);
   *self->_lastAudioAccessorySample.gyroBias = v109;
   *&self->_lastAudioAccessorySample.sourceTimestampToMachContinuous = v108;
   *&self->_lastAudioAccessorySample.btcTimestamp = v110;
@@ -6936,7 +6936,7 @@ LABEL_683:
   v326 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_feedAccessoryConfig:(const Config *)a3
+- (void)_feedAccessoryConfig:(const Config *)config
 {
   v57 = *MEMORY[0x1E69E9840];
   if (self->_started)
@@ -6944,7 +6944,7 @@ LABEL_683:
     ptr = self->_analyticsTracker.__ptr_;
     if (ptr)
     {
-      *(ptr + 532) = a3->var3;
+      *(ptr + 532) = config->var3;
     }
 
     if (qword_1EAFE2998 != -1)
@@ -6955,14 +6955,14 @@ LABEL_683:
     v6 = off_1EAFE29A0;
     if (os_log_type_enabled(off_1EAFE29A0, OS_LOG_TYPE_DEFAULT))
     {
-      var0 = a3->var0;
-      var3 = a3->var3;
+      var0 = config->var0;
+      var3 = config->var3;
       *buf = 67240963;
       *&buf[4] = var0;
       *&buf[8] = 2081;
-      *&buf[10] = a3->var1;
+      *&buf[10] = config->var1;
       v53 = 2081;
-      var2 = a3->var2;
+      var2 = config->var2;
       v55 = 1026;
       v56 = var3;
       _os_log_impl(&dword_19B41C000, v6, OS_LOG_TYPE_DEFAULT, "[CMMediaSession] Received accessoryDeviceMotion config. side,%{public}d,configuration,%{private}s,serialNumber,%{private}s,hardwareModel,%{public}d", buf, 0x22u);
@@ -6977,14 +6977,14 @@ LABEL_683:
         dispatch_once(&qword_1EAFE2998, &unk_1F0E292A0);
       }
 
-      v10 = a3->var0;
-      v11 = a3->var3;
+      v10 = config->var0;
+      v11 = config->var3;
       *v47 = 67240963;
       *&v47[4] = v10;
       *&v47[8] = 2081;
-      *&v47[10] = a3->var1;
+      *&v47[10] = config->var1;
       v48 = 2081;
-      v49 = a3->var2;
+      v49 = config->var2;
       v50 = 1026;
       v51 = v11;
       v12 = _os_log_send_and_compose_impl();
@@ -6998,13 +6998,13 @@ LABEL_683:
     objc_sync_enter(self);
     *v47 = 0;
     *&v47[8] = 0x3F80000000000000;
-    v13 = a3->var3;
+    v13 = config->var3;
     if (v13 > 3)
     {
       if (v13 == 4)
       {
         v24 = self->_analyticsTracker.__ptr_;
-        v25 = a3->var0;
+        v25 = config->var0;
         if (v24)
         {
           *(v24 + 533) = v25;
@@ -7061,7 +7061,7 @@ LABEL_683:
       }
 
       v32 = self->_analyticsTracker.__ptr_;
-      v33 = a3->var0;
+      v33 = config->var0;
       if (v32)
       {
         *(v32 + 533) = v33;
@@ -7115,7 +7115,7 @@ LABEL_683:
         if (v13 == 3)
         {
           v14 = self->_analyticsTracker.__ptr_;
-          v15 = a3->var0;
+          v15 = config->var0;
           if (v14)
           {
             *(v14 + 533) = v15;
@@ -7139,7 +7139,7 @@ LABEL_94:
 LABEL_95:
             if (self->_logForReplay)
             {
-              sub_19B5E73F0(self->_logger.__ptr_, a3);
+              sub_19B5E73F0(self->_logger.__ptr_, config);
             }
 
             objc_sync_exit(self);
@@ -7179,15 +7179,15 @@ LABEL_125:
         }
 
 LABEL_59:
-        if (a3->var6)
+        if (config->var6)
         {
           v26 = self->_analyticsTracker.__ptr_;
           if (v26)
           {
-            *(v26 + 533) = a3->var0;
+            *(v26 + 533) = config->var0;
           }
 
-          *v47 = a3->var7;
+          *v47 = config->var7;
           if (qword_1EAFE2998 != -1)
           {
             dispatch_once(&qword_1EAFE2998, &unk_1F0E292A0);
@@ -7196,7 +7196,7 @@ LABEL_59:
           v27 = off_1EAFE29A0;
           if (os_log_type_enabled(off_1EAFE29A0, OS_LOG_TYPE_DEFAULT))
           {
-            v28 = a3->var3;
+            v28 = config->var3;
             *buf = 67240192;
             *&buf[4] = v28;
             _os_log_impl(&dword_19B41C000, v27, OS_LOG_TYPE_DEFAULT, "[CMMediaSession] Use the H2H transformation from IORegistry for model %{public}d", buf, 8u);
@@ -7211,7 +7211,7 @@ LABEL_59:
               dispatch_once(&qword_1EAFE2998, &unk_1F0E292A0);
             }
 
-            v45 = a3->var3;
+            v45 = config->var3;
             v31 = _os_log_send_and_compose_impl();
             sub_19B6BB7CC("Generic", 1, 0, 2, "[CMMediaSession _feedAccessoryConfig:]", "CoreLocation: %s\n", v31);
             if (v31 != buf)
@@ -7231,7 +7231,7 @@ LABEL_59:
         v34 = off_1EAFE29A0;
         if (os_log_type_enabled(off_1EAFE29A0, OS_LOG_TYPE_ERROR))
         {
-          v35 = a3->var3;
+          v35 = config->var3;
           *buf = 67240192;
           *&buf[4] = v35;
           _os_log_impl(&dword_19B41C000, v34, OS_LOG_TYPE_ERROR, "[CMMediaSession] Error -- No H2H transformation for model %{public}d", buf, 8u);
@@ -7249,7 +7249,7 @@ LABEL_59:
           dispatch_once(&qword_1EAFE2998, &unk_1F0E292A0);
         }
 
-        v46 = a3->var3;
+        v46 = config->var3;
         v37 = _os_log_send_and_compose_impl();
         sub_19B6BB7CC("Generic", 1, 0, 0, "[CMMediaSession _feedAccessoryConfig:]", "CoreLocation: %s\n", v37);
 LABEL_126:
@@ -7262,7 +7262,7 @@ LABEL_126:
       }
 
       v20 = self->_analyticsTracker.__ptr_;
-      v21 = a3->var0;
+      v21 = config->var0;
       if (v20)
       {
         *(v20 + 533) = v21;
@@ -7548,12 +7548,12 @@ LABEL_57:
   v30 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_feedAccessoryInEarStatus:(const int *)a3
+- (void)_feedAccessoryInEarStatus:(const int *)status
 {
   v30 = *MEMORY[0x1E69E9840];
   if (self->_started)
   {
-    if (!self->_inEarStatusGatingEnabled || *a3 == self->_inEarStatus)
+    if (!self->_inEarStatusGatingEnabled || *status == self->_inEarStatus)
     {
       goto LABEL_34;
     }
@@ -7562,13 +7562,13 @@ LABEL_57:
     if (self->_logForReplay)
     {
       ptr = self->_logger.__ptr_;
-      v6 = *a3;
+      v6 = *status;
       v7 = mach_continuous_time();
       v8 = sub_19B41E070(v7);
       sub_19B5E7BFC(ptr, v6, v8);
     }
 
-    self->_inEarStatus = *a3;
+    self->_inEarStatus = *status;
     objc_sync_exit(self);
     sub_19B6D6344();
     v9 = sub_19B7851B0();
@@ -7776,11 +7776,11 @@ LABEL_34:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateClientMode:(int64_t)a3
+- (void)_updateClientMode:(int64_t)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   v21 = *MEMORY[0x1E69E9840];
-  v5 = objc_msgSend__mapCMMediaSessionClientModeToRelDMClientMode_(self, a2, a3);
+  v5 = objc_msgSend__mapCMMediaSessionClientModeToRelDMClientMode_(self, a2, mode);
   if (self->_clientMode != v5)
   {
     if (self->_headTrackingService.__ptr_)
@@ -7798,7 +7798,7 @@ LABEL_34:
         *buf = 67240448;
         v18 = clientMode;
         v19 = 1026;
-        v20 = v3;
+        v20 = modeCopy;
         _os_log_impl(&dword_19B41C000, v7, OS_LOG_TYPE_INFO, "[CMMediaSession] Changing clientMode from: %{public}d to %{public}d", buf, 0xEu);
       }
 
@@ -7868,24 +7868,24 @@ LABEL_34:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateTrackingScheme:(int64_t)a3
+- (void)_updateTrackingScheme:(int64_t)scheme
 {
   if (!self->_hasUserDefaultTrackingScheme)
   {
-    objc_msgSend__setTrackingSchemeInternal_(self, a2, a3);
+    objc_msgSend__setTrackingSchemeInternal_(self, a2, scheme);
   }
 }
 
-- (void)_feedScreenUnlockedEvent:(BOOL)a3
+- (void)_feedScreenUnlockedEvent:(BOOL)event
 {
   v14 = *MEMORY[0x1E69E9840];
   if (self->_started)
   {
-    v3 = a3;
+    eventCopy = event;
     ptr = self->_analyticsTracker.__ptr_;
-    if (ptr && *(self->_headTrackingService.__ptr_ + 60) != a3)
+    if (ptr && *(self->_headTrackingService.__ptr_ + 60) != event)
     {
-      if (a3)
+      if (event)
       {
         if (*(ptr + 50) > 0.0)
         {
@@ -7899,7 +7899,7 @@ LABEL_34:
       }
     }
 
-    *(self->_headTrackingService.__ptr_ + 60) = v3;
+    *(self->_headTrackingService.__ptr_ + 60) = eventCopy;
     if (qword_1EAFE2998 != -1)
     {
       dispatch_once(&qword_1EAFE2998, &unk_1F0E292A0);
@@ -7909,7 +7909,7 @@ LABEL_34:
     if (os_log_type_enabled(off_1EAFE29A0, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67240192;
-      v13 = v3;
+      v13 = eventCopy;
       _os_log_impl(&dword_19B41C000, v8, OS_LOG_TYPE_DEFAULT, "[CMMediaSession] Screen state changed. isScreenUnlocked, %{public}d", buf, 8u);
     }
 
@@ -7988,13 +7988,13 @@ LABEL_29:
   return self;
 }
 
-- (void)_logEvent:(id)a3
+- (void)_logEvent:(id)event
 {
   v9 = *MEMORY[0x1E69E9840];
   if (self->_logForReplay)
   {
     objc_sync_enter(self);
-    if (objc_msgSend_getCString_maxLength_encoding_(a3, v5, v8, 1024, 1))
+    if (objc_msgSend_getCString_maxLength_encoding_(event, v5, v8, 1024, 1))
     {
       sub_19B5E6D00(self->_logger.__ptr_, v8, v6);
     }
@@ -8005,21 +8005,21 @@ LABEL_29:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_setFixedTransforms:(const CMOQuaternion *)a3
+- (void)_setFixedTransforms:(const CMOQuaternion *)transforms
 {
   ptr = self->_headTrackingService.__ptr_;
   v5 = ptr + 36864;
-  sub_19B699EF8(ptr, a3);
+  sub_19B699EF8(ptr, transforms);
   v6 = *(v5 + 110);
   if (v6)
   {
-    *(v6 + 76) = *a3;
+    *(v6 + 76) = *transforms;
   }
 
   v7 = *(v5 + 113);
   if (v7)
   {
-    *(v7 + 4968) = *a3;
+    *(v7 + 4968) = *transforms;
   }
 }
 

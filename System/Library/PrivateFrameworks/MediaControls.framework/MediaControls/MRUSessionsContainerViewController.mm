@@ -1,23 +1,23 @@
 @interface MRUSessionsContainerViewController
 - (MPMediaControlsConfiguration)configuration;
-- (MRUSessionsContainerViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (MRUSessionsContainerViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)customRowTappedBlock;
 - (id)dismissalBlock;
 - (void)loadView;
-- (void)presentationControllerDidDismiss:(id)a3;
-- (void)setConfiguration:(id)a3;
-- (void)setCustomRowTappedBlock:(id)a3;
-- (void)setDismissalBlock:(id)a3;
-- (void)transitionToVisible:(BOOL)a3 animated:(BOOL)a4;
+- (void)presentationControllerDidDismiss:(id)dismiss;
+- (void)setConfiguration:(id)configuration;
+- (void)setCustomRowTappedBlock:(id)block;
+- (void)setDismissalBlock:(id)block;
+- (void)transitionToVisible:(BOOL)visible animated:(BOOL)animated;
 @end
 
 @implementation MRUSessionsContainerViewController
 
 - (void)loadView
 {
-  v3 = self;
+  selfCopy = self;
   v2 = sub_1A22D8A00();
-  [(MRUSessionsContainerViewController *)v3 setView:v2];
+  [(MRUSessionsContainerViewController *)selfCopy setView:v2];
 }
 
 - (MPMediaControlsConfiguration)configuration
@@ -27,11 +27,11 @@
   return *(self + v3);
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  v5 = a3;
-  v6 = self;
-  sub_1A22DA3A4(a3);
+  configurationCopy = configuration;
+  selfCopy = self;
+  sub_1A22DA3A4(configuration);
 }
 
 - (id)dismissalBlock
@@ -58,9 +58,9 @@
   return v4;
 }
 
-- (void)setDismissalBlock:(id)a3
+- (void)setDismissalBlock:(id)block
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -78,7 +78,7 @@
   v7 = *v6;
   *v6 = v4;
   v6[1] = v5;
-  v8 = self;
+  selfCopy = self;
   sub_1A210F5C0(v7);
 }
 
@@ -106,9 +106,9 @@
   return v4;
 }
 
-- (void)setCustomRowTappedBlock:(id)a3
+- (void)setCustomRowTappedBlock:(id)block
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -126,26 +126,26 @@
   v7 = *v6;
   *v6 = v4;
   v6[1] = v5;
-  v8 = self;
+  selfCopy = self;
   sub_1A210F5C0(v7);
 }
 
-- (void)transitionToVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)transitionToVisible:(BOOL)visible animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = self;
-  sub_1A22DAC5C(a3, v4);
+  animatedCopy = animated;
+  selfCopy = self;
+  sub_1A22DAC5C(visible, animatedCopy);
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v3 = self;
+  selfCopy = self;
   sub_1A22DB320();
 }
 
-- (MRUSessionsContainerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (MRUSessionsContainerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_1A22E65C8();
     v7 = v6;
@@ -157,8 +157,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_1A22DB514(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_1A22DB514(v5, v7, bundle);
 }
 
 @end

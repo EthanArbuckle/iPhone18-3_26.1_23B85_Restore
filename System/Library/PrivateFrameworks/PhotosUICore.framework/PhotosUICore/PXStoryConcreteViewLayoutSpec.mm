@@ -10,16 +10,16 @@
 - (CGSize)rightEdgeHighlightImageSize;
 - (CGSize)scrubberRegularAssetSize;
 - (CGSize)upNextCountDownSize;
-- (PXStoryConcreteViewLayoutSpec)initWithExtendedTraitCollection:(id)a3 options:(unint64_t)a4 storyConfigurationOptions:(unint64_t)a5 customGeneralChromeTitleConfiguration:(id)a6;
+- (PXStoryConcreteViewLayoutSpec)initWithExtendedTraitCollection:(id)collection options:(unint64_t)options storyConfigurationOptions:(unint64_t)configurationOptions customGeneralChromeTitleConfiguration:(id)configuration;
 - (UIEdgeInsets)browseGridLayoutMargins;
 - (UIEdgeInsets)infoPanelMargins;
 - (UIEdgeInsets)infoPanelPadding;
 - (UIEdgeInsets)scrubberFadeAreaInsets;
 - (UIEdgeInsets)tapNavigationAreaInsets;
 - (double)_calculatePredictedBrowseChromeTextHeight;
-- (double)_predictedChromeTextBoxHeightWithAttributes:(id)a3 numberOfLines:(int64_t)a4;
-- (id)chromeSongAttributedStringWithString:(id)a3;
-- (id)chromeSongStringWithTitle:(id)a3 artist:(id)a4;
+- (double)_predictedChromeTextBoxHeightWithAttributes:(id)attributes numberOfLines:(int64_t)lines;
+- (id)chromeSongAttributedStringWithString:(id)string;
+- (id)chromeSongStringWithTitle:(id)title artist:(id)artist;
 @end
 
 @implementation PXStoryConcreteViewLayoutSpec
@@ -188,13 +188,13 @@
   return result;
 }
 
-- (double)_predictedChromeTextBoxHeightWithAttributes:(id)a3 numberOfLines:(int64_t)a4
+- (double)_predictedChromeTextBoxHeightWithAttributes:(id)attributes numberOfLines:(int64_t)lines
 {
   v5 = MEMORY[0x1E696AAB0];
-  v6 = a3;
-  v7 = [[v5 alloc] initWithString:@"L" attributes:v6];
+  attributesCopy = attributes;
+  v7 = [[v5 alloc] initWithString:@"L" attributes:attributesCopy];
 
-  [v7 px_sizeWithProposedWidth:a4 maximumLines:1 drawingOptions:INFINITY];
+  [v7 px_sizeWithProposedWidth:lines maximumLines:1 drawingOptions:INFINITY];
   v9 = v8;
 
   return v9;
@@ -202,18 +202,18 @@
 
 - (double)_calculatePredictedBrowseChromeTextHeight
 {
-  v3 = [(PXStoryConcreteViewLayoutSpec *)self browseChromeTitleSpec];
-  v4 = [(PXStoryConcreteViewLayoutSpec *)self chromeTitleAttributes];
-  -[PXStoryConcreteViewLayoutSpec _predictedChromeTextBoxHeightWithAttributes:numberOfLines:](self, "_predictedChromeTextBoxHeightWithAttributes:numberOfLines:", v4, [v3 numberOfTitleLines]);
+  browseChromeTitleSpec = [(PXStoryConcreteViewLayoutSpec *)self browseChromeTitleSpec];
+  chromeTitleAttributes = [(PXStoryConcreteViewLayoutSpec *)self chromeTitleAttributes];
+  -[PXStoryConcreteViewLayoutSpec _predictedChromeTextBoxHeightWithAttributes:numberOfLines:](self, "_predictedChromeTextBoxHeightWithAttributes:numberOfLines:", chromeTitleAttributes, [browseChromeTitleSpec numberOfTitleLines]);
   v6 = v5;
 
-  v7 = [(PXStoryConcreteViewLayoutSpec *)self chromeSubtitleAttributes];
-  -[PXStoryConcreteViewLayoutSpec _predictedChromeTextBoxHeightWithAttributes:numberOfLines:](self, "_predictedChromeTextBoxHeightWithAttributes:numberOfLines:", v7, [v3 numberOfSubtitleLines]);
+  chromeSubtitleAttributes = [(PXStoryConcreteViewLayoutSpec *)self chromeSubtitleAttributes];
+  -[PXStoryConcreteViewLayoutSpec _predictedChromeTextBoxHeightWithAttributes:numberOfLines:](self, "_predictedChromeTextBoxHeightWithAttributes:numberOfLines:", chromeSubtitleAttributes, [browseChromeTitleSpec numberOfSubtitleLines]);
   v9 = v8;
 
   v10 = v6 + v9;
-  v11 = [(PXStoryConcreteViewLayoutSpec *)self chromeButtonSpec];
-  [v11 defaultImageSize];
+  chromeButtonSpec = [(PXStoryConcreteViewLayoutSpec *)self chromeButtonSpec];
+  [chromeButtonSpec defaultImageSize];
   v13 = v12;
 
   [(PXStoryConcreteViewLayoutSpec *)self distanceFromTopEdgeToTopButtonCenter];
@@ -223,15 +223,15 @@
   return v15;
 }
 
-- (id)chromeSongAttributedStringWithString:(id)a3
+- (id)chromeSongAttributedStringWithString:(id)string
 {
-  v4 = a3;
-  v5 = [(PXStoryConcreteViewLayoutSpec *)self chromeSongSymbolName];
+  stringCopy = string;
+  chromeSongSymbolName = [(PXStoryConcreteViewLayoutSpec *)self chromeSongSymbolName];
   v6 = MEMORY[0x1E69DCAB8];
-  v7 = [(PXStoryConcreteViewLayoutSpec *)self chromeTitleMusicSystemImageConfiguration];
-  v8 = [v6 _systemImageNamed:v5 withConfiguration:v7];
+  chromeTitleMusicSystemImageConfiguration = [(PXStoryConcreteViewLayoutSpec *)self chromeTitleMusicSystemImageConfiguration];
+  v8 = [v6 _systemImageNamed:chromeSongSymbolName withConfiguration:chromeTitleMusicSystemImageConfiguration];
 
-  v9 = [(PXStoryConcreteViewLayoutSpec *)self chromeSubtitleAttributes];
+  chromeSubtitleAttributes = [(PXStoryConcreteViewLayoutSpec *)self chromeSubtitleAttributes];
   v10 = objc_alloc_init(MEMORY[0x1E69DB7F0]);
   v11 = [v8 imageWithRenderingMode:2];
   [v10 setImage:v11];
@@ -239,43 +239,43 @@
   v12 = [MEMORY[0x1E696AAB0] attributedStringWithAttachment:v10];
   v13 = [v12 mutableCopy];
 
-  [v13 addAttributes:v9 range:{0, objc_msgSend(v13, "length")}];
-  v14 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:@" " attributes:v9];
+  [v13 addAttributes:chromeSubtitleAttributes range:{0, objc_msgSend(v13, "length")}];
+  v14 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:@" " attributes:chromeSubtitleAttributes];
   [v13 appendAttributedString:v14];
 
-  v15 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v4 attributes:v9];
+  v15 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:stringCopy attributes:chromeSubtitleAttributes];
   [v13 appendAttributedString:v15];
 
   return v13;
 }
 
-- (id)chromeSongStringWithTitle:(id)a3 artist:(id)a4
+- (id)chromeSongStringWithTitle:(id)title artist:(id)artist
 {
-  a4;
-  a3;
+  artist;
+  title;
   [(PXStoryConcreteViewLayoutSpec *)self chromeTitleLocalizedSongFormat];
   objc_claimAutoreleasedReturnValue();
   PXStringWithValidatedFormat();
 }
 
-- (PXStoryConcreteViewLayoutSpec)initWithExtendedTraitCollection:(id)a3 options:(unint64_t)a4 storyConfigurationOptions:(unint64_t)a5 customGeneralChromeTitleConfiguration:(id)a6
+- (PXStoryConcreteViewLayoutSpec)initWithExtendedTraitCollection:(id)collection options:(unint64_t)options storyConfigurationOptions:(unint64_t)configurationOptions customGeneralChromeTitleConfiguration:(id)configuration
 {
   v16 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a6;
+  collectionCopy = collection;
+  configurationCopy = configuration;
   v15.receiver = self;
   v15.super_class = PXStoryConcreteViewLayoutSpec;
-  v11 = [(PXStoryConcreteViewLayoutSpec *)&v15 initWithExtendedTraitCollection:v9 options:a4];
+  v11 = [(PXStoryConcreteViewLayoutSpec *)&v15 initWithExtendedTraitCollection:collectionCopy options:options];
 
   if (v11)
   {
     +[PXStorySettings sharedInstance];
     objc_claimAutoreleasedReturnValue();
-    [v9 userInterfaceIdiom];
+    [collectionCopy userInterfaceIdiom];
     [(PXStoryConcreteViewLayoutSpec *)v11 layoutOrientation];
-    [v9 layoutSizeClass];
-    LODWORD(v14) = [v9 insideCollectionDetailsView];
-    [v9 contentSizeCategory];
+    [collectionCopy layoutSizeClass];
+    LODWORD(v14) = [collectionCopy insideCollectionDetailsView];
+    [collectionCopy contentSizeCategory];
     PXPreferredContentSizeCategoryIsAccessibility();
   }
 

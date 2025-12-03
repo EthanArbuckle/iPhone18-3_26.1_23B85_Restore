@@ -1,8 +1,8 @@
 @interface FPOneToManyWeakMap
 - (FPOneToManyWeakMap)init;
-- (id)anyObjectForKey:(id)a3;
-- (id)removeObject:(id)a3;
-- (void)addObject:(id)a3 forKey:(id)a4;
+- (id)anyObjectForKey:(id)key;
+- (id)removeObject:(id)object;
+- (void)addObject:(id)object forKey:(id)key;
 @end
 
 @implementation FPOneToManyWeakMap
@@ -22,34 +22,34 @@
   return v2;
 }
 
-- (void)addObject:(id)a3 forKey:(id)a4
+- (void)addObject:(id)object forKey:(id)key
 {
-  v8 = a3;
-  v6 = a4;
-  if (v8 && v6)
+  objectCopy = object;
+  keyCopy = key;
+  if (objectCopy && keyCopy)
   {
-    v7 = [(NSMutableDictionary *)self->_backingDictionary objectForKeyedSubscript:v6];
-    if (!v7)
+    weakObjectsHashTable = [(NSMutableDictionary *)self->_backingDictionary objectForKeyedSubscript:keyCopy];
+    if (!weakObjectsHashTable)
     {
-      v7 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
-      [(NSMutableDictionary *)self->_backingDictionary setObject:v7 forKeyedSubscript:v6];
+      weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+      [(NSMutableDictionary *)self->_backingDictionary setObject:weakObjectsHashTable forKeyedSubscript:keyCopy];
     }
 
-    [v7 addObject:v8];
+    [weakObjectsHashTable addObject:objectCopy];
   }
 }
 
-- (id)removeObject:(id)a3
+- (id)removeObject:(id)object
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  objectCopy = object;
   v5 = objc_opt_new();
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = [(NSMutableDictionary *)self->_backingDictionary allKeys];
-  v7 = [v6 copy];
+  allKeys = [(NSMutableDictionary *)self->_backingDictionary allKeys];
+  v7 = [allKeys copy];
 
   v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
@@ -67,15 +67,15 @@
 
         v12 = *(*(&v17 + 1) + 8 * i);
         v13 = [(NSMutableDictionary *)self->_backingDictionary objectForKeyedSubscript:v12];
-        if ([v13 containsObject:v4])
+        if ([v13 containsObject:objectCopy])
         {
           [v5 addObject:v12];
-          [v13 removeObject:v4];
+          [v13 removeObject:objectCopy];
         }
 
-        v14 = [v13 anyObject];
+        anyObject = [v13 anyObject];
 
-        if (!v14)
+        if (!anyObject)
         {
           [(NSMutableDictionary *)self->_backingDictionary setObject:0 forKeyedSubscript:v12];
         }
@@ -92,20 +92,20 @@
   return v5;
 }
 
-- (id)anyObjectForKey:(id)a3
+- (id)anyObjectForKey:(id)key
 {
-  if (a3)
+  if (key)
   {
     v3 = [(NSMutableDictionary *)self->_backingDictionary objectForKeyedSubscript:?];
-    v4 = [v3 anyObject];
+    anyObject = [v3 anyObject];
   }
 
   else
   {
-    v4 = 0;
+    anyObject = 0;
   }
 
-  return v4;
+  return anyObject;
 }
 
 @end

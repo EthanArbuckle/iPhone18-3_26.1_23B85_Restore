@@ -1,25 +1,25 @@
 @interface NTKPrideAnalogFace
-+ (BOOL)isAvailableForDevice:(id)a3;
-+ (BOOL)isRestrictedForDevice:(id)a3;
++ (BOOL)isAvailableForDevice:(id)device;
++ (BOOL)isRestrictedForDevice:(id)device;
 + (id)_complicationSlotDescriptors;
-+ (id)_localizedNameOverrideForCustomEditMode:(int64_t)a3 forDevice:(id)a4;
++ (id)_localizedNameOverrideForCustomEditMode:(int64_t)mode forDevice:(id)device;
 + (id)_orderedComplicationSlots;
-- (BOOL)_hasOptionsForCustomEditMode:(int64_t)a3;
-- (Class)_optionClassForCustomEditMode:(int64_t)a3;
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4;
+- (BOOL)_hasOptionsForCustomEditMode:(int64_t)mode;
+- (Class)_optionClassForCustomEditMode:(int64_t)mode;
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot;
 - (id)_faceDescription;
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (id)complicationSlotsHiddenByEditOption:(id)a3;
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4;
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (id)complicationSlotsHiddenByEditOption:(id)option;
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot;
 @end
 
 @implementation NTKPrideAnalogFace
 
 - (id)_faceDescription
 {
-  v2 = [(NTKPrideAnalogFace *)self _faceDescriptionKey];
-  v3 = [NTKPrideAnalogFaceBundle localizedStringForKey:v2 table:@"PrideAnalog" comment:@"Pride Analog face description"];
+  _faceDescriptionKey = [(NTKPrideAnalogFace *)self _faceDescriptionKey];
+  v3 = [NTKPrideAnalogFaceBundle localizedStringForKey:_faceDescriptionKey table:@"PrideAnalog" comment:@"Pride Analog face description"];
 
   return v3;
 }
@@ -59,30 +59,30 @@
   return v2;
 }
 
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v6 = a4;
-  if (a3 == 12)
+  slotCopy = slot;
+  if (mode == 12)
   {
-    v13 = [(NTKPrideAnalogFace *)self device];
-    v14 = [v13 pdrDeviceVersion];
+    device = [(NTKPrideAnalogFace *)self device];
+    pdrDeviceVersion = [device pdrDeviceVersion];
 
     v9 = NTKPrideAnalogStyleEditOption;
-    v10 = [(NTKPrideAnalogFace *)self device];
-    if (v14 <= 0x50200)
+    device2 = [(NTKPrideAnalogFace *)self device];
+    if (pdrDeviceVersion <= 0x50200)
     {
       goto LABEL_6;
     }
 
-    v15 = [(NTKPrideStyleEditOption *)NTKPrideAnalogStyleEditOption optionWithStyle:2 forDevice:v10];
+    v15 = [(NTKPrideStyleEditOption *)NTKPrideAnalogStyleEditOption optionWithStyle:2 forDevice:device2];
 
-    v16 = [(NTKPrideAnalogFace *)self device];
-    v17 = [v15 optionExistsInDevice:v16];
+    device3 = [(NTKPrideAnalogFace *)self device];
+    v17 = [v15 optionExistsInDevice:device3];
 
     if ((v17 & 1) == 0)
     {
-      v10 = [(NTKPrideAnalogFace *)self device];
-      v19 = [(NTKPrideStyleEditOption *)NTKPrideAnalogStyleEditOption optionWithStyle:1 forDevice:v10];
+      device2 = [(NTKPrideAnalogFace *)self device];
+      v19 = [(NTKPrideStyleEditOption *)NTKPrideAnalogStyleEditOption optionWithStyle:1 forDevice:device2];
 
       v15 = v19;
       goto LABEL_8;
@@ -91,19 +91,19 @@
 
   else
   {
-    if (a3 == 15)
+    if (mode == 15)
     {
-      v7 = [(NTKPrideAnalogFace *)self device];
-      v8 = [v7 deviceCategory];
+      device4 = [(NTKPrideAnalogFace *)self device];
+      deviceCategory = [device4 deviceCategory];
 
       v9 = NTKPrideAnalogShapeEditOption;
-      v10 = [(NTKPrideAnalogFace *)self device];
-      if (v8 != &dword_0 + 1)
+      device2 = [(NTKPrideAnalogFace *)self device];
+      if (deviceCategory != &dword_0 + 1)
       {
         v11 = NTKPrideAnalogShapeEditOption;
         v12 = 1;
 LABEL_7:
-        v15 = [(__objc2_class *)v11 optionWithStyle:v12 forDevice:v10];
+        v15 = [(__objc2_class *)v11 optionWithStyle:v12 forDevice:device2];
 LABEL_8:
 
         goto LABEL_11;
@@ -123,86 +123,86 @@ LABEL_11:
   return v15;
 }
 
-- (BOOL)_hasOptionsForCustomEditMode:(int64_t)a3
+- (BOOL)_hasOptionsForCustomEditMode:(int64_t)mode
 {
-  if (a3 != 15)
+  if (mode != 15)
   {
     return 1;
   }
 
-  v3 = [(NTKPrideAnalogFace *)self device];
-  v4 = [v3 deviceCategory] != &dword_0 + 1;
+  device = [(NTKPrideAnalogFace *)self device];
+  v4 = [device deviceCategory] != &dword_0 + 1;
 
   return v4;
 }
 
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v7 = a3;
-  if (a4 == 12)
+  optionCopy = option;
+  if (mode == 12)
   {
     v8 = [(NTKPrideAnalogFace *)self _optionClassForCustomEditMode:12];
-    v9 = [(NTKPrideAnalogFace *)self device];
-    v10 = [(objc_class *)v8 indexOfOption:v7 forDevice:v9];
+    device = [(NTKPrideAnalogFace *)self device];
+    v10 = [(objc_class *)v8 indexOfOption:optionCopy forDevice:device];
 
     v11 = v10 - 1;
   }
 
   else
   {
-    v12 = [(NTKPrideAnalogFace *)self _optionClassForCustomEditMode:a4];
-    v9 = [(NTKPrideAnalogFace *)self device];
-    v11 = [(objc_class *)v12 indexOfOption:v7 forDevice:v9];
+    v12 = [(NTKPrideAnalogFace *)self _optionClassForCustomEditMode:mode];
+    device = [(NTKPrideAnalogFace *)self device];
+    v11 = [(objc_class *)v12 indexOfOption:optionCopy forDevice:device];
   }
 
   return v11;
 }
 
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a3 == 12)
+  if (mode == 12)
   {
-    v5 = [(NTKPrideAnalogFace *)self _optionClassForCustomEditMode:12, a4];
-    v6 = [(NTKPrideAnalogFace *)self device];
-    v7 = [(objc_class *)v5 numberOfOptionsForDevice:v6]- 1;
+    slot = [(NTKPrideAnalogFace *)self _optionClassForCustomEditMode:12, slot];
+    device = [(NTKPrideAnalogFace *)self device];
+    v7 = [(objc_class *)slot numberOfOptionsForDevice:device]- 1;
   }
 
   else
   {
-    v8 = [(NTKPrideAnalogFace *)self _optionClassForCustomEditMode:a3, a4];
-    v6 = [(NTKPrideAnalogFace *)self device];
-    v7 = [(objc_class *)v8 numberOfOptionsForDevice:v6];
+    slot2 = [(NTKPrideAnalogFace *)self _optionClassForCustomEditMode:mode, slot];
+    device = [(NTKPrideAnalogFace *)self device];
+    v7 = [(objc_class *)slot2 numberOfOptionsForDevice:device];
   }
 
   return v7;
 }
 
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a4 == 12)
+  if (mode == 12)
   {
-    v7 = [(NTKPrideAnalogFace *)self _optionClassForCustomEditMode:12, 12, a5];
-    v8 = [(NTKPrideAnalogFace *)self device];
-    v9 = a3 + 1;
-    v10 = v7;
+    slot = [(NTKPrideAnalogFace *)self _optionClassForCustomEditMode:12, 12, slot];
+    device = [(NTKPrideAnalogFace *)self device];
+    indexCopy = index + 1;
+    v10 = slot;
   }
 
   else
   {
-    v11 = [(NTKPrideAnalogFace *)self _optionClassForCustomEditMode:a4];
-    v8 = [(NTKPrideAnalogFace *)self device];
+    v11 = [(NTKPrideAnalogFace *)self _optionClassForCustomEditMode:mode];
+    device = [(NTKPrideAnalogFace *)self device];
     v10 = v11;
-    v9 = a3;
+    indexCopy = index;
   }
 
-  v12 = [(objc_class *)v10 optionAtIndex:v9 forDevice:v8];
+  v12 = [(objc_class *)v10 optionAtIndex:indexCopy forDevice:device];
 
   return v12;
 }
 
-- (Class)_optionClassForCustomEditMode:(int64_t)a3
+- (Class)_optionClassForCustomEditMode:(int64_t)mode
 {
-  if (a3 == 15)
+  if (mode == 15)
   {
     v4 = off_243E8;
 LABEL_5:
@@ -212,7 +212,7 @@ LABEL_5:
     return v6;
   }
 
-  if (a3 == 12)
+  if (mode == 12)
   {
     v4 = &off_243F0;
     goto LABEL_5;
@@ -223,9 +223,9 @@ LABEL_5:
   return v6;
 }
 
-+ (BOOL)isRestrictedForDevice:(id)a3
++ (BOOL)isRestrictedForDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   if (NTKFaceStyleIsAvailable())
   {
     v4 = NTKGizmoOrCompanionAreRussian();
@@ -239,12 +239,12 @@ LABEL_5:
   return v4;
 }
 
-+ (BOOL)isAvailableForDevice:(id)a3
++ (BOOL)isAvailableForDevice:(id)device
 {
-  v3 = a3;
-  if ([v3 pdrDeviceVersion] >= 0x50201)
+  deviceCopy = device;
+  if ([deviceCopy pdrDeviceVersion] >= 0x50201)
   {
-    v4 = ![NTKPrideAnalogFace isRestrictedForDevice:v3];
+    v4 = ![NTKPrideAnalogFace isRestrictedForDevice:deviceCopy];
   }
 
   else
@@ -255,16 +255,16 @@ LABEL_5:
   return v4;
 }
 
-+ (id)_localizedNameOverrideForCustomEditMode:(int64_t)a3 forDevice:(id)a4
++ (id)_localizedNameOverrideForCustomEditMode:(int64_t)mode forDevice:(id)device
 {
-  v5 = a4;
-  if (a3 == 15)
+  deviceCopy = device;
+  if (mode == 15)
   {
     v6 = @"EDIT_MODE_LABEL_DIAL";
     goto LABEL_5;
   }
 
-  if (a3 == 12)
+  if (mode == 12)
   {
     v6 = @"EDIT_MODE_LABEL_STYLE";
 LABEL_5:
@@ -280,11 +280,11 @@ LABEL_7:
   return v8;
 }
 
-- (id)complicationSlotsHiddenByEditOption:(id)a3
+- (id)complicationSlotsHiddenByEditOption:(id)option
 {
-  v4 = a3;
+  optionCopy = option;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v4 style] == &dword_0 + 1)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [optionCopy style] == &dword_0 + 1)
   {
     v9[0] = NTKComplicationSlotTopLeft;
     v9[1] = NTKComplicationSlotTopRight;
@@ -297,7 +297,7 @@ LABEL_7:
   {
     v8.receiver = self;
     v8.super_class = NTKPrideAnalogFace;
-    v5 = [(NTKPrideAnalogFace *)&v8 complicationSlotsHiddenByEditOption:v4];
+    v5 = [(NTKPrideAnalogFace *)&v8 complicationSlotsHiddenByEditOption:optionCopy];
   }
 
   v6 = v5;

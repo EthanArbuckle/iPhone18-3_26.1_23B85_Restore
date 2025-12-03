@@ -1,37 +1,37 @@
 @interface TIMecabraFacemarkCandidate
-+ (id)candidateWithCandidate:(id)a3 category:(id)a4 input:(id)a5 mecabraCandidatePointerValue:(id)a6;
-- (BOOL)isEqual:(id)a3;
-- (TIMecabraFacemarkCandidate)initWithCandidate:(id)a3 category:(id)a4 input:(id)a5 mecabraCandidatePointerValue:(id)a6;
-- (TIMecabraFacemarkCandidate)initWithCandidateResultSetCoder:(id)a3;
-- (TIMecabraFacemarkCandidate)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)candidateWithCandidate:(id)candidate category:(id)category input:(id)input mecabraCandidatePointerValue:(id)value;
+- (BOOL)isEqual:(id)equal;
+- (TIMecabraFacemarkCandidate)initWithCandidate:(id)candidate category:(id)category input:(id)input mecabraCandidatePointerValue:(id)value;
+- (TIMecabraFacemarkCandidate)initWithCandidateResultSetCoder:(id)coder;
+- (TIMecabraFacemarkCandidate)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCandidateResultSetCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCandidateResultSetCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TIMecabraFacemarkCandidate
 
-- (void)encodeWithCandidateResultSetCoder:(id)a3
+- (void)encodeWithCandidateResultSetCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = TIMecabraFacemarkCandidate;
-  v4 = a3;
-  [(TIMecabraCandidate *)&v6 encodeWithCandidateResultSetCoder:v4];
+  coderCopy = coder;
+  [(TIMecabraCandidate *)&v6 encodeWithCandidateResultSetCoder:coderCopy];
   v5 = [(TIMecabraFacemarkCandidate *)self category:v6.receiver];
-  [v4 encodeString:v5];
+  [coderCopy encodeString:v5];
 }
 
-- (TIMecabraFacemarkCandidate)initWithCandidateResultSetCoder:(id)a3
+- (TIMecabraFacemarkCandidate)initWithCandidateResultSetCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = TIMecabraFacemarkCandidate;
-  v5 = [(TIMecabraCandidate *)&v10 initWithCandidateResultSetCoder:v4];
+  v5 = [(TIMecabraCandidate *)&v10 initWithCandidateResultSetCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeString];
-    v7 = [v6 copy];
+    decodeString = [coderCopy decodeString];
+    v7 = [decodeString copy];
     category = v5->_category;
     v5->_category = v7;
   }
@@ -43,18 +43,18 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(TIMecabraCandidate *)self input];
-  v6 = [(TIMecabraCandidate *)self candidate];
-  v7 = [(TIMecabraFacemarkCandidate *)self category];
-  v8 = [v3 stringWithFormat:@"<%@: %p '%@' -> '%@' (%@)", v4, self, v5, v6, v7];
+  input = [(TIMecabraCandidate *)self input];
+  candidate = [(TIMecabraCandidate *)self candidate];
+  category = [(TIMecabraFacemarkCandidate *)self category];
+  v8 = [v3 stringWithFormat:@"<%@: %p '%@' -> '%@' (%@)", v4, self, input, candidate, category];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -64,10 +64,10 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(TIMecabraFacemarkCandidate *)v5 category];
-      v7 = [(TIMecabraFacemarkCandidate *)self category];
-      v8 = [v6 isEqualToString:v7];
+      v5 = equalCopy;
+      category = [(TIMecabraFacemarkCandidate *)v5 category];
+      category2 = [(TIMecabraFacemarkCandidate *)self category];
+      v8 = [category isEqualToString:category2];
 
       if (v8)
       {
@@ -91,28 +91,28 @@
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = TIMecabraFacemarkCandidate;
-  [(TIMecabraCandidate *)&v6 encodeWithCoder:v4];
+  [(TIMecabraCandidate *)&v6 encodeWithCoder:coderCopy];
   category = self->_category;
   if (category)
   {
-    [v4 encodeObject:category forKey:@"category"];
+    [coderCopy encodeObject:category forKey:@"category"];
   }
 }
 
-- (TIMecabraFacemarkCandidate)initWithCoder:(id)a3
+- (TIMecabraFacemarkCandidate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = TIMecabraFacemarkCandidate;
-  v5 = [(TIMecabraCandidate *)&v10 initWithCoder:v4];
+  v5 = [(TIMecabraCandidate *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"category"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"category"];
     v7 = [v6 copy];
     category = v5->_category;
     v5->_category = v7;
@@ -121,14 +121,14 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = TIMecabraFacemarkCandidate;
   v5 = [(TIMecabraCandidate *)&v9 copyWithZone:?];
   if (v5)
   {
-    v6 = [(NSString *)self->_category copyWithZone:a3];
+    v6 = [(NSString *)self->_category copyWithZone:zone];
     v7 = v5[31];
     v5[31] = v6;
   }
@@ -136,28 +136,28 @@
   return v5;
 }
 
-- (TIMecabraFacemarkCandidate)initWithCandidate:(id)a3 category:(id)a4 input:(id)a5 mecabraCandidatePointerValue:(id)a6
+- (TIMecabraFacemarkCandidate)initWithCandidate:(id)candidate category:(id)category input:(id)input mecabraCandidatePointerValue:(id)value
 {
-  v10 = a4;
+  categoryCopy = category;
   v14.receiver = self;
   v14.super_class = TIMecabraFacemarkCandidate;
-  v11 = [(TIMecabraCandidate *)&v14 initWithSurface:a3 input:a5 mecabraCandidatePointerValue:a6];
+  v11 = [(TIMecabraCandidate *)&v14 initWithSurface:candidate input:input mecabraCandidatePointerValue:value];
   v12 = v11;
   if (v11)
   {
-    [(TIMecabraFacemarkCandidate *)v11 setCategory:v10];
+    [(TIMecabraFacemarkCandidate *)v11 setCategory:categoryCopy];
   }
 
   return v12;
 }
 
-+ (id)candidateWithCandidate:(id)a3 category:(id)a4 input:(id)a5 mecabraCandidatePointerValue:(id)a6
++ (id)candidateWithCandidate:(id)candidate category:(id)category input:(id)input mecabraCandidatePointerValue:(id)value
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[a1 alloc] initWithCandidate:v13 category:v12 input:v11 mecabraCandidatePointerValue:v10];
+  valueCopy = value;
+  inputCopy = input;
+  categoryCopy = category;
+  candidateCopy = candidate;
+  v14 = [[self alloc] initWithCandidate:candidateCopy category:categoryCopy input:inputCopy mecabraCandidatePointerValue:valueCopy];
 
   return v14;
 }

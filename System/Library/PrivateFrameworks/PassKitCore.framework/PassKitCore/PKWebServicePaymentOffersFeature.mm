@@ -1,29 +1,29 @@
 @interface PKWebServicePaymentOffersFeature
-- (BOOL)isSupportedOnDevice:(id)a3;
-- (PKWebServicePaymentOffersFeature)initWithDictionary:(id)a3 region:(id)a4;
+- (BOOL)isSupportedOnDevice:(id)device;
+- (PKWebServicePaymentOffersFeature)initWithDictionary:(id)dictionary region:(id)region;
 - (id)description;
 @end
 
 @implementation PKWebServicePaymentOffersFeature
 
-- (PKWebServicePaymentOffersFeature)initWithDictionary:(id)a3 region:(id)a4
+- (PKWebServicePaymentOffersFeature)initWithDictionary:(id)dictionary region:(id)region
 {
   v5.receiver = self;
   v5.super_class = PKWebServicePaymentOffersFeature;
-  return [(PKWebServiceRegionFeature *)&v5 initWithFeatureType:15 dictionary:a3 region:a4];
+  return [(PKWebServiceRegionFeature *)&v5 initWithFeatureType:15 dictionary:dictionary region:region];
 }
 
-- (BOOL)isSupportedOnDevice:(id)a3
+- (BOOL)isSupportedOnDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(PKWebServiceRegionFeature *)self versionRange];
+  deviceCopy = device;
+  versionRange = [(PKWebServiceRegionFeature *)self versionRange];
 
-  if (v5)
+  if (versionRange)
   {
-    v6 = [v4 deviceClass];
+    deviceClass = [deviceCopy deviceClass];
     v7 = +[PKOSVersionRequirement fromDeviceVersion];
-    v8 = [(PKWebServiceRegionFeature *)self versionRange];
-    v9 = [v8 versionMeetsRequirements:v7 deviceClass:v6];
+    versionRange2 = [(PKWebServiceRegionFeature *)self versionRange];
+    v9 = [versionRange2 versionMeetsRequirements:v7 deviceClass:deviceClass];
   }
 
   else
@@ -41,9 +41,9 @@
   v5 = NSStringFromClass(v4);
   v6 = [v3 stringWithFormat:@"<%@: %p ", v5, self];;
 
-  v7 = [(PKWebServiceRegionFeature *)self versionRange];
-  v8 = [v7 asDictionary];
-  [v6 appendFormat:@"versionRange: '%@'; ", v8];
+  versionRange = [(PKWebServiceRegionFeature *)self versionRange];
+  asDictionary = [versionRange asDictionary];
+  [v6 appendFormat:@"versionRange: '%@'; ", asDictionary];
 
   [v6 appendFormat:@">"];
   v9 = [MEMORY[0x1E696AEC0] stringWithString:v6];

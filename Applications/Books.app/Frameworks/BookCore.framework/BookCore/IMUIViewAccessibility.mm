@@ -6,8 +6,8 @@
 
 - (BOOL)accessibilityPerformEscape
 {
-  v3 = [(IMUIViewAccessibility *)self imaxIdentification];
-  if ([v3 isEqualToString:@"AENoteWindow"])
+  imaxIdentification = [(IMUIViewAccessibility *)self imaxIdentification];
+  if ([imaxIdentification isEqualToString:@"AENoteWindow"])
   {
     v4 = +[NSNotificationCenter defaultCenter];
     [v4 postNotificationName:AEAnnotationPopoverShouldHideNotification object:0];

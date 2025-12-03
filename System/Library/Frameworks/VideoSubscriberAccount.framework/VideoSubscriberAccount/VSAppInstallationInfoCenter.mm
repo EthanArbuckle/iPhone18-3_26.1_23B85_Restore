@@ -30,10 +30,10 @@
 
         v9 = *(*(&v14 + 1) + 8 * i);
         v10 = objc_autoreleasePoolPush();
-        v11 = [v9 bundleIdentifier];
-        if (v11)
+        bundleIdentifier = [v9 bundleIdentifier];
+        if (bundleIdentifier)
         {
-          [v2 addObject:v11];
+          [v2 addObject:bundleIdentifier];
         }
 
         objc_autoreleasePoolPop(v10);

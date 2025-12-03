@@ -1,11 +1,11 @@
 @interface PMDevice
 - (PMDevice)init;
-- (PMDevice)initWithDeviceName:(id)a3 operatingSystemName:(id)a4 operatingSystemVersion:(id)a5 deviceImageSymbolName:(id)a6;
+- (PMDevice)initWithDeviceName:(id)name operatingSystemName:(id)systemName operatingSystemVersion:(id)version deviceImageSymbolName:(id)symbolName;
 @end
 
 @implementation PMDevice
 
-- (PMDevice)initWithDeviceName:(id)a3 operatingSystemName:(id)a4 operatingSystemVersion:(id)a5 deviceImageSymbolName:(id)a6
+- (PMDevice)initWithDeviceName:(id)name operatingSystemName:(id)systemName operatingSystemVersion:(id)version deviceImageSymbolName:(id)symbolName
 {
   v7 = sub_21CB855C4();
   v9 = v8;

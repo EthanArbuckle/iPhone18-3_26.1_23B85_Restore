@@ -1,6 +1,6 @@
 @interface AKSecondFactorContentViewController
 + (void)initialize;
-- (double)_codeGeneratorSpacing:(double)a3;
+- (double)_codeGeneratorSpacing:(double)spacing;
 - (void)_configureCodeGenView;
 - (void)_configureFooterView;
 - (void)_configureTitleHeaderView;
@@ -11,7 +11,7 @@
 
 + (void)initialize
 {
-  if (a1 == objc_opt_class())
+  if (self == objc_opt_class())
   {
     sub_100003180();
   }
@@ -19,61 +19,61 @@
 
 - (void)loadView
 {
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
   v10.receiver = self;
   v10.super_class = AKSecondFactorContentViewController;
   [(AKSecondFactorContentViewController *)&v10 loadView];
-  v4 = [(AKSecondFactorContentViewController *)v12 extensionContext];
-  v3 = [v4 inputItems];
-  v9 = [v3 firstObject];
+  extensionContext = [(AKSecondFactorContentViewController *)selfCopy extensionContext];
+  inputItems = [extensionContext inputItems];
+  firstObject = [inputItems firstObject];
 
-  v5 = [v9 ak_context];
-  [(AKSecondFactorContentViewController *)v12 setAuthenticationContext:?];
+  ak_context = [firstObject ak_context];
+  [(AKSecondFactorContentViewController *)selfCopy setAuthenticationContext:?];
 
   v8 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
-  [(AKSecondFactorContentViewController *)v12 setView:v8];
-  [(AKSecondFactorContentViewController *)v12 _configureTitleHeaderView];
-  [(AKSecondFactorContentViewController *)v12 _configureCodeGenView];
-  [(AKSecondFactorContentViewController *)v12 _configureFooterView];
-  v6 = [(AKSecondFactorContentViewController *)v12 view];
-  [v6 systemLayoutSizeFittingSize:{UILayoutFittingExpandedSize.width, UILayoutFittingExpandedSize.height}];
+  [(AKSecondFactorContentViewController *)selfCopy setView:v8];
+  [(AKSecondFactorContentViewController *)selfCopy _configureTitleHeaderView];
+  [(AKSecondFactorContentViewController *)selfCopy _configureCodeGenView];
+  [(AKSecondFactorContentViewController *)selfCopy _configureFooterView];
+  view = [(AKSecondFactorContentViewController *)selfCopy view];
+  [view systemLayoutSizeFittingSize:{UILayoutFittingExpandedSize.width, UILayoutFittingExpandedSize.height}];
   v7 = v2;
 
-  [(AKSecondFactorContentViewController *)v12 setPreferredContentSize:270.0, v7];
+  [(AKSecondFactorContentViewController *)selfCopy setPreferredContentSize:270.0, v7];
   objc_storeStrong(&v8, 0);
-  objc_storeStrong(&v9, 0);
+  objc_storeStrong(&firstObject, 0);
 }
 
 - (void)_configureTitleHeaderView
 {
-  v16 = self;
+  selfCopy = self;
   v15[1] = a2;
   v2 = [objc_alloc(sub_100003358()) initWithNibName:0 bundle:?];
-  titleHeaderViewController = v16->_titleHeaderViewController;
-  v16->_titleHeaderViewController = v2;
+  titleHeaderViewController = selfCopy->_titleHeaderViewController;
+  selfCopy->_titleHeaderViewController = v2;
 
-  v5 = [(AKAppleIDAuthenticationContext *)v16->_authenticationContext _message];
-  v4 = [(AKBasicLoginContentViewController *)v16->_titleHeaderViewController contentContainerView];
-  [v4 setTitleText:v5];
+  _message = [(AKAppleIDAuthenticationContext *)selfCopy->_authenticationContext _message];
+  contentContainerView = [(AKBasicLoginContentViewController *)selfCopy->_titleHeaderViewController contentContainerView];
+  [contentContainerView setTitleText:_message];
 
-  v7 = [(AKAppleIDAuthenticationContext *)v16->_authenticationContext _interpolatedReason];
-  v6 = [(AKBasicLoginContentViewController *)v16->_titleHeaderViewController contentContainerView];
-  [v6 setMessageText:v7];
+  _interpolatedReason = [(AKAppleIDAuthenticationContext *)selfCopy->_authenticationContext _interpolatedReason];
+  contentContainerView2 = [(AKBasicLoginContentViewController *)selfCopy->_titleHeaderViewController contentContainerView];
+  [contentContainerView2 setMessageText:_interpolatedReason];
 
-  [(AKSecondFactorContentViewController *)v16 addChildViewController:v16->_titleHeaderViewController];
-  v15[0] = [(AKBasicLoginContentViewController *)v16->_titleHeaderViewController view];
+  [(AKSecondFactorContentViewController *)selfCopy addChildViewController:selfCopy->_titleHeaderViewController];
+  v15[0] = [(AKBasicLoginContentViewController *)selfCopy->_titleHeaderViewController view];
   [v15[0] setTranslatesAutoresizingMaskIntoConstraints:0];
-  v8 = [(AKSecondFactorContentViewController *)v16 view];
-  [v8 addSubview:v15[0]];
+  view = [(AKSecondFactorContentViewController *)selfCopy view];
+  [view addSubview:v15[0]];
 
   v9 = v15[0];
-  v11 = [(AKSecondFactorContentViewController *)v16 view];
+  view2 = [(AKSecondFactorContentViewController *)selfCopy view];
   v10 = [NSLayoutConstraint constraintWithItem:"constraintWithItem:attribute:relatedBy:toItem:attribute:multiplier:constant:" attribute:v9 relatedBy:7 toItem:? attribute:? multiplier:? constant:?];
   [(NSLayoutConstraint *)v10 setActive:1];
 
   v12 = v15[0];
-  v14 = [(AKSecondFactorContentViewController *)v16 view];
+  view3 = [(AKSecondFactorContentViewController *)selfCopy view];
   v13 = [NSLayoutConstraint constraintWithItem:"constraintWithItem:attribute:relatedBy:toItem:attribute:multiplier:constant:" attribute:v12 relatedBy:3 toItem:0 attribute:1.0 multiplier:0.0 constant:?];
   [(NSLayoutConstraint *)v13 setActive:1];
 
@@ -83,10 +83,10 @@
 - (void)_configureCodeGenView
 {
   v22 = [AKCodeGenerationView alloc];
-  v23 = [(AKAppleIDAuthenticationContext *)self->_authenticationContext generatedCode];
-  if (v23)
+  generatedCode = [(AKAppleIDAuthenticationContext *)self->_authenticationContext generatedCode];
+  if (generatedCode)
   {
-    v21 = v23;
+    v21 = generatedCode;
   }
 
   else
@@ -98,119 +98,119 @@
   codeGeneratorView = self->_codeGeneratorView;
   self->_codeGeneratorView = v2;
 
-  v18 = [(AKSecondFactorContentViewController *)self view];
-  [v18 addSubview:self->_codeGeneratorView];
+  view = [(AKSecondFactorContentViewController *)self view];
+  [view addSubview:self->_codeGeneratorView];
 
   v19 = +[AKFeatureManager sharedManager];
-  v20 = [v19 isAuthKitSolariumFeatureEnabled];
+  isAuthKitSolariumFeatureEnabled = [v19 isAuthKitSolariumFeatureEnabled];
 
-  if (v20)
+  if (isAuthKitSolariumFeatureEnabled)
   {
     v12 = self->_codeGeneratorView;
-    v14 = [(AKSecondFactorContentViewController *)self view];
+    view2 = [(AKSecondFactorContentViewController *)self view];
     v13 = [NSLayoutConstraint constraintWithItem:"constraintWithItem:attribute:relatedBy:toItem:attribute:multiplier:constant:" attribute:v12 relatedBy:5 toItem:? attribute:? multiplier:? constant:?];
     [(NSLayoutConstraint *)v13 setActive:1];
 
     v15 = self->_codeGeneratorView;
-    v17 = [(AKBasicLoginContentViewController *)self->_titleHeaderViewController view];
+    view3 = [(AKBasicLoginContentViewController *)self->_titleHeaderViewController view];
     [(AKSecondFactorContentViewController *)self _codeGeneratorSpacing:50.0];
-    v16 = [NSLayoutConstraint constraintWithItem:v15 attribute:12 relatedBy:0 toItem:v17 attribute:11 multiplier:1.0 constant:v4];
+    v16 = [NSLayoutConstraint constraintWithItem:v15 attribute:12 relatedBy:0 toItem:view3 attribute:11 multiplier:1.0 constant:v4];
     [(NSLayoutConstraint *)v16 setActive:1];
   }
 
   else
   {
     v6 = self->_codeGeneratorView;
-    v8 = [(AKSecondFactorContentViewController *)self view];
+    view4 = [(AKSecondFactorContentViewController *)self view];
     v7 = [NSLayoutConstraint constraintWithItem:"constraintWithItem:attribute:relatedBy:toItem:attribute:multiplier:constant:" attribute:v6 relatedBy:9 toItem:? attribute:? multiplier:? constant:?];
     [(NSLayoutConstraint *)v7 setActive:1];
 
     v9 = self->_codeGeneratorView;
-    v11 = [(AKBasicLoginContentViewController *)self->_titleHeaderViewController view];
+    view5 = [(AKBasicLoginContentViewController *)self->_titleHeaderViewController view];
     [(AKSecondFactorContentViewController *)self _codeGeneratorSpacing:50.0];
-    v10 = [NSLayoutConstraint constraintWithItem:v9 attribute:12 relatedBy:0 toItem:v11 attribute:11 multiplier:1.0 constant:v5];
+    v10 = [NSLayoutConstraint constraintWithItem:v9 attribute:12 relatedBy:0 toItem:view5 attribute:11 multiplier:1.0 constant:v5];
     [(NSLayoutConstraint *)v10 setActive:1];
   }
 }
 
 - (void)_configureFooterView
 {
-  v27 = self;
+  selfCopy = self;
   v26[1] = a2;
   v23 = +[AKFeatureManager sharedManager];
-  v24 = [v23 isAuthKitSolariumFeatureEnabled];
+  isAuthKitSolariumFeatureEnabled = [v23 isAuthKitSolariumFeatureEnabled];
 
   v2 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
-  footerView = v27->_footerView;
-  v27->_footerView = v2;
+  footerView = selfCopy->_footerView;
+  selfCopy->_footerView = v2;
 
-  if (v24)
+  if (isAuthKitSolariumFeatureEnabled)
   {
     v26[0] = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleFootnote addingSymbolicTraits:0x8000 options:2];
-    v20 = v27->_footerView;
-    v21 = [(AKAppleIDAuthenticationContext *)v27->_authenticationContext notificationDisclaimer];
+    v20 = selfCopy->_footerView;
+    notificationDisclaimer = [(AKAppleIDAuthenticationContext *)selfCopy->_authenticationContext notificationDisclaimer];
     [(UILabel *)v20 setText:?];
 
     v22 = [UIFont fontWithDescriptor:v26[0] size:0.0];
-    [(UILabel *)v27->_footerView setFont:?];
+    [(UILabel *)selfCopy->_footerView setFont:?];
 
-    [(UILabel *)v27->_footerView setTextAlignment:4];
-    [(UILabel *)v27->_footerView setNumberOfLines:0];
-    [(UILabel *)v27->_footerView setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(UILabel *)selfCopy->_footerView setTextAlignment:4];
+    [(UILabel *)selfCopy->_footerView setNumberOfLines:0];
+    [(UILabel *)selfCopy->_footerView setTranslatesAutoresizingMaskIntoConstraints:0];
     LODWORD(v4) = 1055286886;
-    [(UILabel *)v27->_footerView _setHyphenationFactor:v4];
-    [(UILabel *)v27->_footerView setPreferredMaxLayoutWidth:238.0];
+    [(UILabel *)selfCopy->_footerView _setHyphenationFactor:v4];
+    [(UILabel *)selfCopy->_footerView setPreferredMaxLayoutWidth:238.0];
     objc_storeStrong(v26, 0);
   }
 
   else
   {
     v25 = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleFootnote addingSymbolicTraits:0x8000 options:2];
-    v17 = v27->_footerView;
-    v18 = [(AKAppleIDAuthenticationContext *)v27->_authenticationContext notificationDisclaimer];
+    v17 = selfCopy->_footerView;
+    notificationDisclaimer2 = [(AKAppleIDAuthenticationContext *)selfCopy->_authenticationContext notificationDisclaimer];
     [(UILabel *)v17 setText:?];
 
     v19 = [UIFont fontWithDescriptor:v25 size:0.0];
-    [(UILabel *)v27->_footerView setFont:?];
+    [(UILabel *)selfCopy->_footerView setFont:?];
 
-    [(UILabel *)v27->_footerView setTextAlignment:1];
-    [(UILabel *)v27->_footerView setNumberOfLines:0];
-    [(UILabel *)v27->_footerView setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(UILabel *)selfCopy->_footerView setTextAlignment:1];
+    [(UILabel *)selfCopy->_footerView setNumberOfLines:0];
+    [(UILabel *)selfCopy->_footerView setTranslatesAutoresizingMaskIntoConstraints:0];
     LODWORD(v5) = 1055286886;
-    [(UILabel *)v27->_footerView _setHyphenationFactor:v5];
-    [(UILabel *)v27->_footerView setPreferredMaxLayoutWidth:238.0];
+    [(UILabel *)selfCopy->_footerView _setHyphenationFactor:v5];
+    [(UILabel *)selfCopy->_footerView setPreferredMaxLayoutWidth:238.0];
     objc_storeStrong(&v25, 0);
   }
 
-  v6 = [(AKSecondFactorContentViewController *)v27 view];
-  [v6 addSubview:v27->_footerView];
+  view = [(AKSecondFactorContentViewController *)selfCopy view];
+  [view addSubview:selfCopy->_footerView];
 
-  v7 = v27->_footerView;
-  v9 = [(AKSecondFactorContentViewController *)v27 view];
+  v7 = selfCopy->_footerView;
+  view2 = [(AKSecondFactorContentViewController *)selfCopy view];
   v8 = [NSLayoutConstraint constraintWithItem:"constraintWithItem:attribute:relatedBy:toItem:attribute:multiplier:constant:" attribute:v7 relatedBy:5 toItem:? attribute:? multiplier:? constant:?];
   [(NSLayoutConstraint *)v8 setActive:1];
 
-  v10 = v27->_footerView;
-  v12 = [(AKSecondFactorContentViewController *)v27 view];
+  v10 = selfCopy->_footerView;
+  view3 = [(AKSecondFactorContentViewController *)selfCopy view];
   v11 = [NSLayoutConstraint constraintWithItem:"constraintWithItem:attribute:relatedBy:toItem:attribute:multiplier:constant:" attribute:v10 relatedBy:6 toItem:0 attribute:1.0 multiplier:? constant:?];
   [(NSLayoutConstraint *)v11 setActive:1];
 
-  v13 = [NSLayoutConstraint constraintWithItem:v27->_footerView attribute:3 relatedBy:0 toItem:v27->_codeGeneratorView attribute:1.0 multiplier:16.0 constant:?];
+  v13 = [NSLayoutConstraint constraintWithItem:selfCopy->_footerView attribute:3 relatedBy:0 toItem:selfCopy->_codeGeneratorView attribute:1.0 multiplier:16.0 constant:?];
   [(NSLayoutConstraint *)v13 setActive:1];
 
-  v14 = v27->_footerView;
-  v16 = [(AKSecondFactorContentViewController *)v27 view];
+  v14 = selfCopy->_footerView;
+  view4 = [(AKSecondFactorContentViewController *)selfCopy view];
   v15 = [NSLayoutConstraint constraintWithItem:"constraintWithItem:attribute:relatedBy:toItem:attribute:multiplier:constant:" attribute:v14 relatedBy:4 toItem:0 attribute:1.0 multiplier:-16.0 constant:?];
   [(NSLayoutConstraint *)v15 setActive:1];
 }
 
-- (double)_codeGeneratorSpacing:(double)a3
+- (double)_codeGeneratorSpacing:(double)spacing
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
-  v8 = a3;
+  spacingCopy = spacing;
   v7 = +[AKCodeGenerationView _generatorLabelFont];
-  [v7 _scaledValueForValue:v8];
+  [v7 _scaledValueForValue:spacingCopy];
   v5 = +[UIScreen mainScreen];
   UIRoundToScreenScale();
   v6 = v3;

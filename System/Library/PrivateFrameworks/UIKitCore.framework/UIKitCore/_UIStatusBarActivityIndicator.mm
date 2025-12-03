@@ -1,14 +1,14 @@
 @interface _UIStatusBarActivityIndicator
 - (UIEdgeInsets)alignmentRectInsets;
-- (void)applyStyleAttributes:(id)a3;
+- (void)applyStyleAttributes:(id)attributes;
 @end
 
 @implementation _UIStatusBarActivityIndicator
 
-- (void)applyStyleAttributes:(id)a3
+- (void)applyStyleAttributes:(id)attributes
 {
-  v4 = [a3 imageTintColor];
-  [(UIActivityIndicatorView *)self setColor:v4];
+  imageTintColor = [attributes imageTintColor];
+  [(UIActivityIndicatorView *)self setColor:imageTintColor];
 }
 
 - (UIEdgeInsets)alignmentRectInsets

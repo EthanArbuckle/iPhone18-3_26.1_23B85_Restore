@@ -1,13 +1,13 @@
 @interface TSTStrokeWidthCache
 - (TSTStrokeWidthCache)init;
 - (_opaque_pthread_rwlock_t)rwlock;
-- (double)strokeWidthForGridIndex:(unsigned int)a3 inRange:(TSTSimpleRange)a4;
+- (double)strokeWidthForGridIndex:(unsigned int)index inRange:(TSTSimpleRange)range;
 - (id).cxx_construct;
 - (void)dealloc;
-- (void)setCount:(unsigned int)a3;
-- (void)setRwlock:(_opaque_pthread_rwlock_t *)a3;
-- (void)strokeWidthForGridIndex:(unsigned int)a3 outWidth:(double *)a4 outNextWidth:(double *)a5;
-- (void)updateCacheForGridIndex:(unsigned int)a3 withMajorStrokes:(id)a4 andMinorStrokes:(id)a5;
+- (void)setCount:(unsigned int)count;
+- (void)setRwlock:(_opaque_pthread_rwlock_t *)rwlock;
+- (void)strokeWidthForGridIndex:(unsigned int)index outWidth:(double *)width outNextWidth:(double *)nextWidth;
+- (void)updateCacheForGridIndex:(unsigned int)index withMajorStrokes:(id)strokes andMinorStrokes:(id)minorStrokes;
 @end
 
 @implementation TSTStrokeWidthCache
@@ -34,24 +34,24 @@
   [(TSTStrokeWidthCache *)&v3 dealloc];
 }
 
-- (void)setCount:(unsigned int)a3
+- (void)setCount:(unsigned int)count
 {
   pthread_rwlock_wrlock(&self->_rwlock);
-  sub_221280CE8(&self->_indexToCacheEntriesMap.__begin_, a3);
+  sub_221280CE8(&self->_indexToCacheEntriesMap.__begin_, count);
 
   pthread_rwlock_unlock(&self->_rwlock);
 }
 
-- (double)strokeWidthForGridIndex:(unsigned int)a3 inRange:(TSTSimpleRange)a4
+- (double)strokeWidthForGridIndex:(unsigned int)index inRange:(TSTSimpleRange)range
 {
-  length = a4.length;
-  origin = a4.origin;
+  length = range.length;
+  origin = range.origin;
   pthread_rwlock_rdlock(&self->_rwlock);
   begin = self->_indexToCacheEntriesMap.__begin_;
   v9 = -1.0;
-  if (a3 < ((self->_indexToCacheEntriesMap.__end_ - begin) >> 5))
+  if (index < ((self->_indexToCacheEntriesMap.__end_ - begin) >> 5))
   {
-    v10 = begin + 32 * a3;
+    v10 = begin + 32 * index;
     v12 = *(v10 + 1);
     v11 = *(v10 + 2);
     if (v12 != v11)
@@ -109,16 +109,16 @@
   return v9;
 }
 
-- (void)strokeWidthForGridIndex:(unsigned int)a3 outWidth:(double *)a4 outNextWidth:(double *)a5
+- (void)strokeWidthForGridIndex:(unsigned int)index outWidth:(double *)width outNextWidth:(double *)nextWidth
 {
   pthread_rwlock_rdlock(&self->_rwlock);
   begin = self->_indexToCacheEntriesMap.__begin_;
   v10 = (self->_indexToCacheEntriesMap.__end_ - begin) >> 5;
   v11 = -1.0;
   v12 = -1.0;
-  if (v10 > a3)
+  if (v10 > index)
   {
-    v13 = begin + 32 * a3;
+    v13 = begin + 32 * index;
     if (*(v13 + 1) == *(v13 + 2))
     {
       v12 = -1.0;
@@ -130,7 +130,7 @@
     }
   }
 
-  v14 = a3 + 1;
+  v14 = index + 1;
   if (v10 > v14)
   {
     v15 = begin + 32 * v14;
@@ -146,39 +146,39 @@
   }
 
   pthread_rwlock_unlock(&self->_rwlock);
-  if (a4)
+  if (width)
   {
-    *a4 = v12;
+    *width = v12;
   }
 
-  if (a5)
+  if (nextWidth)
   {
-    *a5 = v11;
+    *nextWidth = v11;
   }
 }
 
-- (void)updateCacheForGridIndex:(unsigned int)a3 withMajorStrokes:(id)a4 andMinorStrokes:(id)a5
+- (void)updateCacheForGridIndex:(unsigned int)index withMajorStrokes:(id)strokes andMinorStrokes:(id)minorStrokes
 {
-  v5 = a3;
+  indexCopy = index;
   begin = self->_indexToCacheEntriesMap.__begin_;
-  if (a3 < ((self->_indexToCacheEntriesMap.__end_ - begin) >> 5))
+  if (index < ((self->_indexToCacheEntriesMap.__end_ - begin) >> 5))
   {
     v46 = 0;
     v8 = 0uLL;
     v44 = 0u;
     v45 = 0u;
-    if (a4)
+    if (strokes)
     {
-      objc_msgSend_stackReferences(a4, a2, *&a3, a4, a5);
+      objc_msgSend_stackReferences(strokes, a2, *&index, strokes, minorStrokes);
       v8 = 0uLL;
     }
 
     v43 = 0;
     v41 = v8;
     v42 = v8;
-    if (a5)
+    if (minorStrokes)
     {
-      objc_msgSend_stackReferences(a5, a2, *&a3, a4, a5);
+      objc_msgSend_stackReferences(minorStrokes, a2, *&index, strokes, minorStrokes);
     }
 
     v38 = 0;
@@ -295,7 +295,7 @@
     v24[4] = &v29;
     v24[5] = &v25;
     objc_msgSend_enumerateWidthsInLayers_usingBlock_(TSTStrokeLayerMergedStack, v10, &v38, v24, v11);
-    v22 = (begin + 32 * v5);
+    v22 = (begin + 32 * indexCopy);
     *v22 = v26[3];
     v23 = v22 + 1;
     if (v23 != v30 + 6)
@@ -343,27 +343,27 @@
   return self;
 }
 
-- (void)setRwlock:(_opaque_pthread_rwlock_t *)a3
+- (void)setRwlock:(_opaque_pthread_rwlock_t *)rwlock
 {
-  *&self->_rwlock.__sig = *&a3->__sig;
-  v3 = *&a3->__opaque[8];
-  v4 = *&a3->__opaque[24];
-  v5 = *&a3->__opaque[56];
-  *&self->_rwlock.__opaque[40] = *&a3->__opaque[40];
+  *&self->_rwlock.__sig = *&rwlock->__sig;
+  v3 = *&rwlock->__opaque[8];
+  v4 = *&rwlock->__opaque[24];
+  v5 = *&rwlock->__opaque[56];
+  *&self->_rwlock.__opaque[40] = *&rwlock->__opaque[40];
   *&self->_rwlock.__opaque[56] = v5;
   *&self->_rwlock.__opaque[8] = v3;
   *&self->_rwlock.__opaque[24] = v4;
-  v6 = *&a3->__opaque[72];
-  v7 = *&a3->__opaque[88];
-  v8 = *&a3->__opaque[120];
-  *&self->_rwlock.__opaque[104] = *&a3->__opaque[104];
+  v6 = *&rwlock->__opaque[72];
+  v7 = *&rwlock->__opaque[88];
+  v8 = *&rwlock->__opaque[120];
+  *&self->_rwlock.__opaque[104] = *&rwlock->__opaque[104];
   *&self->_rwlock.__opaque[120] = v8;
   *&self->_rwlock.__opaque[72] = v6;
   *&self->_rwlock.__opaque[88] = v7;
-  v9 = *&a3->__opaque[136];
-  v10 = *&a3->__opaque[152];
-  v11 = *&a3->__opaque[168];
-  *&self->_rwlock.__opaque[184] = *&a3->__opaque[184];
+  v9 = *&rwlock->__opaque[136];
+  v10 = *&rwlock->__opaque[152];
+  v11 = *&rwlock->__opaque[168];
+  *&self->_rwlock.__opaque[184] = *&rwlock->__opaque[184];
   *&self->_rwlock.__opaque[152] = v10;
   *&self->_rwlock.__opaque[168] = v11;
   *&self->_rwlock.__opaque[136] = v9;

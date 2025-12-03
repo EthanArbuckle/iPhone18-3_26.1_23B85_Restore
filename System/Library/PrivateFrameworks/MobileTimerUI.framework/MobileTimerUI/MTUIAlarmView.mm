@@ -1,24 +1,24 @@
 @interface MTUIAlarmView
 - (BOOL)isSwitchVisible;
-- (MTUIAlarmView)initWithFrame:(CGRect)a3;
+- (MTUIAlarmView)initWithFrame:(CGRect)frame;
 - (void)_loadFontsWithTextStyles;
-- (void)setLayoutMargins:(UIEdgeInsets)a3;
-- (void)setName:(id)a3 andRepeatText:(id)a4 textColor:(id)a5;
-- (void)setNameFont:(id)a3;
-- (void)setRepeatFont:(id)a3;
-- (void)setShouldAddLayoutConstraints:(BOOL)a3;
-- (void)setStyle:(int64_t)a3;
-- (void)setSwitchVisible:(BOOL)a3;
+- (void)setLayoutMargins:(UIEdgeInsets)margins;
+- (void)setName:(id)name andRepeatText:(id)text textColor:(id)color;
+- (void)setNameFont:(id)font;
+- (void)setRepeatFont:(id)font;
+- (void)setShouldAddLayoutConstraints:(BOOL)constraints;
+- (void)setStyle:(int64_t)style;
+- (void)setSwitchVisible:(BOOL)visible;
 - (void)tearDownContentSizeChangeObserver;
 @end
 
 @implementation MTUIAlarmView
 
-- (MTUIAlarmView)initWithFrame:(CGRect)a3
+- (MTUIAlarmView)initWithFrame:(CGRect)frame
 {
   v24.receiver = self;
   v24.super_class = MTUIAlarmView;
-  v3 = [(NUIContainerGridView *)&v24 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NUIContainerGridView *)&v24 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -27,14 +27,14 @@
     timeLabel = v4->_timeLabel;
     v4->_timeLabel = v5;
 
-    v7 = [(MTUIDateLabel *)v4->_timeLabel dateLabel];
-    [v7 setAdjustsFontSizeToFitWidth:1];
+    dateLabel = [(MTUIDateLabel *)v4->_timeLabel dateLabel];
+    [dateLabel setAdjustsFontSizeToFitWidth:1];
 
-    v8 = [MEMORY[0x277D74300] mtui_thinTimeFont];
-    [(MTUIDateLabel *)v4->_timeLabel setFont:v8];
+    mtui_thinTimeFont = [MEMORY[0x277D74300] mtui_thinTimeFont];
+    [(MTUIDateLabel *)v4->_timeLabel setFont:mtui_thinTimeFont];
 
-    v9 = [MEMORY[0x277D75348] clearColor];
-    [(MTUIDigitalClockLabel *)v4->_timeLabel setBackgroundColor:v9];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(MTUIDigitalClockLabel *)v4->_timeLabel setBackgroundColor:clearColor];
 
     v10 = [MEMORY[0x277D74300] _lightSystemFontOfSize:30.0];
     [(MTUIDateLabel *)v4->_timeLabel setTimeDesignatorFont:v10];
@@ -59,8 +59,8 @@
     enabledSwitch = v4->_enabledSwitch;
     v4->_enabledSwitch = v14;
 
-    v16 = [MEMORY[0x277D75348] mtui_switchTintColor];
-    [(UISwitch *)v4->_enabledSwitch setTintColor:v16];
+    mtui_switchTintColor = [MEMORY[0x277D75348] mtui_switchTintColor];
+    [(UISwitch *)v4->_enabledSwitch setTintColor:mtui_switchTintColor];
 
     LODWORD(v17) = 1148846080;
     [(UISwitch *)v4->_enabledSwitch setLayoutSize:*MEMORY[0x277CEC620] withContentPriority:*(MEMORY[0x277CEC620] + 8), v17];
@@ -104,7 +104,7 @@ uint64_t __31__MTUIAlarmView_initWithFrame___block_invoke(uint64_t a1)
   return [*(a1 + 32) _loadFontsWithTextStyles];
 }
 
-- (void)setShouldAddLayoutConstraints:(BOOL)a3
+- (void)setShouldAddLayoutConstraints:(BOOL)constraints
 {
   v6 = MTLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -112,34 +112,34 @@ uint64_t __31__MTUIAlarmView_initWithFrame___block_invoke(uint64_t a1)
     [(MTUIAlarmView *)a2 setShouldAddLayoutConstraints:v6];
   }
 
-  self->_shouldAddLayoutConstraints = a3;
+  self->_shouldAddLayoutConstraints = constraints;
 }
 
-- (void)setSwitchVisible:(BOOL)a3
+- (void)setSwitchVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   v4 = [(NUIContainerGridView *)self columnAtIndex:1];
-  [v4 setHidden:!v3];
+  [v4 setHidden:!visibleCopy];
 }
 
 - (BOOL)isSwitchVisible
 {
   v2 = [(NUIContainerGridView *)self columnAtIndex:1];
-  v3 = [v2 isHidden];
+  isHidden = [v2 isHidden];
 
-  return v3 ^ 1;
+  return isHidden ^ 1;
 }
 
-- (void)setNameFont:(id)a3
+- (void)setNameFont:(id)font
 {
-  objc_storeStrong(&self->_nameFont, a3);
+  objc_storeStrong(&self->_nameFont, font);
 
   [(MTUIAlarmView *)self tearDownContentSizeChangeObserver];
 }
 
-- (void)setRepeatFont:(id)a3
+- (void)setRepeatFont:(id)font
 {
-  objc_storeStrong(&self->_repeatFont, a3);
+  objc_storeStrong(&self->_repeatFont, font);
 
   [(MTUIAlarmView *)self tearDownContentSizeChangeObserver];
 }
@@ -154,26 +154,26 @@ uint64_t __31__MTUIAlarmView_initWithFrame___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setStyle:(int64_t)a3
+- (void)setStyle:(int64_t)style
 {
-  if (self->_style != a3)
+  if (self->_style != style)
   {
-    self->_style = a3;
+    self->_style = style;
     [(MTUIAlarmView *)self setNeedsUpdateConstraints];
   }
 }
 
-- (void)setName:(id)a3 andRepeatText:(id)a4 textColor:(id)a5
+- (void)setName:(id)name andRepeatText:(id)text textColor:(id)color
 {
   v32[2] = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  [(MTUIAlarmView *)self setName:v10];
-  [(MTUIAlarmView *)self setRepeatText:v9];
-  if (v10)
+  colorCopy = color;
+  textCopy = text;
+  nameCopy = name;
+  [(MTUIAlarmView *)self setName:nameCopy];
+  [(MTUIAlarmView *)self setRepeatText:textCopy];
+  if (nameCopy)
   {
-    v11 = v10;
+    v11 = nameCopy;
   }
 
   else
@@ -183,9 +183,9 @@ uint64_t __31__MTUIAlarmView_initWithFrame___block_invoke(uint64_t a1)
 
   v12 = v11;
 
-  if (v9)
+  if (textCopy)
   {
-    v13 = v9;
+    v13 = textCopy;
   }
 
   else
@@ -201,13 +201,13 @@ uint64_t __31__MTUIAlarmView_initWithFrame___block_invoke(uint64_t a1)
   v15 = v31[0];
   v31[1] = v17;
   v32[0] = nameFont;
-  v32[1] = v8;
+  v32[1] = colorCopy;
   v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v32 forKeys:v31 count:2];
   repeatFont = self->_repeatFont;
   v29[0] = v15;
   v29[1] = v17;
   v30[0] = repeatFont;
-  v30[1] = v8;
+  v30[1] = colorCopy;
   v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:v29 count:2];
   v21 = v12;
   if ([(__CFString *)v21 length])
@@ -263,11 +263,11 @@ LABEL_12:
   self->_nameFont = v3;
 }
 
-- (void)setLayoutMargins:(UIEdgeInsets)a3
+- (void)setLayoutMargins:(UIEdgeInsets)margins
 {
   v4.receiver = self;
   v4.super_class = MTUIAlarmView;
-  [(MTUIAlarmView *)&v4 setLayoutMargins:a3.top, a3.left, a3.bottom, a3.right];
+  [(MTUIAlarmView *)&v4 setLayoutMargins:margins.top, margins.left, margins.bottom, margins.right];
   [(MTUIAlarmView *)self setBaselineRelativeLayoutMarginsForArrangement:0];
 }
 

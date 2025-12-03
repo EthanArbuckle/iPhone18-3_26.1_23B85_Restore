@@ -1,19 +1,19 @@
 @interface UARPPersonalizationNumberTuple64
-- (UARPPersonalizationNumberTuple64)initWithKey:(id)a3 value:(unint64_t)a4;
+- (UARPPersonalizationNumberTuple64)initWithKey:(id)key value:(unint64_t)value;
 - (void)dealloc;
 @end
 
 @implementation UARPPersonalizationNumberTuple64
 
-- (UARPPersonalizationNumberTuple64)initWithKey:(id)a3 value:(unint64_t)a4
+- (UARPPersonalizationNumberTuple64)initWithKey:(id)key value:(unint64_t)value
 {
   v8.receiver = self;
   v8.super_class = UARPPersonalizationNumberTuple64;
   v6 = [(UARPPersonalizationNumberTuple64 *)&v8 init];
   if (v6)
   {
-    v6->_key = [a3 copy];
-    v6->_value = a4;
+    v6->_key = [key copy];
+    v6->_value = value;
   }
 
   return v6;

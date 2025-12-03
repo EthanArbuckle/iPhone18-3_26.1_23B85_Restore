@@ -5,10 +5,10 @@
 - (CGSize)assetSize;
 - (NSString)description;
 - (_PUIPosterSnapshotCacheRecord)init;
-- (_PUIPosterSnapshotCacheRecord)initWithCoder:(id)a3;
-- (_PUIPosterSnapshotCacheRecord)initWithSnapshotContext:(id)a3;
-- (id)snapshotBundleURLRelativeToURL:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_PUIPosterSnapshotCacheRecord)initWithCoder:(id)coder;
+- (_PUIPosterSnapshotCacheRecord)initWithSnapshotContext:(id)context;
+- (id)snapshotBundleURLRelativeToURL:(id)l;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _PUIPosterSnapshotCacheRecord
@@ -19,7 +19,7 @@
   block[1] = 3221225472;
   block[2] = __60___PUIPosterSnapshotCacheRecord_bundleInfoKeyToColumnLookup__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (bundleInfoKeyToColumnLookup_onceToken != -1)
   {
     dispatch_once(&bundleInfoKeyToColumnLookup_onceToken, block);
@@ -49,51 +49,51 @@
   return 0;
 }
 
-- (_PUIPosterSnapshotCacheRecord)initWithSnapshotContext:(id)a3
+- (_PUIPosterSnapshotCacheRecord)initWithSnapshotContext:(id)context
 {
-  v5 = a3;
-  if (!v5)
+  contextCopy = context;
+  if (!contextCopy)
   {
     [_PUIPosterSnapshotCacheRecord initWithSnapshotContext:a2];
   }
 
-  v6 = v5;
+  v6 = contextCopy;
   v36.receiver = self;
   v36.super_class = _PUIPosterSnapshotCacheRecord;
   v7 = [(_PUIPosterSnapshotCacheRecord *)&v36 init];
   if (v7)
   {
-    v8 = [v6 snapshotBundleUUID];
+    snapshotBundleUUID = [v6 snapshotBundleUUID];
     snapshotBundleUUID = v7->_snapshotBundleUUID;
-    v7->_snapshotBundleUUID = v8;
+    v7->_snapshotBundleUUID = snapshotBundleUUID;
 
-    v10 = [v6 dateCreated];
+    dateCreated = [v6 dateCreated];
     dateCreated = v7->_dateCreated;
-    v7->_dateCreated = v10;
+    v7->_dateCreated = dateCreated;
 
-    v12 = [v6 posterProvider];
+    posterProvider = [v6 posterProvider];
     posterProvider = v7->_posterProvider;
-    v7->_posterProvider = v12;
+    v7->_posterProvider = posterProvider;
 
-    v14 = [v6 posterUUID];
+    posterUUID = [v6 posterUUID];
     posterUUID = v7->_posterUUID;
-    v7->_posterUUID = v14;
+    v7->_posterUUID = posterUUID;
 
     v7->_posterVersion = [v6 posterVersion];
-    v16 = [v6 hardwareIdentifier];
+    hardwareIdentifier = [v6 hardwareIdentifier];
     hardwareIdentifier = v7->_hardwareIdentifier;
-    v7->_hardwareIdentifier = v16;
+    v7->_hardwareIdentifier = hardwareIdentifier;
 
-    v18 = [v6 snapshotDefinitionIdentifier];
+    snapshotDefinitionIdentifier = [v6 snapshotDefinitionIdentifier];
     snapshotDefinitionIdentifier = v7->_snapshotDefinitionIdentifier;
-    v7->_snapshotDefinitionIdentifier = v18;
+    v7->_snapshotDefinitionIdentifier = snapshotDefinitionIdentifier;
 
-    v20 = [v6 bootSessionIdentifier];
+    bootSessionIdentifier = [v6 bootSessionIdentifier];
     bootSessionIdentifier = v7->_bootSessionIdentifier;
-    v7->_bootSessionIdentifier = v20;
+    v7->_bootSessionIdentifier = bootSessionIdentifier;
 
-    v22 = [v6 snapshotLevelSets];
-    v23 = [v22 copy];
+    snapshotLevelSets = [v6 snapshotLevelSets];
+    v23 = [snapshotLevelSets copy];
     snapshotLevelSets = v7->_snapshotLevelSets;
     v7->_snapshotLevelSets = v23;
 
@@ -116,56 +116,56 @@
     v7->_salientContentRectangle.origin.y = v30;
     v7->_salientContentRectangle.size.width = v31;
     v7->_salientContentRectangle.size.height = v32;
-    v33 = [v6 contentOcclusionRectangles];
+    contentOcclusionRectangles = [v6 contentOcclusionRectangles];
     contentOcclusionRectangles = v7->_contentOcclusionRectangles;
-    v7->_contentOcclusionRectangles = v33;
+    v7->_contentOcclusionRectangles = contentOcclusionRectangles;
   }
 
   return v7;
 }
 
-- (_PUIPosterSnapshotCacheRecord)initWithCoder:(id)a3
+- (_PUIPosterSnapshotCacheRecord)initWithCoder:(id)coder
 {
   v48[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v47.receiver = self;
   v47.super_class = _PUIPosterSnapshotCacheRecord;
   v5 = [(_PUIPosterSnapshotCacheRecord *)&v47 init];
   if (v5)
   {
     v6 = objc_opt_self();
-    v7 = [v4 decodeObjectOfClass:v6 forKey:@"_snapshotBundleUUID"];
+    v7 = [coderCopy decodeObjectOfClass:v6 forKey:@"_snapshotBundleUUID"];
     snapshotBundleUUID = v5->_snapshotBundleUUID;
     v5->_snapshotBundleUUID = v7;
 
     v9 = objc_opt_self();
-    v10 = [v4 decodeObjectOfClass:v9 forKey:@"_dateCreated"];
+    v10 = [coderCopy decodeObjectOfClass:v9 forKey:@"_dateCreated"];
     dateCreated = v5->_dateCreated;
     v5->_dateCreated = v10;
 
     v12 = objc_opt_self();
-    v13 = [v4 decodeObjectOfClass:v12 forKey:@"_posterProvider"];
+    v13 = [coderCopy decodeObjectOfClass:v12 forKey:@"_posterProvider"];
     posterProvider = v5->_posterProvider;
     v5->_posterProvider = v13;
 
     v15 = objc_opt_self();
-    v16 = [v4 decodeObjectOfClass:v15 forKey:@"_posterUUID"];
+    v16 = [coderCopy decodeObjectOfClass:v15 forKey:@"_posterUUID"];
     posterUUID = v5->_posterUUID;
     v5->_posterUUID = v16;
 
-    v5->_posterVersion = [v4 decodeIntegerForKey:@"_posterVersion"];
+    v5->_posterVersion = [coderCopy decodeIntegerForKey:@"_posterVersion"];
     v18 = objc_opt_self();
-    v19 = [v4 decodeObjectOfClass:v18 forKey:@"_hardwareIdentifier"];
+    v19 = [coderCopy decodeObjectOfClass:v18 forKey:@"_hardwareIdentifier"];
     hardwareIdentifier = v5->_hardwareIdentifier;
     v5->_hardwareIdentifier = v19;
 
     v21 = objc_opt_self();
-    v22 = [v4 decodeObjectOfClass:v21 forKey:@"_snapshotDefinitionIdentifier"];
+    v22 = [coderCopy decodeObjectOfClass:v21 forKey:@"_snapshotDefinitionIdentifier"];
     snapshotDefinitionIdentifier = v5->_snapshotDefinitionIdentifier;
     v5->_snapshotDefinitionIdentifier = v22;
 
     v24 = objc_opt_self();
-    v25 = [v4 decodeObjectOfClass:v24 forKey:@"_bootSessionIdentifier"];
+    v25 = [coderCopy decodeObjectOfClass:v24 forKey:@"_bootSessionIdentifier"];
     bootSessionIdentifier = v5->_bootSessionIdentifier;
     v5->_bootSessionIdentifier = v25;
 
@@ -176,33 +176,33 @@
     v48[1] = v29;
     v30 = [MEMORY[0x1E695DEC8] arrayWithObjects:v48 count:2];
     v31 = [v27 setWithArray:v30];
-    v32 = [v4 decodeObjectOfClasses:v31 forKey:@"_snapshotLevelSets"];
+    v32 = [coderCopy decodeObjectOfClasses:v31 forKey:@"_snapshotLevelSets"];
     snapshotLevelSets = v5->_snapshotLevelSets;
     v5->_snapshotLevelSets = v32;
 
-    v5->_snapshotEpoch = [v4 decodeIntegerForKey:@"_snapshotEpoch"];
-    v5->_snapshotBundleVersion = [v4 decodeIntegerForKey:@"_snapshotBundleVersion"];
+    v5->_snapshotEpoch = [coderCopy decodeIntegerForKey:@"_snapshotEpoch"];
+    v5->_snapshotBundleVersion = [coderCopy decodeIntegerForKey:@"_snapshotBundleVersion"];
     v34 = objc_opt_self();
-    v35 = [v4 decodeObjectOfClass:v34 forKey:@"_assetSize"];
+    v35 = [coderCopy decodeObjectOfClass:v34 forKey:@"_assetSize"];
     [v35 CGSizeValue];
     v5->_assetSize.width = v36;
     v5->_assetSize.height = v37;
 
-    v5->_interfaceOrientation = [v4 decodeIntegerForKey:@"_interfaceOrientation"];
-    v5->_deviceOrientation = [v4 decodeIntegerForKey:@"_deviceOrientation"];
-    v5->_userInterfaceStyle = [v4 decodeIntegerForKey:@"_userInterfaceStyle"];
-    [v4 decodeDoubleForKey:@"_snapshotScale"];
+    v5->_interfaceOrientation = [coderCopy decodeIntegerForKey:@"_interfaceOrientation"];
+    v5->_deviceOrientation = [coderCopy decodeIntegerForKey:@"_deviceOrientation"];
+    v5->_userInterfaceStyle = [coderCopy decodeIntegerForKey:@"_userInterfaceStyle"];
+    [coderCopy decodeDoubleForKey:@"_snapshotScale"];
     v5->_snapshotScale = v38;
-    [v4 decodeDoubleForKey:@"_persistenceScale"];
+    [coderCopy decodeDoubleForKey:@"_persistenceScale"];
     v5->_persistenceScale = v39;
-    v5->_hasColorStatistics = [v4 decodeBoolForKey:@"_hasColorStatistics"];
-    v5->_accessibilityContrast = [v4 decodeIntegerForKey:@"_accessibilityContrast"];
-    [v4 decodeCGRectForKey:@"_salientContentRectangle"];
+    v5->_hasColorStatistics = [coderCopy decodeBoolForKey:@"_hasColorStatistics"];
+    v5->_accessibilityContrast = [coderCopy decodeIntegerForKey:@"_accessibilityContrast"];
+    [coderCopy decodeCGRectForKey:@"_salientContentRectangle"];
     v5->_salientContentRectangle.origin.x = v40;
     v5->_salientContentRectangle.origin.y = v41;
     v5->_salientContentRectangle.size.width = v42;
     v5->_salientContentRectangle.size.height = v43;
-    v44 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_contentOcclusionRectangles"];
+    v44 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_contentOcclusionRectangles"];
     contentOcclusionRectangles = v5->_contentOcclusionRectangles;
     v5->_contentOcclusionRectangles = v44;
   }
@@ -210,41 +210,41 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   snapshotBundleUUID = self->_snapshotBundleUUID;
-  v6 = a3;
-  [v6 encodeObject:snapshotBundleUUID forKey:@"_snapshotBundleUUID"];
-  [v6 encodeObject:self->_dateCreated forKey:@"_dateCreated"];
-  [v6 encodeObject:self->_posterProvider forKey:@"_posterProvider"];
-  [v6 encodeObject:self->_posterUUID forKey:@"_posterUUID"];
-  [v6 encodeInteger:self->_posterVersion forKey:@"_posterVersion"];
-  [v6 encodeObject:self->_hardwareIdentifier forKey:@"_hardwareIdentifier"];
-  [v6 encodeObject:self->_snapshotDefinitionIdentifier forKey:@"_snapshotDefinitionIdentifier"];
-  [v6 encodeObject:self->_bootSessionIdentifier forKey:@"_bootSessionIdentifier"];
-  [v6 encodeObject:self->_snapshotLevelSets forKey:@"_snapshotLevelSets"];
-  [v6 encodeInteger:self->_snapshotEpoch forKey:@"_snapshotEpoch"];
-  [v6 encodeInteger:self->_snapshotBundleVersion forKey:@"_snapshotBundleVersion"];
+  coderCopy = coder;
+  [coderCopy encodeObject:snapshotBundleUUID forKey:@"_snapshotBundleUUID"];
+  [coderCopy encodeObject:self->_dateCreated forKey:@"_dateCreated"];
+  [coderCopy encodeObject:self->_posterProvider forKey:@"_posterProvider"];
+  [coderCopy encodeObject:self->_posterUUID forKey:@"_posterUUID"];
+  [coderCopy encodeInteger:self->_posterVersion forKey:@"_posterVersion"];
+  [coderCopy encodeObject:self->_hardwareIdentifier forKey:@"_hardwareIdentifier"];
+  [coderCopy encodeObject:self->_snapshotDefinitionIdentifier forKey:@"_snapshotDefinitionIdentifier"];
+  [coderCopy encodeObject:self->_bootSessionIdentifier forKey:@"_bootSessionIdentifier"];
+  [coderCopy encodeObject:self->_snapshotLevelSets forKey:@"_snapshotLevelSets"];
+  [coderCopy encodeInteger:self->_snapshotEpoch forKey:@"_snapshotEpoch"];
+  [coderCopy encodeInteger:self->_snapshotBundleVersion forKey:@"_snapshotBundleVersion"];
   v5 = [MEMORY[0x1E696B098] valueWithCGSize:{self->_assetSize.width, self->_assetSize.height}];
-  [v6 encodeObject:v5 forKey:@"_assetSize"];
+  [coderCopy encodeObject:v5 forKey:@"_assetSize"];
 
-  [v6 encodeInteger:self->_interfaceOrientation forKey:@"_interfaceOrientation"];
-  [v6 encodeInteger:self->_deviceOrientation forKey:@"_deviceOrientation"];
-  [v6 encodeInteger:self->_userInterfaceStyle forKey:@"_userInterfaceStyle"];
-  [v6 encodeDouble:@"_snapshotScale" forKey:self->_snapshotScale];
-  [v6 encodeDouble:@"_persistenceScale" forKey:self->_persistenceScale];
-  [v6 encodeBool:self->_hasColorStatistics forKey:@"_hasColorStatistics"];
-  [v6 encodeInteger:self->_accessibilityContrast forKey:@"_accessibilityContrast"];
-  [v6 encodeCGRect:@"_salientContentRectangle" forKey:{self->_salientContentRectangle.origin.x, self->_salientContentRectangle.origin.y, self->_salientContentRectangle.size.width, self->_salientContentRectangle.size.height}];
-  [v6 encodeObject:self->_contentOcclusionRectangles forKey:@"_contentOcclusionRectangles"];
+  [coderCopy encodeInteger:self->_interfaceOrientation forKey:@"_interfaceOrientation"];
+  [coderCopy encodeInteger:self->_deviceOrientation forKey:@"_deviceOrientation"];
+  [coderCopy encodeInteger:self->_userInterfaceStyle forKey:@"_userInterfaceStyle"];
+  [coderCopy encodeDouble:@"_snapshotScale" forKey:self->_snapshotScale];
+  [coderCopy encodeDouble:@"_persistenceScale" forKey:self->_persistenceScale];
+  [coderCopy encodeBool:self->_hasColorStatistics forKey:@"_hasColorStatistics"];
+  [coderCopy encodeInteger:self->_accessibilityContrast forKey:@"_accessibilityContrast"];
+  [coderCopy encodeCGRect:@"_salientContentRectangle" forKey:{self->_salientContentRectangle.origin.x, self->_salientContentRectangle.origin.y, self->_salientContentRectangle.size.width, self->_salientContentRectangle.size.height}];
+  [coderCopy encodeObject:self->_contentOcclusionRectangles forKey:@"_contentOcclusionRectangles"];
 }
 
-- (id)snapshotBundleURLRelativeToURL:(id)a3
+- (id)snapshotBundleURLRelativeToURL:(id)l
 {
-  v4 = a3;
-  v5 = [(_PUIPosterSnapshotCacheRecord *)self snapshotBundleUUID];
-  v6 = [v5 UUIDString];
-  v7 = [v4 URLByAppendingPathComponent:v6];
+  lCopy = l;
+  snapshotBundleUUID = [(_PUIPosterSnapshotCacheRecord *)self snapshotBundleUUID];
+  uUIDString = [snapshotBundleUUID UUIDString];
+  v7 = [lCopy URLByAppendingPathComponent:uUIDString];
 
   v8 = [v7 URLByAppendingPathComponent:@"Snapshot.pks" isDirectory:1];
 
@@ -266,12 +266,12 @@
   v16 = __44___PUIPosterSnapshotCacheRecord_description__block_invoke;
   v17 = &unk_1E78548A0;
   v18 = v3;
-  v19 = self;
+  selfCopy = self;
   v11 = v3;
   [v11 appendBodySectionWithName:@"attributes" multilinePrefix:@"\n" block:&v14];
-  v12 = [v11 build];
+  build = [v11 build];
 
-  return v12;
+  return build;
 }
 
 - (CGSize)assetSize

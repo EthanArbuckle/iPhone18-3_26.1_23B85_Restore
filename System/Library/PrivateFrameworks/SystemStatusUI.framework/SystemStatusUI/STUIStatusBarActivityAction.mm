@@ -1,19 +1,19 @@
 @interface STUIStatusBarActivityAction
-+ (id)actionForBackgroundActivityWithIdentifier:(id)a3;
++ (id)actionForBackgroundActivityWithIdentifier:(id)identifier;
 @end
 
 @implementation STUIStatusBarActivityAction
 
-+ (id)actionForBackgroundActivityWithIdentifier:(id)a3
++ (id)actionForBackgroundActivityWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __73__STUIStatusBarActivityAction_actionForBackgroundActivityWithIdentifier___block_invoke;
   v8[3] = &unk_279D38240;
-  v9 = v4;
-  v5 = v4;
-  v6 = [a1 actionWithBlock:v8];
+  v9 = identifierCopy;
+  v5 = identifierCopy;
+  v6 = [self actionWithBlock:v8];
 
   return v6;
 }

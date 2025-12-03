@@ -1,96 +1,96 @@
 @interface MADFetchRequest
-+ (id)fetchRequestWithManagedObjectContext:(id)a3;
-- (BOOL)keyExistsInKeyValueStore:(id)a3;
-- (MADFetchRequest)initWithManagedObjectContext:(id)a3;
-- (id)_fetchPredicateForTaskID:(id)a3 matchingProcessingStatus:(id)a4 includingProcessingStatuses:(id)a5 excludingProcessingStatuses:(id)a6 matchingAttempts:(id)a7 fromNextAttemptDate:(id)a8 toNextAttemptDate:(id)a9 localIdentifiers:(id)a10 additionalPredicates:(id)a11;
-- (id)fetchAnalysesWithLocalIdentifiers:(id)a3 predicate:(id)a4;
-- (id)fetchAnalysesWithLocalIdentifiers:(id)a3 predicate:(id)a4 resultTypes:(id)a5;
-- (id)fetchAnalysisWithLocalIdentifier:(id)a3 predicate:(id)a4;
-- (id)fetchAnalysisWithLocalIdentifier:(id)a3 predicate:(id)a4 resultTypes:(id)a5;
-- (id)fetchDataStoreValueIfKeyExists:(id)a3;
-- (id)fetchFailedProcessingStatusFromAssets:(id)a3 taskID:(unint64_t)a4;
-- (int)_fetchLocalIdentifiers:(id *)a3 eligibleToRetry:(id)a4 matchingProcessingStatus:(id)a5 includingProcessingStatuses:(id)a6 excludingProcessingStatuses:(id)a7 taskID:(id)a8 matchingAttempts:(id)a9 fetchLimit:(id)a10 additionalPredicates:(id)a11;
-- (int)_fetchManagedAssetCount:(unint64_t *)a3 predicate:(id)a4;
-- (int)_fetchManagedProcessingStatusCount:(unint64_t *)a3 predicate:(id)a4;
-- (int)fetchAllDataStoreKeyValuePairs:(id *)a3;
-- (int)fetchAllMomentsScheduledAssets:(id *)a3;
-- (int)fetchAllMomentsScheduledAssetsForLookup:(id *)a3 totalCount:(unint64_t *)a4;
-- (int)fetchAssetCountForTaskID:(unint64_t)a3;
-- (int)fetchAssetCountForTaskID:(unint64_t)a3 minimumAttempts:(unint64_t)a4;
-- (int)fetchAssetCountForTaskID:(unint64_t)a3 status:(unint64_t)a4;
-- (int)fetchAssetCountForTaskID:(unint64_t)a3 status:(unint64_t)a4 attempts:(int)a5;
-- (int)fetchAssetCountForTaskID:(unint64_t)a3 totalAssets:(unint64_t *)a4 processedAssets:(unint64_t *)a5;
-- (int)fetchAssetCountFromLocalIdentifiers:(id)a3 taskID:(unint64_t)a4 excludingStatuses:(id)a5;
-- (int)fetchAssetCountWithPredicate:(id)a3;
-- (int)fetchChangeToken:(id *)a3 taskID:(unint64_t)a4 changeTokenType:(unint64_t)a5;
-- (int)fetchEligibleToRetryLocalIdentifiers:(id *)a3 processingStatus:(unint64_t)a4 taskID:(unint64_t)a5 fetchLimit:(unint64_t)a6;
-- (int)fetchEligibleToRetryLocalIdentifiers:(id *)a3 processingStatus:(unint64_t)a4 taskID:(unint64_t)a5 fetchLimit:(unint64_t)a6 additionalPredicates:(id)a7;
-- (int)fetchLocalIdentifiers:(id *)a3 processingStatus:(unint64_t)a4 taskID:(unint64_t)a5 attempts:(int)a6 fetchLimit:(unint64_t)a7;
-- (int)fetchLocalIdentifiers:(id *)a3 processingStatus:(unint64_t)a4 taskID:(unint64_t)a5 attempts:(int)a6 fetchLimit:(unint64_t)a7 additionalPredicates:(id)a8;
-- (int)fetchLocalIdentifiers:(id *)a3 taskID:(unint64_t)a4 processingStatus:(unint64_t)a5;
-- (int)fetchLocalIdentifiers:(id *)a3 taskID:(unint64_t)a4 processingStatus:(unint64_t)a5 additionalPredicates:(id)a6;
-- (int)fetchLocalIdentifiersEligibleForRetry:(id *)a3 taskID:(unint64_t)a4 excludingStatuses:(id)a5 fetchLimit:(unint64_t)a6 additionalPredicates:(id)a7;
-- (int)fetchLocalIdentifiersEligibleForRetry:(id *)a3 taskID:(unint64_t)a4 fetchLimit:(unint64_t)a5;
-- (int)fetchLocalIdentifiersEligibleForRetry:(id *)a3 taskID:(unint64_t)a4 includingStatuses:(id)a5 fetchLimit:(unint64_t)a6 additionalPredicates:(id)a7;
-- (int)fetchModifiedAssetCountSinceDate:(id)a3;
-- (int)fetchMomentsScheduledAssetEntries:(id *)a3 forTaskID:(unint64_t)a4;
-- (int)fetchProcessingErrorCode:(unint64_t *)a3 errorLine:(unint64_t *)a4 taskID:(unint64_t)a5 localIdentifier:(id)a6;
-- (int)fetchProcessingErrorCodeCounts:(id *)a3 taskID:(unint64_t)a4 sinceDate:(id)a5 additionalPredicates:(id)a6;
-- (int)fetchProcessingStatus:(unint64_t *)a3 attempts:(int *)a4 lastAttemptDate:(id *)a5 nextAttemptDate:(id *)a6 localIdentifier:(id)a7 taskID:(unint64_t)a8;
-- (int)fetchProgressHistoryRecords:(id *)a3 sinceDate:(id)a4;
-- (int)loadAllChangeToken:(id *)a3 totalCount:(unint64_t *)a4;
-- (int)loadAllProcessingStatus:(id *)a3 totalCount:(unint64_t *)a4;
-- (int)loadAllProgressHistoryRecords:(id *)a3 totalCount:(unint64_t *)a4;
-- (int64_t)dataStoreValueForKey:(id)a3;
-- (unint64_t)fetchEligibleToRetryAssetCountWithProcessingStatus:(unint64_t)a3 taskID:(unint64_t)a4;
-- (unint64_t)fetchEligibleToRetryAssetCountWithTaskID:(unint64_t)a3;
++ (id)fetchRequestWithManagedObjectContext:(id)context;
+- (BOOL)keyExistsInKeyValueStore:(id)store;
+- (MADFetchRequest)initWithManagedObjectContext:(id)context;
+- (id)_fetchPredicateForTaskID:(id)d matchingProcessingStatus:(id)status includingProcessingStatuses:(id)statuses excludingProcessingStatuses:(id)processingStatuses matchingAttempts:(id)attempts fromNextAttemptDate:(id)date toNextAttemptDate:(id)attemptDate localIdentifiers:(id)self0 additionalPredicates:(id)self1;
+- (id)fetchAnalysesWithLocalIdentifiers:(id)identifiers predicate:(id)predicate;
+- (id)fetchAnalysesWithLocalIdentifiers:(id)identifiers predicate:(id)predicate resultTypes:(id)types;
+- (id)fetchAnalysisWithLocalIdentifier:(id)identifier predicate:(id)predicate;
+- (id)fetchAnalysisWithLocalIdentifier:(id)identifier predicate:(id)predicate resultTypes:(id)types;
+- (id)fetchDataStoreValueIfKeyExists:(id)exists;
+- (id)fetchFailedProcessingStatusFromAssets:(id)assets taskID:(unint64_t)d;
+- (int)_fetchLocalIdentifiers:(id *)identifiers eligibleToRetry:(id)retry matchingProcessingStatus:(id)status includingProcessingStatuses:(id)statuses excludingProcessingStatuses:(id)processingStatuses taskID:(id)d matchingAttempts:(id)attempts fetchLimit:(id)self0 additionalPredicates:(id)self1;
+- (int)_fetchManagedAssetCount:(unint64_t *)count predicate:(id)predicate;
+- (int)_fetchManagedProcessingStatusCount:(unint64_t *)count predicate:(id)predicate;
+- (int)fetchAllDataStoreKeyValuePairs:(id *)pairs;
+- (int)fetchAllMomentsScheduledAssets:(id *)assets;
+- (int)fetchAllMomentsScheduledAssetsForLookup:(id *)lookup totalCount:(unint64_t *)count;
+- (int)fetchAssetCountForTaskID:(unint64_t)d;
+- (int)fetchAssetCountForTaskID:(unint64_t)d minimumAttempts:(unint64_t)attempts;
+- (int)fetchAssetCountForTaskID:(unint64_t)d status:(unint64_t)status;
+- (int)fetchAssetCountForTaskID:(unint64_t)d status:(unint64_t)status attempts:(int)attempts;
+- (int)fetchAssetCountForTaskID:(unint64_t)d totalAssets:(unint64_t *)assets processedAssets:(unint64_t *)processedAssets;
+- (int)fetchAssetCountFromLocalIdentifiers:(id)identifiers taskID:(unint64_t)d excludingStatuses:(id)statuses;
+- (int)fetchAssetCountWithPredicate:(id)predicate;
+- (int)fetchChangeToken:(id *)token taskID:(unint64_t)d changeTokenType:(unint64_t)type;
+- (int)fetchEligibleToRetryLocalIdentifiers:(id *)identifiers processingStatus:(unint64_t)status taskID:(unint64_t)d fetchLimit:(unint64_t)limit;
+- (int)fetchEligibleToRetryLocalIdentifiers:(id *)identifiers processingStatus:(unint64_t)status taskID:(unint64_t)d fetchLimit:(unint64_t)limit additionalPredicates:(id)predicates;
+- (int)fetchLocalIdentifiers:(id *)identifiers processingStatus:(unint64_t)status taskID:(unint64_t)d attempts:(int)attempts fetchLimit:(unint64_t)limit;
+- (int)fetchLocalIdentifiers:(id *)identifiers processingStatus:(unint64_t)status taskID:(unint64_t)d attempts:(int)attempts fetchLimit:(unint64_t)limit additionalPredicates:(id)predicates;
+- (int)fetchLocalIdentifiers:(id *)identifiers taskID:(unint64_t)d processingStatus:(unint64_t)status;
+- (int)fetchLocalIdentifiers:(id *)identifiers taskID:(unint64_t)d processingStatus:(unint64_t)status additionalPredicates:(id)predicates;
+- (int)fetchLocalIdentifiersEligibleForRetry:(id *)retry taskID:(unint64_t)d excludingStatuses:(id)statuses fetchLimit:(unint64_t)limit additionalPredicates:(id)predicates;
+- (int)fetchLocalIdentifiersEligibleForRetry:(id *)retry taskID:(unint64_t)d fetchLimit:(unint64_t)limit;
+- (int)fetchLocalIdentifiersEligibleForRetry:(id *)retry taskID:(unint64_t)d includingStatuses:(id)statuses fetchLimit:(unint64_t)limit additionalPredicates:(id)predicates;
+- (int)fetchModifiedAssetCountSinceDate:(id)date;
+- (int)fetchMomentsScheduledAssetEntries:(id *)entries forTaskID:(unint64_t)d;
+- (int)fetchProcessingErrorCode:(unint64_t *)code errorLine:(unint64_t *)line taskID:(unint64_t)d localIdentifier:(id)identifier;
+- (int)fetchProcessingErrorCodeCounts:(id *)counts taskID:(unint64_t)d sinceDate:(id)date additionalPredicates:(id)predicates;
+- (int)fetchProcessingStatus:(unint64_t *)status attempts:(int *)attempts lastAttemptDate:(id *)date nextAttemptDate:(id *)attemptDate localIdentifier:(id)identifier taskID:(unint64_t)d;
+- (int)fetchProgressHistoryRecords:(id *)records sinceDate:(id)date;
+- (int)loadAllChangeToken:(id *)token totalCount:(unint64_t *)count;
+- (int)loadAllProcessingStatus:(id *)status totalCount:(unint64_t *)count;
+- (int)loadAllProgressHistoryRecords:(id *)records totalCount:(unint64_t *)count;
+- (int64_t)dataStoreValueForKey:(id)key;
+- (unint64_t)fetchEligibleToRetryAssetCountWithProcessingStatus:(unint64_t)status taskID:(unint64_t)d;
+- (unint64_t)fetchEligibleToRetryAssetCountWithTaskID:(unint64_t)d;
 @end
 
 @implementation MADFetchRequest
 
-- (id)fetchAnalysisWithLocalIdentifier:(id)a3 predicate:(id)a4
+- (id)fetchAnalysisWithLocalIdentifier:(id)identifier predicate:(id)predicate
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v12[0] = v6;
+  identifierCopy = identifier;
+  predicateCopy = predicate;
+  v12[0] = identifierCopy;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
-  v9 = [(MADFetchRequest *)self fetchAnalysesWithLocalIdentifiers:v8 predicate:v7 resultTypes:0];
-  v10 = [v9 objectForKeyedSubscript:v6];
+  v9 = [(MADFetchRequest *)self fetchAnalysesWithLocalIdentifiers:v8 predicate:predicateCopy resultTypes:0];
+  v10 = [v9 objectForKeyedSubscript:identifierCopy];
 
   return v10;
 }
 
-- (id)fetchAnalysisWithLocalIdentifier:(id)a3 predicate:(id)a4 resultTypes:(id)a5
+- (id)fetchAnalysisWithLocalIdentifier:(id)identifier predicate:(id)predicate resultTypes:(id)types
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v15[0] = v8;
+  identifierCopy = identifier;
+  predicateCopy = predicate;
+  typesCopy = types;
+  v15[0] = identifierCopy;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
-  v12 = [(MADFetchRequest *)self fetchAnalysesWithLocalIdentifiers:v11 predicate:v9 resultTypes:v10];
-  v13 = [v12 objectForKeyedSubscript:v8];
+  v12 = [(MADFetchRequest *)self fetchAnalysesWithLocalIdentifiers:v11 predicate:predicateCopy resultTypes:typesCopy];
+  v13 = [v12 objectForKeyedSubscript:identifierCopy];
 
   return v13;
 }
 
-- (id)fetchAnalysesWithLocalIdentifiers:(id)a3 predicate:(id)a4
+- (id)fetchAnalysesWithLocalIdentifiers:(id)identifiers predicate:(id)predicate
 {
-  v4 = [(MADFetchRequest *)self fetchAnalysesWithLocalIdentifiers:a3 predicate:a4 resultTypes:0];
+  v4 = [(MADFetchRequest *)self fetchAnalysesWithLocalIdentifiers:identifiers predicate:predicate resultTypes:0];
 
   return v4;
 }
 
-- (id)fetchAnalysesWithLocalIdentifiers:(id)a3 predicate:(id)a4 resultTypes:(id)a5
+- (id)fetchAnalysesWithLocalIdentifiers:(id)identifiers predicate:(id)predicate resultTypes:(id)types
 {
   v47 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v39 = a5;
-  if (v8 && [v8 count])
+  identifiersCopy = identifiers;
+  predicateCopy = predicate;
+  typesCopy = types;
+  if (identifiersCopy && [identifiersCopy count])
   {
-    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d localIdentifiers", objc_msgSend(v8, "count")];
+    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d localIdentifiers", objc_msgSend(identifiersCopy, "count")];
   }
 
   else
@@ -112,45 +112,45 @@
   }
 
   v16 = +[MADManagedPhotosAsset fetchRequest];
-  if ([v8 count])
+  if ([identifiersCopy count])
   {
     v17 = MEMORY[0x1E696AE18];
     v18 = +[MADManagedPhotosAsset localIdentifierColumnName];
-    v19 = [v17 predicateWithFormat:@"%K IN %@", v18, v8];
-    [v16 setPredicate:v19];
+    identifiersCopy = [v17 predicateWithFormat:@"%K IN %@", v18, identifiersCopy];
+    [v16 setPredicate:identifiersCopy];
 
-    if (v9)
+    if (predicateCopy)
     {
       v20 = MEMORY[0x1E696AB28];
-      v21 = [v16 predicate];
-      v44[0] = v21;
-      v44[1] = v9;
+      predicate = [v16 predicate];
+      v44[0] = predicate;
+      v44[1] = predicateCopy;
       v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v44 count:2];
       v23 = [v20 andPredicateWithSubpredicates:v22];
       [v16 setPredicate:v23];
     }
 
-    [v16 setFetchLimit:{objc_msgSend(v8, "count")}];
+    [v16 setFetchLimit:{objc_msgSend(identifiersCopy, "count")}];
   }
 
-  else if (v9)
+  else if (predicateCopy)
   {
-    [v16 setPredicate:v9];
+    [v16 setPredicate:predicateCopy];
   }
 
-  v24 = [v16 predicate];
-  v25 = v24 == 0;
+  predicate2 = [v16 predicate];
+  v25 = predicate2 == 0;
 
   if (!v25 && MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
-    v26 = [v16 predicate];
-    v27 = [v26 description];
+    predicate3 = [v16 predicate];
+    v27 = [predicate3 description];
     *buf = 138412290;
     v46 = v27;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[MACD|Asset] Fetching with predicate %@", buf, 0xCu);
   }
 
-  v28 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   moc = self->_moc;
   v40[0] = MEMORY[0x1E69E9820];
   v40[1] = 3221225472;
@@ -159,9 +159,9 @@
   v40[4] = self;
   v30 = v16;
   v41 = v30;
-  v31 = v28;
+  v31 = dictionary;
   v42 = v31;
-  v32 = v39;
+  v32 = typesCopy;
   v43 = v32;
   [(NSManagedObjectContext *)moc performBlockAndWait:v40];
   if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
@@ -523,14 +523,14 @@ LABEL_34:
 LABEL_37:
 }
 
-- (int)_fetchManagedAssetCount:(unint64_t *)a3 predicate:(id)a4
+- (int)_fetchManagedAssetCount:(unint64_t *)count predicate:(id)predicate
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (a3)
+  predicateCopy = predicate;
+  if (count)
   {
     v7 = +[MADManagedPhotosAsset fetchRequest];
-    [v7 setPredicate:v6];
+    [v7 setPredicate:predicateCopy];
     *v26 = 0;
     v27 = v26;
     v28 = 0x3032000000;
@@ -547,7 +547,7 @@ LABEL_37:
     v16 = __60__MADFetchRequest_Asset___fetchManagedAssetCount_predicate___block_invoke;
     v17 = &unk_1E834D070;
     v20 = &v22;
-    v18 = self;
+    selfCopy = self;
     v9 = v7;
     v19 = v9;
     v21 = v26;
@@ -556,7 +556,7 @@ LABEL_37:
     {
       if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
-        v10 = [v6 description];
+        v10 = [predicateCopy description];
         v11 = *(v27 + 5);
         *buf = 138412546;
         v33 = v10;
@@ -571,7 +571,7 @@ LABEL_37:
     else
     {
       v12 = 0;
-      *a3 = v23[3];
+      *count = v23[3];
     }
 
     _Block_object_dispose(&v22, 8);
@@ -603,15 +603,15 @@ void __60__MADFetchRequest_Asset___fetchManagedAssetCount_predicate___block_invo
   *(*(a1[6] + 8) + 24) = v5;
 }
 
-- (int)fetchModifiedAssetCountSinceDate:(id)a3
+- (int)fetchModifiedAssetCountSinceDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v11 = 0;
   v5 = MEMORY[0x1E696AE18];
   v6 = +[MADManagedPhotosAsset dateModifiedColumnName];
   v7 = +[MADManagedPhotosAsset dateModifiedColumnName];
-  v8 = [MEMORY[0x1E695DF00] date];
-  v9 = [v5 predicateWithFormat:@"%K >= %@ && %K <= %@", v6, v4, v7, v8];
+  date = [MEMORY[0x1E695DF00] date];
+  v9 = [v5 predicateWithFormat:@"%K >= %@ && %K <= %@", v6, dateCopy, v7, date];
 
   [(MADFetchRequest *)self _fetchManagedAssetCount:&v11 predicate:v9];
   LODWORD(v6) = v11;
@@ -619,9 +619,9 @@ void __60__MADFetchRequest_Asset___fetchManagedAssetCount_predicate___block_invo
   return v6;
 }
 
-- (int)fetchAllMomentsScheduledAssets:(id *)a3
+- (int)fetchAllMomentsScheduledAssets:(id *)assets
 {
-  v5 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v6 = +[MADManagedMomentsScheduledAsset fetchRequest];
   v17 = 0;
   v18 = &v17;
@@ -636,7 +636,7 @@ void __60__MADFetchRequest_Asset___fetchManagedAssetCount_predicate___block_invo
   v8 = v6;
   v14 = v8;
   v16 = &v17;
-  v9 = v5;
+  v9 = dictionary;
   v15 = v9;
   [(NSManagedObjectContext *)moc performBlockAndWait:v13];
   if (*(v18 + 6))
@@ -646,7 +646,7 @@ void __60__MADFetchRequest_Asset___fetchManagedAssetCount_predicate___block_invo
   }
 
   v10 = v9;
-  *a3 = v9;
+  *assets = v9;
   v11 = *(v18 + 6);
 
   _Block_object_dispose(&v17, 8);
@@ -727,9 +727,9 @@ void __73__MADFetchRequest_MomentsScheduledAsset__fetchAllMomentsScheduledAssets
   }
 }
 
-- (int)fetchAllMomentsScheduledAssetsForLookup:(id *)a3 totalCount:(unint64_t *)a4
+- (int)fetchAllMomentsScheduledAssetsForLookup:(id *)lookup totalCount:(unint64_t *)count
 {
-  v7 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v8 = +[MADManagedMomentsScheduledAsset fetchRequest];
   v24 = 0;
   v25 = &v24;
@@ -749,7 +749,7 @@ void __73__MADFetchRequest_MomentsScheduledAsset__fetchAllMomentsScheduledAssets
   v16 = v10;
   v18 = &v20;
   v19 = &v24;
-  v11 = v7;
+  v11 = dictionary;
   v17 = v11;
   [(NSManagedObjectContext *)moc performBlockAndWait:v15];
   if (*(v21 + 6))
@@ -760,8 +760,8 @@ void __73__MADFetchRequest_MomentsScheduledAsset__fetchAllMomentsScheduledAssets
   }
 
   v12 = v11;
-  *a3 = v11;
-  *a4 = v25[3];
+  *lookup = v11;
+  *count = v25[3];
   v13 = *(v21 + 6);
 
   _Block_object_dispose(&v20, 8);
@@ -828,16 +828,16 @@ void __93__MADFetchRequest_MomentsScheduledAsset__fetchAllMomentsScheduledAssets
   [v14 setObject:v5 forKeyedSubscript:v15];
 }
 
-- (int)fetchMomentsScheduledAssetEntries:(id *)a3 forTaskID:(unint64_t)a4
+- (int)fetchMomentsScheduledAssetEntries:(id *)entries forTaskID:(unint64_t)d
 {
   v7 = +[MADManagedMomentsScheduledAsset fetchRequest];
   v8 = MEMORY[0x1E696AE18];
   v9 = +[MADManagedMomentsScheduledAsset taskIDColumnName];
-  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:d];
   v11 = [v8 predicateWithFormat:@"%K == %@", v9, v10];
   [v7 setPredicate:v11];
 
-  v12 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -851,8 +851,8 @@ void __93__MADFetchRequest_MomentsScheduledAsset__fetchAllMomentsScheduledAssets
   v14 = v7;
   v20 = v14;
   v22 = &v24;
-  v23 = a4;
-  v15 = v12;
+  dCopy = d;
+  v15 = array;
   v21 = v15;
   [(NSManagedObjectContext *)moc performBlockAndWait:v19];
   if (*(v25 + 6))
@@ -862,7 +862,7 @@ void __93__MADFetchRequest_MomentsScheduledAsset__fetchAllMomentsScheduledAssets
   }
 
   v16 = v15;
-  *a3 = v15;
+  *entries = v15;
   v17 = *(v25 + 6);
 
   _Block_object_dispose(&v24, 8);
@@ -927,19 +927,19 @@ void __86__MADFetchRequest_MomentsScheduledAsset__fetchMomentsScheduledAssetEntr
   }
 }
 
-- (int)fetchAssetCountForTaskID:(unint64_t)a3 totalAssets:(unint64_t *)a4 processedAssets:(unint64_t *)a5
+- (int)fetchAssetCountForTaskID:(unint64_t)d totalAssets:(unint64_t *)assets processedAssets:(unint64_t *)processedAssets
 {
   v29[1] = *MEMORY[0x1E69E9840];
   result = -50;
-  if (a4)
+  if (assets)
   {
-    if (a5)
+    if (processedAssets)
     {
       v10 = +[MADManagedBackgroundAnalysisProgressHistory fetchRequest];
       v11 = MEMORY[0x1E696AE18];
       v23 = v10;
       v12 = +[MADManagedBackgroundAnalysisProgressHistory activityIDColumnName];
-      v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+      v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:d];
       v14 = +[MADManagedBackgroundAnalysisProgressHistory analysisSubtypeColumnName];
       v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:0];
       v16 = [v11 predicateWithFormat:@"%K == %@ && %K == %@", v12, v13, v14, v15];
@@ -961,9 +961,9 @@ void __86__MADFetchRequest_MomentsScheduledAsset__fetchMomentsScheduledAssetEntr
       v24[4] = self;
       v22 = v23;
       v25 = v22;
-      v26 = a3;
-      v27 = a4;
-      v28 = a5;
+      dCopy = d;
+      assetsCopy = assets;
+      processedAssetsCopy = processedAssets;
       [(NSManagedObjectContext *)moc performBlockAndWait:v24];
 
       return 0;
@@ -1000,17 +1000,17 @@ void __107__MADFetchRequest_BackgroundAnalysisProgressHistory__fetchAssetCountFo
   }
 }
 
-- (int)fetchProgressHistoryRecords:(id *)a3 sinceDate:(id)a4
+- (int)fetchProgressHistoryRecords:(id *)records sinceDate:(id)date
 {
   v37[3] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (a3)
+  dateCopy = date;
+  if (records)
   {
     v27 = +[MADManagedBackgroundAnalysisProgressHistory fetchRequest];
     v7 = MEMORY[0x1E696AE18];
     v8 = +[MADManagedBackgroundAnalysisProgressHistory storeDateColumnName];
-    v9 = [v7 predicateWithFormat:@"%K >= %@", v8, v6];
-    [v27 setPredicate:v9];
+    dateCopy = [v7 predicateWithFormat:@"%K >= %@", v8, dateCopy];
+    [v27 setPredicate:dateCopy];
 
     v10 = MEMORY[0x1E696AEB0];
     v11 = +[MADManagedBackgroundAnalysisProgressHistory activityIDColumnName];
@@ -1031,7 +1031,7 @@ void __107__MADFetchRequest_BackgroundAnalysisProgressHistory__fetchAssetCountFo
     v34 = &v33;
     v35 = 0x2020000000;
     v36 = 0;
-    v20 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     moc = self->_moc;
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
@@ -1040,9 +1040,9 @@ void __107__MADFetchRequest_BackgroundAnalysisProgressHistory__fetchAssetCountFo
     v28[4] = self;
     v22 = v27;
     v29 = v22;
-    v30 = v6;
+    v30 = dateCopy;
     v32 = &v33;
-    v23 = v20;
+    v23 = array;
     v31 = v23;
     [(NSManagedObjectContext *)moc performBlockAndWait:v28];
     if (*(v34 + 6))
@@ -1052,7 +1052,7 @@ void __107__MADFetchRequest_BackgroundAnalysisProgressHistory__fetchAssetCountFo
     }
 
     v24 = v23;
-    *a3 = v23;
+    *records = v23;
     v25 = *(v34 + 6);
 
     _Block_object_dispose(&v33, 8);
@@ -1130,7 +1130,7 @@ void __92__MADFetchRequest_BackgroundAnalysisProgressHistory__fetchProgressHisto
   }
 }
 
-- (int)loadAllProgressHistoryRecords:(id *)a3 totalCount:(unint64_t *)a4
+- (int)loadAllProgressHistoryRecords:(id *)records totalCount:(unint64_t *)count
 {
   v7 = +[MADManagedBackgroundAnalysisProgressHistory fetchRequest];
   v26 = 0;
@@ -1138,7 +1138,7 @@ void __92__MADFetchRequest_BackgroundAnalysisProgressHistory__fetchProgressHisto
   v28 = 0x3032000000;
   v29 = __Block_byref_object_copy__13;
   v30 = __Block_byref_object_dispose__13;
-  v31 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -1167,8 +1167,8 @@ void __92__MADFetchRequest_BackgroundAnalysisProgressHistory__fetchProgressHisto
     v23[3] = 0;
   }
 
-  *a3 = v27[5];
-  *a4 = v23[3];
+  *records = v27[5];
+  *count = v23[3];
   v11 = *(v19 + 6);
 
   _Block_object_dispose(&v18, 8);
@@ -1226,9 +1226,9 @@ void __95__MADFetchRequest_BackgroundAnalysisProgressHistory__loadAllProgressHis
   [v5 setObject:v3 forKeyedSubscript:v6];
 }
 
-- (BOOL)keyExistsInKeyValueStore:(id)a3
+- (BOOL)keyExistsInKeyValueStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -1240,10 +1240,10 @@ void __95__MADFetchRequest_BackgroundAnalysisProgressHistory__loadAllProgressHis
   v8[1] = 3221225472;
   v8[2] = __59__MADFetchRequest_KeyValueStore__keyExistsInKeyValueStore___block_invoke;
   v8[3] = &unk_1E834D210;
-  v10 = self;
+  selfCopy = self;
   v11 = &v12;
-  v9 = v4;
-  v6 = v4;
+  v9 = storeCopy;
+  v6 = storeCopy;
   [(NSManagedObjectContext *)moc performBlockAndWait:v8];
   LOBYTE(moc) = v13[5] != 0;
 
@@ -1259,9 +1259,9 @@ void __59__MADFetchRequest_KeyValueStore__keyExistsInKeyValueStore___block_invok
   *(v3 + 40) = v2;
 }
 
-- (int64_t)dataStoreValueForKey:(id)a3
+- (int64_t)dataStoreValueForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -1271,10 +1271,10 @@ void __59__MADFetchRequest_KeyValueStore__keyExistsInKeyValueStore___block_invok
   v9[1] = 3221225472;
   v9[2] = __55__MADFetchRequest_KeyValueStore__dataStoreValueForKey___block_invoke;
   v9[3] = &unk_1E834CE28;
-  v10 = v4;
-  v11 = self;
+  v10 = keyCopy;
+  selfCopy = self;
   v12 = &v13;
-  v6 = v4;
+  v6 = keyCopy;
   [(NSManagedObjectContext *)moc performBlockAndWait:v9];
   v7 = v14[3];
 
@@ -1288,9 +1288,9 @@ void __55__MADFetchRequest_KeyValueStore__dataStoreValueForKey___block_invoke(vo
   *(*(a1[6] + 8) + 24) = [v2 value];
 }
 
-- (id)fetchDataStoreValueIfKeyExists:(id)a3
+- (id)fetchDataStoreValueIfKeyExists:(id)exists
 {
-  v4 = a3;
+  existsCopy = exists;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -1302,10 +1302,10 @@ void __55__MADFetchRequest_KeyValueStore__dataStoreValueForKey___block_invoke(vo
   v9[1] = 3221225472;
   v9[2] = __65__MADFetchRequest_KeyValueStore__fetchDataStoreValueIfKeyExists___block_invoke;
   v9[3] = &unk_1E834CE28;
-  v10 = v4;
-  v11 = self;
+  v10 = existsCopy;
+  selfCopy = self;
   v12 = &v13;
-  v6 = v4;
+  v6 = existsCopy;
   [(NSManagedObjectContext *)moc performBlockAndWait:v9];
   v7 = v14[5];
 
@@ -1329,10 +1329,10 @@ void __65__MADFetchRequest_KeyValueStore__fetchDataStoreValueIfKeyExists___block
   }
 }
 
-- (int)fetchAllDataStoreKeyValuePairs:(id *)a3
+- (int)fetchAllDataStoreKeyValuePairs:(id *)pairs
 {
   v5 = +[MADManagedKeyValueStore fetchRequest];
-  v6 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -1346,14 +1346,14 @@ void __65__MADFetchRequest_KeyValueStore__fetchDataStoreValueIfKeyExists___block
   v8 = v5;
   v14 = v8;
   v16 = &v17;
-  v9 = v6;
+  v9 = dictionary;
   v15 = v9;
   [(NSManagedObjectContext *)moc performBlockAndWait:v13];
   v10 = *(v18 + 6);
   if (!v10)
   {
     v11 = v9;
-    *a3 = v9;
+    *pairs = v9;
     v10 = *(v18 + 6);
   }
 
@@ -1435,14 +1435,14 @@ void __65__MADFetchRequest_KeyValueStore__fetchAllDataStoreKeyValuePairs___block
   }
 }
 
-- (int)_fetchManagedProcessingStatusCount:(unint64_t *)a3 predicate:(id)a4
+- (int)_fetchManagedProcessingStatusCount:(unint64_t *)count predicate:(id)predicate
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (a3)
+  predicateCopy = predicate;
+  if (count)
   {
     v7 = +[MADManagedProcessingStatus fetchRequest];
-    [v7 setPredicate:v6];
+    [v7 setPredicate:predicateCopy];
     *v26 = 0;
     v27 = v26;
     v28 = 0x3032000000;
@@ -1459,7 +1459,7 @@ void __65__MADFetchRequest_KeyValueStore__fetchAllDataStoreKeyValuePairs___block
     v16 = __82__MADFetchRequest_ProcessingStatus___fetchManagedProcessingStatusCount_predicate___block_invoke;
     v17 = &unk_1E834D070;
     v20 = &v22;
-    v18 = self;
+    selfCopy = self;
     v9 = v7;
     v19 = v9;
     v21 = v26;
@@ -1468,7 +1468,7 @@ void __65__MADFetchRequest_KeyValueStore__fetchAllDataStoreKeyValuePairs___block
     {
       if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
-        v10 = [v6 description];
+        v10 = [predicateCopy description];
         v11 = *(v27 + 5);
         *buf = 138412546;
         v33 = v10;
@@ -1483,7 +1483,7 @@ void __65__MADFetchRequest_KeyValueStore__fetchAllDataStoreKeyValuePairs___block
     else
     {
       v12 = 0;
-      *a3 = v23[3];
+      *count = v23[3];
     }
 
     _Block_object_dispose(&v22, 8);
@@ -1515,28 +1515,28 @@ void __82__MADFetchRequest_ProcessingStatus___fetchManagedProcessingStatusCount_
   *(*(a1[6] + 8) + 24) = v5;
 }
 
-- (id)_fetchPredicateForTaskID:(id)a3 matchingProcessingStatus:(id)a4 includingProcessingStatuses:(id)a5 excludingProcessingStatuses:(id)a6 matchingAttempts:(id)a7 fromNextAttemptDate:(id)a8 toNextAttemptDate:(id)a9 localIdentifiers:(id)a10 additionalPredicates:(id)a11
+- (id)_fetchPredicateForTaskID:(id)d matchingProcessingStatus:(id)status includingProcessingStatuses:(id)statuses excludingProcessingStatuses:(id)processingStatuses matchingAttempts:(id)attempts fromNextAttemptDate:(id)date toNextAttemptDate:(id)attemptDate localIdentifiers:(id)self0 additionalPredicates:(id)self1
 {
-  v16 = a3;
-  v47 = a4;
-  *(&v48 + 1) = a5;
-  *&v48 = a6;
-  v49 = a7;
-  v17 = a8;
-  v18 = a9;
-  v19 = a10;
-  v20 = a11;
-  v21 = [MEMORY[0x1E695DF70] array];
-  if (v16)
+  dCopy = d;
+  statusCopy = status;
+  *(&v48 + 1) = statuses;
+  *&v48 = processingStatuses;
+  attemptsCopy = attempts;
+  dateCopy = date;
+  attemptDateCopy = attemptDate;
+  identifiersCopy = identifiers;
+  predicatesCopy = predicates;
+  array = [MEMORY[0x1E695DF70] array];
+  if (dCopy)
   {
     v22 = MEMORY[0x1E696AE18];
     v23 = +[MADManagedProcessingStatus taskIDColumnName];
-    v24 = [v22 predicateWithFormat:@"%K == %@", v23, v16];
+    dCopy = [v22 predicateWithFormat:@"%K == %@", v23, dCopy];
 
-    [v21 addObject:v24];
+    [array addObject:dCopy];
   }
 
-  if (v47)
+  if (statusCopy)
   {
     if (v48 != 0 && MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -1545,9 +1545,9 @@ void __82__MADFetchRequest_ProcessingStatus___fetchManagedProcessingStatusCount_
 
     v25 = MEMORY[0x1E696AE18];
     v26 = +[MADManagedProcessingStatus statusColumnName];
-    v27 = [v25 predicateWithFormat:@"%K == %@", v26, v47];
+    statusCopy = [v25 predicateWithFormat:@"%K == %@", v26, statusCopy];
 
-    [v21 addObject:v27];
+    [array addObject:statusCopy];
   }
 
   else if (*(&v48 + 1))
@@ -1559,9 +1559,9 @@ void __82__MADFetchRequest_ProcessingStatus___fetchManagedProcessingStatusCount_
 
     v28 = MEMORY[0x1E696AE18];
     v29 = +[MADManagedProcessingStatus statusColumnName];
-    v27 = [v28 predicateWithFormat:@"%K IN %@", v29, *(&v48 + 1)];
+    statusCopy = [v28 predicateWithFormat:@"%K IN %@", v29, *(&v48 + 1)];
 
-    [v21 addObject:v27];
+    [array addObject:statusCopy];
   }
 
   else
@@ -1573,80 +1573,80 @@ void __82__MADFetchRequest_ProcessingStatus___fetchManagedProcessingStatusCount_
 
     v30 = MEMORY[0x1E696AE18];
     v31 = +[MADManagedProcessingStatus statusColumnName];
-    v27 = [v30 predicateWithFormat:@"NOT (%K IN %@)", v31, v48];
+    statusCopy = [v30 predicateWithFormat:@"NOT (%K IN %@)", v31, v48];
 
-    [v21 addObject:v27];
+    [array addObject:statusCopy];
   }
 
 LABEL_18:
-  if (v49)
+  if (attemptsCopy)
   {
     v32 = MEMORY[0x1E696AE18];
     v33 = +[MADManagedProcessingStatus attemptCountColumnName];
-    v34 = [v32 predicateWithFormat:@"%K == %@", v33, v49];
+    attemptsCopy = [v32 predicateWithFormat:@"%K == %@", v33, attemptsCopy];
 
-    [v21 addObject:v34];
+    [array addObject:attemptsCopy];
   }
 
-  if (v17)
+  if (dateCopy)
   {
     v35 = MEMORY[0x1E696AE18];
     v36 = +[MADManagedProcessingStatus nextAttemptDateColumnName];
-    v37 = [v35 predicateWithFormat:@"%K >= %@", v36, v17];
+    dateCopy = [v35 predicateWithFormat:@"%K >= %@", v36, dateCopy];
 
-    [v21 addObject:v37];
+    [array addObject:dateCopy];
   }
 
-  if (v18)
+  if (attemptDateCopy)
   {
     v38 = MEMORY[0x1E696AE18];
     v39 = +[MADManagedProcessingStatus nextAttemptDateColumnName];
-    v40 = [v38 predicateWithFormat:@"%K < %@", v39, v18];
+    attemptDateCopy = [v38 predicateWithFormat:@"%K < %@", v39, attemptDateCopy];
 
-    [v21 addObject:v40];
+    [array addObject:attemptDateCopy];
   }
 
-  if (v19)
+  if (identifiersCopy)
   {
     v41 = MEMORY[0x1E696AE18];
     v42 = +[MADManagedProcessingStatus localIdentifierColumnName];
-    v43 = [v41 predicateWithFormat:@"%K IN %@", v42, v19];
+    identifiersCopy = [v41 predicateWithFormat:@"%K IN %@", v42, identifiersCopy];
 
-    [v21 addObject:v43];
+    [array addObject:identifiersCopy];
   }
 
-  if (v20)
+  if (predicatesCopy)
   {
-    v44 = [MEMORY[0x1E696AE18] predicateWithFormat:v20];
-    [v21 addObject:v44];
+    v44 = [MEMORY[0x1E696AE18] predicateWithFormat:predicatesCopy];
+    [array addObject:v44];
   }
 
-  v45 = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:v21];
+  v45 = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:array];
 
   return v45;
 }
 
-- (int)_fetchLocalIdentifiers:(id *)a3 eligibleToRetry:(id)a4 matchingProcessingStatus:(id)a5 includingProcessingStatuses:(id)a6 excludingProcessingStatuses:(id)a7 taskID:(id)a8 matchingAttempts:(id)a9 fetchLimit:(id)a10 additionalPredicates:(id)a11
+- (int)_fetchLocalIdentifiers:(id *)identifiers eligibleToRetry:(id)retry matchingProcessingStatus:(id)status includingProcessingStatuses:(id)statuses excludingProcessingStatuses:(id)processingStatuses taskID:(id)d matchingAttempts:(id)attempts fetchLimit:(id)self0 additionalPredicates:(id)self1
 {
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v39 = a8;
-  v21 = a9;
-  v22 = a10;
-  v23 = a11;
-  if (a3)
+  retryCopy = retry;
+  statusCopy = status;
+  statusesCopy = statuses;
+  processingStatusesCopy = processingStatuses;
+  dCopy = d;
+  attemptsCopy = attempts;
+  limitCopy = limit;
+  predicatesCopy = predicates;
+  if (identifiers)
   {
-    v37 = v18;
-    v38 = v17;
-    v35 = v20;
-    v36 = v19;
+    v37 = statusCopy;
+    v38 = retryCopy;
+    v35 = processingStatusesCopy;
+    v36 = statusesCopy;
     v24 = [MEMORY[0x1E695DF00] now];
-    v34 = [(MADFetchRequest *)self _fetchPredicateForTaskID:v39 matchingProcessingStatus:v18 includingProcessingStatuses:v19 excludingProcessingStatuses:v20 matchingAttempts:v21 fromNextAttemptDate:0 toNextAttemptDate:v24 localIdentifiers:0 additionalPredicates:v23];
+    v34 = [(MADFetchRequest *)self _fetchPredicateForTaskID:dCopy matchingProcessingStatus:statusCopy includingProcessingStatuses:statusesCopy excludingProcessingStatuses:processingStatusesCopy matchingAttempts:attemptsCopy fromNextAttemptDate:0 toNextAttemptDate:v24 localIdentifiers:0 additionalPredicates:predicatesCopy];
 
     v25 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"objectID" ascending:1];
-    v26 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v54 = 0;
     v55 = &v54;
     v56 = 0x2020000000;
@@ -1666,15 +1666,15 @@ LABEL_18:
     v47 = buf;
     v28 = v34;
     v41 = v28;
-    v42 = v22;
+    v42 = limitCopy;
     v29 = v25;
     v43 = v29;
-    v44 = self;
-    v30 = v26;
+    selfCopy = self;
+    v30 = array;
     v45 = v30;
     [(NSManagedObjectContext *)moc performBlockAndWait:v40];
-    v18 = v37;
-    v17 = v38;
+    statusCopy = v37;
+    retryCopy = v38;
     if (*(v55 + 6))
     {
 
@@ -1682,14 +1682,14 @@ LABEL_18:
     }
 
     v31 = v30;
-    *a3 = v30;
+    *identifiers = v30;
     v32 = *(v55 + 6);
 
     _Block_object_dispose(buf, 8);
     _Block_object_dispose(&v54, 8);
 
-    v20 = v35;
-    v19 = v36;
+    processingStatusesCopy = v35;
+    statusesCopy = v36;
   }
 
   else
@@ -1756,69 +1756,69 @@ void __213__MADFetchRequest_ProcessingStatus___fetchLocalIdentifiers_eligibleToR
   }
 }
 
-- (int)fetchAssetCountWithPredicate:(id)a3
+- (int)fetchAssetCountWithPredicate:(id)predicate
 {
   v4 = 0;
-  [(MADFetchRequest *)self _fetchManagedProcessingStatusCount:&v4 predicate:a3];
+  [(MADFetchRequest *)self _fetchManagedProcessingStatusCount:&v4 predicate:predicate];
   return v4;
 }
 
-- (int)fetchAssetCountForTaskID:(unint64_t)a3
+- (int)fetchAssetCountForTaskID:(unint64_t)d
 {
   v5 = MEMORY[0x1E696AE18];
   v6 = +[MADManagedProcessingStatus taskIDColumnName];
-  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:d];
   v8 = [v5 predicateWithFormat:@"%K == %@", v6, v7];
   LODWORD(self) = [(MADFetchRequest *)self fetchAssetCountWithPredicate:v8];
 
   return self;
 }
 
-- (int)fetchAssetCountForTaskID:(unint64_t)a3 minimumAttempts:(unint64_t)a4
+- (int)fetchAssetCountForTaskID:(unint64_t)d minimumAttempts:(unint64_t)attempts
 {
   v7 = MEMORY[0x1E696AE18];
   v8 = +[MADManagedProcessingStatus taskIDColumnName];
-  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:d];
   v10 = +[MADManagedProcessingStatus attemptCountColumnName];
-  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a4];
+  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:attempts];
   v12 = [v7 predicateWithFormat:@"%K == %@ && %K >= %@", v8, v9, v10, v11];
 
   LODWORD(v8) = [(MADFetchRequest *)self fetchAssetCountWithPredicate:v12];
   return v8;
 }
 
-- (int)fetchAssetCountForTaskID:(unint64_t)a3 status:(unint64_t)a4
+- (int)fetchAssetCountForTaskID:(unint64_t)d status:(unint64_t)status
 {
   v7 = MEMORY[0x1E696AE18];
   v8 = +[MADManagedProcessingStatus taskIDColumnName];
-  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:d];
   v10 = +[MADManagedProcessingStatus statusColumnName];
-  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:status];
   v12 = [v7 predicateWithFormat:@"%K == %@ && %K == %@", v8, v9, v10, v11];
 
   LODWORD(v8) = [(MADFetchRequest *)self fetchAssetCountWithPredicate:v12];
   return v8;
 }
 
-- (int)fetchAssetCountFromLocalIdentifiers:(id)a3 taskID:(unint64_t)a4 excludingStatuses:(id)a5
+- (int)fetchAssetCountFromLocalIdentifiers:(id)identifiers taskID:(unint64_t)d excludingStatuses:(id)statuses
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
-  v11 = [(MADFetchRequest *)self _fetchPredicateForTaskID:v10 matchingProcessingStatus:0 includingProcessingStatuses:0 excludingProcessingStatuses:v9 matchingAttempts:0 fromNextAttemptDate:0 toNextAttemptDate:0 localIdentifiers:v8 additionalPredicates:0];
+  identifiersCopy = identifiers;
+  statusesCopy = statuses;
+  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:d];
+  v11 = [(MADFetchRequest *)self _fetchPredicateForTaskID:v10 matchingProcessingStatus:0 includingProcessingStatuses:0 excludingProcessingStatuses:statusesCopy matchingAttempts:0 fromNextAttemptDate:0 toNextAttemptDate:0 localIdentifiers:identifiersCopy additionalPredicates:0];
   LODWORD(self) = [(MADFetchRequest *)self fetchAssetCountWithPredicate:v11];
 
   return self;
 }
 
-- (int)fetchAssetCountForTaskID:(unint64_t)a3 status:(unint64_t)a4 attempts:(int)a5
+- (int)fetchAssetCountForTaskID:(unint64_t)d status:(unint64_t)status attempts:(int)attempts
 {
-  v5 = *&a5;
+  v5 = *&attempts;
   v9 = MEMORY[0x1E696AE18];
   v10 = +[MADManagedProcessingStatus taskIDColumnName];
-  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:d];
   v12 = +[MADManagedProcessingStatus statusColumnName];
-  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:status];
   v14 = +[MADManagedProcessingStatus attemptCountColumnName];
   v15 = [MEMORY[0x1E696AD98] numberWithInt:v5];
   v16 = [v9 predicateWithFormat:@"%K == %@ && %K == %@ && %K == %@", v10, v11, v12, v13, v14, v15];
@@ -1827,9 +1827,9 @@ void __213__MADFetchRequest_ProcessingStatus___fetchLocalIdentifiers_eligibleToR
   return v10;
 }
 
-- (int)fetchProcessingStatus:(unint64_t *)a3 attempts:(int *)a4 lastAttemptDate:(id *)a5 nextAttemptDate:(id *)a6 localIdentifier:(id)a7 taskID:(unint64_t)a8
+- (int)fetchProcessingStatus:(unint64_t *)status attempts:(int *)attempts lastAttemptDate:(id *)date nextAttemptDate:(id *)attemptDate localIdentifier:(id)identifier taskID:(unint64_t)d
 {
-  v13 = a7;
+  identifierCopy = identifier;
   v48 = 0;
   v49 = &v48;
   v50 = 0x2020000000;
@@ -1860,10 +1860,10 @@ void __213__MADFetchRequest_ProcessingStatus___fetchLocalIdentifiers_eligibleToR
   v19[2] = __123__MADFetchRequest_ProcessingStatus__fetchProcessingStatus_attempts_lastAttemptDate_nextAttemptDate_localIdentifier_taskID___block_invoke;
   v19[3] = &unk_1E834FCD8;
   v22 = &v48;
-  v27 = a8;
-  v15 = v13;
+  dCopy = d;
+  v15 = identifierCopy;
   v20 = v15;
-  v21 = self;
+  selfCopy = self;
   v23 = &v44;
   v24 = &v40;
   v25 = &v34;
@@ -1871,24 +1871,24 @@ void __213__MADFetchRequest_ProcessingStatus___fetchLocalIdentifiers_eligibleToR
   [(NSManagedObjectContext *)moc performBlockAndWait:v19];
   if (!*(v49 + 6))
   {
-    if (a3)
+    if (status)
     {
-      *a3 = v45[3];
+      *status = v45[3];
     }
 
-    if (a4)
+    if (attempts)
     {
-      *a4 = *(v41 + 6);
+      *attempts = *(v41 + 6);
     }
 
-    if (a5)
+    if (date)
     {
-      *a5 = v35[5];
+      *date = v35[5];
     }
 
-    if (a6)
+    if (attemptDate)
     {
-      *a6 = v29[5];
+      *attemptDate = v29[5];
     }
   }
 
@@ -1927,11 +1927,11 @@ void __123__MADFetchRequest_ProcessingStatus__fetchProcessingStatus_attempts_las
   }
 }
 
-- (unint64_t)fetchEligibleToRetryAssetCountWithTaskID:(unint64_t)a3
+- (unint64_t)fetchEligibleToRetryAssetCountWithTaskID:(unint64_t)d
 {
   v5 = MEMORY[0x1E696AE18];
   v6 = +[MADManagedProcessingStatus taskIDColumnName];
-  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:d];
   v8 = +[MADManagedProcessingStatus nextAttemptDateColumnName];
   v9 = [MEMORY[0x1E695DF00] now];
   v10 = [v5 predicateWithFormat:@"%K == %@ && %K < %@", v6, v7, v8, v9];
@@ -1940,13 +1940,13 @@ void __123__MADFetchRequest_ProcessingStatus__fetchProcessingStatus_attempts_las
   return v11;
 }
 
-- (unint64_t)fetchEligibleToRetryAssetCountWithProcessingStatus:(unint64_t)a3 taskID:(unint64_t)a4
+- (unint64_t)fetchEligibleToRetryAssetCountWithProcessingStatus:(unint64_t)status taskID:(unint64_t)d
 {
   v7 = MEMORY[0x1E696AE18];
   v8 = +[MADManagedProcessingStatus taskIDColumnName];
-  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:d];
   v10 = +[MADManagedProcessingStatus statusColumnName];
-  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:status];
   v12 = +[MADManagedProcessingStatus nextAttemptDateColumnName];
   v13 = [MEMORY[0x1E695DF00] now];
   v14 = [v7 predicateWithFormat:@"%K == %@ && %K == %@ && %K < %@", v8, v9, v10, v11, v12, v13];
@@ -1955,18 +1955,18 @@ void __123__MADFetchRequest_ProcessingStatus__fetchProcessingStatus_attempts_las
   return v15;
 }
 
-- (id)fetchFailedProcessingStatusFromAssets:(id)a3 taskID:(unint64_t)a4
+- (id)fetchFailedProcessingStatusFromAssets:(id)assets taskID:(unint64_t)d
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if ([v6 count])
+  assetsCopy = assets;
+  if ([assetsCopy count])
   {
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v8 = v6;
+    v8 = assetsCopy;
     v9 = [v8 countByEnumeratingWithState:&v30 objects:v34 count:16];
     if (v9)
     {
@@ -1980,8 +1980,8 @@ void __123__MADFetchRequest_ProcessingStatus__fetchProcessingStatus_attempts_las
             objc_enumerationMutation(v8);
           }
 
-          v12 = [*(*(&v30 + 1) + 8 * i) localIdentifier];
-          [v7 addObject:v12];
+          localIdentifier = [*(*(&v30 + 1) + 8 * i) localIdentifier];
+          [array addObject:localIdentifier];
         }
 
         v9 = [v8 countByEnumeratingWithState:&v30 objects:v34 count:16];
@@ -1990,16 +1990,16 @@ void __123__MADFetchRequest_ProcessingStatus__fetchProcessingStatus_attempts_las
       while (v9);
     }
 
-    if ([v7 count])
+    if ([array count])
     {
       v13 = MEMORY[0x1E696AE18];
       v14 = +[MADManagedProcessingStatus localIdentifierColumnName];
       v15 = +[MADManagedProcessingStatus statusColumnName];
       v16 = +[MADManagedProcessingStatus taskIDColumnName];
-      v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
-      v18 = [v13 predicateWithFormat:@"%K IN %@ && NOT (%K IN %@) && %K == %@", v14, v7, v15, &unk_1F49BEC68, v16, v17];
+      v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:d];
+      v18 = [v13 predicateWithFormat:@"%K IN %@ && NOT (%K IN %@) && %K == %@", v14, array, v15, &unk_1F49BEC68, v16, v17];
 
-      v19 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       moc = self->_moc;
       v26[0] = MEMORY[0x1E69E9820];
       v26[1] = 3221225472;
@@ -2007,8 +2007,8 @@ void __123__MADFetchRequest_ProcessingStatus__fetchProcessingStatus_attempts_las
       v26[3] = &unk_1E834D020;
       v21 = v18;
       v27 = v21;
-      v28 = self;
-      v22 = v19;
+      selfCopy = self;
+      v22 = dictionary;
       v29 = v22;
       [(NSManagedObjectContext *)moc performBlockAndWait:v26];
       v23 = v29;
@@ -2073,7 +2073,7 @@ void __82__MADFetchRequest_ProcessingStatus__fetchFailedProcessingStatusFromAsse
   }
 }
 
-- (int)loadAllProcessingStatus:(id *)a3 totalCount:(unint64_t *)a4
+- (int)loadAllProcessingStatus:(id *)status totalCount:(unint64_t *)count
 {
   v7 = +[MADManagedProcessingStatus fetchRequest];
   v26 = 0;
@@ -2081,7 +2081,7 @@ void __82__MADFetchRequest_ProcessingStatus__fetchFailedProcessingStatusFromAsse
   v28 = 0x3032000000;
   v29 = __Block_byref_object_copy__36;
   v30 = __Block_byref_object_dispose__36;
-  v31 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -2110,8 +2110,8 @@ void __82__MADFetchRequest_ProcessingStatus__fetchFailedProcessingStatusFromAsse
     v23[3] = 0;
   }
 
-  *a3 = v27[5];
-  *a4 = v23[3];
+  *status = v27[5];
+  *count = v23[3];
   v11 = *(v19 + 6);
 
   _Block_object_dispose(&v18, 8);
@@ -2182,107 +2182,107 @@ void __72__MADFetchRequest_ProcessingStatus__loadAllProcessingStatus_totalCount_
   [v17 setObject:v8 forKeyedSubscript:v18];
 }
 
-- (int)fetchEligibleToRetryLocalIdentifiers:(id *)a3 processingStatus:(unint64_t)a4 taskID:(unint64_t)a5 fetchLimit:(unint64_t)a6 additionalPredicates:(id)a7
+- (int)fetchEligibleToRetryLocalIdentifiers:(id *)identifiers processingStatus:(unint64_t)status taskID:(unint64_t)d fetchLimit:(unint64_t)limit additionalPredicates:(id)predicates
 {
-  v12 = a7;
-  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
-  v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a5];
-  v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a6];
-  LODWORD(a3) = [(MADFetchRequest *)self _fetchLocalIdentifiers:a3 eligibleToRetry:MEMORY[0x1E695E118] matchingProcessingStatus:v13 includingProcessingStatuses:0 excludingProcessingStatuses:0 taskID:v14 matchingAttempts:0 fetchLimit:v15 additionalPredicates:v12];
+  predicatesCopy = predicates;
+  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:status];
+  v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:d];
+  v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:limit];
+  LODWORD(identifiers) = [(MADFetchRequest *)self _fetchLocalIdentifiers:identifiers eligibleToRetry:MEMORY[0x1E695E118] matchingProcessingStatus:v13 includingProcessingStatuses:0 excludingProcessingStatuses:0 taskID:v14 matchingAttempts:0 fetchLimit:v15 additionalPredicates:predicatesCopy];
 
-  return a3;
+  return identifiers;
 }
 
-- (int)fetchEligibleToRetryLocalIdentifiers:(id *)a3 processingStatus:(unint64_t)a4 taskID:(unint64_t)a5 fetchLimit:(unint64_t)a6
+- (int)fetchEligibleToRetryLocalIdentifiers:(id *)identifiers processingStatus:(unint64_t)status taskID:(unint64_t)d fetchLimit:(unint64_t)limit
 {
-  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
-  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a5];
-  v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a6];
-  LODWORD(a3) = [(MADFetchRequest *)self _fetchLocalIdentifiers:a3 eligibleToRetry:MEMORY[0x1E695E118] matchingProcessingStatus:v10 includingProcessingStatuses:0 excludingProcessingStatuses:0 taskID:v11 matchingAttempts:0 fetchLimit:v12 additionalPredicates:0];
+  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:status];
+  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:d];
+  v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:limit];
+  LODWORD(identifiers) = [(MADFetchRequest *)self _fetchLocalIdentifiers:identifiers eligibleToRetry:MEMORY[0x1E695E118] matchingProcessingStatus:v10 includingProcessingStatuses:0 excludingProcessingStatuses:0 taskID:v11 matchingAttempts:0 fetchLimit:v12 additionalPredicates:0];
 
-  return a3;
+  return identifiers;
 }
 
-- (int)fetchLocalIdentifiersEligibleForRetry:(id *)a3 taskID:(unint64_t)a4 fetchLimit:(unint64_t)a5
+- (int)fetchLocalIdentifiersEligibleForRetry:(id *)retry taskID:(unint64_t)d fetchLimit:(unint64_t)limit
 {
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
-  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a5];
-  LODWORD(a3) = [(MADFetchRequest *)self _fetchLocalIdentifiers:a3 eligibleToRetry:MEMORY[0x1E695E118] matchingProcessingStatus:0 includingProcessingStatuses:0 excludingProcessingStatuses:0 taskID:v8 matchingAttempts:0 fetchLimit:v9 additionalPredicates:0];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:d];
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:limit];
+  LODWORD(retry) = [(MADFetchRequest *)self _fetchLocalIdentifiers:retry eligibleToRetry:MEMORY[0x1E695E118] matchingProcessingStatus:0 includingProcessingStatuses:0 excludingProcessingStatuses:0 taskID:v8 matchingAttempts:0 fetchLimit:v9 additionalPredicates:0];
 
-  return a3;
+  return retry;
 }
 
-- (int)fetchLocalIdentifiersEligibleForRetry:(id *)a3 taskID:(unint64_t)a4 includingStatuses:(id)a5 fetchLimit:(unint64_t)a6 additionalPredicates:(id)a7
+- (int)fetchLocalIdentifiersEligibleForRetry:(id *)retry taskID:(unint64_t)d includingStatuses:(id)statuses fetchLimit:(unint64_t)limit additionalPredicates:(id)predicates
 {
-  v12 = a5;
-  v13 = a7;
-  v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
-  v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a6];
-  LODWORD(a3) = [(MADFetchRequest *)self _fetchLocalIdentifiers:a3 eligibleToRetry:MEMORY[0x1E695E118] matchingProcessingStatus:0 includingProcessingStatuses:v12 excludingProcessingStatuses:0 taskID:v14 matchingAttempts:0 fetchLimit:v15 additionalPredicates:v13];
+  statusesCopy = statuses;
+  predicatesCopy = predicates;
+  v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:d];
+  v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:limit];
+  LODWORD(retry) = [(MADFetchRequest *)self _fetchLocalIdentifiers:retry eligibleToRetry:MEMORY[0x1E695E118] matchingProcessingStatus:0 includingProcessingStatuses:statusesCopy excludingProcessingStatuses:0 taskID:v14 matchingAttempts:0 fetchLimit:v15 additionalPredicates:predicatesCopy];
 
-  return a3;
+  return retry;
 }
 
-- (int)fetchLocalIdentifiersEligibleForRetry:(id *)a3 taskID:(unint64_t)a4 excludingStatuses:(id)a5 fetchLimit:(unint64_t)a6 additionalPredicates:(id)a7
+- (int)fetchLocalIdentifiersEligibleForRetry:(id *)retry taskID:(unint64_t)d excludingStatuses:(id)statuses fetchLimit:(unint64_t)limit additionalPredicates:(id)predicates
 {
-  v12 = a5;
-  v13 = a7;
-  v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
-  v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a6];
-  LODWORD(a3) = [(MADFetchRequest *)self _fetchLocalIdentifiers:a3 eligibleToRetry:MEMORY[0x1E695E118] matchingProcessingStatus:0 includingProcessingStatuses:0 excludingProcessingStatuses:v12 taskID:v14 matchingAttempts:0 fetchLimit:v15 additionalPredicates:v13];
+  statusesCopy = statuses;
+  predicatesCopy = predicates;
+  v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:d];
+  v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:limit];
+  LODWORD(retry) = [(MADFetchRequest *)self _fetchLocalIdentifiers:retry eligibleToRetry:MEMORY[0x1E695E118] matchingProcessingStatus:0 includingProcessingStatuses:0 excludingProcessingStatuses:statusesCopy taskID:v14 matchingAttempts:0 fetchLimit:v15 additionalPredicates:predicatesCopy];
 
-  return a3;
+  return retry;
 }
 
-- (int)fetchLocalIdentifiers:(id *)a3 processingStatus:(unint64_t)a4 taskID:(unint64_t)a5 attempts:(int)a6 fetchLimit:(unint64_t)a7 additionalPredicates:(id)a8
+- (int)fetchLocalIdentifiers:(id *)identifiers processingStatus:(unint64_t)status taskID:(unint64_t)d attempts:(int)attempts fetchLimit:(unint64_t)limit additionalPredicates:(id)predicates
 {
-  v9 = *&a6;
-  v14 = a8;
-  v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
-  v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a5];
+  v9 = *&attempts;
+  predicatesCopy = predicates;
+  v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:status];
+  v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:d];
   v17 = [MEMORY[0x1E696AD98] numberWithInt:v9];
-  v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a7];
-  LODWORD(a3) = [(MADFetchRequest *)self _fetchLocalIdentifiers:a3 eligibleToRetry:0 matchingProcessingStatus:v15 includingProcessingStatuses:0 excludingProcessingStatuses:0 taskID:v16 matchingAttempts:v17 fetchLimit:v18 additionalPredicates:v14];
+  v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:limit];
+  LODWORD(identifiers) = [(MADFetchRequest *)self _fetchLocalIdentifiers:identifiers eligibleToRetry:0 matchingProcessingStatus:v15 includingProcessingStatuses:0 excludingProcessingStatuses:0 taskID:v16 matchingAttempts:v17 fetchLimit:v18 additionalPredicates:predicatesCopy];
 
-  return a3;
+  return identifiers;
 }
 
-- (int)fetchLocalIdentifiers:(id *)a3 processingStatus:(unint64_t)a4 taskID:(unint64_t)a5 attempts:(int)a6 fetchLimit:(unint64_t)a7
+- (int)fetchLocalIdentifiers:(id *)identifiers processingStatus:(unint64_t)status taskID:(unint64_t)d attempts:(int)attempts fetchLimit:(unint64_t)limit
 {
-  v8 = *&a6;
-  v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
-  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a5];
+  v8 = *&attempts;
+  v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:status];
+  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:d];
   v14 = [MEMORY[0x1E696AD98] numberWithInt:v8];
-  v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a7];
-  LODWORD(a3) = [(MADFetchRequest *)self _fetchLocalIdentifiers:a3 eligibleToRetry:0 matchingProcessingStatus:v12 includingProcessingStatuses:0 excludingProcessingStatuses:0 taskID:v13 matchingAttempts:v14 fetchLimit:v15 additionalPredicates:0];
+  v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:limit];
+  LODWORD(identifiers) = [(MADFetchRequest *)self _fetchLocalIdentifiers:identifiers eligibleToRetry:0 matchingProcessingStatus:v12 includingProcessingStatuses:0 excludingProcessingStatuses:0 taskID:v13 matchingAttempts:v14 fetchLimit:v15 additionalPredicates:0];
 
-  return a3;
+  return identifiers;
 }
 
-- (int)fetchLocalIdentifiers:(id *)a3 taskID:(unint64_t)a4 processingStatus:(unint64_t)a5 additionalPredicates:(id)a6
+- (int)fetchLocalIdentifiers:(id *)identifiers taskID:(unint64_t)d processingStatus:(unint64_t)status additionalPredicates:(id)predicates
 {
-  v10 = a6;
-  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a5];
-  v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
-  LODWORD(a3) = [(MADFetchRequest *)self _fetchLocalIdentifiers:a3 eligibleToRetry:0 matchingProcessingStatus:v11 includingProcessingStatuses:0 excludingProcessingStatuses:0 taskID:v12 matchingAttempts:0 fetchLimit:0 additionalPredicates:v10];
+  predicatesCopy = predicates;
+  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:status];
+  v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:d];
+  LODWORD(identifiers) = [(MADFetchRequest *)self _fetchLocalIdentifiers:identifiers eligibleToRetry:0 matchingProcessingStatus:v11 includingProcessingStatuses:0 excludingProcessingStatuses:0 taskID:v12 matchingAttempts:0 fetchLimit:0 additionalPredicates:predicatesCopy];
 
-  return a3;
+  return identifiers;
 }
 
-- (int)fetchLocalIdentifiers:(id *)a3 taskID:(unint64_t)a4 processingStatus:(unint64_t)a5
+- (int)fetchLocalIdentifiers:(id *)identifiers taskID:(unint64_t)d processingStatus:(unint64_t)status
 {
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a5];
-  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
-  LODWORD(a3) = [(MADFetchRequest *)self _fetchLocalIdentifiers:a3 eligibleToRetry:0 matchingProcessingStatus:v8 includingProcessingStatuses:0 excludingProcessingStatuses:0 taskID:v9 matchingAttempts:0 fetchLimit:0 additionalPredicates:0];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:status];
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:d];
+  LODWORD(identifiers) = [(MADFetchRequest *)self _fetchLocalIdentifiers:identifiers eligibleToRetry:0 matchingProcessingStatus:v8 includingProcessingStatuses:0 excludingProcessingStatuses:0 taskID:v9 matchingAttempts:0 fetchLimit:0 additionalPredicates:0];
 
-  return a3;
+  return identifiers;
 }
 
-- (int)fetchProcessingErrorCode:(unint64_t *)a3 errorLine:(unint64_t *)a4 taskID:(unint64_t)a5 localIdentifier:(id)a6
+- (int)fetchProcessingErrorCode:(unint64_t *)code errorLine:(unint64_t *)line taskID:(unint64_t)d localIdentifier:(id)identifier
 {
-  v10 = a6;
-  v11 = v10;
-  if (a3 | a4)
+  identifierCopy = identifier;
+  v11 = identifierCopy;
+  if (code | line)
   {
     *buf = 0;
     v31 = buf;
@@ -2302,23 +2302,23 @@ void __72__MADFetchRequest_ProcessingStatus__loadAllProcessingStatus_totalCount_
     v15[2] = __95__MADFetchRequest_ProcessingStatus__fetchProcessingErrorCode_errorLine_taskID_localIdentifier___block_invoke;
     v15[3] = &unk_1E834FD28;
     v18 = buf;
-    v21 = a5;
-    v16 = v10;
-    v17 = self;
+    dCopy = d;
+    v16 = identifierCopy;
+    selfCopy = self;
     v19 = &v26;
     v20 = &v22;
     [(NSManagedObjectContext *)moc performBlockAndWait:v15];
     v13 = *(v31 + 6);
     if (!v13)
     {
-      if (a3)
+      if (code)
       {
-        *a3 = v27[3];
+        *code = v27[3];
       }
 
-      if (a4)
+      if (line)
       {
-        *a4 = v23[3];
+        *line = v23[3];
       }
     }
 
@@ -2355,12 +2355,12 @@ void __95__MADFetchRequest_ProcessingStatus__fetchProcessingErrorCode_errorLine_
   }
 }
 
-- (int)fetchProcessingErrorCodeCounts:(id *)a3 taskID:(unint64_t)a4 sinceDate:(id)a5 additionalPredicates:(id)a6
+- (int)fetchProcessingErrorCodeCounts:(id *)counts taskID:(unint64_t)d sinceDate:(id)date additionalPredicates:(id)predicates
 {
   v42[1] = *MEMORY[0x1E69E9840];
-  v30 = a5;
-  v31 = a6;
-  if (a3)
+  dateCopy = date;
+  predicatesCopy = predicates;
+  if (counts)
   {
     v10 = +[MADManagedProcessingStatus fetchRequest];
     v11 = MEMORY[0x1E696ABC8];
@@ -2386,11 +2386,11 @@ void __95__MADFetchRequest_ProcessingStatus__fetchProcessingErrorCode_errorLine_
     v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:2];
     [v10 setPropertiesToFetch:v20];
 
-    v21 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
-    v22 = [(MADFetchRequest *)self _fetchPredicateForTaskID:v21 matchingProcessingStatus:0 includingProcessingStatuses:0 excludingProcessingStatuses:0 matchingAttempts:0 fromNextAttemptDate:v30 toNextAttemptDate:0 localIdentifiers:0 additionalPredicates:v31];
+    v21 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:d];
+    v22 = [(MADFetchRequest *)self _fetchPredicateForTaskID:v21 matchingProcessingStatus:0 includingProcessingStatuses:0 excludingProcessingStatuses:0 matchingAttempts:0 fromNextAttemptDate:dateCopy toNextAttemptDate:0 localIdentifiers:0 additionalPredicates:predicatesCopy];
     [v10 setPredicate:v22];
 
-    v23 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     *buf = 0;
     v37 = buf;
     v38 = 0x2020000000;
@@ -2404,14 +2404,14 @@ void __95__MADFetchRequest_ProcessingStatus__fetchProcessingErrorCode_errorLine_
     v25 = v10;
     v33 = v25;
     v35 = buf;
-    v26 = v23;
+    v26 = dictionary;
     v34 = v26;
     [(NSManagedObjectContext *)moc performBlockAndWait:v32];
     v27 = *(v37 + 6);
     if (!v27)
     {
       v28 = v26;
-      *a3 = v26;
+      *counts = v26;
       v27 = *(v37 + 6);
     }
 
@@ -2516,17 +2516,17 @@ void __106__MADFetchRequest_ProcessingStatus__fetchProcessingErrorCodeCounts_tas
   }
 }
 
-- (int)fetchChangeToken:(id *)a3 taskID:(unint64_t)a4 changeTokenType:(unint64_t)a5
+- (int)fetchChangeToken:(id *)token taskID:(unint64_t)d changeTokenType:(unint64_t)type
 {
-  if (a3)
+  if (token)
   {
-    *a3 = 0;
+    *token = 0;
     v9 = +[MADManagedChangeToken fetchRequest];
     v10 = MEMORY[0x1E696AE18];
     v11 = +[MADManagedChangeToken tokenIDColumnName];
-    v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+    v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:d];
     v13 = +[MADManagedChangeToken tokenTypeColumnName];
-    v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a5];
+    v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
     v15 = [v10 predicateWithFormat:@"(%K == %@) AND (%K == %@)", v11, v12, v13, v14];
     [v9 setPredicate:v15];
 
@@ -2547,13 +2547,13 @@ void __106__MADFetchRequest_ProcessingStatus__fetchProcessingErrorCodeCounts_tas
     v20[3] = &unk_1E8350450;
     v20[4] = self;
     v17 = v9;
-    v24 = a4;
-    v25 = a5;
+    dCopy = d;
+    typeCopy = type;
     v21 = v17;
     v22 = &v32;
     v23 = buf;
     [(NSManagedObjectContext *)moc performBlockAndWait:v20];
-    *a3 = *(v27 + 5);
+    *token = *(v27 + 5);
     v18 = *(v33 + 6);
 
     _Block_object_dispose(buf, 8);
@@ -2663,7 +2663,7 @@ LABEL_19:
   }
 }
 
-- (int)loadAllChangeToken:(id *)a3 totalCount:(unint64_t *)a4
+- (int)loadAllChangeToken:(id *)token totalCount:(unint64_t *)count
 {
   v7 = +[MADManagedChangeToken fetchRequest];
   v26 = 0;
@@ -2671,7 +2671,7 @@ LABEL_19:
   v28 = 0x3032000000;
   v29 = __Block_byref_object_copy__48;
   v30 = __Block_byref_object_dispose__48;
-  v31 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -2700,8 +2700,8 @@ LABEL_19:
     v23[3] = 0;
   }
 
-  *a3 = v27[5];
-  *a4 = v23[3];
+  *token = v27[5];
+  *count = v23[3];
   v11 = *(v19 + 6);
 
   _Block_object_dispose(&v18, 8);
@@ -2770,25 +2770,25 @@ void __62__MADFetchRequest_ChangeToken__loadAllChangeToken_totalCount___block_in
   [v16 setObject:v7 forKeyedSubscript:v17];
 }
 
-- (MADFetchRequest)initWithManagedObjectContext:(id)a3
+- (MADFetchRequest)initWithManagedObjectContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = MADFetchRequest;
   v6 = [(MADFetchRequest *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_moc, a3);
+    objc_storeStrong(&v6->_moc, context);
   }
 
   return v7;
 }
 
-+ (id)fetchRequestWithManagedObjectContext:(id)a3
++ (id)fetchRequestWithManagedObjectContext:(id)context
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithManagedObjectContext:v3];
+  contextCopy = context;
+  v4 = [objc_alloc(objc_opt_class()) initWithManagedObjectContext:contextCopy];
 
   return v4;
 }

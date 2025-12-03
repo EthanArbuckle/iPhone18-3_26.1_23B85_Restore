@@ -1,16 +1,16 @@
 @interface SUUIToolbarControllerAccessibility
-- (id)_barButtonItemWithButtonElement:(id)a3;
+- (id)_barButtonItemWithButtonElement:(id)element;
 @end
 
 @implementation SUUIToolbarControllerAccessibility
 
-- (id)_barButtonItemWithButtonElement:(id)a3
+- (id)_barButtonItemWithButtonElement:(id)element
 {
   v6.receiver = self;
   v6.super_class = SUUIToolbarControllerAccessibility;
-  v3 = a3;
-  v4 = [(SUUIToolbarControllerAccessibility *)&v6 _barButtonItemWithButtonElement:v3];
-  NSLog(&cfstr_ItemLu.isa, v4, v3, [v3 safeIntegerForKey:@"elementType"]);
+  elementCopy = element;
+  v4 = [(SUUIToolbarControllerAccessibility *)&v6 _barButtonItemWithButtonElement:elementCopy];
+  NSLog(&cfstr_ItemLu.isa, v4, elementCopy, [elementCopy safeIntegerForKey:@"elementType"]);
 
   return v4;
 }

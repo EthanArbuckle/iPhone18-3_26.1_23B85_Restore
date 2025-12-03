@@ -1,5 +1,5 @@
 @interface _ASAccountSharingGroupMemberData
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)displayName;
 - (id)description;
 - (unint64_t)hash;
@@ -27,10 +27,10 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v23 = 1;
   }
@@ -40,33 +40,33 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       contactDisplayName = self->_contactDisplayName;
-      v7 = [(_ASAccountSharingGroupMemberData *)v5 contactDisplayName];
+      contactDisplayName = [(_ASAccountSharingGroupMemberData *)v5 contactDisplayName];
       if (WBSIsEqual())
       {
         shortContactDisplayName = self->_shortContactDisplayName;
-        v9 = [(_ASAccountSharingGroupMemberData *)v5 shortContactDisplayName];
+        shortContactDisplayName = [(_ASAccountSharingGroupMemberData *)v5 shortContactDisplayName];
         if (WBSIsEqual())
         {
           handle = self->_handle;
-          v11 = [(_ASAccountSharingGroupMemberData *)v5 handle];
-          if ([(NSString *)handle isEqualToString:v11])
+          handle = [(_ASAccountSharingGroupMemberData *)v5 handle];
+          if ([(NSString *)handle isEqualToString:handle])
           {
             handleForDisplay = self->_handleForDisplay;
-            v13 = [(_ASAccountSharingGroupMemberData *)v5 handleForDisplay];
-            if ([(NSString *)handleForDisplay isEqualToString:v13])
+            handleForDisplay = [(_ASAccountSharingGroupMemberData *)v5 handleForDisplay];
+            if ([(NSString *)handleForDisplay isEqualToString:handleForDisplay])
             {
               avatarImageForGroupMemberCell = self->_avatarImageForGroupMemberCell;
-              v15 = [(_ASAccountSharingGroupMemberData *)v5 avatarImageForGroupMemberCell];
-              if ([(UIImage *)avatarImageForGroupMemberCell isEqual:v15]&& (groupPermissionLevel = self->_groupPermissionLevel, groupPermissionLevel == [(_ASAccountSharingGroupMemberData *)v5 groupPermissionLevel]) && (isMeParticipant = self->_isMeParticipant, isMeParticipant == [(_ASAccountSharingGroupMemberData *)v5 isMeParticipant]) && (inviteStatus = self->_inviteStatus, inviteStatus == [(_ASAccountSharingGroupMemberData *)v5 inviteStatus]))
+              avatarImageForGroupMemberCell = [(_ASAccountSharingGroupMemberData *)v5 avatarImageForGroupMemberCell];
+              if ([(UIImage *)avatarImageForGroupMemberCell isEqual:avatarImageForGroupMemberCell]&& (groupPermissionLevel = self->_groupPermissionLevel, groupPermissionLevel == [(_ASAccountSharingGroupMemberData *)v5 groupPermissionLevel]) && (isMeParticipant = self->_isMeParticipant, isMeParticipant == [(_ASAccountSharingGroupMemberData *)v5 isMeParticipant]) && (inviteStatus = self->_inviteStatus, inviteStatus == [(_ASAccountSharingGroupMemberData *)v5 inviteStatus]))
               {
                 contact = self->_contact;
-                v20 = [(_ASAccountSharingGroupMemberData *)v5 contact];
+                contact = [(_ASAccountSharingGroupMemberData *)v5 contact];
                 if (WBSIsEqual())
                 {
                   participantID = self->_participantID;
-                  v22 = [(_ASAccountSharingGroupMemberData *)v5 participantID];
+                  participantID = [(_ASAccountSharingGroupMemberData *)v5 participantID];
                   v23 = WBSIsEqual();
                 }
 
@@ -158,9 +158,9 @@
   }
 
   v10 = v5;
-  v11 = [v3 stringWithFormat:@"<%@: %p contactDisplayName = %@; shortContactDisplayName = %@; handle = %@; handleForDisplay = %@; permissionLevel = %lld; isMeParticipant = %@; inviteStatus = %lld>; hasContact = %@; participantID: %@;", v4, self, v14, v13, groupPermissionLevel, v10, inviteStatus, v9, participantID];;
+  participantID = [v3 stringWithFormat:@"<%@: %p contactDisplayName = %@; shortContactDisplayName = %@; handle = %@; handleForDisplay = %@; permissionLevel = %lld; isMeParticipant = %@; inviteStatus = %lld>; hasContact = %@; participantID: %@;", v4, self, v14, v13, groupPermissionLevel, v10, inviteStatus, v9, participantID];;
 
-  return v11;
+  return participantID;
 }
 
 @end

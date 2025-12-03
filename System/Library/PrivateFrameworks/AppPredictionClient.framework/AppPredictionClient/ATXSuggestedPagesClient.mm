@@ -1,14 +1,14 @@
 @interface ATXSuggestedPagesClient
-+ (id)tapToRadarURLForModeName:(id)a3;
++ (id)tapToRadarURLForModeName:(id)name;
 - (ATXSuggestedPagesClient)init;
-- (BOOL)allowsSuggestionsForModeUUID:(id)a3;
+- (BOOL)allowsSuggestionsForModeUUID:(id)d;
 - (void)_createInstalledPagesTrackerIfNeeded;
-- (void)didAddAppsWithBundleIds:(id)a3 suggestedPage:(id)a4;
-- (void)didInstallSuggestedPage:(id)a3;
-- (void)didRemoveAppsWithBundleIds:(id)a3 suggestedPage:(id)a4;
-- (void)sendModificationMetricsToCoreAnalyticsWithBundleIds:(id)a3 suggestedPage:(id)a4 isAdded:(BOOL)a5;
-- (void)suggestedPagesWithFilter:(id)a3 layoutOptions:(id)a4 completionHandler:(id)a5;
-- (void)updateSuggestedPagesWithCompletionHandler:(id)a3;
+- (void)didAddAppsWithBundleIds:(id)ids suggestedPage:(id)page;
+- (void)didInstallSuggestedPage:(id)page;
+- (void)didRemoveAppsWithBundleIds:(id)ids suggestedPage:(id)page;
+- (void)sendModificationMetricsToCoreAnalyticsWithBundleIds:(id)ids suggestedPage:(id)page isAdded:(BOOL)added;
+- (void)suggestedPagesWithFilter:(id)filter layoutOptions:(id)options completionHandler:(id)handler;
+- (void)updateSuggestedPagesWithCompletionHandler:(id)handler;
 @end
 
 @implementation ATXSuggestedPagesClient
@@ -59,23 +59,23 @@ void __31__ATXSuggestedPagesClient_init__block_invoke_8()
   }
 }
 
-- (void)suggestedPagesWithFilter:(id)a3 layoutOptions:(id)a4 completionHandler:(id)a5
+- (void)suggestedPagesWithFilter:(id)filter layoutOptions:(id)options completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  filterCopy = filter;
+  optionsCopy = options;
+  handlerCopy = handler;
   v11 = dispatch_get_global_queue(25, 0);
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __84__ATXSuggestedPagesClient_suggestedPagesWithFilter_layoutOptions_completionHandler___block_invoke;
   v15[3] = &unk_1E80C1468;
-  v16 = v8;
-  v17 = self;
-  v18 = v9;
-  v19 = v10;
-  v12 = v9;
-  v13 = v10;
-  v14 = v8;
+  v16 = filterCopy;
+  selfCopy = self;
+  v18 = optionsCopy;
+  v19 = handlerCopy;
+  v12 = optionsCopy;
+  v13 = handlerCopy;
+  v14 = filterCopy;
   dispatch_async(v11, v15);
 }
 
@@ -120,23 +120,23 @@ void __84__ATXSuggestedPagesClient_suggestedPagesWithFilter_layoutOptions_comple
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)updateSuggestedPagesWithCompletionHandler:(id)a3
+- (void)updateSuggestedPagesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   xpcConnection = self->_xpcConnection;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __69__ATXSuggestedPagesClient_updateSuggestedPagesWithCompletionHandler___block_invoke;
   v8[3] = &unk_1E80C08E0;
-  v9 = v4;
-  v6 = v4;
+  v9 = handlerCopy;
+  v6 = handlerCopy;
   v7 = [(NSXPCConnection *)xpcConnection remoteObjectProxyWithErrorHandler:v8];
   [v7 updateSuggestedPagesWithCompletionHandler:v6];
 }
 
-- (BOOL)allowsSuggestionsForModeUUID:(id)a3
+- (BOOL)allowsSuggestionsForModeUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   [(ATXSuggestedPagesClient *)self _createInstalledPagesTrackerIfNeeded];
   v5 = objc_alloc_init(ATXHomeScreenConfigCache);
   v6 = [(ATXHomeScreenConfigCache *)v5 loadHomeScreenPageConfigurationsIncludingHidden:1 error:0];
@@ -154,7 +154,7 @@ void __84__ATXSuggestedPagesClient_suggestedPagesWithFilter_layoutOptions_comple
 
   else
   {
-    v7 = [(ATXInstalledSuggestedPagesTracker *)self->_tracker identifierOfSuggestedPageForModeUUID:v4];
+    v7 = [(ATXInstalledSuggestedPagesTracker *)self->_tracker identifierOfSuggestedPageForModeUUID:dCopy];
     if ([v7 length])
     {
       v13[0] = MEMORY[0x1E69E9820];
@@ -167,8 +167,8 @@ void __84__ATXSuggestedPagesClient_suggestedPagesWithFilter_layoutOptions_comple
       v10 = v9;
       if (v9)
       {
-        v11 = [v9 associatedModeUUIDs];
-        v8 = [v11 count] == 0;
+        associatedModeUUIDs = [v9 associatedModeUUIDs];
+        v8 = [associatedModeUUIDs count] == 0;
       }
 
       else
@@ -194,20 +194,20 @@ uint64_t __56__ATXSuggestedPagesClient_allowsSuggestionsForModeUUID___block_invo
   return v4;
 }
 
-- (void)didInstallSuggestedPage:(id)a3
+- (void)didInstallSuggestedPage:(id)page
 {
-  v4 = a3;
-  v5 = [v4 uniqueIdentifier];
-  v6 = [v5 length];
+  pageCopy = page;
+  uniqueIdentifier = [pageCopy uniqueIdentifier];
+  v6 = [uniqueIdentifier length];
 
   if (v6)
   {
     [(ATXSuggestedPagesClient *)self _createInstalledPagesTrackerIfNeeded];
     tracker = self->_tracker;
-    v8 = [v4 uniqueIdentifier];
-    v9 = [v4 associatedModeUUIDs];
-    v10 = [v9 anyObject];
-    -[ATXInstalledSuggestedPagesTracker storePageIdentifier:modeUUID:forPageType:](tracker, "storePageIdentifier:modeUUID:forPageType:", v8, v10, [v4 suggestedPageType]);
+    uniqueIdentifier2 = [pageCopy uniqueIdentifier];
+    associatedModeUUIDs = [pageCopy associatedModeUUIDs];
+    anyObject = [associatedModeUUIDs anyObject];
+    -[ATXInstalledSuggestedPagesTracker storePageIdentifier:modeUUID:forPageType:](tracker, "storePageIdentifier:modeUUID:forPageType:", uniqueIdentifier2, anyObject, [pageCopy suggestedPageType]);
   }
 
   else
@@ -220,44 +220,44 @@ uint64_t __56__ATXSuggestedPagesClient_allowsSuggestionsForModeUUID___block_invo
   }
 }
 
-- (void)didAddAppsWithBundleIds:(id)a3 suggestedPage:(id)a4
+- (void)didAddAppsWithBundleIds:(id)ids suggestedPage:(id)page
 {
   tracker = self->_tracker;
-  v7 = a4;
-  v10 = a3;
-  v8 = [v7 suggestedPageType];
-  v9 = [v7 uniqueIdentifier];
-  [(ATXInstalledSuggestedPagesTracker *)tracker trackSuggestedHomePageWithAction:2 pageType:v8 identifier:v9];
+  pageCopy = page;
+  idsCopy = ids;
+  suggestedPageType = [pageCopy suggestedPageType];
+  uniqueIdentifier = [pageCopy uniqueIdentifier];
+  [(ATXInstalledSuggestedPagesTracker *)tracker trackSuggestedHomePageWithAction:2 pageType:suggestedPageType identifier:uniqueIdentifier];
 
-  [(ATXSuggestedPagesClient *)self sendModificationMetricsToCoreAnalyticsWithBundleIds:v10 suggestedPage:v7 isAdded:1];
+  [(ATXSuggestedPagesClient *)self sendModificationMetricsToCoreAnalyticsWithBundleIds:idsCopy suggestedPage:pageCopy isAdded:1];
 }
 
-- (void)didRemoveAppsWithBundleIds:(id)a3 suggestedPage:(id)a4
+- (void)didRemoveAppsWithBundleIds:(id)ids suggestedPage:(id)page
 {
   tracker = self->_tracker;
-  v7 = a4;
-  v10 = a3;
-  v8 = [v7 suggestedPageType];
-  v9 = [v7 uniqueIdentifier];
-  [(ATXInstalledSuggestedPagesTracker *)tracker trackSuggestedHomePageWithAction:2 pageType:v8 identifier:v9];
+  pageCopy = page;
+  idsCopy = ids;
+  suggestedPageType = [pageCopy suggestedPageType];
+  uniqueIdentifier = [pageCopy uniqueIdentifier];
+  [(ATXInstalledSuggestedPagesTracker *)tracker trackSuggestedHomePageWithAction:2 pageType:suggestedPageType identifier:uniqueIdentifier];
 
-  [(ATXSuggestedPagesClient *)self sendModificationMetricsToCoreAnalyticsWithBundleIds:v10 suggestedPage:v7 isAdded:0];
+  [(ATXSuggestedPagesClient *)self sendModificationMetricsToCoreAnalyticsWithBundleIds:idsCopy suggestedPage:pageCopy isAdded:0];
 }
 
-- (void)sendModificationMetricsToCoreAnalyticsWithBundleIds:(id)a3 suggestedPage:(id)a4 isAdded:(BOOL)a5
+- (void)sendModificationMetricsToCoreAnalyticsWithBundleIds:(id)ids suggestedPage:(id)page isAdded:(BOOL)added
 {
-  v8 = a3;
-  v9 = a4;
+  idsCopy = ids;
+  pageCopy = page;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __101__ATXSuggestedPagesClient_sendModificationMetricsToCoreAnalyticsWithBundleIds_suggestedPage_isAdded___block_invoke;
   block[3] = &unk_1E80C14B8;
-  v14 = v8;
-  v15 = v9;
-  v16 = a5;
-  v11 = v9;
-  v12 = v8;
+  v14 = idsCopy;
+  v15 = pageCopy;
+  addedCopy = added;
+  v11 = pageCopy;
+  v12 = idsCopy;
   dispatch_async(queue, block);
 }
 
@@ -323,15 +323,15 @@ void __101__ATXSuggestedPagesClient_sendModificationMetricsToCoreAnalyticsWithBu
   }
 }
 
-+ (id)tapToRadarURLForModeName:(id)a3
++ (id)tapToRadarURLForModeName:(id)name
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E69C5D08] currentOsBuild];
-  v5 = [MEMORY[0x1E69C5CF8] internalDeviceCode];
+  nameCopy = name;
+  currentOsBuild = [MEMORY[0x1E69C5D08] currentOsBuild];
+  internalDeviceCode = [MEMORY[0x1E69C5CF8] internalDeviceCode];
   v6 = objc_alloc(MEMORY[0x1E696AEC0]);
-  if (v5)
+  if (internalDeviceCode)
   {
-    v7 = v4 == 0;
+    v7 = currentOsBuild == 0;
   }
 
   else
@@ -341,21 +341,21 @@ void __101__ATXSuggestedPagesClient_sendModificationMetricsToCoreAnalyticsWithBu
 
   if (v7)
   {
-    v8 = [v6 initWithFormat:@"💬 %@ Page Suggestion Feedback", v3, v18, v19];
+    nameCopy = [v6 initWithFormat:@"💬 %@ Page Suggestion Feedback", nameCopy, v18, v19];
   }
 
   else
   {
-    v8 = [v6 initWithFormat:@"💬 %@/%@: %@ Page Suggestion Feedback", v5, v4, v3];
+    nameCopy = [v6 initWithFormat:@"💬 %@/%@: %@ Page Suggestion Feedback", internalDeviceCode, currentOsBuild, nameCopy];
   }
 
-  v9 = v8;
-  v10 = [MEMORY[0x1E696AB08] URLQueryAllowedCharacterSet];
-  v11 = [v9 stringByAddingPercentEncodingWithAllowedCharacters:v10];
+  v9 = nameCopy;
+  uRLQueryAllowedCharacterSet = [MEMORY[0x1E696AB08] URLQueryAllowedCharacterSet];
+  v11 = [v9 stringByAddingPercentEncodingWithAllowedCharacters:uRLQueryAllowedCharacterSet];
 
-  v12 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"= = = Provide %@ Suggestion Feedback = = =\n\nAre there any apps or widgets that are missing that you would expect to see? If so, which ones?\n- - - - - - - - - - - - - - - - - - - - - - - - - - - -\n\n\nAre there any apps or widgets that should not be there? If so, which ones?\n- - - - - - - - - - - - - - - - - - - - - - - - - - - -\n\n\nAdditional Notes\n- - - - - - - - - - - - - - - - - - - - - - - - - - - -\n\n", v3];
-  v13 = [MEMORY[0x1E696AB08] URLQueryAllowedCharacterSet];
-  v14 = [v12 stringByAddingPercentEncodingWithAllowedCharacters:v13];
+  nameCopy2 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"= = = Provide %@ Suggestion Feedback = = =\n\nAre there any apps or widgets that are missing that you would expect to see? If so, which ones?\n- - - - - - - - - - - - - - - - - - - - - - - - - - - -\n\n\nAre there any apps or widgets that should not be there? If so, which ones?\n- - - - - - - - - - - - - - - - - - - - - - - - - - - -\n\n\nAdditional Notes\n- - - - - - - - - - - - - - - - - - - - - - - - - - - -\n\n", nameCopy];
+  uRLQueryAllowedCharacterSet2 = [MEMORY[0x1E696AB08] URLQueryAllowedCharacterSet];
+  v14 = [nameCopy2 stringByAddingPercentEncodingWithAllowedCharacters:uRLQueryAllowedCharacterSet2];
 
   v15 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"tap-to-radar://new?ComponentID=1153724&ComponentName=Proactive%%20Mode%%20Intelligence&ComponentVersion=All&Classification=Enhancement&Reproducibility=Not%%20Applicable&Title=%@&Description=%@", v11, v14];
   v16 = [MEMORY[0x1E695DFF8] URLWithString:v15];

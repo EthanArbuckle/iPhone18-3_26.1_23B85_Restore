@@ -1,23 +1,23 @@
 @interface AXSSMotionTrackingVideoFileInput
-+ (id)videoFileInputWithName:(id)a3;
-- (AXSSMotionTrackingVideoFileInput)initWithCoder:(id)a3;
-- (AXSSMotionTrackingVideoFileInput)initWithName:(id)a3;
-- (AXSSMotionTrackingVideoFileInput)initWithPlistDictionary:(id)a3;
++ (id)videoFileInputWithName:(id)name;
+- (AXSSMotionTrackingVideoFileInput)initWithCoder:(id)coder;
+- (AXSSMotionTrackingVideoFileInput)initWithName:(id)name;
+- (AXSSMotionTrackingVideoFileInput)initWithPlistDictionary:(id)dictionary;
 - (NSString)name;
 - (id)description;
 - (id)plistDictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AXSSMotionTrackingVideoFileInput
 
-+ (id)videoFileInputWithName:(id)a3
++ (id)videoFileInputWithName:(id)name
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 length])
+  nameCopy = name;
+  v5 = nameCopy;
+  if (nameCopy && [nameCopy length])
   {
-    v6 = [[a1 alloc] initWithName:v5];
+    v6 = [[self alloc] initWithName:v5];
   }
 
   else
@@ -28,15 +28,15 @@
   return v6;
 }
 
-- (AXSSMotionTrackingVideoFileInput)initWithName:(id)a3
+- (AXSSMotionTrackingVideoFileInput)initWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = AXSSMotionTrackingVideoFileInput;
   v5 = [(AXSSMotionTrackingInput *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     name = v5->__name;
     v5->__name = v6;
   }
@@ -46,9 +46,9 @@
 
 - (NSString)name
 {
-  v2 = [(AXSSMotionTrackingVideoFileInput *)self _name];
-  v3 = v2;
-  if (v2 && [v2 length])
+  _name = [(AXSSMotionTrackingVideoFileInput *)self _name];
+  v3 = _name;
+  if (_name && [_name length])
   {
     v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ (Test Video File)", v3];
   }
@@ -63,25 +63,25 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  v4 = [(AXSSMotionTrackingVideoFileInput *)self name];
+  coderCopy = coder;
+  name = [(AXSSMotionTrackingVideoFileInput *)self name];
 
-  if (v4)
+  if (name)
   {
-    v5 = [(AXSSMotionTrackingVideoFileInput *)self _name];
+    _name = [(AXSSMotionTrackingVideoFileInput *)self _name];
     v6 = NSStringFromSelector(sel_name);
-    [v7 encodeObject:v5 forKey:v6];
+    [coderCopy encodeObject:_name forKey:v6];
   }
 }
 
-- (AXSSMotionTrackingVideoFileInput)initWithCoder:(id)a3
+- (AXSSMotionTrackingVideoFileInput)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(sel_name);
-  v7 = [v4 decodeObjectOfClass:v5 forKey:v6];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:v6];
 
   if (v7 && [v7 length])
   {
@@ -102,62 +102,62 @@
   v8.receiver = self;
   v8.super_class = AXSSMotionTrackingVideoFileInput;
   v4 = [(AXSSMotionTrackingVideoFileInput *)&v8 description];
-  v5 = [(AXSSMotionTrackingVideoFileInput *)self _name];
-  v6 = [v3 stringWithFormat:@"%@ <%@>", v4, v5];
+  _name = [(AXSSMotionTrackingVideoFileInput *)self _name];
+  v6 = [v3 stringWithFormat:@"%@ <%@>", v4, _name];
 
   return v6;
 }
 
 - (id)plistDictionary
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v13.receiver = self;
   v13.super_class = AXSSMotionTrackingVideoFileInput;
-  v4 = [(AXSSMotionTrackingInput *)&v13 plistDictionary];
-  if ([v4 count])
+  plistDictionary = [(AXSSMotionTrackingInput *)&v13 plistDictionary];
+  if ([plistDictionary count])
   {
-    [v3 addEntriesFromDictionary:v4];
+    [dictionary addEntriesFromDictionary:plistDictionary];
   }
 
-  v5 = [(AXSSMotionTrackingVideoFileInput *)self _name];
-  if (v5)
+  _name = [(AXSSMotionTrackingVideoFileInput *)self _name];
+  if (_name)
   {
-    v6 = v5;
-    v7 = [(AXSSMotionTrackingVideoFileInput *)self _name];
-    v8 = [v7 length];
+    v6 = _name;
+    _name2 = [(AXSSMotionTrackingVideoFileInput *)self _name];
+    v8 = [_name2 length];
 
     if (v8)
     {
-      v9 = [(AXSSMotionTrackingVideoFileInput *)self _name];
+      _name3 = [(AXSSMotionTrackingVideoFileInput *)self _name];
       v10 = NSStringFromSelector(sel_name);
-      [v3 setObject:v9 forKeyedSubscript:v10];
+      [dictionary setObject:_name3 forKeyedSubscript:v10];
     }
   }
 
-  v11 = [v3 copy];
+  v11 = [dictionary copy];
 
   return v11;
 }
 
-- (AXSSMotionTrackingVideoFileInput)initWithPlistDictionary:(id)a3
+- (AXSSMotionTrackingVideoFileInput)initWithPlistDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = NSStringFromSelector(sel_name);
-  v6 = [v4 objectForKeyedSubscript:v5];
+  v6 = [dictionaryCopy objectForKeyedSubscript:v5];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [v6 length])
   {
     self = [(AXSSMotionTrackingVideoFileInput *)self initWithName:v6];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 @end

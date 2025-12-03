@@ -1,9 +1,9 @@
 @interface MDLInteractiveCameraController
 - (MDLInteractiveCameraController)init;
 - (__n128)framingBounds;
-- (uint64_t)setFramingBounds:(_OWORD *)a3;
+- (uint64_t)setFramingBounds:(_OWORD *)bounds;
 - (void)frameObject;
-- (void)update:(float)a3;
+- (void)update:(float)update;
 @end
 
 @implementation MDLInteractiveCameraController
@@ -34,17 +34,17 @@
   return v2;
 }
 
-- (uint64_t)setFramingBounds:(_OWORD *)a3
+- (uint64_t)setFramingBounds:(_OWORD *)bounds
 {
-  *(a1 + 80) = a3[1];
-  *(a1 + 64) = *a3;
-  return MEMORY[0x2821F9670](a1, sel_frameObject, a3);
+  *(self + 80) = bounds[1];
+  *(self + 64) = *bounds;
+  return MEMORY[0x2821F9670](self, sel_frameObject, bounds);
 }
 
 - (__n128)framingBounds
 {
-  result = *(a1 + 80);
-  *a2 = *(a1 + 64);
+  result = *(self + 80);
+  *a2 = *(self + 64);
   *(a2 + 16) = result;
   return result;
 }
@@ -95,7 +95,7 @@
   MEMORY[0x2821F9670](self, sel_update_, v19);
 }
 
-- (void)update:(float)a3
+- (void)update:(float)update
 {
   camera = self->_camera->super._camera;
   camera[3].columns[3].i32[0] = vdiv_f32(*self->_viewSize, vdup_lane_s32(*self->_viewSize, 1)).u32[0];
@@ -124,7 +124,7 @@
         *(v8.n128_u64 + 4) = LODWORD(self->_targetElevation);
         targetElevation = self->_targetElevation;
         v21 = v8;
-        *&dword_27DF912AC = *&dword_27DF912AC + (a3 * 10.0);
+        *&dword_27DF912AC = *&dword_27DF912AC + (update * 10.0);
         v9 = self->_targetDistance;
         v8.n128_f32[0] = *&dword_27DF912AC * -0.1;
         v10 = __sincosf_stret(v8.n128_f32[0]);
@@ -140,7 +140,7 @@
       return;
     }
 
-    *self->_dragVector = vmul_f32(vmul_n_f32(0xC040000040A00000, a3), vsub_f32(*self->_dragPoint, *self->_clickPoint));
+    *self->_dragVector = vmul_f32(vmul_n_f32(0xC040000040A00000, update), vsub_f32(*self->_dragPoint, *self->_clickPoint));
     v13 = self->_camera->super._camera;
     v23 = *&v13[2].var7;
     objc_msgSend_translation(v13->var10, v5, v6);

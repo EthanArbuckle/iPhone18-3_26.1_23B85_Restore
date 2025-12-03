@@ -1,40 +1,40 @@
 @interface PXWidgetCompositionElement
-+ (id)elementWithWidget:(id)a3 scrollViewController:(id)a4;
++ (id)elementWithWidget:(id)widget scrollViewController:(id)controller;
 - (BOOL)_isViewElementAndCheckingInTile;
-- (BOOL)widget:(id)a3 requestViewControllerDismissalAnimated:(BOOL)a4;
-- (BOOL)widget:(id)a3 transitionToViewController:(id)a4 withTransitionType:(int64_t)a5;
+- (BOOL)widget:(id)widget requestViewControllerDismissalAnimated:(BOOL)animated;
+- (BOOL)widget:(id)widget transitionToViewController:(id)controller withTransitionType:(int64_t)type;
 - (CGSize)widgetContentSize;
 - (PXScrollViewController)scrollViewController;
 - (PXTilingController)contentTilingController;
 - (PXTilingController)footerTilingController;
 - (PXTilingController)headerTilingController;
 - (PXWidgetCompositionElement)init;
-- (PXWidgetCompositionElement)initWithWidget:(id)a3 scrollViewController:(id)a4;
+- (PXWidgetCompositionElement)initWithWidget:(id)widget scrollViewController:(id)controller;
 - (PXWidgetCompositionElementDelegate)delegate;
 - (id)extendedTraitCollection;
-- (id)presentationEnvironmentForWidget:(id)a3;
-- (id)widgetUndoManager:(id)a3;
-- (id)widgetViewControllerHostingWidget:(id)a3;
-- (id)widgetViewHostingGestureRecognizers:(id)a3;
-- (int64_t)widgetDefaultContentViewAnchoringTypeForDisclosureHeightChange:(id)a3;
-- (void)_notifyWidgetUsingBlock:(id)a3;
-- (void)_performChanges:(id)a3 withAnimationOptions:(id)a4;
-- (void)_performContentChangeWhenSafe:(id)a3;
+- (id)presentationEnvironmentForWidget:(id)widget;
+- (id)widgetUndoManager:(id)manager;
+- (id)widgetViewControllerHostingWidget:(id)widget;
+- (id)widgetViewHostingGestureRecognizers:(id)recognizers;
+- (int64_t)widgetDefaultContentViewAnchoringTypeForDisclosureHeightChange:(id)change;
+- (void)_notifyWidgetUsingBlock:(id)block;
+- (void)_performChanges:(id)changes withAnimationOptions:(id)options;
+- (void)_performContentChangeWhenSafe:(id)safe;
 - (void)_updateFooter;
 - (void)_updateHeader;
 - (void)prepare;
-- (void)registerObserver:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setShouldLoadWidgetContent:(BOOL)a3;
-- (void)setSpec:(id)a3;
-- (void)setWidgetContentSize:(CGSize)a3;
-- (void)unregisterObserver:(id)a3;
-- (void)widget:(id)a3 animateChanges:(id)a4 withAnimationOptions:(id)a5;
-- (void)widgetBarDidSelectDisclosureAffordance:(id)a3;
-- (void)widgetBarDidSelectSubtitle:(id)a3;
-- (void)widgetHasLoadedContentDataDidChange:(id)a3;
-- (void)widgetLocalizedDisclosureTitleDidChange:(id)a3;
-- (void)widgetRequestFocus:(id)a3;
+- (void)registerObserver:(id)observer;
+- (void)setDelegate:(id)delegate;
+- (void)setShouldLoadWidgetContent:(BOOL)content;
+- (void)setSpec:(id)spec;
+- (void)setWidgetContentSize:(CGSize)size;
+- (void)unregisterObserver:(id)observer;
+- (void)widget:(id)widget animateChanges:(id)changes withAnimationOptions:(id)options;
+- (void)widgetBarDidSelectDisclosureAffordance:(id)affordance;
+- (void)widgetBarDidSelectSubtitle:(id)subtitle;
+- (void)widgetHasLoadedContentDataDidChange:(id)change;
+- (void)widgetLocalizedDisclosureTitleDidChange:(id)change;
+- (void)widgetRequestFocus:(id)focus;
 @end
 
 @implementation PXWidgetCompositionElement
@@ -62,40 +62,40 @@
   return WeakRetained;
 }
 
-- (void)widgetBarDidSelectDisclosureAffordance:(id)a3
+- (void)widgetBarDidSelectDisclosureAffordance:(id)affordance
 {
-  v4 = [(PXWidgetCompositionElement *)self widget];
-  [(PXWidgetCompositionElement *)self widgetRequestFocus:v4];
+  widget = [(PXWidgetCompositionElement *)self widget];
+  [(PXWidgetCompositionElement *)self widgetRequestFocus:widget];
   if (objc_opt_respondsToSelector())
   {
-    [v4 userDidSelectDisclosureControl];
+    [widget userDidSelectDisclosureControl];
   }
 }
 
-- (void)widgetBarDidSelectSubtitle:(id)a3
+- (void)widgetBarDidSelectSubtitle:(id)subtitle
 {
-  v4 = [(PXWidgetCompositionElement *)self widget];
-  [(PXWidgetCompositionElement *)self widgetRequestFocus:v4];
+  widget = [(PXWidgetCompositionElement *)self widget];
+  [(PXWidgetCompositionElement *)self widgetRequestFocus:widget];
   if (objc_opt_respondsToSelector())
   {
-    [v4 userDidSelectSubtitle];
+    [widget userDidSelectSubtitle];
   }
 }
 
-- (id)widgetUndoManager:(id)a3
+- (id)widgetUndoManager:(id)manager
 {
-  v4 = [(PXWidgetCompositionElement *)self delegate];
-  v5 = [v4 elementUndoManager:self];
+  delegate = [(PXWidgetCompositionElement *)self delegate];
+  v5 = [delegate elementUndoManager:self];
 
   return v5;
 }
 
-- (id)presentationEnvironmentForWidget:(id)a3
+- (id)presentationEnvironmentForWidget:(id)widget
 {
   if (self->_delegateFlags.respondsToPresentationEnvironment)
   {
-    v4 = [(PXWidgetCompositionElement *)self delegate];
-    v5 = [v4 presentationEnvironmentForElement:self];
+    delegate = [(PXWidgetCompositionElement *)self delegate];
+    v5 = [delegate presentationEnvironmentForElement:self];
   }
 
   else
@@ -106,71 +106,71 @@
   return v5;
 }
 
-- (BOOL)widget:(id)a3 requestViewControllerDismissalAnimated:(BOOL)a4
+- (BOOL)widget:(id)widget requestViewControllerDismissalAnimated:(BOOL)animated
 {
   if (!self->_delegateFlags.respondsToRequestViewControllerDismissalAnimated)
   {
     return 0;
   }
 
-  v4 = a4;
-  v6 = [(PXWidgetCompositionElement *)self delegate];
-  LOBYTE(v4) = [v6 element:self requestViewControllerDismissalAnimated:v4];
+  animatedCopy = animated;
+  delegate = [(PXWidgetCompositionElement *)self delegate];
+  LOBYTE(animatedCopy) = [delegate element:self requestViewControllerDismissalAnimated:animatedCopy];
 
-  return v4;
+  return animatedCopy;
 }
 
-- (BOOL)widget:(id)a3 transitionToViewController:(id)a4 withTransitionType:(int64_t)a5
+- (BOOL)widget:(id)widget transitionToViewController:(id)controller withTransitionType:(int64_t)type
 {
   if (!self->_delegateFlags.respondsToTransitionToViewControllerPreferredTransitionType)
   {
     return 0;
   }
 
-  v7 = a4;
-  v8 = [(PXWidgetCompositionElement *)self delegate];
-  LOBYTE(a5) = [v8 element:self transitionToViewController:v7 withTransitionType:a5];
+  controllerCopy = controller;
+  delegate = [(PXWidgetCompositionElement *)self delegate];
+  LOBYTE(type) = [delegate element:self transitionToViewController:controllerCopy withTransitionType:type];
 
-  return a5;
+  return type;
 }
 
-- (int64_t)widgetDefaultContentViewAnchoringTypeForDisclosureHeightChange:(id)a3
+- (int64_t)widgetDefaultContentViewAnchoringTypeForDisclosureHeightChange:(id)change
 {
-  v5 = a3;
-  v6 = [(PXWidgetCompositionElement *)self spec];
-  v7 = [v6 disclosureLocation];
+  changeCopy = change;
+  spec = [(PXWidgetCompositionElement *)self spec];
+  disclosureLocation = [spec disclosureLocation];
 
-  if (v7 != 1 && v7 != 2)
+  if (disclosureLocation != 1 && disclosureLocation != 2)
   {
-    if (!v7)
+    if (!disclosureLocation)
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v9 handleFailureInMethod:a2 object:self file:@"PXWidgetCompositionElement.m" lineNumber:396 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXWidgetCompositionElement.m" lineNumber:396 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
 
-    v7 = 0;
+    disclosureLocation = 0;
   }
 
-  return v7;
+  return disclosureLocation;
 }
 
-- (void)widgetRequestFocus:(id)a3
+- (void)widgetRequestFocus:(id)focus
 {
-  v3 = [(PXWidgetCompositionElement *)self contentTilingController];
-  [v3 requestFocus];
+  contentTilingController = [(PXWidgetCompositionElement *)self contentTilingController];
+  [contentTilingController requestFocus];
 }
 
-- (void)widgetHasLoadedContentDataDidChange:(id)a3
+- (void)widgetHasLoadedContentDataDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __66__PXWidgetCompositionElement_widgetHasLoadedContentDataDidChange___block_invoke;
   v6[3] = &unk_1E77379A0;
-  v7 = v4;
-  v5 = v4;
+  v7 = changeCopy;
+  v5 = changeCopy;
   [(PXWidgetCompositionElement *)self _performContentChangeWhenSafe:v6];
 }
 
@@ -253,7 +253,7 @@ void __76__PXWidgetCompositionElement_widgetPreferredContentHeightForWidthDidCha
   [v3 invalidateLayoutWithContext:v4];
 }
 
-- (void)widgetLocalizedDisclosureTitleDidChange:(id)a3
+- (void)widgetLocalizedDisclosureTitleDidChange:(id)change
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -296,78 +296,78 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)widget:(id)a3 animateChanges:(id)a4 withAnimationOptions:(id)a5
+- (void)widget:(id)widget animateChanges:(id)changes withAnimationOptions:(id)options
 {
-  v7 = a4;
-  v8 = a5;
-  if (!v8)
+  changesCopy = changes;
+  optionsCopy = options;
+  if (!optionsCopy)
   {
-    v8 = +[PXBasicTileAnimationOptions defaultAnimationOptions];
+    optionsCopy = +[PXBasicTileAnimationOptions defaultAnimationOptions];
   }
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __73__PXWidgetCompositionElement_widget_animateChanges_withAnimationOptions___block_invoke;
   v11[3] = &unk_1E7737930;
-  v12 = v8;
-  v13 = v7;
+  v12 = optionsCopy;
+  v13 = changesCopy;
   v11[4] = self;
-  v9 = v8;
-  v10 = v7;
+  v9 = optionsCopy;
+  v10 = changesCopy;
   [(PXWidgetCompositionElement *)self _performContentChangeWhenSafe:v11];
 }
 
-- (id)widgetViewControllerHostingWidget:(id)a3
+- (id)widgetViewControllerHostingWidget:(id)widget
 {
-  v4 = [(PXWidgetCompositionElement *)self delegate];
-  v5 = [v4 elementViewController:self];
+  delegate = [(PXWidgetCompositionElement *)self delegate];
+  v5 = [delegate elementViewController:self];
 
   return v5;
 }
 
-- (id)widgetViewHostingGestureRecognizers:(id)a3
+- (id)widgetViewHostingGestureRecognizers:(id)recognizers
 {
-  v3 = [(PXWidgetCompositionElement *)self scrollViewController];
-  v4 = [v3 scrollView];
+  scrollViewController = [(PXWidgetCompositionElement *)self scrollViewController];
+  scrollView = [scrollViewController scrollView];
 
-  return v4;
+  return scrollView;
 }
 
 - (BOOL)_isViewElementAndCheckingInTile
 {
-  v3 = [(PXWidgetCompositionElement *)self _isClassOfViewElement];
-  if (v3)
+  _isClassOfViewElement = [(PXWidgetCompositionElement *)self _isClassOfViewElement];
+  if (_isClassOfViewElement)
   {
 
-    LOBYTE(v3) = [(PXWidgetCompositionElement *)self isCheckingInTile];
+    LOBYTE(_isClassOfViewElement) = [(PXWidgetCompositionElement *)self isCheckingInTile];
   }
 
-  return v3;
+  return _isClassOfViewElement;
 }
 
-- (void)_performChanges:(id)a3 withAnimationOptions:(id)a4
+- (void)_performChanges:(id)changes withAnimationOptions:(id)options
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  changesCopy = changes;
+  optionsCopy = options;
   isPerformingChanges = self->_isPerformingChanges;
   self->_isPerformingChanges = 1;
-  if (v6)
+  if (changesCopy)
   {
-    v6[2](v6);
+    changesCopy[2](changesCopy);
   }
 
   self->_isPerformingChanges = isPerformingChanges;
   if (!isPerformingChanges)
   {
-    v16 = v6;
-    v9 = [(PXWidgetCompositionElement *)self animationOptionsOriginatingTilingController];
+    v16 = changesCopy;
+    animationOptionsOriginatingTilingController = [(PXWidgetCompositionElement *)self animationOptionsOriginatingTilingController];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v10 = [(PXWidgetCompositionElement *)self _observers];
-    v11 = [v10 countByEnumeratingWithState:&v17 objects:v23 count:16];
+    _observers = [(PXWidgetCompositionElement *)self _observers];
+    v11 = [_observers countByEnumeratingWithState:&v17 objects:v23 count:16];
     if (v11)
     {
       v12 = v11;
@@ -378,34 +378,34 @@ LABEL_8:
         {
           if (*v18 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(_observers);
           }
 
           v15 = *(*(&v17 + 1) + 8 * i);
           if (objc_opt_respondsToSelector())
           {
-            [v15 elementNeedsLayout:self preferredAnimationOptions:v7 originatingTilingController:v9];
+            [v15 elementNeedsLayout:self preferredAnimationOptions:optionsCopy originatingTilingController:animationOptionsOriginatingTilingController];
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v17 objects:v23 count:16];
+        v12 = [_observers countByEnumeratingWithState:&v17 objects:v23 count:16];
       }
 
       while (v12);
     }
 
-    v6 = v16;
+    changesCopy = v16;
     goto LABEL_17;
   }
 
-  if (v7)
+  if (optionsCopy)
   {
-    v9 = PLUIGetLog();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    animationOptionsOriginatingTilingController = PLUIGetLog();
+    if (os_log_type_enabled(animationOptionsOriginatingTilingController, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v22 = v7;
-      _os_log_impl(&dword_1A3C1C000, v9, OS_LOG_TYPE_DEFAULT, "ignoring nested animation options %@", buf, 0xCu);
+      v22 = optionsCopy;
+      _os_log_impl(&dword_1A3C1C000, animationOptionsOriginatingTilingController, OS_LOG_TYPE_DEFAULT, "ignoring nested animation options %@", buf, 0xCu);
     }
 
 LABEL_17:
@@ -414,9 +414,9 @@ LABEL_17:
 
 - (void)_updateFooter
 {
-  v3 = [(PXWidgetCompositionElement *)self widget];
-  v4 = [(PXWidgetCompositionElement *)self spec];
-  if ([v4 disclosureLocation] != 2)
+  widget = [(PXWidgetCompositionElement *)self widget];
+  spec = [(PXWidgetCompositionElement *)self spec];
+  if ([spec disclosureLocation] != 2)
   {
 
     goto LABEL_5;
@@ -427,26 +427,26 @@ LABEL_17:
   if ((v5 & 1) == 0)
   {
 LABEL_5:
-    v6 = 0;
+    localizedDisclosureTitle = 0;
     goto LABEL_6;
   }
 
-  v6 = [v3 localizedDisclosureTitle];
+  localizedDisclosureTitle = [widget localizedDisclosureTitle];
 LABEL_6:
-  v7 = [(PXWidgetCompositionElement *)self spec];
-  v8 = [v7 footerSpec];
+  spec2 = [(PXWidgetCompositionElement *)self spec];
+  footerSpec = [spec2 footerSpec];
 
-  v9 = [(PXWidgetCompositionElement *)self _footer];
+  _footer = [(PXWidgetCompositionElement *)self _footer];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __43__PXWidgetCompositionElement__updateFooter__block_invoke;
   v13[3] = &unk_1E774A1B8;
-  v14 = v9;
-  v15 = v6;
-  v16 = v8;
-  v10 = v8;
-  v11 = v6;
-  v12 = v9;
+  v14 = _footer;
+  v15 = localizedDisclosureTitle;
+  v16 = footerSpec;
+  v10 = footerSpec;
+  v11 = localizedDisclosureTitle;
+  v12 = _footer;
   [v12 performChanges:v13];
 }
 
@@ -461,35 +461,35 @@ uint64_t __43__PXWidgetCompositionElement__updateFooter__block_invoke(uint64_t a
 
 - (void)_updateHeader
 {
-  v3 = [(PXWidgetCompositionElement *)self widget];
+  widget = [(PXWidgetCompositionElement *)self widget];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 localizedTitle];
+    localizedTitle = [widget localizedTitle];
   }
 
   else
   {
-    v4 = 0;
+    localizedTitle = 0;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v3 localizedSubtitle];
+    localizedSubtitle = [widget localizedSubtitle];
   }
 
   else
   {
-    v5 = 0;
+    localizedSubtitle = 0;
   }
 
-  v6 = [(PXWidgetCompositionElement *)self spec];
-  if ([v6 disclosureLocation] == 1)
+  spec = [(PXWidgetCompositionElement *)self spec];
+  if ([spec disclosureLocation] == 1)
   {
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [v3 localizedDisclosureTitle];
+      localizedDisclosureTitle = [widget localizedDisclosureTitle];
       goto LABEL_12;
     }
   }
@@ -498,47 +498,47 @@ uint64_t __43__PXWidgetCompositionElement__updateFooter__block_invoke(uint64_t a
   {
   }
 
-  v8 = 0;
+  localizedDisclosureTitle = 0;
 LABEL_12:
   if (objc_opt_respondsToSelector())
   {
-    v9 = [v3 allowUserInteractionWithSubtitle];
+    allowUserInteractionWithSubtitle = [widget allowUserInteractionWithSubtitle];
   }
 
   else
   {
-    v9 = 0;
+    allowUserInteractionWithSubtitle = 0;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v10 = [v3 contentLayoutStyle];
+    contentLayoutStyle = [widget contentLayoutStyle];
   }
 
   else
   {
-    v10 = 0;
+    contentLayoutStyle = 0;
   }
 
-  v11 = [(PXWidgetCompositionElement *)self spec];
-  v12 = [v11 headerSpecForWidgetContentLayoutStyle:v10];
+  spec2 = [(PXWidgetCompositionElement *)self spec];
+  v12 = [spec2 headerSpecForWidgetContentLayoutStyle:contentLayoutStyle];
 
-  v13 = [(PXWidgetCompositionElement *)self _header];
+  _header = [(PXWidgetCompositionElement *)self _header];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __43__PXWidgetCompositionElement__updateHeader__block_invoke;
   v19[3] = &unk_1E7737908;
-  v20 = v13;
-  v21 = v4;
-  v22 = v5;
-  v23 = v8;
+  v20 = _header;
+  v21 = localizedTitle;
+  v22 = localizedSubtitle;
+  v23 = localizedDisclosureTitle;
   v24 = v12;
-  v25 = v9;
+  v25 = allowUserInteractionWithSubtitle;
   v14 = v12;
-  v15 = v8;
-  v16 = v5;
-  v17 = v4;
-  v18 = v13;
+  v15 = localizedDisclosureTitle;
+  v16 = localizedSubtitle;
+  v17 = localizedTitle;
+  v18 = _header;
   [v18 performChanges:v19];
 }
 
@@ -554,9 +554,9 @@ uint64_t __43__PXWidgetCompositionElement__updateHeader__block_invoke(uint64_t a
   return [v2 setAllowUserInteractionWithSubtitle:v3];
 }
 
-- (void)_performContentChangeWhenSafe:(id)a3
+- (void)_performContentChangeWhenSafe:(id)safe
 {
-  v4 = a3;
+  safeCopy = safe;
   if ([(PXWidgetCompositionElement *)self _isNotifyingWidget]|| [(PXWidgetCompositionElement *)self _isViewElementAndCheckingInTile])
   {
     objc_initWeak(&location, self);
@@ -565,7 +565,7 @@ uint64_t __43__PXWidgetCompositionElement__updateHeader__block_invoke(uint64_t a
     block[2] = __60__PXWidgetCompositionElement__performContentChangeWhenSafe___block_invoke;
     block[3] = &unk_1E774AA30;
     objc_copyWeak(&v7, &location);
-    v6 = v4;
+    v6 = safeCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
 
     objc_destroyWeak(&v7);
@@ -574,7 +574,7 @@ uint64_t __43__PXWidgetCompositionElement__updateHeader__block_invoke(uint64_t a
 
   else
   {
-    (*(v4 + 2))(v4, self);
+    (*(safeCopy + 2))(safeCopy, self);
   }
 }
 
@@ -589,33 +589,33 @@ void __60__PXWidgetCompositionElement__performContentChangeWhenSafe___block_invo
   }
 }
 
-- (void)_notifyWidgetUsingBlock:(id)a3
+- (void)_notifyWidgetUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(PXWidgetCompositionElement *)self _isNotifyingWidget];
+  blockCopy = block;
+  _isNotifyingWidget = [(PXWidgetCompositionElement *)self _isNotifyingWidget];
   [(PXWidgetCompositionElement *)self _setNotifyingWidget:1];
-  v4[2](v4);
+  blockCopy[2](blockCopy);
 
-  [(PXWidgetCompositionElement *)self _setNotifyingWidget:v5];
+  [(PXWidgetCompositionElement *)self _setNotifyingWidget:_isNotifyingWidget];
 }
 
-- (void)setShouldLoadWidgetContent:(BOOL)a3
+- (void)setShouldLoadWidgetContent:(BOOL)content
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (self->_shouldLoadWidgetContent != a3)
+  if (self->_shouldLoadWidgetContent != content)
   {
-    v3 = a3;
-    self->_shouldLoadWidgetContent = a3;
-    v5 = [(PXWidgetCompositionElement *)self widget];
+    contentCopy = content;
+    self->_shouldLoadWidgetContent = content;
+    widget = [(PXWidgetCompositionElement *)self widget];
     v6 = PLRelatedGetLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v12 = self;
+      selfCopy = self;
       v13 = 1024;
-      v14 = v3;
+      v14 = contentCopy;
       v15 = 2112;
-      v16 = v5;
+      v16 = widget;
       _os_log_impl(&dword_1A3C1C000, v6, OS_LOG_TYPE_DEFAULT, "[%@] set should load content=%i for widget=%@ ", buf, 0x1Cu);
     }
 
@@ -623,9 +623,9 @@ void __60__PXWidgetCompositionElement__performContentChangeWhenSafe___block_invo
     v8[1] = 3221225472;
     v8[2] = __57__PXWidgetCompositionElement_setShouldLoadWidgetContent___block_invoke;
     v8[3] = &unk_1E7749428;
-    v10 = v3;
-    v9 = v5;
-    v7 = v5;
+    v10 = contentCopy;
+    v9 = widget;
+    v7 = widget;
     [(PXWidgetCompositionElement *)self _notifyWidgetUsingBlock:v8];
   }
 }
@@ -677,15 +677,15 @@ uint64_t __57__PXWidgetCompositionElement_setShouldLoadWidgetContent___block_inv
   return result;
 }
 
-- (void)setWidgetContentSize:(CGSize)a3
+- (void)setWidgetContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v21 = *MEMORY[0x1E69E9840];
-  if (a3.width != self->_widgetContentSize.width || a3.height != self->_widgetContentSize.height)
+  if (size.width != self->_widgetContentSize.width || size.height != self->_widgetContentSize.height)
   {
-    self->_widgetContentSize = a3;
-    v7 = [(PXWidgetCompositionElement *)self widget];
+    self->_widgetContentSize = size;
+    widget = [(PXWidgetCompositionElement *)self widget];
     v8 = PLRelatedGetLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
@@ -693,9 +693,9 @@ uint64_t __57__PXWidgetCompositionElement_setShouldLoadWidgetContent___block_inv
       v22.height = height;
       v9 = NSStringFromCGSize(v22);
       *buf = 138412802;
-      v16 = self;
+      selfCopy = self;
       v17 = 2112;
-      v18 = v7;
+      v18 = widget;
       v19 = 2112;
       v20 = v9;
       _os_log_impl(&dword_1A3C1C000, v8, OS_LOG_TYPE_DEFAULT, "[%@] set content size for widget=%@ size=%@", buf, 0x20u);
@@ -705,10 +705,10 @@ uint64_t __57__PXWidgetCompositionElement_setShouldLoadWidgetContent___block_inv
     v11[1] = 3221225472;
     v11[2] = __51__PXWidgetCompositionElement_setWidgetContentSize___block_invoke;
     v11[3] = &unk_1E7745A10;
-    v12 = v7;
+    v12 = widget;
     v13 = width;
     v14 = height;
-    v10 = v7;
+    v10 = widget;
     [(PXWidgetCompositionElement *)self _notifyWidgetUsingBlock:v11];
   }
 }
@@ -730,58 +730,58 @@ uint64_t __51__PXWidgetCompositionElement_setWidgetContentSize___block_invoke(do
 
 - (PXTilingController)footerTilingController
 {
-  v2 = [(PXWidgetCompositionElement *)self _footer];
-  v3 = [v2 tilingController];
+  _footer = [(PXWidgetCompositionElement *)self _footer];
+  tilingController = [_footer tilingController];
 
-  return v3;
+  return tilingController;
 }
 
 - (PXTilingController)headerTilingController
 {
-  v2 = [(PXWidgetCompositionElement *)self _header];
-  v3 = [v2 tilingController];
+  _header = [(PXWidgetCompositionElement *)self _header];
+  tilingController = [_header tilingController];
 
-  return v3;
+  return tilingController;
 }
 
 - (PXTilingController)contentTilingController
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXWidgetCompositionElement.m" lineNumber:129 description:@"must be implemented by concrete subclass"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXWidgetCompositionElement.m" lineNumber:129 description:@"must be implemented by concrete subclass"];
 
   return 0;
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(PXWidgetCompositionElement *)self _observers];
-  [v5 removeObject:v4];
+  observerCopy = observer;
+  _observers = [(PXWidgetCompositionElement *)self _observers];
+  [_observers removeObject:observerCopy];
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(PXWidgetCompositionElement *)self _observers];
-  [v5 addObject:v4];
+  observerCopy = observer;
+  _observers = [(PXWidgetCompositionElement *)self _observers];
+  [_observers addObject:observerCopy];
 }
 
-- (void)setSpec:(id)a3
+- (void)setSpec:(id)spec
 {
-  v5 = a3;
-  if (self->_spec != v5)
+  specCopy = spec;
+  if (self->_spec != specCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_spec, a3);
+    v6 = specCopy;
+    objc_storeStrong(&self->_spec, spec);
     [(PXWidgetCompositionElement *)self _invalidateHeader];
     [(PXWidgetCompositionElement *)self _invalidateFooter];
-    v5 = v6;
+    specCopy = v6;
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -800,20 +800,20 @@ uint64_t __51__PXWidgetCompositionElement_setWidgetContentSize___block_invoke(do
   [(PXWidgetCompositionElement *)self _updateFooter];
 }
 
-- (PXWidgetCompositionElement)initWithWidget:(id)a3 scrollViewController:(id)a4
+- (PXWidgetCompositionElement)initWithWidget:(id)widget scrollViewController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
+  widgetCopy = widget;
+  controllerCopy = controller;
   v28.receiver = self;
   v28.super_class = PXWidgetCompositionElement;
   v9 = [(PXWidgetCompositionElement *)&v28 init];
   if (v9)
   {
-    v10 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v9->__observers;
-    v9->__observers = v10;
+    v9->__observers = weakObjectsHashTable;
 
-    objc_storeStrong(&v9->_widget, a3);
+    objc_storeStrong(&v9->_widget, widget);
     if ((objc_opt_respondsToSelector() & 1) == 0)
     {
       v12 = objc_opt_class();
@@ -839,7 +839,7 @@ uint64_t __51__PXWidgetCompositionElement_setWidgetContentSize___block_invoke(do
 
     if (objc_opt_respondsToSelector())
     {
-      [v7 setWidgetDelegate:v9];
+      [widgetCopy setWidgetDelegate:v9];
     }
 
     objc_opt_class();
@@ -849,7 +849,7 @@ uint64_t __51__PXWidgetCompositionElement_setWidgetContentSize___block_invoke(do
     }
 
     v9->_widgetContentSize = *off_1E7722230;
-    objc_storeWeak(&v9->_scrollViewController, v8);
+    objc_storeWeak(&v9->_scrollViewController, controllerCopy);
     v19 = objc_alloc([objc_opt_class() headerBarClass]);
     WeakRetained = objc_loadWeakRetained(&v9->_scrollViewController);
     v21 = [v19 initWithScrollViewController:WeakRetained];
@@ -871,16 +871,16 @@ uint64_t __51__PXWidgetCompositionElement_setWidgetContentSize___block_invoke(do
 
 - (PXWidgetCompositionElement)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXWidgetCompositionElement.m" lineNumber:56 description:@"invalid initializer"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXWidgetCompositionElement.m" lineNumber:56 description:@"invalid initializer"];
 
   return 0;
 }
 
-+ (id)elementWithWidget:(id)a3 scrollViewController:(id)a4
++ (id)elementWithWidget:(id)widget scrollViewController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
+  widgetCopy = widget;
+  controllerCopy = controller;
   if (objc_opt_respondsToSelector() & 1) != 0 || (objc_opt_respondsToSelector())
   {
     v9 = objc_opt_class();
@@ -888,25 +888,25 @@ uint64_t __51__PXWidgetCompositionElement_setWidgetContentSize___block_invoke(do
 
   else
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:a1 file:@"PXWidgetCompositionElement.m" lineNumber:49 description:@"widget must provide either contentView or contentTilingController"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXWidgetCompositionElement.m" lineNumber:49 description:@"widget must provide either contentView or contentTilingController"];
 
     v9 = 0;
   }
 
-  v11 = [[v9 alloc] initWithWidget:v7 scrollViewController:v8];
+  v11 = [[v9 alloc] initWithWidget:widgetCopy scrollViewController:controllerCopy];
 
   return v11;
 }
 
 - (id)extendedTraitCollection
 {
-  v3 = [(PXWidgetCompositionElement *)self delegate];
-  v4 = [v3 elementViewController:self];
+  delegate = [(PXWidgetCompositionElement *)self delegate];
+  v4 = [delegate elementViewController:self];
 
-  v5 = [v4 px_extendedTraitCollection];
+  px_extendedTraitCollection = [v4 px_extendedTraitCollection];
 
-  return v5;
+  return px_extendedTraitCollection;
 }
 
 @end

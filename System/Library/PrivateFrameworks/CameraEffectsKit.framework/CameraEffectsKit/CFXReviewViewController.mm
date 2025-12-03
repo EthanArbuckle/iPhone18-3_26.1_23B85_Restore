@@ -1,48 +1,48 @@
 @interface CFXReviewViewController
 + (void)initialize;
-- (BOOL)allowLandscapeForEffectBrowserViewController:(id)a3;
+- (BOOL)allowLandscapeForEffectBrowserViewController:(id)controller;
 - (BOOL)mediaCapturedInFunCam;
 - (BOOL)mediaItemRequiresExport;
-- (BOOL)shouldAlwaysPresentExpandedAppsForEffectBrowserViewController:(id)a3;
-- (CFXReviewViewController)initWithMediaItem:(id)a3;
+- (BOOL)shouldAlwaysPresentExpandedAppsForEffectBrowserViewController:(id)controller;
+- (CFXReviewViewController)initWithMediaItem:(id)item;
 - (CFXReviewViewControllerDelegate)delegate;
 - (NSData)adjustmentsData;
 - (NSData)animojiMetadata;
 - (UIView)effectsPickerDrawer;
-- (double)effectBrowserViewController:(id)a3 screenTopBarHeightForWindowBounds:(CGRect)a4 orientation:(int64_t)a5;
-- (id)localizedPromptForHidingAnimojiForEffectBrowserViewController:(id)a3;
+- (double)effectBrowserViewController:(id)controller screenTopBarHeightForWindowBounds:(CGRect)bounds orientation:(int64_t)orientation;
+- (id)localizedPromptForHidingAnimojiForEffectBrowserViewController:(id)controller;
 - (id)preferredDisplayColorSpace;
 - (id)preferredExportColorSpace;
-- (id)selectedAnimojiIdentifierForEffectBrowserViewController:(id)a3;
-- (id)selectedAppIdentifierForPreviewViewController:(id)a3;
-- (id)selectedFilterIdentifierForEffectBrowserViewController:(id)a3;
+- (id)selectedAnimojiIdentifierForEffectBrowserViewController:(id)controller;
+- (id)selectedAppIdentifierForPreviewViewController:(id)controller;
+- (id)selectedFilterIdentifierForEffectBrowserViewController:(id)controller;
 - (int64_t)calculateMediaInterfaceOrientationForDisplay;
 - (int64_t)mediaCaptureDevicePosition;
 - (void)CFX_resetAndLoadPreviewViewController;
-- (void)CFX_updateAnalyticsForSentMediaItem:(id)a3;
-- (void)effectBrowserViewController:(id)a3 didDismissPickerForEffectType:(id)a4;
-- (void)effectBrowserViewController:(id)a3 didDropOverlayEffect:(id)a4 atScreenLocation:(CGPoint)a5 atScreenSize:(CGSize)a6 rotationAngle:(double)a7;
-- (void)effectBrowserViewController:(id)a3 didPresentPickerForEffectType:(id)a4;
-- (void)effectBrowserViewController:(id)a3 didRemoveAllEffectsOfType:(id)a4;
-- (void)effectBrowserViewController:(id)a3 didSelectAppWithIdentifier:(id)a4;
-- (void)effectBrowserViewController:(id)a3 didSelectEffect:(id)a4;
-- (void)effectBrowserViewController:(id)a3 filterPickerPreviewBackgroundImageAtSizeInPixels:(CGSize)a4 completion:(id)a5;
-- (void)effectBrowserViewController:(id)a3 willChangeDockHeight:(double)a4;
-- (void)exportMediaItemToFileURL:(id)a3;
+- (void)CFX_updateAnalyticsForSentMediaItem:(id)item;
+- (void)effectBrowserViewController:(id)controller didDismissPickerForEffectType:(id)type;
+- (void)effectBrowserViewController:(id)controller didDropOverlayEffect:(id)effect atScreenLocation:(CGPoint)location atScreenSize:(CGSize)size rotationAngle:(double)angle;
+- (void)effectBrowserViewController:(id)controller didPresentPickerForEffectType:(id)type;
+- (void)effectBrowserViewController:(id)controller didRemoveAllEffectsOfType:(id)type;
+- (void)effectBrowserViewController:(id)controller didSelectAppWithIdentifier:(id)identifier;
+- (void)effectBrowserViewController:(id)controller didSelectEffect:(id)effect;
+- (void)effectBrowserViewController:(id)controller filterPickerPreviewBackgroundImageAtSizeInPixels:(CGSize)pixels completion:(id)completion;
+- (void)effectBrowserViewController:(id)controller willChangeDockHeight:(double)height;
+- (void)exportMediaItemToFileURL:(id)l;
 - (void)loadView;
-- (void)previewViewController:(id)a3 didFinishExportingMediaItem:(id)a4 withError:(id)a5;
-- (void)previewViewController:(id)a3 didProgress:(double)a4 exportingMediaItem:(id)a5;
-- (void)previewViewController:(id)a3 didStartExportingMediaItem:(id)a4;
-- (void)previewViewControllerDidHideUserInterface:(id)a3;
-- (void)previewViewControllerDidShowUserInterface:(id)a3;
-- (void)previewViewControllerDidStartEditingText:(id)a3;
-- (void)previewViewControllerDidStopEditingText:(id)a3;
-- (void)setEffectsPickerDrawer:(id)a3;
-- (void)showMemojiPicker:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)previewViewController:(id)controller didFinishExportingMediaItem:(id)item withError:(id)error;
+- (void)previewViewController:(id)controller didProgress:(double)progress exportingMediaItem:(id)item;
+- (void)previewViewController:(id)controller didStartExportingMediaItem:(id)item;
+- (void)previewViewControllerDidHideUserInterface:(id)interface;
+- (void)previewViewControllerDidShowUserInterface:(id)interface;
+- (void)previewViewControllerDidStartEditingText:(id)text;
+- (void)previewViewControllerDidStopEditingText:(id)text;
+- (void)setEffectsPickerDrawer:(id)drawer;
+- (void)showMemojiPicker:(id)picker;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation CFXReviewViewController
@@ -51,23 +51,23 @@
 {
   v7[1] = *MEMORY[0x277D85DE8];
   +[CFXApplicationState beginMonitoringApplicationState];
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v2 addSuiteNamed:@"com.apple.MobileSMS"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults addSuiteNamed:@"com.apple.MobileSMS"];
 
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
   v6 = *MEMORY[0x277D416D8];
   v7[0] = &unk_28556D068;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:&v6 count:1];
-  [v3 registerDefaults:v4];
+  [standardUserDefaults2 registerDefaults:v4];
 
   +[CFXEffect setupFactoryDelegate];
   v5 = +[CFXMediaSettings sharedInstance];
   [JFXMediaSettings setProviderDelegate:v5];
 }
 
-- (CFXReviewViewController)initWithMediaItem:(id)a3
+- (CFXReviewViewController)initWithMediaItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v23.receiver = self;
   v23.super_class = CFXReviewViewController;
   v6 = [(CFXReviewViewController *)&v23 initWithNibName:0 bundle:0];
@@ -79,29 +79,29 @@
     v8 = dispatch_get_global_queue(25, 0);
     dispatch_async(v8, &__block_literal_global);
 
-    objc_storeStrong(v6 + 130, a3);
+    objc_storeStrong(v6 + 130, item);
     v9 = dispatch_group_create();
     v10 = *(v6 + 131);
     *(v6 + 131) = v9;
 
     *(v6 + 992) = 0;
     *(v6 + 132) = 0;
-    *(v6 + 134) = [v5 cameraMode];
-    v11 = [v5 originalAssetURL];
-    v12 = [v5 metadataURL];
-    v13 = [v5 type];
+    *(v6 + 134) = [itemCopy cameraMode];
+    originalAssetURL = [itemCopy originalAssetURL];
+    metadataURL = [itemCopy metadataURL];
+    type = [itemCopy type];
     dispatch_group_enter(*(v6 + 131));
     v14 = dispatch_get_global_queue(21, 0);
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __45__CFXReviewViewController_initWithMediaItem___block_invoke_2;
     v18[3] = &unk_278D79CF8;
-    v19 = v12;
-    v21 = v11;
-    v22 = v13;
+    v19 = metadataURL;
+    v21 = originalAssetURL;
+    v22 = type;
     v20 = v6;
-    v15 = v11;
-    v16 = v12;
+    v15 = originalAssetURL;
+    v16 = metadataURL;
     dispatch_async(v14, v18);
   }
 
@@ -196,8 +196,8 @@ void __45__CFXReviewViewController_initWithMediaItem___block_invoke_3(uint64_t a
 - (void)loadView
 {
   v3 = [JFXPassThroughContainerView alloc];
-  v4 = [MEMORY[0x277D759A0] mainScreen];
-  [v4 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v5 = [(JFXPassThroughContainerView *)v3 initWithFrame:?];
 
   [(CFXReviewViewController *)self setView:v5];
@@ -218,11 +218,11 @@ void __45__CFXReviewViewController_initWithMediaItem___block_invoke_3(uint64_t a
   [(UIViewController *)self jfxAddChildViewController:v3];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = CFXReviewViewController;
-  [(CFXReviewViewController *)&v3 viewDidAppear:a3];
+  [(CFXReviewViewController *)&v3 viewDidAppear:appear];
 }
 
 - (void)viewDidLayoutSubviews
@@ -232,47 +232,47 @@ void __45__CFXReviewViewController_initWithMediaItem___block_invoke_3(uint64_t a
   [(CFXReviewViewController *)&v2 viewDidLayoutSubviews];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v30 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  coordinatorCopy = coordinator;
   v27.receiver = self;
   v27.super_class = CFXReviewViewController;
-  [(CFXReviewViewController *)&v27 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(CFXReviewViewController *)&v27 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8 = CFXLog_action();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(CFXReviewViewController *)self internalPreviewViewController];
-    v10 = [v9 previewClip];
-    v11 = [v10 effectStack];
-    v12 = [CFXActionLogging actionLogAsJSONForEvent:@"device rotated" atLocation:@"post-capture" withEffectStack:v11];
+    internalPreviewViewController = [(CFXReviewViewController *)self internalPreviewViewController];
+    previewClip = [internalPreviewViewController previewClip];
+    effectStack = [previewClip effectStack];
+    v12 = [CFXActionLogging actionLogAsJSONForEvent:@"device rotated" atLocation:@"post-capture" withEffectStack:effectStack];
     *buf = 138543362;
     v29 = v12;
     _os_log_impl(&dword_242A3B000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
   }
 
-  v13 = [MEMORY[0x277D75418] currentDevice];
-  if ([v13 userInterfaceIdiom])
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice userInterfaceIdiom])
   {
     goto LABEL_6;
   }
 
-  v14 = [(CFXReviewViewController *)self view];
-  v15 = [v14 window];
+  view = [(CFXReviewViewController *)self view];
+  window = [view window];
 
-  if (v15)
+  if (window)
   {
-    v13 = [(CFXReviewViewController *)self internalPreviewViewController];
-    v16 = [v13 bottomControlsSnapshot];
-    v17 = [(CFXReviewViewController *)self internalPreviewViewController];
-    [v17 bottomControlsCenter];
+    currentDevice = [(CFXReviewViewController *)self internalPreviewViewController];
+    bottomControlsSnapshot = [currentDevice bottomControlsSnapshot];
+    internalPreviewViewController2 = [(CFXReviewViewController *)self internalPreviewViewController];
+    [internalPreviewViewController2 bottomControlsCenter];
     v19 = v18;
     v21 = v20;
-    v22 = [(CFXReviewViewController *)self view];
-    v23 = [v22 subviews];
-    v24 = [v23 count];
+    view2 = [(CFXReviewViewController *)self view];
+    subviews = [view2 subviews];
+    v24 = [subviews count];
     v25[4] = self;
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
@@ -283,7 +283,7 @@ void __45__CFXReviewViewController_initWithMediaItem___block_invoke_3(uint64_t a
     v25[1] = 3221225472;
     v25[2] = __78__CFXReviewViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke_2;
     v25[3] = &unk_278D79D20;
-    [(UIViewController *)self displaySnapshot:v16 atCenterPoint:v24 atIndex:0 forTransitionToSize:v7 fadeOut:v26 withTransitionCoordinator:v25 preTransitionBlock:v19 postTransitionBlock:v21, width, height];
+    [(UIViewController *)self displaySnapshot:bottomControlsSnapshot atCenterPoint:v24 atIndex:0 forTransitionToSize:coordinatorCopy fadeOut:v26 withTransitionCoordinator:v25 preTransitionBlock:v19 postTransitionBlock:v21, width, height];
 
 LABEL_6:
   }
@@ -303,36 +303,36 @@ void __78__CFXReviewViewController_viewWillTransitionToSize_withTransitionCoordi
 
 - (NSData)adjustmentsData
 {
-  v2 = [(CFXReviewViewController *)self mediaItem];
-  v3 = [v2 adjustmentsData];
+  mediaItem = [(CFXReviewViewController *)self mediaItem];
+  adjustmentsData = [mediaItem adjustmentsData];
 
-  return v3;
+  return adjustmentsData;
 }
 
 - (UIView)effectsPickerDrawer
 {
   [(CFXReviewViewController *)self loadViewIfNeeded];
-  v3 = [(CFXReviewViewController *)self internalPreviewViewController];
-  v4 = [v3 effectsPickerDrawer];
+  internalPreviewViewController = [(CFXReviewViewController *)self internalPreviewViewController];
+  effectsPickerDrawer = [internalPreviewViewController effectsPickerDrawer];
 
-  return v4;
+  return effectsPickerDrawer;
 }
 
-- (void)setEffectsPickerDrawer:(id)a3
+- (void)setEffectsPickerDrawer:(id)drawer
 {
-  v4 = a3;
+  drawerCopy = drawer;
   [(CFXReviewViewController *)self loadViewIfNeeded];
-  v5 = [(CFXReviewViewController *)self internalPreviewViewController];
-  [v5 setEffectsPickerDrawer:v4];
+  internalPreviewViewController = [(CFXReviewViewController *)self internalPreviewViewController];
+  [internalPreviewViewController setEffectsPickerDrawer:drawerCopy];
 
-  if (!v4)
+  if (!drawerCopy)
   {
-    v6 = [(CFXReviewViewController *)self effectBrowserViewController];
+    effectBrowserViewController = [(CFXReviewViewController *)self effectBrowserViewController];
 
-    if (v6)
+    if (effectBrowserViewController)
     {
-      v7 = [(CFXReviewViewController *)self effectBrowserViewController];
-      [v7 jfxRemoveFromParentViewController];
+      effectBrowserViewController2 = [(CFXReviewViewController *)self effectBrowserViewController];
+      [effectBrowserViewController2 jfxRemoveFromParentViewController];
 
       [(CFXReviewViewController *)self setEffectBrowserViewController:0];
     }
@@ -341,9 +341,9 @@ void __78__CFXReviewViewController_viewWillTransitionToSize_withTransitionCoordi
 
 - (BOOL)mediaCapturedInFunCam
 {
-  v3 = [(CFXReviewViewController *)self metadataReaderGroup];
+  metadataReaderGroup = [(CFXReviewViewController *)self metadataReaderGroup];
   v4 = dispatch_time(0, 5000000000);
-  v5 = dispatch_group_wait(v3, v4);
+  v5 = dispatch_group_wait(metadataReaderGroup, v4);
 
   if (v5)
   {
@@ -359,9 +359,9 @@ void __78__CFXReviewViewController_viewWillTransitionToSize_withTransitionCoordi
 
 - (int64_t)mediaCaptureDevicePosition
 {
-  v3 = [(CFXReviewViewController *)self metadataReaderGroup];
+  metadataReaderGroup = [(CFXReviewViewController *)self metadataReaderGroup];
   v4 = dispatch_time(0, 5000000000);
-  v5 = dispatch_group_wait(v3, v4);
+  v5 = dispatch_group_wait(metadataReaderGroup, v4);
 
   if (v5)
   {
@@ -377,9 +377,9 @@ void __78__CFXReviewViewController_viewWillTransitionToSize_withTransitionCoordi
 
 - (int64_t)calculateMediaInterfaceOrientationForDisplay
 {
-  v3 = [(CFXReviewViewController *)self metadataReaderGroup];
+  metadataReaderGroup = [(CFXReviewViewController *)self metadataReaderGroup];
   v4 = dispatch_time(0, 5000000000);
-  v5 = dispatch_group_wait(v3, v4);
+  v5 = dispatch_group_wait(metadataReaderGroup, v4);
 
   if (v5)
   {
@@ -395,9 +395,9 @@ void __78__CFXReviewViewController_viewWillTransitionToSize_withTransitionCoordi
 
 - (NSData)animojiMetadata
 {
-  v3 = [(CFXReviewViewController *)self metadataReaderGroup];
+  metadataReaderGroup = [(CFXReviewViewController *)self metadataReaderGroup];
   v4 = dispatch_time(0, 5000000000);
-  v5 = dispatch_group_wait(v3, v4);
+  v5 = dispatch_group_wait(metadataReaderGroup, v4);
 
   if (v5)
   {
@@ -408,22 +408,22 @@ void __78__CFXReviewViewController_viewWillTransitionToSize_withTransitionCoordi
     }
   }
 
-  v7 = [(CFXReviewViewController *)self animojiMetadata_metadata];
+  animojiMetadata_metadata = [(CFXReviewViewController *)self animojiMetadata_metadata];
 
-  return v7;
+  return animojiMetadata_metadata;
 }
 
-- (void)exportMediaItemToFileURL:(id)a3
+- (void)exportMediaItemToFileURL:(id)l
 {
-  v4 = a3;
-  v5 = [(CFXReviewViewController *)self internalPreviewViewController];
-  [v5 exportMediaItemToFileURL:v4];
+  lCopy = l;
+  internalPreviewViewController = [(CFXReviewViewController *)self internalPreviewViewController];
+  [internalPreviewViewController exportMediaItemToFileURL:lCopy];
 }
 
 - (BOOL)mediaItemRequiresExport
 {
-  v3 = [(CFXReviewViewController *)self internalPreviewViewController];
-  v4 = [v3 previewClip];
+  internalPreviewViewController = [(CFXReviewViewController *)self internalPreviewViewController];
+  previewClip = [internalPreviewViewController previewClip];
 
   if ([(CFXReviewViewController *)self mediaCapturedInFunCam])
   {
@@ -432,168 +432,168 @@ void __78__CFXReviewViewController_viewWillTransitionToSize_withTransitionCoordi
 
   else
   {
-    v6 = [v4 effectStack];
-    v5 = [v6 count] != 0;
+    effectStack = [previewClip effectStack];
+    v5 = [effectStack count] != 0;
   }
 
   return v5;
 }
 
-- (void)showMemojiPicker:(id)a3
+- (void)showMemojiPicker:(id)picker
 {
-  v4 = a3;
-  v5 = [(CFXReviewViewController *)self effectBrowserViewController];
+  pickerCopy = picker;
+  effectBrowserViewController = [(CFXReviewViewController *)self effectBrowserViewController];
 
-  if (v5)
+  if (effectBrowserViewController)
   {
-    v6 = [(CFXReviewViewController *)self effectBrowserViewController];
-    [v6 showMemojiPicker:v4];
+    effectBrowserViewController2 = [(CFXReviewViewController *)self effectBrowserViewController];
+    [effectBrowserViewController2 showMemojiPicker:pickerCopy];
   }
 
   else
   {
-    v6 = JFXLog_camera();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    effectBrowserViewController2 = JFXLog_camera();
+    if (os_log_type_enabled(effectBrowserViewController2, OS_LOG_TYPE_ERROR))
     {
       [CFXReviewViewController showMemojiPicker:];
     }
   }
 }
 
-- (void)effectBrowserViewController:(id)a3 didDismissPickerForEffectType:(id)a4
+- (void)effectBrowserViewController:(id)controller didDismissPickerForEffectType:(id)type
 {
-  if ([a4 jtEffectType] == 1)
+  if ([type jtEffectType] == 1)
   {
-    v5 = [(CFXReviewViewController *)self internalPreviewViewController];
-    [v5 setPresentingFilterPicker:0];
+    internalPreviewViewController = [(CFXReviewViewController *)self internalPreviewViewController];
+    [internalPreviewViewController setPresentingFilterPicker:0];
   }
 }
 
-- (void)effectBrowserViewController:(id)a3 didDropOverlayEffect:(id)a4 atScreenLocation:(CGPoint)a5 atScreenSize:(CGSize)a6 rotationAngle:(double)a7
+- (void)effectBrowserViewController:(id)controller didDropOverlayEffect:(id)effect atScreenLocation:(CGPoint)location atScreenSize:(CGSize)size rotationAngle:(double)angle
 {
-  height = a6.height;
-  width = a6.width;
-  y = a5.y;
-  x = a5.x;
-  v13 = a4;
-  v14 = [(CFXReviewViewController *)self internalPreviewViewController];
-  [v14 addOverlayEffect:v13 atScreenLocation:0 atScreenSize:x rotationAngle:y completion:{width, height, a7}];
+  height = size.height;
+  width = size.width;
+  y = location.y;
+  x = location.x;
+  effectCopy = effect;
+  internalPreviewViewController = [(CFXReviewViewController *)self internalPreviewViewController];
+  [internalPreviewViewController addOverlayEffect:effectCopy atScreenLocation:0 atScreenSize:x rotationAngle:y completion:{width, height, angle}];
 }
 
-- (void)effectBrowserViewController:(id)a3 didPresentPickerForEffectType:(id)a4
+- (void)effectBrowserViewController:(id)controller didPresentPickerForEffectType:(id)type
 {
-  if ([a4 jtEffectType] == 1)
+  if ([type jtEffectType] == 1)
   {
-    v5 = [(CFXReviewViewController *)self internalPreviewViewController];
-    [v5 setPresentingFilterPicker:1];
+    internalPreviewViewController = [(CFXReviewViewController *)self internalPreviewViewController];
+    [internalPreviewViewController setPresentingFilterPicker:1];
   }
 }
 
-- (void)effectBrowserViewController:(id)a3 didSelectAppWithIdentifier:(id)a4
+- (void)effectBrowserViewController:(id)controller didSelectAppWithIdentifier:(id)identifier
 {
-  v9 = a4;
+  identifierCopy = identifier;
   v6 = +[CFXAnalyticsManager sharedInstance];
   v7 = v6;
-  if (a4)
+  if (identifier)
   {
-    [v6 startTrackingPickerWithIdentifier:v9];
+    [v6 startTrackingPickerWithIdentifier:identifierCopy];
   }
 
   else
   {
-    v8 = [(CFXReviewViewController *)self effectBrowserPresentedAppIdentifier];
-    [v7 stopTrackingPickerWithIdentifier:v8];
+    effectBrowserPresentedAppIdentifier = [(CFXReviewViewController *)self effectBrowserPresentedAppIdentifier];
+    [v7 stopTrackingPickerWithIdentifier:effectBrowserPresentedAppIdentifier];
   }
 
-  [(CFXReviewViewController *)self setEffectBrowserPresentedAppIdentifier:v9];
+  [(CFXReviewViewController *)self setEffectBrowserPresentedAppIdentifier:identifierCopy];
 }
 
-- (void)effectBrowserViewController:(id)a3 didRemoveAllEffectsOfType:(id)a4
+- (void)effectBrowserViewController:(id)controller didRemoveAllEffectsOfType:(id)type
 {
-  v5 = a4;
-  v6 = [(CFXReviewViewController *)self internalPreviewViewController];
-  v7 = [v6 previewClip];
-  [v7 removeAllEffectsOfType:7];
+  typeCopy = type;
+  internalPreviewViewController = [(CFXReviewViewController *)self internalPreviewViewController];
+  previewClip = [internalPreviewViewController previewClip];
+  [previewClip removeAllEffectsOfType:7];
 
-  v8 = [(CFXReviewViewController *)self internalPreviewViewController];
-  v9 = [v8 previewPlayer];
-  [v9 updateCompositionForEffectChange];
+  internalPreviewViewController2 = [(CFXReviewViewController *)self internalPreviewViewController];
+  previewPlayer = [internalPreviewViewController2 previewPlayer];
+  [previewPlayer updateCompositionForEffectChange];
 
-  v10 = [v5 identifier];
+  identifier = [typeCopy identifier];
 
-  LODWORD(v9) = [v10 isEqualToString:@"Animoji"];
-  if (v9)
+  LODWORD(previewPlayer) = [identifier isEqualToString:@"Animoji"];
+  if (previewPlayer)
   {
     v11 = +[CFXAnalyticsManager sharedInstance];
     [v11 didSelectEffectOfType:@"Animoji" effectIsNone:1];
   }
 }
 
-- (void)effectBrowserViewController:(id)a3 didSelectEffect:(id)a4
+- (void)effectBrowserViewController:(id)controller didSelectEffect:(id)effect
 {
-  v5 = a4;
-  v6 = [(CFXReviewViewController *)self internalPreviewViewController];
-  [v6 addEffect:v5 completion:0];
+  effectCopy = effect;
+  internalPreviewViewController = [(CFXReviewViewController *)self internalPreviewViewController];
+  [internalPreviewViewController addEffect:effectCopy completion:0];
 
-  v7 = [v5 jtEffect];
-  v8 = [v7 type];
+  jtEffect = [effectCopy jtEffect];
+  type = [jtEffect type];
 
   v9 = @"Filter";
-  if (v8 != 1)
+  if (type != 1)
   {
     v9 = 0;
   }
 
   v10 = v9;
   v12 = +[CFXAnalyticsManager sharedInstance];
-  v11 = [v5 isNone];
+  isNone = [effectCopy isNone];
 
-  [v12 didSelectEffectOfType:v10 effectIsNone:v11];
+  [v12 didSelectEffectOfType:v10 effectIsNone:isNone];
 }
 
-- (id)selectedFilterIdentifierForEffectBrowserViewController:(id)a3
+- (id)selectedFilterIdentifierForEffectBrowserViewController:(id)controller
 {
-  v3 = [(CFXReviewViewController *)self internalPreviewViewController];
-  v4 = [v3 previewClip];
-  v5 = [v4 effectsOfType:1];
-  v6 = [v5 firstObject];
+  internalPreviewViewController = [(CFXReviewViewController *)self internalPreviewViewController];
+  previewClip = [internalPreviewViewController previewClip];
+  v5 = [previewClip effectsOfType:1];
+  firstObject = [v5 firstObject];
 
-  v7 = [v6 effectID];
+  effectID = [firstObject effectID];
 
-  return v7;
+  return effectID;
 }
 
-- (id)selectedAnimojiIdentifierForEffectBrowserViewController:(id)a3
+- (id)selectedAnimojiIdentifierForEffectBrowserViewController:(id)controller
 {
-  v3 = [(CFXReviewViewController *)self internalPreviewViewController];
-  v4 = [v3 previewClip];
-  v5 = [v4 effectsOfType:7];
-  v6 = [v5 firstObject];
+  internalPreviewViewController = [(CFXReviewViewController *)self internalPreviewViewController];
+  previewClip = [internalPreviewViewController previewClip];
+  v5 = [previewClip effectsOfType:7];
+  firstObject = [v5 firstObject];
 
-  v7 = [v6 effectID];
+  effectID = [firstObject effectID];
 
-  return v7;
+  return effectID;
 }
 
-- (void)effectBrowserViewController:(id)a3 willChangeDockHeight:(double)a4
+- (void)effectBrowserViewController:(id)controller willChangeDockHeight:(double)height
 {
-  v5 = [(CFXReviewViewController *)self internalPreviewViewController:a3];
-  [v5 updateUIForDockMagnify:a4 > 50.0 dockHeightDelta:a4 + -44.0];
+  v5 = [(CFXReviewViewController *)self internalPreviewViewController:controller];
+  [v5 updateUIForDockMagnify:height > 50.0 dockHeightDelta:height + -44.0];
 }
 
-- (id)localizedPromptForHidingAnimojiForEffectBrowserViewController:(id)a3
+- (id)localizedPromptForHidingAnimojiForEffectBrowserViewController:(id)controller
 {
   if ([(CFXReviewViewController *)self mediaCapturedInFunCam])
   {
-    v4 = [(CFXReviewViewController *)self mediaItem];
-    v5 = [v4 metadataURL];
-    if (v5)
+    mediaItem = [(CFXReviewViewController *)self mediaItem];
+    metadataURL = [mediaItem metadataURL];
+    if (metadataURL)
     {
-      v6 = v5;
-      v7 = [MEMORY[0x277D75418] currentDevice];
-      v8 = [v7 jfx_hasTrueDepthFrontCamera];
+      v6 = metadataURL;
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      jfx_hasTrueDepthFrontCamera = [currentDevice jfx_hasTrueDepthFrontCamera];
 
-      if (v8)
+      if (jfx_hasTrueDepthFrontCamera)
       {
         v9 = 0;
         goto LABEL_7;
@@ -605,316 +605,316 @@ void __78__CFXReviewViewController_viewWillTransitionToSize_withTransitionCoordi
     }
   }
 
-  v10 = [MEMORY[0x277CCA8D8] jfxBundle];
-  v9 = [v10 localizedStringForKey:@"HIDE_MEMOJI_NON_FUN_CAM_MEDIA_ITEM_DIPLAY Name" value:&stru_28553D028 table:0];
+  jfxBundle = [MEMORY[0x277CCA8D8] jfxBundle];
+  v9 = [jfxBundle localizedStringForKey:@"HIDE_MEMOJI_NON_FUN_CAM_MEDIA_ITEM_DIPLAY Name" value:&stru_28553D028 table:0];
 
 LABEL_7:
 
   return v9;
 }
 
-- (BOOL)shouldAlwaysPresentExpandedAppsForEffectBrowserViewController:(id)a3
+- (BOOL)shouldAlwaysPresentExpandedAppsForEffectBrowserViewController:(id)controller
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom] == 1;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  v4 = [currentDevice userInterfaceIdiom] == 1;
 
   return v4;
 }
 
-- (BOOL)allowLandscapeForEffectBrowserViewController:(id)a3
+- (BOOL)allowLandscapeForEffectBrowserViewController:(id)controller
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom] == 0;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  v4 = [currentDevice userInterfaceIdiom] == 0;
 
   return v4;
 }
 
-- (void)effectBrowserViewController:(id)a3 filterPickerPreviewBackgroundImageAtSizeInPixels:(CGSize)a4 completion:(id)a5
+- (void)effectBrowserViewController:(id)controller filterPickerPreviewBackgroundImageAtSizeInPixels:(CGSize)pixels completion:(id)completion
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = a5;
-  v9 = [(CFXReviewViewController *)self internalPreviewViewController];
-  [v9 filterPickerPreviewBackgroundImageAtSizeInPixels:v8 completion:{width, height}];
+  height = pixels.height;
+  width = pixels.width;
+  completionCopy = completion;
+  internalPreviewViewController = [(CFXReviewViewController *)self internalPreviewViewController];
+  [internalPreviewViewController filterPickerPreviewBackgroundImageAtSizeInPixels:completionCopy completion:{width, height}];
 }
 
-- (void)previewViewController:(id)a3 didFinishExportingMediaItem:(id)a4 withError:(id)a5
+- (void)previewViewController:(id)controller didFinishExportingMediaItem:(id)item withError:(id)error
 {
-  v13 = a4;
-  v7 = a5;
-  [(CFXReviewViewController *)self setMediaItem:v13];
-  [(CFXReviewViewController *)self CFX_updateAnalyticsForSentMediaItem:v13];
-  v8 = [(CFXReviewViewController *)self delegate];
-  if (v8)
+  itemCopy = item;
+  errorCopy = error;
+  [(CFXReviewViewController *)self setMediaItem:itemCopy];
+  [(CFXReviewViewController *)self CFX_updateAnalyticsForSentMediaItem:itemCopy];
+  delegate = [(CFXReviewViewController *)self delegate];
+  if (delegate)
   {
-    v9 = v8;
-    v10 = [(CFXReviewViewController *)self delegate];
+    v9 = delegate;
+    delegate2 = [(CFXReviewViewController *)self delegate];
     v11 = objc_opt_respondsToSelector();
 
     if (v11)
     {
-      v12 = [(CFXReviewViewController *)self delegate];
-      [v12 reviewViewController:self didFinishExportingMediaItem:v13 withError:v7];
+      delegate3 = [(CFXReviewViewController *)self delegate];
+      [delegate3 reviewViewController:self didFinishExportingMediaItem:itemCopy withError:errorCopy];
     }
   }
 }
 
-- (void)previewViewController:(id)a3 didProgress:(double)a4 exportingMediaItem:(id)a5
+- (void)previewViewController:(id)controller didProgress:(double)progress exportingMediaItem:(id)item
 {
-  v12 = a5;
-  v7 = [(CFXReviewViewController *)self delegate];
-  if (v7)
+  itemCopy = item;
+  delegate = [(CFXReviewViewController *)self delegate];
+  if (delegate)
   {
-    v8 = v7;
-    v9 = [(CFXReviewViewController *)self delegate];
+    v8 = delegate;
+    delegate2 = [(CFXReviewViewController *)self delegate];
     v10 = objc_opt_respondsToSelector();
 
     if (v10)
     {
-      v11 = [(CFXReviewViewController *)self delegate];
-      [v11 reviewViewController:self didProgress:v12 exportingMediaItem:a4];
+      delegate3 = [(CFXReviewViewController *)self delegate];
+      [delegate3 reviewViewController:self didProgress:itemCopy exportingMediaItem:progress];
     }
   }
 }
 
-- (void)previewViewController:(id)a3 didStartExportingMediaItem:(id)a4
+- (void)previewViewController:(id)controller didStartExportingMediaItem:(id)item
 {
-  v10 = a4;
-  v5 = [(CFXReviewViewController *)self delegate];
-  if (v5)
+  itemCopy = item;
+  delegate = [(CFXReviewViewController *)self delegate];
+  if (delegate)
   {
-    v6 = v5;
-    v7 = [(CFXReviewViewController *)self delegate];
+    v6 = delegate;
+    delegate2 = [(CFXReviewViewController *)self delegate];
     v8 = objc_opt_respondsToSelector();
 
     if (v8)
     {
-      v9 = [(CFXReviewViewController *)self delegate];
-      [v9 reviewViewController:self didStartExportingMediaItem:v10];
+      delegate3 = [(CFXReviewViewController *)self delegate];
+      [delegate3 reviewViewController:self didStartExportingMediaItem:itemCopy];
     }
   }
 }
 
-- (void)previewViewControllerDidHideUserInterface:(id)a3
+- (void)previewViewControllerDidHideUserInterface:(id)interface
 {
-  v4 = [(CFXReviewViewController *)self delegate];
-  if (v4)
+  delegate = [(CFXReviewViewController *)self delegate];
+  if (delegate)
   {
-    v5 = v4;
-    v6 = [(CFXReviewViewController *)self delegate];
+    v5 = delegate;
+    delegate2 = [(CFXReviewViewController *)self delegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(CFXReviewViewController *)self delegate];
-      [v8 reviewViewControllerDidHideUserInterface:self];
+      delegate3 = [(CFXReviewViewController *)self delegate];
+      [delegate3 reviewViewControllerDidHideUserInterface:self];
     }
   }
 }
 
-- (void)previewViewControllerDidShowUserInterface:(id)a3
+- (void)previewViewControllerDidShowUserInterface:(id)interface
 {
-  v4 = [(CFXReviewViewController *)self delegate];
-  if (v4)
+  delegate = [(CFXReviewViewController *)self delegate];
+  if (delegate)
   {
-    v5 = v4;
-    v6 = [(CFXReviewViewController *)self delegate];
+    v5 = delegate;
+    delegate2 = [(CFXReviewViewController *)self delegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(CFXReviewViewController *)self delegate];
-      [v8 reviewViewControllerDidShowUserInterface:self];
+      delegate3 = [(CFXReviewViewController *)self delegate];
+      [delegate3 reviewViewControllerDidShowUserInterface:self];
     }
   }
 }
 
-- (void)previewViewControllerDidStartEditingText:(id)a3
+- (void)previewViewControllerDidStartEditingText:(id)text
 {
-  v4 = [(CFXReviewViewController *)self delegate];
-  if (v4)
+  delegate = [(CFXReviewViewController *)self delegate];
+  if (delegate)
   {
-    v5 = v4;
-    v6 = [(CFXReviewViewController *)self delegate];
+    v5 = delegate;
+    delegate2 = [(CFXReviewViewController *)self delegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(CFXReviewViewController *)self delegate];
-      [v8 reviewViewControllerDidHideUserInterface:self];
+      delegate3 = [(CFXReviewViewController *)self delegate];
+      [delegate3 reviewViewControllerDidHideUserInterface:self];
     }
   }
 }
 
-- (void)previewViewControllerDidStopEditingText:(id)a3
+- (void)previewViewControllerDidStopEditingText:(id)text
 {
-  v4 = [(CFXReviewViewController *)self delegate];
-  if (v4)
+  delegate = [(CFXReviewViewController *)self delegate];
+  if (delegate)
   {
-    v5 = v4;
-    v6 = [(CFXReviewViewController *)self delegate];
+    v5 = delegate;
+    delegate2 = [(CFXReviewViewController *)self delegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(CFXReviewViewController *)self delegate];
-      [v8 reviewViewControllerDidShowUserInterface:self];
+      delegate3 = [(CFXReviewViewController *)self delegate];
+      [delegate3 reviewViewControllerDidShowUserInterface:self];
     }
   }
 }
 
-- (id)selectedAppIdentifierForPreviewViewController:(id)a3
+- (id)selectedAppIdentifierForPreviewViewController:(id)controller
 {
-  v3 = [(CFXReviewViewController *)self effectBrowserViewController];
-  v4 = [v3 selectedAppIdentifier];
+  effectBrowserViewController = [(CFXReviewViewController *)self effectBrowserViewController];
+  selectedAppIdentifier = [effectBrowserViewController selectedAppIdentifier];
 
-  return v4;
+  return selectedAppIdentifier;
 }
 
 - (id)preferredDisplayColorSpace
 {
-  v2 = [(CFXReviewViewController *)self mediaItem];
-  v3 = [v2 clip];
-  v4 = [v3 mediaItem];
+  mediaItem = [(CFXReviewViewController *)self mediaItem];
+  clip = [mediaItem clip];
+  mediaItem2 = [clip mediaItem];
 
-  v5 = [v4 colorSpace];
+  colorSpace = [mediaItem2 colorSpace];
 
-  return v5;
+  return colorSpace;
 }
 
 - (id)preferredExportColorSpace
 {
-  v3 = [(CFXReviewViewController *)self mediaItem];
-  v4 = [v3 clip];
-  v5 = [v4 mediaItem];
+  mediaItem = [(CFXReviewViewController *)self mediaItem];
+  clip = [mediaItem clip];
+  mediaItem2 = [clip mediaItem];
 
-  if ([v5 mediaType] == 2)
+  if ([mediaItem2 mediaType] == 2)
   {
-    v6 = [(CFXReviewViewController *)self preferredDisplayColorSpace];
+    preferredDisplayColorSpace = [(CFXReviewViewController *)self preferredDisplayColorSpace];
   }
 
   else
   {
-    v7 = [v5 colorSpace];
-    v6 = [v7 jfx_videoExportColorSpace];
+    colorSpace = [mediaItem2 colorSpace];
+    preferredDisplayColorSpace = [colorSpace jfx_videoExportColorSpace];
   }
 
-  return v6;
+  return preferredDisplayColorSpace;
 }
 
-- (double)effectBrowserViewController:(id)a3 screenTopBarHeightForWindowBounds:(CGRect)a4 orientation:(int64_t)a5
+- (double)effectBrowserViewController:(id)controller screenTopBarHeightForWindowBounds:(CGRect)bounds orientation:(int64_t)orientation
 {
   v9 = 0u;
   v10 = 0u;
   v7 = 0u;
   v8 = 0u;
   memset(&v6, 0, sizeof(v6));
-  [MEMORY[0x277D3D080] reviewScreenTopBarGeometryForReferenceBounds:a5 withOrientation:{a4.origin.x, a4.origin.y, a4.size.width, a4.size.height}];
+  [MEMORY[0x277D3D080] reviewScreenTopBarGeometryForReferenceBounds:orientation withOrientation:{bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height}];
   return CGRectGetHeight(v6);
 }
 
 - (void)CFX_resetAndLoadPreviewViewController
 {
   v45[4] = *MEMORY[0x277D85DE8];
-  v3 = [(CFXReviewViewController *)self internalPreviewViewController];
+  internalPreviewViewController = [(CFXReviewViewController *)self internalPreviewViewController];
 
-  if (v3)
+  if (internalPreviewViewController)
   {
-    v4 = [(CFXReviewViewController *)self internalPreviewViewController];
-    [v4 jfxRemoveFromParentViewController];
+    internalPreviewViewController2 = [(CFXReviewViewController *)self internalPreviewViewController];
+    [internalPreviewViewController2 jfxRemoveFromParentViewController];
 
-    v5 = [(CFXReviewViewController *)self effectBrowserViewController];
-    [v5 jfxRemoveFromParentViewController];
+    effectBrowserViewController = [(CFXReviewViewController *)self effectBrowserViewController];
+    [effectBrowserViewController jfxRemoveFromParentViewController];
   }
 
   v6 = MEMORY[0x277D75AC8];
-  v7 = [MEMORY[0x277CCA8D8] jfxBundle];
-  v8 = [v6 storyboardWithName:@"CFXPreviewView" bundle:v7];
+  jfxBundle = [MEMORY[0x277CCA8D8] jfxBundle];
+  v8 = [v6 storyboardWithName:@"CFXPreviewView" bundle:jfxBundle];
   v9 = [v8 instantiateViewControllerWithIdentifier:@"CFXPreviewViewController"];
   [(CFXReviewViewController *)self setInternalPreviewViewController:v9];
 
-  v10 = [(CFXReviewViewController *)self internalPreviewViewController];
-  [v10 setDelegate:self];
+  internalPreviewViewController3 = [(CFXReviewViewController *)self internalPreviewViewController];
+  [internalPreviewViewController3 setDelegate:self];
 
-  v11 = [(CFXReviewViewController *)self mediaItem];
-  v12 = [(CFXReviewViewController *)self internalPreviewViewController];
-  [v12 setMediaItem:v11];
+  mediaItem = [(CFXReviewViewController *)self mediaItem];
+  internalPreviewViewController4 = [(CFXReviewViewController *)self internalPreviewViewController];
+  [internalPreviewViewController4 setMediaItem:mediaItem];
 
   v13 = [(CFXReviewViewController *)self mediaCaptureDevicePosition]== 1;
-  v14 = [(CFXReviewViewController *)self internalPreviewViewController];
-  [v14 setCapturedWithBackCamera:v13];
+  internalPreviewViewController5 = [(CFXReviewViewController *)self internalPreviewViewController];
+  [internalPreviewViewController5 setCapturedWithBackCamera:v13];
 
-  v15 = [(CFXReviewViewController *)self internalPreviewViewController];
-  [v15 loadViewIfNeeded];
+  internalPreviewViewController6 = [(CFXReviewViewController *)self internalPreviewViewController];
+  [internalPreviewViewController6 loadViewIfNeeded];
 
-  v16 = [(CFXReviewViewController *)self internalPreviewViewController];
-  v17 = [v16 previewControls];
+  internalPreviewViewController7 = [(CFXReviewViewController *)self internalPreviewViewController];
+  previewControls = [internalPreviewViewController7 previewControls];
 
-  [v17 view];
-  v43 = v42 = v17;
-  v18 = [v17 controlsContainerView];
-  v19 = [(CFXReviewViewController *)self internalPreviewViewController];
-  v44 = [v19 effectBrowserContentPresenterViewController];
+  [previewControls view];
+  v43 = v42 = previewControls;
+  controlsContainerView = [previewControls controlsContainerView];
+  internalPreviewViewController8 = [(CFXReviewViewController *)self internalPreviewViewController];
+  effectBrowserContentPresenterViewController = [internalPreviewViewController8 effectBrowserContentPresenterViewController];
 
-  v20 = [[CFXEffectBrowserViewController alloc] initWithDelegate:self contentPresenter:v44];
+  v20 = [[CFXEffectBrowserViewController alloc] initWithDelegate:self contentPresenter:effectBrowserContentPresenterViewController];
   [(CFXReviewViewController *)self setEffectBrowserViewController:v20];
 
-  v21 = [(CFXReviewViewController *)self effectBrowserViewController];
-  [v21 setContentPresenterDelegate:v44];
+  effectBrowserViewController2 = [(CFXReviewViewController *)self effectBrowserViewController];
+  [effectBrowserViewController2 setContentPresenterDelegate:effectBrowserContentPresenterViewController];
 
-  [v44 setDelegate:self];
-  v22 = [(CFXReviewViewController *)self effectBrowserViewController];
-  v23 = [v22 view];
+  [effectBrowserContentPresenterViewController setDelegate:self];
+  effectBrowserViewController3 = [(CFXReviewViewController *)self effectBrowserViewController];
+  view = [effectBrowserViewController3 view];
 
-  v24 = [(CFXReviewViewController *)self effectBrowserViewController];
-  [v17 addChildViewController:v24];
+  effectBrowserViewController4 = [(CFXReviewViewController *)self effectBrowserViewController];
+  [previewControls addChildViewController:effectBrowserViewController4];
 
-  [v43 addSubview:v23];
-  [v23 setTranslatesAutoresizingMaskIntoConstraints:0];
+  [v43 addSubview:view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
   v35 = MEMORY[0x277CCAAD0];
-  v41 = [v23 leadingAnchor];
-  v39 = [v18 leadingAnchor];
-  v38 = [v41 constraintEqualToAnchor:v39];
+  leadingAnchor = [view leadingAnchor];
+  leadingAnchor2 = [controlsContainerView leadingAnchor];
+  v38 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v45[0] = v38;
-  v37 = [v23 trailingAnchor];
-  v36 = [v18 trailingAnchor];
-  v25 = [v37 constraintEqualToAnchor:v36];
+  trailingAnchor = [view trailingAnchor];
+  trailingAnchor2 = [controlsContainerView trailingAnchor];
+  v25 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v45[1] = v25;
-  v26 = [v23 topAnchor];
-  v40 = v18;
-  v27 = [v18 topAnchor];
-  v28 = [v26 constraintEqualToAnchor:v27];
+  topAnchor = [view topAnchor];
+  v40 = controlsContainerView;
+  topAnchor2 = [controlsContainerView topAnchor];
+  v28 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v45[2] = v28;
-  v29 = [v23 bottomAnchor];
-  v30 = [v18 bottomAnchor];
-  v31 = [v29 constraintEqualToAnchor:v30];
+  bottomAnchor = [view bottomAnchor];
+  bottomAnchor2 = [controlsContainerView bottomAnchor];
+  v31 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v45[3] = v31;
   v32 = [MEMORY[0x277CBEA60] arrayWithObjects:v45 count:4];
   [v35 activateConstraints:v32];
 
-  v33 = [(CFXReviewViewController *)self effectBrowserViewController];
-  [v33 didMoveToParentViewController:v42];
+  effectBrowserViewController5 = [(CFXReviewViewController *)self effectBrowserViewController];
+  [effectBrowserViewController5 didMoveToParentViewController:v42];
 
-  v34 = [(CFXReviewViewController *)self internalPreviewViewController];
-  [(UIViewController *)self jfxAddChildViewController:v34 constrainRelativeToSafeAreas:0];
+  internalPreviewViewController9 = [(CFXReviewViewController *)self internalPreviewViewController];
+  [(UIViewController *)self jfxAddChildViewController:internalPreviewViewController9 constrainRelativeToSafeAreas:0];
 }
 
-- (void)CFX_updateAnalyticsForSentMediaItem:(id)a3
+- (void)CFX_updateAnalyticsForSentMediaItem:(id)item
 {
   v62 = *MEMORY[0x277D85DE8];
   v3 = 0x278D78000;
-  if (!a3)
+  if (!item)
   {
     goto LABEL_32;
   }
 
-  [a3 clip];
+  [item clip];
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
   v47 = v60 = 0u;
-  v4 = [v47 effectStack];
-  v5 = [v4 countByEnumeratingWithState:&v57 objects:v61 count:16];
+  effectStack = [v47 effectStack];
+  v5 = [effectStack countByEnumeratingWithState:&v57 objects:v61 count:16];
   if (!v5)
   {
     v50 = 0;
@@ -935,7 +935,7 @@ LABEL_7:
   v54 = 0;
   v7 = *v58;
   v48 = *MEMORY[0x277D418E8];
-  v49 = v4;
+  v49 = effectStack;
   v8 = 0x278D78000uLL;
   do
   {
@@ -943,23 +943,23 @@ LABEL_7:
     {
       if (*v58 != v7)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(effectStack);
       }
 
       v10 = *(*(&v57 + 1) + 8 * i);
-      v11 = [v10 type];
-      switch(v11)
+      type = [v10 type];
+      switch(type)
       {
         case 7:
           v54 = 1;
           continue;
         case 2:
-          v12 = [v10 effectID];
+          effectID = [v10 effectID];
           v13 = *(v8 + 672);
           [CFXEffectType effectTypeWithIdentifier:@"Text"];
           v15 = v14 = v8;
           v16 = [v13 effectIdentifiersForEffectType:v15];
-          v17 = [v16 containsObject:v12];
+          v17 = [v16 containsObject:effectID];
 
           if (v17)
           {
@@ -970,7 +970,7 @@ LABEL_7:
           v18 = *(v14 + 672);
           v19 = [CFXEffectType effectTypeWithIdentifier:@"Shapes"];
           v20 = [v18 effectIdentifiersForEffectType:v19];
-          v21 = [v20 containsObject:v12];
+          v21 = [v20 containsObject:effectID];
 
           if (v21)
           {
@@ -984,7 +984,7 @@ LABEL_16:
             v22 = *(v14 + 672);
             v23 = [CFXEffectType effectTypeWithIdentifier:@"EmojiStickers"];
             v24 = [v22 effectIdentifiersForEffectType:v23];
-            v25 = [v24 containsObject:v12];
+            v25 = [v24 containsObject:effectID];
 
             if (v25)
             {
@@ -993,11 +993,11 @@ LABEL_16:
 
             else
             {
-              v51 += [v12 isEqualToString:v48];
+              v51 += [effectID isEqualToString:v48];
             }
 
             v8 = v14;
-            v4 = v49;
+            effectStack = v49;
           }
 
           continue;
@@ -1007,61 +1007,61 @@ LABEL_16:
       }
     }
 
-    v6 = [v4 countByEnumeratingWithState:&v57 objects:v61 count:16];
+    v6 = [effectStack countByEnumeratingWithState:&v57 objects:v61 count:16];
   }
 
   while (v6);
 LABEL_26:
 
-  v26 = [v47 isVideo];
-  v27 = [(CFXReviewViewController *)self internalPreviewViewController];
-  v28 = [v27 capturedWithBackCamera];
+  isVideo = [v47 isVideo];
+  internalPreviewViewController = [(CFXReviewViewController *)self internalPreviewViewController];
+  capturedWithBackCamera = [internalPreviewViewController capturedWithBackCamera];
 
   v29 = +[CFXEffectHostAppDelegate sharedInstance];
-  v30 = [v29 preferredExportColorSpace];
+  preferredExportColorSpace = [v29 preferredExportColorSpace];
 
   v31 = +[CFXEffectHostAppDelegate sharedInstance];
-  v32 = [v31 preferredDisplayColorSpace];
+  preferredDisplayColorSpace = [v31 preferredDisplayColorSpace];
 
-  v53 = v32;
-  if ([v30 isHDRSpace])
+  v53 = preferredDisplayColorSpace;
+  if ([preferredExportColorSpace isHDRSpace])
   {
-    v33 = [v32 isHDRSpace];
+    isHDRSpace = [preferredDisplayColorSpace isHDRSpace];
   }
 
   else
   {
-    v33 = 0;
+    isHDRSpace = 0;
   }
 
   v3 = 0x278D78000uLL;
-  v34 = [v47 mediaItem];
-  v35 = [v34 colorSpace];
-  v36 = [v35 isHDRSpace];
+  mediaItem = [v47 mediaItem];
+  colorSpace = [mediaItem colorSpace];
+  isHDRSpace2 = [colorSpace isHDRSpace];
   v37 = +[CFXAnalyticsManager sharedInstance];
-  BYTE1(v45) = v36;
-  LOBYTE(v45) = v33;
-  [v37 trackMediaSentWithAnimoji:v54 & 1 video:v26 frontCamera:v28 ^ 1u filterCount:v56 labelCount:v55 messagesStickerCount:v51 shapeCount:v52 emojiStickerCount:v50 supportsHDR:v45 isHDR:?];
+  BYTE1(v45) = isHDRSpace2;
+  LOBYTE(v45) = isHDRSpace;
+  [v37 trackMediaSentWithAnimoji:v54 & 1 video:isVideo frontCamera:capturedWithBackCamera ^ 1u filterCount:v56 labelCount:v55 messagesStickerCount:v51 shapeCount:v52 emojiStickerCount:v50 supportsHDR:v45 isHDR:?];
 
-  if (v26)
+  if (isVideo)
   {
-    v38 = [v47 duration];
+    duration = [v47 duration];
     v39 = +[CFXMediaSettings sharedInstance];
-    v40 = v38 / [v39 frameRate];
+    v40 = duration / [v39 frameRate];
 
     v41 = +[CFXAnalyticsManager sharedInstance];
     [v41 trackEventWithName:@"videoduration" duration:v40];
   }
 
 LABEL_32:
-  v42 = [*(v3 + 560) sharedInstance];
-  [v42 stopTrackingTimeIntervalEventWithName:@"activebackcameratime"];
+  sharedInstance = [*(v3 + 560) sharedInstance];
+  [sharedInstance stopTrackingTimeIntervalEventWithName:@"activebackcameratime"];
 
-  v43 = [*(v3 + 560) sharedInstance];
-  [v43 stopTrackingTimeIntervalEventWithName:@"activefrontcameratime"];
+  sharedInstance2 = [*(v3 + 560) sharedInstance];
+  [sharedInstance2 stopTrackingTimeIntervalEventWithName:@"activefrontcameratime"];
 
-  v44 = [*(v3 + 560) sharedInstance];
-  [v44 stopTrackingTimeIntervalEventWithName:@"activetime"];
+  sharedInstance3 = [*(v3 + 560) sharedInstance];
+  [sharedInstance3 stopTrackingTimeIntervalEventWithName:@"activetime"];
 }
 
 - (CFXReviewViewControllerDelegate)delegate

@@ -1,14 +1,14 @@
 @interface RingtonePurchaseStore
 - (RingtonePurchaseStore)init;
-- (RingtonePurchaseStore)initWithMangedObjectContext:(id)a3;
-- (id)ringtonesForAdamID:(unint64_t)a3 transactionID:(id)a4;
-- (void)addRingtonesForPurchases:(id)a3;
+- (RingtonePurchaseStore)initWithMangedObjectContext:(id)context;
+- (id)ringtonesForAdamID:(unint64_t)d transactionID:(id)iD;
+- (void)addRingtonesForPurchases:(id)purchases;
 - (void)dealloc;
-- (void)finalizeRingtoneForAdamID:(unint64_t)a3 transactionID:(id)a4 toneIdentifier:(id)a5;
+- (void)finalizeRingtoneForAdamID:(unint64_t)d transactionID:(id)iD toneIdentifier:(id)identifier;
 - (void)prunePurchasedRingtones;
-- (void)removeRingtoneForAdamID:(unint64_t)a3 transactionID:(id)a4;
-- (void)removeRingtonesForPurchases:(id)a3;
-- (void)updateRingtonesForPurchases:(id)a3 withDownloads:(id)a4;
+- (void)removeRingtoneForAdamID:(unint64_t)d transactionID:(id)iD;
+- (void)removeRingtonesForPurchases:(id)purchases;
+- (void)updateRingtonesForPurchases:(id)purchases withDownloads:(id)downloads;
 @end
 
 @implementation RingtonePurchaseStore
@@ -21,14 +21,14 @@
   return [(RingtonePurchaseStore *)self initWithMangedObjectContext:v3];
 }
 
-- (RingtonePurchaseStore)initWithMangedObjectContext:(id)a3
+- (RingtonePurchaseStore)initWithMangedObjectContext:(id)context
 {
   v6.receiver = self;
   v6.super_class = RingtonePurchaseStore;
   v4 = [(RingtonePurchaseStore *)&v6 init];
   if (v4)
   {
-    v4->_context = a3;
+    v4->_context = context;
   }
 
   return v4;
@@ -47,14 +47,14 @@
   [(RingtonePurchaseStore *)&v3 dealloc];
 }
 
-- (void)addRingtonesForPurchases:(id)a3
+- (void)addRingtonesForPurchases:(id)purchases
 {
   v5 = [RingtonePurchase entityFromContext:self->_context];
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v6 = [purchases countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = *v12;
@@ -64,7 +64,7 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(purchases);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -72,7 +72,7 @@
         [(RingtonePurchase *)v10 loadFromPurchase:v9];
       }
 
-      v6 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [purchases countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -81,13 +81,13 @@
   sub_1000CE00C(self->_context);
 }
 
-- (void)finalizeRingtoneForAdamID:(unint64_t)a3 transactionID:(id)a4 toneIdentifier:(id)a5
+- (void)finalizeRingtoneForAdamID:(unint64_t)d transactionID:(id)iD toneIdentifier:(id)identifier
 {
-  v7 = [(RingtonePurchaseStore *)self ringtonesForAdamID:a3 transactionID:a4];
+  v7 = [(RingtonePurchaseStore *)self ringtonesForAdamID:d transactionID:iD];
   if ([v7 count])
   {
     v8 = [v7 objectAtIndex:0];
-    [v8 applyUserActionWithToneIdentifier:a5];
+    [v8 applyUserActionWithToneIdentifier:identifier];
     [(NSManagedObjectContext *)self->_context deleteObject:v8];
   }
 
@@ -129,13 +129,13 @@
   sub_1000CE00C(self->_context);
 }
 
-- (void)removeRingtonesForPurchases:(id)a3
+- (void)removeRingtonesForPurchases:(id)purchases
 {
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [purchases countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = *v11;
@@ -146,7 +146,7 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(purchases);
         }
 
         [*(*(&v10 + 1) + 8 * i) valueForDownloadProperty:v7];
@@ -157,7 +157,7 @@
         }
       }
 
-      v5 = [a3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [purchases countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -166,9 +166,9 @@
   sub_1000CE00C(self->_context);
 }
 
-- (void)removeRingtoneForAdamID:(unint64_t)a3 transactionID:(id)a4
+- (void)removeRingtoneForAdamID:(unint64_t)d transactionID:(id)iD
 {
-  v5 = [(RingtonePurchaseStore *)self ringtonesForAdamID:a3 transactionID:a4];
+  v5 = [(RingtonePurchaseStore *)self ringtonesForAdamID:d transactionID:iD];
   if ([v5 count])
   {
     -[NSManagedObjectContext deleteObject:](self->_context, "deleteObject:", [v5 objectAtIndex:0]);
@@ -177,28 +177,28 @@
   sub_1000CE00C(self->_context);
 }
 
-- (id)ringtonesForAdamID:(unint64_t)a3 transactionID:(id)a4
+- (id)ringtonesForAdamID:(unint64_t)d transactionID:(id)iD
 {
   v7 = objc_alloc_init(NSFetchRequest);
   [v7 setEntity:{+[RingtonePurchase entityFromContext:](RingtonePurchase, "entityFromContext:", self->_context)}];
-  if (!a4)
+  if (!iD)
   {
-    a4 = +[NSNull null];
+    iD = +[NSNull null];
   }
 
-  [v7 setPredicate:{+[NSPredicate predicateWithFormat:](NSPredicate, "predicateWithFormat:", @"adamID = %llu AND transactionID = %@", a3, a4)}];
+  [v7 setPredicate:{+[NSPredicate predicateWithFormat:](NSPredicate, "predicateWithFormat:", @"adamID = %llu AND transactionID = %@", d, iD)}];
   v8 = [(NSManagedObjectContext *)self->_context executeFetchRequest:v7 error:0];
 
   return v8;
 }
 
-- (void)updateRingtonesForPurchases:(id)a3 withDownloads:(id)a4
+- (void)updateRingtonesForPurchases:(id)purchases withDownloads:(id)downloads
 {
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  v5 = [purchases countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v5)
   {
     v16 = *v23;
@@ -209,7 +209,7 @@
       {
         if (*v23 != v16)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(purchases);
         }
 
         [*(*(&v22 + 1) + 8 * i) valueForDownloadProperty:v6];
@@ -222,7 +222,7 @@
           v21 = 0u;
           v18 = 0u;
           v19 = 0u;
-          v11 = [a4 countByEnumeratingWithState:&v18 objects:v26 count:16];
+          v11 = [downloads countByEnumeratingWithState:&v18 objects:v26 count:16];
           if (v11)
           {
             v12 = *v19;
@@ -232,7 +232,7 @@
               {
                 if (*v19 != v12)
                 {
-                  objc_enumerationMutation(a4);
+                  objc_enumerationMutation(downloads);
                 }
 
                 v14 = *(*(&v18 + 1) + 8 * j);
@@ -243,7 +243,7 @@
                 }
               }
 
-              v11 = [a4 countByEnumeratingWithState:&v18 objects:v26 count:16];
+              v11 = [downloads countByEnumeratingWithState:&v18 objects:v26 count:16];
               if (v11)
               {
                 continue;
@@ -258,7 +258,7 @@ LABEL_17:
         ;
       }
 
-      v5 = [a3 countByEnumeratingWithState:&v22 objects:v27 count:16];
+      v5 = [purchases countByEnumeratingWithState:&v22 objects:v27 count:16];
     }
 
     while (v5);

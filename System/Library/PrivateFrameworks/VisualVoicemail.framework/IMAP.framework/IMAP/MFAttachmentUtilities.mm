@@ -1,8 +1,8 @@
 @interface MFAttachmentUtilities
 + (id)_temporaryDirectoryUniqueURL;
 + (id)temporaryDirectory;
-+ (id)temporaryFileURLWithExtension:(id)a3;
-+ (id)temporaryFileURLWithFileName:(id)a3;
++ (id)temporaryFileURLWithExtension:(id)extension;
++ (id)temporaryFileURLWithFileName:(id)name;
 @end
 
 @implementation MFAttachmentUtilities
@@ -17,23 +17,23 @@
 
 + (id)_temporaryDirectoryUniqueURL
 {
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [MEMORY[0x277CCAC38] processInfo];
-  v5 = [v4 globallyUniqueString];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  globallyUniqueString = [processInfo globallyUniqueString];
 
-  v6 = [a1 temporaryDirectory];
-  v7 = [v6 stringByAppendingPathComponent:v5];
+  temporaryDirectory = [self temporaryDirectory];
+  v7 = [temporaryDirectory stringByAppendingPathComponent:globallyUniqueString];
 
   if (v7)
   {
     v8 = [MEMORY[0x277CBEBC0] fileURLWithPath:v7 isDirectory:1];
-    v9 = [v8 scheme];
-    v10 = [v9 hasPrefix:@"file"];
+    scheme = [v8 scheme];
+    v10 = [scheme hasPrefix:@"file"];
 
     if (v10)
     {
       v15 = 0;
-      [v3 createDirectoryAtURL:v8 withIntermediateDirectories:1 attributes:0 error:&v15];
+      [defaultManager createDirectoryAtURL:v8 withIntermediateDirectories:1 attributes:0 error:&v15];
       v11 = v15;
       v12 = v8;
     }
@@ -56,30 +56,30 @@
   return v12;
 }
 
-+ (id)temporaryFileURLWithExtension:(id)a3
++ (id)temporaryFileURLWithExtension:(id)extension
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  v6 = [a1 _temporaryDirectoryUniqueURL];
-  v7 = [v6 path];
-  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"XXXXX.%@", v4];
-  v9 = [v7 stringByAppendingPathComponent:v8];
+  extensionCopy = extension;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  _temporaryDirectoryUniqueURL = [self _temporaryDirectoryUniqueURL];
+  path = [_temporaryDirectoryUniqueURL path];
+  extensionCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"XXXXX.%@", extensionCopy];
+  v9 = [path stringByAppendingPathComponent:extensionCopy];
 
-  if (v6)
+  if (_temporaryDirectoryUniqueURL)
   {
     v10 = strdup([v9 fileSystemRepresentation]);
-    if (mkstemps(v10, [v4 length] + 1) == -1)
+    if (mkstemps(v10, [extensionCopy length] + 1) == -1)
     {
-      v11 = [v6 path];
-      [v5 removeItemAtPath:v11 error:0];
+      path2 = [_temporaryDirectoryUniqueURL path];
+      [defaultManager removeItemAtPath:path2 error:0];
       v12 = 0;
     }
 
     else
     {
-      v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:v10];
-      [v5 createFileAtPath:v11 contents:0 attributes:0];
-      v12 = [objc_alloc(MEMORY[0x277CBEBC0]) initFileURLWithPath:v11 isDirectory:0];
+      path2 = [MEMORY[0x277CCACA8] stringWithUTF8String:v10];
+      [defaultManager createFileAtPath:path2 contents:0 attributes:0];
+      v12 = [objc_alloc(MEMORY[0x277CBEBC0]) initFileURLWithPath:path2 isDirectory:0];
     }
 
     if (v10)
@@ -96,26 +96,26 @@
   return v12;
 }
 
-+ (id)temporaryFileURLWithFileName:(id)a3
++ (id)temporaryFileURLWithFileName:(id)name
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  v6 = [a1 _temporaryDirectoryUniqueURL];
-  v7 = v6;
-  if (v6)
+  nameCopy = name;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  _temporaryDirectoryUniqueURL = [self _temporaryDirectoryUniqueURL];
+  v7 = _temporaryDirectoryUniqueURL;
+  if (_temporaryDirectoryUniqueURL)
   {
-    v8 = [v6 path];
-    v9 = [v8 stringByAppendingPathComponent:v4];
+    path = [_temporaryDirectoryUniqueURL path];
+    v9 = [path stringByAppendingPathComponent:nameCopy];
 
-    if ([v5 createFileAtPath:v9 contents:0 attributes:0])
+    if ([defaultManager createFileAtPath:v9 contents:0 attributes:0])
     {
       v10 = [objc_alloc(MEMORY[0x277CBEBC0]) initFileURLWithPath:v9 isDirectory:0];
     }
 
     else
     {
-      v11 = [v7 path];
-      [v5 removeItemAtPath:v11 error:0];
+      path2 = [v7 path];
+      [defaultManager removeItemAtPath:path2 error:0];
 
       v10 = 0;
     }

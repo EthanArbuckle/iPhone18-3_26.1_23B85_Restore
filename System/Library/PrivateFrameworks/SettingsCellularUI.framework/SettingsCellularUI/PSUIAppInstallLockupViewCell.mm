@@ -1,47 +1,47 @@
 @interface PSUIAppInstallLockupViewCell
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PSUIAppInstallLockupViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
-- (id)presentingViewControllerForLockupView:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PSUIAppInstallLockupViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
+- (id)presentingViewControllerForLockupView:(id)view;
 - (void)_setupView;
 - (void)installButtonAction;
 - (void)layoutSubviews;
-- (void)lockupView:(id)a3 appStateDidChange:(id)a4;
-- (void)lockupView:(id)a3 didFailRequestWithError:(id)a4;
-- (void)lockupViewDidBeginRequest:(id)a3;
-- (void)lockupViewDidFinishRequest:(id)a3;
-- (void)lockupViewFailed:(id)a3;
+- (void)lockupView:(id)view appStateDidChange:(id)change;
+- (void)lockupView:(id)view didFailRequestWithError:(id)error;
+- (void)lockupViewDidBeginRequest:(id)request;
+- (void)lockupViewDidFinishRequest:(id)request;
+- (void)lockupViewFailed:(id)failed;
 - (void)openButtonAction;
 - (void)updateConstraints;
 @end
 
 @implementation PSUIAppInstallLockupViewCell
 
-- (PSUIAppInstallLockupViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (PSUIAppInstallLockupViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
   v39 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  specifierCopy = specifier;
   v28.receiver = self;
   v28.super_class = PSUIAppInstallLockupViewCell;
-  v9 = [(PSTableCell *)&v28 initWithStyle:a3 reuseIdentifier:a4 specifier:v8];
+  v9 = [(PSTableCell *)&v28 initWithStyle:style reuseIdentifier:identifier specifier:specifierCopy];
   if (v9)
   {
-    v10 = [v8 propertyForKey:@"PSUIAppOpenURL"];
+    v10 = [specifierCopy propertyForKey:@"PSUIAppOpenURL"];
     openAppURL = v9->_openAppURL;
     v9->_openAppURL = v10;
 
-    v12 = [v8 propertyForKey:@"PSUIAppId"];
+    v12 = [specifierCopy propertyForKey:@"PSUIAppId"];
     appId = v9->_appId;
     v9->_appId = v12;
 
-    v14 = [v8 propertyForKey:@"PSUIAnalyticsEventForApp"];
+    v14 = [specifierCopy propertyForKey:@"PSUIAnalyticsEventForApp"];
     analyticsEventForApp = v9->_analyticsEventForApp;
     v9->_analyticsEventForApp = v14;
 
-    v16 = [v8 propertyForKey:@"PSUIAnalyticsEventDetailsCode"];
+    v16 = [specifierCopy propertyForKey:@"PSUIAnalyticsEventDetailsCode"];
     analyticsEventDetailsCode = v9->_analyticsEventDetailsCode;
     v9->_analyticsEventDetailsCode = v16;
 
-    v18 = [v8 propertyForKey:@"PSUIAnalyticsEventDetailsSubCode"];
+    v18 = [specifierCopy propertyForKey:@"PSUIAnalyticsEventDetailsSubCode"];
     analyticsEventDetailsSubCode = v9->_analyticsEventDetailsSubCode;
     v9->_analyticsEventDetailsSubCode = v18;
 
@@ -53,8 +53,8 @@
     }
 
     [(PSUIAppInstallLockupViewCell *)v9 _setupView];
-    v21 = [(PSUIAppInstallLockupViewCell *)v9 getLogger];
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+    getLogger = [(PSUIAppInstallLockupViewCell *)v9 getLogger];
+    if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
     {
       v22 = v9->_appId;
       v23 = v9->_analyticsEventForApp;
@@ -70,7 +70,7 @@
       v36 = v24;
       v37 = 2112;
       v38 = v25;
-      _os_log_impl(&dword_2658DE000, v21, OS_LOG_TYPE_DEFAULT, "%s appId:%@ AnalyticsEvent:[%@, Code=%@, SubCode=%@]", buf, 0x34u);
+      _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s appId:%@ AnalyticsEvent:[%@, Code=%@, SubCode=%@]", buf, 0x34u);
     }
   }
 
@@ -85,40 +85,40 @@
   [(PSTableCell *)&v14 layoutSubviews];
   [(PSUIAppInstallLockupViewCell *)self setNeedsUpdateConstraints];
   [(PSTableCell *)self setCellEnabled:1];
-  v3 = [(PSUIAppInstallLockupViewCell *)self contentView];
-  [v3 bounds];
+  contentView = [(PSUIAppInstallLockupViewCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(PSUIAppInstallLockupViewCell *)self lockupView];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  lockupView = [(PSUIAppInstallLockupViewCell *)self lockupView];
+  [lockupView setFrame:{v5, v7, v9, v11}];
 
-  v13 = [(PSUIAppInstallLockupViewCell *)self lockupView];
-  [v13 setLayoutMargins:{8.0, 15.0, 8.0, 12.0}];
+  lockupView2 = [(PSUIAppInstallLockupViewCell *)self lockupView];
+  [lockupView2 setLayoutMargins:{8.0, 15.0, 8.0, 12.0}];
 }
 
 - (void)updateConstraints
 {
   v22[3] = *MEMORY[0x277D85DE8];
   v14 = MEMORY[0x277CCAAD0];
-  v20 = [(PSUIAppInstallLockupViewCell *)self contentView];
-  v18 = [v20 leadingAnchor];
-  v19 = [(PSUIAppInstallLockupViewCell *)self lockupView];
-  v17 = [v19 leadingAnchor];
-  v16 = [v18 constraintEqualToAnchor:v17];
+  contentView = [(PSUIAppInstallLockupViewCell *)self contentView];
+  leadingAnchor = [contentView leadingAnchor];
+  lockupView = [(PSUIAppInstallLockupViewCell *)self lockupView];
+  leadingAnchor2 = [lockupView leadingAnchor];
+  v16 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v22[0] = v16;
-  v15 = [(PSUIAppInstallLockupViewCell *)self contentView];
-  v13 = [v15 trailingAnchor];
-  v3 = [(PSUIAppInstallLockupViewCell *)self lockupView];
-  v4 = [v3 trailingAnchor];
-  v5 = [v13 constraintEqualToAnchor:v4];
+  contentView2 = [(PSUIAppInstallLockupViewCell *)self contentView];
+  trailingAnchor = [contentView2 trailingAnchor];
+  lockupView2 = [(PSUIAppInstallLockupViewCell *)self lockupView];
+  trailingAnchor2 = [lockupView2 trailingAnchor];
+  v5 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v22[1] = v5;
-  v6 = [(PSUIAppInstallLockupViewCell *)self contentView];
-  v7 = [v6 topAnchor];
-  v8 = [(PSUIAppInstallLockupViewCell *)self lockupView];
-  v9 = [v8 topAnchor];
-  v10 = [v7 constraintEqualToAnchor:v9];
+  contentView3 = [(PSUIAppInstallLockupViewCell *)self contentView];
+  topAnchor = [contentView3 topAnchor];
+  lockupView3 = [(PSUIAppInstallLockupViewCell *)self lockupView];
+  topAnchor2 = [lockupView3 topAnchor];
+  v10 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v22[2] = v10;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:3];
   [v14 activateConstraints:v11];
@@ -129,12 +129,12 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(PSUIAppInstallLockupViewCell *)self lockupView];
-  [v5 sizeThatFits:{width, height}];
+  height = fits.height;
+  width = fits.width;
+  lockupView = [(PSUIAppInstallLockupViewCell *)self lockupView];
+  [lockupView sizeThatFits:{width, height}];
   v7 = v6;
   v9 = v8;
 
@@ -151,25 +151,25 @@
   v4 = [v3 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [(PSUIAppInstallLockupViewCell *)self setLockupView:v4];
 
-  v5 = [(PSUIAppInstallLockupViewCell *)self lockupView];
-  [v5 setDelegate:self];
+  lockupView = [(PSUIAppInstallLockupViewCell *)self lockupView];
+  [lockupView setDelegate:self];
 
-  v6 = [(PSUIAppInstallLockupViewCell *)self lockupView];
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+  lockupView2 = [(PSUIAppInstallLockupViewCell *)self lockupView];
+  [lockupView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v7 = *MEMORY[0x277CEC248];
-  v8 = [(PSUIAppInstallLockupViewCell *)self lockupView];
-  [v8 setLockupSize:v7];
+  lockupView3 = [(PSUIAppInstallLockupViewCell *)self lockupView];
+  [lockupView3 setLockupSize:v7];
 
   v14 = [objc_alloc(MEMORY[0x277CEC258]) initWithStringValue:self->_appId];
   v9 = objc_alloc(MEMORY[0x277CEC290]);
   v10 = [v9 _initWithID:v14 kind:*MEMORY[0x277CEC230] context:*MEMORY[0x277CEC218] clientID:@"SettingsView"];
-  v11 = [(PSUIAppInstallLockupViewCell *)self lockupView];
-  [v11 setRequest:v10];
+  lockupView4 = [(PSUIAppInstallLockupViewCell *)self lockupView];
+  [lockupView4 setRequest:v10];
 
-  v12 = [(PSUIAppInstallLockupViewCell *)self contentView];
-  v13 = [(PSUIAppInstallLockupViewCell *)self lockupView];
-  [v12 addSubview:v13];
+  contentView = [(PSUIAppInstallLockupViewCell *)self contentView];
+  lockupView5 = [(PSUIAppInstallLockupViewCell *)self lockupView];
+  [contentView addSubview:lockupView5];
 
   [(PSUIAppInstallLockupViewCell *)self layoutSubviews];
 }
@@ -179,29 +179,29 @@
   v27 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBEBC0];
   openAppURL = self->_openAppURL;
-  v5 = [MEMORY[0x277CCA900] URLQueryAllowedCharacterSet];
-  v6 = [(NSString *)openAppURL stringByAddingPercentEncodingWithAllowedCharacters:v5];
+  uRLQueryAllowedCharacterSet = [MEMORY[0x277CCA900] URLQueryAllowedCharacterSet];
+  v6 = [(NSString *)openAppURL stringByAddingPercentEncodingWithAllowedCharacters:uRLQueryAllowedCharacterSet];
   v7 = [v3 URLWithString:v6];
 
-  v8 = [(PSUIAppInstallLockupViewCell *)self getLogger];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUIAppInstallLockupViewCell *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v24 = "[PSUIAppInstallLockupViewCell openButtonAction]";
     v25 = 2112;
     v26 = v7;
-    _os_log_impl(&dword_2658DE000, v8, OS_LOG_TYPE_DEFAULT, "%s for URL: %@", buf, 0x16u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s for URL: %@", buf, 0x16u);
   }
 
-  v9 = [MEMORY[0x277D75128] sharedApplication];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
   v15 = MEMORY[0x277D85DD0];
   v16 = 3221225472;
   v17 = __48__PSUIAppInstallLockupViewCell_openButtonAction__block_invoke;
   v18 = &unk_279BAA7F8;
-  v19 = self;
+  selfCopy = self;
   v10 = v7;
   v20 = v10;
-  [v9 openURL:v10 options:MEMORY[0x277CBEC10] completionHandler:&v15];
+  [mEMORY[0x277D75128] openURL:v10 options:MEMORY[0x277CBEC10] completionHandler:&v15];
 
   analyticsEventForApp = self->_analyticsEventForApp;
   if (analyticsEventForApp)
@@ -213,7 +213,7 @@
     v22[1] = analyticsEventDetailsCode;
     v21[2] = 0x287739A38;
     v22[2] = self->_analyticsEventDetailsSubCode;
-    v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:v21 count:{3, v15, v16, v17, v18, v19}];
+    v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:v21 count:{3, v15, v16, v17, v18, selfCopy}];
     PSAnalyticsSendEvent_0(analyticsEventForApp, v13);
   }
 
@@ -241,8 +241,8 @@ void __48__PSUIAppInstallLockupViewCell_openButtonAction__block_invoke(uint64_t 
 - (void)installButtonAction
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(PSUIAppInstallLockupViewCell *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUIAppInstallLockupViewCell *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     appId = self->_appId;
     *buf = 136315650;
@@ -251,7 +251,7 @@ void __48__PSUIAppInstallLockupViewCell_openButtonAction__block_invoke(uint64_t 
     v14 = appId;
     v15 = 1024;
     v16 = installButtonAction_installStarted;
-    _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "%s appId:%@ installStarted=%d", buf, 0x1Cu);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s appId:%@ installStarted=%d", buf, 0x1Cu);
   }
 
   analyticsEventForApp = self->_analyticsEventForApp;
@@ -272,76 +272,76 @@ void __48__PSUIAppInstallLockupViewCell_openButtonAction__block_invoke(uint64_t 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)lockupViewFailed:(id)a3
+- (void)lockupViewFailed:(id)failed
 {
   v4 = *MEMORY[0x277D3FCE0];
-  v5 = a3;
+  failedCopy = failed;
   WeakRetained = objc_loadWeakRetained((&self->super.super.super.super.super.isa + v4));
-  [WeakRetained handleLockupViewFailure:v5];
+  [WeakRetained handleLockupViewFailure:failedCopy];
 }
 
-- (void)lockupViewDidBeginRequest:(id)a3
+- (void)lockupViewDidBeginRequest:(id)request
 {
   v7 = *MEMORY[0x277D85DE8];
-  v3 = [(PSUIAppInstallLockupViewCell *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUIAppInstallLockupViewCell *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 136315138;
     v6 = "[PSUIAppInstallLockupViewCell lockupViewDidBeginRequest:]";
-    _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "%s", &v5, 0xCu);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s", &v5, 0xCu);
   }
 
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)lockupViewDidFinishRequest:(id)a3
+- (void)lockupViewDidFinishRequest:(id)request
 {
   v7 = *MEMORY[0x277D85DE8];
-  v3 = [(PSUIAppInstallLockupViewCell *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUIAppInstallLockupViewCell *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 136315138;
     v6 = "[PSUIAppInstallLockupViewCell lockupViewDidFinishRequest:]";
-    _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "%s", &v5, 0xCu);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s", &v5, 0xCu);
   }
 
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)lockupView:(id)a3 didFailRequestWithError:(id)a4
+- (void)lockupView:(id)view didFailRequestWithError:(id)error
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [(PSUIAppInstallLockupViewCell *)self getLogger];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  errorCopy = error;
+  getLogger = [(PSUIAppInstallLockupViewCell *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315394;
     v9 = "[PSUIAppInstallLockupViewCell lockupView:didFailRequestWithError:]";
     v10 = 2112;
-    v11 = v5;
-    _os_log_impl(&dword_2658DE000, v6, OS_LOG_TYPE_DEFAULT, "%s with error: %@", &v8, 0x16u);
+    v11 = errorCopy;
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s with error: %@", &v8, 0x16u);
   }
 
-  [(PSUIAppInstallLockupViewCell *)self lockupViewFailed:v5];
+  [(PSUIAppInstallLockupViewCell *)self lockupViewFailed:errorCopy];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)lockupView:(id)a3 appStateDidChange:(id)a4
+- (void)lockupView:(id)view appStateDidChange:(id)change
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PSUIAppInstallLockupViewCell *)self getLogger];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  viewCopy = view;
+  changeCopy = change;
+  getLogger = [(PSUIAppInstallLockupViewCell *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v20 = "[PSUIAppInstallLockupViewCell lockupView:appStateDidChange:]";
     v21 = 2112;
-    v22 = v7;
-    _os_log_impl(&dword_2658DE000, v8, OS_LOG_TYPE_DEFAULT, "%s %@", buf, 0x16u);
+    v22 = changeCopy;
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s %@", buf, 0x16u);
   }
 
-  if (([v7 isEqual:*MEMORY[0x277CEC1A0]] & 1) != 0 || objc_msgSend(v7, "isEqual:", *MEMORY[0x277CEC1A8]))
+  if (([changeCopy isEqual:*MEMORY[0x277CEC1A0]] & 1) != 0 || objc_msgSend(changeCopy, "isEqual:", *MEMORY[0x277CEC1A8]))
   {
     v9 = MEMORY[0x277CEC2B0];
     v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -355,12 +355,12 @@ void __48__PSUIAppInstallLockupViewCell_openButtonAction__block_invoke(uint64_t 
     v18[3] = &unk_279BA9D58;
     v18[4] = self;
     v14 = [v13 initWithMetadata:v12 action:v18];
-    v15 = [v6 lockup];
-    v16 = [v15 lockupWithOffer:v14];
-    [v6 setLockup:v16];
+    lockup = [viewCopy lockup];
+    v16 = [lockup lockupWithOffer:v14];
+    [viewCopy setLockup:v16];
   }
 
-  else if ([v7 isEqual:*MEMORY[0x277CEC198]])
+  else if ([changeCopy isEqual:*MEMORY[0x277CEC198]])
   {
     [(PSUIAppInstallLockupViewCell *)self installButtonAction];
   }
@@ -368,15 +368,15 @@ void __48__PSUIAppInstallLockupViewCell_openButtonAction__block_invoke(uint64_t 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)presentingViewControllerForLockupView:(id)a3
+- (id)presentingViewControllerForLockupView:(id)view
 {
   v8 = *MEMORY[0x277D85DE8];
-  v3 = [(PSUIAppInstallLockupViewCell *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUIAppInstallLockupViewCell *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 136315138;
     v7 = "[PSUIAppInstallLockupViewCell presentingViewControllerForLockupView:]";
-    _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "%s", &v6, 0xCu);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s", &v6, 0xCu);
   }
 
   v4 = *MEMORY[0x277D85DE8];

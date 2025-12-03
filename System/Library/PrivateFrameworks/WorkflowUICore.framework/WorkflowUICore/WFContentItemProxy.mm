@@ -1,6 +1,6 @@
 @interface WFContentItemProxy
 + (id)previewRetrievalQueue;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)previewItemTitle;
 - (NSURL)previewItemURL;
 - (WFContentItem)item;
@@ -24,15 +24,15 @@
   return WeakRetained;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = [(WFContentItemProxy *)self file];
-    v6 = [v4 file];
-    v7 = v5;
-    v8 = v6;
+    file = [(WFContentItemProxy *)self file];
+    file2 = [equalCopy file];
+    v7 = file;
+    v8 = file2;
     v9 = v8;
     if (v7 == v8)
     {
@@ -59,52 +59,52 @@
 
 - (unint64_t)hash
 {
-  v2 = [(WFContentItemProxy *)self file];
-  v3 = [v2 hash];
+  file = [(WFContentItemProxy *)self file];
+  v3 = [file hash];
 
   return v3;
 }
 
 - (NSString)previewItemTitle
 {
-  v2 = [(WFContentItemProxy *)self item];
-  v3 = [v2 name];
+  item = [(WFContentItemProxy *)self item];
+  name = [item name];
 
-  return v3;
+  return name;
 }
 
 - (NSURL)previewItemURL
 {
-  v3 = [(WFContentItemProxy *)self file];
+  file = [(WFContentItemProxy *)self file];
 
-  if (!v3)
+  if (!file)
   {
-    v4 = [MEMORY[0x277CBEB68] null];
-    [(WFContentItemProxy *)self setFile:v4];
+    null = [MEMORY[0x277CBEB68] null];
+    [(WFContentItemProxy *)self setFile:null];
 
-    v5 = [objc_opt_class() previewRetrievalQueue];
+    previewRetrievalQueue = [objc_opt_class() previewRetrievalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __36__WFContentItemProxy_previewItemURL__block_invoke;
     block[3] = &unk_279EF5240;
     block[4] = self;
-    dispatch_async(v5, block);
+    dispatch_async(previewRetrievalQueue, block);
   }
 
-  v6 = [(WFContentItemProxy *)self file];
+  file2 = [(WFContentItemProxy *)self file];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = 0;
+    fileURL = 0;
   }
 
   else
   {
-    v8 = [(WFContentItemProxy *)self file];
-    v7 = [v8 fileURL];
+    file3 = [(WFContentItemProxy *)self file];
+    fileURL = [file3 fileURL];
   }
 
-  return v7;
+  return fileURL;
 }
 
 void __36__WFContentItemProxy_previewItemURL__block_invoke(uint64_t a1)

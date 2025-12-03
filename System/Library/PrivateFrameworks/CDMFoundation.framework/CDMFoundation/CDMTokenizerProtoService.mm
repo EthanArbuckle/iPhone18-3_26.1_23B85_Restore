@@ -1,10 +1,10 @@
 @interface CDMTokenizerProtoService
-+ (id)createProtoTokenRequestWithAsrOutputs:(id)a3 locale:(id)a4;
-+ (id)createProtoTokenRequestWithText:(id)a3 locale:(id)a4;
-+ (id)tokenChainFromProto:(id)a3;
-- (id)handle:(id)a3;
++ (id)createProtoTokenRequestWithAsrOutputs:(id)outputs locale:(id)locale;
++ (id)createProtoTokenRequestWithText:(id)text locale:(id)locale;
++ (id)tokenChainFromProto:(id)proto;
+- (id)handle:(id)handle;
 - (id)handleRequestCommandTypeNames;
-- (id)setup:(id)a3;
+- (id)setup:(id)setup;
 @end
 
 @implementation CDMTokenizerProtoService
@@ -23,25 +23,25 @@
   return v5;
 }
 
-+ (id)tokenChainFromProto:(id)a3
++ (id)tokenChainFromProto:(id)proto
 {
-  v3 = a3;
-  v4 = [[CDMTokenChain alloc] initWithProtoTokenChain:v3];
+  protoCopy = proto;
+  v4 = [[CDMTokenChain alloc] initWithProtoTokenChain:protoCopy];
 
   return v4;
 }
 
-+ (id)createProtoTokenRequestWithAsrOutputs:(id)a3 locale:(id)a4
++ (id)createProtoTokenRequestWithAsrOutputs:(id)outputs locale:(id)locale
 {
   v48 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  outputsCopy = outputs;
+  localeCopy = locale;
   v36 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  obj = v5;
+  obj = outputsCopy;
   v7 = [obj countByEnumeratingWithState:&v37 objects:v47 count:16];
   if (v7)
   {
@@ -67,7 +67,7 @@
         v17 = CDMOSLoggerForCategory(0);
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
         {
-          v25 = [v13 utterance];
+          utterance = [v13 utterance];
           *buf = v34;
           v42 = "+[CDMTokenizerProtoService createProtoTokenRequestWithAsrOutputs:locale:]";
           v43 = 1024;
@@ -75,19 +75,19 @@
           *&v44[4] = 2112;
           *&v44[6] = v16;
           v45 = 2112;
-          v46 = v25;
+          v46 = utterance;
           _os_log_debug_impl(&dword_1DC287000, v17, OS_LOG_TYPE_DEBUG, "%s ASR #%d: Processing asr.UUID=%@, asr.utterance=%@", buf, 0x26u);
         }
 
-        v18 = [v13 utterance];
-        v19 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-        v20 = [v18 stringByTrimmingCharactersInSet:v19];
+        utterance2 = [v13 utterance];
+        whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+        v20 = [utterance2 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
         if ([v20 length])
         {
           v21 = objc_alloc_init(MEMORY[0x1E69D13C0]);
           [v21 setText:v20];
-          [v21 setLocale:v6];
+          [v21 setLocale:localeCopy];
           v22 = [v13 idA];
           [v21 setAsrId:v22];
 
@@ -106,7 +106,7 @@
           }
 
           [v36 addObject:v21];
-          v24 = [CDMUserDefaultsUtils readAsrAlternativeCount:v6];
+          v24 = [CDMUserDefaultsUtils readAsrAlternativeCount:localeCopy];
           if (v11 >= v24)
           {
             v27 = v24;
@@ -133,7 +133,7 @@
           v21 = CDMOSLoggerForCategory(0);
           if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
           {
-            v26 = [v13 utterance];
+            utterance3 = [v13 utterance];
             *buf = v34;
             v42 = "+[CDMTokenizerProtoService createProtoTokenRequestWithAsrOutputs:locale:]";
             v43 = 1024;
@@ -141,7 +141,7 @@
             *&v44[4] = 2112;
             *&v44[6] = v16;
             v45 = 2112;
-            v46 = v26;
+            v46 = utterance3;
             _os_log_debug_impl(&dword_1DC287000, v21, OS_LOG_TYPE_DEBUG, "%s ASR #%d: Skipping trimmed empty version of asr.UUID=%@, asr.utterance=%@", buf, 0x26u);
           }
         }
@@ -176,24 +176,24 @@ LABEL_21:
   return v30;
 }
 
-+ (id)createProtoTokenRequestWithText:(id)a3 locale:(id)a4
++ (id)createProtoTokenRequestWithText:(id)text locale:(id)locale
 {
   v5 = MEMORY[0x1E69D13C0];
-  v6 = a4;
-  v7 = a3;
+  localeCopy = locale;
+  textCopy = text;
   v8 = objc_alloc_init(v5);
-  [v8 setText:v7];
+  [v8 setText:textCopy];
 
-  [v8 setLocale:v6];
+  [v8 setLocale:localeCopy];
   v9 = [[CDMTokenizationProtoRequestCommand alloc] initWithRequest:v8];
 
   return v9;
 }
 
-- (id)setup:(id)a3
+- (id)setup:(id)setup
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  setupCopy = setup;
   v5 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -202,16 +202,16 @@ LABEL_21:
     _os_log_impl(&dword_1DC287000, v5, OS_LOG_TYPE_INFO, "%s Tokenization Service setup started", &v19, 0xCu);
   }
 
-  v6 = [v4 dynamicConfig];
-  v7 = [v6 languageCode];
-  v8 = [CDMTokenizer tokenizerForLocale:v7];
+  dynamicConfig = [setupCopy dynamicConfig];
+  languageCode = [dynamicConfig languageCode];
+  v8 = [CDMTokenizer tokenizerForLocale:languageCode];
   tokenizer = self->_tokenizer;
   self->_tokenizer = v8;
 
-  v10 = [v4 dataDispatcherContext];
+  dataDispatcherContext = [setupCopy dataDispatcherContext];
 
   dataDispatcherContext = self->_dataDispatcherContext;
-  self->_dataDispatcherContext = v10;
+  self->_dataDispatcherContext = dataDispatcherContext;
 
   v12 = self->_tokenizer;
   v13 = CDMOSLoggerForCategory(0);
@@ -226,7 +226,7 @@ LABEL_21:
     }
 
     self->super.super._serviceState = 2;
-    v15 = [(CDMBaseService *)self createSetupResponseCommand];
+    createSetupResponseCommand = [(CDMBaseService *)self createSetupResponseCommand];
   }
 
   else
@@ -239,35 +239,35 @@ LABEL_21:
     }
 
     self->super.super._serviceState = 3;
-    v15 = [(CDMBaseService *)self createSetupResponseCommand];
+    createSetupResponseCommand = [(CDMBaseService *)self createSetupResponseCommand];
     v16 = [(CDMBaseService *)self createErrorWithCode:1 description:@"Tokenizer nil"];
-    [v15 setCmdError:v16];
+    [createSetupResponseCommand setCmdError:v16];
   }
 
   v17 = *MEMORY[0x1E69E9840];
 
-  return v15;
+  return createSetupResponseCommand;
 }
 
-- (id)handle:(id)a3
+- (id)handle:(id)handle
 {
   v70 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handleCopy = handle;
   if (self->super.super._serviceState == 2)
   {
-    v5 = [(CDMDataDispatcherContext *)self->_dataDispatcherContext cdmSELFLoggingPolicyType];
+    cdmSELFLoggingPolicyType = [(CDMDataDispatcherContext *)self->_dataDispatcherContext cdmSELFLoggingPolicyType];
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v56 = 0u;
     v57 = 0u;
     v58 = 0u;
     v59 = 0u;
-    v42 = v4;
-    obj = [v4 requests];
+    v42 = handleCopy;
+    obj = [handleCopy requests];
     v47 = [obj countByEnumeratingWithState:&v56 objects:v69 count:16];
     if (v47)
     {
       v46 = *v57;
-      v44 = self;
+      selfCopy = self;
       v45 = v6;
       do
       {
@@ -285,28 +285,28 @@ LABEL_21:
             v50 = v7;
             tokenizer = self->_tokenizer;
             v51 = *(*(&v56 + 1) + 8 * v7);
-            v10 = [v8 text];
-            v11 = [(CDMTokenizer *)tokenizer createTokenChain:v10];
+            text = [v8 text];
+            v11 = [(CDMTokenizer *)tokenizer createTokenChain:text];
 
             v12 = objc_alloc_init(MEMORY[0x1E69D13D8]);
-            v13 = [v11 string];
-            [v12 setStringValue:v13];
+            string = [v11 string];
+            [v12 setStringValue:string];
 
-            v14 = [v11 locale];
+            locale = [v11 locale];
             v48 = v12;
-            [v12 setLocale:v14];
+            [v12 setLocale:locale];
 
             v15 = MEMORY[0x1E695DF70];
-            v16 = [v11 tokens];
-            v17 = [v15 arrayWithCapacity:{objc_msgSend(v16, "count")}];
+            tokens = [v11 tokens];
+            v17 = [v15 arrayWithCapacity:{objc_msgSend(tokens, "count")}];
 
             v54 = 0u;
             v55 = 0u;
             v52 = 0u;
             v53 = 0u;
             v49 = v11;
-            v18 = [v11 tokens];
-            v19 = [v18 countByEnumeratingWithState:&v52 objects:v68 count:16];
+            tokens2 = [v11 tokens];
+            v19 = [tokens2 countByEnumeratingWithState:&v52 objects:v68 count:16];
             if (v19)
             {
               v20 = v19;
@@ -318,35 +318,35 @@ LABEL_21:
                 {
                   if (*v53 != v21)
                   {
-                    objc_enumerationMutation(v18);
+                    objc_enumerationMutation(tokens2);
                   }
 
                   v23 = *(*(&v52 + 1) + 8 * v22);
                   v24 = objc_alloc_init(MEMORY[0x1E69D13D0]);
-                  v25 = [v23 value];
-                  [v24 setValue:v25];
+                  value = [v23 value];
+                  [v24 setValue:value];
 
                   [v24 setBegin:{objc_msgSend(v23, "begin")}];
                   [v24 setEnd:{objc_msgSend(v23, "end")}];
                   [v24 setIsSignificant:{objc_msgSend(v23, "isSignificant")}];
                   [v24 setIsWhitespace:{objc_msgSend(v23, "isWhiteSpace")}];
-                  v26 = [v23 cleanValue];
-                  [v24 setCleanValue:v26];
+                  cleanValue = [v23 cleanValue];
+                  [v24 setCleanValue:cleanValue];
 
-                  v27 = [v23 cleanValues];
-                  v28 = [v27 mutableCopy];
+                  cleanValues = [v23 cleanValues];
+                  v28 = [cleanValues mutableCopy];
                   [v24 setCleanValues:v28];
 
                   [v24 setTokenIndex:{objc_msgSend(v23, "tokenIndex")}];
                   [v24 setNonWhitespaceTokenIndex:{objc_msgSend(v23, "nonWhitespaceTokenIndex")}];
-                  v29 = [v23 normalizedValues];
-                  v30 = [v29 mutableCopy];
+                  normalizedValues = [v23 normalizedValues];
+                  v30 = [normalizedValues mutableCopy];
                   [v24 setNormalizedValues:v30];
 
                   [v17 addObject:v24];
                   v31 = CDMLogContext;
                   v32 = os_log_type_enabled(CDMLogContext, OS_LOG_TYPE_DEBUG);
-                  if (v5 == 2)
+                  if (cdmSELFLoggingPolicyType == 2)
                   {
                     if (v32)
                     {
@@ -361,13 +361,13 @@ LABEL_21:
                   else if (v32)
                   {
                     v33 = v31;
-                    v34 = [v51 asrId];
+                    asrId = [v51 asrId];
                     *buf = 136315907;
                     v61 = "[CDMTokenizerProtoService handle:]";
                     v62 = 2112;
                     v63 = @"tokenize";
                     v64 = 2112;
-                    v65 = v34;
+                    v65 = asrId;
                     v66 = 2117;
                     v67 = v24;
                     _os_log_debug_impl(&dword_1DC287000, v33, OS_LOG_TYPE_DEBUG, "%s [insights-cdm-%@]:\nAdded token for asrId=%@.\nToken = %{sensitive}@", buf, 0x2Au);
@@ -377,7 +377,7 @@ LABEL_21:
                 }
 
                 while (v20 != v22);
-                v20 = [v18 countByEnumeratingWithState:&v52 objects:v68 count:16];
+                v20 = [tokens2 countByEnumeratingWithState:&v52 objects:v68 count:16];
               }
 
               while (v20);
@@ -385,17 +385,17 @@ LABEL_21:
 
             [v48 setTokens:v17];
             v35 = objc_alloc_init(MEMORY[0x1E69D13C8]);
-            v36 = [v51 text];
-            [v35 setText:v36];
+            text2 = [v51 text];
+            [v35 setText:text2];
 
             [v35 setTokenChain:v48];
-            v37 = [v51 asrId];
-            [v35 setAsrId:v37];
+            asrId2 = [v51 asrId];
+            [v35 setAsrId:asrId2];
 
             v6 = v45;
             [v45 addObject:v35];
 
-            self = v44;
+            self = selfCopy;
             v38 = v49;
             v7 = v50;
           }
@@ -422,7 +422,7 @@ LABEL_21:
     }
 
     v39 = [[CDMTokenizationProtoResponseCommand alloc] initWithResponses:v6];
-    v4 = v42;
+    handleCopy = v42;
   }
 
   else

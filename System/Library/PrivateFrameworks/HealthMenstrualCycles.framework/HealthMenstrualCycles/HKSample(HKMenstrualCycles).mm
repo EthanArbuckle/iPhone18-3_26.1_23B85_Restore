@@ -24,30 +24,30 @@
 
 - (uint64_t)hkmc_wasEnteredFromCycleTracking
 {
-  v1 = [a1 metadata];
-  v2 = [v1 objectForKeyedSubscript:*MEMORY[0x277CCE148]];
-  v3 = [v2 BOOLValue];
+  metadata = [self metadata];
+  v2 = [metadata objectForKeyedSubscript:*MEMORY[0x277CCE148]];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (uint64_t)hkmc_isNotPresentSymptom
 {
-  v2 = [a1 sampleType];
-  v3 = [v2 code];
+  sampleType = [self sampleType];
+  code = [sampleType code];
 
-  if ((v3 - 157) <= 0xE)
+  if ((code - 157) <= 0xE)
   {
-    if (((1 << (v3 + 99)) & 0x4F7F) == 0)
+    if (((1 << (code + 99)) & 0x4F7F) == 0)
     {
-      v4 = a1;
+      selfCopy2 = self;
       goto LABEL_6;
     }
 
 LABEL_5:
-    v4 = a1;
+    selfCopy2 = self;
 LABEL_6:
-    result = [v4 value];
+    result = [selfCopy2 value];
     if (result == 1)
     {
       return result;
@@ -56,7 +56,7 @@ LABEL_6:
     return 0;
   }
 
-  if ((v3 - 229) < 7)
+  if ((code - 229) < 7)
   {
     goto LABEL_5;
   }
@@ -66,27 +66,27 @@ LABEL_6:
 
 - (uint64_t)hkmc_isCycleFactorSample
 {
-  v2 = [a1 sampleType];
-  v3 = [v2 identifier];
-  if ([v3 isEqualToString:*MEMORY[0x277CCB9F0]])
+  sampleType = [self sampleType];
+  identifier = [sampleType identifier];
+  if ([identifier isEqualToString:*MEMORY[0x277CCB9F0]])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [a1 sampleType];
-    v6 = [v5 identifier];
-    if ([v6 isEqualToString:*MEMORY[0x277CCBA68]])
+    sampleType2 = [self sampleType];
+    identifier2 = [sampleType2 identifier];
+    if ([identifier2 isEqualToString:*MEMORY[0x277CCBA68]])
     {
       v4 = 1;
     }
 
     else
     {
-      v7 = [a1 sampleType];
-      v8 = [v7 identifier];
-      v4 = [v8 isEqualToString:*MEMORY[0x277CCB938]];
+      sampleType3 = [self sampleType];
+      identifier3 = [sampleType3 identifier];
+      v4 = [identifier3 isEqualToString:*MEMORY[0x277CCB938]];
     }
   }
 
@@ -95,9 +95,9 @@ LABEL_6:
 
 - (uint64_t)hkmc_isSleepDependentSample
 {
-  v1 = [a1 sampleType];
-  v2 = [v1 identifier];
-  v3 = [v2 isEqualToString:*MEMORY[0x277CCC938]];
+  sampleType = [self sampleType];
+  identifier = [sampleType identifier];
+  v3 = [identifier isEqualToString:*MEMORY[0x277CCC938]];
 
   return v3;
 }

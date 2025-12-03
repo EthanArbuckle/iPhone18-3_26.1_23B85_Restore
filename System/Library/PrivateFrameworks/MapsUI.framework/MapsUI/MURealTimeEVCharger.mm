@@ -1,19 +1,19 @@
 @interface MURealTimeEVCharger
-- (MURealTimeEVCharger)initWithAvailable:(unint64_t)a3 total:(unint64_t)a4 status:(int)a5;
+- (MURealTimeEVCharger)initWithAvailable:(unint64_t)available total:(unint64_t)total status:(int)status;
 @end
 
 @implementation MURealTimeEVCharger
 
-- (MURealTimeEVCharger)initWithAvailable:(unint64_t)a3 total:(unint64_t)a4 status:(int)a5
+- (MURealTimeEVCharger)initWithAvailable:(unint64_t)available total:(unint64_t)total status:(int)status
 {
   v9.receiver = self;
   v9.super_class = MURealTimeEVCharger;
   result = [(MURealTimeEVCharger *)&v9 init];
   if (result)
   {
-    result->_status = a5;
-    result->_total = a4;
-    result->_available = a3;
+    result->_status = status;
+    result->_total = total;
+    result->_available = available;
   }
 
   return result;

@@ -1,11 +1,11 @@
 @interface VNFaceBBoxAligner
 + (id)configurationOptionKeysForDetectorKey;
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4;
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4;
-- (BOOL)createRegionOfInterestCrop:(CGRect)a3 options:(id)a4 qosClass:(unsigned int)a5 warningRecorder:(id)a6 pixelBuffer:(__CVBuffer *)a7 error:(id *)a8 progressHandler:(id)a9;
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error;
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error;
+- (BOOL)createRegionOfInterestCrop:(CGRect)crop options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder pixelBuffer:(__CVBuffer *)buffer error:(id *)error progressHandler:(id)handler;
 - (id).cxx_construct;
-- (id)internalProcessUsingQualityOfServiceClass:(unsigned int)a3 options:(id)a4 regionOfInterest:(CGRect)a5 warningRecorder:(id)a6 error:(id *)a7 progressHandler:(id)a8;
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9;
+- (id)internalProcessUsingQualityOfServiceClass:(unsigned int)class options:(id)options regionOfInterest:(CGRect)interest warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler;
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler;
 - (void)dealloc;
 @end
 
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = __58__VNFaceBBoxAligner_configurationOptionKeysForDetectorKey__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[VNFaceBBoxAligner configurationOptionKeysForDetectorKey]::onceToken != -1)
   {
     dispatch_once(&+[VNFaceBBoxAligner configurationOptionKeysForDetectorKey]::onceToken, block);
@@ -41,11 +41,11 @@ void __58__VNFaceBBoxAligner_configurationOptionKeysForDetectorKey__block_invoke
   +[VNFaceBBoxAligner configurationOptionKeysForDetectorKey]::configurationOptionKeys = v3;
 }
 
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v7 = @"VNComputeStageMain";
-  v4 = [VNComputeDeviceUtilities allCPUComputeDevices:a3];
+  v4 = [VNComputeDeviceUtilities allCPUComputeDevices:options];
   v8[0] = v4;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
 
@@ -59,38 +59,38 @@ void __58__VNFaceBBoxAligner_configurationOptionKeysForDetectorKey__block_invoke
   return self;
 }
 
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler
 {
   v187 = *MEMORY[0x1E69E9840];
   __p = 0;
   v171 = 0;
   v172 = 0;
-  v142 = a5;
-  BaseAddress = CVPixelBufferGetBaseAddress(a4);
-  Height = CVPixelBufferGetHeight(a4);
-  Width = CVPixelBufferGetWidth(a4);
-  BytesPerRow = CVPixelBufferGetBytesPerRow(a4);
-  v14 = [v142 objectForKeyedSubscript:@"VNFaceBBoxAlignerProcessOption_FaceRawBoxInImageCoordinates_X"];
+  optionsCopy = options;
+  BaseAddress = CVPixelBufferGetBaseAddress(buffer);
+  Height = CVPixelBufferGetHeight(buffer);
+  Width = CVPixelBufferGetWidth(buffer);
+  BytesPerRow = CVPixelBufferGetBytesPerRow(buffer);
+  v14 = [optionsCopy objectForKeyedSubscript:@"VNFaceBBoxAlignerProcessOption_FaceRawBoxInImageCoordinates_X"];
   [v14 doubleValue];
-  v15 = [v142 objectForKeyedSubscript:@"VNFaceBBoxAlignerProcessOption_FaceRawBoxInImageCoordinates_Y"];
+  v15 = [optionsCopy objectForKeyedSubscript:@"VNFaceBBoxAlignerProcessOption_FaceRawBoxInImageCoordinates_Y"];
   [v15 doubleValue];
-  v16 = [v142 objectForKeyedSubscript:@"VNFaceBBoxAlignerProcessOption_FaceRawBoxInImageCoordinates_Width"];
+  v16 = [optionsCopy objectForKeyedSubscript:@"VNFaceBBoxAlignerProcessOption_FaceRawBoxInImageCoordinates_Width"];
   [v16 doubleValue];
   v164 = v17;
-  v18 = [v142 objectForKeyedSubscript:@"VNFaceBBoxAlignerProcessOption_FaceRawBoxInImageCoordinates_Height"];
+  v18 = [optionsCopy objectForKeyedSubscript:@"VNFaceBBoxAlignerProcessOption_FaceRawBoxInImageCoordinates_Height"];
   [v18 doubleValue];
   v160 = v19;
 
-  v20 = [v142 objectForKeyedSubscript:@"VNFaceBBoxAlignerProcessOption_FaceRawBoxInImageCoordinatesMagnified_X"];
+  v20 = [optionsCopy objectForKeyedSubscript:@"VNFaceBBoxAlignerProcessOption_FaceRawBoxInImageCoordinatesMagnified_X"];
   [v20 doubleValue];
   v22 = v21;
-  v23 = [v142 objectForKeyedSubscript:@"VNFaceBBoxAlignerProcessOption_FaceRawBoxInImageCoordinatesMagnified_Y"];
+  v23 = [optionsCopy objectForKeyedSubscript:@"VNFaceBBoxAlignerProcessOption_FaceRawBoxInImageCoordinatesMagnified_Y"];
   [v23 doubleValue];
   v25 = v24;
-  v26 = [v142 objectForKeyedSubscript:@"VNFaceBBoxAlignerProcessOption_FaceRawBoxInImageCoordinatesMagnified_Width"];
+  v26 = [optionsCopy objectForKeyedSubscript:@"VNFaceBBoxAlignerProcessOption_FaceRawBoxInImageCoordinatesMagnified_Width"];
   [v26 doubleValue];
   v158 = v27;
-  v28 = [v142 objectForKeyedSubscript:@"VNFaceBBoxAlignerProcessOption_FaceRawBoxInImageCoordinatesMagnified_Height"];
+  v28 = [optionsCopy objectForKeyedSubscript:@"VNFaceBBoxAlignerProcessOption_FaceRawBoxInImageCoordinatesMagnified_Height"];
   [v28 doubleValue];
   v155 = v29;
   v140 = v25;
@@ -414,27 +414,27 @@ LABEL_43:
   operator delete(v110);
   v122 = v167;
   std::vector<long long>::__assign_with_size[abi:ne200100]<long long *,long long *>(&__p, v167, v168, (v168 - v167) >> 3);
-  v123 = VNCloneFaceObservationFromOptions(v142, a8);
+  v123 = VNCloneFaceObservationFromOptions(optionsCopy, error);
   if (v123)
   {
     v124 = objc_alloc(MEMORY[0x1E695DEF0]);
     v125 = [v124 initWithBytes:__p length:v171 - __p];
     [v123 setAlignedMeanShape:v125];
 
-    v126 = [(VNDetector *)self validatedImageBufferFromOptions:v142 error:a8];
+    v126 = [(VNDetector *)self validatedImageBufferFromOptions:optionsCopy error:error];
     v127 = v126;
     if (v126)
     {
-      v128 = [v126 width];
-      v129 = [v127 height];
+      width = [v126 width];
+      height = [v127 height];
       HIDWORD(v131) = HIDWORD(v140);
       HIDWORD(v130) = HIDWORD(v141);
       v132 = v141;
-      *&v130 = (v163 + v132) / v128;
+      *&v130 = (v163 + v132) / width;
       v133 = v140;
-      *&v131 = (v166 + v133) / v129;
-      *&v134 = v93 / v128;
-      *&v135 = v100 / v129;
+      *&v131 = (v166 + v133) / height;
+      *&v134 = v93 / width;
+      *&v135 = v100 / height;
       [v123 setAlignedBoundingBox:{v130, v131, v135, v134}];
       *&v136 = v157;
       [v123 setAlignedRotationAngle:v136];
@@ -470,39 +470,39 @@ LABEL_43:
   return v138;
 }
 
-- (BOOL)createRegionOfInterestCrop:(CGRect)a3 options:(id)a4 qosClass:(unsigned int)a5 warningRecorder:(id)a6 pixelBuffer:(__CVBuffer *)a7 error:(id *)a8 progressHandler:(id)a9
+- (BOOL)createRegionOfInterestCrop:(CGRect)crop options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder pixelBuffer:(__CVBuffer *)buffer error:(id *)error progressHandler:(id)handler
 {
-  v12 = a4;
-  v13 = [(VNDetector *)self validatedImageBufferFromOptions:v12 error:a8];
+  optionsCopy = options;
+  v13 = [(VNDetector *)self validatedImageBufferFromOptions:optionsCopy error:error];
   if (v13)
   {
-    v14 = [VNValidationUtilities requiredFaceObservationInOptions:v12 error:a8];
+    v14 = [VNValidationUtilities requiredFaceObservationInOptions:optionsCopy error:error];
     v15 = v14;
-    if (v14 && ([v14 boundingBox], v17 = v16, v19 = v18, v21 = v20, v23 = v22, v24 = objc_msgSend(v13, "width"), v25 = objc_msgSend(v13, "height"), v26 = v17 * v24, v27 = v21 * v24, v28 = v19 * v25, v29 = v23 * v25, v47.origin.x = v26, v47.origin.y = v28, v47.size.width = v27, v47.size.height = v29, v48 = CGRectInset(v47, v27 * -0.5, v29 * -0.5), x = v48.origin.x, y = v48.origin.y, width = v48.size.width, height = v48.size.height, v46 = -1, (objc_msgSend(v15, "getFaceEXIFOrientation:error:", &v46, a8) & 1) != 0) && (objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", v46), v34 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "setObject:forKeyedSubscript:", v34, @"VNImageBufferOption_FeatureOrientationRelativeToUpRight"), v34, v35 = objc_msgSend(v13, "croppedBufferWithWidth:height:format:cropRect:options:error:", width, height, 1278226488, v12, a8, x, y, width, height), (*a7 = v35) != 0))
+    if (v14 && ([v14 boundingBox], v17 = v16, v19 = v18, v21 = v20, v23 = v22, v24 = objc_msgSend(v13, "width"), v25 = objc_msgSend(v13, "height"), v26 = v17 * v24, v27 = v21 * v24, v28 = v19 * v25, v29 = v23 * v25, v47.origin.x = v26, v47.origin.y = v28, v47.size.width = v27, v47.size.height = v29, v48 = CGRectInset(v47, v27 * -0.5, v29 * -0.5), x = v48.origin.x, y = v48.origin.y, width = v48.size.width, height = v48.size.height, v46 = -1, (objc_msgSend(v15, "getFaceEXIFOrientation:error:", &v46, error) & 1) != 0) && (objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", v46), v34 = objc_claimAutoreleasedReturnValue(), objc_msgSend(optionsCopy, "setObject:forKeyedSubscript:", v34, @"VNImageBufferOption_FeatureOrientationRelativeToUpRight"), v34, v35 = objc_msgSend(v13, "croppedBufferWithWidth:height:format:cropRect:options:error:", width, height, 1278226488, optionsCopy, error, x, y, width, height), (*buffer = v35) != 0))
     {
       v36 = [MEMORY[0x1E696AD98] numberWithDouble:v26];
-      [v12 setObject:v36 forKeyedSubscript:@"VNFaceBBoxAlignerProcessOption_FaceRawBoxInImageCoordinates_X"];
+      [optionsCopy setObject:v36 forKeyedSubscript:@"VNFaceBBoxAlignerProcessOption_FaceRawBoxInImageCoordinates_X"];
 
       v37 = [MEMORY[0x1E696AD98] numberWithDouble:v28];
-      [v12 setObject:v37 forKeyedSubscript:@"VNFaceBBoxAlignerProcessOption_FaceRawBoxInImageCoordinates_Y"];
+      [optionsCopy setObject:v37 forKeyedSubscript:@"VNFaceBBoxAlignerProcessOption_FaceRawBoxInImageCoordinates_Y"];
 
       v38 = [MEMORY[0x1E696AD98] numberWithDouble:v27];
-      [v12 setObject:v38 forKeyedSubscript:@"VNFaceBBoxAlignerProcessOption_FaceRawBoxInImageCoordinates_Width"];
+      [optionsCopy setObject:v38 forKeyedSubscript:@"VNFaceBBoxAlignerProcessOption_FaceRawBoxInImageCoordinates_Width"];
 
       v39 = [MEMORY[0x1E696AD98] numberWithDouble:v29];
-      [v12 setObject:v39 forKeyedSubscript:@"VNFaceBBoxAlignerProcessOption_FaceRawBoxInImageCoordinates_Height"];
+      [optionsCopy setObject:v39 forKeyedSubscript:@"VNFaceBBoxAlignerProcessOption_FaceRawBoxInImageCoordinates_Height"];
 
       v40 = [MEMORY[0x1E696AD98] numberWithDouble:x];
-      [v12 setObject:v40 forKeyedSubscript:@"VNFaceBBoxAlignerProcessOption_FaceRawBoxInImageCoordinatesMagnified_X"];
+      [optionsCopy setObject:v40 forKeyedSubscript:@"VNFaceBBoxAlignerProcessOption_FaceRawBoxInImageCoordinatesMagnified_X"];
 
       v41 = [MEMORY[0x1E696AD98] numberWithDouble:y];
-      [v12 setObject:v41 forKeyedSubscript:@"VNFaceBBoxAlignerProcessOption_FaceRawBoxInImageCoordinatesMagnified_Y"];
+      [optionsCopy setObject:v41 forKeyedSubscript:@"VNFaceBBoxAlignerProcessOption_FaceRawBoxInImageCoordinatesMagnified_Y"];
 
       v42 = [MEMORY[0x1E696AD98] numberWithDouble:width];
-      [v12 setObject:v42 forKeyedSubscript:@"VNFaceBBoxAlignerProcessOption_FaceRawBoxInImageCoordinatesMagnified_Width"];
+      [optionsCopy setObject:v42 forKeyedSubscript:@"VNFaceBBoxAlignerProcessOption_FaceRawBoxInImageCoordinatesMagnified_Width"];
 
       v43 = [MEMORY[0x1E696AD98] numberWithDouble:height];
-      [v12 setObject:v43 forKeyedSubscript:@"VNFaceBBoxAlignerProcessOption_FaceRawBoxInImageCoordinatesMagnified_Height"];
+      [optionsCopy setObject:v43 forKeyedSubscript:@"VNFaceBBoxAlignerProcessOption_FaceRawBoxInImageCoordinatesMagnified_Height"];
 
       v44 = 1;
     }
@@ -521,34 +521,34 @@ LABEL_43:
   return v44;
 }
 
-- (id)internalProcessUsingQualityOfServiceClass:(unsigned int)a3 options:(id)a4 regionOfInterest:(CGRect)a5 warningRecorder:(id)a6 error:(id *)a7 progressHandler:(id)a8
+- (id)internalProcessUsingQualityOfServiceClass:(unsigned int)class options:(id)options regionOfInterest:(CGRect)interest warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v15 = *&a3;
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
+  v15 = *&class;
   v27[1] = *MEMORY[0x1E69E9840];
-  v17 = a4;
-  v18 = a6;
-  v19 = a8;
-  v20 = [VNValidationUtilities requiredFaceObservationInOptions:v17 error:a7];
+  optionsCopy = options;
+  recorderCopy = recorder;
+  handlerCopy = handler;
+  v20 = [VNValidationUtilities requiredFaceObservationInOptions:optionsCopy error:error];
   v21 = v20;
   if (v20)
   {
     if ([v20 isBoundingBoxAligned])
     {
-      v22 = VNCloneFaceObservationFromOptions(v17, a7);
+      v22 = VNCloneFaceObservationFromOptions(optionsCopy, error);
       v23 = v22;
       if (v22)
       {
         v27[0] = v22;
-        v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:1];
+        height = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:1];
       }
 
       else
       {
-        v24 = 0;
+        height = 0;
       }
     }
 
@@ -556,16 +556,16 @@ LABEL_43:
     {
       v26.receiver = self;
       v26.super_class = VNFaceBBoxAligner;
-      v24 = [(VNDetector *)&v26 internalProcessUsingQualityOfServiceClass:v15 options:v17 regionOfInterest:v18 warningRecorder:a7 error:v19 progressHandler:x, y, width, height];
+      height = [(VNDetector *)&v26 internalProcessUsingQualityOfServiceClass:v15 options:optionsCopy regionOfInterest:recorderCopy warningRecorder:error error:handlerCopy progressHandler:x, y, width, height];
     }
   }
 
   else
   {
-    v24 = 0;
+    height = 0;
   }
 
-  return v24;
+  return height;
 }
 
 - (void)dealloc
@@ -582,11 +582,11 @@ LABEL_43:
   [(VNDetector *)&v5 dealloc];
 }
 
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error
 {
   v13.receiver = self;
   v13.super_class = VNFaceBBoxAligner;
-  if (![(VNDetector *)&v13 completeInitializationForSession:a3 error:?])
+  if (![(VNDetector *)&v13 completeInitializationForSession:session error:?])
   {
     return 0;
   }
@@ -601,7 +601,7 @@ LABEL_43:
   v12 = v6;
   v7 = v6;
   v8 = _Block_copy(v11);
-  v9 = VNExecuteBlock(v8, a4);
+  v9 = VNExecuteBlock(v8, error);
 
   return v9;
 }

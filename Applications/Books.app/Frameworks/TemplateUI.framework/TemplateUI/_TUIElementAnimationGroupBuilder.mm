@@ -1,14 +1,14 @@
 @interface _TUIElementAnimationGroupBuilder
 - (id)finalizeAnimationGroup;
-- (void)addAnimationGroupPhase:(id)a3 withName:(id)a4;
+- (void)addAnimationGroupPhase:(id)phase withName:(id)name;
 @end
 
 @implementation _TUIElementAnimationGroupBuilder
 
-- (void)addAnimationGroupPhase:(id)a3 withName:(id)a4
+- (void)addAnimationGroupPhase:(id)phase withName:(id)name
 {
-  v10 = a3;
-  v6 = a4;
+  phaseCopy = phase;
+  nameCopy = name;
   phases = self->_phases;
   if (!phases)
   {
@@ -19,7 +19,7 @@
     phases = self->_phases;
   }
 
-  [(NSMutableDictionary *)phases setObject:v10 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)phases setObject:phaseCopy forKeyedSubscript:nameCopy];
 }
 
 - (id)finalizeAnimationGroup

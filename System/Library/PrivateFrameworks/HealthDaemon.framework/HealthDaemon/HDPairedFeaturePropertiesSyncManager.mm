@@ -1,43 +1,43 @@
 @interface HDPairedFeaturePropertiesSyncManager
 - (HDAllowedCountriesDataSourceObserver)delegate;
-- (HDPairedFeaturePropertiesSyncManager)initWithFeatureIdentifier:(id)a3 localFeatureAttributes:(id)a4 localCountrySetAvailabilityProvider:(id)a5;
-- (HDPairedFeaturePropertiesSyncManager)initWithFeatureIdentifier:(id)a3 localFeatureAttributes:(id)a4 localCountrySetAvailabilityProvider:(id)a5 activeRemoteReadSourceProvider:(id)a6 remoteReadSourceForDeviceProvider:(id)a7 localWriteSource:(id)a8;
+- (HDPairedFeaturePropertiesSyncManager)initWithFeatureIdentifier:(id)identifier localFeatureAttributes:(id)attributes localCountrySetAvailabilityProvider:(id)provider;
+- (HDPairedFeaturePropertiesSyncManager)initWithFeatureIdentifier:(id)identifier localFeatureAttributes:(id)attributes localCountrySetAvailabilityProvider:(id)provider activeRemoteReadSourceProvider:(id)sourceProvider remoteReadSourceForDeviceProvider:(id)deviceProvider localWriteSource:(id)source;
 - (HKCountrySet)activeRemoteCountrySet;
 - (HKPairedFeatureAttributes)currentPairedFeatureAttributes;
-- (id)pairedFeatureAttributesForPairedDevice:(id)a3;
-- (id)remoteCountrySetForDevice:(id)a3;
+- (id)pairedFeatureAttributesForPairedDevice:(id)device;
+- (id)remoteCountrySetForDevice:(id)device;
 - (void)dealloc;
-- (void)regionAvailabilityProvidingDidUpdate:(id)a3;
+- (void)regionAvailabilityProvidingDidUpdate:(id)update;
 - (void)synchronizeLocalProperties;
 @end
 
 @implementation HDPairedFeaturePropertiesSyncManager
 
-- (HDPairedFeaturePropertiesSyncManager)initWithFeatureIdentifier:(id)a3 localFeatureAttributes:(id)a4 localCountrySetAvailabilityProvider:(id)a5
+- (HDPairedFeaturePropertiesSyncManager)initWithFeatureIdentifier:(id)identifier localFeatureAttributes:(id)attributes localCountrySetAvailabilityProvider:(id)provider
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = HKLocalFeaturePropertiesDefaultsDomainForFeatureIdentifier(v10);
+  providerCopy = provider;
+  attributesCopy = attributes;
+  identifierCopy = identifier;
+  v11 = HKLocalFeaturePropertiesDefaultsDomainForFeatureIdentifier(identifierCopy);
   v12 = MEMORY[0x277CCDD30];
   v13 = v11;
-  v14 = [v12 sharedBehavior];
-  v15 = [v14 isAppleWatch];
+  sharedBehavior = [v12 sharedBehavior];
+  isAppleWatch = [sharedBehavior isAppleWatch];
 
-  if (v15)
+  if (isAppleWatch)
   {
     v16 = [_HDDeferredFeaturePropertiesWriting alloc];
-    v17 = [MEMORY[0x277D2BCF8] sharedInstance];
-    v18 = [(_HDDeferredFeaturePropertiesWriting *)v16 initWithLocalDomain:v13 pairedDeviceRegistry:v17];
+    mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+    v18 = [(_HDDeferredFeaturePropertiesWriting *)v16 initWithLocalDomain:v13 pairedDeviceRegistry:mEMORY[0x277D2BCF8]];
   }
 
   else
   {
     v18 = [[_HDFeaturePropertiesWriting alloc] initWithLocalDomain:v13];
-    v17 = v13;
+    mEMORY[0x277D2BCF8] = v13;
   }
 
-  v19 = [(HDPairedFeaturePropertiesSyncManager *)self initWithFeatureIdentifier:v10 localFeatureAttributes:v9 localCountrySetAvailabilityProvider:v8 activeRemoteReadSourceProvider:&__block_literal_global_155 remoteReadSourceForDeviceProvider:&__block_literal_global_393 localWriteSource:v18];
+  v19 = [(HDPairedFeaturePropertiesSyncManager *)self initWithFeatureIdentifier:identifierCopy localFeatureAttributes:attributesCopy localCountrySetAvailabilityProvider:providerCopy activeRemoteReadSourceProvider:&__block_literal_global_155 remoteReadSourceForDeviceProvider:&__block_literal_global_393 localWriteSource:v18];
   return v19;
 }
 
@@ -105,43 +105,43 @@ id __125__HDPairedFeaturePropertiesSyncManager_initWithFeatureIdentifier_localFe
   return v9;
 }
 
-- (HDPairedFeaturePropertiesSyncManager)initWithFeatureIdentifier:(id)a3 localFeatureAttributes:(id)a4 localCountrySetAvailabilityProvider:(id)a5 activeRemoteReadSourceProvider:(id)a6 remoteReadSourceForDeviceProvider:(id)a7 localWriteSource:(id)a8
+- (HDPairedFeaturePropertiesSyncManager)initWithFeatureIdentifier:(id)identifier localFeatureAttributes:(id)attributes localCountrySetAvailabilityProvider:(id)provider activeRemoteReadSourceProvider:(id)sourceProvider remoteReadSourceForDeviceProvider:(id)deviceProvider localWriteSource:(id)source
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  identifierCopy = identifier;
+  attributesCopy = attributes;
+  providerCopy = provider;
+  sourceProviderCopy = sourceProvider;
+  deviceProviderCopy = deviceProvider;
+  sourceCopy = source;
   v36.receiver = self;
   v36.super_class = HDPairedFeaturePropertiesSyncManager;
   v20 = [(HDPairedFeaturePropertiesSyncManager *)&v36 init];
   if (v20)
   {
-    v35 = v16;
-    v21 = [v14 copy];
+    v35 = providerCopy;
+    v21 = [identifierCopy copy];
     featureIdentifier = v20->_featureIdentifier;
     v20->_featureIdentifier = v21;
 
-    v23 = [v15 copy];
+    v23 = [attributesCopy copy];
     localFeatureAttributes = v20->_localFeatureAttributes;
     v20->_localFeatureAttributes = v23;
 
-    objc_storeStrong(&v20->_localCountrySetAvailabilityProvider, a5);
-    v25 = _Block_copy(v17);
+    objc_storeStrong(&v20->_localCountrySetAvailabilityProvider, provider);
+    v25 = _Block_copy(sourceProviderCopy);
     activeRemoteReadSourceProvider = v20->_activeRemoteReadSourceProvider;
     v20->_activeRemoteReadSourceProvider = v25;
 
-    v27 = _Block_copy(v18);
+    v27 = _Block_copy(deviceProviderCopy);
     remoteReadSourceForDeviceProvider = v20->_remoteReadSourceForDeviceProvider;
     v20->_remoteReadSourceForDeviceProvider = v27;
 
-    objc_storeStrong(&v20->_localWriteSource, a8);
+    objc_storeStrong(&v20->_localWriteSource, source);
     v20->_nanoPreferencesSyncChangeNotificationToken = -1;
     objc_initWeak(&location, v20);
     v29 = v20->_featureIdentifier;
     v30 = HKFeaturePropertiesChangeNotificationForFeatureIdentifier();
-    v31 = [v30 UTF8String];
+    uTF8String = [v30 UTF8String];
     v32 = MEMORY[0x277D85CD0];
     v33 = MEMORY[0x277D85CD0];
     handler[0] = MEMORY[0x277D85DD0];
@@ -149,12 +149,12 @@ id __125__HDPairedFeaturePropertiesSyncManager_initWithFeatureIdentifier_localFe
     handler[2] = __89__HDPairedFeaturePropertiesSyncManager__registerForNanoPreferencesSyncChangeNotification__block_invoke;
     handler[3] = &unk_278613BF0;
     objc_copyWeak(&v38, &location);
-    notify_register_dispatch(v31, &v20->_nanoPreferencesSyncChangeNotificationToken, v32, handler);
+    notify_register_dispatch(uTF8String, &v20->_nanoPreferencesSyncChangeNotificationToken, v32, handler);
 
     objc_destroyWeak(&v38);
     objc_destroyWeak(&location);
     [(HDLocalCountrySetAvailabilityProvider *)v20->_localCountrySetAvailabilityProvider setDelegate:v20];
-    v16 = v35;
+    providerCopy = v35;
   }
 
   return v20;
@@ -187,8 +187,8 @@ id __125__HDPairedFeaturePropertiesSyncManager_initWithFeatureIdentifier_localFe
   v12[4] = self;
   [v3 enumerateKeysAndObjectsUsingBlock:v12];
 
-  v4 = [(HDLocalCountrySetAvailabilityProvider *)self->_localCountrySetAvailabilityProvider countrySet];
-  v5 = NSDictionaryPreferencesSyncRepresentationForHKCountrySet(v4);
+  countrySet = [(HDLocalCountrySetAvailabilityProvider *)self->_localCountrySetAvailabilityProvider countrySet];
+  v5 = NSDictionaryPreferencesSyncRepresentationForHKCountrySet(countrySet);
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __66__HDPairedFeaturePropertiesSyncManager_synchronizeLocalProperties__block_invoke_2;
@@ -224,10 +224,10 @@ id __125__HDPairedFeaturePropertiesSyncManager_initWithFeatureIdentifier_localFe
   return v6;
 }
 
-- (id)pairedFeatureAttributesForPairedDevice:(id)a3
+- (id)pairedFeatureAttributesForPairedDevice:(id)device
 {
   featureIdentifier = self->_featureIdentifier;
-  v5 = a3;
+  deviceCopy = device;
   v6 = HKRemoteFeaturePropertiesDefaultsDomainForFeatureIdentifier(featureIdentifier);
   v7 = (*(self->_remoteReadSourceForDeviceProvider + 2))();
 
@@ -246,10 +246,10 @@ id __125__HDPairedFeaturePropertiesSyncManager_initWithFeatureIdentifier_localFe
   return v5;
 }
 
-- (id)remoteCountrySetForDevice:(id)a3
+- (id)remoteCountrySetForDevice:(id)device
 {
   featureIdentifier = self->_featureIdentifier;
-  v5 = a3;
+  deviceCopy = device;
   v6 = HKRemoteFeaturePropertiesDefaultsDomainForFeatureIdentifier(featureIdentifier);
   v7 = (*(self->_remoteReadSourceForDeviceProvider + 2))();
 
@@ -285,7 +285,7 @@ void __89__HDPairedFeaturePropertiesSyncManager__registerForNanoPreferencesSyncC
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)regionAvailabilityProvidingDidUpdate:(id)a3
+- (void)regionAvailabilityProvidingDidUpdate:(id)update
 {
   v14 = *MEMORY[0x277D85DE8];
   _HKInitializeLogging();

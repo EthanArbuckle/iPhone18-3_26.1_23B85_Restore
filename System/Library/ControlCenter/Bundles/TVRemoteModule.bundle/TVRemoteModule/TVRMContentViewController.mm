@@ -2,7 +2,7 @@
 - (BOOL)canDismissPresentedContent;
 - (BOOL)shouldFinishTransitionToExpandedContentModule;
 - (BOOL)shouldLaunchAsViewService;
-- (CGAffineTransform)_defaultScaledTransformForSize:(SEL)a3;
+- (CGAffineTransform)_defaultScaledTransformForSize:(SEL)size;
 - (CGSize)transitionSize;
 - (UIViewPropertyAnimator)customAnimator;
 - (double)preferredExpandedContentHeight;
@@ -10,28 +10,28 @@
 - (id)title;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)_createRemoteControlViewControllerIfNeeded;
-- (void)_dismissChildViewControllersPresentedContentAnimated:(BOOL)a3 completion:(id)a4;
+- (void)_dismissChildViewControllersPresentedContentAnimated:(BOOL)animated completion:(id)completion;
 - (void)_prewarm;
-- (void)_remoteLaunchedAsViewService:(id)a3;
+- (void)_remoteLaunchedAsViewService:(id)service;
 - (void)_requestLaunchAsViewService;
 - (void)_startRemoteControlViewController;
 - (void)_stopRemoteControlViewController;
-- (void)buttonTapped:(id)a3 forEvent:(id)a4;
-- (void)dismissPresentedContentAnimated:(BOOL)a3 completion:(id)a4;
+- (void)buttonTapped:(id)tapped forEvent:(id)event;
+- (void)dismissPresentedContentAnimated:(BOOL)animated completion:(id)completion;
 - (void)displayWillTurnOff;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willTransitionToExpandedContentMode:(BOOL)a3;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willTransitionToExpandedContentMode:(BOOL)mode;
 @end
 
 @implementation TVRMContentViewController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = TVRMContentViewController;
-  [(TVRMContentViewController *)&v4 viewWillAppear:a3];
+  [(TVRMContentViewController *)&v4 viewWillAppear:appear];
   [(TVRMContentViewController *)self _prewarm];
 }
 
@@ -42,41 +42,41 @@
   [(CCUIButtonModuleViewController *)&v23 viewWillLayoutSubviews];
   if ([(CCUIButtonModuleViewController *)self isExpanded])
   {
-    v3 = [(CCUIButtonModuleViewController *)self buttonView];
-    [v3 setAlpha:0.0];
+    buttonView = [(CCUIButtonModuleViewController *)self buttonView];
+    [buttonView setAlpha:0.0];
 
-    v4 = [(TVRMContentViewController *)self remoteControlViewController];
-    v5 = [v4 view];
-    [v5 setAlpha:1.0];
+    remoteControlViewController = [(TVRMContentViewController *)self remoteControlViewController];
+    view = [remoteControlViewController view];
+    [view setAlpha:1.0];
 
     +[TVRMDeviceInfo expandedRoundedCornerRadius];
   }
 
   else
   {
-    v7 = [(TVRMContentViewController *)self remoteControlViewController];
-    v8 = [v7 view];
-    [v8 setAlpha:0.0];
+    remoteControlViewController2 = [(TVRMContentViewController *)self remoteControlViewController];
+    view2 = [remoteControlViewController2 view];
+    [view2 setAlpha:0.0];
 
-    v9 = [(CCUIButtonModuleViewController *)self buttonView];
-    [v9 setAlpha:1.0];
+    buttonView2 = [(CCUIButtonModuleViewController *)self buttonView];
+    [buttonView2 setAlpha:1.0];
 
     [(CCUIButtonModuleViewController *)self compactContinuousCornerRadius];
   }
 
   v10 = v6;
-  v11 = [(TVRMContentViewController *)self remoteControlViewController];
-  [v11 setBackgroundCornerRadius:v10];
+  remoteControlViewController3 = [(TVRMContentViewController *)self remoteControlViewController];
+  [remoteControlViewController3 setBackgroundCornerRadius:v10];
 
-  v12 = [(TVRMContentViewController *)self view];
-  [v12 bounds];
+  view3 = [(TVRMContentViewController *)self view];
+  [view3 bounds];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  v21 = [(TVRMContentViewController *)self remoteControlViewController];
-  v22 = [v21 view];
-  [v22 setFrame:{v14, v16, v18, v20}];
+  remoteControlViewController4 = [(TVRMContentViewController *)self remoteControlViewController];
+  view4 = [remoteControlViewController4 view];
+  [view4 setFrame:{v14, v16, v18, v20}];
 }
 
 - (id)title
@@ -89,8 +89,8 @@
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [(TVRMContentViewController *)self traitCollection];
-  if ([v2 userInterfaceIdiom] == 1)
+  traitCollection = [(TVRMContentViewController *)self traitCollection];
+  if ([traitCollection userInterfaceIdiom] == 1)
   {
     v3 = 30;
   }
@@ -103,19 +103,19 @@
   return v3;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v24 = *MEMORY[0x29EDCA608];
-  v7 = a4;
+  coordinatorCopy = coordinator;
   v20.receiver = self;
   v20.super_class = TVRMContentViewController;
-  [(TVRMContentViewController *)&v20 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(TVRMContentViewController *)&v20 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   [(TVRMContentViewController *)self setTransitionSize:width, height];
-  v8 = [(CCUIButtonModuleViewController *)self isExpanded];
-  v9 = [(CCUIButtonModuleViewController *)self buttonView];
-  [v9 setEnabled:!v8];
+  isExpanded = [(CCUIButtonModuleViewController *)self isExpanded];
+  buttonView = [(CCUIButtonModuleViewController *)self buttonView];
+  [buttonView setEnabled:!isExpanded];
 
   if (_AXSReduceMotionEnabled())
   {
@@ -139,12 +139,12 @@
     v17 = buf;
     v18 = v22;
     v19 = v23;
-    v11 = [(TVRMContentViewController *)self remoteControlViewController];
-    v12 = [v11 view];
+    remoteControlViewController = [(TVRMContentViewController *)self remoteControlViewController];
+    view = [remoteControlViewController view];
     v16[0] = v17;
     v16[1] = v18;
     v16[2] = v19;
-    [v12 setTransform:v16];
+    [view setTransform:v16];
   }
 
   v15[0] = MEMORY[0x29EDCA5F8];
@@ -152,7 +152,7 @@
   v15[2] = __80__TVRMContentViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v15[3] = &unk_29F33F040;
   v15[4] = self;
-  [v7 animateAlongsideTransition:v15 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v15 completion:0];
   v13 = _TVRMControlCenterLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
@@ -178,19 +178,19 @@ void __80__TVRMContentViewController_viewWillTransitionToSize_withTransitionCoor
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v12 = [(CCUIButtonModuleViewController *)self isExpanded];
+    isExpanded = [(CCUIButtonModuleViewController *)self isExpanded];
     _os_log_impl(&dword_29C9F3000, v3, OS_LOG_TYPE_DEFAULT, "Custom animator requested. expanded = %{BOOL}d", buf, 8u);
   }
 
   if ([(CCUIButtonModuleViewController *)self isExpanded])
   {
-    v4 = [MEMORY[0x29EDC6F30] standardSpringAnimator];
+    standardSpringAnimator = [MEMORY[0x29EDC6F30] standardSpringAnimator];
     v10[0] = MEMORY[0x29EDCA5F8];
     v10[1] = 3221225472;
     v10[2] = __43__TVRMContentViewController_customAnimator__block_invoke;
     v10[3] = &unk_29F33F068;
     v10[4] = self;
-    [v4 addAnimations:v10];
+    [standardSpringAnimator addAnimations:v10];
     v5 = _TVRMControlCenterLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
@@ -202,13 +202,13 @@ void __80__TVRMContentViewController_viewWillTransitionToSize_withTransitionCoor
   else
   {
     v6 = [objc_alloc(MEMORY[0x29EDC7C88]) initWithMass:3.0 stiffness:300.0 damping:55.0 initialVelocity:{10.0, 10.0}];
-    v4 = [objc_alloc(MEMORY[0x29EDC7DB0]) initWithDuration:v6 timingParameters:0.0];
+    standardSpringAnimator = [objc_alloc(MEMORY[0x29EDC7DB0]) initWithDuration:v6 timingParameters:0.0];
     v9[0] = MEMORY[0x29EDCA5F8];
     v9[1] = 3221225472;
     v9[2] = __43__TVRMContentViewController_customAnimator__block_invoke_17;
     v9[3] = &unk_29F33F068;
     v9[4] = self;
-    [v4 addAnimations:v9];
+    [standardSpringAnimator addAnimations:v9];
     v7 = _TVRMControlCenterLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
@@ -217,7 +217,7 @@ void __80__TVRMContentViewController_viewWillTransitionToSize_withTransitionCoor
     }
   }
 
-  return v4;
+  return standardSpringAnimator;
 }
 
 void __43__TVRMContentViewController_customAnimator__block_invoke(uint64_t a1)
@@ -281,68 +281,68 @@ void __43__TVRMContentViewController_customAnimator__block_invoke_17(uint64_t a1
 
 - (void)_createRemoteControlViewControllerIfNeeded
 {
-  v3 = [(TVRMContentViewController *)self remoteControlViewController];
+  remoteControlViewController = [(TVRMContentViewController *)self remoteControlViewController];
 
-  if (!v3)
+  if (!remoteControlViewController)
   {
     v4 = objc_alloc_init(MEMORY[0x29EDC6F38]);
     [(TVRMContentViewController *)self setHintsViewController:v4];
 
-    v5 = [(TVRMContentViewController *)self view];
-    [v5 bounds];
+    view = [(TVRMContentViewController *)self view];
+    [view bounds];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    v14 = [(TVRMContentViewController *)self hintsViewController];
-    v15 = [v14 view];
-    [v15 setFrame:{v7, v9, v11, v13}];
+    hintsViewController = [(TVRMContentViewController *)self hintsViewController];
+    view2 = [hintsViewController view];
+    [view2 setFrame:{v7, v9, v11, v13}];
 
-    v16 = [MEMORY[0x29EDC7A58] currentDevice];
-    v17 = [v16 userInterfaceIdiom] != 1;
+    currentDevice = [MEMORY[0x29EDC7A58] currentDevice];
+    v17 = [currentDevice userInterfaceIdiom] != 1;
 
-    v18 = [(TVRMContentViewController *)self hintsViewController];
-    [v18 setAllowSiriHint:v17];
+    hintsViewController2 = [(TVRMContentViewController *)self hintsViewController];
+    [hintsViewController2 setAllowSiriHint:v17];
 
-    v19 = [(TVRMContentViewController *)self hintsViewController];
-    [v19 setAllowVolumeHint:v17];
+    hintsViewController3 = [(TVRMContentViewController *)self hintsViewController];
+    [hintsViewController3 setAllowVolumeHint:v17];
 
-    v20 = [(TVRMContentViewController *)self hintsViewController];
-    [v20 setAllowTips:v17];
+    hintsViewController4 = [(TVRMContentViewController *)self hintsViewController];
+    [hintsViewController4 setAllowTips:v17];
 
     v21 = objc_alloc_init(MEMORY[0x29EDC6F40]);
     remoteControlViewController = self->_remoteControlViewController;
     self->_remoteControlViewController = v21;
 
-    v23 = [(TVRMContentViewController *)self hintsViewController];
-    [(TVRUIRemoteViewController *)self->_remoteControlViewController setDelegate:v23];
+    hintsViewController5 = [(TVRMContentViewController *)self hintsViewController];
+    [(TVRUIRemoteViewController *)self->_remoteControlViewController setDelegate:hintsViewController5];
 
-    v24 = [(TVRUIRemoteViewController *)self->_remoteControlViewController view];
-    [v24 setAlpha:0.0];
+    view3 = [(TVRUIRemoteViewController *)self->_remoteControlViewController view];
+    [view3 setAlpha:0.0];
 
     [(TVRMContentViewController *)self bs_addChildViewController:self->_remoteControlViewController];
-    v25 = [(TVRMContentViewController *)self hintsViewController];
-    [(TVRMContentViewController *)self bs_addChildViewController:v25];
+    hintsViewController6 = [(TVRMContentViewController *)self hintsViewController];
+    [(TVRMContentViewController *)self bs_addChildViewController:hintsViewController6];
 
-    v26 = [(TVRMContentViewController *)self view];
-    v27 = [(TVRMContentViewController *)self hintsViewController];
-    v28 = [v27 view];
-    [v26 bringSubviewToFront:v28];
+    view4 = [(TVRMContentViewController *)self view];
+    hintsViewController7 = [(TVRMContentViewController *)self hintsViewController];
+    view5 = [hintsViewController7 view];
+    [view4 bringSubviewToFront:view5];
 
     if (![(CCUIButtonModuleViewController *)self isExpanded])
     {
-      v29 = [(TVRMContentViewController *)self view];
-      [v29 bounds];
+      view6 = [(TVRMContentViewController *)self view];
+      [view6 bounds];
       [(TVRMContentViewController *)self _defaultScaledTransformForSize:v30, v31];
-      v32 = [(TVRMContentViewController *)self remoteControlViewController];
-      v33 = [v32 view];
+      remoteControlViewController2 = [(TVRMContentViewController *)self remoteControlViewController];
+      view7 = [remoteControlViewController2 view];
       v35[0] = v35[3];
       v35[1] = v35[4];
       v35[2] = v35[5];
-      [v33 setTransform:v35];
+      [view7 setTransform:v35];
 
-      v34 = [(TVRMContentViewController *)self view];
-      [v34 layoutIfNeeded];
+      view8 = [(TVRMContentViewController *)self view];
+      [view8 layoutIfNeeded];
     }
   }
 }
@@ -356,12 +356,12 @@ void __43__TVRMContentViewController_customAnimator__block_invoke_17(uint64_t a1
     _os_log_impl(&dword_29C9F3000, v3, OS_LOG_TYPE_DEFAULT, "Module requesting connections to start", v7, 2u);
   }
 
-  v4 = [(TVRMContentViewController *)self remoteControlViewController];
-  v5 = [(TVRMContentViewController *)self lastActiveEndpointIdentifier];
-  [v4 configureWithDeviceIdentifier:v5 identifierType:*MEMORY[0x29EDC6F58] deviceType:0 launchContext:1];
+  remoteControlViewController = [(TVRMContentViewController *)self remoteControlViewController];
+  lastActiveEndpointIdentifier = [(TVRMContentViewController *)self lastActiveEndpointIdentifier];
+  [remoteControlViewController configureWithDeviceIdentifier:lastActiveEndpointIdentifier identifierType:*MEMORY[0x29EDC6F58] deviceType:0 launchContext:1];
 
-  v6 = [(TVRMContentViewController *)self remoteControlViewController];
-  [v6 startConnections];
+  remoteControlViewController2 = [(TVRMContentViewController *)self remoteControlViewController];
+  [remoteControlViewController2 startConnections];
 
   [(TVRMContentViewController *)self setSystemInitiatedDismissal:0];
 }
@@ -377,30 +377,30 @@ void __43__TVRMContentViewController_customAnimator__block_invoke_17(uint64_t a1
     _os_log_impl(&dword_29C9F3000, v3, OS_LOG_TYPE_DEFAULT, "Module requesting connections to stop. systemInitiated %{BOOL}d", v9, 8u);
   }
 
-  v4 = [(TVRMContentViewController *)self hintsViewController];
-  [v4 dismissHints];
+  hintsViewController = [(TVRMContentViewController *)self hintsViewController];
+  [hintsViewController dismissHints];
 
   [(TVRMContentViewController *)self _dismissChildViewControllersPresentedContentAnimated:0 completion:0];
-  v5 = [(TVRMContentViewController *)self systemInitiatedDismissal];
-  v6 = [(TVRMContentViewController *)self remoteControlViewController];
-  v7 = v6;
-  if (v5)
+  systemInitiatedDismissal = [(TVRMContentViewController *)self systemInitiatedDismissal];
+  remoteControlViewController = [(TVRMContentViewController *)self remoteControlViewController];
+  v7 = remoteControlViewController;
+  if (systemInitiatedDismissal)
   {
-    [v6 _disconnectSystemInitiated];
+    [remoteControlViewController _disconnectSystemInitiated];
   }
 
   else
   {
-    [v6 _disconnectUserInitiated];
+    [remoteControlViewController _disconnectUserInitiated];
   }
 
-  v8 = [(TVRMContentViewController *)self remoteControlViewController];
-  [v8 stopConnections];
+  remoteControlViewController2 = [(TVRMContentViewController *)self remoteControlViewController];
+  [remoteControlViewController2 stopConnections];
 }
 
-- (void)buttonTapped:(id)a3 forEvent:(id)a4
+- (void)buttonTapped:(id)tapped forEvent:(id)event
 {
-  if ([(TVRMContentViewController *)self shouldLaunchAsViewService:a3])
+  if ([(TVRMContentViewController *)self shouldLaunchAsViewService:tapped])
   {
     v5 = _TVRMControlCenterLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -414,12 +414,12 @@ void __43__TVRMContentViewController_customAnimator__block_invoke_17(uint64_t a1
 
   else
   {
-    v6 = [MEMORY[0x29EDC7A58] currentDevice];
-    v7 = [v6 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x29EDC7A58] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
     v8 = _TVRMControlCenterLog();
     v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-    if (v7 == 1)
+    if (userInterfaceIdiom == 1)
     {
       if (v9)
       {
@@ -427,8 +427,8 @@ void __43__TVRMContentViewController_customAnimator__block_invoke_17(uint64_t a1
         _os_log_impl(&dword_29C9F3000, v8, OS_LOG_TYPE_DEFAULT, "Module button tapped so requesting module expansion", v11, 2u);
       }
 
-      v10 = [(TVRMContentViewController *)self contentModuleContext];
-      [v10 requestExpandModule];
+      contentModuleContext = [(TVRMContentViewController *)self contentModuleContext];
+      [contentModuleContext requestExpandModule];
     }
 
     else
@@ -439,20 +439,20 @@ void __43__TVRMContentViewController_customAnimator__block_invoke_17(uint64_t a1
         _os_log_impl(&dword_29C9F3000, v8, OS_LOG_TYPE_DEFAULT, "Module button tapped so requesting app launch", v12, 2u);
       }
 
-      v10 = [(TVRMContentViewController *)self contentModuleContext];
-      [v10 openApplication:@"com.apple.TVRemoteUIService" completionHandler:0];
+      contentModuleContext = [(TVRMContentViewController *)self contentModuleContext];
+      [contentModuleContext openApplication:@"com.apple.TVRemoteUIService" completionHandler:0];
     }
   }
 }
 
 - (double)preferredExpandedContentHeight
 {
-  v2 = [MEMORY[0x29EDC7A58] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x29EDC7A58] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   CCUIScreenBounds();
   Height = CGRectGetHeight(v8);
-  if (v3 == 1)
+  if (userInterfaceIdiom == 1)
   {
     +[TVRMDeviceInfo contentEdgeInsets];
     v6 = Height + v5 * -2.0;
@@ -472,10 +472,10 @@ void __43__TVRMContentViewController_customAnimator__block_invoke_17(uint64_t a1
 
 - (double)preferredExpandedContentWidth
 {
-  v2 = [MEMORY[0x29EDC7A58] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x29EDC7A58] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v3 == 1)
+  if (userInterfaceIdiom == 1)
   {
     return 375.0;
   }
@@ -511,12 +511,12 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v6 = [MEMORY[0x29EDC7A58] currentDevice];
-  v7 = [v6 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x29EDC7A58] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v4 = _TVRMControlCenterLog();
   v8 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (v7 != 1)
+  if (userInterfaceIdiom != 1)
   {
     if (v8)
     {
@@ -542,9 +542,9 @@ LABEL_14:
   return v9;
 }
 
-- (void)willTransitionToExpandedContentMode:(BOOL)a3
+- (void)willTransitionToExpandedContentMode:(BOOL)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   v12 = *MEMORY[0x29EDCA608];
   v5 = _TVRMControlCenterLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -552,11 +552,11 @@ LABEL_14:
     *buf = 136315394;
     v9 = "[TVRMContentViewController willTransitionToExpandedContentMode:]";
     v10 = 1024;
-    v11 = v3;
+    v11 = modeCopy;
     _os_log_impl(&dword_29C9F3000, v5, OS_LOG_TYPE_DEFAULT, "%s, expanded=%{BOOL}d", buf, 0x12u);
   }
 
-  if (v3)
+  if (modeCopy)
   {
     [(TVRMContentViewController *)self _createRemoteControlViewControllerIfNeeded];
     [(TVRMContentViewController *)self _startRemoteControlViewController];
@@ -565,13 +565,13 @@ LABEL_14:
   else
   {
     [(TVRMContentViewController *)self _stopRemoteControlViewController];
-    v6 = [(TVRMContentViewController *)self hintsViewController];
-    [v6 remoteWillBeDismissed];
+    hintsViewController = [(TVRMContentViewController *)self hintsViewController];
+    [hintsViewController remoteWillBeDismissed];
   }
 
   v7.receiver = self;
   v7.super_class = TVRMContentViewController;
-  [(CCUIButtonModuleViewController *)&v7 willTransitionToExpandedContentMode:v3];
+  [(CCUIButtonModuleViewController *)&v7 willTransitionToExpandedContentMode:modeCopy];
 }
 
 - (void)displayWillTurnOff
@@ -588,11 +588,11 @@ LABEL_14:
   }
 }
 
-- (void)_dismissChildViewControllersPresentedContentAnimated:(BOOL)a3 completion:(id)a4
+- (void)_dismissChildViewControllersPresentedContentAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
+  animatedCopy = animated;
   v15 = *MEMORY[0x29EDCA608];
-  v6 = a4;
+  completionCopy = completion;
   v7 = _TVRMControlCenterLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -601,16 +601,16 @@ LABEL_14:
     _os_log_impl(&dword_29C9F3000, v7, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  v8 = [(TVRMContentViewController *)self hintsViewController];
+  hintsViewController = [(TVRMContentViewController *)self hintsViewController];
   v10[0] = MEMORY[0x29EDCA5F8];
   v10[1] = 3221225472;
   v10[2] = __93__TVRMContentViewController__dismissChildViewControllersPresentedContentAnimated_completion___block_invoke;
   v10[3] = &unk_29F33F090;
-  v12 = v4;
+  v12 = animatedCopy;
   v10[4] = self;
-  v11 = v6;
-  v9 = v6;
-  [v8 dismissPresentedContentAnimated:v4 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [hintsViewController dismissPresentedContentAnimated:animatedCopy completion:v10];
 }
 
 void __93__TVRMContentViewController__dismissChildViewControllersPresentedContentAnimated_completion___block_invoke(uint64_t a1)
@@ -622,49 +622,49 @@ void __93__TVRMContentViewController__dismissChildViewControllersPresentedConten
 - (BOOL)canDismissPresentedContent
 {
   v12 = *MEMORY[0x29EDCA608];
-  v3 = [(TVRMContentViewController *)self remoteControlViewController];
-  v4 = [v3 hasPresentedContent];
+  remoteControlViewController = [(TVRMContentViewController *)self remoteControlViewController];
+  hasPresentedContent = [remoteControlViewController hasPresentedContent];
 
-  v5 = [(TVRMContentViewController *)self hintsViewController];
-  v6 = [v5 hasPresentedContent];
+  hintsViewController = [(TVRMContentViewController *)self hintsViewController];
+  hasPresentedContent2 = [hintsViewController hasPresentedContent];
 
   v7 = _TVRMControlCenterLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9[0] = 67109376;
-    v9[1] = v4;
+    v9[1] = hasPresentedContent;
     v10 = 1024;
-    v11 = v6;
+    v11 = hasPresentedContent2;
     _os_log_impl(&dword_29C9F3000, v7, OS_LOG_TYPE_DEFAULT, "Can dismiss presented content, remoteHasPresentedContent=%{BOOL}d, hintsHasPresentedContent=%{BOOL}d", v9, 0xEu);
   }
 
-  return (v4 | v6) & 1;
+  return (hasPresentedContent | hasPresentedContent2) & 1;
 }
 
-- (void)dismissPresentedContentAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissPresentedContentAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
+  animatedCopy = animated;
   v16 = *MEMORY[0x29EDCA608];
-  v6 = a4;
+  completionCopy = completion;
   v7 = _TVRMControlCenterLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = MEMORY[0x29ED51270](v6);
+    v8 = MEMORY[0x29ED51270](completionCopy);
     *buf = 138412290;
     v15 = v8;
     _os_log_impl(&dword_29C9F3000, v7, OS_LOG_TYPE_DEFAULT, "Dismiss presented content completion %@", buf, 0xCu);
   }
 
-  v9 = [(TVRMContentViewController *)self hintsViewController];
+  hintsViewController = [(TVRMContentViewController *)self hintsViewController];
   v11[0] = MEMORY[0x29EDCA5F8];
   v11[1] = 3221225472;
   v11[2] = __72__TVRMContentViewController_dismissPresentedContentAnimated_completion___block_invoke;
   v11[3] = &unk_29F33F090;
-  v13 = v4;
+  v13 = animatedCopy;
   v11[4] = self;
-  v12 = v6;
-  v10 = v6;
-  [v9 dismissPresentedContentAnimated:v4 completion:v11];
+  v12 = completionCopy;
+  v10 = completionCopy;
+  [hintsViewController dismissPresentedContentAnimated:animatedCopy completion:v11];
 }
 
 void __72__TVRMContentViewController_dismissPresentedContentAnimated_completion___block_invoke(uint64_t a1)
@@ -675,15 +675,15 @@ void __72__TVRMContentViewController_dismissPresentedContentAnimated_completion_
 
 - (BOOL)shouldLaunchAsViewService
 {
-  v3 = [MEMORY[0x29EDC7A58] currentDevice];
-  if ([v3 userInterfaceIdiom])
+  currentDevice = [MEMORY[0x29EDC7A58] currentDevice];
+  if ([currentDevice userInterfaceIdiom])
   {
     LOBYTE(v4) = 0;
   }
 
   else
   {
-    v5 = [(CCUIButtonModuleViewController *)self buttonView];
+    buttonView = [(CCUIButtonModuleViewController *)self buttonView];
     v4 = CCUILayoutShouldBePortrait() ^ 1;
   }
 
@@ -701,14 +701,14 @@ void __72__TVRMContentViewController_dismissPresentedContentAnimated_completion_
 
   v4 = [objc_alloc(MEMORY[0x29EDC6F48]) _initWithLaunchContext:1];
   [v4 setDismissalType:1];
-  v5 = [MEMORY[0x29EDB9F98] defaultCenter];
-  [v5 addObserver:self selector:sel__remoteLaunchedAsViewService_ name:*MEMORY[0x29EDC6F60] object:0];
+  defaultCenter = [MEMORY[0x29EDB9F98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__remoteLaunchedAsViewService_ name:*MEMORY[0x29EDC6F60] object:0];
 
-  v6 = [MEMORY[0x29EDC6F50] sharedInstance];
-  [v6 presentWithContext:v4];
+  mEMORY[0x29EDC6F50] = [MEMORY[0x29EDC6F50] sharedInstance];
+  [mEMORY[0x29EDC6F50] presentWithContext:v4];
 }
 
-- (void)_remoteLaunchedAsViewService:(id)a3
+- (void)_remoteLaunchedAsViewService:(id)service
 {
   block[0] = MEMORY[0x29EDCA5F8];
   block[1] = 3221225472;
@@ -716,8 +716,8 @@ void __72__TVRMContentViewController_dismissPresentedContentAnimated_completion_
   block[3] = &unk_29F33F068;
   block[4] = self;
   dispatch_async(MEMORY[0x29EDCA578], block);
-  v4 = [MEMORY[0x29EDB9F98] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x29EDC6F60] object:0];
+  defaultCenter = [MEMORY[0x29EDB9F98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x29EDC6F60] object:0];
 }
 
 void __58__TVRMContentViewController__remoteLaunchedAsViewService___block_invoke(uint64_t a1)
@@ -726,7 +726,7 @@ void __58__TVRMContentViewController__remoteLaunchedAsViewService___block_invoke
   [v1 dismissControlCenter];
 }
 
-- (CGAffineTransform)_defaultScaledTransformForSize:(SEL)a3
+- (CGAffineTransform)_defaultScaledTransformForSize:(SEL)size
 {
   height = a4.height;
   width = a4.width;
@@ -752,15 +752,15 @@ void __58__TVRMContentViewController__remoteLaunchedAsViewService___block_invoke
 - (void)_prewarm
 {
   v6 = *MEMORY[0x29EDCA608];
-  v2 = [(TVRMContentViewController *)self shouldLaunchAsViewService];
-  v3 = [MEMORY[0x29EDC6F50] sharedInstance];
-  [v3 _prewarmWithLaunchViewService:v2 fetchActiveEndpoint:1];
+  shouldLaunchAsViewService = [(TVRMContentViewController *)self shouldLaunchAsViewService];
+  mEMORY[0x29EDC6F50] = [MEMORY[0x29EDC6F50] sharedInstance];
+  [mEMORY[0x29EDC6F50] _prewarmWithLaunchViewService:shouldLaunchAsViewService fetchActiveEndpoint:1];
 
   v4 = _TVRMControlCenterLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5[0] = 67109120;
-    v5[1] = v2;
+    v5[1] = shouldLaunchAsViewService;
     _os_log_impl(&dword_29C9F3000, v4, OS_LOG_TYPE_DEFAULT, "Module prewarm called launchAsViewService %{BOOL}d", v5, 8u);
   }
 }

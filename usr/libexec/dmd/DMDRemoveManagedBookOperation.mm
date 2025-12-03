@@ -1,7 +1,7 @@
 @interface DMDRemoveManagedBookOperation
-+ (BOOL)validateRequest:(id)a3 error:(id *)a4;
++ (BOOL)validateRequest:(id)request error:(id *)error;
 + (id)whitelistedClassesForRequest;
-- (void)runWithRequest:(id)a3;
+- (void)runWithRequest:(id)request;
 - (void)waitUntilFinished;
 @end
 
@@ -21,30 +21,30 @@
   return [NSSet setWithObject:v2];
 }
 
-+ (BOOL)validateRequest:(id)a3 error:(id *)a4
++ (BOOL)validateRequest:(id)request error:(id *)error
 {
-  v6 = a3;
-  v11.receiver = a1;
+  requestCopy = request;
+  v11.receiver = self;
   v11.super_class = &OBJC_METACLASS___DMDRemoveManagedBookOperation;
-  if (!objc_msgSendSuper2(&v11, "validateRequest:error:", v6, a4))
+  if (!objc_msgSendSuper2(&v11, "validateRequest:error:", requestCopy, error))
   {
     goto LABEL_8;
   }
 
-  v7 = [v6 persistentID];
-  if (!v7)
+  persistentID = [requestCopy persistentID];
+  if (!persistentID)
   {
-    v8 = [v6 iTunesStoreID];
+    iTunesStoreID = [requestCopy iTunesStoreID];
 
-    if (v8)
+    if (iTunesStoreID)
     {
       goto LABEL_5;
     }
 
-    if (a4)
+    if (error)
     {
       DMFErrorWithCodeAndUserInfo();
-      *a4 = v9 = 0;
+      *error = v9 = 0;
       goto LABEL_9;
     }
 
@@ -60,9 +60,9 @@ LABEL_9:
   return v9;
 }
 
-- (void)runWithRequest:(id)a3
+- (void)runWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   if (MCHasMDMMigrated())
   {
     v5 = +[DMDManagedMediaManager sharedManager];
@@ -74,18 +74,18 @@ LABEL_9:
     v6 = v14 = self;
     v15 = v6;
     v7 = objc_retainBlock(&v10);
-    v8 = [v4 persistentID];
+    persistentID = [requestCopy persistentID];
 
-    if (v8)
+    if (persistentID)
     {
-      v9 = [v4 persistentID];
-      [v5 removeNonStoreBookWithPersistentID:v9 assertion:v6 completionBlock:v7];
+      persistentID2 = [requestCopy persistentID];
+      [v5 removeNonStoreBookWithPersistentID:persistentID2 assertion:v6 completionBlock:v7];
     }
 
     else
     {
-      v9 = [v4 iTunesStoreID];
-      [v5 removeStoreBookWithiTunesStoreID:v9 assertion:v6 completionBlock:v7];
+      persistentID2 = [requestCopy iTunesStoreID];
+      [v5 removeStoreBookWithiTunesStoreID:persistentID2 assertion:v6 completionBlock:v7];
     }
   }
 

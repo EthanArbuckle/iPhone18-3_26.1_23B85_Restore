@@ -1,35 +1,35 @@
 @interface MUActionRowItemView
 + (id)labelFont;
 + (id)monospacedLabelFont;
-- (MUActionRowItemView)initWithStyle:(int64_t)a3 useVibrancy:(BOOL)a4;
+- (MUActionRowItemView)initWithStyle:(int64_t)style useVibrancy:(BOOL)vibrancy;
 - (MUActionRowItemViewDelegate)delegate;
 - (void)_touchBegan;
 - (void)_touchEnded;
 - (void)_updateCornerRadius;
 - (void)_updateMetrics;
 - (void)didMoveToWindow;
-- (void)handleHoverGesture:(id)a3;
+- (void)handleHoverGesture:(id)gesture;
 - (void)handleMenuPresentation;
 - (void)handlePress;
 - (void)infoCardThemeChanged;
 - (void)layoutSubviews;
-- (void)setAccessoryView:(id)a3;
-- (void)setContentBackgroundColor:(id)a3;
-- (void)setCornerStyle:(int64_t)a3;
-- (void)setFullWidthMode:(BOOL)a3;
-- (void)setGlyphColor:(id)a3;
-- (void)setGlyphName:(id)a3;
-- (void)setHighlightedBackgroundColor:(id)a3;
-- (void)setHovering:(BOOL)a3;
-- (void)setMenu:(id)a3;
-- (void)setTintColor:(id)a3;
-- (void)setTitleText:(id)a3;
-- (void)setTitleUsesMonospacedNumbersFont:(BOOL)a3;
-- (void)setTouched:(BOOL)a3;
+- (void)setAccessoryView:(id)view;
+- (void)setContentBackgroundColor:(id)color;
+- (void)setCornerStyle:(int64_t)style;
+- (void)setFullWidthMode:(BOOL)mode;
+- (void)setGlyphColor:(id)color;
+- (void)setGlyphName:(id)name;
+- (void)setHighlightedBackgroundColor:(id)color;
+- (void)setHovering:(BOOL)hovering;
+- (void)setMenu:(id)menu;
+- (void)setTintColor:(id)color;
+- (void)setTitleText:(id)text;
+- (void)setTitleUsesMonospacedNumbersFont:(BOOL)font;
+- (void)setTouched:(BOOL)touched;
 - (void)tintColorDidChange;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 - (void)updateColor;
 - (void)updateImage;
 @end
@@ -43,14 +43,14 @@
   return WeakRetained;
 }
 
-- (void)setMenu:(id)a3
+- (void)setMenu:(id)menu
 {
   v5.receiver = self;
   v5.super_class = MUActionRowItemView;
-  [(MUActionRowItemView *)&v5 setMenu:a3];
-  v4 = [(MUActionRowItemView *)self menu];
+  [(MUActionRowItemView *)&v5 setMenu:menu];
+  menu = [(MUActionRowItemView *)self menu];
 
-  if (v4)
+  if (menu)
   {
     [(MUActionRowItemView *)self removeTarget:self action:sel_handlePress forControlEvents:0x2000];
   }
@@ -60,37 +60,37 @@
     [(MUActionRowItemView *)self addTarget:self action:sel_handlePress forControlEvents:0x2000];
   }
 
-  [(MUActionRowItemView *)self setShowsMenuAsPrimaryAction:v4 != 0];
+  [(MUActionRowItemView *)self setShowsMenuAsPrimaryAction:menu != 0];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = MUActionRowItemView;
-  [(MUActionRowItemView *)&v5 touchesEnded:a3 withEvent:a4];
+  [(MUActionRowItemView *)&v5 touchesEnded:ended withEvent:event];
   [(MUActionRowItemView *)self _touchEnded];
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = MUActionRowItemView;
-  [(MUActionRowItemView *)&v5 touchesCancelled:a3 withEvent:a4];
+  [(MUActionRowItemView *)&v5 touchesCancelled:cancelled withEvent:event];
   [(MUActionRowItemView *)self _touchCancelled];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = MUActionRowItemView;
-  v6 = a4;
-  [(MUActionRowItemView *)&v10 touchesBegan:a3 withEvent:v6];
+  eventCopy = event;
+  [(MUActionRowItemView *)&v10 touchesBegan:began withEvent:eventCopy];
   v7 = [(MUActionRowItemView *)self window:v10.receiver];
-  v8 = [v6 touchesForWindow:v7];
+  v8 = [eventCopy touchesForWindow:v7];
 
-  v9 = [v8 anyObject];
+  anyObject = [v8 anyObject];
 
-  if ([v9 tapCount] == 1)
+  if ([anyObject tapCount] == 1)
   {
     [(MUActionRowItemView *)self _touchBegan];
   }
@@ -114,20 +114,20 @@
   }
 }
 
-- (void)setTouched:(BOOL)a3
+- (void)setTouched:(BOOL)touched
 {
-  if (self->_touched != a3)
+  if (self->_touched != touched)
   {
-    self->_touched = a3;
+    self->_touched = touched;
     [(MUActionRowItemView *)self updateColor];
   }
 }
 
-- (void)setTitleUsesMonospacedNumbersFont:(BOOL)a3
+- (void)setTitleUsesMonospacedNumbersFont:(BOOL)font
 {
-  if (self->_titleUsesMonospacedNumbersFont != a3)
+  if (self->_titleUsesMonospacedNumbersFont != font)
   {
-    self->_titleUsesMonospacedNumbersFont = a3;
+    self->_titleUsesMonospacedNumbersFont = font;
     [(MUActionRowItemView *)self _updateMetrics];
   }
 }
@@ -142,52 +142,52 @@
       return;
     }
 
-    v4 = [(MUActionRowItemView *)self mk_theme];
-    v22 = [v4 tintColor];
+    mk_theme = [(MUActionRowItemView *)self mk_theme];
+    tintColor = [mk_theme tintColor];
 
-    v5 = [(MUActionRowItemView *)self tintColor];
+    tintColor2 = [(MUActionRowItemView *)self tintColor];
 
-    if (v5)
+    if (tintColor2)
     {
-      v6 = [(MUActionRowItemView *)self tintColor];
+      tintColor3 = [(MUActionRowItemView *)self tintColor];
 
-      v22 = v6;
+      tintColor = tintColor3;
     }
 
     if ([(MUActionRowItemView *)self isEnabled]&& [(MUActionRowItemView *)self tintAdjustmentMode]!= 2)
     {
-      v9 = v22;
+      v9 = tintColor;
     }
 
     else
     {
-      v7 = [(MUActionRowItemView *)self mk_theme];
-      v8 = [v7 disabledActionRowTextColor];
+      mk_theme2 = [(MUActionRowItemView *)self mk_theme];
+      disabledActionRowTextColor = [mk_theme2 disabledActionRowTextColor];
 
-      v9 = v8;
+      v9 = disabledActionRowTextColor;
     }
 
     v23 = v9;
     if (self->_useVibrancy)
     {
-      v15 = [MEMORY[0x1E69DC888] tertiarySystemFillColor];
-      [(MKVibrantView *)self->_vibrantView setBackgroundColor:v15];
+      tertiarySystemFillColor = [MEMORY[0x1E69DC888] tertiarySystemFillColor];
+      [(MKVibrantView *)self->_vibrantView setBackgroundColor:tertiarySystemFillColor];
 
       touched = self->_touched;
-      v17 = [(MUActionRowItemView *)self mk_theme];
-      v18 = v17;
+      mk_theme3 = [(MUActionRowItemView *)self mk_theme];
+      mk_theme4 = mk_theme3;
       if (touched)
       {
-        [v17 buttonHighlightedColor];
+        [mk_theme3 buttonHighlightedColor];
       }
 
       else
       {
-        [v17 buttonNormalColor];
+        [mk_theme3 buttonNormalColor];
       }
       v20 = ;
-      v21 = [(MKVibrantView *)self->_vibrantView contentView];
-      [v21 setBackgroundColor:v20];
+      contentView = [(MKVibrantView *)self->_vibrantView contentView];
+      [contentView setBackgroundColor:v20];
 
       goto LABEL_30;
     }
@@ -196,11 +196,11 @@
     {
       if (!self->_highlightedBackgroundColor)
       {
-        v18 = [(MUActionRowItemView *)self mk_theme];
-        v19 = [v18 buttonHighlightedColor];
+        mk_theme4 = [(MUActionRowItemView *)self mk_theme];
+        buttonHighlightedColor = [mk_theme4 buttonHighlightedColor];
 LABEL_29:
-        v20 = v19;
-        [(UIView *)self->_backgroundView setBackgroundColor:v19];
+        v20 = buttonHighlightedColor;
+        [(UIView *)self->_backgroundView setBackgroundColor:buttonHighlightedColor];
 LABEL_30:
 
         goto LABEL_31;
@@ -209,8 +209,8 @@ LABEL_30:
 
     else if (!self->_contentBackgroundColor)
     {
-      v18 = [(MUActionRowItemView *)self mk_theme];
-      v19 = [v18 buttonNormalColor];
+      mk_theme4 = [(MUActionRowItemView *)self mk_theme];
+      buttonHighlightedColor = [mk_theme4 buttonNormalColor];
       goto LABEL_29;
     }
 
@@ -222,8 +222,8 @@ LABEL_31:
     return;
   }
 
-  v10 = [(MUActionRowItemView *)self tintColor];
-  if (v10)
+  tintColor4 = [(MUActionRowItemView *)self tintColor];
+  if (tintColor4)
   {
     [(MUActionRowItemView *)self tintColor];
   }
@@ -236,9 +236,9 @@ LABEL_31:
   [(UIImageView *)self->_glyphImageView setTintColor:v11];
 
   [(UIView *)self->_backgroundView setBackgroundColor:self->_contentBackgroundColor];
-  v12 = [(MUActionRowItemView *)self isEnabled];
+  isEnabled = [(MUActionRowItemView *)self isEnabled];
   v13 = 0.5;
-  if (v12)
+  if (isEnabled)
   {
     v13 = 1.0;
   }
@@ -248,56 +248,56 @@ LABEL_31:
   [(UIImageView *)glyphImageView setAlpha:v13];
 }
 
-- (void)setCornerStyle:(int64_t)a3
+- (void)setCornerStyle:(int64_t)style
 {
-  if (self->_cornerStyle != a3)
+  if (self->_cornerStyle != style)
   {
-    self->_cornerStyle = a3;
+    self->_cornerStyle = style;
     [(MUActionRowItemView *)self _updateCornerRadius];
   }
 }
 
-- (void)setHighlightedBackgroundColor:(id)a3
+- (void)setHighlightedBackgroundColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if (([(UIColor *)self->_highlightedBackgroundColor isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_highlightedBackgroundColor, a3);
+    objc_storeStrong(&self->_highlightedBackgroundColor, color);
     [(MUActionRowItemView *)self updateColor];
   }
 }
 
-- (void)setGlyphColor:(id)a3
+- (void)setGlyphColor:(id)color
 {
   if (self->_style == 1)
   {
-    [(MUActionRowItemView *)self setTintColor:a3];
+    [(MUActionRowItemView *)self setTintColor:color];
   }
 }
 
-- (void)setContentBackgroundColor:(id)a3
+- (void)setContentBackgroundColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if (([(UIColor *)self->_contentBackgroundColor isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_contentBackgroundColor, a3);
+    objc_storeStrong(&self->_contentBackgroundColor, color);
     [(MUActionRowItemView *)self updateColor];
   }
 }
 
-- (void)setTitleText:(id)a3
+- (void)setTitleText:(id)text
 {
   label = self->_label;
-  v5 = a3;
-  [(UILabel *)label setText:v5];
-  [(MUActionRowItemView *)self setToolTip:v5];
+  textCopy = text;
+  [(UILabel *)label setText:textCopy];
+  [(MUActionRowItemView *)self setToolTip:textCopy];
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
   v4.receiver = self;
   v4.super_class = MUActionRowItemView;
-  [(MUActionRowItemView *)&v4 setTintColor:a3];
+  [(MUActionRowItemView *)&v4 setTintColor:color];
   [(MUActionRowItemView *)self updateColor];
 }
 
@@ -366,9 +366,9 @@ LABEL_31:
   v4.receiver = self;
   v4.super_class = MUActionRowItemView;
   [(MUActionRowItemView *)&v4 didMoveToWindow];
-  v3 = [(MUActionRowItemView *)self window];
+  window = [(MUActionRowItemView *)self window];
 
-  if (v3)
+  if (window)
   {
     [(MUActionRowItemView *)self infoCardThemeChanged];
   }
@@ -416,12 +416,12 @@ LABEL_31:
   [(MUActionRowItemView *)&v6 layoutSubviews];
   if (self->_style == 1)
   {
-    v3 = [(UIView *)self->_backgroundView layer];
-    [v3 setCornerRadius:8.0];
+    layer = [(UIView *)self->_backgroundView layer];
+    [layer setCornerRadius:8.0];
 
     v4 = *MEMORY[0x1E69796E8];
-    v5 = [(UIView *)self->_backgroundView layer];
-    [v5 setCornerCurve:v4];
+    layer2 = [(UIView *)self->_backgroundView layer];
+    [layer2 setCornerCurve:v4];
   }
 
   if (self->_cornerStyle == 1)
@@ -432,11 +432,11 @@ LABEL_31:
 
 - (void)_updateMetrics
 {
-  v3 = [(MUActionRowItemView *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
-  if (UIContentSizeCategoryIsAccessibilityCategory(v4))
+  traitCollection = [(MUActionRowItemView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
   {
-    v5 = UIContentSizeCategoryCompareToCategory(v4, *MEMORY[0x1E69DDC28]);
+    v5 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, *MEMORY[0x1E69DDC28]);
     v6 = 18;
     v7 = 12;
     if (v5 == NSOrderedAscending)
@@ -475,13 +475,13 @@ LABEL_31:
   [(UILabel *)self->_label setFont:v13];
 }
 
-- (void)setFullWidthMode:(BOOL)a3
+- (void)setFullWidthMode:(BOOL)mode
 {
-  if (self->_fullWidthMode != a3)
+  if (self->_fullWidthMode != mode)
   {
     v9 = v3;
-    self->_fullWidthMode = a3;
-    if (a3)
+    self->_fullWidthMode = mode;
+    if (mode)
     {
       v8 = 4;
     }
@@ -497,11 +497,11 @@ LABEL_31:
   }
 }
 
-- (void)setHovering:(BOOL)a3
+- (void)setHovering:(BOOL)hovering
 {
-  if (self->_hovering != a3)
+  if (self->_hovering != hovering)
   {
-    self->_hovering = a3;
+    self->_hovering = hovering;
     v4 = 1.0;
     if (!UIAccessibilityDarkerSystemColorsEnabled())
     {
@@ -522,47 +522,47 @@ LABEL_31:
   }
 }
 
-- (void)setAccessoryView:(id)a3
+- (void)setAccessoryView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   if (([(UIView *)self->_accessoryView isEqual:?]& 1) == 0)
   {
     [(UIView *)self->_accessoryView removeFromSuperview];
-    objc_storeStrong(&self->_accessoryView, a3);
+    objc_storeStrong(&self->_accessoryView, view);
     [(MUActionRowItemView *)self updateImage];
   }
 }
 
-- (void)setGlyphName:(id)a3
+- (void)setGlyphName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   if (([(NSString *)self->_glyphName isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_glyphName, a3);
+    objc_storeStrong(&self->_glyphName, name);
     [(MUActionRowItemView *)self updateImage];
   }
 }
 
-- (void)handleHoverGesture:(id)a3
+- (void)handleHoverGesture:(id)gesture
 {
-  v4 = ([a3 state] - 1) < 2;
+  v4 = ([gesture state] - 1) < 2;
 
   [(MUActionRowItemView *)self setHovering:v4];
 }
 
 - (void)handleMenuPresentation
 {
-  v3 = [(MUActionRowItemView *)self delegate];
-  [v3 actionRowItemPresentedMenu:self isForActionBar:0 actionBarMoreMenu:0];
+  delegate = [(MUActionRowItemView *)self delegate];
+  [delegate actionRowItemPresentedMenu:self isForActionBar:0 actionBarMoreMenu:0];
 }
 
 - (void)handlePress
 {
-  v3 = [(MUActionRowItemView *)self delegate];
-  [v3 actionRowItemSelected:self isForActionBar:0 actionBarMoreMenu:0];
+  delegate = [(MUActionRowItemView *)self delegate];
+  [delegate actionRowItemSelected:self isForActionBar:0 actionBarMoreMenu:0];
 }
 
-- (MUActionRowItemView)initWithStyle:(int64_t)a3 useVibrancy:(BOOL)a4
+- (MUActionRowItemView)initWithStyle:(int64_t)style useVibrancy:(BOOL)vibrancy
 {
   v44.receiver = self;
   v44.super_class = MUActionRowItemView;
@@ -577,10 +577,10 @@ LABEL_31:
     return v11;
   }
 
-  v10->_style = a3;
-  v10->_useVibrancy = a4;
-  v12 = [MEMORY[0x1E69DC888] clearColor];
-  [(MUActionRowItemView *)v11 setBackgroundColor:v12];
+  v10->_style = style;
+  v10->_useVibrancy = vibrancy;
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(MUActionRowItemView *)v11 setBackgroundColor:clearColor];
 
   [(MUActionRowItemView *)v11 setEnabled:1];
   [(MUActionRowItemView *)v11 setPreferredMenuElementOrder:2];
@@ -593,8 +593,8 @@ LABEL_31:
     v11->_vibrantView = v13;
 
     backgroundView = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:0.200000003];
-    v17 = [(MKVibrantView *)v11->_vibrantView contentView];
-    [v17 setBackgroundColor:backgroundView];
+    contentView = [(MKVibrantView *)v11->_vibrantView contentView];
+    [contentView setBackgroundColor:backgroundView];
   }
 
   else
@@ -685,8 +685,8 @@ LABEL_10:
 
   [(MUActionRowItemView *)v11 updateColor];
   [(MUActionRowItemView *)v11 updateImage];
-  v35 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v35 addObserver:v11 selector:sel__contentSizeDidChange name:*MEMORY[0x1E69DDC48] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:v11 selector:sel__contentSizeDidChange name:*MEMORY[0x1E69DDC48] object:0];
 
   [(MUActionRowItemView *)v11 addTarget:v11 action:sel_handlePress forControlEvents:0x2000];
   [(MUActionRowItemView *)v11 addTarget:v11 action:sel_handleMenuPresentation forControlEvents:0x4000];
@@ -700,11 +700,11 @@ LABEL_10:
   objc_storeStrong(&v11->_iconLabelStackLayout, v36);
   [(MUActionRowItemView *)v11 _updateMetrics];
   [v20 addObject:v36];
-  v39 = [(MUActionRowItemView *)v11 traitCollection];
-  v40 = [v39 preferredContentSizeCategory];
-  if (UIContentSizeCategoryIsAccessibilityCategory(v40))
+  traitCollection = [(MUActionRowItemView *)v11 traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
   {
-    UIContentSizeCategoryCompareToCategory(v40, *MEMORY[0x1E69DDC28]);
+    UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, *MEMORY[0x1E69DDC28]);
   }
 
   v41 = MEMORY[0x1E696ACD8];
@@ -716,10 +716,10 @@ LABEL_10:
 
 + (id)monospacedLabelFont
 {
-  v2 = [a1 labelFont];
-  v3 = [v2 _mapsui_fontWithMonospacedNumbers];
+  labelFont = [self labelFont];
+  _mapsui_fontWithMonospacedNumbers = [labelFont _mapsui_fontWithMonospacedNumbers];
 
-  return v3;
+  return _mapsui_fontWithMonospacedNumbers;
 }
 
 + (id)labelFont

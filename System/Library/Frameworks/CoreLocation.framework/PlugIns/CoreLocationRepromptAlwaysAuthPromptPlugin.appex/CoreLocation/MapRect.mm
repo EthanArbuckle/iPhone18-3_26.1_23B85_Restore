@@ -1,7 +1,7 @@
 @interface MapRect
 + ($0FC7783E560512924F10969FB67BBDC8)boundingWithNormalizedRects:()vector<MKMapRect;
 - ($0FC7783E560512924F10969FB67BBDC8)rect;
-- (MapRect)initWithRectA:(id)a3 rectB:(id)a4;
+- (MapRect)initWithRectA:(id)a rectB:(id)b;
 @end
 
 @implementation MapRect
@@ -131,17 +131,17 @@ LABEL_26:
   return result;
 }
 
-- (MapRect)initWithRectA:(id)a3 rectB:(id)a4
+- (MapRect)initWithRectA:(id)a rectB:(id)b
 {
-  var1 = a4.var0.var1;
-  var0 = a4.var0.var0;
-  v6 = a3.var0.var1;
-  v7 = a3.var0.var0;
-  v47 = a3;
-  *&v45 = a4.var0.var0;
-  *(&v45 + 1) = *&a4.var0.var1;
-  *&v46 = a4.var1.var0;
-  *(&v46 + 1) = *&a4.var1.var1;
+  var1 = b.var0.var1;
+  var0 = b.var0.var0;
+  v6 = a.var0.var1;
+  v7 = a.var0.var0;
+  aCopy = a;
+  *&v45 = b.var0.var0;
+  *(&v45 + 1) = *&b.var0.var1;
+  *&v46 = b.var1.var0;
+  *(&v46 + 1) = *&b.var1.var1;
   v44.receiver = self;
   v44.super_class = MapRect;
   v8 = [(MapRect *)&v44 init];
@@ -224,7 +224,7 @@ LABEL_26:
     if (v26 == MKMapRectNull.origin.x && (v33 = MKMapRectNull.origin.y, v28 == v33))
     {
       v34 = v6 == v33 && v7 == MKMapRectNull.origin.x;
-      v35 = &v47;
+      v35 = &aCopy;
       if (v34)
       {
         v35 = &v45;

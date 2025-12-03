@@ -1,17 +1,17 @@
 @interface SHPaletteLayer
 - (SHPaletteLayer)init;
-- (SHPaletteLayer)initWithCoder:(id)a3;
-- (SHPaletteLayer)initWithPalette:(id)a3;
+- (SHPaletteLayer)initWithCoder:(id)coder;
+- (SHPaletteLayer)initWithPalette:(id)palette;
 - (void)setup;
 @end
 
 @implementation SHPaletteLayer
 
-- (SHPaletteLayer)initWithCoder:(id)a3
+- (SHPaletteLayer)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = SHPaletteLayer;
-  v3 = [(SHPaletteLayer *)&v7 initWithCoder:a3];
+  v3 = [(SHPaletteLayer *)&v7 initWithCoder:coder];
   if (v3)
   {
     v4 = +[SHPalette default];
@@ -32,16 +32,16 @@
   return v4;
 }
 
-- (SHPaletteLayer)initWithPalette:(id)a3
+- (SHPaletteLayer)initWithPalette:(id)palette
 {
-  v5 = a3;
+  paletteCopy = palette;
   v9.receiver = self;
   v9.super_class = SHPaletteLayer;
   v6 = [(SHPaletteLayer *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_palette, a3);
+    objc_storeStrong(&v6->_palette, palette);
     [(SHPaletteLayer *)v7 setup];
   }
 

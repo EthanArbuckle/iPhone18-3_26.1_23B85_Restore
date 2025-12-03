@@ -1,33 +1,33 @@
 @interface HFPlaceholderTriggerBuilder
-+ (id)createPlaceholderTriggerForHome:(id)a3 withTriggerActionSetBuilder:(id)a4 context:(id)a5;
++ (id)createPlaceholderTriggerForHome:(id)home withTriggerActionSetBuilder:(id)builder context:(id)context;
 - (id)commitItem;
 @end
 
 @implementation HFPlaceholderTriggerBuilder
 
-+ (id)createPlaceholderTriggerForHome:(id)a3 withTriggerActionSetBuilder:(id)a4 context:(id)a5
++ (id)createPlaceholderTriggerForHome:(id)home withTriggerActionSetBuilder:(id)builder context:(id)context
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [(HFTriggerBuilder *)[HFPlaceholderTriggerBuilder alloc] initWithHome:v9 context:v7];
+  contextCopy = context;
+  builderCopy = builder;
+  homeCopy = home;
+  v10 = [(HFTriggerBuilder *)[HFPlaceholderTriggerBuilder alloc] initWithHome:homeCopy context:contextCopy];
 
   [(HFTriggerBuilder *)v10 setName:@"Placeholder Trigger"];
-  v11 = [(HFTriggerBuilder *)v10 triggerActionSets];
-  [v11 setFromTriggerActionSetsBuilder:v8];
+  triggerActionSets = [(HFTriggerBuilder *)v10 triggerActionSets];
+  [triggerActionSets setFromTriggerActionSetsBuilder:builderCopy];
 
-  v12 = [(HFTriggerBuilder *)v10 triggerActionSets];
-  -[HFPlaceholderTriggerBuilder setIsEditing:](v10, "setIsEditing:", [v12 hasActions]);
+  triggerActionSets2 = [(HFTriggerBuilder *)v10 triggerActionSets];
+  -[HFPlaceholderTriggerBuilder setIsEditing:](v10, "setIsEditing:", [triggerActionSets2 hasActions]);
 
   return v10;
 }
 
 - (id)commitItem
 {
-  v3 = [(HFTriggerBuilder *)self triggerActionSets];
-  v4 = [v3 allActionBuilders];
+  triggerActionSets = [(HFTriggerBuilder *)self triggerActionSets];
+  allActionBuilders = [triggerActionSets allActionBuilders];
 
-  v5 = [v4 na_map:&__block_literal_global_201];
+  v5 = [allActionBuilders na_map:&__block_literal_global_201];
   v6 = [MEMORY[0x277D2C900] combineAllFutures:v5];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;

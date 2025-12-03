@@ -1,13 +1,13 @@
 @interface SHAnalytics
-+ (void)sendEvent:(id)a3 withPayload:(id)a4;
++ (void)sendEvent:(id)event withPayload:(id)payload;
 @end
 
 @implementation SHAnalytics
 
-+ (void)sendEvent:(id)a3 withPayload:(id)a4
++ (void)sendEvent:(id)event withPayload:(id)payload
 {
-  v5 = a4;
-  v4 = v5;
+  payloadCopy = payload;
+  v4 = payloadCopy;
   AnalyticsSendEventLazy();
 }
 

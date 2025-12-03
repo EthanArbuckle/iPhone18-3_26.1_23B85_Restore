@@ -1,18 +1,18 @@
 @interface CHDScatterSeries
-- (void)setCategoryData:(id)a3;
+- (void)setCategoryData:(id)data;
 @end
 
 @implementation CHDScatterSeries
 
-- (void)setCategoryData:(id)a3
+- (void)setCategoryData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v7.receiver = self;
   v7.super_class = CHDScatterSeries;
-  [(CHDSeries *)&v7 setCategoryData:v4];
+  [(CHDSeries *)&v7 setCategoryData:dataCopy];
   WeakRetained = objc_loadWeakRetained(&self->super.super.mChart);
-  v6 = [WeakRetained processors];
-  [v6 markObject:v4 processor:objc_opt_class()];
+  processors = [WeakRetained processors];
+  [processors markObject:dataCopy processor:objc_opt_class()];
 }
 
 @end

@@ -13,7 +13,7 @@
   v9 = a5;
   v10 = [v8 dictionaryWithObjects:v15 forKeys:&v14 count:1];
 
-  [a1 boundingRectWithSize:1 options:v10 attributes:0 context:{a2, a3}];
+  [self boundingRectWithSize:1 options:v10 attributes:0 context:{a2, a3}];
   v12 = v11;
 
   return v12;

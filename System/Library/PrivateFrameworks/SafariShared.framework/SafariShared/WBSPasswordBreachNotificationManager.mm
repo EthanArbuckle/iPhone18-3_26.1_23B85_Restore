@@ -1,13 +1,13 @@
 @interface WBSPasswordBreachNotificationManager
-+ (BOOL)_highLevelDomain:(id)a3 isIncludedInTopFraudTargets:(id)a4;
-+ (id)_bodyForHighLevelDomains:(id)a3 deviceClass:(int)a4 topFraudTargets:(id)a5;
-+ (id)_bodyForSavedAccounts:(id)a3 withTopFraudTargets:(id)a4;
-+ (unint64_t)_bodyStyleForTopFraudTargetDomains:(id)a3 sensitiveDomains:(id)a4 passwordsCount:(unint64_t)a5;
++ (BOOL)_highLevelDomain:(id)domain isIncludedInTopFraudTargets:(id)targets;
++ (id)_bodyForHighLevelDomains:(id)domains deviceClass:(int)class topFraudTargets:(id)targets;
++ (id)_bodyForSavedAccounts:(id)accounts withTopFraudTargets:(id)targets;
++ (unint64_t)_bodyStyleForTopFraudTargetDomains:(id)domains sensitiveDomains:(id)sensitiveDomains passwordsCount:(unint64_t)count;
 - (WBSPasswordBreachNotificationManager)init;
-- (id)_contentWithSavedAccounts:(id)a3 topFraudTargets:(id)a4;
-- (id)_passwordManagerURLForSavedAccount:(id)a3;
-- (id)_titleForSavedAccounts:(id)a3;
-- (void)addBreachNotificationForSavedAccounts:(id)a3 withCompletionHandler:(id)a4;
+- (id)_contentWithSavedAccounts:(id)accounts topFraudTargets:(id)targets;
+- (id)_passwordManagerURLForSavedAccount:(id)account;
+- (id)_titleForSavedAccounts:(id)accounts;
+- (void)addBreachNotificationForSavedAccounts:(id)accounts withCompletionHandler:(id)handler;
 @end
 
 @implementation WBSPasswordBreachNotificationManager
@@ -33,11 +33,11 @@
   return v2;
 }
 
-- (void)addBreachNotificationForSavedAccounts:(id)a3 withCompletionHandler:(id)a4
+- (void)addBreachNotificationForSavedAccounts:(id)accounts withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  accountsCopy = accounts;
+  handlerCopy = handler;
+  if ([accountsCopy count])
   {
     topFraudTargetsManager = self->_topFraudTargetsManager;
     v10[0] = MEMORY[0x1E69E9820];
@@ -45,15 +45,15 @@
     v10[2] = __100__WBSPasswordBreachNotificationManager_addBreachNotificationForSavedAccounts_withCompletionHandler___block_invoke;
     v10[3] = &unk_1E7FC91D8;
     v10[4] = self;
-    v11 = v6;
-    v12 = v7;
+    v11 = accountsCopy;
+    v12 = handlerCopy;
     [(WBSPasswordWarningTopFraudTargetsManager *)topFraudTargetsManager getTopFraudTargetsWithCompletionHandler:v10];
   }
 
   else
   {
     v9 = [MEMORY[0x1E696ABC0] safari_errorWithDomain:*MEMORY[0x1E696A798] code:22 privacyPreservingDescription:@"Cannot add a notification for zero passwords."];
-    (*(v7 + 2))(v7, v9);
+    (*(handlerCopy + 2))(handlerCopy, v9);
   }
 }
 
@@ -82,80 +82,80 @@ void __100__WBSPasswordBreachNotificationManager_addBreachNotificationForSavedAc
   [v3 schedulePasswordBreachNotificationRequest:v2 completionHandler:*(a1 + 56)];
 }
 
-- (id)_contentWithSavedAccounts:(id)a3 topFraudTargets:(id)a4
+- (id)_contentWithSavedAccounts:(id)accounts topFraudTargets:(id)targets
 {
-  v6 = a3;
+  accountsCopy = accounts;
   v7 = MEMORY[0x1E6983220];
-  v8 = a4;
+  targetsCopy = targets;
   v9 = objc_alloc_init(v7);
-  v10 = [(WBSPasswordBreachNotificationManager *)self _titleForSavedAccounts:v6];
+  v10 = [(WBSPasswordBreachNotificationManager *)self _titleForSavedAccounts:accountsCopy];
   [v9 setTitle:v10];
 
-  v11 = [WBSPasswordBreachNotificationManager _bodyForSavedAccounts:v6 withTopFraudTargets:v8];
+  v11 = [WBSPasswordBreachNotificationManager _bodyForSavedAccounts:accountsCopy withTopFraudTargets:targetsCopy];
 
   [v9 setBody:v11];
-  if ([v6 count] == 1)
+  if ([accountsCopy count] == 1)
   {
-    v12 = [v6 firstObject];
-    v13 = [(WBSPasswordBreachNotificationManager *)self _passwordManagerURLForSavedAccount:v12];
+    firstObject = [accountsCopy firstObject];
+    passwordManagerSecurityRecommendationsURL = [(WBSPasswordBreachNotificationManager *)self _passwordManagerURLForSavedAccount:firstObject];
   }
 
   else
   {
-    v13 = [MEMORY[0x1E69C8978] passwordManagerSecurityRecommendationsURL];
+    passwordManagerSecurityRecommendationsURL = [MEMORY[0x1E69C8978] passwordManagerSecurityRecommendationsURL];
   }
 
-  [v9 setDefaultActionURL:v13];
+  [v9 setDefaultActionURL:passwordManagerSecurityRecommendationsURL];
 
   return v9;
 }
 
-- (id)_passwordManagerURLForSavedAccount:(id)a3
+- (id)_passwordManagerURLForSavedAccount:(id)account
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v3 = [a3 stableIDString];
+  stableIDString = [account stableIDString];
   v4 = MEMORY[0x1E69C8978];
   v8 = @"Security";
-  v9[0] = v3;
+  v9[0] = stableIDString;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
   v6 = [v4 passwordManagerURLWithDictionary:v5];
 
   return v6;
 }
 
-- (id)_titleForSavedAccounts:(id)a3
+- (id)_titleForSavedAccounts:(id)accounts
 {
-  [a3 count];
+  [accounts count];
   v3 = _WBSLocalizedString();
 
   return v3;
 }
 
-+ (id)_bodyForSavedAccounts:(id)a3 withTopFraudTargets:(id)a4
++ (id)_bodyForSavedAccounts:(id)accounts withTopFraudTargets:(id)targets
 {
-  v6 = a4;
-  v7 = [a3 safari_mapObjectsUsingBlock:&__block_literal_global_86];
-  v8 = [MEMORY[0x1E69C8860] currentDevice];
-  v9 = [v8 deviceClass];
+  targetsCopy = targets;
+  v7 = [accounts safari_mapObjectsUsingBlock:&__block_literal_global_86];
+  currentDevice = [MEMORY[0x1E69C8860] currentDevice];
+  deviceClass = [currentDevice deviceClass];
 
-  v10 = [a1 _bodyForHighLevelDomains:v7 deviceClass:v9 topFraudTargets:v6];
+  v10 = [self _bodyForHighLevelDomains:v7 deviceClass:deviceClass topFraudTargets:targetsCopy];
 
   return v10;
 }
 
-+ (unint64_t)_bodyStyleForTopFraudTargetDomains:(id)a3 sensitiveDomains:(id)a4 passwordsCount:(unint64_t)a5
++ (unint64_t)_bodyStyleForTopFraudTargetDomains:(id)domains sensitiveDomains:(id)sensitiveDomains passwordsCount:(unint64_t)count
 {
-  v7 = a4;
-  v8 = [a3 count];
-  v9 = [v7 count];
+  sensitiveDomainsCopy = sensitiveDomains;
+  v8 = [domains count];
+  v9 = [sensitiveDomainsCopy count];
 
-  if (a5 == 1 && !v8 && v9 == 1)
+  if (count == 1 && !v8 && v9 == 1)
   {
     return 5;
   }
 
   v12 = v8 == 1 && v9 == 0;
-  result = a5 != 1 || !v12;
+  result = count != 1 || !v12;
   if (!v12)
   {
     if (v8 != 2 || v9)
@@ -188,46 +188,46 @@ void __100__WBSPasswordBreachNotificationManager_addBreachNotificationForSavedAc
   return result;
 }
 
-+ (BOOL)_highLevelDomain:(id)a3 isIncludedInTopFraudTargets:(id)a4
++ (BOOL)_highLevelDomain:(id)domain isIncludedInTopFraudTargets:(id)targets
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 highPriorityFraudTargets];
-  if ([v7 containsObject:v5])
+  domainCopy = domain;
+  targetsCopy = targets;
+  highPriorityFraudTargets = [targetsCopy highPriorityFraudTargets];
+  if ([highPriorityFraudTargets containsObject:domainCopy])
   {
     v8 = 1;
   }
 
   else
   {
-    v9 = [v6 fraudTargets];
-    if ([v9 containsObject:v5])
+    fraudTargets = [targetsCopy fraudTargets];
+    if ([fraudTargets containsObject:domainCopy])
     {
       v8 = 1;
     }
 
     else
     {
-      v10 = [v6 financialFraudTargets];
-      v8 = [v10 containsObject:v5];
+      financialFraudTargets = [targetsCopy financialFraudTargets];
+      v8 = [financialFraudTargets containsObject:domainCopy];
     }
   }
 
   return v8;
 }
 
-+ (id)_bodyForHighLevelDomains:(id)a3 deviceClass:(int)a4 topFraudTargets:(id)a5
++ (id)_bodyForHighLevelDomains:(id)domains deviceClass:(int)class topFraudTargets:(id)targets
 {
   v34 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
+  domainsCopy = domains;
+  targetsCopy = targets;
   v9 = objc_alloc_init(MEMORY[0x1E695DFA0]);
   v10 = objc_alloc_init(MEMORY[0x1E695DFA0]);
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v11 = v7;
+  v11 = domainsCopy;
   v12 = [v11 countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v12)
   {
@@ -243,7 +243,7 @@ void __100__WBSPasswordBreachNotificationManager_addBreachNotificationForSavedAc
         }
 
         v16 = *(*(&v29 + 1) + 8 * i);
-        if ([a1 _highLevelDomain:v16 isIncludedInTopFraudTargets:v8])
+        if ([self _highLevelDomain:v16 isIncludedInTopFraudTargets:targetsCopy])
         {
           v17 = v9;
         }
@@ -262,7 +262,7 @@ void __100__WBSPasswordBreachNotificationManager_addBreachNotificationForSavedAc
     while (v13);
   }
 
-  v18 = [a1 _bodyStyleForTopFraudTargetDomains:v9 sensitiveDomains:v10 passwordsCount:{objc_msgSend(v11, "count")}];
+  v18 = [self _bodyStyleForTopFraudTargetDomains:v9 sensitiveDomains:v10 passwordsCount:{objc_msgSend(v11, "count")}];
   if (v18 <= 2)
   {
     if (v18)
@@ -276,9 +276,9 @@ void __100__WBSPasswordBreachNotificationManager_addBreachNotificationForSavedAc
 
         v23 = MEMORY[0x1E696AEC0];
         v20 = _WBSLocalizedString();
-        v21 = [v9 objectAtIndexedSubscript:0];
+        firstObject = [v9 objectAtIndexedSubscript:0];
         v24 = [v9 objectAtIndexedSubscript:1];
-        a1 = [v23 stringWithFormat:v20, v21, v24];
+        self = [v23 stringWithFormat:v20, firstObject, v24];
         goto LABEL_24;
       }
 
@@ -291,8 +291,8 @@ void __100__WBSPasswordBreachNotificationManager_addBreachNotificationForSavedAc
     }
 
     v20 = _WBSLocalizedString();
-    v21 = [v9 firstObject];
-    v22 = [v25 stringWithFormat:v20, v21];
+    firstObject = [v9 firstObject];
+    v22 = [v25 stringWithFormat:v20, firstObject];
     goto LABEL_28;
   }
 
@@ -302,19 +302,19 @@ void __100__WBSPasswordBreachNotificationManager_addBreachNotificationForSavedAc
     {
       v19 = MEMORY[0x1E696AEC0];
       v20 = _WBSLocalizedString();
-      v21 = [v9 objectAtIndexedSubscript:0];
-      v22 = [v19 localizedStringWithFormat:v20, v21, objc_msgSend(v9, "count") + objc_msgSend(v10, "count") - 1];
+      firstObject = [v9 objectAtIndexedSubscript:0];
+      v22 = [v19 localizedStringWithFormat:v20, firstObject, objc_msgSend(v9, "count") + objc_msgSend(v10, "count") - 1];
 LABEL_28:
-      a1 = v22;
+      self = v22;
       goto LABEL_29;
     }
 
     v26 = MEMORY[0x1E696AEC0];
     v20 = _WBSLocalizedString();
-    v21 = [v9 objectAtIndexedSubscript:0];
+    firstObject = [v9 objectAtIndexedSubscript:0];
     v24 = [v9 objectAtIndexedSubscript:1];
     v27 = [v9 objectAtIndexedSubscript:2];
-    a1 = [v26 stringWithFormat:v20, v21, v24, v27];
+    self = [v26 stringWithFormat:v20, firstObject, v24, v27];
 
 LABEL_24:
 LABEL_29:
@@ -324,12 +324,12 @@ LABEL_29:
 
   if (v18 == 5 || v18 == 6)
   {
-    a1 = _WBSLocalizedString();
+    self = _WBSLocalizedString();
   }
 
 LABEL_30:
 
-  return a1;
+  return self;
 }
 
 @end

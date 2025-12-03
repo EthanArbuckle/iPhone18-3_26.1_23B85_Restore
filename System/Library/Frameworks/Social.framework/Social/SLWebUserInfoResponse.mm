@@ -1,15 +1,15 @@
 @interface SLWebUserInfoResponse
-- (SLWebUserInfoResponse)initWithData:(id)a3 urlResponse:(id)a4 error:(id)a5;
+- (SLWebUserInfoResponse)initWithData:(id)data urlResponse:(id)response error:(id)error;
 @end
 
 @implementation SLWebUserInfoResponse
 
-- (SLWebUserInfoResponse)initWithData:(id)a3 urlResponse:(id)a4 error:(id)a5
+- (SLWebUserInfoResponse)initWithData:(id)data urlResponse:(id)response error:(id)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v9, "length")}];
+  dataCopy = data;
+  responseCopy = response;
+  errorCopy = error;
+  v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(dataCopy, "length")}];
   _SLLog(v5, 7, @"SLWebUserInfoResponse initWithData: %@ length urlResponse: %@ error: %@");
 
   v22.receiver = self;
@@ -18,19 +18,19 @@
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_error, a5);
+    objc_storeStrong(&v12->_error, error);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v14 = [v10 statusCode];
-      v13->_statusCode = v14;
-      v20 = [MEMORY[0x1E696AD98] numberWithInteger:v14];
+      statusCode = [responseCopy statusCode];
+      v13->_statusCode = statusCode;
+      v20 = [MEMORY[0x1E696AD98] numberWithInteger:statusCode];
       _SLLog(v5, 7, @"SLWebUserInfoResponse httpResponse status code %@");
 
       if (!v13->_error)
       {
         v21 = 0;
-        v15 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v9 options:0 error:{&v21, v20}];
+        v15 = [MEMORY[0x1E696ACB0] JSONObjectWithData:dataCopy options:0 error:{&v21, v20}];
         v16 = v21;
         v17 = v21;
         if (v17)

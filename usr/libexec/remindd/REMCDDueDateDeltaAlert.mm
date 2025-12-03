@@ -1,19 +1,19 @@
 @interface REMCDDueDateDeltaAlert
 + (NSString)cdEntityName;
-+ (id)objectIDWithUUID:(id)a3;
-- (REMCDDueDateDeltaAlert)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
++ (id)objectIDWithUUID:(id)d;
+- (REMCDDueDateDeltaAlert)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 - (REMObjectID)remObjectID;
 - (id)remChangedObjectID;
-- (id)remObjectIDWithError:(id *)a3;
+- (id)remObjectIDWithError:(id *)error;
 @end
 
 @implementation REMCDDueDateDeltaAlert
 
-- (REMCDDueDateDeltaAlert)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (REMCDDueDateDeltaAlert)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  return [(REMCDDueDateDeltaAlert *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(REMCDDueDateDeltaAlert *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 + (NSString)cdEntityName
@@ -28,7 +28,7 @@
 
 - (id)remChangedObjectID
 {
-  v2 = self;
+  selfCopy = self;
   v3 = REMCDDueDateDeltaAlert.remChangedObjectID()();
 
   return v3;
@@ -36,22 +36,22 @@
 
 - (REMObjectID)remObjectID
 {
-  v2 = self;
+  selfCopy = self;
   v3 = REMCDDueDateDeltaAlert.remObjectID.getter();
 
   return v3;
 }
 
-- (id)remObjectIDWithError:(id *)a3
+- (id)remObjectIDWithError:(id *)error
 {
-  v3 = self;
+  selfCopy = self;
   REMCDDueDateDeltaAlert.checkedREMObjectID()();
   v5 = v4;
 
   return v5;
 }
 
-+ (id)objectIDWithUUID:(id)a3
++ (id)objectIDWithUUID:(id)d
 {
   ObjCClassMetadata = swift_getObjCClassMetadata();
   v4 = type metadata accessor for UUID();

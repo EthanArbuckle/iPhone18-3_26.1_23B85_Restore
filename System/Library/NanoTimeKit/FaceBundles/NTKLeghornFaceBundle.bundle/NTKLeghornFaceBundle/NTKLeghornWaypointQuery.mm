@@ -1,19 +1,19 @@
 @interface NTKLeghornWaypointQuery
-+ (NTKLeghornWaypointQuery)queryWithCenterCoordinate:(CLLocationCoordinate2D)a3 radius:(double)a4 poiFilter:(id)a5;
++ (NTKLeghornWaypointQuery)queryWithCenterCoordinate:(CLLocationCoordinate2D)coordinate radius:(double)radius poiFilter:(id)filter;
 - (BOOL)isValid;
-- (BOOL)matchesQuery:(id)a3;
-- (BOOL)matchesQuery:(id)a3 distance:(double)a4;
+- (BOOL)matchesQuery:(id)query;
+- (BOOL)matchesQuery:(id)query distance:(double)distance;
 - (CLLocationCoordinate2D)centerCoordinate;
-- (NTKLeghornWaypointQuery)initWithCenterCoordinate:(CLLocationCoordinate2D)a3 radius:(double)a4 poiFilter:(id)a5;
+- (NTKLeghornWaypointQuery)initWithCenterCoordinate:(CLLocationCoordinate2D)coordinate radius:(double)radius poiFilter:(id)filter;
 @end
 
 @implementation NTKLeghornWaypointQuery
 
-- (NTKLeghornWaypointQuery)initWithCenterCoordinate:(CLLocationCoordinate2D)a3 radius:(double)a4 poiFilter:(id)a5
+- (NTKLeghornWaypointQuery)initWithCenterCoordinate:(CLLocationCoordinate2D)coordinate radius:(double)radius poiFilter:(id)filter
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
-  v10 = a5;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  filterCopy = filter;
   v14.receiver = self;
   v14.super_class = NTKLeghornWaypointQuery;
   v11 = [(NTKLeghornWaypointQuery *)&v14 init];
@@ -22,29 +22,29 @@
   {
     v11->_centerCoordinate.latitude = latitude;
     v11->_centerCoordinate.longitude = longitude;
-    v11->_radius = a4;
-    objc_storeStrong(&v11->_poiFilter, a5);
+    v11->_radius = radius;
+    objc_storeStrong(&v11->_poiFilter, filter);
   }
 
   return v12;
 }
 
-+ (NTKLeghornWaypointQuery)queryWithCenterCoordinate:(CLLocationCoordinate2D)a3 radius:(double)a4 poiFilter:(id)a5
++ (NTKLeghornWaypointQuery)queryWithCenterCoordinate:(CLLocationCoordinate2D)coordinate radius:(double)radius poiFilter:(id)filter
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
-  v8 = a5;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  filterCopy = filter;
   v9 = [NTKLeghornWaypointQuery alloc];
-  v11 = objc_msgSend_initWithCenterCoordinate_radius_poiFilter_(v9, v10, latitude, v8, longitude, a4);
+  v11 = objc_msgSend_initWithCenterCoordinate_radius_poiFilter_(v9, v10, latitude, filterCopy, longitude, radius);
 
   return v11;
 }
 
-- (BOOL)matchesQuery:(id)a3 distance:(double)a4
+- (BOOL)matchesQuery:(id)query distance:(double)distance
 {
-  v6 = a3;
+  queryCopy = query;
   v9 = objc_msgSend_poiFilter(self, v7, v8);
-  v12 = objc_msgSend_poiFilter(v6, v10, v11);
+  v12 = objc_msgSend_poiFilter(queryCopy, v10, v11);
   v15 = v12;
   if ((v9 == 0) == (v12 != 0))
   {
@@ -55,7 +55,7 @@ LABEL_7:
   }
 
   v16 = objc_msgSend_poiFilter(self, v13, v14);
-  v19 = objc_msgSend_poiFilter(v6, v17, v18);
+  v19 = objc_msgSend_poiFilter(queryCopy, v17, v18);
   isEqual = objc_msgSend_isEqual_(v16, v20, v21, v19);
 
   if (!isEqual)
@@ -65,7 +65,7 @@ LABEL_7:
 
   objc_msgSend_radius(self, v23, v24);
   v26 = v25 == 0.0;
-  objc_msgSend_radius(v6, v27, v25);
+  objc_msgSend_radius(queryCopy, v27, v25);
   if (v26 == (v29 != 0.0))
   {
     goto LABEL_7;
@@ -73,7 +73,7 @@ LABEL_7:
 
   objc_msgSend_radius(self, v28, v29);
   v31 = v30;
-  objc_msgSend_radius(v6, v32, v30);
+  objc_msgSend_radius(queryCopy, v32, v30);
   v35 = vabdd_f64(v31, v34);
   if (v35 > 10.0)
   {
@@ -83,18 +83,18 @@ LABEL_7:
   objc_msgSend_centerCoordinate(self, v33, v35);
   v37 = v36;
   v39 = v38;
-  objc_msgSend_centerCoordinate(v6, v40, v36);
-  v43 = fabs(ntk_CLLocationCoordinate2DDistanceToCoordinate(v37, v39, v41, v42)) <= a4;
+  objc_msgSend_centerCoordinate(queryCopy, v40, v36);
+  v43 = fabs(ntk_CLLocationCoordinate2DDistanceToCoordinate(v37, v39, v41, v42)) <= distance;
 LABEL_8:
 
   return v43;
 }
 
-- (BOOL)matchesQuery:(id)a3
+- (BOOL)matchesQuery:(id)query
 {
-  v4 = a3;
+  queryCopy = query;
   objc_msgSend_radius(self, v5, v6);
-  LOBYTE(self) = objc_msgSend_matchesQuery_distance_(self, v8, v7 * 0.1, v4);
+  LOBYTE(self) = objc_msgSend_matchesQuery_distance_(self, v8, v7 * 0.1, queryCopy);
 
   return self;
 }

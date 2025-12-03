@@ -1,36 +1,36 @@
 @interface PAAggregateVisibilityStateMonitor
-- (PAAggregateVisibilityStateMonitor)initWithRawMonitor:(id)a3 startupInterval:(double)a4;
-- (id)startMonitoringAggregateVisibilityStateForBundleIdentifiers:(id)a3 onQueue:(id)a4 withDelegate:(id)a5;
+- (PAAggregateVisibilityStateMonitor)initWithRawMonitor:(id)monitor startupInterval:(double)interval;
+- (id)startMonitoringAggregateVisibilityStateForBundleIdentifiers:(id)identifiers onQueue:(id)queue withDelegate:(id)delegate;
 @end
 
 @implementation PAAggregateVisibilityStateMonitor
 
-- (PAAggregateVisibilityStateMonitor)initWithRawMonitor:(id)a3 startupInterval:(double)a4
+- (PAAggregateVisibilityStateMonitor)initWithRawMonitor:(id)monitor startupInterval:(double)interval
 {
-  v7 = a3;
+  monitorCopy = monitor;
   v12.receiver = self;
   v12.super_class = PAAggregateVisibilityStateMonitor;
   v8 = [(PAAggregateVisibilityStateMonitor *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_rawMonitor, a3);
-    v9->_startupInterval = a4;
+    objc_storeStrong(&v8->_rawMonitor, monitor);
+    v9->_startupInterval = interval;
     v10 = v9;
   }
 
   return v9;
 }
 
-- (id)startMonitoringAggregateVisibilityStateForBundleIdentifiers:(id)a3 onQueue:(id)a4 withDelegate:(id)a5
+- (id)startMonitoringAggregateVisibilityStateForBundleIdentifiers:(id)identifiers onQueue:(id)queue withDelegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count])
+  identifiersCopy = identifiers;
+  queueCopy = queue;
+  delegateCopy = delegate;
+  if ([identifiersCopy count])
   {
-    v11 = [[PAAggregateVisibilityStateMonitorHandle alloc] initWithStartupInterval:v9 onQueue:v10 delegate:self->_startupInterval];
-    v12 = [(PAProcessStateMonitoring *)self->_rawMonitor startMonitoringVisibilityStateForBundleIdentifiers:v8 onQueue:v9 withDelegate:v11];
+    v11 = [[PAAggregateVisibilityStateMonitorHandle alloc] initWithStartupInterval:queueCopy onQueue:delegateCopy delegate:self->_startupInterval];
+    v12 = [(PAProcessStateMonitoring *)self->_rawMonitor startMonitoringVisibilityStateForBundleIdentifiers:identifiersCopy onQueue:queueCopy withDelegate:v11];
     [(PAAggregateVisibilityStateMonitorHandle *)v11 bindToRawHandle:v12];
   }
 

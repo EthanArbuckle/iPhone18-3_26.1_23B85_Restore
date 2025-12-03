@@ -1,7 +1,7 @@
 @interface CCAppIntentsExtractedEntityBusinessMembershipCard
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCAppIntentsExtractedEntityBusinessMembershipCard)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCAppIntentsExtractedEntityBusinessMembershipCard)initWithProvider:(id)a3 underName:(id)a4 number:(id)a5 membershipType:(id)a6 issueDate:(id)a7 expirationDate:(id)a8 issuedBy:(id)a9 eventSubType:(id)a10 error:(id *)a11;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCAppIntentsExtractedEntityBusinessMembershipCard)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCAppIntentsExtractedEntityBusinessMembershipCard)initWithProvider:(id)provider underName:(id)name number:(id)number membershipType:(id)type issueDate:(id)date expirationDate:(id)expirationDate issuedBy:(id)by eventSubType:(id)self0 error:(id *)self1;
 - (NSString)eventSubType;
 - (NSString)expirationDate;
 - (NSString)issueDate;
@@ -11,30 +11,30 @@
 - (NSString)provider;
 - (NSString)underName;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCAppIntentsExtractedEntityBusinessMembershipCard
 
-- (CCAppIntentsExtractedEntityBusinessMembershipCard)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCAppIntentsExtractedEntityBusinessMembershipCard)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"provider"];
-    v10 = [v6 objectForKeyedSubscript:@"underName"];
-    v11 = [v6 objectForKeyedSubscript:@"number"];
-    [v6 objectForKeyedSubscript:@"membershipType"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"provider"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"underName"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"number"];
+    [dictionaryCopy objectForKeyedSubscript:@"membershipType"];
     v12 = v19 = v8;
-    v13 = [v6 objectForKeyedSubscript:@"issueDate"];
-    v14 = [v6 objectForKeyedSubscript:@"expirationDate"];
-    [v6 objectForKeyedSubscript:@"issuedBy"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"issueDate"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"expirationDate"];
+    [dictionaryCopy objectForKeyedSubscript:@"issuedBy"];
     v15 = v20 = self;
-    v16 = [v6 objectForKeyedSubscript:@"eventSubType"];
-    v17 = [[CCAppIntentsExtractedEntityBusinessMembershipCard alloc] initWithProvider:v9 underName:v10 number:v11 membershipType:v12 issueDate:v13 expirationDate:v14 issuedBy:v15 eventSubType:v16 error:a4];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"eventSubType"];
+    v17 = [[CCAppIntentsExtractedEntityBusinessMembershipCard alloc] initWithProvider:v9 underName:v10 number:v11 membershipType:v12 issueDate:v13 expirationDate:v14 issuedBy:v15 eventSubType:v16 error:error];
 
     self = v20;
     v8 = v19;
@@ -54,50 +54,50 @@
   v3 = objc_opt_new();
   if (self->_provider)
   {
-    v4 = [(CCAppIntentsExtractedEntityBusinessMembershipCard *)self provider];
-    [v3 setObject:v4 forKeyedSubscript:@"provider"];
+    provider = [(CCAppIntentsExtractedEntityBusinessMembershipCard *)self provider];
+    [v3 setObject:provider forKeyedSubscript:@"provider"];
   }
 
   if (self->_underName)
   {
-    v5 = [(CCAppIntentsExtractedEntityBusinessMembershipCard *)self underName];
-    [v3 setObject:v5 forKeyedSubscript:@"underName"];
+    underName = [(CCAppIntentsExtractedEntityBusinessMembershipCard *)self underName];
+    [v3 setObject:underName forKeyedSubscript:@"underName"];
   }
 
   if (self->_number)
   {
-    v6 = [(CCAppIntentsExtractedEntityBusinessMembershipCard *)self number];
-    [v3 setObject:v6 forKeyedSubscript:@"number"];
+    number = [(CCAppIntentsExtractedEntityBusinessMembershipCard *)self number];
+    [v3 setObject:number forKeyedSubscript:@"number"];
   }
 
   if (self->_membershipType)
   {
-    v7 = [(CCAppIntentsExtractedEntityBusinessMembershipCard *)self membershipType];
-    [v3 setObject:v7 forKeyedSubscript:@"membershipType"];
+    membershipType = [(CCAppIntentsExtractedEntityBusinessMembershipCard *)self membershipType];
+    [v3 setObject:membershipType forKeyedSubscript:@"membershipType"];
   }
 
   if (self->_issueDate)
   {
-    v8 = [(CCAppIntentsExtractedEntityBusinessMembershipCard *)self issueDate];
-    [v3 setObject:v8 forKeyedSubscript:@"issueDate"];
+    issueDate = [(CCAppIntentsExtractedEntityBusinessMembershipCard *)self issueDate];
+    [v3 setObject:issueDate forKeyedSubscript:@"issueDate"];
   }
 
   if (self->_expirationDate)
   {
-    v9 = [(CCAppIntentsExtractedEntityBusinessMembershipCard *)self expirationDate];
-    [v3 setObject:v9 forKeyedSubscript:@"expirationDate"];
+    expirationDate = [(CCAppIntentsExtractedEntityBusinessMembershipCard *)self expirationDate];
+    [v3 setObject:expirationDate forKeyedSubscript:@"expirationDate"];
   }
 
   if (self->_issuedBy)
   {
-    v10 = [(CCAppIntentsExtractedEntityBusinessMembershipCard *)self issuedBy];
-    [v3 setObject:v10 forKeyedSubscript:@"issuedBy"];
+    issuedBy = [(CCAppIntentsExtractedEntityBusinessMembershipCard *)self issuedBy];
+    [v3 setObject:issuedBy forKeyedSubscript:@"issuedBy"];
   }
 
   if (self->_eventSubType)
   {
-    v11 = [(CCAppIntentsExtractedEntityBusinessMembershipCard *)self eventSubType];
-    [v3 setObject:v11 forKeyedSubscript:@"eventSubType"];
+    eventSubType = [(CCAppIntentsExtractedEntityBusinessMembershipCard *)self eventSubType];
+    [v3 setObject:eventSubType forKeyedSubscript:@"eventSubType"];
   }
 
   v12 = [v3 copy];
@@ -105,58 +105,58 @@
   return v12;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v14 = a3;
+  blockCopy = block;
   if (self->_provider)
   {
     v5 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27494 stringValue:self->_provider];
-    v14[2](v14, v5);
+    blockCopy[2](blockCopy, v5);
   }
 
   if (self->_underName)
   {
     v6 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27495 stringValue:self->_underName];
-    v14[2](v14, v6);
+    blockCopy[2](blockCopy, v6);
   }
 
   if (self->_number)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27496 stringValue:self->_number];
-    v14[2](v14, v7);
+    blockCopy[2](blockCopy, v7);
   }
 
   if (self->_membershipType)
   {
     v8 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27497 stringValue:self->_membershipType];
-    v14[2](v14, v8);
+    blockCopy[2](blockCopy, v8);
   }
 
   if (self->_issueDate)
   {
     v9 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27498 stringValue:self->_issueDate];
-    v14[2](v14, v9);
+    blockCopy[2](blockCopy, v9);
   }
 
   if (self->_expirationDate)
   {
     v10 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27499 stringValue:self->_expirationDate];
-    v14[2](v14, v10);
+    blockCopy[2](blockCopy, v10);
   }
 
   if (self->_issuedBy)
   {
     v11 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27500 stringValue:self->_issuedBy];
-    v14[2](v14, v11);
+    blockCopy[2](blockCopy, v11);
   }
 
-  v12 = v14;
+  v12 = blockCopy;
   if (self->_eventSubType)
   {
     v13 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27501 stringValue:self->_eventSubType];
-    v14[2](v14, v13);
+    blockCopy[2](blockCopy, v13);
 
-    v12 = v14;
+    v12 = blockCopy;
   }
 }
 
@@ -216,10 +216,10 @@
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v5];
+  dataCopy = data;
+  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v7 = MEMORY[0x1E6993AB8];
   v8 = MEMORY[0x1E6993AB0];
   v9 = MEMORY[0x1E6993AA8];
@@ -431,22 +431,22 @@ LABEL_53:
   return v32;
 }
 
-- (CCAppIntentsExtractedEntityBusinessMembershipCard)initWithProvider:(id)a3 underName:(id)a4 number:(id)a5 membershipType:(id)a6 issueDate:(id)a7 expirationDate:(id)a8 issuedBy:(id)a9 eventSubType:(id)a10 error:(id *)a11
+- (CCAppIntentsExtractedEntityBusinessMembershipCard)initWithProvider:(id)provider underName:(id)name number:(id)number membershipType:(id)type issueDate:(id)date expirationDate:(id)expirationDate issuedBy:(id)by eventSubType:(id)self0 error:(id *)self1
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v44 = a8;
-  v43 = a9;
-  v42 = a10;
+  providerCopy = provider;
+  nameCopy = name;
+  numberCopy = number;
+  typeCopy = type;
+  dateCopy = date;
+  expirationDateCopy = expirationDate;
+  byCopy = by;
+  subTypeCopy = subType;
   v21 = objc_opt_new();
   v22 = 0x1E696A000uLL;
-  if (!v16)
+  if (!providerCopy)
   {
     v24 = 0;
-    if (!v17)
+    if (!nameCopy)
     {
       goto LABEL_4;
     }
@@ -467,14 +467,14 @@ LABEL_29:
 
     CCPBDataWriterWriteStringField();
     v22 = 0x1E696A000uLL;
-    if (v18)
+    if (numberCopy)
     {
       goto LABEL_5;
     }
 
 LABEL_14:
     v24 = v25;
-    if (!v19)
+    if (!typeCopy)
     {
       goto LABEL_7;
     }
@@ -491,14 +491,14 @@ LABEL_14:
   }
 
   CCPBDataWriterWriteStringField();
-  if (v17)
+  if (nameCopy)
   {
     goto LABEL_12;
   }
 
 LABEL_4:
   v25 = v24;
-  if (!v18)
+  if (!numberCopy)
   {
     goto LABEL_14;
   }
@@ -515,11 +515,11 @@ LABEL_5:
 
   CCPBDataWriterWriteStringField();
   v22 = 0x1E696A000uLL;
-  if (!v19)
+  if (!typeCopy)
   {
 LABEL_7:
     v25 = v24;
-    if (v20)
+    if (dateCopy)
     {
       goto LABEL_8;
     }
@@ -539,7 +539,7 @@ LABEL_15:
 
   CCPBDataWriterWriteStringField();
   v22 = 0x1E696A000uLL;
-  if (v20)
+  if (dateCopy)
   {
 LABEL_8:
     objc_opt_class();
@@ -553,7 +553,7 @@ LABEL_8:
 
     CCPBDataWriterWriteStringField();
     v22 = 0x1E696A000;
-    if (!v44)
+    if (!expirationDateCopy)
     {
       goto LABEL_10;
     }
@@ -563,7 +563,7 @@ LABEL_8:
 
 LABEL_17:
   v24 = v25;
-  if (!v44)
+  if (!expirationDateCopy)
   {
 LABEL_10:
     v25 = v24;
@@ -584,7 +584,7 @@ LABEL_18:
   CCPBDataWriterWriteStringField();
   v22 = 0x1E696A000uLL;
 LABEL_20:
-  if (v43)
+  if (byCopy)
   {
     v32 = *(v22 + 3776);
     objc_opt_class();
@@ -602,13 +602,13 @@ LABEL_23:
     CCSetError();
     v34 = 0;
 LABEL_30:
-    v38 = self;
+    selfCopy = self;
     goto LABEL_31;
   }
 
   v24 = v25;
 LABEL_25:
-  if (v42)
+  if (subTypeCopy)
   {
     v35 = *(v22 + 3776);
     objc_opt_class();
@@ -626,10 +626,10 @@ LABEL_25:
   }
 
 LABEL_28:
-  v37 = [v21 immutableData];
-  v34 = [v41 initWithData:v37 error:a11];
+  immutableData = [v21 immutableData];
+  v34 = [v41 initWithData:immutableData error:error];
 
-  v38 = v34;
+  selfCopy = v34;
 LABEL_31:
 
   return v34;

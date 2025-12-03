@@ -1,8 +1,8 @@
 @interface FAMemberPhotoRequest404Cache
-- (BOOL)shouldAllowRequestFor:(id)a3 cacheDuration:(int64_t)a4;
+- (BOOL)shouldAllowRequestFor:(id)for cacheDuration:(int64_t)duration;
 - (FAMemberPhotoRequest404Cache)init;
-- (id)getLast404ResponseFor:(id)a3;
-- (void)save404ResponseFor:(id)a3;
+- (id)getLast404ResponseFor:(id)for;
+- (void)save404ResponseFor:(id)for;
 @end
 
 @implementation FAMemberPhotoRequest404Cache
@@ -21,24 +21,24 @@
   v10 = *(v8 + 52);
   swift_allocObject();
   *(&self->super.isa + v7) = JSONDecoder.init()();
-  v11 = [objc_opt_self() standardUserDefaults];
-  *(&self->super.isa + OBJC_IVAR___FAMemberPhotoRequest404Cache_persistence) = v11;
+  standardUserDefaults = [objc_opt_self() standardUserDefaults];
+  *(&self->super.isa + OBJC_IVAR___FAMemberPhotoRequest404Cache_persistence) = standardUserDefaults;
   v13.receiver = self;
   v13.super_class = type metadata accessor for MemberPhotoRequest404Cache();
   return [(FAMemberPhotoRequest404Cache *)&v13 init];
 }
 
-- (void)save404ResponseFor:(id)a3
+- (void)save404ResponseFor:(id)for
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8._countAndFlagsBits = v4;
   v8._object = v6;
   MemberPhotoRequest404Cache.save404Response(for:)(v8);
 }
 
-- (id)getLast404ResponseFor:(id)a3
+- (id)getLast404ResponseFor:(id)for
 {
   v4 = sub_100022F18(&qword_1000B89A8, &qword_10008CE90);
   v5 = *(*(v4 - 8) + 64);
@@ -46,7 +46,7 @@
   v8 = &v19 - v7;
   v9 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v11 = v10;
-  v12 = self;
+  selfCopy = self;
   MemberPhotoRequest404Cache.getLast404Response(for:)(v9, v11, v8);
 
   v13 = type metadata accessor for Date();
@@ -63,16 +63,16 @@
   return v16;
 }
 
-- (BOOL)shouldAllowRequestFor:(id)a3 cacheDuration:(int64_t)a4
+- (BOOL)shouldAllowRequestFor:(id)for cacheDuration:(int64_t)duration
 {
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
-  v9 = self;
+  selfCopy = self;
   v10._countAndFlagsBits = v6;
   v10._object = v8;
-  LOBYTE(a4) = MemberPhotoRequest404Cache.shouldAllowRequest(for:cacheDuration:)(v10, a4);
+  LOBYTE(duration) = MemberPhotoRequest404Cache.shouldAllowRequest(for:cacheDuration:)(v10, duration);
 
-  return a4 & 1;
+  return duration & 1;
 }
 
 @end

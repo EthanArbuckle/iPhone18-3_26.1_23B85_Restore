@@ -1,21 +1,21 @@
 @interface SUUIParallaxImageView
 - (CGSize)imageSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SUUIParallaxImageView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SUUIParallaxImageView)initWithFrame:(CGRect)frame;
 - (void)_updateInnerImageView;
-- (void)setFrame:(CGRect)a3;
-- (void)setImagePadding:(UIEdgeInsets)a3;
-- (void)setImageSize:(CGSize)a3;
+- (void)setFrame:(CGRect)frame;
+- (void)setImagePadding:(UIEdgeInsets)padding;
+- (void)setImageSize:(CGSize)size;
 - (void)updateForChangedDistanceFromVanishingPoint;
 @end
 
 @implementation SUUIParallaxImageView
 
-- (SUUIParallaxImageView)initWithFrame:(CGRect)a3
+- (SUUIParallaxImageView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = SUUIParallaxImageView;
-  v3 = [(SUUIParallaxImageView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUUIParallaxImageView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [SUUIImageView alloc];
@@ -31,15 +31,15 @@
   return v3;
 }
 
-- (void)setImagePadding:(UIEdgeInsets)a3
+- (void)setImagePadding:(UIEdgeInsets)padding
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = padding.top;
+  v3.f64[1] = padding.left;
+  v4.f64[0] = padding.bottom;
+  v4.f64[1] = padding.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_imagePadding.top), vceqq_f64(v4, *&self->_imagePadding.bottom)))) & 1) == 0)
   {
-    self->_imagePadding = a3;
+    self->_imagePadding = padding;
     [(SUUIParallaxImageView *)self _updateInnerImageView];
 
     [(SUUIParallaxImageView *)self setNeedsLayout];
@@ -55,11 +55,11 @@
   return result;
 }
 
-- (void)setImageSize:(CGSize)a3
+- (void)setImageSize:(CGSize)size
 {
-  if (a3.width != self->_imageSize.width || a3.height != self->_imageSize.height)
+  if (size.width != self->_imageSize.width || size.height != self->_imageSize.height)
   {
-    self->_imageSize = a3;
+    self->_imageSize = size;
     [(SUUIParallaxImageView *)self _updateInnerImageView];
 
     [(SUUIParallaxImageView *)self setNeedsLayout];
@@ -71,17 +71,17 @@
   [(SUUIParallaxImageView *)self frame];
   v4 = v3;
   v6 = v5;
-  v7 = [(SUUIParallaxImageView *)self window];
-  [(SUUIParallaxImageView *)self convertPoint:v7 toView:v4, v6];
+  window = [(SUUIParallaxImageView *)self window];
+  [(SUUIParallaxImageView *)self convertPoint:window toView:v4, v6];
   v9 = v8;
   v11 = v10;
 
-  v12 = [(SUUIParallaxImageView *)self window];
-  [v12 frame];
+  window2 = [(SUUIParallaxImageView *)self window];
+  [window2 frame];
   v13 = v9 / CGRectGetWidth(v30);
 
-  v14 = [(SUUIParallaxImageView *)self window];
-  [v14 frame];
+  window3 = [(SUUIParallaxImageView *)self window];
+  [window3 frame];
   v15 = (v11 + -64.0) / (CGRectGetHeight(v31) + -128.0);
 
   v16 = 1.0;
@@ -140,12 +140,12 @@
   [(SUUIImageView *)v25 setTransform:v26];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(SUUIParallaxImageView *)self frame];
   v14.origin.x = v8;
   v14.origin.y = v9;
@@ -165,7 +165,7 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   width = self->_imageSize.width;
   height = self->_imageSize.height;

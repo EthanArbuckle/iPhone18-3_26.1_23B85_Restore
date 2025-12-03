@@ -1,19 +1,19 @@
 @interface CKDPRecordFieldValueEncryptedValue
-- (BOOL)isEqual:(id)a3;
-- (double)doubleListValueAtIndex:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (double)doubleListValueAtIndex:(unint64_t)index;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int64_t)signedListValueAtIndex:(unint64_t)a3;
+- (int64_t)signedListValueAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)addDateListValue:(id)a3;
-- (void)addLocationListValue:(id)a3;
-- (void)addStringListValue:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addDateListValue:(id)value;
+- (void)addLocationListValue:(id)value;
+- (void)addStringListValue:(id)value;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasSignedValue:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasSignedValue:(BOOL)value;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPRecordFieldValueEncryptedValue
@@ -27,9 +27,9 @@
   [(CKDPRecordFieldValueEncryptedValue *)&v3 dealloc];
 }
 
-- (void)setHasSignedValue:(BOOL)a3
+- (void)setHasSignedValue:(BOOL)value
 {
-  if (a3)
+  if (value)
   {
     v3 = 2;
   }
@@ -42,90 +42,90 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int64_t)signedListValueAtIndex:(unint64_t)a3
+- (int64_t)signedListValueAtIndex:(unint64_t)index
 {
   p_signedListValues = &self->_signedListValues;
   count = self->_signedListValues.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695DA20];
-    v8 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], a2, @"idx (%lu) is out of range (%lu)", a3, count);
+    v8 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], a2, @"idx (%lu) is out of range (%lu)", index, count);
     v10 = objc_msgSend_exceptionWithName_reason_userInfo_(v6, v9, v7, v8, 0);
     objc_msgSend_raise(v10, v11, v12);
   }
 
-  return p_signedListValues->list[a3];
+  return p_signedListValues->list[index];
 }
 
-- (double)doubleListValueAtIndex:(unint64_t)a3
+- (double)doubleListValueAtIndex:(unint64_t)index
 {
   p_doubleListValues = &self->_doubleListValues;
   count = self->_doubleListValues.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695DA20];
-    v8 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], a2, @"idx (%lu) is out of range (%lu)", a3, count);
+    v8 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], a2, @"idx (%lu) is out of range (%lu)", index, count);
     v10 = objc_msgSend_exceptionWithName_reason_userInfo_(v6, v9, v7, v8, 0);
     objc_msgSend_raise(v10, v11, v12);
   }
 
-  return p_doubleListValues->list[a3];
+  return p_doubleListValues->list[index];
 }
 
-- (void)addDateListValue:(id)a3
+- (void)addDateListValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   dateListValues = self->_dateListValues;
-  v8 = v4;
+  v8 = valueCopy;
   if (!dateListValues)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_dateListValues;
     self->_dateListValues = v6;
 
-    v4 = v8;
+    valueCopy = v8;
     dateListValues = self->_dateListValues;
   }
 
-  objc_msgSend_addObject_(dateListValues, v4, v4);
+  objc_msgSend_addObject_(dateListValues, valueCopy, valueCopy);
 }
 
-- (void)addStringListValue:(id)a3
+- (void)addStringListValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   stringListValues = self->_stringListValues;
-  v8 = v4;
+  v8 = valueCopy;
   if (!stringListValues)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_stringListValues;
     self->_stringListValues = v6;
 
-    v4 = v8;
+    valueCopy = v8;
     stringListValues = self->_stringListValues;
   }
 
-  objc_msgSend_addObject_(stringListValues, v4, v4);
+  objc_msgSend_addObject_(stringListValues, valueCopy, valueCopy);
 }
 
-- (void)addLocationListValue:(id)a3
+- (void)addLocationListValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   locationListValues = self->_locationListValues;
-  v8 = v4;
+  v8 = valueCopy;
   if (!locationListValues)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_locationListValues;
     self->_locationListValues = v6;
 
-    v4 = v8;
+    valueCopy = v8;
     locationListValues = self->_locationListValues;
   }
 
-  objc_msgSend_addObject_(locationListValues, v4, v4);
+  objc_msgSend_addObject_(locationListValues, valueCopy, valueCopy);
 }
 
 - (id)description
@@ -277,10 +277,10 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v52 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -431,28 +431,28 @@
   v36 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[8] = self->_signedValue;
-    *(v4 + 128) |= 2u;
+    toCopy[8] = self->_signedValue;
+    *(toCopy + 128) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    v4[7] = *&self->_ckDoubleValue;
-    *(v4 + 128) |= 1u;
+    toCopy[7] = *&self->_ckDoubleValue;
+    *(toCopy + 128) |= 1u;
   }
 
   dateValue = self->_dateValue;
-  v57 = v4;
+  v57 = toCopy;
   if (dateValue)
   {
-    objc_msgSend_setDateValue_(v4, v5, dateValue);
+    objc_msgSend_setDateValue_(toCopy, v5, dateValue);
   }
 
   stringValue = self->_stringValue;
@@ -549,11 +549,11 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v69 = *MEMORY[0x1E69E9840];
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
   v12 = v10;
   has = self->_has;
@@ -570,19 +570,19 @@
     *(v10 + 128) |= 1u;
   }
 
-  v14 = objc_msgSend_copyWithZone_(self->_dateValue, v11, a3);
+  v14 = objc_msgSend_copyWithZone_(self->_dateValue, v11, zone);
   v15 = v12[10];
   v12[10] = v14;
 
-  v17 = objc_msgSend_copyWithZone_(self->_stringValue, v16, a3);
+  v17 = objc_msgSend_copyWithZone_(self->_stringValue, v16, zone);
   v18 = v12[15];
   v12[15] = v17;
 
-  v20 = objc_msgSend_copyWithZone_(self->_locationValue, v19, a3);
+  v20 = objc_msgSend_copyWithZone_(self->_locationValue, v19, zone);
   v21 = v12[12];
   v12[12] = v20;
 
-  v23 = objc_msgSend_copyWithZone_(self->_referenceValue, v22, a3);
+  v23 = objc_msgSend_copyWithZone_(self->_referenceValue, v22, zone);
   v24 = v12[13];
   v12[13] = v23;
 
@@ -607,7 +607,7 @@
           objc_enumerationMutation(v25);
         }
 
-        v32 = objc_msgSend_copyWithZone_(*(*(&v62 + 1) + 8 * i), v28, a3);
+        v32 = objc_msgSend_copyWithZone_(*(*(&v62 + 1) + 8 * i), v28, zone);
         objc_msgSend_addDateListValue_(v12, v33, v32);
       }
 
@@ -636,7 +636,7 @@
           objc_enumerationMutation(v34);
         }
 
-        v41 = objc_msgSend_copyWithZone_(*(*(&v58 + 1) + 8 * j), v37, a3);
+        v41 = objc_msgSend_copyWithZone_(*(*(&v58 + 1) + 8 * j), v37, zone);
         objc_msgSend_addStringListValue_(v12, v42, v41);
       }
 
@@ -665,7 +665,7 @@
           objc_enumerationMutation(v43);
         }
 
-        v50 = objc_msgSend_copyWithZone_(*(*(&v54 + 1) + 8 * k), v46, a3, v54);
+        v50 = objc_msgSend_copyWithZone_(*(*(&v54 + 1) + 8 * k), v46, zone, v54);
         objc_msgSend_addLocationListValue_(v12, v51, v50);
       }
 
@@ -679,25 +679,25 @@
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_28;
   }
 
-  v8 = *(v4 + 128);
+  v8 = *(equalCopy + 128);
   if ((*&self->_has & 2) != 0)
   {
-    if ((v4[16] & 2) == 0 || self->_signedValue != v4[8])
+    if ((equalCopy[16] & 2) == 0 || self->_signedValue != equalCopy[8])
     {
       goto LABEL_28;
     }
   }
 
-  else if ((v4[16] & 2) != 0)
+  else if ((equalCopy[16] & 2) != 0)
   {
 LABEL_28:
     isEqual = 0;
@@ -706,26 +706,26 @@ LABEL_28:
 
   if (*&self->_has)
   {
-    if ((v4[16] & 1) == 0 || self->_ckDoubleValue != *(v4 + 7))
+    if ((equalCopy[16] & 1) == 0 || self->_ckDoubleValue != *(equalCopy + 7))
     {
       goto LABEL_28;
     }
   }
 
-  else if (v4[16])
+  else if (equalCopy[16])
   {
     goto LABEL_28;
   }
 
   dateValue = self->_dateValue;
-  v10 = v4[10];
+  v10 = equalCopy[10];
   if (dateValue | v10 && !objc_msgSend_isEqual_(dateValue, v7, v10))
   {
     goto LABEL_28;
   }
 
   stringValue = self->_stringValue;
-  v12 = v4[15];
+  v12 = equalCopy[15];
   if (stringValue | v12)
   {
     if (!objc_msgSend_isEqual_(stringValue, v7, v12))
@@ -735,7 +735,7 @@ LABEL_28:
   }
 
   locationValue = self->_locationValue;
-  v14 = v4[12];
+  v14 = equalCopy[12];
   if (locationValue | v14)
   {
     if (!objc_msgSend_isEqual_(locationValue, v7, v14))
@@ -745,7 +745,7 @@ LABEL_28:
   }
 
   referenceValue = self->_referenceValue;
-  v16 = v4[13];
+  v16 = equalCopy[13];
   if (referenceValue | v16)
   {
     if (!objc_msgSend_isEqual_(referenceValue, v7, v16))
@@ -765,7 +765,7 @@ LABEL_28:
   }
 
   dateListValues = self->_dateListValues;
-  v19 = v4[9];
+  v19 = equalCopy[9];
   if (dateListValues | v19)
   {
     if (!objc_msgSend_isEqual_(dateListValues, v17, v19))
@@ -775,7 +775,7 @@ LABEL_28:
   }
 
   stringListValues = self->_stringListValues;
-  v21 = v4[14];
+  v21 = equalCopy[14];
   if (stringListValues | v21)
   {
     if (!objc_msgSend_isEqual_(stringListValues, v17, v21))
@@ -785,7 +785,7 @@ LABEL_28:
   }
 
   locationListValues = self->_locationListValues;
-  v23 = v4[11];
+  v23 = equalCopy[11];
   if (locationListValues | v23)
   {
     isEqual = objc_msgSend_isEqual_(locationListValues, v17, v23);
@@ -860,22 +860,22 @@ LABEL_9:
   return v22 ^ v28 ^ objc_msgSend_hash(self->_locationListValues, v29, v30);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v65 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v6 = v4;
-  v7 = *(v4 + 128);
+  fromCopy = from;
+  v6 = fromCopy;
+  v7 = *(fromCopy + 128);
   if ((v7 & 2) != 0)
   {
-    self->_signedValue = *(v4 + 8);
+    self->_signedValue = *(fromCopy + 8);
     *&self->_has |= 2u;
-    v7 = *(v4 + 128);
+    v7 = *(fromCopy + 128);
   }
 
   if (v7)
   {
-    self->_ckDoubleValue = *(v4 + 7);
+    self->_ckDoubleValue = *(fromCopy + 7);
     *&self->_has |= 1u;
   }
 

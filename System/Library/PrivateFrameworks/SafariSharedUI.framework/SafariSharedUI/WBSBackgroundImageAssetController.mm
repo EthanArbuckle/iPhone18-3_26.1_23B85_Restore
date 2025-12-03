@@ -1,20 +1,20 @@
 @interface WBSBackgroundImageAssetController
 + (id)mobileAssetBackgroundImageNamesOnDisk;
-- (BOOL)_saveAssetAtURL:(id)a3 toURL:(id)a4;
+- (BOOL)_saveAssetAtURL:(id)l toURL:(id)rL;
 - (NSArray)fileNames;
 - (WBSBackgroundImageAssetController)init;
-- (WBSBackgroundImageAssetController)initWithMobileAssetController:(id)a3;
+- (WBSBackgroundImageAssetController)initWithMobileAssetController:(id)controller;
 - (WBSBackgroundImageAssetControllerDelegate)delegate;
-- (int64_t)downloadStateForFileName:(id)a3;
+- (int64_t)downloadStateForFileName:(id)name;
 - (void)_removePlaceholderMobileAssetIfNeeded;
 - (void)_sendBackgroundImageThumbnailAssetsToDelegateIfPossible;
-- (void)_sendBackgroundImageThumbnailAssetsToDelegateIfPossible:(id)a3;
-- (void)downloadMobileAssetBackgroundImage:(id)a3 completionHandler:(id)a4;
-- (void)mobileAssetController:(id)a3 didBecomeAvailable:(id)a4 withAttributes:(id)a5;
-- (void)mobileAssetController:(id)a3 didFailCatalogDownload:(id)a4;
-- (void)mobileAssetController:(id)a3 didFailDownload:(id)a4;
-- (void)mobileAssetController:(id)a3 didFailRetrieve:(id)a4;
-- (void)setDelegate:(id)a3;
+- (void)_sendBackgroundImageThumbnailAssetsToDelegateIfPossible:(id)possible;
+- (void)downloadMobileAssetBackgroundImage:(id)image completionHandler:(id)handler;
+- (void)mobileAssetController:(id)controller didBecomeAvailable:(id)available withAttributes:(id)attributes;
+- (void)mobileAssetController:(id)controller didFailCatalogDownload:(id)download;
+- (void)mobileAssetController:(id)controller didFailDownload:(id)download;
+- (void)mobileAssetController:(id)controller didFailRetrieve:(id)retrieve;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation WBSBackgroundImageAssetController
@@ -22,21 +22,21 @@
 - (WBSBackgroundImageAssetController)init
 {
   v3 = [WBSMobileAssetController alloc];
-  v4 = [objc_opt_class() mobileAssetType];
-  v5 = [(WBSMobileAssetController *)v3 initWithMobileAssetType:v4 updateInterval:604800.0 minimumDelay:180.0];
+  mobileAssetType = [objc_opt_class() mobileAssetType];
+  v5 = [(WBSMobileAssetController *)v3 initWithMobileAssetType:mobileAssetType updateInterval:604800.0 minimumDelay:180.0];
 
   if (v5)
   {
     self = [(WBSBackgroundImageAssetController *)self initWithMobileAssetController:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (void)_removePlaceholderMobileAssetIfNeeded
@@ -50,14 +50,14 @@
 {
   v17 = *MEMORY[0x1E69E9840];
   v2 = [MEMORY[0x1E695DFA8] set];
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [v3 safari_startPageBackgroundImageMobileAssetFolderURL];
-  v5 = [v4 path];
-  v6 = [v3 contentsOfDirectoryAtPath:v5 error:0];
+  safari_startPageBackgroundImageMobileAssetFolderURL = [defaultManager safari_startPageBackgroundImageMobileAssetFolderURL];
+  path = [safari_startPageBackgroundImageMobileAssetFolderURL path];
+  v6 = [defaultManager contentsOfDirectoryAtPath:path error:0];
 
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
@@ -86,10 +86,10 @@
   return v10;
 }
 
-- (WBSBackgroundImageAssetController)initWithMobileAssetController:(id)a3
+- (WBSBackgroundImageAssetController)initWithMobileAssetController:(id)controller
 {
   v55[1] = *MEMORY[0x1E69E9840];
-  v42 = a3;
+  controllerCopy = controller;
   v51.receiver = self;
   v51.super_class = WBSBackgroundImageAssetController;
   v5 = [(WBSBackgroundImageAssetController *)&v51 init];
@@ -97,37 +97,37 @@
   {
     v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.Safari.SafariSharedUI.WBSBackgroundImageAssetController.%@.%p._queue", objc_opt_class(), v5];
     v7 = v6;
-    v8 = [v6 UTF8String];
+    uTF8String = [v6 UTF8String];
     v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v10 = dispatch_queue_create(v8, v9);
+    v10 = dispatch_queue_create(uTF8String, v9);
     queue = v5->_queue;
     v5->_queue = v10;
 
-    objc_storeStrong(&v5->_assetController, a3);
+    objc_storeStrong(&v5->_assetController, controller);
     [(WBSMobileAssetControllerProtocol *)v5->_assetController setDelegate:v5];
-    v12 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     assetURLToAttributes = v5->_assetURLToAttributes;
-    v5->_assetURLToAttributes = v12;
+    v5->_assetURLToAttributes = dictionary;
 
-    v14 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     imageNamesToDownloadStates = v5->_imageNamesToDownloadStates;
-    v5->_imageNamesToDownloadStates = v14;
+    v5->_imageNamesToDownloadStates = dictionary2;
 
-    v16 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     fileNames = v5->_fileNames;
-    v5->_fileNames = v16;
+    v5->_fileNames = array;
 
     if ([MEMORY[0x1E69C8880] isInternalInstall])
     {
       [(WBSBackgroundImageAssetController *)v5 _removePlaceholderMobileAssetIfNeeded];
     }
 
-    v18 = [MEMORY[0x1E696AC08] defaultManager];
-    v19 = [v18 safari_startPageBackgroundImageThumbnailMobileAssetFolderURL];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    safari_startPageBackgroundImageThumbnailMobileAssetFolderURL = [defaultManager safari_startPageBackgroundImageThumbnailMobileAssetFolderURL];
     v20 = *MEMORY[0x1E695DAA0];
     v55[0] = *MEMORY[0x1E695DAA0];
     v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v55 count:1];
-    v22 = [v18 enumeratorAtURL:v19 includingPropertiesForKeys:v21 options:5 errorHandler:0];
+    v22 = [defaultManager enumeratorAtURL:safari_startPageBackgroundImageThumbnailMobileAssetFolderURL includingPropertiesForKeys:v21 options:5 errorHandler:0];
 
     v49 = 0u;
     v50 = 0u;
@@ -148,11 +148,11 @@
           }
 
           v27 = *(*(&v47 + 1) + 8 * i);
-          if ([v18 safari_imageExistsAtFileURL:v27])
+          if ([defaultManager safari_imageExistsAtFileURL:v27])
           {
             v28 = v5->_fileNames;
-            v29 = [v27 lastPathComponent];
-            [(NSMutableArray *)v28 addObject:v29];
+            lastPathComponent = [v27 lastPathComponent];
+            [(NSMutableArray *)v28 addObject:lastPathComponent];
           }
         }
 
@@ -162,10 +162,10 @@
       while (v24);
     }
 
-    v30 = [v18 safari_startPageBackgroundImageMobileAssetFolderURL];
+    safari_startPageBackgroundImageMobileAssetFolderURL = [defaultManager safari_startPageBackgroundImageMobileAssetFolderURL];
     v53 = v20;
     v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v53 count:1];
-    v32 = [v18 enumeratorAtURL:v30 includingPropertiesForKeys:v31 options:5 errorHandler:0];
+    v32 = [defaultManager enumeratorAtURL:safari_startPageBackgroundImageMobileAssetFolderURL includingPropertiesForKeys:v31 options:5 errorHandler:0];
 
     v45 = 0u;
     v46 = 0u;
@@ -186,11 +186,11 @@
           }
 
           v37 = *(*(&v43 + 1) + 8 * j);
-          if ([v18 safari_imageExistsAtFileURL:v37])
+          if ([defaultManager safari_imageExistsAtFileURL:v37])
           {
             v38 = v5->_imageNamesToDownloadStates;
-            v39 = [v37 lastPathComponent];
-            [(NSMutableDictionary *)v38 setObject:&unk_1F466C8E8 forKeyedSubscript:v39];
+            lastPathComponent2 = [v37 lastPathComponent];
+            [(NSMutableDictionary *)v38 setObject:&unk_1F466C8E8 forKeyedSubscript:lastPathComponent2];
           }
         }
 
@@ -206,22 +206,22 @@
   return v5;
 }
 
-- (void)downloadMobileAssetBackgroundImage:(id)a3 completionHandler:(id)a4
+- (void)downloadMobileAssetBackgroundImage:(id)image completionHandler:(id)handler
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length])
+  imageCopy = image;
+  handlerCopy = handler;
+  if ([imageCopy length])
   {
-    [(NSMutableDictionary *)self->_imageNamesToDownloadStates setObject:&unk_1F466C900 forKeyedSubscript:v6];
+    [(NSMutableDictionary *)self->_imageNamesToDownloadStates setObject:&unk_1F466C900 forKeyedSubscript:imageCopy];
     assetController = self->_assetController;
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __90__WBSBackgroundImageAssetController_downloadMobileAssetBackgroundImage_completionHandler___block_invoke;
     v13[3] = &unk_1E8282E50;
-    v14 = v6;
-    v15 = self;
-    v16 = v7;
+    v14 = imageCopy;
+    selfCopy = self;
+    v16 = handlerCopy;
     [(WBSMobileAssetControllerProtocol *)assetController downloadMobileAssetBackgroundImage:v14 completionHandler:v13];
 
     v9 = v14;
@@ -235,7 +235,7 @@
     v18[0] = v9;
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:&v17 count:1];
     v12 = [v10 errorWithDomain:@"com.apple.SafariSharedUI.BackgroundImageAsset.ErrorDomain" code:-1 userInfo:v11];
-    (*(v7 + 2))(v7, 0, v12);
+    (*(handlerCopy + 2))(handlerCopy, 0, v12);
   }
 }
 
@@ -274,20 +274,20 @@ void __90__WBSBackgroundImageAssetController_downloadMobileAssetBackgroundImage_
   (*(*(a1 + 48) + 16))();
 }
 
-- (int64_t)downloadStateForFileName:(id)a3
+- (int64_t)downloadStateForFileName:(id)name
 {
-  v3 = [(NSMutableDictionary *)self->_imageNamesToDownloadStates objectForKeyedSubscript:a3];
-  v4 = [v3 integerValue];
+  v3 = [(NSMutableDictionary *)self->_imageNamesToDownloadStates objectForKeyedSubscript:name];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 - (NSArray)fileNames
 {
   v2 = [(NSMutableArray *)self->_fileNames sortedArrayUsingSelector:sel_caseInsensitiveCompare_];
-  v3 = [v2 reverseObjectEnumerator];
-  v4 = [v3 allObjects];
-  v5 = [v4 copy];
+  reverseObjectEnumerator = [v2 reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
+  v5 = [allObjects copy];
 
   return v5;
 }
@@ -322,17 +322,17 @@ void __45__WBSBackgroundImageAssetController_delegate__block_invoke(uint64_t a1)
   *(v3 + 40) = WeakRetained;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __49__WBSBackgroundImageAssetController_setDelegate___block_invoke;
   v7[3] = &unk_1E8282EA0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_async(queue, v7);
 }
 
@@ -353,7 +353,7 @@ void __49__WBSBackgroundImageAssetController_setDelegate___block_invoke(uint64_t
   }
 }
 
-- (void)_sendBackgroundImageThumbnailAssetsToDelegateIfPossible:(id)a3
+- (void)_sendBackgroundImageThumbnailAssetsToDelegateIfPossible:(id)possible
 {
   if ([(NSMutableDictionary *)self->_assetURLToAttributes count])
   {
@@ -411,15 +411,15 @@ void __93__WBSBackgroundImageAssetController__sendBackgroundImageThumbnailAssets
   }
 }
 
-- (BOOL)_saveAssetAtURL:(id)a3 toURL:(id)a4
+- (BOOL)_saveAssetAtURL:(id)l toURL:(id)rL
 {
   v13[6] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  lCopy = l;
+  rLCopy = rL;
   MEMORY[0x1CCA512D0](v13, @"com.apple.Safari.SafariSharedUI.WBSBackgroundImageAssetController");
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v12 = 0;
-  v8 = [v7 safari_replaceItemAtURL:v6 withItemFromURL:v5 error:&v12];
+  v8 = [defaultManager safari_replaceItemAtURL:rLCopy withItemFromURL:lCopy error:&v12];
   v9 = v12;
   if ((v8 & 1) == 0)
   {
@@ -436,20 +436,20 @@ void __93__WBSBackgroundImageAssetController__sendBackgroundImageThumbnailAssets
   return v8;
 }
 
-- (void)mobileAssetController:(id)a3 didBecomeAvailable:(id)a4 withAttributes:(id)a5
+- (void)mobileAssetController:(id)controller didBecomeAvailable:(id)available withAttributes:(id)attributes
 {
-  v7 = a4;
-  v8 = a5;
+  availableCopy = available;
+  attributesCopy = attributes;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __93__WBSBackgroundImageAssetController_mobileAssetController_didBecomeAvailable_withAttributes___block_invoke;
   block[3] = &unk_1E8282EF0;
   block[4] = self;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = availableCopy;
+  v14 = attributesCopy;
+  v10 = attributesCopy;
+  v11 = availableCopy;
   dispatch_async(queue, block);
 }
 
@@ -461,49 +461,49 @@ uint64_t __93__WBSBackgroundImageAssetController_mobileAssetController_didBecome
   return [v2 _sendBackgroundImageThumbnailAssetsToDelegateIfPossible];
 }
 
-- (void)mobileAssetController:(id)a3 didFailCatalogDownload:(id)a4
+- (void)mobileAssetController:(id)controller didFailCatalogDownload:(id)download
 {
-  v5 = a4;
+  downloadCopy = download;
   v6 = WBS_LOG_CHANNEL_PREFIXMobileAsset();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    [v5 safari_privacyPreservingDescription];
+    [downloadCopy safari_privacyPreservingDescription];
     objc_claimAutoreleasedReturnValue();
     [WBSBackgroundImageAssetController mobileAssetController:didFailCatalogDownload:];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained backgroundImageAssetController:self didFailCatalogDownload:v5];
+  [WeakRetained backgroundImageAssetController:self didFailCatalogDownload:downloadCopy];
 }
 
-- (void)mobileAssetController:(id)a3 didFailDownload:(id)a4
+- (void)mobileAssetController:(id)controller didFailDownload:(id)download
 {
-  v5 = a4;
+  downloadCopy = download;
   v6 = WBS_LOG_CHANNEL_PREFIXMobileAsset();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    [v5 safari_privacyPreservingDescription];
+    [downloadCopy safari_privacyPreservingDescription];
     objc_claimAutoreleasedReturnValue();
     [WBSBackgroundImageAssetController mobileAssetController:didFailDownload:];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained backgroundImageAssetController:self didFailDownload:v5];
+  [WeakRetained backgroundImageAssetController:self didFailDownload:downloadCopy];
 }
 
-- (void)mobileAssetController:(id)a3 didFailRetrieve:(id)a4
+- (void)mobileAssetController:(id)controller didFailRetrieve:(id)retrieve
 {
-  v5 = a4;
+  retrieveCopy = retrieve;
   v6 = WBS_LOG_CHANNEL_PREFIXMobileAsset();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    [v5 safari_privacyPreservingDescription];
+    [retrieveCopy safari_privacyPreservingDescription];
     objc_claimAutoreleasedReturnValue();
     [WBSBackgroundImageAssetController mobileAssetController:didFailRetrieve:];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained backgroundImageAssetController:self didFailLoad:v5];
+  [WeakRetained backgroundImageAssetController:self didFailLoad:retrieveCopy];
 }
 
 - (void)_saveAssetAtURL:toURL:.cold.1()

@@ -1,6 +1,6 @@
 @interface DMDPowerAssertion
-+ (id)assertionForOperation:(id)a3;
-- (id)initForOperation:(id)a3;
++ (id)assertionForOperation:(id)operation;
+- (id)initForOperation:(id)operation;
 - (void)_release;
 - (void)_retain;
 - (void)dealloc;
@@ -10,12 +10,12 @@
 
 @implementation DMDPowerAssertion
 
-+ (id)assertionForOperation:(id)a3
++ (id)assertionForOperation:(id)operation
 {
-  if (a3)
+  if (operation)
   {
-    v4 = a3;
-    v5 = [[NSString alloc] initWithFormat:v4 arguments:&v9];
+    operationCopy = operation;
+    v5 = [[NSString alloc] initWithFormat:operationCopy arguments:&v9];
   }
 
   else
@@ -23,21 +23,21 @@
     v5 = @"unknown";
   }
 
-  v6 = [[a1 alloc] initForOperation:v5];
+  v6 = [[self alloc] initForOperation:v5];
 
   return v6;
 }
 
-- (id)initForOperation:(id)a3
+- (id)initForOperation:(id)operation
 {
-  v5 = a3;
+  operationCopy = operation;
   v12.receiver = self;
   v12.super_class = DMDPowerAssertion;
   v6 = [(DMDPowerAssertion *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_operation, a3);
+    objc_storeStrong(&v6->_operation, operation);
     v8 = _assertionQueue();
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -102,23 +102,23 @@
   qword_1000FF2B0 = v3 + 1;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(DMDPowerAssertion *)self operation];
+    operation = [(DMDPowerAssertion *)self operation];
     v10 = 138543362;
-    v11 = v4;
+    v11 = operation;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Beginning power assertion, operation: %{public}@", &v10, 0xCu);
   }
 
   v5 = +[DMDUserSwitchStakeholder sharedStakeholder];
-  v6 = [v5 inEDUMode];
+  inEDUMode = [v5 inEDUMode];
 
-  if (v6)
+  if (inEDUMode)
   {
-    v7 = [(DMDPowerAssertion *)self operation];
-    v8 = [UMUserSwitchBlockingTask taskWithName:@"DMDSwitchBlockingTask" reason:v7];
+    operation2 = [(DMDPowerAssertion *)self operation];
+    v8 = [UMUserSwitchBlockingTask taskWithName:@"DMDSwitchBlockingTask" reason:operation2];
     [(DMDPowerAssertion *)self setBlockingTask:v8];
 
-    v9 = [(DMDPowerAssertion *)self blockingTask];
-    [v9 begin];
+    blockingTask = [(DMDPowerAssertion *)self blockingTask];
+    [blockingTask begin];
   }
 }
 
@@ -131,19 +131,19 @@
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
-    v3 = [(DMDPowerAssertion *)self operation];
+    operation = [(DMDPowerAssertion *)self operation];
     v7 = 138543362;
-    v8 = v3;
+    v8 = operation;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Ending power assertion, operation: %{public}@", &v7, 0xCu);
   }
 
   v4 = +[DMDUserSwitchStakeholder sharedStakeholder];
-  v5 = [v4 inEDUMode];
+  inEDUMode = [v4 inEDUMode];
 
-  if (v5)
+  if (inEDUMode)
   {
-    v6 = [(DMDPowerAssertion *)self blockingTask];
-    [v6 end];
+    blockingTask = [(DMDPowerAssertion *)self blockingTask];
+    [blockingTask end];
   }
 }
 

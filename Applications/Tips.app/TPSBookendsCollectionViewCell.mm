@@ -1,69 +1,69 @@
 @interface TPSBookendsCollectionViewCell
-- (BOOL)setTip:(id)a3 withCellAppearance:(id)a4;
-- (TPSBookendsCollectionViewCell)initWithFrame:(CGRect)a3;
+- (BOOL)setTip:(id)tip withCellAppearance:(id)appearance;
+- (TPSBookendsCollectionViewCell)initWithFrame:(CGRect)frame;
 - (void)updateConstraints;
 @end
 
 @implementation TPSBookendsCollectionViewCell
 
-- (TPSBookendsCollectionViewCell)initWithFrame:(CGRect)a3
+- (TPSBookendsCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v34.receiver = self;
   v34.super_class = TPSBookendsCollectionViewCell;
-  v3 = [(TPSBaseTipCollectionViewCell *)&v34 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TPSBaseTipCollectionViewCell *)&v34 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[TPSAppearance defaultBackgroundColor];
     [(TPSBaseTipCollectionViewCell *)v3 setNoImageBackgroundColorOverride:v4];
 
-    v5 = [(TPSBaseTipCollectionViewCell *)v3 heroAssetView];
-    v6 = [(TPSBaseTipCollectionViewCell *)v3 titleLabel];
-    v7 = [(TPSBaseTipCollectionViewCell *)v3 contentScrollView];
-    v8 = [v5 topAnchor];
-    v9 = [v7 topAnchor];
-    v10 = [v8 constraintEqualToAnchor:v9];
+    heroAssetView = [(TPSBaseTipCollectionViewCell *)v3 heroAssetView];
+    titleLabel = [(TPSBaseTipCollectionViewCell *)v3 titleLabel];
+    contentScrollView = [(TPSBaseTipCollectionViewCell *)v3 contentScrollView];
+    topAnchor = [heroAssetView topAnchor];
+    topAnchor2 = [contentScrollView topAnchor];
+    v10 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v10 setActive:1];
 
-    v11 = [v5 widthAnchor];
-    v12 = [v11 constraintEqualToConstant:0.0];
+    widthAnchor = [heroAssetView widthAnchor];
+    v12 = [widthAnchor constraintEqualToConstant:0.0];
     heroAssetViewWidthConstraint = v3->_heroAssetViewWidthConstraint;
     v3->_heroAssetViewWidthConstraint = v12;
 
     [(NSLayoutConstraint *)v3->_heroAssetViewWidthConstraint setActive:1];
-    v14 = [v5 heightAnchor];
-    v15 = [v14 constraintEqualToConstant:0.0];
+    heightAnchor = [heroAssetView heightAnchor];
+    v15 = [heightAnchor constraintEqualToConstant:0.0];
     [(TPSBaseTipCollectionViewCell *)v3 setAssetViewHeightConstraint:v15];
 
-    v16 = [(TPSBaseTipCollectionViewCell *)v3 assetViewHeightConstraint];
-    [v16 setActive:1];
+    assetViewHeightConstraint = [(TPSBaseTipCollectionViewCell *)v3 assetViewHeightConstraint];
+    [assetViewHeightConstraint setActive:1];
 
-    v17 = [v5 centerXAnchor];
-    v18 = [v7 centerXAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18];
+    centerXAnchor = [heroAssetView centerXAnchor];
+    centerXAnchor2 = [contentScrollView centerXAnchor];
+    v19 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
 
     [v19 setActive:1];
     [(TPSBaseTipCollectionViewCell *)v3 setAssetViewLayoutGuideCenterXConstraint:v19];
     v20 = +[UIColor clearColor];
-    [v6 setBackgroundColor:v20];
+    [titleLabel setBackgroundColor:v20];
 
-    v21 = [v7 frameLayoutGuide];
-    v22 = [v6 centerXAnchor];
-    v23 = [v21 centerXAnchor];
-    v24 = [v22 constraintEqualToAnchor:v23];
+    frameLayoutGuide = [contentScrollView frameLayoutGuide];
+    centerXAnchor3 = [titleLabel centerXAnchor];
+    centerXAnchor4 = [frameLayoutGuide centerXAnchor];
+    v24 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     titleLabelCenterXConstraint = v3->_titleLabelCenterXConstraint;
     v3->_titleLabelCenterXConstraint = v24;
 
     [(NSLayoutConstraint *)v3->_titleLabelCenterXConstraint setActive:1];
-    v26 = [v6 widthAnchor];
-    v27 = [v21 widthAnchor];
-    v28 = [v26 constraintEqualToAnchor:v27];
+    widthAnchor2 = [titleLabel widthAnchor];
+    widthAnchor3 = [frameLayoutGuide widthAnchor];
+    v28 = [widthAnchor2 constraintEqualToAnchor:widthAnchor3];
     titleLabelWidthConstraint = v3->_titleLabelWidthConstraint;
     v3->_titleLabelWidthConstraint = v28;
 
     [(NSLayoutConstraint *)v3->_titleLabelWidthConstraint setActive:1];
-    v30 = [v6 topAnchor];
-    v31 = [v7 topAnchor];
-    v32 = [v30 constraintEqualToAnchor:v31 constant:40.0];
+    topAnchor3 = [titleLabel topAnchor];
+    topAnchor4 = [contentScrollView topAnchor];
+    v32 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:40.0];
     [v32 setActive:1];
 
     [(TPSBaseTipCollectionViewCell *)v3 updateFonts];
@@ -72,37 +72,37 @@
   return v3;
 }
 
-- (BOOL)setTip:(id)a3 withCellAppearance:(id)a4
+- (BOOL)setTip:(id)tip withCellAppearance:(id)appearance
 {
-  v6 = a3;
-  v7 = a4;
-  [v7 size];
+  tipCopy = tip;
+  appearanceCopy = appearance;
+  [appearanceCopy size];
   v9 = v8;
   v11 = v10;
   [(TPSBaseTipCollectionViewCell *)self cacheCellSize];
   v14 = v11 == v13 && v9 == v12;
   v29.receiver = self;
   v29.super_class = TPSBookendsCollectionViewCell;
-  v15 = [(TPSBaseTipCollectionViewCell *)&v29 setTip:v6 withCellAppearance:v7];
-  v16 = [v6 isOutro];
+  v15 = [(TPSBaseTipCollectionViewCell *)&v29 setTip:tipCopy withCellAppearance:appearanceCopy];
+  isOutro = [tipCopy isOutro];
   v17 = 1.0;
-  if (v16)
+  if (isOutro)
   {
-    [v7 outroWidthMultiplier];
+    [appearanceCopy outroWidthMultiplier];
     v17 = -v18;
   }
 
   [(TPSBaseTipCollectionViewCell *)self setImageParallaxMultiplier:v17];
-  v19 = [(TPSBaseTipCollectionViewCell *)self titleLabel];
-  [v19 setAccessibilityIgnoresInvertColors:0];
+  titleLabel = [(TPSBaseTipCollectionViewCell *)self titleLabel];
+  [titleLabel setAccessibilityIgnoresInvertColors:0];
 
-  v20 = [(TPSBaseTipCollectionViewCell *)self contentLabel];
-  [v20 setAccessibilityIgnoresInvertColors:0];
+  contentLabel = [(TPSBaseTipCollectionViewCell *)self contentLabel];
+  [contentLabel setAccessibilityIgnoresInvertColors:0];
 
-  v21 = [v6 fullContent];
-  v22 = [v21 labelStyle];
+  fullContent = [tipCopy fullContent];
+  labelStyle = [fullContent labelStyle];
 
-  if (v22)
+  if (labelStyle)
   {
     +[UIColor whiteColor];
   }
@@ -112,13 +112,13 @@
     +[TPSAppearance defaultLabelColor];
   }
   v23 = ;
-  v24 = [(TPSBaseTipCollectionViewCell *)self titleLabel];
-  [v24 setTextColor:v23];
+  titleLabel2 = [(TPSBaseTipCollectionViewCell *)self titleLabel];
+  [titleLabel2 setTextColor:v23];
 
-  v25 = [(TPSBaseTipCollectionViewCell *)self titleLabel];
-  v26 = [v25 textColor];
-  v27 = [(TPSBaseTipCollectionViewCell *)self contentLabel];
-  [v27 setTextColor:v26];
+  titleLabel3 = [(TPSBaseTipCollectionViewCell *)self titleLabel];
+  textColor = [titleLabel3 textColor];
+  contentLabel2 = [(TPSBaseTipCollectionViewCell *)self contentLabel];
+  [contentLabel2 setTextColor:textColor];
 
   if (!v14)
   {
@@ -133,22 +133,22 @@
   v16.receiver = self;
   v16.super_class = TPSBookendsCollectionViewCell;
   [(TPSBaseTipCollectionViewCell *)&v16 updateConstraints];
-  v3 = [(TPSBaseTipCollectionViewCell *)self cellAppearance];
-  [v3 size];
+  cellAppearance = [(TPSBaseTipCollectionViewCell *)self cellAppearance];
+  [cellAppearance size];
   v5 = v4;
-  [v3 bookendsHeightMultiplier];
+  [cellAppearance bookendsHeightMultiplier];
   v7 = v6;
-  [v3 size];
+  [cellAppearance size];
   v9 = v8;
   v10 = [(TPSBaseTipCollectionViewCell *)self tip];
   if ([v10 isOutro])
   {
-    [v3 outroWidthMultiplier];
+    [cellAppearance outroWidthMultiplier];
     v12 = v11;
 
     if (v12 != 0.0)
     {
-      [v3 outroWidthMultiplier];
+      [cellAppearance outroWidthMultiplier];
       v9 = v9 * v13;
     }
   }
@@ -157,12 +157,12 @@
   {
   }
 
-  v14 = [(TPSBaseTipCollectionViewCell *)self heroAssetView];
-  [v14 setAspectFillAsset:1];
+  heroAssetView = [(TPSBaseTipCollectionViewCell *)self heroAssetView];
+  [heroAssetView setAspectFillAsset:1];
 
   [(NSLayoutConstraint *)self->_heroAssetViewWidthConstraint setConstant:v9];
   [(NSLayoutConstraint *)self->_heroAssetViewHeightConstraint setConstant:ceil(v5 * v7)];
-  [v3 bookendsContentSidePadding];
+  [cellAppearance bookendsContentSidePadding];
   [(NSLayoutConstraint *)self->_titleLabelWidthConstraint setConstant:v15 * -2.0];
 }
 

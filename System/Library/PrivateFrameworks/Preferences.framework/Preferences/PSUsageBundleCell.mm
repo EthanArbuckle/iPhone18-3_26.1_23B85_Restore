@@ -10,28 +10,28 @@
   v45.receiver = self;
   v45.super_class = PSUsageBundleCell;
   [(PSTableCell *)&v45 layoutSubviews];
-  v3 = [(PSUsageBundleCell *)self contentView];
-  [v3 bounds];
+  contentView = [(PSUsageBundleCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
 
-  v8 = [(PSUsageBundleCell *)self detailTextLabel];
-  [v8 frame];
+  detailTextLabel = [(PSUsageBundleCell *)self detailTextLabel];
+  [detailTextLabel frame];
   v10 = v9;
   v43 = v12;
   v44 = v11;
   v14 = v13;
 
-  v15 = [(PSUsageBundleCell *)self textLabel];
-  [v15 frame];
+  textLabel = [(PSUsageBundleCell *)self textLabel];
+  [textLabel frame];
   v17 = v16;
   v19 = v18;
   v21 = v20;
   v23 = v22;
 
-  v24 = [(PSUsageBundleCell *)self _shouldReverseLayoutDirection];
-  v25 = [(PSUsageBundleCell *)self detailTextLabel];
-  [v25 sizeThatFits:{v5, v7}];
+  _shouldReverseLayoutDirection = [(PSUsageBundleCell *)self _shouldReverseLayoutDirection];
+  detailTextLabel2 = [(PSUsageBundleCell *)self detailTextLabel];
+  [detailTextLabel2 sizeThatFits:{v5, v7}];
   v27 = v26;
 
   if (v14 < v27)
@@ -39,7 +39,7 @@
     v28 = ceil(v27 - v14);
     v14 = v14 + v28;
     v29 = v10 - v28;
-    if (v24)
+    if (_shouldReverseLayoutDirection)
     {
       v30 = v10;
     }
@@ -50,7 +50,7 @@
     }
 
     v42 = v30;
-    if (v24)
+    if (_shouldReverseLayoutDirection)
     {
       v31 = v17;
       v32 = v19;
@@ -82,7 +82,7 @@
     v47.size.width = v21;
     v47.size.height = v23;
     Width = CGRectGetWidth(v47);
-    if ((v24 & 1) == 0)
+    if ((_shouldReverseLayoutDirection & 1) == 0)
     {
       v51.origin.x = v29;
       v51.size.height = v43;
@@ -117,16 +117,16 @@
 
   v29 = v10;
 LABEL_14:
-  v40 = [(PSUsageBundleCell *)self detailTextLabel];
-  [v40 setFrame:{v29, v44, v14, v43}];
+  detailTextLabel3 = [(PSUsageBundleCell *)self detailTextLabel];
+  [detailTextLabel3 setFrame:{v29, v44, v14, v43}];
 
-  v41 = [(PSUsageBundleCell *)self textLabel];
-  [v41 setFrame:{v17, v19, v21, v23}];
+  textLabel2 = [(PSUsageBundleCell *)self textLabel];
+  [textLabel2 setFrame:{v17, v19, v21, v23}];
 }
 
 + (Class)alternativeCellClass
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = objc_opt_class();
   }

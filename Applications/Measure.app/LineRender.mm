@@ -8,10 +8,10 @@
 - (void)dealloc
 {
   ObjectType = swift_getObjectType();
-  v4 = self;
+  selfCopy = self;
   sub_1000D2184();
 
-  v5.receiver = v4;
+  v5.receiver = selfCopy;
   v5.super_class = ObjectType;
   [(LineRender *)&v5 dealloc];
 }

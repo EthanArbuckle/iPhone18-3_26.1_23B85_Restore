@@ -1,10 +1,10 @@
 @interface IXUninstallOptions
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (IXUninstallOptions)init;
-- (IXUninstallOptions)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (IXUninstallOptions)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IXUninstallOptions
@@ -30,41 +30,41 @@
   return v3;
 }
 
-- (IXUninstallOptions)initWithCoder:(id)a3
+- (IXUninstallOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(IXUninstallOptions *)self init];
   if (v5)
   {
-    v5->_requestUserConfirmation = [v4 decodeBoolForKey:@"requestUserConfirmation"];
-    v5->_waitForDeletion = [v4 decodeBoolForKey:@"waitForDeletion"];
-    v5->_showArchiveOption = [v4 decodeBoolForKey:@"showArchiveOption"];
-    v5->_showDemotionOption = [v4 decodeBoolForKey:@"showDemotionOption"];
-    v5->_systemAppNotAllowed = [v4 decodeBoolForKey:@"systemAppNotAllowed"];
-    v5->_ignoreRemovability = [v4 decodeBoolForKey:@"ignoreRemovability"];
-    v5->_ignoreRestrictions = [v4 decodeBoolForKey:@"ignoreRestrictions"];
-    v5->_ignoreAppProtection = [v4 decodeBoolForKey:@"ignoreAppProtection"];
+    v5->_requestUserConfirmation = [coderCopy decodeBoolForKey:@"requestUserConfirmation"];
+    v5->_waitForDeletion = [coderCopy decodeBoolForKey:@"waitForDeletion"];
+    v5->_showArchiveOption = [coderCopy decodeBoolForKey:@"showArchiveOption"];
+    v5->_showDemotionOption = [coderCopy decodeBoolForKey:@"showDemotionOption"];
+    v5->_systemAppNotAllowed = [coderCopy decodeBoolForKey:@"systemAppNotAllowed"];
+    v5->_ignoreRemovability = [coderCopy decodeBoolForKey:@"ignoreRemovability"];
+    v5->_ignoreRestrictions = [coderCopy decodeBoolForKey:@"ignoreRestrictions"];
+    v5->_ignoreAppProtection = [coderCopy decodeBoolForKey:@"ignoreAppProtection"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[IXUninstallOptions requestUserConfirmation](self forKey:{"requestUserConfirmation"), @"requestUserConfirmation"}];
-  [v4 encodeBool:-[IXUninstallOptions waitForDeletion](self forKey:{"waitForDeletion"), @"waitForDeletion"}];
-  [v4 encodeBool:-[IXUninstallOptions showArchiveOption](self forKey:{"showArchiveOption"), @"showArchiveOption"}];
-  [v4 encodeBool:-[IXUninstallOptions showDemotionOption](self forKey:{"showDemotionOption"), @"showDemotionOption"}];
-  [v4 encodeBool:-[IXUninstallOptions systemAppNotAllowed](self forKey:{"systemAppNotAllowed"), @"systemAppNotAllowed"}];
-  [v4 encodeBool:-[IXUninstallOptions ignoreRemovability](self forKey:{"ignoreRemovability"), @"ignoreRemovability"}];
-  [v4 encodeBool:-[IXUninstallOptions ignoreRestrictions](self forKey:{"ignoreRestrictions"), @"ignoreRestrictions"}];
-  [v4 encodeBool:-[IXUninstallOptions ignoreAppProtection](self forKey:{"ignoreAppProtection"), @"ignoreAppProtection"}];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[IXUninstallOptions requestUserConfirmation](self forKey:{"requestUserConfirmation"), @"requestUserConfirmation"}];
+  [coderCopy encodeBool:-[IXUninstallOptions waitForDeletion](self forKey:{"waitForDeletion"), @"waitForDeletion"}];
+  [coderCopy encodeBool:-[IXUninstallOptions showArchiveOption](self forKey:{"showArchiveOption"), @"showArchiveOption"}];
+  [coderCopy encodeBool:-[IXUninstallOptions showDemotionOption](self forKey:{"showDemotionOption"), @"showDemotionOption"}];
+  [coderCopy encodeBool:-[IXUninstallOptions systemAppNotAllowed](self forKey:{"systemAppNotAllowed"), @"systemAppNotAllowed"}];
+  [coderCopy encodeBool:-[IXUninstallOptions ignoreRemovability](self forKey:{"ignoreRemovability"), @"ignoreRemovability"}];
+  [coderCopy encodeBool:-[IXUninstallOptions ignoreRestrictions](self forKey:{"ignoreRestrictions"), @"ignoreRestrictions"}];
+  [coderCopy encodeBool:-[IXUninstallOptions ignoreAppProtection](self forKey:{"ignoreAppProtection"), @"ignoreAppProtection"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setRequestUserConfirmation:{-[IXUninstallOptions requestUserConfirmation](self, "requestUserConfirmation")}];
   [v4 setWaitForDeletion:{-[IXUninstallOptions waitForDeletion](self, "waitForDeletion")}];
   [v4 setShowArchiveOption:{-[IXUninstallOptions showArchiveOption](self, "showArchiveOption")}];
@@ -76,10 +76,10 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -89,9 +89,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(IXUninstallOptions *)self requestUserConfirmation];
-      if (v6 != [(IXUninstallOptions *)v5 requestUserConfirmation])
+      v5 = equalCopy;
+      requestUserConfirmation = [(IXUninstallOptions *)self requestUserConfirmation];
+      if (requestUserConfirmation != [(IXUninstallOptions *)v5 requestUserConfirmation])
       {
         v7 = sub_1000031B0(off_100121958);
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -112,11 +112,11 @@ LABEL_34:
         goto LABEL_35;
       }
 
-      v9 = [(IXUninstallOptions *)self waitForDeletion];
-      if (v9 == [(IXUninstallOptions *)v5 waitForDeletion])
+      waitForDeletion = [(IXUninstallOptions *)self waitForDeletion];
+      if (waitForDeletion == [(IXUninstallOptions *)v5 waitForDeletion])
       {
-        v10 = [(IXUninstallOptions *)self showArchiveOption];
-        if (v10 != [(IXUninstallOptions *)v5 showArchiveOption])
+        showArchiveOption = [(IXUninstallOptions *)self showArchiveOption];
+        if (showArchiveOption != [(IXUninstallOptions *)v5 showArchiveOption])
         {
           v7 = sub_1000031B0(off_100121958);
           if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -131,8 +131,8 @@ LABEL_34:
           goto LABEL_33;
         }
 
-        v11 = [(IXUninstallOptions *)self showDemotionOption];
-        if (v11 != [(IXUninstallOptions *)v5 showDemotionOption])
+        showDemotionOption = [(IXUninstallOptions *)self showDemotionOption];
+        if (showDemotionOption != [(IXUninstallOptions *)v5 showDemotionOption])
         {
           v7 = sub_1000031B0(off_100121958);
           if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -147,20 +147,20 @@ LABEL_34:
           goto LABEL_33;
         }
 
-        v12 = [(IXUninstallOptions *)self waitForDeletion];
-        if (v12 == [(IXUninstallOptions *)v5 waitForDeletion])
+        waitForDeletion2 = [(IXUninstallOptions *)self waitForDeletion];
+        if (waitForDeletion2 == [(IXUninstallOptions *)v5 waitForDeletion])
         {
-          v13 = [(IXUninstallOptions *)self systemAppNotAllowed];
-          if (v13 == [(IXUninstallOptions *)v5 systemAppNotAllowed])
+          systemAppNotAllowed = [(IXUninstallOptions *)self systemAppNotAllowed];
+          if (systemAppNotAllowed == [(IXUninstallOptions *)v5 systemAppNotAllowed])
           {
-            v14 = [(IXUninstallOptions *)self ignoreRemovability];
-            if (v14 == [(IXUninstallOptions *)v5 ignoreRemovability])
+            ignoreRemovability = [(IXUninstallOptions *)self ignoreRemovability];
+            if (ignoreRemovability == [(IXUninstallOptions *)v5 ignoreRemovability])
             {
-              v15 = [(IXUninstallOptions *)self ignoreRestrictions];
-              if (v15 == [(IXUninstallOptions *)v5 ignoreRestrictions])
+              ignoreRestrictions = [(IXUninstallOptions *)self ignoreRestrictions];
+              if (ignoreRestrictions == [(IXUninstallOptions *)v5 ignoreRestrictions])
               {
-                v16 = [(IXUninstallOptions *)self ignoreAppProtection];
-                if (v16 == [(IXUninstallOptions *)v5 ignoreAppProtection])
+                ignoreAppProtection = [(IXUninstallOptions *)self ignoreAppProtection];
+                if (ignoreAppProtection == [(IXUninstallOptions *)v5 ignoreAppProtection])
                 {
                   v8 = 1;
                   goto LABEL_34;

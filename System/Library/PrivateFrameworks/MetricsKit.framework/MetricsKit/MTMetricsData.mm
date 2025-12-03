@@ -6,9 +6,9 @@
 - (id)recordEvent;
 - (id)toDictionary;
 - (id)userAndClientIDFields;
-- (void)addFields:(id)a3;
-- (void)addPostProcessingBlock:(id)a3;
-- (void)addPostProcessingBlocks:(id)a3;
+- (void)addFields:(id)fields;
+- (void)addPostProcessingBlock:(id)block;
+- (void)addPostProcessingBlocks:(id)blocks;
 - (void)cancelUnfinishedPromisedEventData;
 @end
 
@@ -19,9 +19,9 @@
   additionalData = self->_additionalData;
   if (!additionalData)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v5 = self->_additionalData;
-    self->_additionalData = v4;
+    self->_additionalData = array;
 
     additionalData = self->_additionalData;
   }
@@ -29,14 +29,14 @@
   return additionalData;
 }
 
-- (void)addFields:(id)a3
+- (void)addFields:(id)fields
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(MTMetricsData *)v5 getAdditionalData];
+  fieldsCopy = fields;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  getAdditionalData = [(MTMetricsData *)selfCopy getAdditionalData];
   v12 = &v13;
-  v7 = v4;
+  v7 = fieldsCopy;
   v8 = v7;
   if (v7)
   {
@@ -46,12 +46,12 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v6 addObjectsFromArray:v9];
+        [getAdditionalData addObjectsFromArray:v9];
       }
 
       else
       {
-        [v6 addObject:v9];
+        [getAdditionalData addObject:v9];
       }
 
       v10 = v12++;
@@ -63,7 +63,7 @@
     while (v11);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (id)getPostProcessingBlocks
@@ -71,9 +71,9 @@
   postProcessingBlocks = self->_postProcessingBlocks;
   if (!postProcessingBlocks)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v5 = self->_postProcessingBlocks;
-    self->_postProcessingBlocks = v4;
+    self->_postProcessingBlocks = array;
 
     postProcessingBlocks = self->_postProcessingBlocks;
   }
@@ -81,133 +81,133 @@
   return postProcessingBlocks;
 }
 
-- (void)addPostProcessingBlock:(id)a3
+- (void)addPostProcessingBlock:(id)block
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(MTMetricsData *)v4 getPostProcessingBlocks];
-  v6 = MEMORY[0x259C9F5D0](v7);
-  [v5 addObject:v6];
+  blockCopy = block;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  getPostProcessingBlocks = [(MTMetricsData *)selfCopy getPostProcessingBlocks];
+  v6 = MEMORY[0x259C9F5D0](blockCopy);
+  [getPostProcessingBlocks addObject:v6];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)addPostProcessingBlocks:(id)a3
+- (void)addPostProcessingBlocks:(id)blocks
 {
-  v6 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(MTMetricsData *)v4 getPostProcessingBlocks];
-  [v5 addObjectsFromArray:v6];
+  blocksCopy = blocks;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  getPostProcessingBlocks = [(MTMetricsData *)selfCopy getPostProcessingBlocks];
+  [getPostProcessingBlocks addObjectsFromArray:blocksCopy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (id)composeFieldsMaps
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(MTMetricsData *)self registeredEventData];
-  v5 = [v4 count];
+  array = [MEMORY[0x277CBEB18] array];
+  registeredEventData = [(MTMetricsData *)self registeredEventData];
+  v5 = [registeredEventData count];
 
   if (v5)
   {
-    v6 = [(MTMetricsData *)self registeredEventData];
-    [v3 addObjectsFromArray:v6];
+    registeredEventData2 = [(MTMetricsData *)self registeredEventData];
+    [array addObjectsFromArray:registeredEventData2];
   }
 
-  v7 = [(MTMetricsData *)self baseFields];
-  v8 = [v7 count];
+  baseFields = [(MTMetricsData *)self baseFields];
+  v8 = [baseFields count];
 
   if (v8)
   {
-    v9 = [(MTMetricsData *)self baseFields];
-    [v3 addObject:v9];
+    baseFields2 = [(MTMetricsData *)self baseFields];
+    [array addObject:baseFields2];
   }
 
-  v10 = [(MTMetricsData *)self additionalBaseData];
-  v11 = [v10 count];
+  additionalBaseData = [(MTMetricsData *)self additionalBaseData];
+  v11 = [additionalBaseData count];
 
   if (v11)
   {
-    v12 = [(MTMetricsData *)self additionalBaseData];
-    [v3 addObjectsFromArray:v12];
+    additionalBaseData2 = [(MTMetricsData *)self additionalBaseData];
+    [array addObjectsFromArray:additionalBaseData2];
   }
 
-  v13 = [(MTMetricsData *)self eventSpecificFields];
-  v14 = [v13 count];
+  eventSpecificFields = [(MTMetricsData *)self eventSpecificFields];
+  v14 = [eventSpecificFields count];
 
   if (v14)
   {
-    v15 = [(MTMetricsData *)self eventSpecificFields];
-    [v3 addObject:v15];
+    eventSpecificFields2 = [(MTMetricsData *)self eventSpecificFields];
+    [array addObject:eventSpecificFields2];
   }
 
-  v16 = [(MTMetricsData *)self additionalEventData];
-  v17 = [v16 count];
+  additionalEventData = [(MTMetricsData *)self additionalEventData];
+  v17 = [additionalEventData count];
 
   if (v17)
   {
-    v18 = [(MTMetricsData *)self additionalEventData];
-    [v3 addObjectsFromArray:v18];
+    additionalEventData2 = [(MTMetricsData *)self additionalEventData];
+    [array addObjectsFromArray:additionalEventData2];
   }
 
-  v19 = [(MTMetricsData *)self configBaseFields];
+  configBaseFields = [(MTMetricsData *)self configBaseFields];
 
-  if (v19)
+  if (configBaseFields)
   {
-    v20 = [(MTMetricsData *)self configBaseFields];
-    [v3 addObject:v20];
+    configBaseFields2 = [(MTMetricsData *)self configBaseFields];
+    [array addObject:configBaseFields2];
   }
 
-  v21 = [(MTMetricsData *)self callerSuppliedFields];
-  v22 = [v21 eventData];
-  v23 = [v22 count];
+  callerSuppliedFields = [(MTMetricsData *)self callerSuppliedFields];
+  eventData = [callerSuppliedFields eventData];
+  v23 = [eventData count];
 
   if (v23)
   {
-    v24 = [(MTMetricsData *)self callerSuppliedFields];
-    v25 = [v24 eventData];
-    [v3 addObjectsFromArray:v25];
+    callerSuppliedFields2 = [(MTMetricsData *)self callerSuppliedFields];
+    eventData2 = [callerSuppliedFields2 eventData];
+    [array addObjectsFromArray:eventData2];
   }
 
-  v26 = [(MTMetricsData *)self additionalData];
-  v27 = [v26 count];
+  additionalData = [(MTMetricsData *)self additionalData];
+  v27 = [additionalData count];
 
   if (v27)
   {
-    v28 = [(MTMetricsData *)self additionalData];
-    [v3 addObjectsFromArray:v28];
+    additionalData2 = [(MTMetricsData *)self additionalData];
+    [array addObjectsFromArray:additionalData2];
   }
 
-  v29 = [v3 copy];
+  v29 = [array copy];
 
   return v29;
 }
 
 - (id)toDictionary
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(MTMetricsData *)v2 composeFieldsMaps];
-  v4 = [(MTMetricsData *)v2 postProcessingBlocks];
-  v5 = [v4 copy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  composeFieldsMaps = [(MTMetricsData *)selfCopy composeFieldsMaps];
+  postProcessingBlocks = [(MTMetricsData *)selfCopy postProcessingBlocks];
+  v5 = [postProcessingBlocks copy];
 
-  objc_sync_exit(v2);
-  v6 = [MTPromise promiseWithComposition:v3];
+  objc_sync_exit(selfCopy);
+  v6 = [MTPromise promiseWithComposition:composeFieldsMaps];
   v24 = MEMORY[0x277D85DD0];
   v25 = 3221225472;
   v26 = __29__MTMetricsData_toDictionary__block_invoke;
   v27 = &unk_2798CD900;
   v28 = v5;
-  v29 = v2;
+  v29 = selfCopy;
   v7 = v5;
   v8 = [v6 thenWithBlock:&v24];
 
-  v9 = [(MTObject *)v2 metricsKit:v24];
-  v10 = [v9 system];
-  v11 = [v10 treatmentFilter];
-  v12 = [v11 apply:v8];
+  v9 = [(MTObject *)selfCopy metricsKit:v24];
+  system = [v9 system];
+  treatmentFilter = [system treatmentFilter];
+  v12 = [treatmentFilter apply:v8];
   v13 = v12;
   if (v12)
   {
@@ -221,10 +221,10 @@
 
   v15 = v14;
 
-  v16 = [(MTObject *)v2 metricsKit];
-  v17 = [v16 system];
-  v18 = [v17 eventFilter];
-  v19 = [v18 apply:v15];
+  metricsKit = [(MTObject *)selfCopy metricsKit];
+  system2 = [metricsKit system];
+  eventFilter = [system2 eventFilter];
+  v19 = [eventFilter apply:v15];
   v20 = v19;
   if (v19)
   {
@@ -301,8 +301,8 @@ id __29__MTMetricsData_toDictionary__block_invoke(uint64_t a1, void *a2)
 
 - (id)userAndClientIDFields
 {
-  v2 = [(MTMetricsData *)self toDictionary];
-  v3 = [v2 thenWithBlock:&__block_literal_global_7];
+  toDictionary = [(MTMetricsData *)self toDictionary];
+  v3 = [toDictionary thenWithBlock:&__block_literal_global_7];
 
   return v3;
 }
@@ -358,35 +358,35 @@ id __38__MTMetricsData_userAndClientIDFields__block_invoke(uint64_t a1, void *a2
 
 - (void)cancelUnfinishedPromisedEventData
 {
-  v3 = [(MTMetricsData *)self callerSuppliedFields];
-  v4 = [v3 eventData];
-  [MTPromise cancelPromisesInComposition:v4];
+  callerSuppliedFields = [(MTMetricsData *)self callerSuppliedFields];
+  eventData = [callerSuppliedFields eventData];
+  [MTPromise cancelPromisesInComposition:eventData];
 
-  v5 = [(MTMetricsData *)self baseFields];
-  [MTPromise cancelPromisesInComposition:v5];
+  baseFields = [(MTMetricsData *)self baseFields];
+  [MTPromise cancelPromisesInComposition:baseFields];
 
-  v6 = [(MTMetricsData *)self additionalBaseData];
-  [MTPromise cancelPromisesInComposition:v6];
+  additionalBaseData = [(MTMetricsData *)self additionalBaseData];
+  [MTPromise cancelPromisesInComposition:additionalBaseData];
 
-  v7 = [(MTMetricsData *)self eventSpecificFields];
-  [MTPromise cancelPromisesInComposition:v7];
+  eventSpecificFields = [(MTMetricsData *)self eventSpecificFields];
+  [MTPromise cancelPromisesInComposition:eventSpecificFields];
 
-  v8 = [(MTMetricsData *)self additionalEventData];
-  [MTPromise cancelPromisesInComposition:v8];
+  additionalEventData = [(MTMetricsData *)self additionalEventData];
+  [MTPromise cancelPromisesInComposition:additionalEventData];
 
-  v9 = [(MTMetricsData *)self configBaseFields];
-  [MTPromise cancelPromisesInComposition:v9];
+  configBaseFields = [(MTMetricsData *)self configBaseFields];
+  [MTPromise cancelPromisesInComposition:configBaseFields];
 
-  v10 = [(MTMetricsData *)self additionalData];
-  [MTPromise cancelPromisesInComposition:v10];
+  additionalData = [(MTMetricsData *)self additionalData];
+  [MTPromise cancelPromisesInComposition:additionalData];
 }
 
 - (id)recordEvent
 {
-  v3 = [(MTMetricsData *)self toDictionary];
-  v4 = [(MTObject *)self metricsKit];
-  v5 = [v4 config];
-  v6 = [v5 eventDataTimeout] / 1000.0;
+  toDictionary = [(MTMetricsData *)self toDictionary];
+  metricsKit = [(MTObject *)self metricsKit];
+  config = [metricsKit config];
+  v6 = [config eventDataTimeout] / 1000.0;
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
@@ -400,13 +400,13 @@ id __38__MTMetricsData_userAndClientIDFields__block_invoke(uint64_t a1, void *a2
   v12[3] = &unk_2798CDF48;
   v13 = v7;
   v8 = v7;
-  [v3 addFinishBlock:v12];
+  [toDictionary addFinishBlock:v12];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __28__MTMetricsData_recordEvent__block_invoke_2;
   v11[3] = &unk_2798CD570;
   v11[4] = self;
-  v9 = [v3 thenWithBlock:v11];
+  v9 = [toDictionary thenWithBlock:v11];
   [v9 addErrorBlock:&__block_literal_global_14];
 
   return v9;
@@ -483,17 +483,17 @@ void __28__MTMetricsData_recordEvent__block_invoke_3(uint64_t a1, void *a2)
   v3 = MEMORY[0x277CCAB68];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(MTMetricsData *)self callerSuppliedFields];
-  v7 = [(MTMetricsData *)self baseFields];
-  v8 = [(MTMetricsData *)self eventSpecificFields];
-  v9 = [v3 stringWithFormat:@"<%@: %p, callerSuppliedFields: %@\nbaseFields: %@\neventSpecificFields: %@", v5, self, v6, v7, v8];
+  callerSuppliedFields = [(MTMetricsData *)self callerSuppliedFields];
+  baseFields = [(MTMetricsData *)self baseFields];
+  eventSpecificFields = [(MTMetricsData *)self eventSpecificFields];
+  v9 = [v3 stringWithFormat:@"<%@: %p, callerSuppliedFields: %@\nbaseFields: %@\neventSpecificFields: %@", v5, self, callerSuppliedFields, baseFields, eventSpecificFields];
 
-  v10 = [(MTMetricsData *)self performanceData];
+  performanceData = [(MTMetricsData *)self performanceData];
 
-  if (v10)
+  if (performanceData)
   {
-    v11 = [(MTMetricsData *)self performanceData];
-    [v9 appendFormat:@"\nperformanceData: %@", v11];
+    performanceData2 = [(MTMetricsData *)self performanceData];
+    [v9 appendFormat:@"\nperformanceData: %@", performanceData2];
   }
 
   [v9 appendString:@">"];

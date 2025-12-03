@@ -1,36 +1,36 @@
 @interface ComposePlaceholderView
-- (ComposePlaceholderView)initWithFrame:(CGRect)a3 subject:(id)a4 modelFuture:(id)a5;
-- (id)snapshotContentUsingWebView:(id)a3;
+- (ComposePlaceholderView)initWithFrame:(CGRect)frame subject:(id)subject modelFuture:(id)future;
+- (id)snapshotContentUsingWebView:(id)view;
 - (void)_createSubviews;
-- (void)_setSubject:(id)a3;
-- (void)_updateHeadersWithModel:(id)a3;
-- (void)_updateIndividualFieldsWithModel:(id)a3;
-- (void)_updateMultiFieldWithModel:(id)a3;
-- (void)composeHeaderView:(id)a3 didChangeSize:(CGSize)a4;
+- (void)_setSubject:(id)subject;
+- (void)_updateHeadersWithModel:(id)model;
+- (void)_updateIndividualFieldsWithModel:(id)model;
+- (void)_updateMultiFieldWithModel:(id)model;
+- (void)composeHeaderView:(id)view didChangeSize:(CGSize)size;
 - (void)layoutSubviews;
-- (void)webView:(id)a3 didFailNavigation:(id)a4 withError:(id)a5;
-- (void)webView:(id)a3 didFinishNavigation:(id)a4;
+- (void)webView:(id)view didFailNavigation:(id)navigation withError:(id)error;
+- (void)webView:(id)view didFinishNavigation:(id)navigation;
 @end
 
 @implementation ComposePlaceholderView
 
-- (ComposePlaceholderView)initWithFrame:(CGRect)a3 subject:(id)a4 modelFuture:(id)a5
+- (ComposePlaceholderView)initWithFrame:(CGRect)frame subject:(id)subject modelFuture:(id)future
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a4;
-  v12 = a5;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  subjectCopy = subject;
+  futureCopy = future;
   v16.receiver = self;
   v16.super_class = ComposePlaceholderView;
-  v13 = [(ComposePlaceholderView *)&v16 initWithFrame:x, y, width, height];
-  v14 = v13;
-  if (v13)
+  height = [(ComposePlaceholderView *)&v16 initWithFrame:x, y, width, height];
+  v14 = height;
+  if (height)
   {
-    objc_storeStrong(&v13->_modelFuture, a5);
+    objc_storeStrong(&height->_modelFuture, future);
     [(ComposePlaceholderView *)v14 _createSubviews];
-    [(ComposePlaceholderView *)v14 _setSubject:v11];
+    [(ComposePlaceholderView *)v14 _setSubject:subjectCopy];
   }
 
   return v14;
@@ -147,21 +147,21 @@
     v8 = 0.0;
   }
 
-  v9 = [(ComposePlaceholderView *)self navigationBar];
-  [v9 setFrame:{0.0, v8, v7, 50.0}];
+  navigationBar = [(ComposePlaceholderView *)self navigationBar];
+  [navigationBar setFrame:{0.0, v8, v7, 50.0}];
 
-  v10 = [(ComposePlaceholderView *)self toField];
-  v32[0] = v10;
-  v11 = [(ComposePlaceholderView *)self multiField];
-  v32[1] = v11;
-  v12 = [(ComposePlaceholderView *)self ccField];
-  v32[2] = v12;
-  v13 = [(ComposePlaceholderView *)self bccField];
-  v32[3] = v13;
-  v14 = [(ComposePlaceholderView *)self fromField];
-  v32[4] = v14;
-  v15 = [(ComposePlaceholderView *)self subjectField];
-  v32[5] = v15;
+  toField = [(ComposePlaceholderView *)self toField];
+  v32[0] = toField;
+  multiField = [(ComposePlaceholderView *)self multiField];
+  v32[1] = multiField;
+  ccField = [(ComposePlaceholderView *)self ccField];
+  v32[2] = ccField;
+  bccField = [(ComposePlaceholderView *)self bccField];
+  v32[3] = bccField;
+  fromField = [(ComposePlaceholderView *)self fromField];
+  v32[4] = fromField;
+  subjectField = [(ComposePlaceholderView *)self subjectField];
+  v32[5] = subjectField;
   v16 = [NSArray arrayWithObjects:v32 count:6];
 
   v28 = 0u;
@@ -209,43 +209,43 @@
   v35.size.width = width;
   v35.size.height = height;
   v24 = CGRectGetHeight(v35);
-  v25 = [(ComposePlaceholderView *)self snapshotImageView];
-  [v25 setFrame:{0.0, v20, v7, v24 - v20}];
+  snapshotImageView = [(ComposePlaceholderView *)self snapshotImageView];
+  [snapshotImageView setFrame:{0.0, v20, v7, v24 - v20}];
 }
 
-- (void)_updateHeadersWithModel:(id)a3
+- (void)_updateHeadersWithModel:(id)model
 {
-  v7 = a3;
-  v4 = [v7 toRecipients];
-  v5 = [(ComposePlaceholderView *)self toField];
-  [v5 setRecipients:v4];
+  modelCopy = model;
+  toRecipients = [modelCopy toRecipients];
+  toField = [(ComposePlaceholderView *)self toField];
+  [toField setRecipients:toRecipients];
 
-  if ([v7 shouldUseMultiField])
+  if ([modelCopy shouldUseMultiField])
   {
-    [(ComposePlaceholderView *)self _updateMultiFieldWithModel:v7];
+    [(ComposePlaceholderView *)self _updateMultiFieldWithModel:modelCopy];
   }
 
   else
   {
-    v6 = [(ComposePlaceholderView *)self multiField];
-    [v6 setHidden:1];
+    multiField = [(ComposePlaceholderView *)self multiField];
+    [multiField setHidden:1];
 
-    [(ComposePlaceholderView *)self _updateIndividualFieldsWithModel:v7];
+    [(ComposePlaceholderView *)self _updateIndividualFieldsWithModel:modelCopy];
     [(ComposePlaceholderView *)self setNeedsLayout];
   }
 }
 
-- (void)_updateMultiFieldWithModel:(id)a3
+- (void)_updateMultiFieldWithModel:(id)model
 {
-  v12 = a3;
+  modelCopy = model;
   v4 = [NSBundle bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"CC/BCC" value:&stru_100662A88 table:@"Main"];
 
-  if ([v12 showSenderAddress])
+  if ([modelCopy showSenderAddress])
   {
-    v6 = [v12 senderAddress];
+    senderAddress = [modelCopy senderAddress];
 
-    if (v6)
+    if (senderAddress)
     {
       v7 = [NSBundle bundleForClass:objc_opt_class()];
       v8 = [v7 localizedStringForKey:@"CC/BCC/FROM" value:&stru_100662A88 table:@"Main"];
@@ -254,68 +254,68 @@
     }
   }
 
-  v9 = [(ComposePlaceholderView *)self multiField];
-  v10 = [v12 senderAddress];
-  [v9 setAccountDescription:v10];
+  multiField = [(ComposePlaceholderView *)self multiField];
+  senderAddress2 = [modelCopy senderAddress];
+  [multiField setAccountDescription:senderAddress2];
 
-  v11 = [(ComposePlaceholderView *)self multiField];
-  [v11 setLabel:v5];
+  multiField2 = [(ComposePlaceholderView *)self multiField];
+  [multiField2 setLabel:v5];
 }
 
-- (void)_updateIndividualFieldsWithModel:(id)a3
+- (void)_updateIndividualFieldsWithModel:(id)model
 {
-  v18 = a3;
-  v4 = [v18 ccRecipients];
-  v5 = [v4 count];
+  modelCopy = model;
+  ccRecipients = [modelCopy ccRecipients];
+  v5 = [ccRecipients count];
 
   if (v5)
   {
-    v6 = [v18 ccRecipients];
-    v7 = [(ComposePlaceholderView *)self ccField];
-    [v7 setRecipients:v6];
+    ccRecipients2 = [modelCopy ccRecipients];
+    ccField = [(ComposePlaceholderView *)self ccField];
+    [ccField setRecipients:ccRecipients2];
 
-    v8 = [(ComposePlaceholderView *)self ccField];
-    [v8 setHidden:0];
+    ccField2 = [(ComposePlaceholderView *)self ccField];
+    [ccField2 setHidden:0];
   }
 
-  v9 = [v18 bccRecipients];
-  v10 = [v9 count];
+  bccRecipients = [modelCopy bccRecipients];
+  v10 = [bccRecipients count];
 
   if (v10)
   {
-    v11 = [v18 bccRecipients];
-    v12 = [(ComposePlaceholderView *)self bccField];
-    [v12 setRecipients:v11];
+    bccRecipients2 = [modelCopy bccRecipients];
+    bccField = [(ComposePlaceholderView *)self bccField];
+    [bccField setRecipients:bccRecipients2];
 
-    v13 = [(ComposePlaceholderView *)self bccField];
-    [v13 setHidden:0];
+    bccField2 = [(ComposePlaceholderView *)self bccField];
+    [bccField2 setHidden:0];
   }
 
-  if ([v18 showSenderAddress])
+  if ([modelCopy showSenderAddress])
   {
-    v14 = [v18 senderAddress];
+    senderAddress = [modelCopy senderAddress];
 
-    if (v14)
+    if (senderAddress)
     {
-      v15 = [v18 senderAddress];
-      v16 = [(ComposePlaceholderView *)self fromField];
-      [v16 setSelectedAddress:v15];
+      senderAddress2 = [modelCopy senderAddress];
+      fromField = [(ComposePlaceholderView *)self fromField];
+      [fromField setSelectedAddress:senderAddress2];
 
-      v17 = [(ComposePlaceholderView *)self fromField];
-      [v17 setHidden:0];
+      fromField2 = [(ComposePlaceholderView *)self fromField];
+      [fromField2 setHidden:0];
     }
   }
 }
 
-- (void)_setSubject:(id)a3
+- (void)_setSubject:(id)subject
 {
-  v6 = a3;
-  v13 = v6;
-  if (v6)
+  subjectCopy = subject;
+  v13 = subjectCopy;
+  if (subjectCopy)
   {
     v7 = 0;
     v8 = 0;
-    v9 = v6;
+    v9 = subjectCopy;
   }
 
   else
@@ -336,9 +336,9 @@
     v8 = v7 ^ 1;
   }
 
-  v10 = [(ComposePlaceholderView *)self navigationBar];
-  v11 = [v10 topItem];
-  [v11 setTitle:v9];
+  navigationBar = [(ComposePlaceholderView *)self navigationBar];
+  topItem = [navigationBar topItem];
+  [topItem setTitle:v9];
 
   if (v8)
   {
@@ -348,22 +348,22 @@
   {
   }
 
-  v12 = [(ComposePlaceholderView *)self subjectField];
-  [v12 setText:v13];
+  subjectField = [(ComposePlaceholderView *)self subjectField];
+  [subjectField setText:v13];
 }
 
-- (void)composeHeaderView:(id)a3 didChangeSize:(CGSize)a4
+- (void)composeHeaderView:(id)view didChangeSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v20 = a3;
-  v7 = [(ComposePlaceholderView *)self subjectField];
+  height = size.height;
+  width = size.width;
+  viewCopy = view;
+  subjectField = [(ComposePlaceholderView *)self subjectField];
 
-  v8 = v20;
-  if (v7 == v20)
+  v8 = viewCopy;
+  if (subjectField == viewCopy)
   {
-    v9 = [(ComposePlaceholderView *)self subjectField];
-    [v9 frame];
+    subjectField2 = [(ComposePlaceholderView *)self subjectField];
+    [subjectField2 frame];
     v11 = v10;
     v13 = v12;
     v15 = v14;
@@ -374,27 +374,27 @@
     v22.size.width = v15;
     v22.size.height = v17;
     MinY = CGRectGetMinY(v22);
-    v19 = [(ComposePlaceholderView *)self subjectField];
-    [v19 setFrame:{0.0, MinY, width, height}];
+    subjectField3 = [(ComposePlaceholderView *)self subjectField];
+    [subjectField3 setFrame:{0.0, MinY, width, height}];
 
-    v8 = v20;
+    v8 = viewCopy;
   }
 }
 
-- (id)snapshotContentUsingWebView:(id)a3
+- (id)snapshotContentUsingWebView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   objc_initWeak(&location, self);
-  v5 = [(ComposePlaceholderView *)self modelFuture];
+  modelFuture = [(ComposePlaceholderView *)self modelFuture];
   v6 = +[EFScheduler mainThreadScheduler];
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_10004DDB0;
   v21[3] = &unk_10064C610;
   objc_copyWeak(&v23, &location);
-  v7 = v4;
+  v7 = viewCopy;
   v22 = v7;
-  v8 = [v5 onScheduler:v6 then:v21];
+  v8 = [modelFuture onScheduler:v6 then:v21];
 
   v9 = +[EFScheduler mainThreadScheduler];
   v19[0] = _NSConcreteStackBlock;
@@ -422,18 +422,18 @@
   return v14;
 }
 
-- (void)webView:(id)a3 didFinishNavigation:(id)a4
+- (void)webView:(id)view didFinishNavigation:(id)navigation
 {
-  v5 = [(ComposePlaceholderView *)self contentLoadingPromise:a3];
+  v5 = [(ComposePlaceholderView *)self contentLoadingPromise:view];
   v4 = +[NSNull null];
   [v5 finishWithResult:v4];
 }
 
-- (void)webView:(id)a3 didFailNavigation:(id)a4 withError:(id)a5
+- (void)webView:(id)view didFailNavigation:(id)navigation withError:(id)error
 {
-  v7 = a5;
-  v6 = [(ComposePlaceholderView *)self contentLoadingPromise];
-  [v6 finishWithError:v7];
+  errorCopy = error;
+  contentLoadingPromise = [(ComposePlaceholderView *)self contentLoadingPromise];
+  [contentLoadingPromise finishWithError:errorCopy];
 }
 
 @end

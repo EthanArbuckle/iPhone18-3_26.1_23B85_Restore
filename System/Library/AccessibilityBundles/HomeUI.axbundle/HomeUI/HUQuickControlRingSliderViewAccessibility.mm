@@ -1,51 +1,51 @@
 @interface HUQuickControlRingSliderViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (double)_axAdjustmentDelta;
 - (id)_axInteractionDelegate;
-- (id)_axLocalizedStringForAXControlValueType:(unint64_t)a3;
+- (id)_axLocalizedStringForAXControlValueType:(unint64_t)type;
 - (id)_axViewController;
 - (id)accessibilityElements;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_axAdjustValueOfUpperBound:(BOOL)a3 increment:(BOOL)a4;
+- (void)_axAdjustValueOfUpperBound:(BOOL)bound increment:(BOOL)increment;
 @end
 
 @implementation HUQuickControlRingSliderViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HUQuickControlRingSliderView" hasInstanceVariable:@"_profile" withType:"HUQuickControlRingSliderViewProfile"];
-  [v3 validateClass:@"HUQuickControlRingSliderView" hasInstanceVariable:@"_primaryHandleView" withType:"HUQuickControlRingSliderHandleView"];
-  [v3 validateClass:@"HUQuickControlRingSliderView" hasInstanceVariable:@"_secondaryHandleView" withType:"HUQuickControlRingSliderHandleView"];
-  [v3 validateClass:@"HUQuickControlRingSliderView" hasInstanceMethod:@"supplementaryValueMarkingView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUQuickControlRingSliderView" hasInstanceMethod:@"primaryLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUQuickControlRingSliderView" hasInstanceMethod:@"supplementaryLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUQuickControlRingSliderView" hasInstanceMethod:@"showOffState" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"HUQuickControlRingSliderView" hasInstanceMethod:@"setUserInteractionActive:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"HUQuickControlRingSliderViewProfile" hasInstanceMethod:@"shouldShowSupplementaryValue" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"HUQuickControlRingSliderViewProfile" hasInstanceMethod:@"gradationMarkingValues" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUQuickControlRingSliderView" conformsToProtocol:@"HUQuickControlInteractiveView"];
-  [v3 validateProtocol:@"HUQuickControlInteractiveView" hasMethod:@"interactionDelegate" isInstanceMethod:1 isRequired:1];
-  [v3 validateProtocol:@"HUQuickControlInteractiveView" conformsToProtocol:@"HUQuickControlControllableView"];
-  [v3 validateProtocol:@"HUQuickControlControllableView" hasMethod:@"value" isInstanceMethod:1 isRequired:1];
-  [v3 validateProtocol:@"HUQuickControlControllableView" hasMethod:@"setValue:" isInstanceMethod:1 isRequired:1];
-  [v3 validateClass:@"HUQuickControlRingSliderHandleView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"HUQuickControlRingSliderInteractionCoordinator" conformsToProtocol:@"HUQuickControlViewInteractionDelegate"];
-  [v3 validateClass:@"HUQuickControlRingSliderInteractionCoordinator" hasInstanceMethod:@"value" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUQuickControlRingSliderInteractionCoordinator" hasInstanceMethod:@"setUserInteractionActive:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"HUQuickControlRingSliderInteractionCoordinator" hasInstanceMethod:@"setFirstTouchDown:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"HUQuickControlRingSliderInteractionCoordinator" hasInstanceVariable:@"_delegate" withType:"<HUQuickControlInteractionCoordinatorDelegate>"];
-  [v3 validateClass:@"HUQuickControlRingSliderInteractionCoordinator" isKindOfClass:@"HUQuickControlInteractionCoordinator"];
-  [v3 validateClass:@"HUQuickControlRingSliderRangeViewController" conformsToProtocol:@"HUQuickControlRingSliderInteractionCoordinatorDelegate"];
-  [v3 validateClass:@"HUQuickControlRingSliderRangeViewController" hasInstanceMethod:@"modelValueDidChange" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"HUQuickControlRingSliderRangeViewController" isKindOfClass:@"HUQuickControlSingleControlViewController"];
-  [v3 validateClass:@"HUQuickControlSingleControlViewController" hasInstanceMethod:@"modelValue" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUQuickControlSingleControlViewController" hasInstanceMethod:@"controlItem" withFullSignature:{"@", 0}];
-  [v3 validateProtocol:@"HUQuickControlRingSliderInteractionCoordinatorDelegate" conformsToProtocol:@"HUQuickControlInteractionCoordinatorDelegate"];
-  [v3 validateProtocol:@"HUQuickControlInteractionCoordinatorDelegate" hasMethod:@"interactionCoordinator:viewValueDidChange:" isInstanceMethod:1 isRequired:1];
-  [v3 validateClass:@"HFNumberRange" hasInstanceMethod:@"setMaxValue:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"HFNumberRange" hasInstanceMethod:@"setMinValue:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"HFNumberRange" hasInstanceMethod:@"setMidValue:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HUQuickControlRingSliderView" hasInstanceVariable:@"_profile" withType:"HUQuickControlRingSliderViewProfile"];
+  [validationsCopy validateClass:@"HUQuickControlRingSliderView" hasInstanceVariable:@"_primaryHandleView" withType:"HUQuickControlRingSliderHandleView"];
+  [validationsCopy validateClass:@"HUQuickControlRingSliderView" hasInstanceVariable:@"_secondaryHandleView" withType:"HUQuickControlRingSliderHandleView"];
+  [validationsCopy validateClass:@"HUQuickControlRingSliderView" hasInstanceMethod:@"supplementaryValueMarkingView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUQuickControlRingSliderView" hasInstanceMethod:@"primaryLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUQuickControlRingSliderView" hasInstanceMethod:@"supplementaryLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUQuickControlRingSliderView" hasInstanceMethod:@"showOffState" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"HUQuickControlRingSliderView" hasInstanceMethod:@"setUserInteractionActive:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"HUQuickControlRingSliderViewProfile" hasInstanceMethod:@"shouldShowSupplementaryValue" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"HUQuickControlRingSliderViewProfile" hasInstanceMethod:@"gradationMarkingValues" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUQuickControlRingSliderView" conformsToProtocol:@"HUQuickControlInteractiveView"];
+  [validationsCopy validateProtocol:@"HUQuickControlInteractiveView" hasMethod:@"interactionDelegate" isInstanceMethod:1 isRequired:1];
+  [validationsCopy validateProtocol:@"HUQuickControlInteractiveView" conformsToProtocol:@"HUQuickControlControllableView"];
+  [validationsCopy validateProtocol:@"HUQuickControlControllableView" hasMethod:@"value" isInstanceMethod:1 isRequired:1];
+  [validationsCopy validateProtocol:@"HUQuickControlControllableView" hasMethod:@"setValue:" isInstanceMethod:1 isRequired:1];
+  [validationsCopy validateClass:@"HUQuickControlRingSliderHandleView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"HUQuickControlRingSliderInteractionCoordinator" conformsToProtocol:@"HUQuickControlViewInteractionDelegate"];
+  [validationsCopy validateClass:@"HUQuickControlRingSliderInteractionCoordinator" hasInstanceMethod:@"value" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUQuickControlRingSliderInteractionCoordinator" hasInstanceMethod:@"setUserInteractionActive:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"HUQuickControlRingSliderInteractionCoordinator" hasInstanceMethod:@"setFirstTouchDown:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"HUQuickControlRingSliderInteractionCoordinator" hasInstanceVariable:@"_delegate" withType:"<HUQuickControlInteractionCoordinatorDelegate>"];
+  [validationsCopy validateClass:@"HUQuickControlRingSliderInteractionCoordinator" isKindOfClass:@"HUQuickControlInteractionCoordinator"];
+  [validationsCopy validateClass:@"HUQuickControlRingSliderRangeViewController" conformsToProtocol:@"HUQuickControlRingSliderInteractionCoordinatorDelegate"];
+  [validationsCopy validateClass:@"HUQuickControlRingSliderRangeViewController" hasInstanceMethod:@"modelValueDidChange" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"HUQuickControlRingSliderRangeViewController" isKindOfClass:@"HUQuickControlSingleControlViewController"];
+  [validationsCopy validateClass:@"HUQuickControlSingleControlViewController" hasInstanceMethod:@"modelValue" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUQuickControlSingleControlViewController" hasInstanceMethod:@"controlItem" withFullSignature:{"@", 0}];
+  [validationsCopy validateProtocol:@"HUQuickControlRingSliderInteractionCoordinatorDelegate" conformsToProtocol:@"HUQuickControlInteractionCoordinatorDelegate"];
+  [validationsCopy validateProtocol:@"HUQuickControlInteractionCoordinatorDelegate" hasMethod:@"interactionCoordinator:viewValueDidChange:" isInstanceMethod:1 isRequired:1];
+  [validationsCopy validateClass:@"HFNumberRange" hasInstanceMethod:@"setMaxValue:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"HFNumberRange" hasInstanceMethod:@"setMinValue:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"HFNumberRange" hasInstanceMethod:@"setMidValue:" withFullSignature:{"v", "@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -288,25 +288,25 @@ id __87__HUQuickControlRingSliderViewAccessibility__accessibilityLoadAccessibili
   return v9;
 }
 
-- (id)_axLocalizedStringForAXControlValueType:(unint64_t)a3
+- (id)_axLocalizedStringForAXControlValueType:(unint64_t)type
 {
-  v4 = [(HUQuickControlRingSliderViewAccessibility *)self _axViewController];
-  if (a3)
+  _axViewController = [(HUQuickControlRingSliderViewAccessibility *)self _axViewController];
+  if (type)
   {
     objc_opt_class();
-    v5 = [v4 safeValueForKey:@"modelValue"];
+    v5 = [_axViewController safeValueForKey:@"modelValue"];
     v6 = __UIAccessibilityCastAsClass();
 
-    switch(a3)
+    switch(type)
     {
       case 3uLL:
-        v7 = [v6 targetValue];
+        targetValue = [v6 targetValue];
         break;
       case 2uLL:
-        v7 = [v6 minimumValue];
+        targetValue = [v6 minimumValue];
         break;
       case 1uLL:
-        v7 = [v6 maximumValue];
+        targetValue = [v6 maximumValue];
         break;
       default:
         v11 = 0;
@@ -317,22 +317,22 @@ id __87__HUQuickControlRingSliderViewAccessibility__accessibilityLoadAccessibili
   else
   {
     objc_opt_class();
-    v8 = [v4 safeValueForKey:@"controlItem"];
+    v8 = [_axViewController safeValueForKey:@"controlItem"];
     v9 = __UIAccessibilityCastAsClass();
 
-    v10 = [v9 latestResults];
-    v6 = [v10 objectForKey:*MEMORY[0x29EDC52F0]];
+    latestResults = [v9 latestResults];
+    v6 = [latestResults objectForKey:*MEMORY[0x29EDC52F0]];
 
-    v7 = [v6 objectForKey:*MEMORY[0x29EDBB0A8]];
+    targetValue = [v6 objectForKey:*MEMORY[0x29EDBB0A8]];
   }
 
-  v11 = v7;
-  if (v7)
+  v11 = targetValue;
+  if (targetValue)
   {
-    v12 = [MEMORY[0x29EDC5380] sharedInstance];
-    v13 = [v12 temperatureFormatter];
+    mEMORY[0x29EDC5380] = [MEMORY[0x29EDC5380] sharedInstance];
+    temperatureFormatter = [mEMORY[0x29EDC5380] temperatureFormatter];
 
-    v14 = [v13 stringForObjectValue:v11];
+    v14 = [temperatureFormatter stringForObjectValue:v11];
 
     goto LABEL_13;
   }
@@ -344,12 +344,12 @@ LABEL_13:
   return v14;
 }
 
-- (void)_axAdjustValueOfUpperBound:(BOOL)a3 increment:(BOOL)a4
+- (void)_axAdjustValueOfUpperBound:(BOOL)bound increment:(BOOL)increment
 {
-  v4 = a4;
-  v5 = a3;
+  incrementCopy = increment;
+  boundCopy = bound;
   [(HUQuickControlRingSliderViewAccessibility *)self _axAdjustmentDelta];
-  if (v4)
+  if (incrementCopy)
   {
     v8 = v7;
   }
@@ -359,13 +359,13 @@ LABEL_13:
     v8 = -v7;
   }
 
-  v9 = [(HUQuickControlRingSliderViewAccessibility *)self _axInteractionDelegate];
+  _axInteractionDelegate = [(HUQuickControlRingSliderViewAccessibility *)self _axInteractionDelegate];
   v43 = MEMORY[0x29EDCA5F8];
   v44 = 3221225472;
   v45 = __82__HUQuickControlRingSliderViewAccessibility__axAdjustValueOfUpperBound_increment___block_invoke;
   v46 = &unk_29F2C6E88;
-  v47 = self;
-  v10 = v9;
+  selfCopy = self;
+  v10 = _axInteractionDelegate;
   v48 = v10;
   AXPerformSafeBlock();
   v11 = [v10 safeValueForKey:@"value"];
@@ -381,10 +381,10 @@ LABEL_13:
 
     if ([v14 type] == 1)
     {
-      if (v5)
+      if (boundCopy)
       {
-        v15 = [v14 maxValue];
-        [v15 doubleValue];
+        maxValue = [v14 maxValue];
+        [maxValue doubleValue];
         v17 = v8 + v16;
 
         v18 = fmax(fmin(v17, 1.0), 0.0);
@@ -396,8 +396,8 @@ LABEL_13:
 
       else
       {
-        v32 = [v14 minValue];
-        [v32 doubleValue];
+        minValue = [v14 minValue];
+        [minValue doubleValue];
         v34 = v8 + v33;
 
         v18 = fmax(fmin(v34, 1.0), 0.0);
@@ -410,8 +410,8 @@ LABEL_13:
 
     else
     {
-      v29 = [v14 midValue];
-      [v29 doubleValue];
+      midValue = [v14 midValue];
+      [midValue doubleValue];
       v31 = v8 + v30;
 
       v18 = fmax(fmin(v31, 1.0), 0.0);
@@ -559,8 +559,8 @@ uint64_t __82__HUQuickControlRingSliderViewAccessibility__axAdjustValueOfUpperBo
 
 - (id)_axViewController
 {
-  v2 = [(HUQuickControlRingSliderViewAccessibility *)self _axInteractionDelegate];
-  v3 = [v2 safeValueForKey:@"_delegate"];
+  _axInteractionDelegate = [(HUQuickControlRingSliderViewAccessibility *)self _axInteractionDelegate];
+  v3 = [_axInteractionDelegate safeValueForKey:@"_delegate"];
 
   v4 = NSProtocolFromString(&cfstr_Huquickcontrol_39.isa);
   v5 = [v3 conformsToProtocol:v4];

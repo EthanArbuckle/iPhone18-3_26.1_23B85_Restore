@@ -1,32 +1,32 @@
 @interface VNDocumentObservation
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)shouldReprocessDocument;
-- (VNDocumentObservation)initWithCoder:(id)a3;
-- (VNDocumentObservation)initWithTopLevelRegion:(id)a3 requestRevision:(unint64_t)a4;
+- (VNDocumentObservation)initWithCoder:(id)coder;
+- (VNDocumentObservation)initWithTopLevelRegion:(id)region requestRevision:(unint64_t)revision;
 - (VNRecognizedTextBlockObservation)getTitle;
-- (_NSRange)rangeOfTextBlock:(id)a3;
-- (_NSRange)rangeOfTextBlockObservation:(id)a3;
-- (id)_textBlockObservationsFromRegion:(id)a3 requestRevision:(unint64_t)a4;
-- (id)blocksWithTypes:(unint64_t)a3 inRegion:(CGRect)a4;
-- (id)boundingBoxForTextRange:(_NSRange)a3 error:(id *)a4;
-- (id)closestTextBlockOfTypes:(unint64_t)a3 toPoint:(CGPoint)a4 maximumPixelDistance:(int64_t)a5;
-- (id)getDataDetectorResults:(id *)a3;
-- (id)textBlockOfTypes:(unint64_t)a3 containingTextAtIndex:(int64_t)a4;
-- (id)textBlockWithCharacterRange:(_NSRange)a3;
+- (_NSRange)rangeOfTextBlock:(id)block;
+- (_NSRange)rangeOfTextBlockObservation:(id)observation;
+- (id)_textBlockObservationsFromRegion:(id)region requestRevision:(unint64_t)revision;
+- (id)blocksWithTypes:(unint64_t)types inRegion:(CGRect)region;
+- (id)boundingBoxForTextRange:(_NSRange)range error:(id *)error;
+- (id)closestTextBlockOfTypes:(unint64_t)types toPoint:(CGPoint)point maximumPixelDistance:(int64_t)distance;
+- (id)getDataDetectorResults:(id *)results;
+- (id)textBlockOfTypes:(unint64_t)types containingTextAtIndex:(int64_t)index;
+- (id)textBlockWithCharacterRange:(_NSRange)range;
 - (id)vn_cloneObject;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VNDocumentObservation
 
-- (VNDocumentObservation)initWithCoder:(id)a3
+- (VNDocumentObservation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = VNDocumentObservation;
-  v5 = [(VNDetectedObjectObservation *)&v10 initWithCoder:v4];
-  if (v5 && ([v4 decodeObjectOfClass:objc_opt_class() forKey:@"topLevelRegion"], v6 = objc_claimAutoreleasedReturnValue(), topLevelRegion = v5->_topLevelRegion, v5->_topLevelRegion = v6, topLevelRegion, !v5->_topLevelRegion))
+  v5 = [(VNDetectedObjectObservation *)&v10 initWithCoder:coderCopy];
+  if (v5 && ([coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"topLevelRegion"], v6 = objc_claimAutoreleasedReturnValue(), topLevelRegion = v5->_topLevelRegion, v5->_topLevelRegion = v6, topLevelRegion, !v5->_topLevelRegion))
   {
     v8 = 0;
   }
@@ -39,35 +39,35 @@
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = VNDocumentObservation;
-  v4 = a3;
-  [(VNDetectedObjectObservation *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_topLevelRegion forKey:{@"topLevelRegion", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(VNDetectedObjectObservation *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_topLevelRegion forKey:{@"topLevelRegion", v5.receiver, v5.super_class}];
 }
 
 - (id)vn_cloneObject
 {
   v9.receiver = self;
   v9.super_class = VNDocumentObservation;
-  v3 = [(VNDetectedObjectObservation *)&v9 vn_cloneObject];
-  if (v3)
+  vn_cloneObject = [(VNDetectedObjectObservation *)&v9 vn_cloneObject];
+  if (vn_cloneObject)
   {
     v4 = [(CRDocumentOutputRegion *)self->_topLevelRegion copy];
-    v5 = v3[20];
-    v3[20] = v4;
+    v5 = vn_cloneObject[20];
+    vn_cloneObject[20] = v4;
 
     v6 = [(NSArray *)self->_blocks copy];
-    v7 = v3[21];
-    v3[21] = v6;
+    v7 = vn_cloneObject[21];
+    vn_cloneObject[21] = v6;
   }
 
-  return v3;
+  return vn_cloneObject;
 }
 
-- (id)getDataDetectorResults:(id *)a3
+- (id)getDataDetectorResults:(id *)results
 {
   v22 = *MEMORY[0x1E69E9840];
   kdebug_trace();
@@ -95,18 +95,18 @@
 
           v9 = *(*(&v17 + 1) + 8 * i);
           v10 = [VNDataDetectorResult alloc];
-          v11 = [v9 ddResult];
-          v12 = [(VNDataDetectorResult *)v10 initWithDDScannerResult:v11 observation:self];
+          ddResult = [v9 ddResult];
+          v12 = [(VNDataDetectorResult *)v10 initWithDDScannerResult:ddResult observation:self];
 
-          v13 = [v9 dataType];
-          if ((v13 - 1) >= 9)
+          dataType = [v9 dataType];
+          if ((dataType - 1) >= 9)
           {
             v14 = 0;
           }
 
           else
           {
-            v14 = v13;
+            v14 = dataType;
           }
 
           [(VNDataDetectorResult *)v12 setType:v14];
@@ -130,10 +130,10 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -142,9 +142,9 @@
   {
     v8.receiver = self;
     v8.super_class = VNDocumentObservation;
-    if ([(VNDetectedObjectObservation *)&v8 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if ([(VNDetectedObjectObservation *)&v8 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v5 = v4;
+      v5 = equalCopy;
       if ([(CRDocumentOutputRegion *)self->_topLevelRegion isEqual:v5->_topLevelRegion])
       {
         v6 = [(NSArray *)self->_blocks isEqual:v5->_blocks];
@@ -174,15 +174,15 @@
 
 - (BOOL)shouldReprocessDocument
 {
-  v2 = [(VNDocumentObservation *)self getCRDocumentOutputRegion];
-  v3 = [v2 shouldReprocessDocument];
+  getCRDocumentOutputRegion = [(VNDocumentObservation *)self getCRDocumentOutputRegion];
+  shouldReprocessDocument = [getCRDocumentOutputRegion shouldReprocessDocument];
 
-  return v3;
+  return shouldReprocessDocument;
 }
 
-- (id)closestTextBlockOfTypes:(unint64_t)a3 toPoint:(CGPoint)a4 maximumPixelDistance:(int64_t)a5
+- (id)closestTextBlockOfTypes:(unint64_t)types toPoint:(CGPoint)point maximumPixelDistance:(int64_t)distance
 {
-  v6 = [(CRDocumentOutputRegion *)self->_topLevelRegion closestContentRegionOfType:a3 toNormalizedPoint:a5 maxPixelDistance:a4.x, 1.0 - a4.y];
+  v6 = [(CRDocumentOutputRegion *)self->_topLevelRegion closestContentRegionOfType:types toNormalizedPoint:distance maxPixelDistance:point.x, 1.0 - point.y];
   if (v6)
   {
     v7 = [[VNRecognizedTextBlockObservation alloc] initWithRequestRevision:[(VNObservation *)self requestRevision] crOutputRegion:v6];
@@ -196,9 +196,9 @@
   return v7;
 }
 
-- (id)textBlockWithCharacterRange:(_NSRange)a3
+- (id)textBlockWithCharacterRange:(_NSRange)range
 {
-  v4 = [(CRDocumentOutputRegion *)self->_topLevelRegion outputRegionWithContentsOfCharacterRange:a3.location, a3.length];
+  v4 = [(CRDocumentOutputRegion *)self->_topLevelRegion outputRegionWithContentsOfCharacterRange:range.location, range.length];
   if (v4)
   {
     v5 = [[VNRecognizedTextBlockObservation alloc] initWithRequestRevision:[(VNObservation *)self requestRevision] crOutputRegion:v4];
@@ -212,18 +212,18 @@
   return v5;
 }
 
-- (id)textBlockOfTypes:(unint64_t)a3 containingTextAtIndex:(int64_t)a4
+- (id)textBlockOfTypes:(unint64_t)types containingTextAtIndex:(int64_t)index
 {
-  v5 = [(CRDocumentOutputRegion *)self->_topLevelRegion contentRegionOfType:a3 containingTextAtIndex:a4];
+  v5 = [(CRDocumentOutputRegion *)self->_topLevelRegion contentRegionOfType:types containingTextAtIndex:index];
   v6 = [[VNRecognizedTextBlock alloc] initWithRequestRevision:[(VNObservation *)self requestRevision] crOutputRegion:v5];
 
   return v6;
 }
 
-- (_NSRange)rangeOfTextBlockObservation:(id)a3
+- (_NSRange)rangeOfTextBlockObservation:(id)observation
 {
-  v4 = [a3 getCROutputRegion];
-  v5 = [(CRDocumentOutputRegion *)self->_topLevelRegion rangeOfContentRegion:v4];
+  getCROutputRegion = [observation getCROutputRegion];
+  v5 = [(CRDocumentOutputRegion *)self->_topLevelRegion rangeOfContentRegion:getCROutputRegion];
   v7 = v6;
 
   v8 = v5;
@@ -233,10 +233,10 @@
   return result;
 }
 
-- (_NSRange)rangeOfTextBlock:(id)a3
+- (_NSRange)rangeOfTextBlock:(id)block
 {
-  v4 = [a3 getCROutputRegion];
-  v5 = [(CRDocumentOutputRegion *)self->_topLevelRegion rangeOfContentRegion:v4];
+  getCROutputRegion = [block getCROutputRegion];
+  v5 = [(CRDocumentOutputRegion *)self->_topLevelRegion rangeOfContentRegion:getCROutputRegion];
   v7 = v6;
 
   v8 = v5;
@@ -246,36 +246,36 @@
   return result;
 }
 
-- (id)boundingBoxForTextRange:(_NSRange)a3 error:(id *)a4
+- (id)boundingBoxForTextRange:(_NSRange)range error:(id *)error
 {
-  v5 = [(CRDocumentOutputRegion *)self->_topLevelRegion quadForTextInCharacterRange:a3.location, a3.length, a4];
+  error = [(CRDocumentOutputRegion *)self->_topLevelRegion quadForTextInCharacterRange:range.location, range.length, error];
   v6 = [VNRectangleObservation alloc];
-  v7 = [(VNObservation *)self requestRevision];
-  [v5 topLeft];
+  requestRevision = [(VNObservation *)self requestRevision];
+  [error topLeft];
   v9 = v8;
   v11 = 1.0 - v10;
-  [v5 topRight];
+  [error topRight];
   v13 = v12;
   v15 = 1.0 - v14;
-  [v5 bottomRight];
+  [error bottomRight];
   v17 = v16;
   v19 = 1.0 - v18;
-  [v5 bottomLeft];
-  v22 = [(VNRectangleObservation *)v6 initWithRequestRevision:v7 topLeft:v9 topRight:v11 bottomRight:v13 bottomLeft:v15, v17, v19, v21, 1.0 - v20];
+  [error bottomLeft];
+  v22 = [(VNRectangleObservation *)v6 initWithRequestRevision:requestRevision topLeft:v9 topRight:v11 bottomRight:v13 bottomLeft:v15, v17, v19, v21, 1.0 - v20];
 
   return v22;
 }
 
-- (id)blocksWithTypes:(unint64_t)a3 inRegion:(CGRect)a4
+- (id)blocksWithTypes:(unint64_t)types inRegion:(CGRect)region
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3;
+  height = region.size.height;
+  width = region.size.width;
+  y = region.origin.y;
+  x = region.origin.x;
+  typesCopy = types;
   v32 = *MEMORY[0x1E69E9840];
   v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if ((v8 & 0x1000) != 0)
+  if ((typesCopy & 0x1000) != 0)
   {
     v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"self isKindOfClass: %@", objc_opt_class()];
     v12 = [(NSArray *)self->_blocks filteredArrayUsingPredicate:v11];
@@ -293,9 +293,9 @@
     [v10 addObjectsFromArray:v14];
   }
 
-  if ((v8 & 0x3E) != 0)
+  if ((typesCopy & 0x3E) != 0)
   {
-    v15 = [(CRDocumentOutputRegion *)self->_topLevelRegion contentsWithTypes:v8 & 0xFFF];
+    0xFFF = [(CRDocumentOutputRegion *)self->_topLevelRegion contentsWithTypes:typesCopy & 0xFFF];
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
     v29[2] = __50__VNDocumentObservation_blocksWithTypes_inRegion___block_invoke_2;
@@ -305,7 +305,7 @@
     *&v29[6] = width;
     *&v29[7] = height;
     v16 = [MEMORY[0x1E696AE18] predicateWithBlock:v29];
-    v17 = [v15 filteredArrayUsingPredicate:v16];
+    v17 = [0xFFF filteredArrayUsingPredicate:v16];
 
     v27 = 0u;
     v28 = 0u;
@@ -381,10 +381,10 @@ BOOL __50__VNDocumentObservation_blocksWithTypes_inRegion___block_invoke_2(void 
 
 - (VNRecognizedTextBlockObservation)getTitle
 {
-  v3 = [(CRDocumentOutputRegion *)self->_topLevelRegion title];
-  if (v3)
+  title = [(CRDocumentOutputRegion *)self->_topLevelRegion title];
+  if (title)
   {
-    v4 = [[VNRecognizedTextBlockObservation alloc] initWithRequestRevision:[(VNObservation *)self requestRevision] crOutputRegion:v3];
+    v4 = [[VNRecognizedTextBlockObservation alloc] initWithRequestRevision:[(VNObservation *)self requestRevision] crOutputRegion:title];
   }
 
   else
@@ -395,11 +395,11 @@ BOOL __50__VNDocumentObservation_blocksWithTypes_inRegion___block_invoke_2(void 
   return v4;
 }
 
-- (id)_textBlockObservationsFromRegion:(id)a3 requestRevision:(unint64_t)a4
+- (id)_textBlockObservationsFromRegion:(id)region requestRevision:(unint64_t)revision
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 contentsWithTypes:2];
+  regionCopy = region;
+  v6 = [regionCopy contentsWithTypes:2];
   v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v6, "count")}];
   v19 = 0u;
   v20 = 0u;
@@ -423,7 +423,7 @@ BOOL __50__VNDocumentObservation_blocksWithTypes_inRegion___block_invoke_2(void 
         v13 = *(*(&v19 + 1) + 8 * i);
         if ([v13 type] == 2 || objc_msgSend(v13, "type") == 4 || objc_msgSend(v13, "type") == 8 || objc_msgSend(v13, "type") == 2048)
         {
-          v14 = [[VNRecognizedTextBlockObservation alloc] initWithRequestRevision:a4 crOutputRegion:v13];
+          v14 = [[VNRecognizedTextBlockObservation alloc] initWithRequestRevision:revision crOutputRegion:v13];
           if (!v14)
           {
 
@@ -432,8 +432,8 @@ BOOL __50__VNDocumentObservation_blocksWithTypes_inRegion___block_invoke_2(void 
           }
 
           v15 = v14;
-          v16 = [v5 title];
-          [(VNRecognizedTextObservation *)v15 setIsTitle:v13 == v16];
+          title = [regionCopy title];
+          [(VNRecognizedTextObservation *)v15 setIsTitle:v13 == title];
 
           [v7 addObject:v15];
         }
@@ -455,30 +455,30 @@ LABEL_16:
   return v17;
 }
 
-- (VNDocumentObservation)initWithTopLevelRegion:(id)a3 requestRevision:(unint64_t)a4
+- (VNDocumentObservation)initWithTopLevelRegion:(id)region requestRevision:(unint64_t)revision
 {
-  v6 = a3;
-  v7 = [v6 boundingQuad];
-  [v7 boundingBox];
+  regionCopy = region;
+  boundingQuad = [regionCopy boundingQuad];
+  [boundingQuad boundingBox];
   v18.receiver = self;
   v18.super_class = VNDocumentObservation;
-  v8 = [(VNDetectedObjectObservation *)&v18 initWithRequestRevision:a4 boundingBox:?];
+  v8 = [(VNDetectedObjectObservation *)&v18 initWithRequestRevision:revision boundingBox:?];
 
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [regionCopy copy];
     topLevelRegion = v8->_topLevelRegion;
     v8->_topLevelRegion = v9;
 
-    v11 = [(VNDocumentObservation *)v8 _textBlockObservationsFromRegion:v8->_topLevelRegion requestRevision:a4];
+    v11 = [(VNDocumentObservation *)v8 _textBlockObservationsFromRegion:v8->_topLevelRegion requestRevision:revision];
     v12 = [v11 copy];
     blocks = v8->_blocks;
     v8->_blocks = v12;
 
-    v14 = [(CRDocumentOutputRegion *)v8->_topLevelRegion trackingID];
+    trackingID = [(CRDocumentOutputRegion *)v8->_topLevelRegion trackingID];
 
     v15 = v8->_topLevelRegion;
-    if (v14)
+    if (trackingID)
     {
       [(CRDocumentOutputRegion *)v15 trackingID];
     }

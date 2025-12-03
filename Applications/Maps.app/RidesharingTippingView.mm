@@ -1,21 +1,21 @@
 @interface RidesharingTippingView
-- (RidesharingTippingView)initWithCoder:(id)a3;
-- (RidesharingTippingView)initWithOptions:(id)a3 updateBlock:(id)a4;
+- (RidesharingTippingView)initWithCoder:(id)coder;
+- (RidesharingTippingView)initWithOptions:(id)options updateBlock:(id)block;
 - (id)description;
-- (void)_commonInitWithOptions:(id)a3;
-- (void)_selectedOption:(id)a3 fromOptions:(id)a4;
-- (void)setTippingOptions:(id)a3;
-- (void)tapped:(id)a3;
+- (void)_commonInitWithOptions:(id)options;
+- (void)_selectedOption:(id)option fromOptions:(id)options;
+- (void)setTippingOptions:(id)options;
+- (void)tapped:(id)tapped;
 @end
 
 @implementation RidesharingTippingView
 
-- (void)setTippingOptions:(id)a3
+- (void)setTippingOptions:(id)options
 {
-  v4 = a3;
-  if (![(NSArray *)self->_tippingOptions isEqualToArray:v4])
+  optionsCopy = options;
+  if (![(NSArray *)self->_tippingOptions isEqualToArray:optionsCopy])
   {
-    v5 = [v4 mutableCopy];
+    v5 = [optionsCopy mutableCopy];
     v6 = [v5 sortedArrayUsingComparator:&stru_10162CFD0];
     tippingOptions = self->_tippingOptions;
     self->_tippingOptions = v6;
@@ -24,8 +24,8 @@
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v8 = [(UIStackView *)self->_stackView arrangedSubviews];
-    v9 = [v8 countByEnumeratingWithState:&v25 objects:v30 count:16];
+    arrangedSubviews = [(UIStackView *)self->_stackView arrangedSubviews];
+    v9 = [arrangedSubviews countByEnumeratingWithState:&v25 objects:v30 count:16];
     if (v9)
     {
       v10 = v9;
@@ -37,7 +37,7 @@
         {
           if (*v26 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(arrangedSubviews);
           }
 
           [(UIStackView *)self->_stackView removeArrangedSubview:*(*(&v25 + 1) + 8 * v12)];
@@ -45,7 +45,7 @@
         }
 
         while (v10 != v12);
-        v10 = [v8 countByEnumeratingWithState:&v25 objects:v30 count:16];
+        v10 = [arrangedSubviews countByEnumeratingWithState:&v25 objects:v30 count:16];
       }
 
       while (v10);
@@ -96,23 +96,23 @@
 
 - (id)description
 {
-  v2 = [(UIStackView *)self->_stackView arrangedSubviews];
-  v3 = [NSString stringWithFormat:@"RidesharingTippingView\nOptions:%@", v2];
+  arrangedSubviews = [(UIStackView *)self->_stackView arrangedSubviews];
+  v3 = [NSString stringWithFormat:@"RidesharingTippingView\nOptions:%@", arrangedSubviews];
 
   return v3;
 }
 
-- (void)_selectedOption:(id)a3 fromOptions:(id)a4
+- (void)_selectedOption:(id)option fromOptions:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 isSelected] ^ 1;
-  v9 = [v6 isOther] | v8;
+  optionCopy = option;
+  optionsCopy = options;
+  v8 = [optionCopy isSelected] ^ 1;
+  v9 = [optionCopy isOther] | v8;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v10 = v7;
+  v10 = optionsCopy;
   v11 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v11)
   {
@@ -136,14 +136,14 @@
     while (v12);
   }
 
-  [v6 setSelected:v9 & 1];
+  [optionCopy setSelected:v9 & 1];
   updateBlock = self->_updateBlock;
   if (updateBlock)
   {
     if (v9)
     {
-      v16 = [v6 amount];
-      updateBlock[2](updateBlock, v16);
+      amount = [optionCopy amount];
+      updateBlock[2](updateBlock, amount);
     }
 
     else
@@ -153,15 +153,15 @@
   }
 }
 
-- (void)tapped:(id)a3
+- (void)tapped:(id)tapped
 {
-  v4 = a3;
-  v5 = [(UIStackView *)self->_stackView arrangedSubviews];
-  if ([v5 count])
+  tappedCopy = tapped;
+  arrangedSubviews = [(UIStackView *)self->_stackView arrangedSubviews];
+  if ([arrangedSubviews count])
   {
-    for (i = 0; i < [v5 count]; ++i)
+    for (i = 0; i < [arrangedSubviews count]; ++i)
     {
-      v7 = [v5 objectAtIndexedSubscript:i];
+      v7 = [arrangedSubviews objectAtIndexedSubscript:i];
       objc_opt_class();
       v8 = (objc_opt_isKindOfClass() & 1) != 0 ? v7 : 0;
       v9 = v8;
@@ -171,23 +171,23 @@
         break;
       }
 
-      [v4 locationInView:v9];
+      [tappedCopy locationInView:v9];
       if ([v9 pointInside:0 withEvent:?])
       {
         if ([v9 isOther])
         {
-          v45 = self;
+          selfCopy = self;
           v10 = +[NSLocale currentLocale];
-          v44 = [v10 currencySymbol];
+          currencySymbol = [v10 currencySymbol];
 
           v11 = +[NSLocale currentLocale];
-          v46 = [v11 currencyCode];
+          currencyCode = [v11 currencyCode];
 
           v59 = 0u;
           v60 = 0u;
           v58 = 0u;
           v57 = 0u;
-          v12 = v5;
+          v12 = arrangedSubviews;
           v13 = [v12 countByEnumeratingWithState:&v57 objects:v61 count:16];
           if (v13)
           {
@@ -203,18 +203,18 @@
                 }
 
                 v17 = *(*(&v57 + 1) + 8 * j);
-                v18 = [v17 amount];
-                v19 = [v18 currencySymbol];
+                amount = [v17 amount];
+                currencySymbol2 = [amount currencySymbol];
 
-                if (v19)
+                if (currencySymbol2)
                 {
-                  v21 = [v19 copy];
+                  v21 = [currencySymbol2 copy];
 
-                  v22 = [v17 amount];
-                  v23 = [v22 currencyCode];
+                  amount2 = [v17 amount];
+                  currencyCode2 = [amount2 currencyCode];
 
                   v20 = v21;
-                  v46 = v23;
+                  currencyCode = currencyCode2;
                   goto LABEL_22;
                 }
               }
@@ -229,7 +229,7 @@
             }
           }
 
-          v20 = v44;
+          v20 = currencySymbol;
 LABEL_22:
 
           v24 = +[NSBundle mainBundle];
@@ -262,31 +262,31 @@ LABEL_22:
           v36 = v30;
           v49 = v36;
           v50 = v29;
-          v37 = v46;
+          v37 = currencyCode;
           v51 = v37;
-          v52 = v45;
+          v52 = selfCopy;
           v53 = v12;
           v38 = [UIAlertAction actionWithTitle:v35 style:0 handler:v48];
           [v36 addAction:v38];
 
-          v39 = [(RidesharingTippingView *)v45 delegate];
-          if (v39)
+          delegate = [(RidesharingTippingView *)selfCopy delegate];
+          if (delegate)
           {
-            v40 = v39;
-            v41 = [(RidesharingTippingView *)v45 delegate];
+            v40 = delegate;
+            delegate2 = [(RidesharingTippingView *)selfCopy delegate];
             v42 = objc_opt_respondsToSelector();
 
             if (v42)
             {
-              v43 = [(RidesharingTippingView *)v45 delegate];
-              [v43 presentCustomTipAlert:v36];
+              delegate3 = [(RidesharingTippingView *)selfCopy delegate];
+              [delegate3 presentCustomTipAlert:v36];
             }
           }
         }
 
         else
         {
-          [(RidesharingTippingView *)self _selectedOption:v9 fromOptions:v5];
+          [(RidesharingTippingView *)self _selectedOption:v9 fromOptions:arrangedSubviews];
         }
 
         break;
@@ -295,14 +295,14 @@ LABEL_22:
   }
 }
 
-- (void)_commonInitWithOptions:(id)a3
+- (void)_commonInitWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(RidesharingTippingView *)self layer];
-  [v5 setCornerRadius:4.0];
+  optionsCopy = options;
+  layer = [(RidesharingTippingView *)self layer];
+  [layer setCornerRadius:4.0];
 
-  v6 = [(RidesharingTippingView *)self layer];
-  [v6 setMasksToBounds:1];
+  layer2 = [(RidesharingTippingView *)self layer];
+  [layer2 setMasksToBounds:1];
 
   v7 = objc_alloc_init(UIStackView);
   stackView = self->_stackView;
@@ -314,27 +314,27 @@ LABEL_22:
   [(UIStackView *)self->_stackView setDistribution:1];
   [(UIStackView *)self->_stackView setAlignment:3];
   [(RidesharingTippingView *)self addSubview:self->_stackView];
-  v9 = [(UIStackView *)self->_stackView topAnchor];
-  v10 = [(RidesharingTippingView *)self topAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  topAnchor = [(UIStackView *)self->_stackView topAnchor];
+  topAnchor2 = [(RidesharingTippingView *)self topAnchor];
+  v11 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v11 setActive:1];
 
-  v12 = [(UIStackView *)self->_stackView leadingAnchor];
-  v13 = [(RidesharingTippingView *)self leadingAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13];
+  leadingAnchor = [(UIStackView *)self->_stackView leadingAnchor];
+  leadingAnchor2 = [(RidesharingTippingView *)self leadingAnchor];
+  v14 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v14 setActive:1];
 
-  v15 = [(UIStackView *)self->_stackView bottomAnchor];
-  v16 = [(RidesharingTippingView *)self bottomAnchor];
-  v17 = [v15 constraintEqualToAnchor:v16];
+  bottomAnchor = [(UIStackView *)self->_stackView bottomAnchor];
+  bottomAnchor2 = [(RidesharingTippingView *)self bottomAnchor];
+  v17 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v17 setActive:1];
 
-  v18 = [(UIStackView *)self->_stackView trailingAnchor];
-  v19 = [(RidesharingTippingView *)self trailingAnchor];
-  v20 = [v18 constraintEqualToAnchor:v19];
+  trailingAnchor = [(UIStackView *)self->_stackView trailingAnchor];
+  trailingAnchor2 = [(RidesharingTippingView *)self trailingAnchor];
+  v20 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v20 setActive:1];
 
-  [(RidesharingTippingView *)self setTippingOptions:v4];
+  [(RidesharingTippingView *)self setTippingOptions:optionsCopy];
   v21 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"tapped:"];
   tapGesture = self->_tapGesture;
   self->_tapGesture = v21;
@@ -346,11 +346,11 @@ LABEL_22:
   [(RidesharingTippingView *)self addGestureRecognizer:v23];
 }
 
-- (RidesharingTippingView)initWithCoder:(id)a3
+- (RidesharingTippingView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = RidesharingTippingView;
-  v3 = [(RidesharingTippingView *)&v7 initWithCoder:a3];
+  v3 = [(RidesharingTippingView *)&v7 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -361,22 +361,22 @@ LABEL_22:
   return v4;
 }
 
-- (RidesharingTippingView)initWithOptions:(id)a3 updateBlock:(id)a4
+- (RidesharingTippingView)initWithOptions:(id)options updateBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  blockCopy = block;
   v14.receiver = self;
   v14.super_class = RidesharingTippingView;
   v8 = [(RidesharingTippingView *)&v14 init];
   if (v8)
   {
-    v9 = [v7 copy];
+    v9 = [blockCopy copy];
     updateBlock = v8->_updateBlock;
     v8->_updateBlock = v9;
 
-    if (v6)
+    if (optionsCopy)
     {
-      v11 = v6;
+      v11 = optionsCopy;
     }
 
     else

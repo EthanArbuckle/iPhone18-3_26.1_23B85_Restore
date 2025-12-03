@@ -8,7 +8,7 @@
 {
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
-  v3 = [v2 rootViewController];
+  rootViewController = [v2 rootViewController];
   AXSafeClassFromString();
   isKindOfClass = objc_opt_isKindOfClass();
 

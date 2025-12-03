@@ -1,16 +1,16 @@
 @interface NSData
-- (BOOL)ps_containsString:(id)a3;
+- (BOOL)ps_containsString:(id)string;
 @end
 
 @implementation NSData
 
-- (BOOL)ps_containsString:(id)a3
+- (BOOL)ps_containsString:(id)string
 {
-  v4 = a3;
-  v5 = v4;
+  stringCopy = string;
+  v5 = stringCopy;
   if (self)
   {
-    v6 = [v4 dataUsingEncoding:4];
+    v6 = [stringCopy dataUsingEncoding:4];
     LOBYTE(self) = [(NSData *)self rangeOfData:v6 options:0 range:0, [(NSData *)self length]]!= 0x7FFFFFFFFFFFFFFFLL;
   }
 

@@ -6,31 +6,31 @@
 
 - (void)tlk_updateWithCurrentAppearance
 {
-  v2 = [a1 window];
+  window = [self window];
 
-  if (v2)
+  if (window)
   {
-    v3 = [a1 traitCollection];
-    if (v3)
+    traitCollection = [self traitCollection];
+    if (traitCollection)
     {
-      v7 = v3;
-      v4 = [MEMORY[0x1E69DD1B8] currentTraitCollection];
-      if ([v7 isEqual:v4])
+      v7 = traitCollection;
+      currentTraitCollection = [MEMORY[0x1E69DD1B8] currentTraitCollection];
+      if ([v7 isEqual:currentTraitCollection])
       {
-        v5 = [TLKAppearance bestAppearanceForView:a1];
-        [a1 tlk_updateForAppearance:v5];
+        v5 = [TLKAppearance bestAppearanceForView:self];
+        [self tlk_updateForAppearance:v5];
       }
 
       else
       {
         [MEMORY[0x1E69DD1B8] setCurrentTraitCollection:v7];
-        v6 = [TLKAppearance bestAppearanceForView:a1];
-        [a1 tlk_updateForAppearance:v6];
+        v6 = [TLKAppearance bestAppearanceForView:self];
+        [self tlk_updateForAppearance:v6];
 
-        [MEMORY[0x1E69DD1B8] setCurrentTraitCollection:v4];
+        [MEMORY[0x1E69DD1B8] setCurrentTraitCollection:currentTraitCollection];
       }
 
-      v3 = v7;
+      traitCollection = v7;
     }
   }
 }

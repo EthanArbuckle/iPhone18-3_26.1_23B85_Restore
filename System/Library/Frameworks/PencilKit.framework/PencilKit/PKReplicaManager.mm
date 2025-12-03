@@ -1,7 +1,7 @@
 @interface PKReplicaManager
 + (id)sharedReplicaManager;
 - (PKReplicaManager)init;
-- (id)checkoutReplicaUUIDForDrawing:(id)a3;
+- (id)checkoutReplicaUUIDForDrawing:(id)drawing;
 - (void)_applicationWillTerminate;
 - (void)_loadState;
 - (void)_resetAllReplicaUUIDs;
@@ -9,21 +9,21 @@
 - (void)_scheduleSaveState;
 - (void)_setReplicasDirtyToken;
 - (void)persistIfNeeded;
-- (void)returnReplicaForDrawing:(id)a3;
-- (void)setTestMode:(BOOL)a3;
-- (void)updateVersionForDrawing:(id)a3;
+- (void)returnReplicaForDrawing:(id)drawing;
+- (void)setTestMode:(BOOL)mode;
+- (void)updateVersionForDrawing:(id)drawing;
 @end
 
 @implementation PKReplicaManager
 
-- (void)setTestMode:(BOOL)a3
+- (void)setTestMode:(BOOL)mode
 {
-  self->_testMode = a3;
-  if (a3)
+  self->_testMode = mode;
+  if (mode)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     replicaManagerErrors = self->_replicaManagerErrors;
-    self->_replicaManagerErrors = v4;
+    self->_replicaManagerErrors = array;
   }
 }
 
@@ -57,8 +57,8 @@ void __40__PKReplicaManager_sharedReplicaManager__block_invoke()
     uuidAccessQueue = v2->_uuidAccessQueue;
     v2->_uuidAccessQueue = v3;
 
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:v2 selector:sel__applicationWillTerminate name:*MEMORY[0x1E69DDBD0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__applicationWillTerminate name:*MEMORY[0x1E69DDBD0] object:0];
   }
 
   return v2;
@@ -89,9 +89,9 @@ void *__45__PKReplicaManager__applicationWillTerminate__block_invoke(uint64_t a1
   return result;
 }
 
-- (id)checkoutReplicaUUIDForDrawing:(id)a3
+- (id)checkoutReplicaUUIDForDrawing:(id)drawing
 {
-  v4 = a3;
+  drawingCopy = drawing;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -104,9 +104,9 @@ void *__45__PKReplicaManager__applicationWillTerminate__block_invoke(uint64_t a1
   block[2] = __50__PKReplicaManager_checkoutReplicaUUIDForDrawing___block_invoke;
   block[3] = &unk_1E82DA298;
   block[4] = self;
-  v10 = v4;
+  v10 = drawingCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = drawingCopy;
   dispatch_sync(uuidAccessQueue, block);
   v7 = v13[5];
 
@@ -311,17 +311,17 @@ LABEL_35:
   }
 }
 
-- (void)updateVersionForDrawing:(id)a3
+- (void)updateVersionForDrawing:(id)drawing
 {
-  v4 = a3;
+  drawingCopy = drawing;
   uuidAccessQueue = self->_uuidAccessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__PKReplicaManager_updateVersionForDrawing___block_invoke;
   v7[3] = &unk_1E82D6890;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = drawingCopy;
+  v6 = drawingCopy;
   dispatch_sync(uuidAccessQueue, v7);
 }
 
@@ -454,18 +454,18 @@ _BYTE *__35__PKReplicaManager_persistIfNeeded__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)returnReplicaForDrawing:(id)a3
+- (void)returnReplicaForDrawing:(id)drawing
 {
-  v4 = a3;
-  [(PKReplicaManager *)self updateVersionForDrawing:v4];
+  drawingCopy = drawing;
+  [(PKReplicaManager *)self updateVersionForDrawing:drawingCopy];
   uuidAccessQueue = self->_uuidAccessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__PKReplicaManager_returnReplicaForDrawing___block_invoke;
   v7[3] = &unk_1E82D6890;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = drawingCopy;
+  v6 = drawingCopy;
   dispatch_sync(uuidAccessQueue, v7);
 }
 
@@ -561,16 +561,16 @@ void __44__PKReplicaManager_returnReplicaForDrawing___block_invoke(uint64_t a1)
 
 - (void)_loadState
 {
-  v3 = [MEMORY[0x1E696AAE8] mainBundle];
-  applicationID = [v3 bundleIdentifier];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  applicationID = [mainBundle bundleIdentifier];
 
   if ([(PKReplicaManager *)self isValidBundleIDForSaving:applicationID])
   {
-    v4 = [(PKReplicaManager *)self testMode];
+    testMode = [(PKReplicaManager *)self testMode];
     v5 = applicationID;
     if (applicationID)
     {
-      v6 = v4;
+      v6 = testMode;
     }
 
     else
@@ -610,16 +610,16 @@ void __44__PKReplicaManager_returnReplicaForDrawing___block_invoke(uint64_t a1)
 
       if (!self->_replicaUUIDs)
       {
-        v16 = [MEMORY[0x1E695DFA0] orderedSet];
+        orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
         v17 = self->_replicaUUIDs;
-        self->_replicaUUIDs = v16;
+        self->_replicaUUIDs = orderedSet;
       }
 
       if (!self->_replicaEntries)
       {
-        v18 = [MEMORY[0x1E695DF90] dictionary];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
         v19 = self->_replicaEntries;
-        self->_replicaEntries = v18;
+        self->_replicaEntries = dictionary;
       }
     }
   }
@@ -630,13 +630,13 @@ void __44__PKReplicaManager_returnReplicaForDrawing___block_invoke(uint64_t a1)
   if (!self->_dirtyTokenSet)
   {
     self->_dirtyTokenSet = 1;
-    v3 = [MEMORY[0x1E696AAE8] mainBundle];
-    v4 = [v3 bundleIdentifier];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
 
-    v5 = [(PKReplicaManager *)self testMode];
-    if (v4)
+    testMode = [(PKReplicaManager *)self testMode];
+    if (bundleIdentifier)
     {
-      v6 = v5;
+      v6 = testMode;
     }
 
     else
@@ -647,15 +647,15 @@ void __44__PKReplicaManager_returnReplicaForDrawing___block_invoke(uint64_t a1)
     if (v6 == 1)
     {
 
-      v4 = @"com.apple.replicas.test";
+      bundleIdentifier = @"com.apple.replicas.test";
     }
 
     v10 = 1;
     v7 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:&v10 length:1];
     v8 = *MEMORY[0x1E695E8B8];
     v9 = *MEMORY[0x1E695E8B0];
-    CFPreferencesSetValue(@"com.apple.PencilKit.replicasDirtyToken", v7, v4, *MEMORY[0x1E695E8B8], *MEMORY[0x1E695E8B0]);
-    CFPreferencesSynchronize(v4, v8, v9);
+    CFPreferencesSetValue(@"com.apple.PencilKit.replicasDirtyToken", v7, bundleIdentifier, *MEMORY[0x1E695E8B8], *MEMORY[0x1E695E8B0]);
+    CFPreferencesSynchronize(bundleIdentifier, v8, v9);
   }
 }
 
@@ -702,10 +702,10 @@ uint64_t __38__PKReplicaManager__scheduleSaveState__block_invoke(uint64_t a1)
 
     else
     {
-      v9 = [MEMORY[0x1E696AAE8] mainBundle];
-      v4 = [v9 bundleIdentifier];
+      mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+      bundleIdentifier = [mainBundle bundleIdentifier];
 
-      v3 = v4;
+      v3 = bundleIdentifier;
     }
 
     v10 = v3;
@@ -715,12 +715,12 @@ uint64_t __38__PKReplicaManager__scheduleSaveState__block_invoke(uint64_t a1)
       [v5 encodeObject:self->_replicaUUIDs forKey:@"ReplicaUUIDs"];
       [v5 encodeObject:self->_replicaEntries forKey:@"ReplicaEntries"];
       [v5 finishEncoding];
-      v6 = [v5 encodedData];
+      encodedData = [v5 encodedData];
       v7 = *MEMORY[0x1E695E8B8];
       v8 = *MEMORY[0x1E695E8B0];
       CFPreferencesSetValue(@"com.apple.PencilKit.replicasDirtyToken", 0, v10, *MEMORY[0x1E695E8B8], *MEMORY[0x1E695E8B0]);
       *&self->_dirtyTokenSet = 0;
-      CFPreferencesSetValue(@"com.apple.PencilKit.replicas", v6, v10, v7, v8);
+      CFPreferencesSetValue(@"com.apple.PencilKit.replicas", encodedData, v10, v7, v8);
       CFPreferencesSynchronize(v10, v7, v8);
     }
   }
@@ -728,13 +728,13 @@ uint64_t __38__PKReplicaManager__scheduleSaveState__block_invoke(uint64_t a1)
 
 - (void)_resetAllReplicaUUIDs
 {
-  v3 = [MEMORY[0x1E695DFA0] orderedSet];
+  orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
   replicaUUIDs = self->_replicaUUIDs;
-  self->_replicaUUIDs = v3;
+  self->_replicaUUIDs = orderedSet;
 
-  v5 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   replicaEntries = self->_replicaEntries;
-  self->_replicaEntries = v5;
+  self->_replicaEntries = dictionary;
 
   [(PKReplicaManager *)self _saveStateImmediately];
 }

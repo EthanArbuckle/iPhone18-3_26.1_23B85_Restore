@@ -1,5 +1,5 @@
 @interface VSFullScreenActionAlertViewController
-- (_TtC7Vehicle37VSFullScreenActionAlertViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC7Vehicle37VSFullScreenActionAlertViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)primaryAction;
 - (void)viewDidLoad;
 @end
@@ -8,7 +8,7 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100013AE8();
 }
 
@@ -18,12 +18,12 @@
   if (v2)
   {
     v3 = *&self->action[OBJC_IVAR____TtC7Vehicle37VSFullScreenActionAlertViewController_action];
-    v4 = self;
+    selfCopy = self;
     v2();
   }
 }
 
-- (_TtC7Vehicle37VSFullScreenActionAlertViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7Vehicle37VSFullScreenActionAlertViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,23 +1,23 @@
 @interface PKMessageExtensionMessageBubbleView
-- (CGSize)_layoutWithBounds:(CGRect)a3 isTemplateLayout:(BOOL)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKMessageExtensionMessageBubbleView)initWithFrame:(CGRect)a3;
+- (CGSize)_layoutWithBounds:(CGRect)bounds isTemplateLayout:(BOOL)layout;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKMessageExtensionMessageBubbleView)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)contentInset;
-- (void)_applyProperties:(id)a3;
+- (void)_applyProperties:(id)properties;
 - (void)_setupBubbleView;
 - (void)beginValidateMessage;
 - (void)endValidateMessage;
 - (void)layoutSubviews;
-- (void)setProperties:(id)a3;
+- (void)setProperties:(id)properties;
 @end
 
 @implementation PKMessageExtensionMessageBubbleView
 
-- (PKMessageExtensionMessageBubbleView)initWithFrame:(CGRect)a3
+- (PKMessageExtensionMessageBubbleView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PKMessageExtensionMessageBubbleView;
-  v3 = [(PKMessageExtensionMessageBubbleView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKMessageExtensionMessageBubbleView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -89,9 +89,9 @@ uint64_t __57__PKMessageExtensionMessageBubbleView_endValidateMessage__block_inv
   return [v4 setAlpha:1.0];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(PKMessageExtensionMessageBubbleView *)self _layoutWithBounds:1 isTemplateLayout:0.0, 0.0, a3.width, 10000.0];
+  [(PKMessageExtensionMessageBubbleView *)self _layoutWithBounds:1 isTemplateLayout:0.0, 0.0, fits.width, 10000.0];
   result.height = v4;
   result.width = v3;
   return result;
@@ -106,13 +106,13 @@ uint64_t __57__PKMessageExtensionMessageBubbleView_endValidateMessage__block_inv
   [(PKMessageExtensionMessageBubbleView *)self _layoutWithBounds:0 isTemplateLayout:?];
 }
 
-- (CGSize)_layoutWithBounds:(CGRect)a3 isTemplateLayout:(BOOL)a4
+- (CGSize)_layoutWithBounds:(CGRect)bounds isTemplateLayout:(BOOL)layout
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = [(PKMessageExtensionMessageBubbleView *)self _shouldReverseLayoutDirection];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  _shouldReverseLayoutDirection = [(PKMessageExtensionMessageBubbleView *)self _shouldReverseLayoutDirection];
   memset(&slice, 0, sizeof(slice));
   v11 = self->_contentInset.left + 12.0;
   v12 = x + v11;
@@ -122,7 +122,7 @@ uint64_t __57__PKMessageExtensionMessageBubbleView_endValidateMessage__block_inv
   remainder.origin.y = y + 0.0;
   remainder.size.width = v14;
   remainder.size.height = height;
-  v15 = [(UILabel *)self->_buttonLabel isHidden];
+  isHidden = [(UILabel *)self->_buttonLabel isHidden];
   v51.origin.x = v12;
   v51.origin.y = y + 0.0;
   v51.size.width = v14;
@@ -140,14 +140,14 @@ uint64_t __57__PKMessageExtensionMessageBubbleView_endValidateMessage__block_inv
   v43 = *MEMORY[0x1E695F058];
   v46.origin = *MEMORY[0x1E695F058];
   v46.size = v41;
-  if (v15)
+  if (isHidden)
   {
     v46 = remainder;
   }
 
   else
   {
-    if (v10)
+    if (_shouldReverseLayoutDirection)
     {
       v20 = CGRectMinXEdge;
     }
@@ -166,8 +166,8 @@ uint64_t __57__PKMessageExtensionMessageBubbleView_endValidateMessage__block_inv
   [(UILabel *)self->_subtitleLabel sizeThatFits:v46.size.width, v46.size.height, v41];
   if (v21 == 0.0)
   {
-    v22 = [(UILabel *)self->_subtitleLabel font];
-    [v22 lineHeight];
+    font = [(UILabel *)self->_subtitleLabel font];
+    [font lineHeight];
     v24 = v23;
   }
 
@@ -177,7 +177,7 @@ uint64_t __57__PKMessageExtensionMessageBubbleView_endValidateMessage__block_inv
   }
 
   CGRectDivide(v46, &slice, &v46, v24, CGRectMaxYEdge);
-  if (!a4)
+  if (!layout)
   {
     [(UILabel *)self->_subtitleLabel setFrame:slice.origin.x, slice.origin.y, slice.size.width, slice.size.height];
   }
@@ -186,17 +186,17 @@ uint64_t __57__PKMessageExtensionMessageBubbleView_endValidateMessage__block_inv
   v45.origin = v43;
   v45.size = v42;
   CGRectDivide(v46, &v45, &v46, v25, CGRectMaxYEdge);
-  if (!a4)
+  if (!layout)
   {
     [(UILabel *)self->_titleLabel setFrame:v45.origin.x, v45.origin.y, v45.size.width, v45.size.height];
-    if ((v15 & 1) == 0)
+    if ((isHidden & 1) == 0)
     {
       v26 = v45.origin.y;
       v47.origin.y = v45.origin.y;
       [(UIView *)self->_buttonBackgroundView setFrame:v13, v45.origin.y, v19, v17 + v17];
-      v27 = [(UIView *)self->_buttonBackgroundView layer];
+      layer = [(UIView *)self->_buttonBackgroundView layer];
       PKFloatRoundToPixel();
-      [v27 setCornerRadius:{fmin(v28, 20.0)}];
+      [layer setCornerRadius:{fmin(v28, 20.0)}];
 
       v52.origin.x = v13;
       v52.origin.y = v26;
@@ -220,7 +220,7 @@ uint64_t __57__PKMessageExtensionMessageBubbleView_endValidateMessage__block_inv
   v44.size = v42;
   v31 = CGRectGetMinY(v45) + -12.0 + -13.0;
   CGRectDivide(remainder, &v44, &remainder, v31, CGRectMinYEdge);
-  if (!a4)
+  if (!layout)
   {
     [(UIView *)self->_cardView setFrame:v44.origin.x, v44.origin.y, v44.size.width, v44.size.height];
     spinner = self->_spinner;
@@ -230,10 +230,10 @@ uint64_t __57__PKMessageExtensionMessageBubbleView_endValidateMessage__block_inv
 
   if (self->_isUsingFallbackImage)
   {
-    v33 = [(UIImageView *)self->_cardArtImageView image];
-    [v33 size];
+    image = [(UIImageView *)self->_cardArtImageView image];
+    [image size];
 
-    if (a4)
+    if (layout)
     {
       goto LABEL_22;
     }
@@ -242,7 +242,7 @@ uint64_t __57__PKMessageExtensionMessageBubbleView_endValidateMessage__block_inv
   }
 
   PKSizeScaleAspectFit();
-  if (!a4)
+  if (!layout)
   {
 LABEL_21:
     cardArtImageView = self->_cardArtImageView;
@@ -273,7 +273,7 @@ LABEL_22:
 
 - (void)_setupBubbleView
 {
-  v3 = [(PKMessageExtensionMessageBubbleView *)self _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(PKMessageExtensionMessageBubbleView *)self _shouldReverseLayoutDirection];
   [(PKMessageExtensionMessageBubbleView *)self setPreservesSuperviewLayoutMargins:1];
   [(PKMessageExtensionMessageBubbleView *)self setAutoresizingMask:18];
   v4 = +[PKSharingMessageExtensionInvitationTheme messageBubbleBackgroundColor];
@@ -287,17 +287,17 @@ LABEL_22:
   v8 = +[PKSharingMessageExtensionInvitationTheme carKeyImageBackgroundColor];
   [(UIView *)v7 setBackgroundColor:v8];
 
-  v9 = [(UIView *)self->_cardView layer];
-  [v9 setCornerRadius:8.0];
+  layer = [(UIView *)self->_cardView layer];
+  [layer setCornerRadius:8.0];
 
   [(PKMessageExtensionMessageBubbleView *)self addSubview:self->_cardView];
   v10 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
   cardArtImageView = self->_cardArtImageView;
   self->_cardArtImageView = v10;
 
-  v56 = [(UIImageView *)self->_cardArtImageView layer];
-  [v56 setCornerRadius:8.0];
-  [v56 setMasksToBounds:1];
+  layer2 = [(UIImageView *)self->_cardArtImageView layer];
+  [layer2 setCornerRadius:8.0];
+  [layer2 setMasksToBounds:1];
   [(PKMessageExtensionMessageBubbleView *)self addSubview:self->_cardArtImageView];
   v12 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   leftTitleLabel = self->_leftTitleLabel;
@@ -338,8 +338,8 @@ LABEL_22:
   self->_buttonBackgroundView = v24;
 
   v26 = self->_buttonBackgroundView;
-  v27 = [MEMORY[0x1E69DC888] systemBlackColor];
-  [(UIView *)v26 setBackgroundColor:v27];
+  systemBlackColor = [MEMORY[0x1E69DC888] systemBlackColor];
+  [(UIView *)v26 setBackgroundColor:systemBlackColor];
 
   [(PKMessageExtensionMessageBubbleView *)self addSubview:self->_buttonBackgroundView];
   v28 = objc_alloc_init(MEMORY[0x1E69DCC10]);
@@ -379,7 +379,7 @@ LABEL_22:
   v42 = +[PKSharingMessageExtensionInvitationTheme messageTitleFont];
   [(UILabel *)v41 setFont:v42];
 
-  if (v3)
+  if (_shouldReverseLayoutDirection)
   {
     v43 = 2;
   }
@@ -431,26 +431,26 @@ LABEL_22:
   [(PKMessageExtensionMessageBubbleView *)self addSubview:self->_spinner];
 }
 
-- (void)setProperties:(id)a3
+- (void)setProperties:(id)properties
 {
-  v5 = a3;
+  propertiesCopy = properties;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_properties, a3);
-    [(PKMessageExtensionMessageBubbleView *)self _applyProperties:v5];
+    objc_storeStrong(&self->_properties, properties);
+    [(PKMessageExtensionMessageBubbleView *)self _applyProperties:propertiesCopy];
   }
 }
 
-- (void)_applyProperties:(id)a3
+- (void)_applyProperties:(id)properties
 {
-  v24 = a3;
-  v4 = [v24 cardImage];
-  if (v4)
+  propertiesCopy = properties;
+  cardImage = [propertiesCopy cardImage];
+  if (cardImage)
   {
-    v5 = v4;
+    fallbackCardImageName = cardImage;
     self->_isUsingFallbackImage = 0;
 LABEL_3:
-    [(UIImageView *)self->_cardArtImageView setImage:v5];
+    [(UIImageView *)self->_cardArtImageView setImage:fallbackCardImageName];
     LOBYTE(v6) = self->_isUsingFallbackImage;
     v7 = v6;
 LABEL_4:
@@ -458,69 +458,69 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v5 = [v24 fallbackCardImageName];
+  fallbackCardImageName = [propertiesCopy fallbackCardImageName];
   v7 = 1.0;
-  if (!v5)
+  if (!fallbackCardImageName)
   {
     goto LABEL_4;
   }
 
-  v20 = [(UIImageView *)self->_cardArtImageView image];
+  image = [(UIImageView *)self->_cardArtImageView image];
 
-  if (v20)
+  if (image)
   {
     goto LABEL_4;
   }
 
   v21 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:4 weight:2 scale:54.0];
-  v22 = [MEMORY[0x1E69DCAB8] systemImageNamed:v5];
+  v22 = [MEMORY[0x1E69DCAB8] systemImageNamed:fallbackCardImageName];
   v23 = [v22 imageWithSymbolConfiguration:v21];
 
   self->_isUsingFallbackImage = 1;
   if (v23)
   {
-    v5 = v23;
+    fallbackCardImageName = v23;
     goto LABEL_3;
   }
 
 LABEL_5:
   [(UIView *)self->_cardView setAlpha:v7];
-  v8 = [(PKMessageExtensionMessageBubbleView *)self _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(PKMessageExtensionMessageBubbleView *)self _shouldReverseLayoutDirection];
   leftTitleLabel = self->_leftTitleLabel;
-  if (v8)
+  if (_shouldReverseLayoutDirection)
   {
-    v10 = [v24 rightTitleText];
-    [(UILabel *)leftTitleLabel setText:v10];
+    rightTitleText = [propertiesCopy rightTitleText];
+    [(UILabel *)leftTitleLabel setText:rightTitleText];
 
     rightTitleLabel = self->_rightTitleLabel;
-    [v24 leftTitleText];
+    [propertiesCopy leftTitleText];
   }
 
   else
   {
-    v12 = [v24 leftTitleText];
-    [(UILabel *)leftTitleLabel setText:v12];
+    leftTitleText = [propertiesCopy leftTitleText];
+    [(UILabel *)leftTitleLabel setText:leftTitleText];
 
     rightTitleLabel = self->_rightTitleLabel;
-    [v24 rightTitleText];
+    [propertiesCopy rightTitleText];
   }
   v13 = ;
   [(UILabel *)rightTitleLabel setText:v13];
 
   titleLabel = self->_titleLabel;
-  v15 = [v24 title];
-  [(UILabel *)titleLabel setText:v15];
+  title = [propertiesCopy title];
+  [(UILabel *)titleLabel setText:title];
 
   subtitleLabel = self->_subtitleLabel;
-  v17 = [v24 subtitle];
-  [(UILabel *)subtitleLabel setText:v17];
+  subtitle = [propertiesCopy subtitle];
+  [(UILabel *)subtitleLabel setText:subtitle];
 
-  v18 = [v24 buttonText];
-  v19 = v18 == 0;
+  buttonText = [propertiesCopy buttonText];
+  v19 = buttonText == 0;
   [(UILabel *)self->_buttonLabel setHidden:v19];
   [(UIImageView *)self->_buttonIconView setHidden:v19];
   [(UIView *)self->_buttonBackgroundView setHidden:v19];
-  [(UILabel *)self->_buttonLabel setText:v18];
+  [(UILabel *)self->_buttonLabel setText:buttonText];
   [(PKMessageExtensionMessageBubbleView *)self setNeedsLayout];
 }
 

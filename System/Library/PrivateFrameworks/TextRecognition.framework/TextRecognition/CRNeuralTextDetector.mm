@@ -1,19 +1,19 @@
 @interface CRNeuralTextDetector
-+ (CGSize)smallestImageSizeForTextWithRelativeHeight:(double)a3 originalImageSize:(CGSize)a4 configuration:(id)a5;
-+ (id)_lineRegionFromLineTextFeature:(id)a3 imageSize:(CGSize)a4;
-+ (id)textFeaturesFromPolygons:(void *)a3 withScale:(const float *)a4 withNMSOutputScale:(unint64_t)a5;
++ (CGSize)smallestImageSizeForTextWithRelativeHeight:(double)height originalImageSize:(CGSize)size configuration:(id)configuration;
++ (id)_lineRegionFromLineTextFeature:(id)feature imageSize:(CGSize)size;
++ (id)textFeaturesFromPolygons:(void *)polygons withScale:(const float *)scale withNMSOutputScale:(unint64_t)outputScale;
 - (CRNeuralTextDetector)init;
-- (id)detectInImage:(id)a3 trackingSession:(id)a4 delegate:(id)a5 error:(id *)a6;
+- (id)detectInImage:(id)image trackingSession:(id)session delegate:(id)delegate error:(id *)error;
 @end
 
 @implementation CRNeuralTextDetector
 
-+ (id)_lineRegionFromLineTextFeature:(id)a3 imageSize:(CGSize)a4
++ (id)_lineRegionFromLineTextFeature:(id)feature imageSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = a3;
-  v7 = sub_1B410FA4C(v6, width, height);
+  height = size.height;
+  width = size.width;
+  featureCopy = feature;
+  v7 = sub_1B410FA4C(featureCopy, width, height);
 
   return v7;
 }
@@ -35,25 +35,25 @@
   return v3;
 }
 
-+ (id)textFeaturesFromPolygons:(void *)a3 withScale:(const float *)a4 withNMSOutputScale:(unint64_t)a5
++ (id)textFeaturesFromPolygons:(void *)polygons withScale:(const float *)scale withNMSOutputScale:(unint64_t)outputScale
 {
-  v7 = [MEMORY[0x1E695DF70] array];
-  if (*(a3 + 1) != *a3)
+  array = [MEMORY[0x1E695DF70] array];
+  if (*(polygons + 1) != *polygons)
   {
-    CRDetectorUtils::sortQuadWithRotation(*a3);
+    CRDetectorUtils::sortQuadWithRotation(*polygons);
   }
 
-  return v7;
+  return array;
 }
 
-- (id)detectInImage:(id)a3 trackingSession:(id)a4 delegate:(id)a5 error:(id *)a6
+- (id)detectInImage:(id)image trackingSession:(id)session delegate:(id)delegate error:(id *)error
 {
-  v6 = [(CRNeuralTextDetector *)self detectInImage:a3 delegate:a5 error:a6];
+  v6 = [(CRNeuralTextDetector *)self detectInImage:image delegate:delegate error:error];
 
   return v6;
 }
 
-+ (CGSize)smallestImageSizeForTextWithRelativeHeight:(double)a3 originalImageSize:(CGSize)a4 configuration:(id)a5
++ (CGSize)smallestImageSizeForTextWithRelativeHeight:(double)height originalImageSize:(CGSize)size configuration:(id)configuration
 {
   v5 = *MEMORY[0x1E695F060];
   v6 = *(MEMORY[0x1E695F060] + 8);

@@ -1,28 +1,28 @@
 @interface CRHomeScreenPersistenceManager
-+ (id)_iconStateDebugDescription:(id)a3;
-- (CRHomeScreenPersistenceManager)initWithVehicleId:(id)a3 certificateSerial:(id)a4;
-- (id)_iconForBundleIdentifier:(id)a3;
-- (void)_processIconStateResponse:(id)a3 completion:(id)a4;
++ (id)_iconStateDebugDescription:(id)description;
+- (CRHomeScreenPersistenceManager)initWithVehicleId:(id)id certificateSerial:(id)serial;
+- (id)_iconForBundleIdentifier:(id)identifier;
+- (void)_processIconStateResponse:(id)response completion:(id)completion;
 - (void)dealloc;
-- (void)fetchIconStateWithCompletion:(id)a3;
+- (void)fetchIconStateWithCompletion:(id)completion;
 - (void)resetIconState;
-- (void)setIconState:(id)a3 hiddenIcons:(id)a4;
+- (void)setIconState:(id)state hiddenIcons:(id)icons;
 @end
 
 @implementation CRHomeScreenPersistenceManager
 
-- (CRHomeScreenPersistenceManager)initWithVehicleId:(id)a3 certificateSerial:(id)a4
+- (CRHomeScreenPersistenceManager)initWithVehicleId:(id)id certificateSerial:(id)serial
 {
-  v7 = a3;
-  v8 = a4;
+  idCopy = id;
+  serialCopy = serial;
   v17.receiver = self;
   v17.super_class = CRHomeScreenPersistenceManager;
   v9 = [(CRHomeScreenPersistenceManager *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_vehicleId, a3);
-    objc_storeStrong(&v10->_vehicleCertificateSerial, a4);
+    objc_storeStrong(&v9->_vehicleId, id);
+    objc_storeStrong(&v10->_vehicleCertificateSerial, serial);
     v11 = objc_alloc_init(CRSIconLayoutController);
     iconLayoutController = v10->_iconLayoutController;
     v10->_iconLayoutController = v11;
@@ -40,25 +40,25 @@
 
 - (void)dealloc
 {
-  v3 = [(CRHomeScreenPersistenceManager *)self iconLayoutController];
-  [v3 invalidate];
+  iconLayoutController = [(CRHomeScreenPersistenceManager *)self iconLayoutController];
+  [iconLayoutController invalidate];
 
   v4.receiver = self;
   v4.super_class = CRHomeScreenPersistenceManager;
   [(CRHomeScreenPersistenceManager *)&v4 dealloc];
 }
 
-- (void)fetchIconStateWithCompletion:(id)a3
+- (void)fetchIconStateWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v5 = CarGeneralLogging();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(CRHomeScreenPersistenceManager *)self vehicleId];
+      vehicleId = [(CRHomeScreenPersistenceManager *)self vehicleId];
       *buf = 138412290;
-      v17 = v6;
+      v17 = vehicleId;
       _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "Fetching icon state for vehicle %@", buf, 0xCu);
     }
 
@@ -66,50 +66,50 @@
     v11 = 3221225472;
     v12 = sub_BF5C;
     v13 = &unk_6E670;
-    v14 = self;
-    v15 = v4;
+    selfCopy = self;
+    v15 = completionCopy;
     v7 = objc_retainBlock(&v10);
     v8 = [(CRHomeScreenPersistenceManager *)self iconLayoutController:v10];
-    v9 = [(CRHomeScreenPersistenceManager *)self vehicleId];
-    [v8 fetchIconStateForVehicleID:v9 completion:v7];
+    vehicleId2 = [(CRHomeScreenPersistenceManager *)self vehicleId];
+    [v8 fetchIconStateForVehicleID:vehicleId2 completion:v7];
   }
 }
 
-- (void)setIconState:(id)a3 hiddenIcons:(id)a4
+- (void)setIconState:(id)state hiddenIcons:(id)icons
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(CRHomeScreenPersistenceManager *)self iconLayoutController];
-  v8 = [(CRHomeScreenPersistenceManager *)self vehicleId];
-  [v9 setIconOrder:v7 hiddenIcons:v6 forVehicleID:v8];
+  iconsCopy = icons;
+  stateCopy = state;
+  iconLayoutController = [(CRHomeScreenPersistenceManager *)self iconLayoutController];
+  vehicleId = [(CRHomeScreenPersistenceManager *)self vehicleId];
+  [iconLayoutController setIconOrder:stateCopy hiddenIcons:iconsCopy forVehicleID:vehicleId];
 }
 
 - (void)resetIconState
 {
-  v4 = [(CRHomeScreenPersistenceManager *)self iconLayoutController];
-  v3 = [(CRHomeScreenPersistenceManager *)self vehicleId];
-  [v4 resetIconStateForVehicleID:v3];
+  iconLayoutController = [(CRHomeScreenPersistenceManager *)self iconLayoutController];
+  vehicleId = [(CRHomeScreenPersistenceManager *)self vehicleId];
+  [iconLayoutController resetIconStateForVehicleID:vehicleId];
 }
 
-+ (id)_iconStateDebugDescription:(id)a3
++ (id)_iconStateDebugDescription:(id)description
 {
   v3 = kCRSIconLayoutDisplaysOEMIcon;
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:v3];
+  descriptionCopy = description;
+  v5 = [descriptionCopy objectForKeyedSubscript:v3];
   v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v5 BOOLValue]);
-  v7 = [v4 objectForKeyedSubscript:kCRSIconLayoutOEMIconLabel];
-  v8 = [v4 objectForKeyedSubscript:kCRSIconLayoutIconOrderKey];
-  v9 = [v8 firstObject];
-  v10 = [v4 objectForKeyedSubscript:kCRSIconLayoutHiddenIconsKey];
+  v7 = [descriptionCopy objectForKeyedSubscript:kCRSIconLayoutOEMIconLabel];
+  v8 = [descriptionCopy objectForKeyedSubscript:kCRSIconLayoutIconOrderKey];
+  firstObject = [v8 firstObject];
+  v10 = [descriptionCopy objectForKeyedSubscript:kCRSIconLayoutHiddenIconsKey];
 
-  v11 = [NSString stringWithFormat:@"%@ '%@', %@ icons, %@ hidden apps", v6, v7, v9, v10];
+  v11 = [NSString stringWithFormat:@"%@ '%@', %@ icons, %@ hidden apps", v6, v7, firstObject, v10];
 
   return v11;
 }
 
-- (id)_iconForBundleIdentifier:(id)a3
+- (id)_iconForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v42 = 0;
   v43 = &v42;
   v44 = 0x3032000000;
@@ -126,7 +126,7 @@
   v33 = &v32;
   v34 = 0x2020000000;
   v35 = 0;
-  v5 = [[CRApplicationIcon alloc] initWithBundleIdentifier:v4];
+  v5 = [[CRApplicationIcon alloc] initWithBundleIdentifier:identifierCopy];
   if ([(CRApplicationIcon *)v5 hasCustomImage])
   {
     v6 = dispatch_semaphore_create(0);
@@ -136,16 +136,16 @@
     v25 = &unk_6E698;
     v29 = &v42;
     v30 = &v36;
-    v7 = v4;
+    v7 = identifierCopy;
     v26 = v7;
-    v27 = self;
+    selfCopy = self;
     v31 = &v32;
     v8 = v6;
     v28 = v8;
     v9 = objc_retainBlock(&v22);
     v10 = [(CRHomeScreenPersistenceManager *)self iconLayoutController:v22];
-    v11 = [(CRHomeScreenPersistenceManager *)self vehicleId];
-    [v10 fetchApplicationIconInformationForBundleIdentifier:v7 vehicleID:v11 showBorder:-[CRHomeScreenPersistenceManager drawIconBorders](self completion:{"drawIconBorders"), v9}];
+    vehicleId = [(CRHomeScreenPersistenceManager *)self vehicleId];
+    [v10 fetchApplicationIconInformationForBundleIdentifier:v7 vehicleID:vehicleId showBorder:-[CRHomeScreenPersistenceManager drawIconBorders](self completion:{"drawIconBorders"), v9}];
 
     dispatch_semaphore_wait(v8, 0xFFFFFFFFFFFFFFFFLL);
     v12 = v26;
@@ -158,15 +158,15 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v8 = [LSApplicationProxy applicationProxyForIdentifier:v4];
+  v8 = [LSApplicationProxy applicationProxyForIdentifier:identifierCopy];
   v12 = [CRCarPlayAppDeclaration declarationForAppProxy:v8];
-  v13 = [(CRHomeScreenPersistenceManager *)self evaluator];
-  v14 = [(CRHomeScreenPersistenceManager *)self vehicleCertificateSerial];
-  v15 = [v13 effectivePolicyForAppDeclaration:v12 inVehicleWithCertificateSerial:v14];
+  evaluator = [(CRHomeScreenPersistenceManager *)self evaluator];
+  vehicleCertificateSerial = [(CRHomeScreenPersistenceManager *)self vehicleCertificateSerial];
+  v15 = [evaluator effectivePolicyForAppDeclaration:v12 inVehicleWithCertificateSerial:vehicleCertificateSerial];
 
   if ([v15 isCarPlaySupported])
   {
-    if ([v4 isEqualToString:CRSBooksIdentifier])
+    if ([identifierCopy isEqualToString:CRSBooksIdentifier])
     {
       v16 = [v8 localizedNameForContext:@"Car"];
       v17 = v16;
@@ -183,9 +183,9 @@ LABEL_14:
 
     else
     {
-      v20 = [v8 localizedName];
+      localizedName = [v8 localizedName];
       v16 = v43[5];
-      v43[5] = v20;
+      v43[5] = localizedName;
     }
 
     goto LABEL_14;
@@ -195,7 +195,7 @@ LABEL_14:
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v49 = v4;
+    v49 = identifierCopy;
     _os_log_impl(&dword_0, v18, OS_LOG_TYPE_DEFAULT, "Application %@ is not supported in this vehicle.", buf, 0xCu);
   }
 
@@ -210,36 +210,36 @@ LABEL_15:
   return v19;
 }
 
-- (void)_processIconStateResponse:(id)a3 completion:(id)a4
+- (void)_processIconStateResponse:(id)response completion:(id)completion
 {
-  v6 = a3;
-  v34 = a4;
-  v36 = [NSMutableDictionary dictionaryWithDictionary:v6];
+  responseCopy = response;
+  completionCopy = completion;
+  v36 = [NSMutableDictionary dictionaryWithDictionary:responseCopy];
   v7 = CarGeneralLogging();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [objc_opt_class() _iconStateDebugDescription:v6];
+    v8 = [objc_opt_class() _iconStateDebugDescription:responseCopy];
     *buf = 138412290;
     v49 = v8;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "Processing icon state response: %@", buf, 0xCu);
   }
 
-  v35 = v6;
+  v35 = responseCopy;
 
   v33 = kCRSIconLayoutIconOrderKey;
   v9 = [v36 objectForKeyedSubscript:?];
-  v10 = [v9 firstObject];
+  firstObject = [v9 firstObject];
 
   v11 = +[NSMutableArray array];
   v12 = [v36 objectForKeyedSubscript:kCRSIconLayoutDisplaysOEMIcon];
-  v13 = [v12 BOOLValue];
+  bOOLValue = [v12 BOOLValue];
 
   v37 = [v36 objectForKeyedSubscript:kCRSIconLayoutOEMIconLabel];
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v14 = v10;
+  v14 = firstObject;
   v15 = [v14 countByEnumeratingWithState:&v42 objects:v47 count:16];
   if (v15)
   {
@@ -256,7 +256,7 @@ LABEL_15:
         }
 
         v20 = *(*(&v42 + 1) + 8 * i);
-        if (v13 & 1 | (([v20 isEqualToString:v18] & 1) == 0))
+        if (bOOLValue & 1 | (([v20 isEqualToString:v18] & 1) == 0))
         {
           v21 = [(CRHomeScreenPersistenceManager *)self _iconForBundleIdentifier:v20];
           if (v21)
@@ -318,7 +318,7 @@ LABEL_15:
   [v36 setObject:v31 forKeyedSubscript:v24];
 
   v32 = [NSDictionary dictionaryWithDictionary:v36];
-  v34[2](v34, v32);
+  completionCopy[2](completionCopy, v32);
 }
 
 @end

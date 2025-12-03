@@ -1,45 +1,45 @@
 @interface _UIStackedImageContainerView
-- (BOOL)_applyKeyPathsAndRelativeValues:(id)a3 forMotionEffect:(id)a4;
+- (BOOL)_applyKeyPathsAndRelativeValues:(id)values forMotionEffect:(id)effect;
 - (CGPoint)focusDirection;
 - (UIView)maskedOverlayView;
 - (UIView)unmaskedOverlayView;
-- (_UIStackedImageContainerView)initWithFrame:(CGRect)a3;
-- (id)_focusedFrameGuideCreateIfNecessary:(BOOL)a3;
-- (id)_preferredConfigurationForFocusAnimation:(int64_t)a3 inContext:(id)a4;
+- (_UIStackedImageContainerView)initWithFrame:(CGRect)frame;
+- (id)_focusedFrameGuideCreateIfNecessary:(BOOL)necessary;
+- (id)_preferredConfigurationForFocusAnimation:(int64_t)animation inContext:(id)context;
 - (id)_viewForBackgroundEffects;
 - (unint64_t)controlState;
 - (void)_installMotionEffects;
-- (void)_setStackFocused:(BOOL)a3 animated:(BOOL)a4 focusAnimationCoordinator:(id)a5;
+- (void)_setStackFocused:(BOOL)focused animated:(BOOL)animated focusAnimationCoordinator:(id)coordinator;
 - (void)_uninstallMotionEffects;
 - (void)_updateContainerLayerImages;
-- (void)_updateFocusDirection:(CGPoint)a3 animated:(BOOL)a4;
+- (void)_updateFocusDirection:(CGPoint)direction animated:(BOOL)animated;
 - (void)_updateFocusedFrameGuideConstraintsIfApplicable;
 - (void)dealloc;
-- (void)setBounds:(CGRect)a3;
-- (void)setConfig:(id)a3;
-- (void)setConstructedStackImage:(id)a3;
-- (void)setControlState:(unint64_t)a3 animated:(BOOL)a4 focusAnimationCoordinator:(id)a5;
-- (void)setFocusDirection:(CGPoint)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setInstallsMotionEffectsWhenFocused:(BOOL)a3;
-- (void)setMaskedOverlayView:(id)a3;
-- (void)setPressed:(BOOL)a3;
-- (void)setStackImage:(id)a3;
-- (void)setUnmaskedOverlayView:(id)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setConfig:(id)config;
+- (void)setConstructedStackImage:(id)image;
+- (void)setControlState:(unint64_t)state animated:(BOOL)animated focusAnimationCoordinator:(id)coordinator;
+- (void)setFocusDirection:(CGPoint)direction;
+- (void)setFrame:(CGRect)frame;
+- (void)setInstallsMotionEffectsWhenFocused:(BOOL)focused;
+- (void)setMaskedOverlayView:(id)view;
+- (void)setPressed:(BOOL)pressed;
+- (void)setStackImage:(id)image;
+- (void)setUnmaskedOverlayView:(id)view;
 @end
 
 @implementation _UIStackedImageContainerView
 
-- (_UIStackedImageContainerView)initWithFrame:(CGRect)a3
+- (_UIStackedImageContainerView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = _UIStackedImageContainerView;
-  v3 = [(UIView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(_UIStackedImageContainerView *)v3 _imageContainerLayer];
-    [v5 _configureForContainedInStackedImageContainerView];
+    _imageContainerLayer = [(_UIStackedImageContainerView *)v3 _imageContainerLayer];
+    [_imageContainerLayer _configureForContainedInStackedImageContainerView];
 
     v6 = +[_UIStackedImageConfiguration newStandardConfiguration];
     [(_UIStackedImageContainerView *)v4 setConfig:v6];
@@ -51,36 +51,36 @@
 
 - (void)dealloc
 {
-  v3 = [(_UIStackedImageContainerView *)self _renderer];
-  [v3 setLayerStack:0];
+  _renderer = [(_UIStackedImageContainerView *)self _renderer];
+  [_renderer setLayerStack:0];
 
   v4.receiver = self;
   v4.super_class = _UIStackedImageContainerView;
   [(UIView *)&v4 dealloc];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = _UIStackedImageContainerView;
-  [(UIView *)&v4 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(UIView *)&v4 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(_UIStackedImageContainerView *)self _updateFocusedFrameGuideConstraintsIfApplicable];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   v4.receiver = self;
   v4.super_class = _UIStackedImageContainerView;
-  [(UIView *)&v4 setBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(UIView *)&v4 setBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   [(_UIStackedImageContainerView *)self _updateFocusedFrameGuideConstraintsIfApplicable];
 }
 
 - (void)_updateContainerLayerImages
 {
-  v3 = [(UIImage *)self->_stackImage _primitiveImageAsset];
-  v4 = [v3 _layerStack];
-  constructedStackImage = v4;
-  if (!v4)
+  _primitiveImageAsset = [(UIImage *)self->_stackImage _primitiveImageAsset];
+  _layerStack = [_primitiveImageAsset _layerStack];
+  constructedStackImage = _layerStack;
+  if (!_layerStack)
   {
     constructedStackImage = self->_constructedStackImage;
   }
@@ -103,137 +103,137 @@
     }
   }
 
-  v7 = [(_UIStackedImageContainerView *)self _renderer];
-  v8 = [(_UIStackedImageContainerView *)self config];
-  [v7 setConfiguration:v8];
+  _renderer = [(_UIStackedImageContainerView *)self _renderer];
+  config = [(_UIStackedImageContainerView *)self config];
+  [_renderer setConfiguration:config];
 
-  v9 = [(_UIStackedImageContainerView *)self _renderer];
-  [v9 setLayerStack:v10];
+  _renderer2 = [(_UIStackedImageContainerView *)self _renderer];
+  [_renderer2 setLayerStack:v10];
 }
 
-- (void)setConfig:(id)a3
+- (void)setConfig:(id)config
 {
-  v5 = a3;
+  configCopy = config;
   if (![(_UIStackedImageConfiguration *)self->_config isEqual:?])
   {
-    objc_storeStrong(&self->_config, a3);
+    objc_storeStrong(&self->_config, config);
     [(_UIStackedImageContainerView *)self _updateContainerLayerImages];
     [(_UIStackedImageContainerView *)self _updateFocusedFrameGuideConstraintsIfApplicable];
   }
 }
 
-- (void)setStackImage:(id)a3
+- (void)setStackImage:(id)image
 {
-  v5 = a3;
+  imageCopy = image;
   if (![(UIImage *)self->_stackImage isEqual:?])
   {
-    objc_storeStrong(&self->_stackImage, a3);
+    objc_storeStrong(&self->_stackImage, image);
     [(_UIStackedImageContainerView *)self _updateContainerLayerImages];
   }
 }
 
-- (void)setConstructedStackImage:(id)a3
+- (void)setConstructedStackImage:(id)image
 {
-  v5 = a3;
-  if (self->_constructedStackImage != v5)
+  imageCopy = image;
+  if (self->_constructedStackImage != imageCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_constructedStackImage, a3);
+    v6 = imageCopy;
+    objc_storeStrong(&self->_constructedStackImage, image);
     [(_UIStackedImageContainerView *)self _updateContainerLayerImages];
-    v5 = v6;
+    imageCopy = v6;
   }
 }
 
 - (unint64_t)controlState
 {
-  v2 = [(_UIStackedImageContainerView *)self _renderer];
-  v3 = [v2 rendererControlState];
+  _renderer = [(_UIStackedImageContainerView *)self _renderer];
+  rendererControlState = [_renderer rendererControlState];
 
-  return v3;
+  return rendererControlState;
 }
 
-- (void)setControlState:(unint64_t)a3 animated:(BOOL)a4 focusAnimationCoordinator:(id)a5
+- (void)setControlState:(unint64_t)state animated:(BOOL)animated focusAnimationCoordinator:(id)coordinator
 {
-  v5 = a4;
-  v14 = a5;
-  if (v14)
+  animatedCopy = animated;
+  coordinatorCopy = coordinator;
+  if (coordinatorCopy)
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = v5;
+    v8 = animatedCopy;
   }
 
-  if ((a3 & 8) != 0)
+  if ((state & 8) != 0)
   {
     [(_UIStackedImageContainerView *)self _installMotionEffects];
-    v9 = v14;
+    v9 = coordinatorCopy;
     if (!v8)
     {
       goto LABEL_10;
     }
 
-    v10 = [(_UIStackedImageContainerView *)self config];
-    v11 = [v10 focusAnimationConfiguration];
-    v12 = [UIFocusAnimationCoordinator _focusingAnimationCoordinatorWithConfiguration:v11 inContext:0];
+    config = [(_UIStackedImageContainerView *)self config];
+    focusAnimationConfiguration = [config focusAnimationConfiguration];
+    v12 = [UIFocusAnimationCoordinator _focusingAnimationCoordinatorWithConfiguration:focusAnimationConfiguration inContext:0];
   }
 
   else
   {
     [(_UIStackedImageContainerView *)self _uninstallMotionEffects];
-    v9 = v14;
+    v9 = coordinatorCopy;
     if (!v8)
     {
       goto LABEL_10;
     }
 
-    v10 = [(_UIStackedImageContainerView *)self config];
-    v11 = [v10 focusAnimationConfiguration];
-    v12 = [UIFocusAnimationCoordinator _unfocusingAnimationCoordinatorWithConfiguration:v11 inContext:0];
+    config = [(_UIStackedImageContainerView *)self config];
+    focusAnimationConfiguration = [config focusAnimationConfiguration];
+    v12 = [UIFocusAnimationCoordinator _unfocusingAnimationCoordinatorWithConfiguration:focusAnimationConfiguration inContext:0];
   }
 
   v9 = v12;
 
 LABEL_10:
   [(_UIStackedImageContainerView *)self focusDirection];
-  [(_UIStackedImageContainerView *)self _updateGlassMaterialsWithControlState:a3 focusDirection:v5 animated:v9 focusAnimationCoordinator:?];
-  v13 = [(_UIStackedImageContainerView *)self _renderer];
-  [v13 setRendererControlState:a3 animated:v5 focusAnimationCoordinator:v9];
+  [(_UIStackedImageContainerView *)self _updateGlassMaterialsWithControlState:state focusDirection:animatedCopy animated:v9 focusAnimationCoordinator:?];
+  _renderer = [(_UIStackedImageContainerView *)self _renderer];
+  [_renderer setRendererControlState:state animated:animatedCopy focusAnimationCoordinator:v9];
 
-  if (v9 != v14)
+  if (v9 != coordinatorCopy)
   {
     [v9 _animate];
   }
 }
 
-- (void)_setStackFocused:(BOOL)a3 animated:(BOOL)a4 focusAnimationCoordinator:(id)a5
+- (void)_setStackFocused:(BOOL)focused animated:(BOOL)animated focusAnimationCoordinator:(id)coordinator
 {
-  v5 = a4;
-  v6 = a3;
-  v10 = a5;
+  animatedCopy = animated;
+  focusedCopy = focused;
+  coordinatorCopy = coordinator;
   v8 = [(_UIStackedImageContainerView *)self controlState]& 0xFFFFFFFFFFFFFFF7;
   v9 = 8;
-  if (!v6)
+  if (!focusedCopy)
   {
     v9 = 0;
   }
 
-  [(_UIStackedImageContainerView *)self setControlState:v8 | v9 animated:v5 focusAnimationCoordinator:v10];
+  [(_UIStackedImageContainerView *)self setControlState:v8 | v9 animated:animatedCopy focusAnimationCoordinator:coordinatorCopy];
 }
 
-- (void)setPressed:(BOOL)a3
+- (void)setPressed:(BOOL)pressed
 {
-  v4 = [(_UIStackedImageContainerView *)self controlState]& 0xFFFFFFFFFFFFFFFELL | a3;
+  v4 = [(_UIStackedImageContainerView *)self controlState]& 0xFFFFFFFFFFFFFFFELL | pressed;
 
   [(_UIStackedImageContainerView *)self setControlState:v4 animated:1];
 }
 
 - (CGPoint)focusDirection
 {
-  v2 = [(_UIStackedImageContainerView *)self _renderer];
-  [v2 focusDirection];
+  _renderer = [(_UIStackedImageContainerView *)self _renderer];
+  [_renderer focusDirection];
   v4 = v3;
   v6 = v5;
 
@@ -244,10 +244,10 @@ LABEL_10:
   return result;
 }
 
-- (void)setFocusDirection:(CGPoint)a3
+- (void)setFocusDirection:(CGPoint)direction
 {
-  y = a3.y;
-  x = a3.x;
+  y = direction.y;
+  x = direction.x;
   if ([(_UIStackedImageContainerView *)self installsMotionEffectsWhenFocused]&& setFocusDirection__once != -1)
   {
     dispatch_once(&setFocusDirection__once, &__block_literal_global_721);
@@ -256,25 +256,25 @@ LABEL_10:
   [(_UIStackedImageContainerView *)self _updateFocusDirection:1 animated:x, y];
 }
 
-- (void)_updateFocusDirection:(CGPoint)a3 animated:(BOOL)a4
+- (void)_updateFocusDirection:(CGPoint)direction animated:(BOOL)animated
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
-  v8 = [(_UIStackedImageContainerView *)self _renderer];
-  [v8 setFocusDirection:v4 animated:{x, y}];
+  animatedCopy = animated;
+  y = direction.y;
+  x = direction.x;
+  _renderer = [(_UIStackedImageContainerView *)self _renderer];
+  [_renderer setFocusDirection:animatedCopy animated:{x, y}];
 
-  v9 = [(_UIStackedImageContainerView *)self controlState];
+  controlState = [(_UIStackedImageContainerView *)self controlState];
 
-  [(_UIStackedImageContainerView *)self _updateGlassMaterialsWithControlState:v9 focusDirection:v4 animated:0 focusAnimationCoordinator:x, y];
+  [(_UIStackedImageContainerView *)self _updateGlassMaterialsWithControlState:controlState focusDirection:animatedCopy animated:0 focusAnimationCoordinator:x, y];
 }
 
-- (void)setInstallsMotionEffectsWhenFocused:(BOOL)a3
+- (void)setInstallsMotionEffectsWhenFocused:(BOOL)focused
 {
-  if (self->_installsMotionEffectsWhenFocused != a3)
+  if (self->_installsMotionEffectsWhenFocused != focused)
   {
-    self->_installsMotionEffectsWhenFocused = a3;
-    if (a3)
+    self->_installsMotionEffectsWhenFocused = focused;
+    if (focused)
     {
       if ([(_UIStackedImageContainerView *)self isStackFocused])
       {
@@ -329,13 +329,13 @@ LABEL_10:
   }
 }
 
-- (BOOL)_applyKeyPathsAndRelativeValues:(id)a3 forMotionEffect:(id)a4
+- (BOOL)_applyKeyPathsAndRelativeValues:(id)values forMotionEffect:(id)effect
 {
-  v5 = a3;
-  v6 = [v5 objectForKey:@"focusDirectionX"];
+  valuesCopy = values;
+  v6 = [valuesCopy objectForKey:@"focusDirectionX"];
   [v6 doubleValue];
   v8 = v7;
-  v9 = [v5 objectForKey:@"focusDirectionY"];
+  v9 = [valuesCopy objectForKey:@"focusDirectionY"];
 
   [v9 doubleValue];
   v11 = v10;
@@ -344,67 +344,67 @@ LABEL_10:
   return 1;
 }
 
-- (id)_preferredConfigurationForFocusAnimation:(int64_t)a3 inContext:(id)a4
+- (id)_preferredConfigurationForFocusAnimation:(int64_t)animation inContext:(id)context
 {
-  v4 = [(_UIStackedImageContainerView *)self config:a3];
-  v5 = [v4 focusAnimationConfiguration];
+  v4 = [(_UIStackedImageContainerView *)self config:animation];
+  focusAnimationConfiguration = [v4 focusAnimationConfiguration];
 
-  return v5;
+  return focusAnimationConfiguration;
 }
 
-- (void)setUnmaskedOverlayView:(id)a3
+- (void)setUnmaskedOverlayView:(id)view
 {
-  v6 = a3;
-  if (v6)
+  viewCopy = view;
+  if (viewCopy)
   {
-    v4 = [(_UIStackedImageContainerView *)self maskedOverlayView];
+    maskedOverlayView = [(_UIStackedImageContainerView *)self maskedOverlayView];
 
-    if (v4 == v6)
+    if (maskedOverlayView == viewCopy)
     {
       [(_UIStackedImageContainerView *)self setMaskedOverlayView:0];
     }
   }
 
-  v5 = [(_UIStackedImageContainerView *)self _renderer];
-  [v5 setUnmaskedOverlayView:v6];
+  _renderer = [(_UIStackedImageContainerView *)self _renderer];
+  [_renderer setUnmaskedOverlayView:viewCopy];
 }
 
 - (UIView)unmaskedOverlayView
 {
-  v2 = [(_UIStackedImageContainerView *)self _renderer];
-  v3 = [v2 unmaskedOverlayView];
+  _renderer = [(_UIStackedImageContainerView *)self _renderer];
+  unmaskedOverlayView = [_renderer unmaskedOverlayView];
 
-  return v3;
+  return unmaskedOverlayView;
 }
 
-- (void)setMaskedOverlayView:(id)a3
+- (void)setMaskedOverlayView:(id)view
 {
-  v6 = a3;
-  if (v6)
+  viewCopy = view;
+  if (viewCopy)
   {
-    v4 = [(_UIStackedImageContainerView *)self unmaskedOverlayView];
+    unmaskedOverlayView = [(_UIStackedImageContainerView *)self unmaskedOverlayView];
 
-    if (v4 == v6)
+    if (unmaskedOverlayView == viewCopy)
     {
       [(_UIStackedImageContainerView *)self setUnmaskedOverlayView:0];
     }
   }
 
-  v5 = [(_UIStackedImageContainerView *)self _renderer];
-  [v5 setMaskedOverlayView:v6];
+  _renderer = [(_UIStackedImageContainerView *)self _renderer];
+  [_renderer setMaskedOverlayView:viewCopy];
 }
 
 - (UIView)maskedOverlayView
 {
-  v2 = [(_UIStackedImageContainerView *)self _renderer];
-  v3 = [v2 maskedOverlayView];
+  _renderer = [(_UIStackedImageContainerView *)self _renderer];
+  maskedOverlayView = [_renderer maskedOverlayView];
 
-  return v3;
+  return maskedOverlayView;
 }
 
-- (id)_focusedFrameGuideCreateIfNecessary:(BOOL)a3
+- (id)_focusedFrameGuideCreateIfNecessary:(BOOL)necessary
 {
-  v3 = a3;
+  necessaryCopy = necessary;
   v15[4] = *MEMORY[0x1E69E9840];
   v5 = objc_getAssociatedObject(self, &_focusedFrameGuideCreateIfNecessary__focusedFrameGuideKey_0);
   if (v5)
@@ -414,7 +414,7 @@ LABEL_10:
 
   else
   {
-    v6 = !v3;
+    v6 = !necessaryCopy;
   }
 
   if (!v6)
@@ -441,8 +441,8 @@ LABEL_10:
 
     [(_UIStackedImageContainerView *)self _updateFocusedFrameGuideConstraintsIfApplicable];
     v12 = MEMORY[0x1E69977A0];
-    v13 = [(UILayoutGuide *)v5 _systemConstraints];
-    [v12 activateConstraints:v13];
+    _systemConstraints = [(UILayoutGuide *)v5 _systemConstraints];
+    [v12 activateConstraints:_systemConstraints];
   }
 
   return v5;
@@ -454,8 +454,8 @@ LABEL_10:
   if (v3)
   {
     v32 = v3;
-    v4 = [(_UIStackedImageContainerView *)self config];
-    [v4 scaleSizeIncrease];
+    config = [(_UIStackedImageContainerView *)self config];
+    [config scaleSizeIncrease];
     v6 = v5;
 
     [(UIView *)self bounds];
@@ -497,44 +497,44 @@ LABEL_10:
       }
     }
 
-    v15 = [v11 _systemConstraints];
-    v16 = [v15 objectAtIndexedSubscript:0];
+    _systemConstraints = [v11 _systemConstraints];
+    v16 = [_systemConstraints objectAtIndexedSubscript:0];
     [v16 constant];
     v18 = v17;
 
     if (v18 != v10)
     {
-      v19 = [v15 objectAtIndexedSubscript:0];
+      v19 = [_systemConstraints objectAtIndexedSubscript:0];
       [v19 setConstant:v10];
     }
 
-    v20 = [v15 objectAtIndexedSubscript:1];
+    v20 = [_systemConstraints objectAtIndexedSubscript:1];
     [v20 constant];
     v22 = v21;
 
     if (v22 != v9)
     {
-      v23 = [v15 objectAtIndexedSubscript:1];
+      v23 = [_systemConstraints objectAtIndexedSubscript:1];
       [v23 setConstant:v9];
     }
 
-    v24 = [v15 objectAtIndexedSubscript:2];
+    v24 = [_systemConstraints objectAtIndexedSubscript:2];
     [v24 constant];
     v26 = v25;
 
     if (v26 != v10)
     {
-      v27 = [v15 objectAtIndexedSubscript:2];
+      v27 = [_systemConstraints objectAtIndexedSubscript:2];
       [v27 setConstant:v10];
     }
 
-    v28 = [v15 objectAtIndexedSubscript:3];
+    v28 = [_systemConstraints objectAtIndexedSubscript:3];
     [v28 constant];
     v30 = v29;
 
     if (v30 != v9)
     {
-      v31 = [v15 objectAtIndexedSubscript:3];
+      v31 = [_systemConstraints objectAtIndexedSubscript:3];
       [v31 setConstant:v9];
     }
 
@@ -544,10 +544,10 @@ LABEL_10:
 
 - (id)_viewForBackgroundEffects
 {
-  v2 = [(_UIStackedImageContainerView *)self _renderer];
-  v3 = [v2 viewForBackgroundEffects];
+  _renderer = [(_UIStackedImageContainerView *)self _renderer];
+  viewForBackgroundEffects = [_renderer viewForBackgroundEffects];
 
-  return v3;
+  return viewForBackgroundEffects;
 }
 
 @end

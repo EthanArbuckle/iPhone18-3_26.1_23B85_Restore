@@ -1,19 +1,19 @@
 @interface BPSRemoteWatchView
-- (BPSRemoteWatchView)initWithFrame:(CGRect)a3;
-- (id)_imageForSize:(unint64_t)a3;
+- (BPSRemoteWatchView)initWithFrame:(CGRect)frame;
+- (id)_imageForSize:(unint64_t)size;
 - (void)layoutSubviews;
-- (void)setAdvertisingIdentifier:(id)a3 andStyle:(unint64_t)a4;
-- (void)setAdvertisingName:(id)a3 andStyle:(unint64_t)a4;
+- (void)setAdvertisingIdentifier:(id)identifier andStyle:(unint64_t)style;
+- (void)setAdvertisingName:(id)name andStyle:(unint64_t)style;
 - (void)setupWatchView;
 @end
 
 @implementation BPSRemoteWatchView
 
-- (BPSRemoteWatchView)initWithFrame:(CGRect)a3
+- (BPSRemoteWatchView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = BPSRemoteWatchView;
-  v3 = [(BPSRemoteWatchView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(BPSRemoteWatchView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277D37A68]);
@@ -32,11 +32,11 @@
     [(BPSWatchView *)watch removeFromSuperview];
   }
 
-  v4 = [MEMORY[0x277D37A78] sharedDeviceController];
-  [v4 setMaterial:self->_material];
+  mEMORY[0x277D37A78] = [MEMORY[0x277D37A78] sharedDeviceController];
+  [mEMORY[0x277D37A78] setMaterial:self->_material];
 
-  v5 = [MEMORY[0x277D37A78] sharedDeviceController];
-  [v5 setInternalSize:self->_size];
+  mEMORY[0x277D37A78]2 = [MEMORY[0x277D37A78] sharedDeviceController];
+  [mEMORY[0x277D37A78]2 setInternalSize:self->_size];
 
   v6 = [[BPSWatchView alloc] initWithStyle:self->_style];
   v7 = self->_watch;
@@ -51,14 +51,14 @@
   [(BPSWatchView *)self->_watch addSubview:self->_watchScreen];
 }
 
-- (void)setAdvertisingIdentifier:(id)a3 andStyle:(unint64_t)a4
+- (void)setAdvertisingIdentifier:(id)identifier andStyle:(unint64_t)style
 {
-  v6 = a3;
-  self->_material = [v6 enclosureMaterial];
-  v7 = [v6 deviceSize];
+  identifierCopy = identifier;
+  self->_material = [identifierCopy enclosureMaterial];
+  deviceSize = [identifierCopy deviceSize];
 
-  self->_size = v7;
-  self->_style = a4;
+  self->_size = deviceSize;
+  self->_style = style;
   [(BPSRemoteWatchView *)self setupWatchView];
   assetManager = self->_assetManager;
   if (!assetManager)
@@ -101,10 +101,10 @@ void __56__BPSRemoteWatchView_setAdvertisingIdentifier_andStyle___block_invoke(u
   }
 }
 
-- (void)setAdvertisingName:(id)a3 andStyle:(unint64_t)a4
+- (void)setAdvertisingName:(id)name andStyle:(unint64_t)style
 {
-  v7 = a3;
-  objc_storeStrong(&self->_advertisingName, a3);
+  nameCopy = name;
+  objc_storeStrong(&self->_advertisingName, name);
   v8 = PBAdvertisingInfoFromPayload();
   v9 = [v8 objectForKeyedSubscript:*MEMORY[0x277D37A90]];
   self->_material = [v9 integerValue];
@@ -112,7 +112,7 @@ void __56__BPSRemoteWatchView_setAdvertisingIdentifier_andStyle___block_invoke(u
   v10 = [v8 objectForKeyedSubscript:*MEMORY[0x277D37AA0]];
   self->_size = [v10 integerValue];
 
-  self->_style = a4;
+  self->_style = style;
   [(BPSRemoteWatchView *)self setupWatchView];
   assetManager = self->_assetManager;
   if (!assetManager)
@@ -150,9 +150,9 @@ void __50__BPSRemoteWatchView_setAdvertisingName_andStyle___block_invoke(uint64_
   }
 }
 
-- (id)_imageForSize:(unint64_t)a3
+- (id)_imageForSize:(unint64_t)size
 {
-  if (a3 == 24 || a3 == 19)
+  if (size == 24 || size == 19)
   {
     v3 = MEMORY[0x277D755B8];
     v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -226,12 +226,12 @@ LABEL_4:
   v37.size.width = v8;
   v37.size.height = v10;
   [(BPSWatchView *)self->_watch setFrame:v16, floor((CGRectGetHeight(v37) - v14) * 0.5), v12, v14];
-  v17 = [(BPSWatchView *)self->_watch layer];
-  v18 = [(BPSWatchView *)self->_watch layer];
-  v19 = v18;
-  if (v18)
+  layer = [(BPSWatchView *)self->_watch layer];
+  layer2 = [(BPSWatchView *)self->_watch layer];
+  v19 = layer2;
+  if (layer2)
   {
-    [v18 transform];
+    [layer2 transform];
   }
 
   else
@@ -240,10 +240,10 @@ LABEL_4:
   }
 
   CATransform3DScale(&v35, &v34, sx, sx, sx);
-  [v17 setTransform:&v35];
+  [layer setTransform:&v35];
 
-  v20 = [(UIImageView *)self->_watchScreen image];
-  [v20 scale];
+  image = [(UIImageView *)self->_watchScreen image];
+  [image scale];
   v22 = v21;
 
   size = self->_size;

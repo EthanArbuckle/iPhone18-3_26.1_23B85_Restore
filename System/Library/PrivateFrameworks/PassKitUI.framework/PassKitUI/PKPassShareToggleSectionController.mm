@@ -1,21 +1,21 @@
 @interface PKPassShareToggleSectionController
 - (NSString)footerText;
-- (PKPassShareToggleSectionController)initWithIdentifier:(id)a3 title:(id)a4 toggleValue:(BOOL)a5 isEditable:(BOOL)a6 delegate:(id)a7;
+- (PKPassShareToggleSectionController)initWithIdentifier:(id)identifier title:(id)title toggleValue:(BOOL)value isEditable:(BOOL)editable delegate:(id)delegate;
 - (PKPassShareToggleSectionControllerDelegate)delegate;
-- (id)cellRegistrationForItem:(id)a3;
-- (id)footerAttributedStringForIdentifier:(id)a3;
-- (void)decorateCell:(id)a3 forIdentifier:(id)a4;
-- (void)toggleValueDidChange:(id)a3;
+- (id)cellRegistrationForItem:(id)item;
+- (id)footerAttributedStringForIdentifier:(id)identifier;
+- (void)decorateCell:(id)cell forIdentifier:(id)identifier;
+- (void)toggleValueDidChange:(id)change;
 @end
 
 @implementation PKPassShareToggleSectionController
 
-- (PKPassShareToggleSectionController)initWithIdentifier:(id)a3 title:(id)a4 toggleValue:(BOOL)a5 isEditable:(BOOL)a6 delegate:(id)a7
+- (PKPassShareToggleSectionController)initWithIdentifier:(id)identifier title:(id)title toggleValue:(BOOL)value isEditable:(BOOL)editable delegate:(id)delegate
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a7;
+  identifierCopy = identifier;
+  titleCopy = title;
+  delegateCopy = delegate;
   v22[0] = @"ToggleSection";
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:1];
   v20.receiver = self;
@@ -24,11 +24,11 @@
 
   if (v17)
   {
-    objc_storeStrong(&v17->_identifier, a3);
-    objc_storeStrong(&v17->_title, a4);
-    v17->_toggleValue = a5;
-    v17->_isEditable = a6;
-    objc_storeWeak(&v17->_delegate, v15);
+    objc_storeStrong(&v17->_identifier, identifier);
+    objc_storeStrong(&v17->_title, title);
+    v17->_toggleValue = value;
+    v17->_isEditable = editable;
+    objc_storeWeak(&v17->_delegate, delegateCopy);
     v21 = @"ToggleRow";
     v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v21 count:1];
     [(PKPaymentSetupListSectionController *)v17 setItems:v18];
@@ -37,9 +37,9 @@
   return v17;
 }
 
-- (id)cellRegistrationForItem:(id)a3
+- (id)cellRegistrationForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_initWeak(&location, self);
   v5 = MEMORY[0x1E69DC800];
   v6 = objc_opt_class();
@@ -67,15 +67,15 @@ void __62__PKPassShareToggleSectionController_cellRegistrationForItem___block_in
   }
 }
 
-- (void)decorateCell:(id)a3 forIdentifier:(id)a4
+- (void)decorateCell:(id)cell forIdentifier:(id)identifier
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7 == @"ToggleRow" || v7 && (v9 = [(__CFString *)v7 isEqualToString:@"ToggleRow"], v8, v9))
+  cellCopy = cell;
+  identifierCopy = identifier;
+  v8 = identifierCopy;
+  if (identifierCopy == @"ToggleRow" || identifierCopy && (v9 = [(__CFString *)identifierCopy isEqualToString:@"ToggleRow"], v8, v9))
   {
-    v10 = [MEMORY[0x1E69DCC28] subtitleCellConfiguration];
+    subtitleCellConfiguration = [MEMORY[0x1E69DCC28] subtitleCellConfiguration];
     v11 = objc_alloc_init(MEMORY[0x1E69DCFD0]);
     [v11 setOn:self->_toggleValue];
     [v11 setEnabled:self->_isEditable];
@@ -84,16 +84,16 @@ void __62__PKPassShareToggleSectionController_cellRegistrationForItem___block_in
     [v12 setMaintainsFixedSize:1];
     v16[0] = v12;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
-    [v6 setAccessories:v13];
+    [cellCopy setAccessories:v13];
 
-    [v10 setText:self->_title];
-    [v10 setImage:self->_icon];
-    v14 = [v10 imageProperties];
-    v15 = [MEMORY[0x1E69DC888] systemBlueColor];
-    [v14 setTintColor:v15];
+    [subtitleCellConfiguration setText:self->_title];
+    [subtitleCellConfiguration setImage:self->_icon];
+    imageProperties = [subtitleCellConfiguration imageProperties];
+    systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+    [imageProperties setTintColor:systemBlueColor];
 
-    [v6 setContentConfiguration:v10];
-    [v6 setConfigurationUpdateHandler:&__block_literal_global_8];
+    [cellCopy setContentConfiguration:subtitleCellConfiguration];
+    [cellCopy setConfigurationUpdateHandler:&__block_literal_global_8];
   }
 }
 
@@ -108,14 +108,14 @@ void __65__PKPassShareToggleSectionController_decorateCell_forIdentifier___block
   [v3 setBackgroundConfiguration:v5];
 }
 
-- (id)footerAttributedStringForIdentifier:(id)a3
+- (id)footerAttributedStringForIdentifier:(id)identifier
 {
   v16[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_footerText);
   if (WeakRetained)
   {
-    v6 = v4;
+    v6 = identifierCopy;
     if (v6 == @"ToggleSection")
     {
     }
@@ -145,8 +145,8 @@ LABEL_9:
     v11 = PKFontForDefaultDesign(*MEMORY[0x1E69DDD28], *MEMORY[0x1E69DDC60]);
     v16[0] = v11;
     v15[1] = *MEMORY[0x1E69DB650];
-    v12 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    v16[1] = v12;
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    v16[1] = secondaryLabelColor;
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:2];
     WeakRetained = [v9 initWithString:v10 attributes:v13];
   }
@@ -156,9 +156,9 @@ LABEL_10:
   return WeakRetained;
 }
 
-- (void)toggleValueDidChange:(id)a3
+- (void)toggleValueDidChange:(id)change
 {
-  self->_toggleValue = [a3 isOn];
+  self->_toggleValue = [change isOn];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained toggle:self->_identifier valueDidChange:self->_toggleValue];
 }

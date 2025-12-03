@@ -1,32 +1,32 @@
 @interface TimelineTextView
 - (CGSize)intrinsicContentSize;
-- (_TtC7Journal16TimelineTextView)initWithCoder:(id)a3;
-- (_TtC7Journal16TimelineTextView)initWithFrame:(CGRect)a3 textContainer:(id)a4;
+- (_TtC7Journal16TimelineTextView)initWithCoder:(id)coder;
+- (_TtC7Journal16TimelineTextView)initWithFrame:(CGRect)frame textContainer:(id)container;
 - (void)layoutSubviews;
 @end
 
 @implementation TimelineTextView
 
-- (_TtC7Journal16TimelineTextView)initWithFrame:(CGRect)a3 textContainer:(id)a4
+- (_TtC7Journal16TimelineTextView)initWithFrame:(CGRect)frame textContainer:(id)container
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  return sub_1000494F4(a4, x, y, width, height);
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  containerCopy = container;
+  return sub_1000494F4(container, x, y, width, height);
 }
 
 - (CGSize)intrinsicContentSize
 {
   ObjectType = swift_getObjectType();
-  v4 = self;
-  v5 = [(TimelineTextView *)v4 textStorage];
-  v6 = [v5 length];
+  selfCopy = self;
+  textStorage = [(TimelineTextView *)selfCopy textStorage];
+  v6 = [textStorage length];
 
   if (v6)
   {
-    v13.receiver = v4;
+    v13.receiver = selfCopy;
     v13.super_class = ObjectType;
     [(JournalTextView *)&v13 intrinsicContentSize];
     v8 = v7;
@@ -49,11 +49,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10022CBFC();
 }
 
-- (_TtC7Journal16TimelineTextView)initWithCoder:(id)a3
+- (_TtC7Journal16TimelineTextView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.super.super.isa + OBJC_IVAR____TtC7Journal16TimelineTextView_isAlwaysTruncated) = 0;
   *(&self->super.super.super.super.super.super.super.isa + OBJC_IVAR____TtC7Journal16TimelineTextView____lazy_storage___truncationFade) = 0;

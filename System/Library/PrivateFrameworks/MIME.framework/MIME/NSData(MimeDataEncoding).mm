@@ -9,7 +9,7 @@
   v5 = objc_alloc_init(MFBufferedDataConsumer);
   v6 = [(MFBaseFilterDataConsumer *)[MFQuotedPrintableDecoder alloc] initWithConsumer:v5];
   [(MFQuotedPrintableDecoder *)v6 setForTextPart:a3];
-  v7 = _EnDecodeData(v5, v6, a1);
+  v7 = _EnDecodeData(v5, v6, self);
 
   return v7;
 }

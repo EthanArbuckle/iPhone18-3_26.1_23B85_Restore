@@ -1,17 +1,17 @@
 @interface DSShutdownLog
-+ (BOOL)isValidNumber:(id)a3;
-+ (id)nullableBoolNumberWithNumber:(id)a3;
-+ (id)nullableIntegerNumberWithNumber:(id)a3;
-- (id)processedBatteryShutdownDataEntry:(id)a3;
-- (void)addShutdownLogToArray:(id)a3 usingFormatter:(id)a4;
++ (BOOL)isValidNumber:(id)number;
++ (id)nullableBoolNumberWithNumber:(id)number;
++ (id)nullableIntegerNumberWithNumber:(id)number;
+- (id)processedBatteryShutdownDataEntry:(id)entry;
+- (void)addShutdownLogToArray:(id)array usingFormatter:(id)formatter;
 @end
 
 @implementation DSShutdownLog
 
-- (void)addShutdownLogToArray:(id)a3 usingFormatter:(id)a4
+- (void)addShutdownLogToArray:(id)array usingFormatter:(id)formatter
 {
-  v6 = a3;
-  v7 = a4;
+  arrayCopy = array;
+  formatterCopy = formatter;
   v8 = PLQueryRegistered();
   v9 = DiagnosticLogHandleForCategory();
   v10 = v9;
@@ -38,8 +38,8 @@
 
           if (v14)
           {
-            v15 = v7[2](v7, v14);
-            [v6 addObject:v15];
+            v15 = formatterCopy[2](formatterCopy, v14);
+            [arrayCopy addObject:v15];
           }
 
           ++v12;
@@ -69,13 +69,13 @@
   }
 }
 
-- (id)processedBatteryShutdownDataEntry:(id)a3
+- (id)processedBatteryShutdownDataEntry:(id)entry
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  entryCopy = entry;
+  v4 = entryCopy;
+  if (entryCopy)
   {
-    v5 = [v3 objectForKeyedSubscript:@"BatteryShutdownTimestamp"];
+    v5 = [entryCopy objectForKeyedSubscript:@"BatteryShutdownTimestamp"];
     if (v5)
     {
       v6 = +[DSDateFormatter sharedFormatter];
@@ -311,12 +311,12 @@
   return v35;
 }
 
-+ (id)nullableBoolNumberWithNumber:(id)a3
++ (id)nullableBoolNumberWithNumber:(id)number
 {
-  v3 = a3;
-  if ([DSShutdownLog isValidNumber:v3])
+  numberCopy = number;
+  if ([DSShutdownLog isValidNumber:numberCopy])
   {
-    +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 BOOLValue]);
+    +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [numberCopy BOOLValue]);
   }
 
   else
@@ -328,12 +328,12 @@
   return v4;
 }
 
-+ (id)nullableIntegerNumberWithNumber:(id)a3
++ (id)nullableIntegerNumberWithNumber:(id)number
 {
-  v3 = a3;
-  if ([DSShutdownLog isValidNumber:v3])
+  numberCopy = number;
+  if ([DSShutdownLog isValidNumber:numberCopy])
   {
-    +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v3 integerValue]);
+    +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [numberCopy integerValue]);
   }
 
   else
@@ -345,11 +345,11 @@
   return v4;
 }
 
-+ (BOOL)isValidNumber:(id)a3
++ (BOOL)isValidNumber:(id)number
 {
-  if (a3)
+  if (number)
   {
-    v3 = a3;
+    numberCopy = number;
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }

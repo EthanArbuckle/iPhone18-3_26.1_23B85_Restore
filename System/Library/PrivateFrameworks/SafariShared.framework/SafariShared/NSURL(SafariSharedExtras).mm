@@ -71,7 +71,7 @@
 
 + (id)safari_URLWithDataAsString:()SafariSharedExtras
 {
-  v3 = [a1 safari_URLWithDataAsString:a3 relativeToURL:0];
+  v3 = [self safari_URLWithDataAsString:a3 relativeToURL:0];
 
   return v3;
 }
@@ -82,8 +82,8 @@
   v6 = a4;
   if (v5)
   {
-    v7 = [v5 safari_stringByTrimmingWhitespace];
-    v8 = [v7 dataUsingEncoding:5];
+    safari_stringByTrimmingWhitespace = [v5 safari_stringByTrimmingWhitespace];
+    v8 = [safari_stringByTrimmingWhitespace dataUsingEncoding:5];
     v10 = WTF::URLWithData(v8, v6, v9);
   }
 
@@ -106,90 +106,90 @@
 
 - (__CFString)safari_path
 {
-  v1 = CFURLCopyPath(a1);
+  v1 = CFURLCopyPath(self);
 
   return v1;
 }
 
 - (__CFString)safari_fileType
 {
-  if ([a1 isFileURL])
+  if ([self isFileURL])
   {
     v7 = 0;
-    v2 = [a1 getResourceValue:&v7 forKey:*MEMORY[0x1E695DAA0] error:0];
+    v2 = [self getResourceValue:&v7 forKey:*MEMORY[0x1E695DAA0] error:0];
     v3 = v7;
     v4 = v3;
     if (v2)
     {
-      v5 = [v3 identifier];
+      identifier = [v3 identifier];
     }
 
     else
     {
-      v5 = &stru_1F3A5E418;
+      identifier = &stru_1F3A5E418;
     }
   }
 
   else
   {
-    v5 = &stru_1F3A5E418;
+    identifier = &stru_1F3A5E418;
   }
 
-  return v5;
+  return identifier;
 }
 
 - (id)safari_identityPreferenceDomain
 {
-  v1 = [objc_alloc(MEMORY[0x1E696AF20]) initWithURL:a1 resolvingAgainstBaseURL:0];
+  v1 = [objc_alloc(MEMORY[0x1E696AF20]) initWithURL:self resolvingAgainstBaseURL:0];
   v2 = objc_alloc_init(MEMORY[0x1E696AF20]);
-  v3 = [v1 scheme];
-  [v2 setScheme:v3];
+  scheme = [v1 scheme];
+  [v2 setScheme:scheme];
 
-  v4 = [v1 host];
-  [v2 setHost:v4];
+  host = [v1 host];
+  [v2 setHost:host];
 
-  v5 = [v1 port];
-  [v2 setPort:v5];
+  port = [v1 port];
+  [v2 setPort:port];
 
-  v6 = [v2 string];
+  string = [v2 string];
 
-  return v6;
+  return string;
 }
 
 - (uint64_t)safari_hasLocalScheme
 {
-  if ([a1 isFileURL])
+  if ([self isFileURL])
   {
     return 1;
   }
 
-  return [a1 safari_hasScheme:@"applewebdata"];
+  return [self safari_hasScheme:@"applewebdata"];
 }
 
 - (uint64_t)safari_hasFeedScheme
 {
-  if ([a1 safari_hasScheme:@"feed"])
+  if ([self safari_hasScheme:@"feed"])
   {
     return 1;
   }
 
-  return [a1 safari_hasScheme:@"feeds"];
+  return [self safari_hasScheme:@"feeds"];
 }
 
 - (uint64_t)safari_isDataURL
 {
-  v1 = [a1 absoluteString];
-  v2 = [v1 safari_hasCaseInsensitivePrefix:@"data:"];
+  absoluteString = [self absoluteString];
+  v2 = [absoluteString safari_hasCaseInsensitivePrefix:@"data:"];
 
   return v2;
 }
 
 - (uint64_t)safari_hasCustomScheme
 {
-  v2 = [a1 scheme];
-  if ([v2 length])
+  scheme = [self scheme];
+  if ([scheme length])
   {
-    v3 = [a1 safari_isHTTPFamilyURL] ^ 1;
+    v3 = [self safari_isHTTPFamilyURL] ^ 1;
   }
 
   else
@@ -202,31 +202,31 @@
 
 - (uint64_t)safari_isMailtoURL
 {
-  v1 = [a1 absoluteString];
-  v2 = [v1 safari_hasCaseInsensitivePrefix:@"mailto:"];
+  absoluteString = [self absoluteString];
+  v2 = [absoluteString safari_hasCaseInsensitivePrefix:@"mailto:"];
 
   return v2;
 }
 
 - (uint64_t)safari_isAboutBlankURL
 {
-  v2 = [MEMORY[0x1E695DFF8] safari_aboutBlankURL];
-  v3 = [a1 isEqual:v2];
+  safari_aboutBlankURL = [MEMORY[0x1E695DFF8] safari_aboutBlankURL];
+  v3 = [self isEqual:safari_aboutBlankURL];
 
   return v3;
 }
 
 - (uint64_t)safari_looksLikeAboutBlankURL
 {
-  v1 = [MEMORY[0x1E696AF20] componentsWithURL:a1 resolvingAgainstBaseURL:0];
+  v1 = [MEMORY[0x1E696AF20] componentsWithURL:self resolvingAgainstBaseURL:0];
   v2 = v1;
   if (v1)
   {
-    v3 = [v1 scheme];
-    if ([v3 isEqualToString:@"about"])
+    scheme = [v1 scheme];
+    if ([scheme isEqualToString:@"about"])
     {
-      v4 = [v2 path];
-      v5 = [v4 hasPrefix:@"blank"];
+      path = [v2 path];
+      v5 = [path hasPrefix:@"blank"];
     }
 
     else
@@ -245,15 +245,15 @@
 
 - (uint64_t)safari_looksLikeAboutSrcdocURL
 {
-  v1 = [MEMORY[0x1E696AF20] componentsWithURL:a1 resolvingAgainstBaseURL:0];
+  v1 = [MEMORY[0x1E696AF20] componentsWithURL:self resolvingAgainstBaseURL:0];
   v2 = v1;
   if (v1)
   {
-    v3 = [v1 scheme];
-    if ([v3 isEqualToString:@"about"])
+    scheme = [v1 scheme];
+    if ([scheme isEqualToString:@"about"])
     {
-      v4 = [v2 path];
-      v5 = [v4 hasPrefix:@"srcdoc"];
+      path = [v2 path];
+      v5 = [path hasPrefix:@"srcdoc"];
     }
 
     else
@@ -272,12 +272,12 @@
 
 - (id)safari_composedIdentifierAndProfileIdentifierInSafariWebExtensionURL
 {
-  if ([a1 safari_isSafariWebExtensionURL])
+  if ([self safari_isSafariWebExtensionURL])
   {
-    v2 = [a1 host];
-    v3 = [v2 stringByRemovingPercentEncoding];
+    host = [self host];
+    stringByRemovingPercentEncoding = [host stringByRemovingPercentEncoding];
 
-    v4 = [v3 safari_indexOfFirstAppearanceOfCharacter:41];
+    v4 = [stringByRemovingPercentEncoding safari_indexOfFirstAppearanceOfCharacter:41];
     v5 = v4;
     if (v4 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -286,8 +286,8 @@
 
     else
     {
-      v7 = [v3 substringToIndex:v4 + 1];
-      v8 = [v3 substringFromIndex:v5 + 1];
+      v7 = [stringByRemovingPercentEncoding substringToIndex:v4 + 1];
+      v8 = [stringByRemovingPercentEncoding substringFromIndex:v5 + 1];
       v6 = [objc_alloc(MEMORY[0x1E69C88F0]) initWithFirst:v7 second:v8];
     }
   }
@@ -302,31 +302,31 @@
 
 - (uint64_t)safari_isMarketplaceKitURL
 {
-  if ([a1 safari_hasScheme:@"app-distribution"])
+  if ([self safari_hasScheme:@"app-distribution"])
   {
     return 1;
   }
 
-  return [a1 safari_hasScheme:@"marketplace-kit"];
+  return [self safari_hasScheme:@"marketplace-kit"];
 }
 
 - (uint64_t)safari_isFaviconURL
 {
-  if ([a1 safari_isHTTPFamilyURL])
+  if ([self safari_isHTTPFamilyURL])
   {
     return 1;
   }
 
-  return [a1 safari_isDataURL];
+  return [self safari_isDataURL];
 }
 
 - (id)safari_URLByNormalizingSafariSpecificURL
 {
-  v2 = [a1 host];
+  host = [self host];
 
-  if (v2)
+  if (host)
   {
-    v3 = [MEMORY[0x1E696AF20] componentsWithURL:a1 resolvingAgainstBaseURL:0];
+    v3 = [MEMORY[0x1E696AF20] componentsWithURL:self resolvingAgainstBaseURL:0];
     [v3 setScheme:@"https"];
     v4 = [v3 URL];
   }
@@ -341,15 +341,15 @@
 
 - (uint64_t)safari_isLocalOrPrivateNetworkURL
 {
-  v1 = [a1 host];
-  if ([v1 isEqualToString:@"localhost"])
+  host = [self host];
+  if ([host isEqualToString:@"localhost"])
   {
     v2 = 1;
   }
 
   else
   {
-    v2 = [v1 cStringUsingEncoding:1];
+    v2 = [host cStringUsingEncoding:1];
     if (v2)
     {
       if (inet_pton(2, v2, &v10) == 1)
@@ -386,10 +386,10 @@
 
 - (uint64_t)safari_isEligibleToBeOpenedByServiceWorkers
 {
-  result = [a1 safari_isHTTPFamilyURL];
+  result = [self safari_isHTTPFamilyURL];
   if (result)
   {
-    return [a1 safari_isLocalOrPrivateNetworkURL] ^ 1;
+    return [self safari_isLocalOrPrivateNetworkURL] ^ 1;
   }
 
   return result;
@@ -397,10 +397,10 @@
 
 - (uint64_t)safari_isEligibleToShowNotSecureWarning
 {
-  result = [a1 safari_isHTTPURL];
+  result = [self safari_isHTTPURL];
   if (result)
   {
-    return [a1 safari_isLocalOrPrivateNetworkURL] ^ 1;
+    return [self safari_isLocalOrPrivateNetworkURL] ^ 1;
   }
 
   return result;
@@ -408,34 +408,34 @@
 
 - (uint64_t)safari_isOTPAuthURL
 {
-  if ([a1 safari_hasScheme:@"otpauth"])
+  if ([self safari_hasScheme:@"otpauth"])
   {
     return 1;
   }
 
-  return [a1 safari_hasScheme:@"apple-otpauth"];
+  return [self safari_hasScheme:@"apple-otpauth"];
 }
 
 - (uint64_t)safari_isOTPAuthMigrationURL
 {
-  if ([a1 safari_hasScheme:@"otpauth-migration"])
+  if ([self safari_hasScheme:@"otpauth-migration"])
   {
     return 1;
   }
 
-  return [a1 safari_hasScheme:@"apple-otpauth-migration"];
+  return [self safari_hasScheme:@"apple-otpauth-migration"];
 }
 
 - (id)safari_firstURLQueryValue
 {
   v13 = *MEMORY[0x1E69E9840];
-  v1 = [MEMORY[0x1E696AF20] componentsWithURL:a1 resolvingAgainstBaseURL:1];
+  v1 = [MEMORY[0x1E696AF20] componentsWithURL:self resolvingAgainstBaseURL:1];
   v10 = 0u;
   v11 = 0u;
   v8 = 0u;
   v9 = 0u;
-  v2 = [v1 queryItems];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  queryItems = [v1 queryItems];
+  v3 = [queryItems countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -445,19 +445,19 @@
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(queryItems);
         }
 
-        v6 = [*(*(&v8 + 1) + 8 * i) value];
-        if ([v6 safari_looksLikeAbsoluteURLString])
+        value = [*(*(&v8 + 1) + 8 * i) value];
+        if ([value safari_looksLikeAbsoluteURLString])
         {
-          v3 = [MEMORY[0x1E695DFF8] URLWithString:v6];
+          v3 = [MEMORY[0x1E695DFF8] URLWithString:value];
 
           goto LABEL_11;
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [queryItems countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;
@@ -475,15 +475,15 @@ LABEL_11:
 - (uint64_t)safari_isEqualToOrChildOfStartURL:()SafariSharedExtras
 {
   v4 = a3;
-  v5 = [a1 safari_URLByRemovingAllParameters];
-  v6 = [v5 absoluteString];
-  v7 = [v6 lowercaseString];
+  safari_URLByRemovingAllParameters = [self safari_URLByRemovingAllParameters];
+  absoluteString = [safari_URLByRemovingAllParameters absoluteString];
+  lowercaseString = [absoluteString lowercaseString];
 
-  v8 = [v4 safari_URLByRemovingAllParameters];
-  v9 = [v8 absoluteString];
-  v10 = [v9 lowercaseString];
+  safari_URLByRemovingAllParameters2 = [v4 safari_URLByRemovingAllParameters];
+  absoluteString2 = [safari_URLByRemovingAllParameters2 absoluteString];
+  lowercaseString2 = [absoluteString2 lowercaseString];
 
-  v11 = [v7 hasPrefix:v10];
+  v11 = [lowercaseString hasPrefix:lowercaseString2];
   return v11;
 }
 
@@ -495,11 +495,11 @@ LABEL_11:
     goto LABEL_6;
   }
 
-  if (![a1 safari_hasSameOriginAsURL:v6 relaxingWWW:1] || objc_msgSend(a1, "safari_canQuirkBannerForNavigation"))
+  if (![self safari_hasSameOriginAsURL:v6 relaxingWWW:1] || objc_msgSend(self, "safari_canQuirkBannerForNavigation"))
   {
     if (a4)
     {
-      v7 = [a1 _safari_isWithinQuirkedNavigationScope:v6];
+      v7 = [self _safari_isWithinQuirkedNavigationScope:v6];
       goto LABEL_12;
     }
 
@@ -508,11 +508,11 @@ LABEL_6:
     goto LABEL_12;
   }
 
-  v8 = [a1 path];
-  v9 = [v6 path];
-  if ([v8 length] && objc_msgSend(v9, "length"))
+  path = [self path];
+  path2 = [v6 path];
+  if ([path length] && objc_msgSend(path2, "length"))
   {
-    v7 = [v8 safari_hasPrefix:v9];
+    v7 = [path safari_hasPrefix:path2];
   }
 
   else
@@ -526,8 +526,8 @@ LABEL_12:
 
 - (uint64_t)safari_canQuirkBannerForNavigation
 {
-  v1 = [a1 safari_highLevelDomain];
-  v2 = [&unk_1F3A9B288 containsObject:v1];
+  safari_highLevelDomain = [self safari_highLevelDomain];
+  v2 = [&unk_1F3A9B288 containsObject:safari_highLevelDomain];
 
   return v2;
 }
@@ -535,24 +535,24 @@ LABEL_12:
 - (uint64_t)_safari_isWithinQuirkedNavigationScope:()SafariSharedExtras
 {
   v4 = a3;
-  v5 = [v4 host];
-  v6 = [v5 lowercaseString];
+  host = [v4 host];
+  lowercaseString = [host lowercaseString];
 
-  v7 = [a1 host];
-  v8 = [v7 lowercaseString];
+  host2 = [self host];
+  lowercaseString2 = [host2 lowercaseString];
 
-  v9 = [v6 safari_highLevelDomainFromHost];
-  v10 = [v8 safari_highLevelDomainFromHost];
-  if ([a1 safari_canQuirkBannerForNavigation] && (objc_msgSend(v9, "isEqualToString:", v10) & 1) != 0)
+  safari_highLevelDomainFromHost = [lowercaseString safari_highLevelDomainFromHost];
+  safari_highLevelDomainFromHost2 = [lowercaseString2 safari_highLevelDomainFromHost];
+  if ([self safari_canQuirkBannerForNavigation] && (objc_msgSend(safari_highLevelDomainFromHost, "isEqualToString:", safari_highLevelDomainFromHost2) & 1) != 0)
   {
     goto LABEL_15;
   }
 
-  if (![v9 isEqualToString:v10])
+  if (![safari_highLevelDomainFromHost isEqualToString:safari_highLevelDomainFromHost2])
   {
 LABEL_17:
-    v19 = [v6 safari_stringByRemovingWwwDotPrefix];
-    v20 = [v8 safari_stringByRemovingWwwDotPrefix];
+    safari_stringByRemovingWwwDotPrefix = [lowercaseString safari_stringByRemovingWwwDotPrefix];
+    safari_stringByRemovingWwwDotPrefix2 = [lowercaseString2 safari_stringByRemovingWwwDotPrefix];
     v28 = 0;
     v29 = &v28;
     v30 = 0x2020000000;
@@ -561,11 +561,11 @@ LABEL_17:
     v24[1] = 3221225472;
     v24[2] = __68__NSURL_SafariSharedExtras___safari_isWithinQuirkedNavigationScope___block_invoke;
     v24[3] = &unk_1E7FC87D0;
-    v21 = v19;
-    v26 = v20;
+    v21 = safari_stringByRemovingWwwDotPrefix;
+    v26 = safari_stringByRemovingWwwDotPrefix2;
     v27 = &v28;
     v25 = v21;
-    v22 = v20;
+    v22 = safari_stringByRemovingWwwDotPrefix2;
     [&unk_1F3A9B410 enumerateKeysAndObjectsUsingBlock:v24];
     v18 = *(v29 + 24);
 
@@ -573,27 +573,27 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if ([&unk_1F3A9B2A0 containsObject:v9])
+  if ([&unk_1F3A9B2A0 containsObject:safari_highLevelDomainFromHost])
   {
     goto LABEL_15;
   }
 
-  v11 = [v9 componentsSeparatedByString:@"."];
-  v12 = [v11 firstObject];
-  v13 = [&unk_1F3A9B2A0 containsObject:v12];
+  v11 = [safari_highLevelDomainFromHost componentsSeparatedByString:@"."];
+  firstObject = [v11 firstObject];
+  v13 = [&unk_1F3A9B2A0 containsObject:firstObject];
 
   if (v13)
   {
     goto LABEL_15;
   }
 
-  v14 = [v8 componentsSeparatedByString:@"."];
-  v15 = [v14 firstObject];
+  v14 = [lowercaseString2 componentsSeparatedByString:@"."];
+  firstObject2 = [v14 firstObject];
 
-  v16 = [v6 componentsSeparatedByString:@"."];
-  v17 = [v16 firstObject];
+  v16 = [lowercaseString componentsSeparatedByString:@"."];
+  firstObject3 = [v16 firstObject];
 
-  if ((!v17 || ([v15 hasPrefix:v17] & 1) == 0) && (!v15 || (objc_msgSend(v17, "hasPrefix:", v15) & 1) == 0) && (objc_msgSend(v17, "isEqualToString:", @"www") & 1) == 0 && (objc_msgSend(v15, "isEqualToString:", @"www") & 1) == 0 && (objc_msgSend(v6, "isEqualToString:", v9) & 1) == 0 && (objc_msgSend(v8, "isEqualToString:", v10) & 1) == 0)
+  if ((!firstObject3 || ([firstObject2 hasPrefix:firstObject3] & 1) == 0) && (!firstObject2 || (objc_msgSend(firstObject3, "hasPrefix:", firstObject2) & 1) == 0) && (objc_msgSend(firstObject3, "isEqualToString:", @"www") & 1) == 0 && (objc_msgSend(firstObject2, "isEqualToString:", @"www") & 1) == 0 && (objc_msgSend(lowercaseString, "isEqualToString:", safari_highLevelDomainFromHost) & 1) == 0 && (objc_msgSend(lowercaseString2, "isEqualToString:", safari_highLevelDomainFromHost2) & 1) == 0)
   {
 
     goto LABEL_17;
@@ -608,9 +608,9 @@ LABEL_18:
 
 - (uint64_t)safari_isSlackRedirectPage
 {
-  v2 = [a1 safari_highLevelDomain];
-  v3 = [a1 host];
-  v4 = [v2 isEqualToString:v3];
+  safari_highLevelDomain = [self safari_highLevelDomain];
+  host = [self host];
+  v4 = [safari_highLevelDomain isEqualToString:host];
 
   if (v4)
   {
@@ -619,19 +619,19 @@ LABEL_18:
 
   else
   {
-    v6 = [a1 path];
-    if ([v6 safari_isSubpathOfPath:@"/archives"])
+    path = [self path];
+    if ([path safari_isSubpathOfPath:@"/archives"])
     {
       v7 = 1;
     }
 
     else
     {
-      v8 = [a1 path];
-      v7 = [v8 safari_isSubpathOfPath:@"/files"];
+      path2 = [self path];
+      v7 = [path2 safari_isSubpathOfPath:@"/files"];
     }
 
-    v5 = [v2 isEqualToString:@"slack.com"] & v7;
+    v5 = [safari_highLevelDomain isEqualToString:@"slack.com"] & v7;
   }
 
   return v5;
@@ -640,7 +640,7 @@ LABEL_18:
 - (id)safari_URLByReplacingHostWithString:()SafariSharedExtras
 {
   v4 = a3;
-  v5 = [MEMORY[0x1E696AF20] componentsWithURL:a1 resolvingAgainstBaseURL:1];
+  v5 = [MEMORY[0x1E696AF20] componentsWithURL:self resolvingAgainstBaseURL:1];
   [v5 setHost:v4];
   v6 = [v5 URL];
 
@@ -649,17 +649,17 @@ LABEL_18:
 
 - (BOOL)safari_hasUserOrPassword
 {
-  v1 = [MEMORY[0x1E696AF20] componentsWithURL:a1 resolvingAgainstBaseURL:0];
-  v2 = [v1 user];
-  if ([v2 length])
+  v1 = [MEMORY[0x1E696AF20] componentsWithURL:self resolvingAgainstBaseURL:0];
+  user = [v1 user];
+  if ([user length])
   {
     v3 = 1;
   }
 
   else
   {
-    v4 = [v1 password];
-    v3 = [v4 length] != 0;
+    password = [v1 password];
+    v3 = [password length] != 0;
   }
 
   return v3;
@@ -667,9 +667,9 @@ LABEL_18:
 
 - (id)safari_URLByDeletingUserAndPassword
 {
-  v2 = [MEMORY[0x1E696AF20] componentsWithURL:a1 resolvingAgainstBaseURL:0];
-  v3 = [v2 user];
-  if ([v3 length])
+  v2 = [MEMORY[0x1E696AF20] componentsWithURL:self resolvingAgainstBaseURL:0];
+  user = [v2 user];
+  if ([user length])
   {
 
 LABEL_4:
@@ -679,15 +679,15 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v4 = [v2 password];
-  v5 = [v4 length];
+  password = [v2 password];
+  v5 = [password length];
 
   if (v5)
   {
     goto LABEL_4;
   }
 
-  v6 = [a1 copy];
+  v6 = [self copy];
 LABEL_5:
   v7 = v6;
 
@@ -696,7 +696,7 @@ LABEL_5:
 
 - (id)safari_URLByRemovingAllParameters
 {
-  v1 = [MEMORY[0x1E696AF20] componentsWithURL:a1 resolvingAgainstBaseURL:0];
+  v1 = [MEMORY[0x1E696AF20] componentsWithURL:self resolvingAgainstBaseURL:0];
   [v1 setQuery:0];
   v2 = [v1 URL];
 
@@ -705,25 +705,25 @@ LABEL_5:
 
 - (id)safari_canonicalURLForStartPage
 {
-  v1 = [a1 safari_originalDataAsString];
-  v2 = [v1 safari_bestURLForUserTypedString];
-  v3 = [v2 safari_canonicalURL];
+  safari_originalDataAsString = [self safari_originalDataAsString];
+  safari_bestURLForUserTypedString = [safari_originalDataAsString safari_bestURLForUserTypedString];
+  safari_canonicalURL = [safari_bestURLForUserTypedString safari_canonicalURL];
 
-  return v3;
+  return safari_canonicalURL;
 }
 
 - (id)safari_simplifiedURLStringForDeduping
 {
-  v1 = [a1 safari_canonicalURL];
-  v2 = [v1 safari_originalDataAsString];
-  v3 = [v2 safari_simplifiedUserVisibleURLStringWithSimplifications:367 forDisplayOnly:0 simplifiedStringOffset:0];
+  safari_canonicalURL = [self safari_canonicalURL];
+  safari_originalDataAsString = [safari_canonicalURL safari_originalDataAsString];
+  v3 = [safari_originalDataAsString safari_simplifiedUserVisibleURLStringWithSimplifications:367 forDisplayOnly:0 simplifiedStringOffset:0];
 
   return v3;
 }
 
 - (BOOL)safari_hasCharactersBeyondPath
 {
-  v1 = [MEMORY[0x1E696AF20] componentsWithURL:a1 resolvingAgainstBaseURL:1];
+  v1 = [MEMORY[0x1E696AF20] componentsWithURL:self resolvingAgainstBaseURL:1];
   v2 = v1;
   if (v1)
   {
@@ -748,11 +748,11 @@ LABEL_5:
 
   else
   {
-    if ([a1 isFileURL])
+    if ([self isFileURL])
     {
-      v8 = [MEMORY[0x1E696AC08] defaultManager];
-      v9 = [a1 path];
-      v6 = [v8 displayNameAtPath:v9];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      path = [self path];
+      v6 = [defaultManager displayNameAtPath:path];
 
       if (v6)
       {
@@ -762,14 +762,14 @@ LABEL_5:
       goto LABEL_4;
     }
 
-    if ([a1 safari_isURLTooLongToDisplay])
+    if ([self safari_isURLTooLongToDisplay])
     {
-      [a1 host];
+      [self host];
     }
 
     else
     {
-      [a1 safari_userVisibleString];
+      [self safari_userVisibleString];
     }
     v5 = ;
   }
@@ -784,7 +784,7 @@ LABEL_4:
   v7 = WBS_LOG_CHANNEL_PREFIXOther();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
-    [(NSURL(SafariSharedExtras) *)a1 safari_displayNameWithTitle:v7];
+    [(NSURL(SafariSharedExtras) *)self safari_displayNameWithTitle:v7];
   }
 
   v6 = _WBSLocalizedString();
@@ -796,7 +796,7 @@ LABEL_9:
 - (id)safari_originalDataAsString
 {
   v2 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = WTF::originalURLData(a1, v3);
+  v4 = WTF::originalURLData(self, v3);
   v5 = [v2 initWithData:v4 encoding:5];
 
   return v5;
@@ -804,8 +804,8 @@ LABEL_9:
 
 - (__CFString)safari_userVisibleHost
 {
-  v1 = [a1 host];
-  v3 = WTF::decodeHostName(v1, v2);
+  host = [self host];
+  v3 = WTF::decodeHostName(host, v2);
   v4 = v3;
   if (v3)
   {
@@ -824,16 +824,16 @@ LABEL_9:
 
 - (id)safari_userVisibleHostOrExtensionDisplayName
 {
-  v2 = [(NSURL *)a1 safari_isSafariWebExtensionURL];
-  if (v2)
+  safari_isSafariWebExtensionURL = [(NSURL *)self safari_isSafariWebExtensionURL];
+  if (safari_isSafariWebExtensionURL)
   {
-    v3 = SafariShared::ExtensionURLTranslator::shared(v2);
-    SafariShared::ExtensionURLTranslator::displayNameForExtensionURL(v3, a1);
+    v3 = SafariShared::ExtensionURLTranslator::shared(safari_isSafariWebExtensionURL);
+    SafariShared::ExtensionURLTranslator::displayNameForExtensionURL(v3, self);
   }
 
   else
   {
-    [(NSURL *)a1 safari_userVisibleHostWithoutWWWSubdomain];
+    [(NSURL *)self safari_userVisibleHostWithoutWWWSubdomain];
   }
   v4 = ;
 
@@ -842,13 +842,13 @@ LABEL_9:
 
 - (id)safari_perSitePreferencesMenuBarTitle
 {
-  v2 = [a1 safari_userVisibleHostOrExtensionDisplayName];
-  if ([v2 length])
+  safari_userVisibleHostOrExtensionDisplayName = [self safari_userVisibleHostOrExtensionDisplayName];
+  if ([safari_userVisibleHostOrExtensionDisplayName length])
   {
-    [a1 safari_isSafariWebExtensionURL];
+    [self safari_isSafariWebExtensionURL];
     v3 = MEMORY[0x1E696AEC0];
     v4 = _WBSLocalizedString();
-    v5 = [v3 stringWithFormat:v4, v2];
+    v5 = [v3 stringWithFormat:v4, safari_userVisibleHostOrExtensionDisplayName];
   }
 
   else
@@ -861,35 +861,35 @@ LABEL_9:
 
 - (id)safari_userVisibleHostWithoutWWWSubdomain
 {
-  v1 = [a1 safari_userVisibleHost];
-  v2 = [v1 safari_stringByRemovingWwwDotPrefix];
+  safari_userVisibleHost = [self safari_userVisibleHost];
+  safari_stringByRemovingWwwDotPrefix = [safari_userVisibleHost safari_stringByRemovingWwwDotPrefix];
 
-  return v2;
+  return safari_stringByRemovingWwwDotPrefix;
 }
 
 - (id)safari_userVisibleHostWithoutWWWSubdomainIfSecure
 {
-  if ([a1 safari_isEligibleToShowNotSecureWarning])
+  if ([self safari_isEligibleToShowNotSecureWarning])
   {
-    v2 = [a1 safari_userVisibleHost];
-    v3 = [MEMORY[0x1E696AF20] componentsWithURL:a1 resolvingAgainstBaseURL:1];
+    safari_userVisibleHost = [self safari_userVisibleHost];
+    v3 = [MEMORY[0x1E696AF20] componentsWithURL:self resolvingAgainstBaseURL:1];
     v4 = MEMORY[0x1E696AEC0];
-    v5 = [v3 scheme];
-    v6 = [v4 stringWithFormat:@"%@://%@", v5, v2];
+    scheme = [v3 scheme];
+    safari_userVisibleHostWithoutWWWSubdomain = [v4 stringWithFormat:@"%@://%@", scheme, safari_userVisibleHost];
   }
 
   else
   {
-    v6 = [a1 safari_userVisibleHostWithoutWWWSubdomain];
+    safari_userVisibleHostWithoutWWWSubdomain = [self safari_userVisibleHostWithoutWWWSubdomain];
   }
 
-  return v6;
+  return safari_userVisibleHostWithoutWWWSubdomain;
 }
 
 - (__CFString)safari_userVisibleScheme
 {
-  v1 = [a1 safari_userVisibleString];
-  v2 = [v1 rangeOfString:@":"];
+  safari_userVisibleString = [self safari_userVisibleString];
+  v2 = [safari_userVisibleString rangeOfString:@":"];
   if (v2 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v3 = &stru_1F3A5E418;
@@ -897,7 +897,7 @@ LABEL_9:
 
   else
   {
-    v3 = [v1 substringToIndex:v2];
+    v3 = [safari_userVisibleString substringToIndex:v2];
   }
 
   return v3;
@@ -905,10 +905,10 @@ LABEL_9:
 
 - (uint64_t)safari_isTopLevelURL
 {
-  v1 = [a1 path];
-  if ([v1 length])
+  path = [self path];
+  if ([path length])
   {
-    v2 = [v1 isEqualToString:@"/"];
+    v2 = [path isEqualToString:@"/"];
   }
 
   else
@@ -922,27 +922,27 @@ LABEL_9:
 - (uint64_t)safari_shouldBeAssociatedWithFaviconFromRedirectedURL:()SafariSharedExtras
 {
   v4 = a3;
-  v5 = [MEMORY[0x1E696AF20] componentsWithURL:a1 resolvingAgainstBaseURL:1];
+  v5 = [MEMORY[0x1E696AF20] componentsWithURL:self resolvingAgainstBaseURL:1];
   v6 = [MEMORY[0x1E696AF20] componentsWithURL:v4 resolvingAgainstBaseURL:1];
-  v7 = [v5 path];
-  if (![v7 length] || (objc_msgSend(v7, "isEqualToString:", @"/") & 1) != 0 || (objc_msgSend(v6, "path"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v7, "isEqual:", v8), v8, (v9 & 1) != 0))
+  path = [v5 path];
+  if (![path length] || (objc_msgSend(path, "isEqualToString:", @"/") & 1) != 0 || (objc_msgSend(v6, "path"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(path, "isEqual:", v8), v8, (v9 & 1) != 0))
   {
-    v10 = [v6 scheme];
-    [v5 setScheme:v10];
+    scheme = [v6 scheme];
+    [v5 setScheme:scheme];
 
-    v11 = [v6 path];
-    [v5 setPath:v11];
+    path2 = [v6 path];
+    [v5 setPath:path2];
 
-    v12 = [v6 fragment];
-    [v5 setFragment:v12];
+    fragment = [v6 fragment];
+    [v5 setFragment:fragment];
 
-    v13 = [v5 host];
-    v14 = [v13 safari_stringByRemovingWwwDotPrefix];
-    [v5 setHost:v14];
+    host = [v5 host];
+    safari_stringByRemovingWwwDotPrefix = [host safari_stringByRemovingWwwDotPrefix];
+    [v5 setHost:safari_stringByRemovingWwwDotPrefix];
 
-    v15 = [v6 host];
-    v16 = [v15 safari_stringByRemovingWwwDotPrefix];
-    [v6 setHost:v16];
+    host2 = [v6 host];
+    safari_stringByRemovingWwwDotPrefix2 = [host2 safari_stringByRemovingWwwDotPrefix];
+    [v6 setHost:safari_stringByRemovingWwwDotPrefix2];
 
     v17 = [v5 isEqual:v6];
   }
@@ -957,34 +957,34 @@ LABEL_9:
 
 - (id)safari_userVisibleStringConsideringLongURLs
 {
-  if ([a1 safari_isURLTooLongToDisplay])
+  if ([self safari_isURLTooLongToDisplay])
   {
-    v2 = [a1 absoluteString];
-    v3 = [v2 substringToIndex:4096];
+    absoluteString = [self absoluteString];
+    safari_userVisibleString = [absoluteString substringToIndex:4096];
   }
 
   else
   {
-    v3 = [a1 safari_userVisibleString];
+    safari_userVisibleString = [self safari_userVisibleString];
   }
 
-  return v3;
+  return safari_userVisibleString;
 }
 
 - (BOOL)safari_isURLTooLongToDisplay
 {
-  v1 = [a1 absoluteString];
-  v2 = [v1 length] > 0x1000;
+  absoluteString = [self absoluteString];
+  v2 = [absoluteString length] > 0x1000;
 
   return v2;
 }
 
 - (id)safari_wellKnownResponseCodeReliabilityURL
 {
-  if ([a1 safari_isHTTPFamilyURL])
+  if ([self safari_isHTTPFamilyURL])
   {
-    v2 = [a1 safari_URLByRemovingUserPasswordPathQueryAndFragment];
-    v3 = [v2 URLByAppendingPathComponent:@".well-known/resource-that-should-not-exist-whose-status-code-should-not-be-200"];
+    safari_URLByRemovingUserPasswordPathQueryAndFragment = [self safari_URLByRemovingUserPasswordPathQueryAndFragment];
+    v3 = [safari_URLByRemovingUserPasswordPathQueryAndFragment URLByAppendingPathComponent:@".well-known/resource-that-should-not-exist-whose-status-code-should-not-be-200"];
     v4 = [v3 safari_URLByReplacingSchemeWithString:@"https"];
   }
 
@@ -998,21 +998,21 @@ LABEL_9:
 
 - (__CFString)safari_relativePathToURL:()SafariSharedExtras
 {
-  v4 = [a3 URLByStandardizingPath];
-  v5 = [v4 pathComponents];
+  uRLByStandardizingPath = [a3 URLByStandardizingPath];
+  pathComponents = [uRLByStandardizingPath pathComponents];
 
-  v6 = [a1 URLByStandardizingPath];
-  v7 = [v6 pathComponents];
+  uRLByStandardizingPath2 = [self URLByStandardizingPath];
+  pathComponents2 = [uRLByStandardizingPath2 pathComponents];
 
   v8 = 0;
-  if (v5 && v7)
+  if (pathComponents && pathComponents2)
   {
-    v9 = [v5 count];
-    v10 = [v7 count];
+    v9 = [pathComponents count];
+    v10 = [pathComponents2 count];
     if (v9 >= v10)
     {
-      v11 = [v5 subarrayWithRange:{0, v10}];
-      if ([v11 isEqualToArray:v7])
+      v11 = [pathComponents subarrayWithRange:{0, v10}];
+      if ([v11 isEqualToArray:pathComponents2])
       {
         if (v9 == v10)
         {
@@ -1021,7 +1021,7 @@ LABEL_9:
 
         else
         {
-          v12 = [v5 subarrayWithRange:{v10, v9 - v10}];
+          v12 = [pathComponents subarrayWithRange:{v10, v9 - v10}];
           v8 = [MEMORY[0x1E696AEC0] pathWithComponents:v12];
         }
       }
@@ -1043,15 +1043,15 @@ LABEL_9:
 
 - (id)safari_stringForListDisplayWithAdditionalSimplificationOptions:()SafariSharedExtras
 {
-  v4 = [a1 safari_userVisibleStringConsideringLongURLs];
-  if ([v4 length] >= 0x101)
+  safari_userVisibleStringConsideringLongURLs = [self safari_userVisibleStringConsideringLongURLs];
+  if ([safari_userVisibleStringConsideringLongURLs length] >= 0x101)
   {
-    v5 = [v4 substringWithRange:{0, 256}];
+    v5 = [safari_userVisibleStringConsideringLongURLs substringWithRange:{0, 256}];
 
-    v4 = v5;
+    safari_userVisibleStringConsideringLongURLs = v5;
   }
 
-  v6 = [v4 safari_simplifiedUserVisibleURLStringWithSimplifications:a3 | 0x1CF forDisplayOnly:1 simplifiedStringOffset:0];
+  v6 = [safari_userVisibleStringConsideringLongURLs safari_simplifiedUserVisibleURLStringWithSimplifications:a3 | 0x1CF forDisplayOnly:1 simplifiedStringOffset:0];
 
   return v6;
 }
@@ -1059,20 +1059,20 @@ LABEL_9:
 - (id)safari_mailtoURLStatusMessage
 {
   v24 = *MEMORY[0x1E69E9840];
-  if (![a1 safari_isMailtoURL])
+  if (![self safari_isMailtoURL])
   {
     v12 = 0;
     goto LABEL_22;
   }
 
-  v2 = [MEMORY[0x1E696AF20] componentsWithURL:a1 resolvingAgainstBaseURL:0];
-  v3 = [v2 path];
+  v2 = [MEMORY[0x1E696AF20] componentsWithURL:self resolvingAgainstBaseURL:0];
+  path = [v2 path];
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = [v2 queryItems];
-  v5 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  queryItems = [v2 queryItems];
+  v5 = [queryItems countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v5)
   {
     v6 = *v20;
@@ -1082,21 +1082,21 @@ LABEL_9:
       {
         if (*v20 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(queryItems);
         }
 
         v8 = *(*(&v19 + 1) + 8 * i);
-        v9 = [v8 name];
-        v10 = [v9 isEqualToString:@"subject"];
+        name = [v8 name];
+        v10 = [name isEqualToString:@"subject"];
 
         if (v10)
         {
-          v11 = [v8 value];
+          value = [v8 value];
           goto LABEL_13;
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v5 = [queryItems countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v5)
       {
         continue;
@@ -1106,26 +1106,26 @@ LABEL_9:
     }
   }
 
-  v11 = 0;
+  value = 0;
 LABEL_13:
 
-  if ([v11 length] && objc_msgSend(v3, "length"))
+  if ([value length] && objc_msgSend(path, "length"))
   {
     v13 = MEMORY[0x1E696AEC0];
     v14 = _WBSLocalizedString();
-    v15 = [v13 stringWithFormat:v14, v3, v11];
+    v15 = [v13 stringWithFormat:v14, path, value];
   }
 
-  else if ([v11 length])
+  else if ([value length])
   {
     v16 = MEMORY[0x1E696AEC0];
     v14 = _WBSLocalizedString();
-    v15 = [v16 stringWithFormat:v14, v11];
+    v15 = [v16 stringWithFormat:v14, value];
   }
 
   else
   {
-    if (![v3 length])
+    if (![path length])
     {
       v12 = 0;
       goto LABEL_21;
@@ -1133,7 +1133,7 @@ LABEL_13:
 
     v17 = MEMORY[0x1E696AEC0];
     v14 = _WBSLocalizedString();
-    v15 = [v17 stringWithFormat:v14, v3];
+    v15 = [v17 stringWithFormat:v14, path];
   }
 
   v12 = v15;
@@ -1146,40 +1146,40 @@ LABEL_22:
 
 - (id)safari_defaultStatusMessageString
 {
-  if ([a1 safari_isJavaScriptURL])
+  if ([self safari_isJavaScriptURL])
   {
     v2 = MEMORY[0x1E696AEC0];
     v3 = _WBSLocalizedString();
-    v4 = [a1 safari_userVisibleString];
-    v5 = [v4 substringFromIndex:11];
-    v6 = [v2 stringWithFormat:v3, v5];
+    safari_userVisibleString = [self safari_userVisibleString];
+    v5 = [safari_userVisibleString substringFromIndex:11];
+    safari_mailtoURLStatusMessage = [v2 stringWithFormat:v3, v5];
 LABEL_5:
 
     goto LABEL_7;
   }
 
-  if ([a1 safari_isTelURL])
+  if ([self safari_isTelURL])
   {
     v7 = MEMORY[0x1E696AEC0];
     v3 = _WBSLocalizedString();
-    v4 = [a1 absoluteString];
-    v5 = [v4 substringFromIndex:{objc_msgSend(@"tel:", "length")}];
-    v8 = [v5 stringByRemovingPercentEncoding];
-    v6 = [v7 stringWithFormat:v3, v8];
+    safari_userVisibleString = [self absoluteString];
+    v5 = [safari_userVisibleString substringFromIndex:{objc_msgSend(@"tel:", "length")}];
+    stringByRemovingPercentEncoding = [v5 stringByRemovingPercentEncoding];
+    safari_mailtoURLStatusMessage = [v7 stringWithFormat:v3, stringByRemovingPercentEncoding];
 
     goto LABEL_5;
   }
 
-  v6 = [a1 safari_mailtoURLStatusMessage];
+  safari_mailtoURLStatusMessage = [self safari_mailtoURLStatusMessage];
 LABEL_7:
 
-  return v6;
+  return safari_mailtoURLStatusMessage;
 }
 
 - (uint64_t)safari_isSharedTabGroupURL
 {
-  v1 = [a1 absoluteString];
-  v2 = [v1 hasPrefix:@"https://www.icloud.com/safari-tab-groups"];
+  absoluteString = [self absoluteString];
+  v2 = [absoluteString hasPrefix:@"https://www.icloud.com/safari-tab-groups"];
 
   return v2;
 }
@@ -1187,21 +1187,21 @@ LABEL_7:
 - (uint64_t)safari_isEqualToURL:()SafariSharedExtras
 {
   v4 = a3;
-  if ([a1 safari_isHTTPFamilyURL] && (objc_msgSend(v4, "safari_isHTTPFamilyURL") & 1) != 0)
+  if ([self safari_isHTTPFamilyURL] && (objc_msgSend(v4, "safari_isHTTPFamilyURL") & 1) != 0)
   {
-    v5 = a1;
-    v6 = [v5 lastPathComponent];
-    v7 = [v6 length];
+    selfCopy = self;
+    lastPathComponent = [selfCopy lastPathComponent];
+    v7 = [lastPathComponent length];
 
     if (!v7)
     {
-      v8 = [v5 URLByAppendingPathComponent:@"/"];
+      v8 = [selfCopy URLByAppendingPathComponent:@"/"];
 
-      v5 = v8;
+      selfCopy = v8;
     }
 
-    v9 = [v4 lastPathComponent];
-    v10 = [v9 length];
+    lastPathComponent2 = [v4 lastPathComponent];
+    v10 = [lastPathComponent2 length];
 
     if (!v10)
     {
@@ -1210,12 +1210,12 @@ LABEL_7:
       v4 = v11;
     }
 
-    v12 = [v5 isEqual:v4];
+    v12 = [selfCopy isEqual:v4];
   }
 
   else
   {
-    v12 = [a1 isEqual:v4];
+    v12 = [self isEqual:v4];
   }
 
   return v12;
@@ -1224,16 +1224,16 @@ LABEL_7:
 - (uint64_t)safari_isEqualOrHasSameHighLevelDomainAsURL:()SafariSharedExtras
 {
   v4 = a3;
-  v5 = a1;
-  v6 = [v5 host];
-  v7 = [v4 host];
-  v8 = [v6 isEqualToString:v7];
+  selfCopy = self;
+  host = [selfCopy host];
+  host2 = [v4 host];
+  v8 = [host isEqualToString:host2];
 
-  v9 = [v5 host];
-  v10 = [v9 safari_highLevelDomainFromHost];
-  v11 = [v4 host];
-  v12 = [v11 safari_highLevelDomainFromHost];
-  v13 = [v10 isEqualToString:v12];
+  host3 = [selfCopy host];
+  safari_highLevelDomainFromHost = [host3 safari_highLevelDomainFromHost];
+  host4 = [v4 host];
+  safari_highLevelDomainFromHost2 = [host4 safari_highLevelDomainFromHost];
+  v13 = [safari_highLevelDomainFromHost isEqualToString:safari_highLevelDomainFromHost2];
 
   if ((v8 | v13))
   {
@@ -1242,7 +1242,7 @@ LABEL_7:
 
   else
   {
-    v14 = [v5 safari_isEqualToURL:v4];
+    v14 = [selfCopy safari_isEqualToURL:v4];
   }
 
   return v14;
@@ -1250,10 +1250,10 @@ LABEL_7:
 
 - (id)safari_readingListItemUUIDString
 {
-  if ([a1 safari_isReadingListURL])
+  if ([self safari_isReadingListURL])
   {
-    v2 = [a1 host];
-    v3 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v2];
+    host = [self host];
+    v3 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:host];
 
     if (v3)
     {
@@ -1262,26 +1262,26 @@ LABEL_7:
 
     else
     {
-      v4 = v2;
+      v4 = host;
     }
 
     if (!v3)
     {
-      v2 = 0;
+      host = 0;
     }
   }
 
   else
   {
-    v2 = 0;
+    host = 0;
   }
 
-  return v2;
+  return host;
 }
 
 - (id)safari_URLByRemovingQuery
 {
-  v1 = [objc_alloc(MEMORY[0x1E696AF20]) initWithURL:a1 resolvingAgainstBaseURL:0];
+  v1 = [objc_alloc(MEMORY[0x1E696AF20]) initWithURL:self resolvingAgainstBaseURL:0];
   [v1 setQuery:0];
   v2 = [v1 URL];
 

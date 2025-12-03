@@ -1,14 +1,14 @@
 @interface SKStateTransitionTable
-+ (id)tableWithTransitionEntries:(id)a3 selectorTarget:(id)a4;
-- (id)entryForState:(id)a3 event:(id)a4;
++ (id)tableWithTransitionEntries:(id)entries selectorTarget:(id)target;
+- (id)entryForState:(id)state event:(id)event;
 @end
 
 @implementation SKStateTransitionTable
 
-+ (id)tableWithTransitionEntries:(id)a3 selectorTarget:(id)a4
++ (id)tableWithTransitionEntries:(id)entries selectorTarget:(id)target
 {
-  v5 = a3;
-  v27 = a4;
+  entriesCopy = entries;
+  targetCopy = target;
   v6 = objc_alloc_init(objc_opt_class());
   v7 = objc_opt_new();
   [v6 setEntriesMap:v7];
@@ -17,7 +17,7 @@
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v5;
+  obj = entriesCopy;
   v8 = [obj countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v8)
   {
@@ -33,20 +33,20 @@
         }
 
         v11 = *(*(&v29 + 1) + 8 * i);
-        v12 = [v6 entriesMap];
-        v13 = [v11 state];
-        v14 = [v12 objectForKeyedSubscript:v13];
+        entriesMap = [v6 entriesMap];
+        state = [v11 state];
+        v14 = [entriesMap objectForKeyedSubscript:state];
 
         if (!v14)
         {
           v14 = objc_opt_new();
-          v15 = [v6 entriesMap];
-          v16 = [v11 state];
-          [v15 setObject:v14 forKeyedSubscript:v16];
+          entriesMap2 = [v6 entriesMap];
+          state2 = [v11 state];
+          [entriesMap2 setObject:v14 forKeyedSubscript:state2];
         }
 
-        v17 = [v11 event];
-        [v14 objectForKeyedSubscript:v17];
+        event = [v11 event];
+        [v14 objectForKeyedSubscript:event];
         if (objc_claimAutoreleasedReturnValue())
         {
           sub_10002E440();
@@ -60,24 +60,24 @@
             sub_10002E46C();
           }
 
-          v18 = [v11 state];
-          v19 = [v11 event];
-          v20 = [v11 selector];
-          v21 = [v11 nextState];
-          v22 = [SKStateTransitionEntry entryWithState:v18 event:v19 selector:v20 nextState:v21];
-          v23 = [v11 event];
-          [v14 setObject:v22 forKeyedSubscript:v23];
+          state3 = [v11 state];
+          event2 = [v11 event];
+          selector = [v11 selector];
+          nextState = [v11 nextState];
+          nextState2 = [SKStateTransitionEntry entryWithState:state3 event:event2 selector:selector nextState:nextState];
+          event3 = [v11 event];
+          [v14 setObject:nextState2 forKeyedSubscript:event3];
         }
 
         else
         {
-          v18 = [v11 state];
-          v19 = [v11 event];
-          v21 = [v11 action];
-          v22 = [v11 nextState];
-          v23 = [SKStateTransitionEntry entryWithState:v18 event:v19 action:v21 nextState:v22];
-          v24 = [v11 event];
-          [v14 setObject:v23 forKeyedSubscript:v24];
+          state3 = [v11 state];
+          event2 = [v11 event];
+          nextState = [v11 action];
+          nextState2 = [v11 nextState];
+          event3 = [SKStateTransitionEntry entryWithState:state3 event:event2 action:nextState nextState:nextState2];
+          event4 = [v11 event];
+          [v14 setObject:event3 forKeyedSubscript:event4];
         }
       }
 
@@ -87,21 +87,21 @@
     while (v9);
   }
 
-  [v6 setSelectorTarget:v27];
+  [v6 setSelectorTarget:targetCopy];
 
   return v6;
 }
 
-- (id)entryForState:(id)a3 event:(id)a4
+- (id)entryForState:(id)state event:(id)event
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SKStateTransitionTable *)self entriesMap];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  eventCopy = event;
+  stateCopy = state;
+  entriesMap = [(SKStateTransitionTable *)self entriesMap];
+  v9 = [entriesMap objectForKeyedSubscript:stateCopy];
 
   if (v9)
   {
-    v10 = [v9 objectForKeyedSubscript:v6];
+    v10 = [v9 objectForKeyedSubscript:eventCopy];
   }
 
   else

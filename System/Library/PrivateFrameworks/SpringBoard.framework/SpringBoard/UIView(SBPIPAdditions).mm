@@ -11,35 +11,35 @@
 
 - (uint64_t)SBPIP_allowsEdgeAntialiasing
 {
-  v1 = [a1 layer];
-  v2 = [v1 allowsEdgeAntialiasing];
+  layer = [self layer];
+  allowsEdgeAntialiasing = [layer allowsEdgeAntialiasing];
 
-  return v2;
+  return allowsEdgeAntialiasing;
 }
 
 - (void)SBPIP_setAllowsEdgeAntialiasing:()SBPIPAdditions
 {
-  v5 = [a1 layer];
-  v6 = [MEMORY[0x277D759A0] mainScreen];
-  [v6 scale];
-  [v5 setContentsScale:?];
+  layer = [self layer];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
+  [layer setContentsScale:?];
 
-  v7 = [a1 layer];
-  [v7 setAllowsEdgeAntialiasing:a3];
+  layer2 = [self layer];
+  [layer2 setAllowsEdgeAntialiasing:a3];
 }
 
 - (uint64_t)SBPIP_allowsGroupBlending
 {
-  v1 = [a1 layer];
-  v2 = [v1 allowsGroupBlending];
+  layer = [self layer];
+  allowsGroupBlending = [layer allowsGroupBlending];
 
-  return v2;
+  return allowsGroupBlending;
 }
 
 - (void)SBPIP_setAllowsGroupBlending:()SBPIPAdditions
 {
-  v4 = [a1 layer];
-  [v4 setAllowsGroupBlending:a3];
+  layer = [self layer];
+  [layer setAllowsGroupBlending:a3];
 }
 
 + (void)SBPIP_performWithoutRetargetingAnimation:()SBPIPAdditions
@@ -51,7 +51,7 @@
   v6[3] = &unk_2783A9348;
   v7 = v4;
   v5 = v4;
-  [a1 _performWithoutRetargetingAnimations:v6];
+  [self _performWithoutRetargetingAnimations:v6];
 }
 
 + (void)SBPIP_animateUsingDefaultTimingWithOptions:()SBPIPAdditions animations:completion:
@@ -62,9 +62,9 @@
   v10[2] = __91__UIView_SBPIPAdditions__SBPIP_animateUsingDefaultTimingWithOptions_animations_completion___block_invoke;
   v10[3] = &unk_2783B2E30;
   v11 = v8;
-  v12 = a1;
+  selfCopy = self;
   v9 = v8;
-  [a1 _animateUsingDefaultTimingWithOptions:a3 animations:v10 completion:a5];
+  [self _animateUsingDefaultTimingWithOptions:a3 animations:v10 completion:a5];
 }
 
 @end

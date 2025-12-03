@@ -1,15 +1,15 @@
 @interface FigFCRCALayerOutputNodeLayer
 - (FigFCRCALayerOutputNodeLayer)init;
-- (void)_addBoundsAnimationToLayer:(id)a3 usingAnimation:(id)a4 forKey:(id)a5;
-- (void)_addPositionAnimationToLayer:(id)a3 usingAnimation:(id)a4 forKey:(id)a5;
-- (void)addAnimation:(id)a3 forKey:(id)a4;
+- (void)_addBoundsAnimationToLayer:(id)layer usingAnimation:(id)animation forKey:(id)key;
+- (void)_addPositionAnimationToLayer:(id)layer usingAnimation:(id)animation forKey:(id)key;
+- (void)addAnimation:(id)animation forKey:(id)key;
 - (void)dealloc;
-- (void)setBounds:(CGRect)a3;
-- (void)setContents:(id)a3;
-- (void)setCornerRadius:(double)a3;
-- (void)setPCTContextData:(id)a3;
-- (void)setPosition:(CGPoint)a3;
-- (void)setWindowOpacity:(double)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setContents:(id)contents;
+- (void)setCornerRadius:(double)radius;
+- (void)setPCTContextData:(id)data;
+- (void)setPosition:(CGPoint)position;
+- (void)setWindowOpacity:(double)opacity;
 @end
 
 @implementation FigFCRCALayerOutputNodeLayer
@@ -87,13 +87,13 @@ LABEL_5:
   [(FigBaseCALayer *)&v6 dealloc];
 }
 
-- (void)setContents:(id)a3
+- (void)setContents:(id)contents
 {
   if (self->layerInternal->var5)
   {
     v5.receiver = self;
     v5.super_class = FigFCRCALayerOutputNodeLayer;
-    [(FigFCRCALayerOutputNodeLayer *)&v5 setContents:a3];
+    [(FigFCRCALayerOutputNodeLayer *)&v5 setContents:contents];
   }
 
   [MEMORY[0x1E6979518] begin];
@@ -103,13 +103,13 @@ LABEL_5:
   }
 
   [MEMORY[0x1E6979518] setDisableActions:1];
-  [self->layerInternal->var3 setContents:a3];
+  [self->layerInternal->var3 setContents:contents];
   [MEMORY[0x1E6979518] commit];
 }
 
-- (void)setPCTContextData:(id)a3
+- (void)setPCTContextData:(id)data
 {
-  [self->layerInternal->var3 setValue:a3 forKeyPath:@"separatedOptions.contextData"];
+  [self->layerInternal->var3 setValue:data forKeyPath:@"separatedOptions.contextData"];
   v4 = MEMORY[0x1E695E118];
   [self->layerInternal->var3 setValue:MEMORY[0x1E695E118] forKeyPath:@"separatedOptions.enableContext"];
   [self->layerInternal->var3 setNeedsDisplay];
@@ -118,12 +118,12 @@ LABEL_5:
   [var3 setValue:v4 forKeyPath:@"separatedOptions.enableBifurcation"];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [MEMORY[0x1E6979518] begin];
   if (!pthread_main_np())
   {
@@ -146,10 +146,10 @@ LABEL_5:
   [(FigBaseCALayer *)&v10 setBounds:x, y, width, height];
 }
 
-- (void)setPosition:(CGPoint)a3
+- (void)setPosition:(CGPoint)position
 {
-  y = a3.y;
-  x = a3.x;
+  y = position.y;
+  x = position.x;
   [MEMORY[0x1E6979518] begin];
   if (!pthread_main_np())
   {
@@ -179,7 +179,7 @@ LABEL_5:
   [(FigBaseCALayer *)&v15 setPosition:x, y];
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
   [MEMORY[0x1E6979518] begin];
   if (!pthread_main_np())
@@ -188,24 +188,24 @@ LABEL_5:
   }
 
   [MEMORY[0x1E6979518] setDisableActions:1];
-  [self->layerInternal->var3 setCornerRadius:a3];
+  [self->layerInternal->var3 setCornerRadius:radius];
   var4 = self->layerInternal->var4;
   if (var4)
   {
-    [var4 setCornerRadius:a3];
+    [var4 setCornerRadius:radius];
     [self->layerInternal->var4 setHidden:0];
   }
 
   [MEMORY[0x1E6979518] commit];
   v6.receiver = self;
   v6.super_class = FigFCRCALayerOutputNodeLayer;
-  [(FigFCRCALayerOutputNodeLayer *)&v6 setCornerRadius:a3];
+  [(FigFCRCALayerOutputNodeLayer *)&v6 setCornerRadius:radius];
 }
 
-- (void)setWindowOpacity:(double)a3
+- (void)setWindowOpacity:(double)opacity
 {
-  self->layerInternal->var2 = a3;
-  if (a3 <= 0.0)
+  self->layerInternal->var2 = opacity;
+  if (opacity <= 0.0)
   {
     [MEMORY[0x1E6979518] begin];
     if (!pthread_main_np())
@@ -226,10 +226,10 @@ LABEL_5:
   }
 }
 
-- (void)_addBoundsAnimationToLayer:(id)a3 usingAnimation:(id)a4 forKey:(id)a5
+- (void)_addBoundsAnimationToLayer:(id)layer usingAnimation:(id)animation forKey:(id)key
 {
-  v8 = _animationByTransformingValues(a4, &__block_literal_global_107);
-  if ([a4 isAdditive])
+  v8 = _animationByTransformingValues(animation, &__block_literal_global_107);
+  if ([animation isAdditive])
   {
     v9 = @"bounds.size";
   }
@@ -242,12 +242,12 @@ LABEL_5:
   [v8 setKeyPath:v9];
   [v8 setDelegate:0];
 
-  [a3 addAnimation:v8 forKey:a5];
+  [layer addAnimation:v8 forKey:key];
 }
 
-- (void)_addPositionAnimationToLayer:(id)a3 usingAnimation:(id)a4 forKey:(id)a5
+- (void)_addPositionAnimationToLayer:(id)layer usingAnimation:(id)animation forKey:(id)key
 {
-  if ([a4 isAdditive])
+  if ([animation isAdditive])
   {
     v9 = &__block_literal_global_34_1;
   }
@@ -262,10 +262,10 @@ LABEL_5:
     v9 = v11;
   }
 
-  v10 = _animationByTransformingValues(a4, v9);
+  v10 = _animationByTransformingValues(animation, v9);
   [v10 setKeyPath:@"position"];
   [v10 setDelegate:0];
-  [a3 addAnimation:v10 forKey:a5];
+  [layer addAnimation:v10 forKey:key];
 }
 
 uint64_t __83__FigFCRCALayerOutputNodeLayer__addPositionAnimationToLayer_usingAnimation_forKey___block_invoke(uint64_t a1, void *a2)
@@ -288,27 +288,27 @@ uint64_t __83__FigFCRCALayerOutputNodeLayer__addPositionAnimationToLayer_usingAn
   return [v1 valueWithPoint:{v4, v7}];
 }
 
-- (void)addAnimation:(id)a3 forKey:(id)a4
+- (void)addAnimation:(id)animation forKey:(id)key
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (([@"bounds.size" isEqualToString:{objc_msgSend(a3, "keyPath")}] & 1) != 0 || objc_msgSend(@"bounds", "isEqualToString:", objc_msgSend(a3, "keyPath")))
+    if (([@"bounds.size" isEqualToString:{objc_msgSend(animation, "keyPath")}] & 1) != 0 || objc_msgSend(@"bounds", "isEqualToString:", objc_msgSend(animation, "keyPath")))
     {
-      [(FigFCRCALayerOutputNodeLayer *)self _addBoundsAnimationToLayer:self->layerInternal->var3 usingAnimation:a3 forKey:a4];
-      [(FigFCRCALayerOutputNodeLayer *)self _addBoundsAnimationToLayer:self->layerInternal->var4 usingAnimation:a3 forKey:a4];
+      [(FigFCRCALayerOutputNodeLayer *)self _addBoundsAnimationToLayer:self->layerInternal->var3 usingAnimation:animation forKey:key];
+      [(FigFCRCALayerOutputNodeLayer *)self _addBoundsAnimationToLayer:self->layerInternal->var4 usingAnimation:animation forKey:key];
     }
 
     else
     {
-      [(FigFCRCALayerOutputNodeLayer *)self _addPositionAnimationToLayer:self->layerInternal->var3 usingAnimation:a3 forKey:a4];
-      [(FigFCRCALayerOutputNodeLayer *)self _addPositionAnimationToLayer:self->layerInternal->var4 usingAnimation:a3 forKey:a4];
+      [(FigFCRCALayerOutputNodeLayer *)self _addPositionAnimationToLayer:self->layerInternal->var3 usingAnimation:animation forKey:key];
+      [(FigFCRCALayerOutputNodeLayer *)self _addPositionAnimationToLayer:self->layerInternal->var4 usingAnimation:animation forKey:key];
     }
   }
 
   v7.receiver = self;
   v7.super_class = FigFCRCALayerOutputNodeLayer;
-  [(FigFCRCALayerOutputNodeLayer *)&v7 addAnimation:a3 forKey:a4];
+  [(FigFCRCALayerOutputNodeLayer *)&v7 addAnimation:animation forKey:key];
 }
 
 @end

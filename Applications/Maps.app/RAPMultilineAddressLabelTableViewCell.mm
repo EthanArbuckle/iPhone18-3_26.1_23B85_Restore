@@ -1,26 +1,26 @@
 @interface RAPMultilineAddressLabelTableViewCell
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5;
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text;
 - (RAPAddressDelegate)delegate;
-- (RAPMultilineAddressLabelTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (RAPMultilineAddressLabelTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (UITableView)parentTableView;
 - (void)_addressChanged;
 - (void)_clearSubviews;
 - (void)_contentSizeDidChange;
-- (void)_freeformAddressFieldTapped:(id)a3;
+- (void)_freeformAddressFieldTapped:(id)tapped;
 - (void)_recalculateConstraints;
-- (void)_scrollTextViewSelectedRangeVisible:(id)a3;
+- (void)_scrollTextViewSelectedRangeVisible:(id)visible;
 - (void)_updateConstraints;
 - (void)_updateFonts;
 - (void)_updateFreeformCellHeightIfNeeded;
 - (void)_updateViews;
 - (void)initViews;
-- (void)setCanEditFreeformAddress:(BOOL)a3;
-- (void)setEditableAndTappable:(BOOL)a3;
-- (void)setFreeformAddress:(id)a3;
-- (void)setLayoutOptions:(id)a3;
-- (void)textViewDidBeginEditing:(id)a3;
-- (void)textViewDidChange:(id)a3;
-- (void)textViewDidEndEditing:(id)a3;
+- (void)setCanEditFreeformAddress:(BOOL)address;
+- (void)setEditableAndTappable:(BOOL)tappable;
+- (void)setFreeformAddress:(id)address;
+- (void)setLayoutOptions:(id)options;
+- (void)textViewDidBeginEditing:(id)editing;
+- (void)textViewDidChange:(id)change;
+- (void)textViewDidEndEditing:(id)editing;
 @end
 
 @implementation RAPMultilineAddressLabelTableViewCell
@@ -148,8 +148,8 @@
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(UIView *)self->_containerView subviews];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  subviews = [(UIView *)self->_containerView subviews];
+  v3 = [subviews countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -161,7 +161,7 @@
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(subviews);
         }
 
         [*(*(&v7 + 1) + 8 * v6) removeFromSuperview];
@@ -169,7 +169,7 @@
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [subviews countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
@@ -185,9 +185,9 @@
   detailViews = self->_detailViews;
   self->_detailViews = v3;
 
-  v5 = [(RAPAddressLayoutOptions *)self->_layoutOptions numberOfEnabledOptions];
+  numberOfEnabledOptions = [(RAPAddressLayoutOptions *)self->_layoutOptions numberOfEnabledOptions];
   v6 = v8;
-  if (v5)
+  if (numberOfEnabledOptions)
   {
     [(UIView *)v8 addSubview:self->_topHorizontalHairlineView];
     if ([(RAPAddressLayoutOptions *)self->_layoutOptions showFloor])
@@ -208,7 +208,7 @@
       [(UIView *)v8 addSubview:self->_unitTextField];
     }
 
-    if (v5 >= 2)
+    if (numberOfEnabledOptions >= 2)
     {
       [(UIView *)v8 addSubview:self->_middleVerticalHairlineView];
       [(NSMutableArray *)self->_detailViews insertObject:self->_middleVerticalHairlineView atIndex:1];
@@ -225,12 +225,12 @@
   }
 }
 
-- (void)setLayoutOptions:(id)a3
+- (void)setLayoutOptions:(id)options
 {
-  v6 = a3;
+  optionsCopy = options;
   if (![(RAPAddressLayoutOptions *)self->_layoutOptions isEqual:?])
   {
-    v4 = [v6 copy];
+    v4 = [optionsCopy copy];
     layoutOptions = self->_layoutOptions;
     self->_layoutOptions = v4;
 
@@ -239,12 +239,12 @@
   }
 }
 
-- (void)setEditableAndTappable:(BOOL)a3
+- (void)setEditableAndTappable:(BOOL)tappable
 {
-  if (self->_editableAndTappable != a3)
+  if (self->_editableAndTappable != tappable)
   {
-    self->_editableAndTappable = a3;
-    if (a3)
+    self->_editableAndTappable = tappable;
+    if (tappable)
     {
       if (!self->_freeformGestureRecognizer)
       {
@@ -269,11 +269,11 @@
   }
 }
 
-- (void)setCanEditFreeformAddress:(BOOL)a3
+- (void)setCanEditFreeformAddress:(BOOL)address
 {
-  if (self->_canEditFreeformAddress != a3)
+  if (self->_canEditFreeformAddress != address)
   {
-    self->_canEditFreeformAddress = a3;
+    self->_canEditFreeformAddress = address;
     if (self->_editableAndTappable)
     {
       [(TextViewWithPlaceholderText *)self->_freeformAddressTextView setEditable:?];
@@ -284,35 +284,35 @@
 - (void)_addressChanged
 {
   v8 = objc_alloc_init(RAPAddressFields);
-  v3 = [(TextViewWithPlaceholderText *)self->_freeformAddressTextView text];
-  [(RAPAddressFields *)v8 setFreeformAddress:v3];
+  text = [(TextViewWithPlaceholderText *)self->_freeformAddressTextView text];
+  [(RAPAddressFields *)v8 setFreeformAddress:text];
 
-  v4 = [(UITextField *)self->_floorTextField text];
-  [(RAPAddressFields *)v8 setFloor:v4];
+  text2 = [(UITextField *)self->_floorTextField text];
+  [(RAPAddressFields *)v8 setFloor:text2];
 
-  v5 = [(UITextField *)self->_unitTextField text];
-  [(RAPAddressFields *)v8 setUnit:v5];
+  text3 = [(UITextField *)self->_unitTextField text];
+  [(RAPAddressFields *)v8 setUnit:text3];
 
-  v6 = [(UITextField *)self->_buildingTextField text];
-  [(RAPAddressFields *)v8 setBuilding:v6];
+  text4 = [(UITextField *)self->_buildingTextField text];
+  [(RAPAddressFields *)v8 setBuilding:text4];
 
-  v7 = [(RAPMultilineAddressLabelTableViewCell *)self delegate];
-  [v7 addressTableViewCell:self updatedAddress:v8];
+  delegate = [(RAPMultilineAddressLabelTableViewCell *)self delegate];
+  [delegate addressTableViewCell:self updatedAddress:v8];
 }
 
-- (void)setFreeformAddress:(id)a3
+- (void)setFreeformAddress:(id)address
 {
-  v6 = a3;
+  addressCopy = address;
   if (![(NSString *)self->_freeformAddress isEqualToString:?])
   {
-    objc_storeStrong(&self->_freeformAddress, a3);
+    objc_storeStrong(&self->_freeformAddress, address);
     [(TextViewWithPlaceholderText *)self->_freeformAddressTextView setText:self->_freeformAddress];
   }
 
   if ([(RAPMultilineAddressLabelTableViewCell *)self isEditableAndTappable])
   {
-    v5 = [(TextViewWithPlaceholderText *)self->_freeformAddressTextView text];
-    -[RAPMultilineAddressLabelTableViewCell setCanEditFreeformAddress:](self, "setCanEditFreeformAddress:", [v5 length] != 0);
+    text = [(TextViewWithPlaceholderText *)self->_freeformAddressTextView text];
+    -[RAPMultilineAddressLabelTableViewCell setCanEditFreeformAddress:](self, "setCanEditFreeformAddress:", [text length] != 0);
   }
 
   else
@@ -324,8 +324,8 @@
 - (void)_updateFreeformCellHeightIfNeeded
 {
   WeakRetained = objc_loadWeakRetained(&self->_parentTableView);
-  v4 = [WeakRetained superview];
-  [v4 setNeedsLayout];
+  superview = [WeakRetained superview];
+  [superview setNeedsLayout];
 
   v5 = objc_loadWeakRetained(&self->_parentTableView);
   [v5 _maps_reloadCellHeights];
@@ -335,58 +335,58 @@
   [(RAPMultilineAddressLabelTableViewCell *)self _scrollTextViewSelectedRangeVisible:freeformAddressTextView];
 }
 
-- (void)textViewDidEndEditing:(id)a3
+- (void)textViewDidEndEditing:(id)editing
 {
-  v5 = a3;
+  editingCopy = editing;
   if ([(RAPMultilineAddressLabelTableViewCell *)self isEditableAndTappable])
   {
-    v4 = [v5 text];
-    -[RAPMultilineAddressLabelTableViewCell setCanEditFreeformAddress:](self, "setCanEditFreeformAddress:", [v4 length] != 0);
+    text = [editingCopy text];
+    -[RAPMultilineAddressLabelTableViewCell setCanEditFreeformAddress:](self, "setCanEditFreeformAddress:", [text length] != 0);
   }
 }
 
-- (void)textViewDidChange:(id)a3
+- (void)textViewDidChange:(id)change
 {
   [(RAPMultilineAddressLabelTableViewCell *)self _updateFreeformCellHeightIfNeeded];
 
   [(RAPMultilineAddressLabelTableViewCell *)self _addressChanged];
 }
 
-- (void)textViewDidBeginEditing:(id)a3
+- (void)textViewDidBeginEditing:(id)editing
 {
-  v3 = [(RAPMultilineAddressLabelTableViewCell *)self analyticTarget];
+  analyticTarget = [(RAPMultilineAddressLabelTableViewCell *)self analyticTarget];
 
-  [GEOAPPortal captureUserAction:10167 target:v3 value:0];
+  [GEOAPPortal captureUserAction:10167 target:analyticTarget value:0];
 }
 
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text
 {
-  v6 = a5;
-  v7 = a3;
-  v8 = [v7 text];
+  textCopy = text;
+  viewCopy = view;
+  text = [viewCopy text];
   v9 = +[NSCharacterSet newlineCharacterSet];
-  v10 = [v8 componentsSeparatedByCharactersInSet:v9];
+  v10 = [text componentsSeparatedByCharactersInSet:v9];
 
   v11 = +[NSCharacterSet newlineCharacterSet];
-  v12 = [v6 componentsSeparatedByCharactersInSet:v11];
+  v12 = [textCopy componentsSeparatedByCharactersInSet:v11];
 
   v13 = [v10 count];
   v14 = [v12 count] + v13 - 1;
-  v15 = [v7 textContainer];
+  textContainer = [viewCopy textContainer];
 
-  LOBYTE(v7) = v14 <= [v15 maximumNumberOfLines];
-  return v7;
+  LOBYTE(viewCopy) = v14 <= [textContainer maximumNumberOfLines];
+  return viewCopy;
 }
 
-- (void)_scrollTextViewSelectedRangeVisible:(id)a3
+- (void)_scrollTextViewSelectedRangeVisible:(id)visible
 {
-  v30 = a3;
-  v4 = [v30 selectedTextRange];
-  if (v4)
+  visibleCopy = visible;
+  selectedTextRange = [visibleCopy selectedTextRange];
+  if (selectedTextRange)
   {
     WeakRetained = objc_loadWeakRetained(&self->_parentTableView);
-    [v30 firstRectForRange:v4];
-    [WeakRetained convertRect:v30 toView:?];
+    [visibleCopy firstRectForRange:selectedTextRange];
+    [WeakRetained convertRect:visibleCopy toView:?];
     v7 = v6;
     v9 = v8;
     v11 = v10;
@@ -415,8 +415,8 @@
       [v20 layoutIfNeeded];
 
       v21 = objc_loadWeakRetained(&self->_parentTableView);
-      [v30 firstRectForRange:v4];
-      [v21 convertRect:v30 toView:?];
+      [visibleCopy firstRectForRange:selectedTextRange];
+      [v21 convertRect:visibleCopy toView:?];
       v23 = v22;
       v25 = v24;
       v27 = v26;
@@ -435,15 +435,15 @@
   }
 }
 
-- (void)_freeformAddressFieldTapped:(id)a3
+- (void)_freeformAddressFieldTapped:(id)tapped
 {
-  v7 = a3;
-  v4 = [(TextViewWithPlaceholderText *)self->_freeformAddressTextView text];
-  v5 = [v4 length];
+  tappedCopy = tapped;
+  text = [(TextViewWithPlaceholderText *)self->_freeformAddressTextView text];
+  v5 = [text length];
 
   if (v5)
   {
-    if ([v7 state] != 3 || self->_canEditFreeformAddress)
+    if ([tappedCopy state] != 3 || self->_canEditFreeformAddress)
     {
       [(TextViewWithPlaceholderText *)self->_freeformAddressTextView becomeFirstResponder];
       goto LABEL_7;
@@ -455,8 +455,8 @@
     [(TextViewWithPlaceholderText *)self->_freeformAddressTextView resignFirstResponder];
   }
 
-  v6 = [(RAPMultilineAddressLabelTableViewCell *)self delegate];
-  [v6 userTappedOnAddressTableViewCell:self];
+  delegate = [(RAPMultilineAddressLabelTableViewCell *)self delegate];
+  [delegate userTappedOnAddressTableViewCell:self];
 
 LABEL_7:
 }
@@ -479,23 +479,23 @@ LABEL_7:
   lastBaselineToBottomConstraints = self->_lastBaselineToBottomConstraints;
   self->_lastBaselineToBottomConstraints = v8;
 
-  v10 = [(TextViewWithPlaceholderText *)self->_freeformAddressTextView topAnchor];
-  v11 = [(UIView *)v3 topAnchor];
+  topAnchor = [(TextViewWithPlaceholderText *)self->_freeformAddressTextView topAnchor];
+  topAnchor2 = [(UIView *)v3 topAnchor];
   v12 = +[UIFont system17];
   [v12 _mapkit_scaledValueForValue:10.0];
-  v13 = [v10 constraintEqualToAnchor:v11 constant:?];
+  v13 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:?];
   freeformTopConstraint = self->_freeformTopConstraint;
   self->_freeformTopConstraint = v13;
 
   v15 = self->_constraints;
-  v16 = [(TextViewWithPlaceholderText *)self->_freeformAddressTextView leadingAnchor];
-  v17 = [(UIView *)v3 leadingAnchor];
-  v18 = [v16 constraintEqualToAnchor:v17 constant:10.0];
+  leadingAnchor = [(TextViewWithPlaceholderText *)self->_freeformAddressTextView leadingAnchor];
+  leadingAnchor2 = [(UIView *)v3 leadingAnchor];
+  v18 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:10.0];
   v109[0] = v18;
-  v19 = [(TextViewWithPlaceholderText *)self->_freeformAddressTextView trailingAnchor];
+  trailingAnchor = [(TextViewWithPlaceholderText *)self->_freeformAddressTextView trailingAnchor];
   v97 = v3;
-  v20 = [(UIView *)v3 trailingAnchor];
-  v21 = [v19 constraintEqualToAnchor:v20 constant:-8.0];
+  trailingAnchor2 = [(UIView *)v3 trailingAnchor];
+  v21 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-8.0];
   v22 = self->_freeformTopConstraint;
   v109[1] = v21;
   v109[2] = v22;
@@ -504,34 +504,34 @@ LABEL_7:
 
   v24 = objc_alloc_init(NSMutableArray);
   v25 = [(NSMutableArray *)self->_detailViews count];
-  v26 = [(TextViewWithPlaceholderText *)self->_freeformAddressTextView bottomAnchor];
+  bottomAnchor = [(TextViewWithPlaceholderText *)self->_freeformAddressTextView bottomAnchor];
   if (v25)
   {
-    v27 = [(RAPSeparatorBar *)self->_topHorizontalHairlineView topAnchor];
+    topAnchor3 = [(RAPSeparatorBar *)self->_topHorizontalHairlineView topAnchor];
     v28 = +[UIFont system17];
     [v28 _mapkit_scaledValueForValue:10.0];
-    v30 = [v26 constraintEqualToAnchor:v27 constant:-v29];
+    v30 = [bottomAnchor constraintEqualToAnchor:topAnchor3 constant:-v29];
     freeformBottomConstraint = self->_freeformBottomConstraint;
     self->_freeformBottomConstraint = v30;
 
     [(NSMutableArray *)self->_constraints addObject:self->_freeformBottomConstraint];
-    v32 = [(RAPSeparatorBar *)self->_topHorizontalHairlineView heightAnchor];
+    heightAnchor = [(RAPSeparatorBar *)self->_topHorizontalHairlineView heightAnchor];
     +[RAPSeparatorBar thickness];
-    v33 = [v32 constraintEqualToConstant:?];
+    v33 = [heightAnchor constraintEqualToConstant:?];
     [v24 addObject:v33];
 
-    v34 = [(RAPSeparatorBar *)self->_topHorizontalHairlineView leadingAnchor];
+    leadingAnchor3 = [(RAPSeparatorBar *)self->_topHorizontalHairlineView leadingAnchor];
     v35 = v97;
-    v36 = [(UIView *)v97 leadingAnchor];
-    v37 = [v34 constraintEqualToAnchor:v36 constant:8.0];
+    leadingAnchor4 = [(UIView *)v97 leadingAnchor];
+    v37 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:8.0];
     [v24 addObject:v37];
 
-    v38 = [(RAPSeparatorBar *)self->_topHorizontalHairlineView trailingAnchor];
-    v39 = [(UIView *)v97 trailingAnchor];
-    v40 = [v38 constraintEqualToAnchor:v39 constant:-8.0];
+    trailingAnchor3 = [(RAPSeparatorBar *)self->_topHorizontalHairlineView trailingAnchor];
+    trailingAnchor4 = [(UIView *)v97 trailingAnchor];
+    v40 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-8.0];
     [v24 addObject:v40];
 
-    v103 = [(RAPSeparatorBar *)self->_topHorizontalHairlineView bottomAnchor];
+    bottomAnchor2 = [(RAPSeparatorBar *)self->_topHorizontalHairlineView bottomAnchor];
     v41 = &OBJC_IVAR___TransitNavigationTrayViewController__hasForcedInitialContaineeHeight;
     if ([(RAPAddressLayoutOptions *)self->_layoutOptions numberOfEnabledOptions]< 3)
     {
@@ -578,13 +578,13 @@ LABEL_7:
         }
 
         v55 = *(*(&v104 + 1) + 8 * v53);
-        v56 = [(NSMutableArray *)self->_detailViews firstObject];
+        firstObject = [(NSMutableArray *)self->_detailViews firstObject];
 
-        if (v55 == v56)
+        if (v55 == firstObject)
         {
-          v57 = [v55 leadingAnchor];
-          v58 = [(UIView *)v35 leadingAnchor];
-          v59 = [v57 constraintEqualToAnchor:v58 constant:10.0];
+          leadingAnchor5 = [v55 leadingAnchor];
+          leadingAnchor6 = [(UIView *)v35 leadingAnchor];
+          v59 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6 constant:10.0];
           [v24 addObject:v59];
 
           v41 = &OBJC_IVAR___TransitNavigationTrayViewController__hasForcedInitialContaineeHeight;
@@ -596,42 +596,42 @@ LABEL_7:
         {
           if (v55 == *(&self->super.super.super.super.isa + v41[209]))
           {
-            v83 = [v55 heightAnchor];
+            heightAnchor2 = [v55 heightAnchor];
             +[RAPSeparatorBar thickness];
-            v84 = [v83 constraintEqualToConstant:?];
+            v84 = [heightAnchor2 constraintEqualToConstant:?];
             [v24 addObject:v84];
 
-            v85 = [v55 leadingAnchor];
-            v86 = [(UIView *)v35 leadingAnchor];
-            [v85 constraintEqualToAnchor:v86 constant:8.0];
+            leadingAnchor7 = [v55 leadingAnchor];
+            leadingAnchor8 = [(UIView *)v35 leadingAnchor];
+            [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8 constant:8.0];
             v88 = v87 = v35;
             [v24 addObject:v88];
 
-            v67 = [v55 trailingAnchor];
-            v68 = [(UIView *)v87 trailingAnchor];
-            v89 = [v67 constraintEqualToAnchor:v68 constant:-8.0];
+            trailingAnchor5 = [v55 trailingAnchor];
+            trailingAnchor6 = [(UIView *)v87 trailingAnchor];
+            v89 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:-8.0];
             [v24 addObject:v89];
           }
 
           else
           {
-            v60 = [v55 widthAnchor];
+            widthAnchor = [v55 widthAnchor];
             +[RAPSeparatorBar thickness];
-            v61 = [v60 constraintEqualToConstant:?];
+            v61 = [widthAnchor constraintEqualToConstant:?];
             [v24 addObject:v61];
 
-            v62 = [v55 centerXAnchor];
-            v63 = [(UIView *)v35 centerXAnchor];
-            v64 = [v62 constraintEqualToAnchor:v63];
+            centerXAnchor = [v55 centerXAnchor];
+            centerXAnchor2 = [(UIView *)v35 centerXAnchor];
+            v64 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
             [v24 addObject:v64];
 
-            v65 = [v55 topAnchor];
-            v66 = [v65 constraintEqualToAnchor:v103 constant:10.0];
+            topAnchor4 = [v55 topAnchor];
+            v66 = [topAnchor4 constraintEqualToAnchor:bottomAnchor2 constant:10.0];
             [v24 addObject:v66];
 
-            v67 = [v55 bottomAnchor];
-            v68 = [v67 constraintEqualToAnchor:v102 constant:-10.0];
-            [v24 addObject:v68];
+            trailingAnchor5 = [v55 bottomAnchor];
+            trailingAnchor6 = [trailingAnchor5 constraintEqualToAnchor:v102 constant:-10.0];
+            [v24 addObject:trailingAnchor6];
           }
         }
 
@@ -645,40 +645,40 @@ LABEL_7:
 
           if (v99)
           {
-            v69 = [(RAPSeparatorBar *)self->_topHorizontalHairlineView bottomAnchor];
+            bottomAnchor3 = [(RAPSeparatorBar *)self->_topHorizontalHairlineView bottomAnchor];
 
             v70 = v97;
-            if (v103 == v69)
+            if (bottomAnchor2 == bottomAnchor3)
             {
-              v71 = [v55 widthAnchor];
-              v72 = [v99 widthAnchor];
-              v73 = [v71 constraintEqualToAnchor:v72];
+              widthAnchor2 = [v55 widthAnchor];
+              widthAnchor3 = [v99 widthAnchor];
+              v73 = [widthAnchor2 constraintEqualToAnchor:widthAnchor3];
               [v24 addObject:v73];
 
               v70 = v54;
             }
 
-            v74 = [v55 leadingAnchor];
-            v75 = [(UIView *)v70 leadingAnchor];
-            v76 = [v74 constraintEqualToAnchor:v75 constant:10.0];
+            leadingAnchor9 = [v55 leadingAnchor];
+            leadingAnchor10 = [(UIView *)v70 leadingAnchor];
+            v76 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10 constant:10.0];
             [v24 addObject:v76];
 
-            v77 = [v55 trailingAnchor];
-            v78 = [(UIView *)v97 trailingAnchor];
-            v79 = [v77 constraintEqualToAnchor:v78 constant:-8.0];
+            trailingAnchor7 = [v55 trailingAnchor];
+            trailingAnchor8 = [(UIView *)v97 trailingAnchor];
+            v79 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8 constant:-8.0];
             [v24 addObject:v79];
           }
 
-          v80 = [v55 firstBaselineAnchor];
-          v67 = [v80 constraintEqualToAnchor:v103 constant:v48];
+          firstBaselineAnchor = [v55 firstBaselineAnchor];
+          trailingAnchor5 = [firstBaselineAnchor constraintEqualToAnchor:bottomAnchor2 constant:v48];
 
-          v81 = [v55 lastBaselineAnchor];
-          v68 = [v81 constraintEqualToAnchor:v102 constant:v51];
+          lastBaselineAnchor = [v55 lastBaselineAnchor];
+          trailingAnchor6 = [lastBaselineAnchor constraintEqualToAnchor:v102 constant:v51];
 
-          [v24 addObject:v67];
-          [v24 addObject:v68];
-          [(NSMutableArray *)self->_topToFirstBaselineConstraints addObject:v67];
-          [(NSMutableArray *)self->_lastBaselineToBottomConstraints addObject:v68];
+          [v24 addObject:trailingAnchor5];
+          [v24 addObject:trailingAnchor6];
+          [(NSMutableArray *)self->_topToFirstBaselineConstraints addObject:trailingAnchor5];
+          [(NSMutableArray *)self->_lastBaselineToBottomConstraints addObject:trailingAnchor6];
           v82 = v55;
 
           v99 = v82;
@@ -687,13 +687,13 @@ LABEL_7:
         v35 = v97;
         v41 = &OBJC_IVAR___TransitNavigationTrayViewController__hasForcedInitialContaineeHeight;
 LABEL_24:
-        v90 = [(NSMutableArray *)self->_detailViews lastObject];
+        lastObject = [(NSMutableArray *)self->_detailViews lastObject];
 
-        if (v55 == v90)
+        if (v55 == lastObject)
         {
-          v91 = [v55 trailingAnchor];
-          v92 = [(UIView *)v35 trailingAnchor];
-          v93 = [v91 constraintEqualToAnchor:v92 constant:-8.0];
+          trailingAnchor9 = [v55 trailingAnchor];
+          trailingAnchor10 = [(UIView *)v35 trailingAnchor];
+          v93 = [trailingAnchor9 constraintEqualToAnchor:trailingAnchor10 constant:-8.0];
           [v24 addObject:v93];
 
           v35 = v97;
@@ -703,12 +703,12 @@ LABEL_24:
         v94 = *(&self->super.super.super.super.isa + v41[209]);
         if (v55 == v94)
         {
-          v95 = [v94 bottomAnchor];
+          bottomAnchor4 = [v94 bottomAnchor];
 
-          v96 = [(UIView *)v35 bottomAnchor];
+          bottomAnchor5 = [(UIView *)v35 bottomAnchor];
 
-          v102 = v96;
-          v103 = v95;
+          v102 = bottomAnchor5;
+          bottomAnchor2 = bottomAnchor4;
         }
 
         v52 = v55;
@@ -723,17 +723,17 @@ LABEL_24:
       {
 LABEL_32:
 
-        v45 = v103;
+        v45 = bottomAnchor2;
         goto LABEL_33;
       }
     }
   }
 
   v35 = v97;
-  v42 = [(UIView *)v97 bottomAnchor];
+  bottomAnchor6 = [(UIView *)v97 bottomAnchor];
   v43 = +[UIFont system17];
   [v43 _mapkit_scaledValueForValue:10.0];
-  v45 = [v26 constraintEqualToAnchor:v42 constant:-v44];
+  v45 = [bottomAnchor constraintEqualToAnchor:bottomAnchor6 constant:-v44];
 
   [(NSMutableArray *)self->_constraints addObject:v45];
 LABEL_33:
@@ -750,17 +750,17 @@ LABEL_33:
 
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:@"Add Street or Address [Report an Issue]" value:@"localized string not found" table:0];
-  v7 = [(TextViewWithPlaceholderText *)self->_freeformAddressTextView placeholderLabel];
-  [v7 setText:v6];
+  placeholderLabel = [(TextViewWithPlaceholderText *)self->_freeformAddressTextView placeholderLabel];
+  [placeholderLabel setText:v6];
 
   [(TextViewWithPlaceholderText *)self->_freeformAddressTextView setScrollEnabled:0];
-  v8 = [(TextViewWithPlaceholderText *)self->_freeformAddressTextView textContainer];
-  [v8 setMaximumNumberOfLines:8];
+  textContainer = [(TextViewWithPlaceholderText *)self->_freeformAddressTextView textContainer];
+  [textContainer setMaximumNumberOfLines:8];
 
-  v9 = [(RAPMultilineAddressLabelTableViewCell *)self traitCollection];
-  v10 = [v9 userInterfaceIdiom];
+  traitCollection = [(RAPMultilineAddressLabelTableViewCell *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v10 == 5)
+  if (userInterfaceIdiom == 5)
   {
     +[UIColor systemGray6Color];
   }
@@ -830,36 +830,36 @@ LABEL_33:
   self->_containerView = v30;
 
   [(UIView *)self->_containerView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v32 = [(RAPMultilineAddressLabelTableViewCell *)self contentView];
-  [v32 addSubview:self->_containerView];
+  contentView = [(RAPMultilineAddressLabelTableViewCell *)self contentView];
+  [contentView addSubview:self->_containerView];
 
-  v53 = [(UIView *)self->_containerView leadingAnchor];
-  v54 = [(RAPMultilineAddressLabelTableViewCell *)self contentView];
-  v52 = [v54 leadingAnchor];
-  v51 = [v53 constraintEqualToAnchor:v52 constant:0.0];
+  leadingAnchor = [(UIView *)self->_containerView leadingAnchor];
+  contentView2 = [(RAPMultilineAddressLabelTableViewCell *)self contentView];
+  leadingAnchor2 = [contentView2 leadingAnchor];
+  v51 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:0.0];
   v55[0] = v51;
-  v49 = [(UIView *)self->_containerView trailingAnchor];
-  v50 = [(RAPMultilineAddressLabelTableViewCell *)self contentView];
-  v48 = [v50 trailingAnchor];
-  v47 = [v49 constraintEqualToAnchor:v48 constant:-0.0];
+  trailingAnchor = [(UIView *)self->_containerView trailingAnchor];
+  contentView3 = [(RAPMultilineAddressLabelTableViewCell *)self contentView];
+  trailingAnchor2 = [contentView3 trailingAnchor];
+  v47 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-0.0];
   v55[1] = v47;
-  v46 = [(UIView *)self->_containerView topAnchor];
-  v33 = [(RAPMultilineAddressLabelTableViewCell *)self contentView];
-  v34 = [v33 topAnchor];
-  v35 = [v46 constraintEqualToAnchor:v34 constant:0.0];
+  topAnchor = [(UIView *)self->_containerView topAnchor];
+  contentView4 = [(RAPMultilineAddressLabelTableViewCell *)self contentView];
+  topAnchor2 = [contentView4 topAnchor];
+  v35 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:0.0];
   v55[2] = v35;
-  v36 = [(UIView *)self->_containerView bottomAnchor];
-  v37 = [(RAPMultilineAddressLabelTableViewCell *)self contentView];
-  v38 = [v37 bottomAnchor];
-  v39 = [v36 constraintEqualToAnchor:v38 constant:-0.0];
+  bottomAnchor = [(UIView *)self->_containerView bottomAnchor];
+  contentView5 = [(RAPMultilineAddressLabelTableViewCell *)self contentView];
+  bottomAnchor2 = [contentView5 bottomAnchor];
+  v39 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-0.0];
   v55[3] = v39;
   v40 = [NSArray arrayWithObjects:v55 count:4];
   [NSLayoutConstraint activateConstraints:v40];
 
-  v41 = [(RAPMultilineAddressLabelTableViewCell *)self traitCollection];
-  v42 = [v41 userInterfaceIdiom];
+  traitCollection2 = [(RAPMultilineAddressLabelTableViewCell *)self traitCollection];
+  userInterfaceIdiom2 = [traitCollection2 userInterfaceIdiom];
 
-  if (v42 == 5)
+  if (userInterfaceIdiom2 == 5)
   {
     v43 = +[UIColor systemBackgroundColor];
     [(RAPMultilineAddressLabelTableViewCell *)self setBackgroundColor:v43];
@@ -867,18 +867,18 @@ LABEL_33:
     v44 = +[UIColor systemGray6Color];
     [(UIView *)self->_containerView setBackgroundColor:v44];
 
-    v45 = [(UIView *)self->_containerView layer];
-    [v45 setCornerRadius:7.5];
+    layer = [(UIView *)self->_containerView layer];
+    [layer setCornerRadius:7.5];
 
     [(UIView *)self->_containerView setClipsToBounds:1];
   }
 }
 
-- (RAPMultilineAddressLabelTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (RAPMultilineAddressLabelTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v8.receiver = self;
   v8.super_class = RAPMultilineAddressLabelTableViewCell;
-  v4 = [(RAPMultilineAddressLabelTableViewCell *)&v8 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(RAPMultilineAddressLabelTableViewCell *)&v8 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {

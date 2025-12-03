@@ -1,11 +1,11 @@
 @interface VUIBarItemSelectionManager
 + (id)lastSelectedIdentifier;
-+ (void)updateLastSelectedIdentifier:(id)a3 tabItemInfo:(id)a4;
++ (void)updateLastSelectedIdentifier:(id)identifier tabItemInfo:(id)info;
 @end
 
 @implementation VUIBarItemSelectionManager
 
-+ (void)updateLastSelectedIdentifier:(id)a3 tabItemInfo:(id)a4
++ (void)updateLastSelectedIdentifier:(id)identifier tabItemInfo:(id)info
 {
   v4 = sub_1E4205F14();
   v6 = v5;

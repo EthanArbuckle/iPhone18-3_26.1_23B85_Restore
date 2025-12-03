@@ -4,10 +4,10 @@
 - (NSString)messageCountText;
 - (id)cellDetailDestructiveActionText;
 - (id)navigationBarText;
-- (void)deleteAllTapped:(id)a3;
-- (void)performTableViewDestructiveActionAtIndexPath:(id)a3;
+- (void)deleteAllTapped:(id)tapped;
+- (void)performTableViewDestructiveActionAtIndexPath:(id)path;
 - (void)viewDidLoad;
-- (void)willShowVoicemails:(id)a3;
+- (void)willShowVoicemails:(id)voicemails;
 @end
 
 @implementation PHVoicemailBlockedListViewController
@@ -17,26 +17,26 @@
   v11.receiver = self;
   v11.super_class = PHVoicemailBlockedListViewController;
   [(MPVoicemailTableViewController *)&v11 viewDidLoad];
-  v3 = [(PHVoicemailBlockedListViewController *)self navigationBarText];
-  v4 = [(PHVoicemailBlockedListViewController *)self navigationItem];
-  [v4 setTitle:v3];
+  navigationBarText = [(PHVoicemailBlockedListViewController *)self navigationBarText];
+  navigationItem = [(PHVoicemailBlockedListViewController *)self navigationItem];
+  [navigationItem setTitle:navigationBarText];
 
   v5 = [UIBarButtonItem alloc];
   v6 = +[NSBundle mainBundle];
   v7 = [v6 localizedStringForKey:@"DELETE_ALL" value:&stru_10028F310 table:@"Voicemail"];
   v8 = [v5 initWithTitle:v7 style:0 target:self action:"deleteAllTapped:"];
 
-  v9 = [(PHVoicemailBlockedListViewController *)self navigationItem];
-  [v9 setRightBarButtonItem:v8];
+  navigationItem2 = [(PHVoicemailBlockedListViewController *)self navigationItem];
+  [navigationItem2 setRightBarButtonItem:v8];
 
-  v10 = [(PHVoicemailBlockedListViewController *)self navigationItem];
-  [v10 setLargeTitleDisplayMode:2];
+  navigationItem3 = [(PHVoicemailBlockedListViewController *)self navigationItem];
+  [navigationItem3 setLargeTitleDisplayMode:2];
 }
 
 - (BOOL)hasContentToDisplay
 {
-  v2 = [(MPVoicemailTableViewController *)self voicemails];
-  v3 = [v2 count] != 0;
+  voicemails = [(MPVoicemailTableViewController *)self voicemails];
+  v3 = [voicemails count] != 0;
 
   return v3;
 }
@@ -51,8 +51,8 @@
 
 - (NSString)messageCountText
 {
-  v2 = [(MPVoicemailTableViewController *)self voicemails];
-  v3 = [v2 count];
+  voicemails = [(MPVoicemailTableViewController *)self voicemails];
+  v3 = [voicemails count];
 
   if (v3 < 1)
   {
@@ -85,11 +85,11 @@ BOOL __58__PHVoicemailBlockedListViewController_voicemailPredicate__block_invoke
   return v3;
 }
 
-- (void)performTableViewDestructiveActionAtIndexPath:(id)a3
+- (void)performTableViewDestructiveActionAtIndexPath:(id)path
 {
-  v7 = a3;
-  v4 = a3;
-  v5 = [NSArray arrayWithObjects:&v7 count:1];
+  pathCopy = path;
+  pathCopy2 = path;
+  v5 = [NSArray arrayWithObjects:&pathCopy count:1];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = __85__PHVoicemailBlockedListViewController_performTableViewDestructiveActionAtIndexPath___block_invoke;
@@ -114,15 +114,15 @@ void __85__PHVoicemailBlockedListViewController_performTableViewDestructiveActio
   return v3;
 }
 
-- (void)willShowVoicemails:(id)a3
+- (void)willShowVoicemails:(id)voicemails
 {
-  v4 = [a3 count] != 0;
-  v6 = [(PHVoicemailBlockedListViewController *)self navigationItem];
-  v5 = [v6 rightBarButtonItem];
-  [v5 setEnabled:v4];
+  v4 = [voicemails count] != 0;
+  navigationItem = [(PHVoicemailBlockedListViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:v4];
 }
 
-- (void)deleteAllTapped:(id)a3
+- (void)deleteAllTapped:(id)tapped
 {
   v4 = +[NSBundle mainBundle];
   v5 = [v4 localizedStringForKey:@"DELETE_ALL_ALERT_TITLE" value:&stru_10028F310 table:@"Voicemail"];

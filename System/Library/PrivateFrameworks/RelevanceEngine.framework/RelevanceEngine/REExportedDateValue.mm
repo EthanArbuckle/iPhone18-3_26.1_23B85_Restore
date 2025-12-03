@@ -1,19 +1,19 @@
 @interface REExportedDateValue
-- (REExportedDateValue)initWithDate:(id)a3;
+- (REExportedDateValue)initWithDate:(id)date;
 @end
 
 @implementation REExportedDateValue
 
-- (REExportedDateValue)initWithDate:(id)a3
+- (REExportedDateValue)initWithDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   v9.receiver = self;
   v9.super_class = REExportedDateValue;
   v6 = [(REExportedDateValue *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_date, a3);
+    objc_storeStrong(&v6->_date, date);
   }
 
   return v7;

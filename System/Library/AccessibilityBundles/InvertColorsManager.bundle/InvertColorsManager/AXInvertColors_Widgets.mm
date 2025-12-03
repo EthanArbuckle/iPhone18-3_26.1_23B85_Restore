@@ -1,14 +1,14 @@
 @interface AXInvertColors_Widgets
-+ (void)performValidations:(id)a3;
++ (void)performValidations:(id)validations;
 @end
 
 @implementation AXInvertColors_Widgets
 
-+ (void)performValidations:(id)a3
++ (void)performValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"WGWidgetListEditViewTableViewCell" isKindOfClass:@"UITableViewCell"];
-  [v3 validateClass:@"WGWidgetListEditViewTableViewCell" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"WGWidgetListEditViewTableViewCell" isKindOfClass:@"UITableViewCell"];
+  [validationsCopy validateClass:@"WGWidgetListEditViewTableViewCell" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
 }
 
 @end

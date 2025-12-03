@@ -11,9 +11,9 @@
 {
   v18 = *MEMORY[0x277D85DE8];
   v2 = 0.0;
-  if ([a1 count])
+  if ([self count])
   {
-    v3 = [a1 firstObject];
+    firstObject = [self firstObject];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -23,8 +23,8 @@
       v16 = 0u;
       v13 = 0u;
       v14 = 0u;
-      v5 = a1;
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      selfCopy = self;
+      v6 = [selfCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         v7 = v6;
@@ -36,7 +36,7 @@
           {
             if (*v14 != v8)
             {
-              objc_enumerationMutation(v5);
+              objc_enumerationMutation(selfCopy);
             }
 
             [*(*(&v13 + 1) + 8 * v9) doubleValue];
@@ -45,13 +45,13 @@
           }
 
           while (v7 != v9);
-          v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+          v7 = [selfCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
         }
 
         while (v7);
       }
 
-      v2 = v2 / [v5 count];
+      v2 = v2 / [selfCopy count];
     }
   }
 
@@ -63,22 +63,22 @@
 {
   v21 = *MEMORY[0x277D85DE8];
   v2 = 0.0;
-  if ([a1 count] >= 2)
+  if ([self count] >= 2)
   {
-    v3 = [a1 firstObject];
+    firstObject = [self firstObject];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      [a1 mean];
+      [self mean];
       v6 = v5;
       v16 = 0u;
       v17 = 0u;
       v18 = 0u;
       v19 = 0u;
-      v7 = a1;
-      v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      selfCopy = self;
+      v8 = [selfCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v8)
       {
         v9 = v8;
@@ -90,14 +90,14 @@
           {
             if (*v17 != v10)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(selfCopy);
             }
 
             [*(*(&v16 + 1) + 8 * i) doubleValue];
             v11 = v11 + (v13 - v6) * (v13 - v6);
           }
 
-          v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+          v9 = [selfCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
         }
 
         while (v9);
@@ -108,7 +108,7 @@
         v11 = 0.0;
       }
 
-      v2 = sqrt(v11 / ([v7 count] - 1));
+      v2 = sqrt(v11 / ([selfCopy count] - 1));
     }
   }
 
@@ -118,12 +118,12 @@
 
 - (double)percentile:()PowerUIAdditions
 {
-  v4 = [a1 count];
+  v4 = [self count];
   v5 = 0.0;
   if (v4)
   {
     v6 = v4;
-    v7 = [a1 firstObject];
+    firstObject = [self firstObject];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -131,19 +131,19 @@
     {
       if (v6 == 1)
       {
-        v9 = [a1 firstObject];
-        [v9 doubleValue];
+        firstObject2 = [self firstObject];
+        [firstObject2 doubleValue];
         v5 = v10;
 LABEL_12:
 
         return v5;
       }
 
-      v11 = [a1 sortedArrayUsingSelector:sel_compare_];
-      v9 = v11;
+      v11 = [self sortedArrayUsingSelector:sel_compare_];
+      firstObject2 = v11;
       if (a2 >= 1.0)
       {
-        v26 = [a1 lastObject];
+        lastObject = [self lastObject];
       }
 
       else
@@ -159,11 +159,11 @@ LABEL_12:
           [v17 doubleValue];
           v19 = v18;
           v20 = v12;
-          v21 = [v9 objectAtIndexedSubscript:v12];
+          v21 = [firstObject2 objectAtIndexedSubscript:v12];
           [v21 doubleValue];
           v23 = v19 - v22;
 
-          v24 = [v9 objectAtIndexedSubscript:v20];
+          v24 = [firstObject2 objectAtIndexedSubscript:v20];
           [v24 doubleValue];
           v5 = v16 * v23 / (v15 - v14) + v25;
 LABEL_11:
@@ -171,11 +171,11 @@ LABEL_11:
           goto LABEL_12;
         }
 
-        v26 = [a1 firstObject];
+        lastObject = [self firstObject];
       }
 
-      v24 = v26;
-      [v26 doubleValue];
+      v24 = lastObject;
+      [lastObject doubleValue];
       v5 = v27;
       goto LABEL_11;
     }
@@ -188,9 +188,9 @@ LABEL_11:
 {
   v38 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [a1 count];
+  v5 = [self count];
   v6 = objc_opt_new();
-  v31 = [a1 sortedArrayUsingSelector:sel_compare_];
+  v31 = [self sortedArrayUsingSelector:sel_compare_];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
@@ -216,7 +216,7 @@ LABEL_11:
         if (v5)
         {
           v14 = v12;
-          v15 = [a1 firstObject];
+          firstObject = [self firstObject];
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
 
@@ -229,7 +229,7 @@ LABEL_11:
 
             if (v14 >= 1.0)
             {
-              v17 = [a1 lastObject];
+              lastObject = [self lastObject];
             }
 
             else
@@ -254,11 +254,11 @@ LABEL_15:
               }
 
 LABEL_9:
-              v17 = [a1 firstObject];
+              lastObject = [self firstObject];
             }
 
-            v24 = v17;
-            [v17 doubleValue];
+            v24 = lastObject;
+            [lastObject doubleValue];
             v13 = v26;
             goto LABEL_15;
           }

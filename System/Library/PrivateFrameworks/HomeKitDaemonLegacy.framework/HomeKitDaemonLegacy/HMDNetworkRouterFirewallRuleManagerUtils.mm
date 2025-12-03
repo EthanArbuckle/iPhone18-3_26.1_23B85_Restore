@@ -1,13 +1,13 @@
 @interface HMDNetworkRouterFirewallRuleManagerUtils
-+ (id)dumpTLVsFromJSONData:(id)a3 error:(id *)a4;
++ (id)dumpTLVsFromJSONData:(id)data error:(id *)error;
 @end
 
 @implementation HMDNetworkRouterFirewallRuleManagerUtils
 
-+ (id)dumpTLVsFromJSONData:(id)a3 error:(id *)a4
++ (id)dumpTLVsFromJSONData:(id)data error:(id *)error
 {
   v71 = *MEMORY[0x277D85DE8];
-  v44 = a3;
+  dataCopy = data;
   v45 = [HMDNetworkRouterFirewallRuleManagerOverrideParser parseFromData:?];
   if (v45)
   {
@@ -29,12 +29,12 @@
     v5 = v55[5];
     if (v5)
     {
-      if (a4)
+      if (error)
       {
         v6 = v5;
 LABEL_12:
         v7 = 0;
-        *a4 = v6;
+        *error = v6;
 LABEL_39:
 
         _Block_object_dispose(&v54, 8);
@@ -64,9 +64,9 @@ LABEL_39:
           objc_autoreleasePoolPop(v11);
         }
 
-        v36 = [v42 firstObject];
-        v37 = [v36 ruleConfigurations];
-        if ([v37 hmf_isEmpty])
+        firstObject = [v42 firstObject];
+        ruleConfigurations = [firstObject ruleConfigurations];
+        if ([ruleConfigurations hmf_isEmpty])
         {
           v15 = objc_autoreleasePoolPush();
           v16 = HMFGetOSLogHandle();
@@ -79,10 +79,10 @@ LABEL_39:
           }
 
           objc_autoreleasePoolPop(v15);
-          if (a4)
+          if (error)
           {
             [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-            *a4 = v7 = 0;
+            *error = v7 = 0;
           }
 
           else
@@ -93,12 +93,12 @@ LABEL_39:
 
         else
         {
-          v41 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v37, "count")}];
+          v41 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(ruleConfigurations, "count")}];
           v49 = 0u;
           v50 = 0u;
           v47 = 0u;
           v48 = 0u;
-          obj = v37;
+          obj = ruleConfigurations;
           v18 = [obj countByEnumeratingWithState:&v47 objects:v66 count:16];
           if (v18)
           {
@@ -116,13 +116,13 @@ LABEL_39:
                 v20 = *(*(&v47 + 1) + 8 * i);
                 v43 = [HMDNetworkRouterWANFirewallConfiguration configurationFromFirewallRuleConfiguration:v20];
                 v21 = [HMDNetworkRouterLANFirewallConfiguration configurationFromFirewallRuleConfiguration:v20];
-                v22 = [v43 serializeWithError:a4];
+                v22 = [v43 serializeWithError:error];
                 if (!v22)
                 {
                   goto LABEL_36;
                 }
 
-                v23 = [v21 serializeWithError:a4];
+                v23 = [v21 serializeWithError:error];
                 if (!v23)
                 {
 
@@ -138,10 +138,10 @@ LABEL_36:
                 v25 = [v23 hmf_hexadecimalStringWithOptions:2];
                 v65[1] = v25;
                 v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v65 forKeys:v64 count:2];
-                v27 = [v20 accessoryIdentifier];
-                v28 = [v27 firmwareVersion];
-                v29 = [v28 versionString];
-                [v41 setObject:v26 forKeyedSubscript:v29];
+                accessoryIdentifier = [v20 accessoryIdentifier];
+                firmwareVersion = [accessoryIdentifier firmwareVersion];
+                versionString = [firmwareVersion versionString];
+                [v41 setObject:v26 forKeyedSubscript:versionString];
               }
 
               v18 = [obj countByEnumeratingWithState:&v47 objects:v66 count:16];
@@ -154,18 +154,18 @@ LABEL_36:
             }
           }
 
-          obj = [v36 baseAccessoryIdentifier];
-          v30 = [obj productGroup];
-          v62 = v30;
-          v31 = [obj productNumber];
-          v60 = v31;
+          obj = [firstObject baseAccessoryIdentifier];
+          productGroup = [obj productGroup];
+          v62 = productGroup;
+          productNumber = [obj productNumber];
+          v60 = productNumber;
           v32 = [v41 copy];
           v61 = v32;
           v33 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v61 forKeys:&v60 count:1];
           v63 = v33;
           v43 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v63 forKeys:&v62 count:1];
 
-          v7 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v43 options:3 error:a4];
+          v7 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v43 options:3 error:error];
 LABEL_37:
         }
 
@@ -183,7 +183,7 @@ LABEL_37:
       }
 
       objc_autoreleasePoolPop(v8);
-      if (a4)
+      if (error)
       {
         v6 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
         goto LABEL_12;
@@ -194,10 +194,10 @@ LABEL_37:
     goto LABEL_39;
   }
 
-  if (a4)
+  if (error)
   {
     [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
-    *a4 = v7 = 0;
+    *error = v7 = 0;
   }
 
   else

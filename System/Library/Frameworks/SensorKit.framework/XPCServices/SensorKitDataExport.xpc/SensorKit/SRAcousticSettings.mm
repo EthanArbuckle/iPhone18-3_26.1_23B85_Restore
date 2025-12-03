@@ -21,10 +21,10 @@
   v24[1] = @"audioExposureSampleLifetime";
   v25[1] = [NSNumber numberWithInteger:[(SRAcousticSettings *)self audioExposureSampleLifetime]];
   v24[2] = @"headphoneSafetyAudioLevel";
-  v4 = [(SRAcousticSettings *)self headphoneSafetyAudioLevel];
-  if (v4)
+  headphoneSafetyAudioLevel = [(SRAcousticSettings *)self headphoneSafetyAudioLevel];
+  if (headphoneSafetyAudioLevel)
   {
-    [v4 doubleValue];
+    [headphoneSafetyAudioLevel doubleValue];
     if (fabs(v5) == INFINITY)
     {
       v6 = @"INF";

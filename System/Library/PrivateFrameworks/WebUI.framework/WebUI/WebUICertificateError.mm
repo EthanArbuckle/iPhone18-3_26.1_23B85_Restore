@@ -1,16 +1,16 @@
 @interface WebUICertificateError
-+ (BOOL)userAllowsCertificateTrust:(__SecTrust *)a3 host:(id)a4;
++ (BOOL)userAllowsCertificateTrust:(__SecTrust *)trust host:(id)host;
 @end
 
 @implementation WebUICertificateError
 
-+ (BOOL)userAllowsCertificateTrust:(__SecTrust *)a3 host:(id)a4
++ (BOOL)userAllowsCertificateTrust:(__SecTrust *)trust host:(id)host
 {
   v29[2] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [MEMORY[0x277CF9710] defaultTrustManager];
+  hostCopy = host;
+  defaultTrustManager = [MEMORY[0x277CF9710] defaultTrustManager];
   v7 = *MEMORY[0x277CF9718];
-  v8 = [v6 actionForSSLTrust:a3 hostname:v5 service:*MEMORY[0x277CF9718]];
+  v8 = [defaultTrustManager actionForSSLTrust:trust hostname:hostCopy service:*MEMORY[0x277CF9718]];
   if (v8)
   {
     if (v8 == 1)
@@ -21,12 +21,12 @@
     else
     {
       v10 = objc_alloc_init(MEMORY[0x277CF9708]);
-      [v10 setTrust:a3];
-      v11 = [v5 _webkit_decodeHostName];
-      [v10 setHost:v11];
+      [v10 setTrust:trust];
+      _webkit_decodeHostName = [hostCopy _webkit_decodeHostName];
+      [v10 setHost:_webkit_decodeHostName];
 
       [v10 setService:v7];
-      if ([off_279EB0F30 certificateWarningCannotBeBypassedForTrust:a3])
+      if ([off_279EB0F30 certificateWarningCannotBeBypassedForTrust:trust])
       {
         v12 = *MEMORY[0x277CF9738];
         v28[0] = *MEMORY[0x277CF9740];
@@ -50,9 +50,9 @@
       v18[1] = 3221225472;
       v18[2] = __57__WebUICertificateError_userAllowsCertificateTrust_host___block_invoke;
       v18[3] = &unk_279EB14C0;
-      v19 = v6;
-      v23 = a3;
-      v20 = v5;
+      v19 = defaultTrustManager;
+      trustCopy = trust;
+      v20 = hostCopy;
       v22 = &v24;
       v15 = v14;
       v21 = v15;

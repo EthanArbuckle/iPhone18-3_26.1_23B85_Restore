@@ -1,14 +1,14 @@
 @interface AFSiriAnnounceWorkoutReminderRequest
-+ (void)deactivateRequestForPredictionIdentifier:(id)a3 completion:(id)a4;
-- (AFSiriAnnounceWorkoutReminderRequest)initWithWorkoutReminder:(id)a3;
-- (void)performRequestWithCompletion:(id)a3;
++ (void)deactivateRequestForPredictionIdentifier:(id)identifier completion:(id)completion;
+- (AFSiriAnnounceWorkoutReminderRequest)initWithWorkoutReminder:(id)reminder;
+- (void)performRequestWithCompletion:(id)completion;
 @end
 
 @implementation AFSiriAnnounceWorkoutReminderRequest
 
-- (void)performRequestWithCompletion:(id)a3
+- (void)performRequestWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG))
   {
@@ -18,13 +18,13 @@
     v30 = 2112;
     v31 = workoutReminder;
     _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%s Creating xpc for workout reminder announcement:%@", buf, 0x16u);
-    if (!v4)
+    if (!completionCopy)
     {
       goto LABEL_20;
     }
   }
 
-  else if (!v4)
+  else if (!completionCopy)
   {
     goto LABEL_20;
   }
@@ -48,7 +48,7 @@
       _os_log_error_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "%s Failed to serialize workoutReminder %@: %@", buf, 0x20u);
     }
 
-    v4[2](v4, 0);
+    completionCopy[2](completionCopy, 0);
     v11 = 0;
   }
 
@@ -81,7 +81,7 @@
       handler[1] = 3221225472;
       handler[2] = sub_1000D0A04;
       handler[3] = &unk_10051E228;
-      v24 = v4;
+      v24 = completionCopy;
       v23 = v14;
       xpc_connection_send_message_with_reply(v23, v12, 0, handler);
     }
@@ -98,7 +98,7 @@
         _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "%s Unable to send workout reminder annoucement xpc message for %@", buf, 0x16u);
       }
 
-      v4[2](v4, 0);
+      completionCopy[2](completionCopy, 0);
       if (v14)
       {
         xpc_connection_cancel(v14);
@@ -113,15 +113,15 @@
 LABEL_20:
 }
 
-- (AFSiriAnnounceWorkoutReminderRequest)initWithWorkoutReminder:(id)a3
+- (AFSiriAnnounceWorkoutReminderRequest)initWithWorkoutReminder:(id)reminder
 {
-  v4 = a3;
+  reminderCopy = reminder;
   v9.receiver = self;
   v9.super_class = AFSiriAnnounceWorkoutReminderRequest;
   v5 = [(AFSiriAnnounceWorkoutReminderRequest *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [reminderCopy copy];
     workoutReminder = v5->_workoutReminder;
     v5->_workoutReminder = v6;
   }
@@ -129,10 +129,10 @@ LABEL_20:
   return v5;
 }
 
-+ (void)deactivateRequestForPredictionIdentifier:(id)a3 completion:(id)a4
++ (void)deactivateRequestForPredictionIdentifier:(id)identifier completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   AFLogInitIfNeeded();
   v7 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG))
@@ -140,21 +140,21 @@ LABEL_20:
     *buf = 136315394;
     v26 = "+[AFSiriAnnounceWorkoutReminderRequest deactivateRequestForPredictionIdentifier:completion:]";
     v27 = 2112;
-    v28 = v5;
+    v28 = identifierCopy;
     _os_log_debug_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "%s Creating xpc to deactivate workout reminder announcement with prediction identifier: %@", buf, 0x16u);
-    if (!v6)
+    if (!completionCopy)
     {
       goto LABEL_20;
     }
   }
 
-  else if (!v6)
+  else if (!completionCopy)
   {
     goto LABEL_20;
   }
 
   v22 = 0;
-  v8 = [NSKeyedArchiver archivedDataWithRootObject:v5 requiringSecureCoding:1 error:&v22];
+  v8 = [NSKeyedArchiver archivedDataWithRootObject:identifierCopy requiringSecureCoding:1 error:&v22];
   v9 = v22;
   if (v9 || !v8)
   {
@@ -164,13 +164,13 @@ LABEL_20:
       *buf = 136315650;
       v26 = "+[AFSiriAnnounceWorkoutReminderRequest deactivateRequestForPredictionIdentifier:completion:]";
       v27 = 2112;
-      v28 = v5;
+      v28 = identifierCopy;
       v29 = 2112;
       v30 = v9;
       _os_log_error_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "%s Failed to serialize workout reminder prediction identifier %@: %@", buf, 0x20u);
     }
 
-    v6[2](v6, 0);
+    completionCopy[2](completionCopy, 0);
     v12 = 0;
   }
 
@@ -194,7 +194,7 @@ LABEL_20:
         *buf = 136315394;
         v26 = "+[AFSiriAnnounceWorkoutReminderRequest deactivateRequestForPredictionIdentifier:completion:]";
         v27 = 2112;
-        v28 = v5;
+        v28 = identifierCopy;
         _os_log_debug_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEBUG, "%s Sending deactivate workout reminder xpc message for prediction identifier:%@", buf, 0x16u);
       }
 
@@ -202,7 +202,7 @@ LABEL_20:
       handler[1] = 3221225472;
       handler[2] = sub_1000D0EA4;
       handler[3] = &unk_10051E228;
-      v21 = v6;
+      v21 = completionCopy;
       v20 = v15;
       xpc_connection_send_message_with_reply(v20, v13, 0, handler);
     }
@@ -214,11 +214,11 @@ LABEL_20:
         *buf = 136315394;
         v26 = "+[AFSiriAnnounceWorkoutReminderRequest deactivateRequestForPredictionIdentifier:completion:]";
         v27 = 2112;
-        v28 = v5;
+        v28 = identifierCopy;
         _os_log_error_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "%s Unable to send deactivate request xpc message for workout prediction %@", buf, 0x16u);
       }
 
-      v6[2](v6, 0);
+      completionCopy[2](completionCopy, 0);
       if (v15)
       {
         xpc_connection_cancel(v15);

@@ -1,21 +1,21 @@
 @interface CSToggleButtonIconView
-- (CSToggleButtonIconView)initWithConfiguration:(id)a3;
-- (id)_imageForState:(unint64_t)a3;
-- (void)setState:(unint64_t)a3;
+- (CSToggleButtonIconView)initWithConfiguration:(id)configuration;
+- (id)_imageForState:(unint64_t)state;
+- (void)setState:(unint64_t)state;
 @end
 
 @implementation CSToggleButtonIconView
 
-- (CSToggleButtonIconView)initWithConfiguration:(id)a3
+- (CSToggleButtonIconView)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v24.receiver = self;
   v24.super_class = CSToggleButtonIconView;
   v6 = [(CSToggleButtonIconView *)&v24 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configuration, a3);
+    objc_storeStrong(&v6->_configuration, configuration);
     v8 = objc_alloc_init(MEMORY[0x277D755E8]);
     imageView = v7->_imageView;
     v7->_imageView = v8;
@@ -24,19 +24,19 @@
     [(UIImageView *)v7->_imageView setContentMode:1];
     [(CSToggleButtonIconView *)v7 addSubview:v7->_imageView];
     v19 = MEMORY[0x277CCAAD0];
-    v22 = [(UIImageView *)v7->_imageView centerXAnchor];
-    v21 = [(CSToggleButtonIconView *)v7 centerXAnchor];
-    v20 = [v22 constraintEqualToAnchor:v21];
+    centerXAnchor = [(UIImageView *)v7->_imageView centerXAnchor];
+    centerXAnchor2 = [(CSToggleButtonIconView *)v7 centerXAnchor];
+    v20 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v23[0] = v20;
-    v10 = [(UIImageView *)v7->_imageView centerYAnchor];
-    v11 = [(CSToggleButtonIconView *)v7 centerYAnchor];
-    v12 = [v10 constraintEqualToAnchor:v11];
+    centerYAnchor = [(UIImageView *)v7->_imageView centerYAnchor];
+    centerYAnchor2 = [(CSToggleButtonIconView *)v7 centerYAnchor];
+    v12 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v23[1] = v12;
-    v13 = [(UIImageView *)v7->_imageView widthAnchor];
-    v14 = [v13 constraintEqualToConstant:108.0];
+    widthAnchor = [(UIImageView *)v7->_imageView widthAnchor];
+    v14 = [widthAnchor constraintEqualToConstant:108.0];
     v23[2] = v14;
-    v15 = [(UIImageView *)v7->_imageView heightAnchor];
-    v16 = [v15 constraintEqualToConstant:108.0];
+    heightAnchor = [(UIImageView *)v7->_imageView heightAnchor];
+    v16 = [heightAnchor constraintEqualToConstant:108.0];
     v23[3] = v16;
     v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:4];
     [v19 activateConstraints:v17];
@@ -47,9 +47,9 @@
   return v7;
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
-  v4 = [(CSToggleButtonIconView *)self _imageForState:a3];
+  v4 = [(CSToggleButtonIconView *)self _imageForState:state];
   v5 = MEMORY[0x277D75D18];
   imageView = self->_imageView;
   v8[0] = MEMORY[0x277D85DD0];
@@ -62,12 +62,12 @@
   [v5 transitionWithView:imageView duration:5242884 options:v8 animations:0 completion:0.1];
 }
 
-- (id)_imageForState:(unint64_t)a3
+- (id)_imageForState:(unint64_t)state
 {
-  v5 = [(CSToggleButtonConfiguration *)self->_configuration iconImages];
-  v6 = [v5 count];
+  iconImages = [(CSToggleButtonConfiguration *)self->_configuration iconImages];
+  v6 = [iconImages count];
 
-  if (v6 <= a3)
+  if (v6 <= state)
   {
     v8 = ContinuitySingLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -78,8 +78,8 @@
 
   else
   {
-    v7 = [(CSToggleButtonConfiguration *)self->_configuration iconImages];
-    v8 = [v7 objectAtIndexedSubscript:a3];
+    iconImages2 = [(CSToggleButtonConfiguration *)self->_configuration iconImages];
+    v8 = [iconImages2 objectAtIndexedSubscript:state];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())

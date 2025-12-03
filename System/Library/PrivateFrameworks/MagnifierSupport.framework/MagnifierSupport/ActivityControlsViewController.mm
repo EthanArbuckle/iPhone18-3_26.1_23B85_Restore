@@ -1,21 +1,21 @@
 @interface ActivityControlsViewController
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
-- (BOOL)tableView:(id)a3 shouldIndentWhileEditingRowAtIndexPath:(id)a4;
-- (_TtC16MagnifierSupport30ActivityControlsViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)tableView:(id)a3 targetIndexPathForMoveFromRowAtIndexPath:(id)a4 toProposedIndexPath:(id)a5;
-- (id)tableView:(id)a3 titleForDeleteConfirmationButtonForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4;
-- (void)handleDoneButtonTap:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
+- (BOOL)tableView:(id)view shouldIndentWhileEditingRowAtIndexPath:(id)path;
+- (_TtC16MagnifierSupport30ActivityControlsViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)tableView:(id)view targetIndexPathForMoveFromRowAtIndexPath:(id)path toProposedIndexPath:(id)indexPath;
+- (id)tableView:(id)view titleForDeleteConfirmationButtonForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path;
+- (void)handleDoneButtonTap:(id)tap;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation ActivityControlsViewController
 
-- (_TtC16MagnifierSupport30ActivityControlsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC16MagnifierSupport30ActivityControlsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_257ECF500();
     v7 = v6;
@@ -27,19 +27,19 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_257CDA190(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_257CDA190(v5, v7, bundle);
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_257CDDAB8();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   ObjectType = swift_getObjectType();
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27F8F7600);
   v7 = *(v6 - 8);
@@ -47,9 +47,9 @@
   v9 = &v12 - v8;
   v12.receiver = self;
   v12.super_class = ObjectType;
-  v10 = self;
-  [(ActivityControlsViewController *)&v12 viewWillAppear:v3];
-  [*(&v10->super.super.super.isa + OBJC_IVAR____TtC16MagnifierSupport30ActivityControlsViewController_tableView) setEditing_];
+  selfCopy = self;
+  [(ActivityControlsViewController *)&v12 viewWillAppear:appearCopy];
+  [*(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC16MagnifierSupport30ActivityControlsViewController_tableView) setEditing_];
   sub_257CDE3EC();
   sub_257CDDD74();
   v11 = sub_257CDA5F8();
@@ -59,12 +59,12 @@
   (*(v7 + 8))(v9, v6);
 }
 
-- (void)handleDoneButtonTap:(id)a3
+- (void)handleDoneButtonTap:(id)tap
 {
-  v3 = self;
-  if (a3)
+  selfCopy = self;
+  if (tap)
   {
-    v4 = self;
+    selfCopy2 = self;
     swift_unknownObjectRetain();
     sub_257ED0160();
     swift_unknownObjectRelease();
@@ -74,22 +74,22 @@
   {
     v9 = 0u;
     v10 = 0u;
-    v5 = self;
+    selfCopy3 = self;
   }
 
-  v6 = [(ActivityControlsViewController *)v3 navigationController:v9];
+  v6 = [(ActivityControlsViewController *)selfCopy navigationController:v9];
   if (v6)
   {
     v7 = v6;
     v8 = [(ActivityControlsViewController *)v6 popViewControllerAnimated:1];
 
-    v3 = v7;
+    selfCopy = v7;
   }
 
   sub_257BE4084(&v9, &unk_27F8F62F0);
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
   v4 = sub_257ECCEB0();
   v5 = *(v4 - 8);
@@ -100,22 +100,22 @@
   return 1;
 }
 
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path
 {
   v6 = sub_257ECCEB0();
   v7 = *(v6 - 8);
   MEMORY[0x28223BE20](v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_257ECCE40();
-  v10 = a3;
-  v11 = self;
-  v12 = sub_257CE4F50(v10);
+  viewCopy = view;
+  selfCopy = self;
+  v12 = sub_257CE4F50(viewCopy);
 
   (*(v7 + 8))(v9, v6);
   return v12;
 }
 
-- (id)tableView:(id)a3 titleForDeleteConfirmationButtonForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view titleForDeleteConfirmationButtonForRowAtIndexPath:(id)path
 {
   v4 = sub_257ECCEB0();
   v5 = *(v4 - 8);
@@ -138,7 +138,7 @@
   return v10;
 }
 
-- (BOOL)tableView:(id)a3 shouldIndentWhileEditingRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldIndentWhileEditingRowAtIndexPath:(id)path
 {
   v4 = sub_257ECCEB0();
   v5 = *(v4 - 8);
@@ -149,7 +149,7 @@
   return 0;
 }
 
-- (id)tableView:(id)a3 targetIndexPathForMoveFromRowAtIndexPath:(id)a4 toProposedIndexPath:(id)a5
+- (id)tableView:(id)view targetIndexPathForMoveFromRowAtIndexPath:(id)path toProposedIndexPath:(id)indexPath
 {
   v7 = sub_257ECCEB0();
   v8 = *(v7 - 8);
@@ -161,8 +161,8 @@
   v16 = &v22 - v15;
   sub_257ECCE40();
   sub_257ECCE40();
-  v17 = a3;
-  v18 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_257CDF908(v14, v11, v16);
 
   v19 = *(v8 + 8);
@@ -174,16 +174,16 @@
   return v20;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v6 = sub_257ECCEB0();
   v7 = *(v6 - 8);
   MEMORY[0x28223BE20](v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_257ECCE40();
-  v10 = a3;
-  v11 = self;
-  sub_257CDFEFC(v10);
+  viewCopy = view;
+  selfCopy = self;
+  sub_257CDFEFC(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 }

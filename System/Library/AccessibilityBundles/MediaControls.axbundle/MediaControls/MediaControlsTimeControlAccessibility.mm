@@ -1,26 +1,26 @@
 @interface MediaControlsTimeControlAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event;
 - (CGPoint)accessibilityActivationPoint;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
 - (void)_axPostUpdate;
-- (void)_updateLabels:(double)a3 withRemainingDuration:(double)a4;
+- (void)_updateLabels:(double)labels withRemainingDuration:(double)duration;
 @end
 
 @implementation MediaControlsTimeControlAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MediaControlsTimeControl" hasInstanceVariable:@"_currentTimeInTrack" withType:"d"];
-  [v3 validateClass:@"MediaControlsTimeControl" hasInstanceVariable:@"_sliderValue" withType:"d"];
-  [v3 validateClass:@"MediaControlsTimeControl" hasInstanceMethod:@"setSliderValue:" withFullSignature:{"v", "d", 0}];
-  [v3 validateClass:@"MediaControlsTimeControl" hasInstanceMethod:@"knobView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MediaControlsTimeControl" hasInstanceMethod:@"liveBackground" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MediaControlsTimeControl" hasInstanceMethod:@"isCurrentlyTracking" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"MediaControlsTimeControl" hasInstanceMethod:@"_updateLabels:withRemainingDuration:" withFullSignature:{"v", "d", "d", 0}];
-  [v3 validateClass:@"MediaControlsTimeControl" hasInstanceMethod:@"continueTrackingWithTouch:withEvent:" withFullSignature:{"B", "@", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MediaControlsTimeControl" hasInstanceVariable:@"_currentTimeInTrack" withType:"d"];
+  [validationsCopy validateClass:@"MediaControlsTimeControl" hasInstanceVariable:@"_sliderValue" withType:"d"];
+  [validationsCopy validateClass:@"MediaControlsTimeControl" hasInstanceMethod:@"setSliderValue:" withFullSignature:{"v", "d", 0}];
+  [validationsCopy validateClass:@"MediaControlsTimeControl" hasInstanceMethod:@"knobView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MediaControlsTimeControl" hasInstanceMethod:@"liveBackground" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MediaControlsTimeControl" hasInstanceMethod:@"isCurrentlyTracking" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"MediaControlsTimeControl" hasInstanceMethod:@"_updateLabels:withRemainingDuration:" withFullSignature:{"v", "d", "d", 0}];
+  [validationsCopy validateClass:@"MediaControlsTimeControl" hasInstanceMethod:@"continueTrackingWithTouch:withEvent:" withFullSignature:{"B", "@", "@", 0}];
 }
 
 - (CGPoint)accessibilityActivationPoint
@@ -41,21 +41,21 @@
   return result;
 }
 
-- (void)_updateLabels:(double)a3 withRemainingDuration:(double)a4
+- (void)_updateLabels:(double)labels withRemainingDuration:(double)duration
 {
   v7.receiver = self;
   v7.super_class = MediaControlsTimeControlAccessibility;
-  [(MediaControlsTimeControlAccessibility *)&v7 _updateLabels:a3 withRemainingDuration:?];
-  v6 = [MEMORY[0x29EDBA070] numberWithDouble:a4];
+  [(MediaControlsTimeControlAccessibility *)&v7 _updateLabels:labels withRemainingDuration:?];
+  v6 = [MEMORY[0x29EDBA070] numberWithDouble:duration];
   [(MediaControlsTimeControlAccessibility *)self _accessibilitySetRetainedValue:v6 forKey:@"AXRemaining"];
 }
 
 - (id)accessibilityValue
 {
   v3 = [(MediaControlsTimeControlAccessibility *)self safeUIViewForKey:@"liveBackground"];
-  v4 = [v3 _accessibilityViewIsVisible];
+  _accessibilityViewIsVisible = [v3 _accessibilityViewIsVisible];
 
-  if (v4)
+  if (_accessibilityViewIsVisible)
   {
     v5 = accessibilityLocalizedString(@"slider.live");
   }
@@ -119,15 +119,15 @@
 - (void)_axPostUpdate
 {
   v2 = *MEMORY[0x29EDC7EA8];
-  v3 = [(MediaControlsTimeControlAccessibility *)self accessibilityValue];
-  UIAccessibilityPostNotification(v2, v3);
+  accessibilityValue = [(MediaControlsTimeControlAccessibility *)self accessibilityValue];
+  UIAccessibilityPostNotification(v2, accessibilityValue);
 }
 
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event
 {
   v9.receiver = self;
   v9.super_class = MediaControlsTimeControlAccessibility;
-  v5 = [(MediaControlsTimeControlAccessibility *)&v9 continueTrackingWithTouch:a3 withEvent:a4];
+  v5 = [(MediaControlsTimeControlAccessibility *)&v9 continueTrackingWithTouch:touch withEvent:event];
   if (UIAccessibilityIsVoiceOverRunning())
   {
     [(MediaControlsTimeControlAccessibility *)self safeCGFloatForKey:@"_sliderValue"];
@@ -163,10 +163,10 @@ uint64_t __63__MediaControlsTimeControlAccessibility_accessibilityIncrement__blo
 {
   v5.receiver = self;
   v5.super_class = MediaControlsTimeControlAccessibility;
-  v3 = [(MediaControlsTimeControlAccessibility *)&v5 accessibilityTraits];
+  accessibilityTraits = [(MediaControlsTimeControlAccessibility *)&v5 accessibilityTraits];
   if (([(MediaControlsTimeControlAccessibility *)self safeBoolForKey:@"isUserInteractionEnabled"]& 1) != 0)
   {
-    return *MEMORY[0x29EDC7F60] | v3;
+    return *MEMORY[0x29EDC7F60] | accessibilityTraits;
   }
 
   else

@@ -1,20 +1,20 @@
 @interface MSDKManifestItem
 - (MSDKManifestComponent)component;
-- (MSDKManifestItem)initWithIdentifier:(id)a3 andDictionary:(id)a4 forComponent:(id)a5;
+- (MSDKManifestItem)initWithIdentifier:(id)identifier andDictionary:(id)dictionary forComponent:(id)component;
 @end
 
 @implementation MSDKManifestItem
 
-- (MSDKManifestItem)initWithIdentifier:(id)a3 andDictionary:(id)a4 forComponent:(id)a5
+- (MSDKManifestItem)initWithIdentifier:(id)identifier andDictionary:(id)dictionary forComponent:(id)component
 {
-  v6 = a5;
+  componentCopy = component;
   v10.receiver = self;
   v10.super_class = MSDKManifestItem;
   v7 = [(MSDKManifestItem *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_component, v6);
+    objc_storeWeak(&v7->_component, componentCopy);
   }
 
   return v8;

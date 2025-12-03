@@ -2,19 +2,19 @@
 - (id)description;
 - (tagVCAudioFrameFormat)inputFormat;
 - (void)dealloc;
-- (void)setInputFormat:(tagVCAudioFrameFormat *)a3;
-- (void)setSframeCryptor:(tagVCCryptor *)a3;
+- (void)setInputFormat:(tagVCAudioFrameFormat *)format;
+- (void)setSframeCryptor:(tagVCCryptor *)cryptor;
 @end
 
 @implementation VCAudioTransmitterConfig
 
-- (void)setSframeCryptor:(tagVCCryptor *)a3
+- (void)setSframeCryptor:(tagVCCryptor *)cryptor
 {
   sframeCryptor = self->_sframeCryptor;
-  self->_sframeCryptor = a3;
-  if (a3)
+  self->_sframeCryptor = cryptor;
+  if (cryptor)
   {
-    CFRetain(a3);
+    CFRetain(cryptor);
   }
 
   if (sframeCryptor)
@@ -154,11 +154,11 @@
   return self;
 }
 
-- (void)setInputFormat:(tagVCAudioFrameFormat *)a3
+- (void)setInputFormat:(tagVCAudioFrameFormat *)format
 {
-  v3 = *&a3->format.mSampleRate;
-  v4 = *&a3->format.mBitsPerChannel;
-  *&self->_inputFormat.format.mBytesPerPacket = *&a3->format.mBytesPerPacket;
+  v3 = *&format->format.mSampleRate;
+  v4 = *&format->format.mBitsPerChannel;
+  *&self->_inputFormat.format.mBytesPerPacket = *&format->format.mBytesPerPacket;
   *&self->_inputFormat.format.mBitsPerChannel = v4;
   *&self->_inputFormat.format.mSampleRate = v3;
 }

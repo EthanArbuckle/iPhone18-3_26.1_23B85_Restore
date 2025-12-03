@@ -1,19 +1,19 @@
 @interface WorkoutRemoteViewServiceAdaptor
 - (_TtC12WorkoutKitUI31WorkoutRemoteViewServiceAdaptor)init;
 - (void)closeButtonTapped;
-- (void)dismissRemoteViewControllerOn:(id)a3;
-- (void)presentRemoteViewControllerOn:(id)a3 with:(id)a4 dismissCompletion:(id)a5 completion:(id)a6;
+- (void)dismissRemoteViewControllerOn:(id)on;
+- (void)presentRemoteViewControllerOn:(id)on with:(id)with dismissCompletion:(id)completion completion:(id)a6;
 @end
 
 @implementation WorkoutRemoteViewServiceAdaptor
 
-- (void)presentRemoteViewControllerOn:(id)a3 with:(id)a4 dismissCompletion:(id)a5 completion:(id)a6
+- (void)presentRemoteViewControllerOn:(id)on with:(id)with dismissCompletion:(id)completion completion:(id)a6
 {
-  v10 = _Block_copy(a5);
+  v10 = _Block_copy(completion);
   v11 = _Block_copy(a6);
-  v12 = a3;
-  v13 = a4;
-  v19 = self;
+  onCopy = on;
+  withCopy = with;
+  selfCopy = self;
   v14 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v16 = v15;
 
@@ -21,21 +21,21 @@
   *(v17 + 16) = v10;
   v18 = swift_allocObject();
   *(v18 + 16) = v11;
-  WorkoutRemoteViewServiceAdaptor.presentRemoteViewController(on:with:dismissCompletion:completion:)(v12, v14, v16, partial apply for thunk for @escaping @callee_unowned @convention(block) () -> (), v17, partial apply for thunk for @escaping @callee_unowned @convention(block) (@unowned ObjCBool, @unowned NSError?) -> (), v18);
+  WorkoutRemoteViewServiceAdaptor.presentRemoteViewController(on:with:dismissCompletion:completion:)(onCopy, v14, v16, partial apply for thunk for @escaping @callee_unowned @convention(block) () -> (), v17, partial apply for thunk for @escaping @callee_unowned @convention(block) (@unowned ObjCBool, @unowned NSError?) -> (), v18);
 
   outlined consume of Data._Representation(v14, v16);
 }
 
-- (void)dismissRemoteViewControllerOn:(id)a3
+- (void)dismissRemoteViewControllerOn:(id)on
 {
-  v4 = a3;
-  v5 = self;
-  WorkoutRemoteViewServiceAdaptor.dismissRemoteViewController(on:)(v4);
+  onCopy = on;
+  selfCopy = self;
+  WorkoutRemoteViewServiceAdaptor.dismissRemoteViewController(on:)(onCopy);
 }
 
 - (void)closeButtonTapped
 {
-  v2 = self;
+  selfCopy = self;
   WorkoutRemoteViewServiceAdaptor.closeButtonTapped()();
 }
 

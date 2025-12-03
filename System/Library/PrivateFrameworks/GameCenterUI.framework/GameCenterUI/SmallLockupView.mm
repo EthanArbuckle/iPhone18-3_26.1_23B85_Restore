@@ -1,19 +1,19 @@
 @interface SmallLockupView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
 - (UIEdgeInsets)layoutMargins;
 - (_TtC12GameCenterUI11ArtworkView)accessibilityArtworkView;
 - (_TtC12GameCenterUI16DynamicTypeLabel)accessibilitySubtitleLabel;
 - (_TtC12GameCenterUI16DynamicTypeLabel)accessibilityTitleLabel;
 - (void)layoutSubviews;
-- (void)setLayoutMargins:(UIEdgeInsets)a3;
+- (void)setLayoutMargins:(UIEdgeInsets)margins;
 @end
 
 @implementation SmallLockupView
 
 - (UIEdgeInsets)layoutMargins
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_24E034940();
   v5 = v4;
   v7 = v6;
@@ -30,15 +30,15 @@
   return result;
 }
 
-- (void)setLayoutMargins:(UIEdgeInsets)a3
+- (void)setLayoutMargins:(UIEdgeInsets)margins
 {
-  v3 = self;
+  selfCopy = self;
   sub_24E034A0C();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
+  selfCopy = self;
   sub_24DFB64A4();
   v5 = v4;
   v7 = v6;
@@ -50,11 +50,11 @@
   return result;
 }
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
   swift_unknownObjectRetain();
-  v6 = self;
-  v7 = sub_24E034AAC(a4);
+  selfCopy = self;
+  v7 = sub_24E034AAC(in);
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -73,7 +73,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E034C54();
 }
 

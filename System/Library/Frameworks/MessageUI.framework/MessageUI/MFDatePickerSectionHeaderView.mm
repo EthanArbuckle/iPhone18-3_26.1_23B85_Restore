@@ -1,10 +1,10 @@
 @interface MFDatePickerSectionHeaderView
-- (MFDatePickerSectionHeaderView)initWithFrame:(CGRect)a3;
+- (MFDatePickerSectionHeaderView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation MFDatePickerSectionHeaderView
 
-- (MFDatePickerSectionHeaderView)initWithFrame:(CGRect)a3
+- (MFDatePickerSectionHeaderView)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = MFDatePickerSectionHeaderView;

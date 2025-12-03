@@ -1,23 +1,23 @@
 @interface VUISortUtilities
-+ (id)ascendingDateSortComparatorWithBlock:(id)a3;
++ (id)ascendingDateSortComparatorWithBlock:(id)block;
 + (id)ascendingTitleSortComparator;
-+ (id)descendingDateSortComparatorWithBlock:(id)a3;
++ (id)descendingDateSortComparatorWithBlock:(id)block;
 + (id)descendingTitleSortComparator;
-+ (id)titleSortComparatorWithAscending:(BOOL)a3;
-+ (int64_t)comparisonResultForObject1:(id)a3 object2:(id)a4 withComparators:(id)a5;
++ (id)titleSortComparatorWithAscending:(BOOL)ascending;
++ (int64_t)comparisonResultForObject1:(id)object1 object2:(id)object2 withComparators:(id)comparators;
 @end
 
 @implementation VUISortUtilities
 
-+ (id)ascendingDateSortComparatorWithBlock:(id)a3
++ (id)ascendingDateSortComparatorWithBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __57__VUISortUtilities_ascendingDateSortComparatorWithBlock___block_invoke;
   v8[3] = &unk_279E21460;
-  v9 = v3;
-  v4 = v3;
+  v9 = blockCopy;
+  v4 = blockCopy;
   v5 = MEMORY[0x2743B7C30](v8);
   v6 = MEMORY[0x2743B7C30]();
 
@@ -53,16 +53,16 @@ uint64_t __57__VUISortUtilities_ascendingDateSortComparatorWithBlock___block_inv
   return v10;
 }
 
-+ (id)descendingDateSortComparatorWithBlock:(id)a3
++ (id)descendingDateSortComparatorWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __58__VUISortUtilities_descendingDateSortComparatorWithBlock___block_invoke;
   v12[3] = &unk_279E21488;
-  v13 = v4;
-  v14 = a1;
-  v5 = v4;
+  v13 = blockCopy;
+  selfCopy = self;
+  v5 = blockCopy;
   v6 = MEMORY[0x2743B7C30](v12);
   v10 = MEMORY[0x2743B7C30](v6, v7, v8, v9);
 
@@ -121,16 +121,16 @@ uint64_t __58__VUISortUtilities_descendingDateSortComparatorWithBlock___block_in
   return v16;
 }
 
-+ (id)titleSortComparatorWithAscending:(BOOL)a3
++ (id)titleSortComparatorWithAscending:(BOOL)ascending
 {
-  if (a3)
+  if (ascending)
   {
-    [a1 ascendingTitleSortComparator];
+    [self ascendingTitleSortComparator];
   }
 
   else
   {
-    [a1 descendingTitleSortComparator];
+    [self descendingTitleSortComparator];
   }
   v3 = ;
 
@@ -139,13 +139,13 @@ uint64_t __58__VUISortUtilities_descendingDateSortComparatorWithBlock___block_in
 
 + (id)ascendingTitleSortComparator
 {
-  v2 = [MEMORY[0x277CCA900] letterCharacterSet];
+  letterCharacterSet = [MEMORY[0x277CCA900] letterCharacterSet];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__VUISortUtilities_ascendingTitleSortComparator__block_invoke;
   v7[3] = &unk_279E214B0;
-  v8 = v2;
-  v3 = v2;
+  v8 = letterCharacterSet;
+  v3 = letterCharacterSet;
   v4 = MEMORY[0x2743B7C30](v7);
   v5 = MEMORY[0x2743B7C30]();
 
@@ -198,7 +198,7 @@ uint64_t __48__VUISortUtilities_ascendingTitleSortComparator__block_invoke(uint6
   v5[1] = 3221225472;
   v5[2] = __49__VUISortUtilities_descendingTitleSortComparator__block_invoke;
   v5[3] = &__block_descriptor_40_e31_q24__0__NSString_8__NSString_16l;
-  v5[4] = a1;
+  v5[4] = self;
   v2 = MEMORY[0x2743B7C30](v5, a2);
   v3 = MEMORY[0x2743B7C30]();
 
@@ -234,23 +234,23 @@ uint64_t __49__VUISortUtilities_descendingTitleSortComparator__block_invoke(uint
   }
 }
 
-+ (int64_t)comparisonResultForObject1:(id)a3 object2:(id)a4 withComparators:(id)a5
++ (int64_t)comparisonResultForObject1:(id)object1 object2:(id)object2 withComparators:(id)comparators
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 count];
+  object1Copy = object1;
+  object2Copy = object2;
+  comparatorsCopy = comparators;
+  v11 = [comparatorsCopy count];
   if (v11)
   {
     v12 = v11;
-    v13 = [v10 firstObject];
-    v14 = [v10 subarrayWithRange:{1, v12 - 1}];
-    v15 = (v13)[2](v13, v8, v9);
+    firstObject = [comparatorsCopy firstObject];
+    v14 = [comparatorsCopy subarrayWithRange:{1, v12 - 1}];
+    v15 = (firstObject)[2](firstObject, object1Copy, object2Copy);
     if (!v15)
     {
       if ([v14 count])
       {
-        v15 = [a1 comparisonResultForObject1:v8 object2:v9 withComparators:v14];
+        v15 = [self comparisonResultForObject1:object1Copy object2:object2Copy withComparators:v14];
       }
 
       else

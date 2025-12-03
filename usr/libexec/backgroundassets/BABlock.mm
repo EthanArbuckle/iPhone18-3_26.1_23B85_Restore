@@ -1,23 +1,23 @@
 @interface BABlock
-- (BABlock)initWithToken:(id)a3 block:(id)a4;
-- (BOOL)isEqual:(id)a3;
+- (BABlock)initWithToken:(id)token block:(id)block;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 @end
 
 @implementation BABlock
 
-- (BABlock)initWithToken:(id)a3 block:(id)a4
+- (BABlock)initWithToken:(id)token block:(id)block
 {
-  v7 = a3;
-  v8 = a4;
+  tokenCopy = token;
+  blockCopy = block;
   v15.receiver = self;
   v15.super_class = BABlock;
   v9 = [(BABlock *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_token, a3);
-    v11 = objc_retainBlock(v8);
+    objc_storeStrong(&v9->_token, token);
+    v11 = objc_retainBlock(blockCopy);
     block = v10->_block;
     v10->_block = v11;
 
@@ -28,26 +28,26 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_5;
   }
 
-  if (v4 == self)
+  if (equalCopy == self)
   {
     v8 = 1;
     goto LABEL_7;
   }
 
-  if ([(BABlock *)v4 isMemberOfClass:objc_opt_class()])
+  if ([(BABlock *)equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v6 = [(BABlock *)v5 token];
-    v7 = [(BABlock *)self token];
-    v8 = [v6 isEqual:v7];
+    token = [(BABlock *)v5 token];
+    token2 = [(BABlock *)self token];
+    v8 = [token isEqual:token2];
   }
 
   else
@@ -63,8 +63,8 @@ LABEL_7:
 
 - (unint64_t)hash
 {
-  v2 = [(BABlock *)self token];
-  v3 = [v2 hash];
+  token = [(BABlock *)self token];
+  v3 = [token hash];
 
   return v3;
 }

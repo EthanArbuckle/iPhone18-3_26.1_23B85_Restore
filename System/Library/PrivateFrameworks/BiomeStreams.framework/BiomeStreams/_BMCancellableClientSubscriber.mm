@@ -1,22 +1,22 @@
 @interface _BMCancellableClientSubscriber
-- (_BMCancellableClientSubscriber)initWithClient:(id)a3 identifier:(id)a4;
+- (_BMCancellableClientSubscriber)initWithClient:(id)client identifier:(id)identifier;
 - (void)cancel;
 @end
 
 @implementation _BMCancellableClientSubscriber
 
-- (_BMCancellableClientSubscriber)initWithClient:(id)a3 identifier:(id)a4
+- (_BMCancellableClientSubscriber)initWithClient:(id)client identifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  clientCopy = client;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = _BMCancellableClientSubscriber;
   v9 = [(_BMCancellableClientSubscriber *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_client, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_client, client);
+    v11 = [identifierCopy copy];
     identifier = v10->_identifier;
     v10->_identifier = v11;
   }
@@ -26,10 +26,10 @@
 
 - (void)cancel
 {
-  v4 = self;
-  v2 = [(_BMCancellableClientSubscriber *)v4 client];
-  v3 = [(_BMCancellableClientSubscriber *)v4 identifier];
-  [v2 unsubscribeWithIdentifier:v3];
+  selfCopy = self;
+  client = [(_BMCancellableClientSubscriber *)selfCopy client];
+  identifier = [(_BMCancellableClientSubscriber *)selfCopy identifier];
+  [client unsubscribeWithIdentifier:identifier];
 }
 
 @end

@@ -1,15 +1,15 @@
 @interface MPStoreAssetInfoPlaybackCacheRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation MPStoreAssetInfoPlaybackCacheRequest
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
     goto LABEL_19;
@@ -21,18 +21,18 @@
     goto LABEL_18;
   }
 
-  if (self->_accountID != v4->_accountID)
+  if (self->_accountID != equalCopy->_accountID)
   {
     goto LABEL_18;
   }
 
-  if (self->_delegatedAccountID != v4->_delegatedAccountID)
+  if (self->_delegatedAccountID != equalCopy->_delegatedAccountID)
   {
     goto LABEL_18;
   }
 
   requestType = self->_requestType;
-  if (requestType != v4->_requestType)
+  if (requestType != equalCopy->_requestType)
   {
     goto LABEL_18;
   }
@@ -43,7 +43,7 @@
     if (requestType == 3)
     {
       storeRadioAdamID = self->_storeRadioAdamID;
-      storeSubscriptionAdamID = v4->_storeRadioAdamID;
+      storeSubscriptionAdamID = equalCopy->_storeRadioAdamID;
       goto LABEL_23;
     }
 
@@ -52,10 +52,10 @@
       goto LABEL_19;
     }
 
-    if (self->_storeCloudID == v4->_storeCloudID && self->_storePurchasedAdamID == v4->_storePurchasedAdamID && self->_storeSubscriptionAdamID == v4->_storeSubscriptionAdamID)
+    if (self->_storeCloudID == equalCopy->_storeCloudID && self->_storePurchasedAdamID == equalCopy->_storePurchasedAdamID && self->_storeSubscriptionAdamID == equalCopy->_storeSubscriptionAdamID)
     {
       cloudUniversalLibraryID = self->_cloudUniversalLibraryID;
-      if (cloudUniversalLibraryID == v4->_cloudUniversalLibraryID)
+      if (cloudUniversalLibraryID == equalCopy->_cloudUniversalLibraryID)
       {
         goto LABEL_19;
       }
@@ -76,14 +76,14 @@ LABEL_18:
     }
 
     storeRadioAdamID = self->_storeSubscriptionAdamID;
-    storeSubscriptionAdamID = v4->_storeSubscriptionAdamID;
+    storeSubscriptionAdamID = equalCopy->_storeSubscriptionAdamID;
 LABEL_23:
     v6 = storeRadioAdamID == storeSubscriptionAdamID;
     goto LABEL_19;
   }
 
   cloudUniversalLibraryID = self->_redownloadParameters;
-  if (cloudUniversalLibraryID != v4->_redownloadParameters)
+  if (cloudUniversalLibraryID != equalCopy->_redownloadParameters)
   {
 LABEL_9:
     v6 = [(NSString *)cloudUniversalLibraryID isEqual:?];
@@ -138,9 +138,9 @@ LABEL_10:
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (v4)
   {

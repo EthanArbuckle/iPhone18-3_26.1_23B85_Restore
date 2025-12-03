@@ -19,10 +19,10 @@
   v7[2] = __39__AVURLAsset_HKAdditions__hk_assetSize__block_invoke;
   v7[3] = &unk_1E81BAB50;
   v9 = &v10;
-  v7[4] = a1;
+  v7[4] = self;
   v4 = v2;
   v8 = v4;
-  [a1 loadTracksWithMediaType:v3 completionHandler:v7];
+  [self loadTracksWithMediaType:v3 completionHandler:v7];
   dispatch_semaphore_wait(v4, 0xFFFFFFFFFFFFFFFFLL);
   v5 = v11[4];
 
@@ -32,7 +32,7 @@
 
 - (id)hk_thumbnailImage
 {
-  v2 = [MEMORY[0x1E6987E68] assetImageGeneratorWithAsset:a1];
+  v2 = [MEMORY[0x1E6987E68] assetImageGeneratorWithAsset:self];
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -45,7 +45,7 @@
   v9[2] = __44__AVURLAsset_HKAdditions__hk_thumbnailImage__block_invoke;
   v9[3] = &unk_1E81BAB78;
   v11 = &v12;
-  v9[4] = a1;
+  v9[4] = self;
   v4 = v3;
   v10 = v4;
   v7 = *MEMORY[0x1E6960CC0];

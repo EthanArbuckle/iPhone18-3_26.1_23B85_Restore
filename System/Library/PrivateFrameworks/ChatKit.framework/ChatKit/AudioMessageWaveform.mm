@@ -1,12 +1,12 @@
 @interface AudioMessageWaveform
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation AudioMessageWaveform
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  v3 = self;
+  selfCopy = self;
   sub_190898418();
 }
 

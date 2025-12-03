@@ -1,39 +1,39 @@
 @interface PLMomentGeneration
-+ (id)dateIntervalsAroundSortedDates:(id)a3 minimumIntervalDuration:(double)a4;
-- (BOOL)_hasWorkWorkRemainingWithCompletionBlocks:(id *)a3;
-- (BOOL)_isAsset:(id)a3 identicalToAssetForMoments:(id)a4;
-- (BOOL)_writeDetails:(id)a3 toFilepath:(id)a4 withDefaultFilename:(id)a5;
-- (BOOL)regenerateMonthHighlightTitlesWithManager:(id)a3 error:(id *)a4;
-- (PLMomentGeneration)initWithMomentGenerationDataManager:(id)a3 bundle:(id)a4 locale:(id)a5;
++ (id)dateIntervalsAroundSortedDates:(id)dates minimumIntervalDuration:(double)duration;
+- (BOOL)_hasWorkWorkRemainingWithCompletionBlocks:(id *)blocks;
+- (BOOL)_isAsset:(id)asset identicalToAssetForMoments:(id)moments;
+- (BOOL)_writeDetails:(id)details toFilepath:(id)filepath withDefaultFilename:(id)filename;
+- (BOOL)regenerateMonthHighlightTitlesWithManager:(id)manager error:(id *)error;
+- (PLMomentGeneration)initWithMomentGenerationDataManager:(id)manager bundle:(id)bundle locale:(id)locale;
 - (PLMomentGenerationDataManagement)momentGenerationDataManager;
-- (id)_detailsForAsset:(id)a3 simpleOnly:(BOOL)a4;
-- (id)_detailsForMoment:(id)a3;
+- (id)_detailsForAsset:(id)asset simpleOnly:(BOOL)only;
+- (id)_detailsForMoment:(id)moment;
 - (id)_highlightGenerator;
-- (id)_logEntryForAssets:(id)a3 isBatchUpdate:(BOOL)a4;
-- (id)_newPublicGlobalUUIDsToAssetsMappingWithAssets:(id)a3;
-- (id)allAssetMetadataWriteToFile:(id)a3;
-- (id)allMomentsMetadataWriteToFile:(id)a3;
+- (id)_logEntryForAssets:(id)assets isBatchUpdate:(BOOL)update;
+- (id)_newPublicGlobalUUIDsToAssetsMappingWithAssets:(id)assets;
+- (id)allAssetMetadataWriteToFile:(id)file;
+- (id)allMomentsMetadataWriteToFile:(id)file;
 - (id)momentGenerationStatus;
 - (id)newFrequentLocationManager;
 - (id)newLocalCreationDateCreator;
-- (void)_appendAssetsToReplayLog:(id)a3 forBatchUpdate:(BOOL)a4;
+- (void)_appendAssetsToReplayLog:(id)log forBatchUpdate:(BOOL)update;
 - (void)_clearReplayLog;
-- (void)_runIncrementalGenerationPassWithCompletionHandler:(id)a3;
-- (void)_runIncrementalMomentGenerationIfItemsArePendingWithCompletion:(id)a3;
-- (void)_runMomentAndHighlightGenerationForAssets:(id)a3 hiddenAssets:(id)a4 updatedAssetIDsForHighlights:(id)a5 updatedMomentIDsForHighlights:(id)a6 affectedMoments:(id)a7 highlightsWithDeletedMoments:(id)a8 sharedAssetContainerIncrementalChanges:(id)a9 insertedOrUpdatedMoments:(id *)a10;
-- (void)cleanupEmptyHighlightsWithCompletionBlock:(id)a3;
-- (void)generateWithAssetInsertsAndUpdates:(id)a3 assetDeletes:(id)a4 assetUpdatesForHighlights:(id)a5 momentUpdatesForHighlights:(id)a6 completionHandler:(id)a7;
-- (void)generateWithIncrementalDataCompletionHandler:(id)a3;
-- (void)invalidateHighlightSubtitlesAndRegenerateHighlightTitlesWithForceUpdateLocale:(BOOL)a3 completionBlock:(id)a4;
-- (void)locationOfInterestUpdateWithCompletionBlock:(id)a3;
-- (void)processRecentHighlightsWithCompletionBlock:(id)a3;
-- (void)processUnprocessedMomentLocationsWithCompletionBlock:(id)a3;
-- (void)rebuildAllHighlightsWithOptions:(id)a3 completionHandler:(id)a4;
-- (void)rebuildAllMomentsWithOptions:(id)a3 completionHandler:(id)a4;
+- (void)_runIncrementalGenerationPassWithCompletionHandler:(id)handler;
+- (void)_runIncrementalMomentGenerationIfItemsArePendingWithCompletion:(id)completion;
+- (void)_runMomentAndHighlightGenerationForAssets:(id)assets hiddenAssets:(id)hiddenAssets updatedAssetIDsForHighlights:(id)highlights updatedMomentIDsForHighlights:(id)forHighlights affectedMoments:(id)moments highlightsWithDeletedMoments:(id)deletedMoments sharedAssetContainerIncrementalChanges:(id)changes insertedOrUpdatedMoments:(id *)self0;
+- (void)cleanupEmptyHighlightsWithCompletionBlock:(id)block;
+- (void)generateWithAssetInsertsAndUpdates:(id)updates assetDeletes:(id)deletes assetUpdatesForHighlights:(id)highlights momentUpdatesForHighlights:(id)forHighlights completionHandler:(id)handler;
+- (void)generateWithIncrementalDataCompletionHandler:(id)handler;
+- (void)invalidateHighlightSubtitlesAndRegenerateHighlightTitlesWithForceUpdateLocale:(BOOL)locale completionBlock:(id)block;
+- (void)locationOfInterestUpdateWithCompletionBlock:(id)block;
+- (void)processRecentHighlightsWithCompletionBlock:(id)block;
+- (void)processUnprocessedMomentLocationsWithCompletionBlock:(id)block;
+- (void)rebuildAllHighlightsWithOptions:(id)options completionHandler:(id)handler;
+- (void)rebuildAllMomentsWithOptions:(id)options completionHandler:(id)handler;
 - (void)releaseMemoryIntensiveObjects;
-- (void)saveChangesForAssetInsertsAndUpdates:(id)a3 assetDeletes:(id)a4 assetUpdatesForHighlights:(id)a5 momentUpdatesForHighlights:(id)a6 sharedAssetContainerIncrementalChangesByAssetID:(id)a7;
-- (void)updateHighlightTitlesWithCompletionBlock:(id)a3;
-- (void)validateLibraryWithCompletionBlock:(id)a3;
+- (void)saveChangesForAssetInsertsAndUpdates:(id)updates assetDeletes:(id)deletes assetUpdatesForHighlights:(id)highlights momentUpdatesForHighlights:(id)forHighlights sharedAssetContainerIncrementalChangesByAssetID:(id)d;
+- (void)updateHighlightTitlesWithCompletionBlock:(id)block;
+- (void)validateLibraryWithCompletionBlock:(id)block;
 @end
 
 @implementation PLMomentGeneration
@@ -45,9 +45,9 @@
   return WeakRetained;
 }
 
-- (BOOL)regenerateMonthHighlightTitlesWithManager:(id)a3 error:(id *)a4
+- (BOOL)regenerateMonthHighlightTitlesWithManager:(id)manager error:(id *)error
 {
-  v6 = a3;
+  managerCopy = manager;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -62,15 +62,15 @@
   v10[1] = 3221225472;
   v10[2] = __70__PLMomentGeneration_regenerateMonthHighlightTitlesWithManager_error___block_invoke;
   v10[3] = &unk_1E7578898;
-  v7 = v6;
+  v7 = managerCopy;
   v13 = &v15;
   v14 = &v19;
   v11 = v7;
-  v12 = self;
+  selfCopy = self;
   [v7 performDataTransaction:v10 synchronously:1 completionHandler:0];
-  if (a4)
+  if (error)
   {
-    *a4 = v20[5];
+    *error = v20[5];
   }
 
   v8 = *(v16 + 24);
@@ -116,21 +116,21 @@ void __70__PLMomentGeneration_regenerateMonthHighlightTitlesWithManager_error___
   }
 }
 
-- (void)validateLibraryWithCompletionBlock:(id)a3
+- (void)validateLibraryWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if ([(PLMomentGeneration *)self isGenerationPassInProgress])
   {
-    if (v4)
+    if (blockCopy)
     {
-      v4[2](v4);
+      blockCopy[2](blockCopy);
     }
   }
 
   else
   {
-    v5 = [(PLMomentGeneration *)self momentGenerationDataManager];
-    if (([v5 shouldPerformLightweightValidation] & 1) != 0 && (v6 = +[PLModelMigrator currentModelVersion](PLModelMigrator, "currentModelVersion"), v7 = objc_msgSend(v5, "previousValidatedModelVersion"), v8 = objc_msgSend(v5, "previousValidationSucceeded"), v7 < v6))
+    momentGenerationDataManager = [(PLMomentGeneration *)self momentGenerationDataManager];
+    if (([momentGenerationDataManager shouldPerformLightweightValidation] & 1) != 0 && (v6 = +[PLModelMigrator currentModelVersion](PLModelMigrator, "currentModelVersion"), v7 = objc_msgSend(momentGenerationDataManager, "previousValidatedModelVersion"), v8 = objc_msgSend(momentGenerationDataManager, "previousValidationSucceeded"), v7 < v6))
     {
       v9 = v8;
       v10 = PLMomentGenerationGetLog();
@@ -143,19 +143,19 @@ void __70__PLMomentGeneration_regenerateMonthHighlightTitlesWithManager_error___
       v33[2] = 0x3032000000;
       v33[3] = __Block_byref_object_copy__108963;
       v33[4] = __Block_byref_object_dispose__108964;
-      v34 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v31[0] = 0;
       v31[1] = v31;
       v31[2] = 0x3032000000;
       v31[3] = __Block_byref_object_copy__108963;
       v31[4] = __Block_byref_object_dispose__108964;
-      v32 = [MEMORY[0x1E695DF70] array];
+      array2 = [MEMORY[0x1E695DF70] array];
       v29[0] = 0;
       v29[1] = v29;
       v29[2] = 0x3032000000;
       v29[3] = __Block_byref_object_copy__108963;
       v29[4] = __Block_byref_object_dispose__108964;
-      v30 = [MEMORY[0x1E695DF70] array];
+      array3 = [MEMORY[0x1E695DF70] array];
       v21[0] = MEMORY[0x1E69E9820];
       v21[1] = 3221225472;
       v21[2] = __57__PLMomentGeneration_validateLibraryWithCompletionBlock___block_invoke;
@@ -164,8 +164,8 @@ void __70__PLMomentGeneration_regenerateMonthHighlightTitlesWithManager_error___
       v22 = v11;
       v25 = v35;
       v26 = v33;
-      v23 = v5;
-      v24 = self;
+      v23 = momentGenerationDataManager;
+      selfCopy = self;
       v27 = v31;
       v28 = v29;
       v12[0] = MEMORY[0x1E69E9820];
@@ -179,7 +179,7 @@ void __70__PLMomentGeneration_regenerateMonthHighlightTitlesWithManager_error___
       v18 = v29;
       v13 = v23;
       v19 = v6;
-      v14 = v4;
+      v14 = blockCopy;
       [v13 performDataTransaction:v21 synchronously:0 completionHandler:v12];
 
       _Block_object_dispose(v29, 8);
@@ -189,9 +189,9 @@ void __70__PLMomentGeneration_regenerateMonthHighlightTitlesWithManager_error___
       _Block_object_dispose(v35, 8);
     }
 
-    else if (v4)
+    else if (blockCopy)
     {
-      v4[2](v4);
+      blockCopy[2](blockCopy);
     }
   }
 }
@@ -734,10 +734,10 @@ uint64_t __57__PLMomentGeneration_validateLibraryWithCompletionBlock___block_inv
   return result;
 }
 
-- (id)allMomentsMetadataWriteToFile:(id)a3
+- (id)allMomentsMetadataWriteToFile:(id)file
 {
-  v4 = a3;
-  v5 = [(PLMomentGeneration *)self momentGenerationDataManager];
+  fileCopy = file;
+  momentGenerationDataManager = [(PLMomentGeneration *)self momentGenerationDataManager];
   v21[0] = 0;
   v21[1] = v21;
   v21[2] = 0x3032000000;
@@ -755,16 +755,16 @@ uint64_t __57__PLMomentGeneration_validateLibraryWithCompletionBlock___block_inv
   v10[2] = __52__PLMomentGeneration_allMomentsMetadataWriteToFile___block_invoke;
   v10[3] = &unk_1E7578898;
   v13 = v21;
-  v6 = v5;
+  v6 = momentGenerationDataManager;
   v14 = &v15;
   v11 = v6;
-  v12 = self;
+  selfCopy = self;
   [v6 performBlock:v10 synchronously:1 completionHandler:0];
-  if (v4)
+  if (fileCopy)
   {
-    if (![(PLMomentGeneration *)self _writeDetails:v16[5] toFilepath:v4 withDefaultFilename:@"momentsMetadataDump.plist"])
+    if (![(PLMomentGeneration *)self _writeDetails:v16[5] toFilepath:fileCopy withDefaultFilename:@"momentsMetadataDump.plist"])
     {
-      NSLog(&cfstr_ThereWasAnErro_0.isa, v4);
+      NSLog(&cfstr_ThereWasAnErro_0.isa, fileCopy);
     }
 
     v7 = v16[5];
@@ -832,19 +832,19 @@ void __52__PLMomentGeneration_allMomentsMetadataWriteToFile___block_invoke(uint6
   [*(*(*(a1 + 56) + 8) + 40) setValue:v8 forKey:@"AllMoments"];
 }
 
-- (id)_detailsForMoment:(id)a3
+- (id)_detailsForMoment:(id)moment
 {
   v33[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  momentCopy = moment;
+  v5 = momentCopy;
+  if (momentCopy)
   {
-    v6 = [v4 approximateLocation];
+    approximateLocation = [momentCopy approximateLocation];
 
-    if (v6)
+    if (approximateLocation)
     {
-      v7 = [v5 approximateLocation];
-      [v7 coordinate];
+      approximateLocation2 = [v5 approximateLocation];
+      [approximateLocation2 coordinate];
       v9 = v8;
       v11 = v10;
 
@@ -854,27 +854,27 @@ void __52__PLMomentGeneration_allMomentsMetadataWriteToFile___block_invoke(uint6
       v32[1] = @"MomentApproximateLocationLongitude";
       v33[0] = v12;
       v33[1] = v13;
-      v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v33 forKeys:v32 count:2];
+      approximateLocation = [MEMORY[0x1E695DF20] dictionaryWithObjects:v33 forKeys:v32 count:2];
     }
 
     v14 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v15 = [v5 startDate];
-    [v14 setValue:v15 forKey:@"MomentStartDate"];
+    startDate = [v5 startDate];
+    [v14 setValue:startDate forKey:@"MomentStartDate"];
 
-    v16 = [v5 endDate];
-    [v14 setValue:v16 forKey:@"MomentEndDate"];
+    endDate = [v5 endDate];
+    [v14 setValue:endDate forKey:@"MomentEndDate"];
 
-    v17 = [v5 representativeDate];
-    [v14 setValue:v17 forKey:@"MomentRepresentativeDate"];
+    representativeDate = [v5 representativeDate];
+    [v14 setValue:representativeDate forKey:@"MomentRepresentativeDate"];
 
-    [v14 setValue:v6 forKey:@"MomentApproximateLocation"];
-    v18 = [v5 assets];
-    v19 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v18, "count")}];
+    [v14 setValue:approximateLocation forKey:@"MomentApproximateLocation"];
+    assets = [v5 assets];
+    v19 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(assets, "count")}];
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v20 = v18;
+    v20 = assets;
     v21 = [v20 countByEnumeratingWithState:&v27 objects:v31 count:16];
     if (v21)
     {
@@ -910,10 +910,10 @@ void __52__PLMomentGeneration_allMomentsMetadataWriteToFile___block_invoke(uint6
   return v14;
 }
 
-- (id)allAssetMetadataWriteToFile:(id)a3
+- (id)allAssetMetadataWriteToFile:(id)file
 {
-  v4 = a3;
-  v5 = [(PLMomentGeneration *)self momentGenerationDataManager];
+  fileCopy = file;
+  momentGenerationDataManager = [(PLMomentGeneration *)self momentGenerationDataManager];
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -924,16 +924,16 @@ void __52__PLMomentGeneration_allMomentsMetadataWriteToFile___block_invoke(uint6
   v11 = 3221225472;
   v12 = __50__PLMomentGeneration_allAssetMetadataWriteToFile___block_invoke;
   v13 = &unk_1E7578820;
-  v6 = v5;
-  v15 = self;
+  v6 = momentGenerationDataManager;
+  selfCopy = self;
   v16 = &v17;
   v14 = v6;
   [v6 performBlock:&v10 synchronously:1 completionHandler:0];
-  if (v4)
+  if (fileCopy)
   {
-    if (![(PLMomentGeneration *)self _writeDetails:v18[5] toFilepath:v4 withDefaultFilename:@"metadataDump.plist"])
+    if (![(PLMomentGeneration *)self _writeDetails:v18[5] toFilepath:fileCopy withDefaultFilename:@"metadataDump.plist"])
     {
-      NSLog(&cfstr_ThereWasAnErro_0.isa, v4, v10, v11, v12, v13);
+      NSLog(&cfstr_ThereWasAnErro_0.isa, fileCopy, v10, v11, v12, v13);
     }
 
     v7 = v18[5];
@@ -1010,21 +1010,21 @@ void __50__PLMomentGeneration_allAssetMetadataWriteToFile___block_invoke(uint64_
   [v19 setObject:v20 forKey:@"CurrentMaxID"];
 }
 
-- (id)_logEntryForAssets:(id)a3 isBatchUpdate:(BOOL)a4
+- (id)_logEntryForAssets:(id)assets isBatchUpdate:(BOOL)update
 {
-  v4 = a4;
+  updateCopy = update;
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  assetsCopy = assets;
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v8 = [MEMORY[0x1E696AD98] numberWithBool:v4];
+  v8 = [MEMORY[0x1E696AD98] numberWithBool:updateCopy];
   [v7 setObject:v8 forKey:@"EntryIsBatchUpdate"];
 
-  v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+  v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(assetsCopy, "count")}];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v10 = v6;
+  v10 = assetsCopy;
   v11 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v11)
   {
@@ -1054,15 +1054,15 @@ void __50__PLMomentGeneration_allAssetMetadataWriteToFile___block_invoke(uint64_
   return v7;
 }
 
-- (void)_appendAssetsToReplayLog:(id)a3 forBatchUpdate:(BOOL)a4
+- (void)_appendAssetsToReplayLog:(id)log forBatchUpdate:(BOOL)update
 {
-  v4 = a4;
+  updateCopy = update;
   v47 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(PLMomentGeneration *)self momentGenerationDataManager];
-  v8 = [v7 replayLogPath];
+  logCopy = log;
+  momentGenerationDataManager = [(PLMomentGeneration *)self momentGenerationDataManager];
+  replayLogPath = [momentGenerationDataManager replayLogPath];
 
-  v9 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:v8];
+  v9 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:replayLogPath];
   if (v9)
   {
     v42 = 0;
@@ -1073,16 +1073,16 @@ void __50__PLMomentGeneration_allAssetMetadataWriteToFile___block_invoke(uint64_
       v12 = PLMomentsGetLog();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v13 = [v11 localizedDescription];
+        localizedDescription = [v11 localizedDescription];
         *buf = 138412290;
-        v44 = v13;
+        v44 = localizedDescription;
         _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_ERROR, "Error reading replay log: %@", buf, 0xCu);
       }
     }
 
     if (v10)
     {
-      v14 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v10];
+      dictionary = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v10];
 
       goto LABEL_10;
     }
@@ -1093,53 +1093,53 @@ void __50__PLMomentGeneration_allAssetMetadataWriteToFile___block_invoke(uint64_
     v11 = 0;
   }
 
-  v14 = [MEMORY[0x1E695DF90] dictionary];
-  [v14 setObject:&unk_1F0FBEC80 forKey:@"ReplayLogAssetCount"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:&unk_1F0FBEC80 forKey:@"ReplayLogAssetCount"];
 LABEL_10:
-  v15 = [v14 objectForKey:@"ReplayLogAssetCount"];
-  v16 = [v15 integerValue];
+  v15 = [dictionary objectForKey:@"ReplayLogAssetCount"];
+  integerValue = [v15 integerValue];
 
-  if (([v6 count] + v16) < 0x2711)
+  if (([logCopy count] + integerValue) < 0x2711)
   {
-    v38 = v8;
-    v18 = [v6 count];
-    v17 = [v14 objectForKey:@"ReplayStream"];
+    v38 = replayLogPath;
+    v18 = [logCopy count];
+    v17 = [dictionary objectForKey:@"ReplayStream"];
     v19 = [MEMORY[0x1E695DF70] arrayWithArray:v17];
-    if ([v6 count])
+    if ([logCopy count])
     {
-      v20 = [(PLMomentGeneration *)self _logEntryForAssets:v6 isBatchUpdate:v4];
+      v20 = [(PLMomentGeneration *)self _logEntryForAssets:logCopy isBatchUpdate:updateCopy];
       [v19 addObject:v20];
     }
 
-    [v14 setObject:v19 forKey:@"ReplayStream"];
-    v21 = [MEMORY[0x1E696AD98] numberWithInteger:v18 + v16];
-    [v14 setObject:v21 forKey:@"ReplayLogAssetCount"];
+    [dictionary setObject:v19 forKey:@"ReplayStream"];
+    v21 = [MEMORY[0x1E696AD98] numberWithInteger:v18 + integerValue];
+    [dictionary setObject:v21 forKey:@"ReplayLogAssetCount"];
 
     v41 = 0;
-    v22 = [MEMORY[0x1E696AE40] dataWithPropertyList:v14 format:200 options:0 error:&v41];
+    v22 = [MEMORY[0x1E696AE40] dataWithPropertyList:dictionary format:200 options:0 error:&v41];
     v23 = v41;
 
     if (v23)
     {
-      v24 = PLMomentsGetLog();
-      if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
+      defaultManager = PLMomentsGetLog();
+      if (os_log_type_enabled(defaultManager, OS_LOG_TYPE_ERROR))
       {
-        v25 = [v23 localizedDescription];
+        localizedDescription2 = [v23 localizedDescription];
         *buf = 138412290;
-        v44 = v25;
-        _os_log_impl(&dword_19BF1F000, v24, OS_LOG_TYPE_ERROR, "Error reading moments replay log plist: %@", buf, 0xCu);
+        v44 = localizedDescription2;
+        _os_log_impl(&dword_19BF1F000, defaultManager, OS_LOG_TYPE_ERROR, "Error reading moments replay log plist: %@", buf, 0xCu);
       }
 
       goto LABEL_30;
     }
 
-    v24 = [MEMORY[0x1E696AC08] defaultManager];
-    v26 = [v38 stringByDeletingLastPathComponent];
-    v37 = v26;
-    if (([v24 fileExistsAtPath:v26]& 1) != 0 || (v40 = 0, v27 = [v24 createDirectoryAtPath:v26 withIntermediateDirectories:0 attributes:0 error:&v40], v28 = v40, v29 = v28, v27) && !v28)
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    stringByDeletingLastPathComponent = [v38 stringByDeletingLastPathComponent];
+    v37 = stringByDeletingLastPathComponent;
+    if (([defaultManager fileExistsAtPath:stringByDeletingLastPathComponent]& 1) != 0 || (v40 = 0, v27 = [defaultManager createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:0 attributes:0 error:&v40], v28 = v40, v29 = v28, v27) && !v28)
     {
       v39 = 0;
-      v30 = [v22 writeToFile:v38 options:0 error:{&v39, v26}];
+      v30 = [v22 writeToFile:v38 options:0 error:{&v39, stringByDeletingLastPathComponent}];
       v31 = v39;
       v29 = v31;
       if (v30)
@@ -1154,9 +1154,9 @@ LABEL_10:
       v32 = PLMomentsGetLog();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
       {
-        v33 = [v29 localizedDescription];
+        localizedDescription3 = [v29 localizedDescription];
         *buf = 138412290;
-        v44 = v33;
+        v44 = localizedDescription3;
         v34 = "Error writing moments replay log data: %@";
         v35 = v32;
         v36 = 12;
@@ -1170,11 +1170,11 @@ LABEL_27:
       v32 = PLMomentsGetLog();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
       {
-        v33 = [v29 localizedDescription];
+        localizedDescription3 = [v29 localizedDescription];
         *buf = 138412546;
         v44 = v37;
         v45 = 2112;
-        v46 = v33;
+        v46 = localizedDescription3;
         v34 = "Unable to create directory at %@ for moments replay log: %@";
         v35 = v32;
         v36 = 22;
@@ -1187,7 +1187,7 @@ LABEL_29:
 
 LABEL_30:
     v11 = v23;
-    v8 = v38;
+    replayLogPath = v38;
     goto LABEL_31;
   }
 
@@ -1204,12 +1204,12 @@ LABEL_31:
 - (void)_clearReplayLog
 {
   v14 = *MEMORY[0x1E69E9840];
-  v2 = [(PLMomentGeneration *)self momentGenerationDataManager];
-  v3 = [v2 replayLogPath];
+  momentGenerationDataManager = [(PLMomentGeneration *)self momentGenerationDataManager];
+  replayLogPath = [momentGenerationDataManager replayLogPath];
 
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v11 = 0;
-  v5 = [v4 removeItemAtPath:v3 error:&v11];
+  v5 = [defaultManager removeItemAtPath:replayLogPath error:&v11];
   v6 = v11;
   v7 = v6;
   if (v5)
@@ -1227,27 +1227,27 @@ LABEL_31:
     v9 = PLMomentsGetLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v10 = [v7 localizedDescription];
+      localizedDescription = [v7 localizedDescription];
       *buf = 138412290;
-      v13 = v10;
+      v13 = localizedDescription;
       _os_log_impl(&dword_19BF1F000, v9, OS_LOG_TYPE_ERROR, "Error deleting replay log file: %@", buf, 0xCu);
     }
   }
 }
 
-- (id)_detailsForAsset:(id)a3 simpleOnly:(BOOL)a4
+- (id)_detailsForAsset:(id)asset simpleOnly:(BOOL)only
 {
   v30[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  assetCopy = asset;
+  if (assetCopy)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v7 = [v5 location];
+    location = [assetCopy location];
 
-    if (v7)
+    if (location)
     {
-      v8 = [v5 location];
-      [v8 coordinate];
+      location2 = [assetCopy location];
+      [location2 coordinate];
       v10 = v9;
       v12 = v11;
 
@@ -1257,50 +1257,50 @@ LABEL_31:
       v29[1] = @"AssetLocationLongitude";
       v30[0] = v13;
       v30[1] = v14;
-      v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:v29 count:2];
+      location = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:v29 count:2];
     }
 
-    [v6 setValue:v7 forKey:@"AssetLocation"];
-    v15 = [v5 dateCreated];
-    [v6 setValue:v15 forKey:@"AssetDateCreated"];
+    [v6 setValue:location forKey:@"AssetLocation"];
+    dateCreated = [assetCopy dateCreated];
+    [v6 setValue:dateCreated forKey:@"AssetDateCreated"];
 
-    if (!a4)
+    if (!only)
     {
-      v16 = [v5 cloudAssetGUID];
-      v17 = [v5 uuid];
-      v18 = v17;
-      if (v16)
+      cloudAssetGUID = [assetCopy cloudAssetGUID];
+      uuid = [assetCopy uuid];
+      v18 = uuid;
+      if (cloudAssetGUID)
       {
-        v19 = v16;
+        v19 = cloudAssetGUID;
       }
 
       else
       {
-        v19 = v17;
+        v19 = uuid;
       }
 
       [v6 setValue:v19 forKey:@"AssetCloudOrLocalID"];
-      v20 = [v5 modificationDate];
-      [v6 setValue:v20 forKey:@"AssetModificationDate"];
+      modificationDate = [assetCopy modificationDate];
+      [v6 setValue:modificationDate forKey:@"AssetModificationDate"];
 
       v21 = MEMORY[0x1E696AD98];
-      [v5 duration];
+      [assetCopy duration];
       v22 = [v21 numberWithDouble:?];
       [v6 setValue:v22 forKey:@"AssetDuration"];
 
-      v23 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v5, "favorite")}];
+      v23 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(assetCopy, "favorite")}];
       [v6 setValue:v23 forKey:@"AssetIsFavorite"];
 
-      v24 = [MEMORY[0x1E696AD98] numberWithShort:{objc_msgSend(v5, "kind")}];
+      v24 = [MEMORY[0x1E696AD98] numberWithShort:{objc_msgSend(assetCopy, "kind")}];
       [v6 setValue:v24 forKey:@"AssetKind"];
 
-      v25 = [MEMORY[0x1E696AD98] numberWithShort:{objc_msgSend(v5, "kindSubtype")}];
+      v25 = [MEMORY[0x1E696AD98] numberWithShort:{objc_msgSend(assetCopy, "kindSubtype")}];
       [v6 setValue:v25 forKey:@"AssetKindSubtype"];
 
-      v26 = [MEMORY[0x1E696AD98] numberWithShort:{objc_msgSend(v5, "height")}];
+      v26 = [MEMORY[0x1E696AD98] numberWithShort:{objc_msgSend(assetCopy, "height")}];
       [v6 setValue:v26 forKey:@"AssetHeight"];
 
-      v27 = [MEMORY[0x1E696AD98] numberWithShort:{objc_msgSend(v5, "width")}];
+      v27 = [MEMORY[0x1E696AD98] numberWithShort:{objc_msgSend(assetCopy, "width")}];
       [v6 setValue:v27 forKey:@"AssetWidth"];
     }
   }
@@ -1313,20 +1313,20 @@ LABEL_31:
   return v6;
 }
 
-- (BOOL)_writeDetails:(id)a3 toFilepath:(id)a4 withDefaultFilename:(id)a5
+- (BOOL)_writeDetails:(id)details toFilepath:(id)filepath withDefaultFilename:(id)filename
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 pathExtension];
-  if (![v10 isEqual:&stru_1F0F06D80])
+  detailsCopy = details;
+  filepathCopy = filepath;
+  filenameCopy = filename;
+  pathExtension = [filepathCopy pathExtension];
+  if (![pathExtension isEqual:&stru_1F0F06D80])
   {
     goto LABEL_7;
   }
 
   v18 = 0;
-  v11 = [MEMORY[0x1E696AC08] defaultManager];
-  v12 = [v11 fileExistsAtPath:v8 isDirectory:&v18];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v12 = [defaultManager fileExistsAtPath:filepathCopy isDirectory:&v18];
 
   if (v12)
   {
@@ -1335,22 +1335,22 @@ LABEL_31:
       goto LABEL_7;
     }
 
-    v13 = [v8 stringByAppendingPathComponent:v9];
+    v13 = [filepathCopy stringByAppendingPathComponent:filenameCopy];
   }
 
   else
   {
-    v13 = [v8 stringByAppendingPathExtension:@"plist"];
+    v13 = [filepathCopy stringByAppendingPathExtension:@"plist"];
   }
 
   v14 = v13;
 
-  v8 = v14;
+  filepathCopy = v14;
 LABEL_7:
-  if (v7)
+  if (detailsCopy)
   {
-    v15 = [MEMORY[0x1E696AE40] dataWithPropertyList:v7 format:100 options:0 error:0];
-    v16 = [v15 writeToFile:v8 options:1073741825 error:0];
+    v15 = [MEMORY[0x1E696AE40] dataWithPropertyList:detailsCopy format:100 options:0 error:0];
+    v16 = [v15 writeToFile:filepathCopy options:1073741825 error:0];
   }
 
   else
@@ -1418,24 +1418,24 @@ uint64_t __44__PLMomentGeneration_momentGenerationStatus__block_invoke(void *a1)
   return result;
 }
 
-- (void)invalidateHighlightSubtitlesAndRegenerateHighlightTitlesWithForceUpdateLocale:(BOOL)a3 completionBlock:(id)a4
+- (void)invalidateHighlightSubtitlesAndRegenerateHighlightTitlesWithForceUpdateLocale:(BOOL)locale completionBlock:(id)block
 {
-  v6 = a4;
-  v7 = [(PLMomentGeneration *)self momentGenerationDataManager];
+  blockCopy = block;
+  momentGenerationDataManager = [(PLMomentGeneration *)self momentGenerationDataManager];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __116__PLMomentGeneration_invalidateHighlightSubtitlesAndRegenerateHighlightTitlesWithForceUpdateLocale_completionBlock___block_invoke;
   v12[3] = &unk_1E7576AC8;
-  v15 = a3;
-  v13 = v7;
-  v14 = self;
+  localeCopy = locale;
+  v13 = momentGenerationDataManager;
+  selfCopy = self;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __116__PLMomentGeneration_invalidateHighlightSubtitlesAndRegenerateHighlightTitlesWithForceUpdateLocale_completionBlock___block_invoke_145;
   v10[3] = &unk_1E7576AA0;
-  v11 = v6;
-  v8 = v6;
-  v9 = v7;
+  v11 = blockCopy;
+  v8 = blockCopy;
+  v9 = momentGenerationDataManager;
   [v9 performDataTransaction:v12 synchronously:1 completionHandler:v10];
 }
 
@@ -1698,12 +1698,12 @@ uint64_t __116__PLMomentGeneration_invalidateHighlightSubtitlesAndRegenerateHigh
   return result;
 }
 
-- (void)locationOfInterestUpdateWithCompletionBlock:(id)a3
+- (void)locationOfInterestUpdateWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   WeakRetained = objc_loadWeakRetained(&self->_momentGenerationDataManager);
-  v6 = [WeakRetained isolationQueue];
-  v7 = v4;
+  isolationQueue = [WeakRetained isolationQueue];
+  v7 = blockCopy;
   pl_dispatch_async();
 }
 
@@ -1740,12 +1740,12 @@ uint64_t __66__PLMomentGeneration_locationOfInterestUpdateWithCompletionBlock___
   return result;
 }
 
-- (void)cleanupEmptyHighlightsWithCompletionBlock:(id)a3
+- (void)cleanupEmptyHighlightsWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   WeakRetained = objc_loadWeakRetained(&self->_momentGenerationDataManager);
-  v6 = [WeakRetained isolationQueue];
-  v7 = v4;
+  isolationQueue = [WeakRetained isolationQueue];
+  v7 = blockCopy;
   pl_dispatch_async();
 }
 
@@ -1816,12 +1816,12 @@ uint64_t __64__PLMomentGeneration_cleanupEmptyHighlightsWithCompletionBlock___bl
   return result;
 }
 
-- (void)updateHighlightTitlesWithCompletionBlock:(id)a3
+- (void)updateHighlightTitlesWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   WeakRetained = objc_loadWeakRetained(&self->_momentGenerationDataManager);
-  v6 = [WeakRetained isolationQueue];
-  v7 = v4;
+  isolationQueue = [WeakRetained isolationQueue];
+  v7 = blockCopy;
   pl_dispatch_async();
 }
 
@@ -1892,12 +1892,12 @@ uint64_t __63__PLMomentGeneration_updateHighlightTitlesWithCompletionBlock___blo
   return result;
 }
 
-- (void)processUnprocessedMomentLocationsWithCompletionBlock:(id)a3
+- (void)processUnprocessedMomentLocationsWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   WeakRetained = objc_loadWeakRetained(&self->_momentGenerationDataManager);
-  v6 = [WeakRetained isolationQueue];
-  v7 = v4;
+  isolationQueue = [WeakRetained isolationQueue];
+  v7 = blockCopy;
   pl_dispatch_async();
 }
 
@@ -1934,12 +1934,12 @@ uint64_t __75__PLMomentGeneration_processUnprocessedMomentLocationsWithCompletio
   return result;
 }
 
-- (void)processRecentHighlightsWithCompletionBlock:(id)a3
+- (void)processRecentHighlightsWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   WeakRetained = objc_loadWeakRetained(&self->_momentGenerationDataManager);
-  v6 = [WeakRetained isolationQueue];
-  v7 = v4;
+  isolationQueue = [WeakRetained isolationQueue];
+  v7 = blockCopy;
   pl_dispatch_async();
 }
 
@@ -2010,10 +2010,10 @@ uint64_t __65__PLMomentGeneration_processRecentHighlightsWithCompletionBlock___b
   return result;
 }
 
-- (void)rebuildAllHighlightsWithOptions:(id)a3 completionHandler:(id)a4
+- (void)rebuildAllHighlightsWithOptions:(id)options completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  handlerCopy = handler;
   if (PLPlatformMomentsSupported())
   {
     Current = CFAbsoluteTimeGetCurrent();
@@ -2034,10 +2034,10 @@ uint64_t __65__PLMomentGeneration_processRecentHighlightsWithCompletionBlock___b
       _os_signpost_emit_with_name_impl(&dword_19BF1F000, v13, OS_SIGNPOST_INTERVAL_BEGIN, v11, "FullRebuild", "", buf, 2u);
     }
 
-    v14 = [v6 objectForKey:PLMomentGenerationShouldDeleteAllHighlightsKey];
-    v15 = [v14 BOOLValue];
+    v14 = [optionsCopy objectForKey:PLMomentGenerationShouldDeleteAllHighlightsKey];
+    bOOLValue = [v14 BOOLValue];
 
-    v16 = [(PLMomentGeneration *)self momentGenerationDataManager];
+    momentGenerationDataManager = [(PLMomentGeneration *)self momentGenerationDataManager];
     v44[0] = 0;
     v44[1] = v44;
     v44[2] = 0x2020000000;
@@ -2052,9 +2052,9 @@ uint64_t __65__PLMomentGeneration_processRecentHighlightsWithCompletionBlock___b
     v33[1] = 3221225472;
     v33[2] = __72__PLMomentGeneration_rebuildAllHighlightsWithOptions_completionHandler___block_invoke;
     v33[3] = &unk_1E7576A50;
-    v37 = v15;
+    v37 = bOOLValue;
     v35 = v44;
-    v17 = v16;
+    v17 = momentGenerationDataManager;
     v34 = v17;
     v36 = buf;
     [v17 performDataTransaction:v33 synchronously:1 completionHandler:0];
@@ -2065,7 +2065,7 @@ uint64_t __65__PLMomentGeneration_processRecentHighlightsWithCompletionBlock___b
 
     v18 = dispatch_group_create();
     dispatch_group_enter(v18);
-    v19 = [(PLMomentGenerationThrottle *)self->_incrementalMomentGenThrottle singleThreaded];
+    singleThreaded = [(PLMomentGenerationThrottle *)self->_incrementalMomentGenThrottle singleThreaded];
     [(PLMomentGenerationThrottle *)self->_incrementalMomentGenThrottle setSingleThreaded:1];
     v20 = *(v39 + 5);
     v27[0] = MEMORY[0x1E69E9820];
@@ -2076,7 +2076,7 @@ uint64_t __65__PLMomentGeneration_processRecentHighlightsWithCompletionBlock___b
     v28 = v21;
     v31 = v11;
     v32 = Current;
-    v30 = v7;
+    v30 = handlerCopy;
     v22 = v18;
     v29 = v22;
     [(PLMomentGeneration *)self generateWithAssetInsertsAndUpdates:MEMORY[0x1E695E0F0] assetDeletes:0 assetUpdatesForHighlights:0 momentUpdatesForHighlights:v20 completionHandler:v27];
@@ -2088,7 +2088,7 @@ uint64_t __65__PLMomentGeneration_processRecentHighlightsWithCompletionBlock___b
     }
 
     dispatch_group_wait(v22, 0xFFFFFFFFFFFFFFFFLL);
-    [(PLMomentGenerationThrottle *)self->_incrementalMomentGenThrottle setSingleThreaded:v19];
+    [(PLMomentGenerationThrottle *)self->_incrementalMomentGenThrottle setSingleThreaded:singleThreaded];
 
     _Block_object_dispose(buf, 8);
     _Block_object_dispose(v44, 8);
@@ -2097,7 +2097,7 @@ uint64_t __65__PLMomentGeneration_processRecentHighlightsWithCompletionBlock___b
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_momentGenerationDataManager);
-    v25 = [WeakRetained isolationQueue];
+    isolationQueue = [WeakRetained isolationQueue];
     pl_dispatch_async();
   }
 }
@@ -2188,10 +2188,10 @@ void __72__PLMomentGeneration_rebuildAllHighlightsWithOptions_completionHandler_
   dispatch_group_leave(*(a1 + 40));
 }
 
-- (void)rebuildAllMomentsWithOptions:(id)a3 completionHandler:(id)a4
+- (void)rebuildAllMomentsWithOptions:(id)options completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  handlerCopy = handler;
   if (PLPlatformMomentsSupported())
   {
     Current = CFAbsoluteTimeGetCurrent();
@@ -2212,10 +2212,10 @@ void __72__PLMomentGeneration_rebuildAllHighlightsWithOptions_completionHandler_
       _os_signpost_emit_with_name_impl(&dword_19BF1F000, v13, OS_SIGNPOST_INTERVAL_BEGIN, v11, "FullRebuild", "", buf, 2u);
     }
 
-    v14 = [v6 objectForKey:PLMomentGenerationShouldDeleteAllMomentsKey];
-    v15 = [v14 BOOLValue];
+    v14 = [optionsCopy objectForKey:PLMomentGenerationShouldDeleteAllMomentsKey];
+    bOOLValue = [v14 BOOLValue];
 
-    v16 = [(PLMomentGeneration *)self momentGenerationDataManager];
+    momentGenerationDataManager = [(PLMomentGeneration *)self momentGenerationDataManager];
     *buf = 0;
     v33 = buf;
     v34 = 0x3032000000;
@@ -2226,11 +2226,11 @@ void __72__PLMomentGeneration_rebuildAllHighlightsWithOptions_completionHandler_
     v27[1] = 3221225472;
     v27[2] = __69__PLMomentGeneration_rebuildAllMomentsWithOptions_completionHandler___block_invoke;
     v27[3] = &unk_1E7577898;
-    v31 = v15;
-    v17 = v16;
+    v31 = bOOLValue;
+    v17 = momentGenerationDataManager;
     v28 = v17;
     v30 = buf;
-    v29 = v6;
+    v29 = optionsCopy;
     [v17 performDataTransaction:v27 synchronously:1 completionHandler:0];
     if ([v17 wantsMomentReplayLogging])
     {
@@ -2246,7 +2246,7 @@ void __72__PLMomentGeneration_rebuildAllHighlightsWithOptions_completionHandler_
     v23 = v19;
     v25 = v11;
     v26 = Current;
-    v24 = v7;
+    v24 = handlerCopy;
     [(PLMomentGeneration *)self generateWithAssetInsertsAndUpdates:v18 assetDeletes:0 assetUpdatesForHighlights:0 momentUpdatesForHighlights:0 completionHandler:v22];
 
     _Block_object_dispose(buf, 8);
@@ -2255,7 +2255,7 @@ void __72__PLMomentGeneration_rebuildAllHighlightsWithOptions_completionHandler_
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_momentGenerationDataManager);
-    v21 = [WeakRetained isolationQueue];
+    isolationQueue = [WeakRetained isolationQueue];
     pl_dispatch_async();
   }
 }
@@ -2381,59 +2381,59 @@ uint64_t __69__PLMomentGeneration_rebuildAllMomentsWithOptions_completionHandler
   return result;
 }
 
-- (void)_runMomentAndHighlightGenerationForAssets:(id)a3 hiddenAssets:(id)a4 updatedAssetIDsForHighlights:(id)a5 updatedMomentIDsForHighlights:(id)a6 affectedMoments:(id)a7 highlightsWithDeletedMoments:(id)a8 sharedAssetContainerIncrementalChanges:(id)a9 insertedOrUpdatedMoments:(id *)a10
+- (void)_runMomentAndHighlightGenerationForAssets:(id)assets hiddenAssets:(id)hiddenAssets updatedAssetIDsForHighlights:(id)highlights updatedMomentIDsForHighlights:(id)forHighlights affectedMoments:(id)moments highlightsWithDeletedMoments:(id)deletedMoments sharedAssetContainerIncrementalChanges:(id)changes insertedOrUpdatedMoments:(id *)self0
 {
   v107 = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v17 = a4;
-  v82 = a5;
-  v81 = a6;
-  v18 = a7;
-  v79 = a8;
-  v19 = a9;
-  v20 = [(PLMomentGeneration *)self localCreationDateCreator];
-  v21 = [(PLMomentGeneration *)self frequentLocationManager];
+  assetsCopy = assets;
+  hiddenAssetsCopy = hiddenAssets;
+  highlightsCopy = highlights;
+  forHighlightsCopy = forHighlights;
+  momentsCopy = moments;
+  deletedMomentsCopy = deletedMoments;
+  changesCopy = changes;
+  localCreationDateCreator = [(PLMomentGeneration *)self localCreationDateCreator];
+  frequentLocationManager = [(PLMomentGeneration *)self frequentLocationManager];
   v22 = objc_autoreleasePoolPush();
   v23 = [PLAssetCollectionGenerator alloc];
-  v24 = [(PLMomentGeneration *)self momentGenerationDataManager];
-  v77 = v21;
-  v78 = v20;
-  v25 = [(PLAssetCollectionGenerator *)v23 initWithDataManager:v24 frequentLocationManager:v21 localCreationDateCreator:v20];
+  momentGenerationDataManager = [(PLMomentGeneration *)self momentGenerationDataManager];
+  v77 = frequentLocationManager;
+  v78 = localCreationDateCreator;
+  v25 = [(PLAssetCollectionGenerator *)v23 initWithDataManager:momentGenerationDataManager frequentLocationManager:frequentLocationManager localCreationDateCreator:localCreationDateCreator];
 
-  v26 = v16;
-  v80 = v18;
-  v27 = [(PLAssetCollectionGenerator *)v25 processMomentsWithAssets:v16 affectedMoments:v18];
+  v26 = assetsCopy;
+  v80 = momentsCopy;
+  v27 = [(PLAssetCollectionGenerator *)v25 processMomentsWithAssets:assetsCopy affectedMoments:momentsCopy];
 
   objc_autoreleasePoolPop(v22);
-  *a10 = [v27 insertedOrUpdatedMoments];
-  v28 = [(PLMomentGeneration *)self _highlightGenerator];
-  if (v28)
+  *updatedMoments = [v27 insertedOrUpdatedMoments];
+  _highlightGenerator = [(PLMomentGeneration *)self _highlightGenerator];
+  if (_highlightGenerator)
   {
     context = objc_autoreleasePoolPush();
-    v29 = [(PLMomentGeneration *)self momentGenerationDataManager];
-    v75 = v17;
-    v76 = v16;
-    [v28 beginGenerationWithAssets:v16 hiddenAssets:v17];
+    momentGenerationDataManager2 = [(PLMomentGeneration *)self momentGenerationDataManager];
+    v75 = hiddenAssetsCopy;
+    v76 = assetsCopy;
+    [_highlightGenerator beginGenerationWithAssets:assetsCopy hiddenAssets:hiddenAssetsCopy];
     v99[0] = MEMORY[0x1E69E9820];
     v99[1] = 3221225472;
     v99[2] = __245__PLMomentGeneration__runMomentAndHighlightGenerationForAssets_hiddenAssets_updatedAssetIDsForHighlights_updatedMomentIDsForHighlights_affectedMoments_highlightsWithDeletedMoments_sharedAssetContainerIncrementalChanges_insertedOrUpdatedMoments___block_invoke;
     v99[3] = &unk_1E7576A00;
-    v30 = v29;
+    v30 = momentGenerationDataManager2;
     v100 = v30;
-    v71 = v28;
+    v71 = _highlightGenerator;
     v101 = v71;
-    [v19 enumerateKeysAndObjectsUsingBlock:v99];
+    [changesCopy enumerateKeysAndObjectsUsingBlock:v99];
     v97[0] = MEMORY[0x1E69E9820];
     v97[1] = 3221225472;
     v97[2] = __245__PLMomentGeneration__runMomentAndHighlightGenerationForAssets_hiddenAssets_updatedAssetIDsForHighlights_updatedMomentIDsForHighlights_affectedMoments_highlightsWithDeletedMoments_sharedAssetContainerIncrementalChanges_insertedOrUpdatedMoments___block_invoke_2;
     v97[3] = &unk_1E7578478;
     v72 = v30;
     v98 = v72;
-    v74 = v19;
-    [v19 enumerateKeysAndObjectsUsingBlock:v97];
-    v31 = [(PLMomentGeneration *)self momentGenerationDataManager];
+    v74 = changesCopy;
+    [changesCopy enumerateKeysAndObjectsUsingBlock:v97];
+    momentGenerationDataManager3 = [(PLMomentGeneration *)self momentGenerationDataManager];
     v96 = 0;
-    v32 = [v31 momentsForAssetsWithUniqueIDs:v82 error:&v96];
+    v32 = [momentGenerationDataManager3 momentsForAssetsWithUniqueIDs:highlightsCopy error:&v96];
     v33 = v96;
     v34 = MEMORY[0x1E695E0F0];
     if (v32)
@@ -2448,9 +2448,9 @@ uint64_t __69__PLMomentGeneration_rebuildAllMomentsWithOptions_completionHandler
 
     v36 = v35;
 
-    v37 = [(PLMomentGeneration *)self momentGenerationDataManager];
+    momentGenerationDataManager4 = [(PLMomentGeneration *)self momentGenerationDataManager];
     v95 = v33;
-    v38 = [v37 momentsWithUniqueIDs:v81 error:&v95];
+    v38 = [momentGenerationDataManager4 momentsWithUniqueIDs:forHighlightsCopy error:&v95];
     v70 = v95;
 
     if (v38)
@@ -2471,8 +2471,8 @@ uint64_t __69__PLMomentGeneration_rebuildAllMomentsWithOptions_completionHandler
     v92 = 0u;
     v93 = 0u;
     v94 = 0u;
-    v42 = [v27 insertedOrUpdatedMoments];
-    v43 = [v42 countByEnumeratingWithState:&v91 objects:v104 count:16];
+    insertedOrUpdatedMoments = [v27 insertedOrUpdatedMoments];
+    v43 = [insertedOrUpdatedMoments countByEnumeratingWithState:&v91 objects:v104 count:16];
     if (v43)
     {
       v44 = v43;
@@ -2483,7 +2483,7 @@ uint64_t __69__PLMomentGeneration_rebuildAllMomentsWithOptions_completionHandler
         {
           if (*v92 != v45)
           {
-            objc_enumerationMutation(v42);
+            objc_enumerationMutation(insertedOrUpdatedMoments);
           }
 
           v47 = *(*(&v91 + 1) + 8 * i);
@@ -2500,7 +2500,7 @@ uint64_t __69__PLMomentGeneration_rebuildAllMomentsWithOptions_completionHandler
           [v48 addObject:v47];
         }
 
-        v44 = [v42 countByEnumeratingWithState:&v91 objects:v104 count:16];
+        v44 = [insertedOrUpdatedMoments countByEnumeratingWithState:&v91 objects:v104 count:16];
       }
 
       while (v44);
@@ -2584,31 +2584,31 @@ uint64_t __69__PLMomentGeneration_rebuildAllMomentsWithOptions_completionHandler
       while (v58);
     }
 
-    v21 = v77;
+    frequentLocationManager = v77;
     if ([v40 count] || objc_msgSend(v41, "count"))
     {
       [v77 invalidateCurrentFrequentLocations];
     }
 
-    v63 = v79;
-    [v71 registerHighlightsWithDeletedMoments:{v79, v69}];
+    v63 = deletedMomentsCopy;
+    [v71 registerHighlightsWithDeletedMoments:{deletedMomentsCopy, v69}];
     [v71 generateHighlightsForUpsertedMoments:v40 frequentLocationsDidChange:{objc_msgSend(v27, "frequentLocationsDidChange")}];
     [v71 finishGeneration];
 
     objc_autoreleasePoolPop(context);
-    v17 = v75;
+    hiddenAssetsCopy = v75;
     v26 = v76;
     v64 = v27;
-    v66 = v81;
-    v65 = v82;
-    v19 = v74;
+    v66 = forHighlightsCopy;
+    v65 = highlightsCopy;
+    changesCopy = v74;
   }
 
   else
   {
     v64 = v27;
-    v66 = v81;
-    v65 = v82;
+    v66 = forHighlightsCopy;
+    v65 = highlightsCopy;
     v67 = PLMomentsGetLog();
     if (os_log_type_enabled(v67, OS_LOG_TYPE_DEFAULT))
     {
@@ -2618,7 +2618,7 @@ uint64_t __69__PLMomentGeneration_rebuildAllMomentsWithOptions_completionHandler
       _os_log_impl(&dword_19BF1F000, v67, OS_LOG_TYPE_DEFAULT, "Skipping highlight generation on photoLibrary: %@", buf, 0xCu);
     }
 
-    v63 = v79;
+    v63 = deletedMomentsCopy;
   }
 }
 
@@ -2813,16 +2813,16 @@ LABEL_39:
 - (id)_highlightGenerator
 {
   v3 = MEMORY[0x1E69BF2A0];
-  v4 = [(PLPhotoLibraryBundle *)self->_libraryBundle libraryServicesManager];
-  LODWORD(v3) = [v3 shouldProcessHighlightsForWellKnownPhotoLibraryIdentifier:{objc_msgSend(v4, "wellKnownPhotoLibraryIdentifier")}];
+  libraryServicesManager = [(PLPhotoLibraryBundle *)self->_libraryBundle libraryServicesManager];
+  LODWORD(v3) = [v3 shouldProcessHighlightsForWellKnownPhotoLibraryIdentifier:{objc_msgSend(libraryServicesManager, "wellKnownPhotoLibraryIdentifier")}];
 
   if (v3)
   {
-    v5 = [(PLMomentGeneration *)self localCreationDateCreator];
-    v6 = [(PLMomentGeneration *)self frequentLocationManager];
+    localCreationDateCreator = [(PLMomentGeneration *)self localCreationDateCreator];
+    frequentLocationManager = [(PLMomentGeneration *)self frequentLocationManager];
     v7 = [PLPhotosHighlightGenerator alloc];
     WeakRetained = objc_loadWeakRetained(&self->_momentGenerationDataManager);
-    v9 = [(PLPhotosHighlightGenerator *)v7 initWithDataManager:WeakRetained frequentLocationManager:v6 localCreationDateCreator:v5 dateRangeTitleGenerator:self->_dateRangeTitleGenerator];
+    v9 = [(PLPhotosHighlightGenerator *)v7 initWithDataManager:WeakRetained frequentLocationManager:frequentLocationManager localCreationDateCreator:localCreationDateCreator dateRangeTitleGenerator:self->_dateRangeTitleGenerator];
   }
 
   else
@@ -2840,14 +2840,14 @@ LABEL_39:
   v5 = [(PLFrequentLocationManager *)v3 initWithMomentGenerationDataManager:WeakRetained];
 
   v6 = objc_loadWeakRetained(&self->_momentGenerationDataManager);
-  v7 = [v6 cameraIsActive];
+  cameraIsActive = [v6 cameraIsActive];
 
-  if (v7)
+  if (cameraIsActive)
   {
-    v8 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     v9 = objc_loadWeakRetained(&self->_momentGenerationDataManager);
-    v10 = [v8 dateByAddingTimeInterval:-15724800.0];
-    v11 = [v9 momentsBetweenDate:v10 andDate:v8 sorted:1 excludeExternal:1];
+    v10 = [date dateByAddingTimeInterval:-15724800.0];
+    v11 = [v9 momentsBetweenDate:v10 andDate:date sorted:1 excludeExternal:1];
   }
 
   else
@@ -2868,16 +2868,16 @@ LABEL_39:
 - (id)newLocalCreationDateCreator
 {
   v3 = [PLLocalCreationDateCreator alloc];
-  v4 = [(PLPhotoLibraryBundle *)self->_libraryBundle timeZoneLookup];
-  v5 = [(PLLocalCreationDateCreator *)v3 initWithTimeZoneLookup:v4];
+  timeZoneLookup = [(PLPhotoLibraryBundle *)self->_libraryBundle timeZoneLookup];
+  v5 = [(PLLocalCreationDateCreator *)v3 initWithTimeZoneLookup:timeZoneLookup];
 
   return v5;
 }
 
-- (void)_runIncrementalGenerationPassWithCompletionHandler:(id)a3
+- (void)_runIncrementalGenerationPassWithCompletionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = [(PLMomentGeneration *)self momentGenerationDataManager];
+  handlerCopy = handler;
+  momentGenerationDataManager = [(PLMomentGeneration *)self momentGenerationDataManager];
   v49[0] = 0;
   v49[1] = v49;
   v49[2] = 0x3032000000;
@@ -2887,7 +2887,7 @@ LABEL_39:
   v48[0] = 0;
   v48[1] = v48;
   v48[2] = 0x2020000000;
-  v48[3] = [v6 hardGenerationBatchSizeLimit];
+  v48[3] = [momentGenerationDataManager hardGenerationBatchSizeLimit];
   v7 = PLMomentGenerationGetLog();
   v8 = os_signpost_id_generate(v7);
   info = 0;
@@ -2926,9 +2926,9 @@ LABEL_39:
   v27[2] = __73__PLMomentGeneration__runIncrementalGenerationPassWithCompletionHandler___block_invoke;
   v27[3] = &unk_1E75769B0;
   v28 = v12;
-  v29 = self;
+  selfCopy = self;
   v31 = v48;
-  v13 = v6;
+  v13 = momentGenerationDataManager;
   v36 = v38;
   v37 = a2;
   v30 = v13;
@@ -2950,7 +2950,7 @@ LABEL_39:
   v14 = v28;
   v17 = v14;
   v25 = v8;
-  v15 = v5;
+  v15 = handlerCopy;
   v18 = v15;
   [v13 performDataTransaction:v27 synchronously:0 completionHandler:v16];
 
@@ -4004,19 +4004,19 @@ unint64_t __73__PLMomentGeneration__runIncrementalGenerationPassWithCompletionHa
   return result;
 }
 
-- (void)generateWithIncrementalDataCompletionHandler:(id)a3
+- (void)generateWithIncrementalDataCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (PLPlatformMomentsSupported())
   {
-    if (v4)
+    if (handlerCopy)
     {
       v7 = MEMORY[0x1E69E9820];
       v8 = 3221225472;
       v9 = __67__PLMomentGeneration_generateWithIncrementalDataCompletionHandler___block_invoke;
       v10 = &unk_1E7577C08;
-      v11 = self;
-      v12 = v4;
+      selfCopy = self;
+      v12 = handlerCopy;
       pl_dispatch_sync();
     }
 
@@ -4026,7 +4026,7 @@ unint64_t __73__PLMomentGeneration__runIncrementalGenerationPassWithCompletionHa
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_momentGenerationDataManager);
-    v6 = [WeakRetained isolationQueue];
+    isolationQueue = [WeakRetained isolationQueue];
     pl_dispatch_async();
   }
 }
@@ -4039,41 +4039,41 @@ void __67__PLMomentGeneration_generateWithIncrementalDataCompletionHandler___blo
   [v2 addObject:v3];
 }
 
-- (void)generateWithAssetInsertsAndUpdates:(id)a3 assetDeletes:(id)a4 assetUpdatesForHighlights:(id)a5 momentUpdatesForHighlights:(id)a6 completionHandler:(id)a7
+- (void)generateWithAssetInsertsAndUpdates:(id)updates assetDeletes:(id)deletes assetUpdatesForHighlights:(id)highlights momentUpdatesForHighlights:(id)forHighlights completionHandler:(id)handler
 {
-  v18 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (PLPlatformMomentsSupported() && ([v18 count] || objc_msgSend(v12, "count") || objc_msgSend(v13, "count") || objc_msgSend(v14, "count")))
+  updatesCopy = updates;
+  deletesCopy = deletes;
+  highlightsCopy = highlights;
+  forHighlightsCopy = forHighlights;
+  handlerCopy = handler;
+  if (PLPlatformMomentsSupported() && ([updatesCopy count] || objc_msgSend(deletesCopy, "count") || objc_msgSend(highlightsCopy, "count") || objc_msgSend(forHighlightsCopy, "count")))
   {
-    [(PLMomentGeneration *)self saveChangesForAssetInsertsAndUpdates:v18 assetDeletes:v12 assetUpdatesForHighlights:v13 momentUpdatesForHighlights:v14 sharedAssetContainerIncrementalChangesByAssetID:0];
-    [(PLMomentGeneration *)self generateWithIncrementalDataCompletionHandler:v15];
+    [(PLMomentGeneration *)self saveChangesForAssetInsertsAndUpdates:updatesCopy assetDeletes:deletesCopy assetUpdatesForHighlights:highlightsCopy momentUpdatesForHighlights:forHighlightsCopy sharedAssetContainerIncrementalChangesByAssetID:0];
+    [(PLMomentGeneration *)self generateWithIncrementalDataCompletionHandler:handlerCopy];
   }
 
-  else if (v15)
+  else if (handlerCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_momentGenerationDataManager);
-    v17 = [WeakRetained isolationQueue];
+    isolationQueue = [WeakRetained isolationQueue];
     pl_dispatch_async();
   }
 }
 
-- (void)saveChangesForAssetInsertsAndUpdates:(id)a3 assetDeletes:(id)a4 assetUpdatesForHighlights:(id)a5 momentUpdatesForHighlights:(id)a6 sharedAssetContainerIncrementalChangesByAssetID:(id)a7
+- (void)saveChangesForAssetInsertsAndUpdates:(id)updates assetDeletes:(id)deletes assetUpdatesForHighlights:(id)highlights momentUpdatesForHighlights:(id)forHighlights sharedAssetContainerIncrementalChangesByAssetID:(id)d
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (PLPlatformMomentsSupported() && ([v11 count] || objc_msgSend(v12, "count") || objc_msgSend(v13, "count") || objc_msgSend(v14, "count")))
+  updatesCopy = updates;
+  deletesCopy = deletes;
+  highlightsCopy = highlights;
+  forHighlightsCopy = forHighlights;
+  dCopy = d;
+  if (PLPlatformMomentsSupported() && ([updatesCopy count] || objc_msgSend(deletesCopy, "count") || objc_msgSend(highlightsCopy, "count") || objc_msgSend(forHighlightsCopy, "count")))
   {
-    v16 = v11;
-    v17 = v12;
-    v18 = v13;
-    v19 = v14;
-    v20 = v15;
+    v16 = updatesCopy;
+    v17 = deletesCopy;
+    v18 = highlightsCopy;
+    v19 = forHighlightsCopy;
+    v20 = dCopy;
     pl_dispatch_sync();
   }
 }
@@ -4111,16 +4111,16 @@ void __173__PLMomentGeneration_saveChangesForAssetInsertsAndUpdates_assetDeletes
   }
 }
 
-- (BOOL)_isAsset:(id)a3 identicalToAssetForMoments:(id)a4
+- (BOOL)_isAsset:(id)asset identicalToAssetForMoments:(id)moments
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 dateCreated];
-  v8 = [v6 dateCreated];
-  v9 = v8;
-  if (v7)
+  assetCopy = asset;
+  momentsCopy = moments;
+  dateCreated = [assetCopy dateCreated];
+  dateCreated2 = [momentsCopy dateCreated];
+  v9 = dateCreated2;
+  if (dateCreated)
   {
-    if (v8 && ([v7 isEqual:v8] & 1) != 0)
+    if (dateCreated2 && ([dateCreated isEqual:dateCreated2] & 1) != 0)
     {
       goto LABEL_4;
     }
@@ -4130,24 +4130,24 @@ LABEL_9:
     goto LABEL_12;
   }
 
-  if (v8)
+  if (dateCreated2)
   {
     goto LABEL_9;
   }
 
 LABEL_4:
-  v10 = [v5 location];
-  v11 = [v6 location];
-  v12 = v11;
-  v13 = (v10 | v11) == 0;
-  if (v10 && v11)
+  location = [assetCopy location];
+  location2 = [momentsCopy location];
+  v12 = location2;
+  v13 = (location | location2) == 0;
+  if (location && location2)
   {
-    [v10 coordinate];
+    [location coordinate];
     v15 = v14;
     [v12 coordinate];
     if (v15 == v16)
     {
-      [v10 coordinate];
+      [location coordinate];
       v18 = v17;
       [v12 coordinate];
       v13 = v18 == v19;
@@ -4163,16 +4163,16 @@ LABEL_12:
   return v13;
 }
 
-- (id)_newPublicGlobalUUIDsToAssetsMappingWithAssets:(id)a3
+- (id)_newPublicGlobalUUIDsToAssetsMappingWithAssets:(id)assets
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  assetsCopy = assets;
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = assetsCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -4190,10 +4190,10 @@ LABEL_12:
         v10 = *(*(&v13 + 1) + 8 * i);
         [v10 moment];
 
-        v11 = [v10 globalUUID];
-        if (v11)
+        globalUUID = [v10 globalUUID];
+        if (globalUUID)
         {
-          [v4 setObject:v10 forKey:v11];
+          [v4 setObject:v10 forKey:globalUUID];
         }
       }
 
@@ -4206,9 +4206,9 @@ LABEL_12:
   return v4;
 }
 
-- (void)_runIncrementalMomentGenerationIfItemsArePendingWithCompletion:(id)a3
+- (void)_runIncrementalMomentGenerationIfItemsArePendingWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v29[0] = 0;
   v29[1] = v29;
   v29[2] = 0x3032000000;
@@ -4224,14 +4224,14 @@ LABEL_12:
   v28 = v5;
   v6 = self->_incrementalMomentGenThrottle;
   WeakRetained = objc_loadWeakRetained(&self->_momentGenerationDataManager);
-  v8 = [WeakRetained isolationQueue];
+  isolationQueue = [WeakRetained isolationQueue];
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __85__PLMomentGeneration__runIncrementalMomentGenerationIfItemsArePendingWithCompletion___block_invoke;
   aBlock[3] = &unk_1E7578910;
   v23 = v29;
-  v9 = v8;
+  v9 = isolationQueue;
   v22 = v9;
   v10 = _Block_copy(aBlock);
   v11 = v10;
@@ -4249,7 +4249,7 @@ LABEL_12:
     v19 = v29;
     v15 = v6;
     v16 = v11;
-    v17 = v4;
+    v17 = completionCopy;
     [(PLMomentGeneration *)self _runIncrementalGenerationPassWithCompletionHandler:v14];
 
     objc_autoreleasePoolPop(v12);
@@ -4258,7 +4258,7 @@ LABEL_12:
   else
   {
     (*(v10 + 2))(v10);
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 
   _Block_object_dispose(&v25, 8);
@@ -4349,7 +4349,7 @@ void __85__PLMomentGeneration__runIncrementalMomentGenerationIfItemsArePendingWi
   [WeakRetained releaseMemoryIntensiveObjects];
 }
 
-- (BOOL)_hasWorkWorkRemainingWithCompletionBlocks:(id *)a3
+- (BOOL)_hasWorkWorkRemainingWithCompletionBlocks:(id *)blocks
 {
   v10 = 0;
   v11 = &v10;
@@ -4362,9 +4362,9 @@ void __85__PLMomentGeneration__runIncrementalMomentGenerationIfItemsArePendingWi
   v8 = 0x2020000000;
   v9 = 0;
   pl_dispatch_sync();
-  if (a3)
+  if (blocks)
   {
-    *a3 = v11[5];
+    *blocks = v11[5];
   }
 
   v4 = *(v7 + 24);
@@ -4398,11 +4398,11 @@ uint64_t __64__PLMomentGeneration__hasWorkWorkRemainingWithCompletionBlocks___bl
   return result;
 }
 
-- (PLMomentGeneration)initWithMomentGenerationDataManager:(id)a3 bundle:(id)a4 locale:(id)a5
+- (PLMomentGeneration)initWithMomentGenerationDataManager:(id)manager bundle:(id)bundle locale:(id)locale
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  managerCopy = manager;
+  bundleCopy = bundle;
+  localeCopy = locale;
   v49.receiver = self;
   v49.super_class = PLMomentGeneration;
   v11 = [(PLMomentGeneration *)&v49 init];
@@ -4410,7 +4410,7 @@ uint64_t __64__PLMomentGeneration__hasWorkWorkRemainingWithCompletionBlocks___bl
   {
     if (v11)
     {
-      objc_storeWeak(&v11->_momentGenerationDataManager, v8);
+      objc_storeWeak(&v11->_momentGenerationDataManager, managerCopy);
       v12 = objc_alloc_init(MEMORY[0x1E695DFA0]);
       pendingInsertsAndUpdates = v11->_pendingInsertsAndUpdates;
       v11->_pendingInsertsAndUpdates = v12;
@@ -4439,10 +4439,10 @@ uint64_t __64__PLMomentGeneration__hasWorkWorkRemainingWithCompletionBlocks___bl
       incrementalGenerationStateQueue = v11->_incrementalGenerationStateQueue;
       v11->_incrementalGenerationStateQueue = v24;
 
-      objc_storeStrong(&v11->_libraryBundle, a4);
-      if (v10)
+      objc_storeStrong(&v11->_libraryBundle, bundle);
+      if (localeCopy)
       {
-        v26 = [[PLDateRangeTitleGenerator alloc] initWithLocale:v10];
+        v26 = [[PLDateRangeTitleGenerator alloc] initWithLocale:localeCopy];
       }
 
       else
@@ -4481,14 +4481,14 @@ uint64_t __64__PLMomentGeneration__hasWorkWorkRemainingWithCompletionBlocks___bl
 
       objc_initWeak(&location, v11);
       v36 = [PLMomentGenerationThrottle alloc];
-      v37 = [v8 isLightweightMigrationManager];
-      v38 = [v8 isolationQueue];
+      isLightweightMigrationManager = [managerCopy isLightweightMigrationManager];
+      isolationQueue = [managerCopy isolationQueue];
       v42[0] = MEMORY[0x1E69E9820];
       v42[1] = 3221225472;
       v42[2] = __72__PLMomentGeneration_initWithMomentGenerationDataManager_bundle_locale___block_invoke_3;
       v42[3] = &unk_1E7576878;
       objc_copyWeak(&v43, &location);
-      v39 = [(PLMomentGenerationThrottle *)v36 initWithName:@"MomentGeneration" canDelayAnyQOS:0 singleThreadedMode:v37 timeProvider:0 targetQueue:v38 target:v42];
+      v39 = [(PLMomentGenerationThrottle *)v36 initWithName:@"MomentGeneration" canDelayAnyQOS:0 singleThreadedMode:isLightweightMigrationManager timeProvider:0 targetQueue:isolationQueue target:v42];
       incrementalMomentGenThrottle = v11->_incrementalMomentGenThrottle;
       v11->_incrementalMomentGenThrottle = v39;
 
@@ -4582,26 +4582,26 @@ void __72__PLMomentGeneration_initWithMomentGenerationDataManager_bundle_locale_
   }
 }
 
-+ (id)dateIntervalsAroundSortedDates:(id)a3 minimumIntervalDuration:(double)a4
++ (id)dateIntervalsAroundSortedDates:(id)dates minimumIntervalDuration:(double)duration
 {
   v33 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if ([v5 count])
+  datesCopy = dates;
+  if ([datesCopy count])
   {
-    v6 = [v5 firstObject];
-    v7 = a4 * 0.5;
-    v27 = [MEMORY[0x1E695DF70] array];
-    v8 = -(a4 * 0.5);
-    v9 = [v6 dateByAddingTimeInterval:v8];
-    v25 = v6;
-    v10 = [v6 dateByAddingTimeInterval:v7];
+    firstObject = [datesCopy firstObject];
+    v7 = duration * 0.5;
+    array = [MEMORY[0x1E695DF70] array];
+    v8 = -(duration * 0.5);
+    v9 = [firstObject dateByAddingTimeInterval:v8];
+    v25 = firstObject;
+    v10 = [firstObject dateByAddingTimeInterval:v7];
     v11 = [v10 dateByAddingTimeInterval:v7];
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v26 = v5;
-    v12 = v5;
+    v26 = datesCopy;
+    v12 = datesCopy;
     v13 = [v12 countByEnumeratingWithState:&v28 objects:v32 count:16];
     if (v13)
     {
@@ -4623,7 +4623,7 @@ void __72__PLMomentGeneration_initWithMomentGenerationDataManager_bundle_locale_
           if ([v18 compare:v19] == -1)
           {
             v20 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:v9 endDate:v17];
-            [v27 addObject:v20];
+            [array addObject:v20];
             v21 = [v19 dateByAddingTimeInterval:v8];
 
             v9 = v21;
@@ -4646,10 +4646,10 @@ void __72__PLMomentGeneration_initWithMomentGenerationDataManager_bundle_locale_
     }
 
     v22 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:v9 endDate:v10];
-    [v27 addObject:v22];
-    v23 = v27;
+    [array addObject:v22];
+    v23 = array;
 
-    v5 = v26;
+    datesCopy = v26;
   }
 
   else

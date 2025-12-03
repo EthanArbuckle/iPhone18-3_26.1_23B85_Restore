@@ -4,13 +4,13 @@
 - (HMDWACScannerDelegate)delegate;
 - (void)backoff;
 - (void)resume;
-- (void)setDelegate:(id)a3 queue:(id)a4;
+- (void)setDelegate:(id)delegate queue:(id)queue;
 - (void)start;
-- (void)startDiscoveringAirPlayAccessoriesWithBrowser:(id)a3;
+- (void)startDiscoveringAirPlayAccessoriesWithBrowser:(id)browser;
 - (void)stop;
-- (void)wacBrowser:(id)a3 didFindAirPlayDevice:(id)a4;
-- (void)wacBrowser:(id)a3 didRemoveAirPlayDevice:(id)a4;
-- (void)wacBrowser:(id)a3 didUpdateAirPlayDevice:(id)a4;
+- (void)wacBrowser:(id)browser didFindAirPlayDevice:(id)device;
+- (void)wacBrowser:(id)browser didRemoveAirPlayDevice:(id)device;
+- (void)wacBrowser:(id)browser didUpdateAirPlayDevice:(id)device;
 @end
 
 @implementation HMDWACScanner
@@ -22,17 +22,17 @@
   return WeakRetained;
 }
 
-- (void)wacBrowser:(id)a3 didUpdateAirPlayDevice:(id)a4
+- (void)wacBrowser:(id)browser didUpdateAirPlayDevice:(id)device
 {
-  v5 = a4;
+  deviceCopy = device;
   dispatchQueue = self->_dispatchQueue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __51__HMDWACScanner_wacBrowser_didUpdateAirPlayDevice___block_invoke;
   v8[3] = &unk_2797359B0;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = deviceCopy;
+  v7 = deviceCopy;
   dispatch_async(dispatchQueue, v8);
 }
 
@@ -78,17 +78,17 @@ void __51__HMDWACScanner_wacBrowser_didUpdateAirPlayDevice___block_invoke(uint64
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)wacBrowser:(id)a3 didRemoveAirPlayDevice:(id)a4
+- (void)wacBrowser:(id)browser didRemoveAirPlayDevice:(id)device
 {
-  v5 = a4;
+  deviceCopy = device;
   dispatchQueue = self->_dispatchQueue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __51__HMDWACScanner_wacBrowser_didRemoveAirPlayDevice___block_invoke;
   v8[3] = &unk_2797359B0;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = deviceCopy;
+  v7 = deviceCopy;
   dispatch_async(dispatchQueue, v8);
 }
 
@@ -134,17 +134,17 @@ void __51__HMDWACScanner_wacBrowser_didRemoveAirPlayDevice___block_invoke(uint64
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)wacBrowser:(id)a3 didFindAirPlayDevice:(id)a4
+- (void)wacBrowser:(id)browser didFindAirPlayDevice:(id)device
 {
-  v5 = a4;
+  deviceCopy = device;
   dispatchQueue = self->_dispatchQueue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __49__HMDWACScanner_wacBrowser_didFindAirPlayDevice___block_invoke;
   v8[3] = &unk_2797359B0;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = deviceCopy;
+  v7 = deviceCopy;
   dispatch_async(dispatchQueue, v8);
 }
 
@@ -261,17 +261,17 @@ void __21__HMDWACScanner_stop__block_invoke(uint64_t a1)
   dispatch_sync(dispatchQueue, block);
 }
 
-- (void)startDiscoveringAirPlayAccessoriesWithBrowser:(id)a3
+- (void)startDiscoveringAirPlayAccessoriesWithBrowser:(id)browser
 {
-  v4 = a3;
+  browserCopy = browser;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __63__HMDWACScanner_startDiscoveringAirPlayAccessoriesWithBrowser___block_invoke;
   v7[3] = &unk_2797359B0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = browserCopy;
+  selfCopy = self;
+  v6 = browserCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -351,20 +351,20 @@ void __22__HMDWACScanner_start__block_invoke(uint64_t a1)
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setDelegate:(id)a3 queue:(id)a4
+- (void)setDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  queueCopy = queue;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __35__HMDWACScanner_setDelegate_queue___block_invoke;
   block[3] = &unk_279734960;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = delegateCopy;
+  v13 = queueCopy;
+  v9 = queueCopy;
+  v10 = delegateCopy;
   dispatch_async(dispatchQueue, block);
 }
 

@@ -1,27 +1,27 @@
 @interface PLKQueue
-- (PLKQueue)initWithPath:(id)a3 withDispatchQueue:(id)a4 withBlock:(id)a5;
-- (void)setEnabled:(BOOL)a3;
+- (PLKQueue)initWithPath:(id)path withDispatchQueue:(id)queue withBlock:(id)block;
+- (void)setEnabled:(BOOL)enabled;
 @end
 
 @implementation PLKQueue
 
-- (PLKQueue)initWithPath:(id)a3 withDispatchQueue:(id)a4 withBlock:(id)a5
+- (PLKQueue)initWithPath:(id)path withDispatchQueue:(id)queue withBlock:(id)block
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  pathCopy = path;
+  queueCopy = queue;
+  blockCopy = block;
   v17.receiver = self;
   v17.super_class = PLKQueue;
   v12 = [(PLKQueue *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_path, a3);
-    objc_storeStrong(&v13->_dispatchQueue, a4);
+    objc_storeStrong(&v12->_path, path);
+    objc_storeStrong(&v13->_dispatchQueue, queue);
     *&v13->_kQueue = -1;
     v13->_kqueueDescriptorSource = 0;
     v13->_kqueueDescriptorRef = 0;
-    v14 = MEMORY[0x1DA71B0D0](v11);
+    v14 = MEMORY[0x1DA71B0D0](blockCopy);
     kQueueBlock = v13->_kQueueBlock;
     v13->_kQueueBlock = v14;
   }
@@ -29,13 +29,13 @@
   return v13;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v70 = *MEMORY[0x1E69E9840];
-  v4 = self;
-  objc_sync_enter(v4);
-  v4->_enabled = v3;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_enabled = enabledCopy;
   if (+[PLDefaults debugEnabled])
   {
     v5 = objc_opt_class();
@@ -56,9 +56,9 @@
       v8 = [v6 stringWithFormat:@"PLKQueue.setEnabled: enabled=%@", v7];
 
       v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Utilities/PLKQueue.m"];
-      v10 = [v9 lastPathComponent];
+      lastPathComponent = [v9 lastPathComponent];
       v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLKQueue setEnabled:]"];
-      [PLCoreStorage logMessage:v8 fromFile:v10 fromFunction:v11 fromLineNumber:53];
+      [PLCoreStorage logMessage:v8 fromFile:lastPathComponent fromFunction:v11 fromLineNumber:53];
 
       v12 = PLLogCommon();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -68,27 +68,27 @@
     }
   }
 
-  if (v3)
+  if (enabledCopy)
   {
-    if ([(PLKQueue *)v4 kQueue]!= -1)
+    if ([(PLKQueue *)selfCopy kQueue]!= -1)
     {
       goto LABEL_53;
     }
 
-    [(PLKQueue *)v4 setFileDescriptor:0xFFFFFFFFLL];
+    [(PLKQueue *)selfCopy setFileDescriptor:0xFFFFFFFFLL];
     for (i = 6; i > 1; --i)
     {
-      if ([(PLKQueue *)v4 fileDescriptor]> 0)
+      if ([(PLKQueue *)selfCopy fileDescriptor]> 0)
       {
         break;
       }
 
       *__error() = 0;
-      v20 = [(PLKQueue *)v4 path];
-      v21 = v20;
-      -[PLKQueue setFileDescriptor:](v4, "setFileDescriptor:", open([v20 fileSystemRepresentation], 0x8000));
+      path = [(PLKQueue *)selfCopy path];
+      v21 = path;
+      -[PLKQueue setFileDescriptor:](selfCopy, "setFileDescriptor:", open([path fileSystemRepresentation], 0x8000));
 
-      if ([(PLKQueue *)v4 fileDescriptor]<= 0)
+      if ([(PLKQueue *)selfCopy fileDescriptor]<= 0)
       {
         if (+[PLDefaults debugEnabled])
         {
@@ -106,14 +106,14 @@
           if (setEnabled__classDebugEnabled_15 == 1)
           {
             v23 = MEMORY[0x1E696AEC0];
-            v24 = [(PLKQueue *)v4 fileDescriptor];
+            fileDescriptor = [(PLKQueue *)selfCopy fileDescriptor];
             v25 = *__error();
             v26 = __error();
-            v27 = [v23 stringWithFormat:@"PLKQueue.enabled error! fileDescriptor=%d errno=%d-%s", v24, v25, strerror(*v26)];
+            v27 = [v23 stringWithFormat:@"PLKQueue.enabled error! fileDescriptor=%d errno=%d-%s", fileDescriptor, v25, strerror(*v26)];
             v28 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Utilities/PLKQueue.m"];
-            v29 = [v28 lastPathComponent];
+            lastPathComponent2 = [v28 lastPathComponent];
             v30 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLKQueue setEnabled:]"];
-            [PLCoreStorage logMessage:v27 fromFile:v29 fromFunction:v30 fromLineNumber:63];
+            [PLCoreStorage logMessage:v27 fromFile:lastPathComponent2 fromFunction:v30 fromLineNumber:63];
 
             v31 = PLLogCommon();
             if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
@@ -129,7 +129,7 @@
       }
     }
 
-    if ([(PLKQueue *)v4 fileDescriptor]< 1)
+    if ([(PLKQueue *)selfCopy fileDescriptor]< 1)
     {
       v62 = "self.fileDescriptor > 0";
       v63 = 68;
@@ -139,14 +139,14 @@
     {
       for (j = 6; j > 1; --j)
       {
-        if ([(PLKQueue *)v4 kQueue]> 0)
+        if ([(PLKQueue *)selfCopy kQueue]> 0)
         {
           break;
         }
 
         *__error() = 0;
-        [(PLKQueue *)v4 setKQueue:kqueue()];
-        if ([(PLKQueue *)v4 kQueue]<= 0)
+        [(PLKQueue *)selfCopy setKQueue:kqueue()];
+        if ([(PLKQueue *)selfCopy kQueue]<= 0)
         {
           if (+[PLDefaults debugEnabled])
           {
@@ -164,14 +164,14 @@
             if (setEnabled__classDebugEnabled_23 == 1)
             {
               v36 = MEMORY[0x1E696AEC0];
-              v37 = [(PLKQueue *)v4 kQueue];
+              kQueue = [(PLKQueue *)selfCopy kQueue];
               v38 = *__error();
               v39 = __error();
-              v40 = [v36 stringWithFormat:@"PLKQueue.enabled error! kQueue=%d errno=%d-%s", v37, v38, strerror(*v39)];
+              v40 = [v36 stringWithFormat:@"PLKQueue.enabled error! kQueue=%d errno=%d-%s", kQueue, v38, strerror(*v39)];
               v41 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Utilities/PLKQueue.m"];
-              v42 = [v41 lastPathComponent];
+              lastPathComponent3 = [v41 lastPathComponent];
               v43 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLKQueue setEnabled:]"];
-              [PLCoreStorage logMessage:v40 fromFile:v42 fromFunction:v43 fromLineNumber:75];
+              [PLCoreStorage logMessage:v40 fromFile:lastPathComponent3 fromFunction:v43 fromLineNumber:75];
 
               v44 = PLLogCommon();
               if (os_log_type_enabled(v44, OS_LOG_TYPE_DEBUG))
@@ -187,13 +187,13 @@
         }
       }
 
-      if ([(PLKQueue *)v4 kQueue]> 0)
+      if ([(PLKQueue *)selfCopy kQueue]> 0)
       {
-        changelist.ident = [(PLKQueue *)v4 fileDescriptor];
+        changelist.ident = [(PLKQueue *)selfCopy fileDescriptor];
         *&changelist.filter = 0x7F0025FFFCLL;
         changelist.data = 0;
-        changelist.udata = &v4->_fileDescriptor;
-        if (kevent([(PLKQueue *)v4 kQueue], &changelist, 1, 0, 0, 0) == -1)
+        changelist.udata = &selfCopy->_fileDescriptor;
+        if (kevent([(PLKQueue *)selfCopy kQueue], &changelist, 1, 0, 0, 0) == -1)
         {
           if (+[PLDefaults debugEnabled])
           {
@@ -212,9 +212,9 @@
             {
               v46 = [MEMORY[0x1E696AEC0] stringWithFormat:@"unable to setup kQueue"];
               v47 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Utilities/PLKQueue.m"];
-              v48 = [v47 lastPathComponent];
+              lastPathComponent4 = [v47 lastPathComponent];
               v49 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLKQueue setEnabled:]"];
-              [PLCoreStorage logMessage:v46 fromFile:v48 fromFunction:v49 fromLineNumber:89];
+              [PLCoreStorage logMessage:v46 fromFile:lastPathComponent4 fromFunction:v49 fromLineNumber:89];
 
               v50 = PLLogCommon();
               if (os_log_type_enabled(v50, OS_LOG_TYPE_DEBUG))
@@ -229,15 +229,15 @@
 
         buf.version = 0;
         memset(&buf.retain, 0, 24);
-        buf.info = v4;
-        v57 = [(PLKQueue *)v4 kQueue];
+        buf.info = selfCopy;
+        kQueue2 = [(PLKQueue *)selfCopy kQueue];
         v58 = *MEMORY[0x1E695E480];
-        [(PLKQueue *)v4 setKqueueDescriptorRef:CFFileDescriptorCreate(*MEMORY[0x1E695E480], v57, 1u, kQueueEvent, &buf)];
-        CFFileDescriptorEnableCallBacks([(PLKQueue *)v4 kqueueDescriptorRef], 1uLL);
-        [(PLKQueue *)v4 setKqueueDescriptorSource:CFFileDescriptorCreateRunLoopSource(v58, [(PLKQueue *)v4 kqueueDescriptorRef], 0)];
+        [(PLKQueue *)selfCopy setKqueueDescriptorRef:CFFileDescriptorCreate(*MEMORY[0x1E695E480], kQueue2, 1u, kQueueEvent, &buf)];
+        CFFileDescriptorEnableCallBacks([(PLKQueue *)selfCopy kqueueDescriptorRef], 1uLL);
+        [(PLKQueue *)selfCopy setKqueueDescriptorSource:CFFileDescriptorCreateRunLoopSource(v58, [(PLKQueue *)selfCopy kqueueDescriptorRef], 0)];
         Main = CFRunLoopGetMain();
-        v60 = [(PLKQueue *)v4 kqueueDescriptorSource];
-        CFRunLoopAddSource(Main, v60, *MEMORY[0x1E695E8E0]);
+        kqueueDescriptorSource = [(PLKQueue *)selfCopy kqueueDescriptorSource];
+        CFRunLoopAddSource(Main, kqueueDescriptorSource, *MEMORY[0x1E695E8E0]);
         goto LABEL_53;
       }
 
@@ -248,31 +248,31 @@
     __assert_rtn("[PLKQueue setEnabled:]", "PLKQueue.m", v63, v62);
   }
 
-  if ([(PLKQueue *)v4 kqueueDescriptorSource])
+  if ([(PLKQueue *)selfCopy kqueueDescriptorSource])
   {
     v32 = CFRunLoopGetMain();
-    v33 = [(PLKQueue *)v4 kqueueDescriptorSource];
-    CFRunLoopRemoveSource(v32, v33, *MEMORY[0x1E695E8E0]);
-    CFRelease([(PLKQueue *)v4 kqueueDescriptorSource]);
-    [(PLKQueue *)v4 setKqueueDescriptorSource:0];
+    kqueueDescriptorSource2 = [(PLKQueue *)selfCopy kqueueDescriptorSource];
+    CFRunLoopRemoveSource(v32, kqueueDescriptorSource2, *MEMORY[0x1E695E8E0]);
+    CFRelease([(PLKQueue *)selfCopy kqueueDescriptorSource]);
+    [(PLKQueue *)selfCopy setKqueueDescriptorSource:0];
   }
 
-  if ([(PLKQueue *)v4 kqueueDescriptorRef])
+  if ([(PLKQueue *)selfCopy kqueueDescriptorRef])
   {
-    CFFileDescriptorInvalidate([(PLKQueue *)v4 kqueueDescriptorRef]);
-    CFRelease([(PLKQueue *)v4 kqueueDescriptorRef]);
-    [(PLKQueue *)v4 setKqueueDescriptorRef:0];
-    [(PLKQueue *)v4 setKQueue:0xFFFFFFFFLL];
+    CFFileDescriptorInvalidate([(PLKQueue *)selfCopy kqueueDescriptorRef]);
+    CFRelease([(PLKQueue *)selfCopy kqueueDescriptorRef]);
+    [(PLKQueue *)selfCopy setKqueueDescriptorRef:0];
+    [(PLKQueue *)selfCopy setKQueue:0xFFFFFFFFLL];
   }
 
-  if ([(PLKQueue *)v4 fileDescriptor]!= -1)
+  if ([(PLKQueue *)selfCopy fileDescriptor]!= -1)
   {
-    close([(PLKQueue *)v4 fileDescriptor]);
-    [(PLKQueue *)v4 setFileDescriptor:0xFFFFFFFFLL];
+    close([(PLKQueue *)selfCopy fileDescriptor]);
+    [(PLKQueue *)selfCopy setFileDescriptor:0xFFFFFFFFLL];
   }
 
 LABEL_53:
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   v61 = *MEMORY[0x1E69E9840];
 }

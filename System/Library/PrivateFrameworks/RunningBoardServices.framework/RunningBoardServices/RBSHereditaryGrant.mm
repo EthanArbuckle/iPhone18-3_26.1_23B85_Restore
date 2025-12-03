@@ -1,14 +1,14 @@
 @interface RBSHereditaryGrant
-+ (id)grantWithNamespace:(id)a3 endowment:(id)a4 attributes:(id)a5;
-+ (id)grantWithNamespace:(id)a3 sourceEnvironment:(id)a4 attributes:(id)a5;
-+ (id)grantWithNamespace:(id)a3 sourceEnvironment:(id)a4 endowment:(id)a5 attributes:(id)a6;
-- (BOOL)isEqual:(id)a3;
-- (RBSHereditaryGrant)initWithRBSXPCCoder:(id)a3;
++ (id)grantWithNamespace:(id)namespace endowment:(id)endowment attributes:(id)attributes;
++ (id)grantWithNamespace:(id)namespace sourceEnvironment:(id)environment attributes:(id)attributes;
++ (id)grantWithNamespace:(id)namespace sourceEnvironment:(id)environment endowment:(id)endowment attributes:(id)attributes;
+- (BOOL)isEqual:(id)equal;
+- (RBSHereditaryGrant)initWithRBSXPCCoder:(id)coder;
 - (id)debugDescription;
 - (id)description;
 - (unint64_t)hash;
-- (void)_initWithNamespace:(void *)a3 sourceEnvironment:(void *)a4 endowment:(void *)a5 attributes:;
-- (void)encodeWithRBSXPCCoder:(id)a3;
+- (void)_initWithNamespace:(void *)namespace sourceEnvironment:(void *)environment endowment:(void *)endowment attributes:;
+- (void)encodeWithRBSXPCCoder:(id)coder;
 @end
 
 @implementation RBSHereditaryGrant
@@ -44,36 +44,36 @@
   return v4 ^ [(NSString *)self->_sourceEnvironment hash];
 }
 
-+ (id)grantWithNamespace:(id)a3 endowment:(id)a4 attributes:(id)a5
++ (id)grantWithNamespace:(id)namespace endowment:(id)endowment attributes:(id)attributes
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[RBSHereditaryGrant alloc] _initWithNamespace:v9 sourceEnvironment:0 endowment:v8 attributes:v7];
+  attributesCopy = attributes;
+  endowmentCopy = endowment;
+  namespaceCopy = namespace;
+  v10 = [[RBSHereditaryGrant alloc] _initWithNamespace:namespaceCopy sourceEnvironment:0 endowment:endowmentCopy attributes:attributesCopy];
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v13.receiver = self;
   v13.super_class = RBSHereditaryGrant;
   v11 = 0;
-  if ([(RBSAttribute *)&v13 isEqual:v4])
+  if ([(RBSAttribute *)&v13 isEqual:equalCopy])
   {
     endowmentNamespace = self->_endowmentNamespace;
-    if (endowmentNamespace == v4[1] || [(NSString *)endowmentNamespace isEqual:?])
+    if (endowmentNamespace == equalCopy[1] || [(NSString *)endowmentNamespace isEqual:?])
     {
       sourceEnvironment = self->_sourceEnvironment;
-      if (sourceEnvironment == v4[2] || [(NSString *)sourceEnvironment isEqualToString:?])
+      if (sourceEnvironment == equalCopy[2] || [(NSString *)sourceEnvironment isEqualToString:?])
       {
         encodedEndowment = self->_encodedEndowment;
-        v8 = v4[3];
+        v8 = equalCopy[3];
         if (encodedEndowment == v8 || (encodedEndowment ? (v9 = v8 == 0) : (v9 = 1), !v9))
         {
           attributes = self->_attributes;
-          if (attributes == v4[4] || [(NSArray *)attributes isEqualToArray:?])
+          if (attributes == equalCopy[4] || [(NSArray *)attributes isEqualToArray:?])
           {
             v11 = 1;
           }
@@ -149,34 +149,34 @@
   return v14;
 }
 
-- (void)encodeWithRBSXPCCoder:(id)a3
+- (void)encodeWithRBSXPCCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = RBSHereditaryGrant;
-  v4 = a3;
-  [(RBSAttribute *)&v6 encodeWithRBSXPCCoder:v4];
-  [v4 encodeObject:self->_endowmentNamespace forKey:{@"_endowmentNamespace", v6.receiver, v6.super_class}];
-  [v4 encodeObject:self->_sourceEnvironment forKey:@"_sourceEnvironment"];
-  [v4 encodeObject:self->_attributes forKey:@"_attributes"];
+  coderCopy = coder;
+  [(RBSAttribute *)&v6 encodeWithRBSXPCCoder:coderCopy];
+  [coderCopy encodeObject:self->_endowmentNamespace forKey:{@"_endowmentNamespace", v6.receiver, v6.super_class}];
+  [coderCopy encodeObject:self->_sourceEnvironment forKey:@"_sourceEnvironment"];
+  [coderCopy encodeObject:self->_attributes forKey:@"_attributes"];
   v5 = RBSXPCPackObject(self->_encodedEndowment);
-  [v4 encodeXPCObject:v5 forKey:@"_encodedEndowment"];
+  [coderCopy encodeXPCObject:v5 forKey:@"_encodedEndowment"];
 }
 
-- (RBSHereditaryGrant)initWithRBSXPCCoder:(id)a3
+- (RBSHereditaryGrant)initWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeStringForKey:@"_endowmentNamespace"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeStringForKey:@"_endowmentNamespace"];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_sourceEnvironment"];
-    v7 = [v4 decodeXPCObjectOfType:MEMORY[0x1E69E9E80] forKey:@"_encodedEndowment"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_sourceEnvironment"];
+    v7 = [coderCopy decodeXPCObjectOfType:MEMORY[0x1E69E9E80] forKey:@"_encodedEndowment"];
     v8 = RBSXPCUnpackObject(v7);
 
     if (v6 | v8)
     {
       v17.receiver = self;
       v17.super_class = RBSHereditaryGrant;
-      v11 = [(RBSAttribute *)&v17 initWithRBSXPCCoder:v4];
+      v11 = [(RBSAttribute *)&v17 initWithRBSXPCCoder:coderCopy];
       v12 = v11;
       if (v11)
       {
@@ -184,13 +184,13 @@
         objc_storeStrong(&v12->_sourceEnvironment, v6);
         objc_storeStrong(&v12->_encodedEndowment, v8);
         v13 = objc_opt_class();
-        v14 = [v4 decodeCollectionOfClass:v13 containingClass:objc_opt_class() forKey:@"_attributes"];
+        v14 = [coderCopy decodeCollectionOfClass:v13 containingClass:objc_opt_class() forKey:@"_attributes"];
         attributes = v12->_attributes;
         v12->_attributes = v14;
       }
 
       self = v12;
-      v10 = self;
+      selfCopy = self;
     }
 
     else
@@ -201,7 +201,7 @@
         [(RBSHereditaryGrant *)self initWithRBSXPCCoder:v9];
       }
 
-      v10 = 0;
+      selfCopy = 0;
     }
   }
 
@@ -213,79 +213,79 @@
       [(RBSHereditaryGrant *)self initWithRBSXPCCoder:v6];
     }
 
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (void)_initWithNamespace:(void *)a3 sourceEnvironment:(void *)a4 endowment:(void *)a5 attributes:
+- (void)_initWithNamespace:(void *)namespace sourceEnvironment:(void *)environment endowment:(void *)endowment attributes:
 {
   v10 = a2;
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (a1)
+  namespaceCopy = namespace;
+  environmentCopy = environment;
+  endowmentCopy = endowment;
+  if (self)
   {
     if (!v10)
     {
-      v22 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v22 handleFailureInMethod:sel__initWithNamespace_sourceEnvironment_endowment_attributes_ object:a1 file:@"RBSHereditaryGrant.m" lineNumber:133 description:{@"Invalid parameter not satisfying: %@", @"endowmentNamespace"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__initWithNamespace_sourceEnvironment_endowment_attributes_ object:self file:@"RBSHereditaryGrant.m" lineNumber:133 description:{@"Invalid parameter not satisfying: %@", @"endowmentNamespace"}];
     }
 
-    if (!(v11 | v12))
+    if (!(namespaceCopy | environmentCopy))
     {
-      v23 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v23 handleFailureInMethod:sel__initWithNamespace_sourceEnvironment_endowment_attributes_ object:a1 file:@"RBSHereditaryGrant.m" lineNumber:134 description:@"Missing source environment or endowment"];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:sel__initWithNamespace_sourceEnvironment_endowment_attributes_ object:self file:@"RBSHereditaryGrant.m" lineNumber:134 description:@"Missing source environment or endowment"];
     }
 
-    v25.receiver = a1;
+    v25.receiver = self;
     v25.super_class = RBSHereditaryGrant;
     v14 = objc_msgSendSuper2(&v25, sel__init);
-    a1 = v14;
+    self = v14;
     if (v14)
     {
       objc_storeStrong(v14 + 1, a2);
-      v15 = [v11 copy];
-      v16 = a1[2];
-      a1[2] = v15;
+      v15 = [namespaceCopy copy];
+      v16 = self[2];
+      self[2] = v15;
 
-      v17 = RBSEndowmentEncode(v12);
-      v18 = a1[3];
-      a1[3] = v17;
+      v17 = RBSEndowmentEncode(environmentCopy);
+      v18 = self[3];
+      self[3] = v17;
 
-      v19 = [v13 copy];
-      v20 = a1[4];
-      a1[4] = v19;
+      v19 = [endowmentCopy copy];
+      v20 = self[4];
+      self[4] = v19;
 
-      if ((v12 == 0) != (a1[3] == 0))
+      if ((environmentCopy == 0) != (self[3] == 0))
       {
-        v24 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v24 handleFailureInMethod:sel__initWithNamespace_sourceEnvironment_endowment_attributes_ object:a1 file:@"RBSHereditaryGrant.m" lineNumber:142 description:{@"endowment encode failed : %@", v12}];
+        currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler3 handleFailureInMethod:sel__initWithNamespace_sourceEnvironment_endowment_attributes_ object:self file:@"RBSHereditaryGrant.m" lineNumber:142 description:{@"endowment encode failed : %@", environmentCopy}];
       }
     }
   }
 
-  return a1;
+  return self;
 }
 
-+ (id)grantWithNamespace:(id)a3 sourceEnvironment:(id)a4 attributes:(id)a5
++ (id)grantWithNamespace:(id)namespace sourceEnvironment:(id)environment attributes:(id)attributes
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[RBSHereditaryGrant alloc] _initWithNamespace:v9 sourceEnvironment:v8 endowment:0 attributes:v7];
+  attributesCopy = attributes;
+  environmentCopy = environment;
+  namespaceCopy = namespace;
+  v10 = [[RBSHereditaryGrant alloc] _initWithNamespace:namespaceCopy sourceEnvironment:environmentCopy endowment:0 attributes:attributesCopy];
 
   return v10;
 }
 
-+ (id)grantWithNamespace:(id)a3 sourceEnvironment:(id)a4 endowment:(id)a5 attributes:(id)a6
++ (id)grantWithNamespace:(id)namespace sourceEnvironment:(id)environment endowment:(id)endowment attributes:(id)attributes
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[RBSHereditaryGrant alloc] _initWithNamespace:v12 sourceEnvironment:v11 endowment:v10 attributes:v9];
+  attributesCopy = attributes;
+  endowmentCopy = endowment;
+  environmentCopy = environment;
+  namespaceCopy = namespace;
+  v13 = [[RBSHereditaryGrant alloc] _initWithNamespace:namespaceCopy sourceEnvironment:environmentCopy endowment:endowmentCopy attributes:attributesCopy];
 
   return v13;
 }

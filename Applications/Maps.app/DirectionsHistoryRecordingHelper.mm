@@ -1,80 +1,80 @@
 @interface DirectionsHistoryRecordingHelper
-+ (id)destinationGEOMapItemToRecordWithDirectionIntent:(id)a3 searchResults:(id)a4;
-+ (id)destinationGEOMapItemToRecordWithDirectionItem:(id)a3;
++ (id)destinationGEOMapItemToRecordWithDirectionIntent:(id)intent searchResults:(id)results;
++ (id)destinationGEOMapItemToRecordWithDirectionItem:(id)item;
 @end
 
 @implementation DirectionsHistoryRecordingHelper
 
-+ (id)destinationGEOMapItemToRecordWithDirectionItem:(id)a3
++ (id)destinationGEOMapItemToRecordWithDirectionItem:(id)item
 {
-  v3 = a3;
-  v4 = [v3 startMapItem];
-  v5 = [v4 isCurrentLocation];
+  itemCopy = item;
+  startMapItem = [itemCopy startMapItem];
+  isCurrentLocation = [startMapItem isCurrentLocation];
 
-  if (v5)
+  if (isCurrentLocation)
   {
-    v6 = [v3 items];
-    v7 = [v6 lastObject];
-    v8 = [v7 mapItemIfGeocoded];
-    v9 = [v8 _geoMapItem];
+    items = [itemCopy items];
+    lastObject = [items lastObject];
+    mapItemIfGeocoded = [lastObject mapItemIfGeocoded];
+    _geoMapItem = [mapItemIfGeocoded _geoMapItem];
   }
 
   else
   {
-    v9 = 0;
+    _geoMapItem = 0;
   }
 
-  return v9;
+  return _geoMapItem;
 }
 
-+ (id)destinationGEOMapItemToRecordWithDirectionIntent:(id)a3 searchResults:(id)a4
++ (id)destinationGEOMapItemToRecordWithDirectionIntent:(id)intent searchResults:(id)results
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 origin];
-  v8 = [v7 itemType];
+  intentCopy = intent;
+  resultsCopy = results;
+  origin = [intentCopy origin];
+  itemType = [origin itemType];
 
-  if (v8 != 4)
+  if (itemType != 4)
   {
     goto LABEL_6;
   }
 
-  v9 = [v5 destination];
-  v10 = [v9 itemType];
+  destination = [intentCopy destination];
+  itemType2 = [destination itemType];
 
-  if (v10 != 5)
+  if (itemType2 != 5)
   {
     goto LABEL_6;
   }
 
-  v11 = [v5 destination];
-  if (![v11 hasResultIndex])
+  destination2 = [intentCopy destination];
+  if (![destination2 hasResultIndex])
   {
-    v17 = 0;
+    _geoMapItem = 0;
     goto LABEL_11;
   }
 
-  v12 = [v5 destination];
-  v13 = [v12 resultIndex];
-  v14 = [v6 count];
+  destination3 = [intentCopy destination];
+  resultIndex = [destination3 resultIndex];
+  v14 = [resultsCopy count];
 
-  if (v13 >= v14)
+  if (resultIndex >= v14)
   {
 LABEL_6:
-    v17 = 0;
+    _geoMapItem = 0;
     goto LABEL_7;
   }
 
-  v15 = [v5 destination];
-  v11 = [v6 objectAtIndexedSubscript:{objc_msgSend(v15, "resultIndex")}];
+  destination4 = [intentCopy destination];
+  destination2 = [resultsCopy objectAtIndexedSubscript:{objc_msgSend(destination4, "resultIndex")}];
 
-  v16 = [v11 mapItem];
-  v17 = [v16 _geoMapItem];
+  mapItem = [destination2 mapItem];
+  _geoMapItem = [mapItem _geoMapItem];
 
 LABEL_11:
 LABEL_7:
 
-  return v17;
+  return _geoMapItem;
 }
 
 @end

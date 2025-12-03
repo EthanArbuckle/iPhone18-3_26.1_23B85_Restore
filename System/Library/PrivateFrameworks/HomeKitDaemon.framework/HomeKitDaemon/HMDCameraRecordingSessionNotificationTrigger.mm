@@ -1,14 +1,14 @@
 @interface HMDCameraRecordingSessionNotificationTrigger
 + (id)logCategory;
-- (HMDCameraRecordingSessionNotificationTrigger)initWithCamera:(id)a3 workQueue:(id)a4;
-- (HMDCameraRecordingSessionNotificationTrigger)initWithCamera:(id)a3 workQueue:(id)a4 availabilityListener:(id)a5 notificationCenter:(id)a6;
+- (HMDCameraRecordingSessionNotificationTrigger)initWithCamera:(id)camera workQueue:(id)queue;
+- (HMDCameraRecordingSessionNotificationTrigger)initWithCamera:(id)camera workQueue:(id)queue availabilityListener:(id)listener notificationCenter:(id)center;
 - (HMDCameraRecordingSessionNotificationTriggerDelegate)delegate;
 - (HMDHAPAccessory)cameraAccessory;
-- (void)_handleObservedCharacteristicsValueUpdate:(id)a3;
+- (void)_handleObservedCharacteristicsValueUpdate:(id)update;
 - (void)dealloc;
-- (void)handleAccessoryConfigured:(id)a3;
-- (void)handleCharacteristicsValueUpdated:(id)a3;
-- (void)listener:(id)a3 didUpdateAvailableCharacteristics:(id)a4;
+- (void)handleAccessoryConfigured:(id)configured;
+- (void)handleCharacteristicsValueUpdated:(id)updated;
+- (void)listener:(id)listener didUpdateAvailableCharacteristics:(id)characteristics;
 - (void)start;
 @end
 
@@ -28,16 +28,16 @@
   return WeakRetained;
 }
 
-- (void)listener:(id)a3 didUpdateAvailableCharacteristics:(id)a4
+- (void)listener:(id)listener didUpdateAvailableCharacteristics:(id)characteristics
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDCameraRecordingSessionNotificationTrigger *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  listenerCopy = listener;
+  characteristicsCopy = characteristics;
+  workQueue = [(HMDCameraRecordingSessionNotificationTrigger *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -45,38 +45,38 @@
     v18 = 138543618;
     v19 = v12;
     v20 = 2112;
-    v21 = v7;
+    v21 = characteristicsCopy;
     _os_log_impl(&dword_229538000, v11, OS_LOG_TYPE_INFO, "%{public}@Enabling notification for characteristics: %@", &v18, 0x16u);
   }
 
   objc_autoreleasePoolPop(v9);
-  [(HMDCameraRecordingSessionNotificationTrigger *)v10 setAvailableCharacteristics:v7];
-  v13 = [(HMDCameraRecordingSessionNotificationTrigger *)v10 cameraAccessory];
-  v14 = [(HMDCameraRecordingSessionNotificationTrigger *)v10 availableCharacteristics];
-  v15 = [v14 allObjects];
-  v16 = [(HMDCameraRecordingSessionNotificationTrigger *)v10 clientIdentifier];
-  [v13 enableNotification:1 forCharacteristics:v15 message:0 clientIdentifier:v16];
+  [(HMDCameraRecordingSessionNotificationTrigger *)selfCopy setAvailableCharacteristics:characteristicsCopy];
+  cameraAccessory = [(HMDCameraRecordingSessionNotificationTrigger *)selfCopy cameraAccessory];
+  availableCharacteristics = [(HMDCameraRecordingSessionNotificationTrigger *)selfCopy availableCharacteristics];
+  allObjects = [availableCharacteristics allObjects];
+  clientIdentifier = [(HMDCameraRecordingSessionNotificationTrigger *)selfCopy clientIdentifier];
+  [cameraAccessory enableNotification:1 forCharacteristics:allObjects message:0 clientIdentifier:clientIdentifier];
 
-  if ([v13 isReachable])
+  if ([cameraAccessory isReachable])
   {
-    [(HMDCameraRecordingSessionNotificationTrigger *)v10 _handleObservedCharacteristicsValueUpdate:MEMORY[0x277CBEBF8]];
+    [(HMDCameraRecordingSessionNotificationTrigger *)selfCopy _handleObservedCharacteristicsValueUpdate:MEMORY[0x277CBEBF8]];
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleCharacteristicsValueUpdated:(id)a3
+- (void)handleCharacteristicsValueUpdated:(id)updated
 {
-  v4 = a3;
-  v5 = [(HMDCameraRecordingSessionNotificationTrigger *)self workQueue];
+  updatedCopy = updated;
+  workQueue = [(HMDCameraRecordingSessionNotificationTrigger *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __82__HMDCameraRecordingSessionNotificationTrigger_handleCharacteristicsValueUpdated___block_invoke;
   v7[3] = &unk_27868A750;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = updatedCopy;
+  selfCopy = self;
+  v6 = updatedCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __82__HMDCameraRecordingSessionNotificationTrigger_handleCharacteristicsValueUpdated___block_invoke(uint64_t a1)
@@ -105,35 +105,35 @@ void __82__HMDCameraRecordingSessionNotificationTrigger_handleCharacteristicsVal
   }
 }
 
-- (void)handleAccessoryConfigured:(id)a3
+- (void)handleAccessoryConfigured:(id)configured
 {
-  v4 = [(HMDCameraRecordingSessionNotificationTrigger *)self workQueue];
+  workQueue = [(HMDCameraRecordingSessionNotificationTrigger *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __74__HMDCameraRecordingSessionNotificationTrigger_handleAccessoryConfigured___block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(workQueue, block);
 }
 
-- (void)_handleObservedCharacteristicsValueUpdate:(id)a3
+- (void)_handleObservedCharacteristicsValueUpdate:(id)update
 {
   v95 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDCameraRecordingSessionNotificationTrigger *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  updateCopy = update;
+  workQueue = [(HMDCameraRecordingSessionNotificationTrigger *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v74 = [(HMDCameraRecordingSessionNotificationTrigger *)self delegate];
+  delegate = [(HMDCameraRecordingSessionNotificationTrigger *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v68 = v4;
-    if ([v4 count])
+    v68 = updateCopy;
+    if ([updateCopy count])
     {
       v79 = 0u;
       v80 = 0u;
       v77 = 0u;
       v78 = 0u;
-      obj = v4;
+      obj = updateCopy;
       v6 = [obj countByEnumeratingWithState:&v77 objects:v85 count:16];
       if (!v6)
       {
@@ -156,17 +156,17 @@ void __82__HMDCameraRecordingSessionNotificationTrigger_handleCharacteristicsVal
           }
 
           v10 = *(*(&v77 + 1) + 8 * v9);
-          v11 = [(HMDCameraRecordingSessionNotificationTrigger *)self availabilityListener];
-          v12 = [v11 availableCharacteristics];
-          v13 = [v12 containsObject:v10];
+          availabilityListener = [(HMDCameraRecordingSessionNotificationTrigger *)self availabilityListener];
+          availableCharacteristics = [availabilityListener availableCharacteristics];
+          v13 = [availableCharacteristics containsObject:v10];
 
           if (v13)
           {
-            v14 = [v10 value];
+            value = [v10 value];
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v15 = v14;
+              v15 = value;
             }
 
             else
@@ -178,14 +178,14 @@ void __82__HMDCameraRecordingSessionNotificationTrigger_handleCharacteristicsVal
 
             if (v16)
             {
-              v17 = [v10 type];
-              v18 = [v17 isEqualToString:v70];
+              type = [v10 type];
+              v18 = [type isEqualToString:v70];
 
               if (v18)
               {
-                v19 = [v16 BOOLValue];
+                bOOLValue = [v16 BOOLValue];
                 v20 = objc_autoreleasePoolPush();
-                v21 = self;
+                selfCopy = self;
                 v22 = HMFGetOSLogHandle();
                 if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
                 {
@@ -203,21 +203,21 @@ LABEL_17:
                 v8 = v72;
 
                 objc_autoreleasePoolPop(v20);
-                [v74 notificationTrigger:self didObserveTriggerType:v25 changeToActive:v19];
+                [delegate notificationTrigger:self didObserveTriggerType:v25 changeToActive:bOOLValue];
               }
 
               else
               {
-                v33 = [v10 type];
-                v34 = [v33 isEqualToString:v69];
+                type2 = [v10 type];
+                v34 = [type2 isEqualToString:v69];
 
                 v20 = objc_autoreleasePoolPush();
-                v35 = self;
+                selfCopy2 = self;
                 v36 = HMFGetOSLogHandle();
                 v22 = v36;
                 if (v34)
                 {
-                  v19 = 1;
+                  bOOLValue = 1;
                   if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
                   {
                     v37 = HMFGetLogIdentifier();
@@ -226,7 +226,7 @@ LABEL_17:
                     v25 = 1;
                     _os_log_impl(&dword_229538000, v22, OS_LOG_TYPE_INFO, "%{public}@Doorbell event detected", buf, 0xCu);
 
-                    v19 = 1;
+                    bOOLValue = 1;
                   }
 
                   else
@@ -255,12 +255,12 @@ LABEL_17:
             else
             {
               v26 = objc_autoreleasePoolPush();
-              v27 = self;
+              selfCopy3 = self;
               v28 = HMFGetOSLogHandle();
               if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
               {
                 v29 = HMFGetLogIdentifier();
-                v30 = [v10 value];
+                value2 = [v10 value];
                 v31 = objc_opt_class();
                 v32 = NSStringFromClass(v31);
                 *buf = 138543618;
@@ -292,7 +292,7 @@ LABEL_32:
     }
 
     v44 = objc_autoreleasePoolPush();
-    v45 = self;
+    selfCopy4 = self;
     v46 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v46, OS_LOG_TYPE_INFO))
     {
@@ -307,38 +307,38 @@ LABEL_32:
     v84 = 0u;
     v81 = 0u;
     v82 = 0u;
-    v48 = [(HMDCameraRecordingSessionNotificationTrigger *)v45 availabilityListener];
-    v49 = [v48 availableCharacteristics];
+    availabilityListener2 = [(HMDCameraRecordingSessionNotificationTrigger *)selfCopy4 availabilityListener];
+    availableCharacteristics2 = [availabilityListener2 availableCharacteristics];
 
-    v50 = [v49 countByEnumeratingWithState:&v81 objects:v94 count:16];
+    v50 = [availableCharacteristics2 countByEnumeratingWithState:&v81 objects:v94 count:16];
     if (v50)
     {
       v51 = v50;
       v52 = *v82;
       v53 = *MEMORY[0x277CCF978];
-      v71 = v45;
-      v73 = v49;
+      v71 = selfCopy4;
+      v73 = availableCharacteristics2;
       do
       {
         for (i = 0; i != v51; ++i)
         {
           if (*v82 != v52)
           {
-            objc_enumerationMutation(v49);
+            objc_enumerationMutation(availableCharacteristics2);
           }
 
           v55 = *(*(&v81 + 1) + 8 * i);
-          v56 = [v55 type];
-          v57 = [v56 isEqualToString:v53];
+          type3 = [v55 type];
+          v57 = [type3 isEqualToString:v53];
 
           if (v57)
           {
             v58 = v52;
-            v59 = [v55 value];
+            value3 = [v55 value];
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v60 = v59;
+              v60 = value3;
             }
 
             else
@@ -350,13 +350,13 @@ LABEL_32:
 
             if (v61)
             {
-              [v74 notificationTrigger:v45 didObserveTriggerType:0 changeToActive:{objc_msgSend(v61, "BOOLValue")}];
+              [delegate notificationTrigger:selfCopy4 didObserveTriggerType:0 changeToActive:{objc_msgSend(v61, "BOOLValue")}];
             }
 
             else
             {
               obja = objc_autoreleasePoolPush();
-              v62 = v45;
+              v62 = selfCopy4;
               v63 = HMFGetOSLogHandle();
               if (os_log_type_enabled(v63, OS_LOG_TYPE_INFO))
               {
@@ -365,7 +365,7 @@ LABEL_32:
                 *buf = 138544130;
                 v87 = v64;
                 v88 = 2112;
-                v89 = v59;
+                v89 = value3;
                 v90 = 2112;
                 v91 = v65;
                 v92 = 2112;
@@ -373,31 +373,31 @@ LABEL_32:
                 v66 = v65;
                 _os_log_impl(&dword_229538000, v63, OS_LOG_TYPE_INFO, "%{public}@Received unhandled value %@ of type %@ for characteristic: %@", buf, 0x2Au);
 
-                v45 = v71;
+                selfCopy4 = v71;
               }
 
               objc_autoreleasePoolPop(obja);
-              v49 = v73;
+              availableCharacteristics2 = v73;
             }
 
             v52 = v58;
           }
         }
 
-        v51 = [v49 countByEnumeratingWithState:&v81 objects:v94 count:16];
+        v51 = [availableCharacteristics2 countByEnumeratingWithState:&v81 objects:v94 count:16];
       }
 
       while (v51);
     }
 
 LABEL_56:
-    v4 = v68;
+    updateCopy = v68;
   }
 
   else
   {
     v40 = objc_autoreleasePoolPush();
-    v41 = self;
+    selfCopy5 = self;
     v42 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v42, OS_LOG_TYPE_INFO))
     {
@@ -415,33 +415,33 @@ LABEL_56:
 
 - (void)start
 {
-  v3 = [(HMDCameraRecordingSessionNotificationTrigger *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDCameraRecordingSessionNotificationTrigger *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v8 = [(HMDCameraRecordingSessionNotificationTrigger *)self cameraAccessory];
-  v4 = [(HMDCameraRecordingSessionNotificationTrigger *)self notificationCenter];
-  [v4 addObserver:self selector:sel_handleAccessoryConfigured_ name:@"HMDAccessoryConnectedNotification" object:v8];
+  cameraAccessory = [(HMDCameraRecordingSessionNotificationTrigger *)self cameraAccessory];
+  notificationCenter = [(HMDCameraRecordingSessionNotificationTrigger *)self notificationCenter];
+  [notificationCenter addObserver:self selector:sel_handleAccessoryConfigured_ name:@"HMDAccessoryConnectedNotification" object:cameraAccessory];
 
-  v5 = [(HMDCameraRecordingSessionNotificationTrigger *)self notificationCenter];
-  [v5 addObserver:self selector:sel_handleCharacteristicsValueUpdated_ name:@"HMDNotificationCharacteristicValueUpdated" object:v8];
+  notificationCenter2 = [(HMDCameraRecordingSessionNotificationTrigger *)self notificationCenter];
+  [notificationCenter2 addObserver:self selector:sel_handleCharacteristicsValueUpdated_ name:@"HMDNotificationCharacteristicValueUpdated" object:cameraAccessory];
 
-  v6 = [(HMDCameraRecordingSessionNotificationTrigger *)self availabilityListener];
-  [v6 setDelegate:self];
+  availabilityListener = [(HMDCameraRecordingSessionNotificationTrigger *)self availabilityListener];
+  [availabilityListener setDelegate:self];
 
-  v7 = [(HMDCameraRecordingSessionNotificationTrigger *)self availabilityListener];
-  [v7 start];
+  availabilityListener2 = [(HMDCameraRecordingSessionNotificationTrigger *)self availabilityListener];
+  [availabilityListener2 start];
 }
 
 - (void)dealloc
 {
   v16 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = HMFGetLogIdentifier();
-    clientIdentifier = v4->_clientIdentifier;
+    clientIdentifier = selfCopy->_clientIdentifier;
     *buf = 138543618;
     v13 = v6;
     v14 = 2112;
@@ -450,35 +450,35 @@ LABEL_56:
   }
 
   objc_autoreleasePoolPop(v3);
-  WeakRetained = objc_loadWeakRetained(&v4->_cameraAccessory);
-  v9 = [(NSSet *)v4->_availableCharacteristics allObjects];
-  [WeakRetained enableNotification:0 forCharacteristics:v9 message:0 clientIdentifier:v4->_clientIdentifier];
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_cameraAccessory);
+  allObjects = [(NSSet *)selfCopy->_availableCharacteristics allObjects];
+  [WeakRetained enableNotification:0 forCharacteristics:allObjects message:0 clientIdentifier:selfCopy->_clientIdentifier];
 
-  v11.receiver = v4;
+  v11.receiver = selfCopy;
   v11.super_class = HMDCameraRecordingSessionNotificationTrigger;
   [(HMDCameraRecordingSessionNotificationTrigger *)&v11 dealloc];
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDCameraRecordingSessionNotificationTrigger)initWithCamera:(id)a3 workQueue:(id)a4 availabilityListener:(id)a5 notificationCenter:(id)a6
+- (HMDCameraRecordingSessionNotificationTrigger)initWithCamera:(id)camera workQueue:(id)queue availabilityListener:(id)listener notificationCenter:(id)center
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  cameraCopy = camera;
+  queueCopy = queue;
+  listenerCopy = listener;
+  centerCopy = center;
   v27.receiver = self;
   v27.super_class = HMDCameraRecordingSessionNotificationTrigger;
   v14 = [(HMDCameraRecordingSessionNotificationTrigger *)&v27 init];
   if (v14)
   {
-    v15 = [v10 hapAccessory];
-    objc_storeWeak(&v14->_cameraAccessory, v15);
+    hapAccessory = [cameraCopy hapAccessory];
+    objc_storeWeak(&v14->_cameraAccessory, hapAccessory);
 
-    objc_storeStrong(&v14->_workQueue, a4);
-    objc_storeStrong(&v14->_availabilityListener, a5);
-    objc_storeStrong(&v14->_notificationCenter, a6);
-    v16 = [v10 logIdentifier];
-    v17 = [v16 copy];
+    objc_storeStrong(&v14->_workQueue, queue);
+    objc_storeStrong(&v14->_availabilityListener, listener);
+    objc_storeStrong(&v14->_notificationCenter, center);
+    logIdentifier = [cameraCopy logIdentifier];
+    v17 = [logIdentifier copy];
     logIdentifier = v14->_logIdentifier;
     v14->_logIdentifier = v17;
 
@@ -487,9 +487,9 @@ LABEL_56:
     v14->_availableCharacteristics = v19;
 
     v21 = MEMORY[0x277CCACA8];
-    v22 = [MEMORY[0x277CCAD78] UUID];
-    v23 = [v22 UUIDString];
-    v24 = [v21 stringWithFormat:@"%@.HMDCameraRecordingSessionNotificationTrigger.%@", @"com.apple.HomeKitDaemon.Local", v23];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    v24 = [v21 stringWithFormat:@"%@.HMDCameraRecordingSessionNotificationTrigger.%@", @"com.apple.HomeKitDaemon.Local", uUIDString];
     clientIdentifier = v14->_clientIdentifier;
     v14->_clientIdentifier = v24;
   }
@@ -497,14 +497,14 @@ LABEL_56:
   return v14;
 }
 
-- (HMDCameraRecordingSessionNotificationTrigger)initWithCamera:(id)a3 workQueue:(id)a4
+- (HMDCameraRecordingSessionNotificationTrigger)initWithCamera:(id)camera workQueue:(id)queue
 {
   v21[2] = *MEMORY[0x277D85DE8];
   v20[0] = *MEMORY[0x277CD0EC0];
   v6 = MEMORY[0x277CBEB98];
   v7 = *MEMORY[0x277CCF978];
-  v8 = a4;
-  v9 = a3;
+  queueCopy = queue;
+  cameraCopy = camera;
   v10 = [v6 setWithObject:v7];
   v21[0] = v10;
   v20[1] = *MEMORY[0x277CD0E38];
@@ -513,11 +513,11 @@ LABEL_56:
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:2];
 
   v13 = [HMDCharacteristicsAvailabilityListener alloc];
-  v14 = [v9 hapAccessory];
-  v15 = [(HMDCharacteristicsAvailabilityListener *)v13 initWithAccessory:v14 workQueue:v8 interestedCharacteristicTypesByServiceType:v12];
+  hapAccessory = [cameraCopy hapAccessory];
+  v15 = [(HMDCharacteristicsAvailabilityListener *)v13 initWithAccessory:hapAccessory workQueue:queueCopy interestedCharacteristicTypesByServiceType:v12];
 
-  v16 = [MEMORY[0x277CCAB98] defaultCenter];
-  v17 = [(HMDCameraRecordingSessionNotificationTrigger *)self initWithCamera:v9 workQueue:v8 availabilityListener:v15 notificationCenter:v16];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  v17 = [(HMDCameraRecordingSessionNotificationTrigger *)self initWithCamera:cameraCopy workQueue:queueCopy availabilityListener:v15 notificationCenter:defaultCenter];
 
   v18 = *MEMORY[0x277D85DE8];
   return v17;

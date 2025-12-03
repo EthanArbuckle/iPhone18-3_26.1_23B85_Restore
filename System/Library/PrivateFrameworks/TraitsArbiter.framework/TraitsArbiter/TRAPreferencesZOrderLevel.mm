@@ -1,40 +1,40 @@
 @interface TRAPreferencesZOrderLevel
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToZOrderLevelPreferences:(id)a3;
-- (TRAPreferencesZOrderLevel)initWithPreferredZOrderLevel:(double)a3;
-- (TRAPreferencesZOrderLevel)initWithZOrderLevelPreferences:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToZOrderLevelPreferences:(id)preferences;
+- (TRAPreferencesZOrderLevel)initWithPreferredZOrderLevel:(double)level;
+- (TRAPreferencesZOrderLevel)initWithZOrderLevelPreferences:(id)preferences;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 @end
 
 @implementation TRAPreferencesZOrderLevel
 
-- (TRAPreferencesZOrderLevel)initWithPreferredZOrderLevel:(double)a3
+- (TRAPreferencesZOrderLevel)initWithPreferredZOrderLevel:(double)level
 {
   v5.receiver = self;
   v5.super_class = TRAPreferencesZOrderLevel;
   result = [(TRAPreferencesZOrderLevel *)&v5 init];
   if (result)
   {
-    result->_preferredZOrderLevel = a3;
+    result->_preferredZOrderLevel = level;
   }
 
   return result;
 }
 
-- (TRAPreferencesZOrderLevel)initWithZOrderLevelPreferences:(id)a3
+- (TRAPreferencesZOrderLevel)initWithZOrderLevelPreferences:(id)preferences
 {
-  [a3 preferredZOrderLevel];
+  [preferences preferredZOrderLevel];
 
   return [(TRAPreferencesZOrderLevel *)self initWithPreferredZOrderLevel:?];
 }
 
-- (BOOL)isEqualToZOrderLevelPreferences:(id)a3
+- (BOOL)isEqualToZOrderLevelPreferences:(id)preferences
 {
-  v5 = a3;
-  if (v5)
+  preferencesCopy = preferences;
+  if (preferencesCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -42,7 +42,7 @@
       [(TRAPreferencesZOrderLevel *)a2 isEqualToZOrderLevelPreferences:?];
     }
 
-    if (self == v5)
+    if (self == preferencesCopy)
     {
       v7 = 1;
     }
@@ -50,7 +50,7 @@
     else
     {
       preferredZOrderLevel = self->_preferredZOrderLevel;
-      [(TRAPreferencesZOrderLevel *)v5 preferredZOrderLevel];
+      [(TRAPreferencesZOrderLevel *)preferencesCopy preferredZOrderLevel];
       v7 = BSFloatEqualToFloat();
     }
   }
@@ -63,17 +63,17 @@
   return v7;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [TRAMutablePreferencesZOrderLevel allocWithZone:a3];
+  v4 = [TRAMutablePreferencesZOrderLevel allocWithZone:zone];
 
   return [(TRAPreferencesZOrderLevel *)v4 initWithZOrderLevelPreferences:self];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -81,7 +81,7 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TRAPreferencesZOrderLevel *)self isEqualToZOrderLevelPreferences:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TRAPreferencesZOrderLevel *)self isEqualToZOrderLevelPreferences:equalCopy];
   }
 
   return v5;
@@ -89,10 +89,10 @@
 
 - (id)succinctDescription
 {
-  v2 = [(TRAPreferencesZOrderLevel *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(TRAPreferencesZOrderLevel *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -112,12 +112,12 @@
   return v4;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(TRAPreferencesZOrderLevel *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(TRAPreferencesZOrderLevel *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 - (void)isEqualToZOrderLevelPreferences:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)

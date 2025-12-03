@@ -1,14 +1,14 @@
 @interface PeopleBadgeView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC16MusicApplicationP33_AA0DFD7D953F5F9BB2DAA84AD1DB9C2715PeopleBadgeView)initWithCoder:(id)a3;
-- (_TtC16MusicApplicationP33_AA0DFD7D953F5F9BB2DAA84AD1DB9C2715PeopleBadgeView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC16MusicApplicationP33_AA0DFD7D953F5F9BB2DAA84AD1DB9C2715PeopleBadgeView)initWithCoder:(id)coder;
+- (_TtC16MusicApplicationP33_AA0DFD7D953F5F9BB2DAA84AD1DB9C2715PeopleBadgeView)initWithFrame:(CGRect)frame;
 - (void)clearArtworkCatalogs;
 - (void)layoutSubviews;
 @end
 
 @implementation PeopleBadgeView
 
-- (_TtC16MusicApplicationP33_AA0DFD7D953F5F9BB2DAA84AD1DB9C2715PeopleBadgeView)initWithCoder:(id)a3
+- (_TtC16MusicApplicationP33_AA0DFD7D953F5F9BB2DAA84AD1DB9C2715PeopleBadgeView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC16MusicApplicationP33_AA0DFD7D953F5F9BB2DAA84AD1DB9C2715PeopleBadgeView_socialPersons) = _swiftEmptyArrayStorage;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC16MusicApplicationP33_AA0DFD7D953F5F9BB2DAA84AD1DB9C2715PeopleBadgeView_artworkCachingReference) = 0;
@@ -19,9 +19,9 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
+  selfCopy = self;
   sub_3ADA40();
   v5 = v4;
   v7 = v6;
@@ -35,17 +35,17 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_3AE50C();
 }
 
 - (void)clearArtworkCatalogs
 {
-  v2 = self;
+  selfCopy = self;
   sub_3AE7E8();
 }
 
-- (_TtC16MusicApplicationP33_AA0DFD7D953F5F9BB2DAA84AD1DB9C2715PeopleBadgeView)initWithFrame:(CGRect)a3
+- (_TtC16MusicApplicationP33_AA0DFD7D953F5F9BB2DAA84AD1DB9C2715PeopleBadgeView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

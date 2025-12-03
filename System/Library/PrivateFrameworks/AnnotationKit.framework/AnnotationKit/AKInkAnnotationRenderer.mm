@@ -1,19 +1,19 @@
 @interface AKInkAnnotationRenderer
-+ (CGRect)_concreteDrawingBoundsOfAnnotation:(id)a3;
-+ (CGSize)_concreteDraggingBoundsInsetsForAnnotation:(id)a3;
-+ (void)_concreteRenderAnnotation:(id)a3 intoContext:(CGContext *)a4 options:(id)a5 pageControllerOrNil:(id)a6;
++ (CGRect)_concreteDrawingBoundsOfAnnotation:(id)annotation;
++ (CGSize)_concreteDraggingBoundsInsetsForAnnotation:(id)annotation;
++ (void)_concreteRenderAnnotation:(id)annotation intoContext:(CGContext *)context options:(id)options pageControllerOrNil:(id)nil;
 @end
 
 @implementation AKInkAnnotationRenderer
 
-+ (CGRect)_concreteDrawingBoundsOfAnnotation:(id)a3
++ (CGRect)_concreteDrawingBoundsOfAnnotation:(id)annotation
 {
-  [a3 rectangle];
+  [annotation rectangle];
 
   return CGRectInset(*&v3, -1.0, -1.0);
 }
 
-+ (CGSize)_concreteDraggingBoundsInsetsForAnnotation:(id)a3
++ (CGSize)_concreteDraggingBoundsInsetsForAnnotation:(id)annotation
 {
   v3 = *MEMORY[0x277CBF3A8];
   v4 = *(MEMORY[0x277CBF3A8] + 8);
@@ -22,21 +22,21 @@
   return result;
 }
 
-+ (void)_concreteRenderAnnotation:(id)a3 intoContext:(CGContext *)a4 options:(id)a5 pageControllerOrNil:(id)a6
++ (void)_concreteRenderAnnotation:(id)annotation intoContext:(CGContext *)context options:(id)options pageControllerOrNil:(id)nil
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = a5;
-  CGContextSaveGState(a4);
-  v13 = [v12 forDisplay];
+  annotationCopy = annotation;
+  nilCopy = nil;
+  optionsCopy = options;
+  CGContextSaveGState(context);
+  forDisplay = [optionsCopy forDisplay];
 
-  [a1 _transformContextToModelCoordinates:a4 forAnnotation:v10 forDisplay:v13 pageControllerOrNil:v11];
-  v14 = [v10 drawing];
-  v15 = v14;
-  if (v14)
+  [self _transformContextToModelCoordinates:context forAnnotation:annotationCopy forDisplay:forDisplay pageControllerOrNil:nilCopy];
+  drawing = [annotationCopy drawing];
+  v15 = drawing;
+  if (drawing)
   {
-    v16 = [v14 strokes];
-    v17 = [v16 count];
+    strokes = [drawing strokes];
+    v17 = [strokes count];
 
     if (v17)
     {
@@ -45,7 +45,7 @@
       v118 = v19;
       v112 = v21;
       v114 = v20;
-      [v10 rectangle];
+      [annotationCopy rectangle];
       x = v127.origin.x;
       y = v127.origin.y;
       width = v127.size.width;
@@ -56,17 +56,17 @@
       v128.size.width = width;
       v128.size.height = height;
       MidY = CGRectGetMidY(v128);
-      v28 = [v10 originalExifOrientation];
+      originalExifOrientation = [annotationCopy originalExifOrientation];
       v29 = x;
       v30 = y;
       v31 = width;
       v32 = height;
-      if (v28 != 1)
+      if (originalExifOrientation != 1)
       {
         memset(&v126, 0, sizeof(v126));
-        [AKGeometryHelper affineTransformForExifOrientation:[AKGeometryHelper inverseExifOrientation:v28] aboutCenter:MidX, MidY];
+        [AKGeometryHelper affineTransformForExifOrientation:[AKGeometryHelper inverseExifOrientation:originalExifOrientation] aboutCenter:MidX, MidY];
         transform = v126;
-        CGContextConcatCTM(a4, &transform);
+        CGContextConcatCTM(context, &transform);
         transform = v126;
         v129.origin.x = x;
         v129.origin.y = y;
@@ -83,7 +83,7 @@
       v110 = v32;
       v97 = MidY;
       memset(&v126, 0, sizeof(v126));
-      CGContextGetCTM(&v126, a4);
+      CGContextGetCTM(&v126, context);
       v123[0] = MEMORY[0x277D85DD0];
       v123[1] = 3221225472;
       v123[2] = sub_23F451394;
@@ -307,18 +307,18 @@
           v95 = kCGInterpolationHigh;
         }
 
-        CGContextSetInterpolationQuality(a4, v95);
-        v96 = [v56 akCGImage];
+        CGContextSetInterpolationQuality(context, v95);
+        akCGImage = [v56 akCGImage];
         v152.origin.x = v91;
         v152.origin.y = v92;
         v152.size.width = v93;
         v152.size.height = v94;
-        CGContextDrawImage(a4, v152, v96);
+        CGContextDrawImage(context, v152, akCGImage);
       }
     }
   }
 
-  CGContextRestoreGState(a4);
+  CGContextRestoreGState(context);
 }
 
 @end

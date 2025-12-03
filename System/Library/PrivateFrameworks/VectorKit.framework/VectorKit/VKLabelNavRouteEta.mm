@@ -1,20 +1,20 @@
 @interface VKLabelNavRouteEta
-+ (RoadSignStyleGroup)styleForNavContext:(SEL)a3 selected:(const NavContext *)a4 focused:(BOOL)a5 etaComparison:(BOOL)a6 transportType:(unsigned __int8)a7 navLabelType:(unsigned __int8)a8 when:(unsigned __int8)a9 routeLegWhen:(optional<gss:(optional<gss:(id)a12 :RouteLegWhen>)a11 :When>)a10 additionalAttributes:;
-+ (id)artworkForEtaDescription:(id)a3 navContext:(const NavContext *)a4 roadSignStyleGroup:(const void *)a5 mercatorPoint:(const void *)a6 orientation:(unsigned __int8)a7 isSelected:(BOOL)a8 artworkCache:(void *)a9;
-+ (unsigned)toStyleEtaComparison:(unsigned __int8)a3;
-+ (unsigned)toStyleNavLabelType:(int64_t)a3;
-+ (vector<GeoCodecsFeatureStylePair,)baseAttributesForEtaLabel:(mdm:(id)a2 :(SEL)a3 zone_mallocator>> *__return_ptr)retstr focused:(BOOL)a4 etaComparison:(BOOL)a5 transportType:(unsigned __int8)a6 navLabelType:(unsigned __int8)a7 when:(unsigned __int8)a8 routeLegWhen:(optional<gss:(optional<gss:(id)a11 :RouteLegWhen>)a10 :When>)a9 additionalAttributes:;
++ (RoadSignStyleGroup)styleForNavContext:(SEL)context selected:(const NavContext *)selected focused:(BOOL)focused etaComparison:(BOOL)comparison transportType:(unsigned __int8)type navLabelType:(unsigned __int8)labelType when:(unsigned __int8)when routeLegWhen:(optional<gss:(optional<gss:(id)self2 :RouteLegWhen>)self1 :When>)self0 additionalAttributes:;
++ (id)artworkForEtaDescription:(id)description navContext:(const NavContext *)context roadSignStyleGroup:(const void *)group mercatorPoint:(const void *)point orientation:(unsigned __int8)orientation isSelected:(BOOL)selected artworkCache:(void *)cache;
++ (unsigned)toStyleEtaComparison:(unsigned __int8)comparison;
++ (unsigned)toStyleNavLabelType:(int64_t)type;
++ (vector<GeoCodecsFeatureStylePair,)baseAttributesForEtaLabel:(mdm:(id)label :(SEL)a3 zone_mallocator>> *__return_ptr)retstr focused:(BOOL)focused etaComparison:(BOOL)comparison transportType:(unsigned __int8)type navLabelType:(unsigned __int8)labelType when:(unsigned __int8)when routeLegWhen:(optional<gss:(optional<gss:(id)self1 :RouteLegWhen>)self0 :When>)a9 additionalAttributes:;
 - (BOOL)hasAnchor;
 - (BOOL)hasLabelWithAnchor;
 - (Matrix<double,)worldPointForStaging;
-- (VKLabelNavRouteEta)initWithRouteInfo:(id)a3 routeCoord:(PolylineCoordinate)a4;
-- (_retain_ptr<VKLabelNavRoadLabel)updateRoadSignWithNavContext:(const NavContext *)a3 artworkCache:(void *)a4;
+- (VKLabelNavRouteEta)initWithRouteInfo:(id)info routeCoord:(PolylineCoordinate)coord;
+- (_retain_ptr<VKLabelNavRoadLabel)updateRoadSignWithNavContext:(const NavContext *)context artworkCache:(void *)cache;
 - (id).cxx_construct;
 - (unsigned)etaComparisonToMain;
 - (void)clearLabel;
-- (void)createLabelWithNavContext:(const NavContext *)a3 orientation:(unsigned __int8)a4 etaDescription:(id)a5 selected:(BOOL)a6 when:(optional<gss:(optional<gss:(void *)a9 :RouteLegWhen>)a8 :When>)a7 routeLegWhen:artworkCache:;
+- (void)createLabelWithNavContext:(const NavContext *)context orientation:(unsigned __int8)orientation etaDescription:(id)description selected:(BOOL)selected when:(optional<gss:(optional<gss:(void *)when :RouteLegWhen>)a8 :When>)a7 routeLegWhen:artworkCache:;
 - (void)dealloc;
-- (void)updateAnchorWithContext:(const NavContext *)a3;
+- (void)updateAnchorWithContext:(const NavContext *)context;
 @end
 
 @implementation VKLabelNavRouteEta
@@ -27,7 +27,7 @@
   return self;
 }
 
-- (_retain_ptr<VKLabelNavRoadLabel)updateRoadSignWithNavContext:(const NavContext *)a3 artworkCache:(void *)a4
+- (_retain_ptr<VKLabelNavRoadLabel)updateRoadSignWithNavContext:(const NavContext *)context artworkCache:(void *)cache
 {
   v40 = v4;
   if ([(VKLabelNavRouteEta *)self isRepositioning])
@@ -35,39 +35,39 @@
     goto LABEL_12;
   }
 
-  v34 = [(VKLabelNavRouteEta *)self orientation];
-  v37 = [(VKLabelNavRouteEta *)self selected];
-  v38 = [(VKLabelNavRouteEta *)self routeInfo];
-  v36 = [v38 hasFocus];
-  v35 = [(VKLabelNavRouteEta *)self etaComparisonToMain];
-  v7 = [(VKRouteInfo *)self->_routeInfo route];
-  v8 = [v7 transportType];
-  if (v8 >= 7)
+  orientation = [(VKLabelNavRouteEta *)self orientation];
+  selected = [(VKLabelNavRouteEta *)self selected];
+  routeInfo = [(VKLabelNavRouteEta *)self routeInfo];
+  hasFocus = [routeInfo hasFocus];
+  etaComparisonToMain = [(VKLabelNavRouteEta *)self etaComparisonToMain];
+  route = [(VKRouteInfo *)self->_routeInfo route];
+  transportType = [route transportType];
+  if (transportType >= 7)
   {
     v9 = 4;
   }
 
   else
   {
-    v9 = 0x50403020100uLL >> (8 * v8);
+    v9 = 0x50403020100uLL >> (8 * transportType);
   }
 
-  v10 = [(VKLabelNavRouteEta *)self displayEtaDescription];
-  v11 = +[VKLabelNavRouteEta toStyleNavLabelType:](VKLabelNavRouteEta, "toStyleNavLabelType:", [v10 routeEtaType]);
-  v12 = [(VKLabelNavRouteEta *)self when];
-  v13 = [(VKLabelNavRouteEta *)self routeLegWhen];
-  v14 = [(VKLabelNavRouteEta *)self displayEtaDescription];
-  v15 = [v14 styleAttributes];
-  [VKLabelNavRouteEta styleForNavContext:a3 selected:v37 focused:v36 etaComparison:v35 transportType:v9 navLabelType:v11 when:*&v12 routeLegWhen:*&v13 additionalAttributes:v15];
+  displayEtaDescription = [(VKLabelNavRouteEta *)self displayEtaDescription];
+  v11 = +[VKLabelNavRouteEta toStyleNavLabelType:](VKLabelNavRouteEta, "toStyleNavLabelType:", [displayEtaDescription routeEtaType]);
+  when = [(VKLabelNavRouteEta *)self when];
+  routeLegWhen = [(VKLabelNavRouteEta *)self routeLegWhen];
+  displayEtaDescription2 = [(VKLabelNavRouteEta *)self displayEtaDescription];
+  styleAttributes = [displayEtaDescription2 styleAttributes];
+  [VKLabelNavRouteEta styleForNavContext:context selected:selected focused:hasFocus etaComparison:etaComparisonToMain transportType:v9 navLabelType:v11 when:*&when routeLegWhen:*&routeLegWhen additionalAttributes:styleAttributes];
 
   [(VKLabelNavRouteEta *)self worldPointForStaging];
   v17 = v16;
   v19 = v18;
-  v20 = [(VKLabelNavRouteEta *)self displayEtaDescription];
+  displayEtaDescription3 = [(VKLabelNavRouteEta *)self displayEtaDescription];
   v41[0] = v17;
   v41[1] = v19;
   [(VKLabelNavRouteEta *)self selected];
-  artworkAndKeyForEtaLabel(&v42, v20, a3, v44, v41, v34, a4);
+  artworkAndKeyForEtaLabel(&v42, displayEtaDescription3, context, v44, v41, orientation, cache);
 
   etaLabelArtworkKey = self->_etaLabelArtworkKey;
   v22 = v42;
@@ -84,7 +84,7 @@
     std::__shared_weak_count::__release_shared[abi:nn200100](v46);
   }
 
-  v25 = v45;
+  isRepositioning = v45;
   if (v45)
   {
     std::__shared_weak_count::__release_shared[abi:nn200100](v45);
@@ -99,16 +99,16 @@
   else
   {
 LABEL_12:
-    v26 = [(VKLabelNavRouteEta *)self label];
-    geo::_retain_ptr<VKLabelNavRoadLabel * {__strong},geo::_retain_objc_arc,geo::_release_objc_arc,geo::_hash_objc,geo::_equal_objc>::_retain_ptr(v40, v26);
+    label = [(VKLabelNavRouteEta *)self label];
+    geo::_retain_ptr<VKLabelNavRoadLabel * {__strong},geo::_retain_objc_arc,geo::_release_objc_arc,geo::_hash_objc,geo::_equal_objc>::_retain_ptr(v40, label);
 
     [(VKLabelNavRouteEta *)self clearLabel];
-    v27 = [(VKLabelNavRouteEta *)self orientation];
-    v28 = [(VKLabelNavRouteEta *)self displayEtaDescription];
-    [(VKLabelNavRouteEta *)self createLabelWithNavContext:a3 orientation:v27 etaDescription:v28 selected:[(VKLabelNavRouteEta *)self selected] when:[(VKLabelNavRouteEta *)self when] routeLegWhen:[(VKLabelNavRouteEta *)self routeLegWhen] artworkCache:a4];
+    orientation2 = [(VKLabelNavRouteEta *)self orientation];
+    displayEtaDescription4 = [(VKLabelNavRouteEta *)self displayEtaDescription];
+    [(VKLabelNavRouteEta *)self createLabelWithNavContext:context orientation:orientation2 etaDescription:displayEtaDescription4 selected:[(VKLabelNavRouteEta *)self selected] when:[(VKLabelNavRouteEta *)self when] routeLegWhen:[(VKLabelNavRouteEta *)self routeLegWhen] artworkCache:cache];
 
-    v25 = [(VKLabelNavRouteEta *)self isRepositioning];
-    if (v25)
+    isRepositioning = [(VKLabelNavRouteEta *)self isRepositioning];
+    if (isRepositioning)
     {
       v29 = v40[1];
       if (v29)
@@ -127,11 +127,11 @@ LABEL_12:
 
     else
     {
-      v25 = [(VKLabelNavRouteEta *)self hasLabel];
-      if (v25)
+      isRepositioning = [(VKLabelNavRouteEta *)self hasLabel];
+      if (isRepositioning)
       {
-        v32 = [(VKLabelNavRouteEta *)self label];
-        v33 = *[v32 label];
+        label2 = [(VKLabelNavRouteEta *)self label];
+        v33 = *[label2 label];
         *(v33 + 280) = 1065353216;
         *(v33 + 284) = 1;
       }
@@ -139,13 +139,13 @@ LABEL_12:
   }
 
   result.var1 = v24;
-  result.var0 = &v25->__vftable;
+  result.var0 = &isRepositioning->__vftable;
   return result;
 }
 
-- (void)updateAnchorWithContext:(const NavContext *)a3
+- (void)updateAnchorWithContext:(const NavContext *)context
 {
-  v5 = *(*(a3->var1 + 29) + 30);
+  v5 = *(*(context->var1 + 29) + 30);
   if (v5)
   {
     v6 = 1;
@@ -153,7 +153,7 @@ LABEL_12:
 
   else
   {
-    v6 = *(a3->var3 + 24) ^ 1;
+    v6 = *(context->var3 + 24) ^ 1;
   }
 
   v7 = v6 & 1;
@@ -165,60 +165,60 @@ LABEL_12:
   }
 
   v8 = *[(VKLabelNavRoadLabel *)self->_etaLabel label];
-  md::NavLabel::worldPointForDisplay(v8, a3);
+  md::NavLabel::worldPointForDisplay(v8, context);
   *(v8 + 17) = v9;
   *(v8 + 18) = v10;
   *(v8 + 19) = v11;
 }
 
-- (void)createLabelWithNavContext:(const NavContext *)a3 orientation:(unsigned __int8)a4 etaDescription:(id)a5 selected:(BOOL)a6 when:(optional<gss:(optional<gss:(void *)a9 :RouteLegWhen>)a8 :When>)a7 routeLegWhen:artworkCache:
+- (void)createLabelWithNavContext:(const NavContext *)context orientation:(unsigned __int8)orientation etaDescription:(id)description selected:(BOOL)selected when:(optional<gss:(optional<gss:(void *)when :RouteLegWhen>)a8 :When>)a7 routeLegWhen:artworkCache:
 {
-  v11 = a6;
-  v16 = a5;
+  selectedCopy = selected;
+  descriptionCopy = description;
   if (!self->_etaLabel)
   {
     displayEtaDescription = self->_displayEtaDescription;
     location = &self->_displayEtaDescription;
-    v46 = v16;
-    if (displayEtaDescription != v16 && ![(VKRouteEtaDescription *)displayEtaDescription isEqual:v16])
+    v46 = descriptionCopy;
+    if (displayEtaDescription != descriptionCopy && ![(VKRouteEtaDescription *)displayEtaDescription isEqual:descriptionCopy])
     {
-      objc_storeStrong(location, a5);
+      objc_storeStrong(location, description);
     }
 
-    self->_selected = v11;
+    self->_selected = selectedCopy;
     self->_when = a7;
     self->_routeLegWhen = a8;
-    self->_orientation = a4;
-    v18 = [(VKRouteInfo *)self->_routeInfo route];
-    [v18 pointWithAltitudeCorrectionAtRouteCoordinate:*&self->_routeOffset];
+    self->_orientation = orientation;
+    route = [(VKRouteInfo *)self->_routeInfo route];
+    [route pointWithAltitudeCorrectionAtRouteCoordinate:*&self->_routeOffset];
     v48 = v19;
     v21 = v20;
     v23 = v22;
 
-    v45 = [(VKLabelNavRouteEta *)self routeInfo];
-    v24 = [v45 hasFocus];
-    v25 = [(VKLabelNavRouteEta *)self etaComparisonToMain];
-    v26 = [(VKRouteInfo *)self->_routeInfo route];
-    v43 = v25;
-    v44 = v24;
-    v47 = a4;
-    v27 = [v26 transportType];
-    if (v27 >= 7)
+    routeInfo = [(VKLabelNavRouteEta *)self routeInfo];
+    hasFocus = [routeInfo hasFocus];
+    etaComparisonToMain = [(VKLabelNavRouteEta *)self etaComparisonToMain];
+    route2 = [(VKRouteInfo *)self->_routeInfo route];
+    v43 = etaComparisonToMain;
+    v44 = hasFocus;
+    orientationCopy = orientation;
+    transportType = [route2 transportType];
+    if (transportType >= 7)
     {
       v28 = 4;
     }
 
     else
     {
-      v28 = 0x50403020100uLL >> (8 * v27);
+      v28 = 0x50403020100uLL >> (8 * transportType);
     }
 
-    v29 = [(VKLabelNavRouteEta *)self displayEtaDescription];
-    v30 = +[VKLabelNavRouteEta toStyleNavLabelType:](VKLabelNavRouteEta, "toStyleNavLabelType:", [v29 routeEtaType]);
-    v31 = [(VKLabelNavRouteEta *)self when];
-    v32 = [(VKLabelNavRouteEta *)self routeLegWhen];
-    v33 = [*location styleAttributes];
-    [VKLabelNavRouteEta styleForNavContext:a3 selected:v11 focused:v44 etaComparison:v43 transportType:v28 navLabelType:v30 when:*&v31 routeLegWhen:*&v32 additionalAttributes:v33];
+    displayEtaDescription = [(VKLabelNavRouteEta *)self displayEtaDescription];
+    v30 = +[VKLabelNavRouteEta toStyleNavLabelType:](VKLabelNavRouteEta, "toStyleNavLabelType:", [displayEtaDescription routeEtaType]);
+    when = [(VKLabelNavRouteEta *)self when];
+    routeLegWhen = [(VKLabelNavRouteEta *)self routeLegWhen];
+    styleAttributes = [*location styleAttributes];
+    [VKLabelNavRouteEta styleForNavContext:context selected:selectedCopy focused:v44 etaComparison:v43 transportType:v28 navLabelType:v30 when:*&when routeLegWhen:*&routeLegWhen additionalAttributes:styleAttributes];
 
     v34 = tan(v21 * 0.00872664626 + 0.785398163);
     v35 = log(v34);
@@ -227,8 +227,8 @@ LABEL_12:
     __asm { FMOV            V2.2D, #0.5 }
 
     v54 = vmlaq_f64(_Q2, xmmword_1B33B0700, v36);
-    v16 = v46;
-    artworkAndKeyForEtaLabel(&v55, v46, a3, &v50, &v54, v47, a9);
+    descriptionCopy = v46;
+    artworkAndKeyForEtaLabel(&v55, v46, context, &v50, &v54, orientationCopy, when);
     v42 = v55;
     *&v55 = 0;
     if (v42)
@@ -285,17 +285,17 @@ LABEL_12:
   return v4;
 }
 
-- (VKLabelNavRouteEta)initWithRouteInfo:(id)a3 routeCoord:(PolylineCoordinate)a4
+- (VKLabelNavRouteEta)initWithRouteInfo:(id)info routeCoord:(PolylineCoordinate)coord
 {
-  v7 = a3;
+  infoCopy = info;
   v12.receiver = self;
   v12.super_class = VKLabelNavRouteEta;
   v8 = [(VKLabelNavRouteEta *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_routeInfo, a3);
-    v9->_routeOffset = a4;
+    objc_storeStrong(&v8->_routeInfo, info);
+    v9->_routeOffset = coord;
     v10 = v9;
   }
 
@@ -304,33 +304,33 @@ LABEL_12:
 
 - (BOOL)hasLabelWithAnchor
 {
-  v3 = [(VKLabelNavRouteEta *)self hasLabel];
-  if (v3)
+  hasLabel = [(VKLabelNavRouteEta *)self hasLabel];
+  if (hasLabel)
   {
-    LOBYTE(v3) = *(*[(VKLabelNavRoadLabel *)self->_etaLabel label]+ 160) != 0;
+    LOBYTE(hasLabel) = *(*[(VKLabelNavRoadLabel *)self->_etaLabel label]+ 160) != 0;
   }
 
-  return v3;
+  return hasLabel;
 }
 
 - (BOOL)hasAnchor
 {
-  v3 = [(VKLabelNavRouteEta *)self hasLabel];
-  if (v3)
+  hasLabel = [(VKLabelNavRouteEta *)self hasLabel];
+  if (hasLabel)
   {
-    LOBYTE(v3) = *(*[(VKLabelNavRoadLabel *)self->_etaLabel label]+ 160) != 0;
+    LOBYTE(hasLabel) = *(*[(VKLabelNavRoadLabel *)self->_etaLabel label]+ 160) != 0;
   }
 
-  return v3;
+  return hasLabel;
 }
 
 - (Matrix<double,)worldPointForStaging
 {
-  v2 = [(VKLabelNavRouteEta *)self label];
-  v3 = [v2 label];
-  v4 = *(*v3 + 136);
-  v5 = *(*v3 + 144);
-  v6 = *(*v3 + 152);
+  label = [(VKLabelNavRouteEta *)self label];
+  v2Label = [label label];
+  v4 = *(*v2Label + 136);
+  v5 = *(*v2Label + 144);
+  v6 = *(*v2Label + 152);
 
   v7 = v4;
   v8 = v5;
@@ -341,10 +341,10 @@ LABEL_12:
   return result;
 }
 
-+ (unsigned)toStyleNavLabelType:(int64_t)a3
++ (unsigned)toStyleNavLabelType:(int64_t)type
 {
-  v3 = a3 + 4;
-  if (a3 >= 5)
+  v3 = type + 4;
+  if (type >= 5)
   {
     return 4;
   }
@@ -352,36 +352,36 @@ LABEL_12:
   return v3;
 }
 
-+ (unsigned)toStyleEtaComparison:(unsigned __int8)a3
++ (unsigned)toStyleEtaComparison:(unsigned __int8)comparison
 {
-  if (a3 >= 4u)
+  if (comparison >= 4u)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return comparison;
   }
 }
 
-+ (RoadSignStyleGroup)styleForNavContext:(SEL)a3 selected:(const NavContext *)a4 focused:(BOOL)a5 etaComparison:(BOOL)a6 transportType:(unsigned __int8)a7 navLabelType:(unsigned __int8)a8 when:(unsigned __int8)a9 routeLegWhen:(optional<gss:(optional<gss:(id)a12 :RouteLegWhen>)a11 :When>)a10 additionalAttributes:
++ (RoadSignStyleGroup)styleForNavContext:(SEL)context selected:(const NavContext *)selected focused:(BOOL)focused etaComparison:(BOOL)comparison transportType:(unsigned __int8)type navLabelType:(unsigned __int8)labelType when:(unsigned __int8)when routeLegWhen:(optional<gss:(optional<gss:(id)self2 :RouteLegWhen>)self1 :When>)self0 additionalAttributes:
 {
-  v12 = a9;
-  v13 = a8;
-  v14 = a7;
-  v15 = a6;
-  v16 = a5;
+  whenCopy = when;
+  labelTypeCopy = labelType;
+  typeCopy = type;
+  comparisonCopy = comparison;
+  focusedCopy = focused;
   v62[1] = *MEMORY[0x1E69E9840];
-  v19 = a12;
+  legWhenCopy = legWhen;
   v20 = objc_alloc_init(MEMORY[0x1E69A1DB0]);
-  [VKLabelNavRouteEta baseAttributesForEtaLabel:v16 focused:v15 etaComparison:v14 transportType:v13 navLabelType:v12 when:*&a10 routeLegWhen:*&a11 additionalAttributes:v19];
+  [VKLabelNavRouteEta baseAttributesForEtaLabel:focusedCopy focused:comparisonCopy etaComparison:typeCopy transportType:labelTypeCopy navLabelType:whenCopy when:*&a10 routeLegWhen:*&a11 additionalAttributes:legWhenCopy];
   [v20 replaceAttributes:? count:?];
-  md::NavContext::styleQueryForFeatureAttributes(&v54, a4, v20);
+  md::NavContext::styleQueryForFeatureAttributes(&v54, selected, v20);
   v23 = v54;
   v22 = v55;
   v24 = v60;
-  if (v19)
+  if (legWhenCopy)
   {
     if (v60 >= v61)
     {
@@ -445,7 +445,7 @@ LABEL_12:
 
     v60 = v25;
     [v20 replaceAttributes:? count:?];
-    md::NavContext::styleQueryForFeatureAttributes(&v54, a4, v20);
+    md::NavContext::styleQueryForFeatureAttributes(&v54, selected, v20);
     v27 = v54;
     v26 = v55;
     v24 = v60 - 8;
@@ -489,7 +489,7 @@ LABEL_40:
   }
 
   v58 = v62;
-  v53 = v19;
+  v53 = legWhenCopy;
   if (v41)
   {
     v42 = mdm::zone_mallocator::instance(v21);
@@ -520,11 +520,11 @@ LABEL_40:
   v55 = v48;
   std::__split_buffer<GeoCodecsFeatureStylePair,geo::allocator_adapter<GeoCodecsFeatureStylePair,mdm::zone_mallocator> &>::~__split_buffer(&v54);
   v23 = v44;
-  v19 = v53;
+  legWhenCopy = v53;
 LABEL_28:
   v60 = v38;
   [v20 replaceAttributes:? count:?];
-  md::NavContext::styleQueryForFeatureAttributes(&v54, a4, v20);
+  md::NavContext::styleQueryForFeatureAttributes(&v54, selected, v20);
   v50 = v54;
   v51 = v55;
   retstr->var0.var0 = v23;
@@ -569,19 +569,19 @@ LABEL_28:
   return result;
 }
 
-+ (vector<GeoCodecsFeatureStylePair,)baseAttributesForEtaLabel:(mdm:(id)a2 :(SEL)a3 zone_mallocator>> *__return_ptr)retstr focused:(BOOL)a4 etaComparison:(BOOL)a5 transportType:(unsigned __int8)a6 navLabelType:(unsigned __int8)a7 when:(unsigned __int8)a8 routeLegWhen:(optional<gss:(optional<gss:(id)a11 :RouteLegWhen>)a10 :When>)a9 additionalAttributes:
++ (vector<GeoCodecsFeatureStylePair,)baseAttributesForEtaLabel:(mdm:(id)label :(SEL)a3 zone_mallocator>> *__return_ptr)retstr focused:(BOOL)focused etaComparison:(BOOL)comparison transportType:(unsigned __int8)type navLabelType:(unsigned __int8)labelType when:(unsigned __int8)when routeLegWhen:(optional<gss:(optional<gss:(id)self1 :RouteLegWhen>)self0 :When>)a9 additionalAttributes:
 {
-  v11 = a8;
-  v144 = a7;
-  v145 = a6;
-  v12 = a5;
-  v13 = a4;
-  v15 = a11;
+  whenCopy = when;
+  labelTypeCopy = labelType;
+  typeCopy = type;
+  comparisonCopy = comparison;
+  focusedCopy = focused;
+  legWhenCopy = legWhen;
   retstr->var1 = 0;
   retstr->var2 = 0;
   retstr->var0 = 0;
   v151 = retstr + 1;
-  v16 = mdm::zone_mallocator::instance(v15);
+  v16 = mdm::zone_mallocator::instance(legWhenCopy);
   v17 = geo::tracked_allocator<geo::zone_mallocator,geo::allocation_counter>::allocate<GeoCodecsFeatureStylePair>(v16, 1);
   *v17 = 0x1000000005;
   v18 = retstr->var1 - retstr->var0;
@@ -638,7 +638,7 @@ LABEL_28:
 
     v31 = &v30[8 * v28];
     v32 = &v30[8 * v25];
-    *v32 = (((v11 << 32) | 0x10002) + 51);
+    *v32 = (((whenCopy << 32) | 0x10002) + 51);
     v24 = v32 + 1;
     v33 = retstr->var1 - retstr->var0;
     v34 = &v30[8 * v25 - v33];
@@ -657,7 +657,7 @@ LABEL_28:
 
   else
   {
-    *(v17 + 1) = ((v11 << 32) | 0x10002) + 51;
+    *(v17 + 1) = ((whenCopy << 32) | 0x10002) + 51;
     v24 = (v17 + 16);
   }
 
@@ -702,7 +702,7 @@ LABEL_28:
 
     v46 = &v45[8 * v40];
     v47 = &v45[8 * v43];
-    if (v13)
+    if (focusedCopy)
     {
       v48 = 0x100010002;
     }
@@ -731,7 +731,7 @@ LABEL_28:
 
   else
   {
-    if (v13)
+    if (focusedCopy)
     {
       v38 = 0x100010002;
     }
@@ -786,7 +786,7 @@ LABEL_28:
 
     v62 = &v61[8 * v56];
     v63 = &v61[8 * v59];
-    if (v12)
+    if (comparisonCopy)
     {
       v64 = 0x100010002;
     }
@@ -815,7 +815,7 @@ LABEL_28:
 
   else
   {
-    if (v12)
+    if (comparisonCopy)
     {
       v54 = 0x100010002;
     }
@@ -871,7 +871,7 @@ LABEL_28:
 
     v78 = &v77[8 * v75];
     v79 = &v77[8 * v72];
-    *v79 = (((v145 << 32) | 0x10002) + 69);
+    *v79 = (((typeCopy << 32) | 0x10002) + 69);
     v71 = v79 + 1;
     v80 = retstr->var1 - retstr->var0;
     v81 = &v77[8 * v72 - v80];
@@ -891,7 +891,7 @@ LABEL_28:
   else
   {
     v70 = a9;
-    *v55 = (((v145 << 32) | 0x10002) + 69);
+    *v55 = (((typeCopy << 32) | 0x10002) + 69);
     v71 = v55 + 1;
   }
 
@@ -936,7 +936,7 @@ LABEL_28:
 
     v92 = &v91[8 * v89];
     v93 = &v91[8 * v86];
-    *v93 = (((v144 << 32) | 0x10002) + 14);
+    *v93 = (((labelTypeCopy << 32) | 0x10002) + 14);
     v85 = v93 + 1;
     v94 = retstr->var1 - retstr->var0;
     v95 = &v91[8 * v86 - v94];
@@ -955,7 +955,7 @@ LABEL_28:
 
   else
   {
-    *v71 = (((v144 << 32) | 0x10002) + 14);
+    *v71 = (((labelTypeCopy << 32) | 0x10002) + 14);
     v85 = v71 + 1;
   }
 
@@ -1096,11 +1096,11 @@ LABEL_118:
 LABEL_100:
   retstr->var1 = v112;
 LABEL_101:
-  if (v15)
+  if (legWhenCopy)
   {
-    for (i = 0; i < [(mdm::zone_mallocator *)v15 countAttrs]; ++i)
+    for (i = 0; i < [(mdm::zone_mallocator *)legWhenCopy countAttrs]; ++i)
     {
-      v126 = [(mdm::zone_mallocator *)v15 attributeAtIndex:i];
+      v126 = [(mdm::zone_mallocator *)legWhenCopy attributeAtIndex:i];
       v127 = v126;
       var1 = retstr->var1;
       v128 = retstr->var2;
@@ -1173,9 +1173,9 @@ LABEL_101:
   return result;
 }
 
-+ (id)artworkForEtaDescription:(id)a3 navContext:(const NavContext *)a4 roadSignStyleGroup:(const void *)a5 mercatorPoint:(const void *)a6 orientation:(unsigned __int8)a7 isSelected:(BOOL)a8 artworkCache:(void *)a9
++ (id)artworkForEtaDescription:(id)description navContext:(const NavContext *)context roadSignStyleGroup:(const void *)group mercatorPoint:(const void *)point orientation:(unsigned __int8)orientation isSelected:(BOOL)selected artworkCache:(void *)cache
 {
-  artworkAndKeyForEtaLabel(v11, a3, a4, a5, a6, a7, a9);
+  artworkAndKeyForEtaLabel(v11, description, context, group, point, orientation, cache);
   v9 = v11[0];
 
   return v9;

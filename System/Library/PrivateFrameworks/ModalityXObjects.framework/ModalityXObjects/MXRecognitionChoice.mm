@@ -1,14 +1,14 @@
 @interface MXRecognitionChoice
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)alternativeIndexAtIndex:(unint64_t)a3;
+- (int)alternativeIndexAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MXRecognitionChoice
@@ -21,20 +21,20 @@
   [(MXRecognitionChoice *)&v3 dealloc];
 }
 
-- (int)alternativeIndexAtIndex:(unint64_t)a3
+- (int)alternativeIndexAtIndex:(unint64_t)index
 {
   p_alternativeIndexs = &self->_alternativeIndexs;
   count = self->_alternativeIndexs.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE730];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_alternativeIndexs->list[a3];
+  return p_alternativeIndexs->list[index];
 }
 
 - (id)description
@@ -43,31 +43,31 @@
   v8.receiver = self;
   v8.super_class = MXRecognitionChoice;
   v4 = [(MXRecognitionChoice *)&v8 description];
-  v5 = [(MXRecognitionChoice *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MXRecognitionChoice *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = PBRepeatedInt32NSArray();
-  [v3 setObject:v4 forKey:@"alternative_index"];
+  [dictionary setObject:v4 forKey:@"alternative_index"];
 
   if (*&self->_has)
   {
     v5 = [MEMORY[0x277CCABB0] numberWithInt:self->_confidence];
-    [v3 setObject:v5 forKey:@"confidence"];
+    [dictionary setObject:v5 forKey:@"confidence"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_alternativeIndexs.count)
   {
     v5 = 0;
@@ -75,7 +75,7 @@
     {
       v6 = self->_alternativeIndexs.list[v5];
       PBDataWriterWriteInt32Field();
-      v4 = v8;
+      toCopy = v8;
       ++v5;
     }
 
@@ -86,37 +86,37 @@
   {
     confidence = self->_confidence;
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   if ([(MXRecognitionChoice *)self alternativeIndexsCount])
   {
-    [v7 clearAlternativeIndexs];
-    v4 = [(MXRecognitionChoice *)self alternativeIndexsCount];
-    if (v4)
+    [toCopy clearAlternativeIndexs];
+    alternativeIndexsCount = [(MXRecognitionChoice *)self alternativeIndexsCount];
+    if (alternativeIndexsCount)
     {
-      v5 = v4;
+      v5 = alternativeIndexsCount;
       for (i = 0; i != v5; ++i)
       {
-        [v7 addAlternativeIndex:{-[MXRecognitionChoice alternativeIndexAtIndex:](self, "alternativeIndexAtIndex:", i)}];
+        [toCopy addAlternativeIndex:{-[MXRecognitionChoice alternativeIndexAtIndex:](self, "alternativeIndexAtIndex:", i)}];
       }
     }
   }
 
   if (*&self->_has)
   {
-    *(v7 + 8) = self->_confidence;
-    *(v7 + 36) |= 1u;
+    *(toCopy + 8) = self->_confidence;
+    *(toCopy + 36) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   PBRepeatedInt32Copy();
   if (*&self->_has)
   {
@@ -127,18 +127,18 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()] || !PBRepeatedInt32IsEqual())
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()] || !PBRepeatedInt32IsEqual())
   {
     goto LABEL_7;
   }
 
-  v5 = (*(v4 + 36) & 1) == 0;
+  v5 = (*(equalCopy + 36) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) != 0 && self->_confidence == *(v4 + 8))
+    if ((*(equalCopy + 36) & 1) != 0 && self->_confidence == *(equalCopy + 8))
     {
       v5 = 1;
       goto LABEL_8;
@@ -169,22 +169,22 @@ LABEL_8:
   return v4 ^ v3;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v7 = a3;
-  v4 = [v7 alternativeIndexsCount];
-  if (v4)
+  fromCopy = from;
+  alternativeIndexsCount = [fromCopy alternativeIndexsCount];
+  if (alternativeIndexsCount)
   {
-    v5 = v4;
+    v5 = alternativeIndexsCount;
     for (i = 0; i != v5; ++i)
     {
-      -[MXRecognitionChoice addAlternativeIndex:](self, "addAlternativeIndex:", [v7 alternativeIndexAtIndex:i]);
+      -[MXRecognitionChoice addAlternativeIndex:](self, "addAlternativeIndex:", [fromCopy alternativeIndexAtIndex:i]);
     }
   }
 
-  if (v7[9])
+  if (fromCopy[9])
   {
-    self->_confidence = v7[8];
+    self->_confidence = fromCopy[8];
     *&self->_has |= 1u;
   }
 }

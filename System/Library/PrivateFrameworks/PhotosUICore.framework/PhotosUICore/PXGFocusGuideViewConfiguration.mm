@@ -1,15 +1,15 @@
 @interface PXGFocusGuideViewConfiguration
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation PXGFocusGuideViewConfiguration
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -19,9 +19,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(PXGFocusGuideViewConfiguration *)v4 preferredFocusEnvironments];
-      v6 = [(PXGFocusGuideViewConfiguration *)self preferredFocusEnvironments];
-      v7 = [v5 isEqual:v6];
+      preferredFocusEnvironments = [(PXGFocusGuideViewConfiguration *)equalCopy preferredFocusEnvironments];
+      preferredFocusEnvironments2 = [(PXGFocusGuideViewConfiguration *)self preferredFocusEnvironments];
+      v7 = [preferredFocusEnvironments isEqual:preferredFocusEnvironments2];
     }
 
     else
@@ -35,17 +35,17 @@
 
 - (unint64_t)hash
 {
-  v2 = [(PXGFocusGuideViewConfiguration *)self preferredFocusEnvironments];
-  v3 = [v2 hash];
+  preferredFocusEnvironments = [(PXGFocusGuideViewConfiguration *)self preferredFocusEnvironments];
+  v3 = [preferredFocusEnvironments hash];
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [(PXGFocusGuideViewConfiguration *)self preferredFocusEnvironments];
-  v6 = [v5 copy];
+  preferredFocusEnvironments = [(PXGFocusGuideViewConfiguration *)self preferredFocusEnvironments];
+  v6 = [preferredFocusEnvironments copy];
   v7 = v4[1];
   v4[1] = v6;
 

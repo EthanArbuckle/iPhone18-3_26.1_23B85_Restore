@@ -1,8 +1,8 @@
 @interface ABAnyValuePredicate
 - (ABAnyValuePredicate)init;
-- (id)queryJoinsInCompound:(BOOL)a3 predicateIdentifier:(int)a4;
-- (id)queryWhereStringForPredicateIdentifier:(int)a3;
-- (void)ab_bindWhereClauseComponentOfStatement:(CPSqliteStatement *)a3 withBindingOffset:(int *)a4 predicateIdentifier:(int)a5;
+- (id)queryJoinsInCompound:(BOOL)compound predicateIdentifier:(int)identifier;
+- (id)queryWhereStringForPredicateIdentifier:(int)identifier;
+- (void)ab_bindWhereClauseComponentOfStatement:(CPSqliteStatement *)statement withBindingOffset:(int *)offset predicateIdentifier:(int)identifier;
 @end
 
 @implementation ABAnyValuePredicate
@@ -20,7 +20,7 @@
   return result;
 }
 
-- (id)queryJoinsInCompound:(BOOL)a3 predicateIdentifier:(int)a4
+- (id)queryJoinsInCompound:(BOOL)compound predicateIdentifier:(int)identifier
 {
   if ((ABPersonGetTypeOfProperty(self->_property) & 0x100) == 0)
   {
@@ -32,7 +32,7 @@
   return [v5 arrayWithObject:@"JOIN ABMultiValue abv ON abp.ROWID = abv.record_id"];
 }
 
-- (id)queryWhereStringForPredicateIdentifier:(int)a3
+- (id)queryWhereStringForPredicateIdentifier:(int)identifier
 {
   if ((ABPersonGetTypeOfProperty(self->_property) & 0x100) != 0)
   {
@@ -44,12 +44,12 @@
   return [(__CFString *)v4 stringByAppendingString:@" is not NULL"];
 }
 
-- (void)ab_bindWhereClauseComponentOfStatement:(CPSqliteStatement *)a3 withBindingOffset:(int *)a4 predicateIdentifier:(int)a5
+- (void)ab_bindWhereClauseComponentOfStatement:(CPSqliteStatement *)statement withBindingOffset:(int *)offset predicateIdentifier:(int)identifier
 {
   if ((ABPersonGetTypeOfProperty(self->_property) & 0x100) != 0)
   {
-    sqlite3_bind_int(a3->var1, *a4, self->_property);
-    ++*a4;
+    sqlite3_bind_int(statement->var1, *offset, self->_property);
+    ++*offset;
   }
 }
 

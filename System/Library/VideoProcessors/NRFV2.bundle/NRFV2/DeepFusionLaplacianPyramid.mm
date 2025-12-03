@@ -1,33 +1,33 @@
 @interface DeepFusionLaplacianPyramid
-- (DeepFusionLaplacianPyramid)initWithMetalContext:(id)a3;
-- (int)_performLaplacianPyramid:(id)a3 inputTextures:(id)a4 destinationTextures:(id)a5 upsamplingFilter:(int)a6;
-- (int)_validateInputs:(id)a3 gaussianPyramid:(id)a4;
-- (int)upsampleUsing:(id)a3 inputTex:(id)a4 outputTexUpsampled:(id)a5 upsamplingFilter:(int)a6;
+- (DeepFusionLaplacianPyramid)initWithMetalContext:(id)context;
+- (int)_performLaplacianPyramid:(id)pyramid inputTextures:(id)textures destinationTextures:(id)destinationTextures upsamplingFilter:(int)filter;
+- (int)_validateInputs:(id)inputs gaussianPyramid:(id)pyramid;
+- (int)upsampleUsing:(id)using inputTex:(id)tex outputTexUpsampled:(id)upsampled upsamplingFilter:(int)filter;
 @end
 
 @implementation DeepFusionLaplacianPyramid
 
-- (DeepFusionLaplacianPyramid)initWithMetalContext:(id)a3
+- (DeepFusionLaplacianPyramid)initWithMetalContext:(id)context
 {
   v4.receiver = self;
   v4.super_class = DeepFusionLaplacianPyramid;
-  return [(DeepFusionPyramidBaseClass *)&v4 initWithMetalContext:a3];
+  return [(DeepFusionPyramidBaseClass *)&v4 initWithMetalContext:context];
 }
 
-- (int)upsampleUsing:(id)a3 inputTex:(id)a4 outputTexUpsampled:(id)a5 upsamplingFilter:(int)a6
+- (int)upsampleUsing:(id)using inputTex:(id)tex outputTexUpsampled:(id)upsampled upsamplingFilter:(int)filter
 {
-  v10 = a3;
-  v11 = a4;
-  v15 = a5;
+  usingCopy = using;
+  texCopy = tex;
+  upsampledCopy = upsampled;
   v120 = 0;
-  if (a6 != 1)
+  if (filter != 1)
   {
     sub_2958C93F4();
     goto LABEL_7;
   }
 
-  v16 = objc_msgSend_width(v11, v12, v13, v14);
-  if (objc_msgSend_width(v15, v17, v18, v19) != 2 * v16 || (v23 = objc_msgSend_height(v11, v20, v21, v22), objc_msgSend_height(v15, v24, v25, v26) != 2 * v23))
+  v16 = objc_msgSend_width(texCopy, v12, v13, v14);
+  if (objc_msgSend_width(upsampledCopy, v17, v18, v19) != 2 * v16 || (v23 = objc_msgSend_height(texCopy, v20, v21, v22), objc_msgSend_height(upsampledCopy, v24, v25, v26) != 2 * v23))
   {
     sub_2958C9454(&v117);
 LABEL_13:
@@ -44,15 +44,15 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v38 = objc_msgSend_pixelFormat(v11, v35, v36, v37);
+  v38 = objc_msgSend_pixelFormat(texCopy, v35, v36, v37);
   v42 = objc_msgSend_desc(v34, v39, v40, v41);
   objc_msgSend_setPixelFormat_(v42, v43, v38, v44);
 
-  v48 = objc_msgSend_width(v15, v45, v46, v47);
+  v48 = objc_msgSend_width(upsampledCopy, v45, v46, v47);
   v52 = objc_msgSend_desc(v34, v49, v50, v51);
   objc_msgSend_setWidth_(v52, v53, v48, v54);
 
-  v58 = objc_msgSend_height(v11, v55, v56, v57);
+  v58 = objc_msgSend_height(texCopy, v55, v56, v57);
   v62 = objc_msgSend_desc(v34, v59, v60, v61);
   objc_msgSend_setHeight_(v62, v63, v58, v64);
 
@@ -64,7 +64,7 @@ LABEL_13:
   v79 = objc_msgSend_newTextureWithDescriptor_(v76, v77, v34, v78);
   v120 = v79;
 
-  v83 = objc_msgSend_computeCommandEncoder(v10, v80, v81, v82);
+  v83 = objc_msgSend_computeCommandEncoder(usingCopy, v80, v81, v82);
   if (!v83)
   {
     sub_2958C94F0(v79, v34, &v117);
@@ -74,19 +74,19 @@ LABEL_13:
   v85 = v83;
   objc_msgSend_setImageblockWidth_height_(v83, v84, 32, 32);
   objc_msgSend_setComputePipelineState_(v85, v86, self->super._shaders->_krnLaplacianGaussianH, v87);
-  objc_msgSend_setTexture_atIndex_(v85, v88, v11, 0);
+  objc_msgSend_setTexture_atIndex_(v85, v88, texCopy, 0);
   objc_msgSend_setTexture_atIndex_(v85, v89, v79, 1);
-  v117 = objc_msgSend_width(v11, v90, v91, v92);
-  v118 = objc_msgSend_height(v11, v93, v94, v95);
+  v117 = objc_msgSend_width(texCopy, v90, v91, v92);
+  v118 = objc_msgSend_height(texCopy, v93, v94, v95);
   v119 = 1;
   v115 = xmmword_2959D5EB0;
   v116 = 1;
   objc_msgSend_dispatchThreads_threadsPerThreadgroup_(v85, v96, &v117, &v115);
   objc_msgSend_setComputePipelineState_(v85, v97, self->super._shaders->_krnLaplacianGaussianV, v98);
   objc_msgSend_setTexture_atIndex_(v85, v99, v79, 0);
-  objc_msgSend_setTexture_atIndex_(v85, v100, v15, 1);
-  v104 = objc_msgSend_width(v15, v101, v102, v103);
-  v108 = objc_msgSend_height(v11, v105, v106, v107);
+  objc_msgSend_setTexture_atIndex_(v85, v100, upsampledCopy, 1);
+  v104 = objc_msgSend_width(upsampledCopy, v101, v102, v103);
+  v108 = objc_msgSend_height(texCopy, v105, v106, v107);
   v117 = v104;
   v118 = v108;
   v119 = 1;
@@ -103,15 +103,15 @@ LABEL_8:
   return v113;
 }
 
-- (int)_performLaplacianPyramid:(id)a3 inputTextures:(id)a4 destinationTextures:(id)a5 upsamplingFilter:(int)a6
+- (int)_performLaplacianPyramid:(id)pyramid inputTextures:(id)textures destinationTextures:(id)destinationTextures upsamplingFilter:(int)filter
 {
-  v10 = a3;
-  v11 = a4;
-  v162 = a5;
+  pyramidCopy = pyramid;
+  texturesCopy = textures;
+  destinationTexturesCopy = destinationTextures;
   shaders = self->super._shaders;
-  if (a6 == 1)
+  if (filter == 1)
   {
-    v160 = v10;
+    v160 = pyramidCopy;
     v161 = shaders->_krnLaplacianGaussianH;
     v159 = self->super._shaders->_krnLaplacianGaussianVLap;
     v15 = 0;
@@ -122,13 +122,13 @@ LABEL_8:
       {
 LABEL_21:
 
-        v10 = v160;
+        pyramidCopy = v160;
         goto LABEL_22;
       }
 
-      v16 = objc_msgSend_objectAtIndexedSubscript_(v11, v13, v15, v14);
-      v19 = objc_msgSend_objectAtIndexedSubscript_(v11, v17, v15 + 1, v18);
-      v22 = objc_msgSend_objectAtIndexedSubscript_(v162, v20, v15, v21);
+      v16 = objc_msgSend_objectAtIndexedSubscript_(texturesCopy, v13, v15, v14);
+      v19 = objc_msgSend_objectAtIndexedSubscript_(texturesCopy, v17, v15 + 1, v18);
+      v22 = objc_msgSend_objectAtIndexedSubscript_(destinationTexturesCopy, v20, v15, v21);
       v168 = 0;
       v26 = objc_msgSend_allocator(self->super._metal, v23, v24, v25);
       v30 = objc_msgSend_newTextureDescriptor(v26, v27, v28, v29);
@@ -230,10 +230,10 @@ LABEL_13:
       break;
     }
 
-    v125 = objc_msgSend_objectAtIndexedSubscript_(v11, v122, v124, v123);
-    v128 = objc_msgSend_objectAtIndexedSubscript_(v11, v126, v124 + 1, v127);
-    v131 = objc_msgSend_objectAtIndexedSubscript_(v162, v129, v124, v130);
-    v135 = objc_msgSend_computeCommandEncoder(v10, v132, v133, v134);
+    v125 = objc_msgSend_objectAtIndexedSubscript_(texturesCopy, v122, v124, v123);
+    v128 = objc_msgSend_objectAtIndexedSubscript_(texturesCopy, v126, v124 + 1, v127);
+    v131 = objc_msgSend_objectAtIndexedSubscript_(destinationTexturesCopy, v129, v124, v130);
+    v135 = objc_msgSend_computeCommandEncoder(pyramidCopy, v132, v133, v134);
     v139 = v135;
     if (v135)
     {
@@ -268,12 +268,12 @@ LABEL_22:
   return v158;
 }
 
-- (int)_validateInputs:(id)a3 gaussianPyramid:(id)a4
+- (int)_validateInputs:(id)inputs gaussianPyramid:(id)pyramid
 {
-  v6 = a3;
-  v7 = a4;
-  v11 = v7;
-  if (!v6)
+  inputsCopy = inputs;
+  pyramidCopy = pyramid;
+  v11 = pyramidCopy;
+  if (!inputsCopy)
   {
     sub_2958C9DA0(&v67);
 LABEL_21:
@@ -281,7 +281,7 @@ LABEL_21:
     goto LABEL_11;
   }
 
-  if (!v7)
+  if (!pyramidCopy)
   {
     sub_2958C9D04(&v67);
     goto LABEL_21;

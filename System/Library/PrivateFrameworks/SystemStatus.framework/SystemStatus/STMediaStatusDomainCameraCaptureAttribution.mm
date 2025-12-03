@@ -1,43 +1,43 @@
 @interface STMediaStatusDomainCameraCaptureAttribution
-- (BOOL)isEqual:(id)a3;
-- (STMediaStatusDomainCameraCaptureAttribution)initWithCameraDescriptor:(id)a3 activityAttribution:(id)a4;
-- (STMediaStatusDomainCameraCaptureAttribution)initWithCoder:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (STMediaStatusDomainCameraCaptureAttribution)initWithCameraDescriptor:(id)descriptor activityAttribution:(id)attribution;
+- (STMediaStatusDomainCameraCaptureAttribution)initWithCoder:(id)coder;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STMediaStatusDomainCameraCaptureAttribution
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [(STMediaStatusDomainCameraCaptureAttribution *)self cameraDescriptor];
-  v5 = [v3 appendObject:v4];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  cameraDescriptor = [(STMediaStatusDomainCameraCaptureAttribution *)self cameraDescriptor];
+  v5 = [builder appendObject:cameraDescriptor];
 
-  v6 = [(STMediaStatusDomainCameraCaptureAttribution *)self activityAttribution];
-  v7 = [v3 appendObject:v6];
+  activityAttribution = [(STMediaStatusDomainCameraCaptureAttribution *)self activityAttribution];
+  v7 = [builder appendObject:activityAttribution];
 
-  v8 = [v3 hash];
+  v8 = [builder hash];
   return v8;
 }
 
-- (STMediaStatusDomainCameraCaptureAttribution)initWithCameraDescriptor:(id)a3 activityAttribution:(id)a4
+- (STMediaStatusDomainCameraCaptureAttribution)initWithCameraDescriptor:(id)descriptor activityAttribution:(id)attribution
 {
-  v6 = a3;
-  v7 = a4;
+  descriptorCopy = descriptor;
+  attributionCopy = attribution;
   v14.receiver = self;
   v14.super_class = STMediaStatusDomainCameraCaptureAttribution;
   v8 = [(STMediaStatusDomainCameraCaptureAttribution *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [descriptorCopy copy];
     cameraDescriptor = v8->_cameraDescriptor;
     v8->_cameraDescriptor = v9;
 
-    v11 = [v7 copy];
+    v11 = [attributionCopy copy];
     activityAttribution = v8->_activityAttribution;
     v8->_activityAttribution = v11;
   }
@@ -45,60 +45,60 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E698E6A0] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
-  v6 = [(STMediaStatusDomainCameraCaptureAttribution *)self cameraDescriptor];
+  equalCopy = equal;
+  v5 = [MEMORY[0x1E698E6A0] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
+  cameraDescriptor = [(STMediaStatusDomainCameraCaptureAttribution *)self cameraDescriptor];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __55__STMediaStatusDomainCameraCaptureAttribution_isEqual___block_invoke;
   v18[3] = &unk_1E85DDCD8;
-  v7 = v4;
+  v7 = equalCopy;
   v19 = v7;
-  v8 = [v5 appendObject:v6 counterpart:v18];
+  v8 = [v5 appendObject:cameraDescriptor counterpart:v18];
 
-  v9 = [(STMediaStatusDomainCameraCaptureAttribution *)self activityAttribution];
+  activityAttribution = [(STMediaStatusDomainCameraCaptureAttribution *)self activityAttribution];
   v13 = MEMORY[0x1E69E9820];
   v14 = 3221225472;
   v15 = __55__STMediaStatusDomainCameraCaptureAttribution_isEqual___block_invoke_2;
   v16 = &unk_1E85DDCD8;
   v17 = v7;
   v10 = v7;
-  v11 = [v5 appendObject:v9 counterpart:&v13];
+  v11 = [v5 appendObject:activityAttribution counterpart:&v13];
 
-  LOBYTE(v9) = [v5 isEqual];
-  return v9;
+  LOBYTE(activityAttribution) = [v5 isEqual];
+  return activityAttribution;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(STMediaStatusDomainCameraCaptureAttribution *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(STMediaStatusDomainCameraCaptureAttribution *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STMediaStatusDomainCameraCaptureAttribution *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(STMediaStatusDomainCameraCaptureAttribution *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(STMediaStatusDomainCameraCaptureAttribution *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(STMediaStatusDomainCameraCaptureAttribution *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __85__STMediaStatusDomainCameraCaptureAttribution_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_1E85DDD00;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;
@@ -115,21 +115,21 @@ void __85__STMediaStatusDomainCameraCaptureAttribution_descriptionBuilderWithMul
   v6 = [v5 appendObject:v7 withName:@"activityAttribution"];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(STMediaStatusDomainCameraCaptureAttribution *)self cameraDescriptor];
-  [v4 encodeObject:v5 forKey:@"cameraDescriptor"];
+  coderCopy = coder;
+  cameraDescriptor = [(STMediaStatusDomainCameraCaptureAttribution *)self cameraDescriptor];
+  [coderCopy encodeObject:cameraDescriptor forKey:@"cameraDescriptor"];
 
-  v6 = [(STMediaStatusDomainCameraCaptureAttribution *)self activityAttribution];
-  [v4 encodeObject:v6 forKey:@"activityAttribution"];
+  activityAttribution = [(STMediaStatusDomainCameraCaptureAttribution *)self activityAttribution];
+  [coderCopy encodeObject:activityAttribution forKey:@"activityAttribution"];
 }
 
-- (STMediaStatusDomainCameraCaptureAttribution)initWithCoder:(id)a3
+- (STMediaStatusDomainCameraCaptureAttribution)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cameraDescriptor"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"activityAttribution"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cameraDescriptor"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"activityAttribution"];
 
   if (v5)
   {
@@ -143,16 +143,16 @@ void __85__STMediaStatusDomainCameraCaptureAttribution_descriptionBuilderWithMul
 
   if (v7)
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(STMediaStatusDomainCameraCaptureAttribution *)self initWithCameraDescriptor:v5 activityAttribution:v6];
-    v8 = self;
+    selfCopy = self;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 @end

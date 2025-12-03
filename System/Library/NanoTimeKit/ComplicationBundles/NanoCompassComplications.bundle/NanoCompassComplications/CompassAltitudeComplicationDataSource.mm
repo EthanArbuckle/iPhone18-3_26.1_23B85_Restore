@@ -1,7 +1,7 @@
 @interface CompassAltitudeComplicationDataSource
-+ (BOOL)acceptsComplicationFamily:(int64_t)a3 forDevice:(id)a4;
-- (CompassAltitudeComplicationDataSource)initWithComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5;
-- (id)_templateNoData:(BOOL)a3 noHeading:(BOOL)a4 calibrated:(BOOL)a5 altitude:(id)a6 heading:(id)a7;
++ (BOOL)acceptsComplicationFamily:(int64_t)family forDevice:(id)device;
+- (CompassAltitudeComplicationDataSource)initWithComplication:(id)complication family:(int64_t)family forDevice:(id)device;
+- (id)_templateNoData:(BOOL)data noHeading:(BOOL)heading calibrated:(BOOL)calibrated altitude:(id)altitude heading:(id)a7;
 - (id)alwaysOnTemplate;
 - (id)newTemplate;
 - (id)randomizedTemplate;
@@ -10,14 +10,14 @@
 
 @implementation CompassAltitudeComplicationDataSource
 
-+ (BOOL)acceptsComplicationFamily:(int64_t)a3 forDevice:(id)a4
++ (BOOL)acceptsComplicationFamily:(int64_t)family forDevice:(id)device
 {
-  v5 = a4;
-  if (objc_msgSend_supportsUrsa(v5, v6, v7, v8) && objc_msgSend_supportsPolaris(v5, v9, v10, v11))
+  deviceCopy = device;
+  if (objc_msgSend_supportsUrsa(deviceCopy, v6, v7, v8) && objc_msgSend_supportsPolaris(deviceCopy, v9, v10, v11))
   {
     if (!objc_msgSend_showingIdealizedData(NCManager, v12, v13, v14))
     {
-      v16 = a3 == 3;
+      v16 = family == 3;
       goto LABEL_8;
     }
 
@@ -35,11 +35,11 @@ LABEL_8:
   return v16;
 }
 
-- (CompassAltitudeComplicationDataSource)initWithComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5
+- (CompassAltitudeComplicationDataSource)initWithComplication:(id)complication family:(int64_t)family forDevice:(id)device
 {
   v6.receiver = self;
   v6.super_class = CompassAltitudeComplicationDataSource;
-  return [(NanoCompassBaseComplicationDataSource *)&v6 initWithComplication:a3 family:a4 forDevice:a5 mode:9];
+  return [(NanoCompassBaseComplicationDataSource *)&v6 initWithComplication:complication family:family forDevice:device mode:9];
 }
 
 - (id)sampleTemplate
@@ -83,20 +83,20 @@ LABEL_8:
   return v11;
 }
 
-- (id)_templateNoData:(BOOL)a3 noHeading:(BOOL)a4 calibrated:(BOOL)a5 altitude:(id)a6 heading:(id)a7
+- (id)_templateNoData:(BOOL)data noHeading:(BOOL)heading calibrated:(BOOL)calibrated altitude:(id)altitude heading:(id)a7
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v12 = a6;
+  calibratedCopy = calibrated;
+  headingCopy = heading;
+  dataCopy = data;
+  altitudeCopy = altitude;
   v16 = a7;
-  if (v10)
+  if (dataCopy)
   {
 
-    v12 = 0;
+    altitudeCopy = 0;
   }
 
-  else if (v8 && !v9)
+  else if (calibratedCopy && !headingCopy)
   {
     if (objc_msgSend_family(self, v13, v14, v15) == 3)
     {
@@ -108,7 +108,7 @@ LABEL_8:
 
   if (objc_msgSend_family(self, v17, v18, v19) == 3)
   {
-    if (v10)
+    if (dataCopy)
     {
       v20 = NanoCompassRedactionLabel();
       v16 = 0;
@@ -119,11 +119,11 @@ LABEL_8:
 LABEL_13:
     v20 = objc_opt_new();
     v24 = NanoCompassFormattedHeadingAndDirection(v16, 0, 0);
-    if (v12)
+    if (altitudeCopy)
     {
-      v25 = objc_msgSend_displayTilde(v12, v21, v22, v23);
+      v25 = objc_msgSend_displayTilde(altitudeCopy, v21, v22, v23);
       v26 = MEMORY[0x277CCABB0];
-      objc_msgSend_altitude(v12, v27, v28, v29);
+      objc_msgSend_altitude(altitudeCopy, v27, v28, v29);
       v33 = objc_msgSend_numberWithDouble_(v26, v30, v31, v32);
       v34 = NanoCompassValueWithFormat(v33, 0, v25);
     }

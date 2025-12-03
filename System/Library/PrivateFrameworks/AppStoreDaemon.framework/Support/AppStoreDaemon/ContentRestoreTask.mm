@@ -10,15 +10,15 @@
   {
     v109 = [(Bag *)self->_bag URLForKey:@"p2-content-restore/url"];
     v3 = [ContentRestoreURLRequestEncoder alloc];
-    v4 = [(Bag *)self->_bag amsBag];
-    v5 = [(ContentRestoreURLRequestEncoder *)v3 initWithBag:v4];
+    amsBag = [(Bag *)self->_bag amsBag];
+    v5 = [(ContentRestoreURLRequestEncoder *)v3 initWithBag:amsBag];
 
     [(ContentRestoreURLRequestEncoder *)v5 setAccount:self->_account];
     v6 = [_TtC9appstored20AppInstallationEvent additionalMetricsWithRestoreInstalls:self->_restoreInstalls];
     v112 = v5;
     [(ContentRestoreURLRequestEncoder *)v5 setAdditionalMetrics:v6];
 
-    v7 = [(ACAccount *)self->_account ams_DSID];
+    ams_DSID = [(ACAccount *)self->_account ams_DSID];
     v8 = objc_opt_new();
     if (os_variant_has_internal_content())
     {
@@ -37,8 +37,8 @@
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Content restore setting ForceAppDRMMode: %d", buf, 8u);
       }
 
-      v12 = [v10 stringValue];
-      [v8 setObject:v12 forKeyedSubscript:@"ForceAppDRMMode"];
+      stringValue = [v10 stringValue];
+      [v8 setObject:stringValue forKeyedSubscript:@"ForceAppDRMMode"];
     }
 
     v13 = +[AMSDevice deviceGUID];
@@ -50,11 +50,11 @@
     v102 = v13;
     v14 = +[AMSKeybag sharedInstance];
     v130 = 0;
-    v15 = [v14 keybagSyncDataWithAccountID:v7 transactionType:1 error:&v130];
+    v15 = [v14 keybagSyncDataWithAccountID:ams_DSID transactionType:1 error:&v130];
     v16 = v130;
 
     v111 = v8;
-    v106 = v7;
+    v106 = ams_DSID;
     v104 = v10;
     v98 = v15;
     v100 = v16;
@@ -69,7 +69,7 @@
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v139 = v7;
+        v139 = ams_DSID;
         v140 = 2114;
         v141 = v16;
         _os_log_error_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "KBSync unavailable for account: %{public}@ error: %{public}@", buf, 0x16u);
@@ -81,7 +81,7 @@
     v127 = 0u;
     v128 = 0u;
     v129 = 0u;
-    v110 = self;
+    selfCopy = self;
     obj = self->_restoreInstalls;
     v21 = [(NSArray *)obj countByEnumeratingWithState:&v126 objects:buf count:16];
     v116 = v20;
@@ -145,8 +145,8 @@
             if (v37)
             {
               v38 = sub_100398864(v25);
-              v39 = [v38 UUIDString];
-              [v28 setObject:v39 forKeyedSubscript:@"vid"];
+              uUIDString = [v38 UUIDString];
+              [v28 setObject:uUIDString forKeyedSubscript:@"vid"];
             }
 
             v40 = sub_100398764(v25);
@@ -193,7 +193,7 @@
 
     v46 = [AMSDevice serialNumber:v98];
     v48 = v109;
-    v47 = v110;
+    v47 = selfCopy;
     if (v46)
     {
       [v111 setObject:v46 forKeyedSubscript:@"serial-number"];
@@ -217,13 +217,13 @@
       v56 = ASDLogHandleForCategory();
       if (os_log_type_enabled(v56, OS_LOG_TYPE_DEFAULT))
       {
-        v57 = [v55 bundleIdentifier];
+        bundleIdentifier = [v55 bundleIdentifier];
         *buf = 138543362;
-        v139 = v57;
+        v139 = bundleIdentifier;
         _os_log_impl(&_mh_execute_header, v56, OS_LOG_TYPE_DEFAULT, "Content restore attributing network to: %{public}@", buf, 0xCu);
       }
 
-      v54 = sub_10024A984(AMSURLSession, 0, v55, v110->_bag);
+      v54 = sub_10024A984(AMSURLSession, 0, v55, selfCopy->_bag);
       v58 = [v54 dataTaskPromiseWithRequest:v50];
       v124 = 0;
       v53 = [v58 resultWithError:&v124];
@@ -231,11 +231,11 @@
 
       if (!v51)
       {
-        v107 = [v53 object];
+        object = [v53 object];
         v113 = v53;
-        v59 = [v53 response];
+        response = [v53 response];
         objc_opt_class();
-        v60 = v59;
+        v60 = response;
         if (objc_opt_isKindOfClass())
         {
           v61 = v60;
@@ -246,8 +246,8 @@
           v61 = 0;
         }
 
-        v62 = v107;
-        v63 = sub_1003BE8FC(StoreItemResponse, v107, v61, 0, v110->_bag);
+        v62 = object;
+        v63 = sub_1003BE8FC(StoreItemResponse, object, v61, 0, selfCopy->_bag);
 
         v64 = v63;
         if (v63)
@@ -261,7 +261,7 @@
         }
 
         v67 = Property;
-        v68 = [v107 objectForKeyedSubscript:@"failed-items"];
+        v68 = [object objectForKeyedSubscript:@"failed-items"];
         v103 = v68;
         v105 = v67;
         v108 = v64;
@@ -293,9 +293,9 @@
                 v74 = [v73 objectForKeyedSubscript:{@"customerMessage", v99, v101, v103}];
                 v75 = [v73 objectForKeyedSubscript:@"item-id"];
                 v76 = [v73 objectForKeyedSubscript:@"failureType"];
-                v77 = [v76 integerValue];
+                integerValue = [v76 integerValue];
 
-                if (v77)
+                if (integerValue)
                 {
                   v78 = [v73 objectForKeyedSubscript:@"failureType"];
                   [v78 integerValue];
@@ -315,12 +315,12 @@
           }
 
           v48 = v109;
-          v47 = v110;
+          v47 = selfCopy;
           v54 = v99;
           v50 = v101;
           v52 = &selRef_deviceManagementPolicyDidChange_;
           v53 = v113;
-          v62 = v107;
+          v62 = object;
           v64 = v108;
           v68 = v117;
         }

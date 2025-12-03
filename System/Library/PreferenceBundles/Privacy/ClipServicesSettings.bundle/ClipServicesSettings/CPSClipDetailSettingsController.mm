@@ -20,24 +20,24 @@
     v48 = OBJC_IVAR___PSListController__specifiers;
     v5 = objc_alloc_init(NSMutableArray);
     v6 = OBJC_IVAR___PSViewController__specifier;
-    v7 = [*&self->PSListController_opaque[OBJC_IVAR___PSViewController__specifier] cps_bundleIdentifier];
-    v8 = [[PSSystemPolicyForApp alloc] initWithBundleIdentifier:v7];
+    cps_bundleIdentifier = [*&self->PSListController_opaque[OBJC_IVAR___PSViewController__specifier] cps_bundleIdentifier];
+    v8 = [[PSSystemPolicyForApp alloc] initWithBundleIdentifier:cps_bundleIdentifier];
     appPolicy = self->_appPolicy;
     self->_appPolicy = v8;
 
     v10 = [(PSSystemPolicyForApp *)self->_appPolicy specifiersForPolicyOptions:-142737409 force:0];
     [v5 addObjectsFromArray:v10];
 
-    v11 = [*&self->PSListController_opaque[v6] cps_storeItemIdentifier];
-    v12 = [*&self->PSListController_opaque[v6] cps_isTestFlight];
-    if (v11)
+    cps_storeItemIdentifier = [*&self->PSListController_opaque[v6] cps_storeItemIdentifier];
+    cps_isTestFlight = [*&self->PSListController_opaque[v6] cps_isTestFlight];
+    if (cps_storeItemIdentifier)
     {
       v13 = 0;
     }
 
     else
     {
-      v13 = v12 == 0;
+      v13 = cps_isTestFlight == 0;
     }
 
     if (!v13)
@@ -47,11 +47,11 @@
       [v14 setName:v15];
 
       [v5 addObject:v14];
-      v16 = [CPSClipStoreTableViewCell specifierForBundleIdentifier:v7];
+      v16 = [CPSClipStoreTableViewCell specifierForBundleIdentifier:cps_bundleIdentifier];
       [v5 addObject:v16];
     }
 
-    v49 = v7;
+    v49 = cps_bundleIdentifier;
     v17 = [PSSpecifier groupSpecifierWithID:@"DELETE_GROUP_ID"];
     v18 = _CPSLocalizedString();
     v19 = +[CPSUtilities localizedDeviceName];
@@ -84,20 +84,20 @@
 
     v27 = _CPSLocalizedString();
     v28 = _CPSLocalizedString();
-    v29 = [*&self->PSListController_opaque[v6] cps_appClipApplicationRecord];
-    v30 = [v29 iTunesMetadata];
-    v31 = [v30 itemName];
-    v32 = v31;
-    if (v31)
+    cps_appClipApplicationRecord = [*&self->PSListController_opaque[v6] cps_appClipApplicationRecord];
+    iTunesMetadata = [cps_appClipApplicationRecord iTunesMetadata];
+    itemName = [iTunesMetadata itemName];
+    v32 = itemName;
+    if (itemName)
     {
       v33 = v27;
-      v34 = [NSString stringWithFormat:v28, v31, v27];
+      v34 = [NSString stringWithFormat:v28, itemName, v27];
     }
 
     else
     {
-      v35 = [*&self->PSListController_opaque[v6] name];
-      v34 = [NSString stringWithFormat:v28, v35, v27];
+      name = [*&self->PSListController_opaque[v6] name];
+      v34 = [NSString stringWithFormat:v28, name, v27];
 
       v33 = v27;
     }
@@ -143,16 +143,16 @@
 
 - (void)_confirmDeleteAppClip
 {
-  v3 = [(PSSystemPolicyForApp *)self->_appPolicy bundleIdentifier];
-  v9 = v3;
+  bundleIdentifier = [(PSSystemPolicyForApp *)self->_appPolicy bundleIdentifier];
+  v9 = bundleIdentifier;
   v4 = [NSArray arrayWithObjects:&v9 count:1];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_61E0;
   v6[3] = &unk_14970;
-  v7 = v3;
-  v8 = self;
-  v5 = v3;
+  v7 = bundleIdentifier;
+  selfCopy = self;
+  v5 = bundleIdentifier;
   [CPSClipRequest deleteClipsWithBundleIDs:v4 completion:v6];
 }
 
@@ -169,8 +169,8 @@
 {
   v3 = [CPSReportProblemViewController alloc];
   v4 = OBJC_IVAR___PSViewController__specifier;
-  v5 = [*&self->PSListController_opaque[OBJC_IVAR___PSViewController__specifier] cps_bundleIdentifier];
-  v6 = -[CPSReportProblemViewController initWithClipBundleIdentifier:itemIdentifier:](v3, "initWithClipBundleIdentifier:itemIdentifier:", v5, [*&self->PSListController_opaque[v4] cps_storeItemIdentifier]);
+  cps_bundleIdentifier = [*&self->PSListController_opaque[OBJC_IVAR___PSViewController__specifier] cps_bundleIdentifier];
+  v6 = -[CPSReportProblemViewController initWithClipBundleIdentifier:itemIdentifier:](v3, "initWithClipBundleIdentifier:itemIdentifier:", cps_bundleIdentifier, [*&self->PSListController_opaque[v4] cps_storeItemIdentifier]);
 
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
@@ -180,8 +180,8 @@
   [(CPSReportProblemViewController *)v6 setFinishAction:v9];
   [(CPSClipDetailSettingsController *)self presentViewController:v6 animated:1 completion:0];
   v7 = +[CPSAnalyticsLogger sharedLogger];
-  v8 = [*&self->PSListController_opaque[v4] cps_bundleIdentifier];
-  [v7 recordReportProblemStepCompletedWithBundleID:v8 problemLabel:0 event:1];
+  cps_bundleIdentifier2 = [*&self->PSListController_opaque[v4] cps_bundleIdentifier];
+  [v7 recordReportProblemStepCompletedWithBundleID:cps_bundleIdentifier2 problemLabel:0 event:1];
 }
 
 @end

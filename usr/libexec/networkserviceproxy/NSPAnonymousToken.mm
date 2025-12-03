@@ -1,16 +1,16 @@
 @interface NSPAnonymousToken
-+ (void)sendRequestForTokens:(id)a3 tokenFetchURLSession:(id)a4 tokenActivationQuery:(id)a5 completionHandler:(id)a6;
++ (void)sendRequestForTokens:(id)tokens tokenFetchURLSession:(id)session tokenActivationQuery:(id)query completionHandler:(id)handler;
 @end
 
 @implementation NSPAnonymousToken
 
-+ (void)sendRequestForTokens:(id)a3 tokenFetchURLSession:(id)a4 tokenActivationQuery:(id)a5 completionHandler:(id)a6
++ (void)sendRequestForTokens:(id)tokens tokenFetchURLSession:(id)session tokenActivationQuery:(id)query completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (!v9)
+  tokensCopy = tokens;
+  sessionCopy = session;
+  queryCopy = query;
+  handlerCopy = handler;
+  if (!tokensCopy)
   {
     v16 = nplog_obj();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
@@ -23,7 +23,7 @@
     goto LABEL_18;
   }
 
-  if (!v10)
+  if (!sessionCopy)
   {
     v16 = nplog_obj();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
@@ -36,7 +36,7 @@
     goto LABEL_18;
   }
 
-  if (!v11)
+  if (!queryCopy)
   {
     v16 = nplog_obj();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
@@ -49,9 +49,9 @@
     goto LABEL_18;
   }
 
-  v13 = [v11 authInfo];
+  authInfo = [queryCopy authInfo];
 
-  if (!v13)
+  if (!authInfo)
   {
     v16 = nplog_obj();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
@@ -63,15 +63,15 @@
 
 LABEL_18:
 
-    (*(v12 + 2))(v12, 4, 0, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 4, 0, 0, 0);
     goto LABEL_6;
   }
 
-  [v11 setAuthType:4];
-  v14 = [v11 data];
-  [v9 setHTTPBody:v14];
+  [queryCopy setAuthType:4];
+  data = [queryCopy data];
+  [tokensCopy setHTTPBody:data];
 
-  [v9 _setPrivacyProxyFailClosed:1];
+  [tokensCopy _setPrivacyProxyFailClosed:1];
   *&buf = 0;
   *(&buf + 1) = &buf;
   v24 = 0x3032000000;
@@ -83,8 +83,8 @@ LABEL_18:
   v19 = sub_1000B1730;
   v20 = &unk_10010AA30;
   p_buf = &buf;
-  v21 = v12;
-  v15 = [v10 dataTaskWithRequest:v9 completionHandler:&v17];
+  v21 = handlerCopy;
+  v15 = [sessionCopy dataTaskWithRequest:tokensCopy completionHandler:&v17];
   objc_storeStrong((*(&buf + 1) + 40), v15);
   [*(*(&buf + 1) + 40) resume];
 

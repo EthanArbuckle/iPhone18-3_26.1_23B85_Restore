@@ -1,27 +1,27 @@
 @interface TSUBasicProgress
-- (TSUBasicProgress)initWithMaxValue:(double)a3;
+- (TSUBasicProgress)initWithMaxValue:(double)value;
 - (id)initForSubclass;
-- (void)setIndeterminate:(BOOL)a3;
-- (void)setValue:(double)a3;
+- (void)setIndeterminate:(BOOL)indeterminate;
+- (void)setValue:(double)value;
 @end
 
 @implementation TSUBasicProgress
 
-- (TSUBasicProgress)initWithMaxValue:(double)a3
+- (TSUBasicProgress)initWithMaxValue:(double)value
 {
   v8.receiver = self;
   v8.super_class = TSUBasicProgress;
-  v4 = [(TSUProgress *)&v8 initForSubclass];
-  if (v4)
+  initForSubclass = [(TSUProgress *)&v8 initForSubclass];
+  if (initForSubclass)
   {
     v5 = objc_alloc_init(TSUBasicProgressStorage);
-    storage = v4->_storage;
-    v4->_storage = v5;
+    storage = initForSubclass->_storage;
+    initForSubclass->_storage = v5;
 
-    [(TSUBasicProgressStorage *)v4->_storage setMaxValue:a3];
+    [(TSUBasicProgressStorage *)initForSubclass->_storage setMaxValue:value];
   }
 
-  return v4;
+  return initForSubclass;
 }
 
 - (id)initForSubclass
@@ -40,16 +40,16 @@
   objc_exception_throw(v7);
 }
 
-- (void)setValue:(double)a3
+- (void)setValue:(double)value
 {
-  [(TSUBasicProgressStorage *)self->_storage setValue:a3];
+  [(TSUBasicProgressStorage *)self->_storage setValue:value];
 
   [(TSUProgress *)self protected_progressDidChange];
 }
 
-- (void)setIndeterminate:(BOOL)a3
+- (void)setIndeterminate:(BOOL)indeterminate
 {
-  [(TSUBasicProgressStorage *)self->_storage setIndeterminate:a3];
+  [(TSUBasicProgressStorage *)self->_storage setIndeterminate:indeterminate];
 
   [(TSUProgress *)self protected_progressDidChange];
 }

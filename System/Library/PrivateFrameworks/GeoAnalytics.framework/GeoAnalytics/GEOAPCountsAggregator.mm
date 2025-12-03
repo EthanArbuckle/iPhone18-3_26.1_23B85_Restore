@@ -1,12 +1,12 @@
 @interface GEOAPCountsAggregator
-- (BOOL)aggregateDailyCountsAndReportFrom:(id)a3 until:(id)a4;
+- (BOOL)aggregateDailyCountsAndReportFrom:(id)from until:(id)until;
 - (GEOAPCountsAggregator)init;
 - (double)retrieveDailyAggregationInterval;
 - (id)now;
-- (void)aggregateDailyUsageCountsAndReportFrom:(id)a3 until:(id)a4;
-- (void)reportDailySettingsFrom:(id)a3 until:(id)a4;
+- (void)aggregateDailyUsageCountsAndReportFrom:(id)from until:(id)until;
+- (void)reportDailySettingsFrom:(id)from until:(id)until;
 - (void)setup;
-- (void)startDailyAggregationFromTime:(id)a3;
+- (void)startDailyAggregationFromTime:(id)time;
 @end
 
 @implementation GEOAPCountsAggregator
@@ -14,9 +14,9 @@
 - (id)now
 {
   v2 = +[GEOReferenceTimeManager sharedManager];
-  v3 = [v2 bestReferenceDate];
+  bestReferenceDate = [v2 bestReferenceDate];
 
-  return v3;
+  return bestReferenceDate;
 }
 
 - (double)retrieveDailyAggregationInterval
@@ -26,44 +26,44 @@
   return result;
 }
 
-- (BOOL)aggregateDailyCountsAndReportFrom:(id)a3 until:(id)a4
+- (BOOL)aggregateDailyCountsAndReportFrom:(id)from until:(id)until
 {
-  v6 = a3;
-  v7 = a4;
+  fromCopy = from;
+  untilCopy = until;
   v8 = sub_10000AB3C();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v11 = 138478083;
-    v12 = v6;
+    v12 = fromCopy;
     v13 = 2113;
-    v14 = v7;
+    v14 = untilCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "starting daily aggregation from %{private}@ until %{private}@", &v11, 0x16u);
   }
 
-  [(GEOAPCountsAggregator *)self reportDailySettingsFrom:v6 until:v7];
-  [(GEOAPCountsAggregator *)self aggregateDailyUsageCountsAndReportFrom:v6 until:v7];
+  [(GEOAPCountsAggregator *)self reportDailySettingsFrom:fromCopy until:untilCopy];
+  [(GEOAPCountsAggregator *)self aggregateDailyUsageCountsAndReportFrom:fromCopy until:untilCopy];
   v9 = sub_10000AB3C();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     v11 = 138478083;
-    v12 = v6;
+    v12 = fromCopy;
     v13 = 2113;
-    v14 = v7;
+    v14 = untilCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "finished daily aggregation from %{private}@ until %{private}@", &v11, 0x16u);
   }
 
   return 1;
 }
 
-- (void)aggregateDailyUsageCountsAndReportFrom:(id)a3 until:(id)a4
+- (void)aggregateDailyUsageCountsAndReportFrom:(id)from until:(id)until
 {
-  v6 = a3;
-  v7 = a4;
+  fromCopy = from;
+  untilCopy = until;
   v8 = sub_10000AB3C();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     LODWORD(buf) = 138477827;
-    *(&buf + 4) = v7;
+    *(&buf + 4) = untilCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "starting daily usage counts aggregation up until %{private}@", &buf, 0xCu);
   }
 
@@ -84,7 +84,7 @@
   v58[2] = 0x3032000000;
   v58[3] = sub_10000B104;
   v58[4] = sub_10000B114;
-  v59 = v6;
+  v59 = fromCopy;
   v57[0] = 0;
   v57[1] = v57;
   v57[2] = 0x2020000000;
@@ -109,12 +109,12 @@
   v47 = &v46;
   v48 = 0x2020000000;
   v49 = 0;
-  v11 = [(GEOAPCountsAggregator *)self apPersistence];
+  apPersistence = [(GEOAPCountsAggregator *)self apPersistence];
   v34[0] = _NSConcreteStackBlock;
   v34[1] = 3221225472;
   v34[2] = sub_10000B11C;
   v34[3] = &unk_10003C8A0;
-  v22 = v7;
+  v22 = untilCopy;
   v35 = v22;
   v38 = &v50;
   v39 = &v46;
@@ -142,7 +142,7 @@
   v30 = v54;
   v31 = v55;
   v32 = v60;
-  LOBYTE(v10) = [v11 selectDailyCountsWithVisitorBlock:v34 completionBlock:v23];
+  LOBYTE(v10) = [apPersistence selectDailyCountsWithVisitorBlock:v34 completionBlock:v23];
 
   v14 = sub_10000AB3C();
   v15 = v14;
@@ -188,10 +188,10 @@ LABEL_8:
   _Block_object_dispose(&buf, 8);
 }
 
-- (void)reportDailySettingsFrom:(id)a3 until:(id)a4
+- (void)reportDailySettingsFrom:(id)from until:(id)until
 {
-  v6 = a3;
-  v7 = a4;
+  fromCopy = from;
+  untilCopy = until;
   v8 = sub_10000AB3C();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -205,7 +205,7 @@ LABEL_8:
   v17 = sub_10000B104;
   v18 = sub_10000B114;
   v19 = 0;
-  v9 = [(GEOAPCountsAggregator *)self apPersistence];
+  apPersistence = [(GEOAPCountsAggregator *)self apPersistence];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10000BF40;
@@ -216,7 +216,7 @@ LABEL_8:
   v12[2] = sub_10000C06C;
   v12[3] = &unk_10003C850;
   v12[4] = buf;
-  [v9 selectDailySettingsWithVisitorBlock:v13 completionBlock:v12];
+  [apPersistence selectDailySettingsWithVisitorBlock:v13 completionBlock:v12];
 
   v10 = sub_10000AB3C();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -228,19 +228,19 @@ LABEL_8:
   _Block_object_dispose(buf, 8);
 }
 
-- (void)startDailyAggregationFromTime:(id)a3
+- (void)startDailyAggregationFromTime:(id)time
 {
-  v4 = a3;
+  timeCopy = time;
   v5 = sub_10000AB3C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v17 = v4;
+    v17 = timeCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "starting daily at %@", buf, 0xCu);
   }
 
   v6 = sub_10000C4B8(self);
-  while ([(NSDate *)v6 compare:v4]== NSOrderedAscending)
+  while ([(NSDate *)v6 compare:timeCopy]== NSOrderedAscending)
   {
     v7 = sub_10000AB3C();
     v8 = os_signpost_id_generate(v7);
@@ -287,9 +287,9 @@ LABEL_8:
   self->_runningLock = v3;
 
   v15 = [(GEOAPCountsAggregator *)self now];
-  v5 = [(GEOAPCountsAggregator *)self retrieveLastDailyAggregationTime];
+  retrieveLastDailyAggregationTime = [(GEOAPCountsAggregator *)self retrieveLastDailyAggregationTime];
   lastDailyAggregation = self->_lastDailyAggregation;
-  self->_lastDailyAggregation = v5;
+  self->_lastDailyAggregation = retrieveLastDailyAggregationTime;
 
   if (!self->_lastDailyAggregation)
   {
@@ -311,9 +311,9 @@ LABEL_8:
   [(GEOAPCountsAggregator *)self retrieveDailyAggregationInterval];
   self->_dailyAggregationInterval = v11;
   v12 = +[GEOPlatform sharedPlatform];
-  v13 = [v12 isInternalInstall];
+  isInternalInstall = [v12 isInternalInstall];
 
-  if ((v13 & 1) == 0)
+  if ((isInternalInstall & 1) == 0)
   {
     dailyAggregationInterval = self->_dailyAggregationInterval;
     if (dailyAggregationInterval < 86400.0)

@@ -1,5 +1,5 @@
 @interface VSJSAppScriptEvaluator
-- (VSJSAppScriptEvaluator)initWithApp:(id)a3 urls:(id)a4;
+- (VSJSAppScriptEvaluator)initWithApp:(id)app urls:(id)urls;
 - (void)start;
 - (void)transitionToDoneState;
 - (void)transitionToEnqueueingNextUrlState;
@@ -8,18 +8,18 @@
 
 @implementation VSJSAppScriptEvaluator
 
-- (VSJSAppScriptEvaluator)initWithApp:(id)a3 urls:(id)a4
+- (VSJSAppScriptEvaluator)initWithApp:(id)app urls:(id)urls
 {
-  v7 = a3;
-  v8 = a4;
+  appCopy = app;
+  urlsCopy = urls;
   v23.receiver = self;
   v23.super_class = VSJSAppScriptEvaluator;
   v9 = [(VSJSAppScriptEvaluator *)&v23 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_app, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_app, app);
+    v11 = [urlsCopy copy];
     urls = v10->_urls;
     v10->_urls = v11;
 
@@ -55,10 +55,10 @@
 - (void)start
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = [(VSJSAppScriptEvaluator *)self stateMachine];
-  v4 = [v3 currentState];
-  v5 = [v4 forceUnwrapObject];
-  v6 = [v5 isEqual:@"Idle"];
+  stateMachine = [(VSJSAppScriptEvaluator *)self stateMachine];
+  currentState = [stateMachine currentState];
+  forceUnwrapObject = [currentState forceUnwrapObject];
+  v6 = [forceUnwrapObject isEqual:@"Idle"];
 
   if ((v6 & 1) == 0)
   {
@@ -68,13 +68,13 @@
   v7 = VSDefaultLogObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(VSJSAppScriptEvaluator *)self urls];
+    urls = [(VSJSAppScriptEvaluator *)self urls];
     v9 = 134217984;
-    v10 = [v8 count];
+    v10 = [urls count];
     _os_log_impl(&dword_23AB8E000, v7, OS_LOG_TYPE_DEFAULT, "Starting script evaluation for %lu URLs", &v9, 0xCu);
   }
 
-  [v3 enqueueEvent:@"Start"];
+  [stateMachine enqueueEvent:@"Start"];
 }
 
 - (void)transitionToEnqueueingNextUrlState
@@ -88,24 +88,24 @@
     _os_log_impl(&dword_23AB8E000, v3, OS_LOG_TYPE_DEFAULT, "Entering %s", &v11, 0xCu);
   }
 
-  v4 = [(VSJSAppScriptEvaluator *)self remainingURLs];
-  v5 = [v4 firstObject];
+  remainingURLs = [(VSJSAppScriptEvaluator *)self remainingURLs];
+  firstObject = [remainingURLs firstObject];
 
   v6 = VSDefaultLogObject();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-  if (v5)
+  if (firstObject)
   {
     if (v7)
     {
       v11 = 138412290;
-      v12 = v5;
+      v12 = firstObject;
       _os_log_impl(&dword_23AB8E000, v6, OS_LOG_TYPE_DEFAULT, "Enqueued URL: %@", &v11, 0xCu);
     }
 
-    v8 = [(VSJSAppScriptEvaluator *)self remainingURLs];
-    [v8 removeObject:v5];
+    remainingURLs2 = [(VSJSAppScriptEvaluator *)self remainingURLs];
+    [remainingURLs2 removeObject:firstObject];
 
-    [(VSJSAppScriptEvaluator *)self setCurrentURL:v5];
+    [(VSJSAppScriptEvaluator *)self setCurrentURL:firstObject];
     v9 = @"Enqueued Next URL";
   }
 
@@ -120,16 +120,16 @@
     v9 = @"Done";
   }
 
-  v10 = [(VSJSAppScriptEvaluator *)self stateMachine];
-  [v10 enqueueEvent:v9];
+  stateMachine = [(VSJSAppScriptEvaluator *)self stateMachine];
+  [stateMachine enqueueEvent:v9];
 }
 
 - (void)transitionToFetchingScriptState
 {
   v6 = *MEMORY[0x277D85DE8];
-  v3 = [a1 currentURL];
+  currentURL = [self currentURL];
   v4 = 138412290;
-  v5 = v3;
+  v5 = currentURL;
   _os_log_error_impl(&dword_23AB8E000, a2, OS_LOG_TYPE_ERROR, "Invalid URL: %@", &v4, 0xCu);
 }
 
@@ -195,11 +195,11 @@ void __57__VSJSAppScriptEvaluator_transitionToFetchingScriptState__block_invoke(
     _os_log_impl(&dword_23AB8E000, v3, OS_LOG_TYPE_DEFAULT, "Entering %s", &v6, 0xCu);
   }
 
-  v4 = [(VSJSAppScriptEvaluator *)self completionBlock];
-  if (v4)
+  completionBlock = [(VSJSAppScriptEvaluator *)self completionBlock];
+  if (completionBlock)
   {
-    v5 = [(VSJSAppScriptEvaluator *)self results];
-    (v4)[2](v4, v5);
+    results = [(VSJSAppScriptEvaluator *)self results];
+    (completionBlock)[2](completionBlock, results);
   }
 }
 

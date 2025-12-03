@@ -1,9 +1,9 @@
 @interface IntervalTrackedFlowCounts
 - (id)description;
-- (void)addFlowCounts:(id)a3;
-- (void)addIntervalFlowCounts:(id)a3;
-- (void)subtractFlowCounts:(id)a3;
-- (void)subtractIntervalFlowCounts:(id)a3;
+- (void)addFlowCounts:(id)counts;
+- (void)addIntervalFlowCounts:(id)counts;
+- (void)subtractFlowCounts:(id)counts;
+- (void)subtractIntervalFlowCounts:(id)counts;
 @end
 
 @implementation IntervalTrackedFlowCounts
@@ -21,13 +21,13 @@
   return v7;
 }
 
-- (void)addFlowCounts:(id)a3
+- (void)addFlowCounts:(id)counts
 {
-  v4 = a3;
+  countsCopy = counts;
   v6.receiver = self;
   v6.super_class = IntervalTrackedFlowCounts;
-  [(TrackedFlowCounts *)&v6 addFlowCounts:v4];
-  if ([v4 rxDupeBytes])
+  [(TrackedFlowCounts *)&v6 addFlowCounts:countsCopy];
+  if ([countsCopy rxDupeBytes])
   {
     v5 = &OBJC_IVAR___IntervalTrackedFlowCounts__numBlemishedFlows;
   }
@@ -35,7 +35,7 @@
   else
   {
     v5 = &OBJC_IVAR___IntervalTrackedFlowCounts__numBlemishedFlows;
-    if (![v4 rxOOOBytes] && !objc_msgSend(v4, "txReTxBytes"))
+    if (![countsCopy rxOOOBytes] && !objc_msgSend(countsCopy, "txReTxBytes"))
     {
       v5 = &OBJC_IVAR___IntervalTrackedFlowCounts__numUnblemishedFlows;
     }
@@ -44,25 +44,25 @@
   ++*(&self->super.super.isa + *v5);
 }
 
-- (void)addIntervalFlowCounts:(id)a3
+- (void)addIntervalFlowCounts:(id)counts
 {
   v6.receiver = self;
   v6.super_class = IntervalTrackedFlowCounts;
-  v4 = a3;
-  [(TrackedFlowCounts *)&v6 addFlowCounts:v4];
-  self->_numBlemishedFlows += [v4 numBlemishedFlows];
-  v5 = [v4 numUnblemishedFlows];
+  countsCopy = counts;
+  [(TrackedFlowCounts *)&v6 addFlowCounts:countsCopy];
+  self->_numBlemishedFlows += [countsCopy numBlemishedFlows];
+  numUnblemishedFlows = [countsCopy numUnblemishedFlows];
 
-  self->_numUnblemishedFlows += v5;
+  self->_numUnblemishedFlows += numUnblemishedFlows;
 }
 
-- (void)subtractFlowCounts:(id)a3
+- (void)subtractFlowCounts:(id)counts
 {
-  v4 = a3;
+  countsCopy = counts;
   v6.receiver = self;
   v6.super_class = IntervalTrackedFlowCounts;
-  [(TrackedFlowCounts *)&v6 subtractFlowCounts:v4];
-  if ([v4 rxDupeBytes])
+  [(TrackedFlowCounts *)&v6 subtractFlowCounts:countsCopy];
+  if ([countsCopy rxDupeBytes])
   {
     v5 = &OBJC_IVAR___IntervalTrackedFlowCounts__numBlemishedFlows;
   }
@@ -70,7 +70,7 @@
   else
   {
     v5 = &OBJC_IVAR___IntervalTrackedFlowCounts__numBlemishedFlows;
-    if (![v4 rxOOOBytes] && !objc_msgSend(v4, "txReTxBytes"))
+    if (![countsCopy rxOOOBytes] && !objc_msgSend(countsCopy, "txReTxBytes"))
     {
       v5 = &OBJC_IVAR___IntervalTrackedFlowCounts__numUnblemishedFlows;
     }
@@ -79,16 +79,16 @@
   --*(&self->super.super.isa + *v5);
 }
 
-- (void)subtractIntervalFlowCounts:(id)a3
+- (void)subtractIntervalFlowCounts:(id)counts
 {
   v6.receiver = self;
   v6.super_class = IntervalTrackedFlowCounts;
-  v4 = a3;
-  [(TrackedFlowCounts *)&v6 subtractFlowCounts:v4];
-  self->_numBlemishedFlows -= [v4 numBlemishedFlows];
-  v5 = [v4 numUnblemishedFlows];
+  countsCopy = counts;
+  [(TrackedFlowCounts *)&v6 subtractFlowCounts:countsCopy];
+  self->_numBlemishedFlows -= [countsCopy numBlemishedFlows];
+  numUnblemishedFlows = [countsCopy numUnblemishedFlows];
 
-  self->_numUnblemishedFlows -= v5;
+  self->_numUnblemishedFlows -= numUnblemishedFlows;
 }
 
 @end

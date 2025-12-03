@@ -13,7 +13,7 @@
   v20[3] = &unk_27867BA78;
   v21 = v16;
   v17 = v16;
-  v18 = [a1 idInfoForDestinations:a3 service:a4 infoTypes:a5 options:a6 listenerID:a7 queue:a8 completionBlock:v20];
+  v18 = [self idInfoForDestinations:a3 service:a4 infoTypes:a5 options:a6 listenerID:a7 queue:a8 completionBlock:v20];
 
   return v18;
 }

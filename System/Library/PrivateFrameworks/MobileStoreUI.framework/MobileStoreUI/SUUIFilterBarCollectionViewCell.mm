@@ -1,58 +1,58 @@
 @interface SUUIFilterBarCollectionViewCell
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5;
-- (SUUIFilterBarCollectionViewCell)initWithFrame:(CGRect)a3;
-- (void)applyLayoutAttributes:(id)a3;
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context;
+- (SUUIFilterBarCollectionViewCell)initWithFrame:(CGRect)frame;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
+- (void)setBackgroundColor:(id)color;
 @end
 
 @implementation SUUIFilterBarCollectionViewCell
 
-- (SUUIFilterBarCollectionViewCell)initWithFrame:(CGRect)a3
+- (SUUIFilterBarCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = SUUIFilterBarCollectionViewCell;
-  v3 = [(SUUIViewReuseCollectionViewCell *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUUIViewReuseCollectionViewCell *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(SUUIFilterBarCollectionViewCell *)v3 contentView];
+    contentView = [(SUUIFilterBarCollectionViewCell *)v3 contentView];
     v6 = [SUUIFilterBarView alloc];
-    [v5 bounds];
+    [contentView bounds];
     v7 = [(SUUIFilterBarView *)v6 initWithFrame:?];
     filterBarView = v4->_filterBarView;
     v4->_filterBarView = v7;
 
-    [v5 addSubview:v4->_filterBarView];
+    [contentView addSubview:v4->_filterBarView];
   }
 
   return v4;
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
   filterBarView = self->_filterBarView;
-  v5 = a3;
-  v6 = [v5 backgroundColor];
-  [(SUUIViewReuseView *)filterBarView setBackgroundColor:v6];
+  attributesCopy = attributes;
+  backgroundColor = [attributesCopy backgroundColor];
+  [(SUUIViewReuseView *)filterBarView setBackgroundColor:backgroundColor];
 
   v7.receiver = self;
   v7.super_class = SUUIFilterBarCollectionViewCell;
-  [(SUUIViewReuseCollectionViewCell *)&v7 applyLayoutAttributes:v5];
+  [(SUUIViewReuseCollectionViewCell *)&v7 applyLayoutAttributes:attributesCopy];
 }
 
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context
 {
-  [SUUIFilterBarView preferredSizeForViewElement:a3 context:a4];
+  [SUUIFilterBarView preferredSizeForViewElement:element context:context];
   result.height = v5;
   result.width = v4;
   return result;
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context
 {
-  [SUUIFilterBarView sizeThatFitsWidth:a4 viewElement:a5 context:a3];
+  [SUUIFilterBarView sizeThatFitsWidth:element viewElement:context context:width];
   result.height = v6;
   result.width = v5;
   return result;
@@ -64,19 +64,19 @@
   v5.super_class = SUUIFilterBarCollectionViewCell;
   [(SUUICollectionViewCell *)&v5 layoutSubviews];
   filterBarView = self->_filterBarView;
-  v4 = [(SUUIFilterBarCollectionViewCell *)self contentView];
-  [v4 bounds];
+  contentView = [(SUUIFilterBarCollectionViewCell *)self contentView];
+  [contentView bounds];
   [(SUUIFilterBarView *)filterBarView setFrame:?];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   filterBarView = self->_filterBarView;
-  v5 = a3;
-  [(SUUIViewReuseView *)filterBarView setBackgroundColor:v5];
+  colorCopy = color;
+  [(SUUIViewReuseView *)filterBarView setBackgroundColor:colorCopy];
   v6.receiver = self;
   v6.super_class = SUUIFilterBarCollectionViewCell;
-  [(SUUIViewReuseCollectionViewCell *)&v6 setBackgroundColor:v5];
+  [(SUUIViewReuseCollectionViewCell *)&v6 setBackgroundColor:colorCopy];
 }
 
 @end

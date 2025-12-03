@@ -1,18 +1,18 @@
 @interface PAEColorSolid
 - (BOOL)addParameters;
-- (BOOL)canThrowRenderOutput:(id)a3 withInfo:(id *)a4;
-- (BOOL)frameSetup:(id *)a3 hardware:(BOOL *)a4 software:(BOOL *)a5;
-- (PAEColorSolid)initWithAPIManager:(id)a3;
+- (BOOL)canThrowRenderOutput:(id)output withInfo:(id *)info;
+- (BOOL)frameSetup:(id *)setup hardware:(BOOL *)hardware software:(BOOL *)software;
+- (PAEColorSolid)initWithAPIManager:(id)manager;
 - (id)properties;
 @end
 
 @implementation PAEColorSolid
 
-- (PAEColorSolid)initWithAPIManager:(id)a3
+- (PAEColorSolid)initWithAPIManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = PAEColorSolid;
-  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:a3];
+  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:manager];
 }
 
 - (id)properties
@@ -49,7 +49,7 @@ uint64_t __27__PAEColorSolid_properties__block_invoke()
   return v3 != 0;
 }
 
-- (BOOL)canThrowRenderOutput:(id)a3 withInfo:(id *)a4
+- (BOOL)canThrowRenderOutput:(id)output withInfo:(id *)info
 {
   v7 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
   if (v7)
@@ -57,16 +57,16 @@ uint64_t __27__PAEColorSolid_properties__block_invoke()
     v32 = 0;
     v33 = 0;
     v31 = 0;
-    [v7 getRedValue:&v33 greenValue:&v32 blueValue:&v31 fromParm:1 atFxTime:a4->var0.var1];
-    LODWORD(v7) = [(PAESharedDefaultBase *)self getRenderMode:a4->var0.var1];
+    [v7 getRedValue:&v33 greenValue:&v32 blueValue:&v31 fromParm:1 atFxTime:info->var0.var1];
+    LODWORD(v7) = [(PAESharedDefaultBase *)self getRenderMode:info->var0.var1];
     if (v7)
     {
-      if ([a3 imageType] == 3)
+      if ([output imageType] == 3)
       {
-        [a3 bounds];
+        [output bounds];
         v25 = v8;
         v26 = v9;
-        [(PAESharedDefaultBase *)self getPixelTransformForImage:a3];
+        [(PAESharedDefaultBase *)self getPixelTransformForImage:output];
         v10.f64[0] = v25;
         v10.f64[1] = v26;
         __asm { FMOV            V1.2D, #-0.5 }
@@ -104,14 +104,14 @@ uint64_t __27__PAEColorSolid_properties__block_invoke()
   return v7;
 }
 
-- (BOOL)frameSetup:(id *)a3 hardware:(BOOL *)a4 software:(BOOL *)a5
+- (BOOL)frameSetup:(id *)setup hardware:(BOOL *)hardware software:(BOOL *)software
 {
-  *a5 = 0;
-  *a4 = 0;
-  v5 = *&a3->var2;
-  v7[0] = *&a3->var0.var0;
+  *software = 0;
+  *hardware = 0;
+  v5 = *&setup->var2;
+  v7[0] = *&setup->var0.var0;
   v7[1] = v5;
-  v7[2] = *&a3->var4;
+  v7[2] = *&setup->var4;
   [PAESharedDefaultBase overrideFrameSetupForRenderMode:"overrideFrameSetupForRenderMode:hardware:software:" hardware:v7 software:?];
   return 1;
 }

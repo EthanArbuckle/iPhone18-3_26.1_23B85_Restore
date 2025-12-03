@@ -1,15 +1,15 @@
 @interface PKPaymentOfferConfirmationRecord
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isSetupPaymentOfferAfterPurchase;
-- (PKPaymentOfferConfirmationRecord)initWithCoder:(id)a3;
-- (PKPaymentOfferConfirmationRecord)initWithTransaction:(id)a3 passUniqueID:(id)a4 criteriaIdentifier:(id)a5 context:(unint64_t)a6 type:(unint64_t)a7;
-- (id)_dynamicContentMessageTileForPageType:(unint64_t)a3;
+- (PKPaymentOfferConfirmationRecord)initWithCoder:(id)coder;
+- (PKPaymentOfferConfirmationRecord)initWithTransaction:(id)transaction passUniqueID:(id)d criteriaIdentifier:(id)identifier context:(unint64_t)context type:(unint64_t)type;
+- (id)_dynamicContentMessageTileForPageType:(unint64_t)type;
 - (id)_init;
 - (id)description;
 - (id)processedEventsString;
 - (id)selectedOfferConfirmationRecord;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPaymentOfferConfirmationRecord
@@ -21,22 +21,22 @@
   return [(PKPaymentOfferConfirmationRecord *)&v3 init];
 }
 
-- (PKPaymentOfferConfirmationRecord)initWithTransaction:(id)a3 passUniqueID:(id)a4 criteriaIdentifier:(id)a5 context:(unint64_t)a6 type:(unint64_t)a7
+- (PKPaymentOfferConfirmationRecord)initWithTransaction:(id)transaction passUniqueID:(id)d criteriaIdentifier:(id)identifier context:(unint64_t)context type:(unint64_t)type
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
+  transactionCopy = transaction;
+  dCopy = d;
+  identifierCopy = identifier;
   v19.receiver = self;
   v19.super_class = PKPaymentOfferConfirmationRecord;
   v16 = [(PKPaymentOfferConfirmationRecord *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_transaction, a3);
-    objc_storeStrong(&v17->_passUniqueID, a4);
-    objc_storeStrong(&v17->_criteriaIdentifier, a5);
-    v17->_context = a6;
-    v17->_type = a7;
+    objc_storeStrong(&v16->_transaction, transaction);
+    objc_storeStrong(&v17->_passUniqueID, d);
+    objc_storeStrong(&v17->_criteriaIdentifier, identifier);
+    v17->_context = context;
+    v17->_type = type;
   }
 
   return v17;
@@ -46,15 +46,15 @@
 {
   if (self->_type == 1)
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (BOOL)isSetupPaymentOfferAfterPurchase
@@ -64,20 +64,20 @@
   {
     if (type == 1)
     {
-      v3 = [(PKPaymentOfferConfirmationRecord *)self selectedOfferConfirmationRecord];
-      v4 = [v3 selectedOffer];
-      v5 = [v4 installmentSelectedPaymentOffer];
+      selectedOfferConfirmationRecord = [(PKPaymentOfferConfirmationRecord *)self selectedOfferConfirmationRecord];
+      selectedOffer = [selectedOfferConfirmationRecord selectedOffer];
+      installmentSelectedPaymentOffer = [selectedOffer installmentSelectedPaymentOffer];
 
-      if (!v5)
+      if (!installmentSelectedPaymentOffer)
       {
         v7 = 0;
         goto LABEL_9;
       }
 
-      v6 = [v5 selectionType];
-      if (v6 <= 2)
+      selectionType = [installmentSelectedPaymentOffer selectionType];
+      if (selectionType <= 2)
       {
-        v7 = v6;
+        v7 = selectionType;
 LABEL_9:
 
         return v7 & 1;
@@ -98,47 +98,47 @@ LABEL_11:
   return v7 & 1;
 }
 
-- (id)_dynamicContentMessageTileForPageType:(unint64_t)a3
+- (id)_dynamicContentMessageTileForPageType:(unint64_t)type
 {
-  v5 = [(PKPaymentTransaction *)self->_transaction formattedBalanceAdjustmentAmount];
-  v6 = [(PKPaymentTransaction *)self->_transaction merchant];
-  v7 = [v6 displayName];
+  formattedBalanceAdjustmentAmount = [(PKPaymentTransaction *)self->_transaction formattedBalanceAdjustmentAmount];
+  merchant = [(PKPaymentTransaction *)self->_transaction merchant];
+  displayName = [merchant displayName];
 
   type = self->_type;
   if (type != 1)
   {
     if (type == 3)
     {
-      v9 = [PKPaymentOfferDynamicContentPage postPurchaseChoosePlanDynamicContentPageForAmountString:v5 merchantName:v7];
+      v9 = [PKPaymentOfferDynamicContentPage postPurchaseChoosePlanDynamicContentPageForAmountString:formattedBalanceAdjustmentAmount merchantName:displayName];
       goto LABEL_14;
     }
 
     goto LABEL_13;
   }
 
-  v10 = [(PKPaymentOfferConfirmationRecord *)self selectedOfferConfirmationRecord];
-  v11 = [v10 selectedOffer];
-  v12 = [v11 installmentSelectedPaymentOffer];
+  selectedOfferConfirmationRecord = [(PKPaymentOfferConfirmationRecord *)self selectedOfferConfirmationRecord];
+  selectedOffer = [selectedOfferConfirmationRecord selectedOffer];
+  installmentSelectedPaymentOffer = [selectedOffer installmentSelectedPaymentOffer];
 
-  if (!v12)
+  if (!installmentSelectedPaymentOffer)
   {
     v9 = 0;
     goto LABEL_11;
   }
 
-  v13 = [v12 selectionType];
-  if (!v13 || v13 == 2)
+  selectionType = [installmentSelectedPaymentOffer selectionType];
+  if (!selectionType || selectionType == 2)
   {
-    v14 = [v12 installmentAssessment];
-    v15 = [v14 dynamicContent];
-    v9 = [v15 dynamicContentPageForPageType:a3];
+    installmentAssessment = [installmentSelectedPaymentOffer installmentAssessment];
+    dynamicContent = [installmentAssessment dynamicContent];
+    v9 = [dynamicContent dynamicContentPageForPageType:type];
 
     goto LABEL_11;
   }
 
-  if (v13 == 1)
+  if (selectionType == 1)
   {
-    v9 = [PKPaymentOfferDynamicContentPage postPurchaseChoosePlanDynamicContentPageForAmountString:v5 merchantName:v7];
+    v9 = [PKPaymentOfferDynamicContentPage postPurchaseChoosePlanDynamicContentPageForAmountString:formattedBalanceAdjustmentAmount merchantName:displayName];
 LABEL_11:
 
     goto LABEL_14;
@@ -173,76 +173,76 @@ LABEL_14:
   return v7;
 }
 
-- (PKPaymentOfferConfirmationRecord)initWithCoder:(id)a3
+- (PKPaymentOfferConfirmationRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = PKPaymentOfferConfirmationRecord;
   v5 = [(PKPaymentOfferConfirmationRecord *)&v19 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transaction"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transaction"];
     transaction = v5->_transaction;
     v5->_transaction = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"passUniqueID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"passUniqueID"];
     passUniqueID = v5->_passUniqueID;
     v5->_passUniqueID = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"criteriaIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"criteriaIdentifier"];
     criteriaIdentifier = v5->_criteriaIdentifier;
     v5->_criteriaIdentifier = v10;
 
-    v5->_type = [v4 decodeIntegerForKey:@"type"];
-    v5->_context = [v4 decodeIntegerForKey:@"context"];
-    v5->_processedEvents = [v4 decodeIntegerForKey:@"processedEvents"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"nextAttempt"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"type"];
+    v5->_context = [coderCopy decodeIntegerForKey:@"context"];
+    v5->_processedEvents = [coderCopy decodeIntegerForKey:@"processedEvents"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"nextAttempt"];
     nextAttempt = v5->_nextAttempt;
     v5->_nextAttempt = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastAttempt"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastAttempt"];
     lastAttempt = v5->_lastAttempt;
     v5->_lastAttempt = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fullyProcessedDate"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fullyProcessedDate"];
     fullyProcessedDate = v5->_fullyProcessedDate;
     v5->_fullyProcessedDate = v16;
 
-    v5->_backoffLevel = [v4 decodeIntegerForKey:@"backoffLevel"];
+    v5->_backoffLevel = [coderCopy decodeIntegerForKey:@"backoffLevel"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   transaction = self->_transaction;
-  v5 = a3;
-  [v5 encodeObject:transaction forKey:@"transaction"];
-  [v5 encodeObject:self->_passUniqueID forKey:@"passUniqueID"];
-  [v5 encodeObject:self->_criteriaIdentifier forKey:@"criteriaIdentifier"];
-  [v5 encodeObject:self->_criteriaIdentifier forKey:@"criteriaIdentifier"];
-  [v5 encodeInteger:self->_type forKey:@"type"];
-  [v5 encodeInteger:self->_context forKey:@"context"];
-  [v5 encodeObject:self->_nextAttempt forKey:@"nextAttempt"];
-  [v5 encodeObject:self->_lastAttempt forKey:@"lastAttempt"];
-  [v5 encodeObject:self->_fullyProcessedDate forKey:@"fullyProcessedDate"];
-  [v5 encodeInteger:self->_backoffLevel forKey:@"backoffLevel"];
-  [v5 encodeInteger:self->_processedEvents forKey:@"processedEvents"];
+  coderCopy = coder;
+  [coderCopy encodeObject:transaction forKey:@"transaction"];
+  [coderCopy encodeObject:self->_passUniqueID forKey:@"passUniqueID"];
+  [coderCopy encodeObject:self->_criteriaIdentifier forKey:@"criteriaIdentifier"];
+  [coderCopy encodeObject:self->_criteriaIdentifier forKey:@"criteriaIdentifier"];
+  [coderCopy encodeInteger:self->_type forKey:@"type"];
+  [coderCopy encodeInteger:self->_context forKey:@"context"];
+  [coderCopy encodeObject:self->_nextAttempt forKey:@"nextAttempt"];
+  [coderCopy encodeObject:self->_lastAttempt forKey:@"lastAttempt"];
+  [coderCopy encodeObject:self->_fullyProcessedDate forKey:@"fullyProcessedDate"];
+  [coderCopy encodeInteger:self->_backoffLevel forKey:@"backoffLevel"];
+  [coderCopy encodeInteger:self->_processedEvents forKey:@"processedEvents"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -423,8 +423,8 @@ LABEL_45:
   v6 = PKPaymentOffersSessionDetailsContextToString(self->_context);
   [v3 appendFormat:@"context: '%@'; ", v6];
 
-  v7 = [(PKPaymentOfferConfirmationRecord *)self processedEventsString];
-  [v3 appendFormat:@"processedEvents: '%@'; ", v7];
+  processedEventsString = [(PKPaymentOfferConfirmationRecord *)self processedEventsString];
+  [v3 appendFormat:@"processedEvents: '%@'; ", processedEventsString];
 
   [v3 appendFormat:@"lastAttempt: '%@'; ", self->_lastAttempt];
   [v3 appendFormat:@"nextAttempt: '%@'; ", self->_nextAttempt];

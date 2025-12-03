@@ -1,17 +1,17 @@
 @interface AMSFollowUpMetricsEvent
-+ (id)eventFromMetricsDictionary:(id)a3;
++ (id)eventFromMetricsDictionary:(id)dictionary;
 @end
 
 @implementation AMSFollowUpMetricsEvent
 
-+ (id)eventFromMetricsDictionary:(id)a3
++ (id)eventFromMetricsDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = [objc_alloc(objc_opt_class()) initWithTopic:@"xp_amp_followup"];
   v5 = v4;
-  if (v3)
+  if (dictionaryCopy)
   {
-    [v4 addPropertiesWithDictionary:v3];
+    [v4 addPropertiesWithDictionary:dictionaryCopy];
   }
 
   return v5;

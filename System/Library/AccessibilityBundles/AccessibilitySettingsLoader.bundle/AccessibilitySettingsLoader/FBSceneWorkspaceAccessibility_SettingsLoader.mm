@@ -1,34 +1,34 @@
 @interface FBSceneWorkspaceAccessibility_SettingsLoader
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (FBSceneWorkspaceAccessibility_SettingsLoader)initWithIdentifier:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (FBSceneWorkspaceAccessibility_SettingsLoader)initWithIdentifier:(id)identifier;
 - (void)invalidate;
 @end
 
 @implementation FBSceneWorkspaceAccessibility_SettingsLoader
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"FBSceneWorkspace" hasInstanceMethod:@"initWithIdentifier:" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"FBSceneWorkspace" hasInstanceMethod:@"invalidate" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"FBSceneWorkspace" hasInstanceMethod:@"initWithIdentifier:" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"FBSceneWorkspace" hasInstanceMethod:@"invalidate" withFullSignature:{"v", 0}];
 }
 
-- (FBSceneWorkspaceAccessibility_SettingsLoader)initWithIdentifier:(id)a3
+- (FBSceneWorkspaceAccessibility_SettingsLoader)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v8.receiver = self;
   v8.super_class = FBSceneWorkspaceAccessibility_SettingsLoader;
-  v5 = [(FBSceneWorkspaceAccessibility_SettingsLoader *)&v8 initWithIdentifier:v4];
+  v5 = [(FBSceneWorkspaceAccessibility_SettingsLoader *)&v8 initWithIdentifier:identifierCopy];
   if (initWithIdentifier__onceToken != -1)
   {
     [FBSceneWorkspaceAccessibility_SettingsLoader initWithIdentifier:];
   }
 
-  [AXWorkspaces setObject:v5 forKeyedSubscript:v4];
+  [AXWorkspaces setObject:v5 forKeyedSubscript:identifierCopy];
   v6 = AXLogCommon();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    [(FBSceneWorkspaceAccessibility_SettingsLoader *)v4 initWithIdentifier:v5, v6];
+    [(FBSceneWorkspaceAccessibility_SettingsLoader *)identifierCopy initWithIdentifier:v5, v6];
   }
 
   return v5;

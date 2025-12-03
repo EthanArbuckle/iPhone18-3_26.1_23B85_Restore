@@ -1,12 +1,12 @@
 @interface IDSCredentialsDaemon
 + (id)sharedInstance;
 - (IDSCredentialsDaemon)init;
-- (id)credentialLoaderForUniqueID:(id)a3;
-- (void)_pidSuspended:(int)a3;
+- (id)credentialLoaderForUniqueID:(id)d;
+- (void)_pidSuspended:(int)suspended;
 - (void)_terminate;
-- (void)addCredentialLoader:(id)a3;
+- (void)addCredentialLoader:(id)loader;
 - (void)dealloc;
-- (void)removeCredentialLoaderForUniqueID:(id)a3;
+- (void)removeCredentialLoaderForUniqueID:(id)d;
 - (void)shutdown;
 @end
 
@@ -27,9 +27,9 @@
 - (IDSCredentialsDaemon)init
 {
   v3 = +[IMSystemMonitor sharedInstance];
-  v4 = [v3 systemIsShuttingDown];
+  systemIsShuttingDown = [v3 systemIsShuttingDown];
 
-  if (v4)
+  if (systemIsShuttingDown)
   {
     v5 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -46,7 +46,7 @@
       _IDSLogTransport();
     }
 
-    v6 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -129,10 +129,10 @@
     }
 
     self = v8;
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -169,21 +169,21 @@
   [(IDSCredentialsDaemon *)self _terminate];
 }
 
-- (void)addCredentialLoader:(id)a3
+- (void)addCredentialLoader:(id)loader
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  loaderCopy = loader;
+  v5 = loaderCopy;
+  if (loaderCopy)
   {
-    v6 = [(NSMutableDictionary *)v4 uniqueID];
-    if ([v6 length])
+    uniqueID = [(NSMutableDictionary *)loaderCopy uniqueID];
+    if ([uniqueID length])
     {
-      v7 = [(NSMutableDictionary *)self->_uniqueIDToCredentialLoaderMap objectForKey:v6];
+      v7 = [(NSMutableDictionary *)self->_uniqueIDToCredentialLoaderMap objectForKey:uniqueID];
 
       if (!v7)
       {
-        v8 = [(NSMutableDictionary *)self->_uniqueIDToCredentialLoaderMap allKeys];
-        v9 = [v8 count];
+        allKeys = [(NSMutableDictionary *)self->_uniqueIDToCredentialLoaderMap allKeys];
+        v9 = [allKeys count];
 
         if (!v9)
         {
@@ -191,7 +191,7 @@
           [v10 addFastDormancyDisableToken:@"IDSCredentialsDaemon"];
         }
 
-        [(NSMutableDictionary *)self->_uniqueIDToCredentialLoaderMap setObject:v5 forKey:v6];
+        [(NSMutableDictionary *)self->_uniqueIDToCredentialLoaderMap setObject:v5 forKey:uniqueID];
         v11 = OSLogHandleForIDSCategory();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
         {
@@ -224,17 +224,17 @@
   }
 }
 
-- (void)removeCredentialLoaderForUniqueID:(id)a3
+- (void)removeCredentialLoaderForUniqueID:(id)d
 {
-  v4 = a3;
-  if ([(NSMutableDictionary *)v4 length])
+  dCopy = d;
+  if ([(NSMutableDictionary *)dCopy length])
   {
-    [(NSMutableDictionary *)self->_uniqueIDToCredentialLoaderMap removeObjectForKey:v4];
+    [(NSMutableDictionary *)self->_uniqueIDToCredentialLoaderMap removeObjectForKey:dCopy];
     v5 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v10 = v4;
+      v10 = dCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "Removing Loader for uniqueID %@", buf, 0xCu);
     }
 
@@ -262,12 +262,12 @@
   }
 }
 
-- (id)credentialLoaderForUniqueID:(id)a3
+- (id)credentialLoaderForUniqueID:(id)d
 {
-  v4 = a3;
-  if ([v4 length])
+  dCopy = d;
+  if ([dCopy length])
   {
-    v5 = [(NSMutableDictionary *)self->_uniqueIDToCredentialLoaderMap objectForKey:v4];
+    v5 = [(NSMutableDictionary *)self->_uniqueIDToCredentialLoaderMap objectForKey:dCopy];
   }
 
   else
@@ -278,13 +278,13 @@
   return v5;
 }
 
-- (void)_pidSuspended:(int)a3
+- (void)_pidSuspended:(int)suspended
 {
   v4 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v6 = a3;
+    suspendedCopy = suspended;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "PID: %d was suspended", buf, 8u);
   }
 

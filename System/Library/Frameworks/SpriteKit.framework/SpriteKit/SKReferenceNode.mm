@@ -1,17 +1,17 @@
 @interface SKReferenceNode
-+ (SKReferenceNode)nodeWithFileNamed:(id)a3;
++ (SKReferenceNode)nodeWithFileNamed:(id)named;
 + (SKReferenceNode)referenceNodeWithFileNamed:(NSString *)fileName;
 + (SKReferenceNode)referenceNodeWithURL:(NSURL *)referenceURL;
 - (SKReferenceNode)initWithCoder:(NSCoder *)aDecoder;
 - (SKReferenceNode)initWithFileNamed:(NSString *)fileName;
 - (SKReferenceNode)initWithURL:(NSURL *)url;
 - (id)_resolveReferenceNode;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)resolvedNode;
-- (void)encodeWithCoder:(id)a3;
-- (void)resolveNodeFromArchiveData:(id)a3;
-- (void)setReferenceFileName:(id)a3;
-- (void)setReferenceURL:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)resolveNodeFromArchiveData:(id)data;
+- (void)setReferenceFileName:(id)name;
+- (void)setReferenceURL:(id)l;
 @end
 
 @implementation SKReferenceNode
@@ -66,15 +66,15 @@
   return v6;
 }
 
-- (void)setReferenceFileName:(id)a3
+- (void)setReferenceFileName:(id)name
 {
-  v10 = a3;
-  v4 = [(SKReferenceNode *)self referenceFileName];
-  v5 = [v10 isEqual:v4];
+  nameCopy = name;
+  referenceFileName = [(SKReferenceNode *)self referenceFileName];
+  v5 = [nameCopy isEqual:referenceFileName];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [v10 copy];
+    v6 = [nameCopy copy];
     referenceFileName = self->_referenceFileName;
     self->_referenceFileName = v6;
 
@@ -91,15 +91,15 @@
   }
 }
 
-- (void)setReferenceURL:(id)a3
+- (void)setReferenceURL:(id)l
 {
-  v10 = a3;
-  v4 = [(SKReferenceNode *)self referenceURL];
-  v5 = [v10 isEqual:v4];
+  lCopy = l;
+  referenceURL = [(SKReferenceNode *)self referenceURL];
+  v5 = [lCopy isEqual:referenceURL];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [v10 copy];
+    v6 = [lCopy copy];
     referenceURL = self->_referenceURL;
     self->_referenceURL = v6;
 
@@ -132,17 +132,17 @@
   return v4;
 }
 
-+ (SKReferenceNode)nodeWithFileNamed:(id)a3
++ (SKReferenceNode)nodeWithFileNamed:(id)named
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithFileNamed:v3];
+  namedCopy = named;
+  v4 = [objc_alloc(objc_opt_class()) initWithFileNamed:namedCopy];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   resolvedNode = self->_resolvedNode;
   if (resolvedNode)
   {
@@ -151,9 +151,9 @@
 
   v6.receiver = self;
   v6.super_class = SKReferenceNode;
-  [(SKNode *)&v6 encodeWithCoder:v4];
-  [v4 encodeObject:self->_referenceURL forKey:@"_referenceURL"];
-  [v4 encodeObject:self->_referenceFileName forKey:@"_referenceFileName"];
+  [(SKNode *)&v6 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_referenceURL forKey:@"_referenceURL"];
+  [coderCopy encodeObject:self->_referenceFileName forKey:@"_referenceFileName"];
   if (self->_resolvedNode)
   {
     [(SKNode *)self addChild:?];
@@ -182,9 +182,9 @@
     v5->_hasResolvedURL = 0;
     if (v5->_referenceFileName || v5->_referenceURL)
     {
-      v11 = [(SKNode *)v5 scene];
+      scene = [(SKNode *)v5 scene];
 
-      if (!v11)
+      if (!scene)
       {
         [(SKReferenceNode *)v5 resolveReferenceNode];
       }
@@ -245,8 +245,8 @@ LABEL_4:
     if (v12 && [(NSString *)v12 length])
     {
       v13 = self->_referenceFileName;
-      v14 = [(NSString *)v13 pathExtension];
-      v15 = [v14 length];
+      pathExtension = [(NSString *)v13 pathExtension];
+      v15 = [pathExtension length];
 
       if (!v15)
       {
@@ -326,10 +326,10 @@ LABEL_17:
   return v24;
 }
 
-- (void)resolveNodeFromArchiveData:(id)a3
+- (void)resolveNodeFromArchiveData:(id)data
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   if (self->_resolvedNode)
   {
     [(SKNode *)self removeChild:?];
@@ -337,10 +337,10 @@ LABEL_17:
     self->_resolvedNode = 0;
   }
 
-  if (v4)
+  if (dataCopy)
   {
     v20 = 0;
-    v6 = [objc_alloc(MEMORY[0x277CCAAC8]) initForReadingFromData:v4 error:&v20];
+    v6 = [objc_alloc(MEMORY[0x277CCAAC8]) initForReadingFromData:dataCopy error:&v20];
     v7 = v20;
     [v6 setRequiresSecureCoding:0];
     v8 = [v6 decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x277CCA308]];
@@ -404,7 +404,7 @@ LABEL_17:
 {
   if (!self->_hasResolvedURL)
   {
-    v3 = [(SKReferenceNode *)self _resolveReferenceNode];
+    _resolveReferenceNode = [(SKReferenceNode *)self _resolveReferenceNode];
   }
 
   resolvedNode = self->_resolvedNode;
@@ -412,7 +412,7 @@ LABEL_17:
   return resolvedNode;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   resolvedNode = self->_resolvedNode;
   if (resolvedNode)
@@ -422,12 +422,12 @@ LABEL_17:
 
   v10.receiver = self;
   v10.super_class = SKReferenceNode;
-  v6 = [(SKNode *)&v10 copyWithZone:a3];
-  v7 = [(SKReferenceNode *)self referenceURL];
-  [v6 setReferenceURL:v7];
+  v6 = [(SKNode *)&v10 copyWithZone:zone];
+  referenceURL = [(SKReferenceNode *)self referenceURL];
+  [v6 setReferenceURL:referenceURL];
 
-  v8 = [(SKReferenceNode *)self referenceFileName];
-  [v6 setReferenceFileName:v8];
+  referenceFileName = [(SKReferenceNode *)self referenceFileName];
+  [v6 setReferenceFileName:referenceFileName];
 
   if (self->_resolvedNode)
   {

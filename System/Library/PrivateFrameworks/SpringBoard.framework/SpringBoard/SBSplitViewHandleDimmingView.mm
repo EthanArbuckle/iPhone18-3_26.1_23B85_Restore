@@ -1,15 +1,15 @@
 @interface SBSplitViewHandleDimmingView
-- (SBSplitViewHandleDimmingView)initWithFrame:(CGRect)a3;
+- (SBSplitViewHandleDimmingView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation SBSplitViewHandleDimmingView
 
-- (SBSplitViewHandleDimmingView)initWithFrame:(CGRect)a3
+- (SBSplitViewHandleDimmingView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = SBSplitViewHandleDimmingView;
-  v3 = [(SBSplitViewHandleDimmingView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBSplitViewHandleDimmingView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [MEMORY[0x277D755B8] imageNamed:@"SplitViewDimming"];

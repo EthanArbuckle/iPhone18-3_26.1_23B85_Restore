@@ -1,57 +1,57 @@
 @interface ICQBundlesHook
-- (BOOL)dynamicViewControllerShouldDismiss:(id)a3;
-- (BOOL)shouldMatchModel:(id)a3;
-- (ICQBundlesHook)initWithFlowManager:(id)a3;
+- (BOOL)dynamicViewControllerShouldDismiss:(id)dismiss;
+- (BOOL)shouldMatchModel:(id)model;
+- (ICQBundlesHook)initWithFlowManager:(id)manager;
 - (RUIServerHookDelegate)delegate;
 - (RUIServerHookResponse)serverHookResponse;
 - (id)continuationResponseBody;
-- (id)dynamicViewController:(id)a3 contentViewControllerWithDictionary:(id)a4;
-- (void)dynamicViewController:(id)a3 didFinishPurchaseWithResult:(id)a4 error:(id)a5;
+- (id)dynamicViewController:(id)controller contentViewControllerWithDictionary:(id)dictionary;
+- (void)dynamicViewController:(id)controller didFinishPurchaseWithResult:(id)result error:(id)error;
 - (void)launchBundleOffer;
-- (void)processElement:(id)a3 attributes:(id)a4 objectModel:(id)a5 completion:(id)a6;
-- (void)processObjectModel:(id)a3 completion:(id)a4;
-- (void)setAdditionalParameters:(id)a3;
+- (void)processElement:(id)element attributes:(id)attributes objectModel:(id)model completion:(id)completion;
+- (void)processObjectModel:(id)model completion:(id)completion;
+- (void)setAdditionalParameters:(id)parameters;
 @end
 
 @implementation ICQBundlesHook
 
-- (ICQBundlesHook)initWithFlowManager:(id)a3
+- (ICQBundlesHook)initWithFlowManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v8.receiver = self;
   v8.super_class = ICQBundlesHook;
   v5 = [(ICQBundlesHook *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_flowManager, v4);
+    objc_storeWeak(&v5->_flowManager, managerCopy);
   }
 
   return v6;
 }
 
-- (void)processElement:(id)a3 attributes:(id)a4 objectModel:(id)a5 completion:(id)a6
+- (void)processElement:(id)element attributes:(id)attributes objectModel:(id)model completion:(id)completion
 {
   v13 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a6;
+  elementCopy = element;
+  completionCopy = completion;
   v9 = _ICQGetLogSystem();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v7 name];
+    name = [elementCopy name];
     v11 = 138412290;
-    v12 = v10;
+    v12 = name;
     _os_log_impl(&dword_275623000, v9, OS_LOG_TYPE_DEFAULT, "Couldn't process element |%@|, It's not yet supported.", &v11, 0xCu);
   }
 
-  (*(v8 + 2))(v8, 0, 0);
+  (*(completionCopy + 2))(completionCopy, 0, 0);
 }
 
-- (BOOL)shouldMatchModel:(id)a3
+- (BOOL)shouldMatchModel:(id)model
 {
-  v3 = a3;
-  v4 = [v3 clientInfo];
-  v5 = [v4 objectForKeyedSubscript:@"action"];
+  modelCopy = model;
+  clientInfo = [modelCopy clientInfo];
+  v5 = [clientInfo objectForKeyedSubscript:@"action"];
   if ([v5 isEqualToString:@"LAUNCH_BUNDLE_OFFER_VIEW"])
   {
     v6 = 1;
@@ -59,22 +59,22 @@
 
   else
   {
-    v7 = [v3 clientInfo];
-    v8 = [v7 objectForKeyedSubscript:@"action"];
+    clientInfo2 = [modelCopy clientInfo];
+    v8 = [clientInfo2 objectForKeyedSubscript:@"action"];
     v6 = [v8 isEqualToString:@"ICQActionLaunchAppleOne"];
   }
 
   return v6;
 }
 
-- (void)processObjectModel:(id)a3 completion:(id)a4
+- (void)processObjectModel:(id)model completion:(id)completion
 {
-  v6 = a4;
-  v7 = [a3 clientInfo];
+  completionCopy = completion;
+  clientInfo = [model clientInfo];
   clientInfo = self->_clientInfo;
-  self->_clientInfo = v7;
+  self->_clientInfo = clientInfo;
 
-  v9 = [ICQPurchase clearCacheAndNotifyClientsWithCompletion:v6];
+  v9 = [ICQPurchase clearCacheAndNotifyClientsWithCompletion:completionCopy];
 
   completionHandler = self->_completionHandler;
   self->_completionHandler = v9;
@@ -188,10 +188,10 @@
 {
   v37 = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_flowManager);
-  v4 = [WeakRetained offer];
-  v5 = [v4 action];
+  offer = [WeakRetained offer];
+  action = [offer action];
 
-  if (v5 == 118)
+  if (action == 118)
   {
     v6 = objc_loadWeakRetained(&self->_flowManager);
     [v6 presentHostingNavigationController];
@@ -204,16 +204,16 @@
     _os_log_impl(&dword_275623000, v7, OS_LOG_TYPE_DEFAULT, "present bundle start from server hook path", buf, 2u);
   }
 
-  v8 = [MEMORY[0x277CEE3F8] quotaBag];
+  quotaBag = [MEMORY[0x277CEE3F8] quotaBag];
   v9 = _ICQGetLogSystem();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v36 = v8;
+    v36 = quotaBag;
     _os_log_impl(&dword_275623000, v9, OS_LOG_TYPE_DEFAULT, "bag = %@", buf, 0xCu);
   }
 
-  v10 = [objc_alloc(MEMORY[0x277CEE8E8]) initWithServiceType:@"icloud" placement:@"iCloudPreBuyFlow" bag:v8];
+  v10 = [objc_alloc(MEMORY[0x277CEE8E8]) initWithServiceType:@"icloud" placement:@"iCloudPreBuyFlow" bag:quotaBag];
   [v10 setDelegate:self];
   [(ICQBundlesHook *)self setAdditionalParameters:v10];
   v11 = _ICQGetLogSystem();
@@ -224,10 +224,10 @@
   }
 
   v12 = objc_loadWeakRetained(&self->_flowManager);
-  v13 = [v12 hostingNavigationController];
-  v14 = [v13 presentingViewController];
+  hostingNavigationController = [v12 hostingNavigationController];
+  presentingViewController = [hostingNavigationController presentingViewController];
   presentingViewController = self->_presentingViewController;
-  self->_presentingViewController = v14;
+  self->_presentingViewController = presentingViewController;
 
   v16 = [MEMORY[0x277CBEA60] arrayWithObject:v10];
   v30 = 0u;
@@ -235,11 +235,11 @@
   v32 = 0u;
   v33 = 0u;
   v17 = objc_loadWeakRetained(&self->_flowManager);
-  v18 = [v17 hostingNavigationController];
-  v19 = [v18 navigationBar];
-  v20 = [v19 subviews];
+  hostingNavigationController2 = [v17 hostingNavigationController];
+  navigationBar = [hostingNavigationController2 navigationBar];
+  subviews = [navigationBar subviews];
 
-  v21 = [v20 countByEnumeratingWithState:&v30 objects:v34 count:16];
+  v21 = [subviews countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v21)
   {
     v22 = v21;
@@ -251,7 +251,7 @@
       {
         if (*v31 != v23)
         {
-          objc_enumerationMutation(v20);
+          objc_enumerationMutation(subviews);
         }
 
         v25 = *(*(&v30 + 1) + 8 * v24);
@@ -265,36 +265,36 @@
       }
 
       while (v22 != v24);
-      v22 = [v20 countByEnumeratingWithState:&v30 objects:v34 count:16];
+      v22 = [subviews countByEnumeratingWithState:&v30 objects:v34 count:16];
     }
 
     while (v22);
   }
 
   v26 = objc_loadWeakRetained(&self->_flowManager);
-  v27 = [v26 hostingNavigationController];
-  [v27 setNavigationBarHidden:0 animated:0];
+  hostingNavigationController3 = [v26 hostingNavigationController];
+  [hostingNavigationController3 setNavigationBarHidden:0 animated:0];
 
   v28 = objc_loadWeakRetained(&self->_flowManager);
-  v29 = [v28 hostingNavigationController];
-  [v29 setViewControllers:v16];
+  hostingNavigationController4 = [v28 hostingNavigationController];
+  [hostingNavigationController4 setViewControllers:v16];
 }
 
-- (void)setAdditionalParameters:(id)a3
+- (void)setAdditionalParameters:(id)parameters
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CB8F48] ams_sharedAccountStore];
-  v6 = [v5 ams_activeiTunesAccount];
+  parametersCopy = parameters;
+  ams_sharedAccountStore = [MEMORY[0x277CB8F48] ams_sharedAccountStore];
+  ams_activeiTunesAccount = [ams_sharedAccountStore ams_activeiTunesAccount];
   v7 = _ICQGetLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v41 = v6;
+    v41 = ams_activeiTunesAccount;
     _os_log_impl(&dword_275623000, v7, OS_LOG_TYPE_DEFAULT, "acc = %@", buf, 0xCu);
   }
 
-  [v4 setAccount:v6];
+  [parametersCopy setAccount:ams_activeiTunesAccount];
   v8 = [(NSDictionary *)self->_clientInfo objectForKeyedSubscript:@"amsParams"];
 
   if (v8)
@@ -333,7 +333,7 @@ LABEL_13:
           _os_log_impl(&dword_275623000, v16, OS_LOG_TYPE_DEFAULT, "AMS Bundle additional Parameters = %@", buf, 0xCu);
         }
 
-        [v4 setClientOptions:v12];
+        [parametersCopy setClientOptions:v12];
         v14 = v12;
         goto LABEL_13;
       }
@@ -342,27 +342,27 @@ LABEL_13:
 LABEL_14:
   }
 
-  v17 = [MEMORY[0x277CEE620] currentProcess];
+  currentProcess = [MEMORY[0x277CEE620] currentProcess];
   WeakRetained = objc_loadWeakRetained(&self->_flowManager);
-  v19 = [WeakRetained offer];
+  offer = [WeakRetained offer];
 
-  v20 = [v19 appVersionId];
+  appVersionId = [offer appVersionId];
   v21 = MEMORY[0x277CCACA8];
-  v22 = [v19 bundleIdentifier];
-  v23 = [v21 stringWithFormat:@"%@/%@ MBF/1.0 CastleSettings/1.0", v22, v20];
-  [v17 setUserAgentSuffix:v23];
+  bundleIdentifier = [offer bundleIdentifier];
+  v23 = [v21 stringWithFormat:@"%@/%@ MBF/1.0 CastleSettings/1.0", bundleIdentifier, appVersionId];
+  [currentProcess setUserAgentSuffix:v23];
 
-  [v4 setClientInfo:v17];
-  [v4 setMediaClientIdentifier:@"com.apple.RemoteICloudQuotaUI"];
+  [parametersCopy setClientInfo:currentProcess];
+  [parametersCopy setMediaClientIdentifier:@"com.apple.RemoteICloudQuotaUI"];
   v24 = objc_alloc_init(MEMORY[0x277CBEB38]);
   [v24 setObject:@"icloud" forKey:@"app"];
   [v24 setObject:@"xp_its_main" forKey:@"topic"];
-  v25 = [v6 ams_DSID];
+  ams_DSID = [ams_activeiTunesAccount ams_DSID];
 
-  if (v25)
+  if (ams_DSID)
   {
-    v26 = [v6 ams_DSID];
-    [v24 setObject:v26 forKey:@"DSID"];
+    ams_DSID2 = [ams_activeiTunesAccount ams_DSID];
+    [v24 setObject:ams_DSID2 forKey:@"DSID"];
   }
 
   v27 = [(NSDictionary *)self->_clientInfo objectForKeyedSubscript:@"precedingMarketing"];
@@ -375,7 +375,7 @@ LABEL_14:
 
     if (v30)
     {
-      v37 = v5;
+      v37 = ams_sharedAccountStore;
       v38 = 0;
       v31 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v30 options:0 error:&v38];
       v32 = v38;
@@ -391,7 +391,7 @@ LABEL_14:
         }
 
 LABEL_27:
-        v5 = v37;
+        ams_sharedAccountStore = v37;
         goto LABEL_28;
       }
 
@@ -422,15 +422,15 @@ LABEL_28:
     _os_log_impl(&dword_275623000, v36, OS_LOG_TYPE_DEFAULT, "Setting overlayDictionary = %@", buf, 0xCu);
   }
 
-  [v4 setMetricsOverlay:v24];
+  [parametersCopy setMetricsOverlay:v24];
 }
 
-- (void)dynamicViewController:(id)a3 didFinishPurchaseWithResult:(id)a4 error:(id)a5
+- (void)dynamicViewController:(id)controller didFinishPurchaseWithResult:(id)result error:(id)error
 {
   v50[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  controllerCopy = controller;
+  resultCopy = result;
+  errorCopy = error;
   v11 = _ICQGetLogSystem();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -442,7 +442,7 @@ LABEL_28:
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v43 = 138412290;
-    v44 = v8;
+    v44 = controllerCopy;
     _os_log_impl(&dword_275623000, v12, OS_LOG_TYPE_DEFAULT, "AMSUIDynamicViewController = %@", &v43, 0xCu);
   }
 
@@ -450,7 +450,7 @@ LABEL_28:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v43 = 138412290;
-    v44 = v9;
+    v44 = resultCopy;
     _os_log_impl(&dword_275623000, v13, OS_LOG_TYPE_DEFAULT, "AMSPurchaseResult = %@", &v43, 0xCu);
   }
 
@@ -458,14 +458,14 @@ LABEL_28:
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v43 = 138412290;
-    v44 = v10;
+    v44 = errorCopy;
     _os_log_impl(&dword_275623000, v14, OS_LOG_TYPE_DEFAULT, "error = %@", &v43, 0xCu);
   }
 
-  self->_amsErrorCode = [v10 code];
+  self->_amsErrorCode = [errorCopy code];
   self->_purchaseSuccess = 0;
-  objc_storeStrong(&self->_purchaseError, a5);
-  if (v9)
+  objc_storeStrong(&self->_purchaseError, error);
+  if (resultCopy)
   {
     v15 = _ICQGetLogSystem();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -480,38 +480,38 @@ LABEL_28:
     v18 = [v16 arrayWithObject:v17];
 
     WeakRetained = objc_loadWeakRetained(&self->_flowManager);
-    v20 = [WeakRetained hostingNavigationController];
-    [v20 setViewControllers:v18];
+    hostingNavigationController = [WeakRetained hostingNavigationController];
+    [hostingNavigationController setViewControllers:v18];
 
     v21 = objc_loadWeakRetained(&self->_flowManager);
-    v22 = [v21 hostingNavigationController];
-    if (v22)
+    hostingNavigationController2 = [v21 hostingNavigationController];
+    if (hostingNavigationController2)
     {
-      v23 = v22;
-      v24 = [(UIViewController *)self->_presentingViewController presentedViewController];
+      v23 = hostingNavigationController2;
+      presentedViewController = [(UIViewController *)self->_presentingViewController presentedViewController];
 
-      if (!v24)
+      if (!presentedViewController)
       {
         presentingViewController = self->_presentingViewController;
         v26 = objc_loadWeakRetained(&self->_flowManager);
-        v27 = [v26 hostingNavigationController];
-        [(UIViewController *)presentingViewController presentPreferredSizeWithViewController:v27 animated:1 completion:0];
+        hostingNavigationController3 = [v26 hostingNavigationController];
+        [(UIViewController *)presentingViewController presentPreferredSizeWithViewController:hostingNavigationController3 animated:1 completion:0];
 
 LABEL_22:
         self->_statusCode = 0;
-        v31 = [v9 purchase];
+        purchase = [resultCopy purchase];
         v49 = @"mtTopic";
         v50[0] = @"xp_its_main";
         v32 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v50 forKeys:&v49 count:1];
-        [v31 setMetricsOverlay:v32];
+        [purchase setMetricsOverlay:v32];
 
-        v33 = [v31 buyParams];
-        v34 = v33;
-        if (v33)
+        buyParams = [purchase buyParams];
+        v34 = buyParams;
+        if (buyParams)
         {
-          v35 = [v33 stringValue];
+          stringValue = [buyParams stringValue];
           buyParamsStr = self->_buyParamsStr;
-          self->_buyParamsStr = v35;
+          self->_buyParamsStr = stringValue;
 
           v37 = [MEMORY[0x277D7F3E0] base64EncodeString:self->_buyParamsStr];
           v38 = self->_buyParamsStr;
@@ -567,13 +567,13 @@ LABEL_22:
     else if (v30)
     {
       v41 = self->_amsErrorCode;
-      v42 = [v10 localizedDescription];
+      localizedDescription = [errorCopy localizedDescription];
       v43 = 136315650;
       v44 = "[ICQBundlesHook dynamicViewController:didFinishPurchaseWithResult:error:]";
       v45 = 2048;
       v46 = v41;
       v47 = 2112;
-      v48 = v42;
+      v48 = localizedDescription;
       _os_log_impl(&dword_275623000, v29, OS_LOG_TYPE_DEFAULT, "%s: Error code %ld. Error: %@", &v43, 0x20u);
     }
 
@@ -600,10 +600,10 @@ LABEL_22:
 LABEL_33:
 }
 
-- (id)dynamicViewController:(id)a3 contentViewControllerWithDictionary:(id)a4
+- (id)dynamicViewController:(id)controller contentViewControllerWithDictionary:(id)dictionary
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  dictionaryCopy = dictionary;
   v6 = _ICQGetLogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -615,7 +615,7 @@ LABEL_33:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v5;
+    v12 = dictionaryCopy;
     _os_log_impl(&dword_275623000, v7, OS_LOG_TYPE_DEFAULT, "contentViewControllerDictionary = %@", &v11, 0xCu);
   }
 
@@ -631,7 +631,7 @@ LABEL_33:
   return v8;
 }
 
-- (BOOL)dynamicViewControllerShouldDismiss:(id)a3
+- (BOOL)dynamicViewControllerShouldDismiss:(id)dismiss
 {
   v15 = *MEMORY[0x277D85DE8];
   v4 = _ICQGetLogSystem();

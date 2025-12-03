@@ -1,12 +1,12 @@
 @interface FTMessageQueue
-- (BOOL)addMessage:(id)a3;
-- (BOOL)addMessageAtHeadOfQueue:(id)a3;
-- (BOOL)removeMessage:(id)a3;
+- (BOOL)addMessage:(id)message;
+- (BOOL)addMessageAtHeadOfQueue:(id)queue;
+- (BOOL)removeMessage:(id)message;
 - (FTMessageQueue)init;
 - (FTMessageQueueDelegate)delegate;
 - (IDSBaseMessage)topMessage;
 - (id)dequeueTopMessage;
-- (id)messageForUniqueID:(unint64_t)a3;
+- (id)messageForUniqueID:(unint64_t)d;
 - (void)_setTimeout;
 - (void)_timeoutHit;
 - (void)removeAllMessages;
@@ -18,17 +18,17 @@
 {
   v18 = *MEMORY[0x1E69E9840];
   [(FTMessageQueue *)self _clearTimeout];
-  v3 = [(FTMessageQueue *)self topMessage];
-  if (v3)
+  topMessage = [(FTMessageQueue *)self topMessage];
+  if (topMessage)
   {
-    v4 = [(FTMessageQueue *)self delegate];
+    delegate = [(FTMessageQueue *)self delegate];
 
-    if (v4)
+    if (delegate)
     {
       v5 = [(NSMutableArray *)self->_addDates objectAtIndex:0];
       [v5 timeIntervalSinceNow];
       v7 = fabs(v6);
-      [v3 timeout];
+      [topMessage timeout];
       v9 = v8 - v7;
       if (v9 <= 0.0)
       {
@@ -41,15 +41,15 @@
       }
 
       [(CUTDeferredTaskQueue *)self->_timeoutTask enqueueExecutionWithTarget:self afterDelay:v10];
-      v11 = [MEMORY[0x1E69A6138] registration];
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+      registration = [MEMORY[0x1E69A6138] registration];
+      if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [(FTMessageQueue *)self topMessage];
+        topMessage2 = [(FTMessageQueue *)self topMessage];
         v14 = 134218242;
         v15 = v10;
         v16 = 2112;
-        v17 = v12;
-        _os_log_impl(&dword_195925000, v11, OS_LOG_TYPE_DEFAULT, "Setting timeout for %f seconds from now  (Message: %@)", &v14, 0x16u);
+        v17 = topMessage2;
+        _os_log_impl(&dword_195925000, registration, OS_LOG_TYPE_DEFAULT, "Setting timeout for %f seconds from now  (Message: %@)", &v14, 0x16u);
       }
     }
   }
@@ -130,18 +130,18 @@
 - (void)_timeoutHit
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69A6138] registration];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  registration = [MEMORY[0x1E69A6138] registration];
+  if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(FTMessageQueue *)self topMessage];
+    topMessage = [(FTMessageQueue *)self topMessage];
     v8 = 138412290;
-    v9 = v4;
-    _os_log_impl(&dword_195925000, v3, OS_LOG_TYPE_DEFAULT, "Queue timeout hit for message: %@", &v8, 0xCu);
+    v9 = topMessage;
+    _os_log_impl(&dword_195925000, registration, OS_LOG_TYPE_DEFAULT, "Queue timeout hit for message: %@", &v8, 0xCu);
   }
 
-  v5 = [(FTMessageQueue *)self delegate];
-  v6 = [(FTMessageQueue *)self topMessage];
-  [v5 queue:self hitTimeoutForMessage:v6];
+  delegate = [(FTMessageQueue *)self delegate];
+  topMessage2 = [(FTMessageQueue *)self topMessage];
+  [delegate queue:self hitTimeoutForMessage:topMessage2];
 
   if ([(NSMutableArray *)self->_queue count])
   {
@@ -172,10 +172,10 @@
   }
 }
 
-- (id)messageForUniqueID:(unint64_t)a3
+- (id)messageForUniqueID:(unint64_t)d
 {
   v19 = *MEMORY[0x1E69E9840];
-  if ([(IDSBaseMessage *)self->_currentMessage uniqueID]== a3)
+  if ([(IDSBaseMessage *)self->_currentMessage uniqueID]== d)
   {
     v5 = self->_currentMessage;
   }
@@ -202,7 +202,7 @@
           }
 
           v11 = *(*(&v14 + 1) + 8 * i);
-          if ([v11 uniqueID] == a3)
+          if ([v11 uniqueID] == d)
           {
             v5 = v11;
 
@@ -229,9 +229,9 @@ LABEL_13:
   return v5;
 }
 
-- (BOOL)addMessage:(id)a3
+- (BOOL)addMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   if (!self->_queue)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -246,10 +246,10 @@ LABEL_13:
     self->_addDates = v7;
   }
 
-  [(NSMutableArray *)self->_queue addObject:v4];
+  [(NSMutableArray *)self->_queue addObject:messageCopy];
   v9 = self->_addDates;
-  v10 = [MEMORY[0x1E695DF00] date];
-  [(NSMutableArray *)v9 addObject:v10];
+  date = [MEMORY[0x1E695DF00] date];
+  [(NSMutableArray *)v9 addObject:date];
 
   if ([(NSMutableArray *)self->_queue count]== 1)
   {
@@ -259,9 +259,9 @@ LABEL_13:
   return 1;
 }
 
-- (BOOL)addMessageAtHeadOfQueue:(id)a3
+- (BOOL)addMessageAtHeadOfQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   if (!self->_queue)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -276,10 +276,10 @@ LABEL_13:
     self->_addDates = v7;
   }
 
-  [(NSMutableArray *)self->_queue insertObject:v4 atIndex:0];
+  [(NSMutableArray *)self->_queue insertObject:queueCopy atIndex:0];
   v9 = self->_addDates;
-  v10 = [MEMORY[0x1E695DF00] date];
-  [(NSMutableArray *)v9 insertObject:v10 atIndex:0];
+  date = [MEMORY[0x1E695DF00] date];
+  [(NSMutableArray *)v9 insertObject:date atIndex:0];
 
   if ([(NSMutableArray *)self->_queue count]== 1)
   {
@@ -289,14 +289,14 @@ LABEL_13:
   return 1;
 }
 
-- (BOOL)removeMessage:(id)a3
+- (BOOL)removeMessage:(id)message
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  messageCopy = message;
+  v5 = messageCopy;
+  if (messageCopy)
   {
     currentMessage = self->_currentMessage;
-    if (currentMessage == v4)
+    if (currentMessage == messageCopy)
     {
       self->_currentMessage = 0;
     }

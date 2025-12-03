@@ -1,16 +1,16 @@
 @interface CHCustomCategories
-+ (void)databaseAssetAvailableStatusWithCompletion:(id)a3;
-+ (void)downloadDatabaseAssetIfNeededWithCompletion:(id)a3;
++ (void)databaseAssetAvailableStatusWithCompletion:(id)completion;
++ (void)downloadDatabaseAssetIfNeededWithCompletion:(id)completion;
 - (CHCustomCategories)init;
-- (id)categoryForBundleId:(id)a3;
+- (id)categoryForBundleId:(id)id;
 - (id)customCategoryVersion;
-- (id)extractDataFromCoreDataResult:(id)a3;
-- (id)fetchCategoriesForBundleId:(id)a3;
+- (id)extractDataFromCoreDataResult:(id)result;
+- (id)fetchCategoriesForBundleId:(id)id;
 - (id)loadMappingFromFile;
-- (id)lockAssetAndReturnAssetPathForFile:(id)a3 withLockReason:(id)a4;
+- (id)lockAssetAndReturnAssetPathForFile:(id)file withLockReason:(id)reason;
 - (id)resetTimer;
-- (void)categoriesForBundleId:(id)a3 completion:(id)a4;
-- (void)categoriesForBundleIdSet:(id)a3 completion:(id)a4;
+- (void)categoriesForBundleId:(id)id completion:(id)completion;
+- (void)categoriesForBundleIdSet:(id)set completion:(id)completion;
 @end
 
 @implementation CHCustomCategories
@@ -38,10 +38,10 @@ void __32__CHCustomCategories_resetTimer__block_invoke(uint64_t a1)
   lockTimer = 0;
 }
 
-- (id)lockAssetAndReturnAssetPathForFile:(id)a3 withLockReason:(id)a4
+- (id)lockAssetAndReturnAssetPathForFile:(id)file withLockReason:(id)reason
 {
-  v5 = a3;
-  v6 = a4;
+  fileCopy = file;
+  reasonCopy = reason;
   v7 = objc_alloc_init(CHMobileAssetBridge);
   v20 = 0;
   v21 = &v20;
@@ -57,14 +57,14 @@ void __32__CHCustomCategories_resetTimer__block_invoke(uint64_t a1)
   v19 = &v20;
   v9 = v8;
   v18 = v9;
-  [(CHMobileAssetBridge *)v7 autoAssetLockContentForAssetType:@"com.apple.MobileAsset.CognitiveHealth" assetSpecifier:@"SupplementalCategoryDatabase" lockReason:v6 completion:&v14];
+  [(CHMobileAssetBridge *)v7 autoAssetLockContentForAssetType:@"com.apple.MobileAsset.CognitiveHealth" assetSpecifier:@"SupplementalCategoryDatabase" lockReason:reasonCopy completion:&v14];
   v10 = dispatch_time(0, 1000000000);
   dispatch_semaphore_wait(v9, v10);
   v11 = v21[5];
   if (v11)
   {
-    v12 = [v11 stringByAppendingPathComponent:v5];
-    NSLog(&cfstr_AssetPathForRe.isa, v6, v12, v14, v15, v16, v17);
+    v12 = [v11 stringByAppendingPathComponent:fileCopy];
+    NSLog(&cfstr_AssetPathForRe.isa, reasonCopy, v12, v14, v15, v16, v17);
   }
 
   else
@@ -94,7 +94,7 @@ void __72__CHCustomCategories_lockAssetAndReturnAssetPathForFile_withLockReason_
 - (id)loadMappingFromFile
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = [(CHCustomCategories *)self lockAssetAndReturnAssetPathForFile:@"uuid-int-mapping.csv" withLockReason:@"Locking to load uuid to int mapping file"];
   NSLog(&cfstr_CustomCategory.isa, v4);
   v24 = 0;
@@ -134,7 +134,7 @@ void __72__CHCustomCategories_lockAssetAndReturnAssetPathForFile_withLockReason_
           {
             v14 = [v13 objectAtIndex:0];
             v15 = [v13 objectAtIndex:1];
-            [v3 setValue:v14 forKey:v15];
+            [dictionary setValue:v14 forKey:v15];
           }
         }
 
@@ -150,19 +150,19 @@ void __72__CHCustomCategories_lockAssetAndReturnAssetPathForFile_withLockReason_
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (id)extractDataFromCoreDataResult:(id)a3
+- (id)extractDataFromCoreDataResult:(id)result
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  resultCopy = result;
+  array = [MEMORY[0x277CBEB18] array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v4;
+  v6 = resultCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -178,12 +178,12 @@ void __72__CHCustomCategories_lockAssetAndReturnAssetPathForFile_withLockReason_
         }
 
         intToUUIDMapping = self->_intToUUIDMapping;
-        v12 = [*(*(&v16 + 1) + 8 * i) category];
-        v13 = [(NSDictionary *)intToUUIDMapping objectForKey:v12];
+        category = [*(*(&v16 + 1) + 8 * i) category];
+        v13 = [(NSDictionary *)intToUUIDMapping objectForKey:category];
 
         if (v13)
         {
-          [v5 addObject:v13];
+          [array addObject:v13];
         }
       }
 
@@ -195,41 +195,41 @@ void __72__CHCustomCategories_lockAssetAndReturnAssetPathForFile_withLockReason_
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return array;
 }
 
-- (id)fetchCategoriesForBundleId:(id)a3
+- (id)fetchCategoriesForBundleId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   [(CHCustomCategories *)self lockAssetWithLockReason:@"Locking to fetch from CoreData"];
   v5 = objc_alloc_init(MEMORY[0x277CBE428]);
   v6 = MEMORY[0x277CBE408];
-  v7 = [(NSPersistentContainer *)self->_persistentContainer viewContext];
-  v8 = [v6 entityForName:@"CustomCategory" inManagedObjectContext:v7];
+  viewContext = [(NSPersistentContainer *)self->_persistentContainer viewContext];
+  v8 = [v6 entityForName:@"CustomCategory" inManagedObjectContext:viewContext];
   [v5 setEntity:v8];
 
-  v9 = [MEMORY[0x277CCAC30] predicateWithFormat:@"bundleId == %@", v4];
+  idCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"bundleId == %@", idCopy];
 
-  [v5 setPredicate:v9];
-  v10 = [(NSPersistentContainer *)self->_persistentContainer viewContext];
+  [v5 setPredicate:idCopy];
+  viewContext2 = [(NSPersistentContainer *)self->_persistentContainer viewContext];
   v18 = 0;
-  v11 = [v10 executeFetchRequest:v5 error:&v18];
+  v11 = [viewContext2 executeFetchRequest:v5 error:&v18];
   v12 = v18;
 
   fetchError = self->_fetchError;
   self->_fetchError = v12;
   v14 = v12;
 
-  v15 = [(CHCustomCategories *)self resetTimer];
+  resetTimer = [(CHCustomCategories *)self resetTimer];
   v16 = lockTimer;
-  lockTimer = v15;
+  lockTimer = resetTimer;
 
   return v11;
 }
 
-- (id)categoryForBundleId:(id)a3
+- (id)categoryForBundleId:(id)id
 {
-  v4 = [(CHCustomCategories *)self fetchCategoriesForBundleId:a3];
+  v4 = [(CHCustomCategories *)self fetchCategoriesForBundleId:id];
   v5 = [(CHCustomCategories *)self extractDataFromCoreDataResult:v4];
   if ([v5 count])
   {
@@ -246,17 +246,17 @@ void __72__CHCustomCategories_lockAssetAndReturnAssetPathForFile_withLockReason_
   return v6;
 }
 
-- (void)categoriesForBundleIdSet:(id)a3 completion:(id)a4
+- (void)categoriesForBundleIdSet:(id)set completion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEB38] dictionary];
+  setCopy = set;
+  completionCopy = completion;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = v6;
+  v9 = setCopy;
   v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
@@ -273,7 +273,7 @@ void __72__CHCustomCategories_lockAssetAndReturnAssetPathForFile_withLockReason_
 
         v14 = *(*(&v17 + 1) + 8 * i);
         v15 = [(CHCustomCategories *)self categoryForBundleId:v14, v17];
-        [v8 setValue:v15 forKey:v14];
+        [dictionary setValue:v15 forKey:v14];
       }
 
       v11 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -282,15 +282,15 @@ void __72__CHCustomCategories_lockAssetAndReturnAssetPathForFile_withLockReason_
     while (v11);
   }
 
-  v7[2](v7, v8, self->_fetchError);
+  completionCopy[2](completionCopy, dictionary, self->_fetchError);
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)categoriesForBundleId:(id)a3 completion:(id)a4
+- (void)categoriesForBundleId:(id)id completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(CHCustomCategories *)self categoryForBundleId:a3];
-  v6[2](v6, v7, self->_fetchError);
+  completionCopy = completion;
+  v7 = [(CHCustomCategories *)self categoryForBundleId:id];
+  completionCopy[2](completionCopy, v7, self->_fetchError);
 }
 
 - (id)customCategoryVersion
@@ -300,9 +300,9 @@ void __72__CHCustomCategories_lockAssetAndReturnAssetPathForFile_withLockReason_
   v10 = 0;
   v4 = [MEMORY[0x277CCACA8] stringWithContentsOfFile:v3 encoding:4 error:&v10];
   v5 = v10;
-  v6 = [(CHCustomCategories *)self resetTimer];
+  resetTimer = [(CHCustomCategories *)self resetTimer];
   v7 = lockTimer;
-  lockTimer = v6;
+  lockTimer = resetTimer;
 
   if (v5)
   {
@@ -329,32 +329,32 @@ void __72__CHCustomCategories_lockAssetAndReturnAssetPathForFile_withLockReason_
     coreDataController = v2->_coreDataController;
     v2->_coreDataController = v3;
 
-    v5 = [(CHCoreDataController *)v2->_coreDataController persistentContainer];
+    persistentContainer = [(CHCoreDataController *)v2->_coreDataController persistentContainer];
     persistentContainer = v2->_persistentContainer;
-    v2->_persistentContainer = v5;
+    v2->_persistentContainer = persistentContainer;
 
-    v7 = [(CHCustomCategories *)v2 loadMappingFromFile];
+    loadMappingFromFile = [(CHCustomCategories *)v2 loadMappingFromFile];
     intToUUIDMapping = v2->_intToUUIDMapping;
-    v2->_intToUUIDMapping = v7;
+    v2->_intToUUIDMapping = loadMappingFromFile;
 
-    v9 = [(CHCustomCategories *)v2 resetTimer];
+    resetTimer = [(CHCustomCategories *)v2 resetTimer];
     v10 = lockTimer;
-    lockTimer = v9;
+    lockTimer = resetTimer;
   }
 
   return v2;
 }
 
-+ (void)downloadDatabaseAssetIfNeededWithCompletion:(id)a3
++ (void)downloadDatabaseAssetIfNeededWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = objc_alloc_init(CHMobileAssetBridge);
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __66__CHCustomCategories_downloadDatabaseAssetIfNeededWithCompletion___block_invoke;
   v6[3] = &unk_278DE5008;
-  v7 = v3;
-  v5 = v3;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(CHMobileAssetBridge *)v4 autoAssetInterestInContentForAssetType:@"com.apple.MobileAsset.CognitiveHealth" assetSpecifier:@"SupplementalCategoryDatabase" completion:v6];
 }
 
@@ -365,16 +365,16 @@ void __66__CHCustomCategories_downloadDatabaseAssetIfNeededWithCompletion___bloc
   (*(*(a1 + 32) + 16))();
 }
 
-+ (void)databaseAssetAvailableStatusWithCompletion:(id)a3
++ (void)databaseAssetAvailableStatusWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = objc_alloc_init(CHMobileAssetBridge);
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __65__CHCustomCategories_databaseAssetAvailableStatusWithCompletion___block_invoke;
   v6[3] = &unk_278DE4FE0;
-  v7 = v3;
-  v5 = v3;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(CHMobileAssetBridge *)v4 autoAssetAvailableForUseForAssetType:@"com.apple.MobileAsset.CognitiveHealth" assetSpecifier:@"SupplementalCategoryDatabase" completion:v6];
 }
 

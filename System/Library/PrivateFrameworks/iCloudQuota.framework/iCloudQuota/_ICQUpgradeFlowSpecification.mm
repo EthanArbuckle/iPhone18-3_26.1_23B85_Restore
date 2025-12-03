@@ -1,25 +1,25 @@
 @interface _ICQUpgradeFlowSpecification
-+ (id)_upgradePageIdentifierForError:(id)a3;
-+ (id)sanitizedUpgradeFlowServerDict:(id)a3;
-+ (id)upgradeFlowSpecificationSampleForLevel:(int64_t)a3;
-- (_ICQUpgradeFlowSpecification)initWithServerDictionary:(id)a3;
++ (id)_upgradePageIdentifierForError:(id)error;
++ (id)sanitizedUpgradeFlowServerDict:(id)dict;
++ (id)upgradeFlowSpecificationSampleForLevel:(int64_t)level;
+- (_ICQUpgradeFlowSpecification)initWithServerDictionary:(id)dictionary;
 - (id)upgradeFailurePage;
 - (id)upgradeFailurePageForNetwork;
-- (id)upgradePageForError:(id)a3;
-- (id)upgradePageForSuccess:(BOOL)a3;
+- (id)upgradePageForError:(id)error;
+- (id)upgradePageForSuccess:(BOOL)success;
 - (id)upgradeSuccessPage;
 - (id)upgradeSuccessPageForWiFi;
 @end
 
 @implementation _ICQUpgradeFlowSpecification
 
-+ (id)upgradeFlowSpecificationSampleForLevel:(int64_t)a3
++ (id)upgradeFlowSpecificationSampleForLevel:(int64_t)level
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = ___UpgradeFlowSpecificationSampleForLevel_block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a3;
+  block[4] = level;
   if (_UpgradeFlowSpecificationSampleForLevel_onceToken != -1)
   {
     dispatch_once(&_UpgradeFlowSpecificationSampleForLevel_onceToken, block);
@@ -32,8 +32,8 @@
 
 - (id)upgradeSuccessPage
 {
-  v2 = [(_ICQFlowSpecification *)self pagesByIdentifier];
-  v3 = [v2 objectForKey:@"UpgradeComplete"];
+  pagesByIdentifier = [(_ICQFlowSpecification *)self pagesByIdentifier];
+  v3 = [pagesByIdentifier objectForKey:@"UpgradeComplete"];
 
   if (!v3)
   {
@@ -50,8 +50,8 @@
 
 - (id)upgradeFailurePage
 {
-  v2 = [(_ICQFlowSpecification *)self pagesByIdentifier];
-  v3 = [v2 objectForKey:@"UpgradeFailure"];
+  pagesByIdentifier = [(_ICQFlowSpecification *)self pagesByIdentifier];
+  v3 = [pagesByIdentifier objectForKey:@"UpgradeFailure"];
 
   if (!v3)
   {
@@ -66,9 +66,9 @@
   return v3;
 }
 
-- (id)upgradePageForSuccess:(BOOL)a3
+- (id)upgradePageForSuccess:(BOOL)success
 {
-  if (a3)
+  if (success)
   {
     [(_ICQUpgradeFlowSpecification *)self upgradeSuccessPage];
   }
@@ -84,10 +84,10 @@
 
 - (id)upgradeSuccessPageForWiFi
 {
-  v3 = [(_ICQFlowSpecification *)self pagesByIdentifier];
-  v4 = [v3 objectForKey:@"UpgradeSuccessWiFi"];
+  pagesByIdentifier = [(_ICQFlowSpecification *)self pagesByIdentifier];
+  upgradeSuccessPage = [pagesByIdentifier objectForKey:@"UpgradeSuccessWiFi"];
 
-  if (!v4)
+  if (!upgradeSuccessPage)
   {
     v5 = _ICQGetLogSystem();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -96,18 +96,18 @@
       _os_log_impl(&dword_275572000, v5, OS_LOG_TYPE_DEFAULT, "missing wireless network success page, falling back on generic", v7, 2u);
     }
 
-    v4 = [(_ICQUpgradeFlowSpecification *)self upgradeSuccessPage];
+    upgradeSuccessPage = [(_ICQUpgradeFlowSpecification *)self upgradeSuccessPage];
   }
 
-  return v4;
+  return upgradeSuccessPage;
 }
 
 - (id)upgradeFailurePageForNetwork
 {
-  v3 = [(_ICQFlowSpecification *)self pagesByIdentifier];
-  v4 = [v3 objectForKey:@"UpgradeFailureNetwork"];
+  pagesByIdentifier = [(_ICQFlowSpecification *)self pagesByIdentifier];
+  upgradeFailurePage = [pagesByIdentifier objectForKey:@"UpgradeFailureNetwork"];
 
-  if (!v4)
+  if (!upgradeFailurePage)
   {
     v5 = _ICQGetLogSystem();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -116,21 +116,21 @@
       _os_log_impl(&dword_275572000, v5, OS_LOG_TYPE_DEFAULT, "missing network failure page, falling back on generic", v7, 2u);
     }
 
-    v4 = [(_ICQUpgradeFlowSpecification *)self upgradeFailurePage];
+    upgradeFailurePage = [(_ICQUpgradeFlowSpecification *)self upgradeFailurePage];
   }
 
-  return v4;
+  return upgradeFailurePage;
 }
 
-- (id)upgradePageForError:(id)a3
+- (id)upgradePageForError:(id)error
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  errorCopy = error;
+  if (errorCopy)
   {
-    v5 = [objc_opt_class() _upgradePageIdentifierForError:v4];
-    v6 = [(_ICQFlowSpecification *)self pagesByIdentifier];
-    v7 = [v6 objectForKey:v5];
+    v5 = [objc_opt_class() _upgradePageIdentifierForError:errorCopy];
+    pagesByIdentifier = [(_ICQFlowSpecification *)self pagesByIdentifier];
+    v7 = [pagesByIdentifier objectForKey:v5];
 
     if (!v7)
     {
@@ -138,7 +138,7 @@
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         v11 = 138412290;
-        v12 = v4;
+        v12 = errorCopy;
         _os_log_impl(&dword_275572000, v8, OS_LOG_TYPE_DEFAULT, "missing page spec for error: %@", &v11, 0xCu);
       }
     }
@@ -154,35 +154,35 @@
   return v7;
 }
 
-+ (id)_upgradePageIdentifierForError:(id)a3
++ (id)_upgradePageIdentifierForError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  v5 = [v4 isEqualToString:*MEMORY[0x277CEE188]];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v5 = [domain isEqualToString:*MEMORY[0x277CEE188]];
 
   if (v5)
   {
-    if ([v3 code] == 6)
+    if ([errorCopy code] == 6)
     {
-      v6 = 0;
+      stringValue = 0;
     }
 
     else
     {
-      v6 = @"UpgradeFailure";
+      stringValue = @"UpgradeFailure";
     }
   }
 
   else
   {
-    v7 = [v3 domain];
-    if ([v7 isEqualToString:*MEMORY[0x277CCA738]])
+    domain2 = [errorCopy domain];
+    if ([domain2 isEqualToString:*MEMORY[0x277CCA738]])
     {
-      v8 = [v3 code];
+      code = [errorCopy code];
 
-      if (v8 == -1001)
+      if (code == -1001)
       {
-        v6 = @"UpgradeFailureNetwork";
+        stringValue = @"UpgradeFailureNetwork";
         goto LABEL_10;
       }
     }
@@ -191,21 +191,21 @@
     {
     }
 
-    v9 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v3, "code")}];
-    v6 = [v9 stringValue];
+    v9 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(errorCopy, "code")}];
+    stringValue = [v9 stringValue];
   }
 
 LABEL_10:
 
-  return v6;
+  return stringValue;
 }
 
-+ (id)sanitizedUpgradeFlowServerDict:(id)a3
++ (id)sanitizedUpgradeFlowServerDict:(id)dict
 {
   v54 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dictCopy = dict;
   v4 = objc_opt_new();
-  v5 = _ICQDictionaryForOneOfKeys(v3, &unk_2884452F8);
+  v5 = _ICQDictionaryForOneOfKeys(dictCopy, &unk_2884452F8);
   if (v5)
   {
     [v4 setObject:v5 forKey:@"UpgradeOffer"];
@@ -221,8 +221,8 @@ LABEL_10:
     }
   }
 
-  v7 = _ICQDictionaryForKey(v3, @"postUpgradeInfo");
-  v8 = _ICQDictionaryForKey(v3, @"successInfo");
+  v7 = _ICQDictionaryForKey(dictCopy, @"postUpgradeInfo");
+  v8 = _ICQDictionaryForKey(dictCopy, @"successInfo");
   v41 = v5;
   v42 = v8;
   if (!v7)
@@ -242,7 +242,7 @@ LABEL_10:
 
     [v4 setObject:v8 forKey:@"UpgradeComplete"];
 LABEL_21:
-    v20 = _ICQDictionaryForKey(v3, @"failureInfo");
+    v20 = _ICQDictionaryForKey(dictCopy, @"failureInfo");
     if (v20)
     {
       [v4 setObject:v20 forKey:@"UpgradeFailure"];
@@ -258,7 +258,7 @@ LABEL_21:
       }
     }
 
-    v22 = _ICQDictionaryForKey(v3, @"network");
+    v22 = _ICQDictionaryForKey(dictCopy, @"network");
     v38 = v22;
     if (v22)
     {
@@ -275,7 +275,7 @@ LABEL_21:
       }
     }
 
-    v24 = _ICQDictionaryForKey(v3, @"wifi");
+    v24 = _ICQDictionaryForKey(dictCopy, @"wifi");
     if (v24)
     {
       [v4 setObject:v24 forKey:@"UpgradeSuccessWiFi"];
@@ -297,7 +297,7 @@ LABEL_21:
     v46 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v27 = v3;
+    v27 = dictCopy;
     v28 = [v27 countByEnumeratingWithState:&v43 objects:v52 count:16];
     if (v28)
     {
@@ -394,24 +394,24 @@ LABEL_50:
   return v35;
 }
 
-- (_ICQUpgradeFlowSpecification)initWithServerDictionary:(id)a3
+- (_ICQUpgradeFlowSpecification)initWithServerDictionary:(id)dictionary
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  _ICQServerDictToOfferTypeAndLevel(v4, &self->_offerType, 0);
-  v5 = [v4 objectForKeyedSubscript:@"needsWifi"];
+  dictionaryCopy = dictionary;
+  _ICQServerDictToOfferTypeAndLevel(dictionaryCopy, &self->_offerType, 0);
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"needsWifi"];
   self->_needsWiFi = _ICQBooleanForServerObjectDefault(v5, 0);
 
-  v6 = [v4 objectForKeyedSubscript:@"offerInfo"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"offerInfo"];
   if (!v6)
   {
-    v6 = v4;
+    v6 = dictionaryCopy;
   }
 
-  v24 = v4;
+  v24 = dictionaryCopy;
   v7 = [_ICQUpgradeFlowSpecification sanitizedUpgradeFlowServerDict:v6];
 
-  v8 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -439,12 +439,12 @@ LABEL_50:
 
         if ([v14 isEqualToString:@"UpgradeOffer"])
         {
-          [v8 insertObject:v17 atIndex:0];
+          [array insertObject:v17 atIndex:0];
         }
 
         else
         {
-          [v8 addObject:v17];
+          [array addObject:v17];
         }
       }
 
@@ -454,7 +454,7 @@ LABEL_50:
     while (v11);
   }
 
-  v18 = [v8 copy];
+  v18 = [array copy];
   v25.receiver = self;
   v25.super_class = _ICQUpgradeFlowSpecification;
   v19 = [(_ICQFlowSpecification *)&v25 initWithPages:v18];

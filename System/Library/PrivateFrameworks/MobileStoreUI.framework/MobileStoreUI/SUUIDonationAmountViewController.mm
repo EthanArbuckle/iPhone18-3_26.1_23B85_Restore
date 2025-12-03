@@ -1,35 +1,35 @@
 @interface SUUIDonationAmountViewController
-- (SUUIDonationAmountViewController)initWithCharity:(id)a3 configuration:(id)a4;
-- (void)_amountChangedNotification:(id)a3;
-- (void)_cancelButtonAction:(id)a3;
-- (void)_donateButtonAction:(id)a3;
-- (void)_finishPurchaseWithResult:(BOOL)a3 errorMessage:(id)a4;
-- (void)_finishValidationWithResponse:(id)a3 error:(id)a4;
+- (SUUIDonationAmountViewController)initWithCharity:(id)charity configuration:(id)configuration;
+- (void)_amountChangedNotification:(id)notification;
+- (void)_cancelButtonAction:(id)action;
+- (void)_donateButtonAction:(id)action;
+- (void)_finishPurchaseWithResult:(BOOL)result errorMessage:(id)message;
+- (void)_finishValidationWithResponse:(id)response error:(id)error;
 - (void)_performActionAfterValidation;
 - (void)_reenableAfterFailure;
-- (void)_setDonationButtonEnabled:(BOOL)a3;
-- (void)_validateDonation:(id)a3;
+- (void)_setDonationButtonEnabled:(BOOL)enabled;
+- (void)_validateDonation:(id)donation;
 - (void)dealloc;
-- (void)donationConfigurationController:(id)a3 didLoadLogoForCharity:(id)a4;
+- (void)donationConfigurationController:(id)controller didLoadLogoForCharity:(id)charity;
 - (void)loadView;
 @end
 
 @implementation SUUIDonationAmountViewController
 
-- (SUUIDonationAmountViewController)initWithCharity:(id)a3 configuration:(id)a4
+- (SUUIDonationAmountViewController)initWithCharity:(id)charity configuration:(id)configuration
 {
-  v6 = a4;
+  configurationCopy = configuration;
   v12.receiver = self;
   v12.super_class = SUUIDonationAmountViewController;
-  v7 = [(SUUIDonationStepViewController *)&v12 initWithCharity:a3 configuration:v6];
+  v7 = [(SUUIDonationStepViewController *)&v12 initWithCharity:charity configuration:configurationCopy];
   if (v7)
   {
-    [v6 addObserver:v7];
-    v8 = [v6 clientContext];
-    v9 = v8;
-    if (v8)
+    [configurationCopy addObserver:v7];
+    clientContext = [configurationCopy clientContext];
+    v9 = clientContext;
+    if (clientContext)
     {
-      [v8 localizedStringForKey:@"DONATION_FLOW_TITLE"];
+      [clientContext localizedStringForKey:@"DONATION_FLOW_TITLE"];
     }
 
     else
@@ -45,8 +45,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:0x286B01400 object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:0x286B01400 object:0];
 
   v4.receiver = self;
   v4.super_class = SUUIDonationAmountViewController;
@@ -55,17 +55,17 @@
 
 - (void)loadView
 {
-  v3 = [(SUUIDonationStepViewController *)self donationConfiguration];
-  v19 = [v3 clientContext];
+  donationConfiguration = [(SUUIDonationStepViewController *)self donationConfiguration];
+  clientContext = [donationConfiguration clientContext];
 
-  v4 = [(SUUIDonationAmountViewController *)self navigationItem];
-  [v4 setHidesBackButton:1];
+  navigationItem = [(SUUIDonationAmountViewController *)self navigationItem];
+  [navigationItem setHidesBackButton:1];
   v5 = objc_alloc_init(MEMORY[0x277D751E0]);
   [v5 setAction:sel__cancelButtonAction_];
   [v5 setTarget:self];
-  if (v19)
+  if (clientContext)
   {
-    [v19 localizedStringForKey:@"DONATION_FLOW_CANCEL_BUTTON"];
+    [clientContext localizedStringForKey:@"DONATION_FLOW_CANCEL_BUTTON"];
   }
 
   else
@@ -75,14 +75,14 @@
   v6 = ;
   [v5 setTitle:v6];
 
-  [v4 setLeftBarButtonItem:v5];
+  [navigationItem setLeftBarButtonItem:v5];
   v7 = objc_alloc_init(MEMORY[0x277D751E0]);
   [v7 setAction:sel__donateButtonAction_];
   [v7 setEnabled:0];
   [v7 setTarget:self];
-  if (v19)
+  if (clientContext)
   {
-    [v19 localizedStringForKey:@"DONATION_FLOW_DONATE_BUTTON"];
+    [clientContext localizedStringForKey:@"DONATION_FLOW_DONATE_BUTTON"];
   }
 
   else
@@ -92,62 +92,62 @@
   v8 = ;
   [v7 setTitle:v8];
 
-  [v4 setRightBarButtonItem:v7];
+  [navigationItem setRightBarButtonItem:v7];
   amountView = self->_amountView;
   if (!amountView)
   {
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v11 = [SUUIDonationAmountView alloc];
-    v12 = [(SUUIDonationStepViewController *)self charity];
-    v13 = [(SUUIDonationAmountView *)v11 initWithCharity:v12];
+    charity = [(SUUIDonationStepViewController *)self charity];
+    v13 = [(SUUIDonationAmountView *)v11 initWithCharity:charity];
     v14 = self->_amountView;
     self->_amountView = v13;
 
     v15 = self->_amountView;
-    v16 = [(SUUIDonationStepViewController *)self donationConfiguration];
-    v17 = [(SUUIDonationStepViewController *)self charity];
-    v18 = [v16 logoImageForCharity:v17];
+    donationConfiguration2 = [(SUUIDonationStepViewController *)self donationConfiguration];
+    charity2 = [(SUUIDonationStepViewController *)self charity];
+    v18 = [donationConfiguration2 logoImageForCharity:charity2];
     [(SUUIDonationAmountView *)v15 setLogoImage:v18];
 
-    [v10 addObserver:self selector:sel__amountChangedNotification_ name:0x286B01400 object:self->_amountView];
+    [defaultCenter addObserver:self selector:sel__amountChangedNotification_ name:0x286B01400 object:self->_amountView];
     amountView = self->_amountView;
   }
 
   [(SUUIDonationAmountViewController *)self setView:amountView];
 }
 
-- (void)donationConfigurationController:(id)a3 didLoadLogoForCharity:(id)a4
+- (void)donationConfigurationController:(id)controller didLoadLogoForCharity:(id)charity
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(SUUIDonationStepViewController *)self charity];
+  controllerCopy = controller;
+  charityCopy = charity;
+  charity = [(SUUIDonationStepViewController *)self charity];
 
-  if (v7 == v6)
+  if (charity == charityCopy)
   {
     amountView = self->_amountView;
-    v9 = [v10 logoImageForCharity:v6];
+    v9 = [controllerCopy logoImageForCharity:charityCopy];
     [(SUUIDonationAmountView *)amountView setLogoImage:v9];
   }
 }
 
-- (void)_cancelButtonAction:(id)a3
+- (void)_cancelButtonAction:(id)action
 {
-  v4 = [(SUUIDonationStepViewController *)self donationViewController];
-  v5 = v4;
-  if (!v4)
+  selfCopy = [(SUUIDonationStepViewController *)self donationViewController];
+  v5 = selfCopy;
+  if (!selfCopy)
   {
-    v4 = self;
+    selfCopy = self;
   }
 
-  [v4 dismissViewControllerAnimated:1 completion:0];
+  [selfCopy dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)_donateButtonAction:(id)a3
+- (void)_donateButtonAction:(id)action
 {
   amountView = self->_amountView;
-  v5 = a3;
+  actionCopy = action;
   [(SUUIDonationAmountView *)amountView setUserInteractionEnabled:0];
-  [v5 setEnabled:0];
+  [actionCopy setEnabled:0];
 
   if ([(SUUIGiftValidator *)self->_validator isValidating])
   {
@@ -163,18 +163,18 @@
   else
   {
     self->_tappedNextWhileValidating = 1;
-    v6 = [(SUUIDonationAmountView *)self->_amountView selectedAmount];
-    [(SUUIDonationAmountViewController *)self _validateDonation:v6];
+    selectedAmount = [(SUUIDonationAmountView *)self->_amountView selectedAmount];
+    [(SUUIDonationAmountViewController *)self _validateDonation:selectedAmount];
   }
 }
 
-- (void)_amountChangedNotification:(id)a3
+- (void)_amountChangedNotification:(id)notification
 {
-  v4 = [(SUUIDonationAmountView *)self->_amountView selectedAmount];
-  if (v4)
+  selectedAmount = [(SUUIDonationAmountView *)self->_amountView selectedAmount];
+  if (selectedAmount)
   {
     [(SUUIDonationAmountViewController *)self _setDonationButtonEnabled:1];
-    [(SUUIDonationAmountViewController *)self _validateDonation:v4];
+    [(SUUIDonationAmountViewController *)self _validateDonation:selectedAmount];
   }
 
   else
@@ -184,39 +184,39 @@
   }
 }
 
-- (void)_finishPurchaseWithResult:(BOOL)a3 errorMessage:(id)a4
+- (void)_finishPurchaseWithResult:(BOOL)result errorMessage:(id)message
 {
-  v4 = a3;
-  v6 = a4;
-  v23 = v6;
-  if (v4)
+  resultCopy = result;
+  messageCopy = message;
+  v23 = messageCopy;
+  if (resultCopy)
   {
     v7 = [SUUIDonationResultViewController alloc];
-    v8 = [(SUUIDonationStepViewController *)self charity];
-    v9 = [(SUUIDonationStepViewController *)self donationConfiguration];
-    v10 = [(SUUIDonationResultViewController *)v7 initWithCharity:v8 configuration:v9];
+    charity = [(SUUIDonationStepViewController *)self charity];
+    donationConfiguration = [(SUUIDonationStepViewController *)self donationConfiguration];
+    v10 = [(SUUIDonationResultViewController *)v7 initWithCharity:charity configuration:donationConfiguration];
 
-    v11 = [(SUUIDonationAmountView *)self->_amountView selectedAmount];
-    [(SUUIDonationResultViewController *)v10 setDonationAmount:v11];
+    selectedAmount = [(SUUIDonationAmountView *)self->_amountView selectedAmount];
+    [(SUUIDonationResultViewController *)v10 setDonationAmount:selectedAmount];
 
-    v12 = [(SUUIDonationStepViewController *)self operationQueue];
-    [(SUUIDonationStepViewController *)v10 setOperationQueue:v12];
+    operationQueue = [(SUUIDonationStepViewController *)self operationQueue];
+    [(SUUIDonationStepViewController *)v10 setOperationQueue:operationQueue];
 
-    v13 = [(SUUIDonationAmountViewController *)self navigationController];
-    [v13 pushViewController:v10 animated:1];
+    navigationController = [(SUUIDonationAmountViewController *)self navigationController];
+    [navigationController pushViewController:v10 animated:1];
   }
 
   else
   {
-    if (v6)
+    if (messageCopy)
     {
-      v14 = [(SUUIDonationStepViewController *)self donationConfiguration];
-      v15 = [v14 clientContext];
+      donationConfiguration2 = [(SUUIDonationStepViewController *)self donationConfiguration];
+      clientContext = [donationConfiguration2 clientContext];
 
       v16 = MEMORY[0x277D75110];
-      if (v15)
+      if (clientContext)
       {
-        [v15 localizedStringForKey:@"DONATION_FLOW_UNABLE_TO_DONATE"];
+        [clientContext localizedStringForKey:@"DONATION_FLOW_UNABLE_TO_DONATE"];
       }
 
       else
@@ -227,9 +227,9 @@
       v18 = [v16 alertControllerWithTitle:v17 message:v23 preferredStyle:1];
 
       v19 = MEMORY[0x277D750F8];
-      if (v15)
+      if (clientContext)
       {
-        [v15 localizedStringForKey:@"DONATION_FLOW_OK_BUTTON"];
+        [clientContext localizedStringForKey:@"DONATION_FLOW_OK_BUTTON"];
       }
 
       else
@@ -250,12 +250,12 @@
   self->_purchaseRequest = 0;
 }
 
-- (void)_finishValidationWithResponse:(id)a3 error:(id)a4
+- (void)_finishValidationWithResponse:(id)response error:(id)error
 {
-  v7 = a3;
-  objc_storeStrong(&self->_lastValidationResponse, a3);
-  v6 = [(SUUIDonationAmountView *)self->_amountView selectedAmount];
-  [(SUUIDonationAmountViewController *)self _setDonationButtonEnabled:v6 != 0];
+  responseCopy = response;
+  objc_storeStrong(&self->_lastValidationResponse, response);
+  selectedAmount = [(SUUIDonationAmountView *)self->_amountView selectedAmount];
+  [(SUUIDonationAmountViewController *)self _setDonationButtonEnabled:selectedAmount != 0];
 
   if (self->_tappedNextWhileValidating)
   {
@@ -272,9 +272,9 @@
     {
       objc_initWeak(&location, self);
       v3 = [SUUIGiftPurchaseRequest alloc];
-      v4 = [(SUUIDonationAmountView *)self->_amountView selectedAmount];
-      v5 = [(SUUIDonationStepViewController *)self donationConfiguration];
-      v6 = [(SUUIGiftPurchaseRequest *)v3 initWithDonation:v4 configuration:v5];
+      selectedAmount = [(SUUIDonationAmountView *)self->_amountView selectedAmount];
+      donationConfiguration = [(SUUIDonationStepViewController *)self donationConfiguration];
+      v6 = [(SUUIGiftPurchaseRequest *)v3 initWithDonation:selectedAmount configuration:donationConfiguration];
       purchaseRequest = self->_purchaseRequest;
       self->_purchaseRequest = v6;
 
@@ -292,13 +292,13 @@
 
   else
   {
-    v9 = [(SUUIDonationStepViewController *)self donationConfiguration];
-    v17 = [v9 clientContext];
+    donationConfiguration2 = [(SUUIDonationStepViewController *)self donationConfiguration];
+    clientContext = [donationConfiguration2 clientContext];
 
     v10 = MEMORY[0x277D75110];
-    if (v17)
+    if (clientContext)
     {
-      [v17 localizedStringForKey:@"DONATION_FLOW_INVALID_DONATION"];
+      [clientContext localizedStringForKey:@"DONATION_FLOW_INVALID_DONATION"];
     }
 
     else
@@ -306,13 +306,13 @@
       [SUUIClientContext localizedStringForKey:@"DONATION_FLOW_INVALID_DONATION" inBundles:0];
     }
     v11 = ;
-    v12 = [(SUUIGiftValidationResponse *)self->_lastValidationResponse errorString];
-    v13 = [v10 alertControllerWithTitle:v11 message:v12 preferredStyle:1];
+    errorString = [(SUUIGiftValidationResponse *)self->_lastValidationResponse errorString];
+    v13 = [v10 alertControllerWithTitle:v11 message:errorString preferredStyle:1];
 
     v14 = MEMORY[0x277D750F8];
-    if (v17)
+    if (clientContext)
     {
-      [v17 localizedStringForKey:@"DONATION_FLOW_OK_BUTTON"];
+      [clientContext localizedStringForKey:@"DONATION_FLOW_OK_BUTTON"];
     }
 
     else
@@ -353,17 +353,17 @@ void __65__SUUIDonationAmountViewController__performActionAfterValidation__block
 - (void)_reenableAfterFailure
 {
   [(SUUIDonationAmountView *)self->_amountView setUserInteractionEnabled:1];
-  v3 = [(SUUIDonationAmountView *)self->_amountView selectedAmount];
-  [(SUUIDonationAmountViewController *)self _setDonationButtonEnabled:v3 != 0];
+  selectedAmount = [(SUUIDonationAmountView *)self->_amountView selectedAmount];
+  [(SUUIDonationAmountViewController *)self _setDonationButtonEnabled:selectedAmount != 0];
 }
 
-- (void)_setDonationButtonEnabled:(BOOL)a3
+- (void)_setDonationButtonEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(SUUIDonationAmountViewController *)self navigationItem];
-  v6 = [v4 rightBarButtonItem];
+  enabledCopy = enabled;
+  navigationItem = [(SUUIDonationAmountViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
 
-  if (v3)
+  if (enabledCopy)
   {
     v5 = 2;
   }
@@ -373,13 +373,13 @@ void __65__SUUIDonationAmountViewController__performActionAfterValidation__block
     v5 = 0;
   }
 
-  [v6 setEnabled:v3];
-  [v6 setStyle:v5];
+  [rightBarButtonItem setEnabled:enabledCopy];
+  [rightBarButtonItem setStyle:v5];
 }
 
-- (void)_validateDonation:(id)a3
+- (void)_validateDonation:(id)donation
 {
-  v4 = a3;
+  donationCopy = donation;
   validator = self->_validator;
   if (validator)
   {
@@ -388,17 +388,17 @@ void __65__SUUIDonationAmountViewController__performActionAfterValidation__block
 
   else
   {
-    v6 = [(SUUIDonationStepViewController *)self donationConfiguration];
+    donationConfiguration = [(SUUIDonationStepViewController *)self donationConfiguration];
     v7 = [SUUIGiftValidator alloc];
-    v8 = [v6 donationValidationURL];
-    v9 = [v6 clientContext];
-    v10 = [(SUUIGiftValidator *)v7 initWithValidationURL:v8 clientContext:v9];
+    donationValidationURL = [donationConfiguration donationValidationURL];
+    clientContext = [donationConfiguration clientContext];
+    v10 = [(SUUIGiftValidator *)v7 initWithValidationURL:donationValidationURL clientContext:clientContext];
     v11 = self->_validator;
     self->_validator = v10;
 
     v12 = self->_validator;
-    v13 = [(SUUIDonationStepViewController *)self operationQueue];
-    [(SUUIGiftValidator *)v12 setOperationQueue:v13];
+    operationQueue = [(SUUIDonationStepViewController *)self operationQueue];
+    [(SUUIGiftValidator *)v12 setOperationQueue:operationQueue];
   }
 
   objc_initWeak(&location, self);
@@ -408,7 +408,7 @@ void __65__SUUIDonationAmountViewController__performActionAfterValidation__block
   v15[2] = __54__SUUIDonationAmountViewController__validateDonation___block_invoke;
   v15[3] = &unk_2798F8CD0;
   objc_copyWeak(&v16, &location);
-  [(SUUIGiftValidator *)v14 validateDonation:v4 withCompletionBlock:v15];
+  [(SUUIGiftValidator *)v14 validateDonation:donationCopy withCompletionBlock:v15];
   objc_destroyWeak(&v16);
   objc_destroyWeak(&location);
 }

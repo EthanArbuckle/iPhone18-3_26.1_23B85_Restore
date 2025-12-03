@@ -1,22 +1,22 @@
 @interface PSCameraStream
-- (PSCameraStream)initWithKey:(id)a3 queue:(id)a4 device:(id)a5;
+- (PSCameraStream)initWithKey:(id)key queue:(id)queue device:(id)device;
 - (_opaque_pthread_mutex_t)mLock;
 - (void)dealloc;
-- (void)setMLock:(_opaque_pthread_mutex_t *)a3;
+- (void)setMLock:(_opaque_pthread_mutex_t *)lock;
 @end
 
 @implementation PSCameraStream
 
-- (PSCameraStream)initWithKey:(id)a3 queue:(id)a4 device:(id)a5
+- (PSCameraStream)initWithKey:(id)key queue:(id)queue device:(id)device
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  keyCopy = key;
+  queueCopy = queue;
+  deviceCopy = device;
   v12 = sub_100013BF4();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf.__sig) = 138412290;
-    *(&buf.__sig + 4) = v9;
+    *(&buf.__sig + 4) = keyCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Initializing stream key (%@)\n", &buf, 0xCu);
   }
 
@@ -26,9 +26,9 @@
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_key, a3);
-    objc_storeStrong(&v14->_queue, a4);
-    objc_storeStrong(&v14->_device, a5);
+    objc_storeStrong(&v13->_key, key);
+    objc_storeStrong(&v14->_queue, queue);
+    objc_storeStrong(&v14->_device, device);
     buf.__sig = 0;
     *buf.__opaque = 0;
     pthread_mutexattr_init(&buf);
@@ -75,12 +75,12 @@
   return self;
 }
 
-- (void)setMLock:(_opaque_pthread_mutex_t *)a3
+- (void)setMLock:(_opaque_pthread_mutex_t *)lock
 {
-  v3 = *&a3->__sig;
-  v4 = *&a3->__opaque[8];
-  v5 = *&a3->__opaque[24];
-  *&self->_mLock.__opaque[40] = *&a3->__opaque[40];
+  v3 = *&lock->__sig;
+  v4 = *&lock->__opaque[8];
+  v5 = *&lock->__opaque[24];
+  *&self->_mLock.__opaque[40] = *&lock->__opaque[40];
   *&self->_mLock.__opaque[24] = v5;
   *&self->_mLock.__opaque[8] = v4;
   *&self->_mLock.__sig = v3;

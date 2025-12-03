@@ -7,18 +7,18 @@
 
 - (id)hf_affectedAccessoryProfiles
 {
-  v4 = [a1 lightProfile];
+  lightProfile = [self lightProfile];
 
-  if (v4)
+  if (lightProfile)
   {
-    v5 = objc_getAssociatedObject(a1, a2);
-    if (!v5 || ([a1 lightProfile], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v5, "containsObject:", v6), v6, (v7 & 1) == 0))
+    v5 = objc_getAssociatedObject(self, a2);
+    if (!v5 || ([self lightProfile], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v5, "containsObject:", v6), v6, (v7 & 1) == 0))
     {
       v8 = MEMORY[0x277CBEB98];
-      v9 = [a1 lightProfile];
-      v10 = [v8 setWithObject:v9];
+      lightProfile2 = [self lightProfile];
+      v10 = [v8 setWithObject:lightProfile2];
 
-      objc_setAssociatedObject(a1, a2, v10, 0x301);
+      objc_setAssociatedObject(self, a2, v10, 0x301);
       v5 = v10;
     }
   }
@@ -39,8 +39,8 @@
 - (id)hf_affectedAccessoryRepresentables
 {
   v1 = MEMORY[0x277CBEB98];
-  v2 = [a1 lightProfile];
-  v3 = [v1 na_setWithSafeObject:v2];
+  lightProfile = [self lightProfile];
+  v3 = [v1 na_setWithSafeObject:lightProfile];
 
   return v3;
 }

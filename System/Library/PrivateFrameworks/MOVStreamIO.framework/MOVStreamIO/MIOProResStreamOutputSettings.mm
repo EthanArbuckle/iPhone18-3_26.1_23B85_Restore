@@ -1,56 +1,56 @@
 @interface MIOProResStreamOutputSettings
-+ (id)outputSettingsProResEncoderType:(int)a3 quality:(int64_t)a4 formatDescription:(opaqueCMFormatDescription *)a5 preferEncoderConfig:(BOOL)a6;
-+ (id)outputSettingsWithConfig:(id)a3 formatDescription:(opaqueCMFormatDescription *)a4 defaultFrameRate:(double)a5 preferEncoderConfig:(BOOL)a6 enableAVEHighPerformanceProfile:(BOOL)a7;
-+ (unsigned)cmCodecTypeFromAVCodecType:(id)a3;
++ (id)outputSettingsProResEncoderType:(int)type quality:(int64_t)quality formatDescription:(opaqueCMFormatDescription *)description preferEncoderConfig:(BOOL)config;
++ (id)outputSettingsWithConfig:(id)config formatDescription:(opaqueCMFormatDescription *)description defaultFrameRate:(double)rate preferEncoderConfig:(BOOL)encoderConfig enableAVEHighPerformanceProfile:(BOOL)profile;
++ (unsigned)cmCodecTypeFromAVCodecType:(id)type;
 @end
 
 @implementation MIOProResStreamOutputSettings
 
-+ (id)outputSettingsWithConfig:(id)a3 formatDescription:(opaqueCMFormatDescription *)a4 defaultFrameRate:(double)a5 preferEncoderConfig:(BOOL)a6 enableAVEHighPerformanceProfile:(BOOL)a7
++ (id)outputSettingsWithConfig:(id)config formatDescription:(opaqueCMFormatDescription *)description defaultFrameRate:(double)rate preferEncoderConfig:(BOOL)encoderConfig enableAVEHighPerformanceProfile:(BOOL)profile
 {
-  v7 = a6;
-  v9 = a3;
-  v10 = [v9 objectForKey:@"StreamEncoderType"];
-  v11 = [v10 intValue];
+  encoderConfigCopy = encoderConfig;
+  configCopy = config;
+  v10 = [configCopy objectForKey:@"StreamEncoderType"];
+  intValue = [v10 intValue];
 
-  if (v9 && ([v9 objectForKey:@"ProResEncodingQuality"], v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
+  if (configCopy && ([configCopy objectForKey:@"ProResEncodingQuality"], v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
   {
-    v13 = [v9 objectForKey:@"ProResEncodingQuality"];
-    v14 = [v13 intValue];
+    v13 = [configCopy objectForKey:@"ProResEncodingQuality"];
+    intValue2 = [v13 intValue];
   }
 
   else
   {
-    v14 = 1;
+    intValue2 = 1;
   }
 
-  v15 = [objc_opt_class() outputSettingsProResEncoderType:v11 quality:v14 formatDescription:a4 preferEncoderConfig:v7];
+  v15 = [objc_opt_class() outputSettingsProResEncoderType:intValue quality:intValue2 formatDescription:description preferEncoderConfig:encoderConfigCopy];
 
   return v15;
 }
 
-+ (id)outputSettingsProResEncoderType:(int)a3 quality:(int64_t)a4 formatDescription:(opaqueCMFormatDescription *)a5 preferEncoderConfig:(BOOL)a6
++ (id)outputSettingsProResEncoderType:(int)type quality:(int64_t)quality formatDescription:(opaqueCMFormatDescription *)description preferEncoderConfig:(BOOL)config
 {
-  v6 = a6;
+  configCopy = config;
   v26[3] = *MEMORY[0x277D85DE8];
-  if (a3 == 29)
+  if (type == 29)
   {
     v8 = @"aprn";
     goto LABEL_20;
   }
 
-  if (a3 == 30)
+  if (type == 30)
   {
     v8 = @"aprh";
     goto LABEL_20;
   }
 
-  if (a4 == 3)
+  if (quality == 3)
   {
     v10 = MEMORY[0x277CE62E8];
 LABEL_13:
     v9 = *v10;
-    if (a3 != 15)
+    if (type != 15)
     {
       v9 = 0;
     }
@@ -58,16 +58,16 @@ LABEL_13:
     goto LABEL_19;
   }
 
-  if (a4 == 2)
+  if (quality == 2)
   {
     v10 = MEMORY[0x277CE62E0];
     goto LABEL_13;
   }
 
-  if (a4)
+  if (quality)
   {
     v11 = MEMORY[0x277CE62D0];
-    if (a3 != 15)
+    if (type != 15)
     {
       v11 = MEMORY[0x277CE62F0];
     }
@@ -78,7 +78,7 @@ LABEL_13:
   else
   {
     v9 = *MEMORY[0x277CE62D8];
-    if (a3 != 15)
+    if (type != 15)
     {
       v9 = @"ap4x";
     }
@@ -93,7 +93,7 @@ LABEL_19:
   }
 
 LABEL_20:
-  if (v6)
+  if (configCopy)
   {
     v12 = [objc_opt_class() cmCodecTypeFromAVCodecType:v8];
     if (!v12)
@@ -109,7 +109,7 @@ LABEL_20:
 
   else
   {
-    Dimensions = CMVideoFormatDescriptionGetDimensions(a5);
+    Dimensions = CMVideoFormatDescriptionGetDimensions(description);
     v17 = *MEMORY[0x277CE62C8];
     v26[0] = v8;
     v18 = *MEMORY[0x277CE63C0];
@@ -128,23 +128,23 @@ LABEL_20:
   return v15;
 }
 
-+ (unsigned)cmCodecTypeFromAVCodecType:(id)a3
++ (unsigned)cmCodecTypeFromAVCodecType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   v4 = 1634755432;
-  if (([v3 isEqualToString:*MEMORY[0x277CE62D8]] & 1) == 0)
+  if (([typeCopy isEqualToString:*MEMORY[0x277CE62D8]] & 1) == 0)
   {
-    if ([v3 isEqualToString:*MEMORY[0x277CE62E0]])
+    if ([typeCopy isEqualToString:*MEMORY[0x277CE62E0]])
     {
       v4 = 1634755443;
     }
 
-    else if ([v3 isEqualToString:*MEMORY[0x277CE62E8]])
+    else if ([typeCopy isEqualToString:*MEMORY[0x277CE62E8]])
     {
       v4 = 1634755439;
     }
 
-    else if ([v3 isEqualToString:*MEMORY[0x277CE62D0]])
+    else if ([typeCopy isEqualToString:*MEMORY[0x277CE62D0]])
     {
       v4 = 1634755438;
     }
@@ -152,19 +152,19 @@ LABEL_20:
     else
     {
       v4 = 1634743400;
-      if (([v3 isEqualToString:*MEMORY[0x277CE62F0]] & 1) == 0)
+      if (([typeCopy isEqualToString:*MEMORY[0x277CE62F0]] & 1) == 0)
       {
-        if ([v3 isEqualToString:@"ap4x"])
+        if ([typeCopy isEqualToString:@"ap4x"])
         {
           v4 = 1634743416;
         }
 
-        else if ([v3 isEqualToString:@"aprn"])
+        else if ([typeCopy isEqualToString:@"aprn"])
         {
           v4 = 1634759278;
         }
 
-        else if ([v3 isEqualToString:@"aprh"])
+        else if ([typeCopy isEqualToString:@"aprh"])
         {
           v4 = 1634759272;
         }

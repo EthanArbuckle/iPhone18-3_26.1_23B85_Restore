@@ -1,8 +1,8 @@
 @interface CNWatchdog
 + (CNWatchdog)defaultWatchdog;
 - (CNWatchdog)init;
-- (unint64_t)statusForEvent:(id)a3;
-- (void)setStatus:(unint64_t)a3 forEvent:(id)a4;
+- (unint64_t)statusForEvent:(id)event;
+- (void)setStatus:(unint64_t)status forEvent:(id)event;
 @end
 
 @implementation CNWatchdog
@@ -31,38 +31,38 @@
   return v2;
 }
 
-- (void)setStatus:(unint64_t)a3 forEvent:(id)a4
+- (void)setStatus:(unint64_t)status forEvent:(id)event
 {
-  if (a3)
+  if (status)
   {
     v5 = MEMORY[0x1E696AD98];
-    v6 = a4;
-    v10 = +[(CNEnvironmentBase *)CNEnvironment];
-    v7 = [v10 timeProvider];
-    [v7 timestamp];
+    eventCopy = event;
+    eventCopy2 = +[(CNEnvironmentBase *)CNEnvironment];
+    timeProvider = [eventCopy2 timeProvider];
+    [timeProvider timestamp];
     v8 = [v5 numberWithDouble:?];
-    [(CNCache *)self->_events setObject:v8 forKeyedSubscript:v6];
+    [(CNCache *)self->_events setObject:v8 forKeyedSubscript:eventCopy];
   }
 
   else
   {
     events = self->_events;
-    v10 = a4;
+    eventCopy2 = event;
     [(CNCache *)events setObject:0 forKeyedSubscript:?];
   }
 }
 
-- (unint64_t)statusForEvent:(id)a3
+- (unint64_t)statusForEvent:(id)event
 {
-  v3 = [(CNCache *)self->_events objectForKeyedSubscript:a3];
+  v3 = [(CNCache *)self->_events objectForKeyedSubscript:event];
   v4 = v3;
   if (v3)
   {
     [v3 _cn_timeIntervalValue];
     v6 = v5;
     v7 = +[(CNEnvironmentBase *)CNEnvironment];
-    v8 = [v7 timeProvider];
-    [v8 timestamp];
+    timeProvider = [v7 timeProvider];
+    [timeProvider timestamp];
     v10 = v9 - v6;
 
     v11 = v10 < 60.0;

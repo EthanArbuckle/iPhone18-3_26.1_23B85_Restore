@@ -1,36 +1,36 @@
 @interface PKDashboardPaymentSetupProductItem
-- (PKDashboardPaymentSetupProductItem)initWithPaymentSetupProductResult:(id)a3;
+- (PKDashboardPaymentSetupProductItem)initWithPaymentSetupProductResult:(id)result;
 @end
 
 @implementation PKDashboardPaymentSetupProductItem
 
-- (PKDashboardPaymentSetupProductItem)initWithPaymentSetupProductResult:(id)a3
+- (PKDashboardPaymentSetupProductItem)initWithPaymentSetupProductResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v17.receiver = self;
   v17.super_class = PKDashboardPaymentSetupProductItem;
   v5 = [(PKDashboardPaymentSetupProductItem *)&v17 init];
   if (v5)
   {
-    v6 = [v4 productIdentifier];
+    productIdentifier = [resultCopy productIdentifier];
     productIdentifier = v5->_productIdentifier;
-    v5->_productIdentifier = v6;
+    v5->_productIdentifier = productIdentifier;
 
-    v8 = [v4 thumbnailURL];
+    thumbnailURL = [resultCopy thumbnailURL];
     thumbnailURL = v5->_thumbnailURL;
-    v5->_thumbnailURL = v8;
+    v5->_thumbnailURL = thumbnailURL;
 
-    v10 = [v4 thumbnailData];
+    thumbnailData = [resultCopy thumbnailData];
     thumbnailData = v5->_thumbnailData;
-    v5->_thumbnailData = v10;
+    v5->_thumbnailData = thumbnailData;
 
-    v12 = [v4 displayName];
+    displayName = [resultCopy displayName];
     displayName = v5->_displayName;
-    v5->_displayName = v12;
+    v5->_displayName = displayName;
 
-    v14 = [v4 contentDescription];
+    contentDescription = [resultCopy contentDescription];
     contentDescription = v5->_contentDescription;
-    v5->_contentDescription = v14;
+    v5->_contentDescription = contentDescription;
   }
 
   return v5;

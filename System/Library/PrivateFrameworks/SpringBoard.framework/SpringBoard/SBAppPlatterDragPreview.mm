@@ -7,16 +7,16 @@
 - (CGRect)_effectiveIconViewFrame;
 - (CGRect)_effectivePlatterFrame;
 - (CGSize)platterSize;
-- (SBAppPlatterDragPreview)initWithReferenceIconView:(id)a3 sourceView:(id)a4 sourceViewScale:(double)a5;
+- (SBAppPlatterDragPreview)initWithReferenceIconView:(id)view sourceView:(id)sourceView sourceViewScale:(double)scale;
 - (double)_blurContentViewIconViewCenterYOffset;
 - (double)_effectiveCornerRadius;
 - (double)_effectiveIconAccessoryAlpha;
 - (double)_effectiveIconContentScale;
 - (double)iconDragAlpha;
 - (id)_effectiveCornerRadiusConfiguration;
-- (id)delayCleanUpForReason:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)delayCleanUpForReason:(id)reason;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (uint64_t)anchorPointAdjustmentContainerView;
 - (uint64_t)captureOnlyBackgroundView;
@@ -38,80 +38,80 @@
 - (uint64_t)sourcePortalView;
 - (uint64_t)unclippedSourceContainerView;
 - (unint64_t)_effectiveMode;
-- (void)_configureIconViewWithReferenceIconView:(id)a3;
-- (void)_getIconAlpha:(double *)a3 platterAlpha:(double *)a4;
-- (void)_matchMoveView:(id)a3 toContainerView:(id)a4;
-- (void)_removeDelayCleanupAssertion:(id)a3;
-- (void)_setSourcePortalViewHidden:(BOOL)a3;
+- (void)_configureIconViewWithReferenceIconView:(id)view;
+- (void)_getIconAlpha:(double *)alpha platterAlpha:(double *)platterAlpha;
+- (void)_matchMoveView:(id)view toContainerView:(id)containerView;
+- (void)_removeDelayCleanupAssertion:(id)assertion;
+- (void)_setSourcePortalViewHidden:(BOOL)hidden;
 - (void)_updateContainerViewPositionForAnchorPoint;
 - (void)_updateIconViewComponentVisibility;
 - (void)_updateShadowView;
-- (void)_updateShowDebugIconBorderWithColor:(id)a3;
+- (void)_updateShowDebugIconBorderWithColor:(id)color;
 - (void)_updateSubviewVisibility;
-- (void)configurePlatterForSceneHandle:(id)a3 withTargetView:(id)a4 completion:(id)a5;
-- (void)draggingSourceDroppedWithOperation:(unint64_t)a3;
+- (void)configurePlatterForSceneHandle:(id)handle withTargetView:(id)view completion:(id)completion;
+- (void)draggingSourceDroppedWithOperation:(unint64_t)operation;
 - (void)handleCleanup;
 - (void)invalidateSourceView;
 - (void)layoutSubviews;
-- (void)setAnchorPointAdjustmentContainerView:(uint64_t)a1;
-- (void)setCaptureOnlyBackgroundView:(uint64_t)a1;
-- (void)setCornerMaskingView:(uint64_t)a1;
-- (void)setCornerRadiusConfiguration:(id)a3;
-- (void)setCustomIconImageViewController:(uint64_t)a1;
-- (void)setDiffuseShadowFilters:(id)a3;
-- (void)setDiffuseShadowParameters:(SBDragPreviewShadowParameters *)a3;
-- (void)setDiffuseShadowView:(uint64_t)a1;
-- (void)setDragState:(unint64_t)a3;
-- (void)setFlocked:(BOOL)a3;
-- (void)setIconAllowsAccessory:(BOOL)a3;
-- (void)setIconAllowsLabelArea:(BOOL)a3;
-- (void)setIconCanShowCloseBox:(BOOL)a3;
-- (void)setIconCanShowResizeHandle:(BOOL)a3;
-- (void)setIconContainerView:(uint64_t)a1;
-- (void)setIconContentScale:(double)a3;
-- (void)setIconView:(uint64_t)a1;
-- (void)setIconViewCustomIconImageViewController:(id)a3;
-- (void)setIconViewDelegate:(id)a3;
-- (void)setIconViewListLayoutProvider:(id)a3;
-- (void)setMode:(unint64_t)a3;
-- (void)setPlatterSize:(CGSize)a3;
-- (void)setPlatterView:(uint64_t)a1;
-- (void)setReferenceIconView:(uint64_t)a1;
-- (void)setRimShadowFilters:(id)a3;
-- (void)setRimShadowParameters:(SBDragPreviewShadowParameters *)a3;
-- (void)setRimShadowView:(uint64_t)a1;
-- (void)setSourcePortalView:(uint64_t)a1;
-- (void)setSourceView:(uint64_t)a1;
-- (void)setUnclippedSourceContainerView:(uint64_t)a1;
-- (void)updateDestinationIconLocation:(id)a3 allowsLabelArea:(BOOL)a4 animated:(BOOL)a5;
-- (void)updateSourceView:(id)a3;
+- (void)setAnchorPointAdjustmentContainerView:(uint64_t)view;
+- (void)setCaptureOnlyBackgroundView:(uint64_t)view;
+- (void)setCornerMaskingView:(uint64_t)view;
+- (void)setCornerRadiusConfiguration:(id)configuration;
+- (void)setCustomIconImageViewController:(uint64_t)controller;
+- (void)setDiffuseShadowFilters:(id)filters;
+- (void)setDiffuseShadowParameters:(SBDragPreviewShadowParameters *)parameters;
+- (void)setDiffuseShadowView:(uint64_t)view;
+- (void)setDragState:(unint64_t)state;
+- (void)setFlocked:(BOOL)flocked;
+- (void)setIconAllowsAccessory:(BOOL)accessory;
+- (void)setIconAllowsLabelArea:(BOOL)area;
+- (void)setIconCanShowCloseBox:(BOOL)box;
+- (void)setIconCanShowResizeHandle:(BOOL)handle;
+- (void)setIconContainerView:(uint64_t)view;
+- (void)setIconContentScale:(double)scale;
+- (void)setIconView:(uint64_t)view;
+- (void)setIconViewCustomIconImageViewController:(id)controller;
+- (void)setIconViewDelegate:(id)delegate;
+- (void)setIconViewListLayoutProvider:(id)provider;
+- (void)setMode:(unint64_t)mode;
+- (void)setPlatterSize:(CGSize)size;
+- (void)setPlatterView:(uint64_t)view;
+- (void)setReferenceIconView:(uint64_t)view;
+- (void)setRimShadowFilters:(id)filters;
+- (void)setRimShadowParameters:(SBDragPreviewShadowParameters *)parameters;
+- (void)setRimShadowView:(uint64_t)view;
+- (void)setSourcePortalView:(uint64_t)view;
+- (void)setSourceView:(uint64_t)view;
+- (void)setUnclippedSourceContainerView:(uint64_t)view;
+- (void)updateDestinationIconLocation:(id)location allowsLabelArea:(BOOL)area animated:(BOOL)animated;
+- (void)updateSourceView:(id)view;
 @end
 
 @implementation SBAppPlatterDragPreview
 
-- (SBAppPlatterDragPreview)initWithReferenceIconView:(id)a3 sourceView:(id)a4 sourceViewScale:(double)a5
+- (SBAppPlatterDragPreview)initWithReferenceIconView:(id)view sourceView:(id)sourceView sourceViewScale:(double)scale
 {
-  v10 = a3;
-  v11 = a4;
-  if (!v10)
+  viewCopy = view;
+  sourceViewCopy = sourceView;
+  if (!viewCopy)
   {
     [SBAppPlatterDragPreview initWithReferenceIconView:a2 sourceView:self sourceViewScale:?];
   }
 
-  [v10 iconImageInfo];
+  [viewCopy iconImageInfo];
   SBRectWithSize();
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  [v11 frame];
-  v59 = a5;
+  [sourceViewCopy frame];
+  scaleCopy = scale;
   SBTransformedRectWithScale();
   v20 = v19;
   v21 = v17;
   v22 = v15;
   v23 = v13;
-  if (v11)
+  if (sourceViewCopy)
   {
     SBRectWithSize();
     v23 = v24;
@@ -133,28 +133,28 @@
     [(SBAppPlatterDragPreview *)v29 addSubview:v35];
     objc_storeStrong(&v29->_anchorPointAdjustmentContainerView, v35);
     v36 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{v13, v15, v17, v19}];
-    v37 = [v36 layer];
-    [v37 setAllowsGroupOpacity:1];
+    layer = [v36 layer];
+    [layer setAllowsGroupOpacity:1];
 
     [v36 setClipsToBounds:0];
-    [v10 iconImageInfo];
+    [viewCopy iconImageInfo];
     [v36 _setContinuousCornerRadius:v38];
     [(UIView *)v29->_anchorPointAdjustmentContainerView addSubview:v36];
     objc_storeStrong(&v29->_iconContainerView, v36);
-    v29->_mode = 2 * (v11 != 0);
-    objc_storeStrong(&v29->_referenceIconView, a3);
-    v29->_sourceViewScale = v59;
-    v29->_iconAllowsLabelArea = [v10 allowsLabelArea];
-    v29->_iconAllowsAccessory = [v10 allowsAccessoryView];
-    v29->_iconIsHighlighted = [v10 isHighlighted];
-    v29->_iconCanShowCloseBox = [v10 canShowCloseBox];
-    v29->_iconCanShowResizeHandle = [v10 canShowResizeHandle];
-    [v10 iconContentScale];
+    v29->_mode = 2 * (sourceViewCopy != 0);
+    objc_storeStrong(&v29->_referenceIconView, view);
+    v29->_sourceViewScale = scaleCopy;
+    v29->_iconAllowsLabelArea = [viewCopy allowsLabelArea];
+    v29->_iconAllowsAccessory = [viewCopy allowsAccessoryView];
+    v29->_iconIsHighlighted = [viewCopy isHighlighted];
+    v29->_iconCanShowCloseBox = [viewCopy canShowCloseBox];
+    v29->_iconCanShowResizeHandle = [viewCopy canShowResizeHandle];
+    [viewCopy iconContentScale];
     v29->_iconContentScale = v39;
-    v29->_iconInitiallyShowingCloseBox = [v10 shouldShowCloseBox];
-    v29->_iconInitiallyShowingResizeHandle = [v10 shouldShowResizeHandle];
-    v40 = [(SBAppPlatterDragPreview *)v29 layer];
-    [v40 setAllowsGroupOpacity:1];
+    v29->_iconInitiallyShowingCloseBox = [viewCopy shouldShowCloseBox];
+    v29->_iconInitiallyShowingResizeHandle = [viewCopy shouldShowResizeHandle];
+    layer2 = [(SBAppPlatterDragPreview *)v29 layer];
+    [layer2 setAllowsGroupOpacity:1];
 
     SBScreenDisplayCornerRadius();
     if (BSFloatIsZero())
@@ -163,29 +163,29 @@
       cornerMaskingView = v29->_cornerMaskingView;
       v29->_cornerMaskingView = v41;
 
-      v43 = [(UIView *)v29->_cornerMaskingView layer];
-      [v43 setCornerCurve:*MEMORY[0x277CDA138]];
+      layer3 = [(UIView *)v29->_cornerMaskingView layer];
+      [layer3 setCornerCurve:*MEMORY[0x277CDA138]];
     }
 
     else
     {
       v44 = [[SBAsymmetricalCornerRadiusWrapperView alloc] initWithFrame:v23, v22, v21, v20];
-      v43 = v29->_cornerMaskingView;
+      layer3 = v29->_cornerMaskingView;
       v29->_cornerMaskingView = &v44->super.super;
     }
 
     [(UIView *)v29->_cornerMaskingView setClipsToBounds:1];
     [(UIView *)v29->_anchorPointAdjustmentContainerView insertSubview:v29->_cornerMaskingView atIndex:0];
-    v45 = [(SBAppPlatterDragPreview *)v29 _effectiveMode];
-    if (v45)
+    _effectiveMode = [(SBAppPlatterDragPreview *)v29 _effectiveMode];
+    if (_effectiveMode)
     {
       v46 = [objc_alloc(MEMORY[0x277D65FB0]) initWithFrame:{v23, v22, v21, v20}];
       rimShadowView = v29->_rimShadowView;
       v29->_rimShadowView = v46;
 
       [(SBFView *)v29->_rimShadowView setAnimatedLayerProperties:&unk_28336E3A0];
-      v48 = [(SBFView *)v29->_rimShadowView layer];
-      [v48 setShadowPathIsBounds:1];
+      layer4 = [(SBFView *)v29->_rimShadowView layer];
+      [layer4 setShadowPathIsBounds:1];
 
       [(UIView *)v29->_anchorPointAdjustmentContainerView insertSubview:v29->_rimShadowView atIndex:0];
       v49 = [objc_alloc(MEMORY[0x277D65FB0]) initWithFrame:{v23, v22, v21, v20}];
@@ -193,20 +193,20 @@
       v29->_diffuseShadowView = v49;
 
       [(SBFView *)v29->_diffuseShadowView setAnimatedLayerProperties:&unk_28336E3B8];
-      v51 = [(SBFView *)v29->_diffuseShadowView layer];
-      [v51 setShadowPathIsBounds:1];
+      layer5 = [(SBFView *)v29->_diffuseShadowView layer];
+      [layer5 setShadowPathIsBounds:1];
 
       [(UIView *)v29->_anchorPointAdjustmentContainerView insertSubview:v29->_diffuseShadowView atIndex:0];
     }
 
-    [(SBAppPlatterDragPreview *)v29 updateSourceView:v11];
-    v52 = [v10 icon];
-    v53 = [v52 isWidgetIcon];
+    [(SBAppPlatterDragPreview *)v29 updateSourceView:sourceViewCopy];
+    icon = [viewCopy icon];
+    isWidgetIcon = [icon isWidgetIcon];
 
-    if (!v45 && (v53 & 1) == 0)
+    if (!_effectiveMode && (isWidgetIcon & 1) == 0)
     {
-      v54 = [v10 listLayoutProvider];
-      v55 = [v54 layoutForIconLocation:*MEMORY[0x277D666D0]];
+      listLayoutProvider = [viewCopy listLayoutProvider];
+      v55 = [listLayoutProvider layoutForIconLocation:*MEMORY[0x277D666D0]];
 
       [v55 iconImageInfo];
       v58 = v56;
@@ -222,29 +222,29 @@
   return v29;
 }
 
-- (void)setMode:(unint64_t)a3
+- (void)setMode:(unint64_t)mode
 {
-  if (self->_mode != a3)
+  if (self->_mode != mode)
   {
-    self->_mode = a3;
+    self->_mode = mode;
     [(SBAppPlatterDragPreview *)self setNeedsLayout];
   }
 }
 
-- (void)_matchMoveView:(id)a3 toContainerView:(id)a4
+- (void)_matchMoveView:(id)view toContainerView:(id)containerView
 {
   v5 = MEMORY[0x277D65DE0];
-  v6 = a3;
-  v8 = [v5 matchMoveAnimationForPinningToView:a4];
-  v7 = [v6 layer];
+  viewCopy = view;
+  v8 = [v5 matchMoveAnimationForPinningToView:containerView];
+  layer = [viewCopy layer];
 
-  [v7 addAnimation:v8 forKey:@"MatchMove-SBAppPlatterDragPreview"];
+  [layer addAnimation:v8 forKey:@"MatchMove-SBAppPlatterDragPreview"];
 }
 
-- (void)updateSourceView:(id)a3
+- (void)updateSourceView:(id)view
 {
-  v5 = a3;
-  v33 = v5;
+  viewCopy = view;
+  v33 = viewCopy;
   if (!self->_sourcePortalView)
   {
     v6 = [SBPortalView alloc];
@@ -272,10 +272,10 @@
 
     [(SBAppPlatterDragPreview *)self _matchMoveView:self->_sourcePortalView toContainerView:self->_cornerMaskingView];
 
-    v5 = v33;
+    viewCopy = v33;
   }
 
-  [(UIView *)v5 frame];
+  [(UIView *)viewCopy frame];
   SBRectWithSize();
   v13 = v12;
   v15 = v14;
@@ -287,10 +287,10 @@
     v21 = sourceView;
     if (v21)
     {
-      v22 = [(UIView *)self->_sourceView superview];
+      superview = [(UIView *)self->_sourceView superview];
       unclippedSourceContainerView = self->_unclippedSourceContainerView;
 
-      if (v22 == unclippedSourceContainerView)
+      if (superview == unclippedSourceContainerView)
       {
         [(UIView *)self->_sourceView removeFromSuperview];
       }
@@ -298,14 +298,14 @@
       [(SBPortalView *)self->_sourcePortalView setSourceView:0];
     }
 
-    objc_storeStrong(&self->_sourceView, a3);
-    v24 = [(UIView *)self->_sourceView superview];
+    objc_storeStrong(&self->_sourceView, view);
+    superview2 = [(UIView *)self->_sourceView superview];
 
-    if (v24)
+    if (superview2)
     {
       v25 = self->_sourcePortalView;
-      v26 = [MEMORY[0x277D75348] clearColor];
-      [(SBPortalView *)v25 setBackgroundColor:v26];
+      clearColor = [MEMORY[0x277D75348] clearColor];
+      [(SBPortalView *)v25 setBackgroundColor:clearColor];
 
       [(SBPortalView *)self->_sourcePortalView setSourceView:self->_sourceView];
       [(SBPortalView *)self->_sourcePortalView setHidesSourceView:1];
@@ -334,8 +334,8 @@
       if (BSFloatIsOne())
       {
         v31 = self->_sourcePortalView;
-        v32 = [MEMORY[0x277D75348] systemBackgroundColor];
-        [(SBPortalView *)v31 setBackgroundColor:v32];
+        systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+        [(SBPortalView *)v31 setBackgroundColor:systemBackgroundColor];
       }
     }
 
@@ -350,10 +350,10 @@
 - (void)invalidateSourceView
 {
   [(SBPortalView *)self->_sourcePortalView setSourceView:0];
-  v3 = [(UIView *)self->_sourceView superview];
+  superview = [(UIView *)self->_sourceView superview];
   unclippedSourceContainerView = self->_unclippedSourceContainerView;
 
-  if (v3 == unclippedSourceContainerView)
+  if (superview == unclippedSourceContainerView)
   {
     [(UIView *)self->_sourceView removeFromSuperview];
   }
@@ -362,38 +362,38 @@
   self->_sourceView = 0;
 }
 
-- (void)configurePlatterForSceneHandle:(id)a3 withTargetView:(id)a4 completion:(id)a5
+- (void)configurePlatterForSceneHandle:(id)handle withTargetView:(id)view completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   self->_isBlurredPlatterReady = 0;
   self->_hasAnimatedToBlurredPlatter = 0;
-  v9 = a4;
-  v10 = [a3 application];
-  v11 = [v10 bundleIdentifier];
+  viewCopy = view;
+  application = [handle application];
+  bundleIdentifier = [application bundleIdentifier];
 
   v12 = [SBApplicationBlurContentView alloc];
-  [v9 bounds];
-  v13 = [(SBApplicationBlurContentView *)v12 initWithFrame:v11 bundleIdentifier:v9 targetViewToBlur:?];
+  [viewCopy bounds];
+  v13 = [(SBApplicationBlurContentView *)v12 initWithFrame:bundleIdentifier bundleIdentifier:viewCopy targetViewToBlur:?];
 
   platterView = self->_platterView;
   self->_platterView = v13;
 
-  v15 = [(SBApplicationBlurContentView *)self->_platterView iconView];
-  v16 = [v15 imageView];
-  [v16 setHidden:1];
+  iconView = [(SBApplicationBlurContentView *)self->_platterView iconView];
+  imageView = [iconView imageView];
+  [imageView setHidden:1];
 
   [(SBApplicationBlurContentView *)self->_platterView bs_setHitTestingDisabled:1];
   v24 = MEMORY[0x277D85DD0];
   v25 = 3221225472;
   v26 = __84__SBAppPlatterDragPreview_configurePlatterForSceneHandle_withTargetView_completion___block_invoke;
   v27 = &unk_2783A98A0;
-  v28 = self;
-  v17 = v8;
+  selfCopy = self;
+  v17 = completionCopy;
   v29 = v17;
   v18 = MEMORY[0x223D6F7F0](&v24);
   if (self->_mode != 2 || ([(UIView *)self->_sourceView superview:v24], v19 = objc_claimAutoreleasedReturnValue(), unclippedSourceContainerView = self->_unclippedSourceContainerView, v19, v19 == unclippedSourceContainerView))
   {
-    [(SBApplicationBlurContentView *)self->_platterView generateAndAnimateToBlurredSnapshotWithAnimationFactory:0 completion:v18, v24, v25, v26, v27, v28];
+    [(SBApplicationBlurContentView *)self->_platterView generateAndAnimateToBlurredSnapshotWithAnimationFactory:0 completion:v18, v24, v25, v26, v27, selfCopy];
     self->_hasAnimatedToBlurredPlatter = 1;
   }
 
@@ -453,10 +453,10 @@ uint64_t __84__SBAppPlatterDragPreview_configurePlatterForSceneHandle_withTarget
   return [v2 layoutIfNeeded];
 }
 
-- (void)setPlatterSize:(CGSize)a3
+- (void)setPlatterSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   p_platterSize = &self->_platterSize;
   if ((BSSizeEqualToSize() & 1) == 0)
   {
@@ -467,7 +467,7 @@ uint64_t __84__SBAppPlatterDragPreview_configurePlatterForSceneHandle_withTarget
   }
 }
 
-- (void)setDiffuseShadowParameters:(SBDragPreviewShadowParameters *)a3
+- (void)setDiffuseShadowParameters:(SBDragPreviewShadowParameters *)parameters
 {
   v7 = v6;
   v8 = v5;
@@ -485,7 +485,7 @@ uint64_t __84__SBAppPlatterDragPreview_configurePlatterForSceneHandle_withTarget
   }
 }
 
-- (void)setRimShadowParameters:(SBDragPreviewShadowParameters *)a3
+- (void)setRimShadowParameters:(SBDragPreviewShadowParameters *)parameters
 {
   v7 = v6;
   v8 = v5;
@@ -503,12 +503,12 @@ uint64_t __84__SBAppPlatterDragPreview_configurePlatterForSceneHandle_withTarget
   }
 }
 
-- (void)setDiffuseShadowFilters:(id)a3
+- (void)setDiffuseShadowFilters:(id)filters
 {
-  v6 = a3;
+  filtersCopy = filters;
   if (![(NSArray *)self->_diffuseShadowFilters isEqualToArray:?])
   {
-    v4 = [v6 copy];
+    v4 = [filtersCopy copy];
     diffuseShadowFilters = self->_diffuseShadowFilters;
     self->_diffuseShadowFilters = v4;
 
@@ -516,12 +516,12 @@ uint64_t __84__SBAppPlatterDragPreview_configurePlatterForSceneHandle_withTarget
   }
 }
 
-- (void)setRimShadowFilters:(id)a3
+- (void)setRimShadowFilters:(id)filters
 {
-  v6 = a3;
+  filtersCopy = filters;
   if (![(NSArray *)self->_rimShadowFilters isEqualToArray:?])
   {
-    v4 = [v6 copy];
+    v4 = [filtersCopy copy];
     rimShadowFilters = self->_rimShadowFilters;
     self->_rimShadowFilters = v4;
 
@@ -529,21 +529,21 @@ uint64_t __84__SBAppPlatterDragPreview_configurePlatterForSceneHandle_withTarget
   }
 }
 
-- (void)setCornerRadiusConfiguration:(id)a3
+- (void)setCornerRadiusConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   if (([(BSCornerRadiusConfiguration *)self->_cornerRadiusConfiguration isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_cornerRadiusConfiguration, a3);
+    objc_storeStrong(&self->_cornerRadiusConfiguration, configuration);
     [(SBAppPlatterDragPreview *)self setNeedsLayout];
   }
 }
 
-- (void)setDragState:(unint64_t)a3
+- (void)setDragState:(unint64_t)state
 {
-  if (self->_dragState != a3)
+  if (self->_dragState != state)
   {
-    if (a3 >= 2 && !self->_iconView)
+    if (state >= 2 && !self->_iconView)
     {
       if (!self->_referenceIconView)
       {
@@ -560,7 +560,7 @@ uint64_t __84__SBAppPlatterDragPreview_configurePlatterForSceneHandle_withTarget
       self->_referenceIconView = 0;
     }
 
-    self->_dragState = a3;
+    self->_dragState = state;
     [(SBAppPlatterDragPreview *)self setNeedsLayout];
     [(SBAppPlatterDragPreview *)self layoutIfNeeded];
   }
@@ -582,20 +582,20 @@ void __40__SBAppPlatterDragPreview_setDragState___block_invoke(uint64_t a1)
   [*(a1 + 32) _configureIconViewWithReferenceIconView:*(*(a1 + 32) + 544)];
 }
 
-- (void)setFlocked:(BOOL)a3
+- (void)setFlocked:(BOOL)flocked
 {
-  if (self->_flocked != a3)
+  if (self->_flocked != flocked)
   {
-    self->_flocked = a3;
+    self->_flocked = flocked;
     [(SBAppPlatterDragPreview *)self setNeedsLayout];
   }
 }
 
-- (void)updateDestinationIconLocation:(id)a3 allowsLabelArea:(BOOL)a4 animated:(BOOL)a5
+- (void)updateDestinationIconLocation:(id)location allowsLabelArea:(BOOL)area animated:(BOOL)animated
 {
-  v8 = a3;
-  v9 = [(SBIconView *)self->_iconView location];
-  v10 = [v9 isEqual:v8];
+  locationCopy = location;
+  location = [(SBIconView *)self->_iconView location];
+  v10 = [location isEqual:locationCopy];
 
   if ((v10 & 1) == 0)
   {
@@ -604,12 +604,12 @@ void __40__SBAppPlatterDragPreview_setDragState___block_invoke(uint64_t a1)
     v23[2] = __82__SBAppPlatterDragPreview_updateDestinationIconLocation_allowsLabelArea_animated___block_invoke;
     v23[3] = &unk_2783B2708;
     v23[4] = self;
-    v24 = v8;
-    v25 = a5;
-    v26 = a4;
+    v24 = locationCopy;
+    animatedCopy = animated;
+    areaCopy = area;
     v11 = MEMORY[0x223D6F7F0](v23);
     v12 = v11;
-    if (a5)
+    if (animated)
     {
       v13 = [(SBIconView *)self->_iconView startForbiddingAccessoryUpdatesWithReason:@"dragPlatterUpdatingLocation" animated:1];
       v14 = MEMORY[0x277D75D40];
@@ -686,105 +686,105 @@ uint64_t __82__SBAppPlatterDragPreview_updateDestinationIconLocation_allowsLabel
   return [v22 layoutIfNeeded];
 }
 
-- (void)_updateShowDebugIconBorderWithColor:(id)a3
+- (void)_updateShowDebugIconBorderWithColor:(id)color
 {
-  v14 = a3;
-  v4 = [MEMORY[0x277D661A0] rootSettings];
-  v5 = [v4 iconEditingSettings];
-  v6 = [v5 showDragPlatterIconBorder];
+  colorCopy = color;
+  rootSettings = [MEMORY[0x277D661A0] rootSettings];
+  iconEditingSettings = [rootSettings iconEditingSettings];
+  showDragPlatterIconBorder = [iconEditingSettings showDragPlatterIconBorder];
 
-  if (v6)
+  if (showDragPlatterIconBorder)
   {
-    v7 = [(SBIconView *)self->_iconView _iconImageView];
+    _iconImageView = [(SBIconView *)self->_iconView _iconImageView];
     [(SBIconView *)self->_iconView iconImageInfo];
-    [v7 _setContinuousCornerRadius:v8];
+    [_iconImageView _setContinuousCornerRadius:v8];
 
-    v9 = [(SBIconView *)self->_iconView _iconImageView];
-    v10 = [v9 layer];
-    v11 = v14;
-    if (!v14)
+    _iconImageView2 = [(SBIconView *)self->_iconView _iconImageView];
+    layer = [_iconImageView2 layer];
+    redColor = colorCopy;
+    if (!colorCopy)
     {
-      v11 = [MEMORY[0x277D75348] redColor];
+      redColor = [MEMORY[0x277D75348] redColor];
     }
 
-    [v10 setBorderColor:{objc_msgSend(v11, "CGColor")}];
-    if (!v14)
+    [layer setBorderColor:{objc_msgSend(redColor, "CGColor")}];
+    if (!colorCopy)
     {
     }
 
-    v12 = [(SBIconView *)self->_iconView _iconImageView];
-    v13 = [v12 layer];
-    [v13 setBorderWidth:4.0];
+    _iconImageView3 = [(SBIconView *)self->_iconView _iconImageView];
+    layer2 = [_iconImageView3 layer];
+    [layer2 setBorderWidth:4.0];
   }
 }
 
-- (void)setIconAllowsLabelArea:(BOOL)a3
+- (void)setIconAllowsLabelArea:(BOOL)area
 {
-  if (self->_iconAllowsLabelArea != a3)
+  if (self->_iconAllowsLabelArea != area)
   {
-    self->_iconAllowsLabelArea = a3;
+    self->_iconAllowsLabelArea = area;
     [(SBAppPlatterDragPreview *)self _updateIconViewComponentVisibility];
   }
 }
 
-- (void)setIconAllowsAccessory:(BOOL)a3
+- (void)setIconAllowsAccessory:(BOOL)accessory
 {
-  if (self->_iconAllowsAccessory != a3)
+  if (self->_iconAllowsAccessory != accessory)
   {
-    self->_iconAllowsAccessory = a3;
+    self->_iconAllowsAccessory = accessory;
     [(SBAppPlatterDragPreview *)self _updateIconViewComponentVisibility];
   }
 }
 
-- (void)setIconCanShowCloseBox:(BOOL)a3
+- (void)setIconCanShowCloseBox:(BOOL)box
 {
-  if (self->_iconCanShowCloseBox != a3)
+  if (self->_iconCanShowCloseBox != box)
   {
-    self->_iconCanShowCloseBox = a3;
+    self->_iconCanShowCloseBox = box;
     [(SBAppPlatterDragPreview *)self _updateIconViewComponentVisibility];
   }
 }
 
-- (void)setIconCanShowResizeHandle:(BOOL)a3
+- (void)setIconCanShowResizeHandle:(BOOL)handle
 {
-  if (self->_iconCanShowResizeHandle != a3)
+  if (self->_iconCanShowResizeHandle != handle)
   {
-    self->_iconCanShowResizeHandle = a3;
+    self->_iconCanShowResizeHandle = handle;
     [(SBAppPlatterDragPreview *)self _updateIconViewComponentVisibility];
   }
 }
 
-- (void)setIconContentScale:(double)a3
+- (void)setIconContentScale:(double)scale
 {
-  if (self->_iconContentScale != a3)
+  if (self->_iconContentScale != scale)
   {
-    self->_iconContentScale = a3;
+    self->_iconContentScale = scale;
     [(SBAppPlatterDragPreview *)self setNeedsLayout];
   }
 }
 
-- (id)delayCleanUpForReason:(id)a3
+- (id)delayCleanUpForReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   if (!self->_cleanupDelayAssertions)
   {
-    v5 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     cleanupDelayAssertions = self->_cleanupDelayAssertions;
-    self->_cleanupDelayAssertions = v5;
+    self->_cleanupDelayAssertions = weakObjectsHashTable;
   }
 
-  v7 = [[SBAppPlatterDragPreviewDelayCleanupAssertion alloc] initWithDragPreview:self reason:v4];
+  v7 = [[SBAppPlatterDragPreviewDelayCleanupAssertion alloc] initWithDragPreview:self reason:reasonCopy];
   [(NSHashTable *)self->_cleanupDelayAssertions addObject:v7];
 
   return v7;
 }
 
-- (void)_removeDelayCleanupAssertion:(id)a3
+- (void)_removeDelayCleanupAssertion:(id)assertion
 {
-  v4 = a3;
+  assertionCopy = assertion;
   if ([(NSHashTable *)self->_cleanupDelayAssertions containsObject:?])
   {
-    [(NSHashTable *)self->_cleanupDelayAssertions removeObject:v4];
+    [(NSHashTable *)self->_cleanupDelayAssertions removeObject:assertionCopy];
     if (![(NSHashTable *)self->_cleanupDelayAssertions count]&& self->_delayingCleanup)
     {
       [(SBAppPlatterDragPreview *)self handleCleanup];
@@ -792,7 +792,7 @@ uint64_t __82__SBAppPlatterDragPreview_updateDestinationIconLocation_allowsLabel
   }
 }
 
-- (void)draggingSourceDroppedWithOperation:(unint64_t)a3
+- (void)draggingSourceDroppedWithOperation:(unint64_t)operation
 {
   v14 = *MEMORY[0x277D85DE8];
   v5 = dispatch_time(0, 2000000000);
@@ -802,12 +802,12 @@ uint64_t __82__SBAppPlatterDragPreview_updateDestinationIconLocation_allowsLabel
   block[3] = &unk_2783A8C18;
   block[4] = self;
   dispatch_after(v5, MEMORY[0x277D85CD0], block);
-  if (!a3)
+  if (!operation)
   {
     v6 = self->_iconView;
-    v7 = [(SBIconView *)v6 customIconImageViewController];
+    customIconImageViewController = [(SBIconView *)v6 customIconImageViewController];
 
-    if (v7)
+    if (customIconImageViewController)
     {
       v8 = SBLogIconDragging();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -817,12 +817,12 @@ uint64_t __82__SBAppPlatterDragPreview_updateDestinationIconLocation_allowsLabel
         _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "Drop cancelled; replacing platter of icon image view controller with snapshot: %@", buf, 0xCu);
       }
 
-      v9 = [(SBIconView *)v6 snapshotView];
-      v10 = [(SBIconView *)v6 superview];
-      [v10 addSubview:v9];
+      snapshotView = [(SBIconView *)v6 snapshotView];
+      superview = [(SBIconView *)v6 superview];
+      [superview addSubview:snapshotView];
 
       [(SBIconView *)v6 frame];
-      [v9 setFrame:?];
+      [snapshotView setFrame:?];
       [(SBIconView *)v6 setIcon:0];
     }
   }
@@ -870,15 +870,15 @@ uint64_t __82__SBAppPlatterDragPreview_updateDestinationIconLocation_allowsLabel
   v20 = SBSafeCast(v19, self->_cornerMaskingView);
   if (v20)
   {
-    v21 = [(SBAppPlatterDragPreview *)self _effectiveCornerRadiusConfiguration];
-    [v20 setCornerRadiusConfiguration:v21];
+    _effectiveCornerRadiusConfiguration = [(SBAppPlatterDragPreview *)self _effectiveCornerRadiusConfiguration];
+    [v20 setCornerRadiusConfiguration:_effectiveCornerRadiusConfiguration];
   }
 
   else
   {
-    v21 = [(UIView *)self->_cornerMaskingView layer];
+    _effectiveCornerRadiusConfiguration = [(UIView *)self->_cornerMaskingView layer];
     [(SBAppPlatterDragPreview *)self _effectiveCornerRadius];
-    [v21 setCornerRadius:?];
+    [_effectiveCornerRadiusConfiguration setCornerRadius:?];
   }
 
   [(SBAppPlatterDragPreview *)self _updateSubviewVisibility];
@@ -1002,44 +1002,44 @@ uint64_t __82__SBAppPlatterDragPreview_updateDestinationIconLocation_allowsLabel
   [(SBFView *)self->_rimShadowView setFrame:v18, v19, v20, v21];
   [(SBFView *)self->_diffuseShadowView _setContinuousCornerRadius:v23];
   [(SBFView *)self->_rimShadowView _setContinuousCornerRadius:v23];
-  v24 = [(SBFView *)self->_diffuseShadowView layer];
+  layer = [(SBFView *)self->_diffuseShadowView layer];
   *&v25 = shadowOpacity;
-  [v24 setShadowOpacity:v25];
+  [layer setShadowOpacity:v25];
 
-  v26 = [(SBFView *)self->_diffuseShadowView layer];
-  [v26 setShadowRadius:shadowRadius];
+  layer2 = [(SBFView *)self->_diffuseShadowView layer];
+  [layer2 setShadowRadius:shadowRadius];
 
-  v27 = [(SBFView *)self->_diffuseShadowView layer];
-  [v27 setShadowOffset:{v37, v38}];
+  layer3 = [(SBFView *)self->_diffuseShadowView layer];
+  [layer3 setShadowOffset:{v37, v38}];
 
-  v28 = [(SBFView *)self->_rimShadowView layer];
+  layer4 = [(SBFView *)self->_rimShadowView layer];
   *&v29 = v12;
-  [v28 setShadowOpacity:v29];
+  [layer4 setShadowOpacity:v29];
 
-  v30 = [(SBFView *)self->_rimShadowView layer];
-  [v30 setShadowRadius:v34];
+  layer5 = [(SBFView *)self->_rimShadowView layer];
+  [layer5 setShadowRadius:v34];
 
-  v31 = [(SBFView *)self->_rimShadowView layer];
-  [v31 setShadowOffset:{v36, v35}];
+  layer6 = [(SBFView *)self->_rimShadowView layer];
+  [layer6 setShadowOffset:{v36, v35}];
 
-  v32 = [(SBFView *)self->_diffuseShadowView layer];
-  [v32 setFilters:v39];
+  layer7 = [(SBFView *)self->_diffuseShadowView layer];
+  [layer7 setFilters:v39];
 
-  v33 = [(SBFView *)self->_rimShadowView layer];
-  [v33 setFilters:v11];
+  layer8 = [(SBFView *)self->_rimShadowView layer];
+  [layer8 setFilters:v11];
 }
 
-- (void)_getIconAlpha:(double *)a3 platterAlpha:(double *)a4
+- (void)_getIconAlpha:(double *)alpha platterAlpha:(double *)platterAlpha
 {
-  v7 = [(SBAppPlatterDragPreview *)self _effectiveMode];
-  if (v7 == 2)
+  _effectiveMode = [(SBAppPlatterDragPreview *)self _effectiveMode];
+  if (_effectiveMode == 2)
   {
     v10 = 0.0;
     goto LABEL_7;
   }
 
   v8 = 1.0;
-  if (v7)
+  if (_effectiveMode)
   {
     v10 = 1.0;
     goto LABEL_9;
@@ -1066,14 +1066,14 @@ LABEL_7:
   }
 
 LABEL_9:
-  if (a3)
+  if (alpha)
   {
-    *a3 = v8;
+    *alpha = v8;
   }
 
-  if (a4)
+  if (platterAlpha)
   {
-    *a4 = v10;
+    *platterAlpha = v10;
   }
 }
 
@@ -1218,14 +1218,14 @@ uint64_t __51__SBAppPlatterDragPreview__updateSubviewVisibility__block_invoke_5(
   return [v2 setAlpha:v3];
 }
 
-- (void)_setSourcePortalViewHidden:(BOOL)a3
+- (void)_setSourcePortalViewHidden:(BOOL)hidden
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __54__SBAppPlatterDragPreview__setSourcePortalViewHidden___block_invoke;
   v3[3] = &unk_2783A9F58;
   v3[4] = self;
-  v4 = a3;
+  hiddenCopy = hidden;
   [MEMORY[0x277D75D18] _performWithoutRetargetingAnimations:v3];
 }
 
@@ -1242,9 +1242,9 @@ uint64_t __54__SBAppPlatterDragPreview__setSourcePortalViewHidden___block_invoke
 
 - (double)_effectiveIconContentScale
 {
-  v3 = [(SBAppPlatterDragPreview *)self _effectiveMode];
+  _effectiveMode = [(SBAppPlatterDragPreview *)self _effectiveMode];
   result = 1.0;
-  if (!v3)
+  if (!_effectiveMode)
   {
     dragState = self->_dragState;
     if (dragState >= 3)
@@ -1271,10 +1271,10 @@ uint64_t __54__SBAppPlatterDragPreview__setSourcePortalViewHidden___block_invoke
 
 - (double)_blurContentViewIconViewCenterYOffset
 {
-  v3 = [(SBApplicationBlurContentView *)self->_platterView iconView];
+  iconView = [(SBApplicationBlurContentView *)self->_platterView iconView];
   [(UIView *)self->_iconContainerView bounds];
   v5 = v4;
-  [v3 bounds];
+  [iconView bounds];
   v7 = (v5 - v6) * 0.5;
 
   return v7;
@@ -1315,9 +1315,9 @@ uint64_t __54__SBAppPlatterDragPreview__setSourcePortalViewHidden___block_invoke
 
 - (CGRect)_effectivePlatterFrame
 {
-  v3 = [(SBAppPlatterDragPreview *)self _effectiveMode];
-  v4 = v3;
-  if (v3 == 2)
+  _effectiveMode = [(SBAppPlatterDragPreview *)self _effectiveMode];
+  v4 = _effectiveMode;
+  if (_effectiveMode == 2)
   {
     [(UIView *)self->_sourceView frame];
     sourceViewScale = self->_sourceViewScale;
@@ -1325,7 +1325,7 @@ uint64_t __54__SBAppPlatterDragPreview__setSourcePortalViewHidden___block_invoke
 
   else
   {
-    if (v3)
+    if (_effectiveMode)
     {
       goto LABEL_9;
     }
@@ -1369,10 +1369,10 @@ LABEL_9:
 
 - (id)_effectiveCornerRadiusConfiguration
 {
-  v3 = [(SBAppPlatterDragPreview *)self _effectiveMode];
-  if (v3 - 1 >= 2)
+  _effectiveMode = [(SBAppPlatterDragPreview *)self _effectiveMode];
+  if (_effectiveMode - 1 >= 2)
   {
-    if (v3)
+    if (_effectiveMode)
     {
       v4 = 0;
     }
@@ -1403,14 +1403,14 @@ LABEL_9:
 - (double)_effectiveCornerRadius
 {
   v14 = *MEMORY[0x277D85DE8];
-  v2 = [(SBAppPlatterDragPreview *)self _effectiveCornerRadiusConfiguration];
-  [v2 topLeft];
+  _effectiveCornerRadiusConfiguration = [(SBAppPlatterDragPreview *)self _effectiveCornerRadiusConfiguration];
+  [_effectiveCornerRadiusConfiguration topLeft];
   v4 = v3;
-  [v2 topRight];
+  [_effectiveCornerRadiusConfiguration topRight];
   v11 = v5;
-  [v2 bottomLeft];
+  [_effectiveCornerRadiusConfiguration bottomLeft];
   v12 = v6;
-  [v2 bottomRight];
+  [_effectiveCornerRadiusConfiguration bottomRight];
   v13 = v7;
   for (i = 8; i != 32; i += 8)
   {
@@ -1425,9 +1425,9 @@ LABEL_9:
 
 - (double)_effectiveIconAccessoryAlpha
 {
-  v3 = [(SBAppPlatterDragPreview *)self _effectiveMode];
+  _effectiveMode = [(SBAppPlatterDragPreview *)self _effectiveMode];
   result = 0.0;
-  if (!v3)
+  if (!_effectiveMode)
   {
     dragState = self->_dragState;
     if (dragState >= 3)
@@ -1533,31 +1533,31 @@ LABEL_9:
 
 - (id)succinctDescription
 {
-  v2 = [(SBAppPlatterDragPreview *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBAppPlatterDragPreview *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBAppPlatterDragPreview *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBAppPlatterDragPreview *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBAppPlatterDragPreview *)self succinctDescriptionBuilder];
-  v5 = [(SBAppPlatterDragPreview *)self mode];
+  succinctDescriptionBuilder = [(SBAppPlatterDragPreview *)self succinctDescriptionBuilder];
+  mode = [(SBAppPlatterDragPreview *)self mode];
   v6 = @"SBAppPlatterDragPreviewModeIcon";
-  if (v5 == 2)
+  if (mode == 2)
   {
     v6 = @"SBAppPlatterDragPreviewModeSourceView";
   }
 
-  if (v5 == 1)
+  if (mode == 1)
   {
     v7 = @"SBAppPlatterDragPreviewModePlatter";
   }
@@ -1567,27 +1567,27 @@ LABEL_9:
     v7 = v6;
   }
 
-  v8 = [v4 appendObject:v7 withName:@"mode"];
-  v9 = [(SBAppPlatterDragPreview *)self dragState];
-  if (v9 > 4)
+  v8 = [succinctDescriptionBuilder appendObject:v7 withName:@"mode"];
+  dragState = [(SBAppPlatterDragPreview *)self dragState];
+  if (dragState > 4)
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = off_2783B6EB8[v9];
+    v10 = off_2783B6EB8[dragState];
   }
 
-  v11 = [v4 appendObject:v10 withName:@"dragState"];
+  v11 = [succinctDescriptionBuilder appendObject:v10 withName:@"dragState"];
   [(SBAppPlatterDragPreview *)self platterSize];
-  v12 = [v4 appendSize:@"platterSize" withName:?];
+  v12 = [succinctDescriptionBuilder appendSize:@"platterSize" withName:?];
   [(SBAppPlatterDragPreview *)self sourceViewScale];
-  v13 = [v4 appendFloat:@"sourceViewScale" withName:?];
+  v13 = [succinctDescriptionBuilder appendFloat:@"sourceViewScale" withName:?];
   [(SBAppPlatterDragPreview *)self rotation];
-  v14 = [v4 appendFloat:@"rotation" withName:?];
+  v14 = [succinctDescriptionBuilder appendFloat:@"rotation" withName:?];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 - (CGSize)platterSize
@@ -1608,13 +1608,13 @@ LABEL_9:
   return result;
 }
 
-- (void)_configureIconViewWithReferenceIconView:(id)a3
+- (void)_configureIconViewWithReferenceIconView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = [objc_alloc(objc_opt_class()) initWithConfigurationOptions:4];
   [v5 setCustomIconImageViewControllerPriority:3];
-  v6 = [v5 borrowIconImageView];
-  [v4 configureMatchingIconView:v5];
+  borrowIconImageView = [v5 borrowIconImageView];
+  [viewCopy configureMatchingIconView:v5];
   if (self)
   {
     customIconImageViewController = self->_customIconImageViewController;
@@ -1625,22 +1625,22 @@ LABEL_9:
     customIconImageViewController = 0;
   }
 
-  v8 = customIconImageViewController;
-  [v5 setOverrideCustomIconImageViewController:v8];
-  [v6 invalidate];
-  if (!v8)
+  customIconImageViewController = customIconImageViewController;
+  [v5 setOverrideCustomIconImageViewController:customIconImageViewController];
+  [borrowIconImageView invalidate];
+  if (!customIconImageViewController)
   {
-    v8 = [v5 customIconImageViewController];
+    customIconImageViewController = [v5 customIconImageViewController];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [(SBIconViewCustomImageViewControlling *)v8 setShowsSnapshotWhenDeactivated:1];
+    [(SBIconViewCustomImageViewControlling *)customIconImageViewController setShowsSnapshotWhenDeactivated:1];
   }
 
-  [v5 setEditing:{objc_msgSend(v4, "isEditing")}];
-  v9 = [v4 accessibilityTintColor];
-  [v5 setAccessibilityTintColor:v9];
+  [v5 setEditing:{objc_msgSend(viewCopy, "isEditing")}];
+  accessibilityTintColor = [viewCopy accessibilityTintColor];
+  [v5 setAccessibilityTintColor:accessibilityTintColor];
 
   [v5 setAllowsEditingAnimation:0];
   [v5 setIconContentScalingEnabled:0];
@@ -1655,21 +1655,21 @@ LABEL_9:
   [(SBAppPlatterDragPreview *)self _getIconAlpha:&v14 platterAlpha:0];
   [v5 setAlpha:v14];
   [(UIView *)self->_iconContainerView addSubview:v5];
-  v10 = [v5 backgroundViewGroupNameBase];
+  backgroundViewGroupNameBase = [v5 backgroundViewGroupNameBase];
 
-  if (v10)
+  if (backgroundViewGroupNameBase)
   {
-    v11 = [v5 newCaptureOnlyBackgroundView];
+    newCaptureOnlyBackgroundView = [v5 newCaptureOnlyBackgroundView];
     [v5 frame];
-    [(UIView *)v11 setFrame:?];
-    [(UIView *)self->_iconContainerView addSubview:v11];
-    [(UIView *)self->_iconContainerView sendSubviewToBack:v11];
+    [(UIView *)newCaptureOnlyBackgroundView setFrame:?];
+    [(UIView *)self->_iconContainerView addSubview:newCaptureOnlyBackgroundView];
+    [(UIView *)self->_iconContainerView sendSubviewToBack:newCaptureOnlyBackgroundView];
     captureOnlyBackgroundView = self->_captureOnlyBackgroundView;
-    self->_captureOnlyBackgroundView = v11;
+    self->_captureOnlyBackgroundView = newCaptureOnlyBackgroundView;
   }
 
-  v13 = [MEMORY[0x277D75348] redColor];
-  [(SBAppPlatterDragPreview *)self _updateShowDebugIconBorderWithColor:v13];
+  redColor = [MEMORY[0x277D75348] redColor];
+  [(SBAppPlatterDragPreview *)self _updateShowDebugIconBorderWithColor:redColor];
 }
 
 - (uint64_t)customIconImageViewController
@@ -1723,9 +1723,9 @@ LABEL_9:
 
 - (uint64_t)isDelayingCleanup
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_0_9(*(a1 + 440));
+    return OUTLINED_FUNCTION_0_9(*(self + 440));
   }
 
   else
@@ -1755,14 +1755,14 @@ _BYTE *__62__SBAppPlatterDragPreview_draggingSourceDroppedWithOperation___block_
   return result;
 }
 
-- (void)setIconViewDelegate:(id)a3
+- (void)setIconViewDelegate:(id)delegate
 {
   if (self)
   {
     self = self->_iconView;
   }
 
-  [(SBAppPlatterDragPreview *)self setDelegate:a3];
+  [(SBAppPlatterDragPreview *)self setDelegate:delegate];
 }
 
 - (uint64_t)iconView
@@ -1775,20 +1775,20 @@ _BYTE *__62__SBAppPlatterDragPreview_draggingSourceDroppedWithOperation___block_
   return result;
 }
 
-- (void)setIconViewListLayoutProvider:(id)a3
+- (void)setIconViewListLayoutProvider:(id)provider
 {
   if (self)
   {
     self = self->_iconView;
   }
 
-  [(SBAppPlatterDragPreview *)self setListLayoutProvider:a3];
+  [(SBAppPlatterDragPreview *)self setListLayoutProvider:provider];
 }
 
-- (void)setIconViewCustomIconImageViewController:(id)a3
+- (void)setIconViewCustomIconImageViewController:(id)controller
 {
-  v5 = a3;
-  [(SBAppPlatterDragPreview *)self setCustomIconImageViewController:v5];
+  controllerCopy = controller;
+  [(SBAppPlatterDragPreview *)self setCustomIconImageViewController:controllerCopy];
   if (self)
   {
     iconView = self->_iconView;
@@ -1799,14 +1799,14 @@ _BYTE *__62__SBAppPlatterDragPreview_draggingSourceDroppedWithOperation___block_
     iconView = 0;
   }
 
-  [(SBIconView *)iconView setOverrideCustomIconImageViewController:v5];
+  [(SBIconView *)iconView setOverrideCustomIconImageViewController:controllerCopy];
 }
 
-- (void)setCustomIconImageViewController:(uint64_t)a1
+- (void)setCustomIconImageViewController:(uint64_t)controller
 {
-  if (a1)
+  if (controller)
   {
-    OUTLINED_FUNCTION_0_18(a1, a2, 568);
+    OUTLINED_FUNCTION_0_18(controller, a2, 568);
   }
 }
 
@@ -1817,11 +1817,11 @@ _BYTE *__62__SBAppPlatterDragPreview_draggingSourceDroppedWithOperation___block_
     self = self->_iconView;
   }
 
-  v2 = [(SBAppPlatterDragPreview *)self icon];
-  v3 = [v2 gridSizeClass];
-  v4 = v3;
+  icon = [(SBAppPlatterDragPreview *)self icon];
+  gridSizeClass = [icon gridSizeClass];
+  v4 = gridSizeClass;
   v5 = 0.5;
-  if (v3 != *MEMORY[0x277D66528] && ([v3 isEqualToString:?] & 1) == 0)
+  if (gridSizeClass != *MEMORY[0x277D66528] && ([gridSizeClass isEqualToString:?] & 1) == 0)
   {
     [MEMORY[0x277D663F0] iconLiftAlpha];
     v5 = v6;
@@ -1855,29 +1855,29 @@ _BYTE *__62__SBAppPlatterDragPreview_draggingSourceDroppedWithOperation___block_
     v6 = 0.0;
   }
 
-  v7 = [(SBAppPlatterDragPreview *)self _effectiveIconIsHighlighted];
-  v8 = [(SBAppPlatterDragPreview *)self _effectiveIconCanShowCloseBox];
-  v9 = [(SBAppPlatterDragPreview *)self _effectiveIconCanShowResizeHandle];
+  _effectiveIconIsHighlighted = [(SBAppPlatterDragPreview *)self _effectiveIconIsHighlighted];
+  _effectiveIconCanShowCloseBox = [(SBAppPlatterDragPreview *)self _effectiveIconCanShowCloseBox];
+  _effectiveIconCanShowResizeHandle = [(SBAppPlatterDragPreview *)self _effectiveIconCanShowResizeHandle];
   [(SBIconView *)v10 setIconAccessoryAlpha:v5];
   [(SBIconView *)v10 setIconLabelAlpha:v6];
-  [(SBIconView *)v10 setHighlighted:v7];
-  [(SBIconView *)v10 setAllowsCloseBox:v8];
-  [(SBIconView *)v10 setAllowsResizeHandle:v9];
+  [(SBIconView *)v10 setHighlighted:_effectiveIconIsHighlighted];
+  [(SBIconView *)v10 setAllowsCloseBox:_effectiveIconCanShowCloseBox];
+  [(SBIconView *)v10 setAllowsResizeHandle:_effectiveIconCanShowResizeHandle];
 }
 
-- (void)setSourceView:(uint64_t)a1
+- (void)setSourceView:(uint64_t)view
 {
-  if (a1)
+  if (view)
   {
-    OUTLINED_FUNCTION_0_18(a1, a2, 480);
+    OUTLINED_FUNCTION_0_18(view, a2, 480);
   }
 }
 
-- (void)setPlatterView:(uint64_t)a1
+- (void)setPlatterView:(uint64_t)view
 {
-  if (a1)
+  if (view)
   {
-    OUTLINED_FUNCTION_0_18(a1, a2, 496);
+    OUTLINED_FUNCTION_0_18(view, a2, 496);
   }
 }
 
@@ -1891,19 +1891,19 @@ _BYTE *__62__SBAppPlatterDragPreview_draggingSourceDroppedWithOperation___block_
   return result;
 }
 
-- (void)setReferenceIconView:(uint64_t)a1
+- (void)setReferenceIconView:(uint64_t)view
 {
-  if (a1)
+  if (view)
   {
-    OUTLINED_FUNCTION_0_18(a1, a2, 544);
+    OUTLINED_FUNCTION_0_18(view, a2, 544);
   }
 }
 
-- (void)setIconView:(uint64_t)a1
+- (void)setIconView:(uint64_t)view
 {
-  if (a1)
+  if (view)
   {
-    OUTLINED_FUNCTION_0_18(a1, a2, 552);
+    OUTLINED_FUNCTION_0_18(view, a2, 552);
   }
 }
 
@@ -1917,19 +1917,19 @@ _BYTE *__62__SBAppPlatterDragPreview_draggingSourceDroppedWithOperation___block_
   return result;
 }
 
-- (void)setCaptureOnlyBackgroundView:(uint64_t)a1
+- (void)setCaptureOnlyBackgroundView:(uint64_t)view
 {
-  if (a1)
+  if (view)
   {
-    OUTLINED_FUNCTION_0_18(a1, a2, 560);
+    OUTLINED_FUNCTION_0_18(view, a2, 560);
   }
 }
 
 - (uint64_t)iconIsHighlighted
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_0_9(*(a1 + 437));
+    return OUTLINED_FUNCTION_0_9(*(self + 437));
   }
 
   else
@@ -1950,9 +1950,9 @@ _BYTE *__62__SBAppPlatterDragPreview_draggingSourceDroppedWithOperation___block_
 
 - (uint64_t)iconInitiallyShowingCloseBox
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_0_9(*(a1 + 438));
+    return OUTLINED_FUNCTION_0_9(*(self + 438));
   }
 
   else
@@ -1973,9 +1973,9 @@ _BYTE *__62__SBAppPlatterDragPreview_draggingSourceDroppedWithOperation___block_
 
 - (uint64_t)iconInitiallyShowingResizeHandle
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_0_9(*(a1 + 439));
+    return OUTLINED_FUNCTION_0_9(*(self + 439));
   }
 
   else
@@ -2004,11 +2004,11 @@ _BYTE *__62__SBAppPlatterDragPreview_draggingSourceDroppedWithOperation___block_
   return result;
 }
 
-- (void)setAnchorPointAdjustmentContainerView:(uint64_t)a1
+- (void)setAnchorPointAdjustmentContainerView:(uint64_t)view
 {
-  if (a1)
+  if (view)
   {
-    OUTLINED_FUNCTION_0_18(a1, a2, 576);
+    OUTLINED_FUNCTION_0_18(view, a2, 576);
   }
 }
 
@@ -2022,11 +2022,11 @@ _BYTE *__62__SBAppPlatterDragPreview_draggingSourceDroppedWithOperation___block_
   return result;
 }
 
-- (void)setIconContainerView:(uint64_t)a1
+- (void)setIconContainerView:(uint64_t)view
 {
-  if (a1)
+  if (view)
   {
-    OUTLINED_FUNCTION_0_18(a1, a2, 584);
+    OUTLINED_FUNCTION_0_18(view, a2, 584);
   }
 }
 
@@ -2040,11 +2040,11 @@ _BYTE *__62__SBAppPlatterDragPreview_draggingSourceDroppedWithOperation___block_
   return result;
 }
 
-- (void)setCornerMaskingView:(uint64_t)a1
+- (void)setCornerMaskingView:(uint64_t)view
 {
-  if (a1)
+  if (view)
   {
-    OUTLINED_FUNCTION_0_18(a1, a2, 592);
+    OUTLINED_FUNCTION_0_18(view, a2, 592);
   }
 }
 
@@ -2058,11 +2058,11 @@ _BYTE *__62__SBAppPlatterDragPreview_draggingSourceDroppedWithOperation___block_
   return result;
 }
 
-- (void)setSourcePortalView:(uint64_t)a1
+- (void)setSourcePortalView:(uint64_t)view
 {
-  if (a1)
+  if (view)
   {
-    OUTLINED_FUNCTION_0_18(a1, a2, 600);
+    OUTLINED_FUNCTION_0_18(view, a2, 600);
   }
 }
 
@@ -2076,11 +2076,11 @@ _BYTE *__62__SBAppPlatterDragPreview_draggingSourceDroppedWithOperation___block_
   return result;
 }
 
-- (void)setUnclippedSourceContainerView:(uint64_t)a1
+- (void)setUnclippedSourceContainerView:(uint64_t)view
 {
-  if (a1)
+  if (view)
   {
-    OUTLINED_FUNCTION_0_18(a1, a2, 608);
+    OUTLINED_FUNCTION_0_18(view, a2, 608);
   }
 }
 
@@ -2094,11 +2094,11 @@ _BYTE *__62__SBAppPlatterDragPreview_draggingSourceDroppedWithOperation___block_
   return result;
 }
 
-- (void)setDiffuseShadowView:(uint64_t)a1
+- (void)setDiffuseShadowView:(uint64_t)view
 {
-  if (a1)
+  if (view)
   {
-    OUTLINED_FUNCTION_0_18(a1, a2, 616);
+    OUTLINED_FUNCTION_0_18(view, a2, 616);
   }
 }
 
@@ -2112,11 +2112,11 @@ _BYTE *__62__SBAppPlatterDragPreview_draggingSourceDroppedWithOperation___block_
   return result;
 }
 
-- (void)setRimShadowView:(uint64_t)a1
+- (void)setRimShadowView:(uint64_t)view
 {
-  if (a1)
+  if (view)
   {
-    OUTLINED_FUNCTION_0_18(a1, a2, 624);
+    OUTLINED_FUNCTION_0_18(view, a2, 624);
   }
 }
 

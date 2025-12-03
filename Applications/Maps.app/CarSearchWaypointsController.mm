@@ -1,70 +1,70 @@
 @interface CarSearchWaypointsController
-- (CarSearchWaypointsController)initWithSearchResults:(id)a3 selectedIndex:(unint64_t)a4;
+- (CarSearchWaypointsController)initWithSearchResults:(id)results selectedIndex:(unint64_t)index;
 - (id)destinationSearchResultIfAvailable;
 - (id)subtitleForCurrentDestination;
 - (id)titleForCurrentDestination;
 - (id)visuallySelectedItem;
 - (unint64_t)totalDestinations;
-- (void)nextPlaceWithTraits:(id)a3;
-- (void)previousPlaceWithTraits:(id)a3;
-- (void)setSelectedIndex:(unint64_t)a3;
+- (void)nextPlaceWithTraits:(id)traits;
+- (void)previousPlaceWithTraits:(id)traits;
+- (void)setSelectedIndex:(unint64_t)index;
 @end
 
 @implementation CarSearchWaypointsController
 
 - (unint64_t)totalDestinations
 {
-  v2 = [(CarSearchWaypointsController *)self searchResults];
-  v3 = [v2 count];
+  searchResults = [(CarSearchWaypointsController *)self searchResults];
+  v3 = [searchResults count];
 
   return v3;
 }
 
 - (id)subtitleForCurrentDestination
 {
-  v2 = [(CarSearchWaypointsController *)self destinationSearchResultIfAvailable];
-  v3 = [v2 mapItem];
-  v4 = [v3 _addressFormattedAsShortenedAddress];
+  destinationSearchResultIfAvailable = [(CarSearchWaypointsController *)self destinationSearchResultIfAvailable];
+  mapItem = [destinationSearchResultIfAvailable mapItem];
+  _addressFormattedAsShortenedAddress = [mapItem _addressFormattedAsShortenedAddress];
 
-  return v4;
+  return _addressFormattedAsShortenedAddress;
 }
 
 - (id)titleForCurrentDestination
 {
-  v2 = [(CarSearchWaypointsController *)self destinationSearchResultIfAvailable];
-  v3 = [v2 title];
+  destinationSearchResultIfAvailable = [(CarSearchWaypointsController *)self destinationSearchResultIfAvailable];
+  title = [destinationSearchResultIfAvailable title];
 
-  return v3;
+  return title;
 }
 
 - (id)destinationSearchResultIfAvailable
 {
-  v3 = [(CarSearchWaypointsController *)self searchResults];
-  v4 = [v3 objectAtIndexedSubscript:{-[CarSearchWaypointsController selectedIndex](self, "selectedIndex")}];
+  searchResults = [(CarSearchWaypointsController *)self searchResults];
+  v4 = [searchResults objectAtIndexedSubscript:{-[CarSearchWaypointsController selectedIndex](self, "selectedIndex")}];
 
   return v4;
 }
 
-- (void)previousPlaceWithTraits:(id)a3
+- (void)previousPlaceWithTraits:(id)traits
 {
-  v5 = a3;
+  traitsCopy = traits;
   if ([(CarWaypointsController *)self allowLooping]&& ![(CarSearchWaypointsController *)self selectedIndex])
   {
-    v4 = [(CarSearchWaypointsController *)self totalDestinations];
+    totalDestinations = [(CarSearchWaypointsController *)self totalDestinations];
   }
 
   else
   {
-    v4 = [(CarSearchWaypointsController *)self selectedIndex];
+    totalDestinations = [(CarSearchWaypointsController *)self selectedIndex];
   }
 
-  [(CarSearchWaypointsController *)self setSelectedIndex:v4 - 1];
-  [(CarWaypointsController *)self startLoadWithTraits:v5];
+  [(CarSearchWaypointsController *)self setSelectedIndex:totalDestinations - 1];
+  [(CarWaypointsController *)self startLoadWithTraits:traitsCopy];
 }
 
-- (void)nextPlaceWithTraits:(id)a3
+- (void)nextPlaceWithTraits:(id)traits
 {
-  v5 = a3;
+  traitsCopy = traits;
   v4 = [(CarSearchWaypointsController *)self selectedIndex]+ 1;
   if ([(CarWaypointsController *)self allowLooping]&& v4 >= [(CarSearchWaypointsController *)self totalDestinations])
   {
@@ -72,53 +72,53 @@
   }
 
   [(CarSearchWaypointsController *)self setSelectedIndex:v4];
-  [(CarWaypointsController *)self startLoadWithTraits:v5];
+  [(CarWaypointsController *)self startLoadWithTraits:traitsCopy];
 }
 
 - (id)visuallySelectedItem
 {
-  v3 = [(CarSearchWaypointsController *)self searchResults];
-  v4 = [v3 objectAtIndexedSubscript:self->_selectedIndex];
+  searchResults = [(CarSearchWaypointsController *)self searchResults];
+  v4 = [searchResults objectAtIndexedSubscript:self->_selectedIndex];
 
   return v4;
 }
 
-- (void)setSelectedIndex:(unint64_t)a3
+- (void)setSelectedIndex:(unint64_t)index
 {
   if ([(CarSearchWaypointsController *)self totalDestinations])
   {
-    if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+    if (index == 0x7FFFFFFFFFFFFFFFLL)
     {
-      a3 = 0;
+      index = 0;
     }
 
-    else if ([(CarSearchWaypointsController *)self totalDestinations]<= a3)
+    else if ([(CarSearchWaypointsController *)self totalDestinations]<= index)
     {
-      a3 = [(CarSearchWaypointsController *)self totalDestinations];
+      index = [(CarSearchWaypointsController *)self totalDestinations];
     }
   }
 
   else
   {
-    a3 = 0x7FFFFFFFFFFFFFFFLL;
+    index = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  self->_selectedIndex = a3;
+  self->_selectedIndex = index;
 }
 
-- (CarSearchWaypointsController)initWithSearchResults:(id)a3 selectedIndex:(unint64_t)a4
+- (CarSearchWaypointsController)initWithSearchResults:(id)results selectedIndex:(unint64_t)index
 {
-  v6 = a3;
+  resultsCopy = results;
   v11.receiver = self;
   v11.super_class = CarSearchWaypointsController;
   v7 = [(CarSearchWaypointsController *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [resultsCopy copy];
     searchResults = v7->_searchResults;
     v7->_searchResults = v8;
 
-    v7->_selectedIndex = a4;
+    v7->_selectedIndex = index;
   }
 
   return v7;

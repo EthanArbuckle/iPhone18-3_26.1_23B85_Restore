@@ -1,19 +1,19 @@
 @interface PGMemoryTriggerRecentMeaningfulEvent
-- (id)meaningNodesSupportedForTriggerInGraph:(id)a3;
-- (id)relevantFeatureNodesInFeatureNodes:(id)a3;
-- (id)resultsTriggeredWithContext:(id)a3 inGraph:(id)a4 progressReporter:(id)a5;
+- (id)meaningNodesSupportedForTriggerInGraph:(id)graph;
+- (id)relevantFeatureNodesInFeatureNodes:(id)nodes;
+- (id)resultsTriggeredWithContext:(id)context inGraph:(id)graph progressReporter:(id)reporter;
 @end
 
 @implementation PGMemoryTriggerRecentMeaningfulEvent
 
-- (id)meaningNodesSupportedForTriggerInGraph:(id)a3
+- (id)meaningNodesSupportedForTriggerInGraph:(id)graph
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [(PGGraphNodeCollection *)PGGraphMeaningNodeCollection nodesInGraph:v3];
+  graphCopy = graph;
+  v4 = [(PGGraphNodeCollection *)PGGraphMeaningNodeCollection nodesInGraph:graphCopy];
   v10[0] = @"HolidayEvent";
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
-  v6 = [PGGraphMeaningNodeCollection meaningNodesWithMeaningLabels:v5 inGraph:v3];
+  v6 = [PGGraphMeaningNodeCollection meaningNodesWithMeaningLabels:v5 inGraph:graphCopy];
 
   v7 = [v4 collectionBySubtracting:v6];
 
@@ -22,13 +22,13 @@
   return v7;
 }
 
-- (id)resultsTriggeredWithContext:(id)a3 inGraph:(id)a4 progressReporter:(id)a5
+- (id)resultsTriggeredWithContext:(id)context inGraph:(id)graph progressReporter:(id)reporter
 {
   v40 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v10 isCancelledWithProgress:0.0])
+  contextCopy = context;
+  graphCopy = graph;
+  reporterCopy = reporter;
+  if ([reporterCopy isCancelledWithProgress:0.0])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -44,34 +44,34 @@
 
   else
   {
-    v12 = [v8 localDate];
-    v13 = [v8 timeZone];
-    v14 = [PGMemoryTrigger dateNodesInGraph:v9 startDayOffset:-8 endDayOffset:-1 fromLocalDate:v12 inTimeZone:v13];
+    localDate = [contextCopy localDate];
+    timeZone = [contextCopy timeZone];
+    v14 = [PGMemoryTrigger dateNodesInGraph:graphCopy startDayOffset:-8 endDayOffset:-1 fromLocalDate:localDate inTimeZone:timeZone];
 
     v29 = v14;
-    v15 = [v14 momentNodes];
-    v27 = [(PGMemoryTriggerRecentMeaningfulEvent *)self meaningNodesSupportedForTriggerInGraph:v9];
+    momentNodes = [v14 momentNodes];
+    v27 = [(PGMemoryTriggerRecentMeaningfulEvent *)self meaningNodesSupportedForTriggerInGraph:graphCopy];
     [v27 momentNodes];
-    v26 = v28 = v15;
-    v16 = [v15 collectionByIntersecting:?];
-    v17 = [v16 memoryNodes];
-    v18 = [PGGraphMemoryNodeCollection memoryNodesOfCategory:16 inGraph:v9];
-    v19 = [v17 collectionByIntersecting:v18];
-    v20 = [PGGraphMemoryNodeCollection memoryNodesOfCategory:17 inGraph:v9];
+    v26 = v28 = momentNodes;
+    v16 = [momentNodes collectionByIntersecting:?];
+    memoryNodes = [v16 memoryNodes];
+    v18 = [PGGraphMemoryNodeCollection memoryNodesOfCategory:16 inGraph:graphCopy];
+    v19 = [memoryNodes collectionByIntersecting:v18];
+    v20 = [PGGraphMemoryNodeCollection memoryNodesOfCategory:17 inGraph:graphCopy];
     v21 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v30[0] = MEMORY[0x277D85DD0];
     v30[1] = 3221225472;
     v30[2] = __93__PGMemoryTriggerRecentMeaningfulEvent_resultsTriggeredWithContext_inGraph_progressReporter___block_invoke;
     v30[3] = &unk_278887CD0;
     v31 = v20;
-    v32 = v9;
-    v33 = self;
-    v34 = v8;
+    v32 = graphCopy;
+    selfCopy = self;
+    v34 = contextCopy;
     v22 = v21;
     v35 = v22;
     v23 = v20;
     [v19 enumerateIdentifiersAsCollectionsWithBlock:v30];
-    if ([v10 isCancelledWithProgress:1.0])
+    if ([reporterCopy isCancelledWithProgress:1.0])
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
@@ -193,12 +193,12 @@ BOOL __93__PGMemoryTriggerRecentMeaningfulEvent_resultsTriggeredWithContext_inGr
   return v3;
 }
 
-- (id)relevantFeatureNodesInFeatureNodes:(id)a3
+- (id)relevantFeatureNodesInFeatureNodes:(id)nodes
 {
-  v3 = [(PGGraphNodeCollection *)PGGraphMeaningNodeCollection subsetInCollection:a3];
-  v4 = [v3 featureNodeCollection];
+  v3 = [(PGGraphNodeCollection *)PGGraphMeaningNodeCollection subsetInCollection:nodes];
+  featureNodeCollection = [v3 featureNodeCollection];
 
-  return v4;
+  return featureNodeCollection;
 }
 
 @end

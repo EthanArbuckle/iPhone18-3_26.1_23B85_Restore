@@ -1,29 +1,29 @@
 @interface TVCarouselLayout
-+ (TVCarouselLayout)layoutWithLayout:(id)a3 element:(id)a4;
-+ (int64_t)layoutTypeForElement:(id)a3;
-+ (int64_t)layoutTypeForString:(id)a3;
-+ (unint64_t)scrollModeForString:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (TVCarouselLayout)layoutWithLayout:(id)layout element:(id)element;
++ (int64_t)layoutTypeForElement:(id)element;
++ (int64_t)layoutTypeForString:(id)string;
++ (unint64_t)scrollModeForString:(id)string;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)cellSize;
 - (UIEdgeInsets)cellPadding;
 @end
 
 @implementation TVCarouselLayout
 
-+ (int64_t)layoutTypeForString:(id)a3
++ (int64_t)layoutTypeForString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"upsell"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"upsell"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ribbon"])
+  else if ([stringCopy isEqualToString:@"ribbon"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"centerGrowth"])
+  else if ([stringCopy isEqualToString:@"centerGrowth"])
   {
     v4 = 0;
   }
@@ -36,15 +36,15 @@
   return v4;
 }
 
-+ (unint64_t)scrollModeForString:(id)a3
++ (unint64_t)scrollModeForString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"continuous"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"continuous"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"none"])
+  else if ([stringCopy isEqualToString:@"none"])
   {
     v4 = 2;
   }
@@ -57,14 +57,14 @@
   return v4;
 }
 
-+ (int64_t)layoutTypeForElement:(id)a3
++ (int64_t)layoutTypeForElement:(id)element
 {
-  v4 = [a3 attributes];
-  v5 = [v4 objectForKey:@"tv_layout"];
+  attributes = [element attributes];
+  v5 = [attributes objectForKey:@"tv_layout"];
 
   if (v5)
   {
-    v6 = [a1 layoutTypeForString:v5];
+    v6 = [self layoutTypeForString:v5];
   }
 
   else
@@ -75,41 +75,41 @@
   return v6;
 }
 
-+ (TVCarouselLayout)layoutWithLayout:(id)a3 element:(id)a4
++ (TVCarouselLayout)layoutWithLayout:(id)layout element:(id)element
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  layoutCopy = layout;
+  elementCopy = element;
+  v8 = layoutCopy;
   v9 = v8;
   if (!v8)
   {
     v9 = objc_alloc_init(TVCarouselLayout);
   }
 
-  v23.receiver = a1;
+  v23.receiver = self;
   v23.super_class = &OBJC_METACLASS___TVCarouselLayout;
-  v10 = objc_msgSendSuper2(&v23, sel_layoutWithLayout_element_, v9, v7);
-  v11 = [v7 style];
-  v12 = [a1 layoutTypeForElement:v7];
+  v10 = objc_msgSendSuper2(&v23, sel_layoutWithLayout_element_, v9, elementCopy);
+  style = [elementCopy style];
+  v12 = [self layoutTypeForElement:elementCopy];
   if (v12 != 3)
   {
     [(TVCarouselLayout *)v9 setLayoutType:v12];
   }
 
-  v13 = [v11 tv_scrollMode];
-  -[TVCarouselLayout setScrollMode:](v9, "setScrollMode:", [a1 scrollModeForString:v13]);
+  tv_scrollMode = [style tv_scrollMode];
+  -[TVCarouselLayout setScrollMode:](v9, "setScrollMode:", [self scrollModeForString:tv_scrollMode]);
 
   if ([(TVCarouselLayout *)v9 layoutType]== 2 || [(TVCarouselLayout *)v9 layoutType]== 1)
   {
-    v14 = [(TVCarouselLayout *)v9 layoutType];
+    layoutType = [(TVCarouselLayout *)v9 layoutType];
     v15 = 130.0;
-    if (v14 == 2)
+    if (layoutType == 2)
     {
       v15 = 480.0;
     }
 
     v16 = 0.0;
-    if (v14 == 2)
+    if (layoutType == 2)
     {
       v17 = 100.0;
     }
@@ -124,10 +124,10 @@
     goto LABEL_13;
   }
 
-  [v11 tv_interitemSpacing];
+  [style tv_interitemSpacing];
   if (v21 != 0.0)
   {
-    [v11 tv_interitemSpacing];
+    [style tv_interitemSpacing];
     v16 = v22;
 LABEL_13:
     [(TVCarouselLayout *)v9 setInteritemSpacing:v16];
@@ -139,8 +139,8 @@ LABEL_13:
     [(TVCarouselLayout *)v9 setShearAngle:-0.162444763];
   }
 
-  v18 = [v7 attributes];
-  v19 = [v18 objectForKey:@"pageControl"];
+  attributes = [elementCopy attributes];
+  v19 = [attributes objectForKey:@"pageControl"];
 
   if (v19 && (objc_opt_respondsToSelector() & 1) != 0)
   {
@@ -150,7 +150,7 @@ LABEL_13:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [_TVLockupFactory cellMetricsForCollectionElement:v7];
+    [_TVLockupFactory cellMetricsForCollectionElement:elementCopy];
     [(TVCarouselLayout *)v9 setCellPadding:0, 0];
     [(TVCarouselLayout *)v9 setCellSize:0];
   }
@@ -158,10 +158,10 @@ LABEL_13:
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v15 = 1;
     goto LABEL_20;
@@ -174,7 +174,7 @@ LABEL_13:
     goto LABEL_20;
   }
 
-  v5 = v4;
+  v5 = equalCopy;
   [(TVCarouselLayout *)self interitemSpacing];
   v7 = v6;
   [(TVCarouselLayout *)v5 interitemSpacing];
@@ -183,8 +183,8 @@ LABEL_13:
     goto LABEL_16;
   }
 
-  v9 = [(TVCarouselLayout *)self layoutType];
-  if (v9 != [(TVCarouselLayout *)v5 layoutType])
+  layoutType = [(TVCarouselLayout *)self layoutType];
+  if (layoutType != [(TVCarouselLayout *)v5 layoutType])
   {
     goto LABEL_16;
   }
@@ -221,11 +221,11 @@ LABEL_13:
   [(TVCarouselLayout *)v5 focusedEdgeExpansion];
   if (v30 == v31 && ([(TVCarouselLayout *)self revealDistance], v33 = v32, [(TVCarouselLayout *)v5 revealDistance], v33 == v34) && (v35 = [(TVCarouselLayout *)self isParallaxEnabled], v35 == [(TVCarouselLayout *)v5 isParallaxEnabled]) && ([(TVCarouselLayout *)self shearAngle], v37 = v36, [(TVCarouselLayout *)v5 shearAngle], v37 == v38) && (v39 = [(TVCarouselLayout *)self showsPageControl], v39 == [(TVCarouselLayout *)v5 showsPageControl]))
   {
-    v41 = [(TVCarouselLayout *)self pageControlMarginNumber];
-    [v41 floatValue];
+    pageControlMarginNumber = [(TVCarouselLayout *)self pageControlMarginNumber];
+    [pageControlMarginNumber floatValue];
     v43 = v42;
-    v44 = [(TVCarouselLayout *)v5 pageControlMarginNumber];
-    [v44 floatValue];
+    pageControlMarginNumber2 = [(TVCarouselLayout *)v5 pageControlMarginNumber];
+    [pageControlMarginNumber2 floatValue];
     v15 = v43 == v45;
   }
 

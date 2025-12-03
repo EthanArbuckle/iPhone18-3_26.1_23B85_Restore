@@ -1,23 +1,23 @@
 @interface ATXRelevantContextConverter
-+ (id)contextFromRelevanceProvider:(id)a3;
-+ (id)contextFromRelevantContext:(id)a3;
++ (id)contextFromRelevanceProvider:(id)provider;
++ (id)contextFromRelevantContext:(id)context;
 - (ATXRelevantContextConverter)init;
 @end
 
 @implementation ATXRelevantContextConverter
 
-+ (id)contextFromRelevanceProvider:(id)a3
++ (id)contextFromRelevanceProvider:(id)provider
 {
-  v3 = a3;
-  v4 = sub_2267EC310(v3, 0x277CD3B88);
+  providerCopy = provider;
+  v4 = sub_2267EC310(providerCopy, 0x277CD3B88);
 
   return v4;
 }
 
-+ (id)contextFromRelevantContext:(id)a3
++ (id)contextFromRelevantContext:(id)context
 {
-  v3 = a3;
-  v4 = sub_2267EC310(v3, 0x277CDB6A0);
+  contextCopy = context;
+  v4 = sub_2267EC310(contextCopy, 0x277CDB6A0);
 
   return v4;
 }

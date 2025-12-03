@@ -1,19 +1,19 @@
 @interface TestService
-- (void)cancelOperationsWithIdentifiers:(id)a3 reply:(id)a4;
-- (void)performGetStringWithOperationID:(NSString *)a3 reply:(id)a4;
-- (void)performLongOperationWithOperationID:(NSString *)a3 reply:(id)a4;
+- (void)cancelOperationsWithIdentifiers:(id)identifiers reply:(id)reply;
+- (void)performGetStringWithOperationID:(NSString *)d reply:(id)reply;
+- (void)performLongOperationWithOperationID:(NSString *)d reply:(id)reply;
 @end
 
 @implementation TestService
 
-- (void)performGetStringWithOperationID:(NSString *)a3 reply:(id)a4
+- (void)performGetStringWithOperationID:(NSString *)d reply:(id)reply
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27DAD8710);
   MEMORY[0x28223BE20](v7 - 8);
   v9 = &v16 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(reply);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = d;
   v11[3] = v10;
   v11[4] = self;
   v12 = sub_22FCC8D14();
@@ -28,19 +28,19 @@
   v14[3] = 0;
   v14[4] = &unk_22FCD7F28;
   v14[5] = v13;
-  v15 = a3;
+  dCopy = d;
 
   sub_22FC0D8B4(0, 0, v9, &unk_22FCD7F30, v14);
 }
 
-- (void)performLongOperationWithOperationID:(NSString *)a3 reply:(id)a4
+- (void)performLongOperationWithOperationID:(NSString *)d reply:(id)reply
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27DAD8710);
   MEMORY[0x28223BE20](v7 - 8);
   v9 = &v16 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(reply);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = d;
   v11[3] = v10;
   v11[4] = self;
   v12 = sub_22FCC8D14();
@@ -55,17 +55,17 @@
   v14[3] = 0;
   v14[4] = &unk_22FCD2CA0;
   v14[5] = v13;
-  v15 = a3;
+  dCopy = d;
 
   sub_22FC0D8B4(0, 0, v9, &unk_22FCDA590, v14);
 }
 
-- (void)cancelOperationsWithIdentifiers:(id)a3 reply:(id)a4
+- (void)cancelOperationsWithIdentifiers:(id)identifiers reply:(id)reply
 {
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27DAD8710);
   MEMORY[0x28223BE20](v6 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a4);
+  v9 = _Block_copy(reply);
   v10 = sub_22FCC8C44();
   v11 = swift_allocObject();
   *(v11 + 16) = v9;

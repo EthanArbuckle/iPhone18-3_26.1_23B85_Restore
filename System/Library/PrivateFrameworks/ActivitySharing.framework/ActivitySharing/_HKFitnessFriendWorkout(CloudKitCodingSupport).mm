@@ -10,76 +10,76 @@
 - (ASCodableCloudKitWorkout)codableWorkout
 {
   v2 = objc_alloc_init(ASCodableCloudKitWorkout);
-  v3 = _ASCodableCloudKitSampleForSample(a1);
+  v3 = _ASCodableCloudKitSampleForSample(self);
   [(ASCodableCloudKitWorkout *)v2 setSample:v3];
 
-  -[ASCodableCloudKitWorkout setType:](v2, "setType:", [a1 workoutActivityType]);
-  [a1 duration];
+  -[ASCodableCloudKitWorkout setType:](v2, "setType:", [self workoutActivityType]);
+  [self duration];
   [(ASCodableCloudKitWorkout *)v2 setDuration:?];
-  v4 = [a1 totalEnergyBurned];
+  totalEnergyBurned = [self totalEnergyBurned];
 
-  if (v4)
+  if (totalEnergyBurned)
   {
-    v5 = [a1 totalEnergyBurned];
+    totalEnergyBurned2 = [self totalEnergyBurned];
     v6 = _HKWorkoutCanonicalEnergyBurnedUnit();
-    [v5 doubleValueForUnit:v6];
+    [totalEnergyBurned2 doubleValueForUnit:v6];
     [(ASCodableCloudKitWorkout *)v2 setTotalEnergyBurnedInCanonicalUnit:?];
   }
 
-  v7 = [a1 totalBasalEnergyBurned];
+  totalBasalEnergyBurned = [self totalBasalEnergyBurned];
 
-  if (v7)
+  if (totalBasalEnergyBurned)
   {
-    v8 = [a1 totalBasalEnergyBurned];
+    totalBasalEnergyBurned2 = [self totalBasalEnergyBurned];
     v9 = _HKWorkoutCanonicalEnergyBurnedUnit();
-    [v8 doubleValueForUnit:v9];
+    [totalBasalEnergyBurned2 doubleValueForUnit:v9];
     [(ASCodableCloudKitWorkout *)v2 setTotalBasalEnergyBurnedInCanonicalUnit:?];
   }
 
-  v10 = [a1 totalDistance];
+  totalDistance = [self totalDistance];
 
-  if (v10)
+  if (totalDistance)
   {
-    v11 = [a1 totalDistance];
+    totalDistance2 = [self totalDistance];
     v12 = _HKWorkoutCanonicalDistanceUnit();
-    [v11 doubleValueForUnit:v12];
+    [totalDistance2 doubleValueForUnit:v12];
     [(ASCodableCloudKitWorkout *)v2 setTotalDistanceInCanonicalUnit:?];
   }
 
-  -[ASCodableCloudKitWorkout setGoalType:](v2, "setGoalType:", [a1 goalType]);
-  v13 = [a1 goal];
-  if (v13)
+  -[ASCodableCloudKitWorkout setGoalType:](v2, "setGoalType:", [self goalType]);
+  goal = [self goal];
+  if (goal)
   {
-    v14 = v13;
-    [a1 goalType];
+    v14 = goal;
+    [self goalType];
     IsValidForGoal = _HKWorkoutGoalTypeIsValidForGoal();
 
     if (IsValidForGoal)
     {
-      v16 = [a1 goal];
-      [a1 goalType];
+      goal2 = [self goal];
+      [self goalType];
       v17 = _HKWorkoutCanonicalUnitForGoalType();
-      [v16 doubleValueForUnit:v17];
+      [goal2 doubleValueForUnit:v17];
       [(ASCodableCloudKitWorkout *)v2 setGoalInCanonicalUnit:?];
     }
   }
 
-  v18 = [a1 bundleID];
-  [(ASCodableCloudKitWorkout *)v2 setBundleID:v18];
+  bundleID = [self bundleID];
+  [(ASCodableCloudKitWorkout *)v2 setBundleID:bundleID];
 
-  -[ASCodableCloudKitWorkout setIsWatchWorkout:](v2, "setIsWatchWorkout:", [a1 isWatchWorkout]);
-  -[ASCodableCloudKitWorkout setIsIndoorWorkout:](v2, "setIsIndoorWorkout:", [a1 isIndoorWorkout]);
-  v19 = [a1 deviceManufacturer];
-  [(ASCodableCloudKitWorkout *)v2 setDeviceManufacturer:v19];
+  -[ASCodableCloudKitWorkout setIsWatchWorkout:](v2, "setIsWatchWorkout:", [self isWatchWorkout]);
+  -[ASCodableCloudKitWorkout setIsIndoorWorkout:](v2, "setIsIndoorWorkout:", [self isIndoorWorkout]);
+  deviceManufacturer = [self deviceManufacturer];
+  [(ASCodableCloudKitWorkout *)v2 setDeviceManufacturer:deviceManufacturer];
 
-  v20 = [a1 deviceModel];
-  [(ASCodableCloudKitWorkout *)v2 setDeviceModel:v20];
+  deviceModel = [self deviceModel];
+  [(ASCodableCloudKitWorkout *)v2 setDeviceModel:deviceModel];
 
-  v21 = [a1 seymourCatalogWorkoutIdentifier];
-  [(ASCodableCloudKitWorkout *)v2 setSeymourCatalogWorkoutIdentifier:v21];
+  seymourCatalogWorkoutIdentifier = [self seymourCatalogWorkoutIdentifier];
+  [(ASCodableCloudKitWorkout *)v2 setSeymourCatalogWorkoutIdentifier:seymourCatalogWorkoutIdentifier];
 
-  v22 = [a1 seymourMediaType];
-  [(ASCodableCloudKitWorkout *)v2 setSeymourMediaType:v22];
+  seymourMediaType = [self seymourMediaType];
+  [(ASCodableCloudKitWorkout *)v2 setSeymourMediaType:seymourMediaType];
 
   return v2;
 }
@@ -87,15 +87,15 @@
 - (id)recordWithZoneID:()CloudKitCodingSupport recordEncryptionType:
 {
   v6 = a3;
-  v7 = [a1 UUID];
-  v8 = ASWorkoutRecordIDForUUID(v7, v6);
+  uUID = [self UUID];
+  v8 = ASWorkoutRecordIDForUUID(uUID, v6);
 
   v9 = [objc_alloc(MEMORY[0x277CBC5A0]) initWithRecordType:@"ActivitySharingWorkout" recordID:v8];
   _ASUpdateSchemaVersionOnRecord(2, v9, a4);
-  v10 = [a1 codableWorkout];
-  v11 = [v10 data];
-  v12 = [v9 encryptedValues];
-  [v12 setObject:v11 forKeyedSubscript:@"EncryptedData"];
+  codableWorkout = [self codableWorkout];
+  data = [codableWorkout data];
+  encryptedValues = [v9 encryptedValues];
+  [encryptedValues setObject:data forKeyedSubscript:@"EncryptedData"];
 
   ASLoggingInitialize();
   if (os_log_type_enabled(ASLogCloudKit, OS_LOG_TYPE_DEBUG))
@@ -107,7 +107,7 @@
   v13 = ASLogCloudKit;
   if (os_log_type_enabled(ASLogCloudKit, OS_LOG_TYPE_DEBUG))
   {
-    [_HKFitnessFriendWorkout(CloudKitCodingSupport) recordWithZoneID:v13 recordEncryptionType:a1];
+    [_HKFitnessFriendWorkout(CloudKitCodingSupport) recordWithZoneID:v13 recordEncryptionType:self];
   }
 
   return v9;
@@ -119,8 +119,8 @@
   v7 = a4;
   if (_ASCloudKitSchemaVersionForRecord(v6) == 2)
   {
-    v8 = [v6 encryptedValues];
-    v9 = [v8 objectForKeyedSubscript:@"EncryptedData"];
+    encryptedValues = [v6 encryptedValues];
+    v9 = [encryptedValues objectForKeyedSubscript:@"EncryptedData"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -135,7 +135,7 @@
     if (v10)
     {
       v12 = [[ASCodableCloudKitWorkout alloc] initWithData:v10];
-      v11 = [a1 fitnessFriendWorkoutWithCodableWorkout:v12 friendUUID:v7];
+      v11 = [self fitnessFriendWorkoutWithCodableWorkout:v12 friendUUID:v7];
     }
 
     else
@@ -169,19 +169,19 @@
   v5 = a3;
   v6 = MEMORY[0x277CCAD78];
   v51 = a4;
-  v7 = [v5 sample];
-  v8 = [v7 uuid];
-  v54 = [v6 hk_UUIDWithData:v8];
+  sample = [v5 sample];
+  uuid = [sample uuid];
+  v54 = [v6 hk_UUIDWithData:uuid];
 
-  v50 = [v5 type];
+  type = [v5 type];
   v9 = MEMORY[0x277CBEAA8];
-  v10 = [v5 sample];
-  [v10 startDate];
+  sample2 = [v5 sample];
+  [sample2 startDate];
   v11 = [v9 dateWithTimeIntervalSinceReferenceDate:?];
 
   v12 = MEMORY[0x277CBEAA8];
-  v13 = [v5 sample];
-  [v13 endDate];
+  sample3 = [v5 sample];
+  [sample3 endDate];
   v14 = [v12 dateWithTimeIntervalSinceReferenceDate:?];
 
   if ([v5 hasTotalEnergyBurnedInCanonicalUnit])
@@ -245,7 +245,7 @@
   v52 = v17;
   v53 = v14;
   v56 = v23;
-  v48 = [v5 goalType];
+  goalType = [v5 goalType];
   if ([v5 hasGoalInCanonicalUnit])
   {
     v29 = MEMORY[0x277CCD7E8];
@@ -259,21 +259,21 @@
     v31 = 0;
   }
 
-  v32 = [v5 isIndoorWorkout];
+  isIndoorWorkout = [v5 isIndoorWorkout];
   v47 = MEMORY[0x277CCDDD0];
   [v5 duration];
   v34 = v33;
-  v35 = [v5 bundleID];
-  v36 = [v5 isWatchWorkout];
-  v37 = [v5 deviceManufacturer];
-  v38 = [v5 deviceModel];
+  bundleID = [v5 bundleID];
+  isWatchWorkout = [v5 isWatchWorkout];
+  deviceManufacturer = [v5 deviceManufacturer];
+  deviceModel = [v5 deviceModel];
   v39 = [v5 amm];
-  v40 = [v5 seymourCatalogWorkoutIdentifier];
-  v41 = [v5 seymourMediaType];
-  BYTE1(v46) = v32;
-  LOBYTE(v46) = v36;
+  seymourCatalogWorkoutIdentifier = [v5 seymourCatalogWorkoutIdentifier];
+  seymourMediaType = [v5 seymourMediaType];
+  BYTE1(v46) = isIndoorWorkout;
+  LOBYTE(v46) = isWatchWorkout;
   v49 = v31;
-  v42 = [v47 fitnessFriendworkoutWithActivityType:v50 friendUUID:v51 startDate:v57 endDate:v53 duration:v52 totalActiveEnergyBurned:v56 totalBasalEnergyBurned:v34 totalDistance:v55 goalType:v48 goal:v31 bundleID:v35 isWatchWorkout:v46 isIndoorWorkout:v37 deviceManufacturer:v38 deviceModel:v39 amm:v40 seymourCatalogWorkoutIdentifier:v41 seymourMediaType:?];
+  v42 = [v47 fitnessFriendworkoutWithActivityType:type friendUUID:v51 startDate:v57 endDate:v53 duration:v52 totalActiveEnergyBurned:v56 totalBasalEnergyBurned:v34 totalDistance:v55 goalType:goalType goal:v31 bundleID:bundleID isWatchWorkout:v46 isIndoorWorkout:deviceManufacturer deviceManufacturer:deviceModel deviceModel:v39 amm:seymourCatalogWorkoutIdentifier seymourCatalogWorkoutIdentifier:seymourMediaType seymourMediaType:?];
 
   [v42 _setUUID:v54];
   [v42 workoutActivityType];

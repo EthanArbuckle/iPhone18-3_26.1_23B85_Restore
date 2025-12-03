@@ -1,59 +1,59 @@
 @interface PBUIWallpaperImage
-- (BOOL)isEqual:(id)a3;
-- (PBUIWallpaperImage)initWithCGImage:(CGImage *)a3 scale:(double)a4 orientation:(int64_t)a5 wallpaperFileURL:(id)a6;
-- (PBUIWallpaperImage)initWithCoder:(id)a3;
-- (PBUIWallpaperImage)initWithFlatColor:(id)a3;
-- (PBUIWallpaperImage)initWithFlatColor:(id)a3 size:(CGSize)a4 scale:(double)a5;
+- (BOOL)isEqual:(id)equal;
+- (PBUIWallpaperImage)initWithCGImage:(CGImage *)image scale:(double)scale orientation:(int64_t)orientation wallpaperFileURL:(id)l;
+- (PBUIWallpaperImage)initWithCoder:(id)coder;
+- (PBUIWallpaperImage)initWithFlatColor:(id)color;
+- (PBUIWallpaperImage)initWithFlatColor:(id)color size:(CGSize)size scale:(double)scale;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PBUIWallpaperImage
 
-- (PBUIWallpaperImage)initWithCGImage:(CGImage *)a3 scale:(double)a4 orientation:(int64_t)a5 wallpaperFileURL:(id)a6
+- (PBUIWallpaperImage)initWithCGImage:(CGImage *)image scale:(double)scale orientation:(int64_t)orientation wallpaperFileURL:(id)l
 {
-  v11 = a6;
+  lCopy = l;
   v15.receiver = self;
   v15.super_class = PBUIWallpaperImage;
-  v12 = [(PBUIWallpaperImage *)&v15 initWithCGImage:a3 scale:a5 orientation:a4];
+  v12 = [(PBUIWallpaperImage *)&v15 initWithCGImage:image scale:orientation orientation:scale];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_wallpaperFileURL, a6);
+    objc_storeStrong(&v12->_wallpaperFileURL, l);
   }
 
   return v13;
 }
 
-- (PBUIWallpaperImage)initWithFlatColor:(id)a3
+- (PBUIWallpaperImage)initWithFlatColor:(id)color
 {
   v4 = MEMORY[0x277D759A0];
-  v5 = a3;
-  v6 = [v4 mainScreen];
-  [v6 bounds];
+  colorCopy = color;
+  mainScreen = [v4 mainScreen];
+  [mainScreen bounds];
   v8 = v7;
   v10 = v9;
-  [v6 scale];
+  [mainScreen scale];
   v12 = v11;
-  v13 = PBUIWallpaperImageWithFlatColor(v5, v8, v10, v11);
+  v13 = PBUIWallpaperImageWithFlatColor(colorCopy, v8, v10, v11);
 
   v14 = -[PBUIWallpaperImage initWithCGImage:scale:orientation:wallpaperFileURL:](self, "initWithCGImage:scale:orientation:wallpaperFileURL:", [v13 CGImage], 0, 0, v12);
   return v14;
 }
 
-- (PBUIWallpaperImage)initWithFlatColor:(id)a3 size:(CGSize)a4 scale:(double)a5
+- (PBUIWallpaperImage)initWithFlatColor:(id)color size:(CGSize)size scale:(double)scale
 {
-  v7 = PBUIWallpaperImageWithFlatColor(a3, a4.width, a4.height, a5);
-  v8 = -[PBUIWallpaperImage initWithCGImage:scale:orientation:wallpaperFileURL:](self, "initWithCGImage:scale:orientation:wallpaperFileURL:", [v7 CGImage], 0, 0, a5);
+  v7 = PBUIWallpaperImageWithFlatColor(color, size.width, size.height, scale);
+  v8 = -[PBUIWallpaperImage initWithCGImage:scale:orientation:wallpaperFileURL:](self, "initWithCGImage:scale:orientation:wallpaperFileURL:", [v7 CGImage], 0, 0, scale);
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ([v4 wallpaperFileURL], v5 = objc_claimAutoreleasedReturnValue(), self->_wallpaperFileURL | v5))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ([equalCopy wallpaperFileURL], v5 = objc_claimAutoreleasedReturnValue(), self->_wallpaperFileURL | v5))
   {
     v6 = BSEqualObjects();
   }
@@ -62,7 +62,7 @@
   {
     v8.receiver = self;
     v8.super_class = PBUIWallpaperImage;
-    v6 = [(PBUIWallpaperImage *)&v8 isEqual:v4];
+    v6 = [(PBUIWallpaperImage *)&v8 isEqual:equalCopy];
   }
 
   return v6;
@@ -87,24 +87,24 @@
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PBUIWallpaperImage;
-  v4 = a3;
-  [(PBUIWallpaperImage *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_wallpaperFileURL forKey:{@"wallpaperFileURL", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(PBUIWallpaperImage *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_wallpaperFileURL forKey:{@"wallpaperFileURL", v5.receiver, v5.super_class}];
 }
 
-- (PBUIWallpaperImage)initWithCoder:(id)a3
+- (PBUIWallpaperImage)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PBUIWallpaperImage;
-  v5 = [(PBUIWallpaperImage *)&v9 initWithCoder:v4];
+  v5 = [(PBUIWallpaperImage *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"wallpaperFileURL"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"wallpaperFileURL"];
     wallpaperFileURL = v5->_wallpaperFileURL;
     v5->_wallpaperFileURL = v6;
   }

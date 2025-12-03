@@ -1,29 +1,29 @@
 @interface PEGASUSSchemaPEGASUSCrossIntentRankerResponse
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PEGASUSSchemaPEGASUSCrossIntentRankerResponse)initWithDictionary:(id)a3;
-- (PEGASUSSchemaPEGASUSCrossIntentRankerResponse)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (PEGASUSSchemaPEGASUSCrossIntentRankerResponse)initWithDictionary:(id)dictionary;
+- (PEGASUSSchemaPEGASUSCrossIntentRankerResponse)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addCrossDomainRankerScoreKeeper:(id)a3;
-- (void)addCrossIntentRankerScoreKeeper:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addCrossDomainRankerScoreKeeper:(id)keeper;
+- (void)addCrossIntentRankerScoreKeeper:(id)keeper;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PEGASUSSchemaPEGASUSCrossIntentRankerResponse
 
-- (PEGASUSSchemaPEGASUSCrossIntentRankerResponse)initWithDictionary:(id)a3
+- (PEGASUSSchemaPEGASUSCrossIntentRankerResponse)initWithDictionary:(id)dictionary
 {
   v44 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v41.receiver = self;
   v41.super_class = PEGASUSSchemaPEGASUSCrossIntentRankerResponse;
   v5 = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)&v41 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"crossDomainRankerScoreKeeper"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"crossDomainRankerScoreKeeper"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -66,7 +66,7 @@
       }
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"crossIntentRankerScoreKeeper"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"crossIntentRankerScoreKeeper"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -109,7 +109,7 @@
       }
     }
 
-    v22 = [v4 objectForKeyedSubscript:{@"domainCards", v33}];
+    v22 = [dictionaryCopy objectForKeyedSubscript:{@"domainCards", v33}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -117,7 +117,7 @@
       [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)v5 setDomainCards:v23];
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"cirPireneConfidenceDebug"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"cirPireneConfidenceDebug"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -125,7 +125,7 @@
       [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)v5 setCirPireneConfidenceDebug:v25];
     }
 
-    v26 = [v4 objectForKeyedSubscript:@"sortedScore"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"sortedScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -133,7 +133,7 @@
       [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)v5 setSortedScore:v27];
     }
 
-    v28 = [v4 objectForKeyedSubscript:@"cirAlerts"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"cirAlerts"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -141,7 +141,7 @@
       [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)v5 setCirAlerts:v29];
     }
 
-    v30 = [v4 objectForKeyedSubscript:@"cirFallbackTriggered"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"cirFallbackTriggered"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -154,30 +154,30 @@
   return v5;
 }
 
-- (PEGASUSSchemaPEGASUSCrossIntentRankerResponse)initWithJSON:(id)a3
+- (PEGASUSSchemaPEGASUSCrossIntentRankerResponse)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -190,85 +190,85 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_cirAlerts)
   {
-    v4 = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self cirAlerts];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    cirAlerts = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self cirAlerts];
+    dictionaryRepresentation = [cirAlerts dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"cirAlerts"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"cirAlerts"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"cirAlerts"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"cirAlerts"];
     }
   }
 
   if (*(&self->_cirFallbackTriggered + 1))
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[PEGASUSSchemaPEGASUSCrossIntentRankerResponse cirFallbackTriggered](self, "cirFallbackTriggered")}];
-    [v3 setObject:v7 forKeyedSubscript:@"cirFallbackTriggered"];
+    [dictionary setObject:v7 forKeyedSubscript:@"cirFallbackTriggered"];
   }
 
   if (self->_cirPireneConfidenceDebug)
   {
-    v8 = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self cirPireneConfidenceDebug];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"cirPireneConfidenceDebug"];
+    cirPireneConfidenceDebug = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self cirPireneConfidenceDebug];
+    v9 = [cirPireneConfidenceDebug copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"cirPireneConfidenceDebug"];
   }
 
   if (self->_crossDomainRankerScoreKeepers)
   {
-    v10 = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self crossDomainRankerScoreKeepers];
-    v11 = [v10 copy];
-    [v3 setObject:v11 forKeyedSubscript:@"crossDomainRankerScoreKeeper"];
+    crossDomainRankerScoreKeepers = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self crossDomainRankerScoreKeepers];
+    v11 = [crossDomainRankerScoreKeepers copy];
+    [dictionary setObject:v11 forKeyedSubscript:@"crossDomainRankerScoreKeeper"];
   }
 
   if (self->_crossIntentRankerScoreKeepers)
   {
-    v12 = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self crossIntentRankerScoreKeepers];
-    v13 = [v12 copy];
-    [v3 setObject:v13 forKeyedSubscript:@"crossIntentRankerScoreKeeper"];
+    crossIntentRankerScoreKeepers = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self crossIntentRankerScoreKeepers];
+    v13 = [crossIntentRankerScoreKeepers copy];
+    [dictionary setObject:v13 forKeyedSubscript:@"crossIntentRankerScoreKeeper"];
   }
 
   if (self->_domainCards)
   {
-    v14 = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self domainCards];
-    v15 = [v14 dictionaryRepresentation];
-    if (v15)
+    domainCards = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self domainCards];
+    dictionaryRepresentation2 = [domainCards dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v15 forKeyedSubscript:@"domainCards"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"domainCards"];
     }
 
     else
     {
-      v16 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v16 forKeyedSubscript:@"domainCards"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"domainCards"];
     }
   }
 
   if (self->_sortedScore)
   {
-    v17 = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self sortedScore];
-    v18 = [v17 dictionaryRepresentation];
-    if (v18)
+    sortedScore = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self sortedScore];
+    dictionaryRepresentation3 = [sortedScore dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v18 forKeyedSubscript:@"sortedScore"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"sortedScore"];
     }
 
     else
     {
-      v19 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v19 forKeyedSubscript:@"sortedScore"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"sortedScore"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -292,28 +292,28 @@
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_32;
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self crossDomainRankerScoreKeepers];
-  v6 = [v4 crossDomainRankerScoreKeepers];
-  if ((v5 != 0) == (v6 == 0))
+  crossDomainRankerScoreKeepers = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self crossDomainRankerScoreKeepers];
+  crossDomainRankerScoreKeepers2 = [equalCopy crossDomainRankerScoreKeepers];
+  if ((crossDomainRankerScoreKeepers != 0) == (crossDomainRankerScoreKeepers2 == 0))
   {
     goto LABEL_31;
   }
 
-  v7 = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self crossDomainRankerScoreKeepers];
-  if (v7)
+  crossDomainRankerScoreKeepers3 = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self crossDomainRankerScoreKeepers];
+  if (crossDomainRankerScoreKeepers3)
   {
-    v8 = v7;
-    v9 = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self crossDomainRankerScoreKeepers];
-    v10 = [v4 crossDomainRankerScoreKeepers];
-    v11 = [v9 isEqual:v10];
+    v8 = crossDomainRankerScoreKeepers3;
+    crossDomainRankerScoreKeepers4 = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self crossDomainRankerScoreKeepers];
+    crossDomainRankerScoreKeepers5 = [equalCopy crossDomainRankerScoreKeepers];
+    v11 = [crossDomainRankerScoreKeepers4 isEqual:crossDomainRankerScoreKeepers5];
 
     if (!v11)
     {
@@ -325,20 +325,20 @@
   {
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self crossIntentRankerScoreKeepers];
-  v6 = [v4 crossIntentRankerScoreKeepers];
-  if ((v5 != 0) == (v6 == 0))
+  crossDomainRankerScoreKeepers = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self crossIntentRankerScoreKeepers];
+  crossDomainRankerScoreKeepers2 = [equalCopy crossIntentRankerScoreKeepers];
+  if ((crossDomainRankerScoreKeepers != 0) == (crossDomainRankerScoreKeepers2 == 0))
   {
     goto LABEL_31;
   }
 
-  v12 = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self crossIntentRankerScoreKeepers];
-  if (v12)
+  crossIntentRankerScoreKeepers = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self crossIntentRankerScoreKeepers];
+  if (crossIntentRankerScoreKeepers)
   {
-    v13 = v12;
-    v14 = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self crossIntentRankerScoreKeepers];
-    v15 = [v4 crossIntentRankerScoreKeepers];
-    v16 = [v14 isEqual:v15];
+    v13 = crossIntentRankerScoreKeepers;
+    crossIntentRankerScoreKeepers2 = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self crossIntentRankerScoreKeepers];
+    crossIntentRankerScoreKeepers3 = [equalCopy crossIntentRankerScoreKeepers];
+    v16 = [crossIntentRankerScoreKeepers2 isEqual:crossIntentRankerScoreKeepers3];
 
     if (!v16)
     {
@@ -350,20 +350,20 @@
   {
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self domainCards];
-  v6 = [v4 domainCards];
-  if ((v5 != 0) == (v6 == 0))
+  crossDomainRankerScoreKeepers = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self domainCards];
+  crossDomainRankerScoreKeepers2 = [equalCopy domainCards];
+  if ((crossDomainRankerScoreKeepers != 0) == (crossDomainRankerScoreKeepers2 == 0))
   {
     goto LABEL_31;
   }
 
-  v17 = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self domainCards];
-  if (v17)
+  domainCards = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self domainCards];
+  if (domainCards)
   {
-    v18 = v17;
-    v19 = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self domainCards];
-    v20 = [v4 domainCards];
-    v21 = [v19 isEqual:v20];
+    v18 = domainCards;
+    domainCards2 = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self domainCards];
+    domainCards3 = [equalCopy domainCards];
+    v21 = [domainCards2 isEqual:domainCards3];
 
     if (!v21)
     {
@@ -375,20 +375,20 @@
   {
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self cirPireneConfidenceDebug];
-  v6 = [v4 cirPireneConfidenceDebug];
-  if ((v5 != 0) == (v6 == 0))
+  crossDomainRankerScoreKeepers = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self cirPireneConfidenceDebug];
+  crossDomainRankerScoreKeepers2 = [equalCopy cirPireneConfidenceDebug];
+  if ((crossDomainRankerScoreKeepers != 0) == (crossDomainRankerScoreKeepers2 == 0))
   {
     goto LABEL_31;
   }
 
-  v22 = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self cirPireneConfidenceDebug];
-  if (v22)
+  cirPireneConfidenceDebug = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self cirPireneConfidenceDebug];
+  if (cirPireneConfidenceDebug)
   {
-    v23 = v22;
-    v24 = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self cirPireneConfidenceDebug];
-    v25 = [v4 cirPireneConfidenceDebug];
-    v26 = [v24 isEqual:v25];
+    v23 = cirPireneConfidenceDebug;
+    cirPireneConfidenceDebug2 = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self cirPireneConfidenceDebug];
+    cirPireneConfidenceDebug3 = [equalCopy cirPireneConfidenceDebug];
+    v26 = [cirPireneConfidenceDebug2 isEqual:cirPireneConfidenceDebug3];
 
     if (!v26)
     {
@@ -400,20 +400,20 @@
   {
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self sortedScore];
-  v6 = [v4 sortedScore];
-  if ((v5 != 0) == (v6 == 0))
+  crossDomainRankerScoreKeepers = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self sortedScore];
+  crossDomainRankerScoreKeepers2 = [equalCopy sortedScore];
+  if ((crossDomainRankerScoreKeepers != 0) == (crossDomainRankerScoreKeepers2 == 0))
   {
     goto LABEL_31;
   }
 
-  v27 = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self sortedScore];
-  if (v27)
+  sortedScore = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self sortedScore];
+  if (sortedScore)
   {
-    v28 = v27;
-    v29 = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self sortedScore];
-    v30 = [v4 sortedScore];
-    v31 = [v29 isEqual:v30];
+    v28 = sortedScore;
+    sortedScore2 = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self sortedScore];
+    sortedScore3 = [equalCopy sortedScore];
+    v31 = [sortedScore2 isEqual:sortedScore3];
 
     if (!v31)
     {
@@ -425,22 +425,22 @@
   {
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self cirAlerts];
-  v6 = [v4 cirAlerts];
-  if ((v5 != 0) == (v6 == 0))
+  crossDomainRankerScoreKeepers = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self cirAlerts];
+  crossDomainRankerScoreKeepers2 = [equalCopy cirAlerts];
+  if ((crossDomainRankerScoreKeepers != 0) == (crossDomainRankerScoreKeepers2 == 0))
   {
 LABEL_31:
 
     goto LABEL_32;
   }
 
-  v32 = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self cirAlerts];
-  if (v32)
+  cirAlerts = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self cirAlerts];
+  if (cirAlerts)
   {
-    v33 = v32;
-    v34 = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self cirAlerts];
-    v35 = [v4 cirAlerts];
-    v36 = [v34 isEqual:v35];
+    v33 = cirAlerts;
+    cirAlerts2 = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self cirAlerts];
+    cirAlerts3 = [equalCopy cirAlerts];
+    v36 = [cirAlerts2 isEqual:cirAlerts3];
 
     if (!v36)
     {
@@ -452,9 +452,9 @@ LABEL_31:
   {
   }
 
-  if (*(&self->_cirFallbackTriggered + 1) == (v4[57] & 1))
+  if (*(&self->_cirFallbackTriggered + 1) == (equalCopy[57] & 1))
   {
-    if (!*(&self->_cirFallbackTriggered + 1) || (cirFallbackTriggered = self->_cirFallbackTriggered, cirFallbackTriggered == [v4 cirFallbackTriggered]))
+    if (!*(&self->_cirFallbackTriggered + 1) || (cirFallbackTriggered = self->_cirFallbackTriggered, cirFallbackTriggered == [equalCopy cirFallbackTriggered]))
     {
       v37 = 1;
       goto LABEL_33;
@@ -468,10 +468,10 @@ LABEL_33:
   return v37;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -534,34 +534,34 @@ LABEL_33:
     while (v12);
   }
 
-  v15 = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self domainCards];
+  domainCards = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self domainCards];
 
-  if (v15)
+  if (domainCards)
   {
-    v16 = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self domainCards];
+    domainCards2 = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self domainCards];
     PBDataWriterWriteSubmessage();
   }
 
-  v17 = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self cirPireneConfidenceDebug];
+  cirPireneConfidenceDebug = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self cirPireneConfidenceDebug];
 
-  if (v17)
+  if (cirPireneConfidenceDebug)
   {
     PBDataWriterWriteStringField();
   }
 
-  v18 = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self sortedScore];
+  sortedScore = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self sortedScore];
 
-  if (v18)
+  if (sortedScore)
   {
-    v19 = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self sortedScore];
+    sortedScore2 = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self sortedScore];
     PBDataWriterWriteSubmessage();
   }
 
-  v20 = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self cirAlerts];
+  cirAlerts = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self cirAlerts];
 
-  if (v20)
+  if (cirAlerts)
   {
-    v21 = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self cirAlerts];
+    cirAlerts2 = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self cirAlerts];
     PBDataWriterWriteSubmessage();
   }
 
@@ -571,71 +571,71 @@ LABEL_33:
   }
 }
 
-- (void)addCrossIntentRankerScoreKeeper:(id)a3
+- (void)addCrossIntentRankerScoreKeeper:(id)keeper
 {
-  v4 = a3;
+  keeperCopy = keeper;
   crossIntentRankerScoreKeepers = self->_crossIntentRankerScoreKeepers;
-  v8 = v4;
+  v8 = keeperCopy;
   if (!crossIntentRankerScoreKeepers)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_crossIntentRankerScoreKeepers;
-    self->_crossIntentRankerScoreKeepers = v6;
+    self->_crossIntentRankerScoreKeepers = array;
 
-    v4 = v8;
+    keeperCopy = v8;
     crossIntentRankerScoreKeepers = self->_crossIntentRankerScoreKeepers;
   }
 
-  [(NSArray *)crossIntentRankerScoreKeepers addObject:v4];
+  [(NSArray *)crossIntentRankerScoreKeepers addObject:keeperCopy];
 }
 
-- (void)addCrossDomainRankerScoreKeeper:(id)a3
+- (void)addCrossDomainRankerScoreKeeper:(id)keeper
 {
-  v4 = a3;
+  keeperCopy = keeper;
   crossDomainRankerScoreKeepers = self->_crossDomainRankerScoreKeepers;
-  v8 = v4;
+  v8 = keeperCopy;
   if (!crossDomainRankerScoreKeepers)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_crossDomainRankerScoreKeepers;
-    self->_crossDomainRankerScoreKeepers = v6;
+    self->_crossDomainRankerScoreKeepers = array;
 
-    v4 = v8;
+    keeperCopy = v8;
     crossDomainRankerScoreKeepers = self->_crossDomainRankerScoreKeepers;
   }
 
-  [(NSArray *)crossDomainRankerScoreKeepers addObject:v4];
+  [(NSArray *)crossDomainRankerScoreKeepers addObject:keeperCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v16.receiver = self;
   v16.super_class = PEGASUSSchemaPEGASUSCrossIntentRankerResponse;
-  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:v4];
-  v6 = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self domainCards];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:policyCopy];
+  domainCards = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self domainCards];
+  v7 = [domainCards applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self deleteDomainCards];
   }
 
-  v9 = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self sortedScore];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  sortedScore = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self sortedScore];
+  v10 = [sortedScore applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self deleteSortedScore];
   }
 
-  v12 = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self cirAlerts];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  cirAlerts = [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self cirAlerts];
+  v13 = [cirAlerts applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(PEGASUSSchemaPEGASUSCrossIntentRankerResponse *)self deleteCirAlerts];
   }

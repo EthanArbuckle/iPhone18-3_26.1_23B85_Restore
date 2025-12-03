@@ -1,26 +1,26 @@
 @interface SIRINLUEXTERNALNLUSupplementaryOutput
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addMatchingSpans:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addMatchingSpans:(id)spans;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUEXTERNALNLUSupplementaryOutput
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v4[2];
+  v5 = fromCopy[2];
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -45,7 +45,7 @@
   }
 
   rewrite = self->_rewrite;
-  v11 = v4[3];
+  v11 = fromCopy[3];
   if (rewrite)
   {
     if (v11)
@@ -60,7 +60,7 @@
   }
 
   correctionOutcome = self->_correctionOutcome;
-  v13 = v4[1];
+  v13 = fromCopy[1];
   if (correctionOutcome)
   {
     if (v13)
@@ -84,13 +84,13 @@
   return v4 ^ [(SIRINLUEXTERNALCorrectionOutcome *)self->_correctionOutcome hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((matchingSpans = self->_matchingSpans, !(matchingSpans | v4[2])) || -[NSMutableArray isEqual:](matchingSpans, "isEqual:")) && ((rewrite = self->_rewrite, !(rewrite | v4[3])) || -[SIRINLUEXTERNALRewriteMessage isEqual:](rewrite, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((matchingSpans = self->_matchingSpans, !(matchingSpans | equalCopy[2])) || -[NSMutableArray isEqual:](matchingSpans, "isEqual:")) && ((rewrite = self->_rewrite, !(rewrite | equalCopy[3])) || -[SIRINLUEXTERNALRewriteMessage isEqual:](rewrite, "isEqual:")))
   {
     correctionOutcome = self->_correctionOutcome;
-    if (correctionOutcome | v4[1])
+    if (correctionOutcome | equalCopy[1])
     {
       v8 = [(SIRINLUEXTERNALCorrectionOutcome *)correctionOutcome isEqual:?];
     }
@@ -109,10 +109,10 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -133,7 +133,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v18 + 1) + 8 * v10) copyWithZone:{a3, v18}];
+        v11 = [*(*(&v18 + 1) + 8 * v10) copyWithZone:{zone, v18}];
         [v5 addMatchingSpans:v11];
 
         ++v10;
@@ -146,11 +146,11 @@
     while (v8);
   }
 
-  v12 = [(SIRINLUEXTERNALRewriteMessage *)self->_rewrite copyWithZone:a3];
+  v12 = [(SIRINLUEXTERNALRewriteMessage *)self->_rewrite copyWithZone:zone];
   v13 = v5[3];
   v5[3] = v12;
 
-  v14 = [(SIRINLUEXTERNALCorrectionOutcome *)self->_correctionOutcome copyWithZone:a3];
+  v14 = [(SIRINLUEXTERNALCorrectionOutcome *)self->_correctionOutcome copyWithZone:zone];
   v15 = v5[1];
   v5[1] = v14;
 
@@ -158,41 +158,41 @@
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if ([(SIRINLUEXTERNALNLUSupplementaryOutput *)self matchingSpansCount])
   {
-    [v9 clearMatchingSpans];
-    v4 = [(SIRINLUEXTERNALNLUSupplementaryOutput *)self matchingSpansCount];
-    if (v4)
+    [toCopy clearMatchingSpans];
+    matchingSpansCount = [(SIRINLUEXTERNALNLUSupplementaryOutput *)self matchingSpansCount];
+    if (matchingSpansCount)
     {
-      v5 = v4;
+      v5 = matchingSpansCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(SIRINLUEXTERNALNLUSupplementaryOutput *)self matchingSpansAtIndex:i];
-        [v9 addMatchingSpans:v7];
+        [toCopy addMatchingSpans:v7];
       }
     }
   }
 
   if (self->_rewrite)
   {
-    [v9 setRewrite:?];
+    [toCopy setRewrite:?];
   }
 
-  v8 = v9;
+  v8 = toCopy;
   if (self->_correctionOutcome)
   {
-    [v9 setCorrectionOutcome:?];
-    v8 = v9;
+    [toCopy setCorrectionOutcome:?];
+    v8 = toCopy;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -241,7 +241,7 @@
 - (id)dictionaryRepresentation
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSMutableArray *)self->_matchingSpans count])
   {
     v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSMutableArray count](self->_matchingSpans, "count")}];
@@ -264,8 +264,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -274,26 +274,26 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"matching_spans"];
+    [dictionary setObject:v4 forKey:@"matching_spans"];
   }
 
   rewrite = self->_rewrite;
   if (rewrite)
   {
-    v12 = [(SIRINLUEXTERNALRewriteMessage *)rewrite dictionaryRepresentation];
-    [v3 setObject:v12 forKey:@"rewrite"];
+    dictionaryRepresentation2 = [(SIRINLUEXTERNALRewriteMessage *)rewrite dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"rewrite"];
   }
 
   correctionOutcome = self->_correctionOutcome;
   if (correctionOutcome)
   {
-    v14 = [(SIRINLUEXTERNALCorrectionOutcome *)correctionOutcome dictionaryRepresentation];
-    [v3 setObject:v14 forKey:@"correction_outcome"];
+    dictionaryRepresentation3 = [(SIRINLUEXTERNALCorrectionOutcome *)correctionOutcome dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"correction_outcome"];
   }
 
   v15 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -302,28 +302,28 @@
   v8.receiver = self;
   v8.super_class = SIRINLUEXTERNALNLUSupplementaryOutput;
   v4 = [(SIRINLUEXTERNALNLUSupplementaryOutput *)&v8 description];
-  v5 = [(SIRINLUEXTERNALNLUSupplementaryOutput *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUEXTERNALNLUSupplementaryOutput *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addMatchingSpans:(id)a3
+- (void)addMatchingSpans:(id)spans
 {
-  v4 = a3;
+  spansCopy = spans;
   matchingSpans = self->_matchingSpans;
-  v8 = v4;
+  v8 = spansCopy;
   if (!matchingSpans)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_matchingSpans;
     self->_matchingSpans = v6;
 
-    v4 = v8;
+    spansCopy = v8;
     matchingSpans = self->_matchingSpans;
   }
 
-  [(NSMutableArray *)matchingSpans addObject:v4];
+  [(NSMutableArray *)matchingSpans addObject:spansCopy];
 }
 
 @end

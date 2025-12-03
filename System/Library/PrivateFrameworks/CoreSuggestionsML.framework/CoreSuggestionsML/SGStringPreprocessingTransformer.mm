@@ -1,46 +1,46 @@
 @interface SGStringPreprocessingTransformer
-+ (id)withMethods:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToStringPreprocessingTransformer:(id)a3;
-- (SEL)selectorForMethod:(id)a3 preprocessor:(id)a4;
-- (SGStringPreprocessingTransformer)initWithMethods:(id)a3;
-- (SGStringPreprocessingTransformer)initWithPlist:(id)a3 chunks:(id)a4 context:(id)a5;
-- (id)toPlistWithChunks:(id)a3;
-- (id)transform:(id)a3;
-- (id)transformBatch:(id)a3;
-- (void)applySelector:(SEL)a3 preprocesor:(id)a4 string:(id)a5 value:(id)a6;
++ (id)withMethods:(id)methods;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToStringPreprocessingTransformer:(id)transformer;
+- (SEL)selectorForMethod:(id)method preprocessor:(id)preprocessor;
+- (SGStringPreprocessingTransformer)initWithMethods:(id)methods;
+- (SGStringPreprocessingTransformer)initWithPlist:(id)plist chunks:(id)chunks context:(id)context;
+- (id)toPlistWithChunks:(id)chunks;
+- (id)transform:(id)transform;
+- (id)transformBatch:(id)batch;
+- (void)applySelector:(SEL)selector preprocesor:(id)preprocesor string:(id)string value:(id)value;
 @end
 
 @implementation SGStringPreprocessingTransformer
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGStringPreprocessingTransformer *)self isEqualToStringPreprocessingTransformer:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGStringPreprocessingTransformer *)self isEqualToStringPreprocessingTransformer:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToStringPreprocessingTransformer:(id)a3
+- (BOOL)isEqualToStringPreprocessingTransformer:(id)transformer
 {
-  v4 = a3;
-  if (!v4)
+  transformerCopy = transformer;
+  if (!transformerCopy)
   {
     goto LABEL_4;
   }
 
   v5 = self->_methodNames;
   v6 = v5;
-  if (v5 == v4[1])
+  if (v5 == transformerCopy[1])
   {
   }
 
@@ -58,7 +58,7 @@ LABEL_4:
 
   v9 = self->_methodValues;
   v10 = v9;
-  if (v9 == v4[2])
+  if (v9 == transformerCopy[2])
   {
     v8 = 1;
   }
@@ -72,18 +72,18 @@ LABEL_10:
   return v8;
 }
 
-- (SGStringPreprocessingTransformer)initWithPlist:(id)a3 chunks:(id)a4 context:(id)a5
+- (SGStringPreprocessingTransformer)initWithPlist:(id)plist chunks:(id)chunks context:(id)context
 {
-  v6 = [a3 objectForKeyedSubscript:{@"METHODS", a4, a5}];
+  v6 = [plist objectForKeyedSubscript:{@"METHODS", chunks, context}];
   v7 = [(SGStringPreprocessingTransformer *)self initWithMethods:v6];
 
   return v7;
 }
 
-- (id)toPlistWithChunks:(id)a3
+- (id)toPlistWithChunks:(id)chunks
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  chunksCopy = chunks;
   v5 = objc_opt_new();
   if ([(NSArray *)self->_methodNames count])
   {
@@ -124,32 +124,32 @@ LABEL_10:
   return v14;
 }
 
-- (void)applySelector:(SEL)a3 preprocesor:(id)a4 string:(id)a5 value:(id)a6
+- (void)applySelector:(SEL)selector preprocesor:(id)preprocesor string:(id)string value:(id)value
 {
-  v12 = a4;
-  v9 = a5;
-  v10 = a6;
-  if (a3 && (objc_opt_respondsToSelector() & 1) != 0)
+  preprocesorCopy = preprocesor;
+  stringCopy = string;
+  valueCopy = value;
+  if (selector && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v11 = [v12 methodForSelector:a3];
-    if ([v10 length])
+    v11 = [preprocesorCopy methodForSelector:selector];
+    if ([valueCopy length])
     {
-      v11(v12, a3, v9, v10);
+      v11(preprocesorCopy, selector, stringCopy, valueCopy);
     }
 
     else
     {
-      (v11)(v12, a3, v9);
+      (v11)(preprocesorCopy, selector, stringCopy);
     }
   }
 }
 
-- (SEL)selectorForMethod:(id)a3 preprocessor:(id)a4
+- (SEL)selectorForMethod:(id)method preprocessor:(id)preprocessor
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = NSSelectorFromString(v5);
+  methodCopy = method;
+  preprocessorCopy = preprocessor;
+  v7 = NSSelectorFromString(methodCopy);
   if (!v7)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -172,7 +172,7 @@ LABEL_6:
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       v14 = 138412290;
-      v15 = v5;
+      v15 = methodCopy;
       v9 = MEMORY[0x277D86220];
       v10 = "SGStringPreprocessor received an invalid method %@";
       v11 = 12;
@@ -190,18 +190,18 @@ LABEL_7:
   return v8;
 }
 
-- (id)transformBatch:(id)a3
+- (id)transformBatch:(id)batch
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  batchCopy = batch;
   context = objc_autoreleasePoolPush();
   v5 = objc_opt_new();
-  v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(batchCopy, "count")}];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v7 = v4;
+  v7 = batchCopy;
   v8 = [v7 countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v8)
   {
@@ -231,8 +231,8 @@ LABEL_7:
     v13 = 0;
     do
     {
-      v14 = [(NSArray *)self->_methodNames objectAtIndexedSubscript:v13, context];
-      v15 = [(SGStringPreprocessingTransformer *)self selectorForMethod:v14 preprocessor:v5];
+      context = [(NSArray *)self->_methodNames objectAtIndexedSubscript:v13, context];
+      v15 = [(SGStringPreprocessingTransformer *)self selectorForMethod:context preprocessor:v5];
 
       v25 = v13;
       v16 = [(NSArray *)self->_methodValues objectAtIndexedSubscript:v13];
@@ -276,9 +276,9 @@ LABEL_7:
   return v6;
 }
 
-- (id)transform:(id)a3
+- (id)transform:(id)transform
 {
-  v4 = a3;
+  transformCopy = transform;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -287,7 +287,7 @@ LABEL_7:
 
   v5 = objc_autoreleasePoolPush();
   v6 = objc_opt_new();
-  v7 = [v4 mutableCopy];
+  v7 = [transformCopy mutableCopy];
   if ([(NSArray *)self->_methodNames count])
   {
     v8 = 0;
@@ -310,20 +310,20 @@ LABEL_7:
   return v7;
 }
 
-- (SGStringPreprocessingTransformer)initWithMethods:(id)a3
+- (SGStringPreprocessingTransformer)initWithMethods:(id)methods
 {
   v36 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  methodsCopy = methods;
+  if (!methodsCopy)
   {
-    v27 = [MEMORY[0x277CCA890] currentHandler];
-    [v27 handleFailureInMethod:a2 object:self file:@"SGStringPreprocessingTransformer.m" lineNumber:67 description:{@"Invalid parameter not satisfying: %@", @"methods"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGStringPreprocessingTransformer.m" lineNumber:67 description:{@"Invalid parameter not satisfying: %@", @"methods"}];
   }
 
-  if ([v5 count])
+  if ([methodsCopy count])
   {
-    v28 = [MEMORY[0x277CCA890] currentHandler];
-    [v28 handleFailureInMethod:a2 object:self file:@"SGStringPreprocessingTransformer.m" lineNumber:68 description:{@"Invalid parameter not satisfying: %@", @"methods.count % 2 == 0"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"SGStringPreprocessingTransformer.m" lineNumber:68 description:{@"Invalid parameter not satisfying: %@", @"methods.count % 2 == 0"}];
   }
 
   v33.receiver = self;
@@ -336,13 +336,13 @@ LABEL_7:
     v32 = v6;
     v8 = objc_opt_new();
     v9 = objc_opt_new();
-    if ([v5 count])
+    if ([methodsCopy count])
     {
       v10 = 0;
       do
       {
-        v11 = [v5 objectAtIndexedSubscript:v10 + 1];
-        v12 = [v5 objectAtIndexedSubscript:v10];
+        v11 = [methodsCopy objectAtIndexedSubscript:v10 + 1];
+        v12 = [methodsCopy objectAtIndexedSubscript:v10];
         v13 = v9;
         v14 = v8;
         v15 = [v11 length];
@@ -371,7 +371,7 @@ LABEL_7:
         v10 += 2;
       }
 
-      while (v10 < [v5 count]);
+      while (v10 < [methodsCopy count]);
     }
 
     v7 = v32;
@@ -381,8 +381,8 @@ LABEL_7:
     v35 = 0u;
     if (snprintf(__str, 0x20uLL, "%s%s%s%s", "v", "@", ":", "@") > 0x1F)
     {
-      v29 = [MEMORY[0x277CCA890] currentHandler];
-      [v29 handleFailureInMethod:v31 object:v32 file:@"SGStringPreprocessingTransformer.m" lineNumber:83 description:{@"Invalid parameter not satisfying: %@", @"size >= 0 && size < TYPES_STRING_BUF_SIZE"}];
+      currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler3 handleFailureInMethod:v31 object:v32 file:@"SGStringPreprocessingTransformer.m" lineNumber:83 description:{@"Invalid parameter not satisfying: %@", @"size >= 0 && size < TYPES_STRING_BUF_SIZE"}];
     }
 
     v21 = [MEMORY[0x277CBEB08] signatureWithObjCTypes:__str];
@@ -391,8 +391,8 @@ LABEL_7:
 
     if (snprintf(__str, 0x20uLL, "%s%s%s%s%s", "v", "@", ":", "@", "@") >= 0x20)
     {
-      v30 = [MEMORY[0x277CCA890] currentHandler];
-      [v30 handleFailureInMethod:v31 object:v32 file:@"SGStringPreprocessingTransformer.m" lineNumber:86 description:{@"Invalid parameter not satisfying: %@", @"size >= 0 && size < TYPES_STRING_BUF_SIZE"}];
+      currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler4 handleFailureInMethod:v31 object:v32 file:@"SGStringPreprocessingTransformer.m" lineNumber:86 description:{@"Invalid parameter not satisfying: %@", @"size >= 0 && size < TYPES_STRING_BUF_SIZE"}];
     }
 
     v23 = [MEMORY[0x277CBEB08] signatureWithObjCTypes:__str];
@@ -404,10 +404,10 @@ LABEL_7:
   return v7;
 }
 
-+ (id)withMethods:(id)a3
++ (id)withMethods:(id)methods
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithMethods:v4];
+  methodsCopy = methods;
+  v5 = [[self alloc] initWithMethods:methodsCopy];
 
   return v5;
 }

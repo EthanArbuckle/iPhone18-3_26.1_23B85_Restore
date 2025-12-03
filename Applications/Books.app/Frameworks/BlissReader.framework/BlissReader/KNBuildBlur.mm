@@ -1,25 +1,25 @@
 @interface KNBuildBlur
 + (id)defaultAttributes;
-+ (id)localizedMenuString:(int)a3;
-+ (void)downgradeAttributes:(id *)a3 animationName:(id *)a4 warning:(id *)a5 type:(int)a6 isToClassic:(BOOL)a7 version:(unint64_t)a8;
-- (CGRect)frameOfEffectWithContext:(id)a3;
-- (KNBuildBlur)initWithAnimationContext:(id)a3;
-- (void)animationDidEndWithContext:(id)a3;
-- (void)animationWillBeginWithContext:(id)a3;
-- (void)metalAnimationDidEndWithContext:(id)a3;
-- (void)metalAnimationHasBegunWithContext:(id)a3;
-- (void)metalPrepareAnimationWithContext:(id)a3;
-- (void)metalRenderFrameWithContext:(id)a3;
-- (void)metalTeardownAnimationsWithContext:(id)a3;
-- (void)p_prepareAnimationWithContext:(id)a3;
-- (void)p_setupMVPMatricesWithContext:(id)a3;
++ (id)localizedMenuString:(int)string;
++ (void)downgradeAttributes:(id *)attributes animationName:(id *)name warning:(id *)warning type:(int)type isToClassic:(BOOL)classic version:(unint64_t)version;
+- (CGRect)frameOfEffectWithContext:(id)context;
+- (KNBuildBlur)initWithAnimationContext:(id)context;
+- (void)animationDidEndWithContext:(id)context;
+- (void)animationWillBeginWithContext:(id)context;
+- (void)metalAnimationDidEndWithContext:(id)context;
+- (void)metalAnimationHasBegunWithContext:(id)context;
+- (void)metalPrepareAnimationWithContext:(id)context;
+- (void)metalRenderFrameWithContext:(id)context;
+- (void)metalTeardownAnimationsWithContext:(id)context;
+- (void)p_prepareAnimationWithContext:(id)context;
+- (void)p_setupMVPMatricesWithContext:(id)context;
 - (void)p_teardownBlurEffects;
 - (void)teardown;
 @end
 
 @implementation KNBuildBlur
 
-+ (id)localizedMenuString:(int)a3
++ (id)localizedMenuString:(int)string
 {
   v3 = KNBundle();
   v4 = [v3 localizedStringForKey:@"Blur *BlurBuild*" value:@"Blur" table:@"Keynote"];
@@ -36,24 +36,24 @@
   return v2;
 }
 
-+ (void)downgradeAttributes:(id *)a3 animationName:(id *)a4 warning:(id *)a5 type:(int)a6 isToClassic:(BOOL)a7 version:(unint64_t)a8
++ (void)downgradeAttributes:(id *)attributes animationName:(id *)name warning:(id *)warning type:(int)type isToClassic:(BOOL)classic version:(unint64_t)version
 {
-  if (a7)
+  if (classic)
   {
-    v8 = *&a6;
-    *a4 = @"apple:dissolve";
+    v8 = *&type;
+    *name = @"apple:dissolve";
     v13 = KNBundle();
     v11 = [v13 localizedStringForKey:@"%@ builds were exported as Dissolve." value:&stru_471858 table:@"Keynote"];
-    v12 = [a1 localizedMenuString:v8];
-    *a5 = [NSString stringWithFormat:v11, v12];
+    v12 = [self localizedMenuString:v8];
+    *warning = [NSString stringWithFormat:v11, v12];
   }
 }
 
-- (KNBuildBlur)initWithAnimationContext:(id)a3
+- (KNBuildBlur)initWithAnimationContext:(id)context
 {
   v9.receiver = self;
   v9.super_class = KNBuildBlur;
-  v3 = [(KNAnimationEffect *)&v9 initWithAnimationContext:a3];
+  v3 = [(KNAnimationEffect *)&v9 initWithAnimationContext:context];
   if (v3)
   {
     v4 = [NSBundle bundleForClass:objc_opt_class()];
@@ -104,9 +104,9 @@
   self->_blurEffects = 0;
 }
 
-- (CGRect)frameOfEffectWithContext:(id)a3
+- (CGRect)frameOfEffectWithContext:(id)context
 {
-  [a3 drawableFrame];
+  [context drawableFrame];
   x = v20.origin.x;
   y = v20.origin.y;
   width = v20.size.width;
@@ -151,16 +151,16 @@
   return result;
 }
 
-- (void)p_setupMVPMatricesWithContext:(id)a3
+- (void)p_setupMVPMatricesWithContext:(id)context
 {
-  v4 = [a3 textures];
-  v5 = [v4 firstObject];
+  textures = [context textures];
+  firstObject = [textures firstObject];
 
-  [v5 frameOnCanvas];
+  [firstObject frameOnCanvas];
   v7 = v6 - CGRectGetMinX(self->_animationRect);
-  [v5 frameOnCanvas];
+  [firstObject frameOnCanvas];
   v9 = v8;
-  [v5 frame];
+  [firstObject frame];
   v11 = v9 + v10 - CGRectGetMaxY(self->_animationRect);
   CGRectGetWidth(self->_animationRect);
   CGRectGetHeight(self->_animationRect);
@@ -195,24 +195,24 @@
   *self->_anon_30 = v19;
 }
 
-- (void)animationWillBeginWithContext:(id)a3
+- (void)animationWillBeginWithContext:(id)context
 {
-  v4 = a3;
-  [(KNBuildBlur *)self frameOfEffectWithContext:v4];
-  [(KNBuildBlur *)self metalPrepareAnimationWithContext:v4];
-  [(KNBuildBlur *)self metalAnimationHasBegunWithContext:v4];
+  contextCopy = context;
+  [(KNBuildBlur *)self frameOfEffectWithContext:contextCopy];
+  [(KNBuildBlur *)self metalPrepareAnimationWithContext:contextCopy];
+  [(KNBuildBlur *)self metalAnimationHasBegunWithContext:contextCopy];
 }
 
-- (void)animationDidEndWithContext:(id)a3
+- (void)animationDidEndWithContext:(id)context
 {
-  v4 = a3;
-  [(KNBuildBlur *)self metalAnimationDidEndWithContext:v4];
-  [(KNBuildBlur *)self metalTeardownAnimationsWithContext:v4];
+  contextCopy = context;
+  [(KNBuildBlur *)self metalAnimationDidEndWithContext:contextCopy];
+  [(KNBuildBlur *)self metalTeardownAnimationsWithContext:contextCopy];
 }
 
-- (void)p_prepareAnimationWithContext:(id)a3
+- (void)p_prepareAnimationWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   [(KNAnimationContext *)self->super.mAnimationContext slideRect];
   self->_drawableFrame.origin.x = v5;
   self->_drawableFrame.origin.y = v6;
@@ -222,7 +222,7 @@
   self->_animationRect.origin = self->_drawableFrame.origin;
   self->_animationRect.size = size;
   p_projectionMatrix = &self->_projectionMatrix;
-  [(KNAnimationEffect *)self perspectiveMVPMatrixWithContext:v4];
+  [(KNAnimationEffect *)self perspectiveMVPMatrixWithContext:contextCopy];
   v11 = v61;
   *&self->_projectionMatrix.m31 = v60;
   *&self->_projectionMatrix.m33 = v11;
@@ -235,16 +235,16 @@
   v14 = v59;
   *&self->_projectionMatrix.m21 = v58;
   *&self->_projectionMatrix.m23 = v14;
-  v15 = [v4 metalContext];
-  v16 = [v15 device];
+  metalContext = [contextCopy metalContext];
+  device = [metalContext device];
   v17 = objc_alloc_init(MTLRenderPipelineColorAttachmentDescriptor);
-  [v17 setPixelFormat:objc_msgSend(v15, "pixelFormat")];
+  [v17 setPixelFormat:objc_msgSend(metalContext, "pixelFormat")];
   [v17 setBlendingEnabled:1];
   [v17 setDestinationRGBBlendFactor:5];
   [v17 setDestinationAlphaBlendFactor:5];
   v47 = v17;
-  v48 = v16;
-  v18 = [[TSDMetalShader alloc] initCustomShaderWithVertexShader:@"KNBuildBlurVertexShader" fragmentShader:@"KNBuildBlurFragmentShader" device:v16 library:@"KeynoteMetalLibrary" colorAttachment:v17];
+  v48 = device;
+  v18 = [[TSDMetalShader alloc] initCustomShaderWithVertexShader:@"KNBuildBlurVertexShader" fragmentShader:@"KNBuildBlurFragmentShader" device:device library:@"KeynoteMetalLibrary" colorAttachment:v17];
   metalShader = self->_metalShader;
   self->_metalShader = v18;
 
@@ -255,24 +255,24 @@
   *&self->_anon_30[16] = v20;
   *&self->_anon_30[32] = v21;
   *&self->_anon_30[48] = v22;
-  v51 = v4;
-  v23 = [v4 textures];
+  v51 = contextCopy;
+  textures = [contextCopy textures];
   [(KNAnimParameterGroup *)self->_parameterGroup valueForConstant:@"Blur Steps"];
   v25 = v24;
   [(KNAnimParameterGroup *)self->_parameterGroup valueForConstant:@"Blur Radius Max"];
   v27 = v26;
-  v28 = self;
+  selfCopy = self;
   [(KNAnimParameterGroup *)self->_parameterGroup valueForConstant:@"Half Size Radius Every"];
   v30 = v29;
   v31 = +[NSMutableArray array];
-  v49 = v15;
-  v46 = [v15 commandQueue];
-  v32 = [v46 commandBuffer];
+  v49 = metalContext;
+  commandQueue = [metalContext commandQueue];
+  commandBuffer = [commandQueue commandBuffer];
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  obj = v23;
+  obj = textures;
   v33 = [obj countByEnumeratingWithState:&v52 objects:v64 count:16];
   if (v33)
   {
@@ -307,8 +307,8 @@
         [v38 singleTextureOpacity];
         [(KNGaussianBlurEffect *)v39 setOpacity:?];
         [(KNGaussianBlurEffect *)v39 setupEffectIfNecessary];
-        v44 = [(KNAnimationContext *)v28->super.mAnimationContext capabilities];
-        [(KNGaussianBlurEffect *)v39 createBlurTexturesWithBlurSteps:v35 maxBlurRadius:v32 stepsToDecreaseRadius:v44 commandBuffer:v27 capabilities:v30];
+        capabilities = [(KNAnimationContext *)selfCopy->super.mAnimationContext capabilities];
+        [(KNGaussianBlurEffect *)v39 createBlurTexturesWithBlurSteps:v35 maxBlurRadius:commandBuffer stepsToDecreaseRadius:capabilities commandBuffer:v27 capabilities:v30];
 
         [(NSMutableArray *)v31 addObject:v39];
       }
@@ -319,44 +319,44 @@
     while (v34);
   }
 
-  [v32 commit];
-  blurEffects = v28->_blurEffects;
-  v28->_blurEffects = v31;
+  [commandBuffer commit];
+  blurEffects = selfCopy->_blurEffects;
+  selfCopy->_blurEffects = v31;
 }
 
-- (void)metalPrepareAnimationWithContext:(id)a3
+- (void)metalPrepareAnimationWithContext:(id)context
 {
-  v6 = a3;
-  v4 = [v6 animatedBuild];
-  v5 = [v4 isBuildIn];
+  contextCopy = context;
+  animatedBuild = [contextCopy animatedBuild];
+  isBuildIn = [animatedBuild isBuildIn];
 
-  if (v5)
+  if (isBuildIn)
   {
-    [(KNBuildBlur *)self p_prepareAnimationWithContext:v6];
+    [(KNBuildBlur *)self p_prepareAnimationWithContext:contextCopy];
   }
 }
 
-- (void)metalAnimationHasBegunWithContext:(id)a3
+- (void)metalAnimationHasBegunWithContext:(id)context
 {
-  v6 = a3;
-  v4 = [v6 animatedBuild];
-  v5 = [v4 isBuildOut];
+  contextCopy = context;
+  animatedBuild = [contextCopy animatedBuild];
+  isBuildOut = [animatedBuild isBuildOut];
 
-  if (v5)
+  if (isBuildOut)
   {
-    [(KNBuildBlur *)self p_prepareAnimationWithContext:v6];
+    [(KNBuildBlur *)self p_prepareAnimationWithContext:contextCopy];
   }
 }
 
-- (void)metalRenderFrameWithContext:(id)a3
+- (void)metalRenderFrameWithContext:(id)context
 {
-  v4 = a3;
-  [v4 percent];
+  contextCopy = context;
+  [contextCopy percent];
   v6 = v5;
-  v7 = [v4 animatedBuild];
-  v8 = [v7 isBuildIn];
+  animatedBuild = [contextCopy animatedBuild];
+  isBuildIn = [animatedBuild isBuildIn];
 
-  if (v8)
+  if (isBuildIn)
   {
     v6 = 1.0 - v6;
   }
@@ -386,13 +386,13 @@
         }
 
         v19 = *(*(&v24 + 1) + 8 * i);
-        v20 = [v19 texture];
-        [v20 singleTextureOpacity];
+        texture = [v19 texture];
+        [texture singleTextureOpacity];
         v22 = v21;
 
         [v19 setOpacity:v16 * v22];
-        v23 = [v4 metalContext];
-        [v19 renderEffectAtPercent:v23 withContext:v12];
+        metalContext = [contextCopy metalContext];
+        [v19 renderEffectAtPercent:metalContext withContext:v12];
       }
 
       v15 = [(NSMutableArray *)v13 countByEnumeratingWithState:&v24 objects:v28 count:16];
@@ -439,19 +439,19 @@
   self->_blurEffects = 0;
 }
 
-- (void)metalAnimationDidEndWithContext:(id)a3
+- (void)metalAnimationDidEndWithContext:(id)context
 {
-  v4 = [a3 animatedBuild];
-  v5 = [v4 isBuildOut];
+  animatedBuild = [context animatedBuild];
+  isBuildOut = [animatedBuild isBuildOut];
 
-  if (v5)
+  if (isBuildOut)
   {
 
     [(KNBuildBlur *)self p_teardownBlurEffects];
   }
 }
 
-- (void)metalTeardownAnimationsWithContext:(id)a3
+- (void)metalTeardownAnimationsWithContext:(id)context
 {
   if (self->_blurEffects)
   {

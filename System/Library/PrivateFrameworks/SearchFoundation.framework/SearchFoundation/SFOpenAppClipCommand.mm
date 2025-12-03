@@ -1,12 +1,12 @@
 @interface SFOpenAppClipCommand
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFOpenAppClipCommand)initWithCoder:(id)a3;
-- (SFOpenAppClipCommand)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFOpenAppClipCommand)initWithCoder:(id)coder;
+- (SFOpenAppClipCommand)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFOpenAppClipCommand
@@ -16,38 +16,38 @@
   v7.receiver = self;
   v7.super_class = SFOpenAppClipCommand;
   v3 = [(SFCommand *)&v7 hash];
-  v4 = [(SFOpenAppClipCommand *)self clipIdentifier];
-  v5 = [v4 hash];
+  clipIdentifier = [(SFOpenAppClipCommand *)self clipIdentifier];
+  v5 = [clipIdentifier hash];
 
   return v5 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
-  else if ([(SFOpenAppClipCommand *)v4 isMemberOfClass:objc_opt_class()]&& (v13.receiver = self, v13.super_class = SFOpenAppClipCommand, [(SFCommand *)&v13 isEqual:v4]))
+  else if ([(SFOpenAppClipCommand *)equalCopy isMemberOfClass:objc_opt_class()]&& (v13.receiver = self, v13.super_class = SFOpenAppClipCommand, [(SFCommand *)&v13 isEqual:equalCopy]))
   {
-    v5 = v4;
-    v6 = [(SFOpenAppClipCommand *)self clipIdentifier];
-    v7 = [(SFOpenAppClipCommand *)v5 clipIdentifier];
-    if ((v6 != 0) == (v7 == 0))
+    v5 = equalCopy;
+    clipIdentifier = [(SFOpenAppClipCommand *)self clipIdentifier];
+    clipIdentifier2 = [(SFOpenAppClipCommand *)v5 clipIdentifier];
+    if ((clipIdentifier != 0) == (clipIdentifier2 == 0))
     {
       v11 = 0;
     }
 
     else
     {
-      v8 = [(SFOpenAppClipCommand *)self clipIdentifier];
-      if (v8)
+      clipIdentifier3 = [(SFOpenAppClipCommand *)self clipIdentifier];
+      if (clipIdentifier3)
       {
-        v9 = [(SFOpenAppClipCommand *)self clipIdentifier];
-        v10 = [(SFOpenAppClipCommand *)v5 clipIdentifier];
-        v11 = [v9 isEqual:v10];
+        clipIdentifier4 = [(SFOpenAppClipCommand *)self clipIdentifier];
+        clipIdentifier5 = [(SFOpenAppClipCommand *)v5 clipIdentifier];
+        v11 = [clipIdentifier4 isEqual:clipIdentifier5];
       }
 
       else
@@ -65,13 +65,13 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = SFOpenAppClipCommand;
-  v4 = [(SFCommand *)&v8 copyWithZone:a3];
-  v5 = [(SFOpenAppClipCommand *)self clipIdentifier];
-  v6 = [v5 copy];
+  v4 = [(SFCommand *)&v8 copyWithZone:zone];
+  clipIdentifier = [(SFOpenAppClipCommand *)self clipIdentifier];
+  v6 = [clipIdentifier copy];
   [v4 setClipIdentifier:v6];
 
   return v4;
@@ -80,70 +80,70 @@
 - (NSData)jsonData
 {
   v2 = [[_SFPBOpenAppClipCommand alloc] initWithFacade:self];
-  v3 = [(_SFPBOpenAppClipCommand *)v2 jsonData];
+  jsonData = [(_SFPBOpenAppClipCommand *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBOpenAppClipCommand alloc] initWithFacade:self];
-  v3 = [(_SFPBOpenAppClipCommand *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBOpenAppClipCommand *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = SFOpenAppClipCommand;
-  [(SFCommand *)&v3 encodeWithCoder:a3];
+  [(SFCommand *)&v3 encodeWithCoder:coder];
 }
 
-- (SFOpenAppClipCommand)initWithCoder:(id)a3
+- (SFOpenAppClipCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SFOpenAppClipCommand *)self init];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v7 = [[_SFPBCommand alloc] initWithData:v6];
   v8 = [[SFCommand alloc] initWithProtobuf:v7];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [(SFCommand *)v8 clipIdentifier];
-    [(SFOpenAppClipCommand *)v5 setClipIdentifier:v9];
+    clipIdentifier = [(SFCommand *)v8 clipIdentifier];
+    [(SFOpenAppClipCommand *)v5 setClipIdentifier:clipIdentifier];
 
-    v10 = [(SFCommand *)v8 commandDetail];
-    [(SFCommand *)v5 setCommandDetail:v10];
+    commandDetail = [(SFCommand *)v8 commandDetail];
+    [(SFCommand *)v5 setCommandDetail:commandDetail];
 
-    v11 = [(SFCommand *)v8 normalizedTopic];
-    [(SFCommand *)v5 setNormalizedTopic:v11];
+    normalizedTopic = [(SFCommand *)v8 normalizedTopic];
+    [(SFCommand *)v5 setNormalizedTopic:normalizedTopic];
 
-    v12 = [(SFCommand *)v8 backendData];
-    [(SFCommand *)v5 setBackendData:v12];
+    backendData = [(SFCommand *)v8 backendData];
+    [(SFCommand *)v5 setBackendData:backendData];
 
-    v13 = [(SFCommand *)v8 commandReference];
-    [(SFCommand *)v5 setCommandReference:v13];
+    commandReference = [(SFCommand *)v8 commandReference];
+    [(SFCommand *)v5 setCommandReference:commandReference];
   }
 
   return v5;
 }
 
-- (SFOpenAppClipCommand)initWithProtobuf:(id)a3
+- (SFOpenAppClipCommand)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v10.receiver = self;
   v10.super_class = SFOpenAppClipCommand;
   v5 = [(SFOpenAppClipCommand *)&v10 init];
   if (v5)
   {
-    v6 = [v4 clipIdentifier];
+    clipIdentifier = [protobufCopy clipIdentifier];
 
-    if (v6)
+    if (clipIdentifier)
     {
-      v7 = [v4 clipIdentifier];
-      [(SFOpenAppClipCommand *)v5 setClipIdentifier:v7];
+      clipIdentifier2 = [protobufCopy clipIdentifier];
+      [(SFOpenAppClipCommand *)v5 setClipIdentifier:clipIdentifier2];
     }
 
     v8 = v5;

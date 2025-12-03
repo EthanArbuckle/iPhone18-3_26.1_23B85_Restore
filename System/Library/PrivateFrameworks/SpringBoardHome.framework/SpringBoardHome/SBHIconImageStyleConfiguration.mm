@@ -1,35 +1,35 @@
 @interface SBHIconImageStyleConfiguration
-+ (SBHIconImageStyleConfiguration)allocWithZone:(_NSZone *)a3;
++ (SBHIconImageStyleConfiguration)allocWithZone:(_NSZone *)zone;
 + (SBHIconImageStyleConfiguration)clearAutomaticStyleConfiguration;
 + (SBHIconImageStyleConfiguration)clearDarkStyleConfiguration;
 + (SBHIconImageStyleConfiguration)clearLightStyleConfiguration;
 + (SBHIconImageStyleConfiguration)colorAutomaticStyleConfiguration;
 + (SBHIconImageStyleConfiguration)colorDarkStyleConfiguration;
 + (SBHIconImageStyleConfiguration)colorLightStyleConfiguration;
-+ (SBHIconImageStyleConfiguration)styleConfigurationWithHomeScreenConfiguration:(id)a3;
-+ (SBHIconImageStyleConfiguration)styleConfigurationWithIconImageAppearance:(id)a3;
++ (SBHIconImageStyleConfiguration)styleConfigurationWithHomeScreenConfiguration:(id)configuration;
++ (SBHIconImageStyleConfiguration)styleConfigurationWithIconImageAppearance:(id)appearance;
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (PUIStylePickerHomeScreenConfiguration)homeScreenConfiguration;
-- (SBHIconImageStyleConfiguration)initWithBSXPCCoder:(id)a3;
-- (SBHIconImageStyleConfiguration)initWithCoder:(id)a3;
-- (SBHIconImageStyleConfiguration)initWithConfigurationType:(int64_t)a3 variant:(int64_t)a4 tintColor:(id)a5;
-- (SBHIconImageStyleConfiguration)styleConfigurationWithTintColor:(id)a3;
+- (SBHIconImageStyleConfiguration)initWithBSXPCCoder:(id)coder;
+- (SBHIconImageStyleConfiguration)initWithCoder:(id)coder;
+- (SBHIconImageStyleConfiguration)initWithConfigurationType:(int64_t)type variant:(int64_t)variant tintColor:(id)color;
+- (SBHIconImageStyleConfiguration)styleConfigurationWithTintColor:(id)color;
 - (SBSHomeScreenIconStyleConfiguration)homeScreenIconStyleConfiguration;
 - (UIColor)opaqueTintColor;
-- (id)appearanceForIcon:(id)a3 userInterfaceStyle:(int64_t)a4;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)iconImageAppearanceWithUserInterfaceStyle:(int64_t)a3;
+- (id)appearanceForIcon:(id)icon userInterfaceStyle:(int64_t)style;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)iconImageAppearanceWithUserInterfaceStyle:(int64_t)style;
 - (id)succinctDescription;
-- (id)widgetAppearanceWithUserInterfaceStyle:(int64_t)a3;
+- (id)widgetAppearanceWithUserInterfaceStyle:(int64_t)style;
 - (int64_t)dockGlassUserInterfaceStyle;
 - (int64_t)iconGlassUserInterfaceStyle;
 - (int64_t)sbsHomeScreenIconStyleConfigurationType;
 - (int64_t)sbsHomeScreenIconStyleConfigurationVariant;
 - (unint64_t)hash;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SBHIconImageStyleConfiguration
@@ -50,7 +50,7 @@
 {
   v3 = objc_opt_self();
 
-  if (v3 == a1)
+  if (v3 == self)
   {
     reusablePlaceholderStyleConfiguration = [SBHPlaceholderIconImageStyleConfiguration alloc];
 
@@ -172,11 +172,11 @@ uint64_t __66__SBHIconImageStyleConfiguration_clearAutomaticStyleConfiguration__
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-+ (SBHIconImageStyleConfiguration)allocWithZone:(_NSZone *)a3
++ (SBHIconImageStyleConfiguration)allocWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_self();
 
-  if (v5 == a1)
+  if (v5 == self)
   {
     v7 = reusablePlaceholderStyleConfiguration;
 
@@ -185,15 +185,15 @@ uint64_t __66__SBHIconImageStyleConfiguration_clearAutomaticStyleConfiguration__
 
   else
   {
-    v8.receiver = a1;
+    v8.receiver = self;
     v8.super_class = &OBJC_METACLASS___SBHIconImageStyleConfiguration;
-    return objc_msgSendSuper2(&v8, sel_allocWithZone_, a3);
+    return objc_msgSendSuper2(&v8, sel_allocWithZone_, zone);
   }
 }
 
-- (SBHIconImageStyleConfiguration)initWithConfigurationType:(int64_t)a3 variant:(int64_t)a4 tintColor:(id)a5
+- (SBHIconImageStyleConfiguration)initWithConfigurationType:(int64_t)type variant:(int64_t)variant tintColor:(id)color
 {
-  v8 = a5;
+  colorCopy = color;
   v9 = objc_opt_self();
   if ([(SBHIconImageStyleConfiguration *)self isMemberOfClass:v9])
   {
@@ -211,7 +211,7 @@ uint64_t __66__SBHIconImageStyleConfiguration_clearAutomaticStyleConfiguration__
       v13 = [(SBHIconImageStyleConfiguration *)&v19 init];
       if (v13)
       {
-        v13->_variant = a4;
+        v13->_variant = variant;
       }
 
       v12 = v13;
@@ -220,34 +220,34 @@ uint64_t __66__SBHIconImageStyleConfiguration_clearAutomaticStyleConfiguration__
     }
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     v14 = [SBHTintedIconImageStyleConfiguration alloc];
     v15 = 2;
-    v16 = a4;
-    v17 = v8;
+    variantCopy = variant;
+    v17 = colorCopy;
 LABEL_30:
-    v12 = [(SBHTintedIconImageStyleConfiguration *)v14 initWithConfigurationType:v15 variant:v16 tintColor:v17];
+    v12 = [(SBHTintedIconImageStyleConfiguration *)v14 initWithConfigurationType:v15 variant:variantCopy tintColor:v17];
     goto LABEL_31;
   }
 
-  if (a3 != 1)
+  if (type != 1)
   {
-    if (a3)
+    if (type)
     {
-      a3 = 0;
+      type = 0;
       goto LABEL_32;
     }
 
-    if (a4 > 1)
+    if (variant > 1)
     {
-      if (a4 == 2)
+      if (variant == 2)
       {
         v12 = +[SBHIconImageStyleConfiguration colorAutomaticStyleConfiguration];
         goto LABEL_31;
       }
 
-      if (a4 == 3)
+      if (variant == 3)
       {
         v12 = +[SBHIconImageStyleConfiguration colorLightStyleConfiguration];
         goto LABEL_31;
@@ -256,13 +256,13 @@ LABEL_30:
       goto LABEL_32;
     }
 
-    if (a4)
+    if (variant)
     {
-      if (a4 == 1)
+      if (variant == 1)
       {
         v12 = +[SBHIconImageStyleConfiguration colorDarkStyleConfiguration];
 LABEL_31:
-        a3 = v12;
+        type = v12;
         goto LABEL_32;
       }
 
@@ -271,39 +271,39 @@ LABEL_31:
 
     v14 = [SBHColorIconImageStyleConfiguration alloc];
     v15 = 0;
-    v16 = 0;
+    variantCopy = 0;
     goto LABEL_29;
   }
 
-  a3 = 0;
-  if (a4 > 1)
+  type = 0;
+  if (variant > 1)
   {
-    if (a4 == 2)
+    if (variant == 2)
     {
       v12 = +[SBHIconImageStyleConfiguration clearAutomaticStyleConfiguration];
       goto LABEL_31;
     }
 
-    if (a4 != 3)
+    if (variant != 3)
     {
       goto LABEL_32;
     }
 
     v14 = [SBHClearIconImageStyleConfiguration alloc];
     v15 = 1;
-    v16 = 3;
+    variantCopy = 3;
 LABEL_29:
     v17 = 0;
     goto LABEL_30;
   }
 
-  if (!a4)
+  if (!variant)
   {
     v12 = +[SBHIconImageStyleConfiguration clearLightStyleConfiguration];
     goto LABEL_31;
   }
 
-  if (a4 == 1)
+  if (variant == 1)
   {
     v12 = +[SBHIconImageStyleConfiguration clearDarkStyleConfiguration];
     goto LABEL_31;
@@ -311,52 +311,52 @@ LABEL_29:
 
 LABEL_32:
 
-  return a3;
+  return type;
 }
 
-+ (SBHIconImageStyleConfiguration)styleConfigurationWithIconImageAppearance:(id)a3
++ (SBHIconImageStyleConfiguration)styleConfigurationWithIconImageAppearance:(id)appearance
 {
-  v4 = a3;
-  v5 = [v4 appearanceType];
+  appearanceCopy = appearance;
+  appearanceType = [appearanceCopy appearanceType];
   v6 = 0;
-  if (v5 <= 2)
+  if (appearanceType <= 2)
   {
-    if (!v5)
+    if (!appearanceType)
     {
-      v11 = [a1 colorLightStyleConfiguration];
+      colorLightStyleConfiguration = [self colorLightStyleConfiguration];
       goto LABEL_14;
     }
 
-    if (v5 != 1)
+    if (appearanceType != 1)
     {
-      if (v5 != 2)
+      if (appearanceType != 2)
       {
         goto LABEL_17;
       }
 
-      v11 = [a1 clearLightStyleConfiguration];
+      colorLightStyleConfiguration = [self clearLightStyleConfiguration];
       goto LABEL_14;
     }
 
 LABEL_11:
-    v11 = [a1 colorDarkStyleConfiguration];
+    colorLightStyleConfiguration = [self colorDarkStyleConfiguration];
 LABEL_14:
-    v6 = v11;
+    v6 = colorLightStyleConfiguration;
     goto LABEL_17;
   }
 
-  if (v5 > 4)
+  if (appearanceType > 4)
   {
-    if (v5 == 5)
+    if (appearanceType == 5)
     {
       v12 = [SBHTintedIconImageStyleConfiguration alloc];
-      v8 = [v4 tintColor];
+      tintColor = [appearanceCopy tintColor];
       v9 = v12;
       v10 = 1;
       goto LABEL_16;
     }
 
-    if (v5 != 6)
+    if (appearanceType != 6)
     {
       goto LABEL_17;
     }
@@ -364,18 +364,18 @@ LABEL_14:
     goto LABEL_11;
   }
 
-  if (v5 == 3)
+  if (appearanceType == 3)
   {
-    v11 = [a1 clearDarkStyleConfiguration];
+    colorLightStyleConfiguration = [self clearDarkStyleConfiguration];
     goto LABEL_14;
   }
 
   v7 = [SBHTintedIconImageStyleConfiguration alloc];
-  v8 = [v4 tintColor];
+  tintColor = [appearanceCopy tintColor];
   v9 = v7;
   v10 = 0;
 LABEL_16:
-  v6 = [(SBHTintedIconImageStyleConfiguration *)v9 initWithConfigurationType:2 variant:v10 tintColor:v8];
+  v6 = [(SBHTintedIconImageStyleConfiguration *)v9 initWithConfigurationType:2 variant:v10 tintColor:tintColor];
 
 LABEL_17:
 
@@ -384,11 +384,11 @@ LABEL_17:
 
 - (UIColor)opaqueTintColor
 {
-  v2 = [(SBHIconImageStyleConfiguration *)self tintColor];
-  v3 = v2;
-  if (v2)
+  tintColor = [(SBHIconImageStyleConfiguration *)self tintColor];
+  v3 = tintColor;
+  if (tintColor)
   {
-    v4 = SBHOpaqueTintColorFromTintColor(v2);
+    v4 = SBHOpaqueTintColorFromTintColor(tintColor);
   }
 
   else
@@ -401,15 +401,15 @@ LABEL_17:
 
 - (int64_t)iconGlassUserInterfaceStyle
 {
-  v2 = [(SBHIconImageStyleConfiguration *)self variant];
-  if (v2 > 3)
+  variant = [(SBHIconImageStyleConfiguration *)self variant];
+  if (variant > 3)
   {
     return 0;
   }
 
   else
   {
-    return qword_1BEE85988[v2];
+    return qword_1BEE85988[variant];
   }
 }
 
@@ -426,35 +426,35 @@ LABEL_17:
   }
 }
 
-- (id)iconImageAppearanceWithUserInterfaceStyle:(int64_t)a3
+- (id)iconImageAppearanceWithUserInterfaceStyle:(int64_t)style
 {
-  v5 = [(SBHIconImageStyleConfiguration *)self configurationType];
-  v6 = [(SBHIconImageStyleConfiguration *)self variant];
-  v7 = [(SBHIconImageStyleConfiguration *)self tintColor];
-  if (v5 == 2)
+  configurationType = [(SBHIconImageStyleConfiguration *)self configurationType];
+  variant = [(SBHIconImageStyleConfiguration *)self variant];
+  tintColor = [(SBHIconImageStyleConfiguration *)self tintColor];
+  if (configurationType == 2)
   {
-    v5 = 0;
-    if (v6 > 1)
+    configurationType = 0;
+    if (variant > 1)
     {
-      if (v6 == 2)
+      if (variant == 2)
       {
-        if (a3 == 2)
+        if (style == 2)
         {
 LABEL_29:
-          v8 = [SBHIconImageAppearance tintedDarkAppearanceWithTintColor:v7];
+          v8 = [SBHIconImageAppearance tintedDarkAppearanceWithTintColor:tintColor];
           goto LABEL_32;
         }
       }
 
-      else if (v6 != 3)
+      else if (variant != 3)
       {
         goto LABEL_33;
       }
     }
 
-    else if (v6)
+    else if (variant)
     {
-      if (v6 != 1)
+      if (variant != 1)
       {
         goto LABEL_33;
       }
@@ -462,18 +462,18 @@ LABEL_29:
       goto LABEL_29;
     }
 
-    v8 = [SBHIconImageAppearance tintedLightAppearanceWithTintColor:v7];
+    v8 = [SBHIconImageAppearance tintedLightAppearanceWithTintColor:tintColor];
     goto LABEL_32;
   }
 
-  if (v5 == 1)
+  if (configurationType == 1)
   {
-    v5 = 0;
-    if (v6 > 1)
+    configurationType = 0;
+    if (variant > 1)
     {
-      if (v6 == 2)
+      if (variant == 2)
       {
-        if (a3 == 2)
+        if (style == 2)
         {
 LABEL_27:
           v8 = +[SBHIconImageAppearance clearDarkAppearance];
@@ -481,15 +481,15 @@ LABEL_27:
         }
       }
 
-      else if (v6 != 3)
+      else if (variant != 3)
       {
         goto LABEL_33;
       }
     }
 
-    else if (v6)
+    else if (variant)
     {
-      if (v6 != 1)
+      if (variant != 1)
       {
         goto LABEL_33;
       }
@@ -501,17 +501,17 @@ LABEL_27:
     goto LABEL_32;
   }
 
-  if (v5)
+  if (configurationType)
   {
-    v5 = 0;
+    configurationType = 0;
     goto LABEL_33;
   }
 
-  if (v6 > 1)
+  if (variant > 1)
   {
-    if (v6 == 2)
+    if (variant == 2)
     {
-      if (a3 == 2)
+      if (style == 2)
       {
 LABEL_31:
         v8 = +[SBHIconImageAppearance darkAppearance];
@@ -519,15 +519,15 @@ LABEL_31:
       }
     }
 
-    else if (v6 != 3)
+    else if (variant != 3)
     {
       goto LABEL_33;
     }
   }
 
-  else if (v6)
+  else if (variant)
   {
-    if (v6 != 1)
+    if (variant != 1)
     {
       goto LABEL_33;
     }
@@ -537,32 +537,32 @@ LABEL_31:
 
   v8 = +[SBHIconImageAppearance lightAppearance];
 LABEL_32:
-  v5 = v8;
+  configurationType = v8;
 LABEL_33:
 
-  return v5;
+  return configurationType;
 }
 
-- (id)widgetAppearanceWithUserInterfaceStyle:(int64_t)a3
+- (id)widgetAppearanceWithUserInterfaceStyle:(int64_t)style
 {
-  v5 = [(SBHIconImageStyleConfiguration *)self configurationType];
-  v6 = [(SBHIconImageStyleConfiguration *)self variant];
-  v7 = [(SBHIconImageStyleConfiguration *)self tintColor];
-  if (v5 == 2)
+  configurationType = [(SBHIconImageStyleConfiguration *)self configurationType];
+  variant = [(SBHIconImageStyleConfiguration *)self variant];
+  tintColor = [(SBHIconImageStyleConfiguration *)self tintColor];
+  if (configurationType == 2)
   {
-    if ((v6 - 2) < 2)
+    if ((variant - 2) < 2)
     {
-      if (a3 != 2)
+      if (style != 2)
       {
 LABEL_19:
-        v9 = [SBHIconImageAppearance tintedLightAppearanceWithTintColor:v7];
+        v9 = [SBHIconImageAppearance tintedLightAppearanceWithTintColor:tintColor];
         goto LABEL_25;
       }
     }
 
-    else if (v6 != 1)
+    else if (variant != 1)
     {
-      if (v6)
+      if (variant)
       {
         goto LABEL_15;
       }
@@ -570,20 +570,20 @@ LABEL_19:
       goto LABEL_19;
     }
 
-    v9 = [SBHIconImageAppearance tintedDarkAppearanceWithTintColor:v7];
+    v9 = [SBHIconImageAppearance tintedDarkAppearanceWithTintColor:tintColor];
     goto LABEL_25;
   }
 
-  if (v5 != 1)
+  if (configurationType != 1)
   {
-    if (v5)
+    if (configurationType)
     {
       goto LABEL_15;
     }
 
-    if ((v6 - 2) < 2)
+    if ((variant - 2) < 2)
     {
-      if (a3 != 2)
+      if (style != 2)
       {
 LABEL_21:
         v9 = +[SBHIconImageAppearance lightAppearance];
@@ -591,9 +591,9 @@ LABEL_21:
       }
     }
 
-    else if (v6 != 1)
+    else if (variant != 1)
     {
-      if (!v6)
+      if (!variant)
       {
         goto LABEL_21;
       }
@@ -607,11 +607,11 @@ LABEL_15:
     goto LABEL_25;
   }
 
-  if ((v6 - 2) >= 2)
+  if ((variant - 2) >= 2)
   {
-    if (v6 != 1)
+    if (variant != 1)
     {
-      if (v6)
+      if (variant)
       {
         goto LABEL_15;
       }
@@ -624,7 +624,7 @@ LABEL_22:
     goto LABEL_25;
   }
 
-  if (a3 == 2)
+  if (style == 2)
   {
     goto LABEL_22;
   }
@@ -638,28 +638,28 @@ LABEL_26:
   return v8;
 }
 
-- (id)appearanceForIcon:(id)a3 userInterfaceStyle:(int64_t)a4
+- (id)appearanceForIcon:(id)icon userInterfaceStyle:(int64_t)style
 {
-  if ([a3 isWidgetIcon])
+  if ([icon isWidgetIcon])
   {
-    [(SBHIconImageStyleConfiguration *)self widgetAppearanceWithUserInterfaceStyle:a4];
+    [(SBHIconImageStyleConfiguration *)self widgetAppearanceWithUserInterfaceStyle:style];
   }
 
   else
   {
-    [(SBHIconImageStyleConfiguration *)self iconImageAppearanceWithUserInterfaceStyle:a4];
+    [(SBHIconImageStyleConfiguration *)self iconImageAppearanceWithUserInterfaceStyle:style];
   }
   v6 = ;
 
   return v6;
 }
 
-- (SBHIconImageStyleConfiguration)styleConfigurationWithTintColor:(id)a3
+- (SBHIconImageStyleConfiguration)styleConfigurationWithTintColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   if ([(SBHIconImageStyleConfiguration *)self configurationType]== 2)
   {
-    v5 = [objc_alloc(objc_opt_class()) initWithConfigurationType:2 variant:-[SBHIconImageStyleConfiguration variant](self tintColor:{"variant"), v4}];
+    v5 = [objc_alloc(objc_opt_class()) initWithConfigurationType:2 variant:-[SBHIconImageStyleConfiguration variant](self tintColor:{"variant"), colorCopy}];
   }
 
   else
@@ -672,18 +672,18 @@ LABEL_26:
 
 - (unint64_t)hash
 {
-  v3 = [(SBHIconImageStyleConfiguration *)self configurationType];
-  v4 = [(SBHIconImageStyleConfiguration *)self variant]+ v3;
-  v5 = [(SBHIconImageStyleConfiguration *)self tintColor];
-  v6 = [v5 hash];
+  configurationType = [(SBHIconImageStyleConfiguration *)self configurationType];
+  v4 = [(SBHIconImageStyleConfiguration *)self variant]+ configurationType;
+  tintColor = [(SBHIconImageStyleConfiguration *)self tintColor];
+  v6 = [tintColor hash];
 
   return v4 + v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -695,12 +695,12 @@ LABEL_26:
 
     if (isKindOfClass)
     {
-      v7 = v4;
-      v8 = [(SBHIconImageStyleConfiguration *)self configurationType];
-      if (v8 == [(SBHIconImageStyleConfiguration *)v7 configurationType]&& (v9 = [(SBHIconImageStyleConfiguration *)self variant], v9 == [(SBHIconImageStyleConfiguration *)v7 variant]))
+      v7 = equalCopy;
+      configurationType = [(SBHIconImageStyleConfiguration *)self configurationType];
+      if (configurationType == [(SBHIconImageStyleConfiguration *)v7 configurationType]&& (v9 = [(SBHIconImageStyleConfiguration *)self variant], v9 == [(SBHIconImageStyleConfiguration *)v7 variant]))
       {
-        v10 = [(SBHIconImageStyleConfiguration *)self tintColor];
-        v11 = [(SBHIconImageStyleConfiguration *)v7 tintColor];
+        tintColor = [(SBHIconImageStyleConfiguration *)self tintColor];
+        tintColor2 = [(SBHIconImageStyleConfiguration *)v7 tintColor];
         v12 = BSEqualObjects();
       }
 
@@ -719,53 +719,53 @@ LABEL_26:
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[SBHIconImageStyleConfiguration configurationType](self forKey:{"configurationType"), @"configurationType"}];
-  [v4 encodeInteger:-[SBHIconImageStyleConfiguration variant](self forKey:{"variant"), @"configurationVariant"}];
-  v5 = [(SBHIconImageStyleConfiguration *)self tintColor];
-  [v4 encodeObject:v5 forKey:@"tintColor"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[SBHIconImageStyleConfiguration configurationType](self forKey:{"configurationType"), @"configurationType"}];
+  [coderCopy encodeInteger:-[SBHIconImageStyleConfiguration variant](self forKey:{"variant"), @"configurationVariant"}];
+  tintColor = [(SBHIconImageStyleConfiguration *)self tintColor];
+  [coderCopy encodeObject:tintColor forKey:@"tintColor"];
 }
 
-- (SBHIconImageStyleConfiguration)initWithCoder:(id)a3
+- (SBHIconImageStyleConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"configurationType"];
-  if (v5 > 2 || (v6 = v5, v7 = [v4 decodeIntegerForKey:@"configurationVariant"], v7 > 3))
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"configurationType"];
+  if (v5 > 2 || (v6 = v5, v7 = [coderCopy decodeIntegerForKey:@"configurationVariant"], v7 > 3))
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     v8 = v7;
     v9 = objc_opt_self();
-    v10 = [v4 decodeObjectOfClass:v9 forKey:@"tintColor"];
+    v10 = [coderCopy decodeObjectOfClass:v9 forKey:@"tintColor"];
 
     self = [(SBHIconImageStyleConfiguration *)self initWithConfigurationType:v6 variant:v8 tintColor:v10];
-    v11 = self;
+    selfCopy = self;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt64:-[SBHIconImageStyleConfiguration configurationType](self forKey:{"configurationType"), @"configurationType"}];
-  [v4 encodeInt64:-[SBHIconImageStyleConfiguration variant](self forKey:{"variant"), @"configurationVariant"}];
-  v5 = [(SBHIconImageStyleConfiguration *)self tintColor];
-  [v4 encodeObject:v5 forKey:@"tintColor"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:-[SBHIconImageStyleConfiguration configurationType](self forKey:{"configurationType"), @"configurationType"}];
+  [coderCopy encodeInt64:-[SBHIconImageStyleConfiguration variant](self forKey:{"variant"), @"configurationVariant"}];
+  tintColor = [(SBHIconImageStyleConfiguration *)self tintColor];
+  [coderCopy encodeObject:tintColor forKey:@"tintColor"];
 }
 
-- (SBHIconImageStyleConfiguration)initWithBSXPCCoder:(id)a3
+- (SBHIconImageStyleConfiguration)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeInt64ForKey:@"configurationType"];
-  v6 = [v4 decodeInt64ForKey:@"configurationVariant"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeInt64ForKey:@"configurationType"];
+  v6 = [coderCopy decodeInt64ForKey:@"configurationVariant"];
   v7 = objc_opt_self();
-  v8 = [v4 decodeObjectOfClass:v7 forKey:@"tintColor"];
+  v8 = [coderCopy decodeObjectOfClass:v7 forKey:@"tintColor"];
 
   v9 = [(SBHIconImageStyleConfiguration *)self initWithConfigurationType:v5 variant:v6 tintColor:v8];
   return v9;
@@ -773,66 +773,66 @@ LABEL_26:
 
 - (id)succinctDescription
 {
-  v2 = [(SBHIconImageStyleConfiguration *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBHIconImageStyleConfiguration *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBHIconImageStyleConfiguration *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBHIconImageStyleConfiguration *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBHIconImageStyleConfiguration *)self succinctDescriptionBuilder];
-  v5 = [(SBHIconImageStyleConfiguration *)self variant];
-  if (v5 > 3)
+  succinctDescriptionBuilder = [(SBHIconImageStyleConfiguration *)self succinctDescriptionBuilder];
+  variant = [(SBHIconImageStyleConfiguration *)self variant];
+  if (variant > 3)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = off_1E808B268[v5];
+    v6 = off_1E808B268[variant];
   }
 
-  [v4 appendString:v6 withName:@"variant"];
-  v7 = [(SBHIconImageStyleConfiguration *)self tintColor];
-  v8 = [v4 appendObject:v7 withName:@"tintColor" skipIfNil:1];
+  [succinctDescriptionBuilder appendString:v6 withName:@"variant"];
+  tintColor = [(SBHIconImageStyleConfiguration *)self tintColor];
+  v8 = [succinctDescriptionBuilder appendObject:tintColor withName:@"tintColor" skipIfNil:1];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
-+ (SBHIconImageStyleConfiguration)styleConfigurationWithHomeScreenConfiguration:(id)a3
++ (SBHIconImageStyleConfiguration)styleConfigurationWithHomeScreenConfiguration:(id)configuration
 {
-  v3 = a3;
-  v4 = [v3 styleVariant];
-  v5 = [v3 styleType];
+  configurationCopy = configuration;
+  styleVariant = [configurationCopy styleVariant];
+  styleType = [configurationCopy styleType];
   v6 = 0;
   v7 = 3;
-  if (v5 != 5)
+  if (styleType != 5)
   {
     v7 = 0;
   }
 
   v8 = 1;
   v9 = 2;
-  if (v4)
+  if (styleVariant)
   {
     v9 = 0;
   }
 
-  if (v4 != 1)
+  if (styleVariant != 1)
   {
     v8 = v9;
   }
 
-  if (v4 == 2)
+  if (styleVariant == 2)
   {
     v10 = v7;
   }
@@ -842,9 +842,9 @@ LABEL_26:
     v10 = v8;
   }
 
-  if (v5 <= 2)
+  if (styleType <= 2)
   {
-    if (v5 >= 3)
+    if (styleType >= 3)
     {
       goto LABEL_18;
     }
@@ -852,16 +852,16 @@ LABEL_26:
     goto LABEL_16;
   }
 
-  if (v5 != 3)
+  if (styleType != 3)
   {
-    if (v5 == 4)
+    if (styleType == 4)
     {
       v11 = [SBHIconImageStyleConfiguration alloc];
       v12 = 1;
       goto LABEL_17;
     }
 
-    if (v5 != 5)
+    if (styleType != 5)
     {
       goto LABEL_18;
     }
@@ -877,25 +877,25 @@ LABEL_17:
   v14 = styleConfigurationWithHomeScreenConfiguration__sharedTintedStyleConfigurations;
   if (!styleConfigurationWithHomeScreenConfiguration__sharedTintedStyleConfigurations)
   {
-    v15 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     v16 = styleConfigurationWithHomeScreenConfiguration__sharedTintedStyleConfigurations;
-    styleConfigurationWithHomeScreenConfiguration__sharedTintedStyleConfigurations = v15;
+    styleConfigurationWithHomeScreenConfiguration__sharedTintedStyleConfigurations = weakToStrongObjectsMapTable;
 
     v14 = styleConfigurationWithHomeScreenConfiguration__sharedTintedStyleConfigurations;
   }
 
-  v6 = [v14 objectForKey:v3];
+  v6 = [v14 objectForKey:configurationCopy];
   if (!v6)
   {
-    v17 = [v3 accentColor];
-    if (v17)
+    accentColor = [configurationCopy accentColor];
+    if (accentColor)
     {
-      v18 = [MEMORY[0x1E69DC888] clearColor];
-      if ([v17 isEqual:v18])
+      clearColor = [MEMORY[0x1E69DC888] clearColor];
+      if ([accentColor isEqual:clearColor])
       {
-        v19 = [v3 iconTintSource];
+        iconTintSource = [configurationCopy iconTintSource];
 
-        if (v19 != 3)
+        if (iconTintSource != 3)
         {
           goto LABEL_32;
         }
@@ -908,14 +908,14 @@ LABEL_33:
       }
     }
 
-    else if ([v3 iconTintSource] == 3)
+    else if ([configurationCopy iconTintSource] == 3)
     {
       goto LABEL_30;
     }
 
 LABEL_32:
-    v6 = [[SBHIconImageStyleConfiguration alloc] initWithConfigurationType:2 variant:v10 tintColor:v17];
-    [styleConfigurationWithHomeScreenConfiguration__sharedTintedStyleConfigurations setObject:v6 forKey:v3];
+    v6 = [[SBHIconImageStyleConfiguration alloc] initWithConfigurationType:2 variant:v10 tintColor:accentColor];
+    [styleConfigurationWithHomeScreenConfiguration__sharedTintedStyleConfigurations setObject:v6 forKey:configurationCopy];
     goto LABEL_33;
   }
 
@@ -926,53 +926,53 @@ LABEL_18:
 
 - (PUIStylePickerHomeScreenConfiguration)homeScreenConfiguration
 {
-  v3 = [(SBHIconImageStyleConfiguration *)self configurationType];
-  v4 = [(SBHIconImageStyleConfiguration *)self variant];
-  if (v4 <= 3)
+  configurationType = [(SBHIconImageStyleConfiguration *)self configurationType];
+  variant = [(SBHIconImageStyleConfiguration *)self variant];
+  if (variant <= 3)
   {
-    v5 = qword_1BEE859A8[v4];
-    if (v3)
+    v5 = qword_1BEE859A8[variant];
+    if (configurationType)
     {
       goto LABEL_3;
     }
 
 LABEL_7:
-    v6 = 0;
+    tintColor = 0;
     v7 = 5;
     goto LABEL_10;
   }
 
   v5 = 0;
-  if (!v3)
+  if (!configurationType)
   {
     goto LABEL_7;
   }
 
 LABEL_3:
-  if (v3 == 1)
+  if (configurationType == 1)
   {
-    v6 = 0;
+    tintColor = 0;
     v7 = 4;
   }
 
-  else if (v3 == 2)
+  else if (configurationType == 2)
   {
-    v6 = [(SBHIconImageStyleConfiguration *)self tintColor];
+    tintColor = [(SBHIconImageStyleConfiguration *)self tintColor];
     v7 = 3;
   }
 
   else
   {
     v7 = 0;
-    v6 = 0;
+    tintColor = 0;
   }
 
 LABEL_10:
   v8 = [objc_alloc(MEMORY[0x1E69C5570]) initWithStyleType:v7 styleVariant:v5 variation:0.0 luminance:0.0];
   v9 = v8;
-  if (v6)
+  if (tintColor)
   {
-    [v8 setAccentColor:v6];
+    [v8 setAccentColor:tintColor];
   }
 
   return v9;
@@ -980,12 +980,12 @@ LABEL_10:
 
 - (SBSHomeScreenIconStyleConfiguration)homeScreenIconStyleConfiguration
 {
-  v3 = [(SBHIconImageStyleConfiguration *)self sbsHomeScreenIconStyleConfigurationType];
-  v4 = [(SBHIconImageStyleConfiguration *)self sbsHomeScreenIconStyleConfigurationVariant];
-  v5 = [(SBHIconImageStyleConfiguration *)self tintColor];
-  v6 = [v5 BSColor];
+  sbsHomeScreenIconStyleConfigurationType = [(SBHIconImageStyleConfiguration *)self sbsHomeScreenIconStyleConfigurationType];
+  sbsHomeScreenIconStyleConfigurationVariant = [(SBHIconImageStyleConfiguration *)self sbsHomeScreenIconStyleConfigurationVariant];
+  tintColor = [(SBHIconImageStyleConfiguration *)self tintColor];
+  bSColor = [tintColor BSColor];
 
-  v7 = [objc_alloc(MEMORY[0x1E69D4228]) initWithConfigurationType:v3 variant:v4 tintColor:v6];
+  v7 = [objc_alloc(MEMORY[0x1E69D4228]) initWithConfigurationType:sbsHomeScreenIconStyleConfigurationType variant:sbsHomeScreenIconStyleConfigurationVariant tintColor:bSColor];
 
   return v7;
 }

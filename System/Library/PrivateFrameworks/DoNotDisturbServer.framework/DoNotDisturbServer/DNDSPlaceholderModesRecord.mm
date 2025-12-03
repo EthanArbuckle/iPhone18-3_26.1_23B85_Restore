@@ -1,49 +1,49 @@
 @interface DNDSPlaceholderModesRecord
-+ (id)backingStoreWithFileURL:(id)a3;
-+ (id)newWithDictionaryRepresentation:(id)a3 context:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)_initWithModePlaceholders:(id)a3;
-- (id)_initWithRecord:(id)a3;
-- (id)dictionaryRepresentationWithContext:(id)a3;
++ (id)backingStoreWithFileURL:(id)l;
++ (id)newWithDictionaryRepresentation:(id)representation context:(id)context;
+- (BOOL)isEqual:(id)equal;
+- (id)_initWithModePlaceholders:(id)placeholders;
+- (id)_initWithRecord:(id)record;
+- (id)dictionaryRepresentationWithContext:(id)context;
 @end
 
 @implementation DNDSPlaceholderModesRecord
 
-+ (id)backingStoreWithFileURL:(id)a3
++ (id)backingStoreWithFileURL:(id)l
 {
-  v4 = a3;
-  v5 = [[DNDSJSONBackingStore alloc] initWithRecordClass:a1 fileURL:v4 versionNumber:1];
+  lCopy = l;
+  v5 = [[DNDSJSONBackingStore alloc] initWithRecordClass:self fileURL:lCopy versionNumber:1];
 
   return v5;
 }
 
-- (id)_initWithRecord:(id)a3
+- (id)_initWithRecord:(id)record
 {
-  v4 = [a3 placeholderModes];
-  v5 = [(DNDSPlaceholderModesRecord *)self _initWithModePlaceholders:v4];
+  placeholderModes = [record placeholderModes];
+  v5 = [(DNDSPlaceholderModesRecord *)self _initWithModePlaceholders:placeholderModes];
 
   return v5;
 }
 
-- (id)_initWithModePlaceholders:(id)a3
+- (id)_initWithModePlaceholders:(id)placeholders
 {
-  v5 = a3;
+  placeholdersCopy = placeholders;
   v9.receiver = self;
   v9.super_class = DNDSPlaceholderModesRecord;
   v6 = [(DNDSPlaceholderModesRecord *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_placeholderModes, a3);
+    objc_storeStrong(&v6->_placeholderModes, placeholders);
   }
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -53,25 +53,25 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(DNDSPlaceholderModesRecord *)self placeholderModes];
-      v7 = [(DNDSPlaceholderModesRecord *)v5 placeholderModes];
-      if (v6 == v7)
+      v5 = equalCopy;
+      placeholderModes = [(DNDSPlaceholderModesRecord *)self placeholderModes];
+      placeholderModes2 = [(DNDSPlaceholderModesRecord *)v5 placeholderModes];
+      if (placeholderModes == placeholderModes2)
       {
         v12 = 1;
       }
 
       else
       {
-        v8 = [(DNDSPlaceholderModesRecord *)self placeholderModes];
-        if (v8)
+        placeholderModes3 = [(DNDSPlaceholderModesRecord *)self placeholderModes];
+        if (placeholderModes3)
         {
-          v9 = [(DNDSPlaceholderModesRecord *)v5 placeholderModes];
-          if (v9)
+          placeholderModes4 = [(DNDSPlaceholderModesRecord *)v5 placeholderModes];
+          if (placeholderModes4)
           {
-            v10 = [(DNDSPlaceholderModesRecord *)self placeholderModes];
-            v11 = [(DNDSPlaceholderModesRecord *)v5 placeholderModes];
-            v12 = [v10 isEqual:v11];
+            placeholderModes5 = [(DNDSPlaceholderModesRecord *)self placeholderModes];
+            placeholderModes6 = [(DNDSPlaceholderModesRecord *)v5 placeholderModes];
+            v12 = [placeholderModes5 isEqual:placeholderModes6];
           }
 
           else
@@ -96,11 +96,11 @@
   return v12;
 }
 
-- (id)dictionaryRepresentationWithContext:(id)a3
+- (id)dictionaryRepresentationWithContext:(id)context
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  contextCopy = context;
+  array = [MEMORY[0x277CBEB18] array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -120,8 +120,8 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentationWithContext:{v4, v15}];
-        [v5 addObject:v11];
+        v11 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentationWithContext:{contextCopy, v15}];
+        [array addObject:v11];
       }
 
       v8 = [(NSArray *)v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -130,21 +130,21 @@
     while (v8);
   }
 
-  v12 = [MEMORY[0x277CBEB38] dictionary];
-  [v12 setObject:v5 forKeyedSubscript:@"placeholderModes"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setObject:array forKeyedSubscript:@"placeholderModes"];
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return v12;
+  return dictionary;
 }
 
-+ (id)newWithDictionaryRepresentation:(id)a3 context:(id)a4
++ (id)newWithDictionaryRepresentation:(id)representation context:(id)context
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 bs_safeObjectForKey:@"placeholderModes" ofType:objc_opt_class()];
-  v9 = [MEMORY[0x277CBEB18] array];
+  representationCopy = representation;
+  contextCopy = context;
+  v8 = [representationCopy bs_safeObjectForKey:@"placeholderModes" ofType:objc_opt_class()];
+  array = [MEMORY[0x277CBEB18] array];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -165,8 +165,8 @@
           objc_enumerationMutation(v10);
         }
 
-        v15 = [DNDSModeRecord newWithDictionaryRepresentation:*(*(&v19 + 1) + 8 * v14) context:v7, v19];
-        [v9 addObject:v15];
+        v15 = [DNDSModeRecord newWithDictionaryRepresentation:*(*(&v19 + 1) + 8 * v14) context:contextCopy, v19];
+        [array addObject:v15];
 
         ++v14;
       }
@@ -178,7 +178,7 @@
     while (v12);
   }
 
-  v16 = [[a1 alloc] _initWithModePlaceholders:v9];
+  v16 = [[self alloc] _initWithModePlaceholders:array];
   v17 = *MEMORY[0x277D85DE8];
   return v16;
 }

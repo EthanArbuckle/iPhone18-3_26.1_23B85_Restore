@@ -1,29 +1,29 @@
 @interface MPRadioStation
-- (BOOL)isEqual:(id)a3;
-- (MPRadioStation)initWithCoder:(id)a3;
-- (MPRadioStation)initWithModelStation:(id)a3;
-- (MPRadioStation)initWithPlayParameters:(id)a3;
-- (MPRadioStation)initWithStation:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MPRadioStation)initWithCoder:(id)coder;
+- (MPRadioStation)initWithModelStation:(id)station;
+- (MPRadioStation)initWithPlayParameters:(id)parameters;
+- (MPRadioStation)initWithStation:(id)station;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPRadioStation
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v5)
   {
-    v6 = [(NSString *)self->_localizedName copyWithZone:a3];
+    v6 = [(NSString *)self->_localizedName copyWithZone:zone];
     v7 = v5[2];
     v5[2] = v6;
 
-    v8 = [(NSString *)self->_stationStringID copyWithZone:a3];
+    v8 = [(NSString *)self->_stationStringID copyWithZone:zone];
     v9 = v5[4];
     v5[4] = v8;
 
-    v10 = [(NSString *)self->_localizedDescription copyWithZone:a3];
+    v10 = [(NSString *)self->_localizedDescription copyWithZone:zone];
     v11 = v5[3];
     v5[3] = v10;
 
@@ -33,24 +33,24 @@
   return v5;
 }
 
-- (MPRadioStation)initWithCoder:(id)a3
+- (MPRadioStation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = MPRadioStation;
   v5 = [(MPRadioStation *)&v13 init];
   if (v5)
   {
-    v5->_uniqueIdentifier = [v4 decodeInt64ForKey:@"uniqueIdentifier"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"stationStringID"];
+    v5->_uniqueIdentifier = [coderCopy decodeInt64ForKey:@"uniqueIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stationStringID"];
     stationStringID = v5->_stationStringID;
     v5->_stationStringID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedName"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedName"];
     localizedName = v5->_localizedName;
     v5->_localizedName = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedDescription"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedDescription"];
     localizedDescription = v5->_localizedDescription;
     v5->_localizedDescription = v10;
   }
@@ -58,15 +58,15 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 allowsKeyedCoding])
+  coderCopy = coder;
+  if ([coderCopy allowsKeyedCoding])
   {
-    [v4 encodeInt64:self->_uniqueIdentifier forKey:@"uniqueIdentifier"];
-    [v4 encodeObject:self->_stationStringID forKey:@"stationStringID"];
-    [v4 encodeObject:self->_localizedName forKey:@"localizedName"];
-    [v4 encodeObject:self->_localizedDescription forKey:@"localizedDescription"];
+    [coderCopy encodeInt64:self->_uniqueIdentifier forKey:@"uniqueIdentifier"];
+    [coderCopy encodeObject:self->_stationStringID forKey:@"stationStringID"];
+    [coderCopy encodeObject:self->_localizedName forKey:@"localizedName"];
+    [coderCopy encodeObject:self->_localizedDescription forKey:@"localizedDescription"];
   }
 
   else
@@ -75,13 +75,13 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(MPRadioStation *)self uniqueIdentifier];
-    v6 = v5 == [v4 uniqueIdentifier];
+    uniqueIdentifier = [(MPRadioStation *)self uniqueIdentifier];
+    v6 = uniqueIdentifier == [equalCopy uniqueIdentifier];
   }
 
   else
@@ -92,34 +92,34 @@
   return v6;
 }
 
-- (MPRadioStation)initWithStation:(id)a3
+- (MPRadioStation)initWithStation:(id)station
 {
-  v4 = a3;
+  stationCopy = station;
   v13.receiver = self;
   v13.super_class = MPRadioStation;
   v5 = [(MPRadioStation *)&v13 init];
   if (v5)
   {
-    v6 = [v4 name];
+    name = [stationCopy name];
     localizedName = v5->_localizedName;
-    v5->_localizedName = v6;
+    v5->_localizedName = name;
 
-    v8 = [v4 stationDescription];
+    stationDescription = [stationCopy stationDescription];
     localizedDescription = v5->_localizedDescription;
-    v5->_localizedDescription = v8;
+    v5->_localizedDescription = stationDescription;
 
-    v5->_uniqueIdentifier = [v4 stationID];
-    v10 = [v4 stationStringID];
+    v5->_uniqueIdentifier = [stationCopy stationID];
+    stationStringID = [stationCopy stationStringID];
     stationStringID = v5->_stationStringID;
-    v5->_stationStringID = v10;
+    v5->_stationStringID = stationStringID;
   }
 
   return v5;
 }
 
-- (MPRadioStation)initWithModelStation:(id)a3
+- (MPRadioStation)initWithModelStation:(id)station
 {
-  v4 = a3;
+  stationCopy = station;
   v11.receiver = self;
   v11.super_class = MPRadioStation;
   v5 = [(MPRadioStation *)&v11 init];
@@ -131,7 +131,7 @@
     v8[2] = __39__MPRadioStation_initWithModelStation___block_invoke;
     v8[3] = &unk_1E76823C0;
     v9 = v5;
-    v10 = v4;
+    v10 = stationCopy;
     [MPModelObject performWithoutEnforcement:v8];
   }
 
@@ -162,16 +162,16 @@ void __39__MPRadioStation_initWithModelStation___block_invoke(uint64_t a1)
   *(v12 + 32) = v11;
 }
 
-- (MPRadioStation)initWithPlayParameters:(id)a3
+- (MPRadioStation)initWithPlayParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v12.receiver = self;
   v12.super_class = MPRadioStation;
   v5 = [(MPRadioStation *)&v12 init];
   if (v5)
   {
-    v6 = [v4 itemKind];
-    v7 = [v6 isEqual:@"radioStation"];
+    itemKind = [parametersCopy itemKind];
+    v7 = [itemKind isEqual:@"radioStation"];
 
     if (!v7)
     {
@@ -179,9 +179,9 @@ void __39__MPRadioStation_initWithModelStation___block_invoke(uint64_t a1)
       goto LABEL_6;
     }
 
-    v8 = [v4 itemID];
+    itemID = [parametersCopy itemID];
     stationStringID = v5->_stationStringID;
-    v5->_stationStringID = v8;
+    v5->_stationStringID = itemID;
   }
 
   v10 = v5;

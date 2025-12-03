@@ -1,47 +1,47 @@
 @interface AXSDDetectionResult
-- (AXSDDetectionResult)initWithResult:(id)a3;
-- (AXSDDetectionResult)initWithTimeStamp:(id)a3 identifier:(id)a4 confidence:(double)a5;
+- (AXSDDetectionResult)initWithResult:(id)result;
+- (AXSDDetectionResult)initWithTimeStamp:(id)stamp identifier:(id)identifier confidence:(double)confidence;
 - (NSString)debug;
 @end
 
 @implementation AXSDDetectionResult
 
-- (AXSDDetectionResult)initWithTimeStamp:(id)a3 identifier:(id)a4 confidence:(double)a5
+- (AXSDDetectionResult)initWithTimeStamp:(id)stamp identifier:(id)identifier confidence:(double)confidence
 {
-  v9 = a3;
-  v10 = a4;
+  stampCopy = stamp;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = AXSDDetectionResult;
   v11 = [(AXSDDetectionResult *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_timestamp, a3);
-    objc_storeStrong(&v12->_identifier, a4);
-    v12->_confidence = a5;
+    objc_storeStrong(&v11->_timestamp, stamp);
+    objc_storeStrong(&v12->_identifier, identifier);
+    v12->_confidence = confidence;
   }
 
   return v12;
 }
 
-- (AXSDDetectionResult)initWithResult:(id)a3
+- (AXSDDetectionResult)initWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v13.receiver = self;
   v13.super_class = AXSDDetectionResult;
   v5 = [(AXSDDetectionResult *)&v13 init];
   if (v5)
   {
-    v6 = [[AXSDTimeStamp alloc] initWithResult:v4];
+    v6 = [[AXSDTimeStamp alloc] initWithResult:resultCopy];
     timestamp = v5->_timestamp;
     v5->_timestamp = v6;
     v8 = v6;
 
-    v9 = [v4 identifier];
+    identifier = [resultCopy identifier];
     identifier = v5->_identifier;
-    v5->_identifier = v9;
+    v5->_identifier = identifier;
 
-    [v4 confidence];
+    [resultCopy confidence];
     v5->_confidence = v11;
   }
 

@@ -1,5 +1,5 @@
 @interface WorkoutCountdownView
-- (_TtC9SeymourUI20WorkoutCountdownView)initWithFrame:(CGRect)a3;
+- (_TtC9SeymourUI20WorkoutCountdownView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -12,7 +12,7 @@
   [(WorkoutCountdownView *)&v2 layoutSubviews];
 }
 
-- (_TtC9SeymourUI20WorkoutCountdownView)initWithFrame:(CGRect)a3
+- (_TtC9SeymourUI20WorkoutCountdownView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

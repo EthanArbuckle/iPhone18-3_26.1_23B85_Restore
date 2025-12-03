@@ -1,5 +1,5 @@
 @interface NanoRoutePlanningRouteRequestState
-- (void)_processIncomingRoutes:(id)a3 error:(id)a4 directionsError:(id)a5 fromTicket:(id)a6;
+- (void)_processIncomingRoutes:(id)routes error:(id)error directionsError:(id)directionsError fromTicket:(id)ticket;
 - (void)cancelRequest;
 - (void)dealloc;
 - (void)start;
@@ -20,42 +20,42 @@
 
 - (void)start
 {
-  v3 = [(NanoRoutePlanningState *)self manager];
-  v4 = [v3 request];
+  manager = [(NanoRoutePlanningState *)self manager];
+  request = [manager request];
 
-  v5 = [v4 waypoints];
-  v6 = sub_1000282B8(v5, &stru_1000853D0);
+  waypoints = [request waypoints];
+  v6 = sub_1000282B8(waypoints, &stru_1000853D0);
 
-  v7 = [v4 routeAttributes];
-  v8 = [v4 tracePath];
-  v9 = [v8 length];
+  routeAttributes = [request routeAttributes];
+  tracePath = [request tracePath];
+  v9 = [tracePath length];
 
   v10 = [MNDirectionsRequestDetails alloc];
   v11 = v10;
   if (v9)
   {
-    v12 = [v4 tracePath];
-    v13 = [v11 initWithTracePath:v12];
+    tracePath2 = [request tracePath];
+    v13 = [v11 initWithTracePath:tracePath2];
   }
 
   else
   {
-    v13 = [v10 initWithWaypoints:v6 routeAttributes:v7];
+    v13 = [v10 initWithWaypoints:v6 routeAttributes:routeAttributes];
   }
 
   v14 = [[GEODirectionsRequestFeedback alloc] initWithPurpose:4 andSource:1];
   [v14 setAppIdentifier:MapsAppBundleId];
   [v13 setDirectionsRequestFeedback:v14];
-  v15 = [v4 auditToken];
-  [v13 setAuditToken:v15];
+  auditToken = [request auditToken];
+  [v13 setAuditToken:auditToken];
 
-  v16 = [v4 traits];
-  [v13 setTraits:v16];
+  traits = [request traits];
+  [v13 setTraits:traits];
 
-  v17 = [v4 traits];
-  v18 = [v17 deviceLocation];
+  traits2 = [request traits];
+  deviceLocation = [traits2 deviceLocation];
 
-  [v13 setCurrentUserLocation:v18];
+  [v13 setCurrentUserLocation:deviceLocation];
   ticket = self->_ticket;
   if (ticket)
   {
@@ -91,37 +91,37 @@
   objc_destroyWeak(buf);
 }
 
-- (void)_processIncomingRoutes:(id)a3 error:(id)a4 directionsError:(id)a5 fromTicket:(id)a6
+- (void)_processIncomingRoutes:(id)routes error:(id)error directionsError:(id)directionsError fromTicket:(id)ticket
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  routesCopy = routes;
+  errorCopy = error;
+  directionsErrorCopy = directionsError;
+  ticketCopy = ticket;
   if ([(NanoRoutePlanningState *)self isActive])
   {
     v14 = sub_100053324();
     v15 = v14;
-    if (v11 | v12)
+    if (errorCopy | directionsErrorCopy)
     {
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
         *buf = 134218498;
-        *&buf[4] = [v10 count];
+        *&buf[4] = [routesCopy count];
         v36 = 2114;
-        v37 = v11;
+        v37 = errorCopy;
         v38 = 2114;
-        v39 = v12;
+        v39 = directionsErrorCopy;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "Route request returned with %lu routes and error: %{public}@, directionsError: %{public}@", buf, 0x20u);
       }
 
       ticket = self->_ticket;
       self->_ticket = 0;
 
-      if (v12)
+      if (directionsErrorCopy)
       {
         v17 = +[GEODirectionsError key];
         v33 = v17;
-        v34 = v12;
+        v34 = directionsErrorCopy;
         v18 = [NSDictionary dictionaryWithObjects:&v34 forKeys:&v33 count:1];
         v19 = [v18 objectForKeyedSubscript:NSLocalizedDescriptionKey];
 
@@ -146,7 +146,7 @@
         goto LABEL_20;
       }
 
-      if (v11)
+      if (errorCopy)
       {
         v25 = sub_1000134CC(5);
         v17 = v25;
@@ -174,7 +174,7 @@ LABEL_20:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
         *buf = 134217984;
-        *&buf[4] = [v10 count];
+        *&buf[4] = [routesCopy count];
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "Route request returned %lu routes", buf, 0xCu);
       }
 
@@ -184,16 +184,16 @@ LABEL_20:
 
     v23 = 0;
 LABEL_21:
-    v26 = [(NanoRoutePlanningState *)self manager];
+    manager = [(NanoRoutePlanningState *)self manager];
     v29[0] = _NSConcreteStackBlock;
     v29[1] = 3221225472;
     v29[2] = sub_100010748;
     v29[3] = &unk_100085448;
-    v30 = v13;
+    v30 = ticketCopy;
     v31 = v23;
-    v32 = v10;
+    v32 = routesCopy;
     v27 = v23;
-    [v26 updateWithBlock:v29];
+    [manager updateWithBlock:v29];
   }
 }
 

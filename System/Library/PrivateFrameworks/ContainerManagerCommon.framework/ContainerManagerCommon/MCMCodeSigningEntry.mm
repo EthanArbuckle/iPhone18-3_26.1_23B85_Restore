@@ -1,27 +1,27 @@
 @interface MCMCodeSigningEntry
 - (BOOL)isAdvanceCopy;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isInvalid;
 - (BOOL)isPlaceholder;
 - (BOOL)isRegisteredByCaller;
 - (BOOL)isRegisteredByKernel;
-- (MCMCodeSigningEntry)initWithCodeSigningInfo:(id)a3;
-- (MCMCodeSigningEntry)initWithCodeSigningInfo:(id)a3 andDataContainerClass:(unint64_t)a4;
-- (MCMCodeSigningEntry)initWithSerializedDictionary:(id)a3;
+- (MCMCodeSigningEntry)initWithCodeSigningInfo:(id)info;
+- (MCMCodeSigningEntry)initWithCodeSigningInfo:(id)info andDataContainerClass:(unint64_t)class;
+- (MCMCodeSigningEntry)initWithSerializedDictionary:(id)dictionary;
 - (NSArray)childBundleIdentifiers;
 - (NSDictionary)codeSigningInfo;
 - (id)description;
 - (id)serialize;
 - (unint64_t)dataContainerClass;
 - (unint64_t)hash;
-- (void)setAdvanceCopy:(BOOL)a3;
-- (void)setChildBundleIdentifiers:(id)a3;
-- (void)setCodeSigningInfo:(id)a3;
-- (void)setDataContainerClass:(unint64_t)a3;
-- (void)setInvalid:(BOOL)a3;
-- (void)setPlaceholder:(BOOL)a3;
-- (void)setRegisteredByCaller:(BOOL)a3;
-- (void)setRegisteredByKernel:(BOOL)a3;
+- (void)setAdvanceCopy:(BOOL)copy;
+- (void)setChildBundleIdentifiers:(id)identifiers;
+- (void)setCodeSigningInfo:(id)info;
+- (void)setDataContainerClass:(unint64_t)class;
+- (void)setInvalid:(BOOL)invalid;
+- (void)setPlaceholder:(BOOL)placeholder;
+- (void)setRegisteredByCaller:(BOOL)caller;
+- (void)setRegisteredByKernel:(BOOL)kernel;
 @end
 
 @implementation MCMCodeSigningEntry
@@ -50,17 +50,17 @@
   return result;
 }
 
-- (void)setDataContainerClass:(unint64_t)a3
+- (void)setDataContainerClass:(unint64_t)class
 {
   v4 = *MEMORY[0x1E69E9840];
-  self->_dataContainerClass = a3;
+  self->_dataContainerClass = class;
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setRegisteredByKernel:(BOOL)a3
+- (void)setRegisteredByKernel:(BOOL)kernel
 {
   v4 = *MEMORY[0x1E69E9840];
-  self->_registeredByKernel = a3;
+  self->_registeredByKernel = kernel;
   v3 = *MEMORY[0x1E69E9840];
 }
 
@@ -72,17 +72,17 @@
   return result;
 }
 
-- (void)setRegisteredByCaller:(BOOL)a3
+- (void)setRegisteredByCaller:(BOOL)caller
 {
   v4 = *MEMORY[0x1E69E9840];
-  self->_registeredByCaller = a3;
+  self->_registeredByCaller = caller;
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setAdvanceCopy:(BOOL)a3
+- (void)setAdvanceCopy:(BOOL)copy
 {
   v4 = *MEMORY[0x1E69E9840];
-  self->_advanceCopy = a3;
+  self->_advanceCopy = copy;
   v3 = *MEMORY[0x1E69E9840];
 }
 
@@ -94,10 +94,10 @@
   return result;
 }
 
-- (void)setPlaceholder:(BOOL)a3
+- (void)setPlaceholder:(BOOL)placeholder
 {
   v4 = *MEMORY[0x1E69E9840];
-  self->_placeholder = a3;
+  self->_placeholder = placeholder;
   v3 = *MEMORY[0x1E69E9840];
 }
 
@@ -109,10 +109,10 @@
   return result;
 }
 
-- (void)setInvalid:(BOOL)a3
+- (void)setInvalid:(BOOL)invalid
 {
   v4 = *MEMORY[0x1E69E9840];
-  self->_invalid = a3;
+  self->_invalid = invalid;
   v3 = *MEMORY[0x1E69E9840];
 }
 
@@ -124,13 +124,13 @@
   return result;
 }
 
-- (void)setChildBundleIdentifiers:(id)a3
+- (void)setChildBundleIdentifiers:(id)identifiers
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E69E9840];
   p_childBundleIdentifiers = &self->_childBundleIdentifiers;
 
-  objc_storeStrong(p_childBundleIdentifiers, a3);
+  objc_storeStrong(p_childBundleIdentifiers, identifiers);
 }
 
 - (NSArray)childBundleIdentifiers
@@ -141,13 +141,13 @@
   return result;
 }
 
-- (void)setCodeSigningInfo:(id)a3
+- (void)setCodeSigningInfo:(id)info
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E69E9840];
   p_codeSigningInfo = &self->_codeSigningInfo;
 
-  objc_storeStrong(p_codeSigningInfo, a3);
+  objc_storeStrong(p_codeSigningInfo, info);
 }
 
 - (id)description
@@ -250,10 +250,10 @@ id __34__MCMCodeSigningEntry_description__block_invoke(uint64_t a1, char a2)
 - (unint64_t)hash
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [(MCMCodeSigningEntry *)self codeSigningInfo];
-  v4 = [v3 hash];
-  v5 = [(MCMCodeSigningEntry *)self childBundleIdentifiers];
-  v6 = [v5 hash];
+  codeSigningInfo = [(MCMCodeSigningEntry *)self codeSigningInfo];
+  v4 = [codeSigningInfo hash];
+  childBundleIdentifiers = [(MCMCodeSigningEntry *)self childBundleIdentifiers];
+  v6 = [childBundleIdentifiers hash];
   if ([(MCMCodeSigningEntry *)self isInvalid])
   {
     v7 = 2;
@@ -309,11 +309,11 @@ id __34__MCMCodeSigningEntry_description__block_invoke(uint64_t a1, char a2)
   return v7 + (v6 ^ v4) + v8 + v9 + 16 * v10 + v11 + v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -323,15 +323,15 @@ id __34__MCMCodeSigningEntry_description__block_invoke(uint64_t a1, char a2)
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(MCMCodeSigningEntry *)self codeSigningInfo];
-      if (v7 || ([(MCMCodeSigningEntry *)v6 codeSigningInfo], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+      v6 = equalCopy;
+      codeSigningInfo = [(MCMCodeSigningEntry *)self codeSigningInfo];
+      if (codeSigningInfo || ([(MCMCodeSigningEntry *)v6 codeSigningInfo], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
       {
-        v8 = [(MCMCodeSigningEntry *)self codeSigningInfo];
-        v9 = [(MCMCodeSigningEntry *)v6 codeSigningInfo];
-        v10 = [v8 isEqualToDictionary:v9];
+        codeSigningInfo2 = [(MCMCodeSigningEntry *)self codeSigningInfo];
+        codeSigningInfo3 = [(MCMCodeSigningEntry *)v6 codeSigningInfo];
+        v10 = [codeSigningInfo2 isEqualToDictionary:codeSigningInfo3];
 
-        if (v7)
+        if (codeSigningInfo)
         {
 
           if (!v10)
@@ -350,14 +350,14 @@ id __34__MCMCodeSigningEntry_description__block_invoke(uint64_t a1, char a2)
         }
       }
 
-      v12 = [(MCMCodeSigningEntry *)self childBundleIdentifiers];
-      if (v12 || ([(MCMCodeSigningEntry *)v6 childBundleIdentifiers], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+      childBundleIdentifiers = [(MCMCodeSigningEntry *)self childBundleIdentifiers];
+      if (childBundleIdentifiers || ([(MCMCodeSigningEntry *)v6 childBundleIdentifiers], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
       {
-        v13 = [(MCMCodeSigningEntry *)self childBundleIdentifiers];
-        v14 = [(MCMCodeSigningEntry *)v6 childBundleIdentifiers];
-        v15 = [v13 isEqualToArray:v14];
+        childBundleIdentifiers2 = [(MCMCodeSigningEntry *)self childBundleIdentifiers];
+        childBundleIdentifiers3 = [(MCMCodeSigningEntry *)v6 childBundleIdentifiers];
+        v15 = [childBundleIdentifiers2 isEqualToArray:childBundleIdentifiers3];
 
-        if (v12)
+        if (childBundleIdentifiers)
         {
 
           if (!v15)
@@ -376,23 +376,23 @@ id __34__MCMCodeSigningEntry_description__block_invoke(uint64_t a1, char a2)
         }
       }
 
-      v16 = [(MCMCodeSigningEntry *)self isInvalid];
-      if (v16 == [(MCMCodeSigningEntry *)v6 isInvalid])
+      isInvalid = [(MCMCodeSigningEntry *)self isInvalid];
+      if (isInvalid == [(MCMCodeSigningEntry *)v6 isInvalid])
       {
-        v17 = [(MCMCodeSigningEntry *)self isPlaceholder];
-        if (v17 == [(MCMCodeSigningEntry *)v6 isPlaceholder])
+        isPlaceholder = [(MCMCodeSigningEntry *)self isPlaceholder];
+        if (isPlaceholder == [(MCMCodeSigningEntry *)v6 isPlaceholder])
         {
-          v18 = [(MCMCodeSigningEntry *)self isAdvanceCopy];
-          if (v18 == [(MCMCodeSigningEntry *)v6 isAdvanceCopy])
+          isAdvanceCopy = [(MCMCodeSigningEntry *)self isAdvanceCopy];
+          if (isAdvanceCopy == [(MCMCodeSigningEntry *)v6 isAdvanceCopy])
           {
-            v19 = [(MCMCodeSigningEntry *)self isRegisteredByCaller];
-            if (v19 == [(MCMCodeSigningEntry *)v6 isRegisteredByCaller])
+            isRegisteredByCaller = [(MCMCodeSigningEntry *)self isRegisteredByCaller];
+            if (isRegisteredByCaller == [(MCMCodeSigningEntry *)v6 isRegisteredByCaller])
             {
-              v20 = [(MCMCodeSigningEntry *)self isRegisteredByKernel];
-              if (v20 == [(MCMCodeSigningEntry *)v6 isRegisteredByKernel])
+              isRegisteredByKernel = [(MCMCodeSigningEntry *)self isRegisteredByKernel];
+              if (isRegisteredByKernel == [(MCMCodeSigningEntry *)v6 isRegisteredByKernel])
               {
-                v23 = [(MCMCodeSigningEntry *)self dataContainerClass];
-                v11 = v23 == [(MCMCodeSigningEntry *)v6 dataContainerClass];
+                dataContainerClass = [(MCMCodeSigningEntry *)self dataContainerClass];
+                v11 = dataContainerClass == [(MCMCodeSigningEntry *)v6 dataContainerClass];
                 goto LABEL_23;
               }
             }
@@ -420,11 +420,11 @@ LABEL_24:
 {
   v15 = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
-  v4 = [(MCMCodeSigningEntry *)self codeSigningInfo];
-  [v3 setObject:v4 forKeyedSubscript:@"CodeSigningInfo"];
+  codeSigningInfo = [(MCMCodeSigningEntry *)self codeSigningInfo];
+  [v3 setObject:codeSigningInfo forKeyedSubscript:@"CodeSigningInfo"];
 
-  v5 = [(MCMCodeSigningEntry *)self childBundleIdentifiers];
-  [v3 setObject:v5 forKeyedSubscript:@"ChildBundleIds"];
+  childBundleIdentifiers = [(MCMCodeSigningEntry *)self childBundleIdentifiers];
+  [v3 setObject:childBundleIdentifiers forKeyedSubscript:@"ChildBundleIds"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[MCMCodeSigningEntry isInvalid](self, "isInvalid")}];
   [v3 setObject:v6 forKeyedSubscript:@"Invalid"];
@@ -450,39 +450,39 @@ LABEL_24:
   return v12;
 }
 
-- (MCMCodeSigningEntry)initWithSerializedDictionary:(id)a3
+- (MCMCodeSigningEntry)initWithSerializedDictionary:(id)dictionary
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v18.receiver = self;
   v18.super_class = MCMCodeSigningEntry;
   v5 = [(MCMCodeSigningEntry *)&v18 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"CodeSigningInfo"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"CodeSigningInfo"];
     codeSigningInfo = v5->_codeSigningInfo;
     v5->_codeSigningInfo = v6;
 
-    v8 = [v4 objectForKeyedSubscript:@"ChildBundleIds"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"ChildBundleIds"];
     childBundleIdentifiers = v5->_childBundleIdentifiers;
     v5->_childBundleIdentifiers = v8;
 
-    v10 = [v4 objectForKeyedSubscript:@"Invalid"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"Invalid"];
     v5->_invalid = [v10 BOOLValue];
 
-    v11 = [v4 objectForKeyedSubscript:@"Placeholder"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"Placeholder"];
     v5->_placeholder = [v11 BOOLValue];
 
-    v12 = [v4 objectForKeyedSubscript:@"AdvanceCopy"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"AdvanceCopy"];
     v5->_advanceCopy = [v12 BOOLValue];
 
-    v13 = [v4 objectForKeyedSubscript:@"RegisteredByCaller"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"RegisteredByCaller"];
     v5->_registeredByCaller = [v13 BOOLValue];
 
-    v14 = [v4 objectForKeyedSubscript:@"RegisteredByKernel"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"RegisteredByKernel"];
     v5->_registeredByKernel = [v14 BOOLValue];
 
-    v15 = [v4 objectForKeyedSubscript:@"DataContainerClass"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"DataContainerClass"];
     v5->_dataContainerClass = [v15 unsignedLongLongValue];
   }
 
@@ -490,31 +490,31 @@ LABEL_24:
   return v5;
 }
 
-- (MCMCodeSigningEntry)initWithCodeSigningInfo:(id)a3
+- (MCMCodeSigningEntry)initWithCodeSigningInfo:(id)info
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E69E9840];
 
-  return [(MCMCodeSigningEntry *)self initWithCodeSigningInfo:a3 andDataContainerClass:0];
+  return [(MCMCodeSigningEntry *)self initWithCodeSigningInfo:info andDataContainerClass:0];
 }
 
-- (MCMCodeSigningEntry)initWithCodeSigningInfo:(id)a3 andDataContainerClass:(unint64_t)a4
+- (MCMCodeSigningEntry)initWithCodeSigningInfo:(id)info andDataContainerClass:(unint64_t)class
 {
   v14 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  infoCopy = info;
   v13.receiver = self;
   v13.super_class = MCMCodeSigningEntry;
   v8 = [(MCMCodeSigningEntry *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_codeSigningInfo, a3);
+    objc_storeStrong(&v8->_codeSigningInfo, info);
     childBundleIdentifiers = v9->_childBundleIdentifiers;
     v9->_childBundleIdentifiers = 0;
 
     v9->_registeredByKernel = 0;
     *&v9->_invalid = 0;
-    v9->_dataContainerClass = a4;
+    v9->_dataContainerClass = class;
   }
 
   v11 = *MEMORY[0x1E69E9840];

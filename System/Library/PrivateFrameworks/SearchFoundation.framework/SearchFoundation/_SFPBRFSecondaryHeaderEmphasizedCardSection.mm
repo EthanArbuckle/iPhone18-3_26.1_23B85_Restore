@@ -1,28 +1,28 @@
 @interface _SFPBRFSecondaryHeaderEmphasizedCardSection
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBRFSecondaryHeaderEmphasizedCardSection)initWithDictionary:(id)a3;
-- (_SFPBRFSecondaryHeaderEmphasizedCardSection)initWithFacade:(id)a3;
-- (_SFPBRFSecondaryHeaderEmphasizedCardSection)initWithJSON:(id)a3;
+- (_SFPBRFSecondaryHeaderEmphasizedCardSection)initWithDictionary:(id)dictionary;
+- (_SFPBRFSecondaryHeaderEmphasizedCardSection)initWithFacade:(id)facade;
+- (_SFPBRFSecondaryHeaderEmphasizedCardSection)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBRFSecondaryHeaderEmphasizedCardSection
 
-- (_SFPBRFSecondaryHeaderEmphasizedCardSection)initWithFacade:(id)a3
+- (_SFPBRFSecondaryHeaderEmphasizedCardSection)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBRFSecondaryHeaderEmphasizedCardSection *)self init];
   if (v5)
   {
-    v6 = [v4 text];
+    text = [facadeCopy text];
 
-    if (v6)
+    if (text)
     {
       v7 = [_SFPBRFTextProperty alloc];
-      v8 = [v4 text];
-      v9 = [(_SFPBRFTextProperty *)v7 initWithFacade:v8];
+      text2 = [facadeCopy text];
+      v9 = [(_SFPBRFTextProperty *)v7 initWithFacade:text2];
       [(_SFPBRFSecondaryHeaderEmphasizedCardSection *)v5 setText_1:v9];
     }
 
@@ -32,15 +32,15 @@
   return v5;
 }
 
-- (_SFPBRFSecondaryHeaderEmphasizedCardSection)initWithDictionary:(id)a3
+- (_SFPBRFSecondaryHeaderEmphasizedCardSection)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = _SFPBRFSecondaryHeaderEmphasizedCardSection;
   v5 = [(_SFPBRFSecondaryHeaderEmphasizedCardSection *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"text1"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"text1"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -54,30 +54,30 @@
   return v5;
 }
 
-- (_SFPBRFSecondaryHeaderEmphasizedCardSection)initWithJSON:(id)a3
+- (_SFPBRFSecondaryHeaderEmphasizedCardSection)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBRFSecondaryHeaderEmphasizedCardSection *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBRFSecondaryHeaderEmphasizedCardSection *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBRFSecondaryHeaderEmphasizedCardSection *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -90,38 +90,38 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_text_1)
   {
-    v4 = [(_SFPBRFSecondaryHeaderEmphasizedCardSection *)self text];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    text = [(_SFPBRFSecondaryHeaderEmphasizedCardSection *)self text];
+    dictionaryRepresentation = [text dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"text1"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"text1"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"text1"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"text1"];
     }
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_SFPBRFSecondaryHeaderEmphasizedCardSection *)self text];
-    v6 = [v4 text];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    text = [(_SFPBRFSecondaryHeaderEmphasizedCardSection *)self text];
+    text2 = [equalCopy text];
+    v7 = text2;
+    if ((text != 0) != (text2 == 0))
     {
-      v8 = [(_SFPBRFSecondaryHeaderEmphasizedCardSection *)self text];
-      if (!v8)
+      text3 = [(_SFPBRFSecondaryHeaderEmphasizedCardSection *)self text];
+      if (!text3)
       {
 
 LABEL_10:
@@ -129,10 +129,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(_SFPBRFSecondaryHeaderEmphasizedCardSection *)self text];
-      v11 = [v4 text];
-      v12 = [v10 isEqual:v11];
+      v9 = text3;
+      text4 = [(_SFPBRFSecondaryHeaderEmphasizedCardSection *)self text];
+      text5 = [equalCopy text];
+      v12 = [text4 isEqual:text5];
 
       if (v12)
       {
@@ -151,11 +151,11 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
-  v4 = [(_SFPBRFSecondaryHeaderEmphasizedCardSection *)self text];
-  if (v4)
+  toCopy = to;
+  text = [(_SFPBRFSecondaryHeaderEmphasizedCardSection *)self text];
+  if (text)
   {
     PBDataWriterWriteSubmessage();
   }

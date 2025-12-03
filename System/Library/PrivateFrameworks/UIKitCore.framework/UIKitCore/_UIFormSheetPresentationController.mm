@@ -4,10 +4,10 @@
 - (BOOL)_shouldPresentedViewControllerControlStatusBarAppearance;
 - (BOOL)shouldSubscribeToKeyboardNotifications;
 - (CGRect)frameOfPresentedViewInContainerView;
-- (CGSize)sizeForChildContentContainer:(id)a3 withParentContainerSize:(CGSize)a4;
-- (int64_t)_defaultPresentationStyleForTraitCollection:(id)a3;
-- (void)_changeLayoutModeToAvoidKeyboard:(BOOL)a3 withOrigin:(double)a4;
-- (void)_keyboardWillShow:(id)a3;
+- (CGSize)sizeForChildContentContainer:(id)container withParentContainerSize:(CGSize)size;
+- (int64_t)_defaultPresentationStyleForTraitCollection:(id)collection;
+- (void)_changeLayoutModeToAvoidKeyboard:(BOOL)keyboard withOrigin:(double)origin;
+- (void)_keyboardWillShow:(id)show;
 - (void)dismissalTransitionWillBegin;
 - (void)presentationTransitionWillBegin;
 @end
@@ -16,8 +16,8 @@
 
 - (BOOL)_shouldPresentedViewControllerControlStatusBarAppearance
 {
-  v3 = [(UIPresentationController *)self presentedViewController];
-  v4 = _UISheetPresentationControllerStylesSheetsAsCards(v3);
+  presentedViewController = [(UIPresentationController *)self presentedViewController];
+  v4 = _UISheetPresentationControllerStylesSheetsAsCards(presentedViewController);
 
   if (v4)
   {
@@ -38,44 +38,44 @@
   v10.receiver = self;
   v10.super_class = _UIFormSheetPresentationController;
   [(UISheetPresentationController *)&v10 presentationTransitionWillBegin];
-  v3 = [(UIPresentationController *)self presentedViewController];
-  v4 = _UISheetPresentationControllerStylesSheetsAsCards(v3);
+  presentedViewController = [(UIPresentationController *)self presentedViewController];
+  v4 = _UISheetPresentationControllerStylesSheetsAsCards(presentedViewController);
 
   if ((v4 & 1) == 0)
   {
-    v5 = [(UISheetPresentationController *)self dropShadowView];
-    [v5 setAutoresizingMask:45];
+    dropShadowView = [(UISheetPresentationController *)self dropShadowView];
+    [dropShadowView setAutoresizingMask:45];
   }
 
-  v6 = [(UIPresentationController *)self presentedViewController];
-  v7 = [v6 disablesAutomaticKeyboardDismissal];
+  presentedViewController2 = [(UIPresentationController *)self presentedViewController];
+  disablesAutomaticKeyboardDismissal = [presentedViewController2 disablesAutomaticKeyboardDismissal];
 
-  if (v7)
+  if (disablesAutomaticKeyboardDismissal)
   {
-    v8 = [(UIPresentationController *)self presentedViewController];
-    [v8 _beginPinningInputViews];
+    presentedViewController3 = [(UIPresentationController *)self presentedViewController];
+    [presentedViewController3 _beginPinningInputViews];
   }
 
   if ([(_UIFormSheetPresentationController *)self shouldSubscribeToKeyboardNotifications])
   {
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 addObserver:self selector:sel__keyboardWillShow_ name:@"UIKeyboardPrivateWillShowNotification" object:0];
-    [v9 addObserver:self selector:sel__keyboardWillHide_ name:@"UIKeyboardPrivateWillHideNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__keyboardWillShow_ name:@"UIKeyboardPrivateWillShowNotification" object:0];
+    [defaultCenter addObserver:self selector:sel__keyboardWillHide_ name:@"UIKeyboardPrivateWillHideNotification" object:0];
   }
 }
 
 - (BOOL)shouldSubscribeToKeyboardNotifications
 {
-  v2 = [(UIPresentationController *)self presentedViewController];
-  v3 = _UISheetPresentationControllerStylesSheetsAsCards(v2);
+  presentedViewController = [(UIPresentationController *)self presentedViewController];
+  v3 = _UISheetPresentationControllerStylesSheetsAsCards(presentedViewController);
 
   return v3 ^ 1;
 }
 
 - (CGRect)frameOfPresentedViewInContainerView
 {
-  v3 = [(UIPresentationController *)self presentedViewController];
-  v4 = _UISheetPresentationControllerStylesSheetsAsCards(v3);
+  presentedViewController = [(UIPresentationController *)self presentedViewController];
+  v4 = _UISheetPresentationControllerStylesSheetsAsCards(presentedViewController);
 
   if (v4)
   {
@@ -88,32 +88,32 @@
 
   else
   {
-    v11 = [(UIPresentationController *)self containerView];
-    [v11 bounds];
+    containerView = [(UIPresentationController *)self containerView];
+    [containerView bounds];
     v13 = v12;
     v15 = v14;
     v17 = v16;
     v19 = v18;
 
-    v20 = [(UIPresentationController *)self containerView];
-    [v20 safeAreaInsets];
+    containerView2 = [(UIPresentationController *)self containerView];
+    [containerView2 safeAreaInsets];
 
-    v21 = [(UIPresentationController *)self presentingViewController];
-    v22 = [(UIPresentationController *)self presentedViewController];
-    v23 = _UISheetContentContainerSize(v21, v22, v17, v19);
+    presentingViewController = [(UIPresentationController *)self presentingViewController];
+    presentedViewController2 = [(UIPresentationController *)self presentedViewController];
+    v23 = _UISheetContentContainerSize(presentingViewController, presentedViewController2, v17, v19);
     v25 = v24;
 
-    v26 = [(UIPresentationController *)self presentedViewController];
-    v27 = [(UIPresentationController *)self containerView];
-    v28 = [v27 _screen];
-    [v28 bounds];
-    [v26 _formSheetSizeForWindowWithSize:v23 screenSize:v25];
+    presentedViewController3 = [(UIPresentationController *)self presentedViewController];
+    containerView3 = [(UIPresentationController *)self containerView];
+    _screen = [containerView3 _screen];
+    [_screen bounds];
+    [presentedViewController3 _formSheetSizeForWindowWithSize:v23 screenSize:v25];
     v8 = v29;
     v10 = v30;
 
-    v31 = [(_UIFormSheetPresentationController *)self _shouldHideBottomCorner];
-    v32 = [(UISheetPresentationController *)self dropShadowView];
-    [v32 setMasksTopCornersOnly:v31];
+    _shouldHideBottomCorner = [(_UIFormSheetPresentationController *)self _shouldHideBottomCorner];
+    dropShadowView = [(UISheetPresentationController *)self dropShadowView];
+    [dropShadowView setMasksTopCornersOnly:_shouldHideBottomCorner];
 
     if ([(_UIFormSheetPresentationController *)self _shouldHideBottomCorner])
     {
@@ -124,9 +124,9 @@
     else if (self->_layoutStateShouldAvoidKeyboard && (-[UIPresentationController presentedViewController](self, "presentedViewController"), v33 = objc_claimAutoreleasedReturnValue(), v34 = [v33 interfaceOrientation] - 5, v33, v34 > 0xFFFFFFFFFFFFFFFDLL))
     {
       v35 = v15 + (self->_keyboardYOrigin - v10) * 0.5;
-      v36 = [(UIPresentationController *)self containerView];
-      v37 = [v36 window];
-      v38 = __UIStatusBarManagerForWindow(v37);
+      containerView4 = [(UIPresentationController *)self containerView];
+      window = [containerView4 window];
+      v38 = __UIStatusBarManagerForWindow(window);
       [v38 defaultStatusBarHeightInOrientation:1];
       v40 = v39;
 
@@ -165,25 +165,25 @@
   [(UISheetPresentationController *)&v7 dismissalTransitionWillBegin];
   if ([(_UIFormSheetPresentationController *)self shouldSubscribeToKeyboardNotifications])
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 removeObserver:self name:@"UIKeyboardPrivateWillShowNotification" object:0];
-    [v3 removeObserver:self name:@"UIKeyboardPrivateWillHideNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:@"UIKeyboardPrivateWillShowNotification" object:0];
+    [defaultCenter removeObserver:self name:@"UIKeyboardPrivateWillHideNotification" object:0];
   }
 
-  v4 = [(UIPresentationController *)self presentedViewController];
-  v5 = [v4 disablesAutomaticKeyboardDismissal];
+  presentedViewController = [(UIPresentationController *)self presentedViewController];
+  disablesAutomaticKeyboardDismissal = [presentedViewController disablesAutomaticKeyboardDismissal];
 
-  if (v5)
+  if (disablesAutomaticKeyboardDismissal)
   {
-    v6 = [(UIPresentationController *)self presentedViewController];
-    [v6 _endPinningInputViews];
+    presentedViewController2 = [(UIPresentationController *)self presentedViewController];
+    [presentedViewController2 _endPinningInputViews];
   }
 }
 
-- (void)_keyboardWillShow:(id)a3
+- (void)_keyboardWillShow:(id)show
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 valueForKey:@"UIKeyboardFrameEndUserInfoKey"];
+  userInfo = [show userInfo];
+  v5 = [userInfo valueForKey:@"UIKeyboardFrameEndUserInfoKey"];
   [v5 CGRectValue];
   v7 = v6;
   v9 = v8;
@@ -199,14 +199,14 @@
   [(_UIFormSheetPresentationController *)self _changeLayoutModeToAvoidKeyboard:1 withOrigin:MinY];
 }
 
-- (void)_changeLayoutModeToAvoidKeyboard:(BOOL)a3 withOrigin:(double)a4
+- (void)_changeLayoutModeToAvoidKeyboard:(BOOL)keyboard withOrigin:(double)origin
 {
-  if (self->_layoutStateShouldAvoidKeyboard != a3 || self->_keyboardYOrigin != a4)
+  if (self->_layoutStateShouldAvoidKeyboard != keyboard || self->_keyboardYOrigin != origin)
   {
-    self->_layoutStateShouldAvoidKeyboard = a3;
-    self->_keyboardYOrigin = a4;
-    v5 = [(UIPresentationController *)self containerView];
-    [v5 setNeedsLayout];
+    self->_layoutStateShouldAvoidKeyboard = keyboard;
+    self->_keyboardYOrigin = origin;
+    containerView = [(UIPresentationController *)self containerView];
+    [containerView setNeedsLayout];
 
     if ([(UIPresentationController *)self presented])
     {
@@ -222,26 +222,26 @@
 
 - (BOOL)_shouldHideBottomCorner
 {
-  v2 = [(UIPresentationController *)self traitCollection];
-  v3 = [v2 userInterfaceIdiom] == 0;
+  traitCollection = [(UIPresentationController *)self traitCollection];
+  v3 = [traitCollection userInterfaceIdiom] == 0;
 
   return v3;
 }
 
-- (CGSize)sizeForChildContentContainer:(id)a3 withParentContainerSize:(CGSize)a4
+- (CGSize)sizeForChildContentContainer:(id)container withParentContainerSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
-  v8 = [(UIPresentationController *)self presentedViewController];
+  height = size.height;
+  width = size.width;
+  containerCopy = container;
+  presentedViewController = [(UIPresentationController *)self presentedViewController];
 
-  if (v8 == v7)
+  if (presentedViewController == containerCopy)
   {
-    v13 = [(UIPresentationController *)self presentedViewController];
-    v14 = [(UIPresentationController *)self containerView];
-    v15 = [v14 _screen];
-    [v15 bounds];
-    [v13 _formSheetSizeForWindowWithSize:width screenSize:height];
+    presentedViewController2 = [(UIPresentationController *)self presentedViewController];
+    containerView = [(UIPresentationController *)self containerView];
+    _screen = [containerView _screen];
+    [_screen bounds];
+    [presentedViewController2 _formSheetSizeForWindowWithSize:width screenSize:height];
     v10 = v16;
     v12 = v17;
   }
@@ -250,7 +250,7 @@
   {
     v20.receiver = self;
     v20.super_class = _UIFormSheetPresentationController;
-    [(UIPresentationController *)&v20 sizeForChildContentContainer:v7 withParentContainerSize:width, height];
+    [(UIPresentationController *)&v20 sizeForChildContentContainer:containerCopy withParentContainerSize:width, height];
     v10 = v9;
     v12 = v11;
   }
@@ -262,23 +262,23 @@
   return result;
 }
 
-- (int64_t)_defaultPresentationStyleForTraitCollection:(id)a3
+- (int64_t)_defaultPresentationStyleForTraitCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(UIPresentationController *)self presentedViewController];
-  if (_UISheetPresentationControllerStylesSheetsAsCards(v5))
+  collectionCopy = collection;
+  presentedViewController = [(UIPresentationController *)self presentedViewController];
+  if (_UISheetPresentationControllerStylesSheetsAsCards(presentedViewController))
   {
 
 LABEL_5:
     v9.receiver = self;
     v9.super_class = _UIFormSheetPresentationController;
-    v7 = [(UIPresentationController *)&v9 _defaultPresentationStyleForTraitCollection:v4];
+    v7 = [(UIPresentationController *)&v9 _defaultPresentationStyleForTraitCollection:collectionCopy];
     goto LABEL_6;
   }
 
-  v6 = [v4 horizontalSizeClass];
+  horizontalSizeClass = [collectionCopy horizontalSizeClass];
 
-  if (v6 != 1)
+  if (horizontalSizeClass != 1)
   {
     goto LABEL_5;
   }
@@ -291,8 +291,8 @@ LABEL_6:
 
 - (BOOL)_presentationPotentiallyUnderlapsStatusBar
 {
-  v2 = [(UIPresentationController *)self presentedViewController];
-  v3 = _UISheetPresentationControllerStylesSheetsAsCards(v2);
+  presentedViewController = [(UIPresentationController *)self presentedViewController];
+  v3 = _UISheetPresentationControllerStylesSheetsAsCards(presentedViewController);
 
   return v3;
 }

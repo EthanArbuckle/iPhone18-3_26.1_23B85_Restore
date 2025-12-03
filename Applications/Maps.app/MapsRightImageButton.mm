@@ -1,15 +1,15 @@
 @interface MapsRightImageButton
-- (CGRect)imageRectForContentRect:(CGRect)a3;
-- (CGRect)titleRectForContentRect:(CGRect)a3;
+- (CGRect)imageRectForContentRect:(CGRect)rect;
+- (CGRect)titleRectForContentRect:(CGRect)rect;
 @end
 
 @implementation MapsRightImageButton
 
-- (CGRect)imageRectForContentRect:(CGRect)a3
+- (CGRect)imageRectForContentRect:(CGRect)rect
 {
   v17.receiver = self;
   v17.super_class = MapsRightImageButton;
-  [(MapsRightImageButton *)&v17 imageRectForContentRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(MapsRightImageButton *)&v17 imageRectForContentRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -31,11 +31,11 @@
   return result;
 }
 
-- (CGRect)titleRectForContentRect:(CGRect)a3
+- (CGRect)titleRectForContentRect:(CGRect)rect
 {
   v17.receiver = self;
   v17.super_class = MapsRightImageButton;
-  [(MapsRightImageButton *)&v17 titleRectForContentRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(MapsRightImageButton *)&v17 titleRectForContentRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v5 = v4;
   v7 = v6;
   v9 = v8;

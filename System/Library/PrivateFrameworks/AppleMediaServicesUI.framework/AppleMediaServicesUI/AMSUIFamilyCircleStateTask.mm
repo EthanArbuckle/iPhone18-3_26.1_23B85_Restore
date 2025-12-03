@@ -1,14 +1,14 @@
 @interface AMSUIFamilyCircleStateTask
-- (AMSUIFamilyCircleStateTask)initWithJSONDictionary:(id)a3 presentingViewController:(id)a4;
+- (AMSUIFamilyCircleStateTask)initWithJSONDictionary:(id)dictionary presentingViewController:(id)controller;
 - (id)present;
 @end
 
 @implementation AMSUIFamilyCircleStateTask
 
-- (AMSUIFamilyCircleStateTask)initWithJSONDictionary:(id)a3 presentingViewController:(id)a4
+- (AMSUIFamilyCircleStateTask)initWithJSONDictionary:(id)dictionary presentingViewController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  controllerCopy = controller;
   v30.receiver = self;
   v30.super_class = AMSUIFamilyCircleStateTask;
   v8 = [(AMSTask *)&v30 init];
@@ -18,8 +18,8 @@
     goto LABEL_19;
   }
 
-  [(AMSUIFamilyCircleStateTask *)v8 setPresentingViewController:v7];
-  v10 = [v6 objectForKeyedSubscript:@"eventType"];
+  [(AMSUIFamilyCircleStateTask *)v8 setPresentingViewController:controllerCopy];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"eventType"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -31,19 +31,19 @@
     v11 = 0;
   }
 
-  v12 = [v6 objectForKeyedSubscript:@"clientBundleID"];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"clientBundleID"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v13 = v12;
+    bundleIdentifier = v12;
   }
 
   else
   {
-    v13 = 0;
+    bundleIdentifier = 0;
   }
 
-  v14 = [v6 objectForKeyedSubscript:@"clientName"];
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"clientName"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -55,7 +55,7 @@
     v15 = 0;
   }
 
-  v16 = [v6 objectForKeyedSubscript:@"additionalParameters"];
+  v16 = [dictionaryCopy objectForKeyedSubscript:@"additionalParameters"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -97,7 +97,7 @@
     }
 
     v11 = *v25;
-    if (v13)
+    if (bundleIdentifier)
     {
       goto LABEL_16;
     }
@@ -105,11 +105,11 @@
     goto LABEL_24;
   }
 
-  if (!v13)
+  if (!bundleIdentifier)
   {
 LABEL_24:
-    v28 = [MEMORY[0x1E696AAE8] mainBundle];
-    v13 = [v28 bundleIdentifier];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
   }
 
 LABEL_16:
@@ -134,14 +134,14 @@ LABEL_16:
   v20 = [[v18 alloc] initWithEventType:v11];
   [(AMSUIFamilyCircleStateTask *)v9 setFaContext:v20];
 
-  v21 = [(AMSUIFamilyCircleStateTask *)v9 faContext];
-  [v21 setClientBundleID:v13];
+  faContext = [(AMSUIFamilyCircleStateTask *)v9 faContext];
+  [faContext setClientBundleID:bundleIdentifier];
 
-  v22 = [(AMSUIFamilyCircleStateTask *)v9 faContext];
-  [v22 setClientName:v15];
+  faContext2 = [(AMSUIFamilyCircleStateTask *)v9 faContext];
+  [faContext2 setClientName:v15];
 
-  v23 = [(AMSUIFamilyCircleStateTask *)v9 faContext];
-  [v23 setAdditionalParameters:v17];
+  faContext3 = [(AMSUIFamilyCircleStateTask *)v9 faContext];
+  [faContext3 setAdditionalParameters:v17];
 
 LABEL_19:
   return v9;
@@ -173,8 +173,8 @@ LABEL_19:
   v4 = v3;
   _Block_object_dispose(&v14, 8);
   v5 = [v3 alloc];
-  v6 = [(AMSUIFamilyCircleStateTask *)self presentingViewController];
-  v12 = [v5 initWithPresenter:v6];
+  presentingViewController = [(AMSUIFamilyCircleStateTask *)self presentingViewController];
+  v12 = [v5 initWithPresenter:presentingViewController];
 
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -183,11 +183,11 @@ LABEL_19:
   v10[4] = self;
   v10[5] = v11;
   v7 = [(AMSTask *)self performTaskWithPromiseBlock:v10];
-  v8 = [v7 binaryPromiseAdapter];
+  binaryPromiseAdapter = [v7 binaryPromiseAdapter];
 
   _Block_object_dispose(v11, 8);
 
-  return v8;
+  return binaryPromiseAdapter;
 }
 
 id __37__AMSUIFamilyCircleStateTask_present__block_invoke(uint64_t a1)

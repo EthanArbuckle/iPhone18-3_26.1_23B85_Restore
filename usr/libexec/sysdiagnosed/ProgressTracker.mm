@@ -1,6 +1,6 @@
 @interface ProgressTracker
 - (double)getProgress;
-- (double)increaseCountForPhase:(int)a3;
+- (double)increaseCountForPhase:(int)phase;
 @end
 
 @implementation ProgressTracker
@@ -40,11 +40,11 @@
   return v5 + v4 + v9 + v8;
 }
 
-- (double)increaseCountForPhase:(int)a3
+- (double)increaseCountForPhase:(int)phase
 {
-  v5 = [(ProgressTracker *)self phaseTracker];
-  v6 = 8 * a3 + 32;
-  *(v5 + v6) = *(v5 + v6) + 1.0;
+  phaseTracker = [(ProgressTracker *)self phaseTracker];
+  v6 = 8 * phase + 32;
+  *(phaseTracker + v6) = *(phaseTracker + v6) + 1.0;
   return *([(ProgressTracker *)self phaseTracker]+ v6);
 }
 

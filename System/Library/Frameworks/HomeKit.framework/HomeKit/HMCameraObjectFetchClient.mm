@@ -1,42 +1,42 @@
 @interface HMCameraObjectFetchClient
 + (id)logCategory;
-- (HMCameraObjectFetchClient)initWithUUID:(id)a3 context:(id)a4 messageName:(id)a5 destination:(id)a6;
+- (HMCameraObjectFetchClient)initWithUUID:(id)d context:(id)context messageName:(id)name destination:(id)destination;
 - (id)logIdentifier;
 - (void)dealloc;
-- (void)fetchWithCompletion:(id)a3;
-- (void)handleDidFetchObjectsMessage:(id)a3;
+- (void)fetchWithCompletion:(id)completion;
+- (void)handleDidFetchObjectsMessage:(id)message;
 @end
 
 @implementation HMCameraObjectFetchClient
 
 - (id)logIdentifier
 {
-  v2 = [(HMCameraObjectFetchClient *)self UUID];
-  v3 = [v2 UUIDString];
+  uUID = [(HMCameraObjectFetchClient *)self UUID];
+  uUIDString = [uUID UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (void)handleDidFetchObjectsMessage:(id)a3
+- (void)handleDidFetchObjectsMessage:(id)message
 {
   v47[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 messagePayload];
-  v6 = [v5 objectForKeyedSubscript:@"HMCOFC.mk.fo"];
+  messageCopy = message;
+  messagePayload = [messageCopy messagePayload];
+  v6 = [messagePayload objectForKeyedSubscript:@"HMCOFC.mk.fo"];
 
   if (!v6)
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       v18 = HMFGetLogIdentifier();
-      v19 = [v4 messagePayload];
+      messagePayload2 = [messageCopy messagePayload];
       *buf = 138543618;
       v42 = v18;
       v43 = 2112;
-      v44 = v19;
+      v44 = messagePayload2;
       _os_log_impl(&dword_19BB39000, v17, OS_LOG_TYPE_ERROR, "%{public}@Could not find fetched objects in message payload: %@", buf, 0x16u);
     }
 
@@ -44,8 +44,8 @@
     goto LABEL_21;
   }
 
-  v7 = [(HMCameraObjectFetchClient *)self classForUnarchiving];
-  if (!v7)
+  classForUnarchiving = [(HMCameraObjectFetchClient *)self classForUnarchiving];
+  if (!classForUnarchiving)
   {
     v14 = v6;
     objc_opt_class();
@@ -66,7 +66,7 @@
     {
 LABEL_12:
       v24 = objc_autoreleasePoolPush();
-      v25 = self;
+      selfCopy2 = self;
       v26 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
       {
@@ -80,15 +80,15 @@ LABEL_12:
       }
 
       objc_autoreleasePoolPop(v24);
-      v29 = [(HMCameraObjectFetchClient *)v25 fetchedObjects];
-      [v29 addObjectsFromArray:v14];
+      fetchedObjects = [(HMCameraObjectFetchClient *)selfCopy2 fetchedObjects];
+      [fetchedObjects addObjectsFromArray:v14];
 
-      [v4 respondWithPayload:0];
+      [messageCopy respondWithPayload:0];
       goto LABEL_22;
     }
 
     v35 = objc_autoreleasePoolPush();
-    v36 = self;
+    selfCopy3 = self;
     v37 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
     {
@@ -104,11 +104,11 @@ LABEL_12:
 LABEL_21:
     objc_autoreleasePoolPop(v20);
     v14 = [MEMORY[0x1E696ABC0] hmErrorWithCode:20];
-    [v4 respondWithError:v14];
+    [messageCopy respondWithError:v14];
     goto LABEL_22;
   }
 
-  v8 = v7;
+  v8 = classForUnarchiving;
   v9 = MEMORY[0x1E696ACD0];
   v10 = MEMORY[0x1E695DFD8];
   v47[0] = objc_opt_class();
@@ -127,7 +127,7 @@ LABEL_21:
   }
 
   v30 = objc_autoreleasePoolPush();
-  v31 = self;
+  selfCopy4 = self;
   v32 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
   {
@@ -143,41 +143,41 @@ LABEL_21:
 
   objc_autoreleasePoolPop(v30);
   v34 = [MEMORY[0x1E696ABC0] hmErrorWithCode:20];
-  [v4 respondWithError:v34];
+  [messageCopy respondWithError:v34];
 
 LABEL_22:
   v39 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchWithCompletion:(id)a3
+- (void)fetchWithCompletion:(id)completion
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HMCameraObjectFetchClient *)self context];
-  v6 = [v5 messageDispatcher];
-  [v6 registerForMessage:@"HMCOFC.m.dfo" receiver:self selector:sel_handleDidFetchObjectsMessage_];
+  completionCopy = completion;
+  context = [(HMCameraObjectFetchClient *)self context];
+  messageDispatcher = [context messageDispatcher];
+  [messageDispatcher registerForMessage:@"HMCOFC.m.dfo" receiver:self selector:sel_handleDidFetchObjectsMessage_];
 
-  v7 = [(HMCameraObjectFetchClient *)self payload];
-  v8 = [v7 mutableCopy];
+  payload = [(HMCameraObjectFetchClient *)self payload];
+  v8 = [payload mutableCopy];
 
-  v9 = [(HMCameraObjectFetchClient *)self UUID];
-  [v8 setObject:v9 forKeyedSubscript:@"HMCOFC.mk.u"];
+  uUID = [(HMCameraObjectFetchClient *)self UUID];
+  [v8 setObject:uUID forKeyedSubscript:@"HMCOFC.mk.u"];
 
   v10 = MEMORY[0x1E69A2A10];
-  v11 = [(HMCameraObjectFetchClient *)self messageName];
-  v12 = [(HMCameraObjectFetchClient *)self destination];
-  v13 = [v10 messageWithName:v11 destination:v12 payload:v8];
+  messageName = [(HMCameraObjectFetchClient *)self messageName];
+  destination = [(HMCameraObjectFetchClient *)self destination];
+  v13 = [v10 messageWithName:messageName destination:destination payload:v8];
 
   v22 = MEMORY[0x1E69E9820];
   v23 = 3221225472;
   v24 = __49__HMCameraObjectFetchClient_fetchWithCompletion___block_invoke;
   v25 = &unk_1E754DE00;
-  v26 = self;
-  v14 = v4;
+  selfCopy = self;
+  v14 = completionCopy;
   v27 = v14;
   [v13 setResponseHandler:&v22];
   v15 = objc_autoreleasePoolPush();
-  v16 = self;
+  selfCopy2 = self;
   v17 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
@@ -188,9 +188,9 @@ LABEL_22:
   }
 
   objc_autoreleasePoolPop(v15);
-  v19 = [(HMCameraObjectFetchClient *)v16 context:v22];
-  v20 = [v19 messageDispatcher];
-  [v20 sendMessage:v13];
+  v19 = [(HMCameraObjectFetchClient *)selfCopy2 context:v22];
+  messageDispatcher2 = [v19 messageDispatcher];
+  [messageDispatcher2 sendMessage:v13];
 
   v21 = *MEMORY[0x1E69E9840];
 }
@@ -269,43 +269,43 @@ void __49__HMCameraObjectFetchClient_fetchWithCompletion___block_invoke_14(uint6
 
 - (void)dealloc
 {
-  v3 = [(HMCameraObjectFetchClient *)self context];
-  v4 = [v3 messageDispatcher];
-  [v4 deregisterReceiver:self];
+  context = [(HMCameraObjectFetchClient *)self context];
+  messageDispatcher = [context messageDispatcher];
+  [messageDispatcher deregisterReceiver:self];
 
   v5.receiver = self;
   v5.super_class = HMCameraObjectFetchClient;
   [(HMCameraObjectFetchClient *)&v5 dealloc];
 }
 
-- (HMCameraObjectFetchClient)initWithUUID:(id)a3 context:(id)a4 messageName:(id)a5 destination:(id)a6
+- (HMCameraObjectFetchClient)initWithUUID:(id)d context:(id)context messageName:(id)name destination:(id)destination
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  dCopy = d;
+  contextCopy = context;
+  nameCopy = name;
+  destinationCopy = destination;
   v25.receiver = self;
   v25.super_class = HMCameraObjectFetchClient;
   v15 = [(HMCameraObjectFetchClient *)&v25 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_UUID, a3);
-    objc_storeStrong(&v16->_context, a4);
-    v17 = [v13 copy];
+    objc_storeStrong(&v15->_UUID, d);
+    objc_storeStrong(&v16->_context, context);
+    v17 = [nameCopy copy];
     messageName = v16->_messageName;
     v16->_messageName = v17;
 
-    v19 = [v14 copy];
+    v19 = [destinationCopy copy];
     destination = v16->_destination;
     v16->_destination = v19;
 
     payload = v16->_payload;
     v16->_payload = MEMORY[0x1E695E0F8];
 
-    v22 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     fetchedObjects = v16->_fetchedObjects;
-    v16->_fetchedObjects = v22;
+    v16->_fetchedObjects = array;
   }
 
   return v16;

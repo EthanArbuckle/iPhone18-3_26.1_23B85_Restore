@@ -1,10 +1,10 @@
 @interface ULDarwinNotificationHelper
 - (ULDarwinNotificationHelper)init;
-- (unint64_t)stateForNotificationName:(id)a3;
-- (void)_handleDarwinNotificationCallback:(id)a3;
-- (void)addObserverForNotificationName:(id)a3 handler:(id)a4;
+- (unint64_t)stateForNotificationName:(id)name;
+- (void)_handleDarwinNotificationCallback:(id)callback;
+- (void)addObserverForNotificationName:(id)name handler:(id)handler;
 - (void)dealloc;
-- (void)removeObserverForNotificationName:(id)a3;
+- (void)removeObserverForNotificationName:(id)name;
 @end
 
 @implementation ULDarwinNotificationHelper
@@ -16,8 +16,8 @@
   v2 = [(ULDarwinNotificationHelper *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
-    [(ULDarwinNotificationHelper *)v2 setRegistrations:v3];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [(ULDarwinNotificationHelper *)v2 setRegistrations:dictionary];
 
     v4 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v5 = dispatch_queue_create("com.apple.milod.ULDarwinNotificationHelper", v4);
@@ -34,10 +34,10 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(ULDarwinNotificationHelper *)self registrations];
-  v4 = [v3 allValues];
+  registrations = [(ULDarwinNotificationHelper *)self registrations];
+  allValues = [registrations allValues];
 
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -49,17 +49,17 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * v8) notificationName];
-        [(ULDarwinNotificationHelper *)self removeObserverForNotificationName:v9];
+        notificationName = [*(*(&v12 + 1) + 8 * v8) notificationName];
+        [(ULDarwinNotificationHelper *)self removeObserverForNotificationName:notificationName];
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -71,24 +71,24 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addObserverForNotificationName:(id)a3 handler:(id)a4
+- (void)addObserverForNotificationName:(id)name handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ULDarwinNotificationHelper *)self queue];
-  dispatch_assert_queue_not_V2(v8);
+  nameCopy = name;
+  handlerCopy = handler;
+  queue = [(ULDarwinNotificationHelper *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
-  v9 = [(ULDarwinNotificationHelper *)self queue];
+  queue2 = [(ULDarwinNotificationHelper *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __69__ULDarwinNotificationHelper_addObserverForNotificationName_handler___block_invoke;
   block[3] = &unk_2798DA4E0;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_sync(v9, block);
+  v13 = nameCopy;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = nameCopy;
+  dispatch_sync(queue2, block);
 }
 
 void __69__ULDarwinNotificationHelper_addObserverForNotificationName_handler___block_invoke(uint64_t a1)
@@ -210,21 +210,21 @@ void __69__ULDarwinNotificationHelper_addObserverForNotificationName_handler___b
   }
 }
 
-- (void)removeObserverForNotificationName:(id)a3
+- (void)removeObserverForNotificationName:(id)name
 {
-  v4 = a3;
-  v5 = [(ULDarwinNotificationHelper *)self queue];
-  dispatch_assert_queue_not_V2(v5);
+  nameCopy = name;
+  queue = [(ULDarwinNotificationHelper *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
-  v6 = [(ULDarwinNotificationHelper *)self queue];
+  queue2 = [(ULDarwinNotificationHelper *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __64__ULDarwinNotificationHelper_removeObserverForNotificationName___block_invoke;
   v8[3] = &unk_2798DA508;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_sync(v6, v8);
+  v9 = nameCopy;
+  v7 = nameCopy;
+  dispatch_sync(queue2, v8);
 }
 
 void __64__ULDarwinNotificationHelper_removeObserverForNotificationName___block_invoke(uint64_t a1)
@@ -302,26 +302,26 @@ void __64__ULDarwinNotificationHelper_removeObserverForNotificationName___block_
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)stateForNotificationName:(id)a3
+- (unint64_t)stateForNotificationName:(id)name
 {
-  v4 = a3;
-  v5 = [(ULDarwinNotificationHelper *)self queue];
-  dispatch_assert_queue_not_V2(v5);
+  nameCopy = name;
+  queue = [(ULDarwinNotificationHelper *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 0;
-  v6 = [(ULDarwinNotificationHelper *)self queue];
+  queue2 = [(ULDarwinNotificationHelper *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__ULDarwinNotificationHelper_stateForNotificationName___block_invoke;
   block[3] = &unk_2798DA530;
   block[4] = self;
-  v11 = v4;
+  v11 = nameCopy;
   v12 = &v13;
-  v7 = v4;
-  dispatch_sync(v6, block);
+  v7 = nameCopy;
+  dispatch_sync(queue2, block);
 
   v8 = v14[3];
   _Block_object_dispose(&v13, 8);
@@ -362,12 +362,12 @@ void __55__ULDarwinNotificationHelper_stateForNotificationName___block_invoke(ui
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleDarwinNotificationCallback:(id)a3
+- (void)_handleDarwinNotificationCallback:(id)callback
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ULDarwinNotificationHelper *)self queue];
-  dispatch_assert_queue_V2(v5);
+  callbackCopy = callback;
+  queue = [(ULDarwinNotificationHelper *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if (onceToken_MicroLocation_Default != -1)
   {
@@ -378,20 +378,20 @@ void __55__ULDarwinNotificationHelper_stateForNotificationName___block_invoke(ui
   if (os_log_type_enabled(logObject_MicroLocation_Default, OS_LOG_TYPE_DEBUG))
   {
     v13 = 138412290;
-    v14 = v4;
+    v14 = callbackCopy;
     _os_log_impl(&dword_2592C5000, v6, OS_LOG_TYPE_DEBUG, "Darwin notification received: %@", &v13, 0xCu);
   }
 
-  v7 = [(ULDarwinNotificationHelper *)self registrations];
-  v8 = [v7 objectForKeyedSubscript:v4];
+  registrations = [(ULDarwinNotificationHelper *)self registrations];
+  v8 = [registrations objectForKeyedSubscript:callbackCopy];
 
   if (v8)
   {
-    v9 = [v8 handler];
-    v10 = v9;
-    if (v9)
+    handler = [v8 handler];
+    v10 = handler;
+    if (handler)
     {
-      (*(v9 + 16))(v9);
+      (*(handler + 16))(handler);
     }
   }
 

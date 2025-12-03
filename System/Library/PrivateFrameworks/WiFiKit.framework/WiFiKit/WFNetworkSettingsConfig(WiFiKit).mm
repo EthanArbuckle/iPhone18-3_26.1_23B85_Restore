@@ -11,17 +11,17 @@
 {
   v26 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [v4 method];
-  if (v5 == 5)
+  method = [v4 method];
+  if (method == 5)
   {
-    v6 = a1;
+    selfCopy2 = self;
     v7 = 1;
     goto LABEL_8;
   }
 
-  if (v5 != 4)
+  if (method != 4)
   {
-    if (v5 != 1)
+    if (method != 1)
     {
       v11 = WFLogForCategory(0);
       v12 = OSLogForWFLogLevel(2uLL);
@@ -31,7 +31,7 @@
         if (os_log_type_enabled(v13, v12))
         {
           v24 = 134217984;
-          v25 = [v4 method];
+          method2 = [v4 method];
           _os_log_impl(&dword_273ECD000, v13, v12, "Unknown DHCP config method %ld", &v24, 0xCu);
         }
       }
@@ -39,80 +39,80 @@
       goto LABEL_15;
     }
 
-    v6 = a1;
+    selfCopy2 = self;
     v7 = 0;
 LABEL_8:
-    [v6 setIpv4Config:v7];
+    [selfCopy2 setIpv4Config:v7];
 LABEL_15:
-    v8 = [v4 addresses];
-    if (v8)
+    addresses = [v4 addresses];
+    if (addresses)
     {
-      v14 = [v4 addresses];
-      v15 = [v14 firstObject];
-      [a1 setIpv4Address:v15];
+      addresses2 = [v4 addresses];
+      firstObject = [addresses2 firstObject];
+      [self setIpv4Address:firstObject];
     }
 
     else
     {
-      [a1 setIpv4Address:0];
+      [self setIpv4Address:0];
     }
 
-    [a1 setIpv4AddressManual:0];
-    v16 = [v4 subnetMasks];
-    if (v16)
+    [self setIpv4AddressManual:0];
+    subnetMasks = [v4 subnetMasks];
+    if (subnetMasks)
     {
-      v17 = [v4 subnetMasks];
-      v18 = [v17 firstObject];
-      [a1 setIpv4SubnetMask:v18];
+      subnetMasks2 = [v4 subnetMasks];
+      firstObject2 = [subnetMasks2 firstObject];
+      [self setIpv4SubnetMask:firstObject2];
     }
 
     else
     {
-      [a1 setIpv4SubnetMask:0];
+      [self setIpv4SubnetMask:0];
     }
 
-    [a1 setIpv4SubnetMaskManual:0];
-    v19 = [v4 router];
-    [a1 setIpv4RouterAddress:v19];
-    [a1 setIpv4RouterAddressManual:0];
+    [self setIpv4SubnetMaskManual:0];
+    router = [v4 router];
+    [self setIpv4RouterAddress:router];
+    [self setIpv4RouterAddressManual:0];
     goto LABEL_27;
   }
 
-  [a1 setIpv4Config:2];
-  v8 = [v4 addresses];
-  if (v8)
+  [self setIpv4Config:2];
+  addresses = [v4 addresses];
+  if (addresses)
   {
-    v9 = [v4 addresses];
-    v10 = [v9 firstObject];
-    [a1 setIpv4AddressManual:v10];
+    addresses3 = [v4 addresses];
+    firstObject3 = [addresses3 firstObject];
+    [self setIpv4AddressManual:firstObject3];
   }
 
   else
   {
-    [a1 setIpv4AddressManual:0];
+    [self setIpv4AddressManual:0];
   }
 
-  [a1 setIpv4Address:0];
-  v16 = [v4 subnetMasks];
-  if (v16)
+  [self setIpv4Address:0];
+  subnetMasks = [v4 subnetMasks];
+  if (subnetMasks)
   {
-    v20 = [v4 subnetMasks];
-    v21 = [v20 firstObject];
-    [a1 setIpv4SubnetMaskManual:v21];
+    subnetMasks3 = [v4 subnetMasks];
+    firstObject4 = [subnetMasks3 firstObject];
+    [self setIpv4SubnetMaskManual:firstObject4];
   }
 
   else
   {
-    [a1 setIpv4SubnetMaskManual:0];
+    [self setIpv4SubnetMaskManual:0];
   }
 
-  [a1 setIpv4SubnetMask:0];
-  v19 = [v4 router];
-  [a1 setIpv4RouterAddressManual:v19];
-  [a1 setIpv4RouterAddress:0];
+  [self setIpv4SubnetMask:0];
+  router = [v4 router];
+  [self setIpv4RouterAddressManual:router];
+  [self setIpv4RouterAddress:0];
 LABEL_27:
-  v22 = [v4 dhcpClientID];
-  [a1 setDhcpClientID:v22];
+  dhcpClientID = [v4 dhcpClientID];
+  [self setDhcpClientID:dhcpClientID];
 
   v23 = *MEMORY[0x277D85DE8];
 }
@@ -121,22 +121,22 @@ LABEL_27:
 {
   v18 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [v4 method];
-  switch(v5)
+  method = [v4 method];
+  switch(method)
   {
     case 3:
-      v6 = a1;
+      selfCopy3 = self;
       v7 = 1;
       goto LABEL_7;
     case 2:
-      v6 = a1;
+      selfCopy3 = self;
       v7 = 2;
       goto LABEL_7;
     case 1:
-      v6 = a1;
+      selfCopy3 = self;
       v7 = 0;
 LABEL_7:
-      [v6 setIpv6Config:v7];
+      [selfCopy3 setIpv6Config:v7];
       goto LABEL_14;
   }
 
@@ -148,26 +148,26 @@ LABEL_7:
     if (os_log_type_enabled(v10, v9))
     {
       v16 = 134217984;
-      v17 = [v4 method];
+      method2 = [v4 method];
       _os_log_impl(&dword_273ECD000, v10, v9, "Unknown DHCP config method %ld", &v16, 0xCu);
     }
   }
 
 LABEL_14:
-  v11 = [v4 addresses];
+  addresses = [v4 addresses];
 
-  if (v11)
+  if (addresses)
   {
-    v12 = [v4 addresses];
-    [a1 setIpv6Addresses:v12];
+    addresses2 = [v4 addresses];
+    [self setIpv6Addresses:addresses2];
   }
 
-  v13 = [v4 router];
+  router = [v4 router];
 
-  if (v13)
+  if (router)
   {
-    v14 = [v4 router];
-    [a1 setIpv6RouterAddress:v14];
+    router2 = [v4 router];
+    [self setIpv6RouterAddress:router2];
   }
 
   v15 = *MEMORY[0x277D85DE8];
@@ -176,69 +176,69 @@ LABEL_14:
 - (void)populateDNS:()WiFiKit
 {
   v8 = a3;
-  v4 = [v8 serverAddresses];
+  serverAddresses = [v8 serverAddresses];
 
-  if (v4)
+  if (serverAddresses)
   {
-    v5 = [v8 serverAddresses];
-    [a1 setDnsServerAddresses:v5];
+    serverAddresses2 = [v8 serverAddresses];
+    [self setDnsServerAddresses:serverAddresses2];
   }
 
-  v6 = [v8 searchDomains];
+  searchDomains = [v8 searchDomains];
 
-  if (v6)
+  if (searchDomains)
   {
-    v7 = [v8 searchDomains];
-    [a1 setDnsSearchDomains:v7];
+    searchDomains2 = [v8 searchDomains];
+    [self setDnsSearchDomains:searchDomains2];
   }
 }
 
 - (void)populateProxy:()WiFiKit
 {
   v14 = a3;
-  v4 = [v14 server];
+  server = [v14 server];
 
-  if (v4)
+  if (server)
   {
-    v5 = [v14 server];
-    [a1 setHttpProxyServerAddress:v5];
+    server2 = [v14 server];
+    [self setHttpProxyServerAddress:server2];
   }
 
-  v6 = [v14 port];
+  port = [v14 port];
 
-  if (v6)
+  if (port)
   {
-    v7 = [v14 port];
-    [a1 setHttpProxyServerPort:v7];
+    port2 = [v14 port];
+    [self setHttpProxyServerPort:port2];
   }
 
-  v8 = [v14 username];
+  username = [v14 username];
 
-  if (v8)
+  if (username)
   {
-    v9 = [v14 username];
-    [a1 setHttpProxyUsername:v9];
+    username2 = [v14 username];
+    [self setHttpProxyUsername:username2];
   }
 
-  v10 = [v14 password];
+  password = [v14 password];
 
-  if (v10)
+  if (password)
   {
-    v11 = [v14 password];
-    [a1 setHttpProxyPassword:v11];
+    password2 = [v14 password];
+    [self setHttpProxyPassword:password2];
   }
 
   if ([v14 authenticated])
   {
-    [a1 setHttpProxyAuthenticationRequired:{objc_msgSend(v14, "authenticated")}];
+    [self setHttpProxyAuthenticationRequired:{objc_msgSend(v14, "authenticated")}];
   }
 
-  v12 = [v14 autoConfigureURL];
+  autoConfigureURL = [v14 autoConfigureURL];
 
-  if (v12)
+  if (autoConfigureURL)
   {
-    v13 = [v14 autoConfigureURL];
-    [a1 setHttpProxyConfigPAC:v13];
+    autoConfigureURL2 = [v14 autoConfigureURL];
+    [self setHttpProxyConfigPAC:autoConfigureURL2];
   }
 }
 

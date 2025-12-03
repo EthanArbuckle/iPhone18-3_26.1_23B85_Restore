@@ -10,11 +10,11 @@
 - (id)_ui_rtfdFileWrapperError:()UIKitAdditions_Internal
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v5 = [a1 length];
+  v5 = [self length];
   v9 = *off_1E70EC8F0;
   v10[0] = *off_1E70EC998;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
-  v7 = [a1 fileWrapperFromRange:0 documentAttributes:v5 error:{v6, a3}];
+  v7 = [self fileWrapperFromRange:0 documentAttributes:v5 error:{v6, a3}];
 
   return v7;
 }
@@ -22,11 +22,11 @@
 - (id)_ui_rtfDataError:()UIKitAdditions_Internal
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v5 = [a1 length];
+  v5 = [self length];
   v9 = *off_1E70EC8F0;
   v10[0] = *off_1E70EC9A0;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
-  v7 = [a1 dataFromRange:0 documentAttributes:v5 error:{v6, a3}];
+  v7 = [self dataFromRange:0 documentAttributes:v5 error:{v6, a3}];
 
   return v7;
 }
@@ -34,7 +34,7 @@
 - (id)_ui_attributedStringAdjustedToTraitCollection:()UIKitAdditions_Internal
 {
   v4 = a3;
-  v5 = [(_NSAttributedStringIntentResolver *)_UIAttributedStringIntentResolver attributedStringByResolvingString:a1];
+  v5 = [(_NSAttributedStringIntentResolver *)_UIAttributedStringIntentResolver attributedStringByResolvingString:self];
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -43,7 +43,7 @@
   v22 = 0;
   if (v4)
   {
-    v6 = [a1 length];
+    v6 = [self length];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __93__NSAttributedString_UIKitAdditions_Internal___ui_attributedStringAdjustedToTraitCollection___block_invoke;
@@ -65,15 +65,15 @@
   v9 = v8;
   if (v8)
   {
-    v10 = v8;
+    selfCopy = v8;
   }
 
   else
   {
-    v10 = a1;
+    selfCopy = self;
   }
 
-  v11 = v10;
+  v11 = selfCopy;
 
   _Block_object_dispose(&v17, 8);
 
@@ -86,7 +86,7 @@
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v2 = [a1 length];
+  v2 = [self length];
   v3 = NSClassFromString(&cfstr_Nstexttableblo.isa);
   v4 = *off_1E70EC988;
   v7[0] = MEMORY[0x1E69E9820];
@@ -95,7 +95,7 @@
   v7[3] = &unk_1E70F30A0;
   v7[4] = &v8;
   v7[5] = v3;
-  [a1 enumerateAttribute:v4 inRange:0 options:v2 usingBlock:{0, v7}];
+  [self enumerateAttribute:v4 inRange:0 options:v2 usingBlock:{0, v7}];
   v5 = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
   return v5;

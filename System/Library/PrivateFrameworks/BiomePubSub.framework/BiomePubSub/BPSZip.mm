@@ -1,27 +1,27 @@
 @interface BPSZip
 - (BOOL)completed;
-- (BPSZip)initWithA:(id)a3 b:(id)a4;
+- (BPSZip)initWithA:(id)a b:(id)b;
 - (id)_tryConstructResultTuple;
 - (id)nextEvent;
 - (id)upstreamPublishers;
 - (void)reset;
-- (void)subscribe:(id)a3;
+- (void)subscribe:(id)subscribe;
 @end
 
 @implementation BPSZip
 
-- (BPSZip)initWithA:(id)a3 b:(id)a4
+- (BPSZip)initWithA:(id)a b:(id)b
 {
-  v7 = a3;
-  v8 = a4;
+  aCopy = a;
+  bCopy = b;
   v16.receiver = self;
   v16.super_class = BPSZip;
   v9 = [(BPSZip *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_a, a3);
-    objc_storeStrong(&v10->_b, a4);
+    objc_storeStrong(&v9->_a, a);
+    objc_storeStrong(&v10->_b, b);
     v10->_nextIsB = 0;
     v11 = objc_opt_new();
     eventsA = v10->_eventsA;
@@ -35,10 +35,10 @@
   return v10;
 }
 
-- (void)subscribe:(id)a3
+- (void)subscribe:(id)subscribe
 {
-  v4 = a3;
-  v9 = [(_BPSAbstractZip *)[_BPSZip2Inner alloc] initWithDownstream:v4 upstreamCount:2];
+  subscribeCopy = subscribe;
+  v9 = [(_BPSAbstractZip *)[_BPSZip2Inner alloc] initWithDownstream:subscribeCopy upstreamCount:2];
 
   v5 = [(BPSZip *)self a];
   v6 = [[_BPSAbstractZipSide alloc] initWithIndex:0 zip:v9];
@@ -51,30 +51,30 @@
 
 - (id)_tryConstructResultTuple
 {
-  v3 = [(BPSZip *)self eventsA];
-  if (![v3 count])
+  eventsA = [(BPSZip *)self eventsA];
+  if (![eventsA count])
   {
     v9 = 0;
     goto LABEL_5;
   }
 
-  v4 = [(BPSZip *)self eventsB];
-  v5 = [v4 count];
+  eventsB = [(BPSZip *)self eventsB];
+  v5 = [eventsB count];
 
   if (v5)
   {
-    v6 = [(BPSZip *)self eventsA];
-    v3 = [v6 objectAtIndexedSubscript:0];
+    eventsA2 = [(BPSZip *)self eventsA];
+    eventsA = [eventsA2 objectAtIndexedSubscript:0];
 
-    v7 = [(BPSZip *)self eventsB];
-    v8 = [v7 objectAtIndexedSubscript:0];
+    eventsB2 = [(BPSZip *)self eventsB];
+    v8 = [eventsB2 objectAtIndexedSubscript:0];
 
-    v9 = [[BPSTuple alloc] initWithFirst:v3 second:v8];
-    v10 = [(BPSZip *)self eventsA];
-    [v10 removeObjectAtIndex:0];
+    v9 = [[BPSTuple alloc] initWithFirst:eventsA second:v8];
+    eventsA3 = [(BPSZip *)self eventsA];
+    [eventsA3 removeObjectAtIndex:0];
 
-    v11 = [(BPSZip *)self eventsB];
-    [v11 removeObjectAtIndex:0];
+    eventsB3 = [(BPSZip *)self eventsB];
+    [eventsB3 removeObjectAtIndex:0];
 
 LABEL_5:
     goto LABEL_7;
@@ -102,9 +102,9 @@ LABEL_7:
 
 - (id)nextEvent
 {
-  v3 = [(BPSZip *)self nextIsB];
+  nextIsB = [(BPSZip *)self nextIsB];
   [(BPSZip *)self setNextIsB:[(BPSZip *)self nextIsB]^ 1];
-  if (v3)
+  if (nextIsB)
   {
     [(BPSZip *)self b];
   }
@@ -114,13 +114,13 @@ LABEL_7:
     [(BPSZip *)self a];
   }
   v4 = ;
-  v5 = [v4 nextEvent];
-  if (!v5)
+  nextEvent = [v4 nextEvent];
+  if (!nextEvent)
   {
     goto LABEL_10;
   }
 
-  if (v3)
+  if (nextIsB)
   {
     [(BPSZip *)self eventsB];
   }
@@ -130,22 +130,22 @@ LABEL_7:
     [(BPSZip *)self eventsA];
   }
   v6 = ;
-  [v6 addObject:v5];
+  [v6 addObject:nextEvent];
 
-  v7 = [(BPSZip *)self _tryConstructResultTuple];
-  if (v7)
+  _tryConstructResultTuple = [(BPSZip *)self _tryConstructResultTuple];
+  if (_tryConstructResultTuple)
   {
-    v8 = v7;
-    v9 = v5;
+    _tryConstructResultTuple2 = _tryConstructResultTuple;
+    nextEvent2 = nextEvent;
     v10 = v4;
   }
 
   else
   {
 LABEL_10:
-    v11 = [(BPSZip *)self nextIsB];
+    nextIsB2 = [(BPSZip *)self nextIsB];
     [(BPSZip *)self setNextIsB:[(BPSZip *)self nextIsB]^ 1];
-    if (v11)
+    if (nextIsB2)
     {
       [(BPSZip *)self b];
     }
@@ -156,15 +156,15 @@ LABEL_10:
     }
     v10 = ;
 
-    v9 = [v10 nextEvent];
+    nextEvent2 = [v10 nextEvent];
 
-    if (!v9)
+    if (!nextEvent2)
     {
-      v8 = 0;
+      _tryConstructResultTuple2 = 0;
       goto LABEL_20;
     }
 
-    if (v11)
+    if (nextIsB2)
     {
       [(BPSZip *)self eventsB];
     }
@@ -174,14 +174,14 @@ LABEL_10:
       [(BPSZip *)self eventsA];
     }
     v12 = ;
-    [v12 addObject:v9];
+    [v12 addObject:nextEvent2];
 
-    v8 = [(BPSZip *)self _tryConstructResultTuple];
+    _tryConstructResultTuple2 = [(BPSZip *)self _tryConstructResultTuple];
   }
 
 LABEL_20:
 
-  return v8;
+  return _tryConstructResultTuple2;
 }
 
 - (void)reset
@@ -201,17 +201,17 @@ LABEL_20:
 - (BOOL)completed
 {
   v3 = [(BPSZip *)self a];
-  v4 = [v3 completed];
+  completed = [v3 completed];
 
-  if (v4)
+  if (completed)
   {
     return 1;
   }
 
   v6 = [(BPSZip *)self b];
-  v7 = [v6 completed];
+  completed2 = [v6 completed];
 
-  return v7;
+  return completed2;
 }
 
 @end

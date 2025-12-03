@@ -1,6 +1,6 @@
 @interface LaunchEventSyncMetadata
 - (LaunchEventSyncMetadata)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation LaunchEventSyncMetadata
@@ -12,11 +12,11 @@
   return [(SQLiteMemoryEntity *)&v3 init];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = LaunchEventSyncMetadata;
-  return [(SQLiteMemoryEntity *)&v4 copyWithZone:a3];
+  return [(SQLiteMemoryEntity *)&v4 copyWithZone:zone];
 }
 
 @end

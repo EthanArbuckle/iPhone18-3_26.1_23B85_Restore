@@ -1,15 +1,15 @@
 @interface TPSBiomeSQLQueryManager
-+ (unint64_t)countsForEvent:(id)a3 interval:(id)a4;
++ (unint64_t)countsForEvent:(id)event interval:(id)interval;
 - (TPSBiomeSQLQueryManager)init;
 @end
 
 @implementation TPSBiomeSQLQueryManager
 
-+ (unint64_t)countsForEvent:(id)a3 interval:(id)a4
++ (unint64_t)countsForEvent:(id)event interval:(id)interval
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = _s8TipsCore0A20BiomeSQLQueryManagerC14countsForEvent_8intervalSuSo013TPSContextualcH0C_So14NSDateIntervalCtFZ_0(v5, v6);
+  eventCopy = event;
+  intervalCopy = interval;
+  v7 = _s8TipsCore0A20BiomeSQLQueryManagerC14countsForEvent_8intervalSuSo013TPSContextualcH0C_So14NSDateIntervalCtFZ_0(eventCopy, intervalCopy);
 
   return v7;
 }

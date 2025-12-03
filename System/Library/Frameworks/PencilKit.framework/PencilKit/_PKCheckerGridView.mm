@@ -1,45 +1,45 @@
 @interface _PKCheckerGridView
-- (_PKCheckerGridView)initWithFrame:(CGRect)a3;
-- (_PKCheckerGridView)initWithTileSize:(double)a3 colorA:(id)a4 colorB:(id)a5;
+- (_PKCheckerGridView)initWithFrame:(CGRect)frame;
+- (_PKCheckerGridView)initWithTileSize:(double)size colorA:(id)a colorB:(id)b;
 - (id)_createGridTileImage;
 - (void)_updateUI;
 - (void)layoutSubviews;
-- (void)setColorA:(id)a3;
-- (void)setColorB:(id)a3;
-- (void)setTileSize:(double)a3;
+- (void)setColorA:(id)a;
+- (void)setColorB:(id)b;
+- (void)setTileSize:(double)size;
 @end
 
 @implementation _PKCheckerGridView
 
-- (_PKCheckerGridView)initWithFrame:(CGRect)a3
+- (_PKCheckerGridView)initWithFrame:(CGRect)frame
 {
-  v4 = [MEMORY[0x1E69DC888] blackColor];
-  v5 = [MEMORY[0x1E69DC888] whiteColor];
-  v6 = [(_PKCheckerGridView *)self initWithTileSize:v4 colorA:v5 colorB:5.0];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  v6 = [(_PKCheckerGridView *)self initWithTileSize:blackColor colorA:whiteColor colorB:5.0];
 
   return v6;
 }
 
-- (_PKCheckerGridView)initWithTileSize:(double)a3 colorA:(id)a4 colorB:(id)a5
+- (_PKCheckerGridView)initWithTileSize:(double)size colorA:(id)a colorB:(id)b
 {
-  v9 = a4;
-  v10 = a5;
+  aCopy = a;
+  bCopy = b;
   v17.receiver = self;
   v17.super_class = _PKCheckerGridView;
   v11 = [(_PKCheckerGridView *)&v17 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v12 = v11;
   if (v11)
   {
-    v11->_tileSize = a3;
-    objc_storeStrong(&v11->_colorA, a4);
-    objc_storeStrong(&v12->_colorB, a5);
+    v11->_tileSize = size;
+    objc_storeStrong(&v11->_colorA, a);
+    objc_storeStrong(&v12->_colorB, b);
     v13 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
     imageView = v12->_imageView;
     v12->_imageView = v13;
 
     [(UIImageView *)v12->_imageView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v15 = [(_PKCheckerGridView *)v12 imageView];
-    [(_PKCheckerGridView *)v12 addSubview:v15];
+    imageView = [(_PKCheckerGridView *)v12 imageView];
+    [(_PKCheckerGridView *)v12 addSubview:imageView];
 
     [(_PKCheckerGridView *)v12 _updateUI];
   }
@@ -47,25 +47,25 @@
   return v12;
 }
 
-- (void)setTileSize:(double)a3
+- (void)setTileSize:(double)size
 {
-  self->_tileSize = a3;
+  self->_tileSize = size;
   [(_PKCheckerGridView *)self _updateUI];
 
   [(_PKCheckerGridView *)self setNeedsLayout];
 }
 
-- (void)setColorA:(id)a3
+- (void)setColorA:(id)a
 {
-  objc_storeStrong(&self->_colorA, a3);
+  objc_storeStrong(&self->_colorA, a);
   [(_PKCheckerGridView *)self _updateUI];
 
   [(_PKCheckerGridView *)self setNeedsLayout];
 }
 
-- (void)setColorB:(id)a3
+- (void)setColorB:(id)b
 {
-  objc_storeStrong(&self->_colorB, a3);
+  objc_storeStrong(&self->_colorB, b);
   [(_PKCheckerGridView *)self _updateUI];
 
   [(_PKCheckerGridView *)self setNeedsLayout];
@@ -81,15 +81,15 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(_PKCheckerGridView *)self imageView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  imageView = [(_PKCheckerGridView *)self imageView];
+  [imageView setFrame:{v4, v6, v8, v10}];
 }
 
 - (void)_updateUI
 {
-  v4 = [(_PKCheckerGridView *)self _createGridTileImage];
-  v3 = [(_PKCheckerGridView *)self imageView];
-  [v3 setImage:v4];
+  _createGridTileImage = [(_PKCheckerGridView *)self _createGridTileImage];
+  imageView = [(_PKCheckerGridView *)self imageView];
+  [imageView setImage:_createGridTileImage];
 }
 
 - (id)_createGridTileImage

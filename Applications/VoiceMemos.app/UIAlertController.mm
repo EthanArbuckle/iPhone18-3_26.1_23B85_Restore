@@ -1,38 +1,38 @@
 @interface UIAlertController
-+ (id)rc_OKAlertControllerWithTitle:(id)a3 message:(id)a4 handler:(id)a5;
-+ (id)rc_alertControllerWithTitle:(id)a3 message:(id)a4 buttons:(id)a5;
++ (id)rc_OKAlertControllerWithTitle:(id)title message:(id)message handler:(id)handler;
++ (id)rc_alertControllerWithTitle:(id)title message:(id)message buttons:(id)buttons;
 - (void)rc_showInMainWindow;
 @end
 
 @implementation UIAlertController
 
-+ (id)rc_OKAlertControllerWithTitle:(id)a3 message:(id)a4 handler:(id)a5
++ (id)rc_OKAlertControllerWithTitle:(id)title message:(id)message handler:(id)handler
 {
-  v7 = a5;
-  v8 = [UIAlertController alertControllerWithTitle:a3 message:a4 preferredStyle:1];
+  handlerCopy = handler;
+  v8 = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:1];
   v9 = +[NSBundle mainBundle];
   v10 = [v9 localizedStringForKey:@"OK" value:&stru_100295BB8 table:0];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100081BAC;
   v14[3] = &unk_10028B7B0;
-  v15 = v7;
-  v11 = v7;
+  v15 = handlerCopy;
+  v11 = handlerCopy;
   v12 = [UIAlertAction actionWithTitle:v10 style:0 handler:v14];
   [v8 addAction:v12];
 
   return v8;
 }
 
-+ (id)rc_alertControllerWithTitle:(id)a3 message:(id)a4 buttons:(id)a5
++ (id)rc_alertControllerWithTitle:(id)title message:(id)message buttons:(id)buttons
 {
-  v7 = a5;
-  v8 = [UIAlertController alertControllerWithTitle:a3 message:a4 preferredStyle:1];
+  buttonsCopy = buttons;
+  v8 = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:1];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = v7;
+  obj = buttonsCopy;
   v9 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v9)
   {
@@ -50,7 +50,7 @@
         v13 = *(*(&v24 + 1) + 8 * i);
         v14 = [v13 objectForKeyedSubscript:@"title"];
         v15 = [v13 objectForKeyedSubscript:@"style"];
-        v16 = [v15 integerValue];
+        integerValue = [v15 integerValue];
 
         v17 = [v13 objectForKeyedSubscript:@"action"];
         v22[0] = _NSConcreteStackBlock;
@@ -59,7 +59,7 @@
         v22[3] = &unk_10028B7B0;
         v23 = v17;
         v18 = v17;
-        v19 = [UIAlertAction actionWithTitle:v14 style:v16 handler:v22];
+        v19 = [UIAlertAction actionWithTitle:v14 style:integerValue handler:v22];
         [v8 addAction:v19];
       }
 
@@ -75,19 +75,19 @@
 - (void)rc_showInMainWindow
 {
   v3 = +[UIApplication sharedApplication];
-  v4 = [v3 delegate];
-  v5 = [v4 window];
-  v9 = [v5 rootViewController];
+  delegate = [v3 delegate];
+  window = [delegate window];
+  rootViewController = [window rootViewController];
 
-  v6 = [v9 presentedViewController];
-  if (v6)
+  presentedViewController = [rootViewController presentedViewController];
+  if (presentedViewController)
   {
-    v7 = v6;
+    v7 = presentedViewController;
   }
 
   else
   {
-    v7 = v9;
+    v7 = rootViewController;
   }
 
   v8 = v7;

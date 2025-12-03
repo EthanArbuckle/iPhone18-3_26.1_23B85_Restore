@@ -1,10 +1,10 @@
 @interface MusicSettingsListViewController
 - (id)_sectionedCollectionRepresentation;
-- (id)loadSpecifiersFromPlistName:(id)a3 target:(id)a4 bundle:(id)a5;
+- (id)loadSpecifiersFromPlistName:(id)name target:(id)target bundle:(id)bundle;
 - (id)specifiers;
-- (void)_configureCell:(id)a3 forIndexPath:(id)a4;
-- (void)setPreferenceValue:(id)a3 specifier:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)_configureCell:(id)cell forIndexPath:(id)path;
+- (void)setPreferenceValue:(id)value specifier:(id)specifier;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 - (void)updateVisibleSpecifiers;
 @end
 
@@ -13,18 +13,18 @@
 - (id)_sectionedCollectionRepresentation
 {
   v3 = objc_alloc_init(MEMORY[0x277CD5FD0]);
-  v4 = [(MusicSettingsListViewController *)self numberOfGroups];
-  if (v4 >= 1)
+  numberOfGroups = [(MusicSettingsListViewController *)self numberOfGroups];
+  if (numberOfGroups >= 1)
   {
-    v5 = v4;
+    v5 = numberOfGroups;
     v6 = 0;
     v7 = MEMORY[0x277D3FC48];
     do
     {
       v8 = [(MusicSettingsListViewController *)self specifierAtIndex:[(MusicSettingsListViewController *)self indexOfGroup:v6]];
       [v3 appendSection:v8];
-      v9 = [v8 identifier];
-      v10 = [(MusicSettingsListViewController *)self rangeOfSpecifiersInGroupID:v9];
+      identifier = [v8 identifier];
+      v10 = [(MusicSettingsListViewController *)self rangeOfSpecifiersInGroupID:identifier];
       v12 = v11;
 
       v13 = [*(&self->super.super.super.super.super.isa + *v7) subarrayWithRange:{v10 + 1, v12 - 1}];
@@ -39,16 +39,16 @@
   return v3;
 }
 
-- (void)_configureCell:(id)a3 forIndexPath:(id)a4
+- (void)_configureCell:(id)cell forIndexPath:(id)path
 {
-  v8 = a3;
-  v6 = a4;
+  cellCopy = cell;
+  pathCopy = path;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [(MusicSettingsListViewController *)self specifierAtIndexPath:v6];
-    [v8 setSpecifier:v7];
-    [v8 refreshCellContentsWithSpecifier:v7];
+    v7 = [(MusicSettingsListViewController *)self specifierAtIndexPath:pathCopy];
+    [cellCopy setSpecifier:v7];
+    [cellCopy refreshCellContentsWithSpecifier:v7];
   }
 }
 
@@ -57,19 +57,19 @@
   v2 = *MEMORY[0x277D3FC48];
   if (*(&self->super.super.super.super.super.isa + v2))
   {
-    v4 = [(MusicSettingsListViewController *)self _sectionedCollectionRepresentation];
+    _sectionedCollectionRepresentation = [(MusicSettingsListViewController *)self _sectionedCollectionRepresentation];
     v5 = _MSS_resolvedSpecifiers(self);
     v6 = *(&self->super.super.super.super.super.isa + v2);
     *(&self->super.super.super.super.super.isa + v2) = v5;
 
     [(MusicSettingsListViewController *)self prepareSpecifiersMetadata];
-    v7 = [(MusicSettingsListViewController *)self _sectionedCollectionRepresentation];
+    _sectionedCollectionRepresentation2 = [(MusicSettingsListViewController *)self _sectionedCollectionRepresentation];
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __58__MusicSettingsListViewController_updateVisibleSpecifiers__block_invoke;
     v26[3] = &unk_279926210;
-    v27 = v4;
-    v28 = v7;
+    v27 = _sectionedCollectionRepresentation;
+    v28 = _sectionedCollectionRepresentation2;
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __58__MusicSettingsListViewController_updateVisibleSpecifiers__block_invoke_2;
@@ -79,16 +79,16 @@
     v9 = v28;
     v25 = v9;
     v10 = [v8 changeDetailsToSectionedCollection:v9 isEqualBlock:v26 isUpdatedBlock:v23];
-    v11 = [(MusicSettingsListViewController *)self table];
+    table = [(MusicSettingsListViewController *)self table];
     [(MusicSettingsListViewController *)self setCachesCells:0];
     [(MusicSettingsListViewController *)self setCachesCells:1];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __58__MusicSettingsListViewController_updateVisibleSpecifiers__block_invoke_3;
     v20[3] = &unk_279926238;
-    v12 = v11;
+    v12 = table;
     v21 = v12;
-    v22 = self;
+    selfCopy = self;
     v13 = MEMORY[0x25F856670](v20);
     v14 = v13;
     if (v10)
@@ -256,19 +256,19 @@ void __58__MusicSettingsListViewController_updateVisibleSpecifiers__block_invoke
   [v15 enumerateItemMovesUsingBlock:v16];
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  cellCopy = cell;
+  pathCopy = path;
   if (objc_opt_respondsToSelector())
   {
     v11.receiver = self;
     v11.super_class = MusicSettingsListViewController;
-    [(MusicSettingsListViewController *)&v11 tableView:v8 willDisplayCell:v9 forRowAtIndexPath:v10];
+    [(MusicSettingsListViewController *)&v11 tableView:viewCopy willDisplayCell:cellCopy forRowAtIndexPath:pathCopy];
   }
 
-  [(MusicSettingsListViewController *)self _configureCell:v9 forIndexPath:v10];
+  [(MusicSettingsListViewController *)self _configureCell:cellCopy forIndexPath:pathCopy];
 }
 
 - (id)specifiers
@@ -281,8 +281,8 @@ void __58__MusicSettingsListViewController_updateVisibleSpecifiers__block_invoke
     v6 = *(&self->super.super.super.super.super.isa + v3);
     *(&self->super.super.super.super.super.isa + v3) = v5;
 
-    v7 = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD20]) name];
-    [(MusicSettingsListViewController *)self setTitle:v7];
+    name = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD20]) name];
+    [(MusicSettingsListViewController *)self setTitle:name];
 
     v4 = *(&self->super.super.super.super.super.isa + v3);
   }
@@ -290,11 +290,11 @@ void __58__MusicSettingsListViewController_updateVisibleSpecifiers__block_invoke
   return v4;
 }
 
-- (void)setPreferenceValue:(id)a3 specifier:(id)a4
+- (void)setPreferenceValue:(id)value specifier:(id)specifier
 {
   v6.receiver = self;
   v6.super_class = MusicSettingsListViewController;
-  [(MusicSettingsListViewController *)&v6 setPreferenceValue:a3 specifier:a4];
+  [(MusicSettingsListViewController *)&v6 setPreferenceValue:value specifier:specifier];
   [(MusicSettingsListViewController *)self updateVisibleSpecifiers];
   WeakRetained = objc_loadWeakRetained((&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD08]));
   objc_opt_class();
@@ -304,15 +304,15 @@ void __58__MusicSettingsListViewController_updateVisibleSpecifiers__block_invoke
   }
 }
 
-- (id)loadSpecifiersFromPlistName:(id)a3 target:(id)a4 bundle:(id)a5
+- (id)loadSpecifiersFromPlistName:(id)name target:(id)target bundle:(id)bundle
 {
-  objc_storeStrong(&self->_stringsTable, a3);
-  v9 = a3;
-  v10 = a5;
-  v11 = a4;
+  objc_storeStrong(&self->_stringsTable, name);
+  nameCopy = name;
+  bundleCopy = bundle;
+  targetCopy = target;
   v14.receiver = self;
   v14.super_class = MusicSettingsListViewController;
-  v12 = [(MusicSettingsListViewController *)&v14 loadSpecifiersFromPlistName:v9 target:v11 bundle:v10];
+  v12 = [(MusicSettingsListViewController *)&v14 loadSpecifiersFromPlistName:nameCopy target:targetCopy bundle:bundleCopy];
 
   return v12;
 }

@@ -1,47 +1,47 @@
 @interface MTAAppController
 - (BOOL)_runResizeTest;
 - (BOOL)_runRotationTest;
-- (BOOL)_runScrollTest:(id)a3;
-- (BOOL)_runSelectTest:(id)a3;
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
-- (BOOL)application:(id)a3 willFinishLaunchingWithOptions:(id)a4;
-- (BOOL)runTest:(id)a3 options:(id)a4;
+- (BOOL)_runScrollTest:(id)test;
+- (BOOL)_runSelectTest:(id)test;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
+- (BOOL)application:(id)application willFinishLaunchingWithOptions:(id)options;
+- (BOOL)runTest:(id)test options:(id)options;
 - (NSString)recentTimerIdentifier;
 - (double)visibleViewHeight;
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5;
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options;
 - (int64_t)interfaceOrientation;
-- (void)_handleAddSpecifierForSection:(int64_t)a3;
-- (void)_handleDefaultSpecifierForSection:(int64_t)a3;
-- (void)_handleEditSpecifierForSection:(int64_t)a3;
-- (void)_selectViewController:(id)a3;
+- (void)_handleAddSpecifierForSection:(int64_t)section;
+- (void)_handleDefaultSpecifierForSection:(int64_t)section;
+- (void)_handleEditSpecifierForSection:(int64_t)section;
+- (void)_selectViewController:(id)controller;
 - (void)_spinMainRunLoop;
-- (void)_windowDidRotate:(id)a3;
-- (void)appIntentsProvider:(id)a3 didSelectTab:(unint64_t)a4;
+- (void)_windowDidRotate:(id)rotate;
+- (void)appIntentsProvider:(id)provider didSelectTab:(unint64_t)tab;
 - (void)applyStyle;
-- (void)buildMenuWithBuilder:(id)a3;
+- (void)buildMenuWithBuilder:(id)builder;
 - (void)cancelScheduledUserPreferencesCommit;
-- (void)chooseViewOption:(int64_t)a3;
+- (void)chooseViewOption:(int64_t)option;
 - (void)commitUserPreferences;
 - (void)dealloc;
-- (void)didAddNewWorldClockWithName:(id)a3 provider:(id)a4;
-- (void)didRemoveWorldClockWithName:(id)a3 provider:(id)a4;
-- (void)finishedTest:(id)a3 extraResults:(id)a4;
+- (void)didAddNewWorldClockWithName:(id)name provider:(id)provider;
+- (void)didRemoveWorldClockWithName:(id)name provider:(id)provider;
+- (void)finishedTest:(id)test extraResults:(id)results;
 - (void)handleUserPreferencesChanged;
-- (void)initWindowAndViewControllersWithWindowScene:(id)a3;
-- (void)prepareTabBarControllerRestoreIndex:(BOOL)a3;
+- (void)initWindowAndViewControllersWithWindowScene:(id)scene;
+- (void)prepareTabBarControllerRestoreIndex:(BOOL)index;
 - (void)reloadTimerState;
 - (void)restoreLastSelectedTabIndex;
 - (void)saveState;
-- (void)scene:(id)a3 continueUserActivity:(id)a4;
-- (void)scene:(id)a3 didFailToContinueUserActivityWithType:(id)a4 error:(id)a5;
-- (void)scene:(id)a3 openURL:(id)a4 sourceApplication:(id)a5;
-- (void)scene:(id)a3 willContinueUserActivityWithType:(id)a4;
-- (void)sceneDidBecomeActive:(id)a3;
-- (void)sceneWillEnterForeground:(id)a3;
+- (void)scene:(id)scene continueUserActivity:(id)activity;
+- (void)scene:(id)scene didFailToContinueUserActivityWithType:(id)type error:(id)error;
+- (void)scene:(id)scene openURL:(id)l sourceApplication:(id)application;
+- (void)scene:(id)scene willContinueUserActivityWithType:(id)type;
+- (void)sceneDidBecomeActive:(id)active;
+- (void)sceneWillEnterForeground:(id)foreground;
 - (void)scheduleUserPreferencesCommit;
-- (void)startedTest:(id)a3;
+- (void)startedTest:(id)test;
 - (void)switchToTimerTab;
-- (void)windowScene:(id)a3 performActionForShortcutItem:(id)a4 completionHandler:(id)a5;
+- (void)windowScene:(id)scene performActionForShortcutItem:(id)item completionHandler:(id)handler;
 @end
 
 @implementation MTAAppController
@@ -79,8 +79,8 @@
     v5 = v4 - 1;
   }
 
-  v7 = [(MTATabBarController *)self->_tabBarController viewControllers];
-  if (v5 >= [v7 count])
+  viewControllers = [(MTATabBarController *)self->_tabBarController viewControllers];
+  if (v5 >= [viewControllers count])
   {
     v6 = 0;
   }
@@ -95,13 +95,13 @@
 
 - (void)reloadTimerState
 {
-  v3 = [(MTATabBarController *)self->_tabBarController timerViewController];
-  v4 = [v3 isViewLoaded];
+  timerViewController = [(MTATabBarController *)self->_tabBarController timerViewController];
+  isViewLoaded = [timerViewController isViewLoaded];
 
-  if (v4)
+  if (isViewLoaded)
   {
-    v5 = [(MTATabBarController *)self->_tabBarController timerViewController];
-    [v5 reloadState];
+    timerViewController2 = [(MTATabBarController *)self->_tabBarController timerViewController];
+    [timerViewController2 reloadState];
   }
 }
 
@@ -114,21 +114,21 @@
   [(MTAAppController *)&v4 dealloc];
 }
 
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options
 {
-  v5 = [a4 configuration];
-  [v5 setDelegateClass:objc_opt_class()];
+  configuration = [session configuration];
+  [configuration setDelegateClass:objc_opt_class()];
 
-  return v5;
+  return configuration;
 }
 
-- (void)sceneDidBecomeActive:(id)a3
+- (void)sceneDidBecomeActive:(id)active
 {
   v4 = MTLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v34 = self;
+    selfCopy2 = self;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ sceneDidBecomeActive", buf, 0xCu);
   }
 
@@ -138,8 +138,8 @@
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v5 = [(MTATabBarController *)self->_tabBarController viewControllers];
-    v6 = [v5 countByEnumeratingWithState:&v29 objects:v38 count:16];
+    viewControllers = [(MTATabBarController *)self->_tabBarController viewControllers];
+    v6 = [viewControllers countByEnumeratingWithState:&v29 objects:v38 count:16];
     if (v6)
     {
       v7 = v6;
@@ -151,25 +151,25 @@
         {
           if (*v30 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(viewControllers);
           }
 
-          v10 = [*(*(&v29 + 1) + 8 * v9) topViewController];
-          [v10 setTitle:&stru_1000AEF10];
-          v11 = [v10 navigationItem];
-          [v11 setLeftBarButtonItem:0];
+          topViewController = [*(*(&v29 + 1) + 8 * v9) topViewController];
+          [topViewController setTitle:&stru_1000AEF10];
+          navigationItem = [topViewController navigationItem];
+          [navigationItem setLeftBarButtonItem:0];
 
-          v12 = [v10 navigationItem];
-          [v12 setRightBarButtonItem:0];
+          navigationItem2 = [topViewController navigationItem];
+          [navigationItem2 setRightBarButtonItem:0];
 
-          v13 = [v10 view];
-          [v13 setHidden:1];
+          view = [topViewController view];
+          [view setHidden:1];
 
           v9 = v9 + 1;
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v29 objects:v38 count:16];
+        v7 = [viewControllers countByEnumeratingWithState:&v29 objects:v38 count:16];
       }
 
       while (v7);
@@ -179,12 +179,12 @@
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v14 = [(MTATabBarController *)self->_tabBarController view];
-    v15 = [v14 subviews];
-    v16 = [v15 objectAtIndex:1];
-    v17 = [v16 subviews];
+    view2 = [(MTATabBarController *)self->_tabBarController view];
+    subviews = [view2 subviews];
+    v16 = [subviews objectAtIndex:1];
+    subviews2 = [v16 subviews];
 
-    v18 = [v17 countByEnumeratingWithState:&v25 objects:v37 count:16];
+    v18 = [subviews2 countByEnumeratingWithState:&v25 objects:v37 count:16];
     if (v18)
     {
       v19 = v18;
@@ -196,7 +196,7 @@
         {
           if (*v26 != v20)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(subviews2);
           }
 
           v22 = *(*(&v25 + 1) + 8 * v21);
@@ -210,7 +210,7 @@
         }
 
         while (v19 != v21);
-        v19 = [v17 countByEnumeratingWithState:&v25 objects:v37 count:16];
+        v19 = [subviews2 countByEnumeratingWithState:&v25 objects:v37 count:16];
       }
 
       while (v19);
@@ -222,7 +222,7 @@
   {
     sessionManager = self->_sessionManager;
     *buf = 138543618;
-    v34 = self;
+    selfCopy2 = self;
     v35 = 2114;
     v36 = sessionManager;
     _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "%{public}@ ending session with manager: %{public}@", buf, 0x16u);
@@ -231,13 +231,13 @@
   [(MTSessionManager *)self->_sessionManager endAlertingSession];
 }
 
-- (BOOL)application:(id)a3 willFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application willFinishLaunchingWithOptions:(id)options
 {
   v5 = MTLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543362;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ application willFinishLaunchingWithOptions", &v8, 0xCu);
   }
 
@@ -247,13 +247,13 @@
   return 1;
 }
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
   v5 = MTLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v22 = 138543362;
-    v23 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ application didFinishLaunchingWithOptions", &v22, 0xCu);
   }
 
@@ -287,43 +287,43 @@
   [v18 setDelegate:self];
 
   v19 = +[UIApplication sharedApplication];
-  v20 = [v19 keyWindow];
-  [v20 _accessibilitySetInterfaceStyleIntent:2];
+  keyWindow = [v19 keyWindow];
+  [keyWindow _accessibilitySetInterfaceStyleIntent:2];
 
   return 1;
 }
 
-- (void)scene:(id)a3 openURL:(id)a4 sourceApplication:(id)a5
+- (void)scene:(id)scene openURL:(id)l sourceApplication:(id)application
 {
-  v6 = a4;
-  v7 = [v6 resourceSpecifier];
-  v8 = [v6 mtClockAppSection];
+  lCopy = l;
+  resourceSpecifier = [lCopy resourceSpecifier];
+  mtClockAppSection = [lCopy mtClockAppSection];
 
-  if (v8 != -1)
+  if (mtClockAppSection != -1)
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100017600;
     block[3] = &unk_1000ADE80;
     block[4] = self;
-    v10 = v7;
-    v11 = v8;
+    v10 = resourceSpecifier;
+    v11 = mtClockAppSection;
     dispatch_async(&_dispatch_main_q, block);
   }
 }
 
-- (void)_handleDefaultSpecifierForSection:(int64_t)a3
+- (void)_handleDefaultSpecifierForSection:(int64_t)section
 {
-  v4 = [(MTATabBarController *)self->_tabBarController tabIndexForAppSection:a3];
+  v4 = [(MTATabBarController *)self->_tabBarController tabIndexForAppSection:section];
   [(MTATabBarController *)self->_tabBarController setSelectedIndex:v4];
   v6 = +[NSUserDefaults standardUserDefaults];
   v5 = [NSNumber numberWithUnsignedInteger:v4 + 1];
   [v6 setObject:v5 forKey:@"LAST_SELECTED_VIEW"];
 }
 
-- (void)_handleEditSpecifierForSection:(int64_t)a3
+- (void)_handleEditSpecifierForSection:(int64_t)section
 {
-  if (a3 == 2)
+  if (section == 2)
   {
     [(MTAAppController *)self _handleDefaultSpecifierForSection:?];
     tabBarController = self->_tabBarController;
@@ -332,9 +332,9 @@
   }
 }
 
-- (void)_handleAddSpecifierForSection:(int64_t)a3
+- (void)_handleAddSpecifierForSection:(int64_t)section
 {
-  if (a3 == 4)
+  if (section == 4)
   {
     [(MTAAppController *)self _handleDefaultSpecifierForSection:?];
     tabBarController = self->_tabBarController;
@@ -343,14 +343,14 @@
   }
 }
 
-- (void)initWindowAndViewControllersWithWindowScene:(id)a3
+- (void)initWindowAndViewControllersWithWindowScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:@"CLOCK" value:&stru_1000AEF10 table:0];
-  [v4 setTitle:v6];
+  [sceneCopy setTitle:v6];
 
-  v7 = [[MTASecureWindow alloc] initWithWindowScene:v4];
+  v7 = [[MTASecureWindow alloc] initWithWindowScene:sceneCopy];
   window = self->_window;
   self->_window = v7;
 
@@ -377,10 +377,10 @@
 
 - (int64_t)interfaceOrientation
 {
-  v2 = [(MTASecureWindow *)self->_window windowScene];
-  v3 = [v2 interfaceOrientation];
+  windowScene = [(MTASecureWindow *)self->_window windowScene];
+  interfaceOrientation = [windowScene interfaceOrientation];
 
-  return v3;
+  return interfaceOrientation;
 }
 
 - (void)saveState
@@ -388,17 +388,17 @@
   v3 = [NSNumber numberWithUnsignedInteger:[(MTATabBarController *)self->_tabBarController selectedIndex]+ 1];
   CFPreferencesSetAppValue(@"LAST_SELECTED_VIEW", v3, @"com.apple.mobiletimer");
 
-  v4 = [(MTATabBarController *)self->_tabBarController worldClockViewController];
-  [v4 saveState];
+  worldClockViewController = [(MTATabBarController *)self->_tabBarController worldClockViewController];
+  [worldClockViewController saveState];
 
-  v5 = [(MTATabBarController *)self->_tabBarController alarmViewController];
-  [v5 saveState];
+  alarmViewController = [(MTATabBarController *)self->_tabBarController alarmViewController];
+  [alarmViewController saveState];
 
-  v6 = [(MTATabBarController *)self->_tabBarController stopwatchViewController];
-  [v6 saveState];
+  stopwatchViewController = [(MTATabBarController *)self->_tabBarController stopwatchViewController];
+  [stopwatchViewController saveState];
 
-  v7 = [(MTATabBarController *)self->_tabBarController timerViewController];
-  [v7 saveState];
+  timerViewController = [(MTATabBarController *)self->_tabBarController timerViewController];
+  [timerViewController saveState];
 
   [(MTAAppController *)self commitUserPreferences];
 
@@ -429,48 +429,48 @@
 
 - (void)handleUserPreferencesChanged
 {
-  v3 = [(MTATabBarController *)self->_tabBarController worldClockViewController];
-  v4 = [v3 isViewLoaded];
+  worldClockViewController = [(MTATabBarController *)self->_tabBarController worldClockViewController];
+  isViewLoaded = [worldClockViewController isViewLoaded];
 
   if (!self->_userPreferencesCommitTimer)
   {
     +[ClockManager loadUserPreferences];
-    if (v4)
+    if (isViewLoaded)
     {
       v6 = +[WorldClockManager sharedManager];
       if ([v6 checkIfCitiesModified])
       {
-        v5 = [(MTATabBarController *)self->_tabBarController worldClockViewController];
-        [v5 reloadState];
+        worldClockViewController2 = [(MTATabBarController *)self->_tabBarController worldClockViewController];
+        [worldClockViewController2 reloadState];
       }
     }
   }
 }
 
-- (void)sceneWillEnterForeground:(id)a3
+- (void)sceneWillEnterForeground:(id)foreground
 {
   v4 = MTLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138543362;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ sceneWillEnterForeground", &v11, 0xCu);
   }
 
   [(MTAAppController *)self prepareTabBarControllerRestoreIndex:1];
   [(MTAAppController *)self reloadTimerState];
-  v5 = [(MTATabBarController *)self->_tabBarController stopwatchViewController];
-  v6 = [v5 isViewLoaded];
+  stopwatchViewController = [(MTATabBarController *)self->_tabBarController stopwatchViewController];
+  isViewLoaded = [stopwatchViewController isViewLoaded];
 
-  if (v6)
+  if (isViewLoaded)
   {
-    v7 = [(MTATabBarController *)self->_tabBarController stopwatchViewController];
-    [v7 reloadState];
+    stopwatchViewController2 = [(MTATabBarController *)self->_tabBarController stopwatchViewController];
+    [stopwatchViewController2 reloadState];
   }
 
   v8 = +[UIApplication sharedApplication];
-  v9 = [v8 shortcutItems];
-  v10 = [v9 count];
+  shortcutItems = [v8 shortcutItems];
+  v10 = [shortcutItems count];
 
   if (!v10)
   {
@@ -480,54 +480,54 @@
   [(MTATabBarController *)self->_tabBarController restoreState];
 }
 
-- (void)prepareTabBarControllerRestoreIndex:(BOOL)a3
+- (void)prepareTabBarControllerRestoreIndex:(BOOL)index
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100017F48;
   v3[3] = &unk_1000ADEA8;
   v3[4] = self;
-  v4 = a3;
+  indexCopy = index;
   if (qword_1000D2928 != -1)
   {
     dispatch_once(&qword_1000D2928, v3);
   }
 }
 
-- (void)startedTest:(id)a3
+- (void)startedTest:(id)test
 {
-  objc_storeStrong(&self->_currentTestName, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_currentTestName, test);
+  testCopy = test;
   v6.receiver = self;
   v6.super_class = MTAAppController;
-  [(MTAAppController *)&v6 startedTest:v5];
+  [(MTAAppController *)&v6 startedTest:testCopy];
 }
 
-- (void)finishedTest:(id)a3 extraResults:(id)a4
+- (void)finishedTest:(id)test extraResults:(id)results
 {
   v6.receiver = self;
   v6.super_class = MTAAppController;
-  [(MTAAppController *)&v6 finishedTest:a3 extraResults:a4];
+  [(MTAAppController *)&v6 finishedTest:test extraResults:results];
   currentTestName = self->_currentTestName;
   self->_currentTestName = 0;
 }
 
-- (BOOL)_runSelectTest:(id)a3
+- (BOOL)_runSelectTest:(id)test
 {
-  v4 = a3;
+  testCopy = test;
   if ([(NSString *)self->_currentTestName isEqualToString:@"SelectAlarm"])
   {
-    v5 = [(MTATabBarController *)self->_tabBarController alarmViewController];
+    alarmViewController = [(MTATabBarController *)self->_tabBarController alarmViewController];
   }
 
   else if ([(NSString *)self->_currentTestName isEqualToString:@"SelectWorldClock"])
   {
-    v5 = [(MTATabBarController *)self->_tabBarController worldClockViewController];
+    alarmViewController = [(MTATabBarController *)self->_tabBarController worldClockViewController];
   }
 
   else if ([(NSString *)self->_currentTestName isEqualToString:@"SelectStopwatch"])
   {
-    v5 = [(MTATabBarController *)self->_tabBarController stopwatchViewController];
+    alarmViewController = [(MTATabBarController *)self->_tabBarController stopwatchViewController];
   }
 
   else
@@ -537,15 +537,15 @@
       goto LABEL_13;
     }
 
-    v5 = [(MTATabBarController *)self->_tabBarController timerViewController];
+    alarmViewController = [(MTATabBarController *)self->_tabBarController timerViewController];
   }
 
-  v6 = v5;
-  if (v5)
+  v6 = alarmViewController;
+  if (alarmViewController)
   {
     if (objc_opt_respondsToSelector())
     {
-      [v6 setupForTest:self->_currentTestName options:v4];
+      [v6 setupForTest:self->_currentTestName options:testCopy];
     }
 
     [(MTAAppController *)self startedTest:self->_currentTestName];
@@ -556,7 +556,7 @@
     block[3] = &unk_1000ADED0;
     block[4] = self;
     v10 = v6;
-    v11 = v4;
+    v11 = testCopy;
     v7 = v6;
     dispatch_async(&_dispatch_main_q, block);
   }
@@ -566,10 +566,10 @@ LABEL_13:
   return 1;
 }
 
-- (BOOL)_runScrollTest:(id)a3
+- (BOOL)_runScrollTest:(id)test
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"natural"];
+  testCopy = test;
+  v5 = [testCopy objectForKeyedSubscript:@"natural"];
   if ([v5 BOOLValue])
   {
     v6 = +[RPTTestRunner isRecapAvailable];
@@ -582,7 +582,7 @@ LABEL_13:
 
   if ([(NSString *)self->_currentTestName containsString:@"ScrollAlarm"])
   {
-    v7 = [(MTATabBarController *)self->_tabBarController alarmViewController];
+    alarmViewController = [(MTATabBarController *)self->_tabBarController alarmViewController];
     v8 = 0;
   }
 
@@ -593,12 +593,12 @@ LABEL_13:
       goto LABEL_20;
     }
 
-    v7 = [(MTATabBarController *)self->_tabBarController worldClockViewController];
+    alarmViewController = [(MTATabBarController *)self->_tabBarController worldClockViewController];
     if ([(NSString *)self->_currentTestName containsString:@"Edit"])
     {
-      v11 = [(MTATabBarController *)self->_tabBarController worldClockViewController];
+      worldClockViewController = [(MTATabBarController *)self->_tabBarController worldClockViewController];
       v8 = 1;
-      [v11 setEditing:1 animated:1];
+      [worldClockViewController setEditing:1 animated:1];
     }
 
     else
@@ -607,40 +607,40 @@ LABEL_13:
     }
   }
 
-  if (v7)
+  if (alarmViewController)
   {
     if (objc_opt_respondsToSelector())
     {
-      [v7 setupForTest:self->_currentTestName options:v4];
+      [alarmViewController setupForTest:self->_currentTestName options:testCopy];
     }
 
-    [(MTAAppController *)self _selectViewController:v7];
+    [(MTAAppController *)self _selectViewController:alarmViewController];
     [(MTAAppController *)self _spinMainRunLoop];
-    v9 = [v7 contentScrollView];
+    contentScrollView = [alarmViewController contentScrollView];
     if (v6)
     {
-      v10 = [[RPTScrollViewTestParameters alloc] initWithTestName:self->_currentTestName scrollView:v9 completionHandler:0];
+      v10 = [[RPTScrollViewTestParameters alloc] initWithTestName:self->_currentTestName scrollView:contentScrollView completionHandler:0];
       [RPTTestRunner runTestWithParameters:v10];
     }
 
     else
     {
       currentTestName = self->_currentTestName;
-      v10 = [v4 objectForKeyedSubscript:@"iterations"];
-      v13 = [v10 intValue];
-      v14 = [v4 objectForKey:@"offset"];
-      [v9 _performScrollTest:currentTestName iterations:v13 delta:{objc_msgSend(v14, "intValue")}];
+      v10 = [testCopy objectForKeyedSubscript:@"iterations"];
+      intValue = [v10 intValue];
+      v14 = [testCopy objectForKey:@"offset"];
+      [contentScrollView _performScrollTest:currentTestName iterations:intValue delta:{objc_msgSend(v14, "intValue")}];
     }
 
     if (v8)
     {
-      v15 = [(MTATabBarController *)self->_tabBarController worldClockViewController];
-      [v15 setEditing:0 animated:0];
+      worldClockViewController2 = [(MTATabBarController *)self->_tabBarController worldClockViewController];
+      [worldClockViewController2 setEditing:0 animated:0];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v7 teardownForTest:self->_currentTestName options:v4];
+      [alarmViewController teardownForTest:self->_currentTestName options:testCopy];
     }
   }
 
@@ -656,16 +656,16 @@ LABEL_20:
   [v3 runUntilDate:v2];
 }
 
-- (void)_selectViewController:(id)a3
+- (void)_selectViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v15 = self;
-  v5 = [(MTATabBarController *)self->_tabBarController viewControllers];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  selfCopy = self;
+  viewControllers = [(MTATabBarController *)self->_tabBarController viewControllers];
+  v6 = [viewControllers countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -680,16 +680,16 @@ LABEL_20:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(viewControllers);
         }
 
         v12 = *(*(&v16 + 1) + 8 * v10);
-        if (v12 == v4 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && ([v12 viewControllers], v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "objectAtIndexedSubscript:", 0), v14 = objc_claimAutoreleasedReturnValue(), v14, v13, v14 == v4))
+        if (v12 == controllerCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && ([v12 viewControllers], v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "objectAtIndexedSubscript:", 0), v14 = objc_claimAutoreleasedReturnValue(), v14, v13, v14 == controllerCopy))
         {
 
           if (v11 != 1)
           {
-            [(MTATabBarController *)v15->_tabBarController setSelectedIndex:-v11];
+            [(MTATabBarController *)selfCopy->_tabBarController setSelectedIndex:-v11];
           }
 
           goto LABEL_14;
@@ -700,7 +700,7 @@ LABEL_20:
       }
 
       while (v7 != v10);
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [viewControllers countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v7)
       {
         continue;
@@ -738,31 +738,31 @@ LABEL_14:
   return 1;
 }
 
-- (void)_windowDidRotate:(id)a3
+- (void)_windowDidRotate:(id)rotate
 {
-  v4 = a3;
+  rotateCopy = rotate;
   if (self->_currentTestName)
   {
-    v12 = v4;
+    v12 = rotateCopy;
     if (self->_iterations)
     {
       v5 = +[UIWindow keyWindow];
-      v6 = [v5 interfaceOrientation];
+      interfaceOrientation = [v5 interfaceOrientation];
 
-      if (v6 == 3)
+      if (interfaceOrientation == 3)
       {
         --self->_iterations;
-        v7 = self;
+        selfCopy2 = self;
         v8 = 1;
       }
 
       else
       {
-        v7 = self;
+        selfCopy2 = self;
         v8 = 3;
       }
 
-      [(MTAAppController *)v7 rotateIfNeeded:v8];
+      [(MTAAppController *)selfCopy2 rotateIfNeeded:v8];
     }
 
     else
@@ -774,18 +774,18 @@ LABEL_14:
       [v9 removeObserver:self name:v10 object:v11];
     }
 
-    v4 = v12;
+    rotateCopy = v12;
   }
 }
 
-- (void)scene:(id)a3 willContinueUserActivityWithType:(id)a4
+- (void)scene:(id)scene willContinueUserActivityWithType:(id)type
 {
-  v5 = a4;
+  typeCopy = type;
   v6 = MTLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v9 = 138412290;
-    v10 = v5;
+    v10 = typeCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Will Continue with Activity Type:%@", &v9, 0xCu);
   }
 
@@ -795,179 +795,179 @@ LABEL_14:
     sub_1000735A4();
   }
 
-  if ([v5 isEqualToString:@"com.apple.clock.worldclock"])
+  if ([typeCopy isEqualToString:@"com.apple.clock.worldclock"])
   {
-    v7 = [(MTATabBarController *)self->_tabBarController worldClockViewController];
+    worldClockViewController = [(MTATabBarController *)self->_tabBarController worldClockViewController];
   }
 
-  else if (([v5 isEqualToString:@"com.apple.clock.alarm"] & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", @"com.apple.clock.wakealarm") & 1) != 0 || objc_msgSend(v5, "isEqualToString:", @"com.apple.clock.bedtime"))
+  else if (([typeCopy isEqualToString:@"com.apple.clock.alarm"] & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", @"com.apple.clock.wakealarm") & 1) != 0 || objc_msgSend(typeCopy, "isEqualToString:", @"com.apple.clock.bedtime"))
   {
-    v7 = [(MTATabBarController *)self->_tabBarController alarmViewController];
+    worldClockViewController = [(MTATabBarController *)self->_tabBarController alarmViewController];
   }
 
-  else if ([v5 isEqualToString:@"com.apple.clock.stopwatch"])
+  else if ([typeCopy isEqualToString:@"com.apple.clock.stopwatch"])
   {
-    v7 = [(MTATabBarController *)self->_tabBarController stopwatchViewController];
+    worldClockViewController = [(MTATabBarController *)self->_tabBarController stopwatchViewController];
   }
 
   else
   {
-    if (![v5 isEqualToString:@"com.apple.clock.timer"])
+    if (![typeCopy isEqualToString:@"com.apple.clock.timer"])
     {
       goto LABEL_12;
     }
 
-    v7 = [(MTATabBarController *)self->_tabBarController timerViewController];
+    worldClockViewController = [(MTATabBarController *)self->_tabBarController timerViewController];
   }
 
-  v8 = v7;
-  [(MTAAppController *)self _selectViewController:v7];
+  v8 = worldClockViewController;
+  [(MTAAppController *)self _selectViewController:worldClockViewController];
 
 LABEL_12:
 }
 
-- (void)scene:(id)a3 continueUserActivity:(id)a4
+- (void)scene:(id)scene continueUserActivity:(id)activity
 {
-  v10 = a4;
-  v5 = [v10 interaction];
-  v6 = [v5 intent];
+  activityCopy = activity;
+  interaction = [activityCopy interaction];
+  intent = [interaction intent];
 
-  if (v6)
+  if (intent)
   {
-    [(MTATabBarController *)self->_tabBarController performActionForIntent:v6];
+    [(MTATabBarController *)self->_tabBarController performActionForIntent:intent];
   }
 
   else
   {
-    v7 = [v10 activityType];
-    v8 = [v7 isEqualToString:@"com.apple.clock.worldclock"];
+    activityType = [activityCopy activityType];
+    v8 = [activityType isEqualToString:@"com.apple.clock.worldclock"];
 
     if (v8)
     {
-      v9 = [(MTATabBarController *)self->_tabBarController worldClockViewController];
+      worldClockViewController = [(MTATabBarController *)self->_tabBarController worldClockViewController];
       if (objc_opt_respondsToSelector())
       {
-        [v9 restoreWithUserActivity:v10];
+        [worldClockViewController restoreWithUserActivity:activityCopy];
       }
     }
   }
 }
 
-- (void)scene:(id)a3 didFailToContinueUserActivityWithType:(id)a4 error:(id)a5
+- (void)scene:(id)scene didFailToContinueUserActivityWithType:(id)type error:(id)error
 {
-  v6 = a5;
+  errorCopy = error;
   v7 = MTLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
-    sub_1000735CC(self, v6, v7);
+    sub_1000735CC(self, errorCopy, v7);
   }
 }
 
-- (void)windowScene:(id)a3 performActionForShortcutItem:(id)a4 completionHandler:(id)a5
+- (void)windowScene:(id)scene performActionForShortcutItem:(id)item completionHandler:(id)handler
 {
-  v7 = a4;
+  itemCopy = item;
   v6 = +[MTAStateStore shared];
   [v6 bypass];
 
   [(MTAAppController *)self prepareTabBarControllerRestoreIndex:0];
-  [(MTATabBarController *)self->_tabBarController performActionForShortcutItem:v7];
+  [(MTATabBarController *)self->_tabBarController performActionForShortcutItem:itemCopy];
 }
 
-- (void)buildMenuWithBuilder:(id)a3
+- (void)buildMenuWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v14.receiver = self;
   v14.super_class = MTAAppController;
-  [(MTAAppController *)&v14 buildMenuWithBuilder:v4];
-  [(MTAAppController *)self setMenuBuilder:v4];
-  [v4 removeMenuForIdentifier:UIMenuHide];
-  [v4 removeMenuForIdentifier:UIMenuQuit];
-  [v4 removeMenuForIdentifier:UIMenuFont];
-  [v4 removeMenuForIdentifier:UIMenuFormat];
-  [v4 removeMenuForIdentifier:UIMenuFind];
-  [v4 removeMenuForIdentifier:UIMenuAutoFill];
+  [(MTAAppController *)&v14 buildMenuWithBuilder:builderCopy];
+  [(MTAAppController *)self setMenuBuilder:builderCopy];
+  [builderCopy removeMenuForIdentifier:UIMenuHide];
+  [builderCopy removeMenuForIdentifier:UIMenuQuit];
+  [builderCopy removeMenuForIdentifier:UIMenuFont];
+  [builderCopy removeMenuForIdentifier:UIMenuFormat];
+  [builderCopy removeMenuForIdentifier:UIMenuFind];
+  [builderCopy removeMenuForIdentifier:UIMenuAutoFill];
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:@"RECENT_TIMERS_MENU" value:&stru_1000AEF10 table:0];
   v7 = [UIMenu menuWithTitle:v6 children:&__NSArray0__struct];
 
-  [v4 insertChildMenu:v7 atStartOfMenuForIdentifier:UIMenuFile];
-  v8 = [v7 identifier];
-  [(MTAAppController *)self setRecentTimerIdentifier:v8];
+  [builderCopy insertChildMenu:v7 atStartOfMenuForIdentifier:UIMenuFile];
+  identifier = [v7 identifier];
+  [(MTAAppController *)self setRecentTimerIdentifier:identifier];
 
-  v9 = [(MTATabBarController *)self->_tabBarController timerViewController];
+  timerViewController = [(MTATabBarController *)self->_tabBarController timerViewController];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(MTATabBarController *)self->_tabBarController timerViewController];
-    v12 = [v7 identifier];
-    [v11 performSelector:"menuBarAppearedWithBuilder:targetMenuIdentifier:" withObject:v4 withObject:v12];
+    timerViewController2 = [(MTATabBarController *)self->_tabBarController timerViewController];
+    identifier2 = [v7 identifier];
+    [timerViewController2 performSelector:"menuBarAppearedWithBuilder:targetMenuIdentifier:" withObject:builderCopy withObject:identifier2];
   }
 
-  [v4 replaceChildrenOfMenuForIdentifier:UIMenuStandardEdit fromChildrenBlock:&stru_1000ADF30];
+  [builderCopy replaceChildrenOfMenuForIdentifier:UIMenuStandardEdit fromChildrenBlock:&stru_1000ADF30];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100019298;
   v13[3] = &unk_1000ADF80;
   v13[4] = self;
-  [v4 replaceChildrenOfMenuForIdentifier:UIMenuView fromChildrenBlock:v13];
-  [v4 replaceChildrenOfMenuForIdentifier:UIMenuWindow fromChildrenBlock:&stru_1000ADFA0];
+  [builderCopy replaceChildrenOfMenuForIdentifier:UIMenuView fromChildrenBlock:v13];
+  [builderCopy replaceChildrenOfMenuForIdentifier:UIMenuWindow fromChildrenBlock:&stru_1000ADFA0];
 }
 
-- (void)chooseViewOption:(int64_t)a3
+- (void)chooseViewOption:(int64_t)option
 {
-  if (a3 > 1)
+  if (option > 1)
   {
-    if (a3 == 2)
+    if (option == 2)
     {
-      v4 = [(MTATabBarController *)self->_tabBarController stopwatchViewController];
+      stopwatchViewController = [(MTATabBarController *)self->_tabBarController stopwatchViewController];
     }
 
     else
     {
-      if (a3 != 3)
+      if (option != 3)
       {
         return;
       }
 
-      v4 = [(MTATabBarController *)self->_tabBarController timerViewController];
+      stopwatchViewController = [(MTATabBarController *)self->_tabBarController timerViewController];
     }
   }
 
-  else if (a3)
+  else if (option)
   {
-    if (a3 != 1)
+    if (option != 1)
     {
       return;
     }
 
-    v4 = [(MTATabBarController *)self->_tabBarController alarmViewController];
+    stopwatchViewController = [(MTATabBarController *)self->_tabBarController alarmViewController];
   }
 
   else
   {
-    v4 = [(MTATabBarController *)self->_tabBarController worldClockViewController];
+    stopwatchViewController = [(MTATabBarController *)self->_tabBarController worldClockViewController];
   }
 
-  if (v4)
+  if (stopwatchViewController)
   {
-    v5 = v4;
-    [(MTAAppController *)self _selectViewController:v4];
+    v5 = stopwatchViewController;
+    [(MTAAppController *)self _selectViewController:stopwatchViewController];
   }
 }
 
 - (void)switchToTimerTab
 {
-  v3 = [(MTATabBarController *)self->_tabBarController timerViewController];
-  [(MTAAppController *)self _selectViewController:v3];
+  timerViewController = [(MTATabBarController *)self->_tabBarController timerViewController];
+  [(MTAAppController *)self _selectViewController:timerViewController];
 }
 
-- (void)appIntentsProvider:(id)a3 didSelectTab:(unint64_t)a4
+- (void)appIntentsProvider:(id)provider didSelectTab:(unint64_t)tab
 {
-  v6 = a3;
-  if (a4 > 1)
+  providerCopy = provider;
+  if (tab > 1)
   {
-    if (a4 == 2)
+    if (tab == 2)
     {
       v11 = MTLogForCategory();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -977,11 +977,11 @@ LABEL_12:
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%s: Handling AppIntents action for MTProviderTabStopwatch", &v13, 0xCu);
       }
 
-      v8 = [(MTATabBarController *)self->_tabBarController stopwatchViewController];
+      stopwatchViewController = [(MTATabBarController *)self->_tabBarController stopwatchViewController];
       goto LABEL_18;
     }
 
-    if (a4 == 3)
+    if (tab == 3)
     {
       v9 = MTLogForCategory();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -991,14 +991,14 @@ LABEL_12:
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s: Handling AppIntents action for MTProviderTabTimer", &v13, 0xCu);
       }
 
-      v8 = [(MTATabBarController *)self->_tabBarController timerViewController];
+      stopwatchViewController = [(MTATabBarController *)self->_tabBarController timerViewController];
       goto LABEL_18;
     }
   }
 
   else
   {
-    if (!a4)
+    if (!tab)
     {
       v10 = MTLogForCategory();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -1008,11 +1008,11 @@ LABEL_12:
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s: Handling AppIntents action for MTProviderTabClock", &v13, 0xCu);
       }
 
-      v8 = [(MTATabBarController *)self->_tabBarController worldClockViewController];
+      stopwatchViewController = [(MTATabBarController *)self->_tabBarController worldClockViewController];
       goto LABEL_18;
     }
 
-    if (a4 == 1)
+    if (tab == 1)
     {
       v7 = MTLogForCategory();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -1022,24 +1022,24 @@ LABEL_12:
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s: Handling AppIntents action for MTProviderTabAlarm", &v13, 0xCu);
       }
 
-      v8 = [(MTATabBarController *)self->_tabBarController alarmViewController];
+      stopwatchViewController = [(MTATabBarController *)self->_tabBarController alarmViewController];
 LABEL_18:
-      v12 = v8;
-      [(MTAAppController *)self _selectViewController:v8];
+      v12 = stopwatchViewController;
+      [(MTAAppController *)self _selectViewController:stopwatchViewController];
     }
   }
 }
 
-- (void)didAddNewWorldClockWithName:(id)a3 provider:(id)a4
+- (void)didAddNewWorldClockWithName:(id)name provider:(id)provider
 {
-  v5 = a3;
+  nameCopy = name;
   v6 = MTLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v11 = self;
+    selfCopy = self;
     v12 = 2114;
-    v13 = v5;
+    v13 = nameCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: didAddNewWordClockWithName: %{public}@", buf, 0x16u);
   }
 
@@ -1048,21 +1048,21 @@ LABEL_18:
   v8[2] = sub_100019BA0;
   v8[3] = &unk_1000ADAB0;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = nameCopy;
+  v7 = nameCopy;
   dispatch_async(&_dispatch_main_q, v8);
 }
 
-- (void)didRemoveWorldClockWithName:(id)a3 provider:(id)a4
+- (void)didRemoveWorldClockWithName:(id)name provider:(id)provider
 {
-  v5 = a3;
+  nameCopy = name;
   v6 = MTLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v11 = self;
+    selfCopy = self;
     v12 = 2114;
-    v13 = v5;
+    v13 = nameCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: didRemoveWorldClockWithName: %{public}@", buf, 0x16u);
   }
 
@@ -1071,34 +1071,34 @@ LABEL_18:
   v8[2] = sub_100019EF0;
   v8[3] = &unk_1000ADAB0;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = nameCopy;
+  v7 = nameCopy;
   dispatch_async(&_dispatch_main_q, v8);
 }
 
-- (BOOL)runTest:(id)a3 options:(id)a4
+- (BOOL)runTest:(id)test options:(id)options
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 objectForKey:@"iterations"];
+  testCopy = test;
+  optionsCopy = options;
+  v9 = [optionsCopy objectForKey:@"iterations"];
   self->_iterations = [v9 integerValue];
 
-  objc_storeStrong(&self->_currentTestName, a3);
-  if ([v7 rangeOfString:@"Scroll"] != 0x7FFFFFFFFFFFFFFFLL)
+  objc_storeStrong(&self->_currentTestName, test);
+  if ([testCopy rangeOfString:@"Scroll"] != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v13 = [(MTAAppController *)self _runScrollTest:v8];
+    v13 = [(MTAAppController *)self _runScrollTest:optionsCopy];
 LABEL_23:
     v16 = v13;
     goto LABEL_24;
   }
 
-  if ([v7 rangeOfString:@"Select"] != 0x7FFFFFFFFFFFFFFFLL)
+  if ([testCopy rangeOfString:@"Select"] != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v13 = [(MTAAppController *)self _runSelectTest:v8];
+    v13 = [(MTAAppController *)self _runSelectTest:optionsCopy];
     goto LABEL_23;
   }
 
-  if (([v7 hasPrefix:@"Rotate"] & 1) == 0 && !objc_msgSend(v7, "hasPrefix:", @"Resize"))
+  if (([testCopy hasPrefix:@"Rotate"] & 1) == 0 && !objc_msgSend(testCopy, "hasPrefix:", @"Resize"))
   {
     goto LABEL_22;
   }
@@ -1106,76 +1106,76 @@ LABEL_23:
   if ((MTUIIsPadIdiom() & 1) == 0)
   {
     v10 = +[UIDevice currentDevice];
-    v11 = [v10 userInterfaceIdiom];
+    userInterfaceIdiom = [v10 userInterfaceIdiom];
 
-    if (v11 != 5)
+    if (userInterfaceIdiom != 5)
     {
       goto LABEL_22;
     }
   }
 
-  if ([v7 hasSuffix:@"WorldClock"])
+  if ([testCopy hasSuffix:@"WorldClock"])
   {
-    v12 = [(MTATabBarController *)self->_tabBarController worldClockViewController];
+    worldClockViewController = [(MTATabBarController *)self->_tabBarController worldClockViewController];
   }
 
-  else if ([v7 hasSuffix:@"Alarm"])
+  else if ([testCopy hasSuffix:@"Alarm"])
   {
-    v12 = [(MTATabBarController *)self->_tabBarController alarmViewController];
+    worldClockViewController = [(MTATabBarController *)self->_tabBarController alarmViewController];
   }
 
-  else if ([v7 hasSuffix:@"Stopwatch"])
+  else if ([testCopy hasSuffix:@"Stopwatch"])
   {
-    v12 = [(MTATabBarController *)self->_tabBarController stopwatchViewController];
+    worldClockViewController = [(MTATabBarController *)self->_tabBarController stopwatchViewController];
   }
 
   else
   {
-    if (![v7 hasSuffix:@"Timer"])
+    if (![testCopy hasSuffix:@"Timer"])
     {
 LABEL_22:
       v18.receiver = self;
       v18.super_class = MTAAppController;
-      v13 = [(MTAAppController *)&v18 runTest:v7 options:v8];
+      v13 = [(MTAAppController *)&v18 runTest:testCopy options:optionsCopy];
       goto LABEL_23;
     }
 
-    v12 = [(MTATabBarController *)self->_tabBarController timerViewController];
+    worldClockViewController = [(MTATabBarController *)self->_tabBarController timerViewController];
   }
 
-  v14 = v12;
-  if (!v12)
+  v14 = worldClockViewController;
+  if (!worldClockViewController)
   {
     goto LABEL_22;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v14 setupForTest:v7 options:v8];
+    [v14 setupForTest:testCopy options:optionsCopy];
   }
 
   [(MTAAppController *)self _selectViewController:v14];
-  if ([v7 hasPrefix:@"Rotate"])
+  if ([testCopy hasPrefix:@"Rotate"])
   {
-    v15 = [(MTAAppController *)self _runRotationTest];
+    _runRotationTest = [(MTAAppController *)self _runRotationTest];
   }
 
   else
   {
-    if (![v7 hasPrefix:@"Resize"])
+    if (![testCopy hasPrefix:@"Resize"])
     {
       v16 = 0;
       goto LABEL_29;
     }
 
-    v15 = [(MTAAppController *)self _runResizeTest];
+    _runRotationTest = [(MTAAppController *)self _runResizeTest];
   }
 
-  v16 = v15;
+  v16 = _runRotationTest;
 LABEL_29:
   if (objc_opt_respondsToSelector())
   {
-    [v14 teardownForTest:v7 options:v8];
+    [v14 teardownForTest:testCopy options:optionsCopy];
   }
 
 LABEL_24:
@@ -1184,19 +1184,19 @@ LABEL_24:
 
 - (double)visibleViewHeight
 {
-  v2 = [(MTATabBarController *)self->_tabBarController viewControllers];
-  v3 = [v2 firstObject];
+  viewControllers = [(MTATabBarController *)self->_tabBarController viewControllers];
+  firstObject = [viewControllers firstObject];
 
-  v4 = [v3 topViewController];
-  if (v4)
+  topViewController = [firstObject topViewController];
+  if (topViewController)
   {
     v5 = +[MTAUtilities isLandscape];
-    v6 = [v4 view];
-    [v6 frame];
+    view = [topViewController view];
+    [view frame];
     v8 = v7;
 
-    v9 = [v4 view];
-    [v9 frame];
+    view2 = [topViewController view];
+    [view2 frame];
     v11 = v10;
 
     if (v8 < v11 != v5)
@@ -1209,14 +1209,14 @@ LABEL_24:
       v12 = v8;
     }
 
-    v13 = [v4 tabBarController];
-    v14 = [v13 tabBar];
-    [v14 frame];
+    tabBarController = [topViewController tabBarController];
+    tabBar = [tabBarController tabBar];
+    [tabBar frame];
     v16 = v15;
 
-    v17 = [v4 navigationController];
-    v18 = [v17 navigationBar];
-    [v18 frame];
+    navigationController = [topViewController navigationController];
+    navigationBar = [navigationController navigationBar];
+    [navigationBar frame];
     v20 = v19;
 
     v21 = v12 - v16 - v20;

@@ -1,10 +1,10 @@
 @interface _AppProtectionManager
-- (void)shieldViewUnlockButtonPressed:(id)a3;
+- (void)shieldViewUnlockButtonPressed:(id)pressed;
 @end
 
 @implementation _AppProtectionManager
 
-- (void)shieldViewUnlockButtonPressed:(id)a3
+- (void)shieldViewUnlockButtonPressed:(id)pressed
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EC6D8E60);
   MEMORY[0x1EEE9AC00](v5 - 8);
@@ -12,9 +12,9 @@
   v8 = sub_1D28785F8();
   (*(*(v8 - 8) + 56))(v7, 1, 1, v8);
   sub_1D2878568();
-  v9 = a3;
+  pressedCopy = pressed;
   swift_retain_n();
-  v10 = v9;
+  v10 = pressedCopy;
   v11 = sub_1D2878558();
   v12 = swift_allocObject();
   v13 = MEMORY[0x1E69E85E0];

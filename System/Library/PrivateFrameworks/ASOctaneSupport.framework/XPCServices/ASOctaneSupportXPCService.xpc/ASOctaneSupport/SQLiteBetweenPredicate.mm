@@ -1,47 +1,47 @@
 @interface SQLiteBetweenPredicate
-+ (id)predicateWithProperty:(id)a3 lowerValue:(id)a4 upperValue:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (id)SQLForEntityClass:(Class)a3;
++ (id)predicateWithProperty:(id)property lowerValue:(id)value upperValue:(id)upperValue;
+- (BOOL)isEqual:(id)equal;
+- (id)SQLForEntityClass:(Class)class;
 - (id)description;
 - (unint64_t)hash;
-- (void)applyBinding:(id)a3 atIndex:(int *)a4;
-- (void)applyBinding:(id)a3 value:(id)a4 atIndex:(int *)a5;
+- (void)applyBinding:(id)binding atIndex:(int *)index;
+- (void)applyBinding:(id)binding value:(id)value atIndex:(int *)index;
 @end
 
 @implementation SQLiteBetweenPredicate
 
-+ (id)predicateWithProperty:(id)a3 lowerValue:(id)a4 upperValue:(id)a5
++ (id)predicateWithProperty:(id)property lowerValue:(id)value upperValue:(id)upperValue
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = a3;
+  valueCopy = value;
+  upperValueCopy = upperValue;
+  propertyCopy = property;
   v10 = objc_alloc_init(objc_opt_class());
-  v11 = [v9 copy];
+  v11 = [propertyCopy copy];
 
   v12 = v10[1];
   v10[1] = v11;
 
-  if ([v7 conformsToProtocol:&OBJC_PROTOCOL___NSCopying])
+  if ([valueCopy conformsToProtocol:&OBJC_PROTOCOL___NSCopying])
   {
-    v13 = [v7 copy];
+    v13 = [valueCopy copy];
   }
 
   else
   {
-    v13 = v7;
+    v13 = valueCopy;
   }
 
   v14 = v10[3];
   v10[3] = v13;
 
-  if ([v8 conformsToProtocol:&OBJC_PROTOCOL___NSCopying])
+  if ([upperValueCopy conformsToProtocol:&OBJC_PROTOCOL___NSCopying])
   {
-    v15 = [v8 copy];
+    v15 = [upperValueCopy copy];
   }
 
   else
   {
-    v15 = v8;
+    v15 = upperValueCopy;
   }
 
   v16 = v10[4];
@@ -50,24 +50,24 @@
   return v10;
 }
 
-- (void)applyBinding:(id)a3 atIndex:(int *)a4
+- (void)applyBinding:(id)binding atIndex:(int *)index
 {
   v7.receiver = self;
   v7.super_class = SQLiteBetweenPredicate;
-  v6 = a3;
-  [(SQLitePropertyPredicate *)&v7 applyBinding:v6 atIndex:a4];
-  [(SQLiteBetweenPredicate *)self applyBinding:v6 value:self->_lowerValue atIndex:a4, v7.receiver, v7.super_class];
-  [(SQLiteBetweenPredicate *)self applyBinding:v6 value:self->_upperValue atIndex:a4];
+  bindingCopy = binding;
+  [(SQLitePropertyPredicate *)&v7 applyBinding:bindingCopy atIndex:index];
+  [(SQLiteBetweenPredicate *)self applyBinding:bindingCopy value:self->_lowerValue atIndex:index, v7.receiver, v7.super_class];
+  [(SQLiteBetweenPredicate *)self applyBinding:bindingCopy value:self->_upperValue atIndex:index];
 }
 
-- (void)applyBinding:(id)a3 value:(id)a4 atIndex:(int *)a5
+- (void)applyBinding:(id)binding value:(id)value atIndex:(int *)index
 {
-  v8 = a3;
-  v7 = a4;
+  bindingCopy = binding;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v8 bindString:v7 atPosition:*a5];
+    [bindingCopy bindString:valueCopy atPosition:*index];
   }
 
   else
@@ -75,7 +75,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v8 bindNumber:v7 atPosition:*a5];
+      [bindingCopy bindNumber:valueCopy atPosition:*index];
     }
 
     else
@@ -83,12 +83,12 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v8 bindUUID:v7 atPosition:*a5];
+        [bindingCopy bindUUID:valueCopy atPosition:*index];
       }
     }
   }
 
-  ++*a5;
+  ++*index;
 }
 
 - (id)description
@@ -102,31 +102,31 @@
 
 - (unint64_t)hash
 {
-  v3 = [(SQLitePropertyPredicate *)self property];
-  v4 = [v3 hash];
-  v5 = [(SQLiteBetweenPredicate *)self lowerValue];
-  v6 = &v4[[v5 hash]];
-  v7 = [(SQLiteBetweenPredicate *)self upperValue];
-  v8 = [v7 hash];
+  property = [(SQLitePropertyPredicate *)self property];
+  v4 = [property hash];
+  lowerValue = [(SQLiteBetweenPredicate *)self lowerValue];
+  v6 = &v4[[lowerValue hash]];
+  upperValue = [(SQLiteBetweenPredicate *)self upperValue];
+  v8 = [upperValue hash];
 
   return v8 + v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
+  equalCopy = equal;
   v16.receiver = self;
   v16.super_class = SQLiteBetweenPredicate;
-  if ([(SQLitePropertyPredicate *)&v16 isEqual:v6])
+  if ([(SQLitePropertyPredicate *)&v16 isEqual:equalCopy])
   {
-    v7 = [(SQLiteBetweenPredicate *)self lowerValue];
-    v8 = [v6 lowerValue];
-    if (v7 == v8 || (-[SQLiteBetweenPredicate lowerValue](self, "lowerValue"), v3 = objc_claimAutoreleasedReturnValue(), [v6 lowerValue], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "isEqual:", v4)))
+    lowerValue = [(SQLiteBetweenPredicate *)self lowerValue];
+    lowerValue2 = [equalCopy lowerValue];
+    if (lowerValue == lowerValue2 || (-[SQLiteBetweenPredicate lowerValue](self, "lowerValue"), v3 = objc_claimAutoreleasedReturnValue(), [equalCopy lowerValue], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "isEqual:", v4)))
     {
-      v10 = [(SQLiteBetweenPredicate *)self upperValue];
-      v11 = [v6 upperValue];
-      v12 = v11;
-      if (v10 == v11)
+      upperValue = [(SQLiteBetweenPredicate *)self upperValue];
+      upperValue2 = [equalCopy upperValue];
+      v12 = upperValue2;
+      if (upperValue == upperValue2)
       {
 
         v9 = 1;
@@ -134,12 +134,12 @@
 
       else
       {
-        v13 = [(SQLiteBetweenPredicate *)self upperValue];
-        v14 = [v6 upperValue];
-        v9 = [v13 isEqual:v14];
+        upperValue3 = [(SQLiteBetweenPredicate *)self upperValue];
+        upperValue4 = [equalCopy upperValue];
+        v9 = [upperValue3 isEqual:upperValue4];
       }
 
-      if (v7 == v8)
+      if (lowerValue == lowerValue2)
       {
         goto LABEL_11;
       }
@@ -160,9 +160,9 @@ LABEL_12:
   return v9;
 }
 
-- (id)SQLForEntityClass:(Class)a3
+- (id)SQLForEntityClass:(Class)class
 {
-  v3 = [(SQLitePropertyPredicate *)self _transformedSQLForEntityClass:a3];
+  v3 = [(SQLitePropertyPredicate *)self _transformedSQLForEntityClass:class];
   v4 = [NSString stringWithFormat:@"%@ BETWEEN ? AND ?", v3];
 
   return v4;

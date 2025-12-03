@@ -1,10 +1,10 @@
 @interface INRecurrenceRule
-- (BOOL)isEqual:(id)a3;
-- (INRecurrenceRule)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (INRecurrenceRule)initWithCoder:(id)coder;
 - (INRecurrenceRule)initWithInterval:(NSUInteger)interval frequency:(INRecurrenceFrequency)frequency weeklyRecurrenceDays:(INDayOfWeekOptions)weeklyRecurrenceDays;
 - (id)_dictionaryRepresentation;
-- (id)descriptionAtIndent:(unint64_t)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)descriptionAtIndent:(unint64_t)indent;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INRecurrenceRule
@@ -39,45 +39,45 @@
   return v8;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INRecurrenceRule;
   v6 = [(INRecurrenceRule *)&v11 description];
-  v7 = [(INRecurrenceRule *)self _dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  _dictionaryRepresentation = [(INRecurrenceRule *)self _dictionaryRepresentation];
+  v8 = [_dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   interval = self->_interval;
-  v5 = a3;
-  [v5 encodeInteger:interval forKey:@"interval"];
-  [v5 encodeInteger:self->_frequency forKey:@"frequency"];
-  [v5 encodeInteger:self->_weeklyRecurrenceDays forKey:@"weeklyRecurrenceDays"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:interval forKey:@"interval"];
+  [coderCopy encodeInteger:self->_frequency forKey:@"frequency"];
+  [coderCopy encodeInteger:self->_weeklyRecurrenceDays forKey:@"weeklyRecurrenceDays"];
 }
 
-- (INRecurrenceRule)initWithCoder:(id)a3
+- (INRecurrenceRule)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"interval"];
-  v6 = [v4 decodeIntegerForKey:@"frequency"];
-  v7 = [v4 decodeIntegerForKey:@"weeklyRecurrenceDays"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"interval"];
+  v6 = [coderCopy decodeIntegerForKey:@"frequency"];
+  v7 = [coderCopy decodeIntegerForKey:@"weeklyRecurrenceDays"];
 
   return [(INRecurrenceRule *)self initWithInterval:v5 frequency:v6 weeklyRecurrenceDays:v7];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = self->_interval == v5[1] && self->_frequency == v5[2] && self->_weeklyRecurrenceDays == v5[3];
   }
 

@@ -2,15 +2,15 @@
 - (BOOL)isLastRideOptionInSection;
 - (RideBookingOutlineController)parentDataSource;
 - (RideBookingRideOption)rideBookingRideOption;
-- (RideBookingRideOptionSection)initWithCollectionView:(id)a3 sectionIdentifier:(id)a4;
+- (RideBookingRideOptionSection)initWithCollectionView:(id)view sectionIdentifier:(id)identifier;
 - (RideBookingRideOptionSectionDelegate)delegate;
 - (double)estimatedItemHeight;
-- (id)cellForItemAtIndexPath:(id)a3;
-- (id)listLayoutSectionConfigurationAtIndex:(int64_t)a3 layoutEnvironment:(id)a4;
-- (int64_t)numberOfItemsInSection:(int64_t)a3;
-- (void)didSelectItemAtIndexPath:(id)a3;
-- (void)ridesharingAppActionCollectionViewCellDidPerformAction:(id)a3;
-- (void)ridesharingAppLargeIconTableViewCell:(id)a3 didSelectActionButton:(id)a4;
+- (id)cellForItemAtIndexPath:(id)path;
+- (id)listLayoutSectionConfigurationAtIndex:(int64_t)index layoutEnvironment:(id)environment;
+- (int64_t)numberOfItemsInSection:(int64_t)section;
+- (void)didSelectItemAtIndexPath:(id)path;
+- (void)ridesharingAppActionCollectionViewCellDidPerformAction:(id)action;
+- (void)ridesharingAppLargeIconTableViewCell:(id)cell didSelectActionButton:(id)button;
 @end
 
 @implementation RideBookingRideOptionSection
@@ -31,19 +31,19 @@
 
 - (RideBookingRideOption)rideBookingRideOption
 {
-  v3 = [(RideBookingRideOptionSection *)self rideBookingRideOptionIndex];
-  v4 = [(RideBookingRideOptionSection *)self rideBookingRideOptions];
-  v5 = [v4 count];
+  rideBookingRideOptionIndex = [(RideBookingRideOptionSection *)self rideBookingRideOptionIndex];
+  rideBookingRideOptions = [(RideBookingRideOptionSection *)self rideBookingRideOptions];
+  v5 = [rideBookingRideOptions count];
 
-  if (v3 >= v5)
+  if (rideBookingRideOptionIndex >= v5)
   {
     v7 = 0;
   }
 
   else
   {
-    v6 = [(RideBookingRideOptionSection *)self rideBookingRideOptions];
-    v7 = [v6 objectAtIndex:{-[RideBookingRideOptionSection rideBookingRideOptionIndex](self, "rideBookingRideOptionIndex")}];
+    rideBookingRideOptions2 = [(RideBookingRideOptionSection *)self rideBookingRideOptions];
+    v7 = [rideBookingRideOptions2 objectAtIndex:{-[RideBookingRideOptionSection rideBookingRideOptionIndex](self, "rideBookingRideOptionIndex")}];
   }
 
   return v7;
@@ -51,81 +51,81 @@
 
 - (BOOL)isLastRideOptionInSection
 {
-  v3 = [(RideBookingRideOptionSection *)self applicationSectionIsExpanded];
+  applicationSectionIsExpanded = [(RideBookingRideOptionSection *)self applicationSectionIsExpanded];
   adjustedSectionOffset = self->_adjustedSectionOffset;
-  if ((v3 & 1) == 0 && adjustedSectionOffset == 2)
+  if ((applicationSectionIsExpanded & 1) == 0 && adjustedSectionOffset == 2)
   {
     return 1;
   }
 
-  v6 = [(RideBookingRideOptionStatus *)self->_rideBookingRideOptionStatus rideOptions];
-  v5 = adjustedSectionOffset == [v6 count] - 1;
+  rideOptions = [(RideBookingRideOptionStatus *)self->_rideBookingRideOptionStatus rideOptions];
+  v5 = adjustedSectionOffset == [rideOptions count] - 1;
 
   return v5;
 }
 
-- (void)ridesharingAppActionCollectionViewCellDidPerformAction:(id)a3
+- (void)ridesharingAppActionCollectionViewCellDidPerformAction:(id)action
 {
-  v4 = a3;
-  v17 = [v4 status];
-  v5 = [v4 titleType];
+  actionCopy = action;
+  status = [actionCopy status];
+  titleType = [actionCopy titleType];
 
-  if (v5 >= 2)
+  if (titleType >= 2)
   {
-    if (v5 != 2)
+    if (titleType != 2)
     {
       goto LABEL_6;
     }
 
-    v9 = [(RideBookingRideOptionSection *)self delegate];
-    v10 = [v17 application];
-    v11 = [v10 identifier];
-    [v9 didExpandSection:v11];
+    delegate = [(RideBookingRideOptionSection *)self delegate];
+    application = [status application];
+    identifier = [application identifier];
+    [delegate didExpandSection:identifier];
 
     v12 = +[MKMapService sharedService];
-    v13 = [v17 application];
-    v14 = [v13 name];
-    [v12 captureUserAction:14008 onTarget:1401 eventValue:v14];
+    application2 = [status application];
+    name = [application2 name];
+    [v12 captureUserAction:14008 onTarget:1401 eventValue:name];
 
-    v8 = [(RideBookingRideOptionSection *)self parentDataSource];
-    v15 = [v8 delegate];
-    v16 = [(RideBookingRideOptionSection *)self parentDataSource];
-    [v15 dataSourceRequiresReload:v16];
+    parentDataSource = [(RideBookingRideOptionSection *)self parentDataSource];
+    delegate2 = [parentDataSource delegate];
+    parentDataSource2 = [(RideBookingRideOptionSection *)self parentDataSource];
+    [delegate2 dataSourceRequiresReload:parentDataSource2];
   }
 
   else
   {
-    v6 = [v17 application];
-    v7 = [v17 userActivity];
-    [RideBookingDataCoordinator openRideBookingApplication:v6 withUserActivity:v7];
+    application3 = [status application];
+    userActivity = [status userActivity];
+    [RideBookingDataCoordinator openRideBookingApplication:application3 withUserActivity:userActivity];
 
-    v8 = +[MKMapService sharedService];
-    [v8 captureUserAction:6020 onTarget:304 eventValue:0];
+    parentDataSource = +[MKMapService sharedService];
+    [parentDataSource captureUserAction:6020 onTarget:304 eventValue:0];
   }
 
 LABEL_6:
 }
 
-- (void)ridesharingAppLargeIconTableViewCell:(id)a3 didSelectActionButton:(id)a4
+- (void)ridesharingAppLargeIconTableViewCell:(id)cell didSelectActionButton:(id)button
 {
-  v9 = [(RideBookingRideOptionSection *)self parentDataSource:a3];
-  v5 = [v9 delegate];
-  v6 = [(RideBookingRideOptionSection *)self rideBookingRideOptionStatus];
-  v7 = [v6 application];
-  v8 = [v7 identifier];
-  [v5 didSelectFeedbackWithAppIdentifier:v8];
+  v9 = [(RideBookingRideOptionSection *)self parentDataSource:cell];
+  delegate = [v9 delegate];
+  rideBookingRideOptionStatus = [(RideBookingRideOptionSection *)self rideBookingRideOptionStatus];
+  application = [rideBookingRideOptionStatus application];
+  identifier = [application identifier];
+  [delegate didSelectFeedbackWithAppIdentifier:identifier];
 }
 
-- (void)didSelectItemAtIndexPath:(id)a3
+- (void)didSelectItemAtIndexPath:(id)path
 {
-  v4 = [(RideBookingRideOptionSection *)self rideBookingRideOption];
+  rideBookingRideOption = [(RideBookingRideOptionSection *)self rideBookingRideOption];
 
-  if (v4)
+  if (rideBookingRideOption)
   {
-    v10 = [(RideBookingRideOptionSection *)self parentDataSource];
-    v5 = [v10 delegate];
-    v6 = [(RideBookingRideOptionSection *)self rideBookingRideOption];
-    [v5 didSelectRideOption:v6];
+    parentDataSource = [(RideBookingRideOptionSection *)self parentDataSource];
+    delegate = [parentDataSource delegate];
+    rideBookingRideOption2 = [(RideBookingRideOptionSection *)self rideBookingRideOption];
+    [delegate didSelectRideOption:rideBookingRideOption2];
   }
 
   else
@@ -144,19 +144,19 @@ LABEL_6:
   }
 }
 
-- (id)listLayoutSectionConfigurationAtIndex:(int64_t)a3 layoutEnvironment:(id)a4
+- (id)listLayoutSectionConfigurationAtIndex:(int64_t)index layoutEnvironment:(id)environment
 {
-  v6 = a4;
+  environmentCopy = environment;
   v12.receiver = self;
   v12.super_class = RideBookingRideOptionSection;
-  v7 = [(RoutePlanningOutlineSection *)&v12 listLayoutSectionConfigurationAtIndex:a3 layoutEnvironment:v6];
+  v7 = [(RoutePlanningOutlineSection *)&v12 listLayoutSectionConfigurationAtIndex:index layoutEnvironment:environmentCopy];
   [v7 setSeparatorStyle:{-[RideBookingRideOptionSection isLastRideOptionInSection](self, "isLastRideOptionInSection")}];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100EA9CA0;
   v10[3] = &unk_101657728;
-  v11 = v6;
-  v8 = v6;
+  v11 = environmentCopy;
+  v8 = environmentCopy;
   [v7 setSeparatorInsetProvider:v10];
 
   return v7;
@@ -164,9 +164,9 @@ LABEL_6:
 
 - (double)estimatedItemHeight
 {
-  v3 = [(RideBookingRideOptionSection *)self rideBookingRideOption];
+  rideBookingRideOption = [(RideBookingRideOptionSection *)self rideBookingRideOption];
 
-  if (v3)
+  if (rideBookingRideOption)
   {
     v4 = [[RouteOverviewCell alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
     [(UICollectionView *)self->super._collectionView bounds];
@@ -176,7 +176,7 @@ LABEL_6:
     v10[2] = sub_100EA9E48;
     v10[3] = &unk_101661A90;
     v11 = v4;
-    v12 = self;
+    selfCopy = self;
     v6 = v4;
     [(RouteOverviewCell *)v6 _maps_compressedSizeForWidth:v10 withBlock:Width];
     v8 = v7;
@@ -193,11 +193,11 @@ LABEL_6:
   return result;
 }
 
-- (int64_t)numberOfItemsInSection:(int64_t)a3
+- (int64_t)numberOfItemsInSection:(int64_t)section
 {
-  v4 = [(RideBookingRideOptionSection *)self rideBookingRideOption];
+  rideBookingRideOption = [(RideBookingRideOptionSection *)self rideBookingRideOption];
 
-  if (!v4)
+  if (!rideBookingRideOption)
   {
     return 0;
   }
@@ -210,15 +210,15 @@ LABEL_6:
   return 1;
 }
 
-- (id)cellForItemAtIndexPath:(id)a3
+- (id)cellForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  if ([v4 row])
+  pathCopy = path;
+  if ([pathCopy row])
   {
     collectionView = self->super._collectionView;
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
-    v8 = [(UICollectionView *)collectionView dequeueReusableCellWithReuseIdentifier:v7 forIndexPath:v4];
+    v8 = [(UICollectionView *)collectionView dequeueReusableCellWithReuseIdentifier:v7 forIndexPath:pathCopy];
 
     [v8 setDelegate:self];
     if ([(RideBookingRideOptionSection *)self applicationSectionIsExpanded])
@@ -255,11 +255,11 @@ LABEL_6:
       v13 = @"RideBooking";
     }
 
-    v14 = [(UICollectionView *)self->super._collectionView dequeueReusableCellWithReuseIdentifier:v13 forIndexPath:v4];
+    v14 = [(UICollectionView *)self->super._collectionView dequeueReusableCellWithReuseIdentifier:v13 forIndexPath:pathCopy];
 
-    v15 = [(RideBookingRideOptionSection *)self parentDataSource];
-    v16 = [v15 delegate];
-    [v14 setDelegate:v16];
+    parentDataSource = [(RideBookingRideOptionSection *)self parentDataSource];
+    delegate = [parentDataSource delegate];
+    [v14 setDelegate:delegate];
 
     v21[0] = _NSConcreteStackBlock;
     v21[1] = 3221225472;
@@ -278,11 +278,11 @@ LABEL_6:
   return v11;
 }
 
-- (RideBookingRideOptionSection)initWithCollectionView:(id)a3 sectionIdentifier:(id)a4
+- (RideBookingRideOptionSection)initWithCollectionView:(id)view sectionIdentifier:(id)identifier
 {
   v5.receiver = self;
   v5.super_class = RideBookingRideOptionSection;
-  return [(RoutePlanningOutlineSection *)&v5 initWithCollectionView:a3 sectionIdentifier:a4];
+  return [(RoutePlanningOutlineSection *)&v5 initWithCollectionView:view sectionIdentifier:identifier];
 }
 
 @end

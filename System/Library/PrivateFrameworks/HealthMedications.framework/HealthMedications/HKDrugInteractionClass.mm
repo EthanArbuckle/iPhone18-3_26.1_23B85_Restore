@@ -1,11 +1,11 @@
 @interface HKDrugInteractionClass
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKDrugInteractionClass)init;
-- (HKDrugInteractionClass)initWithCoder:(id)a3;
-- (HKDrugInteractionClass)initWithName:(id)a3 relationshipCount:(unint64_t)a4 ancestorIdentifier:(id)a5 ontologyIdentifier:(id)a6 validRegionCodes:(id)a7;
+- (HKDrugInteractionClass)initWithCoder:(id)coder;
+- (HKDrugInteractionClass)initWithName:(id)name relationshipCount:(unint64_t)count ancestorIdentifier:(id)identifier ontologyIdentifier:(id)ontologyIdentifier validRegionCodes:(id)codes;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKDrugInteractionClass
@@ -20,15 +20,15 @@
   return 0;
 }
 
-- (HKDrugInteractionClass)initWithName:(id)a3 relationshipCount:(unint64_t)a4 ancestorIdentifier:(id)a5 ontologyIdentifier:(id)a6 validRegionCodes:(id)a7
+- (HKDrugInteractionClass)initWithName:(id)name relationshipCount:(unint64_t)count ancestorIdentifier:(id)identifier ontologyIdentifier:(id)ontologyIdentifier validRegionCodes:(id)codes
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (v14)
+  nameCopy = name;
+  identifierCopy = identifier;
+  ontologyIdentifierCopy = ontologyIdentifier;
+  codesCopy = codes;
+  if (identifierCopy)
   {
-    if (v15)
+    if (ontologyIdentifierCopy)
     {
       goto LABEL_3;
     }
@@ -37,7 +37,7 @@
   else
   {
     [HKDrugInteractionClass initWithName:a2 relationshipCount:self ancestorIdentifier:? ontologyIdentifier:? validRegionCodes:?];
-    if (v15)
+    if (ontologyIdentifierCopy)
     {
       goto LABEL_3;
     }
@@ -50,20 +50,20 @@ LABEL_3:
   v17 = [(HKDrugInteractionClass *)&v27 init];
   if (v17)
   {
-    v18 = [v13 copy];
+    v18 = [nameCopy copy];
     name = v17->_name;
     v17->_name = v18;
 
-    v17->_relationshipCount = a4;
-    v20 = [v14 copy];
+    v17->_relationshipCount = count;
+    v20 = [identifierCopy copy];
     ancestorIdentifier = v17->_ancestorIdentifier;
     v17->_ancestorIdentifier = v20;
 
-    v22 = [v15 copy];
+    v22 = [ontologyIdentifierCopy copy];
     identifier = v17->_identifier;
     v17->_identifier = v22;
 
-    v24 = [v16 copy];
+    v24 = [codesCopy copy];
     validRegionCodes = v17->_validRegionCodes;
     v17->_validRegionCodes = v24;
   }
@@ -78,8 +78,8 @@ LABEL_3:
   v11 = *&self->_name;
   ancestorIdentifier = self->_ancestorIdentifier;
   identifier = self->_identifier;
-  v7 = [(NSSet *)self->_validRegionCodes allObjects];
-  v8 = [v7 componentsJoinedByString:{@", "}];
+  allObjects = [(NSSet *)self->_validRegionCodes allObjects];
+  v8 = [allObjects componentsJoinedByString:{@", "}];
   v9 = [v3 stringWithFormat:@"<%@:%p name:%@, relationship count:%ld, ancestorIdentifier: %@, ontologyIdentifier:%@, validRegionCodes:[%@]>", v4, self, v11, ancestorIdentifier, identifier, v8];
 
   return v9;
@@ -93,10 +93,10 @@ LABEL_3:
   return v5 ^ [(NSSet *)self->_validRegionCodes hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v14 = 1;
   }
@@ -106,7 +106,7 @@ LABEL_3:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       name = self->_name;
       v7 = v5->_name;
       if (name != v7 && (!v7 || ![(NSString *)name isEqualToString:?]))
@@ -165,40 +165,40 @@ LABEL_20:
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   name = self->_name;
-  v5 = a3;
-  [v5 encodeObject:name forKey:@"Name"];
-  [v5 encodeObject:self->_ancestorIdentifier forKey:@"AncestorOntologyIdentifier"];
-  [v5 encodeObject:self->_identifier forKey:@"OntologyIdentifier"];
-  [v5 encodeInteger:self->_relationshipCount forKey:@"RelationshipCount"];
-  [v5 encodeObject:self->_validRegionCodes forKey:@"ValidRegionCodes"];
+  coderCopy = coder;
+  [coderCopy encodeObject:name forKey:@"Name"];
+  [coderCopy encodeObject:self->_ancestorIdentifier forKey:@"AncestorOntologyIdentifier"];
+  [coderCopy encodeObject:self->_identifier forKey:@"OntologyIdentifier"];
+  [coderCopy encodeInteger:self->_relationshipCount forKey:@"RelationshipCount"];
+  [coderCopy encodeObject:self->_validRegionCodes forKey:@"ValidRegionCodes"];
 }
 
-- (HKDrugInteractionClass)initWithCoder:(id)a3
+- (HKDrugInteractionClass)initWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = HKDrugInteractionClass;
   v6 = [(HKDrugInteractionClass *)&v17 init];
   if (v6)
   {
-    v7 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"Name"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Name"];
     name = v6->_name;
     v6->_name = v7;
 
-    v6->_relationshipCount = [v5 decodeIntegerForKey:@"RelationshipCount"];
-    v9 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"AncestorOntologyIdentifier"];
+    v6->_relationshipCount = [coderCopy decodeIntegerForKey:@"RelationshipCount"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AncestorOntologyIdentifier"];
     ancestorIdentifier = v6->_ancestorIdentifier;
     v6->_ancestorIdentifier = v9;
 
-    v11 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"OntologyIdentifier"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"OntologyIdentifier"];
     identifier = v6->_identifier;
     v6->_identifier = v11;
 
     v13 = [MEMORY[0x277CBEB98] hk_typesForSetOf:objc_opt_class()];
-    v14 = [v5 decodeObjectOfClasses:v13 forKey:@"ValidRegionCodes"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"ValidRegionCodes"];
     validRegionCodes = v6->_validRegionCodes;
     v6->_validRegionCodes = v14;
 

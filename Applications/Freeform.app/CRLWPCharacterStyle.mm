@@ -1,23 +1,23 @@
 @interface CRLWPCharacterStyle
-- (BOOL)isEqual:(id)a3;
-- (id)boxedValueForProperty:(unint64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)boxedValueForProperty:(unint64_t)property;
 @end
 
 @implementation CRLWPCharacterStyle
 
-- (id)boxedValueForProperty:(unint64_t)a3
+- (id)boxedValueForProperty:(unint64_t)property
 {
-  v4 = self;
-  v5 = sub_100D661E4(a3);
+  selfCopy = self;
+  v5 = sub_100D661E4(property);
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -26,7 +26,7 @@
   else
   {
     memset(v11, 0, sizeof(v11));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_100601584(v11, v9);

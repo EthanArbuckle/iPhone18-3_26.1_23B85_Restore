@@ -1,16 +1,16 @@
 @interface MediaEventsRecorder
 + (void)initialize;
 - (void)dealloc;
-- (void)launchEventRunActivity:(id)a3;
-- (void)sensorWriterDidStopMonitoring:(id)a3;
-- (void)sensorWriterWillStartMonitoring:(id)a3;
+- (void)launchEventRunActivity:(id)activity;
+- (void)sensorWriterDidStopMonitoring:(id)monitoring;
+- (void)sensorWriterWillStartMonitoring:(id)monitoring;
 @end
 
 @implementation MediaEventsRecorder
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     qword_10002B298 = os_log_create("com.apple.SensorKit", "SensorKitMediaEventsRecorder");
   }
@@ -32,7 +32,7 @@
   [(MediaEventsRecorder *)&v3 dealloc];
 }
 
-- (void)sensorWriterWillStartMonitoring:(id)a3
+- (void)sensorWriterWillStartMonitoring:(id)monitoring
 {
   v4 = qword_10002B298;
   if (os_log_type_enabled(qword_10002B298, OS_LOG_TYPE_INFO))
@@ -46,7 +46,7 @@
   [(RDLaunchEvents *)launchEvents registerForXPCActivities:[NSArray arrayWithObjects:&v7 count:1]];
 }
 
-- (void)sensorWriterDidStopMonitoring:(id)a3
+- (void)sensorWriterDidStopMonitoring:(id)monitoring
 {
   v4 = qword_10002B298;
   if (os_log_type_enabled(qword_10002B298, OS_LOG_TYPE_DEBUG))
@@ -60,18 +60,18 @@
   [(RDLaunchEvents *)launchEvents unregisterForXPCActivities:[NSArray arrayWithObjects:&v7 count:1]];
 }
 
-- (void)launchEventRunActivity:(id)a3
+- (void)launchEventRunActivity:(id)activity
 {
-  v4 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_queue;
   }
 
   dispatch_assert_queue_V2(&self->super);
-  if (a3)
+  if (activity)
   {
-    v5 = *(a3 + 1);
+    v5 = *(activity + 1);
   }
 
   else
@@ -85,23 +85,23 @@
     v15[1] = 3221225472;
     v16 = sub_100008C80;
     v17 = &unk_100024A10;
-    v18 = a3;
-    if (v4)
+    activityCopy = activity;
+    if (selfCopy)
     {
-      v6 = [(SRDataCollectorsDefaults *)v4->_defaults lastMediaEventsQueryDate];
+      lastMediaEventsQueryDate = [(SRDataCollectorsDefaults *)selfCopy->_defaults lastMediaEventsQueryDate];
       v7 = +[NSDate now];
       v8 = [objc_msgSend(objc_msgSend(BiomeLibrary() "Messages")];
-      v9 = [[BMPublisherOptions alloc] initWithStartDate:v6 endDate:v7 maxEvents:0 lastN:0 reversed:0];
+      v9 = [[BMPublisherOptions alloc] initWithStartDate:lastMediaEventsQueryDate endDate:v7 maxEvents:0 lastN:0 reversed:0];
       v10 = [v8 publisherWithOptions:v9];
 
       if (v10)
       {
-        objc_initWeak(&location, v4);
+        objc_initWeak(&location, selfCopy);
         v11 = qword_10002B298;
         if (os_log_type_enabled(qword_10002B298, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543618;
-          *&buf[4] = v6;
+          *&buf[4] = lastMediaEventsQueryDate;
           *&buf[12] = 2114;
           *&buf[14] = v7;
           _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Querying media events for interval with start date:%{public}@, end date:%{public}@", buf, 0x16u);
@@ -144,9 +144,9 @@
     v12 = qword_10002B298;
     if (os_log_type_enabled(qword_10002B298, OS_LOG_TYPE_FAULT))
     {
-      if (a3)
+      if (activity)
       {
-        v14 = *(a3 + 1);
+        v14 = *(activity + 1);
       }
 
       else
@@ -159,7 +159,7 @@
       _os_log_fault_impl(&_mh_execute_header, v12, OS_LOG_TYPE_FAULT, "Told to run unsupported XPC activity %{public}@", buf, 0xCu);
     }
 
-    [a3 markCompleted];
+    [activity markCompleted];
   }
 }
 

@@ -4,15 +4,15 @@
 - (id)initPrivate;
 - (void)dealloc;
 - (void)deallocPrivate;
-- (void)enableMotionSimulationPrivate:(BOOL)a3;
-- (void)feedOdometryData:(const InertialOdometryData *)a3;
+- (void)enableMotionSimulationPrivate:(BOOL)private;
+- (void)feedOdometryData:(const InertialOdometryData *)data;
 - (void)sendOdometryToClientPrivate;
-- (void)setOdometryUpdateInterval:(double)a3;
-- (void)setOdometryUpdateIntervalPrivate:(double)a3;
+- (void)setOdometryUpdateInterval:(double)interval;
+- (void)setOdometryUpdateIntervalPrivate:(double)private;
 - (void)setupBIO;
-- (void)startOdometryUpdatesPrivateUsingReferenceFrame:(unint64_t)a3 toQueue:(id)a4 withHandler:(id)a5;
-- (void)startOdometryUpdatesToQueue:(id)a3 withHandler:(id)a4;
-- (void)startOdometryUpdatesUsingReferenceFrame:(unint64_t)a3 toQueue:(id)a4 withHandler:(id)a5;
+- (void)startOdometryUpdatesPrivateUsingReferenceFrame:(unint64_t)frame toQueue:(id)queue withHandler:(id)handler;
+- (void)startOdometryUpdatesToQueue:(id)queue withHandler:(id)handler;
+- (void)startOdometryUpdatesUsingReferenceFrame:(unint64_t)frame toQueue:(id)queue withHandler:(id)handler;
 - (void)stopBackgroundUpdatesPrivate;
 - (void)stopOdometryUpdates;
 - (void)stopOdometryUpdatesPrivate;
@@ -135,7 +135,7 @@
   dispatch_async(xpcQueue, block);
 }
 
-- (void)startOdometryUpdatesToQueue:(id)a3 withHandler:(id)a4
+- (void)startOdometryUpdatesToQueue:(id)queue withHandler:(id)handler
 {
   v7 = sub_19B420D84();
   v8[0] = MEMORY[0x1E69E9820];
@@ -143,12 +143,12 @@
   v8[2] = sub_19B67F084;
   v8[3] = &unk_1E7532C08;
   v8[4] = self;
-  v8[5] = a3;
-  v8[6] = a4;
+  v8[5] = queue;
+  v8[6] = handler;
   sub_19B420C9C(v7, v8);
 }
 
-- (void)startOdometryUpdatesUsingReferenceFrame:(unint64_t)a3 toQueue:(id)a4 withHandler:(id)a5
+- (void)startOdometryUpdatesUsingReferenceFrame:(unint64_t)frame toQueue:(id)queue withHandler:(id)handler
 {
   v9 = sub_19B420D84();
   v10[0] = MEMORY[0x1E69E9820];
@@ -156,9 +156,9 @@
   v10[2] = sub_19B67F12C;
   v10[3] = &unk_1E7533780;
   v10[4] = self;
-  v10[5] = a4;
-  v10[6] = a5;
-  v10[7] = a3;
+  v10[5] = queue;
+  v10[6] = handler;
+  v10[7] = frame;
   sub_19B420C9C(v9, v10);
 }
 
@@ -173,7 +173,7 @@
   sub_19B420C9C(v3, v4);
 }
 
-- (void)setOdometryUpdateInterval:(double)a3
+- (void)setOdometryUpdateInterval:(double)interval
 {
   v5 = sub_19B420D84();
   v6[0] = MEMORY[0x1E69E9820];
@@ -181,21 +181,21 @@
   v6[2] = sub_19B67F258;
   v6[3] = &unk_1E7533490;
   v6[4] = self;
-  *&v6[5] = a3;
+  *&v6[5] = interval;
   sub_19B420C9C(v5, v6);
 }
 
-- (void)setOdometryUpdateIntervalPrivate:(double)a3
+- (void)setOdometryUpdateIntervalPrivate:(double)private
 {
   v13 = *MEMORY[0x1E69E9840];
   internal = self->_internal;
-  v5 = 0.1;
-  if (a3 >= 0.1)
+  privateCopy = 0.1;
+  if (private >= 0.1)
   {
-    v5 = a3;
+    privateCopy = private;
   }
 
-  *(internal + 32) = v5;
+  *(internal + 32) = privateCopy;
   if (*(internal + 31))
   {
     if (qword_1EAFE2A88 != -1)
@@ -207,7 +207,7 @@
     if (os_log_type_enabled(qword_1EAFE2A90, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134349056;
-      v12 = a3;
+      privateCopy2 = private;
       _os_log_impl(&dword_19B41C000, v6, OS_LOG_TYPE_DEFAULT, "Requesting CMOdometry updates with interval: %{public}f", buf, 0xCu);
     }
 
@@ -430,10 +430,10 @@
   v58 = *MEMORY[0x1E69E9840];
 }
 
-- (void)feedOdometryData:(const InertialOdometryData *)a3
+- (void)feedOdometryData:(const InertialOdometryData *)data
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (data)
   {
     v5 = sub_19B420D84();
     v10[0] = MEMORY[0x1E69E9820];
@@ -441,7 +441,7 @@
     v10[2] = sub_19B67FD08;
     v10[3] = &unk_1E7533490;
     v10[4] = self;
-    v10[5] = a3;
+    v10[5] = data;
     sub_19B420C9C(v5, v10);
   }
 
@@ -481,7 +481,7 @@
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startOdometryUpdatesPrivateUsingReferenceFrame:(unint64_t)a3 toQueue:(id)a4 withHandler:(id)a5
+- (void)startOdometryUpdatesPrivateUsingReferenceFrame:(unint64_t)frame toQueue:(id)queue withHandler:(id)handler
 {
   v27 = *MEMORY[0x1E69E9840];
   sub_19B420D84();
@@ -555,7 +555,7 @@ LABEL_58:
     goto LABEL_58;
   }
 
-  if (a3 == 1 || a3 == 8)
+  if (frame == 1 || frame == 8)
   {
     if (qword_1EAFE2A88 != -1)
     {
@@ -566,7 +566,7 @@ LABEL_58:
     if (os_log_type_enabled(qword_1EAFE2A90, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67240192;
-      v26 = a3;
+      frameCopy = frame;
       _os_log_impl(&dword_19B41C000, v10, OS_LOG_TYPE_DEFAULT, "Starting InertialOdometry updates with reference frame: %{public}d", buf, 8u);
     }
 
@@ -587,19 +587,19 @@ LABEL_58:
       }
     }
 
-    *(internal + 30) = a3;
+    *(internal + 30) = frame;
     v13 = *(internal + 34);
-    if (v13 != a4)
+    if (v13 != queue)
     {
 
-      *(internal + 34) = a4;
+      *(internal + 34) = queue;
     }
 
     v14 = *(internal + 33);
-    if (v14 != a5)
+    if (v14 != handler)
     {
 
-      *(internal + 33) = objc_msgSend_copy(a5, v15, v16);
+      *(internal + 33) = objc_msgSend_copy(handler, v15, v16);
     }
 
     if (!*(internal + 31))
@@ -738,7 +738,7 @@ LABEL_51:
   }
 }
 
-- (void)enableMotionSimulationPrivate:(BOOL)a3
+- (void)enableMotionSimulationPrivate:(BOOL)private
 {
   if (+[CMOdometryManager isAvailable]_0())
   {
@@ -749,7 +749,7 @@ LABEL_51:
     block[2] = sub_19B6813D4;
     block[3] = &unk_1E7533FB0;
     objc_copyWeak(&v7, &location);
-    v8 = a3;
+    privateCopy = private;
     dispatch_async(xpcQueue, block);
     objc_destroyWeak(&v7);
     objc_destroyWeak(&location);

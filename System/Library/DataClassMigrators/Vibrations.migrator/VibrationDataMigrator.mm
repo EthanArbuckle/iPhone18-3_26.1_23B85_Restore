@@ -7,9 +7,9 @@
 - (BOOL)performMigration
 {
   v2 = objc_alloc_init(TLVibrationManager);
-  v3 = [v2 _migrateLegacySettings];
+  _migrateLegacySettings = [v2 _migrateLegacySettings];
 
-  return v3;
+  return _migrateLegacySettings;
 }
 
 @end

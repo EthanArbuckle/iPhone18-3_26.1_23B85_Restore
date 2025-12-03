@@ -1,5 +1,5 @@
 @interface AXEntityControllerElement
-- (AXEntityControllerElement)initWithAccessibilityContainer:(id)a3 entityController:(id)a4 previewViewController:(id)a5;
+- (AXEntityControllerElement)initWithAccessibilityContainer:(id)container entityController:(id)controller previewViewController:(id)viewController;
 - (id)_accessibilityScrollStatus;
 - (id)entityController;
 - (id)previewViewController;
@@ -7,18 +7,18 @@
 
 @implementation AXEntityControllerElement
 
-- (AXEntityControllerElement)initWithAccessibilityContainer:(id)a3 entityController:(id)a4 previewViewController:(id)a5
+- (AXEntityControllerElement)initWithAccessibilityContainer:(id)container entityController:(id)controller previewViewController:(id)viewController
 {
-  v8 = a4;
-  v9 = a5;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
   v13.receiver = self;
   v13.super_class = AXEntityControllerElement;
-  v10 = [(AXEntityControllerElement *)&v13 initWithAccessibilityContainer:a3];
+  v10 = [(AXEntityControllerElement *)&v13 initWithAccessibilityContainer:container];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_entityController, v8);
-    objc_storeWeak(&v11->_previewViewController, v9);
+    objc_storeWeak(&v10->_entityController, controllerCopy);
+    objc_storeWeak(&v11->_previewViewController, viewControllerCopy);
   }
 
   return v11;
@@ -26,13 +26,13 @@
 
 - (id)_accessibilityScrollStatus
 {
-  v3 = [(AXEntityControllerElement *)self previewViewController];
-  v4 = [(AXEntityControllerElement *)self entityController];
-  v5 = [v3 _axEmitterMode];
+  previewViewController = [(AXEntityControllerElement *)self previewViewController];
+  entityController = [(AXEntityControllerElement *)self entityController];
+  _axEmitterMode = [previewViewController _axEmitterMode];
   v6 = 0;
-  if (v4 && v3 && v5 == 2)
+  if (entityController && previewViewController && _axEmitterMode == 2)
   {
-    if ([v3 _axIsOffScreenForEntityController:v4])
+    if ([previewViewController _axIsOffScreenForEntityController:entityController])
     {
       v6 = 0;
     }
@@ -43,8 +43,8 @@
       v30 = &v29;
       v31 = 0x2020000000;
       v32 = 0;
-      v27 = v3;
-      v28 = v4;
+      v27 = previewViewController;
+      v28 = entityController;
       AXPerformSafeBlock();
       v26 = *(v30 + 6);
 
@@ -54,8 +54,8 @@
       v10 = v9;
       v12 = v11;
       v14 = v13;
-      v15 = [(AXEntityControllerElement *)self _arView];
-      [v15 bounds];
+      _arView = [(AXEntityControllerElement *)self _arView];
+      [_arView bounds];
       v17 = v16;
       v19 = v18;
       v21 = v20;

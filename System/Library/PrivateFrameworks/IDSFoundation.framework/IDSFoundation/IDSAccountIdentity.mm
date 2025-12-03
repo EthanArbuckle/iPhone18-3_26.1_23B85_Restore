@@ -1,26 +1,26 @@
 @interface IDSAccountIdentity
-- (IDSAccountIdentity)initWithCoder:(id)a3;
-- (IDSAccountIdentity)initWithFullCluster:(id)a3;
+- (IDSAccountIdentity)initWithCoder:(id)coder;
+- (IDSAccountIdentity)initWithFullCluster:(id)cluster;
 - (IDSMPFullAccountIdentity)accountIdentity;
 - (IDSMPFullServiceIdentityAdmin)adminIdentity;
 - (IDSMPFullServiceIdentitySigning)signingIdentity;
 - (IDSPublicAccountIdentity)accountPublicKey;
 - (NSString)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IDSAccountIdentity
 
-- (IDSAccountIdentity)initWithFullCluster:(id)a3
+- (IDSAccountIdentity)initWithFullCluster:(id)cluster
 {
-  v5 = a3;
+  clusterCopy = cluster;
   v9.receiver = self;
   v9.super_class = IDSAccountIdentity;
   v6 = [(IDSAccountIdentity *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_identityCluster, a3);
+    objc_storeStrong(&v6->_identityCluster, cluster);
   }
 
   return v7;
@@ -29,40 +29,40 @@
 - (IDSPublicAccountIdentity)accountPublicKey
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [(IDSAccountIdentity *)self adminIdentity];
+  adminIdentity = [(IDSAccountIdentity *)self adminIdentity];
   v16 = 0;
-  v4 = [v3 publicServiceIdentityAdminWithError:&v16];
+  v4 = [adminIdentity publicServiceIdentityAdminWithError:&v16];
   v5 = v16;
 
   if (v4)
   {
-    v6 = [(IDSAccountIdentity *)self signingIdentity];
+    signingIdentity = [(IDSAccountIdentity *)self signingIdentity];
     v15 = v5;
-    v7 = [v6 publicServiceIdentitySigningWithError:&v15];
+    registration3 = [signingIdentity publicServiceIdentitySigningWithError:&v15];
     v8 = v15;
 
-    if (v7)
+    if (registration3)
     {
-      v9 = [(IDSAccountIdentity *)self accountIdentity];
+      accountIdentity = [(IDSAccountIdentity *)self accountIdentity];
       v14 = v8;
-      v10 = [v9 publicAccountIdentityWithError:&v14];
+      registration2 = [accountIdentity publicAccountIdentityWithError:&v14];
       v5 = v14;
 
-      if (v10)
+      if (registration2)
       {
-        v11 = [[IDSPublicAccountIdentity alloc] initWithAccountIdentity:v10 adminIdentity:v4 signingIdentity:v7];
+        v11 = [[IDSPublicAccountIdentity alloc] initWithAccountIdentity:registration2 adminIdentity:v4 signingIdentity:registration3];
       }
 
       else
       {
-        v12 = [MEMORY[0x1E69A6138] registration];
-        if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+        registration = [MEMORY[0x1E69A6138] registration];
+        if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543618;
-          v18 = self;
+          selfCopy3 = self;
           v19 = 2114;
           v20 = v5;
-          _os_log_impl(&dword_1A7AD9000, v12, OS_LOG_TYPE_DEFAULT, "Failed to create publicAccountIdentity for IDSPublicAccountIdentity {IDSAccountIdentity: %{public}@, error: %{public}@}", buf, 0x16u);
+          _os_log_impl(&dword_1A7AD9000, registration, OS_LOG_TYPE_DEFAULT, "Failed to create publicAccountIdentity for IDSPublicAccountIdentity {IDSAccountIdentity: %{public}@, error: %{public}@}", buf, 0x16u);
         }
 
         v11 = 0;
@@ -71,14 +71,14 @@
 
     else
     {
-      v10 = [MEMORY[0x1E69A6138] registration];
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+      registration2 = [MEMORY[0x1E69A6138] registration];
+      if (os_log_type_enabled(registration2, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v18 = self;
+        selfCopy3 = self;
         v19 = 2114;
         v20 = v8;
-        _os_log_impl(&dword_1A7AD9000, v10, OS_LOG_TYPE_DEFAULT, "Failed to create publicSigningIdentity for IDSPublicAccountIdentity {IDSAccountIdentity: %{public}@, error: %{public}@}", buf, 0x16u);
+        _os_log_impl(&dword_1A7AD9000, registration2, OS_LOG_TYPE_DEFAULT, "Failed to create publicSigningIdentity for IDSPublicAccountIdentity {IDSAccountIdentity: %{public}@, error: %{public}@}", buf, 0x16u);
       }
 
       v11 = 0;
@@ -88,14 +88,14 @@
 
   else
   {
-    v7 = [MEMORY[0x1E69A6138] registration];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    registration3 = [MEMORY[0x1E69A6138] registration];
+    if (os_log_type_enabled(registration3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v18 = self;
+      selfCopy3 = self;
       v19 = 2114;
       v20 = v5;
-      _os_log_impl(&dword_1A7AD9000, v7, OS_LOG_TYPE_DEFAULT, "Failed to create publicAdminIdentity for IDSPublicAccountIdentity {IDSAccountIdentity: %{public}@, error: %{public}@}", buf, 0x16u);
+      _os_log_impl(&dword_1A7AD9000, registration3, OS_LOG_TYPE_DEFAULT, "Failed to create publicAdminIdentity for IDSPublicAccountIdentity {IDSAccountIdentity: %{public}@, error: %{public}@}", buf, 0x16u);
     }
 
     v11 = 0;
@@ -108,18 +108,18 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(IDSAccountIdentity *)self accountIdentity];
-  v6 = [(IDSAccountIdentity *)self adminIdentity];
-  v7 = [(IDSAccountIdentity *)self signingIdentity];
-  v8 = [v3 stringWithFormat:@"<%@ %p accountIdentity: %@, adminIdentity: %@, signingIdentity: %@>", v4, self, v5, v6, v7];
+  accountIdentity = [(IDSAccountIdentity *)self accountIdentity];
+  adminIdentity = [(IDSAccountIdentity *)self adminIdentity];
+  signingIdentity = [(IDSAccountIdentity *)self signingIdentity];
+  v8 = [v3 stringWithFormat:@"<%@ %p accountIdentity: %@, adminIdentity: %@, signingIdentity: %@>", v4, self, accountIdentity, adminIdentity, signingIdentity];
 
   return v8;
 }
 
-- (IDSAccountIdentity)initWithCoder:(id)a3
+- (IDSAccountIdentity)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kIDSAccountIdentityClusterData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kIDSAccountIdentityClusterData"];
   v10 = 0;
   v6 = [IDSMPFullAccountIdentityCluster clusterWithDataRepresentation:v5 error:&v10];
   v7 = v10;
@@ -131,52 +131,52 @@
 
   else
   {
-    [v4 failWithError:v7];
+    [coderCopy failWithError:v7];
     v8 = 0;
   }
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(IDSAccountIdentity *)self identityCluster];
+  coderCopy = coder;
+  identityCluster = [(IDSAccountIdentity *)self identityCluster];
   v8 = 0;
-  v6 = [v5 dataRepresentationWithError:&v8];
+  v6 = [identityCluster dataRepresentationWithError:&v8];
   v7 = v8;
 
   if (v6)
   {
-    [v4 encodeObject:v6 forKey:@"kIDSAccountIdentityClusterData"];
+    [coderCopy encodeObject:v6 forKey:@"kIDSAccountIdentityClusterData"];
   }
 
   else
   {
-    [v4 failWithError:v7];
+    [coderCopy failWithError:v7];
   }
 }
 
 - (IDSMPFullAccountIdentity)accountIdentity
 {
-  v2 = [(IDSAccountIdentity *)self identityCluster];
-  v3 = [v2 fullAccountIdentity];
+  identityCluster = [(IDSAccountIdentity *)self identityCluster];
+  fullAccountIdentity = [identityCluster fullAccountIdentity];
 
-  return v3;
+  return fullAccountIdentity;
 }
 
 - (IDSMPFullServiceIdentityAdmin)adminIdentity
 {
-  v2 = [(IDSAccountIdentity *)self identityCluster];
-  v3 = [v2 adminServiceIdentityWithType:1];
+  identityCluster = [(IDSAccountIdentity *)self identityCluster];
+  v3 = [identityCluster adminServiceIdentityWithType:1];
 
   return v3;
 }
 
 - (IDSMPFullServiceIdentitySigning)signingIdentity
 {
-  v2 = [(IDSAccountIdentity *)self identityCluster];
-  v3 = [v2 signingServiceIdentityWithType:1];
+  identityCluster = [(IDSAccountIdentity *)self identityCluster];
+  v3 = [identityCluster signingServiceIdentityWithType:1];
 
   return v3;
 }

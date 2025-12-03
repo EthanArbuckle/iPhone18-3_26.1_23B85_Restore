@@ -1,31 +1,31 @@
 @interface NTKCompanionRemoteComplicationDataSource
-+ (BOOL)acceptsComplicationType:(unint64_t)a3 withFamily:(int64_t)a4 forDevice:(id)a5;
++ (BOOL)acceptsComplicationType:(unint64_t)type withFamily:(int64_t)family forDevice:(id)device;
 - (BOOL)_remoteIsCompanion;
-- (NTKCompanionRemoteComplicationDataSource)initWithComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5;
-- (id)_templateFromApp:(id)a3;
+- (NTKCompanionRemoteComplicationDataSource)initWithComplication:(id)complication family:(int64_t)family forDevice:(id)device;
+- (id)_templateFromApp:(id)app;
 - (id)currentSwitcherTemplate;
 - (void)_activeDeviceChanged;
 - (void)_invalidate;
-- (void)_invalidateIfComplicationCorrespondsToApp:(id)a3;
+- (void)_invalidateIfComplicationCorrespondsToApp:(id)app;
 - (void)_loadCollection;
-- (void)appLibrary:(id)a3 didAddApp:(id)a4;
-- (void)appLibrary:(id)a3 didUpdateApp:(id)a4;
-- (void)complicationCollection:(id)a3 didRemoveSampleTemplatesForClient:(id)a4;
-- (void)complicationCollection:(id)a3 didUpdateSampleTemplateForClient:(id)a4;
+- (void)appLibrary:(id)library didAddApp:(id)app;
+- (void)appLibrary:(id)library didUpdateApp:(id)app;
+- (void)complicationCollection:(id)collection didRemoveSampleTemplatesForClient:(id)client;
+- (void)complicationCollection:(id)collection didUpdateSampleTemplateForClient:(id)client;
 - (void)dealloc;
 @end
 
 @implementation NTKCompanionRemoteComplicationDataSource
 
-- (NTKCompanionRemoteComplicationDataSource)initWithComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5
+- (NTKCompanionRemoteComplicationDataSource)initWithComplication:(id)complication family:(int64_t)family forDevice:(id)device
 {
   v10.receiver = self;
   v10.super_class = NTKCompanionRemoteComplicationDataSource;
-  v5 = [(CLKCComplicationDataSource *)&v10 initWithComplication:a3 family:a4 forDevice:a5];
+  v5 = [(CLKCComplicationDataSource *)&v10 initWithComplication:complication family:family forDevice:device];
   if (v5)
   {
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 addObserver:v5 selector:sel__activeDeviceChanged name:*MEMORY[0x277CBB640] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel__activeDeviceChanged name:*MEMORY[0x277CBB640] object:0];
 
     [(NTKCompanionRemoteComplicationDataSource *)v5 _loadCollection];
     v7 = +[NTKCompanionAppLibrary sharedAppLibrary];
@@ -40,8 +40,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277CBB640] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CBB640] object:0];
 
   [(NTKComplicationCollection *)self->_complicationCollection removeObserver:self];
   [(NTKCompanionAppLibrary *)self->_appLibrary removeObserver:self];
@@ -53,8 +53,8 @@
 - (void)_loadCollection
 {
   [(NTKComplicationCollection *)self->_complicationCollection removeObserver:self];
-  v3 = [(CLKCComplicationDataSource *)self device];
-  v4 = [NTKCompanionComplicationCollectionManager sharedComplicationCollectionForDevice:v3];
+  device = [(CLKCComplicationDataSource *)self device];
+  v4 = [NTKCompanionComplicationCollectionManager sharedComplicationCollectionForDevice:device];
   complicationCollection = self->_complicationCollection;
   self->_complicationCollection = v4;
 
@@ -70,11 +70,11 @@
   [(NTKCompanionRemoteComplicationDataSource *)self _invalidate];
 }
 
-+ (BOOL)acceptsComplicationType:(unint64_t)a3 withFamily:(int64_t)a4 forDevice:(id)a5
++ (BOOL)acceptsComplicationType:(unint64_t)type withFamily:(int64_t)family forDevice:(id)device
 {
-  if (a3 == 31)
+  if (type == 31)
   {
-    return NTKComplicationFamilyIsPublic(a4);
+    return NTKComplicationFamilyIsPublic(family);
   }
 
   else
@@ -85,32 +85,32 @@
 
 - (id)currentSwitcherTemplate
 {
-  v2 = self;
+  selfCopy = self;
   v41 = *MEMORY[0x277D85DE8];
   complicationTemplate = self->_complicationTemplate;
   if (!complicationTemplate)
   {
-    v4 = [(CLKCComplicationDataSource *)v2 complication];
-    if ([(NTKCompanionRemoteComplicationDataSource *)v2 _remoteIsCompanion])
+    complication = [(CLKCComplicationDataSource *)selfCopy complication];
+    if ([(NTKCompanionRemoteComplicationDataSource *)selfCopy _remoteIsCompanion])
     {
-      v5 = [(CLKCComplicationDataSource *)v2 complication];
-      v6 = [v5 app];
-      v7 = [(NTKCompanionRemoteComplicationDataSource *)v2 _templateFromApp:v6];
-      v8 = v2->_complicationTemplate;
-      v2->_complicationTemplate = v7;
+      complication2 = [(CLKCComplicationDataSource *)selfCopy complication];
+      v6 = [complication2 app];
+      v7 = [(NTKCompanionRemoteComplicationDataSource *)selfCopy _templateFromApp:v6];
+      v8 = selfCopy->_complicationTemplate;
+      selfCopy->_complicationTemplate = v7;
     }
 
-    if (!v2->_complicationTemplate)
+    if (!selfCopy->_complicationTemplate)
     {
-      v33 = v2;
+      v33 = selfCopy;
       v38 = 0u;
       v39 = 0u;
       v36 = 0u;
       v37 = 0u;
       v9 = +[NTKCompanionAppLibrary sharedAppLibrary];
-      v10 = [v9 thirdPartyApps];
+      thirdPartyApps = [v9 thirdPartyApps];
 
-      v11 = [v10 countByEnumeratingWithState:&v36 objects:v40 count:16];
+      v11 = [thirdPartyApps countByEnumeratingWithState:&v36 objects:v40 count:16];
       if (v11)
       {
         v12 = v11;
@@ -123,7 +123,7 @@
           {
             if (*v37 != v13)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(thirdPartyApps);
             }
 
             v15 = *(*(&v36 + 1) + 8 * v14);
@@ -131,19 +131,19 @@
             if (objc_opt_isKindOfClass())
             {
               v16 = v15;
-              v17 = [v16 complicationClientIdentifier];
-              v18 = [v4 clientIdentifier];
-              if ([v17 isEqualToString:v18])
+              complicationClientIdentifier = [v16 complicationClientIdentifier];
+              clientIdentifier = [complication clientIdentifier];
+              if ([complicationClientIdentifier isEqualToString:clientIdentifier])
               {
-                v19 = [v16 watchApplicationIdentifier];
-                [v4 appBundleIdentifier];
+                watchApplicationIdentifier = [v16 watchApplicationIdentifier];
+                [complication appBundleIdentifier];
                 v20 = v13;
-                v21 = v10;
-                v23 = v22 = v4;
-                v35 = [v19 isEqualToString:v23];
+                v21 = thirdPartyApps;
+                v23 = v22 = complication;
+                v35 = [watchApplicationIdentifier isEqualToString:v23];
 
-                v4 = v22;
-                v10 = v21;
+                complication = v22;
+                thirdPartyApps = v21;
                 v13 = v20;
 
                 v12 = v34;
@@ -166,7 +166,7 @@
           }
 
           while (v12 != v14);
-          v12 = [v10 countByEnumeratingWithState:&v36 objects:v40 count:16];
+          v12 = [thirdPartyApps countByEnumeratingWithState:&v36 objects:v40 count:16];
         }
 
         while (v12);
@@ -174,31 +174,31 @@
 
 LABEL_18:
 
-      v2 = v33;
+      selfCopy = v33;
       if (!v33->_complicationTemplate)
       {
         complicationCollection = v33->_complicationCollection;
-        v27 = [v4 clientIdentifier];
-        v28 = [v4 complicationDescriptor];
-        v29 = [v4 appBundleIdentifier];
-        v30 = [(NTKComplicationCollection *)complicationCollection sampleTemplateForClientIdentifier:v27 descriptor:v28 applicationID:v29 family:[(CLKCComplicationDataSource *)v33 family]];
+        clientIdentifier2 = [complication clientIdentifier];
+        complicationDescriptor = [complication complicationDescriptor];
+        appBundleIdentifier = [complication appBundleIdentifier];
+        v30 = [(NTKComplicationCollection *)complicationCollection sampleTemplateForClientIdentifier:clientIdentifier2 descriptor:complicationDescriptor applicationID:appBundleIdentifier family:[(CLKCComplicationDataSource *)v33 family]];
         v31 = v33->_complicationTemplate;
         v33->_complicationTemplate = v30;
       }
     }
 
-    complicationTemplate = v2->_complicationTemplate;
+    complicationTemplate = selfCopy->_complicationTemplate;
   }
 
   return complicationTemplate;
 }
 
-- (void)complicationCollection:(id)a3 didUpdateSampleTemplateForClient:(id)a4
+- (void)complicationCollection:(id)collection didUpdateSampleTemplateForClient:(id)client
 {
-  v5 = a4;
-  v8 = [(CLKCComplicationDataSource *)self complication];
-  v6 = [v8 clientIdentifier];
-  v7 = [v5 isEqualToString:v6];
+  clientCopy = client;
+  complication = [(CLKCComplicationDataSource *)self complication];
+  clientIdentifier = [complication clientIdentifier];
+  v7 = [clientCopy isEqualToString:clientIdentifier];
 
   if (v7)
   {
@@ -206,12 +206,12 @@ LABEL_18:
   }
 }
 
-- (void)complicationCollection:(id)a3 didRemoveSampleTemplatesForClient:(id)a4
+- (void)complicationCollection:(id)collection didRemoveSampleTemplatesForClient:(id)client
 {
-  v5 = a4;
-  v8 = [(CLKCComplicationDataSource *)self complication];
-  v6 = [v8 clientIdentifier];
-  v7 = [v5 isEqualToString:v6];
+  clientCopy = client;
+  complication = [(CLKCComplicationDataSource *)self complication];
+  clientIdentifier = [complication clientIdentifier];
+  v7 = [clientCopy isEqualToString:clientIdentifier];
 
   if (v7)
   {
@@ -219,47 +219,47 @@ LABEL_18:
   }
 }
 
-- (void)appLibrary:(id)a3 didAddApp:(id)a4
+- (void)appLibrary:(id)library didAddApp:(id)app
 {
-  v5 = a4;
+  appCopy = app;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __65__NTKCompanionRemoteComplicationDataSource_appLibrary_didAddApp___block_invoke;
   v7[3] = &unk_27877E438;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = appCopy;
+  v6 = appCopy;
   dispatch_sync(MEMORY[0x277D85CD0], v7);
 }
 
-- (void)appLibrary:(id)a3 didUpdateApp:(id)a4
+- (void)appLibrary:(id)library didUpdateApp:(id)app
 {
-  v5 = a4;
+  appCopy = app;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __68__NTKCompanionRemoteComplicationDataSource_appLibrary_didUpdateApp___block_invoke;
   v7[3] = &unk_27877E438;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = appCopy;
+  v6 = appCopy;
   dispatch_sync(MEMORY[0x277D85CD0], v7);
 }
 
-- (void)_invalidateIfComplicationCorrespondsToApp:(id)a3
+- (void)_invalidateIfComplicationCorrespondsToApp:(id)app
 {
-  v11 = a3;
-  v4 = [(CLKCComplicationDataSource *)self complication];
+  appCopy = app;
+  complication = [(CLKCComplicationDataSource *)self complication];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v11;
-    v6 = [v5 complicationClientIdentifier];
-    v7 = [v4 clientIdentifier];
-    if ([v6 isEqualToString:v7])
+    v5 = appCopy;
+    complicationClientIdentifier = [v5 complicationClientIdentifier];
+    clientIdentifier = [complication clientIdentifier];
+    if ([complicationClientIdentifier isEqualToString:clientIdentifier])
     {
-      v8 = [v5 watchApplicationIdentifier];
-      v9 = [v4 appBundleIdentifier];
-      v10 = [v8 isEqualToString:v9];
+      watchApplicationIdentifier = [v5 watchApplicationIdentifier];
+      appBundleIdentifier = [complication appBundleIdentifier];
+      v10 = [watchApplicationIdentifier isEqualToString:appBundleIdentifier];
 
       if (v10)
       {
@@ -273,12 +273,12 @@ LABEL_18:
   }
 }
 
-- (id)_templateFromApp:(id)a3
+- (id)_templateFromApp:(id)app
 {
-  v4 = [a3 urlToComplicationBundle];
-  if (v4)
+  urlToComplicationBundle = [app urlToComplicationBundle];
+  if (urlToComplicationBundle)
   {
-    v5 = [MEMORY[0x277CCA8D8] bundleWithURL:v4];
+    v5 = [MEMORY[0x277CCA8D8] bundleWithURL:urlToComplicationBundle];
     v6 = [NTKComplicationBundleHelper localizedComplicationTemplateForFamily:[(CLKCComplicationDataSource *)self family] bundle:v5 localization:0];
   }
 
@@ -292,7 +292,7 @@ LABEL_18:
 
 - (BOOL)_remoteIsCompanion
 {
-  v2 = [(CLKCComplicationDataSource *)self complication];
+  complication = [(CLKCComplicationDataSource *)self complication];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -304,8 +304,8 @@ LABEL_18:
   complicationTemplate = self->_complicationTemplate;
   self->_complicationTemplate = 0;
 
-  v4 = [(CLKCComplicationDataSource *)self delegate];
-  [v4 invalidateSwitcherTemplate];
+  delegate = [(CLKCComplicationDataSource *)self delegate];
+  [delegate invalidateSwitcherTemplate];
 }
 
 @end

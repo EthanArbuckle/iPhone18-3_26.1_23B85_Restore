@@ -1,22 +1,22 @@
 @interface AMUIDateTimeViewController
-- (AMUIDateTimeViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (AMUIDateTimeViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (BSUIVibrancyConfiguration)vibrancyConfiguration;
 - (void)_startUpdateTimer;
 - (void)_stopUpdateTimer;
-- (void)_updateViewWithDate:(id)a3;
+- (void)_updateViewWithDate:(id)date;
 - (void)dealloc;
 - (void)loadView;
-- (void)setDateProvider:(id)a3;
-- (void)setVibrancyConfiguration:(id)a3;
+- (void)setDateProvider:(id)provider;
+- (void)setVibrancyConfiguration:(id)configuration;
 @end
 
 @implementation AMUIDateTimeViewController
 
-- (AMUIDateTimeViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (AMUIDateTimeViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = AMUIDateTimeViewController;
-  v4 = [(AMUIDateTimeViewController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(AMUIDateTimeViewController *)&v7 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -44,46 +44,46 @@
   v6 = *(MEMORY[0x277CBF3A0] + 24);
   v7 = [v2 initWithFrame:{*MEMORY[0x277CBF3A0], v4, v5, v6}];
   v8 = [[AMUIDateTimeView alloc] initWithFrame:v3, v4, v5, v6];
-  v9 = [(AMUIDateTimeView *)v8 layer];
-  [v9 setAllowsGroupOpacity:1];
+  layer = [(AMUIDateTimeView *)v8 layer];
+  [layer setAllowsGroupOpacity:1];
 
-  v10 = [v7 contentView];
-  [v10 addSubview:v8];
-  [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
+  contentView = [v7 contentView];
+  [contentView addSubview:v8];
+  [contentView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(AMUIDateTimeView *)v8 setTranslatesAutoresizingMaskIntoConstraints:0];
   v32 = MEMORY[0x277CCAAD0];
-  v42 = [v10 leadingAnchor];
-  v41 = [(AMUIDateTimeView *)v8 leadingAnchor];
-  v40 = [v42 constraintEqualToAnchor:v41];
+  leadingAnchor = [contentView leadingAnchor];
+  leadingAnchor2 = [(AMUIDateTimeView *)v8 leadingAnchor];
+  v40 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v44[0] = v40;
-  v39 = [v10 trailingAnchor];
-  v38 = [(AMUIDateTimeView *)v8 trailingAnchor];
-  v37 = [v39 constraintEqualToAnchor:v38];
+  trailingAnchor = [contentView trailingAnchor];
+  trailingAnchor2 = [(AMUIDateTimeView *)v8 trailingAnchor];
+  v37 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v44[1] = v37;
-  v36 = [v10 topAnchor];
-  v35 = [(AMUIDateTimeView *)v8 topAnchor];
-  v34 = [v36 constraintEqualToAnchor:v35];
+  topAnchor = [contentView topAnchor];
+  topAnchor2 = [(AMUIDateTimeView *)v8 topAnchor];
+  v34 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v44[2] = v34;
-  v33 = [v10 bottomAnchor];
-  v31 = [(AMUIDateTimeView *)v8 bottomAnchor];
-  v30 = [v33 constraintEqualToAnchor:v31];
+  bottomAnchor = [contentView bottomAnchor];
+  bottomAnchor2 = [(AMUIDateTimeView *)v8 bottomAnchor];
+  v30 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v44[3] = v30;
-  v28 = [v7 leadingAnchor];
-  v27 = [v10 leadingAnchor];
-  v26 = [v28 constraintEqualToAnchor:v27];
+  leadingAnchor3 = [v7 leadingAnchor];
+  leadingAnchor4 = [contentView leadingAnchor];
+  v26 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v44[4] = v26;
-  v25 = [v7 trailingAnchor];
-  v24 = [v10 trailingAnchor];
-  v11 = [v25 constraintEqualToAnchor:v24];
+  trailingAnchor3 = [v7 trailingAnchor];
+  trailingAnchor4 = [contentView trailingAnchor];
+  v11 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v44[5] = v11;
   v29 = v7;
-  v12 = [v7 topAnchor];
-  v13 = [v10 topAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13];
+  topAnchor3 = [v7 topAnchor];
+  topAnchor4 = [contentView topAnchor];
+  v14 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v44[6] = v14;
-  v15 = [v7 bottomAnchor];
-  v16 = [v10 bottomAnchor];
-  v17 = [v15 constraintEqualToAnchor:v16];
+  bottomAnchor3 = [v7 bottomAnchor];
+  bottomAnchor4 = [contentView bottomAnchor];
+  v17 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v44[7] = v17;
   v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v44 count:8];
   [v32 activateConstraints:v18];
@@ -100,27 +100,27 @@
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setDateProvider:(id)a3
+- (void)setDateProvider:(id)provider
 {
-  v4 = a3;
-  if (!v4)
+  providerCopy = provider;
+  if (!providerCopy)
   {
-    v4 = objc_alloc_init(AMUIDefaultDateProvider);
+    providerCopy = objc_alloc_init(AMUIDefaultDateProvider);
   }
 
-  if (self->_dateProvider != v4)
+  if (self->_dateProvider != providerCopy)
   {
-    obj = v4;
+    obj = providerCopy;
     [(AMUIDateTimeViewController *)self _stopUpdateTimer];
     objc_storeStrong(&self->_dateProvider, obj);
-    v5 = [(AMUIDateProviding *)self->_dateProvider date];
-    [(AMUIDateTimeViewController *)self _updateViewWithDate:v5];
+    date = [(AMUIDateProviding *)self->_dateProvider date];
+    [(AMUIDateTimeViewController *)self _updateViewWithDate:date];
 
-    v4 = obj;
+    providerCopy = obj;
     if (!self->_disablesUpdates)
     {
       [(AMUIDateTimeViewController *)self _startUpdateTimer];
-      v4 = obj;
+      providerCopy = obj;
     }
   }
 }
@@ -133,20 +133,20 @@
   return [(BSUIVibrancyEffectView *)vibrancyView configuration];
 }
 
-- (void)setVibrancyConfiguration:(id)a3
+- (void)setVibrancyConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   [(AMUIDateTimeViewController *)self loadViewIfNeeded];
-  [(BSUIVibrancyEffectView *)self->_vibrancyView setConfiguration:v4];
+  [(BSUIVibrancyEffectView *)self->_vibrancyView setConfiguration:configurationCopy];
   dateTimeView = self->_dateTimeView;
-  v6 = [v4 color];
+  color = [configurationCopy color];
 
-  [(AMUIDateTimeView *)dateTimeView setTextColor:v6];
+  [(AMUIDateTimeView *)dateTimeView setTextColor:color];
 }
 
-- (void)_updateViewWithDate:(id)a3
+- (void)_updateViewWithDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   if (self->_disablesUpdates)
   {
     [(AMUIDateTimeViewController *)self _stopUpdateTimer];
@@ -154,8 +154,8 @@
 
   else
   {
-    v4 = [(AMUIDateTimeViewController *)self _dateTimeViewIfExists];
-    [v4 setDate:v5];
+    _dateTimeViewIfExists = [(AMUIDateTimeViewController *)self _dateTimeViewIfExists];
+    [_dateTimeViewIfExists setDate:dateCopy];
 
     [(AMUIDateTimeViewController *)self _startUpdateTimer];
   }

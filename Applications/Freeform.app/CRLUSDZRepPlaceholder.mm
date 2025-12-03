@@ -2,8 +2,8 @@
 - (NSString)previewItemTitle;
 - (NSURL)previewItemURL;
 - (_TtC8Freeform21CRLUSDZRepPlaceholder)init;
-- (void)setPreviewItemTitle:(id)a3;
-- (void)setPreviewItemURL:(id)a3;
+- (void)setPreviewItemTitle:(id)title;
+- (void)setPreviewItemURL:(id)l;
 @end
 
 @implementation CRLUSDZRepPlaceholder
@@ -31,12 +31,12 @@
   return v10;
 }
 
-- (void)setPreviewItemURL:(id)a3
+- (void)setPreviewItemURL:(id)l
 {
   v5 = sub_1005B981C(&unk_1019F33C0);
   __chkstk_darwin(v5 - 8);
   v7 = &v12 - v6;
-  if (a3)
+  if (l)
   {
     static URL._unconditionallyBridgeFromObjectiveC(_:)();
     v8 = type metadata accessor for URL();
@@ -51,7 +51,7 @@
 
   v10 = OBJC_IVAR____TtC8Freeform21CRLUSDZRepPlaceholder_previewItemURL;
   swift_beginAccess();
-  v11 = self;
+  selfCopy = self;
   sub_10084E778(v7, self + v10);
   swift_endAccess();
 }
@@ -72,9 +72,9 @@
   return v2;
 }
 
-- (void)setPreviewItemTitle:(id)a3
+- (void)setPreviewItemTitle:(id)title
 {
-  if (a3)
+  if (title)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   }

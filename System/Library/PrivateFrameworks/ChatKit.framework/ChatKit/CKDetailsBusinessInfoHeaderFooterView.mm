@@ -1,49 +1,49 @@
 @interface CKDetailsBusinessInfoHeaderFooterView
-- (CKDetailsBusinessInfoHeaderFooterView)initWithReuseIdentifier:(id)a3;
+- (CKDetailsBusinessInfoHeaderFooterView)initWithReuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
-- (void)setBusinessInfoView:(id)a3;
+- (void)setBusinessInfoView:(id)view;
 @end
 
 @implementation CKDetailsBusinessInfoHeaderFooterView
 
-- (CKDetailsBusinessInfoHeaderFooterView)initWithReuseIdentifier:(id)a3
+- (CKDetailsBusinessInfoHeaderFooterView)initWithReuseIdentifier:(id)identifier
 {
   v9.receiver = self;
   v9.super_class = CKDetailsBusinessInfoHeaderFooterView;
-  v3 = [(CKDetailsBusinessInfoHeaderFooterView *)&v9 initWithReuseIdentifier:a3];
+  v3 = [(CKDetailsBusinessInfoHeaderFooterView *)&v9 initWithReuseIdentifier:identifier];
   if (v3)
   {
     if (CKIsRunningInMacCatalyst())
     {
-      v4 = [MEMORY[0x1E69DC6E8] clearConfiguration];
-      [(CKDetailsBusinessInfoHeaderFooterView *)v3 setBackgroundConfiguration:v4];
+      clearConfiguration = [MEMORY[0x1E69DC6E8] clearConfiguration];
+      [(CKDetailsBusinessInfoHeaderFooterView *)v3 setBackgroundConfiguration:clearConfiguration];
     }
 
     else
     {
-      v4 = [(CKDetailsBusinessInfoHeaderFooterView *)v3 contentView];
+      clearConfiguration = [(CKDetailsBusinessInfoHeaderFooterView *)v3 contentView];
       v5 = +[CKUIBehavior sharedBehaviors];
-      v6 = [v5 theme];
-      v7 = [v6 detailsHeaderFooterContentViewBackgroundColor];
-      [v4 setBackgroundColor:v7];
+      theme = [v5 theme];
+      detailsHeaderFooterContentViewBackgroundColor = [theme detailsHeaderFooterContentViewBackgroundColor];
+      [clearConfiguration setBackgroundColor:detailsHeaderFooterContentViewBackgroundColor];
     }
   }
 
   return v3;
 }
 
-- (void)setBusinessInfoView:(id)a3
+- (void)setBusinessInfoView:(id)view
 {
-  v5 = a3;
-  if (self->_businessInfoView != v5)
+  viewCopy = view;
+  if (self->_businessInfoView != viewCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_businessInfoView, a3);
-    v6 = [(CKDetailsBusinessInfoHeaderFooterView *)self contentView];
-    [v6 addSubview:self->_businessInfoView];
+    v7 = viewCopy;
+    objc_storeStrong(&self->_businessInfoView, view);
+    contentView = [(CKDetailsBusinessInfoHeaderFooterView *)self contentView];
+    [contentView addSubview:self->_businessInfoView];
 
     [(CKDetailsBusinessInfoHeaderFooterView *)self setNeedsLayout];
-    v5 = v7;
+    viewCopy = v7;
   }
 }
 
@@ -52,17 +52,17 @@
   v14.receiver = self;
   v14.super_class = CKDetailsBusinessInfoHeaderFooterView;
   [(CKDetailsBusinessInfoHeaderFooterView *)&v14 layoutSubviews];
-  v3 = [(CKDetailsBusinessInfoHeaderFooterView *)self contentView];
-  [v3 bounds];
+  contentView = [(CKDetailsBusinessInfoHeaderFooterView *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(CKDetailsBusinessInfoHeaderFooterView *)self businessInfoView];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  businessInfoView = [(CKDetailsBusinessInfoHeaderFooterView *)self businessInfoView];
+  [businessInfoView setFrame:{v5, v7, v9, v11}];
 
-  v13 = [(CKDetailsBusinessInfoHeaderFooterView *)self businessInfoView];
-  [v13 setNeedsLayout];
+  businessInfoView2 = [(CKDetailsBusinessInfoHeaderFooterView *)self businessInfoView];
+  [businessInfoView2 setNeedsLayout];
 }
 
 @end

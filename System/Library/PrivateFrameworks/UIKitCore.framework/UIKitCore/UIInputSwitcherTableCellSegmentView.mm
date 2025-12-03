@@ -1,17 +1,17 @@
 @interface UIInputSwitcherTableCellSegmentView
 - (CGSize)intrinsicContentSize;
-- (UIInputSwitcherTableCellSegmentView)initWithFrame:(CGRect)a3;
+- (UIInputSwitcherTableCellSegmentView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setSelected:(BOOL)a3;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation UIInputSwitcherTableCellSegmentView
 
-- (UIInputSwitcherTableCellSegmentView)initWithFrame:(CGRect)a3
+- (UIInputSwitcherTableCellSegmentView)initWithFrame:(CGRect)frame
 {
   v20.receiver = self;
   v20.super_class = UIInputSwitcherTableCellSegmentView;
-  v3 = [(UIView *)&v20 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v20 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [UIInputSwitcherTableCellBackgroundView alloc];
@@ -33,8 +33,8 @@
     label = v3->_label;
     v3->_label = v12;
 
-    v14 = [objc_opt_class() _fontForBiasLabel];
-    [(UILabel *)v3->_label setFont:v14];
+    _fontForBiasLabel = [objc_opt_class() _fontForBiasLabel];
+    [(UILabel *)v3->_label setFont:_fontForBiasLabel];
 
     v15 = +[UIColor clearColor];
     [(UIView *)v3->_label setBackgroundColor:v15];
@@ -52,15 +52,15 @@
   return v3;
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
-  self->_selected = a3;
-  v5 = [(UIInputSwitcherTableCellSegmentView *)self backgroundView];
-  [v5 setSelected:v3];
+  selectedCopy = selected;
+  self->_selected = selected;
+  backgroundView = [(UIInputSwitcherTableCellSegmentView *)self backgroundView];
+  [backgroundView setSelected:selectedCopy];
 
-  v6 = [(UIView *)self _inheritedRenderConfig];
-  if (([v6 colorAdaptiveBackground] & 1) == 0 && v3 || -[UIInputSwitcherTableCellSegmentView usesDarkTheme](self, "usesDarkTheme"))
+  _inheritedRenderConfig = [(UIView *)self _inheritedRenderConfig];
+  if (([_inheritedRenderConfig colorAdaptiveBackground] & 1) == 0 && selectedCopy || -[UIInputSwitcherTableCellSegmentView usesDarkTheme](self, "usesDarkTheme"))
   {
     v7 = +[UIColor whiteColor];
   }
@@ -72,11 +72,11 @@
 
   v10 = v7;
 
-  v8 = [(UIInputSwitcherTableCellSegmentView *)self label];
-  [v8 setTextColor:v10];
+  label = [(UIInputSwitcherTableCellSegmentView *)self label];
+  [label setTextColor:v10];
 
-  v9 = [(UIInputSwitcherTableCellSegmentView *)self imageView];
-  [v9 setTintColor:v10];
+  imageView = [(UIInputSwitcherTableCellSegmentView *)self imageView];
+  [imageView setTintColor:v10];
 }
 
 - (void)layoutSubviews
@@ -92,14 +92,14 @@
   v10 = v9;
   [(UIView *)self bounds];
   [(UILabel *)self->_label setFrame:round(v12 + (v11 - v8) * 0.5), round(v14 + (v13 - v10) * 0.5), v8, v10];
-  v15 = [(UIImageView *)self->_imageView image];
+  image = [(UIImageView *)self->_imageView image];
 
   imageView = self->_imageView;
-  if (v15)
+  if (image)
   {
     [(UIImageView *)imageView setHidden:0];
-    v17 = [(UIImageView *)self->_imageView image];
-    [v17 size];
+    image2 = [(UIImageView *)self->_imageView image];
+    [image2 size];
     v19 = v18;
     v21 = v20;
 

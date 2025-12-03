@@ -1,14 +1,14 @@
 @interface WindParticleSimulator
-- (void)tick:(id)a3;
+- (void)tick:(id)tick;
 @end
 
 @implementation WindParticleSimulator
 
-- (void)tick:(id)a3
+- (void)tick:(id)tick
 {
-  v3 = a3;
+  tickCopy = tick;
 
-  sub_220ED81C4(v3);
+  sub_220ED81C4(tickCopy);
 }
 
 @end

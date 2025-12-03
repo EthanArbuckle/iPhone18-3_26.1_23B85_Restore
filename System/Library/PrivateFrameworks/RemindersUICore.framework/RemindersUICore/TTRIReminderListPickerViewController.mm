@@ -1,21 +1,21 @@
 @interface TTRIReminderListPickerViewController
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
-- (_TtC15RemindersUICore36TTRIReminderListPickerViewController)initWithCoder:(id)a3;
-- (_TtC15RemindersUICore36TTRIReminderListPickerViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC15RemindersUICore36TTRIReminderListPickerViewController)initWithStyle:(int64_t)a3;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (void)cancelButtonAction:(id)a3;
-- (void)moveButtonAction:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
+- (_TtC15RemindersUICore36TTRIReminderListPickerViewController)initWithCoder:(id)coder;
+- (_TtC15RemindersUICore36TTRIReminderListPickerViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC15RemindersUICore36TTRIReminderListPickerViewController)initWithStyle:(int64_t)style;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (void)cancelButtonAction:(id)action;
+- (void)moveButtonAction:(id)action;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation TTRIReminderListPickerViewController
 
-- (_TtC15RemindersUICore36TTRIReminderListPickerViewController)initWithCoder:(id)a3
+- (_TtC15RemindersUICore36TTRIReminderListPickerViewController)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.super.isa + OBJC_IVAR____TtC15RemindersUICore36TTRIReminderListPickerViewController_palette);
   *v3 = 0;
@@ -28,7 +28,7 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_21D1AF050();
 }
 
@@ -41,21 +41,21 @@
   sub_21D1AF7E0();
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = self;
-  v8 = sub_21D1AFAD0(v6, a4);
+  viewCopy = view;
+  selfCopy = self;
+  v8 = sub_21D1AFAD0(viewCopy, section);
 
   return v8;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
   result = 0.0;
-  if (*((*(&self->super.super.super.super.isa + OBJC_IVAR____TtC15RemindersUICore36TTRIReminderListPickerViewController_presenter))[4] + 16) > a4)
+  if (*((*(&self->super.super.super.super.isa + OBJC_IVAR____TtC15RemindersUICore36TTRIReminderListPickerViewController_presenter))[4] + 16) > section)
   {
-    if (a4 < 0)
+    if (section < 0)
     {
       __break(1u);
     }
@@ -69,15 +69,15 @@
   return result;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = sub_21DBF5D5C();
   v7 = *(v6 - 8);
   MEMORY[0x28223BE20](v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_21DBF5CAC();
-  v10 = a3;
-  v11 = self;
+  viewCopy = view;
+  selfCopy = self;
   v12 = sub_21D1B03FC();
 
   (*(v7 + 8))(v9, v6);
@@ -85,7 +85,7 @@
   return v12;
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
   v5 = sub_21DBF5D5C();
   v6 = *(v5 - 8);
@@ -98,7 +98,7 @@
   *&v20[0] = v11;
   *(&v20[0] + 1) = v10;
   v12 = v10;
-  v13 = self;
+  selfCopy = self;
   sub_21DBF8E0C();
   v14 = sub_21DBF5CCC();
   v15 = sub_21DBF5D0C();
@@ -125,25 +125,25 @@
   return (BYTE11(v21[1]) & 1) == 0;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v6 = sub_21DBF5D5C();
   v7 = *(v6 - 8);
   MEMORY[0x28223BE20](v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_21DBF5CAC();
-  v10 = a3;
-  v11 = self;
-  sub_21D1B0DE4(v10, v9);
+  viewCopy = view;
+  selfCopy = self;
+  sub_21D1B0DE4(viewCopy, v9);
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (void)cancelButtonAction:(id)a3
+- (void)cancelButtonAction:(id)action
 {
-  if (a3)
+  if (action)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_21DBFBC1C();
     swift_unknownObjectRelease();
@@ -153,7 +153,7 @@
   {
     v6 = 0u;
     v7 = 0u;
-    v5 = self;
+    selfCopy2 = self;
   }
 
   [(TTRIReminderListPickerViewController *)self dismissViewControllerAnimated:1 completion:0, v6, v7];
@@ -161,11 +161,11 @@
   sub_21D0CF7E0(&v6, &qword_27CE5C690);
 }
 
-- (void)moveButtonAction:(id)a3
+- (void)moveButtonAction:(id)action
 {
-  if (a3)
+  if (action)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_21DBFBC1C();
     swift_unknownObjectRelease();
@@ -174,7 +174,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_21D1B1850();
@@ -182,14 +182,14 @@
   sub_21D0CF7E0(v6, &qword_27CE5C690);
 }
 
-- (_TtC15RemindersUICore36TTRIReminderListPickerViewController)initWithStyle:(int64_t)a3
+- (_TtC15RemindersUICore36TTRIReminderListPickerViewController)initWithStyle:(int64_t)style
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC15RemindersUICore36TTRIReminderListPickerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC15RemindersUICore36TTRIReminderListPickerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

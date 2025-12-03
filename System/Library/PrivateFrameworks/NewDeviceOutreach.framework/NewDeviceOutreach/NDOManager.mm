@@ -1,42 +1,42 @@
 @interface NDOManager
-+ (void)postCAEventFor:(id)a3 eventDict:(id)a4;
-- (BOOL)checkIsAvailableInStore:(id)a3;
-- (BOOL)isAPSSupportedOverrideWithServerValue:(BOOL)a3;
++ (void)postCAEventFor:(id)for eventDict:(id)dict;
+- (BOOL)checkIsAvailableInStore:(id)store;
+- (BOOL)isAPSSupportedOverrideWithServerValue:(BOOL)value;
 - (NDOManager)init;
 - (id)agentConnection;
 - (id)clientConfiguration;
 - (id)defaultDevice;
 - (id)getDefaultDeviceInfoUsingForceCachedPolicy;
-- (id)getDeviceInfoUsingForceCachedPolicyForSerialNumber:(id)a3;
+- (id)getDeviceInfoUsingForceCachedPolicyForSerialNumber:(id)number;
 - (id)pairedBTDevices;
 - (id)pairedWatches;
-- (id)payloadDictionaryForDeviceInfo:(id)a3 atIndex:(int64_t)a4;
-- (id)payloadFrom:(id)a3 atIndex:(int64_t)a4 device:(id)a5;
-- (void)_getDeviceListForLocalDevices:(id)a3 sessionID:(id)a4 params:(id)a5 completionBlock:(id)a6;
-- (void)appSupportDictionaryWithReply:(id)a3;
-- (void)apsSupportedOverride:(id)a3;
-- (void)clearAllUserInitiatedFollowUpDismissalsWithReply:(id)a3;
-- (void)clearUserInitiatedFollowUpDismissalForSerialNumber:(id)a3 withReply:(id)a4;
-- (void)dismissFollowUpForSerialNumber:(id)a3 completion:(id)a4;
-- (void)dismissFollowUps:(id)a3 completion:(id)a4;
-- (void)dismissNotificationForSerialNumber:(id)a3 completion:(id)a4;
-- (void)getAmsPropertiesForContext:(id)a3 withReply:(id)a4;
-- (void)getCoverageInfoForSerialNumber:(id)a3 usingPolicy:(unint64_t)a4 withReply:(id)a5;
-- (void)getDecodedParamsForPath:(id)a3 withReply:(id)a4;
-- (void)getDefaultDeviceInfoUsingPolicy:(unint64_t)a3 withReply:(id)a4;
-- (void)getDeviceInfoForSerialNumber:(id)a3 usingPolicy:(unint64_t)a4 withReply:(id)a5;
-- (void)getDeviceListForLocalDevices:(id)a3 sessionID:(id)a4 policy:(unint64_t)a5 params:(id)a6 salesReplyOnly:(BOOL)a7 salesInfoReply:(id)a8 deviceInfoReply:(id)a9 completionBlock:(id)a10;
-- (void)getLocalDeviceListWithReply:(id)a3;
-- (void)getLocalDeviceWarrantyForSerialNumber:(id)a3 withReply:(id)a4;
-- (void)getRemoteDeviceListWithReply:(id)a3;
-- (void)getRemoteDeviceWarrantyForSerialNumber:(id)a3 withAdditionalHeaders:(id)a4 withReply:(id)a5;
-- (void)getWarrantyUsingPolicy:(unint64_t)a3 withReply:(id)a4;
-- (void)handleInternalCommand:(id)a3 withReply:(id)a4;
-- (void)removePromoSectionWithHashValue:(int64_t)a3 andAckData:(id)a4;
-- (void)scheduleOutreachAfter:(double)a3 withReply:(id)a4;
-- (void)storeUserInitiatedFollowUpDismissalForSerialNumber:(id)a3 withReply:(id)a4;
-- (void)ulWebURLOverride:(id)a3;
-- (void)webURLOverride:(id)a3;
+- (id)payloadDictionaryForDeviceInfo:(id)info atIndex:(int64_t)index;
+- (id)payloadFrom:(id)from atIndex:(int64_t)index device:(id)device;
+- (void)_getDeviceListForLocalDevices:(id)devices sessionID:(id)d params:(id)params completionBlock:(id)block;
+- (void)appSupportDictionaryWithReply:(id)reply;
+- (void)apsSupportedOverride:(id)override;
+- (void)clearAllUserInitiatedFollowUpDismissalsWithReply:(id)reply;
+- (void)clearUserInitiatedFollowUpDismissalForSerialNumber:(id)number withReply:(id)reply;
+- (void)dismissFollowUpForSerialNumber:(id)number completion:(id)completion;
+- (void)dismissFollowUps:(id)ups completion:(id)completion;
+- (void)dismissNotificationForSerialNumber:(id)number completion:(id)completion;
+- (void)getAmsPropertiesForContext:(id)context withReply:(id)reply;
+- (void)getCoverageInfoForSerialNumber:(id)number usingPolicy:(unint64_t)policy withReply:(id)reply;
+- (void)getDecodedParamsForPath:(id)path withReply:(id)reply;
+- (void)getDefaultDeviceInfoUsingPolicy:(unint64_t)policy withReply:(id)reply;
+- (void)getDeviceInfoForSerialNumber:(id)number usingPolicy:(unint64_t)policy withReply:(id)reply;
+- (void)getDeviceListForLocalDevices:(id)devices sessionID:(id)d policy:(unint64_t)policy params:(id)params salesReplyOnly:(BOOL)only salesInfoReply:(id)reply deviceInfoReply:(id)infoReply completionBlock:(id)self0;
+- (void)getLocalDeviceListWithReply:(id)reply;
+- (void)getLocalDeviceWarrantyForSerialNumber:(id)number withReply:(id)reply;
+- (void)getRemoteDeviceListWithReply:(id)reply;
+- (void)getRemoteDeviceWarrantyForSerialNumber:(id)number withAdditionalHeaders:(id)headers withReply:(id)reply;
+- (void)getWarrantyUsingPolicy:(unint64_t)policy withReply:(id)reply;
+- (void)handleInternalCommand:(id)command withReply:(id)reply;
+- (void)removePromoSectionWithHashValue:(int64_t)value andAckData:(id)data;
+- (void)scheduleOutreachAfter:(double)after withReply:(id)reply;
+- (void)storeUserInitiatedFollowUpDismissalForSerialNumber:(id)number withReply:(id)reply;
+- (void)ulWebURLOverride:(id)override;
+- (void)webURLOverride:(id)override;
 @end
 
 @implementation NDOManager
@@ -121,17 +121,17 @@
   return v2;
 }
 
-- (void)scheduleOutreachAfter:(double)a3 withReply:(id)a4
+- (void)scheduleOutreachAfter:(double)after withReply:(id)reply
 {
-  v6 = a4;
-  v7 = [(NDOManager *)self agentConnection];
+  replyCopy = reply;
+  agentConnection = [(NDOManager *)self agentConnection];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __46__NDOManager_scheduleOutreachAfter_withReply___block_invoke;
   v16[3] = &unk_279975D98;
-  v8 = v7;
+  v8 = agentConnection;
   v17 = v8;
-  v9 = v6;
+  v9 = replyCopy;
   v18 = v9;
   v10 = [v8 remoteObjectProxyWithErrorHandler:v16];
   v13[0] = MEMORY[0x277D85DD0];
@@ -142,7 +142,7 @@
   v15 = v9;
   v11 = v9;
   v12 = v8;
-  [v10 scheduleOutreachAfter:v13 withReply:a3];
+  [v10 scheduleOutreachAfter:v13 withReply:after];
 }
 
 void __46__NDOManager_scheduleOutreachAfter_withReply___block_invoke(uint64_t a1, void *a2)
@@ -175,16 +175,16 @@ uint64_t __46__NDOManager_scheduleOutreachAfter_withReply___block_invoke_9(uint6
   return result;
 }
 
-- (void)getWarrantyUsingPolicy:(unint64_t)a3 withReply:(id)a4
+- (void)getWarrantyUsingPolicy:(unint64_t)policy withReply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __47__NDOManager_getWarrantyUsingPolicy_withReply___block_invoke;
   v8[3] = &unk_279975DE8;
-  v9 = v6;
-  v7 = v6;
-  [(NDOManager *)self getDefaultDeviceInfoUsingPolicy:a3 withReply:v8];
+  v9 = replyCopy;
+  v7 = replyCopy;
+  [(NDOManager *)self getDefaultDeviceInfoUsingPolicy:policy withReply:v8];
 }
 
 void __47__NDOManager_getWarrantyUsingPolicy_withReply___block_invoke(uint64_t a1, void *a2)
@@ -194,19 +194,19 @@ void __47__NDOManager_getWarrantyUsingPolicy_withReply___block_invoke(uint64_t a
   (*(v2 + 16))(v2, v3);
 }
 
-- (BOOL)checkIsAvailableInStore:(id)a3
+- (BOOL)checkIsAvailableInStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 0;
-  v5 = [(NDOManager *)self agentConnection];
+  agentConnection = [(NDOManager *)self agentConnection];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __38__NDOManager_checkIsAvailableInStore___block_invoke;
   v13[3] = &unk_279975E10;
-  v6 = v5;
+  v6 = agentConnection;
   v14 = v6;
   v7 = [v6 synchronousRemoteObjectProxyWithErrorHandler:v13];
   v10[0] = MEMORY[0x277D85DD0];
@@ -216,7 +216,7 @@ void __47__NDOManager_getWarrantyUsingPolicy_withReply___block_invoke(uint64_t a
   v8 = v6;
   v11 = v8;
   v12 = &v15;
-  [v7 checkIsAvailableInStore:v4 withReply:v10];
+  [v7 checkIsAvailableInStore:storeCopy withReply:v10];
 
   LOBYTE(v7) = *(v16 + 24);
   _Block_object_dispose(&v15, 8);
@@ -255,10 +255,10 @@ void __38__NDOManager_checkIsAvailableInStore___block_invoke_12(uint64_t a1, voi
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)appSupportDictionaryWithReply:(id)a3
+- (void)appSupportDictionaryWithReply:(id)reply
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  replyCopy = reply;
   v19[0] = 0;
   v19[1] = v19;
   v19[2] = 0x3032000000;
@@ -267,14 +267,14 @@ void __38__NDOManager_checkIsAvailableInStore___block_invoke_12(uint64_t a1, voi
   v21 = @"AppAvailabilityType";
   v22[0] = &unk_286D6E450;
   v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:&v21 count:1];
-  v5 = [(NDOManager *)self agentConnection];
+  agentConnection = [(NDOManager *)self agentConnection];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __44__NDOManager_appSupportDictionaryWithReply___block_invoke;
   v15[3] = &unk_279975E60;
-  v6 = v5;
+  v6 = agentConnection;
   v16 = v6;
-  v7 = v4;
+  v7 = replyCopy;
   v17 = v7;
   v18 = v19;
   v8 = [v6 remoteObjectProxyWithErrorHandler:v15];
@@ -314,15 +314,15 @@ void __44__NDOManager_appSupportDictionaryWithReply___block_invoke_18(uint64_t a
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)webURLOverride:(id)a3
+- (void)webURLOverride:(id)override
 {
-  v4 = a3;
-  v5 = [(NDOManager *)self agentConnection];
+  overrideCopy = override;
+  agentConnection = [(NDOManager *)self agentConnection];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __29__NDOManager_webURLOverride___block_invoke;
   v13[3] = &unk_279975E10;
-  v6 = v5;
+  v6 = agentConnection;
   v14 = v6;
   v7 = [v6 synchronousRemoteObjectProxyWithErrorHandler:v13];
   v10[0] = MEMORY[0x277D85DD0];
@@ -330,8 +330,8 @@ void __44__NDOManager_appSupportDictionaryWithReply___block_invoke_18(uint64_t a
   v10[2] = __29__NDOManager_webURLOverride___block_invoke_19;
   v10[3] = &unk_279975EB0;
   v11 = v6;
-  v12 = v4;
-  v8 = v4;
+  v12 = overrideCopy;
+  v8 = overrideCopy;
   v9 = v6;
   [v7 readWebURLOverride:v10];
 }
@@ -365,15 +365,15 @@ void __29__NDOManager_webURLOverride___block_invoke_19(uint64_t a1, void *a2)
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)ulWebURLOverride:(id)a3
+- (void)ulWebURLOverride:(id)override
 {
-  v4 = a3;
-  v5 = [(NDOManager *)self agentConnection];
+  overrideCopy = override;
+  agentConnection = [(NDOManager *)self agentConnection];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __31__NDOManager_ulWebURLOverride___block_invoke;
   v13[3] = &unk_279975E10;
-  v6 = v5;
+  v6 = agentConnection;
   v14 = v6;
   v7 = [v6 synchronousRemoteObjectProxyWithErrorHandler:v13];
   v10[0] = MEMORY[0x277D85DD0];
@@ -381,8 +381,8 @@ void __29__NDOManager_webURLOverride___block_invoke_19(uint64_t a1, void *a2)
   v10[2] = __31__NDOManager_ulWebURLOverride___block_invoke_21;
   v10[3] = &unk_279975EB0;
   v11 = v6;
-  v12 = v4;
-  v8 = v4;
+  v12 = overrideCopy;
+  v8 = overrideCopy;
   v9 = v6;
   [v7 readULWebURLOverride:v10];
 }
@@ -416,15 +416,15 @@ void __31__NDOManager_ulWebURLOverride___block_invoke_21(uint64_t a1, void *a2)
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)apsSupportedOverride:(id)a3
+- (void)apsSupportedOverride:(id)override
 {
-  v4 = a3;
-  v5 = [(NDOManager *)self agentConnection];
+  overrideCopy = override;
+  agentConnection = [(NDOManager *)self agentConnection];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __35__NDOManager_apsSupportedOverride___block_invoke;
   v13[3] = &unk_279975E10;
-  v6 = v5;
+  v6 = agentConnection;
   v14 = v6;
   v7 = [v6 synchronousRemoteObjectProxyWithErrorHandler:v13];
   v10[0] = MEMORY[0x277D85DD0];
@@ -432,8 +432,8 @@ void __31__NDOManager_ulWebURLOverride___block_invoke_21(uint64_t a1, void *a2)
   v10[2] = __35__NDOManager_apsSupportedOverride___block_invoke_22;
   v10[3] = &unk_279975EB0;
   v11 = v6;
-  v12 = v4;
-  v8 = v4;
+  v12 = overrideCopy;
+  v8 = overrideCopy;
   v9 = v6;
   [v7 readAPSSupportedOverride:v10];
 }
@@ -467,7 +467,7 @@ void __35__NDOManager_apsSupportedOverride___block_invoke_22(uint64_t a1, void *
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isAPSSupportedOverrideWithServerValue:(BOOL)a3
+- (BOOL)isAPSSupportedOverrideWithServerValue:(BOOL)value
 {
   v15 = 0;
   v16[0] = &v15;
@@ -505,12 +505,12 @@ void __35__NDOManager_apsSupportedOverride___block_invoke_22(uint64_t a1, void *
       [(NDOManager *)v16 isAPSSupportedOverrideWithServerValue:v10];
     }
 
-    a3 = [*(v16[0] + 40) isEqualToString:@"1"];
+    value = [*(v16[0] + 40) isEqualToString:@"1"];
   }
 
   _Block_object_dispose(&v15, 8);
 
-  return a3;
+  return value;
 }
 
 void __52__NDOManager_isAPSSupportedOverrideWithServerValue___block_invoke(uint64_t a1, void *a2)
@@ -520,30 +520,30 @@ void __52__NDOManager_isAPSSupportedOverrideWithServerValue___block_invoke(uint6
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)getDecodedParamsForPath:(id)a3 withReply:(id)a4
+- (void)getDecodedParamsForPath:(id)path withReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NDOManager *)self agentConnection];
+  pathCopy = path;
+  replyCopy = reply;
+  agentConnection = [(NDOManager *)self agentConnection];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __48__NDOManager_getDecodedParamsForPath_withReply___block_invoke;
   v19[3] = &unk_279975D98;
-  v9 = v8;
+  v9 = agentConnection;
   v20 = v9;
-  v10 = v7;
+  v10 = replyCopy;
   v21 = v10;
   v11 = [v9 remoteObjectProxyWithErrorHandler:v19];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __48__NDOManager_getDecodedParamsForPath_withReply___block_invoke_36;
   v15[3] = &unk_279975F00;
-  v16 = v6;
+  v16 = pathCopy;
   v17 = v9;
   v18 = v10;
   v12 = v10;
   v13 = v9;
-  v14 = v6;
+  v14 = pathCopy;
   [v11 getDecodedParamsForPath:v14 withReply:v15];
 }
 
@@ -591,12 +591,12 @@ void __48__NDOManager_getDecodedParamsForPath_withReply___block_invoke_36(uint64
   v17 = __Block_byref_object_copy_;
   v18 = __Block_byref_object_dispose_;
   v19 = 0;
-  v2 = [(NDOManager *)self agentConnection];
+  agentConnection = [(NDOManager *)self agentConnection];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __33__NDOManager_clientConfiguration__block_invoke;
   v12[3] = &unk_279975E10;
-  v3 = v2;
+  v3 = agentConnection;
   v13 = v3;
   v4 = [v3 synchronousRemoteObjectProxyWithErrorHandler:v12];
   v9[0] = MEMORY[0x277D85DD0];
@@ -646,12 +646,12 @@ void __33__NDOManager_clientConfiguration__block_invoke_37(uint64_t a1, void *a2
   v19 = __Block_byref_object_copy_;
   v20 = __Block_byref_object_dispose_;
   v21 = 0;
-  v2 = [(NDOManager *)self agentConnection];
+  agentConnection = [(NDOManager *)self agentConnection];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __27__NDOManager_defaultDevice__block_invoke;
   v14[3] = &unk_279975E10;
-  v3 = v2;
+  v3 = agentConnection;
   v15 = v3;
   v4 = [v3 synchronousRemoteObjectProxyWithErrorHandler:v14];
   v11[0] = MEMORY[0x277D85DD0];
@@ -710,12 +710,12 @@ void __27__NDOManager_defaultDevice__block_invoke_39(uint64_t a1, void *a2)
   v19 = __Block_byref_object_copy_;
   v20 = __Block_byref_object_dispose_;
   v21 = 0;
-  v2 = [(NDOManager *)self agentConnection];
+  agentConnection = [(NDOManager *)self agentConnection];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __27__NDOManager_pairedWatches__block_invoke;
   v14[3] = &unk_279975E10;
-  v3 = v2;
+  v3 = agentConnection;
   v15 = v3;
   v4 = [v3 synchronousRemoteObjectProxyWithErrorHandler:v14];
   v11[0] = MEMORY[0x277D85DD0];
@@ -774,12 +774,12 @@ void __27__NDOManager_pairedWatches__block_invoke_41(uint64_t a1, void *a2)
   v19 = __Block_byref_object_copy_;
   v20 = __Block_byref_object_dispose_;
   v21 = 0;
-  v2 = [(NDOManager *)self agentConnection];
+  agentConnection = [(NDOManager *)self agentConnection];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __29__NDOManager_pairedBTDevices__block_invoke;
   v14[3] = &unk_279975E10;
-  v3 = v2;
+  v3 = agentConnection;
   v15 = v3;
   v4 = [v3 synchronousRemoteObjectProxyWithErrorHandler:v14];
   v11[0] = MEMORY[0x277D85DD0];
@@ -831,7 +831,7 @@ void __29__NDOManager_pairedBTDevices__block_invoke_43(uint64_t a1, void *a2)
 
 - (id)getDefaultDeviceInfoUsingForceCachedPolicy
 {
-  v2 = [(NDOManager *)self agentConnection];
+  agentConnection = [(NDOManager *)self agentConnection];
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -842,7 +842,7 @@ void __29__NDOManager_pairedBTDevices__block_invoke_43(uint64_t a1, void *a2)
   v11[1] = 3221225472;
   v11[2] = __56__NDOManager_getDefaultDeviceInfoUsingForceCachedPolicy__block_invoke;
   v11[3] = &unk_279975E10;
-  v3 = v2;
+  v3 = agentConnection;
   v12 = v3;
   v4 = [v3 synchronousRemoteObjectProxyWithErrorHandler:v11];
   v8[0] = MEMORY[0x277D85DD0];
@@ -881,17 +881,17 @@ void __56__NDOManager_getDefaultDeviceInfoUsingForceCachedPolicy__block_invoke_4
   *(v4 + 40) = v3;
 }
 
-- (void)getDefaultDeviceInfoUsingPolicy:(unint64_t)a3 withReply:(id)a4
+- (void)getDefaultDeviceInfoUsingPolicy:(unint64_t)policy withReply:(id)reply
 {
-  v6 = a4;
-  v7 = [(NDOManager *)self agentConnection];
+  replyCopy = reply;
+  agentConnection = [(NDOManager *)self agentConnection];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __56__NDOManager_getDefaultDeviceInfoUsingPolicy_withReply___block_invoke;
   v16[3] = &unk_279975D98;
-  v8 = v7;
+  v8 = agentConnection;
   v17 = v8;
-  v9 = v6;
+  v9 = replyCopy;
   v18 = v9;
   v10 = [v8 remoteObjectProxyWithErrorHandler:v16];
   v13[0] = MEMORY[0x277D85DD0];
@@ -902,7 +902,7 @@ void __56__NDOManager_getDefaultDeviceInfoUsingForceCachedPolicy__block_invoke_4
   v15 = v9;
   v11 = v9;
   v12 = v8;
-  [v10 getDefaultDeviceInfoUsingPolicy:a3 withReply:v13];
+  [v10 getDefaultDeviceInfoUsingPolicy:policy withReply:v13];
 }
 
 void __56__NDOManager_getDefaultDeviceInfoUsingPolicy_withReply___block_invoke(uint64_t a1, void *a2)
@@ -926,10 +926,10 @@ void __56__NDOManager_getDefaultDeviceInfoUsingPolicy_withReply___block_invoke_4
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)getDeviceInfoUsingForceCachedPolicyForSerialNumber:(id)a3
+- (id)getDeviceInfoUsingForceCachedPolicyForSerialNumber:(id)number
 {
-  v4 = a3;
-  v5 = [(NDOManager *)self agentConnection];
+  numberCopy = number;
+  agentConnection = [(NDOManager *)self agentConnection];
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -940,7 +940,7 @@ void __56__NDOManager_getDefaultDeviceInfoUsingPolicy_withReply___block_invoke_4
   v14[1] = 3221225472;
   v14[2] = __65__NDOManager_getDeviceInfoUsingForceCachedPolicyForSerialNumber___block_invoke;
   v14[3] = &unk_279975E10;
-  v6 = v5;
+  v6 = agentConnection;
   v15 = v6;
   v7 = [v6 synchronousRemoteObjectProxyWithErrorHandler:v14];
   v11[0] = MEMORY[0x277D85DD0];
@@ -950,7 +950,7 @@ void __56__NDOManager_getDefaultDeviceInfoUsingPolicy_withReply___block_invoke_4
   v8 = v6;
   v12 = v8;
   v13 = &v16;
-  [v7 getDeviceInfoForSerialNumber:v4 usingPolicy:1 withReply:v11];
+  [v7 getDeviceInfoForSerialNumber:numberCopy usingPolicy:1 withReply:v11];
 
   v9 = v17[5];
   _Block_object_dispose(&v16, 8);
@@ -979,18 +979,18 @@ void __65__NDOManager_getDeviceInfoUsingForceCachedPolicyForSerialNumber___block
   *(v4 + 40) = v3;
 }
 
-- (void)getDeviceInfoForSerialNumber:(id)a3 usingPolicy:(unint64_t)a4 withReply:(id)a5
+- (void)getDeviceInfoForSerialNumber:(id)number usingPolicy:(unint64_t)policy withReply:(id)reply
 {
-  v7 = a3;
-  v8 = a5;
+  numberCopy = number;
+  replyCopy = reply;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __65__NDOManager_getDeviceInfoForSerialNumber_usingPolicy_withReply___block_invoke;
   v11[3] = &unk_279975FC8;
-  v12 = v7;
-  v13 = v8;
-  v9 = v7;
-  v10 = v8;
+  v12 = numberCopy;
+  v13 = replyCopy;
+  v9 = numberCopy;
+  v10 = replyCopy;
   [(NDOManager *)self getCoverageInfoForSerialNumber:v9 usingPolicy:2 withReply:v11];
 }
 
@@ -1037,23 +1037,23 @@ void __103__NDOManager_getDeviceInfoForSerialNumber_usingPolicy_sessionID_params
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)payloadFrom:(id)a3 atIndex:(int64_t)a4 device:(id)a5
+- (id)payloadFrom:(id)from atIndex:(int64_t)index device:(id)device
 {
   v59 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [v9 serialNumber];
-  v11 = [(NDOManager *)self defaultDevice];
-  v12 = [v11 serialNumber];
-  v48 = v10;
-  v13 = [v12 isEqualToString:v10];
+  fromCopy = from;
+  deviceCopy = device;
+  serialNumber = [deviceCopy serialNumber];
+  defaultDevice = [(NDOManager *)self defaultDevice];
+  serialNumber2 = [defaultDevice serialNumber];
+  v48 = serialNumber;
+  v13 = [serialNumber2 isEqualToString:serialNumber];
 
-  v14 = [v8 acOfferEligibleUntil];
+  acOfferEligibleUntil = [fromCopy acOfferEligibleUntil];
 
-  if (v14)
+  if (acOfferEligibleUntil)
   {
-    v15 = [v8 acOfferEligibleUntil];
-    v16 = [NDOUtilities daysFromDate:v15];
+    acOfferEligibleUntil2 = [fromCopy acOfferEligibleUntil];
+    v16 = [NDOUtilities daysFromDate:acOfferEligibleUntil2];
   }
 
   else
@@ -1064,42 +1064,42 @@ void __103__NDOManager_getDeviceInfoForSerialNumber_usingPolicy_sessionID_params
   v17 = _NDOLogSystem();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = [(NDOManager *)self defaultDevice];
-    v19 = [v18 serialNumber];
-    v20 = [v8 acOfferEligibleUntil];
+    defaultDevice2 = [(NDOManager *)self defaultDevice];
+    serialNumber3 = [defaultDevice2 serialNumber];
+    acOfferEligibleUntil3 = [fromCopy acOfferEligibleUntil];
     *buf = 136446978;
     v52 = "[NDOManager payloadFrom:atIndex:device:]";
     v53 = 2112;
-    v54 = v19;
+    v54 = serialNumber3;
     v55 = 2112;
-    v56 = v10;
+    v56 = serialNumber;
     v57 = 2112;
-    v58 = v20;
+    v58 = acOfferEligibleUntil3;
     _os_log_impl(&dword_25BD52000, v17, OS_LOG_TYPE_DEFAULT, "%{public}s: sn: %@ sn2: %@ %@", buf, 0x2Au);
   }
 
-  v50[0] = v10;
+  v50[0] = serialNumber;
   v49[0] = @"serialNum";
   v49[1] = @"currentDevice";
   v47 = [MEMORY[0x277CCABB0] numberWithBool:v13];
   v50[1] = v47;
   v49[2] = @"deviceSeq";
-  v46 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+  v46 = [MEMORY[0x277CCABB0] numberWithInteger:index];
   v50[2] = v46;
   v49[3] = @"deviceName";
-  v21 = [v9 name];
-  v50[3] = v21;
+  name = [deviceCopy name];
+  v50[3] = name;
   v49[4] = @"deviceImageUrl";
-  v22 = [v9 deviceImageUrl];
+  deviceImageUrl = [deviceCopy deviceImageUrl];
 
-  v23 = v22;
-  if (!v22)
+  v23 = deviceImageUrl;
+  if (!deviceImageUrl)
   {
-    v24 = [v8 deviceImageUrl];
-    v44 = v24;
-    if (v24)
+    deviceImageUrl2 = [fromCopy deviceImageUrl];
+    v44 = deviceImageUrl2;
+    if (deviceImageUrl2)
     {
-      v23 = v24;
+      v23 = deviceImageUrl2;
     }
 
     else
@@ -1110,11 +1110,11 @@ void __103__NDOManager_getDeviceInfoForSerialNumber_usingPolicy_sessionID_params
 
   v50[4] = v23;
   v49[5] = @"deviceDesc";
-  v25 = [v8 deviceDesc];
-  v26 = v25;
-  if (v25)
+  deviceDesc = [fromCopy deviceDesc];
+  v26 = deviceDesc;
+  if (deviceDesc)
   {
-    v27 = v25;
+    v27 = deviceDesc;
   }
 
   else
@@ -1127,11 +1127,11 @@ void __103__NDOManager_getDeviceInfoForSerialNumber_usingPolicy_sessionID_params
   v28 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v16];
   v50[6] = v28;
   v49[7] = @"sgId";
-  v29 = [v8 sgId];
-  v30 = v29;
-  if (v29)
+  sgId = [fromCopy sgId];
+  v30 = sgId;
+  if (sgId)
   {
-    v31 = v29;
+    v31 = sgId;
   }
 
   else
@@ -1141,11 +1141,11 @@ void __103__NDOManager_getDeviceInfoForSerialNumber_usingPolicy_sessionID_params
 
   v50[7] = v31;
   v49[8] = @"pfcId";
-  v32 = [v8 pfcId];
-  v33 = v32;
-  if (v32)
+  pfcId = [fromCopy pfcId];
+  v33 = pfcId;
+  if (pfcId)
   {
-    v34 = v32;
+    v34 = pfcId;
   }
 
   else
@@ -1155,11 +1155,11 @@ void __103__NDOManager_getDeviceInfoForSerialNumber_usingPolicy_sessionID_params
 
   v50[8] = v34;
   v49[9] = @"pgfId";
-  v35 = [v8 pgfId];
-  v36 = v35;
-  if (v35)
+  pgfId = [fromCopy pgfId];
+  v36 = pgfId;
+  if (pgfId)
   {
-    v37 = v35;
+    v37 = pgfId;
   }
 
   else
@@ -1169,11 +1169,11 @@ void __103__NDOManager_getDeviceInfoForSerialNumber_usingPolicy_sessionID_params
 
   v50[9] = v37;
   v49[10] = @"parentId";
-  v38 = [v8 parentId];
-  v39 = v38;
-  if (v38)
+  parentId = [fromCopy parentId];
+  v39 = parentId;
+  if (parentId)
   {
-    v40 = v38;
+    v40 = parentId;
   }
 
   else
@@ -1184,7 +1184,7 @@ void __103__NDOManager_getDeviceInfoForSerialNumber_usingPolicy_sessionID_params
   v50[10] = v40;
   v41 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v50 forKeys:v49 count:11];
 
-  if (!v22)
+  if (!deviceImageUrl)
   {
   }
 
@@ -1193,27 +1193,27 @@ void __103__NDOManager_getDeviceInfoForSerialNumber_usingPolicy_sessionID_params
   return v41;
 }
 
-- (id)payloadDictionaryForDeviceInfo:(id)a3 atIndex:(int64_t)a4
+- (id)payloadDictionaryForDeviceInfo:(id)info atIndex:(int64_t)index
 {
-  v6 = a3;
-  v7 = v6;
-  if (!v6)
+  infoCopy = info;
+  v7 = infoCopy;
+  if (!infoCopy)
   {
     goto LABEL_14;
   }
 
-  v8 = [v6 warranty];
-  v9 = [v8 acOfferDisplayDate];
+  warranty = [infoCopy warranty];
+  acOfferDisplayDate = [warranty acOfferDisplayDate];
 
-  v10 = [v7 warranty];
-  v11 = [v10 acOfferEligible];
-  if (v9)
+  warranty2 = [v7 warranty];
+  acOfferEligible = [warranty2 acOfferEligible];
+  if (acOfferDisplayDate)
   {
-    if (v11)
+    if (acOfferEligible)
     {
-      v12 = [v7 warranty];
-      v13 = [v12 acOfferDisplayDate];
-      [v13 timeIntervalSinceNow];
+      warranty3 = [v7 warranty];
+      acOfferDisplayDate2 = [warranty3 acOfferDisplayDate];
+      [acOfferDisplayDate2 timeIntervalSinceNow];
       if (v14 > 0.0)
       {
 
@@ -1223,9 +1223,9 @@ LABEL_12:
         goto LABEL_13;
       }
 
-      v18 = [v7 warranty];
-      v19 = [v18 acOfferEligibleUntil];
-      [v19 timeIntervalSinceNow];
+      warranty4 = [v7 warranty];
+      acOfferEligibleUntil = [warranty4 acOfferEligibleUntil];
+      [acOfferEligibleUntil timeIntervalSinceNow];
       v17 = v20;
 
       goto LABEL_10;
@@ -1238,22 +1238,22 @@ LABEL_13:
     goto LABEL_15;
   }
 
-  if (!v11)
+  if (!acOfferEligible)
   {
     goto LABEL_8;
   }
 
-  v12 = [v7 warranty];
-  v13 = [v12 acOfferEligibleUntil];
-  [v13 timeIntervalSinceNow];
+  warranty3 = [v7 warranty];
+  acOfferDisplayDate2 = [warranty3 acOfferEligibleUntil];
+  [acOfferDisplayDate2 timeIntervalSinceNow];
   v17 = v16;
 LABEL_10:
 
   if (v17 > 0.0)
   {
-    v10 = [v7 warranty];
-    v12 = [v7 device];
-    v15 = [(NDOManager *)self payloadFrom:v10 atIndex:a4 device:v12];
+    warranty2 = [v7 warranty];
+    warranty3 = [v7 device];
+    v15 = [(NDOManager *)self payloadFrom:warranty2 atIndex:index device:warranty3];
     goto LABEL_12;
   }
 
@@ -1264,33 +1264,33 @@ LABEL_15:
   return v15;
 }
 
-- (void)getDeviceListForLocalDevices:(id)a3 sessionID:(id)a4 policy:(unint64_t)a5 params:(id)a6 salesReplyOnly:(BOOL)a7 salesInfoReply:(id)a8 deviceInfoReply:(id)a9 completionBlock:(id)a10
+- (void)getDeviceListForLocalDevices:(id)devices sessionID:(id)d policy:(unint64_t)policy params:(id)params salesReplyOnly:(BOOL)only salesInfoReply:(id)reply deviceInfoReply:(id)infoReply completionBlock:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a6;
-  v19 = a8;
-  v20 = a9;
-  v21 = a10;
+  devicesCopy = devices;
+  dCopy = d;
+  paramsCopy = params;
+  replyCopy = reply;
+  infoReplyCopy = infoReply;
+  blockCopy = block;
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __129__NDOManager_getDeviceListForLocalDevices_sessionID_policy_params_salesReplyOnly_salesInfoReply_deviceInfoReply_completionBlock___block_invoke;
   v28[3] = &unk_279976108;
   v28[4] = self;
-  v29 = v16;
-  v36 = a7;
-  v32 = v21;
-  v33 = v19;
-  v30 = v17;
-  v31 = v18;
-  v34 = v20;
-  v35 = a5;
-  v22 = v20;
-  v23 = v18;
-  v24 = v17;
-  v25 = v19;
-  v26 = v21;
-  v27 = v16;
+  v29 = devicesCopy;
+  onlyCopy = only;
+  v32 = blockCopy;
+  v33 = replyCopy;
+  v30 = dCopy;
+  v31 = paramsCopy;
+  v34 = infoReplyCopy;
+  policyCopy = policy;
+  v22 = infoReplyCopy;
+  v23 = paramsCopy;
+  v24 = dCopy;
+  v25 = replyCopy;
+  v26 = blockCopy;
+  v27 = devicesCopy;
   [(NDOManager *)self _getDeviceListForLocalDevices:v27 sessionID:v24 params:v23 completionBlock:v28];
 }
 
@@ -1782,20 +1782,20 @@ uint64_t __129__NDOManager_getDeviceListForLocalDevices_sessionID_policy_params_
   return result;
 }
 
-- (void)_getDeviceListForLocalDevices:(id)a3 sessionID:(id)a4 params:(id)a5 completionBlock:(id)a6
+- (void)_getDeviceListForLocalDevices:(id)devices sessionID:(id)d params:(id)params completionBlock:(id)block
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(NDOManager *)self agentConnection];
+  blockCopy = block;
+  paramsCopy = params;
+  dCopy = d;
+  devicesCopy = devices;
+  agentConnection = [(NDOManager *)self agentConnection];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __77__NDOManager__getDeviceListForLocalDevices_sessionID_params_completionBlock___block_invoke;
   v23[3] = &unk_279975D98;
-  v15 = v14;
+  v15 = agentConnection;
   v24 = v15;
-  v16 = v10;
+  v16 = blockCopy;
   v25 = v16;
   v17 = [v15 remoteObjectProxyWithErrorHandler:v23];
   v20[0] = MEMORY[0x277D85DD0];
@@ -1806,7 +1806,7 @@ uint64_t __129__NDOManager_getDeviceListForLocalDevices_sessionID_policy_params_
   v22 = v16;
   v18 = v16;
   v19 = v15;
-  [v17 getDeviceListForLocalDevices:v13 sessionID:v12 params:v11 withReply:v20];
+  [v17 getDeviceListForLocalDevices:devicesCopy sessionID:dCopy params:paramsCopy withReply:v20];
 }
 
 void __77__NDOManager__getDeviceListForLocalDevices_sessionID_params_completionBlock___block_invoke(uint64_t a1, void *a2)
@@ -1915,18 +1915,18 @@ void __75__NDOManager_getBTPioneerDeviceInfosUsingPolicy_updateFollowUps_withRep
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)dismissFollowUpForSerialNumber:(id)a3 completion:(id)a4
+- (void)dismissFollowUpForSerialNumber:(id)number completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NDOManager *)self agentConnection];
+  completionCopy = completion;
+  numberCopy = number;
+  agentConnection = [(NDOManager *)self agentConnection];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __56__NDOManager_dismissFollowUpForSerialNumber_completion___block_invoke;
   v17[3] = &unk_279975D98;
-  v9 = v8;
+  v9 = agentConnection;
   v18 = v9;
-  v10 = v6;
+  v10 = completionCopy;
   v19 = v10;
   v11 = [v9 remoteObjectProxyWithErrorHandler:v17];
   v14[0] = MEMORY[0x277D85DD0];
@@ -1937,7 +1937,7 @@ void __75__NDOManager_getBTPioneerDeviceInfosUsingPolicy_updateFollowUps_withRep
   v16 = v10;
   v12 = v10;
   v13 = v9;
-  [v11 dismissFollowUpForSerialNumber:v7 completion:v14];
+  [v11 dismissFollowUpForSerialNumber:numberCopy completion:v14];
 }
 
 void __56__NDOManager_dismissFollowUpForSerialNumber_completion___block_invoke(uint64_t a1, void *a2)
@@ -1961,18 +1961,18 @@ uint64_t __56__NDOManager_dismissFollowUpForSerialNumber_completion___block_invo
   return v2();
 }
 
-- (void)dismissNotificationForSerialNumber:(id)a3 completion:(id)a4
+- (void)dismissNotificationForSerialNumber:(id)number completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NDOManager *)self agentConnection];
+  completionCopy = completion;
+  numberCopy = number;
+  agentConnection = [(NDOManager *)self agentConnection];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __60__NDOManager_dismissNotificationForSerialNumber_completion___block_invoke;
   v17[3] = &unk_279975D98;
-  v9 = v8;
+  v9 = agentConnection;
   v18 = v9;
-  v10 = v6;
+  v10 = completionCopy;
   v19 = v10;
   v11 = [v9 remoteObjectProxyWithErrorHandler:v17];
   v14[0] = MEMORY[0x277D85DD0];
@@ -1983,7 +1983,7 @@ uint64_t __56__NDOManager_dismissFollowUpForSerialNumber_completion___block_invo
   v16 = v10;
   v12 = v10;
   v13 = v9;
-  [v11 dismissNotificationForSerialNumber:v7 completion:v14];
+  [v11 dismissNotificationForSerialNumber:numberCopy completion:v14];
 }
 
 void __60__NDOManager_dismissNotificationForSerialNumber_completion___block_invoke(uint64_t a1, void *a2)
@@ -2007,12 +2007,12 @@ uint64_t __60__NDOManager_dismissNotificationForSerialNumber_completion___block_
   return v2();
 }
 
-+ (void)postCAEventFor:(id)a3 eventDict:(id)a4
++ (void)postCAEventFor:(id)for eventDict:(id)dict
 {
-  v7 = a3;
-  v8 = a4;
-  v5 = v8;
-  v6 = v7;
+  forCopy = for;
+  dictCopy = dict;
+  v5 = dictCopy;
+  v6 = forCopy;
   AnalyticsSendEventLazy();
 }
 
@@ -2037,18 +2037,18 @@ id __39__NDOManager_postCAEventFor_eventDict___block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)clearUserInitiatedFollowUpDismissalForSerialNumber:(id)a3 withReply:(id)a4
+- (void)clearUserInitiatedFollowUpDismissalForSerialNumber:(id)number withReply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NDOManager *)self agentConnection];
+  replyCopy = reply;
+  numberCopy = number;
+  agentConnection = [(NDOManager *)self agentConnection];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __75__NDOManager_clearUserInitiatedFollowUpDismissalForSerialNumber_withReply___block_invoke;
   v17[3] = &unk_279975D98;
-  v9 = v8;
+  v9 = agentConnection;
   v18 = v9;
-  v10 = v6;
+  v10 = replyCopy;
   v19 = v10;
   v11 = [v9 remoteObjectProxyWithErrorHandler:v17];
   v14[0] = MEMORY[0x277D85DD0];
@@ -2059,7 +2059,7 @@ id __39__NDOManager_postCAEventFor_eventDict___block_invoke(uint64_t a1)
   v16 = v10;
   v12 = v10;
   v13 = v9;
-  [v11 clearUserInitiatedFollowUpDismissalForSerialNumber:v7 completion:v14];
+  [v11 clearUserInitiatedFollowUpDismissalForSerialNumber:numberCopy completion:v14];
 }
 
 void __75__NDOManager_clearUserInitiatedFollowUpDismissalForSerialNumber_withReply___block_invoke(uint64_t a1, void *a2)
@@ -2087,17 +2087,17 @@ uint64_t __75__NDOManager_clearUserInitiatedFollowUpDismissalForSerialNumber_wit
   return v2();
 }
 
-- (void)clearAllUserInitiatedFollowUpDismissalsWithReply:(id)a3
+- (void)clearAllUserInitiatedFollowUpDismissalsWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(NDOManager *)self agentConnection];
+  replyCopy = reply;
+  agentConnection = [(NDOManager *)self agentConnection];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __63__NDOManager_clearAllUserInitiatedFollowUpDismissalsWithReply___block_invoke;
   v14[3] = &unk_279975D98;
-  v6 = v5;
+  v6 = agentConnection;
   v15 = v6;
-  v7 = v4;
+  v7 = replyCopy;
   v16 = v7;
   v8 = [v6 remoteObjectProxyWithErrorHandler:v14];
   v11[0] = MEMORY[0x277D85DD0];
@@ -2136,11 +2136,11 @@ uint64_t __63__NDOManager_clearAllUserInitiatedFollowUpDismissalsWithReply___blo
   return v2();
 }
 
-- (void)storeUserInitiatedFollowUpDismissalForSerialNumber:(id)a3 withReply:(id)a4
+- (void)storeUserInitiatedFollowUpDismissalForSerialNumber:(id)number withReply:(id)reply
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  replyCopy = reply;
+  numberCopy = number;
   v8 = _NDOLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -2149,14 +2149,14 @@ uint64_t __63__NDOManager_clearAllUserInitiatedFollowUpDismissalsWithReply___blo
     _os_log_impl(&dword_25BD52000, v8, OS_LOG_TYPE_DEFAULT, "%{private}s", buf, 0xCu);
   }
 
-  v9 = [(NDOManager *)self agentConnection];
+  agentConnection = [(NDOManager *)self agentConnection];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __75__NDOManager_storeUserInitiatedFollowUpDismissalForSerialNumber_withReply___block_invoke;
   v19[3] = &unk_279975D98;
-  v10 = v9;
+  v10 = agentConnection;
   v20 = v10;
-  v11 = v6;
+  v11 = replyCopy;
   v21 = v11;
   v12 = [v10 remoteObjectProxyWithErrorHandler:v19];
   v16[0] = MEMORY[0x277D85DD0];
@@ -2167,7 +2167,7 @@ uint64_t __63__NDOManager_clearAllUserInitiatedFollowUpDismissalsWithReply___blo
   v18 = v11;
   v13 = v11;
   v14 = v10;
-  [v12 storeUserInitiatedFollowUpDismissalForSerialNumber:v7 completion:v16];
+  [v12 storeUserInitiatedFollowUpDismissalForSerialNumber:numberCopy completion:v16];
 
   v15 = *MEMORY[0x277D85DE8];
 }
@@ -2197,17 +2197,17 @@ uint64_t __75__NDOManager_storeUserInitiatedFollowUpDismissalForSerialNumber_wit
   return v2();
 }
 
-- (void)getLocalDeviceListWithReply:(id)a3
+- (void)getLocalDeviceListWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(NDOManager *)self agentConnection];
+  replyCopy = reply;
+  agentConnection = [(NDOManager *)self agentConnection];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __42__NDOManager_getLocalDeviceListWithReply___block_invoke;
   v14[3] = &unk_279975D98;
-  v6 = v5;
+  v6 = agentConnection;
   v15 = v6;
-  v7 = v4;
+  v7 = replyCopy;
   v16 = v7;
   v8 = [v6 remoteObjectProxyWithErrorHandler:v14];
   v11[0] = MEMORY[0x277D85DD0];
@@ -2242,17 +2242,17 @@ void __42__NDOManager_getLocalDeviceListWithReply___block_invoke_211(uint64_t a1
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)getRemoteDeviceListWithReply:(id)a3
+- (void)getRemoteDeviceListWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(NDOManager *)self agentConnection];
+  replyCopy = reply;
+  agentConnection = [(NDOManager *)self agentConnection];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __43__NDOManager_getRemoteDeviceListWithReply___block_invoke;
   v14[3] = &unk_279975D98;
-  v6 = v5;
+  v6 = agentConnection;
   v15 = v6;
-  v7 = v4;
+  v7 = replyCopy;
   v16 = v7;
   v8 = [v6 remoteObjectProxyWithErrorHandler:v14];
   v11[0] = MEMORY[0x277D85DD0];
@@ -2287,15 +2287,15 @@ void __43__NDOManager_getRemoteDeviceListWithReply___block_invoke_213(uint64_t a
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)removePromoSectionWithHashValue:(int64_t)a3 andAckData:(id)a4
+- (void)removePromoSectionWithHashValue:(int64_t)value andAckData:(id)data
 {
-  v6 = a4;
-  v7 = [(NDOManager *)self agentConnection];
+  dataCopy = data;
+  agentConnection = [(NDOManager *)self agentConnection];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __57__NDOManager_removePromoSectionWithHashValue_andAckData___block_invoke;
   v13[3] = &unk_279975E10;
-  v8 = v7;
+  v8 = agentConnection;
   v14 = v8;
   v9 = [v8 remoteObjectProxyWithErrorHandler:v13];
   v11[0] = MEMORY[0x277D85DD0];
@@ -2304,7 +2304,7 @@ void __43__NDOManager_getRemoteDeviceListWithReply___block_invoke_213(uint64_t a
   v11[3] = &unk_2799761F8;
   v12 = v8;
   v10 = v8;
-  [v9 removePromoSectionWithHashValue:a3 andAckData:v6 withReply:v11];
+  [v9 removePromoSectionWithHashValue:value andAckData:dataCopy withReply:v11];
 }
 
 void __57__NDOManager_removePromoSectionWithHashValue_andAckData___block_invoke(uint64_t a1, void *a2)
@@ -2319,18 +2319,18 @@ void __57__NDOManager_removePromoSectionWithHashValue_andAckData___block_invoke(
   [*(a1 + 32) invalidate];
 }
 
-- (void)getLocalDeviceWarrantyForSerialNumber:(id)a3 withReply:(id)a4
+- (void)getLocalDeviceWarrantyForSerialNumber:(id)number withReply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NDOManager *)self agentConnection];
+  replyCopy = reply;
+  numberCopy = number;
+  agentConnection = [(NDOManager *)self agentConnection];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __62__NDOManager_getLocalDeviceWarrantyForSerialNumber_withReply___block_invoke;
   v17[3] = &unk_279975D98;
-  v9 = v8;
+  v9 = agentConnection;
   v18 = v9;
-  v10 = v6;
+  v10 = replyCopy;
   v19 = v10;
   v11 = [v9 remoteObjectProxyWithErrorHandler:v17];
   v14[0] = MEMORY[0x277D85DD0];
@@ -2341,7 +2341,7 @@ void __57__NDOManager_removePromoSectionWithHashValue_andAckData___block_invoke(
   v16 = v10;
   v12 = v10;
   v13 = v9;
-  [v11 getLocalDeviceWarrantyForSerialNumber:v7 withReply:v14];
+  [v11 getLocalDeviceWarrantyForSerialNumber:numberCopy withReply:v14];
 }
 
 void __62__NDOManager_getLocalDeviceWarrantyForSerialNumber_withReply___block_invoke(uint64_t a1, void *a2)
@@ -2365,19 +2365,19 @@ void __62__NDOManager_getLocalDeviceWarrantyForSerialNumber_withReply___block_in
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)getRemoteDeviceWarrantyForSerialNumber:(id)a3 withAdditionalHeaders:(id)a4 withReply:(id)a5
+- (void)getRemoteDeviceWarrantyForSerialNumber:(id)number withAdditionalHeaders:(id)headers withReply:(id)reply
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(NDOManager *)self agentConnection];
+  replyCopy = reply;
+  headersCopy = headers;
+  numberCopy = number;
+  agentConnection = [(NDOManager *)self agentConnection];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __85__NDOManager_getRemoteDeviceWarrantyForSerialNumber_withAdditionalHeaders_withReply___block_invoke;
   v20[3] = &unk_279975D98;
-  v12 = v11;
+  v12 = agentConnection;
   v21 = v12;
-  v13 = v8;
+  v13 = replyCopy;
   v22 = v13;
   v14 = [v12 remoteObjectProxyWithErrorHandler:v20];
   v17[0] = MEMORY[0x277D85DD0];
@@ -2388,7 +2388,7 @@ void __62__NDOManager_getLocalDeviceWarrantyForSerialNumber_withReply___block_in
   v19 = v13;
   v15 = v13;
   v16 = v12;
-  [v14 getRemoteDeviceWarrantyForSerialNumber:v10 withAdditionalHeaders:v9 withReply:v17];
+  [v14 getRemoteDeviceWarrantyForSerialNumber:numberCopy withAdditionalHeaders:headersCopy withReply:v17];
 }
 
 void __85__NDOManager_getRemoteDeviceWarrantyForSerialNumber_withAdditionalHeaders_withReply___block_invoke(uint64_t a1, void *a2)
@@ -2412,18 +2412,18 @@ void __85__NDOManager_getRemoteDeviceWarrantyForSerialNumber_withAdditionalHeade
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)getCoverageInfoForSerialNumber:(id)a3 usingPolicy:(unint64_t)a4 withReply:(id)a5
+- (void)getCoverageInfoForSerialNumber:(id)number usingPolicy:(unint64_t)policy withReply:(id)reply
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(NDOManager *)self agentConnection];
+  replyCopy = reply;
+  numberCopy = number;
+  agentConnection = [(NDOManager *)self agentConnection];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __67__NDOManager_getCoverageInfoForSerialNumber_usingPolicy_withReply___block_invoke;
   v19[3] = &unk_279975D98;
-  v11 = v10;
+  v11 = agentConnection;
   v20 = v11;
-  v12 = v8;
+  v12 = replyCopy;
   v21 = v12;
   v13 = [v11 remoteObjectProxyWithErrorHandler:v19];
   v16[0] = MEMORY[0x277D85DD0];
@@ -2434,7 +2434,7 @@ void __85__NDOManager_getRemoteDeviceWarrantyForSerialNumber_withAdditionalHeade
   v18 = v12;
   v14 = v12;
   v15 = v11;
-  [v13 getCoverageInfoForSerialNumber:v9 usingPolicy:a4 withReply:v16];
+  [v13 getCoverageInfoForSerialNumber:numberCopy usingPolicy:policy withReply:v16];
 }
 
 void __67__NDOManager_getCoverageInfoForSerialNumber_usingPolicy_withReply___block_invoke(uint64_t a1, void *a2)
@@ -2459,18 +2459,18 @@ void __67__NDOManager_getCoverageInfoForSerialNumber_usingPolicy_withReply___blo
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)getAmsPropertiesForContext:(id)a3 withReply:(id)a4
+- (void)getAmsPropertiesForContext:(id)context withReply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NDOManager *)self agentConnection];
+  replyCopy = reply;
+  contextCopy = context;
+  agentConnection = [(NDOManager *)self agentConnection];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __51__NDOManager_getAmsPropertiesForContext_withReply___block_invoke;
   v17[3] = &unk_279975D98;
-  v9 = v8;
+  v9 = agentConnection;
   v18 = v9;
-  v10 = v6;
+  v10 = replyCopy;
   v19 = v10;
   v11 = [v9 remoteObjectProxyWithErrorHandler:v17];
   v14[0] = MEMORY[0x277D85DD0];
@@ -2481,7 +2481,7 @@ void __67__NDOManager_getCoverageInfoForSerialNumber_usingPolicy_withReply___blo
   v16 = v10;
   v12 = v10;
   v13 = v9;
-  [v11 getAmsPropertiesForContext:v7 withReply:v14];
+  [v11 getAmsPropertiesForContext:contextCopy withReply:v14];
 }
 
 void __51__NDOManager_getAmsPropertiesForContext_withReply___block_invoke(uint64_t a1, void *a2)
@@ -2506,18 +2506,18 @@ void __51__NDOManager_getAmsPropertiesForContext_withReply___block_invoke_218(ui
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)dismissFollowUps:(id)a3 completion:(id)a4
+- (void)dismissFollowUps:(id)ups completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NDOManager *)self agentConnection];
+  completionCopy = completion;
+  upsCopy = ups;
+  agentConnection = [(NDOManager *)self agentConnection];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __42__NDOManager_dismissFollowUps_completion___block_invoke;
   v17[3] = &unk_279975D98;
-  v9 = v8;
+  v9 = agentConnection;
   v18 = v9;
-  v10 = v6;
+  v10 = completionCopy;
   v19 = v10;
   v11 = [v9 remoteObjectProxyWithErrorHandler:v17];
   v14[0] = MEMORY[0x277D85DD0];
@@ -2528,7 +2528,7 @@ void __51__NDOManager_getAmsPropertiesForContext_withReply___block_invoke_218(ui
   v16 = v10;
   v12 = v10;
   v13 = v9;
-  [v11 dismissFollowUps:v7 completion:v14];
+  [v11 dismissFollowUps:upsCopy completion:v14];
 }
 
 void __42__NDOManager_dismissFollowUps_completion___block_invoke(uint64_t a1, void *a2)
@@ -2552,18 +2552,18 @@ void __42__NDOManager_dismissFollowUps_completion___block_invoke_220(uint64_t a1
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)handleInternalCommand:(id)a3 withReply:(id)a4
+- (void)handleInternalCommand:(id)command withReply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NDOManager *)self agentConnection];
+  replyCopy = reply;
+  commandCopy = command;
+  agentConnection = [(NDOManager *)self agentConnection];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __46__NDOManager_handleInternalCommand_withReply___block_invoke;
   v17[3] = &unk_279975D98;
-  v9 = v8;
+  v9 = agentConnection;
   v18 = v9;
-  v10 = v6;
+  v10 = replyCopy;
   v19 = v10;
   v11 = [v9 remoteObjectProxyWithErrorHandler:v17];
   v14[0] = MEMORY[0x277D85DD0];
@@ -2574,7 +2574,7 @@ void __42__NDOManager_dismissFollowUps_completion___block_invoke_220(uint64_t a1
   v16 = v10;
   v12 = v10;
   v13 = v9;
-  [v11 handleInternalCommand:v7 withReply:v14];
+  [v11 handleInternalCommand:commandCopy withReply:v14];
 }
 
 void __46__NDOManager_handleInternalCommand_withReply___block_invoke(uint64_t a1, void *a2)

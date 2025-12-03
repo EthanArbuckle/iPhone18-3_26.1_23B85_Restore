@@ -1,15 +1,15 @@
 @interface MirroredStartViewController
-- (_TtC9WorkoutUI27MirroredStartViewController)initWithCoder:(id)a3;
-- (_TtC9WorkoutUI27MirroredStartViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (_TtC9WorkoutUI27MirroredStartViewController)initWithCoder:(id)coder;
+- (_TtC9WorkoutUI27MirroredStartViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
 @implementation MirroredStartViewController
 
-- (_TtC9WorkoutUI27MirroredStartViewController)initWithCoder:(id)a3
+- (_TtC9WorkoutUI27MirroredStartViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC9WorkoutUI27MirroredStartViewController_workoutStateCancellable) = 0;
   v3 = (self + OBJC_IVAR____TtC9WorkoutUI27MirroredStartViewController_idleTimerToken);
@@ -24,25 +24,25 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   MirroredStartViewController.viewDidLoad()();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  MirroredStartViewController.viewDidAppear(_:)(a3);
+  selfCopy = self;
+  MirroredStartViewController.viewDidAppear(_:)(appear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  MirroredStartViewController.viewDidDisappear(_:)(a3);
+  selfCopy = self;
+  MirroredStartViewController.viewDidDisappear(_:)(disappear);
 }
 
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   if (v6)
   {
     v7 = swift_allocObject();
@@ -55,12 +55,12 @@
     v7 = 0;
   }
 
-  v8 = self;
-  MirroredStartViewController.dismiss(animated:completion:)(a3, v6, v7);
+  selfCopy = self;
+  MirroredStartViewController.dismiss(animated:completion:)(animated, v6, v7);
   outlined consume of (@escaping @callee_guaranteed () -> ())?(v6);
 }
 
-- (_TtC9WorkoutUI27MirroredStartViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9WorkoutUI27MirroredStartViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

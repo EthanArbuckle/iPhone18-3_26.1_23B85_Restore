@@ -7,17 +7,17 @@
 
 + (BOOL)isTVApp
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 bundleIdentifier];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  if ([v3 isEqualToString:@"com.apple.TVWatchList"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"com.apple.tv"))
+  if ([bundleIdentifier isEqualToString:@"com.apple.TVWatchList"] & 1) != 0 || (objc_msgSend(bundleIdentifier, "isEqualToString:", @"com.apple.tv"))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"com.apple.TV"];
+    v4 = [bundleIdentifier isEqualToString:@"com.apple.TV"];
   }
 
   return v4;

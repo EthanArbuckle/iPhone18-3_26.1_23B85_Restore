@@ -1,13 +1,13 @@
 @interface AppleBalanceAddMoneyViewController
-- (_TtC9PassKitUI34AppleBalanceAddMoneyViewController)initWithCoder:(id)a3;
-- (_TtC9PassKitUI34AppleBalanceAddMoneyViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC9PassKitUI34AppleBalanceAddMoneyViewController)initWithCoder:(id)coder;
+- (_TtC9PassKitUI34AppleBalanceAddMoneyViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)loadView;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation AppleBalanceAddMoneyViewController
 
-- (_TtC9PassKitUI34AppleBalanceAddMoneyViewController)initWithCoder:(id)a3
+- (_TtC9PassKitUI34AppleBalanceAddMoneyViewController)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC9PassKitUI34AppleBalanceAddMoneyViewController_paymentWebService;
   *(&self->super.super.super.isa + v4) = [objc_opt_self() sharedService];
@@ -20,7 +20,7 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD291838();
 }
 
@@ -30,18 +30,18 @@
   v14.super_class = type metadata accessor for AppleBalanceAddMoneyViewController();
   v2 = v14.receiver;
   [(AppleBalanceAddMoneyViewController *)&v14 viewWillLayoutSubviews];
-  v3 = [v2 view];
-  if (v3)
+  view = [v2 view];
+  if (view)
   {
-    v4 = v3;
-    [v3 bounds];
+    v4 = view;
+    [view bounds];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
 
-    v13 = [*&v2[OBJC_IVAR____TtC9PassKitUI34AppleBalanceAddMoneyViewController_hostingVC] view];
-    [v13 setFrame_];
+    view2 = [*&v2[OBJC_IVAR____TtC9PassKitUI34AppleBalanceAddMoneyViewController_hostingVC] view];
+    [view2 setFrame_];
   }
 
   else
@@ -50,7 +50,7 @@
   }
 }
 
-- (_TtC9PassKitUI34AppleBalanceAddMoneyViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9PassKitUI34AppleBalanceAddMoneyViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,14 +1,14 @@
 @interface OrdinalCardCell
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4;
-- (CGSize)vui_sizeThatFits:(CGSize)a3;
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only;
+- (CGSize)vui_sizeThatFits:(CGSize)fits;
 - (id)zoomSourceView;
 @end
 
 @implementation OrdinalCardCell
 
-- (CGSize)vui_sizeThatFits:(CGSize)a3
+- (CGSize)vui_sizeThatFits:(CGSize)fits
 {
-  v3 = self;
+  selfCopy = self;
   v4 = OUTLINED_FUNCTION_6_12();
   v5 = sub_1E3BCFC44(v4);
   v7 = v6;
@@ -20,9 +20,9 @@
   return result;
 }
 
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only
 {
-  v4 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_6_12();
   sub_1E3BD0B80();
   v6 = v5;
@@ -37,7 +37,7 @@
 
 - (id)zoomSourceView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1E3BD1A2C();
 
   return v3;

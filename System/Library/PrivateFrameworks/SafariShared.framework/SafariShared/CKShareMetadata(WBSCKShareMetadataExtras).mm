@@ -6,12 +6,12 @@
 
 - (uint64_t)safari_supportsSharedTabGroups
 {
-  v1 = [a1 share];
-  v2 = [v1 recordID];
-  v3 = [v2 zoneID];
-  v4 = [v3 safari_isTabGroupSecondaryRecordZoneID];
+  share = [self share];
+  recordID = [share recordID];
+  zoneID = [recordID zoneID];
+  safari_isTabGroupSecondaryRecordZoneID = [zoneID safari_isTabGroupSecondaryRecordZoneID];
 
-  return v4;
+  return safari_isTabGroupSecondaryRecordZoneID;
 }
 
 @end

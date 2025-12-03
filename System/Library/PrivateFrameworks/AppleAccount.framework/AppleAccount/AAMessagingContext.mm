@@ -1,45 +1,45 @@
 @interface AAMessagingContext
-- (AAMessagingContext)initWithContext:(id)a3;
+- (AAMessagingContext)initWithContext:(id)context;
 @end
 
 @implementation AAMessagingContext
 
-- (AAMessagingContext)initWithContext:(id)a3
+- (AAMessagingContext)initWithContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v24.receiver = self;
   v24.super_class = AAMessagingContext;
   v6 = [(AAMessagingContext *)&v24 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_context, a3);
+    objc_storeStrong(&v6->_context, context);
     v7->_expectsPeerResponse = [(IDSMessageContext *)v7->_context expectsPeerResponse];
-    v8 = [(IDSMessageContext *)v7->_context outgoingResponseIdentifier];
+    outgoingResponseIdentifier = [(IDSMessageContext *)v7->_context outgoingResponseIdentifier];
     outgoingResponseIdentifier = v7->_outgoingResponseIdentifier;
-    v7->_outgoingResponseIdentifier = v8;
+    v7->_outgoingResponseIdentifier = outgoingResponseIdentifier;
 
-    v10 = [(IDSMessageContext *)v7->_context senderCorrelationIdentifier];
+    senderCorrelationIdentifier = [(IDSMessageContext *)v7->_context senderCorrelationIdentifier];
     senderCorrelationIdentifier = v7->_senderCorrelationIdentifier;
-    v7->_senderCorrelationIdentifier = v10;
+    v7->_senderCorrelationIdentifier = senderCorrelationIdentifier;
 
-    v12 = [(IDSMessageContext *)v7->_context incomingResponseIdentifier];
+    incomingResponseIdentifier = [(IDSMessageContext *)v7->_context incomingResponseIdentifier];
     incomingResponseIdentifier = v7->_incomingResponseIdentifier;
-    v7->_incomingResponseIdentifier = v12;
+    v7->_incomingResponseIdentifier = incomingResponseIdentifier;
 
-    v14 = [(IDSMessageContext *)v7->_context fromID];
+    fromID = [(IDSMessageContext *)v7->_context fromID];
 
-    if (v14)
+    if (fromID)
     {
       v15 = [AAMessagingDestination alloc];
-      v16 = [(IDSMessageContext *)v7->_context fromID];
-      v17 = [(AAMessagingDestination *)v15 initWithHandle:v16];
+      fromID2 = [(IDSMessageContext *)v7->_context fromID];
+      v17 = [(AAMessagingDestination *)v15 initWithHandle:fromID2];
       fromID = v7->_fromID;
       v7->_fromID = v17;
 
       v19 = [AAMessagingDestination alloc];
-      v20 = [(IDSMessageContext *)v7->_context toID];
-      v21 = [(AAMessagingDestination *)v19 initWithHandle:v20];
+      toID = [(IDSMessageContext *)v7->_context toID];
+      v21 = [(AAMessagingDestination *)v19 initWithHandle:toID];
       toID = v7->_toID;
       v7->_toID = v21;
     }

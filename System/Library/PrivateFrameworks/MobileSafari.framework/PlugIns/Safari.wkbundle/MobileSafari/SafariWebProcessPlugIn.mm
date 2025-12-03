@@ -1,20 +1,20 @@
 @interface SafariWebProcessPlugIn
-- (id)pageControllerWithBrowserContextController:(id)a3;
+- (id)pageControllerWithBrowserContextController:(id)controller;
 @end
 
 @implementation SafariWebProcessPlugIn
 
-- (id)pageControllerWithBrowserContextController:(id)a3
+- (id)pageControllerWithBrowserContextController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   if (objc_opt_respondsToSelector())
   {
-    v10 = objc_msgSend__groupIdentifier(v4, v5, v6, v7);
+    v10 = objc_msgSend__groupIdentifier(controllerCopy, v5, v6, v7);
   }
 
   else
   {
-    v13 = objc_msgSend_pageGroup(v4, v5, v6, v7);
+    v13 = objc_msgSend_pageGroup(controllerCopy, v5, v6, v7);
     v10 = objc_msgSend_identifier(v13, v14, v15, v16);
   }
 
@@ -34,7 +34,7 @@
   }
 
   v19 = objc_alloc(*v17);
-  v21 = objc_msgSend_initWithPlugIn_contextController_(v19, v20, self, v4);
+  v21 = objc_msgSend_initWithPlugIn_contextController_(v19, v20, self, controllerCopy);
 
   return v21;
 }

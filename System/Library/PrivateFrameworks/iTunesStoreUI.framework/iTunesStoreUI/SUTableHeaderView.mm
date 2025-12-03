@@ -1,28 +1,28 @@
 @interface SUTableHeaderView
-- (SUTableHeaderView)initWithFrame:(CGRect)a3;
+- (SUTableHeaderView)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)edgeInsets;
 - (void)dealloc;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 - (void)layoutSubviews;
-- (void)setBottomBorderColor:(id)a3;
-- (void)setEdgeInsets:(UIEdgeInsets)a3;
-- (void)setIndex:(int64_t)a3;
-- (void)setShadowColor:(id)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setSubtitleFont:(id)a3;
-- (void)setTextColor:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setTitleFont:(id)a3;
+- (void)setBottomBorderColor:(id)color;
+- (void)setEdgeInsets:(UIEdgeInsets)insets;
+- (void)setIndex:(int64_t)index;
+- (void)setShadowColor:(id)color;
+- (void)setSubtitle:(id)subtitle;
+- (void)setSubtitleFont:(id)font;
+- (void)setTextColor:(id)color;
+- (void)setTitle:(id)title;
+- (void)setTitleFont:(id)font;
 - (void)sizeToFit;
 @end
 
 @implementation SUTableHeaderView
 
-- (SUTableHeaderView)initWithFrame:(CGRect)a3
+- (SUTableHeaderView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = SUTableHeaderView;
-  v3 = [(SUTableHeaderView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUTableHeaderView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -55,11 +55,11 @@
   [(SUTableHeaderView *)&v3 dealloc];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   if (self->_bottomBorderColor)
   {
-    [(SUTableHeaderView *)self bounds:a3.origin.x];
+    [(SUTableHeaderView *)self bounds:rect.origin.x];
     v5 = v4;
     v7 = v6;
     [(UIColor *)self->_bottomBorderColor set];
@@ -201,52 +201,52 @@ LABEL_9:
   [(SUTableHeaderView *)self setFrame:v4, v6, v8, v17];
 }
 
-- (void)setBottomBorderColor:(id)a3
+- (void)setBottomBorderColor:(id)color
 {
   bottomBorderColor = self->_bottomBorderColor;
-  if (bottomBorderColor != a3)
+  if (bottomBorderColor != color)
   {
 
-    self->_bottomBorderColor = a3;
+    self->_bottomBorderColor = color;
 
     [(SUTableHeaderView *)self setNeedsDisplay];
   }
 }
 
-- (void)setEdgeInsets:(UIEdgeInsets)a3
+- (void)setEdgeInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_edgeInsets.top, v3), vceqq_f64(*&self->_edgeInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_edgeInsets = a3;
+    self->_edgeInsets = insets;
     [(SUTableHeaderView *)self setNeedsDisplay];
   }
 }
 
-- (void)setIndex:(int64_t)a3
+- (void)setIndex:(int64_t)index
 {
-  if (self->_index != a3)
+  if (self->_index != index)
   {
-    self->_index = a3;
+    self->_index = index;
     [(SUTableHeaderView *)self setNeedsDisplay];
   }
 }
 
-- (void)setShadowColor:(id)a3
+- (void)setShadowColor:(id)color
 {
   [(UILabel *)self->_subtitleLabel setShadowColor:?];
   titleLabel = self->_titleLabel;
 
-  [(UILabel *)titleLabel setShadowColor:a3];
+  [(UILabel *)titleLabel setShadowColor:color];
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
   [(UILabel *)self->_subtitleLabel setText:?];
-  if ([a3 length])
+  if ([subtitle length])
   {
     [(SUTableHeaderView *)self addSubview:self->_subtitleLabel];
   }
@@ -259,25 +259,25 @@ LABEL_9:
   [(SUTableHeaderView *)self setNeedsLayout];
 }
 
-- (void)setSubtitleFont:(id)a3
+- (void)setSubtitleFont:(id)font
 {
-  [(UILabel *)self->_subtitleLabel setFont:a3];
+  [(UILabel *)self->_subtitleLabel setFont:font];
 
   [(SUTableHeaderView *)self setNeedsLayout];
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
   [(UILabel *)self->_subtitleLabel setTextColor:?];
   titleLabel = self->_titleLabel;
 
-  [(UILabel *)titleLabel setTextColor:a3];
+  [(UILabel *)titleLabel setTextColor:color];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   [(UILabel *)self->_titleLabel setText:?];
-  if ([a3 length])
+  if ([title length])
   {
     [(SUTableHeaderView *)self addSubview:self->_titleLabel];
   }
@@ -290,9 +290,9 @@ LABEL_9:
   [(SUTableHeaderView *)self setNeedsLayout];
 }
 
-- (void)setTitleFont:(id)a3
+- (void)setTitleFont:(id)font
 {
-  [(UILabel *)self->_titleLabel setFont:a3];
+  [(UILabel *)self->_titleLabel setFont:font];
 
   [(SUTableHeaderView *)self setNeedsLayout];
 }

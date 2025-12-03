@@ -9,11 +9,11 @@
 - (id)pr_SHADigest
 {
   v9 = *MEMORY[0x277D85DE8];
-  v1 = [a1 UTF8String];
+  uTF8String = [self UTF8String];
   *md = 0u;
   v8 = 0u;
-  v2 = strlen(v1);
-  CC_SHA256(v1, v2, md);
+  v2 = strlen(uTF8String);
+  CC_SHA256(uTF8String, v2, md);
   v3 = [objc_alloc(MEMORY[0x277CCAB68]) initWithCapacity:64];
   for (i = 0; i != 32; ++i)
   {
@@ -28,13 +28,13 @@
 - (id)pr_numericValue
 {
   v2 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@"0123456789"];
-  v3 = [v2 invertedSet];
+  invertedSet = [v2 invertedSet];
 
-  v4 = [a1 componentsSeparatedByCharactersInSet:v3];
+  v4 = [self componentsSeparatedByCharactersInSet:invertedSet];
   v5 = [v4 componentsJoinedByString:&stru_287026288];
-  v6 = [v5 longLongValue];
+  longLongValue = [v5 longLongValue];
 
-  v7 = [MEMORY[0x277CCABB0] numberWithLongLong:v6];
+  v7 = [MEMORY[0x277CCABB0] numberWithLongLong:longLongValue];
 
   return v7;
 }
@@ -43,13 +43,13 @@
 {
   v3 = a3;
   v4 = [v3 length];
-  v5 = [v3 bytes];
+  bytes = [v3 bytes];
   v6 = [objc_alloc(MEMORY[0x277CCAB68]) initWithCapacity:2 * v4];
   if (v4 >= 1)
   {
     do
     {
-      v7 = *v5++;
+      v7 = *bytes++;
       [v6 appendFormat:@"%02X", v7];
       --v4;
     }

@@ -1,28 +1,28 @@
 @interface CursorInteractionDelegate
 - (_TtC9RemindersP33_CB8DF1A557292041751C28CBB1A9D75525CursorInteractionDelegate)init;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
 @end
 
 @implementation CursorInteractionDelegate
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_1001C6AB8(v6);
+  interactionCopy = interaction;
+  regionCopy = region;
+  selfCopy = self;
+  v9 = sub_1001C6AB8(interactionCopy);
 
   return v9;
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  v12 = sub_1001C7054(v8, v9);
+  interactionCopy = interaction;
+  requestCopy = request;
+  regionCopy = region;
+  selfCopy = self;
+  v12 = sub_1001C7054(interactionCopy, requestCopy);
 
   return v12;
 }

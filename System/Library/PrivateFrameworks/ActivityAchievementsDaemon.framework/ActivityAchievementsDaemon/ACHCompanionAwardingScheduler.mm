@@ -1,68 +1,68 @@
 @interface ACHCompanionAwardingScheduler
-- (ACHCompanionAwardingScheduler)initWithHealthStore:(id)a3 assertionClient:(id)a4 cloudSyncStatusProvider:(id)a5 systemTaskScheduler:(id)a6 dataStore:(id)a7 earnedInstanceStore:(id)a8 templateStore:(id)a9 awardingEngine:(id)a10;
+- (ACHCompanionAwardingScheduler)initWithHealthStore:(id)store assertionClient:(id)client cloudSyncStatusProvider:(id)provider systemTaskScheduler:(id)scheduler dataStore:(id)dataStore earnedInstanceStore:(id)instanceStore templateStore:(id)templateStore awardingEngine:(id)self0;
 - (BOOL)_didRunToday;
 - (BOOL)isInitialAwardingRunComplete;
 - (BOOL)maintenanceTaskScheduled;
 - (NSDate)lastSuccessfulRunDate;
-- (void)_cloudRestoreStatusDidChange:(id)a3;
-- (void)_queue_addAwardingCompletion:(id)a3;
-- (void)_queue_callAwardingCompletionsWithSuccess:(BOOL)a3 error:(id)a4;
+- (void)_cloudRestoreStatusDidChange:(id)change;
+- (void)_queue_addAwardingCompletion:(id)completion;
+- (void)_queue_callAwardingCompletionsWithSuccess:(BOOL)success error:(id)error;
 - (void)_queue_performCleanupTasks;
 - (void)_queue_removeAllEarnedInstances;
 - (void)_queue_requestAwardingEvaluation;
-- (void)_runBackgroundTaskWithCompletion:(id)a3;
+- (void)_runBackgroundTaskWithCompletion:(id)completion;
 - (void)_startUp;
-- (void)_systemTimeZoneDidChange:(id)a3;
+- (void)_systemTimeZoneDidChange:(id)change;
 - (void)activate;
-- (void)addAwardingCompletion:(id)a3;
+- (void)addAwardingCompletion:(id)completion;
 - (void)clearLastSuccessfulRunDate;
-- (void)dataStoreDidPopulate:(id)a3;
+- (void)dataStoreDidPopulate:(id)populate;
 - (void)lastSuccessfulRunDate;
-- (void)overrideCoalescingDelay:(double)a3;
-- (void)requestAwardingEvaluationWithCompletion:(id)a3;
-- (void)scheduleMaintenanceTaskForAwardingWithCompletion:(id)a3;
-- (void)setLastSuccessfulRunDate:(id)a3;
-- (void)setMaintenanceTaskScheduled:(BOOL)a3;
-- (void)templateStore:(id)a3 didAddNewTemplates:(id)a4;
-- (void)templateStoreDidFinishInitialFetch:(id)a3;
+- (void)overrideCoalescingDelay:(double)delay;
+- (void)requestAwardingEvaluationWithCompletion:(id)completion;
+- (void)scheduleMaintenanceTaskForAwardingWithCompletion:(id)completion;
+- (void)setLastSuccessfulRunDate:(id)date;
+- (void)setMaintenanceTaskScheduled:(BOOL)scheduled;
+- (void)templateStore:(id)store didAddNewTemplates:(id)templates;
+- (void)templateStoreDidFinishInitialFetch:(id)fetch;
 @end
 
 @implementation ACHCompanionAwardingScheduler
 
-- (ACHCompanionAwardingScheduler)initWithHealthStore:(id)a3 assertionClient:(id)a4 cloudSyncStatusProvider:(id)a5 systemTaskScheduler:(id)a6 dataStore:(id)a7 earnedInstanceStore:(id)a8 templateStore:(id)a9 awardingEngine:(id)a10
+- (ACHCompanionAwardingScheduler)initWithHealthStore:(id)store assertionClient:(id)client cloudSyncStatusProvider:(id)provider systemTaskScheduler:(id)scheduler dataStore:(id)dataStore earnedInstanceStore:(id)instanceStore templateStore:(id)templateStore awardingEngine:(id)self0
 {
-  v39 = a3;
-  v38 = a4;
-  v37 = a5;
-  v36 = a6;
-  v17 = a7;
-  v35 = a8;
-  v34 = a9;
-  v33 = a10;
+  storeCopy = store;
+  clientCopy = client;
+  providerCopy = provider;
+  schedulerCopy = scheduler;
+  dataStoreCopy = dataStore;
+  instanceStoreCopy = instanceStore;
+  templateStoreCopy = templateStore;
+  engineCopy = engine;
   v40.receiver = self;
   v40.super_class = ACHCompanionAwardingScheduler;
   v18 = [(ACHCompanionAwardingScheduler *)&v40 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_healthStore, a3);
-    objc_storeStrong(&v19->_assertionClient, a4);
-    v20 = [v17 keyValueClient];
+    objc_storeStrong(&v18->_healthStore, store);
+    objc_storeStrong(&v19->_assertionClient, client);
+    keyValueClient = [dataStoreCopy keyValueClient];
     keyValueClient = v19->_keyValueClient;
-    v19->_keyValueClient = v20;
+    v19->_keyValueClient = keyValueClient;
 
-    objc_storeStrong(&v19->_systemTaskScheduler, a6);
-    objc_storeStrong(&v19->_dataStore, a7);
-    objc_storeStrong(&v19->_earnedInstanceStore, a8);
-    objc_storeStrong(&v19->_templateStore, a9);
-    objc_storeStrong(&v19->_awardingEngine, a10);
+    objc_storeStrong(&v19->_systemTaskScheduler, scheduler);
+    objc_storeStrong(&v19->_dataStore, dataStore);
+    objc_storeStrong(&v19->_earnedInstanceStore, instanceStore);
+    objc_storeStrong(&v19->_templateStore, templateStore);
+    objc_storeStrong(&v19->_awardingEngine, engine);
     v22 = HKCreateSerialDispatchQueue();
     queue = v19->_queue;
     v19->_queue = v22;
 
-    v24 = [MEMORY[0x277CBEA80] autoupdatingCurrentCalendar];
+    autoupdatingCurrentCalendar = [MEMORY[0x277CBEA80] autoupdatingCurrentCalendar];
     calendar = v19->_calendar;
-    v19->_calendar = v24;
+    v19->_calendar = autoupdatingCurrentCalendar;
 
     v26 = HKCreateSerialDispatchQueueWithQOSClass();
     awardingEvaluationQueue = v19->_awardingEvaluationQueue;
@@ -77,7 +77,7 @@
     localKeyValueDomain = v19->_localKeyValueDomain;
     v19->_localKeyValueDomain = v30;
 
-    objc_storeStrong(&v19->_cloudSyncStatusProvider, a5);
+    objc_storeStrong(&v19->_cloudSyncStatusProvider, provider);
   }
 
   return v19;
@@ -95,26 +95,26 @@
   [(ACHCompanionAwardingScheduler *)self _startUp];
 }
 
-- (void)setLastSuccessfulRunDate:(id)a3
+- (void)setLastSuccessfulRunDate:(id)date
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  dateCopy = date;
   v6 = ACHLogAwardScheduling();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v16 = v5;
+    v16 = dateCopy;
     _os_log_impl(&dword_221DDC000, v6, OS_LOG_TYPE_DEFAULT, "SET: lastSuccessfulRunDate = %@", buf, 0xCu);
   }
 
-  objc_storeStrong(&self->_lastSuccessfulRunDate, a3);
+  objc_storeStrong(&self->_lastSuccessfulRunDate, date);
   v7 = MEMORY[0x277CCABB0];
-  [v5 timeIntervalSinceReferenceDate];
+  [dateCopy timeIntervalSinceReferenceDate];
   v8 = [v7 numberWithDouble:?];
-  v9 = [(ACHCompanionAwardingScheduler *)self localKeyValueDomain];
+  localKeyValueDomain = [(ACHCompanionAwardingScheduler *)self localKeyValueDomain];
   v10 = NSStringFromSelector(sel_lastSuccessfulRunDate);
   v14 = 0;
-  [v9 setNumber:v8 forKey:v10 error:&v14];
+  [localKeyValueDomain setNumber:v8 forKey:v10 error:&v14];
   v11 = v14;
 
   if (v11)
@@ -136,10 +136,10 @@
   lastSuccessfulRunDate = self->_lastSuccessfulRunDate;
   if (!lastSuccessfulRunDate)
   {
-    v4 = [(ACHCompanionAwardingScheduler *)self localKeyValueDomain];
-    v5 = [(ACHCompanionAwardingScheduler *)self _lastSuccessfulRunDateKey];
+    localKeyValueDomain = [(ACHCompanionAwardingScheduler *)self localKeyValueDomain];
+    _lastSuccessfulRunDateKey = [(ACHCompanionAwardingScheduler *)self _lastSuccessfulRunDateKey];
     v12 = 0;
-    v6 = [v4 numberForKey:v5 error:&v12];
+    v6 = [localKeyValueDomain numberForKey:_lastSuccessfulRunDateKey error:&v12];
     v7 = v12;
 
     if (v7)
@@ -176,11 +176,11 @@
   lastSuccessfulRunDate = self->_lastSuccessfulRunDate;
   self->_lastSuccessfulRunDate = 0;
 
-  v4 = [(ACHCompanionAwardingScheduler *)self localKeyValueDomain];
+  localKeyValueDomain = [(ACHCompanionAwardingScheduler *)self localKeyValueDomain];
   v5 = MEMORY[0x277CBEB98];
-  v6 = [(ACHCompanionAwardingScheduler *)self _lastSuccessfulRunDateKey];
-  v7 = [v5 setWithObject:v6];
-  [v4 removeValuesForKeys:v7 completion:&__block_literal_global_18];
+  _lastSuccessfulRunDateKey = [(ACHCompanionAwardingScheduler *)self _lastSuccessfulRunDateKey];
+  v7 = [v5 setWithObject:_lastSuccessfulRunDateKey];
+  [localKeyValueDomain removeValuesForKeys:v7 completion:&__block_literal_global_18];
 
   v8 = *MEMORY[0x277CE8BB8];
 
@@ -207,43 +207,43 @@ void __59__ACHCompanionAwardingScheduler_clearLastSuccessfulRunDate__block_invok
 
 - (BOOL)maintenanceTaskScheduled
 {
-  v3 = [(ACHCompanionAwardingScheduler *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(ACHCompanionAwardingScheduler *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   return self->_maintenanceTaskScheduled;
 }
 
-- (void)setMaintenanceTaskScheduled:(BOOL)a3
+- (void)setMaintenanceTaskScheduled:(BOOL)scheduled
 {
-  v3 = a3;
+  scheduledCopy = scheduled;
   v9 = *MEMORY[0x277D85DE8];
-  v5 = [(ACHCompanionAwardingScheduler *)self queue];
-  dispatch_assert_queue_V2(v5);
+  queue = [(ACHCompanionAwardingScheduler *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = ACHLogAwardScheduling();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8[0] = 67109120;
-    v8[1] = v3;
+    v8[1] = scheduledCopy;
     _os_log_impl(&dword_221DDC000, v6, OS_LOG_TYPE_DEFAULT, "SET: maintenanceTaskScheduled %d", v8, 8u);
   }
 
-  self->_maintenanceTaskScheduled = v3;
+  self->_maintenanceTaskScheduled = scheduledCopy;
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_systemTimeZoneDidChange:(id)a3
+- (void)_systemTimeZoneDidChange:(id)change
 {
-  v4 = [(ACHCompanionAwardingScheduler *)self queue];
-  dispatch_assert_queue_not_V2(v4);
+  queue = [(ACHCompanionAwardingScheduler *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
-  v5 = [(ACHCompanionAwardingScheduler *)self queue];
+  queue2 = [(ACHCompanionAwardingScheduler *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__ACHCompanionAwardingScheduler__systemTimeZoneDidChange___block_invoke;
   block[3] = &unk_278490870;
   block[4] = self;
-  dispatch_sync(v5, block);
+  dispatch_sync(queue2, block);
 }
 
 void __58__ACHCompanionAwardingScheduler__systemTimeZoneDidChange___block_invoke(uint64_t a1)
@@ -252,15 +252,15 @@ void __58__ACHCompanionAwardingScheduler__systemTimeZoneDidChange___block_invoke
   [*(a1 + 32) setCalendar:v2];
 }
 
-- (void)_cloudRestoreStatusDidChange:(id)a3
+- (void)_cloudRestoreStatusDidChange:(id)change
 {
-  v4 = [(ACHCompanionAwardingScheduler *)self queue];
+  queue = [(ACHCompanionAwardingScheduler *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __62__ACHCompanionAwardingScheduler__cloudRestoreStatusDidChange___block_invoke;
   block[3] = &unk_278490870;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(queue, block);
 }
 
 uint64_t __62__ACHCompanionAwardingScheduler__cloudRestoreStatusDidChange___block_invoke(uint64_t a1)
@@ -284,14 +284,14 @@ uint64_t __62__ACHCompanionAwardingScheduler__cloudRestoreStatusDidChange___bloc
 - (void)_queue_removeAllEarnedInstances
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(ACHCompanionAwardingScheduler *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(ACHCompanionAwardingScheduler *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(ACHCompanionAwardingScheduler *)self earnedInstanceStore];
-  v5 = [(ACHCompanionAwardingScheduler *)self earnedInstanceStore];
-  v6 = [v5 earnedInstances];
+  earnedInstanceStore = [(ACHCompanionAwardingScheduler *)self earnedInstanceStore];
+  earnedInstanceStore2 = [(ACHCompanionAwardingScheduler *)self earnedInstanceStore];
+  earnedInstances = [earnedInstanceStore2 earnedInstances];
   v11 = 0;
-  v7 = [v4 removeEarnedInstances:v6 error:&v11];
+  v7 = [earnedInstanceStore removeEarnedInstances:earnedInstances error:&v11];
   v8 = v11;
 
   v9 = ACHLogDatabase();
@@ -312,22 +312,22 @@ uint64_t __62__ACHCompanionAwardingScheduler__cloudRestoreStatusDidChange___bloc
 
 - (void)_startUp
 {
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 addObserver:self selector:sel__systemTimeZoneDidChange_ name:*MEMORY[0x277CBE780] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__systemTimeZoneDidChange_ name:*MEMORY[0x277CBE780] object:0];
   v3 = *MEMORY[0x277CE8B30];
-  v4 = [(ACHCompanionAwardingScheduler *)self cloudSyncStatusProvider];
-  [v7 addObserver:self selector:sel__cloudRestoreStatusDidChange_ name:v3 object:v4];
+  cloudSyncStatusProvider = [(ACHCompanionAwardingScheduler *)self cloudSyncStatusProvider];
+  [defaultCenter addObserver:self selector:sel__cloudRestoreStatusDidChange_ name:v3 object:cloudSyncStatusProvider];
 
-  v5 = [(ACHCompanionAwardingScheduler *)self templateStore];
-  [v5 addObserver:self];
+  templateStore = [(ACHCompanionAwardingScheduler *)self templateStore];
+  [templateStore addObserver:self];
 
-  v6 = [(ACHCompanionAwardingScheduler *)self dataStore];
-  [v6 addObserver:self];
+  dataStore = [(ACHCompanionAwardingScheduler *)self dataStore];
+  [dataStore addObserver:self];
 }
 
-- (void)templateStoreDidFinishInitialFetch:(id)a3
+- (void)templateStoreDidFinishInitialFetch:(id)fetch
 {
-  v4 = a3;
+  fetchCopy = fetch;
   v5 = ACHLogAwardScheduling();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -337,22 +337,22 @@ uint64_t __62__ACHCompanionAwardingScheduler__cloudRestoreStatusDidChange___bloc
 
   objc_initWeak(buf, self);
   v6 = [ACHBackgroundTaskScheduler alloc];
-  v7 = [(ACHCompanionAwardingScheduler *)self systemTaskScheduler];
+  systemTaskScheduler = [(ACHCompanionAwardingScheduler *)self systemTaskScheduler];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __68__ACHCompanionAwardingScheduler_templateStoreDidFinishInitialFetch___block_invoke;
   v17[3] = &unk_278491EC8;
   objc_copyWeak(&v18, buf);
-  v8 = [(ACHBackgroundTaskScheduler *)v6 initWithName:@"com.apple.activityawardsd.companion_scheduler" systemTaskScheduler:v7 performHandler:v17];
+  v8 = [(ACHBackgroundTaskScheduler *)v6 initWithName:@"com.apple.activityawardsd.companion_scheduler" systemTaskScheduler:systemTaskScheduler performHandler:v17];
   backgroundTaskScheduler = self->_backgroundTaskScheduler;
   self->_backgroundTaskScheduler = v8;
 
-  v10 = [v4 allTemplates];
-  if ([v10 count])
+  allTemplates = [fetchCopy allTemplates];
+  if ([allTemplates count])
   {
-    v11 = [(ACHCompanionAwardingScheduler *)self _shouldRunImmediatelyOnTemplateLoad];
+    _shouldRunImmediatelyOnTemplateLoad = [(ACHCompanionAwardingScheduler *)self _shouldRunImmediatelyOnTemplateLoad];
 
-    if (v11)
+    if (_shouldRunImmediatelyOnTemplateLoad)
     {
       v12 = ACHLogAwardScheduling();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -370,8 +370,8 @@ uint64_t __62__ACHCompanionAwardingScheduler__cloudRestoreStatusDidChange___bloc
   {
   }
 
-  v13 = [v4 allTemplates];
-  v14 = [v13 count];
+  allTemplates2 = [fetchCopy allTemplates];
+  v14 = [allTemplates2 count];
 
   if (!v14)
   {
@@ -395,21 +395,21 @@ void __68__ACHCompanionAwardingScheduler_templateStoreDidFinishInitialFetch___bl
   [WeakRetained _runBackgroundTaskWithCompletion:v3];
 }
 
-- (void)_runBackgroundTaskWithCompletion:(id)a3
+- (void)_runBackgroundTaskWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 0;
-  v5 = [(ACHCompanionAwardingScheduler *)self queue];
+  queue = [(ACHCompanionAwardingScheduler *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __66__ACHCompanionAwardingScheduler__runBackgroundTaskWithCompletion___block_invoke;
   block[3] = &unk_278490FE8;
   block[4] = self;
   block[5] = &v14;
-  dispatch_sync(v5, block);
+  dispatch_sync(queue, block);
 
   if (v15[3])
   {
@@ -424,7 +424,7 @@ void __68__ACHCompanionAwardingScheduler_templateStoreDidFinishInitialFetch___bl
     v9[1] = 3221225472;
     v9[2] = __66__ACHCompanionAwardingScheduler__runBackgroundTaskWithCompletion___block_invoke_324;
     v9[3] = &unk_278491EF0;
-    v10 = v4;
+    v10 = completionCopy;
     [(ACHCompanionAwardingScheduler *)self scheduleMaintenanceTaskForAwardingWithCompletion:v9];
   }
 
@@ -437,15 +437,15 @@ void __68__ACHCompanionAwardingScheduler_templateStoreDidFinishInitialFetch___bl
       _os_log_impl(&dword_221DDC000, v7, OS_LOG_TYPE_DEFAULT, "Activity app isn't installed - not requesting evaluation", buf, 2u);
     }
 
-    v8 = [(ACHCompanionAwardingScheduler *)self queue];
+    queue2 = [(ACHCompanionAwardingScheduler *)self queue];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __66__ACHCompanionAwardingScheduler__runBackgroundTaskWithCompletion___block_invoke_323;
     v11[3] = &unk_278490870;
     v11[4] = self;
-    dispatch_sync(v8, v11);
+    dispatch_sync(queue2, v11);
 
-    (*(v4 + 2))(v4, 1, 0);
+    (*(completionCopy + 2))(completionCopy, 1, 0);
   }
 
   _Block_object_dispose(&v14, 8);
@@ -505,9 +505,9 @@ void __66__ACHCompanionAwardingScheduler__runBackgroundTaskWithCompletion___bloc
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)templateStore:(id)a3 didAddNewTemplates:(id)a4
+- (void)templateStore:(id)store didAddNewTemplates:(id)templates
 {
-  if ([a4 count])
+  if ([templates count])
   {
 
     [(ACHCompanionAwardingScheduler *)self scheduleMaintenanceTaskForAwardingWithCompletion:0];
@@ -516,19 +516,19 @@ void __66__ACHCompanionAwardingScheduler__runBackgroundTaskWithCompletion___bloc
 
 - (BOOL)isInitialAwardingRunComplete
 {
-  v2 = [(ACHCompanionAwardingScheduler *)self lastSuccessfulRunDate];
-  [v2 timeIntervalSinceReferenceDate];
+  lastSuccessfulRunDate = [(ACHCompanionAwardingScheduler *)self lastSuccessfulRunDate];
+  [lastSuccessfulRunDate timeIntervalSinceReferenceDate];
   v4 = v3;
-  v5 = [MEMORY[0x277CBEAA8] distantPast];
-  [v5 timeIntervalSinceReferenceDate];
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
+  [distantPast timeIntervalSinceReferenceDate];
   v7 = v4 > v6;
 
   return v7;
 }
 
-- (void)requestAwardingEvaluationWithCompletion:(id)a3
+- (void)requestAwardingEvaluationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = ACHLogAwardScheduling();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -536,12 +536,12 @@ void __66__ACHCompanionAwardingScheduler__runBackgroundTaskWithCompletion___bloc
     _os_log_impl(&dword_221DDC000, v5, OS_LOG_TYPE_DEFAULT, "Awarding evaluation requested", v6, 2u);
   }
 
-  [(ACHCompanionAwardingScheduler *)self scheduleMaintenanceTaskForAwardingWithCompletion:v4];
+  [(ACHCompanionAwardingScheduler *)self scheduleMaintenanceTaskForAwardingWithCompletion:completionCopy];
 }
 
-- (void)scheduleMaintenanceTaskForAwardingWithCompletion:(id)a3
+- (void)scheduleMaintenanceTaskForAwardingWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = ACHLogAwardScheduling();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -549,20 +549,20 @@ void __66__ACHCompanionAwardingScheduler__runBackgroundTaskWithCompletion___bloc
     _os_log_impl(&dword_221DDC000, v5, OS_LOG_TYPE_DEFAULT, "Running awarding for maintenance task...", buf, 2u);
   }
 
-  v6 = [(ACHCompanionAwardingScheduler *)self queue];
-  dispatch_assert_queue_not_V2(v6);
+  queue = [(ACHCompanionAwardingScheduler *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
   objc_initWeak(buf, self);
-  v7 = [(ACHCompanionAwardingScheduler *)self queue];
+  queue2 = [(ACHCompanionAwardingScheduler *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __82__ACHCompanionAwardingScheduler_scheduleMaintenanceTaskForAwardingWithCompletion___block_invoke;
   block[3] = &unk_278491F40;
-  v10 = v4;
-  v8 = v4;
+  v10 = completionCopy;
+  v8 = completionCopy;
   objc_copyWeak(&v11, buf);
   block[4] = self;
-  dispatch_sync(v7, block);
+  dispatch_sync(queue2, block);
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(buf);
@@ -621,29 +621,29 @@ uint64_t __82__ACHCompanionAwardingScheduler_scheduleMaintenanceTaskForAwardingW
 
 - (void)_queue_requestAwardingEvaluation
 {
-  v3 = [(ACHCompanionAwardingScheduler *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(ACHCompanionAwardingScheduler *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(ACHCompanionAwardingScheduler *)self awardingEvaluationQueue];
-  dispatch_assert_queue_not_V2(v4);
+  awardingEvaluationQueue = [(ACHCompanionAwardingScheduler *)self awardingEvaluationQueue];
+  dispatch_assert_queue_not_V2(awardingEvaluationQueue);
 
-  v5 = [(ACHCompanionAwardingScheduler *)self cloudSyncStatusProvider];
-  v6 = [v5 isInitialCloudRestoreComplete];
+  cloudSyncStatusProvider = [(ACHCompanionAwardingScheduler *)self cloudSyncStatusProvider];
+  isInitialCloudRestoreComplete = [cloudSyncStatusProvider isInitialCloudRestoreComplete];
 
-  if (v6)
+  if (isInitialCloudRestoreComplete)
   {
     if ([(ACHCompanionAwardingScheduler *)self dataStoreIsLoaded])
     {
       [(ACHCompanionAwardingScheduler *)self setShouldRunImmediatelyOnCloudSyncCompletion:0];
       [(ACHCompanionAwardingScheduler *)self setShouldRunImmediatelyOnDataStoreLoad:0];
       [(ACHCompanionAwardingScheduler *)self setMaintenanceTaskScheduled:1];
-      v7 = [(ACHCompanionAwardingScheduler *)self awardingEvaluationQueue];
+      awardingEvaluationQueue2 = [(ACHCompanionAwardingScheduler *)self awardingEvaluationQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __65__ACHCompanionAwardingScheduler__queue_requestAwardingEvaluation__block_invoke;
       block[3] = &unk_278490870;
       block[4] = self;
-      dispatch_async(v7, block);
+      dispatch_async(awardingEvaluationQueue2, block);
     }
 
     else
@@ -742,70 +742,70 @@ void __65__ACHCompanionAwardingScheduler__queue_requestAwardingEvaluation__block
 - (void)_queue_performCleanupTasks
 {
   v3 = [ACHEarnedInstanceCleanupUtility alloc];
-  v4 = [(ACHCompanionAwardingScheduler *)self healthStore];
-  v5 = [(ACHCompanionAwardingScheduler *)self keyValueClient];
-  v6 = [(ACHCompanionAwardingScheduler *)self earnedInstanceStore];
-  v7 = [(ACHEarnedInstanceCleanupUtility *)v3 initWithHealthStore:v4 keyValueClient:v5 earnedInstanceStore:v6];
+  healthStore = [(ACHCompanionAwardingScheduler *)self healthStore];
+  keyValueClient = [(ACHCompanionAwardingScheduler *)self keyValueClient];
+  earnedInstanceStore = [(ACHCompanionAwardingScheduler *)self earnedInstanceStore];
+  v7 = [(ACHEarnedInstanceCleanupUtility *)v3 initWithHealthStore:healthStore keyValueClient:keyValueClient earnedInstanceStore:earnedInstanceStore];
 
   [(ACHEarnedInstanceCleanupUtility *)v7 performCleanup];
 }
 
 - (BOOL)_didRunToday
 {
-  v2 = [(ACHCompanionAwardingScheduler *)self lastSuccessfulRunDate];
-  v3 = [MEMORY[0x277CBEAA8] date];
-  [v3 timeIntervalSinceDate:v2];
+  lastSuccessfulRunDate = [(ACHCompanionAwardingScheduler *)self lastSuccessfulRunDate];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSinceDate:lastSuccessfulRunDate];
   v5 = v4 < 86400.0;
 
   return v5;
 }
 
-- (void)overrideCoalescingDelay:(double)a3
+- (void)overrideCoalescingDelay:(double)delay
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:delay];
   [(ACHCompanionAwardingScheduler *)self setCoalescingDelayOverride:v4];
 }
 
-- (void)addAwardingCompletion:(id)a3
+- (void)addAwardingCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v5 = [(ACHCompanionAwardingScheduler *)self queue];
+    queue = [(ACHCompanionAwardingScheduler *)self queue];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __55__ACHCompanionAwardingScheduler_addAwardingCompletion___block_invoke;
     v6[3] = &unk_278491948;
     v6[4] = self;
-    v7 = v4;
-    dispatch_sync(v5, v6);
+    v7 = completionCopy;
+    dispatch_sync(queue, v6);
   }
 }
 
-- (void)_queue_addAwardingCompletion:(id)a3
+- (void)_queue_addAwardingCompletion:(id)completion
 {
-  v9 = a3;
-  v4 = [(ACHCompanionAwardingScheduler *)self queue];
-  dispatch_assert_queue_V2(v4);
+  completionCopy = completion;
+  queue = [(ACHCompanionAwardingScheduler *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v5 = v9;
-  if (v9)
+  v5 = completionCopy;
+  if (completionCopy)
   {
     awardEvaluationCompletionBlocks = self->_awardEvaluationCompletionBlocks;
-    v7 = [v9 copy];
+    v7 = [completionCopy copy];
     v8 = _Block_copy(v7);
     [(NSMutableArray *)awardEvaluationCompletionBlocks addObject:v8];
 
-    v5 = v9;
+    v5 = completionCopy;
   }
 }
 
-- (void)_queue_callAwardingCompletionsWithSuccess:(BOOL)a3 error:(id)a4
+- (void)_queue_callAwardingCompletionsWithSuccess:(BOOL)success error:(id)error
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [(ACHCompanionAwardingScheduler *)self queue];
-  dispatch_assert_queue_V2(v6);
+  errorCopy = error;
+  queue = [(ACHCompanionAwardingScheduler *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   [(ACHCompanionAwardingScheduler *)self _queue_performCleanupTasks];
   v17 = 0u;
@@ -851,15 +851,15 @@ void __65__ACHCompanionAwardingScheduler__queue_requestAwardingEvaluation__block
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)dataStoreDidPopulate:(id)a3
+- (void)dataStoreDidPopulate:(id)populate
 {
-  v4 = [(ACHCompanionAwardingScheduler *)self queue];
+  queue = [(ACHCompanionAwardingScheduler *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __54__ACHCompanionAwardingScheduler_dataStoreDidPopulate___block_invoke;
   block[3] = &unk_278490870;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(queue, block);
 }
 
 uint64_t __54__ACHCompanionAwardingScheduler_dataStoreDidPopulate___block_invoke(uint64_t a1)
@@ -894,7 +894,7 @@ uint64_t __54__ACHCompanionAwardingScheduler_dataStoreDidPopulate___block_invoke
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_221DDC000, a2, OS_LOG_TYPE_ERROR, "Error fetching last scheduled run date: %@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

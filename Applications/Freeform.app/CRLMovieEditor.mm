@@ -1,13 +1,13 @@
 @interface CRLMovieEditor
 - (BOOL)p_canSaveDefaultMoviePreset;
 - (_TtC8Freeform12CRLMovieItem)anyMovieItem;
-- (int64_t)canPerformEditorAction:(SEL)a3 withSender:(id)a4;
-- (void)addMiniFormatterElementsToArray:(id)a3 atPoint:(CGPoint)a4;
-- (void)didEndChangingTimePropertyForMovieItem:(id)a3 withCommand:(id)a4 error:(id)a5;
-- (void)saveDefaultInsertionPreset:(id)a3;
-- (void)setMovieVolume:(double)a3;
-- (void)setPropertyValue:(id)a3 forMovieProperty:(unint64_t)a4;
-- (void)willBeginChangingTimePropertyForMovieItem:(id)a3 withLocalizedMessage:(id)a4 cancelHandler:(id)a5;
+- (int64_t)canPerformEditorAction:(SEL)action withSender:(id)sender;
+- (void)addMiniFormatterElementsToArray:(id)array atPoint:(CGPoint)point;
+- (void)didEndChangingTimePropertyForMovieItem:(id)item withCommand:(id)command error:(id)error;
+- (void)saveDefaultInsertionPreset:(id)preset;
+- (void)setMovieVolume:(double)volume;
+- (void)setPropertyValue:(id)value forMovieProperty:(unint64_t)property;
+- (void)willBeginChangingTimePropertyForMovieItem:(id)item withLocalizedMessage:(id)message cancelHandler:(id)handler;
 @end
 
 @implementation CRLMovieEditor
@@ -16,15 +16,15 @@
 {
   v3 = objc_opt_self();
   v4 = [(CRLBoardItemEditor *)self sortedBoardItemsOfClass:v3];
-  v5 = [v4 firstObject];
+  firstObject = [v4 firstObject];
 
-  return v5;
+  return firstObject;
 }
 
-- (int64_t)canPerformEditorAction:(SEL)a3 withSender:(id)a4
+- (int64_t)canPerformEditorAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  if (sel_isEqual(a3, "saveDefaultInsertionPreset:"))
+  senderCopy = sender;
+  if (sel_isEqual(action, "saveDefaultInsertionPreset:"))
   {
     if ([(CRLMovieEditor *)self p_canSaveDefaultMoviePreset])
     {
@@ -41,34 +41,34 @@
   {
     v9.receiver = self;
     v9.super_class = CRLMovieEditor;
-    v7 = [(CRLMediaEditor *)&v9 canPerformEditorAction:a3 withSender:v6];
+    v7 = [(CRLMediaEditor *)&v9 canPerformEditorAction:action withSender:senderCopy];
   }
 
   return v7;
 }
 
-- (void)setMovieVolume:(double)a3
+- (void)setMovieVolume:(double)volume
 {
-  v5 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-  v6 = [v5 commandController];
+  interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  commandController = [interactiveCanvasController commandController];
 
   v7 = [CRLCanvasCommandSelectionBehavior alloc];
-  v8 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-  v9 = [v8 canvasEditor];
-  v10 = [(CRLCanvasCommandSelectionBehavior *)v7 initWithCanvasEditor:v9];
+  interactiveCanvasController2 = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  canvasEditor = [interactiveCanvasController2 canvasEditor];
+  v10 = [(CRLCanvasCommandSelectionBehavior *)v7 initWithCanvasEditor:canvasEditor];
 
-  [v6 openGroupWithSelectionBehavior:v10];
+  [commandController openGroupWithSelectionBehavior:v10];
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v11 = [(CRLBoardItemEditor *)self boardItems];
-  v12 = [v11 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  boardItems = [(CRLBoardItemEditor *)self boardItems];
+  v12 = [boardItems countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v12)
   {
     v13 = v12;
     v14 = *v22;
-    v15 = a3;
+    volumeCopy = volume;
     do
     {
       v16 = 0;
@@ -76,32 +76,32 @@
       {
         if (*v22 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(boardItems);
         }
 
         v17 = *(*(&v21 + 1) + 8 * v16);
         v18 = [_TtC8Freeform24CRLCommandSetMovieVolume alloc];
-        *&v19 = v15;
+        *&v19 = volumeCopy;
         v20 = [(CRLCommandSetMovieVolume *)v18 initWithMovieItem:v17 volume:v19];
-        [v6 enqueueCommand:v20];
+        [commandController enqueueCommand:v20];
 
         v16 = v16 + 1;
       }
 
       while (v13 != v16);
-      v13 = [v11 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v13 = [boardItems countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v13);
   }
 
-  [v6 closeGroup];
+  [commandController closeGroup];
 }
 
-- (void)setPropertyValue:(id)a3 forMovieProperty:(unint64_t)a4
+- (void)setPropertyValue:(id)value forMovieProperty:(unint64_t)property
 {
-  v6 = a3;
-  if (a4 == 47 || a4 == 44)
+  valueCopy = value;
+  if (property == 47 || property == 44)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -125,28 +125,28 @@
       sub_10130DA10(v7);
     }
 
-    v8 = [NSString stringWithUTF8String:"[CRLMovieEditor setPropertyValue:forMovieProperty:]"];
+    commandController = [NSString stringWithUTF8String:"[CRLMovieEditor setPropertyValue:forMovieProperty:]"];
     v9 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/BoardItems/CRLMovieEditor.m"];
-    [CRLAssertionHandler handleFailureInFunction:v8 file:v9 lineNumber:105 isFatal:0 description:"We need to set the poster time and the poster image together. The poster image is a board item asset so it is async so we'll have to wait until we have both, then use CRLCommandSetMoviePosterTime."];
+    [CRLAssertionHandler handleFailureInFunction:commandController file:v9 lineNumber:105 isFatal:0 description:"We need to set the poster time and the poster image together. The poster image is a board item asset so it is async so we'll have to wait until we have both, then use CRLCommandSetMoviePosterTime."];
   }
 
   else
   {
-    v10 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-    v8 = [v10 commandController];
+    interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+    commandController = [interactiveCanvasController commandController];
 
     v11 = [CRLCanvasCommandSelectionBehavior alloc];
-    v12 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-    v13 = [v12 canvasEditor];
-    v9 = [(CRLCanvasCommandSelectionBehavior *)v11 initWithCanvasEditor:v13];
+    interactiveCanvasController2 = [(CRLBoardItemEditor *)self interactiveCanvasController];
+    canvasEditor = [interactiveCanvasController2 canvasEditor];
+    v9 = [(CRLCanvasCommandSelectionBehavior *)v11 initWithCanvasEditor:canvasEditor];
 
-    [v8 openGroupWithSelectionBehavior:v9];
+    [commandController openGroupWithSelectionBehavior:v9];
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v14 = [(CRLBoardItemEditor *)self boardItems];
-    v15 = [v14 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    boardItems = [(CRLBoardItemEditor *)self boardItems];
+    v15 = [boardItems countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v15)
     {
       v16 = v15;
@@ -157,27 +157,27 @@
         {
           if (*v21 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(boardItems);
           }
 
-          v19 = [_TtC8Freeform23CRLCommandSetMovieValue movieSetValueCommandWithMovie:*(*(&v20 + 1) + 8 * i) property:a4 boxedValue:v6];
-          [v8 enqueueCommand:v19];
+          v19 = [_TtC8Freeform23CRLCommandSetMovieValue movieSetValueCommandWithMovie:*(*(&v20 + 1) + 8 * i) property:property boxedValue:valueCopy];
+          [commandController enqueueCommand:v19];
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v16 = [boardItems countByEnumeratingWithState:&v20 objects:v24 count:16];
       }
 
       while (v16);
     }
 
-    [v8 closeGroup];
+    [commandController closeGroup];
   }
 }
 
-- (void)willBeginChangingTimePropertyForMovieItem:(id)a3 withLocalizedMessage:(id)a4 cancelHandler:(id)a5
+- (void)willBeginChangingTimePropertyForMovieItem:(id)item withLocalizedMessage:(id)message cancelHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  messageCopy = message;
+  handlerCopy = handler;
   if (!+[NSThread isMainThread])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -210,7 +210,7 @@
   v12 = *(&self->super.super.mIsChangingStrokeWidth + 1);
   if (!v12)
   {
-    v13 = [(CRLBoardItemEditor *)self interactiveCanvasController];
+    interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
     if (*(&self->_timePropertyUpdatingCount + 1))
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -240,13 +240,13 @@
       [CRLAssertionHandler handleFailureInFunction:v15 file:v16 lineNumber:130 isFatal:0 description:"expected nil value for '%{public}s'", "_modalOperationToken"];
     }
 
-    v17 = [v13 layerHost];
+    layerHost = [interactiveCanvasController layerHost];
     v25[0] = _NSConcreteStackBlock;
     v25[1] = 3221225472;
     v25[2] = sub_1005007B0;
     v25[3] = &unk_10183AB38;
     v25[4] = self;
-    v18 = [v17 beginModalOperationWithLocalizedMessage:v7 progress:0 cancelHandler:v25];
+    v18 = [layerHost beginModalOperationWithLocalizedMessage:messageCopy progress:0 cancelHandler:v25];
     v19 = *(&self->_timePropertyUpdatingCount + 1);
     *(&self->_timePropertyUpdatingCount + 1) = v18;
 
@@ -254,7 +254,7 @@
   }
 
   *(&self->super.super.mIsChangingStrokeWidth + 1) = v12 + 1;
-  if (v8)
+  if (handlerCopy)
   {
     v20 = *(&self->_modalOperationToken + 1);
     if (!v20)
@@ -266,16 +266,16 @@
       v20 = *(&self->_modalOperationToken + 1);
     }
 
-    v23 = [v8 copy];
+    v23 = [handlerCopy copy];
     v24 = objc_retainBlock(v23);
     [v20 addObject:v24];
   }
 }
 
-- (void)didEndChangingTimePropertyForMovieItem:(id)a3 withCommand:(id)a4 error:(id)a5
+- (void)didEndChangingTimePropertyForMovieItem:(id)item withCommand:(id)command error:(id)error
 {
-  v7 = a4;
-  v8 = a5;
+  commandCopy = command;
+  errorCopy = error;
   if (!+[NSThread isMainThread])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -339,7 +339,7 @@
   if (*(&self->super.super.mIsChangingStrokeWidth + 1))
   {
 LABEL_21:
-    if (v7)
+    if (commandCopy)
     {
       v15 = *(&self->_timePropertyUpdatingCancelHandlers + 1);
       if (!v15)
@@ -351,10 +351,10 @@ LABEL_21:
         v15 = *(&self->_timePropertyUpdatingCancelHandlers + 1);
       }
 
-      [v15 addObject:v7];
+      [v15 addObject:commandCopy];
     }
 
-    if (v8)
+    if (errorCopy)
     {
       v18 = *(&self->_timePropertyUpdatingCommands + 1);
       if (!v18)
@@ -366,14 +366,14 @@ LABEL_21:
         v18 = *(&self->_timePropertyUpdatingCommands + 1);
       }
 
-      [v18 addObject:v8];
+      [v18 addObject:errorCopy];
     }
 
     v21 = *(&self->super.super.mIsChangingStrokeWidth + 1) - 1;
     *(&self->super.super.mIsChangingStrokeWidth + 1) = v21;
     if (!v21)
     {
-      v22 = [(CRLBoardItemEditor *)self interactiveCanvasController];
+      interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
       if (*(&self->_timePropertyUpdatingCount + 1))
       {
         goto LABEL_40;
@@ -408,8 +408,8 @@ LABEL_21:
       if (*(&self->_timePropertyUpdatingCount + 1))
       {
 LABEL_40:
-        v26 = [v22 layerHost];
-        [v26 endModalOperationWithToken:*(&self->_timePropertyUpdatingCount + 1)];
+        layerHost = [interactiveCanvasController layerHost];
+        [layerHost endModalOperationWithToken:*(&self->_timePropertyUpdatingCount + 1)];
 
         v27 = *(&self->_timePropertyUpdatingCount + 1);
         *(&self->_timePropertyUpdatingCount + 1) = 0;
@@ -424,12 +424,12 @@ LABEL_40:
           if (v29)
           {
             v30 = v29;
-            v31 = [v22 commandController];
-            v32 = v31;
+            commandController = [interactiveCanvasController commandController];
+            v32 = commandController;
             v44 = v30;
             if (v30 != 1)
             {
-              [v31 openGroup];
+              [commandController openGroup];
             }
 
             v49 = 0u;
@@ -476,7 +476,7 @@ LABEL_40:
         v45[2] = sub_100501098;
         v45[3] = &unk_10183AE28;
         v45[4] = self;
-        v46 = v22;
+        v46 = interactiveCanvasController;
         v39 = v45;
         Main = CFRunLoopGetMain();
         CFRunLoopPerformBlock(Main, kCFRunLoopDefaultMode, v39);
@@ -500,12 +500,12 @@ LABEL_40:
 - (BOOL)p_canSaveDefaultMoviePreset
 {
   v3 = objc_opt_class();
-  v4 = [(CRLBoardItemEditor *)self boardItems];
-  v5 = [v4 anyObject];
-  v6 = sub_100013F00(v3, v5);
+  boardItems = [(CRLBoardItemEditor *)self boardItems];
+  anyObject = [boardItems anyObject];
+  v6 = sub_100013F00(v3, anyObject);
 
-  v7 = [(CRLBoardItemEditor *)self boardItems];
-  if ([v7 count] == 1)
+  boardItems2 = [(CRLBoardItemEditor *)self boardItems];
+  if ([boardItems2 count] == 1)
   {
     v8 = [v6 isAudioOnly] ^ 1;
   }
@@ -518,10 +518,10 @@ LABEL_40:
   return v8;
 }
 
-- (void)saveDefaultInsertionPreset:(id)a3
+- (void)saveDefaultInsertionPreset:(id)preset
 {
-  v4 = [(CRLBoardItemEditor *)self boardItems];
-  v5 = [v4 count];
+  boardItems = [(CRLBoardItemEditor *)self boardItems];
+  v5 = [boardItems count];
 
   if (v5 != 1)
   {
@@ -553,41 +553,41 @@ LABEL_40:
   }
 
   v9 = objc_opt_class();
-  v10 = [(CRLBoardItemEditor *)self boardItems];
-  v11 = [v10 anyObject];
-  v12 = sub_100013F00(v9, v11);
+  boardItems2 = [(CRLBoardItemEditor *)self boardItems];
+  anyObject = [boardItems2 anyObject];
+  v12 = sub_100013F00(v9, anyObject);
 
   if (v12)
   {
     v13 = [[_TtC8Freeform40CRLCommandSetDefaultMovieInsertionPreset alloc] initWithMovieItem:v12];
-    v14 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-    v15 = [v14 commandController];
-    [v15 enqueueCommand:v13];
+    interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+    commandController = [interactiveCanvasController commandController];
+    [commandController enqueueCommand:v13];
   }
 }
 
-- (void)addMiniFormatterElementsToArray:(id)a3 atPoint:(CGPoint)a4
+- (void)addMiniFormatterElementsToArray:(id)array atPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
+  y = point.y;
+  x = point.x;
+  arrayCopy = array;
   v31.receiver = self;
   v31.super_class = CRLMovieEditor;
-  [(CRLBoardItemEditor *)&v31 addMiniFormatterElementsToArray:v7 atPoint:x, y];
-  v8 = [(CRLBoardItemEditor *)self boardItems];
-  v9 = [v8 count];
+  [(CRLBoardItemEditor *)&v31 addMiniFormatterElementsToArray:arrayCopy atPoint:x, y];
+  boardItems = [(CRLBoardItemEditor *)self boardItems];
+  v9 = [boardItems count];
 
   if (v9 <= 1)
   {
     if ([(CRLMovieEditor *)self p_canModifyMedia])
     {
-      v10 = [(CRLMovieEditor *)self anyMovieItem];
-      v11 = [v10 isAudioOnly];
+      anyMovieItem = [(CRLMovieEditor *)self anyMovieItem];
+      isAudioOnly = [anyMovieItem isAudioOnly];
 
       v12 = +[NSBundle mainBundle];
       v13 = v12;
-      v14 = v11 == 0;
-      if (v11)
+      v14 = isAudioOnly == 0;
+      if (isAudioOnly)
       {
         v15 = @"Modify Audio";
       }
@@ -597,7 +597,7 @@ LABEL_40:
         v15 = @"Modify Movie";
       }
 
-      if (v11)
+      if (isAudioOnly)
       {
         v16 = @"speaker.wave.2";
       }
@@ -646,7 +646,7 @@ LABEL_40:
       v24 = [v23 localizedStringForKey:v19 value:0 table:0];
       [v22 setToolTip:v24];
 
-      [v7 insertObject:v22 atIndex:{objc_msgSend(v7, "count")}];
+      [arrayCopy insertObject:v22 atIndex:{objc_msgSend(arrayCopy, "count")}];
     }
 
     if ([(CRLBoardItemEditor *)self canShowPreview])
@@ -657,11 +657,11 @@ LABEL_40:
       v28 = [CRLQuickInspectorElement elementWithName:v26 image:v27 type:2 action:"showPreview:"];
 
       [v28 setTag:23];
-      v29 = [(CRLMovieEditor *)self anyMovieItem];
-      v30 = [v29 previewTooltip];
-      [v28 setToolTip:v30];
+      anyMovieItem2 = [(CRLMovieEditor *)self anyMovieItem];
+      previewTooltip = [anyMovieItem2 previewTooltip];
+      [v28 setToolTip:previewTooltip];
 
-      [v7 addObject:v28];
+      [arrayCopy addObject:v28];
     }
   }
 }

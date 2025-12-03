@@ -1,9 +1,9 @@
 @interface RAPPlacecardImageryLayoutManager
-- (RAPPlacecardImageryLayoutManager)initWithDefaultItems:(id)a3;
-- (id)issueItemForIndex:(unint64_t)a3;
+- (RAPPlacecardImageryLayoutManager)initWithDefaultItems:(id)items;
+- (id)issueItemForIndex:(unint64_t)index;
 - (id)issueItems;
-- (void)downloadAndResolveLayoutWithMapItem:(id)a3 completion:(id)a4;
-- (void)mergeWithServerConfig:(id)a3;
+- (void)downloadAndResolveLayoutWithMapItem:(id)item completion:(id)completion;
+- (void)mergeWithServerConfig:(id)config;
 @end
 
 @implementation RAPPlacecardImageryLayoutManager
@@ -31,12 +31,12 @@
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
-        v10 = [v9 fieldType];
-        v11 = [v10 unsignedIntegerValue];
+        fieldType = [v9 fieldType];
+        unsignedIntegerValue = [fieldType unsignedIntegerValue];
 
-        v12 = [v9 displayText];
+        displayText = [v9 displayText];
 
-        v13 = [[RAPPlacecardImageryIssueItem alloc] initWithType:v11 overridenText:v12];
+        v13 = [[RAPPlacecardImageryIssueItem alloc] initWithType:unsignedIntegerValue overridenText:displayText];
         [v3 addObject:v13];
       }
 
@@ -51,9 +51,9 @@
   return v14;
 }
 
-- (id)issueItemForIndex:(unint64_t)a3
+- (id)issueItemForIndex:(unint64_t)index
 {
-  if ([(RAPPlacecardImageryLayoutManager *)self numberOfIssueItems]<= a3)
+  if ([(RAPPlacecardImageryLayoutManager *)self numberOfIssueItems]<= index)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_FAULT))
     {
@@ -66,24 +66,24 @@
 
   else
   {
-    v5 = [(NSArray *)self->_layoutItems objectAtIndex:a3];
-    v6 = [v5 fieldType];
-    v7 = [v6 unsignedIntegerValue];
+    v5 = [(NSArray *)self->_layoutItems objectAtIndex:index];
+    fieldType = [v5 fieldType];
+    unsignedIntegerValue = [fieldType unsignedIntegerValue];
 
-    v8 = [v5 displayText];
-    v9 = [[RAPPlacecardImageryIssueItem alloc] initWithType:v7 overridenText:v8];
+    displayText = [v5 displayText];
+    v9 = [[RAPPlacecardImageryIssueItem alloc] initWithType:unsignedIntegerValue overridenText:displayText];
   }
 
   return v9;
 }
 
-- (void)downloadAndResolveLayoutWithMapItem:(id)a3 completion:(id)a4
+- (void)downloadAndResolveLayoutWithMapItem:(id)item completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  completionCopy = completion;
   v8 = objc_alloc_init(RAPLayoutOptions);
   [(RAPLayoutOptions *)v8 setLayoutType:5];
-  [(RAPLayoutOptions *)v8 setReportedMapItem:v6];
+  [(RAPLayoutOptions *)v8 setReportedMapItem:itemCopy];
   v9 = [[RAPLayoutDownloader alloc] initWithLayoutOptions:v8];
   downloader = self->_downloader;
   self->_downloader = v9;
@@ -95,7 +95,7 @@
   v13[2] = sub_100768B80;
   v13[3] = &unk_101628608;
   objc_copyWeak(&v15, &location);
-  v12 = v7;
+  v12 = completionCopy;
   v14 = v12;
   [(RAPLayoutDownloader *)v11 fetchLayoutConfig:v13];
 
@@ -103,17 +103,17 @@
   objc_destroyWeak(&location);
 }
 
-- (void)mergeWithServerConfig:(id)a3
+- (void)mergeWithServerConfig:(id)config
 {
-  v3 = a3;
+  configCopy = config;
   obj = objc_opt_new();
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
   v69 = 0u;
-  v50 = v3;
-  v4 = [v3 layoutFields];
-  v5 = [v4 countByEnumeratingWithState:&v66 objects:v73 count:16];
+  v50 = configCopy;
+  layoutFields = [configCopy layoutFields];
+  v5 = [layoutFields countByEnumeratingWithState:&v66 objects:v73 count:16];
   if (v5)
   {
     v6 = v5;
@@ -124,7 +124,7 @@
       {
         if (*v67 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(layoutFields);
         }
 
         v9 = *(*(&v66 + 1) + 8 * i);
@@ -132,8 +132,8 @@
         {
           v10 = v9;
           v11 = objc_alloc_init(RAPLayoutItem);
-          v12 = [v10 name];
-          v13 = [v12 poiImageCorrectionType] - 1;
+          name = [v10 name];
+          v13 = [name poiImageCorrectionType] - 1;
           if (v13 < 8)
           {
             v14 = v13 + 1;
@@ -147,14 +147,14 @@
           v15 = [NSNumber numberWithUnsignedInteger:v14];
           [(RAPLayoutItem *)v11 setFieldType:v15];
 
-          v16 = [v10 displayText];
-          [(RAPLayoutItem *)v11 setDisplayText:v16];
+          displayText = [v10 displayText];
+          [(RAPLayoutItem *)v11 setDisplayText:displayText];
 
           [obj addObject:v11];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v66 objects:v73 count:16];
+      v6 = [layoutFields countByEnumeratingWithState:&v66 objects:v73 count:16];
     }
 
     while (v6);
@@ -183,11 +183,11 @@
         }
 
         v25 = *(*(&v62 + 1) + 8 * j);
-        v26 = [v25 fieldType];
-        [v18 setObject:v25 forKey:v26];
+        fieldType = [v25 fieldType];
+        [v18 setObject:v25 forKey:fieldType];
 
-        v27 = [v25 fieldType];
-        [v19 addObject:v27];
+        fieldType2 = [v25 fieldType];
+        [v19 addObject:fieldType2];
       }
 
       v22 = [v20 countByEnumeratingWithState:&v62 objects:v72 count:16];
@@ -219,20 +219,20 @@
         }
 
         v33 = *(*(&v58 + 1) + 8 * k);
-        v34 = [v33 fieldType];
-        v35 = [v18 objectForKey:v34];
+        fieldType3 = [v33 fieldType];
+        v35 = [v18 objectForKey:fieldType3];
 
-        v36 = [v33 displayText];
-        v37 = [v36 length];
+        displayText2 = [v33 displayText];
+        v37 = [displayText2 length];
 
         if (v37)
         {
-          v38 = [v33 displayText];
-          [v35 setDisplayText:v38];
+          displayText3 = [v33 displayText];
+          [v35 setDisplayText:displayText3];
         }
 
-        v39 = [v33 fieldType];
-        [v28 addObject:v39];
+        fieldType4 = [v33 fieldType];
+        [v28 addObject:fieldType4];
       }
 
       v30 = [obja countByEnumeratingWithState:&v58 objects:v71 count:16];
@@ -277,9 +277,9 @@
   self->_layoutItems = v47;
 }
 
-- (RAPPlacecardImageryLayoutManager)initWithDefaultItems:(id)a3
+- (RAPPlacecardImageryLayoutManager)initWithDefaultItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v24.receiver = self;
   v24.super_class = RAPPlacecardImageryLayoutManager;
   v5 = [(RAPPlacecardImageryLayoutManager *)&v24 init];
@@ -287,7 +287,7 @@
   if (v5)
   {
     v22 = v5;
-    v7 = v4;
+    v7 = itemsCopy;
     v8 = objc_alloc_init(NSMutableArray);
     v25 = 0u;
     v26 = 0u;
@@ -311,8 +311,8 @@
 
           v14 = *(*(&v25 + 1) + 8 * i);
           v15 = objc_alloc_init(RAPLayoutItem);
-          v16 = [v14 localizedTitle];
-          [(RAPLayoutItem *)v15 setDisplayText:v16];
+          localizedTitle = [v14 localizedTitle];
+          [(RAPLayoutItem *)v15 setDisplayText:localizedTitle];
 
           v17 = [NSNumber numberWithUnsignedInteger:v11];
           [(RAPLayoutItem *)v15 setOrdinal:v17];

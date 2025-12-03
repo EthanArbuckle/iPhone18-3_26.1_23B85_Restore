@@ -1,7 +1,7 @@
 @interface FCCKDatabaseUserAuthenticationMiddleware
 - (FCCKDatabaseUserAuthenticationMiddleware)init;
 - (_BYTE)initWithPrivateDataSyncingEnabled:(_BYTE *)result;
-- (int64_t)database:(id)a3 willEnqueueOperation:(id)a4 error:(id *)a5;
+- (int64_t)database:(id)database willEnqueueOperation:(id)operation error:(id *)error;
 @end
 
 @implementation FCCKDatabaseUserAuthenticationMiddleware
@@ -48,7 +48,7 @@
   return result;
 }
 
-- (int64_t)database:(id)a3 willEnqueueOperation:(id)a4 error:(id *)a5
+- (int64_t)database:(id)database willEnqueueOperation:(id)operation error:(id *)error
 {
   if (NSClassFromString(&cfstr_Xctest.isa))
   {

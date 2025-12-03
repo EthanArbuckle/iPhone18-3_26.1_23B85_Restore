@@ -1,23 +1,23 @@
 @interface SearchUIMovieCardSectionViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (SearchUIMovieCardSectionViewAccessibility)initWithRowModel:(id)a3 feedbackDelegate:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (SearchUIMovieCardSectionViewAccessibility)initWithRowModel:(id)model feedbackDelegate:(id)delegate;
 - (id)accessibilityLabel;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation SearchUIMovieCardSectionViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"TLKMediaInfoView"];
-  [v3 validateClass:@"TLKMediaInfoView" hasInstanceMethod:@"contents" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TLKDetailsSection"];
-  [v3 validateClass:@"TLKDetailsSection" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TLKDetailsSection" hasInstanceMethod:@"details" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TLKMultilineText"];
-  [v3 validateClass:@"TLKMultilineText" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SearchUIMovieCardSectionView" hasInstanceMethod:@"initWithRowModel:feedbackDelegate:" withFullSignature:{"@", "@", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"TLKMediaInfoView"];
+  [validationsCopy validateClass:@"TLKMediaInfoView" hasInstanceMethod:@"contents" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TLKDetailsSection"];
+  [validationsCopy validateClass:@"TLKDetailsSection" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TLKDetailsSection" hasInstanceMethod:@"details" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TLKMultilineText"];
+  [validationsCopy validateClass:@"TLKMultilineText" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SearchUIMovieCardSectionView" hasInstanceMethod:@"initWithRowModel:feedbackDelegate:" withFullSignature:{"@", "@", "@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -32,16 +32,16 @@
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
   v22 = v2;
-  v3 = [v2 subviews];
-  v4 = [v3 firstObject];
+  subviews = [v2 subviews];
+  firstObject = [subviews firstObject];
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v21 = v4;
-  v5 = [v4 subviews];
-  v6 = [v5 countByEnumeratingWithState:&v24 objects:v30 count:16];
+  v21 = firstObject;
+  subviews2 = [firstObject subviews];
+  v6 = [subviews2 countByEnumeratingWithState:&v24 objects:v30 count:16];
   if (v6)
   {
     v7 = v6;
@@ -52,7 +52,7 @@
       {
         if (*v25 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(subviews2);
         }
 
         v10 = *(*(&v24 + 1) + 8 * i);
@@ -67,8 +67,8 @@
         v12 = v11;
         if (v11)
         {
-          v13 = [v11 text];
-          v14 = [v23 numberFromString:v13];
+          text = [v11 text];
+          v14 = [v23 numberFromString:text];
           v15 = v14;
           if (v14)
           {
@@ -84,13 +84,13 @@
             }
 
             v18 = accessibilityLocalizedString(v17);
-            v19 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"%@, %@", v13, v18];
+            v19 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"%@, %@", text, v18];
             [v12 setAccessibilityLabel:v19];
           }
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v24 objects:v30 count:16];
+      v7 = [subviews2 countByEnumeratingWithState:&v24 objects:v30 count:16];
     }
 
     while (v7);
@@ -105,7 +105,7 @@
   v3 = [(SearchUIMovieCardSectionViewAccessibility *)self _accessibilityFindSubviewDescendant:&__block_literal_global_11];
   v37.receiver = self;
   v37.super_class = SearchUIMovieCardSectionViewAccessibility;
-  v4 = [(SearchUIMovieCardSectionViewAccessibility *)&v37 accessibilityLabel];
+  accessibilityLabel = [(SearchUIMovieCardSectionViewAccessibility *)&v37 accessibilityLabel];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
@@ -119,7 +119,7 @@
     do
     {
       v5 = 0;
-      v6 = v4;
+      v6 = accessibilityLabel;
       do
       {
         v28 = v6;
@@ -177,10 +177,10 @@
         v20 = v13;
         v22 = @"__AXStringForVariablesSentinel";
         v18 = v27;
-        v4 = __UIAXStringForVariables();
+        accessibilityLabel = __UIAXStringForVariables();
 
         ++v5;
-        v6 = v4;
+        v6 = accessibilityLabel;
       }
 
       while (v5 != v26);
@@ -192,7 +192,7 @@
 
   v16 = *MEMORY[0x29EDCA608];
 
-  return v4;
+  return accessibilityLabel;
 }
 
 uint64_t __63__SearchUIMovieCardSectionViewAccessibility_accessibilityLabel__block_invoke(uint64_t a1, void *a2)
@@ -221,11 +221,11 @@ uint64_t __83__SearchUIMovieCardSectionViewAccessibility__accessibilitySupplemen
   return v3;
 }
 
-- (SearchUIMovieCardSectionViewAccessibility)initWithRowModel:(id)a3 feedbackDelegate:(id)a4
+- (SearchUIMovieCardSectionViewAccessibility)initWithRowModel:(id)model feedbackDelegate:(id)delegate
 {
   v6.receiver = self;
   v6.super_class = SearchUIMovieCardSectionViewAccessibility;
-  v4 = [(SearchUIMovieCardSectionViewAccessibility *)&v6 initWithRowModel:a3 feedbackDelegate:a4];
+  v4 = [(SearchUIMovieCardSectionViewAccessibility *)&v6 initWithRowModel:model feedbackDelegate:delegate];
   [(SearchUIMovieCardSectionViewAccessibility *)v4 _accessibilityLoadAccessibilityInformation];
   return v4;
 }

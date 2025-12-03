@@ -1,45 +1,45 @@
 @interface UARPSuperBinaryPayloadBackDeploy
 - (BOOL)expandTLVs;
-- (BOOL)queryTatsuSigningServer:(id)a3 ssoOnly:(BOOL)a4 error:(id *)a5;
-- (UARPSuperBinaryPayloadBackDeploy)initWithData:(id)a3 metaData:(id)a4 tag:(id)a5 version:(id)a6;
+- (BOOL)queryTatsuSigningServer:(id)server ssoOnly:(BOOL)only error:(id *)error;
+- (UARPSuperBinaryPayloadBackDeploy)initWithData:(id)data metaData:(id)metaData tag:(id)tag version:(id)version;
 - (id)description;
 - (id)personalizedData;
 - (id)personalizedMetaData;
 - (id)requiredTSSOptions;
-- (id)tatsuMeasurements:(unint64_t)a3;
-- (id)tssKeyName:(id)a3 unitNumber:(unint64_t)a4;
-- (void)addSubfile:(id)a3 tag:(id)a4;
-- (void)processMeasurementsForTSSOptions:(id)a3 unitNumber:(unint64_t)a4 asMeasurement:(BOOL)a5;
+- (id)tatsuMeasurements:(unint64_t)measurements;
+- (id)tssKeyName:(id)name unitNumber:(unint64_t)number;
+- (void)addSubfile:(id)subfile tag:(id)tag;
+- (void)processMeasurementsForTSSOptions:(id)options unitNumber:(unint64_t)number asMeasurement:(BOOL)measurement;
 - (void)processTLVsForPersonalization;
-- (void)removeSubfile:(id)a3 tag:(id)a4;
+- (void)removeSubfile:(id)subfile tag:(id)tag;
 @end
 
 @implementation UARPSuperBinaryPayloadBackDeploy
 
-- (UARPSuperBinaryPayloadBackDeploy)initWithData:(id)a3 metaData:(id)a4 tag:(id)a5 version:(id)a6
+- (UARPSuperBinaryPayloadBackDeploy)initWithData:(id)data metaData:(id)metaData tag:(id)tag version:(id)version
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dataCopy = data;
+  metaDataCopy = metaData;
+  tagCopy = tag;
+  versionCopy = version;
   v36.receiver = self;
   v36.super_class = UARPSuperBinaryPayloadBackDeploy;
   v14 = [(UARPSuperBinaryPayloadBackDeploy *)&v36 init];
   if (v14)
   {
-    v15 = [v12 copy];
+    v15 = [tagCopy copy];
     tag = v14->_tag;
     v14->_tag = v15;
 
-    v17 = [v13 copy];
+    v17 = [versionCopy copy];
     version = v14->_version;
     v14->_version = v17;
 
-    v19 = [v10 copy];
+    v19 = [dataCopy copy];
     payloadData = v14->_payloadData;
     v14->_payloadData = v19;
 
-    v21 = [v11 copy];
+    v21 = [metaDataCopy copy];
     metaData = v14->_metaData;
     v14->_metaData = v21;
 
@@ -85,15 +85,15 @@
       [(FTABFileBackDeploy *)self->_ftab setManifest:?];
     }
 
-    v3 = [(FTABFileBackDeploy *)self->_ftab writeToData];
+    writeToData = [(FTABFileBackDeploy *)self->_ftab writeToData];
   }
 
   else
   {
-    v3 = self->_payloadData;
+    writeToData = self->_payloadData;
   }
 
-  return v3;
+  return writeToData;
 }
 
 - (id)personalizedMetaData
@@ -103,7 +103,7 @@
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v20 = self;
+  selfCopy = self;
   v3 = self->_tlvs;
   v4 = [(NSMutableArray *)v3 countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v4)
@@ -141,7 +141,7 @@
                     objc_opt_class();
                     if ((objc_opt_isKindOfClass() & 1) == 0)
                     {
-                      [(NSMutableArray *)v20->_trimmedTlvs addObject:v8];
+                      [(NSMutableArray *)selfCopy->_trimmedTlvs addObject:v8];
                     }
                   }
                 }
@@ -157,15 +157,15 @@
     while (v5);
   }
 
-  if (!v20->_ftab)
+  if (!selfCopy->_ftab)
   {
-    manifest = v20->_manifest;
+    manifest = selfCopy->_manifest;
     if (manifest)
     {
-      v10 = [UARPMetaDataTLVBackDeploy tlvFromType:2293403952 length:[(NSData *)manifest length] value:[(NSData *)v20->_manifest bytes]];
+      v10 = [UARPMetaDataTLVBackDeploy tlvFromType:2293403952 length:[(NSData *)manifest length] value:[(NSData *)selfCopy->_manifest bytes]];
       if (v10)
       {
-        [(NSMutableArray *)v20->_trimmedTlvs addObject:v10];
+        [(NSMutableArray *)selfCopy->_trimmedTlvs addObject:v10];
       }
     }
   }
@@ -175,7 +175,7 @@
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v12 = v20->_trimmedTlvs;
+  v12 = selfCopy->_trimmedTlvs;
   v13 = [(NSMutableArray *)v12 countByEnumeratingWithState:&v21 objects:v29 count:16];
   if (v13)
   {
@@ -190,8 +190,8 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v21 + 1) + 8 * j) generateTLV];
-        [v11 appendData:v17];
+        generateTLV = [*(*(&v21 + 1) + 8 * j) generateTLV];
+        [v11 appendData:generateTLV];
       }
 
       v14 = [(NSMutableArray *)v12 countByEnumeratingWithState:&v21 objects:v29 count:16];
@@ -207,7 +207,7 @@
 
 - (BOOL)expandTLVs
 {
-  v3 = [(NSData *)self->_metaData bytes];
+  bytes = [(NSData *)self->_metaData bytes];
   if ([(NSData *)self->_metaData length])
   {
     v4 = 0;
@@ -218,21 +218,21 @@
         break;
       }
 
-      v5 = uarpNtohl(*&v3[v4]);
+      v5 = uarpNtohl(*&bytes[v4]);
       v6 = v4 + 8;
       if (v4 + 8 > [(NSData *)self->_metaData length])
       {
         break;
       }
 
-      v7 = uarpNtohl(*&v3[v4 + 4]);
+      v7 = uarpNtohl(*&bytes[v4 + 4]);
       v4 = v6 + v7;
       if (v4 > [(NSData *)self->_metaData length])
       {
         break;
       }
 
-      v8 = [UARPMetaDataTLVBackDeploy tlvFromType:v5 length:v7 value:&v3[v6]];
+      v8 = [UARPMetaDataTLVBackDeploy tlvFromType:v5 length:v7 value:&bytes[v6]];
       if (!v8)
       {
         break;
@@ -357,24 +357,24 @@ LABEL_29:
   return v3;
 }
 
-- (BOOL)queryTatsuSigningServer:(id)a3 ssoOnly:(BOOL)a4 error:(id *)a5
+- (BOOL)queryTatsuSigningServer:(id)server ssoOnly:(BOOL)only error:(id *)error
 {
-  v5 = a4;
-  v7 = a3;
-  if (!v7)
+  onlyCopy = only;
+  serverCopy = server;
+  if (!serverCopy)
   {
-    v7 = [NSURL URLWithString:@"https://gs.apple.com:443"];
+    serverCopy = [NSURL URLWithString:@"https://gs.apple.com:443"];
   }
 
   tssRequest = self->_tssRequest;
-  if (v5)
+  if (onlyCopy)
   {
-    v9 = UARPPersonalizationTSSRequestWithSigningServerSSO(tssRequest, v7);
+    v9 = UARPPersonalizationTSSRequestWithSigningServerSSO(tssRequest, serverCopy);
   }
 
   else
   {
-    v9 = UARPPersonalizationTSSRequestWithSigningServer(tssRequest, v7);
+    v9 = UARPPersonalizationTSSRequestWithSigningServer(tssRequest, serverCopy);
   }
 
   v10 = v9;
@@ -423,9 +423,9 @@ LABEL_29:
           if (objc_opt_isKindOfClass())
           {
             v9 = v8;
-            v10 = [v9 ticketPrefix];
+            ticketPrefix = [v9 ticketPrefix];
             ticketPrefix = self->_ticketPrefix;
-            self->_ticketPrefix = v10;
+            self->_ticketPrefix = ticketPrefix;
           }
 
           else
@@ -476,14 +476,14 @@ LABEL_29:
   }
 }
 
-- (void)processMeasurementsForTSSOptions:(id)a3 unitNumber:(unint64_t)a4 asMeasurement:(BOOL)a5
+- (void)processMeasurementsForTSSOptions:(id)options unitNumber:(unint64_t)number asMeasurement:(BOOL)measurement
 {
-  v27 = a3;
+  optionsCopy = options;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v30 = self;
+  selfCopy = self;
   obj = self->_measurements;
   v28 = [(NSMutableArray *)obj countByEnumeratingWithState:&v36 objects:v41 count:16];
   if (v28)
@@ -506,8 +506,8 @@ LABEL_29:
         v33 = 0u;
         v34 = 0u;
         v35 = 0u;
-        v9 = [v7 tlvs];
-        v10 = [v9 countByEnumeratingWithState:&v32 objects:v40 count:16];
+        tlvs = [v7 tlvs];
+        v10 = [tlvs countByEnumeratingWithState:&v32 objects:v40 count:16];
         if (!v10)
         {
           v12 = 0;
@@ -523,7 +523,7 @@ LABEL_29:
           {
             if (*v33 != v13)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(tlvs);
             }
 
             v15 = *(*(&v32 + 1) + 8 * i);
@@ -531,17 +531,17 @@ LABEL_29:
             if (objc_opt_isKindOfClass())
             {
               v16 = v15;
-              v17 = [v16 longname];
+              longname = [v16 longname];
 
-              v12 = v17;
+              v12 = longname;
               continue;
             }
 
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v18 = [v15 digest];
-              [v8 setObject:v18 forKeyedSubscript:@"Digest"];
+              digest = [v15 digest];
+              [v8 setObject:digest forKeyedSubscript:@"Digest"];
 
               continue;
             }
@@ -549,12 +549,12 @@ LABEL_29:
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              if (a5)
+              if (measurement)
               {
                 continue;
               }
 
-              if ([(UARPSuperBinaryPayloadBackDeploy *)v30 securityMode])
+              if ([(UARPSuperBinaryPayloadBackDeploy *)selfCopy securityMode])
               {
                 v19 = &__kCFBooleanTrue;
               }
@@ -572,12 +572,12 @@ LABEL_29:
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              if (a5)
+              if (measurement)
               {
                 continue;
               }
 
-              if ([(UARPSuperBinaryPayloadBackDeploy *)v30 productionMode])
+              if ([(UARPSuperBinaryPayloadBackDeploy *)selfCopy productionMode])
               {
                 v19 = &__kCFBooleanTrue;
               }
@@ -595,10 +595,10 @@ LABEL_29:
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v22 = [v15 trusted];
-              if (!a5)
+              trusted = [v15 trusted];
+              if (!measurement)
               {
-                if (v22)
+                if (trusted)
                 {
                   v19 = &__kCFBooleanTrue;
                 }
@@ -617,26 +617,26 @@ LABEL_33:
             }
           }
 
-          v11 = [v9 countByEnumeratingWithState:&v32 objects:v40 count:16];
+          v11 = [tlvs countByEnumeratingWithState:&v32 objects:v40 count:16];
         }
 
         while (v11);
 LABEL_38:
 
         v23 = objc_opt_new();
-        [v23 appendFormat:@"%@", v30->_ticketPrefix];
-        if (v30->_prefixNeedsUnitNumber)
+        [v23 appendFormat:@"%@", selfCopy->_ticketPrefix];
+        if (selfCopy->_prefixNeedsUnitNumber)
         {
-          [v23 appendFormat:@"%lu", a4];
+          [v23 appendFormat:@"%lu", number];
         }
 
         [v23 appendFormat:@", %@", v12];
-        if (v30->_suffixNeedsUnitNumber)
+        if (selfCopy->_suffixNeedsUnitNumber)
         {
-          [v23 appendFormat:@", %lu", a4];
+          [v23 appendFormat:@", %lu", number];
         }
 
-        [v27 setObject:v8 forKeyedSubscript:v23];
+        [optionsCopy setObject:v8 forKeyedSubscript:v23];
 
         v6 = v29 + 1;
       }
@@ -649,20 +649,20 @@ LABEL_38:
   }
 }
 
-- (id)tssKeyName:(id)a3 unitNumber:(unint64_t)a4
+- (id)tssKeyName:(id)name unitNumber:(unint64_t)number
 {
-  v6 = a3;
+  nameCopy = name;
   v7 = objc_opt_new();
   [v7 appendFormat:@"%@", self->_ticketPrefix];
   if (self->_prefixNeedsUnitNumber)
   {
-    [v7 appendFormat:@"%lu", a4];
+    [v7 appendFormat:@"%lu", number];
   }
 
-  [v7 appendFormat:@", %@", v6];
+  [v7 appendFormat:@", %@", nameCopy];
   if (self->_suffixNeedsUnitNumber)
   {
-    [v7 appendFormat:@", %lu", a4];
+    [v7 appendFormat:@", %lu", number];
   }
 
   v8 = [NSString stringWithString:v7];
@@ -679,29 +679,29 @@ LABEL_38:
   return v4;
 }
 
-- (id)tatsuMeasurements:(unint64_t)a3
+- (id)tatsuMeasurements:(unint64_t)measurements
 {
   v5 = [(NSMutableArray *)self->_tlvs count];
   if (v5)
   {
-    v5 = [(UARPSuperBinaryPayloadBackDeploy *)self composeTSSRequest:a3 asMeasurement:1];
+    v5 = [(UARPSuperBinaryPayloadBackDeploy *)self composeTSSRequest:measurements asMeasurement:1];
   }
 
   return v5;
 }
 
-- (void)addSubfile:(id)a3 tag:(id)a4
+- (void)addSubfile:(id)subfile tag:(id)tag
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[FTABSubfileBackDeploy alloc] initWithTag:v6 data:v7];
+  tagCopy = tag;
+  subfileCopy = subfile;
+  v8 = [[FTABSubfileBackDeploy alloc] initWithTag:tagCopy data:subfileCopy];
 
   [(NSMutableArray *)self->_subfiles addObject:v8];
 }
 
-- (void)removeSubfile:(id)a3 tag:(id)a4
+- (void)removeSubfile:(id)subfile tag:(id)tag
 {
-  v5 = a4;
+  tagCopy = tag;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -723,7 +723,7 @@ LABEL_3:
 
       v11 = *(*(&v15 + 1) + 8 * v10);
       v12 = [v11 tag];
-      v13 = [v12 compare:v5];
+      v13 = [v12 compare:tagCopy];
 
       if (!v13)
       {

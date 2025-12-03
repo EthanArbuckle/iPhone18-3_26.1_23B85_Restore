@@ -4,14 +4,14 @@
 - (UIEdgeInsets)edgeInsets;
 - (_UIContentConstraintsLayoutGuide)init;
 - (void)_clearConstraints;
-- (void)_setAllMarginConstraintsActive:(BOOL)a3;
-- (void)_setAllSizeConstraintsActive:(BOOL)a3;
+- (void)_setAllMarginConstraintsActive:(BOOL)active;
+- (void)_setAllSizeConstraintsActive:(BOOL)active;
 - (void)_updateAllMarginConstraintConstants;
 - (void)_updateAllSizeConstraints;
-- (void)setEdgeInsets:(UIEdgeInsets)a3;
-- (void)setMaximumSize:(CGSize)a3;
-- (void)setMinimumSize:(CGSize)a3;
-- (void)setOwningView:(id)a3;
+- (void)setEdgeInsets:(UIEdgeInsets)insets;
+- (void)setMaximumSize:(CGSize)size;
+- (void)setMinimumSize:(CGSize)size;
+- (void)setOwningView:(id)view;
 @end
 
 @implementation _UIContentConstraintsLayoutGuide
@@ -30,64 +30,64 @@
   return result;
 }
 
-- (void)setOwningView:(id)a3
+- (void)setOwningView:(id)view
 {
-  v4 = a3;
-  v5 = [(UILayoutGuide *)self owningView];
+  viewCopy = view;
+  owningView = [(UILayoutGuide *)self owningView];
 
-  if (v5 != v4)
+  if (owningView != viewCopy)
   {
     [(_UIContentConstraintsLayoutGuide *)self _clearConstraints];
     v40.receiver = self;
     v40.super_class = _UIContentConstraintsLayoutGuide;
-    [(UILayoutGuide *)&v40 setOwningView:v4];
-    if (v4)
+    [(UILayoutGuide *)&v40 setOwningView:viewCopy];
+    if (viewCopy)
     {
-      v6 = [(UILayoutGuide *)self leadingAnchor];
-      v7 = [v4 leadingAnchor];
-      v8 = [v6 constraintEqualToAnchor:v7 constant:0.0];
+      leadingAnchor = [(UILayoutGuide *)self leadingAnchor];
+      leadingAnchor2 = [viewCopy leadingAnchor];
+      v8 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:0.0];
       leadingConstraint = self->_leadingConstraint;
       self->_leadingConstraint = v8;
 
-      v10 = [(UILayoutGuide *)self trailingAnchor];
-      v11 = [v4 trailingAnchor];
-      v12 = [v10 constraintEqualToAnchor:v11 constant:0.0];
+      trailingAnchor = [(UILayoutGuide *)self trailingAnchor];
+      trailingAnchor2 = [viewCopy trailingAnchor];
+      v12 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:0.0];
       trailingConstraint = self->_trailingConstraint;
       self->_trailingConstraint = v12;
 
-      v14 = [(UILayoutGuide *)self topAnchor];
-      v15 = [v4 topAnchor];
-      v16 = [v14 constraintEqualToAnchor:v15 constant:0.0];
+      topAnchor = [(UILayoutGuide *)self topAnchor];
+      topAnchor2 = [viewCopy topAnchor];
+      v16 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:0.0];
       topConstraint = self->_topConstraint;
       self->_topConstraint = v16;
 
       LODWORD(v18) = 1144750080;
       [(NSLayoutConstraint *)self->_topConstraint setPriority:v18];
-      v19 = [(UILayoutGuide *)self bottomAnchor];
-      v20 = [v4 bottomAnchor];
-      v21 = [v19 constraintEqualToAnchor:v20 constant:0.0];
+      bottomAnchor = [(UILayoutGuide *)self bottomAnchor];
+      bottomAnchor2 = [viewCopy bottomAnchor];
+      v21 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:0.0];
       bottomConstraint = self->_bottomConstraint;
       self->_bottomConstraint = v21;
 
       LODWORD(v23) = 1144750080;
       [(NSLayoutConstraint *)self->_bottomConstraint setPriority:v23];
-      v24 = [(UILayoutGuide *)self widthAnchor];
-      v25 = [v24 constraintLessThanOrEqualToConstant:0.0];
+      widthAnchor = [(UILayoutGuide *)self widthAnchor];
+      v25 = [widthAnchor constraintLessThanOrEqualToConstant:0.0];
       maximumWidthConstraint = self->_maximumWidthConstraint;
       self->_maximumWidthConstraint = v25;
 
-      v27 = [(UILayoutGuide *)self heightAnchor];
-      v28 = [v27 constraintLessThanOrEqualToConstant:0.0];
+      heightAnchor = [(UILayoutGuide *)self heightAnchor];
+      v28 = [heightAnchor constraintLessThanOrEqualToConstant:0.0];
       maximumHeightConstraint = self->_maximumHeightConstraint;
       self->_maximumHeightConstraint = v28;
 
-      v30 = [(UILayoutGuide *)self widthAnchor];
-      v31 = [v30 constraintGreaterThanOrEqualToConstant:0.0];
+      widthAnchor2 = [(UILayoutGuide *)self widthAnchor];
+      v31 = [widthAnchor2 constraintGreaterThanOrEqualToConstant:0.0];
       minimumWidthConstraint = self->_minimumWidthConstraint;
       self->_minimumWidthConstraint = v31;
 
-      v33 = [(UILayoutGuide *)self heightAnchor];
-      v34 = [v33 constraintGreaterThanOrEqualToConstant:0.0];
+      heightAnchor2 = [(UILayoutGuide *)self heightAnchor];
+      v34 = [heightAnchor2 constraintGreaterThanOrEqualToConstant:0.0];
       minimumHeightConstraint = self->_minimumHeightConstraint;
       self->_minimumHeightConstraint = v34;
 
@@ -107,24 +107,24 @@
   }
 }
 
-- (void)setEdgeInsets:(UIEdgeInsets)a3
+- (void)setEdgeInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_edgeInsets.top, v3), vceqq_f64(*&self->_edgeInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_edgeInsets = a3;
+    self->_edgeInsets = insets;
     [(_UIContentConstraintsLayoutGuide *)self _updateAllMarginConstraintConstants];
   }
 }
 
-- (void)setMaximumSize:(CGSize)a3
+- (void)setMaximumSize:(CGSize)size
 {
-  if (fabs(a3.width) >= 0.5)
+  if (fabs(size.width) >= 0.5)
   {
-    width = a3.width;
+    width = size.width;
   }
 
   else
@@ -132,9 +132,9 @@
     width = 1.79769313e308;
   }
 
-  if (fabs(a3.height) >= 0.5)
+  if (fabs(size.height) >= 0.5)
   {
-    height = a3.height;
+    height = size.height;
   }
 
   else
@@ -152,11 +152,11 @@
   }
 }
 
-- (void)setMinimumSize:(CGSize)a3
+- (void)setMinimumSize:(CGSize)size
 {
-  if (fabs(a3.width) >= 0.5)
+  if (fabs(size.width) >= 0.5)
   {
-    width = a3.width;
+    width = size.width;
   }
 
   else
@@ -164,9 +164,9 @@
     width = 0.0;
   }
 
-  if (fabs(a3.height) >= 0.5)
+  if (fabs(size.height) >= 0.5)
   {
-    height = a3.height;
+    height = size.height;
   }
 
   else
@@ -184,26 +184,26 @@
   }
 }
 
-- (void)_setAllMarginConstraintsActive:(BOOL)a3
+- (void)_setAllMarginConstraintsActive:(BOOL)active
 {
-  v3 = a3;
+  activeCopy = active;
   v4 = MEMORY[0x1E69977A0];
-  v5 = [(_UIContentConstraintsLayoutGuide *)self _allMarginConstraints];
-  if (v3)
+  _allMarginConstraints = [(_UIContentConstraintsLayoutGuide *)self _allMarginConstraints];
+  if (activeCopy)
   {
-    [v4 activateConstraints:v5];
+    [v4 activateConstraints:_allMarginConstraints];
   }
 
   else
   {
-    [v4 deactivateConstraints:v5];
+    [v4 deactivateConstraints:_allMarginConstraints];
   }
 }
 
-- (void)_setAllSizeConstraintsActive:(BOOL)a3
+- (void)_setAllSizeConstraintsActive:(BOOL)active
 {
-  self->_wantsMaximumSizeConstraintsActive = a3;
-  self->_wantsMinimumSizeConstraintsActive = a3;
+  self->_wantsMaximumSizeConstraintsActive = active;
+  self->_wantsMinimumSizeConstraintsActive = active;
   [(_UIContentConstraintsLayoutGuide *)self _updateAllSizeConstraints];
 }
 
@@ -221,13 +221,13 @@
 
 - (void)_updateAllSizeConstraints
 {
-  v10 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if (self->_maximumSize.width < 1.79769313e308)
   {
     [(NSLayoutConstraint *)self->_maximumWidthConstraint setConstant:?];
     if (self->_wantsMaximumSizeConstraintsActive)
     {
-      [v10 addObject:self->_maximumWidthConstraint];
+      [array addObject:self->_maximumWidthConstraint];
     }
   }
 
@@ -236,7 +236,7 @@
     [(NSLayoutConstraint *)self->_maximumHeightConstraint setConstant:?];
     if (self->_wantsMaximumSizeConstraintsActive)
     {
-      [v10 addObject:self->_maximumHeightConstraint];
+      [array addObject:self->_maximumHeightConstraint];
     }
   }
 
@@ -245,7 +245,7 @@
     [(NSLayoutConstraint *)self->_minimumWidthConstraint setConstant:?];
     if (self->_wantsMinimumSizeConstraintsActive)
     {
-      [v10 addObject:self->_minimumWidthConstraint];
+      [array addObject:self->_minimumWidthConstraint];
     }
   }
 
@@ -254,14 +254,14 @@
     [(NSLayoutConstraint *)self->_minimumHeightConstraint setConstant:?];
     if (self->_wantsMinimumSizeConstraintsActive)
     {
-      [v10 addObject:self->_minimumHeightConstraint];
+      [array addObject:self->_minimumHeightConstraint];
     }
   }
 
   v3 = [MEMORY[0x1E695DF70] arrayWithObjects:{self->_maximumWidthConstraint, self->_maximumHeightConstraint, self->_minimumWidthConstraint, self->_minimumHeightConstraint, 0}];
-  [v3 removeObjectsInArray:v10];
+  [v3 removeObjectsInArray:array];
   v4 = MEMORY[0x1E69977A0];
-  v6 = _UIConstraintsBySortingConstraintsForInsertionPerformance(v10, v5);
+  v6 = _UIConstraintsBySortingConstraintsForInsertionPerformance(array, v5);
   [v4 activateConstraints:v6];
 
   v7 = MEMORY[0x1E69977A0];

@@ -7,20 +7,20 @@
 - (uint64_t)containsAppleMusicRadioContent
 {
   v21 = *MEMORY[0x1E69E9840];
-  if ([a1 type] != 1)
+  if ([self type] != 1)
   {
     goto LABEL_4;
   }
 
-  v2 = [a1 playbackSessionType];
-  if (v2 == @"com.apple.MediaPlaybackCore.playbackContextArchive-v1.opack")
+  playbackSessionType = [self playbackSessionType];
+  if (playbackSessionType == @"com.apple.MediaPlaybackCore.playbackContextArchive-v1.opack")
   {
   }
 
   else
   {
-    v3 = v2;
-    v4 = [(__CFString *)v2 isEqual:@"com.apple.MediaPlaybackCore.playbackContextArchive-v1.opack"];
+    v3 = playbackSessionType;
+    v4 = [(__CFString *)playbackSessionType isEqual:@"com.apple.MediaPlaybackCore.playbackContextArchive-v1.opack"];
 
     if (!v4)
     {
@@ -35,9 +35,9 @@ LABEL_4:
   v8 = objc_opt_class();
   v9 = objc_opt_class();
   v10 = [v7 setWithObjects:{v8, v9, objc_opt_class(), 0}];
-  v11 = [a1 playbackSessionData];
+  playbackSessionData = [self playbackSessionData];
   v16 = 0;
-  v12 = [v6 decodedObjectOfClasses:v10 fromData:v11 error:&v16];
+  v12 = [v6 decodedObjectOfClasses:v10 fromData:playbackSessionData error:&v16];
   v13 = v16;
 
   if (v13)
@@ -46,7 +46,7 @@ LABEL_4:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v18 = a1;
+      selfCopy = self;
       v19 = 2114;
       v20 = v13;
       _os_log_impl(&dword_1C5C61000, v14, OS_LOG_TYPE_ERROR, "MPPlaybackArchive containsAppleMusicRadioContent failed [decode failure] archive=%{public}@ error=%{public}@", buf, 0x16u);

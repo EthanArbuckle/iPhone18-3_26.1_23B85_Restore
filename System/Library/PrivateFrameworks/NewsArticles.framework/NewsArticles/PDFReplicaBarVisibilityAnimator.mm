@@ -1,6 +1,6 @@
 @interface PDFReplicaBarVisibilityAnimator
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer;
 - (_TtC12NewsArticles31PDFReplicaBarVisibilityAnimator)init;
 - (void)handleTapGesture;
 @end
@@ -16,18 +16,18 @@
 
 - (void)handleTapGesture
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D7AF48A0();
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
   objc_opt_self();
   v4 = swift_dynamicCastObjCClass();
   return !v4 || [v4 numberOfTapsRequired] == 1;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer
 {
   objc_opt_self();
   v4 = swift_dynamicCastObjCClass();

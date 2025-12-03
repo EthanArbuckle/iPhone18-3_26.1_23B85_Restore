@@ -1,14 +1,14 @@
 @interface ATXContextNavigationSuggestionProducer
-- (ATXContextNavigationSuggestionProducer)initWithTitle:(id)a3 event:(id)a4 schemaForEvent:(id)a5 alternateDestinationTitle:(id)a6;
-- (id)_contextTitleWithReasons:(unint64_t)a3;
+- (ATXContextNavigationSuggestionProducer)initWithTitle:(id)title event:(id)event schemaForEvent:(id)forEvent alternateDestinationTitle:(id)destinationTitle;
+- (id)_contextTitleWithReasons:(unint64_t)reasons;
 - (id)_dateInterval;
-- (id)_stringsWithPredictionReasons:(unint64_t)a3;
-- (id)suggestionForNavigationToDestination:(id)a3 transportType:(unint64_t)a4 destinationName:(id)a5 subtitle:(id)a6 predictionReasons:(unint64_t)a7 score:(double)a8 shouldClearOnEngagement:(BOOL)a9 validStartDate:(id)a10 validEndDate:(id)a11;
+- (id)_stringsWithPredictionReasons:(unint64_t)reasons;
+- (id)suggestionForNavigationToDestination:(id)destination transportType:(unint64_t)type destinationName:(id)name subtitle:(id)subtitle predictionReasons:(unint64_t)reasons score:(double)score shouldClearOnEngagement:(BOOL)engagement validStartDate:(id)self0 validEndDate:(id)self1;
 @end
 
 @implementation ATXContextNavigationSuggestionProducer
 
-- (id)_contextTitleWithReasons:(unint64_t)a3
+- (id)_contextTitleWithReasons:(unint64_t)reasons
 {
   v39 = *MEMORY[0x277D85DE8];
   v5 = __atxlog_handle_context_heuristic();
@@ -27,8 +27,8 @@
   {
     v8 = [(NSDictionary *)schemaForEvent objectForKeyedSubscript:@"reservationFor"];
     v9 = [v8 objectForKeyedSubscript:@"arrivalAirport"];
-    v10 = [v9 objectForKeyedSubscript:@"address"];
-    v11 = [v10 objectForKeyedSubscript:@"addressLocality"];
+    firstObject = [v9 objectForKeyedSubscript:@"address"];
+    v11 = [firstObject objectForKeyedSubscript:@"addressLocality"];
   }
 
   else
@@ -41,8 +41,8 @@
 
     v8 = [(EKEvent *)event customObjectForKey:@"SGEventMetadataKey"];
     v9 = [v8 objectForKeyedSubscript:@"SGEventMetadataSchemaOrgKey"];
-    v10 = [v9 firstObject];
-    v13 = [v10 objectForKeyedSubscript:@"reservationFor"];
+    firstObject = [v9 firstObject];
+    v13 = [firstObject objectForKeyedSubscript:@"reservationFor"];
     v14 = [v13 objectForKeyedSubscript:@"arrivalAirport"];
     v15 = [v14 objectForKeyedSubscript:@"address"];
     v11 = [v15 objectForKeyedSubscript:@"addressLocality"];
@@ -50,7 +50,7 @@
 
   if (v11)
   {
-    if ((a3 & 0x80000000) == 0)
+    if ((reasons & 0x80000000) == 0)
     {
       goto LABEL_9;
     }
@@ -58,38 +58,38 @@
 LABEL_15:
     v16 = MEMORY[0x277CCACA8];
     v17 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v18 = v17;
+    title = v17;
     v19 = @"CONTEXT_UPCOMING_FLIGHT_TITLE";
     goto LABEL_26;
   }
 
 LABEL_12:
-  if ((a3 & 0x380000000) != 0 || (alternateDestinationTitle = self->_alternateDestinationTitle) == 0)
+  if ((reasons & 0x380000000) != 0 || (alternateDestinationTitle = self->_alternateDestinationTitle) == 0)
   {
-    if ((a3 & 0x80000000) != 0)
+    if ((reasons & 0x80000000) != 0)
     {
       v25 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-      v18 = v25;
+      title = v25;
       v26 = @"CONTEXT_UPCOMING_FLIGHT_NO_ARRIVAL_CITY_TITLE";
     }
 
-    else if ((a3 & 0x100000000) != 0)
+    else if ((reasons & 0x100000000) != 0)
     {
       v25 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-      v18 = v25;
+      title = v25;
       v26 = @"CONTEXT_ONGOING_FLIGHT_NO_ARRIVAL_CITY_TITLE";
     }
 
     else
     {
-      if ((a3 & 0x200000000) == 0)
+      if ((reasons & 0x200000000) == 0)
       {
         v11 = 0;
         goto LABEL_20;
       }
 
       v25 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-      v18 = v25;
+      title = v25;
       v26 = @"CONTEXT_CONCLUDED_FLIGHT_NO_ARRIVAL_CITY_TITLE";
     }
 
@@ -99,26 +99,26 @@ LABEL_12:
   }
 
   v11 = alternateDestinationTitle;
-  if ((a3 & 0x80000000) != 0)
+  if ((reasons & 0x80000000) != 0)
   {
     goto LABEL_15;
   }
 
 LABEL_9:
-  if ((a3 & 0x100000000) != 0)
+  if ((reasons & 0x100000000) != 0)
   {
     v16 = MEMORY[0x277CCACA8];
     v17 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v18 = v17;
+    title = v17;
     v19 = @"CONTEXT_ONGOING_FLIGHT_TITLE";
     goto LABEL_26;
   }
 
-  if ((a3 & 0x200000000) != 0)
+  if ((reasons & 0x200000000) != 0)
   {
     v16 = MEMORY[0x277CCACA8];
     v17 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v18 = v17;
+    title = v17;
     v19 = @"CONTEXT_CONCLUDED_FLIGHT_TITLE";
 LABEL_26:
     v24 = [v17 localizedStringForKey:v19 value:&stru_2850AD368 table:0];
@@ -129,14 +129,14 @@ LABEL_37:
   }
 
 LABEL_20:
-  if ((a3 & 0x300000) != 0)
+  if ((reasons & 0x300000) != 0)
   {
     v21 = self->_event;
     if (v21)
     {
-      v18 = [(EKEvent *)v21 title];
-      v22 = v18;
-      if (!v18)
+      title = [(EKEvent *)v21 title];
+      v22 = title;
+      if (!title)
       {
         v22 = self->_title;
       }
@@ -146,7 +146,7 @@ LABEL_20:
     }
   }
 
-  if ((a3 & 0x1000000000) != 0)
+  if ((reasons & 0x1000000000) != 0)
   {
     v28 = MEMORY[0x277CCACA8];
     v29 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -159,7 +159,7 @@ LABEL_42:
     goto LABEL_38;
   }
 
-  if ((a3 & 0x2000000000) != 0)
+  if ((reasons & 0x2000000000) != 0)
   {
     v28 = MEMORY[0x277CCACA8];
     v29 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -171,7 +171,7 @@ LABEL_42:
   v27 = __atxlog_handle_context_heuristic();
   if (os_log_type_enabled(v27, OS_LOG_TYPE_FAULT))
   {
-    [(ATXContextNavigationSuggestionProducer *)self _contextTitleWithReasons:a3, v27];
+    [(ATXContextNavigationSuggestionProducer *)self _contextTitleWithReasons:reasons, v27];
   }
 
   v23 = self->_title;
@@ -182,7 +182,7 @@ LABEL_38:
   return v23;
 }
 
-- (id)_stringsWithPredictionReasons:(unint64_t)a3
+- (id)_stringsWithPredictionReasons:(unint64_t)reasons
 {
   v5 = 0;
   v6 = &v5;
@@ -203,52 +203,52 @@ void __72__ATXContextNavigationSuggestionProducer__stringsWithPredictionReasons_
   [*(*(*(a1 + 32) + 8) + 40) addObject:v2];
 }
 
-- (ATXContextNavigationSuggestionProducer)initWithTitle:(id)a3 event:(id)a4 schemaForEvent:(id)a5 alternateDestinationTitle:(id)a6
+- (ATXContextNavigationSuggestionProducer)initWithTitle:(id)title event:(id)event schemaForEvent:(id)forEvent alternateDestinationTitle:(id)destinationTitle
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  titleCopy = title;
+  eventCopy = event;
+  forEventCopy = forEvent;
+  destinationTitleCopy = destinationTitle;
   v18.receiver = self;
   v18.super_class = ATXContextNavigationSuggestionProducer;
   v15 = [(ATXContextNavigationSuggestionProducer *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_title, a3);
-    objc_storeStrong(&v16->_event, a4);
-    objc_storeStrong(&v16->_schemaForEvent, a5);
-    objc_storeStrong(&v16->_alternateDestinationTitle, a6);
+    objc_storeStrong(&v15->_title, title);
+    objc_storeStrong(&v16->_event, event);
+    objc_storeStrong(&v16->_schemaForEvent, forEvent);
+    objc_storeStrong(&v16->_alternateDestinationTitle, destinationTitle);
   }
 
   return v16;
 }
 
-- (id)suggestionForNavigationToDestination:(id)a3 transportType:(unint64_t)a4 destinationName:(id)a5 subtitle:(id)a6 predictionReasons:(unint64_t)a7 score:(double)a8 shouldClearOnEngagement:(BOOL)a9 validStartDate:(id)a10 validEndDate:(id)a11
+- (id)suggestionForNavigationToDestination:(id)destination transportType:(unint64_t)type destinationName:(id)name subtitle:(id)subtitle predictionReasons:(unint64_t)reasons score:(double)score shouldClearOnEngagement:(BOOL)engagement validStartDate:(id)self0 validEndDate:(id)self1
 {
-  v17 = a11;
-  v18 = a10;
-  v19 = a6;
-  v20 = a5;
-  v21 = a3;
-  v22 = [(ATXContextNavigationSuggestionProducer *)self _contextTitleWithReasons:a7];
+  endDateCopy = endDate;
+  dateCopy = date;
+  subtitleCopy = subtitle;
+  nameCopy = name;
+  destinationCopy = destination;
+  v22 = [(ATXContextNavigationSuggestionProducer *)self _contextTitleWithReasons:reasons];
   title = self->_title;
-  v24 = [(ATXContextNavigationSuggestionProducer *)self _dateInterval];
-  LOBYTE(v27) = a9;
-  v25 = [ATXContextHeuristicSuggestionProducer navigationToDestination:v21 title:title subtitle:v19 transportType:a4 destinationName:v20 predictionReasons:a7 localizedReason:a8 score:v22 shouldClearOnEngagement:v27 validStartDate:v18 validEndDate:v17 dateInterval:v24];
+  _dateInterval = [(ATXContextNavigationSuggestionProducer *)self _dateInterval];
+  LOBYTE(v27) = engagement;
+  v25 = [ATXContextHeuristicSuggestionProducer navigationToDestination:destinationCopy title:title subtitle:subtitleCopy transportType:type destinationName:nameCopy predictionReasons:reasons localizedReason:score score:v22 shouldClearOnEngagement:v27 validStartDate:dateCopy validEndDate:endDateCopy dateInterval:_dateInterval];
 
   return v25;
 }
 
 - (id)_dateInterval
 {
-  v3 = [(EKEvent *)self->_event startDate];
-  if (v3 && (v4 = v3, [(EKEvent *)self->_event endDate], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
+  startDate = [(EKEvent *)self->_event startDate];
+  if (startDate && (v4 = startDate, [(EKEvent *)self->_event endDate], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
   {
     v6 = objc_alloc(MEMORY[0x277CCA970]);
-    v7 = [(EKEvent *)self->_event startDate];
-    v8 = [(EKEvent *)self->_event endDate];
-    v9 = [v6 initWithStartDate:v7 endDate:v8];
+    startDate2 = [(EKEvent *)self->_event startDate];
+    endDate = [(EKEvent *)self->_event endDate];
+    v9 = [v6 initWithStartDate:startDate2 endDate:endDate];
   }
 
   else

@@ -1,34 +1,34 @@
 @interface _UIDynamicCaretInput
 - (BOOL)hasInk;
 - (BOOL)isInking;
-- (_UIDynamicCaretInput)initWithFrame:(CGRect)a3;
+- (_UIDynamicCaretInput)initWithFrame:(CGRect)frame;
 - (void)_fadeInk;
-- (void)addInkPoint:(CGPoint)a3 fromLastPoint:(BOOL)a4;
-- (void)addTouchAtPoint:(CGPoint)a3;
-- (void)cancelTouchAtPoint:(CGPoint)a3;
-- (void)clearAndNotify:(BOOL)a3;
+- (void)addInkPoint:(CGPoint)point fromLastPoint:(BOOL)lastPoint;
+- (void)addTouchAtPoint:(CGPoint)point;
+- (void)cancelTouchAtPoint:(CGPoint)point;
+- (void)clearAndNotify:(BOOL)notify;
 - (void)clearFadeTimer;
 - (void)committedStrokes;
 - (void)dealloc;
-- (void)drawPoint:(CGPoint)a3;
-- (void)drawRect:(CGRect)a3;
-- (void)endTouchAtPoint:(CGPoint)a3;
+- (void)drawPoint:(CGPoint)point;
+- (void)drawRect:(CGRect)rect;
+- (void)endTouchAtPoint:(CGPoint)point;
 - (void)log;
 - (void)send;
-- (void)setFrame:(CGRect)a3;
-- (void)setNeedsDisplayInRect:(CGRect)a3;
-- (void)startTouchAtPoint:(CGPoint)a3;
+- (void)setFrame:(CGRect)frame;
+- (void)setNeedsDisplayInRect:(CGRect)rect;
+- (void)startTouchAtPoint:(CGPoint)point;
 @end
 
 @implementation _UIDynamicCaretInput
 
-- (_UIDynamicCaretInput)initWithFrame:(CGRect)a3
+- (_UIDynamicCaretInput)initWithFrame:(CGRect)frame
 {
-  width = a3.size.width;
+  width = frame.size.width;
   v19[1] = *MEMORY[0x1E69E9840];
   v18.receiver = self;
   v18.super_class = _UIDynamicCaretInput;
-  v4 = [(UIView *)&v18 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(UIView *)&v18 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v5 = v4;
   if (v4)
   {
@@ -43,25 +43,25 @@
     [v7 setValue:&unk_1EFE2EE48 forKey:@"inputRadius"];
     v19[0] = v7;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
-    v9 = [(UIView *)v5 layer];
-    [v9 setFilters:v8];
+    layer = [(UIView *)v5 layer];
+    [layer setFilters:v8];
 
     v10 = width * 0.3;
     v11 = [[_UIDynamicCaretDot alloc] initWithFrame:0.0, 0.0, v10, v10];
     [(_UIDynamicCaretInput *)v5 setDotView:v11];
 
-    v12 = [(_UIDynamicCaretInput *)v5 dotView];
-    v13 = [v12 layer];
-    [v13 setCornerRadius:v10 * 0.5];
+    dotView = [(_UIDynamicCaretInput *)v5 dotView];
+    layer2 = [dotView layer];
+    [layer2 setCornerRadius:v10 * 0.5];
 
-    v14 = [(_UIDynamicCaretInput *)v5 dotView];
-    [v14 setAlpha:0.5];
+    dotView2 = [(_UIDynamicCaretInput *)v5 dotView];
+    [dotView2 setAlpha:0.5];
 
-    v15 = [(_UIDynamicCaretInput *)v5 dotView];
-    [v15 setHidden:1];
+    dotView3 = [(_UIDynamicCaretInput *)v5 dotView];
+    [dotView3 setHidden:1];
 
-    v16 = [(_UIDynamicCaretInput *)v5 dotView];
-    [(UIView *)v5 addSubview:v16];
+    dotView4 = [(_UIDynamicCaretInput *)v5 dotView];
+    [(UIView *)v5 addSubview:dotView4];
   }
 
   return v5;
@@ -75,43 +75,43 @@
   [(UIView *)&v3 dealloc];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  width = a3.size.width;
+  width = frame.size.width;
   v10.receiver = self;
   v10.super_class = _UIDynamicCaretInput;
-  [(UIView *)&v10 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
-  v5 = [(_UIDynamicCaretInput *)self dotView];
-  [v5 setBounds:{0.0, 0.0, width * 0.3, width * 0.3}];
+  [(UIView *)&v10 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
+  dotView = [(_UIDynamicCaretInput *)self dotView];
+  [dotView setBounds:{0.0, 0.0, width * 0.3, width * 0.3}];
 
-  v6 = [(_UIDynamicCaretInput *)self dotView];
-  v7 = [v6 layer];
-  [v7 setCornerRadius:width * 0.3 * 0.5];
+  dotView2 = [(_UIDynamicCaretInput *)self dotView];
+  layer = [dotView2 layer];
+  [layer setCornerRadius:width * 0.3 * 0.5];
 
-  v8 = [(UIView *)self layer];
+  layer2 = [(UIView *)self layer];
   v9 = [MEMORY[0x1E696AD98] numberWithDouble:width * 0.05];
-  [v8 setValue:v9 forKeyPath:@"filters.gaussianBlur.inputRadius"];
+  [layer2 setValue:v9 forKeyPath:@"filters.gaussianBlur.inputRadius"];
 }
 
 - (BOOL)hasInk
 {
-  v2 = [(_UIDynamicCaretInput *)self accumulatedStrokes];
-  v3 = [v2 numberOfStrokes] != 0;
+  accumulatedStrokes = [(_UIDynamicCaretInput *)self accumulatedStrokes];
+  v3 = [accumulatedStrokes numberOfStrokes] != 0;
 
   return v3;
 }
 
 - (BOOL)isInking
 {
-  v2 = [(_UIDynamicCaretInput *)self dotView];
-  v3 = [v2 isHidden];
+  dotView = [(_UIDynamicCaretInput *)self dotView];
+  isHidden = [dotView isHidden];
 
-  return v3 ^ 1;
+  return isHidden ^ 1;
 }
 
-- (void)setNeedsDisplayInRect:(CGRect)a3
+- (void)setNeedsDisplayInRect:(CGRect)rect
 {
-  [(UIView *)self bounds:a3.origin.x];
+  [(UIView *)self bounds:rect.origin.x];
   v4.receiver = self;
   v4.super_class = _UIDynamicCaretInput;
   [(UIView *)&v4 setNeedsDisplayInRect:?];
@@ -119,18 +119,18 @@
 
 - (void)clearFadeTimer
 {
-  v3 = [(_UIDynamicCaretInput *)self fadeTimer];
-  [v3 invalidate];
+  fadeTimer = [(_UIDynamicCaretInput *)self fadeTimer];
+  [fadeTimer invalidate];
 
   [(_UIDynamicCaretInput *)self setFadeTimer:0];
 }
 
 - (void)_fadeInk
 {
-  v3 = [(_UIDynamicCaretInput *)self dotView];
-  v4 = [v3 isHidden];
+  dotView = [(_UIDynamicCaretInput *)self dotView];
+  isHidden = [dotView isHidden];
 
-  if (v4)
+  if (isHidden)
   {
     fadeCount = self->_fadeCount;
     self->_fadeCount = fadeCount - 1;
@@ -146,11 +146,11 @@
   [(UIView *)self setNeedsDisplay];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   if (self->_bitmapContext)
   {
-    [(UIView *)self bounds:a3.origin.x];
+    [(UIView *)self bounds:rect.origin.x];
     v5 = v4;
     v7 = v6;
     v9 = v8;
@@ -179,10 +179,10 @@
   }
 }
 
-- (void)drawPoint:(CGPoint)a3
+- (void)drawPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   bitmapContext = self->_bitmapContext;
   if (!bitmapContext)
   {
@@ -217,13 +217,13 @@
 
 - (void)log
 {
-  v17 = [(_UIDynamicCaretInput *)self accumulatedStrokes];
-  if ([v17 numberOfStrokes])
+  accumulatedStrokes = [(_UIDynamicCaretInput *)self accumulatedStrokes];
+  if ([accumulatedStrokes numberOfStrokes])
   {
     v2 = objc_alloc_init(MEMORY[0x1E696AB78]);
     [v2 setDateFormat:@"%Y-%m-%d-%H%M%S"];
-    v3 = [MEMORY[0x1E695DF00] date];
-    v4 = [v2 stringFromDate:v3];
+    date = [MEMORY[0x1E695DF00] date];
+    v4 = [v2 stringFromDate:date];
 
     if (geteuid())
     {
@@ -244,29 +244,29 @@
     if (v9 || *__error() == 2 && ([MEMORY[0x1E696AC08] defaultManager], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "createDirectoryAtPath:withIntermediateDirectories:attributes:error:", v6, 1, 0, 0), v15, v16) && (v9 = fopen(objc_msgSend(v8, "UTF8String"), "w+")) != 0)
     {
       v10 = v9;
-      if ([v17 numberOfStrokes])
+      if ([accumulatedStrokes numberOfStrokes])
       {
         v11 = 0;
         do
         {
-          if ([v17 numberOfPointsInStrokeAtIndex:v11])
+          if ([accumulatedStrokes numberOfPointsInStrokeAtIndex:v11])
           {
             v12 = 0;
             do
             {
-              [v17 pointAtIndex:v12 inStrokeAtIndex:v11];
+              [accumulatedStrokes pointAtIndex:v12 inStrokeAtIndex:v11];
               fprintf(v10, "%d %d\n", v13, v14);
               ++v12;
             }
 
-            while (v12 < [v17 numberOfPointsInStrokeAtIndex:v11]);
+            while (v12 < [accumulatedStrokes numberOfPointsInStrokeAtIndex:v11]);
           }
 
           fwrite(";\n", 2uLL, 1uLL, v10);
           ++v11;
         }
 
-        while (v11 < [v17 numberOfStrokes]);
+        while (v11 < [accumulatedStrokes numberOfStrokes]);
       }
 
       fclose(v10);
@@ -281,9 +281,9 @@
   [(_UIDynamicCaretInput *)self clearAndNotify:1];
 }
 
-- (void)clearAndNotify:(BOOL)a3
+- (void)clearAndNotify:(BOOL)notify
 {
-  v3 = a3;
+  notifyCopy = notify;
   v5 = objc_alloc_init(MEMORY[0x1E69D9598]);
   [(_UIDynamicCaretInput *)self setAccumulatedStrokes:v5];
 
@@ -300,7 +300,7 @@
   }
 
   [(UIView *)self setNeedsDisplay];
-  if (v3)
+  if (notifyCopy)
   {
     v8 = +[UIKeyboardImpl activeInstance];
     [v8 clearInput];
@@ -309,34 +309,34 @@
 
 - (void)send
 {
-  v3 = [(_UIDynamicCaretInput *)self accumulatedStrokes];
-  v4 = [v3 numberOfStrokes];
+  accumulatedStrokes = [(_UIDynamicCaretInput *)self accumulatedStrokes];
+  numberOfStrokes = [accumulatedStrokes numberOfStrokes];
 
-  if (v4)
+  if (numberOfStrokes)
   {
     v6 = +[UIKeyboardImpl activeInstance];
-    v5 = [(_UIDynamicCaretInput *)self accumulatedStrokes];
-    [v6 addInputObject:v5];
+    accumulatedStrokes2 = [(_UIDynamicCaretInput *)self accumulatedStrokes];
+    [v6 addInputObject:accumulatedStrokes2];
   }
 }
 
-- (void)addInkPoint:(CGPoint)a3 fromLastPoint:(BOOL)a4
+- (void)addInkPoint:(CGPoint)point fromLastPoint:(BOOL)lastPoint
 {
-  v4 = a4;
-  x = a3.x;
-  y = a3.y;
-  v6 = [(_UIDynamicCaretInput *)self accumulatedStrokes];
+  lastPointCopy = lastPoint;
+  x = point.x;
+  y = point.y;
+  accumulatedStrokes = [(_UIDynamicCaretInput *)self accumulatedStrokes];
 
-  if (!v6)
+  if (!accumulatedStrokes)
   {
     v7 = objc_alloc_init(MEMORY[0x1E69D9598]);
     [(_UIDynamicCaretInput *)self setAccumulatedStrokes:v7];
   }
 
-  v8 = [(_UIDynamicCaretInput *)self accumulatedStrokes];
-  [v8 addPoint:{x, y}];
+  accumulatedStrokes2 = [(_UIDynamicCaretInput *)self accumulatedStrokes];
+  [accumulatedStrokes2 addPoint:{x, y}];
 
-  if (v4)
+  if (lastPointCopy)
   {
     v9 = sqrt((x - self->_lastViewLoc.x) * (x - self->_lastViewLoc.x) + (y - self->_lastViewLoc.y) * (y - self->_lastViewLoc.y));
     v10 = y;
@@ -369,68 +369,68 @@
 LABEL_10:
   *&self->_lastViewLoc.x = v11;
   self->_lastViewLoc.y = v10;
-  v18 = [(_UIDynamicCaretInput *)self committedAction];
-  [v18 touch];
+  committedAction = [(_UIDynamicCaretInput *)self committedAction];
+  [committedAction touch];
 }
 
-- (void)startTouchAtPoint:(CGPoint)a3
+- (void)startTouchAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(_UIDynamicCaretInput *)self dotView];
-  [v6 setHidden:0];
+  y = point.y;
+  x = point.x;
+  dotView = [(_UIDynamicCaretInput *)self dotView];
+  [dotView setHidden:0];
 
-  v7 = [(_UIDynamicCaretInput *)self dotView];
-  [v7 setCenter:{x, y}];
+  dotView2 = [(_UIDynamicCaretInput *)self dotView];
+  [dotView2 setCenter:{x, y}];
 
   [(_UIDynamicCaretInput *)self addInkPoint:0 fromLastPoint:x, y];
-  v8 = [(_UIDynamicCaretInput *)self fadeTimer];
+  fadeTimer = [(_UIDynamicCaretInput *)self fadeTimer];
 
-  if (!v8)
+  if (!fadeTimer)
   {
     v9 = [MEMORY[0x1E695DFF0] scheduledTimerWithTimeInterval:self target:sel__fadeInk selector:0 userInfo:1 repeats:0.0333333333];
     [(_UIDynamicCaretInput *)self setFadeTimer:v9];
 
-    v11 = [MEMORY[0x1E695DFD0] currentRunLoop];
-    v10 = [(_UIDynamicCaretInput *)self fadeTimer];
-    [v11 addTimer:v10 forMode:*MEMORY[0x1E695D918]];
+    currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
+    fadeTimer2 = [(_UIDynamicCaretInput *)self fadeTimer];
+    [currentRunLoop addTimer:fadeTimer2 forMode:*MEMORY[0x1E695D918]];
   }
 }
 
-- (void)addTouchAtPoint:(CGPoint)a3
+- (void)addTouchAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  if ((a3.x - self->_lastViewLoc.x) * (a3.x - self->_lastViewLoc.x) + (a3.y - self->_lastViewLoc.y) * (a3.y - self->_lastViewLoc.y) > 0.25)
+  y = point.y;
+  x = point.x;
+  if ((point.x - self->_lastViewLoc.x) * (point.x - self->_lastViewLoc.x) + (point.y - self->_lastViewLoc.y) * (point.y - self->_lastViewLoc.y) > 0.25)
   {
-    [(_UIDynamicCaretInput *)self addInkPoint:1 fromLastPoint:a3.x, a3.y];
+    [(_UIDynamicCaretInput *)self addInkPoint:1 fromLastPoint:point.x, point.y];
   }
 
-  v6 = [(_UIDynamicCaretInput *)self dotView];
-  [v6 setCenter:{x, y}];
+  dotView = [(_UIDynamicCaretInput *)self dotView];
+  [dotView setCenter:{x, y}];
 }
 
-- (void)endTouchAtPoint:(CGPoint)a3
+- (void)endTouchAtPoint:(CGPoint)point
 {
-  v4 = [(_UIDynamicCaretInput *)self dotView:a3.x];
-  v5 = [v4 isHidden];
+  v4 = [(_UIDynamicCaretInput *)self dotView:point.x];
+  isHidden = [v4 isHidden];
 
-  if ((v5 & 1) == 0)
+  if ((isHidden & 1) == 0)
   {
-    v6 = [(_UIDynamicCaretInput *)self dotView];
-    [v6 setHidden:1];
+    dotView = [(_UIDynamicCaretInput *)self dotView];
+    [dotView setHidden:1];
 
     self->_fadeCount = 30;
     [(UIView *)self setNeedsDisplay];
     [(_UIDynamicCaretInput *)self committedStrokes];
-    v7 = [(_UIDynamicCaretInput *)self committedAction];
-    [v7 cancel];
+    committedAction = [(_UIDynamicCaretInput *)self committedAction];
+    [committedAction cancel];
   }
 }
 
-- (void)cancelTouchAtPoint:(CGPoint)a3
+- (void)cancelTouchAtPoint:(CGPoint)point
 {
-  [(_UIDynamicCaretInput *)self endTouchAtPoint:a3.x, a3.y];
+  [(_UIDynamicCaretInput *)self endTouchAtPoint:point.x, point.y];
 
   [(_UIDynamicCaretInput *)self clearAndNotify:1];
 }

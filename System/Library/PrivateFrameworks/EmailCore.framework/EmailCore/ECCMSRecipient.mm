@@ -1,26 +1,26 @@
 @interface ECCMSRecipient
-- (ECCMSRecipient)initWithAddress:(id)a3 certificate:(__SecCertificate *)a4 capabilities:(id)a5;
+- (ECCMSRecipient)initWithAddress:(id)address certificate:(__SecCertificate *)certificate capabilities:(id)capabilities;
 - (void)dealloc;
 @end
 
 @implementation ECCMSRecipient
 
-- (ECCMSRecipient)initWithAddress:(id)a3 certificate:(__SecCertificate *)a4 capabilities:(id)a5
+- (ECCMSRecipient)initWithAddress:(id)address certificate:(__SecCertificate *)certificate capabilities:(id)capabilities
 {
-  v8 = a3;
-  v9 = a5;
+  addressCopy = address;
+  capabilitiesCopy = capabilities;
   v16.receiver = self;
   v16.super_class = ECCMSRecipient;
   v10 = [(ECCMSRecipient *)&v16 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [addressCopy copy];
     address = v10->_address;
     v10->_address = v11;
 
-    v10->_certificate = a4;
-    CFRetain(a4);
-    v13 = [v9 copy];
+    v10->_certificate = certificate;
+    CFRetain(certificate);
+    v13 = [capabilitiesCopy copy];
     capabilities = v10->_capabilities;
     v10->_capabilities = v13;
   }

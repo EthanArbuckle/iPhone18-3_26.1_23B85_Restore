@@ -1,6 +1,6 @@
 @interface MRDXPCUIController
 - (BOOL)hasUIAssertions;
-- (MRDXPCUIController)initWithDelegate:(id)a3;
+- (MRDXPCUIController)initWithDelegate:(id)delegate;
 - (MRUIServerXPCProtocol)server;
 - (NSXPCConnection)xpcConnection;
 - (id)acquireQuickControlsAssertion;
@@ -8,12 +8,12 @@
 - (id)synchronousServer;
 - (void)_updateTransaction;
 - (void)acquireGroupSessionLowPowerPlatterAssertion;
-- (void)acquireGroupSessionNearbyAssertionForSession:(id)a3;
+- (void)acquireGroupSessionNearbyAssertionForSession:(id)session;
 - (void)acquireLockScreenControlsAssertion;
-- (void)acquireRouteRecommendationAssertionForIdentifiers:(id)a3;
+- (void)acquireRouteRecommendationAssertionForIdentifiers:(id)identifiers;
 - (void)acquireScreenMirroringQuickControlsAssertion;
 - (void)dealloc;
-- (void)nearbyGroupSessionDismissed:(id)a3;
+- (void)nearbyGroupSessionDismissed:(id)dismissed;
 - (void)releaseGroupSessionLowPowerPlatterAssertion;
 - (void)releaseGroupSessionNearbyAssertion;
 - (void)releaseLockScreenControlsAssertion;
@@ -25,9 +25,9 @@
 
 @implementation MRDXPCUIController
 
-- (MRDXPCUIController)initWithDelegate:(id)a3
+- (MRDXPCUIController)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = MRDXPCUIController;
   v5 = [(MRDXPCUIController *)&v8 init];
@@ -42,7 +42,7 @@
     }
 
     v5->_lock._os_unfair_lock_opaque = 0;
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v5;
@@ -54,11 +54,11 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v13 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "[MRUIController][D] <%p> Dealloc.", buf, 0xCu);
   }
 
-  v4 = [(MRDXPCUIController *)self server];
+  server = [(MRDXPCUIController *)self server];
   if ([(MRDXPCUIController *)self hasLockScreenControlsAssertion])
   {
     v5 = _MRLogForCategory();
@@ -67,7 +67,7 @@
       sub_1003B03CC();
     }
 
-    [v4 releaseLockScreenControlsAssertionWithReply:&stru_1004C10A0];
+    [server releaseLockScreenControlsAssertionWithReply:&stru_1004C10A0];
   }
 
   if ([(MRDXPCUIController *)self hasQuickControlsAssertion])
@@ -78,7 +78,7 @@
       sub_1003B0434();
     }
 
-    [v4 releaseQuickControlsAssertionWithReply:&stru_1004C10C0];
+    [server releaseQuickControlsAssertionWithReply:&stru_1004C10C0];
   }
 
   if ([(MRDXPCUIController *)self hasScreenMirroringQuickControlsAssertion])
@@ -89,7 +89,7 @@
       sub_1003B049C();
     }
 
-    [v4 releaseScreenMirroringQuickControlsAssertionWithReply:&stru_1004C10E0];
+    [server releaseScreenMirroringQuickControlsAssertionWithReply:&stru_1004C10E0];
   }
 
   if ([(MRDXPCUIController *)self hasRouteRecommendationAssertion])
@@ -100,7 +100,7 @@
       sub_1003B0504();
     }
 
-    [v4 releaseRouteRecommendationAssertionWithReply:&stru_1004C1100];
+    [server releaseRouteRecommendationAssertionWithReply:&stru_1004C1100];
   }
 
   if ([(MRDXPCUIController *)self hasGroupSessionLowPowerAssertion])
@@ -111,11 +111,11 @@
       sub_1003B056C();
     }
 
-    [v4 releaseGroupSessionLowPowerPlatterAssertionWithReply:&stru_1004C1120];
+    [server releaseGroupSessionLowPowerPlatterAssertionWithReply:&stru_1004C1120];
   }
 
-  v10 = [(MRDXPCUIController *)self xpcConnection];
-  [v10 invalidate];
+  xpcConnection = [(MRDXPCUIController *)self xpcConnection];
+  [xpcConnection invalidate];
 
   v11.receiver = self;
   v11.super_class = MRDXPCUIController;
@@ -131,7 +131,7 @@
     v5 = [v3 initWithName:v4];
     [(MRDXPCUIController *)self setTransaction:v5];
 
-    v6 = [(MRDXPCUIController *)self transaction];
+    transaction = [(MRDXPCUIController *)self transaction];
     MRRegisterTransaction();
   }
 
@@ -159,10 +159,10 @@
   if (!xpcConnection)
   {
     v4 = +[MRDUIServer sharedServer];
-    v5 = [v4 listener];
-    v6 = [v5 endpoint];
+    listener = [v4 listener];
+    endpoint = [listener endpoint];
 
-    v7 = [[NSXPCConnection alloc] initWithListenerEndpoint:v6];
+    v7 = [[NSXPCConnection alloc] initWithListenerEndpoint:endpoint];
     v8 = objc_opt_class();
     v9 = objc_opt_class();
     v10 = [NSMutableSet setWithObjects:v8, v9, objc_opt_class(), 0];
@@ -210,26 +210,26 @@
 
 - (MRUIServerXPCProtocol)server
 {
-  v3 = [(MRDXPCUIController *)self xpcConnection];
+  xpcConnection = [(MRDXPCUIController *)self xpcConnection];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1001A7BF8;
   v6[3] = &unk_1004B6FC0;
   v6[4] = self;
-  v4 = [v3 remoteObjectProxyWithErrorHandler:v6];
+  v4 = [xpcConnection remoteObjectProxyWithErrorHandler:v6];
 
   return v4;
 }
 
 - (id)synchronousServer
 {
-  v3 = [(MRDXPCUIController *)self xpcConnection];
+  xpcConnection = [(MRDXPCUIController *)self xpcConnection];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1001A7D68;
   v6[3] = &unk_1004B6FC0;
   v6[4] = self;
-  v4 = [v3 synchronousRemoteObjectProxyWithErrorHandler:v6];
+  v4 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v6];
 
   return v4;
 }
@@ -237,16 +237,16 @@
 - (void)acquireLockScreenControlsAssertion
 {
   v3 = +[MRSharedSettings currentSettings];
-  v4 = [v3 supportManyRecommendationsPlatters];
+  supportManyRecommendationsPlatters = [v3 supportManyRecommendationsPlatters];
 
-  if ((v4 & 1) == 0 && [(MRDXPCUIController *)self hasRouteRecommendationAssertion])
+  if ((supportManyRecommendationsPlatters & 1) == 0 && [(MRDXPCUIController *)self hasRouteRecommendationAssertion])
   {
     [(MRDXPCUIController *)self releaseRouteRecommendationAssertion];
   }
 
   [(MRDXPCUIController *)self setHasLockScreenControlsAssertion:1];
-  v5 = [(MRDXPCUIController *)self server];
-  [v5 acquireLockScreenControlsAssertionWithReply:&stru_1004C1140];
+  server = [(MRDXPCUIController *)self server];
+  [server acquireLockScreenControlsAssertionWithReply:&stru_1004C1140];
 
   [(MRDXPCUIController *)self _updateTransaction];
 }
@@ -254,16 +254,16 @@
 - (void)releaseLockScreenControlsAssertion
 {
   [(MRDXPCUIController *)self setHasLockScreenControlsAssertion:0];
-  v3 = [(MRDXPCUIController *)self server];
-  [v3 releaseLockScreenControlsAssertionWithReply:&stru_1004C1160];
+  server = [(MRDXPCUIController *)self server];
+  [server releaseLockScreenControlsAssertionWithReply:&stru_1004C1160];
 
   [(MRDXPCUIController *)self _updateTransaction];
 }
 
 - (void)routeRecommendationDismissed
 {
-  v2 = [(MRDXPCUIController *)self delegate];
-  [v2 routeRecommendationDismissed];
+  delegate = [(MRDXPCUIController *)self delegate];
+  [delegate routeRecommendationDismissed];
 }
 
 - (id)acquireQuickControlsAssertion
@@ -274,13 +274,13 @@
   v10 = sub_10003528C;
   v11 = sub_100035AFC;
   v12 = 0;
-  v3 = [(MRDXPCUIController *)self synchronousServer];
+  synchronousServer = [(MRDXPCUIController *)self synchronousServer];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1001A809C;
   v6[3] = &unk_1004C1188;
   v6[4] = &v7;
-  [v3 acquireQuickControlsAssertionWithReply:v6];
+  [synchronousServer acquireQuickControlsAssertionWithReply:v6];
 
   [(MRDXPCUIController *)self _updateTransaction];
   v4 = v8[5];
@@ -292,8 +292,8 @@
 - (void)releaseQuickControlsAssertion
 {
   [(MRDXPCUIController *)self setHasQuickControlsAssertion:0];
-  v3 = [(MRDXPCUIController *)self server];
-  [v3 releaseQuickControlsAssertionWithReply:&stru_1004C11A8];
+  server = [(MRDXPCUIController *)self server];
+  [server releaseQuickControlsAssertionWithReply:&stru_1004C11A8];
 
   [(MRDXPCUIController *)self _updateTransaction];
 }
@@ -301,8 +301,8 @@
 - (void)acquireScreenMirroringQuickControlsAssertion
 {
   [(MRDXPCUIController *)self setHasScreenMirroringQuickControlsAssertion:1];
-  v3 = [(MRDXPCUIController *)self server];
-  [v3 acquireScreenMirroringQuickControlsAssertionWithReply:&stru_1004C11C8];
+  server = [(MRDXPCUIController *)self server];
+  [server acquireScreenMirroringQuickControlsAssertionWithReply:&stru_1004C11C8];
 
   [(MRDXPCUIController *)self _updateTransaction];
 }
@@ -310,18 +310,18 @@
 - (void)releaseScreenMirroringQuickControlsAssertion
 {
   [(MRDXPCUIController *)self setHasScreenMirroringQuickControlsAssertion:0];
-  v3 = [(MRDXPCUIController *)self server];
-  [v3 releaseScreenMirroringQuickControlsAssertionWithReply:&stru_1004C11E8];
+  server = [(MRDXPCUIController *)self server];
+  [server releaseScreenMirroringQuickControlsAssertionWithReply:&stru_1004C11E8];
 
   [(MRDXPCUIController *)self _updateTransaction];
 }
 
-- (void)acquireGroupSessionNearbyAssertionForSession:(id)a3
+- (void)acquireGroupSessionNearbyAssertionForSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   [(MRDXPCUIController *)self setHasGroupSessionNearbyAssertion:1];
-  v5 = [(MRDXPCUIController *)self server];
-  [v5 acquireGroupSessionNearbyAssertionForSession:v4 withReply:&stru_1004C1208];
+  server = [(MRDXPCUIController *)self server];
+  [server acquireGroupSessionNearbyAssertionForSession:sessionCopy withReply:&stru_1004C1208];
 
   [(MRDXPCUIController *)self _updateTransaction];
 }
@@ -329,8 +329,8 @@
 - (void)releaseGroupSessionNearbyAssertion
 {
   [(MRDXPCUIController *)self setHasGroupSessionNearbyAssertion:0];
-  v3 = [(MRDXPCUIController *)self server];
-  [v3 releaseGroupSessionNearbyAssertionWithReply:&stru_1004C1228];
+  server = [(MRDXPCUIController *)self server];
+  [server releaseGroupSessionNearbyAssertionWithReply:&stru_1004C1228];
 
   [(MRDXPCUIController *)self _updateTransaction];
 }
@@ -338,8 +338,8 @@
 - (void)acquireGroupSessionLowPowerPlatterAssertion
 {
   [(MRDXPCUIController *)self setHasGroupSessionLowPowerAssertion:1];
-  v3 = [(MRDXPCUIController *)self server];
-  [v3 acquireGroupSessionLowPowerPlatterAssertionWithReply:&stru_1004C1248];
+  server = [(MRDXPCUIController *)self server];
+  [server acquireGroupSessionLowPowerPlatterAssertionWithReply:&stru_1004C1248];
 
   [(MRDXPCUIController *)self _updateTransaction];
 }
@@ -347,30 +347,30 @@
 - (void)releaseGroupSessionLowPowerPlatterAssertion
 {
   [(MRDXPCUIController *)self setHasGroupSessionLowPowerAssertion:0];
-  v3 = [(MRDXPCUIController *)self server];
-  [v3 releaseGroupSessionLowPowerPlatterAssertionWithReply:&stru_1004C1268];
+  server = [(MRDXPCUIController *)self server];
+  [server releaseGroupSessionLowPowerPlatterAssertionWithReply:&stru_1004C1268];
 
   [(MRDXPCUIController *)self _updateTransaction];
 }
 
-- (void)nearbyGroupSessionDismissed:(id)a3
+- (void)nearbyGroupSessionDismissed:(id)dismissed
 {
-  v4 = a3;
-  v5 = [(MRDXPCUIController *)self delegate];
-  [v5 nearbyGroupSessionDismissed:v4];
+  dismissedCopy = dismissed;
+  delegate = [(MRDXPCUIController *)self delegate];
+  [delegate nearbyGroupSessionDismissed:dismissedCopy];
 }
 
-- (void)acquireRouteRecommendationAssertionForIdentifiers:(id)a3
+- (void)acquireRouteRecommendationAssertionForIdentifiers:(id)identifiers
 {
-  v7 = a3;
+  identifiersCopy = identifiers;
   v4 = +[MRSharedSettings currentSettings];
-  v5 = [v4 supportManyRecommendationsPlatters];
+  supportManyRecommendationsPlatters = [v4 supportManyRecommendationsPlatters];
 
-  if ((v5 & 1) != 0 || ![(MRDXPCUIController *)self hasLockScreenControlsAssertion])
+  if ((supportManyRecommendationsPlatters & 1) != 0 || ![(MRDXPCUIController *)self hasLockScreenControlsAssertion])
   {
     [(MRDXPCUIController *)self setHasRouteRecommendationAssertion:1];
-    v6 = [(MRDXPCUIController *)self server];
-    [v6 acquireRouteRecommendationAssertionForIdentifiers:v7 withReply:&stru_1004C1288];
+    server = [(MRDXPCUIController *)self server];
+    [server acquireRouteRecommendationAssertionForIdentifiers:identifiersCopy withReply:&stru_1004C1288];
 
     [(MRDXPCUIController *)self _updateTransaction];
   }
@@ -379,8 +379,8 @@
 - (void)releaseRouteRecommendationAssertion
 {
   [(MRDXPCUIController *)self setHasRouteRecommendationAssertion:0];
-  v3 = [(MRDXPCUIController *)self server];
-  [v3 releaseRouteRecommendationAssertionWithReply:&stru_1004C12A8];
+  server = [(MRDXPCUIController *)self server];
+  [server releaseRouteRecommendationAssertionWithReply:&stru_1004C12A8];
 
   [(MRDXPCUIController *)self _updateTransaction];
 }

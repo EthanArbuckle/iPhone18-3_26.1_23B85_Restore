@@ -1,28 +1,28 @@
 @interface SBStartupTransitionToLoginWindow
-- (id)suggestedLockAnimationForTransitionRequest:(id)a3;
+- (id)suggestedLockAnimationForTransitionRequest:(id)request;
 @end
 
 @implementation SBStartupTransitionToLoginWindow
 
-- (id)suggestedLockAnimationForTransitionRequest:(id)a3
+- (id)suggestedLockAnimationForTransitionRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(SBBaseStartupTransition *)self context];
-  v6 = [v5 isLogout];
+  requestCopy = request;
+  context = [(SBBaseStartupTransition *)self context];
+  isLogout = [context isLogout];
 
-  if (v6)
+  if (isLogout)
   {
     v7 = [SBUIStartupToLoginWindowAnimationController alloc];
-    v8 = [(SBBaseStartupTransition *)self context];
-    v9 = [v8 overlay];
-    v10 = [(SBUIStartupToLoginWindowAnimationController *)v7 initWithTransitionContextProvider:v4 overlay:v9];
+    context2 = [(SBBaseStartupTransition *)self context];
+    overlay = [context2 overlay];
+    v10 = [(SBUIStartupToLoginWindowAnimationController *)v7 initWithTransitionContextProvider:requestCopy overlay:overlay];
   }
 
   else
   {
     v12.receiver = self;
     v12.super_class = SBStartupTransitionToLoginWindow;
-    v10 = [(SBStartupTransitionToLockOut *)&v12 suggestedLockAnimationForTransitionRequest:v4];
+    v10 = [(SBStartupTransitionToLockOut *)&v12 suggestedLockAnimationForTransitionRequest:requestCopy];
   }
 
   return v10;

@@ -1,29 +1,29 @@
 @interface PUTrimToolControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_handlePlayPauseButton:(id)a3;
-- (void)_handleScrubberTimelineOverlayButton:(id)a3;
-- (void)focusTimeline:(id)a3 presentAction:(id)a4 locationInTimeline:(CGPoint)a5;
+- (void)_handlePlayPauseButton:(id)button;
+- (void)_handleScrubberTimelineOverlayButton:(id)button;
+- (void)focusTimeline:(id)timeline presentAction:(id)action locationInTimeline:(CGPoint)inTimeline;
 - (void)viewDidLoad;
 @end
 
 @implementation PUTrimToolControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PUTrimToolController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PUTrimToolController" hasInstanceMethod:@"_handlePlayPauseButton:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"PUTrimToolController" hasInstanceMethod:@"playerWrapper" withFullSignature:{"@", 0}];
-  [v3 validateProtocol:@"PXTrimToolPlayerWrapper" hasMethod:@"isPlaying" isInstanceMethod:1 isRequired:1];
-  [v3 validateClass:@"PUTrimToolController" hasInstanceMethod:@"focusTimeline:presentAction:locationInTimeline:" withFullSignature:{"v", "@", "@", "{CGPoint=dd}", 0}];
-  [v3 validateClass:@"PUTrimToolController" hasInstanceMethod:@"_handleScrubberTimelineOverlayButton:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"PXLivePhotoTrimScrubber" hasInstanceMethod:@"keyTime" withFullSignature:{"{?=qiIq}", 0}];
-  [v3 validateClass:@"PUTrimToolController" hasInstanceMethod:@"trimScrubberTimelineOverlayView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUTrimToolController" hasInstanceMethod:@"trimScrubberTimelineOverlayButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUTrimToolController" hasInstanceMethod:@"focusTimelineAction" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXFocusTimelineAction" hasInstanceMethod:@"kind" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"PUTrimToolController" hasInstanceVariable:@"_trimScrubber" withType:"PXLivePhotoTrimScrubber"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PUTrimToolController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PUTrimToolController" hasInstanceMethod:@"_handlePlayPauseButton:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"PUTrimToolController" hasInstanceMethod:@"playerWrapper" withFullSignature:{"@", 0}];
+  [validationsCopy validateProtocol:@"PXTrimToolPlayerWrapper" hasMethod:@"isPlaying" isInstanceMethod:1 isRequired:1];
+  [validationsCopy validateClass:@"PUTrimToolController" hasInstanceMethod:@"focusTimeline:presentAction:locationInTimeline:" withFullSignature:{"v", "@", "@", "{CGPoint=dd}", 0}];
+  [validationsCopy validateClass:@"PUTrimToolController" hasInstanceMethod:@"_handleScrubberTimelineOverlayButton:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"PXLivePhotoTrimScrubber" hasInstanceMethod:@"keyTime" withFullSignature:{"{?=qiIq}", 0}];
+  [validationsCopy validateClass:@"PUTrimToolController" hasInstanceMethod:@"trimScrubberTimelineOverlayView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUTrimToolController" hasInstanceMethod:@"trimScrubberTimelineOverlayButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUTrimToolController" hasInstanceMethod:@"focusTimelineAction" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXFocusTimelineAction" hasInstanceMethod:@"kind" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"PUTrimToolController" hasInstanceVariable:@"_trimScrubber" withType:"PXLivePhotoTrimScrubber"];
 }
 
 - (void)viewDidLoad
@@ -34,14 +34,14 @@
   [(PUTrimToolControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
-- (void)_handlePlayPauseButton:(id)a3
+- (void)_handlePlayPauseButton:(id)button
 {
   v8.receiver = self;
   v8.super_class = PUTrimToolControllerAccessibility;
-  [(PUTrimToolControllerAccessibility *)&v8 _handlePlayPauseButton:a3];
+  [(PUTrimToolControllerAccessibility *)&v8 _handlePlayPauseButton:button];
   v4 = [(PUTrimToolControllerAccessibility *)self safeValueForKey:@"_trimScrubber"];
-  v5 = [v4 accessibilityTraits];
-  if ((*MEMORY[0x29EDC7FA8] & v5) != 0)
+  accessibilityTraits = [v4 accessibilityTraits];
+  if ((*MEMORY[0x29EDC7FA8] & accessibilityTraits) != 0)
   {
     v6 = ~*MEMORY[0x29EDC7FA8];
   }
@@ -55,7 +55,7 @@
   v7[1] = 3221225472;
   v7[2] = __60__PUTrimToolControllerAccessibility__handlePlayPauseButton___block_invoke;
   v7[3] = &__block_descriptor_40_e5_Q8__0l;
-  v7[4] = v6 & v5;
+  v7[4] = v6 & accessibilityTraits;
   [v4 _setAccessibilityTraitsBlock:v7];
   [(PUTrimToolControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
@@ -105,24 +105,24 @@ id __79__PUTrimToolControllerAccessibility__accessibilityLoadAccessibilityInform
   return v4;
 }
 
-- (void)focusTimeline:(id)a3 presentAction:(id)a4 locationInTimeline:(CGPoint)a5
+- (void)focusTimeline:(id)timeline presentAction:(id)action locationInTimeline:(CGPoint)inTimeline
 {
-  y = a5.y;
-  x = a5.x;
-  v9 = a3;
-  v10 = a4;
+  y = inTimeline.y;
+  x = inTimeline.x;
+  timelineCopy = timeline;
+  actionCopy = action;
   v34.receiver = self;
   v34.super_class = PUTrimToolControllerAccessibility;
-  [(PUTrimToolControllerAccessibility *)&v34 focusTimeline:v9 presentAction:v10 locationInTimeline:x, y];
+  [(PUTrimToolControllerAccessibility *)&v34 focusTimeline:timelineCopy presentAction:actionCopy locationInTimeline:x, y];
   [(PUTrimToolControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
   v11 = [(PUTrimToolControllerAccessibility *)self safeValueForKey:@"_trimScrubber"];
-  v12 = [v11 accessibilityTraits];
+  accessibilityTraits = [v11 accessibilityTraits];
   v13 = [(PUTrimToolControllerAccessibility *)self safeValueForKey:@"trimScrubberTimelineOverlayButton"];
-  v14 = [v10 safeIntegerForKey:@"kind"];
+  v14 = [actionCopy safeIntegerForKey:@"kind"];
   v15 = *MEMORY[0x29EDC7FA8];
   if (v14)
   {
-    v16 = v12 & ~v15;
+    v16 = accessibilityTraits & ~v15;
   }
 
   else
@@ -141,7 +141,7 @@ id __79__PUTrimToolControllerAccessibility__accessibilityLoadAccessibilityInform
     p_time = &time;
     v26 = v11;
     AXPerformSafeBlock();
-    v16 = v15 | v12;
+    v16 = v15 | accessibilityTraits;
     v33 = *(*&time.timescale + 32);
 
     _Block_object_dispose(&time, 8);
@@ -185,29 +185,29 @@ id __84__PUTrimToolControllerAccessibility_focusTimeline_presentAction_locationI
   return v3;
 }
 
-- (void)_handleScrubberTimelineOverlayButton:(id)a3
+- (void)_handleScrubberTimelineOverlayButton:(id)button
 {
   v10.receiver = self;
   v10.super_class = PUTrimToolControllerAccessibility;
-  [(PUTrimToolControllerAccessibility *)&v10 _handleScrubberTimelineOverlayButton:a3];
+  [(PUTrimToolControllerAccessibility *)&v10 _handleScrubberTimelineOverlayButton:button];
   v4 = [(PUTrimToolControllerAccessibility *)self safeValueForKey:@"focusTimelineAction"];
   v5 = [v4 safeUnsignedIntegerForKey:@"kind"];
 
   v6 = [(PUTrimToolControllerAccessibility *)self safeValueForKey:@"_trimScrubber"];
-  v7 = [v6 accessibilityTraits];
+  accessibilityTraits = [v6 accessibilityTraits];
   if (!v5)
   {
     v8 = accessibilityPULocalizedString(@"deleted.focus");
     UIAccessibilitySpeakAndDoNotBeInterrupted();
 
-    v7 &= ~*MEMORY[0x29EDC7FA8];
+    accessibilityTraits &= ~*MEMORY[0x29EDC7FA8];
   }
 
   v9[0] = MEMORY[0x29EDCA5F8];
   v9[1] = 3221225472;
   v9[2] = __74__PUTrimToolControllerAccessibility__handleScrubberTimelineOverlayButton___block_invoke;
   v9[3] = &__block_descriptor_40_e5_Q8__0l;
-  v9[4] = v7;
+  v9[4] = accessibilityTraits;
   [v6 _setAccessibilityTraitsBlock:v9];
 }
 

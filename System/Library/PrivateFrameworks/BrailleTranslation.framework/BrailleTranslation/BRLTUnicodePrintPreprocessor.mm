@@ -1,19 +1,19 @@
 @interface BRLTUnicodePrintPreprocessor
-- (id)preprocessPrintString:(id)a3 withLocationMap:(id *)a4 isEightDot:(BOOL)a5 textFormattingRanges:(id)a6;
+- (id)preprocessPrintString:(id)string withLocationMap:(id *)map isEightDot:(BOOL)dot textFormattingRanges:(id)ranges;
 @end
 
 @implementation BRLTUnicodePrintPreprocessor
 
-- (id)preprocessPrintString:(id)a3 withLocationMap:(id *)a4 isEightDot:(BOOL)a5 textFormattingRanges:(id)a6
+- (id)preprocessPrintString:(id)string withLocationMap:(id *)map isEightDot:(BOOL)dot textFormattingRanges:(id)ranges
 {
   v55 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = v7;
-  if (v7)
+  stringCopy = string;
+  v8 = stringCopy;
+  if (stringCopy)
   {
-    v9 = [v7 length];
-    v48 = [MEMORY[0x277CCAB68] string];
-    if (a4)
+    v9 = [stringCopy length];
+    string = [MEMORY[0x277CCAB68] string];
+    if (map)
     {
       v10 = [MEMORY[0x277CBEB28] dataWithLength:0];
     }
@@ -27,9 +27,9 @@
     v52 = 0u;
     v49 = 0u;
     v50 = 0u;
-    v11 = [&unk_2854025F8 allKeys];
-    v12 = [v11 countByEnumeratingWithState:&v49 objects:v54 count:16];
-    v43 = a4;
+    allKeys = [&unk_2854025F8 allKeys];
+    v12 = [allKeys countByEnumeratingWithState:&v49 objects:v54 count:16];
+    mapCopy = map;
     if (v12)
     {
       v13 = v12;
@@ -43,7 +43,7 @@
         {
           if (*v50 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(allKeys);
           }
 
           v15 = [(__CFString *)v17 stringByAppendingString:*(*(&v49 + 1) + 8 * v16)];
@@ -53,7 +53,7 @@
         }
 
         while (v13 != v16);
-        v13 = [v11 countByEnumeratingWithState:&v49 objects:v54 count:16];
+        v13 = [allKeys countByEnumeratingWithState:&v49 objects:v54 count:16];
       }
 
       while (v13);
@@ -89,7 +89,7 @@
             break;
           }
 
-          v26 = v48;
+          v26 = string;
           v27 = v10;
           v28 = [v45 substringWithRange:{v20, v23}];
           [v26 appendString:v28];
@@ -124,7 +124,7 @@
           while (v34 < [v33 length]);
         }
 
-        [v48 appendString:v33];
+        [string appendString:v33];
         v35 = v23 + v25;
         v19 = [v21 substringFromIndex:v23 + v25];
 
@@ -137,7 +137,7 @@
 
     if (v42 > v20)
     {
-      v36 = v48;
+      v36 = string;
       v37 = v10;
       v38 = [v45 substringWithRange:{v20, v42 - v20}];
       [v36 appendString:v38];
@@ -152,10 +152,10 @@
       while (v42 != v20);
     }
 
-    if (v43)
+    if (mapCopy)
     {
       v39 = v10;
-      *v43 = v10;
+      *mapCopy = v10;
     }
 
     v8 = v44;
@@ -163,12 +163,12 @@
 
   else
   {
-    v48 = 0;
+    string = 0;
   }
 
   v40 = *MEMORY[0x277D85DE8];
 
-  return v48;
+  return string;
 }
 
 @end

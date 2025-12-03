@@ -17,7 +17,7 @@
 + (id)storeConfigurationForLabeledDataStore;
 + (id)storeConfigurationForPeopleSuggestionsMetricsStore;
 + (id)storeConfigurationForVirtualFeatureStore;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)sublibraries;
 + (id)validKeyPaths;
 @end
@@ -27,10 +27,10 @@
 + (id)sublibraries
 {
   v8[2] = *MEMORY[0x1E69E9840];
-  v3 = [a1 Inference];
-  v8[0] = v3;
-  v4 = [a1 Metrics];
-  v8[1] = v4;
+  inference = [self Inference];
+  v8[0] = inference;
+  metrics = [self Metrics];
+  v8[1] = metrics;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:2];
 
   v6 = *MEMORY[0x1E69E9840];
@@ -38,44 +38,44 @@
   return v5;
 }
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"ConversationUserInteraction"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"ConversationUserInteraction"])
   {
-    v5 = [a1 ConversationUserInteraction];
+    conversationUserInteraction = [self ConversationUserInteraction];
 LABEL_13:
-    v6 = v5;
+    v6 = conversationUserInteraction;
     goto LABEL_14;
   }
 
-  if ([v4 isEqualToString:@"DurableFeatureStore"])
+  if ([nameCopy isEqualToString:@"DurableFeatureStore"])
   {
-    v5 = [a1 DurableFeatureStore];
+    conversationUserInteraction = [self DurableFeatureStore];
     goto LABEL_13;
   }
 
-  if ([v4 isEqualToString:@"Feedback"])
+  if ([nameCopy isEqualToString:@"Feedback"])
   {
-    v5 = [a1 Feedback];
+    conversationUserInteraction = [self Feedback];
     goto LABEL_13;
   }
 
-  if ([v4 isEqualToString:@"LabeledDataStore"])
+  if ([nameCopy isEqualToString:@"LabeledDataStore"])
   {
-    v5 = [a1 LabeledDataStore];
+    conversationUserInteraction = [self LabeledDataStore];
     goto LABEL_13;
   }
 
-  if ([v4 isEqualToString:@"PeopleSuggestionsMetricsStore"])
+  if ([nameCopy isEqualToString:@"PeopleSuggestionsMetricsStore"])
   {
-    v5 = [a1 PeopleSuggestionsMetricsStore];
+    conversationUserInteraction = [self PeopleSuggestionsMetricsStore];
     goto LABEL_13;
   }
 
-  if ([v4 isEqualToString:@"VirtualFeatureStore"])
+  if ([nameCopy isEqualToString:@"VirtualFeatureStore"])
   {
-    v5 = [a1 VirtualFeatureStore];
+    conversationUserInteraction = [self VirtualFeatureStore];
     goto LABEL_13;
   }
 
@@ -113,13 +113,13 @@ LABEL_14:
 
 + (id)configurationForVirtualFeatureStore
 {
-  v3 = [a1 storeConfigurationForVirtualFeatureStore];
-  v4 = [a1 syncPolicyForVirtualFeatureStore];
+  storeConfigurationForVirtualFeatureStore = [self storeConfigurationForVirtualFeatureStore];
+  syncPolicyForVirtualFeatureStore = [self syncPolicyForVirtualFeatureStore];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"9FCB9545-A0B1-411E-9A64-19461E3008DE"];
   BYTE2(v9) = 0;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"MLSE.ShareSheet.VirtualFeatureStore" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"MLSE.ShareSheet.VirtualFeatureStore" eventClass:objc_opt_class() storeConfig:storeConfigurationForVirtualFeatureStore syncPolicy:syncPolicyForVirtualFeatureStore legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -134,13 +134,13 @@ LABEL_14:
 
 + (id)configurationForPeopleSuggestionsMetricsStore
 {
-  v3 = [a1 storeConfigurationForPeopleSuggestionsMetricsStore];
-  v4 = [a1 syncPolicyForPeopleSuggestionsMetricsStore];
+  storeConfigurationForPeopleSuggestionsMetricsStore = [self storeConfigurationForPeopleSuggestionsMetricsStore];
+  syncPolicyForPeopleSuggestionsMetricsStore = [self syncPolicyForPeopleSuggestionsMetricsStore];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"DEEC2B98-B758-4A6F-99E4-EA6E3ACEB4AD"];
   BYTE2(v9) = 0;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"MLSE.ShareSheet.PeopleSuggestionsMetricsStore" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"MLSE.ShareSheet.PeopleSuggestionsMetricsStore" eventClass:objc_opt_class() storeConfig:storeConfigurationForPeopleSuggestionsMetricsStore syncPolicy:syncPolicyForPeopleSuggestionsMetricsStore legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -155,13 +155,13 @@ LABEL_14:
 
 + (id)configurationForLabeledDataStore
 {
-  v3 = [a1 storeConfigurationForLabeledDataStore];
-  v4 = [a1 syncPolicyForLabeledDataStore];
+  storeConfigurationForLabeledDataStore = [self storeConfigurationForLabeledDataStore];
+  syncPolicyForLabeledDataStore = [self syncPolicyForLabeledDataStore];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"430149E5-857B-45D3-AE56-E0BC709329CE"];
   BYTE2(v9) = 0;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"MLSE.ShareSheet.LabeledDataStore" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"MLSE.ShareSheet.LabeledDataStore" eventClass:objc_opt_class() storeConfig:storeConfigurationForLabeledDataStore syncPolicy:syncPolicyForLabeledDataStore legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -176,13 +176,13 @@ LABEL_14:
 
 + (id)configurationForFeedback
 {
-  v3 = [a1 storeConfigurationForFeedback];
-  v4 = [a1 syncPolicyForFeedback];
+  storeConfigurationForFeedback = [self storeConfigurationForFeedback];
+  syncPolicyForFeedback = [self syncPolicyForFeedback];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"E7B0B540-24DC-4A28-B82A-C4885124C6C7"];
   BYTE2(v9) = 0;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"MLSE.ShareSheet.Feedback" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"MLSE.ShareSheet.Feedback" eventClass:objc_opt_class() storeConfig:storeConfigurationForFeedback syncPolicy:syncPolicyForFeedback legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -197,13 +197,13 @@ LABEL_14:
 
 + (id)configurationForDurableFeatureStore
 {
-  v3 = [a1 storeConfigurationForDurableFeatureStore];
-  v4 = [a1 syncPolicyForDurableFeatureStore];
+  storeConfigurationForDurableFeatureStore = [self storeConfigurationForDurableFeatureStore];
+  syncPolicyForDurableFeatureStore = [self syncPolicyForDurableFeatureStore];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"1A32CA36-C398-4658-BCE5-6DB72241A708"];
   BYTE2(v9) = 0;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"MLSE.ShareSheet.DurableFeatureStore" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"MLSE.ShareSheet.DurableFeatureStore" eventClass:objc_opt_class() storeConfig:storeConfigurationForDurableFeatureStore syncPolicy:syncPolicyForDurableFeatureStore legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -219,8 +219,8 @@ LABEL_14:
 + (id)configurationForConversationUserInteraction
 {
   v21[3] = *MEMORY[0x1E69E9840];
-  v3 = [a1 storeConfigurationForConversationUserInteraction];
-  v4 = [a1 syncPolicyForConversationUserInteraction];
+  storeConfigurationForConversationUserInteraction = [self storeConfigurationForConversationUserInteraction];
+  syncPolicyForConversationUserInteraction = [self syncPolicyForConversationUserInteraction];
   v5 = objc_alloc(MEMORY[0x1E698F330]);
   v6 = [MEMORY[0x1E696AE18] predicateWithFormat:@"$uninstalled == bundleID" argumentArray:0];
   v7 = [v5 initWithIdentifier:@"app-uninstall" predicate:v6];
@@ -239,7 +239,7 @@ LABEL_14:
   v16 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"B68950B3-B5B5-412A-82D6-1D45539F6089"];
   BYTE2(v20) = 0;
   LOWORD(v20) = 1;
-  v17 = [v15 _libraryStreamConfigurationWithUUID:v16 streamIdentifier:@"MLSE.ShareSheet.ConversationUserInteraction" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v20 enableSubscriptionSubstream:0 enableTombstoneSubstream:v14 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v17 = [v15 _libraryStreamConfigurationWithUUID:v16 streamIdentifier:@"MLSE.ShareSheet.ConversationUserInteraction" eventClass:objc_opt_class() storeConfig:storeConfigurationForConversationUserInteraction syncPolicy:syncPolicyForConversationUserInteraction legacyNames:0 internalMetadata:0 enableSubscriptions:v20 enableSubscriptionSubstream:0 enableTombstoneSubstream:v14 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   v18 = *MEMORY[0x1E69E9840];
 
@@ -258,7 +258,7 @@ LABEL_14:
 + (id)VirtualFeatureStore
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForVirtualFeatureStore];
+  configurationForVirtualFeatureStore = [self configurationForVirtualFeatureStore];
   v3 = +[BMMLSEVirtualFeatureStore columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -270,7 +270,7 @@ LABEL_14:
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"MLSE.ShareSheet.VirtualFeatureStore" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"MLSE.ShareSheet.VirtualFeatureStore" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"MLSE.ShareSheet.VirtualFeatureStore" schema:v9 configuration:configurationForVirtualFeatureStore];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -280,7 +280,7 @@ LABEL_14:
 + (id)PeopleSuggestionsMetricsStore
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForPeopleSuggestionsMetricsStore];
+  configurationForPeopleSuggestionsMetricsStore = [self configurationForPeopleSuggestionsMetricsStore];
   v3 = +[BMMLSEPeopleSuggestionsMetricsStore columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -292,7 +292,7 @@ LABEL_14:
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"MLSE.ShareSheet.PeopleSuggestionsMetricsStore" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"MLSE.ShareSheet.PeopleSuggestionsMetricsStore" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"MLSE.ShareSheet.PeopleSuggestionsMetricsStore" schema:v9 configuration:configurationForPeopleSuggestionsMetricsStore];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -302,7 +302,7 @@ LABEL_14:
 + (id)LabeledDataStore
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForLabeledDataStore];
+  configurationForLabeledDataStore = [self configurationForLabeledDataStore];
   v3 = +[BMMLSELabeledDataStore columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -314,7 +314,7 @@ LABEL_14:
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"MLSE.ShareSheet.LabeledDataStore" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"MLSE.ShareSheet.LabeledDataStore" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"MLSE.ShareSheet.LabeledDataStore" schema:v9 configuration:configurationForLabeledDataStore];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -324,7 +324,7 @@ LABEL_14:
 + (id)Feedback
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForFeedback];
+  configurationForFeedback = [self configurationForFeedback];
   v3 = +[BMMLSEShareSheetFeedback columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -336,7 +336,7 @@ LABEL_14:
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"MLSE.ShareSheet.Feedback" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"MLSE.ShareSheet.Feedback" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"MLSE.ShareSheet.Feedback" schema:v9 configuration:configurationForFeedback];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -346,7 +346,7 @@ LABEL_14:
 + (id)DurableFeatureStore
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForDurableFeatureStore];
+  configurationForDurableFeatureStore = [self configurationForDurableFeatureStore];
   v3 = +[BMMLSEDurableFeatureStore columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -358,7 +358,7 @@ LABEL_14:
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"MLSE.ShareSheet.DurableFeatureStore" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"MLSE.ShareSheet.DurableFeatureStore" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"MLSE.ShareSheet.DurableFeatureStore" schema:v9 configuration:configurationForDurableFeatureStore];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -368,7 +368,7 @@ LABEL_14:
 + (id)ConversationUserInteraction
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForConversationUserInteraction];
+  configurationForConversationUserInteraction = [self configurationForConversationUserInteraction];
   v3 = +[BMMLSEConversationUserInteraction columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -380,7 +380,7 @@ LABEL_14:
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"MLSE.ShareSheet.ConversationUserInteraction" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"MLSE.ShareSheet.ConversationUserInteraction" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"MLSE.ShareSheet.ConversationUserInteraction" schema:v9 configuration:configurationForConversationUserInteraction];
 
   v11 = *MEMORY[0x1E69E9840];
 

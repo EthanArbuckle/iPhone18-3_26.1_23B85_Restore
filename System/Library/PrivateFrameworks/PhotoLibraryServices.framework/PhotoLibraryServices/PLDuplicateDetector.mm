@@ -1,26 +1,26 @@
 @interface PLDuplicateDetector
-+ (BOOL)duplicateDetectorCompletedDateBackgroundMigrationAction:(id)a3;
-+ (BOOL)duplicateDetectorCompletedPerceptualHashProcessingWithManagedObjectContext:(id)a3 pathManager:(id)a4;
-+ (id)duplicateDetectorExcludeZeroByteStableHashPredicateWithProperty:(id)a3;
-+ (id)duplicateDetectorFilterProcessingStateWithPrefix:(id)a3 processingType:(unint64_t)a4;
-+ (id)duplicateDetectorProcessingFilterAssetsPredicateWithPrefix:(id)a3 processingType:(unint64_t)a4 pathManager:(id)a5;
-+ (id)predicateFormatToPrependAssetAttributeSubstitutionWithPrefix:(id)a3;
++ (BOOL)duplicateDetectorCompletedDateBackgroundMigrationAction:(id)action;
++ (BOOL)duplicateDetectorCompletedPerceptualHashProcessingWithManagedObjectContext:(id)context pathManager:(id)manager;
++ (id)duplicateDetectorExcludeZeroByteStableHashPredicateWithProperty:(id)property;
++ (id)duplicateDetectorFilterProcessingStateWithPrefix:(id)prefix processingType:(unint64_t)type;
++ (id)duplicateDetectorProcessingFilterAssetsPredicateWithPrefix:(id)prefix processingType:(unint64_t)type pathManager:(id)manager;
++ (id)predicateFormatToPrependAssetAttributeSubstitutionWithPrefix:(id)prefix;
 @end
 
 @implementation PLDuplicateDetector
 
-+ (BOOL)duplicateDetectorCompletedPerceptualHashProcessingWithManagedObjectContext:(id)a3 pathManager:(id)a4
++ (BOOL)duplicateDetectorCompletedPerceptualHashProcessingWithManagedObjectContext:(id)context pathManager:(id)manager
 {
   v33[3] = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E695D5E0];
-  v7 = a4;
-  v8 = a3;
+  managerCopy = manager;
+  contextCopy = context;
   v9 = [v6 alloc];
   v10 = +[PLAdditionalAssetAttributes entityName];
   v11 = [v9 initWithEntityName:v10];
 
   v12 = MEMORY[0x1E696AB28];
-  v13 = [PLDuplicateDetector duplicateDetectorProcessingFilterAssetsPredicateWithPrefix:@"asset" processingType:2 pathManager:v7];
+  v13 = [PLDuplicateDetector duplicateDetectorProcessingFilterAssetsPredicateWithPrefix:@"asset" processingType:2 pathManager:managerCopy];
 
   v33[0] = v13;
   v14 = [PLManagedAsset predicateToExcludeAssetsMissingMasterThumbnailsWithThumbnailIndexKeyPath:@"asset.thumbnailIndex"];
@@ -38,7 +38,7 @@
 
   [v11 setFetchLimit:1];
   v27 = 0;
-  v20 = [v8 executeFetchRequest:v11 error:&v27];
+  v20 = [contextCopy executeFetchRequest:v11 error:&v27];
 
   v21 = v27;
   if (!v20)
@@ -64,17 +64,17 @@ LABEL_7:
   }
 
   v22 = [v20 objectAtIndexedSubscript:0];
-  v23 = [v22 sceneAnalysisVersion];
+  sceneAnalysisVersion = [v22 sceneAnalysisVersion];
 
-  v24 = v23 == [a1 currentSceneAnalysisUmbrellaVersion];
+  v24 = sceneAnalysisVersion == [self currentSceneAnalysisUmbrellaVersion];
 LABEL_8:
 
   return v24;
 }
 
-+ (BOOL)duplicateDetectorCompletedDateBackgroundMigrationAction:(id)a3
++ (BOOL)duplicateDetectorCompletedDateBackgroundMigrationAction:(id)action
 {
-  v3 = a3;
+  actionCopy = action;
   if (MEMORY[0x19EAEE520]() & 1) != 0 || (PLIsInternalTool())
   {
     v4 = 1;
@@ -83,8 +83,8 @@ LABEL_8:
   else if (PLIsAssetsd())
   {
     v6 = objc_opt_class();
-    v7 = [v3 pathManager];
-    v4 = [PLBackgroundModelMigration hasCompletedBackgroundActionClass:v6 pathManager:v7];
+    pathManager = [actionCopy pathManager];
+    v4 = [PLBackgroundModelMigration hasCompletedBackgroundActionClass:v6 pathManager:pathManager];
   }
 
   else
@@ -95,43 +95,43 @@ LABEL_8:
   return v4;
 }
 
-+ (id)predicateFormatToPrependAssetAttributeSubstitutionWithPrefix:(id)a3
++ (id)predicateFormatToPrependAssetAttributeSubstitutionWithPrefix:(id)prefix
 {
-  v3 = a3;
-  v4 = [v3 rangeOfString:@"additionalAssetAttributes"];
+  prefixCopy = prefix;
+  v4 = [prefixCopy rangeOfString:@"additionalAssetAttributes"];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    [v3 stringByAppendingFormat:@".%@", @"additionalAttributes"];
+    [prefixCopy stringByAppendingFormat:@".%@", @"additionalAttributes"];
   }
 
   else
   {
-    [v3 substringToIndex:v4 + v5];
+    [prefixCopy substringToIndex:v4 + v5];
   }
   v6 = ;
 
   return v6;
 }
 
-+ (id)duplicateDetectorFilterProcessingStateWithPrefix:(id)a3 processingType:(unint64_t)a4
++ (id)duplicateDetectorFilterProcessingStateWithPrefix:(id)prefix processingType:(unint64_t)type
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
+  prefixCopy = prefix;
+  v7 = prefixCopy;
   v8 = 0;
-  if (a4 > 1)
+  if (type > 1)
   {
-    if (a4 != 7 && a4 != 4)
+    if (type != 7 && type != 4)
     {
-      if (a4 != 2)
+      if (type != 2)
       {
         goto LABEL_15;
       }
 
       v9 = MEMORY[0x1E696AE18];
-      if (v6)
+      if (prefixCopy)
       {
-        v10 = [a1 predicateFormatToPrependAssetAttributeSubstitutionWithPrefix:v6];
+        v10 = [self predicateFormatToPrependAssetAttributeSubstitutionWithPrefix:prefixCopy];
         v8 = [v9 predicateWithFormat:@"noindex:(%K.%K) == %ld", v10, @"duplicateDetectorPerceptualProcessingState", 0];
 
         goto LABEL_15;
@@ -144,21 +144,21 @@ LABEL_8:
     goto LABEL_10;
   }
 
-  if (!a4)
+  if (!type)
   {
 LABEL_10:
     v11 = PLDuplicateDetectionGetLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 134217984;
-      v15 = a4;
+      typeCopy = type;
       _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_ERROR, "Requesting predicate for unsupported detector type: %tu", buf, 0xCu);
     }
 
     goto LABEL_13;
   }
 
-  if (a4 == 1)
+  if (type == 1)
   {
 LABEL_13:
     v12 = [MEMORY[0x1E696AE18] predicateWithValue:1];
@@ -171,23 +171,23 @@ LABEL_15:
   return v8;
 }
 
-+ (id)duplicateDetectorExcludeZeroByteStableHashPredicateWithProperty:(id)a3
++ (id)duplicateDetectorExcludeZeroByteStableHashPredicateWithProperty:(id)property
 {
   v3 = MEMORY[0x1E6994AE0];
-  v4 = a3;
-  v5 = [v3 fingerprintSchemeForStableHash];
-  v6 = [v5 zeroByteFileFingerprint];
+  propertyCopy = property;
+  fingerprintSchemeForStableHash = [v3 fingerprintSchemeForStableHash];
+  zeroByteFileFingerprint = [fingerprintSchemeForStableHash zeroByteFileFingerprint];
 
-  v7 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K != %@", v4, v6];
+  v7 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K != %@", propertyCopy, zeroByteFileFingerprint];
 
   return v7;
 }
 
-+ (id)duplicateDetectorProcessingFilterAssetsPredicateWithPrefix:(id)a3 processingType:(unint64_t)a4 pathManager:(id)a5
++ (id)duplicateDetectorProcessingFilterAssetsPredicateWithPrefix:(id)prefix processingType:(unint64_t)type pathManager:(id)manager
 {
   v21[7] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = [PLDuplicateProcessor sharedLibraryDedupeEnabledWithPathManager:a5];
+  prefixCopy = prefix;
+  v9 = [PLDuplicateProcessor sharedLibraryDedupeEnabledWithPathManager:manager];
   v10 = MEMORY[0x1E696AB28];
   if (v9)
   {
@@ -196,21 +196,21 @@ LABEL_15:
 
   else
   {
-    [MEMORY[0x1E696AE18] predicateWithFormat:@"noindex:(%K.%K) = %d", v8, @"activeLibraryScopeParticipationState", 0];
+    [MEMORY[0x1E696AE18] predicateWithFormat:@"noindex:(%K.%K) = %d", prefixCopy, @"activeLibraryScopeParticipationState", 0];
   }
   v11 = ;
   v21[0] = v11;
-  v12 = [a1 duplicateDetectorFilterProcessingStateWithPrefix:v8 processingType:a4];
+  v12 = [self duplicateDetectorFilterProcessingStateWithPrefix:prefixCopy processingType:type];
   v21[1] = v12;
-  v13 = [MEMORY[0x1E696AE18] predicateWithFormat:@"noindex:(%K.%K) = %d", v8, @"trashedState", 0];
+  v13 = [MEMORY[0x1E696AE18] predicateWithFormat:@"noindex:(%K.%K) = %d", prefixCopy, @"trashedState", 0];
   v21[2] = v13;
-  v14 = [MEMORY[0x1E696AE18] predicateWithFormat:@"noindex:(%K.%K) = NO", v8, @"hidden"];
+  v14 = [MEMORY[0x1E696AE18] predicateWithFormat:@"noindex:(%K.%K) = NO", prefixCopy, @"hidden"];
   v21[3] = v14;
-  v15 = [MEMORY[0x1E696AE18] predicateWithFormat:@"noindex:(%K.%K) != %d", v8, @"avalancheKind", 1];
+  v15 = [MEMORY[0x1E696AE18] predicateWithFormat:@"noindex:(%K.%K) != %d", prefixCopy, @"avalancheKind", 1];
   v21[4] = v15;
-  v16 = [MEMORY[0x1E696AE18] predicateWithFormat:@"noindex:(%K.%K) != %d", v8, @"cloudLocalState", 4];
+  v16 = [MEMORY[0x1E696AE18] predicateWithFormat:@"noindex:(%K.%K) != %d", prefixCopy, @"cloudLocalState", 4];
   v21[5] = v16;
-  v17 = [MEMORY[0x1E69BF328] predicateForExcludeMask:objc_msgSend(MEMORY[0x1E69BF328] useIndex:"maskForDuplicateProcessingExclusions") keyPathPrefix:{0, v8}];
+  v17 = [MEMORY[0x1E69BF328] predicateForExcludeMask:objc_msgSend(MEMORY[0x1E69BF328] useIndex:"maskForDuplicateProcessingExclusions") keyPathPrefix:{0, prefixCopy}];
   v21[6] = v17;
   v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:7];
   v19 = [v10 andPredicateWithSubpredicates:v18];

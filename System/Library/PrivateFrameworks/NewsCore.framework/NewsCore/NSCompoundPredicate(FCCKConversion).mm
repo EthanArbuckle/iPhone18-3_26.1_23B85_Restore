@@ -8,13 +8,13 @@
 {
   v33[1] = *MEMORY[0x1E69E9840];
   v6 = a3;
-  if ([a1 compoundPredicateType] != 1)
+  if ([self compoundPredicateType] != 1)
   {
-    if ([a1 compoundPredicateType])
+    if ([self compoundPredicateType])
     {
       if (a4)
       {
-        [MEMORY[0x1E695B978] errorWithCode:1009 format:{@"Unexpected expression: %@", a1}];
+        [MEMORY[0x1E695B978] errorWithCode:1009 format:{@"Unexpected expression: %@", self}];
         *a4 = v17 = 0;
       }
 
@@ -26,8 +26,8 @@
       goto LABEL_56;
     }
 
-    v19 = [a1 subpredicates];
-    v20 = [v19 objectAtIndexedSubscript:0];
+    subpredicates = [self subpredicates];
+    v20 = [subpredicates objectAtIndexedSubscript:0];
 
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && ![v20 compoundPredicateType])
@@ -128,14 +128,14 @@ LABEL_49:
 
       if (a4)
       {
-        [MEMORY[0x1E695B978] errorWithCode:1009 format:{@"Invalid NOT predicate: %@", a1}];
+        [MEMORY[0x1E695B978] errorWithCode:1009 format:{@"Invalid NOT predicate: %@", self}];
         goto LABEL_53;
       }
     }
 
     else if (a4)
     {
-      [MEMORY[0x1E695B978] errorWithCode:1009 format:{@"Expected comparison subpredicate: %@", a1}];
+      [MEMORY[0x1E695B978] errorWithCode:1009 format:{@"Expected comparison subpredicate: %@", self}];
 LABEL_53:
       *a4 = v17 = 0;
       goto LABEL_55;
@@ -150,8 +150,8 @@ LABEL_53:
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v8 = [a1 subpredicates];
-  v9 = [v8 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  subpredicates2 = [self subpredicates];
+  v9 = [subpredicates2 countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v9)
   {
     v10 = v9;
@@ -165,7 +165,7 @@ LABEL_53:
       {
         if (*v29 != v12)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(subpredicates2);
         }
 
         v15 = *(*(&v28 + 1) + 8 * v13);
@@ -188,7 +188,7 @@ LABEL_53:
       }
 
       while (v10 != v13);
-      v10 = [v8 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      v10 = [subpredicates2 countByEnumeratingWithState:&v28 objects:v32 count:16];
       if (v10)
       {
         continue;

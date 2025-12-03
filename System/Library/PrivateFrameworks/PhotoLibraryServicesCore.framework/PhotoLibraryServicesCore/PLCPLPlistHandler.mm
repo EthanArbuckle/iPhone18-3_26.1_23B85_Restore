@@ -1,18 +1,18 @@
 @interface PLCPLPlistHandler
-+ (BOOL)CPLPlistFileExistsWithPathManager:(id)a3;
-+ (id)_cplPlistURLWithPathManager:(id)a3 verb:(id)a4;
-+ (id)_readCPLPlistWithPathManager:(id)a3;
-+ (id)readCPLPlistObjectWithKey:(id)a3 pathManager:(id)a4;
-+ (void)deleteCPLPlistWithPathManager:(id)a3;
++ (BOOL)CPLPlistFileExistsWithPathManager:(id)manager;
++ (id)_cplPlistURLWithPathManager:(id)manager verb:(id)verb;
++ (id)_readCPLPlistWithPathManager:(id)manager;
++ (id)readCPLPlistObjectWithKey:(id)key pathManager:(id)manager;
++ (void)deleteCPLPlistWithPathManager:(id)manager;
 + (void)initialize;
-+ (void)saveCPLPlistObject:(id)a3 forKey:(id)a4 pathManager:(id)a5;
++ (void)saveCPLPlistObject:(id)object forKey:(id)key pathManager:(id)manager;
 @end
 
 @implementation PLCPLPlistHandler
 
-+ (void)deleteCPLPlistWithPathManager:(id)a3
++ (void)deleteCPLPlistWithPathManager:(id)manager
 {
-  v3 = [a1 _cplPlistURLWithPathManager:a3 verb:@"deleting"];
+  v3 = [self _cplPlistURLWithPathManager:manager verb:@"deleting"];
   v4 = v3;
   if (v3)
   {
@@ -50,11 +50,11 @@ void __51__PLCPLPlistHandler_deleteCPLPlistWithPathManager___block_invoke(uint64
   }
 }
 
-+ (void)saveCPLPlistObject:(id)a3 forKey:(id)a4 pathManager:(id)a5
++ (void)saveCPLPlistObject:(id)object forKey:(id)key pathManager:(id)manager
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [a1 _cplPlistURLWithPathManager:a5 verb:@"writing"];
+  objectCopy = object;
+  keyCopy = key;
+  v10 = [self _cplPlistURLWithPathManager:manager verb:@"writing"];
   v11 = v10;
   if (v10)
   {
@@ -64,8 +64,8 @@ void __51__PLCPLPlistHandler_deleteCPLPlistWithPathManager___block_invoke(uint64
     block[2] = __59__PLCPLPlistHandler_saveCPLPlistObject_forKey_pathManager___block_invoke;
     block[3] = &unk_1E7930348;
     v14 = v10;
-    v15 = v8;
-    v16 = v9;
+    v15 = objectCopy;
+    v16 = keyCopy;
     dispatch_async(v12, block);
   }
 }
@@ -190,20 +190,20 @@ LABEL_19:
 LABEL_20:
 }
 
-+ (id)readCPLPlistObjectWithKey:(id)a3 pathManager:(id)a4
++ (id)readCPLPlistObjectWithKey:(id)key pathManager:(id)manager
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [a1 _readCPLPlistWithPathManager:a4];
+  keyCopy = key;
+  v7 = [self _readCPLPlistWithPathManager:manager];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 objectForKeyedSubscript:v6];
+    v9 = [v7 objectForKeyedSubscript:keyCopy];
     v10 = PLBackendGetLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
       v12 = 138412546;
-      v13 = v6;
+      v13 = keyCopy;
       v14 = 2112;
       v15 = v9;
       _os_log_impl(&dword_1AA9BD000, v10, OS_LOG_TYPE_DEBUG, "Reading %@ from mobileCPL.plist: %@", &v12, 0x16u);
@@ -218,11 +218,11 @@ LABEL_20:
   return v9;
 }
 
-+ (id)_readCPLPlistWithPathManager:(id)a3
++ (id)_readCPLPlistWithPathManager:(id)manager
 {
   v42 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [a1 _cplPlistURLWithPathManager:v4 verb:@"reading"];
+  managerCopy = manager;
+  v5 = [self _cplPlistURLWithPathManager:managerCopy verb:@"reading"];
   v6 = v5;
   if (!v5)
   {
@@ -316,14 +316,14 @@ void __50__PLCPLPlistHandler__readCPLPlistWithPathManager___block_invoke(void *a
   *(v5 + 40) = v4;
 }
 
-+ (BOOL)CPLPlistFileExistsWithPathManager:(id)a3
++ (BOOL)CPLPlistFileExistsWithPathManager:(id)manager
 {
-  v3 = [a1 _cplPlistURLWithPathManager:a3 verb:@"checking existence of"];
+  v3 = [self _cplPlistURLWithPathManager:manager verb:@"checking existence of"];
   if (v3)
   {
-    v4 = [MEMORY[0x1E696AC08] defaultManager];
-    v5 = [v3 path];
-    v6 = [v4 fileExistsAtPath:v5];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    path = [v3 path];
+    v6 = [defaultManager fileExistsAtPath:path];
   }
 
   else
@@ -334,13 +334,13 @@ void __50__PLCPLPlistHandler__readCPLPlistWithPathManager___block_invoke(void *a
   return v6;
 }
 
-+ (id)_cplPlistURLWithPathManager:(id)a3 verb:(id)a4
++ (id)_cplPlistURLWithPathManager:(id)manager verb:(id)verb
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  managerCopy = manager;
+  verbCopy = verb;
   v13 = 0;
-  v7 = [v5 photoDirectoryWithType:14 leafType:3 createIfNeeded:1 error:&v13];
+  v7 = [managerCopy photoDirectoryWithType:14 leafType:3 createIfNeeded:1 error:&v13];
   v8 = v13;
   v9 = [v7 stringByAppendingPathComponent:@"mobileCPL.plist"];
   if (v9)
@@ -354,9 +354,9 @@ void __50__PLCPLPlistHandler__readCPLPlistWithPathManager___block_invoke(void *a
     if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
     {
       *buf = 138543874;
-      v15 = v6;
+      v15 = verbCopy;
       v16 = 2112;
-      v17 = v5;
+      v17 = managerCopy;
       v18 = 2112;
       v19 = v8;
       _os_log_impl(&dword_1AA9BD000, v11, OS_LOG_TYPE_FAULT, "Error %{public}@ mobileCPL.plist, path is nil, pathManager: %@, error: %@", buf, 0x20u);

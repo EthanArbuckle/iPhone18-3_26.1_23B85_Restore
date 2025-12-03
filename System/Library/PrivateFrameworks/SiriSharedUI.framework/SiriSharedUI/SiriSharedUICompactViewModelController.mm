@@ -1,34 +1,34 @@
 @interface SiriSharedUICompactViewModelController
 - (BOOL)alwaysShowRecognizedSpeech;
 - (SiriSharedUICompactViewModelChangeObserving)viewModelChangeObserver;
-- (SiriSharedUICompactViewModelController)initWithConversation:(id)a3 delegate:(id)a4;
+- (SiriSharedUICompactViewModelController)initWithConversation:(id)conversation delegate:(id)delegate;
 - (SiriSharedUICompactViewModelControllerDelegate)delegate;
-- (id)_serverUtterancesToDisplayForConversation:(id)a3;
-- (id)_userUtteranceForConversationItem:(id)a3;
+- (id)_serverUtterancesToDisplayForConversation:(id)conversation;
+- (id)_userUtteranceForConversationItem:(id)item;
 - (int64_t)inputType;
-- (unint64_t)_generateDiffFromViewModel:(id)a3 toViewModel:(id)a4;
+- (unint64_t)_generateDiffFromViewModel:(id)model toViewModel:(id)viewModel;
 - (void)_clearAdditionalContentTranscriptItems;
-- (void)_notifyObserverOfViewModelChangeWithDiff:(unint64_t)a3;
-- (void)_processInitialConversationItemsForConversation:(id)a3;
-- (void)_processInsertedConversationItems:(id)a3 forConversation:(id)a4;
-- (void)_processUpdatedConversationItemsAtIndexPaths:(id)a3;
-- (void)conversationDidChangeWithTransaction:(id)a3;
+- (void)_notifyObserverOfViewModelChangeWithDiff:(unint64_t)diff;
+- (void)_processInitialConversationItemsForConversation:(id)conversation;
+- (void)_processInsertedConversationItems:(id)items forConversation:(id)conversation;
+- (void)_processUpdatedConversationItemsAtIndexPaths:(id)paths;
+- (void)conversationDidChangeWithTransaction:(id)transaction;
 - (void)inputTypeDidChange;
-- (void)resetViewsAndClearASR:(BOOL)a3;
+- (void)resetViewsAndClearASR:(BOOL)r;
 - (void)revealLatencyView;
-- (void)revealUserUtterance:(id)a3 backingAceObject:(id)a4;
-- (void)setViewModel:(id)a3;
-- (void)setViewModelChangeObserver:(id)a3;
-- (void)updateCurrentRequestText:(id)a3;
-- (void)updateLatencySummary:(id)a3;
+- (void)revealUserUtterance:(id)utterance backingAceObject:(id)object;
+- (void)setViewModel:(id)model;
+- (void)setViewModelChangeObserver:(id)observer;
+- (void)updateCurrentRequestText:(id)text;
+- (void)updateLatencySummary:(id)summary;
 @end
 
 @implementation SiriSharedUICompactViewModelController
 
-- (SiriSharedUICompactViewModelController)initWithConversation:(id)a3 delegate:(id)a4
+- (SiriSharedUICompactViewModelController)initWithConversation:(id)conversation delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  conversationCopy = conversation;
+  delegateCopy = delegate;
   v15.receiver = self;
   v15.super_class = SiriSharedUICompactViewModelController;
   v9 = [(SiriSharedUICompactViewModelController *)&v15 init];
@@ -38,36 +38,36 @@
     viewModel = v9->_viewModel;
     v9->_viewModel = v10;
 
-    objc_storeStrong(&v9->_conversation, a3);
+    objc_storeStrong(&v9->_conversation, conversation);
     v12 = objc_alloc_init(MEMORY[0x277CBEB38]);
     serverUtteranceConversationIds = v9->_serverUtteranceConversationIds;
     v9->_serverUtteranceConversationIds = v12;
 
     v9->_immersiveExperienceOn = 0;
-    objc_storeWeak(&v9->_delegate, v8);
+    objc_storeWeak(&v9->_delegate, delegateCopy);
     [(SiriSharedUICompactViewModelController *)v9 inputTypeDidChange];
-    [(SiriSharedUICompactViewModelController *)v9 _processInitialConversationItemsForConversation:v7];
+    [(SiriSharedUICompactViewModelController *)v9 _processInitialConversationItemsForConversation:conversationCopy];
   }
 
   return v9;
 }
 
-- (void)setViewModelChangeObserver:(id)a3
+- (void)setViewModelChangeObserver:(id)observer
 {
-  objc_storeWeak(&self->_viewModelChangeObserver, a3);
+  objc_storeWeak(&self->_viewModelChangeObserver, observer);
   v4 = objc_alloc_init(SiriSharedUICompactViewModel);
   [(SiriSharedUICompactViewModelController *)self _notifyObserverOfViewModelChangeWithDiff:[(SiriSharedUICompactViewModelController *)self _generateDiffFromViewModel:v4 toViewModel:self->_viewModel]];
 }
 
-- (void)_notifyObserverOfViewModelChangeWithDiff:(unint64_t)a3
+- (void)_notifyObserverOfViewModelChangeWithDiff:(unint64_t)diff
 {
-  if (a3)
+  if (diff)
   {
-    v5 = [(SiriSharedUICompactViewModelController *)self viewModelChangeObserver];
-    v6 = [(SiriSharedUICompactViewModelController *)self viewModel];
+    viewModelChangeObserver = [(SiriSharedUICompactViewModelController *)self viewModelChangeObserver];
+    viewModel = [(SiriSharedUICompactViewModelController *)self viewModel];
     if ([MEMORY[0x277CCACC8] isMainThread])
     {
-      [v5 compactViewModelDidChange:v6 withDiff:a3];
+      [viewModelChangeObserver compactViewModelDidChange:viewModel withDiff:diff];
     }
 
     else
@@ -76,23 +76,23 @@
       block[1] = 3221225472;
       block[2] = __83__SiriSharedUICompactViewModelController__notifyObserverOfViewModelChangeWithDiff___block_invoke;
       block[3] = &unk_278354BA0;
-      v8 = v5;
-      v9 = v6;
-      v10 = a3;
+      v8 = viewModelChangeObserver;
+      v9 = viewModel;
+      diffCopy = diff;
       dispatch_async(MEMORY[0x277D85CD0], block);
     }
   }
 }
 
-- (unint64_t)_generateDiffFromViewModel:(id)a3 toViewModel:(id)a4
+- (unint64_t)_generateDiffFromViewModel:(id)model toViewModel:(id)viewModel
 {
   v69 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB18] array];
-  v8 = [v6 resultTranscriptItems];
-  v9 = [v5 resultTranscriptItems];
-  v10 = [v8 isEqualToArray:v9];
+  modelCopy = model;
+  viewModelCopy = viewModel;
+  array = [MEMORY[0x277CBEB18] array];
+  resultTranscriptItems = [viewModelCopy resultTranscriptItems];
+  resultTranscriptItems2 = [modelCopy resultTranscriptItems];
+  v10 = [resultTranscriptItems isEqualToArray:resultTranscriptItems2];
 
   if (v10)
   {
@@ -101,27 +101,27 @@
 
   else
   {
-    [v7 addObject:@"resultTranscriptItems"];
+    [array addObject:@"resultTranscriptItems"];
     v11 = 1;
   }
 
-  v12 = [v6 conversationTranscriptItems];
-  v13 = [v5 conversationTranscriptItems];
-  v14 = [v12 isEqualToArray:v13];
+  conversationTranscriptItems = [viewModelCopy conversationTranscriptItems];
+  conversationTranscriptItems2 = [modelCopy conversationTranscriptItems];
+  v14 = [conversationTranscriptItems isEqualToArray:conversationTranscriptItems2];
 
   if ((v14 & 1) == 0)
   {
     v11 |= 2uLL;
-    [v7 addObject:@"conversationTranscriptItems"];
+    [array addObject:@"conversationTranscriptItems"];
   }
 
-  v15 = [v6 additionalPlatterTranscriptItems];
-  v16 = [v5 additionalPlatterTranscriptItems];
+  additionalPlatterTranscriptItems = [viewModelCopy additionalPlatterTranscriptItems];
+  additionalPlatterTranscriptItems2 = [modelCopy additionalPlatterTranscriptItems];
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v17 = v15;
+  v17 = additionalPlatterTranscriptItems;
   v18 = [v17 countByEnumeratingWithState:&v55 objects:v68 count:16];
   v50 = v11;
   if (v18)
@@ -153,13 +153,13 @@
     v23 = 1;
   }
 
-  v24 = v7;
+  v24 = array;
 
   v53 = 0u;
   v54 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v25 = v16;
+  v25 = additionalPlatterTranscriptItems2;
   v26 = [v25 countByEnumeratingWithState:&v51 objects:v67 count:16];
   if (v26)
   {
@@ -207,9 +207,9 @@ LABEL_27:
   v33 = v50 | 0x20;
   [v32 addObject:@"additionalPlatterTranscriptItems"];
 LABEL_29:
-  v34 = [v6 serverUtterances];
-  v35 = [v5 serverUtterances];
-  v36 = [v34 isEqualToArray:v35];
+  serverUtterances = [viewModelCopy serverUtterances];
+  serverUtterances2 = [modelCopy serverUtterances];
+  v36 = [serverUtterances isEqualToArray:serverUtterances2];
 
   if ((v36 & 1) == 0)
   {
@@ -217,18 +217,18 @@ LABEL_29:
     [v32 addObject:@"serverUtterances"];
   }
 
-  v37 = [v6 speechRecognitionHypothesis];
-  v38 = [v5 speechRecognitionHypothesis];
+  speechRecognitionHypothesis = [viewModelCopy speechRecognitionHypothesis];
+  speechRecognitionHypothesis2 = [modelCopy speechRecognitionHypothesis];
 
-  if (v37 != v38)
+  if (speechRecognitionHypothesis != speechRecognitionHypothesis2)
   {
     v33 |= 8uLL;
     [v32 addObject:@"speechRecognitionHypothesis"];
   }
 
-  v39 = [v6 latencyViewModel];
-  v40 = [v5 latencyViewModel];
-  v41 = [v39 viewShouldUpdateFromOldModel:v40];
+  latencyViewModel = [viewModelCopy latencyViewModel];
+  latencyViewModel2 = [modelCopy latencyViewModel];
+  v41 = [latencyViewModel viewShouldUpdateFromOldModel:latencyViewModel2];
 
   if (v41)
   {
@@ -236,8 +236,8 @@ LABEL_29:
     [v32 addObject:@"latencyViewModel"];
   }
 
-  v42 = [v6 inputType];
-  if (v42 != [v5 inputType])
+  inputType = [viewModelCopy inputType];
+  if (inputType != [modelCopy inputType])
   {
     v33 |= 0x10uLL;
     [v32 addObject:@"inputType"];
@@ -255,9 +255,9 @@ LABEL_29:
       v61 = 2112;
       v62 = v32;
       v63 = 2112;
-      v64 = v5;
+      v64 = modelCopy;
       v65 = 2112;
-      v66 = v6;
+      v66 = viewModelCopy;
       v46 = "%s #viewModelDiff %@ differs between original %@ and updated %@";
       v47 = v44;
       v48 = 42;
@@ -279,12 +279,12 @@ LABEL_42:
   return v33;
 }
 
-- (void)setViewModel:(id)a3
+- (void)setViewModel:(id)model
 {
   viewModel = self->_viewModel;
-  v5 = a3;
-  v6 = [(SiriSharedUICompactViewModelController *)self _generateDiffFromViewModel:viewModel toViewModel:v5];
-  v7 = [v5 copy];
+  modelCopy = model;
+  v6 = [(SiriSharedUICompactViewModelController *)self _generateDiffFromViewModel:viewModel toViewModel:modelCopy];
+  v7 = [modelCopy copy];
 
   v8 = self->_viewModel;
   self->_viewModel = v7;
@@ -292,28 +292,28 @@ LABEL_42:
   [(SiriSharedUICompactViewModelController *)self _notifyObserverOfViewModelChangeWithDiff:v6];
 }
 
-- (void)_processInitialConversationItemsForConversation:(id)a3
+- (void)_processInitialConversationItemsForConversation:(id)conversation
 {
-  v7 = a3;
-  if ([v7 numberOfChildrenForItemWithIdentifier:0] >= 1)
+  conversationCopy = conversation;
+  if ([conversationCopy numberOfChildrenForItemWithIdentifier:0] >= 1)
   {
-    v4 = [v7 lastItem];
-    v5 = [v4 identifier];
-    v6 = [v7 sruif_itemsRelatedToIdentifier:v5];
+    lastItem = [conversationCopy lastItem];
+    identifier = [lastItem identifier];
+    v6 = [conversationCopy sruif_itemsRelatedToIdentifier:identifier];
 
-    [(SiriSharedUICompactViewModelController *)self _processInsertedConversationItems:v6 forConversation:v7];
+    [(SiriSharedUICompactViewModelController *)self _processInsertedConversationItems:v6 forConversation:conversationCopy];
   }
 }
 
-- (void)conversationDidChangeWithTransaction:(id)a3
+- (void)conversationDidChangeWithTransaction:(id)transaction
 {
   v60 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 updatedItemIndexPaths];
-  v5 = v4;
-  if (v4)
+  transactionCopy = transaction;
+  updatedItemIndexPaths = [transactionCopy updatedItemIndexPaths];
+  v5 = updatedItemIndexPaths;
+  if (updatedItemIndexPaths)
   {
-    v6 = v4;
+    v6 = updatedItemIndexPaths;
   }
 
   else
@@ -323,11 +323,11 @@ LABEL_42:
 
   v7 = v6;
 
-  v8 = [v3 insertedItemIndexPaths];
-  v9 = v8;
-  if (v8)
+  insertedItemIndexPaths = [transactionCopy insertedItemIndexPaths];
+  v9 = insertedItemIndexPaths;
+  if (insertedItemIndexPaths)
   {
-    v10 = v8;
+    v10 = insertedItemIndexPaths;
   }
 
   else
@@ -337,7 +337,7 @@ LABEL_42:
 
   v11 = v10;
 
-  v12 = [(SiriSharedUICompactViewModelController *)self conversation];
+  conversation = [(SiriSharedUICompactViewModelController *)self conversation];
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
@@ -346,7 +346,7 @@ LABEL_42:
   v14 = [v13 countByEnumeratingWithState:&v51 objects:v59 count:16];
   v45 = v13;
   v42 = v11;
-  v43 = v3;
+  v43 = transactionCopy;
   if (v14)
   {
     v15 = v14;
@@ -361,12 +361,12 @@ LABEL_42:
           objc_enumerationMutation(v13);
         }
 
-        v18 = [v12 itemAtIndexPath:*(*(&v51 + 1) + 8 * i)];
+        v18 = [conversation itemAtIndexPath:*(*(&v51 + 1) + 8 * i)];
         if ([v18 type] == 3)
         {
-          v19 = [v18 aceObject];
+          aceObject = [v18 aceObject];
           objc_opt_class();
-          if (objc_opt_isKindOfClass() & 1) == 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) && (-[SiriSharedUICompactViewModelController serverUtteranceConversationIds](self, "serverUtteranceConversationIds"), v20 = objc_claimAutoreleasedReturnValue(), [v12 identifier], v21 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v20, "objectForKey:", v21), v22 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "identifier"), v23 = v15, v24 = objc_claimAutoreleasedReturnValue(), v25 = objc_msgSend(v22, "containsObject:", v24), v24, v15 = v23, v22, v16 = v44, v21, v20, v13 = v45, !v25))
+          if (objc_opt_isKindOfClass() & 1) == 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) && (-[SiriSharedUICompactViewModelController serverUtteranceConversationIds](self, "serverUtteranceConversationIds"), v20 = objc_claimAutoreleasedReturnValue(), [conversation identifier], v21 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v20, "objectForKey:", v21), v22 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "identifier"), v23 = v15, v24 = objc_claimAutoreleasedReturnValue(), v25 = objc_msgSend(v22, "containsObject:", v24), v24, v15 = v23, v22, v16 = v44, v21, v20, v13 = v45, !v25))
           {
 
             v26 = 1;
@@ -387,7 +387,7 @@ LABEL_42:
     v26 = 0;
 LABEL_21:
     v11 = v42;
-    v3 = v43;
+    transactionCopy = v43;
   }
 
   else
@@ -397,20 +397,20 @@ LABEL_21:
 
   if (![v11 count] && (v26 & 1) == 0)
   {
-    v27 = self;
+    selfCopy2 = self;
     v28 = v13;
 LABEL_26:
-    [(SiriSharedUICompactViewModelController *)v27 _processUpdatedConversationItemsAtIndexPaths:v28];
+    [(SiriSharedUICompactViewModelController *)selfCopy2 _processUpdatedConversationItemsAtIndexPaths:v28];
     goto LABEL_45;
   }
 
   if ([v11 count] == 1)
   {
     v29 = [v11 objectAtIndexedSubscript:0];
-    v30 = [v12 itemAtIndexPath:v29];
-    v31 = [v30 type];
+    v30 = [conversation itemAtIndexPath:v29];
+    type = [v30 type];
 
-    if (v31 == 1)
+    if (type == 1)
     {
       v32 = *MEMORY[0x277CEF098];
       if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
@@ -420,7 +420,7 @@ LABEL_26:
         _os_log_impl(&dword_21E3EB000, v32, OS_LOG_TYPE_DEFAULT, "%s The only item added to the conversation is an SASSpeechRecognized. Treating as an update", buf, 0xCu);
       }
 
-      v27 = self;
+      selfCopy2 = self;
       v28 = v11;
       goto LABEL_26;
     }
@@ -447,7 +447,7 @@ LABEL_26:
         }
 
         v39 = *(*(&v47 + 1) + 8 * j);
-        v40 = [v12 itemAtIndexPath:v39];
+        v40 = [conversation itemAtIndexPath:v39];
         if ([v40 type] == 2)
         {
           v55 = v39;
@@ -469,32 +469,32 @@ LABEL_26:
 
   if ([v33 count])
   {
-    [(SiriSharedUICompactViewModelController *)self _processInsertedConversationItems:v33 forConversation:v12];
+    [(SiriSharedUICompactViewModelController *)self _processInsertedConversationItems:v33 forConversation:conversation];
   }
 
   v11 = v42;
-  v3 = v43;
+  transactionCopy = v43;
   v13 = v45;
 LABEL_45:
 }
 
-- (void)_processUpdatedConversationItemsAtIndexPaths:(id)a3
+- (void)_processUpdatedConversationItemsAtIndexPaths:(id)paths
 {
   v62 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SiriSharedUICompactViewModelController *)self conversation];
-  v50 = [(SiriSharedUICompactViewModelController *)self alwaysShowRecognizedSpeech];
+  pathsCopy = paths;
+  conversation = [(SiriSharedUICompactViewModelController *)self conversation];
+  alwaysShowRecognizedSpeech = [(SiriSharedUICompactViewModelController *)self alwaysShowRecognizedSpeech];
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v7 = v4;
+  v7 = pathsCopy;
   v42 = v7;
   v49 = [v7 countByEnumeratingWithState:&v51 objects:v61 count:16];
   if (v49)
   {
-    v44 = 0;
+    saeAvailable = 0;
     v46 = 0;
     v45 = 0;
     v8 = 0;
@@ -510,7 +510,7 @@ LABEL_45:
           objc_enumerationMutation(v7);
         }
 
-        v11 = [v5 itemAtIndexPath:{*(*(&v51 + 1) + 8 * i), v42}];
+        v11 = [conversation itemAtIndexPath:{*(*(&v51 + 1) + 8 * i), v42}];
         if ([v11 type] == 1 || objc_msgSend(v11, "type") == 2)
         {
           if (v8)
@@ -532,37 +532,37 @@ LABEL_45:
             v13 = 0;
           }
 
-          if (v50 || v13)
+          if (alwaysShowRecognizedSpeech || v13)
           {
             v14 = objc_alloc(MEMORY[0x277D61B08]);
             v15 = [(SiriSharedUICompactViewModelController *)self _userUtteranceForConversationItem:v11];
-            v16 = [v11 aceObject];
-            v17 = [v14 initWithUserUtterance:v15 backingAceObject:v16 isFinal:{objc_msgSend(v11, "type") == 1}];
+            aceObject = [v11 aceObject];
+            v17 = [v14 initWithUserUtterance:v15 backingAceObject:aceObject isFinal:{objc_msgSend(v11, "type") == 1}];
 
-            v18 = [(SiriSharedUICompactViewModelController *)self viewModel];
-            v19 = [v18 speechRecognitionHypothesis];
-            if ([v19 isFinal])
+            viewModel = [(SiriSharedUICompactViewModelController *)self viewModel];
+            speechRecognitionHypothesis = [viewModel speechRecognitionHypothesis];
+            if ([speechRecognitionHypothesis isFinal])
             {
               v20 = 0;
             }
 
             else
             {
-              v28 = [(SiriSharedUICompactViewModelController *)self viewModel];
-              v29 = [v28 speechRecognitionHypothesis];
-              v20 = v29 != 0;
+              viewModel2 = [(SiriSharedUICompactViewModelController *)self viewModel];
+              speechRecognitionHypothesis2 = [viewModel2 speechRecognitionHypothesis];
+              v20 = speechRecognitionHypothesis2 != 0;
             }
 
             v9 = 0x277CEF000uLL;
 
-            if (v20 || v50)
+            if (v20 || alwaysShowRecognizedSpeech)
             {
-              v44 = !v20;
+              saeAvailable = !v20;
             }
 
             else
             {
-              v44 = [MEMORY[0x277CEF4D0] saeAvailable];
+              saeAvailable = [MEMORY[0x277CEF4D0] saeAvailable];
             }
 
             v6 = v47;
@@ -576,10 +576,10 @@ LABEL_45:
           if ([*(v9 + 1232) saeAvailable] && objc_msgSend(v11, "type") == 1)
           {
             v30 = [(SiriSharedUICompactViewModelController *)self _userUtteranceForConversationItem:v11];
-            v31 = [v30 bestTextInterpretation];
+            bestTextInterpretation = [v30 bestTextInterpretation];
 
             v9 = 0x277CEF000;
-            v45 = v31;
+            v45 = bestTextInterpretation;
           }
 
           v8 = v17;
@@ -587,16 +587,16 @@ LABEL_45:
 
         else
         {
-          v21 = [(SiriSharedUICompactViewModelController *)self serverUtteranceConversationIds];
-          v22 = [v5 identifier];
-          v23 = [v21 objectForKey:v22];
+          serverUtteranceConversationIds = [(SiriSharedUICompactViewModelController *)self serverUtteranceConversationIds];
+          identifier = [conversation identifier];
+          v23 = [serverUtteranceConversationIds objectForKey:identifier];
           [v11 identifier];
-          v24 = self;
-          v26 = v25 = v5;
+          selfCopy = self;
+          v26 = v25 = conversation;
           v27 = [v23 containsObject:v26];
 
-          v5 = v25;
-          self = v24;
+          conversation = v25;
+          self = selfCopy;
           v7 = v42;
 
           v6 = v47;
@@ -604,8 +604,8 @@ LABEL_45:
           v46 |= v27;
         }
 
-        v32 = [v11 identifier];
-        [v6 addObject:v32];
+        identifier2 = [v11 identifier];
+        [v6 addObject:identifier2];
       }
 
       v49 = [v7 countByEnumeratingWithState:&v51 objects:v61 count:16];
@@ -616,7 +616,7 @@ LABEL_45:
 
   else
   {
-    v44 = 0;
+    saeAvailable = 0;
     v46 = 0;
     v45 = 0;
     v8 = 0;
@@ -624,8 +624,8 @@ LABEL_45:
 
   if ([v6 count])
   {
-    v33 = [(SiriSharedUICompactViewModelController *)self delegate];
-    [v33 compactViewModelController:self didProcessConversationItemsWithIdentifiers:v6];
+    delegate = [(SiriSharedUICompactViewModelController *)self delegate];
+    [delegate compactViewModelController:self didProcessConversationItemsWithIdentifiers:v6];
   }
 
   if (((v8 | v45) != 0) | v46 & 1)
@@ -634,7 +634,7 @@ LABEL_45:
     if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
     {
       v35 = @"updating existing viewModel with new hypothesis.";
-      if (v44)
+      if (saeAvailable)
       {
         v35 = @"clearing previous content from viewModel since this hypothesis .";
       }
@@ -646,46 +646,46 @@ LABEL_45:
       _os_log_impl(&dword_21E3EB000, v34, OS_LOG_TYPE_DEFAULT, "%s #compact speechRecognitionHypothesis updated, %@", buf, 0x16u);
     }
 
-    v36 = [(SiriSharedUICompactViewModelController *)self viewModel];
-    v37 = v36;
-    if (v44)
+    viewModel3 = [(SiriSharedUICompactViewModelController *)self viewModel];
+    serverUtteranceConversationIds2 = viewModel3;
+    if (saeAvailable)
     {
-      v38 = self;
-      v39 = [v36 copyWithConversationTranscriptItems:MEMORY[0x277CBEBF8] serverUtterances:MEMORY[0x277CBEBF8] speechRecognitionHypothesis:v8 latencyViewUtterance:v45];
+      selfCopy3 = self;
+      v39 = [viewModel3 copyWithConversationTranscriptItems:MEMORY[0x277CBEBF8] serverUtterances:MEMORY[0x277CBEBF8] speechRecognitionHypothesis:v8 latencyViewUtterance:v45];
 
-      v37 = [(SiriSharedUICompactViewModelController *)v38 serverUtteranceConversationIds];
-      v40 = [v5 identifier];
-      v41 = [v37 objectForKey:v40];
+      serverUtteranceConversationIds2 = [(SiriSharedUICompactViewModelController *)selfCopy3 serverUtteranceConversationIds];
+      identifier3 = [conversation identifier];
+      v41 = [serverUtteranceConversationIds2 objectForKey:identifier3];
       [v41 removeAllObjects];
     }
 
     else
     {
-      v40 = [(SiriSharedUICompactViewModelController *)self _serverUtterancesToDisplayForConversation:v5];
-      v38 = self;
-      v39 = [v37 copyWithServerUtterances:v40 speechRecognitionHypothesis:v8 latencyViewUtterance:v45];
+      identifier3 = [(SiriSharedUICompactViewModelController *)self _serverUtterancesToDisplayForConversation:conversation];
+      selfCopy3 = self;
+      v39 = [serverUtteranceConversationIds2 copyWithServerUtterances:identifier3 speechRecognitionHypothesis:v8 latencyViewUtterance:v45];
     }
 
-    [(SiriSharedUICompactViewModelController *)v38 setViewModel:v39];
+    [(SiriSharedUICompactViewModelController *)selfCopy3 setViewModel:v39];
     v7 = v43;
   }
 }
 
-- (void)_processInsertedConversationItems:(id)a3 forConversation:(id)a4
+- (void)_processInsertedConversationItems:(id)items forConversation:(id)conversation
 {
   v168 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v125 = a4;
+  itemsCopy = items;
+  conversationCopy = conversation;
   [(SiriSharedUICompactViewModelController *)self _clearAdditionalContentTranscriptItems];
-  v127 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v154 = 0u;
   v155 = 0u;
   v156 = 0u;
   v157 = 0u;
-  v8 = v6;
+  v8 = itemsCopy;
   v9 = [v8 countByEnumeratingWithState:&v154 objects:v167 count:16];
-  v131 = self;
+  selfCopy = self;
   if (v9)
   {
     v10 = v9;
@@ -702,8 +702,8 @@ LABEL_45:
         if ([*(*(&v154 + 1) + 8 * i) isSupplemental])
         {
           v124 = 1;
-          v13 = v8;
-          v14 = v125;
+          serverUtteranceConversationIds = v8;
+          v14 = conversationCopy;
           goto LABEL_11;
         }
       }
@@ -718,16 +718,16 @@ LABEL_45:
     }
   }
 
-  v13 = [(SiriSharedUICompactViewModelController *)self serverUtteranceConversationIds];
-  v14 = v125;
-  v15 = [v125 identifier];
-  v16 = [v13 objectForKey:v15];
+  serverUtteranceConversationIds = [(SiriSharedUICompactViewModelController *)self serverUtteranceConversationIds];
+  v14 = conversationCopy;
+  identifier = [conversationCopy identifier];
+  v16 = [serverUtteranceConversationIds objectForKey:identifier];
   [v16 removeAllObjects];
 
   v124 = 0;
 LABEL_11:
 
-  v126 = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v150 = 0u;
   v151 = 0u;
   v152 = 0u;
@@ -748,8 +748,8 @@ LABEL_11:
           objc_enumerationMutation(v17);
         }
 
-        v23 = [*(*(&v150 + 1) + 8 * j) aceObject];
-        v24 = [v23 propertyForKey:v21];
+        aceObject = [*(*(&v150 + 1) + 8 * j) aceObject];
+        v24 = [aceObject propertyForKey:v21];
 
         if (v24 && [v24 BOOLValue])
         {
@@ -770,7 +770,7 @@ LABEL_11:
 
     v123 = 0;
 LABEL_22:
-    v14 = v125;
+    v14 = conversationCopy;
   }
 
   else
@@ -778,8 +778,8 @@ LABEL_22:
     v123 = 0;
   }
 
-  p_isa = &v131->super.isa;
-  if (!SiriSharedUIDeviceIsPad() && (SiriSharedUIDeviceIsMac() & 1) == 0 && ![(SiriSharedUICompactViewModelController *)v131 immersiveExperienceOn])
+  p_isa = &selfCopy->super.isa;
+  if (!SiriSharedUIDeviceIsPad() && (SiriSharedUIDeviceIsMac() & 1) == 0 && ![(SiriSharedUICompactViewModelController *)selfCopy immersiveExperienceOn])
   {
     v148 = 0u;
     v149 = 0u;
@@ -803,18 +803,18 @@ LABEL_22:
           if ([*(*(&v146 + 1) + 8 * k) isImmersiveExperience])
           {
 
-            p_isa = &v131->super.isa;
-            v31 = [(SiriSharedUICompactViewModelController *)v131 delegate];
-            [v31 immersiveExperienceRequestedForViewModelController:v131];
+            p_isa = &selfCopy->super.isa;
+            delegate = [(SiriSharedUICompactViewModelController *)selfCopy delegate];
+            [delegate immersiveExperienceRequestedForViewModelController:selfCopy];
 
-            [(SiriSharedUICompactViewModelController *)v131 setImmersiveExperienceOn:1];
-            v14 = v125;
+            [(SiriSharedUICompactViewModelController *)selfCopy setImmersiveExperienceOn:1];
+            v14 = conversationCopy;
             goto LABEL_37;
           }
         }
 
         v28 = [v26 countByEnumeratingWithState:&v146 objects:v165 count:16];
-        v14 = v125;
+        v14 = conversationCopy;
         if (v28)
         {
           continue;
@@ -824,7 +824,7 @@ LABEL_22:
       }
     }
 
-    p_isa = &v131->super.isa;
+    p_isa = &selfCopy->super.isa;
   }
 
 LABEL_37:
@@ -837,12 +837,12 @@ LABEL_37:
   v130 = v7;
   if (!v32)
   {
-    v128 = 0;
+    speechRecognitionHypothesis = 0;
     goto LABEL_71;
   }
 
   v33 = v32;
-  v128 = 0;
+  speechRecognitionHypothesis = 0;
   v132 = *v143;
   while (2)
   {
@@ -855,12 +855,12 @@ LABEL_37:
       }
 
       v35 = *(*(&v142 + 1) + 8 * v34);
-      v36 = [v35 aceObject];
+      aceObject2 = [v35 aceObject];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v37 = [p_isa delegate];
-        v38 = [v37 siriDeviceLockedForViewModelController:p_isa];
+        delegate2 = [p_isa delegate];
+        v38 = [delegate2 siriDeviceLockedForViewModelController:p_isa];
 
         if (v38)
         {
@@ -879,44 +879,44 @@ LABEL_37:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v39 = [p_isa serverUtteranceConversationIds];
-        v40 = [v14 identifier];
-        v41 = [v39 objectForKey:v40];
+        serverUtteranceConversationIds2 = [p_isa serverUtteranceConversationIds];
+        identifier2 = [v14 identifier];
+        v41 = [serverUtteranceConversationIds2 objectForKey:identifier2];
 
         if (!v41)
         {
-          v42 = [p_isa serverUtteranceConversationIds];
+          serverUtteranceConversationIds3 = [p_isa serverUtteranceConversationIds];
           v43 = objc_alloc_init(MEMORY[0x277CBEB18]);
-          v44 = [v14 identifier];
-          [v42 setObject:v43 forKey:v44];
+          identifier3 = [v14 identifier];
+          [serverUtteranceConversationIds3 setObject:v43 forKey:identifier3];
         }
 
-        v45 = [p_isa serverUtteranceConversationIds];
-        v46 = [v14 identifier];
-        v47 = [v45 objectForKey:v46];
-        v48 = [v35 identifier];
-        [v47 addObject:v48];
+        serverUtteranceConversationIds4 = [p_isa serverUtteranceConversationIds];
+        identifier4 = [v14 identifier];
+        _instrumentationManager = [serverUtteranceConversationIds4 objectForKey:identifier4];
+        identifier5 = [v35 identifier];
+        [_instrumentationManager addObject:identifier5];
         goto LABEL_48;
       }
 
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) != 0 && [v35 presentationState] != 3)
       {
-        v53 = [p_isa delegate];
-        v45 = [v53 compactViewModelController:p_isa requestsTranscriptItemForAceObject:v36];
+        delegate3 = [p_isa delegate];
+        serverUtteranceConversationIds4 = [delegate3 compactViewModelController:p_isa requestsTranscriptItemForAceObject:aceObject2];
 
-        v54 = [v45 viewController];
-        [v54 setAceObject:v36];
+        viewController = [serverUtteranceConversationIds4 viewController];
+        [viewController setAceObject:aceObject2];
 
-        v55 = [v45 viewController];
-        [v55 wasAddedToTranscript];
+        viewController2 = [serverUtteranceConversationIds4 viewController];
+        [viewController2 wasAddedToTranscript];
 
-        [v127 addObject:v45];
-        [v126 addObject:v45];
-        v46 = [v45 viewController];
+        [array addObject:serverUtteranceConversationIds4];
+        [array2 addObject:serverUtteranceConversationIds4];
+        identifier4 = [serverUtteranceConversationIds4 viewController];
         if (objc_opt_respondsToSelector())
         {
-          [v46 configureForConversationStorable:v35];
+          [identifier4 configureForConversationStorable:v35];
         }
 
         if ((objc_opt_respondsToSelector() & 1) == 0)
@@ -924,21 +924,21 @@ LABEL_37:
           goto LABEL_50;
         }
 
-        v47 = [p_isa _instrumentationManager];
-        v48 = [v47 currentInstrumentationTurnContext];
-        v56 = [v48 turnIdentifier];
-        [v46 setInstrumentationTurnIdentifier:v56];
+        _instrumentationManager = [p_isa _instrumentationManager];
+        identifier5 = [_instrumentationManager currentInstrumentationTurnContext];
+        turnIdentifier = [identifier5 turnIdentifier];
+        [identifier4 setInstrumentationTurnIdentifier:turnIdentifier];
 
-        v14 = v125;
+        v14 = conversationCopy;
 LABEL_48:
 
-        p_isa = &v131->super.isa;
+        p_isa = &selfCopy->super.isa;
         goto LABEL_49;
       }
 
       if ([v35 type] == 1)
       {
-        if (v128)
+        if (speechRecognitionHypothesis)
         {
           v49 = *MEMORY[0x277CEF098];
           if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_FAULT))
@@ -950,11 +950,11 @@ LABEL_48:
         if ([p_isa alwaysShowRecognizedSpeech])
         {
           v50 = objc_alloc(MEMORY[0x277D61B08]);
-          v45 = [p_isa _userUtteranceForConversationItem:v35];
-          v46 = [v35 aceObject];
-          v51 = [v50 initWithUserUtterance:v45 backingAceObject:v46 isFinal:1];
-          v47 = v128;
-          v128 = v51;
+          serverUtteranceConversationIds4 = [p_isa _userUtteranceForConversationItem:v35];
+          identifier4 = [v35 aceObject];
+          v51 = [v50 initWithUserUtterance:serverUtteranceConversationIds4 backingAceObject:identifier4 isFinal:1];
+          _instrumentationManager = speechRecognitionHypothesis;
+          speechRecognitionHypothesis = v51;
 LABEL_49:
 
 LABEL_50:
@@ -962,8 +962,8 @@ LABEL_50:
         }
       }
 
-      v52 = [v35 identifier];
-      [v7 addObject:v52];
+      identifier6 = [v35 identifier];
+      [v7 addObject:identifier6];
 
       ++v34;
     }
@@ -981,25 +981,25 @@ LABEL_50:
 
 LABEL_71:
 
-  if ([v126 count])
+  if ([array2 count])
   {
-    objc_storeStrong(p_isa + 7, v126);
+    objc_storeStrong(p_isa + 7, array2);
   }
 
   if ([v7 count])
   {
-    v59 = [p_isa delegate];
-    [v59 compactViewModelController:p_isa didProcessConversationItemsWithIdentifiers:v7];
+    delegate4 = [p_isa delegate];
+    [delegate4 compactViewModelController:p_isa didProcessConversationItemsWithIdentifiers:v7];
   }
 
-  v60 = [MEMORY[0x277CBEB38] dictionary];
-  if ([v127 count] || (-[SiriSharedUICompactViewModelController serverUtteranceConversationIds](v131, "serverUtteranceConversationIds"), v61 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v125, "identifier"), v62 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v61, "objectForKey:", v62), v63 = objc_claimAutoreleasedReturnValue(), v64 = objc_msgSend(v63, "count"), v63, v62, v61, v64))
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if ([array count] || (-[SiriSharedUICompactViewModelController serverUtteranceConversationIds](selfCopy, "serverUtteranceConversationIds"), v61 = objc_claimAutoreleasedReturnValue(), objc_msgSend(conversationCopy, "identifier"), v62 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v61, "objectForKey:", v62), v63 = objc_claimAutoreleasedReturnValue(), v64 = objc_msgSend(v63, "count"), v63, v62, v61, v64))
   {
     v140 = 0u;
     v141 = 0u;
     v138 = 0u;
     v139 = 0u;
-    v65 = v127;
+    v65 = array;
     v66 = [v65 countByEnumeratingWithState:&v138 objects:v159 count:16];
     if (v66)
     {
@@ -1015,17 +1015,17 @@ LABEL_71:
           }
 
           v70 = *(*(&v138 + 1) + 8 * m);
-          v71 = [v70 platterCategory];
-          v72 = [MEMORY[0x277CCABB0] numberWithInteger:v71];
-          v73 = [v60 objectForKey:v72];
+          platterCategory = [v70 platterCategory];
+          v72 = [MEMORY[0x277CCABB0] numberWithInteger:platterCategory];
+          v73 = [dictionary objectForKey:v72];
 
           if (!v73)
           {
-            v74 = [MEMORY[0x277CBEB18] array];
-            [v60 setObject:v74 forKey:v72];
+            array3 = [MEMORY[0x277CBEB18] array];
+            [dictionary setObject:array3 forKey:v72];
           }
 
-          v75 = [v60 objectForKeyedSubscript:v72];
+          v75 = [dictionary objectForKeyedSubscript:v72];
           [v75 addObject:v70];
         }
 
@@ -1038,35 +1038,35 @@ LABEL_71:
     v7 = v130;
   }
 
-  v76 = [MEMORY[0x277CBEB18] array];
-  v77 = [MEMORY[0x277CBEB18] array];
-  v78 = [v60 objectForKeyedSubscript:&unk_282F90FD8];
+  array4 = [MEMORY[0x277CBEB18] array];
+  array5 = [MEMORY[0x277CBEB18] array];
+  v78 = [dictionary objectForKeyedSubscript:&unk_282F90FD8];
 
   if (v78)
   {
-    v79 = [v60 objectForKeyedSubscript:&unk_282F90FD8];
+    v79 = [dictionary objectForKeyedSubscript:&unk_282F90FD8];
 
-    [v60 removeObjectForKey:&unk_282F90FD8];
-    v77 = v79;
+    [dictionary removeObjectForKey:&unk_282F90FD8];
+    array5 = v79;
   }
 
-  v80 = [v60 objectForKeyedSubscript:&unk_282F90FF0];
+  v80 = [dictionary objectForKeyedSubscript:&unk_282F90FF0];
 
   if (v80)
   {
-    v81 = [v60 objectForKeyedSubscript:&unk_282F90FF0];
+    v81 = [dictionary objectForKeyedSubscript:&unk_282F90FF0];
 
-    [v60 removeObjectForKey:&unk_282F90FF0];
-    v76 = v81;
+    [dictionary removeObjectForKey:&unk_282F90FF0];
+    array4 = v81;
   }
 
-  v82 = v131;
-  v83 = [MEMORY[0x277CBEB18] array];
+  v82 = selfCopy;
+  array6 = [MEMORY[0x277CBEB18] array];
   v134 = 0u;
   v135 = 0u;
   v136 = 0u;
   v137 = 0u;
-  v84 = v60;
+  v84 = dictionary;
   v85 = [v84 countByEnumeratingWithState:&v134 objects:v158 count:16];
   if (v85)
   {
@@ -1082,7 +1082,7 @@ LABEL_71:
         }
 
         v89 = [v84 objectForKey:*(*(&v134 + 1) + 8 * n)];
-        [v83 addObject:v89];
+        [array6 addObject:v89];
       }
 
       v86 = [v84 countByEnumeratingWithState:&v134 objects:v158 count:16];
@@ -1091,145 +1091,145 @@ LABEL_71:
     while (v86);
   }
 
-  if (!v128)
+  if (!speechRecognitionHypothesis)
   {
-    v90 = [(SiriSharedUICompactViewModelController *)v131 viewModel];
-    v128 = [v90 speechRecognitionHypothesis];
+    viewModel = [(SiriSharedUICompactViewModelController *)selfCopy viewModel];
+    speechRecognitionHypothesis = [viewModel speechRecognitionHypothesis];
   }
 
   if (v124)
   {
-    v91 = [(SiriSharedUICompactViewModelController *)v131 viewModel];
-    v92 = [v91 resultTranscriptItems];
-    v93 = [v92 arrayByAddingObjectsFromArray:v76];
+    viewModel2 = [(SiriSharedUICompactViewModelController *)selfCopy viewModel];
+    resultTranscriptItems = [viewModel2 resultTranscriptItems];
+    v93 = [resultTranscriptItems arrayByAddingObjectsFromArray:array4];
     v94 = [v93 mutableCopy];
 
-    v95 = [(SiriSharedUICompactViewModelController *)v131 viewModel];
-    v96 = [v95 conversationTranscriptItems];
-    v97 = [v96 arrayByAddingObjectsFromArray:v77];
+    viewModel3 = [(SiriSharedUICompactViewModelController *)selfCopy viewModel];
+    conversationTranscriptItems = [viewModel3 conversationTranscriptItems];
+    v97 = [conversationTranscriptItems arrayByAddingObjectsFromArray:array5];
     v98 = [v97 mutableCopy];
 
-    v99 = [v83 count];
-    v100 = [(SiriSharedUICompactViewModelController *)v131 viewModel];
-    v101 = [v100 additionalPlatterTranscriptItems];
-    v102 = [v101 count];
+    v99 = [array6 count];
+    viewModel4 = [(SiriSharedUICompactViewModelController *)selfCopy viewModel];
+    additionalPlatterTranscriptItems = [viewModel4 additionalPlatterTranscriptItems];
+    v102 = [additionalPlatterTranscriptItems count];
 
-    if (v99 == v102 && [v83 count])
+    if (v99 == v102 && [array6 count])
     {
       v133 = v98;
       v103 = 0;
-      v82 = v131;
+      v82 = selfCopy;
       do
       {
-        v104 = [(SiriSharedUICompactViewModelController *)v82 viewModel];
-        v105 = [v104 additionalPlatterTranscriptItems];
-        v106 = [v105 objectAtIndexedSubscript:v103];
-        v107 = [v83 objectAtIndexedSubscript:v103];
+        viewModel5 = [(SiriSharedUICompactViewModelController *)v82 viewModel];
+        additionalPlatterTranscriptItems2 = [viewModel5 additionalPlatterTranscriptItems];
+        v106 = [additionalPlatterTranscriptItems2 objectAtIndexedSubscript:v103];
+        v107 = [array6 objectAtIndexedSubscript:v103];
         v108 = [v107 mutableCopy];
         v109 = [v106 arrayByAddingObjectsFromArray:v108];
-        [v83 setObject:v109 atIndexedSubscript:v103];
+        [array6 setObject:v109 atIndexedSubscript:v103];
 
-        v82 = v131;
+        v82 = selfCopy;
         ++v103;
       }
 
-      while ([v83 count] > v103);
-      v76 = v94;
-      v77 = v133;
+      while ([array6 count] > v103);
+      array4 = v94;
+      array5 = v133;
       v7 = v130;
     }
 
     else
     {
-      v76 = v94;
-      v77 = v98;
+      array4 = v94;
+      array5 = v98;
       v7 = v130;
-      v82 = v131;
+      v82 = selfCopy;
     }
   }
 
-  else if (v123 && ![v76 count])
+  else if (v123 && ![array4 count])
   {
-    v110 = [MEMORY[0x277CEF4D0] saeAvailable];
-    v111 = [(SiriSharedUICompactViewModelController *)v131 viewModel];
-    v112 = v111;
-    if (v110)
+    saeAvailable = [MEMORY[0x277CEF4D0] saeAvailable];
+    viewModel6 = [(SiriSharedUICompactViewModelController *)selfCopy viewModel];
+    v112 = viewModel6;
+    if (saeAvailable)
     {
-      v113 = [(NSArray *)v111 conversationTranscriptItems];
+      conversationTranscriptItems2 = [(NSArray *)viewModel6 conversationTranscriptItems];
 
-      v114 = [(NSArray *)v113 count];
-      storedTranscriptItems = v113;
+      v114 = [(NSArray *)conversationTranscriptItems2 count];
+      storedTranscriptItems = conversationTranscriptItems2;
       if (!v114)
       {
-        storedTranscriptItems = v131->_storedTranscriptItems;
+        storedTranscriptItems = selfCopy->_storedTranscriptItems;
       }
 
-      v116 = v77;
-      v77 = [(NSArray *)storedTranscriptItems mutableCopy];
+      resultTranscriptItems2 = array5;
+      array5 = [(NSArray *)storedTranscriptItems mutableCopy];
     }
 
     else
     {
-      v116 = [(NSArray *)v111 resultTranscriptItems];
-      v117 = [v116 mutableCopy];
+      resultTranscriptItems2 = [(NSArray *)viewModel6 resultTranscriptItems];
+      v117 = [resultTranscriptItems2 mutableCopy];
 
-      v113 = v112;
-      v76 = v117;
+      conversationTranscriptItems2 = v112;
+      array4 = v117;
     }
 
     v7 = v130;
   }
 
-  v118 = [(SiriSharedUICompactViewModelController *)v82 inputType];
+  inputType = [(SiriSharedUICompactViewModelController *)v82 inputType];
   v119 = [SiriSharedUICompactViewModel alloc];
-  [(SiriSharedUICompactViewModelController *)v82 _serverUtterancesToDisplayForConversation:v125];
+  [(SiriSharedUICompactViewModelController *)v82 _serverUtterancesToDisplayForConversation:conversationCopy];
   v121 = v120 = v82;
-  v122 = [(SiriSharedUICompactViewModel *)v119 initWithInputType:v118 resultTranscriptItems:v76 conversationTranscriptItems:v77 additionalPlatterTranscriptItems:v83 serverUtterances:v121 speechRecognitionHypothesis:v128];
+  v122 = [(SiriSharedUICompactViewModel *)v119 initWithInputType:inputType resultTranscriptItems:array4 conversationTranscriptItems:array5 additionalPlatterTranscriptItems:array6 serverUtterances:v121 speechRecognitionHypothesis:speechRecognitionHypothesis];
 
   [(SiriSharedUICompactViewModelController *)v120 setViewModel:v122];
 }
 
-- (id)_userUtteranceForConversationItem:(id)a3
+- (id)_userUtteranceForConversationItem:(id)item
 {
-  v3 = a3;
-  if ([v3 type] == 1)
+  itemCopy = item;
+  if ([itemCopy type] == 1)
   {
-    v4 = [v3 aceObject];
-    v5 = [v4 recognition];
-    v6 = [v4 refId];
-    v7 = [v4 sessionId];
-    v8 = [v5 af_userUtteranceValueWithRefId:v6 sessionId:v7];
+    aceObject = [itemCopy aceObject];
+    recognition = [aceObject recognition];
+    refId = [aceObject refId];
+    sessionId = [aceObject sessionId];
+    af_userUtteranceValue = [recognition af_userUtteranceValueWithRefId:refId sessionId:sessionId];
 
 LABEL_5:
     goto LABEL_7;
   }
 
-  if ([v3 type] == 2)
+  if ([itemCopy type] == 2)
   {
-    v4 = [v3 aceObject];
-    v8 = [v4 af_userUtteranceValue];
+    aceObject = [itemCopy aceObject];
+    af_userUtteranceValue = [aceObject af_userUtteranceValue];
     goto LABEL_5;
   }
 
-  v8 = 0;
+  af_userUtteranceValue = 0;
 LABEL_7:
 
-  return v8;
+  return af_userUtteranceValue;
 }
 
-- (id)_serverUtterancesToDisplayForConversation:(id)a3
+- (id)_serverUtterancesToDisplayForConversation:(id)conversation
 {
   v51 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  conversationCopy = conversation;
   v36 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v39 = self;
-  v5 = [(SiriSharedUICompactViewModelController *)self serverUtteranceConversationIds];
-  v6 = [v4 identifier];
-  v7 = [v5 objectForKey:v6];
+  selfCopy = self;
+  serverUtteranceConversationIds = [(SiriSharedUICompactViewModelController *)self serverUtteranceConversationIds];
+  identifier = [conversationCopy identifier];
+  v7 = [serverUtteranceConversationIds objectForKey:identifier];
   v8 = [v7 copy];
 
   obj = v8;
@@ -1253,23 +1253,23 @@ LABEL_7:
         }
 
         v15 = *(*(&v40 + 1) + 8 * v14);
-        v16 = [v4 itemWithIdentifier:{v15, v35}];
+        v16 = [conversationCopy itemWithIdentifier:{v15, v35}];
         v17 = v16;
         if (v16)
         {
-          v18 = [v16 aceObject];
+          aceObject = [v16 aceObject];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v19 = v18;
-            v20 = [v19 text];
+            serverUtteranceConversationIds2 = aceObject;
+            text = [serverUtteranceConversationIds2 text];
 
-            if (v20)
+            if (text)
             {
-              [v36 addObject:v19];
+              [v36 addObject:serverUtteranceConversationIds2];
             }
 
-            v18 = v19;
+            aceObject = serverUtteranceConversationIds2;
           }
 
           else
@@ -1280,21 +1280,21 @@ LABEL_7:
             if (os_log_type_enabled(*v13, OS_LOG_TYPE_DEFAULT))
             {
               v28 = v27;
-              v29 = [v15 UUIDString];
+              uUIDString = [v15 UUIDString];
               v30 = objc_opt_class();
               v31 = NSStringFromClass(v30);
               *buf = v35;
               v45 = "[SiriSharedUICompactViewModelController _serverUtterancesToDisplayForConversation:]";
               v46 = 2112;
-              v47 = v29;
+              v47 = uUIDString;
               v48 = 2112;
               v49 = v31;
               _os_log_impl(&dword_21E3EB000, v28, OS_LOG_TYPE_DEFAULT, "%s #compact Removing %@ because it is no longer an SAUIAssistantUtteranceView. New type: %@", buf, 0x20u);
             }
 
-            v19 = [(SiriSharedUICompactViewModelController *)v39 serverUtteranceConversationIds];
-            v32 = [v4 identifier];
-            v33 = [v19 objectForKey:v32];
+            serverUtteranceConversationIds2 = [(SiriSharedUICompactViewModelController *)selfCopy serverUtteranceConversationIds];
+            identifier2 = [conversationCopy identifier];
+            v33 = [serverUtteranceConversationIds2 objectForKey:identifier2];
             [v33 removeObject:v15];
 
             v13 = v26;
@@ -1309,17 +1309,17 @@ LABEL_7:
           if (os_log_type_enabled(*v13, OS_LOG_TYPE_DEFAULT))
           {
             v22 = v21;
-            v23 = [v15 UUIDString];
+            uUIDString2 = [v15 UUIDString];
             *buf = 136315394;
             v45 = "[SiriSharedUICompactViewModelController _serverUtterancesToDisplayForConversation:]";
             v46 = 2112;
-            v47 = v23;
+            v47 = uUIDString2;
             _os_log_impl(&dword_21E3EB000, v22, OS_LOG_TYPE_DEFAULT, "%s #compact Removing %@ because it is no longer in the conversation", buf, 0x16u);
           }
 
-          v18 = [(SiriSharedUICompactViewModelController *)v39 serverUtteranceConversationIds];
-          v19 = [v4 identifier];
-          v24 = [v18 objectForKey:v19];
+          aceObject = [(SiriSharedUICompactViewModelController *)selfCopy serverUtteranceConversationIds];
+          serverUtteranceConversationIds2 = [conversationCopy identifier];
+          v24 = [aceObject objectForKey:serverUtteranceConversationIds2];
           [v24 removeObject:v15];
         }
 
@@ -1339,7 +1339,7 @@ LABEL_7:
 - (void)_clearAdditionalContentTranscriptItems
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -1356,8 +1356,8 @@ LABEL_7:
         objc_enumerationMutation(v4);
       }
 
-      v8 = [MEMORY[0x277CBEA60] array];
-      [v3 addObject:v8];
+      array2 = [MEMORY[0x277CBEA60] array];
+      [array addObject:array2];
 
       if (!--v6)
       {
@@ -1370,43 +1370,43 @@ LABEL_7:
     }
   }
 
-  v9 = [v3 copy];
-  v10 = [(SiriSharedUICompactViewModelController *)self viewModel];
-  v11 = [v10 copyWithAdditionalPlatterTranscriptItems:v9];
+  v9 = [array copy];
+  viewModel = [(SiriSharedUICompactViewModelController *)self viewModel];
+  v11 = [viewModel copyWithAdditionalPlatterTranscriptItems:v9];
 
   [(SiriSharedUICompactViewModelController *)self setViewModel:v11];
 }
 
 - (int64_t)inputType
 {
-  v3 = [(SiriSharedUICompactViewModelController *)self delegate];
-  v4 = [v3 inputTypeForCompactViewModelController:self];
+  delegate = [(SiriSharedUICompactViewModelController *)self delegate];
+  v4 = [delegate inputTypeForCompactViewModelController:self];
 
   return v4;
 }
 
 - (void)inputTypeDidChange
 {
-  v3 = [(SiriSharedUICompactViewModelController *)self inputType];
-  v4 = [(SiriSharedUICompactViewModelController *)self viewModel];
-  v5 = [v4 copyWithInputType:v3];
+  inputType = [(SiriSharedUICompactViewModelController *)self inputType];
+  viewModel = [(SiriSharedUICompactViewModelController *)self viewModel];
+  v5 = [viewModel copyWithInputType:inputType];
 
   [(SiriSharedUICompactViewModelController *)self setViewModel:v5];
 }
 
-- (void)revealUserUtterance:(id)a3 backingAceObject:(id)a4
+- (void)revealUserUtterance:(id)utterance backingAceObject:(id)object
 {
   v6 = MEMORY[0x277D61B08];
-  v7 = a4;
-  v8 = a3;
-  v11 = [[v6 alloc] initWithUserUtterance:v8 backingAceObject:v7 isFinal:1];
+  objectCopy = object;
+  utteranceCopy = utterance;
+  v11 = [[v6 alloc] initWithUserUtterance:utteranceCopy backingAceObject:objectCopy isFinal:1];
 
-  v9 = [(SiriSharedUICompactViewModelController *)self viewModel];
-  v10 = [v9 copyWithSpeechRecognitionHypothesis:v11];
+  viewModel = [(SiriSharedUICompactViewModelController *)self viewModel];
+  v10 = [viewModel copyWithSpeechRecognitionHypothesis:v11];
   [(SiriSharedUICompactViewModelController *)self setViewModel:v10];
 }
 
-- (void)resetViewsAndClearASR:(BOOL)a3
+- (void)resetViewsAndClearASR:(BOOL)r
 {
   v11 = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277CEF098];
@@ -1418,10 +1418,10 @@ LABEL_7:
   }
 
   v6 = objc_alloc_init(SiriSharedUICompactViewModel);
-  if (!a3)
+  if (!r)
   {
-    v7 = [(SiriSharedUICompactViewModel *)self->_viewModel speechRecognitionHypothesis];
-    v8 = [(SiriSharedUICompactViewModel *)v6 copyWithSpeechRecognitionHypothesis:v7];
+    speechRecognitionHypothesis = [(SiriSharedUICompactViewModel *)self->_viewModel speechRecognitionHypothesis];
+    v8 = [(SiriSharedUICompactViewModel *)v6 copyWithSpeechRecognitionHypothesis:speechRecognitionHypothesis];
 
     v6 = v8;
   }
@@ -1437,36 +1437,36 @@ LABEL_7:
   _os_log_debug_impl(&dword_21E3EB000, log, OS_LOG_TYPE_DEBUG, "%s Attempting to display latency view", &v1, 0xCu);
 }
 
-- (void)updateLatencySummary:(id)a3
+- (void)updateLatencySummary:(id)summary
 {
-  v4 = a3;
+  summaryCopy = summary;
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEBUG))
   {
-    [(SiriSharedUICompactViewModelController *)v4 updateLatencySummary:v5];
+    [(SiriSharedUICompactViewModelController *)summaryCopy updateLatencySummary:v5];
   }
 
-  v6 = [objc_alloc(MEMORY[0x277CEF4F0]) initWithString:v4 correctionIdentifier:0];
+  v6 = [objc_alloc(MEMORY[0x277CEF4F0]) initWithString:summaryCopy correctionIdentifier:0];
   v7 = [objc_alloc(MEMORY[0x277D61B08]) initWithUserUtterance:v6 backingAceObject:0 isFinal:0];
-  v8 = [(SiriSharedUICompactViewModelController *)self viewModel];
-  v9 = [v8 copyWithSpeechRecognitionHypothesis:v7];
+  viewModel = [(SiriSharedUICompactViewModelController *)self viewModel];
+  v9 = [viewModel copyWithSpeechRecognitionHypothesis:v7];
   [(SiriSharedUICompactViewModelController *)self setViewModel:v9];
 }
 
-- (void)updateCurrentRequestText:(id)a3
+- (void)updateCurrentRequestText:(id)text
 {
   v4 = MEMORY[0x277CEF4F0];
-  v5 = a3;
-  v13 = [[v4 alloc] initWithString:v5 correctionIdentifier:0];
+  textCopy = text;
+  v13 = [[v4 alloc] initWithString:textCopy correctionIdentifier:0];
 
   v6 = [objc_alloc(MEMORY[0x277D61B08]) initWithUserUtterance:v13 backingAceObject:0 isFinal:1];
-  v7 = [(SiriSharedUICompactViewModelController *)self viewModel];
-  v8 = [v7 copyWithConversationTranscriptItems:MEMORY[0x277CBEBF8] serverUtterances:MEMORY[0x277CBEBF8] speechRecognitionHypothesis:v6 latencyViewUtterance:0];
+  viewModel = [(SiriSharedUICompactViewModelController *)self viewModel];
+  v8 = [viewModel copyWithConversationTranscriptItems:MEMORY[0x277CBEBF8] serverUtterances:MEMORY[0x277CBEBF8] speechRecognitionHypothesis:v6 latencyViewUtterance:0];
 
-  v9 = [(SiriSharedUICompactViewModelController *)self serverUtteranceConversationIds];
-  v10 = [(SiriSharedUICompactViewModelController *)self conversation];
-  v11 = [v10 identifier];
-  v12 = [v9 objectForKey:v11];
+  serverUtteranceConversationIds = [(SiriSharedUICompactViewModelController *)self serverUtteranceConversationIds];
+  conversation = [(SiriSharedUICompactViewModelController *)self conversation];
+  identifier = [conversation identifier];
+  v12 = [serverUtteranceConversationIds objectForKey:identifier];
   [v12 removeAllObjects];
 
   [(SiriSharedUICompactViewModelController *)self setViewModel:v8];
@@ -1474,11 +1474,11 @@ LABEL_7:
 
 - (BOOL)alwaysShowRecognizedSpeech
 {
-  v2 = self;
-  v3 = [(SiriSharedUICompactViewModelController *)self delegate];
-  LOBYTE(v2) = [v3 compactViewModelControllerShouldAlwaysShowRecognizedSpeech:v2];
+  selfCopy = self;
+  delegate = [(SiriSharedUICompactViewModelController *)self delegate];
+  LOBYTE(selfCopy) = [delegate compactViewModelControllerShouldAlwaysShowRecognizedSpeech:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
 - (SiriSharedUICompactViewModelChangeObserving)viewModelChangeObserver

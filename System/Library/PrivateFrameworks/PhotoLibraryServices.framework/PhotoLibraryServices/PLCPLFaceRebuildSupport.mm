@@ -1,36 +1,36 @@
 @interface PLCPLFaceRebuildSupport
-+ (void)rebuildDeferredFacesForAsset:(id)a3 inManagedObjectContext:(id)a4;
-- (PLCPLFaceRebuildSupport)initWithAsset:(id)a3 managedObjectContext:(id)a4;
++ (void)rebuildDeferredFacesForAsset:(id)asset inManagedObjectContext:(id)context;
+- (PLCPLFaceRebuildSupport)initWithAsset:(id)asset managedObjectContext:(id)context;
 - (id)fetchDeferredFacesToRebuild;
-- (id)fetchPersonForDeferredFace:(id)a3;
+- (id)fetchPersonForDeferredFace:(id)face;
 - (void)rebuildAllFaces;
-- (void)rebuildDetectedFace:(id)a3;
-- (void)rebuildFace:(id)a3;
-- (void)rebuildHiddenFace:(id)a3;
-- (void)rebuildRejectedFace:(id)a3;
+- (void)rebuildDetectedFace:(id)face;
+- (void)rebuildFace:(id)face;
+- (void)rebuildHiddenFace:(id)face;
+- (void)rebuildRejectedFace:(id)face;
 @end
 
 @implementation PLCPLFaceRebuildSupport
 
-- (id)fetchPersonForDeferredFace:(id)a3
+- (id)fetchPersonForDeferredFace:(id)face
 {
-  v4 = [a3 personUUID];
-  v5 = [PLPerson personWithUUID:v4 inManagedObjectContext:self->_context];
+  personUUID = [face personUUID];
+  v5 = [PLPerson personWithUUID:personUUID inManagedObjectContext:self->_context];
 
   return v5;
 }
 
 - (id)fetchDeferredFacesToRebuild
 {
-  v3 = [(PLManagedAsset *)self->_asset cloudAssetGUID];
-  v4 = [PLDeferredRebuildFace deferredFacesWithAssetCloudGUID:v3 inManagedObjectContext:self->_context];
+  cloudAssetGUID = [(PLManagedAsset *)self->_asset cloudAssetGUID];
+  v4 = [PLDeferredRebuildFace deferredFacesWithAssetCloudGUID:cloudAssetGUID inManagedObjectContext:self->_context];
 
   return v4;
 }
 
-- (void)rebuildHiddenFace:(id)a3
+- (void)rebuildHiddenFace:(id)face
 {
-  [(PLFaceRebuildHelper *)self->_rebuildHelper rebuildHiddenFace:a3 onAsset:self->_asset];
+  [(PLFaceRebuildHelper *)self->_rebuildHelper rebuildHiddenFace:face onAsset:self->_asset];
   ++self->_hiddenFaceCount;
   if ((*MEMORY[0x1E6994D48] & 1) == 0)
   {
@@ -43,11 +43,11 @@
   }
 }
 
-- (void)rebuildRejectedFace:(id)a3
+- (void)rebuildRejectedFace:(id)face
 {
-  v4 = a3;
-  v5 = [(PLCPLFaceRebuildSupport *)self fetchPersonForDeferredFace:v4];
-  [(PLFaceRebuildHelper *)self->_rebuildHelper rebuildRejectedFace:v4 onAsset:self->_asset person:v5];
+  faceCopy = face;
+  v5 = [(PLCPLFaceRebuildSupport *)self fetchPersonForDeferredFace:faceCopy];
+  [(PLFaceRebuildHelper *)self->_rebuildHelper rebuildRejectedFace:faceCopy onAsset:self->_asset person:v5];
 
   ++self->_rejectedFaceCount;
   if ((*MEMORY[0x1E6994D48] & 1) == 0)
@@ -61,11 +61,11 @@
   }
 }
 
-- (void)rebuildDetectedFace:(id)a3
+- (void)rebuildDetectedFace:(id)face
 {
-  v4 = a3;
-  v5 = [(PLCPLFaceRebuildSupport *)self fetchPersonForDeferredFace:v4];
-  [(PLFaceRebuildHelper *)self->_rebuildHelper rebuildDetectedFace:v4 onAsset:self->_asset person:v5];
+  faceCopy = face;
+  v5 = [(PLCPLFaceRebuildSupport *)self fetchPersonForDeferredFace:faceCopy];
+  [(PLFaceRebuildHelper *)self->_rebuildHelper rebuildDetectedFace:faceCopy onAsset:self->_asset person:v5];
 
   ++self->_detectedFaceCount;
   if ((*MEMORY[0x1E6994D48] & 1) == 0)
@@ -79,10 +79,10 @@
   }
 }
 
-- (void)rebuildFace:(id)a3
+- (void)rebuildFace:(id)face
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  faceCopy = face;
   v5 = MEMORY[0x1E6994D48];
   if ((*MEMORY[0x1E6994D48] & 1) == 0)
   {
@@ -90,21 +90,21 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
       v11 = 138412290;
-      v12 = v4;
+      v12 = faceCopy;
       _os_log_impl(&dword_19BF1F000, v6, OS_LOG_TYPE_DEBUG, "Rebuilding deferred face: %@", &v11, 0xCu);
     }
   }
 
-  if (([v4 rejected] & 1) != 0 || (objc_msgSend(v4, "personUUID"), v7 = objc_claimAutoreleasedReturnValue(), v7, !v7))
+  if (([faceCopy rejected] & 1) != 0 || (objc_msgSend(faceCopy, "personUUID"), v7 = objc_claimAutoreleasedReturnValue(), v7, !v7))
   {
-    if ([v4 rejected] && (objc_msgSend(v4, "personUUID"), v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
+    if ([faceCopy rejected] && (objc_msgSend(faceCopy, "personUUID"), v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
     {
-      [(PLCPLFaceRebuildSupport *)self rebuildRejectedFace:v4];
+      [(PLCPLFaceRebuildSupport *)self rebuildRejectedFace:faceCopy];
     }
 
-    else if ([v4 isHidden] && (objc_msgSend(v4, "personUUID"), v9 = objc_claimAutoreleasedReturnValue(), v9, !v9))
+    else if ([faceCopy isHidden] && (objc_msgSend(faceCopy, "personUUID"), v9 = objc_claimAutoreleasedReturnValue(), v9, !v9))
     {
-      [(PLCPLFaceRebuildSupport *)self rebuildHiddenFace:v4];
+      [(PLCPLFaceRebuildSupport *)self rebuildHiddenFace:faceCopy];
     }
 
     else if ((*v5 & 1) == 0)
@@ -113,7 +113,7 @@
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
         v11 = 138412290;
-        v12 = v4;
+        v12 = faceCopy;
         _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_ERROR, "Unexpected deferred face state: %@", &v11, 0xCu);
       }
     }
@@ -121,21 +121,21 @@
 
   else
   {
-    [(PLCPLFaceRebuildSupport *)self rebuildDetectedFace:v4];
+    [(PLCPLFaceRebuildSupport *)self rebuildDetectedFace:faceCopy];
   }
 }
 
 - (void)rebuildAllFaces
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = [(PLCPLFaceRebuildSupport *)self fetchDeferredFacesToRebuild];
-  if ([v3 count])
+  fetchDeferredFacesToRebuild = [(PLCPLFaceRebuildSupport *)self fetchDeferredFacesToRebuild];
+  if ([fetchDeferredFacesToRebuild count])
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v4 = v3;
+    v4 = fetchDeferredFacesToRebuild;
     v5 = [v4 countByEnumeratingWithState:&v16 objects:v28 count:16];
     if (v5)
     {
@@ -174,7 +174,7 @@
         detectedFaceCount = self->_detectedFaceCount;
         rejectedFaceCount = self->_rejectedFaceCount;
         hiddenFaceCount = self->_hiddenFaceCount;
-        v15 = [(PLManagedAsset *)self->_asset cloudAssetGUID];
+        cloudAssetGUID = [(PLManagedAsset *)self->_asset cloudAssetGUID];
         *buf = 67109890;
         v21 = detectedFaceCount;
         v22 = 1024;
@@ -182,25 +182,25 @@
         v24 = 1024;
         v25 = hiddenFaceCount;
         v26 = 2112;
-        v27 = v15;
+        v27 = cloudAssetGUID;
         _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_DEFAULT, "Rebuilt %d detected, %d rejected, %d hidden for asset: %@", buf, 0x1Eu);
       }
     }
   }
 }
 
-- (PLCPLFaceRebuildSupport)initWithAsset:(id)a3 managedObjectContext:(id)a4
+- (PLCPLFaceRebuildSupport)initWithAsset:(id)asset managedObjectContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  assetCopy = asset;
+  contextCopy = context;
   v15.receiver = self;
   v15.super_class = PLCPLFaceRebuildSupport;
   v9 = [(PLCPLFaceRebuildSupport *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_asset, a3);
-    objc_storeStrong(&v10->_context, a4);
+    objc_storeStrong(&v9->_asset, asset);
+    objc_storeStrong(&v10->_context, context);
     v11 = [[PLFaceRebuildHelper alloc] initWithContext:v10->_context];
     rebuildHelper = v10->_rebuildHelper;
     v10->_rebuildHelper = v11;
@@ -211,12 +211,12 @@
   return v10;
 }
 
-+ (void)rebuildDeferredFacesForAsset:(id)a3 inManagedObjectContext:(id)a4
++ (void)rebuildDeferredFacesForAsset:(id)asset inManagedObjectContext:(id)context
 {
-  v8 = a3;
-  v5 = a4;
+  assetCopy = asset;
+  contextCopy = context;
   v6 = objc_autoreleasePoolPush();
-  v7 = [[PLCPLFaceRebuildSupport alloc] initWithAsset:v8 managedObjectContext:v5];
+  v7 = [[PLCPLFaceRebuildSupport alloc] initWithAsset:assetCopy managedObjectContext:contextCopy];
   [(PLCPLFaceRebuildSupport *)v7 rebuildAllFaces];
 
   objc_autoreleasePoolPop(v6);

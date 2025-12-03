@@ -1,6 +1,6 @@
 @interface CRKConcretePrivateKey
-+ (id)privateKeyWithData:(id)a3;
-- (CRKConcretePrivateKey)initWithPrivateKey:(__SecKey *)a3;
++ (id)privateKeyWithData:(id)data;
+- (CRKConcretePrivateKey)initWithPrivateKey:(__SecKey *)key;
 - (NSData)dataRepresentation;
 - (void)dataRepresentation;
 - (void)dealloc;
@@ -16,21 +16,21 @@
   [(CRKConcretePrivateKey *)&v3 dealloc];
 }
 
-- (CRKConcretePrivateKey)initWithPrivateKey:(__SecKey *)a3
+- (CRKConcretePrivateKey)initWithPrivateKey:(__SecKey *)key
 {
   v6.receiver = self;
   v6.super_class = CRKConcretePrivateKey;
   v4 = [(CRKConcretePrivateKey *)&v6 init];
   if (v4)
   {
-    CFRetain(a3);
-    v4->_underlyingPrivateKey = a3;
+    CFRetain(key);
+    v4->_underlyingPrivateKey = key;
   }
 
   return v4;
 }
 
-+ (id)privateKeyWithData:(id)a3
++ (id)privateKeyWithData:(id)data
 {
   v16[2] = *MEMORY[0x277D85DE8];
   v4 = *MEMORY[0x277CDBFE0];
@@ -40,14 +40,14 @@
   v16[0] = *MEMORY[0x277CDC060];
   v16[1] = v5;
   v6 = MEMORY[0x277CBEAC0];
-  v7 = a3;
+  dataCopy = data;
   v8 = [v6 dictionaryWithObjects:v16 forKeys:v15 count:2];
   v14 = 0;
-  v9 = SecKeyCreateWithData(v7, v8, &v14);
+  v9 = SecKeyCreateWithData(dataCopy, v8, &v14);
 
   if (v9)
   {
-    v10 = [[a1 alloc] initWithPrivateKey:v9];
+    v10 = [[self alloc] initWithPrivateKey:v9];
     CFRelease(v9);
   }
 
@@ -91,7 +91,7 @@
 
 - (void)dataRepresentation
 {
-  v1 = [a1 verboseDescription];
+  verboseDescription = [self verboseDescription];
   OUTLINED_FUNCTION_0_3(&dword_243550000, v2, v3, "Error occurred while getting the private key, %{public}@", v4, v5, v6, v7, 2u);
 }
 

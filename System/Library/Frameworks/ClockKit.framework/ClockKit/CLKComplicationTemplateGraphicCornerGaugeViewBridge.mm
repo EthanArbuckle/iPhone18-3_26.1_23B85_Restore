@@ -1,25 +1,25 @@
 @interface CLKComplicationTemplateGraphicCornerGaugeViewBridge
-- (id)serializableCopyWithImageProviders:(id)a3;
-- (id)viewDataKeyForSwiftUIViewKey:(id)a3;
-- (void)_enumerateTextProviderKeysWithBlock:(id)a3;
+- (id)serializableCopyWithImageProviders:(id)providers;
+- (id)viewDataKeyForSwiftUIViewKey:(id)key;
+- (void)_enumerateTextProviderKeysWithBlock:(id)block;
 @end
 
 @implementation CLKComplicationTemplateGraphicCornerGaugeViewBridge
 
-- (void)_enumerateTextProviderKeysWithBlock:(id)a3
+- (void)_enumerateTextProviderKeysWithBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = 0;
-  v3[2](v3, @"leadingTextProvider", 1, 1, &v4);
+  blockCopy[2](blockCopy, @"leadingTextProvider", 1, 1, &v4);
   if ((v4 & 1) == 0)
   {
-    v3[2](v3, @"trailingTextProvider", 1, 1, &v4);
+    blockCopy[2](blockCopy, @"trailingTextProvider", 1, 1, &v4);
   }
 }
 
-- (id)viewDataKeyForSwiftUIViewKey:(id)a3
+- (id)viewDataKeyForSwiftUIViewKey:(id)key
 {
-  if ([a3 isEqualToString:@"label"])
+  if ([key isEqualToString:@"label"])
   {
     return @"labelData";
   }
@@ -30,16 +30,16 @@
   }
 }
 
-- (id)serializableCopyWithImageProviders:(id)a3
+- (id)serializableCopyWithImageProviders:(id)providers
 {
-  v4 = a3;
+  providersCopy = providers;
   v5 = [CLKComplicationTemplateGraphicCornerGaugeImage alloc];
-  v6 = [(CLKComplicationTemplateGraphicCornerGaugeViewBridge *)self gaugeProvider];
-  v7 = [(CLKComplicationTemplateGraphicCornerGaugeViewBridge *)self leadingTextProvider];
-  v8 = [(CLKComplicationTemplateGraphicCornerGaugeViewBridge *)self trailingTextProvider];
-  v9 = [v4 objectForKeyedSubscript:@"labelData"];
+  gaugeProvider = [(CLKComplicationTemplateGraphicCornerGaugeViewBridge *)self gaugeProvider];
+  leadingTextProvider = [(CLKComplicationTemplateGraphicCornerGaugeViewBridge *)self leadingTextProvider];
+  trailingTextProvider = [(CLKComplicationTemplateGraphicCornerGaugeViewBridge *)self trailingTextProvider];
+  v9 = [providersCopy objectForKeyedSubscript:@"labelData"];
 
-  v10 = [(CLKComplicationTemplateGraphicCornerGaugeImage *)v5 initWithGaugeProvider:v6 leadingTextProvider:v7 trailingTextProvider:v8 imageProvider:v9];
+  v10 = [(CLKComplicationTemplateGraphicCornerGaugeImage *)v5 initWithGaugeProvider:gaugeProvider leadingTextProvider:leadingTextProvider trailingTextProvider:trailingTextProvider imageProvider:v9];
   [(CLKComplicationTemplate *)v10 setSdkVersion:[(CLKComplicationTemplate *)self sdkVersion]];
 
   return v10;

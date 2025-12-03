@@ -1,29 +1,29 @@
 @interface CRKFileWrapperBackedFileSystemNode
-- (BOOL)writeToURL:(id)a3 error:(id *)a4;
-- (CRKFileWrapperBackedFileSystemNode)initWithFileWrapper:(id)a3 parentFileWrapper:(id)a4;
+- (BOOL)writeToURL:(id)l error:(id *)error;
+- (CRKFileWrapperBackedFileSystemNode)initWithFileWrapper:(id)wrapper parentFileWrapper:(id)fileWrapper;
 - (NSData)content;
 - (NSDictionary)children;
 - (NSString)fileName;
-- (id)addChildWithDescriptor:(id)a3;
+- (id)addChildWithDescriptor:(id)descriptor;
 - (int64_t)type;
 - (void)removeFromParent;
-- (void)setFileName:(id)a3;
+- (void)setFileName:(id)name;
 @end
 
 @implementation CRKFileWrapperBackedFileSystemNode
 
-- (CRKFileWrapperBackedFileSystemNode)initWithFileWrapper:(id)a3 parentFileWrapper:(id)a4
+- (CRKFileWrapperBackedFileSystemNode)initWithFileWrapper:(id)wrapper parentFileWrapper:(id)fileWrapper
 {
-  v7 = a3;
-  v8 = a4;
+  wrapperCopy = wrapper;
+  fileWrapperCopy = fileWrapper;
   v12.receiver = self;
   v12.super_class = CRKFileWrapperBackedFileSystemNode;
   v9 = [(CRKFileWrapperBackedFileSystemNode *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_fileWrapper, a3);
-    objc_storeStrong(&v10->_parentFileWrapper, a4);
+    objc_storeStrong(&v9->_fileWrapper, wrapper);
+    objc_storeStrong(&v10->_parentFileWrapper, fileWrapper);
   }
 
   return v10;
@@ -31,45 +31,45 @@
 
 - (NSString)fileName
 {
-  v2 = [(CRKFileWrapperBackedFileSystemNode *)self fileWrapper];
-  v3 = [v2 filename];
+  fileWrapper = [(CRKFileWrapperBackedFileSystemNode *)self fileWrapper];
+  filename = [fileWrapper filename];
 
-  return v3;
+  return filename;
 }
 
-- (void)setFileName:(id)a3
+- (void)setFileName:(id)name
 {
-  v4 = a3;
-  v5 = [(CRKFileWrapperBackedFileSystemNode *)self fileWrapper];
-  [v5 setFilename:v4];
+  nameCopy = name;
+  fileWrapper = [(CRKFileWrapperBackedFileSystemNode *)self fileWrapper];
+  [fileWrapper setFilename:nameCopy];
 }
 
 - (int64_t)type
 {
-  v2 = [(CRKFileWrapperBackedFileSystemNode *)self fileWrapper];
-  v3 = [v2 isDirectory] ^ 1;
+  fileWrapper = [(CRKFileWrapperBackedFileSystemNode *)self fileWrapper];
+  v3 = [fileWrapper isDirectory] ^ 1;
 
   return v3;
 }
 
 - (NSData)content
 {
-  v2 = [(CRKFileWrapperBackedFileSystemNode *)self fileWrapper];
-  v3 = [v2 regularFileContents];
+  fileWrapper = [(CRKFileWrapperBackedFileSystemNode *)self fileWrapper];
+  regularFileContents = [fileWrapper regularFileContents];
 
-  return v3;
+  return regularFileContents;
 }
 
 - (NSDictionary)children
 {
-  v3 = [(CRKFileWrapperBackedFileSystemNode *)self fileWrapper];
-  v4 = [v3 fileWrappers];
+  fileWrapper = [(CRKFileWrapperBackedFileSystemNode *)self fileWrapper];
+  fileWrappers = [fileWrapper fileWrappers];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __46__CRKFileWrapperBackedFileSystemNode_children__block_invoke;
   v7[3] = &unk_278DC2678;
   v7[4] = self;
-  v5 = [v4 crk_mapToDictionary:v7];
+  v5 = [fileWrappers crk_mapToDictionary:v7];
 
   return v5;
 }
@@ -86,36 +86,36 @@ void __46__CRKFileWrapperBackedFileSystemNode_children__block_invoke(uint64_t a1
   (a4)[2](v8, v10, v12);
 }
 
-- (id)addChildWithDescriptor:(id)a3
+- (id)addChildWithDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = [v4 type];
-  if (v5 == 1)
+  descriptorCopy = descriptor;
+  type = [descriptorCopy type];
+  if (type == 1)
   {
     v8 = objc_alloc(MEMORY[0x277CCAA20]);
-    v9 = [v4 content];
-    v7 = [v8 initRegularFileWithContents:v9];
+    content = [descriptorCopy content];
+    v7 = [v8 initRegularFileWithContents:content];
 
     goto LABEL_5;
   }
 
-  if (!v5)
+  if (!type)
   {
     v6 = objc_alloc(MEMORY[0x277CCAA20]);
     v7 = [v6 initDirectoryWithFileWrappers:MEMORY[0x277CBEC10]];
 LABEL_5:
-    v10 = [v4 fileName];
-    [v7 setFilename:v10];
+    fileName = [descriptorCopy fileName];
+    [v7 setFilename:fileName];
 
-    v11 = [v4 fileName];
-    [v7 setPreferredFilename:v11];
+    fileName2 = [descriptorCopy fileName];
+    [v7 setPreferredFilename:fileName2];
 
-    v12 = [(CRKFileWrapperBackedFileSystemNode *)self fileWrapper];
-    v13 = [v12 addFileWrapper:v7];
+    fileWrapper = [(CRKFileWrapperBackedFileSystemNode *)self fileWrapper];
+    v13 = [fileWrapper addFileWrapper:v7];
 
     v14 = [CRKFileWrapperBackedFileSystemNode alloc];
-    v15 = [(CRKFileWrapperBackedFileSystemNode *)self fileWrapper];
-    v16 = [(CRKFileWrapperBackedFileSystemNode *)v14 initWithFileWrapper:v7 parentFileWrapper:v15];
+    fileWrapper2 = [(CRKFileWrapperBackedFileSystemNode *)self fileWrapper];
+    v16 = [(CRKFileWrapperBackedFileSystemNode *)v14 initWithFileWrapper:v7 parentFileWrapper:fileWrapper2];
 
     goto LABEL_7;
   }
@@ -128,24 +128,24 @@ LABEL_7:
 
 - (void)removeFromParent
 {
-  v4 = [(CRKFileWrapperBackedFileSystemNode *)self parentFileWrapper];
-  v3 = [(CRKFileWrapperBackedFileSystemNode *)self fileWrapper];
-  [v4 removeFileWrapper:v3];
+  parentFileWrapper = [(CRKFileWrapperBackedFileSystemNode *)self parentFileWrapper];
+  fileWrapper = [(CRKFileWrapperBackedFileSystemNode *)self fileWrapper];
+  [parentFileWrapper removeFileWrapper:fileWrapper];
 }
 
-- (BOOL)writeToURL:(id)a3 error:(id *)a4
+- (BOOL)writeToURL:(id)l error:(id *)error
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(CRKFileWrapperBackedFileSystemNode *)self fileWrapper];
-  if ([v7 writeToURL:v6 options:1 originalContentsURL:0 error:a4])
+  lCopy = l;
+  fileWrapper = [(CRKFileWrapperBackedFileSystemNode *)self fileWrapper];
+  if ([fileWrapper writeToURL:lCopy options:1 originalContentsURL:0 error:error])
   {
-    v8 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v13 = *MEMORY[0x277CCA110];
     v14[0] = MEMORY[0x277CBEC38];
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:&v13 count:1];
-    v10 = [v6 path];
-    v11 = [v8 setAttributes:v9 ofItemAtPath:v10 error:a4];
+    path = [lCopy path];
+    v11 = [defaultManager setAttributes:v9 ofItemAtPath:path error:error];
   }
 
   else

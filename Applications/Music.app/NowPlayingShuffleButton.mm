@@ -1,5 +1,5 @@
 @interface NowPlayingShuffleButton
-- (_TtC5Music23NowPlayingShuffleButton)initWithCoder:(id)a3;
+- (_TtC5Music23NowPlayingShuffleButton)initWithCoder:(id)coder;
 - (void)tintColorDidChange;
 @end
 
@@ -14,7 +14,7 @@
   sub_10004FD5C();
 }
 
-- (_TtC5Music23NowPlayingShuffleButton)initWithCoder:(id)a3
+- (_TtC5Music23NowPlayingShuffleButton)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC5Music23NowPlayingShuffleButton_shuffleType) = 0;
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC5Music23NowPlayingShuffleButton_defaultColor) = 0;

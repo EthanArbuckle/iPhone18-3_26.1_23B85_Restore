@@ -7,9 +7,9 @@
 
 - (void)ams_encryptionResult
 {
-  v6 = [a1 objectForKeyedSubscript:@"data"];
-  v4 = [a1 objectForKeyedSubscript:@"iv"];
-  v5 = [a1 objectForKeyedSubscript:@"tag"];
+  v6 = [self objectForKeyedSubscript:@"data"];
+  v4 = [self objectForKeyedSubscript:@"iv"];
+  v5 = [self objectForKeyedSubscript:@"tag"];
   if (v6 && v4 && v5)
   {
     *a2 = v6;

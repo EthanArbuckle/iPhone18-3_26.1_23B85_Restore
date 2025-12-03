@@ -1,5 +1,5 @@
 @interface CKTranscriptManagementNameFieldAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityScrollToVisible;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)layoutSubviews;
@@ -7,11 +7,11 @@
 
 @implementation CKTranscriptManagementNameFieldAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKTranscriptManagementNameField" hasInstanceMethod:@"fieldLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKTranscriptManagementNameField" hasInstanceMethod:@"textField" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKTranscriptManagementNameField" hasInstanceMethod:@"fieldLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKTranscriptManagementNameField" hasInstanceMethod:@"textField" withFullSignature:{"@", 0}];
 }
 
 - (BOOL)accessibilityScrollToVisible
@@ -38,8 +38,8 @@
   [v4 accessibilitySetIdentification:@"GroupNameField"];
 
   v5 = [(CKTranscriptManagementNameFieldAccessibility *)self safeValueForKey:@"textField"];
-  v6 = [v3 accessibilityLabel];
-  [v5 setAccessibilityLabel:v6];
+  accessibilityLabel = [v3 accessibilityLabel];
+  [v5 setAccessibilityLabel:accessibilityLabel];
 }
 
 - (void)layoutSubviews

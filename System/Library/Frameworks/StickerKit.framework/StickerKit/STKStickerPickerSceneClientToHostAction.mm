@@ -1,6 +1,6 @@
 @interface STKStickerPickerSceneClientToHostAction
 + (id)actionForStickerPickerSceneDidRequestDismissal;
-- (void)performActionForSceneController:(id)a3;
+- (void)performActionForSceneController:(id)controller;
 @end
 
 @implementation STKStickerPickerSceneClientToHostAction
@@ -9,23 +9,23 @@
 {
   v3 = objc_alloc_init(MEMORY[0x1E698E700]);
   [v3 setObject:&unk_1F0DFA2F0 forSetting:0];
-  v4 = [[a1 alloc] initWithInfo:v3 responder:0];
+  v4 = [[self alloc] initWithInfo:v3 responder:0];
 
   return v4;
 }
 
-- (void)performActionForSceneController:(id)a3
+- (void)performActionForSceneController:(id)controller
 {
-  v4 = a3;
-  v5 = [(STKStickerPickerSceneClientToHostAction *)self info];
-  v6 = [v5 objectForSetting:0];
-  v7 = [v6 integerValue];
+  controllerCopy = controller;
+  info = [(STKStickerPickerSceneClientToHostAction *)self info];
+  v6 = [info objectForSetting:0];
+  integerValue = [v6 integerValue];
 
-  v8 = [v4 delegate];
+  delegate = [controllerCopy delegate];
 
-  if (!v7)
+  if (!integerValue)
   {
-    [v8 stickerPickerSceneDidRequestDismissal];
+    [delegate stickerPickerSceneDidRequestDismissal];
   }
 }
 

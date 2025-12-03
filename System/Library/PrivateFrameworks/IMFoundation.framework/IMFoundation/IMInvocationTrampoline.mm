@@ -1,9 +1,9 @@
 @interface IMInvocationTrampoline
-- (BOOL)respondsToSelector:(SEL)a3;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (void)dealloc;
-- (void)forwardInvocation:(id)a3;
-- (void)performInvocation:(id)a3;
+- (void)forwardInvocation:(id)invocation;
+- (void)performInvocation:(id)invocation;
 @end
 
 @implementation IMInvocationTrampoline
@@ -18,37 +18,37 @@
   [(IMInvocationTrampoline *)&v4 dealloc];
 }
 
-- (void)performInvocation:(id)a3
+- (void)performInvocation:(id)invocation
 {
-  v9 = a3;
+  invocationCopy = invocation;
   v4 = objc_autoreleasePoolPush();
   v7 = objc_msgSend_target(self, v5, v6);
-  objc_msgSend_invokeWithTarget_(v9, v8, v7);
+  objc_msgSend_invokeWithTarget_(invocationCopy, v8, v7);
 
   objc_autoreleasePoolPop(v4);
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v12.receiver = self;
   v12.super_class = IMInvocationTrampoline;
   if ([(IMInvocationTrampoline *)&v12 respondsToSelector:?])
   {
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = objc_msgSend_target(self, v5, v6);
+    selfCopy = objc_msgSend_target(self, v5, v6);
   }
 
-  v9 = v7;
-  v10 = objc_msgSend_methodSignatureForSelector_(v7, v8, a3);
+  v9 = selfCopy;
+  v10 = objc_msgSend_methodSignatureForSelector_(selfCopy, v8, selector);
 
   return v10;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v9.receiver = self;
   v9.super_class = IMInvocationTrampoline;
@@ -66,11 +66,11 @@
   return v6 & 1;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v4 = a3;
+  invocationCopy = invocation;
   v8 = objc_msgSend_target(self, v5, v6);
-  objc_msgSend_invokeWithTarget_(v4, v7, v8);
+  objc_msgSend_invokeWithTarget_(invocationCopy, v7, v8);
 }
 
 @end

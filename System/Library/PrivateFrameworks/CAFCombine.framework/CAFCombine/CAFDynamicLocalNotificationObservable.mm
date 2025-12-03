@@ -1,17 +1,17 @@
 @interface CAFDynamicLocalNotificationObservable
 - (NSString)description;
-- (void)dynamicLocalNotificationService:(id)a3 didUpdateSymbolNameAndColor:(id)a4;
-- (void)dynamicLocalNotificationService:(id)a3 didUpdateUserDismissible:(BOOL)a4;
-- (void)serviceDidFinishGroupUpdate:(id)a3;
-- (void)serviceDidUpdate:(id)a3 characteristic:(id)a4 fromGroupUpdate:(BOOL)a5;
-- (void)serviceDidUpdate:(id)a3 receivedAllValues:(BOOL)a4;
+- (void)dynamicLocalNotificationService:(id)service didUpdateSymbolNameAndColor:(id)color;
+- (void)dynamicLocalNotificationService:(id)service didUpdateUserDismissible:(BOOL)dismissible;
+- (void)serviceDidFinishGroupUpdate:(id)update;
+- (void)serviceDidUpdate:(id)update characteristic:(id)characteristic fromGroupUpdate:(BOOL)groupUpdate;
+- (void)serviceDidUpdate:(id)update receivedAllValues:(BOOL)values;
 @end
 
 @implementation CAFDynamicLocalNotificationObservable
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CAFDynamicLocalNotificationObservable.description.getter();
   v5 = v4;
 
@@ -20,40 +20,40 @@
   return v6;
 }
 
-- (void)dynamicLocalNotificationService:(id)a3 didUpdateUserDismissible:(BOOL)a4
+- (void)dynamicLocalNotificationService:(id)service didUpdateUserDismissible:(BOOL)dismissible
 {
-  v5 = a3;
-  v6 = self;
+  serviceCopy = service;
+  selfCopy = self;
   CAFDynamicLocalNotificationObservable.dynamicLocalNotificationService(_:didUpdateUserDismissible:)();
 }
 
-- (void)dynamicLocalNotificationService:(id)a3 didUpdateSymbolNameAndColor:(id)a4
+- (void)dynamicLocalNotificationService:(id)service didUpdateSymbolNameAndColor:(id)color
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  CAFDynamicLocalNotificationObservable.dynamicLocalNotificationService(_:didUpdateSymbolNameAndColor:)(v8, v7);
+  serviceCopy = service;
+  colorCopy = color;
+  selfCopy = self;
+  CAFDynamicLocalNotificationObservable.dynamicLocalNotificationService(_:didUpdateSymbolNameAndColor:)(selfCopy, colorCopy);
 }
 
-- (void)serviceDidUpdate:(id)a3 characteristic:(id)a4 fromGroupUpdate:(BOOL)a5
+- (void)serviceDidUpdate:(id)update characteristic:(id)characteristic fromGroupUpdate:(BOOL)groupUpdate
 {
-  v8 = a3;
-  v9 = a4;
-  v11 = self;
-  CAFDynamicLocalNotificationObservable.serviceDidUpdate(_:characteristic:fromGroupUpdate:)(v11, v10, a5);
+  updateCopy = update;
+  characteristicCopy = characteristic;
+  selfCopy = self;
+  CAFDynamicLocalNotificationObservable.serviceDidUpdate(_:characteristic:fromGroupUpdate:)(selfCopy, v10, groupUpdate);
 }
 
-- (void)serviceDidUpdate:(id)a3 receivedAllValues:(BOOL)a4
+- (void)serviceDidUpdate:(id)update receivedAllValues:(BOOL)values
 {
-  v6 = a3;
-  v7 = self;
-  CAFDynamicLocalNotificationObservable.serviceDidUpdate(_:receivedAllValues:)(v7, a4);
+  updateCopy = update;
+  selfCopy = self;
+  CAFDynamicLocalNotificationObservable.serviceDidUpdate(_:receivedAllValues:)(selfCopy, values);
 }
 
-- (void)serviceDidFinishGroupUpdate:(id)a3
+- (void)serviceDidFinishGroupUpdate:(id)update
 {
-  v4 = a3;
-  v5 = self;
+  updateCopy = update;
+  selfCopy = self;
   CAFDynamicLocalNotificationObservable.serviceDidFinishGroupUpdate(_:)();
 }
 

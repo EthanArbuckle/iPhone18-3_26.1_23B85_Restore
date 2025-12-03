@@ -1,7 +1,7 @@
 @interface MTL4BinaryFunctionDescriptor
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MTL4BinaryFunctionDescriptor)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
@@ -25,9 +25,9 @@
   [(MTL4BinaryFunctionDescriptor *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setFunctionDescriptor:{-[MTL4BinaryFunctionDescriptor functionDescriptor](self, "functionDescriptor")}];
   [v4 setPipelineOptions:{-[MTL4BinaryFunctionDescriptor pipelineOptions](self, "pipelineOptions")}];
   [v4 setOptions:{-[MTL4BinaryFunctionDescriptor options](self, "options")}];
@@ -35,15 +35,15 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     goto LABEL_13;
   }
 
   Class = object_getClass(self);
-  if (Class != object_getClass(a3))
+  if (Class != object_getClass(equal))
   {
 LABEL_3:
     LOBYTE(v6) = 0;
@@ -51,18 +51,18 @@ LABEL_3:
   }
 
   functionDescriptor = self->_functionDescriptor;
-  if (functionDescriptor == *(a3 + 2) || (v6 = [(MTL4FunctionDescriptor *)functionDescriptor isEqual:?]) != 0)
+  if (functionDescriptor == *(equal + 2) || (v6 = [(MTL4FunctionDescriptor *)functionDescriptor isEqual:?]) != 0)
   {
     pipelineOptions = self->_pipelineOptions;
-    if (pipelineOptions == *(a3 + 1) || (v6 = [(MTL4PipelineOptions *)pipelineOptions isEqual:?]) != 0)
+    if (pipelineOptions == *(equal + 1) || (v6 = [(MTL4PipelineOptions *)pipelineOptions isEqual:?]) != 0)
     {
-      if (self->_options != *(a3 + 4))
+      if (self->_options != *(equal + 4))
       {
         goto LABEL_3;
       }
 
       name = self->_name;
-      if (name != *(a3 + 3))
+      if (name != *(equal + 3))
       {
 
         LOBYTE(v6) = [(NSString *)name isEqual:?];

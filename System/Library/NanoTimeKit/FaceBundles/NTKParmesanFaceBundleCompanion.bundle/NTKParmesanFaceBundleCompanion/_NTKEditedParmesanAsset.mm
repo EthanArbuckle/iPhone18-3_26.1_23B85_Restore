@@ -2,25 +2,25 @@
 - (BOOL)addOriginalAssetAndMaskData;
 - (BOOL)isInResourceDirectory;
 - (CGRect)currentCrop;
-- (_NTKEditedParmesanAsset)initWithParmesanAsset:(id)a3 phAsset:(id)a4;
-- (void)addUserOverride:(id)a3;
+- (_NTKEditedParmesanAsset)initWithParmesanAsset:(id)asset phAsset:(id)phAsset;
+- (void)addUserOverride:(id)override;
 - (void)purgeOriginalAssetAndMaskData;
 @end
 
 @implementation _NTKEditedParmesanAsset
 
-- (_NTKEditedParmesanAsset)initWithParmesanAsset:(id)a3 phAsset:(id)a4
+- (_NTKEditedParmesanAsset)initWithParmesanAsset:(id)asset phAsset:(id)phAsset
 {
-  v7 = a3;
-  v8 = a4;
+  assetCopy = asset;
+  phAssetCopy = phAsset;
   v21.receiver = self;
   v21.super_class = _NTKEditedParmesanAsset;
   v9 = [(_NTKEditedParmesanAsset *)&v21 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_asset, a3);
-    objc_storeStrong(&v10->_phAsset, a4);
+    objc_storeStrong(&v9->_asset, asset);
+    objc_storeStrong(&v10->_phAsset, phAsset);
     phAsset = v10->_phAsset;
     if (phAsset)
     {
@@ -56,15 +56,15 @@
   return v5;
 }
 
-- (void)addUserOverride:(id)a3
+- (void)addUserOverride:(id)override
 {
-  v4 = a3;
-  v8 = objc_msgSend_timeLayout(v4, v5, v6, v7);
+  overrideCopy = override;
+  v8 = objc_msgSend_timeLayout(overrideCopy, v5, v6, v7);
   v12 = objc_msgSend_scale(v8, v9, v10, v11);
 
   userOverrides = self->_userOverrides;
   v16 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v14, v12, v15);
-  objc_msgSend_setObject_forKeyedSubscript_(userOverrides, v17, v4, v16);
+  objc_msgSend_setObject_forKeyedSubscript_(userOverrides, v17, overrideCopy, v16);
 
   self->_lastEditedUserOverride = v12;
 }
@@ -144,7 +144,7 @@ LABEL_6:
   v43 = 3221225472;
   v44 = sub_23BF20F48;
   v45 = &unk_278BA6E38;
-  v46 = self;
+  selfCopy = self;
   v27 = v14;
   v47 = v27;
   objc_msgSend_processAssetsWithIdentifiers_dstDir_completion_(NTKParmesanPhotoProcessor, v28, v26, v16, &v42);
@@ -152,7 +152,7 @@ LABEL_6:
   dispatch_semaphore_wait(v27, 0xFFFFFFFFFFFFFFFFLL);
   if (!self->_originalAsset)
   {
-    v32 = objc_msgSend_defaultManager(MEMORY[0x277CCAA00], v29, v30, v31, v42, v43, v44, v45, v46);
+    v32 = objc_msgSend_defaultManager(MEMORY[0x277CCAA00], v29, v30, v31, v42, v43, v44, v45, selfCopy);
     objc_msgSend_removeItemAtPath_error_(v32, v33, v16, 0);
 
     v37 = objc_msgSend_logObject(NTKParmesanFaceBundle, v34, v35, v36);
@@ -162,7 +162,7 @@ LABEL_6:
     }
   }
 
-  v40 = objc_msgSend_logObject(NTKParmesanFaceBundle, v29, v30, v31, v42, v43, v44, v45, v46);
+  v40 = objc_msgSend_logObject(NTKParmesanFaceBundle, v29, v30, v31, v42, v43, v44, v45, selfCopy);
   if (os_log_type_enabled(v40, OS_LOG_TYPE_DEBUG))
   {
     sub_23BFF74C0(p_originalAsset, self, v40);

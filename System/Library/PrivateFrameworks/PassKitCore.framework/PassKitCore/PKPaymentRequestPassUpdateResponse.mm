@@ -1,27 +1,27 @@
 @interface PKPaymentRequestPassUpdateResponse
-- (PKPaymentRequestPassUpdateResponse)initWithData:(id)a3;
+- (PKPaymentRequestPassUpdateResponse)initWithData:(id)data;
 @end
 
 @implementation PKPaymentRequestPassUpdateResponse
 
-- (PKPaymentRequestPassUpdateResponse)initWithData:(id)a3
+- (PKPaymentRequestPassUpdateResponse)initWithData:(id)data
 {
   v22 = *MEMORY[0x1E69E9840];
   v17.receiver = self;
   v17.super_class = PKPaymentRequestPassUpdateResponse;
-  v3 = [(PKWebServiceResponse *)&v17 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v17 initWithData:data];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PKWebServiceResponse *)v3 JSONObject];
+    jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v5 PKStringForKey:@"passURL"];
+      v6 = [jSONObject PKStringForKey:@"passURL"];
       passURL = v4->_passURL;
       v4->_passURL = v6;
 
-      v8 = [v5 PKStringForKey:@"appletState"];
+      v8 = [jSONObject PKStringForKey:@"appletState"];
       if ([v8 isEqualToString:@"upgradePending"])
       {
         v9 = 1;

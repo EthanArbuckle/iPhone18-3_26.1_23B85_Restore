@@ -1,5 +1,5 @@
 @interface BrowseTileViewController
-- (_TtC18HealthExperienceUI24BrowseTileViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC18HealthExperienceUI24BrowseTileViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -8,7 +8,7 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BA1C778C();
 }
 
@@ -21,9 +21,9 @@
   sub_1BA1C7B8C();
 }
 
-- (_TtC18HealthExperienceUI24BrowseTileViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC18HealthExperienceUI24BrowseTileViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = _sSo19HKFeatureIdentifiera18HealthExperienceUIE2idSSvg_0();
     v7 = v6;
@@ -35,8 +35,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return BrowseTileViewController.init(nibName:bundle:)(v5, v7, a4);
+  bundleCopy = bundle;
+  return BrowseTileViewController.init(nibName:bundle:)(v5, v7, bundle);
 }
 
 @end

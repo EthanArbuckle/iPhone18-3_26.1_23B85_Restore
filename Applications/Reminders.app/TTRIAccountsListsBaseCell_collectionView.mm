@@ -2,18 +2,18 @@
 - (NSArray)accessibilityUserInputLabels;
 - (NSAttributedString)accessibilityAttributedValue;
 - (NSString)accessibilityLabel;
-- (_TtC9Reminders40TTRIAccountsListsBaseCell_collectionView)initWithFrame:(CGRect)a3;
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3;
+- (_TtC9Reminders40TTRIAccountsListsBaseCell_collectionView)initWithFrame:(CGRect)frame;
+- (void)_bridgedUpdateConfigurationUsingState:(id)state;
 @end
 
 @implementation TTRIAccountsListsBaseCell_collectionView
 
-- (_TtC9Reminders40TTRIAccountsListsBaseCell_collectionView)initWithFrame:(CGRect)a3
+- (_TtC9Reminders40TTRIAccountsListsBaseCell_collectionView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = OBJC_IVAR____TtC9Reminders40TTRIAccountsListsBaseCell_collectionView_badgeConfiguration;
   v9 = type metadata accessor for TTRIAccountsListsBaseCell_collectionView.BadgeConfiguration(0);
   (*(*(v9 - 8) + 56))(self + v8, 1, 1, v9);
@@ -39,14 +39,14 @@
   return [(TTRIAccountsListsCollectionListCell *)&v19 initWithFrame:x, y, width, height];
 }
 
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3
+- (void)_bridgedUpdateConfigurationUsingState:(id)state
 {
   v4 = type metadata accessor for UICellConfigurationState();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UICellConfigurationState._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   sub_100032F2C(v7);
 
   (*(v5 + 8))(v7, v4);
@@ -58,7 +58,7 @@
   v4 = *(v3 - 8);
   __chkstk_darwin(v3);
   v6 = &v10 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v7 = self;
+  selfCopy = self;
   sub_10003139C(v6);
   sub_10016D594(v6, _swiftEmptyArrayStorage);
 
@@ -74,7 +74,7 @@
   v4 = *(v3 - 8);
   __chkstk_darwin(v3);
   v6 = &v15 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v7 = self;
+  selfCopy = self;
   sub_10003139C(v6);
   v8 = UIListContentConfiguration.text.getter();
   v10 = v9;
@@ -98,7 +98,7 @@
 
 - (NSAttributedString)accessibilityAttributedValue
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10005CBF4();
 
   return v3;

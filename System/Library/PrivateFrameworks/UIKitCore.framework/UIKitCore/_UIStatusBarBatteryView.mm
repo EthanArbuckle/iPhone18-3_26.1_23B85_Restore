@@ -1,19 +1,19 @@
 @interface _UIStatusBarBatteryView
-+ (CGSize)_batterySizeForIconSize:(int64_t)a3;
-+ (CGSize)_pinSizeForIconSize:(int64_t)a3;
-+ (CGSize)_statusBarIntrinsicContentSizeForIconSize:(int64_t)a3;
-+ (double)_lineWidthAndInterspaceForIconSize:(int64_t)a3;
-+ (id)_boltBezierPathForSize:(CGSize)a3;
++ (CGSize)_batterySizeForIconSize:(int64_t)size;
++ (CGSize)_pinSizeForIconSize:(int64_t)size;
++ (CGSize)_statusBarIntrinsicContentSizeForIconSize:(int64_t)size;
++ (double)_lineWidthAndInterspaceForIconSize:(int64_t)size;
++ (id)_boltBezierPathForSize:(CGSize)size;
 + (id)_boltMaskBezierPath;
-+ (id)_pinBezierPathForSize:(CGSize)a3 isComplex:(BOOL)a4;
-- ($F24F406B2B787EFB06265DBA3D28CBD5)_baselineOffsetsAtSize:(CGSize)a3;
++ (id)_pinBezierPathForSize:(CGSize)size isComplex:(BOOL)complex;
+- ($F24F406B2B787EFB06265DBA3D28CBD5)_baselineOffsetsAtSize:(CGSize)size;
 - (BOOL)_batteryTextIsCutout;
-- (BOOL)_percentageFontCondensedWhenChargingForTraitCollection:(id)a3;
+- (BOOL)_percentageFontCondensedWhenChargingForTraitCollection:(id)collection;
 - (BOOL)isLowBattery;
-- (CGRect)_bodyRectForTraitCollection:(id)a3;
+- (CGRect)_bodyRectForTraitCollection:(id)collection;
 - (CGRect)_updateBodyLayers;
-- (CGSize)_batterySizeForTraitCollection:(id)a3;
-- (CGSize)_pinSizeForTraitCollection:(id)a3;
+- (CGSize)_batterySizeForTraitCollection:(id)collection;
+- (CGSize)_pinSizeForTraitCollection:(id)collection;
 - (CGSize)intrinsicContentSize;
 - (UIAccessibilityHUDItem)accessibilityHUDRepresentation;
 - (UIColor)bodyColor;
@@ -21,17 +21,17 @@
 - (UIColor)fillColor;
 - (UIColor)inactiveColor;
 - (UIColor)pinColor;
-- (_UIStatusBarBatteryView)initWithCoder:(id)a3;
-- (_UIStatusBarBatteryView)initWithFrame:(CGRect)a3;
-- (_UIStatusBarBatteryView)initWithSizeCategory:(int64_t)a3;
-- (double)_batteryBoltPositionOffsetForTraitCollection:(id)a3;
+- (_UIStatusBarBatteryView)initWithCoder:(id)coder;
+- (_UIStatusBarBatteryView)initWithFrame:(CGRect)frame;
+- (_UIStatusBarBatteryView)initWithSizeCategory:(int64_t)category;
+- (double)_batteryBoltPositionOffsetForTraitCollection:(id)collection;
 - (double)_batteryBoltScaleFactorMultiplier;
-- (double)_insideCornerRadiusForTraitCollection:(id)a3;
-- (double)_lineWidthAndInterspaceForTraitCollection:(id)a3;
-- (double)_outsideCornerRadiusForTraitCollection:(id)a3;
-- (double)_percentTextVerticalAdjustmentForTraitCollection:(id)a3;
+- (double)_insideCornerRadiusForTraitCollection:(id)collection;
+- (double)_lineWidthAndInterspaceForTraitCollection:(id)collection;
+- (double)_outsideCornerRadiusForTraitCollection:(id)collection;
+- (double)_percentTextVerticalAdjustmentForTraitCollection:(id)collection;
 - (double)_percentageBatteryBoltScaleFactorMultiplier;
-- (double)_percentageFontSizeForTraitCollection:(id)a3;
+- (double)_percentageFontSizeForTraitCollection:(id)collection;
 - (id)_batteryFillColor;
 - (id)_batteryTextColor;
 - (id)_batteryUnfilledColor;
@@ -39,11 +39,11 @@
 - (void)__updateFillLayer;
 - (void)_commonInit;
 - (void)_createBodyLayers;
-- (void)_createBoltLayersWithSize:(CGSize)a3;
+- (void)_createBoltLayersWithSize:(CGSize)size;
 - (void)_createFillLayer;
-- (void)_fillLayerFrame:(CGRect *)a3 cornerRadius:(double *)a4;
-- (void)_notifyDidFinishAnimatingBoltToVisible:(BOOL)a3;
-- (void)_notifyWillBeginAnimatingBoltToVisible:(BOOL)a3;
+- (void)_fillLayerFrame:(CGRect *)frame cornerRadius:(double *)radius;
+- (void)_notifyDidFinishAnimatingBoltToVisible:(BOOL)visible;
+- (void)_notifyWillBeginAnimatingBoltToVisible:(BOOL)visible;
 - (void)_unflipBoltIfNecessary;
 - (void)_updateBatteryFillColor;
 - (void)_updateBodyColors;
@@ -54,24 +54,24 @@
 - (void)_updatePercentage;
 - (void)_updatePercentageFont;
 - (void)_updateTransform;
-- (void)applyStyleAttributes:(id)a3;
+- (void)applyStyleAttributes:(id)attributes;
 - (void)layoutSubviews;
-- (void)setBodyColor:(id)a3;
-- (void)setBodyColorAlpha:(double)a3;
-- (void)setBoltColor:(id)a3;
-- (void)setChargePercent:(double)a3;
-- (void)setChargingState:(int64_t)a3;
-- (void)setFillColor:(id)a3;
-- (void)setInactiveColor:(id)a3;
-- (void)setInternalSizeCategory:(int64_t)a3;
-- (void)setLowBatteryMode:(int64_t)a3;
-- (void)setPinColor:(id)a3;
-- (void)setPinColorAlpha:(double)a3;
-- (void)setSaverModeActive:(BOOL)a3;
-- (void)setShowsInlineChargingIndicator:(BOOL)a3;
-- (void)setShowsPercentage:(BOOL)a3;
-- (void)setSizeCategory:(int64_t)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setBodyColor:(id)color;
+- (void)setBodyColorAlpha:(double)alpha;
+- (void)setBoltColor:(id)color;
+- (void)setChargePercent:(double)percent;
+- (void)setChargingState:(int64_t)state;
+- (void)setFillColor:(id)color;
+- (void)setInactiveColor:(id)color;
+- (void)setInternalSizeCategory:(int64_t)category;
+- (void)setLowBatteryMode:(int64_t)mode;
+- (void)setPinColor:(id)color;
+- (void)setPinColorAlpha:(double)alpha;
+- (void)setSaverModeActive:(BOOL)active;
+- (void)setShowsInlineChargingIndicator:(BOOL)indicator;
+- (void)setShowsPercentage:(BOOL)percentage;
+- (void)setSizeCategory:(int64_t)category;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation _UIStatusBarBatteryView
@@ -90,8 +90,8 @@
 
 - (void)_createFillLayer
 {
-  v3 = [MEMORY[0x1E6979398] layer];
-  [(_UIStatusBarBatteryView *)self setFillLayer:v3];
+  layer = [MEMORY[0x1E6979398] layer];
+  [(_UIStatusBarBatteryView *)self setFillLayer:layer];
 
   [(CALayer *)self->_fillLayer setMasksToBounds:1];
   [(CALayer *)self->_fillLayer setCornerCurve:*MEMORY[0x1E69796E8]];
@@ -103,96 +103,96 @@
 
 - (void)_createBodyLayers
 {
-  v3 = [MEMORY[0x1E69794A0] layer];
-  [(_UIStatusBarBatteryView *)self setBodyLayer:v3];
+  layer = [MEMORY[0x1E69794A0] layer];
+  [(_UIStatusBarBatteryView *)self setBodyLayer:layer];
 
   v4 = +[UIColor clearColor];
-  v5 = [v4 CGColor];
-  v6 = [(_UIStatusBarBatteryView *)self bodyShapeLayer];
-  [v6 setFillColor:v5];
+  cGColor = [v4 CGColor];
+  bodyShapeLayer = [(_UIStatusBarBatteryView *)self bodyShapeLayer];
+  [bodyShapeLayer setFillColor:cGColor];
 
-  v7 = [(UIView *)self layer];
-  [v7 addSublayer:self->_bodyLayer];
+  layer2 = [(UIView *)self layer];
+  [layer2 addSublayer:self->_bodyLayer];
 
-  v8 = [MEMORY[0x1E69794A0] layer];
-  [(_UIStatusBarBatteryView *)self setPinLayer:v8];
+  layer3 = [MEMORY[0x1E69794A0] layer];
+  [(_UIStatusBarBatteryView *)self setPinLayer:layer3];
 
-  v9 = [(UIView *)self layer];
-  [v9 addSublayer:self->_pinLayer];
+  layer4 = [(UIView *)self layer];
+  [layer4 addSublayer:self->_pinLayer];
 
-  v10 = [MEMORY[0x1E69794A0] layer];
-  [(_UIStatusBarBatteryView *)self setPercentFillLayer:v10];
+  layer5 = [MEMORY[0x1E69794A0] layer];
+  [(_UIStatusBarBatteryView *)self setPercentFillLayer:layer5];
 
   v14 = objc_alloc_init(MEMORY[0x1E6979398]);
   v11 = +[UIColor blackColor];
   [v14 setBackgroundColor:{objc_msgSend(v11, "CGColor")}];
 
-  v12 = [(_UIStatusBarBatteryView *)self percentFillLayer];
-  [v12 setMask:v14];
+  percentFillLayer = [(_UIStatusBarBatteryView *)self percentFillLayer];
+  [percentFillLayer setMask:v14];
 
-  v13 = [(UIView *)self layer];
-  [v13 addSublayer:self->_percentFillLayer];
+  layer6 = [(UIView *)self layer];
+  [layer6 addSublayer:self->_percentFillLayer];
 }
 
-- (void)_createBoltLayersWithSize:(CGSize)a3
+- (void)_createBoltLayersWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v20 = [objc_opt_class() _boltBezierPathForSize:{a3.width, a3.height}];
-  v6 = [objc_opt_class() _boltMaskBezierPath];
-  v7 = [MEMORY[0x1E69794A0] layer];
+  height = size.height;
+  width = size.width;
+  v20 = [objc_opt_class() _boltBezierPathForSize:{size.width, size.height}];
+  _boltMaskBezierPath = [objc_opt_class() _boltMaskBezierPath];
+  layer = [MEMORY[0x1E69794A0] layer];
   boltMaskLayer = self->_boltMaskLayer;
-  self->_boltMaskLayer = v7;
+  self->_boltMaskLayer = layer;
 
-  v9 = [v6 CGPath];
-  v10 = [(_UIStatusBarBatteryView *)self boltMaskShapeLayer];
-  [v10 setPath:v9];
+  cGPath = [_boltMaskBezierPath CGPath];
+  boltMaskShapeLayer = [(_UIStatusBarBatteryView *)self boltMaskShapeLayer];
+  [boltMaskShapeLayer setPath:cGPath];
 
   v11 = +[UIColor blackColor];
-  v12 = [v11 CGColor];
-  v13 = [(_UIStatusBarBatteryView *)self boltMaskShapeLayer];
-  [v13 setFillColor:v12];
+  cGColor = [v11 CGColor];
+  boltMaskShapeLayer2 = [(_UIStatusBarBatteryView *)self boltMaskShapeLayer];
+  [boltMaskShapeLayer2 setFillColor:cGColor];
 
   v14 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E69798E8]];
   [(CALayer *)self->_boltMaskLayer setCompositingFilter:v14];
 
   [(CALayer *)self->_boltMaskLayer setBounds:0.0, 0.0, width, height];
-  v15 = [MEMORY[0x1E69794A0] layer];
+  layer2 = [MEMORY[0x1E69794A0] layer];
   boltLayer = self->_boltLayer;
-  self->_boltLayer = v15;
+  self->_boltLayer = layer2;
 
   v17 = v20;
-  v18 = [v20 CGPath];
-  v19 = [(_UIStatusBarBatteryView *)self boltShapeLayer];
-  [v19 setPath:v18];
+  cGPath2 = [v20 CGPath];
+  boltShapeLayer = [(_UIStatusBarBatteryView *)self boltShapeLayer];
+  [boltShapeLayer setPath:cGPath2];
 
   [(CALayer *)self->_boltLayer setBounds:0.0, 0.0, width, height];
 }
 
-- (_UIStatusBarBatteryView)initWithSizeCategory:(int64_t)a3
+- (_UIStatusBarBatteryView)initWithSizeCategory:(int64_t)category
 {
   v6.receiver = self;
   v6.super_class = _UIStatusBarBatteryView;
   v4 = [(UIView *)&v6 init];
   [(_UIStatusBarBatteryView *)v4 _commonInit];
-  [(_UIStatusBarBatteryView *)v4 setSizeCategory:a3];
+  [(_UIStatusBarBatteryView *)v4 setSizeCategory:category];
   return v4;
 }
 
-- (_UIStatusBarBatteryView)initWithFrame:(CGRect)a3
+- (_UIStatusBarBatteryView)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = _UIStatusBarBatteryView;
-  v3 = [(UIView *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(_UIStatusBarBatteryView *)v3 _commonInit];
   return v3;
 }
 
-- (_UIStatusBarBatteryView)initWithCoder:(id)a3
+- (_UIStatusBarBatteryView)initWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = _UIStatusBarBatteryView;
-  v3 = [(UIView *)&v5 initWithCoder:a3];
+  v3 = [(UIView *)&v5 initWithCoder:coder];
   [(_UIStatusBarBatteryView *)v3 _commonInit];
   return v3;
 }
@@ -201,46 +201,46 @@
 {
   if (self->_showsPercentage && self->_chargePercent < 0.995)
   {
-    v2 = [(_UIStatusBarBatteryView *)self inactiveColor];
+    inactiveColor = [(_UIStatusBarBatteryView *)self inactiveColor];
   }
 
   else
   {
-    v2 = [(_UIStatusBarBatteryView *)self _batteryFillColor];
+    inactiveColor = [(_UIStatusBarBatteryView *)self _batteryFillColor];
   }
 
-  return v2;
+  return inactiveColor;
 }
 
 - (id)_batteryFillColor
 {
   if ([(_UIStatusBarBatteryView *)self saverModeActive])
   {
-    v3 = [(UIView *)self traitCollection];
+    traitCollection = [(UIView *)self traitCollection];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __44___UIStatusBarBatteryView__batteryFillColor__block_invoke;
     v15[3] = &__block_descriptor_40_e27_v16__0___UIMutableTraits__8l;
     v15[4] = 0;
-    v4 = [v3 traitCollectionByModifyingTraits:v15];
+    v4 = [traitCollection traitCollectionByModifyingTraits:v15];
 
     v5 = +[UIColor systemYellowColor];
 LABEL_7:
     v8 = v5;
-    v9 = [v5 resolvedColorWithTraitCollection:v4];
+    fillColor = [v5 resolvedColorWithTraitCollection:v4];
 
     goto LABEL_8;
   }
 
   if ([(_UIStatusBarBatteryView *)self isLowBattery])
   {
-    v6 = [(UIView *)self traitCollection];
+    traitCollection2 = [(UIView *)self traitCollection];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __44___UIStatusBarBatteryView__batteryFillColor__block_invoke_2;
     v13[3] = &__block_descriptor_48_e27_v16__0___UIMutableTraits__8l;
     v14 = xmmword_18A6507C0;
-    v4 = [v6 traitCollectionByModifyingTraits:v13];
+    v4 = [traitCollection2 traitCollectionByModifyingTraits:v13];
 
     v5 = +[UIColor systemRedColor];
     goto LABEL_7;
@@ -248,22 +248,22 @@ LABEL_7:
 
   if ([(_UIStatusBarBatteryView *)self chargingState])
   {
-    v7 = [(UIView *)self traitCollection];
+    traitCollection3 = [(UIView *)self traitCollection];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __44___UIStatusBarBatteryView__batteryFillColor__block_invoke_3;
     v11[3] = &__block_descriptor_48_e27_v16__0___UIMutableTraits__8l;
     v12 = xmmword_18A6507C0;
-    v4 = [v7 traitCollectionByModifyingTraits:v11];
+    v4 = [traitCollection3 traitCollectionByModifyingTraits:v11];
 
     v5 = +[UIColor systemGreenColor];
     goto LABEL_7;
   }
 
-  v9 = [(_UIStatusBarBatteryView *)self fillColor];
+  fillColor = [(_UIStatusBarBatteryView *)self fillColor];
 LABEL_8:
 
-  return v9;
+  return fillColor;
 }
 
 - (id)_batteryTextColor
@@ -295,15 +295,15 @@ LABEL_8:
   }
 }
 
-+ (CGSize)_batterySizeForIconSize:(int64_t)a3
++ (CGSize)_batterySizeForIconSize:(int64_t)size
 {
   v3 = 11.5;
   v4 = 22.0;
-  switch(a3)
+  switch(size)
   {
     case 0:
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v7 handleFailureInMethod:a2 object:a1 file:@"_UIStatusBarBatteryView.m" lineNumber:314 description:@"Undefined icon size"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UIStatusBarBatteryView.m" lineNumber:314 description:@"Undefined icon size"];
 
       v4 = *MEMORY[0x1E695F060];
       v3 = *(MEMORY[0x1E695F060] + 8);
@@ -370,21 +370,21 @@ LABEL_14:
   return result;
 }
 
-- (CGSize)_batterySizeForTraitCollection:(id)a3
+- (CGSize)_batterySizeForTraitCollection:(id)collection
 {
-  v4 = a3;
-  v5 = v4;
+  collectionCopy = collection;
+  v5 = collectionCopy;
   internalSizeCategory = self->_internalSizeCategory;
   if (internalSizeCategory == 2)
   {
-    [v4 displayScale];
+    [collectionCopy displayScale];
     v10 = 15.0;
     *&v8 = 33.0;
   }
 
   else if (internalSizeCategory == 1)
   {
-    [v4 displayScale];
+    [collectionCopy displayScale];
     if (v11 <= 2.5)
     {
       v10 = 11.5;
@@ -424,11 +424,11 @@ LABEL_14:
   return result;
 }
 
-- ($F24F406B2B787EFB06265DBA3D28CBD5)_baselineOffsetsAtSize:(CGSize)a3
+- ($F24F406B2B787EFB06265DBA3D28CBD5)_baselineOffsetsAtSize:(CGSize)size
 {
   if (self->_showsPercentage)
   {
-    [(UIView *)self _currentScreenScale:a3.width];
+    [(UIView *)self _currentScreenScale:size.width];
     v6 = 1.0 / v5;
   }
 
@@ -443,15 +443,15 @@ LABEL_14:
   return result;
 }
 
-+ (CGSize)_pinSizeForIconSize:(int64_t)a3
++ (CGSize)_pinSizeForIconSize:(int64_t)size
 {
   v3 = 4.5;
   v4 = 1.25;
-  switch(a3)
+  switch(size)
   {
     case 0:
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v7 handleFailureInMethod:a2 object:a1 file:@"_UIStatusBarBatteryView.m" lineNumber:401 description:@"Undefined icon size"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UIStatusBarBatteryView.m" lineNumber:401 description:@"Undefined icon size"];
 
       v4 = *MEMORY[0x1E695F060];
       v3 = *(MEMORY[0x1E695F060] + 8);
@@ -509,20 +509,20 @@ LABEL_12:
   return result;
 }
 
-- (CGSize)_pinSizeForTraitCollection:(id)a3
+- (CGSize)_pinSizeForTraitCollection:(id)collection
 {
-  v6 = a3;
-  v7 = v6;
+  collectionCopy = collection;
+  v7 = collectionCopy;
   internalSizeCategory = self->_internalSizeCategory;
   switch(internalSizeCategory)
   {
     case 2:
-      [v6 displayScale];
+      [collectionCopy displayScale];
       v3 = 5.0;
       v4 = 2.0;
       break;
     case 1:
-      [v6 displayScale];
+      [collectionCopy displayScale];
       if (v11 <= 2.5)
       {
         v3 = 3.0;
@@ -550,16 +550,16 @@ LABEL_12:
   return result;
 }
 
-+ (double)_lineWidthAndInterspaceForIconSize:(int64_t)a3
++ (double)_lineWidthAndInterspaceForIconSize:(int64_t)size
 {
   result = 1.0;
-  if (a3 > 10)
+  if (size > 10)
   {
-    if (a3 > 12)
+    if (size > 12)
     {
-      if (a3 != 13)
+      if (size != 13)
       {
-        if (a3 == 15)
+        if (size == 15)
         {
           return 1.25;
         }
@@ -570,7 +570,7 @@ LABEL_12:
       return 1.16666667;
     }
 
-    if (a3 != 11)
+    if (size != 11)
     {
       return 1.16666667;
     }
@@ -578,9 +578,9 @@ LABEL_12:
     return 1.25;
   }
 
-  if (a3 > 8)
+  if (size > 8)
   {
-    if (a3 != 9)
+    if (size != 9)
     {
       return 1.16666667;
     }
@@ -588,15 +588,15 @@ LABEL_12:
     return 1.25;
   }
 
-  if (!a3)
+  if (!size)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:a1 file:@"_UIStatusBarBatteryView.m" lineNumber:466 description:@"Undefined icon size"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIStatusBarBatteryView.m" lineNumber:466 description:@"Undefined icon size"];
 
     return 0.0;
   }
 
-  if (a3 == 8)
+  if (size == 8)
   {
     return 1.16666667;
   }
@@ -604,14 +604,14 @@ LABEL_12:
   return result;
 }
 
-- (double)_lineWidthAndInterspaceForTraitCollection:(id)a3
+- (double)_lineWidthAndInterspaceForTraitCollection:(id)collection
 {
-  v4 = a3;
-  v5 = v4;
+  collectionCopy = collection;
+  v5 = collectionCopy;
   internalSizeCategory = self->_internalSizeCategory;
   if (internalSizeCategory == 2)
   {
-    [v4 displayScale];
+    [collectionCopy displayScale];
     if (v9 <= 2.5)
     {
       v7 = 1.25;
@@ -636,14 +636,14 @@ LABEL_12:
   return v7;
 }
 
-- (double)_outsideCornerRadiusForTraitCollection:(id)a3
+- (double)_outsideCornerRadiusForTraitCollection:(id)collection
 {
-  v5 = a3;
-  v6 = v5;
+  collectionCopy = collection;
+  v6 = collectionCopy;
   internalSizeCategory = self->_internalSizeCategory;
   if (internalSizeCategory == 2)
   {
-    [v5 displayScale];
+    [collectionCopy displayScale];
     if (v10 <= 2.5)
     {
       v3 = 4.25;
@@ -664,10 +664,10 @@ LABEL_12:
         goto LABEL_12;
       }
 
-      v8 = [(_UIStatusBarBatteryView *)self iconSize];
-      if (v8 < 0x10)
+      iconSize = [(_UIStatusBarBatteryView *)self iconSize];
+      if (iconSize < 0x10)
       {
-        v3 = dbl_18A681950[v8];
+        v3 = dbl_18A681950[iconSize];
         goto LABEL_12;
       }
     }
@@ -689,15 +689,15 @@ LABEL_12:
   return v3;
 }
 
-- (double)_insideCornerRadiusForTraitCollection:(id)a3
+- (double)_insideCornerRadiusForTraitCollection:(id)collection
 {
-  v5 = a3;
-  v6 = v5;
+  collectionCopy = collection;
+  v6 = collectionCopy;
   internalSizeCategory = self->_internalSizeCategory;
   switch(internalSizeCategory)
   {
     case 2:
-      [v5 displayScale];
+      [collectionCopy displayScale];
       if (v9 <= 2.5)
       {
         v3 = 2.0;
@@ -712,10 +712,10 @@ LABEL_12:
     case 1:
       goto LABEL_6;
     case 0:
-      v8 = [(_UIStatusBarBatteryView *)self iconSize];
-      if (v8 < 0x10)
+      iconSize = [(_UIStatusBarBatteryView *)self iconSize];
+      if (iconSize < 0x10)
       {
-        v3 = dbl_18A6819D0[v8];
+        v3 = dbl_18A6819D0[iconSize];
         break;
       }
 
@@ -728,9 +728,9 @@ LABEL_6:
   return v3;
 }
 
-- (double)_percentageFontSizeForTraitCollection:(id)a3
+- (double)_percentageFontSizeForTraitCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   internalSizeCategory = self->_internalSizeCategory;
   if (internalSizeCategory == 2)
   {
@@ -792,7 +792,7 @@ LABEL_4:
   return v6;
 }
 
-- (BOOL)_percentageFontCondensedWhenChargingForTraitCollection:(id)a3
+- (BOOL)_percentageFontCondensedWhenChargingForTraitCollection:(id)collection
 {
   if (self->_internalSizeCategory)
   {
@@ -801,42 +801,42 @@ LABEL_4:
 
   else
   {
-    v5 = [(_UIStatusBarBatteryView *)self iconSize];
-    if (v5 == 8)
+    iconSize = [(_UIStatusBarBatteryView *)self iconSize];
+    if (iconSize == 8)
     {
       return 0;
     }
 
     else
     {
-      return v5 != 7 || !self->_rounded;
+      return iconSize != 7 || !self->_rounded;
     }
   }
 }
 
-- (double)_percentTextVerticalAdjustmentForTraitCollection:(id)a3
+- (double)_percentTextVerticalAdjustmentForTraitCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   v5 = 0.0;
   if (!self->_internalSizeCategory)
   {
-    v6 = [(_UIStatusBarBatteryView *)self iconSize];
-    if (v6 <= 0x11)
+    iconSize = [(_UIStatusBarBatteryView *)self iconSize];
+    if (iconSize <= 0x11)
     {
-      v5 = dbl_18A681A50[v6];
+      v5 = dbl_18A681A50[iconSize];
     }
   }
 
   return v5;
 }
 
-- (CGRect)_bodyRectForTraitCollection:(id)a3
+- (CGRect)_bodyRectForTraitCollection:(id)collection
 {
-  v4 = a3;
-  [(_UIStatusBarBatteryView *)self _batterySizeForTraitCollection:v4];
+  collectionCopy = collection;
+  [(_UIStatusBarBatteryView *)self _batterySizeForTraitCollection:collectionCopy];
   v6 = v5;
   v8 = v7;
-  [(_UIStatusBarBatteryView *)self _lineWidthAndInterspaceForTraitCollection:v4];
+  [(_UIStatusBarBatteryView *)self _lineWidthAndInterspaceForTraitCollection:collectionCopy];
   v10 = v9;
 
   [(UIView *)self bounds];
@@ -851,12 +851,12 @@ LABEL_4:
   return result;
 }
 
-- (double)_batteryBoltPositionOffsetForTraitCollection:(id)a3
+- (double)_batteryBoltPositionOffsetForTraitCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   [(_UIStatusBarBatteryView *)self _percentageBatteryBoltScaleFactorMultiplier];
   v6 = v5 * 0.333333333 * 10.6666667;
-  [(_UIStatusBarBatteryView *)self _lineWidthAndInterspaceForTraitCollection:v4];
+  [(_UIStatusBarBatteryView *)self _lineWidthAndInterspaceForTraitCollection:collectionCopy];
   v8 = v7;
 
   return v8 + v6;
@@ -866,16 +866,16 @@ LABEL_4:
 {
   if (self->_internalSizeCategory || [(_UIStatusBarBatteryView *)self iconSize])
   {
-    v3 = [(UIView *)self traitCollection];
-    [(_UIStatusBarBatteryView *)self _bodyRectForTraitCollection:v3];
+    traitCollection = [(UIView *)self traitCollection];
+    [(_UIStatusBarBatteryView *)self _bodyRectForTraitCollection:traitCollection];
     v8 = v4;
     v9 = v5;
     v10 = v6;
     v11 = v7;
     if (self->_showsPercentage)
     {
-      v12 = [(_UIStatusBarBatteryView *)self _shouldShowBolt];
-      [(_UIStatusBarBatteryView *)self _lineWidthAndInterspaceForTraitCollection:v3];
+      _shouldShowBolt = [(_UIStatusBarBatteryView *)self _shouldShowBolt];
+      [(_UIStatusBarBatteryView *)self _lineWidthAndInterspaceForTraitCollection:traitCollection];
       v14 = v13;
       [(_UIStatusBarBatteryView *)self _updatePercentageFont];
       [(UIView *)self->_percentageLabel sizeToFit];
@@ -884,9 +884,9 @@ LABEL_4:
       v48.size.width = v10;
       v48.size.height = v11;
       MidY = CGRectGetMidY(v48);
-      [(_UIStatusBarBatteryView *)self _percentTextVerticalAdjustmentForTraitCollection:v3];
+      [(_UIStatusBarBatteryView *)self _percentTextVerticalAdjustmentForTraitCollection:traitCollection];
       v17 = MidY + v16;
-      if (v12)
+      if (_shouldShowBolt)
       {
         [(UIView *)self _currentScreenScale];
         v19 = v14 + v14 + 2.0 / v18;
@@ -1005,15 +1005,15 @@ LABEL_4:
 
 - (CGRect)_updateBodyLayers
 {
-  v3 = [(UIView *)self traitCollection];
-  [(_UIStatusBarBatteryView *)self _lineWidthAndInterspaceForTraitCollection:v3];
+  traitCollection = [(UIView *)self traitCollection];
+  [(_UIStatusBarBatteryView *)self _lineWidthAndInterspaceForTraitCollection:traitCollection];
   v5 = v4;
-  [(_UIStatusBarBatteryView *)self _batterySizeForTraitCollection:v3];
+  [(_UIStatusBarBatteryView *)self _batterySizeForTraitCollection:traitCollection];
   v42 = v6;
-  [(_UIStatusBarBatteryView *)self _pinSizeForTraitCollection:v3];
+  [(_UIStatusBarBatteryView *)self _pinSizeForTraitCollection:traitCollection];
   v43 = v7;
   v9 = v8;
-  [(_UIStatusBarBatteryView *)self _bodyRectForTraitCollection:v3];
+  [(_UIStatusBarBatteryView *)self _bodyRectForTraitCollection:traitCollection];
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -1030,34 +1030,34 @@ LABEL_4:
 
   else
   {
-    [(_UIStatusBarBatteryView *)self _outsideCornerRadiusForTraitCollection:v3];
+    [(_UIStatusBarBatteryView *)self _outsideCornerRadiusForTraitCollection:traitCollection];
     v24 = v25 + v5 * -0.5;
   }
 
   v26 = [UIBezierPath bezierPathWithRoundedRect:v11 cornerRadius:v13, v15, v17, v24];
-  v27 = [(_UIStatusBarBatteryView *)self bodyShapeLayer];
-  [v27 setLineWidth:v5];
+  bodyShapeLayer = [(_UIStatusBarBatteryView *)self bodyShapeLayer];
+  [bodyShapeLayer setLineWidth:v5];
 
-  v28 = [v26 CGPath];
-  v29 = [(_UIStatusBarBatteryView *)self bodyShapeLayer];
-  [v29 setPath:v28];
+  cGPath = [v26 CGPath];
+  bodyShapeLayer2 = [(_UIStatusBarBatteryView *)self bodyShapeLayer];
+  [bodyShapeLayer2 setPath:cGPath];
 
   v44.origin.x = v41;
   v44.origin.y = rect;
   v44.size.width = v21;
   v44.size.height = v23;
   [(CALayer *)self->_pinLayer setFrame:v5 + v42, CGRectGetMidY(v44) + v9 * -0.5, v43, v9];
-  v30 = [(_UIStatusBarBatteryView *)self percentFillShapeLayer];
-  [v30 setLineWidth:v5];
+  percentFillShapeLayer = [(_UIStatusBarBatteryView *)self percentFillShapeLayer];
+  [percentFillShapeLayer setLineWidth:v5];
 
-  v31 = [v26 CGPath];
-  v32 = [(_UIStatusBarBatteryView *)self percentFillShapeLayer];
-  [v32 setPath:v31];
+  cGPath2 = [v26 CGPath];
+  percentFillShapeLayer2 = [(_UIStatusBarBatteryView *)self percentFillShapeLayer];
+  [percentFillShapeLayer2 setPath:cGPath2];
 
   v33 = [objc_opt_class() _pinBezierPathForSize:self->_internalSizeCategory == 2 isComplex:{v43, v9}];
-  v34 = [v33 CGPath];
-  v35 = [(_UIStatusBarBatteryView *)self pinShapeLayer];
-  [v35 setPath:v34];
+  cGPath3 = [v33 CGPath];
+  pinShapeLayer = [(_UIStatusBarBatteryView *)self pinShapeLayer];
+  [pinShapeLayer setPath:cGPath3];
 
   v36 = v11;
   v37 = v15;
@@ -1096,94 +1096,94 @@ LABEL_4:
   }
 
   v3 = +[UITraitCollection _currentTraitCollectionIfExists];
-  v4 = [(UIView *)self traitCollection];
-  [UITraitCollection setCurrentTraitCollection:v4];
+  traitCollection = [(UIView *)self traitCollection];
+  [UITraitCollection setCurrentTraitCollection:traitCollection];
 
   v5 = _UISetCurrentFallbackEnvironment(self);
   if (self->_showsPercentage)
   {
-    v6 = [(_UIStatusBarBatteryView *)self _batteryUnfilledColor];
-    v7 = [v6 CGColor];
-    [v6 alphaComponent];
+    _batteryUnfilledColor = [(_UIStatusBarBatteryView *)self _batteryUnfilledColor];
+    cGColor = [_batteryUnfilledColor CGColor];
+    [_batteryUnfilledColor alphaComponent];
     if (v8 >= 1.0)
     {
-      v29 = [(_UIStatusBarBatteryView *)self bodyShapeLayer];
-      [v29 setStrokeColor:v7];
+      bodyShapeLayer = [(_UIStatusBarBatteryView *)self bodyShapeLayer];
+      [bodyShapeLayer setStrokeColor:cGColor];
 
-      v30 = [(_UIStatusBarBatteryView *)self bodyShapeLayer];
-      [v30 setFillColor:v7];
+      bodyShapeLayer2 = [(_UIStatusBarBatteryView *)self bodyShapeLayer];
+      [bodyShapeLayer2 setFillColor:cGColor];
 
       v14 = 1.0;
     }
 
     else
     {
-      v9 = [v6 colorWithAlphaComponent:1.0];
-      v10 = [v9 CGColor];
+      v9 = [_batteryUnfilledColor colorWithAlphaComponent:1.0];
+      cGColor2 = [v9 CGColor];
 
-      v11 = [(_UIStatusBarBatteryView *)self bodyShapeLayer];
-      [v11 setStrokeColor:v10];
+      bodyShapeLayer3 = [(_UIStatusBarBatteryView *)self bodyShapeLayer];
+      [bodyShapeLayer3 setStrokeColor:cGColor2];
 
-      v12 = [(_UIStatusBarBatteryView *)self bodyShapeLayer];
-      [v12 setFillColor:v10];
+      bodyShapeLayer4 = [(_UIStatusBarBatteryView *)self bodyShapeLayer];
+      [bodyShapeLayer4 setFillColor:cGColor2];
 
-      [v6 alphaComponent];
+      [_batteryUnfilledColor alphaComponent];
       v14 = v13;
     }
 
-    v31 = [(_UIStatusBarBatteryView *)self bodyShapeLayer];
+    bodyShapeLayer5 = [(_UIStatusBarBatteryView *)self bodyShapeLayer];
     *&v32 = v14;
-    [v31 setOpacity:v32];
+    [bodyShapeLayer5 setOpacity:v32];
 
-    v33 = [(_UIStatusBarBatteryView *)self pinShapeLayer];
-    [v33 setFillColor:v7];
+    pinShapeLayer = [(_UIStatusBarBatteryView *)self pinShapeLayer];
+    [pinShapeLayer setFillColor:cGColor];
 
-    v34 = [(_UIStatusBarBatteryView *)self _batteryTextColor];
-    v35 = [v34 CGColor];
-    v36 = [(_UIStatusBarBatteryView *)self boltShapeLayer];
-    [v36 setFillColor:v35];
+    _batteryTextColor = [(_UIStatusBarBatteryView *)self _batteryTextColor];
+    cGColor3 = [_batteryTextColor CGColor];
+    boltShapeLayer = [(_UIStatusBarBatteryView *)self boltShapeLayer];
+    [boltShapeLayer setFillColor:cGColor3];
 
-    v37 = [(_UIStatusBarBatteryView *)self _batteryFillColor];
-    v38 = [v37 CGColor];
-    v39 = [(_UIStatusBarBatteryView *)self percentFillShapeLayer];
-    [v39 setStrokeColor:v38];
+    _batteryFillColor = [(_UIStatusBarBatteryView *)self _batteryFillColor];
+    cGColor4 = [_batteryFillColor CGColor];
+    percentFillShapeLayer = [(_UIStatusBarBatteryView *)self percentFillShapeLayer];
+    [percentFillShapeLayer setStrokeColor:cGColor4];
 
-    v40 = [(_UIStatusBarBatteryView *)self percentFillShapeLayer];
-    [v40 setFillColor:v38];
+    percentFillShapeLayer2 = [(_UIStatusBarBatteryView *)self percentFillShapeLayer];
+    [percentFillShapeLayer2 setFillColor:cGColor4];
 
-    v41 = [(_UIStatusBarBatteryView *)self percentFillShapeLayer];
+    percentFillShapeLayer3 = [(_UIStatusBarBatteryView *)self percentFillShapeLayer];
     LODWORD(v42) = 1.0;
-    [v41 setOpacity:v42];
+    [percentFillShapeLayer3 setOpacity:v42];
   }
 
   else
   {
-    v15 = [(_UIStatusBarBatteryView *)self bodyColor];
-    v16 = [v15 CGColor];
-    v17 = [(_UIStatusBarBatteryView *)self bodyShapeLayer];
-    [v17 setStrokeColor:v16];
+    bodyColor = [(_UIStatusBarBatteryView *)self bodyColor];
+    cGColor5 = [bodyColor CGColor];
+    bodyShapeLayer6 = [(_UIStatusBarBatteryView *)self bodyShapeLayer];
+    [bodyShapeLayer6 setStrokeColor:cGColor5];
 
     v18 = +[UIColor clearColor];
-    v19 = [v18 CGColor];
-    v20 = [(_UIStatusBarBatteryView *)self bodyShapeLayer];
-    [v20 setFillColor:v19];
+    cGColor6 = [v18 CGColor];
+    bodyShapeLayer7 = [(_UIStatusBarBatteryView *)self bodyShapeLayer];
+    [bodyShapeLayer7 setFillColor:cGColor6];
 
-    v21 = [(_UIStatusBarBatteryView *)self bodyShapeLayer];
+    bodyShapeLayer8 = [(_UIStatusBarBatteryView *)self bodyShapeLayer];
     LODWORD(v22) = 1.0;
-    [v21 setOpacity:v22];
+    [bodyShapeLayer8 setOpacity:v22];
 
-    v23 = [(_UIStatusBarBatteryView *)self pinColor];
-    v24 = [v23 CGColor];
-    v25 = [(_UIStatusBarBatteryView *)self pinShapeLayer];
-    [v25 setFillColor:v24];
+    pinColor = [(_UIStatusBarBatteryView *)self pinColor];
+    cGColor7 = [pinColor CGColor];
+    pinShapeLayer2 = [(_UIStatusBarBatteryView *)self pinShapeLayer];
+    [pinShapeLayer2 setFillColor:cGColor7];
 
-    v26 = [(_UIStatusBarBatteryView *)self boltColor];
-    v27 = [v26 CGColor];
-    v28 = [(_UIStatusBarBatteryView *)self boltShapeLayer];
-    [v28 setFillColor:v27];
+    boltColor = [(_UIStatusBarBatteryView *)self boltColor];
+    cGColor8 = [boltColor CGColor];
+    boltShapeLayer2 = [(_UIStatusBarBatteryView *)self boltShapeLayer];
+    [boltShapeLayer2 setFillColor:cGColor8];
 
-    v6 = [(_UIStatusBarBatteryView *)self percentFillShapeLayer];
-    [v6 setOpacity:0.0];
+    _batteryUnfilledColor = [(_UIStatusBarBatteryView *)self percentFillShapeLayer];
+    [_batteryUnfilledColor setOpacity:0.0];
   }
 
   _UIRestorePreviousFallbackEnvironment(v5);
@@ -1196,7 +1196,7 @@ LABEL_4:
   v2[1] = 3221225472;
   v3 = __43___UIStatusBarBatteryView__updateFillColor__block_invoke;
   v4 = &unk_1E70F3590;
-  v5 = self;
+  selfCopy = self;
   if ([MEMORY[0x1E6979518] currentState])
   {
     v3(v2);
@@ -1246,8 +1246,8 @@ LABEL_4:
   }
 
   v3 = +[UITraitCollection _currentTraitCollectionIfExists];
-  v4 = [(UIView *)self traitCollection];
-  [UITraitCollection setCurrentTraitCollection:v4];
+  traitCollection = [(UIView *)self traitCollection];
+  [UITraitCollection setCurrentTraitCollection:traitCollection];
 
   v5 = _UISetCurrentFallbackEnvironment(self);
   if (self->_showsPercentage)
@@ -1260,8 +1260,8 @@ LABEL_4:
 
   else
   {
-    v7 = [(_UIStatusBarBatteryView *)self _batteryFillColor];
-    -[CALayer setBackgroundColor:](self->_fillLayer, "setBackgroundColor:", [v7 CGColor]);
+    _batteryFillColor = [(_UIStatusBarBatteryView *)self _batteryFillColor];
+    -[CALayer setBackgroundColor:](self->_fillLayer, "setBackgroundColor:", [_batteryFillColor CGColor]);
   }
 
   _UIRestorePreviousFallbackEnvironment(v5);
@@ -1302,17 +1302,17 @@ LABEL_4:
   [(CALayer *)self->_fillLayer setFrame:v8, v9];
   v4 = v8;
   v5 = v9;
-  v6 = [(CALayer *)self->_percentFillLayer mask];
-  [v6 setFrame:{v4, v5}];
+  mask = [(CALayer *)self->_percentFillLayer mask];
+  [mask setFrame:{v4, v5}];
 }
 
-- (void)_fillLayerFrame:(CGRect *)a3 cornerRadius:(double *)a4
+- (void)_fillLayerFrame:(CGRect *)frame cornerRadius:(double *)radius
 {
-  v24 = [(UIView *)self traitCollection];
-  [(_UIStatusBarBatteryView *)self _batterySizeForTraitCollection:v24];
+  traitCollection = [(UIView *)self traitCollection];
+  [(_UIStatusBarBatteryView *)self _batterySizeForTraitCollection:traitCollection];
   v8 = v7;
   v10 = v9;
-  [(_UIStatusBarBatteryView *)self _lineWidthAndInterspaceForTraitCollection:v24];
+  [(_UIStatusBarBatteryView *)self _lineWidthAndInterspaceForTraitCollection:traitCollection];
   v12 = v11;
   [(UIView *)self bounds];
   v14 = v13;
@@ -1327,7 +1327,7 @@ LABEL_4:
   }
 
   v18 = v17 * v8;
-  [(_UIStatusBarBatteryView *)self _insideCornerRadiusForTraitCollection:v24];
+  [(_UIStatusBarBatteryView *)self _insideCornerRadiusForTraitCollection:traitCollection];
   v20 = v19;
   if ([(_UIStatusBarBatteryView *)self rounded])
   {
@@ -1355,24 +1355,24 @@ LABEL_4:
   }
 
   UIRoundToViewScale(self);
-  if (a3)
+  if (frame)
   {
-    a3->origin.x = v14;
-    a3->origin.y = v16;
-    a3->size.width = fmax(v23, 1.0);
-    a3->size.height = v10;
+    frame->origin.x = v14;
+    frame->origin.y = v16;
+    frame->size.width = fmax(v23, 1.0);
+    frame->size.height = v10;
   }
 
-  if (a4)
+  if (radius)
   {
-    *a4 = v20;
+    *radius = v20;
   }
 }
 
 - (double)_percentageBatteryBoltScaleFactorMultiplier
 {
-  v3 = [(UIView *)self traitCollection];
-  [(_UIStatusBarBatteryView *)self _percentageFontSizeForTraitCollection:v3];
+  traitCollection = [(UIView *)self traitCollection];
+  [(_UIStatusBarBatteryView *)self _percentageFontSizeForTraitCollection:traitCollection];
   v5 = v4;
   v6 = 11.5;
   if (!self->_internalSizeCategory && [(_UIStatusBarBatteryView *)self iconSize])
@@ -1411,7 +1411,7 @@ LABEL_4:
 
 - (void)_updateBolt
 {
-  v3 = [(_UIStatusBarBatteryView *)self _shouldShowBolt];
+  _shouldShowBolt = [(_UIStatusBarBatteryView *)self _shouldShowBolt];
   [(CALayer *)self->_boltLayer opacity];
   v5 = v4;
   showsPercentage = self->_showsPercentage;
@@ -1436,26 +1436,26 @@ LABEL_4:
   CATransform3DMakeScale(&v32, v10, v10, 1.0);
   memset(&v31, 0, sizeof(v31));
   CATransform3DMakeScale(&v31, v14, v14, 1.0);
-  v15 = !v3;
-  if (v3 && v5 != 1.0)
+  v15 = !_shouldShowBolt;
+  if (_shouldShowBolt && v5 != 1.0)
   {
     if (!self->_boltLayer)
     {
       [(_UIStatusBarBatteryView *)self _createBoltLayersWithSize:32.0, 40.0];
     }
 
-    v16 = [(UIView *)self layer];
-    [v16 addSublayer:self->_boltMaskLayer];
+    layer = [(UIView *)self layer];
+    [layer addSublayer:self->_boltMaskLayer];
 
-    v17 = [(UIView *)self layer];
-    [v17 addSublayer:self->_boltLayer];
+    layer2 = [(UIView *)self layer];
+    [layer2 addSublayer:self->_boltLayer];
 
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v30 = v32;
     v27 = __38___UIStatusBarBatteryView__updateBolt__block_invoke;
     v28 = &unk_1E7103ED8;
-    v29 = self;
+    selfCopy = self;
     if (+[UIView areAnimationsEnabled])
     {
       v25 = v31;
@@ -1479,7 +1479,7 @@ LABEL_4:
       v23[2] = __38___UIStatusBarBatteryView__updateBolt__block_invoke_2;
       v23[3] = &unk_1E70F35E0;
       v23[4] = self;
-      v24 = v3;
+      v24 = _shouldShowBolt;
       [MEMORY[0x1E6979518] setCompletionBlock:v23];
       v27(v26);
       v19 = MEMORY[0x1E6979518];
@@ -1496,7 +1496,7 @@ LABEL_4:
     goto LABEL_25;
   }
 
-  if (!v3 && v5 == 1.0)
+  if (!_shouldShowBolt && v5 == 1.0)
   {
     [(_UIStatusBarBatteryView *)self _notifyWillBeginAnimatingBoltToVisible:0];
     [MEMORY[0x1E6979518] begin];
@@ -1515,7 +1515,7 @@ LABEL_4:
     v21[2] = __38___UIStatusBarBatteryView__updateBolt__block_invoke_3;
     v21[3] = &unk_1E70F35E0;
     v21[4] = self;
-    v22 = v3;
+    v22 = _shouldShowBolt;
     [MEMORY[0x1E6979518] setCompletionBlock:v21];
     v25 = v31;
     [(CALayer *)self->_boltLayer setTransform:&v25];
@@ -1552,41 +1552,41 @@ LABEL_25:
   }
 }
 
-- (void)_notifyWillBeginAnimatingBoltToVisible:(BOOL)a3
+- (void)_notifyWillBeginAnimatingBoltToVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   if ([(_UIStatusBarBatteryView *)self internalSizeCategory]|| [(_UIStatusBarBatteryView *)self iconSize])
   {
 
-    [(_UIStatusBarBatteryView *)self _willBeginAnimatingBoltToVisible:v3];
+    [(_UIStatusBarBatteryView *)self _willBeginAnimatingBoltToVisible:visibleCopy];
   }
 }
 
-- (void)_notifyDidFinishAnimatingBoltToVisible:(BOOL)a3
+- (void)_notifyDidFinishAnimatingBoltToVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   if ([(_UIStatusBarBatteryView *)self internalSizeCategory]|| [(_UIStatusBarBatteryView *)self iconSize])
   {
 
-    [(_UIStatusBarBatteryView *)self _didFinishAnimatingBoltToVisible:v3];
+    [(_UIStatusBarBatteryView *)self _didFinishAnimatingBoltToVisible:visibleCopy];
   }
 }
 
 - (void)_updatePercentageFont
 {
-  v3 = [(UIView *)self traitCollection];
-  [(_UIStatusBarBatteryView *)self _percentageFontSizeForTraitCollection:v3];
+  traitCollection = [(UIView *)self traitCollection];
+  [(_UIStatusBarBatteryView *)self _percentageFontSizeForTraitCollection:traitCollection];
   v5 = v4;
 
-  v6 = [(UIView *)self traitCollection];
-  v7 = [(_UIStatusBarBatteryView *)self _percentageFontCondensedWhenChargingForTraitCollection:v6];
+  traitCollection2 = [(UIView *)self traitCollection];
+  v7 = [(_UIStatusBarBatteryView *)self _percentageFontCondensedWhenChargingForTraitCollection:traitCollection2];
 
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v14 = __48___UIStatusBarBatteryView__updatePercentageFont__block_invoke;
   v15 = &unk_1E711FE50;
   v18 = v7;
-  v16 = self;
+  selfCopy = self;
   v17 = v5;
   if (self->_percentageLabel)
   {
@@ -1620,8 +1620,8 @@ LABEL_25:
     }
 
     v4 = [MEMORY[0x1E696AEC0] localizedStringWithFormat:@"%.0f", *&v3];
-    v5 = [(UILabel *)self->_percentageLabel text];
-    v6 = [v4 isEqualToString:v5];
+    text = [(UILabel *)self->_percentageLabel text];
+    v6 = [v4 isEqualToString:text];
 
     if ((v6 & 1) == 0)
     {
@@ -1666,8 +1666,8 @@ LABEL_25:
   if ([(UIView *)self _shouldReverseLayoutDirection])
   {
     CATransform3DMakeScale(&v18, -1.0, 1.0, 1.0);
-    v3 = [(UIView *)self layer];
-    v4 = v3;
+    layer = [(UIView *)self layer];
+    v4 = layer;
     v14 = *&v18.m31;
     v15 = *&v18.m33;
     v16 = *&v18.m41;
@@ -1680,8 +1680,8 @@ LABEL_25:
 
   else
   {
-    v3 = [(UIView *)self layer];
-    v4 = v3;
+    layer = [(UIView *)self layer];
+    v4 = layer;
     v7 = *(MEMORY[0x1E69792E8] + 80);
     v14 = *(MEMORY[0x1E69792E8] + 64);
     v15 = v7;
@@ -1697,7 +1697,7 @@ LABEL_25:
 
   v12 = v5;
   v13 = v6;
-  [v3 setSublayerTransform:&v10];
+  [layer setSublayerTransform:&v10];
 }
 
 - (void)_unflipBoltIfNecessary
@@ -1739,11 +1739,11 @@ LABEL_25:
   }
 }
 
-- (void)setInternalSizeCategory:(int64_t)a3
+- (void)setInternalSizeCategory:(int64_t)category
 {
-  if (self->_internalSizeCategory != a3)
+  if (self->_internalSizeCategory != category)
   {
-    self->_internalSizeCategory = a3;
+    self->_internalSizeCategory = category;
     [(_UIStatusBarBatteryView *)self __resetBoltLayers];
     [(UIView *)self invalidateIntrinsicContentSize];
 
@@ -1751,11 +1751,11 @@ LABEL_25:
   }
 }
 
-- (void)setSizeCategory:(int64_t)a3
+- (void)setSizeCategory:(int64_t)category
 {
-  if (a3)
+  if (category)
   {
-    if (a3 != 1)
+    if (category != 1)
     {
       return;
     }
@@ -1771,14 +1771,14 @@ LABEL_25:
   [(_UIStatusBarBatteryView *)self setInternalSizeCategory:v3];
 }
 
-- (void)setChargePercent:(double)a3
+- (void)setChargePercent:(double)percent
 {
-  if (self->_chargePercent != a3)
+  if (self->_chargePercent != percent)
   {
-    v5 = [(_UIStatusBarBatteryView *)self _shouldShowBolt];
-    v6 = [(_UIStatusBarBatteryView *)self isLowBattery];
-    self->_chargePercent = fmin(fmax(a3, 0.0), 1.0);
-    if (v5 != [(_UIStatusBarBatteryView *)self _shouldShowBolt])
+    _shouldShowBolt = [(_UIStatusBarBatteryView *)self _shouldShowBolt];
+    isLowBattery = [(_UIStatusBarBatteryView *)self isLowBattery];
+    self->_chargePercent = fmin(fmax(percent, 0.0), 1.0);
+    if (_shouldShowBolt != [(_UIStatusBarBatteryView *)self _shouldShowBolt])
     {
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
@@ -1788,7 +1788,7 @@ LABEL_25:
       [UIView performWithoutAnimation:v8];
     }
 
-    if (self->_showsPercentage && v6 != [(_UIStatusBarBatteryView *)self isLowBattery])
+    if (self->_showsPercentage && isLowBattery != [(_UIStatusBarBatteryView *)self isLowBattery])
     {
       v7[0] = MEMORY[0x1E69E9820];
       v7[1] = 3221225472;
@@ -1803,13 +1803,13 @@ LABEL_25:
   }
 }
 
-- (void)setChargingState:(int64_t)a3
+- (void)setChargingState:(int64_t)state
 {
-  if (self->_chargingState != a3)
+  if (self->_chargingState != state)
   {
     v6[7] = v3;
     v6[8] = v4;
-    self->_chargingState = a3;
+    self->_chargingState = state;
     if (self->_showsPercentage)
     {
       v6[0] = MEMORY[0x1E69E9820];
@@ -1825,22 +1825,22 @@ LABEL_25:
   }
 }
 
-- (void)setSaverModeActive:(BOOL)a3
+- (void)setSaverModeActive:(BOOL)active
 {
-  if (self->_saverModeActive != a3)
+  if (self->_saverModeActive != active)
   {
-    self->_saverModeActive = a3;
+    self->_saverModeActive = active;
     [(_UIStatusBarBatteryView *)self _updateFillColor];
   }
 }
 
-- (void)setLowBatteryMode:(int64_t)a3
+- (void)setLowBatteryMode:(int64_t)mode
 {
-  if (self->_lowBatteryMode != a3)
+  if (self->_lowBatteryMode != mode)
   {
-    v5 = [(_UIStatusBarBatteryView *)self isLowBattery];
-    self->_lowBatteryMode = a3;
-    if (v5 != [(_UIStatusBarBatteryView *)self isLowBattery])
+    isLowBattery = [(_UIStatusBarBatteryView *)self isLowBattery];
+    self->_lowBatteryMode = mode;
+    if (isLowBattery != [(_UIStatusBarBatteryView *)self isLowBattery])
     {
 
       [(_UIStatusBarBatteryView *)self _updateFillColor];
@@ -1862,24 +1862,24 @@ LABEL_25:
   return v6 <= v7;
 }
 
-- (void)setShowsInlineChargingIndicator:(BOOL)a3
+- (void)setShowsInlineChargingIndicator:(BOOL)indicator
 {
-  if (self->_showsInlineChargingIndicator != a3)
+  if (self->_showsInlineChargingIndicator != indicator)
   {
-    self->_showsInlineChargingIndicator = a3;
+    self->_showsInlineChargingIndicator = indicator;
     [(_UIStatusBarBatteryView *)self _updatePercentage];
 
     [(_UIStatusBarBatteryView *)self _updateBolt];
   }
 }
 
-- (void)setShowsPercentage:(BOOL)a3
+- (void)setShowsPercentage:(BOOL)percentage
 {
-  if (self->_showsPercentage != a3)
+  if (self->_showsPercentage != percentage)
   {
     v7[7] = v3;
     v7[8] = v4;
-    self->_showsPercentage = a3;
+    self->_showsPercentage = percentage;
     [(_UIStatusBarBatteryView *)self _updatePercentageFont];
     [(_UIStatusBarBatteryView *)self _updatePercentage];
     [(_UIStatusBarBatteryView *)self _updateBolt];
@@ -1896,26 +1896,26 @@ LABEL_25:
     v7[3] = &unk_1E70F3590;
     v7[4] = self;
     [UIView animateWithDuration:v7 animations:0.25];
-    if (!a3)
+    if (!percentage)
     {
       [(_UIStatusBarBatteryView *)self _updateBodyColors];
     }
   }
 }
 
-- (void)setFillColor:(id)a3
+- (void)setFillColor:(id)color
 {
-  v5 = a3;
-  if (self->_fillColor != v5)
+  colorCopy = color;
+  if (self->_fillColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_fillColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_fillColor, color);
     [(_UIStatusBarBatteryView *)self _updateFillColor];
-    v5 = v6;
+    colorCopy = v6;
     if (!self->_showsPercentage)
     {
       [(_UIStatusBarBatteryView *)self _updateBodyColors];
-      v5 = v6;
+      colorCopy = v6;
     }
   }
 }
@@ -1936,18 +1936,18 @@ LABEL_25:
   return v3;
 }
 
-- (void)setBodyColor:(id)a3
+- (void)setBodyColor:(id)color
 {
-  v5 = a3;
-  if (self->_bodyColor != v5)
+  colorCopy = color;
+  if (self->_bodyColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_bodyColor, a3);
-    v5 = v6;
+    v6 = colorCopy;
+    objc_storeStrong(&self->_bodyColor, color);
+    colorCopy = v6;
     if (!self->_showsPercentage)
     {
       [(_UIStatusBarBatteryView *)self _updateBodyColors];
-      v5 = v6;
+      colorCopy = v6;
     }
   }
 }
@@ -1962,18 +1962,18 @@ LABEL_25:
 
   else
   {
-    v5 = [(_UIStatusBarBatteryView *)self fillColor];
-    v3 = [v5 colorWithAlphaComponent:self->_bodyColorAlpha];
+    fillColor = [(_UIStatusBarBatteryView *)self fillColor];
+    v3 = [fillColor colorWithAlphaComponent:self->_bodyColorAlpha];
   }
 
   return v3;
 }
 
-- (void)setBodyColorAlpha:(double)a3
+- (void)setBodyColorAlpha:(double)alpha
 {
-  if (self->_bodyColorAlpha != a3)
+  if (self->_bodyColorAlpha != alpha)
   {
-    self->_bodyColorAlpha = a3;
+    self->_bodyColorAlpha = alpha;
     if (!self->_bodyColor && !self->_showsPercentage)
     {
       [(_UIStatusBarBatteryView *)self _updateBodyColors];
@@ -1981,18 +1981,18 @@ LABEL_25:
   }
 }
 
-- (void)setPinColor:(id)a3
+- (void)setPinColor:(id)color
 {
-  v5 = a3;
-  if (self->_pinColor != v5)
+  colorCopy = color;
+  if (self->_pinColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_pinColor, a3);
-    v5 = v6;
+    v6 = colorCopy;
+    objc_storeStrong(&self->_pinColor, color);
+    colorCopy = v6;
     if (!self->_showsPercentage)
     {
       [(_UIStatusBarBatteryView *)self _updateBodyColors];
-      v5 = v6;
+      colorCopy = v6;
     }
   }
 }
@@ -2007,18 +2007,18 @@ LABEL_25:
 
   else
   {
-    v5 = [(_UIStatusBarBatteryView *)self bodyColor];
-    v3 = [v5 colorWithAlphaComponent:self->_pinColorAlpha];
+    bodyColor = [(_UIStatusBarBatteryView *)self bodyColor];
+    v3 = [bodyColor colorWithAlphaComponent:self->_pinColorAlpha];
   }
 
   return v3;
 }
 
-- (void)setPinColorAlpha:(double)a3
+- (void)setPinColorAlpha:(double)alpha
 {
-  if (self->_pinColorAlpha != a3)
+  if (self->_pinColorAlpha != alpha)
   {
-    self->_pinColorAlpha = a3;
+    self->_pinColorAlpha = alpha;
     if (!self->_pinColor && !self->_showsPercentage)
     {
       [(_UIStatusBarBatteryView *)self _updateBodyColors];
@@ -2026,15 +2026,15 @@ LABEL_25:
   }
 }
 
-- (void)setBoltColor:(id)a3
+- (void)setBoltColor:(id)color
 {
-  v5 = a3;
-  if (self->_boltColor != v5)
+  colorCopy = color;
+  if (self->_boltColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_boltColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_boltColor, color);
     [(_UIStatusBarBatteryView *)self _updateBodyColors];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
@@ -2048,25 +2048,25 @@ LABEL_25:
 
   else
   {
-    v4 = [(_UIStatusBarBatteryView *)self bodyColor];
-    v3 = [v4 colorWithAlphaComponent:1.0];
+    bodyColor = [(_UIStatusBarBatteryView *)self bodyColor];
+    v3 = [bodyColor colorWithAlphaComponent:1.0];
   }
 
   return v3;
 }
 
-- (void)setInactiveColor:(id)a3
+- (void)setInactiveColor:(id)color
 {
-  v5 = a3;
-  if (self->_inactiveColor != v5)
+  colorCopy = color;
+  if (self->_inactiveColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_inactiveColor, a3);
-    v5 = v6;
+    v6 = colorCopy;
+    objc_storeStrong(&self->_inactiveColor, color);
+    colorCopy = v6;
     if (self->_showsPercentage)
     {
       [(_UIStatusBarBatteryView *)self _updateFillColor];
-      v5 = v6;
+      colorCopy = v6;
     }
   }
 }
@@ -2081,11 +2081,11 @@ LABEL_25:
 
   else
   {
-    v5 = [(UIView *)self traitCollection];
-    v6 = [v5 userInterfaceStyle];
+    traitCollection = [(UIView *)self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
     saverModeActive = self->_saverModeActive;
-    if (v6 == 2)
+    if (userInterfaceStyle == 2)
     {
       if (!saverModeActive && ([(_UIStatusBarBatteryView *)self isLowBattery]|| [(_UIStatusBarBatteryView *)self chargingState]))
       {
@@ -2123,11 +2123,11 @@ LABEL_25:
   return v3;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = _UIStatusBarBatteryView;
-  [(UIView *)&v4 traitCollectionDidChange:a3];
+  [(UIView *)&v4 traitCollectionDidChange:change];
   [(_UIStatusBarBatteryView *)self _updateFillColor];
   [(_UIStatusBarBatteryView *)self _updateTransform];
   [(_UIStatusBarBatteryView *)self _updateBolt];
@@ -2135,18 +2135,18 @@ LABEL_25:
   [(UIView *)self setNeedsLayout];
 }
 
-- (void)applyStyleAttributes:(id)a3
+- (void)applyStyleAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [v4 isRounded];
-  v6 = [v4 iconSize];
+  attributesCopy = attributes;
+  isRounded = [attributesCopy isRounded];
+  iconSize = [attributesCopy iconSize];
 
-  if (self->_iconSize == v6)
+  if (self->_iconSize == iconSize)
   {
     rounded = self->_rounded;
-    [(_UIStatusBarBatteryView *)self setRounded:v5];
-    [(_UIStatusBarBatteryView *)self setIconSize:v6];
-    if (rounded == v5)
+    [(_UIStatusBarBatteryView *)self setRounded:isRounded];
+    [(_UIStatusBarBatteryView *)self setIconSize:iconSize];
+    if (rounded == isRounded)
     {
       return;
     }
@@ -2154,8 +2154,8 @@ LABEL_25:
 
   else
   {
-    [(_UIStatusBarBatteryView *)self setRounded:v5];
-    [(_UIStatusBarBatteryView *)self setIconSize:v6];
+    [(_UIStatusBarBatteryView *)self setRounded:isRounded];
+    [(_UIStatusBarBatteryView *)self setIconSize:iconSize];
   }
 
   if (!self->_internalSizeCategory)
@@ -2167,14 +2167,14 @@ LABEL_25:
   }
 }
 
-+ (CGSize)_statusBarIntrinsicContentSizeForIconSize:(int64_t)a3
++ (CGSize)_statusBarIntrinsicContentSizeForIconSize:(int64_t)size
 {
-  [a1 _batterySizeForIconSize:?];
+  [self _batterySizeForIconSize:?];
   v6 = v5;
   v8 = v7;
-  [a1 _pinSizeForIconSize:a3];
+  [self _pinSizeForIconSize:size];
   v10 = v9;
-  [a1 _lineWidthAndInterspaceForIconSize:a3];
+  [self _lineWidthAndInterspaceForIconSize:size];
   v12 = v10 + v6 + v11;
   v13 = v8;
   result.height = v13;
@@ -2184,13 +2184,13 @@ LABEL_25:
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(UIView *)self traitCollection];
-  [(_UIStatusBarBatteryView *)self _batterySizeForTraitCollection:v3];
+  traitCollection = [(UIView *)self traitCollection];
+  [(_UIStatusBarBatteryView *)self _batterySizeForTraitCollection:traitCollection];
   v5 = v4;
   v7 = v6;
-  [(_UIStatusBarBatteryView *)self _pinSizeForTraitCollection:v3];
+  [(_UIStatusBarBatteryView *)self _pinSizeForTraitCollection:traitCollection];
   v9 = v8;
-  [(_UIStatusBarBatteryView *)self _lineWidthAndInterspaceForTraitCollection:v3];
+  [(_UIStatusBarBatteryView *)self _lineWidthAndInterspaceForTraitCollection:traitCollection];
   v11 = v9 + v5 + v10;
 
   v12 = v11;
@@ -2200,14 +2200,14 @@ LABEL_25:
   return result;
 }
 
-+ (id)_pinBezierPathForSize:(CGSize)a3 isComplex:(BOOL)a4
++ (id)_pinBezierPathForSize:(CGSize)size isComplex:(BOOL)complex
 {
-  v4 = a4;
-  height = a3.height;
-  width = a3.width;
+  complexCopy = complex;
+  height = size.height;
+  width = size.width;
   v7 = +[UIBezierPath bezierPath];
   v8 = v7;
-  if (v4)
+  if (complexCopy)
   {
     [v7 moveToPoint:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
     [v8 addArcWithCenter:1 radius:0.0 startAngle:width endAngle:width clockwise:{4.71238898, 0.0}];
@@ -2243,9 +2243,9 @@ LABEL_25:
   return v8;
 }
 
-+ (id)_boltBezierPathForSize:(CGSize)a3
++ (id)_boltBezierPathForSize:(CGSize)size
 {
-  v3 = [UIBezierPath bezierPath:a3.width];
+  v3 = [UIBezierPath bezierPath:size.width];
   [v3 moveToPoint:{12.429, 37.023}];
   [v3 addLineToPoint:{27.272, 19.152}];
   [v3 addCurveToPoint:27.738 controlPoint1:18.034 controlPoint2:{27.583, 18.779, 27.738, 18.422}];
@@ -2293,9 +2293,9 @@ LABEL_25:
 {
   [(_UIStatusBarBatteryView *)self chargePercent];
   v4 = v3;
-  v5 = [(_UIStatusBarBatteryView *)self _batteryFillColor];
-  v6 = [(UIView *)self traitCollection];
-  if ([v6 userInterfaceStyle] == 2)
+  _batteryFillColor = [(_UIStatusBarBatteryView *)self _batteryFillColor];
+  traitCollection = [(UIView *)self traitCollection];
+  if ([traitCollection userInterfaceStyle] == 2)
   {
     +[UIColor whiteColor];
   }
@@ -2306,39 +2306,39 @@ LABEL_25:
   }
   v7 = ;
 
-  v8 = [(_UIStatusBarBatteryView *)self _shouldShowBolt];
-  v9 = [(UIView *)self _shouldReverseLayoutDirection];
-  v10 = [(UIView *)self _screen];
-  [v10 scale];
+  _shouldShowBolt = [(_UIStatusBarBatteryView *)self _shouldShowBolt];
+  _shouldReverseLayoutDirection = [(UIView *)self _shouldReverseLayoutDirection];
+  _screen = [(UIView *)self _screen];
+  [_screen scale];
   v12 = v11;
 
-  v13 = [(_UIStatusBarBatteryView *)self showsPercentage];
-  v14 = [(UIView *)self traitCollection];
-  v15 = [v14 preferredContentSizeCategory];
+  showsPercentage = [(_UIStatusBarBatteryView *)self showsPercentage];
+  traitCollection2 = [(UIView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection2 preferredContentSizeCategory];
 
-  v16 = [(_UIStatusBarBatteryView *)self accessibilityHUDImageCacheInfo];
-  v17 = [v16 cacheMatchesCapacity:v5 fillColor:v7 tintColor:v8 showingBolt:v9 reverseLayout:v13 scale:v15 showsPercentage:v4 contentSizeCategory:v12];
+  accessibilityHUDImageCacheInfo = [(_UIStatusBarBatteryView *)self accessibilityHUDImageCacheInfo];
+  v17 = [accessibilityHUDImageCacheInfo cacheMatchesCapacity:_batteryFillColor fillColor:v7 tintColor:_shouldShowBolt showingBolt:_shouldReverseLayoutDirection reverseLayout:showsPercentage scale:preferredContentSizeCategory showsPercentage:v4 contentSizeCategory:v12];
 
   if ((v17 & 1) == 0)
   {
-    v18 = UIStatusBarCreateHUDBatteryImage(v5, v7, v8, 0, v9, v13, v4, v12);
+    v18 = UIStatusBarCreateHUDBatteryImage(_batteryFillColor, v7, _shouldShowBolt, 0, _shouldReverseLayoutDirection, showsPercentage, v4, v12);
     v19 = objc_opt_new();
     [v19 setCachedImage:v18];
     [v19 setCapacity:v4];
-    [v19 setFillColor:v5];
+    [v19 setFillColor:_batteryFillColor];
     [v19 setTintColor:v7];
-    [v19 setShowBolt:v8];
-    [v19 setReverseLayoutDirection:v9];
+    [v19 setShowBolt:_shouldShowBolt];
+    [v19 setReverseLayoutDirection:_shouldReverseLayoutDirection];
     [v19 setScale:v12];
-    [v19 setShowsPercentage:v13];
-    [v19 setContentSizeCategory:v15];
+    [v19 setShowsPercentage:showsPercentage];
+    [v19 setContentSizeCategory:preferredContentSizeCategory];
     [(_UIStatusBarBatteryView *)self setAccessibilityHUDImageCacheInfo:v19];
   }
 
   v20 = [UIAccessibilityHUDItem alloc];
-  v21 = [(_UIStatusBarBatteryView *)self accessibilityHUDImageCacheInfo];
-  v22 = [v21 cachedImage];
-  v23 = [(UIAccessibilityHUDItem *)v20 initWithTitle:0 image:v22 imageInsets:0.0, 0.0, 0.0, 0.0];
+  accessibilityHUDImageCacheInfo2 = [(_UIStatusBarBatteryView *)self accessibilityHUDImageCacheInfo];
+  cachedImage = [accessibilityHUDImageCacheInfo2 cachedImage];
+  v23 = [(UIAccessibilityHUDItem *)v20 initWithTitle:0 image:cachedImage imageInsets:0.0, 0.0, 0.0, 0.0];
 
   [(UIAccessibilityHUDItem *)v23 setFlattenImage:0];
 

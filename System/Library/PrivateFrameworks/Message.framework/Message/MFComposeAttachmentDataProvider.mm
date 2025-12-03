@@ -1,22 +1,22 @@
 @interface MFComposeAttachmentDataProvider
-- (MFComposeAttachmentDataProvider)initWithAttachmentDataItemProvider:(id)a3 forContentID:(id)a4;
-- (MFComposeAttachmentDataProvider)initWithData:(id)a3 forContentID:(id)a4;
-- (id)_dataForAttachment:(id)a3;
-- (id)dataForContentID:(id)a3;
-- (id)rawDataForContentID:(id)a3;
-- (void)_commonInitWithDataProvider:(id)a3 forContentID:(id)a4;
-- (void)addData:(id)a3 forContentID:(id)a4;
-- (void)addDataItemProvider:(id)a3 forContentID:(id)a4;
-- (void)fetchDataForAttachment:(id)a3 consumer:(id)a4 progress:(id)a5 completion:(id)a6;
-- (void)removeDataForAttachment:(id)a3;
+- (MFComposeAttachmentDataProvider)initWithAttachmentDataItemProvider:(id)provider forContentID:(id)d;
+- (MFComposeAttachmentDataProvider)initWithData:(id)data forContentID:(id)d;
+- (id)_dataForAttachment:(id)attachment;
+- (id)dataForContentID:(id)d;
+- (id)rawDataForContentID:(id)d;
+- (void)_commonInitWithDataProvider:(id)provider forContentID:(id)d;
+- (void)addData:(id)data forContentID:(id)d;
+- (void)addDataItemProvider:(id)provider forContentID:(id)d;
+- (void)fetchDataForAttachment:(id)attachment consumer:(id)consumer progress:(id)progress completion:(id)completion;
+- (void)removeDataForAttachment:(id)attachment;
 @end
 
 @implementation MFComposeAttachmentDataProvider
 
-- (MFComposeAttachmentDataProvider)initWithData:(id)a3 forContentID:(id)a4
+- (MFComposeAttachmentDataProvider)initWithData:(id)data forContentID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = MFComposeAttachmentDataProvider;
   v8 = [(MFComposeAttachmentDataProvider *)&v12 init];
@@ -26,17 +26,17 @@
     attachmentsData = v8->_attachmentsData;
     v8->_attachmentsData = v9;
 
-    [(MFComposeAttachmentDataProvider *)v8 addData:v6 forContentID:v7];
-    [(MFComposeAttachmentDataProvider *)v8 _commonInitWithDataProvider:v6 forContentID:v7];
+    [(MFComposeAttachmentDataProvider *)v8 addData:dataCopy forContentID:dCopy];
+    [(MFComposeAttachmentDataProvider *)v8 _commonInitWithDataProvider:dataCopy forContentID:dCopy];
   }
 
   return v8;
 }
 
-- (MFComposeAttachmentDataProvider)initWithAttachmentDataItemProvider:(id)a3 forContentID:(id)a4
+- (MFComposeAttachmentDataProvider)initWithAttachmentDataItemProvider:(id)provider forContentID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  providerCopy = provider;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = MFComposeAttachmentDataProvider;
   v8 = [(MFComposeAttachmentDataProvider *)&v12 init];
@@ -46,89 +46,89 @@
     attachmentsData = v8->_attachmentsData;
     v8->_attachmentsData = v9;
 
-    [(MFComposeAttachmentDataProvider *)v8 addDataItemProvider:v6 forContentID:v7];
-    [(MFComposeAttachmentDataProvider *)v8 _commonInitWithDataProvider:v6 forContentID:v7];
+    [(MFComposeAttachmentDataProvider *)v8 addDataItemProvider:providerCopy forContentID:dCopy];
+    [(MFComposeAttachmentDataProvider *)v8 _commonInitWithDataProvider:providerCopy forContentID:dCopy];
   }
 
   return v8;
 }
 
-- (void)_commonInitWithDataProvider:(id)a3 forContentID:(id)a4
+- (void)_commonInitWithDataProvider:(id)provider forContentID:(id)d
 {
   v5 = objc_alloc_init(MEMORY[0x1E695DEE0]);
   attachmentsPlaceholderData = self->_attachmentsPlaceholderData;
   self->_attachmentsPlaceholderData = v5;
 }
 
-- (void)addData:(id)a3 forContentID:(id)a4
+- (void)addData:(id)data forContentID:(id)d
 {
-  v10 = a3;
-  v6 = a4;
-  if (v6)
+  dataCopy = data;
+  dCopy = d;
+  if (dCopy)
   {
-    v7 = [(NSMutableDictionary *)self->_attachmentsData objectForKey:v6];
-    v8 = [v7 isEqualToData:v10];
+    v7 = [(NSMutableDictionary *)self->_attachmentsData objectForKey:dCopy];
+    v8 = [v7 isEqualToData:dataCopy];
 
     if ((v8 & 1) == 0)
     {
-      v9 = [objc_alloc(MEMORY[0x1E69AD6B0]) initWithData:v10];
-      [(NSMutableDictionary *)self->_attachmentsData setValue:v9 forKey:v6];
+      v9 = [objc_alloc(MEMORY[0x1E69AD6B0]) initWithData:dataCopy];
+      [(NSMutableDictionary *)self->_attachmentsData setValue:v9 forKey:dCopy];
     }
   }
 }
 
-- (void)addDataItemProvider:(id)a3 forContentID:(id)a4
+- (void)addDataItemProvider:(id)provider forContentID:(id)d
 {
-  v8 = a3;
-  v6 = a4;
-  if (v6)
+  providerCopy = provider;
+  dCopy = d;
+  if (dCopy)
   {
-    v7 = [(NSMutableDictionary *)self->_attachmentsData objectForKeyedSubscript:v6];
+    v7 = [(NSMutableDictionary *)self->_attachmentsData objectForKeyedSubscript:dCopy];
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & (v7 != v8)) == 1)
+    if ((objc_opt_isKindOfClass() & (v7 != providerCopy)) == 1)
     {
-      [(NSMutableDictionary *)self->_attachmentsData setValue:v8 forKey:v6];
+      [(NSMutableDictionary *)self->_attachmentsData setValue:providerCopy forKey:dCopy];
     }
   }
 }
 
-- (void)removeDataForAttachment:(id)a3
+- (void)removeDataForAttachment:(id)attachment
 {
-  v4 = a3;
-  if (v4)
+  attachmentCopy = attachment;
+  if (attachmentCopy)
   {
-    v6 = v4;
-    v5 = [v4 lastPathComponent];
-    [(NSMutableDictionary *)self->_attachmentsData removeObjectForKey:v5];
+    v6 = attachmentCopy;
+    lastPathComponent = [attachmentCopy lastPathComponent];
+    [(NSMutableDictionary *)self->_attachmentsData removeObjectForKey:lastPathComponent];
 
-    v4 = v6;
+    attachmentCopy = v6;
   }
 }
 
-- (id)_dataForAttachment:(id)a3
+- (id)_dataForAttachment:(id)attachment
 {
-  v4 = a3;
-  v5 = [v4 contentID];
-  if (![v5 length])
+  attachmentCopy = attachment;
+  contentID = [attachmentCopy contentID];
+  if (![contentID length])
   {
-    v6 = [v4 url];
-    v7 = [v6 lastPathComponent];
+    v6 = [attachmentCopy url];
+    lastPathComponent = [v6 lastPathComponent];
 
-    v5 = v7;
+    contentID = lastPathComponent;
   }
 
-  v8 = [(MFComposeAttachmentDataProvider *)self dataForContentID:v5];
+  v8 = [(MFComposeAttachmentDataProvider *)self dataForContentID:contentID];
 
   return v8;
 }
 
-- (id)dataForContentID:(id)a3
+- (id)dataForContentID:(id)d
 {
-  v4 = a3;
-  v5 = [(MFComposeAttachmentDataProvider *)self rawDataForContentID:v4];
+  dCopy = d;
+  v5 = [(MFComposeAttachmentDataProvider *)self rawDataForContentID:dCopy];
   if ([MFAttachmentPlaceholder isPlaceholderSerializedRepresentation:v5])
   {
-    v6 = [(NSCache *)self->_attachmentsPlaceholderData objectForKey:v4];
+    v6 = [(NSCache *)self->_attachmentsPlaceholderData objectForKey:dCopy];
     if (v6)
     {
       goto LABEL_3;
@@ -140,7 +140,7 @@
       v6 = [MFAttachmentPlaceholder dataForPlaceholder:v9];
       if ([v6 length])
       {
-        [(NSCache *)self->_attachmentsPlaceholderData setObject:v6 forKey:v4];
+        [(NSCache *)self->_attachmentsPlaceholderData setObject:v6 forKey:dCopy];
       }
 
       if (v6)
@@ -156,10 +156,10 @@ LABEL_3:
   return v5;
 }
 
-- (id)rawDataForContentID:(id)a3
+- (id)rawDataForContentID:(id)d
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_attachmentsData objectForKey:v4];
+  dCopy = d;
+  v5 = [(NSMutableDictionary *)self->_attachmentsData objectForKey:dCopy];
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -170,16 +170,16 @@ LABEL_3:
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
-    v7 = [v6 registeredTypeIdentifiers];
-    v8 = [v7 firstObject];
+    registeredTypeIdentifiers = [v6 registeredTypeIdentifiers];
+    firstObject = [registeredTypeIdentifiers firstObject];
     v13 = MEMORY[0x1E69E9820];
     v14 = 3221225472;
     v15 = __55__MFComposeAttachmentDataProvider_rawDataForContentID___block_invoke;
     v16 = &unk_1E7AA5320;
     v18 = &v19;
-    v9 = v4;
+    v9 = dCopy;
     v17 = v9;
-    v10 = [v6 loadDataRepresentationForTypeIdentifier:v8 completionHandler:&v13];
+    v10 = [v6 loadDataRepresentationForTypeIdentifier:firstObject completionHandler:&v13];
 
     [(NSMutableDictionary *)self->_attachmentsData setObject:v20[5] forKeyedSubscript:v9, v13, v14, v15, v16];
 LABEL_3:
@@ -195,7 +195,7 @@ LABEL_3:
       v6 = MFLogGeneral();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
       {
-        [(MFComposeAttachmentDataProvider *)v4 rawDataForContentID:v6];
+        [(MFComposeAttachmentDataProvider *)dCopy rawDataForContentID:v6];
       }
     }
 
@@ -204,7 +204,7 @@ LABEL_3:
       v6 = MFLogGeneral();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
       {
-        [(MFComposeAttachmentDataProvider *)v4 rawDataForContentID:v6];
+        [(MFComposeAttachmentDataProvider *)dCopy rawDataForContentID:v6];
       }
     }
 
@@ -241,21 +241,21 @@ void __55__MFComposeAttachmentDataProvider_rawDataForContentID___block_invoke(ui
   }
 }
 
-- (void)fetchDataForAttachment:(id)a3 consumer:(id)a4 progress:(id)a5 completion:(id)a6
+- (void)fetchDataForAttachment:(id)attachment consumer:(id)consumer progress:(id)progress completion:(id)completion
 {
-  v16 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(MFComposeAttachmentDataProvider *)self _dataForAttachment:v16];
+  attachmentCopy = attachment;
+  consumerCopy = consumer;
+  progressCopy = progress;
+  completionCopy = completion;
+  v13 = [(MFComposeAttachmentDataProvider *)self _dataForAttachment:attachmentCopy];
   if (v13)
   {
-    [v10 appendData:v13];
-    v14 = [v16 encodedFileSize];
-    [v11 setCompletedUnitCount:v14];
-    [v11 setTotalUnitCount:v14];
+    [consumerCopy appendData:v13];
+    encodedFileSize = [attachmentCopy encodedFileSize];
+    [progressCopy setCompletedUnitCount:encodedFileSize];
+    [progressCopy setTotalUnitCount:encodedFileSize];
     v15 = 0;
-    [v10 done];
+    [consumerCopy done];
   }
 
   else
@@ -263,7 +263,7 @@ void __55__MFComposeAttachmentDataProvider_rawDataForContentID___block_invoke(ui
     v15 = [MFError errorWithDomain:@"MFMessageErrorDomain" code:1030 localizedDescription:@"Could not find data for compose attachment." title:@"No Data Found" userInfo:0];
   }
 
-  v12[2](v12, v13 != 0, v15, 0);
+  completionCopy[2](completionCopy, v13 != 0, v15, 0);
 }
 
 - (void)rawDataForContentID:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

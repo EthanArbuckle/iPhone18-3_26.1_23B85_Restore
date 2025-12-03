@@ -1,7 +1,7 @@
 @interface CVAMattingRequest
 - (CGRect)primaryCaptureRect;
-- (CVAMattingRequest)initWithDisparityPostprocessingRequest:(id)a3 segmentationPixelBuffer:(__CVBuffer *)a4 skinSegmentationPixelBuffer:(__CVBuffer *)a5 destinationAlphaMattePixelBuffer:(__CVBuffer *)a6 error:(id *)a7;
-- (CVAMattingRequest)initWithDisparityPostprocessingRequest:(id)a3 segmentationPixelBuffer:(__CVBuffer *)a4 skinSegmentationPixelBuffer:(__CVBuffer *)a5 primaryCaptureRect:(CGRect)a6 applyRotation:(BOOL)a7 destinationAlphaMattePixelBuffer:(__CVBuffer *)a8 error:(id *)a9;
+- (CVAMattingRequest)initWithDisparityPostprocessingRequest:(id)request segmentationPixelBuffer:(__CVBuffer *)buffer skinSegmentationPixelBuffer:(__CVBuffer *)pixelBuffer destinationAlphaMattePixelBuffer:(__CVBuffer *)mattePixelBuffer error:(id *)error;
+- (CVAMattingRequest)initWithDisparityPostprocessingRequest:(id)request segmentationPixelBuffer:(__CVBuffer *)buffer skinSegmentationPixelBuffer:(__CVBuffer *)pixelBuffer primaryCaptureRect:(CGRect)rect applyRotation:(BOOL)rotation destinationAlphaMattePixelBuffer:(__CVBuffer *)mattePixelBuffer error:(id *)error;
 - (void)dealloc;
 @end
 
@@ -31,20 +31,20 @@
   [(CVAMattingRequest *)&v3 dealloc];
 }
 
-- (CVAMattingRequest)initWithDisparityPostprocessingRequest:(id)a3 segmentationPixelBuffer:(__CVBuffer *)a4 skinSegmentationPixelBuffer:(__CVBuffer *)a5 primaryCaptureRect:(CGRect)a6 applyRotation:(BOOL)a7 destinationAlphaMattePixelBuffer:(__CVBuffer *)a8 error:(id *)a9
+- (CVAMattingRequest)initWithDisparityPostprocessingRequest:(id)request segmentationPixelBuffer:(__CVBuffer *)buffer skinSegmentationPixelBuffer:(__CVBuffer *)pixelBuffer primaryCaptureRect:(CGRect)rect applyRotation:(BOOL)rotation destinationAlphaMattePixelBuffer:(__CVBuffer *)mattePixelBuffer error:(id *)error
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v20 = a3;
-  v21 = v20;
-  if (a9)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  requestCopy = request;
+  v21 = requestCopy;
+  if (error)
   {
-    *a9 = 0;
+    *error = 0;
   }
 
-  if (v20)
+  if (requestCopy)
   {
     v28.receiver = self;
     v28.super_class = CVAMattingRequest;
@@ -52,16 +52,16 @@
     v23 = v22;
     if (v22)
     {
-      objc_storeStrong(&v22->_disparityPostprocessingRequest, a3);
-      v23->_skinSegmentationPixelBuffer = a5;
-      v23->_destinationAlphaMattePixelBuffer = a8;
-      v23->_segmentationPixelBuffer = a4;
+      objc_storeStrong(&v22->_disparityPostprocessingRequest, request);
+      v23->_skinSegmentationPixelBuffer = pixelBuffer;
+      v23->_destinationAlphaMattePixelBuffer = mattePixelBuffer;
+      v23->_segmentationPixelBuffer = buffer;
       v23->_primaryCaptureRect.origin.x = x;
       v23->_primaryCaptureRect.origin.y = y;
       v23->_primaryCaptureRect.size.width = width;
       v23->_primaryCaptureRect.size.height = height;
-      v23->_applyRotation = a7;
-      CVPixelBufferRetain(a4);
+      v23->_applyRotation = rotation;
+      CVPixelBufferRetain(buffer);
       CVPixelBufferRetain(v23->_skinSegmentationPixelBuffer);
       CVPixelBufferRetain(v23->_destinationAlphaMattePixelBuffer);
     }
@@ -72,7 +72,7 @@
     v24 = MEMORY[0x1E696AEC0];
     v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"segmentation-only matting is not implemented!"];
     v26 = [v24 stringWithFormat:@"Assertion failure in %s at %s:%d -- %@", "-[CVAMattingRequest initWithDisparityPostprocessingRequest:segmentationPixelBuffer:skinSegmentationPixelBuffer:primaryCaptureRect:applyRotation:destinationAlphaMattePixelBuffer:error:]", "/Library/Caches/com.apple.xbs/Sources/AppleCVAPhoto/src/CVAVideoPipelineRequest.mm", 240, v25];
-    sub_1DED25D64(1, a9, 4294944394, v26);
+    sub_1DED25D64(1, error, 4294944394, v26);
 
     v23 = 0;
   }
@@ -80,11 +80,11 @@
   return v23;
 }
 
-- (CVAMattingRequest)initWithDisparityPostprocessingRequest:(id)a3 segmentationPixelBuffer:(__CVBuffer *)a4 skinSegmentationPixelBuffer:(__CVBuffer *)a5 destinationAlphaMattePixelBuffer:(__CVBuffer *)a6 error:(id *)a7
+- (CVAMattingRequest)initWithDisparityPostprocessingRequest:(id)request segmentationPixelBuffer:(__CVBuffer *)buffer skinSegmentationPixelBuffer:(__CVBuffer *)pixelBuffer destinationAlphaMattePixelBuffer:(__CVBuffer *)mattePixelBuffer error:(id *)error
 {
-  v12 = a3;
-  Width = CVPixelBufferGetWidth([v12 sourceColorPixelBuffer]);
-  v14 = -[CVAMattingRequest initWithDisparityPostprocessingRequest:segmentationPixelBuffer:skinSegmentationPixelBuffer:primaryCaptureRect:applyRotation:destinationAlphaMattePixelBuffer:error:](self, "initWithDisparityPostprocessingRequest:segmentationPixelBuffer:skinSegmentationPixelBuffer:primaryCaptureRect:applyRotation:destinationAlphaMattePixelBuffer:error:", v12, a4, a5, 1, a6, a7, 0.0, 0.0, Width, CVPixelBufferGetHeight([v12 sourceColorPixelBuffer]));
+  requestCopy = request;
+  Width = CVPixelBufferGetWidth([requestCopy sourceColorPixelBuffer]);
+  v14 = -[CVAMattingRequest initWithDisparityPostprocessingRequest:segmentationPixelBuffer:skinSegmentationPixelBuffer:primaryCaptureRect:applyRotation:destinationAlphaMattePixelBuffer:error:](self, "initWithDisparityPostprocessingRequest:segmentationPixelBuffer:skinSegmentationPixelBuffer:primaryCaptureRect:applyRotation:destinationAlphaMattePixelBuffer:error:", requestCopy, buffer, pixelBuffer, 1, mattePixelBuffer, error, 0.0, 0.0, Width, CVPixelBufferGetHeight([requestCopy sourceColorPixelBuffer]));
 
   return v14;
 }

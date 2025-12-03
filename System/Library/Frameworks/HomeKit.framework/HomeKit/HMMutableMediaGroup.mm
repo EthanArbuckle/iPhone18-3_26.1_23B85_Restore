@@ -1,19 +1,19 @@
 @interface HMMutableMediaGroup
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HMMutableMediaGroup
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [HMMediaGroup alloc];
-  v5 = [(HMMediaGroup *)self identifier];
-  v6 = [(HMMediaGroup *)self parentIdentifier];
-  v7 = [(HMMediaGroup *)self name];
-  v8 = [(HMMediaGroup *)self isDefaultName];
-  v9 = [(HMMediaGroup *)self destinationUniqueIdentifiers];
-  v10 = [(HMMediaGroup *)self associatedGroupIdentifier];
-  v11 = [(HMMediaGroup *)v4 initWithIdentifier:v5 parentIdentifier:v6 name:v7 defaultName:v8 destinationIdentifiers:v9 associatedGroupIdentifier:v10];
+  identifier = [(HMMediaGroup *)self identifier];
+  parentIdentifier = [(HMMediaGroup *)self parentIdentifier];
+  name = [(HMMediaGroup *)self name];
+  isDefaultName = [(HMMediaGroup *)self isDefaultName];
+  destinationUniqueIdentifiers = [(HMMediaGroup *)self destinationUniqueIdentifiers];
+  associatedGroupIdentifier = [(HMMediaGroup *)self associatedGroupIdentifier];
+  v11 = [(HMMediaGroup *)v4 initWithIdentifier:identifier parentIdentifier:parentIdentifier name:name defaultName:isDefaultName destinationIdentifiers:destinationUniqueIdentifiers associatedGroupIdentifier:associatedGroupIdentifier];
 
   return v11;
 }

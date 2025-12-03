@@ -1,51 +1,51 @@
 @interface NFCReaderSession
-+ (BOOL)featureAvailable:(unint64_t)a3;
-- (BOOL)_connectTag:(id)a3 error:(id *)a4;
-- (BOOL)checkPresenceWithError:(id *)a3;
-- (BOOL)connectTag:(id)a3 error:(id *)a4;
-- (BOOL)disconnectTagWithError:(id *)a3;
++ (BOOL)featureAvailable:(unint64_t)available;
+- (BOOL)_connectTag:(id)tag error:(id *)error;
+- (BOOL)checkPresenceWithError:(id *)error;
+- (BOOL)connectTag:(id)tag error:(id *)error;
+- (BOOL)disconnectTagWithError:(id *)error;
 - (BOOL)isInvalidated;
 - (BOOL)isReady;
-- (BOOL)validateDelegate:(id)a3 expectedType:(int64_t)a4;
-- (BOOL)writeNdefMessage:(id)a3 error:(id *)a4;
-- (NFCReaderSession)initWithDelegate:(id)a3 sessionDelegateType:(int64_t)a4 queue:(id)a5 pollMethod:(unint64_t)a6 sessionType:(unint64_t)a7 sessionConfig:(unint64_t)a8;
+- (BOOL)validateDelegate:(id)delegate expectedType:(int64_t)type;
+- (BOOL)writeNdefMessage:(id)message error:(id *)error;
+- (NFCReaderSession)initWithDelegate:(id)delegate sessionDelegateType:(int64_t)type queue:(id)queue pollMethod:(unint64_t)method sessionType:(unint64_t)sessionType sessionConfig:(unint64_t)config;
 - (NFReaderSessionInterface)readerProxy;
 - (NFTag)currentTag;
 - (NSString)alertMessage;
-- (id)_convertMessageToInternal:(id)a3;
+- (id)_convertMessageToInternal:(id)internal;
 - (id)delegate;
-- (id)ndefStatus:(int64_t *)a3 maxMessageLength:(unint64_t *)a4;
-- (id)readNdefMessageWithError:(id *)a3;
-- (id)transceive:(id)a3 tagUpdate:(id *)a4 error:(id *)a5;
+- (id)ndefStatus:(int64_t *)status maxMessageLength:(unint64_t *)length;
+- (id)readNdefMessageWithError:(id *)error;
+- (id)transceive:(id)transceive tagUpdate:(id *)update error:(id *)error;
 - (id)writeLockNdef;
 - (void)_callbackDidBecomeActive;
-- (void)_callbackDidInvalidateWithError:(id)a3;
-- (void)_invalidateSessionWithCode:(int64_t)a3 message:(id)a4 finalUIState:(int64_t)a5 activateCallback:(BOOL)a6;
-- (void)_restartPollingWithCompletionHandler:(id)a3;
+- (void)_callbackDidInvalidateWithError:(id)error;
+- (void)_invalidateSessionWithCode:(int64_t)code message:(id)message finalUIState:(int64_t)state activateCallback:(BOOL)callback;
+- (void)_restartPollingWithCompletionHandler:(id)handler;
 - (void)_resumeDelegateQueue;
-- (void)_startPollingWithMethod:(unint64_t)a3 sessionConfig:(unint64_t)a4 completionHandler:(id)a5;
-- (void)_stopPollingWithCompletionHandler:(id)a3;
+- (void)_startPollingWithMethod:(unint64_t)method sessionConfig:(unint64_t)config completionHandler:(id)handler;
+- (void)_stopPollingWithCompletionHandler:(id)handler;
 - (void)beginSession;
-- (void)beginSessionWithConfig:(id)a3;
+- (void)beginSessionWithConfig:(id)config;
 - (void)cleanupNFCHardwareManagerRegistration;
-- (void)connectTag:(id)a3 completionHandler:(id)a4;
+- (void)connectTag:(id)tag completionHandler:(id)handler;
 - (void)dealloc;
 - (void)didDetectExternalReader;
-- (void)didDetectTags:(id)a3 connectedTagIndex:(unint64_t)a4;
+- (void)didDetectTags:(id)tags connectedTagIndex:(unint64_t)index;
 - (void)didInvalidate;
-- (void)didStartSession:(id)a3;
-- (void)didTerminate:(id)a3;
-- (void)didUIControllerInvalidate:(id)a3;
+- (void)didStartSession:(id)session;
+- (void)didTerminate:(id)terminate;
+- (void)didUIControllerInvalidate:(id)invalidate;
 - (void)handleSessionResumed;
-- (void)handleSessionSuspended:(id)a3;
-- (void)hwStateDidChange:(unsigned int)a3;
+- (void)handleSessionSuspended:(id)suspended;
+- (void)hwStateDidChange:(unsigned int)change;
 - (void)invalidateSession;
-- (void)invalidateSessionWithErrorMessage:(id)a3;
+- (void)invalidateSessionWithErrorMessage:(id)message;
 - (void)restartPolling;
-- (void)setAlertMessage:(id)a3;
-- (void)submitBlockOnDelegateQueue:(id)a3;
-- (void)submitBlockOnSessionQueue:(id)a3;
-- (void)submitBlockOnSessionQueueWithDelay:(unint64_t)a3 block:(id)a4;
+- (void)setAlertMessage:(id)message;
+- (void)submitBlockOnDelegateQueue:(id)queue;
+- (void)submitBlockOnSessionQueue:(id)queue;
+- (void)submitBlockOnSessionQueueWithDelay:(unint64_t)delay block:(id)block;
 @end
 
 @implementation NFCReaderSession
@@ -64,68 +64,68 @@
 
 - (BOOL)isReady
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = (v2->_sessionState - 2) < 3;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = (selfCopy->_sessionState - 2) < 3;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (BOOL)isInvalidated
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = (v2->_sessionState - 5) < 3;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = (selfCopy->_sessionState - 5) < 3;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (NSString)alertMessage
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_alertMessage;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_alertMessage;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setAlertMessage:(id)a3
+- (void)setAlertMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   v6 = _os_activity_create(&dword_23728C000, "NFCReaderSession setAlertMessage:", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v6, &state);
   os_activity_scope_leave(&state);
 
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = [v5 copy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v8 = [messageCopy copy];
 
-  alertMessage = v7->_alertMessage;
-  v7->_alertMessage = v8;
+  alertMessage = selfCopy->_alertMessage;
+  selfCopy->_alertMessage = v8;
 
-  proxy = v7->_proxy;
+  proxy = selfCopy->_proxy;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = sub_2372C598C;
   v14[3] = &unk_278A2A2A8;
-  v14[4] = v7;
+  v14[4] = selfCopy;
   v14[5] = a2;
   v11 = [(NFReaderSessionInterface *)proxy synchronousRemoteObjectProxyWithErrorHandler:v14];
-  v12 = v7->_alertMessage;
+  v12 = selfCopy->_alertMessage;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = sub_2372C5B14;
   v13[3] = &unk_278A2A2A8;
-  v13[4] = v7;
+  v13[4] = selfCopy;
   v13[5] = a2;
   [v11 updateSharingUIScanText:v12 completion:v13];
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)invalidateSession
@@ -139,16 +139,16 @@
   [(NFCReaderSession *)self invalidateSessionWithReason:200];
 }
 
-- (void)invalidateSessionWithErrorMessage:(id)a3
+- (void)invalidateSessionWithErrorMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = _os_activity_create(&dword_23728C000, "NFCReaderSession invalidateSessionWithErrorMessage:", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   v6.opaque[0] = 0;
   v6.opaque[1] = 0;
   os_activity_scope_enter(v5, &v6);
   os_activity_scope_leave(&v6);
 
-  [(NFCReaderSession *)self _invalidateSessionWithCode:200 message:v4 finalUIState:2 activateCallback:0];
+  [(NFCReaderSession *)self _invalidateSessionWithCode:200 message:messageCopy finalUIState:2 activateCallback:0];
 }
 
 - (void)_callbackDidBecomeActive
@@ -174,14 +174,14 @@
       isMetaClass = class_isMetaClass(Class);
       ClassName = object_getClassName(self);
       Name = sel_getName(a2);
-      v17 = [(NFCReaderSession *)self delegateType];
+      delegateType = [(NFCReaderSession *)self delegateType];
       v12 = 45;
       if (isMetaClass)
       {
         v12 = 43;
       }
 
-      v7(4, "%c[%{public}s %{public}s]:%i Unknown delegate type: %ld", v12, ClassName, Name, 145, v17);
+      v7(4, "%c[%{public}s %{public}s]:%i Unknown delegate type: %ld", v12, ClassName, Name, 145, delegateType);
     }
 
     v13 = NFSharedLogGetLogger();
@@ -207,7 +207,7 @@
       v25 = 1024;
       v26 = 145;
       v27 = 2048;
-      v28 = [(NFCReaderSession *)self delegateType];
+      delegateType2 = [(NFCReaderSession *)self delegateType];
       _os_log_impl(&dword_23728C000, v13, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Unknown delegate type: %ld", buf, 0x2Cu);
     }
   }
@@ -215,19 +215,19 @@
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didStartSession:(id)a3
+- (void)didStartSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = sub_2372C6170;
   aBlock[3] = &unk_278A2A2D0;
-  v5 = v4;
+  v5 = sessionCopy;
   v11 = v5;
-  v12 = self;
+  selfCopy = self;
   v6 = _Block_copy(aBlock);
-  v7 = self;
-  objc_sync_enter(v7);
+  selfCopy2 = self;
+  objc_sync_enter(selfCopy2);
   if (v5)
   {
     v6[2](v6, v5);
@@ -235,17 +235,17 @@
 
   else
   {
-    v7->_sessionState = 2;
+    selfCopy2->_sessionState = 2;
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = sub_2372C625C;
     v8[3] = &unk_278A29DC0;
-    v8[4] = v7;
+    v8[4] = selfCopy2;
     v9 = v6;
-    [(NFCReaderSession *)v7 submitBlockOnSessionQueue:v8];
+    [(NFCReaderSession *)selfCopy2 submitBlockOnSessionQueue:v8];
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy2);
 }
 
 - (void)handleSessionResumed
@@ -296,7 +296,7 @@
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleSessionSuspended:(id)a3
+- (void)handleSessionSuspended:(id)suspended
 {
   v24 = *MEMORY[0x277D85DE8];
   Logger = NFLogGetLogger();
@@ -344,21 +344,21 @@
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didTerminate:(id)a3
+- (void)didTerminate:(id)terminate
 {
   v39 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
+  terminateCopy = terminate;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   Logger = NFLogGetLogger();
   if (Logger)
   {
     v8 = Logger;
-    Class = object_getClass(v6);
+    Class = object_getClass(selfCopy);
     isMetaClass = class_isMetaClass(Class);
-    ClassName = object_getClassName(v6);
+    ClassName = object_getClassName(selfCopy);
     Name = sel_getName(a2);
-    if (v6->_proxy)
+    if (selfCopy->_proxy)
     {
       v13 = @"YES";
     }
@@ -374,13 +374,13 @@
       v14 = 45;
     }
 
-    v8(5, "%c[%{public}s %{public}s]:%i sessionState=%ld, proxy=%@, error=%@", v14, ClassName, Name, 209, v6->_sessionState, v13, v5);
+    v8(5, "%c[%{public}s %{public}s]:%i sessionState=%ld, proxy=%@, error=%@", v14, ClassName, Name, 209, selfCopy->_sessionState, v13, terminateCopy);
   }
 
   v15 = NFSharedLogGetLogger();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = object_getClass(v6);
+    v16 = object_getClass(selfCopy);
     if (class_isMetaClass(v16))
     {
       v17 = 43;
@@ -391,10 +391,10 @@
       v17 = 45;
     }
 
-    v18 = object_getClassName(v6);
+    v18 = object_getClassName(selfCopy);
     v19 = sel_getName(a2);
-    sessionState = v6->_sessionState;
-    if (v6->_proxy)
+    sessionState = selfCopy->_sessionState;
+    if (selfCopy->_proxy)
     {
       v21 = @"YES";
     }
@@ -417,16 +417,16 @@
     v35 = 2112;
     v36 = v21;
     v37 = 2112;
-    v38 = v5;
+    v38 = terminateCopy;
     _os_log_impl(&dword_23728C000, v15, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i sessionState=%ld, proxy=%@, error=%@", buf, 0x40u);
   }
 
-  if ([v5 code] == 64)
+  if ([terminateCopy code] == 64)
   {
     v22 = 203;
   }
 
-  else if ([v5 code] == 5)
+  else if ([terminateCopy code] == 5)
   {
     v22 = 201;
   }
@@ -436,32 +436,32 @@
     v22 = 202;
   }
 
-  v6->_invalidationCode = v22;
-  proxy = v6->_proxy;
-  v6->_proxy = 0;
-  v6->_sessionState = 7;
+  selfCopy->_invalidationCode = v22;
+  proxy = selfCopy->_proxy;
+  selfCopy->_proxy = 0;
+  selfCopy->_sessionState = 7;
 
-  [(NFCReaderSession *)v6 cleanupNFCHardwareManagerRegistration];
-  objc_sync_exit(v6);
+  [(NFCReaderSession *)selfCopy cleanupNFCHardwareManagerRegistration];
+  objc_sync_exit(selfCopy);
 
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didUIControllerInvalidate:(id)a3
+- (void)didUIControllerInvalidate:(id)invalidate
 {
   v38 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
+  invalidateCopy = invalidate;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   Logger = NFLogGetLogger();
   if (Logger)
   {
     v8 = Logger;
-    Class = object_getClass(v6);
+    Class = object_getClass(selfCopy);
     isMetaClass = class_isMetaClass(Class);
-    ClassName = object_getClassName(v6);
+    ClassName = object_getClassName(selfCopy);
     Name = sel_getName(a2);
-    if (v6->_proxy)
+    if (selfCopy->_proxy)
     {
       v13 = @"YES";
     }
@@ -477,13 +477,13 @@
       v14 = 43;
     }
 
-    v8(5, "%c[%{public}s %{public}s]:%i sessionState=%ld, proxy=%@", v14, ClassName, Name, 230, v6->_sessionState, v13);
+    v8(5, "%c[%{public}s %{public}s]:%i sessionState=%ld, proxy=%@", v14, ClassName, Name, 230, selfCopy->_sessionState, v13);
   }
 
   v15 = NFSharedLogGetLogger();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = object_getClass(v6);
+    v16 = object_getClass(selfCopy);
     if (class_isMetaClass(v16))
     {
       v17 = 43;
@@ -494,10 +494,10 @@
       v17 = 45;
     }
 
-    v18 = object_getClassName(v6);
+    v18 = object_getClassName(selfCopy);
     v19 = sel_getName(a2);
-    sessionState = v6->_sessionState;
-    if (v6->_proxy)
+    sessionState = selfCopy->_sessionState;
+    if (selfCopy->_proxy)
     {
       v21 = @"YES";
     }
@@ -522,38 +522,38 @@
     _os_log_impl(&dword_23728C000, v15, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i sessionState=%ld, proxy=%@", buf, 0x36u);
   }
 
-  if ((v6->_sessionState | 2) != 7)
+  if ((selfCopy->_sessionState | 2) != 7)
   {
-    v22 = [v5 code];
+    code = [invalidateCopy code];
     v23 = 202;
-    if (v22 == 48)
+    if (code == 48)
     {
       v23 = 200;
     }
 
-    v6->_invalidationCode = v23;
+    selfCopy->_invalidationCode = v23;
   }
 
-  [(NFCReaderSession *)v6 _invalidateSessionAndActivateCallbackWithCode:v6->_invalidationCode];
-  [(NFCReaderSession *)v6 cleanupNFCHardwareManagerRegistration];
-  proxy = v6->_proxy;
-  v6->_proxy = 0;
+  [(NFCReaderSession *)selfCopy _invalidateSessionAndActivateCallbackWithCode:selfCopy->_invalidationCode];
+  [(NFCReaderSession *)selfCopy cleanupNFCHardwareManagerRegistration];
+  proxy = selfCopy->_proxy;
+  selfCopy->_proxy = 0;
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didDetectTags:(id)a3 connectedTagIndex:(unint64_t)a4
+- (void)didDetectTags:(id)tags connectedTagIndex:(unint64_t)index
 {
   v67 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = self;
-  objc_sync_enter(v8);
+  tagsCopy = tags;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   Logger = NFLogGetLogger();
   if (Logger)
   {
     v10 = Logger;
-    Class = object_getClass(v8);
+    Class = object_getClass(selfCopy);
     if (class_isMetaClass(Class))
     {
       v12 = 43;
@@ -564,9 +564,9 @@
       v12 = 45;
     }
 
-    ClassName = object_getClassName(v8);
+    ClassName = object_getClassName(selfCopy);
     Name = sel_getName(a2);
-    currentTag = v8->_currentTag;
+    currentTag = selfCopy->_currentTag;
     if (currentTag)
     {
       v16 = [(NFTag *)currentTag description];
@@ -582,14 +582,14 @@
   v17 = NFSharedLogGetLogger();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = object_getClass(v8);
+    v18 = object_getClass(selfCopy);
     v19 = class_isMetaClass(v18) ? 43 : 45;
-    v20 = object_getClassName(v8);
+    v20 = object_getClassName(selfCopy);
     v21 = sel_getName(a2);
-    v22 = v8->_currentTag;
+    v22 = selfCopy->_currentTag;
     if (v22)
     {
-      v23 = [(NFTag *)v8->_currentTag description];
+      v23 = [(NFTag *)selfCopy->_currentTag description];
     }
 
     else
@@ -606,24 +606,24 @@
     v61 = 1024;
     v62 = 251;
     v63 = 2112;
-    v64 = v23;
+    indexCopy2 = v23;
     _os_log_impl(&dword_23728C000, v17, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Current connectedTag: %@", buf, 0x2Cu);
     if (v22)
     {
     }
   }
 
-  if (a4 != 0x7FFFFFFFFFFFFFFFLL)
+  if (index != 0x7FFFFFFFFFFFFFFFLL)
   {
-    if ([v7 count] <= a4)
+    if ([tagsCopy count] <= index)
     {
       v43 = NFLogGetLogger();
       if (v43)
       {
         v44 = v43;
-        v45 = object_getClass(v8);
+        v45 = object_getClass(selfCopy);
         isMetaClass = class_isMetaClass(v45);
-        v53 = object_getClassName(v8);
+        v53 = object_getClassName(selfCopy);
         v54 = sel_getName(a2);
         v47 = 45;
         if (isMetaClass)
@@ -631,7 +631,7 @@
           v47 = 43;
         }
 
-        v44(3, "%c[%{public}s %{public}s]:%i Invalid tag index: %ld", v47, v53, v54, 257, a4);
+        v44(3, "%c[%{public}s %{public}s]:%i Invalid tag index: %ld", v47, v53, v54, 257, index);
       }
 
       v33 = NFSharedLogGetLogger();
@@ -640,7 +640,7 @@
         goto LABEL_38;
       }
 
-      v48 = object_getClass(v8);
+      v48 = object_getClass(selfCopy);
       if (class_isMetaClass(v48))
       {
         v49 = 43;
@@ -651,7 +651,7 @@
         v49 = 45;
       }
 
-      v50 = object_getClassName(v8);
+      v50 = object_getClassName(selfCopy);
       v51 = sel_getName(a2);
       *buf = 67110146;
       v56 = v49;
@@ -662,7 +662,7 @@
       v61 = 1024;
       v62 = 257;
       v63 = 2048;
-      v64 = a4;
+      indexCopy2 = index;
       v39 = "%c[%{public}s %{public}s]:%i Invalid tag index: %ld";
       v40 = v33;
       v41 = OS_LOG_TYPE_ERROR;
@@ -671,17 +671,17 @@
 
     else
     {
-      v24 = [v7 objectAtIndex:a4];
-      v25 = v8->_currentTag;
-      v8->_currentTag = v24;
+      v24 = [tagsCopy objectAtIndex:index];
+      v25 = selfCopy->_currentTag;
+      selfCopy->_currentTag = v24;
 
       v26 = NFLogGetLogger();
       if (v26)
       {
         v27 = v26;
-        v28 = object_getClass(v8);
+        v28 = object_getClass(selfCopy);
         v29 = class_isMetaClass(v28);
-        v30 = object_getClassName(v8);
+        v30 = object_getClassName(selfCopy);
         v31 = sel_getName(a2);
         v32 = 45;
         if (v29)
@@ -689,7 +689,7 @@
           v32 = 43;
         }
 
-        v27(6, "%c[%{public}s %{public}s]:%i ConnectedTag[%ld]: %@", v32, v30, v31, 255, a4, v8->_currentTag);
+        v27(6, "%c[%{public}s %{public}s]:%i ConnectedTag[%ld]: %@", v32, v30, v31, 255, index, selfCopy->_currentTag);
       }
 
       v33 = NFSharedLogGetLogger();
@@ -698,7 +698,7 @@
         goto LABEL_38;
       }
 
-      v34 = object_getClass(v8);
+      v34 = object_getClass(selfCopy);
       if (class_isMetaClass(v34))
       {
         v35 = 43;
@@ -709,9 +709,9 @@
         v35 = 45;
       }
 
-      v36 = object_getClassName(v8);
+      v36 = object_getClassName(selfCopy);
       v37 = sel_getName(a2);
-      v38 = v8->_currentTag;
+      v38 = selfCopy->_currentTag;
       *buf = 67110402;
       v56 = v35;
       v57 = 2082;
@@ -721,7 +721,7 @@
       v61 = 1024;
       v62 = 255;
       v63 = 2048;
-      v64 = a4;
+      indexCopy2 = index;
       v65 = 2112;
       v66 = v38;
       v39 = "%c[%{public}s %{public}s]:%i ConnectedTag[%ld]: %@";
@@ -734,8 +734,8 @@
 LABEL_38:
   }
 
-  v8->_sessionState = 4;
-  objc_sync_exit(v8);
+  selfCopy->_sessionState = 4;
+  objc_sync_exit(selfCopy);
 
   v52 = *MEMORY[0x277D85DE8];
 }
@@ -789,11 +789,11 @@ LABEL_38:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)hwStateDidChange:(unsigned int)a3
+- (void)hwStateDidChange:(unsigned int)change
 {
   obj = self;
   objc_sync_enter(obj);
-  if (a3 == 4)
+  if (change == 4)
   {
     [(NFCReaderSession *)obj _invalidateSessionWithCode:1];
   }
@@ -804,18 +804,18 @@ LABEL_38:
 - (void)didInvalidate
 {
   v43 = *MEMORY[0x277D85DE8];
-  v3 = self;
-  objc_sync_enter(v3);
-  sessionState = v3->_sessionState;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  sessionState = selfCopy->_sessionState;
   Logger = NFLogGetLogger();
   v6 = Logger;
   if (sessionState == 6)
   {
     if (Logger)
     {
-      Class = object_getClass(v3);
+      Class = object_getClass(selfCopy);
       isMetaClass = class_isMetaClass(Class);
-      ClassName = object_getClassName(v3);
+      ClassName = object_getClassName(selfCopy);
       Name = sel_getName(a2);
       v10 = 45;
       if (isMetaClass)
@@ -829,7 +829,7 @@ LABEL_38:
     v11 = NFSharedLogGetLogger();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = object_getClass(v3);
+      v12 = object_getClass(selfCopy);
       if (class_isMetaClass(v12))
       {
         v13 = 43;
@@ -843,7 +843,7 @@ LABEL_38:
       *buf = 67109890;
       v32 = v13;
       v33 = 2082;
-      v34 = object_getClassName(v3);
+      v34 = object_getClassName(selfCopy);
       v35 = 2082;
       v36 = sel_getName(a2);
       v37 = 1024;
@@ -856,11 +856,11 @@ LABEL_38:
   {
     if (Logger)
     {
-      v14 = object_getClass(v3);
+      v14 = object_getClass(selfCopy);
       v15 = class_isMetaClass(v14);
-      v16 = object_getClassName(v3);
+      v16 = object_getClassName(selfCopy);
       v17 = sel_getName(a2);
-      if (v3->_proxy)
+      if (selfCopy->_proxy)
       {
         v18 = @"YES";
       }
@@ -876,13 +876,13 @@ LABEL_38:
         v19 = 43;
       }
 
-      v6(5, "%c[%{public}s %{public}s]:%i sessionState=%ld, proxy=%@", v19, v16, v17, 307, v3->_sessionState, v18);
+      v6(5, "%c[%{public}s %{public}s]:%i sessionState=%ld, proxy=%@", v19, v16, v17, 307, selfCopy->_sessionState, v18);
     }
 
     v20 = NFSharedLogGetLogger();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = object_getClass(v3);
+      v21 = object_getClass(selfCopy);
       if (class_isMetaClass(v21))
       {
         v22 = 43;
@@ -893,10 +893,10 @@ LABEL_38:
         v22 = 45;
       }
 
-      v23 = object_getClassName(v3);
+      v23 = object_getClassName(selfCopy);
       v24 = sel_getName(a2);
-      v25 = v3->_sessionState;
-      if (v3->_proxy)
+      v25 = selfCopy->_sessionState;
+      if (selfCopy->_proxy)
       {
         v26 = @"YES";
       }
@@ -921,12 +921,12 @@ LABEL_38:
       _os_log_impl(&dword_23728C000, v20, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i sessionState=%ld, proxy=%@", buf, 0x36u);
     }
 
-    proxy = v3->_proxy;
-    v3->_proxy = 0;
+    proxy = selfCopy->_proxy;
+    selfCopy->_proxy = 0;
 
-    if (v3->_invalidationCode)
+    if (selfCopy->_invalidationCode)
     {
-      invalidationCode = v3->_invalidationCode;
+      invalidationCode = selfCopy->_invalidationCode;
     }
 
     else
@@ -934,12 +934,12 @@ LABEL_38:
       invalidationCode = 202;
     }
 
-    [(NFCReaderSession *)v3 _invalidateSessionAndActivateCallbackWithCode:invalidationCode];
-    v3->_sessionState = 6;
-    [(NFCReaderSession *)v3 cleanupNFCHardwareManagerRegistration];
+    [(NFCReaderSession *)selfCopy _invalidateSessionAndActivateCallbackWithCode:invalidationCode];
+    selfCopy->_sessionState = 6;
+    [(NFCReaderSession *)selfCopy cleanupNFCHardwareManagerRegistration];
   }
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 
   v29 = *MEMORY[0x277D85DE8];
 }
@@ -951,14 +951,14 @@ LABEL_38:
   return WeakRetained;
 }
 
-- (void)submitBlockOnSessionQueue:(id)a3
+- (void)submitBlockOnSessionQueue:(id)queue
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  queueCopy = queue;
   sessionQueue = self->_sessionQueue;
   if (sessionQueue || ([MEMORY[0x277CCA890] currentHandler], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "handleFailureInMethod:object:file:lineNumber:description:", a2, self, @"NFCReaderSession.m", 333, @"Session queue is nil"), v8, (sessionQueue = self->_sessionQueue) != 0))
   {
-    dispatch_async(sessionQueue, v5);
+    dispatch_async(sessionQueue, queueCopy);
   }
 
   else
@@ -1005,21 +1005,21 @@ LABEL_38:
       _os_log_impl(&dword_23728C000, v15, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Session queue is nil", buf, 0x22u);
     }
 
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"NFCReaderSession.m" lineNumber:336 description:@"Session queue is nil"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NFCReaderSession.m" lineNumber:336 description:@"Session queue is nil"];
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)submitBlockOnSessionQueueWithDelay:(unint64_t)a3 block:(id)a4
+- (void)submitBlockOnSessionQueueWithDelay:(unint64_t)delay block:(id)block
 {
   v30 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  blockCopy = block;
   sessionQueue = self->_sessionQueue;
   if (sessionQueue || ([MEMORY[0x277CCA890] currentHandler], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "handleFailureInMethod:object:file:lineNumber:description:", a2, self, @"NFCReaderSession.m", 344, @"Session queue is nil"), v10, (sessionQueue = self->_sessionQueue) != 0))
   {
-    dispatch_after(a3, sessionQueue, v7);
+    dispatch_after(delay, sessionQueue, blockCopy);
   }
 
   else
@@ -1066,21 +1066,21 @@ LABEL_38:
       _os_log_impl(&dword_23728C000, v17, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Session queue is nil", buf, 0x22u);
     }
 
-    v20 = [MEMORY[0x277CCA890] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"NFCReaderSession.m" lineNumber:347 description:@"Session queue is nil"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NFCReaderSession.m" lineNumber:347 description:@"Session queue is nil"];
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)submitBlockOnDelegateQueue:(id)a3
+- (void)submitBlockOnDelegateQueue:(id)queue
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  queueCopy = queue;
   delegateQueue = self->_delegateQueue;
   if (delegateQueue || ([MEMORY[0x277CCA890] currentHandler], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "handleFailureInMethod:object:file:lineNumber:description:", a2, self, @"NFCReaderSession.m", 355, @"Delegate queue is nil"), v8, (delegateQueue = self->_delegateQueue) != 0))
   {
-    dispatch_group_notify(self->_sessionStartInProgress, delegateQueue, v5);
+    dispatch_group_notify(self->_sessionStartInProgress, delegateQueue, queueCopy);
   }
 
   else
@@ -1127,8 +1127,8 @@ LABEL_38:
       _os_log_impl(&dword_23728C000, v15, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Session queue is nil", buf, 0x22u);
     }
 
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"NFCReaderSession.m" lineNumber:358 description:@"Session queue is nil"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NFCReaderSession.m" lineNumber:358 description:@"Session queue is nil"];
   }
 
   v7 = *MEMORY[0x277D85DE8];
@@ -1179,14 +1179,14 @@ LABEL_38:
     _os_log_impl(&dword_23728C000, v10, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i ", buf, 0x22u);
   }
 
-  v13 = self;
-  objc_sync_enter(v13);
-  delegateType = v13->_delegateType;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  delegateType = selfCopy->_delegateType;
   if (delegateType <= 3)
   {
     if ((delegateType - 2) < 2)
     {
-      if ([(NFCReaderSession *)v13 sessionType]!= 3 && [(NFCReaderSession *)v13 sessionType]!= 5)
+      if ([(NFCReaderSession *)selfCopy sessionType]!= 3 && [(NFCReaderSession *)selfCopy sessionType]!= 5)
       {
         __assert_rtn("[NFCReaderSession beginSession]", "NFCReaderSession.m", 377, "(self.sessionType == CoreNFCSessionTypeTagReader) || (self.sessionType == CoreNFCSessionTypePaymentReader)");
       }
@@ -1196,7 +1196,7 @@ LABEL_38:
 
     if (delegateType == 1)
     {
-      if ([(NFCReaderSession *)v13 sessionType]!= 2)
+      if ([(NFCReaderSession *)selfCopy sessionType]!= 2)
       {
         __assert_rtn("[NFCReaderSession beginSession]", "NFCReaderSession.m", 383, "self.sessionType == CoreNFCSessionTypeISO15693Reader");
       }
@@ -1216,9 +1216,9 @@ LABEL_24:
       if (v15)
       {
         v16 = v15;
-        v17 = object_getClass(v13);
+        v17 = object_getClass(selfCopy);
         v18 = class_isMetaClass(v17);
-        v19 = object_getClassName(v13);
+        v19 = object_getClassName(selfCopy);
         v33 = sel_getName(a2);
         v20 = 45;
         if (v18)
@@ -1232,7 +1232,7 @@ LABEL_24:
       v21 = NFSharedLogGetLogger();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
-        v22 = object_getClass(v13);
+        v22 = object_getClass(selfCopy);
         if (class_isMetaClass(v22))
         {
           v23 = 43;
@@ -1243,7 +1243,7 @@ LABEL_24:
           v23 = 45;
         }
 
-        v24 = object_getClassName(v13);
+        v24 = object_getClassName(selfCopy);
         v25 = sel_getName(a2);
         *buf = 67109890;
         v35 = v23;
@@ -1259,22 +1259,22 @@ LABEL_24:
       goto LABEL_34;
     }
 
-    if ([(NFCReaderSession *)v13 sessionType]!= 4)
+    if ([(NFCReaderSession *)selfCopy sessionType]!= 4)
     {
       __assert_rtn("[NFCReaderSession beginSession]", "NFCReaderSession.m", 374, "self.sessionType == CoreNFCSessionTypeVASReader");
     }
   }
 
-  else if ([(NFCReaderSession *)v13 sessionType]!= 1)
+  else if ([(NFCReaderSession *)selfCopy sessionType]!= 1)
   {
     __assert_rtn("[NFCReaderSession beginSession]", "NFCReaderSession.m", 380, "self.sessionType == CoreNFCSessionTypeNDEFReader");
   }
 
 LABEL_34:
-  pollOption = v13->_pollOption;
+  pollOption = selfCopy->_pollOption;
   if ((pollOption & 2) != 0)
   {
-    sessionConfig = v13->_sessionConfig;
+    sessionConfig = selfCopy->_sessionConfig;
     v29 = 1;
     if ((sessionConfig & 0x40) == 0)
     {
@@ -1302,16 +1302,16 @@ LABEL_34:
     v27 = 0;
   }
 
-  v30 = [MEMORY[0x277D82B70] sessionConfigWithUIMode:v27 sessionType:-[NFCReaderSession sessionType](v13 initialScanText:"sessionType") vasPass:{v13->_alertMessage, 0}];
-  [(NFCReaderSession *)v13 beginSessionWithConfig:v30];
+  v30 = [MEMORY[0x277D82B70] sessionConfigWithUIMode:v27 sessionType:-[NFCReaderSession sessionType](selfCopy initialScanText:"sessionType") vasPass:{selfCopy->_alertMessage, 0}];
+  [(NFCReaderSession *)selfCopy beginSessionWithConfig:v30];
 
-  objc_sync_exit(v13);
+  objc_sync_exit(selfCopy);
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)beginSessionWithConfig:(id)a3
+- (void)beginSessionWithConfig:(id)config
 {
-  v5 = a3;
+  configCopy = config;
   v6 = _os_activity_create(&dword_23728C000, "NFCReaderSession beginSessionWithConfig:", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -1320,7 +1320,7 @@ LABEL_34:
 
   if ((self->_sessionState - 5) > 1)
   {
-    if ((self->_pollOption & 0xFFFFFFFFFFFFFFC1) != 0 || (v8 = [v5 sessionType], pollOption = self->_pollOption, v8 == 5) && (pollOption & 8) == 0 || (pollOption & 0x1C) != 0 && (pollOption & 2) != 0)
+    if ((self->_pollOption & 0xFFFFFFFFFFFFFFC1) != 0 || (v8 = [configCopy sessionType], pollOption = self->_pollOption, v8 == 5) && (pollOption & 8) == 0 || (pollOption & 0x1C) != 0 && (pollOption & 2) != 0)
     {
       [(NFCReaderSession *)self _resumeDelegateQueue];
       [(NFCReaderSession *)self _invalidateSessionAndActivateCallbackWithCode:1];
@@ -1334,7 +1334,7 @@ LABEL_34:
       v10[3] = &unk_278A2A150;
       v10[4] = self;
       v12 = a2;
-      v11 = v5;
+      v11 = configCopy;
       [(NFCReaderSession *)self submitBlockOnSessionQueue:v10];
     }
   }
@@ -1346,11 +1346,11 @@ LABEL_34:
   }
 }
 
-- (NFCReaderSession)initWithDelegate:(id)a3 sessionDelegateType:(int64_t)a4 queue:(id)a5 pollMethod:(unint64_t)a6 sessionType:(unint64_t)a7 sessionConfig:(unint64_t)a8
+- (NFCReaderSession)initWithDelegate:(id)delegate sessionDelegateType:(int64_t)type queue:(id)queue pollMethod:(unint64_t)method sessionType:(unint64_t)sessionType sessionConfig:(unint64_t)config
 {
   v55 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a5;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v46.receiver = self;
   v46.super_class = NFCReaderSession;
   v17 = [(NFCReaderSession *)&v46 init];
@@ -1360,7 +1360,7 @@ LABEL_34:
     goto LABEL_10;
   }
 
-  if (![(NFCReaderSession *)v17 validateDelegate:v15 expectedType:a4])
+  if (![(NFCReaderSession *)v17 validateDelegate:delegateCopy expectedType:type])
   {
 LABEL_21:
     v31 = 0;
@@ -1371,12 +1371,12 @@ LABEL_21:
   hardwareManager = v18->_hardwareManager;
   v18->_hardwareManager = v19;
 
-  v18->_delegateType = a4;
-  objc_storeWeak(&v18->_delegate, v15);
+  v18->_delegateType = type;
+  objc_storeWeak(&v18->_delegate, delegateCopy);
   v21 = MEMORY[0x277D82BB0];
-  if (v16)
+  if (queueCopy)
   {
-    objc_storeStrong(&v18->_delegateQueue, a5);
+    objc_storeStrong(&v18->_delegateQueue, queue);
   }
 
   else
@@ -1395,9 +1395,9 @@ LABEL_21:
   v18->_sessionQueue = v26;
 
   dispatch_queue_set_specific(v18->_sessionQueue, *v21, 1, 0);
-  v18->_sessionType = a7;
-  v18->_pollOption = a6;
-  v18->_sessionConfig = a8;
+  v18->_sessionType = sessionType;
+  v18->_pollOption = method;
+  v18->_sessionConfig = config;
   v28 = dispatch_group_create();
   sessionStartInProgress = v18->_sessionStartInProgress;
   v18->_sessionStartInProgress = v28;
@@ -1476,23 +1476,23 @@ LABEL_22:
 
 - (void)cleanupNFCHardwareManagerRegistration
 {
-  v3 = [(NFCReaderSession *)self hardwareManager];
-  [v3 dequeueSession:self];
+  hardwareManager = [(NFCReaderSession *)self hardwareManager];
+  [hardwareManager dequeueSession:self];
 }
 
-- (BOOL)validateDelegate:(id)a3 expectedType:(int64_t)a4
+- (BOOL)validateDelegate:(id)delegate expectedType:(int64_t)type
 {
   v34 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = v7;
-  if (a4 == 1)
+  delegateCopy = delegate;
+  v8 = delegateCopy;
+  if (type == 1)
   {
     v9 = &unk_284A5A270;
   }
 
   else
   {
-    if ((a4 & 0xFFFFFFFFFFFFFFFELL) != 2)
+    if ((type & 0xFFFFFFFFFFFFFFFELL) != 2)
     {
       goto LABEL_7;
     }
@@ -1500,7 +1500,7 @@ LABEL_22:
     v9 = &unk_284A546A8;
   }
 
-  if ([v7 conformsToProtocol:v9])
+  if ([delegateCopy conformsToProtocol:v9])
   {
 LABEL_6:
     v10 = 1;
@@ -1511,11 +1511,11 @@ LABEL_7:
   v11 = 0;
   if ([v8 conformsToProtocol:&unk_284A5A210])
   {
-    if (a4 <= 3)
+    if (type <= 3)
     {
-      if ((a4 - 2) >= 2)
+      if ((type - 2) >= 2)
       {
-        if (a4)
+        if (type)
         {
           goto LABEL_11;
         }
@@ -1528,7 +1528,7 @@ LABEL_16:
       goto LABEL_17;
     }
 
-    if ((a4 - 4) < 2)
+    if ((type - 4) < 2)
     {
       goto LABEL_6;
     }
@@ -1536,14 +1536,14 @@ LABEL_16:
 
   else
   {
-    if (a4 <= 3)
+    if (type <= 3)
     {
-      if ((a4 - 2) >= 2)
+      if ((type - 2) >= 2)
       {
-        if (a4)
+        if (type)
         {
 LABEL_11:
-          if (a4 == 1)
+          if (type == 1)
           {
             v11 = @"NFCReaderSessionDelegate";
           }
@@ -1559,14 +1559,14 @@ LABEL_17:
       goto LABEL_25;
     }
 
-    if ((a4 - 4) < 2)
+    if ((type - 4) < 2)
     {
       v11 = @"NFCNDEFReaderSessionDelegate";
       goto LABEL_25;
     }
   }
 
-  if (a4 == 6)
+  if (type == 6)
   {
     if ([v8 conformsToProtocol:&unk_284A5A2D0])
     {
@@ -1628,124 +1628,124 @@ LABEL_35:
   return v10;
 }
 
-- (void)_startPollingWithMethod:(unint64_t)a3 sessionConfig:(unint64_t)a4 completionHandler:(id)a5
+- (void)_startPollingWithMethod:(unint64_t)method sessionConfig:(unint64_t)config completionHandler:(id)handler
 {
-  v14 = a5;
-  v9 = self;
-  objc_sync_enter(v9);
-  proxy = v9->_proxy;
-  if (!v14 || proxy)
+  handlerCopy = handler;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  proxy = selfCopy->_proxy;
+  if (!handlerCopy || proxy)
   {
     v12 = proxy;
-    objc_sync_exit(v9);
+    objc_sync_exit(selfCopy);
 
-    if ((a3 & 0x1C) != 0)
+    if ((method & 0x1C) != 0)
     {
-      v9 = [(NFReaderSessionInterface *)v12 synchronousRemoteObjectProxyWithErrorHandler:v14];
-      [(NFCReaderSession *)v9 startPollingForTags:a3 sessionConfig:a4 completion:v14];
+      selfCopy = [(NFReaderSessionInterface *)v12 synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
+      [(NFCReaderSession *)selfCopy startPollingForTags:method sessionConfig:config completion:handlerCopy];
     }
 
-    else if ((a3 & 2) != 0)
+    else if ((method & 2) != 0)
     {
-      v9 = [(NFReaderSessionInterface *)v12 synchronousRemoteObjectProxyWithErrorHandler:v14];
-      [(NFCReaderSession *)v9 startPollingForNDEFMessagesWithSessionConfig:a4 completion:v14];
+      selfCopy = [(NFReaderSessionInterface *)v12 synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
+      [(NFCReaderSession *)selfCopy startPollingForNDEFMessagesWithSessionConfig:config completion:handlerCopy];
     }
 
     else
     {
-      v13 = [MEMORY[0x277CCA890] currentHandler];
-      [v13 handleFailureInMethod:a2 object:v9 file:@"NFCReaderSession.m" lineNumber:627 description:@"Unsupported poll mode"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"NFCReaderSession.m" lineNumber:627 description:@"Unsupported poll mode"];
 
-      v9 = [NFCError errorWithCode:1];
-      v14[2](v14, v9);
+      selfCopy = [NFCError errorWithCode:1];
+      handlerCopy[2](handlerCopy, selfCopy);
     }
   }
 
   else
   {
     v11 = [NFCError errorWithCode:202];
-    v14[2](v14, v11);
+    handlerCopy[2](handlerCopy, v11);
 
-    objc_sync_exit(v9);
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (void)_stopPollingWithCompletionHandler:(id)a3
+- (void)_stopPollingWithCompletionHandler:(id)handler
 {
-  v4 = self;
-  v5 = a3;
-  objc_sync_enter(v4);
-  proxy = v4->_proxy;
+  selfCopy = self;
+  handlerCopy = handler;
+  objc_sync_enter(selfCopy);
+  proxy = selfCopy->_proxy;
   v9 = proxy;
-  if (!v5 || proxy)
+  if (!handlerCopy || proxy)
   {
     v8 = proxy;
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
 
-    v4 = [(NFReaderSessionInterface *)v8 synchronousRemoteObjectProxyWithErrorHandler:v5];
-    [(NFCReaderSession *)v4 stopPollingWithCompletion:v5];
+    selfCopy = [(NFReaderSessionInterface *)v8 synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
+    [(NFCReaderSession *)selfCopy stopPollingWithCompletion:handlerCopy];
   }
 
   else
   {
     v7 = [NFCError errorWithCode:202];
-    (*(v5 + 2))(v5, v7);
+    (*(handlerCopy + 2))(handlerCopy, v7);
 
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (void)_restartPollingWithCompletionHandler:(id)a3
+- (void)_restartPollingWithCompletionHandler:(id)handler
 {
-  v4 = self;
-  v5 = a3;
-  objc_sync_enter(v4);
-  proxy = v4->_proxy;
+  selfCopy = self;
+  handlerCopy = handler;
+  objc_sync_enter(selfCopy);
+  proxy = selfCopy->_proxy;
   v10 = proxy;
-  if (!v5 || proxy)
+  if (!handlerCopy || proxy)
   {
     v8 = proxy;
-    currentTag = v4->_currentTag;
-    v4->_currentTag = 0;
+    currentTag = selfCopy->_currentTag;
+    selfCopy->_currentTag = 0;
 
-    v4->_sessionState = 3;
-    objc_sync_exit(v4);
+    selfCopy->_sessionState = 3;
+    objc_sync_exit(selfCopy);
 
-    v4 = [(NFReaderSessionInterface *)v8 synchronousRemoteObjectProxyWithErrorHandler:v5];
-    [(NFCReaderSession *)v4 restartPollingWithCompletion:v5];
+    selfCopy = [(NFReaderSessionInterface *)v8 synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
+    [(NFCReaderSession *)selfCopy restartPollingWithCompletion:handlerCopy];
   }
 
   else
   {
     v7 = [NFCError errorWithCode:202];
-    (*(v5 + 2))(v5, v7);
+    (*(handlerCopy + 2))(handlerCopy, v7);
 
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
   }
 }
 
 - (NFTag)currentTag
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_currentTag;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_currentTag;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)connectTag:(id)a3 completionHandler:(id)a4
+- (void)connectTag:(id)tag completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  tagCopy = tag;
+  handlerCopy = handler;
   if ([(NFCReaderSession *)self isInvalidated])
   {
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = sub_2372C9268;
     v14[3] = &unk_278A29C38;
-    v15 = v7;
-    v8 = v7;
+    v15 = handlerCopy;
+    v8 = handlerCopy;
     [(NFCReaderSession *)self submitBlockOnDelegateQueue:v14];
     v9 = v15;
   }
@@ -1757,33 +1757,33 @@ LABEL_35:
     v11[2] = sub_2372C92D0;
     v11[3] = &unk_278A29DE8;
     v11[4] = self;
-    v12 = v6;
-    v13 = v7;
-    v10 = v7;
+    v12 = tagCopy;
+    v13 = handlerCopy;
+    v10 = handlerCopy;
     [(NFCReaderSession *)self submitBlockOnSessionQueue:v11];
 
     v9 = v12;
   }
 }
 
-- (BOOL)connectTag:(id)a3 error:(id *)a4
+- (BOOL)connectTag:(id)tag error:(id *)error
 {
   v51 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = self;
-  objc_sync_enter(v8);
-  sessionState = v8->_sessionState;
+  tagCopy = tag;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  sessionState = selfCopy->_sessionState;
   if (sessionState == 4)
   {
-    if (([v7 isEqualToNFTag:v8->_currentTag] & 1) == 0 && v8->_currentTag)
+    if (([tagCopy isEqualToNFTag:selfCopy->_currentTag] & 1) == 0 && selfCopy->_currentTag)
     {
       Logger = NFLogGetLogger();
       if (Logger)
       {
         v11 = Logger;
-        Class = object_getClass(v8);
+        Class = object_getClass(selfCopy);
         isMetaClass = class_isMetaClass(Class);
-        ClassName = object_getClassName(v8);
+        ClassName = object_getClassName(selfCopy);
         Name = sel_getName(a2);
         v15 = 45;
         if (isMetaClass)
@@ -1797,7 +1797,7 @@ LABEL_35:
       v16 = NFSharedLogGetLogger();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = object_getClass(v8);
+        v17 = object_getClass(selfCopy);
         if (class_isMetaClass(v17))
         {
           v18 = 43;
@@ -1811,7 +1811,7 @@ LABEL_35:
         *buf = 67109890;
         v42 = v18;
         v43 = 2082;
-        v44 = object_getClassName(v8);
+        v44 = object_getClassName(selfCopy);
         v45 = 2082;
         v46 = sel_getName(a2);
         v47 = 1024;
@@ -1819,18 +1819,18 @@ LABEL_35:
         _os_log_impl(&dword_23728C000, v16, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Disconnecting previous tag", buf, 0x22u);
       }
 
-      [(NFCReaderSession *)v8 disconnectTagWithError:0];
+      [(NFCReaderSession *)selfCopy disconnectTagWithError:0];
     }
 
     v40 = 0;
-    [(NFCReaderSession *)v8 _connectTag:v7 error:&v40];
+    [(NFCReaderSession *)selfCopy _connectTag:tagCopy error:&v40];
     v19 = v40;
     v20 = v19;
-    if (a4)
+    if (error)
     {
       v21 = v19;
 LABEL_27:
-      *a4 = v21;
+      *error = v21;
     }
   }
 
@@ -1840,9 +1840,9 @@ LABEL_27:
     if (v22)
     {
       v23 = v22;
-      v24 = object_getClass(v8);
+      v24 = object_getClass(selfCopy);
       v25 = class_isMetaClass(v24);
-      v26 = object_getClassName(v8);
+      v26 = object_getClassName(selfCopy);
       v27 = sel_getName(a2);
       v28 = 45;
       if (v25)
@@ -1850,13 +1850,13 @@ LABEL_27:
         v28 = 43;
       }
 
-      v23(3, "%c[%{public}s %{public}s]:%i Invalid state, %ld", v28, v26, v27, 692, v8->_sessionState);
+      v23(3, "%c[%{public}s %{public}s]:%i Invalid state, %ld", v28, v26, v27, 692, selfCopy->_sessionState);
     }
 
     v29 = NFSharedLogGetLogger();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
-      v30 = object_getClass(v8);
+      v30 = object_getClass(selfCopy);
       if (class_isMetaClass(v30))
       {
         v31 = 43;
@@ -1867,9 +1867,9 @@ LABEL_27:
         v31 = 45;
       }
 
-      v32 = object_getClassName(v8);
+      v32 = object_getClassName(selfCopy);
       v33 = sel_getName(a2);
-      v34 = v8->_sessionState;
+      v34 = selfCopy->_sessionState;
       *buf = 67110146;
       v42 = v31;
       v43 = 2082;
@@ -1883,7 +1883,7 @@ LABEL_27:
       _os_log_impl(&dword_23728C000, v29, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Invalid state, %ld", buf, 0x2Cu);
     }
 
-    if (a4)
+    if (error)
     {
       v21 = [NFCError errorWithCode:100];
       v20 = 0;
@@ -1893,24 +1893,24 @@ LABEL_27:
     v20 = 0;
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 
   v36 = sessionState == 4 && v20 == 0;
   v37 = *MEMORY[0x277D85DE8];
   return v36;
 }
 
-- (BOOL)_connectTag:(id)a3 error:(id *)a4
+- (BOOL)_connectTag:(id)tag error:(id *)error
 {
   v60[2] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = self;
-  objc_sync_enter(v8);
-  proxy = v8->_proxy;
+  tagCopy = tag;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  proxy = selfCopy->_proxy;
   if (proxy)
   {
     v10 = proxy;
-    objc_sync_exit(v8);
+    objc_sync_exit(selfCopy);
 
     v43 = 0;
     v44 = &v43;
@@ -1924,9 +1924,9 @@ LABEL_27:
     v40 = sub_2372C9BDC;
     v41 = sub_2372C9BEC;
     v42 = 0;
-    if (a4)
+    if (error)
     {
-      *a4 = 0;
+      *error = 0;
     }
 
     v36[0] = MEMORY[0x277D85DD0];
@@ -1941,28 +1941,28 @@ LABEL_27:
     v35[3] = &unk_278A2A370;
     v35[4] = &v43;
     v35[5] = &v37;
-    [v11 connect:v7 completion:v35];
+    [v11 connect:tagCopy completion:v35];
 
     v12 = v44[5];
     v13 = v12 == 0;
     if (v12)
     {
-      v14 = [v12 domain];
+      domain = [v12 domain];
       v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"nfcd"];
-      v16 = [v14 isEqualToString:v15];
+      v16 = [domain isEqualToString:v15];
 
       if (v16)
       {
         v17 = [NFCError errorWithNFCDError:v44[5] defaultNFCErrorCode:100];
         if ([v17 code] == 203)
         {
-          -[NFCReaderSession _invalidateSessionWithCode:](v8, "_invalidateSessionWithCode:", [v17 code]);
+          -[NFCReaderSession _invalidateSessionWithCode:](selfCopy, "_invalidateSessionWithCode:", [v17 code]);
         }
       }
 
       else
       {
-        [(NFCReaderSession *)v8 _invalidateSessionWithCode:202];
+        [(NFCReaderSession *)selfCopy _invalidateSessionWithCode:202];
         v59[0] = *MEMORY[0x277CCA450];
         v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:"XPC Error"];
         v59[1] = *MEMORY[0x277CCA7E8];
@@ -1976,9 +1976,9 @@ LABEL_27:
       if (Logger)
       {
         v21 = Logger;
-        Class = object_getClass(v8);
+        Class = object_getClass(selfCopy);
         isMetaClass = class_isMetaClass(Class);
-        ClassName = object_getClassName(v8);
+        ClassName = object_getClassName(selfCopy);
         Name = sel_getName(a2);
         v24 = 45;
         if (isMetaClass)
@@ -1992,7 +1992,7 @@ LABEL_27:
       v25 = NFSharedLogGetLogger();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
-        v26 = object_getClass(v8);
+        v26 = object_getClass(selfCopy);
         if (class_isMetaClass(v26))
         {
           v27 = 43;
@@ -2003,7 +2003,7 @@ LABEL_27:
           v27 = 45;
         }
 
-        v28 = object_getClassName(v8);
+        v28 = object_getClassName(selfCopy);
         v29 = sel_getName(a2);
         *buf = 67110146;
         v50 = v27;
@@ -2018,16 +2018,16 @@ LABEL_27:
         _os_log_impl(&dword_23728C000, v25, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i %@", buf, 0x2Cu);
       }
 
-      if (a4)
+      if (error)
       {
         v30 = v17;
-        *a4 = v17;
+        *error = v17;
       }
     }
 
     else
     {
-      v17 = v8;
+      v17 = selfCopy;
       objc_sync_enter(v17);
       objc_storeStrong(v17 + 8, v38[5]);
       objc_sync_exit(v17);
@@ -2039,12 +2039,12 @@ LABEL_27:
 
   else
   {
-    if (a4)
+    if (error)
     {
-      *a4 = [NFCError errorWithCode:103];
+      *error = [NFCError errorWithCode:103];
     }
 
-    objc_sync_exit(v8);
+    objc_sync_exit(selfCopy);
 
     v13 = 0;
   }
@@ -2053,16 +2053,16 @@ LABEL_27:
   return v13;
 }
 
-- (BOOL)disconnectTagWithError:(id *)a3
+- (BOOL)disconnectTagWithError:(id *)error
 {
   v57[2] = *MEMORY[0x277D85DE8];
-  v5 = self;
-  objc_sync_enter(v5);
-  proxy = v5->_proxy;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  proxy = selfCopy->_proxy;
   if (proxy)
   {
     v7 = proxy;
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
 
     v38 = 0;
     v39 = &v38;
@@ -2070,9 +2070,9 @@ LABEL_27:
     v41 = sub_2372C9BDC;
     v42 = sub_2372C9BEC;
     v43 = 0;
-    if (a3)
+    if (error)
     {
-      *a3 = 0;
+      *error = 0;
     }
 
     v37[0] = MEMORY[0x277D85DD0];
@@ -2092,9 +2092,9 @@ LABEL_27:
     v10 = v9 == 0;
     if (v9)
     {
-      v11 = [v9 domain];
+      domain = [v9 domain];
       v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"nfcd"];
-      v13 = [v11 isEqualToString:v12];
+      v13 = [domain isEqualToString:v12];
 
       if (v13)
       {
@@ -2109,7 +2109,7 @@ LABEL_27:
 
       else
       {
-        [(NFCReaderSession *)v5 _invalidateSessionWithCode:202];
+        [(NFCReaderSession *)selfCopy _invalidateSessionWithCode:202];
         v54[0] = *MEMORY[0x277CCA450];
         v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"XPC Error"];
         v54[1] = *MEMORY[0x277CCA7E8];
@@ -2125,9 +2125,9 @@ LABEL_27:
       if (Logger)
       {
         v20 = Logger;
-        Class = object_getClass(v5);
+        Class = object_getClass(selfCopy);
         isMetaClass = class_isMetaClass(Class);
-        ClassName = object_getClassName(v5);
+        ClassName = object_getClassName(selfCopy);
         Name = sel_getName(a2);
         v23 = 45;
         if (isMetaClass)
@@ -2141,7 +2141,7 @@ LABEL_27:
       v24 = NFSharedLogGetLogger();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
       {
-        v25 = object_getClass(v5);
+        v25 = object_getClass(selfCopy);
         if (class_isMetaClass(v25))
         {
           v26 = 43;
@@ -2152,7 +2152,7 @@ LABEL_27:
           v26 = 45;
         }
 
-        v27 = object_getClassName(v5);
+        v27 = object_getClassName(selfCopy);
         v28 = sel_getName(a2);
         *buf = 67110146;
         v45 = v26;
@@ -2167,14 +2167,14 @@ LABEL_27:
         _os_log_impl(&dword_23728C000, v24, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i %@", buf, 0x2Cu);
       }
 
-      if (a3)
+      if (error)
       {
         v29 = v18;
-        *a3 = v18;
+        *error = v18;
       }
     }
 
-    v30 = v5;
+    v30 = selfCopy;
     objc_sync_enter(v30);
     currentTag = v30->_currentTag;
     v30->_currentTag = 0;
@@ -2185,15 +2185,15 @@ LABEL_27:
 
   else
   {
-    if (a3)
+    if (error)
     {
-      *a3 = [NFCError errorWithCode:103];
+      *error = [NFCError errorWithCode:103];
     }
 
-    v17 = v5->_currentTag;
-    v5->_currentTag = 0;
+    v17 = selfCopy->_currentTag;
+    selfCopy->_currentTag = 0;
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
     v10 = 0;
   }
 
@@ -2201,16 +2201,16 @@ LABEL_27:
   return v10;
 }
 
-- (BOOL)checkPresenceWithError:(id *)a3
+- (BOOL)checkPresenceWithError:(id *)error
 {
   v55[2] = *MEMORY[0x277D85DE8];
-  v5 = self;
-  objc_sync_enter(v5);
-  proxy = v5->_proxy;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  proxy = selfCopy->_proxy;
   if (proxy)
   {
     v7 = proxy;
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
 
     v38 = 0;
     v39 = &v38;
@@ -2222,9 +2222,9 @@ LABEL_27:
     v35 = &v34;
     v36 = 0x2020000000;
     v37 = 0;
-    if (a3)
+    if (error)
     {
-      *a3 = 0;
+      *error = 0;
     }
 
     v33[0] = MEMORY[0x277D85DD0];
@@ -2244,22 +2244,22 @@ LABEL_27:
     v9 = v39[5];
     if (v9)
     {
-      v10 = [v9 domain];
+      domain = [v9 domain];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"nfcd"];
-      v12 = [v10 isEqualToString:v11];
+      v12 = [domain isEqualToString:v11];
 
       if (v12)
       {
         v13 = [NFCError errorWithNFCDError:v39[5] defaultNFCErrorCode:100];
         if ([v13 code] == 203)
         {
-          -[NFCReaderSession _invalidateSessionWithCode:](v5, "_invalidateSessionWithCode:", [v13 code]);
+          -[NFCReaderSession _invalidateSessionWithCode:](selfCopy, "_invalidateSessionWithCode:", [v13 code]);
         }
       }
 
       else
       {
-        [(NFCReaderSession *)v5 _invalidateSessionWithCode:202];
+        [(NFCReaderSession *)selfCopy _invalidateSessionWithCode:202];
         v54[0] = *MEMORY[0x277CCA450];
         v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"XPC Error"];
         v54[1] = *MEMORY[0x277CCA7E8];
@@ -2273,9 +2273,9 @@ LABEL_27:
       if (Logger)
       {
         v18 = Logger;
-        Class = object_getClass(v5);
+        Class = object_getClass(selfCopy);
         isMetaClass = class_isMetaClass(Class);
-        ClassName = object_getClassName(v5);
+        ClassName = object_getClassName(selfCopy);
         Name = sel_getName(a2);
         v21 = 45;
         if (isMetaClass)
@@ -2289,7 +2289,7 @@ LABEL_27:
       v22 = NFSharedLogGetLogger();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
-        v23 = object_getClass(v5);
+        v23 = object_getClass(selfCopy);
         if (class_isMetaClass(v23))
         {
           v24 = 43;
@@ -2300,7 +2300,7 @@ LABEL_27:
           v24 = 45;
         }
 
-        v25 = object_getClassName(v5);
+        v25 = object_getClassName(selfCopy);
         v26 = sel_getName(a2);
         *buf = 67110146;
         v45 = v24;
@@ -2315,10 +2315,10 @@ LABEL_27:
         _os_log_impl(&dword_23728C000, v22, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i %@", buf, 0x2Cu);
       }
 
-      if (a3)
+      if (error)
       {
         v27 = v13;
-        *a3 = v13;
+        *error = v13;
       }
     }
 
@@ -2329,12 +2329,12 @@ LABEL_27:
 
   else
   {
-    if (a3)
+    if (error)
     {
-      *a3 = [NFCError errorWithCode:103];
+      *error = [NFCError errorWithCode:103];
     }
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
 
     v14 = 0;
   }
@@ -2343,17 +2343,17 @@ LABEL_27:
   return v14 & 1;
 }
 
-- (id)transceive:(id)a3 tagUpdate:(id *)a4 error:(id *)a5
+- (id)transceive:(id)transceive tagUpdate:(id *)update error:(id *)error
 {
   v77[2] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = self;
-  objc_sync_enter(v10);
-  proxy = v10->_proxy;
+  transceiveCopy = transceive;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  proxy = selfCopy->_proxy;
   if (proxy)
   {
     v12 = proxy;
-    objc_sync_exit(v10);
+    objc_sync_exit(selfCopy);
 
     v58 = 0;
     v59 = &v58;
@@ -2373,9 +2373,9 @@ LABEL_27:
     v49 = sub_2372C9BDC;
     v50 = sub_2372C9BEC;
     v51 = 0;
-    if (a5)
+    if (error)
     {
-      *a5 = 0;
+      *error = 0;
     }
 
     v45[0] = MEMORY[0x277D85DD0];
@@ -2391,14 +2391,14 @@ LABEL_27:
     v44[4] = &v52;
     v44[5] = &v58;
     v44[6] = &v46;
-    [v13 transceive:v9 completion:v44];
+    [v13 transceive:transceiveCopy completion:v44];
 
     v14 = v59[5];
     if (v14)
     {
-      v15 = [v14 domain];
+      domain = [v14 domain];
       v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"nfcd"];
-      v17 = [v15 isEqualToString:v16];
+      v17 = [domain isEqualToString:v16];
 
       if (v17)
       {
@@ -2420,13 +2420,13 @@ LABEL_27:
 
         if ([v20 code] == 203)
         {
-          -[NFCReaderSession _invalidateSessionWithCode:](v10, "_invalidateSessionWithCode:", [v20 code]);
+          -[NFCReaderSession _invalidateSessionWithCode:](selfCopy, "_invalidateSessionWithCode:", [v20 code]);
         }
       }
 
       else
       {
-        [(NFCReaderSession *)v10 _invalidateSessionWithCode:202];
+        [(NFCReaderSession *)selfCopy _invalidateSessionWithCode:202];
         v74[0] = *MEMORY[0x277CCA450];
         v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"XPC Error"];
         v74[1] = *MEMORY[0x277CCA7E8];
@@ -2440,9 +2440,9 @@ LABEL_27:
       if (Logger)
       {
         v25 = Logger;
-        Class = object_getClass(v10);
+        Class = object_getClass(selfCopy);
         isMetaClass = class_isMetaClass(Class);
-        ClassName = object_getClassName(v10);
+        ClassName = object_getClassName(selfCopy);
         Name = sel_getName(a2);
         v28 = 45;
         if (isMetaClass)
@@ -2456,11 +2456,11 @@ LABEL_27:
       v29 = NFSharedLogGetLogger();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
       {
-        v30 = object_getClass(v10);
-        v31 = a5;
+        v30 = object_getClass(selfCopy);
+        errorCopy = error;
         v32 = proxy;
-        v33 = v9;
-        v34 = a4;
+        v33 = transceiveCopy;
+        updateCopy = update;
         if (class_isMetaClass(v30))
         {
           v35 = 43;
@@ -2471,14 +2471,14 @@ LABEL_27:
           v35 = 45;
         }
 
-        v36 = object_getClassName(v10);
+        v36 = object_getClassName(selfCopy);
         v37 = sel_getName(a2);
         *buf = 67110146;
         v65 = v35;
-        a4 = v34;
-        v9 = v33;
+        update = updateCopy;
+        transceiveCopy = v33;
         proxy = v32;
-        a5 = v31;
+        error = errorCopy;
         v66 = 2082;
         v67 = v36;
         v68 = 2082;
@@ -2490,21 +2490,21 @@ LABEL_27:
         _os_log_impl(&dword_23728C000, v29, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i %@", buf, 0x2Cu);
       }
 
-      if (a5)
+      if (error)
       {
         v38 = v20;
-        *a5 = v20;
+        *error = v20;
       }
     }
 
-    v39 = v10;
+    v39 = selfCopy;
     objc_sync_enter(v39);
     objc_storeStrong(v39 + 8, v47[5]);
     objc_sync_exit(v39);
 
-    if (a4)
+    if (update)
     {
-      *a4 = v47[5];
+      *update = v47[5];
     }
 
     v21 = v53[5];
@@ -2516,12 +2516,12 @@ LABEL_27:
 
   else
   {
-    if (a5)
+    if (error)
     {
-      *a5 = [NFCError errorWithCode:103];
+      *error = [NFCError errorWithCode:103];
     }
 
-    objc_sync_exit(v10);
+    objc_sync_exit(selfCopy);
 
     v21 = 0;
   }
@@ -2544,11 +2544,11 @@ LABEL_27:
   }
 }
 
-- (void)_callbackDidInvalidateWithError:(id)a3
+- (void)_callbackDidInvalidateWithError:(id)error
 {
   v53 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
+  errorCopy = error;
+  v6 = errorCopy;
   if (!self->_sessionState)
   {
     Logger = NFLogGetLogger();
@@ -2607,7 +2607,7 @@ LABEL_27:
     v41[2] = sub_2372CB260;
     v41[3] = &unk_278A29E60;
     v41[4] = self;
-    v42 = v5;
+    v42 = errorCopy;
     [(NFCReaderSession *)self submitBlockOnDelegateQueue:v41];
     v7 = v42;
 LABEL_18:
@@ -2712,22 +2712,22 @@ LABEL_19:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_invalidateSessionWithCode:(int64_t)a3 message:(id)a4 finalUIState:(int64_t)a5 activateCallback:(BOOL)a6
+- (void)_invalidateSessionWithCode:(int64_t)code message:(id)message finalUIState:(int64_t)state activateCallback:(BOOL)callback
 {
-  v6 = a6;
+  callbackCopy = callback;
   v62 = *MEMORY[0x277D85DE8];
-  v11 = a4;
-  v12 = self;
-  objc_sync_enter(v12);
-  if ((v12->_sessionState - 5) >= 2)
+  messageCopy = message;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ((selfCopy->_sessionState - 5) >= 2)
   {
     Logger = NFLogGetLogger();
     if (Logger)
     {
       v14 = Logger;
-      Class = object_getClass(v12);
+      Class = object_getClass(selfCopy);
       isMetaClass = class_isMetaClass(Class);
-      ClassName = object_getClassName(v12);
+      ClassName = object_getClassName(selfCopy);
       Name = sel_getName(a2);
       v17 = 43;
       if (!isMetaClass)
@@ -2735,13 +2735,13 @@ LABEL_19:
         v17 = 45;
       }
 
-      v14(6, "%c[%{public}s %{public}s]:%i code=%ld, finalUIState=%ld, activateCallback=%ld", v17, ClassName, Name, 977, a3, a5, v6);
+      v14(6, "%c[%{public}s %{public}s]:%i code=%ld, finalUIState=%ld, activateCallback=%ld", v17, ClassName, Name, 977, code, state, callbackCopy);
     }
 
     v18 = NFSharedLogGetLogger();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = object_getClass(v12);
+      v19 = object_getClass(selfCopy);
       if (class_isMetaClass(v19))
       {
         v20 = 43;
@@ -2755,61 +2755,61 @@ LABEL_19:
       *buf = 67110658;
       v49 = v20;
       v50 = 2082;
-      v51 = object_getClassName(v12);
+      v51 = object_getClassName(selfCopy);
       v52 = 2082;
       v53 = sel_getName(a2);
       v54 = 1024;
       v55 = 977;
       v56 = 2048;
-      v57 = a3;
+      codeCopy = code;
       v58 = 2048;
-      v59 = a5;
+      stateCopy = state;
       v60 = 2048;
-      v61 = v6;
+      v61 = callbackCopy;
       _os_log_impl(&dword_23728C000, v18, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i code=%ld, finalUIState=%ld, activateCallback=%ld", buf, 0x40u);
     }
 
-    if (v12->_sessionState > 2uLL)
+    if (selfCopy->_sessionState > 2uLL)
     {
-      if (v11)
+      if (messageCopy)
       {
-        proxy = v12->_proxy;
+        proxy = selfCopy->_proxy;
         v47[0] = MEMORY[0x277D85DD0];
         v47[1] = 3221225472;
         v47[2] = sub_2372CB8CC;
         v47[3] = &unk_278A2A2A8;
-        v47[4] = v12;
+        v47[4] = selfCopy;
         v47[5] = a2;
         v22 = [(NFReaderSessionInterface *)proxy synchronousRemoteObjectProxyWithErrorHandler:v47];
         v46[0] = MEMORY[0x277D85DD0];
         v46[1] = 3221225472;
         v46[2] = sub_2372CBA54;
         v46[3] = &unk_278A2A2A8;
-        v46[4] = v12;
+        v46[4] = selfCopy;
         v46[5] = a2;
-        [v22 updateSharingUIScanText:v11 completion:v46];
+        [v22 updateSharingUIScanText:messageCopy completion:v46];
       }
 
-      if (a5 == 2)
+      if (state == 2)
       {
-        delegateType = v12->_delegateType;
+        delegateType = selfCopy->_delegateType;
         if (delegateType <= 6)
         {
           if (((1 << delegateType) & 0x6C) != 0)
           {
-            v24 = v12->_proxy;
+            v24 = selfCopy->_proxy;
             v45[0] = MEMORY[0x277D85DD0];
             v45[1] = 3221225472;
             v45[2] = sub_2372CBBE0;
             v45[3] = &unk_278A2A2A8;
-            v45[4] = v12;
+            v45[4] = selfCopy;
             v45[5] = a2;
             v25 = [(NFReaderSessionInterface *)v24 synchronousRemoteObjectProxyWithErrorHandler:v45];
             v44[0] = MEMORY[0x277D85DD0];
             v44[1] = 3221225472;
             v44[2] = sub_2372CBD68;
             v44[3] = &unk_278A2A2A8;
-            v44[4] = v12;
+            v44[4] = selfCopy;
             v44[5] = a2;
             [v25 updateSharingUIStateOnInvalidation:2 completion:v44];
           }
@@ -2820,9 +2820,9 @@ LABEL_19:
             if (v26)
             {
               v27 = v26;
-              v28 = object_getClass(v12);
+              v28 = object_getClass(selfCopy);
               v29 = class_isMetaClass(v28);
-              v30 = object_getClassName(v12);
+              v30 = object_getClassName(selfCopy);
               v43 = sel_getName(a2);
               v31 = 45;
               if (v29)
@@ -2836,7 +2836,7 @@ LABEL_19:
             v25 = NFSharedLogGetLogger();
             if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
             {
-              v32 = object_getClass(v12);
+              v32 = object_getClass(selfCopy);
               if (class_isMetaClass(v32))
               {
                 v33 = 43;
@@ -2847,7 +2847,7 @@ LABEL_19:
                 v33 = 45;
               }
 
-              v34 = object_getClassName(v12);
+              v34 = object_getClassName(selfCopy);
               v35 = sel_getName(a2);
               *buf = 67109890;
               v49 = v33;
@@ -2866,60 +2866,60 @@ LABEL_19:
 
     else
     {
-      [(NFCReaderSession *)v12 cleanupNFCHardwareManagerRegistration];
+      [(NFCReaderSession *)selfCopy cleanupNFCHardwareManagerRegistration];
     }
 
-    v36 = [(NFReaderSessionInterface *)v12->_proxy remoteObjectProxy];
-    [v36 endSession:&unk_284A4F490];
+    remoteObjectProxy = [(NFReaderSessionInterface *)selfCopy->_proxy remoteObjectProxy];
+    [remoteObjectProxy endSession:&unk_284A4F490];
 
-    sessionId = v12->_sessionId;
-    v12->_sessionId = 0;
+    sessionId = selfCopy->_sessionId;
+    selfCopy->_sessionId = 0;
 
-    currentTag = v12->_currentTag;
-    v12->_currentTag = 0;
+    currentTag = selfCopy->_currentTag;
+    selfCopy->_currentTag = 0;
 
-    v12->_sessionState = 5;
-    v12->_invalidationCode = a3;
+    selfCopy->_sessionState = 5;
+    selfCopy->_invalidationCode = code;
   }
 
-  if (v6)
+  if (callbackCopy)
   {
-    v39 = [NFCError errorWithCode:v12->_invalidationCode];
-    [(NFCReaderSession *)v12 _callbackDidInvalidateWithError:v39];
+    v39 = [NFCError errorWithCode:selfCopy->_invalidationCode];
+    [(NFCReaderSession *)selfCopy _callbackDidInvalidateWithError:v39];
   }
 
-  objc_sync_exit(v12);
+  objc_sync_exit(selfCopy);
 
   v40 = *MEMORY[0x277D85DE8];
 }
 
 - (NFReaderSessionInterface)readerProxy
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_proxy;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_proxy;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-+ (BOOL)featureAvailable:(unint64_t)a3
++ (BOOL)featureAvailable:(unint64_t)available
 {
   v4 = +[NFCHardwareManager sharedHardwareManager];
-  LOBYTE(a3) = [v4 areFeaturesSupported:a3 outError:0];
+  LOBYTE(available) = [v4 areFeaturesSupported:available outError:0];
 
-  return a3;
+  return available;
 }
 
-- (id)ndefStatus:(int64_t *)a3 maxMessageLength:(unint64_t *)a4
+- (id)ndefStatus:(int64_t *)status maxMessageLength:(unint64_t *)length
 {
-  v6 = self;
-  objc_sync_enter(v6);
-  proxy = v6->_proxy;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  proxy = selfCopy->_proxy;
   if (proxy)
   {
     v8 = proxy;
-    objc_sync_exit(v6);
+    objc_sync_exit(selfCopy);
 
     v25 = 0;
     v26 = &v25;
@@ -2943,12 +2943,12 @@ LABEL_19:
     v17[3] = &unk_278A2A410;
     v17[4] = &v19;
     v17[5] = &v25;
-    v17[6] = a4;
+    v17[6] = length;
     [v9 checkNdefSupportWithCompletion:v17];
 
-    if (a3)
+    if (status)
     {
-      *a3 = v26[3];
+      *status = v26[3];
     }
 
     v10 = [NFCError errorWithNFCDError:v20[5] defaultNFCErrorCode:104];
@@ -2959,11 +2959,11 @@ LABEL_19:
     v13 = v20[5];
     if (v13)
     {
-      v14 = [v13 code];
+      code = [v13 code];
       v12 = v20;
-      if (v14 == 203)
+      if (code == 203)
       {
-        -[NFCReaderSession _invalidateSessionWithCode:](v6, "_invalidateSessionWithCode:", [v20[5] code]);
+        -[NFCReaderSession _invalidateSessionWithCode:](selfCopy, "_invalidateSessionWithCode:", [v20[5] code]);
         v12 = v20;
       }
     }
@@ -2976,42 +2976,42 @@ LABEL_19:
 
   else
   {
-    if (a3)
+    if (status)
     {
-      *a3 = 0;
+      *status = 0;
     }
 
     v15 = [NFCError errorWithCode:103];
-    objc_sync_exit(v6);
+    objc_sync_exit(selfCopy);
   }
 
   return v15;
 }
 
-- (id)readNdefMessageWithError:(id *)a3
+- (id)readNdefMessageWithError:(id *)error
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  if (!v4->_currentTag)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_currentTag)
   {
-    if (a3)
+    if (error)
     {
       v10 = 104;
 LABEL_13:
-      *a3 = [NFCError errorWithCode:v10];
+      *error = [NFCError errorWithCode:v10];
     }
 
 LABEL_14:
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
 
     v9 = 0;
     goto LABEL_15;
   }
 
-  proxy = v4->_proxy;
+  proxy = selfCopy->_proxy;
   if (!proxy)
   {
-    if (a3)
+    if (error)
     {
       v10 = 103;
       goto LABEL_13;
@@ -3021,7 +3021,7 @@ LABEL_14:
   }
 
   v6 = proxy;
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   v20 = 0;
   v21 = &v20;
@@ -3049,15 +3049,15 @@ LABEL_14:
   v12[5] = &v20;
   [v7 ndefReadWithCompletion:v12];
 
-  if (a3)
+  if (error)
   {
-    *a3 = v15[5];
+    *error = v15[5];
   }
 
   v8 = v15[5];
   if (v8 && [v8 code] == 203)
   {
-    -[NFCReaderSession _invalidateSessionWithCode:](v4, "_invalidateSessionWithCode:", [v15[5] code]);
+    -[NFCReaderSession _invalidateSessionWithCode:](selfCopy, "_invalidateSessionWithCode:", [v15[5] code]);
   }
 
   v9 = v21[5];
@@ -3069,16 +3069,16 @@ LABEL_15:
   return v9;
 }
 
-- (id)_convertMessageToInternal:(id)a3
+- (id)_convertMessageToInternal:(id)internal
 {
   v25 = *MEMORY[0x277D85DE8];
-  v16 = a3;
+  internalCopy = internal;
   v17 = objc_alloc_init(MEMORY[0x277D82B60]);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  obj = [v16 records];
+  obj = [internalCopy records];
   v3 = [obj countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v3)
   {
@@ -3096,11 +3096,11 @@ LABEL_15:
         v7 = *(*(&v20 + 1) + 8 * i);
         v19 = 0;
         v8 = MEMORY[0x277D82B68];
-        v9 = [v7 typeNameFormat];
-        v10 = [v7 type];
-        v11 = [v7 identifier];
-        v12 = [v7 payload];
-        v13 = [v8 recordsWithTNF:v9 type:v10 identifier:v11 payload:v12 chunkSize:objc_msgSend(v7 outError:{"chunkSize"), &v19}];
+        typeNameFormat = [v7 typeNameFormat];
+        type = [v7 type];
+        identifier = [v7 identifier];
+        payload = [v7 payload];
+        v13 = [v8 recordsWithTNF:typeNameFormat type:type identifier:identifier payload:payload chunkSize:objc_msgSend(v7 outError:{"chunkSize"), &v19}];
 
         if (!v19)
         {
@@ -3119,15 +3119,15 @@ LABEL_15:
   return v17;
 }
 
-- (BOOL)writeNdefMessage:(id)a3 error:(id *)a4
+- (BOOL)writeNdefMessage:(id)message error:(id *)error
 {
-  v6 = a3;
-  if (!v6)
+  messageCopy = message;
+  if (!messageCopy)
   {
-    if (a4)
+    if (error)
     {
       [NFCError errorWithCode:403];
-      *a4 = v12 = 0;
+      *error = v12 = 0;
       goto LABEL_19;
     }
 
@@ -3136,27 +3136,27 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v7 = self;
-  objc_sync_enter(v7);
-  if (!v7->_currentTag)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_currentTag)
   {
-    if (a4)
+    if (error)
     {
       v14 = 104;
 LABEL_16:
-      *a4 = [NFCError errorWithCode:v14];
+      *error = [NFCError errorWithCode:v14];
     }
 
 LABEL_17:
-    objc_sync_exit(v7);
+    objc_sync_exit(selfCopy);
 
     goto LABEL_18;
   }
 
-  proxy = v7->_proxy;
+  proxy = selfCopy->_proxy;
   if (!proxy)
   {
-    if (a4)
+    if (error)
     {
       v14 = 103;
       goto LABEL_16;
@@ -3166,7 +3166,7 @@ LABEL_17:
   }
 
   v9 = proxy;
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 
   v18 = 0;
   v19 = &v18;
@@ -3174,7 +3174,7 @@ LABEL_17:
   v21 = sub_2372C9BDC;
   v22 = sub_2372C9BEC;
   v23 = 0;
-  v10 = [(NFCReaderSession *)v7 _convertMessageToInternal:v6];
+  v10 = [(NFCReaderSession *)selfCopy _convertMessageToInternal:messageCopy];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = sub_2372CCA00;
@@ -3188,16 +3188,16 @@ LABEL_17:
   v16[4] = &v18;
   [v11 ndefWrite:v10 completion:v16];
 
-  v12 = a4 == 0;
-  if (a4)
+  v12 = error == 0;
+  if (error)
   {
-    *a4 = v19[5];
+    *error = v19[5];
   }
 
   v13 = v19[5];
   if (v13 && [v13 code] == 203)
   {
-    -[NFCReaderSession _invalidateSessionWithCode:](v7, "_invalidateSessionWithCode:", [v19[5] code]);
+    -[NFCReaderSession _invalidateSessionWithCode:](selfCopy, "_invalidateSessionWithCode:", [v19[5] code]);
   }
 
   _Block_object_dispose(&v18, 8);
@@ -3208,19 +3208,19 @@ LABEL_19:
 
 - (id)writeLockNdef
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_currentTag)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_currentTag)
   {
     v12 = 104;
 LABEL_9:
     v11 = [NFCError errorWithCode:v12];
-    objc_sync_exit(v2);
+    objc_sync_exit(selfCopy);
 
     goto LABEL_10;
   }
 
-  proxy = v2->_proxy;
+  proxy = selfCopy->_proxy;
   if (!proxy)
   {
     v12 = 103;
@@ -3228,7 +3228,7 @@ LABEL_9:
   }
 
   v4 = proxy;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v16 = 0;
   v17 = &v16;
@@ -3257,11 +3257,11 @@ LABEL_9:
   v9 = v17[5];
   if (v9)
   {
-    v10 = [v9 code];
+    code = [v9 code];
     v8 = v17;
-    if (v10 == 203)
+    if (code == 203)
     {
-      -[NFCReaderSession _invalidateSessionWithCode:](v2, "_invalidateSessionWithCode:", [v17[5] code]);
+      -[NFCReaderSession _invalidateSessionWithCode:](selfCopy, "_invalidateSessionWithCode:", [v17[5] code]);
       v8 = v17;
     }
   }

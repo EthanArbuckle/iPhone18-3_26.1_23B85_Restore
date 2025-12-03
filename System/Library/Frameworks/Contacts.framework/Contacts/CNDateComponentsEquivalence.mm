@@ -1,20 +1,20 @@
 @interface CNDateComponentsEquivalence
-+ (BOOL)canUnifyComponents:(id)a3 withComponents:(id)a4;
-+ (BOOL)isCalendar:(id)a3 equivalentToCalendar:(id)a4;
-+ (BOOL)isComponent:(int64_t)a3 equivalentToComponent:(int64_t)a4;
++ (BOOL)canUnifyComponents:(id)components withComponents:(id)withComponents;
++ (BOOL)isCalendar:(id)calendar equivalentToCalendar:(id)toCalendar;
++ (BOOL)isComponent:(int64_t)component equivalentToComponent:(int64_t)toComponent;
 @end
 
 @implementation CNDateComponentsEquivalence
 
-+ (BOOL)canUnifyComponents:(id)a3 withComponents:(id)a4
++ (BOOL)canUnifyComponents:(id)components withComponents:(id)withComponents
 {
-  v6 = a3;
-  v7 = a4;
-  if ([a1 isComponent:objc_msgSend(v6 equivalentToComponent:{"era"), objc_msgSend(v7, "era")}] && objc_msgSend(a1, "isComponent:equivalentToComponent:", objc_msgSend(v6, "year"), objc_msgSend(v7, "year")) && objc_msgSend(a1, "isComponent:equivalentToComponent:", objc_msgSend(v6, "month"), objc_msgSend(v7, "month")) && (v8 = objc_msgSend(v6, "isLeapMonth"), v8 == objc_msgSend(v7, "isLeapMonth")) && objc_msgSend(a1, "isComponent:equivalentToComponent:", objc_msgSend(v6, "day"), objc_msgSend(v7, "day")))
+  componentsCopy = components;
+  withComponentsCopy = withComponents;
+  if ([self isComponent:objc_msgSend(componentsCopy equivalentToComponent:{"era"), objc_msgSend(withComponentsCopy, "era")}] && objc_msgSend(self, "isComponent:equivalentToComponent:", objc_msgSend(componentsCopy, "year"), objc_msgSend(withComponentsCopy, "year")) && objc_msgSend(self, "isComponent:equivalentToComponent:", objc_msgSend(componentsCopy, "month"), objc_msgSend(withComponentsCopy, "month")) && (v8 = objc_msgSend(componentsCopy, "isLeapMonth"), v8 == objc_msgSend(withComponentsCopy, "isLeapMonth")) && objc_msgSend(self, "isComponent:equivalentToComponent:", objc_msgSend(componentsCopy, "day"), objc_msgSend(withComponentsCopy, "day")))
   {
-    v9 = [v6 calendar];
-    v10 = [v7 calendar];
-    v11 = [a1 isCalendar:v9 equivalentToCalendar:v10];
+    calendar = [componentsCopy calendar];
+    calendar2 = [withComponentsCopy calendar];
+    v11 = [self isCalendar:calendar equivalentToCalendar:calendar2];
   }
 
   else
@@ -25,29 +25,29 @@
   return v11;
 }
 
-+ (BOOL)isComponent:(int64_t)a3 equivalentToComponent:(int64_t)a4
++ (BOOL)isComponent:(int64_t)component equivalentToComponent:(int64_t)toComponent
 {
-  if (a3 == a4)
+  if (component == toComponent)
   {
     return 1;
   }
 
   else
   {
-    return (a3 == 0x7FFFFFFFFFFFFFFFLL) ^ (a4 == 0x7FFFFFFFFFFFFFFFLL);
+    return (component == 0x7FFFFFFFFFFFFFFFLL) ^ (toComponent == 0x7FFFFFFFFFFFFFFFLL);
   }
 }
 
-+ (BOOL)isCalendar:(id)a3 equivalentToCalendar:(id)a4
++ (BOOL)isCalendar:(id)calendar equivalentToCalendar:(id)toCalendar
 {
-  if ((a3 == 0) == (a4 != 0))
+  if ((calendar == 0) == (toCalendar != 0))
   {
     return 1;
   }
 
   else
   {
-    return [a3 isEqual:a4];
+    return [calendar isEqual:toCalendar];
   }
 }
 

@@ -1,39 +1,39 @@
 @interface IMDINInteractionDonationContext
-- (IMDINInteractionDonationContext)initWithIndexableChatDictionary:(id)a3 messageDictionary:(id)a4;
+- (IMDINInteractionDonationContext)initWithIndexableChatDictionary:(id)dictionary messageDictionary:(id)messageDictionary;
 @end
 
 @implementation IMDINInteractionDonationContext
 
-- (IMDINInteractionDonationContext)initWithIndexableChatDictionary:(id)a3 messageDictionary:(id)a4
+- (IMDINInteractionDonationContext)initWithIndexableChatDictionary:(id)dictionary messageDictionary:(id)messageDictionary
 {
   v127 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  messageDictionaryCopy = messageDictionary;
   v125.receiver = self;
   v125.super_class = IMDINInteractionDonationContext;
   v9 = [(IMDINInteractionDonationContext *)&v125 init];
   if (v9)
   {
-    v10 = objc_msgSend_objectForKey_(v7, v8, @"guid");
+    v10 = objc_msgSend_objectForKey_(messageDictionaryCopy, v8, @"guid");
     messageGUID = v9->_messageGUID;
     v9->_messageGUID = v10;
 
-    v13 = objc_msgSend_objectForKey_(v7, v12, @"plainBody");
+    v13 = objc_msgSend_objectForKey_(messageDictionaryCopy, v12, @"plainBody");
     messagePlainBody = v9->_messagePlainBody;
     v9->_messagePlainBody = v13;
 
-    v16 = objc_msgSend_objectForKey_(v7, v15, @"time");
+    v16 = objc_msgSend_objectForKey_(messageDictionaryCopy, v15, @"time");
     messageDate = v9->_messageDate;
     v9->_messageDate = v16;
 
-    v19 = objc_msgSend_objectForKey_(v7, v18, @"service");
+    v19 = objc_msgSend_objectForKey_(messageDictionaryCopy, v18, @"service");
     serviceName = v9->_serviceName;
     v9->_serviceName = v19;
 
-    v22 = objc_msgSend_objectForKey_(v6, v21, @"lalh");
+    v22 = objc_msgSend_objectForKey_(dictionaryCopy, v21, @"lalh");
     v25 = objc_msgSend__stripFZIDPrefix(v22, v23, v24);
 
-    v27 = objc_msgSend_objectForKey_(v7, v26, @"flags");
+    v27 = objc_msgSend_objectForKey_(messageDictionaryCopy, v26, @"flags");
     v30 = objc_msgSend_unsignedLongLongValue(v27, v28, v29);
 
     v118 = v25;
@@ -46,35 +46,35 @@
 
     else
     {
-      senderHandleID = objc_msgSend_objectForKey_(v7, v31, @"handle", v25);
+      senderHandleID = objc_msgSend_objectForKey_(messageDictionaryCopy, v31, @"handle", v25);
       v35 = objc_msgSend__stripFZIDPrefix(senderHandleID, v33, v34);
       v38 = objc_msgSend_im_stripCategoryLabel(v35, v36, v37);
       v39 = v9->_senderHandleID;
       v9->_senderHandleID = v38;
     }
 
-    v119 = v7;
-    v42 = objc_msgSend_objectForKey_(v7, v41, @"uncanonicalizedHandle");
+    v119 = messageDictionaryCopy;
+    v42 = objc_msgSend_objectForKey_(messageDictionaryCopy, v41, @"uncanonicalizedHandle");
     uncanonicalizedSenderHandleID = v9->_uncanonicalizedSenderHandleID;
     v9->_uncanonicalizedSenderHandleID = v42;
 
-    v45 = objc_msgSend_objectForKey_(v6, v44, @"guid");
+    v45 = objc_msgSend_objectForKey_(dictionaryCopy, v44, @"guid");
     chatGUID = v9->_chatGUID;
     v9->_chatGUID = v45;
 
-    v48 = objc_msgSend_objectForKey_(v6, v47, @"chatIdentifier");
+    v48 = objc_msgSend_objectForKey_(dictionaryCopy, v47, @"chatIdentifier");
     chatIdentifier = v9->_chatIdentifier;
     v9->_chatIdentifier = v48;
 
-    v51 = objc_msgSend_objectForKey_(v6, v50, @"groupName");
+    v51 = objc_msgSend_objectForKey_(dictionaryCopy, v50, @"groupName");
     chatDisplayName = v9->_chatDisplayName;
     v9->_chatDisplayName = v51;
 
-    v54 = objc_msgSend_objectForKey_(v6, v53, @"style");
+    v54 = objc_msgSend_objectForKey_(dictionaryCopy, v53, @"style");
     v9->_chatStyle = objc_msgSend_intValue(v54, v55, v56);
 
-    v9->_isFilteredValue = objc_msgSend_integerValueForKey_withDefault_(v6, v57, @"isFiltered", 0);
-    v59 = objc_msgSend_objectForKey_(v6, v58, @"participants");
+    v9->_isFilteredValue = objc_msgSend_integerValueForKey_withDefault_(dictionaryCopy, v57, @"isFiltered", 0);
+    v59 = objc_msgSend_objectForKey_(dictionaryCopy, v58, @"participants");
     v60 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v121 = 0u;
     v122 = 0u;
@@ -119,20 +119,20 @@
     chatParticipants = v9->_chatParticipants;
     v9->_chatParticipants = v82;
 
-    v85 = objc_msgSend_objectForKey_(v6, v84, @"lalh");
+    v85 = objc_msgSend_objectForKey_(dictionaryCopy, v84, @"lalh");
     v88 = objc_msgSend__stripFZIDPrefix(v85, v86, v87);
     chatLastAddressedLocaleHandle = v9->_chatLastAddressedLocaleHandle;
     v9->_chatLastAddressedLocaleHandle = v88;
 
-    v91 = objc_msgSend_objectForKeyedSubscript_(v6, v90, @"groupPhotoGUID");
+    v91 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v90, @"groupPhotoGUID");
     groupPhotoGuid = v9->_groupPhotoGuid;
     v9->_groupPhotoGuid = v91;
 
-    v94 = objc_msgSend_objectForKeyedSubscript_(v6, v93, @"groupPhotoPath");
+    v94 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v93, @"groupPhotoPath");
     groupPhotoInternalFilePath = v9->_groupPhotoInternalFilePath;
     v9->_groupPhotoInternalFilePath = v94;
 
-    v7 = v119;
+    messageDictionaryCopy = v119;
     v97 = objc_msgSend_objectForKey_(v119, v96, @"attributedBody");
     v99 = objc_msgSend_objectForKey_(v119, v98, @"destinationCallerID");
     v9->_isMentionOfMe = _IMDCoreSpotlightMessageMentionsMe(v97, v99);
@@ -143,7 +143,7 @@
     v107 = objc_msgSend_objectForKey_(v119, v106, @"flags");
     v120->_isNotifyAnyway = (objc_msgSend_unsignedLongLongValue(v107, v108, v109) & 0x800000000) != 0;
 
-    v111 = objc_msgSend_objectForKey_(v6, v110, @"properties");
+    v111 = objc_msgSend_objectForKey_(dictionaryCopy, v110, @"properties");
     v113 = objc_msgSend_objectForKey_(v111, v112, *MEMORY[0x1E69A6BC8]);
     v120->_isMergedBusinessThread = objc_msgSend_BOOLValue(v113, v114, v115);
 

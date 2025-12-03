@@ -1,22 +1,22 @@
 @interface SXLayoutResult
-- (SXLayoutResult)initWithLayoutBlueprint:(id)a3 DOM:(id)a4 duration:(double)a5;
+- (SXLayoutResult)initWithLayoutBlueprint:(id)blueprint DOM:(id)m duration:(double)duration;
 @end
 
 @implementation SXLayoutResult
 
-- (SXLayoutResult)initWithLayoutBlueprint:(id)a3 DOM:(id)a4 duration:(double)a5
+- (SXLayoutResult)initWithLayoutBlueprint:(id)blueprint DOM:(id)m duration:(double)duration
 {
-  v9 = a3;
-  v10 = a4;
+  blueprintCopy = blueprint;
+  mCopy = m;
   v14.receiver = self;
   v14.super_class = SXLayoutResult;
   v11 = [(SXLayoutResult *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_blueprint, a3);
-    objc_storeStrong(&v12->_DOM, a4);
-    v12->_duration = a5;
+    objc_storeStrong(&v11->_blueprint, blueprint);
+    objc_storeStrong(&v12->_DOM, m);
+    v12->_duration = duration;
   }
 
   return v12;

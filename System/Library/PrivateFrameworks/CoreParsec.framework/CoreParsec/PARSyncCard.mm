@@ -1,17 +1,17 @@
 @interface PARSyncCard
-+ (id)cardWithTitle:(id)a3 sections:(id)a4;
++ (id)cardWithTitle:(id)title sections:(id)sections;
 @end
 
 @implementation PARSyncCard
 
-+ (id)cardWithTitle:(id)a3 sections:(id)a4
++ (id)cardWithTitle:(id)title sections:(id)sections
 {
-  v5 = a4;
-  v6 = a3;
+  sectionsCopy = sections;
+  titleCopy = title;
   v7 = objc_alloc_init(PARSyncCard);
-  [(PARSyncCard *)v7 setTitle:v6];
+  [(PARSyncCard *)v7 setTitle:titleCopy];
 
-  [(PARSyncCard *)v7 setCardSections:v5];
+  [(PARSyncCard *)v7 setCardSections:sectionsCopy];
 
   return v7;
 }

@@ -1,24 +1,24 @@
 @interface FPDDetachKnownFolderOperation
-- (FPDDetachKnownFolderOperation)initWithKnownFolder:(id)a3 server:(id)a4 request:(id)a5;
+- (FPDDetachKnownFolderOperation)initWithKnownFolder:(id)folder server:(id)server request:(id)request;
 - (void)main;
 @end
 
 @implementation FPDDetachKnownFolderOperation
 
-- (FPDDetachKnownFolderOperation)initWithKnownFolder:(id)a3 server:(id)a4 request:(id)a5
+- (FPDDetachKnownFolderOperation)initWithKnownFolder:(id)folder server:(id)server request:(id)request
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  folderCopy = folder;
+  serverCopy = server;
+  requestCopy = request;
   v15.receiver = self;
   v15.super_class = FPDDetachKnownFolderOperation;
   v12 = [(FPOperation *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_knownFolders, a3);
-    objc_storeStrong(&v13->_server, a4);
-    objc_storeStrong(&v13->_request, a5);
+    objc_storeStrong(&v12->_knownFolders, folder);
+    objc_storeStrong(&v13->_server, server);
+    objc_storeStrong(&v13->_request, request);
   }
 
   return v13;
@@ -52,13 +52,13 @@
 
         v9 = *(*(&v24 + 1) + 8 * v7);
         v23 = 0;
-        v10 = [(FPDServer *)self->_server extensionManager];
-        v11 = [v9 logicalLocation];
-        v5 = [v10 domainForURL:v11 reason:&v23];
+        extensionManager = [(FPDServer *)self->_server extensionManager];
+        logicalLocation = [v9 logicalLocation];
+        v5 = [extensionManager domainForURL:logicalLocation reason:&v23];
 
         if (v8 && v5 != v8)
         {
-          v12 = [v9 logicalLocation];
+          logicalLocation2 = [v9 logicalLocation];
           v13 = FPProviderNotFoundErrorForURL();
           [(FPOperation *)self finishWithResult:0 error:v13];
 
@@ -85,12 +85,12 @@
     v5 = 0;
   }
 
-  v14 = [v5 defaultBackend];
+  defaultBackend = [v5 defaultBackend];
   v15 = objc_opt_respondsToSelector();
 
   if (v15)
   {
-    v16 = [v5 defaultBackend];
+    defaultBackend2 = [v5 defaultBackend];
     v17 = *(&self->super.super.super.isa + v20);
     request = self->_request;
     v22[0] = MEMORY[0x1E69E9820];
@@ -98,13 +98,13 @@
     v22[2] = __37__FPDDetachKnownFolderOperation_main__block_invoke;
     v22[3] = &unk_1E83BDFC8;
     v22[4] = self;
-    [v16 detachKnownFolders:v17 request:request completionHandler:v22];
+    [defaultBackend2 detachKnownFolders:v17 request:request completionHandler:v22];
   }
 
   else
   {
-    v16 = FPNotSupportedError();
-    [(FPOperation *)self finishWithResult:0 error:v16];
+    defaultBackend2 = FPNotSupportedError();
+    [(FPOperation *)self finishWithResult:0 error:defaultBackend2];
   }
 
   v8 = v5;

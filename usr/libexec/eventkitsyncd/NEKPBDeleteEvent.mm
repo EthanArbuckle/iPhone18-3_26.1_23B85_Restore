@@ -1,20 +1,20 @@
 @interface NEKPBDeleteEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasSpan:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasSpan:(BOOL)span;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NEKPBDeleteEvent
 
-- (void)setHasSpan:(BOOL)a3
+- (void)setHasSpan:(BOOL)span
 {
-  if (a3)
+  if (span)
   {
     v3 = 2;
   }
@@ -32,8 +32,8 @@
   v7.receiver = self;
   v7.super_class = NEKPBDeleteEvent;
   v3 = [(NEKPBDeleteEvent *)&v7 description];
-  v4 = [(NEKPBDeleteEvent *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(NEKPBDeleteEvent *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -87,110 +87,110 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (self->_eventIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_eventTitle)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (*&self->_has)
   {
     eventStart = self->_eventStart;
     PBDataWriterWriteDoubleField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_calendarIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_calendarTitle)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_storeIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if ((*&self->_has & 2) != 0)
   {
     span = self->_span;
     PBDataWriterWriteUint32Field();
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_eventIdentifier)
   {
-    [v4 setEventIdentifier:?];
-    v4 = v5;
+    [toCopy setEventIdentifier:?];
+    toCopy = v5;
   }
 
   if (self->_eventTitle)
   {
     [v5 setEventTitle:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = *&self->_eventStart;
-    *(v4 + 64) |= 1u;
+    *(toCopy + 1) = *&self->_eventStart;
+    *(toCopy + 64) |= 1u;
   }
 
   if (self->_calendarIdentifier)
   {
     [v5 setCalendarIdentifier:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_calendarTitle)
   {
     [v5 setCalendarTitle:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_storeIdentifier)
   {
     [v5 setStoreIdentifier:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 12) = self->_span;
-    *(v4 + 64) |= 2u;
+    *(toCopy + 12) = self->_span;
+    *(toCopy + 64) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_eventIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_eventIdentifier copyWithZone:zone];
   v7 = v5[4];
   v5[4] = v6;
 
-  v8 = [(NSString *)self->_eventTitle copyWithZone:a3];
+  v8 = [(NSString *)self->_eventTitle copyWithZone:zone];
   v9 = v5[5];
   v5[5] = v8;
 
@@ -200,15 +200,15 @@
     *(v5 + 64) |= 1u;
   }
 
-  v10 = [(NSString *)self->_calendarIdentifier copyWithZone:a3];
+  v10 = [(NSString *)self->_calendarIdentifier copyWithZone:zone];
   v11 = v5[2];
   v5[2] = v10;
 
-  v12 = [(NSString *)self->_calendarTitle copyWithZone:a3];
+  v12 = [(NSString *)self->_calendarTitle copyWithZone:zone];
   v13 = v5[3];
   v5[3] = v12;
 
-  v14 = [(NSString *)self->_storeIdentifier copyWithZone:a3];
+  v14 = [(NSString *)self->_storeIdentifier copyWithZone:zone];
   v15 = v5[7];
   v5[7] = v14;
 
@@ -221,16 +221,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_21;
   }
 
   eventIdentifier = self->_eventIdentifier;
-  if (eventIdentifier | *(v4 + 4))
+  if (eventIdentifier | *(equalCopy + 4))
   {
     if (![(NSString *)eventIdentifier isEqual:?])
     {
@@ -239,7 +239,7 @@
   }
 
   eventTitle = self->_eventTitle;
-  if (eventTitle | *(v4 + 5))
+  if (eventTitle | *(equalCopy + 5))
   {
     if (![(NSString *)eventTitle isEqual:?])
     {
@@ -247,16 +247,16 @@
     }
   }
 
-  v7 = *(v4 + 64);
+  v7 = *(equalCopy + 64);
   if (*&self->_has)
   {
-    if ((*(v4 + 64) & 1) == 0 || self->_eventStart != *(v4 + 1))
+    if ((*(equalCopy + 64) & 1) == 0 || self->_eventStart != *(equalCopy + 1))
     {
       goto LABEL_21;
     }
   }
 
-  else if (*(v4 + 64))
+  else if (*(equalCopy + 64))
   {
 LABEL_21:
     v11 = 0;
@@ -264,13 +264,13 @@ LABEL_21:
   }
 
   calendarIdentifier = self->_calendarIdentifier;
-  if (calendarIdentifier | *(v4 + 2) && ![(NSString *)calendarIdentifier isEqual:?])
+  if (calendarIdentifier | *(equalCopy + 2) && ![(NSString *)calendarIdentifier isEqual:?])
   {
     goto LABEL_21;
   }
 
   calendarTitle = self->_calendarTitle;
-  if (calendarTitle | *(v4 + 3))
+  if (calendarTitle | *(equalCopy + 3))
   {
     if (![(NSString *)calendarTitle isEqual:?])
     {
@@ -279,7 +279,7 @@ LABEL_21:
   }
 
   storeIdentifier = self->_storeIdentifier;
-  if (storeIdentifier | *(v4 + 7))
+  if (storeIdentifier | *(equalCopy + 7))
   {
     if (![(NSString *)storeIdentifier isEqual:?])
     {
@@ -287,10 +287,10 @@ LABEL_21:
     }
   }
 
-  v11 = (*(v4 + 64) & 2) == 0;
+  v11 = (*(equalCopy + 64) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 64) & 2) == 0 || self->_span != *(v4 + 12))
+    if ((*(equalCopy + 64) & 2) == 0 || self->_span != *(equalCopy + 12))
     {
       goto LABEL_21;
     }
@@ -356,49 +356,49 @@ LABEL_22:
   return v4 ^ v3 ^ v7 ^ v11 ^ v12 ^ v13 ^ v14;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 4))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 4))
   {
     [(NEKPBDeleteEvent *)self setEventIdentifier:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(NEKPBDeleteEvent *)self setEventTitle:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 64))
+  if (*(fromCopy + 64))
   {
-    self->_eventStart = *(v4 + 1);
+    self->_eventStart = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(NEKPBDeleteEvent *)self setCalendarIdentifier:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(NEKPBDeleteEvent *)self setCalendarTitle:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(NEKPBDeleteEvent *)self setStoreIdentifier:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if ((*(v4 + 64) & 2) != 0)
+  if ((*(fromCopy + 64) & 2) != 0)
   {
-    self->_span = *(v4 + 12);
+    self->_span = *(fromCopy + 12);
     *&self->_has |= 2u;
   }
 }

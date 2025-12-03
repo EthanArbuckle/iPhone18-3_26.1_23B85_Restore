@@ -111,14 +111,14 @@
   v27 = v4 * 1.3;
   v28 = v23 * 1.4;
   v29 = [CIVector vectorWithX:v22.__cosval * v22.__cosval / ((v28 + v28) * v28) + v22.__sinval * v22.__sinval / ((v27 + v27) * v27) Y:v24 / (v27 * 4.0 * v27) - v24 / (v28 * 4.0 * v28) Z:v22.__sinval * v22.__sinval / ((v28 + v28) * v28) + v22.__cosval * v22.__cosval / ((v27 + v27) * v27) W:v52];
-  v30 = [(CIPortraitLightingEdge *)self _faceContourMask];
+  _faceContourMask = [(CIPortraitLightingEdge *)self _faceContourMask];
   [(CIImage *)self->inputImage extent];
   v58[0] = self->inputImage;
   v58[1] = inputCenter;
   v58[2] = v25;
   v58[3] = v29;
-  v35 = [v30 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v58, 4), v31, v32, v33, v34}];
-  v36 = [(CIPortraitLightingEdge *)self _darken];
+  v35 = [_faceContourMask applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v58, 4), v31, v32, v33, v34}];
+  _darken = [(CIPortraitLightingEdge *)self _darken];
   inputImage = self->inputImage;
   v56 = @"inputStrength";
   [(NSNumber *)self->inputStrength floatValue];
@@ -132,7 +132,7 @@
   v55[0] = v39;
   [(NSNumber *)self->inputStrength floatValue];
   v55[1] = [NSNumber numberWithDouble:v48 * 0.3];
-  v49 = [v36 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v55, 2), v41, v43, v45, v47}];
+  v49 = [_darken applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v55, 2), v41, v43, v45, v47}];
   v50 = self->inputImage;
   v53[0] = @"inputBackgroundImage";
   v53[1] = @"inputMaskImage";

@@ -1,20 +1,20 @@
 @interface CyclingRouteAttributesBuilder
-- (id)initWihCyclePreferences:(id)a3;
-- (void)fillRouteAttributes:(id)a3;
+- (id)initWihCyclePreferences:(id)preferences;
+- (void)fillRouteAttributes:(id)attributes;
 @end
 
 @implementation CyclingRouteAttributesBuilder
 
-- (void)fillRouteAttributes:(id)a3
+- (void)fillRouteAttributes:(id)attributes
 {
-  v7 = a3;
-  [v7 setMainTransportType:3];
-  v4 = [(CyclingRouteAttributesBuilder *)self cyclePreferences];
-  v5 = [v4 cyclingOptions];
-  [v7 setCyclingOptions:v5];
+  attributesCopy = attributes;
+  [attributesCopy setMainTransportType:3];
+  cyclePreferences = [(CyclingRouteAttributesBuilder *)self cyclePreferences];
+  cyclingOptions = [cyclePreferences cyclingOptions];
+  [attributesCopy setCyclingOptions:cyclingOptions];
 
-  [v7 addUiContext:4];
-  [v7 setIncludePhonetics:1];
+  [attributesCopy addUiContext:4];
+  [attributesCopy setIncludePhonetics:1];
   if (GEOConfigGetBOOL())
   {
     v6 = MGGetBoolAnswer();
@@ -25,19 +25,19 @@
     v6 = 0;
   }
 
-  [v7 setIncludeCellularCoverage:v6];
+  [attributesCopy setIncludeCellularCoverage:v6];
 }
 
-- (id)initWihCyclePreferences:(id)a3
+- (id)initWihCyclePreferences:(id)preferences
 {
-  v5 = a3;
+  preferencesCopy = preferences;
   v9.receiver = self;
   v9.super_class = CyclingRouteAttributesBuilder;
   v6 = [(CyclingRouteAttributesBuilder *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_cyclePreferences, a3);
+    objc_storeStrong(&v6->_cyclePreferences, preferences);
   }
 
   return v7;

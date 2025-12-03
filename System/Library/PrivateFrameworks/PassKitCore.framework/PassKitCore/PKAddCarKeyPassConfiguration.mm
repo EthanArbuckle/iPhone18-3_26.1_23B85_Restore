@@ -1,10 +1,10 @@
 @interface PKAddCarKeyPassConfiguration
 - (PKAddCarKeyPassConfiguration)init;
-- (PKAddCarKeyPassConfiguration)initWithCoder:(id)a3;
+- (PKAddCarKeyPassConfiguration)initWithCoder:(id)coder;
 - (id)description;
 - (id)manufacturerOrIssuerIdentifier;
 - (id)vehicleInitiatedPairingLaunchURL;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKAddCarKeyPassConfiguration
@@ -26,8 +26,8 @@
 
 - (id)vehicleInitiatedPairingLaunchURL
 {
-  v3 = [(PKAddSecureElementPassConfiguration *)self issuerIdentifier];
-  v4 = PKVehicleInitiatedPairingLaunchURL(v3, self->_supportedRadioTechnologies, self->_provisioningTemplateIdentifier, self->_referralSource);
+  issuerIdentifier = [(PKAddSecureElementPassConfiguration *)self issuerIdentifier];
+  v4 = PKVehicleInitiatedPairingLaunchURL(issuerIdentifier, self->_supportedRadioTechnologies, self->_provisioningTemplateIdentifier, self->_referralSource);
 
   return v4;
 }
@@ -37,79 +37,79 @@
   manufacturerIdentifier = self->_manufacturerIdentifier;
   if (manufacturerIdentifier)
   {
-    v3 = manufacturerIdentifier;
+    issuerIdentifier = manufacturerIdentifier;
   }
 
   else
   {
-    v3 = [(PKAddSecureElementPassConfiguration *)self issuerIdentifier];
+    issuerIdentifier = [(PKAddSecureElementPassConfiguration *)self issuerIdentifier];
   }
 
-  return v3;
+  return issuerIdentifier;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = PKAddCarKeyPassConfiguration;
-  v4 = a3;
-  [(PKAddSecureElementPassConfiguration *)&v6 encodeWithCoder:v4];
-  [v4 encodeObject:self->_password forKey:{@"password", v6.receiver, v6.super_class}];
+  coderCopy = coder;
+  [(PKAddSecureElementPassConfiguration *)&v6 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_password forKey:{@"password", v6.receiver, v6.super_class}];
   v5 = PKSubcredentialPairingReferralSourceToString(self->_referralSource);
-  [v4 encodeObject:v5 forKey:@"referralSource"];
+  [coderCopy encodeObject:v5 forKey:@"referralSource"];
 
-  [v4 encodeInteger:self->_supportedRadioTechnologies forKey:@"supportedRadioTechnologies"];
-  [v4 encodeObject:self->_provisioningTemplateIdentifier forKey:@"provisioningTemplateIdentifier"];
-  [v4 encodeObject:self->_manufacturerIdentifier forKey:@"manufacturerIdentifier"];
-  [v4 encodeObject:self->_pairedReaderIdentifier forKey:@"pairedReaderIdentifier"];
-  [v4 encodeObject:self->_productPlanIdentifier forKey:@"productPlanIdentifier"];
-  [v4 encodeObject:self->_vehicleName forKey:@"vehicleName"];
-  [v4 encodeBool:self->_ownerKeyPairingAvailable forKey:@"ownerKeyPairingAvailable"];
-  [v4 encodeBool:self->_proofOfOwnershipPresent forKey:@"proofOfOwnershipPresent"];
-  [v4 encodeBool:self->_onlineServicesActivated forKey:@"onlineServicesActivated"];
-  [v4 encodeBool:self->_passwordEnteredManually forKey:@"passwordEnteredManually"];
+  [coderCopy encodeInteger:self->_supportedRadioTechnologies forKey:@"supportedRadioTechnologies"];
+  [coderCopy encodeObject:self->_provisioningTemplateIdentifier forKey:@"provisioningTemplateIdentifier"];
+  [coderCopy encodeObject:self->_manufacturerIdentifier forKey:@"manufacturerIdentifier"];
+  [coderCopy encodeObject:self->_pairedReaderIdentifier forKey:@"pairedReaderIdentifier"];
+  [coderCopy encodeObject:self->_productPlanIdentifier forKey:@"productPlanIdentifier"];
+  [coderCopy encodeObject:self->_vehicleName forKey:@"vehicleName"];
+  [coderCopy encodeBool:self->_ownerKeyPairingAvailable forKey:@"ownerKeyPairingAvailable"];
+  [coderCopy encodeBool:self->_proofOfOwnershipPresent forKey:@"proofOfOwnershipPresent"];
+  [coderCopy encodeBool:self->_onlineServicesActivated forKey:@"onlineServicesActivated"];
+  [coderCopy encodeBool:self->_passwordEnteredManually forKey:@"passwordEnteredManually"];
 }
 
-- (PKAddCarKeyPassConfiguration)initWithCoder:(id)a3
+- (PKAddCarKeyPassConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = PKAddCarKeyPassConfiguration;
-  v5 = [(PKAddSecureElementPassConfiguration *)&v20 initWithCoder:v4];
+  v5 = [(PKAddSecureElementPassConfiguration *)&v20 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"password"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"password"];
     password = v5->_password;
     v5->_password = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"referralSource"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"referralSource"];
     v5->_referralSource = PKSubcredentialPairingReferralSourceFromString(v8);
 
-    v5->_supportedRadioTechnologies = [v4 decodeIntegerForKey:@"supportedRadioTechnologies"];
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"provisioningTemplateIdentifier"];
+    v5->_supportedRadioTechnologies = [coderCopy decodeIntegerForKey:@"supportedRadioTechnologies"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"provisioningTemplateIdentifier"];
     provisioningTemplateIdentifier = v5->_provisioningTemplateIdentifier;
     v5->_provisioningTemplateIdentifier = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"manufacturerIdentifier"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"manufacturerIdentifier"];
     manufacturerIdentifier = v5->_manufacturerIdentifier;
     v5->_manufacturerIdentifier = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pairedReaderIdentifier"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pairedReaderIdentifier"];
     pairedReaderIdentifier = v5->_pairedReaderIdentifier;
     v5->_pairedReaderIdentifier = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"productPlanIdentifier"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"productPlanIdentifier"];
     productPlanIdentifier = v5->_productPlanIdentifier;
     v5->_productPlanIdentifier = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"vehicleName"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"vehicleName"];
     vehicleName = v5->_vehicleName;
     v5->_vehicleName = v17;
 
-    v5->_ownerKeyPairingAvailable = [v4 decodeBoolForKey:@"ownerKeyPairingAvailable"];
-    v5->_proofOfOwnershipPresent = [v4 decodeBoolForKey:@"proofOfOwnershipPresent"];
-    v5->_onlineServicesActivated = [v4 decodeBoolForKey:@"onlineServicesActivated"];
-    v5->_passwordEnteredManually = [v4 decodeBoolForKey:@"passwordEnteredManually"];
+    v5->_ownerKeyPairingAvailable = [coderCopy decodeBoolForKey:@"ownerKeyPairingAvailable"];
+    v5->_proofOfOwnershipPresent = [coderCopy decodeBoolForKey:@"proofOfOwnershipPresent"];
+    v5->_onlineServicesActivated = [coderCopy decodeBoolForKey:@"onlineServicesActivated"];
+    v5->_passwordEnteredManually = [coderCopy decodeBoolForKey:@"passwordEnteredManually"];
   }
 
   return v5;
@@ -119,8 +119,8 @@
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@: %p ", objc_opt_class(), self];;
   [v3 appendFormat:@"manufacturerIdentifier: '%@'; ", self->_manufacturerIdentifier];
-  v4 = [(PKAddSecureElementPassConfiguration *)self issuerIdentifier];
-  [v3 appendFormat:@"issuerIdentifier: '%@'; ", v4];
+  issuerIdentifier = [(PKAddSecureElementPassConfiguration *)self issuerIdentifier];
+  [v3 appendFormat:@"issuerIdentifier: '%@'; ", issuerIdentifier];
 
   [v3 appendFormat:@"provisioningTemplateIdentifier: '%@'; ", self->_provisioningTemplateIdentifier];
   [v3 appendFormat:@"pairedReaderIdentifier: '%@'; ", self->_pairedReaderIdentifier];

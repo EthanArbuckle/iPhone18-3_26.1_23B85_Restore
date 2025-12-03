@@ -6,14 +6,14 @@
 
 - (id)expirationDate
 {
-  v2 = [(HKSPStateMachineState *)self stateMachine];
-  v3 = [v2 infoProvider];
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
+  infoProvider = [stateMachine infoProvider];
 
-  v4 = [v3 currentDate];
-  v5 = [v3 monitoringWindowAfterDate:v4];
-  v6 = [v5 startDate];
+  currentDate = [infoProvider currentDate];
+  v5 = [infoProvider monitoringWindowAfterDate:currentDate];
+  startDate = [v5 startDate];
 
-  return v6;
+  return startDate;
 }
 
 @end

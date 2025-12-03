@@ -1,11 +1,11 @@
 @interface WCFocusRingShapeLayer
 + (id)clearLayer;
-+ (id)focusLayerForUserInterfaceStyle:(int64_t)a3;
-- (double)scaledOutlineWidth:(double)a3;
++ (id)focusLayerForUserInterfaceStyle:(int64_t)style;
+- (double)scaledOutlineWidth:(double)width;
 - (id)strokeColorForFocusOutline;
 - (id)viewTintColor;
 - (void)dealloc;
-- (void)setPath:(CGPath *)a3;
+- (void)setPath:(CGPath *)path;
 - (void)updateAppearance;
 - (void)updateCachedSettings;
 - (void)updateFocusOutlinePath;
@@ -15,42 +15,42 @@
 
 + (id)clearLayer
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___WCFocusRingShapeLayer;
   v2 = objc_msgSendSuper2(&v5, sel_layer);
-  v3 = [MEMORY[0x277D75348] clearColor];
-  [v2 setFillColor:{objc_msgSend(v3, "CGColor")}];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v2 setFillColor:{objc_msgSend(clearColor, "CGColor")}];
 
   return v2;
 }
 
-+ (id)focusLayerForUserInterfaceStyle:(int64_t)a3
++ (id)focusLayerForUserInterfaceStyle:(int64_t)style
 {
-  v3 = [a1 layer];
-  [v3 setFillColor:0];
-  v4 = [MEMORY[0x277CD9F90] layer];
-  [v3 setInnerFocusOutlineLayer:v4];
+  layer = [self layer];
+  [layer setFillColor:0];
+  layer2 = [MEMORY[0x277CD9F90] layer];
+  [layer setInnerFocusOutlineLayer:layer2];
 
-  v5 = [v3 innerFocusOutlineLayer];
-  [v5 setFillColor:0];
+  innerFocusOutlineLayer = [layer innerFocusOutlineLayer];
+  [innerFocusOutlineLayer setFillColor:0];
 
-  v6 = [v3 innerFocusOutlineLayer];
-  [v3 addSublayer:v6];
+  innerFocusOutlineLayer2 = [layer innerFocusOutlineLayer];
+  [layer addSublayer:innerFocusOutlineLayer2];
 
-  v7 = [MEMORY[0x277CD9F90] layer];
-  [v3 setOuterFocusOutlineLayer:v7];
+  layer3 = [MEMORY[0x277CD9F90] layer];
+  [layer setOuterFocusOutlineLayer:layer3];
 
-  v8 = [v3 outerFocusOutlineLayer];
-  [v8 setFillColor:0];
+  outerFocusOutlineLayer = [layer outerFocusOutlineLayer];
+  [outerFocusOutlineLayer setFillColor:0];
 
-  v9 = [v3 outerFocusOutlineLayer];
-  [v3 addSublayer:v9];
+  outerFocusOutlineLayer2 = [layer outerFocusOutlineLayer];
+  [layer addSublayer:outerFocusOutlineLayer2];
 
-  [v3 updateCachedSettings];
+  [layer updateCachedSettings];
   v10 = +[WatchControlSettings sharedInstance];
-  [v10 addSettingsObserver:v3];
+  [v10 addSettingsObserver:layer];
 
-  return v3;
+  return layer;
 }
 
 - (void)dealloc
@@ -71,11 +71,11 @@ uint64_t __55__WCFocusRingShapeLayer_watchControlSettingsDidChange___block_invok
   return [v2 updateAppearance];
 }
 
-- (void)setPath:(CGPath *)a3
+- (void)setPath:(CGPath *)path
 {
   v4.receiver = self;
   v4.super_class = WCFocusRingShapeLayer;
-  [(WCFocusRingShapeLayer *)&v4 setPath:a3];
+  [(WCFocusRingShapeLayer *)&v4 setPath:path];
   [(WCFocusRingShapeLayer *)self updateFocusOutlinePath];
   [(WCFocusRingShapeLayer *)self updateAppearance];
 }
@@ -111,13 +111,13 @@ uint64_t __55__WCFocusRingShapeLayer_watchControlSettingsDidChange___block_invok
       v8 = v9;
     }
 
-    v10 = [(WCFocusRingShapeLayer *)self innerFocusOutlineLayer];
-    [v10 lineWidth];
+    innerFocusOutlineLayer = [(WCFocusRingShapeLayer *)self innerFocusOutlineLayer];
+    [innerFocusOutlineLayer lineWidth];
     v12 = v11 * 0.5;
 
-    v13 = [(WCFocusRingShapeLayer *)self increasedContrast];
+    increasedContrast = [(WCFocusRingShapeLayer *)self increasedContrast];
     v14 = v12 + -0.5;
-    if (!v13)
+    if (!increasedContrast)
     {
       v14 = v12;
     }
@@ -178,12 +178,12 @@ uint64_t __55__WCFocusRingShapeLayer_watchControlSettingsDidChange___block_invok
     v55 = v56;
     [v3 applyTransform:&v55];
     [v3 closePath];
-    v27 = [v3 CGPath];
-    v28 = [(WCFocusRingShapeLayer *)self innerFocusOutlineLayer];
-    [v28 setPath:v27];
+    cGPath = [v3 CGPath];
+    innerFocusOutlineLayer2 = [(WCFocusRingShapeLayer *)self innerFocusOutlineLayer];
+    [innerFocusOutlineLayer2 setPath:cGPath];
 
-    v29 = [(WCFocusRingShapeLayer *)self outerFocusOutlineLayer];
-    [v29 lineWidth];
+    outerFocusOutlineLayer = [(WCFocusRingShapeLayer *)self outerFocusOutlineLayer];
+    [outerFocusOutlineLayer lineWidth];
     v31 = v30 * -0.5;
 
     v32 = [MEMORY[0x277D75208] bezierPathWithCGPath:{objc_msgSend(v3, "CGPath")}];
@@ -228,9 +228,9 @@ uint64_t __55__WCFocusRingShapeLayer_watchControlSettingsDidChange___block_invok
     v56 = v55;
     [v32 applyTransform:&v55];
     [v32 closePath];
-    v45 = [v32 CGPath];
-    v46 = [(WCFocusRingShapeLayer *)self outerFocusOutlineLayer];
-    [v46 setPath:v45];
+    cGPath2 = [v32 CGPath];
+    outerFocusOutlineLayer2 = [(WCFocusRingShapeLayer *)self outerFocusOutlineLayer];
+    [outerFocusOutlineLayer2 setPath:cGPath2];
   }
 }
 
@@ -238,35 +238,35 @@ uint64_t __55__WCFocusRingShapeLayer_watchControlSettingsDidChange___block_invok
 {
   [(WCFocusRingShapeLayer *)self scaledOutlineWidth:3.0];
   v4 = v3;
-  v5 = [(WCFocusRingShapeLayer *)self innerFocusOutlineLayer];
-  [v5 setLineWidth:v4];
+  innerFocusOutlineLayer = [(WCFocusRingShapeLayer *)self innerFocusOutlineLayer];
+  [innerFocusOutlineLayer setLineWidth:v4];
 
-  v6 = [(WCFocusRingShapeLayer *)self strokeColorForFocusOutline];
-  v7 = [v6 CGColor];
-  v8 = [(WCFocusRingShapeLayer *)self innerFocusOutlineLayer];
-  [v8 setStrokeColor:v7];
+  strokeColorForFocusOutline = [(WCFocusRingShapeLayer *)self strokeColorForFocusOutline];
+  cGColor = [strokeColorForFocusOutline CGColor];
+  innerFocusOutlineLayer2 = [(WCFocusRingShapeLayer *)self innerFocusOutlineLayer];
+  [innerFocusOutlineLayer2 setStrokeColor:cGColor];
 
   [(WCFocusRingShapeLayer *)self scaledOutlineWidth:3.0];
   v10 = v9;
-  v11 = [(WCFocusRingShapeLayer *)self outerFocusOutlineLayer];
-  [v11 setLineWidth:v10];
+  outerFocusOutlineLayer = [(WCFocusRingShapeLayer *)self outerFocusOutlineLayer];
+  [outerFocusOutlineLayer setLineWidth:v10];
 
-  v12 = [(WCFocusRingShapeLayer *)self increasedContrast];
-  if (v12)
+  increasedContrast = [(WCFocusRingShapeLayer *)self increasedContrast];
+  if (increasedContrast)
   {
-    v7 = [MEMORY[0x277D75348] whiteColor];
-    v13 = [v7 CGColor];
+    cGColor = [MEMORY[0x277D75348] whiteColor];
+    v7CGColor = [cGColor CGColor];
   }
 
   else
   {
-    v13 = 0;
+    v7CGColor = 0;
   }
 
-  v14 = [(WCFocusRingShapeLayer *)self outerFocusOutlineLayer];
-  [v14 setStrokeColor:v13];
+  outerFocusOutlineLayer2 = [(WCFocusRingShapeLayer *)self outerFocusOutlineLayer];
+  [outerFocusOutlineLayer2 setStrokeColor:v7CGColor];
 
-  if (v12)
+  if (increasedContrast)
   {
   }
 
@@ -280,11 +280,11 @@ uint64_t __55__WCFocusRingShapeLayer_watchControlSettingsDidChange___block_invok
   v4 = [v3 colorWithCGColor:AXSAssistiveTouchCursorColor()];
   if (![(WCFocusRingShapeLayer *)self focusRingColor])
   {
-    v5 = [(WCFocusRingShapeLayer *)self viewTintColor];
-    v6 = v5;
-    if (v5)
+    viewTintColor = [(WCFocusRingShapeLayer *)self viewTintColor];
+    v6 = viewTintColor;
+    if (viewTintColor)
     {
-      v7 = v5;
+      v7 = viewTintColor;
     }
 
     else
@@ -327,15 +327,15 @@ uint64_t __55__WCFocusRingShapeLayer_watchControlSettingsDidChange___block_invok
 - (id)viewTintColor
 {
   objc_opt_class();
-  v3 = [(WCFocusRingShapeLayer *)self superlayer];
+  superlayer = [(WCFocusRingShapeLayer *)self superlayer];
   v4 = CALayerGetDelegate();
   v5 = __UIAccessibilityCastAsClass();
 
-  v6 = [v5 _accessibilityFocusRingTintColor];
-  v7 = v6;
-  if (v6)
+  _accessibilityFocusRingTintColor = [v5 _accessibilityFocusRingTintColor];
+  v7 = _accessibilityFocusRingTintColor;
+  if (_accessibilityFocusRingTintColor)
   {
-    v8 = v6;
+    v8 = _accessibilityFocusRingTintColor;
   }
 
   else
@@ -348,20 +348,20 @@ uint64_t __55__WCFocusRingShapeLayer_watchControlSettingsDidChange___block_invok
   return v8;
 }
 
-- (double)scaledOutlineWidth:(double)a3
+- (double)scaledOutlineWidth:(double)width
 {
   objc_opt_class();
-  v5 = [(WCFocusRingShapeLayer *)self superlayer];
+  superlayer = [(WCFocusRingShapeLayer *)self superlayer];
   v6 = CALayerGetDelegate();
   v7 = __UIAccessibilityCastAsClass();
 
   if (v7 && (objc_opt_respondsToSelector() & 1) != 0)
   {
     [v7 _axScaleTransformForFocusLayerLineWidth];
-    a3 = v8 * a3;
+    width = v8 * width;
   }
 
-  return a3;
+  return width;
 }
 
 @end

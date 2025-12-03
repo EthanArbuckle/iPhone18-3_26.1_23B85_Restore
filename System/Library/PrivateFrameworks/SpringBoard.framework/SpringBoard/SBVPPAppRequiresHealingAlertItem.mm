@@ -1,42 +1,42 @@
 @interface SBVPPAppRequiresHealingAlertItem
-- (SBVPPAppRequiresHealingAlertItem)initWithApplication:(id)a3;
-- (void)configure:(BOOL)a3 requirePasscodeForActions:(BOOL)a4;
+- (SBVPPAppRequiresHealingAlertItem)initWithApplication:(id)application;
+- (void)configure:(BOOL)configure requirePasscodeForActions:(BOOL)actions;
 @end
 
 @implementation SBVPPAppRequiresHealingAlertItem
 
-- (SBVPPAppRequiresHealingAlertItem)initWithApplication:(id)a3
+- (SBVPPAppRequiresHealingAlertItem)initWithApplication:(id)application
 {
-  v5 = a3;
+  applicationCopy = application;
   v6 = [(SBAlertItem *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_application, a3);
+    objc_storeStrong(&v6->_application, application);
   }
 
   return v7;
 }
 
-- (void)configure:(BOOL)a3 requirePasscodeForActions:(BOOL)a4
+- (void)configure:(BOOL)configure requirePasscodeForActions:(BOOL)actions
 {
-  v5 = [(SBAlertItem *)self alertController:a3];
-  v6 = [MEMORY[0x277CCA8D8] mainBundle];
-  v7 = [v6 localizedStringForKey:@"APP_REPAIR_REQUIRES_NETWORK_TITLE" value:&stru_283094718 table:@"SpringBoard"];
+  v5 = [(SBAlertItem *)self alertController:configure];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v7 = [mainBundle localizedStringForKey:@"APP_REPAIR_REQUIRES_NETWORK_TITLE" value:&stru_283094718 table:@"SpringBoard"];
   [v5 setTitle:v7];
 
-  v8 = [(SBApplication *)self->_application displayName];
-  v9 = [MEMORY[0x277CCA8D8] mainBundle];
-  v10 = [v9 localizedStringForKey:@"APP_REPAIR_REQUIRES_NETWORK_MESSAGE" value:&stru_283094718 table:@"SpringBoard"];
+  displayName = [(SBApplication *)self->_application displayName];
+  mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+  v10 = [mainBundle2 localizedStringForKey:@"APP_REPAIR_REQUIRES_NETWORK_MESSAGE" value:&stru_283094718 table:@"SpringBoard"];
 
   v11 = MEMORY[0x277CCACA8];
-  v12 = [MEMORY[0x277CCA8D8] mainBundle];
-  v13 = [v12 localizedStringForKey:v10 value:&stru_283094718 table:@"SpringBoard"];
-  v14 = [v11 stringWithFormat:v13, v8];
+  mainBundle3 = [MEMORY[0x277CCA8D8] mainBundle];
+  v13 = [mainBundle3 localizedStringForKey:v10 value:&stru_283094718 table:@"SpringBoard"];
+  v14 = [v11 stringWithFormat:v13, displayName];
 
   [v5 setMessage:v14];
-  v15 = [MEMORY[0x277CCA8D8] mainBundle];
-  v16 = [v15 localizedStringForKey:@"APP_REPAIR_REQUIRES_NETWORK_OK" value:&stru_283094718 table:@"SpringBoard"];
+  mainBundle4 = [MEMORY[0x277CCA8D8] mainBundle];
+  v16 = [mainBundle4 localizedStringForKey:@"APP_REPAIR_REQUIRES_NETWORK_OK" value:&stru_283094718 table:@"SpringBoard"];
 
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;

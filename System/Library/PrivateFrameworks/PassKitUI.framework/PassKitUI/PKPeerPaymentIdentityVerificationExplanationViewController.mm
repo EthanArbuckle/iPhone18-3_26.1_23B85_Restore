@@ -1,56 +1,56 @@
 @interface PKPeerPaymentIdentityVerificationExplanationViewController
 - (CGSize)_snapshotSize;
-- (PKPeerPaymentIdentityVerificationExplanationViewController)initWithContext:(int64_t)a3 setupDelegate:(id)a4 identityVerificationController:(id)a5;
+- (PKPeerPaymentIdentityVerificationExplanationViewController)initWithContext:(int64_t)context setupDelegate:(id)delegate identityVerificationController:(id)controller;
 - (id)_bodyButtonText;
 - (id)_bodyText;
 - (id)_titleText;
 - (void)_cancel;
-- (void)_performAuthenticationLocationBased:(BOOL)a3 withCompletion:(id)a4;
+- (void)_performAuthenticationLocationBased:(BOOL)based withCompletion:(id)completion;
 - (void)_processNextViewController;
-- (void)_sendAnalyticsButtonTapped:(id)a3;
-- (void)_sendAnalyticsEvent:(id)a3;
+- (void)_sendAnalyticsButtonTapped:(id)tapped;
+- (void)_sendAnalyticsEvent:(id)event;
 - (void)_terminateFlow;
-- (void)explanationViewDidSelectBodyButton:(id)a3;
-- (void)explanationViewDidSelectContinue:(id)a3;
+- (void)explanationViewDidSelectBodyButton:(id)button;
+- (void)explanationViewDidSelectContinue:(id)continue;
 - (void)loadView;
-- (void)peerPaymentAccountResolutionController:(id)a3 requestsDismissCurrentViewControllerAnimated:(BOOL)a4;
-- (void)setShowSpinner:(BOOL)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)peerPaymentAccountResolutionController:(id)controller requestsDismissCurrentViewControllerAnimated:(BOOL)animated;
+- (void)setShowSpinner:(BOOL)spinner;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation PKPeerPaymentIdentityVerificationExplanationViewController
 
-- (PKPeerPaymentIdentityVerificationExplanationViewController)initWithContext:(int64_t)a3 setupDelegate:(id)a4 identityVerificationController:(id)a5
+- (PKPeerPaymentIdentityVerificationExplanationViewController)initWithContext:(int64_t)context setupDelegate:(id)delegate identityVerificationController:(id)controller
 {
-  v8 = a4;
-  v9 = a5;
+  delegateCopy = delegate;
+  controllerCopy = controller;
   v23.receiver = self;
   v23.super_class = PKPeerPaymentIdentityVerificationExplanationViewController;
-  v10 = [(PKExplanationViewController *)&v23 initWithContext:a3];
+  v10 = [(PKExplanationViewController *)&v23 initWithContext:context];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_controller, a5);
-    objc_storeWeak(&v11->_setupDelegate, v8);
-    v12 = [v9 webService];
-    v13 = [v12 peerPaymentService];
-    v14 = [v13 account];
-    v15 = [v14 associatedPassUniqueID];
+    objc_storeStrong(&v10->_controller, controller);
+    objc_storeWeak(&v11->_setupDelegate, delegateCopy);
+    webService = [controllerCopy webService];
+    peerPaymentService = [webService peerPaymentService];
+    account = [peerPaymentService account];
+    associatedPassUniqueID = [account associatedPassUniqueID];
 
-    if ([v15 length])
+    if ([associatedPassUniqueID length])
     {
-      v16 = [MEMORY[0x1E69B8A58] sharedInstance];
-      v17 = [v16 passWithUniqueID:v15];
+      mEMORY[0x1E69B8A58] = [MEMORY[0x1E69B8A58] sharedInstance];
+      v17 = [mEMORY[0x1E69B8A58] passWithUniqueID:associatedPassUniqueID];
       [v17 loadImageSetSync:0 preheat:1];
       v18 = [[PKPassView alloc] initWithPass:v17 content:5 suppressedContent:512];
       [(PKPeerPaymentIdentityVerificationExplanationViewController *)v11 _snapshotSize];
       v19 = [(PKPassView *)v18 snapshotOfFrontFaceWithRequestedSize:?];
-      v20 = [(PKExplanationViewController *)v11 explanationView];
-      [v20 setImage:v19];
-      [v20 setShowPrivacyView:0];
-      v21 = [v20 imageView];
-      [v21 setAccessibilityIgnoresInvertColors:1];
+      explanationView = [(PKExplanationViewController *)v11 explanationView];
+      [explanationView setImage:v19];
+      [explanationView setShowPrivacyView:0];
+      imageView = [explanationView imageView];
+      [imageView setAccessibilityIgnoresInvertColors:1];
     }
   }
 
@@ -62,97 +62,97 @@
   v9.receiver = self;
   v9.super_class = PKPeerPaymentIdentityVerificationExplanationViewController;
   [(PKExplanationViewController *)&v9 loadView];
-  v3 = [(PKExplanationViewController *)self explanationView];
-  [v3 setDelegate:self];
-  v4 = [(PKPeerPaymentIdentityVerificationExplanationViewController *)self _titleText];
-  [v3 setTitleText:v4];
+  explanationView = [(PKExplanationViewController *)self explanationView];
+  [explanationView setDelegate:self];
+  _titleText = [(PKPeerPaymentIdentityVerificationExplanationViewController *)self _titleText];
+  [explanationView setTitleText:_titleText];
 
-  v5 = [(PKPeerPaymentIdentityVerificationExplanationViewController *)self _bodyText];
-  [v3 setBodyText:v5];
+  _bodyText = [(PKPeerPaymentIdentityVerificationExplanationViewController *)self _bodyText];
+  [explanationView setBodyText:_bodyText];
 
-  v6 = [(PKPeerPaymentIdentityVerificationExplanationViewController *)self _bodyButtonText];
-  [v3 setBodyButtonText:v6];
+  _bodyButtonText = [(PKPeerPaymentIdentityVerificationExplanationViewController *)self _bodyButtonText];
+  [explanationView setBodyButtonText:_bodyButtonText];
 
-  [v3 setBodyButtonUsesLearnMoreStyle:1];
-  v7 = [(PKPeerPaymentIdentityVerificationController *)self->_controller response];
+  [explanationView setBodyButtonUsesLearnMoreStyle:1];
+  response = [(PKPeerPaymentIdentityVerificationController *)self->_controller response];
 
-  if (!v7)
+  if (!response)
   {
-    v8 = [v3 dockView];
-    [v8 setPrimaryButton:0];
+    dockView = [explanationView dockView];
+    [dockView setPrimaryButton:0];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v7[1] = *MEMORY[0x1E69E9840];
   v5.receiver = self;
   v5.super_class = PKPeerPaymentIdentityVerificationExplanationViewController;
-  [(PKPeerPaymentIdentityVerificationExplanationViewController *)&v5 viewDidAppear:a3];
+  [(PKPeerPaymentIdentityVerificationExplanationViewController *)&v5 viewDidAppear:appear];
   v6 = *MEMORY[0x1E69BA680];
   v7[0] = *MEMORY[0x1E69BA818];
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:&v6 count:1];
   [(PKPeerPaymentIdentityVerificationExplanationViewController *)self _sendAnalyticsEvent:v4];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v7[1] = *MEMORY[0x1E69E9840];
   v5.receiver = self;
   v5.super_class = PKPeerPaymentIdentityVerificationExplanationViewController;
-  [(PKPeerPaymentIdentityVerificationExplanationViewController *)&v5 viewWillDisappear:a3];
+  [(PKPeerPaymentIdentityVerificationExplanationViewController *)&v5 viewWillDisappear:disappear];
   v6 = *MEMORY[0x1E69BA680];
   v7[0] = *MEMORY[0x1E69BA820];
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:&v6 count:1];
   [(PKPeerPaymentIdentityVerificationExplanationViewController *)self _sendAnalyticsEvent:v4];
 }
 
-- (void)setShowSpinner:(BOOL)a3
+- (void)setShowSpinner:(BOOL)spinner
 {
-  v3 = a3;
-  v4 = [(PKExplanationViewController *)self explanationView];
-  [v4 setShowSpinner:v3];
+  spinnerCopy = spinner;
+  explanationView = [(PKExplanationViewController *)self explanationView];
+  [explanationView setShowSpinner:spinnerCopy];
 }
 
-- (void)peerPaymentAccountResolutionController:(id)a3 requestsDismissCurrentViewControllerAnimated:(BOOL)a4
+- (void)peerPaymentAccountResolutionController:(id)controller requestsDismissCurrentViewControllerAnimated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = [(PKPeerPaymentIdentityVerificationExplanationViewController *)self presentingViewController];
-  [v5 dismissViewControllerAnimated:v4 completion:0];
+  animatedCopy = animated;
+  presentingViewController = [(PKPeerPaymentIdentityVerificationExplanationViewController *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:animatedCopy completion:0];
 }
 
-- (void)explanationViewDidSelectContinue:(id)a3
+- (void)explanationViewDidSelectContinue:(id)continue
 {
-  v4 = a3;
-  v5 = v4;
+  continueCopy = continue;
+  v5 = continueCopy;
   identityVerificaionError = self->_identityVerificaionError;
   if (identityVerificaionError > 2)
   {
     switch(identityVerificaionError)
     {
       case 3:
-        v16 = [v4 dockView];
-        [v16 setButtonsEnabled:0];
+        dockView = [continueCopy dockView];
+        [dockView setButtonsEnabled:0];
 
-        v17 = [v5 dockView];
-        v18 = [v17 primaryButton];
-        [v18 setShowSpinner:1];
+        dockView2 = [v5 dockView];
+        primaryButton = [dockView2 primaryButton];
+        [primaryButton setShowSpinner:1];
 
-        v19 = [v5 dockView];
-        v20 = [v19 footerView];
-        [v20 setButtonsEnabled:0];
+        dockView3 = [v5 dockView];
+        footerView = [dockView3 footerView];
+        [footerView setButtonsEnabled:0];
 
         break;
       case 4:
         [(PKPeerPaymentIdentityVerificationExplanationViewController *)self _terminateFlow];
         goto LABEL_16;
       case 5:
-        v7 = [(PKPeerPaymentIdentityVerificationController *)self->_controller webService];
-        v8 = [v7 peerPaymentService];
-        v9 = [v8 account];
+        webService = [(PKPeerPaymentIdentityVerificationController *)self->_controller webService];
+        peerPaymentService = [webService peerPaymentService];
+        account = [peerPaymentService account];
 
         v10 = objc_alloc_init(MEMORY[0x1E69B8A60]);
-        v11 = [[PKPeerPaymentAccountResolutionController alloc] initWithAccount:v9 webService:v7 context:[(PKExplanationViewController *)self context] delegate:self passLibraryDataProvider:v10];
+        v11 = [[PKPeerPaymentAccountResolutionController alloc] initWithAccount:account webService:webService context:[(PKExplanationViewController *)self context] delegate:self passLibraryDataProvider:v10];
         v12 = PKLogFacilityTypeGetObject();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
@@ -177,16 +177,16 @@ LABEL_14:
     {
       v13 = PKLocalizedPaymentString(&cfstr_CouldNotConnec.isa);
       v14 = PKLocalizedPaymentString(&cfstr_CouldNotConnec_0.isa);
-      v7 = PKDisplayableErrorCustom();
+      webService = PKDisplayableErrorCustom();
 
       v21[0] = MEMORY[0x1E69E9820];
       v21[1] = 3221225472;
       v21[2] = __95__PKPeerPaymentIdentityVerificationExplanationViewController_explanationViewDidSelectContinue___block_invoke_56;
       v21[3] = &unk_1E8010970;
       v21[4] = self;
-      v9 = PKAlertForDisplayableErrorWithHandlers(v7, 0, v21, 0);
-      v15 = [(PKPeerPaymentIdentityVerificationExplanationViewController *)self navigationController];
-      [v15 presentViewController:v9 animated:1 completion:0];
+      account = PKAlertForDisplayableErrorWithHandlers(webService, 0, v21, 0);
+      navigationController = [(PKPeerPaymentIdentityVerificationExplanationViewController *)self navigationController];
+      [navigationController presentViewController:account animated:1 completion:0];
 
 LABEL_12:
       goto LABEL_16;
@@ -253,17 +253,17 @@ void __95__PKPeerPaymentIdentityVerificationExplanationViewController_explanatio
   }
 }
 
-- (void)explanationViewDidSelectBodyButton:(id)a3
+- (void)explanationViewDidSelectBodyButton:(id)button
 {
-  v4 = [(PKPeerPaymentIdentityVerificationController *)self->_controller response];
-  v5 = [v4 learnMore];
-  v7 = [v5 buttonURL];
+  response = [(PKPeerPaymentIdentityVerificationController *)self->_controller response];
+  learnMore = [response learnMore];
+  buttonURL = [learnMore buttonURL];
 
-  if (v7)
+  if (buttonURL)
   {
     if (PKIsURLHttpScheme())
     {
-      v6 = [objc_alloc(MEMORY[0x1E697A838]) initWithURL:v7];
+      v6 = [objc_alloc(MEMORY[0x1E697A838]) initWithURL:buttonURL];
       [v6 setModalPresentationStyle:2];
       [(PKPeerPaymentIdentityVerificationExplanationViewController *)self presentViewController:v6 animated:1 completion:0];
     }
@@ -375,56 +375,56 @@ LABEL_3:
 
   else
   {
-    v4 = [(PKPeerPaymentIdentityVerificationExplanationViewController *)self presentingViewController];
-    [v4 dismissViewControllerAnimated:1 completion:0];
+    presentingViewController = [(PKPeerPaymentIdentityVerificationExplanationViewController *)self presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
   }
 }
 
 - (id)_titleText
 {
-  v2 = [(PKPeerPaymentIdentityVerificationController *)self->_controller response];
-  v3 = [v2 title];
+  response = [(PKPeerPaymentIdentityVerificationController *)self->_controller response];
+  title = [response title];
 
-  if (![v3 length])
+  if (![title length])
   {
     v4 = PKLocalizedPeerPaymentString(&cfstr_IdentityVerifi_5.isa);
 
-    v3 = v4;
+    title = v4;
   }
 
-  return v3;
+  return title;
 }
 
 - (id)_bodyText
 {
-  v2 = [(PKPeerPaymentIdentityVerificationController *)self->_controller response];
-  v3 = [v2 subtitle];
+  response = [(PKPeerPaymentIdentityVerificationController *)self->_controller response];
+  subtitle = [response subtitle];
 
-  return v3;
+  return subtitle;
 }
 
 - (id)_bodyButtonText
 {
-  v2 = [(PKPeerPaymentIdentityVerificationController *)self->_controller response];
-  v3 = [v2 learnMore];
+  response = [(PKPeerPaymentIdentityVerificationController *)self->_controller response];
+  learnMore = [response learnMore];
 
-  v4 = [v3 buttonTitle];
-  if (v4)
+  buttonTitle = [learnMore buttonTitle];
+  if (buttonTitle)
   {
-    v5 = [v3 buttonURL];
+    buttonURL = [learnMore buttonURL];
 
-    if (v5)
+    if (buttonURL)
     {
-      v5 = v4;
+      buttonURL = buttonTitle;
     }
   }
 
   else
   {
-    v5 = 0;
+    buttonURL = 0;
   }
 
-  return v5;
+  return buttonURL;
 }
 
 - (CGSize)_snapshotSize
@@ -436,14 +436,14 @@ LABEL_3:
   return result;
 }
 
-- (void)_performAuthenticationLocationBased:(BOOL)a3 withCompletion:(id)a4
+- (void)_performAuthenticationLocationBased:(BOOL)based withCompletion:(id)completion
 {
-  v4 = a3;
+  basedCopy = based;
   v23[2] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (v6)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v4)
+    if (basedCopy)
     {
       v7 = 1025;
     }
@@ -474,7 +474,7 @@ LABEL_3:
     v11[2] = __113__PKPeerPaymentIdentityVerificationExplanationViewController__performAuthenticationLocationBased_withCompletion___block_invoke;
     v11[3] = &unk_1E8017580;
     objc_copyWeak(&v14, &location);
-    v12 = v6;
+    v12 = completionCopy;
     v13 = &v16;
     [v10 evaluatePolicy:v7 options:v9 reply:v11];
 
@@ -510,24 +510,24 @@ void __113__PKPeerPaymentIdentityVerificationExplanationViewController__performA
   v9();
 }
 
-- (void)_sendAnalyticsButtonTapped:(id)a3
+- (void)_sendAnalyticsButtonTapped:(id)tapped
 {
   v9[2] = *MEMORY[0x1E69E9840];
   v4 = *MEMORY[0x1E69BA440];
   v8[0] = *MEMORY[0x1E69BA680];
   v8[1] = v4;
   v9[0] = *MEMORY[0x1E69BA6F0];
-  v9[1] = a3;
+  v9[1] = tapped;
   v5 = MEMORY[0x1E695DF20];
-  v6 = a3;
+  tappedCopy = tapped;
   v7 = [v5 dictionaryWithObjects:v9 forKeys:v8 count:2];
 
   [(PKPeerPaymentIdentityVerificationExplanationViewController *)self _sendAnalyticsEvent:v7];
 }
 
-- (void)_sendAnalyticsEvent:(id)a3
+- (void)_sendAnalyticsEvent:(id)event
 {
-  v3 = [a3 mutableCopy];
+  v3 = [event mutableCopy];
   [v3 setObject:*MEMORY[0x1E69BB010] forKey:*MEMORY[0x1E69BABE8]];
   [v3 setObject:*MEMORY[0x1E69BAEE8] forKey:*MEMORY[0x1E69BA850]];
   [MEMORY[0x1E69B8540] subject:*MEMORY[0x1E69BB6A8] sendEvent:v3];

@@ -6,21 +6,21 @@
 - (id)passcodeController;
 - (id)representedBiometricIdentity;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)dealloc;
-- (void)deleteFingerprint:(id)a3;
-- (void)fetchBiometricTemplateForCurrentBiometricIdentity:(id)a3;
+- (void)deleteFingerprint:(id)fingerprint;
+- (void)fetchBiometricTemplateForCurrentBiometricIdentity:(id)identity;
 - (void)handleDTOStatusChanged;
-- (void)presentAlertIfNeededBeforeDeletingFingerPrint:(id)a3;
-- (void)presentAlertSheetForFingerprintBindingToGovernmentID:(id)a3;
-- (void)presentPopUpAlertForFingerprintBindingToGovernmentID:(id)a3;
-- (void)proceedWithDeleteFingerprintFor:(id)a3;
+- (void)presentAlertIfNeededBeforeDeletingFingerPrint:(id)print;
+- (void)presentAlertSheetForFingerprintBindingToGovernmentID:(id)d;
+- (void)presentPopUpAlertForFingerprintBindingToGovernmentID:(id)d;
+- (void)proceedWithDeleteFingerprintFor:(id)for;
 - (void)refreshDeleteFingerprintGroup;
 - (void)registerObserverAndHandlerForDTOStatusChanges;
-- (void)replaceFingerprint:(id)a3;
-- (void)setFingerprintName:(id)a3;
+- (void)replaceFingerprint:(id)fingerprint;
+- (void)setFingerprintName:(id)name;
 - (void)setupDTOController;
-- (void)updateDeleteFingerGroupEnablementStatus:(id)a3 deleteButtonSpecifier:(id)a4;
+- (void)updateDeleteFingerGroupEnablementStatus:(id)status deleteButtonSpecifier:(id)specifier;
 @end
 
 @implementation PABSFingerprintController
@@ -83,23 +83,23 @@ void __44__PABSFingerprintController_viewWillAppear___block_invoke(uint64_t a1)
 
 - (id)representedBiometricIdentity
 {
-  v2 = [(PABSFingerprintController *)self specifier];
-  v3 = [v2 propertyForKey:@"FingerprintIdentity"];
+  specifier = [(PABSFingerprintController *)self specifier];
+  v3 = [specifier propertyForKey:@"FingerprintIdentity"];
 
   return v3;
 }
 
-- (void)presentAlertIfNeededBeforeDeletingFingerPrint:(id)a3
+- (void)presentAlertIfNeededBeforeDeletingFingerPrint:(id)print
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PABSFingerprintController *)self specifier];
-  v6 = [v5 propertyForKey:@"BIOMETRIC_TEMPLATE_BINDING"];
+  printCopy = print;
+  specifier = [(PABSFingerprintController *)self specifier];
+  v6 = [specifier propertyForKey:@"BIOMETRIC_TEMPLATE_BINDING"];
 
   v7 = PABSLogForCategory(0);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v4 propertyForKey:@"FingerprintIdentity"];
+    v8 = [printCopy propertyForKey:@"FingerprintIdentity"];
     v13 = 138412546;
     v14 = v8;
     v15 = 2112;
@@ -111,7 +111,7 @@ void __44__PABSFingerprintController_viewWillAppear___block_invoke(uint64_t a1)
   {
     if ([v6 BOOLValue])
     {
-      [(PABSFingerprintController *)self presentAlertSheetForFingerprintBindingToGovernmentID:v4];
+      [(PABSFingerprintController *)self presentAlertSheetForFingerprintBindingToGovernmentID:printCopy];
     }
 
     else
@@ -123,7 +123,7 @@ void __44__PABSFingerprintController_viewWillAppear___block_invoke(uint64_t a1)
         _os_log_impl(&dword_25E0E9000, v11, OS_LOG_TYPE_DEFAULT, "Biometic is not bound to government ID, delete fingerprint directly", &v13, 2u);
       }
 
-      [(PABSFingerprintController *)self deleteFingerprint:v4];
+      [(PABSFingerprintController *)self deleteFingerprint:printCopy];
     }
   }
 
@@ -132,22 +132,22 @@ void __44__PABSFingerprintController_viewWillAppear___block_invoke(uint64_t a1)
     v9 = PABSLogForCategory(0);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v4 propertyForKey:@"FingerprintIdentity"];
+      v10 = [printCopy propertyForKey:@"FingerprintIdentity"];
       v13 = 138412290;
       v14 = v10;
       _os_log_impl(&dword_25E0E9000, v9, OS_LOG_TYPE_DEFAULT, "Have not determined biometric binding identity for biometric: %@", &v13, 0xCu);
     }
 
-    [(PSListController *)self configureSpin:1 ofCellForSpecifier:v4 setEnabled:0];
-    [(PABSFingerprintController *)self fetchBiometricTemplateForCurrentBiometricIdentity:v4];
+    [(PSListController *)self configureSpin:1 ofCellForSpecifier:printCopy setEnabled:0];
+    [(PABSFingerprintController *)self fetchBiometricTemplateForCurrentBiometricIdentity:printCopy];
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchBiometricTemplateForCurrentBiometricIdentity:(id)a3
+- (void)fetchBiometricTemplateForCurrentBiometricIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   objc_initWeak(&location, self);
   v5 = objc_alloc_init(MEMORY[0x277CFFE58]);
   v7[0] = MEMORY[0x277D85DD0];
@@ -155,9 +155,9 @@ void __44__PABSFingerprintController_viewWillAppear___block_invoke(uint64_t a1)
   v7[2] = __79__PABSFingerprintController_fetchBiometricTemplateForCurrentBiometricIdentity___block_invoke;
   v7[3] = &unk_279A03420;
   objc_copyWeak(&v10, &location);
-  v6 = v4;
+  v6 = identityCopy;
   v8 = v6;
-  v9 = self;
+  selfCopy = self;
   [v5 globalAuthACLTemplateUUIDsAndBoundCredentialsCountWithCompletion:v7];
 
   objc_destroyWeak(&v10);
@@ -293,9 +293,9 @@ LABEL_23:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)presentAlertSheetForFingerprintBindingToGovernmentID:(id)a3
+- (void)presentAlertSheetForFingerprintBindingToGovernmentID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = PABSLogForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -303,8 +303,8 @@ LABEL_23:
     _os_log_impl(&dword_25E0E9000, v5, OS_LOG_TYPE_DEFAULT, "Presenting first alert for government binding biometrics", buf, 2u);
   }
 
-  v6 = [(PABSFingerprintController *)self specifier];
-  v7 = [v6 propertyForKey:@"BOUND_CREDENTIALS_COUNT_BINDING"];
+  specifier = [(PABSFingerprintController *)self specifier];
+  v7 = [specifier propertyForKey:@"BOUND_CREDENTIALS_COUNT_BINDING"];
 
   v8 = @"DELETE_FINGERPRINT_SHEET_MESSAGE";
   if (v7 && [v7 intValue] > 1)
@@ -329,7 +329,7 @@ LABEL_23:
     v31[2] = __82__PABSFingerprintController_presentAlertSheetForFingerprintBindingToGovernmentID___block_invoke;
     v31[3] = &unk_279A03220;
     v31[4] = self;
-    v32 = v4;
+    v32 = dCopy;
     v17 = [v15 actionWithTitle:v16 style:0 handler:v31];
     [v12 addAction:v17];
   }
@@ -340,11 +340,11 @@ LABEL_23:
   v26 = 3221225472;
   v27 = __82__PABSFingerprintController_presentAlertSheetForFingerprintBindingToGovernmentID___block_invoke_291;
   v28 = &unk_279A03220;
-  v29 = self;
-  v30 = v4;
-  v20 = v4;
+  selfCopy = self;
+  v30 = dCopy;
+  v20 = dCopy;
   v21 = [v18 actionWithTitle:v19 style:2 handler:&v25];
-  [v12 addAction:{v21, v25, v26, v27, v28, v29}];
+  [v12 addAction:{v21, v25, v26, v27, v28, selfCopy}];
 
   v22 = MEMORY[0x277D750F8];
   v23 = PABS_LocalizedStringForPasscodeLock(@"CANCEL");
@@ -378,9 +378,9 @@ uint64_t __82__PABSFingerprintController_presentAlertSheetForFingerprintBindingT
   return [*(a1 + 32) presentPopUpAlertForFingerprintBindingToGovernmentID:*(a1 + 40)];
 }
 
-- (void)presentPopUpAlertForFingerprintBindingToGovernmentID:(id)a3
+- (void)presentPopUpAlertForFingerprintBindingToGovernmentID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = PABSLogForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -388,8 +388,8 @@ uint64_t __82__PABSFingerprintController_presentAlertSheetForFingerprintBindingT
     _os_log_impl(&dword_25E0E9000, v5, OS_LOG_TYPE_DEFAULT, "Presenting second alert for government binding biometrics", buf, 2u);
   }
 
-  v6 = [(PABSFingerprintController *)self specifier];
-  v7 = [v6 propertyForKey:@"BOUND_CREDENTIALS_COUNT_BINDING"];
+  specifier = [(PABSFingerprintController *)self specifier];
+  v7 = [specifier propertyForKey:@"BOUND_CREDENTIALS_COUNT_BINDING"];
 
   v8 = @"DELETE_FINGERPRINT_ALERT_MESSAGE";
   if (v7 && [v7 intValue] > 1)
@@ -413,11 +413,11 @@ uint64_t __82__PABSFingerprintController_presentAlertSheetForFingerprintBindingT
   v21 = 3221225472;
   v22 = __82__PABSFingerprintController_presentPopUpAlertForFingerprintBindingToGovernmentID___block_invoke;
   v23 = &unk_279A03220;
-  v24 = self;
-  v25 = v4;
-  v18 = v4;
+  selfCopy = self;
+  v25 = dCopy;
+  v18 = dCopy;
   v19 = [v16 actionWithTitle:v17 style:2 handler:&v20];
-  [v12 addAction:{v19, v20, v21, v22, v23, v24}];
+  [v12 addAction:{v19, v20, v21, v22, v23, selfCopy}];
 
   [(PABSFingerprintController *)self presentViewController:v12 animated:1 completion:0];
 }
@@ -437,9 +437,9 @@ uint64_t __82__PABSFingerprintController_presentPopUpAlertForFingerprintBindingT
   return [*(a1 + 32) deleteFingerprint:*(a1 + 40)];
 }
 
-- (void)replaceFingerprint:(id)a3
+- (void)replaceFingerprint:(id)fingerprint
 {
-  v4 = a3;
+  fingerprintCopy = fingerprint;
   v5 = PABSLogForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -617,9 +617,9 @@ void __48__PABSFingerprintController_replaceFingerprint___block_invoke_2_312(uin
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteFingerprint:(id)a3
+- (void)deleteFingerprint:(id)fingerprint
 {
-  v4 = a3;
+  fingerprintCopy = fingerprint;
   v5 = PABSLogForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -627,20 +627,20 @@ void __48__PABSFingerprintController_replaceFingerprint___block_invoke_2_312(uin
     _os_log_impl(&dword_25E0E9000, v5, OS_LOG_TYPE_DEFAULT, "Touch ID: User pressed Delete Fingerprint", buf, 2u);
   }
 
-  v6 = [(PABSFingerprintController *)self dtoController];
-  v7 = [v6 isRatchetEnabled];
+  dtoController = [(PABSFingerprintController *)self dtoController];
+  isRatchetEnabled = [dtoController isRatchetEnabled];
 
-  if (v7)
+  if (isRatchetEnabled)
   {
     objc_initWeak(buf, self);
-    v8 = [(PABSFingerprintController *)self dtoController];
+    dtoController2 = [(PABSFingerprintController *)self dtoController];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __47__PABSFingerprintController_deleteFingerprint___block_invoke;
     v9[3] = &unk_279A03248;
     objc_copyWeak(&v11, buf);
-    v10 = v4;
-    [v8 gateWithRatchetForOperation:4 forPresentingVC:self completion:v9];
+    v10 = fingerprintCopy;
+    [dtoController2 gateWithRatchetForOperation:4 forPresentingVC:self completion:v9];
 
     objc_destroyWeak(&v11);
     objc_destroyWeak(buf);
@@ -648,7 +648,7 @@ void __48__PABSFingerprintController_replaceFingerprint___block_invoke_2_312(uin
 
   else
   {
-    [(PABSFingerprintController *)self proceedWithDeleteFingerprintFor:v4];
+    [(PABSFingerprintController *)self proceedWithDeleteFingerprintFor:fingerprintCopy];
   }
 }
 
@@ -702,21 +702,21 @@ void __47__PABSFingerprintController_deleteFingerprint___block_invoke_314(uint64
   }
 }
 
-- (void)proceedWithDeleteFingerprintFor:(id)a3
+- (void)proceedWithDeleteFingerprintFor:(id)for
 {
-  v4 = a3;
-  v5 = [(PABSFingerprintController *)self parentController];
+  forCopy = for;
+  parentController = [(PABSFingerprintController *)self parentController];
   v6 = +[PABSBiometrics sharedInstance];
-  v7 = [(PABSFingerprintController *)self representedBiometricIdentity];
+  representedBiometricIdentity = [(PABSFingerprintController *)self representedBiometricIdentity];
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
   v14 = __61__PABSFingerprintController_proceedWithDeleteFingerprintFor___block_invoke;
   v15 = &unk_279A034E8;
-  v16 = v4;
-  v17 = v5;
-  v8 = v5;
-  v9 = v4;
-  [v6 removeIdentity:v7 completion:&v12];
+  v16 = forCopy;
+  v17 = parentController;
+  v8 = parentController;
+  v9 = forCopy;
+  [v6 removeIdentity:representedBiometricIdentity completion:&v12];
 
   v10 = [(PABSFingerprintController *)self navigationController:v12];
   v11 = [v10 popViewControllerAnimated:1];
@@ -747,12 +747,12 @@ void __61__PABSFingerprintController_proceedWithDeleteFingerprintFor___block_inv
 
 - (id)fingerprintName
 {
-  v2 = [(PABSFingerprintController *)self representedBiometricIdentity];
-  v3 = [v2 name];
-  v4 = v3;
-  if (v3)
+  representedBiometricIdentity = [(PABSFingerprintController *)self representedBiometricIdentity];
+  name = [representedBiometricIdentity name];
+  v4 = name;
+  if (name)
   {
-    v5 = v3;
+    v5 = name;
   }
 
   else
@@ -765,14 +765,14 @@ void __61__PABSFingerprintController_proceedWithDeleteFingerprintFor___block_inv
   return v5;
 }
 
-- (void)setFingerprintName:(id)a3
+- (void)setFingerprintName:(id)name
 {
-  v6 = a3;
-  if ([v6 length])
+  nameCopy = name;
+  if ([nameCopy length])
   {
     v4 = +[PABSBiometrics sharedInstance];
-    v5 = [(PABSFingerprintController *)self representedBiometricIdentity];
-    [v4 setName:v6 forIdentity:v5 completion:&__block_literal_global_316];
+    representedBiometricIdentity = [(PABSFingerprintController *)self representedBiometricIdentity];
+    [v4 setName:nameCopy forIdentity:representedBiometricIdentity completion:&__block_literal_global_316];
   }
 }
 
@@ -797,33 +797,33 @@ void __48__PABSFingerprintController_setFingerprintName___block_invoke_2()
   if (!v4)
   {
     [(PABSFingerprintController *)self setTitle:0];
-    v5 = [MEMORY[0x277CBEB18] array];
-    v6 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
-    [v5 addObject:v6];
+    array = [MEMORY[0x277CBEB18] array];
+    emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+    [array addObject:emptyGroupSpecifier];
 
     v7 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:0 target:self set:sel_setFingerprintName_ get:sel_fingerprintName detail:0 cell:8 edit:0];
     [v7 setProperty:objc_opt_class() forKey:*MEMORY[0x277D3FE58]];
     [v7 setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D3FF20]];
-    v8 = [MEMORY[0x277D262A0] sharedConnection];
-    v9 = [v8 isFingerprintModificationAllowed];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    isFingerprintModificationAllowed = [mEMORY[0x277D262A0] isFingerprintModificationAllowed];
 
-    if ((v9 & 1) == 0)
+    if ((isFingerprintModificationAllowed & 1) == 0)
     {
       [v7 setProperty:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277D3FF38]];
     }
 
-    [v5 addObject:v7];
-    v10 = [MEMORY[0x277D262A0] sharedConnection];
-    v11 = [v10 isFingerprintModificationAllowed];
+    [array addObject:v7];
+    mEMORY[0x277D262A0]2 = [MEMORY[0x277D262A0] sharedConnection];
+    isFingerprintModificationAllowed2 = [mEMORY[0x277D262A0]2 isFingerprintModificationAllowed];
 
-    if (v11)
+    if (isFingerprintModificationAllowed2)
     {
-      v12 = [(PABSFingerprintController *)self getDeleteFingerprintGroup];
-      [v5 addObjectsFromArray:v12];
+      getDeleteFingerprintGroup = [(PABSFingerprintController *)self getDeleteFingerprintGroup];
+      [array addObjectsFromArray:getDeleteFingerprintGroup];
     }
 
     v13 = *(&self->super.super.super.super.super.isa + v3);
-    *(&self->super.super.super.super.super.isa + v3) = v5;
+    *(&self->super.super.super.super.super.isa + v3) = array;
 
     v4 = *(&self->super.super.super.super.super.isa + v3);
   }
@@ -840,9 +840,9 @@ void __48__PABSFingerprintController_setFingerprintName___block_invoke_2()
   v5 = PABSLogForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 identifier];
+    identifier = [v4 identifier];
     v8 = 138412290;
-    v9 = v6;
+    v9 = identifier;
     _os_log_impl(&dword_25E0E9000, v5, OS_LOG_TYPE_DEFAULT, "%@: - Reloading -", &v8, 0xCu);
   }
 
@@ -857,68 +857,68 @@ void __48__PABSFingerprintController_setFingerprintName___block_invoke_2()
 
   if ([v4 count] == 1)
   {
-    v5 = [(PABSFingerprintController *)self dtoController];
-    v6 = [v5 isRatchetEnabled];
+    dtoController = [(PABSFingerprintController *)self dtoController];
+    isRatchetEnabled = [dtoController isRatchetEnabled];
   }
 
   else
   {
-    v6 = 0;
+    isRatchetEnabled = 0;
   }
 
-  return v6;
+  return isRatchetEnabled;
 }
 
 - (id)getDeleteFingerprintGroup
 {
-  v3 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+  emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
   v4 = MEMORY[0x277D3FAD8];
   v5 = PABS_LocalizedStringForPasscodeLock(@"DELETE_FINGERPRINT");
   v6 = [v4 deleteButtonSpecifierWithName:v5 target:self action:sel_presentAlertIfNeededBeforeDeletingFingerPrint_];
 
   [v6 setIdentifier:@"DELETE_FINGERPRINT"];
-  [(PABSFingerprintController *)self updateDeleteFingerGroupEnablementStatus:v3 deleteButtonSpecifier:v6];
-  v7 = [MEMORY[0x277CBEA60] arrayWithObjects:{v3, v6, 0}];
+  [(PABSFingerprintController *)self updateDeleteFingerGroupEnablementStatus:emptyGroupSpecifier deleteButtonSpecifier:v6];
+  v7 = [MEMORY[0x277CBEA60] arrayWithObjects:{emptyGroupSpecifier, v6, 0}];
 
   return v7;
 }
 
-- (void)updateDeleteFingerGroupEnablementStatus:(id)a3 deleteButtonSpecifier:(id)a4
+- (void)updateDeleteFingerGroupEnablementStatus:(id)status deleteButtonSpecifier:(id)specifier
 {
-  v9 = a3;
-  v6 = a4;
+  statusCopy = status;
+  specifierCopy = specifier;
   if ([(PABSFingerprintController *)self mustDisableDeleteFingerprintButton])
   {
     v7 = PABS_LocalizedStringForPasscodeLock(@"REMOVE_TOUCHID_GROUP_FOOTER_SDPISON");
-    [v9 setProperty:v7 forKey:*MEMORY[0x277D3FF88]];
+    [statusCopy setProperty:v7 forKey:*MEMORY[0x277D3FF88]];
 
     v8 = MEMORY[0x277CBEC28];
   }
 
   else
   {
-    [v9 removePropertyForKey:*MEMORY[0x277D3FF88]];
+    [statusCopy removePropertyForKey:*MEMORY[0x277D3FF88]];
     v8 = MEMORY[0x277CBEC38];
   }
 
-  [v6 setProperty:v8 forKey:*MEMORY[0x277D3FF38]];
+  [specifierCopy setProperty:v8 forKey:*MEMORY[0x277D3FF38]];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v9.receiver = self;
   v9.super_class = PABSFingerprintController;
-  v5 = [(PABSFingerprintController *)&v9 tableView:a3 cellForRowAtIndexPath:a4];
+  v5 = [(PABSFingerprintController *)&v9 tableView:view cellForRowAtIndexPath:path];
   if ([v5 tag] == 8)
   {
-    v6 = [v5 editableTextField];
-    [v6 setAutocapitalizationType:2];
-    [v6 setAutocorrectionType:1];
-    [v6 setAutoresizesTextToFit:1];
-    [v6 setReturnKeyType:9];
-    [v6 setClearButtonMode:1];
-    v7 = [(PABSFingerprintController *)self fingerprintName];
-    [v6 setPlaceholder:v7];
+    editableTextField = [v5 editableTextField];
+    [editableTextField setAutocapitalizationType:2];
+    [editableTextField setAutocorrectionType:1];
+    [editableTextField setAutoresizesTextToFit:1];
+    [editableTextField setReturnKeyType:9];
+    [editableTextField setClearButtonMode:1];
+    fingerprintName = [(PABSFingerprintController *)self fingerprintName];
+    [editableTextField setPlaceholder:fingerprintName];
 
     [v5 setControllerDelegate:self];
   }
@@ -935,9 +935,9 @@ void __48__PABSFingerprintController_setFingerprintName___block_invoke_2()
 
 - (void)setupDTOController
 {
-  v3 = [(PABSFingerprintController *)self dtoController];
+  dtoController = [(PABSFingerprintController *)self dtoController];
 
-  if (!v3)
+  if (!dtoController)
   {
     v4 = objc_opt_new();
     [(PABSFingerprintController *)self setDtoController:v4];

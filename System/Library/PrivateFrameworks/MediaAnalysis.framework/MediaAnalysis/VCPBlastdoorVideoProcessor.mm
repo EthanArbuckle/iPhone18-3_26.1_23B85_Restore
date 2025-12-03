@@ -1,25 +1,25 @@
 @interface VCPBlastdoorVideoProcessor
-- (BOOL)addFrameProcessingRequest:(id)a3 withConfiguration:(id)a4 error:(id *)a5;
-- (BOOL)analyzeWithError:(id *)a3;
-- (BOOL)processConfiguration:(id)a3 withError:(id *)a4;
-- (VCPBlastdoorVideoProcessor)initWithURL:(id)a3;
+- (BOOL)addFrameProcessingRequest:(id)request withConfiguration:(id)configuration error:(id *)error;
+- (BOOL)analyzeWithError:(id *)error;
+- (BOOL)processConfiguration:(id)configuration withError:(id *)error;
+- (VCPBlastdoorVideoProcessor)initWithURL:(id)l;
 @end
 
 @implementation VCPBlastdoorVideoProcessor
 
-- (VCPBlastdoorVideoProcessor)initWithURL:(id)a3
+- (VCPBlastdoorVideoProcessor)initWithURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v11.receiver = self;
   v11.super_class = VCPBlastdoorVideoProcessor;
   v6 = [(VCPBlastdoorVideoProcessor *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_url, a3);
-    v8 = [MEMORY[0x1E695DF70] array];
+    objc_storeStrong(&v6->_url, l);
+    array = [MEMORY[0x1E695DF70] array];
     frameProcessors = v7->_frameProcessors;
-    v7->_frameProcessors = v8;
+    v7->_frameProcessors = array;
 
     atomic_store(0, &v7->_canceled);
   }
@@ -27,52 +27,52 @@
   return v7;
 }
 
-- (BOOL)processConfiguration:(id)a3 withError:(id *)a4
+- (BOOL)processConfiguration:(id)configuration withError:(id *)error
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 count];
+  configurationCopy = configuration;
+  v6 = [configurationCopy count];
   if (v6)
   {
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       v7 = objc_opt_class();
-      v8 = [v5 allKeys];
+      allKeys = [configurationCopy allKeys];
       *buf = 138412546;
       v16 = v7;
       v17 = 2112;
-      v18 = v8;
+      v18 = allKeys;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[%@] Unsupported configuration keys: %@", buf, 0x16u);
     }
 
-    if (a4)
+    if (error)
     {
       v9 = MEMORY[0x1E696ABC0];
       v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unsupported configuration keys", *MEMORY[0x1E696A578]];
       v14 = v10;
       v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v14 forKeys:&v13 count:1];
-      *a4 = [v9 errorWithDomain:*MEMORY[0x1E696A768] code:-50 userInfo:v11];
+      *error = [v9 errorWithDomain:*MEMORY[0x1E696A768] code:-50 userInfo:v11];
     }
   }
 
   return v6 == 0;
 }
 
-- (BOOL)addFrameProcessingRequest:(id)a3 withConfiguration:(id)a4 error:(id *)a5
+- (BOOL)addFrameProcessingRequest:(id)request withConfiguration:(id)configuration error:(id *)error
 {
-  v8 = a3;
-  v9 = [(VCPBlastdoorVideoProcessor *)self processConfiguration:a4 withError:a5];
+  requestCopy = request;
+  v9 = [(VCPBlastdoorVideoProcessor *)self processConfiguration:configuration withError:error];
   if (v9)
   {
     frameProcessors = self->_frameProcessors;
-    v11 = _Block_copy(v8);
+    v11 = _Block_copy(requestCopy);
     [(NSMutableArray *)frameProcessors addObject:v11];
   }
 
   return v9;
 }
 
-- (BOOL)analyzeWithError:(id *)a3
+- (BOOL)analyzeWithError:(id *)error
 {
   v56 = *MEMORY[0x1E69E9840];
   if ([(NSMutableArray *)self->_frameProcessors count])
@@ -101,9 +101,9 @@
     v47 = 0x2020000000;
     v48 = 0;
     v6 = [(NSDictionary *)self->_decoderSettings objectForKeyedSubscript:@"FrameLimit"];
-    v7 = [v6 unsignedIntegerValue];
+    unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-    if (!v7 && MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
+    if (!unsignedIntegerValue && MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
       v8 = objc_opt_class();
       LODWORD(buf) = 138412290;
@@ -126,9 +126,9 @@
     p_buf = &buf;
     v11 = v10;
     v40 = v11;
-    v41 = self;
+    selfCopy = self;
     v43 = &v45;
-    v44 = v7;
+    v44 = unsignedIntegerValue;
     v12 = _Block_copy(aBlock);
     progressHandler = self->_progressHandler;
     if (progressHandler)
@@ -137,19 +137,19 @@
     }
 
     v14 = [(NSDictionary *)self->_decoderSettings objectForKeyedSubscript:*MEMORY[0x1E6966208]];
-    v15 = [v14 unsignedIntegerValue];
+    unsignedIntegerValue2 = [v14 unsignedIntegerValue];
 
     v16 = [(NSDictionary *)self->_decoderSettings objectForKeyedSubscript:*MEMORY[0x1E69660B8]];
-    v17 = [v16 unsignedIntegerValue];
+    unsignedIntegerValue3 = [v16 unsignedIntegerValue];
 
-    if (!v15)
+    if (!unsignedIntegerValue2)
     {
-      v15 = 299;
+      unsignedIntegerValue2 = 299;
     }
 
-    if (v17)
+    if (unsignedIntegerValue3)
     {
-      v18 = v17;
+      v18 = unsignedIntegerValue3;
     }
 
     else
@@ -158,18 +158,18 @@
     }
 
     v19 = [(NSDictionary *)self->_decoderSettings objectForKeyedSubscript:@"UniformSampling"];
-    v20 = [v19 BOOLValue];
+    bOOLValue = [v19 BOOLValue];
 
     v21 = [(NSDictionary *)self->_decoderSettings objectForKeyedSubscript:*MEMORY[0x1E6987D38]];
-    v22 = [v21 unsignedIntegerValue];
+    unsignedIntegerValue4 = [v21 unsignedIntegerValue];
 
     v23 = [(NSDictionary *)self->_decoderSettings objectForKeyedSubscript:@"AppliesPreferredTrackTransform"];
-    v24 = [v23 BOOLValue];
+    bOOLValue2 = [v23 BOOLValue];
 
-    LOBYTE(v36) = v24;
-    [v37 generateMovieFramesForAttachmentWithFileURL:self->_url targetPixelWidth:v15 targetPixelHeight:v18 frameLimit:v7 uniformSampling:v20 framesPerSync:v22 appliesPreferredTrackTransform:v36 resultHandler:v12];
+    LOBYTE(v36) = bOOLValue2;
+    [v37 generateMovieFramesForAttachmentWithFileURL:self->_url targetPixelWidth:unsignedIntegerValue2 targetPixelHeight:v18 frameLimit:unsignedIntegerValue uniformSampling:bOOLValue framesPerSync:unsignedIntegerValue4 appliesPreferredTrackTransform:v36 resultHandler:v12];
     dispatch_semaphore_wait(v11, 0xFFFFFFFFFFFFFFFFLL);
-    if (a3)
+    if (error)
     {
       v25 = atomic_load(&self->_canceled);
       v26 = *(&buf + 1);
@@ -187,7 +187,7 @@
         v26 = *(&buf + 1);
       }
 
-      *a3 = [*(v26 + 40) copy];
+      *error = [*(v26 + 40) copy];
     }
 
     v32 = *(*(&buf + 1) + 40) == 0;

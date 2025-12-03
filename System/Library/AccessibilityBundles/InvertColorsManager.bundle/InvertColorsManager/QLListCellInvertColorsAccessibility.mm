@@ -1,6 +1,6 @@
 @interface QLListCellInvertColorsAccessibility
 - (void)_accessibilityLoadInvertColors;
-- (void)setThumbnail:(id)a3;
+- (void)setThumbnail:(id)thumbnail;
 @end
 
 @implementation QLListCellInvertColorsAccessibility
@@ -11,11 +11,11 @@
   [v2 setAccessibilityIgnoresInvertColors:1];
 }
 
-- (void)setThumbnail:(id)a3
+- (void)setThumbnail:(id)thumbnail
 {
   v4.receiver = self;
   v4.super_class = QLListCellInvertColorsAccessibility;
-  [(QLListCellInvertColorsAccessibility *)&v4 setThumbnail:a3];
+  [(QLListCellInvertColorsAccessibility *)&v4 setThumbnail:thumbnail];
   [(QLListCellInvertColorsAccessibility *)self _accessibilityLoadInvertColors];
 }
 

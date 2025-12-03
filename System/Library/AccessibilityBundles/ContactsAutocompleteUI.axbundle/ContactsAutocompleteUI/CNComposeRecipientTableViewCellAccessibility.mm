@@ -1,5 +1,5 @@
 @interface CNComposeRecipientTableViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (unint64_t)accessibilityTraits;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)actionButtonTapped;
@@ -7,12 +7,12 @@
 
 @implementation CNComposeRecipientTableViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CNComposeRecipientTableViewCell" hasInstanceMethod:@"actionType" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"CNComposeRecipientTableViewCell" hasInstanceMethod:@"actionButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNComposeRecipientTableViewCell" hasInstanceMethod:@"actionButtonTapped" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CNComposeRecipientTableViewCell" hasInstanceMethod:@"actionType" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"CNComposeRecipientTableViewCell" hasInstanceMethod:@"actionButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNComposeRecipientTableViewCell" hasInstanceMethod:@"actionButtonTapped" withFullSignature:{"v", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

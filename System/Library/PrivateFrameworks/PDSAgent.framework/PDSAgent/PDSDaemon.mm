@@ -1,12 +1,12 @@
 @interface PDSDaemon
 - (PDSCDCache)underlyingStorage;
-- (PDSDaemon)initWithConfiguration:(id)a3;
+- (PDSDaemon)initWithConfiguration:(id)configuration;
 - (PDSEntryStore)entryStore;
 - (id)_entryStore;
 - (id)_underlyingStorage;
 - (id)remoteInternalListener;
 - (id)remoteListenerForAllClientIDs;
-- (id)remoteListenerForClientIDs:(id)a3;
+- (id)remoteListenerForClientIDs:(id)ds;
 - (void)_setupSysdiagnoseDump;
 - (void)_underlyingStorage;
 - (void)start;
@@ -14,38 +14,38 @@
 
 @implementation PDSDaemon
 
-- (PDSDaemon)initWithConfiguration:(id)a3
+- (PDSDaemon)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  if (!v4)
+  configurationCopy = configuration;
+  if (!configurationCopy)
   {
     [PDSDaemon initWithConfiguration:];
   }
 
-  v5 = [v4 queue];
+  queue = [configurationCopy queue];
 
-  if (!v5)
+  if (!queue)
   {
     [PDSDaemon initWithConfiguration:];
   }
 
-  v6 = [v4 workloop];
+  workloop = [configurationCopy workloop];
 
-  if (!v6)
+  if (!workloop)
   {
     [PDSDaemon initWithConfiguration:];
   }
 
-  v7 = [v4 daemonRootDirectory];
+  daemonRootDirectory = [configurationCopy daemonRootDirectory];
 
-  if (!v7)
+  if (!daemonRootDirectory)
   {
     [PDSDaemon initWithConfiguration:];
   }
 
-  v8 = [v4 pushHandlerPort];
+  pushHandlerPort = [configurationCopy pushHandlerPort];
 
-  if (!v8)
+  if (!pushHandlerPort)
   {
     [PDSDaemon initWithConfiguration:];
   }
@@ -55,7 +55,7 @@
   v9 = [(PDSDaemon *)&v13 init];
   if (v9)
   {
-    v10 = [v4 copy];
+    v10 = [configurationCopy copy];
     configuration = v9->_configuration;
     v9->_configuration = v10;
   }
@@ -65,14 +65,14 @@
 
 - (void)start
 {
-  v3 = [(PDSDaemon *)self configuration];
-  v4 = [v3 queue];
+  configuration = [(PDSDaemon *)self configuration];
+  queue = [configuration queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __18__PDSDaemon_start__block_invoke;
   block[3] = &unk_2799F82F0;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(queue, block);
 }
 
 void __18__PDSDaemon_start__block_invoke(uint64_t a1)
@@ -228,15 +228,15 @@ id __18__PDSDaemon_start__block_invoke_4(uint64_t a1)
   return v2;
 }
 
-- (id)remoteListenerForClientIDs:(id)a3
+- (id)remoteListenerForClientIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [(PDSDaemon *)self _entryStore];
-  if (v5)
+  dsCopy = ds;
+  _entryStore = [(PDSDaemon *)self _entryStore];
+  if (_entryStore)
   {
     v6 = [PDSDaemonListener alloc];
-    v7 = [(PDSDaemon *)self userTracker];
-    v8 = [(PDSDaemonListener *)v6 initWithClientIDs:v4 entryStore:v5 userTracker:v7];
+    userTracker = [(PDSDaemon *)self userTracker];
+    v8 = [(PDSDaemonListener *)v6 initWithClientIDs:dsCopy entryStore:_entryStore userTracker:userTracker];
   }
 
   else
@@ -249,12 +249,12 @@ id __18__PDSDaemon_start__block_invoke_4(uint64_t a1)
 
 - (id)remoteListenerForAllClientIDs
 {
-  v3 = [(PDSDaemon *)self _entryStore];
-  if (v3)
+  _entryStore = [(PDSDaemon *)self _entryStore];
+  if (_entryStore)
   {
     v4 = [PDSDaemonListener alloc];
-    v5 = [(PDSDaemon *)self userTracker];
-    v6 = [(PDSDaemonListener *)v4 initWithEntryStore:v3 userTracker:v5];
+    userTracker = [(PDSDaemon *)self userTracker];
+    v6 = [(PDSDaemonListener *)v4 initWithEntryStore:_entryStore userTracker:userTracker];
   }
 
   else
@@ -268,23 +268,23 @@ id __18__PDSDaemon_start__block_invoke_4(uint64_t a1)
 - (id)remoteInternalListener
 {
   v3 = [PDSInternalDaemonListener alloc];
-  v4 = [(PDSDaemon *)self _underlyingStorage];
-  v5 = [(PDSInternalDaemonListener *)v3 initWithKVStore:v4];
+  _underlyingStorage = [(PDSDaemon *)self _underlyingStorage];
+  v5 = [(PDSInternalDaemonListener *)v3 initWithKVStore:_underlyingStorage];
 
   return v5;
 }
 
 - (id)_underlyingStorage
 {
-  v3 = [(PDSDaemon *)self underlyingStorage];
-  if (!v3)
+  underlyingStorage = [(PDSDaemon *)self underlyingStorage];
+  if (!underlyingStorage)
   {
-    v4 = [(PDSDaemon *)self cacheContainer];
+    cacheContainer = [(PDSDaemon *)self cacheContainer];
     v8 = 0;
-    v3 = [v4 loadWithError:&v8];
+    underlyingStorage = [cacheContainer loadWithError:&v8];
     v5 = v8;
 
-    if (!v3)
+    if (!underlyingStorage)
     {
       v6 = pds_defaultLog();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -294,37 +294,37 @@ id __18__PDSDaemon_start__block_invoke_4(uint64_t a1)
     }
   }
 
-  return v3;
+  return underlyingStorage;
 }
 
 - (id)_entryStore
 {
-  v3 = [(PDSDaemon *)self entryStore];
-  if (!v3)
+  entryStore = [(PDSDaemon *)self entryStore];
+  if (!entryStore)
   {
-    v4 = [(PDSDaemon *)self _underlyingStorage];
-    if (v4)
+    _underlyingStorage = [(PDSDaemon *)self _underlyingStorage];
+    if (_underlyingStorage)
     {
-      v5 = v4;
-      v3 = [[PDSEntryStore alloc] initWithCache:v4];
-      [(PDSDaemon *)self setEntryStore:v3];
-      v6 = [(PDSDaemon *)self coordinator];
-      [(PDSEntryStore *)v3 setDelegate:v6];
+      v5 = _underlyingStorage;
+      entryStore = [[PDSEntryStore alloc] initWithCache:_underlyingStorage];
+      [(PDSDaemon *)self setEntryStore:entryStore];
+      coordinator = [(PDSDaemon *)self coordinator];
+      [(PDSEntryStore *)entryStore setDelegate:coordinator];
     }
 
     else
     {
-      v3 = 0;
+      entryStore = 0;
     }
   }
 
-  return v3;
+  return entryStore;
 }
 
 - (void)_setupSysdiagnoseDump
 {
-  v2 = [(PDSDaemon *)self configuration];
-  v3 = [v2 queue];
+  configuration = [(PDSDaemon *)self configuration];
+  queue = [configuration queue];
   IMLogRegisterStateToSysdiagnoseBlock();
 }
 
@@ -462,7 +462,7 @@ id __34__PDSDaemon__setupSysdiagnoseDump__block_invoke(uint64_t a1)
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_25DED8000, a2, OS_LOG_TYPE_ERROR, "Failed loading cache {error: %@}", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

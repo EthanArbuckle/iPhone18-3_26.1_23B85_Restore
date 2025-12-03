@@ -1,21 +1,21 @@
 @interface SYShowBacklinkIndicatorCommandSynapseImpl
 - (BOOL)isActive;
-- (SYShowBacklinkIndicatorCommandSynapseImpl)initWithDomainIdentifiers:(id)a3 linkIdentifiers:(id)a4;
-- (void)runWithCompletion:(id)a3;
+- (SYShowBacklinkIndicatorCommandSynapseImpl)initWithDomainIdentifiers:(id)identifiers linkIdentifiers:(id)linkIdentifiers;
+- (void)runWithCompletion:(id)completion;
 @end
 
 @implementation SYShowBacklinkIndicatorCommandSynapseImpl
 
-- (SYShowBacklinkIndicatorCommandSynapseImpl)initWithDomainIdentifiers:(id)a3 linkIdentifiers:(id)a4
+- (SYShowBacklinkIndicatorCommandSynapseImpl)initWithDomainIdentifiers:(id)identifiers linkIdentifiers:(id)linkIdentifiers
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  linkIdentifiersCopy = linkIdentifiers;
   v12.receiver = self;
   v12.super_class = SYShowBacklinkIndicatorCommandSynapseImpl;
   v8 = [(SYShowBacklinkIndicatorCommandSynapseImpl *)&v12 init];
   if (v8)
   {
-    v9 = [SYBacklinkIndicatorClient clientWithDomainIdentifiers:v6 linkIdentifiers:v7];
+    v9 = [SYBacklinkIndicatorClient clientWithDomainIdentifiers:identifiersCopy linkIdentifiers:linkIdentifiersCopy];
     client = v8->__client;
     v8->__client = v9;
   }
@@ -25,33 +25,33 @@
 
 - (BOOL)isActive
 {
-  v3 = [(SYShowBacklinkIndicatorCommandSynapseImpl *)self _client];
-  if (v3)
+  _client = [(SYShowBacklinkIndicatorCommandSynapseImpl *)self _client];
+  if (_client)
   {
-    v4 = [(SYShowBacklinkIndicatorCommandSynapseImpl *)self didSucceed];
+    didSucceed = [(SYShowBacklinkIndicatorCommandSynapseImpl *)self didSucceed];
   }
 
   else
   {
-    v4 = 0;
+    didSucceed = 0;
   }
 
-  return v4;
+  return didSucceed;
 }
 
-- (void)runWithCompletion:(id)a3
+- (void)runWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v5 = [(SYShowBacklinkIndicatorCommandSynapseImpl *)self _client];
+  _client = [(SYShowBacklinkIndicatorCommandSynapseImpl *)self _client];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __63__SYShowBacklinkIndicatorCommandSynapseImpl_runWithCompletion___block_invoke;
   v7[3] = &unk_27856B690;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = completionCopy;
   v8 = v6;
-  [v5 requestIndicatorWithCompletion:v7];
+  [_client requestIndicatorWithCompletion:v7];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);

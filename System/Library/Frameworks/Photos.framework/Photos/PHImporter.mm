@@ -1,54 +1,54 @@
 @interface PHImporter
-+ (id)removeItemAtPath:(id)a3 type:(unint64_t)a4 recursive:(BOOL)a5;
-+ (void)dumpImageData:(id)a3;
-+ (void)dumpMetadataForData:(id)a3;
-+ (void)importAssets:(id)a3 fromImportSource:(id)a4 intoLibrary:(id)a5 withOptions:(id)a6 progress:(id *)a7 delegate:(id)a8 atEnd:(id)a9;
-- (BOOL)handleErrorsForRecord:(id)a3 batch:(id)a4 file:(char *)a5 line:(int)a6;
-- (BOOL)shouldImportRecordAsReference:(id)a3;
-- (PHImporter)initWithLibrary:(id)a3 options:(id)a4 source:(id)a5 delegate:(id)a6 completionHandler:(id)a7;
-- (id)_importRecord:(id)a3 createdAlbumIdentifiers:(id)a4 createdFolderIdentifiers:(id)a5;
-- (id)_recordsToImportWithCount:(unint64_t)a3;
-- (id)beginImport:(id)a3;
-- (id)createAlbumForPath:(id)a3 inFolder:(id)a4 error:(id *)a5;
-- (id)createFolderForPath:(id)a3 inFolder:(id)a4 error:(id *)a5;
-- (id)folderChangeRequestForFolder:(id)a3;
-- (id)getDestinationUrlForImportAsset:(id)a3;
-- (id)makeDownloadUrlForParentFolderPath:(id)a3;
-- (id)relativePathComponentsForAlbumPath:(id)a3 fromRootPath:(id)a4;
-- (id)removeImportDirectoryForLibrary:(id)a3;
-- (void)_applyFastVideoModernizationToRecord:(id)a3;
-- (void)addDescriptionPropertiesFromImportAsset:(id)a3 toCreationRequest:(id)a4;
-- (void)addLibraryPropertiesFromImportAssetBundleAsset:(id)a3 toCreationRequest:(id)a4;
-- (void)addRecordToResults:(id)a3;
++ (id)removeItemAtPath:(id)path type:(unint64_t)type recursive:(BOOL)recursive;
++ (void)dumpImageData:(id)data;
++ (void)dumpMetadataForData:(id)data;
++ (void)importAssets:(id)assets fromImportSource:(id)source intoLibrary:(id)library withOptions:(id)options progress:(id *)progress delegate:(id)delegate atEnd:(id)end;
+- (BOOL)handleErrorsForRecord:(id)record batch:(id)batch file:(char *)file line:(int)line;
+- (BOOL)shouldImportRecordAsReference:(id)reference;
+- (PHImporter)initWithLibrary:(id)library options:(id)options source:(id)source delegate:(id)delegate completionHandler:(id)handler;
+- (id)_importRecord:(id)record createdAlbumIdentifiers:(id)identifiers createdFolderIdentifiers:(id)folderIdentifiers;
+- (id)_recordsToImportWithCount:(unint64_t)count;
+- (id)beginImport:(id)import;
+- (id)createAlbumForPath:(id)path inFolder:(id)folder error:(id *)error;
+- (id)createFolderForPath:(id)path inFolder:(id)folder error:(id *)error;
+- (id)folderChangeRequestForFolder:(id)folder;
+- (id)getDestinationUrlForImportAsset:(id)asset;
+- (id)makeDownloadUrlForParentFolderPath:(id)path;
+- (id)relativePathComponentsForAlbumPath:(id)path fromRootPath:(id)rootPath;
+- (id)removeImportDirectoryForLibrary:(id)library;
+- (void)_applyFastVideoModernizationToRecord:(id)record;
+- (void)addDescriptionPropertiesFromImportAsset:(id)asset toCreationRequest:(id)request;
+- (void)addLibraryPropertiesFromImportAssetBundleAsset:(id)asset toCreationRequest:(id)request;
+- (void)addRecordToResults:(id)results;
 - (void)cancellationHandler;
-- (void)downloadNextAssetInRecord:(id)a3 toURL:(id)a4 subRecordEnumerator:(id)a5 completionHandler:(id)a6;
-- (void)ensureContainersExistForAlbumPath:(id)a3 forAsset:(id)a4 completion:(id)a5;
-- (void)ensureEnoughDiskSpaceAvailableIfNeededForAssets:(id)a3 completion:(id)a4;
+- (void)downloadNextAssetInRecord:(id)record toURL:(id)l subRecordEnumerator:(id)enumerator completionHandler:(id)handler;
+- (void)ensureContainersExistForAlbumPath:(id)path forAsset:(id)asset completion:(id)completion;
+- (void)ensureEnoughDiskSpaceAvailableIfNeededForAssets:(id)assets completion:(id)completion;
 - (void)finishImport;
-- (void)importNextAsset:(id)a3;
-- (void)importRecords:(id)a3;
-- (void)importRecords:(id)a3 completionHandler:(id)a4;
-- (void)importedBurstAsset:(id)a3;
-- (void)performLegacyDiskSpaceCheckForRequiredBytes:(int64_t)a3 forPath:(id)a4 withCompletion:(id)a5;
-- (void)updateAlbumCacheWithAlbumIdentifiers:(id)a3;
-- (void)updateFolderCacheWithFolders:(id)a3;
-- (void)validateSourceForAsset:(id)a3;
+- (void)importNextAsset:(id)asset;
+- (void)importRecords:(id)records;
+- (void)importRecords:(id)records completionHandler:(id)handler;
+- (void)importedBurstAsset:(id)asset;
+- (void)performLegacyDiskSpaceCheckForRequiredBytes:(int64_t)bytes forPath:(id)path withCompletion:(id)completion;
+- (void)updateAlbumCacheWithAlbumIdentifiers:(id)identifiers;
+- (void)updateFolderCacheWithFolders:(id)folders;
+- (void)validateSourceForAsset:(id)asset;
 @end
 
 @implementation PHImporter
 
-- (id)removeImportDirectoryForLibrary:(id)a3
+- (id)removeImportDirectoryForLibrary:(id)library
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 pathManager];
-  v6 = [v5 isUBF];
+  libraryCopy = library;
+  pathManager = [libraryCopy pathManager];
+  isUBF = [pathManager isUBF];
 
-  if (v6)
+  if (isUBF)
   {
-    v7 = [v4 pathManager];
+    pathManager2 = [libraryCopy pathManager];
     v29 = 0;
-    v8 = [v7 externalDirectoryWithSubType:1 leafType:1 additionalPathComponents:0 createIfNeeded:0 error:&v29];
+    v8 = [pathManager2 externalDirectoryWithSubType:1 leafType:1 additionalPathComponents:0 createIfNeeded:0 error:&v29];
     v9 = v29;
 
     if (v8)
@@ -96,8 +96,8 @@
 
           v19 = *(*(&v23 + 1) + 8 * i);
           importFileManager = self->_importFileManager;
-          v21 = [v19 path];
-          LODWORD(importFileManager) = [(PLImportFileManager *)importFileManager removeUnusedDCIMDirectoryAtPath:v21];
+          path = [v19 path];
+          LODWORD(importFileManager) = [(PLImportFileManager *)importFileManager removeUnusedDCIMDirectoryAtPath:path];
 
           if (importFileManager)
           {
@@ -131,23 +131,23 @@ void __46__PHImporter_removeImportDirectoryForLibrary___block_invoke(uint64_t a1
   }
 }
 
-- (void)importedBurstAsset:(id)a3
+- (void)importedBurstAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   importedBurstUUIDs = self->_importedBurstUUIDs;
-  v9 = v4;
+  v9 = assetCopy;
   if (!importedBurstUUIDs)
   {
     v6 = objc_opt_new();
     v7 = self->_importedBurstUUIDs;
     self->_importedBurstUUIDs = v6;
 
-    v4 = v9;
+    assetCopy = v9;
     importedBurstUUIDs = self->_importedBurstUUIDs;
   }
 
-  v8 = [v4 burstUUID];
-  [(NSMutableSet *)importedBurstUUIDs addObject:v8];
+  burstUUID = [assetCopy burstUUID];
+  [(NSMutableSet *)importedBurstUUIDs addObject:burstUUID];
 }
 
 - (void)cancellationHandler
@@ -194,26 +194,26 @@ void *__33__PHImporter_cancellationHandler__block_invoke(void *result)
   return result;
 }
 
-- (id)createAlbumForPath:(id)a3 inFolder:(id)a4 error:(id *)a5
+- (id)createAlbumForPath:(id)path inFolder:(id)folder error:(id *)error
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 lastPathComponent];
-  v11 = [PHAssetCollectionChangeRequest creationRequestForAssetCollectionWithTitle:v10];
+  pathCopy = path;
+  folderCopy = folder;
+  lastPathComponent = [pathCopy lastPathComponent];
+  v11 = [PHAssetCollectionChangeRequest creationRequestForAssetCollectionWithTitle:lastPathComponent];
 
-  v12 = [v11 placeholderForCreatedAssetCollection];
-  if (v12)
+  placeholderForCreatedAssetCollection = [v11 placeholderForCreatedAssetCollection];
+  if (placeholderForCreatedAssetCollection)
   {
-    [(NSMutableDictionary *)self->_albumByAlbumPath setObject:v12 forKeyedSubscript:v8];
-    v13 = [v12 localIdentifier];
-    if (v13)
+    [(NSMutableDictionary *)self->_albumByAlbumPath setObject:placeholderForCreatedAssetCollection forKeyedSubscript:pathCopy];
+    localIdentifier = [placeholderForCreatedAssetCollection localIdentifier];
+    if (localIdentifier)
     {
-      [(NSMutableDictionary *)self->_containerPathByLocalIdentifier setObject:v8 forKeyedSubscript:v13];
+      [(NSMutableDictionary *)self->_containerPathByLocalIdentifier setObject:pathCopy forKeyedSubscript:localIdentifier];
     }
 
-    v14 = [(PHImporter *)self folderChangeRequestForFolder:v9];
-    v22[0] = v12;
+    v14 = [(PHImporter *)self folderChangeRequestForFolder:folderCopy];
+    v22[0] = placeholderForCreatedAssetCollection;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:1];
     [v14 addChildCollections:v15];
 
@@ -224,73 +224,73 @@ void *__33__PHImporter_cancellationHandler__block_invoke(void *result)
   {
     v17 = MEMORY[0x1E696ABC0];
     v20 = *MEMORY[0x1E696A278];
-    v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"No error was returned from -[PHPhotoLibrary performChangesAndWait:error:] but the album local identifier was nil for %@", v8];
-    v21 = v13;
+    localIdentifier = [MEMORY[0x1E696AEC0] stringWithFormat:@"No error was returned from -[PHPhotoLibrary performChangesAndWait:error:] but the album local identifier was nil for %@", pathCopy];
+    v21 = localIdentifier;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v21 forKeys:&v20 count:1];
     v16 = [v17 errorWithDomain:@"com.apple.ImportErrorDomain" code:-6 userInfo:v14];
   }
 
-  if (a5)
+  if (error)
   {
     v18 = v16;
-    *a5 = v16;
+    *error = v16;
   }
 
   return v11;
 }
 
-- (void)ensureContainersExistForAlbumPath:(id)a3 forAsset:(id)a4 completion:(id)a5
+- (void)ensureContainersExistForAlbumPath:(id)path forAsset:(id)asset completion:(id)completion
 {
   v65 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(NSMutableDictionary *)self->_albumByAlbumPath objectForKeyedSubscript:v8];
+  pathCopy = path;
+  assetCopy = asset;
+  completionCopy = completion;
+  v11 = [(NSMutableDictionary *)self->_albumByAlbumPath objectForKeyedSubscript:pathCopy];
   v51 = objc_alloc_init(MEMORY[0x1E695DF70]);
   if (v11)
   {
     albumRequestsByAlbumId = self->_albumRequestsByAlbumId;
-    v13 = [v11 localIdentifier];
-    v14 = [(NSMutableDictionary *)albumRequestsByAlbumId objectForKeyedSubscript:v13];
+    localIdentifier = [v11 localIdentifier];
+    prefix = [(NSMutableDictionary *)albumRequestsByAlbumId objectForKeyedSubscript:localIdentifier];
 
-    if (!v14)
+    if (!prefix)
     {
-      v14 = [PHAssetCollectionChangeRequest changeRequestForAssetCollection:v11];
-      v15 = [v11 localIdentifier];
-      if (v15)
+      prefix = [PHAssetCollectionChangeRequest changeRequestForAssetCollection:v11];
+      localIdentifier2 = [v11 localIdentifier];
+      if (localIdentifier2)
       {
-        [(NSMutableDictionary *)self->_albumRequestsByAlbumId setObject:v14 forKeyedSubscript:v15];
+        [(NSMutableDictionary *)self->_albumRequestsByAlbumId setObject:prefix forKeyedSubscript:localIdentifier2];
       }
     }
 
-    v58 = v9;
+    v58 = assetCopy;
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v58 count:1];
-    [v14 addAssets:v16];
+    [prefix addAssets:v16];
 LABEL_7:
-    v17 = 0;
+    placeholderForCreatedAssetCollection2 = 0;
     goto LABEL_42;
   }
 
-  v14 = [(PHImportSource *)self->_source prefix];
-  v18 = [(NSMutableDictionary *)self->_folderByFolderPath objectForKeyedSubscript:v14];
+  prefix = [(PHImportSource *)self->_source prefix];
+  v18 = [(NSMutableDictionary *)self->_folderByFolderPath objectForKeyedSubscript:prefix];
   if (!v18)
   {
     v16 = PLImportGetLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      v36 = [v14 lastPathComponent];
+      lastPathComponent = [prefix lastPathComponent];
       *buf = 138412290;
-      v61 = v36;
+      v61 = lastPathComponent;
       _os_log_impl(&dword_19C86F000, v16, OS_LOG_TYPE_ERROR, "Failed to create root folder '%@'", buf, 0xCu);
     }
 
     goto LABEL_7;
   }
 
-  v46 = v10;
+  v46 = completionCopy;
   v19 = v18;
-  v20 = [(PHImporter *)self relativePathComponentsForAlbumPath:v8 fromRootPath:v14];
-  v21 = v14;
+  v20 = [(PHImporter *)self relativePathComponentsForAlbumPath:pathCopy fromRootPath:prefix];
+  v21 = prefix;
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
@@ -298,8 +298,8 @@ LABEL_7:
   v22 = v20;
   v23 = [v22 countByEnumeratingWithState:&v54 objects:v64 count:16];
   v50 = v22;
-  v47 = v9;
-  v48 = v8;
+  v47 = assetCopy;
+  v48 = pathCopy;
   v45 = v21;
   if (v23)
   {
@@ -320,39 +320,39 @@ LABEL_7:
 
         v21 = [v28 stringByAppendingPathComponent:*(*(&v54 + 1) + 8 * v27)];
 
-        v30 = [(NSMutableDictionary *)self->_folderByFolderPath objectForKeyedSubscript:v21];
+        placeholderForCreatedCollectionList = [(NSMutableDictionary *)self->_folderByFolderPath objectForKeyedSubscript:v21];
 
-        if (!v30)
+        if (!placeholderForCreatedCollectionList)
         {
           v53 = 0;
-          v31 = self;
+          selfCopy = self;
           v32 = [(PHImporter *)self createFolderForPath:v21 inFolder:v29 error:&v53];
           v33 = v53;
           if (v33)
           {
             v37 = v33;
-            v38 = PLImportGetLog();
-            if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
+            localIdentifier4 = PLImportGetLog();
+            if (os_log_type_enabled(localIdentifier4, OS_LOG_TYPE_ERROR))
             {
-              v39 = [v21 lastPathComponent];
+              lastPathComponent2 = [v21 lastPathComponent];
               *buf = 138412546;
-              v61 = v39;
+              v61 = lastPathComponent2;
               v62 = 2112;
               v63 = v37;
-              _os_log_impl(&dword_19C86F000, v38, OS_LOG_TYPE_ERROR, "Failed to create folder '%@' (%@)", buf, 0x16u);
+              _os_log_impl(&dword_19C86F000, localIdentifier4, OS_LOG_TYPE_ERROR, "Failed to create folder '%@' (%@)", buf, 0x16u);
             }
 
-            v17 = 0;
+            placeholderForCreatedAssetCollection2 = 0;
             v19 = v26;
             goto LABEL_40;
           }
 
-          v30 = [v32 placeholderForCreatedCollectionList];
-          v34 = [v30 localIdentifier];
-          if (v34)
+          placeholderForCreatedCollectionList = [v32 placeholderForCreatedCollectionList];
+          localIdentifier3 = [placeholderForCreatedCollectionList localIdentifier];
+          if (localIdentifier3)
           {
-            [v51 addObject:v34];
-            [(NSMutableDictionary *)v31->_folderRequestByFolderId setObject:v32 forKeyedSubscript:v34];
+            [v51 addObject:localIdentifier3];
+            [(NSMutableDictionary *)selfCopy->_folderRequestByFolderId setObject:v32 forKeyedSubscript:localIdentifier3];
           }
 
           else
@@ -360,19 +360,19 @@ LABEL_7:
             v35 = PLImportGetLog();
             if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
             {
-              v49 = [v30 localizedTitle];
+              localizedTitle = [placeholderForCreatedCollectionList localizedTitle];
               *buf = 138412290;
-              v61 = v49;
+              v61 = localizedTitle;
               _os_log_impl(&dword_19C86F000, v35, OS_LOG_TYPE_ERROR, "Failed to get a valid local identifier for collection '%@'", buf, 0xCu);
             }
 
             v26 = v50;
           }
 
-          self = v31;
+          self = selfCopy;
         }
 
-        v19 = v30;
+        v19 = placeholderForCreatedCollectionList;
 
         ++v27;
         v28 = v21;
@@ -391,12 +391,12 @@ LABEL_7:
 
     if (v19)
     {
-      v9 = v47;
-      v8 = v48;
+      assetCopy = v47;
+      pathCopy = v48;
       goto LABEL_32;
     }
 
-    v17 = 0;
+    placeholderForCreatedAssetCollection2 = 0;
   }
 
   else
@@ -404,69 +404,69 @@ LABEL_7:
 
 LABEL_32:
     v52 = 0;
-    [(PHImporter *)self createAlbumForPath:v8 inFolder:v19 error:&v52];
+    [(PHImporter *)self createAlbumForPath:pathCopy inFolder:v19 error:&v52];
     v32 = v40 = self;
     v37 = v52;
     if (v37)
     {
-      v38 = PLImportGetLog();
-      if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
+      localIdentifier4 = PLImportGetLog();
+      if (os_log_type_enabled(localIdentifier4, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v61 = v8;
+        v61 = pathCopy;
         v62 = 2112;
         v63 = v37;
-        _os_log_impl(&dword_19C86F000, v38, OS_LOG_TYPE_ERROR, "Failed to lookup or create folder path to album '%@' (%@)", buf, 0x16u);
+        _os_log_impl(&dword_19C86F000, localIdentifier4, OS_LOG_TYPE_ERROR, "Failed to lookup or create folder path to album '%@' (%@)", buf, 0x16u);
       }
 
-      v17 = 0;
+      placeholderForCreatedAssetCollection2 = 0;
     }
 
     else
     {
       v41 = v40;
-      v59 = v9;
+      v59 = assetCopy;
       v42 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v59 count:1];
       [v32 addAssets:v42];
 
-      v43 = [v32 placeholderForCreatedAssetCollection];
-      v38 = [v43 localIdentifier];
+      placeholderForCreatedAssetCollection = [v32 placeholderForCreatedAssetCollection];
+      localIdentifier4 = [placeholderForCreatedAssetCollection localIdentifier];
 
-      if (v38)
+      if (localIdentifier4)
       {
-        [(NSMutableDictionary *)v41->_albumRequestsByAlbumId setObject:v32 forKeyedSubscript:v38];
+        [(NSMutableDictionary *)v41->_albumRequestsByAlbumId setObject:v32 forKeyedSubscript:localIdentifier4];
       }
 
-      v17 = [v32 placeholderForCreatedAssetCollection];
+      placeholderForCreatedAssetCollection2 = [v32 placeholderForCreatedAssetCollection];
     }
 
     v29 = v19;
 LABEL_40:
   }
 
-  v9 = v47;
-  v8 = v48;
-  v10 = v46;
+  assetCopy = v47;
+  pathCopy = v48;
+  completionCopy = v46;
 
-  v14 = v45;
+  prefix = v45;
   v11 = 0;
   v16 = v50;
 LABEL_42:
 
-  if (v10)
+  if (completionCopy)
   {
-    v44 = [v17 localIdentifier];
-    v10[2](v10, v44, v51);
+    localIdentifier5 = [placeholderForCreatedAssetCollection2 localIdentifier];
+    completionCopy[2](completionCopy, localIdentifier5, v51);
   }
 }
 
-- (id)relativePathComponentsForAlbumPath:(id)a3 fromRootPath:(id)a4
+- (id)relativePathComponentsForAlbumPath:(id)path fromRootPath:(id)rootPath
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5 && (v7 = [v5 length], v7 > objc_msgSend(v6, "length")))
+  pathCopy = path;
+  rootPathCopy = rootPath;
+  if (pathCopy && (v7 = [pathCopy length], v7 > objc_msgSend(rootPathCopy, "length")))
   {
-    v8 = [v5 substringFromIndex:{objc_msgSend(v6, "length") + 1}];
+    v8 = [pathCopy substringFromIndex:{objc_msgSend(rootPathCopy, "length") + 1}];
   }
 
   else
@@ -479,47 +479,47 @@ LABEL_42:
   return v9;
 }
 
-- (void)addRecordToResults:(id)a3
+- (void)addRecordToResults:(id)results
 {
   importQueue = self->_importQueue;
-  v5 = a3;
+  resultsCopy = results;
   dispatch_assert_queue_V2(importQueue);
-  v6 = [(PHImporter *)self results];
-  [v6 addImportRecord:v5];
+  results = [(PHImporter *)self results];
+  [results addImportRecord:resultsCopy];
 
-  v7 = [(PHImporter *)self progress];
-  [v7 setCompletedUnitCount:{objc_msgSend(v7, "completedUnitCount") + 1}];
+  progress = [(PHImporter *)self progress];
+  [progress setCompletedUnitCount:{objc_msgSend(progress, "completedUnitCount") + 1}];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained completedImportRecord:v5];
+  [WeakRetained completedImportRecord:resultsCopy];
 }
 
-- (void)updateFolderCacheWithFolders:(id)a3
+- (void)updateFolderCacheWithFolders:(id)folders
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  foldersCopy = folders;
   v5 = [PHFetchOptions fetchOptionsWithPhotoLibrary:self->_library orObject:0];
-  v6 = [PHCollectionList fetchCollectionListsWithLocalIdentifiers:v4 options:v5];
+  v6 = [PHCollectionList fetchCollectionListsWithLocalIdentifiers:foldersCopy options:v5];
 
   v19 = v6;
-  v7 = [v6 fetchedObjects];
-  if (![v7 count])
+  fetchedObjects = [v6 fetchedObjects];
+  if (![fetchedObjects count])
   {
     v8 = PLImportGetLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v27 = v4;
+      v27 = foldersCopy;
       _os_log_impl(&dword_19C86F000, v8, OS_LOG_TYPE_ERROR, "no PHCollectionLists for %@", buf, 0xCu);
     }
   }
 
-  v20 = v4;
+  v20 = foldersCopy;
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v9 = v7;
+  v9 = fetchedObjects;
   v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v10)
   {
@@ -536,8 +536,8 @@ LABEL_42:
 
         v14 = *(*(&v21 + 1) + 8 * i);
         containerPathByLocalIdentifier = self->_containerPathByLocalIdentifier;
-        v16 = [v14 localIdentifier];
-        v17 = [(NSMutableDictionary *)containerPathByLocalIdentifier objectForKeyedSubscript:v16];
+        localIdentifier = [v14 localIdentifier];
+        v17 = [(NSMutableDictionary *)containerPathByLocalIdentifier objectForKeyedSubscript:localIdentifier];
 
         if (v17)
         {
@@ -562,24 +562,24 @@ LABEL_42:
   }
 }
 
-- (void)updateAlbumCacheWithAlbumIdentifiers:(id)a3
+- (void)updateAlbumCacheWithAlbumIdentifiers:(id)identifiers
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = [PHFetchOptions fetchOptionsWithPhotoLibrary:self->_library orObject:0];
-  v6 = [PHAssetCollection fetchAssetCollectionsWithLocalIdentifiers:v4 options:v5];
+  v6 = [PHAssetCollection fetchAssetCollectionsWithLocalIdentifiers:identifiersCopy options:v5];
 
   v19 = v6;
-  v7 = [v6 fetchedObjects];
-  v8 = v7;
-  v20 = v4;
-  if (v7)
+  fetchedObjects = [v6 fetchedObjects];
+  v8 = fetchedObjects;
+  v20 = identifiersCopy;
+  if (fetchedObjects)
   {
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v9 = [v7 countByEnumeratingWithState:&v21 objects:v27 count:16];
+    v9 = [fetchedObjects countByEnumeratingWithState:&v21 objects:v27 count:16];
     if (v9)
     {
       v10 = v9;
@@ -595,8 +595,8 @@ LABEL_42:
 
           v13 = *(*(&v21 + 1) + 8 * i);
           containerPathByLocalIdentifier = self->_containerPathByLocalIdentifier;
-          v15 = [v13 localIdentifier];
-          v16 = [(NSMutableDictionary *)containerPathByLocalIdentifier objectForKeyedSubscript:v15];
+          localIdentifier = [v13 localIdentifier];
+          v16 = [(NSMutableDictionary *)containerPathByLocalIdentifier objectForKeyedSubscript:localIdentifier];
 
           if (v16)
           {
@@ -627,27 +627,27 @@ LABEL_42:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v26 = v4;
+      v26 = identifiersCopy;
       _os_log_impl(&dword_19C86F000, v18, OS_LOG_TYPE_ERROR, "no PHAssetCollection for identifiers: %@", buf, 0xCu);
     }
   }
 }
 
-- (id)folderChangeRequestForFolder:(id)a3
+- (id)folderChangeRequestForFolder:(id)folder
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  folderCopy = folder;
   folderRequestByFolderId = self->_folderRequestByFolderId;
-  v6 = [v4 localIdentifier];
-  v7 = [(NSMutableDictionary *)folderRequestByFolderId objectForKeyedSubscript:v6];
+  localIdentifier = [folderCopy localIdentifier];
+  v7 = [(NSMutableDictionary *)folderRequestByFolderId objectForKeyedSubscript:localIdentifier];
 
   if (!v7)
   {
-    v7 = [PHCollectionListChangeRequest changeRequestForCollectionList:v4];
-    v8 = [v4 localIdentifier];
-    if (v8 && v7)
+    v7 = [PHCollectionListChangeRequest changeRequestForCollectionList:folderCopy];
+    localIdentifier2 = [folderCopy localIdentifier];
+    if (localIdentifier2 && v7)
     {
-      [(NSMutableDictionary *)self->_folderRequestByFolderId setObject:v7 forKeyedSubscript:v8];
+      [(NSMutableDictionary *)self->_folderRequestByFolderId setObject:v7 forKeyedSubscript:localIdentifier2];
     }
 
     else
@@ -656,7 +656,7 @@ LABEL_42:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
         v11 = 134218240;
-        v12 = v8;
+        v12 = localIdentifier2;
         v13 = 2048;
         v14 = v7;
         _os_log_impl(&dword_19C86F000, v9, OS_LOG_TYPE_ERROR, "Failed to get a local identifier (%p) or request (%p) for collection", &v11, 0x16u);
@@ -667,41 +667,41 @@ LABEL_42:
   return v7;
 }
 
-- (id)createFolderForPath:(id)a3 inFolder:(id)a4 error:(id *)a5
+- (id)createFolderForPath:(id)path inFolder:(id)folder error:(id *)error
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  pathCopy = path;
+  folderCopy = folder;
+  if (pathCopy)
   {
-    v10 = [v8 lastPathComponent];
-    v11 = [PHCollectionListChangeRequest creationRequestForCollectionListWithTitle:v10];
+    lastPathComponent = [pathCopy lastPathComponent];
+    v11 = [PHCollectionListChangeRequest creationRequestForCollectionListWithTitle:lastPathComponent];
 
-    v12 = [v11 placeholderForCreatedCollectionList];
-    if (v12)
+    placeholderForCreatedCollectionList = [v11 placeholderForCreatedCollectionList];
+    if (placeholderForCreatedCollectionList)
     {
-      v13 = [(PHImporter *)self folderChangeRequestForFolder:v9];
-      v26[0] = v12;
+      pathCopy = [(PHImporter *)self folderChangeRequestForFolder:folderCopy];
+      v26[0] = placeholderForCreatedCollectionList;
       v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
-      [v13 addChildCollections:v14];
+      [pathCopy addChildCollections:v14];
 
-      [(NSMutableDictionary *)self->_folderByFolderPath setObject:v12 forKeyedSubscript:v8];
-      v15 = [v12 localIdentifier];
-      if (v15)
+      [(NSMutableDictionary *)self->_folderByFolderPath setObject:placeholderForCreatedCollectionList forKeyedSubscript:pathCopy];
+      localIdentifier = [placeholderForCreatedCollectionList localIdentifier];
+      if (localIdentifier)
       {
         containerPathByLocalIdentifier = self->_containerPathByLocalIdentifier;
-        v17 = [v12 localIdentifier];
-        [(NSMutableDictionary *)containerPathByLocalIdentifier setObject:v8 forKeyedSubscript:v17];
+        localIdentifier2 = [placeholderForCreatedCollectionList localIdentifier];
+        [(NSMutableDictionary *)containerPathByLocalIdentifier setObject:pathCopy forKeyedSubscript:localIdentifier2];
       }
 
       else
       {
-        v17 = PLImportGetLog();
-        if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+        localIdentifier2 = PLImportGetLog();
+        if (os_log_type_enabled(localIdentifier2, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v25 = v8;
-          _os_log_impl(&dword_19C86F000, v17, OS_LOG_TYPE_ERROR, "Failed to get a local identifier for collection created for %@", buf, 0xCu);
+          v25 = pathCopy;
+          _os_log_impl(&dword_19C86F000, localIdentifier2, OS_LOG_TYPE_ERROR, "Failed to get a local identifier for collection created for %@", buf, 0xCu);
         }
       }
 
@@ -712,16 +712,16 @@ LABEL_42:
     {
       v18 = MEMORY[0x1E696ABC0];
       v22 = *MEMORY[0x1E696A278];
-      v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"folder local identifier was nil for %@", v8];
-      v23 = v13;
-      v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v23 forKeys:&v22 count:1];
-      v19 = [v18 errorWithDomain:@"com.apple.ImportErrorDomain" code:-6 userInfo:v15];
+      pathCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"folder local identifier was nil for %@", pathCopy];
+      v23 = pathCopy;
+      localIdentifier = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v23 forKeys:&v22 count:1];
+      v19 = [v18 errorWithDomain:@"com.apple.ImportErrorDomain" code:-6 userInfo:localIdentifier];
     }
 
-    if (a5)
+    if (error)
     {
       v20 = v19;
-      *a5 = v19;
+      *error = v19;
     }
   }
 
@@ -733,41 +733,41 @@ LABEL_42:
   return v11;
 }
 
-- (void)validateSourceForAsset:(id)a3
+- (void)validateSourceForAsset:(id)asset
 {
-  v10 = a3;
-  v4 = [v10 source];
-  v5 = [v4 isAvailable];
+  assetCopy = asset;
+  source = [assetCopy source];
+  isAvailable = [source isAvailable];
 
-  if ((v5 & 1) == 0)
+  if ((isAvailable & 1) == 0)
   {
-    v6 = [(PHImporter *)self results];
-    v7 = [v10 source];
-    v8 = [v7 name];
-    v9 = [v6 addExceptionWithType:3 path:v8 underlyingError:0 file:"/Library/Caches/com.apple.xbs/Sources/Photos/Projects/PhotoKit/Sources/Import/PHImporter.m" line:979];
+    results = [(PHImporter *)self results];
+    source2 = [assetCopy source];
+    name = [source2 name];
+    v9 = [results addExceptionWithType:3 path:name underlyingError:0 file:"/Library/Caches/com.apple.xbs/Sources/Photos/Projects/PhotoKit/Sources/Import/PHImporter.m" line:979];
 
     self->_isCanceled = 1;
   }
 }
 
-- (BOOL)handleErrorsForRecord:(id)a3 batch:(id)a4 file:(char *)a5 line:(int)a6
+- (BOOL)handleErrorsForRecord:(id)record batch:(id)batch file:(char *)file line:(int)line
 {
   v21 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = [v7 exceptions];
-  v9 = [v8 count];
+  recordCopy = record;
+  exceptions = [recordCopy exceptions];
+  v9 = [exceptions count];
 
   if (v9)
   {
-    v10 = [v7 importAsset];
+    importAsset = [recordCopy importAsset];
 
-    if (v10)
+    if (importAsset)
     {
       v11 = PLImportGetLog();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        v12 = [v7 exceptions];
-        if ([v12 count] <= 1)
+        exceptions2 = [recordCopy exceptions];
+        if ([exceptions2 count] <= 1)
         {
           v13 = @"]";
         }
@@ -777,7 +777,7 @@ LABEL_42:
           v13 = @"S]\n";
         }
 
-        v14 = [PHImportException logForAllExceptions:v7];
+        v14 = [PHImportException logForAllExceptions:recordCopy];
         v17 = 138412546;
         v18 = v13;
         v19 = 2112;
@@ -785,10 +785,10 @@ LABEL_42:
         _os_log_impl(&dword_19C86F000, v11, OS_LOG_TYPE_ERROR, "[IMPORT ERROR%@ %@", &v17, 0x16u);
       }
 
-      v15 = [v7 importAsset];
-      [(PHImporter *)self validateSourceForAsset:v15];
+      importAsset2 = [recordCopy importAsset];
+      [(PHImporter *)self validateSourceForAsset:importAsset2];
 
-      [v7 cleanupAfterFailure];
+      [recordCopy cleanupAfterFailure];
     }
   }
 
@@ -845,24 +845,24 @@ LABEL_42:
 
     else
     {
-      v9 = [(PHImporter *)self progress];
-      v10 = [v9 totalUnitCount];
-      v11 = [(PHImporter *)self progress];
-      [v11 setCompletedUnitCount:v10];
+      progress = [(PHImporter *)self progress];
+      totalUnitCount = [progress totalUnitCount];
+      progress2 = [(PHImporter *)self progress];
+      [progress2 setCompletedUnitCount:totalUnitCount];
     }
 
     self->_importState = 3;
     if ([(NSMutableSet *)self->_importedBurstUUIDs count])
     {
-      v12 = [MEMORY[0x1E69BE290] sharedAssetsSaver];
-      v13 = [(NSMutableSet *)self->_importedBurstUUIDs allObjects];
-      v14 = [(PHPhotoLibrary *)self->_library photoLibraryURL];
-      v15 = [v12 validateAvalanches:v13 inLibraryWithURL:v14];
+      mEMORY[0x1E69BE290] = [MEMORY[0x1E69BE290] sharedAssetsSaver];
+      allObjects = [(NSMutableSet *)self->_importedBurstUUIDs allObjects];
+      photoLibraryURL = [(PHPhotoLibrary *)self->_library photoLibraryURL];
+      v15 = [mEMORY[0x1E69BE290] validateAvalanches:allObjects inLibraryWithURL:photoLibraryURL];
 
-      v16 = [(PHImportOptions *)self->_options destinationAlbum];
-      if (v16)
+      destinationAlbum = [(PHImportOptions *)self->_options destinationAlbum];
+      if (destinationAlbum)
       {
-        v17 = v16;
+        v17 = destinationAlbum;
         v18 = [v15 count];
 
         if (v18)
@@ -882,10 +882,10 @@ LABEL_42:
             v22 = PLImportGetLog();
             if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
             {
-              v23 = [(PHImportOptions *)self->_options destinationAlbum];
-              v24 = [v23 localizedTitle];
+              destinationAlbum2 = [(PHImportOptions *)self->_options destinationAlbum];
+              localizedTitle = [destinationAlbum2 localizedTitle];
               *buf = 138412546;
-              v46 = v24;
+              v46 = localizedTitle;
               v47 = 2112;
               v48 = v21;
               _os_log_impl(&dword_19C86F000, v22, OS_LOG_TYPE_ERROR, "Error adding bursts to album '%@': %@", buf, 0x16u);
@@ -907,32 +907,32 @@ LABEL_42:
       }
     }
 
-    v27 = [(PHImporter *)self results];
-    [v27 logPMR];
+    results = [(PHImporter *)self results];
+    [results logPMR];
 
     completionHandler = self->_completionHandler;
     if (completionHandler)
     {
-      v29 = [(PHImporter *)self results];
-      completionHandler[2](completionHandler, v29);
+      results2 = [(PHImporter *)self results];
+      completionHandler[2](completionHandler, results2);
     }
 
     v30 = PLImportGetLog();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
     {
-      v31 = [(PHImporter *)self results];
-      v32 = [v31 importedCount];
-      v33 = [(PHImporter *)self results];
-      v34 = [v33 importSource];
+      results3 = [(PHImporter *)self results];
+      importedCount = [results3 importedCount];
+      results4 = [(PHImporter *)self results];
+      importSource = [results4 importSource];
       v35 = objc_opt_class();
-      v36 = [(PHImporter *)self results];
-      v37 = [v36 importSource];
+      results5 = [(PHImporter *)self results];
+      importSource2 = [results5 importSource];
       *buf = 134218498;
-      v46 = v32;
+      v46 = importedCount;
       v47 = 2114;
       v48 = v35;
       v49 = 2048;
-      v50 = v37;
+      v50 = importSource2;
       _os_log_impl(&dword_19C86F000, v30, OS_LOG_TYPE_DEFAULT, "Finished importing %lu assets from %{public}@ <%p>", buf, 0x20u);
     }
   }
@@ -954,136 +954,136 @@ void __26__PHImporter_finishImport__block_invoke(uint64_t a1)
   }
 }
 
-- (void)addLibraryPropertiesFromImportAssetBundleAsset:(id)a3 toCreationRequest:(id)a4
+- (void)addLibraryPropertiesFromImportAssetBundleAsset:(id)asset toCreationRequest:(id)request
 {
-  v12 = a4;
-  v5 = [a3 assetBundle];
-  v6 = [v5 videoComplementVisibilityState];
-  if (v6)
+  requestCopy = request;
+  assetBundle = [asset assetBundle];
+  videoComplementVisibilityState = [assetBundle videoComplementVisibilityState];
+  if (videoComplementVisibilityState)
   {
-    [v12 setPhotoIrisVisibilityState:v6];
+    [requestCopy setPhotoIrisVisibilityState:videoComplementVisibilityState];
   }
 
-  v7 = [v12 creationDate];
+  creationDate = [requestCopy creationDate];
 
-  if (!v7)
+  if (!creationDate)
   {
-    v8 = [v5 libraryCreationDate];
-    if (v8)
+    libraryCreationDate = [assetBundle libraryCreationDate];
+    if (libraryCreationDate)
     {
-      [v12 setCreationDate:v8];
-      v9 = [v5 libraryCreationDateTimeZone];
-      if (v9)
+      [requestCopy setCreationDate:libraryCreationDate];
+      libraryCreationDateTimeZone = [assetBundle libraryCreationDateTimeZone];
+      if (libraryCreationDateTimeZone)
       {
-        [v12 setTimeZone:v9 withDate:v8];
+        [requestCopy setTimeZone:libraryCreationDateTimeZone withDate:libraryCreationDate];
       }
     }
   }
 
-  v10 = [v12 location];
+  location = [requestCopy location];
 
-  if (!v10)
+  if (!location)
   {
-    v11 = [v5 libraryLocation];
-    if (v11)
+    libraryLocation = [assetBundle libraryLocation];
+    if (libraryLocation)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        [v12 setLocation:v11];
+        [requestCopy setLocation:libraryLocation];
       }
     }
   }
 
-  if ([v5 spatialOvercaptureResourcesPurgeable])
+  if ([assetBundle spatialOvercaptureResourcesPurgeable])
   {
-    [v12 trashAllSpatialOverCaptureResources];
+    [requestCopy trashAllSpatialOverCaptureResources];
   }
 }
 
-- (void)addDescriptionPropertiesFromImportAsset:(id)a3 toCreationRequest:(id)a4
+- (void)addDescriptionPropertiesFromImportAsset:(id)asset toCreationRequest:(id)request
 {
-  v14 = a3;
-  v5 = a4;
-  v6 = [v5 title];
+  assetCopy = asset;
+  requestCopy = request;
+  title = [requestCopy title];
 
-  if (!v6)
+  if (!title)
   {
-    v7 = [v14 title];
-    if (v7)
+    title2 = [assetCopy title];
+    if (title2)
     {
-      [v5 setTitle:v7];
+      [requestCopy setTitle:title2];
     }
   }
 
-  v8 = [v5 keywordTitles];
+  keywordTitles = [requestCopy keywordTitles];
 
-  if (!v8)
+  if (!keywordTitles)
   {
-    v9 = [v14 keywordTitles];
-    if (v9)
+    keywordTitles2 = [assetCopy keywordTitles];
+    if (keywordTitles2)
     {
-      [v5 setKeywordTitles:v9];
+      [requestCopy setKeywordTitles:keywordTitles2];
     }
   }
 
-  v10 = [v5 assetDescription];
+  assetDescription = [requestCopy assetDescription];
 
-  if (!v10)
+  if (!assetDescription)
   {
-    v11 = [v14 assetDescription];
-    if (v11)
+    assetDescription2 = [assetCopy assetDescription];
+    if (assetDescription2)
     {
-      [v5 setAssetDescription:v11];
+      [requestCopy setAssetDescription:assetDescription2];
     }
   }
 
-  v12 = [v5 accessibilityDescription];
+  accessibilityDescription = [requestCopy accessibilityDescription];
 
-  if (!v12)
+  if (!accessibilityDescription)
   {
-    v13 = [v14 accessibilityDescription];
-    if (v13)
+    accessibilityDescription2 = [assetCopy accessibilityDescription];
+    if (accessibilityDescription2)
     {
-      [v5 setAccessibilityDescription:v13];
+      [requestCopy setAccessibilityDescription:accessibilityDescription2];
     }
   }
 }
 
-- (void)_applyFastVideoModernizationToRecord:(id)a3
+- (void)_applyFastVideoModernizationToRecord:(id)record
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 importAsset];
-  v6 = [v4 timers];
-  v7 = [v6 startTiming:10 subtype:0];
+  recordCopy = record;
+  importAsset = [recordCopy importAsset];
+  timers = [recordCopy timers];
+  v7 = [timers startTiming:10 subtype:0];
 
-  if ([v5 isMovie] && !-[PHImporter shouldImportRecordAsReference:](self, "shouldImportRecordAsReference:", v4))
+  if ([importAsset isMovie] && !-[PHImporter shouldImportRecordAsReference:](self, "shouldImportRecordAsReference:", recordCopy))
   {
-    v8 = [v5 metadata];
-    v9 = [v8 contentTypeFromFastModernizeVideoMedia];
+    metadata = [importAsset metadata];
+    contentTypeFromFastModernizeVideoMedia = [metadata contentTypeFromFastModernizeVideoMedia];
 
-    if (v9)
+    if (contentTypeFromFastModernizeVideoMedia)
     {
-      v10 = [v5 contentType];
-      v11 = [v10 isEqual:v9];
+      contentType = [importAsset contentType];
+      v11 = [contentType isEqual:contentTypeFromFastModernizeVideoMedia];
 
       if ((v11 & 1) == 0)
       {
-        v12 = [v9 preferredFilenameExtension];
-        v13 = [v4 downloadedPath];
-        v14 = [v13 stringByDeletingPathExtension];
-        v25 = v12;
-        v15 = [v14 stringByAppendingPathExtension:v12];
+        preferredFilenameExtension = [contentTypeFromFastModernizeVideoMedia preferredFilenameExtension];
+        downloadedPath = [recordCopy downloadedPath];
+        stringByDeletingPathExtension = [downloadedPath stringByDeletingPathExtension];
+        v25 = preferredFilenameExtension;
+        v15 = [stringByDeletingPathExtension stringByAppendingPathExtension:preferredFilenameExtension];
 
-        v16 = [MEMORY[0x1E696AC08] defaultManager];
+        defaultManager = [MEMORY[0x1E696AC08] defaultManager];
         v17 = MEMORY[0x1E695DFF8];
-        v18 = [v4 downloadedPath];
-        v19 = [v17 fileURLWithPath:v18];
+        downloadedPath2 = [recordCopy downloadedPath];
+        v19 = [v17 fileURLWithPath:downloadedPath2];
         v24 = v15;
         v20 = [MEMORY[0x1E695DFF8] fileURLWithPath:v15];
         v26 = 0;
-        LOBYTE(v17) = [v16 moveItemAtURL:v19 toURL:v20 error:&v26];
+        LOBYTE(v17) = [defaultManager moveItemAtURL:v19 toURL:v20 error:&v26];
         v21 = v26;
 
         if ((v17 & 1) == 0)
@@ -1097,28 +1097,28 @@ void __26__PHImporter_finishImport__block_invoke(uint64_t a1)
           }
         }
 
-        [v4 setDownloadedPath:v24];
+        [recordCopy setDownloadedPath:v24];
       }
     }
   }
 
-  v23 = [v4 timers];
-  [v23 stopTiming:v7];
+  timers2 = [recordCopy timers];
+  [timers2 stopTiming:v7];
 }
 
-- (id)_importRecord:(id)a3 createdAlbumIdentifiers:(id)a4 createdFolderIdentifiers:(id)a5
+- (id)_importRecord:(id)record createdAlbumIdentifiers:(id)identifiers createdFolderIdentifiers:(id)folderIdentifiers
 {
   v65 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v52 = a5;
-  v10 = [v8 importAsset];
-  [(PHImporter *)self _applyFastVideoModernizationToRecord:v8];
-  v49 = v9;
-  if ([v10 shouldPreserveUUID])
+  recordCopy = record;
+  identifiersCopy = identifiers;
+  folderIdentifiersCopy = folderIdentifiers;
+  importAsset = [recordCopy importAsset];
+  [(PHImporter *)self _applyFastVideoModernizationToRecord:recordCopy];
+  v49 = identifiersCopy;
+  if ([importAsset shouldPreserveUUID])
   {
-    v11 = [v10 uuid];
-    v12 = [PHAssetCreationRequest creationRequestForAssetWithUUID:v11];
+    uuid = [importAsset uuid];
+    v12 = [PHAssetCreationRequest creationRequestForAssetWithUUID:uuid];
   }
 
   else
@@ -1128,12 +1128,12 @@ void __26__PHImporter_finishImport__block_invoke(uint64_t a1)
 
   [v12 setImportSessionID:{self->_importSessionID, v49}];
   [v12 setImportedBy:{-[PHImportOptions importedBy](self->_options, "importedBy")}];
-  v53 = v10;
-  v13 = [v10 customAssetProperties];
-  [v12 setCustomAssetProperties:v13];
+  v53 = importAsset;
+  customAssetProperties = [importAsset customAssetProperties];
+  [v12 setCustomAssetProperties:customAssetProperties];
 
-  v51 = v8;
-  [v8 allImportRecords];
+  v51 = recordCopy;
+  [recordCopy allImportRecords];
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
@@ -1153,12 +1153,12 @@ void __26__PHImporter_finishImport__block_invoke(uint64_t a1)
         }
 
         v17 = *(*(&v59 + 1) + 8 * i);
-        v18 = [v17 importAsset];
-        [(PHImporter *)self addDescriptionPropertiesFromImportAsset:v18 toCreationRequest:v12];
+        importAsset2 = [v17 importAsset];
+        [(PHImporter *)self addDescriptionPropertiesFromImportAsset:importAsset2 toCreationRequest:v12];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [(PHImporter *)self addLibraryPropertiesFromImportAssetBundleAsset:v18 toCreationRequest:v12];
+          [(PHImporter *)self addLibraryPropertiesFromImportAssetBundleAsset:importAsset2 toCreationRequest:v12];
         }
 
         v19 = objc_alloc_init(PHAssetResourceCreationOptions);
@@ -1166,16 +1166,16 @@ void __26__PHImporter_finishImport__block_invoke(uint64_t a1)
         if (v20)
         {
           [(PHAssetResourceCreationOptions *)v19 setShouldMoveFile:0];
-          v21 = [v17 importAsset];
-          -[PHAssetResourceCreationOptions setShouldIngestInPlace:](v19, "setShouldIngestInPlace:", [v21 hasOriginalResourceType]);
+          importAsset3 = [v17 importAsset];
+          -[PHAssetResourceCreationOptions setShouldIngestInPlace:](v19, "setShouldIngestInPlace:", [importAsset3 hasOriginalResourceType]);
         }
 
         else
         {
-          v22 = [(PHPhotoLibrary *)self->_library pathManager];
-          v23 = [v22 isUBF];
+          pathManager = [(PHPhotoLibrary *)self->_library pathManager];
+          isUBF = [pathManager isUBF];
 
-          if (v23)
+          if (isUBF)
           {
             [(PHAssetResourceCreationOptions *)v19 setShouldMoveFile:1];
             [(PHAssetResourceCreationOptions *)v19 setShouldIngestInPlace:0];
@@ -1183,42 +1183,42 @@ void __26__PHImporter_finishImport__block_invoke(uint64_t a1)
 
           else
           {
-            v24 = [v17 importAsset];
-            [(PHAssetResourceCreationOptions *)v19 setShouldIngestInPlace:[(PHImporter *)self shouldIngestInPlace:v24]];
+            importAsset4 = [v17 importAsset];
+            [(PHAssetResourceCreationOptions *)v19 setShouldIngestInPlace:[(PHImporter *)self shouldIngestInPlace:importAsset4]];
 
             [(PHAssetResourceCreationOptions *)v19 setShouldMoveFile:[(PHAssetResourceCreationOptions *)v19 shouldIngestInPlace]^ 1];
           }
         }
 
-        v25 = [v18 createdFileName];
-        if (v25)
+        createdFileName = [importAsset2 createdFileName];
+        if (createdFileName)
         {
-          [(PHAssetResourceCreationOptions *)v19 setOriginalFilename:v25];
+          [(PHAssetResourceCreationOptions *)v19 setOriginalFilename:createdFileName];
         }
 
         else
         {
-          v26 = [v18 fileName];
-          [(PHAssetResourceCreationOptions *)v19 setOriginalFilename:v26];
+          fileName = [importAsset2 fileName];
+          [(PHAssetResourceCreationOptions *)v19 setOriginalFilename:fileName];
         }
 
-        v27 = [v18 contentType];
-        v28 = [v27 identifier];
-        [(PHAssetResourceCreationOptions *)v19 setUniformTypeIdentifier:v28];
+        contentType = [importAsset2 contentType];
+        identifier = [contentType identifier];
+        [(PHAssetResourceCreationOptions *)v19 setUniformTypeIdentifier:identifier];
 
-        v29 = [v18 fileCreationDate];
-        [(PHAssetResourceCreationOptions *)v19 setAlternateImportImageDate:v29];
+        fileCreationDate = [importAsset2 fileCreationDate];
+        [(PHAssetResourceCreationOptions *)v19 setAlternateImportImageDate:fileCreationDate];
 
-        -[PHAssetResourceCreationOptions setBurstPickType:](v19, "setBurstPickType:", [v18 burstPickType]);
+        -[PHAssetResourceCreationOptions setBurstPickType:](v19, "setBurstPickType:", [importAsset2 burstPickType]);
         if (!v20)
         {
-          v31 = [v17 downloadedPath];
+          downloadedPath = [v17 downloadedPath];
 
-          if (v31)
+          if (downloadedPath)
           {
             v32 = MEMORY[0x1E695DFF8];
-            v33 = [v17 downloadedPath];
-            v30 = [v32 fileURLWithPath:v33];
+            downloadedPath2 = [v17 downloadedPath];
+            v30 = [v32 fileURLWithPath:downloadedPath2];
 
             if (!v30)
             {
@@ -1226,20 +1226,20 @@ void __26__PHImporter_finishImport__block_invoke(uint64_t a1)
             }
 
 LABEL_24:
-            [v12 addResourceWithType:objc_msgSend(v18 fileURL:"resourceType") options:{v30, v19}];
+            [v12 addResourceWithType:objc_msgSend(importAsset2 fileURL:"resourceType") options:{v30, v19}];
           }
 
           else
           {
             v30 = [MEMORY[0x1E696ABC0] ph_genericErrorWithLocalizedDescription:@"Importing as copy. Expected record to have a download path."];
-            v34 = [v18 fileName];
-            v35 = [v17 addExceptionWithType:0 path:v34 underlyingError:v30 file:"/Library/Caches/com.apple.xbs/Sources/Photos/Projects/PhotoKit/Sources/Import/PHImporter.m" line:785];
+            fileName2 = [importAsset2 fileName];
+            v35 = [v17 addExceptionWithType:0 path:fileName2 underlyingError:v30 file:"/Library/Caches/com.apple.xbs/Sources/Photos/Projects/PhotoKit/Sources/Import/PHImporter.m" line:785];
           }
 
           goto LABEL_27;
         }
 
-        v30 = [v18 url];
+        v30 = [importAsset2 url];
         if (v30)
         {
           goto LABEL_24;
@@ -1254,31 +1254,31 @@ LABEL_27:
     while (v15);
   }
 
-  v36 = [v12 placeholderForCreatedAsset];
-  v37 = v36;
-  if (!v36)
+  placeholderForCreatedAsset = [v12 placeholderForCreatedAsset];
+  v37 = placeholderForCreatedAsset;
+  if (!placeholderForCreatedAsset)
   {
-    v42 = [MEMORY[0x1E696ABC0] ph_genericErrorWithLocalizedDescription:@"Failed to get a placeholder object for asset"];
-    v43 = [v53 fileName];
+    stringByDeletingLastPathComponent = [MEMORY[0x1E696ABC0] ph_genericErrorWithLocalizedDescription:@"Failed to get a placeholder object for asset"];
+    fileName3 = [v53 fileName];
     v39 = v51;
-    v44 = [v51 addExceptionWithType:0 path:v43 underlyingError:v42 file:"/Library/Caches/com.apple.xbs/Sources/Photos/Projects/PhotoKit/Sources/Import/PHImporter.m" line:810];
+    v44 = [v51 addExceptionWithType:0 path:fileName3 underlyingError:stringByDeletingLastPathComponent file:"/Library/Caches/com.apple.xbs/Sources/Photos/Projects/PhotoKit/Sources/Import/PHImporter.m" line:810];
     goto LABEL_33;
   }
 
-  v38 = [v36 localIdentifier];
+  localIdentifier = [placeholderForCreatedAsset localIdentifier];
   v39 = v51;
-  [v51 setAssetIdentifier:v38];
+  [v51 setAssetIdentifier:localIdentifier];
 
-  v40 = [(PHImportOptions *)self->_options destinationAlbum];
+  destinationAlbum = [(PHImportOptions *)self->_options destinationAlbum];
 
-  if (v40)
+  if (destinationAlbum)
   {
-    v41 = [(PHImportOptions *)self->_options destinationAlbum];
-    v42 = [PHAssetCollectionChangeRequest changeRequestForAssetCollection:v41];
+    destinationAlbum2 = [(PHImportOptions *)self->_options destinationAlbum];
+    stringByDeletingLastPathComponent = [PHAssetCollectionChangeRequest changeRequestForAssetCollection:destinationAlbum2];
 
     v63 = v37;
-    v43 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v63 count:1];
-    [v42 addAssets:v43];
+    fileName3 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v63 count:1];
+    [stringByDeletingLastPathComponent addAssets:fileName3];
 LABEL_33:
 
     goto LABEL_34;
@@ -1287,25 +1287,25 @@ LABEL_33:
   if ([v53 canPreserveFolderStructure] && -[PHImportOptions preserveFolderStructure](self->_options, "preserveFolderStructure"))
   {
     v47 = [v53 url];
-    v48 = [v47 path];
-    v42 = [v48 stringByDeletingLastPathComponent];
+    path = [v47 path];
+    stringByDeletingLastPathComponent = [path stringByDeletingLastPathComponent];
 
     v56[0] = MEMORY[0x1E69E9820];
     v56[1] = 3221225472;
     v56[2] = __77__PHImporter__importRecord_createdAlbumIdentifiers_createdFolderIdentifiers___block_invoke;
     v56[3] = &unk_1E75A7958;
     v57 = v50;
-    v58 = v52;
-    [(PHImporter *)self ensureContainersExistForAlbumPath:v42 forAsset:v37 completion:v56];
+    v58 = folderIdentifiersCopy;
+    [(PHImporter *)self ensureContainersExistForAlbumPath:stringByDeletingLastPathComponent forAsset:v37 completion:v56];
 
-    v43 = v57;
+    fileName3 = v57;
     goto LABEL_33;
   }
 
 LABEL_34:
-  v45 = [v12 placeholderForCreatedAsset];
+  placeholderForCreatedAsset2 = [v12 placeholderForCreatedAsset];
 
-  return v45;
+  return placeholderForCreatedAsset2;
 }
 
 void __77__PHImporter__importRecord_createdAlbumIdentifiers_createdFolderIdentifiers___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -1319,10 +1319,10 @@ void __77__PHImporter__importRecord_createdAlbumIdentifiers_createdFolderIdentif
   [*(a1 + 40) addObjectsFromArray:v5];
 }
 
-- (void)importRecords:(id)a3 completionHandler:(id)a4
+- (void)importRecords:(id)records completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  recordsCopy = records;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_importQueue);
   v23[0] = 0;
   v23[1] = v23;
@@ -1336,13 +1336,13 @@ void __77__PHImporter__importRecord_createdAlbumIdentifiers_createdFolderIdentif
   v21[3] = __Block_byref_object_copy__26894;
   v21[4] = __Block_byref_object_dispose__26895;
   v22 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v8 = [(PHImporter *)self library];
+  library = [(PHImporter *)self library];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __46__PHImporter_importRecords_completionHandler___block_invoke;
   v16[3] = &unk_1E75A9D58;
-  v17 = v6;
-  v18 = self;
+  v17 = recordsCopy;
+  selfCopy = self;
   v19 = v23;
   v20 = v21;
   v11[0] = MEMORY[0x1E69E9820];
@@ -1354,9 +1354,9 @@ void __77__PHImporter__importRecord_createdAlbumIdentifiers_createdFolderIdentif
   v15 = v21;
   v9 = v17;
   v12 = v9;
-  v10 = v7;
+  v10 = handlerCopy;
   v13 = v10;
-  [v8 performChanges:v16 completionHandler:v11];
+  [library performChanges:v16 completionHandler:v11];
 
   _Block_object_dispose(v21, 8);
   _Block_object_dispose(v23, 8);
@@ -1536,25 +1536,25 @@ uint64_t __46__PHImporter_importRecords_completionHandler___block_invoke_3(uint6
   return (*(*(v1 + 56) + 16))();
 }
 
-- (id)_recordsToImportWithCount:(unint64_t)a3
+- (id)_recordsToImportWithCount:(unint64_t)count
 {
-  v5 = [(NSMutableArray *)self->_downloadedRecords subarrayWithRange:0, a3];
-  [(NSMutableArray *)self->_downloadedRecords removeObjectsInRange:0, a3];
+  v5 = [(NSMutableArray *)self->_downloadedRecords subarrayWithRange:0, count];
+  [(NSMutableArray *)self->_downloadedRecords removeObjectsInRange:0, count];
 
   return v5;
 }
 
-- (void)importRecords:(id)a3
+- (void)importRecords:(id)records
 {
-  v4 = a3;
+  recordsCopy = records;
   dispatch_assert_queue_V2(self->_importQueue);
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __28__PHImporter_importRecords___block_invoke;
   v6[3] = &unk_1E75AAEB0;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = recordsCopy;
+  selfCopy = self;
+  v5 = recordsCopy;
   [(PHImporter *)self importRecords:v5 completionHandler:v6];
 }
 
@@ -1662,28 +1662,28 @@ LABEL_22:
   }
 }
 
-- (void)downloadNextAssetInRecord:(id)a3 toURL:(id)a4 subRecordEnumerator:(id)a5 completionHandler:(id)a6
+- (void)downloadNextAssetInRecord:(id)record toURL:(id)l subRecordEnumerator:(id)enumerator completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  recordCopy = record;
+  lCopy = l;
+  enumeratorCopy = enumerator;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_importQueue);
-  v14 = [v12 nextObject];
-  if (!v14)
+  nextObject = [enumeratorCopy nextObject];
+  if (!nextObject)
   {
     importQueue = self->_importQueue;
     v39[0] = MEMORY[0x1E69E9820];
     v39[1] = 3221225472;
     v39[2] = __84__PHImporter_downloadNextAssetInRecord_toURL_subRecordEnumerator_completionHandler___block_invoke;
     v39[3] = &unk_1E75AADE8;
-    v40 = v13;
+    v40 = handlerCopy;
     dispatch_async(importQueue, v39);
     v23 = v40;
     goto LABEL_7;
   }
 
-  if (-[PHImporter shouldImportRecordAsReference:](self, "shouldImportRecordAsReference:", v14) || ![v14 needsDownload])
+  if (-[PHImporter shouldImportRecordAsReference:](self, "shouldImportRecordAsReference:", nextObject) || ![nextObject needsDownload])
   {
     v22 = self->_importQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -1691,10 +1691,10 @@ LABEL_22:
     block[2] = __84__PHImporter_downloadNextAssetInRecord_toURL_subRecordEnumerator_completionHandler___block_invoke_105;
     block[3] = &unk_1E75AAB40;
     block[4] = self;
-    v27 = v10;
-    v28 = v11;
-    v29 = v12;
-    v30 = v13;
+    v27 = recordCopy;
+    v28 = lCopy;
+    v29 = enumeratorCopy;
+    v30 = handlerCopy;
     dispatch_async(v22, block);
 
     v23 = v27;
@@ -1703,26 +1703,26 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v15 = [v14 timers];
-  v16 = [v15 startTiming:1 subtype:0];
+  timers = [nextObject timers];
+  v16 = [timers startTiming:1 subtype:0];
 
-  v17 = [v14 importAsset];
-  v25 = [v17 fileName];
-  v18 = [v25 uppercaseString];
-  v19 = [v11 URLByAppendingPathComponent:v18];
+  importAsset = [nextObject importAsset];
+  fileName = [importAsset fileName];
+  uppercaseString = [fileName uppercaseString];
+  v19 = [lCopy URLByAppendingPathComponent:uppercaseString];
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __84__PHImporter_downloadNextAssetInRecord_toURL_subRecordEnumerator_completionHandler___block_invoke_2;
   v31[3] = &unk_1E75A78E0;
   v31[4] = self;
-  v32 = v14;
+  v32 = nextObject;
   v33 = v16;
-  v34 = v10;
-  v38 = v13;
-  v35 = v17;
-  v36 = v11;
-  v37 = v12;
-  v20 = v17;
+  v34 = recordCopy;
+  v38 = handlerCopy;
+  v35 = importAsset;
+  v36 = lCopy;
+  v37 = enumeratorCopy;
+  v20 = importAsset;
   v21 = v16;
   [v20 copyToURL:v19 completionHandler:v31];
 
@@ -1918,43 +1918,43 @@ LABEL_32:
   v7();
 }
 
-- (BOOL)shouldImportRecordAsReference:(id)a3
+- (BOOL)shouldImportRecordAsReference:(id)reference
 {
-  v4 = a3;
+  referenceCopy = reference;
   if ([(PHImportOptions *)self->_options shouldImportAsReferenced])
   {
-    v5 = [v4 canReference];
+    canReference = [referenceCopy canReference];
   }
 
   else
   {
-    v5 = 0;
+    canReference = 0;
   }
 
-  return v5;
+  return canReference;
 }
 
-- (void)importNextAsset:(id)a3
+- (void)importNextAsset:(id)asset
 {
-  v5 = a3;
+  assetCopy = asset;
   dispatch_assert_queue_V2(self->_importQueue);
   if (!self->_isCanceled)
   {
-    v6 = [v5 nextObject];
-    v7 = v6;
-    if (v6)
+    nextObject = [assetCopy nextObject];
+    v7 = nextObject;
+    if (nextObject)
     {
-      v3 = [v6 importRecordForPrimaryAsset];
-      if ([(PHImporter *)self handleErrorsForRecord:v3 batch:0 file:"/Library/Caches/com.apple.xbs/Sources/Photos/Projects/PhotoKit/Sources/Import/PHImporter.m" line:502])
+      importRecordForPrimaryAsset = [nextObject importRecordForPrimaryAsset];
+      if ([(PHImporter *)self handleErrorsForRecord:importRecordForPrimaryAsset batch:0 file:"/Library/Caches/com.apple.xbs/Sources/Photos/Projects/PhotoKit/Sources/Import/PHImporter.m" line:502])
       {
-        [(PHImporter *)self addRecordToResults:v3];
+        [(PHImporter *)self addRecordToResults:importRecordForPrimaryAsset];
         importQueue = self->_importQueue;
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
         block[2] = __30__PHImporter_importNextAsset___block_invoke;
         block[3] = &unk_1E75AAEB0;
         block[4] = self;
-        v28 = v5;
+        v28 = assetCopy;
         dispatch_async(importQueue, block);
 
 LABEL_18:
@@ -1962,40 +1962,40 @@ LABEL_18:
       }
 
 LABEL_11:
-      v10 = [(PHImporter *)self getDestinationUrlForImportAsset:v7, v20, isCanceled];
-      if (v10)
+      isCanceled = [(PHImporter *)self getDestinationUrlForImportAsset:v7, v20, isCanceled];
+      if (isCanceled)
       {
-        v11 = [v3 allImportRecords];
-        v12 = [v11 objectEnumerator];
+        allImportRecords = [importRecordForPrimaryAsset allImportRecords];
+        objectEnumerator = [allImportRecords objectEnumerator];
         v22[0] = MEMORY[0x1E69E9820];
         v22[1] = 3221225472;
         v22[2] = __30__PHImporter_importNextAsset___block_invoke_3;
         v22[3] = &unk_1E75AB248;
         v22[4] = self;
-        v23 = v3;
-        v24 = v5;
-        [(PHImporter *)self downloadNextAssetInRecord:v23 toURL:v10 subRecordEnumerator:v12 completionHandler:v22];
+        v23 = importRecordForPrimaryAsset;
+        v24 = assetCopy;
+        [(PHImporter *)self downloadNextAssetInRecord:v23 toURL:isCanceled subRecordEnumerator:objectEnumerator completionHandler:v22];
       }
 
       else
       {
         v13 = MEMORY[0x1E696ABC0];
-        v14 = [v7 fileName];
-        v15 = [v13 ph_genericErrorWithLocalizedDescription:{@"Unable to get a downloadPath for %@", v14}];
+        fileName = [v7 fileName];
+        v15 = [v13 ph_genericErrorWithLocalizedDescription:{@"Unable to get a downloadPath for %@", fileName}];
 
         v16 = [v7 url];
-        v17 = [v16 path];
-        v18 = [v3 addExceptionWithType:0 path:v17 underlyingError:v15 file:"/Library/Caches/com.apple.xbs/Sources/Photos/Projects/PhotoKit/Sources/Import/PHImporter.m" line:511];
+        path = [v16 path];
+        v18 = [importRecordForPrimaryAsset addExceptionWithType:0 path:path underlyingError:v15 file:"/Library/Caches/com.apple.xbs/Sources/Photos/Projects/PhotoKit/Sources/Import/PHImporter.m" line:511];
 
-        [(PHImporter *)self handleErrorsForRecord:v3 batch:0 file:"/Library/Caches/com.apple.xbs/Sources/Photos/Projects/PhotoKit/Sources/Import/PHImporter.m" line:512];
-        [(PHImporter *)self addRecordToResults:v3];
+        [(PHImporter *)self handleErrorsForRecord:importRecordForPrimaryAsset batch:0 file:"/Library/Caches/com.apple.xbs/Sources/Photos/Projects/PhotoKit/Sources/Import/PHImporter.m" line:512];
+        [(PHImporter *)self addRecordToResults:importRecordForPrimaryAsset];
         v19 = self->_importQueue;
         v25[0] = MEMORY[0x1E69E9820];
         v25[1] = 3221225472;
         v25[2] = __30__PHImporter_importNextAsset___block_invoke_2;
         v25[3] = &unk_1E75AAEB0;
         v25[4] = self;
-        v26 = v5;
+        v26 = assetCopy;
         dispatch_async(v19, v25);
       }
 
@@ -2012,8 +2012,8 @@ LABEL_11:
       }
 
       self->_importState = 2;
-      v3 = [(PHImporter *)self _recordsToImportWithCount:[(NSMutableArray *)self->_downloadedRecords count]];
-      [(PHImporter *)self importRecords:v3];
+      importRecordForPrimaryAsset = [(PHImporter *)self _recordsToImportWithCount:[(NSMutableArray *)self->_downloadedRecords count]];
+      [(PHImporter *)self importRecords:importRecordForPrimaryAsset];
       goto LABEL_18;
     }
 
@@ -2090,20 +2090,20 @@ LABEL_9:
   return [v4 importNextAsset:v7];
 }
 
-- (id)getDestinationUrlForImportAsset:(id)a3
+- (id)getDestinationUrlForImportAsset:(id)asset
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PHPhotoLibrary *)self->_library pathManager];
-  v6 = [v5 isUBF];
+  assetCopy = asset;
+  pathManager = [(PHPhotoLibrary *)self->_library pathManager];
+  isUBF = [pathManager isUBF];
 
-  v7 = [v4 parentFolderPath];
-  v8 = v7;
-  if (v6)
+  parentFolderPath = [assetCopy parentFolderPath];
+  v8 = parentFolderPath;
+  if (isUBF)
   {
-    if (v7)
+    if (parentFolderPath)
     {
-      v9 = [(PHImporter *)self makeDownloadUrlForParentFolderPath:v7];
+      v9 = [(PHImporter *)self makeDownloadUrlForParentFolderPath:parentFolderPath];
     }
 
     else
@@ -2112,7 +2112,7 @@ LABEL_9:
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v24 = v4;
+        v24 = assetCopy;
         _os_log_impl(&dword_19C86F000, v16, OS_LOG_TYPE_ERROR, "Didn't get a parent folder for asset %@", buf, 0xCu);
       }
 
@@ -2122,14 +2122,14 @@ LABEL_9:
 
   else
   {
-    v10 = [v4 importIdentifier];
-    v11 = [(NSMutableDictionary *)self->_downloadFolderUrlByImportIdentifier objectForKeyedSubscript:v10];
+    importIdentifier = [assetCopy importIdentifier];
+    v11 = [(NSMutableDictionary *)self->_downloadFolderUrlByImportIdentifier objectForKeyedSubscript:importIdentifier];
     if (v11)
     {
       v9 = v11;
-      v12 = [(PHPhotoLibrary *)self->_library pathManager];
+      pathManager2 = [(PHPhotoLibrary *)self->_library pathManager];
       v22 = 0;
-      v13 = [v12 externalDirectoryWithSubType:1 createIfNeeded:1 error:&v22];
+      v13 = [pathManager2 externalDirectoryWithSubType:1 createIfNeeded:1 error:&v22];
       v14 = v22;
 
       if (v13)
@@ -2172,7 +2172,7 @@ LABEL_9:
       v9 = [(PHImporter *)self makeDownloadUrlForParentFolderPath:v8];
       if (v9)
       {
-        [(NSMutableDictionary *)self->_downloadFolderUrlByImportIdentifier setObject:v9 forKeyedSubscript:v10];
+        [(NSMutableDictionary *)self->_downloadFolderUrlByImportIdentifier setObject:v9 forKeyedSubscript:importIdentifier];
       }
     }
 
@@ -2181,9 +2181,9 @@ LABEL_9:
       v20 = PLImportGetLog();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
-        v21 = [v4 uuid];
+        uuid = [assetCopy uuid];
         *buf = 138412290;
-        v24 = v21;
+        v24 = uuid;
         _os_log_impl(&dword_19C86F000, v20, OS_LOG_TYPE_ERROR, "Didn't get a parent folder for asset %@", buf, 0xCu);
       }
 
@@ -2194,25 +2194,25 @@ LABEL_9:
   return v9;
 }
 
-- (id)makeDownloadUrlForParentFolderPath:(id)a3
+- (id)makeDownloadUrlForParentFolderPath:(id)path
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_parentFolderMapping objectForKeyedSubscript:v4];
+  pathCopy = path;
+  v5 = [(NSMutableDictionary *)self->_parentFolderMapping objectForKeyedSubscript:pathCopy];
   if (!v5)
   {
-    v6 = [(PHPhotoLibrary *)self->_library pathManager];
-    if ([v6 isUBF])
+    pathManager = [(PHPhotoLibrary *)self->_library pathManager];
+    if ([pathManager isUBF])
     {
       v17 = 0;
       v7 = &v17;
-      v8 = [v6 externalDirectoryWithSubType:1 leafType:1 additionalPathComponents:v4 createIfNeeded:1 error:&v17];
+      v8 = [pathManager externalDirectoryWithSubType:1 leafType:1 additionalPathComponents:pathCopy createIfNeeded:1 error:&v17];
     }
 
     else
     {
       v16 = 0;
       v7 = &v16;
-      v8 = [v6 externalDirectoryWithSubType:1 createIfNeeded:1 error:&v16];
+      v8 = [pathManager externalDirectoryWithSubType:1 createIfNeeded:1 error:&v16];
     }
 
     v9 = v8;
@@ -2223,7 +2223,7 @@ LABEL_9:
       if (v11)
       {
         v5 = v11;
-        [(NSMutableDictionary *)self->_parentFolderMapping setObject:v11 forKeyedSubscript:v4];
+        [(NSMutableDictionary *)self->_parentFolderMapping setObject:v11 forKeyedSubscript:pathCopy];
 LABEL_14:
 
         goto LABEL_15;
@@ -2259,10 +2259,10 @@ LABEL_15:
   return v5;
 }
 
-- (void)ensureEnoughDiskSpaceAvailableIfNeededForAssets:(id)a3 completion:(id)a4
+- (void)ensureEnoughDiskSpaceAvailableIfNeededForAssets:(id)assets completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  assetsCopy = assets;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_importQueue);
   if (MEMORY[0x19EAF1E50]())
   {
@@ -2291,7 +2291,7 @@ LABEL_7:
 
 LABEL_8:
 
-    v7[2](v7, 1);
+    completionCopy[2](completionCopy, 1);
     goto LABEL_17;
   }
 
@@ -2299,7 +2299,7 @@ LABEL_8:
   v29 = buf;
   v30 = 0x2020000000;
   v31 = 0x200000;
-  v10 = [v6 count];
+  v10 = [assetsCopy count];
   if (PHImportConcurrencyLimit_onceToken != -1)
   {
     dispatch_once(&PHImportConcurrencyLimit_onceToken, &__block_literal_global_4847);
@@ -2310,18 +2310,18 @@ LABEL_8:
   v25[1] = 3221225472;
   v25[2] = __73__PHImporter_ensureEnoughDiskSpaceAvailableIfNeededForAssets_completion___block_invoke;
   v25[3] = &unk_1E75A7868;
-  v26 = v6;
+  v26 = assetsCopy;
   v27 = buf;
   PHImportDispatchApply(v10, v11, 0, v25);
-  v12 = [(PHPhotoLibrary *)self->_library photoLibraryURL];
-  v13 = [v12 path];
+  photoLibraryURL = [(PHPhotoLibrary *)self->_library photoLibraryURL];
+  path = [photoLibraryURL path];
 
-  LOBYTE(v12) = [MEMORY[0x1E69BE2D0] hasEntitlementsForCacheDelete];
-  v14 = [(PHPhotoLibrary *)self->_library pathManager];
-  v15 = [v14 capabilities];
-  v16 = [v15 isNetworkVolume];
+  LOBYTE(photoLibraryURL) = [MEMORY[0x1E69BE2D0] hasEntitlementsForCacheDelete];
+  pathManager = [(PHPhotoLibrary *)self->_library pathManager];
+  capabilities = [pathManager capabilities];
+  isNetworkVolume = [capabilities isNetworkVolume];
 
-  if (v16 & 1 | ((v12 & 1) == 0))
+  if (isNetworkVolume & 1 | ((photoLibraryURL & 1) == 0))
   {
     v17 = PLImportGetLog();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -2331,23 +2331,23 @@ LABEL_8:
     }
 
     v18 = atomic_load(v29 + 3);
-    [(PHImporter *)self performLegacyDiskSpaceCheckForRequiredBytes:v18 forPath:v13 withCompletion:v7];
+    [(PHImporter *)self performLegacyDiskSpaceCheckForRequiredBytes:v18 forPath:path withCompletion:completionCopy];
   }
 
   else
   {
-    v19 = [objc_alloc(MEMORY[0x1E69BE2D0]) initWithQoSClass:25 pathForVolume:v13 callbackQueue:self->_importQueue];
+    v19 = [objc_alloc(MEMORY[0x1E69BE2D0]) initWithQoSClass:25 pathForVolume:path callbackQueue:self->_importQueue];
     [(PHImporter *)self setCacheDeleteClient:v19];
 
-    v20 = [(PHImporter *)self cacheDeleteClient];
+    cacheDeleteClient = [(PHImporter *)self cacheDeleteClient];
     v21 = atomic_load(v29 + 3);
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __73__PHImporter_ensureEnoughDiskSpaceAvailableIfNeededForAssets_completion___block_invoke_80;
     v22[3] = &unk_1E75A7890;
     v22[4] = self;
-    v23 = v7;
-    [v20 requestDiskSpaceAvailabilityOfSize:v21 completion:v22];
+    v23 = completionCopy;
+    [cacheDeleteClient requestDiskSpaceAvailabilityOfSize:v21 completion:v22];
   }
 
   _Block_object_dispose(buf, 8);
@@ -2438,11 +2438,11 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)performLegacyDiskSpaceCheckForRequiredBytes:(int64_t)a3 forPath:(id)a4 withCompletion:(id)a5
+- (void)performLegacyDiskSpaceCheckForRequiredBytes:(int64_t)bytes forPath:(id)path withCompletion:(id)completion
 {
   v25[2] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  pathCopy = path;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_importQueue);
   if (MEMORY[0x19EAF1E50]())
   {
@@ -2456,14 +2456,14 @@ LABEL_15:
 
   else
   {
-    v11 = [MEMORY[0x1E69BF208] diskSpaceAvailableForPath:v8];
-    v12 = a3 - v11;
-    if (a3 >= v11)
+    v11 = [MEMORY[0x1E69BF208] diskSpaceAvailableForPath:pathCopy];
+    v12 = bytes - v11;
+    if (bytes >= v11)
     {
       v13 = v11;
       v24[0] = *MEMORY[0x1E696A278];
       v14 = MEMORY[0x1E696AEC0];
-      v15 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
+      v15 = [MEMORY[0x1E696AD98] numberWithLongLong:bytes];
       v16 = [MEMORY[0x1E696AD98] numberWithLongLong:v13];
       v17 = [v14 stringWithFormat:@"Not enough storage space available for import. Bytes required: %@. Bytes available: %@", v15, v16];
       v24[1] = @"MoreSpaceRequired";
@@ -2473,71 +2473,71 @@ LABEL_15:
       v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:v24 count:2];
 
       v20 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.ImportErrorDomain" code:-5 userInfo:v19];
-      v21 = [(PHImporter *)self results];
-      v22 = [v21 addExceptionWithType:5 path:0 underlyingError:v20 file:"/Library/Caches/com.apple.xbs/Sources/Photos/Projects/PhotoKit/Sources/Import/PHImporter.m" line:339];
+      results = [(PHImporter *)self results];
+      v22 = [results addExceptionWithType:5 path:0 underlyingError:v20 file:"/Library/Caches/com.apple.xbs/Sources/Photos/Projects/PhotoKit/Sources/Import/PHImporter.m" line:339];
 
       [(NSProgress *)self->_progress cancel];
-      v9[2](v9, 0);
+      completionCopy[2](completionCopy, 0);
 
       goto LABEL_8;
     }
   }
 
-  v9[2](v9, 1);
+  completionCopy[2](completionCopy, 1);
 LABEL_8:
 }
 
-- (id)beginImport:(id)a3
+- (id)beginImport:(id)import
 {
   v57[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PHPhotoLibrary *)self->_library pathManager];
-  v6 = [v5 isUBF];
+  importCopy = import;
+  pathManager = [(PHPhotoLibrary *)self->_library pathManager];
+  isUBF = [pathManager isUBF];
 
-  if (v6)
+  if (isUBF)
   {
     v7 = [(PHImporter *)self removeImportDirectoryForLibrary:self->_library];
   }
 
-  v8 = [(PHImporter *)self options];
-  v9 = [v8 sortDescriptor];
+  options = [(PHImporter *)self options];
+  sortDescriptor = [options sortDescriptor];
 
-  if (v9)
+  if (sortDescriptor)
   {
-    v10 = [(PHImporter *)self options];
-    v11 = [v10 sortDescriptor];
-    v57[0] = v11;
+    options2 = [(PHImporter *)self options];
+    sortDescriptor2 = [options2 sortDescriptor];
+    v57[0] = sortDescriptor2;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v57 count:1];
-    v13 = [v4 sortedArrayUsingDescriptors:v12];
+    v13 = [importCopy sortedArrayUsingDescriptors:v12];
     v14 = [v13 mutableCopy];
   }
 
   else
   {
-    v14 = [v4 mutableCopy];
+    v14 = [importCopy mutableCopy];
   }
 
-  if ([v4 count])
+  if ([importCopy count])
   {
-    v15 = [v4 objectAtIndexedSubscript:0];
-    v16 = [v15 canPreserveFolderStructure];
+    v15 = [importCopy objectAtIndexedSubscript:0];
+    canPreserveFolderStructure = [v15 canPreserveFolderStructure];
 
-    if (v16)
+    if (canPreserveFolderStructure)
     {
       if ([(PHImportOptions *)self->_options preserveFolderStructure])
       {
-        v17 = [(PHImportSource *)self->_source prefix];
-        v18 = v17 == 0;
+        prefix = [(PHImportSource *)self->_source prefix];
+        v18 = prefix == 0;
 
         if (!v18)
         {
-          v19 = [(PHImportOptions *)self->_options destinationFolder];
-          if (!v19)
+          destinationFolder = [(PHImportOptions *)self->_options destinationFolder];
+          if (!destinationFolder)
           {
             v20 = [PHFetchOptions fetchOptionsWithPhotoLibrary:self->_library orObject:0];
             v21 = [PHCollectionList fetchRootAlbumCollectionListWithOptions:v20];
 
-            v19 = [v21 firstObject];
+            destinationFolder = [v21 firstObject];
           }
 
           v51 = 0;
@@ -2565,7 +2565,7 @@ LABEL_8:
           v33[3] = &unk_1E75A9238;
           v35 = v44;
           v33[4] = self;
-          v23 = v19;
+          v23 = destinationFolder;
           v34 = v23;
           v36 = &v38;
           v37 = &v51;
@@ -2584,10 +2584,10 @@ LABEL_8:
             v26 = PLImportGetLog();
             if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
             {
-              v27 = [(PHImportSource *)self->_source prefix];
+              prefix2 = [(PHImportSource *)self->_source prefix];
               v28 = v52[5];
               *buf = 138412546;
-              v47 = v27;
+              v47 = prefix2;
               v48 = 2112;
               v49 = v28;
               _os_log_impl(&dword_19C86F000, v26, OS_LOG_TYPE_ERROR, "Failed to create folder '%@' for import (%@)", buf, 0x16u);
@@ -2599,9 +2599,9 @@ LABEL_8:
             v29 = PLImportGetLog();
             if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
             {
-              v30 = [(PHImportSource *)self->_source prefix];
+              prefix3 = [(PHImportSource *)self->_source prefix];
               *buf = 138412546;
-              v47 = v30;
+              v47 = prefix3;
               v48 = 2112;
               v49 = v24;
               _os_log_impl(&dword_19C86F000, v29, OS_LOG_TYPE_ERROR, "Failed to create folder '%@' for import (%@)", buf, 0x16u);
@@ -2643,23 +2643,23 @@ void __26__PHImporter_beginImport___block_invoke(void *a1)
   *(v13 + 40) = v6;
 }
 
-- (PHImporter)initWithLibrary:(id)a3 options:(id)a4 source:(id)a5 delegate:(id)a6 completionHandler:(id)a7
+- (PHImporter)initWithLibrary:(id)library options:(id)options source:(id)source delegate:(id)delegate completionHandler:(id)handler
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  libraryCopy = library;
+  optionsCopy = options;
+  sourceCopy = source;
+  delegateCopy = delegate;
+  handlerCopy = handler;
   v66.receiver = self;
   v66.super_class = PHImporter;
   v18 = [(PHImporter *)&v66 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_library, a3);
-    if (v14)
+    objc_storeStrong(&v18->_library, library);
+    if (optionsCopy)
     {
-      v20 = v14;
+      v20 = optionsCopy;
     }
 
     else
@@ -2674,9 +2674,9 @@ void __26__PHImporter_beginImport___block_invoke(void *a1)
     results = v19->_results;
     v19->_results = v22;
 
-    v24 = [MEMORY[0x1E69BF320] UUIDString];
+    uUIDString = [MEMORY[0x1E69BF320] UUIDString];
     importSessionID = v19->_importSessionID;
-    v19->_importSessionID = v24;
+    v19->_importSessionID = uUIDString;
 
     v19->_importState = 0;
     v26 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -2685,34 +2685,34 @@ void __26__PHImporter_beginImport___block_invoke(void *a1)
     importQueue = v19->_importQueue;
     v19->_importQueue = v28;
 
-    v30 = [v13 pathManager];
-    LODWORD(v27) = [v30 isDCIM];
+    pathManager = [libraryCopy pathManager];
+    LODWORD(v27) = [pathManager isDCIM];
 
     v31 = 0x1E695D000;
     v32 = 0x1E695D000;
     if (v27)
     {
       v33 = objc_alloc(MEMORY[0x1E69BF268]);
-      v34 = [v13 photoLibraryBundle];
-      [v34 pathManager];
-      v35 = a5;
-      v36 = v14;
-      v37 = v13;
-      v38 = v17;
-      v39 = v16;
-      v41 = v40 = v15;
+      photoLibraryBundle = [libraryCopy photoLibraryBundle];
+      [photoLibraryBundle pathManager];
+      sourceCopy2 = source;
+      v36 = optionsCopy;
+      v37 = libraryCopy;
+      v38 = handlerCopy;
+      v39 = delegateCopy;
+      v41 = v40 = sourceCopy;
       v42 = v33;
       v32 = 0x1E695D000uLL;
       v43 = [v42 initWithPathManager:v41];
       importFileManager = v19->_importFileManager;
       v19->_importFileManager = v43;
 
-      v15 = v40;
-      v16 = v39;
-      v17 = v38;
-      v13 = v37;
-      v14 = v36;
-      a5 = v35;
+      sourceCopy = v40;
+      delegateCopy = v39;
+      handlerCopy = v38;
+      libraryCopy = v37;
+      optionsCopy = v36;
+      source = sourceCopy2;
       v31 = 0x1E695D000uLL;
 
       v45 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -2733,9 +2733,9 @@ void __26__PHImporter_beginImport___block_invoke(void *a1)
     v19->_downloadedRecords = v51;
 
     v19->_isCanceled = 0;
-    objc_storeStrong(&v19->_source, a5);
-    objc_storeWeak(&v19->_delegate, v16);
-    v53 = [v17 copy];
+    objc_storeStrong(&v19->_source, source);
+    objc_storeWeak(&v19->_delegate, delegateCopy);
+    v53 = [handlerCopy copy];
     completionHandler = v19->_completionHandler;
     v19->_completionHandler = v53;
 
@@ -2765,10 +2765,10 @@ void __26__PHImporter_beginImport___block_invoke(void *a1)
   return v19;
 }
 
-+ (void)dumpMetadataForData:(id)a3
++ (void)dumpMetadataForData:(id)data
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = CGImageSourceCreateWithData(a3, 0);
+  v3 = CGImageSourceCreateWithData(data, 0);
   v4 = CGImageSourceCopyPropertiesAtIndex(v3, 0, 0);
   v5 = PLImportGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -2781,7 +2781,7 @@ void __26__PHImporter_beginImport___block_invoke(void *a1)
   CFRelease(v3);
 }
 
-+ (void)dumpImageData:(id)a3
++ (void)dumpImageData:(id)data
 {
   v14[1] = *MEMORY[0x1E69E9840];
   v13 = *MEMORY[0x1E696E0E8];
@@ -2789,9 +2789,9 @@ void __26__PHImporter_beginImport___block_invoke(void *a1)
   v4 = MEMORY[0x1E695E118];
   v14[0] = MEMORY[0x1E695E118];
   v5 = MEMORY[0x1E695DF20];
-  v6 = a3;
+  dataCopy = data;
   v7 = [v5 dictionaryWithObjects:v14 forKeys:&v13 count:1];
-  v8 = CGImageSourceCreateWithData(v6, v7);
+  v8 = CGImageSourceCreateWithData(dataCopy, v7);
 
   v11 = v3;
   v12 = v4;
@@ -2807,39 +2807,39 @@ void __26__PHImporter_beginImport___block_invoke(void *a1)
   CGImageWriteToFile();
 }
 
-+ (id)removeItemAtPath:(id)a3 type:(unint64_t)a4 recursive:(BOOL)a5
++ (id)removeItemAtPath:(id)path type:(unint64_t)type recursive:(BOOL)recursive
 {
   v39[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = [MEMORY[0x1E696AC08] defaultManager];
+  pathCopy = path;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v33 = 0;
-  v9 = [v8 attributesOfItemAtPath:v7 error:&v33];
+  v9 = [defaultManager attributesOfItemAtPath:pathCopy error:&v33];
   v10 = v33;
   if (!v9)
   {
     goto LABEL_21;
   }
 
-  v11 = [v9 fileType];
-  v12 = v11;
-  if (a4 || v11 != *MEMORY[0x1E696A3E8])
+  fileType = [v9 fileType];
+  v12 = fileType;
+  if (type || fileType != *MEMORY[0x1E696A3E8])
   {
-    v13 = [v9 fileType];
+    fileType2 = [v9 fileType];
 
-    if (a4 != 1 || v13 != *MEMORY[0x1E696A3E0])
+    if (type != 1 || fileType2 != *MEMORY[0x1E696A3E0])
     {
       v24 = MEMORY[0x1E696ABC0];
       v25 = *MEMORY[0x1E696A578];
       v34[0] = *MEMORY[0x1E696A368];
       v34[1] = v25;
-      v35[0] = v7;
+      v35[0] = pathCopy;
       v26 = @"file";
-      if (a4)
+      if (type)
       {
         v26 = @"folder";
       }
 
-      v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Attempting to delete '%@' as a %@", v7, v26];
+      v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Attempting to delete '%@' as a %@", pathCopy, v26];
       v35[1] = v27;
       v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v35 forKeys:v34 count:2];
       v29 = [v24 errorWithDomain:@"com.apple.PHImport" code:2 userInfo:v28];
@@ -2852,21 +2852,21 @@ void __26__PHImporter_beginImport___block_invoke(void *a1)
   else
   {
 
-    v13 = *MEMORY[0x1E696A3E0];
+    fileType2 = *MEMORY[0x1E696A3E0];
   }
 
-  v14 = [v9 fileType];
+  fileType3 = [v9 fileType];
 
-  if (v14 == v13)
+  if (fileType3 == fileType2)
   {
-    v15 = [v8 enumeratorAtPath:v7];
+    v15 = [defaultManager enumeratorAtPath:pathCopy];
     if (!v15)
     {
       v16 = MEMORY[0x1E696ABC0];
       v17 = *MEMORY[0x1E696A578];
       v38[0] = *MEMORY[0x1E696A368];
       v38[1] = v17;
-      v39[0] = v7;
+      v39[0] = pathCopy;
       v39[1] = @"Can't get a directory enumerator";
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v39 forKeys:v38 count:2];
       v19 = [v16 errorWithDomain:@"com.apple.PHImport" code:1 userInfo:v18];
@@ -2876,17 +2876,17 @@ void __26__PHImporter_beginImport___block_invoke(void *a1)
 
     if (!v10)
     {
-      v20 = [v15 nextObject];
+      nextObject = [v15 nextObject];
 
-      if (v20)
+      if (nextObject)
       {
-        if (!a5)
+        if (!recursive)
         {
           v21 = MEMORY[0x1E696ABC0];
           v22 = *MEMORY[0x1E696A578];
           v36[0] = *MEMORY[0x1E696A368];
           v36[1] = v22;
-          v37[0] = v7;
+          v37[0] = pathCopy;
           v37[1] = @"Directory is not empty";
           v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v37 forKeys:v36 count:2];
           v10 = [v21 errorWithDomain:@"com.apple.PHImport" code:2 userInfo:v23];
@@ -2904,7 +2904,7 @@ void __26__PHImporter_beginImport___block_invoke(void *a1)
   {
 LABEL_17:
     v32 = 0;
-    [v8 removeItemAtPath:v7 error:&v32];
+    [defaultManager removeItemAtPath:pathCopy error:&v32];
     v10 = v32;
   }
 
@@ -2914,41 +2914,41 @@ LABEL_21:
   return v10;
 }
 
-+ (void)importAssets:(id)a3 fromImportSource:(id)a4 intoLibrary:(id)a5 withOptions:(id)a6 progress:(id *)a7 delegate:(id)a8 atEnd:(id)a9
++ (void)importAssets:(id)assets fromImportSource:(id)source intoLibrary:(id)library withOptions:(id)options progress:(id *)progress delegate:(id)delegate atEnd:(id)end
 {
   v39 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v27 = a6;
-  v28 = a8;
-  v17 = a9;
+  assetsCopy = assets;
+  sourceCopy = source;
+  libraryCopy = library;
+  optionsCopy = options;
+  delegateCopy = delegate;
+  endCopy = end;
   v18 = PLImportGetLog();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
     v36 = objc_opt_class();
     v37 = 2048;
-    v38 = v15;
+    v38 = sourceCopy;
     _os_log_impl(&dword_19C86F000, v18, OS_LOG_TYPE_DEFAULT, "Importing assets from %{public}@ <%p>", buf, 0x16u);
   }
 
-  if ([v14 count])
+  if ([assetsCopy count])
   {
-    v19 = [[PHImporter alloc] initWithLibrary:v16 options:v27 source:v15 delegate:v28 completionHandler:v17];
-    if (a7)
+    v19 = [[PHImporter alloc] initWithLibrary:libraryCopy options:optionsCopy source:sourceCopy delegate:delegateCopy completionHandler:endCopy];
+    if (progress)
     {
-      if (*a7)
+      if (*progress)
       {
-        v20 = *a7;
-        [v20 setTotalUnitCount:{objc_msgSend(v14, "count")}];
+        v20 = *progress;
+        [v20 setTotalUnitCount:{objc_msgSend(assetsCopy, "count")}];
       }
 
       else
       {
-        v20 = [MEMORY[0x1E696AE38] discreteProgressWithTotalUnitCount:{objc_msgSend(v14, "count")}];
+        v20 = [MEMORY[0x1E696AE38] discreteProgressWithTotalUnitCount:{objc_msgSend(assetsCopy, "count")}];
         v24 = v20;
-        *a7 = v20;
+        *progress = v20;
       }
     }
 
@@ -2957,7 +2957,7 @@ LABEL_21:
       v20 = 0;
     }
 
-    [v20 setCancellable:{1, v27}];
+    [v20 setCancellable:{1, optionsCopy}];
     objc_initWeak(buf, v19);
     v33[0] = MEMORY[0x1E69E9820];
     v33[1] = 3221225472;
@@ -2965,7 +2965,7 @@ LABEL_21:
     v33[3] = &unk_1E75A9A90;
     objc_copyWeak(&v34, buf);
     [v20 setCancellationHandler:v33];
-    v25 = v16;
+    v25 = libraryCopy;
     [(PHImporter *)v19 setProgress:v20];
     importQueue = v19->_importQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -2973,12 +2973,12 @@ LABEL_21:
     block[2] = __92__PHImporter_importAssets_fromImportSource_intoLibrary_withOptions_progress_delegate_atEnd___block_invoke_2;
     block[3] = &unk_1E75AA870;
     v30 = v19;
-    v31 = v14;
-    v32 = v17;
+    v31 = assetsCopy;
+    v32 = endCopy;
     v23 = v19;
     dispatch_async(importQueue, block);
 
-    v16 = v25;
+    libraryCopy = v25;
     objc_destroyWeak(&v34);
     objc_destroyWeak(buf);
 
@@ -2986,19 +2986,19 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (v17)
+  if (endCopy)
   {
     v21 = PLImportGetLog();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
-      v22 = [v15 name];
+      name = [sourceCopy name];
       *buf = 138543362;
-      v36 = v22;
+      v36 = name;
       _os_log_impl(&dword_19C86F000, v21, OS_LOG_TYPE_INFO, "Nothing to import from '%{public}@'", buf, 0xCu);
     }
 
     v23 = objc_alloc_init(PHImportResults);
-    (*(v17 + 2))(v17, v23);
+    (*(endCopy + 2))(endCopy, v23);
     goto LABEL_14;
   }
 

@@ -1,26 +1,26 @@
 @interface AXVoiceOverPunctuationController
-- (BOOL)tableView:(id)a3 shouldIndentWhileEditingRowAtIndexPath:(id)a4;
-- (id)_numberEntriesInGroup:(id)a3;
-- (id)_selectedPunctuation:(id)a3;
+- (BOOL)tableView:(id)view shouldIndentWhileEditingRowAtIndexPath:(id)path;
+- (id)_numberEntriesInGroup:(id)group;
+- (id)_selectedPunctuation:(id)punctuation;
 - (id)specifiers;
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4;
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path;
 - (void)_addDoneButton;
-- (void)_configureEditButton:(BOOL)a3;
+- (void)_configureEditButton:(BOOL)button;
 - (void)_donePressed;
 - (void)_editPressed;
 - (void)_loadPunctationGroups;
-- (void)_punctuationGroupsChanged:(id)a3;
-- (void)_updateEditingStatusForSpecifiers:(BOOL)a3;
+- (void)_punctuationGroupsChanged:(id)changed;
+- (void)_updateEditingStatusForSpecifiers:(BOOL)specifiers;
 - (void)dealloc;
-- (void)documentPicker:(id)a3 didPickDocumentsAtURLs:(id)a4;
+- (void)documentPicker:(id)picker didPickDocumentsAtURLs:(id)ls;
 - (void)reloadSpecifiers;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didEndEditingRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willBeginEditingRowAtIndexPath:(id)a4;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didEndEditingRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willBeginEditingRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation AXVoiceOverPunctuationController
@@ -82,13 +82,13 @@
           }
 
           v20 = *(*(&v36 + 1) + 8 * v18);
-          v21 = [v20 uuid];
-          v22 = AXSettingsNameForPunctuationGroupUUID(v21);
+          uuid = [v20 uuid];
+          v22 = AXSettingsNameForPunctuationGroupUUID(uuid);
           v13 = [PSSpecifier preferenceSpecifierNamed:v22 target:self set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
 
           [v13 setProperty:v20 forKey:@"PunctuationGroup"];
-          v23 = [v20 uuid];
-          [v13 setProperty:v23 forKey:@"punctuationGroupUUID"];
+          uuid2 = [v20 uuid];
+          [v13 setProperty:uuid2 forKey:@"punctuationGroupUUID"];
 
           [v14 addObject:v13];
           [(NSMutableArray *)self->_systemPunctuationSpecs addObject:v13];
@@ -131,17 +131,17 @@
   return v4;
 }
 
-- (id)_selectedPunctuation:(id)a3
+- (id)_selectedPunctuation:(id)punctuation
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 voiceOverPunctuationGroup];
+  voiceOverPunctuationGroup = [v3 voiceOverPunctuationGroup];
 
-  if (!v4)
+  if (!voiceOverPunctuationGroup)
   {
-    v4 = AXSettingsDefaultPunctuationGroupUUID();
+    voiceOverPunctuationGroup = AXSettingsDefaultPunctuationGroupUUID();
   }
 
-  v5 = AXSettingsNameForPunctuationGroupUUID(v4);
+  v5 = AXSettingsNameForPunctuationGroupUUID(voiceOverPunctuationGroup);
 
   return v5;
 }
@@ -149,16 +149,16 @@
 - (void)_loadPunctationGroups
 {
   v29 = +[NSMutableArray array];
-  v3 = [(AXVoiceOverPunctuationBaseController *)self customPunctuationGroups];
+  customPunctuationGroups = [(AXVoiceOverPunctuationBaseController *)self customPunctuationGroups];
   v4 = AXLogPunctuationStorage();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v42 = v3;
+    v42 = customPunctuationGroups;
     _os_log_impl(&dword_0, v4, OS_LOG_TYPE_INFO, "Loading punctuation groups: %@", buf, 0xCu);
   }
 
-  if ([v3 count])
+  if ([customPunctuationGroups count])
   {
     v5 = settingsLocString(@"CUSTOM_PUNCTUATION_GROUPS", @"VoiceOverSettings");
     v6 = [PSSpecifier groupSpecifierWithName:v5];
@@ -171,8 +171,8 @@
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v27 = v3;
-  obj = [v3 sortedArrayUsingComparator:&__block_literal_global_53];
+  v27 = customPunctuationGroups;
+  obj = [customPunctuationGroups sortedArrayUsingComparator:&__block_literal_global_53];
   v7 = [obj countByEnumeratingWithState:&v34 objects:v40 count:16];
   if (v7)
   {
@@ -188,13 +188,13 @@
         }
 
         v11 = *(*(&v34 + 1) + 8 * i);
-        v12 = [v11 name];
-        v13 = [PSSpecifier preferenceSpecifierNamed:v12 target:self set:0 get:"_numberEntriesInGroup:" detail:objc_opt_class() cell:2 edit:0];
+        name = [v11 name];
+        v13 = [PSSpecifier preferenceSpecifierNamed:name target:self set:0 get:"_numberEntriesInGroup:" detail:objc_opt_class() cell:2 edit:0];
 
         [v13 setProperty:v11 forKey:@"PunctuationGroup"];
         [v13 setProperty:&__kCFBooleanTrue forKey:@"CustomGroup"];
-        v14 = [v11 uuid];
-        [v13 setProperty:v14 forKey:@"punctuationGroupUUID"];
+        uuid = [v11 uuid];
+        [v13 setProperty:uuid forKey:@"punctuationGroupUUID"];
 
         [v29 addObject:v13];
       }
@@ -211,8 +211,8 @@
   [(AXVoiceOverPunctuationController *)self removeContiguousSpecifiers:v15];
   [(AXVoiceOverPunctuationController *)self insertContiguousSpecifiers:v29 atIndex:[(AXVoiceOverPunctuationController *)self indexOfSpecifierID:@"NewPunctuationGroup"] animated:1];
   [(AXVoiceOverPunctuationController *)self endUpdates];
-  v16 = [(AXVoiceOverPunctuationController *)self table];
-  [v16 beginUpdates];
+  table = [(AXVoiceOverPunctuationController *)self table];
+  [table beginUpdates];
 
   v32 = 0u;
   v33 = 0u;
@@ -234,11 +234,11 @@
         }
 
         v22 = *(*(&v30 + 1) + 8 * j);
-        v23 = [(AXVoiceOverPunctuationController *)self table];
+        table2 = [(AXVoiceOverPunctuationController *)self table];
         v24 = [(AXVoiceOverPunctuationController *)self indexPathForSpecifier:v22];
         v38 = v24;
         v25 = [NSArray arrayWithObjects:&v38 count:1];
-        [v23 reloadRowsAtIndexPaths:v25 withRowAnimation:5];
+        [table2 reloadRowsAtIndexPaths:v25 withRowAnimation:5];
       }
 
       v19 = [v17 countByEnumeratingWithState:&v30 objects:v39 count:16];
@@ -247,8 +247,8 @@
     while (v19);
   }
 
-  v26 = [(AXVoiceOverPunctuationController *)self table];
-  [v26 endUpdates];
+  table3 = [(AXVoiceOverPunctuationController *)self table];
+  [table3 endUpdates];
 }
 
 int64_t __57__AXVoiceOverPunctuationController__loadPunctationGroups__block_invoke(id a1, AXSSPunctuationGroup *a2, AXSSPunctuationGroup *a3)
@@ -261,11 +261,11 @@ int64_t __57__AXVoiceOverPunctuationController__loadPunctationGroups__block_invo
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AXVoiceOverPunctuationController *)self specifierAtIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(AXVoiceOverPunctuationController *)self specifierAtIndexPath:pathCopy];
   v9 = PSIDKey;
   v10 = [v8 propertyForKey:PSIDKey];
   v11 = [v10 isEqualToString:@"NewPunctuation"];
@@ -273,8 +273,8 @@ int64_t __57__AXVoiceOverPunctuationController__loadPunctationGroups__block_invo
   if (v11)
   {
     v56 = v8;
-    v57 = v7;
-    v58 = v6;
+    v57 = pathCopy;
+    v58 = viewCopy;
     v12 = settingsLocString(@"PUNCTUATION_ORIGINAL_GROUP_SELECTION_TITLE", @"VoiceOverSettings");
     v13 = settingsLocString(@"PUNCTUATION_ORIGINAL_GROUP_SELECTION_MESSAGE", @"VoiceOverSettings");
     v14 = [UIAlertController alertControllerWithTitle:v12 message:v13 preferredStyle:AXDeviceIsPad()];
@@ -289,7 +289,7 @@ int64_t __57__AXVoiceOverPunctuationController__loadPunctationGroups__block_invo
     v71 = 0u;
     v72 = 0u;
     v73 = 0u;
-    v55 = self;
+    selfCopy = self;
     obj = self->_systemPunctuationSpecs;
     v16 = [(NSMutableArray *)obj countByEnumeratingWithState:&v70 objects:v77 count:16];
     if (v16)
@@ -307,7 +307,7 @@ int64_t __57__AXVoiceOverPunctuationController__loadPunctationGroups__block_invo
 
           v20 = *(*(&v70 + 1) + 8 * i);
           v21 = [v20 propertyForKey:@"punctuationGroupUUID"];
-          v22 = [v20 name];
+          name = [v20 name];
           v67[0] = _NSConcreteStackBlock;
           v67[1] = 3221225472;
           v67[2] = __70__AXVoiceOverPunctuationController_tableView_didSelectRowAtIndexPath___block_invoke_2;
@@ -316,7 +316,7 @@ int64_t __57__AXVoiceOverPunctuationController__loadPunctationGroups__block_invo
           v68 = v21;
           v69 = v23;
           v24 = v21;
-          v25 = [UIAlertAction actionWithTitle:v22 style:0 handler:v67];
+          v25 = [UIAlertAction actionWithTitle:name style:0 handler:v67];
 
           [v14 addAction:v25];
         }
@@ -332,9 +332,9 @@ int64_t __57__AXVoiceOverPunctuationController__loadPunctationGroups__block_invo
     v63 = 0u;
     v64 = 0u;
     v26 = +[AXSSPunctuationManager sharedDatabase];
-    v27 = [v26 punctuationGroups];
+    punctuationGroups = [v26 punctuationGroups];
 
-    v28 = [v27 countByEnumeratingWithState:&v63 objects:v76 count:16];
+    v28 = [punctuationGroups countByEnumeratingWithState:&v63 objects:v76 count:16];
     if (v28)
     {
       v29 = v28;
@@ -345,13 +345,13 @@ int64_t __57__AXVoiceOverPunctuationController__loadPunctationGroups__block_invo
         {
           if (*v64 != v30)
           {
-            objc_enumerationMutation(v27);
+            objc_enumerationMutation(punctuationGroups);
           }
 
           v32 = *(*(&v63 + 1) + 8 * j);
           if (([v32 isSystemPunctuationGroup] & 1) == 0)
           {
-            v33 = [v32 name];
+            name2 = [v32 name];
             v61[0] = _NSConcreteStackBlock;
             v61[1] = 3221225472;
             v61[2] = __70__AXVoiceOverPunctuationController_tableView_didSelectRowAtIndexPath___block_invoke_3;
@@ -359,13 +359,13 @@ int64_t __57__AXVoiceOverPunctuationController__loadPunctationGroups__block_invo
             v34 = v15;
             v61[4] = v32;
             v62 = v34;
-            v35 = [UIAlertAction actionWithTitle:v33 style:0 handler:v61];
+            v35 = [UIAlertAction actionWithTitle:name2 style:0 handler:v61];
 
             [v14 addAction:v35];
           }
         }
 
-        v29 = [v27 countByEnumeratingWithState:&v63 objects:v76 count:16];
+        v29 = [punctuationGroups countByEnumeratingWithState:&v63 objects:v76 count:16];
       }
 
       while (v29);
@@ -376,25 +376,25 @@ int64_t __57__AXVoiceOverPunctuationController__loadPunctationGroups__block_invo
 
     v38 = v14;
     [v14 addAction:v37];
-    self = v55;
+    self = selfCopy;
     if (_AXSInUnitTestMode())
     {
-      v39 = [(AXVoiceOverPunctuationController *)v55 testingInitialPunctuationGroup];
-      v40 = [v39 uuid];
-      (v15[2])(v15, v40);
+      testingInitialPunctuationGroup = [(AXVoiceOverPunctuationController *)selfCopy testingInitialPunctuationGroup];
+      uuid = [testingInitialPunctuationGroup uuid];
+      (v15[2])(v15, uuid);
     }
 
     else
     {
-      v39 = [(AXVoiceOverPunctuationController *)v55 view];
-      v40 = [v39 window];
-      v49 = [v40 rootViewController];
-      [v49 presentViewController:v14 animated:1 completion:0];
+      testingInitialPunctuationGroup = [(AXVoiceOverPunctuationController *)selfCopy view];
+      uuid = [testingInitialPunctuationGroup window];
+      rootViewController = [uuid rootViewController];
+      [rootViewController presentViewController:v14 animated:1 completion:0];
     }
 
     v8 = v56;
-    v7 = v57;
-    v6 = v58;
+    pathCopy = v57;
+    viewCopy = v58;
   }
 
   else
@@ -411,10 +411,10 @@ int64_t __57__AXVoiceOverPunctuationController__loadPunctationGroups__block_invo
 
       else
       {
-        v50 = [v8 detailControllerClass];
+        detailControllerClass = [v8 detailControllerClass];
         v51 = objc_opt_class();
 
-        if (v50 != v51)
+        if (detailControllerClass != v51)
         {
           goto LABEL_27;
         }
@@ -424,8 +424,8 @@ int64_t __57__AXVoiceOverPunctuationController__loadPunctationGroups__block_invo
       v53 = [v8 propertyForKey:@"PunctuationGroup"];
       [(AXVoiceOverPunctuationGroupController *)v52 setPunctuationGroup:v53];
 
-      v54 = [(AXVoiceOverPunctuationController *)self rootController];
-      [(AXVoiceOverPunctuationGroupController *)v52 setRootController:v54];
+      rootController = [(AXVoiceOverPunctuationController *)self rootController];
+      [(AXVoiceOverPunctuationGroupController *)v52 setRootController:rootController];
 
       [(AXVoiceOverPunctuationGroupController *)v52 setParentController:self];
       [(AXVoiceOverPunctuationController *)self showController:v52 animate:1];
@@ -451,7 +451,7 @@ int64_t __57__AXVoiceOverPunctuationController__loadPunctationGroups__block_invo
 LABEL_27:
   v60.receiver = self;
   v60.super_class = AXVoiceOverPunctuationController;
-  [(AXVoiceOverPunctuationController *)&v60 tableView:v6 didSelectRowAtIndexPath:v7];
+  [(AXVoiceOverPunctuationController *)&v60 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
 LABEL_28:
 }
 
@@ -477,14 +477,14 @@ void __70__AXVoiceOverPunctuationController_tableView_didSelectRowAtIndexPath___
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)documentPicker:(id)a3 didPickDocumentsAtURLs:(id)a4
+- (void)documentPicker:(id)picker didPickDocumentsAtURLs:(id)ls
 {
-  v4 = a4;
+  lsCopy = ls;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v25 objects:v31 count:16];
+  v5 = [lsCopy countByEnumeratingWithState:&v25 objects:v31 count:16];
   if (v5)
   {
     v6 = v5;
@@ -499,7 +499,7 @@ void __70__AXVoiceOverPunctuationController_tableView_didSelectRowAtIndexPath___
       {
         if (*v26 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(lsCopy);
         }
 
         v10 = *(*(&v25 + 1) + 8 * v9);
@@ -539,11 +539,11 @@ void __70__AXVoiceOverPunctuationController_tableView_didSelectRowAtIndexPath___
               v17 = settingsLocString(@"VOICEOVER_IMPORT_PUNCTUATION_SUCCESS_ANNOUNCEMENT", @"VoiceOverSettings");
               [v14 name];
               v18 = v7;
-              v20 = v19 = v4;
+              v20 = v19 = lsCopy;
               v21 = [NSString stringWithFormat:v17, v20];
               UIAccessibilityPostNotification(notification, v21);
 
-              v4 = v19;
+              lsCopy = v19;
               v7 = v18;
               v8 = AXValidationManager_ptr;
 
@@ -569,18 +569,18 @@ void __70__AXVoiceOverPunctuationController_tableView_didSelectRowAtIndexPath___
       }
 
       while (v6 != v9);
-      v6 = [v4 countByEnumeratingWithState:&v25 objects:v31 count:16];
+      v6 = [lsCopy countByEnumeratingWithState:&v25 objects:v31 count:16];
     }
 
     while (v6);
   }
 }
 
-- (id)_numberEntriesInGroup:(id)a3
+- (id)_numberEntriesInGroup:(id)group
 {
-  v3 = [a3 propertyForKey:@"PunctuationGroup"];
-  v4 = [v3 entries];
-  v5 = [v4 ax_filteredArrayUsingBlock:&__block_literal_global_372_1];
+  v3 = [group propertyForKey:@"PunctuationGroup"];
+  entries = [v3 entries];
+  v5 = [entries ax_filteredArrayUsingBlock:&__block_literal_global_372_1];
   v6 = [v5 count];
 
   v7 = settingsLocString(@"VO_PUNCTUATION_GROUP_ENTRY_COUNT", @"VoiceOverSettings");
@@ -625,7 +625,7 @@ void __47__AXVoiceOverPunctuationController_viewDidLoad__block_invoke(uint64_t a
   [WeakRetained reloadSpecifierID:@"voiceOverPunctuationGroup"];
 }
 
-- (void)_punctuationGroupsChanged:(id)a3
+- (void)_punctuationGroupsChanged:(id)changed
 {
   if ([(AXVoiceOverPunctuationController *)self ignoreGroupsChangedNotification])
   {
@@ -657,19 +657,19 @@ void __62__AXVoiceOverPunctuationController__punctuationGroupsChanged___block_in
   [(AXVoiceOverPunctuationController *)&v4 dealloc];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = AXVoiceOverPunctuationController;
   [(AXVoiceOverPunctuationController *)&v5 viewWillAppear:?];
-  [(AXVoiceOverPunctuationController *)self _configureEditButton:v3];
-  [(AXVoiceOverPunctuationController *)self _updateEditingStatusForSpecifiers:v3];
+  [(AXVoiceOverPunctuationController *)self _configureEditButton:appearCopy];
+  [(AXVoiceOverPunctuationController *)self _updateEditingStatusForSpecifiers:appearCopy];
 }
 
-- (BOOL)tableView:(id)a3 shouldIndentWhileEditingRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldIndentWhileEditingRowAtIndexPath:(id)path
 {
-  v4 = [(AXVoiceOverPunctuationController *)self specifierAtIndexPath:a4];
+  v4 = [(AXVoiceOverPunctuationController *)self specifierAtIndexPath:path];
   v5 = [v4 propertyForKey:@"PunctuationGroup"];
   v6 = [v5 isSystemPunctuationGroup] ^ 1;
   if (v5)
@@ -685,9 +685,9 @@ void __62__AXVoiceOverPunctuationController__punctuationGroupsChanged___block_in
   return v7;
 }
 
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path
 {
-  v4 = [(AXVoiceOverPunctuationController *)self specifierAtIndexPath:a4];
+  v4 = [(AXVoiceOverPunctuationController *)self specifierAtIndexPath:path];
   v5 = [v4 propertyForKey:@"PunctuationGroup"];
   v6 = [v5 isSystemPunctuationGroup] ^ 1;
   if (v5)
@@ -703,19 +703,19 @@ void __62__AXVoiceOverPunctuationController__punctuationGroupsChanged___block_in
   return v7;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  if (a4 == 1)
+  if (style == 1)
   {
-    v6 = [(AXVoiceOverPunctuationController *)self specifierAtIndexPath:a5];
+    v6 = [(AXVoiceOverPunctuationController *)self specifierAtIndexPath:path];
     v7 = [v6 propertyForKey:@"PunctuationGroup"];
-    v8 = [v7 isSystemPunctuationGroup];
-    if (v7 && (v8 & 1) == 0)
+    isSystemPunctuationGroup = [v7 isSystemPunctuationGroup];
+    if (v7 && (isSystemPunctuationGroup & 1) == 0)
     {
       v9 = +[AXSettings sharedInstance];
-      v10 = [v9 voiceOverPunctuationGroup];
-      v11 = [v7 uuid];
-      v12 = [v10 isEqual:v11];
+      voiceOverPunctuationGroup = [v9 voiceOverPunctuationGroup];
+      uuid = [v7 uuid];
+      v12 = [voiceOverPunctuationGroup isEqual:uuid];
 
       if (v12)
       {
@@ -728,8 +728,8 @@ void __62__AXVoiceOverPunctuationController__punctuationGroupsChanged___block_in
       [v14 removePunctuationGroup:v7];
 
       [(AXVoiceOverPunctuationController *)self beginUpdates];
-      v15 = [(AXVoiceOverPunctuationBaseController *)self customPunctuationGroups];
-      v16 = [v15 count];
+      customPunctuationGroups = [(AXVoiceOverPunctuationBaseController *)self customPunctuationGroups];
+      v16 = [customPunctuationGroups count];
 
       if (!v16)
       {
@@ -749,9 +749,9 @@ void __62__AXVoiceOverPunctuationController__punctuationGroupsChanged___block_in
       v19 = AXLogPunctuationStorage();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
       {
-        v20 = [(AXVoiceOverPunctuationBaseController *)self customPunctuationGroups];
+        customPunctuationGroups2 = [(AXVoiceOverPunctuationBaseController *)self customPunctuationGroups];
         v21 = 138412290;
-        v22 = v20;
+        v22 = customPunctuationGroups2;
         _os_log_impl(&dword_0, v19, OS_LOG_TYPE_INFO, "existing groups: %@", &v21, 0xCu);
       }
 
@@ -762,14 +762,14 @@ void __62__AXVoiceOverPunctuationController__punctuationGroupsChanged___block_in
   }
 }
 
-- (void)tableView:(id)a3 willBeginEditingRowAtIndexPath:(id)a4
+- (void)tableView:(id)view willBeginEditingRowAtIndexPath:(id)path
 {
   [(AXVoiceOverPunctuationController *)self setEditing:1 animated:1];
 
   [(AXVoiceOverPunctuationController *)self _configureEditButton:1];
 }
 
-- (void)tableView:(id)a3 didEndEditingRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didEndEditingRowAtIndexPath:(id)path
 {
   [(AXVoiceOverPunctuationController *)self setEditing:0 animated:1];
 
@@ -779,21 +779,21 @@ void __62__AXVoiceOverPunctuationController__punctuationGroupsChanged___block_in
 - (void)_addDoneButton
 {
   v4 = [objc_allocWithZone(UIBarButtonItem) initWithBarButtonSystemItem:0 target:self action:"_donePressed"];
-  v3 = [(AXVoiceOverPunctuationController *)self navigationItem];
-  [v3 setRightBarButtonItem:v4];
+  navigationItem = [(AXVoiceOverPunctuationController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v4];
 }
 
-- (void)_configureEditButton:(BOOL)a3
+- (void)_configureEditButton:(BOOL)button
 {
-  v3 = a3;
-  v5 = [(AXVoiceOverPunctuationController *)self specifiers];
-  v6 = [v5 ax_filteredArrayUsingBlock:&__block_literal_global_397];
+  buttonCopy = button;
+  specifiers = [(AXVoiceOverPunctuationController *)self specifiers];
+  v6 = [specifiers ax_filteredArrayUsingBlock:&__block_literal_global_397];
   v7 = [v6 count];
 
   if (v7 < 1)
   {
-    v8 = [(AXVoiceOverPunctuationController *)self navigationItem];
-    [v8 setRightBarButtonItem:0];
+    navigationItem = [(AXVoiceOverPunctuationController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:0];
   }
 
   else
@@ -804,14 +804,14 @@ void __62__AXVoiceOverPunctuationController__punctuationGroupsChanged___block_in
       goto LABEL_7;
     }
 
-    v8 = [objc_allocWithZone(UIBarButtonItem) initWithBarButtonSystemItem:2 target:self action:"_editPressed"];
-    v9 = [(AXVoiceOverPunctuationController *)self navigationItem];
-    [v9 setRightBarButtonItem:v8];
+    navigationItem = [objc_allocWithZone(UIBarButtonItem) initWithBarButtonSystemItem:2 target:self action:"_editPressed"];
+    navigationItem2 = [(AXVoiceOverPunctuationController *)self navigationItem];
+    [navigationItem2 setRightBarButtonItem:navigationItem];
   }
 
 LABEL_7:
 
-  [(AXVoiceOverPunctuationController *)self _updateEditingStatusForSpecifiers:v3];
+  [(AXVoiceOverPunctuationController *)self _updateEditingStatusForSpecifiers:buttonCopy];
 }
 
 BOOL __57__AXVoiceOverPunctuationController__configureEditButton___block_invoke(id a1, PSSpecifier *a2, unint64_t a3, BOOL *a4)
@@ -822,33 +822,33 @@ BOOL __57__AXVoiceOverPunctuationController__configureEditButton___block_invoke(
   return v5;
 }
 
-- (void)_updateEditingStatusForSpecifiers:(BOOL)a3
+- (void)_updateEditingStatusForSpecifiers:(BOOL)specifiers
 {
-  v3 = a3;
-  v5 = [(AXVoiceOverPunctuationController *)self isEditing];
+  specifiersCopy = specifiers;
+  isEditing = [(AXVoiceOverPunctuationController *)self isEditing];
   [(AXVoiceOverPunctuationController *)self beginUpdates];
   v10 = [(AXVoiceOverPunctuationController *)self specifierForID:@"NewPunctuation"];
-  v6 = [NSNumber numberWithInt:v5 ^ 1];
+  v6 = [NSNumber numberWithInt:isEditing ^ 1];
   v7 = PSEnabledKey;
   [v10 setProperty:v6 forKey:PSEnabledKey];
 
-  [(AXVoiceOverPunctuationController *)self reloadSpecifier:v10 animated:v3];
+  [(AXVoiceOverPunctuationController *)self reloadSpecifier:v10 animated:specifiersCopy];
   v8 = [(AXVoiceOverPunctuationController *)self specifierForID:@"ImportPunctuation"];
-  v9 = [NSNumber numberWithInt:v5 ^ 1];
+  v9 = [NSNumber numberWithInt:isEditing ^ 1];
   [v8 setProperty:v9 forKey:v7];
 
   [(AXVoiceOverPunctuationController *)self reloadSpecifier:v8 animated:1];
   [(AXVoiceOverPunctuationController *)self endUpdates];
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v6.receiver = self;
   v6.super_class = AXVoiceOverPunctuationController;
-  [(AXVoiceOverPunctuationController *)&v6 setEditing:a3 animated:?];
-  [(AXVoiceOverPunctuationController *)self _updateEditingStatusForSpecifiers:v4];
-  [(AXVoiceOverPunctuationController *)self _configureEditButton:v4];
+  [(AXVoiceOverPunctuationController *)&v6 setEditing:editing animated:?];
+  [(AXVoiceOverPunctuationController *)self _updateEditingStatusForSpecifiers:animatedCopy];
+  [(AXVoiceOverPunctuationController *)self _configureEditButton:animatedCopy];
 }
 
 - (void)_editPressed
@@ -861,11 +861,11 @@ BOOL __57__AXVoiceOverPunctuationController__configureEditButton___block_invoke(
 - (void)_donePressed
 {
   [(AXVoiceOverPunctuationController *)self setEditing:0 animated:1];
-  v3 = [(AXVoiceOverPunctuationController *)self table];
-  [v3 setEditing:0 animated:1];
+  table = [(AXVoiceOverPunctuationController *)self table];
+  [table setEditing:0 animated:1];
 
-  v4 = [(AXVoiceOverPunctuationController *)self table];
-  [v4 reloadData];
+  table2 = [(AXVoiceOverPunctuationController *)self table];
+  [table2 reloadData];
 }
 
 @end

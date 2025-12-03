@@ -1,32 +1,32 @@
 @interface GKLeaderboardSet
-+ (BOOL)instancesRespondToSelector:(SEL)a3;
-+ (id)instanceMethodSignatureForSelector:(SEL)a3;
-+ (void)loadLeaderboardSetsForGame:(id)a3 withCompletionHandler:(id)a4;
++ (BOOL)instancesRespondToSelector:(SEL)selector;
++ (id)instanceMethodSignatureForSelector:(SEL)selector;
++ (void)loadLeaderboardSetsForGame:(id)game withCompletionHandler:(id)handler;
 + (void)loadLeaderboardSetsWithCompletionHandler:(void *)completionHandler;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)respondsToSelector:(SEL)a3;
-- (GKLeaderboardSet)initWithCoder:(id)a3;
-- (GKLeaderboardSet)initWithInternalRepresentation:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (GKLeaderboardSet)initWithCoder:(id)coder;
+- (GKLeaderboardSet)initWithInternalRepresentation:(id)representation;
 - (id)description;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (id)valueForUndefinedKey:(id)a3;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (id)valueForUndefinedKey:(id)key;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)loadLeaderboardsForGame:(id)a3 forPlayer:(id)a4 withCompletionHandler:(id)a5;
-- (void)loadLeaderboardsForGame:(id)a3 withCompletionHandler:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)loadLeaderboardsForGame:(id)game forPlayer:(id)player withCompletionHandler:(id)handler;
+- (void)loadLeaderboardsForGame:(id)game withCompletionHandler:(id)handler;
 - (void)loadLeaderboardsWithCompletionHandler:(void *)completionHandler;
 - (void)loadLeaderboardsWithHandler:(void *)handler;
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4;
+- (void)setValue:(id)value forUndefinedKey:(id)key;
 @end
 
 @implementation GKLeaderboardSet
 
-- (GKLeaderboardSet)initWithInternalRepresentation:(id)a3
+- (GKLeaderboardSet)initWithInternalRepresentation:(id)representation
 {
-  v4 = a3;
-  if (!v4)
+  representationCopy = representation;
+  if (!representationCopy)
   {
-    v4 = +[(GKInternalRepresentation *)GKLeaderboardSetInternal];
+    representationCopy = +[(GKInternalRepresentation *)GKLeaderboardSetInternal];
   }
 
   v8.receiver = self;
@@ -35,42 +35,42 @@
   v6 = v5;
   if (v5)
   {
-    objc_storeStrong(&v5->_internal, v4);
+    objc_storeStrong(&v5->_internal, representationCopy);
   }
 
   return v6;
 }
 
-- (GKLeaderboardSet)initWithCoder:(id)a3
+- (GKLeaderboardSet)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"internal"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"internal"];
 
   v6 = [(GKLeaderboardSet *)self initWithInternalRepresentation:v5];
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(GKLeaderboardSet *)self internal];
-  [v4 encodeObject:v5 forKey:@"internal"];
+  coderCopy = coder;
+  internal = [(GKLeaderboardSet *)self internal];
+  [coderCopy encodeObject:internal forKey:@"internal"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(GKLeaderboardSet *)self internal];
-  v6 = [v4 internal];
+  equalCopy = equal;
+  internal = [(GKLeaderboardSet *)self internal];
+  internal2 = [equalCopy internal];
 
-  LOBYTE(v4) = [v5 isEqual:v6];
-  return v4;
+  LOBYTE(equalCopy) = [internal isEqual:internal2];
+  return equalCopy;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(GKLeaderboardSet *)self internal];
-  v3 = [v2 hash];
+  internal = [(GKLeaderboardSet *)self internal];
+  v3 = [internal hash];
 
   return v3;
 }
@@ -80,16 +80,16 @@
   v8.receiver = self;
   v8.super_class = GKLeaderboardSet;
   v3 = [(GKLeaderboardSet *)&v8 description];
-  v4 = [(GKLeaderboardSet *)self identifier];
-  v5 = [(GKLeaderboardSet *)self title];
-  v6 = [v3 stringByAppendingFormat:@"%@ - %@ ", v4, v5];
+  identifier = [(GKLeaderboardSet *)self identifier];
+  title = [(GKLeaderboardSet *)self title];
+  v6 = [v3 stringByAppendingFormat:@"%@ - %@ ", identifier, title];
 
   return v6;
 }
 
-+ (id)instanceMethodSignatureForSelector:(SEL)a3
++ (id)instanceMethodSignatureForSelector:(SEL)selector
 {
-  v9.receiver = a1;
+  v9.receiver = self;
   v9.super_class = &OBJC_METACLASS___GKLeaderboardSet;
   v4 = objc_msgSendSuper2(&v9, sel_instanceMethodSignatureForSelector_);
   v5 = v4;
@@ -100,7 +100,7 @@
 
   else
   {
-    v6 = [objc_opt_class() instanceMethodSignatureForSelector:a3];
+    v6 = [objc_opt_class() instanceMethodSignatureForSelector:selector];
   }
 
   v7 = v6;
@@ -108,7 +108,7 @@
   return v7;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v10.receiver = self;
   v10.super_class = GKLeaderboardSet;
@@ -121,14 +121,14 @@
 
   else
   {
-    v8 = [(GKLeaderboardSet *)self forwardingTargetForSelector:a3];
-    v7 = [v8 methodSignatureForSelector:a3];
+    v8 = [(GKLeaderboardSet *)self forwardingTargetForSelector:selector];
+    v7 = [v8 methodSignatureForSelector:selector];
   }
 
   return v7;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v8.receiver = self;
   v8.super_class = GKLeaderboardSet;
@@ -139,18 +139,18 @@
 
   else
   {
-    v6 = [(GKLeaderboardSet *)self forwardingTargetForSelector:a3];
+    v6 = [(GKLeaderboardSet *)self forwardingTargetForSelector:selector];
     v5 = objc_opt_respondsToSelector();
   }
 
   return v5 & 1;
 }
 
-+ (BOOL)instancesRespondToSelector:(SEL)a3
++ (BOOL)instancesRespondToSelector:(SEL)selector
 {
-  if (a3)
+  if (selector)
   {
-    if (class_respondsToSelector(a1, a3))
+    if (class_respondsToSelector(self, selector))
     {
       LOBYTE(v4) = 1;
     }
@@ -161,7 +161,7 @@
       if (v4)
       {
 
-        LOBYTE(v4) = [GKLeaderboardSetInternal instancesRespondToSelector:a3];
+        LOBYTE(v4) = [GKLeaderboardSetInternal instancesRespondToSelector:selector];
       }
     }
   }
@@ -174,29 +174,29 @@
   return v4;
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
-  v4 = a3;
-  v5 = [(GKLeaderboardSet *)self internal];
-  v6 = [v5 valueForKey:v4];
+  keyCopy = key;
+  internal = [(GKLeaderboardSet *)self internal];
+  v6 = [internal valueForKey:keyCopy];
 
   return v6;
 }
 
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4
+- (void)setValue:(id)value forUndefinedKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(GKLeaderboardSet *)self internal];
-  [v8 setValue:v7 forKey:v6];
+  keyCopy = key;
+  valueCopy = value;
+  internal = [(GKLeaderboardSet *)self internal];
+  [internal setValue:valueCopy forKey:keyCopy];
 }
 
-- (void)loadLeaderboardsForGame:(id)a3 forPlayer:(id)a4 withCompletionHandler:(id)a5
+- (void)loadLeaderboardsForGame:(id)game forPlayer:(id)player withCompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  gameCopy = game;
+  playerCopy = player;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKLeaderboardSet.m", 144, "-[GKLeaderboardSet loadLeaderboardsForGame:forPlayer:withCompletionHandler:]"];
     v12 = [GKDispatchGroup dispatchGroupWithName:v11];
@@ -205,9 +205,9 @@
     v18[1] = 3221225472;
     v18[2] = __76__GKLeaderboardSet_loadLeaderboardsForGame_forPlayer_withCompletionHandler___block_invoke;
     v18[3] = &unk_2785DE4C8;
-    v19 = v8;
-    v20 = v9;
-    v21 = self;
+    v19 = gameCopy;
+    v20 = playerCopy;
+    selfCopy = self;
     v13 = v12;
     v22 = v13;
     [v13 perform:v18];
@@ -216,7 +216,7 @@
     v15[2] = __76__GKLeaderboardSet_loadLeaderboardsForGame_forPlayer_withCompletionHandler___block_invoke_4;
     v15[3] = &unk_2785DDC10;
     v16 = v13;
-    v17 = v10;
+    v17 = handlerCopy;
     v14 = v13;
     [v14 notifyOnMainQueueWithBlock:v15];
   }
@@ -310,12 +310,12 @@ void __58__GKLeaderboardSet_loadLeaderboardsWithCompletionHandler___block_invoke
   }
 }
 
-- (void)loadLeaderboardsForGame:(id)a3 withCompletionHandler:(id)a4
+- (void)loadLeaderboardsForGame:(id)game withCompletionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v7 = +[GKGame currentGame];
   v6 = +[GKLocalPlayer localPlayer];
-  [(GKLeaderboardSet *)self loadLeaderboardsForGame:v7 forPlayer:v6 withCompletionHandler:v5];
+  [(GKLeaderboardSet *)self loadLeaderboardsForGame:v7 forPlayer:v6 withCompletionHandler:handlerCopy];
 }
 
 - (void)loadLeaderboardsWithHandler:(void *)handler
@@ -404,11 +404,11 @@ void __48__GKLeaderboardSet_loadLeaderboardsWithHandler___block_invoke_4(uint64_
   (*(v2 + 16))(v2, v4, v5);
 }
 
-+ (void)loadLeaderboardSetsForGame:(id)a3 withCompletionHandler:(id)a4
++ (void)loadLeaderboardSetsForGame:(id)game withCompletionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  gameCopy = game;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKLeaderboardSet.m", 210, "+[GKLeaderboardSet loadLeaderboardSetsForGame:withCompletionHandler:]"];
     v8 = [GKDispatchGroup dispatchGroupWithName:v7];
@@ -417,7 +417,7 @@ void __48__GKLeaderboardSet_loadLeaderboardsWithHandler___block_invoke_4(uint64_
     v14[1] = 3221225472;
     v14[2] = __69__GKLeaderboardSet_loadLeaderboardSetsForGame_withCompletionHandler___block_invoke;
     v14[3] = &unk_2785DD898;
-    v15 = v5;
+    v15 = gameCopy;
     v9 = v8;
     v16 = v9;
     [v9 perform:v14];
@@ -426,7 +426,7 @@ void __48__GKLeaderboardSet_loadLeaderboardsWithHandler___block_invoke_4(uint64_
     v11[2] = __69__GKLeaderboardSet_loadLeaderboardSetsForGame_withCompletionHandler___block_invoke_4;
     v11[3] = &unk_2785DDC10;
     v12 = v9;
-    v13 = v6;
+    v13 = handlerCopy;
     v10 = v9;
     [v10 notifyOnMainQueueWithBlock:v11];
   }

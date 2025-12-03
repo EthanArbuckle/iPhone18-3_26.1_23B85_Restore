@@ -1,13 +1,13 @@
 @interface HKSPAlarmConfiguration
-- (BOOL)_needsMigrationForCoder:(id)a3;
+- (BOOL)_needsMigrationForCoder:(id)coder;
 - (BOOL)breaksThroughSilentMode;
 - (HKSPAlarmConfiguration)init;
-- (HKSPAlarmConfiguration)initWithCoder:(id)a3;
-- (id)initFromObject:(id)a3;
+- (HKSPAlarmConfiguration)initWithCoder:(id)coder;
+- (id)initFromObject:(id)object;
 - (id)mutableCopy;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (void)_migrateForCoder:(id)a3;
+- (void)_migrateForCoder:(id)coder;
 @end
 
 @implementation HKSPAlarmConfiguration
@@ -35,41 +35,41 @@
   return v4;
 }
 
-- (id)initFromObject:(id)a3
+- (id)initFromObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = objectCopy;
     v6 = [(HKSPAlarmConfiguration *)self init];
     HKSPCopyFromObject(v5, v6);
 
     self = v6;
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (HKSPAlarmConfiguration)initWithCoder:(id)a3
+- (HKSPAlarmConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = HKSPAlarmConfiguration;
   v5 = [(HKSPAlarmConfiguration *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    HKSPDecodeObjectWithCoder(v5, v4);
-    if ([(HKSPAlarmConfiguration *)v6 _needsMigrationForCoder:v4])
+    HKSPDecodeObjectWithCoder(v5, coderCopy);
+    if ([(HKSPAlarmConfiguration *)v6 _needsMigrationForCoder:coderCopy])
     {
-      [(HKSPAlarmConfiguration *)v6 _migrateForCoder:v4];
+      [(HKSPAlarmConfiguration *)v6 _migrateForCoder:coderCopy];
     }
 
     v7 = v6;
@@ -78,17 +78,17 @@
   return v6;
 }
 
-- (BOOL)_needsMigrationForCoder:(id)a3
+- (BOOL)_needsMigrationForCoder:(id)coder
 {
-  v3 = a3;
-  v4 = ([v3 hksp_serializationOptions] & 1) != 0 && objc_msgSend(v3, "decodeIntegerForKey:", @"HKSPAlarmVersion") < 4;
+  coderCopy = coder;
+  v4 = ([coderCopy hksp_serializationOptions] & 1) != 0 && objc_msgSend(coderCopy, "decodeIntegerForKey:", @"HKSPAlarmVersion") < 4;
 
   return v4;
 }
 
-- (void)_migrateForCoder:(id)a3
+- (void)_migrateForCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   version = self->_version;
   if (version <= 2)
   {
@@ -127,8 +127,8 @@
 
 - (BOOL)breaksThroughSilentMode
 {
-  v3 = [MEMORY[0x277CCDD30] sharedBehavior];
-  if ([v3 isAppleWatch])
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  if ([mEMORY[0x277CCDD30] isAppleWatch])
   {
     v4 = 1;
   }
@@ -143,10 +143,10 @@
 
 - (id)succinctDescription
 {
-  v2 = [(HKSPAlarmConfiguration *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(HKSPAlarmConfiguration *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -157,14 +157,14 @@
   [(HKSPAlarmConfiguration *)self snoozeDuration];
   v6 = [v3 appendTimeInterval:@"snoozeDuration" withName:1 decomposeUnits:?];
   v7 = [v3 appendBool:-[HKSPAlarmConfiguration breaksThroughSilentMode](self withName:{"breaksThroughSilentMode"), @"breaksThroughSilentMode"}];
-  v8 = [(HKSPAlarmConfiguration *)self toneIdentifier];
-  v9 = [v3 appendObject:v8 withName:@"toneIdentifier"];
+  toneIdentifier = [(HKSPAlarmConfiguration *)self toneIdentifier];
+  v9 = [v3 appendObject:toneIdentifier withName:@"toneIdentifier"];
 
-  v10 = [(HKSPAlarmConfiguration *)self vibrationIdentifier];
-  v11 = [v3 appendObject:v10 withName:@"vibrationIdentifier"];
+  vibrationIdentifier = [(HKSPAlarmConfiguration *)self vibrationIdentifier];
+  v11 = [v3 appendObject:vibrationIdentifier withName:@"vibrationIdentifier"];
 
-  v12 = [(HKSPAlarmConfiguration *)self soundVolume];
-  v13 = [v3 appendObject:v12 withName:@"soundVolume"];
+  soundVolume = [(HKSPAlarmConfiguration *)self soundVolume];
+  v13 = [v3 appendObject:soundVolume withName:@"soundVolume"];
 
   return v3;
 }

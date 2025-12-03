@@ -1,21 +1,21 @@
 @interface PSWalletPolicyController
-- (PSWalletPolicyController)initWithBundleIdentifier:(id)a3;
+- (PSWalletPolicyController)initWithBundleIdentifier:(id)identifier;
 - (id)specifier;
 - (id)walletAuthorizationType;
 @end
 
 @implementation PSWalletPolicyController
 
-- (PSWalletPolicyController)initWithBundleIdentifier:(id)a3
+- (PSWalletPolicyController)initWithBundleIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = PSWalletPolicyController;
   v6 = [(PSWalletPolicyController *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_bundleIdentifier, a3);
+    objc_storeStrong(&v6->_bundleIdentifier, identifier);
     v15 = 0;
     v16 = &v15;
     v17 = 0x2050000000;
@@ -45,9 +45,9 @@
 - (id)walletAuthorizationType
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [self->_privacyController authorizationType];
+  authorizationType = [self->_privacyController authorizationType];
 
-  return [v2 numberWithUnsignedInteger:v3];
+  return [v2 numberWithUnsignedInteger:authorizationType];
 }
 
 - (id)specifier
@@ -68,8 +68,8 @@
 
       [v10 setProperty:self->_bundleIdentifier forKey:@"bundleID"];
       [v10 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"useLazyIcons"];
-      v11 = [MEMORY[0x1E69DC938] currentDevice];
-      if ([v11 userInterfaceIdiom])
+      currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+      if ([currentDevice userInterfaceIdiom])
       {
         v12 = @"com.apple.PassbookStub";
       }

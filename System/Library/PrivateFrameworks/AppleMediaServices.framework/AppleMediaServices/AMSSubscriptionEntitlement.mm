@@ -1,5 +1,5 @@
 @interface AMSSubscriptionEntitlement
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)exportObject;
 @end
 
@@ -11,23 +11,23 @@
   v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[AMSSubscriptionEntitlement autoRenewEnabled](self, "autoRenewEnabled")}];
   [v3 setObject:v4 forKeyedSubscript:@"autoRenewEnabled"];
 
-  v5 = [(AMSSubscriptionEntitlement *)self chargeStoreFrontID];
-  [v3 setObject:v5 forKeyedSubscript:@"chargeStoreFrontID"];
+  chargeStoreFrontID = [(AMSSubscriptionEntitlement *)self chargeStoreFrontID];
+  [v3 setObject:chargeStoreFrontID forKeyedSubscript:@"chargeStoreFrontID"];
 
   v6 = MEMORY[0x1E696AD98];
-  v7 = [(AMSSubscriptionEntitlement *)self expiration];
-  [v7 timeIntervalSince1970];
+  expiration = [(AMSSubscriptionEntitlement *)self expiration];
+  [expiration timeIntervalSince1970];
   v8 = [v6 numberWithDouble:?];
   [v3 setObject:v8 forKeyedSubscript:@"expiration"];
 
-  v9 = [(AMSSubscriptionEntitlement *)self entitlementOriginType];
-  [v3 setObject:v9 forKeyedSubscript:@"entitlementOriginType"];
+  entitlementOriginType = [(AMSSubscriptionEntitlement *)self entitlementOriginType];
+  [v3 setObject:entitlementOriginType forKeyedSubscript:@"entitlementOriginType"];
 
-  v10 = [(AMSSubscriptionEntitlement *)self entitlementSourceAdamId];
-  v11 = v10;
-  if (v10)
+  entitlementSourceAdamId = [(AMSSubscriptionEntitlement *)self entitlementSourceAdamId];
+  v11 = entitlementSourceAdamId;
+  if (entitlementSourceAdamId)
   {
-    v12 = v10;
+    v12 = entitlementSourceAdamId;
   }
 
   else
@@ -37,20 +37,20 @@
 
   [v3 setObject:v12 forKeyedSubscript:@"entitlementSourceAdamId"];
 
-  v13 = [(AMSSubscriptionEntitlement *)self externalSubscriptionID];
-  [v3 setObject:v13 forKeyedSubscript:@"externalSubscriptionID"];
+  externalSubscriptionID = [(AMSSubscriptionEntitlement *)self externalSubscriptionID];
+  [v3 setObject:externalSubscriptionID forKeyedSubscript:@"externalSubscriptionID"];
 
-  v14 = [(AMSSubscriptionEntitlement *)self familyRank];
-  [v3 setObject:v14 forKeyedSubscript:@"familyRank"];
+  familyRank = [(AMSSubscriptionEntitlement *)self familyRank];
+  [v3 setObject:familyRank forKeyedSubscript:@"familyRank"];
 
   v15 = [MEMORY[0x1E696AD98] numberWithBool:{-[AMSSubscriptionEntitlement familySubscription](self, "familySubscription")}];
   [v3 setObject:v15 forKeyedSubscript:@"familySubscription"];
 
-  v16 = [(AMSSubscriptionEntitlement *)self featureAccessTypeId];
-  v17 = v16;
-  if (v16)
+  featureAccessTypeId = [(AMSSubscriptionEntitlement *)self featureAccessTypeId];
+  v17 = featureAccessTypeId;
+  if (featureAccessTypeId)
   {
-    v18 = v16;
+    v18 = featureAccessTypeId;
   }
 
   else
@@ -63,11 +63,11 @@
   v19 = [MEMORY[0x1E696AD98] numberWithBool:{-[AMSSubscriptionEntitlement freeTrialEligible](self, "freeTrialEligible")}];
   [v3 setObject:v19 forKeyedSubscript:@"freeTrialEligible"];
 
-  v20 = [(AMSSubscriptionEntitlement *)self freeTrialPeriodId];
-  v21 = v20;
-  if (v20)
+  freeTrialPeriodId = [(AMSSubscriptionEntitlement *)self freeTrialPeriodId];
+  v21 = freeTrialPeriodId;
+  if (freeTrialPeriodId)
   {
-    v22 = v20;
+    v22 = freeTrialPeriodId;
   }
 
   else
@@ -77,11 +77,11 @@
 
   [v3 setObject:v22 forKeyedSubscript:@"freeTrialPeriodId"];
 
-  v23 = [(AMSSubscriptionEntitlement *)self inAppAdamId];
-  v24 = v23;
-  if (v23)
+  inAppAdamId = [(AMSSubscriptionEntitlement *)self inAppAdamId];
+  v24 = inAppAdamId;
+  if (inAppAdamId)
   {
-    v25 = v23;
+    v25 = inAppAdamId;
   }
 
   else
@@ -91,11 +91,11 @@
 
   [v3 setObject:v25 forKeyedSubscript:@"inAppAdamId"];
 
-  v26 = [(AMSSubscriptionEntitlement *)self inAppVersion];
-  v27 = v26;
-  if (v26)
+  inAppVersion = [(AMSSubscriptionEntitlement *)self inAppVersion];
+  v27 = inAppVersion;
+  if (inAppVersion)
   {
-    v28 = v26;
+    v28 = inAppVersion;
   }
 
   else
@@ -110,11 +110,11 @@
   v30 = [v29 numberWithDouble:?];
   [v3 setObject:v30 forKeyedSubscript:@"initialPurchaseTimestamp"];
 
-  v31 = [(AMSSubscriptionEntitlement *)self offerId];
-  v32 = v31;
-  if (v31)
+  offerId = [(AMSSubscriptionEntitlement *)self offerId];
+  v32 = offerId;
+  if (offerId)
   {
-    v33 = v31;
+    v33 = offerId;
   }
 
   else
@@ -124,11 +124,11 @@
 
   [v3 setObject:v33 forKeyedSubscript:@"offerId"];
 
-  v34 = [(AMSSubscriptionEntitlement *)self poolType];
-  v35 = v34;
-  if (v34)
+  poolType = [(AMSSubscriptionEntitlement *)self poolType];
+  v35 = poolType;
+  if (poolType)
   {
-    v36 = v34;
+    v36 = poolType;
   }
 
   else
@@ -138,11 +138,11 @@
 
   [v3 setObject:v36 forKeyedSubscript:@"poolType"];
 
-  v37 = [(AMSSubscriptionEntitlement *)self promoScenarioId];
-  v38 = v37;
-  if (v37)
+  promoScenarioId = [(AMSSubscriptionEntitlement *)self promoScenarioId];
+  v38 = promoScenarioId;
+  if (promoScenarioId)
   {
-    v39 = v37;
+    v39 = promoScenarioId;
   }
 
   else
@@ -155,10 +155,10 @@
   v40 = [MEMORY[0x1E696AD98] numberWithBool:{-[AMSSubscriptionEntitlement inFreePeriod](self, "inFreePeriod")}];
   [v3 setObject:v40 forKeyedSubscript:@"inFreePeriod"];
 
-  v41 = [(AMSSubscriptionEntitlement *)self period];
+  period = [(AMSSubscriptionEntitlement *)self period];
   v42 = MEMORY[0x1E695E118];
   v43 = MEMORY[0x1E695E110];
-  if (v41)
+  if (period)
   {
     v44 = MEMORY[0x1E695E118];
   }
@@ -195,8 +195,8 @@
   [v3 setObject:v47 forKeyedSubscript:@"purchaser"];
 
   v48 = MEMORY[0x1E696AD98];
-  v49 = [(AMSSubscriptionEntitlement *)self renewDate];
-  [v49 timeIntervalSince1970];
+  renewDate = [(AMSSubscriptionEntitlement *)self renewDate];
+  [renewDate timeIntervalSince1970];
   v50 = [v48 numberWithDouble:?];
   [v3 setObject:v50 forKeyedSubscript:@"renewDate"];
 
@@ -208,23 +208,23 @@
   v53 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[AMSSubscriptionEntitlement source](self, "source")}];
   [v3 setObject:v53 forKeyedSubscript:@"source"];
 
-  v54 = [(AMSSubscriptionEntitlement *)self startDate];
-  [v3 setObject:v54 forKeyedSubscript:@"startDate"];
+  startDate = [(AMSSubscriptionEntitlement *)self startDate];
+  [v3 setObject:startDate forKeyedSubscript:@"startDate"];
 
   v55 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[AMSSubscriptionEntitlement status](self, "status")}];
   [v3 setObject:v55 forKeyedSubscript:@"status"];
 
   v56 = MEMORY[0x1E696AD98];
-  v57 = [(AMSSubscriptionEntitlement *)self studentExpirationDate];
-  [v57 timeIntervalSince1970];
+  studentExpirationDate = [(AMSSubscriptionEntitlement *)self studentExpirationDate];
+  [studentExpirationDate timeIntervalSince1970];
   v58 = [v56 numberWithDouble:?];
   [v3 setObject:v58 forKeyedSubscript:@"studentExpirationDate"];
 
-  v59 = [(AMSSubscriptionEntitlement *)self subscriptionBundleId];
-  v60 = v59;
-  if (v59)
+  subscriptionBundleId = [(AMSSubscriptionEntitlement *)self subscriptionBundleId];
+  v60 = subscriptionBundleId;
+  if (subscriptionBundleId)
   {
-    v61 = v59;
+    v61 = subscriptionBundleId;
   }
 
   else
@@ -234,11 +234,11 @@
 
   [v3 setObject:v61 forKeyedSubscript:@"subscriptionBundleId"];
 
-  v62 = [(AMSSubscriptionEntitlement *)self vendorAdHocOfferId];
-  v63 = v62;
-  if (v62)
+  vendorAdHocOfferId = [(AMSSubscriptionEntitlement *)self vendorAdHocOfferId];
+  v63 = vendorAdHocOfferId;
+  if (vendorAdHocOfferId)
   {
-    v64 = v62;
+    v64 = vendorAdHocOfferId;
   }
 
   else
@@ -248,11 +248,11 @@
 
   [v3 setObject:v64 forKeyedSubscript:@"vendorAdHocOfferId"];
 
-  v65 = [(AMSSubscriptionEntitlement *)self vendorId];
-  v66 = v65;
-  if (v65)
+  vendorId = [(AMSSubscriptionEntitlement *)self vendorId];
+  v66 = vendorId;
+  if (vendorId)
   {
-    v67 = v65;
+    v67 = vendorId;
   }
 
   else
@@ -265,11 +265,11 @@
   v68 = [MEMORY[0x1E696AD98] numberWithInteger:{-[AMSSubscriptionEntitlement carrierErrorCode](self, "carrierErrorCode")}];
   [v3 setObject:v68 forKeyedSubscript:@"carrierErrorCode"];
 
-  v69 = [(AMSSubscriptionEntitlement *)self carrierOperatorName];
-  v70 = v69;
-  if (v69)
+  carrierOperatorName = [(AMSSubscriptionEntitlement *)self carrierOperatorName];
+  v70 = carrierOperatorName;
+  if (carrierOperatorName)
   {
-    v71 = v69;
+    v71 = carrierOperatorName;
   }
 
   else
@@ -279,11 +279,11 @@
 
   [v3 setObject:v71 forKeyedSubscript:@"carrierOperatorName"];
 
-  v72 = [(AMSSubscriptionEntitlement *)self carrierPhoneNumber];
-  v73 = v72;
-  if (v72)
+  carrierPhoneNumber = [(AMSSubscriptionEntitlement *)self carrierPhoneNumber];
+  v73 = carrierPhoneNumber;
+  if (carrierPhoneNumber)
   {
-    v74 = v72;
+    v74 = carrierPhoneNumber;
   }
 
   else
@@ -293,11 +293,11 @@
 
   [v3 setObject:v74 forKeyedSubscript:@"carrierPhoneNumber"];
 
-  v75 = [(AMSSubscriptionEntitlement *)self carrierSessionId];
-  v76 = v75;
-  if (v75)
+  carrierSessionId = [(AMSSubscriptionEntitlement *)self carrierSessionId];
+  v76 = carrierSessionId;
+  if (carrierSessionId)
   {
-    v77 = v75;
+    v77 = carrierSessionId;
   }
 
   else
@@ -313,13 +313,13 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -341,8 +341,8 @@ LABEL_140:
       goto LABEL_141;
     }
 
-    v10 = [(AMSSubscriptionEntitlement *)self autoRenewEnabled];
-    if (v10 != [(AMSSubscriptionEntitlement *)v9 autoRenewEnabled]|| (v12 = [(AMSSubscriptionEntitlement *)self carrierErrorCode], v12 != [(AMSSubscriptionEntitlement *)v9 carrierErrorCode]) || (v13 = [(AMSSubscriptionEntitlement *)self carrierStatus], v13 != [(AMSSubscriptionEntitlement *)v9 carrierStatus]) || (v14 = [(AMSSubscriptionEntitlement *)self familySubscription], v14 != [(AMSSubscriptionEntitlement *)v9 familySubscription]) || (v15 = [(AMSSubscriptionEntitlement *)self freeTrialEligible], v15 != [(AMSSubscriptionEntitlement *)v9 freeTrialEligible]) || (v16 = [(AMSSubscriptionEntitlement *)self inFreePeriod], v16 != [(AMSSubscriptionEntitlement *)v9 inFreePeriod]) || ([(AMSSubscriptionEntitlement *)self initialPurchaseTimestamp], v18 = v17, [(AMSSubscriptionEntitlement *)v9 initialPurchaseTimestamp], v18 != v19) || (v20 = [(AMSSubscriptionEntitlement *)self period], v20 != [(AMSSubscriptionEntitlement *)v9 period]) || (v21 = [(AMSSubscriptionEntitlement *)self purchaser], v21 != [(AMSSubscriptionEntitlement *)v9 purchaser]) || ([(AMSSubscriptionEntitlement *)self serviceBeginsTimestamp], v23 = v22, [(AMSSubscriptionEntitlement *)v9 serviceBeginsTimestamp], v23 != v24) || (v25 = [(AMSSubscriptionEntitlement *)self source], v25 != [(AMSSubscriptionEntitlement *)v9 source]) || (v26 = [(AMSSubscriptionEntitlement *)self status], v26 != [(AMSSubscriptionEntitlement *)v9 status]))
+    autoRenewEnabled = [(AMSSubscriptionEntitlement *)self autoRenewEnabled];
+    if (autoRenewEnabled != [(AMSSubscriptionEntitlement *)v9 autoRenewEnabled]|| (v12 = [(AMSSubscriptionEntitlement *)self carrierErrorCode], v12 != [(AMSSubscriptionEntitlement *)v9 carrierErrorCode]) || (v13 = [(AMSSubscriptionEntitlement *)self carrierStatus], v13 != [(AMSSubscriptionEntitlement *)v9 carrierStatus]) || (v14 = [(AMSSubscriptionEntitlement *)self familySubscription], v14 != [(AMSSubscriptionEntitlement *)v9 familySubscription]) || (v15 = [(AMSSubscriptionEntitlement *)self freeTrialEligible], v15 != [(AMSSubscriptionEntitlement *)v9 freeTrialEligible]) || (v16 = [(AMSSubscriptionEntitlement *)self inFreePeriod], v16 != [(AMSSubscriptionEntitlement *)v9 inFreePeriod]) || ([(AMSSubscriptionEntitlement *)self initialPurchaseTimestamp], v18 = v17, [(AMSSubscriptionEntitlement *)v9 initialPurchaseTimestamp], v18 != v19) || (v20 = [(AMSSubscriptionEntitlement *)self period], v20 != [(AMSSubscriptionEntitlement *)v9 period]) || (v21 = [(AMSSubscriptionEntitlement *)self purchaser], v21 != [(AMSSubscriptionEntitlement *)v9 purchaser]) || ([(AMSSubscriptionEntitlement *)self serviceBeginsTimestamp], v23 = v22, [(AMSSubscriptionEntitlement *)v9 serviceBeginsTimestamp], v23 != v24) || (v25 = [(AMSSubscriptionEntitlement *)self source], v25 != [(AMSSubscriptionEntitlement *)v9 source]) || (v26 = [(AMSSubscriptionEntitlement *)self status], v26 != [(AMSSubscriptionEntitlement *)v9 status]))
     {
       v200 = 0;
       v201 = 0;
@@ -398,16 +398,16 @@ LABEL_140:
       goto LABEL_24;
     }
 
-    v27 = [(AMSSubscriptionEntitlement *)self carrierOperatorName];
-    LODWORD(v201) = v27 == 0;
-    v159 = v27;
-    if (v27 || ([(AMSSubscriptionEntitlement *)v9 carrierOperatorName], (v155 = objc_claimAutoreleasedReturnValue()) != 0))
+    carrierOperatorName = [(AMSSubscriptionEntitlement *)self carrierOperatorName];
+    LODWORD(v201) = carrierOperatorName == 0;
+    v159 = carrierOperatorName;
+    if (carrierOperatorName || ([(AMSSubscriptionEntitlement *)v9 carrierOperatorName], (v155 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v28 = [(AMSSubscriptionEntitlement *)self carrierOperatorName];
+      carrierOperatorName2 = [(AMSSubscriptionEntitlement *)self carrierOperatorName];
       [(AMSSubscriptionEntitlement *)v9 carrierOperatorName];
-      v157 = v158 = v28;
+      v157 = v158 = carrierOperatorName2;
       HIDWORD(v201) = 1;
-      if (![v28 isEqual:?])
+      if (![carrierOperatorName2 isEqual:?])
       {
         v180 = 0;
         v198 = 0;
@@ -471,16 +471,16 @@ LABEL_140:
       LODWORD(v200) = 0;
     }
 
-    v47 = [(AMSSubscriptionEntitlement *)self carrierPhoneNumber];
-    HIDWORD(v200) = v47 == 0;
-    v156 = v47;
-    if (v47 || ([(AMSSubscriptionEntitlement *)v9 carrierPhoneNumber], (v151 = objc_claimAutoreleasedReturnValue()) != 0))
+    carrierPhoneNumber = [(AMSSubscriptionEntitlement *)self carrierPhoneNumber];
+    HIDWORD(v200) = carrierPhoneNumber == 0;
+    v156 = carrierPhoneNumber;
+    if (carrierPhoneNumber || ([(AMSSubscriptionEntitlement *)v9 carrierPhoneNumber], (v151 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v48 = [(AMSSubscriptionEntitlement *)self carrierPhoneNumber];
+      carrierPhoneNumber2 = [(AMSSubscriptionEntitlement *)self carrierPhoneNumber];
       [(AMSSubscriptionEntitlement *)v9 carrierPhoneNumber];
-      v153 = v154 = v48;
+      v153 = v154 = carrierPhoneNumber2;
       HIDWORD(v201) = 1;
-      if (![v48 isEqual:?])
+      if (![carrierPhoneNumber2 isEqual:?])
       {
         v178 = 0;
         v197 = 0;
@@ -543,16 +543,16 @@ LABEL_140:
       LODWORD(v199) = 0;
     }
 
-    v49 = [(AMSSubscriptionEntitlement *)self carrierSessionId];
-    HIDWORD(v199) = v49 == 0;
-    v152 = v49;
-    if (v49 || ([(AMSSubscriptionEntitlement *)v9 carrierSessionId], (v147 = objc_claimAutoreleasedReturnValue()) != 0))
+    carrierSessionId = [(AMSSubscriptionEntitlement *)self carrierSessionId];
+    HIDWORD(v199) = carrierSessionId == 0;
+    v152 = carrierSessionId;
+    if (carrierSessionId || ([(AMSSubscriptionEntitlement *)v9 carrierSessionId], (v147 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v50 = [(AMSSubscriptionEntitlement *)self carrierSessionId];
+      carrierSessionId2 = [(AMSSubscriptionEntitlement *)self carrierSessionId];
       [(AMSSubscriptionEntitlement *)v9 carrierSessionId];
-      v149 = v150 = v50;
+      v149 = v150 = carrierSessionId2;
       HIDWORD(v201) = 1;
-      if (![v50 isEqual:?])
+      if (![carrierSessionId2 isEqual:?])
       {
         v176 = 0;
         v196 = 0;
@@ -614,16 +614,16 @@ LABEL_140:
       LODWORD(v198) = 0;
     }
 
-    v51 = [(AMSSubscriptionEntitlement *)self chargeStoreFrontID];
-    HIDWORD(v198) = v51 == 0;
-    v148 = v51;
-    if (v51 || ([(AMSSubscriptionEntitlement *)v9 chargeStoreFrontID], (v143 = objc_claimAutoreleasedReturnValue()) != 0))
+    chargeStoreFrontID = [(AMSSubscriptionEntitlement *)self chargeStoreFrontID];
+    HIDWORD(v198) = chargeStoreFrontID == 0;
+    v148 = chargeStoreFrontID;
+    if (chargeStoreFrontID || ([(AMSSubscriptionEntitlement *)v9 chargeStoreFrontID], (v143 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v52 = [(AMSSubscriptionEntitlement *)self chargeStoreFrontID];
-      v145 = [(AMSSubscriptionEntitlement *)v9 chargeStoreFrontID];
-      v146 = v52;
+      chargeStoreFrontID2 = [(AMSSubscriptionEntitlement *)self chargeStoreFrontID];
+      chargeStoreFrontID3 = [(AMSSubscriptionEntitlement *)v9 chargeStoreFrontID];
+      v146 = chargeStoreFrontID2;
       HIDWORD(v201) = 1;
-      if (![v52 isEqual:v145])
+      if (![chargeStoreFrontID2 isEqual:chargeStoreFrontID3])
       {
         v174 = 0;
         v196 = 0;
@@ -684,16 +684,16 @@ LABEL_140:
       LODWORD(v197) = 0;
     }
 
-    v53 = [(AMSSubscriptionEntitlement *)self expiration];
-    HIDWORD(v197) = v53 == 0;
-    v144 = v53;
-    if (v53 || ([(AMSSubscriptionEntitlement *)v9 expiration], (v139 = objc_claimAutoreleasedReturnValue()) != 0))
+    expiration = [(AMSSubscriptionEntitlement *)self expiration];
+    HIDWORD(v197) = expiration == 0;
+    v144 = expiration;
+    if (expiration || ([(AMSSubscriptionEntitlement *)v9 expiration], (v139 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v54 = [(AMSSubscriptionEntitlement *)self expiration];
-      v141 = [(AMSSubscriptionEntitlement *)v9 expiration];
-      v142 = v54;
+      expiration2 = [(AMSSubscriptionEntitlement *)self expiration];
+      expiration3 = [(AMSSubscriptionEntitlement *)v9 expiration];
+      v142 = expiration2;
       HIDWORD(v201) = 1;
-      if (![v54 isEqual:v141])
+      if (![expiration2 isEqual:expiration3])
       {
         v172 = 0;
         v194 = 0;
@@ -753,16 +753,16 @@ LABEL_140:
       LODWORD(v196) = 0;
     }
 
-    v55 = [(AMSSubscriptionEntitlement *)self entitlementOriginType];
-    HIDWORD(v196) = v55 == 0;
-    v140 = v55;
-    if (v55 || ([(AMSSubscriptionEntitlement *)v9 entitlementOriginType], (v135 = objc_claimAutoreleasedReturnValue()) != 0))
+    entitlementOriginType = [(AMSSubscriptionEntitlement *)self entitlementOriginType];
+    HIDWORD(v196) = entitlementOriginType == 0;
+    v140 = entitlementOriginType;
+    if (entitlementOriginType || ([(AMSSubscriptionEntitlement *)v9 entitlementOriginType], (v135 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v56 = [(AMSSubscriptionEntitlement *)self entitlementOriginType];
-      v137 = [(AMSSubscriptionEntitlement *)v9 entitlementOriginType];
-      v138 = v56;
+      entitlementOriginType2 = [(AMSSubscriptionEntitlement *)self entitlementOriginType];
+      entitlementOriginType3 = [(AMSSubscriptionEntitlement *)v9 entitlementOriginType];
+      v138 = entitlementOriginType2;
       HIDWORD(v201) = 1;
-      if (![v56 isEqual:v137])
+      if (![entitlementOriginType2 isEqual:entitlementOriginType3])
       {
         v169 = 0;
         v195 = 0;
@@ -821,16 +821,16 @@ LABEL_140:
       v194 = 0;
     }
 
-    v57 = [(AMSSubscriptionEntitlement *)self entitlementSourceAdamId];
-    v195 = v57 == 0;
-    v136 = v57;
-    if (v57 || ([(AMSSubscriptionEntitlement *)v9 entitlementSourceAdamId], (v131 = objc_claimAutoreleasedReturnValue()) != 0))
+    entitlementSourceAdamId = [(AMSSubscriptionEntitlement *)self entitlementSourceAdamId];
+    v195 = entitlementSourceAdamId == 0;
+    v136 = entitlementSourceAdamId;
+    if (entitlementSourceAdamId || ([(AMSSubscriptionEntitlement *)v9 entitlementSourceAdamId], (v131 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v58 = [(AMSSubscriptionEntitlement *)self entitlementSourceAdamId];
-      v133 = [(AMSSubscriptionEntitlement *)v9 entitlementSourceAdamId];
-      v134 = v58;
+      entitlementSourceAdamId2 = [(AMSSubscriptionEntitlement *)self entitlementSourceAdamId];
+      entitlementSourceAdamId3 = [(AMSSubscriptionEntitlement *)v9 entitlementSourceAdamId];
+      v134 = entitlementSourceAdamId2;
       HIDWORD(v201) = 1;
-      if (![v58 isEqual:v133])
+      if (![entitlementSourceAdamId2 isEqual:entitlementSourceAdamId3])
       {
         v168 = 0;
         v193 = 0;
@@ -887,16 +887,16 @@ LABEL_140:
       v192 = 0;
     }
 
-    v59 = [(AMSSubscriptionEntitlement *)self featureAccessTypeId];
-    v193 = v59 == 0;
-    v132 = v59;
-    if (v59 || ([(AMSSubscriptionEntitlement *)v9 featureAccessTypeId], (v127 = objc_claimAutoreleasedReturnValue()) != 0))
+    featureAccessTypeId = [(AMSSubscriptionEntitlement *)self featureAccessTypeId];
+    v193 = featureAccessTypeId == 0;
+    v132 = featureAccessTypeId;
+    if (featureAccessTypeId || ([(AMSSubscriptionEntitlement *)v9 featureAccessTypeId], (v127 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v60 = [(AMSSubscriptionEntitlement *)self featureAccessTypeId];
-      v129 = [(AMSSubscriptionEntitlement *)v9 featureAccessTypeId];
-      v130 = v60;
+      featureAccessTypeId2 = [(AMSSubscriptionEntitlement *)self featureAccessTypeId];
+      featureAccessTypeId3 = [(AMSSubscriptionEntitlement *)v9 featureAccessTypeId];
+      v130 = featureAccessTypeId2;
       HIDWORD(v201) = 1;
-      if (![v60 isEqual:v129])
+      if (![featureAccessTypeId2 isEqual:featureAccessTypeId3])
       {
         v165 = 0;
         v191 = 0;
@@ -951,16 +951,16 @@ LABEL_140:
       v190 = 0;
     }
 
-    v61 = [(AMSSubscriptionEntitlement *)self freeTrialPeriodId];
-    v191 = v61 == 0;
-    v128 = v61;
-    if (v61 || ([(AMSSubscriptionEntitlement *)v9 freeTrialPeriodId], (v123 = objc_claimAutoreleasedReturnValue()) != 0))
+    freeTrialPeriodId = [(AMSSubscriptionEntitlement *)self freeTrialPeriodId];
+    v191 = freeTrialPeriodId == 0;
+    v128 = freeTrialPeriodId;
+    if (freeTrialPeriodId || ([(AMSSubscriptionEntitlement *)v9 freeTrialPeriodId], (v123 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v62 = [(AMSSubscriptionEntitlement *)self freeTrialPeriodId];
-      v125 = [(AMSSubscriptionEntitlement *)v9 freeTrialPeriodId];
-      v126 = v62;
+      freeTrialPeriodId2 = [(AMSSubscriptionEntitlement *)self freeTrialPeriodId];
+      freeTrialPeriodId3 = [(AMSSubscriptionEntitlement *)v9 freeTrialPeriodId];
+      v126 = freeTrialPeriodId2;
       HIDWORD(v201) = 1;
-      if (![v62 isEqual:v125])
+      if (![freeTrialPeriodId2 isEqual:freeTrialPeriodId3])
       {
         v164 = 0;
         v189 = 0;
@@ -1013,16 +1013,16 @@ LABEL_140:
       v188 = 0;
     }
 
-    v63 = [(AMSSubscriptionEntitlement *)self inAppAdamId];
-    v189 = v63 == 0;
-    v124 = v63;
-    if (v63 || ([(AMSSubscriptionEntitlement *)v9 inAppAdamId], (v119 = objc_claimAutoreleasedReturnValue()) != 0))
+    inAppAdamId = [(AMSSubscriptionEntitlement *)self inAppAdamId];
+    v189 = inAppAdamId == 0;
+    v124 = inAppAdamId;
+    if (inAppAdamId || ([(AMSSubscriptionEntitlement *)v9 inAppAdamId], (v119 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v64 = [(AMSSubscriptionEntitlement *)self inAppAdamId];
-      v121 = [(AMSSubscriptionEntitlement *)v9 inAppAdamId];
-      v122 = v64;
+      inAppAdamId2 = [(AMSSubscriptionEntitlement *)self inAppAdamId];
+      inAppAdamId3 = [(AMSSubscriptionEntitlement *)v9 inAppAdamId];
+      v122 = inAppAdamId2;
       HIDWORD(v201) = 1;
-      if (![v64 isEqual:v121])
+      if (![inAppAdamId2 isEqual:inAppAdamId3])
       {
         v163 = 0;
         v187 = 0;
@@ -1073,16 +1073,16 @@ LABEL_140:
       v186 = 0;
     }
 
-    v65 = [(AMSSubscriptionEntitlement *)self inAppVersion];
-    v187 = v65 == 0;
-    v120 = v65;
-    if (v65 || ([(AMSSubscriptionEntitlement *)v9 inAppVersion], (v115 = objc_claimAutoreleasedReturnValue()) != 0))
+    inAppVersion = [(AMSSubscriptionEntitlement *)self inAppVersion];
+    v187 = inAppVersion == 0;
+    v120 = inAppVersion;
+    if (inAppVersion || ([(AMSSubscriptionEntitlement *)v9 inAppVersion], (v115 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v66 = [(AMSSubscriptionEntitlement *)self inAppVersion];
-      v117 = [(AMSSubscriptionEntitlement *)v9 inAppVersion];
-      v118 = v66;
+      inAppVersion2 = [(AMSSubscriptionEntitlement *)self inAppVersion];
+      inAppVersion3 = [(AMSSubscriptionEntitlement *)v9 inAppVersion];
+      v118 = inAppVersion2;
       HIDWORD(v201) = 1;
-      if (![v66 isEqual:v117])
+      if (![inAppVersion2 isEqual:inAppVersion3])
       {
         v161 = 0;
         v185 = 0;
@@ -1131,16 +1131,16 @@ LABEL_140:
       v184 = 0;
     }
 
-    v67 = [(AMSSubscriptionEntitlement *)self offerId];
-    v185 = v67 == 0;
-    v116 = v67;
-    if (v67 || ([(AMSSubscriptionEntitlement *)v9 offerId], (v111 = objc_claimAutoreleasedReturnValue()) != 0))
+    offerId = [(AMSSubscriptionEntitlement *)self offerId];
+    v185 = offerId == 0;
+    v116 = offerId;
+    if (offerId || ([(AMSSubscriptionEntitlement *)v9 offerId], (v111 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v68 = [(AMSSubscriptionEntitlement *)self offerId];
-      v113 = [(AMSSubscriptionEntitlement *)v9 offerId];
-      v114 = v68;
+      offerId2 = [(AMSSubscriptionEntitlement *)self offerId];
+      offerId3 = [(AMSSubscriptionEntitlement *)v9 offerId];
+      v114 = offerId2;
       HIDWORD(v201) = 1;
-      if (![v68 isEqual:v113])
+      if (![offerId2 isEqual:offerId3])
       {
         v160 = 0;
         v183 = 0;
@@ -1187,16 +1187,16 @@ LABEL_140:
       v182 = 0;
     }
 
-    v69 = [(AMSSubscriptionEntitlement *)self poolType];
-    v183 = v69 == 0;
-    v112 = v69;
-    if (v69 || ([(AMSSubscriptionEntitlement *)v9 poolType], (v107 = objc_claimAutoreleasedReturnValue()) != 0))
+    poolType = [(AMSSubscriptionEntitlement *)self poolType];
+    v183 = poolType == 0;
+    v112 = poolType;
+    if (poolType || ([(AMSSubscriptionEntitlement *)v9 poolType], (v107 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v70 = [(AMSSubscriptionEntitlement *)self poolType];
-      v109 = [(AMSSubscriptionEntitlement *)v9 poolType];
-      v110 = v70;
+      poolType2 = [(AMSSubscriptionEntitlement *)self poolType];
+      poolType3 = [(AMSSubscriptionEntitlement *)v9 poolType];
+      v110 = poolType2;
       HIDWORD(v201) = 1;
-      if (![v70 isEqual:v109])
+      if (![poolType2 isEqual:poolType3])
       {
         v29 = 0;
         v181 = 0;
@@ -1241,16 +1241,16 @@ LABEL_140:
       v179 = 0;
     }
 
-    v71 = [(AMSSubscriptionEntitlement *)self promoScenarioId];
-    v181 = v71 == 0;
-    v108 = v71;
-    if (v71 || ([(AMSSubscriptionEntitlement *)v9 promoScenarioId], (v103 = objc_claimAutoreleasedReturnValue()) != 0))
+    promoScenarioId = [(AMSSubscriptionEntitlement *)self promoScenarioId];
+    v181 = promoScenarioId == 0;
+    v108 = promoScenarioId;
+    if (promoScenarioId || ([(AMSSubscriptionEntitlement *)v9 promoScenarioId], (v103 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v72 = [(AMSSubscriptionEntitlement *)self promoScenarioId];
-      v105 = [(AMSSubscriptionEntitlement *)v9 promoScenarioId];
-      v106 = v72;
+      promoScenarioId2 = [(AMSSubscriptionEntitlement *)self promoScenarioId];
+      promoScenarioId3 = [(AMSSubscriptionEntitlement *)v9 promoScenarioId];
+      v106 = promoScenarioId2;
       HIDWORD(v201) = 1;
-      if (![v72 isEqual:v105])
+      if (![promoScenarioId2 isEqual:promoScenarioId3])
       {
         v30 = 0;
         v173 = 0;
@@ -1293,16 +1293,16 @@ LABEL_140:
       LODWORD(v177) = 0;
     }
 
-    v73 = [(AMSSubscriptionEntitlement *)self renewDate];
-    HIDWORD(v177) = v73 == 0;
-    v104 = v73;
-    if (v73 || ([(AMSSubscriptionEntitlement *)v9 renewDate], (v100 = objc_claimAutoreleasedReturnValue()) != 0))
+    renewDate = [(AMSSubscriptionEntitlement *)self renewDate];
+    HIDWORD(v177) = renewDate == 0;
+    v104 = renewDate;
+    if (renewDate || ([(AMSSubscriptionEntitlement *)v9 renewDate], (v100 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v74 = [(AMSSubscriptionEntitlement *)self renewDate];
-      v101 = [(AMSSubscriptionEntitlement *)v9 renewDate];
-      v102 = v74;
+      renewDate2 = [(AMSSubscriptionEntitlement *)self renewDate];
+      renewDate3 = [(AMSSubscriptionEntitlement *)v9 renewDate];
+      v102 = renewDate2;
       HIDWORD(v201) = 1;
-      if (![v74 isEqual:v101])
+      if (![renewDate2 isEqual:renewDate3])
       {
         v31 = 0;
         v175 = 0;
@@ -1344,16 +1344,16 @@ LABEL_140:
       v173 = 0;
     }
 
-    v75 = [(AMSSubscriptionEntitlement *)self startDate];
-    v175 = v75 == 0;
-    v99 = v75;
-    if (v75 || ([(AMSSubscriptionEntitlement *)v9 startDate], (v96 = objc_claimAutoreleasedReturnValue()) != 0))
+    startDate = [(AMSSubscriptionEntitlement *)self startDate];
+    v175 = startDate == 0;
+    v99 = startDate;
+    if (startDate || ([(AMSSubscriptionEntitlement *)v9 startDate], (v96 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v76 = [(AMSSubscriptionEntitlement *)self startDate];
-      v97 = [(AMSSubscriptionEntitlement *)v9 startDate];
-      v98 = v76;
+      startDate2 = [(AMSSubscriptionEntitlement *)self startDate];
+      startDate3 = [(AMSSubscriptionEntitlement *)v9 startDate];
+      v98 = startDate2;
       HIDWORD(v201) = 1;
-      if (![v76 isEqual:v97])
+      if (![startDate2 isEqual:startDate3])
       {
         v32 = 0;
         v171 = 0;
@@ -1393,16 +1393,16 @@ LABEL_140:
       v170 = 0;
     }
 
-    v77 = [(AMSSubscriptionEntitlement *)self subscriptionBundleId];
-    v171 = v77 == 0;
-    v95 = v77;
-    if (v77 || ([(AMSSubscriptionEntitlement *)v9 subscriptionBundleId], (v94 = objc_claimAutoreleasedReturnValue()) != 0))
+    subscriptionBundleId = [(AMSSubscriptionEntitlement *)self subscriptionBundleId];
+    v171 = subscriptionBundleId == 0;
+    v95 = subscriptionBundleId;
+    if (subscriptionBundleId || ([(AMSSubscriptionEntitlement *)v9 subscriptionBundleId], (v94 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v78 = [(AMSSubscriptionEntitlement *)self subscriptionBundleId];
-      v92 = [(AMSSubscriptionEntitlement *)v9 subscriptionBundleId];
-      v93 = v78;
+      subscriptionBundleId2 = [(AMSSubscriptionEntitlement *)self subscriptionBundleId];
+      subscriptionBundleId3 = [(AMSSubscriptionEntitlement *)v9 subscriptionBundleId];
+      v93 = subscriptionBundleId2;
       HIDWORD(v201) = 1;
-      if (![v78 isEqual:v92])
+      if (![subscriptionBundleId2 isEqual:subscriptionBundleId3])
       {
         v33 = 0;
         v167 = 0;
@@ -1440,16 +1440,16 @@ LABEL_140:
       v166 = 0;
     }
 
-    v79 = [(AMSSubscriptionEntitlement *)self vendorAdHocOfferId];
-    v167 = v79 == 0;
-    v91 = v79;
-    if (v79 || ([(AMSSubscriptionEntitlement *)v9 vendorAdHocOfferId], (v88 = objc_claimAutoreleasedReturnValue()) != 0))
+    vendorAdHocOfferId = [(AMSSubscriptionEntitlement *)self vendorAdHocOfferId];
+    v167 = vendorAdHocOfferId == 0;
+    v91 = vendorAdHocOfferId;
+    if (vendorAdHocOfferId || ([(AMSSubscriptionEntitlement *)v9 vendorAdHocOfferId], (v88 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v80 = [(AMSSubscriptionEntitlement *)self vendorAdHocOfferId];
-      v89 = [(AMSSubscriptionEntitlement *)v9 vendorAdHocOfferId];
-      v90 = v80;
+      vendorAdHocOfferId2 = [(AMSSubscriptionEntitlement *)self vendorAdHocOfferId];
+      vendorAdHocOfferId3 = [(AMSSubscriptionEntitlement *)v9 vendorAdHocOfferId];
+      v90 = vendorAdHocOfferId2;
       HIDWORD(v201) = 1;
-      if (![v80 isEqual:v89])
+      if (![vendorAdHocOfferId2 isEqual:vendorAdHocOfferId3])
       {
         v34 = 0;
         v35 = 0;
@@ -1485,16 +1485,16 @@ LABEL_140:
       v162 = 0;
     }
 
-    v81 = [(AMSSubscriptionEntitlement *)self vendorId];
-    v84 = v81 == 0;
-    v87 = v81;
-    if (v81 || ([(AMSSubscriptionEntitlement *)v9 vendorId], (v86 = objc_claimAutoreleasedReturnValue()) != 0))
+    vendorId = [(AMSSubscriptionEntitlement *)self vendorId];
+    v84 = vendorId == 0;
+    v87 = vendorId;
+    if (vendorId || ([(AMSSubscriptionEntitlement *)v9 vendorId], (v86 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v82 = [(AMSSubscriptionEntitlement *)self vendorId];
-      v83 = [(AMSSubscriptionEntitlement *)v9 vendorId];
-      v85 = v82;
-      v8 = [v82 isEqual:v83];
-      v11 = v83;
+      vendorId2 = [(AMSSubscriptionEntitlement *)self vendorId];
+      vendorId3 = [(AMSSubscriptionEntitlement *)v9 vendorId];
+      v85 = vendorId2;
+      v8 = [vendorId2 isEqual:vendorId3];
+      v11 = vendorId3;
       v36 = 1;
       HIDWORD(v201) = 1;
       v180 = 1;

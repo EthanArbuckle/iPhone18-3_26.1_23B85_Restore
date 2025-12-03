@@ -1,14 +1,14 @@
 @interface PKAccountWebServiceCreatedZoneRequest
-- (id)_urlRequestWithAppleAccountInformation:(id)a3;
+- (id)_urlRequestWithAppleAccountInformation:(id)information;
 @end
 
 @implementation PKAccountWebServiceCreatedZoneRequest
 
-- (id)_urlRequestWithAppleAccountInformation:(id)a3
+- (id)_urlRequestWithAppleAccountInformation:(id)information
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  informationCopy = information;
+  v5 = informationCopy;
   baseURL = self->_baseURL;
   if (!baseURL)
   {
@@ -82,7 +82,7 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  if (v4)
+  if (informationCopy)
   {
     v20[0] = @"accounts";
     v20[1] = accountIdentifier;
@@ -92,10 +92,10 @@ LABEL_17:
 
     [v9 setHTTPMethod:@"POST"];
     [v9 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    v10 = [MEMORY[0x1E695DF90] dictionary];
-    [v10 setObject:self->_containerName forKeyedSubscript:@"containerName"];
-    [v10 setObject:self->_zoneName forKeyedSubscript:@"zoneName"];
-    v11 = [objc_opt_class() _HTTPBodyWithDictionary:v10];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary setObject:self->_containerName forKeyedSubscript:@"containerName"];
+    [dictionary setObject:self->_zoneName forKeyedSubscript:@"zoneName"];
+    v11 = [objc_opt_class() _HTTPBodyWithDictionary:dictionary];
     [v9 setHTTPBody:v11];
 
     v12 = [v9 copy];

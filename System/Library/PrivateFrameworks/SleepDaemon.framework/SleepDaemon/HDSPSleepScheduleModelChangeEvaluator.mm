@@ -1,35 +1,35 @@
 @interface HDSPSleepScheduleModelChangeEvaluator
-+ (unint64_t)_evaluateChangesFromObject:(id)a3 toObject:(id)a4 outChangeSet:(id *)a5;
++ (unint64_t)_evaluateChangesFromObject:(id)object toObject:(id)toObject outChangeSet:(id *)set;
 - (HDSPEnvironment)environment;
-- (HDSPSleepScheduleModelChangeEvaluator)initWithEnvironment:(id)a3;
-- (id)evaluateSleepRecordAdd:(id)a3;
-- (id)evaluateSleepRecordUpdate:(id)a3;
-- (id)evaluateSleepScheduleAdd:(id)a3;
-- (id)evaluateSleepScheduleModelChange:(id)a3;
+- (HDSPSleepScheduleModelChangeEvaluator)initWithEnvironment:(id)environment;
+- (id)evaluateSleepRecordAdd:(id)add;
+- (id)evaluateSleepRecordUpdate:(id)update;
+- (id)evaluateSleepScheduleAdd:(id)add;
+- (id)evaluateSleepScheduleModelChange:(id)change;
 - (id)evaluateSleepScheduleRemove;
-- (id)evaluateSleepScheduleUpdate:(id)a3;
-- (id)evaluateSleepSettingsAdd:(id)a3;
-- (id)evaluateSleepSettingsUpdate:(id)a3;
+- (id)evaluateSleepScheduleUpdate:(id)update;
+- (id)evaluateSleepSettingsAdd:(id)add;
+- (id)evaluateSleepSettingsUpdate:(id)update;
 - (void)_loadPersistedModel;
-- (void)_persistModel:(id)a3;
-- (void)_persistRecord:(id)a3;
-- (void)_persistSchedule:(id)a3;
-- (void)_persistSettings:(id)a3;
-- (void)_restorePersistedModelWithScheduleData:(id)a3 settingsData:(id)a4 recordData:(id)a5;
+- (void)_persistModel:(id)model;
+- (void)_persistRecord:(id)record;
+- (void)_persistSchedule:(id)schedule;
+- (void)_persistSettings:(id)settings;
+- (void)_restorePersistedModelWithScheduleData:(id)data settingsData:(id)settingsData recordData:(id)recordData;
 @end
 
 @implementation HDSPSleepScheduleModelChangeEvaluator
 
-- (HDSPSleepScheduleModelChangeEvaluator)initWithEnvironment:(id)a3
+- (HDSPSleepScheduleModelChangeEvaluator)initWithEnvironment:(id)environment
 {
-  v4 = a3;
+  environmentCopy = environment;
   v9.receiver = self;
   v9.super_class = HDSPSleepScheduleModelChangeEvaluator;
   v5 = [(HDSPSleepScheduleModelChangeEvaluator *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_environment, v4);
+    objc_storeWeak(&v5->_environment, environmentCopy);
     v7 = v6;
   }
 
@@ -40,16 +40,16 @@
 {
   v22 = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v4 = [WeakRetained userDefaults];
-  v5 = [v4 hksp_objectForKey:@"HKSPLastSchedule"];
+  userDefaults = [WeakRetained userDefaults];
+  v5 = [userDefaults hksp_objectForKey:@"HKSPLastSchedule"];
 
   v6 = objc_loadWeakRetained(&self->_environment);
-  v7 = [v6 userDefaults];
-  v8 = [v7 hksp_objectForKey:@"HKSPLastSettings"];
+  userDefaults2 = [v6 userDefaults];
+  v8 = [userDefaults2 hksp_objectForKey:@"HKSPLastSettings"];
 
   v9 = objc_loadWeakRetained(&self->_environment);
-  v10 = [v9 userDefaults];
-  v11 = [v10 hksp_objectForKey:@"HKSPLastRecord"];
+  userDefaults3 = [v9 userDefaults];
+  v11 = [userDefaults3 hksp_objectForKey:@"HKSPLastRecord"];
 
   v12 = HKSPLogForCategory();
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
@@ -77,64 +77,64 @@
     }
 
     v15 = objc_loadWeakRetained(&self->_environment);
-    v16 = [v15 sleepScheduleModelManager];
-    v17 = [v16 sleepScheduleModel];
-    [(HDSPSleepScheduleModelChangeEvaluator *)self _persistModel:v17];
+    sleepScheduleModelManager = [v15 sleepScheduleModelManager];
+    sleepScheduleModel = [sleepScheduleModelManager sleepScheduleModel];
+    [(HDSPSleepScheduleModelChangeEvaluator *)self _persistModel:sleepScheduleModel];
   }
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_restorePersistedModelWithScheduleData:(id)a3 settingsData:(id)a4 recordData:(id)a5
+- (void)_restorePersistedModelWithScheduleData:(id)data settingsData:(id)settingsData recordData:(id)recordData
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v13)
+  dataCopy = data;
+  settingsDataCopy = settingsData;
+  recordDataCopy = recordData;
+  if (dataCopy)
   {
-    v10 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v13 error:0];
+    v10 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:dataCopy error:0];
     [(HDSPSleepScheduleModelChangeEvaluator *)self setLastSchedule:v10];
   }
 
-  if (v8)
+  if (settingsDataCopy)
   {
-    v11 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v8 error:0];
+    v11 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:settingsDataCopy error:0];
     [(HDSPSleepScheduleModelChangeEvaluator *)self setLastSettings:v11];
   }
 
-  if (v9)
+  if (recordDataCopy)
   {
-    v12 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v9 error:0];
+    v12 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:recordDataCopy error:0];
     [(HDSPSleepScheduleModelChangeEvaluator *)self setLastRecord:v12];
   }
 }
 
-- (void)_persistModel:(id)a3
+- (void)_persistModel:(id)model
 {
-  v4 = a3;
-  v5 = [v4 sleepSchedule];
-  [(HDSPSleepScheduleModelChangeEvaluator *)self _persistSchedule:v5];
+  modelCopy = model;
+  sleepSchedule = [modelCopy sleepSchedule];
+  [(HDSPSleepScheduleModelChangeEvaluator *)self _persistSchedule:sleepSchedule];
 
-  v6 = [v4 sleepSettings];
-  [(HDSPSleepScheduleModelChangeEvaluator *)self _persistSettings:v6];
+  sleepSettings = [modelCopy sleepSettings];
+  [(HDSPSleepScheduleModelChangeEvaluator *)self _persistSettings:sleepSettings];
 
-  v7 = [v4 sleepEventRecord];
+  sleepEventRecord = [modelCopy sleepEventRecord];
 
-  [(HDSPSleepScheduleModelChangeEvaluator *)self _persistRecord:v7];
+  [(HDSPSleepScheduleModelChangeEvaluator *)self _persistRecord:sleepEventRecord];
 }
 
-- (void)_persistSchedule:(id)a3
+- (void)_persistSchedule:(id)schedule
 {
   [(HDSPSleepScheduleModelChangeEvaluator *)self setLastSchedule:?];
-  if (a3)
+  if (schedule)
   {
     v5 = MEMORY[0x277CCAAB0];
-    v6 = [(HDSPSleepScheduleModelChangeEvaluator *)self lastSchedule];
-    v9 = [v5 archivedDataWithRootObject:v6 requiringSecureCoding:1 error:0];
+    lastSchedule = [(HDSPSleepScheduleModelChangeEvaluator *)self lastSchedule];
+    v9 = [v5 archivedDataWithRootObject:lastSchedule requiringSecureCoding:1 error:0];
 
     WeakRetained = objc_loadWeakRetained(&self->_environment);
-    v8 = [WeakRetained userDefaults];
-    [v8 hksp_setObject:v9 forKey:@"HKSPLastSchedule"];
+    userDefaults = [WeakRetained userDefaults];
+    [userDefaults hksp_setObject:v9 forKey:@"HKSPLastSchedule"];
   }
 
   else
@@ -145,34 +145,34 @@
   }
 }
 
-- (void)_persistSettings:(id)a3
+- (void)_persistSettings:(id)settings
 {
-  [(HDSPSleepScheduleModelChangeEvaluator *)self setLastSettings:a3];
+  [(HDSPSleepScheduleModelChangeEvaluator *)self setLastSettings:settings];
   v4 = MEMORY[0x277CCAAB0];
-  v5 = [(HDSPSleepScheduleModelChangeEvaluator *)self lastSettings];
-  v8 = [v4 archivedDataWithRootObject:v5 requiringSecureCoding:1 error:0];
+  lastSettings = [(HDSPSleepScheduleModelChangeEvaluator *)self lastSettings];
+  v8 = [v4 archivedDataWithRootObject:lastSettings requiringSecureCoding:1 error:0];
 
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v7 = [WeakRetained userDefaults];
-  [v7 hksp_setObject:v8 forKey:@"HKSPLastSettings"];
+  userDefaults = [WeakRetained userDefaults];
+  [userDefaults hksp_setObject:v8 forKey:@"HKSPLastSettings"];
 }
 
-- (void)_persistRecord:(id)a3
+- (void)_persistRecord:(id)record
 {
-  [(HDSPSleepScheduleModelChangeEvaluator *)self setLastRecord:a3];
+  [(HDSPSleepScheduleModelChangeEvaluator *)self setLastRecord:record];
   v4 = MEMORY[0x277CCAAB0];
-  v5 = [(HDSPSleepScheduleModelChangeEvaluator *)self lastRecord];
-  v8 = [v4 archivedDataWithRootObject:v5 requiringSecureCoding:1 error:0];
+  lastRecord = [(HDSPSleepScheduleModelChangeEvaluator *)self lastRecord];
+  v8 = [v4 archivedDataWithRootObject:lastRecord requiringSecureCoding:1 error:0];
 
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v7 = [WeakRetained userDefaults];
-  [v7 hksp_setObject:v8 forKey:@"HKSPLastRecord"];
+  userDefaults = [WeakRetained userDefaults];
+  [userDefaults hksp_setObject:v8 forKey:@"HKSPLastRecord"];
 }
 
-- (id)evaluateSleepScheduleAdd:(id)a3
+- (id)evaluateSleepScheduleAdd:(id)add
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  addCopy = add;
   v5 = HKSPLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -182,7 +182,7 @@
     _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] sleep schedule added", &v12, 0xCu);
   }
 
-  [(HDSPSleepScheduleModelChangeEvaluator *)self _persistSchedule:v4];
+  [(HDSPSleepScheduleModelChangeEvaluator *)self _persistSchedule:addCopy];
   v7 = HKSPSleepScheduleProperties();
   v8 = HKSPPropertyIdentifiersForProperties();
   v9 = [HDSPSleepScheduleModelChangeEvaluation significantChangeWithTopLevelChangeKeys:v8];
@@ -192,17 +192,17 @@
   return v9;
 }
 
-- (id)evaluateSleepScheduleUpdate:(id)a3
+- (id)evaluateSleepScheduleUpdate:(id)update
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updateCopy = update;
   v5 = objc_opt_class();
-  v6 = [(HDSPSleepScheduleModelChangeEvaluator *)self lastSchedule];
+  lastSchedule = [(HDSPSleepScheduleModelChangeEvaluator *)self lastSchedule];
   v17 = 0;
-  v7 = [v5 _evaluateChangesFromObject:v6 toObject:v4 outChangeSet:&v17];
+  v7 = [v5 _evaluateChangesFromObject:lastSchedule toObject:updateCopy outChangeSet:&v17];
   v8 = v17;
 
-  [(HDSPSleepScheduleModelChangeEvaluator *)self _persistSchedule:v4];
+  [(HDSPSleepScheduleModelChangeEvaluator *)self _persistSchedule:updateCopy];
   if (v7 == 2)
   {
     v9 = HKSPLogForCategory();
@@ -217,8 +217,8 @@
   }
 
   v12 = [HDSPSleepScheduleModelChangeEvaluation alloc];
-  v13 = [v8 topLevelChangeKeys];
-  v14 = [(HDSPSleepScheduleModelChangeEvaluation *)v12 initWithIsSignificantChange:v7 == 2 topLevelChangeKeys:v13];
+  topLevelChangeKeys = [v8 topLevelChangeKeys];
+  v14 = [(HDSPSleepScheduleModelChangeEvaluation *)v12 initWithIsSignificantChange:v7 == 2 topLevelChangeKeys:topLevelChangeKeys];
 
   v15 = *MEMORY[0x277D85DE8];
 
@@ -247,10 +247,10 @@
   return v7;
 }
 
-- (id)evaluateSleepSettingsAdd:(id)a3
+- (id)evaluateSleepSettingsAdd:(id)add
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  addCopy = add;
   v5 = HKSPLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -260,7 +260,7 @@
     _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] sleep settings added", &v12, 0xCu);
   }
 
-  [(HDSPSleepScheduleModelChangeEvaluator *)self _persistSettings:v4];
+  [(HDSPSleepScheduleModelChangeEvaluator *)self _persistSettings:addCopy];
   v7 = HKSPSleepSettingsProperties();
   v8 = HKSPPropertyIdentifiersForProperties();
   v9 = [HDSPSleepScheduleModelChangeEvaluation significantChangeWithTopLevelChangeKeys:v8];
@@ -270,17 +270,17 @@
   return v9;
 }
 
-- (id)evaluateSleepSettingsUpdate:(id)a3
+- (id)evaluateSleepSettingsUpdate:(id)update
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updateCopy = update;
   v5 = objc_opt_class();
-  v6 = [(HDSPSleepScheduleModelChangeEvaluator *)self lastSettings];
+  lastSettings = [(HDSPSleepScheduleModelChangeEvaluator *)self lastSettings];
   v17 = 0;
-  v7 = [v5 _evaluateChangesFromObject:v6 toObject:v4 outChangeSet:&v17];
+  v7 = [v5 _evaluateChangesFromObject:lastSettings toObject:updateCopy outChangeSet:&v17];
   v8 = v17;
 
-  [(HDSPSleepScheduleModelChangeEvaluator *)self _persistSettings:v4];
+  [(HDSPSleepScheduleModelChangeEvaluator *)self _persistSettings:updateCopy];
   if (v7 == 2)
   {
     v9 = HKSPLogForCategory();
@@ -295,18 +295,18 @@
   }
 
   v12 = [HDSPSleepScheduleModelChangeEvaluation alloc];
-  v13 = [v8 topLevelChangeKeys];
-  v14 = [(HDSPSleepScheduleModelChangeEvaluation *)v12 initWithIsSignificantChange:v7 == 2 topLevelChangeKeys:v13];
+  topLevelChangeKeys = [v8 topLevelChangeKeys];
+  v14 = [(HDSPSleepScheduleModelChangeEvaluation *)v12 initWithIsSignificantChange:v7 == 2 topLevelChangeKeys:topLevelChangeKeys];
 
   v15 = *MEMORY[0x277D85DE8];
 
   return v14;
 }
 
-- (id)evaluateSleepRecordAdd:(id)a3
+- (id)evaluateSleepRecordAdd:(id)add
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  addCopy = add;
   v5 = HKSPLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -316,7 +316,7 @@
     _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] sleep record added", &v13, 0xCu);
   }
 
-  [(HDSPSleepScheduleModelChangeEvaluator *)self _persistRecord:v4];
+  [(HDSPSleepScheduleModelChangeEvaluator *)self _persistRecord:addCopy];
   v7 = [HDSPSleepScheduleModelChangeEvaluation alloc];
   v8 = HKSPSleepEventRecordProperties();
   v9 = HKSPPropertyIdentifiersForProperties();
@@ -327,17 +327,17 @@
   return v10;
 }
 
-- (id)evaluateSleepRecordUpdate:(id)a3
+- (id)evaluateSleepRecordUpdate:(id)update
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updateCopy = update;
   v5 = objc_opt_class();
-  v6 = [(HDSPSleepScheduleModelChangeEvaluator *)self lastRecord];
+  lastRecord = [(HDSPSleepScheduleModelChangeEvaluator *)self lastRecord];
   v17 = 0;
-  v7 = [v5 _evaluateChangesFromObject:v6 toObject:v4 outChangeSet:&v17];
+  v7 = [v5 _evaluateChangesFromObject:lastRecord toObject:updateCopy outChangeSet:&v17];
   v8 = v17;
 
-  [(HDSPSleepScheduleModelChangeEvaluator *)self _persistRecord:v4];
+  [(HDSPSleepScheduleModelChangeEvaluator *)self _persistRecord:updateCopy];
   if (v7 == 2)
   {
     v9 = HKSPLogForCategory();
@@ -352,61 +352,61 @@
   }
 
   v12 = [HDSPSleepScheduleModelChangeEvaluation alloc];
-  v13 = [v8 topLevelChangeKeys];
-  v14 = [(HDSPSleepScheduleModelChangeEvaluation *)v12 initWithIsSignificantChange:v7 == 2 topLevelChangeKeys:v13];
+  topLevelChangeKeys = [v8 topLevelChangeKeys];
+  v14 = [(HDSPSleepScheduleModelChangeEvaluation *)v12 initWithIsSignificantChange:v7 == 2 topLevelChangeKeys:topLevelChangeKeys];
 
   v15 = *MEMORY[0x277D85DE8];
 
   return v14;
 }
 
-- (id)evaluateSleepScheduleModelChange:(id)a3
+- (id)evaluateSleepScheduleModelChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v6 = [v4 sleepSchedule];
-  if (v6)
+  sleepSchedule = [changeCopy sleepSchedule];
+  if (sleepSchedule)
   {
-    v7 = v6;
-    v8 = [(HDSPSleepScheduleModelChangeEvaluator *)self lastSchedule];
+    v7 = sleepSchedule;
+    lastSchedule = [(HDSPSleepScheduleModelChangeEvaluator *)self lastSchedule];
 
-    if (!v8)
+    if (!lastSchedule)
     {
-      v13 = [v4 sleepSchedule];
-      v14 = [(HDSPSleepScheduleModelChangeEvaluator *)self evaluateSleepScheduleAdd:v13];
+      sleepSchedule2 = [changeCopy sleepSchedule];
+      v14 = [(HDSPSleepScheduleModelChangeEvaluator *)self evaluateSleepScheduleAdd:sleepSchedule2];
       goto LABEL_11;
     }
   }
 
-  v9 = [v4 sleepSchedule];
-  if (v9)
+  sleepSchedule3 = [changeCopy sleepSchedule];
+  if (sleepSchedule3)
   {
   }
 
   else
   {
-    v15 = [(HDSPSleepScheduleModelChangeEvaluator *)self lastSchedule];
+    lastSchedule2 = [(HDSPSleepScheduleModelChangeEvaluator *)self lastSchedule];
 
-    if (v15)
+    if (lastSchedule2)
     {
-      v13 = [(HDSPSleepScheduleModelChangeEvaluator *)self evaluateSleepScheduleRemove];
-      [v5 addObject:v13];
+      sleepSchedule2 = [(HDSPSleepScheduleModelChangeEvaluator *)self evaluateSleepScheduleRemove];
+      [v5 addObject:sleepSchedule2];
 LABEL_12:
 
       goto LABEL_13;
     }
   }
 
-  v10 = [v4 sleepSchedule];
-  if (v10)
+  sleepSchedule4 = [changeCopy sleepSchedule];
+  if (sleepSchedule4)
   {
-    v11 = v10;
-    v12 = [(HDSPSleepScheduleModelChangeEvaluator *)self lastSchedule];
+    v11 = sleepSchedule4;
+    lastSchedule3 = [(HDSPSleepScheduleModelChangeEvaluator *)self lastSchedule];
 
-    if (v12)
+    if (lastSchedule3)
     {
-      v13 = [v4 sleepSchedule];
-      v14 = [(HDSPSleepScheduleModelChangeEvaluator *)self evaluateSleepScheduleUpdate:v13];
+      sleepSchedule2 = [changeCopy sleepSchedule];
+      v14 = [(HDSPSleepScheduleModelChangeEvaluator *)self evaluateSleepScheduleUpdate:sleepSchedule2];
 LABEL_11:
       v16 = v14;
       [v5 addObject:v14];
@@ -416,60 +416,60 @@ LABEL_11:
   }
 
 LABEL_13:
-  v17 = [v4 sleepSettings];
-  if (v17)
+  sleepSettings = [changeCopy sleepSettings];
+  if (sleepSettings)
   {
-    v18 = v17;
-    v19 = [(HDSPSleepScheduleModelChangeEvaluator *)self lastSettings];
+    v18 = sleepSettings;
+    lastSettings = [(HDSPSleepScheduleModelChangeEvaluator *)self lastSettings];
 
-    if (!v19)
+    if (!lastSettings)
     {
-      v23 = [v4 sleepSettings];
-      v24 = [(HDSPSleepScheduleModelChangeEvaluator *)self evaluateSleepSettingsAdd:v23];
+      sleepSettings2 = [changeCopy sleepSettings];
+      v24 = [(HDSPSleepScheduleModelChangeEvaluator *)self evaluateSleepSettingsAdd:sleepSettings2];
       goto LABEL_19;
     }
   }
 
-  v20 = [v4 sleepSettings];
-  if (v20)
+  sleepSettings3 = [changeCopy sleepSettings];
+  if (sleepSettings3)
   {
-    v21 = v20;
-    v22 = [(HDSPSleepScheduleModelChangeEvaluator *)self lastSettings];
+    v21 = sleepSettings3;
+    lastSettings2 = [(HDSPSleepScheduleModelChangeEvaluator *)self lastSettings];
 
-    if (v22)
+    if (lastSettings2)
     {
-      v23 = [v4 sleepSettings];
-      v24 = [(HDSPSleepScheduleModelChangeEvaluator *)self evaluateSleepSettingsUpdate:v23];
+      sleepSettings2 = [changeCopy sleepSettings];
+      v24 = [(HDSPSleepScheduleModelChangeEvaluator *)self evaluateSleepSettingsUpdate:sleepSettings2];
 LABEL_19:
       v25 = v24;
       [v5 addObject:v24];
     }
   }
 
-  v26 = [v4 sleepEventRecord];
-  if (v26)
+  sleepEventRecord = [changeCopy sleepEventRecord];
+  if (sleepEventRecord)
   {
-    v27 = v26;
-    v28 = [(HDSPSleepScheduleModelChangeEvaluator *)self lastRecord];
+    v27 = sleepEventRecord;
+    lastRecord = [(HDSPSleepScheduleModelChangeEvaluator *)self lastRecord];
 
-    if (!v28)
+    if (!lastRecord)
     {
-      v32 = [v4 sleepEventRecord];
-      v33 = [(HDSPSleepScheduleModelChangeEvaluator *)self evaluateSleepRecordAdd:v32];
+      sleepEventRecord2 = [changeCopy sleepEventRecord];
+      v33 = [(HDSPSleepScheduleModelChangeEvaluator *)self evaluateSleepRecordAdd:sleepEventRecord2];
       goto LABEL_26;
     }
   }
 
-  v29 = [v4 sleepEventRecord];
-  if (v29)
+  sleepEventRecord3 = [changeCopy sleepEventRecord];
+  if (sleepEventRecord3)
   {
-    v30 = v29;
-    v31 = [(HDSPSleepScheduleModelChangeEvaluator *)self lastRecord];
+    v30 = sleepEventRecord3;
+    lastRecord2 = [(HDSPSleepScheduleModelChangeEvaluator *)self lastRecord];
 
-    if (v31)
+    if (lastRecord2)
     {
-      v32 = [v4 sleepEventRecord];
-      v33 = [(HDSPSleepScheduleModelChangeEvaluator *)self evaluateSleepRecordUpdate:v32];
+      sleepEventRecord2 = [changeCopy sleepEventRecord];
+      v33 = [(HDSPSleepScheduleModelChangeEvaluator *)self evaluateSleepRecordUpdate:sleepEventRecord2];
 LABEL_26:
       v34 = v33;
       [v5 addObject:v33];
@@ -481,23 +481,23 @@ LABEL_26:
   return v35;
 }
 
-+ (unint64_t)_evaluateChangesFromObject:(id)a3 toObject:(id)a4 outChangeSet:(id *)a5
++ (unint64_t)_evaluateChangesFromObject:(id)object toObject:(id)toObject outChangeSet:(id *)set
 {
-  v6 = a3;
+  objectCopy = object;
   v7 = HKSPGenerateChangeSetBetweenObjects();
   v8 = v7;
-  if (a5)
+  if (set)
   {
     v9 = v7;
-    *a5 = v8;
+    *set = v8;
   }
 
-  v10 = [v8 changes];
-  v11 = [v10 count];
+  changes = [v8 changes];
+  v11 = [changes count];
 
   if (v11)
   {
-    v12 = [v6 mutableCopy];
+    v12 = [objectCopy mutableCopy];
     HKSPApplyChangesToObject();
     v13 = HKSPEvaluateChangesToObject();
   }

@@ -8,7 +8,7 @@
 
 - (int64_t)loadStatus
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AssetBundle.loadStatus.getter();
   v5 = v4;
 
@@ -25,7 +25,7 @@
 
 - (int64_t)reason
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AssetBundleBridge.reason.getter();
 
   return v3;

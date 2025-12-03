@@ -2,12 +2,12 @@
 - (ANNotificationProvider)init;
 - (ANNotificationProviderDelegate)delegate;
 - (id)_defaultNotificationCategories;
-- (id)_notificationContent:(id)a3;
-- (void)_notifyDelegateOfAction:(id)a3 forNotification:(id)a4;
-- (void)deliveredNotifications:(id)a3;
-- (void)postNotification:(id)a3 completion:(id)a4;
-- (void)removeNotificationWithIdentifier:(id)a3;
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5;
+- (id)_notificationContent:(id)content;
+- (void)_notifyDelegateOfAction:(id)action forNotification:(id)notification;
+- (void)deliveredNotifications:(id)notifications;
+- (void)postNotification:(id)notification completion:(id)completion;
+- (void)removeNotificationWithIdentifier:(id)identifier;
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler;
 @end
 
 @implementation ANNotificationProvider
@@ -26,8 +26,8 @@
     [(UNUserNotificationCenter *)v2->_notificationCenter setDelegate:v2];
     [(UNUserNotificationCenter *)v2->_notificationCenter setWantsNotificationResponsesDelivered];
     v5 = v2->_notificationCenter;
-    v6 = [(ANNotificationProvider *)v2 _defaultNotificationCategories];
-    [(UNUserNotificationCenter *)v5 setNotificationCategories:v6];
+    _defaultNotificationCategories = [(ANNotificationProvider *)v2 _defaultNotificationCategories];
+    [(UNUserNotificationCenter *)v5 setNotificationCategories:_defaultNotificationCategories];
   }
 
   return v2;
@@ -42,14 +42,14 @@
   return v2;
 }
 
-- (void)postNotification:(id)a3 completion:(id)a4
+- (void)postNotification:(id)notification completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ANNotificationProvider *)self _notificationContent:v7];
-  v9 = [v7 identifier];
+  completionCopy = completion;
+  notificationCopy = notification;
+  v8 = [(ANNotificationProvider *)self _notificationContent:notificationCopy];
+  identifier = [notificationCopy identifier];
 
-  v10 = [UNNotificationRequest requestWithIdentifier:v9 content:v8 trigger:0];
+  v10 = [UNNotificationRequest requestWithIdentifier:identifier content:v8 trigger:0];
 
   v11 = _ANLogSystem();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -68,14 +68,14 @@
   v14[1] = 3221225472;
   v14[2] = sub_100003040;
   v14[3] = &unk_10000C3F8;
-  v15 = v6;
-  v13 = v6;
+  v15 = completionCopy;
+  v13 = completionCopy;
   [(UNUserNotificationCenter *)notificationCenter addNotificationRequest:v10 withCompletionHandler:v14];
 }
 
-- (id)_notificationContent:(id)a3
+- (id)_notificationContent:(id)content
 {
-  v3 = a3;
+  contentCopy = content;
   v4 = _ANLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -87,14 +87,14 @@
   }
 
   v5 = objc_alloc_init(UNMutableNotificationContent);
-  v6 = [v3 title];
-  [v5 setTitle:v6];
+  title = [contentCopy title];
+  [v5 setTitle:title];
 
-  v7 = [v3 message];
-  [v5 setBody:v7];
+  message = [contentCopy message];
+  [v5 setBody:message];
 
-  v8 = [v3 date];
-  [v5 setDate:v8];
+  date = [contentCopy date];
+  [v5 setDate:date];
 
   v9 = +[UNNotificationSound defaultSound];
   [v5 setSound:v9];
@@ -102,22 +102,22 @@
   [v5 setShouldPreventNotificationDismissalAfterDefaultAction:1];
   [v5 setShouldBackgroundDefaultAction:1];
   [v5 setCategoryIdentifier:@"com.apple.accountnotification.default"];
-  v10 = [v3 dictionaryRepresentation];
+  dictionaryRepresentation = [contentCopy dictionaryRepresentation];
 
-  v14 = v10;
+  v14 = dictionaryRepresentation;
   v11 = [NSDictionary dictionaryWithObjects:&v14 forKeys:&v13 count:1];
   [v5 setUserInfo:v11];
 
   return v5;
 }
 
-- (void)removeNotificationWithIdentifier:(id)a3
+- (void)removeNotificationWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = _ANLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = v4;
+    v13 = identifierCopy;
     v6 = [NSArray arrayWithObjects:&v13 count:1];
     *buf = 136315650;
     v15 = "[ANNotificationProvider removeNotificationWithIdentifier:]";
@@ -129,19 +129,19 @@
   }
 
   notificationCenter = self->_notificationCenter;
-  v12 = v4;
+  v12 = identifierCopy;
   v8 = [NSArray arrayWithObjects:&v12 count:1];
   [(UNUserNotificationCenter *)notificationCenter removePendingNotificationRequestsWithIdentifiers:v8];
 
   v9 = self->_notificationCenter;
-  v11 = v4;
+  v11 = identifierCopy;
   v10 = [NSArray arrayWithObjects:&v11 count:1];
   [(UNUserNotificationCenter *)v9 removeDeliveredNotificationsWithIdentifiers:v10];
 }
 
-- (void)deliveredNotifications:(id)a3
+- (void)deliveredNotifications:(id)notifications
 {
-  v4 = a3;
+  notificationsCopy = notifications;
   v5 = _ANLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -157,15 +157,15 @@
   v8[1] = 3221225472;
   v8[2] = sub_100003550;
   v8[3] = &unk_10000C460;
-  v9 = v4;
-  v7 = v4;
+  v9 = notificationsCopy;
+  v7 = notificationsCopy;
   [(UNUserNotificationCenter *)notificationCenter getDeliveredNotificationsWithCompletionHandler:v8];
 }
 
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  responseCopy = response;
+  handlerCopy = handler;
   v9 = _ANLogSystem();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -174,34 +174,34 @@
     v20 = 1024;
     v21 = 137;
     v22 = 2112;
-    v23 = v7;
+    v23 = responseCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s (%d) Recieved notification response %@", &v18, 0x1Cu);
   }
 
-  v10 = [v7 notification];
-  v11 = [v10 request];
-  v12 = [v11 content];
+  notification = [responseCopy notification];
+  request = [notification request];
+  content = [request content];
 
-  v13 = [v12 userInfo];
+  userInfo = [content userInfo];
 
-  if (v13)
+  if (userInfo)
   {
-    v14 = [v12 userInfo];
-    v15 = [v14 objectForKeyedSubscript:@"ANAccountNotificationDictionaryRepresentationKey"];
+    userInfo2 = [content userInfo];
+    v15 = [userInfo2 objectForKeyedSubscript:@"ANAccountNotificationDictionaryRepresentationKey"];
 
     if (v15)
     {
       v16 = [[ANAccountNotification alloc] initWithDictionaryRepresentation:v15];
       if (v16)
       {
-        v17 = [v7 actionIdentifier];
-        [(ANNotificationProvider *)self _notifyDelegateOfAction:v17 forNotification:v16];
+        actionIdentifier = [responseCopy actionIdentifier];
+        [(ANNotificationProvider *)self _notifyDelegateOfAction:actionIdentifier forNotification:v16];
       }
 
       else
       {
-        v17 = _ANLogSystem();
-        if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+        actionIdentifier = _ANLogSystem();
+        if (os_log_type_enabled(actionIdentifier, OS_LOG_TYPE_ERROR))
         {
           sub_10000566C();
         }
@@ -227,13 +227,13 @@
     }
   }
 
-  v8[2](v8);
+  handlerCopy[2](handlerCopy);
 }
 
-- (void)_notifyDelegateOfAction:(id)a3 forNotification:(id)a4
+- (void)_notifyDelegateOfAction:(id)action forNotification:(id)notification
 {
-  v6 = a3;
-  v7 = a4;
+  actionCopy = action;
+  notificationCopy = notification;
   v8 = _ANLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -242,23 +242,23 @@
     v13 = 1024;
     v14 = 165;
     v15 = 2112;
-    v16 = v6;
+    v16 = actionCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s (%d) Attempting to notify delegate of action %@", &v11, 0x1Cu);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
   {
-    if ([v6 isEqualToString:UNNotificationDefaultActionIdentifier])
+    if ([actionCopy isEqualToString:UNNotificationDefaultActionIdentifier])
     {
       v10 = objc_loadWeakRetained(&self->_delegate);
-      [v10 notificationProvider:self didActivateNotification:v7];
+      [v10 notificationProvider:self didActivateNotification:notificationCopy];
     }
 
-    else if ([v6 isEqualToString:UNNotificationDismissActionIdentifier])
+    else if ([actionCopy isEqualToString:UNNotificationDismissActionIdentifier])
     {
       v10 = objc_loadWeakRetained(&self->_delegate);
-      [v10 notificationProvider:self didDismissNotification:v7];
+      [v10 notificationProvider:self didDismissNotification:notificationCopy];
     }
 
     else

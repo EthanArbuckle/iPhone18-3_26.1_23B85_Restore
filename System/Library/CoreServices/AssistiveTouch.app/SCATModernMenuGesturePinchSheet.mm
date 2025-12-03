@@ -2,9 +2,9 @@
 - (CGRect)rectToClear;
 - (SCATMenuPinchItemsViewDelegate)delegate;
 - (id)makeMenuItemsIfNeeded;
-- (void)menuItemWasActivated:(id)a3;
-- (void)sheetWillAppear:(BOOL)a3;
-- (void)sheetWillDisappear:(BOOL)a3;
+- (void)menuItemWasActivated:(id)activated;
+- (void)sheetWillAppear:(BOOL)appear;
+- (void)sheetWillDisappear:(BOOL)disappear;
 @end
 
 @implementation SCATModernMenuGesturePinchSheet
@@ -31,32 +31,32 @@
   return v3;
 }
 
-- (void)sheetWillAppear:(BOOL)a3
+- (void)sheetWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = SCATModernMenuGesturePinchSheet;
-  [(SCATModernMenuSheet *)&v5 sheetWillAppear:a3];
+  [(SCATModernMenuSheet *)&v5 sheetWillAppear:appear];
   self->_shouldStayInPinchModeDuringDisappearance = 0;
-  v4 = [(SCATModernMenuGesturePinchSheet *)self delegate];
-  [v4 didPushPinchItemsViewController:self];
+  delegate = [(SCATModernMenuGesturePinchSheet *)self delegate];
+  [delegate didPushPinchItemsViewController:self];
 }
 
-- (void)sheetWillDisappear:(BOOL)a3
+- (void)sheetWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = SCATModernMenuGesturePinchSheet;
-  [(SCATModernMenuSheet *)&v5 sheetWillDisappear:a3];
+  [(SCATModernMenuSheet *)&v5 sheetWillDisappear:disappear];
   if (!self->_shouldStayInPinchModeDuringDisappearance)
   {
-    v4 = [(SCATModernMenuGesturePinchSheet *)self delegate];
-    [v4 willPopPinchItemsViewController:self];
+    delegate = [(SCATModernMenuGesturePinchSheet *)self delegate];
+    [delegate willPopPinchItemsViewController:self];
   }
 }
 
 - (CGRect)rectToClear
 {
-  v3 = [(SCATModernMenuGesturePinchSheet *)self delegate];
-  [v3 rectToClearForPinchGesture:self];
+  delegate = [(SCATModernMenuGesturePinchSheet *)self delegate];
+  [delegate rectToClearForPinchGesture:self];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -73,44 +73,44 @@
   return result;
 }
 
-- (void)menuItemWasActivated:(id)a3
+- (void)menuItemWasActivated:(id)activated
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  if ([v5 isEqualToString:@"gestures_pinchIn"])
+  activatedCopy = activated;
+  identifier = [activatedCopy identifier];
+  if ([identifier isEqualToString:@"gestures_pinchIn"])
   {
     self->_shouldStayInPinchModeDuringDisappearance = 1;
-    v6 = [(SCATModernMenuGesturePinchSheet *)self delegate];
-    [v6 didChoosePinchIn:self];
+    delegate = [(SCATModernMenuGesturePinchSheet *)self delegate];
+    [delegate didChoosePinchIn:self];
   }
 
-  else if ([v5 isEqualToString:@"gestures_pinchOut"])
+  else if ([identifier isEqualToString:@"gestures_pinchOut"])
   {
     self->_shouldStayInPinchModeDuringDisappearance = 1;
-    v6 = [(SCATModernMenuGesturePinchSheet *)self delegate];
-    [v6 didChoosePinchOut:self];
+    delegate = [(SCATModernMenuGesturePinchSheet *)self delegate];
+    [delegate didChoosePinchOut:self];
   }
 
-  else if ([v5 isEqualToString:@"gestures_rotateClockwise"])
+  else if ([identifier isEqualToString:@"gestures_rotateClockwise"])
   {
     self->_shouldStayInPinchModeDuringDisappearance = 1;
-    v6 = [(SCATModernMenuGesturePinchSheet *)self delegate];
-    [v6 didChooseRotateClockwise:self];
+    delegate = [(SCATModernMenuGesturePinchSheet *)self delegate];
+    [delegate didChooseRotateClockwise:self];
   }
 
   else
   {
-    if (![v5 isEqualToString:@"gestures_rotateCounterclockwise"])
+    if (![identifier isEqualToString:@"gestures_rotateCounterclockwise"])
     {
       v7.receiver = self;
       v7.super_class = SCATModernMenuGesturePinchSheet;
-      [(SCATModernMenuSheet *)&v7 menuItemWasActivated:v4];
+      [(SCATModernMenuSheet *)&v7 menuItemWasActivated:activatedCopy];
       goto LABEL_10;
     }
 
     self->_shouldStayInPinchModeDuringDisappearance = 1;
-    v6 = [(SCATModernMenuGesturePinchSheet *)self delegate];
-    [v6 didChooseRotateCounterclockwise:self];
+    delegate = [(SCATModernMenuGesturePinchSheet *)self delegate];
+    [delegate didChooseRotateCounterclockwise:self];
   }
 
 LABEL_10:

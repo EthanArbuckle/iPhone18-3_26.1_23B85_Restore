@@ -8,19 +8,19 @@
 
 - (id)ic_loggingValues
 {
-  v9.receiver = a1;
+  v9.receiver = self;
   v9.super_class = &off_282787410;
   v2 = objc_msgSendSuper2(&v9, sel_ic_loggingValues);
   v3 = [v2 mutableCopy];
 
-  v4 = [a1 configurationsByRecordZoneID];
+  configurationsByRecordZoneID = [self configurationsByRecordZoneID];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__CKFetchRecordZoneChangesOperation_IC__ic_loggingValues__block_invoke;
   v7[3] = &unk_278196E40;
   v5 = v3;
   v8 = v5;
-  [v4 enumerateKeysAndObjectsUsingBlock:v7];
+  [configurationsByRecordZoneID enumerateKeysAndObjectsUsingBlock:v7];
 
   return v5;
 }
@@ -30,22 +30,22 @@
   v2 = MEMORY[0x277CCACA8];
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [a1 operationID];
-  v6 = [v2 stringWithFormat:@"<%@ %@>", v4, v5];
+  operationID = [self operationID];
+  v6 = [v2 stringWithFormat:@"<%@ %@>", v4, operationID];
 
   return v6;
 }
 
 - (uint64_t)ic_removeAllCompletionBlocks
 {
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &off_282787410;
   objc_msgSendSuper2(&v3, sel_ic_removeAllCompletionBlocks);
-  [a1 setRecordWasChangedBlock:0];
-  [a1 setRecordWithIDWasDeletedBlock:0];
-  [a1 setFetchRecordZoneChangesCompletionBlock:0];
-  [a1 setRecordZoneFetchCompletionBlock:0];
-  return [a1 setRecordZoneChangeTokensUpdatedBlock:0];
+  [self setRecordWasChangedBlock:0];
+  [self setRecordWithIDWasDeletedBlock:0];
+  [self setFetchRecordZoneChangesCompletionBlock:0];
+  [self setRecordZoneFetchCompletionBlock:0];
+  return [self setRecordZoneChangeTokensUpdatedBlock:0];
 }
 
 @end

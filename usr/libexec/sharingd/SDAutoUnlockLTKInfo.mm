@@ -1,20 +1,20 @@
 @interface SDAutoUnlockLTKInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasSignout:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasSignout:(BOOL)signout;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SDAutoUnlockLTKInfo
 
-- (void)setHasSignout:(BOOL)a3
+- (void)setHasSignout:(BOOL)signout
 {
-  if (a3)
+  if (signout)
   {
     v3 = 2;
   }
@@ -32,8 +32,8 @@
   v7.receiver = self;
   v7.super_class = SDAutoUnlockLTKInfo;
   v3 = [(SDAutoUnlockLTKInfo *)&v7 description];
-  v4 = [(SDAutoUnlockLTKInfo *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(SDAutoUnlockLTKInfo *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -68,9 +68,9 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     version = self->_version;
@@ -94,38 +94,38 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[6] = self->_version;
-    *(v4 + 32) |= 1u;
+    toCopy[6] = self->_version;
+    *(toCopy + 32) |= 1u;
   }
 
-  v5 = v4;
+  v5 = toCopy;
   if (self->_ltk)
   {
-    [v4 setLtk:?];
-    v4 = v5;
+    [toCopy setLtk:?];
+    toCopy = v5;
   }
 
   if (self->_ltkID)
   {
     [v5 setLtkID:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 28) = self->_signout;
-    *(v4 + 32) |= 2u;
+    *(toCopy + 28) = self->_signout;
+    *(toCopy + 32) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -133,11 +133,11 @@
     *(v5 + 32) |= 1u;
   }
 
-  v7 = [(NSData *)self->_ltk copyWithZone:a3];
+  v7 = [(NSData *)self->_ltk copyWithZone:zone];
   v8 = v6[1];
   v6[1] = v7;
 
-  v9 = [(NSData *)self->_ltkID copyWithZone:a3];
+  v9 = [(NSData *)self->_ltkID copyWithZone:zone];
   v10 = v6[2];
   v6[2] = v9;
 
@@ -150,36 +150,36 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
-  v5 = *(v4 + 32);
+  v5 = *(equalCopy + 32);
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_version != *(v4 + 6))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_version != *(equalCopy + 6))
     {
       goto LABEL_13;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
     goto LABEL_13;
   }
 
   ltk = self->_ltk;
-  if (ltk | *(v4 + 1) && ![(NSData *)ltk isEqual:?])
+  if (ltk | *(equalCopy + 1) && ![(NSData *)ltk isEqual:?])
   {
     goto LABEL_13;
   }
 
   ltkID = self->_ltkID;
-  if (ltkID | *(v4 + 2))
+  if (ltkID | *(equalCopy + 2))
   {
     if (![(NSData *)ltkID isEqual:?])
     {
@@ -187,10 +187,10 @@
     }
   }
 
-  v8 = (*(v4 + 32) & 2) == 0;
+  v8 = (*(equalCopy + 32) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 32) & 2) == 0)
+    if ((*(equalCopy + 32) & 2) == 0)
     {
 LABEL_13:
       v8 = 0;
@@ -199,13 +199,13 @@ LABEL_13:
 
     if (self->_signout)
     {
-      if ((*(v4 + 28) & 1) == 0)
+      if ((*(equalCopy + 28) & 1) == 0)
       {
         goto LABEL_13;
       }
     }
 
-    else if (*(v4 + 28))
+    else if (*(equalCopy + 28))
     {
       goto LABEL_13;
     }
@@ -245,31 +245,31 @@ LABEL_14:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 32))
+  fromCopy = from;
+  if (*(fromCopy + 32))
   {
-    self->_version = *(v4 + 6);
+    self->_version = *(fromCopy + 6);
     *&self->_has |= 1u;
   }
 
-  v5 = v4;
-  if (*(v4 + 1))
+  v5 = fromCopy;
+  if (*(fromCopy + 1))
   {
     [(SDAutoUnlockLTKInfo *)self setLtk:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(SDAutoUnlockLTKInfo *)self setLtkID:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if ((*(v4 + 32) & 2) != 0)
+  if ((*(fromCopy + 32) & 2) != 0)
   {
-    self->_signout = *(v4 + 28);
+    self->_signout = *(fromCopy + 28);
     *&self->_has |= 2u;
   }
 }

@@ -1,14 +1,14 @@
 @interface FigHumanBodyObservation
-- (BOOL)isEqual:(id)a3;
-- (FigHumanBodyObservation)initWithHumanObservation:(id)a3 humanBodyID:(unint64_t)a4 time:(unint64_t)a5;
+- (BOOL)isEqual:(id)equal;
+- (FigHumanBodyObservation)initWithHumanObservation:(id)observation humanBodyID:(unint64_t)d time:(unint64_t)time;
 - (void)dealloc;
 @end
 
 @implementation FigHumanBodyObservation
 
-- (FigHumanBodyObservation)initWithHumanObservation:(id)a3 humanBodyID:(unint64_t)a4 time:(unint64_t)a5
+- (FigHumanBodyObservation)initWithHumanObservation:(id)observation humanBodyID:(unint64_t)d time:(unint64_t)time
 {
-  if (!a3)
+  if (!observation)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"humanObservation must not be nil" userInfo:0]);
   }
@@ -18,10 +18,10 @@
   v8 = [(FigHumanBodyObservation *)&v10 init];
   if (v8)
   {
-    v8->_humanObservation = a3;
-    v8->_humanBodyID = a4;
+    v8->_humanObservation = observation;
+    v8->_humanBodyID = d;
     v8->_humanTrackingRequest = [objc_alloc(getVNTrackObjectRequestClass()) initWithDetectedObjectObservation:v8->_humanObservation];
-    v8->_lastUpdatedTime = a5;
+    v8->_lastUpdatedTime = time;
   }
 
   return v8;
@@ -34,9 +34,9 @@
   [(FigHumanBodyObservation *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
@@ -47,8 +47,8 @@
     return 0;
   }
 
-  v5 = [(FigHumanBodyObservation *)self humanBodyID];
-  return v5 == [a3 humanBodyID];
+  humanBodyID = [(FigHumanBodyObservation *)self humanBodyID];
+  return humanBodyID == [equal humanBodyID];
 }
 
 @end

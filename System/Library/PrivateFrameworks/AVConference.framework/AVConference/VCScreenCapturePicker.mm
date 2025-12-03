@@ -1,16 +1,16 @@
 @interface VCScreenCapturePicker
-- (VCScreenCapturePicker)initWithDelegate:(id)a3;
+- (VCScreenCapturePicker)initWithDelegate:(id)delegate;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setActive:(BOOL)a3;
-- (void)setRepickingAllowed:(BOOL)a3;
-- (void)showWithStream:(id)a3;
-- (void)showWithStream:(id)a3 usingContentStyle:(int64_t)a4;
+- (void)setActive:(BOOL)active;
+- (void)setRepickingAllowed:(BOOL)allowed;
+- (void)showWithStream:(id)stream;
+- (void)showWithStream:(id)stream usingContentStyle:(int64_t)style;
 @end
 
 @implementation VCScreenCapturePicker
 
-- (VCScreenCapturePicker)initWithDelegate:(id)a3
+- (VCScreenCapturePicker)initWithDelegate:(id)delegate
 {
   v10 = *MEMORY[0x1E69E9840];
   v9.receiver = self;
@@ -19,7 +19,7 @@
   v5 = v4;
   if (v4)
   {
-    objc_storeWeak(&v4->_delegate, a3);
+    objc_storeWeak(&v4->_delegate, delegate);
     CustomRootQueue = VCDispatchQueue_GetCustomRootQueue(47);
     v7 = dispatch_queue_create_with_target_V2("com.apple.avconference.ScreenCapturePicker.observerQueue", 0, CustomRootQueue);
     v5->_delegateQueue = v7;
@@ -86,7 +86,7 @@ LABEL_11:
         v20 = 2112;
         v21 = v3;
         v22 = 2048;
-        v23 = self;
+        selfCopy = self;
         v6 = " [%s] %s:%d %@(%p) Begin";
         v7 = v10;
         v8 = 48;
@@ -194,9 +194,9 @@ LABEL_11:
   return result;
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  v3 = a3;
+  activeCopy = active;
   v25 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
   {
@@ -213,7 +213,7 @@ LABEL_11:
         v17 = 1024;
         v18 = 117;
         v19 = 1024;
-        LODWORD(v20) = v3;
+        LODWORD(v20) = activeCopy;
         v8 = " [%s] %s:%d Setting picker to active=%d";
         v9 = v7;
         v10 = 34;
@@ -250,9 +250,9 @@ LABEL_11:
         v19 = 2112;
         v20 = v5;
         v21 = 2048;
-        v22 = self;
+        selfCopy = self;
         v23 = 1024;
-        v24 = v3;
+        v24 = activeCopy;
         v8 = " [%s] %s:%d %@(%p) Setting picker to active=%d";
         v9 = v12;
         v10 = 54;
@@ -261,10 +261,10 @@ LABEL_11:
     }
   }
 
-  self->_active = v3;
+  self->_active = activeCopy;
 }
 
-- (void)showWithStream:(id)a3
+- (void)showWithStream:(id)stream
 {
   v25 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -282,7 +282,7 @@ LABEL_11:
         v17 = 1024;
         v18 = 130;
         v19 = 2112;
-        v20 = a3;
+        streamCopy = stream;
         v8 = " [%s] %s:%d stream=%@";
         v9 = v7;
         v10 = 38;
@@ -317,11 +317,11 @@ LABEL_11:
         v17 = 1024;
         v18 = 130;
         v19 = 2112;
-        v20 = v5;
+        streamCopy = v5;
         v21 = 2048;
-        v22 = self;
+        selfCopy = self;
         v23 = 2112;
-        v24 = a3;
+        streamCopy2 = stream;
         v8 = " [%s] %s:%d %@(%p) stream=%@";
         v9 = v12;
         v10 = 58;
@@ -331,7 +331,7 @@ LABEL_11:
   }
 }
 
-- (void)showWithStream:(id)a3 usingContentStyle:(int64_t)a4
+- (void)showWithStream:(id)stream usingContentStyle:(int64_t)style
 {
   v26 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -349,7 +349,7 @@ LABEL_11:
         v18 = 1024;
         v19 = 146;
         v20 = 2112;
-        v21 = a3;
+        streamCopy = stream;
         v9 = " [%s] %s:%d stream=%@";
         v10 = v8;
         v11 = 38;
@@ -384,11 +384,11 @@ LABEL_11:
         v18 = 1024;
         v19 = 146;
         v20 = 2112;
-        v21 = v6;
+        streamCopy = v6;
         v22 = 2048;
-        v23 = self;
+        selfCopy = self;
         v24 = 2112;
-        v25 = a3;
+        streamCopy2 = stream;
         v9 = " [%s] %s:%d %@(%p) stream=%@";
         v10 = v13;
         v11 = 58;
@@ -398,9 +398,9 @@ LABEL_11:
   }
 }
 
-- (void)setRepickingAllowed:(BOOL)a3
+- (void)setRepickingAllowed:(BOOL)allowed
 {
-  v3 = a3;
+  allowedCopy = allowed;
   v25 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
   {
@@ -417,7 +417,7 @@ LABEL_11:
         v17 = 1024;
         v18 = 161;
         v19 = 1024;
-        LODWORD(v20) = v3;
+        LODWORD(v20) = allowedCopy;
         v8 = " [%s] %s:%d Setting repicking=%d";
         v9 = v7;
         v10 = 34;
@@ -454,9 +454,9 @@ LABEL_11:
         v19 = 2112;
         v20 = v5;
         v21 = 2048;
-        v22 = self;
+        selfCopy = self;
         v23 = 1024;
-        v24 = v3;
+        v24 = allowedCopy;
         v8 = " [%s] %s:%d %@(%p) Setting repicking=%d";
         v9 = v12;
         v10 = 54;

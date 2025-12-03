@@ -103,14 +103,14 @@ LABEL_8:
     }
 
     v5[6] = [v7 nextDoc];
-    v8 = [(OrgApacheLuceneSearchDisiPriorityQueue *)self->subScorers_ updateTop];
-    if (!v8)
+    updateTop = [(OrgApacheLuceneSearchDisiPriorityQueue *)self->subScorers_ updateTop];
+    if (!updateTop)
     {
       goto LABEL_8;
     }
 
-    v5 = v8;
-    result = v8[6];
+    v5 = updateTop;
+    result = updateTop[6];
   }
 
   while (result == v6);

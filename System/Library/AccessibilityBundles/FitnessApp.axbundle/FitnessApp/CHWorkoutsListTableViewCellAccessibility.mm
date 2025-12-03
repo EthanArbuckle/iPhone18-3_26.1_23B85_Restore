@@ -1,36 +1,36 @@
 @interface CHWorkoutsListTableViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityPath;
 @end
 
 @implementation CHWorkoutsListTableViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CHWorkoutsListTableViewCell" hasSwiftField:@"workoutContentView" withSwiftType:"WorkoutsListContentView"];
-  [v3 validateClass:@"FitnessApp.WorkoutsListContentView" hasSwiftFieldOfAnyClass:@"insetContentView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CHWorkoutsListTableViewCell" hasSwiftField:@"workoutContentView" withSwiftType:"WorkoutsListContentView"];
+  [validationsCopy validateClass:@"FitnessApp.WorkoutsListContentView" hasSwiftFieldOfAnyClass:@"insetContentView"];
 }
 
 - (id)accessibilityPath
 {
   v3 = [(CHWorkoutsListTableViewCellAccessibility *)self safeSwiftValueForKey:@"workoutContentView"];
   v4 = [v3 safeSwiftValueForKey:@"insetContentView"];
-  v5 = [v4 accessibilityPath];
-  v6 = v5;
-  if (v5)
+  accessibilityPath = [v4 accessibilityPath];
+  v6 = accessibilityPath;
+  if (accessibilityPath)
   {
-    v7 = v5;
+    accessibilityPath2 = accessibilityPath;
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = CHWorkoutsListTableViewCellAccessibility;
-    v7 = [(CHWorkoutsListTableViewCellAccessibility *)&v10 accessibilityPath];
+    accessibilityPath2 = [(CHWorkoutsListTableViewCellAccessibility *)&v10 accessibilityPath];
   }
 
-  v8 = v7;
+  v8 = accessibilityPath2;
 
   return v8;
 }

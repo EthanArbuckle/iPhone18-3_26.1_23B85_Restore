@@ -18,10 +18,10 @@
   v8[1] = 3221225472;
   v8[2] = __90__NSDictionary_HKAttachmentMetadata__hk_validateAttachmentMetadataKeysAndValuesWithError___block_invoke;
   v8[3] = &unk_1E7384238;
-  v8[4] = a1;
+  v8[4] = self;
   v8[5] = &v9;
   v8[6] = a2;
-  [a1 enumerateKeysAndObjectsUsingBlock:v8];
+  [self enumerateKeysAndObjectsUsingBlock:v8];
   v4 = v10[5];
   v5 = v4;
   if (v4)
@@ -60,7 +60,7 @@
   block[1] = 3221225472;
   block[2] = __70__NSDictionary_HKAttachmentMetadata__hk_secureAttachmentCodingClasses__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (hk_secureAttachmentCodingClasses_onceToken != -1)
   {
     dispatch_once(&hk_secureAttachmentCodingClasses_onceToken, block);

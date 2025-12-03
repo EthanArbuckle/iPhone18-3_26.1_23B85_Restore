@@ -1,15 +1,15 @@
 @interface PURedEyeIndicatorView
 - (PURedEyeIndicatorView)init;
-- (void)animateWithDelay:(double)a3 completion:(id)a4;
+- (void)animateWithDelay:(double)delay completion:(id)completion;
 - (void)didMoveToSuperview;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation PURedEyeIndicatorView
 
-- (void)animateWithDelay:(double)a3 completion:(id)a4
+- (void)animateWithDelay:(double)delay completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   if (self->_animationType == 1)
   {
     CGAffineTransformMakeTranslation(&v20, -10.0, 0.0);
@@ -19,7 +19,7 @@
     v19[2] = __53__PURedEyeIndicatorView_animateWithDelay_completion___block_invoke;
     v19[3] = &unk_1E7B80DD0;
     v19[4] = self;
-    [MEMORY[0x1E69DD250] animateWithDuration:0 delay:v19 usingSpringWithDamping:0 initialSpringVelocity:1.29999995 options:a3 animations:0.100000001 completion:0.0];
+    [MEMORY[0x1E69DD250] animateWithDuration:0 delay:v19 usingSpringWithDamping:0 initialSpringVelocity:1.29999995 options:delay animations:0.100000001 completion:0.0];
     v7 = MEMORY[0x1E69DD250];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
@@ -30,9 +30,9 @@
     v16[1] = 3221225472;
     v16[2] = __53__PURedEyeIndicatorView_animateWithDelay_completion___block_invoke_3;
     v16[3] = &unk_1E7B7FA80;
-    v17 = v6;
-    v8 = v6;
-    [v7 animateWithDuration:0 delay:v18 options:v16 animations:0.3 completion:a3 + 0.7];
+    v17 = completionCopy;
+    v8 = completionCopy;
+    [v7 animateWithDuration:0 delay:v18 options:v16 animations:0.3 completion:delay + 0.7];
     v9 = v17;
   }
 
@@ -52,9 +52,9 @@
     v11[1] = 3221225472;
     v11[2] = __53__PURedEyeIndicatorView_animateWithDelay_completion___block_invoke_5;
     v11[3] = &unk_1E7B7FA80;
-    v12 = v6;
-    v8 = v6;
-    [v10 animateWithDuration:3 delay:v13 options:v11 animations:0.300000012 completion:a3];
+    v12 = completionCopy;
+    v8 = completionCopy;
+    [v10 animateWithDuration:3 delay:v13 options:v11 animations:0.300000012 completion:delay];
     v9 = v12;
   }
 }
@@ -99,7 +99,7 @@ uint64_t __53__PURedEyeIndicatorView_animateWithDelay_completion___block_invoke_
   return result;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   CurrentContext = UIGraphicsGetCurrentContext();
   [(PURedEyeIndicatorView *)self bounds];
@@ -114,8 +114,8 @@ uint64_t __53__PURedEyeIndicatorView_animateWithDelay_completion___block_invoke_
   v15.size.height = height;
   MidY = CGRectGetMidY(v15);
   CGContextSetLineWidth(CurrentContext, 2.0);
-  v11 = [MEMORY[0x1E69DC888] whiteColor];
-  CGContextSetStrokeColorWithColor(CurrentContext, [v11 CGColor]);
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  CGContextSetStrokeColorWithColor(CurrentContext, [whiteColor CGColor]);
 
   v13.width = 0.0;
   v13.height = 1.0;
@@ -130,12 +130,12 @@ uint64_t __53__PURedEyeIndicatorView_animateWithDelay_completion___block_invoke_
   v11.receiver = self;
   v11.super_class = PURedEyeIndicatorView;
   [(PURedEyeIndicatorView *)&v11 didMoveToSuperview];
-  v3 = [(PURedEyeIndicatorView *)self window];
+  window = [(PURedEyeIndicatorView *)self window];
 
-  if (v3)
+  if (window)
   {
-    v4 = [(PURedEyeIndicatorView *)self window];
-    [(PURedEyeIndicatorView *)self convertRect:v4 fromView:0.0, 0.0, 1.0, 1.0];
+    window2 = [(PURedEyeIndicatorView *)self window];
+    [(PURedEyeIndicatorView *)self convertRect:window2 fromView:0.0, 0.0, 1.0, 1.0];
     v6 = v5;
     v8 = v7;
 

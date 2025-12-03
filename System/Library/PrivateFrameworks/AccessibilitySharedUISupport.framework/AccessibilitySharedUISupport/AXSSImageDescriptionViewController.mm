@@ -1,12 +1,12 @@
 @interface AXSSImageDescriptionViewController
-- (AXSSImageDescriptionViewController)initWithContentSnapshot:(id)a3;
+- (AXSSImageDescriptionViewController)initWithContentSnapshot:(id)snapshot;
 - (AXSSImageDescriptionViewControllerDelegate)delegate;
 - (BOOL)_hasChanges;
 - (BOOL)_hasFormView;
 - (CGSize)preferredContentSize;
 - (double)_textViewMaxHeight;
 - (id)_modifiedImageDescription;
-- (void)_adjustViewToKeyboardFrame:(id)a3;
+- (void)_adjustViewToKeyboardFrame:(id)frame;
 - (void)_hideKeyboard;
 - (void)_imageDescriptionViewControllerSetupConstraints;
 - (void)_imageDescriptionViewControllerSetupUI;
@@ -14,38 +14,38 @@
 - (void)_layoutImagePreview;
 - (void)_scrollTextViewCaretToVisibleRegion;
 - (void)_updateTextScrollViewConstraints;
-- (void)cancelChanges:(id)a3;
-- (void)imagePreviewShouldExpand:(id)a3;
-- (void)presentationControllerDidDismiss:(id)a3;
-- (void)saveChanges:(id)a3;
-- (void)setContentBackgroundColor:(id)a3;
-- (void)setContentSnapshot:(id)a3;
-- (void)setHidesTextBackground:(BOOL)a3;
-- (void)setImageDescription:(id)a3;
-- (void)setPlaceholderText:(id)a3;
-- (void)textViewDidChange:(id)a3;
-- (void)traitEnvironment:(id)a3 didChangeTraitCollection:(id)a4;
+- (void)cancelChanges:(id)changes;
+- (void)imagePreviewShouldExpand:(id)expand;
+- (void)presentationControllerDidDismiss:(id)dismiss;
+- (void)saveChanges:(id)changes;
+- (void)setContentBackgroundColor:(id)color;
+- (void)setContentSnapshot:(id)snapshot;
+- (void)setHidesTextBackground:(BOOL)background;
+- (void)setImageDescription:(id)description;
+- (void)setPlaceholderText:(id)text;
+- (void)textViewDidChange:(id)change;
+- (void)traitEnvironment:(id)environment didChangeTraitCollection:(id)collection;
 - (void)updateViewConstraints;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation AXSSImageDescriptionViewController
 
-- (AXSSImageDescriptionViewController)initWithContentSnapshot:(id)a3
+- (AXSSImageDescriptionViewController)initWithContentSnapshot:(id)snapshot
 {
-  v5 = a3;
+  snapshotCopy = snapshot;
   v12.receiver = self;
   v12.super_class = AXSSImageDescriptionViewController;
   v6 = [(AXSSImageDescriptionViewController *)&v12 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contentSnapshot, a3);
-    v8 = [MEMORY[0x277D75348] blackColor];
+    objc_storeStrong(&v6->_contentSnapshot, snapshot);
+    blackColor = [MEMORY[0x277D75348] blackColor];
     contentBackgroundColor = v7->_contentBackgroundColor;
-    v7->_contentBackgroundColor = v8;
+    v7->_contentBackgroundColor = blackColor;
 
     contentImage = v7->_contentImage;
     v7->_contentImage = 0;
@@ -54,43 +54,43 @@
   return v7;
 }
 
-- (void)setContentSnapshot:(id)a3
+- (void)setContentSnapshot:(id)snapshot
 {
-  v5 = a3;
-  if (self->_contentSnapshot != v5)
+  snapshotCopy = snapshot;
+  if (self->_contentSnapshot != snapshotCopy)
   {
-    objc_storeStrong(&self->_contentSnapshot, a3);
+    objc_storeStrong(&self->_contentSnapshot, snapshot);
     if ([(AXSSImageDescriptionViewController *)self isUIReady])
     {
-      v6 = [(AXSSImageDescriptionViewController *)self imagePreviewController];
+      imagePreviewController = [(AXSSImageDescriptionViewController *)self imagePreviewController];
 
-      if (v6)
+      if (imagePreviewController)
       {
-        v7 = [(AXSSImageDescriptionViewController *)self imagePreviewController];
-        v8 = [v7 view];
-        [v8 removeFromSuperview];
+        imagePreviewController2 = [(AXSSImageDescriptionViewController *)self imagePreviewController];
+        view = [imagePreviewController2 view];
+        [view removeFromSuperview];
 
-        v9 = [(AXSSImageDescriptionViewController *)self imagePreviewController];
-        [v9 removeFromParentViewController];
+        imagePreviewController3 = [(AXSSImageDescriptionViewController *)self imagePreviewController];
+        [imagePreviewController3 removeFromParentViewController];
 
         [(AXSSImageDescriptionViewController *)self setImagePreviewController:0];
       }
 
-      if (v5)
+      if (snapshotCopy)
       {
-        v10 = [[AXSSImagePreviewViewController alloc] initWithContentSnapshot:v5];
+        v10 = [[AXSSImagePreviewViewController alloc] initWithContentSnapshot:snapshotCopy];
         [(AXSSImagePreviewViewController *)v10 setDelegate:self];
         [(AXSSImageDescriptionViewController *)self addChildViewController:v10];
-        v11 = [(AXSSImageDescriptionViewController *)self view];
-        v12 = [(AXSSImagePreviewViewController *)v10 view];
-        v13 = [(AXSSImageDescriptionViewController *)self navBar];
-        [v11 insertSubview:v12 belowSubview:v13];
+        view2 = [(AXSSImageDescriptionViewController *)self view];
+        view3 = [(AXSSImagePreviewViewController *)v10 view];
+        navBar = [(AXSSImageDescriptionViewController *)self navBar];
+        [view2 insertSubview:view3 belowSubview:navBar];
 
         [(AXSSImageDescriptionViewController *)self setImagePreviewController:v10];
       }
 
-      v14 = [(AXSSImageDescriptionViewController *)self view];
-      [v14 setNeedsUpdateConstraints];
+      view4 = [(AXSSImageDescriptionViewController *)self view];
+      [view4 setNeedsUpdateConstraints];
 
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
@@ -108,99 +108,99 @@ void __57__AXSSImageDescriptionViewController_setContentSnapshot___block_invoke(
   [v1 layoutIfNeeded];
 }
 
-- (void)setContentBackgroundColor:(id)a3
+- (void)setContentBackgroundColor:(id)color
 {
-  v7 = a3;
-  objc_storeStrong(&self->_contentBackgroundColor, a3);
-  v5 = [(AXSSImageDescriptionViewController *)self contentBackgroundView];
+  colorCopy = color;
+  objc_storeStrong(&self->_contentBackgroundColor, color);
+  contentBackgroundView = [(AXSSImageDescriptionViewController *)self contentBackgroundView];
 
-  if (v5)
+  if (contentBackgroundView)
   {
-    v6 = [(AXSSImageDescriptionViewController *)self contentBackgroundView];
-    [v6 setBackgroundColor:v7];
+    contentBackgroundView2 = [(AXSSImageDescriptionViewController *)self contentBackgroundView];
+    [contentBackgroundView2 setBackgroundColor:colorCopy];
   }
 }
 
-- (void)setHidesTextBackground:(BOOL)a3
+- (void)setHidesTextBackground:(BOOL)background
 {
-  self->_hidesTextBackground = a3;
-  if (a3)
+  self->_hidesTextBackground = background;
+  if (background)
   {
-    v4 = [MEMORY[0x277D75348] clearColor];
-    v5 = [v4 CGColor];
-    v6 = [(AXSSImageDescriptionViewController *)self textBackgroundView];
-    v7 = [v6 layer];
-    [v7 setBorderColor:v5];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    cGColor = [clearColor CGColor];
+    textBackgroundView = [(AXSSImageDescriptionViewController *)self textBackgroundView];
+    layer = [textBackgroundView layer];
+    [layer setBorderColor:cGColor];
 
     [MEMORY[0x277D75348] clearColor];
   }
 
   else
   {
-    v8 = [MEMORY[0x277D75348] separatorColor];
-    v9 = [v8 CGColor];
-    v10 = [(AXSSImageDescriptionViewController *)self textBackgroundView];
-    v11 = [v10 layer];
-    [v11 setBorderColor:v9];
+    separatorColor = [MEMORY[0x277D75348] separatorColor];
+    cGColor2 = [separatorColor CGColor];
+    textBackgroundView2 = [(AXSSImageDescriptionViewController *)self textBackgroundView];
+    layer2 = [textBackgroundView2 layer];
+    [layer2 setBorderColor:cGColor2];
 
-    v12 = [(AXSSImageDescriptionViewController *)self textBackgroundView];
-    v13 = [v12 layer];
-    [v13 setBorderWidth:1.0];
+    textBackgroundView3 = [(AXSSImageDescriptionViewController *)self textBackgroundView];
+    layer3 = [textBackgroundView3 layer];
+    [layer3 setBorderWidth:1.0];
 
     [MEMORY[0x277D75348] systemBackgroundColor];
   }
   v15 = ;
-  v14 = [(AXSSImageDescriptionViewController *)self textBackgroundView];
-  [v14 setBackgroundColor:v15];
+  textBackgroundView4 = [(AXSSImageDescriptionViewController *)self textBackgroundView];
+  [textBackgroundView4 setBackgroundColor:v15];
 }
 
-- (void)setImageDescription:(id)a3
+- (void)setImageDescription:(id)description
 {
-  objc_storeStrong(&self->_imageDescription, a3);
-  v5 = a3;
-  v6 = [(AXSSImageDescriptionViewController *)self textView];
-  [v6 setText:v5];
+  objc_storeStrong(&self->_imageDescription, description);
+  descriptionCopy = description;
+  textView = [(AXSSImageDescriptionViewController *)self textView];
+  [textView setText:descriptionCopy];
 }
 
-- (void)setPlaceholderText:(id)a3
+- (void)setPlaceholderText:(id)text
 {
-  v7 = a3;
-  objc_storeStrong(&self->_placeholderText, a3);
+  textCopy = text;
+  objc_storeStrong(&self->_placeholderText, text);
   if (self->_placeholderText)
   {
-    v5 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:self->_placeholderText];
-    v6 = [(AXSSImageDescriptionViewController *)self textView];
-    [v6 setAttributedPlaceholder:v5];
+    textView2 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:self->_placeholderText];
+    textView = [(AXSSImageDescriptionViewController *)self textView];
+    [textView setAttributedPlaceholder:textView2];
   }
 
   else
   {
-    v5 = [(AXSSImageDescriptionViewController *)self textView];
-    [v5 setAttributedPlaceholder:0];
+    textView2 = [(AXSSImageDescriptionViewController *)self textView];
+    [textView2 setAttributedPlaceholder:0];
   }
 }
 
-- (void)saveChanges:(id)a3
+- (void)saveChanges:(id)changes
 {
   if (![(AXSSImageDescriptionViewController *)self isSavingOrCancelling])
   {
     [(AXSSImageDescriptionViewController *)self setIsSavingOrCancelling:1];
-    v4 = [(AXSSImageDescriptionViewController *)self _modifiedImageDescription];
-    [(AXSSImageDescriptionViewController *)self setImageDescription:v4];
+    _modifiedImageDescription = [(AXSSImageDescriptionViewController *)self _modifiedImageDescription];
+    [(AXSSImageDescriptionViewController *)self setImageDescription:_modifiedImageDescription];
 
-    v5 = [(AXSSImageDescriptionViewController *)self delegate];
+    delegate = [(AXSSImageDescriptionViewController *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v5 imageDescriptionViewControllerDidSave:self];
+      [delegate imageDescriptionViewControllerDidSave:self];
     }
 
     [(AXSSImageDescriptionViewController *)self setIsSavingOrCancelling:0];
   }
 }
 
-- (void)cancelChanges:(id)a3
+- (void)cancelChanges:(id)changes
 {
-  v4 = a3;
+  changesCopy = changes;
   if (![(AXSSImageDescriptionViewController *)self isSavingOrCancelling])
   {
     [(AXSSImageDescriptionViewController *)self setIsSavingOrCancelling:1];
@@ -211,13 +211,13 @@ void __57__AXSSImageDescriptionViewController_setContentSnapshot___block_invoke(
     aBlock[3] = &unk_278BF0270;
     objc_copyWeak(&v38, location);
     v5 = _Block_copy(aBlock);
-    v6 = [(AXSSImageDescriptionViewController *)self textView];
-    v7 = [v6 isFirstResponder];
+    textView = [(AXSSImageDescriptionViewController *)self textView];
+    isFirstResponder = [textView isFirstResponder];
 
-    if (v7)
+    if (isFirstResponder)
     {
-      v8 = [(AXSSImageDescriptionViewController *)self textView];
-      [v8 resignFirstResponder];
+      textView2 = [(AXSSImageDescriptionViewController *)self textView];
+      [textView2 resignFirstResponder];
     }
 
     if ([(AXSSImageDescriptionViewController *)self _hasChanges])
@@ -226,7 +226,7 @@ void __57__AXSSImageDescriptionViewController_setContentSnapshot___block_invoke(
       v34[1] = 3221225472;
       v34[2] = __52__AXSSImageDescriptionViewController_cancelChanges___block_invoke_2;
       v34[3] = &unk_278BF0298;
-      v36 = v7;
+      v36 = isFirstResponder;
       objc_copyWeak(&v35, location);
       v31 = _Block_copy(v34);
       v32[0] = MEMORY[0x277D85DD0];
@@ -236,18 +236,18 @@ void __57__AXSSImageDescriptionViewController_setContentSnapshot___block_invoke(
       objc_copyWeak(&v33, location);
       v30 = _Block_copy(v32);
       v9 = [MEMORY[0x277D75110] alertControllerWithTitle:0 message:0 preferredStyle:0];
-      v10 = [(AXSSImageDescriptionViewController *)self contentImage];
-      if (v10)
+      contentImage = [(AXSSImageDescriptionViewController *)self contentImage];
+      if (contentImage)
       {
-        [v9 setImage:v10];
+        [v9 setImage:contentImage];
       }
 
-      v11 = [(AXSSImageDescriptionViewController *)self navBar];
-      v12 = [v11 items];
-      v13 = [v12 objectAtIndexedSubscript:0];
-      v14 = [v13 leftBarButtonItem];
-      v15 = [v9 popoverPresentationController];
-      [v15 setBarButtonItem:v14];
+      navBar = [(AXSSImageDescriptionViewController *)self navBar];
+      items = [navBar items];
+      v13 = [items objectAtIndexedSubscript:0];
+      leftBarButtonItem = [v13 leftBarButtonItem];
+      popoverPresentationController = [v9 popoverPresentationController];
+      [popoverPresentationController setBarButtonItem:leftBarButtonItem];
 
       v16 = MEMORY[0x277D750F8];
       v17 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -261,8 +261,8 @@ void __57__AXSSImageDescriptionViewController_setContentSnapshot___block_invoke(
       v23 = [v20 actionWithTitle:v22 style:2 handler:v5];
       [v9 addAction:v23];
 
-      v24 = [(AXSSImageDescriptionViewController *)self _modifiedImageDescription];
-      v25 = [v24 length];
+      _modifiedImageDescription = [(AXSSImageDescriptionViewController *)self _modifiedImageDescription];
+      v25 = [_modifiedImageDescription length];
 
       if (v25)
       {
@@ -325,8 +325,8 @@ void __52__AXSSImageDescriptionViewController_cancelChanges___block_invoke_3(uin
   [(AXSSImageDescriptionViewController *)&v7 viewDidLoad];
   [(AXSSImageDescriptionViewController *)self _imageDescriptionViewControllerSetupUI];
   [(AXSSImageDescriptionViewController *)self _imageDescriptionViewControllerSetupConstraints];
-  v3 = [(AXSSImageDescriptionViewController *)self presentationController];
-  [v3 setDelegate:self];
+  presentationController = [(AXSSImageDescriptionViewController *)self presentationController];
+  [presentationController setDelegate:self];
 
   v8[0] = objc_opt_class();
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
@@ -335,31 +335,31 @@ void __52__AXSSImageDescriptionViewController_cancelChanges___block_invoke_3(uin
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v13.receiver = self;
   v13.super_class = AXSSImageDescriptionViewController;
-  [(AXSSImageDescriptionViewController *)&v13 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
-  v8 = [(AXSSImageDescriptionViewController *)self textView];
-  v9 = [v8 isFirstResponder];
+  [(AXSSImageDescriptionViewController *)&v13 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
+  textView = [(AXSSImageDescriptionViewController *)self textView];
+  isFirstResponder = [textView isFirstResponder];
 
-  if (v9)
+  if (isFirstResponder)
   {
-    v10 = [(AXSSImageDescriptionViewController *)self textScrollViewBottomConstraint];
-    [v10 setConstant:-16.0];
+    textScrollViewBottomConstraint = [(AXSSImageDescriptionViewController *)self textScrollViewBottomConstraint];
+    [textScrollViewBottomConstraint setConstant:-16.0];
 
-    v11 = [(AXSSImageDescriptionViewController *)self textView];
-    [v11 resignFirstResponder];
+    textView2 = [(AXSSImageDescriptionViewController *)self textView];
+    [textView2 resignFirstResponder];
 
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __89__AXSSImageDescriptionViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
     v12[3] = &unk_278BF02C0;
     v12[4] = self;
-    [v7 animateAlongsideTransition:0 completion:v12];
+    [coordinatorCopy animateAlongsideTransition:0 completion:v12];
   }
 }
 
@@ -369,21 +369,21 @@ void __89__AXSSImageDescriptionViewController_viewWillTransitionToSize_withTrans
   [v1 becomeFirstResponder];
 }
 
-- (void)traitEnvironment:(id)a3 didChangeTraitCollection:(id)a4
+- (void)traitEnvironment:(id)environment didChangeTraitCollection:(id)collection
 {
-  v5 = a4;
-  v6 = [(AXSSImageDescriptionViewController *)self traitCollection];
-  v7 = [v6 userInterfaceStyle];
-  v8 = [v5 userInterfaceStyle];
+  collectionCopy = collection;
+  traitCollection = [(AXSSImageDescriptionViewController *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
+  userInterfaceStyle2 = [collectionCopy userInterfaceStyle];
 
-  if (v7 != v8)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
-    v13 = [MEMORY[0x277D75348] separatorColor];
-    v9 = v13;
-    v10 = [v13 CGColor];
-    v11 = [(AXSSImageDescriptionViewController *)self textBackgroundView];
-    v12 = [v11 layer];
-    [v12 setBorderColor:v10];
+    separatorColor = [MEMORY[0x277D75348] separatorColor];
+    v9 = separatorColor;
+    cGColor = [separatorColor CGColor];
+    textBackgroundView = [(AXSSImageDescriptionViewController *)self textBackgroundView];
+    layer = [textBackgroundView layer];
+    [layer setBorderColor:cGColor];
   }
 }
 
@@ -398,15 +398,15 @@ void __89__AXSSImageDescriptionViewController_viewWillTransitionToSize_withTrans
   {
     [(AXSSImageDescriptionViewController *)self _textViewMaxHeight];
     v8 = v7 + 32.0;
-    v9 = [(AXSSImageDescriptionViewController *)self navBar];
-    [v9 bounds];
+    navBar = [(AXSSImageDescriptionViewController *)self navBar];
+    [navBar bounds];
     v6 = v8 + CGRectGetHeight(v15);
 
     *&v4 = 600.0;
   }
 
-  v10 = [(AXSSImageDescriptionViewController *)self view];
-  [v10 setNeedsUpdateConstraints];
+  view = [(AXSSImageDescriptionViewController *)self view];
+  [view setNeedsUpdateConstraints];
 
   v11 = *&v4;
   v12 = v6;
@@ -420,33 +420,33 @@ void __89__AXSSImageDescriptionViewController_viewWillTransitionToSize_withTrans
   v12.receiver = self;
   v12.super_class = AXSSImageDescriptionViewController;
   [(AXSSImageDescriptionViewController *)&v12 updateViewConstraints];
-  v3 = [(AXSSImageDescriptionViewController *)self _hasFormView];
-  v4 = [(AXSSImageDescriptionViewController *)self textScrollViewFixedHeightConstraint];
-  v5 = v4;
-  if (v3)
+  _hasFormView = [(AXSSImageDescriptionViewController *)self _hasFormView];
+  textScrollViewFixedHeightConstraint = [(AXSSImageDescriptionViewController *)self textScrollViewFixedHeightConstraint];
+  v5 = textScrollViewFixedHeightConstraint;
+  if (_hasFormView)
   {
-    [v4 setActive:1];
+    [textScrollViewFixedHeightConstraint setActive:1];
 
-    v6 = [(AXSSImageDescriptionViewController *)self textScrollViewExpandingHeightConstraint];
-    [v6 setActive:1];
+    textScrollViewExpandingHeightConstraint = [(AXSSImageDescriptionViewController *)self textScrollViewExpandingHeightConstraint];
+    [textScrollViewExpandingHeightConstraint setActive:1];
 
     v7 = 0;
   }
 
   else
   {
-    [v4 setActive:0];
+    [textScrollViewFixedHeightConstraint setActive:0];
 
-    v8 = [(AXSSImageDescriptionViewController *)self imagePreviewController];
-    v7 = v8 == 0;
-    v9 = v8 != 0;
+    imagePreviewController = [(AXSSImageDescriptionViewController *)self imagePreviewController];
+    v7 = imagePreviewController == 0;
+    v9 = imagePreviewController != 0;
 
-    v10 = [(AXSSImageDescriptionViewController *)self textScrollViewExpandingHeightConstraint];
-    [v10 setActive:v9];
+    textScrollViewExpandingHeightConstraint2 = [(AXSSImageDescriptionViewController *)self textScrollViewExpandingHeightConstraint];
+    [textScrollViewExpandingHeightConstraint2 setActive:v9];
   }
 
-  v11 = [(AXSSImageDescriptionViewController *)self textBackgroundViewFixedTopConstraint];
-  [v11 setActive:v7];
+  textBackgroundViewFixedTopConstraint = [(AXSSImageDescriptionViewController *)self textBackgroundViewFixedTopConstraint];
+  [textBackgroundViewFixedTopConstraint setActive:v7];
 }
 
 - (void)viewDidLayoutSubviews
@@ -458,33 +458,33 @@ void __89__AXSSImageDescriptionViewController_viewWillTransitionToSize_withTrans
   [(AXSSImageDescriptionViewController *)self _layoutContentBackground];
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v4 = [(AXSSImageDescriptionViewController *)self delegate];
+  delegate = [(AXSSImageDescriptionViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 imageDescriptionViewControllerDidDismiss:self];
+    [delegate imageDescriptionViewControllerDidDismiss:self];
   }
 }
 
-- (void)imagePreviewShouldExpand:(id)a3
+- (void)imagePreviewShouldExpand:(id)expand
 {
-  v4 = a3;
-  v5 = [(AXSSImageDescriptionViewController *)self imagePreviewController];
+  expandCopy = expand;
+  imagePreviewController = [(AXSSImageDescriptionViewController *)self imagePreviewController];
 
-  if (v5 == v4)
+  if (imagePreviewController == expandCopy)
   {
 
     [(AXSSImageDescriptionViewController *)self _hideKeyboard];
   }
 }
 
-- (void)textViewDidChange:(id)a3
+- (void)textViewDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(AXSSImageDescriptionViewController *)self textView];
+  changeCopy = change;
+  textView = [(AXSSImageDescriptionViewController *)self textView];
 
-  if (v5 == v4)
+  if (textView == changeCopy)
   {
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
@@ -494,67 +494,67 @@ void __89__AXSSImageDescriptionViewController_viewWillTransitionToSize_withTrans
     [MEMORY[0x277CD9FF0] setCompletionBlock:v16];
   }
 
-  v6 = [(AXSSImageDescriptionViewController *)self navBar];
-  v7 = [v6 items];
-  v8 = [v7 firstObject];
+  navBar = [(AXSSImageDescriptionViewController *)self navBar];
+  items = [navBar items];
+  firstObject = [items firstObject];
 
-  if (v8)
+  if (firstObject)
   {
-    v9 = [v8 rightBarButtonItem];
+    rightBarButtonItem = [firstObject rightBarButtonItem];
 
-    if (v9)
+    if (rightBarButtonItem)
     {
-      v10 = [v8 rightBarButtonItem];
-      v11 = [v10 accessibilityIdentifier];
-      v12 = [v11 isEqualToString:@"AXImageDescriptionView-DoneButton"];
+      rightBarButtonItem2 = [firstObject rightBarButtonItem];
+      accessibilityIdentifier = [rightBarButtonItem2 accessibilityIdentifier];
+      v12 = [accessibilityIdentifier isEqualToString:@"AXImageDescriptionView-DoneButton"];
 
       if (v12)
       {
-        v13 = [(AXSSImageDescriptionViewController *)self _modifiedImageDescription];
-        v14 = [v13 length] != 0;
-        v15 = [v8 rightBarButtonItem];
-        [v15 setEnabled:v14];
+        _modifiedImageDescription = [(AXSSImageDescriptionViewController *)self _modifiedImageDescription];
+        v14 = [_modifiedImageDescription length] != 0;
+        rightBarButtonItem3 = [firstObject rightBarButtonItem];
+        [rightBarButtonItem3 setEnabled:v14];
       }
     }
   }
 }
 
-- (void)_adjustViewToKeyboardFrame:(id)a3
+- (void)_adjustViewToKeyboardFrame:(id)frame
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
+  frameCopy = frame;
+  userInfo = [frameCopy userInfo];
 
-  if (v5)
+  if (userInfo)
   {
     v6 = -16.0;
     if (![(AXSSImageDescriptionViewController *)self _hasFormView])
     {
-      v7 = [v4 userInfo];
-      v8 = [v7 objectForKey:*MEMORY[0x277D76BB8]];
+      userInfo2 = [frameCopy userInfo];
+      v8 = [userInfo2 objectForKey:*MEMORY[0x277D76BB8]];
       [v8 CGRectValue];
       v10 = v9;
       v12 = v11;
       v14 = v13;
       v16 = v15;
 
-      v17 = [(AXSSImageDescriptionViewController *)self view];
-      v18 = [v17 window];
-      [v18 convertRect:0 fromView:{v10, v12, v14, v16}];
+      view = [(AXSSImageDescriptionViewController *)self view];
+      window = [view window];
+      [window convertRect:0 fromView:{v10, v12, v14, v16}];
       v20 = v19;
       v22 = v21;
       v24 = v23;
       v26 = v25;
 
-      v27 = [(AXSSImageDescriptionViewController *)self view];
-      v28 = [v27 window];
-      v29 = [(AXSSImageDescriptionViewController *)self view];
-      [v29 frame];
+      view2 = [(AXSSImageDescriptionViewController *)self view];
+      window2 = [view2 window];
+      view3 = [(AXSSImageDescriptionViewController *)self view];
+      [view3 frame];
       v31 = v30;
       v33 = v32;
       v35 = v34;
       v37 = v36;
-      v38 = [(AXSSImageDescriptionViewController *)self view];
-      [v28 convertRect:v38 fromView:{v31, v33, v35, v37}];
+      view4 = [(AXSSImageDescriptionViewController *)self view];
+      [window2 convertRect:view4 fromView:{v31, v33, v35, v37}];
       v40 = v39;
       v42 = v41;
       v44 = v43;
@@ -584,20 +584,20 @@ void __89__AXSSImageDescriptionViewController_viewWillTransitionToSize_withTrans
       }
     }
 
-    v51 = [(AXSSImageDescriptionViewController *)self textScrollViewBottomConstraint];
-    [v51 constant];
+    textScrollViewBottomConstraint = [(AXSSImageDescriptionViewController *)self textScrollViewBottomConstraint];
+    [textScrollViewBottomConstraint constant];
     v53 = v52;
 
     if (v53 != v6)
     {
-      v54 = [v4 userInfo];
-      v55 = [v54 objectForKeyedSubscript:*MEMORY[0x277D76B78]];
+      userInfo3 = [frameCopy userInfo];
+      v55 = [userInfo3 objectForKeyedSubscript:*MEMORY[0x277D76B78]];
       [v55 floatValue];
       v57 = v56;
 
-      v58 = [v4 userInfo];
-      v59 = [v58 objectForKey:*MEMORY[0x277D76B70]];
-      v60 = [v59 integerValue];
+      userInfo4 = [frameCopy userInfo];
+      v59 = [userInfo4 objectForKey:*MEMORY[0x277D76B70]];
+      integerValue = [v59 integerValue];
 
       v61[0] = MEMORY[0x277D85DD0];
       v61[1] = 3221225472;
@@ -605,7 +605,7 @@ void __89__AXSSImageDescriptionViewController_viewWillTransitionToSize_withTrans
       v61[3] = &unk_278BF02E8;
       v61[4] = self;
       *&v61[5] = v6;
-      [MEMORY[0x277D75D18] animateWithDuration:v60 << 16 delay:v61 options:0 animations:v57 completion:0.0];
+      [MEMORY[0x277D75D18] animateWithDuration:integerValue << 16 delay:v61 options:0 animations:v57 completion:0.0];
     }
   }
 }
@@ -622,10 +622,10 @@ void __65__AXSSImageDescriptionViewController__adjustViewToKeyboardFrame___block
 
 - (id)_modifiedImageDescription
 {
-  v2 = [(AXSSImageDescriptionViewController *)self textView];
-  v3 = [v2 text];
-  v4 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v5 = [v3 stringByTrimmingCharactersInSet:v4];
+  textView = [(AXSSImageDescriptionViewController *)self textView];
+  text = [textView text];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v5 = [text stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   if (v5)
   {
@@ -644,40 +644,40 @@ void __65__AXSSImageDescriptionViewController__adjustViewToKeyboardFrame___block
 
 - (BOOL)_hasFormView
 {
-  v2 = [(AXSSImageDescriptionViewController *)self presentationController];
-  v3 = [v2 traitCollection];
+  presentationController = [(AXSSImageDescriptionViewController *)self presentationController];
+  traitCollection = [presentationController traitCollection];
 
-  v4 = [v3 horizontalSizeClass] == 2 && objc_msgSend(v3, "verticalSizeClass") == 2;
+  v4 = [traitCollection horizontalSizeClass] == 2 && objc_msgSend(traitCollection, "verticalSizeClass") == 2;
   return v4;
 }
 
 - (BOOL)_hasChanges
 {
-  v3 = [(AXSSImageDescriptionViewController *)self imageDescription];
-  v4 = v3;
+  imageDescription = [(AXSSImageDescriptionViewController *)self imageDescription];
+  v4 = imageDescription;
   v5 = &stru_284FF0250;
-  if (v3)
+  if (imageDescription)
   {
-    v5 = v3;
+    v5 = imageDescription;
   }
 
   v6 = v5;
 
-  v7 = [(AXSSImageDescriptionViewController *)self _modifiedImageDescription];
-  v8 = [(__CFString *)v6 isEqualToString:v7];
+  _modifiedImageDescription = [(AXSSImageDescriptionViewController *)self _modifiedImageDescription];
+  v8 = [(__CFString *)v6 isEqualToString:_modifiedImageDescription];
 
   return v8 ^ 1;
 }
 
 - (void)_hideKeyboard
 {
-  v3 = [(AXSSImageDescriptionViewController *)self textView];
-  v4 = [v3 isFirstResponder];
+  textView = [(AXSSImageDescriptionViewController *)self textView];
+  isFirstResponder = [textView isFirstResponder];
 
-  if (v4)
+  if (isFirstResponder)
   {
-    v5 = [(AXSSImageDescriptionViewController *)self textView];
-    [v5 resignFirstResponder];
+    textView2 = [(AXSSImageDescriptionViewController *)self textView];
+    [textView2 resignFirstResponder];
   }
 }
 
@@ -714,11 +714,11 @@ void __70__AXSSImageDescriptionViewController__updateTextScrollViewConstraints__
   v5 = v4;
   [v3 leading];
   v7 = v5 + v6;
-  v8 = [(AXSSImageDescriptionViewController *)self textView];
-  [v8 textContainerInset];
+  textView = [(AXSSImageDescriptionViewController *)self textView];
+  [textView textContainerInset];
   v10 = v9 + v7 * 4.5;
-  v11 = [(AXSSImageDescriptionViewController *)self textView];
-  [v11 textContainerInset];
+  textView2 = [(AXSSImageDescriptionViewController *)self textView];
+  [textView2 textContainerInset];
   v13 = v10 + v12;
 
   return ceil(v13);
@@ -726,95 +726,95 @@ void __70__AXSSImageDescriptionViewController__updateTextScrollViewConstraints__
 
 - (void)_layoutImagePreview
 {
-  v3 = [(AXSSImageDescriptionViewController *)self imagePreviewController];
+  imagePreviewController = [(AXSSImageDescriptionViewController *)self imagePreviewController];
 
-  if (v3)
+  if (imagePreviewController)
   {
-    v4 = [(AXSSImageDescriptionViewController *)self textBackgroundView];
-    [v4 frame];
+    textBackgroundView = [(AXSSImageDescriptionViewController *)self textBackgroundView];
+    [textBackgroundView frame];
     MinY = CGRectGetMinY(v15);
 
-    v6 = [(AXSSImageDescriptionViewController *)self view];
-    [v6 frame];
+    view = [(AXSSImageDescriptionViewController *)self view];
+    [view frame];
     Width = CGRectGetWidth(v16);
 
-    v8 = [(AXSSImageDescriptionViewController *)self navBar];
-    [v8 bounds];
+    navBar = [(AXSSImageDescriptionViewController *)self navBar];
+    [navBar bounds];
     v10 = v9;
-    v11 = [(AXSSImageDescriptionViewController *)self imagePreviewController];
-    [v11 setEdgeInsets:{v10, 0.0, 0.0, 0.0}];
+    imagePreviewController2 = [(AXSSImageDescriptionViewController *)self imagePreviewController];
+    [imagePreviewController2 setEdgeInsets:{v10, 0.0, 0.0, 0.0}];
 
-    v13 = [(AXSSImageDescriptionViewController *)self imagePreviewController];
-    v12 = [v13 view];
-    [v12 setFrame:{0.0, 0.0, Width, fmax(MinY, 0.0)}];
+    imagePreviewController3 = [(AXSSImageDescriptionViewController *)self imagePreviewController];
+    view2 = [imagePreviewController3 view];
+    [view2 setFrame:{0.0, 0.0, Width, fmax(MinY, 0.0)}];
   }
 }
 
 - (void)_layoutContentBackground
 {
-  v3 = [(AXSSImageDescriptionViewController *)self contentBackgroundView];
+  contentBackgroundView = [(AXSSImageDescriptionViewController *)self contentBackgroundView];
 
-  if (v3)
+  if (contentBackgroundView)
   {
-    v4 = [(AXSSImageDescriptionViewController *)self textBackgroundView];
-    [v4 frame];
+    textBackgroundView = [(AXSSImageDescriptionViewController *)self textBackgroundView];
+    [textBackgroundView frame];
     MinY = CGRectGetMinY(v13);
 
     v6 = fmax(MinY, 0.0);
-    v7 = [(AXSSImageDescriptionViewController *)self view];
-    [v7 frame];
+    view = [(AXSSImageDescriptionViewController *)self view];
+    [view frame];
     Width = CGRectGetWidth(v14);
 
-    v9 = [(AXSSImageDescriptionViewController *)self navBar];
-    [v9 bounds];
+    navBar = [(AXSSImageDescriptionViewController *)self navBar];
+    [navBar bounds];
     Height = CGRectGetHeight(v15);
 
-    v11 = [(AXSSImageDescriptionViewController *)self contentBackgroundView];
-    [v11 setFrame:{0.0, Height, Width, fmax(v6 - Height, 0.0)}];
+    contentBackgroundView2 = [(AXSSImageDescriptionViewController *)self contentBackgroundView];
+    [contentBackgroundView2 setFrame:{0.0, Height, Width, fmax(v6 - Height, 0.0)}];
   }
 }
 
 - (void)_imageDescriptionViewControllerSetupUI
 {
   v57[1] = *MEMORY[0x277D85DE8];
-  v3 = [(AXSSImageDescriptionViewController *)self contentBackgroundView];
+  contentBackgroundView = [(AXSSImageDescriptionViewController *)self contentBackgroundView];
 
-  if (!v3)
+  if (!contentBackgroundView)
   {
     v4 = objc_alloc(MEMORY[0x277D75D18]);
     v5 = [v4 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
     [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v6 = [(AXSSImageDescriptionViewController *)self contentBackgroundColor];
-    [v5 setBackgroundColor:v6];
+    contentBackgroundColor = [(AXSSImageDescriptionViewController *)self contentBackgroundColor];
+    [v5 setBackgroundColor:contentBackgroundColor];
 
-    v7 = [(AXSSImageDescriptionViewController *)self view];
-    [v7 insertSubview:v5 atIndex:0];
+    view = [(AXSSImageDescriptionViewController *)self view];
+    [view insertSubview:v5 atIndex:0];
 
     [(AXSSImageDescriptionViewController *)self setContentBackgroundView:v5];
   }
 
-  v8 = [(AXSSImageDescriptionViewController *)self navBar];
+  navBar = [(AXSSImageDescriptionViewController *)self navBar];
 
-  if (!v8)
+  if (!navBar)
   {
     v9 = objc_alloc(MEMORY[0x277D75780]);
     v10 = [v9 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
     [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v10 setDelegate:self];
     v11 = objc_alloc(MEMORY[0x277D757A8]);
-    v12 = [(AXSSImageDescriptionViewController *)self title];
-    v13 = [v11 initWithTitle:v12];
+    title = [(AXSSImageDescriptionViewController *)self title];
+    v13 = [v11 initWithTitle:title];
 
     v14 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:self action:sel_saveChanges_];
     [v13 setRightBarButtonItem:v14];
 
-    v15 = [(AXSSImageDescriptionViewController *)self imageDescription];
-    v16 = [v15 length] != 0;
-    v17 = [v13 rightBarButtonItem];
-    [v17 setEnabled:v16];
+    imageDescription = [(AXSSImageDescriptionViewController *)self imageDescription];
+    v16 = [imageDescription length] != 0;
+    rightBarButtonItem = [v13 rightBarButtonItem];
+    [rightBarButtonItem setEnabled:v16];
 
-    v18 = [v13 rightBarButtonItem];
-    [v18 setAccessibilityIdentifier:@"AXImageDescriptionView-DoneButton"];
+    rightBarButtonItem2 = [v13 rightBarButtonItem];
+    [rightBarButtonItem2 setAccessibilityIdentifier:@"AXImageDescriptionView-DoneButton"];
 
     v19 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel_cancelChanges_];
     [v13 setLeftBarButtonItem:v19];
@@ -824,96 +824,96 @@ void __70__AXSSImageDescriptionViewController__updateTextScrollViewConstraints__
     [v10 setItems:v20];
 
     [v10 updateConstraintsIfNeeded];
-    v21 = [(AXSSImageDescriptionViewController *)self view];
-    [v21 addSubview:v10];
+    view2 = [(AXSSImageDescriptionViewController *)self view];
+    [view2 addSubview:v10];
 
     [(AXSSImageDescriptionViewController *)self setNavBar:v10];
   }
 
-  v22 = [(AXSSImageDescriptionViewController *)self imagePreviewController];
-  if (!v22)
+  imagePreviewController = [(AXSSImageDescriptionViewController *)self imagePreviewController];
+  if (!imagePreviewController)
   {
-    v23 = [(AXSSImageDescriptionViewController *)self contentSnapshot];
+    contentSnapshot = [(AXSSImageDescriptionViewController *)self contentSnapshot];
 
-    if (!v23)
+    if (!contentSnapshot)
     {
       goto LABEL_9;
     }
 
     v24 = [AXSSImagePreviewViewController alloc];
-    v25 = [(AXSSImageDescriptionViewController *)self contentSnapshot];
-    v22 = [(AXSSImagePreviewViewController *)v24 initWithContentSnapshot:v25];
+    contentSnapshot2 = [(AXSSImageDescriptionViewController *)self contentSnapshot];
+    imagePreviewController = [(AXSSImagePreviewViewController *)v24 initWithContentSnapshot:contentSnapshot2];
 
-    [(AXSSImagePreviewViewController *)v22 setDelegate:self];
-    [(AXSSImageDescriptionViewController *)self addChildViewController:v22];
-    v26 = [(AXSSImageDescriptionViewController *)self view];
-    v27 = [(AXSSImagePreviewViewController *)v22 view];
-    v28 = [(AXSSImageDescriptionViewController *)self navBar];
-    [v26 insertSubview:v27 belowSubview:v28];
+    [(AXSSImagePreviewViewController *)imagePreviewController setDelegate:self];
+    [(AXSSImageDescriptionViewController *)self addChildViewController:imagePreviewController];
+    view3 = [(AXSSImageDescriptionViewController *)self view];
+    view4 = [(AXSSImagePreviewViewController *)imagePreviewController view];
+    navBar2 = [(AXSSImageDescriptionViewController *)self navBar];
+    [view3 insertSubview:view4 belowSubview:navBar2];
 
-    [(AXSSImageDescriptionViewController *)self setImagePreviewController:v22];
+    [(AXSSImageDescriptionViewController *)self setImagePreviewController:imagePreviewController];
   }
 
 LABEL_9:
-  v29 = [(AXSSImageDescriptionViewController *)self textBackgroundView];
+  textBackgroundView = [(AXSSImageDescriptionViewController *)self textBackgroundView];
 
-  if (!v29)
+  if (!textBackgroundView)
   {
     v30 = objc_alloc(MEMORY[0x277D75D18]);
     v31 = [v30 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
     [v31 setTranslatesAutoresizingMaskIntoConstraints:0];
     if (![(AXSSImageDescriptionViewController *)self hidesTextBackground])
     {
-      v32 = [MEMORY[0x277D75348] separatorColor];
-      v33 = [v32 CGColor];
-      v34 = [v31 layer];
-      [v34 setBorderColor:v33];
+      separatorColor = [MEMORY[0x277D75348] separatorColor];
+      cGColor = [separatorColor CGColor];
+      layer = [v31 layer];
+      [layer setBorderColor:cGColor];
 
-      v35 = [v31 layer];
-      [v35 setBorderWidth:1.0];
+      layer2 = [v31 layer];
+      [layer2 setBorderWidth:1.0];
 
-      v36 = [MEMORY[0x277D75348] systemBackgroundColor];
-      [v31 setBackgroundColor:v36];
+      systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+      [v31 setBackgroundColor:systemBackgroundColor];
     }
 
-    v37 = [(AXSSImageDescriptionViewController *)self view];
-    [v37 addSubview:v31];
+    view5 = [(AXSSImageDescriptionViewController *)self view];
+    [view5 addSubview:v31];
 
     [(AXSSImageDescriptionViewController *)self setTextBackgroundView:v31];
   }
 
-  v38 = [(AXSSImageDescriptionViewController *)self textScrollView];
+  textScrollView = [(AXSSImageDescriptionViewController *)self textScrollView];
 
-  if (!v38)
+  if (!textScrollView)
   {
     v39 = objc_alloc(MEMORY[0x277D759D8]);
     v40 = [v39 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
     [v40 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v41 = [(AXSSImageDescriptionViewController *)self textBackgroundView];
-    [v41 addSubview:v40];
+    textBackgroundView2 = [(AXSSImageDescriptionViewController *)self textBackgroundView];
+    [textBackgroundView2 addSubview:v40];
 
     [(AXSSImageDescriptionViewController *)self setTextScrollView:v40];
   }
 
-  v42 = [(AXSSImageDescriptionViewController *)self textView];
+  textView = [(AXSSImageDescriptionViewController *)self textView];
 
-  if (!v42)
+  if (!textView)
   {
     v43 = [AXSSScrollViewEnclosedTextView alloc];
     v44 = [(AXSSScrollViewEnclosedTextView *)v43 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
     [(AXSSScrollViewEnclosedTextView *)v44 setTranslatesAutoresizingMaskIntoConstraints:0];
     [(AXSSScrollViewEnclosedTextView *)v44 setAdjustsFontForContentSizeCategory:1];
-    v45 = [MEMORY[0x277D75348] clearColor];
-    [(AXSSScrollViewEnclosedTextView *)v44 setBackgroundColor:v45];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(AXSSScrollViewEnclosedTextView *)v44 setBackgroundColor:clearColor];
 
     [(AXSSScrollViewEnclosedTextView *)v44 setTextContainerInset:0.0, 0.0, 0.0, 0.0];
-    v46 = [MEMORY[0x277D75348] labelColor];
-    [(AXSSScrollViewEnclosedTextView *)v44 setTextColor:v46];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    [(AXSSScrollViewEnclosedTextView *)v44 setTextColor:labelColor];
 
     v47 = MEMORY[0x277D74300];
     v48 = *MEMORY[0x277D76918];
-    v49 = [MEMORY[0x277D75C80] currentTraitCollection];
-    v50 = [v47 preferredFontForTextStyle:v48 compatibleWithTraitCollection:v49];
+    currentTraitCollection = [MEMORY[0x277D75C80] currentTraitCollection];
+    v50 = [v47 preferredFontForTextStyle:v48 compatibleWithTraitCollection:currentTraitCollection];
     [(AXSSScrollViewEnclosedTextView *)v44 setFont:v50];
 
     [(AXSSScrollViewEnclosedTextView *)v44 setScrollEnabled:0];
@@ -924,8 +924,8 @@ LABEL_9:
     v54 = [v51 initWithString:v53];
     [(AXSSScrollViewEnclosedTextView *)v44 setAttributedPlaceholder:v54];
 
-    v55 = [(AXSSImageDescriptionViewController *)self textScrollView];
-    [v55 addSubview:v44];
+    textScrollView2 = [(AXSSImageDescriptionViewController *)self textScrollView];
+    [textScrollView2 addSubview:v44];
 
     [(AXSSImageDescriptionViewController *)self setTextView:v44];
   }
@@ -937,59 +937,59 @@ LABEL_9:
 - (void)_imageDescriptionViewControllerSetupConstraints
 {
   v90[10] = *MEMORY[0x277D85DE8];
-  v3 = [(AXSSImageDescriptionViewController *)self textView];
-  v4 = [v3 heightAnchor];
-  v5 = [(AXSSImageDescriptionViewController *)self textScrollView];
-  v6 = [v5 heightAnchor];
-  v7 = [v4 constraintEqualToAnchor:v6];
+  textView = [(AXSSImageDescriptionViewController *)self textView];
+  heightAnchor = [textView heightAnchor];
+  textScrollView = [(AXSSImageDescriptionViewController *)self textScrollView];
+  heightAnchor2 = [textScrollView heightAnchor];
+  v7 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
 
   LODWORD(v8) = 1144733696;
   [v7 setPriority:v8];
-  v9 = [(AXSSImageDescriptionViewController *)self textScrollViewExpandingHeightConstraint];
+  textScrollViewExpandingHeightConstraint = [(AXSSImageDescriptionViewController *)self textScrollViewExpandingHeightConstraint];
 
-  if (!v9)
+  if (!textScrollViewExpandingHeightConstraint)
   {
-    v10 = [(AXSSImageDescriptionViewController *)self textScrollView];
-    v11 = [v10 heightAnchor];
-    v12 = [v11 constraintLessThanOrEqualToConstant:0.0];
+    textScrollView2 = [(AXSSImageDescriptionViewController *)self textScrollView];
+    heightAnchor3 = [textScrollView2 heightAnchor];
+    v12 = [heightAnchor3 constraintLessThanOrEqualToConstant:0.0];
     [(AXSSImageDescriptionViewController *)self setTextScrollViewExpandingHeightConstraint:v12];
 
-    v13 = [(AXSSImageDescriptionViewController *)self textScrollViewExpandingHeightConstraint];
+    textScrollViewExpandingHeightConstraint2 = [(AXSSImageDescriptionViewController *)self textScrollViewExpandingHeightConstraint];
     LODWORD(v14) = 1148829696;
-    [v13 setPriority:v14];
+    [textScrollViewExpandingHeightConstraint2 setPriority:v14];
   }
 
-  v15 = [(AXSSImageDescriptionViewController *)self textBackgroundViewFixedTopConstraint];
+  textBackgroundViewFixedTopConstraint = [(AXSSImageDescriptionViewController *)self textBackgroundViewFixedTopConstraint];
 
-  if (!v15)
+  if (!textBackgroundViewFixedTopConstraint)
   {
-    v16 = [(AXSSImageDescriptionViewController *)self textBackgroundView];
-    v17 = [v16 topAnchor];
-    v18 = [(AXSSImageDescriptionViewController *)self navBar];
-    v19 = [v18 bottomAnchor];
-    v20 = [v17 constraintEqualToAnchor:v19];
+    textBackgroundView = [(AXSSImageDescriptionViewController *)self textBackgroundView];
+    topAnchor = [textBackgroundView topAnchor];
+    navBar = [(AXSSImageDescriptionViewController *)self navBar];
+    bottomAnchor = [navBar bottomAnchor];
+    v20 = [topAnchor constraintEqualToAnchor:bottomAnchor];
     [(AXSSImageDescriptionViewController *)self setTextBackgroundViewFixedTopConstraint:v20];
   }
 
-  v21 = [(AXSSImageDescriptionViewController *)self textScrollViewFixedHeightConstraint];
+  textScrollViewFixedHeightConstraint = [(AXSSImageDescriptionViewController *)self textScrollViewFixedHeightConstraint];
 
-  if (!v21)
+  if (!textScrollViewFixedHeightConstraint)
   {
-    v22 = [(AXSSImageDescriptionViewController *)self textScrollView];
-    v23 = [v22 heightAnchor];
-    v24 = [v23 constraintEqualToConstant:0.0];
+    textScrollView3 = [(AXSSImageDescriptionViewController *)self textScrollView];
+    heightAnchor4 = [textScrollView3 heightAnchor];
+    v24 = [heightAnchor4 constraintEqualToConstant:0.0];
     [(AXSSImageDescriptionViewController *)self setTextScrollViewFixedHeightConstraint:v24];
   }
 
-  v25 = [(AXSSImageDescriptionViewController *)self textScrollViewBottomConstraint];
+  textScrollViewBottomConstraint = [(AXSSImageDescriptionViewController *)self textScrollViewBottomConstraint];
 
-  if (!v25)
+  if (!textScrollViewBottomConstraint)
   {
-    v26 = [(AXSSImageDescriptionViewController *)self textScrollView];
-    v27 = [v26 bottomAnchor];
-    v28 = [(AXSSImageDescriptionViewController *)self view];
-    v29 = [v28 bottomAnchor];
-    v30 = [v27 constraintEqualToAnchor:v29 constant:-16.0];
+    textScrollView4 = [(AXSSImageDescriptionViewController *)self textScrollView];
+    bottomAnchor2 = [textScrollView4 bottomAnchor];
+    view = [(AXSSImageDescriptionViewController *)self view];
+    bottomAnchor3 = [view bottomAnchor];
+    v30 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3 constant:-16.0];
 
     LODWORD(v31) = 1148829696;
     [v30 setPriority:v31];
@@ -998,62 +998,62 @@ LABEL_9:
 
   [(AXSSImageDescriptionViewController *)self _updateTextScrollViewConstraints];
   v66 = objc_alloc(MEMORY[0x277CBEB18]);
-  v89 = [(AXSSImageDescriptionViewController *)self navBar];
-  v87 = [v89 topAnchor];
-  v88 = [(AXSSImageDescriptionViewController *)self view];
-  v86 = [v88 safeAreaLayoutGuide];
-  v85 = [v86 topAnchor];
-  v84 = [v87 constraintEqualToAnchor:v85];
+  navBar2 = [(AXSSImageDescriptionViewController *)self navBar];
+  topAnchor2 = [navBar2 topAnchor];
+  view2 = [(AXSSImageDescriptionViewController *)self view];
+  safeAreaLayoutGuide = [view2 safeAreaLayoutGuide];
+  topAnchor3 = [safeAreaLayoutGuide topAnchor];
+  v84 = [topAnchor2 constraintEqualToAnchor:topAnchor3];
   v90[0] = v84;
-  v83 = [(AXSSImageDescriptionViewController *)self textBackgroundView];
-  v81 = [v83 topAnchor];
-  v82 = [(AXSSImageDescriptionViewController *)self view];
-  v80 = [v82 safeAreaLayoutGuide];
-  v79 = [v80 topAnchor];
-  v78 = [v81 constraintGreaterThanOrEqualToAnchor:v79];
+  textBackgroundView2 = [(AXSSImageDescriptionViewController *)self textBackgroundView];
+  topAnchor4 = [textBackgroundView2 topAnchor];
+  view3 = [(AXSSImageDescriptionViewController *)self view];
+  safeAreaLayoutGuide2 = [view3 safeAreaLayoutGuide];
+  topAnchor5 = [safeAreaLayoutGuide2 topAnchor];
+  v78 = [topAnchor4 constraintGreaterThanOrEqualToAnchor:topAnchor5];
   v90[1] = v78;
-  v77 = [(AXSSImageDescriptionViewController *)self textBackgroundView];
-  v75 = [v77 bottomAnchor];
-  v76 = [(AXSSImageDescriptionViewController *)self view];
-  v73 = [v76 bottomAnchor];
-  v72 = [v75 constraintEqualToAnchor:v73];
+  textBackgroundView3 = [(AXSSImageDescriptionViewController *)self textBackgroundView];
+  bottomAnchor4 = [textBackgroundView3 bottomAnchor];
+  view4 = [(AXSSImageDescriptionViewController *)self view];
+  bottomAnchor5 = [view4 bottomAnchor];
+  v72 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
   v90[2] = v72;
-  v71 = [(AXSSImageDescriptionViewController *)self textScrollView];
-  v69 = [v71 topAnchor];
-  v70 = [(AXSSImageDescriptionViewController *)self textBackgroundView];
-  v68 = [v70 safeAreaLayoutGuide];
-  v65 = [v68 topAnchor];
-  v64 = [v69 constraintEqualToAnchor:v65 constant:16.0];
+  textScrollView5 = [(AXSSImageDescriptionViewController *)self textScrollView];
+  topAnchor6 = [textScrollView5 topAnchor];
+  textBackgroundView4 = [(AXSSImageDescriptionViewController *)self textBackgroundView];
+  safeAreaLayoutGuide3 = [textBackgroundView4 safeAreaLayoutGuide];
+  topAnchor7 = [safeAreaLayoutGuide3 topAnchor];
+  v64 = [topAnchor6 constraintEqualToAnchor:topAnchor7 constant:16.0];
   v90[3] = v64;
-  v63 = [(AXSSImageDescriptionViewController *)self textScrollView];
-  v61 = [v63 leadingAnchor];
-  v62 = [(AXSSImageDescriptionViewController *)self textBackgroundView];
-  v60 = [v62 safeAreaLayoutGuide];
-  v59 = [v60 leadingAnchor];
-  v58 = [v61 constraintEqualToAnchor:v59 constant:16.0];
+  textScrollView6 = [(AXSSImageDescriptionViewController *)self textScrollView];
+  leadingAnchor = [textScrollView6 leadingAnchor];
+  textBackgroundView5 = [(AXSSImageDescriptionViewController *)self textBackgroundView];
+  safeAreaLayoutGuide4 = [textBackgroundView5 safeAreaLayoutGuide];
+  leadingAnchor2 = [safeAreaLayoutGuide4 leadingAnchor];
+  v58 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
   v90[4] = v58;
-  v57 = [(AXSSImageDescriptionViewController *)self textScrollView];
-  v55 = [v57 trailingAnchor];
-  v56 = [(AXSSImageDescriptionViewController *)self textBackgroundView];
-  v54 = [v56 safeAreaLayoutGuide];
-  v53 = [v54 trailingAnchor];
-  v52 = [v55 constraintEqualToAnchor:v53 constant:-16.0];
+  textScrollView7 = [(AXSSImageDescriptionViewController *)self textScrollView];
+  trailingAnchor = [textScrollView7 trailingAnchor];
+  textBackgroundView6 = [(AXSSImageDescriptionViewController *)self textBackgroundView];
+  safeAreaLayoutGuide5 = [textBackgroundView6 safeAreaLayoutGuide];
+  trailingAnchor2 = [safeAreaLayoutGuide5 trailingAnchor];
+  v52 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-16.0];
   v90[5] = v52;
-  v51 = [(AXSSImageDescriptionViewController *)self textScrollView];
-  v49 = [v51 bottomAnchor];
-  v50 = [(AXSSImageDescriptionViewController *)self view];
-  v48 = [v50 safeAreaLayoutGuide];
-  v32 = [v48 bottomAnchor];
-  v33 = [v49 constraintLessThanOrEqualToAnchor:v32 constant:-16.0];
+  textScrollView8 = [(AXSSImageDescriptionViewController *)self textScrollView];
+  bottomAnchor6 = [textScrollView8 bottomAnchor];
+  view5 = [(AXSSImageDescriptionViewController *)self view];
+  safeAreaLayoutGuide6 = [view5 safeAreaLayoutGuide];
+  bottomAnchor7 = [safeAreaLayoutGuide6 bottomAnchor];
+  v33 = [bottomAnchor6 constraintLessThanOrEqualToAnchor:bottomAnchor7 constant:-16.0];
   v90[6] = v33;
-  v34 = [(AXSSImageDescriptionViewController *)self textView];
-  v35 = [v34 widthAnchor];
-  v36 = [(AXSSImageDescriptionViewController *)self textScrollView];
-  v37 = [v36 widthAnchor];
-  v38 = [v35 constraintEqualToAnchor:v37];
+  textView2 = [(AXSSImageDescriptionViewController *)self textView];
+  widthAnchor = [textView2 widthAnchor];
+  textScrollView9 = [(AXSSImageDescriptionViewController *)self textScrollView];
+  widthAnchor2 = [textScrollView9 widthAnchor];
+  v38 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   v90[7] = v38;
-  v39 = [(AXSSImageDescriptionViewController *)self textScrollViewBottomConstraint];
-  v90[8] = v39;
+  textScrollViewBottomConstraint2 = [(AXSSImageDescriptionViewController *)self textScrollViewBottomConstraint];
+  v90[8] = textScrollViewBottomConstraint2;
   v90[9] = v7;
   [MEMORY[0x277CBEA60] arrayWithObjects:v90 count:10];
   v40 = v74 = v7;
@@ -1073,19 +1073,19 @@ LABEL_9:
   [v67 addObjectsFromArray:v45];
 
   [MEMORY[0x277CCAAD0] activateConstraints:v67];
-  v46 = [(AXSSImageDescriptionViewController *)self view];
-  [v46 layoutIfNeeded];
+  view6 = [(AXSSImageDescriptionViewController *)self view];
+  [view6 layoutIfNeeded];
 
   v47 = *MEMORY[0x277D85DE8];
 }
 
 - (void)_scrollTextViewCaretToVisibleRegion
 {
-  v3 = [(AXSSImageDescriptionViewController *)self textView];
-  v4 = [(AXSSImageDescriptionViewController *)self textView];
-  v5 = [v4 selectedTextRange];
-  v6 = [v5 start];
-  [v3 caretRectForPosition:v6];
+  textView = [(AXSSImageDescriptionViewController *)self textView];
+  textView2 = [(AXSSImageDescriptionViewController *)self textView];
+  selectedTextRange = [textView2 selectedTextRange];
+  start = [selectedTextRange start];
+  [textView caretRectForPosition:start];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -1097,16 +1097,16 @@ LABEL_9:
   v27.size.height = v14;
   if (!CGRectIsEmpty(v27))
   {
-    v15 = [(AXSSImageDescriptionViewController *)self textScrollView];
-    v16 = [(AXSSImageDescriptionViewController *)self textView];
-    [v15 convertRect:v16 fromView:{v8, v10, v12, v14}];
+    textScrollView = [(AXSSImageDescriptionViewController *)self textScrollView];
+    textView3 = [(AXSSImageDescriptionViewController *)self textView];
+    [textScrollView convertRect:textView3 fromView:{v8, v10, v12, v14}];
     v18 = v17;
     v20 = v19;
     v22 = v21;
     v24 = v23;
 
-    v25 = [(AXSSImageDescriptionViewController *)self textScrollView];
-    [v25 scrollRectToVisible:0 animated:{v18, v20, v22, v24}];
+    textScrollView2 = [(AXSSImageDescriptionViewController *)self textScrollView];
+    [textScrollView2 scrollRectToVisible:0 animated:{v18, v20, v22, v24}];
   }
 }
 

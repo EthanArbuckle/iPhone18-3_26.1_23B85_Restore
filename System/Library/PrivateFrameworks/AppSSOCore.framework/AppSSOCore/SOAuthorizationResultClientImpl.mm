@@ -1,125 +1,125 @@
 @interface SOAuthorizationResultClientImpl
-- (void)authorization:(id)a3 didCompleteWithError:(id)a4;
-- (void)authorization:(id)a3 didCompleteWithHTTPAuthorizationHeaders:(id)a4;
-- (void)authorization:(id)a3 didCompleteWithHTTPResponse:(id)a4 httpBody:(id)a5;
-- (void)authorizationDidCancel:(id)a3;
-- (void)authorizationDidComplete:(id)a3;
-- (void)authorizationDidNotHandle:(id)a3;
+- (void)authorization:(id)authorization didCompleteWithError:(id)error;
+- (void)authorization:(id)authorization didCompleteWithHTTPAuthorizationHeaders:(id)headers;
+- (void)authorization:(id)authorization didCompleteWithHTTPResponse:(id)response httpBody:(id)body;
+- (void)authorizationDidCancel:(id)cancel;
+- (void)authorizationDidComplete:(id)complete;
+- (void)authorizationDidNotHandle:(id)handle;
 @end
 
 @implementation SOAuthorizationResultClientImpl
 
-- (void)authorizationDidNotHandle:(id)a3
+- (void)authorizationDidNotHandle:(id)handle
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handleCopy = handle;
   v5 = SO_LOG_SOClientImpl();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315394;
     v9 = "[SOAuthorizationResultClientImpl authorizationDidNotHandle:]";
     v10 = 2112;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1CA238000, v5, OS_LOG_TYPE_DEFAULT, "%s  on %@", &v8, 0x16u);
   }
 
   v6 = [SOErrorHelper errorWithCode:-5];
-  [(SOAuthorizationResultClientImpl *)self authorization:v4 didCompleteWithError:v6];
+  [(SOAuthorizationResultClientImpl *)self authorization:handleCopy didCompleteWithError:v6];
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)authorizationDidCancel:(id)a3
+- (void)authorizationDidCancel:(id)cancel
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  cancelCopy = cancel;
   v5 = SO_LOG_SOClientImpl();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315394;
     v9 = "[SOAuthorizationResultClientImpl authorizationDidCancel:]";
     v10 = 2112;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1CA238000, v5, OS_LOG_TYPE_DEFAULT, "%s  on %@", &v8, 0x16u);
   }
 
   v6 = [SOErrorHelper errorWithCode:-2];
-  [(SOAuthorizationResultClientImpl *)self authorization:v4 didCompleteWithError:v6];
+  [(SOAuthorizationResultClientImpl *)self authorization:cancelCopy didCompleteWithError:v6];
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)authorizationDidComplete:(id)a3
+- (void)authorizationDidComplete:(id)complete
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completeCopy = complete;
   v5 = SO_LOG_SOClientImpl();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315394;
     v9 = "[SOAuthorizationResultClientImpl authorizationDidComplete:]";
     v10 = 2112;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1CA238000, v5, OS_LOG_TYPE_DEFAULT, "%s  on %@", &v8, 0x16u);
   }
 
   v6 = [SOErrorHelper errorWithCode:-3];
-  [(SOAuthorizationResultClientImpl *)self authorization:v4 didCompleteWithError:v6];
+  [(SOAuthorizationResultClientImpl *)self authorization:completeCopy didCompleteWithError:v6];
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)authorization:(id)a3 didCompleteWithError:(id)a4
+- (void)authorization:(id)authorization didCompleteWithError:(id)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  authorizationCopy = authorization;
+  errorCopy = error;
   v8 = SO_LOG_SOClientImpl();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 136315650;
     v15 = "[SOAuthorizationResultClientImpl authorization:didCompleteWithError:]";
     v16 = 2114;
-    v17 = v7;
+    v17 = errorCopy;
     v18 = 2112;
-    v19 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1CA238000, v8, OS_LOG_TYPE_DEFAULT, "%s error=%{public}@ on %@", &v14, 0x20u);
   }
 
-  v9 = [(SOAuthorizationResultClientImpl *)self authorizationHandleCredentialCompletion];
+  authorizationHandleCredentialCompletion = [(SOAuthorizationResultClientImpl *)self authorizationHandleCredentialCompletion];
 
-  if (v9)
+  if (authorizationHandleCredentialCompletion)
   {
-    v10 = [(SOAuthorizationResultClientImpl *)self authorizationHandleCredentialCompletion];
-    (v10)[2](v10, 0, v7);
+    authorizationHandleCredentialCompletion2 = [(SOAuthorizationResultClientImpl *)self authorizationHandleCredentialCompletion];
+    (authorizationHandleCredentialCompletion2)[2](authorizationHandleCredentialCompletion2, 0, errorCopy);
 
     [(SOAuthorizationResultClientImpl *)self setAuthorizationHandleCredentialCompletion:0];
   }
 
   else
   {
-    v11 = [(SOAuthorizationResultClientImpl *)self authorizationHandleResponseCompletion];
+    authorizationHandleResponseCompletion = [(SOAuthorizationResultClientImpl *)self authorizationHandleResponseCompletion];
 
-    if (v11)
+    if (authorizationHandleResponseCompletion)
     {
-      v12 = [(SOAuthorizationResultClientImpl *)self authorizationHandleResponseCompletion];
-      (v12)[2](v12, 0, 0, v7);
+      authorizationHandleResponseCompletion2 = [(SOAuthorizationResultClientImpl *)self authorizationHandleResponseCompletion];
+      (authorizationHandleResponseCompletion2)[2](authorizationHandleResponseCompletion2, 0, 0, errorCopy);
 
       [(SOAuthorizationResultClientImpl *)self setAuthorizationHandleResponseCompletion:0];
     }
   }
 
-  [_authorizationPool removeAuthorization:v6];
+  [_authorizationPool removeAuthorization:authorizationCopy];
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)authorization:(id)a3 didCompleteWithHTTPResponse:(id)a4 httpBody:(id)a5
+- (void)authorization:(id)authorization didCompleteWithHTTPResponse:(id)response httpBody:(id)body
 {
   v30 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  authorizationCopy = authorization;
+  responseCopy = response;
+  bodyCopy = body;
   v11 = SO_LOG_SOClientImpl();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -128,19 +128,19 @@
     v20 = 2160;
     v21 = 1752392040;
     v22 = 2117;
-    v23 = v9;
+    v23 = responseCopy;
     v24 = 2160;
     v25 = 1752392040;
     v26 = 2117;
-    v27 = v10;
+    v27 = bodyCopy;
     v28 = 2112;
-    v29 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1CA238000, v11, OS_LOG_TYPE_DEFAULT, "%s httpResponse = %{sensitive, mask.hash}@, httpBody = %{sensitive, mask.hash}@ on %@", &v18, 0x3Eu);
   }
 
-  v12 = [(SOAuthorizationResultClientImpl *)self authorizationHandleCredentialCompletion];
+  authorizationHandleCredentialCompletion = [(SOAuthorizationResultClientImpl *)self authorizationHandleCredentialCompletion];
 
-  if (v12)
+  if (authorizationHandleCredentialCompletion)
   {
     v13 = SO_LOG_SOClientImpl();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -148,35 +148,35 @@
       [SOAuthorizationResultClientImpl authorization:didCompleteWithHTTPResponse:httpBody:];
     }
 
-    v14 = [(SOAuthorizationResultClientImpl *)self authorizationHandleCredentialCompletion];
-    v14[2](v14, 0, _unexpectedResponseError);
+    authorizationHandleCredentialCompletion2 = [(SOAuthorizationResultClientImpl *)self authorizationHandleCredentialCompletion];
+    authorizationHandleCredentialCompletion2[2](authorizationHandleCredentialCompletion2, 0, _unexpectedResponseError);
 
     [(SOAuthorizationResultClientImpl *)self setAuthorizationHandleCredentialCompletion:0];
   }
 
   else
   {
-    v15 = [(SOAuthorizationResultClientImpl *)self authorizationHandleResponseCompletion];
+    authorizationHandleResponseCompletion = [(SOAuthorizationResultClientImpl *)self authorizationHandleResponseCompletion];
 
-    if (v15)
+    if (authorizationHandleResponseCompletion)
     {
-      v16 = [(SOAuthorizationResultClientImpl *)self authorizationHandleResponseCompletion];
-      (v16)[2](v16, [v9 _CFURLResponse], v10, 0);
+      authorizationHandleResponseCompletion2 = [(SOAuthorizationResultClientImpl *)self authorizationHandleResponseCompletion];
+      (authorizationHandleResponseCompletion2)[2](authorizationHandleResponseCompletion2, [responseCopy _CFURLResponse], bodyCopy, 0);
 
       [(SOAuthorizationResultClientImpl *)self setAuthorizationHandleResponseCompletion:0];
     }
   }
 
-  [_authorizationPool removeAuthorization:v8];
+  [_authorizationPool removeAuthorization:authorizationCopy];
 
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)authorization:(id)a3 didCompleteWithHTTPAuthorizationHeaders:(id)a4
+- (void)authorization:(id)authorization didCompleteWithHTTPAuthorizationHeaders:(id)headers
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  authorizationCopy = authorization;
+  headersCopy = headers;
   v8 = SO_LOG_SOClientImpl();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -185,27 +185,27 @@
     v17 = 2160;
     v18 = 1752392040;
     v19 = 2117;
-    v20 = v7;
+    v20 = headersCopy;
     v21 = 2112;
-    v22 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1CA238000, v8, OS_LOG_TYPE_DEFAULT, "%s httpAuthorizationHeaders = %{sensitive, mask.hash}@ on %@", &v15, 0x2Au);
   }
 
-  v9 = [(SOAuthorizationResultClientImpl *)self authorizationHandleCredentialCompletion];
+  authorizationHandleCredentialCompletion = [(SOAuthorizationResultClientImpl *)self authorizationHandleCredentialCompletion];
 
-  if (v9)
+  if (authorizationHandleCredentialCompletion)
   {
-    v10 = [(SOAuthorizationResultClientImpl *)self authorizationHandleCredentialCompletion];
-    (v10)[2](v10, v7, 0);
+    authorizationHandleCredentialCompletion2 = [(SOAuthorizationResultClientImpl *)self authorizationHandleCredentialCompletion];
+    (authorizationHandleCredentialCompletion2)[2](authorizationHandleCredentialCompletion2, headersCopy, 0);
 
     [(SOAuthorizationResultClientImpl *)self setAuthorizationHandleCredentialCompletion:0];
   }
 
   else
   {
-    v11 = [(SOAuthorizationResultClientImpl *)self authorizationHandleResponseCompletion];
+    authorizationHandleResponseCompletion = [(SOAuthorizationResultClientImpl *)self authorizationHandleResponseCompletion];
 
-    if (v11)
+    if (authorizationHandleResponseCompletion)
     {
       v12 = SO_LOG_SOClientImpl();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -213,14 +213,14 @@
         [SOAuthorizationResultClientImpl authorization:didCompleteWithHTTPResponse:httpBody:];
       }
 
-      v13 = [(SOAuthorizationResultClientImpl *)self authorizationHandleResponseCompletion];
-      v13[2](v13, 0, 0, _unexpectedResponseError);
+      authorizationHandleResponseCompletion2 = [(SOAuthorizationResultClientImpl *)self authorizationHandleResponseCompletion];
+      authorizationHandleResponseCompletion2[2](authorizationHandleResponseCompletion2, 0, 0, _unexpectedResponseError);
 
       [(SOAuthorizationResultClientImpl *)self setAuthorizationHandleResponseCompletion:0];
     }
   }
 
-  [_authorizationPool removeAuthorization:v6];
+  [_authorizationPool removeAuthorization:authorizationCopy];
 
   v14 = *MEMORY[0x1E69E9840];
 }

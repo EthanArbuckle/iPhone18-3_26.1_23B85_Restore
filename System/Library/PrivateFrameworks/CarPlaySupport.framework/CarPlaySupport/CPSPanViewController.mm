@@ -1,46 +1,46 @@
 @interface CPSPanViewController
-- (BOOL)shouldUpdateFocusInContext:(id)a3;
+- (BOOL)shouldUpdateFocusInContext:(id)context;
 - (CPSPanEventDelegate)panDelegate;
-- (CPSPanViewController)initWithEnvironment:(id)a3;
+- (CPSPanViewController)initWithEnvironment:(id)environment;
 - (CPSTemplateEnvironment)environment;
 - (double)sideButtonTopInset;
 - (id)_linearFocusItems;
-- (id)_linearFocusItemsWithPresentedMapButtons:(id)a3;
+- (id)_linearFocusItemsWithPresentedMapButtons:(id)buttons;
 - (id)preferredFocusEnvironments;
-- (void)_handleNudgeLongPress:(id)a3;
-- (void)_handleNudgeTapped:(id)a3;
+- (void)_handleNudgeLongPress:(id)press;
+- (void)_handleNudgeTapped:(id)tapped;
 - (void)loadView;
-- (void)panView:(id)a3 panBeganWithDirection:(int64_t)a4;
-- (void)panView:(id)a3 panEndedWithDirection:(int64_t)a4;
-- (void)panView:(id)a3 panWithDirection:(int64_t)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)panView:(id)view panBeganWithDirection:(int64_t)direction;
+- (void)panView:(id)view panEndedWithDirection:(int64_t)direction;
+- (void)panView:(id)view panWithDirection:(int64_t)direction;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation CPSPanViewController
 
-- (CPSPanViewController)initWithEnvironment:(id)a3
+- (CPSPanViewController)initWithEnvironment:(id)environment
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v9;
-  v9 = 0;
+  objc_storeStrong(location, environment);
+  v3 = selfCopy;
+  selfCopy = 0;
   v7.receiver = v3;
   v7.super_class = CPSPanViewController;
   v6 = [(CPSPanViewController *)&v7 init];
-  v9 = v6;
-  objc_storeStrong(&v9, v6);
+  selfCopy = v6;
+  objc_storeStrong(&selfCopy, v6);
   if (v6)
   {
-    objc_storeWeak(&v9->_environment, location[0]);
+    objc_storeWeak(&selfCopy->_environment, location[0]);
   }
 
-  v5 = MEMORY[0x277D82BE0](v9);
+  v5 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v9, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v5;
 }
 
@@ -55,54 +55,54 @@
 - (void)viewDidLoad
 {
   v35[4] = *MEMORY[0x277D85DE8];
-  v34 = self;
+  selfCopy = self;
   v33 = a2;
   v32.receiver = self;
   v32.super_class = CPSPanViewController;
   [(CPSPanViewController *)&v32 viewDidLoad];
-  v6 = [(CPSPanViewController *)v34 environment];
-  v2 = [(CPSTemplateEnvironment *)v6 rightHandDrive];
-  v34->_rightHandDrive = v2;
-  *&v3 = MEMORY[0x277D82BD8](v6).n128_u64[0];
-  v31 = [(CPSPanViewController *)v34 view];
-  [v31 setTranslatesAutoresizingMaskIntoConstraints:0];
+  environment = [(CPSPanViewController *)selfCopy environment];
+  rightHandDrive = [(CPSTemplateEnvironment *)environment rightHandDrive];
+  selfCopy->_rightHandDrive = rightHandDrive;
+  *&v3 = MEMORY[0x277D82BD8](environment).n128_u64[0];
+  view = [(CPSPanViewController *)selfCopy view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
   v4 = [CPSPanView alloc];
   v30 = [(CPSPanView *)v4 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
-  [(CPSPanView *)v30 setDelegate:v34];
-  [v31 addSubview:v30];
-  v7 = v31;
-  v20 = [(CPSPanView *)v30 leftAnchor];
-  v19 = [v31 leftAnchor];
-  v18 = [v20 constraintEqualToAnchor:?];
+  [(CPSPanView *)v30 setDelegate:selfCopy];
+  [view addSubview:v30];
+  v7 = view;
+  leftAnchor = [(CPSPanView *)v30 leftAnchor];
+  leftAnchor2 = [view leftAnchor];
+  v18 = [leftAnchor constraintEqualToAnchor:?];
   v35[0] = v18;
-  v17 = [(CPSPanView *)v30 topAnchor];
-  v16 = [v31 topAnchor];
-  v15 = [v17 constraintEqualToAnchor:?];
+  topAnchor = [(CPSPanView *)v30 topAnchor];
+  topAnchor2 = [view topAnchor];
+  v15 = [topAnchor constraintEqualToAnchor:?];
   v35[1] = v15;
-  v14 = [(CPSPanView *)v30 rightAnchor];
-  v13 = [v31 rightAnchor];
-  v12 = [v14 constraintEqualToAnchor:?];
+  rightAnchor = [(CPSPanView *)v30 rightAnchor];
+  rightAnchor2 = [view rightAnchor];
+  v12 = [rightAnchor constraintEqualToAnchor:?];
   v35[2] = v12;
-  v11 = [(CPSPanView *)v30 bottomAnchor];
-  v10 = [v31 bottomAnchor];
-  v9 = [v11 constraintEqualToAnchor:?];
+  bottomAnchor = [(CPSPanView *)v30 bottomAnchor];
+  bottomAnchor2 = [view bottomAnchor];
+  v9 = [bottomAnchor constraintEqualToAnchor:?];
   v35[3] = v9;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v35 count:4];
   [v7 addConstraints:?];
   MEMORY[0x277D82BD8](v8);
   MEMORY[0x277D82BD8](v9);
-  MEMORY[0x277D82BD8](v10);
-  MEMORY[0x277D82BD8](v11);
+  MEMORY[0x277D82BD8](bottomAnchor2);
+  MEMORY[0x277D82BD8](bottomAnchor);
   MEMORY[0x277D82BD8](v12);
-  MEMORY[0x277D82BD8](v13);
-  MEMORY[0x277D82BD8](v14);
+  MEMORY[0x277D82BD8](rightAnchor2);
+  MEMORY[0x277D82BD8](rightAnchor);
   MEMORY[0x277D82BD8](v15);
-  MEMORY[0x277D82BD8](v16);
-  MEMORY[0x277D82BD8](v17);
+  MEMORY[0x277D82BD8](topAnchor2);
+  MEMORY[0x277D82BD8](topAnchor);
   MEMORY[0x277D82BD8](v18);
-  MEMORY[0x277D82BD8](v19);
-  *&v5 = MEMORY[0x277D82BD8](v20).n128_u64[0];
-  [(CPSPanViewController *)v34 setPanView:v30, v5];
+  MEMORY[0x277D82BD8](leftAnchor2);
+  *&v5 = MEMORY[0x277D82BD8](leftAnchor).n128_u64[0];
+  [(CPSPanViewController *)selfCopy setPanView:v30, v5];
   v29 = MEMORY[0x277D82BE0](&unk_2855C5048);
   v28 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v21 = v29;
@@ -110,16 +110,16 @@
   v23 = 3221225472;
   v24 = __35__CPSPanViewController_viewDidLoad__block_invoke;
   v25 = &unk_278D920B0;
-  v26 = MEMORY[0x277D82BE0](v34);
+  v26 = MEMORY[0x277D82BE0](selfCopy);
   v27 = MEMORY[0x277D82BE0](v28);
   [v21 enumerateObjectsUsingBlock:?];
-  objc_storeStrong(&v34->_nudgeGestureRecognizers, v28);
+  objc_storeStrong(&selfCopy->_nudgeGestureRecognizers, v28);
   objc_storeStrong(&v27, 0);
   objc_storeStrong(&v26, 0);
   objc_storeStrong(&v28, 0);
   objc_storeStrong(&v29, 0);
   objc_storeStrong(&v30, 0);
-  objc_storeStrong(&v31, 0);
+  objc_storeStrong(&view, 0);
 }
 
 void __35__CPSPanViewController_viewDidLoad__block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -155,24 +155,24 @@ void __35__CPSPanViewController_viewDidLoad__block_invoke(uint64_t a1, void *a2,
   objc_storeStrong(location, 0);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
-  v12 = a3;
+  appearCopy = appear;
   v11.receiver = self;
   v11.super_class = CPSPanViewController;
-  [(CPSPanViewController *)&v11 viewDidAppear:a3];
-  v4 = [(CPSPanViewController *)v14 nudgeGestureRecognizers];
+  [(CPSPanViewController *)&v11 viewDidAppear:appear];
+  nudgeGestureRecognizers = [(CPSPanViewController *)selfCopy nudgeGestureRecognizers];
   v5 = MEMORY[0x277D85DD0];
   v6 = -1073741824;
   v7 = 0;
   v8 = __38__CPSPanViewController_viewDidAppear___block_invoke;
   v9 = &unk_278D920D8;
-  v10 = MEMORY[0x277D82BE0](v14);
-  [(NSArray *)v4 enumerateObjectsUsingBlock:?];
-  *&v3 = MEMORY[0x277D82BD8](v4).n128_u64[0];
-  [(CPSPanViewController *)v14 setNeedsFocusUpdate];
+  v10 = MEMORY[0x277D82BE0](selfCopy);
+  [(NSArray *)nudgeGestureRecognizers enumerateObjectsUsingBlock:?];
+  *&v3 = MEMORY[0x277D82BD8](nudgeGestureRecognizers).n128_u64[0];
+  [(CPSPanViewController *)selfCopy setNeedsFocusUpdate];
   objc_storeStrong(&v10, 0);
 }
 
@@ -189,23 +189,23 @@ void __38__CPSPanViewController_viewDidAppear___block_invoke(id *a1, void *a2)
   objc_storeStrong(location, 0);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
-  v11 = a3;
+  disappearCopy = disappear;
   v10.receiver = self;
   v10.super_class = CPSPanViewController;
-  [(CPSPanViewController *)&v10 viewWillDisappear:a3];
-  v3 = [(CPSPanViewController *)v13 nudgeGestureRecognizers];
+  [(CPSPanViewController *)&v10 viewWillDisappear:disappear];
+  nudgeGestureRecognizers = [(CPSPanViewController *)selfCopy nudgeGestureRecognizers];
   v4 = MEMORY[0x277D85DD0];
   v5 = -1073741824;
   v6 = 0;
   v7 = __42__CPSPanViewController_viewWillDisappear___block_invoke;
   v8 = &unk_278D920D8;
-  v9 = MEMORY[0x277D82BE0](v13);
-  [(NSArray *)v3 enumerateObjectsUsingBlock:?];
-  MEMORY[0x277D82BD8](v3);
+  v9 = MEMORY[0x277D82BE0](selfCopy);
+  [(NSArray *)nudgeGestureRecognizers enumerateObjectsUsingBlock:?];
+  MEMORY[0x277D82BD8](nudgeGestureRecognizers);
   objc_storeStrong(&v9, 0);
 }
 
@@ -222,75 +222,75 @@ void __42__CPSPanViewController_viewWillDisappear___block_invoke(id *a1, void *a
   objc_storeStrong(location, 0);
 }
 
-- (void)_handleNudgeTapped:(id)a3
+- (void)_handleNudgeTapped:(id)tapped
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(CPSPanViewController *)v5 panDelegate];
-  -[CPSPanEventDelegate panWithDirection:](v3, "panWithDirection:", [location[0] direction]);
-  MEMORY[0x277D82BD8](v3);
+  objc_storeStrong(location, tapped);
+  panDelegate = [(CPSPanViewController *)selfCopy panDelegate];
+  -[CPSPanEventDelegate panWithDirection:](panDelegate, "panWithDirection:", [location[0] direction]);
+  MEMORY[0x277D82BD8](panDelegate);
   objc_storeStrong(location, 0);
 }
 
-- (void)_handleNudgeLongPress:(id)a3
+- (void)_handleNudgeLongPress:(id)press
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5 = [location[0] state];
-  if (v5 == 1)
+  objc_storeStrong(location, press);
+  state = [location[0] state];
+  if (state == 1)
   {
-    v4 = [(CPSPanViewController *)v7 panDelegate];
-    -[CPSPanEventDelegate panBeganWithDirection:](v4, "panBeganWithDirection:", [location[0] direction]);
-    MEMORY[0x277D82BD8](v4);
+    panDelegate = [(CPSPanViewController *)selfCopy panDelegate];
+    -[CPSPanEventDelegate panBeganWithDirection:](panDelegate, "panBeganWithDirection:", [location[0] direction]);
+    MEMORY[0x277D82BD8](panDelegate);
   }
 
-  else if (v5 == 3)
+  else if (state == 3)
   {
-    v3 = [(CPSPanViewController *)v7 panDelegate];
-    -[CPSPanEventDelegate panEndedWithDirection:](v3, "panEndedWithDirection:", [location[0] direction]);
-    MEMORY[0x277D82BD8](v3);
+    panDelegate2 = [(CPSPanViewController *)selfCopy panDelegate];
+    -[CPSPanEventDelegate panEndedWithDirection:](panDelegate2, "panEndedWithDirection:", [location[0] direction]);
+    MEMORY[0x277D82BD8](panDelegate2);
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)panView:(id)a3 panBeganWithDirection:(int64_t)a4
+- (void)panView:(id)view panBeganWithDirection:(int64_t)direction
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5 = [(CPSPanViewController *)v7 panDelegate];
-  [(CPSPanEventDelegate *)v5 panBeganWithDirection:a4];
-  MEMORY[0x277D82BD8](v5);
+  objc_storeStrong(location, view);
+  panDelegate = [(CPSPanViewController *)selfCopy panDelegate];
+  [(CPSPanEventDelegate *)panDelegate panBeganWithDirection:direction];
+  MEMORY[0x277D82BD8](panDelegate);
   objc_storeStrong(location, 0);
 }
 
-- (void)panView:(id)a3 panEndedWithDirection:(int64_t)a4
+- (void)panView:(id)view panEndedWithDirection:(int64_t)direction
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5 = [(CPSPanViewController *)v7 panDelegate];
-  [(CPSPanEventDelegate *)v5 panEndedWithDirection:a4];
-  MEMORY[0x277D82BD8](v5);
+  objc_storeStrong(location, view);
+  panDelegate = [(CPSPanViewController *)selfCopy panDelegate];
+  [(CPSPanEventDelegate *)panDelegate panEndedWithDirection:direction];
+  MEMORY[0x277D82BD8](panDelegate);
   objc_storeStrong(location, 0);
 }
 
-- (void)panView:(id)a3 panWithDirection:(int64_t)a4
+- (void)panView:(id)view panWithDirection:(int64_t)direction
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5 = [(CPSPanViewController *)v7 panDelegate];
-  [(CPSPanEventDelegate *)v5 panWithDirection:a4];
-  MEMORY[0x277D82BD8](v5);
+  objc_storeStrong(location, view);
+  panDelegate = [(CPSPanViewController *)selfCopy panDelegate];
+  [(CPSPanEventDelegate *)panDelegate panWithDirection:direction];
+  MEMORY[0x277D82BD8](panDelegate);
   objc_storeStrong(location, 0);
 }
 
@@ -299,92 +299,92 @@ void __42__CPSPanViewController_viewWillDisappear___block_invoke(id *a1, void *a
   v9[1] = *MEMORY[0x277D85DE8];
   if (self->_rightHandDrive)
   {
-    v6 = [(CPSPanViewController *)self panView];
-    v5 = [(CPSPanView *)v6 panLeftButton];
-    v9[0] = v5;
+    panView = [(CPSPanViewController *)self panView];
+    panLeftButton = [(CPSPanView *)panView panLeftButton];
+    v9[0] = panLeftButton;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
-    MEMORY[0x277D82BD8](v5);
-    MEMORY[0x277D82BD8](v6);
+    MEMORY[0x277D82BD8](panLeftButton);
+    MEMORY[0x277D82BD8](panView);
   }
 
   else
   {
-    v4 = [(CPSPanViewController *)self panView];
-    v3 = [(CPSPanView *)v4 panUpButton];
-    v8 = v3;
+    panView2 = [(CPSPanViewController *)self panView];
+    panUpButton = [(CPSPanView *)panView2 panUpButton];
+    v8 = panUpButton;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:&v8 count:1];
-    MEMORY[0x277D82BD8](v3);
-    MEMORY[0x277D82BD8](v4);
+    MEMORY[0x277D82BD8](panUpButton);
+    MEMORY[0x277D82BD8](panView2);
   }
 
   return v7;
 }
 
-- (id)_linearFocusItemsWithPresentedMapButtons:(id)a3
+- (id)_linearFocusItemsWithPresentedMapButtons:(id)buttons
 {
   v31[3] = *MEMORY[0x277D85DE8];
-  v28 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, buttons);
   v26 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if (v28->_rightHandDrive)
+  if (selfCopy->_rightHandDrive)
   {
-    v22 = [(CPSPanViewController *)v28 panView];
-    v21 = [(CPSPanView *)v22 panLeftButton];
-    v31[0] = v21;
-    v20 = [(CPSPanViewController *)v28 panView];
-    v19 = [(CPSPanView *)v20 panUpButton];
-    v31[1] = v19;
-    v18 = [(CPSPanViewController *)v28 panView];
-    v17 = [(CPSPanView *)v18 panRightButton];
-    v31[2] = v17;
+    panView = [(CPSPanViewController *)selfCopy panView];
+    panLeftButton = [(CPSPanView *)panView panLeftButton];
+    v31[0] = panLeftButton;
+    panView2 = [(CPSPanViewController *)selfCopy panView];
+    panUpButton = [(CPSPanView *)panView2 panUpButton];
+    v31[1] = panUpButton;
+    panView3 = [(CPSPanViewController *)selfCopy panView];
+    panRightButton = [(CPSPanView *)panView3 panRightButton];
+    v31[2] = panRightButton;
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v31 count:3];
     [v26 addObjectsFromArray:?];
     MEMORY[0x277D82BD8](v16);
-    MEMORY[0x277D82BD8](v17);
-    MEMORY[0x277D82BD8](v18);
-    MEMORY[0x277D82BD8](v19);
-    MEMORY[0x277D82BD8](v20);
-    MEMORY[0x277D82BD8](v21);
-    *&v3 = MEMORY[0x277D82BD8](v22).n128_u64[0];
+    MEMORY[0x277D82BD8](panRightButton);
+    MEMORY[0x277D82BD8](panView3);
+    MEMORY[0x277D82BD8](panUpButton);
+    MEMORY[0x277D82BD8](panView2);
+    MEMORY[0x277D82BD8](panLeftButton);
+    *&v3 = MEMORY[0x277D82BD8](panView).n128_u64[0];
     [v26 addObjectsFromArray:{location[0], v3}];
-    v25 = [(CPSPanViewController *)v28 panView];
-    v24 = [(CPSPanView *)v25 panDownButton];
-    v30 = v24;
+    panView4 = [(CPSPanViewController *)selfCopy panView];
+    panDownButton = [(CPSPanView *)panView4 panDownButton];
+    v30 = panDownButton;
     v23 = [MEMORY[0x277CBEA60] arrayWithObjects:&v30 count:1];
     [v26 addObjectsFromArray:?];
     MEMORY[0x277D82BD8](v23);
-    MEMORY[0x277D82BD8](v24);
-    MEMORY[0x277D82BD8](v25);
+    MEMORY[0x277D82BD8](panDownButton);
+    MEMORY[0x277D82BD8](panView4);
   }
 
   else
   {
-    v8 = [(CPSPanViewController *)v28 panView];
-    v7 = [(CPSPanView *)v8 panRightButton];
+    panView5 = [(CPSPanViewController *)selfCopy panView];
+    panRightButton2 = [(CPSPanView *)panView5 panRightButton];
     [v26 addObject:?];
-    MEMORY[0x277D82BD8](v7);
-    *&v4 = MEMORY[0x277D82BD8](v8).n128_u64[0];
+    MEMORY[0x277D82BD8](panRightButton2);
+    *&v4 = MEMORY[0x277D82BD8](panView5).n128_u64[0];
     [v26 addObjectsFromArray:{location[0], v4}];
-    v15 = [(CPSPanViewController *)v28 panView];
-    v14 = [(CPSPanView *)v15 panDownButton];
-    v29[0] = v14;
-    v13 = [(CPSPanViewController *)v28 panView];
-    v12 = [(CPSPanView *)v13 panLeftButton];
-    v29[1] = v12;
-    v11 = [(CPSPanViewController *)v28 panView];
-    v10 = [(CPSPanView *)v11 panUpButton];
-    v29[2] = v10;
+    panView6 = [(CPSPanViewController *)selfCopy panView];
+    panDownButton2 = [(CPSPanView *)panView6 panDownButton];
+    v29[0] = panDownButton2;
+    panView7 = [(CPSPanViewController *)selfCopy panView];
+    panLeftButton2 = [(CPSPanView *)panView7 panLeftButton];
+    v29[1] = panLeftButton2;
+    panView8 = [(CPSPanViewController *)selfCopy panView];
+    panUpButton2 = [(CPSPanView *)panView8 panUpButton];
+    v29[2] = panUpButton2;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:3];
     [v26 addObjectsFromArray:?];
     MEMORY[0x277D82BD8](v9);
-    MEMORY[0x277D82BD8](v10);
-    MEMORY[0x277D82BD8](v11);
-    MEMORY[0x277D82BD8](v12);
-    MEMORY[0x277D82BD8](v13);
-    MEMORY[0x277D82BD8](v14);
-    MEMORY[0x277D82BD8](v15);
+    MEMORY[0x277D82BD8](panUpButton2);
+    MEMORY[0x277D82BD8](panView8);
+    MEMORY[0x277D82BD8](panLeftButton2);
+    MEMORY[0x277D82BD8](panView7);
+    MEMORY[0x277D82BD8](panDownButton2);
+    MEMORY[0x277D82BD8](panView6);
   }
 
   v6 = MEMORY[0x277D82BE0](v26);
@@ -399,80 +399,80 @@ void __42__CPSPanViewController_viewWillDisappear___block_invoke(id *a1, void *a
   v22[4] = *MEMORY[0x277D85DE8];
   if (self->_rightHandDrive)
   {
-    v18 = [(CPSPanViewController *)self panView];
-    v17 = [(CPSPanView *)v18 panLeftButton];
-    v22[0] = v17;
-    v16 = [(CPSPanViewController *)self panView];
-    v15 = [(CPSPanView *)v16 panUpButton];
-    v22[1] = v15;
-    v14 = [(CPSPanViewController *)self panView];
-    v13 = [(CPSPanView *)v14 panRightButton];
-    v22[2] = v13;
-    v12 = [(CPSPanViewController *)self panView];
-    v11 = [(CPSPanView *)v12 panDownButton];
-    v22[3] = v11;
+    panView = [(CPSPanViewController *)self panView];
+    panLeftButton = [(CPSPanView *)panView panLeftButton];
+    v22[0] = panLeftButton;
+    panView2 = [(CPSPanViewController *)self panView];
+    panUpButton = [(CPSPanView *)panView2 panUpButton];
+    v22[1] = panUpButton;
+    panView3 = [(CPSPanViewController *)self panView];
+    panRightButton = [(CPSPanView *)panView3 panRightButton];
+    v22[2] = panRightButton;
+    panView4 = [(CPSPanViewController *)self panView];
+    panDownButton = [(CPSPanView *)panView4 panDownButton];
+    v22[3] = panDownButton;
     v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:4];
-    MEMORY[0x277D82BD8](v11);
-    MEMORY[0x277D82BD8](v12);
-    MEMORY[0x277D82BD8](v13);
-    MEMORY[0x277D82BD8](v14);
-    MEMORY[0x277D82BD8](v15);
-    MEMORY[0x277D82BD8](v16);
-    MEMORY[0x277D82BD8](v17);
-    MEMORY[0x277D82BD8](v18);
+    MEMORY[0x277D82BD8](panDownButton);
+    MEMORY[0x277D82BD8](panView4);
+    MEMORY[0x277D82BD8](panRightButton);
+    MEMORY[0x277D82BD8](panView3);
+    MEMORY[0x277D82BD8](panUpButton);
+    MEMORY[0x277D82BD8](panView2);
+    MEMORY[0x277D82BD8](panLeftButton);
+    MEMORY[0x277D82BD8](panView);
   }
 
   else
   {
-    v10 = [(CPSPanViewController *)self panView];
-    v9 = [(CPSPanView *)v10 panRightButton];
-    v21[0] = v9;
-    v8 = [(CPSPanViewController *)self panView];
-    v7 = [(CPSPanView *)v8 panDownButton];
-    v21[1] = v7;
-    v6 = [(CPSPanViewController *)self panView];
-    v5 = [(CPSPanView *)v6 panLeftButton];
-    v21[2] = v5;
-    v4 = [(CPSPanViewController *)self panView];
-    v3 = [(CPSPanView *)v4 panUpButton];
-    v21[3] = v3;
+    panView5 = [(CPSPanViewController *)self panView];
+    panRightButton2 = [(CPSPanView *)panView5 panRightButton];
+    v21[0] = panRightButton2;
+    panView6 = [(CPSPanViewController *)self panView];
+    panDownButton2 = [(CPSPanView *)panView6 panDownButton];
+    v21[1] = panDownButton2;
+    panView7 = [(CPSPanViewController *)self panView];
+    panLeftButton2 = [(CPSPanView *)panView7 panLeftButton];
+    v21[2] = panLeftButton2;
+    panView8 = [(CPSPanViewController *)self panView];
+    panUpButton2 = [(CPSPanView *)panView8 panUpButton];
+    v21[3] = panUpButton2;
     v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:4];
-    MEMORY[0x277D82BD8](v3);
-    MEMORY[0x277D82BD8](v4);
-    MEMORY[0x277D82BD8](v5);
-    MEMORY[0x277D82BD8](v6);
-    MEMORY[0x277D82BD8](v7);
-    MEMORY[0x277D82BD8](v8);
-    MEMORY[0x277D82BD8](v9);
-    MEMORY[0x277D82BD8](v10);
+    MEMORY[0x277D82BD8](panUpButton2);
+    MEMORY[0x277D82BD8](panView8);
+    MEMORY[0x277D82BD8](panLeftButton2);
+    MEMORY[0x277D82BD8](panView7);
+    MEMORY[0x277D82BD8](panDownButton2);
+    MEMORY[0x277D82BD8](panView6);
+    MEMORY[0x277D82BD8](panRightButton2);
+    MEMORY[0x277D82BD8](panView5);
   }
 
   return v20;
 }
 
-- (BOOL)shouldUpdateFocusInContext:(id)a3
+- (BOOL)shouldUpdateFocusInContext:(id)context
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5 = [location[0] previouslyFocusedItem];
-  v4 = [(CPSPanViewController *)v15 panView];
-  v6 = [(CPSPanView *)v4 panUpButton];
+  objc_storeStrong(location, context);
+  previouslyFocusedItem = [location[0] previouslyFocusedItem];
+  panView = [(CPSPanViewController *)selfCopy panView];
+  panUpButton = [(CPSPanView *)panView panUpButton];
   v12 = 0;
   v10 = 0;
   v8 = 0;
   v7 = 0;
-  if (v5 == v6)
+  if (previouslyFocusedItem == panUpButton)
   {
-    v13 = [location[0] nextFocusedItem];
+    nextFocusedItem = [location[0] nextFocusedItem];
     v12 = 1;
-    v11 = [(CPSPanViewController *)v15 panView];
+    panView2 = [(CPSPanViewController *)selfCopy panView];
     v10 = 1;
-    v9 = [(CPSPanView *)v11 panLeftButton];
+    panLeftButton = [(CPSPanView *)panView2 panLeftButton];
     v8 = 1;
     v7 = 0;
-    if (v13 == v9)
+    if (nextFocusedItem == panLeftButton)
     {
       v7 = [location[0] focusHeading] == 16;
     }
@@ -480,22 +480,22 @@ void __42__CPSPanViewController_viewWillDisappear___block_invoke(id *a1, void *a
 
   if (v8)
   {
-    MEMORY[0x277D82BD8](v9);
+    MEMORY[0x277D82BD8](panLeftButton);
   }
 
   if (v10)
   {
-    MEMORY[0x277D82BD8](v11);
+    MEMORY[0x277D82BD8](panView2);
   }
 
   if (v12)
   {
-    MEMORY[0x277D82BD8](v13);
+    MEMORY[0x277D82BD8](nextFocusedItem);
   }
 
-  MEMORY[0x277D82BD8](v6);
-  MEMORY[0x277D82BD8](v4);
-  MEMORY[0x277D82BD8](v5);
+  MEMORY[0x277D82BD8](panUpButton);
+  MEMORY[0x277D82BD8](panView);
+  MEMORY[0x277D82BD8](previouslyFocusedItem);
   v16 = !v7;
   objc_storeStrong(location, 0);
   return v16;
@@ -503,10 +503,10 @@ void __42__CPSPanViewController_viewWillDisappear___block_invoke(id *a1, void *a
 
 - (double)sideButtonTopInset
 {
-  v4 = [(CPSPanViewController *)self panView];
-  [(CPSPanView *)v4 sideButtonTopInset];
+  panView = [(CPSPanViewController *)self panView];
+  [(CPSPanView *)panView sideButtonTopInset];
   v5 = v2;
-  MEMORY[0x277D82BD8](v4);
+  MEMORY[0x277D82BD8](panView);
   return v5;
 }
 

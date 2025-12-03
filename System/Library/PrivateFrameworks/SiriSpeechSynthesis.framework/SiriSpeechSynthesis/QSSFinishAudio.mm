@@ -1,8 +1,8 @@
 @interface QSSFinishAudio
 - (NSArray)features_at_endpoint;
 - (NSArray)server_feature_latency_distribution;
-- (Offset<siri::speech::schema_fb::FinishAudio>)addObjectToBuffer:(void *)a3;
-- (QSSFinishAudio)initWithFlatbuffData:(id)a3 root:(const FinishAudio *)a4 verify:(BOOL)a5;
+- (Offset<siri::speech::schema_fb::FinishAudio>)addObjectToBuffer:(void *)buffer;
+- (QSSFinishAudio)initWithFlatbuffData:(id)data root:(const FinishAudio *)root verify:(BOOL)verify;
 - (float)total_audio_recorded_seconds;
 - (id)flatbuffData;
 - (int)packet_count;
@@ -39,22 +39,22 @@ flatbuffers::DetachedBuffer *__30__QSSFinishAudio_flatbuffData__block_invoke(uin
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::FinishAudio>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::FinishAudio>)addObjectToBuffer:(void *)buffer
 {
   v39 = *MEMORY[0x277D85DE8];
-  v25 = [(QSSFinishAudio *)self packet_count];
+  packet_count = [(QSSFinishAudio *)self packet_count];
   [(QSSFinishAudio *)self total_audio_recorded_seconds];
   v6 = v5;
   memset(&v36, 0, sizeof(v36));
-  v7 = [(QSSFinishAudio *)self features_at_endpoint];
-  std::vector<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v36, [v7 count]);
+  features_at_endpoint = [(QSSFinishAudio *)self features_at_endpoint];
+  std::vector<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v36, [features_at_endpoint count]);
 
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v8 = [(QSSFinishAudio *)self features_at_endpoint];
-  v9 = [v8 countByEnumeratingWithState:&v32 objects:v38 count:16];
+  features_at_endpoint2 = [(QSSFinishAudio *)self features_at_endpoint];
+  v9 = [features_at_endpoint2 countByEnumeratingWithState:&v32 objects:v38 count:16];
   if (v9)
   {
     v10 = *v33;
@@ -64,7 +64,7 @@ flatbuffers::DetachedBuffer *__30__QSSFinishAudio_flatbuffData__block_invoke(uin
       {
         if (*v33 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(features_at_endpoint2);
         }
 
         [*(*(&v32 + 1) + 8 * i) floatValue];
@@ -72,7 +72,7 @@ flatbuffers::DetachedBuffer *__30__QSSFinishAudio_flatbuffData__block_invoke(uin
         std::vector<float>::push_back[abi:ne200100](&v36, &v31);
       }
 
-      v9 = [v8 countByEnumeratingWithState:&v32 objects:v38 count:16];
+      v9 = [features_at_endpoint2 countByEnumeratingWithState:&v32 objects:v38 count:16];
     }
 
     while (v9);
@@ -88,9 +88,9 @@ flatbuffers::DetachedBuffer *__30__QSSFinishAudio_flatbuffData__block_invoke(uin
     begin = v36.__begin_;
   }
 
-  v24 = flatbuffers::FlatBufferBuilder::CreateVector<int>(a3, begin, v36.__end_ - v36.__begin_);
-  v14 = [(QSSFinishAudio *)self server_feature_latency_distribution];
-  v15 = [v14 count];
+  v24 = flatbuffers::FlatBufferBuilder::CreateVector<int>(buffer, begin, v36.__end_ - v36.__begin_);
+  server_feature_latency_distribution = [(QSSFinishAudio *)self server_feature_latency_distribution];
+  v15 = [server_feature_latency_distribution count];
   if (v15)
   {
     if (!(v15 >> 62))
@@ -110,27 +110,27 @@ flatbuffers::DetachedBuffer *__30__QSSFinishAudio_flatbuffData__block_invoke(uin
   {
     *v28;
     *v28;
-    [**(&v27 + 1) addObjectToBuffer:a3];
+    [**(&v27 + 1) addObjectToBuffer:buffer];
     std::__allocate_at_least[abi:ne200100]<std::allocator<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>>(1uLL);
   }
 
-  flatbuffers::FlatBufferBuilder::StartVector(a3, 0, 4uLL);
-  v16 = flatbuffers::FlatBufferBuilder::EndVector(a3, 0);
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v17 = *(a3 + 8);
-  v18 = *(a3 + 12);
-  v19 = *(a3 + 10);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 4, v25);
-  flatbuffers::FlatBufferBuilder::AddElement<float>(a3, 6, v6);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 8, v24);
+  flatbuffers::FlatBufferBuilder::StartVector(buffer, 0, 4uLL);
+  v16 = flatbuffers::FlatBufferBuilder::EndVector(buffer, 0);
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v17 = *(buffer + 8);
+  v18 = *(buffer + 12);
+  v19 = *(buffer + 10);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 4, packet_count);
+  flatbuffers::FlatBufferBuilder::AddElement<float>(buffer, 6, v6);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 8, v24);
   if (v16)
   {
-    v20 = flatbuffers::FlatBufferBuilder::ReferTo(a3, v16);
-    flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 10, v20);
+    v20 = flatbuffers::FlatBufferBuilder::ReferTo(buffer, v16);
+    flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 10, v20);
   }
 
-  v21.var0 = flatbuffers::FlatBufferBuilder::EndTable(a3, v17 - v18 + v19);
+  v21.var0 = flatbuffers::FlatBufferBuilder::EndTable(buffer, v17 - v18 + v19);
   if (v36.__begin_)
   {
     operator delete(v36.__begin_);
@@ -142,10 +142,10 @@ flatbuffers::DetachedBuffer *__30__QSSFinishAudio_flatbuffData__block_invoke(uin
 
 - (NSArray)server_feature_latency_distribution
 {
-  v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"server_feature_latency_distribution"];
-  if (!v3)
+  array = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"server_feature_latency_distribution"];
+  if (!array)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     root = self->_root;
     v5 = &root[-*root->var0];
     if (*v5->var0 >= 0xBu)
@@ -162,7 +162,7 @@ flatbuffers::DetachedBuffer *__30__QSSFinishAudio_flatbuffData__block_invoke(uin
           do
           {
             v11 = [[QSSFinishAudio_ServerFeatureLatencyDistributionEntry alloc] initWithFlatbuffData:self->_data root:&v10[*v10->var0] verify:0];
-            [v3 addObject:v11];
+            [array addObject:v11];
 
             v10 += 4;
             v9 -= 4;
@@ -173,10 +173,10 @@ flatbuffers::DetachedBuffer *__30__QSSFinishAudio_flatbuffData__block_invoke(uin
       }
     }
 
-    [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"server_feature_latency_distribution"];
+    [(NSMutableDictionary *)self->_storage setObject:array forKeyedSubscript:@"server_feature_latency_distribution"];
   }
 
-  return v3;
+  return array;
 }
 
 flatbuffers::DetachedBuffer *__68__QSSFinishAudio_ServerFeatureLatencyDistributionEntry_flatbuffData__block_invoke(uint64_t a1)
@@ -194,10 +194,10 @@ flatbuffers::DetachedBuffer *__68__QSSFinishAudio_ServerFeatureLatencyDistributi
 
 - (NSArray)features_at_endpoint
 {
-  v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"features_at_endpoint"];
-  if (!v3)
+  array = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"features_at_endpoint"];
+  if (!array)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     root = self->_root;
     v6 = &root[-*root->var0];
     if (*v6->var0 >= 9u)
@@ -215,7 +215,7 @@ flatbuffers::DetachedBuffer *__68__QSSFinishAudio_ServerFeatureLatencyDistributi
           {
             LODWORD(v4) = *v11->var0;
             v12 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-            [v3 addObject:v12];
+            [array addObject:v12];
 
             v11 += 4;
             v10 -= 4;
@@ -226,10 +226,10 @@ flatbuffers::DetachedBuffer *__68__QSSFinishAudio_ServerFeatureLatencyDistributi
       }
     }
 
-    [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"features_at_endpoint"];
+    [(NSMutableDictionary *)self->_storage setObject:array forKeyedSubscript:@"features_at_endpoint"];
   }
 
-  return v3;
+  return array;
 }
 
 - (float)total_audio_recorded_seconds
@@ -264,42 +264,42 @@ flatbuffers::DetachedBuffer *__68__QSSFinishAudio_ServerFeatureLatencyDistributi
   }
 }
 
-- (QSSFinishAudio)initWithFlatbuffData:(id)a3 root:(const FinishAudio *)a4 verify:(BOOL)a5
+- (QSSFinishAudio)initWithFlatbuffData:(id)data root:(const FinishAudio *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = QSSFinishAudio;
   v10 = [(QSSFinishAudio *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_16;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_16;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_26914CD70;
       v27 = 0;
@@ -321,9 +321,9 @@ LABEL_16:
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;

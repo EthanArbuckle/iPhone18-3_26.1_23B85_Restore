@@ -1,28 +1,28 @@
 @interface PMiOSMainViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)editBBItem;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_setupBottomToolbar;
-- (void)setControlVisibility:(BOOL)a3;
+- (void)setControlVisibility:(BOOL)visibility;
 - (void)toggleControlVisibility;
 - (void)viewDidLoad;
 @end
 
 @implementation PMiOSMainViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PMiOSMainViewController" isKindOfClass:@"MiroPlayerViewController"];
-  [v3 validateClass:@"MiroPlayerViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"PMiOSSliderViewController"];
-  [v3 validateClass:@"PMiOSMainViewController" hasInstanceMethod:@"moodSlider" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PMiOSMainViewController" hasInstanceMethod:@"durationSlider" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PMiOSMainViewController" hasInstanceMethod:@"editBBItem" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PMiOSMainViewController" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PMiOSMainViewController" hasInstanceMethod:@"_setupBottomToolbar" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PMiOSMainViewController" hasInstanceMethod:@"toggleControlVisibility" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PMiOSMainViewController" hasInstanceMethod:@"setControlVisibility:" withFullSignature:{"v", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PMiOSMainViewController" isKindOfClass:@"MiroPlayerViewController"];
+  [validationsCopy validateClass:@"MiroPlayerViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"PMiOSSliderViewController"];
+  [validationsCopy validateClass:@"PMiOSMainViewController" hasInstanceMethod:@"moodSlider" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PMiOSMainViewController" hasInstanceMethod:@"durationSlider" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PMiOSMainViewController" hasInstanceMethod:@"editBBItem" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PMiOSMainViewController" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PMiOSMainViewController" hasInstanceMethod:@"_setupBottomToolbar" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PMiOSMainViewController" hasInstanceMethod:@"toggleControlVisibility" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PMiOSMainViewController" hasInstanceMethod:@"setControlVisibility:" withFullSignature:{"v", "B", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -52,11 +52,11 @@
 {
   v5.receiver = self;
   v5.super_class = PMiOSMainViewControllerAccessibility;
-  v2 = [(PMiOSMainViewControllerAccessibility *)&v5 editBBItem];
+  editBBItem = [(PMiOSMainViewControllerAccessibility *)&v5 editBBItem];
   v3 = accessibilityMemoriesLocalizedString(@"edit.button");
-  [v2 setAccessibilityLabel:v3];
+  [editBBItem setAccessibilityLabel:v3];
 
-  return v2;
+  return editBBItem;
 }
 
 - (void)_setupBottomToolbar
@@ -85,14 +85,14 @@
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7F10], 0);
 }
 
-- (void)setControlVisibility:(BOOL)a3
+- (void)setControlVisibility:(BOOL)visibility
 {
-  v3 = a3;
+  visibilityCopy = visibility;
   v8.receiver = self;
   v8.super_class = PMiOSMainViewControllerAccessibility;
   [(PMiOSMainViewControllerAccessibility *)&v8 setControlVisibility:?];
   v5 = [(PMiOSMainViewControllerAccessibility *)self safeValueForKey:@"view"];
-  if (v3)
+  if (visibilityCopy)
   {
     v6 = @"memory.movie.hint.hide";
   }

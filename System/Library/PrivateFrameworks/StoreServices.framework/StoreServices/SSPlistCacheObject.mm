@@ -1,19 +1,19 @@
 @interface SSPlistCacheObject
-- (SSPlistCacheObject)initWithCacheObjectDataRepresentation:(id)a3;
+- (SSPlistCacheObject)initWithCacheObjectDataRepresentation:(id)representation;
 - (id)plist;
 - (void)dealloc;
-- (void)setPlist:(id)a3;
+- (void)setPlist:(id)plist;
 @end
 
 @implementation SSPlistCacheObject
 
-- (void)setPlist:(id)a3
+- (void)setPlist:(id)plist
 {
   plist = self->_plist;
-  if (plist != a3)
+  if (plist != plist)
   {
 
-    self->_plist = a3;
+    self->_plist = plist;
   }
 }
 
@@ -24,12 +24,12 @@
   return v2;
 }
 
-- (SSPlistCacheObject)initWithCacheObjectDataRepresentation:(id)a3
+- (SSPlistCacheObject)initWithCacheObjectDataRepresentation:(id)representation
 {
   v4 = [(SSPlistCacheObject *)self init];
   if (v4)
   {
-    v4->_plist = [MEMORY[0x1E696AE40] propertyListWithData:a3 options:0 format:0 error:0];
+    v4->_plist = [MEMORY[0x1E696AE40] propertyListWithData:representation options:0 format:0 error:0];
   }
 
   return v4;

@@ -1,11 +1,11 @@
 @interface _TVAppIconImageLoader
 + (id)sharedInstance;
 - (_TVAppIconImageLoader)init;
-- (id)URLForObject:(id)a3;
-- (id)_createApplicationIconForIdentifier:(id)a3;
-- (id)imageKeyForObject:(id)a3;
-- (id)loadImageForObject:(id)a3 scaleToSize:(CGSize)a4 cropToFit:(BOOL)a5 imageDirection:(int64_t)a6 requestLoader:(id)a7 completionHandler:(id)a8;
-- (void)cancelLoad:(id)a3;
+- (id)URLForObject:(id)object;
+- (id)_createApplicationIconForIdentifier:(id)identifier;
+- (id)imageKeyForObject:(id)object;
+- (id)loadImageForObject:(id)object scaleToSize:(CGSize)size cropToFit:(BOOL)fit imageDirection:(int64_t)direction requestLoader:(id)loader completionHandler:(id)handler;
+- (void)cancelLoad:(id)load;
 @end
 
 @implementation _TVAppIconImageLoader
@@ -37,29 +37,29 @@
   return v2;
 }
 
-- (id)URLForObject:(id)a3
+- (id)URLForObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v5 = 0;
-  if (v3 && (isKindOfClass & 1) != 0)
+  if (objectCopy && (isKindOfClass & 1) != 0)
   {
     v6 = MEMORY[0x277CBEBC0];
-    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"app://%@", v3];
-    v5 = [v6 URLWithString:v7];
+    objectCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"app://%@", objectCopy];
+    v5 = [v6 URLWithString:objectCopy];
   }
 
   return v5;
 }
 
-- (id)imageKeyForObject:(id)a3
+- (id)imageKeyForObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 stringByAppendingString:@"-2"];
+    v4 = [objectCopy stringByAppendingString:@"-2"];
   }
 
   else
@@ -70,14 +70,14 @@
   return v4;
 }
 
-- (id)loadImageForObject:(id)a3 scaleToSize:(CGSize)a4 cropToFit:(BOOL)a5 imageDirection:(int64_t)a6 requestLoader:(id)a7 completionHandler:(id)a8
+- (id)loadImageForObject:(id)object scaleToSize:(CGSize)size cropToFit:(BOOL)fit imageDirection:(int64_t)direction requestLoader:(id)loader completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a8;
+  objectCopy = object;
+  handlerCopy = handler;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = v10;
+    v12 = objectCopy;
   }
 
   else
@@ -96,7 +96,7 @@
     v18[3] = &unk_279D6E908;
     v18[4] = self;
     v19 = v13;
-    v20 = v11;
+    v20 = handlerCopy;
     v16 = [v15 blockOperationWithBlock:v18];
     [(NSOperationQueue *)self->_imageLoaderQueue addOperation:v16];
   }
@@ -109,26 +109,26 @@
   return v16;
 }
 
-- (void)cancelLoad:(id)a3
+- (void)cancelLoad:(id)load
 {
-  v3 = a3;
+  loadCopy = load;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v3 cancel];
+    [loadCopy cancel];
   }
 }
 
-- (id)_createApplicationIconForIdentifier:(id)a3
+- (id)_createApplicationIconForIdentifier:(id)identifier
 {
-  v3 = [MEMORY[0x277CC1E60] applicationProxyForIdentifier:a3];
-  v4 = [MEMORY[0x277D759A0] mainScreen];
-  [v4 scale];
+  v3 = [MEMORY[0x277CC1E60] applicationProxyForIdentifier:identifier];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v6 = v5;
 
   v7 = MEMORY[0x277D755B8];
-  v8 = [v3 bundleIdentifier];
-  v9 = [v7 _applicationIconImageForBundleIdentifier:v8 format:2 scale:v6];
+  bundleIdentifier = [v3 bundleIdentifier];
+  v9 = [v7 _applicationIconImageForBundleIdentifier:bundleIdentifier format:2 scale:v6];
 
   return v9;
 }

@@ -1,25 +1,25 @@
 @interface AEAnnotationManagedObjectContext
-- (AEAnnotationManagedObjectContext)initWithConcurrencyType:(unint64_t)a3;
+- (AEAnnotationManagedObjectContext)initWithConcurrencyType:(unint64_t)type;
 - (AEAnnotationProvider)annotationProvider;
 - (BOOL)saveAnnotationProvider;
 @end
 
 @implementation AEAnnotationManagedObjectContext
 
-- (AEAnnotationManagedObjectContext)initWithConcurrencyType:(unint64_t)a3
+- (AEAnnotationManagedObjectContext)initWithConcurrencyType:(unint64_t)type
 {
   v4.receiver = self;
   v4.super_class = AEAnnotationManagedObjectContext;
-  return [(AEAnnotationManagedObjectContext *)&v4 initWithConcurrencyType:a3];
+  return [(AEAnnotationManagedObjectContext *)&v4 initWithConcurrencyType:type];
 }
 
 - (BOOL)saveAnnotationProvider
 {
-  v2 = self;
-  v3 = [(AEAnnotationManagedObjectContext *)self annotationProvider];
-  LOBYTE(v2) = [v3 saveManagedObjectContext:v2];
+  selfCopy = self;
+  annotationProvider = [(AEAnnotationManagedObjectContext *)self annotationProvider];
+  LOBYTE(selfCopy) = [annotationProvider saveManagedObjectContext:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
 - (AEAnnotationProvider)annotationProvider

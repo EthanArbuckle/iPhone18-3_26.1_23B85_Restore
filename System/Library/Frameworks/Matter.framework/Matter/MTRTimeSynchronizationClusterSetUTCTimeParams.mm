@@ -1,8 +1,8 @@
 @interface MTRTimeSynchronizationClusterSetUTCTimeParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRTimeSynchronizationClusterSetUTCTimeParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -35,23 +35,23 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRTimeSynchronizationClusterSetUTCTimeParams);
-  v5 = [(MTRTimeSynchronizationClusterSetUTCTimeParams *)self utcTime];
-  [(MTRTimeSynchronizationClusterSetUTCTimeParams *)v4 setUtcTime:v5];
+  utcTime = [(MTRTimeSynchronizationClusterSetUTCTimeParams *)self utcTime];
+  [(MTRTimeSynchronizationClusterSetUTCTimeParams *)v4 setUtcTime:utcTime];
 
-  v6 = [(MTRTimeSynchronizationClusterSetUTCTimeParams *)self granularity];
-  [(MTRTimeSynchronizationClusterSetUTCTimeParams *)v4 setGranularity:v6];
+  granularity = [(MTRTimeSynchronizationClusterSetUTCTimeParams *)self granularity];
+  [(MTRTimeSynchronizationClusterSetUTCTimeParams *)v4 setGranularity:granularity];
 
-  v7 = [(MTRTimeSynchronizationClusterSetUTCTimeParams *)self timeSource];
-  [(MTRTimeSynchronizationClusterSetUTCTimeParams *)v4 setTimeSource:v7];
+  timeSource = [(MTRTimeSynchronizationClusterSetUTCTimeParams *)self timeSource];
+  [(MTRTimeSynchronizationClusterSetUTCTimeParams *)v4 setTimeSource:timeSource];
 
-  v8 = [(MTRTimeSynchronizationClusterSetUTCTimeParams *)self timedInvokeTimeoutMs];
-  [(MTRTimeSynchronizationClusterSetUTCTimeParams *)v4 setTimedInvokeTimeoutMs:v8];
+  timedInvokeTimeoutMs = [(MTRTimeSynchronizationClusterSetUTCTimeParams *)self timedInvokeTimeoutMs];
+  [(MTRTimeSynchronizationClusterSetUTCTimeParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v9 = [(MTRTimeSynchronizationClusterSetUTCTimeParams *)self serverSideProcessingTimeout];
-  [(MTRTimeSynchronizationClusterSetUTCTimeParams *)v4 setServerSideProcessingTimeout:v9];
+  serverSideProcessingTimeout = [(MTRTimeSynchronizationClusterSetUTCTimeParams *)self serverSideProcessingTimeout];
+  [(MTRTimeSynchronizationClusterSetUTCTimeParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -66,26 +66,26 @@
   return v6;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
   v24[1] = 0;
-  v25 = 0;
+  unsignedLongLongValue = 0;
   *v26 = 0;
   v23 = v24;
   v24[0] = 0;
-  v5 = [(MTRTimeSynchronizationClusterSetUTCTimeParams *)self utcTime];
-  v25 = [v5 unsignedLongLongValue];
+  utcTime = [(MTRTimeSynchronizationClusterSetUTCTimeParams *)self utcTime];
+  unsignedLongLongValue = [utcTime unsignedLongLongValue];
 
-  v6 = [(MTRTimeSynchronizationClusterSetUTCTimeParams *)self granularity];
-  v26[0] = [v6 unsignedCharValue];
+  granularity = [(MTRTimeSynchronizationClusterSetUTCTimeParams *)self granularity];
+  v26[0] = [granularity unsignedCharValue];
 
-  v7 = [(MTRTimeSynchronizationClusterSetUTCTimeParams *)self timeSource];
+  timeSource = [(MTRTimeSynchronizationClusterSetUTCTimeParams *)self timeSource];
 
-  if (v7)
+  if (timeSource)
   {
     *&v26[1] = 1;
-    v8 = [(MTRTimeSynchronizationClusterSetUTCTimeParams *)self timeSource];
-    v26[2] = [v8 unsignedCharValue];
+    timeSource2 = [(MTRTimeSynchronizationClusterSetUTCTimeParams *)self timeSource];
+    v26[2] = [timeSource2 unsignedCharValue];
   }
 
   sub_2393D9C18(0x62FuLL, 0, &v22);
@@ -98,7 +98,7 @@
     v21 = 0;
     sub_238EA16C4(&v18, &v22, 0);
     sub_2393C7BF0(v17, &v18, 0xFFFFFFFF);
-    v9 = sub_238F2D320(&v25, v17, 0x100uLL);
+    v9 = sub_238F2D320(&unsignedLongLongValue, v17, 0x100uLL);
     v11 = v9;
     if (v9 || (v9 = sub_238DD2EFC(v17, &v22), v11 = v9, v9))
     {
@@ -107,8 +107,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v22);
-      v9 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v22);
+      v9 = sub_2393C7114(reader, 21, 256);
       v12 = v16;
       v11 = v9;
     }
@@ -136,19 +136,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRTimeSynchronizationClusterSetUTCTimeParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -159,7 +159,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x1DE300000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

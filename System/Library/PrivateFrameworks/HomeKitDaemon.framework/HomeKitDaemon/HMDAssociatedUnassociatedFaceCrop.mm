@@ -1,6 +1,6 @@
 @interface HMDAssociatedUnassociatedFaceCrop
-- (BOOL)isEqual:(id)a3;
-- (HMDAssociatedUnassociatedFaceCrop)initWithUUID:(id)a3 dataRepresentation:(id)a4 dateCreated:(id)a5 faceBoundingBox:(CGRect)a6 personFaceCropUUID:(id)a7;
+- (BOOL)isEqual:(id)equal;
+- (HMDAssociatedUnassociatedFaceCrop)initWithUUID:(id)d dataRepresentation:(id)representation dateCreated:(id)created faceBoundingBox:(CGRect)box personFaceCropUUID:(id)iD;
 - (id)attributeDescriptions;
 - (unint64_t)hash;
 @end
@@ -11,12 +11,12 @@
 {
   v10.receiver = self;
   v10.super_class = HMDAssociatedUnassociatedFaceCrop;
-  v3 = [(HMDAssociatedUnassociatedFaceCrop *)&v10 attributeDescriptions];
-  v4 = [v3 mutableCopy];
+  attributeDescriptions = [(HMDAssociatedUnassociatedFaceCrop *)&v10 attributeDescriptions];
+  v4 = [attributeDescriptions mutableCopy];
 
   v5 = objc_alloc(MEMORY[0x277D0F778]);
-  v6 = [(HMDAssociatedUnassociatedFaceCrop *)self personFaceCropUUID];
-  v7 = [v5 initWithName:@"Person Face Crop UUID" value:v6];
+  personFaceCropUUID = [(HMDAssociatedUnassociatedFaceCrop *)self personFaceCropUUID];
+  v7 = [v5 initWithName:@"Person Face Crop UUID" value:personFaceCropUUID];
   [v4 addObject:v7];
 
   v8 = [v4 copy];
@@ -26,19 +26,19 @@
 
 - (unint64_t)hash
 {
-  v2 = [(HMDAssociatedUnassociatedFaceCrop *)self personFaceCropUUID];
-  v3 = [v2 hash];
+  personFaceCropUUID = [(HMDAssociatedUnassociatedFaceCrop *)self personFaceCropUUID];
+  v3 = [personFaceCropUUID hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -49,9 +49,9 @@
   v6 = v5;
   if (v6 && (v11.receiver = self, v11.super_class = HMDAssociatedUnassociatedFaceCrop, [(HMDAssociatedUnassociatedFaceCrop *)&v11 isEqual:v6]))
   {
-    v7 = [(HMDAssociatedUnassociatedFaceCrop *)self personFaceCropUUID];
-    v8 = [v6 personFaceCropUUID];
-    v9 = [v7 isEqual:v8];
+    personFaceCropUUID = [(HMDAssociatedUnassociatedFaceCrop *)self personFaceCropUUID];
+    personFaceCropUUID2 = [v6 personFaceCropUUID];
+    v9 = [personFaceCropUUID isEqual:personFaceCropUUID2];
   }
 
   else
@@ -62,38 +62,38 @@
   return v9;
 }
 
-- (HMDAssociatedUnassociatedFaceCrop)initWithUUID:(id)a3 dataRepresentation:(id)a4 dateCreated:(id)a5 faceBoundingBox:(CGRect)a6 personFaceCropUUID:(id)a7
+- (HMDAssociatedUnassociatedFaceCrop)initWithUUID:(id)d dataRepresentation:(id)representation dateCreated:(id)created faceBoundingBox:(CGRect)box personFaceCropUUID:(id)iD
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a7;
-  if (!v15)
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
+  dCopy = d;
+  representationCopy = representation;
+  createdCopy = created;
+  iDCopy = iD;
+  if (!dCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_9;
   }
 
-  if (!v16)
+  if (!representationCopy)
   {
 LABEL_9:
     _HMFPreconditionFailure();
     goto LABEL_10;
   }
 
-  if (!v17)
+  if (!createdCopy)
   {
 LABEL_10:
     _HMFPreconditionFailure();
     goto LABEL_11;
   }
 
-  v19 = v18;
-  if (!v18)
+  v19 = iDCopy;
+  if (!iDCopy)
   {
 LABEL_11:
     v24 = _HMFPreconditionFailure();
@@ -102,15 +102,15 @@ LABEL_11:
 
   v26.receiver = self;
   v26.super_class = HMDAssociatedUnassociatedFaceCrop;
-  v20 = [(HMDAssociatedUnassociatedFaceCrop *)&v26 initWithUUID:v15 dataRepresentation:v16 dateCreated:v17 faceBoundingBox:x, y, width, height];
-  if (v20)
+  height = [(HMDAssociatedUnassociatedFaceCrop *)&v26 initWithUUID:dCopy dataRepresentation:representationCopy dateCreated:createdCopy faceBoundingBox:x, y, width, height];
+  if (height)
   {
     v21 = [v19 copy];
-    personFaceCropUUID = v20->_personFaceCropUUID;
-    v20->_personFaceCropUUID = v21;
+    personFaceCropUUID = height->_personFaceCropUUID;
+    height->_personFaceCropUUID = v21;
   }
 
-  return v20;
+  return height;
 }
 
 @end

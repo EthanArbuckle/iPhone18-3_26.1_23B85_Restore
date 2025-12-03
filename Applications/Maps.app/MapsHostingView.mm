@@ -1,13 +1,13 @@
 @interface MapsHostingView
 - (CGSize)intrinsicContentSize;
-- (_TtC4Maps15MapsHostingView)initWithCoder:(id)a3;
-- (_TtC4Maps15MapsHostingView)initWithFrame:(CGRect)a3;
+- (_TtC4Maps15MapsHostingView)initWithCoder:(id)coder;
+- (_TtC4Maps15MapsHostingView)initWithFrame:(CGRect)frame;
 - (void)didMoveToWindow;
 @end
 
 @implementation MapsHostingView
 
-- (_TtC4Maps15MapsHostingView)initWithCoder:(id)a3
+- (_TtC4Maps15MapsHostingView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC4Maps15MapsHostingView_hostingController) = 0;
   result = _assertionFailure(_:_:file:line:flags:)();
@@ -30,16 +30,16 @@
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC4Maps15MapsHostingView_hostingController);
   if (v2)
   {
-    v3 = self;
-    v4 = [v2 view];
-    if (!v4)
+    selfCopy = self;
+    view = [v2 view];
+    if (!view)
     {
       __break(1u);
       goto LABEL_7;
     }
 
-    v7 = v4;
-    [v4 intrinsicContentSize];
+    v7 = view;
+    [view intrinsicContentSize];
     v9 = v8;
     v11 = v10;
   }
@@ -58,7 +58,7 @@ LABEL_7:
   return result;
 }
 
-- (_TtC4Maps15MapsHostingView)initWithFrame:(CGRect)a3
+- (_TtC4Maps15MapsHostingView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

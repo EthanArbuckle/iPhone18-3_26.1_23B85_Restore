@@ -1,18 +1,18 @@
 @interface TSBuddyMLController
-- (TSBuddyMLController)initWithHostController:(id)a3;
+- (TSBuddyMLController)initWithHostController:(id)controller;
 - (TSSIMSetupFlowDelegate)delegate;
 - (void)_configureRUIController;
 - (void)_userDidTapCancel;
-- (void)loadRequest:(id)a3 completion:(id)a4;
-- (void)remoteUIController:(id)a3 didRemoveObjectModel:(id)a4;
-- (void)remoteUIController:(id)a3 shouldLoadRequest:(id)a4 redirectResponse:(id)a5 withCompletionHandler:(id)a6;
+- (void)loadRequest:(id)request completion:(id)completion;
+- (void)remoteUIController:(id)controller didRemoveObjectModel:(id)model;
+- (void)remoteUIController:(id)controller shouldLoadRequest:(id)request redirectResponse:(id)response withCompletionHandler:(id)handler;
 @end
 
 @implementation TSBuddyMLController
 
-- (TSBuddyMLController)initWithHostController:(id)a3
+- (TSBuddyMLController)initWithHostController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v10.receiver = self;
   v10.super_class = TSBuddyMLController;
   v5 = [(TSBuddyMLController *)&v10 init];
@@ -25,7 +25,7 @@
     v6->_cancelButton = v7;
 
     [(TSBuddyMLController *)v6 _configureRUIController];
-    [(RemoteUIController *)v6->_remoteUIController setHostViewController:v4];
+    [(RemoteUIController *)v6->_remoteUIController setHostViewController:controllerCopy];
   }
 
   return v6;
@@ -33,25 +33,25 @@
 
 - (void)_userDidTapCancel
 {
-  v3 = [(RemoteUIController *)self->_remoteUIController hostViewController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  hostViewController = [(RemoteUIController *)self->_remoteUIController hostViewController];
+  [hostViewController dismissViewControllerAnimated:1 completion:0];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained userDidTapCancel];
 }
 
-- (void)loadRequest:(id)a3 completion:(id)a4
+- (void)loadRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  requestCopy = request;
+  completionCopy = completion;
+  if (requestCopy)
   {
     if (_isInternalInstall())
     {
       v8 = _TSLogDomain();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
       {
-        [TSBuddyMLController loadRequest:v6 completion:v8];
+        [TSBuddyMLController loadRequest:requestCopy completion:v8];
       }
     }
 
@@ -61,8 +61,8 @@
     v11[2] = __46__TSBuddyMLController_loadRequest_completion___block_invoke;
     v11[3] = &unk_279B456F8;
     v11[4] = self;
-    v12 = v7;
-    [(RemoteUIController *)remoteUIController loadRequest:v6 completion:v11];
+    v12 = completionCopy;
+    [(RemoteUIController *)remoteUIController loadRequest:requestCopy completion:v11];
   }
 
   else
@@ -73,14 +73,14 @@
       [TSBuddyMLController loadRequest:v10 completion:?];
     }
 
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-- (void)remoteUIController:(id)a3 shouldLoadRequest:(id)a4 redirectResponse:(id)a5 withCompletionHandler:(id)a6
+- (void)remoteUIController:(id)controller shouldLoadRequest:(id)request redirectResponse:(id)response withCompletionHandler:(id)handler
 {
-  v10 = a4;
-  v8 = a6;
+  requestCopy = request;
+  handlerCopy = handler;
   if (self->_initialRequest)
   {
     initialRequest = 1;
@@ -89,29 +89,29 @@
   else
   {
 
-    v10 = 0;
+    requestCopy = 0;
     initialRequest = self->_initialRequest;
   }
 
-  v8[2](v8, initialRequest, 0);
+  handlerCopy[2](handlerCopy, initialRequest, 0);
 }
 
-- (void)remoteUIController:(id)a3 didRemoveObjectModel:(id)a4
+- (void)remoteUIController:(id)controller didRemoveObjectModel:(id)model
 {
-  v12 = a3;
-  v5 = [v12 displayedPages];
-  v6 = [v5 count];
+  controllerCopy = controller;
+  displayedPages = [controllerCopy displayedPages];
+  v6 = [displayedPages count];
 
   if (!v6)
   {
-    v7 = [v12 navigationController];
-    v8 = [v7 topViewController];
+    navigationController = [controllerCopy navigationController];
+    topViewController = [navigationController topViewController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      WeakRetained = [v12 navigationController];
+      WeakRetained = [controllerCopy navigationController];
       v11 = [WeakRetained popViewControllerAnimated:0];
     }
 
@@ -134,9 +134,9 @@
   v6 = [[TSRemoteUIStyle alloc] initWithButton:self->_cancelButton];
   [(RemoteUIController *)v5 setStyle:v6];
 
-  v7 = [MEMORY[0x277CCAD38] ephemeralSessionConfiguration];
-  [v7 set_sourceApplicationSecondaryIdentifier:@"com.apple.CommCenter.CellularPlanProvisioning"];
-  [(RemoteUIController *)self->_remoteUIController setSessionConfiguration:v7];
+  ephemeralSessionConfiguration = [MEMORY[0x277CCAD38] ephemeralSessionConfiguration];
+  [ephemeralSessionConfiguration set_sourceApplicationSecondaryIdentifier:@"com.apple.CommCenter.CellularPlanProvisioning"];
+  [(RemoteUIController *)self->_remoteUIController setSessionConfiguration:ephemeralSessionConfiguration];
   objc_initWeak(&location, self);
   v8 = self->_remoteUIController;
   v12[0] = MEMORY[0x277D85DD0];

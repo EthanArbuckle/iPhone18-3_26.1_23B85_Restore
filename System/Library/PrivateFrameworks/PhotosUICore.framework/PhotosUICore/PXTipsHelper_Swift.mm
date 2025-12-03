@@ -1,15 +1,15 @@
 @interface PXTipsHelper_Swift
-+ (BOOL)isTipInvalidated:(id)a3;
++ (BOOL)isTipInvalidated:(id)invalidated;
 + (NSDictionary)presentationDelegates;
 + (uint64_t)setup;
-+ (void)setPresentationDelegates:(id)a3;
-+ (void)setTip:(id)a3 presentationDelegate:(id)a4;
++ (void)setPresentationDelegates:(id)delegates;
++ (void)setTip:(id)tip presentationDelegate:(id)delegate;
 - (NSString)presentedTipID;
 - (PXTipsHelper_Swift)init;
 - (UIViewController)tipPopover;
-- (void)presentationControllerDidDismiss:(id)a3;
-- (void)setPresentedTipID:(id)a3;
-- (void)updatePopoverTip:(id)a3 sourceRect:(CGRect)a4;
+- (void)presentationControllerDidDismiss:(id)dismiss;
+- (void)setPresentedTipID:(id)d;
+- (void)updatePopoverTip:(id)tip sourceRect:(CGRect)rect;
 @end
 
 @implementation PXTipsHelper_Swift
@@ -48,7 +48,7 @@
   return result;
 }
 
-+ (BOOL)isTipInvalidated:(id)a3
++ (BOOL)isTipInvalidated:(id)invalidated
 {
   v3 = sub_1A524C674();
   v5 = _s12PhotosUICore12PXTipsHelperC16isTipInvalidatedySbSSFZ_0(v3, v4);
@@ -68,17 +68,17 @@
   return 0;
 }
 
-+ (void)setPresentationDelegates:(id)a3
++ (void)setPresentationDelegates:(id)delegates
 {
-  v3 = a3;
-  if (a3)
+  delegatesCopy = delegates;
+  if (delegates)
   {
     sub_1A3C92704();
-    v3 = sub_1A524C3E4();
+    delegatesCopy = sub_1A524C3E4();
   }
 
   swift_beginAccess();
-  qword_1EB1EB7A0 = v3;
+  qword_1EB1EB7A0 = delegatesCopy;
 }
 
 - (NSString)presentedTipID
@@ -93,9 +93,9 @@
   return 0;
 }
 
-- (void)setPresentedTipID:(id)a3
+- (void)setPresentedTipID:(id)d
 {
-  if (a3)
+  if (d)
   {
     v4 = sub_1A524C674();
     v6 = v5;
@@ -121,7 +121,7 @@
   return Strong;
 }
 
-+ (void)setTip:(id)a3 presentationDelegate:(id)a4
++ (void)setTip:(id)tip presentationDelegate:(id)delegate
 {
   sub_1A524C674();
   swift_beginAccess();
@@ -135,15 +135,15 @@
   _s12PhotosUICore13SpriteBuilderV11buildEither5firstSayAA0C13Configuration_pGAG_tFZ_0();
 }
 
-- (void)updatePopoverTip:(id)a3 sourceRect:(CGRect)a4
+- (void)updatePopoverTip:(id)tip sourceRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v9 = sub_1A524C674();
   v11 = v10;
-  v12 = self;
+  selfCopy = self;
   v13._countAndFlagsBits = v9;
   v13._object = v11;
   v15.origin.x = x;
@@ -153,10 +153,10 @@
   PXTipsHelper.updatePopoverTip(_:sourceRect:)(v13, v15);
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = self;
+  dismissCopy = dismiss;
+  selfCopy = self;
   _s12PhotosUICore12PXTipsHelperC32presentationControllerDidDismissyySo014UIPresentationF0CF_0();
 }
 

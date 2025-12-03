@@ -1,14 +1,14 @@
 @interface _UIViewServiceDummyPopoverView
-- (void)setUseToolbarShine:(BOOL)a3;
+- (void)setUseToolbarShine:(BOOL)shine;
 @end
 
 @implementation _UIViewServiceDummyPopoverView
 
-- (void)setUseToolbarShine:(BOOL)a3
+- (void)setUseToolbarShine:(BOOL)shine
 {
-  v3 = a3;
-  v5 = [(_UIPopoverView *)self popoverController];
-  [v5 _popoverView:self didSetUseToolbarShine:v3];
+  shineCopy = shine;
+  popoverController = [(_UIPopoverView *)self popoverController];
+  [popoverController _popoverView:self didSetUseToolbarShine:shineCopy];
 }
 
 @end

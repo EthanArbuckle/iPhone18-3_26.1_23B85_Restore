@@ -1,34 +1,34 @@
 @interface SKTextureAtlas
-+ (BOOL)canUseObjectForAtlas:(id)a3;
-+ (CGImage)createCGImageFromCUINamedImage:(CGImage *)a3 withSize:(CGSize)a4 atRect:(CGRect)a5;
++ (BOOL)canUseObjectForAtlas:(id)atlas;
++ (CGImage)createCGImageFromCUINamedImage:(CGImage *)image withSize:(CGSize)size atRect:(CGRect)rect;
 + (SKTextureAtlas)atlasNamed:(NSString *)name;
 + (SKTextureAtlas)atlasWithDictionary:(NSDictionary *)properties;
-+ (id)atlasFromCUIImageAtlas:(id)a3 withName:(id)a4;
-+ (id)findTextureNamed:(id)a3;
++ (id)atlasFromCUIImageAtlas:(id)atlas withName:(id)name;
++ (id)findTextureNamed:(id)named;
 + (id)getSupportedPostfixes;
-+ (id)lookupCachedTextureNamed:(id)a3;
-+ (void)_exportAtlasWithDictionary:(id)a3 toFile:(id)a4;
-+ (void)_exportAtlasWithDictionary:(id)a3 toFile:(id)a4 forcePOT:(BOOL)a5;
++ (id)lookupCachedTextureNamed:(id)named;
++ (void)_exportAtlasWithDictionary:(id)dictionary toFile:(id)file;
++ (void)_exportAtlasWithDictionary:(id)dictionary toFile:(id)file forcePOT:(BOOL)t;
 + (void)preloadTextureAtlases:(NSArray *)textureAtlases withCompletionHandler:(void *)completionHandler;
 + (void)preloadTextureAtlasesNamed:(NSArray *)atlasNames withCompletionHandler:(void *)completionHandler;
-- (BOOL)isEqualToTextureAtlas:(id)a3;
+- (BOOL)isEqualToTextureAtlas:(id)atlas;
 - (NSArray)textureNames;
 - (SKTexture)textureNamed:(NSString *)name;
 - (SKTextureAtlas)init;
-- (SKTextureAtlas)initWithCoder:(id)a3;
+- (SKTextureAtlas)initWithCoder:(id)coder;
 - (id).cxx_construct;
 - (id)_copyImageData;
-- (id)createSubTextureFromTexture:(id)a3 andCUINamedImage:(id)a4 andOrigin:(CGPoint)a5;
-- (id)createTextureFromProvider:(CGImageProvider *)a3 andSource:(CGImage *)a4;
+- (id)createSubTextureFromTexture:(id)texture andCUINamedImage:(id)image andOrigin:(CGPoint)origin;
+- (id)createTextureFromProvider:(CGImageProvider *)provider andSource:(CGImage *)source;
 - (id)description;
-- (id)findTextureNamedFromAtlas:(id)a3;
+- (id)findTextureNamedFromAtlas:(id)atlas;
 - (void)_prePopulateCache;
 - (void)commonInit;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)loadTextures;
-- (void)loadTexturesFromCUIImageAtlas:(id)a3;
-- (void)parseAtlasPropertyList:(id)a3 withPath:(id)a4;
+- (void)loadTexturesFromCUIImageAtlas:(id)atlas;
+- (void)parseAtlasPropertyList:(id)list withPath:(id)path;
 - (void)preloadWithCompletionHandler:(void *)completionHandler;
 - (void)unload;
 @end
@@ -120,10 +120,10 @@ void __28__SKTextureAtlas_commonInit__block_invoke()
   return v3;
 }
 
-- (SKTextureAtlas)initWithCoder:(id)a3
+- (SKTextureAtlas)initWithCoder:(id)coder
 {
   v16[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = SKTextureAtlas;
   v5 = [(SKTextureAtlas *)&v15 init];
@@ -131,7 +131,7 @@ void __28__SKTextureAtlas_commonInit__block_invoke()
   if (v5)
   {
     [(SKTextureAtlas *)v5 commonInit];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_atlasName"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_atlasName"];
     atlasName = v6->_atlasName;
     v6->_atlasName = v7;
 
@@ -141,7 +141,7 @@ void __28__SKTextureAtlas_commonInit__block_invoke()
     v16[2] = objc_opt_class();
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:3];
     v11 = [v9 setWithArray:v10];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"_textureDict"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"_textureDict"];
     textureDict = v6->_textureDict;
     v6->_textureDict = v12;
 
@@ -152,19 +152,19 @@ void __28__SKTextureAtlas_commonInit__block_invoke()
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_atlasName forKey:@"_atlasName"];
-  [v4 encodeObject:self->_textureDict forKey:@"_textureDict"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_atlasName forKey:@"_atlasName"];
+  [coderCopy encodeObject:self->_textureDict forKey:@"_textureDict"];
 }
 
-- (BOOL)isEqualToTextureAtlas:(id)a3
+- (BOOL)isEqualToTextureAtlas:(id)atlas
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  atlasCopy = atlas;
   atlasName = self->_atlasName;
-  v6 = *(v4 + 2);
+  v6 = *(atlasCopy + 2);
   if (atlasName)
   {
     if (v6 && [(NSString *)atlasName isEqualToString:?])
@@ -203,7 +203,7 @@ LABEL_4:
 
         v11 = *(*(&v17 + 1) + 8 * i);
         v12 = [(NSDictionary *)self->_textureDict objectForKey:v11, v17];
-        v13 = [*(v4 + 1) objectForKey:v11];
+        v13 = [*(atlasCopy + 1) objectForKey:v11];
         if (!v13)
         {
 
@@ -259,9 +259,9 @@ LABEL_20:
   return v3;
 }
 
-+ (BOOL)canUseObjectForAtlas:(id)a3
++ (BOOL)canUseObjectForAtlas:(id)atlas
 {
-  v3 = a3;
+  atlasCopy = atlas;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
@@ -280,10 +280,10 @@ LABEL_20:
 + (SKTextureAtlas)atlasWithDictionary:(NSDictionary *)properties
 {
   v4 = properties;
-  v5 = [(NSDictionary *)v4 allValues];
-  for (i = 0; [v5 count] > i; ++i)
+  allValues = [(NSDictionary *)v4 allValues];
+  for (i = 0; [allValues count] > i; ++i)
   {
-    v7 = [v5 objectAtIndexedSubscript:i];
+    v7 = [allValues objectAtIndexedSubscript:i];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -294,7 +294,7 @@ LABEL_10:
       goto LABEL_17;
     }
 
-    if (([a1 canUseObjectForAtlas:v7] & 1) == 0)
+    if (([self canUseObjectForAtlas:v7] & 1) == 0)
     {
       v12 = MEMORY[0x277CBEAD8];
       v13 = objc_opt_class();
@@ -339,23 +339,23 @@ LABEL_17:
   return v11;
 }
 
-- (void)parseAtlasPropertyList:(id)a3 withPath:(id)a4
+- (void)parseAtlasPropertyList:(id)list withPath:(id)path
 {
   v152 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v103 = a4;
-  v104 = v5;
-  if (v5)
+  listCopy = list;
+  pathCopy = path;
+  v104 = listCopy;
+  if (listCopy)
   {
-    v102 = [v5 objectForKey:@"format"];
+    v102 = [listCopy objectForKey:@"format"];
     if (v102 && [v102 isEqualToString:@"APPL"])
     {
-      v6 = [v5 objectForKey:@"version"];
+      v6 = [listCopy objectForKey:@"version"];
       if ([v6 intValue] == 1)
       {
         v97 = v6;
-        v7 = [MEMORY[0x277CBEB38] dictionary];
-        [v5 objectForKey:@"images"];
+        dictionary = [MEMORY[0x277CBEB38] dictionary];
+        [listCopy objectForKey:@"images"];
         v144 = 0u;
         v145 = 0u;
         v142 = 0u;
@@ -423,9 +423,9 @@ LABEL_18:
             }
 
             v22 = v108;
-            if (v103)
+            if (pathCopy)
             {
-              v23 = [v103 stringByAppendingPathComponent:v22];
+              v23 = [pathCopy stringByAppendingPathComponent:v22];
             }
 
             else
@@ -435,8 +435,8 @@ LABEL_18:
 
             v24 = v23;
             v18 = [SKTexture textureWithImageNamed:v23];
-            v25 = [v22 lowercaseString];
-            v26 = [v25 rangeOfString:@"@2x"] == 0x7FFFFFFFFFFFFFFFLL;
+            lowercaseString = [v22 lowercaseString];
+            v26 = [lowercaseString rangeOfString:@"@2x"] == 0x7FFFFFFFFFFFFFFFLL;
 
             if (!v26)
             {
@@ -481,9 +481,9 @@ LABEL_23:
                   v38 = CGSizeFromString(v37);
 
                   v39 = [v30 objectForKey:@"textureRotated"];
-                  v40 = [v39 BOOLValue];
+                  bOOLValue = [v39 BOOLValue];
 
-                  if (v40)
+                  if (bOOLValue)
                   {
                     v41 = width;
                   }
@@ -493,7 +493,7 @@ LABEL_23:
                     v41 = height;
                   }
 
-                  if (v40)
+                  if (bOOLValue)
                   {
                     v42 = height;
                   }
@@ -505,12 +505,12 @@ LABEL_23:
 
                   v43 = [SKTexture textureWithRect:v113 inTexture:x / v141.width, (v141.height - (y + height)) / v141.height, width / v141.width, height / v141.height];
                   [v43 setCropOffset:{(v36.x - (v38.width - v42) * 0.5) / v42, (v36.y - (v38.height - v41) * 0.5) / v41}];
-                  [v43 setIsRotated:v40];
+                  [v43 setIsRotated:bOOLValue];
                   [v43 setCropScale:{v42 / v38.width, v41 / v38.height}];
                   v44 = [v30 objectForKey:@"name"];
                   [v43 setSubTextureName:v44];
                   [v43 setOriginalAtlasName:self->_atlasName];
-                  [(NSDictionary *)v7 setObject:v43 forKey:v44];
+                  [(NSDictionary *)dictionary setObject:v43 forKey:v44];
                   v134 = 0u;
                   v135 = 0u;
                   v132 = 0u;
@@ -529,7 +529,7 @@ LABEL_23:
                           objc_enumerationMutation(v45);
                         }
 
-                        [(NSDictionary *)v7 setObject:v43 forKey:*(*(&v132 + 1) + 8 * j)];
+                        [(NSDictionary *)dictionary setObject:v43 forKey:*(*(&v132 + 1) + 8 * j)];
                       }
 
                       v46 = [v45 countByEnumeratingWithState:&v132 objects:v149 count:16];
@@ -555,7 +555,7 @@ LABEL_23:
 LABEL_45:
 
             textureDict = self->_textureDict;
-            self->_textureDict = v7;
+            self->_textureDict = dictionary;
 
             v6 = v97;
             goto LABEL_79;
@@ -569,7 +569,7 @@ LABEL_79:
       goto LABEL_80;
     }
 
-    v50 = [v5 objectForKey:@"metadata"];
+    v50 = [listCopy objectForKey:@"metadata"];
     v51 = v50;
     if (!v50)
     {
@@ -587,7 +587,7 @@ LABEL_81:
       {
         v99 = v52;
         v101 = v51;
-        v53 = [MEMORY[0x277CBEB38] dictionary];
+        dictionary2 = [MEMORY[0x277CBEB38] dictionary];
         v117 = [SKTexture textureWithImageNamed:self->_atlasName];
         v54 = [v51 objectForKey:@"size"];
         v55 = CGSizeFromString(v54);
@@ -631,15 +631,15 @@ LABEL_81:
               v69 = CGSizeFromString(v68);
 
               v70 = [v59 objectForKey:@"textureRotated"];
-              v71 = [v70 BOOLValue];
+              bOOLValue2 = [v70 BOOLValue];
 
               v72 = [SKTexture textureWithRect:v117 inTexture:v112 / v55.width, (v55.height - (v62 + v63)) / v55.height, v114 / v55.width, v63 / v55.height];
               [v72 setCropOffset:{v67.x / v65.width, v67.y / v65.height}];
-              [v72 setIsRotated:v71];
+              [v72 setIsRotated:bOOLValue2];
               [v72 setCropScale:{v65.width / v69.width, v65.height / v69.height}];
               [v72 setSubTextureName:v58];
               [v72 setOriginalAtlasName:self->_atlasName];
-              [(NSDictionary *)v53 setObject:v72 forKey:v58];
+              [(NSDictionary *)dictionary2 setObject:v72 forKey:v58];
               v126 = 0u;
               v127 = 0u;
               v124 = 0u;
@@ -658,7 +658,7 @@ LABEL_81:
                       objc_enumerationMutation(v73);
                     }
 
-                    [(NSDictionary *)v53 setObject:v72 forKey:*(*(&v124 + 1) + 8 * m)];
+                    [(NSDictionary *)dictionary2 setObject:v72 forKey:*(*(&v124 + 1) + 8 * m)];
                   }
 
                   v74 = [v73 countByEnumeratingWithState:&v124 objects:v147 count:16];
@@ -677,7 +677,7 @@ LABEL_81:
 LABEL_76:
 
         v95 = self->_textureDict;
-        self->_textureDict = v53;
+        self->_textureDict = dictionary2;
 
 LABEL_80:
         [(SKTextureAtlas *)self _prePopulateCache];
@@ -689,7 +689,7 @@ LABEL_80:
       {
         v99 = v52;
         v101 = v51;
-        v53 = [MEMORY[0x277CBEB38] dictionary];
+        dictionary2 = [MEMORY[0x277CBEB38] dictionary];
         v77 = [v51 objectForKey:@"textureFileName"];
         v117 = [SKTexture textureWithImageNamed:v77];
 
@@ -734,7 +734,7 @@ LABEL_80:
               [v94 setCropOffset:{v91.x, v91.y}];
               [v94 setIsRotated:0];
               [v94 setCropScale:{v88 / v93.width, v89 / v93.height}];
-              [(NSDictionary *)v53 setObject:v94 forKey:v83];
+              [(NSDictionary *)dictionary2 setObject:v94 forKey:v83];
             }
 
             v80 = [v110 countByEnumeratingWithState:&v120 objects:v146 count:16];
@@ -757,14 +757,14 @@ LABEL_82:
 - (void)loadTextures
 {
   v26 = [MEMORY[0x277D02670] defaultUICatalogForBundle:0];
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  [v3 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v5 = v4;
 
-  v6 = [MEMORY[0x277D75418] currentDevice];
-  v7 = [v6 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  v8 = [v26 namedImageAtlasWithName:self->_atlasName scaleFactor:__deviceClassForInterfaceIdiom(v7) deviceIdiom:v5];
+  v8 = [v26 namedImageAtlasWithName:self->_atlasName scaleFactor:__deviceClassForInterfaceIdiom(userInterfaceIdiom) deviceIdiom:v5];
   if (v8)
   {
     v9 = +[SKAnalytics instance];
@@ -784,28 +784,28 @@ LABEL_15:
 
   if (!v12)
   {
-    v13 = [(NSString *)self->_atlasName pathExtension];
-    v14 = [v13 caseInsensitiveCompare:@"plist"];
+    pathExtension = [(NSString *)self->_atlasName pathExtension];
+    v14 = [pathExtension caseInsensitiveCompare:@"plist"];
 
     atlasName = self->_atlasName;
     if (v14)
     {
-      v16 = [(NSString *)atlasName pathExtension];
-      v17 = [v16 caseInsensitiveCompare:@"atlasc"];
+      pathExtension2 = [(NSString *)atlasName pathExtension];
+      v17 = [pathExtension2 caseInsensitiveCompare:@"atlasc"];
 
       v18 = self->_atlasName;
       if (v17)
       {
-        v19 = [(NSString *)self->_atlasName stringByAppendingString:@".atlasc"];
-        v20 = [(NSString *)self->_atlasName lastPathComponent];
-        v21 = [v19 stringByAppendingPathComponent:v20];
+        lastPathComponent2 = [(NSString *)self->_atlasName stringByAppendingString:@".atlasc"];
+        lastPathComponent = [(NSString *)self->_atlasName lastPathComponent];
+        v21 = [lastPathComponent2 stringByAppendingPathComponent:lastPathComponent];
       }
 
       else
       {
-        v19 = [(NSString *)self->_atlasName lastPathComponent];
-        v22 = [v19 stringByDeletingPathExtension];
-        v21 = [(NSString *)v18 stringByAppendingPathComponent:v22];
+        lastPathComponent2 = [(NSString *)self->_atlasName lastPathComponent];
+        stringByDeletingPathExtension = [lastPathComponent2 stringByDeletingPathExtension];
+        v21 = [(NSString *)v18 stringByAppendingPathComponent:stringByDeletingPathExtension];
       }
     }
 
@@ -818,7 +818,7 @@ LABEL_15:
     v12 = [v23 pathForResource:v21 ofType:@"plist"];
   }
 
-  v24 = [v12 stringByDeletingLastPathComponent];
+  stringByDeletingLastPathComponent = [v12 stringByDeletingLastPathComponent];
   if (v12)
   {
     v25 = [_offlineAtlasCache objectForKey:v12];
@@ -827,7 +827,7 @@ LABEL_15:
       v25 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfFile:v12];
     }
 
-    [(SKTextureAtlas *)self parseAtlasPropertyList:v25 withPath:v24];
+    [(SKTextureAtlas *)self parseAtlasPropertyList:v25 withPath:stringByDeletingLastPathComponent];
     [_offlineAtlasCache removeObjectForKey:v12];
 
     goto LABEL_15;
@@ -851,9 +851,9 @@ LABEL_16:
   else
   {
     v6 = objc_alloc_init(SKTextureAtlas);
-    v7 = [(NSString *)v3 stringByDeletingPathExtension];
+    stringByDeletingPathExtension = [(NSString *)v3 stringByDeletingPathExtension];
     atlasName = v6->_atlasName;
-    v6->_atlasName = v7;
+    v6->_atlasName = stringByDeletingPathExtension;
 
     [(SKTextureAtlas *)v6 loadTextures];
   }
@@ -861,7 +861,7 @@ LABEL_16:
   return v6;
 }
 
-- (id)createTextureFromProvider:(CGImageProvider *)a3 andSource:(CGImage *)a4
+- (id)createTextureFromProvider:(CGImageProvider *)provider andSource:(CGImage *)source
 {
   v5 = CGImageProviderCopyIOSurface();
   if (!v5)
@@ -872,7 +872,7 @@ LABEL_16:
 
   v6 = v5;
   PixelFormat = IOSurfaceGetPixelFormat(v5);
-  ColorSpace = CGImageGetColorSpace(a4);
+  ColorSpace = CGImageGetColorSpace(source);
   ProcessColorModel = CGColorSpaceGetProcessColorModel();
   v10 = CGColorSpaceUsesExtendedRange(ColorSpace);
   switch(PixelFormat)
@@ -908,83 +908,83 @@ LABEL_14:
   return v12;
 }
 
-- (id)createSubTextureFromTexture:(id)a3 andCUINamedImage:(id)a4 andOrigin:(CGPoint)a5
+- (id)createSubTextureFromTexture:(id)texture andCUINamedImage:(id)image andOrigin:(CGPoint)origin
 {
-  y = a5.y;
-  x = a5.x;
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 croppedImage];
-  [v9 size];
+  y = origin.y;
+  x = origin.x;
+  textureCopy = texture;
+  imageCopy = image;
+  croppedImage = [imageCopy croppedImage];
+  [imageCopy size];
   v12 = v11;
-  [v9 scale];
+  [imageCopy scale];
   v14 = v13;
-  [v9 size];
+  [imageCopy size];
   v16 = v15;
-  [v9 scale];
+  [imageCopy scale];
   v17 = v12 * v14;
   v19 = v16 * v18;
   v60 = v17;
   *v65 = v17;
   *&v65[1] = v16 * v18;
-  Width = CGImageGetWidth(v10);
-  Height = CGImageGetHeight(v10);
+  Width = CGImageGetWidth(croppedImage);
+  Height = CGImageGetHeight(croppedImage);
   v64[0] = Width;
   v64[1] = Height;
-  if (v8)
+  if (textureCopy)
   {
-    [v8 pixelSize];
+    [textureCopy pixelSize];
     v23 = v22;
-    [v9 scale];
+    [imageCopy scale];
     v25 = v24;
-    [v8 pixelSize];
+    [textureCopy pixelSize];
     v27 = v26;
-    [v9 scale];
+    [imageCopy scale];
     v62 = v23 / v25;
     v63 = v27 / v28;
-    [v8 pixelSize];
+    [textureCopy pixelSize];
     v30 = v29;
-    [v8 pixelSize];
+    [textureCopy pixelSize];
     v32 = v31;
-    [v8 pixelSize];
+    [textureCopy pixelSize];
     v34 = v33;
-    [v8 pixelSize];
-    v36 = [SKTexture textureWithRect:v8 inTexture:x / v30, y / v32, Width / v34, Height / v35];
+    [textureCopy pixelSize];
+    v36 = [SKTexture textureWithRect:textureCopy inTexture:x / v30, y / v32, Width / v34, Height / v35];
     [v36 setIsFlipped:1];
-    if ([v9 isAlphaCropped])
+    if ([imageCopy isAlphaCropped])
     {
-      [v9 alphaCroppedRect];
+      [imageCopy alphaCroppedRect];
       v38 = v37;
-      [v9 alphaCroppedRect];
+      [imageCopy alphaCroppedRect];
       v40 = v39;
-      [v9 alphaCroppedRect];
+      [imageCopy alphaCroppedRect];
       [v36 setCropOffset:{(v38 - (v60 - (v38 + Width))) * 0.5 / Width, (v19 - (v40 + v41) - (v19 - (v19 - (v40 + v41) + Height))) * 0.5 / Height}];
       [v36 setCropScale:{Width / v60, Height / v19}];
     }
 
-    [v8 pixelSize];
+    [textureCopy pixelSize];
     v61[0] = v42;
     v61[1] = v43;
     [v36 setTextureDimension:&v62 withPixelSize:v61];
   }
 
-  else if ([v9 isAlphaCropped])
+  else if ([imageCopy isAlphaCropped])
   {
-    [v9 alphaCroppedRect];
+    [imageCopy alphaCroppedRect];
     v45 = v44;
-    [v9 alphaCroppedRect];
+    [imageCopy alphaCroppedRect];
     v47 = v46;
-    [v9 alphaCroppedRect];
+    [imageCopy alphaCroppedRect];
     v49 = v48;
-    [v9 alphaCroppedRect];
+    [imageCopy alphaCroppedRect];
     v51 = v50;
-    [v9 alphaCroppedRect];
-    v53 = [SKTextureAtlas createCGImageFromCUINamedImage:v10 withSize:v60 atRect:v19, v45, v19 - (v47 + v49), v51, v52];
+    [imageCopy alphaCroppedRect];
+    v53 = [SKTextureAtlas createCGImageFromCUINamedImage:croppedImage withSize:v60 atRect:v19, v45, v19 - (v47 + v49), v51, v52];
     v36 = [SKTexture textureWithCGImage:v53];
     CGImageRelease(v53);
-    [v9 scale];
+    [imageCopy scale];
     v55 = v54;
-    [v9 scale];
+    [imageCopy scale];
     v62 = v60 / v55;
     v63 = v19 / v56;
     [v36 setTextureDimension:&v62 withPixelSize:v65];
@@ -992,8 +992,8 @@ LABEL_14:
 
   else
   {
-    v36 = [SKTexture textureWithCGImage:v10];
-    [v9 size];
+    v36 = [SKTexture textureWithCGImage:croppedImage];
+    [imageCopy size];
     v62 = v57;
     v63 = v58;
     [v36 setTextureDimension:&v62 withPixelSize:v64];
@@ -1002,10 +1002,10 @@ LABEL_14:
   return v36;
 }
 
-- (void)loadTexturesFromCUIImageAtlas:(id)a3
+- (void)loadTexturesFromCUIImageAtlas:(id)atlas
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  atlasCopy = atlas;
   v21 = objc_alloc_init(MEMORY[0x277CBEB38]);
   memset(v29, 0, sizeof(v29));
   v30 = 1065353216;
@@ -1013,7 +1013,7 @@ LABEL_14:
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = [v3 imageNames];
+  obj = [atlasCopy imageNames];
   v4 = [obj countByEnumeratingWithState:&v25 objects:v32 count:16];
   if (v4)
   {
@@ -1028,11 +1028,11 @@ LABEL_14:
         }
 
         v7 = *(*(&v25 + 1) + 8 * i);
-        v8 = [v3 imageWithName:v7];
-        v9 = [v8 croppedImage];
+        v8 = [atlasCopy imageWithName:v7];
+        croppedImage = [v8 croppedImage];
         if (v7)
         {
-          v10 = v9 == 0;
+          v10 = croppedImage == 0;
         }
 
         else
@@ -1083,7 +1083,7 @@ LABEL_14:
           v17 = [(SKTextureAtlas *)self createSubTextureFromTexture:v14 andCUINamedImage:v8 andOrigin:*&v24[1], *&v24[2]];
           if (objc_opt_respondsToSelector())
           {
-            v18 = [v3 completeTextureExtrusion] ^ 1;
+            v18 = [atlasCopy completeTextureExtrusion] ^ 1;
           }
 
           else
@@ -1092,8 +1092,8 @@ LABEL_14:
           }
 
           [v17 setNeedsExtrusionWorkaround:v18];
-          v19 = [v7 stringByDeletingPathExtension];
-          [v17 _setImageName:v19];
+          stringByDeletingPathExtension = [v7 stringByDeletingPathExtension];
+          [v17 _setImageName:stringByDeletingPathExtension];
 
           [(NSDictionary *)v21 setObject:v17 forKey:v7];
         }
@@ -1112,11 +1112,11 @@ LABEL_14:
   std::__hash_table<std::__hash_value_type<CGImage *,SKTexture * {__strong}>,std::__unordered_map_hasher<CGImage *,std::__hash_value_type<CGImage *,SKTexture * {__strong}>,std::hash<CGImage *>,std::equal_to<CGImage *>,true>,std::__unordered_map_equal<CGImage *,std::__hash_value_type<CGImage *,SKTexture * {__strong}>,std::equal_to<CGImage *>,std::hash<CGImage *>,true>,std::allocator<std::__hash_value_type<CGImage *,SKTexture * {__strong}>>>::~__hash_table(v29);
 }
 
-+ (id)atlasFromCUIImageAtlas:(id)a3 withName:(id)a4
++ (id)atlasFromCUIImageAtlas:(id)atlas withName:(id)name
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [_atlasDict objectForKey:v6];
+  atlasCopy = atlas;
+  nameCopy = name;
+  v7 = [_atlasDict objectForKey:nameCopy];
   v8 = v7;
   if (v7)
   {
@@ -1126,14 +1126,14 @@ LABEL_14:
   else
   {
     v9 = objc_alloc_init(SKTextureAtlas);
-    v10 = [v6 stringByDeletingPathExtension];
+    stringByDeletingPathExtension = [nameCopy stringByDeletingPathExtension];
     atlasName = v9->_atlasName;
-    v9->_atlasName = v10;
+    v9->_atlasName = stringByDeletingPathExtension;
 
     [_atlasDict setObject:v9 forKey:v9->_atlasName];
-    if (v5)
+    if (atlasCopy)
     {
-      [(SKTextureAtlas *)v9 loadTexturesFromCUIImageAtlas:v5];
+      [(SKTextureAtlas *)v9 loadTexturesFromCUIImageAtlas:atlasCopy];
     }
   }
 
@@ -1181,8 +1181,8 @@ LABEL_14:
           v20 = 0u;
           v17 = 0u;
           v18 = 0u;
-          v13 = [*(v12 + 8) objectEnumerator];
-          v14 = [v13 countByEnumeratingWithState:&v17 objects:v25 count:16];
+          objectEnumerator = [*(v12 + 8) objectEnumerator];
+          v14 = [objectEnumerator countByEnumeratingWithState:&v17 objects:v25 count:16];
           if (v14)
           {
             v15 = *v18;
@@ -1193,14 +1193,14 @@ LABEL_14:
               {
                 if (*v18 != v15)
                 {
-                  objc_enumerationMutation(v13);
+                  objc_enumerationMutation(objectEnumerator);
                 }
 
                 [v7 addObject:*(*(&v17 + 1) + 8 * v16++)];
               }
 
               while (v14 != v16);
-              v14 = [v13 countByEnumeratingWithState:&v17 objects:v25 count:16];
+              v14 = [objectEnumerator countByEnumeratingWithState:&v17 objects:v25 count:16];
             }
 
             while (v14);
@@ -1370,8 +1370,8 @@ void __67__SKTextureAtlas_preloadTextureAtlasesNamed_withCompletionHandler___blo
     v5 = v4;
     v6 = MEMORY[0x277CCACA8];
     atlasName = self->_atlasName;
-    v8 = [(NSDictionary *)self->_textureDict allValues];
-    v9 = [v8 description];
+    allValues = [(NSDictionary *)self->_textureDict allValues];
+    v9 = [allValues description];
     v10 = [v6 stringWithFormat:@"<SKTextureAtlas> '%@' %ld textures:\n %@", atlasName, v5, v9];
   }
 
@@ -1391,11 +1391,11 @@ void __67__SKTextureAtlas_preloadTextureAtlasesNamed_withCompletionHandler___blo
   [(SKTextureAtlas *)&v3 dealloc];
 }
 
-- (id)findTextureNamedFromAtlas:(id)a3
+- (id)findTextureNamedFromAtlas:(id)atlas
 {
   v49 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  std::string::basic_string[abi:ne200100]<0>(__p, [v4 UTF8String]);
+  atlasCopy = atlas;
+  std::string::basic_string[abi:ne200100]<0>(__p, [atlasCopy UTF8String]);
   v5 = std::__hash_table<std::__hash_value_type<std::string,SKTexture * {__strong}>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,SKTexture * {__strong}>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,SKTexture * {__strong}>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,SKTexture * {__strong}>>>::find<std::string>(&self->_textureMap.__table_.__bucket_list_.__ptr_, __p);
   if (v5)
   {
@@ -1404,17 +1404,17 @@ void __67__SKTextureAtlas_preloadTextureAtlasesNamed_withCompletionHandler___blo
 
   else
   {
-    v7 = [v4 pathExtension];
-    v30 = self;
-    v8 = [v7 length];
+    pathExtension = [atlasCopy pathExtension];
+    selfCopy = self;
+    v8 = [pathExtension length];
 
     v29 = +[SKTextureAtlas getSupportedPostfixes];
     v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v29, "count")}];
     if (v8)
     {
-      v10 = [v4 stringByDeletingPathExtension];
+      stringByDeletingPathExtension = [atlasCopy stringByDeletingPathExtension];
 
-      v4 = v10;
+      atlasCopy = stringByDeletingPathExtension;
     }
 
     v42 = 0u;
@@ -1435,7 +1435,7 @@ void __67__SKTextureAtlas_preloadTextureAtlasesNamed_withCompletionHandler___blo
             objc_enumerationMutation(v11);
           }
 
-          v15 = [v4 stringByAppendingString:*(*(&v40 + 1) + 8 * i)];
+          v15 = [atlasCopy stringByAppendingString:*(*(&v40 + 1) + 8 * i)];
           [v9 addObject:v15];
         }
 
@@ -1445,7 +1445,7 @@ void __67__SKTextureAtlas_preloadTextureAtlasesNamed_withCompletionHandler___blo
       while (v12);
     }
 
-    if (v30->_textureDict)
+    if (selfCopy->_textureDict)
     {
       v38 = 0u;
       v39 = 0u;
@@ -1471,7 +1471,7 @@ void __67__SKTextureAtlas_preloadTextureAtlasesNamed_withCompletionHandler___blo
             v33 = 0u;
             v34 = 0u;
             v35 = 0u;
-            obj = [(NSDictionary *)v30->_textureDict allKeys];
+            obj = [(NSDictionary *)selfCopy->_textureDict allKeys];
             v18 = [obj countByEnumeratingWithState:&v32 objects:v46 count:16];
             if (v18)
             {
@@ -1486,13 +1486,13 @@ void __67__SKTextureAtlas_preloadTextureAtlasesNamed_withCompletionHandler___blo
                   }
 
                   v21 = *(*(&v32 + 1) + 8 * k);
-                  v22 = [v21 stringByDeletingPathExtension];
+                  stringByDeletingPathExtension2 = [v21 stringByDeletingPathExtension];
 
-                  if (![v22 caseInsensitiveCompare:v17])
+                  if (![stringByDeletingPathExtension2 caseInsensitiveCompare:v17])
                   {
-                    v23 = [(NSDictionary *)v30->_textureDict objectForKey:v21];
+                    v23 = [(NSDictionary *)selfCopy->_textureDict objectForKey:v21];
                     v6 = [v23 copy];
-                    [v6 setRootAtlas:v30];
+                    [v6 setRootAtlas:selfCopy];
 
                     goto LABEL_31;
                   }
@@ -1519,7 +1519,7 @@ void __67__SKTextureAtlas_preloadTextureAtlasesNamed_withCompletionHandler___blo
     }
 
     v6 = [0 copy];
-    [v6 setRootAtlas:v30];
+    [v6 setRootAtlas:selfCopy];
 LABEL_31:
   }
 
@@ -1558,21 +1558,21 @@ LABEL_31:
   return self;
 }
 
-+ (CGImage)createCGImageFromCUINamedImage:(CGImage *)a3 withSize:(CGSize)a4 atRect:(CGRect)a5
++ (CGImage)createCGImageFromCUINamedImage:(CGImage *)image withSize:(CGSize)size atRect:(CGRect)rect
 {
-  if (!a3)
+  if (!image)
   {
     return 0;
   }
 
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v9 = a4.height;
-  v10 = a4.width;
-  v12 = a4.width;
-  v13 = a4.height;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v9 = size.height;
+  v10 = size.width;
+  v12 = size.width;
+  v13 = size.height;
   v14 = malloc_type_malloc((4 * v13 * v12), 0x100004077774924uLL);
   DeviceRGB = CGColorSpaceCreateDeviceRGB();
   v16 = CGBitmapContextCreate(v14, v12, v13, 8uLL, (4 * v12), DeviceRGB, 0x4001u);
@@ -1586,7 +1586,7 @@ LABEL_31:
   v20.origin.y = y;
   v20.size.width = width;
   v20.size.height = height;
-  CGContextDrawImage(v16, v20, a3);
+  CGContextDrawImage(v16, v20, image);
   Image = CGBitmapContextCreateImage(v16);
   CGContextRelease(v16);
   free(v14);
@@ -1597,14 +1597,14 @@ LABEL_31:
 {
   if (!+[SKTextureAtlas(Internal) getSupportedPostfixes]::s_postfixes)
   {
-    v2 = [MEMORY[0x277D75418] currentDevice];
-    v3 = [v2 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    v4 = [MEMORY[0x277D759A0] mainScreen];
-    [v4 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v6 = v5;
 
-    if (v3 == 1)
+    if (userInterfaceIdiom == 1)
     {
       v7 = &unk_282E2D558;
       v8 = +[SKTextureAtlas(Internal) getSupportedPostfixes]::s_postfixes;
@@ -1622,17 +1622,17 @@ LABEL_31:
 
     else
     {
-      v9 = [MEMORY[0x277D759A0] mainScreen];
-      v10 = [v9 currentMode];
-      [v10 size];
+      mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+      currentMode = [mainScreen2 currentMode];
+      [currentMode size];
       v12 = v11;
 
-      v13 = [MEMORY[0x277D759A0] mainScreen];
-      [v13 bounds];
+      mainScreen3 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen3 bounds];
       v15 = v14;
 
-      v16 = [MEMORY[0x277D759A0] mainScreen];
-      [v16 bounds];
+      mainScreen4 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen4 bounds];
       v18 = v17;
 
       if (v15 >= v18)
@@ -1669,35 +1669,35 @@ LABEL_31:
   return v20;
 }
 
-+ (id)findTextureNamed:(id)a3
++ (id)findTextureNamed:(id)named
 {
   v79 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 pathExtension];
-  v5 = [v4 length];
+  namedCopy = named;
+  pathExtension = [namedCopy pathExtension];
+  v5 = [pathExtension length];
 
   if (v5)
   {
-    v6 = [v3 stringByDeletingPathExtension];
+    stringByDeletingPathExtension = [namedCopy stringByDeletingPathExtension];
 
-    v3 = v6;
+    namedCopy = stringByDeletingPathExtension;
   }
 
   if (_atlasDict)
   {
-    v7 = [_atlasDict keyEnumerator];
-    for (i = 0; ; i = v9)
+    keyEnumerator = [_atlasDict keyEnumerator];
+    for (i = 0; ; i = nextObject)
     {
-      v9 = [v7 nextObject];
+      nextObject = [keyEnumerator nextObject];
 
-      if (!v9)
+      if (!nextObject)
       {
 
         goto LABEL_9;
       }
 
-      v10 = [_atlasDict objectForKey:v9];
-      v11 = [v10 findTextureNamedFromAtlas:v3];
+      v10 = [_atlasDict objectForKey:nextObject];
+      v11 = [v10 findTextureNamedFromAtlas:namedCopy];
       if (v11)
       {
         break;
@@ -1737,14 +1737,14 @@ LABEL_9:
             }
 
             v16 = *(*(&v70 + 1) + 8 * j);
-            v53 = [v16 lastPathComponent];
+            lastPathComponent = [v16 lastPathComponent];
             v17 = [_atlasDict objectForKey:?];
             v18 = v17 == 0;
 
             if (v18)
             {
-              v19 = [v53 stringByDeletingPathExtension];
-              v20 = [v16 stringByAppendingPathComponent:v19];
+              stringByDeletingPathExtension2 = [lastPathComponent stringByDeletingPathExtension];
+              v20 = [v16 stringByAppendingPathComponent:stringByDeletingPathExtension2];
 
               v51 = [v20 stringByAppendingString:@".plist"];
 
@@ -1818,7 +1818,7 @@ LABEL_9:
                                   objc_enumerationMutation(v26);
                                 }
 
-                                v30 = [v3 stringByAppendingString:*(*(&v58 + 1) + 8 * n)];
+                                v30 = [namedCopy stringByAppendingString:*(*(&v58 + 1) + 8 * n)];
                                 [v25 addObject:v30];
                               }
 
@@ -1828,7 +1828,7 @@ LABEL_9:
                             while (v27);
                           }
 
-                          v31 = [v24 stringByDeletingPathExtension];
+                          stringByDeletingPathExtension3 = [v24 stringByDeletingPathExtension];
 
                           v56 = 0u;
                           v57 = 0u;
@@ -1848,10 +1848,10 @@ LABEL_9:
                                   objc_enumerationMutation(v32);
                                 }
 
-                                if (![v31 caseInsensitiveCompare:*(*(&v54 + 1) + 8 * ii)])
+                                if (![stringByDeletingPathExtension3 caseInsensitiveCompare:*(*(&v54 + 1) + 8 * ii)])
                                 {
-                                  v37 = [SKTextureAtlas atlasNamed:v53];
-                                  v36 = [v37 textureNamed:v3];
+                                  v37 = [SKTextureAtlas atlasNamed:lastPathComponent];
+                                  v36 = [v37 textureNamed:namedCopy];
 
                                   v13 = v36;
                                   goto LABEL_56;
@@ -1905,28 +1905,28 @@ LABEL_56:
   return v36;
 }
 
-+ (id)lookupCachedTextureNamed:(id)a3
++ (id)lookupCachedTextureNamed:(id)named
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 pathExtension];
-  v5 = [v4 length];
+  namedCopy = named;
+  pathExtension = [namedCopy pathExtension];
+  v5 = [pathExtension length];
 
   if (v5)
   {
-    v6 = [v3 stringByDeletingPathExtension];
+    stringByDeletingPathExtension = [namedCopy stringByDeletingPathExtension];
 
-    v3 = v6;
+    namedCopy = stringByDeletingPathExtension;
   }
 
-  v7 = [_atlasDict objectEnumerator];
-  v8 = [v7 allObjects];
+  objectEnumerator = [_atlasDict objectEnumerator];
+  allObjects = [objectEnumerator allObjects];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v9 = v8;
+  v9 = allObjects;
   v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {
@@ -1940,7 +1940,7 @@ LABEL_56:
           objc_enumerationMutation(v9);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * i) findTextureNamedFromAtlas:{v3, v16}];
+        v13 = [*(*(&v16 + 1) + 8 * i) findTextureNamedFromAtlas:{namedCopy, v16}];
         if (v13)
         {
           v14 = v13;
@@ -1975,32 +1975,32 @@ LABEL_13:
   std::__hash_table<std::__hash_value_type<std::string,SKAttributeValue * {__strong}>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,SKAttributeValue * {__strong}>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,SKAttributeValue * {__strong}>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,SKAttributeValue * {__strong}>>>::clear(&self->_textureMap);
 }
 
-+ (void)_exportAtlasWithDictionary:(id)a3 toFile:(id)a4
++ (void)_exportAtlasWithDictionary:(id)dictionary toFile:(id)file
 {
-  v6 = a3;
-  v5 = a4;
-  [objc_opt_class() _exportAtlasWithDictionary:v6 toFile:v5 forcePOT:0];
+  dictionaryCopy = dictionary;
+  fileCopy = file;
+  [objc_opt_class() _exportAtlasWithDictionary:dictionaryCopy toFile:fileCopy forcePOT:0];
 }
 
-+ (void)_exportAtlasWithDictionary:(id)a3 toFile:(id)a4 forcePOT:(BOOL)a5
++ (void)_exportAtlasWithDictionary:(id)dictionary toFile:(id)file forcePOT:(BOOL)t
 {
-  v5 = a5;
+  tCopy = t;
   v37 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v29 = a4;
-  v25 = v7;
+  dictionaryCopy = dictionary;
+  fileCopy = file;
+  v25 = dictionaryCopy;
   v35 = 0;
   v26 = objc_alloc_init(SKTextureAtlasPacker);
-  [(SKTextureAtlasPacker *)v26 generateTextureAtlasImages:v7 outputDictionary:&v35 forcePOT:v5];
+  [(SKTextureAtlasPacker *)v26 generateTextureAtlasImages:dictionaryCopy outputDictionary:&v35 forcePOT:tCopy];
   v27 = v35;
-  v8 = [v29 pathExtension];
-  LOBYTE(a4) = [v8 caseInsensitiveCompare:@"plist"] == 0;
+  pathExtension = [fileCopy pathExtension];
+  LOBYTE(file) = [pathExtension caseInsensitiveCompare:@"plist"] == 0;
 
-  if ((a4 & 1) == 0)
+  if ((file & 1) == 0)
   {
-    v9 = [v29 stringByAppendingPathExtension:@"plist"];
+    v9 = [fileCopy stringByAppendingPathExtension:@"plist"];
 
-    v29 = v9;
+    fileCopy = v9;
   }
 
   if (v27)
@@ -2026,13 +2026,13 @@ LABEL_13:
           v13 = *(*(&v31 + 1) + 8 * i);
           v14 = [v13 objectForKey:@"path"];
           v15 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@".%ld.png", 1];
-          v16 = [v29 lastPathComponent];
-          v17 = [v16 stringByDeletingPathExtension];
+          lastPathComponent = [fileCopy lastPathComponent];
+          stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
-          v18 = [v17 stringByAppendingString:v15];
+          v18 = [stringByDeletingPathExtension stringByAppendingString:v15];
 
-          v19 = [v29 stringByDeletingLastPathComponent];
-          v20 = [v19 stringByAppendingPathComponent:v18];
+          stringByDeletingLastPathComponent = [fileCopy stringByDeletingLastPathComponent];
+          v20 = [stringByDeletingLastPathComponent stringByAppendingPathComponent:v18];
 
           v21 = UIImagePNGRepresentation(v14);
           [v21 writeToFile:v20 atomically:1];
@@ -2051,8 +2051,8 @@ LABEL_13:
     v23 = v30;
     if (v22)
     {
-      v24 = [MEMORY[0x277CCAA00] defaultManager];
-      [v24 createFileAtPath:v29 contents:v22 attributes:0];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      [defaultManager createFileAtPath:fileCopy contents:v22 attributes:0];
     }
   }
 }
@@ -2065,11 +2065,11 @@ LABEL_13:
     return 0;
   }
 
-  v3 = [(NSDictionary *)textureDict allValues];
-  v4 = [v3 objectAtIndex:0];
-  v5 = [v4 _copyImageData];
+  allValues = [(NSDictionary *)textureDict allValues];
+  v4 = [allValues objectAtIndex:0];
+  _copyImageData = [v4 _copyImageData];
 
-  return v5;
+  return _copyImageData;
 }
 
 @end

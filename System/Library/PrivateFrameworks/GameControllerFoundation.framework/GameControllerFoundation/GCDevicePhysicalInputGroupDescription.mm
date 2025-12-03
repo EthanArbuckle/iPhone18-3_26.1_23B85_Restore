@@ -1,20 +1,20 @@
 @interface GCDevicePhysicalInputGroupDescription
-- (BOOL)validate:(id *)a3;
-- (GCDevicePhysicalInputGroupDescription)initWithCoder:(id)a3;
+- (BOOL)validate:(id *)validate;
+- (GCDevicePhysicalInputGroupDescription)initWithCoder:(id)coder;
 @end
 
 @implementation GCDevicePhysicalInputGroupDescription
 
-- (GCDevicePhysicalInputGroupDescription)initWithCoder:(id)a3
+- (GCDevicePhysicalInputGroupDescription)initWithCoder:(id)coder
 {
   v11.receiver = self;
   v11.super_class = GCDevicePhysicalInputGroupDescription;
-  v3 = a3;
+  coderCopy = coder;
   v4 = [(GCDevicePhysicalInputGroupDescription *)&v11 init];
   v5 = MEMORY[0x1E695DFD8];
   v6 = objc_opt_class();
   v7 = [v5 setWithObjects:{v6, objc_opt_class(), 0, v11.receiver, v11.super_class}];
-  v8 = [v3 decodeObjectOfClasses:v7 forKey:@"physicalInputs"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"physicalInputs"];
 
   physicalInputs = v4->_physicalInputs;
   v4->_physicalInputs = v8;
@@ -22,7 +22,7 @@
   return v4;
 }
 
-- (BOOL)validate:(id *)a3
+- (BOOL)validate:(id *)validate
 {
   v43 = *MEMORY[0x1E69E9840];
   v32 = 0;
@@ -39,10 +39,10 @@
   v31[4] = &v32;
   [(NSArray *)physicalInputs enumerateObjectsUsingBlock:v31];
   v6 = v33[5];
-  if (a3 && v6)
+  if (validate && v6)
   {
     v6 = v6;
-    *a3 = v6;
+    *validate = v6;
   }
 
   v7 = v6 == 0;
@@ -69,11 +69,11 @@
             objc_enumerationMutation(v10);
           }
 
-          v14 = [*(*(&v27 + 1) + 8 * i) attributes];
-          v15 = v14;
-          if (v14)
+          attributes = [*(*(&v27 + 1) + 8 * i) attributes];
+          v15 = attributes;
+          if (attributes)
           {
-            v16 = v14;
+            v16 = attributes;
           }
 
           else
@@ -87,14 +87,14 @@
 
           if (v18)
           {
-            if (a3)
+            if (validate)
             {
               v22 = MEMORY[0x1E696ABC0];
               v40 = *MEMORY[0x1E696A588];
               v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Multiple physical inputs with attributes '%@'.", v17];
               v41 = v23;
               v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v41 forKeys:&v40 count:1];
-              *a3 = [v22 errorWithDomain:@"GCDevicePhysicalInputError" code:0 userInfo:v24];
+              *validate = [v22 errorWithDomain:@"GCDevicePhysicalInputError" code:0 userInfo:v24];
             }
 
             goto LABEL_21;
@@ -117,14 +117,14 @@
     v20 = [v9 member:v19];
     v8 = v20 != 0;
 
-    if (a3 != 0 && !v8)
+    if (validate != 0 && !v8)
     {
       v21 = MEMORY[0x1E696ABC0];
       v38 = *MEMORY[0x1E696A588];
       v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Missing physical input with default attributes."];
       v39 = v10;
       v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v39 forKeys:&v38 count:1];
-      *a3 = [v21 errorWithDomain:@"GCDevicePhysicalInputError" code:0 userInfo:v17];
+      *validate = [v21 errorWithDomain:@"GCDevicePhysicalInputError" code:0 userInfo:v17];
 LABEL_21:
 
       v8 = 0;

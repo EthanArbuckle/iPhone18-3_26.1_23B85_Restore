@@ -1,8 +1,8 @@
 @interface CarPlayWidgetEngagementEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 - (_TtC26ContextualSuggestionClient28CarPlayWidgetEngagementEvent)init;
 - (unsigned)dataVersion;
-- (void)setDataVersion:(unsigned int)a3;
+- (void)setDataVersion:(unsigned int)version;
 @end
 
 @implementation CarPlayWidgetEngagementEvent
@@ -14,16 +14,16 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setDataVersion:(unsigned int)a3
+- (void)setDataVersion:(unsigned int)version
 {
   v5 = OBJC_IVAR____TtC26ContextualSuggestionClient28CarPlayWidgetEngagementEvent_dataVersion;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = version;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = sub_2441D88DC();
   v7 = v6;
 

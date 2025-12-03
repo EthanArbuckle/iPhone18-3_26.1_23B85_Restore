@@ -2,31 +2,31 @@
 - (BFFPaneHeaderView)headerView;
 - (BOOL)isIPad;
 - (BOOL)isiPhone5OrSmaller;
-- (CDPTableViewController)initWithTitle:(id)a3 subTitle:(id)a4;
+- (CDPTableViewController)initWithTitle:(id)title subTitle:(id)subTitle;
 - (NSString)deviceClass;
-- (double)heightForHeaderInTableView:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (double)heightForHeaderInTableView:(id)view;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)loadView;
-- (void)setHeaderSubTitle:(id)a3;
-- (void)setHeaderTitle:(id)a3;
+- (void)setHeaderSubTitle:(id)title;
+- (void)setHeaderTitle:(id)title;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation CDPTableViewController
 
-- (CDPTableViewController)initWithTitle:(id)a3 subTitle:(id)a4
+- (CDPTableViewController)initWithTitle:(id)title subTitle:(id)subTitle
 {
-  v7 = a3;
-  v8 = a4;
+  titleCopy = title;
+  subTitleCopy = subTitle;
   v12.receiver = self;
   v12.super_class = CDPTableViewController;
   v9 = [(CDPTableViewController *)&v12 initWithNibName:0 bundle:0];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_headerTitle, a3);
-    objc_storeStrong(&v10->_headerSubTitle, a4);
+    objc_storeStrong(&v9->_headerTitle, title);
+    objc_storeStrong(&v10->_headerSubTitle, subTitle);
     v10->_tableViewStyle = 1;
   }
 
@@ -35,10 +35,10 @@
 
 - (NSString)deviceClass
 {
-  v2 = [MEMORY[0x277CFD4F8] sharedInstance];
-  v3 = [v2 deviceClass];
+  mEMORY[0x277CFD4F8] = [MEMORY[0x277CFD4F8] sharedInstance];
+  deviceClass = [mEMORY[0x277CFD4F8] deviceClass];
 
-  return v3;
+  return deviceClass;
 }
 
 - (void)loadView
@@ -53,31 +53,31 @@
   self->_containerView = v8;
 
   v10 = self->_containerView;
-  v11 = [getBFFStyleClass() sharedStyle];
-  -[UIView setBackgroundColor:](v10, "setBackgroundColor:", [v11 backgroundColor]);
+  sharedStyle = [getBFFStyleClass() sharedStyle];
+  -[UIView setBackgroundColor:](v10, "setBackgroundColor:", [sharedStyle backgroundColor]);
 
   v12 = [objc_alloc(MEMORY[0x277D75B40]) initWithFrame:self->_tableViewStyle style:{v4, v5, v6, v7}];
   [(CDPTableViewController *)self setTableView:v12];
 
-  v13 = [(CDPTableViewController *)self tableView];
-  [v13 setDelegate:self];
+  tableView = [(CDPTableViewController *)self tableView];
+  [tableView setDelegate:self];
 
-  v14 = [(CDPTableViewController *)self tableView];
-  [v14 setDataSource:self];
+  tableView2 = [(CDPTableViewController *)self tableView];
+  [tableView2 setDataSource:self];
 
-  v15 = [(CDPTableViewController *)self tableView];
-  v16 = [MEMORY[0x277D75348] clearColor];
-  [v15 setBackgroundColor:v16];
+  tableView3 = [(CDPTableViewController *)self tableView];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [tableView3 setBackgroundColor:clearColor];
 
-  v17 = [(CDPTableViewController *)self tableView];
-  [v17 setBackgroundView:0];
+  tableView4 = [(CDPTableViewController *)self tableView];
+  [tableView4 setBackgroundView:0];
 
-  v18 = [(CDPTableViewController *)self tableView];
-  [v18 setAlwaysBounceVertical:0];
+  tableView5 = [(CDPTableViewController *)self tableView];
+  [tableView5 setAlwaysBounceVertical:0];
 
   v19 = self->_containerView;
-  v20 = [(UITableView *)self->_tableView panGestureRecognizer];
-  [(UIView *)v19 addGestureRecognizer:v20];
+  panGestureRecognizer = [(UITableView *)self->_tableView panGestureRecognizer];
+  [(UIView *)v19 addGestureRecognizer:panGestureRecognizer];
 
   [(UIView *)self->_containerView addSubview:self->_tableView];
   v21 = self->_containerView;
@@ -85,21 +85,21 @@
   [(CDPTableViewController *)self setView:v21];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v10.receiver = self;
   v10.super_class = CDPTableViewController;
   [(CDPTableViewController *)&v10 viewWillAppear:?];
-  v5 = [(CDPTableViewController *)self tableView];
-  v6 = [v5 indexPathForSelectedRow];
+  tableView = [(CDPTableViewController *)self tableView];
+  indexPathForSelectedRow = [tableView indexPathForSelectedRow];
 
-  if (v6)
+  if (indexPathForSelectedRow)
   {
-    v7 = [(CDPTableViewController *)self tableView];
-    v8 = [(CDPTableViewController *)self tableView];
-    v9 = [v8 indexPathForSelectedRow];
-    [v7 deselectRowAtIndexPath:v9 animated:v3];
+    tableView2 = [(CDPTableViewController *)self tableView];
+    tableView3 = [(CDPTableViewController *)self tableView];
+    indexPathForSelectedRow2 = [tableView3 indexPathForSelectedRow];
+    [tableView2 deselectRowAtIndexPath:indexPathForSelectedRow2 animated:appearCopy];
   }
 }
 
@@ -131,36 +131,36 @@
 
     [(BFFPaneHeaderView *)self->_headerView setTitleText:self->_headerTitle];
     headerSubTitle = self->_headerSubTitle;
-    v8 = [(BFFPaneHeaderView *)self->_headerView detailTextLabel];
-    [v8 setText:headerSubTitle];
+    detailTextLabel = [(BFFPaneHeaderView *)self->_headerView detailTextLabel];
+    [detailTextLabel setText:headerSubTitle];
 
     [(BFFPaneHeaderView *)self->_headerView setIcon:self->_icon];
     if ([MEMORY[0x277CFD560] isNaturalUIEnabled])
     {
       v9 = MEMORY[0x277D74310];
       v10 = *MEMORY[0x277D76A20];
-      v11 = [(CDPTableViewController *)self traitCollection];
-      v12 = [v9 preferredFontDescriptorWithTextStyle:v10 compatibleWithTraitCollection:v11];
+      traitCollection = [(CDPTableViewController *)self traitCollection];
+      v12 = [v9 preferredFontDescriptorWithTextStyle:v10 compatibleWithTraitCollection:traitCollection];
 
-      v13 = [(BFFPaneHeaderView *)self->_headerView textLabel];
-      [v13 setTextAlignment:4];
+      textLabel = [(BFFPaneHeaderView *)self->_headerView textLabel];
+      [textLabel setTextAlignment:4];
 
       v14 = MEMORY[0x277D74300];
       v15 = [v12 fontDescriptorWithSymbolicTraits:2];
       v16 = [v14 fontWithDescriptor:v15 size:0.0];
-      v17 = [(BFFPaneHeaderView *)self->_headerView textLabel];
-      [v17 setFont:v16];
+      textLabel2 = [(BFFPaneHeaderView *)self->_headerView textLabel];
+      [textLabel2 setFont:v16];
 
-      v18 = [(BFFPaneHeaderView *)self->_headerView detailTextLabel];
-      [v18 setTextAlignment:4];
+      detailTextLabel2 = [(BFFPaneHeaderView *)self->_headerView detailTextLabel];
+      [detailTextLabel2 setTextAlignment:4];
 
       v19 = [MEMORY[0x277D74300] fontWithDescriptor:v12 size:0.0];
-      v20 = [(BFFPaneHeaderView *)self->_headerView detailTextLabel];
-      [v20 setFont:v19];
+      detailTextLabel3 = [(BFFPaneHeaderView *)self->_headerView detailTextLabel];
+      [detailTextLabel3 setFont:v19];
 
-      v21 = [MEMORY[0x277D75348] secondaryLabelColor];
-      v22 = [(BFFPaneHeaderView *)self->_headerView detailTextLabel];
-      [v22 setTextColor:v21];
+      secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+      detailTextLabel4 = [(BFFPaneHeaderView *)self->_headerView detailTextLabel];
+      [detailTextLabel4 setTextColor:secondaryLabelColor];
     }
   }
 
@@ -169,9 +169,9 @@
   return v23;
 }
 
-- (void)setHeaderTitle:(id)a3
+- (void)setHeaderTitle:(id)title
 {
-  v4 = [a3 copy];
+  v4 = [title copy];
   headerTitle = self->_headerTitle;
   self->_headerTitle = v4;
 
@@ -181,21 +181,21 @@
   [(BFFPaneHeaderView *)headerView setTitleText:v7];
 }
 
-- (void)setHeaderSubTitle:(id)a3
+- (void)setHeaderSubTitle:(id)title
 {
-  v4 = [a3 copy];
+  v4 = [title copy];
   headerSubTitle = self->_headerSubTitle;
   self->_headerSubTitle = v4;
 
   v6 = self->_headerSubTitle;
-  v7 = [(BFFPaneHeaderView *)self->_headerView detailTextLabel];
-  [v7 setText:v6];
+  detailTextLabel = [(BFFPaneHeaderView *)self->_headerView detailTextLabel];
+  [detailTextLabel setText:v6];
 }
 
 - (BOOL)isIPad
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 userInterfaceIdiom] == 1;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  v3 = [currentDevice userInterfaceIdiom] == 1;
 
   return v3;
 }
@@ -207,8 +207,8 @@
     return 0;
   }
 
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  [v3 _referenceBounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen _referenceBounds];
   v2 = v4 <= 568.0;
 
   return v2;
@@ -224,16 +224,16 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CDPTableViewController *)self navigationController];
-  v12 = [v11 modalPresentationStyle];
+  navigationController = [(CDPTableViewController *)self navigationController];
+  modalPresentationStyle = [navigationController modalPresentationStyle];
 
-  v13 = [MEMORY[0x277D75418] currentDevice];
-  v14 = [v13 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v14 == 1 && v12 == 0)
+  if (userInterfaceIdiom == 1 && modalPresentationStyle == 0)
   {
-    v16 = [getBFFStyleClass() sharedStyle];
-    [v16 edgeInsetsForTable:self->_tableView];
+    sharedStyle = [getBFFStyleClass() sharedStyle];
+    [sharedStyle edgeInsetsForTable:self->_tableView];
     v4 = v17;
     v19 = v18;
 
@@ -242,35 +242,35 @@
 
   if ([MEMORY[0x277CFD560] isNaturalUIEnabled])
   {
-    v20 = [(CDPTableViewController *)self tableView];
-    [v20 setTranslatesAutoresizingMaskIntoConstraints:0];
+    tableView = [(CDPTableViewController *)self tableView];
+    [tableView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v21 = [(CDPTableViewController *)self tableView];
-    v22 = [v21 topAnchor];
-    v23 = [(CDPTableViewController *)self view];
-    v24 = [v23 topAnchor];
-    v25 = [v22 constraintEqualToAnchor:v24];
+    tableView2 = [(CDPTableViewController *)self tableView];
+    topAnchor = [tableView2 topAnchor];
+    view = [(CDPTableViewController *)self view];
+    topAnchor2 = [view topAnchor];
+    v25 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v25 setActive:1];
 
-    v26 = [(CDPTableViewController *)self tableView];
-    v27 = [v26 leadingAnchor];
-    v28 = [(CDPTableViewController *)self view];
-    v29 = [v28 leadingAnchor];
-    v30 = [v27 constraintEqualToAnchor:v29 constant:19.0];
+    tableView3 = [(CDPTableViewController *)self tableView];
+    leadingAnchor = [tableView3 leadingAnchor];
+    view2 = [(CDPTableViewController *)self view];
+    leadingAnchor2 = [view2 leadingAnchor];
+    v30 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:19.0];
     [v30 setActive:1];
 
-    v31 = [(CDPTableViewController *)self tableView];
-    v32 = [v31 bottomAnchor];
-    v33 = [(CDPTableViewController *)self view];
-    v34 = [v33 bottomAnchor];
-    v35 = [v32 constraintEqualToAnchor:v34];
+    tableView4 = [(CDPTableViewController *)self tableView];
+    bottomAnchor = [tableView4 bottomAnchor];
+    view3 = [(CDPTableViewController *)self view];
+    bottomAnchor2 = [view3 bottomAnchor];
+    v35 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [v35 setActive:1];
 
-    v36 = [(CDPTableViewController *)self tableView];
-    v37 = [v36 trailingAnchor];
-    v38 = [(CDPTableViewController *)self view];
-    v39 = [v38 trailingAnchor];
-    v40 = [v37 constraintEqualToAnchor:v39 constant:-19.0];
+    tableView5 = [(CDPTableViewController *)self tableView];
+    trailingAnchor = [tableView5 trailingAnchor];
+    view4 = [(CDPTableViewController *)self view];
+    trailingAnchor2 = [view4 trailingAnchor];
+    v40 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-19.0];
     [v40 setActive:1];
   }
 
@@ -280,18 +280,18 @@
   }
 }
 
-- (double)heightForHeaderInTableView:(id)a3
+- (double)heightForHeaderInTableView:(id)view
 {
-  v4 = a3;
-  v5 = [(CDPTableViewController *)self headerView];
-  [v4 bounds];
-  [v5 heightForWidth:v4 inView:v6];
+  viewCopy = view;
+  headerView = [(CDPTableViewController *)self headerView];
+  [viewCopy bounds];
+  [headerView heightForWidth:viewCopy inView:v6];
   v8 = v7;
 
   return v8;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v4 = objc_alloc_init(MEMORY[0x277D75B48]);
 

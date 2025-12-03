@@ -1,22 +1,22 @@
 @interface PKAMSMediaLookupItem
-- (BOOL)isEqual:(id)a3;
-- (PKAMSMediaLookupItem)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKAMSMediaLookupItem)initWithCoder:(id)coder;
 - (PKAMSMediaLookupItemMusic)musicItem;
-- (id)_initWithType:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_initWithType:(unint64_t)type;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation PKAMSMediaLookupItem
 
-- (id)_initWithType:(unint64_t)a3
+- (id)_initWithType:(unint64_t)type
 {
   v5.receiver = self;
   v5.super_class = PKAMSMediaLookupItem;
   result = [(PKAMSMediaLookupItem *)&v5 init];
   if (result)
   {
-    *(result + 1) = a3;
+    *(result + 1) = type;
   }
 
   return result;
@@ -26,20 +26,20 @@
 {
   if (self->_type <= 2)
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   return self;
 }
 
-- (PKAMSMediaLookupItem)initWithCoder:(id)a3
+- (PKAMSMediaLookupItem)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"type"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"type"];
   if (v5 <= 2 && (v6 = v5, objc_opt_class()) && (objc_opt_isKindOfClass() & 1) != 0)
   {
     self = [(PKAMSMediaLookupItem *)self _initWithType:v6];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
@@ -52,34 +52,34 @@
     }
 
     v9 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"PKAMSMediaLookupItem" code:0 userInfo:0];
-    [v4 failWithError:v9];
+    [coderCopy failWithError:v9];
 
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [PKAMSMediaLookupItem allocWithZone:a3];
+  v4 = [PKAMSMediaLookupItem allocWithZone:zone];
   type = self->_type;
 
   return [(PKAMSMediaLookupItem *)v4 _initWithType:type];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKAMSMediaLookupItem *)self isEqualToItem:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKAMSMediaLookupItem *)self isEqualToItem:v5];
   }
 
   return v6;
@@ -87,9 +87,9 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_type];
-  [v3 safelyAddObject:v4];
+  [array safelyAddObject:v4];
 
   v5 = PKCombinedHash();
   return v5;

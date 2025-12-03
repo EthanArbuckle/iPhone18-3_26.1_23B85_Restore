@@ -1,19 +1,19 @@
 @interface SBLockScreenBatteryChargingViewController
 - (SBLockScreenBatteryChargingViewControllerDelegate)delegate;
 - (id)chargingView;
-- (id)initForDisplayOfBattery:(BOOL)a3;
+- (id)initForDisplayOfBattery:(BOOL)battery;
 - (void)_clearVisibilityTimer;
-- (void)_visibilityTimerFired:(id)a3;
-- (void)connectedDevicesDidChange:(id)a3;
+- (void)_visibilityTimerFired:(id)fired;
+- (void)connectedDevicesDidChange:(id)change;
 - (void)dealloc;
 - (void)loadView;
-- (void)presentWithAnimation:(BOOL)a3;
-- (void)showChargeLevelWithBatteryVisible:(BOOL)a3;
+- (void)presentWithAnimation:(BOOL)animation;
+- (void)showChargeLevelWithBatteryVisible:(BOOL)visible;
 @end
 
 @implementation SBLockScreenBatteryChargingViewController
 
-- (id)initForDisplayOfBattery:(BOOL)a3
+- (id)initForDisplayOfBattery:(BOOL)battery
 {
   v13.receiver = self;
   v13.super_class = SBLockScreenBatteryChargingViewController;
@@ -21,13 +21,13 @@
   p_isa = &v4->super.super.super.super.isa;
   if (v4)
   {
-    v4->_shouldDisplayBattery = a3;
+    v4->_shouldDisplayBattery = battery;
     v6 = objc_alloc_init(MEMORY[0x277CF0DB0]);
     v7 = p_isa[137];
     p_isa[137] = v6;
 
-    v8 = [p_isa[137] connectedDevices];
-    v9 = [v8 mutableCopy];
+    connectedDevices = [p_isa[137] connectedDevices];
+    v9 = [connectedDevices mutableCopy];
     v10 = p_isa[136];
     p_isa[136] = v9;
 
@@ -40,8 +40,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = SBLockScreenBatteryChargingViewController;
@@ -52,19 +52,19 @@
 {
   if (self->_shouldDisplayBattery && [(NSMutableArray *)self->_connectedDevices count]> 1)
   {
-    v3 = [MEMORY[0x277D02BA8] batteryChargingViewWithDoubleBattery];
+    batteryChargingViewWithDoubleBattery = [MEMORY[0x277D02BA8] batteryChargingViewWithDoubleBattery];
     v5 = 0;
     v4 = 1;
   }
 
   else
   {
-    v3 = [MEMORY[0x277D02BA8] batteryChargingViewWithSingleBattery];
+    batteryChargingViewWithDoubleBattery = [MEMORY[0x277D02BA8] batteryChargingViewWithSingleBattery];
     v4 = 0;
     v5 = 1;
   }
 
-  objc_storeStrong(&self->_chargingView, v3);
+  objc_storeStrong(&self->_chargingView, batteryChargingViewWithDoubleBattery);
   if (v4)
   {
   }
@@ -79,22 +79,22 @@
   [(SBLockScreenBatteryChargingViewController *)self setView:chargingView];
 }
 
-- (void)presentWithAnimation:(BOOL)a3
+- (void)presentWithAnimation:(BOOL)animation
 {
-  v5 = [(SBLockScreenBatteryChargingViewController *)self view];
-  [v5 setAlpha:0.0];
+  view = [(SBLockScreenBatteryChargingViewController *)self view];
+  [view setAlpha:0.0];
 
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __66__SBLockScreenBatteryChargingViewController_presentWithAnimation___block_invoke;
   v8[3] = &unk_2783B08D0;
   v8[4] = self;
-  v9 = a3;
+  animationCopy = animation;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __66__SBLockScreenBatteryChargingViewController_presentWithAnimation___block_invoke_2;
   v6[3] = &unk_2783AF318;
-  v7 = a3;
+  animationCopy2 = animation;
   v6[4] = self;
   [(CSCoverSheetViewControllerBase *)self updateAppearance:v8 completion:v6];
 }
@@ -184,29 +184,29 @@ void __66__SBLockScreenBatteryChargingViewController_presentWithAnimation___bloc
 - (id)chargingView
 {
   v3 = objc_opt_class();
-  v4 = [(SBLockScreenBatteryChargingViewController *)self view];
-  v5 = SBSafeCast(v3, v4);
+  view = [(SBLockScreenBatteryChargingViewController *)self view];
+  v5 = SBSafeCast(v3, view);
 
   return v5;
 }
 
-- (void)showChargeLevelWithBatteryVisible:(BOOL)a3
+- (void)showChargeLevelWithBatteryVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   [(SBLockScreenBatteryChargingViewController *)self _clearVisibilityTimer];
   [(CSBatteryChargingView *)self->_chargingView setAlpha:1.0];
-  [(CSBatteryChargingView *)self->_chargingView setBatteryVisible:v3];
+  [(CSBatteryChargingView *)self->_chargingView setBatteryVisible:visibleCopy];
   v5 = MEMORY[0x277CBEBB8];
   [(CSBatteryChargingView *)self->_chargingView desiredVisibilityDuration];
   v6 = [v5 timerWithTimeInterval:self target:sel__visibilityTimerFired_ selector:0 userInfo:0 repeats:?];
   visibilityTimer = self->_visibilityTimer;
   self->_visibilityTimer = v6;
 
-  v8 = [MEMORY[0x277CBEB88] currentRunLoop];
-  [v8 addTimer:self->_visibilityTimer forMode:*MEMORY[0x277CBE738]];
+  currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+  [currentRunLoop addTimer:self->_visibilityTimer forMode:*MEMORY[0x277CBE738]];
 }
 
-- (void)_visibilityTimerFired:(id)a3
+- (void)_visibilityTimerFired:(id)fired
 {
   [(SBLockScreenBatteryChargingViewController *)self _clearVisibilityTimer];
   v5[0] = MEMORY[0x277D85DD0];
@@ -228,15 +228,15 @@ void __67__SBLockScreenBatteryChargingViewController__visibilityTimerFired___blo
   [WeakRetained chargingViewControllerFadedOutContent:*(a1 + 32)];
 }
 
-- (void)connectedDevicesDidChange:(id)a3
+- (void)connectedDevicesDidChange:(id)change
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  v5 = [changeCopy countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v5)
   {
     v6 = v5;
@@ -252,7 +252,7 @@ void __67__SBLockScreenBatteryChargingViewController__visibilityTimerFired___blo
       {
         if (*v26 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(changeCopy);
         }
 
         v11 = *(*(&v25 + 1) + 8 * v10);
@@ -269,24 +269,24 @@ LABEL_12:
             goto LABEL_13;
           }
 
-          v15 = v4;
-          v16 = [v11 identifier];
+          v15 = changeCopy;
+          identifier = [v11 identifier];
           v17 = [*(&self->super.super.super.super.isa + v12) objectAtIndex:1];
-          v18 = [v17 identifier];
-          v19 = [v16 isEqualToString:v18];
+          identifier2 = [v17 identifier];
+          v19 = [identifier isEqualToString:identifier2];
 
           if ([v11 productIdentifier] == v24 || objc_msgSend(v11, "productIdentifier") == v23)
           {
             v20 = self->_chargingView;
             v14 = SBLockScreenSimpleChargePercentageLabelForBattery(v11);
             [(CSBatteryChargingView *)v20 setSecondaryBatteryText:v14 forBattery:v11];
-            v4 = v15;
+            changeCopy = v15;
             v8 = &OBJC_IVAR___SBExternalDisplayCoverSheetController__screenOn;
             v9 = &OBJC_IVAR___SBExternalDisplayCoverSheetController__screenOn;
             goto LABEL_12;
           }
 
-          v4 = v15;
+          changeCopy = v15;
           v8 = &OBJC_IVAR___SBExternalDisplayCoverSheetController__screenOn;
           v9 = &OBJC_IVAR___SBExternalDisplayCoverSheetController__screenOn;
           if (v19)
@@ -308,7 +308,7 @@ LABEL_13:
       }
 
       while (v6 != v10);
-      v22 = [v4 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v22 = [changeCopy countByEnumeratingWithState:&v25 objects:v29 count:16];
       v6 = v22;
     }
 

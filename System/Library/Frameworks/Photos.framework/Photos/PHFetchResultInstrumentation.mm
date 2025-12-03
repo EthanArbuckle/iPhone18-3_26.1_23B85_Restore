@@ -1,17 +1,17 @@
 @interface PHFetchResultInstrumentation
 - (BOOL)areBacktracesEnabled;
 - (BOOL)isPerformanceLoggingDisabled;
-- (id)formatSqlString:(id)a3 withBindVariables:(id)a4;
+- (id)formatSqlString:(id)string withBindVariables:(id)variables;
 - (int64_t)bytesPerRow;
 - (unsigned)classifyFetchPerformanceLogLevel;
-- (void)beginTrackingStatisticsWithContext:(id)a3;
-- (void)classifyFetchPerformanceWithTuple:(id)a3;
-- (void)didExecuteFetchRequestWithContext:(id)a3 resultCount:(unint64_t)a4 sqlString:(id)a5 bindVariables:(id)a6;
-- (void)didFailFetchRequestWithContext:(id)a3;
-- (void)endTrackingStatisticsWithContext:(id)a3 resultCount:(unint64_t)a4 sqlString:(id)a5 bindVariables:(id)a6;
-- (void)logFetchWithSqlString:(id)a3 bindVariables:(id)a4;
-- (void)managedObjectContext:(id)a3 didExecuteFetchRequest:(id)a4 withSQLString:(id)a5 bindVariables:(id)a6 rowCount:(int64_t)a7;
-- (void)willExecuteFetchRequestWithContext:(id)a3;
+- (void)beginTrackingStatisticsWithContext:(id)context;
+- (void)classifyFetchPerformanceWithTuple:(id)tuple;
+- (void)didExecuteFetchRequestWithContext:(id)context resultCount:(unint64_t)count sqlString:(id)string bindVariables:(id)variables;
+- (void)didFailFetchRequestWithContext:(id)context;
+- (void)endTrackingStatisticsWithContext:(id)context resultCount:(unint64_t)count sqlString:(id)string bindVariables:(id)variables;
+- (void)logFetchWithSqlString:(id)string bindVariables:(id)variables;
+- (void)managedObjectContext:(id)context didExecuteFetchRequest:(id)request withSQLString:(id)string bindVariables:(id)variables rowCount:(int64_t)count;
+- (void)willExecuteFetchRequestWithContext:(id)context;
 @end
 
 @implementation PHFetchResultInstrumentation
@@ -36,7 +36,7 @@
   v19 = v3;
   v20 = v2;
   v8 = qos_class_self();
-  v9 = [(PHFetchResultInstrumentation *)self bytesPerRow];
+  bytesPerRow = [(PHFetchResultInstrumentation *)self bytesPerRow];
   if (v8 < QOS_CLASS_USER_INITIATED)
   {
     v11 = 2;
@@ -45,14 +45,14 @@
   else
   {
     rowCount = self->_rowCount;
-    if (rowCount > 100 || v9 <= 327680)
+    if (rowCount > 100 || bytesPerRow <= 327680)
     {
-      v13 = rowCount < 101 && v9 > 81920;
-      v14 = v9 <= 163840 || rowCount <= 100;
+      v13 = rowCount < 101 && bytesPerRow > 81920;
+      v14 = bytesPerRow <= 163840 || rowCount <= 100;
       v11 = 16;
       if (v14)
       {
-        if (v9 <= 40960 || rowCount <= 100)
+        if (bytesPerRow <= 40960 || rowCount <= 100)
         {
           v16 = 2;
         }
@@ -99,16 +99,16 @@
   return result;
 }
 
-- (void)managedObjectContext:(id)a3 didExecuteFetchRequest:(id)a4 withSQLString:(id)a5 bindVariables:(id)a6 rowCount:(int64_t)a7
+- (void)managedObjectContext:(id)context didExecuteFetchRequest:(id)request withSQLString:(id)string bindVariables:(id)variables rowCount:(int64_t)count
 {
-  if (a7 == -1)
+  if (count == -1)
   {
-    [(PHFetchResultInstrumentation *)self didFailFetchRequestWithContext:a3, a4, a5, a6];
+    [(PHFetchResultInstrumentation *)self didFailFetchRequestWithContext:context, request, string, variables];
   }
 
   else
   {
-    [(PHFetchResultInstrumentation *)self didExecuteFetchRequestWithContext:a3 resultCount:a7 sqlString:a5 bindVariables:a6];
+    [(PHFetchResultInstrumentation *)self didExecuteFetchRequestWithContext:context resultCount:count sqlString:string bindVariables:variables];
   }
 }
 
@@ -122,23 +122,23 @@
   return sAreBacktracesEnabled;
 }
 
-- (id)formatSqlString:(id)a3 withBindVariables:(id)a4
+- (id)formatSqlString:(id)string withBindVariables:(id)variables
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  stringCopy = string;
+  variablesCopy = variables;
+  if (stringCopy)
   {
     context = objc_autoreleasePoolPush();
     v7 = objc_alloc_init(MEMORY[0x1E696AD60]);
-    [v7 appendFormat:@"\nsql: %@", v5];
-    v8 = [v6 count];
+    [v7 appendFormat:@"\nsql: %@", stringCopy];
+    v8 = [variablesCopy count];
     if (v8)
     {
       v9 = v8;
       for (i = 0; i != v9; ++i)
       {
         v11 = objc_autoreleasePoolPush();
-        v12 = [v6 objectAtIndexedSubscript:i];
+        v12 = [variablesCopy objectAtIndexedSubscript:i];
         v13 = [MEMORY[0x1E69BE390] stringFromBindVariable:v12 withTypePrefix:1];
         [v7 appendFormat:@"\nsql: bind[%tu] = %@", i, v13];
 
@@ -159,11 +159,11 @@
   return v14;
 }
 
-- (void)classifyFetchPerformanceWithTuple:(id)a3
+- (void)classifyFetchPerformanceWithTuple:(id)tuple
 {
-  v6 = a3;
-  v4 = [(PHFetchResultInstrumentation *)self classifyFetchPerformanceLogLevel];
-  if (v4 == 2)
+  tupleCopy = tuple;
+  classifyFetchPerformanceLogLevel = [(PHFetchResultInstrumentation *)self classifyFetchPerformanceLogLevel];
+  if (classifyFetchPerformanceLogLevel == 2)
   {
     v5 = &stru_1F0FC60C8;
   }
@@ -175,27 +175,27 @@
 
   if ([(NSString *)self->_importantFetchName hasPrefix:@"!"])
   {
-    if (((v4 - 1) & 0xFE) != 0)
+    if (((classifyFetchPerformanceLogLevel - 1) & 0xFE) != 0)
     {
-      v4 = v4;
+      classifyFetchPerformanceLogLevel = classifyFetchPerformanceLogLevel;
     }
 
     else
     {
-      v4 = 0;
+      classifyFetchPerformanceLogLevel = 0;
     }
 
     v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[%@] %@", self->_importantFetchName, v5];
   }
 
-  v6[2](v6, v4, v5);
+  tupleCopy[2](tupleCopy, classifyFetchPerformanceLogLevel, v5);
 }
 
-- (void)logFetchWithSqlString:(id)a3 bindVariables:(id)a4
+- (void)logFetchWithSqlString:(id)string bindVariables:(id)variables
 {
   v61 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  variablesCopy = variables;
   v37 = 0;
   v38 = &v37;
   v39 = 0x2020000000;
@@ -218,24 +218,24 @@
 
   if (v9)
   {
-    v29 = [(PHFetchResultInstrumentation *)self formatSqlString:v6 withBindVariables:v7];
+    v29 = [(PHFetchResultInstrumentation *)self formatSqlString:stringCopy withBindVariables:variablesCopy];
     v10 = PLFetchPerformanceGetLog();
     v11 = *(v38 + 24);
     if (os_log_type_enabled(v10, v11))
     {
-      v26 = v7;
-      v27 = v6;
+      v26 = variablesCopy;
+      v27 = stringCopy;
       v24 = v32[5];
       duration = self->_duration;
       qos_class_self();
       v12 = PLShortStringFromQoSClass();
-      v28 = [(PHFetchResult *)self->_fetchResult fetchRequest];
-      v13 = [v28 entityName];
+      fetchRequest = [(PHFetchResult *)self->_fetchResult fetchRequest];
+      entityName = [fetchRequest entityName];
       byteCount = self->_byteCount;
       rowCount = self->_rowCount;
-      v16 = [(PHFetchResultInstrumentation *)self bytesPerRow];
-      v17 = [(PHFetchResult *)self->_fetchResult fetchOptions];
-      v18 = [(PHFetchResult *)self->_fetchResult fetchRequest];
+      bytesPerRow = [(PHFetchResultInstrumentation *)self bytesPerRow];
+      fetchOptions = [(PHFetchResult *)self->_fetchResult fetchOptions];
+      fetchRequest2 = [(PHFetchResult *)self->_fetchResult fetchRequest];
       *buf = 138414594;
       v42 = v24;
       v43 = 2048;
@@ -243,29 +243,29 @@
       v45 = 2112;
       v46 = v12;
       v47 = 2112;
-      v48 = v13;
+      v48 = entityName;
       v49 = 2048;
       v50 = rowCount;
       v51 = 2048;
       v52 = byteCount;
       v53 = 2048;
-      v54 = v16;
+      v54 = bytesPerRow;
       v55 = 2112;
-      v56 = v17;
+      v56 = fetchOptions;
       v57 = 2112;
-      v58 = v18;
+      v58 = fetchRequest2;
       v59 = 2112;
       v60 = v29;
       _os_log_impl(&dword_19C86F000, v10, v11, "%@PhotoKit Fetch: duration: %.2f, QoS: %@, entity: %@, count: %lld, bytes: %lld, bytes per row: %lld\nPHFetchOptions: %@\nNSFetchRequest: %@%@", buf, 0x66u);
 
-      v7 = v26;
-      v6 = v27;
+      variablesCopy = v26;
+      stringCopy = v27;
     }
 
     if ([(PHFetchResultInstrumentation *)self areBacktracesEnabled])
     {
-      v19 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v20 = [v19 componentsJoinedByString:@"\n"];
+      callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+      v20 = [callStackSymbols componentsJoinedByString:@"\n"];
 
       if (*(v38 + 24) == 17)
       {
@@ -295,43 +295,43 @@
   _Block_object_dispose(&v37, 8);
 }
 
-- (void)endTrackingStatisticsWithContext:(id)a3 resultCount:(unint64_t)a4 sqlString:(id)a5 bindVariables:(id)a6
+- (void)endTrackingStatisticsWithContext:(id)context resultCount:(unint64_t)count sqlString:(id)string bindVariables:(id)variables
 {
-  v15 = a3;
-  v10 = a5;
-  v11 = a6;
+  contextCopy = context;
+  stringCopy = string;
+  variablesCopy = variables;
   if (![(PHFetchResultInstrumentation *)self isPerformanceLoggingDisabled])
   {
-    [v15 setTrackSQLiteDatabaseStatistics:self->_wasTrackingStatistics];
-    v12 = [v15 databaseStatistics];
-    v13 = [v12 totalCachePages];
-    v14 = v13 - [(NSSQLiteDatabaseStatistics *)self->_statsStart totalCachePages];
-    self->_byteCount = v14 * [v12 pageSize];
-    self->_rowCount = a4;
+    [contextCopy setTrackSQLiteDatabaseStatistics:self->_wasTrackingStatistics];
+    databaseStatistics = [contextCopy databaseStatistics];
+    totalCachePages = [databaseStatistics totalCachePages];
+    v14 = totalCachePages - [(NSSQLiteDatabaseStatistics *)self->_statsStart totalCachePages];
+    self->_byteCount = v14 * [databaseStatistics pageSize];
+    self->_rowCount = count;
     self->_duration = CFAbsoluteTimeGetCurrent() - self->_timeStart;
-    [(PHFetchResultInstrumentation *)self logFetchWithSqlString:v10 bindVariables:v11];
+    [(PHFetchResultInstrumentation *)self logFetchWithSqlString:stringCopy bindVariables:variablesCopy];
   }
 }
 
-- (void)beginTrackingStatisticsWithContext:(id)a3
+- (void)beginTrackingStatisticsWithContext:(id)context
 {
-  v6 = a3;
+  contextCopy = context;
   if (![(PHFetchResultInstrumentation *)self isPerformanceLoggingDisabled])
   {
-    self->_wasTrackingStatistics = [v6 trackSQLiteDatabaseStatistics];
-    [v6 setTrackSQLiteDatabaseStatistics:1];
-    v4 = [v6 databaseStatistics];
+    self->_wasTrackingStatistics = [contextCopy trackSQLiteDatabaseStatistics];
+    [contextCopy setTrackSQLiteDatabaseStatistics:1];
+    databaseStatistics = [contextCopy databaseStatistics];
     statsStart = self->_statsStart;
-    self->_statsStart = v4;
+    self->_statsStart = databaseStatistics;
 
     self->_timeStart = CFAbsoluteTimeGetCurrent();
   }
 }
 
-- (void)didFailFetchRequestWithContext:(id)a3
+- (void)didFailFetchRequestWithContext:(id)context
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   if (self->_importantFetchName)
   {
     v5 = self->_importantFetchSignpost.log;
@@ -347,16 +347,16 @@
 
   if (![(PHFetchResultInstrumentation *)self isPerformanceLoggingDisabled])
   {
-    [v4 setTrackSQLiteDatabaseStatistics:self->_wasTrackingStatistics];
+    [contextCopy setTrackSQLiteDatabaseStatistics:self->_wasTrackingStatistics];
   }
 }
 
-- (void)didExecuteFetchRequestWithContext:(id)a3 resultCount:(unint64_t)a4 sqlString:(id)a5 bindVariables:(id)a6
+- (void)didExecuteFetchRequestWithContext:(id)context resultCount:(unint64_t)count sqlString:(id)string bindVariables:(id)variables
 {
   v18 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  contextCopy = context;
+  stringCopy = string;
+  variablesCopy = variables;
   if (self->_importantFetchName)
   {
     v13 = self->_importantFetchSignpost.log;
@@ -365,19 +365,19 @@
     if (signpostId - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v13))
     {
       v16 = 134217984;
-      v17 = a4;
+      countCopy = count;
       _os_signpost_emit_with_name_impl(&dword_19C86F000, v14, OS_SIGNPOST_INTERVAL_END, signpostId, "ImportantPhotosFetch", "%tu", &v16, 0xCu);
     }
   }
 
-  [(PHFetchResultInstrumentation *)self endTrackingStatisticsWithContext:v10 resultCount:a4 sqlString:v11 bindVariables:v12];
+  [(PHFetchResultInstrumentation *)self endTrackingStatisticsWithContext:contextCopy resultCount:count sqlString:stringCopy bindVariables:variablesCopy];
 }
 
-- (void)willExecuteFetchRequestWithContext:(id)a3
+- (void)willExecuteFetchRequestWithContext:(id)context
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [(PHFetchResultInstrumentation *)self beginTrackingStatisticsWithContext:v4];
+  contextCopy = context;
+  [(PHFetchResultInstrumentation *)self beginTrackingStatisticsWithContext:contextCopy];
   if (self->_importantFetchName)
   {
     v5 = PLImportantFetchGetLog();

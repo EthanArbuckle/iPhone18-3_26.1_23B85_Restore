@@ -1,11 +1,11 @@
 @interface JavaNioCharsetCharset
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isRegistered;
 - (NSString)description;
-- (id)decodeWithJavaNioByteBuffer:(id)a3;
-- (id)encodeWithNSString:(id)a3;
-- (int)compareToWithId:(id)a3;
+- (id)decodeWithJavaNioByteBuffer:(id)buffer;
+- (id)encodeWithNSString:(id)string;
+- (int)compareToWithId:(id)id;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
@@ -31,17 +31,17 @@
   }
 }
 
-- (id)encodeWithNSString:(id)a3
+- (id)encodeWithNSString:(id)string
 {
-  v4 = JavaNioCharBuffer_wrapWithJavaLangCharSequence_(a3);
+  v4 = JavaNioCharBuffer_wrapWithJavaLangCharSequence_(string);
 
   return sub_1001BDC24(self, v4);
 }
 
-- (id)decodeWithJavaNioByteBuffer:(id)a3
+- (id)decodeWithJavaNioByteBuffer:(id)buffer
 {
-  v4 = [(JavaNioCharsetCharset *)self newDecoder];
-  if (!v4)
+  newDecoder = [(JavaNioCharsetCharset *)self newDecoder];
+  if (!newDecoder)
   {
     goto LABEL_9;
   }
@@ -51,7 +51,7 @@
     objc_opt_class();
   }
 
-  v5 = [v4 onMalformedInputWithJavaNioCharsetCodingErrorAction:JavaNioCharsetCodingErrorAction_REPLACE_];
+  v5 = [newDecoder onMalformedInputWithJavaNioCharsetCodingErrorAction:JavaNioCharsetCodingErrorAction_REPLACE_];
   if (!v5)
   {
     goto LABEL_9;
@@ -69,13 +69,13 @@ LABEL_9:
     JreThrowNullPointerException();
   }
 
-  return [v6 decodeWithJavaNioByteBuffer:a3];
+  return [v6 decodeWithJavaNioByteBuffer:buffer];
 }
 
-- (int)compareToWithId:(id)a3
+- (int)compareToWithId:(id)id
 {
   objc_opt_class();
-  if (!a3)
+  if (!id)
   {
     canonicalName = self->canonicalName_;
     JreThrowNullPointerException();
@@ -92,12 +92,12 @@ LABEL_9:
     JreThrowNullPointerException();
   }
 
-  v6 = *(a3 + 1);
+  v6 = *(id + 1);
 
   return [(NSString *)v5 compareToIgnoreCase:v6];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -106,7 +106,7 @@ LABEL_9:
   }
 
   objc_opt_class();
-  if (!a3)
+  if (!equal)
   {
     canonicalName = self->canonicalName_;
     goto LABEL_11;
@@ -124,7 +124,7 @@ LABEL_11:
     JreThrowNullPointerException();
   }
 
-  v6 = *(a3 + 1);
+  v6 = *(equal + 1);
 
   return [(NSString *)v5 isEqual:v6];
 }
@@ -156,7 +156,7 @@ LABEL_11:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = new_JavaUtilHashMap_init();
     JreStrongAssignAndConsume(&qword_100554D90, v2);

@@ -1,14 +1,14 @@
 @interface OrgApacheLuceneSearchFilteredQuery_RandomAccessFilterWrapperQuery
-- (BOOL)isEqual:(id)a3;
-- (id)createWeightWithOrgApacheLuceneSearchIndexSearcher:(id)a3 withBoolean:(BOOL)a4;
-- (id)toStringWithNSString:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)createWeightWithOrgApacheLuceneSearchIndexSearcher:(id)searcher withBoolean:(BOOL)boolean;
+- (id)toStringWithNSString:(id)string;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneSearchFilteredQuery_RandomAccessFilterWrapperQuery
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v10.receiver = self;
   v10.super_class = OrgApacheLuceneSearchFilteredQuery_RandomAccessFilterWrapperQuery;
@@ -16,7 +16,7 @@
   if (v5)
   {
     objc_opt_class();
-    if (!a3)
+    if (!equal)
     {
       v8 = *(&self->super.boost_ + 1);
       JreThrowNullPointerException();
@@ -33,13 +33,13 @@
       goto LABEL_9;
     }
 
-    v5 = [v6 isEqual:*(a3 + 12)];
+    v5 = [v6 isEqual:*(equal + 12)];
     if (v5)
     {
       v7 = *(&self->filter_ + 4);
       if (v7)
       {
-        LOBYTE(v5) = [v7 isEqual:*(a3 + 20)];
+        LOBYTE(v5) = [v7 isEqual:*(equal + 20)];
         return v5;
       }
 
@@ -63,7 +63,7 @@ LABEL_9:
   return (OrgLukhnosPortmobileUtilObjects_hash__WithNSObjectArray_(v5) - v3 + 32 * v3);
 }
 
-- (id)toStringWithNSString:(id)a3
+- (id)toStringWithNSString:(id)string
 {
   v4 = *(&self->super.boost_ + 1);
   if (!v4)
@@ -71,10 +71,10 @@ LABEL_9:
     JreThrowNullPointerException();
   }
 
-  return [v4 toStringWithNSString:a3];
+  return [v4 toStringWithNSString:string];
 }
 
-- (id)createWeightWithOrgApacheLuceneSearchIndexSearcher:(id)a3 withBoolean:(BOOL)a4
+- (id)createWeightWithOrgApacheLuceneSearchIndexSearcher:(id)searcher withBoolean:(BOOL)boolean
 {
   v5 = [OrgApacheLuceneSearchFilteredQuery_RandomAccessFilterWrapperQuery__1 alloc];
   JreStrongAssign(&v5->this$0_, self);

@@ -1,23 +1,23 @@
 @interface CycleStatisticsDataSource
-- (void)analysisProvider:(id)a3 didUpdateAnalysis:(id)a4;
+- (void)analysisProvider:(id)provider didUpdateAnalysis:(id)analysis;
 @end
 
 @implementation CycleStatisticsDataSource
 
-- (void)analysisProvider:(id)a3 didUpdateAnalysis:(id)a4
+- (void)analysisProvider:(id)provider didUpdateAnalysis:(id)analysis
 {
   v5 = *&self->analysis[7];
-  *&self->analysis[7] = a4;
-  v6 = a4;
+  *&self->analysis[7] = analysis;
+  analysisCopy = analysis;
 
   if (self->sectionStyle[0])
   {
-    sub_29E2AB8D0(v6);
+    sub_29E2AB8D0(analysisCopy);
   }
 
   else
   {
-    sub_29E2AB468(v6);
+    sub_29E2AB468(analysisCopy);
   }
 }
 

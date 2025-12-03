@@ -11,8 +11,8 @@
 - (double)unixTimeInterval;
 - (id).cxx_construct;
 - (unsigned)messageType;
-- (void)addData:(id)a3;
-- (void)addMemo:(id)a3;
+- (void)addData:(id)data;
+- (void)addMemo:(id)memo;
 @end
 
 @implementation DTActivityTapTableDecoder
@@ -38,20 +38,20 @@
   return 0;
 }
 
-- (void)addMemo:(id)a3
+- (void)addMemo:(id)memo
 {
-  v4 = a3;
+  memoCopy = memo;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(NSMutableArray *)self->_memos addObject:v4];
+    [(NSMutableArray *)self->_memos addObject:memoCopy];
   }
 }
 
-- (void)addData:(id)a3
+- (void)addData:(id)data
 {
-  v5 = a3;
-  v4 = [[DTActivityTraceTapMemo alloc] initWithData:v5];
+  dataCopy = data;
+  v4 = [[DTActivityTraceTapMemo alloc] initWithData:dataCopy];
   [(DTActivityTapTableDecoder *)self addMemo:v4];
 }
 
@@ -69,9 +69,9 @@
 
   if ([(NSMutableArray *)self->_memos count])
   {
-    v4 = [(NSMutableArray *)self->_memos firstObject];
+    firstObject = [(NSMutableArray *)self->_memos firstObject];
     currentChunk = self->_currentChunk;
-    self->_currentChunk = v4;
+    self->_currentChunk = firstObject;
 
     [(NSMutableArray *)self->_memos removeObjectAtIndex:0];
     __p = 0;
@@ -101,9 +101,9 @@ LABEL_8:
       {
         if (v10 == 4)
         {
-          v14 = [(NSMutableArray *)self->_memos firstObject];
+          firstObject2 = [(NSMutableArray *)self->_memos firstObject];
           v15 = self->_currentChunk;
-          self->_currentChunk = v14;
+          self->_currentChunk = firstObject2;
 
           if (!self->_currentChunk)
           {
@@ -407,10 +407,10 @@ LABEL_115:
 
 - (NSString)processName
 {
-  v2 = [(DTActivityTapTableDecoder *)self processImagePath];
-  v3 = [v2 lastPathComponent];
+  processImagePath = [(DTActivityTapTableDecoder *)self processImagePath];
+  lastPathComponent = [processImagePath lastPathComponent];
 
-  return v3;
+  return lastPathComponent;
 }
 
 - (XRConstantEngineeringValue)process
@@ -510,9 +510,9 @@ LABEL_13:
   }
 
   v3 = [qword_27EE84290 objectForKeyedSubscript:v2];
-  v4 = [v3 unsignedIntValue];
+  unsignedIntValue = [v3 unsignedIntValue];
 
-  return v4;
+  return unsignedIntValue;
 }
 
 - (XRConstantEngineeringValue)senderImageUUID
@@ -551,11 +551,11 @@ LABEL_13:
 - (double)unixTimeInterval
 {
   unixTimeInterval = self->_columns.unixTimeInterval;
-  v3 = self;
+  selfCopy = self;
   v4 = 0.0;
-  if (sub_247F83314(v3->_tableRowDecoder.__ptr_, unixTimeInterval))
+  if (sub_247F83314(selfCopy->_tableRowDecoder.__ptr_, unixTimeInterval))
   {
-    ptr = v3->_decoder.__ptr_;
+    ptr = selfCopy->_decoder.__ptr_;
     v7 = *(ptr + 8);
     v6 = *(ptr + 9);
     v8 = *(v6 + 4);
@@ -596,9 +596,9 @@ LABEL_13:
 - (XRConstantEngineeringValue)message
 {
   message = self->_columns.message;
-  v3 = self;
-  ptr = v3->_decoder.__ptr_;
-  if (sub_247F83314(v3->_tableRowDecoder.__ptr_, message) && (v5 = *(ptr + 8), v7 = *(ptr + 9), v6 = (ptr + 64), *(v7 + 8) == 19))
+  selfCopy = self;
+  ptr = selfCopy->_decoder.__ptr_;
+  if (sub_247F83314(selfCopy->_tableRowDecoder.__ptr_, message) && (v5 = *(ptr + 8), v7 = *(ptr + 9), v6 = (ptr + 64), *(v7 + 8) == 19))
   {
     v8 = *(v5 + *(v7 + 4) - 4);
     v79 = [MEMORY[0x277CBEB18] arrayWithCapacity:v8];
@@ -643,7 +643,7 @@ LABEL_13:
         v20 = (v17 - 12 * v18);
         *(ptr + 8) = v14 + *v20;
         *(ptr + 9) = v20;
-        v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:{sub_247F858BC(v6, v3->_buffer, 0x400uLL)}];
+        v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:{sub_247F858BC(v6, selfCopy->_buffer, 0x400uLL)}];
         if (v21)
         {
           v78 = v21;
@@ -746,7 +746,7 @@ LABEL_39:
               {
                 if (v32 == 3)
                 {
-                  v48 = [MEMORY[0x277CCACA8] stringWithUTF8String:{sub_247F858BC(v80, v3->_buffer, 0x400uLL)}];
+                  v48 = [MEMORY[0x277CCACA8] stringWithUTF8String:{sub_247F858BC(v80, selfCopy->_buffer, 0x400uLL)}];
                   v49 = [MEMORY[0x277D036A0] engineeringValueWithTypeID:v22 value:v48];
                   [v79 addObject:v49];
 
@@ -811,7 +811,7 @@ LABEL_62:
                       {
                         v56 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:v55];
                         v76 = v56;
-                        v57 = [v56 mutableBytes];
+                        mutableBytes = [v56 mutableBytes];
                         if (v55)
                         {
                           v58 = v55;
@@ -837,20 +837,20 @@ LABEL_62:
                             }
 
                             v66 = v63[1];
-                            *v57 = *v64;
+                            *mutableBytes = *v64;
                             if (v66 <= 7)
                             {
                               v77 = v58;
-                              v67 = v57;
-                              memset(v57 + v66, *(*(ptr + 9) + 9), 8 - v66);
-                              v57 = v67;
+                              v67 = mutableBytes;
+                              memset(mutableBytes + v66, *(*(ptr + 9) + 9), 8 - v66);
+                              mutableBytes = v67;
                               v58 = v77;
                               v59 = v75;
                               v56 = v76;
                             }
 
                             ++v60;
-                            ++v57;
+                            ++mutableBytes;
                             v68 = v58 < 9;
                             v58 = v65;
                             if (v68)
@@ -864,13 +864,13 @@ LABEL_62:
                           if (v70 <= 7)
                           {
                             v71 = v58;
-                            v72 = v57;
+                            v72 = mutableBytes;
                             memset(&__src + v70, *(v63 + 9), 8 - v70);
-                            v57 = v72;
+                            mutableBytes = v72;
                             v58 = v71;
                           }
 
-                          memcpy(v57, &__src, v58);
+                          memcpy(mutableBytes, &__src, v58);
                         }
                       }
 

@@ -1,54 +1,54 @@
 @interface SearchUICollectionPeekDelegate
-+ (id)menuConfigurationForCommandHandler:(id)a3;
-+ (void)contextMenuInteractionWillDisplayMenuForCommandHandler:(id)a3 animator:(id)a4;
-+ (void)contextMenuInteractionWillEndForCommandHandler:(id)a3 animator:(id)a4;
-+ (void)contextMenuInteractionWillPerformPreviewActionForMenuWithCommandHandler:(id)a3 animator:(id)a4;
-- (SearchUICollectionPeekDelegate)initWithViewController:(id)a3;
++ (id)menuConfigurationForCommandHandler:(id)handler;
++ (void)contextMenuInteractionWillDisplayMenuForCommandHandler:(id)handler animator:(id)animator;
++ (void)contextMenuInteractionWillEndForCommandHandler:(id)handler animator:(id)animator;
++ (void)contextMenuInteractionWillPerformPreviewActionForMenuWithCommandHandler:(id)handler animator:(id)animator;
+- (SearchUICollectionPeekDelegate)initWithViewController:(id)controller;
 - (SearchUICollectionViewController)collectionViewController;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
-- (id)generateTargetPreviewForInteraction:(id)a3 forItemWithIdentifier:(id)a4;
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5;
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5;
-- (void)contextMenuInteraction:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
+- (id)generateTargetPreviewForInteraction:(id)interaction forItemWithIdentifier:(id)identifier;
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator;
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator;
+- (void)contextMenuInteraction:(id)interaction willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator;
 @end
 
 @implementation SearchUICollectionPeekDelegate
 
-- (SearchUICollectionPeekDelegate)initWithViewController:(id)a3
+- (SearchUICollectionPeekDelegate)initWithViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = SearchUICollectionPeekDelegate;
   v5 = [(SearchUICollectionPeekDelegate *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(SearchUICollectionPeekDelegate *)v5 setCollectionViewController:v4];
+    [(SearchUICollectionPeekDelegate *)v5 setCollectionViewController:controllerCopy];
   }
 
   return v6;
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = [(SearchUICollectionPeekDelegate *)self collectionViewController];
-  v8 = [v7 collectionView];
-  v9 = [v8 indexPathForItemAtPoint:{x, y}];
-  if (!v9 || ![SearchUIUtilities deviceIsAuthenticatedForView:v8])
+  y = location.y;
+  x = location.x;
+  collectionViewController = [(SearchUICollectionPeekDelegate *)self collectionViewController];
+  collectionView = [collectionViewController collectionView];
+  v9 = [collectionView indexPathForItemAtPoint:{x, y}];
+  if (!v9 || ![SearchUIUtilities deviceIsAuthenticatedForView:collectionView])
   {
     v16 = 0;
     goto LABEL_22;
   }
 
-  v10 = [v8 hitTest:0 withEvent:{x, y}];
-  v11 = [v7 dataSource];
-  v12 = [v11 itemIdentifierForIndexPath:v9];
+  v10 = [collectionView hitTest:0 withEvent:{x, y}];
+  dataSource = [collectionViewController dataSource];
+  v12 = [dataSource itemIdentifierForIndexPath:v9];
 
-  v13 = [v12 identifyingResult];
-  v14 = [v13 applicationBundleIdentifier];
-  if (+[SearchUIUtilities bundleIdentifierIsBlockedForScreenTimeExpiration:](SearchUIUtilities, "bundleIdentifierIsBlockedForScreenTimeExpiration:", v14) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && ([v10 isThreeDTouchEnabled] & 1) != 0)
+  identifyingResult = [v12 identifyingResult];
+  applicationBundleIdentifier = [identifyingResult applicationBundleIdentifier];
+  if (+[SearchUIUtilities bundleIdentifierIsBlockedForScreenTimeExpiration:](SearchUIUtilities, "bundleIdentifierIsBlockedForScreenTimeExpiration:", applicationBundleIdentifier) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && ([v10 isThreeDTouchEnabled] & 1) != 0)
   {
     isKindOfClass = 1;
   }
@@ -59,12 +59,12 @@
     isKindOfClass = objc_opt_isKindOfClass();
   }
 
-  v17 = [v8 cellForItemAtIndexPath:v9];
+  v17 = [collectionView cellForItemAtIndexPath:v9];
   if (v17 && [v10 isDescendantOfView:v17] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v18 = [v17 searchui_focusStyle];
-    v19 = [v7 commandEnvironmentForIndexPath:v9];
-    if (v18 == 7)
+    searchui_focusStyle = [v17 searchui_focusStyle];
+    v19 = [collectionViewController commandEnvironmentForIndexPath:v9];
+    if (searchui_focusStyle == 7)
     {
       goto LABEL_15;
     }
@@ -72,7 +72,7 @@
 
   else
   {
-    v19 = [v7 commandEnvironmentForIndexPath:v9];
+    v19 = [collectionViewController commandEnvironmentForIndexPath:v9];
     if (isKindOfClass)
     {
       goto LABEL_15;
@@ -84,9 +84,9 @@
     goto LABEL_19;
   }
 
-  v20 = [v12 cardSection];
-  v21 = [v20 previewButtonItems];
-  if (v21)
+  cardSection = [v12 cardSection];
+  previewButtonItems = [cardSection previewButtonItems];
+  if (previewButtonItems)
   {
 
     goto LABEL_19;
@@ -98,18 +98,18 @@
     goto LABEL_20;
   }
 
-  v25 = [v12 cardSection];
-  v26 = [v25 userReportRequest];
+  cardSection2 = [v12 cardSection];
+  userReportRequest = [cardSection2 userReportRequest];
 
-  if (v26)
+  if (userReportRequest)
   {
 LABEL_19:
     v22 = [SearchUICommandHandler previewHandlerForRowModel:v12 environment:v19];
     [(SearchUICollectionPeekDelegate *)self setCommandHandler:v22];
 
     v23 = objc_opt_class();
-    v20 = [(SearchUICollectionPeekDelegate *)self commandHandler];
-    v16 = [v23 menuConfigurationForCommandHandler:v20];
+    cardSection = [(SearchUICollectionPeekDelegate *)self commandHandler];
+    v16 = [v23 menuConfigurationForCommandHandler:cardSection];
 LABEL_20:
 
     goto LABEL_21;
@@ -124,18 +124,18 @@ LABEL_22:
   return v16;
 }
 
-+ (id)menuConfigurationForCommandHandler:(id)a3
++ (id)menuConfigurationForCommandHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = MEMORY[0x1E69DC8D8];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __69__SearchUICollectionPeekDelegate_menuConfigurationForCommandHandler___block_invoke;
   v9[3] = &unk_1E85B2590;
-  v10 = v3;
-  v5 = v3;
-  v6 = [v5 actionProvider];
-  v7 = [v4 configurationWithIdentifier:0 previewProvider:v9 actionProvider:v6];
+  v10 = handlerCopy;
+  v5 = handlerCopy;
+  actionProvider = [v5 actionProvider];
+  v7 = [v4 configurationWithIdentifier:0 previewProvider:v9 actionProvider:actionProvider];
 
   return v7;
 }
@@ -163,20 +163,20 @@ id __69__SearchUICollectionPeekDelegate_menuConfigurationForCommandHandler___blo
   return v3;
 }
 
-- (id)generateTargetPreviewForInteraction:(id)a3 forItemWithIdentifier:(id)a4
+- (id)generateTargetPreviewForInteraction:(id)interaction forItemWithIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = [(SearchUICollectionPeekDelegate *)self collectionViewController];
-  v7 = [v6 collectionView];
+  interactionCopy = interaction;
+  collectionViewController = [(SearchUICollectionPeekDelegate *)self collectionViewController];
+  collectionView = [collectionViewController collectionView];
 
-  [v5 locationInView:v7];
+  [interactionCopy locationInView:collectionView];
   v9 = v8;
   v11 = v10;
 
   v12 = 0;
-  if ([v7 pointInside:0 withEvent:{v9, v11}])
+  if ([collectionView pointInside:0 withEvent:{v9, v11}])
   {
-    v13 = [v7 indexPathForItemAtPoint:{v9, v11}];
+    v13 = [collectionView indexPathForItemAtPoint:{v9, v11}];
     if (!v13)
     {
       v12 = 0;
@@ -185,7 +185,7 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    v14 = [v7 cellForItemAtIndexPath:v13];
+    v14 = [collectionView cellForItemAtIndexPath:v13];
     if (!v14 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       v12 = 0;
@@ -195,11 +195,11 @@ LABEL_19:
     }
 
     v15 = v14;
-    v16 = [v15 highlightReferenceView];
-    v17 = v16;
-    if (v16)
+    highlightReferenceView = [v15 highlightReferenceView];
+    v17 = highlightReferenceView;
+    if (highlightReferenceView)
     {
-      v18 = v16;
+      v18 = highlightReferenceView;
     }
 
     else
@@ -210,34 +210,34 @@ LABEL_19:
     v19 = v18;
 
     v20 = objc_opt_new();
-    v21 = [v15 backgroundView];
-    if (v21)
+    backgroundView = [v15 backgroundView];
+    if (backgroundView)
     {
     }
 
     else
     {
-      v22 = [(SearchUICollectionPeekDelegate *)self commandHandler];
-      v23 = [v22 viewController];
+      commandHandler = [(SearchUICollectionPeekDelegate *)self commandHandler];
+      viewController = [commandHandler viewController];
 
-      if (!v23)
+      if (!viewController)
       {
         goto LABEL_14;
       }
     }
 
-    v24 = [MEMORY[0x1E69DC888] clearColor];
-    [v20 setBackgroundColor:v24];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [v20 setBackgroundColor:clearColor];
 
 LABEL_14:
-    v25 = [v15 rowModel];
+    rowModel = [v15 rowModel];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v26 = [v15 rowModel];
-      v27 = [v26 supportsCustomHighlightBehavior];
+      rowModel2 = [v15 rowModel];
+      supportsCustomHighlightBehavior = [rowModel2 supportsCustomHighlightBehavior];
 
-      if (!v27)
+      if (!supportsCustomHighlightBehavior)
       {
 LABEL_18:
         v12 = [objc_alloc(MEMORY[0x1E69DD070]) initWithView:v19 parameters:v20];
@@ -245,7 +245,7 @@ LABEL_18:
         goto LABEL_19;
       }
 
-      v28 = [v15 contentView];
+      contentView = [v15 contentView];
 
       v29 = MEMORY[0x1E69DC728];
       [v15 highlightFrame];
@@ -254,9 +254,9 @@ LABEL_18:
       v35 = v34;
       v37 = v36;
       [v15 highlightFrameCornerRadius];
-      v25 = [v29 bezierPathWithRoundedRect:v31 cornerRadius:{v33, v35, v37, v38}];
-      [v20 setVisiblePath:v25];
-      v19 = v28;
+      rowModel = [v29 bezierPathWithRoundedRect:v31 cornerRadius:{v33, v35, v37, v38}];
+      [v20 setVisiblePath:rowModel];
+      v19 = contentView;
     }
 
     goto LABEL_18;
@@ -267,24 +267,24 @@ LABEL_21:
   return v12;
 }
 
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator
 {
-  v6 = a5;
+  animatorCopy = animator;
   v7 = objc_opt_class();
-  v8 = [(SearchUICollectionPeekDelegate *)self commandHandler];
-  [v7 contextMenuInteractionWillDisplayMenuForCommandHandler:v8 animator:v6];
+  commandHandler = [(SearchUICollectionPeekDelegate *)self commandHandler];
+  [v7 contextMenuInteractionWillDisplayMenuForCommandHandler:commandHandler animator:animatorCopy];
 }
 
-+ (void)contextMenuInteractionWillDisplayMenuForCommandHandler:(id)a3 animator:(id)a4
++ (void)contextMenuInteractionWillDisplayMenuForCommandHandler:(id)handler animator:(id)animator
 {
-  v5 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __98__SearchUICollectionPeekDelegate_contextMenuInteractionWillDisplayMenuForCommandHandler_animator___block_invoke;
   v7[3] = &unk_1E85B24C8;
-  v8 = v5;
-  v6 = v5;
-  [a4 addAnimations:v7];
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  [animator addAnimations:v7];
   [v6 didPreview];
 }
 
@@ -296,32 +296,32 @@ void __98__SearchUICollectionPeekDelegate_contextMenuInteractionWillDisplayMenuF
   [v2 setAlpha:0.75];
 }
 
-- (void)contextMenuInteraction:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator
 {
-  v6 = a5;
+  animatorCopy = animator;
   v7 = objc_opt_class();
-  v8 = [(SearchUICollectionPeekDelegate *)self commandHandler];
-  [v7 contextMenuInteractionWillPerformPreviewActionForMenuWithCommandHandler:v8 animator:v6];
+  commandHandler = [(SearchUICollectionPeekDelegate *)self commandHandler];
+  [v7 contextMenuInteractionWillPerformPreviewActionForMenuWithCommandHandler:commandHandler animator:animatorCopy];
 }
 
-+ (void)contextMenuInteractionWillPerformPreviewActionForMenuWithCommandHandler:(id)a3 animator:(id)a4
++ (void)contextMenuInteractionWillPerformPreviewActionForMenuWithCommandHandler:(id)handler animator:(id)animator
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 viewController];
-  [v6 setPreferredCommitStyle:v7 != 0];
+  handlerCopy = handler;
+  animatorCopy = animator;
+  viewController = [handlerCopy viewController];
+  [animatorCopy setPreferredCommitStyle:viewController != 0];
 
-  v8 = [v5 rowModel];
-  v9 = [v8 cardSection];
-  v10 = [v9 previewCommand];
-  if (v10)
+  rowModel = [handlerCopy rowModel];
+  cardSection = [rowModel cardSection];
+  previewCommand = [cardSection previewCommand];
+  if (previewCommand)
   {
-    v11 = [v9 command];
-    if ([v10 isEqual:v11])
+    command = [cardSection command];
+    if ([previewCommand isEqual:command])
     {
-      v12 = [v5 prefersModalPresentation];
+      prefersModalPresentation = [handlerCopy prefersModalPresentation];
 
-      if ((v12 & 1) == 0)
+      if ((prefersModalPresentation & 1) == 0)
       {
         goto LABEL_9;
       }
@@ -332,46 +332,46 @@ void __98__SearchUICollectionPeekDelegate_contextMenuInteractionWillDisplayMenuF
     }
   }
 
-  else if (![v5 prefersModalPresentation])
+  else if (![handlerCopy prefersModalPresentation])
   {
     goto LABEL_9;
   }
 
-  v13 = [v5 rowModel];
-  v14 = [v5 environment];
-  v15 = [SearchUICommandHandler handlerForRowModel:v13 environment:v14];
+  rowModel2 = [handlerCopy rowModel];
+  environment = [handlerCopy environment];
+  v15 = [SearchUICommandHandler handlerForRowModel:rowModel2 environment:environment];
 
-  v5 = v15;
+  handlerCopy = v15;
 LABEL_9:
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __115__SearchUICollectionPeekDelegate_contextMenuInteractionWillPerformPreviewActionForMenuWithCommandHandler_animator___block_invoke;
   v17[3] = &unk_1E85B24C8;
-  v18 = v5;
-  v16 = v5;
-  [v6 addAnimations:v17];
+  v18 = handlerCopy;
+  v16 = handlerCopy;
+  [animatorCopy addAnimations:v17];
 }
 
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator
 {
-  v6 = a5;
+  animatorCopy = animator;
   v7 = objc_opt_class();
-  v8 = [(SearchUICollectionPeekDelegate *)self commandHandler];
-  [v7 contextMenuInteractionWillEndForCommandHandler:v8 animator:v6];
+  commandHandler = [(SearchUICollectionPeekDelegate *)self commandHandler];
+  [v7 contextMenuInteractionWillEndForCommandHandler:commandHandler animator:animatorCopy];
 
   [(SearchUICollectionPeekDelegate *)self setCommandHandler:0];
 }
 
-+ (void)contextMenuInteractionWillEndForCommandHandler:(id)a3 animator:(id)a4
++ (void)contextMenuInteractionWillEndForCommandHandler:(id)handler animator:(id)animator
 {
-  v5 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __90__SearchUICollectionPeekDelegate_contextMenuInteractionWillEndForCommandHandler_animator___block_invoke;
   v7[3] = &unk_1E85B24C8;
-  v8 = v5;
-  v6 = v5;
-  [a4 addAnimations:v7];
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  [animator addAnimations:v7];
 }
 
 void __90__SearchUICollectionPeekDelegate_contextMenuInteractionWillEndForCommandHandler_animator___block_invoke(uint64_t a1)

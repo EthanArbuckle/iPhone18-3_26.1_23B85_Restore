@@ -1,44 +1,44 @@
 @interface HUContactHomeOwnerItem
-- (HUContactHomeOwnerItem)initWithHome:(id)a3;
+- (HUContactHomeOwnerItem)initWithHome:(id)home;
 - (id)_homeOwnerName;
-- (id)_subclass_updateWithOptions:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_subclass_updateWithOptions:(id)options;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HUContactHomeOwnerItem
 
-- (HUContactHomeOwnerItem)initWithHome:(id)a3
+- (HUContactHomeOwnerItem)initWithHome:(id)home
 {
-  v5 = a3;
+  homeCopy = home;
   v9.receiver = self;
   v9.super_class = HUContactHomeOwnerItem;
   v6 = [(HUContactHomeOwnerItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_home, a3);
+    objc_storeStrong(&v6->_home, home);
   }
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(HUContactHomeOwnerItem *)self home];
-  v6 = [v4 initWithHome:v5];
+  home = [(HUContactHomeOwnerItem *)self home];
+  v6 = [v4 initWithHome:home];
 
   return v6;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKey:*MEMORY[0x277D13BB0]];
-  v6 = [v5 BOOLValue];
+  optionsCopy = options;
+  v5 = [optionsCopy objectForKey:*MEMORY[0x277D13BB0]];
+  bOOLValue = [v5 BOOLValue];
 
-  if ((v6 & 1) != 0 || (-[HUContactHomeOwnerItem home](self, "home"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 hf_currentUserIsRestrictedGuest], v7, (v8 & 1) == 0))
+  if ((bOOLValue & 1) != 0 || (-[HUContactHomeOwnerItem home](self, "home"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 hf_currentUserIsRestrictedGuest], v7, (v8 & 1) == 0))
   {
     v18 = *MEMORY[0x277D13FB8];
     v19[0] = MEMORY[0x277CBEC38];
@@ -51,13 +51,13 @@
   else
   {
     objc_initWeak(&location, self);
-    v9 = [(HUContactHomeOwnerItem *)self _homeOwnerName];
+    _homeOwnerName = [(HUContactHomeOwnerItem *)self _homeOwnerName];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __54__HUContactHomeOwnerItem__subclass_updateWithOptions___block_invoke;
     v15[3] = &unk_277DC4640;
     objc_copyWeak(&v16, &location);
-    v10 = [v9 flatMap:v15];
+    v10 = [_homeOwnerName flatMap:v15];
     objc_destroyWeak(&v16);
 
     objc_destroyWeak(&location);
@@ -124,16 +124,16 @@ id __54__HUContactHomeOwnerItem__subclass_updateWithOptions___block_invoke(uint6
 
   else
   {
-    v5 = [MEMORY[0x277D2C938] globalAsyncScheduler];
-    v6 = [(HUContactHomeOwnerItem *)self home];
-    objc_initWeak(buf, v6);
+    globalAsyncScheduler = [MEMORY[0x277D2C938] globalAsyncScheduler];
+    home = [(HUContactHomeOwnerItem *)self home];
+    objc_initWeak(buf, home);
     v7 = MEMORY[0x277D2C900];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __40__HUContactHomeOwnerItem__homeOwnerName__block_invoke;
     v9[3] = &unk_277DBCA20;
     objc_copyWeak(&v10, buf);
-    v4 = [v7 futureWithBlock:v9 scheduler:v5];
+    v4 = [v7 futureWithBlock:v9 scheduler:globalAsyncScheduler];
     objc_destroyWeak(&v10);
     objc_destroyWeak(buf);
   }

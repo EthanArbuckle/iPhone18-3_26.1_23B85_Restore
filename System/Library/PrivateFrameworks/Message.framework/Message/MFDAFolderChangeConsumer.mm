@@ -1,7 +1,7 @@
 @interface MFDAFolderChangeConsumer
 - (MFDAFolderChangeConsumer)init;
 - (id)waitForResult;
-- (void)folderChange:(id)a3 finishedWithStatus:(int64_t)a4 error:(id)a5;
+- (void)folderChange:(id)change finishedWithStatus:(int64_t)status error:(id)error;
 @end
 
 @implementation MFDAFolderChangeConsumer
@@ -21,28 +21,28 @@
   return v2;
 }
 
-- (void)folderChange:(id)a3 finishedWithStatus:(int64_t)a4 error:(id)a5
+- (void)folderChange:(id)change finishedWithStatus:(int64_t)status error:(id)error
 {
-  v9 = a3;
-  v21 = a4;
-  v10 = a5;
-  v20 = v10;
-  MFWalkUpDAErrorChain(&v20, &v21);
+  changeCopy = change;
+  statusCopy = status;
+  errorCopy = error;
+  v20 = errorCopy;
+  MFWalkUpDAErrorChain(&v20, &statusCopy);
   v11 = v20;
 
   [(MFConditionLock *)self->_conditionLock lock];
   if (self->_result)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v19 = NSStringFromSelector(a2);
-    [v18 handleFailureInMethod:a2 object:self file:@"MFDAFolderChangeConsumer.m" lineNumber:55 description:{@"%@ should not be called twice", v19}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MFDAFolderChangeConsumer.m" lineNumber:55 description:{@"%@ should not be called twice", v19}];
   }
 
   v12 = [MFDAFolderChangeResult alloc];
-  v13 = v21;
-  v14 = [v9 folderId];
-  v15 = [v9 displayName];
-  v16 = [(MFDAFolderChangeResult *)v12 initWithStatusCode:v13 error:v11 folderID:v14 folderName:v15];
+  v13 = statusCopy;
+  folderId = [changeCopy folderId];
+  displayName = [changeCopy displayName];
+  v16 = [(MFDAFolderChangeResult *)v12 initWithStatusCode:v13 error:v11 folderID:folderId folderName:displayName];
   result = self->_result;
   self->_result = v16;
 

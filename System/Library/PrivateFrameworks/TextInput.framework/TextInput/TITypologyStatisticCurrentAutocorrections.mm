@@ -1,18 +1,18 @@
 @interface TITypologyStatisticCurrentAutocorrections
-- (void)visitRecordAutocorrections:(id)a3;
+- (void)visitRecordAutocorrections:(id)autocorrections;
 @end
 
 @implementation TITypologyStatisticCurrentAutocorrections
 
-- (void)visitRecordAutocorrections:(id)a3
+- (void)visitRecordAutocorrections:(id)autocorrections
 {
-  v4 = a3;
-  v5 = [v4 autocorrections];
-  [(TITypologyStatisticCurrentAutocorrections *)self setAutocorrections:v5];
+  autocorrectionsCopy = autocorrections;
+  autocorrections = [autocorrectionsCopy autocorrections];
+  [(TITypologyStatisticCurrentAutocorrections *)self setAutocorrections:autocorrections];
 
-  v6 = [v4 requestToken];
+  requestToken = [autocorrectionsCopy requestToken];
 
-  [(TITypologyStatisticCurrentAutocorrections *)self setRequestToken:v6];
+  [(TITypologyStatisticCurrentAutocorrections *)self setRequestToken:requestToken];
 }
 
 @end

@@ -2,17 +2,17 @@
 - (BOOL)decrementUseCount;
 - (BOOL)makeNonPurgeable;
 - (NSString)description;
-- (NUBufferStorage)initWithSize:(id)a3 format:(id)a4;
+- (NUBufferStorage)initWithSize:(id)size format:(id)format;
 - (id)_purgeStateDescription;
 - (id)newRenderDestination;
-- (int)_fetchPurgeState:(int *)a3;
-- (int)_purgeLevelToOSValue:(int64_t)a3;
-- (int64_t)readBufferInRegion:(id)a3 block:(id)a4;
-- (int64_t)useAsCIImageWithOptions:(id)a3 renderer:(id)a4 block:(id)a5;
-- (int64_t)useAsCIRenderDestinationWithRenderer:(id)a3 block:(id)a4;
-- (int64_t)writeBufferInRegion:(id)a3 block:(id)a4;
-- (void)_allocateMemory:(int64_t)a3;
-- (void)adjustPurgeLevel:(int64_t)a3;
+- (int)_fetchPurgeState:(int *)state;
+- (int)_purgeLevelToOSValue:(int64_t)value;
+- (int64_t)readBufferInRegion:(id)region block:(id)block;
+- (int64_t)useAsCIImageWithOptions:(id)options renderer:(id)renderer block:(id)block;
+- (int64_t)useAsCIRenderDestinationWithRenderer:(id)renderer block:(id)block;
+- (int64_t)writeBufferInRegion:(id)region block:(id)block;
+- (void)_allocateMemory:(int64_t)memory;
+- (void)adjustPurgeLevel:(int64_t)level;
 - (void)dealloc;
 - (void)makePurgeable;
 @end
@@ -26,8 +26,8 @@
   bytes = self->_bytes;
   length = self->_length;
   purgeLevel = self->_purgeLevel;
-  v8 = [(NUBufferStorage *)self _purgeStateDescription];
-  v9 = [v3 stringWithFormat:@"<%@:%p> bytes=%p length=%ld priority=%ld %@", v4, self, bytes, length, purgeLevel, v8];
+  _purgeStateDescription = [(NUBufferStorage *)self _purgeStateDescription];
+  v9 = [v3 stringWithFormat:@"<%@:%p> bytes=%p length=%ld priority=%ld %@", v4, self, bytes, length, purgeLevel, _purgeStateDescription];
 
   return v9;
 }
@@ -35,22 +35,22 @@
 - (id)newRenderDestination
 {
   v3 = objc_alloc(MEMORY[0x1E695F678]);
-  v4 = [(NUBufferStorage *)self mutableBytes];
+  mutableBytes = [(NUBufferStorage *)self mutableBytes];
   v5 = [(_NUAbstractStorage *)self size];
   [(_NUAbstractStorage *)self size];
   v7 = v6;
-  v8 = [(NUBufferStorage *)self rowBytes];
-  v9 = [(_NUAbstractStorage *)self format];
-  v10 = [v3 initWithBitmapData:v4 width:v5 height:v7 bytesPerRow:v8 format:{objc_msgSend(v9, "CIFormat")}];
+  rowBytes = [(NUBufferStorage *)self rowBytes];
+  format = [(_NUAbstractStorage *)self format];
+  v10 = [v3 initWithBitmapData:mutableBytes width:v5 height:v7 bytesPerRow:rowBytes format:{objc_msgSend(format, "CIFormat")}];
 
   [v10 setLabel:@"NUBufferStorage-new"];
   return v10;
 }
 
-- (int64_t)useAsCIRenderDestinationWithRenderer:(id)a3 block:(id)a4
+- (int64_t)useAsCIRenderDestinationWithRenderer:(id)renderer block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  rendererCopy = renderer;
+  blockCopy = block;
   v17 = 0;
   v18 = 0;
   v19 = [(_NUAbstractStorage *)self size];
@@ -65,7 +65,7 @@
   v14[2] = __62__NUBufferStorage_useAsCIRenderDestinationWithRenderer_block___block_invoke;
   v14[3] = &unk_1E8109FF8;
   v16 = &v17;
-  v10 = v7;
+  v10 = blockCopy;
   v15 = v10;
   v11 = [(NUBufferStorage *)self writeBufferInRegion:v9 block:v14];
   if (*(v18 + 24))
@@ -89,12 +89,12 @@ void __62__NUBufferStorage_useAsCIRenderDestinationWithRenderer_block___block_in
   *(*(*(a1 + 40) + 8) + 24) = (*(v3 + 16))(v3, v4);
 }
 
-- (int64_t)useAsCIImageWithOptions:(id)a3 renderer:(id)a4 block:(id)a5
+- (int64_t)useAsCIImageWithOptions:(id)options renderer:(id)renderer block:(id)block
 {
   v34 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  optionsCopy = options;
+  rendererCopy = renderer;
+  blockCopy = block;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_10259);
@@ -135,8 +135,8 @@ LABEL_8:
     {
       v20 = MEMORY[0x1E696AF00];
       v21 = v15;
-      v22 = [v20 callStackSymbols];
-      v23 = [v22 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v20 callStackSymbols];
+      v23 = [callStackSymbols componentsJoinedByString:@"\n"];
       *v31 = 138543362;
       *&v31[4] = v23;
       _os_log_error_impl(&dword_1C0184000, v21, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", v31, 0xCu);
@@ -152,8 +152,8 @@ LABEL_8:
     v26 = MEMORY[0x1E696AF00];
     v27 = specific;
     v28 = v24;
-    v29 = [v26 callStackSymbols];
-    v30 = [v29 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v26 callStackSymbols];
+    v30 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *v31 = 138543618;
     *&v31[4] = specific;
     v32 = 2114;
@@ -165,11 +165,11 @@ LABEL_14:
   _NUAssertFailHandler("[NUBufferStorage useAsCIImageWithOptions:renderer:block:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Image/NUBufferStorage.m", 299, @"Not implemented", v16, v17, v18, v19, *v31);
 }
 
-- (int64_t)writeBufferInRegion:(id)a3 block:(id)a4
+- (int64_t)writeBufferInRegion:(id)region block:(id)block
 {
   v19[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  regionCopy = region;
+  blockCopy = block;
   if ([(_NUAbstractStorage *)self isDirty])
   {
     v8 = [(_NUAbstractStorage *)self size];
@@ -179,7 +179,7 @@ LABEL_14:
     v17 = v8;
     v18 = v9;
     v11 = [NURegion regionWithRect:&v15];
-    v12 = [v6 isEqualToRegion:v11];
+    v12 = [regionCopy isEqualToRegion:v11];
 
     if ((v12 & 1) == 0)
     {
@@ -196,20 +196,20 @@ LABEL_14:
   }
 
   v13 = [[NUMutableBufferAdapter alloc] initWithMutableBuffer:self];
-  v7[2](v7, v13);
+  blockCopy[2](blockCopy, v13);
 
   [(NUBufferAdapter *)v13 invalidate];
-  [(_NUAbstractStorage *)self validateRegion:v6];
+  [(_NUAbstractStorage *)self validateRegion:regionCopy];
 
   return 1;
 }
 
-- (int64_t)readBufferInRegion:(id)a3 block:(id)a4
+- (int64_t)readBufferInRegion:(id)region block:(id)block
 {
-  v6 = a4;
-  [(_NUAbstractStorage *)self assertIsValidInRegion:a3];
+  blockCopy = block;
+  [(_NUAbstractStorage *)self assertIsValidInRegion:region];
   v7 = [[NUBufferAdapter alloc] initWithBuffer:self];
-  v6[2](v6, v7);
+  blockCopy[2](blockCopy, v7);
 
   [(NUBufferAdapter *)v7 invalidate];
   return 1;
@@ -276,8 +276,8 @@ LABEL_21:
     {
       v25 = MEMORY[0x1E696AF00];
       v26 = v23;
-      v27 = [v25 callStackSymbols];
-      v28 = [v27 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v25 callStackSymbols];
+      v28 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v31 = v28;
       _os_log_error_impl(&dword_1C0184000, v26, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -299,8 +299,8 @@ LABEL_17:
     v18 = MEMORY[0x1E696AF00];
     v19 = specific;
     v20 = v12;
-    v21 = [v18 callStackSymbols];
-    v22 = [v21 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v18 callStackSymbols];
+    v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v31 = specific;
     v32 = 2114;
@@ -370,8 +370,8 @@ LABEL_10:
           v16 = MEMORY[0x1E696AF00];
           v17 = specific;
           v18 = v10;
-          v19 = [v16 callStackSymbols];
-          v20 = [v19 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v16 callStackSymbols];
+          v20 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v28 = specific;
           v29 = 2114;
@@ -389,8 +389,8 @@ LABEL_16:
       {
         v22 = MEMORY[0x1E696AF00];
         v23 = v21;
-        v24 = [v22 callStackSymbols];
-        v25 = [v24 componentsJoinedByString:@"\n"];
+        callStackSymbols2 = [v22 callStackSymbols];
+        v25 = [callStackSymbols2 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v28 = v25;
         _os_log_error_impl(&dword_1C0184000, v23, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -401,12 +401,12 @@ LABEL_16:
   }
 }
 
-- (void)adjustPurgeLevel:(int64_t)a3
+- (void)adjustPurgeLevel:(int64_t)level
 {
   v32 = *MEMORY[0x1E69E9840];
-  if (self->_purgeLevel != a3)
+  if (self->_purgeLevel != level)
   {
-    self->_purgeLevel = a3;
+    self->_purgeLevel = level;
     if (self->_purgeable)
     {
       v27 = [(NUBufferStorage *)self _purgeLevelToOSValue:?];
@@ -456,8 +456,8 @@ LABEL_11:
             v17 = MEMORY[0x1E696AF00];
             v18 = specific;
             v19 = v11;
-            v20 = [v17 callStackSymbols];
-            v21 = [v20 componentsJoinedByString:@"\n"];
+            callStackSymbols = [v17 callStackSymbols];
+            v21 = [callStackSymbols componentsJoinedByString:@"\n"];
             *buf = 138543618;
             v29 = specific;
             v30 = 2114;
@@ -475,8 +475,8 @@ LABEL_17:
         {
           v23 = MEMORY[0x1E696AF00];
           v24 = v22;
-          v25 = [v23 callStackSymbols];
-          v26 = [v25 componentsJoinedByString:@"\n"];
+          callStackSymbols2 = [v23 callStackSymbols];
+          v26 = [callStackSymbols2 componentsJoinedByString:@"\n"];
           *buf = 138543362;
           v29 = v26;
           _os_log_error_impl(&dword_1C0184000, v24, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -488,16 +488,16 @@ LABEL_17:
   }
 }
 
-- (int)_purgeLevelToOSValue:(int64_t)a3
+- (int)_purgeLevelToOSValue:(int64_t)value
 {
-  if ((a3 - 1) > 3)
+  if ((value - 1) > 3)
   {
     return 33;
   }
 
   else
   {
-    return dword_1C03C2A70[a3 - 1];
+    return dword_1C03C2A70[value - 1];
   }
 }
 
@@ -524,10 +524,10 @@ LABEL_17:
   return off_1E810A018[v5];
 }
 
-- (int)_fetchPurgeState:(int *)a3
+- (int)_fetchPurgeState:(int *)state
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = MEMORY[0x1C68D9C70](*MEMORY[0x1E69E9A60], self->_bytes, 1, a3);
+  v4 = MEMORY[0x1C68D9C70](*MEMORY[0x1E69E9A60], self->_bytes, 1, state);
   if (v4)
   {
     if (_NULogOnceToken != -1)
@@ -572,8 +572,8 @@ LABEL_9:
         v16 = MEMORY[0x1E696AF00];
         v17 = specific;
         v18 = v10;
-        v19 = [v16 callStackSymbols];
-        v20 = [v19 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v16 callStackSymbols];
+        v20 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v28 = specific;
         v29 = 2114;
@@ -591,8 +591,8 @@ LABEL_15:
     {
       v23 = MEMORY[0x1E696AF00];
       v24 = v21;
-      v25 = [v23 callStackSymbols];
-      v26 = [v25 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v23 callStackSymbols];
+      v26 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v28 = v26;
       _os_log_error_impl(&dword_1C0184000, v24, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -629,8 +629,8 @@ LABEL_15:
         v11 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v12 = MEMORY[0x1E696AF00];
         v13 = v11;
-        v14 = [v12 callStackSymbols];
-        v15 = [v14 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v12 callStackSymbols];
+        v15 = [callStackSymbols componentsJoinedByString:@"\n"];
         *v20 = 138543618;
         *&v20[4] = v11;
         v21 = 2114;
@@ -641,8 +641,8 @@ LABEL_15:
 
     else if (v8)
     {
-      v9 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v10 = [v9 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v10 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *v20 = 138543362;
       *&v20[4] = v10;
       _os_log_error_impl(&dword_1C0184000, v7, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", v20, 0xCu);
@@ -654,11 +654,11 @@ LABEL_15:
   return add == 1;
 }
 
-- (void)_allocateMemory:(int64_t)a3
+- (void)_allocateMemory:(int64_t)memory
 {
   v28 = *MEMORY[0x1E69E9840];
   address = 0;
-  v4 = vm_allocate(*MEMORY[0x1E69E9A60], &address, (a3 + *MEMORY[0x1E69E9AC8] - 1) & -*MEMORY[0x1E69E9AC8], -117440509);
+  v4 = vm_allocate(*MEMORY[0x1E69E9A60], &address, (memory + *MEMORY[0x1E69E9AC8] - 1) & -*MEMORY[0x1E69E9AC8], -117440509);
   if (v4)
   {
     v6 = v4;
@@ -681,8 +681,8 @@ LABEL_15:
         v14 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v15 = MEMORY[0x1E696AF00];
         v16 = v14;
-        v17 = [v15 callStackSymbols];
-        v18 = [v17 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v15 callStackSymbols];
+        v18 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v25 = v14;
         v26 = 2114;
@@ -693,8 +693,8 @@ LABEL_15:
 
     else if (v11)
     {
-      v12 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v13 = [v12 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v13 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v25 = v13;
       _os_log_error_impl(&dword_1C0184000, v10, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -714,13 +714,13 @@ LABEL_15:
   [(NUBufferStorage *)&v3 dealloc];
 }
 
-- (NUBufferStorage)initWithSize:(id)a3 format:(id)a4
+- (NUBufferStorage)initWithSize:(id)size format:(id)format
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = size.var1;
+  var0 = size.var0;
   v50 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  if (!v7)
+  formatCopy = format;
+  if (!formatCopy)
   {
     v12 = NUAssertLogger_10319();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -741,8 +741,8 @@ LABEL_15:
         v19 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v20 = MEMORY[0x1E696AF00];
         v21 = v19;
-        v22 = [v20 callStackSymbols];
-        v23 = [v22 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v20 callStackSymbols];
+        v23 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v47 = v19;
         v48 = 2114;
@@ -753,8 +753,8 @@ LABEL_15:
 
     else if (v16)
     {
-      v17 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v18 = [v17 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v18 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v47 = v18;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -763,7 +763,7 @@ LABEL_15:
     _NUAssertFailHandler("[NUBufferStorage initWithSize:format:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Image/NUBufferStorage.m", 51, @"Invalid parameter not satisfying: %s", v24, v25, v26, v27, "pixelFormat != nil");
   }
 
-  v8 = v7;
+  v8 = formatCopy;
   v45.receiver = self;
   v45.super_class = NUBufferStorage;
   v9 = [(_NUAbstractStorage *)&v45 init];
@@ -791,8 +791,8 @@ LABEL_15:
         v35 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v36 = MEMORY[0x1E696AF00];
         v37 = v35;
-        v38 = [v36 callStackSymbols];
-        v39 = [v38 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v36 callStackSymbols];
+        v39 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v47 = v35;
         v48 = 2114;
@@ -803,8 +803,8 @@ LABEL_15:
 
     else if (v32)
     {
-      v33 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v34 = [v33 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v34 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v47 = v34;
       _os_log_error_impl(&dword_1C0184000, v31, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);

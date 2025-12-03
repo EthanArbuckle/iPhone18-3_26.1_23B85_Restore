@@ -1,7 +1,7 @@
 @interface _MFOutgoingMessageBody
 - (_MFOutgoingMessageBody)init;
 - (id)rawData;
-- (int64_t)appendData:(id)a3;
+- (int64_t)appendData:(id)data;
 - (void)dealloc;
 - (void)done;
 @end
@@ -46,12 +46,12 @@
   }
 }
 
-- (int64_t)appendData:(id)a3
+- (int64_t)appendData:(id)data
 {
   v5 = [(MFBufferedDataConsumer *)self->_consumer appendData:?];
   if (v5 >= 1)
   {
-    self->_lastNewLine = *([a3 bytes] + v5 - 1) == 10;
+    self->_lastNewLine = *([data bytes] + v5 - 1) == 10;
     self->_count += v5;
   }
 

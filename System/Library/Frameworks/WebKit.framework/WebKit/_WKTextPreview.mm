@@ -1,26 +1,26 @@
 @interface _WKTextPreview
 - (CGRect)presentationFrame;
-- (_WKTextPreview)initWithSnapshotImage:(CGImage *)a3 presentationFrame:(CGRect)a4;
+- (_WKTextPreview)initWithSnapshotImage:(CGImage *)image presentationFrame:(CGRect)frame;
 @end
 
 @implementation _WKTextPreview
 
-- (_WKTextPreview)initWithSnapshotImage:(CGImage *)a3 presentationFrame:(CGRect)a4
+- (_WKTextPreview)initWithSnapshotImage:(CGImage *)image presentationFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v9 = [(_WKTextPreview *)self init];
   if (v9)
   {
-    if (a3)
+    if (image)
     {
-      CFRetain(a3);
+      CFRetain(image);
     }
 
     m_ptr = v9->_previewImage.m_ptr;
-    v9->_previewImage.m_ptr = a3;
+    v9->_previewImage.m_ptr = image;
     if (m_ptr)
     {
       CFRelease(m_ptr);

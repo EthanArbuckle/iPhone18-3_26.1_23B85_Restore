@@ -4,9 +4,9 @@
 + (id)cloudSyncDisabledFirstPartyBundleIds;
 + (id)sharedInstance;
 + (void)clearTestSettings;
-+ (void)disableBundleIdentifier:(id)a3;
-- (BOOL)bundleIdentifierIsEnabledForCloudKit:(id)a3;
-- (BOOL)bundleIdentifierIsEnabledForDonation:(id)a3;
++ (void)disableBundleIdentifier:(id)identifier;
+- (BOOL)bundleIdentifierIsEnabledForCloudKit:(id)kit;
+- (BOOL)bundleIdentifierIsEnabledForDonation:(id)donation;
 - (BOOL)isAppConnectionsLocationsEnabled;
 - (BOOL)isAuthorizedToLogLocation;
 - (BOOL)queryPlanLoggingEnabled;
@@ -17,34 +17,34 @@
 - (double)weightMultiplier;
 - (id)_donationDisabledBundleIds;
 - (id)abGroupOverride;
-- (id)assetDefaultBundleOverridePathForAssetIdentifier:(id)a3;
+- (id)assetDefaultBundleOverridePathForAssetIdentifier:(id)identifier;
 - (id)entitiesBackfilledTimestamp;
 - (id)entitiesMappingPreviousTrieSha256;
-- (id)trialPathOverrideForNamespaceName:(id)a3 factorName:(id)a4;
+- (id)trialPathOverrideForNamespaceName:(id)name factorName:(id)factorName;
 - (id)trialPathOverrides;
-- (int)registerDisabledBundleIdentifierChangeHandler:(id)a3;
-- (int)registerQueryPlanLoggingChangeHandler:(id)a3;
+- (int)registerDisabledBundleIdentifierChangeHandler:(id)handler;
+- (int)registerQueryPlanLoggingChangeHandler:(id)handler;
 - (uint64_t)_invokeChangeHandlersAsync;
 - (void)_purgeRecordsForDisabledBundleIdsAsync;
 - (void)_refreshCloudKitDisabledBundleIds;
 - (void)_refreshDisabledBundleIds;
 - (void)_triggerDelayedBundleIdPurge;
-- (void)_triggerDelayedOperationWithCoalescingToken:(void *)a3 operation:;
+- (void)_triggerDelayedOperationWithCoalescingToken:(void *)token operation:;
 - (void)_updateAppConnectionsSettings;
 - (void)clearAssetMetadataRefreshIntervalSeconds;
-- (void)deregisterDisabledBundleIdentifierChangeHandlerWithToken:(int)a3;
-- (void)deregisterQueryPlanLoggingChangeHandlerWithToken:(int)a3;
+- (void)deregisterDisabledBundleIdentifierChangeHandlerWithToken:(int)token;
+- (void)deregisterQueryPlanLoggingChangeHandlerWithToken:(int)token;
 - (void)refreshCloudKitDisabledBundleIdsAsync;
 - (void)registerCloudKitDisabledBundleIdRewriteHandler;
 - (void)registerDisabledBundleIdPurgeHandler;
 - (void)rewriteSyncStateForDisabledBundleIdsAsync;
-- (void)setAppConnectionsLocationsEnabled:(BOOL)a3;
-- (void)setAssetDefaultBundleOverridePath:(id)a3 assetIdentifier:(id)a4;
-- (void)setAssetMetadataRefreshIntervalSeconds:(double)a3;
-- (void)setEntitiesBackfilledTimestamp:(id)a3;
-- (void)setEntitiesMappingTrieSha256:(id)a3;
-- (void)setQueryPlanLoggingEnabled:(BOOL)a3;
-- (void)setTrialPathOverrideForNamespaceName:(id)a3 factorName:(id)a4 path:(id)a5;
+- (void)setAppConnectionsLocationsEnabled:(BOOL)enabled;
+- (void)setAssetDefaultBundleOverridePath:(id)path assetIdentifier:(id)identifier;
+- (void)setAssetMetadataRefreshIntervalSeconds:(double)seconds;
+- (void)setEntitiesBackfilledTimestamp:(id)timestamp;
+- (void)setEntitiesMappingTrieSha256:(id)sha256;
+- (void)setQueryPlanLoggingEnabled:(BOOL)enabled;
+- (void)setTrialPathOverrideForNamespaceName:(id)name factorName:(id)factorName path:(id)path;
 - (void)triggerDelayedCloudSyncRewrite;
 @end
 
@@ -65,7 +65,7 @@ void __18__PPSettings_init__block_invoke(uint64_t a1)
 - (void)_updateAppConnectionsSettings
 {
   v10 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     v2 = pp_default_log_handle();
     if (os_log_type_enabled(v2, OS_LOG_TYPE_INFO))
@@ -74,19 +74,19 @@ void __18__PPSettings_init__block_invoke(uint64_t a1)
       _os_log_impl(&dword_23224A000, v2, OS_LOG_TYPE_INFO, "PPSettings: reading App Connections settings...", buf, 2u);
     }
 
-    v3 = a1[3];
+    v3 = self[3];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __43__PPSettings__updateAppConnectionsSettings__block_invoke;
     v7[3] = &unk_278972568;
-    v7[4] = a1;
+    v7[4] = self;
     [v3 runWithLockAcquired:v7];
     v4 = pp_default_log_handle();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
-      v5 = [a1 isAppConnectionsLocationsEnabled];
+      isAppConnectionsLocationsEnabled = [self isAppConnectionsLocationsEnabled];
       *buf = 67109120;
-      v9 = v5;
+      v9 = isAppConnectionsLocationsEnabled;
       _os_log_impl(&dword_23224A000, v4, OS_LOG_TYPE_INFO, "PPSettings: appConnectionsLocationsEnabled = %d", buf, 8u);
     }
   }
@@ -136,7 +136,7 @@ uint64_t __43__PPSettings__updateAppConnectionsSettings__block_invoke(uint64_t a
   block[1] = 3221225472;
   block[2] = __28__PPSettings_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance__pasOnceToken4_3395 != -1)
   {
     dispatch_once(&sharedInstance__pasOnceToken4_3395, block);
@@ -149,7 +149,7 @@ uint64_t __43__PPSettings__updateAppConnectionsSettings__block_invoke(uint64_t a
 
 - (void)_purgeRecordsForDisabledBundleIdsAsync
 {
-  if (a1)
+  if (self)
   {
     v3 = 0;
     atomic_compare_exchange_strong(_purgeRecordsForDisabledBundleIdsAsync_isInQueue, &v3, 1u);
@@ -157,12 +157,12 @@ uint64_t __43__PPSettings__updateAppConnectionsSettings__block_invoke(uint64_t a
     {
       block[5] = v1;
       block[6] = v2;
-      v4 = *(a1 + 32);
+      v4 = *(self + 32);
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __52__PPSettings__purgeRecordsForDisabledBundleIdsAsync__block_invoke;
       block[3] = &unk_2789790A8;
-      block[4] = a1;
+      block[4] = self;
       dispatch_async(v4, block);
     }
   }
@@ -276,9 +276,9 @@ void __52__PPSettings__purgeRecordsForDisabledBundleIdsAsync__block_invoke(uint6
 - (void)_refreshDisabledBundleIds
 {
   v25 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 16);
+    v2 = *(self + 16);
     if (v2)
     {
       v3 = [v2 objectForKey:@"SiriCanLearnFromAppBlacklist"];
@@ -311,7 +311,7 @@ void __52__PPSettings__purgeRecordsForDisabledBundleIdsAsync__block_invoke(uint6
         }
 
         v10 = [v7 mutableCopy];
-        v11 = *(a1 + 24);
+        v11 = *(self + 24);
         v17 = MEMORY[0x277D85DD0];
         v18 = 3221225472;
         v19 = __39__PPSettings__refreshDisabledBundleIds__block_invoke;
@@ -348,10 +348,10 @@ void __52__PPSettings__purgeRecordsForDisabledBundleIdsAsync__block_invoke(uint6
 
 + (BOOL)isVoiceAssistantEnabled
 {
-  v2 = [getAFPreferencesClass() sharedPreferences];
-  v3 = [v2 assistantIsEnabled];
+  sharedPreferences = [getAFPreferencesClass() sharedPreferences];
+  assistantIsEnabled = [sharedPreferences assistantIsEnabled];
 
-  return v3;
+  return assistantIsEnabled;
 }
 
 void __39__PPSettings__refreshDisabledBundleIds__block_invoke(uint64_t a1, id *a2)
@@ -380,7 +380,7 @@ void __39__PPSettings__refreshDisabledBundleIds__block_invoke(uint64_t a1, id *a
 
 - (id)_donationDisabledBundleIds
 {
-  if (a1)
+  if (self)
   {
     v8 = 0;
     v9 = &v8;
@@ -388,7 +388,7 @@ void __39__PPSettings__refreshDisabledBundleIds__block_invoke(uint64_t a1, id *a
     v11 = __Block_byref_object_copy__3300;
     v12 = __Block_byref_object_dispose__3301;
     v13 = 0;
-    v2 = *(a1 + 24);
+    v2 = *(self + 24);
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __40__PPSettings__donationDisabledBundleIds__block_invoke;
@@ -400,14 +400,14 @@ void __39__PPSettings__refreshDisabledBundleIds__block_invoke(uint64_t a1, id *a
 
     if (!v3)
     {
-      [(PPSettings *)a1 _refreshDisabledBundleIds];
+      [(PPSettings *)self _refreshDisabledBundleIds];
       v8 = 0;
       v9 = &v8;
       v10 = 0x3032000000;
       v11 = __Block_byref_object_copy__3300;
       v12 = __Block_byref_object_dispose__3301;
       v13 = 0;
-      v4 = *(a1 + 24);
+      v4 = *(self + 24);
       v6[0] = MEMORY[0x277D85DD0];
       v6[1] = 3221225472;
       v6[2] = __40__PPSettings__donationDisabledBundleIds__block_invoke_2;
@@ -467,7 +467,7 @@ void __39__PPSettings__refreshDisabledBundleIds__block_invoke(uint64_t a1, id *a
 - (void)_refreshCloudKitDisabledBundleIds
 {
   v32[3] = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     v2 = objc_alloc(MEMORY[0x277CBEB58]);
     v3 = +[PPSettings cloudSyncDisabledFirstPartyBundleIds];
@@ -552,7 +552,7 @@ void __39__PPSettings__refreshDisabledBundleIds__block_invoke(uint64_t a1, id *a
       }
     }
 
-    v19 = *(a1 + 24);
+    v19 = *(self + 24);
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __47__PPSettings__refreshCloudKitDisabledBundleIds__block_invoke_232;
@@ -736,14 +736,14 @@ void __55__PPSettings_rewriteSyncStateForDisabledBundleIdsAsync__block_invoke(ui
   return v3;
 }
 
-- (void)deregisterQueryPlanLoggingChangeHandlerWithToken:(int)a3
+- (void)deregisterQueryPlanLoggingChangeHandlerWithToken:(int)token
 {
   lock = self->_lock;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __63__PPSettings_deregisterQueryPlanLoggingChangeHandlerWithToken___block_invoke;
   v4[3] = &__block_descriptor_36_e31_v16__0__PPSettingsGuardedData_8l;
-  v5 = a3;
+  tokenCopy = token;
   [(_PASLock *)lock runWithLockAcquired:v4];
 }
 
@@ -754,13 +754,13 @@ void __63__PPSettings_deregisterQueryPlanLoggingChangeHandlerWithToken___block_i
   [v2 setObject:0 forKeyedSubscript:v3];
 }
 
-- (int)registerQueryPlanLoggingChangeHandler:(id)a3
+- (int)registerQueryPlanLoggingChangeHandler:(id)handler
 {
-  v5 = a3;
-  if (!v5)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PPSettings.m" lineNumber:984 description:{@"Invalid parameter not satisfying: %@", @"handler"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PPSettings.m" lineNumber:984 description:{@"Invalid parameter not satisfying: %@", @"handler"}];
   }
 
   v13 = 0;
@@ -773,7 +773,7 @@ void __63__PPSettings_deregisterQueryPlanLoggingChangeHandlerWithToken___block_i
   v10[2] = __52__PPSettings_registerQueryPlanLoggingChangeHandler___block_invoke;
   v10[3] = &unk_278972600;
   v12 = &v13;
-  v7 = v5;
+  v7 = handlerCopy;
   v11 = v7;
   [(_PASLock *)lock runWithLockAcquired:v10];
   LODWORD(lock) = *(v14 + 6);
@@ -800,21 +800,21 @@ void __52__PPSettings_registerQueryPlanLoggingChangeHandler___block_invoke(uint6
   v2 = [(NSUserDefaults *)self->_portraitDefaults objectForKey:@"queryPlanLoggingEnabled"];
   if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)setQueryPlanLoggingEnabled:(BOOL)a3
+- (void)setQueryPlanLoggingEnabled:(BOOL)enabled
 {
   portraitDefaults = self->_portraitDefaults;
-  if (a3)
+  if (enabled)
   {
     [(NSUserDefaults *)portraitDefaults setObject:MEMORY[0x277CBEC38] forKey:@"queryPlanLoggingEnabled"];
   }
@@ -825,19 +825,19 @@ void __52__PPSettings_registerQueryPlanLoggingChangeHandler___block_invoke(uint6
   }
 }
 
-- (id)assetDefaultBundleOverridePathForAssetIdentifier:(id)a3
+- (id)assetDefaultBundleOverridePathForAssetIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (!v5)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PPSettings.m" lineNumber:923 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PPSettings.m" lineNumber:923 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
   }
 
   v6 = [(NSUserDefaults *)self->_portraitDefaults objectForKey:@"assetDefaultBundleOverridePaths"];
   if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v7 = [v6 objectForKeyedSubscript:v5];
+    v7 = [v6 objectForKeyedSubscript:identifierCopy];
     if (v7)
     {
       objc_opt_class();
@@ -868,29 +868,29 @@ void __52__PPSettings_registerQueryPlanLoggingChangeHandler___block_invoke(uint6
   return v9;
 }
 
-- (void)setTrialPathOverrideForNamespaceName:(id)a3 factorName:(id)a4 path:(id)a5
+- (void)setTrialPathOverrideForNamespaceName:(id)name factorName:(id)factorName path:(id)path
 {
-  v25 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v25)
+  nameCopy = name;
+  factorNameCopy = factorName;
+  pathCopy = path;
+  if (!nameCopy)
   {
-    v23 = [MEMORY[0x277CCA890] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"PPSettings.m" lineNumber:893 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PPSettings.m" lineNumber:893 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
 
-    if (v9)
+    if (factorNameCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_22:
-    v24 = [MEMORY[0x277CCA890] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"PPSettings.m" lineNumber:894 description:{@"Invalid parameter not satisfying: %@", @"factorName"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PPSettings.m" lineNumber:894 description:{@"Invalid parameter not satisfying: %@", @"factorName"}];
 
     goto LABEL_3;
   }
 
-  if (!v9)
+  if (!factorNameCopy)
   {
     goto LABEL_22;
   }
@@ -898,7 +898,7 @@ LABEL_22:
 LABEL_3:
   v11 = [(NSUserDefaults *)self->_portraitDefaults objectForKey:@"trialPathOverrides"];
   v12 = v11;
-  if (v10 || ([v11 objectForKeyedSubscript:v25], v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "objectForKeyedSubscript:", v9), v14 = objc_claimAutoreleasedReturnValue(), v14, v13, v14))
+  if (pathCopy || ([v11 objectForKeyedSubscript:nameCopy], v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "objectForKeyedSubscript:", factorNameCopy), v14 = objc_claimAutoreleasedReturnValue(), v14, v13, v14))
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -912,7 +912,7 @@ LABEL_3:
     }
 
     v16 = v15;
-    v17 = [v12 objectForKeyedSubscript:v25];
+    v17 = [v12 objectForKeyedSubscript:nameCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -925,7 +925,7 @@ LABEL_3:
     }
 
     v19 = v18;
-    [v18 setObject:v10 forKeyedSubscript:v9];
+    [v18 setObject:pathCopy forKeyedSubscript:factorNameCopy];
     if ([v19 count])
     {
       v20 = v19;
@@ -936,7 +936,7 @@ LABEL_3:
       v20 = 0;
     }
 
-    [v16 setObject:v20 forKeyedSubscript:v25];
+    [v16 setObject:v20 forKeyedSubscript:nameCopy];
     v21 = [v16 count];
     portraitDefaults = self->_portraitDefaults;
     if (v21)
@@ -951,14 +951,14 @@ LABEL_3:
   }
 }
 
-- (id)trialPathOverrideForNamespaceName:(id)a3 factorName:(id)a4
+- (id)trialPathOverrideForNamespaceName:(id)name factorName:(id)factorName
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  nameCopy = name;
+  factorNameCopy = factorName;
+  v9 = factorNameCopy;
+  if (nameCopy)
   {
-    if (v8)
+    if (factorNameCopy)
     {
       goto LABEL_3;
     }
@@ -966,8 +966,8 @@ LABEL_3:
 
   else
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PPSettings.m" lineNumber:882 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PPSettings.m" lineNumber:882 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
 
     if (v9)
     {
@@ -975,12 +975,12 @@ LABEL_3:
     }
   }
 
-  v14 = [MEMORY[0x277CCA890] currentHandler];
-  [v14 handleFailureInMethod:a2 object:self file:@"PPSettings.m" lineNumber:883 description:{@"Invalid parameter not satisfying: %@", @"factorName"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PPSettings.m" lineNumber:883 description:{@"Invalid parameter not satisfying: %@", @"factorName"}];
 
 LABEL_3:
   v10 = [(NSUserDefaults *)self->_portraitDefaults objectForKey:@"trialPathOverrides"];
-  v11 = [v10 objectForKeyedSubscript:v7];
+  v11 = [v10 objectForKeyedSubscript:nameCopy];
 
   return v11;
 }
@@ -990,15 +990,15 @@ LABEL_3:
   v2 = [(NSUserDefaults *)self->_portraitDefaults objectForKey:@"trialUseDefaultFiles"];
   if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (id)trialPathOverrides
@@ -1020,14 +1020,14 @@ LABEL_3:
   return v4;
 }
 
-- (void)setAssetDefaultBundleOverridePath:(id)a3 assetIdentifier:(id)a4
+- (void)setAssetDefaultBundleOverridePath:(id)path assetIdentifier:(id)identifier
 {
-  v14 = a3;
-  v7 = a4;
-  if (!v7)
+  pathCopy = path;
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PPSettings.m" lineNumber:846 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PPSettings.m" lineNumber:846 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
   }
 
   v8 = [(NSUserDefaults *)self->_portraitDefaults objectForKey:@"assetDefaultBundleOverridePaths"];
@@ -1043,7 +1043,7 @@ LABEL_3:
   }
 
   v10 = v9;
-  [v9 setObject:v14 forKeyedSubscript:v7];
+  [v9 setObject:pathCopy forKeyedSubscript:identifierCopy];
   v11 = [v10 count];
   portraitDefaults = self->_portraitDefaults;
   if (v11)
@@ -1105,29 +1105,29 @@ LABEL_3:
   [(NSUserDefaults *)self->_portraitDefaults removeObjectForKey:@"assetMetadataUpdateIntervalSeconds"];
 }
 
-- (void)setAssetMetadataRefreshIntervalSeconds:(double)a3
+- (void)setAssetMetadataRefreshIntervalSeconds:(double)seconds
 {
   v11 = *MEMORY[0x277D85DE8];
-  if (a3 >= 1.0)
+  if (seconds >= 1.0)
   {
-    v4 = a3;
+    secondsCopy = seconds;
   }
 
   else
   {
-    v4 = 1.0;
+    secondsCopy = 1.0;
   }
 
   v5 = pp_default_log_handle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 134217984;
-    v10 = v4;
+    v10 = secondsCopy;
     _os_log_impl(&dword_23224A000, v5, OS_LOG_TYPE_DEFAULT, "Setting asset metadata update interval to: %f sec", &v9, 0xCu);
   }
 
   portraitDefaults = self->_portraitDefaults;
-  v7 = [MEMORY[0x277CCABB0] numberWithDouble:v4];
+  v7 = [MEMORY[0x277CCABB0] numberWithDouble:secondsCopy];
   [(NSUserDefaults *)portraitDefaults setObject:v7 forKey:@"assetMetadataUpdateIntervalSeconds"];
 
   v8 = *MEMORY[0x277D85DE8];
@@ -1154,9 +1154,9 @@ LABEL_3:
   return v3;
 }
 
-- (BOOL)bundleIdentifierIsEnabledForCloudKit:(id)a3
+- (BOOL)bundleIdentifierIsEnabledForCloudKit:(id)kit
 {
-  v4 = a3;
+  kitCopy = kit;
   if ([MEMORY[0x277D425A0] waitForSemaphore:self->_initializationComplete timeoutSeconds:5.0] == 1)
   {
     v5 = pp_default_log_handle();
@@ -1186,14 +1186,14 @@ LABEL_3:
   v5 = *(v16 + 5);
   _Block_object_dispose(buf, 8);
 
-  if (([v5 containsObject:v4]& 1) != 0)
+  if (([v5 containsObject:kitCopy]& 1) != 0)
   {
 LABEL_5:
     v7 = 0;
     goto LABEL_10;
   }
 
-  v8 = [*MEMORY[0x277D3A6C8] objectForKeyedSubscript:v4];
+  v8 = [*MEMORY[0x277D3A6C8] objectForKeyedSubscript:kitCopy];
   v9 = v8;
   if (v8)
   {
@@ -1217,10 +1217,10 @@ LABEL_10:
   return v7;
 }
 
-- (BOOL)bundleIdentifierIsEnabledForDonation:(id)a3
+- (BOOL)bundleIdentifierIsEnabledForDonation:(id)donation
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  donationCopy = donation;
   if ([MEMORY[0x277D425A0] waitForSemaphore:self->_initializationComplete timeoutSeconds:5.0] == 1)
   {
     v5 = pp_default_log_handle();
@@ -1252,14 +1252,14 @@ LABEL_10:
     v5 = *(*&buf[8] + 40);
     _Block_object_dispose(buf, 8);
 
-    if (([v5 containsObject:v4]& 1) != 0)
+    if (([v5 containsObject:donationCopy]& 1) != 0)
     {
       v6 = 0;
     }
 
     else
     {
-      v8 = [*MEMORY[0x277D3A6C8] objectForKeyedSubscript:v4];
+      v8 = [*MEMORY[0x277D3A6C8] objectForKeyedSubscript:donationCopy];
       v9 = v8;
       if (v8)
       {
@@ -1291,7 +1291,7 @@ LABEL_10:
       *buf = 138412546;
       *&buf[4] = v14;
       *&buf[12] = 2112;
-      *&buf[14] = v4;
+      *&buf[14] = donationCopy;
       _os_log_debug_impl(&dword_23224A000, v11, OS_LOG_TYPE_DEBUG, "PPSettings: %@ content from bundleIdentifier: %@", buf, 0x16u);
     }
   }
@@ -1377,10 +1377,10 @@ double __30__PPSettings_weightMultiplier__block_invoke(uint64_t a1, uint64_t a2)
   [(PPSettings *)self _triggerDelayedOperationWithCoalescingToken:v2 operation:?];
 }
 
-- (void)_triggerDelayedOperationWithCoalescingToken:(void *)a3 operation:
+- (void)_triggerDelayedOperationWithCoalescingToken:(void *)token operation:
 {
-  v5 = a3;
-  if (a1)
+  tokenCopy = token;
+  if (self)
   {
     if (_triggerDelayedOperationWithCoalescingToken_operation___pasOnceToken33 != -1)
     {
@@ -1395,7 +1395,7 @@ double __30__PPSettings_weightMultiplier__block_invoke(uint64_t a1, uint64_t a2)
     v9[2] = __68__PPSettings__triggerDelayedOperationWithCoalescingToken_operation___block_invoke_2;
     v9[3] = &unk_278975E68;
     v11 = a2;
-    v10 = v5;
+    v10 = tokenCopy;
     v8 = v6;
     [v7 runAsyncOnQueue:v8 afterDelaySeconds:v9 block:180.0];
   }
@@ -1531,14 +1531,14 @@ void __50__PPSettings_registerDisabledBundleIdPurgeHandler__block_invoke_3_222(u
 
 - (void)_triggerDelayedBundleIdPurge
 {
-  if (a1)
+  if (self)
   {
     v1[0] = MEMORY[0x277D85DD0];
     v1[1] = 3221225472;
     v1[2] = __42__PPSettings__triggerDelayedBundleIdPurge__block_invoke;
     v1[3] = &unk_2789790A8;
-    v1[4] = a1;
-    [(PPSettings *)a1 _triggerDelayedOperationWithCoalescingToken:v1 operation:?];
+    v1[4] = self;
+    [(PPSettings *)self _triggerDelayedOperationWithCoalescingToken:v1 operation:?];
   }
 }
 
@@ -1704,14 +1704,14 @@ void __60__PPSettings_registerCloudKitDisabledBundleIdRewriteHandler__block_invo
   objc_autoreleasePoolPop(v0);
 }
 
-- (void)deregisterDisabledBundleIdentifierChangeHandlerWithToken:(int)a3
+- (void)deregisterDisabledBundleIdentifierChangeHandlerWithToken:(int)token
 {
   lock = self->_lock;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __71__PPSettings_deregisterDisabledBundleIdentifierChangeHandlerWithToken___block_invoke;
   v4[3] = &__block_descriptor_36_e31_v16__0__PPSettingsGuardedData_8l;
-  v5 = a3;
+  tokenCopy = token;
   [(_PASLock *)lock runWithLockAcquired:v4];
 }
 
@@ -1722,9 +1722,9 @@ void __71__PPSettings_deregisterDisabledBundleIdentifierChangeHandlerWithToken__
   [v2 setObject:0 forKeyedSubscript:v3];
 }
 
-- (int)registerDisabledBundleIdentifierChangeHandler:(id)a3
+- (int)registerDisabledBundleIdentifierChangeHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -1735,7 +1735,7 @@ void __71__PPSettings_deregisterDisabledBundleIdentifierChangeHandlerWithToken__
   v8[2] = __60__PPSettings_registerDisabledBundleIdentifierChangeHandler___block_invoke;
   v8[3] = &unk_278972600;
   v10 = &v11;
-  v6 = v4;
+  v6 = handlerCopy;
   v9 = v6;
   [(_PASLock *)lock runWithLockAcquired:v8];
   LODWORD(lock) = *(v12 + 6);
@@ -1757,42 +1757,42 @@ void __60__PPSettings_registerDisabledBundleIdentifierChangeHandler___block_invo
   [v6 setObject:v8 forKeyedSubscript:v7];
 }
 
-- (void)setEntitiesMappingTrieSha256:(id)a3
+- (void)setEntitiesMappingTrieSha256:(id)sha256
 {
-  v4 = a3;
+  sha256Copy = sha256;
   lock = self->_lock;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43__PPSettings_setEntitiesMappingTrieSha256___block_invoke;
   v7[3] = &unk_278972568;
-  v8 = v4;
-  v6 = v4;
+  v8 = sha256Copy;
+  v6 = sha256Copy;
   [(_PASLock *)lock runWithLockAcquired:v7];
   [(NSUserDefaults *)self->_portraitDefaults setObject:v6 forKey:@"entityMappingTrieSha256"];
 }
 
-- (void)setEntitiesBackfilledTimestamp:(id)a3
+- (void)setEntitiesBackfilledTimestamp:(id)timestamp
 {
-  v4 = a3;
+  timestampCopy = timestamp;
   lock = self->_lock;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__PPSettings_setEntitiesBackfilledTimestamp___block_invoke;
   v7[3] = &unk_278972568;
-  v8 = v4;
-  v6 = v4;
+  v8 = timestampCopy;
+  v6 = timestampCopy;
   [(_PASLock *)lock runWithLockAcquired:v7];
   [(NSUserDefaults *)self->_portraitDefaults setObject:v6 forKey:@"entityBackfillTimestamp"];
 }
 
-- (void)setAppConnectionsLocationsEnabled:(BOOL)a3
+- (void)setAppConnectionsLocationsEnabled:(BOOL)enabled
 {
   lock = self->_lock;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __48__PPSettings_setAppConnectionsLocationsEnabled___block_invoke;
   v4[3] = &__block_descriptor_33_e31_v16__0__PPSettingsGuardedData_8l;
-  v5 = a3;
+  enabledCopy = enabled;
   [(_PASLock *)lock runWithLockAcquired:v4];
 }
 
@@ -2261,11 +2261,11 @@ double __18__PPSettings_init__block_invoke_161(uint64_t a1, uint64_t a2)
   }
 }
 
-+ (void)disableBundleIdentifier:(id)a3
++ (void)disableBundleIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[PPSettings sharedInstance];
-  v5 = v3;
+  v5 = identifierCopy;
   if (v4)
   {
     v12 = 0;
@@ -2284,8 +2284,8 @@ double __18__PPSettings_init__block_invoke_161(uint64_t a1, uint64_t a2)
     v7 = v13[5];
     _Block_object_dispose(&v12, 8);
 
-    v8 = [v7 allObjects];
-    v9 = [v8 mutableCopy];
+    allObjects = [v7 allObjects];
+    v9 = [allObjects mutableCopy];
 
     [v9 addObject:v5];
     [*(v4 + 16) setObject:v9 forKey:@"SiriCanLearnFromAppBlacklist"];
@@ -2308,10 +2308,10 @@ void __28__PPSettings_sharedInstance__block_invoke(uint64_t a1)
 
 + (BOOL)isCloudSyncEnabled
 {
-  v2 = [getAFPreferencesClass() sharedPreferences];
-  v3 = [v2 cloudSyncEnabled];
+  sharedPreferences = [getAFPreferencesClass() sharedPreferences];
+  cloudSyncEnabled = [sharedPreferences cloudSyncEnabled];
 
-  return v3;
+  return cloudSyncEnabled;
 }
 
 @end

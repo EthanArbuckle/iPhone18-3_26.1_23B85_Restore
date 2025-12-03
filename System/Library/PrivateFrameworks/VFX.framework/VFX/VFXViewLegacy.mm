@@ -4,32 +4,32 @@
 - (BOOL)lowLatency;
 - (MTLCommandQueue)commandQueue;
 - (UIColor)backgroundColor;
-- (_TtC3VFX13VFXViewLegacy)initWithCoder:(id)a3;
-- (_TtC3VFX13VFXViewLegacy)initWithFrame:(CGRect)a3;
+- (_TtC3VFX13VFXViewLegacy)initWithCoder:(id)coder;
+- (_TtC3VFX13VFXViewLegacy)initWithFrame:(CGRect)frame;
 - (double)scaleFactor;
 - (id)postRenderCallback;
 - (int64_t)preferredFramesPerSecond;
 - (unint64_t)pixelFormat;
 - (unsigned)resizingMode;
-- (void)renderWithCompletion:(id)a3;
-- (void)renderWithPresentWithTransaction:(BOOL)a3 completion:(id)a4;
-- (void)setBackgroundColor:(id)a3;
-- (void)setEffect:(id)a3;
-- (void)setFramebufferOnly:(BOOL)a3;
-- (void)setHidden:(BOOL)a3;
-- (void)setLowLatency:(BOOL)a3;
-- (void)setPixelFormat:(unint64_t)a3;
-- (void)setPointOfView:(id)a3;
-- (void)setPostRenderCallback:(id)a3;
-- (void)setPreferredFramesPerSecond:(int64_t)a3;
-- (void)setResizingMode:(unsigned __int8)a3;
-- (void)setScaleFactor:(double)a3;
-- (void)setScene:(id)a3;
+- (void)renderWithCompletion:(id)completion;
+- (void)renderWithPresentWithTransaction:(BOOL)transaction completion:(id)completion;
+- (void)setBackgroundColor:(id)color;
+- (void)setEffect:(id)effect;
+- (void)setFramebufferOnly:(BOOL)only;
+- (void)setHidden:(BOOL)hidden;
+- (void)setLowLatency:(BOOL)latency;
+- (void)setPixelFormat:(unint64_t)format;
+- (void)setPointOfView:(id)view;
+- (void)setPostRenderCallback:(id)callback;
+- (void)setPreferredFramesPerSecond:(int64_t)second;
+- (void)setResizingMode:(unsigned __int8)mode;
+- (void)setScaleFactor:(double)factor;
+- (void)setScene:(id)scene;
 @end
 
 @implementation VFXViewLegacy
 
-- (void)setScene:(id)a3
+- (void)setScene:(id)scene
 {
   sub_1AFDFD638();
   sub_1AFDFD628();
@@ -40,9 +40,9 @@
   }
 
   v5 = *(&self->super.super.super.isa + OBJC_IVAR____TtC3VFX13VFXViewLegacy_scene);
-  *(&self->super.super.super.isa + OBJC_IVAR____TtC3VFX13VFXViewLegacy_scene) = a3;
-  v6 = a3;
-  v7 = self;
+  *(&self->super.super.super.isa + OBJC_IVAR____TtC3VFX13VFXViewLegacy_scene) = scene;
+  sceneCopy = scene;
+  selfCopy = self;
 
   sub_1AFCF6DBC();
 }
@@ -58,16 +58,16 @@
   }
 
   v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC3VFX13VFXViewLegacy_coreView);
-  v4 = self;
-  v5 = [v3 layer];
-  v6 = [v5 framebufferOnly];
+  selfCopy = self;
+  layer = [v3 layer];
+  framebufferOnly = [layer framebufferOnly];
 
-  return v6;
+  return framebufferOnly;
 }
 
-- (void)setFramebufferOnly:(BOOL)a3
+- (void)setFramebufferOnly:(BOOL)only
 {
-  v3 = a3;
+  onlyCopy = only;
   sub_1AFDFD638();
   sub_1AFDFD628();
   sub_1AFDFD5B8();
@@ -77,9 +77,9 @@
   }
 
   v5 = *(&self->super.super.super.isa + OBJC_IVAR____TtC3VFX13VFXViewLegacy_coreView);
-  v7 = self;
-  v6 = [v5 layer];
-  [v6 setFramebufferOnly_];
+  selfCopy = self;
+  layer = [v5 layer];
+  [layer setFramebufferOnly_];
 }
 
 - (MTLCommandQueue)commandQueue
@@ -139,7 +139,7 @@
   return v5;
 }
 
-- (void)setPostRenderCallback:(id)a3
+- (void)setPostRenderCallback:(id)callback
 {
   sub_1AFDFD638();
   sub_1AFDFD628();
@@ -149,7 +149,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = _Block_copy(a3);
+  v5 = _Block_copy(callback);
   if (v5)
   {
     v6 = v5;
@@ -170,7 +170,7 @@
   sub_1AF719C94(v9);
 }
 
-- (void)renderWithCompletion:(id)a3
+- (void)renderWithCompletion:(id)completion
 {
   sub_1AFDFD638();
   sub_1AFDFD628();
@@ -180,20 +180,20 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = _Block_copy(a3);
+  v5 = _Block_copy(completion);
   v6 = swift_allocObject();
   *(v6 + 16) = v5;
   v7 = *(&self->super.super.super.isa + OBJC_IVAR____TtC3VFX13VFXViewLegacy_coreView);
   v8 = swift_allocObject();
   *(v8 + 16) = sub_1AFCF7CF4;
   *(v8 + 24) = v6;
-  v10 = self;
+  selfCopy = self;
   v9 = v7;
 
   sub_1AF755554(0, v9, sub_1AF6CC3F0, v8);
 }
 
-- (void)renderWithPresentWithTransaction:(BOOL)a3 completion:(id)a4
+- (void)renderWithPresentWithTransaction:(BOOL)transaction completion:(id)completion
 {
   sub_1AFDFD638();
   sub_1AFDFD628();
@@ -203,20 +203,20 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v7 = _Block_copy(a4);
+  v7 = _Block_copy(completion);
   v8 = swift_allocObject();
   *(v8 + 16) = v7;
   v9 = *(&self->super.super.super.isa + OBJC_IVAR____TtC3VFX13VFXViewLegacy_coreView);
   v10 = swift_allocObject();
   *(v10 + 16) = sub_1AFCF7CC8;
   *(v10 + 24) = v8;
-  v12 = self;
+  selfCopy = self;
   v11 = v9;
 
-  sub_1AF755554(a3, v11, sub_1AF6CB244, v10);
+  sub_1AF755554(transaction, v11, sub_1AF6CB244, v10);
 }
 
-- (void)setEffect:(id)a3
+- (void)setEffect:(id)effect
 {
   sub_1AFDFD638();
   sub_1AFDFD628();
@@ -227,13 +227,13 @@
   }
 
   v7 = *(&self->super.super.super.isa + OBJC_IVAR____TtC3VFX13VFXViewLegacy_effect);
-  *(&self->super.super.super.isa + OBJC_IVAR____TtC3VFX13VFXViewLegacy_effect) = a3;
-  v5 = a3;
-  v6 = self;
+  *(&self->super.super.super.isa + OBJC_IVAR____TtC3VFX13VFXViewLegacy_effect) = effect;
+  effectCopy = effect;
+  selfCopy = self;
   sub_1AFCF566C(v7);
 }
 
-- (void)setPointOfView:(id)a3
+- (void)setPointOfView:(id)view
 {
   sub_1AFDFD638();
   sub_1AFDFD628();
@@ -243,9 +243,9 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = a3;
-  v6 = self;
-  sub_1AFCF5A1C(a3);
+  viewCopy = view;
+  selfCopy = self;
+  sub_1AFCF5A1C(view);
 }
 
 - (unsigned)resizingMode
@@ -263,7 +263,7 @@
   return v3;
 }
 
-- (void)setResizingMode:(unsigned __int8)a3
+- (void)setResizingMode:(unsigned __int8)mode
 {
   sub_1AFDFD638();
   sub_1AFDFD628();
@@ -273,8 +273,8 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = self;
-  sub_1AFCF5C14(a3);
+  selfCopy = self;
+  sub_1AFCF5C14(mode);
 }
 
 - (UIColor)backgroundColor
@@ -287,12 +287,12 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = [*(&self->super.super.super.isa + OBJC_IVAR____TtC3VFX13VFXViewLegacy_coreView) backgroundColor];
+  backgroundColor = [*(&self->super.super.super.isa + OBJC_IVAR____TtC3VFX13VFXViewLegacy_coreView) backgroundColor];
 
-  return v3;
+  return backgroundColor;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   sub_1AFDFD638();
   sub_1AFDFD628();
@@ -315,12 +315,12 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = [*(*(&self->super.super.super.isa + OBJC_IVAR____TtC3VFX13VFXViewLegacy_coreView) + OBJC_IVAR____TtC3VFX11VFXCoreView_metalLayer) pixelFormat];
+  pixelFormat = [*(*(&self->super.super.super.isa + OBJC_IVAR____TtC3VFX13VFXViewLegacy_coreView) + OBJC_IVAR____TtC3VFX11VFXCoreView_metalLayer) pixelFormat];
 
-  return v3;
+  return pixelFormat;
 }
 
-- (void)setPixelFormat:(unint64_t)a3
+- (void)setPixelFormat:(unint64_t)format
 {
   sub_1AFDFD638();
   sub_1AFDFD628();
@@ -348,7 +348,7 @@
   return v3;
 }
 
-- (void)setScaleFactor:(double)a3
+- (void)setScaleFactor:(double)factor
 {
   sub_1AFDFD638();
   sub_1AFDFD628();
@@ -358,8 +358,8 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = self;
-  sub_1AFCF6220(a3);
+  selfCopy = self;
+  sub_1AFCF6220(factor);
 }
 
 - (int64_t)preferredFramesPerSecond
@@ -387,7 +387,7 @@
   }
 }
 
-- (void)setPreferredFramesPerSecond:(int64_t)a3
+- (void)setPreferredFramesPerSecond:(int64_t)second
 {
   sub_1AFDFD638();
   sub_1AFDFD628();
@@ -397,8 +397,8 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = self;
-  sub_1AFCF6524(a3);
+  selfCopy = self;
+  sub_1AFCF6524(second);
 }
 
 - (BOOL)lowLatency
@@ -411,14 +411,14 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = [*(*(&self->super.super.super.isa + OBJC_IVAR____TtC3VFX13VFXViewLegacy_coreView) + OBJC_IVAR____TtC3VFX11VFXCoreView_metalLayer) lowLatency];
+  lowLatency = [*(*(&self->super.super.super.isa + OBJC_IVAR____TtC3VFX13VFXViewLegacy_coreView) + OBJC_IVAR____TtC3VFX11VFXCoreView_metalLayer) lowLatency];
 
-  return v3;
+  return lowLatency;
 }
 
-- (void)setLowLatency:(BOOL)a3
+- (void)setLowLatency:(BOOL)latency
 {
-  v3 = a3;
+  latencyCopy = latency;
   sub_1AFDFD638();
   sub_1AFDFD628();
   sub_1AFDFD5B8();
@@ -430,12 +430,12 @@
   [*(*(&self->super.super.super.isa + OBJC_IVAR____TtC3VFX13VFXViewLegacy_coreView) + OBJC_IVAR____TtC3VFX11VFXCoreView_metalLayer) setLowLatency_];
 }
 
-- (_TtC3VFX13VFXViewLegacy)initWithFrame:(CGRect)a3
+- (_TtC3VFX13VFXViewLegacy)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   sub_1AFDFD638();
   sub_1AFDFD628();
   sub_1AFDFD5B8();
@@ -449,7 +449,7 @@
   return v7;
 }
 
-- (_TtC3VFX13VFXViewLegacy)initWithCoder:(id)a3
+- (_TtC3VFX13VFXViewLegacy)initWithCoder:(id)coder
 {
   sub_1AFDFD638();
   sub_1AFDFD628();
@@ -459,7 +459,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = sub_1AFCF6B7C(a3);
+  v4 = sub_1AFCF6B7C(coder);
 
   return v4;
 }
@@ -476,14 +476,14 @@
 
   v5.receiver = self;
   v5.super_class = type metadata accessor for VFXViewLegacy();
-  v3 = [(VFXViewLegacy *)&v5 isHidden];
+  isHidden = [(VFXViewLegacy *)&v5 isHidden];
 
-  return v3;
+  return isHidden;
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   sub_1AFDFD638();
   sub_1AFDFD628();
   sub_1AFDFD5B8();
@@ -494,9 +494,9 @@
 
   v7.receiver = self;
   v7.super_class = type metadata accessor for VFXViewLegacy();
-  v5 = self;
-  [(VFXViewLegacy *)&v7 setHidden:v3];
-  v6 = *(&v5->super.super.super.isa + OBJC_IVAR____TtC3VFX13VFXViewLegacy_coreView);
+  selfCopy = self;
+  [(VFXViewLegacy *)&v7 setHidden:hiddenCopy];
+  v6 = *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC3VFX13VFXViewLegacy_coreView);
   [v6 setHidden_];
 }
 

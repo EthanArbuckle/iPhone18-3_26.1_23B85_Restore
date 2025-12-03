@@ -1,5 +1,5 @@
 @interface PKMerchantTokenLoadingCell
-- (PKMerchantTokenLoadingCell)initWithFrame:(CGRect)a3;
+- (PKMerchantTokenLoadingCell)initWithFrame:(CGRect)frame;
 - (void)_computeLoadingCellHeights;
 - (void)_setUpConstraints;
 - (void)_setUpViews;
@@ -8,11 +8,11 @@
 
 @implementation PKMerchantTokenLoadingCell
 
-- (PKMerchantTokenLoadingCell)initWithFrame:(CGRect)a3
+- (PKMerchantTokenLoadingCell)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PKMerchantTokenLoadingCell;
-  v3 = [(PKMerchantTokenLoadingCell *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKMerchantTokenLoadingCell *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -40,29 +40,29 @@
 
   [(UIActivityIndicatorView *)self->_activityIndicator setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIActivityIndicatorView *)self->_activityIndicator startAnimating];
-  v5 = [(PKMerchantTokenLoadingCell *)self contentView];
-  [v5 addSubview:self->_activityIndicator];
+  contentView = [(PKMerchantTokenLoadingCell *)self contentView];
+  [contentView addSubview:self->_activityIndicator];
 }
 
 - (void)_setUpConstraints
 {
   v18[3] = *MEMORY[0x1E69E9840];
-  v3 = [(PKMerchantTokenLoadingCell *)self contentView];
-  v4 = [v3 heightAnchor];
-  v5 = [v4 constraintEqualToConstant:self->_loadingCellHeightWithIcon];
+  contentView = [(PKMerchantTokenLoadingCell *)self contentView];
+  heightAnchor = [contentView heightAnchor];
+  v5 = [heightAnchor constraintEqualToConstant:self->_loadingCellHeightWithIcon];
   heightConstraint = self->_heightConstraint;
   self->_heightConstraint = v5;
 
   v17 = MEMORY[0x1E696ACD8];
-  v7 = [(UIActivityIndicatorView *)self->_activityIndicator centerXAnchor];
-  v8 = [(PKMerchantTokenLoadingCell *)self contentView];
-  v9 = [v8 centerXAnchor];
-  v10 = [v7 constraintEqualToAnchor:v9];
+  centerXAnchor = [(UIActivityIndicatorView *)self->_activityIndicator centerXAnchor];
+  contentView2 = [(PKMerchantTokenLoadingCell *)self contentView];
+  centerXAnchor2 = [contentView2 centerXAnchor];
+  v10 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v18[0] = v10;
-  v11 = [(UIActivityIndicatorView *)self->_activityIndicator centerYAnchor];
-  v12 = [(PKMerchantTokenLoadingCell *)self contentView];
-  v13 = [v12 centerYAnchor];
-  v14 = [v11 constraintEqualToAnchor:v13];
+  centerYAnchor = [(UIActivityIndicatorView *)self->_activityIndicator centerYAnchor];
+  contentView3 = [(PKMerchantTokenLoadingCell *)self contentView];
+  centerYAnchor2 = [contentView3 centerYAnchor];
+  v14 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v15 = self->_heightConstraint;
   v18[1] = v14;
   v18[2] = v15;

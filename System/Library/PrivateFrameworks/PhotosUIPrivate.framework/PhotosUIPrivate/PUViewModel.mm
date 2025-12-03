@@ -7,9 +7,9 @@
 - (void)_publishChanges;
 - (void)_willChange;
 - (void)assertInsideChangesBlock;
-- (void)performChanges:(id)a3;
-- (void)registerChangeObserver:(id)a3;
-- (void)unregisterChangeObserver:(id)a3;
+- (void)performChanges:(id)changes;
+- (void)registerChangeObserver:(id)observer;
+- (void)unregisterChangeObserver:(id)observer;
 @end
 
 @implementation PUViewModel
@@ -25,29 +25,29 @@
     observerQueue = v2->_observerQueue;
     v2->_observerQueue = v3;
 
-    v5 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     changeObservers = v2->__changeObservers;
-    v2->__changeObservers = v5;
+    v2->__changeObservers = weakObjectsHashTable;
 
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     pendingChangeBlocks = v2->_pendingChangeBlocks;
-    v2->_pendingChangeBlocks = v7;
+    v2->_pendingChangeBlocks = array;
   }
 
   return v2;
 }
 
-- (void)unregisterChangeObserver:(id)a3
+- (void)unregisterChangeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observerQueue = self->_observerQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __40__PUViewModel_unregisterChangeObserver___block_invoke;
   v7[3] = &unk_1E7B80C38;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(observerQueue, v7);
 }
 
@@ -65,17 +65,17 @@ void __40__PUViewModel_unregisterChangeObserver___block_invoke(uint64_t a1)
   [v5 removeObject:*(a1 + 40)];
 }
 
-- (void)registerChangeObserver:(id)a3
+- (void)registerChangeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observerQueue = self->_observerQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __38__PUViewModel_registerChangeObserver___block_invoke;
   v7[3] = &unk_1E7B80C38;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(observerQueue, v7);
 }
 
@@ -99,8 +99,8 @@ void __38__PUViewModel_registerChangeObserver___block_invoke(uint64_t a1)
   self->_numAppliedPendingChanges = numAppliedPendingChanges + 1;
   if (numAppliedPendingChanges >= 50)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PUViewModel.m" lineNumber:137 description:{@"Change depth limit reached (%ld), this indicates infinite state ping-ponging, investigate the stack trace and figure out why the model doesn't reach a stable state. Typically because two observers are trying to set different new values in response to the same change.", 50}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUViewModel.m" lineNumber:137 description:{@"Change depth limit reached (%ld), this indicates infinite state ping-ponging, investigate the stack trace and figure out why the model doesn't reach a stable state. Typically because two observers are trying to set different new values in response to the same change.", 50}];
   }
 
   if ([(NSMutableArray *)self->_pendingChangeBlocks count])
@@ -171,7 +171,7 @@ void __35__PUViewModel__applyPendingChanges__block_invoke(uint64_t a1)
   block[4] = self;
   block[5] = &v17;
   dispatch_sync(observerQueue, block);
-  v4 = [(PUViewModel *)self currentChange];
+  currentChange = [(PUViewModel *)self currentChange];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
@@ -194,7 +194,7 @@ void __35__PUViewModel__applyPendingChanges__block_invoke(uint64_t a1)
         v9 = *(*(&v12 + 1) + 8 * v8);
         if (objc_opt_respondsToSelector())
         {
-          [v9 viewModel:self didChange:v4];
+          [v9 viewModel:self didChange:currentChange];
         }
 
         ++v8;
@@ -234,9 +234,9 @@ uint64_t __30__PUViewModel__publishChanges__block_invoke(uint64_t a1)
   nestedChanges = self->_nestedChanges;
   if (nestedChanges <= 0)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v8 = NSStringFromSelector(a2);
-    [v7 handleFailureInMethod:a2 object:self file:@"PUViewModel.m" lineNumber:96 description:{@"%@ called without a change in progress.", v8}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUViewModel.m" lineNumber:96 description:{@"%@ called without a change in progress.", v8}];
 
     nestedChanges = self->_nestedChanges;
   }
@@ -271,33 +271,33 @@ uint64_t __30__PUViewModel__publishChanges__block_invoke(uint64_t a1)
 {
   if ([(PUViewModel *)self _isPublishingChanges])
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"PUViewModel.m" lineNumber:90 description:{@"PUViewModel currently disallows new changes while publishing changes. This requirement might have to be relaxed, but for now it is strict. This makes debugging easier and avoids ping-ponging state. Please figure out if the changes that are being made has to be made in reaction to a viewModel change, or could be made in some other way."}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUViewModel.m" lineNumber:90 description:{@"PUViewModel currently disallows new changes while publishing changes. This requirement might have to be relaxed, but for now it is strict. This makes debugging easier and avoids ping-ponging state. Please figure out if the changes that are being made has to be made in reaction to a viewModel change, or could be made in some other way."}];
   }
 
   ++self->_nestedChanges;
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
-  v8 = a3;
-  if (!v8)
+  changesCopy = changes;
+  if (!changesCopy)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PUViewModel.m" lineNumber:66 description:{@"Invalid parameter not satisfying: %@", @"changeBlock != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUViewModel.m" lineNumber:66 description:{@"Invalid parameter not satisfying: %@", @"changeBlock != nil"}];
   }
 
   if ([(PUViewModel *)self _isPublishingChanges])
   {
     pendingChangeBlocks = self->_pendingChangeBlocks;
-    v6 = [v8 copy];
+    v6 = [changesCopy copy];
     [(NSMutableArray *)pendingChangeBlocks addObject:v6];
   }
 
   else
   {
     [(PUViewModel *)self _willChange];
-    v8[2]();
+    changesCopy[2]();
     [(PUViewModel *)self _didChange];
   }
 }
@@ -306,14 +306,14 @@ uint64_t __30__PUViewModel__publishChanges__block_invoke(uint64_t a1)
 {
   if (self->_nestedChanges >= 1 && !self->_currentChange)
   {
-    v4 = [(PUViewModel *)self newViewModelChange];
+    newViewModelChange = [(PUViewModel *)self newViewModelChange];
     currentChange = self->_currentChange;
-    self->_currentChange = v4;
+    self->_currentChange = newViewModelChange;
 
     if (!self->_currentChange)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:a2 object:self file:@"PUViewModel.m" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"_currentChange != nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUViewModel.m" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"_currentChange != nil"}];
     }
   }
 
@@ -326,16 +326,16 @@ uint64_t __30__PUViewModel__publishChanges__block_invoke(uint64_t a1)
 {
   if (self->_nestedChanges < 1 || [(PUViewModel *)self _isPublishingChanges])
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"PUViewModel.m" lineNumber:45 description:@"Changes must be made inside a block passed to performChanges"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUViewModel.m" lineNumber:45 description:@"Changes must be made inside a block passed to performChanges"];
   }
 }
 
 - (id)newViewModelChange
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = NSStringFromSelector(a2);
-  [v4 handleFailureInMethod:a2 object:self file:@"PUViewModel.m" lineNumber:40 description:{@"Concrete subclass must implement %@", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUViewModel.m" lineNumber:40 description:{@"Concrete subclass must implement %@", v5}];
 
   return 0;
 }

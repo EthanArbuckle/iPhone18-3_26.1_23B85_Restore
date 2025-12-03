@@ -1,15 +1,15 @@
 @interface SubscriberResponseTransactionElement
-+ (id)responseWithInfo:(id)a3;
-- (id)initResponseWithInfo:(id)a3;
++ (id)responseWithInfo:(id)info;
+- (id)initResponseWithInfo:(id)info;
 @end
 
 @implementation SubscriberResponseTransactionElement
 
-- (id)initResponseWithInfo:(id)a3
+- (id)initResponseWithInfo:(id)info
 {
   v6.receiver = self;
   v6.super_class = SubscriberResponseTransactionElement;
-  v3 = [(SubscriberTransactionElement *)&v6 initWithInfo:a3];
+  v3 = [(SubscriberTransactionElement *)&v6 initWithInfo:info];
   v4 = v3;
   if (v3)
   {
@@ -19,9 +19,9 @@
   return v4;
 }
 
-+ (id)responseWithInfo:(id)a3
++ (id)responseWithInfo:(id)info
 {
-  v3 = [[SubscriberResponseTransactionElement alloc] initResponseWithInfo:a3];
+  v3 = [[SubscriberResponseTransactionElement alloc] initResponseWithInfo:info];
 
   return v3;
 }

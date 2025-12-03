@@ -1,13 +1,13 @@
 @interface MessageStoreService
-- (void)messageStoreAccountInfoDidChange:(id)a3;
+- (void)messageStoreAccountInfoDidChange:(id)change;
 - (void)messageStoreRequiresRefetch;
 @end
 
 @implementation MessageStoreService
 
-- (void)messageStoreAccountInfoDidChange:(id)a3
+- (void)messageStoreAccountInfoDidChange:(id)change
 {
-  v3 = a3;
+  changeCopy = change;
 
   MessageStoreService.messageStoreAccountInfoDidChange(_:)();
 }

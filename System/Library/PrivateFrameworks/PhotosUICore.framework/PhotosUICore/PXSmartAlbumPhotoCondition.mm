@@ -1,13 +1,13 @@
 @interface PXSmartAlbumPhotoCondition
-+ (id)defaultSingleQueryForEditingContext:(id)a3;
++ (id)defaultSingleQueryForEditingContext:(id)context;
 - (NSArray)photoTypeValues;
 - (PXLabeledValue)photoTypeValue;
-- (void)setPhotoTypeValue:(id)a3;
+- (void)setPhotoTypeValue:(id)value;
 @end
 
 @implementation PXSmartAlbumPhotoCondition
 
-+ (id)defaultSingleQueryForEditingContext:(id)a3
++ (id)defaultSingleQueryForEditingContext:(id)context
 {
   v3 = objc_alloc_init(MEMORY[0x1E69BF300]);
   [v3 setKey:1];
@@ -17,33 +17,33 @@
   return v3;
 }
 
-- (void)setPhotoTypeValue:(id)a3
+- (void)setPhotoTypeValue:(id)value
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  valueCopy = value;
+  if (!valueCopy)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PXSmartAlbumPhotoCondition.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"photoTypeValue"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSmartAlbumPhotoCondition.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"photoTypeValue"}];
   }
 
-  v6 = [(PXSmartAlbumPhotoCondition *)self photoTypeValues];
-  v7 = [v6 containsObject:v5];
+  photoTypeValues = [(PXSmartAlbumPhotoCondition *)self photoTypeValues];
+  v7 = [photoTypeValues containsObject:valueCopy];
 
   if ((v7 & 1) == 0)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"PXSmartAlbumPhotoCondition.m" lineNumber:45 description:{@"Invalid parameter not satisfying: %@", @"[self.photoTypeValues containsObject:photoTypeValue]"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXSmartAlbumPhotoCondition.m" lineNumber:45 description:{@"Invalid parameter not satisfying: %@", @"[self.photoTypeValues containsObject:photoTypeValue]"}];
   }
 
-  v8 = [v5 value];
-  v9 = [v8 integerValue];
-  switch(v9)
+  value = [valueCopy value];
+  integerValue = [value integerValue];
+  switch(integerValue)
   {
     case 0:
-      v19 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
       v20 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXSmartAlbumPhotoCondition setPhotoTypeValue:]"];
-      [v19 handleFailureInFunction:v20 file:@"PXSmartAlbumPhotoCondition.m" lineNumber:54 description:@"Code which should be unreachable has been reached"];
+      [currentHandler3 handleFailureInFunction:v20 file:@"PXSmartAlbumPhotoCondition.m" lineNumber:54 description:@"Code which should be unreachable has been reached"];
 
       abort();
     case 1:
@@ -139,13 +139,13 @@ LABEL_27:
       break;
   }
 
-  v12 = [(PXSmartAlbumCondition *)self singleQuery];
-  [v12 setKey:v10];
-  [v12 setIntegerValue:v11];
+  singleQuery = [(PXSmartAlbumCondition *)self singleQuery];
+  [singleQuery setKey:v10];
+  [singleQuery setIntegerValue:v11];
   v13 = PLUIGetLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
-    v14 = PXSmartAlbumPhotoTypeDebugDescription(v9);
+    v14 = PXSmartAlbumPhotoTypeDebugDescription(integerValue);
     v15 = PLStringFromPLQueryKey();
     *buf = 138412802;
     v22 = v14;
@@ -156,19 +156,19 @@ LABEL_27:
     _os_log_impl(&dword_1A3C1C000, v13, OS_LOG_TYPE_DEBUG, "PXSmartAlbums: photo type value set to: %@ (%@:%ld)", buf, 0x20u);
   }
 
-  v16 = [(PXSmartAlbumCondition *)self delegate];
-  [v16 conditionDidChange:self];
+  delegate = [(PXSmartAlbumCondition *)self delegate];
+  [delegate conditionDidChange:self];
 }
 
 - (PXLabeledValue)photoTypeValue
 {
-  v4 = [(PXSmartAlbumCondition *)self singleQuery];
-  v5 = PXSmartAlbumPhotoTypeForSingleQuery(v4);
+  singleQuery = [(PXSmartAlbumCondition *)self singleQuery];
+  v5 = PXSmartAlbumPhotoTypeForSingleQuery(singleQuery);
   v6 = v5;
   if (!v5)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PXSmartAlbumPhotoCondition.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"photoType != PXSmartAlbumPhotoTypeInvalid"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSmartAlbumPhotoCondition.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"photoType != PXSmartAlbumPhotoTypeInvalid"}];
 
     v5 = 0;
   }

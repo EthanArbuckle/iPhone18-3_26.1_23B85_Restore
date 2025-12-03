@@ -1,13 +1,13 @@
 @interface FrameTimingInfo
-- (void)setPresentationTimeStamp:(id *)a3;
+- (void)setPresentationTimeStamp:(id *)stamp;
 @end
 
 @implementation FrameTimingInfo
 
-- (void)setPresentationTimeStamp:(id *)a3
+- (void)setPresentationTimeStamp:(id *)stamp
 {
-  v3 = *&a3->var0;
-  self->_presentationTimeStamp.epoch = a3->var3;
+  v3 = *&stamp->var0;
+  self->_presentationTimeStamp.epoch = stamp->var3;
   *&self->_presentationTimeStamp.value = v3;
 }
 

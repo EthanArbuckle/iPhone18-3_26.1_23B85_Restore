@@ -1,14 +1,14 @@
 @interface SAPersistenceStore
-- (BOOL)isEqual:(id)a3;
-- (SAPersistenceStore)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (SAPersistenceStore)initWithCoder:(id)coder;
 @end
 
 @implementation SAPersistenceStore
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -18,19 +18,19 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(SAPersistenceStore *)self monitoringSessionRecord];
-      v7 = [(SAPersistenceStore *)v5 monitoringSessionRecord];
-      if (v6 == v7)
+      v5 = equalCopy;
+      monitoringSessionRecord = [(SAPersistenceStore *)self monitoringSessionRecord];
+      monitoringSessionRecord2 = [(SAPersistenceStore *)v5 monitoringSessionRecord];
+      if (monitoringSessionRecord == monitoringSessionRecord2)
       {
         v10 = 1;
       }
 
       else
       {
-        v8 = [(SAPersistenceStore *)self monitoringSessionRecord];
-        v9 = [(SAPersistenceStore *)v5 monitoringSessionRecord];
-        v10 = [v8 isEqual:v9];
+        monitoringSessionRecord3 = [(SAPersistenceStore *)self monitoringSessionRecord];
+        monitoringSessionRecord4 = [(SAPersistenceStore *)v5 monitoringSessionRecord];
+        v10 = [monitoringSessionRecord3 isEqual:monitoringSessionRecord4];
       }
     }
 
@@ -43,9 +43,9 @@
   return v10;
 }
 
-- (SAPersistenceStore)initWithCoder:(id)a3
+- (SAPersistenceStore)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = SAPersistenceStore;
   v5 = [(SAPersistenceStore *)&v14 init];
@@ -56,7 +56,7 @@
     v8 = objc_opt_class();
     v9 = objc_opt_class();
     v10 = [v6 setWithObjects:{v7, v8, v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"MonitoringSessionRecord"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"MonitoringSessionRecord"];
     monitoringSessionRecord = v5->_monitoringSessionRecord;
     v5->_monitoringSessionRecord = v11;
   }

@@ -9,7 +9,7 @@
   v8 = a4;
   v9 = a5;
   v10 = a3;
-  v11 = [v10 items];
+  items = [v10 items];
   v21 = MEMORY[0x277D85DD0];
   v22 = 3221225472;
   v23 = __95__WFStaccatoActionTemplateParameterValueSection_WorkflowKit__initWithSection_action_parameter___block_invoke;
@@ -18,14 +18,14 @@
   v26 = v9;
   v12 = v9;
   v13 = v8;
-  v14 = [v11 if_compactMap:&v21];
+  v14 = [items if_compactMap:&v21];
 
-  v15 = [v10 title];
-  v16 = [v10 subtitle];
-  v17 = [v10 image];
+  title = [v10 title];
+  subtitle = [v10 subtitle];
+  image = [v10 image];
 
-  v18 = [v17 wf_image];
-  v19 = [a1 initWithTitle:v15 subtitle:v16 image:v18 values:v14];
+  wf_image = [image wf_image];
+  v19 = [self initWithTitle:title subtitle:subtitle image:wf_image values:v14];
 
   return v19;
 }

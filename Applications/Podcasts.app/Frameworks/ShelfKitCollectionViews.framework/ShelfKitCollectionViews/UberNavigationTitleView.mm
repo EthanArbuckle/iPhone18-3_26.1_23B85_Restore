@@ -1,6 +1,6 @@
 @interface UberNavigationTitleView
-- (_TtC23ShelfKitCollectionViews23UberNavigationTitleView)initWithCoder:(id)a3;
-- (_TtC23ShelfKitCollectionViews23UberNavigationTitleView)initWithFrame:(CGRect)a3;
+- (_TtC23ShelfKitCollectionViews23UberNavigationTitleView)initWithCoder:(id)coder;
+- (_TtC23ShelfKitCollectionViews23UberNavigationTitleView)initWithFrame:(CGRect)frame;
 - (void)contentDidChange;
 - (void)layoutSubviews;
 @end
@@ -9,7 +9,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_154708();
 }
 
@@ -22,7 +22,7 @@
   [v2 setNeedsLayout];
 }
 
-- (_TtC23ShelfKitCollectionViews23UberNavigationTitleView)initWithFrame:(CGRect)a3
+- (_TtC23ShelfKitCollectionViews23UberNavigationTitleView)initWithFrame:(CGRect)frame
 {
   self->_UINavigationBarTitleView_opaque[OBJC_IVAR____TtC23ShelfKitCollectionViews23UberNavigationTitleView_backButtonStyle] = 0;
   *&self->_UINavigationBarTitleView_opaque[OBJC_IVAR____TtC23ShelfKitCollectionViews23UberNavigationTitleView_customBackButton] = 0;
@@ -31,7 +31,7 @@
   return result;
 }
 
-- (_TtC23ShelfKitCollectionViews23UberNavigationTitleView)initWithCoder:(id)a3
+- (_TtC23ShelfKitCollectionViews23UberNavigationTitleView)initWithCoder:(id)coder
 {
   self->_UINavigationBarTitleView_opaque[OBJC_IVAR____TtC23ShelfKitCollectionViews23UberNavigationTitleView_backButtonStyle] = 0;
   *&self->_UINavigationBarTitleView_opaque[OBJC_IVAR____TtC23ShelfKitCollectionViews23UberNavigationTitleView_customBackButton] = 0;

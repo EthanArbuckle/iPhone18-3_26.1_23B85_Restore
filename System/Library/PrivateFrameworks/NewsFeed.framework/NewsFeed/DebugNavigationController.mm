@@ -1,9 +1,9 @@
 @interface DebugNavigationController
-- (_TtC8NewsFeed25DebugNavigationController)initWithCoder:(id)a3;
-- (_TtC8NewsFeed25DebugNavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4;
-- (_TtC8NewsFeed25DebugNavigationController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC8NewsFeed25DebugNavigationController)initWithRootViewController:(id)a3;
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5;
+- (_TtC8NewsFeed25DebugNavigationController)initWithCoder:(id)coder;
+- (_TtC8NewsFeed25DebugNavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass;
+- (_TtC8NewsFeed25DebugNavigationController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC8NewsFeed25DebugNavigationController)initWithRootViewController:(id)controller;
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated;
 - (void)viewDidLoad;
 @end
 
@@ -16,52 +16,52 @@
   v2 = v4.receiver;
   [(DebugNavigationController *)&v4 viewDidLoad];
   [v2 setDelegate_];
-  v3 = [v2 navigationBar];
-  [v3 setPreferredBehavioralStyle_];
+  navigationBar = [v2 navigationBar];
+  [navigationBar setPreferredBehavioralStyle_];
 }
 
-- (_TtC8NewsFeed25DebugNavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4
+- (_TtC8NewsFeed25DebugNavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  return [(DebugNavigationController *)&v7 initWithNavigationBarClass:a3 toolbarClass:a4];
+  return [(DebugNavigationController *)&v7 initWithNavigationBarClass:class toolbarClass:toolbarClass];
 }
 
-- (_TtC8NewsFeed25DebugNavigationController)initWithRootViewController:(id)a3
+- (_TtC8NewsFeed25DebugNavigationController)initWithRootViewController:(id)controller
 {
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
-  return [(DebugNavigationController *)&v5 initWithRootViewController:a3];
+  return [(DebugNavigationController *)&v5 initWithRootViewController:controller];
 }
 
-- (_TtC8NewsFeed25DebugNavigationController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8NewsFeed25DebugNavigationController)initWithNibName:(id)name bundle:(id)bundle
 {
   ObjectType = swift_getObjectType();
-  if (a3)
+  if (name)
   {
     sub_1D726207C();
-    v8 = a4;
-    a3 = sub_1D726203C();
+    bundleCopy = bundle;
+    name = sub_1D726203C();
   }
 
   else
   {
-    v9 = a4;
+    bundleCopy2 = bundle;
   }
 
   v12.receiver = self;
   v12.super_class = ObjectType;
-  v10 = [(DebugNavigationController *)&v12 initWithNibName:a3 bundle:a4];
+  v10 = [(DebugNavigationController *)&v12 initWithNibName:name bundle:bundle];
 
   return v10;
 }
 
-- (_TtC8NewsFeed25DebugNavigationController)initWithCoder:(id)a3
+- (_TtC8NewsFeed25DebugNavigationController)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  v4 = a3;
-  v5 = [(DebugNavigationController *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(DebugNavigationController *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {
@@ -70,12 +70,12 @@
   return v5;
 }
 
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  sub_1D5EF2238(v7);
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  selfCopy = self;
+  sub_1D5EF2238(controllerCopy);
 }
 
 @end

@@ -1,20 +1,20 @@
 @interface VUINowPlayingViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation VUINowPlayingViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VUINowPlayingViewController" hasInstanceMethod:@"promoMetadataView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"VUINowPlayingViewController" hasInstanceMethod:@"mediaController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"VUIMediaController" hasInstanceMethod:@"avPlayerViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVPlayerViewController" hasInstanceMethod:@"nowPlayingPlaybackControlsViewController" withFullSignature:{"@", 0}];
-  [v3 validateProtocol:@"AVPlaybackControlsProtocol" hasRequiredInstanceMethod:@"contextualBarViewController"];
-  [v3 validateClass:@"AVUnifiedPlayerActionBarViewController" hasInstanceMethod:@"_actionButtonForIdentifier:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"VUINowPlayingViewController" hasInstanceMethod:@"showSkipAndPromoView:animated:skipInfo:" withFullSignature:{"v", "B", "B", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VUINowPlayingViewController" hasInstanceMethod:@"promoMetadataView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"VUINowPlayingViewController" hasInstanceMethod:@"mediaController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"VUIMediaController" hasInstanceMethod:@"avPlayerViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVPlayerViewController" hasInstanceMethod:@"nowPlayingPlaybackControlsViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateProtocol:@"AVPlaybackControlsProtocol" hasRequiredInstanceMethod:@"contextualBarViewController"];
+  [validationsCopy validateClass:@"AVUnifiedPlayerActionBarViewController" hasInstanceMethod:@"_actionButtonForIdentifier:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"VUINowPlayingViewController" hasInstanceMethod:@"showSkipAndPromoView:animated:skipInfo:" withFullSignature:{"v", "B", "B", "@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

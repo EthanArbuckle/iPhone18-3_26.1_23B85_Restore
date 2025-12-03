@@ -1,5 +1,5 @@
 @interface HMDMediaDestinationControllerTransactionUpdatedDestinationLogEvent
-- (HMDMediaDestinationControllerTransactionUpdatedDestinationLogEvent)initWithExistingDestinationType:(id)a3 destinationType:(id)a4 isTriggeredOnControllerDevice:(id)a5 userPrivilege:(id)a6;
+- (HMDMediaDestinationControllerTransactionUpdatedDestinationLogEvent)initWithExistingDestinationType:(id)type destinationType:(id)destinationType isTriggeredOnControllerDevice:(id)device userPrivilege:(id)privilege;
 - (NSDictionary)coreAnalyticsEventDictionary;
 @end
 
@@ -9,17 +9,17 @@
 {
   v11[4] = *MEMORY[0x277D85DE8];
   v10[0] = @"existingMediaDestinationType";
-  v3 = [(HMDMediaDestinationControllerDestinationLogEvent *)self existingDestinationType];
-  v11[0] = v3;
+  existingDestinationType = [(HMDMediaDestinationControllerDestinationLogEvent *)self existingDestinationType];
+  v11[0] = existingDestinationType;
   v10[1] = @"mediaDestinationType";
-  v4 = [(HMDMediaDestinationControllerDestinationLogEvent *)self destinationType];
-  v11[1] = v4;
+  destinationType = [(HMDMediaDestinationControllerDestinationLogEvent *)self destinationType];
+  v11[1] = destinationType;
   v10[2] = @"isTriggeredOnControllerDevice";
-  v5 = [(HMDMediaDestinationControllerLogEvent *)self isTriggeredOnControllerDevice];
-  v11[2] = v5;
+  isTriggeredOnControllerDevice = [(HMDMediaDestinationControllerLogEvent *)self isTriggeredOnControllerDevice];
+  v11[2] = isTriggeredOnControllerDevice;
   v10[3] = @"userPrivilege";
-  v6 = [(HMDMediaDestinationControllerLogEvent *)self userPrivilege];
-  v11[3] = v6;
+  userPrivilege = [(HMDMediaDestinationControllerLogEvent *)self userPrivilege];
+  v11[3] = userPrivilege;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:v10 count:4];
 
   v8 = *MEMORY[0x277D85DE8];
@@ -27,11 +27,11 @@
   return v7;
 }
 
-- (HMDMediaDestinationControllerTransactionUpdatedDestinationLogEvent)initWithExistingDestinationType:(id)a3 destinationType:(id)a4 isTriggeredOnControllerDevice:(id)a5 userPrivilege:(id)a6
+- (HMDMediaDestinationControllerTransactionUpdatedDestinationLogEvent)initWithExistingDestinationType:(id)type destinationType:(id)destinationType isTriggeredOnControllerDevice:(id)device userPrivilege:(id)privilege
 {
   v7.receiver = self;
   v7.super_class = HMDMediaDestinationControllerTransactionUpdatedDestinationLogEvent;
-  return [(HMDMediaDestinationControllerDestinationLogEvent *)&v7 initWithExistingDestinationType:a3 destinationType:a4 isTriggeredOnControllerDevice:a5 userPrivilege:a6];
+  return [(HMDMediaDestinationControllerDestinationLogEvent *)&v7 initWithExistingDestinationType:type destinationType:destinationType isTriggeredOnControllerDevice:device userPrivilege:privilege];
 }
 
 @end

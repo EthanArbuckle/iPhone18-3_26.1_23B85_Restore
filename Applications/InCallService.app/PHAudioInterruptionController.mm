@@ -1,15 +1,15 @@
 @interface PHAudioInterruptionController
 + (id)sharedInstance;
 - (PHAudioInterruptionController)init;
-- (id)bundleIdentifierForCall:(id)a3;
-- (id)handlesForCall:(id)a3;
-- (void)_callShouldSuppressRingtoneChanged:(id)a3;
-- (void)_callStatusChanged:(id)a3;
+- (id)bundleIdentifierForCall:(id)call;
+- (id)handlesForCall:(id)call;
+- (void)_callShouldSuppressRingtoneChanged:(id)changed;
+- (void)_callStatusChanged:(id)changed;
 - (void)_playAnnouncementForIncomingCallIfNecessary;
 - (void)_playDowntimeStartingAnnouncementForCallIfNecessary;
-- (void)_updateAudioInterruptionsForCall:(id)a3;
+- (void)_updateAudioInterruptionsForCall:(id)call;
 - (void)dealloc;
-- (void)handlePHRingtoneControllerAudioSessionIdentifierDidChangeNotification:(id)a3;
+- (void)handlePHRingtoneControllerAudioSessionIdentifierDidChangeNotification:(id)notification;
 @end
 
 @implementation PHAudioInterruptionController
@@ -50,19 +50,19 @@
     }
 
     v7 = +[TUCallCenter sharedInstance];
-    v8 = [v7 frontmostAudioOrVideoCall];
+    frontmostAudioOrVideoCall = [v7 frontmostAudioOrVideoCall];
 
-    if (v8)
+    if (frontmostAudioOrVideoCall)
     {
       v9 = sub_100004F84();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v17 = v8;
+        v17 = frontmostAudioOrVideoCall;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "INTERRUPT: ... upon creation there was a current call, updating interruptions for %@", buf, 0xCu);
       }
 
-      [(PHAudioInterruptionController *)v2 _updateAudioInterruptionsForCall:v8];
+      [(PHAudioInterruptionController *)v2 _updateAudioInterruptionsForCall:frontmostAudioOrVideoCall];
     }
 
     out_token = 0;
@@ -92,65 +92,65 @@
   [(PHAudioInterruptionController *)&v4 dealloc];
 }
 
-- (void)_callStatusChanged:(id)a3
+- (void)_callStatusChanged:(id)changed
 {
-  v4 = [a3 object];
-  [(PHAudioInterruptionController *)self _updateAudioInterruptionsForCall:v4];
+  object = [changed object];
+  [(PHAudioInterruptionController *)self _updateAudioInterruptionsForCall:object];
 }
 
-- (void)handlePHRingtoneControllerAudioSessionIdentifierDidChangeNotification:(id)a3
+- (void)handlePHRingtoneControllerAudioSessionIdentifierDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412546;
-    v7 = self;
+    selfCopy = self;
     v8 = 2112;
-    v9 = v4;
+    v9 = notificationCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ is handling %@", &v6, 0x16u);
   }
 
   [(PHAudioInterruptionController *)self _playAnnouncementForIncomingCallIfNecessary];
 }
 
-- (void)_updateAudioInterruptionsForCall:(id)a3
+- (void)_updateAudioInterruptionsForCall:(id)call
 {
-  v4 = a3;
+  callCopy = call;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7[0] = 67109120;
-    v7[1] = [v4 status];
+    v7[1] = [callCopy status];
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "INTERRUPT: Call Status changing to: %d", v7, 8u);
   }
 
-  v6 = [(PHAudioInterruptionController *)self ringtoneController];
-  [v6 stopAnnouncement];
+  ringtoneController = [(PHAudioInterruptionController *)self ringtoneController];
+  [ringtoneController stopAnnouncement];
 
-  if ([v4 resolvedCallStatus] == 4)
+  if ([callCopy resolvedCallStatus] == 4)
   {
     [(PHAudioInterruptionController *)self _playAnnouncementForIncomingCallIfNecessary];
   }
 }
 
-- (void)_callShouldSuppressRingtoneChanged:(id)a3
+- (void)_callShouldSuppressRingtoneChanged:(id)changed
 {
-  v4 = [a3 object];
+  object = [changed object];
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = object;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "INTERRUPT: shouldSuppressRingtoneChanged notification for call: %@", &v7, 0xCu);
   }
 
-  if (v4 && [v4 resolvedCallStatus] == 4)
+  if (object && [object resolvedCallStatus] == 4)
   {
-    if ([v4 shouldSuppressRingtone])
+    if ([object shouldSuppressRingtone])
     {
-      v6 = [(PHAudioInterruptionController *)self ringtoneController];
-      [v6 stopAnnouncement];
+      ringtoneController = [(PHAudioInterruptionController *)self ringtoneController];
+      [ringtoneController stopAnnouncement];
     }
 
     else
@@ -163,48 +163,48 @@
 - (void)_playAnnouncementForIncomingCallIfNecessary
 {
   v3 = +[TUCallCenter sharedInstance];
-  v4 = [v3 resolvedIncomingCall];
-  v5 = v4;
-  if (v4)
+  resolvedIncomingCall = [v3 resolvedIncomingCall];
+  v5 = resolvedIncomingCall;
+  if (resolvedIncomingCall)
   {
-    v6 = v4;
+    incomingVideoCall = resolvedIncomingCall;
   }
 
   else
   {
     v7 = +[TUCallCenter sharedInstance];
-    v6 = [v7 incomingVideoCall];
+    incomingVideoCall = [v7 incomingVideoCall];
   }
 
   v8 = +[TUCallCenter sharedInstance];
-  v9 = [v8 displayedAudioAndVideoCalls];
-  v10 = [v9 firstObject];
+  displayedAudioAndVideoCalls = [v8 displayedAudioAndVideoCalls];
+  firstObject = [displayedAudioAndVideoCalls firstObject];
 
   v11 = sub_100004F84();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 138412290;
-    *v18 = v6;
+    *v18 = incomingVideoCall;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "INTERRUPT: incomingCall: %@", &v17, 0xCu);
   }
 
-  if (v10)
+  if (firstObject)
   {
-    if (v10 != v6)
+    if (firstObject != incomingVideoCall)
     {
       goto LABEL_15;
     }
   }
 
-  else if (!v6)
+  else if (!incomingVideoCall)
   {
     goto LABEL_15;
   }
 
-  if (([v6 shouldSuppressRingtone] & 1) == 0)
+  if (([incomingVideoCall shouldSuppressRingtone] & 1) == 0)
   {
-    v12 = [v6 announceProviderIdentifier];
-    v13 = [v12 isEqualToString:TUBundleIdentifierInCallServiceApplication];
+    announceProviderIdentifier = [incomingVideoCall announceProviderIdentifier];
+    v13 = [announceProviderIdentifier isEqualToString:TUBundleIdentifierInCallServiceApplication];
 
     if (v13)
     {
@@ -212,28 +212,28 @@
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         v17 = 138412290;
-        *v18 = v6;
+        *v18 = incomingVideoCall;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Playing call announcement for incoming call %@", &v17, 0xCu);
       }
 
-      v15 = [(PHAudioInterruptionController *)self ringtoneController];
-      [v15 playAnnouncementForCall:v6];
+      ringtoneController = [(PHAudioInterruptionController *)self ringtoneController];
+      [ringtoneController playAnnouncementForCall:incomingVideoCall];
       goto LABEL_17;
     }
   }
 
 LABEL_15:
-  v15 = sub_100004F84();
-  if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+  ringtoneController = sub_100004F84();
+  if (os_log_type_enabled(ringtoneController, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [v6 shouldSuppressRingtone];
+    shouldSuppressRingtone = [incomingVideoCall shouldSuppressRingtone];
     v17 = 67109632;
-    *v18 = v6 == 0;
+    *v18 = incomingVideoCall == 0;
     *&v18[4] = 1024;
-    *&v18[6] = v10 != 0;
+    *&v18[6] = firstObject != 0;
     v19 = 1024;
-    v20 = v16;
-    _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Not playing call announcement since incomingCall is nil (%d) or activeCalls is non-nil (%d) or incomingCall shouldSuppressRingtone (%d)", &v17, 0x14u);
+    v20 = shouldSuppressRingtone;
+    _os_log_impl(&_mh_execute_header, ringtoneController, OS_LOG_TYPE_DEFAULT, "Not playing call announcement since incomingCall is nil (%d) or activeCalls is non-nil (%d) or incomingCall shouldSuppressRingtone (%d)", &v17, 0x14u);
   }
 
 LABEL_17:
@@ -242,49 +242,49 @@ LABEL_17:
 - (void)_playDowntimeStartingAnnouncementForCallIfNecessary
 {
   v3 = +[TUCallCenter sharedInstance];
-  v4 = [v3 displayedAudioAndVideoCalls];
-  v5 = [v4 firstObject];
-  v6 = v5;
-  if (v5)
+  displayedAudioAndVideoCalls = [v3 displayedAudioAndVideoCalls];
+  firstObject = [displayedAudioAndVideoCalls firstObject];
+  v6 = firstObject;
+  if (firstObject)
   {
-    v7 = v5;
+    frontmostAudioOrVideoCall = firstObject;
   }
 
   else
   {
     v8 = +[TUCallCenter sharedInstance];
-    v7 = [v8 frontmostAudioOrVideoCall];
+    frontmostAudioOrVideoCall = [v8 frontmostAudioOrVideoCall];
   }
 
-  v9 = [(PHAudioInterruptionController *)self handlesForCall:v7];
-  v10 = [(PHAudioInterruptionController *)self bundleIdentifierForCall:v7];
+  v9 = [(PHAudioInterruptionController *)self handlesForCall:frontmostAudioOrVideoCall];
+  v10 = [(PHAudioInterruptionController *)self bundleIdentifierForCall:frontmostAudioOrVideoCall];
   if ([v9 count] && objc_msgSend(v10, "length"))
   {
     v11 = +[TUCallCenter sharedInstance];
-    v12 = [v11 callFilterController];
-    v13 = [v12 willRestrictAddresses:v9 forBundleIdentifier:v10];
+    callFilterController = [v11 callFilterController];
+    v13 = [callFilterController willRestrictAddresses:v9 forBundleIdentifier:v10];
 
     v14 = +[TUCallCenter sharedInstance];
-    v15 = [v14 routeController];
-    v16 = [v15 pickedRoute];
-    v17 = [v16 isSpeaker];
+    routeController = [v14 routeController];
+    pickedRoute = [routeController pickedRoute];
+    isSpeaker = [pickedRoute isSpeaker];
 
     v18 = +[TUCallCenter sharedInstance];
     v19 = [v18 countOfCallsPassingTest:&stru_1003571D8];
 
-    v20 = sub_100004F84();
-    v21 = os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT);
-    if (!v7 || !v13 || (v17 & 1) != 0 || v19)
+    ringtoneController = sub_100004F84();
+    v21 = os_log_type_enabled(ringtoneController, OS_LOG_TYPE_DEFAULT);
+    if (!frontmostAudioOrVideoCall || !v13 || (isSpeaker & 1) != 0 || v19)
     {
       if (v21)
       {
         v22 = 67109634;
         *v23 = v13;
         *&v23[4] = 1024;
-        *&v23[6] = v17 ^ 1;
+        *&v23[6] = isSpeaker ^ 1;
         v24 = 2112;
-        v25 = v7;
-        _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Not playing downtime starting alert: callWillEndDuringDowntime: %d currentRouteIsNotSpeaker: %d call: %@", &v22, 0x18u);
+        v25 = frontmostAudioOrVideoCall;
+        _os_log_impl(&_mh_execute_header, ringtoneController, OS_LOG_TYPE_DEFAULT, "Not playing downtime starting alert: callWillEndDuringDowntime: %d currentRouteIsNotSpeaker: %d call: %@", &v22, 0x18u);
       }
     }
 
@@ -293,35 +293,35 @@ LABEL_17:
       if (v21)
       {
         v22 = 138412290;
-        *v23 = v7;
-        _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Playing downtime starting alert for call %@", &v22, 0xCu);
+        *v23 = frontmostAudioOrVideoCall;
+        _os_log_impl(&_mh_execute_header, ringtoneController, OS_LOG_TYPE_DEFAULT, "Playing downtime starting alert for call %@", &v22, 0xCu);
       }
 
-      v20 = [(PHAudioInterruptionController *)self ringtoneController];
-      [v20 playDowntimeStartingAnnouncementForCall:v7];
+      ringtoneController = [(PHAudioInterruptionController *)self ringtoneController];
+      [ringtoneController playDowntimeStartingAnnouncementForCall:frontmostAudioOrVideoCall];
     }
   }
 }
 
-- (id)handlesForCall:(id)a3
+- (id)handlesForCall:(id)call
 {
-  v3 = a3;
-  v4 = [v3 remoteParticipantHandles];
-  v5 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [v4 count]);
+  callCopy = call;
+  remoteParticipantHandles = [callCopy remoteParticipantHandles];
+  v5 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [remoteParticipantHandles count]);
 
-  if ([v3 isConversation])
+  if ([callCopy isConversation])
   {
     v6 = +[TUCallCenter sharedInstance];
-    v31 = v3;
-    v7 = [v6 activeConversationForCall:v3];
+    v31 = callCopy;
+    v7 = [v6 activeConversationForCall:callCopy];
 
     v38 = 0u;
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
     v30 = v7;
-    v8 = [v7 activeRemoteParticipants];
-    v9 = [v8 countByEnumeratingWithState:&v36 objects:v41 count:16];
+    activeRemoteParticipants = [v7 activeRemoteParticipants];
+    v9 = [activeRemoteParticipants countByEnumeratingWithState:&v36 objects:v41 count:16];
     if (v9)
     {
       v10 = v9;
@@ -333,33 +333,33 @@ LABEL_17:
         {
           if (*v37 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(activeRemoteParticipants);
           }
 
           v14 = *(*(&v36 + 1) + 8 * i);
-          v15 = [v14 handle];
-          v16 = [v15 value];
-          if ([v16 length])
+          handle = [v14 handle];
+          value = [handle value];
+          if ([value length])
           {
-            v17 = [v14 handle];
-            v18 = [v17 value];
+            handle2 = [v14 handle];
+            value2 = [handle2 value];
           }
 
           else
           {
-            v18 = v12;
+            value2 = v12;
           }
 
-          [v5 addObject:v18];
+          [v5 addObject:value2];
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v36 objects:v41 count:16];
+        v10 = [activeRemoteParticipants countByEnumeratingWithState:&v36 objects:v41 count:16];
       }
 
       while (v10);
     }
 
-    v3 = v31;
+    callCopy = v31;
   }
 
   if (![v5 count])
@@ -368,8 +368,8 @@ LABEL_17:
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v19 = [v3 remoteParticipantHandles];
-    v20 = [v19 countByEnumeratingWithState:&v32 objects:v40 count:16];
+    remoteParticipantHandles2 = [callCopy remoteParticipantHandles];
+    v20 = [remoteParticipantHandles2 countByEnumeratingWithState:&v32 objects:v40 count:16];
     if (v20)
     {
       v21 = v20;
@@ -381,27 +381,27 @@ LABEL_17:
         {
           if (*v33 != v22)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(remoteParticipantHandles2);
           }
 
           v25 = *(*(&v32 + 1) + 8 * j);
-          v26 = [v25 value];
-          if ([v26 length])
+          value3 = [v25 value];
+          if ([value3 length])
           {
-            v27 = [v25 value];
+            value4 = [v25 value];
           }
 
           else
           {
-            v27 = v23;
+            value4 = v23;
           }
 
-          v28 = v27;
+          v28 = value4;
 
           [v5 addObject:v28];
         }
 
-        v21 = [v19 countByEnumeratingWithState:&v32 objects:v40 count:16];
+        v21 = [remoteParticipantHandles2 countByEnumeratingWithState:&v32 objects:v40 count:16];
       }
 
       while (v21);
@@ -411,35 +411,35 @@ LABEL_17:
   return v5;
 }
 
-- (id)bundleIdentifierForCall:(id)a3
+- (id)bundleIdentifierForCall:(id)call
 {
-  v3 = a3;
-  v4 = [v3 provider];
-  v5 = [v4 isTelephonyProvider];
+  callCopy = call;
+  provider = [callCopy provider];
+  isTelephonyProvider = [provider isTelephonyProvider];
 
-  if (v5)
+  if (isTelephonyProvider)
   {
     v6 = TUBundleIdentifierMobilePhoneApplication;
 LABEL_5:
-    v9 = v6;
+    bundleIdentifier = v6;
     goto LABEL_7;
   }
 
-  v7 = [v3 provider];
-  v8 = [v7 isFaceTimeProvider];
+  provider2 = [callCopy provider];
+  isFaceTimeProvider = [provider2 isFaceTimeProvider];
 
-  if (v8)
+  if (isFaceTimeProvider)
   {
     v6 = TUPreferredFaceTimeBundleIdentifier();
     goto LABEL_5;
   }
 
-  v10 = [v3 provider];
-  v9 = [v10 bundleIdentifier];
+  provider3 = [callCopy provider];
+  bundleIdentifier = [provider3 bundleIdentifier];
 
 LABEL_7:
 
-  return v9;
+  return bundleIdentifier;
 }
 
 @end

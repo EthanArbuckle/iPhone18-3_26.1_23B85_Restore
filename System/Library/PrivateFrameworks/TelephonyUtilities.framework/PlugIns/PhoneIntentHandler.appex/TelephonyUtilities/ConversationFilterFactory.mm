@@ -1,33 +1,33 @@
 @interface ConversationFilterFactory
-+ (id)makeFilterForINCallGroupConversationFilter:(id)a3 contactsDataSource:(id)a4;
++ (id)makeFilterForINCallGroupConversationFilter:(id)filter contactsDataSource:(id)source;
 @end
 
 @implementation ConversationFilterFactory
 
-+ (id)makeFilterForINCallGroupConversationFilter:(id)a3 contactsDataSource:(id)a4
++ (id)makeFilterForINCallGroupConversationFilter:(id)filter contactsDataSource:(id)source
 {
-  v5 = a3;
-  v6 = a4;
+  filterCopy = filter;
+  sourceCopy = source;
   v7 = objc_alloc_init(NSMutableArray);
-  v8 = [v5 callGroup];
+  callGroup = [filterCopy callGroup];
 
-  if (v8)
+  if (callGroup)
   {
-    v9 = [v5 callGroup];
-    v10 = [SimpleConversationFilter filterForCallGroup:v9];
+    callGroup2 = [filterCopy callGroup];
+    v10 = [SimpleConversationFilter filterForCallGroup:callGroup2];
 
     [v7 addObject:v10];
   }
 
-  v11 = [v5 caller];
-  if (v11)
+  caller = [filterCopy caller];
+  if (caller)
   {
   }
 
   else
   {
-    v12 = [v5 participants];
-    v13 = [v12 count];
+    participants = [filterCopy participants];
+    v13 = [participants count];
 
     if (!v13)
     {
@@ -36,21 +36,21 @@
   }
 
   v14 = [ConversationPersonFilter alloc];
-  v15 = [v5 caller];
-  v16 = [v5 participants];
-  v17 = [(ConversationPersonFilter *)v14 initWithCaller:v15 participants:v16 dataSource:v6];
+  caller2 = [filterCopy caller];
+  participants2 = [filterCopy participants];
+  v17 = [(ConversationPersonFilter *)v14 initWithCaller:caller2 participants:participants2 dataSource:sourceCopy];
 
   [v7 addObject:v17];
 LABEL_7:
-  v18 = [v5 matchCallerAndParticipantsExactly];
-  v19 = [v18 BOOLValue];
+  matchCallerAndParticipantsExactly = [filterCopy matchCallerAndParticipantsExactly];
+  bOOLValue = [matchCallerAndParticipantsExactly BOOLValue];
 
-  if (v19)
+  if (bOOLValue)
   {
-    v20 = [v5 participants];
-    v21 = [v20 count];
-    v22 = [v5 caller];
-    if (v22)
+    participants3 = [filterCopy participants];
+    v21 = [participants3 count];
+    caller3 = [filterCopy caller];
+    if (caller3)
     {
       ++v21;
     }

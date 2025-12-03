@@ -1,21 +1,21 @@
 @interface INIntentResponse
 + (id)responseFailure;
 + (id)responseSuccess;
-+ (int)_typeFromCode:(int64_t)a3;
-+ (int64_t)_codeFromIntentResponseCode:(int64_t)a3;
-+ (int64_t)_codeFromType:(int)a3 errorCode:(int)a4 appLaunchRequested:(BOOL)a5;
-+ (int64_t)_intentHandlingStatusFromCode:(int64_t)a3;
++ (int)_typeFromCode:(int64_t)code;
++ (int64_t)_codeFromIntentResponseCode:(int64_t)code;
++ (int64_t)_codeFromType:(int)type errorCode:(int)code appLaunchRequested:(BOOL)requested;
++ (int64_t)_intentHandlingStatusFromCode:(int64_t)code;
 + (void)initialize;
 - (BOOL)_commonInit;
-- (BOOL)_enumerateWithValueProcessingBlock:(id)a3;
-- (BOOL)_intents_enumerateObjectsOfClass:(Class)a3 withBlock:(id)a4;
-- (BOOL)_isValidKey:(id)a3;
+- (BOOL)_enumerateWithValueProcessingBlock:(id)block;
+- (BOOL)_intents_enumerateObjectsOfClass:(Class)class withBlock:(id)block;
+- (BOOL)_isValidKey:(id)key;
 - (INCodableDescription)_codableDescription;
 - (INImage)_keyImage;
 - (INIntentResponse)init;
-- (INIntentResponse)initWithBackingStore:(id)a3;
-- (INIntentResponse)initWithCoder:(id)a3;
-- (INIntentResponse)initWithPropertiesByName:(id)a3;
+- (INIntentResponse)initWithBackingStore:(id)store;
+- (INIntentResponse)initWithCoder:(id)coder;
+- (INIntentResponse)initWithPropertiesByName:(id)name;
 - (INIntentResponseCodableCode)_intentResponseCodableCode;
 - (INIntentResponseDescription)_instanceDescription;
 - (NSDictionary)_JSONDictionaryRepresentation;
@@ -26,45 +26,45 @@
 - (_INPBIntentResponse)backingStore;
 - (id)_dictionaryRepresentation;
 - (id)_inCodable;
-- (id)_initWithCode:(int64_t)a3 userActivity:(id)a4;
+- (id)_initWithCode:(int64_t)code userActivity:(id)activity;
 - (id)_intents_cacheableObjects;
 - (id)_originatingBundleIdentifier;
 - (id)_payloadResponseMessageData;
-- (id)_propertiesByNameForLanguage:(id)a3;
-- (id)_propertiesByNameWithLocalizer:(id)a3;
-- (id)_querySchemaWithBlock:(id)a3;
-- (id)_responseTemplateForLanguage:(id)a3;
-- (id)_responseTemplateWithLocalizer:(id)a3 requiresSiriCompatibility:(BOOL)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionAtIndent:(unint64_t)a3;
+- (id)_propertiesByNameForLanguage:(id)language;
+- (id)_propertiesByNameWithLocalizer:(id)localizer;
+- (id)_querySchemaWithBlock:(id)block;
+- (id)_responseTemplateForLanguage:(id)language;
+- (id)_responseTemplateWithLocalizer:(id)localizer requiresSiriCompatibility:(BOOL)compatibility;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionAtIndent:(unint64_t)indent;
 - (id)intentSlotDescriptions;
-- (id)localizeValueOfSlotDescription:(id)a3 withLocalizer:(id)a4;
-- (id)valueForKey:(id)a3;
-- (id)valueForUndefinedKey:(id)a3;
+- (id)localizeValueOfSlotDescription:(id)description withLocalizer:(id)localizer;
+- (id)valueForKey:(id)key;
+- (id)valueForUndefinedKey:(id)key;
 - (int64_t)_code;
-- (int64_t)_codeWithName:(id)a3;
+- (int64_t)_codeWithName:(id)name;
 - (int64_t)_intentHandlingStatus;
 - (int64_t)_intentResponseCode;
 - (int64_t)_intents_toggleState;
-- (int64_t)_stageWithName:(id)a3;
+- (int64_t)_stageWithName:(id)name;
 - (int64_t)_type;
-- (void)_intents_updateContainerWithCache:(id)a3;
-- (void)_setCode:(int64_t)a3;
-- (void)_setPayloadResponseMessageData:(id)a3;
-- (void)_setPayloadResponseTypeName:(id)a3;
-- (void)_setResponseMessagePBRepresentation:(id)a3;
-- (void)_updateWithJSONDictionary:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setPropertiesByName:(id)a3;
+- (void)_intents_updateContainerWithCache:(id)cache;
+- (void)_setCode:(int64_t)code;
+- (void)_setPayloadResponseMessageData:(id)data;
+- (void)_setPayloadResponseTypeName:(id)name;
+- (void)_setResponseMessagePBRepresentation:(id)representation;
+- (void)_updateWithJSONDictionary:(id)dictionary;
+- (void)encodeWithCoder:(id)coder;
+- (void)setPropertiesByName:(id)name;
 - (void)setUserActivity:(NSUserActivity *)userActivity;
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4;
+- (void)setValue:(id)value forUndefinedKey:(id)key;
 @end
 
 @implementation INIntentResponse
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1 && INLogInitIfNeeded_once != -1)
+  if (objc_opt_class() == self && INLogInitIfNeeded_once != -1)
   {
 
     dispatch_once(&INLogInitIfNeeded_once, &__block_literal_global_72043);
@@ -75,15 +75,15 @@
 {
   v3 = objc_opt_class();
   v4 = INIntentSchemaGetIntentResponseDescriptionWithFacadeClass(v3);
-  v5 = [v4 type];
+  type = [v4 type];
 
-  if (v5)
+  if (type)
   {
     return 1;
   }
 
-  v7 = [(INIntentResponse *)self _payloadResponseTypeName];
-  v8 = [v7 hasPrefix:@"sirikit.intents.custom."];
+  _payloadResponseTypeName = [(INIntentResponse *)self _payloadResponseTypeName];
+  v8 = [_payloadResponseTypeName hasPrefix:@"sirikit.intents.custom."];
 
   if (v8)
   {
@@ -107,18 +107,18 @@
   responseMessagePBRepresentation = self->_responseMessagePBRepresentation;
   if (!responseMessagePBRepresentation)
   {
-    v4 = [(INIntentResponse *)self _payloadResponseMessageData];
-    v5 = [(INIntentResponse *)self _type];
-    if (v5 > 1)
+    _payloadResponseMessageData = [(INIntentResponse *)self _payloadResponseMessageData];
+    _type = [(INIntentResponse *)self _type];
+    if (_type > 1)
     {
-      if (v5 != 3)
+      if (_type != 3)
       {
-        if (v5 == 2)
+        if (_type == 2)
         {
           v11 = [INCodable alloc];
-          if (v4)
+          if (_payloadResponseMessageData)
           {
-            v12 = v4;
+            v12 = _payloadResponseMessageData;
           }
 
           else
@@ -134,16 +134,16 @@
       }
     }
 
-    else if (v5)
+    else if (_type)
     {
-      if (v5 == 1)
+      if (_type == 1)
       {
         v6 = objc_opt_class();
         v7 = INIntentSchemaGetIntentResponseDescriptionWithFacadeClass(v6);
-        v8 = [v7 dataClass];
+        dataClass = [v7 dataClass];
 
-        v9 = v8;
-        if (!v4)
+        v9 = dataClass;
+        if (!_payloadResponseMessageData)
         {
 LABEL_6:
           v10 = objc_alloc_init(v9);
@@ -155,7 +155,7 @@ LABEL_15:
         }
 
 LABEL_12:
-        v10 = [[v9 alloc] initWithData:v4];
+        v10 = [[v9 alloc] initWithData:_payloadResponseMessageData];
         goto LABEL_15;
       }
 
@@ -166,7 +166,7 @@ LABEL_16:
     }
 
     v9 = _INPBGenericIntentResponse;
-    if (!v4)
+    if (!_payloadResponseMessageData)
     {
       goto LABEL_6;
     }
@@ -181,10 +181,10 @@ LABEL_17:
 
 - (id)_payloadResponseMessageData
 {
-  v2 = [(_INPBIntentResponse *)self->_backingStore payloadSuccess];
-  v3 = [v2 responseMessageData];
+  payloadSuccess = [(_INPBIntentResponse *)self->_backingStore payloadSuccess];
+  responseMessageData = [payloadSuccess responseMessageData];
 
-  return v3;
+  return responseMessageData;
 }
 
 - (int64_t)_code
@@ -197,8 +197,8 @@ LABEL_17:
 
   if ([(INIntentResponse *)self _type]== 2)
   {
-    v5 = [(INIntentResponse *)self _inCodable];
-    v6 = [v5 valueForPropertyNamed:@"_code"];
+    _inCodable = [(INIntentResponse *)self _inCodable];
+    v6 = [_inCodable valueForPropertyNamed:@"_code"];
     code = [v6 integerValue];
 
     if (code > 99)
@@ -209,89 +209,89 @@ LABEL_17:
 
   if ([(_INPBIntentResponse *)self->_backingStore hasType])
   {
-    v7 = [(_INPBIntentResponse *)self->_backingStore type];
+    type = [(_INPBIntentResponse *)self->_backingStore type];
   }
 
   else
   {
-    v7 = 3;
+    type = 3;
   }
 
   if ([(_INPBIntentResponse *)self->_backingStore hasPayloadFailure])
   {
-    v8 = [(_INPBIntentResponse *)self->_backingStore payloadFailure];
-    if ([v8 hasErrorCode])
+    payloadFailure = [(_INPBIntentResponse *)self->_backingStore payloadFailure];
+    if ([payloadFailure hasErrorCode])
     {
-      v9 = [v8 errorCode];
+      errorCode = [payloadFailure errorCode];
     }
 
     else
     {
-      v9 = 0x7FFFFFFFLL;
+      errorCode = 0x7FFFFFFFLL;
     }
 
-    if ([v8 hasAppLaunchRequested])
+    if ([payloadFailure hasAppLaunchRequested])
     {
-      v10 = [v8 appLaunchRequested];
+      appLaunchRequested = [payloadFailure appLaunchRequested];
     }
 
     else
     {
-      v10 = 0;
+      appLaunchRequested = 0;
     }
   }
 
   else
   {
-    v10 = 0;
-    v9 = 0x7FFFFFFFLL;
+    appLaunchRequested = 0;
+    errorCode = 0x7FFFFFFFLL;
   }
 
   v11 = objc_opt_class();
 
-  return [v11 _codeFromType:v7 errorCode:v9 appLaunchRequested:v10];
+  return [v11 _codeFromType:type errorCode:errorCode appLaunchRequested:appLaunchRequested];
 }
 
 - (id)intentSlotDescriptions
 {
   v2 = objc_opt_class();
   v3 = INIntentSchemaGetIntentResponseDescriptionWithFacadeClass(v2);
-  v4 = [v3 slotsByName];
-  v5 = [v4 allValues];
+  slotsByName = [v3 slotsByName];
+  allValues = [slotsByName allValues];
 
-  return v5;
+  return allValues;
 }
 
 - (id)_inCodable
 {
-  v3 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+    _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
   }
 
   else
   {
-    v5 = 0;
+    _responseMessagePBRepresentation2 = 0;
   }
 
-  return v5;
+  return _responseMessagePBRepresentation2;
 }
 
 - (int64_t)_intentHandlingStatus
 {
-  v2 = [(INIntentResponse *)self _intentResponseCode];
-  if ((v2 - 1) > 7)
+  _intentResponseCode = [(INIntentResponse *)self _intentResponseCode];
+  if ((_intentResponseCode - 1) > 7)
   {
     return 0;
   }
 
   else
   {
-    return qword_18EE5F0F8[v2 - 1];
+    return qword_18EE5F0F8[_intentResponseCode - 1];
   }
 }
 
@@ -312,15 +312,15 @@ LABEL_17:
   v3 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v4 = objc_opt_class();
   v5 = INIntentSchemaGetIntentResponseDescriptionWithFacadeClass(v4);
-  v6 = [v5 slotsByName];
+  slotsByName = [v5 slotsByName];
   v12 = MEMORY[0x1E69E9820];
   v13 = 3221225472;
   v14 = __61__INIntentResponse_INCacheSupport___intents_cacheableObjects__block_invoke;
   v15 = &unk_1E72840F0;
-  v16 = self;
+  selfCopy = self;
   v7 = v3;
   v17 = v7;
-  [v6 enumerateKeysAndObjectsUsingBlock:&v12];
+  [slotsByName enumerateKeysAndObjectsUsingBlock:&v12];
 
   v8 = [(INIntentResponse *)self userActivity:v12];
   if (v8)
@@ -376,11 +376,11 @@ uint64_t __61__INIntentResponse_INCacheSupport___intents_cacheableObjects__block
 
 - (BOOL)_commonInit
 {
-  v3 = [(_INPBIntentResponse *)self->_backingStore payloadSuccess];
-  v4 = [v3 responseTypeName];
+  payloadSuccess = [(_INPBIntentResponse *)self->_backingStore payloadSuccess];
+  responseTypeName = [payloadSuccess responseTypeName];
   v17 = 0;
   v18 = 0;
-  v5 = INSchemaWithTypeName(v4, &v18, &v17);
+  v5 = INSchemaWithTypeName(responseTypeName, &v18, &v17);
   v6 = v18;
   v7 = v17;
 
@@ -396,15 +396,15 @@ uint64_t __61__INIntentResponse_INCacheSupport___intents_cacheableObjects__block
 
     v9 = v8;
     v10 = [INCodable alloc];
-    v11 = [(_INPBIntentResponse *)self->_backingStore payloadSuccess];
-    v12 = [v11 responseMessageData];
-    v13 = [(INCodable *)v10 initWithCodableDescription:v9 data:v12];
+    payloadSuccess2 = [(_INPBIntentResponse *)self->_backingStore payloadSuccess];
+    responseMessageData = [payloadSuccess2 responseMessageData];
+    v13 = [(INCodable *)v10 initWithCodableDescription:v9 data:responseMessageData];
 
     [(INIntentResponse *)self _setResponseMessagePBRepresentation:v13];
     if (([(INIntentResponse *)self isMemberOfClass:objc_opt_class()]& 1) == 0)
     {
-      v14 = [(INIntentResponse *)self code];
-      if (v14 != [(INIntentResponse *)self _code])
+      code = [(INIntentResponse *)self code];
+      if (code != [(INIntentResponse *)self _code])
       {
         [(INIntentResponse *)self setCode:[(INIntentResponse *)self _code]];
       }
@@ -419,19 +419,19 @@ LABEL_9:
 
 - (NSString)_payloadResponseTypeName
 {
-  v2 = [(_INPBIntentResponse *)self->_backingStore payloadSuccess];
-  v3 = [v2 responseTypeName];
+  payloadSuccess = [(_INPBIntentResponse *)self->_backingStore payloadSuccess];
+  responseTypeName = [payloadSuccess responseTypeName];
 
-  return v3;
+  return responseTypeName;
 }
 
-- (id)localizeValueOfSlotDescription:(id)a3 withLocalizer:(id)a4
+- (id)localizeValueOfSlotDescription:(id)description withLocalizer:(id)localizer
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 facadePropertyName];
-  v9 = [(INIntentResponse *)self valueForKey:v8];
-  v10 = [v7 localizeValue:v9 withLocalizer:v6];
+  localizerCopy = localizer;
+  descriptionCopy = description;
+  facadePropertyName = [descriptionCopy facadePropertyName];
+  v9 = [(INIntentResponse *)self valueForKey:facadePropertyName];
+  v10 = [descriptionCopy localizeValue:v9 withLocalizer:localizerCopy];
 
   return v10;
 }
@@ -443,10 +443,10 @@ LABEL_9:
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v3 = [(INIntentResponse *)self _instanceDescription];
-  v4 = [v3 slotsByName];
+  _instanceDescription = [(INIntentResponse *)self _instanceDescription];
+  slotsByName = [_instanceDescription slotsByName];
 
-  v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v5 = [slotsByName countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
     v6 = v5;
@@ -458,18 +458,18 @@ LABEL_9:
       {
         if (*v18 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(slotsByName);
         }
 
         v9 = *(*(&v17 + 1) + 8 * v8);
-        v10 = [(INIntentResponse *)self _instanceDescription];
-        v11 = [v10 slotsByName];
-        v12 = [v11 objectForKey:v9];
+        _instanceDescription2 = [(INIntentResponse *)self _instanceDescription];
+        slotsByName2 = [_instanceDescription2 slotsByName];
+        v12 = [slotsByName2 objectForKey:v9];
 
         if ([v12 valueType] == 204)
         {
           v14 = [(INIntentResponse *)self valueForKey:v9];
-          v13 = [v14 integerValue];
+          integerValue = [v14 integerValue];
 
           goto LABEL_11;
         }
@@ -478,7 +478,7 @@ LABEL_9:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v6 = [slotsByName countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v6)
       {
         continue;
@@ -488,30 +488,30 @@ LABEL_9:
     }
   }
 
-  v13 = 0;
+  integerValue = 0;
 LABEL_11:
 
   v15 = *MEMORY[0x1E69E9840];
-  return v13;
+  return integerValue;
 }
 
-- (id)_propertiesByNameWithLocalizer:(id)a3
+- (id)_propertiesByNameWithLocalizer:(id)localizer
 {
-  v4 = a3;
+  localizerCopy = localizer;
   v5 = MEMORY[0x1E695DF90];
-  v6 = [(INIntentResponse *)self propertiesByName];
-  v7 = [v5 dictionaryWithCapacity:{objc_msgSend(v6, "count")}];
+  propertiesByName = [(INIntentResponse *)self propertiesByName];
+  v7 = [v5 dictionaryWithCapacity:{objc_msgSend(propertiesByName, "count")}];
 
-  v8 = [(INIntentResponse *)self propertiesByName];
+  propertiesByName2 = [(INIntentResponse *)self propertiesByName];
   v13 = MEMORY[0x1E69E9820];
   v14 = 3221225472;
   v15 = __59__INIntentResponse_Custom___propertiesByNameWithLocalizer___block_invoke;
   v16 = &unk_1E72831C0;
   v17 = v7;
-  v18 = v4;
-  v9 = v4;
+  v18 = localizerCopy;
+  v9 = localizerCopy;
   v10 = v7;
-  [v8 enumerateKeysAndObjectsUsingBlock:&v13];
+  [propertiesByName2 enumerateKeysAndObjectsUsingBlock:&v13];
 
   v11 = [v10 copy];
 
@@ -527,35 +527,35 @@ void __59__INIntentResponse_Custom___propertiesByNameWithLocalizer___block_invok
   [v4 setObject:v7 forKey:v6];
 }
 
-- (id)_propertiesByNameForLanguage:(id)a3
+- (id)_propertiesByNameForLanguage:(id)language
 {
-  v4 = [INStringLocalizer localizerForLanguage:a3];
+  v4 = [INStringLocalizer localizerForLanguage:language];
   v5 = [(INIntentResponse *)self _propertiesByNameWithLocalizer:v4];
 
   return v5;
 }
 
-- (id)_responseTemplateWithLocalizer:(id)a3 requiresSiriCompatibility:(BOOL)a4
+- (id)_responseTemplateWithLocalizer:(id)localizer requiresSiriCompatibility:(BOOL)compatibility
 {
-  v4 = a4;
-  v6 = a3;
+  compatibilityCopy = compatibility;
+  localizerCopy = localizer;
   if ([(INIntentResponse *)self _type]== 2)
   {
-    v7 = [(INIntentResponse *)self _intentResponseCodableCode];
-    v8 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-    v9 = [(INIntentResponse *)self _originatingBundleIdentifier];
-    v10 = [v6 bundleWithIdentifier:v9 fileURL:0];
+    _intentResponseCodableCode = [(INIntentResponse *)self _intentResponseCodableCode];
+    _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+    _originatingBundleIdentifier = [(INIntentResponse *)self _originatingBundleIdentifier];
+    v10 = [localizerCopy bundleWithIdentifier:_originatingBundleIdentifier fileURL:0];
 
     if (!v10)
     {
       v11 = _INVCIntentDefinitionManagerClass();
-      v12 = [(INIntentResponse *)self _originatingBundleIdentifier];
-      v13 = [v11 intentDefinitionURLsForBundleID:v12];
-      v14 = [v13 firstObject];
-      v15 = [v14 URLByDeletingLastPathComponent];
+      _originatingBundleIdentifier2 = [(INIntentResponse *)self _originatingBundleIdentifier];
+      v13 = [v11 intentDefinitionURLsForBundleID:_originatingBundleIdentifier2];
+      firstObject = [v13 firstObject];
+      uRLByDeletingLastPathComponent = [firstObject URLByDeletingLastPathComponent];
 
-      v16 = [(INIntentResponse *)self _originatingBundleIdentifier];
-      v10 = [v6 bundleWithIdentifier:v16 fileURL:v15];
+      _originatingBundleIdentifier3 = [(INIntentResponse *)self _originatingBundleIdentifier];
+      v10 = [localizerCopy bundleWithIdentifier:_originatingBundleIdentifier3 fileURL:uRLByDeletingLastPathComponent];
 
       if (!v10)
       {
@@ -563,57 +563,57 @@ void __59__INIntentResponse_Custom___propertiesByNameWithLocalizer___block_invok
       }
     }
 
-    if (!v4 || [v6 matchesBundleLocalizations:v10])
+    if (!compatibilityCopy || [localizerCopy matchesBundleLocalizations:v10])
     {
-      v17 = [v7 conciseFormatStringLocID];
-      v18 = [v7 formatStringLocID];
-      v19 = [v7 conciseFormatString];
-      v20 = [v7 formatString];
-      v21 = v20;
-      v35 = v18;
-      v36 = v17;
-      if (v18)
+      conciseFormatStringLocID = [_intentResponseCodableCode conciseFormatStringLocID];
+      formatStringLocID = [_intentResponseCodableCode formatStringLocID];
+      conciseFormatString = [_intentResponseCodableCode conciseFormatString];
+      formatString = [_intentResponseCodableCode formatString];
+      v21 = formatString;
+      v35 = formatStringLocID;
+      v36 = conciseFormatStringLocID;
+      if (formatStringLocID)
       {
-        v22 = v18;
+        v22 = formatStringLocID;
       }
 
       else
       {
-        v22 = v17;
+        v22 = conciseFormatStringLocID;
       }
 
-      if (v17)
+      if (conciseFormatStringLocID)
       {
-        v23 = v17;
+        v23 = conciseFormatStringLocID;
       }
 
       else
       {
-        v23 = v18;
+        v23 = formatStringLocID;
       }
 
-      if (v20)
+      if (formatString)
       {
-        v24 = v20;
+        v24 = formatString;
       }
 
       else
       {
-        v24 = v19;
+        v24 = conciseFormatString;
       }
 
-      if (v19)
+      if (conciseFormatString)
       {
-        v25 = v19;
+        v25 = conciseFormatString;
       }
 
       else
       {
-        v25 = v20;
+        v25 = formatString;
       }
 
-      v38 = v6;
-      if (v4)
+      v38 = localizerCopy;
+      if (compatibilityCopy)
       {
         v26 = v22;
       }
@@ -623,7 +623,7 @@ void __59__INIntentResponse_Custom___propertiesByNameWithLocalizer___block_invok
         v26 = v23;
       }
 
-      if (v4)
+      if (compatibilityCopy)
       {
         v27 = v24;
       }
@@ -635,14 +635,14 @@ void __59__INIntentResponse_Custom___propertiesByNameWithLocalizer___block_invok
 
       v28 = v27;
       v29 = v26;
-      [v8 _objectDescription];
-      v30 = v37 = v7;
-      v31 = [v30 _localizationTable];
-      v32 = [v31 tableName];
-      v33 = INLocalizedFormatStringFromCodable(v29, v28, v32, v10, v38, v8, 0, 0, 0);
+      [_responseMessagePBRepresentation _objectDescription];
+      v30 = v37 = _intentResponseCodableCode;
+      _localizationTable = [v30 _localizationTable];
+      tableName = [_localizationTable tableName];
+      v33 = INLocalizedFormatStringFromCodable(v29, v28, tableName, v10, v38, _responseMessagePBRepresentation, 0, 0, 0);
 
-      v6 = v38;
-      v7 = v37;
+      localizerCopy = v38;
+      _intentResponseCodableCode = v37;
     }
 
     else
@@ -660,9 +660,9 @@ LABEL_26:
   return v33;
 }
 
-- (id)_responseTemplateForLanguage:(id)a3
+- (id)_responseTemplateForLanguage:(id)language
 {
-  v4 = [INStringLocalizer localizerForLanguage:a3];
+  v4 = [INStringLocalizer localizerForLanguage:language];
   v5 = [(INIntentResponse *)self _responseTemplateWithLocalizer:v4];
 
   return v5;
@@ -670,13 +670,13 @@ LABEL_26:
 
 - (id)_originatingBundleIdentifier
 {
-  v3 = [(INIntentResponse *)self _payloadResponseTypeName];
-  v4 = [v3 hasPrefix:@"sirikit.intents.custom."];
+  _payloadResponseTypeName = [(INIntentResponse *)self _payloadResponseTypeName];
+  v4 = [_payloadResponseTypeName hasPrefix:@"sirikit.intents.custom."];
 
   if (v4)
   {
-    v5 = [(INIntentResponse *)self _payloadResponseTypeName];
-    v6 = [v5 substringFromIndex:{objc_msgSend(@"sirikit.intents.custom.", "length")}];
+    _payloadResponseTypeName2 = [(INIntentResponse *)self _payloadResponseTypeName];
+    v6 = [_payloadResponseTypeName2 substringFromIndex:{objc_msgSend(@"sirikit.intents.custom.", "length")}];
     v7 = [v6 componentsSeparatedByString:@"."];
 
     v8 = [v7 subarrayWithRange:{0, objc_msgSend(v7, "count") - 1}];
@@ -691,20 +691,20 @@ LABEL_26:
   return v9;
 }
 
-- (void)_intents_updateContainerWithCache:(id)a3
+- (void)_intents_updateContainerWithCache:(id)cache
 {
-  v4 = a3;
+  cacheCopy = cache;
   v5 = objc_opt_class();
   v6 = INIntentSchemaGetIntentResponseDescriptionWithFacadeClass(v5);
-  v7 = [v6 slotsByName];
+  slotsByName = [v6 slotsByName];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __70__INIntentResponse_INCacheSupport___intents_updateContainerWithCache___block_invoke;
   v9[3] = &unk_1E72840F0;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
-  [v7 enumerateKeysAndObjectsUsingBlock:v9];
+  v10 = cacheCopy;
+  v8 = cacheCopy;
+  [slotsByName enumerateKeysAndObjectsUsingBlock:v9];
 }
 
 void __70__INIntentResponse_INCacheSupport___intents_updateContainerWithCache___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -759,20 +759,20 @@ LABEL_4:
 LABEL_9:
 }
 
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4
+- (void)setValue:(id)value forUndefinedKey:(id)key
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(INIntentResponse *)self _inCodable];
-  v9 = v8;
-  if (v8)
+  valueCopy = value;
+  keyCopy = key;
+  _inCodable = [(INIntentResponse *)self _inCodable];
+  v9 = _inCodable;
+  if (_inCodable)
   {
-    if ([v8 isValidKey:v7])
+    if ([_inCodable isValidKey:keyCopy])
     {
-      [v9 setValue:v6 forPropertyNamed:v7];
-      v10 = [v9 data];
-      [(INIntentResponse *)self _setPayloadResponseMessageData:v10];
+      [v9 setValue:valueCopy forPropertyNamed:keyCopy];
+      data = [v9 data];
+      [(INIntentResponse *)self _setPayloadResponseMessageData:data];
     }
 
     else
@@ -783,16 +783,16 @@ LABEL_9:
         goto LABEL_7;
       }
 
-      v10 = v11;
+      data = v11;
       v13 = objc_opt_class();
       v14 = NSStringFromClass(v13);
       *buf = 136315650;
       v17 = "[INIntentResponse setValue:forUndefinedKey:]";
       v18 = 2112;
-      v19 = v7;
+      v19 = keyCopy;
       v20 = 2112;
       v21 = v14;
-      _os_log_fault_impl(&dword_18E991000, v10, OS_LOG_TYPE_FAULT, "%s '%@' is an invalid parameter for '%@'. Please make sure that your intent definition file is valid.", buf, 0x20u);
+      _os_log_fault_impl(&dword_18E991000, data, OS_LOG_TYPE_FAULT, "%s '%@' is an invalid parameter for '%@'. Please make sure that your intent definition file is valid.", buf, 0x20u);
     }
   }
 
@@ -800,7 +800,7 @@ LABEL_9:
   {
     v15.receiver = self;
     v15.super_class = INIntentResponse;
-    [(INIntentResponse *)&v15 setValue:v6 forUndefinedKey:v7];
+    [(INIntentResponse *)&v15 setValue:valueCopy forUndefinedKey:keyCopy];
   }
 
 LABEL_7:
@@ -808,23 +808,23 @@ LABEL_7:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(INIntentResponse *)self _inCodable];
-  v6 = v5;
-  if (!v5)
+  keyCopy = key;
+  _inCodable = [(INIntentResponse *)self _inCodable];
+  v6 = _inCodable;
+  if (!_inCodable)
   {
     v15.receiver = self;
     v15.super_class = INIntentResponse;
-    v7 = [(INIntentResponse *)&v15 valueForUndefinedKey:v4];
+    v7 = [(INIntentResponse *)&v15 valueForUndefinedKey:keyCopy];
     goto LABEL_5;
   }
 
-  if ([v5 isValidKey:v4])
+  if ([_inCodable isValidKey:keyCopy])
   {
-    v7 = [v6 valueForPropertyNamed:v4];
+    v7 = [v6 valueForPropertyNamed:keyCopy];
 LABEL_5:
     v8 = v7;
     goto LABEL_9;
@@ -839,7 +839,7 @@ LABEL_5:
     *buf = 136315650;
     v17 = "[INIntentResponse valueForUndefinedKey:]";
     v18 = 2112;
-    v19 = v4;
+    v19 = keyCopy;
     v20 = 2112;
     v21 = v14;
     _os_log_fault_impl(&dword_18E991000, v12, OS_LOG_TYPE_FAULT, "%s '%@' is an invalid parameter for '%@'. Please make sure that your intent definition file is valid.", buf, 0x20u);
@@ -853,21 +853,21 @@ LABEL_9:
   return v8;
 }
 
-- (id)valueForKey:(id)a3
+- (id)valueForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(INIntentResponse *)self _inCodable];
-  v6 = v5;
-  if (v5 && [v5 isValidKey:v4])
+  keyCopy = key;
+  _inCodable = [(INIntentResponse *)self _inCodable];
+  v6 = _inCodable;
+  if (_inCodable && [_inCodable isValidKey:keyCopy])
   {
-    v7 = [v6 valueForPropertyNamed:v4];
+    v7 = [v6 valueForPropertyNamed:keyCopy];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = INIntentResponse;
-    v7 = [(INIntentResponse *)&v10 valueForKey:v4];
+    v7 = [(INIntentResponse *)&v10 valueForKey:keyCopy];
   }
 
   v8 = v7;
@@ -875,17 +875,17 @@ LABEL_9:
   return v8;
 }
 
-- (id)_querySchemaWithBlock:(id)a3
+- (id)_querySchemaWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(_INPBIntentResponse *)self->_backingStore payloadSuccess];
-  v6 = [v5 responseTypeName];
+  blockCopy = block;
+  payloadSuccess = [(_INPBIntentResponse *)self->_backingStore payloadSuccess];
+  responseTypeName = [payloadSuccess responseTypeName];
   v14 = 0;
   v15 = 0;
-  v7 = INSchemaWithTypeName(v6, &v15, &v14);
+  v7 = INSchemaWithTypeName(responseTypeName, &v15, &v14);
   v8 = v15;
 
-  v9 = v4[2](v4, v7);
+  v9 = blockCopy[2](blockCopy, v7);
   if (v9)
   {
     v10 = v9;
@@ -896,26 +896,26 @@ LABEL_9:
     v11 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v12 = [INSchema _defaultSchemaForBundle:v11];
 
-    v10 = v4[2](v4, v12);
+    v10 = blockCopy[2](blockCopy, v12);
     v7 = v12;
   }
 
   return v10;
 }
 
-- (BOOL)_isValidKey:(id)a3
+- (BOOL)_isValidKey:(id)key
 {
-  v4 = a3;
-  v5 = [(INIntentResponse *)self _inCodable];
-  v6 = v5;
-  if (v5)
+  keyCopy = key;
+  _inCodable = [(INIntentResponse *)self _inCodable];
+  v6 = _inCodable;
+  if (_inCodable)
   {
-    v7 = [v5 isValidKey:v4];
+    v7 = [_inCodable isValidKey:keyCopy];
   }
 
   else
   {
-    NSSelectorFromString(v4);
+    NSSelectorFromString(keyCopy);
 
     v7 = objc_opt_respondsToSelector();
   }
@@ -923,111 +923,111 @@ LABEL_9:
   return v7 & 1;
 }
 
-- (void)_setResponseMessagePBRepresentation:(id)a3
+- (void)_setResponseMessagePBRepresentation:(id)representation
 {
-  objc_storeStrong(&self->_responseMessagePBRepresentation, a3);
-  v5 = a3;
-  v6 = [v5 data];
+  objc_storeStrong(&self->_responseMessagePBRepresentation, representation);
+  representationCopy = representation;
+  data = [representationCopy data];
 
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v6];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
-- (int64_t)_codeWithName:(id)a3
+- (int64_t)_codeWithName:(id)name
 {
   v51 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(INIntentResponse *)self _className];
-  v6 = [v5 stringByAppendingString:@"CodeUnspecified"];
-  v7 = [v4 isEqualToString:v6];
+  nameCopy = name;
+  _className = [(INIntentResponse *)self _className];
+  v6 = [_className stringByAppendingString:@"CodeUnspecified"];
+  v7 = [nameCopy isEqualToString:v6];
 
   if (v7)
   {
-    v8 = 0;
+    value = 0;
   }
 
   else
   {
-    v9 = [v5 stringByAppendingString:@"CodeReady"];
-    v10 = [v4 isEqualToString:v9];
+    v9 = [_className stringByAppendingString:@"CodeReady"];
+    v10 = [nameCopy isEqualToString:v9];
 
     if (v10)
     {
-      v8 = 1;
+      value = 1;
     }
 
     else
     {
-      v11 = [v5 stringByAppendingString:@"CodeInProgress"];
-      v12 = [v4 isEqualToString:v11];
+      v11 = [_className stringByAppendingString:@"CodeInProgress"];
+      v12 = [nameCopy isEqualToString:v11];
 
       if (v12)
       {
-        v8 = 3;
+        value = 3;
       }
 
       else
       {
-        v13 = [v5 stringByAppendingString:@"CodeSuccess"];
-        v14 = [v4 isEqualToString:v13];
+        v13 = [_className stringByAppendingString:@"CodeSuccess"];
+        v14 = [nameCopy isEqualToString:v13];
 
         if (v14)
         {
-          v8 = 4;
+          value = 4;
         }
 
         else
         {
-          v15 = [v5 stringByAppendingString:@"CodeFailure"];
-          v16 = [v4 isEqualToString:v15];
+          v15 = [_className stringByAppendingString:@"CodeFailure"];
+          v16 = [nameCopy isEqualToString:v15];
 
           if (v16)
           {
-            v8 = 5;
+            value = 5;
           }
 
           else
           {
-            v17 = [v5 stringByAppendingString:@"CodeContinueInApp"];
-            v18 = [v4 isEqualToString:v17];
+            v17 = [_className stringByAppendingString:@"CodeContinueInApp"];
+            v18 = [nameCopy isEqualToString:v17];
 
             if (v18)
             {
-              v8 = 2;
+              value = 2;
             }
 
             else
             {
-              v19 = [v5 stringByAppendingString:@"CodeFailureRequiringAppLaunch"];
-              v20 = [v4 isEqualToString:v19];
+              v19 = [_className stringByAppendingString:@"CodeFailureRequiringAppLaunch"];
+              v20 = [nameCopy isEqualToString:v19];
 
               if (v20)
               {
-                v8 = 6;
+                value = 6;
               }
 
               else
               {
-                v21 = [v5 stringByAppendingString:@"CodeUserConfirmationRequired"];
-                v22 = [v4 isEqualToString:v21];
+                v21 = [_className stringByAppendingString:@"CodeUserConfirmationRequired"];
+                v22 = [nameCopy isEqualToString:v21];
 
                 if (v22)
                 {
-                  v8 = 8;
+                  value = 8;
                 }
 
                 else
                 {
-                  v23 = [v5 stringByAppendingString:@"CodeHandleInApp"];
-                  v24 = [v4 isEqualToString:v23];
+                  v23 = [_className stringByAppendingString:@"CodeHandleInApp"];
+                  v24 = [nameCopy isEqualToString:v23];
 
                   if (v24)
                   {
-                    v8 = 7;
+                    value = 7;
                   }
 
                   else
                   {
-                    v8 = 0;
+                    value = 0;
                   }
                 }
               }
@@ -1038,25 +1038,25 @@ LABEL_9:
     }
   }
 
-  v25 = [(INIntentResponse *)self _inCodable];
+  _inCodable = [(INIntentResponse *)self _inCodable];
 
-  if (v25)
+  if (_inCodable)
   {
-    v26 = [(INIntentResponse *)self _inCodable];
-    v27 = [v26 _objectDescription];
+    _inCodable2 = [(INIntentResponse *)self _inCodable];
+    _objectDescription = [_inCodable2 _objectDescription];
     v46 = 0u;
     v47 = 0u;
     v48 = 0u;
     v49 = 0u;
-    obj = [v27 responseCodes];
+    obj = [_objectDescription responseCodes];
     v28 = [obj countByEnumeratingWithState:&v46 objects:v50 count:16];
     if (v28)
     {
       v29 = v28;
-      v42 = v27;
-      v43 = v26;
-      v41 = v8;
-      v45 = v5;
+      v42 = _objectDescription;
+      v43 = _inCodable2;
+      v41 = value;
+      v45 = _className;
       v30 = *v47;
       while (2)
       {
@@ -1068,18 +1068,18 @@ LABEL_9:
           }
 
           v32 = *(*(&v46 + 1) + 8 * i);
-          v33 = [v32 name];
+          name = [v32 name];
           v34 = MEMORY[0x1E696AEC0];
-          v35 = [v33 substringToIndex:1];
-          v36 = [v35 uppercaseString];
-          v37 = [v33 substringFromIndex:1];
-          v38 = [v34 stringWithFormat:@"%@Code%@%@", v45, v36, v37];
+          v35 = [name substringToIndex:1];
+          uppercaseString = [v35 uppercaseString];
+          v37 = [name substringFromIndex:1];
+          v38 = [v34 stringWithFormat:@"%@Code%@%@", v45, uppercaseString, v37];
 
-          if ([v4 isEqualToString:v38])
+          if ([nameCopy isEqualToString:v38])
           {
-            v8 = [v32 value];
+            value = [v32 value];
 
-            v5 = v45;
+            _className = v45;
             goto LABEL_31;
           }
         }
@@ -1093,27 +1093,27 @@ LABEL_9:
         break;
       }
 
-      v5 = v45;
-      v8 = v41;
+      _className = v45;
+      value = v41;
 LABEL_31:
-      v27 = v42;
-      v26 = v43;
+      _objectDescription = v42;
+      _inCodable2 = v43;
     }
   }
 
   v39 = *MEMORY[0x1E69E9840];
-  return v8;
+  return value;
 }
 
-- (int64_t)_stageWithName:(id)a3
+- (int64_t)_stageWithName:(id)name
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Confirm"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"Confirm"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Handle"])
+  else if ([nameCopy isEqualToString:@"Handle"])
   {
     v4 = 2;
   }
@@ -1126,23 +1126,23 @@ LABEL_31:
   return v4;
 }
 
-- (void)setPropertiesByName:(id)a3
+- (void)setPropertiesByName:(id)name
 {
-  v4 = a3;
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  nameCopy = name;
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v6 = MEMORY[0x1E695DF70];
-    v7 = v5;
-    v8 = [[v6 alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
+    v7 = _responseMessagePBRepresentation;
+    v8 = [[v6 alloc] initWithCapacity:{objc_msgSend(nameCopy, "count")}];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __40__INIntentResponse_setPropertiesByName___block_invoke;
     v11[3] = &unk_1E7285238;
     v12 = v8;
     v9 = v8;
-    [v4 enumerateKeysAndObjectsUsingBlock:v11];
+    [nameCopy enumerateKeysAndObjectsUsingBlock:v11];
     [v7 setProperties:v9];
   }
 
@@ -1156,7 +1156,7 @@ LABEL_31:
       v10[2] = __40__INIntentResponse_setPropertiesByName___block_invoke_2;
       v10[3] = &unk_1E7285238;
       v10[4] = self;
-      [v4 enumerateKeysAndObjectsUsingBlock:v10];
+      [nameCopy enumerateKeysAndObjectsUsingBlock:v10];
     }
   }
 }
@@ -1171,14 +1171,14 @@ void __40__INIntentResponse_setPropertiesByName___block_invoke(uint64_t a1, void
 - (NSDictionary)propertiesByName
 {
   v21 = *MEMORY[0x1E69E9840];
-  v2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 properties];
-    if ([v3 count])
+    properties = [_responseMessagePBRepresentation properties];
+    if ([properties count])
     {
-      v4 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v3, "count")}];
+      v4 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(properties, "count")}];
     }
 
     else
@@ -1190,7 +1190,7 @@ void __40__INIntentResponse_setPropertiesByName___block_invoke(uint64_t a1, void
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = v3;
+    v6 = properties;
     v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v7)
     {
@@ -1206,11 +1206,11 @@ void __40__INIntentResponse_setPropertiesByName___block_invoke(uint64_t a1, void
           }
 
           v11 = *(*(&v16 + 1) + 8 * i);
-          v12 = [v11 role];
-          if (v12)
+          role = [v11 role];
+          if (role)
           {
             v13 = INIntentSlotValueTransformFromProperty(v11);
-            [v4 setObject:v13 forKeyedSubscript:v12];
+            [v4 setObject:v13 forKeyedSubscript:role];
           }
         }
 
@@ -1228,7 +1228,7 @@ void __40__INIntentResponse_setPropertiesByName___block_invoke(uint64_t a1, void
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [v2 _dictionaryRepresentationWithNullValues:0];
+      v5 = [_responseMessagePBRepresentation _dictionaryRepresentationWithNullValues:0];
     }
 
     else
@@ -1242,15 +1242,15 @@ void __40__INIntentResponse_setPropertiesByName___block_invoke(uint64_t a1, void
   return v5;
 }
 
-- (INIntentResponse)initWithPropertiesByName:(id)a3
+- (INIntentResponse)initWithPropertiesByName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = objc_alloc_init(_INPBIntentResponse);
   v6 = [(INIntentResponse *)self initWithBackingStore:v5];
 
   if (v6)
   {
-    [(INIntentResponse *)v6 setPropertiesByName:v4];
+    [(INIntentResponse *)v6 setPropertiesByName:nameCopy];
   }
 
   return v6;
@@ -1261,11 +1261,11 @@ void __40__INIntentResponse_setPropertiesByName___block_invoke(uint64_t a1, void
   codableDescription = self->_codableDescription;
   if (!codableDescription)
   {
-    v4 = [(INIntentResponse *)self _inCodable];
-    v5 = v4;
-    if (v4)
+    _inCodable = [(INIntentResponse *)self _inCodable];
+    v5 = _inCodable;
+    if (_inCodable)
     {
-      v6 = [v4 _objectDescription];
+      _objectDescription = [_inCodable _objectDescription];
     }
 
     else
@@ -1275,11 +1275,11 @@ void __40__INIntentResponse_setPropertiesByName___block_invoke(uint64_t a1, void
       v9[2] = __39__INIntentResponse__codableDescription__block_invoke;
       v9[3] = &unk_1E7285210;
       v9[4] = self;
-      v6 = [(INIntentResponse *)self _querySchemaWithBlock:v9];
+      _objectDescription = [(INIntentResponse *)self _querySchemaWithBlock:v9];
     }
 
     v7 = self->_codableDescription;
-    self->_codableDescription = v6;
+    self->_codableDescription = _objectDescription;
 
     codableDescription = self->_codableDescription;
   }
@@ -1300,18 +1300,18 @@ id __39__INIntentResponse__codableDescription__block_invoke(uint64_t a1, void *a
 - (id)_dictionaryRepresentation
 {
   v28[2] = *MEMORY[0x1E69E9840];
-  v3 = [(INIntentResponse *)self _className];
-  v4 = [(INIntentResponse *)self code];
-  v5 = v3;
+  _className = [(INIntentResponse *)self _className];
+  code = [(INIntentResponse *)self code];
+  v5 = _className;
   v6 = v5;
-  if (v4 > 8)
+  if (code > 8)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = [v5 stringByAppendingString:off_1E7285258[v4]];
+    v7 = [v5 stringByAppendingString:off_1E7285258[code]];
   }
 
   if (v7)
@@ -1319,18 +1319,18 @@ id __39__INIntentResponse__codableDescription__block_invoke(uint64_t a1, void *a
     v8 = 0;
     v27[0] = @"code";
 LABEL_6:
-    v9 = v7;
+    null = v7;
     goto LABEL_13;
   }
 
   if (-[INIntentResponse _type](self, "_type") == 2 && (-[INIntentResponse _intentResponseCodableCode](self, "_intentResponseCodableCode"), v10 = objc_claimAutoreleasedReturnValue(), [v10 name], v11 = objc_claimAutoreleasedReturnValue(), v10, v11))
   {
     v12 = MEMORY[0x1E696AEC0];
-    v13 = [(INIntentResponse *)self _className];
+    _className2 = [(INIntentResponse *)self _className];
     v14 = [v11 substringToIndex:1];
-    v15 = [v14 uppercaseString];
+    uppercaseString = [v14 uppercaseString];
     v16 = [v11 substringFromIndex:1];
-    v7 = [v12 stringWithFormat:@"%@Code%@%@", v13, v15, v16];
+    v7 = [v12 stringWithFormat:@"%@Code%@%@", _className2, uppercaseString, v16];
 
     v27[0] = @"code";
     if (v7)
@@ -1345,22 +1345,22 @@ LABEL_6:
     v27[0] = @"code";
   }
 
-  v9 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
   v7 = 0;
   v8 = 1;
 LABEL_13:
   v27[1] = @"userActivity";
-  v28[0] = v9;
-  v17 = [(INIntentResponse *)self userActivity];
-  v18 = v17;
-  if (!v17)
+  v28[0] = null;
+  userActivity = [(INIntentResponse *)self userActivity];
+  null2 = userActivity;
+  if (!userActivity)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v28[1] = v18;
+  v28[1] = null2;
   v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:v27 count:2];
-  if (!v17)
+  if (!userActivity)
   {
   }
 
@@ -1368,14 +1368,14 @@ LABEL_13:
   {
   }
 
-  v20 = [(INIntentResponse *)self _inCodable];
+  _inCodable = [(INIntentResponse *)self _inCodable];
 
-  if (v20)
+  if (_inCodable)
   {
     v21 = [v19 mutableCopy];
-    v22 = [(INIntentResponse *)self _inCodable];
-    v23 = [v22 dictionaryRepresentation];
-    [v21 addEntriesFromDictionary:v23];
+    _inCodable2 = [(INIntentResponse *)self _inCodable];
+    dictionaryRepresentation = [_inCodable2 dictionaryRepresentation];
+    [v21 addEntriesFromDictionary:dictionaryRepresentation];
 
     v24 = [v21 copy];
     v19 = v24;
@@ -1386,23 +1386,23 @@ LABEL_13:
   return v19;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INIntentResponse;
   v6 = [(INIntentResponse *)&v11 description];
-  v7 = [(INIntentResponse *)self _redactedDictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  _redactedDictionaryRepresentation = [(INIntentResponse *)self _redactedDictionaryRepresentation];
+  v8 = [_redactedDictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
 }
 
-- (void)_updateWithJSONDictionary:(id)a3
+- (void)_updateWithJSONDictionary:(id)dictionary
 {
-  v31 = a3;
-  v4 = [v31 objectForKeyedSubscript:@"properties"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"properties"];
   if (v4)
   {
     objc_opt_class();
@@ -1425,12 +1425,12 @@ LABEL_13:
   v6 = v5;
 
   v7 = MEMORY[0x1E696AEC0];
-  v8 = [(INIntentResponse *)self _className];
-  v9 = [v31 objectForKeyedSubscript:@"status"];
-  v10 = [v7 stringWithFormat:@"%@Code%@", v8, v9];
+  _className = [(INIntentResponse *)self _className];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"status"];
+  v10 = [v7 stringWithFormat:@"%@Code%@", _className, v9];
   [(INIntentResponse *)self _setCode:[(INIntentResponse *)self _codeWithName:v10]];
 
-  v11 = [v31 objectForKeyedSubscript:@"stage"];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"stage"];
   if (v11)
   {
     objc_opt_class();
@@ -1455,11 +1455,11 @@ LABEL_13:
   v14 = [(INIntentResponse *)self _stageWithName:v13];
   [(INIntentResponse *)self _setStage:v14];
   v15 = objc_alloc_init(INJSONDecoder);
-  v16 = [(INIntentResponse *)self _codableDescription];
-  [(INJSONDecoder *)v15 decodeObject:self withCodableDescription:v16 from:v6];
+  _codableDescription = [(INIntentResponse *)self _codableDescription];
+  [(INJSONDecoder *)v15 decodeObject:self withCodableDescription:_codableDescription from:v6];
 
   v17 = objc_opt_class();
-  v18 = [v31 objectForKeyedSubscript:@"userActivity"];
+  v18 = [dictionaryCopy objectForKeyedSubscript:@"userActivity"];
   v19 = [(INJSONDecoder *)v15 decodeObjectOfClass:v17 from:v18];
   [(INIntentResponse *)self setUserActivity:v19];
 
@@ -1476,13 +1476,13 @@ LABEL_13:
     v23 = [v21 substringToIndex:v22];
   }
 
-  v24 = [(INIntentResponse *)self _codableDescription];
-  if (v24)
+  _codableDescription2 = [(INIntentResponse *)self _codableDescription];
+  if (_codableDescription2)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v25 = v24;
+      v25 = _codableDescription2;
     }
 
     else
@@ -1498,13 +1498,13 @@ LABEL_13:
 
   v26 = v25;
 
-  v27 = [v26 _nullable_schema];
-  v28 = [v27 _types];
-  [v26 _reestablishReferencedCodableDescriptionsUsingTypes:v28];
+  _nullable_schema = [v26 _nullable_schema];
+  _types = [_nullable_schema _types];
+  [v26 _reestablishReferencedCodableDescriptionsUsingTypes:_types];
 
-  v29 = [v27 intentCodableDescriptionWithIntentClassName:v23];
-  v30 = [v27 _types];
-  [v29 _reestablishReferencedCodableDescriptionsUsingTypes:v30 intentResponseCodableDescription:v26];
+  v29 = [_nullable_schema intentCodableDescriptionWithIntentClassName:v23];
+  _types2 = [_nullable_schema _types];
+  [v29 _reestablishReferencedCodableDescriptionsUsingTypes:_types2 intentResponseCodableDescription:v26];
 }
 
 - (NSDictionary)_JSONDictionaryRepresentation
@@ -1516,22 +1516,22 @@ LABEL_13:
 
   v6 = [(INJSONEncoder *)v3 initWithConfiguration:v4];
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v8 = [(INIntentResponse *)self _dictionaryRepresentation];
-  v9 = [v8 objectForKeyedSubscript:@"code"];
-  v10 = [(INIntentResponse *)self _className];
-  v11 = [v10 stringByAppendingString:@"Code"];
+  _dictionaryRepresentation = [(INIntentResponse *)self _dictionaryRepresentation];
+  v9 = [_dictionaryRepresentation objectForKeyedSubscript:@"code"];
+  _className = [(INIntentResponse *)self _className];
+  v11 = [_className stringByAppendingString:@"Code"];
   v12 = [v9 substringFromIndex:{objc_msgSend(v11, "length")}];
   [v7 if_setObjectIfNonNil:v12 forKey:@"status"];
 
-  v13 = [(INIntentResponse *)self _payloadResponseTypeName];
-  [v7 if_setObjectIfNonNil:v13 forKey:@"typeName"];
+  _payloadResponseTypeName = [(INIntentResponse *)self _payloadResponseTypeName];
+  [v7 if_setObjectIfNonNil:_payloadResponseTypeName forKey:@"typeName"];
 
-  v14 = [(INIntentResponse *)self _codableDescription];
-  v15 = [(INJSONEncoder *)v6 encodeObject:self withCodableDescription:v14];
+  _codableDescription = [(INIntentResponse *)self _codableDescription];
+  v15 = [(INJSONEncoder *)v6 encodeObject:self withCodableDescription:_codableDescription];
   [v7 if_setObjectIfNonNil:v15 forKey:@"properties"];
 
-  v16 = [(INIntentResponse *)self userActivity];
-  v17 = [(INJSONEncoder *)v6 encodeObject:v16];
+  userActivity = [(INIntentResponse *)self userActivity];
+  v17 = [(INJSONEncoder *)v6 encodeObject:userActivity];
   [v7 if_setObjectIfNonNil:v17 forKey:@"userActivity"];
 
   return v7;
@@ -1539,20 +1539,20 @@ LABEL_13:
 
 - (NSString)_className
 {
-  v2 = [(INIntentResponse *)self _payloadResponseTypeName];
-  if ([v2 hasPrefix:@"sirikit.intents.custom."])
+  _payloadResponseTypeName = [(INIntentResponse *)self _payloadResponseTypeName];
+  if ([_payloadResponseTypeName hasPrefix:@"sirikit.intents.custom."])
   {
-    v3 = [v2 componentsSeparatedByString:@"."];
-    v4 = [v3 lastObject];
+    v3 = [_payloadResponseTypeName componentsSeparatedByString:@"."];
+    lastObject = [v3 lastObject];
   }
 
   else
   {
     v5 = objc_opt_class();
-    v4 = NSStringFromClass(v5);
+    lastObject = NSStringFromClass(v5);
   }
 
-  return v4;
+  return lastObject;
 }
 
 - (INIntentResponseDescription)_instanceDescription
@@ -1560,10 +1560,10 @@ LABEL_13:
   if ([(INIntentResponse *)self _type]== 2)
   {
     v3 = [INIntentResponseDescription alloc];
-    v4 = [(INIntentResponse *)self _className];
-    v5 = [(INIntentResponse *)self _className];
+    _className = [(INIntentResponse *)self _className];
+    _className2 = [(INIntentResponse *)self _className];
     v6 = objc_opt_class();
-    v7 = NSClassFromString(v5);
+    v7 = NSClassFromString(_className2);
     if (v7)
     {
       v8 = v7;
@@ -1581,10 +1581,10 @@ LABEL_13:
     }
 
     v10 = v7;
-    v11 = [(INIntentResponse *)self _payloadResponseTypeName];
-    v12 = [(INIntentResponse *)self _inCodable];
-    v13 = INIntentSlotDescriptionsWithCodable(v12);
-    v14 = [(INIntentResponseDescription *)v3 initWithName:v4 facadeClass:v10 dataClass:0 type:v11 isPrivate:0 slotsByName:v13];
+    _payloadResponseTypeName = [(INIntentResponse *)self _payloadResponseTypeName];
+    _inCodable = [(INIntentResponse *)self _inCodable];
+    v13 = INIntentSlotDescriptionsWithCodable(_inCodable);
+    v14 = [(INIntentResponseDescription *)v3 initWithName:_className facadeClass:v10 dataClass:0 type:_payloadResponseTypeName isPrivate:0 slotsByName:v13];
   }
 
   else
@@ -1600,9 +1600,9 @@ LABEL_13:
 {
   if ([(INIntentResponse *)self _type]== 2)
   {
-    v3 = [(INIntentResponse *)self _inCodable];
-    v4 = [v3 _objectDescription];
-    v5 = [v4 intentResponseCodeWithCode:{-[INIntentResponse code](self, "code")}];
+    _inCodable = [(INIntentResponse *)self _inCodable];
+    _objectDescription = [_inCodable _objectDescription];
+    v5 = [_objectDescription intentResponseCodeWithCode:{-[INIntentResponse code](self, "code")}];
   }
 
   else
@@ -1615,59 +1615,59 @@ LABEL_13:
 
 - (int64_t)_intentResponseCode
 {
-  v3 = [(INIntentResponse *)self code];
+  code = [(INIntentResponse *)self code];
   if ([(INIntentResponse *)self _type]== 2)
   {
-    v4 = [(INIntentResponse *)self _intentResponseCodableCode];
+    _intentResponseCodableCode = [(INIntentResponse *)self _intentResponseCodableCode];
     if ([(INIntentResponse *)self code]>= 100)
     {
       if ([(INIntentResponse *)self _stage]== 1)
       {
-        v3 = 1;
+        code = 1;
       }
 
       else
       {
-        v3 = 4;
+        code = 4;
       }
 
-      if (![v4 isSuccess])
+      if (![_intentResponseCodableCode isSuccess])
       {
-        v3 = 5;
+        code = 5;
       }
     }
   }
 
-  return v3;
+  return code;
 }
 
-- (void)_setPayloadResponseTypeName:(id)a3
+- (void)_setPayloadResponseTypeName:(id)name
 {
   backingStore = self->_backingStore;
-  v4 = a3;
-  v5 = [(_INPBIntentResponse *)backingStore payloadSuccess];
-  [v5 setResponseTypeName:v4];
+  nameCopy = name;
+  payloadSuccess = [(_INPBIntentResponse *)backingStore payloadSuccess];
+  [payloadSuccess setResponseTypeName:nameCopy];
 }
 
-- (void)_setPayloadResponseMessageData:(id)a3
+- (void)_setPayloadResponseMessageData:(id)data
 {
   backingStore = self->_backingStore;
-  v4 = a3;
-  v5 = [(_INPBIntentResponse *)backingStore payloadSuccess];
-  [v5 setResponseMessageData:v4];
+  dataCopy = data;
+  payloadSuccess = [(_INPBIntentResponse *)backingStore payloadSuccess];
+  [payloadSuccess setResponseMessageData:dataCopy];
 }
 
-- (INIntentResponse)initWithCoder:(id)a3
+- (INIntentResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-  v6 = [v4 decodeObjectOfClasses:v5 forKey:@"backingStore"];
+  v6 = [coderCopy decodeObjectOfClasses:v5 forKey:@"backingStore"];
 
-  v7 = [v4 decodeIntegerForKey:@"code"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"userActivityData"];
+  v7 = [coderCopy decodeIntegerForKey:@"code"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userActivityData"];
   v9 = INUserActivityDeserializeFromData(v8);
 
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"codableDescriptionData"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"codableDescriptionData"];
   if (v10)
   {
     v18 = 0;
@@ -1676,10 +1676,10 @@ LABEL_13:
     if (v12)
     {
       v13 = v12;
-      [v4 failWithError:v12];
+      [coderCopy failWithError:v12];
 
 LABEL_9:
-      v15 = 0;
+      selfCopy = 0;
       goto LABEL_10;
     }
   }
@@ -1708,47 +1708,47 @@ LABEL_9:
   }
 
   self = self;
-  v15 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v15;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[INIntentResponse code](self forKey:{"code"), @"code"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[INIntentResponse code](self forKey:{"code"), @"code"}];
   v5 = INUserActivitySerializeToData(self->_userActivity);
-  [v4 encodeObject:v5 forKey:@"userActivityData"];
+  [coderCopy encodeObject:v5 forKey:@"userActivityData"];
 
-  v6 = [(INIntentResponse *)self backingStore];
-  [v4 encodeObject:v6 forKey:@"backingStore"];
+  backingStore = [(INIntentResponse *)self backingStore];
+  [coderCopy encodeObject:backingStore forKey:@"backingStore"];
 
-  v7 = [(INIntentResponse *)self _inCodable];
-  v8 = [v7 _objectDescription];
+  _inCodable = [(INIntentResponse *)self _inCodable];
+  _objectDescription = [_inCodable _objectDescription];
 
-  if (v8)
+  if (_objectDescription)
   {
     v11 = 0;
-    v9 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v8 requiringSecureCoding:1 error:&v11];
+    v9 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:_objectDescription requiringSecureCoding:1 error:&v11];
     v10 = v11;
     if (v10)
     {
-      [v4 failWithError:v10];
+      [coderCopy failWithError:v10];
     }
 
     else
     {
-      [v4 encodeObject:v9 forKey:@"codableDescriptionData"];
+      [coderCopy encodeObject:v9 forKey:@"codableDescriptionData"];
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(INIntentResponse *)self backingStore];
-  v6 = [v4 initWithBackingStore:v5];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  backingStore = [(INIntentResponse *)self backingStore];
+  v6 = [v4 initWithBackingStore:backingStore];
 
   if (v6)
   {
@@ -1762,9 +1762,9 @@ LABEL_10:
 - (void)setUserActivity:(NSUserActivity *)userActivity
 {
   v4 = userActivity;
-  v5 = [(NSUserActivity *)v4 _intents_copy];
+  _intents_copy = [(NSUserActivity *)v4 _intents_copy];
   v6 = self->_userActivity;
-  self->_userActivity = v5;
+  self->_userActivity = _intents_copy;
 
   backingStore = self->_backingStore;
   v8 = INUserActivitySerializeToBackingStore(v4);
@@ -1772,53 +1772,53 @@ LABEL_10:
   [(_INPBIntentResponse *)backingStore setUserActivity:v8];
 }
 
-- (void)_setCode:(int64_t)a3
+- (void)_setCode:(int64_t)code
 {
-  self->_code = a3;
+  self->_code = code;
   if ([(INIntentResponse *)self _type]== 2)
   {
-    v5 = [(INIntentResponse *)self _inCodable];
-    if (a3 < 100)
+    _inCodable = [(INIntentResponse *)self _inCodable];
+    if (code < 100)
     {
       v6 = 0;
     }
 
     else
     {
-      v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+      v6 = [MEMORY[0x1E696AD98] numberWithInteger:code];
     }
 
-    if ([v5 isValidKey:@"_code"])
+    if ([_inCodable isValidKey:@"_code"])
     {
-      [v5 setValue:v6 forPropertyNamed:@"_code"];
+      [_inCodable setValue:v6 forPropertyNamed:@"_code"];
     }
 
-    [(INIntentResponse *)self _setResponseMessagePBRepresentation:v5];
+    [(INIntentResponse *)self _setResponseMessagePBRepresentation:_inCodable];
   }
 
-  v7 = [(INIntentResponse *)self _type];
-  if (a3 < 100 || v7 != 2)
+  _type = [(INIntentResponse *)self _type];
+  if (code < 100 || _type != 2)
   {
-    -[_INPBIntentResponse setType:](self->_backingStore, "setType:", [objc_opt_class() _typeFromCode:a3]);
-    v8 = [objc_opt_class() _errorCodeFromCode:a3];
+    -[_INPBIntentResponse setType:](self->_backingStore, "setType:", [objc_opt_class() _typeFromCode:code]);
+    v8 = [objc_opt_class() _errorCodeFromCode:code];
     if (v8 != 0x7FFFFFFF)
     {
       v9 = v8;
-      v10 = [(_INPBIntentResponse *)self->_backingStore payloadFailure];
-      [v10 setErrorCode:v9];
+      payloadFailure = [(_INPBIntentResponse *)self->_backingStore payloadFailure];
+      [payloadFailure setErrorCode:v9];
     }
 
-    if ([objc_opt_class() _appLaunchRequestedFromCode:a3])
+    if ([objc_opt_class() _appLaunchRequestedFromCode:code])
     {
-      v11 = [(_INPBIntentResponse *)self->_backingStore payloadFailure];
-      [v11 setAppLaunchRequested:1];
+      payloadFailure2 = [(_INPBIntentResponse *)self->_backingStore payloadFailure];
+      [payloadFailure2 setAppLaunchRequested:1];
     }
   }
 }
 
-- (INIntentResponse)initWithBackingStore:(id)a3
+- (INIntentResponse)initWithBackingStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v19.receiver = self;
   v19.super_class = INIntentResponse;
   v5 = [(INIntentResponse *)&v19 init];
@@ -1830,12 +1830,12 @@ LABEL_10:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v4 userActivity];
-    v7 = INUserActivityDeserializeFromBackingStore(v6);
+    userActivity = [storeCopy userActivity];
+    v7 = INUserActivityDeserializeFromBackingStore(userActivity);
     userActivity = v5->_userActivity;
     v5->_userActivity = v7;
 
-    v9 = [v4 copy];
+    v9 = [storeCopy copy];
   }
 
   else
@@ -1856,8 +1856,8 @@ LABEL_10:
     v11 = objc_alloc_init(_INPBIntentResponsePayloadSuccess);
     v12 = objc_opt_class();
     v13 = INIntentSchemaGetIntentResponseDescriptionWithFacadeClass(v12);
-    v14 = [v13 type];
-    [(_INPBIntentResponsePayloadSuccess *)v11 setResponseTypeName:v14];
+    type = [v13 type];
+    [(_INPBIntentResponsePayloadSuccess *)v11 setResponseTypeName:type];
 
     [(_INPBIntentResponse *)v5->_backingStore setPayloadSuccess:v11];
   }
@@ -1883,16 +1883,16 @@ LABEL_12:
   return v17;
 }
 
-- (id)_initWithCode:(int64_t)a3 userActivity:(id)a4
+- (id)_initWithCode:(int64_t)code userActivity:(id)activity
 {
-  v7 = a4;
+  activityCopy = activity;
   v22.receiver = self;
   v22.super_class = INIntentResponse;
   v8 = [(INIntentResponse *)&v22 init];
   p_isa = &v8->super.isa;
   if (v8)
   {
-    objc_storeStrong(&v8->_userActivity, a4);
+    objc_storeStrong(&v8->_userActivity, activity);
     v10 = objc_alloc_init(_INPBIntentResponse);
     v11 = p_isa[3];
     p_isa[3] = v10;
@@ -1900,18 +1900,18 @@ LABEL_12:
     v12 = objc_alloc_init(_INPBIntentResponsePayloadSuccess);
     v13 = objc_opt_class();
     v14 = INIntentSchemaGetIntentResponseDescriptionWithFacadeClass(v13);
-    v15 = [v14 type];
-    [(_INPBIntentResponsePayloadSuccess *)v12 setResponseTypeName:v15];
+    type = [v14 type];
+    [(_INPBIntentResponsePayloadSuccess *)v12 setResponseTypeName:type];
 
     [p_isa[3] setPayloadSuccess:v12];
     v16 = p_isa[3];
     v17 = objc_alloc_init(_INPBIntentResponsePayloadFailure);
     [v16 setPayloadFailure:v17];
 
-    if (v7)
+    if (activityCopy)
     {
       v18 = p_isa[3];
-      v19 = INUserActivitySerializeToBackingStore(v7);
+      v19 = INUserActivitySerializeToBackingStore(activityCopy);
       [v18 setUserActivity:v19];
     }
 
@@ -1922,7 +1922,7 @@ LABEL_12:
       goto LABEL_8;
     }
 
-    [p_isa setCode:a3];
+    [p_isa setCode:code];
   }
 
   v20 = p_isa;
@@ -1954,24 +1954,24 @@ LABEL_8:
 
   v5 = objc_opt_class();
   v6 = INIntentSchemaGetIntentResponseDescriptionWithFacadeClass(v5);
-  v7 = [v6 type];
+  type = [v6 type];
 
-  if (v7)
+  if (type)
   {
     goto LABEL_20;
   }
 
   v8 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-  v9 = [v8 bundleIdentifier];
-  v10 = [MEMORY[0x1E6963620] bundleRecordForCurrentProcess];
-  v11 = [v10 if_containingAppRecord];
-  v12 = v11;
-  if (v11)
+  bundleIdentifier = [v8 bundleIdentifier];
+  bundleRecordForCurrentProcess = [MEMORY[0x1E6963620] bundleRecordForCurrentProcess];
+  if_containingAppRecord = [bundleRecordForCurrentProcess if_containingAppRecord];
+  v12 = if_containingAppRecord;
+  if (if_containingAppRecord)
   {
     v13 = MEMORY[0x1E695DFD8];
-    v14 = [v11 intentDefinitionURLs];
-    v15 = [v14 allKeys];
-    v16 = [v13 setWithArray:v15];
+    intentDefinitionURLs = [if_containingAppRecord intentDefinitionURLs];
+    allKeys = [intentDefinitionURLs allKeys];
+    v16 = [v13 setWithArray:allKeys];
 
     v17 = objc_opt_class();
     v18 = NSStringFromClass(v17);
@@ -1988,9 +1988,9 @@ LABEL_8:
 
       if (v20 && [v16 containsObject:v20])
       {
-        v25 = [v12 bundleIdentifier];
+        bundleIdentifier2 = [v12 bundleIdentifier];
 
-        v9 = v25;
+        bundleIdentifier = bundleIdentifier2;
 LABEL_16:
 
         goto LABEL_17;
@@ -2015,32 +2015,32 @@ LABEL_16:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v21 = [v10 URL];
-    v22 = [v8 bundleURL];
-    v23 = [v21 if_isContainedByDirectoryAtURL:v22];
+    v21 = [bundleRecordForCurrentProcess URL];
+    bundleURL = [v8 bundleURL];
+    v23 = [v21 if_isContainedByDirectoryAtURL:bundleURL];
 
     if (v23)
     {
-      v24 = [v10 bundleIdentifier];
+      bundleIdentifier3 = [bundleRecordForCurrentProcess bundleIdentifier];
 
-      v9 = v24;
+      bundleIdentifier = bundleIdentifier3;
     }
   }
 
 LABEL_17:
-  if (!v9)
+  if (!bundleIdentifier)
   {
-    v27 = [v8 bundlePath];
-    v9 = [v27 lastPathComponent];
+    bundlePath = [v8 bundlePath];
+    bundleIdentifier = [bundlePath lastPathComponent];
   }
 
   v28 = objc_opt_class();
   v29 = NSStringFromClass(v28);
-  v30 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@.%@", @"sirikit.intents.custom.", v9, v29];
+  v30 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@.%@", @"sirikit.intents.custom.", bundleIdentifier, v29];
   [v2 _setPayloadResponseTypeName:v30];
-  v31 = [v2 _commonInit];
+  _commonInit = [v2 _commonInit];
 
-  if (!v31)
+  if (!_commonInit)
   {
     v32 = 0;
     goto LABEL_21;
@@ -2054,71 +2054,71 @@ LABEL_21:
   return v32;
 }
 
-+ (int64_t)_intentHandlingStatusFromCode:(int64_t)a3
++ (int64_t)_intentHandlingStatusFromCode:(int64_t)code
 {
-  if ((a3 - 1) > 5)
+  if ((code - 1) > 5)
   {
     return 0;
   }
 
   else
   {
-    return qword_18EE5F158[a3 - 1];
+    return qword_18EE5F158[code - 1];
   }
 }
 
-+ (int64_t)_codeFromIntentResponseCode:(int64_t)a3
++ (int64_t)_codeFromIntentResponseCode:(int64_t)code
 {
-  v4 = [a1 _typeFromCode:a3];
+  v4 = [self _typeFromCode:code];
 
-  return [a1 _codeFromType:v4 errorCode:0 appLaunchRequested:0];
+  return [self _codeFromType:v4 errorCode:0 appLaunchRequested:0];
 }
 
-+ (int)_typeFromCode:(int64_t)a3
++ (int)_typeFromCode:(int64_t)code
 {
-  if ((a3 - 1) > 6)
+  if ((code - 1) > 6)
   {
     return 3;
   }
 
   else
   {
-    return dword_18EE5F138[a3 - 1];
+    return dword_18EE5F138[code - 1];
   }
 }
 
-+ (int64_t)_codeFromType:(int)a3 errorCode:(int)a4 appLaunchRequested:(BOOL)a5
++ (int64_t)_codeFromType:(int)type errorCode:(int)code appLaunchRequested:(BOOL)requested
 {
   v5 = 3;
   v6 = 2;
-  if (a3 != 4)
+  if (type != 4)
   {
-    v6 = a3 == 5;
+    v6 = type == 5;
   }
 
-  if (a3 != 2)
+  if (type != 2)
   {
     v5 = v6;
   }
 
   v7 = 4;
   v8 = 5;
-  if (a5)
+  if (requested)
   {
     v8 = 6;
   }
 
-  if (a3 != 1)
+  if (type != 1)
   {
     v8 = 0;
   }
 
-  if (a3)
+  if (type)
   {
     v7 = v8;
   }
 
-  if (a3 <= 1)
+  if (type <= 1)
   {
     return v7;
   }
@@ -2131,28 +2131,28 @@ LABEL_21:
 
 + (id)responseFailure
 {
-  v2 = [[a1 alloc] _initWithCode:0 userActivity:0];
+  v2 = [[self alloc] _initWithCode:0 userActivity:0];
 
   return v2;
 }
 
 + (id)responseSuccess
 {
-  v2 = [[a1 alloc] _initWithCode:4 userActivity:0];
+  v2 = [[self alloc] _initWithCode:4 userActivity:0];
 
   return v2;
 }
 
-- (BOOL)_enumerateWithValueProcessingBlock:(id)a3
+- (BOOL)_enumerateWithValueProcessingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  blockCopy = block;
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  if (_responseMessagePBRepresentation && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    if (INEnumerateObjectsInCodable(v5, v4))
+    if (INEnumerateObjectsInCodable(_responseMessagePBRepresentation, blockCopy))
     {
-      v6 = [v5 data];
-      [(INIntentResponse *)self _setPayloadResponseMessageData:v6];
+      data = [_responseMessagePBRepresentation data];
+      [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 
       v7 = 1;
     }
@@ -2166,16 +2166,16 @@ LABEL_21:
   else
   {
 
-    v7 = INEnumerateObjectsInIntentSlotComposing(self, v4);
-    v5 = 0;
+    v7 = INEnumerateObjectsInIntentSlotComposing(self, blockCopy);
+    _responseMessagePBRepresentation = 0;
   }
 
   return v7;
 }
 
-- (BOOL)_intents_enumerateObjectsOfClass:(Class)a3 withBlock:(id)a4
+- (BOOL)_intents_enumerateObjectsOfClass:(Class)class withBlock:(id)block
 {
-  v5 = _INEnumerableValueProcessingBlock(a3, a4);
+  v5 = _INEnumerableValueProcessingBlock(class, block);
   LOBYTE(self) = [(INIntentResponse *)self _enumerateWithValueProcessingBlock:v5];
 
   return self;
@@ -2184,20 +2184,20 @@ LABEL_21:
 - (INImage)_keyImage
 {
   v3 = INKeyImageUtilitiesSortedSubProducersForSlotComposingProducer(self);
-  v4 = [v3 firstObject];
+  firstObject = [v3 firstObject];
 
-  v5 = [v4 valueForSlotComposer:self];
+  v5 = [firstObject valueForSlotComposer:self];
   if ([v5 conformsToProtocol:&unk_1F02E1E10])
   {
-    v6 = [v5 _keyImage];
+    _keyImage = [v5 _keyImage];
   }
 
   else
   {
-    v6 = 0;
+    _keyImage = 0;
   }
 
-  return v6;
+  return _keyImage;
 }
 
 @end

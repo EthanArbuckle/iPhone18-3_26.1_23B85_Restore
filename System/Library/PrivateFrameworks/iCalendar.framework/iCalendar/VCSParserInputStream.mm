@@ -1,78 +1,78 @@
 @interface VCSParserInputStream
 - (BOOL)isContinued;
-- (VCSParserInputStream)initWithData:(id)a3;
-- (id)errorStr:(unint64_t)a3;
-- (unint64_t)getLine:(char *)a3 withSize:(unint64_t *)a4;
+- (VCSParserInputStream)initWithData:(id)data;
+- (id)errorStr:(unint64_t)str;
+- (unint64_t)getLine:(char *)line withSize:(unint64_t *)size;
 - (unint64_t)loadLineBuffer;
 @end
 
 @implementation VCSParserInputStream
 
-- (VCSParserInputStream)initWithData:(id)a3
+- (VCSParserInputStream)initWithData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v9.receiver = self;
   v9.super_class = VCSParserInputStream;
   v6 = [(VCSParserInputStream *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dataStream, a3);
+    objc_storeStrong(&v6->_dataStream, data);
   }
 
   return v7;
 }
 
-- (unint64_t)getLine:(char *)a3 withSize:(unint64_t *)a4
+- (unint64_t)getLine:(char *)line withSize:(unint64_t *)size
 {
   if (!self->_dataStream)
   {
     return 1;
   }
 
-  if (!a3)
+  if (!line)
   {
     return 2;
   }
 
   if (self->_discardBuffer)
   {
-    v7 = [(VCSParserInputStream *)self loadLineBuffer];
-    if (v7 == 4)
+    loadLineBuffer = [(VCSParserInputStream *)self loadLineBuffer];
+    if (loadLineBuffer == 4)
     {
-      return v7;
+      return loadLineBuffer;
     }
   }
 
   else
   {
-    v7 = 0;
+    loadLineBuffer = 0;
   }
 
   length = self->_buffer.length;
-  if (*a4 <= length)
+  if (*size <= length)
   {
-    *a4 = length + 1;
+    *size = length + 1;
     return 3;
   }
 
   else
   {
-    [(NSData *)self->_dataStream getBytes:a3 range:self->_buffer.location];
-    a3[self->_buffer.length] = 0;
+    [(NSData *)self->_dataStream getBytes:line range:self->_buffer.location];
+    line[self->_buffer.length] = 0;
     self->_discardBuffer = 1;
-    if (!v7)
+    if (!loadLineBuffer)
     {
       ++self->_currentLineNum;
     }
   }
 
-  return v7;
+  return loadLineBuffer;
 }
 
 - (unint64_t)loadLineBuffer
 {
-  v3 = [(NSData *)self->_dataStream bytes];
+  bytes = [(NSData *)self->_dataStream bytes];
   v4 = [(NSData *)self->_dataStream length];
   seek = self->_seek;
   if (v4 <= seek)
@@ -87,7 +87,7 @@
     v7 = self->_seek;
     while (1)
     {
-      v8 = v3[v7];
+      v8 = bytes[v7];
       self->_seek = v6;
       if (v8 == 10)
       {
@@ -111,7 +111,7 @@
     }
 
     result = 0;
-    if (v3[v6] == 10)
+    if (bytes[v6] == 10)
     {
       v13 = v6 + 1;
     }
@@ -169,16 +169,16 @@ LABEL_14:
   return v9 == 32 || v9 == 9;
 }
 
-- (id)errorStr:(unint64_t)a3
+- (id)errorStr:(unint64_t)str
 {
-  if (a3 - 1 > 3)
+  if (str - 1 > 3)
   {
     return @"Unknown error.";
   }
 
   else
   {
-    return off_27A64C3D8[a3 - 1];
+    return off_27A64C3D8[str - 1];
   }
 }
 

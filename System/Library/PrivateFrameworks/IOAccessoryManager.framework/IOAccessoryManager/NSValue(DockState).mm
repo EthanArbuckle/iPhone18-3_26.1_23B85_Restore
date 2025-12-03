@@ -11,7 +11,7 @@
   *(x8_0 + 80) = unk_25491C308;
   memset((x8_0 + 96), 170, 32);
   memset(x8_0, 170, 64);
-  return [a1 getValue:?];
+  return [self getValue:?];
 }
 
 @end

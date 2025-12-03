@@ -1,26 +1,26 @@
 @interface SISchemaProvisionalEvent
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaProvisionalEvent)initWithDictionary:(id)a3;
-- (SISchemaProvisionalEvent)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (SISchemaProvisionalEvent)initWithDictionary:(id)dictionary;
+- (SISchemaProvisionalEvent)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaProvisionalEvent
 
-- (SISchemaProvisionalEvent)initWithDictionary:(id)a3
+- (SISchemaProvisionalEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = SISchemaProvisionalEvent;
   v5 = [(SISchemaProvisionalEvent *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"anyEvent"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"anyEvent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(SISchemaProvisionalEvent *)v5 setAnyEvent:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"typeId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"typeId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,7 +36,7 @@
       [(SISchemaProvisionalEvent *)v5 setTypeId:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"version"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"version"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,30 +49,30 @@
   return v5;
 }
 
-- (SISchemaProvisionalEvent)initWithJSON:(id)a3
+- (SISchemaProvisionalEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaProvisionalEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaProvisionalEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaProvisionalEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -85,39 +85,39 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_anyEvent)
   {
-    v4 = [(SISchemaProvisionalEvent *)self anyEvent];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    anyEvent = [(SISchemaProvisionalEvent *)self anyEvent];
+    dictionaryRepresentation = [anyEvent dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"anyEvent"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"anyEvent"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"anyEvent"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"anyEvent"];
     }
   }
 
   if (self->_typeId)
   {
-    v7 = [(SISchemaProvisionalEvent *)self typeId];
-    v8 = [v7 copy];
-    [v3 setObject:v8 forKeyedSubscript:@"typeId"];
+    typeId = [(SISchemaProvisionalEvent *)self typeId];
+    v8 = [typeId copy];
+    [dictionary setObject:v8 forKeyedSubscript:@"typeId"];
   }
 
   if (*&self->_has)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[SISchemaProvisionalEvent version](self, "version")}];
-    [v3 setObject:v9 forKeyedSubscript:@"version"];
+    [dictionary setObject:v9 forKeyedSubscript:@"version"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -137,28 +137,28 @@
   return v4 ^ v3 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(SISchemaProvisionalEvent *)self anyEvent];
-  v6 = [v4 anyEvent];
-  if ((v5 != 0) == (v6 == 0))
+  anyEvent = [(SISchemaProvisionalEvent *)self anyEvent];
+  anyEvent2 = [equalCopy anyEvent];
+  if ((anyEvent != 0) == (anyEvent2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(SISchemaProvisionalEvent *)self anyEvent];
-  if (v7)
+  anyEvent3 = [(SISchemaProvisionalEvent *)self anyEvent];
+  if (anyEvent3)
   {
-    v8 = v7;
-    v9 = [(SISchemaProvisionalEvent *)self anyEvent];
-    v10 = [v4 anyEvent];
-    v11 = [v9 isEqual:v10];
+    v8 = anyEvent3;
+    anyEvent4 = [(SISchemaProvisionalEvent *)self anyEvent];
+    anyEvent5 = [equalCopy anyEvent];
+    v11 = [anyEvent4 isEqual:anyEvent5];
 
     if (!v11)
     {
@@ -170,22 +170,22 @@
   {
   }
 
-  v5 = [(SISchemaProvisionalEvent *)self typeId];
-  v6 = [v4 typeId];
-  if ((v5 != 0) == (v6 == 0))
+  anyEvent = [(SISchemaProvisionalEvent *)self typeId];
+  anyEvent2 = [equalCopy typeId];
+  if ((anyEvent != 0) == (anyEvent2 == 0))
   {
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v12 = [(SISchemaProvisionalEvent *)self typeId];
-  if (v12)
+  typeId = [(SISchemaProvisionalEvent *)self typeId];
+  if (typeId)
   {
-    v13 = v12;
-    v14 = [(SISchemaProvisionalEvent *)self typeId];
-    v15 = [v4 typeId];
-    v16 = [v14 isEqual:v15];
+    v13 = typeId;
+    typeId2 = [(SISchemaProvisionalEvent *)self typeId];
+    typeId3 = [equalCopy typeId];
+    v16 = [typeId2 isEqual:typeId3];
 
     if (!v16)
     {
@@ -197,9 +197,9 @@ LABEL_11:
   {
   }
 
-  if ((*&self->_has & 1) == (v4[32] & 1))
+  if ((*&self->_has & 1) == (equalCopy[32] & 1))
   {
-    if ((*&self->_has & 1) == 0 || (version = self->_version, version == [v4 version]))
+    if ((*&self->_has & 1) == 0 || (version = self->_version, version == [equalCopy version]))
     {
       v17 = 1;
       goto LABEL_13;
@@ -213,43 +213,43 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(SISchemaProvisionalEvent *)self anyEvent];
+  toCopy = to;
+  anyEvent = [(SISchemaProvisionalEvent *)self anyEvent];
 
-  if (v4)
+  if (anyEvent)
   {
-    v5 = [(SISchemaProvisionalEvent *)self anyEvent];
+    anyEvent2 = [(SISchemaProvisionalEvent *)self anyEvent];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(SISchemaProvisionalEvent *)self typeId];
+  typeId = [(SISchemaProvisionalEvent *)self typeId];
 
-  if (v6)
+  if (typeId)
   {
     PBDataWriterWriteStringField();
   }
 
-  v7 = v8;
+  v7 = toCopy;
   if (*&self->_has)
   {
     PBDataWriterWriteInt64Field();
-    v7 = v8;
+    v7 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = SISchemaProvisionalEvent;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(SISchemaProvisionalEvent *)self anyEvent:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(SISchemaProvisionalEvent *)self deleteAnyEvent];
   }

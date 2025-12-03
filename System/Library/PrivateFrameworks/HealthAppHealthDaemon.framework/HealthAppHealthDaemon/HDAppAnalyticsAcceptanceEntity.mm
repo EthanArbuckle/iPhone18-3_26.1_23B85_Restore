@@ -1,36 +1,36 @@
 @interface HDAppAnalyticsAcceptanceEntity
-+ (BOOL)deleteAcceptanceForAgreement:(id)a3 version:(int64_t)a4 transaction:(id)a5 error:(id *)a6;
-+ (BOOL)deleteAcceptancesForAgreement:(id)a3 transaction:(id)a4 error:(id *)a5;
-+ (BOOL)setAcceptance:(BOOL)a3 agreement:(id)a4 version:(int64_t)a5 modificationDate:(id)a6 transaction:(id)a7 error:(id *)a8;
-+ (id)acceptanceForAgreement:(id)a3 version:(int64_t)a4 transaction:(id)a5 error:(id *)a6;
-+ (id)acceptancesForAgreement:(id)a3 transaction:(id)a4 error:(id *)a5;
-+ (id)allAcceptancesInTransaction:(id)a3 error:(id *)a4;
++ (BOOL)deleteAcceptanceForAgreement:(id)agreement version:(int64_t)version transaction:(id)transaction error:(id *)error;
++ (BOOL)deleteAcceptancesForAgreement:(id)agreement transaction:(id)transaction error:(id *)error;
++ (BOOL)setAcceptance:(BOOL)acceptance agreement:(id)agreement version:(int64_t)version modificationDate:(id)date transaction:(id)transaction error:(id *)error;
++ (id)acceptanceForAgreement:(id)agreement version:(int64_t)version transaction:(id)transaction error:(id *)error;
++ (id)acceptancesForAgreement:(id)agreement transaction:(id)transaction error:(id *)error;
++ (id)allAcceptancesInTransaction:(id)transaction error:(id *)error;
 + (id)uniquedColumns;
 @end
 
 @implementation HDAppAnalyticsAcceptanceEntity
 
-+ (id)acceptanceForAgreement:(id)a3 version:(int64_t)a4 transaction:(id)a5 error:(id *)a6
++ (id)acceptanceForAgreement:(id)agreement version:(int64_t)version transaction:(id)transaction error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
+  agreementCopy = agreement;
+  transactionCopy = transaction;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
   v30 = __Block_byref_object_copy_;
   v31 = __Block_byref_object_dispose_;
   v32 = 0;
-  v12 = [v11 databaseForEntityClass:a1];
+  v12 = [transactionCopy databaseForEntityClass:self];
   v13 = MEMORY[0x277CCACA8];
-  v14 = [a1 disambiguatedDatabaseTable];
-  v15 = [v13 stringWithFormat:@"SELECT %@, %@ FROM %@ WHERE %@ == ? AND %@ == ?", @"accepted", @"modification_date", v14, @"agreement", @"version"];
+  disambiguatedDatabaseTable = [self disambiguatedDatabaseTable];
+  v15 = [v13 stringWithFormat:@"SELECT %@, %@ FROM %@ WHERE %@ == ? AND %@ == ?", @"accepted", @"modification_date", disambiguatedDatabaseTable, @"agreement", @"version"];
 
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __83__HDAppAnalyticsAcceptanceEntity_acceptanceForAgreement_version_transaction_error___block_invoke;
   v24[3] = &unk_278658250;
-  v25 = v10;
-  v26 = a4;
+  v25 = agreementCopy;
+  versionCopy = version;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __83__HDAppAnalyticsAcceptanceEntity_acceptanceForAgreement_version_transaction_error___block_invoke_2;
@@ -38,8 +38,8 @@
   v22 = &v27;
   v16 = v25;
   v21 = v16;
-  v23 = a4;
-  if ([v12 executeSQL:v15 error:a6 bindingHandler:v24 enumerationHandler:v20])
+  versionCopy2 = version;
+  if ([v12 executeSQL:v15 error:error bindingHandler:v24 enumerationHandler:v20])
   {
     v17 = v28[5];
   }
@@ -81,23 +81,23 @@ uint64_t __83__HDAppAnalyticsAcceptanceEntity_acceptanceForAgreement_version_tra
   return 1;
 }
 
-+ (id)acceptancesForAgreement:(id)a3 transaction:(id)a4 error:(id *)a5
++ (id)acceptancesForAgreement:(id)agreement transaction:(id)transaction error:(id *)error
 {
-  v8 = a3;
+  agreementCopy = agreement;
   v9 = MEMORY[0x277CBEB18];
-  v10 = a4;
+  transactionCopy = transaction;
   v11 = objc_alloc_init(v9);
-  v12 = [v10 databaseForEntityClass:a1];
+  v12 = [transactionCopy databaseForEntityClass:self];
 
   v13 = MEMORY[0x277CCACA8];
-  v14 = [a1 disambiguatedDatabaseTable];
-  v15 = [v13 stringWithFormat:@"SELECT %@, %@, %@ FROM %@ WHERE %@ == ? ORDER BY %@ ASC", @"accepted", @"version", @"modification_date", v14, @"agreement", @"version"];
+  disambiguatedDatabaseTable = [self disambiguatedDatabaseTable];
+  v15 = [v13 stringWithFormat:@"SELECT %@, %@, %@ FROM %@ WHERE %@ == ? ORDER BY %@ ASC", @"accepted", @"version", @"modification_date", disambiguatedDatabaseTable, @"agreement", @"version"];
 
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __76__HDAppAnalyticsAcceptanceEntity_acceptancesForAgreement_transaction_error___block_invoke;
   v24[3] = &unk_2786582A0;
-  v25 = v8;
+  v25 = agreementCopy;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __76__HDAppAnalyticsAcceptanceEntity_acceptancesForAgreement_transaction_error___block_invoke_2;
@@ -106,7 +106,7 @@ uint64_t __83__HDAppAnalyticsAcceptanceEntity_acceptanceForAgreement_version_tra
   v23 = v25;
   v16 = v25;
   v17 = v11;
-  if ([v12 executeSQL:v15 error:a5 bindingHandler:v24 enumerationHandler:v21])
+  if ([v12 executeSQL:v15 error:error bindingHandler:v24 enumerationHandler:v21])
   {
     v18 = v17;
   }
@@ -136,16 +136,16 @@ uint64_t __76__HDAppAnalyticsAcceptanceEntity_acceptancesForAgreement_transactio
   return 1;
 }
 
-+ (id)allAcceptancesInTransaction:(id)a3 error:(id *)a4
++ (id)allAcceptancesInTransaction:(id)transaction error:(id *)error
 {
   v6 = MEMORY[0x277CBEB38];
-  v7 = a3;
+  transactionCopy = transaction;
   v8 = objc_alloc_init(v6);
-  v9 = [v7 databaseForEntityClass:a1];
+  v9 = [transactionCopy databaseForEntityClass:self];
 
   v10 = MEMORY[0x277CCACA8];
-  v11 = [a1 disambiguatedDatabaseTable];
-  v12 = [v10 stringWithFormat:@"SELECT %@, %@, %@, %@ FROM %@ ORDER BY %@ ASC, %@ ASC", @"agreement", @"accepted", @"version", @"modification_date", v11, @"agreement", @"version"];
+  disambiguatedDatabaseTable = [self disambiguatedDatabaseTable];
+  v12 = [v10 stringWithFormat:@"SELECT %@, %@, %@, %@ FROM %@ ORDER BY %@ ASC, %@ ASC", @"agreement", @"accepted", @"version", @"modification_date", disambiguatedDatabaseTable, @"agreement", @"version"];
 
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
@@ -153,7 +153,7 @@ uint64_t __76__HDAppAnalyticsAcceptanceEntity_acceptancesForAgreement_transactio
   v17[3] = &unk_2786582F0;
   v18 = v8;
   v13 = v8;
-  if ([v9 executeSQL:v12 error:a4 bindingHandler:0 enumerationHandler:v17])
+  if ([v9 executeSQL:v12 error:error bindingHandler:0 enumerationHandler:v17])
   {
     v14 = v13;
   }
@@ -190,14 +190,14 @@ uint64_t __68__HDAppAnalyticsAcceptanceEntity_allAcceptancesInTransaction_error_
   return 1;
 }
 
-+ (BOOL)setAcceptance:(BOOL)a3 agreement:(id)a4 version:(int64_t)a5 modificationDate:(id)a6 transaction:(id)a7 error:(id *)a8
++ (BOOL)setAcceptance:(BOOL)acceptance agreement:(id)agreement version:(int64_t)version modificationDate:(id)date transaction:(id)transaction error:(id *)error
 {
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  agreementCopy = agreement;
+  dateCopy = date;
+  transactionCopy = transaction;
   v16 = MEMORY[0x277CCACA8];
-  v17 = [a1 disambiguatedDatabaseTable];
-  v18 = [v16 stringWithFormat:@"SELECT %@ FROM %@ WHERE %@ == ? AND %@ == ?", @"modification_date", v17, @"agreement", @"version"];
+  disambiguatedDatabaseTable = [self disambiguatedDatabaseTable];
+  v18 = [v16 stringWithFormat:@"SELECT %@ FROM %@ WHERE %@ == ? AND %@ == ?", @"modification_date", disambiguatedDatabaseTable, @"agreement", @"version"];
 
   v42 = 0;
   v43 = &v42;
@@ -207,23 +207,23 @@ uint64_t __68__HDAppAnalyticsAcceptanceEntity_allAcceptancesInTransaction_error_
   v40[1] = v40;
   v40[2] = 0x2020000000;
   v41 = 0;
-  v19 = [v15 databaseForEntityClass:a1];
+  v19 = [transactionCopy databaseForEntityClass:self];
   v37[0] = MEMORY[0x277D85DD0];
   v37[1] = 3221225472;
   v37[2] = __101__HDAppAnalyticsAcceptanceEntity_setAcceptance_agreement_version_modificationDate_transaction_error___block_invoke;
   v37[3] = &unk_278658250;
-  v20 = v13;
+  v20 = agreementCopy;
   v38 = v20;
-  v39 = a5;
+  versionCopy = version;
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
   v33[2] = __101__HDAppAnalyticsAcceptanceEntity_setAcceptance_agreement_version_modificationDate_transaction_error___block_invoke_2;
   v33[3] = &unk_278658318;
   v35 = v40;
-  v21 = v14;
+  v21 = dateCopy;
   v34 = v21;
   v36 = &v42;
-  if ([v19 executeSQL:v18 error:a8 bindingHandler:v37 enumerationHandler:v33])
+  if ([v19 executeSQL:v18 error:error bindingHandler:v37 enumerationHandler:v33])
   {
     if (v43[3])
     {
@@ -233,18 +233,18 @@ uint64_t __68__HDAppAnalyticsAcceptanceEntity_allAcceptancesInTransaction_error_
     else
     {
       v23 = MEMORY[0x277CCACA8];
-      v24 = [a1 disambiguatedDatabaseTable];
-      v25 = [v23 stringWithFormat:@"INSERT OR REPLACE INTO %@ (%@, %@, %@, %@) VALUES (?, ?, ?, ?)", v24, @"agreement", @"version", @"accepted", @"modification_date"];
+      disambiguatedDatabaseTable2 = [self disambiguatedDatabaseTable];
+      v25 = [v23 stringWithFormat:@"INSERT OR REPLACE INTO %@ (%@, %@, %@, %@) VALUES (?, ?, ?, ?)", disambiguatedDatabaseTable2, @"agreement", @"version", @"accepted", @"modification_date"];
 
       v28[0] = MEMORY[0x277D85DD0];
       v28[1] = 3221225472;
       v28[2] = __101__HDAppAnalyticsAcceptanceEntity_setAcceptance_agreement_version_modificationDate_transaction_error___block_invoke_3;
       v28[3] = &unk_278658340;
       v29 = v20;
-      v31 = a5;
-      v32 = a3;
+      versionCopy2 = version;
+      acceptanceCopy = acceptance;
       v30 = v21;
-      v22 = [v19 executeSQL:v25 error:a8 bindingHandler:v28 enumerationHandler:0];
+      v22 = [v19 executeSQL:v25 error:error bindingHandler:v28 enumerationHandler:0];
     }
   }
 
@@ -292,24 +292,24 @@ uint64_t __101__HDAppAnalyticsAcceptanceEntity_setAcceptance_agreement_version_m
   return HDSQLiteBindFoundationValueToStatement();
 }
 
-+ (BOOL)deleteAcceptanceForAgreement:(id)a3 version:(int64_t)a4 transaction:(id)a5 error:(id *)a6
++ (BOOL)deleteAcceptanceForAgreement:(id)agreement version:(int64_t)version transaction:(id)transaction error:(id *)error
 {
-  v10 = a3;
-  v11 = [a5 databaseForEntityClass:a1];
+  agreementCopy = agreement;
+  v11 = [transaction databaseForEntityClass:self];
   v12 = MEMORY[0x277CCACA8];
-  v13 = [a1 disambiguatedDatabaseTable];
-  v14 = [v12 stringWithFormat:@"DELETE FROM %@ WHERE %@ == ? AND %@ == ?", v13, @"agreement", @"version"];
+  disambiguatedDatabaseTable = [self disambiguatedDatabaseTable];
+  v14 = [v12 stringWithFormat:@"DELETE FROM %@ WHERE %@ == ? AND %@ == ?", disambiguatedDatabaseTable, @"agreement", @"version"];
 
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __89__HDAppAnalyticsAcceptanceEntity_deleteAcceptanceForAgreement_version_transaction_error___block_invoke;
   v17[3] = &unk_278658250;
-  v18 = v10;
-  v19 = a4;
-  v15 = v10;
-  LOBYTE(a6) = [v11 executeSQL:v14 error:a6 bindingHandler:v17 enumerationHandler:0];
+  v18 = agreementCopy;
+  versionCopy = version;
+  v15 = agreementCopy;
+  LOBYTE(error) = [v11 executeSQL:v14 error:error bindingHandler:v17 enumerationHandler:0];
 
-  return a6;
+  return error;
 }
 
 uint64_t __89__HDAppAnalyticsAcceptanceEntity_deleteAcceptanceForAgreement_version_transaction_error___block_invoke(uint64_t a1, sqlite3_stmt *a2)
@@ -321,23 +321,23 @@ uint64_t __89__HDAppAnalyticsAcceptanceEntity_deleteAcceptanceForAgreement_versi
   return sqlite3_bind_int64(a2, 2, v5);
 }
 
-+ (BOOL)deleteAcceptancesForAgreement:(id)a3 transaction:(id)a4 error:(id *)a5
++ (BOOL)deleteAcceptancesForAgreement:(id)agreement transaction:(id)transaction error:(id *)error
 {
-  v8 = a3;
-  v9 = [a4 databaseForEntityClass:a1];
+  agreementCopy = agreement;
+  v9 = [transaction databaseForEntityClass:self];
   v10 = MEMORY[0x277CCACA8];
-  v11 = [a1 disambiguatedDatabaseTable];
-  v12 = [v10 stringWithFormat:@"DELETE FROM %@ WHERE %@ == ?", v11, @"agreement"];
+  disambiguatedDatabaseTable = [self disambiguatedDatabaseTable];
+  v12 = [v10 stringWithFormat:@"DELETE FROM %@ WHERE %@ == ?", disambiguatedDatabaseTable, @"agreement"];
 
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __82__HDAppAnalyticsAcceptanceEntity_deleteAcceptancesForAgreement_transaction_error___block_invoke;
   v15[3] = &unk_2786582A0;
-  v16 = v8;
-  v13 = v8;
-  LOBYTE(a5) = [v9 executeSQL:v12 error:a5 bindingHandler:v15 enumerationHandler:0];
+  v16 = agreementCopy;
+  v13 = agreementCopy;
+  LOBYTE(error) = [v9 executeSQL:v12 error:error bindingHandler:v15 enumerationHandler:0];
 
-  return a5;
+  return error;
 }
 
 + (id)uniquedColumns

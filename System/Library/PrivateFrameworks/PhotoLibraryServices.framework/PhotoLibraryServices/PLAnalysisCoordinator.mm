@@ -1,49 +1,49 @@
 @interface PLAnalysisCoordinator
-+ (id)bgstTaskNameForCoordinatorFeature:(unint64_t)a3;
-+ (unint64_t)bgstFeatureCodeForCoordinatorFeature:(unint64_t)a3;
-+ (void)registerSearchFastPassTaskWithBundleController:(id)a3;
-+ (void)reportBGSTCustomCheckpoint:(unint64_t)a3 forFeature:(unint64_t)a4;
-+ (void)reportBGSTFeatureAvailable:(unint64_t)a3;
-+ (void)reportBGSTFeaturePreviewAvailable:(unint64_t)a3;
-- (PLAnalysisCoordinator)initWithLibraryServicesManager:(id)a3;
-- (id)analyzeAssets:(id)a3 forFeature:(unint64_t)a4 withCompletionHandler:(id)a5;
-- (id)analyzeLibraryForFeature:(unint64_t)a3 withCompletionHandler:(id)a4;
-- (void)_handleSearchFastPassTask:(id)a3;
-- (void)reportBGSTCheckpointProgressForFeature:(unint64_t)a3;
++ (id)bgstTaskNameForCoordinatorFeature:(unint64_t)feature;
++ (unint64_t)bgstFeatureCodeForCoordinatorFeature:(unint64_t)feature;
++ (void)registerSearchFastPassTaskWithBundleController:(id)controller;
++ (void)reportBGSTCustomCheckpoint:(unint64_t)checkpoint forFeature:(unint64_t)feature;
++ (void)reportBGSTFeatureAvailable:(unint64_t)available;
++ (void)reportBGSTFeaturePreviewAvailable:(unint64_t)available;
+- (PLAnalysisCoordinator)initWithLibraryServicesManager:(id)manager;
+- (id)analyzeAssets:(id)assets forFeature:(unint64_t)feature withCompletionHandler:(id)handler;
+- (id)analyzeLibraryForFeature:(unint64_t)feature withCompletionHandler:(id)handler;
+- (void)_handleSearchFastPassTask:(id)task;
+- (void)reportBGSTCheckpointProgressForFeature:(unint64_t)feature;
 @end
 
 @implementation PLAnalysisCoordinator
 
-- (void)reportBGSTCheckpointProgressForFeature:(unint64_t)a3
+- (void)reportBGSTCheckpointProgressForFeature:(unint64_t)feature
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = [(PLLibraryServicesManager *)self->_lsm databaseContext];
-  v5 = [v4 newShortLivedLibraryWithName:"-[PLAnalysisCoordinator reportBGSTCheckpointProgressForFeature:]"];
+  databaseContext = [(PLLibraryServicesManager *)self->_lsm databaseContext];
+  v5 = [databaseContext newShortLivedLibraryWithName:"-[PLAnalysisCoordinator reportBGSTCheckpointProgressForFeature:]"];
 
-  v6 = [v5 globalValues];
-  v7 = [v6 featureAvailability];
+  globalValues = [v5 globalValues];
+  featureAvailability = [globalValues featureAvailability];
 
-  v8 = [[PLFeatureAvailability alloc] initWithDictionary:v7];
-  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v8 = [[PLFeatureAvailability alloc] initWithDictionary:featureAvailability];
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:feature];
   v10 = [(PLFeatureAvailability *)v8 fractionForFeature:v9];
 
-  v11 = [(PLFeatureAvailability *)v8 processingSnapshot];
+  processingSnapshot = [(PLFeatureAvailability *)v8 processingSnapshot];
   v12 = PLAnalysisCoordinatorGetLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v26 = a3;
+    featureCopy3 = feature;
     v27 = 2112;
-    v28 = v10;
+    featureCopy2 = v10;
     _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_DEFAULT, "Checkpoint progress for feature %lu with fraction %@", buf, 0x16u);
   }
 
-  v13 = [objc_opt_class() bgstTaskNameForCoordinatorFeature:a3];
+  v13 = [objc_opt_class() bgstTaskNameForCoordinatorFeature:feature];
   if (v13)
   {
     v23 = v5;
-    v14 = [MEMORY[0x1E698E4A0] sharedInstance];
-    v15 = [v11 totalAssetCount];
+    mEMORY[0x1E698E4A0] = [MEMORY[0x1E698E4A0] sharedInstance];
+    totalAssetCount = [processingSnapshot totalAssetCount];
     [v10 doubleValue];
     v17 = llround(v16 * 100.0);
     if (v17 >= 0x65)
@@ -52,9 +52,9 @@
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
         *buf = 134218240;
-        v26 = v17;
+        featureCopy3 = v17;
         v27 = 2048;
-        v28 = a3;
+        featureCopy2 = feature;
         _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_ERROR, "completedPercentage is over 100: %tu, capping at 100 for feature %lu", buf, 0x16u);
       }
 
@@ -63,7 +63,7 @@
 
     v19 = [MEMORY[0x1E695DF00] now];
     v24 = 0;
-    v20 = [v14 reportProgressForTaskWithName:v13 withGlobalTarget:v15 completed:v17 atDate:v19 category:10 subCategory:0 error:&v24];
+    v20 = [mEMORY[0x1E698E4A0] reportProgressForTaskWithName:v13 withGlobalTarget:totalAssetCount completed:v17 atDate:v19 category:10 subCategory:0 error:&v24];
     v21 = v24;
 
     if ((v20 & 1) == 0)
@@ -72,9 +72,9 @@
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
         *buf = 134218242;
-        v26 = a3;
+        featureCopy3 = feature;
         v27 = 2112;
-        v28 = v21;
+        featureCopy2 = v21;
         _os_log_impl(&dword_19BF1F000, v22, OS_LOG_TYPE_ERROR, "Report task workload progress failed for feature %lu: %@", buf, 0x16u);
       }
     }
@@ -83,19 +83,19 @@
   }
 }
 
-- (void)_handleSearchFastPassTask:(id)a3
+- (void)_handleSearchFastPassTask:(id)task
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AE38] currentProgress];
+  taskCopy = task;
+  currentProgress = [MEMORY[0x1E696AE38] currentProgress];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __51__PLAnalysisCoordinator__handleSearchFastPassTask___block_invoke;
   v9[3] = &unk_1E7566948;
-  v10 = v5;
-  v11 = self;
-  v12 = v4;
-  v6 = v4;
-  v7 = v5;
+  v10 = currentProgress;
+  selfCopy = self;
+  v12 = taskCopy;
+  v6 = taskCopy;
+  v7 = currentProgress;
   v8 = [(PLAnalysisCoordinator *)self analyzeLibraryForFeature:2 withCompletionHandler:v9];
 }
 
@@ -148,24 +148,24 @@ void __51__PLAnalysisCoordinator__handleSearchFastPassTask___block_invoke(uint64
   }
 }
 
-- (id)analyzeLibraryForFeature:(unint64_t)a3 withCompletionHandler:(id)a4
+- (id)analyzeLibraryForFeature:(unint64_t)feature withCompletionHandler:(id)handler
 {
   lsm = self->_lsm;
-  v7 = a4;
-  v8 = [(PLLibraryServicesManager *)lsm databaseContext];
-  v9 = [v8 newShortLivedLibraryWithName:"-[PLAnalysisCoordinator analyzeLibraryForFeature:withCompletionHandler:]"];
+  handlerCopy = handler;
+  databaseContext = [(PLLibraryServicesManager *)lsm databaseContext];
+  v9 = [databaseContext newShortLivedLibraryWithName:"-[PLAnalysisCoordinator analyzeLibraryForFeature:withCompletionHandler:]"];
 
-  v10 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v15 = MEMORY[0x1E69E9820];
   v16 = 3221225472;
   v17 = __72__PLAnalysisCoordinator_analyzeLibraryForFeature_withCompletionHandler___block_invoke;
   v18 = &unk_1E7578848;
   v19 = v9;
-  v20 = v10;
-  v11 = v10;
+  v20 = array;
+  v11 = array;
   v12 = v9;
   [v12 performBlockAndWait:&v15];
-  v13 = [(PLAnalysisCoordinator *)self analyzeAssets:v11 forFeature:a3 withCompletionHandler:v7, v15, v16, v17, v18];
+  v13 = [(PLAnalysisCoordinator *)self analyzeAssets:v11 forFeature:feature withCompletionHandler:handlerCopy, v15, v16, v17, v18];
 
   return v13;
 }
@@ -199,16 +199,16 @@ void __72__PLAnalysisCoordinator_analyzeLibraryForFeature_withCompletionHandler_
   }
 }
 
-- (id)analyzeAssets:(id)a3 forFeature:(unint64_t)a4 withCompletionHandler:(id)a5
+- (id)analyzeAssets:(id)assets forFeature:(unint64_t)feature withCompletionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [[PLAnalysisCoordinatorTask alloc] initForFeature:a4 assets:v9 lsm:self->_lsm];
+  handlerCopy = handler;
+  assetsCopy = assets;
+  v10 = [[PLAnalysisCoordinatorTask alloc] initForFeature:feature assets:assetsCopy lsm:self->_lsm];
 
   os_unfair_lock_lock(&self->_lock_tasks);
   tasks = self->_tasks;
-  v12 = [v10 taskID];
-  [(NSMutableDictionary *)tasks setObject:v10 forKeyedSubscript:v12];
+  taskID = [v10 taskID];
+  [(NSMutableDictionary *)tasks setObject:v10 forKeyedSubscript:taskID];
 
   os_unfair_lock_unlock(&self->_lock_tasks);
   v13 = +[PLConcurrencyLimiter sharedLimiter];
@@ -218,15 +218,15 @@ void __72__PLAnalysisCoordinator_analyzeLibraryForFeature_withCompletionHandler_
   v19[2] = __72__PLAnalysisCoordinator_analyzeAssets_forFeature_withCompletionHandler___block_invoke;
   v19[3] = &unk_1E7576F38;
   v20 = v10;
-  v21 = self;
-  v22 = v8;
-  v15 = v8;
+  selfCopy = self;
+  v22 = handlerCopy;
+  v15 = handlerCopy;
   v16 = v10;
   [v13 dispatchAsync:taskQueue block:v19];
 
-  v17 = [v16 progress];
+  progress = [v16 progress];
 
-  return v17;
+  return progress;
 }
 
 void __72__PLAnalysisCoordinator_analyzeAssets_forFeature_withCompletionHandler___block_invoke(uint64_t a1)
@@ -255,9 +255,9 @@ void __72__PLAnalysisCoordinator_analyzeAssets_forFeature_withCompletionHandler_
   (*(*(a1 + 48) + 16))();
 }
 
-- (PLAnalysisCoordinator)initWithLibraryServicesManager:(id)a3
+- (PLAnalysisCoordinator)initWithLibraryServicesManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v13.receiver = self;
   v13.super_class = PLAnalysisCoordinator;
   v6 = [(PLAnalysisCoordinator *)&v13 init];
@@ -268,10 +268,10 @@ void __72__PLAnalysisCoordinator_analyzeAssets_forFeature_withCompletionHandler_
     taskQueue = v6->_taskQueue;
     v6->_taskQueue = v8;
 
-    objc_storeStrong(&v6->_lsm, a3);
-    v10 = [MEMORY[0x1E695DF90] dictionary];
+    objc_storeStrong(&v6->_lsm, manager);
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     tasks = v6->_tasks;
-    v6->_tasks = v10;
+    v6->_tasks = dictionary;
 
     v6->_lock_tasks._os_unfair_lock_opaque = 0;
   }
@@ -279,14 +279,14 @@ void __72__PLAnalysisCoordinator_analyzeAssets_forFeature_withCompletionHandler_
   return v6;
 }
 
-+ (void)reportBGSTCustomCheckpoint:(unint64_t)a3 forFeature:(unint64_t)a4
++ (void)reportBGSTCustomCheckpoint:(unint64_t)checkpoint forFeature:(unint64_t)feature
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = [a1 bgstTaskNameForCoordinatorFeature:a4];
+  v6 = [self bgstTaskNameForCoordinatorFeature:feature];
   if (v6)
   {
     v16 = 0;
-    v7 = [MEMORY[0x1E698E4A0] reportCustomCheckpoint:a3 forTask:v6 error:&v16];
+    v7 = [MEMORY[0x1E698E4A0] reportCustomCheckpoint:checkpoint forTask:v6 error:&v16];
     v8 = v16;
     v9 = PLAnalysisCoordinatorGetLog();
     v10 = v9;
@@ -295,9 +295,9 @@ void __72__PLAnalysisCoordinator_analyzeAssets_forFeature_withCompletionHandler_
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218242;
-        v18 = a3;
+        featureCopy = checkpoint;
         v19 = 2112;
-        v20 = v6;
+        checkpointCopy3 = v6;
         v11 = "Successfully reported custom checkpoint %tu for task %@";
         v12 = v10;
         v13 = OS_LOG_TYPE_DEFAULT;
@@ -316,9 +316,9 @@ LABEL_11:
         v15 = v8;
       }
 
-      v18 = a3;
+      featureCopy = checkpoint;
       v19 = 2112;
-      v20 = v6;
+      checkpointCopy3 = v6;
       v21 = 2112;
       v22 = v15;
       v11 = "Failed to report custom checkpoint %tu for task %@ with error: %@";
@@ -335,19 +335,19 @@ LABEL_11:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
     *buf = 134218240;
-    v18 = a4;
+    featureCopy = feature;
     v19 = 2048;
-    v20 = a3;
+    checkpointCopy3 = checkpoint;
     _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_ERROR, "Unknown feature task name %tu, not reporting custom checkpoint %tu", buf, 0x16u);
   }
 
 LABEL_13:
 }
 
-+ (void)reportBGSTFeatureAvailable:(unint64_t)a3
++ (void)reportBGSTFeatureAvailable:(unint64_t)available
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = [a1 bgstFeatureCodeForCoordinatorFeature:?];
+  v4 = [self bgstFeatureCodeForCoordinatorFeature:?];
   if (v4)
   {
     v5 = v4;
@@ -361,7 +361,7 @@ LABEL_13:
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v16 = v5;
+        availableCopy = v5;
         v10 = "Successfully reported feature available checkpoint for feature code: %tu";
         v11 = v9;
         v12 = OS_LOG_TYPE_DEFAULT;
@@ -379,7 +379,7 @@ LABEL_11:
       }
 
       *buf = 138412290;
-      v16 = v13;
+      availableCopy = v13;
       v10 = "Failed to report available checkpoint with error: %@";
       v11 = v9;
       v12 = OS_LOG_TYPE_ERROR;
@@ -393,17 +393,17 @@ LABEL_11:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
     *buf = 134217984;
-    v16 = a3;
+    availableCopy = available;
     _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_ERROR, "Unknown feature %lu, not reporting available", buf, 0xCu);
   }
 
 LABEL_13:
 }
 
-+ (void)reportBGSTFeaturePreviewAvailable:(unint64_t)a3
++ (void)reportBGSTFeaturePreviewAvailable:(unint64_t)available
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = [a1 bgstFeatureCodeForCoordinatorFeature:?];
+  v4 = [self bgstFeatureCodeForCoordinatorFeature:?];
   if (v4)
   {
     v5 = v4;
@@ -417,7 +417,7 @@ LABEL_13:
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v16 = v5;
+        availableCopy = v5;
         v10 = "Successfully reported preview available checkpoint for feature code: %tu";
         v11 = v9;
         v12 = OS_LOG_TYPE_DEFAULT;
@@ -435,7 +435,7 @@ LABEL_11:
       }
 
       *buf = 138412290;
-      v16 = v13;
+      availableCopy = v13;
       v10 = "Failed to report preview available checkpoint with error: %@";
       v11 = v9;
       v12 = OS_LOG_TYPE_ERROR;
@@ -449,22 +449,22 @@ LABEL_11:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
     *buf = 134217984;
-    v16 = a3;
+    availableCopy = available;
     _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_ERROR, "Unknown feature %lu, not reporting available", buf, 0xCu);
   }
 
 LABEL_13:
 }
 
-+ (id)bgstTaskNameForCoordinatorFeature:(unint64_t)a3
++ (id)bgstTaskNameForCoordinatorFeature:(unint64_t)feature
 {
   v3 = @"com.apple.assetsd.MemoriesCreation";
-  if (a3 != 1)
+  if (feature != 1)
   {
     v3 = 0;
   }
 
-  if (a3 == 3)
+  if (feature == 3)
   {
     return @"com.apple.assetsd.PhotosSearchIndexing.fastpass";
   }
@@ -475,28 +475,28 @@ LABEL_13:
   }
 }
 
-+ (unint64_t)bgstFeatureCodeForCoordinatorFeature:(unint64_t)a3
++ (unint64_t)bgstFeatureCodeForCoordinatorFeature:(unint64_t)feature
 {
-  if (a3 > 3)
+  if (feature > 3)
   {
     return 0;
   }
 
   else
   {
-    return qword_19C60B710[a3];
+    return qword_19C60B710[feature];
   }
 }
 
-+ (void)registerSearchFastPassTaskWithBundleController:(id)a3
++ (void)registerSearchFastPassTaskWithBundleController:(id)controller
 {
-  v4 = [MEMORY[0x1E698E4B8] sharedScheduler];
+  mEMORY[0x1E698E4B8] = [MEMORY[0x1E698E4B8] sharedScheduler];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __72__PLAnalysisCoordinator_registerSearchFastPassTaskWithBundleController___block_invoke;
   v5[3] = &__block_descriptor_40_e22_v16__0__BGSystemTask_8l;
-  v5[4] = a1;
-  [v4 registerForTaskWithIdentifier:@"com.apple.assetsd.PhotosSearchIndexing.fastpass" usingQueue:0 launchHandler:v5];
+  v5[4] = self;
+  [mEMORY[0x1E698E4B8] registerForTaskWithIdentifier:@"com.apple.assetsd.PhotosSearchIndexing.fastpass" usingQueue:0 launchHandler:v5];
 }
 
 void __72__PLAnalysisCoordinator_registerSearchFastPassTaskWithBundleController___block_invoke(uint64_t a1, void *a2)

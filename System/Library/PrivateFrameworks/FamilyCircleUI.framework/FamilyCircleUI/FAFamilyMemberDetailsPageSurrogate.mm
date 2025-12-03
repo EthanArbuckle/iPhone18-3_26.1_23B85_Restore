@@ -1,40 +1,40 @@
 @interface FAFamilyMemberDetailsPageSurrogate
-- (BOOL)respondsToSelector:(SEL)a3;
-- (FAFamilyMemberDetailsPageSurrogate)initWithPage:(id)a3 forPerson:(id)a4 account:(id)a5 store:(id)a6;
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (FAFamilyMemberDetailsPageSurrogate)initWithPage:(id)page forPerson:(id)person account:(id)account store:(id)store;
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
 - (void)dealloc;
-- (void)forwardInvocation:(id)a3;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation FAFamilyMemberDetailsPageSurrogate
 
-- (FAFamilyMemberDetailsPageSurrogate)initWithPage:(id)a3 forPerson:(id)a4 account:(id)a5 store:(id)a6
+- (FAFamilyMemberDetailsPageSurrogate)initWithPage:(id)page forPerson:(id)person account:(id)account store:(id)store
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  pageCopy = page;
+  personCopy = person;
+  accountCopy = account;
+  storeCopy = store;
   v23.receiver = self;
   v23.super_class = FAFamilyMemberDetailsPageSurrogate;
   v14 = [(FAFamilyMemberDetailsPageSurrogate *)&v23 init];
   if (v14)
   {
-    v15 = [objc_alloc(MEMORY[0x277CECA90]) initWithAppleAccount:v12 store:v13];
+    v15 = [objc_alloc(MEMORY[0x277CECA90]) initWithAppleAccount:accountCopy store:storeCopy];
     pictureStore = v14->_pictureStore;
     v14->_pictureStore = v15;
 
-    objc_storeStrong(&v14->_familyMember, a4);
-    v17 = [v10 tableViewOM];
-    v18 = [v17 tableView];
+    objc_storeStrong(&v14->_familyMember, person);
+    tableViewOM = [pageCopy tableViewOM];
+    tableView = [tableViewOM tableView];
     remoteTableView = v14->_remoteTableView;
-    v14->_remoteTableView = v18;
+    v14->_remoteTableView = tableView;
 
-    v20 = [v10 tableViewOM];
+    tableViewOM2 = [pageCopy tableViewOM];
     remoteTableViewController = v14->_remoteTableViewController;
-    v14->_remoteTableViewController = v20;
+    v14->_remoteTableViewController = tableViewOM2;
 
     [(UITableView *)v14->_remoteTableView setDelegate:v14];
   }
@@ -55,38 +55,38 @@
   [(FAFamilyMemberDetailsPageSurrogate *)&v4 dealloc];
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
   remoteTableViewController = self->_remoteTableViewController;
-  v5 = a3;
-  [v5 selector];
+  invocationCopy = invocation;
+  [invocationCopy selector];
   if (objc_opt_respondsToSelector())
   {
-    [v5 invokeWithTarget:self->_remoteTableViewController];
+    [invocationCopy invokeWithTarget:self->_remoteTableViewController];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = FAFamilyMemberDetailsPageSurrogate;
-    [(FAFamilyMemberDetailsPageSurrogate *)&v6 forwardInvocation:v5];
+    [(FAFamilyMemberDetailsPageSurrogate *)&v6 forwardInvocation:invocationCopy];
   }
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v7.receiver = self;
   v7.super_class = FAFamilyMemberDetailsPageSurrogate;
   v5 = [(FAFamilyMemberDetailsPageSurrogate *)&v7 methodSignatureForSelector:?];
   if (!v5)
   {
-    v5 = [(UITableViewDelegate *)self->_remoteTableViewController methodSignatureForSelector:a3];
+    v5 = [(UITableViewDelegate *)self->_remoteTableViewController methodSignatureForSelector:selector];
   }
 
   return v5;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   remoteTableViewController = self->_remoteTableViewController;
   if (objc_opt_respondsToSelector())
@@ -96,24 +96,24 @@
 
   v7.receiver = self;
   v7.super_class = FAFamilyMemberDetailsPageSurrogate;
-  return [(FAFamilyMemberDetailsPageSurrogate *)&v7 respondsToSelector:a3];
+  return [(FAFamilyMemberDetailsPageSurrogate *)&v7 respondsToSelector:selector];
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  if (self->_remoteTableView == v6)
+  viewCopy = view;
+  if (self->_remoteTableView == viewCopy)
   {
-    if (a4)
+    if (section)
     {
-      v7 = [(UITableViewDelegate *)self->_remoteTableViewController tableView:v6 viewForHeaderInSection:a4];
+      v7 = [(UITableViewDelegate *)self->_remoteTableViewController tableView:viewCopy viewForHeaderInSection:section];
     }
 
     else
     {
-      v8 = [(FAFamilyMember *)self->_familyMember isMe];
+      isMe = [(FAFamilyMember *)self->_familyMember isMe];
       pictureStore = self->_pictureStore;
-      if (v8)
+      if (isMe)
       {
         [(AAUIProfilePictureStore *)pictureStore profilePictureForAccountOwner];
       }
@@ -123,22 +123,22 @@
         [(AAUIProfilePictureStore *)pictureStore fa_profilePictureForFamilyMember:self->_familyMember];
       }
       v10 = ;
-      v11 = [(FAFamilyMember *)self->_familyMember fullName];
-      v12 = [(FAFamilyMember *)self->_familyMember appleID];
-      v13 = v12;
-      if (v12)
+      fullName = [(FAFamilyMember *)self->_familyMember fullName];
+      appleID = [(FAFamilyMember *)self->_familyMember appleID];
+      v13 = appleID;
+      if (appleID)
       {
-        v14 = v12;
+        inviteEmail = appleID;
       }
 
       else
       {
-        v14 = [(FAFamilyMember *)self->_familyMember inviteEmail];
+        inviteEmail = [(FAFamilyMember *)self->_familyMember inviteEmail];
       }
 
-      v15 = v14;
+      v15 = inviteEmail;
 
-      v7 = [objc_alloc(MEMORY[0x277CECA98]) initWithName:v11 email:v15 image:v10];
+      v7 = [objc_alloc(MEMORY[0x277CECA98]) initWithName:fullName email:v15 image:v10];
       [v7 setTopPadding:8.0];
     }
   }
@@ -151,15 +151,15 @@
   return v7;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
+  viewCopy = view;
   v7 = 0.0;
-  if (self->_remoteTableView == v6)
+  if (self->_remoteTableView == viewCopy)
   {
-    if (a4)
+    if (section)
     {
-      [(UITableViewDelegate *)self->_remoteTableViewController tableView:v6 heightForHeaderInSection:a4];
+      [(UITableViewDelegate *)self->_remoteTableViewController tableView:viewCopy heightForHeaderInSection:section];
       v7 = v8;
     }
 
@@ -173,20 +173,20 @@
   return v7;
 }
 
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section
 {
-  v6 = a3;
+  viewCopy = view;
   v7 = 0.0;
-  if (self->_remoteTableView == v6)
+  if (self->_remoteTableView == viewCopy)
   {
-    if (a4)
+    if (section)
     {
-      [(UITableViewDelegate *)self->_remoteTableViewController tableView:v6 heightForFooterInSection:a4];
+      [(UITableViewDelegate *)self->_remoteTableViewController tableView:viewCopy heightForFooterInSection:section];
     }
 
     else
     {
-      v9 = [(FAFamilyMemberDetailsPageSurrogate *)self tableView:v6 titleForFooterInSection:0];
+      v9 = [(FAFamilyMemberDetailsPageSurrogate *)self tableView:viewCopy titleForFooterInSection:0];
 
       if (v9)
       {

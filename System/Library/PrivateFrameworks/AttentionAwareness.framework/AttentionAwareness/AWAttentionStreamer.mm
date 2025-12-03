@@ -1,17 +1,17 @@
 @interface AWAttentionStreamer
-- ($EB925890EBEBD6850280D1FB85A9BD43)getStreamerOptionsWithMask:(unint64_t)a3;
-- (AWAttentionStreamer)initWithOptions:(id)a3;
-- (BOOL)isStreamerRunningWithMask:(unint64_t)a3;
-- (id)cancelEventStreamWithMask:(unint64_t)a3;
-- (id)initForUnitTest:(BOOL)a3 useAVFoundation:(BOOL)a4;
-- (void)setNotificationHandler:(id)a3 withMask:(unint64_t)a4;
+- ($EB925890EBEBD6850280D1FB85A9BD43)getStreamerOptionsWithMask:(unint64_t)mask;
+- (AWAttentionStreamer)initWithOptions:(id)options;
+- (BOOL)isStreamerRunningWithMask:(unint64_t)mask;
+- (id)cancelEventStreamWithMask:(unint64_t)mask;
+- (id)initForUnitTest:(BOOL)test useAVFoundation:(BOOL)foundation;
+- (void)setNotificationHandler:(id)handler withMask:(unint64_t)mask;
 @end
 
 @implementation AWAttentionStreamer
 
-- ($EB925890EBEBD6850280D1FB85A9BD43)getStreamerOptionsWithMask:(unint64_t)a3
+- ($EB925890EBEBD6850280D1FB85A9BD43)getStreamerOptionsWithMask:(unint64_t)mask
 {
-  if (a3 == 128)
+  if (mask == 128)
   {
     return [(StreamingOperation *)self->_faceDetectStreamer getStreamerOptions];
   }
@@ -24,18 +24,18 @@
   return v3;
 }
 
-- (void)setNotificationHandler:(id)a3 withMask:(unint64_t)a4
+- (void)setNotificationHandler:(id)handler withMask:(unint64_t)mask
 {
-  if (a4 == 128)
+  if (mask == 128)
   {
-    [(StreamingOperation *)self->_faceDetectStreamer setNotificationHandler:a3];
+    [(StreamingOperation *)self->_faceDetectStreamer setNotificationHandler:handler];
   }
 }
 
-- (BOOL)isStreamerRunningWithMask:(unint64_t)a3
+- (BOOL)isStreamerRunningWithMask:(unint64_t)mask
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (a3 != 128)
+  if (mask != 128)
   {
 LABEL_9:
     v7 = *MEMORY[0x1E69E9840];
@@ -75,15 +75,15 @@ LABEL_9:
   return [(StreamingOperation *)faceDetectStreamer attentionStreamerRunning];
 }
 
-- (id)cancelEventStreamWithMask:(unint64_t)a3
+- (id)cancelEventStreamWithMask:(unint64_t)mask
 {
   v24 = *MEMORY[0x1E69E9840];
-  if (a3 == 128)
+  if (mask == 128)
   {
     faceDetectStreamer = self->_faceDetectStreamer;
     if (faceDetectStreamer)
     {
-      v4 = [(StreamingOperation *)faceDetectStreamer cancelEventStream];
+      cancelEventStream = [(StreamingOperation *)faceDetectStreamer cancelEventStream];
       goto LABEL_6;
     }
 
@@ -131,24 +131,24 @@ LABEL_9:
     v10 = 22;
   }
 
-  v4 = [v8 errorWithDomain:v9 code:v10 userInfo:v7];
+  cancelEventStream = [v8 errorWithDomain:v9 code:v10 userInfo:v7];
 
 LABEL_6:
   v11 = *MEMORY[0x1E69E9840];
 
-  return v4;
+  return cancelEventStream;
 }
 
-- (id)initForUnitTest:(BOOL)a3 useAVFoundation:(BOOL)a4
+- (id)initForUnitTest:(BOOL)test useAVFoundation:(BOOL)foundation
 {
-  v4 = a4;
+  foundationCopy = foundation;
   v16.receiver = self;
   v16.super_class = AWAttentionStreamer;
   v6 = [(AWAttentionStreamer *)&v16 init];
   v7 = v6;
   if (v6)
   {
-    v6->_unitTestMode = a3;
+    v6->_unitTestMode = test;
     v8 = awQueue(1);
     queue = v7->_queue;
     v7->_queue = v8;
@@ -158,7 +158,7 @@ LABEL_6:
     v7->_sampleLogger = v10;
 
     v12 = off_1E7F37058;
-    if (!v4)
+    if (!foundationCopy)
     {
       v12 = off_1E7F37088;
     }
@@ -171,52 +171,52 @@ LABEL_6:
   return v7;
 }
 
-- (AWAttentionStreamer)initWithOptions:(id)a3
+- (AWAttentionStreamer)initWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  optionsCopy = options;
+  v5 = optionsCopy;
+  if (!optionsCopy)
   {
     goto LABEL_7;
   }
 
-  v6 = [v4 valueForKey:@"eventMask"];
+  selfCopy = [optionsCopy valueForKey:@"eventMask"];
 
-  if (v6)
+  if (selfCopy)
   {
-    v6 = [v5 valueForKey:@"useAVFoundation"];
+    selfCopy = [v5 valueForKey:@"useAVFoundation"];
 
-    if (v6)
+    if (selfCopy)
     {
-      v6 = [v5 valueForKey:@"unitTest"];
+      selfCopy = [v5 valueForKey:@"unitTest"];
 
-      if (v6)
+      if (selfCopy)
       {
         v7 = [v5 valueForKey:@"eventMask"];
-        v8 = [v7 unsignedLongValue];
+        unsignedLongValue = [v7 unsignedLongValue];
 
         v9 = [v5 valueForKey:@"unitTest"];
-        v10 = [v9 BOOLValue];
+        bOOLValue = [v9 BOOLValue];
 
         v11 = [v5 valueForKey:@"useAVFoundation"];
-        v12 = [v11 BOOLValue];
+        bOOLValue2 = [v11 BOOLValue];
 
-        if (v8 == 128)
+        if (unsignedLongValue == 128)
         {
-          self = [(AWAttentionStreamer *)self initForUnitTest:v10 useAVFoundation:v12];
-          v6 = self;
+          self = [(AWAttentionStreamer *)self initForUnitTest:bOOLValue useAVFoundation:bOOLValue2];
+          selfCopy = self;
           goto LABEL_8;
         }
 
 LABEL_7:
-        v6 = 0;
+        selfCopy = 0;
       }
     }
   }
 
 LABEL_8:
 
-  return v6;
+  return selfCopy;
 }
 
 @end

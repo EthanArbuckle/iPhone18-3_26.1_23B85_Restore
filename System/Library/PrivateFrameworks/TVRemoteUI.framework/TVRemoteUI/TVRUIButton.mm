@@ -1,33 +1,33 @@
 @interface TVRUIButton
 - (BOOL)shouldShowGlass;
 - (NSString)description;
-- (TVRUIButton)initWithType:(int64_t)a3 hasTapAction:(BOOL)a4 buttonLocation:(int64_t)a5 options:(unint64_t)a6;
+- (TVRUIButton)initWithType:(int64_t)type hasTapAction:(BOOL)action buttonLocation:(int64_t)location options:(unint64_t)options;
 - (double)_highlightDuration;
 - (double)_unhighlightDuration;
-- (id)_accessibilityHintForButtonType:(int64_t)a3;
-- (id)_accessibilityIDForButtonType:(int64_t)a3;
-- (id)_accessibilityLabelForButtonType:(int64_t)a3;
+- (id)_accessibilityHintForButtonType:(int64_t)type;
+- (id)_accessibilityIDForButtonType:(int64_t)type;
+- (id)_accessibilityLabelForButtonType:(int64_t)type;
 - (id)_descriptionBuilder;
-- (id)_hapticForButtonType:(int64_t)a3;
-- (id)_pointerEffectForButtonType:(int64_t)a3 targetedPreview:(id)a4;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
-- (void)_boldTextEnabledStatusChanged:(id)a3;
-- (void)_darkenSystemColorsChanged:(id)a3;
-- (void)_largeTextEnabledStatusChanged:(id)a3;
-- (void)_touchDown:(id)a3;
-- (void)_touchUp:(id)a3;
-- (void)_updateButtonType:(int64_t)a3;
+- (id)_hapticForButtonType:(int64_t)type;
+- (id)_pointerEffectForButtonType:(int64_t)type targetedPreview:(id)preview;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
+- (void)_boldTextEnabledStatusChanged:(id)changed;
+- (void)_darkenSystemColorsChanged:(id)changed;
+- (void)_largeTextEnabledStatusChanged:(id)changed;
+- (void)_touchDown:(id)down;
+- (void)_touchUp:(id)up;
+- (void)_updateButtonType:(int64_t)type;
 - (void)layoutSubviews;
-- (void)setEnabled:(BOOL)a3;
-- (void)setHasButtonShape:(BOOL)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setHasButtonShape:(BOOL)shape;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation TVRUIButton
 
-- (TVRUIButton)initWithType:(int64_t)a3 hasTapAction:(BOOL)a4 buttonLocation:(int64_t)a5 options:(unint64_t)a6
+- (TVRUIButton)initWithType:(int64_t)type hasTapAction:(BOOL)action buttonLocation:(int64_t)location options:(unint64_t)options
 {
   v60[4] = *MEMORY[0x277D85DE8];
   v59.receiver = self;
@@ -40,42 +40,42 @@
     v10->_styleProvider = v11;
 
     v10->_hasButtonShape = 1;
-    v10->_buttonLocation = a5;
-    v10->_options = a6;
-    v13 = [(TVRUIButton *)v10 shouldShowGlass];
-    if (v13)
+    v10->_buttonLocation = location;
+    v10->_options = options;
+    shouldShowGlass = [(TVRUIButton *)v10 shouldShowGlass];
+    if (shouldShowGlass)
     {
       [(TVRUIButton *)v10 setBackgroundColor:0];
     }
 
     else
     {
-      v14 = [MEMORY[0x277D75348] clearColor];
-      [(TVRUIButton *)v10 setBackgroundColor:v14];
+      clearColor = [MEMORY[0x277D75348] clearColor];
+      [(TVRUIButton *)v10 setBackgroundColor:clearColor];
     }
 
-    v10->_buttonType = a3;
-    v15 = [(TVRUIButton *)v10 layer];
-    [v15 setBorderColor:0];
+    v10->_buttonType = type;
+    layer = [(TVRUIButton *)v10 layer];
+    [layer setBorderColor:0];
 
-    v16 = [(TVRUIButton *)v10 layer];
-    [v16 setBorderWidth:0.0];
+    layer2 = [(TVRUIButton *)v10 layer];
+    [layer2 setBorderWidth:0.0];
 
     v17 = objc_alloc_init(MEMORY[0x277D75D18]);
     buttonContentView = v10->_buttonContentView;
     v10->_buttonContentView = v17;
 
     [(UIView *)v10->_buttonContentView setUserInteractionEnabled:0];
-    v58 = v13;
-    if (v13)
+    v58 = shouldShowGlass;
+    if (shouldShowGlass)
     {
       [(UIView *)v10->_buttonContentView setBackgroundColor:0];
     }
 
     else
     {
-      v19 = [MEMORY[0x277D75348] clearColor];
-      [(UIView *)v10->_buttonContentView setBackgroundColor:v19];
+      clearColor2 = [MEMORY[0x277D75348] clearColor];
+      [(UIView *)v10->_buttonContentView setBackgroundColor:clearColor2];
     }
 
     [(TVRUIButton *)v10 addSubview:v10->_buttonContentView];
@@ -84,8 +84,8 @@
     titleLabel = v10->_titleLabel;
     v10->_titleLabel = v20;
 
-    v22 = [MEMORY[0x277D75348] systemGrayColor];
-    [(UILabel *)v10->_titleLabel setTextColor:v22];
+    systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+    [(UILabel *)v10->_titleLabel setTextColor:systemGrayColor];
 
     [(UILabel *)v10->_titleLabel setTextAlignment:1];
     [(UILabel *)v10->_titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -115,11 +115,11 @@
       if (v27)
       {
         [(UILabel *)v10->_titleLabel setText:v27];
-        v28 = [(TVRUIStyleProvider *)v10->_styleProvider buttonTextColor];
-        [(UILabel *)v10->_titleLabel setTextColor:v28];
+        buttonTextColor = [(TVRUIStyleProvider *)v10->_styleProvider buttonTextColor];
+        [(UILabel *)v10->_titleLabel setTextColor:buttonTextColor];
 
-        v29 = [(TVRUIStyleProvider *)v10->_styleProvider primaryButtonFont];
-        [(UILabel *)v10->_titleLabel setFont:v29];
+        primaryButtonFont = [(TVRUIStyleProvider *)v10->_styleProvider primaryButtonFont];
+        [(UILabel *)v10->_titleLabel setFont:primaryButtonFont];
 
         [(UILabel *)v10->_titleLabel sizeToFit];
       }
@@ -129,21 +129,21 @@
     haptic = v10->_haptic;
     v10->_haptic = v30;
 
-    v10->_tapAction = a4;
-    v32 = [(TVRUIButton *)v10 _accessibilityLabelForButtonType:a3];
+    v10->_tapAction = action;
+    v32 = [(TVRUIButton *)v10 _accessibilityLabelForButtonType:type];
     [(TVRUIButton *)v10 setAccessibilityLabel:v32];
 
-    v33 = [(TVRUIButton *)v10 _accessibilityHintForButtonType:a3];
+    v33 = [(TVRUIButton *)v10 _accessibilityHintForButtonType:type];
     [(TVRUIButton *)v10 setAccessibilityHint:v33];
 
-    v34 = [(TVRUIButton *)v10 _accessibilityIDForButtonType:a3];
+    v34 = [(TVRUIButton *)v10 _accessibilityIDForButtonType:type];
     [(TVRUIButton *)v10 setAccessibilityIdentifier:v34];
 
     [(TVRUIButton *)v10 addTarget:v10 action:sel__touchDown_ forControlEvents:1];
     [(TVRUIButton *)v10 addTarget:v10 action:sel__touchUp_ forControlEvents:448];
     [(TVRUIButton *)v10 setClipsToBounds:1];
-    v35 = [(TVRUIStyleProvider *)v10->_styleProvider tintColorForButtonEnabled];
-    [(TVRUIButton *)v10 setTintColor:v35];
+    tintColorForButtonEnabled = [(TVRUIStyleProvider *)v10->_styleProvider tintColorForButtonEnabled];
+    [(TVRUIButton *)v10 setTintColor:tintColorForButtonEnabled];
 
     v36 = [objc_alloc(MEMORY[0x277D75870]) initWithDelegate:v10];
     [(TVRUIButton *)v10 addInteraction:v36];
@@ -163,39 +163,39 @@
     }
 
     v52 = MEMORY[0x277CCAAD0];
-    v56 = [(UIImageView *)v10->_imageView centerXAnchor];
-    v55 = [(UIView *)v10->_buttonContentView centerXAnchor];
-    v54 = [v56 constraintEqualToAnchor:v55 constant:v37];
+    centerXAnchor = [(UIImageView *)v10->_imageView centerXAnchor];
+    centerXAnchor2 = [(UIView *)v10->_buttonContentView centerXAnchor];
+    v54 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2 constant:v37];
     v60[0] = v54;
-    v53 = [(UIImageView *)v10->_imageView centerYAnchor];
-    v38 = [(UIView *)v10->_buttonContentView centerYAnchor];
-    v39 = [v53 constraintEqualToAnchor:v38];
+    centerYAnchor = [(UIImageView *)v10->_imageView centerYAnchor];
+    centerYAnchor2 = [(UIView *)v10->_buttonContentView centerYAnchor];
+    v39 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v60[1] = v39;
-    v40 = [(UILabel *)v10->_titleLabel centerXAnchor];
-    v41 = [(UIView *)v10->_buttonContentView centerXAnchor];
-    v42 = [v40 constraintEqualToAnchor:v41];
+    centerXAnchor3 = [(UILabel *)v10->_titleLabel centerXAnchor];
+    centerXAnchor4 = [(UIView *)v10->_buttonContentView centerXAnchor];
+    v42 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     v60[2] = v42;
-    v43 = [(UILabel *)v10->_titleLabel centerYAnchor];
-    v44 = [(UIView *)v10->_buttonContentView centerYAnchor];
-    v45 = [v43 constraintEqualToAnchor:v44];
+    centerYAnchor3 = [(UILabel *)v10->_titleLabel centerYAnchor];
+    centerYAnchor4 = [(UIView *)v10->_buttonContentView centerYAnchor];
+    v45 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     v60[3] = v45;
     v46 = [MEMORY[0x277CBEA60] arrayWithObjects:v60 count:4];
     [v52 activateConstraints:v46];
 
-    v47 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v47 addObserver:v10 selector:sel__boldTextEnabledStatusChanged_ name:*MEMORY[0x277D76448] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v10 selector:sel__boldTextEnabledStatusChanged_ name:*MEMORY[0x277D76448] object:0];
 
-    v48 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v48 addObserver:v10 selector:sel__largeTextEnabledStatusChanged_ name:*MEMORY[0x277D76810] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v10 selector:sel__largeTextEnabledStatusChanged_ name:*MEMORY[0x277D76810] object:0];
 
-    v49 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v49 addObserver:v10 selector:sel__darkenSystemColorsChanged_ name:*MEMORY[0x277D76460] object:0];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 addObserver:v10 selector:sel__darkenSystemColorsChanged_ name:*MEMORY[0x277D76460] object:0];
 
     if (v58)
     {
       [(TVRUIButton *)v10 setClipsToBounds:0];
-      v50 = [(TVRUIStyleProvider *)v10->_styleProvider controlGlassVariant];
-      [(UIView *)v10->_buttonContentView _setBackground:v50];
+      controlGlassVariant = [(TVRUIStyleProvider *)v10->_styleProvider controlGlassVariant];
+      [(UIView *)v10->_buttonContentView _setBackground:controlGlassVariant];
 
       [(UIView *)v10->_buttonContentView setClipsToBounds:1];
       [(TVRUIButton *)v10 setNeedsLayout];
@@ -207,13 +207,13 @@
 
 - (BOOL)shouldShowGlass
 {
-  v3 = [MEMORY[0x277D6C4E8] isSolariumEnabled];
-  if (v3)
+  isSolariumEnabled = [MEMORY[0x277D6C4E8] isSolariumEnabled];
+  if (isSolariumEnabled)
   {
-    LOBYTE(v3) = ![(TVRUIButton *)self disableGlassBackground];
+    LOBYTE(isSolariumEnabled) = ![(TVRUIButton *)self disableGlassBackground];
   }
 
-  return v3;
+  return isSolariumEnabled;
 }
 
 - (void)layoutSubviews
@@ -226,29 +226,29 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(TVRUIButton *)self shouldShowGlass];
+  shouldShowGlass = [(TVRUIButton *)self shouldShowGlass];
   v19.origin.x = v4;
   v19.origin.y = v6;
   v19.size.width = v8;
   v19.size.height = v10;
   Height = CGRectGetHeight(v19);
   v13 = Height * 0.5;
-  if (!v11)
+  if (!shouldShowGlass)
   {
     [(TVRUIButton *)self _setCornerRadius:Height * 0.5];
   }
 
-  v14 = [(TVRUIButton *)self highlightAnimator];
-  if ([v14 isRunning])
+  highlightAnimator = [(TVRUIButton *)self highlightAnimator];
+  if ([highlightAnimator isRunning])
   {
   }
 
   else
   {
-    v15 = [(TVRUIButton *)self unhighlightAnimator];
-    v16 = [v15 isRunning];
+    unhighlightAnimator = [(TVRUIButton *)self unhighlightAnimator];
+    isRunning = [unhighlightAnimator isRunning];
 
-    if ((v16 & 1) == 0)
+    if ((isRunning & 1) == 0)
     {
       [(UIView *)self->_buttonContentView setBounds:v4, v6, v8, v10];
       v20.origin.x = v4;
@@ -266,64 +266,64 @@
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v9.receiver = self;
   v9.super_class = TVRUIButton;
   [(TVRUIButton *)&v9 setEnabled:?];
   if ([(TVRUIButton *)self buttonLocation]!= 1)
   {
-    v5 = [(TVRUIButton *)self styleProvider];
-    v6 = v5;
-    if (v3)
+    styleProvider = [(TVRUIButton *)self styleProvider];
+    v6 = styleProvider;
+    if (enabledCopy)
     {
-      [v5 tintColorForButtonEnabled];
+      [styleProvider tintColorForButtonEnabled];
     }
 
     else
     {
-      [v5 tintColorForButtonDisabled];
+      [styleProvider tintColorForButtonDisabled];
     }
     v7 = ;
-    v8 = [(TVRUIButton *)self imageView];
-    [v8 setTintColor:v7];
+    imageView = [(TVRUIButton *)self imageView];
+    [imageView setTintColor:v7];
   }
 }
 
 - (NSString)description
 {
-  v2 = [(TVRUIButton *)self _descriptionBuilder];
-  v3 = [v2 build];
+  _descriptionBuilder = [(TVRUIButton *)self _descriptionBuilder];
+  build = [_descriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = TVRUIButton;
-  [(TVRUIButton *)&v5 touchesBegan:a3 withEvent:a4];
+  [(TVRUIButton *)&v5 touchesBegan:began withEvent:event];
   [(TVRButtonHaptic *)self->_haptic userInteractionBegan];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = TVRUIButton;
-  [(TVRUIButton *)&v5 touchesEnded:a3 withEvent:a4];
+  [(TVRUIButton *)&v5 touchesEnded:ended withEvent:event];
   [(TVRButtonHaptic *)self->_haptic userInteractionEnded];
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = TVRUIButton;
-  [(TVRUIButton *)&v5 touchesCancelled:a3 withEvent:a4];
+  [(TVRUIButton *)&v5 touchesCancelled:cancelled withEvent:event];
   [(TVRButtonHaptic *)self->_haptic userInteractionCancelled];
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
   v5 = [objc_alloc(MEMORY[0x277D75B90]) initWithView:self];
   v6 = [(TVRUIButton *)self _pointerEffectForButtonType:[(TVRUIButton *)self buttonType] targetedPreview:v5];
@@ -332,20 +332,20 @@
   return v7;
 }
 
-- (id)_pointerEffectForButtonType:(int64_t)a3 targetedPreview:(id)a4
+- (id)_pointerEffectForButtonType:(int64_t)type targetedPreview:(id)preview
 {
   v4 = 0x277D75860;
-  if ((a3 - 28) >= 3)
+  if ((type - 28) >= 3)
   {
     v4 = 0x277D75878;
   }
 
-  v5 = [*v4 effectWithPreview:a4];
+  v5 = [*v4 effectWithPreview:preview];
 
   return v5;
 }
 
-- (void)_boldTextEnabledStatusChanged:(id)a3
+- (void)_boldTextEnabledStatusChanged:(id)changed
 {
   v10 = *MEMORY[0x277D85DE8];
   v4 = _TVRUIViewControllerLog();
@@ -356,13 +356,13 @@
     _os_log_impl(&dword_26CFEB000, v4, OS_LOG_TYPE_DEFAULT, "%s", &v8, 0xCu);
   }
 
-  v5 = [(TVRUIButton *)self styleProvider];
-  v6 = [v5 iconForButtonType:-[TVRUIButton buttonType](self buttonLocation:{"buttonType"), -[TVRUIButton buttonLocation](self, "buttonLocation")}];
-  v7 = [(TVRUIButton *)self imageView];
-  [v7 setImage:v6];
+  styleProvider = [(TVRUIButton *)self styleProvider];
+  v6 = [styleProvider iconForButtonType:-[TVRUIButton buttonType](self buttonLocation:{"buttonType"), -[TVRUIButton buttonLocation](self, "buttonLocation")}];
+  imageView = [(TVRUIButton *)self imageView];
+  [imageView setImage:v6];
 }
 
-- (void)_largeTextEnabledStatusChanged:(id)a3
+- (void)_largeTextEnabledStatusChanged:(id)changed
 {
   v10 = *MEMORY[0x277D85DE8];
   v4 = _TVRUIViewControllerLog();
@@ -373,68 +373,68 @@
     _os_log_impl(&dword_26CFEB000, v4, OS_LOG_TYPE_DEFAULT, "%s", &v8, 0xCu);
   }
 
-  v5 = [(TVRUIButton *)self styleProvider];
-  v6 = [v5 iconForButtonType:-[TVRUIButton buttonType](self buttonLocation:{"buttonType"), -[TVRUIButton buttonLocation](self, "buttonLocation")}];
-  v7 = [(TVRUIButton *)self imageView];
-  [v7 setImage:v6];
+  styleProvider = [(TVRUIButton *)self styleProvider];
+  v6 = [styleProvider iconForButtonType:-[TVRUIButton buttonType](self buttonLocation:{"buttonType"), -[TVRUIButton buttonLocation](self, "buttonLocation")}];
+  imageView = [(TVRUIButton *)self imageView];
+  [imageView setImage:v6];
 }
 
-- (void)_darkenSystemColorsChanged:(id)a3
+- (void)_darkenSystemColorsChanged:(id)changed
 {
-  v4 = [(TVRUIButton *)self shouldShowGlass];
-  v5 = _TVRUIViewControllerLog();
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+  shouldShowGlass = [(TVRUIButton *)self shouldShowGlass];
+  buttonContentView = _TVRUIViewControllerLog();
+  if (os_log_type_enabled(buttonContentView, OS_LOG_TYPE_DEBUG))
   {
-    [TVRUIButton _darkenSystemColorsChanged:v5];
+    [TVRUIButton _darkenSystemColorsChanged:buttonContentView];
   }
 
   if (![(TVRUIButton *)self hasButtonShape])
   {
-    v5 = [(TVRUIButton *)self buttonContentView];
-    [v5 setBackgroundColor:0];
+    buttonContentView = [(TVRUIButton *)self buttonContentView];
+    [buttonContentView setBackgroundColor:0];
 LABEL_10:
 
     return;
   }
 
-  if (v4)
+  if (shouldShowGlass)
   {
-    v6 = 0;
+    buttonBackgroundColor = 0;
   }
 
   else
   {
-    v5 = [(TVRUIButton *)self styleProvider];
-    v6 = [v5 buttonBackgroundColor];
+    buttonContentView = [(TVRUIButton *)self styleProvider];
+    buttonBackgroundColor = [buttonContentView buttonBackgroundColor];
   }
 
-  v7 = [(TVRUIButton *)self buttonContentView];
-  [v7 setBackgroundColor:v6];
+  buttonContentView2 = [(TVRUIButton *)self buttonContentView];
+  [buttonContentView2 setBackgroundColor:buttonBackgroundColor];
 
-  if (!v4)
+  if (!shouldShowGlass)
   {
 
     goto LABEL_10;
   }
 }
 
-- (void)setHasButtonShape:(BOOL)a3
+- (void)setHasButtonShape:(BOOL)shape
 {
-  if (self->_hasButtonShape != a3)
+  if (self->_hasButtonShape != shape)
   {
-    self->_hasButtonShape = a3;
+    self->_hasButtonShape = shape;
     [(TVRUIButton *)self _darkenSystemColorsChanged:0];
   }
 }
 
-- (id)_accessibilityLabelForButtonType:(int64_t)a3
+- (id)_accessibilityLabelForButtonType:(int64_t)type
 {
   v3 = 0;
-  if (a3 > 9991)
+  if (type > 9991)
   {
-    if (a3 > 9994)
+    if (type > 9994)
     {
-      switch(a3)
+      switch(type)
       {
         case 9995:
           v4 = @"TVRUIAXLabelButtonTypeFastForward";
@@ -450,12 +450,12 @@ LABEL_10:
       }
     }
 
-    else if (a3 == 9992)
+    else if (type == 9992)
     {
       v4 = @"TVRUIAXLabelButtonTypeMediaInfo";
     }
 
-    else if (a3 == 9993)
+    else if (type == 9993)
     {
       v4 = @"TVRUIAXLabelButtonTypePlay";
     }
@@ -473,7 +473,7 @@ LABEL_33:
   else
   {
     v4 = @"TVRUIAXLabelButtonTypeMenu";
-    switch(a3)
+    switch(type)
     {
       case 1:
         v4 = @"TVRUIAXLabelButtonTypeSelect";
@@ -543,15 +543,15 @@ LABEL_34:
   return v3;
 }
 
-- (id)_accessibilityHintForButtonType:(int64_t)a3
+- (id)_accessibilityHintForButtonType:(int64_t)type
 {
-  if (a3 == 29)
+  if (type == 29)
   {
     v3 = @"TVRUIAXHintButtonTypeMute";
     goto LABEL_5;
   }
 
-  if (a3 == 30)
+  if (type == 30)
   {
     v3 = @"TVRUIAXHintButtonTypePower";
 LABEL_5:
@@ -567,13 +567,13 @@ LABEL_7:
   return v5;
 }
 
-- (id)_accessibilityIDForButtonType:(int64_t)a3
+- (id)_accessibilityIDForButtonType:(int64_t)type
 {
-  if (a3 > 9992)
+  if (type > 9992)
   {
-    if (a3 <= 9994)
+    if (type <= 9994)
     {
-      if (a3 == 9993)
+      if (type == 9993)
       {
         v4 = @"play";
       }
@@ -586,7 +586,7 @@ LABEL_7:
 
     else
     {
-      switch(a3)
+      switch(type)
       {
         case 9995:
           v4 = @"fastForward";
@@ -608,7 +608,7 @@ LABEL_33:
   else
   {
     v4 = @"menu";
-    switch(a3)
+    switch(type)
     {
       case 1:
         v4 = @"select";
@@ -682,9 +682,9 @@ LABEL_33:
   return v5;
 }
 
-- (id)_hapticForButtonType:(int64_t)a3
+- (id)_hapticForButtonType:(int64_t)type
 {
-  if (a3 == 4)
+  if (type == 4)
   {
     v5 = 0;
   }
@@ -699,9 +699,9 @@ LABEL_33:
 
 - (double)_highlightDuration
 {
-  v2 = [(TVRUIButton *)self shouldShowGlass];
+  shouldShowGlass = [(TVRUIButton *)self shouldShowGlass];
   result = 0.2;
-  if (v2)
+  if (shouldShowGlass)
   {
     return 0.12;
   }
@@ -711,9 +711,9 @@ LABEL_33:
 
 - (double)_unhighlightDuration
 {
-  v2 = [(TVRUIButton *)self shouldShowGlass];
+  shouldShowGlass = [(TVRUIButton *)self shouldShowGlass];
   result = 0.48;
-  if (v2)
+  if (shouldShowGlass)
   {
     return 0.25;
   }
@@ -721,16 +721,16 @@ LABEL_33:
   return result;
 }
 
-- (void)_touchUp:(id)a3
+- (void)_touchUp:(id)up
 {
-  v4 = [(TVRUIButton *)self shouldShowGlass];
-  v5 = [(TVRUIButton *)self highlightAnimator];
-  v6 = [v5 isRunning];
+  shouldShowGlass = [(TVRUIButton *)self shouldShowGlass];
+  highlightAnimator = [(TVRUIButton *)self highlightAnimator];
+  isRunning = [highlightAnimator isRunning];
 
-  if (v6)
+  if (isRunning)
   {
-    v7 = [(TVRUIButton *)self highlightAnimator];
-    [v7 stopAnimation:1];
+    highlightAnimator2 = [(TVRUIButton *)self highlightAnimator];
+    [highlightAnimator2 stopAnimation:1];
   }
 
   v8 = objc_alloc(MEMORY[0x277D75D40]);
@@ -740,12 +740,12 @@ LABEL_33:
   v11[2] = __24__TVRUIButton__touchUp___block_invoke;
   v11[3] = &unk_279D878A8;
   v11[4] = self;
-  v12 = v4;
+  v12 = shouldShowGlass;
   v9 = [v8 initWithDuration:2 curve:v11 animations:?];
   [(TVRUIButton *)self setUnhighlightAnimator:v9];
 
-  v10 = [(TVRUIButton *)self unhighlightAnimator];
-  [v10 startAnimation];
+  unhighlightAnimator = [(TVRUIButton *)self unhighlightAnimator];
+  [unhighlightAnimator startAnimation];
 }
 
 void __24__TVRUIButton__touchUp___block_invoke(uint64_t a1)
@@ -784,34 +784,34 @@ void __24__TVRUIButton__touchUp___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_touchDown:(id)a3
+- (void)_touchDown:(id)down
 {
-  v4 = [(TVRUIButton *)self defaultBackgroundColor];
+  defaultBackgroundColor = [(TVRUIButton *)self defaultBackgroundColor];
 
-  if (!v4)
+  if (!defaultBackgroundColor)
   {
-    v5 = [(TVRUIButton *)self buttonContentView];
-    v6 = [v5 backgroundColor];
-    [(TVRUIButton *)self setDefaultBackgroundColor:v6];
+    buttonContentView = [(TVRUIButton *)self buttonContentView];
+    backgroundColor = [buttonContentView backgroundColor];
+    [(TVRUIButton *)self setDefaultBackgroundColor:backgroundColor];
   }
 
-  v7 = [(TVRUIButton *)self unhighlightAnimator];
-  [v7 stopAnimation:1];
+  unhighlightAnimator = [(TVRUIButton *)self unhighlightAnimator];
+  [unhighlightAnimator stopAnimation:1];
 
-  LOBYTE(v7) = [(TVRUIButton *)self shouldShowGlass];
+  LOBYTE(unhighlightAnimator) = [(TVRUIButton *)self shouldShowGlass];
   v8 = objc_alloc(MEMORY[0x277D75D40]);
   [(TVRUIButton *)self _highlightDuration];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __26__TVRUIButton__touchDown___block_invoke;
   v11[3] = &unk_279D878A8;
-  v12 = v7;
+  v12 = unhighlightAnimator;
   v11[4] = self;
   v9 = [v8 initWithDuration:3 curve:v11 animations:?];
   [(TVRUIButton *)self setHighlightAnimator:v9];
 
-  v10 = [(TVRUIButton *)self highlightAnimator];
-  [v10 startAnimation];
+  highlightAnimator = [(TVRUIButton *)self highlightAnimator];
+  [highlightAnimator startAnimation];
 }
 
 void __26__TVRUIButton__touchDown___block_invoke(uint64_t a1)
@@ -871,9 +871,9 @@ LABEL_7:
 - (id)_descriptionBuilder
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(TVRUIButton *)self titleLabel];
-  v5 = [v4 text];
-  [v3 appendString:v5 withName:@"title"];
+  titleLabel = [(TVRUIButton *)self titleLabel];
+  text = [titleLabel text];
+  [v3 appendString:text withName:@"title"];
 
   v6 = [v3 appendInteger:-[TVRUIButton buttonType](self withName:{"buttonType"), @"buttonType"}];
   v7 = [v3 appendBool:-[TVRUIButton hasTapAction](self withName:{"hasTapAction"), @"hasTapAction"}];
@@ -882,21 +882,21 @@ LABEL_7:
   return v3;
 }
 
-- (void)_updateButtonType:(int64_t)a3
+- (void)_updateButtonType:(int64_t)type
 {
-  self->_buttonType = a3;
-  v5 = [(TVRUIButton *)self styleProvider];
-  v6 = [v5 iconForButtonType:a3 buttonLocation:{-[TVRUIButton buttonLocation](self, "buttonLocation")}];
-  v7 = [(TVRUIButton *)self imageView];
-  [v7 setImage:v6];
+  self->_buttonType = type;
+  styleProvider = [(TVRUIButton *)self styleProvider];
+  v6 = [styleProvider iconForButtonType:type buttonLocation:{-[TVRUIButton buttonLocation](self, "buttonLocation")}];
+  imageView = [(TVRUIButton *)self imageView];
+  [imageView setImage:v6];
 
-  v8 = [(TVRUIButton *)self _accessibilityLabelForButtonType:a3];
+  v8 = [(TVRUIButton *)self _accessibilityLabelForButtonType:type];
   [(TVRUIButton *)self setAccessibilityLabel:v8];
 
-  v9 = [(TVRUIButton *)self _accessibilityHintForButtonType:a3];
+  v9 = [(TVRUIButton *)self _accessibilityHintForButtonType:type];
   [(TVRUIButton *)self setAccessibilityHint:v9];
 
-  v10 = [(TVRUIButton *)self _accessibilityIDForButtonType:a3];
+  v10 = [(TVRUIButton *)self _accessibilityIDForButtonType:type];
   [(TVRUIButton *)self setAccessibilityIdentifier:v10];
 }
 

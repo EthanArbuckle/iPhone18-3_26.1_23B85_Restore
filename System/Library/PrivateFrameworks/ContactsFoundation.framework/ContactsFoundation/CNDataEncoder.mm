@@ -1,19 +1,19 @@
 @interface CNDataEncoder
-+ (id)decodeAddressingGrammarData:(id)a3;
-+ (id)encodeAddressingGrammar:(id)a3;
++ (id)decodeAddressingGrammarData:(id)data;
++ (id)encodeAddressingGrammar:(id)grammar;
 - (_TtC18ContactsFoundation13CNDataEncoder)init;
 @end
 
 @implementation CNDataEncoder
 
-+ (id)encodeAddressingGrammar:(id)a3
++ (id)encodeAddressingGrammar:(id)grammar
 {
   v4 = sub_185A7E5F4();
   v5 = *(v4 - 8);
   v6 = *(v5 + 64);
   MEMORY[0x1EEE9AC00](v4);
   v8 = &v16 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v9 = a3;
+  grammarCopy = grammar;
   sub_185A7E5E4();
 
   v10 = _s18ContactsFoundation13CNDataEncoderC6encodey0B04DataVSgAE13TermOfAddressVFZ_0();
@@ -30,13 +30,13 @@
   return v13;
 }
 
-+ (id)decodeAddressingGrammarData:(id)a3
++ (id)decodeAddressingGrammarData:(id)data
 {
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EA8CAE98, &qword_185A924B8);
   v5 = *(*(v4 - 8) + 64);
   MEMORY[0x1EEE9AC00](v4 - 8);
   v7 = &v18 - v6;
-  v8 = a3;
+  dataCopy = data;
   v9 = sub_185A7E6A4();
   v11 = v10;
 

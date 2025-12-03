@@ -1,15 +1,15 @@
 @interface ICSuzeLeaseSession
-- (ICSuzeLeaseSession)initWithConfiguration:(id)a3;
+- (ICSuzeLeaseSession)initWithConfiguration:(id)configuration;
 - (ICSuzeLeaseSessionDelegate)delegate;
-- (id)_newSuzeLeaseRequestWithType:(int64_t)a3 clientData:(id)a4;
+- (id)_newSuzeLeaseRequestWithType:(int64_t)type clientData:(id)data;
 - (void)_renewLeaseTimerAction;
 - (void)_updateRenewalTimer;
-- (void)_updateRenewalTimerWithResponse:(id)a3;
+- (void)_updateRenewalTimerWithResponse:(id)response;
 - (void)beginAutomaticallyRefreshingLease;
 - (void)dealloc;
 - (void)endAutomaticallyRefreshingLease;
-- (void)startLeaseSessionWithCompletionHandler:(id)a3;
-- (void)stopLeaseSessionWithCompletionHandler:(id)a3;
+- (void)startLeaseSessionWithCompletionHandler:(id)handler;
+- (void)stopLeaseSessionWithCompletionHandler:(id)handler;
 @end
 
 @implementation ICSuzeLeaseSession
@@ -21,11 +21,11 @@
   return WeakRetained;
 }
 
-- (void)_updateRenewalTimerWithResponse:(id)a3
+- (void)_updateRenewalTimerWithResponse:(id)response
 {
-  v4 = [a3 leaseExpirationDate];
+  leaseExpirationDate = [response leaseExpirationDate];
   leaseExpirationDate = self->_leaseExpirationDate;
-  self->_leaseExpirationDate = v4;
+  self->_leaseExpirationDate = leaseExpirationDate;
 
   [(ICSuzeLeaseSession *)self _updateRenewalTimer];
 }
@@ -50,7 +50,7 @@
     {
       leaseExpirationDate = self->_leaseExpirationDate;
       *buf = 138543874;
-      v22 = self;
+      selfCopy2 = self;
       v23 = 2048;
       v24 = v7;
       v25 = 2114;
@@ -97,7 +97,7 @@
       }
 
       *buf = 138544130;
-      v22 = self;
+      selfCopy2 = self;
       v23 = 2048;
       v24 = *&automaticRefreshCount;
       v25 = 2114;
@@ -122,7 +122,7 @@ void __41__ICSuzeLeaseSession__updateRenewalTimer__block_invoke(uint64_t a1)
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B4491000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: Lease renew timer fired.", buf, 0xCu);
   }
 
@@ -353,27 +353,27 @@ void __44__ICSuzeLeaseSession__renewLeaseTimerAction__block_invoke_3(void *a1)
   }
 }
 
-- (id)_newSuzeLeaseRequestWithType:(int64_t)a3 clientData:(id)a4
+- (id)_newSuzeLeaseRequestWithType:(int64_t)type clientData:(id)data
 {
-  v6 = a4;
+  dataCopy = data;
   v7 = [ICSuzeLeaseRequest alloc];
-  v8 = [(ICSuzeLeaseSessionConfiguration *)self->_configuration requestContext];
-  v9 = [(ICSuzeLeaseSessionConfiguration *)self->_configuration leaseID];
-  v10 = [(ICSuzeLeaseRequest *)v7 initWithRequestContext:v8 requestType:a3 leaseID:v9 mediaType:[(ICSuzeLeaseSessionConfiguration *)self->_configuration mediaType] clientData:v6];
+  requestContext = [(ICSuzeLeaseSessionConfiguration *)self->_configuration requestContext];
+  leaseID = [(ICSuzeLeaseSessionConfiguration *)self->_configuration leaseID];
+  v10 = [(ICSuzeLeaseRequest *)v7 initWithRequestContext:requestContext requestType:type leaseID:leaseID mediaType:[(ICSuzeLeaseSessionConfiguration *)self->_configuration mediaType] clientData:dataCopy];
 
   [(ICSuzeLeaseRequest *)v10 setQualityOfService:[(NSOperationQueue *)self->_operationQueue qualityOfService]];
   return v10;
 }
 
-- (void)stopLeaseSessionWithCompletionHandler:(id)a3
+- (void)stopLeaseSessionWithCompletionHandler:(id)handler
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v16 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B4491000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Stopping lease session...", buf, 0xCu);
   }
 
@@ -382,11 +382,11 @@ void __44__ICSuzeLeaseSession__renewLeaseTimerAction__block_invoke_3(void *a1)
   v10 = 3221225472;
   v11 = __60__ICSuzeLeaseSession_stopLeaseSessionWithCompletionHandler___block_invoke;
   v12 = &unk_1E7BF8080;
-  v13 = self;
-  v14 = v4;
-  v7 = v4;
+  selfCopy2 = self;
+  v14 = handlerCopy;
+  v7 = handlerCopy;
   v8 = [(ICAsyncBlockOperation *)v6 initWithStartHandler:&v9];
-  [(NSOperationQueue *)self->_operationQueue addOperation:v8, v9, v10, v11, v12, v13];
+  [(NSOperationQueue *)self->_operationQueue addOperation:v8, v9, v10, v11, v12, selfCopy2];
 }
 
 void __60__ICSuzeLeaseSession_stopLeaseSessionWithCompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -492,15 +492,15 @@ void __60__ICSuzeLeaseSession_stopLeaseSessionWithCompletionHandler___block_invo
   [*(a1 + 40) finishWithError:v5];
 }
 
-- (void)startLeaseSessionWithCompletionHandler:(id)a3
+- (void)startLeaseSessionWithCompletionHandler:(id)handler
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v16 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B4491000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Starting lease session...", buf, 0xCu);
   }
 
@@ -509,11 +509,11 @@ void __60__ICSuzeLeaseSession_stopLeaseSessionWithCompletionHandler___block_invo
   v10 = 3221225472;
   v11 = __61__ICSuzeLeaseSession_startLeaseSessionWithCompletionHandler___block_invoke;
   v12 = &unk_1E7BF8080;
-  v13 = self;
-  v14 = v4;
-  v7 = v4;
+  selfCopy2 = self;
+  v14 = handlerCopy;
+  v7 = handlerCopy;
   v8 = [(ICAsyncBlockOperation *)v6 initWithStartHandler:&v9];
-  [(NSOperationQueue *)self->_operationQueue addOperation:v8, v9, v10, v11, v12, v13];
+  [(NSOperationQueue *)self->_operationQueue addOperation:v8, v9, v10, v11, v12, selfCopy2];
 }
 
 void __61__ICSuzeLeaseSession_startLeaseSessionWithCompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -856,15 +856,15 @@ void *__55__ICSuzeLeaseSession_beginAutomaticallyRefreshingLease__block_invoke(u
   [(ICSuzeLeaseSession *)&v4 dealloc];
 }
 
-- (ICSuzeLeaseSession)initWithConfiguration:(id)a3
+- (ICSuzeLeaseSession)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v13.receiver = self;
   v13.super_class = ICSuzeLeaseSession;
   v5 = [(ICSuzeLeaseSession *)&v13 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [configurationCopy copy];
     configuration = v5->_configuration;
     v5->_configuration = v6;
 

@@ -1,5 +1,5 @@
 @interface AVPictureInPictureSampleBufferDisplayLayerView
-- (AVPictureInPictureSampleBufferDisplayLayerView)initWithSourceLayer:(id)a3 playerController:(id)a4;
+- (AVPictureInPictureSampleBufferDisplayLayerView)initWithSourceLayer:(id)layer playerController:(id)controller;
 - (CGSize)imageQueueSize;
 - (CGSize)lastKnownRenderSize;
 - (id)_makePictureInPicturePlatformAdapterContentPlaceholderLayer;
@@ -7,8 +7,8 @@
 - (void)_updateSourceLayerHost;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setLastKnownRenderSize:(CGSize)a3;
-- (void)setPIPModeEnabled:(BOOL)a3;
+- (void)setLastKnownRenderSize:(CGSize)size;
+- (void)setPIPModeEnabled:(BOOL)enabled;
 @end
 
 @implementation AVPictureInPictureSampleBufferDisplayLayerView
@@ -38,34 +38,34 @@
   v5 = [MEMORY[0x1E69DB878] systemFontOfSize:100.0];
   v6 = [v4 configurationWithFont:v5];
   v7 = [v3 systemImageNamed:@"pip" withConfiguration:v6];
-  v8 = [MEMORY[0x1E69DC888] AV_indicatorForegroundColor];
-  v9 = [v7 _flatImageWithColor:v8];
+  aV_indicatorForegroundColor = [MEMORY[0x1E69DC888] AV_indicatorForegroundColor];
+  v9 = [v7 _flatImageWithColor:aV_indicatorForegroundColor];
 
   v10 = [AVPictureInPictureIndicatorLayer alloc];
-  v11 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sourceLayer];
-  v12 = [v11 avkit_window];
-  v13 = [v12 traitCollection];
-  [v13 displayScale];
+  sourceLayer = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sourceLayer];
+  avkit_window = [sourceLayer avkit_window];
+  traitCollection = [avkit_window traitCollection];
+  [traitCollection displayScale];
   v15 = v14;
-  v16 = [v9 CGImage];
+  cGImage = [v9 CGImage];
   v17 = *MEMORY[0x1E695EFF8];
   v18 = *(MEMORY[0x1E695EFF8] + 8);
-  v19 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self playerController];
-  [v19 contentDimensions];
-  v22 = [(AVPictureInPictureIndicatorLayer *)v10 initWithDisplayScale:v16 placeholderImage:0 opaque:v15 videoRectWhenPIPBegan:v17, v18, v20, v21];
+  playerController = [(AVPictureInPictureSampleBufferDisplayLayerView *)self playerController];
+  [playerController contentDimensions];
+  v22 = [(AVPictureInPictureIndicatorLayer *)v10 initWithDisplayScale:cGImage placeholderImage:0 opaque:v15 videoRectWhenPIPBegan:v17, v18, v20, v21];
 
   return v22;
 }
 
 - (void)_updateGeometry
 {
-  v3 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self playerController];
-  [v3 contentDimensions];
+  playerController = [(AVPictureInPictureSampleBufferDisplayLayerView *)self playerController];
+  [playerController contentDimensions];
   v5 = v4;
   v7 = v6;
 
-  v8 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self playerController];
-  [v8 contentDimensions];
+  playerController2 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self playerController];
+  [playerController2 contentDimensions];
   v11 = v10;
   v12 = v10 - 1;
   v13 = ((v10 & 0x7FFFFFFFFFFFFFFFuLL) - 0x10000000000000) >> 53;
@@ -77,12 +77,12 @@
   v26 = (v11 < 0 || v13 > 0x3FE) && v12 > 0xFFFFFFFFFFFFELL;
   if (!v26 && v16 && v21 && v24 && [(AVPictureInPictureSampleBufferDisplayLayerView *)self isPIPModeEnabled])
   {
-    v27 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sbdlHostView];
-    [v27 setHidden:0];
+    sbdlHostView = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sbdlHostView];
+    [sbdlHostView setHidden:0];
 
-    v28 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sbdlHostView];
+    sbdlHostView2 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sbdlHostView];
     [(AVPictureInPictureSampleBufferDisplayLayerView *)self bounds];
-    [v28 setFrame:? contentDimensions:? imageQueueSize:?];
+    [sbdlHostView2 setFrame:? contentDimensions:? imageQueueSize:?];
 
     [(AVPictureInPictureSampleBufferDisplayLayerView *)self frame];
     v30 = v29;
@@ -96,7 +96,7 @@
     v45.size.width = v34;
     v45.size.height = v36;
     AVMakeRectWithAspectRatioInsideRect(v44, v45);
-    v37 = self;
+    selfCopy = self;
     UIPointRoundToViewScale();
     UISizeRoundToViewScale();
     v39 = v38;
@@ -105,8 +105,8 @@
 
   else
   {
-    v42 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sbdlHostView];
-    [v42 setHidden:1];
+    sbdlHostView3 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sbdlHostView];
+    [sbdlHostView3 setHidden:1];
 
     v39 = *MEMORY[0x1E695F060];
     v41 = *(MEMORY[0x1E695F060] + 8);
@@ -123,37 +123,37 @@
   [(AVPictureInPictureSampleBufferDisplayLayerView *)self _updateGeometry];
 }
 
-- (void)setLastKnownRenderSize:(CGSize)a3
+- (void)setLastKnownRenderSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  if (a3.width != self->_lastKnownRenderSize.width || a3.height != self->_lastKnownRenderSize.height)
+  height = size.height;
+  width = size.width;
+  if (size.width != self->_lastKnownRenderSize.width || size.height != self->_lastKnownRenderSize.height)
   {
-    self->_lastKnownRenderSize = a3;
-    v7 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self playerController];
-    v8 = [v7 pictureInPictureController];
-    v9 = [v8 contentSource];
-    v12 = [v9 sampleBufferPlaybackDelegate];
+    self->_lastKnownRenderSize = size;
+    playerController = [(AVPictureInPictureSampleBufferDisplayLayerView *)self playerController];
+    pictureInPictureController = [playerController pictureInPictureController];
+    contentSource = [pictureInPictureController contentSource];
+    sampleBufferPlaybackDelegate = [contentSource sampleBufferPlaybackDelegate];
 
-    v10 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self playerController];
-    v11 = [v10 pictureInPictureController];
-    [v12 pictureInPictureController:v11 didTransitionToRenderSize:width | (height << 32)];
+    playerController2 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self playerController];
+    pictureInPictureController2 = [playerController2 pictureInPictureController];
+    [sampleBufferPlaybackDelegate pictureInPictureController:pictureInPictureController2 didTransitionToRenderSize:width | (height << 32)];
   }
 }
 
-- (void)setPIPModeEnabled:(BOOL)a3
+- (void)setPIPModeEnabled:(BOOL)enabled
 {
   v68[1] = *MEMORY[0x1E69E9840];
-  if (self->_PIPModeEnabled != a3)
+  if (self->_PIPModeEnabled != enabled)
   {
-    v3 = a3;
-    self->_PIPModeEnabled = a3;
-    v5 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self observationController];
-    [v5 stopAllObservation];
+    enabledCopy = enabled;
+    self->_PIPModeEnabled = enabled;
+    observationController = [(AVPictureInPictureSampleBufferDisplayLayerView *)self observationController];
+    [observationController stopAllObservation];
 
-    v6 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sourceLayer];
+    sourceLayer = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sourceLayer];
 
-    if (!v6)
+    if (!sourceLayer)
     {
       v7 = _AVLog();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -163,34 +163,34 @@
       }
     }
 
-    v8 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self playerController];
+    playerController = [(AVPictureInPictureSampleBufferDisplayLayerView *)self playerController];
 
-    if (v8)
+    if (playerController)
     {
-      if (!v3)
+      if (!enabledCopy)
       {
 LABEL_16:
         [MEMORY[0x1E6979518] begin];
         [MEMORY[0x1E6979518] setDisableActions:1];
-        v14 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sbdlHostView];
-        [v14 setHidden:1];
+        sbdlHostView = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sbdlHostView];
+        [sbdlHostView setHidden:1];
 
-        v15 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sbdlHostView];
-        [v15 removeFromSuperview];
+        sbdlHostView2 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sbdlHostView];
+        [sbdlHostView2 removeFromSuperview];
 
         [(AVPictureInPictureSampleBufferDisplayLayerView *)self setSbdlHostView:0];
-        v16 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sourceContextId];
-        v17 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sourceLayerHost];
-        [v17 setContextId:v16];
+        sourceContextId = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sourceContextId];
+        sourceLayerHost = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sourceLayerHost];
+        [sourceLayerHost setContextId:sourceContextId];
 
-        v18 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sbdlHostView];
-        [v18 setContextId:0];
+        sbdlHostView3 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sbdlHostView];
+        [sbdlHostView3 setContextId:0];
 
         [(AVPictureInPictureSampleBufferDisplayLayerView *)self setSourceContextId:0];
         [(AVPictureInPictureSampleBufferDisplayLayerView *)self setSourceLayerHost:0];
         [MEMORY[0x1E6979518] commit];
-        v19 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self placeholderLayer];
-        [v19 removeFromSuperlayer];
+        placeholderLayer = [(AVPictureInPictureSampleBufferDisplayLayerView *)self placeholderLayer];
+        [placeholderLayer removeFromSuperlayer];
 
         [(AVPictureInPictureSampleBufferDisplayLayerView *)self setPlaceholderLayer:0];
         return;
@@ -206,30 +206,30 @@ LABEL_16:
         _os_log_error_impl(&dword_18B49C000, v9, OS_LOG_TYPE_ERROR, "Expected a player controller.", v67, 2u);
       }
 
-      if (!v3)
+      if (!enabledCopy)
       {
         goto LABEL_16;
       }
     }
 
-    v10 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sourceLayer];
-    if (!v10)
+    sourceLayer2 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sourceLayer];
+    if (!sourceLayer2)
     {
       goto LABEL_16;
     }
 
-    v11 = v10;
-    v12 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self playerController];
+    v11 = sourceLayer2;
+    playerController2 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self playerController];
 
-    if (!v12)
+    if (!playerController2)
     {
       goto LABEL_16;
     }
 
-    v13 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self observationController];
-    if (v13)
+    observationController2 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self observationController];
+    if (observationController2)
     {
-      [(AVPictureInPictureSampleBufferDisplayLayerView *)self setObservationController:v13];
+      [(AVPictureInPictureSampleBufferDisplayLayerView *)self setObservationController:observationController2];
     }
 
     else
@@ -238,39 +238,39 @@ LABEL_16:
       [(AVPictureInPictureSampleBufferDisplayLayerView *)self setObservationController:v20];
     }
 
-    v21 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self placeholderLayer];
-    if (v21)
+    placeholderLayer2 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self placeholderLayer];
+    if (placeholderLayer2)
     {
-      [(AVPictureInPictureSampleBufferDisplayLayerView *)self setPlaceholderLayer:v21];
+      [(AVPictureInPictureSampleBufferDisplayLayerView *)self setPlaceholderLayer:placeholderLayer2];
     }
 
     else
     {
-      v22 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self _makePictureInPicturePlatformAdapterContentPlaceholderLayer];
-      [(AVPictureInPictureSampleBufferDisplayLayerView *)self setPlaceholderLayer:v22];
+      _makePictureInPicturePlatformAdapterContentPlaceholderLayer = [(AVPictureInPictureSampleBufferDisplayLayerView *)self _makePictureInPicturePlatformAdapterContentPlaceholderLayer];
+      [(AVPictureInPictureSampleBufferDisplayLayerView *)self setPlaceholderLayer:_makePictureInPicturePlatformAdapterContentPlaceholderLayer];
     }
 
-    v23 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sourceLayerHost];
+    sourceLayerHost2 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sourceLayerHost];
 
-    if (!v23)
+    if (!sourceLayerHost2)
     {
-      v24 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sourceLayer];
-      v25 = [v24 avkit_sbdlpip_findFirstCALayerHost];
-      [(AVPictureInPictureSampleBufferDisplayLayerView *)self setSourceLayerHost:v25];
+      sourceLayer3 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sourceLayer];
+      avkit_sbdlpip_findFirstCALayerHost = [sourceLayer3 avkit_sbdlpip_findFirstCALayerHost];
+      [(AVPictureInPictureSampleBufferDisplayLayerView *)self setSourceLayerHost:avkit_sbdlpip_findFirstCALayerHost];
 
-      v26 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sourceLayerHost];
-      -[AVPictureInPictureSampleBufferDisplayLayerView setSourceContextId:](self, "setSourceContextId:", [v26 contextId]);
+      sourceLayerHost3 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sourceLayerHost];
+      -[AVPictureInPictureSampleBufferDisplayLayerView setSourceContextId:](self, "setSourceContextId:", [sourceLayerHost3 contextId]);
 
-      v27 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sourceLayerHost];
-      [v27 setContextId:0];
+      sourceLayerHost4 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sourceLayerHost];
+      [sourceLayerHost4 setContextId:0];
     }
 
     [MEMORY[0x1E6979518] begin];
     [MEMORY[0x1E6979518] setDisableActions:1];
-    v28 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sbdlHostView];
-    if (v28)
+    sbdlHostView4 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sbdlHostView];
+    if (sbdlHostView4)
     {
-      [(AVPictureInPictureSampleBufferDisplayLayerView *)self setSbdlHostView:v28];
+      [(AVPictureInPictureSampleBufferDisplayLayerView *)self setSbdlHostView:sbdlHostView4];
     }
 
     else
@@ -281,58 +281,58 @@ LABEL_16:
       [(AVPictureInPictureSampleBufferDisplayLayerView *)self setSbdlHostView:v30];
     }
 
-    v31 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sourceLayerHost];
-    [v31 beginTime];
+    sourceLayerHost5 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sourceLayerHost];
+    [sourceLayerHost5 beginTime];
     v33 = v32;
-    v34 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sbdlHostView];
-    [v34 setBeginTime:v33];
+    sbdlHostView5 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sbdlHostView];
+    [sbdlHostView5 setBeginTime:v33];
 
-    v35 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sourceContextId];
-    v36 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sbdlHostView];
-    [v36 setContextId:v35];
+    sourceContextId2 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sourceContextId];
+    sbdlHostView6 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sbdlHostView];
+    [sbdlHostView6 setContextId:sourceContextId2];
 
-    v37 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sbdlHostView];
-    [(AVPictureInPictureSampleBufferDisplayLayerView *)self addSubview:v37];
+    sbdlHostView7 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sbdlHostView];
+    [(AVPictureInPictureSampleBufferDisplayLayerView *)self addSubview:sbdlHostView7];
 
-    v38 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sourceLayer];
-    v39 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self placeholderLayer];
-    [v38 addSublayer:v39];
+    sourceLayer4 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sourceLayer];
+    placeholderLayer3 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self placeholderLayer];
+    [sourceLayer4 addSublayer:placeholderLayer3];
 
-    v40 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sourceLayer];
-    [v40 bounds];
+    sourceLayer5 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sourceLayer];
+    [sourceLayer5 bounds];
     [(AVPictureInPictureSampleBufferDisplayLayerView *)self setImageQueueSize:v41, v42];
 
-    v43 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sourceLayer];
-    [v43 bounds];
+    sourceLayer6 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sourceLayer];
+    [sourceLayer6 bounds];
     v45 = v44;
     v47 = v46;
     v49 = v48;
     v51 = v50;
-    v52 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self placeholderLayer];
-    [v52 setBounds:{v45, v47, v49, v51}];
+    placeholderLayer4 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self placeholderLayer];
+    [placeholderLayer4 setBounds:{v45, v47, v49, v51}];
 
-    v53 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sourceLayer];
-    [v53 bounds];
+    sourceLayer7 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sourceLayer];
+    [sourceLayer7 bounds];
     UIRectGetCenter();
     v55 = v54;
     v57 = v56;
-    v58 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self placeholderLayer];
-    [v58 setPosition:{v55, v57}];
+    placeholderLayer5 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self placeholderLayer];
+    [placeholderLayer5 setPosition:{v55, v57}];
 
     [(AVPictureInPictureSampleBufferDisplayLayerView *)self _updateGeometry];
     [MEMORY[0x1E6979518] commit];
-    v59 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self observationController];
-    v60 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self playerController];
+    observationController3 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self observationController];
+    playerController3 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self playerController];
     v68[0] = @"contentDimensions";
     v61 = [MEMORY[0x1E695DEC8] arrayWithObjects:v68 count:1];
-    v62 = [v59 startObserving:v60 keyPaths:v61 includeInitialValue:0 observationHandler:&__block_literal_global_16_30313];
+    v62 = [observationController3 startObserving:playerController3 keyPaths:v61 includeInitialValue:0 observationHandler:&__block_literal_global_16_30313];
 
-    v63 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self observationController];
-    v64 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sourceLayer];
-    v65 = [v63 startObserving:v64 keyPath:@"bounds" includeInitialValue:0 observationHandler:&__block_literal_global_21_30315];
+    observationController4 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self observationController];
+    sourceLayer8 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sourceLayer];
+    v65 = [observationController4 startObserving:sourceLayer8 keyPath:@"bounds" includeInitialValue:0 observationHandler:&__block_literal_global_21_30315];
 
-    v66 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self observationController];
-    [v66 startObservingNotificationForName:@"VideoQueue_CAContextIDDidChange" object:0 notificationCenter:0 observationHandler:&__block_literal_global_27_30317];
+    observationController5 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self observationController];
+    [observationController5 startObservingNotificationForName:@"VideoQueue_CAContextIDDidChange" object:0 notificationCenter:0 observationHandler:&__block_literal_global_27_30317];
   }
 }
 
@@ -365,50 +365,50 @@ void __68__AVPictureInPictureSampleBufferDisplayLayerView_setPIPModeEnabled___bl
 
 - (void)_updateSourceLayerHost
 {
-  v3 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sourceLayer];
-  v17 = [v3 avkit_sbdlpip_findFirstCALayerHost];
+  sourceLayer = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sourceLayer];
+  avkit_sbdlpip_findFirstCALayerHost = [sourceLayer avkit_sbdlpip_findFirstCALayerHost];
 
-  v4 = [v17 contextId];
-  v5 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sourceLayerHost];
-  if (v5 != v17)
+  contextId = [avkit_sbdlpip_findFirstCALayerHost contextId];
+  sourceLayerHost = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sourceLayerHost];
+  if (sourceLayerHost != avkit_sbdlpip_findFirstCALayerHost)
   {
 
 LABEL_3:
-    v6 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sourceLayerHost];
+    sourceLayerHost2 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sourceLayerHost];
 
-    if (v6)
+    if (sourceLayerHost2)
     {
-      v7 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self observationController];
-      v8 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sourceLayerHost];
-      [v7 stopObserving:v8];
+      observationController = [(AVPictureInPictureSampleBufferDisplayLayerView *)self observationController];
+      sourceLayerHost3 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sourceLayerHost];
+      [observationController stopObserving:sourceLayerHost3];
     }
 
-    [(AVPictureInPictureSampleBufferDisplayLayerView *)self setSourceLayerHost:v17];
-    v9 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sourceLayerHost];
-    -[AVPictureInPictureSampleBufferDisplayLayerView setSourceContextId:](self, "setSourceContextId:", [v9 contextId]);
+    [(AVPictureInPictureSampleBufferDisplayLayerView *)self setSourceLayerHost:avkit_sbdlpip_findFirstCALayerHost];
+    sourceLayerHost4 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sourceLayerHost];
+    -[AVPictureInPictureSampleBufferDisplayLayerView setSourceContextId:](self, "setSourceContextId:", [sourceLayerHost4 contextId]);
 
-    v10 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self observationController];
-    v11 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sourceLayerHost];
-    v12 = [v10 startObserving:v11 keyPath:@"beginTime" includeInitialValue:1 observationHandler:&__block_literal_global_30330];
+    observationController2 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self observationController];
+    sourceLayerHost5 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sourceLayerHost];
+    v12 = [observationController2 startObserving:sourceLayerHost5 keyPath:@"beginTime" includeInitialValue:1 observationHandler:&__block_literal_global_30330];
 
-    v13 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sourceContextId];
-    v14 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sbdlHostView];
-    [v14 setContextId:v13];
+    sourceContextId = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sourceContextId];
+    sbdlHostView = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sbdlHostView];
+    [sbdlHostView setContextId:sourceContextId];
 
-    [v17 setContextId:0];
+    [avkit_sbdlpip_findFirstCALayerHost setContextId:0];
     goto LABEL_6;
   }
 
-  if (!v4)
+  if (!contextId)
   {
 
     goto LABEL_6;
   }
 
-  v15 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sourceContextId];
-  v16 = [v17 contextId];
+  sourceContextId2 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self sourceContextId];
+  contextId2 = [avkit_sbdlpip_findFirstCALayerHost contextId];
 
-  if (v15 != v16)
+  if (sourceContextId2 != contextId2)
   {
     goto LABEL_3;
   }
@@ -428,26 +428,26 @@ void __72__AVPictureInPictureSampleBufferDisplayLayerView__updateSourceLayerHost
 
 - (void)dealloc
 {
-  v3 = [(AVPictureInPictureSampleBufferDisplayLayerView *)self observationController];
-  [v3 stopAllObservation];
+  observationController = [(AVPictureInPictureSampleBufferDisplayLayerView *)self observationController];
+  [observationController stopAllObservation];
 
   v4.receiver = self;
   v4.super_class = AVPictureInPictureSampleBufferDisplayLayerView;
   [(AVPictureInPictureSampleBufferDisplayLayerView *)&v4 dealloc];
 }
 
-- (AVPictureInPictureSampleBufferDisplayLayerView)initWithSourceLayer:(id)a3 playerController:(id)a4
+- (AVPictureInPictureSampleBufferDisplayLayerView)initWithSourceLayer:(id)layer playerController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
+  layerCopy = layer;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = AVPictureInPictureSampleBufferDisplayLayerView;
   v9 = [(AVPictureInPictureSampleBufferDisplayLayerView *)&v12 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_sourceLayer, a3);
-    objc_storeStrong(&v10->_playerController, a4);
+    objc_storeStrong(&v9->_sourceLayer, layer);
+    objc_storeStrong(&v10->_playerController, controller);
   }
 
   return v10;

@@ -1,21 +1,21 @@
 @interface PVTaskTokenPool
-- (PVTaskTokenPool)initWithOffset:(unint64_t)a3;
+- (PVTaskTokenPool)initWithOffset:(unint64_t)offset;
 - (PVTaskTokenPoolDelegate)delegate;
 - (id).cxx_construct;
 - (id)getToken;
-- (void)returnToken:(id)a3;
+- (void)returnToken:(id)token;
 @end
 
 @implementation PVTaskTokenPool
 
-- (PVTaskTokenPool)initWithOffset:(unint64_t)a3
+- (PVTaskTokenPool)initWithOffset:(unint64_t)offset
 {
   v5.receiver = self;
   v5.super_class = PVTaskTokenPool;
   result = [(PVTaskTokenPool *)&v5 init];
   if (result)
   {
-    *(result + 1) = a3;
+    *(result + 1) = offset;
   }
 
   return result;
@@ -40,12 +40,12 @@
   }
 
   v6 = [[PVTaskToken alloc] initWithPool:self tokenId:v5];
-  v7 = [(PVTaskTokenPool *)self delegate];
+  delegate = [(PVTaskTokenPool *)self delegate];
 
-  if (v7)
+  if (delegate)
   {
-    v8 = [(PVTaskTokenPool *)self delegate];
-    [v8 tokenTaken:v6];
+    delegate2 = [(PVTaskTokenPool *)self delegate];
+    [delegate2 tokenTaken:v6];
   }
 
   std::mutex::unlock(self + 1);
@@ -53,21 +53,21 @@
   return v6;
 }
 
-- (void)returnToken:(id)a3
+- (void)returnToken:(id)token
 {
-  v4 = a3;
-  if (([v4 returned] & 1) == 0)
+  tokenCopy = token;
+  if (([tokenCopy returned] & 1) == 0)
   {
     std::mutex::lock(self + 1);
-    v7 = [v4 tokenId];
-    std::deque<unsigned long>::push_back(self + 2, &v7);
-    [v4 setReturned:1];
-    v5 = [(PVTaskTokenPool *)self delegate];
+    tokenId = [tokenCopy tokenId];
+    std::deque<unsigned long>::push_back(self + 2, &tokenId);
+    [tokenCopy setReturned:1];
+    delegate = [(PVTaskTokenPool *)self delegate];
 
-    if (v5)
+    if (delegate)
     {
-      v6 = [(PVTaskTokenPool *)self delegate];
-      [v6 tokenReturned:v4];
+      delegate2 = [(PVTaskTokenPool *)self delegate];
+      [delegate2 tokenReturned:tokenCopy];
     }
 
     std::mutex::unlock(self + 1);

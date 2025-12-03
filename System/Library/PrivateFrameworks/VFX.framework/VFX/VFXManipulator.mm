@@ -1,26 +1,26 @@
 @interface VFXManipulator
-- (BOOL)_applyWithEvent:(id *)a3;
+- (BOOL)_applyWithEvent:(id *)event;
 - (BOOL)hidden;
-- (BOOL)mouseDown:(id *)a3;
-- (BOOL)mouseDragged:(id *)a3;
-- (BOOL)mouseMoved:(id *)a3;
-- (BOOL)mouseUp:(id *)a3;
+- (BOOL)mouseDown:(id *)down;
+- (BOOL)mouseDragged:(id *)dragged;
+- (BOOL)mouseMoved:(id *)moved;
+- (BOOL)mouseUp:(id *)up;
 - (VFXManipulator)init;
 - (VFXNode)manipulatorNode;
 - (VFXNode)target;
-- (const)snapInfoAtIndex:(unint64_t)a3 axis:(unint64_t)a4;
-- (float32x4_t)_snapPositionToAlign:(uint64_t)a3 original:(_BYTE *)a4 unit:(uint64_t *)a5 axisMove:(float32x4_t)a6 rayStart:(float32x4_t)a7 rayDir:(float)a8 didSnap:(__n128)a9 snapIndexes:(__n128)a10;
+- (const)snapInfoAtIndex:(unint64_t)index axis:(unint64_t)axis;
+- (float32x4_t)_snapPositionToAlign:(uint64_t)align original:(_BYTE *)original unit:(uint64_t *)unit axisMove:(float32x4_t)move rayStart:(float32x4_t)start rayDir:(float)dir didSnap:(__n128)snap snapIndexes:(__n128)self0;
 - (id)copy;
-- (id)hitTest:(id *)a3;
+- (id)hitTest:(id *)test;
 - (id)setupClones;
-- (id)snapGuideIndexesOnAxis:(unint64_t)a3;
+- (id)snapGuideIndexesOnAxis:(unint64_t)axis;
 - (id)world;
 - (int64_t)effectiveEditingSpace;
 - (unint64_t)_effectiveFeatures;
 - (void)_deleteOriginalData;
-- (void)_prepareSnapToAlignData:(VFXManipulator *)self minOffset:(SEL)a2 maxOffset:(unsigned __int16)a3;
+- (void)_prepareSnapToAlignData:(VFXManipulator *)self minOffset:(SEL)offset maxOffset:(unsigned __int16)maxOffset;
 - (void)_saveOriginalData;
-- (void)_updateActionWithEvent:(id *)a3;
+- (void)_updateActionWithEvent:(id *)event;
 - (void)_updateRuntimeItems;
 - (void)addClonesToWorld;
 - (void)clearRuntimeItems;
@@ -29,38 +29,38 @@
 - (void)prepareSnapToAlignData;
 - (void)prepareSnapToAlignDataIfNeeded;
 - (void)removeClonesFromWorld;
-- (void)setTarget:(id)a3;
-- (void)setTargets:(id)a3;
+- (void)setTarget:(id)target;
+- (void)setTargets:(id)targets;
 - (void)setupNode;
 - (void)updateItemsPosition;
 - (void)updateItemsRotation:(VFXManipulator *)self;
-- (void)updateItemsScale:(float)a3 axis:(unsigned __int16)a4;
+- (void)updateItemsScale:(float)scale axis:(unsigned __int16)axis;
 - (void)updateManipulatorComponents;
 - (void)updateManipulatorNode;
-- (void)updateManipulatorPosition:(__CFXEngineContext *)a3;
+- (void)updateManipulatorPosition:(__CFXEngineContext *)position;
 - (void)updateTargetsTransforms;
 - (void)validateClones;
 @end
 
 @implementation VFXManipulator
 
-- (void)setTargets:(id)a3
+- (void)setTargets:(id)targets
 {
   v42 = *MEMORY[0x1E69E9840];
-  v6 = objc_msgSend_authoringEnvironment(self, a2, a3, v3);
+  v6 = objc_msgSend_authoringEnvironment(self, a2, targets, v3);
   objc_sync_enter(v6);
   v7 = self->_targets;
   self->_targets = 0;
-  if (a3)
+  if (targets)
   {
     v11 = MEMORY[0x1E695DFA0];
-    v12 = objc_msgSend_count(a3, v8, v9, v10);
+    v12 = objc_msgSend_count(targets, v8, v9, v10);
     v15 = objc_msgSend_orderedSetWithCapacity_(v11, v13, v12, v14);
     v39 = 0u;
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v20 = objc_msgSend_countByEnumeratingWithState_objects_count_(a3, v16, &v37, v41, 16);
+    v20 = objc_msgSend_countByEnumeratingWithState_objects_count_(targets, v16, &v37, v41, 16);
     if (v20)
     {
       v21 = *v38;
@@ -71,7 +71,7 @@
         {
           if (*v38 != v21)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(targets);
           }
 
           v23 = *(*(&v37 + 1) + 8 * v22);
@@ -88,7 +88,7 @@
                   break;
                 }
 
-                if (objc_msgSend_containsObject_(a3, v28, i, v30))
+                if (objc_msgSend_containsObject_(targets, v28, i, v30))
                 {
                   goto LABEL_10;
                 }
@@ -103,7 +103,7 @@ LABEL_10:
         }
 
         while (v22 != v20);
-        v33 = objc_msgSend_countByEnumeratingWithState_objects_count_(a3, v17, &v37, v41, 16);
+        v33 = objc_msgSend_countByEnumeratingWithState_objects_count_(targets, v17, &v37, v41, 16);
         v20 = v33;
       }
 
@@ -135,14 +135,14 @@ LABEL_10:
   return Object;
 }
 
-- (void)setTarget:(id)a3
+- (void)setTarget:(id)target
 {
-  if (a3)
+  if (target)
   {
-    a3 = objc_msgSend_orderedSetWithObject_(MEMORY[0x1E695DFB8], a2, a3, v3);
+    target = objc_msgSend_orderedSetWithObject_(MEMORY[0x1E695DFB8], a2, target, v3);
   }
 
-  objc_msgSend_setTargets_(self, a2, a3, v3);
+  objc_msgSend_setTargets_(self, a2, target, v3);
 }
 
 - (VFXManipulator)init
@@ -451,9 +451,9 @@ LABEL_10:
   objc_msgSend_setImmediateMode_(VFXTransaction, v529, v531, v530);
 }
 
-- (void)updateManipulatorPosition:(__CFXEngineContext *)a3
+- (void)updateManipulatorPosition:(__CFXEngineContext *)position
 {
-  v6 = objc_msgSend_immediateMode(VFXTransaction, a2, a3, v3);
+  v6 = objc_msgSend_immediateMode(VFXTransaction, a2, position, v3);
   objc_msgSend_setImmediateMode_(VFXTransaction, v7, 1, v8);
   sub_1AF10C564(self, v9, v10, v11);
   v13 = v12;
@@ -462,7 +462,7 @@ LABEL_10:
   *&self->_anon_1f0[36] = v15;
   *&self->_anon_1f0[52] = v16;
   v12.n128_u32[0] = 1128792064;
-  sub_1AF27F708(a3, v12.n128_f64[0], v13, v14, v15, v16);
+  sub_1AF27F708(position, v12.n128_f64[0], v13, v14, v15, v16);
   *&v21 = v20;
   v22 = v20;
   node = self->_node;
@@ -490,7 +490,7 @@ LABEL_10:
 
       else
       {
-        v35 = sub_1AF13050C(a3, 1);
+        v35 = sub_1AF13050C(position, 1);
         v39 = 0;
         v40 = *v35;
         v41 = v35[1];
@@ -608,7 +608,7 @@ LABEL_10:
       v96 = 0u;
       v81 = objc_msgSend___CFObject(self->_billboard, v64, v80, v65);
       v85 = objc_msgSend_nodeRef(self->_screenSpaceRotation, v82, v83, v84);
-      if (sub_1AF150360(a3, v81, v85, &v95, 1.0))
+      if (sub_1AF150360(position, v81, v85, &v95, 1.0))
       {
         objc_msgSend_setTransform_(self->_screenSpaceRotation, v64, v86, v65, *v95.i64, *v96.i64, *v97.i64, *&v98);
       }
@@ -705,7 +705,7 @@ LABEL_9:
   }
 }
 
-- (id)hitTest:(id *)a3
+- (id)hitTest:(id *)test
 {
   v58 = *MEMORY[0x1E69E9840];
   node = self->_node;
@@ -714,7 +714,7 @@ LABEL_9:
     return 0;
   }
 
-  objc_msgSend_opacity(node, a2, a3, v3);
+  objc_msgSend_opacity(node, a2, test, v3);
   if (v10 == 0.0)
   {
     return 0;
@@ -739,7 +739,7 @@ LABEL_9:
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v34 = objc_msgSend_hitTest_options_(v31, v32, v14, v33, a3->var2.x, a3->var2.y, 0);
+  v34 = objc_msgSend_hitTest_options_(v31, v32, v14, v33, test->var2.x, test->var2.y, 0);
   v36 = objc_msgSend_countByEnumeratingWithState_objects_count_(v34, v35, &v53, v57, 16);
   if (!v36)
   {
@@ -813,16 +813,16 @@ LABEL_20:
   return v45;
 }
 
-- (void)_updateActionWithEvent:(id *)a3
+- (void)_updateActionWithEvent:(id *)event
 {
-  v5 = *&a3[1].var0;
-  v18[2] = *&a3->var2.y;
+  v5 = *&event[1].var0;
+  v18[2] = *&event->var2.y;
   v18[3] = v5;
-  v6 = *&a3[1].var2.y;
-  v18[4] = *&a3[1].var1.y;
+  v6 = *&event[1].var2.y;
+  v18[4] = *&event[1].var1.y;
   v18[5] = v6;
-  v7 = *&a3->var1.y;
-  v18[0] = *&a3->var0;
+  v7 = *&event->var1.y;
+  v18[0] = *&event->var0;
   v18[1] = v7;
   v11 = objc_msgSend_hitTest_(self, a2, v18, v3);
   highlightNode = self->_highlightNode;
@@ -848,25 +848,25 @@ LABEL_20:
   }
 }
 
-- (BOOL)mouseMoved:(id *)a3
+- (BOOL)mouseMoved:(id *)moved
 {
   action = self->_action;
   self->_action = 0;
-  if (objc_msgSend_count(self->_targets, a2, a3, v3) && !self->_readonly)
+  if (objc_msgSend_count(self->_targets, a2, moved, v3) && !self->_readonly)
   {
     if (objc_msgSend_isHidden(self->_node, v7, v8, v9))
     {
       return 0;
     }
 
-    v13 = *&a3[1].var0;
-    v16[2] = *&a3->var2.y;
+    v13 = *&moved[1].var0;
+    v16[2] = *&moved->var2.y;
     v16[3] = v13;
-    v14 = *&a3[1].var2.y;
-    v16[4] = *&a3[1].var1.y;
+    v14 = *&moved[1].var2.y;
+    v16[4] = *&moved[1].var1.y;
     v16[5] = v14;
-    v15 = *&a3->var1.y;
-    v16[0] = *&a3->var0;
+    v15 = *&moved->var1.y;
+    v16[0] = *&moved->var0;
     v16[1] = v15;
     objc_msgSend__updateActionWithEvent_(self, v10, v16, v11);
   }
@@ -1279,7 +1279,7 @@ LABEL_20:
   }
 }
 
-- (void)updateItemsScale:(float)a3 axis:(unsigned __int16)a4
+- (void)updateItemsScale:(float)scale axis:(unsigned __int16)axis
 {
   v130 = *MEMORY[0x1E69E9840];
   v6 = 16;
@@ -1297,33 +1297,33 @@ LABEL_20:
 
   else
   {
-    v4.f32[0] = a3;
+    v4.f32[0] = scale;
   }
 
   v112 = v4;
   if ((selectedAxis | 2) == 2)
   {
-    v9 = a3;
+    scaleCopy = scale;
   }
 
   else
   {
-    v9 = 1.0;
+    scaleCopy = 1.0;
   }
 
-  v115 = v9;
+  v115 = scaleCopy;
   v10 = selectedAxis == 3 || selectedAxis == 0;
   v123 = 0u;
   v124 = 0u;
   if (!v10)
   {
-    a3 = 1.0;
+    scale = 1.0;
   }
 
   v121 = 0uLL;
   v122 = 0uLL;
   obj = v7;
-  v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(v7, a2, &v121, v129, 16, LODWORD(a3));
+  v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(v7, a2, &v121, v129, 16, LODWORD(scale));
   if (v11)
   {
     v15 = v11;
@@ -1733,7 +1733,7 @@ LABEL_44:
   objc_msgSend_unlock(self->_presentationItemsLock, v9, v10, v11);
 }
 
-- (BOOL)_applyWithEvent:(id *)a3
+- (BOOL)_applyWithEvent:(id *)event
 {
   v187 = *MEMORY[0x1E69E9840];
   action = self->_action;
@@ -1741,7 +1741,7 @@ LABEL_44:
   {
     if (action == 3)
     {
-      v104 = a3->var1.y - self->_originalMouseLocation.y;
+      v104 = event->var1.y - self->_originalMouseLocation.y;
       v105 = (*self->_anon_130 * v104) * 0.01;
       selectedAxis = self->_selectedAxis;
       if (self->_selectedAxis)
@@ -1787,7 +1787,7 @@ LABEL_44:
       else
       {
         v181 = (*self->_anon_130 * v104) * 0.01;
-        v114 = objc_msgSend_authoringEnvironment(self, a2, a3, v3);
+        v114 = objc_msgSend_authoringEnvironment(self, a2, event, v3);
         objc_msgSend_viewMatrix(v114, v115, v116, v117);
         v189 = __invert_f4(v188);
         v113 = vmlaq_f32(vmlaq_f32(vnegq_f32(v189.columns[2]), 0, v189.columns[1]), 0, v189.columns[0]);
@@ -1864,7 +1864,7 @@ LABEL_44:
         goto LABEL_19;
       }
 
-      v49 = a3->var1.y - self->_originalMouseLocation.y;
+      v49 = event->var1.y - self->_originalMouseLocation.y;
       v50 = v49 <= 0.0;
       v51 = v49;
       v52 = 1.0 / ((100.0 - v51) / 100.0);
@@ -1875,7 +1875,7 @@ LABEL_44:
       }
 
       v54 = v53;
-      objc_msgSend_begin(VFXTransaction, a2, a3, v3);
+      objc_msgSend_begin(VFXTransaction, a2, event, v3);
       objc_msgSend_setAnimationDuration_(VFXTransaction, v55, v56, v57, 0.0);
       *&v58 = v54;
       objc_msgSend_updateItemsScale_axis_(self, v59, self->_selectedAxis, v60, v58);
@@ -1887,8 +1887,8 @@ LABEL_83:
     return v65;
   }
 
-  v6 = *&a3[1].var0;
-  v7 = vsubq_f32(*&a3[1].var1.y, v6);
+  v6 = *&event[1].var0;
+  v7 = vsubq_f32(*&event[1].var1.y, v6);
   v179 = *&self->_anon_1f0[52];
   if (action == 1)
   {
@@ -2034,7 +2034,7 @@ LABEL_82:
     }
 
     v177 = vaddq_f32(v6, *&self->_anon_130[48]);
-    objc_msgSend_begin(VFXTransaction, a2, a3, v3);
+    objc_msgSend_begin(VFXTransaction, a2, event, v3);
     objc_msgSend_setAnimationDuration_(VFXTransaction, v12, v13, v14, 0.0);
     LOBYTE(v183[0]) = 0;
     v18 = objc_msgSend_authoringEnvironment(self, v15, v16, v17);
@@ -2187,52 +2187,52 @@ LABEL_19:
   objc_msgSend_unlock(snapLock, v14, v15, v16);
 }
 
-- (BOOL)mouseDragged:(id *)a3
+- (BOOL)mouseDragged:(id *)dragged
 {
   if (!self->_action)
   {
     return 0;
   }
 
-  v6 = *&a3[1].var0;
-  v21 = *&a3->var2.y;
+  v6 = *&dragged[1].var0;
+  v21 = *&dragged->var2.y;
   v22 = v6;
-  v7 = *&a3[1].var2.y;
-  v23 = *&a3[1].var1.y;
+  v7 = *&dragged[1].var2.y;
+  v23 = *&dragged[1].var1.y;
   v24 = v7;
-  v8 = *&a3->var1.y;
-  v19 = *&a3->var0;
+  v8 = *&dragged->var1.y;
+  v19 = *&dragged->var0;
   v20 = v8;
   objc_msgSend__updateCloneStateWithEvent_(self, a2, &v19, v3);
-  v9 = *&a3[1].var0;
-  v21 = *&a3->var2.y;
+  v9 = *&dragged[1].var0;
+  v21 = *&dragged->var2.y;
   v22 = v9;
-  v10 = *&a3[1].var2.y;
-  v23 = *&a3[1].var1.y;
+  v10 = *&dragged[1].var2.y;
+  v23 = *&dragged[1].var1.y;
   v24 = v10;
-  v11 = *&a3->var1.y;
-  v19 = *&a3->var0;
+  v11 = *&dragged->var1.y;
+  v19 = *&dragged->var0;
   v20 = v11;
   v14 = objc_msgSend__applyWithEvent_(self, v12, &v19, v13);
   objc_msgSend__updateRuntimeItems(self, v15, v16, v17);
   return v14;
 }
 
-- (BOOL)mouseDown:(id *)a3
+- (BOOL)mouseDown:(id *)down
 {
-  if (objc_msgSend_readonly(self, a2, a3, v3))
+  if (objc_msgSend_readonly(self, a2, down, v3))
   {
     return 0;
   }
 
-  v8 = *&a3[1].var0;
-  v63[2] = *&a3->var2.y;
+  v8 = *&down[1].var0;
+  v63[2] = *&down->var2.y;
   v63[3] = v8;
-  v9 = *&a3[1].var2.y;
-  v63[4] = *&a3[1].var1.y;
+  v9 = *&down[1].var2.y;
+  v63[4] = *&down[1].var1.y;
   v63[5] = v9;
-  v10 = *&a3->var1.y;
-  v63[0] = *&a3->var0;
+  v10 = *&down->var1.y;
+  v63[0] = *&down->var0;
   v63[1] = v10;
   objc_msgSend__updateActionWithEvent_(self, v6, v63, v7);
   if (!self->_action)
@@ -2254,7 +2254,7 @@ LABEL_19:
   v23 = *&self->_anon_1f0[52];
   *&self->_anon_1b0[36] = *&self->_anon_1f0[36];
   *&self->_anon_1b0[52] = v23;
-  var1 = a3->var1;
+  var1 = down->var1;
   self->_originalMouseLocation = var1;
   action = self->_action;
   if (action > 2)
@@ -2308,7 +2308,7 @@ LABEL_19:
     *&v58 = v57.f32[2] + vaddv_f32(*v57.f32);
     *v57.f32 = vrsqrte_f32(v58);
     *v57.f32 = vmul_f32(*v57.f32, vrsqrts_f32(v58, vmul_f32(*v57.f32, *v57.f32)));
-    v59 = vmulq_f32(vsubq_f32(*&a3[1].var1.y, *&a3[1].var0), vmulq_n_f32(v56, vmul_f32(*v57.f32, vrsqrts_f32(v58, vmul_f32(*v57.f32, *v57.f32))).f32[0]));
+    v59 = vmulq_f32(vsubq_f32(*&down[1].var1.y, *&down[1].var0), vmulq_n_f32(v56, vmul_f32(*v57.f32, vrsqrts_f32(v58, vmul_f32(*v57.f32, *v57.f32))).f32[0]));
     v60 = vaddv_f32(*v59.f32);
     v61 = -1.0;
     if ((v59.f32[2] + v60) <= 0.0)
@@ -2357,8 +2357,8 @@ LABEL_19:
         *&self->_anon_130[16] = v31;
         *&self->_anon_130[32] = v30;
         *self->_anon_130 = v30;
-        v32 = *&a3[1].var0;
-        v33 = vsubq_f32(*&a3[1].var1.y, v32);
+        v32 = *&down[1].var0;
+        v33 = vsubq_f32(*&down[1].var1.y, v32);
         v34 = vmulq_f32(v33, v31);
         v35 = v34.f32[2] + vaddv_f32(*v34.f32);
         if (v35 != 0.0)
@@ -2395,16 +2395,16 @@ LABEL_19:
     *v49.f32 = vmul_f32(*v49.f32, vrsqrts_f32(v50, vmul_f32(*v49.f32, *v49.f32)));
     *self->_anon_130 = v47;
     *&self->_anon_130[16] = vmulq_n_f32(v48, vmul_f32(*v49.f32, vrsqrts_f32(v50, vmul_f32(*v49.f32, *v49.f32))).f32[0]);
-    *v51.i64 = sub_1AF10F130(self, *&a3[1].var0, vsubq_f32(*&a3[1].var1.y, *&a3[1].var0));
+    *v51.i64 = sub_1AF10F130(self, *&down[1].var0, vsubq_f32(*&down[1].var1.y, *&down[1].var0));
     *&self->_anon_130[32] = vsubq_f32(v62, v51);
   }
 
   return v14;
 }
 
-- (BOOL)mouseUp:(id *)a3
+- (BOOL)mouseUp:(id *)up
 {
-  if (objc_msgSend_readonly(self, a2, a3, v3))
+  if (objc_msgSend_readonly(self, a2, up, v3))
   {
     return 0;
   }
@@ -2413,24 +2413,24 @@ LABEL_19:
   v9 = self->_action != 0;
   if (self->_action)
   {
-    v12 = *&a3[1].var0;
-    v42 = *&a3->var2.y;
+    v12 = *&up[1].var0;
+    v42 = *&up->var2.y;
     v43 = v12;
-    v13 = *&a3[1].var2.y;
-    v44 = *&a3[1].var1.y;
+    v13 = *&up[1].var2.y;
+    v44 = *&up[1].var1.y;
     v45 = v13;
-    v14 = *&a3->var1.y;
-    v40 = *&a3->var0;
+    v14 = *&up->var1.y;
+    v40 = *&up->var0;
     v41 = v14;
     objc_msgSend__updateCloneStateWithEvent_(self, v10, &v40, v11);
-    v15 = *&a3[1].var0;
-    v42 = *&a3->var2.y;
+    v15 = *&up[1].var0;
+    v42 = *&up->var2.y;
     v43 = v15;
-    v16 = *&a3[1].var2.y;
-    v44 = *&a3[1].var1.y;
+    v16 = *&up[1].var2.y;
+    v44 = *&up[1].var1.y;
     v45 = v16;
-    v17 = *&a3->var1.y;
-    v40 = *&a3->var0;
+    v17 = *&up->var1.y;
+    v40 = *&up->var0;
     v41 = v17;
     objc_msgSend__applyWithEvent_(self, v18, &v40, v19);
     if (self->_cloning)
@@ -2463,14 +2463,14 @@ LABEL_19:
   *&self->_anon_130[48] = 0u;
   self->_isMouseDown = 0;
   objc_msgSend_clearRuntimeItems(self, v31, v32, v33);
-  v34 = *&a3[1].var0;
-  v42 = *&a3->var2.y;
+  v34 = *&up[1].var0;
+  v42 = *&up->var2.y;
   v43 = v34;
-  v35 = *&a3[1].var2.y;
-  v44 = *&a3[1].var1.y;
+  v35 = *&up[1].var2.y;
+  v44 = *&up[1].var1.y;
   v45 = v35;
-  v36 = *&a3->var1.y;
-  v40 = *&a3->var0;
+  v36 = *&up->var1.y;
+  v40 = *&up->var0;
   v41 = v36;
   objc_msgSend_mouseMoved_(self, v37, &v40, v38);
   return v9;
@@ -2602,15 +2602,15 @@ LABEL_19:
   return v5;
 }
 
-- (id)snapGuideIndexesOnAxis:(unint64_t)a3
+- (id)snapGuideIndexesOnAxis:(unint64_t)axis
 {
   v3 = 608;
-  if (a3 == 2)
+  if (axis == 2)
   {
     v3 = 600;
   }
 
-  if (a3 == 1)
+  if (axis == 1)
   {
     v3 = 592;
   }
@@ -2618,35 +2618,35 @@ LABEL_19:
   return *(&self->super.isa + v3);
 }
 
-- (const)snapInfoAtIndex:(unint64_t)a3 axis:(unint64_t)a4
+- (const)snapInfoAtIndex:(unint64_t)index axis:(unint64_t)axis
 {
   v4 = 584;
-  if (a4 == 2)
+  if (axis == 2)
   {
     v4 = 576;
   }
 
-  if (a4 == 1)
+  if (axis == 1)
   {
     v4 = 568;
   }
 
-  return (*(&self->super.isa + v4) + 24 * a3);
+  return (*(&self->super.isa + v4) + 24 * index);
 }
 
-- (void)_prepareSnapToAlignData:(VFXManipulator *)self minOffset:(SEL)a2 maxOffset:(unsigned __int16)a3
+- (void)_prepareSnapToAlignData:(VFXManipulator *)self minOffset:(SEL)offset maxOffset:(unsigned __int16)maxOffset
 {
   v62 = v3;
   v63 = v4;
-  if ((a3 - 1) >= 3)
+  if ((maxOffset - 1) >= 3)
   {
-    NSLog(&cfstr_Preparesnaptoa.isa, a2);
+    NSLog(&cfstr_Preparesnaptoa.isa, offset);
   }
 
   else
   {
-    v5 = a3;
-    v7 = (&self->super.isa + ((a3 - 1) & 0x1FFF));
+    maxOffsetCopy = maxOffset;
+    v7 = (&self->super.isa + ((maxOffset - 1) & 0x1FFF));
     free(v7[71]);
     v7[71] = 0;
     if (objc_msgSend_count(self->_targets, v8, v9, v10))
@@ -2724,7 +2724,7 @@ LABEL_17:
         *(v7[71] + 3 * v31 + 19) = v34;
         v53 = v7[71];
         v53[2 * v47 + 4] = 0;
-        switch(v5)
+        switch(maxOffsetCopy)
         {
           case 3:
             v53[6 * v31] = v64.i32[2];
@@ -2934,44 +2934,44 @@ LABEL_21:
   }
 }
 
-- (float32x4_t)_snapPositionToAlign:(uint64_t)a3 original:(_BYTE *)a4 unit:(uint64_t *)a5 axisMove:(float32x4_t)a6 rayStart:(float32x4_t)a7 rayDir:(float)a8 didSnap:(__n128)a9 snapIndexes:(__n128)a10
+- (float32x4_t)_snapPositionToAlign:(uint64_t)align original:(_BYTE *)original unit:(uint64_t *)unit axisMove:(float32x4_t)move rayStart:(float32x4_t)start rayDir:(float)dir didSnap:(__n128)snap snapIndexes:(__n128)self0
 {
-  v12 = a3;
-  v34 = a9;
-  v33 = a10;
-  objc_msgSend_prepareSnapToAlignDataIfNeeded(a1, a2, a3, a4);
-  *a4 = 0;
-  if (a1[70] && a1[71])
+  alignCopy = align;
+  snapCopy = snap;
+  indexesCopy = indexes;
+  objc_msgSend_prepareSnapToAlignDataIfNeeded(self, a2, align, original);
+  *original = 0;
+  if (self[70] && self[71])
   {
     v31 = 0u;
     v32 = 0u;
     v30 = 0;
-    sub_1AF1DA1B4(&v31, &v34, &v33);
-    v15 = a6;
-    v16 = vsubq_f32(a6, a7);
+    sub_1AF1DA1B4(&v31, &snapCopy, &indexesCopy);
+    moveCopy7 = move;
+    v16 = vsubq_f32(move, start);
     v25 = v16;
     if (fabsf(v16.f32[0]) <= 0.00001)
     {
       v19 = 0;
-      v18 = a6;
+      moveCopy4 = move;
     }
 
     else
     {
-      v17 = sub_1AF110A2C(a1[71], a1[70], &v30, a6.f32[0], a8);
-      *a5 = v17;
+      v17 = sub_1AF110A2C(self[71], self[70], &v30, move.f32[0], dir);
+      *unit = v17;
       if (v17 == -1)
       {
         v19 = 0;
-        v15 = a6;
-        v18 = a6;
+        moveCopy7 = move;
+        moveCopy4 = move;
       }
 
       else
       {
-        v18.i32[0] = v30;
-        v15 = a6;
-        *(v18.i64 + 4) = *(a6.i64 + 4);
+        moveCopy4.i32[0] = v30;
+        moveCopy7 = move;
+        *(moveCopy4.i64 + 4) = *(move.i64 + 4);
         v19 = 1;
       }
 
@@ -2985,23 +2985,23 @@ LABEL_21:
 
     else
     {
-      v27 = v18;
-      v20 = sub_1AF110A2C(a1[72], a1[70], &v30, v15.n128_f32[1], a8);
-      a5[1] = v20;
+      v27 = moveCopy4;
+      v20 = sub_1AF110A2C(self[72], self[70], &v30, moveCopy7.n128_f32[1], dir);
+      unit[1] = v20;
       if (v20 == -1)
       {
         v21 = 0;
-        v18 = v27;
+        moveCopy4 = v27;
       }
 
       else
       {
-        v18.i64[0] = __PAIR64__(v30, v27.u32[0]);
-        v18.i64[1] = v27.i64[1];
+        moveCopy4.i64[0] = __PAIR64__(v30, v27.u32[0]);
+        moveCopy4.i64[1] = v27.i64[1];
         v21 = 1;
       }
 
-      v15 = a6;
+      moveCopy7 = move;
       v16.i32[2] = v25.i32[2];
     }
 
@@ -3012,35 +3012,35 @@ LABEL_21:
 
     else
     {
-      v28 = v18;
-      v22 = sub_1AF110A2C(a1[73], a1[70], &v30, v15.n128_f32[2], a8);
-      a5[2] = v22;
+      v28 = moveCopy4;
+      v22 = sub_1AF110A2C(self[73], self[70], &v30, moveCopy7.n128_f32[2], dir);
+      unit[2] = v22;
       if (v22 == -1)
       {
         v23 = 0;
-        v18 = v28;
+        moveCopy4 = v28;
       }
 
       else
       {
-        v18.i64[0] = v28.i64[0];
-        v18.i64[1] = __PAIR64__(v28.u32[3], v30);
+        moveCopy4.i64[0] = v28.i64[0];
+        moveCopy4.i64[1] = __PAIR64__(v28.u32[3], v30);
         v23 = 1;
       }
 
-      v15 = a6;
+      moveCopy7 = move;
     }
 
-    *a4 = v19 | v21 | v23;
-    if (v19 | v21 | v23 && v12)
+    *original = v19 | v21 | v23;
+    if (v19 | v21 | v23 && alignCopy)
     {
-      sub_1AF110CD4(v19, v21, v23, a5, v18, v15, v31, v32);
+      sub_1AF110CD4(v19, v21, v23, unit, moveCopy4, moveCopy7, v31, v32);
     }
 
-    return v18;
+    return moveCopy4;
   }
 
-  return a6;
+  return move;
 }
 
 @end

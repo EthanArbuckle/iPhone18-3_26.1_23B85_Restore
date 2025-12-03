@@ -1,113 +1,113 @@
 @interface PUCarouselSharingViewController
 - (BOOL)_isAnyAssetSelected;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)isItemAtIndexPathSelected:(id)a3;
-- (BOOL)ppt_scrollToAssetAtRelativeIndex:(int64_t)a3 completion:(id)a4;
-- (BOOL)prepareForDismissingForced:(BOOL)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)isItemAtIndexPathSelected:(id)selected;
+- (BOOL)ppt_scrollToAssetAtRelativeIndex:(int64_t)index completion:(id)completion;
+- (BOOL)prepareForDismissingForced:(BOOL)forced;
 - (CGRect)_collectionViewContentFrame;
-- (CGRect)_frameAtIndexPath:(id)a3 inView:(id)a4;
+- (CGRect)_frameAtIndexPath:(id)path inView:(id)view;
 - (CGRect)_previousPreheatRect;
-- (CGRect)frameForBadgeOfKind:(id)a3 forItemFrame:(CGRect)a4 atIndexPath:(id)a5;
-- (CGRect)oneUpAssetTransitionAssetFinalFrame:(id)a3;
-- (CGSize)_sizeForItemAtIndexPath:(id)a3;
-- (CGSize)layout:(id)a3 collectionView:(id)a4 sizeForBadgeViewOfKind:(id)a5 forItemAtIndexPath:(id)a6;
-- (CGSize)layout:(id)a3 collectionView:(id)a4 sizeForItemAtIndexPath:(id)a5;
+- (CGRect)frameForBadgeOfKind:(id)kind forItemFrame:(CGRect)frame atIndexPath:(id)path;
+- (CGRect)oneUpAssetTransitionAssetFinalFrame:(id)frame;
+- (CGSize)_sizeForItemAtIndexPath:(id)path;
+- (CGSize)layout:(id)layout collectionView:(id)view sizeForBadgeViewOfKind:(id)kind forItemAtIndexPath:(id)path;
+- (CGSize)layout:(id)layout collectionView:(id)view sizeForItemAtIndexPath:(id)path;
 - (NSMutableSet)analyticsEventsSent;
 - (NSString)localizedSelectionTitle;
 - (OS_os_log)sharingLog;
 - (PHAsset)currentAsset;
-- (PUCarouselSharingViewController)initWithPhotoCollectionsFetchResult:(id)a3 assetsFetchResultsByAssetCollection:(id)a4 selection:(id)a5;
+- (PUCarouselSharingViewController)initWithPhotoCollectionsFetchResult:(id)result assetsFetchResultsByAssetCollection:(id)collection selection:(id)selection;
 - (PUCarouselSharingViewControllerDelegate)delegate;
-- (double)_horizontalOffsetInCollectionView:(id)a3 forCenteringOnItemAtIndexPath:(id)a4;
-- (double)layout:(id)a3 collectionView:(id)a4 bottomBadgeInsetforItemAtIndexPath:(id)a5;
-- (id)_activityAssetItemForAsset:(id)a3 createIfNecessary:(BOOL)a4;
-- (id)_assetAtIndexPath:(id)a3;
-- (id)_badgeTransitionInfosForCell:(id)a3;
+- (double)_horizontalOffsetInCollectionView:(id)view forCenteringOnItemAtIndexPath:(id)path;
+- (double)layout:(id)layout collectionView:(id)view bottomBadgeInsetforItemAtIndexPath:(id)path;
+- (id)_activityAssetItemForAsset:(id)asset createIfNecessary:(BOOL)necessary;
+- (id)_assetAtIndexPath:(id)path;
+- (id)_badgeTransitionInfosForCell:(id)cell;
 - (id)_firstSelectedIndexPath;
-- (id)_indexPathInCollectionView:(id)a3 closestToContentOffsetX:(double)a4;
-- (id)_indexPathInCollectionView:(id)a3 closestToPoint:(CGPoint)a4;
-- (id)_indexPathOfAsset:(id)a3 sectionHint:(int64_t)a4;
-- (id)_indexPathOfCenterVisibleItemInCollectionView:(id)a3;
-- (id)_optionViewAtIndexPath:(id)a3 forCollectionView:(id)a4;
-- (id)_photoCollectionAtIndex:(int64_t)a3;
-- (id)_selectionViewAtIndexPath:(id)a3 forCollectionView:(id)a4;
-- (id)_updatedActivityAssetItemsForAssets:(id)a3;
-- (id)_validIndexPathFromIndexPath:(id)a3;
+- (id)_indexPathInCollectionView:(id)view closestToContentOffsetX:(double)x;
+- (id)_indexPathInCollectionView:(id)view closestToPoint:(CGPoint)point;
+- (id)_indexPathOfAsset:(id)asset sectionHint:(int64_t)hint;
+- (id)_indexPathOfCenterVisibleItemInCollectionView:(id)view;
+- (id)_optionViewAtIndexPath:(id)path forCollectionView:(id)view;
+- (id)_photoCollectionAtIndex:(int64_t)index;
+- (id)_selectionViewAtIndexPath:(id)path forCollectionView:(id)view;
+- (id)_updatedActivityAssetItemsForAssets:(id)assets;
+- (id)_validIndexPathFromIndexPath:(id)path;
 - (id)adjacentVisibleAssetsTransitionInfos;
-- (id)assetsInAssetCollection:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
+- (id)assetsInAssetCollection:(id)collection;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
 - (id)currentActivityAssetItems;
 - (id)currentIndexPath;
 - (id)referenceAssetTransitionInfo;
-- (int64_t)_numberOfItemsInSection:(int64_t)a3;
+- (int64_t)_numberOfItemsInSection:(int64_t)section;
 - (int64_t)_numberOfSections;
-- (unint64_t)_indexForPhotoCollection:(id)a3;
-- (void)_addActivityAssetItem:(id)a3;
-- (void)_arrowKey:(id)a3;
-- (void)_getFirstValidIndexPath:(id *)a3 lastValidIndexPath:(id *)a4;
-- (void)_getMainCollectionViewFrame:(CGRect *)a3 collectionViewLayoutInsets:(UIEdgeInsets *)a4;
-- (void)_handleAnimatedImageResult:(id)a3 forCell:(id)a4 asset:(id)a5 tag:(int64_t)a6;
-- (void)_handleLivePhotoRequestResult:(id)a3 forCell:(id)a4 tag:(int64_t)a5;
-- (void)_handleLoopingVideoRequestResult:(id)a3 forCell:(id)a4 asset:(id)a5 tag:(int64_t)a6;
+- (unint64_t)_indexForPhotoCollection:(id)collection;
+- (void)_addActivityAssetItem:(id)item;
+- (void)_arrowKey:(id)key;
+- (void)_getFirstValidIndexPath:(id *)path lastValidIndexPath:(id *)indexPath;
+- (void)_getMainCollectionViewFrame:(CGRect *)frame collectionViewLayoutInsets:(UIEdgeInsets *)insets;
+- (void)_handleAnimatedImageResult:(id)result forCell:(id)cell asset:(id)asset tag:(int64_t)tag;
+- (void)_handleLivePhotoRequestResult:(id)result forCell:(id)cell tag:(int64_t)tag;
+- (void)_handleLoopingVideoRequestResult:(id)result forCell:(id)cell asset:(id)asset tag:(int64_t)tag;
 - (void)_handlePhotoViewLoaderBlocks;
-- (void)_handleSchedulingLivePhotoRequestResult:(id)a3 forCell:(id)a4 tag:(int64_t)a5;
-- (void)_handleSchedulingStillPhotoRequestResult:(id)a3 forCell:(id)a4 tag:(int64_t)a5;
-- (void)_handleSelectionOption:(id)a3;
-- (void)_handleStillImageRequestResult:(id)a3 info:(id)a4 forCell:(id)a5 indexPath:(id)a6;
-- (void)_handleStillPhotoRequestResult:(id)a3 forCell:(id)a4 tag:(int64_t)a5;
-- (void)_handleTapAtIndexPath:(id)a3;
-- (void)_handleTapInMainCollectionView:(id)a3;
-- (void)_pageToIndexPath:(id)a3 animated:(BOOL)a4;
-- (void)_playLivePhotoHintIfNeededAtIndexPath:(id)a3;
+- (void)_handleSchedulingLivePhotoRequestResult:(id)result forCell:(id)cell tag:(int64_t)tag;
+- (void)_handleSchedulingStillPhotoRequestResult:(id)result forCell:(id)cell tag:(int64_t)tag;
+- (void)_handleSelectionOption:(id)option;
+- (void)_handleStillImageRequestResult:(id)result info:(id)info forCell:(id)cell indexPath:(id)path;
+- (void)_handleStillPhotoRequestResult:(id)result forCell:(id)cell tag:(int64_t)tag;
+- (void)_handleTapAtIndexPath:(id)path;
+- (void)_handleTapInMainCollectionView:(id)view;
+- (void)_pageToIndexPath:(id)path animated:(BOOL)animated;
+- (void)_playLivePhotoHintIfNeededAtIndexPath:(id)path;
 - (void)_playVitalityHintAfterViewDidAppear;
-- (void)_processCollectionListChangeNotifications:(id)a3 singleCollectionNotifications:(id)a4 needsReloadData:(BOOL)a5;
-- (void)_removeActivityAssetItem:(id)a3;
-- (void)_replaceActivityAssetItem:(id)a3 withAssetItem:(id)a4 notifyDelegate:(BOOL)a5;
+- (void)_processCollectionListChangeNotifications:(id)notifications singleCollectionNotifications:(id)collectionNotifications needsReloadData:(BOOL)data;
+- (void)_removeActivityAssetItem:(id)item;
+- (void)_replaceActivityAssetItem:(id)item withAssetItem:(id)assetItem notifyDelegate:(BOOL)delegate;
 - (void)_resetPreheating;
-- (void)_setLastKnownReferenceAsset:(id)a3 indexPath:(id)a4;
-- (void)_setLastKnownReferenceIndexPath:(id)a3;
-- (void)_setLoopingPlaybackAllowed:(BOOL)a3;
-- (void)_setSelected:(BOOL)a3 atIndexPath:(id)a4 animated:(BOOL)a5;
-- (void)_updateAdditionalContentForAsset:(id)a3 cell:(id)a4;
+- (void)_setLastKnownReferenceAsset:(id)asset indexPath:(id)path;
+- (void)_setLastKnownReferenceIndexPath:(id)path;
+- (void)_setLoopingPlaybackAllowed:(BOOL)allowed;
+- (void)_setSelected:(BOOL)selected atIndexPath:(id)path animated:(BOOL)animated;
+- (void)_updateAdditionalContentForAsset:(id)asset cell:(id)cell;
 - (void)_updateAdditionalContentForVisibleCells;
-- (void)_updateAssetTransitionInfo:(id)a3;
-- (void)_updateCell:(id)a3 forItemAtIndexPath:(id)a4;
-- (void)_updateCellAtIndexPath:(id)a3 withTransitionInfo:(id)a4;
-- (void)_updateInterfaceForModelReloadAnimated:(BOOL)a3;
+- (void)_updateAssetTransitionInfo:(id)info;
+- (void)_updateCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)_updateCellAtIndexPath:(id)path withTransitionInfo:(id)info;
+- (void)_updateInterfaceForModelReloadAnimated:(BOOL)animated;
 - (void)_updateLastKnownReferenceIndexPath;
-- (void)_updateMainViewAnimated:(BOOL)a3;
-- (void)_updateOptionView:(id)a3 atIndexPath:(id)a4;
-- (void)_updatePhotoForAsset:(id)a3 cell:(id)a4 atIndexPath:(id)a5;
+- (void)_updateMainViewAnimated:(BOOL)animated;
+- (void)_updateOptionView:(id)view atIndexPath:(id)path;
+- (void)_updatePhotoForAsset:(id)asset cell:(id)cell atIndexPath:(id)path;
 - (void)_updatePreheatedAssets;
 - (void)_updateVisibleCellBadges;
 - (void)_updateVisibleCells;
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 didEndDisplayingSupplementaryView:(id)a4 forElementOfKind:(id)a5 atIndexPath:(id)a6;
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didEndDisplayingSupplementaryView:(id)supplementaryView forElementOfKind:(id)kind atIndexPath:(id)path;
 - (void)dealloc;
-- (void)oneUpAssetTransition:(id)a3 requestTransitionContextWithCompletion:(id)a4;
-- (void)photoLibraryDidChangeOnMainQueue:(id)a3;
+- (void)oneUpAssetTransition:(id)transition requestTransitionContextWithCompletion:(id)completion;
+- (void)photoLibraryDidChangeOnMainQueue:(id)queue;
 - (void)ppt_faultInScollViewContentSize;
-- (void)scrollViewDidEndScrollingAnimation:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setHideCellForCurrentReferenceAsset:(BOOL)a3;
-- (void)setLeadingAssetTransitionInfo:(id)a3;
-- (void)setOneUpPhotosSharingTransitionContext:(id)a3;
-- (void)setOneUpPhotosSharingTransitionInfo:(id)a3;
-- (void)setPhotosSharingTransitionContext:(id)a3;
-- (void)setPhotosSharingTransitionLayout:(id)a3 animated:(BOOL)a4;
-- (void)setReadyForInteraction:(BOOL)a3;
-- (void)setSendAsAssetBundles:(BOOL)a3;
-- (void)setTrailingAssetTransitionInfo:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)scrollViewDidEndScrollingAnimation:(id)animation;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setHideCellForCurrentReferenceAsset:(BOOL)asset;
+- (void)setLeadingAssetTransitionInfo:(id)info;
+- (void)setOneUpPhotosSharingTransitionContext:(id)context;
+- (void)setOneUpPhotosSharingTransitionInfo:(id)info;
+- (void)setPhotosSharingTransitionContext:(id)context;
+- (void)setPhotosSharingTransitionLayout:(id)layout animated:(BOOL)animated;
+- (void)setReadyForInteraction:(BOOL)interaction;
+- (void)setSendAsAssetBundles:(BOOL)bundles;
+- (void)setTrailingAssetTransitionInfo:(id)info;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation PUCarouselSharingViewController
@@ -153,48 +153,48 @@ uint64_t __45__PUCarouselSharingViewController_sharingLog__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (void)oneUpAssetTransition:(id)a3 requestTransitionContextWithCompletion:(id)a4
+- (void)oneUpAssetTransition:(id)transition requestTransitionContextWithCompletion:(id)completion
 {
-  v5 = a4;
-  v6 = [(PUCarouselSharingViewController *)self view];
-  [v6 layoutIfNeeded];
+  completionCopy = completion;
+  view = [(PUCarouselSharingViewController *)self view];
+  [view layoutIfNeeded];
 
-  v7 = [(PUCarouselSharingViewController *)self mainCollectionView];
-  v8 = [(PUCarouselSharingViewController *)self _indexPathOfCenterVisibleItemInCollectionView:v7];
-  v9 = [v7 cellForItemAtIndexPath:v8];
-  v10 = [v9 photoView];
-  v11 = [v10 contentHelper];
-  v12 = [v11 photoImage];
+  mainCollectionView = [(PUCarouselSharingViewController *)self mainCollectionView];
+  v8 = [(PUCarouselSharingViewController *)self _indexPathOfCenterVisibleItemInCollectionView:mainCollectionView];
+  v9 = [mainCollectionView cellForItemAtIndexPath:v8];
+  photoView = [v9 photoView];
+  contentHelper = [photoView contentHelper];
+  photoImage = [contentHelper photoImage];
 
-  v13 = [(PUCarouselSharingViewController *)self view];
-  [(PUCarouselSharingViewController *)self _frameAtIndexPath:v8 inView:v13];
+  view2 = [(PUCarouselSharingViewController *)self view];
+  [(PUCarouselSharingViewController *)self _frameAtIndexPath:v8 inView:view2];
   v15 = v14;
   v17 = v16;
   v19 = v18;
   v21 = v20;
 
   v22 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithFrame:{v15, v17, v19, v21}];
-  [v22 setImage:v12];
+  [v22 setImage:photoImage];
   [v22 setClipsToBounds:1];
   [v22 setContentMode:2];
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v29[2] = __95__PUCarouselSharingViewController_oneUpAssetTransition_requestTransitionContextWithCompletion___block_invoke;
   v29[3] = &unk_1E7B7F3E0;
-  v23 = v12;
+  v23 = photoImage;
   v30 = v23;
-  v31 = self;
+  selfCopy = self;
   v24 = v8;
   v32 = v24;
   v25 = [PUAssetTransitionInfo assetTransitionInfoWithConfigurationBlock:v29];
-  v26 = [(PUCarouselSharingViewController *)self view];
-  v27 = [PUOneUpAssetTransitionContext oneUpAssetTransitionContextWithContainerView:0 fromView:v26 snapshotView:v22 transitionInfo:v25];
+  view3 = [(PUCarouselSharingViewController *)self view];
+  v27 = [PUOneUpAssetTransitionContext oneUpAssetTransitionContextWithContainerView:0 fromView:view3 snapshotView:v22 transitionInfo:v25];
 
   v28 = [v27 oneUpTransitionContextWithContextShouldHideBackground:1];
 
-  if (v5)
+  if (completionCopy)
   {
-    v5[2](v5, v28);
+    completionCopy[2](completionCopy, v28);
   }
 }
 
@@ -207,21 +207,21 @@ void __95__PUCarouselSharingViewController_oneUpAssetTransition_requestTransitio
   [v4 setAsset:v5];
 }
 
-- (id)_badgeTransitionInfosForCell:(id)a3
+- (id)_badgeTransitionInfosForCell:(id)cell
 {
   v4 = MEMORY[0x1E695DF70];
-  v5 = a3;
-  v42 = [v4 array];
-  v6 = [(PUCarouselSharingViewController *)self mainCollectionView];
-  v41 = v5;
-  v7 = [v6 indexPathForCell:v5];
-  v8 = [(PUCarouselSharingViewController *)self spec];
-  [v8 selectionBadgeOffset];
+  cellCopy = cell;
+  array = [v4 array];
+  mainCollectionView = [(PUCarouselSharingViewController *)self mainCollectionView];
+  v41 = cellCopy;
+  v7 = [mainCollectionView indexPathForCell:cellCopy];
+  spec = [(PUCarouselSharingViewController *)self spec];
+  [spec selectionBadgeOffset];
   v10 = v9;
   v12 = v11;
 
-  v13 = [v6 collectionViewLayout];
-  v14 = [v13 layoutAttributesForSupplementaryViewOfKind:@"PUPhotosSharingOptionBadgeKind" atIndexPath:v7];
+  collectionViewLayout = [mainCollectionView collectionViewLayout];
+  v14 = [collectionViewLayout layoutAttributesForSupplementaryViewOfKind:@"PUPhotosSharingOptionBadgeKind" atIndexPath:v7];
 
   v15 = *MEMORY[0x1E695EFF8];
   v16 = *(MEMORY[0x1E695EFF8] + 8);
@@ -232,60 +232,60 @@ void __95__PUCarouselSharingViewController_oneUpAssetTransition_requestTransitio
   [(PUPhotosSharingOptionView *)v19 layoutSubviews];
   v20 = objc_alloc_init(PUBadgeTransitionInfo);
   [(PUBadgeTransitionInfo *)v20 setSnapshotView:v19];
-  v21 = [(PUCarouselSharingViewController *)self spec];
-  -[PUBadgeTransitionInfo setBadgesCorner:](v20, "setBadgesCorner:", [v21 optionBadgeCorner]);
+  spec2 = [(PUCarouselSharingViewController *)self spec];
+  -[PUBadgeTransitionInfo setBadgesCorner:](v20, "setBadgesCorner:", [spec2 optionBadgeCorner]);
 
   [(PUBadgeTransitionInfo *)v20 setBadgesOffset:v10, v12];
   [v14 frame];
-  [v5 convertRect:v6 fromView:?];
+  [cellCopy convertRect:mainCollectionView fromView:?];
   [(PUBadgeTransitionInfo *)v20 setFrame:?];
-  [v42 addObject:v20];
-  v22 = [v6 collectionViewLayout];
-  v23 = [v22 layoutAttributesForSupplementaryViewOfKind:@"PUPhotosSharingSelectionBadgeKind" atIndexPath:v7];
+  [array addObject:v20];
+  collectionViewLayout2 = [mainCollectionView collectionViewLayout];
+  v23 = [collectionViewLayout2 layoutAttributesForSupplementaryViewOfKind:@"PUPhotosSharingSelectionBadgeKind" atIndexPath:v7];
 
   [v23 frame];
   v26 = [[PUPhotosSharingSelectionView alloc] initWithFrame:v15, v16, v24, v25];
   v27 = -[PUCarouselSharingViewController _photoCollectionAtIndex:](self, "_photoCollectionAtIndex:", [v7 section]);
-  v28 = [(PUCarouselSharingViewController *)self photoSelectionManager];
-  v29 = [v28 isAssetAtIndexSelected:objc_msgSend(v7 inAssetCollection:{"item"), v27}];
+  photoSelectionManager = [(PUCarouselSharingViewController *)self photoSelectionManager];
+  v29 = [photoSelectionManager isAssetAtIndexSelected:objc_msgSend(v7 inAssetCollection:{"item"), v27}];
 
   [(PUPhotosSharingSelectionView *)v26 setSelected:v29 animated:0];
   v30 = objc_alloc_init(PUBadgeTransitionInfo);
   [(PUBadgeTransitionInfo *)v30 setSnapshotView:v26];
-  v31 = [(PUCarouselSharingViewController *)self spec];
-  -[PUBadgeTransitionInfo setBadgesCorner:](v30, "setBadgesCorner:", [v31 selectionBadgeCorner]);
+  spec3 = [(PUCarouselSharingViewController *)self spec];
+  -[PUBadgeTransitionInfo setBadgesCorner:](v30, "setBadgesCorner:", [spec3 selectionBadgeCorner]);
 
   [(PUBadgeTransitionInfo *)v30 setBadgesOffset:v10, v12];
   [v23 frame];
-  [v41 convertRect:v6 fromView:?];
+  [v41 convertRect:mainCollectionView fromView:?];
   v33 = v32;
   v35 = v34;
   v37 = v36;
   v39 = v38;
 
   [(PUBadgeTransitionInfo *)v30 setFrame:v33, v35, v37, v39];
-  [v42 addObject:v30];
+  [array addObject:v30];
 
-  return v42;
+  return array;
 }
 
 - (id)adjacentVisibleAssetsTransitionInfos
 {
   v54 = *MEMORY[0x1E69E9840];
-  v3 = [(PUCarouselSharingViewController *)self view];
-  [v3 layoutIfNeeded];
+  view = [(PUCarouselSharingViewController *)self view];
+  [view layoutIfNeeded];
 
-  v36 = [MEMORY[0x1E695DF70] array];
-  v4 = [(PUCarouselSharingViewController *)self mainCollectionView];
-  v5 = [v4 visibleCells];
-  [(PUCarouselSharingViewController *)self _indexPathOfCenterVisibleItemInCollectionView:v4];
-  v33 = v35 = v4;
-  v38 = [v4 cellForItemAtIndexPath:?];
+  array = [MEMORY[0x1E695DF70] array];
+  mainCollectionView = [(PUCarouselSharingViewController *)self mainCollectionView];
+  visibleCells = [mainCollectionView visibleCells];
+  [(PUCarouselSharingViewController *)self _indexPathOfCenterVisibleItemInCollectionView:mainCollectionView];
+  v33 = v35 = mainCollectionView;
+  v38 = [mainCollectionView cellForItemAtIndexPath:?];
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  obj = v5;
+  obj = visibleCells;
   v39 = [obj countByEnumeratingWithState:&v49 objects:v53 count:16];
   if (v39)
   {
@@ -302,25 +302,25 @@ void __95__PUCarouselSharingViewController_oneUpAssetTransition_requestTransitio
         v7 = *(*(&v49 + 1) + 8 * i);
         if (v7 != v38)
         {
-          v8 = [*(*(&v49 + 1) + 8 * i) photoView];
-          v9 = [v8 contentHelper];
-          v10 = [v9 photoImage];
-          v11 = v10;
-          if (v10)
+          photoView = [*(*(&v49 + 1) + 8 * i) photoView];
+          contentHelper = [photoView contentHelper];
+          photoImage = [contentHelper photoImage];
+          v11 = photoImage;
+          if (photoImage)
           {
-            v12 = v10;
+            placeHolderImage = photoImage;
           }
 
           else
           {
-            v12 = [v9 placeHolderImage];
+            placeHolderImage = [contentHelper placeHolderImage];
           }
 
-          v13 = v12;
+          v13 = placeHolderImage;
 
           v14 = [v35 indexPathForCell:v7];
-          v15 = [(PUCarouselSharingViewController *)self view];
-          [(PUCarouselSharingViewController *)self _frameAtIndexPath:v14 inView:v15];
+          view2 = [(PUCarouselSharingViewController *)self view];
+          [(PUCarouselSharingViewController *)self _frameAtIndexPath:v14 inView:view2];
           v17 = v16;
           v19 = v18;
           v21 = v20;
@@ -337,15 +337,15 @@ void __95__PUCarouselSharingViewController_oneUpAssetTransition_requestTransitio
           v47 = v21;
           v48 = v23;
           v41 = v13;
-          v42 = v8;
+          v42 = photoView;
           v43 = v25;
           v44 = v24;
           v26 = v24;
           v27 = v25;
-          v28 = v8;
+          v28 = photoView;
           v29 = v13;
           v30 = [PUAssetTransitionInfo assetTransitionInfoWithConfigurationBlock:v40];
-          [v36 addObject:v30];
+          [array addObject:v30];
         }
       }
 
@@ -355,7 +355,7 @@ void __95__PUCarouselSharingViewController_oneUpAssetTransition_requestTransitio
     while (v39);
   }
 
-  v31 = [v36 copy];
+  v31 = [array copy];
 
   return v31;
 }
@@ -379,19 +379,19 @@ void __71__PUCarouselSharingViewController_adjacentVisibleAssetsTransitionInfos_
 
 - (id)referenceAssetTransitionInfo
 {
-  v3 = [(PUCarouselSharingViewController *)self view];
-  [v3 layoutIfNeeded];
+  view = [(PUCarouselSharingViewController *)self view];
+  [view layoutIfNeeded];
 
-  v4 = [(PUCarouselSharingViewController *)self mainCollectionView];
-  v5 = [(PUCarouselSharingViewController *)self _indexPathOfCenterVisibleItemInCollectionView:v4];
-  v6 = [v4 cellForItemAtIndexPath:v5];
-  v7 = [v6 photoView];
+  mainCollectionView = [(PUCarouselSharingViewController *)self mainCollectionView];
+  v5 = [(PUCarouselSharingViewController *)self _indexPathOfCenterVisibleItemInCollectionView:mainCollectionView];
+  v6 = [mainCollectionView cellForItemAtIndexPath:v5];
+  photoView = [v6 photoView];
   v8 = [(PUCarouselSharingViewController *)self _assetAtIndexPath:v5];
-  v9 = [v7 contentHelper];
-  v10 = [v9 photoImage];
+  contentHelper = [photoView contentHelper];
+  photoImage = [contentHelper photoImage];
 
-  v11 = [(PUCarouselSharingViewController *)self view];
-  [(PUCarouselSharingViewController *)self _frameAtIndexPath:v5 inView:v11];
+  view2 = [(PUCarouselSharingViewController *)self view];
+  [(PUCarouselSharingViewController *)self _frameAtIndexPath:v5 inView:view2];
   v13 = v12;
   v15 = v14;
   v17 = v16;
@@ -406,14 +406,14 @@ void __71__PUCarouselSharingViewController_adjacentVisibleAssetsTransitionInfos_
   v33 = v15;
   v34 = v17;
   v35 = v19;
-  v28 = v10;
-  v29 = v7;
+  v28 = photoImage;
+  v29 = photoView;
   v30 = v20;
   v31 = v8;
   v21 = v8;
   v22 = v20;
-  v23 = v7;
-  v24 = v10;
+  v23 = photoView;
+  v24 = photoImage;
   v25 = [PUAssetTransitionInfo assetTransitionInfoWithConfigurationBlock:v27];
 
   return v25;
@@ -436,14 +436,14 @@ void __63__PUCarouselSharingViewController_referenceAssetTransitionInfo__block_i
   [v6 setAsset:*(a1 + 56)];
 }
 
-- (CGRect)oneUpAssetTransitionAssetFinalFrame:(id)a3
+- (CGRect)oneUpAssetTransitionAssetFinalFrame:(id)frame
 {
-  v4 = [(PUCarouselSharingViewController *)self view];
-  [v4 layoutIfNeeded];
+  view = [(PUCarouselSharingViewController *)self view];
+  [view layoutIfNeeded];
 
-  v5 = [(PUCarouselSharingViewController *)self currentIndexPath];
-  v6 = [(PUCarouselSharingViewController *)self view];
-  [(PUCarouselSharingViewController *)self _frameAtIndexPath:v5 inView:v6];
+  currentIndexPath = [(PUCarouselSharingViewController *)self currentIndexPath];
+  view2 = [(PUCarouselSharingViewController *)self view];
+  [(PUCarouselSharingViewController *)self _frameAtIndexPath:currentIndexPath inView:view2];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -460,20 +460,20 @@ void __63__PUCarouselSharingViewController_referenceAssetTransitionInfo__block_i
   return result;
 }
 
-- (CGRect)_frameAtIndexPath:(id)a3 inView:(id)a4
+- (CGRect)_frameAtIndexPath:(id)path inView:(id)view
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PUCarouselSharingViewController *)self mainCollectionViewLayout];
-  v9 = [v8 layoutAttributesForItemAtIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  mainCollectionViewLayout = [(PUCarouselSharingViewController *)self mainCollectionViewLayout];
+  v9 = [mainCollectionViewLayout layoutAttributesForItemAtIndexPath:pathCopy];
 
   [v9 frame];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v18 = [(PUCarouselSharingViewController *)self mainCollectionView];
-  [v6 convertRect:v18 fromView:{v11, v13, v15, v17}];
+  mainCollectionView = [(PUCarouselSharingViewController *)self mainCollectionView];
+  [viewCopy convertRect:mainCollectionView fromView:{v11, v13, v15, v17}];
   v20 = v19;
   v22 = v21;
   v24 = v23;
@@ -490,40 +490,40 @@ void __63__PUCarouselSharingViewController_referenceAssetTransitionInfo__block_i
   return result;
 }
 
-- (BOOL)prepareForDismissingForced:(BOOL)a3
+- (BOOL)prepareForDismissingForced:(BOOL)forced
 {
-  v5 = [(PUCarouselSharingViewController *)self presentedViewController];
-  if (!v5)
+  presentedViewController = [(PUCarouselSharingViewController *)self presentedViewController];
+  if (!presentedViewController)
   {
-    a3 = 1;
+    forced = 1;
   }
 
-  if (!a3)
+  if (!forced)
   {
     NSLog(&cfstr_DismissCancell.isa, self);
   }
 
-  return a3;
+  return forced;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v5 = a4;
-  v6 = [(PUCarouselSharingViewController *)self mainCollectionView];
-  [v5 locationInView:v6];
+  touchCopy = touch;
+  mainCollectionView = [(PUCarouselSharingViewController *)self mainCollectionView];
+  [touchCopy locationInView:mainCollectionView];
   v8 = v7;
   v10 = v9;
 
-  v11 = [(PUCarouselSharingViewController *)self mainCollectionView];
-  v12 = [(PUCarouselSharingViewController *)self _indexPathInCollectionView:v11 closestToPoint:v8, v10];
+  mainCollectionView2 = [(PUCarouselSharingViewController *)self mainCollectionView];
+  v12 = [(PUCarouselSharingViewController *)self _indexPathInCollectionView:mainCollectionView2 closestToPoint:v8, v10];
 
   v13 = -[PUCarouselSharingViewController _photoCollectionAtIndex:](self, "_photoCollectionAtIndex:", [v12 section]);
   v14 = [(PUCarouselSharingViewController *)self assetsInAssetCollection:v13];
   v15 = [v14 objectAtIndex:{objc_msgSend(v12, "item")}];
   if ([v15 canPlayPhotoIris])
   {
-    v16 = [(PUCarouselSharingViewController *)self mainCollectionView];
-    v17 = [v16 _visibleSupplementaryViewOfKind:@"PUPhotosSharingOptionBadgeKind" atIndexPath:v12];
+    mainCollectionView3 = [(PUCarouselSharingViewController *)self mainCollectionView];
+    v17 = [mainCollectionView3 _visibleSupplementaryViewOfKind:@"PUPhotosSharingOptionBadgeKind" atIndexPath:v12];
   }
 
   else
@@ -536,64 +536,64 @@ void __63__PUCarouselSharingViewController_referenceAssetTransitionInfo__block_i
   return v18 ^ 1;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PUCarouselSharingViewController *)self mainCollectionView];
+  gestureRecognizerCopy = gestureRecognizer;
+  recognizerCopy = recognizer;
+  mainCollectionView = [(PUCarouselSharingViewController *)self mainCollectionView];
   tapGestureRecognizer = self->_tapGestureRecognizer;
 
-  if (tapGestureRecognizer == v7)
+  if (tapGestureRecognizer == recognizerCopy)
   {
-    v11 = [v8 panGestureRecognizer];
-    if (v11 == v6)
+    panGestureRecognizer = [mainCollectionView panGestureRecognizer];
+    if (panGestureRecognizer == gestureRecognizerCopy)
     {
-      v10 = [v8 isDecelerating];
+      isDecelerating = [mainCollectionView isDecelerating];
     }
 
     else
     {
-      v10 = 0;
+      isDecelerating = 0;
     }
   }
 
   else
   {
-    v10 = 0;
+    isDecelerating = 0;
   }
 
-  return v10;
+  return isDecelerating;
 }
 
-- (void)scrollViewDidEndScrollingAnimation:(id)a3
+- (void)scrollViewDidEndScrollingAnimation:(id)animation
 {
-  v4 = [(PUCarouselSharingViewController *)self _pptOnDidEndScrollingBlock];
-  if (v4)
+  _pptOnDidEndScrollingBlock = [(PUCarouselSharingViewController *)self _pptOnDidEndScrollingBlock];
+  if (_pptOnDidEndScrollingBlock)
   {
-    v5 = v4;
+    v5 = _pptOnDidEndScrollingBlock;
     [(PUCarouselSharingViewController *)self _pptSetOnDidEndScrollingBlock:0];
     v5[2](v5);
-    v4 = v5;
+    _pptOnDidEndScrollingBlock = v5;
   }
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  x = a4.x;
+  x = velocity.x;
   v49 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  [v8 contentOffset];
+  draggingCopy = dragging;
+  [draggingCopy contentOffset];
   v10 = v9;
-  v11 = a5->x;
-  y = a5->y;
-  [v8 bounds];
+  v11 = offset->x;
+  y = offset->y;
+  [draggingCopy bounds];
   width = v50.size.width;
   height = v50.size.height;
   v50.origin.x = v11;
   v50.origin.y = y;
   MidX = CGRectGetMidX(v50);
-  v16 = [(PUCarouselSharingViewController *)self mainCollectionViewLayout];
-  v17 = [v16 layoutAttributesForItemsInRect:{v11, y, width, height}];
+  mainCollectionViewLayout = [(PUCarouselSharingViewController *)self mainCollectionViewLayout];
+  v17 = [mainCollectionViewLayout layoutAttributesForItemsInRect:{v11, y, width, height}];
 
   v44 = 0u;
   v45 = 0u;
@@ -601,14 +601,14 @@ void __63__PUCarouselSharingViewController_referenceAssetTransitionInfo__block_i
   v43 = 0u;
   v18 = v17;
   v19 = [v18 countByEnumeratingWithState:&v42 objects:v48 count:16];
-  v20 = v18;
+  analyticsEventsSent2 = v18;
   if (!v19)
   {
     goto LABEL_23;
   }
 
   v21 = v19;
-  v41 = a5;
+  offsetCopy = offset;
   v22 = *v43;
   v23 = 1.79769313e308;
   v24 = 1.79769313e308;
@@ -622,11 +622,11 @@ void __63__PUCarouselSharingViewController_referenceAssetTransitionInfo__block_i
       }
 
       v26 = *(*(&v42 + 1) + 8 * i);
-      v27 = [v26 indexPath];
-      v28 = [(PUCarouselSharingViewController *)self _assetAtIndexPath:v27];
+      indexPath = [v26 indexPath];
+      v28 = [(PUCarouselSharingViewController *)self _assetAtIndexPath:indexPath];
       if ([(PUCarouselSharingViewController *)self _shouldShowAsset:v28])
       {
-        [(PUCarouselSharingViewController *)self _horizontalOffsetInCollectionView:v8 forCenteringOnItemAtIndexPath:v27];
+        [(PUCarouselSharingViewController *)self _horizontalOffsetInCollectionView:draggingCopy forCenteringOnItemAtIndexPath:indexPath];
         v30 = v29;
         v31 = v29 > v10 && x > 0.0;
         v32 = v29 < v10 && x < 0.0;
@@ -650,10 +650,10 @@ void __63__PUCarouselSharingViewController_referenceAssetTransitionInfo__block_i
 
   if (v24 != 1.79769313e308)
   {
-    v41->x = v24;
-    v41->y = 0.0;
-    v35 = [(PUCarouselSharingViewController *)self analyticsEventsSent];
-    v36 = [v35 containsObject:@"com.apple.photos.CPAnalytics.shareSheetCarouselScrolled"];
+    offsetCopy->x = v24;
+    offsetCopy->y = 0.0;
+    analyticsEventsSent = [(PUCarouselSharingViewController *)self analyticsEventsSent];
+    v36 = [analyticsEventsSent containsObject:@"com.apple.photos.CPAnalytics.shareSheetCarouselScrolled"];
 
     if ((v36 & 1) == 0)
     {
@@ -665,30 +665,30 @@ void __63__PUCarouselSharingViewController_referenceAssetTransitionInfo__block_i
       v40 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v47 forKeys:&v46 count:1];
       [v37 sendEvent:@"com.apple.photos.CPAnalytics.shareSheetCarouselScrolled" withPayload:v40];
 
-      v20 = [(PUCarouselSharingViewController *)self analyticsEventsSent];
-      [v20 addObject:@"com.apple.photos.CPAnalytics.shareSheetCarouselScrolled"];
+      analyticsEventsSent2 = [(PUCarouselSharingViewController *)self analyticsEventsSent];
+      [analyticsEventsSent2 addObject:@"com.apple.photos.CPAnalytics.shareSheetCarouselScrolled"];
 LABEL_23:
     }
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  [(PUScrollViewSpeedometer *)self->_speedometer scrollViewDidScroll:a3];
+  [(PUScrollViewSpeedometer *)self->_speedometer scrollViewDidScroll:scroll];
   [(PUCarouselSharingViewController *)self _updatePreheatedAssets];
-  v4 = [(PUCarouselSharingViewController *)self photosSharingTransitionContext];
+  photosSharingTransitionContext = [(PUCarouselSharingViewController *)self photosSharingTransitionContext];
 
-  if (!v4)
+  if (!photosSharingTransitionContext)
   {
     v5 = [(PUCarouselSharingViewController *)self _indexPathOfCenterVisibleItemInCollectionView:self->_mainCollectionView];
     [(PUCarouselSharingViewController *)self _setLastKnownReferenceAsset:0 indexPath:v5];
   }
 }
 
-- (double)layout:(id)a3 collectionView:(id)a4 bottomBadgeInsetforItemAtIndexPath:(id)a5
+- (double)layout:(id)layout collectionView:(id)view bottomBadgeInsetforItemAtIndexPath:(id)path
 {
-  v5 = [(PUCarouselSharingViewController *)self _assetAtIndexPath:a5, a4];
-  if ([v5 playbackStyle] == 4 || (v6 = 0.0, objc_msgSend(v5, "playbackStyle") == 5) && (objc_msgSend(MEMORY[0x1E69C3378], "sharedInstance"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "showLoopBadges"), v7, v8))
+  view = [(PUCarouselSharingViewController *)self _assetAtIndexPath:path, view];
+  if ([view playbackStyle] == 4 || (v6 = 0.0, objc_msgSend(view, "playbackStyle") == 5) && (objc_msgSend(MEMORY[0x1E69C3378], "sharedInstance"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "showLoopBadges"), v7, v8))
   {
     v6 = 24.0;
   }
@@ -696,14 +696,14 @@ LABEL_23:
   return v6;
 }
 
-- (CGSize)layout:(id)a3 collectionView:(id)a4 sizeForBadgeViewOfKind:(id)a5 forItemAtIndexPath:(id)a6
+- (CGSize)layout:(id)layout collectionView:(id)view sizeForBadgeViewOfKind:(id)kind forItemAtIndexPath:(id)path
 {
-  v8 = a5;
-  v9 = a6;
-  if ([v8 isEqualToString:@"PUPhotosSharingSelectionBadgeKind"])
+  kindCopy = kind;
+  pathCopy = path;
+  if ([kindCopy isEqualToString:@"PUPhotosSharingSelectionBadgeKind"])
   {
-    v10 = [(PUCarouselSharingViewController *)self spec];
-    [v10 selectionBadgeSize];
+    spec = [(PUCarouselSharingViewController *)self spec];
+    [spec selectionBadgeSize];
     v12 = v11;
     v14 = v13;
   }
@@ -712,19 +712,19 @@ LABEL_23:
   {
     v12 = *MEMORY[0x1E695F060];
     v14 = *(MEMORY[0x1E695F060] + 8);
-    if (![v8 isEqualToString:@"PUPhotosSharingOptionBadgeKind"])
+    if (![kindCopy isEqualToString:@"PUPhotosSharingOptionBadgeKind"])
     {
       goto LABEL_8;
     }
 
-    v10 = [(PUCarouselSharingViewController *)self _assetAtIndexPath:v9];
+    spec = [(PUCarouselSharingViewController *)self _assetAtIndexPath:pathCopy];
     v15 = +[PURootSettings sharedInstance];
-    v16 = [v15 irisUIEnabled];
+    irisUIEnabled = [v15 irisUIEnabled];
 
-    if (v16 && [v10 canPlayPhotoIris])
+    if (irisUIEnabled && [spec canPlayPhotoIris])
     {
-      v17 = [(PUCarouselSharingViewController *)self spec];
-      [v17 optionBadgeSize];
+      spec2 = [(PUCarouselSharingViewController *)self spec];
+      [spec2 optionBadgeSize];
       v12 = v18;
       v14 = v19;
     }
@@ -738,76 +738,76 @@ LABEL_8:
   return result;
 }
 
-- (CGSize)layout:(id)a3 collectionView:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)layout:(id)layout collectionView:(id)view sizeForItemAtIndexPath:(id)path
 {
-  [(PUCarouselSharingViewController *)self _sizeForItemAtIndexPath:a5, a4];
+  [(PUCarouselSharingViewController *)self _sizeForItemAtIndexPath:path, view];
   result.height = v6;
   result.width = v5;
   return result;
 }
 
-- (void)collectionView:(id)a3 didEndDisplayingSupplementaryView:(id)a4 forElementOfKind:(id)a5 atIndexPath:(id)a6
+- (void)collectionView:(id)view didEndDisplayingSupplementaryView:(id)supplementaryView forElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v8 = a4;
-  if ([a5 isEqualToString:@"PUPhotosSharingOptionBadgeKind"])
+  supplementaryViewCopy = supplementaryView;
+  if ([kind isEqualToString:@"PUPhotosSharingOptionBadgeKind"])
   {
-    [(NSMapTable *)self->_indexPathsByOptionView removeObjectForKey:v8];
+    [(NSMapTable *)self->_indexPathsByOptionView removeObjectForKey:supplementaryViewCopy];
   }
 }
 
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v13 = a4;
+  cellCopy = cell;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v7 = v13;
+  v7 = cellCopy;
   if (isKindOfClass)
   {
-    v8 = v13;
-    v9 = [v8 currentImageRequestID];
-    if (v9)
+    v8 = cellCopy;
+    currentImageRequestID = [v8 currentImageRequestID];
+    if (currentImageRequestID)
     {
-      v10 = [(PUCarouselSharingViewController *)self cachingImageManager];
-      [v10 cancelImageRequest:v9];
+      cachingImageManager = [(PUCarouselSharingViewController *)self cachingImageManager];
+      [cachingImageManager cancelImageRequest:currentImageRequestID];
 
       [v8 setCurrentImageRequestID:0];
     }
 
-    v11 = [v8 photoView];
-    v12 = [v11 contentHelper];
+    photoView = [v8 photoView];
+    contentHelper = [photoView contentHelper];
 
-    [v12 setLivePhoto:0];
-    [v12 setLoopingVideoAsset:0];
-    [v12 setAnimatedImage:0];
-    [v12 setLoopingPlaybackAllowed:0];
+    [contentHelper setLivePhoto:0];
+    [contentHelper setLoopingVideoAsset:0];
+    [contentHelper setAnimatedImage:0];
+    [contentHelper setLoopingPlaybackAllowed:0];
 
-    v7 = v13;
+    v7 = cellCopy;
   }
 
   MEMORY[0x1EEE66BB8](isKindOfClass, v7);
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if ([v10 isEqualToString:@"PUPhotosSharingSelectionBadgeKind"])
+  viewCopy = view;
+  kindCopy = kind;
+  pathCopy = path;
+  if ([kindCopy isEqualToString:@"PUPhotosSharingSelectionBadgeKind"])
   {
-    v12 = [(PUCarouselSharingViewController *)self _selectionViewAtIndexPath:v11 forCollectionView:v9];
+    v12 = [(PUCarouselSharingViewController *)self _selectionViewAtIndexPath:pathCopy forCollectionView:viewCopy];
   }
 
   else
   {
-    if (![v10 isEqualToString:@"PUPhotosSharingOptionBadgeKind"])
+    if (![kindCopy isEqualToString:@"PUPhotosSharingOptionBadgeKind"])
     {
-      v15 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v15 handleFailureInMethod:a2 object:self file:@"PUCarouselSharingViewController.m" lineNumber:1745 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUCarouselSharingViewController.m" lineNumber:1745 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
 
-    v12 = [(PUCarouselSharingViewController *)self _optionViewAtIndexPath:v11 forCollectionView:v9];
+    v12 = [(PUCarouselSharingViewController *)self _optionViewAtIndexPath:pathCopy forCollectionView:viewCopy];
   }
 
   v13 = v12;
@@ -815,35 +815,35 @@ LABEL_8:
   return v13;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithReuseIdentifier:@"PUPhotosSharingCellIdentifier" forIndexPath:v6];
-  [(PUCarouselSharingViewController *)self _updateCell:v7 forItemAtIndexPath:v6];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithReuseIdentifier:@"PUPhotosSharingCellIdentifier" forIndexPath:pathCopy];
+  [(PUCarouselSharingViewController *)self _updateCell:v7 forItemAtIndexPath:pathCopy];
 
   return v7;
 }
 
-- (void)setHideCellForCurrentReferenceAsset:(BOOL)a3
+- (void)setHideCellForCurrentReferenceAsset:(BOOL)asset
 {
-  v3 = a3;
-  v9 = [(PUCarouselSharingViewController *)self mainCollectionView];
-  v5 = [(PUCarouselSharingViewController *)self _indexPathOfCenterVisibleItemInCollectionView:v9];
-  v6 = [v9 cellForItemAtIndexPath:v5];
-  v7 = [v9 _visibleSupplementaryViewOfKind:@"PUPhotosSharingSelectionBadgeKind" atIndexPath:v5];
-  v8 = [v9 _visibleSupplementaryViewOfKind:@"PUPhotosSharingOptionBadgeKind" atIndexPath:v5];
-  [v6 setHidden:v3];
-  [v7 setHidden:v3];
-  [v8 setHidden:v3];
+  assetCopy = asset;
+  mainCollectionView = [(PUCarouselSharingViewController *)self mainCollectionView];
+  v5 = [(PUCarouselSharingViewController *)self _indexPathOfCenterVisibleItemInCollectionView:mainCollectionView];
+  v6 = [mainCollectionView cellForItemAtIndexPath:v5];
+  v7 = [mainCollectionView _visibleSupplementaryViewOfKind:@"PUPhotosSharingSelectionBadgeKind" atIndexPath:v5];
+  v8 = [mainCollectionView _visibleSupplementaryViewOfKind:@"PUPhotosSharingOptionBadgeKind" atIndexPath:v5];
+  [v6 setHidden:assetCopy];
+  [v7 setHidden:assetCopy];
+  [v8 setHidden:assetCopy];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
-  v8 = [(PUCarouselSharingViewController *)self mainCollectionView];
-  v9 = [(PUCarouselSharingViewController *)self _indexPathOfCenterVisibleItemInCollectionView:v8];
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
+  mainCollectionView = [(PUCarouselSharingViewController *)self mainCollectionView];
+  v9 = [(PUCarouselSharingViewController *)self _indexPathOfCenterVisibleItemInCollectionView:mainCollectionView];
 
   inFlightReferenceIndexPath = self->_inFlightReferenceIndexPath;
   self->_inFlightReferenceIndexPath = v9;
@@ -860,10 +860,10 @@ LABEL_8:
   v13[1] = 3221225472;
   v13[2] = __86__PUCarouselSharingViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke_2;
   v13[3] = &unk_1E7B7DC38;
-  [v7 animateAlongsideTransition:v14 completion:v13];
+  [coordinatorCopy animateAlongsideTransition:v14 completion:v13];
   v12.receiver = self;
   v12.super_class = PUCarouselSharingViewController;
-  [(PUCarouselSharingViewController *)&v12 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(PUCarouselSharingViewController *)&v12 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
 }
 
 void *__86__PUCarouselSharingViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -904,15 +904,15 @@ uint64_t __86__PUCarouselSharingViewController_viewWillTransitionToSize_withTran
   v8.receiver = self;
   v8.super_class = PUCarouselSharingViewController;
   [(PUCarouselSharingViewController *)&v8 viewDidLayoutSubviews];
-  v3 = [(PUCarouselSharingViewController *)self photosSharingTransitionContext];
-  v4 = v3;
+  photosSharingTransitionContext = [(PUCarouselSharingViewController *)self photosSharingTransitionContext];
+  v4 = photosSharingTransitionContext;
   if (self->_shouldScrollToSelection)
   {
-    v5 = [v3 keyAssetIndexPath];
-    if (v5 || ([(PUCarouselSharingViewController *)self _firstSelectedIndexPath], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+    keyAssetIndexPath = [photosSharingTransitionContext keyAssetIndexPath];
+    if (keyAssetIndexPath || ([(PUCarouselSharingViewController *)self _firstSelectedIndexPath], (keyAssetIndexPath = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v6 = v5;
-      [(PUCarouselSharingViewController *)self _pageToIndexPath:v5 animated:0];
+      v6 = keyAssetIndexPath;
+      [(PUCarouselSharingViewController *)self _pageToIndexPath:keyAssetIndexPath animated:0];
     }
 
     self->_shouldScrollToSelection = 0;
@@ -932,9 +932,9 @@ uint64_t __86__PUCarouselSharingViewController_viewWillTransitionToSize_withTran
   [(PUCarouselSharingViewController *)&v5 viewWillLayoutSubviews];
   if (!self->_inFlightRotation && !self->_inFlightReferenceIndexPath)
   {
-    v3 = [(PUCarouselSharingViewController *)self currentIndexPath];
+    currentIndexPath = [(PUCarouselSharingViewController *)self currentIndexPath];
     inFlightReferenceIndexPath = self->_inFlightReferenceIndexPath;
-    self->_inFlightReferenceIndexPath = v3;
+    self->_inFlightReferenceIndexPath = currentIndexPath;
   }
 
   [(PUCarouselSharingViewController *)self _updateMainViewAnimated:0];
@@ -948,25 +948,25 @@ uint64_t __86__PUCarouselSharingViewController_viewWillTransitionToSize_withTran
   [(PUCarouselSharingViewController *)&v19 viewDidLoad];
   [(PUCarouselSharingViewController *)self _updateMainViewAnimated:0];
   [(PUCarouselSharingViewController *)self _setViewInSyncWithModel:0];
-  v3 = [(PUCarouselSharingViewController *)self _lastKnownReferenceAsset];
-  if (v3)
+  _lastKnownReferenceAsset = [(PUCarouselSharingViewController *)self _lastKnownReferenceAsset];
+  if (_lastKnownReferenceAsset)
   {
     goto LABEL_2;
   }
 
-  v4 = [(PUCarouselSharingViewController *)self _lastKnownReferenceIndexPath];
+  _lastKnownReferenceIndexPath = [(PUCarouselSharingViewController *)self _lastKnownReferenceIndexPath];
 
-  if (!v4)
+  if (!_lastKnownReferenceIndexPath)
   {
-    v3 = [(PUCarouselSharingViewController *)self _firstSelectedIndexPath];
-    [(PUCarouselSharingViewController *)self _setLastKnownReferenceAsset:0 indexPath:v3];
+    _lastKnownReferenceAsset = [(PUCarouselSharingViewController *)self _firstSelectedIndexPath];
+    [(PUCarouselSharingViewController *)self _setLastKnownReferenceAsset:0 indexPath:_lastKnownReferenceAsset];
 LABEL_2:
   }
 
-  v5 = [(PUCarouselSharingViewController *)self view];
+  view = [(PUCarouselSharingViewController *)self view];
   v6 = +[PUInterfaceManager currentTheme];
-  v7 = [v6 photoCollectionViewBackgroundColor];
-  [v5 setBackgroundColor:v7];
+  photoCollectionViewBackgroundColor = [v6 photoCollectionViewBackgroundColor];
+  [view setBackgroundColor:photoCollectionViewBackgroundColor];
 
   v17 = 0u;
   v18 = 0u;
@@ -1010,14 +1010,14 @@ LABEL_2:
   v11 = __Block_byref_object_copy__68850;
   v12 = __Block_byref_object_dispose__68851;
   v13 = 0;
-  v3 = [(PUCarouselSharingViewController *)self photoSelectionManager];
+  photoSelectionManager = [(PUCarouselSharingViewController *)self photoSelectionManager];
   photoCollectionsFetchResult = self->_photoCollectionsFetchResult;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __58__PUCarouselSharingViewController__firstSelectedIndexPath__block_invoke;
   v7[3] = &unk_1E7B7D2B8;
   v7[4] = &v8;
-  [v3 enumerateSelectedAssetsWithAssetCollectionOrdering:photoCollectionsFetchResult block:v7];
+  [photoSelectionManager enumerateSelectedAssetsWithAssetCollectionOrdering:photoCollectionsFetchResult block:v7];
   v5 = v9[5];
 
   _Block_object_dispose(&v8, 8);
@@ -1035,14 +1035,14 @@ void __58__PUCarouselSharingViewController__firstSelectedIndexPath__block_invoke
   *a5 = 1;
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = PUCarouselSharingViewController;
-  [(PUCarouselSharingViewController *)&v5 viewWillDisappear:a3];
-  v4 = [(PUCarouselSharingViewController *)self presentedViewController];
+  [(PUCarouselSharingViewController *)&v5 viewWillDisappear:disappear];
+  presentedViewController = [(PUCarouselSharingViewController *)self presentedViewController];
 
-  if (!v4)
+  if (!presentedViewController)
   {
     self->_shouldPlayVitalityHintAfterViewDidAppear = 0;
   }
@@ -1050,19 +1050,19 @@ void __58__PUCarouselSharingViewController__firstSelectedIndexPath__block_invoke
   [(PUCarouselSharingViewController *)self _setLoopingPlaybackAllowed:0];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PUCarouselSharingViewController;
-  [(PUCarouselSharingViewController *)&v4 viewDidAppear:a3];
+  [(PUCarouselSharingViewController *)&v4 viewDidAppear:appear];
   [(PUCarouselSharingViewController *)self _handlePhotoViewLoaderBlocks];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PUCarouselSharingViewController;
-  [(PUCarouselSharingViewController *)&v4 viewWillAppear:a3];
+  [(PUCarouselSharingViewController *)&v4 viewWillAppear:appear];
   [(PUCarouselSharingViewController *)self _updateMainViewAnimated:0];
   if (![(PUCarouselSharingViewController *)self _isViewInSyncWithModel])
   {
@@ -1072,22 +1072,22 @@ void __58__PUCarouselSharingViewController__firstSelectedIndexPath__block_invoke
   [(PUCarouselSharingViewController *)self _setLoopingPlaybackAllowed:1];
 }
 
-- (void)setSendAsAssetBundles:(BOOL)a3
+- (void)setSendAsAssetBundles:(BOOL)bundles
 {
   v18 = *MEMORY[0x1E69E9840];
-  if (self->_sendAsAssetBundles != a3)
+  if (self->_sendAsAssetBundles != bundles)
   {
-    self->_sendAsAssetBundles = a3;
-    if (a3)
+    self->_sendAsAssetBundles = bundles;
+    if (bundles)
     {
-      v4 = [(PUCarouselSharingViewController *)self photoSelectionManager];
-      v5 = [v4 orderedSelectedAssets];
+      photoSelectionManager = [(PUCarouselSharingViewController *)self photoSelectionManager];
+      orderedSelectedAssets = [photoSelectionManager orderedSelectedAssets];
 
       v15 = 0u;
       v16 = 0u;
       v13 = 0u;
       v14 = 0u;
-      v6 = v5;
+      v6 = orderedSelectedAssets;
       v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v7)
       {
@@ -1122,43 +1122,43 @@ void __58__PUCarouselSharingViewController__firstSelectedIndexPath__block_invoke
   }
 }
 
-- (void)setReadyForInteraction:(BOOL)a3
+- (void)setReadyForInteraction:(BOOL)interaction
 {
-  if (self->_readyForInteraction != a3)
+  if (self->_readyForInteraction != interaction)
   {
-    self->_readyForInteraction = a3;
+    self->_readyForInteraction = interaction;
     [(PUCarouselSharingViewController *)self _handlePhotoViewLoaderBlocks];
   }
 }
 
-- (void)_setLoopingPlaybackAllowed:(BOOL)a3
+- (void)_setLoopingPlaybackAllowed:(BOOL)allowed
 {
-  if (self->__loopingPlaybackAllowed != a3)
+  if (self->__loopingPlaybackAllowed != allowed)
   {
-    self->__loopingPlaybackAllowed = a3;
+    self->__loopingPlaybackAllowed = allowed;
     [(PUCarouselSharingViewController *)self _updateAdditionalContentForVisibleCells];
   }
 }
 
-- (void)_updateMainViewAnimated:(BOOL)a3
+- (void)_updateMainViewAnimated:(BOOL)animated
 {
   if (![(PUCarouselSharingViewController *)self isViewLoaded])
   {
     return;
   }
 
-  v4 = [(PUCarouselSharingViewController *)self spec];
+  spec = [(PUCarouselSharingViewController *)self spec];
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
   [(PUCarouselSharingViewController *)self _getMainCollectionViewFrame:&v27 collectionViewLayoutInsets:&v29];
-  v5 = [(PUCarouselSharingViewController *)self mainCollectionView];
-  v6 = [(PUCarouselSharingViewController *)self mainCollectionViewLayout];
-  [v4 interItemSpacing];
-  if (v6)
+  mainCollectionView = [(PUCarouselSharingViewController *)self mainCollectionView];
+  mainCollectionViewLayout = [(PUCarouselSharingViewController *)self mainCollectionViewLayout];
+  [spec interItemSpacing];
+  if (mainCollectionViewLayout)
   {
-    if (v5)
+    if (mainCollectionView)
     {
       goto LABEL_4;
     }
@@ -1167,42 +1167,42 @@ void __58__PUCarouselSharingViewController__firstSelectedIndexPath__block_invoke
   else
   {
     v16 = v7;
-    v6 = objc_alloc_init(PUPhotosSharingCollectionViewLayout);
-    -[PUPhotosSharingCollectionViewLayout setSharingBadgesCorner:](v6, "setSharingBadgesCorner:", [v4 selectionBadgeCorner]);
-    [v4 selectionBadgeOffset];
-    [(PUPhotosSharingCollectionViewLayout *)v6 setSharingBadgesOffset:?];
-    [(PUPhotosSharingCollectionViewLayout *)v6 _setWantsRightToLeftHorizontalMirroringIfNeeded:1];
-    [(PUHorizontalTiledCollectionViewLayout *)v6 setDelegate:self];
-    [(PUCarouselSharingViewController *)self _setMainCollectionViewLayout:v6];
-    [(PUHorizontalTiledCollectionViewLayout *)v6 setInteritemSpacing:v16];
-    if (v5)
+    mainCollectionViewLayout = objc_alloc_init(PUPhotosSharingCollectionViewLayout);
+    -[PUPhotosSharingCollectionViewLayout setSharingBadgesCorner:](mainCollectionViewLayout, "setSharingBadgesCorner:", [spec selectionBadgeCorner]);
+    [spec selectionBadgeOffset];
+    [(PUPhotosSharingCollectionViewLayout *)mainCollectionViewLayout setSharingBadgesOffset:?];
+    [(PUPhotosSharingCollectionViewLayout *)mainCollectionViewLayout _setWantsRightToLeftHorizontalMirroringIfNeeded:1];
+    [(PUHorizontalTiledCollectionViewLayout *)mainCollectionViewLayout setDelegate:self];
+    [(PUCarouselSharingViewController *)self _setMainCollectionViewLayout:mainCollectionViewLayout];
+    [(PUHorizontalTiledCollectionViewLayout *)mainCollectionViewLayout setInteritemSpacing:v16];
+    if (mainCollectionView)
     {
       goto LABEL_4;
     }
   }
 
   v17 = objc_alloc(MEMORY[0x1E69DC7F0]);
-  v5 = [v17 initWithFrame:v6 collectionViewLayout:{v27, v28}];
-  [v5 setAutoresizingMask:18];
-  [(PUCarouselSharingViewController *)self _setMainCollectionView:v5];
-  v18 = [(PUCarouselSharingViewController *)self view];
-  [v18 addSubview:v5];
+  mainCollectionView = [v17 initWithFrame:mainCollectionViewLayout collectionViewLayout:{v27, v28}];
+  [mainCollectionView setAutoresizingMask:18];
+  [(PUCarouselSharingViewController *)self _setMainCollectionView:mainCollectionView];
+  view = [(PUCarouselSharingViewController *)self view];
+  [view addSubview:mainCollectionView];
 
-  [v5 setAlwaysBounceVertical:0];
-  [v5 setAlwaysBounceHorizontal:1];
-  [v5 setPagingEnabled:0];
-  [v5 setDecelerationRate:*MEMORY[0x1E69DE3A0]];
-  [v5 setDataSource:self];
-  [v5 setDelegate:self];
-  [v5 setShowsHorizontalScrollIndicator:0];
-  [v5 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"PUPhotosSharingCellIdentifier"];
-  [v5 registerClass:objc_opt_class() forSupplementaryViewOfKind:@"PUPhotosSharingSelectionBadgeKind" withReuseIdentifier:@"PUPhotosSharingBadgeIdentifier"];
-  [v5 registerClass:objc_opt_class() forSupplementaryViewOfKind:@"PUPhotosSharingOptionBadgeKind" withReuseIdentifier:@"PUPhotosSharingOptionIdentifier"];
-  [v5 setContentInsetAdjustmentBehavior:2];
+  [mainCollectionView setAlwaysBounceVertical:0];
+  [mainCollectionView setAlwaysBounceHorizontal:1];
+  [mainCollectionView setPagingEnabled:0];
+  [mainCollectionView setDecelerationRate:*MEMORY[0x1E69DE3A0]];
+  [mainCollectionView setDataSource:self];
+  [mainCollectionView setDelegate:self];
+  [mainCollectionView setShowsHorizontalScrollIndicator:0];
+  [mainCollectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"PUPhotosSharingCellIdentifier"];
+  [mainCollectionView registerClass:objc_opt_class() forSupplementaryViewOfKind:@"PUPhotosSharingSelectionBadgeKind" withReuseIdentifier:@"PUPhotosSharingBadgeIdentifier"];
+  [mainCollectionView registerClass:objc_opt_class() forSupplementaryViewOfKind:@"PUPhotosSharingOptionBadgeKind" withReuseIdentifier:@"PUPhotosSharingOptionIdentifier"];
+  [mainCollectionView setContentInsetAdjustmentBehavior:2];
   v19 = +[PUInterfaceManager currentTheme];
-  v20 = [v19 photoCollectionViewBackgroundColor];
+  photoCollectionViewBackgroundColor = [v19 photoCollectionViewBackgroundColor];
 
-  [v5 setBackgroundColor:v20];
+  [mainCollectionView setBackgroundColor:photoCollectionViewBackgroundColor];
   v21 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel__handleTapInMainCollectionView_];
   tapGestureRecognizer = self->_tapGestureRecognizer;
   self->_tapGestureRecognizer = v21;
@@ -1210,7 +1210,7 @@ void __58__PUCarouselSharingViewController__firstSelectedIndexPath__block_invoke
   [(UITapGestureRecognizer *)self->_tapGestureRecognizer setNumberOfTapsRequired:1];
   [(UITapGestureRecognizer *)self->_tapGestureRecognizer setNumberOfTouchesRequired:1];
   [(UITapGestureRecognizer *)self->_tapGestureRecognizer setDelegate:self];
-  [v5 addGestureRecognizer:self->_tapGestureRecognizer];
+  [mainCollectionView addGestureRecognizer:self->_tapGestureRecognizer];
   v23 = objc_alloc_init(PUScrollViewSpeedometer);
   speedometer = self->_speedometer;
   self->_speedometer = v23;
@@ -1222,7 +1222,7 @@ void __58__PUCarouselSharingViewController__firstSelectedIndexPath__block_invoke
   [(PUScrollViewSpeedometer *)self->_speedometer setDelegate:self];
 
 LABEL_4:
-  [v5 setFrame:{v27, v28}];
+  [mainCollectionView setFrame:{v27, v28}];
   v25 = 0;
   v26 = 0;
   [(PUCarouselSharingViewController *)self _getFirstValidIndexPath:&v26 lastValidIndexPath:&v25];
@@ -1246,38 +1246,38 @@ LABEL_4:
     v15 = *(&v30 + 1);
   }
 
-  [(PUHorizontalTiledCollectionViewLayout *)v6 setItemsContentInset:*&v29, v13, *&v30, v15];
+  [(PUHorizontalTiledCollectionViewLayout *)mainCollectionViewLayout setItemsContentInset:*&v29, v13, *&v30, v15];
 }
 
-- (void)_processCollectionListChangeNotifications:(id)a3 singleCollectionNotifications:(id)a4 needsReloadData:(BOOL)a5
+- (void)_processCollectionListChangeNotifications:(id)notifications singleCollectionNotifications:(id)collectionNotifications needsReloadData:(BOOL)data
 {
-  v5 = a5;
-  v18 = a4;
-  if (![a3 count] && !objc_msgSend(v18, "count"))
+  dataCopy = data;
+  collectionNotificationsCopy = collectionNotifications;
+  if (![notifications count] && !objc_msgSend(collectionNotificationsCopy, "count"))
   {
     goto LABEL_19;
   }
 
-  v8 = [(PUCarouselSharingViewController *)self _lastKnownReferenceAsset];
-  v9 = [(PUCarouselSharingViewController *)self _lastKnownReferenceIndexPath];
-  v10 = v9;
-  if (!v8)
+  _lastKnownReferenceAsset = [(PUCarouselSharingViewController *)self _lastKnownReferenceAsset];
+  _lastKnownReferenceIndexPath = [(PUCarouselSharingViewController *)self _lastKnownReferenceIndexPath];
+  v10 = _lastKnownReferenceIndexPath;
+  if (!_lastKnownReferenceAsset)
   {
     v12 = 0;
     goto LABEL_9;
   }
 
-  if (v9)
+  if (_lastKnownReferenceIndexPath)
   {
-    v11 = [v9 section];
+    section = [_lastKnownReferenceIndexPath section];
   }
 
   else
   {
-    v11 = 0x7FFFFFFFFFFFFFFFLL;
+    section = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v12 = [(PUCarouselSharingViewController *)self _indexPathOfAsset:v8 sectionHint:v11];
+  v12 = [(PUCarouselSharingViewController *)self _indexPathOfAsset:_lastKnownReferenceAsset sectionHint:section];
   if (!v12)
   {
 LABEL_9:
@@ -1295,12 +1295,12 @@ LABEL_9:
     self->_inFlightReferenceIndexPath = v13;
   }
 
-  if (v5)
+  if (dataCopy)
   {
     if (-[PUCarouselSharingViewController isViewLoaded](self, "isViewLoaded") && (-[PUCarouselSharingViewController view](self, "view"), v15 = objc_claimAutoreleasedReturnValue(), [v15 window], v16 = objc_claimAutoreleasedReturnValue(), v16, v15, v16))
     {
-      v17 = [(PUCarouselSharingViewController *)self mainCollectionView];
-      [v17 reloadData];
+      mainCollectionView = [(PUCarouselSharingViewController *)self mainCollectionView];
+      [mainCollectionView reloadData];
 
       [(PUCarouselSharingViewController *)self _setViewInSyncWithModel:1];
       [(PUCarouselSharingViewController *)self _updatePreheatedAssets];
@@ -1315,39 +1315,39 @@ LABEL_9:
 LABEL_19:
 }
 
-- (void)photoLibraryDidChangeOnMainQueue:(id)a3
+- (void)photoLibraryDidChangeOnMainQueue:(id)queue
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  queueCopy = queue;
   v36 = 0;
   v37 = &v36;
   v38 = 0x2020000000;
   v39 = 0;
-  v5 = [MEMORY[0x1E695DF70] array];
-  v6 = [(PUCarouselSharingViewController *)self photoCollectionsFetchResult];
-  v7 = [v4 changeDetailsForFetchResult:v6];
+  array = [MEMORY[0x1E695DF70] array];
+  photoCollectionsFetchResult = [(PUCarouselSharingViewController *)self photoCollectionsFetchResult];
+  v7 = [queueCopy changeDetailsForFetchResult:photoCollectionsFetchResult];
 
   if (v7)
   {
     if (([v7 hasMoves] & 1) == 0 && objc_msgSend(v7, "hasIncrementalChanges"))
     {
-      v8 = [v7 insertedIndexes];
-      if ([v8 count])
+      insertedIndexes = [v7 insertedIndexes];
+      if ([insertedIndexes count])
       {
       }
 
       else
       {
-        v9 = [v7 removedIndexes];
-        v10 = [v9 count] == 0;
+        removedIndexes = [v7 removedIndexes];
+        v10 = [removedIndexes count] == 0;
 
         if (v10)
         {
 LABEL_8:
-          [v5 addObject:v7];
-          v11 = [v7 fetchResultAfterChanges];
+          [array addObject:v7];
+          fetchResultAfterChanges = [v7 fetchResultAfterChanges];
           photoCollectionsFetchResult = self->_photoCollectionsFetchResult;
-          self->_photoCollectionsFetchResult = v11;
+          self->_photoCollectionsFetchResult = fetchResultAfterChanges;
 
           goto LABEL_9;
         }
@@ -1359,16 +1359,16 @@ LABEL_8:
   }
 
 LABEL_9:
-  v13 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   resultsForAssetCollection = self->_resultsForAssetCollection;
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
   v32[2] = __68__PUCarouselSharingViewController_photoLibraryDidChangeOnMainQueue___block_invoke;
   v32[3] = &unk_1E7B7D268;
-  v15 = v4;
+  v15 = queueCopy;
   v33 = v15;
   v35 = &v36;
-  v16 = v13;
+  v16 = dictionary;
   v34 = v16;
   [(NSMutableDictionary *)resultsForAssetCollection enumerateKeysAndObjectsUsingBlock:v32];
   v30 = 0u;
@@ -1416,19 +1416,19 @@ LABEL_19:
   v27[3] = &unk_1E7B7D290;
   v27[4] = self;
   [v16 enumerateKeysAndObjectsUsingBlock:v27];
-  if ([v5 count] || objc_msgSend(v16, "count"))
+  if ([array count] || objc_msgSend(v16, "count"))
   {
-    v22 = [(PUCarouselSharingViewController *)self photoSelectionManager];
-    [v22 handlePhotoLibraryChange:v15];
+    photoSelectionManager = [(PUCarouselSharingViewController *)self photoSelectionManager];
+    [photoSelectionManager handlePhotoLibraryChange:v15];
 
-    v23 = [(PUCarouselSharingViewController *)self photoSelectionManager];
-    v24 = [v23 orderedSelectedAssets];
+    photoSelectionManager2 = [(PUCarouselSharingViewController *)self photoSelectionManager];
+    orderedSelectedAssets = [photoSelectionManager2 orderedSelectedAssets];
 
-    v25 = [(PUCarouselSharingViewController *)self _updatedActivityAssetItemsForAssets:v24];
-    v26 = [(PUCarouselSharingViewController *)self delegate];
-    [v26 carouselSharingViewController:self setAssetItems:v25];
+    v25 = [(PUCarouselSharingViewController *)self _updatedActivityAssetItemsForAssets:orderedSelectedAssets];
+    delegate = [(PUCarouselSharingViewController *)self delegate];
+    [delegate carouselSharingViewController:self setAssetItems:v25];
 
-    [(PUCarouselSharingViewController *)self _processCollectionListChangeNotifications:v5 singleCollectionNotifications:v16 needsReloadData:*(v37 + 24)];
+    [(PUCarouselSharingViewController *)self _processCollectionListChangeNotifications:array singleCollectionNotifications:v16 needsReloadData:*(v37 + 24)];
   }
 
   _Block_object_dispose(&v36, 8);
@@ -1488,73 +1488,73 @@ void __68__PUCarouselSharingViewController_photoLibraryDidChangeOnMainQueue___bl
   [(PUCarouselSharingViewController *)self _pageToIndexPath:v3 animated:0];
 }
 
-- (BOOL)ppt_scrollToAssetAtRelativeIndex:(int64_t)a3 completion:(id)a4
+- (BOOL)ppt_scrollToAssetAtRelativeIndex:(int64_t)index completion:(id)completion
 {
-  v7 = a4;
-  if (a3 != -1 && a3 != 1)
+  completionCopy = completion;
+  if (index != -1 && index != 1)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PUCarouselSharingViewController.m" lineNumber:1325 description:@"only support single step"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUCarouselSharingViewController.m" lineNumber:1325 description:@"only support single step"];
   }
 
-  v9 = [(PUCarouselSharingViewController *)self currentIndexPath];
-  v10 = [(PUCarouselSharingViewController *)self mainCollectionView];
-  v11 = [v10 next:a3 indexPathFromIndexPath:v9];
+  currentIndexPath = [(PUCarouselSharingViewController *)self currentIndexPath];
+  mainCollectionView = [(PUCarouselSharingViewController *)self mainCollectionView];
+  v11 = [mainCollectionView next:index indexPathFromIndexPath:currentIndexPath];
 
   if (v11)
   {
-    [(PUCarouselSharingViewController *)self _pptSetOnDidEndScrollingBlock:v7];
+    [(PUCarouselSharingViewController *)self _pptSetOnDidEndScrollingBlock:completionCopy];
     [(PUCarouselSharingViewController *)self _pageToIndexPath:v11 animated:1];
   }
 
   return v11 != 0;
 }
 
-- (CGRect)frameForBadgeOfKind:(id)a3 forItemFrame:(CGRect)a4 atIndexPath:(id)a5
+- (CGRect)frameForBadgeOfKind:(id)kind forItemFrame:(CGRect)frame atIndexPath:(id)path
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a3;
-  v12 = a5;
-  v13 = [[PUPhotosSharingCollectionViewItemSublayout alloc] initWithIndexPath:v12 itemFrame:x, y, width, height];
-  [(PUCarouselSharingViewController *)self layout:0 collectionView:0 sizeForBadgeViewOfKind:@"PUPhotosSharingSelectionBadgeKind" forItemAtIndexPath:v12];
-  [(PUPhotosSharingCollectionViewItemSublayout *)v13 setSelectionBadgeSize:?];
-  [(PUCarouselSharingViewController *)self layout:0 collectionView:0 sizeForBadgeViewOfKind:@"PUPhotosSharingOptionBadgeKind" forItemAtIndexPath:v12];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  kindCopy = kind;
+  pathCopy = path;
+  height = [[PUPhotosSharingCollectionViewItemSublayout alloc] initWithIndexPath:pathCopy itemFrame:x, y, width, height];
+  [(PUCarouselSharingViewController *)self layout:0 collectionView:0 sizeForBadgeViewOfKind:@"PUPhotosSharingSelectionBadgeKind" forItemAtIndexPath:pathCopy];
+  [(PUPhotosSharingCollectionViewItemSublayout *)height setSelectionBadgeSize:?];
+  [(PUCarouselSharingViewController *)self layout:0 collectionView:0 sizeForBadgeViewOfKind:@"PUPhotosSharingOptionBadgeKind" forItemAtIndexPath:pathCopy];
   v15 = v14;
   v17 = v16;
 
-  [(PUPhotosSharingCollectionViewItemSublayout *)v13 setOptionBadgeSize:v15, v17];
-  LOBYTE(v12) = [v11 isEqualToString:@"PUPhotosSharingSelectionBadgeKind"];
-  v18 = [(PUCarouselSharingViewController *)self spec];
-  v19 = v18;
-  if (v12)
+  [(PUPhotosSharingCollectionViewItemSublayout *)height setOptionBadgeSize:v15, v17];
+  LOBYTE(pathCopy) = [kindCopy isEqualToString:@"PUPhotosSharingSelectionBadgeKind"];
+  spec = [(PUCarouselSharingViewController *)self spec];
+  v19 = spec;
+  if (pathCopy)
   {
-    v20 = [v18 selectionBadgeCorner];
+    selectionBadgeCorner = [spec selectionBadgeCorner];
   }
 
   else
   {
-    v20 = [v18 optionBadgeCorner];
+    selectionBadgeCorner = [spec optionBadgeCorner];
   }
 
-  v21 = v20;
+  v21 = selectionBadgeCorner;
 
-  [(PUPhotosSharingCollectionViewItemSublayout *)v13 setBadgesCorner:v21];
-  v22 = [(PUCarouselSharingViewController *)self spec];
-  [v22 selectionBadgeOffset];
-  [(PUPhotosSharingCollectionViewItemSublayout *)v13 setBadgesOffset:?];
+  [(PUPhotosSharingCollectionViewItemSublayout *)height setBadgesCorner:v21];
+  spec2 = [(PUCarouselSharingViewController *)self spec];
+  [spec2 selectionBadgeOffset];
+  [(PUPhotosSharingCollectionViewItemSublayout *)height setBadgesOffset:?];
 
-  [(PUPhotosSharingCollectionViewItemSublayout *)v13 prepareSublayout];
-  if ([v11 isEqualToString:@"PUPhotosSharingSelectionBadgeKind"])
+  [(PUPhotosSharingCollectionViewItemSublayout *)height prepareSublayout];
+  if ([kindCopy isEqualToString:@"PUPhotosSharingSelectionBadgeKind"])
   {
-    v23 = [(PUPhotosSharingCollectionViewItemSublayout *)v13 selectionBadgeLayoutAttributes];
+    selectionBadgeLayoutAttributes = [(PUPhotosSharingCollectionViewItemSublayout *)height selectionBadgeLayoutAttributes];
   }
 
   else
   {
-    if (![v11 isEqualToString:@"PUPhotosSharingOptionBadgeKind"])
+    if (![kindCopy isEqualToString:@"PUPhotosSharingOptionBadgeKind"])
     {
 LABEL_10:
       v26 = *MEMORY[0x1E695F058];
@@ -1564,16 +1564,16 @@ LABEL_10:
       goto LABEL_11;
     }
 
-    v23 = [(PUPhotosSharingCollectionViewItemSublayout *)v13 optionBadgeLayoutAttributes];
+    selectionBadgeLayoutAttributes = [(PUPhotosSharingCollectionViewItemSublayout *)height optionBadgeLayoutAttributes];
   }
 
-  v24 = v23;
-  if (!v23)
+  v24 = selectionBadgeLayoutAttributes;
+  if (!selectionBadgeLayoutAttributes)
   {
     goto LABEL_10;
   }
 
-  [v23 frame];
+  [selectionBadgeLayoutAttributes frame];
   v26 = v25;
   v28 = v27;
   v30 = v29;
@@ -1594,8 +1594,8 @@ LABEL_11:
 - (void)_updatePreheatedAssets
 {
   v85 = *MEMORY[0x1E69E9840];
-  v3 = [(PUCarouselSharingViewController *)self mainCollectionView];
-  [v3 bounds];
+  mainCollectionView = [(PUCarouselSharingViewController *)self mainCollectionView];
+  [mainCollectionView bounds];
   x = v86.origin.x;
   y = v86.origin.y;
   width = v86.size.width;
@@ -1635,27 +1635,27 @@ LABEL_11:
       {
         [(PUCarouselSharingViewController *)self _setPreviousPreheatRect:v11, v12, v14, v15];
         photosSharingTransitionContext = self->_photosSharingTransitionContext;
-        v17 = [v3 collectionViewLayout];
-        v18 = v17;
+        collectionViewLayout = [mainCollectionView collectionViewLayout];
+        v18 = collectionViewLayout;
         if (photosSharingTransitionContext)
         {
-          [v17 layoutAttributesForElementsInRect:{v11, v12, v14, v15}];
+          [collectionViewLayout layoutAttributesForElementsInRect:{v11, v12, v14, v15}];
         }
 
         else
         {
-          [v17 layoutAttributesForItemsInRect:{v11, v12, v14, v15}];
+          [collectionViewLayout layoutAttributesForItemsInRect:{v11, v12, v14, v15}];
         }
         v19 = ;
 
-        v20 = [MEMORY[0x1E695DF90] dictionary];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
         v21 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v19, "count")}];
         v76 = 0u;
         v77 = 0u;
         v78 = 0u;
         v79 = 0u;
         v22 = v19;
-        v23 = v20;
+        v23 = dictionary;
         obj = v22;
         v24 = [v22 countByEnumeratingWithState:&v76 objects:v84 count:16];
         if (v24)
@@ -1674,8 +1674,8 @@ LABEL_11:
               v28 = *(*(&v76 + 1) + 8 * i);
               if (![v28 representedElementCategory])
               {
-                v29 = [v28 indexPath];
-                v30 = [(PUCarouselSharingViewController *)self _assetAtIndexPath:v29];
+                indexPath = [v28 indexPath];
+                v30 = [(PUCarouselSharingViewController *)self _assetAtIndexPath:indexPath];
                 [v21 addObject:v30];
                 [v23 setObject:v28 forKey:v30];
               }
@@ -1687,19 +1687,19 @@ LABEL_11:
           while (v25);
         }
 
-        v31 = [(PUCarouselSharingViewController *)self _preheatedAssets];
+        _preheatedAssets = [(PUCarouselSharingViewController *)self _preheatedAssets];
         [(PUCarouselSharingViewController *)self _setPreheatedAssets:v21];
         v32 = [v21 mutableCopy];
-        [v32 minusSet:v31];
-        v65 = [v31 mutableCopy];
+        [v32 minusSet:_preheatedAssets];
+        v65 = [_preheatedAssets mutableCopy];
         [v65 minusSet:v21];
         if ([v32 count] || objc_msgSend(v65, "count"))
         {
-          v61 = v31;
+          v61 = _preheatedAssets;
           v62 = v21;
-          v64 = v3;
+          v64 = mainCollectionView;
           v33 = objc_opt_new();
-          v34 = [(PUCarouselSharingViewController *)self cachingImageManager];
+          cachingImageManager = [(PUCarouselSharingViewController *)self cachingImageManager];
           v72 = 0u;
           v73 = 0u;
           v74 = 0u;
@@ -1727,7 +1727,7 @@ LABEL_11:
                 v45 = v44;
                 v82 = v40;
                 v46 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v82 count:1];
-                [v34 startCachingImagesForAssets:v46 targetSize:0 contentMode:v33 options:{v43, v45}];
+                [cachingImageManager startCachingImagesForAssets:v46 targetSize:0 contentMode:v33 options:{v43, v45}];
               }
 
               v37 = [v35 countByEnumeratingWithState:&v72 objects:v83 count:16];
@@ -1759,15 +1759,15 @@ LABEL_11:
 
                 v51 = *(*(&v68 + 1) + 8 * k);
                 v52 = [(PUCarouselSharingViewController *)self _indexPathOfAsset:v51 sectionHint:0x7FFFFFFFFFFFFFFFLL, v60];
-                v53 = [(PUCarouselSharingViewController *)self mainCollectionViewLayout];
-                v54 = [v53 layoutAttributesForItemAtIndexPath:v52];
+                mainCollectionViewLayout = [(PUCarouselSharingViewController *)self mainCollectionViewLayout];
+                v54 = [mainCollectionViewLayout layoutAttributesForItemAtIndexPath:v52];
 
                 [v54 frame];
                 v56 = PUPixelSizeFromPointSize(v55);
                 v58 = v57;
                 v80 = v51;
                 v59 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v80 count:1];
-                [v34 stopCachingImagesForAssets:v59 targetSize:0 contentMode:v33 options:{v56, v58}];
+                [cachingImageManager stopCachingImagesForAssets:v59 targetSize:0 contentMode:v33 options:{v56, v58}];
               }
 
               v48 = [v66 countByEnumeratingWithState:&v68 objects:v81 count:16];
@@ -1777,8 +1777,8 @@ LABEL_11:
           }
 
           v23 = v63;
-          v3 = v64;
-          v31 = v61;
+          mainCollectionView = v64;
+          _preheatedAssets = v61;
           v21 = v62;
           v32 = v60;
         }
@@ -1795,158 +1795,158 @@ LABEL_11:
   [(PUCarouselSharingViewController *)self _setPreheatedAssets:0];
 }
 
-- (id)_optionViewAtIndexPath:(id)a3 forCollectionView:(id)a4
+- (id)_optionViewAtIndexPath:(id)path forCollectionView:(id)view
 {
-  if (a4)
+  if (view)
   {
-    v7 = a3;
-    v8 = [a4 dequeueReusableSupplementaryViewOfKind:@"PUPhotosSharingOptionBadgeKind" withReuseIdentifier:@"PUPhotosSharingOptionIdentifier" forIndexPath:v7];
+    pathCopy = path;
+    v8 = [view dequeueReusableSupplementaryViewOfKind:@"PUPhotosSharingOptionBadgeKind" withReuseIdentifier:@"PUPhotosSharingOptionIdentifier" forIndexPath:pathCopy];
     [(PUPhotosSharingOptionView *)v8 setTarget:self action:sel__handleSelectionOption_];
-    [(NSMapTable *)self->_indexPathsByOptionView setObject:v7 forKey:v8];
+    [(NSMapTable *)self->_indexPathsByOptionView setObject:pathCopy forKey:v8];
   }
 
   else
   {
-    v9 = a3;
+    pathCopy2 = path;
     v8 = objc_alloc_init(PUPhotosSharingOptionView);
   }
 
-  [(PUCarouselSharingViewController *)self _updateOptionView:v8 atIndexPath:a3];
+  [(PUCarouselSharingViewController *)self _updateOptionView:v8 atIndexPath:path];
 
   return v8;
 }
 
-- (id)_selectionViewAtIndexPath:(id)a3 forCollectionView:(id)a4
+- (id)_selectionViewAtIndexPath:(id)path forCollectionView:(id)view
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  pathCopy = path;
+  viewCopy = view;
+  if (!viewCopy)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PUCarouselSharingViewController.m" lineNumber:1206 description:{@"Invalid parameter not satisfying: %@", @"collectionView"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUCarouselSharingViewController.m" lineNumber:1206 description:{@"Invalid parameter not satisfying: %@", @"collectionView"}];
   }
 
-  v9 = [v8 dequeueReusableSupplementaryViewOfKind:@"PUPhotosSharingSelectionBadgeKind" withReuseIdentifier:@"PUPhotosSharingBadgeIdentifier" forIndexPath:v7];
-  v10 = -[PUCarouselSharingViewController _photoCollectionAtIndex:](self, "_photoCollectionAtIndex:", [v7 section]);
-  v11 = [(PUCarouselSharingViewController *)self photoSelectionManager];
-  v12 = [v11 isAssetAtIndexSelected:objc_msgSend(v7 inAssetCollection:{"item"), v10}];
+  v9 = [viewCopy dequeueReusableSupplementaryViewOfKind:@"PUPhotosSharingSelectionBadgeKind" withReuseIdentifier:@"PUPhotosSharingBadgeIdentifier" forIndexPath:pathCopy];
+  v10 = -[PUCarouselSharingViewController _photoCollectionAtIndex:](self, "_photoCollectionAtIndex:", [pathCopy section]);
+  photoSelectionManager = [(PUCarouselSharingViewController *)self photoSelectionManager];
+  v12 = [photoSelectionManager isAssetAtIndexSelected:objc_msgSend(pathCopy inAssetCollection:{"item"), v10}];
 
   [v9 setSelected:v12 animated:0];
 
   return v9;
 }
 
-- (void)setPhotosSharingTransitionLayout:(id)a3 animated:(BOOL)a4
+- (void)setPhotosSharingTransitionLayout:(id)layout animated:(BOOL)animated
 {
-  v4 = a4;
-  v12 = a3;
-  v7 = [(PUCarouselSharingViewController *)self _transitionLayout];
+  animatedCopy = animated;
+  layoutCopy = layout;
+  _transitionLayout = [(PUCarouselSharingViewController *)self _transitionLayout];
 
-  v8 = v12;
-  if (v7 != v12)
+  v8 = layoutCopy;
+  if (_transitionLayout != layoutCopy)
   {
-    objc_storeStrong(&self->__transitionLayout, a3);
-    if (v12)
+    objc_storeStrong(&self->__transitionLayout, layout);
+    if (layoutCopy)
     {
-      v9 = v12;
+      mainCollectionViewLayout = layoutCopy;
     }
 
     else
     {
-      v9 = [(PUCarouselSharingViewController *)self mainCollectionViewLayout];
+      mainCollectionViewLayout = [(PUCarouselSharingViewController *)self mainCollectionViewLayout];
     }
 
-    v10 = v9;
-    v11 = [(PUCarouselSharingViewController *)self mainCollectionView];
-    [v11 setCollectionViewLayout:v10 animated:v4];
+    v10 = mainCollectionViewLayout;
+    mainCollectionView = [(PUCarouselSharingViewController *)self mainCollectionView];
+    [mainCollectionView setCollectionViewLayout:v10 animated:animatedCopy];
 
-    v8 = v12;
+    v8 = layoutCopy;
   }
 }
 
-- (void)_updateCellAtIndexPath:(id)a3 withTransitionInfo:(id)a4
+- (void)_updateCellAtIndexPath:(id)path withTransitionInfo:(id)info
 {
-  v25 = a4;
-  v7 = a3;
-  v8 = [(PUCarouselSharingViewController *)self mainCollectionView];
-  v9 = [v8 cellForItemAtIndexPath:v7];
+  infoCopy = info;
+  pathCopy = path;
+  mainCollectionView = [(PUCarouselSharingViewController *)self mainCollectionView];
+  v9 = [mainCollectionView cellForItemAtIndexPath:pathCopy];
 
   if (v9)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v21 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v22 = objc_opt_class();
       v23 = NSStringFromClass(v22);
-      v24 = [v9 px_descriptionForAssertionMessage];
-      [v21 handleFailureInMethod:a2 object:self file:@"PUCarouselSharingViewController.m" lineNumber:1180 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"[self.mainCollectionView cellForItemAtIndexPath:indexPath]", v23, v24}];
+      px_descriptionForAssertionMessage = [v9 px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUCarouselSharingViewController.m" lineNumber:1180 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"[self.mainCollectionView cellForItemAtIndexPath:indexPath]", v23, px_descriptionForAssertionMessage}];
     }
 
-    v10 = [v25 image];
-    v11 = [v9 photoView];
-    v12 = [v11 contentHelper];
-    v13 = [v12 photoImage];
+    image = [infoCopy image];
+    photoView = [v9 photoView];
+    contentHelper = [photoView contentHelper];
+    photoImage = [contentHelper photoImage];
 
-    [v10 size];
+    [image size];
     v15 = v14;
-    [v13 size];
+    [photoImage size];
     if (v15 > v16)
     {
-      v17 = [v9 photoView];
-      v18 = [v17 contentHelper];
-      [v18 setPhotoImage:0];
+      photoView2 = [v9 photoView];
+      contentHelper2 = [photoView2 contentHelper];
+      [contentHelper2 setPhotoImage:0];
 
-      v19 = [v9 photoView];
-      v20 = [v19 contentHelper];
-      [v20 setPlaceHolderImage:v10];
+      photoView3 = [v9 photoView];
+      contentHelper3 = [photoView3 contentHelper];
+      [contentHelper3 setPlaceHolderImage:image];
     }
   }
 }
 
-- (void)_updateAssetTransitionInfo:(id)a3
+- (void)_updateAssetTransitionInfo:(id)info
 {
-  v5 = a3;
-  if (v5)
+  infoCopy = info;
+  if (infoCopy)
   {
-    v15 = v5;
-    v6 = [v5 asset];
+    v15 = infoCopy;
+    asset = [infoCopy asset];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
 LABEL_6:
 
-      v5 = v15;
+      infoCopy = v15;
       goto LABEL_7;
     }
 
-    v7 = v6;
+    v7 = asset;
     if (v7)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
 LABEL_5:
-        v8 = [(PUCarouselSharingViewController *)self currentIndexPath];
-        v9 = -[PUCarouselSharingViewController _indexPathOfAsset:sectionHint:](self, "_indexPathOfAsset:sectionHint:", v7, [v8 section]);
+        currentIndexPath = [(PUCarouselSharingViewController *)self currentIndexPath];
+        v9 = -[PUCarouselSharingViewController _indexPathOfAsset:sectionHint:](self, "_indexPathOfAsset:sectionHint:", v7, [currentIndexPath section]);
 
         [(PUCarouselSharingViewController *)self _updateCellAtIndexPath:v9 withTransitionInfo:v15];
         goto LABEL_6;
       }
 
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v13 = objc_opt_class();
       v12 = NSStringFromClass(v13);
-      v14 = [v7 px_descriptionForAssertionMessage];
-      [v10 handleFailureInMethod:a2 object:self file:@"PUCarouselSharingViewController.m" lineNumber:1172 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"displayAsset", v12, v14}];
+      px_descriptionForAssertionMessage = [v7 px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUCarouselSharingViewController.m" lineNumber:1172 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"displayAsset", v12, px_descriptionForAssertionMessage}];
     }
 
     else
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v11 = objc_opt_class();
       v12 = NSStringFromClass(v11);
-      [v10 handleFailureInMethod:a2 object:self file:@"PUCarouselSharingViewController.m" lineNumber:1172 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"displayAsset", v12}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUCarouselSharingViewController.m" lineNumber:1172 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"displayAsset", v12}];
     }
 
     goto LABEL_5;
@@ -1955,67 +1955,67 @@ LABEL_5:
 LABEL_7:
 }
 
-- (void)setTrailingAssetTransitionInfo:(id)a3
+- (void)setTrailingAssetTransitionInfo:(id)info
 {
-  v5 = a3;
-  if (self->_trailingAssetTransitionInfo != v5)
+  infoCopy = info;
+  if (self->_trailingAssetTransitionInfo != infoCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_trailingAssetTransitionInfo, a3);
+    v6 = infoCopy;
+    objc_storeStrong(&self->_trailingAssetTransitionInfo, info);
     [(PUCarouselSharingViewController *)self _updateAssetTransitionInfo:self->_trailingAssetTransitionInfo];
-    v5 = v6;
+    infoCopy = v6;
   }
 }
 
-- (void)setLeadingAssetTransitionInfo:(id)a3
+- (void)setLeadingAssetTransitionInfo:(id)info
 {
-  v5 = a3;
-  if (self->_leadingAssetTransitionInfo != v5)
+  infoCopy = info;
+  if (self->_leadingAssetTransitionInfo != infoCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_leadingAssetTransitionInfo, a3);
+    v6 = infoCopy;
+    objc_storeStrong(&self->_leadingAssetTransitionInfo, info);
     [(PUCarouselSharingViewController *)self _updateAssetTransitionInfo:self->_leadingAssetTransitionInfo];
-    v5 = v6;
+    infoCopy = v6;
   }
 }
 
-- (void)setOneUpPhotosSharingTransitionInfo:(id)a3
+- (void)setOneUpPhotosSharingTransitionInfo:(id)info
 {
-  v6 = a3;
-  if (self->_assetTransitionInfo != v6)
+  infoCopy = info;
+  if (self->_assetTransitionInfo != infoCopy)
   {
-    objc_storeStrong(&self->_assetTransitionInfo, a3);
+    objc_storeStrong(&self->_assetTransitionInfo, info);
     if (self->_assetTransitionInfo)
     {
-      v5 = [(PUCarouselSharingViewController *)self currentIndexPath];
-      [(PUCarouselSharingViewController *)self _updateCellAtIndexPath:v5 withTransitionInfo:self->_assetTransitionInfo];
+      currentIndexPath = [(PUCarouselSharingViewController *)self currentIndexPath];
+      [(PUCarouselSharingViewController *)self _updateCellAtIndexPath:currentIndexPath withTransitionInfo:self->_assetTransitionInfo];
     }
   }
 }
 
-- (void)setOneUpPhotosSharingTransitionContext:(id)a3
+- (void)setOneUpPhotosSharingTransitionContext:(id)context
 {
-  v6 = a3;
-  if (self->_photosSharingTransitionContext != v6)
+  contextCopy = context;
+  if (self->_photosSharingTransitionContext != contextCopy)
   {
-    v15 = v6;
-    objc_storeStrong(&self->_photosSharingTransitionContext, a3);
-    v6 = v15;
+    v15 = contextCopy;
+    objc_storeStrong(&self->_photosSharingTransitionContext, context);
+    contextCopy = v15;
     if (v15)
     {
-      v7 = [(PUPhotosSharingTransitionContext *)v15 currentAssetReference];
-      v8 = [v7 asset];
+      currentAssetReference = [(PUPhotosSharingTransitionContext *)v15 currentAssetReference];
+      asset = [currentAssetReference asset];
 
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
 LABEL_7:
 
-        v6 = v15;
+        contextCopy = v15;
         goto LABEL_8;
       }
 
-      v9 = v8;
+      v9 = asset;
       if (v9)
       {
         objc_opt_class();
@@ -2027,19 +2027,19 @@ LABEL_6:
           goto LABEL_7;
         }
 
-        v10 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v13 = objc_opt_class();
         v12 = NSStringFromClass(v13);
-        v14 = [v9 px_descriptionForAssertionMessage];
-        [v10 handleFailureInMethod:a2 object:self file:@"PUCarouselSharingViewController.m" lineNumber:1133 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"displayAsset", v12, v14}];
+        px_descriptionForAssertionMessage = [v9 px_descriptionForAssertionMessage];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PUCarouselSharingViewController.m" lineNumber:1133 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"displayAsset", v12, px_descriptionForAssertionMessage}];
       }
 
       else
       {
-        v10 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v11 = objc_opt_class();
         v12 = NSStringFromClass(v11);
-        [v10 handleFailureInMethod:a2 object:self file:@"PUCarouselSharingViewController.m" lineNumber:1133 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"displayAsset", v12}];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PUCarouselSharingViewController.m" lineNumber:1133 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"displayAsset", v12}];
       }
 
       goto LABEL_6;
@@ -2049,27 +2049,27 @@ LABEL_6:
 LABEL_8:
 }
 
-- (void)setPhotosSharingTransitionContext:(id)a3
+- (void)setPhotosSharingTransitionContext:(id)context
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (self->_photosSharingTransitionContext != v5)
+  contextCopy = context;
+  if (self->_photosSharingTransitionContext != contextCopy)
   {
-    objc_storeStrong(&self->_photosSharingTransitionContext, a3);
+    objc_storeStrong(&self->_photosSharingTransitionContext, context);
     photosSharingTransitionContext = self->_photosSharingTransitionContext;
     if (photosSharingTransitionContext)
     {
-      v7 = [(PUPhotosSharingTransitionContext *)photosSharingTransitionContext keyAssetIndexPath];
-      [(PUCarouselSharingViewController *)self _setLastKnownReferenceAsset:0 indexPath:v7];
+      keyAssetIndexPath = [(PUPhotosSharingTransitionContext *)photosSharingTransitionContext keyAssetIndexPath];
+      [(PUCarouselSharingViewController *)self _setLastKnownReferenceAsset:0 indexPath:keyAssetIndexPath];
     }
 
-    v8 = [(PUCarouselSharingViewController *)self mainCollectionView];
+    mainCollectionView = [(PUCarouselSharingViewController *)self mainCollectionView];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v9 = [v8 visibleCells];
-    v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    visibleCells = [mainCollectionView visibleCells];
+    v10 = [visibleCells countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v10)
     {
       v11 = v10;
@@ -2080,15 +2080,15 @@ LABEL_8:
         {
           if (*v17 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(visibleCells);
           }
 
           v14 = *(*(&v16 + 1) + 8 * i);
-          v15 = [v8 indexPathForCell:v14];
+          v15 = [mainCollectionView indexPathForCell:v14];
           [(PUCarouselSharingViewController *)self _updateCell:v14 forItemAtIndexPath:v15];
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v11 = [visibleCells countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v11);
@@ -2098,35 +2098,35 @@ LABEL_8:
 
 - (PHAsset)currentAsset
 {
-  v3 = [(PUCarouselSharingViewController *)self _lastKnownReferenceAsset];
-  if (v3)
+  _lastKnownReferenceAsset = [(PUCarouselSharingViewController *)self _lastKnownReferenceAsset];
+  if (_lastKnownReferenceAsset)
   {
-    v4 = [(PUCarouselSharingViewController *)self currentIndexPath];
-    if (v4)
+    currentIndexPath = [(PUCarouselSharingViewController *)self currentIndexPath];
+    if (currentIndexPath)
     {
-      v5 = [(PUCarouselSharingViewController *)self _lastKnownReferenceAsset];
+      _lastKnownReferenceAsset2 = [(PUCarouselSharingViewController *)self _lastKnownReferenceAsset];
 
-      v3 = v5;
+      _lastKnownReferenceAsset = _lastKnownReferenceAsset2;
     }
   }
 
-  return v3;
+  return _lastKnownReferenceAsset;
 }
 
 - (id)currentIndexPath
 {
-  v3 = [(PUCarouselSharingViewController *)self _lastKnownReferenceIndexPath];
+  _lastKnownReferenceIndexPath = [(PUCarouselSharingViewController *)self _lastKnownReferenceIndexPath];
 
-  if (v3 && ([(PUCarouselSharingViewController *)self _lastKnownReferenceIndexPath], (v4 = objc_claimAutoreleasedReturnValue()) != 0) || ([(PUCarouselSharingViewController *)self _updateLastKnownReferenceIndexPath], [(PUCarouselSharingViewController *)self _lastKnownReferenceIndexPath], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (_lastKnownReferenceIndexPath && ([(PUCarouselSharingViewController *)self _lastKnownReferenceIndexPath], (v4 = objc_claimAutoreleasedReturnValue()) != 0) || ([(PUCarouselSharingViewController *)self _updateLastKnownReferenceIndexPath], [(PUCarouselSharingViewController *)self _lastKnownReferenceIndexPath], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
   {
 LABEL_4:
     v5 = v4;
     goto LABEL_5;
   }
 
-  v7 = [(PUCarouselSharingViewController *)self _lastKnownReferenceAsset];
+  _lastKnownReferenceAsset = [(PUCarouselSharingViewController *)self _lastKnownReferenceAsset];
 
-  if (!v7 || ([(PUCarouselSharingViewController *)self _lastKnownReferenceAsset], v8 = objc_claimAutoreleasedReturnValue(), [(PUCarouselSharingViewController *)self _indexPathOfAsset:v8 sectionHint:0x7FFFFFFFFFFFFFFFLL], v5 = objc_claimAutoreleasedReturnValue(), v8, !v5))
+  if (!_lastKnownReferenceAsset || ([(PUCarouselSharingViewController *)self _lastKnownReferenceAsset], v8 = objc_claimAutoreleasedReturnValue(), [(PUCarouselSharingViewController *)self _indexPathOfAsset:v8 sectionHint:0x7FFFFFFFFFFFFFFFLL], v5 = objc_claimAutoreleasedReturnValue(), v8, !v5))
   {
     v4 = self->_inFlightReferenceIndexPath;
     if (!v4)
@@ -2145,50 +2145,50 @@ LABEL_5:
   return v5;
 }
 
-- (void)_setLastKnownReferenceAsset:(id)a3 indexPath:(id)a4
+- (void)_setLastKnownReferenceAsset:(id)asset indexPath:(id)path
 {
-  v7 = a3;
-  v6 = a4;
-  if ((!v7 || v6) && !v7 && v6)
+  assetCopy = asset;
+  pathCopy = path;
+  if ((!assetCopy || pathCopy) && !assetCopy && pathCopy)
   {
-    v7 = [(PUCarouselSharingViewController *)self _assetAtIndexPath:v6];
+    assetCopy = [(PUCarouselSharingViewController *)self _assetAtIndexPath:pathCopy];
   }
 
-  [(PUCarouselSharingViewController *)self _setLastKnownReferenceIndexPath:v6];
-  [(PUCarouselSharingViewController *)self _setLastKnownReferenceAsset:v7];
+  [(PUCarouselSharingViewController *)self _setLastKnownReferenceIndexPath:pathCopy];
+  [(PUCarouselSharingViewController *)self _setLastKnownReferenceAsset:assetCopy];
 }
 
 - (void)_updateLastKnownReferenceIndexPath
 {
-  v5 = [(PUCarouselSharingViewController *)self mainCollectionView];
-  v3 = [(PUCarouselSharingViewController *)self mainCollectionViewLayout];
-  if (v5 && [v3 hasReferenceIndexPath])
+  mainCollectionView = [(PUCarouselSharingViewController *)self mainCollectionView];
+  mainCollectionViewLayout = [(PUCarouselSharingViewController *)self mainCollectionViewLayout];
+  if (mainCollectionView && [mainCollectionViewLayout hasReferenceIndexPath])
   {
-    v4 = [(PUCarouselSharingViewController *)self _indexPathOfCenterVisibleItemInCollectionView:v5];
+    v4 = [(PUCarouselSharingViewController *)self _indexPathOfCenterVisibleItemInCollectionView:mainCollectionView];
     [(PUCarouselSharingViewController *)self _setLastKnownReferenceAsset:0 indexPath:v4];
   }
 }
 
-- (id)_validIndexPathFromIndexPath:(id)a3
+- (id)_validIndexPathFromIndexPath:(id)path
 {
-  v5 = a3;
-  if (!v5)
+  pathCopy = path;
+  if (!pathCopy)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PUCarouselSharingViewController.m" lineNumber:1024 description:@"expected index path"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUCarouselSharingViewController.m" lineNumber:1024 description:@"expected index path"];
   }
 
   v6 = [(PUCarouselSharingViewController *)self _numberOfSections]- 1;
-  v7 = [v5 section];
-  if (v6 >= v7)
+  section = [pathCopy section];
+  if (v6 >= section)
   {
-    v6 = v7;
+    v6 = section;
   }
 
-  v8 = [v5 item];
+  item = [pathCopy item];
   if ((v6 & 0x8000000000000000) == 0)
   {
-    v9 = v8;
+    v9 = item;
     v10 = [(PUCarouselSharingViewController *)self _numberOfItemsInSection:v6];
     if (v10)
     {
@@ -2224,28 +2224,28 @@ LABEL_16:
   return v11;
 }
 
-- (void)_getMainCollectionViewFrame:(CGRect *)a3 collectionViewLayoutInsets:(UIEdgeInsets *)a4
+- (void)_getMainCollectionViewFrame:(CGRect *)frame collectionViewLayoutInsets:(UIEdgeInsets *)insets
 {
-  v6 = [(PUCarouselSharingViewController *)self view];
-  [v6 bounds];
+  view = [(PUCarouselSharingViewController *)self view];
+  [view bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
 
-  if (a3)
+  if (frame)
   {
-    a3->origin.x = v8;
-    a3->origin.y = v10;
-    a3->size.width = v12;
-    a3->size.height = v14;
+    frame->origin.x = v8;
+    frame->origin.y = v10;
+    frame->size.width = v12;
+    frame->size.height = v14;
   }
 
-  if (a4)
+  if (insets)
   {
     v15 = *(MEMORY[0x1E69DDCE0] + 16);
-    *&a4->top = *MEMORY[0x1E69DDCE0];
-    *&a4->bottom = v15;
+    *&insets->top = *MEMORY[0x1E69DDCE0];
+    *&insets->bottom = v15;
   }
 }
 
@@ -2267,87 +2267,87 @@ LABEL_16:
   return result;
 }
 
-- (void)_handleTapInMainCollectionView:(id)a3
+- (void)_handleTapInMainCollectionView:(id)view
 {
-  v4 = a3;
-  v8 = [(PUCarouselSharingViewController *)self mainCollectionView];
-  [v4 locationInView:v8];
+  viewCopy = view;
+  mainCollectionView = [(PUCarouselSharingViewController *)self mainCollectionView];
+  [viewCopy locationInView:mainCollectionView];
   v6 = v5;
 
-  v7 = [(PUCarouselSharingViewController *)self _indexPathInCollectionView:v8 closestToContentOffsetX:v6];
+  v7 = [(PUCarouselSharingViewController *)self _indexPathInCollectionView:mainCollectionView closestToContentOffsetX:v6];
   if (v7)
   {
     [(PUCarouselSharingViewController *)self _handleTapAtIndexPath:v7];
   }
 }
 
-- (void)_handleTapAtIndexPath:(id)a3
+- (void)_handleTapAtIndexPath:(id)path
 {
-  v9 = a3;
-  v4 = [(PUCarouselSharingViewController *)self mainCollectionView];
-  v5 = [(PUCarouselSharingViewController *)self _assetAtIndexPath:v9];
+  pathCopy = path;
+  mainCollectionView = [(PUCarouselSharingViewController *)self mainCollectionView];
+  v5 = [(PUCarouselSharingViewController *)self _assetAtIndexPath:pathCopy];
   if ([v5 canPerformSharingAction] && -[PUCarouselSharingViewController selectionEnabled](self, "selectionEnabled"))
   {
-    v6 = -[PUCarouselSharingViewController _photoCollectionAtIndex:](self, "_photoCollectionAtIndex:", [v9 section]);
-    v7 = [(PUCarouselSharingViewController *)self photoSelectionManager];
-    v8 = [v7 isAssetAtIndexSelected:objc_msgSend(v9 inAssetCollection:{"item"), v6}];
+    v6 = -[PUCarouselSharingViewController _photoCollectionAtIndex:](self, "_photoCollectionAtIndex:", [pathCopy section]);
+    photoSelectionManager = [(PUCarouselSharingViewController *)self photoSelectionManager];
+    v8 = [photoSelectionManager isAssetAtIndexSelected:objc_msgSend(pathCopy inAssetCollection:{"item"), v6}];
 
-    [(PUCarouselSharingViewController *)self _setSelected:v8 ^ 1u atIndexPath:v9 animated:0];
+    [(PUCarouselSharingViewController *)self _setSelected:v8 ^ 1u atIndexPath:pathCopy animated:0];
   }
 
-  if (([v4 isDragging] & 1) == 0 && (objc_msgSend(v4, "isDecelerating") & 1) == 0 && objc_msgSend(v4, "isTracking"))
+  if (([mainCollectionView isDragging] & 1) == 0 && (objc_msgSend(mainCollectionView, "isDecelerating") & 1) == 0 && objc_msgSend(mainCollectionView, "isTracking"))
   {
-    [(PUCarouselSharingViewController *)self _pageToIndexPath:v9 animated:1];
+    [(PUCarouselSharingViewController *)self _pageToIndexPath:pathCopy animated:1];
   }
 }
 
-- (void)_playLivePhotoHintIfNeededAtIndexPath:(id)a3
+- (void)_playLivePhotoHintIfNeededAtIndexPath:(id)path
 {
   mainCollectionView = self->_mainCollectionView;
-  v5 = a3;
-  v14 = [(UICollectionView *)mainCollectionView cellForItemAtIndexPath:v5];
-  v6 = [(PUCarouselSharingViewController *)self _assetAtIndexPath:v5];
+  pathCopy = path;
+  v14 = [(UICollectionView *)mainCollectionView cellForItemAtIndexPath:pathCopy];
+  v6 = [(PUCarouselSharingViewController *)self _assetAtIndexPath:pathCopy];
   v7 = [(PUCarouselSharingViewController *)self _activityAssetItemForAsset:v6 createIfNecessary:0];
-  v8 = -[PUCarouselSharingViewController _photoCollectionAtIndex:](self, "_photoCollectionAtIndex:", [v5 section]);
-  v9 = [(PUCarouselSharingViewController *)self photoSelectionManager];
-  v10 = [v5 item];
+  v8 = -[PUCarouselSharingViewController _photoCollectionAtIndex:](self, "_photoCollectionAtIndex:", [pathCopy section]);
+  photoSelectionManager = [(PUCarouselSharingViewController *)self photoSelectionManager];
+  item = [pathCopy item];
 
-  v11 = [v9 isAssetAtIndexSelected:v10 inAssetCollection:v8];
+  v11 = [photoSelectionManager isAssetAtIndexSelected:item inAssetCollection:v8];
   if (([v7 excludeLiveness] & 1) == 0)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = [v14 photoView];
-      v13 = [v12 contentHelper];
+      photoView = [v14 photoView];
+      contentHelper = [photoView contentHelper];
 
       if (v11)
       {
-        [v13 startPlaybackWithStyle:2];
+        [contentHelper startPlaybackWithStyle:2];
       }
 
       else
       {
-        [v13 stopPlayback];
+        [contentHelper stopPlayback];
       }
     }
   }
 }
 
-- (void)_arrowKey:(id)a3
+- (void)_arrowKey:(id)key
 {
-  v16 = a3;
-  v4 = [(PUCarouselSharingViewController *)self viewIfLoaded];
-  v5 = v4;
-  if (v4)
+  keyCopy = key;
+  viewIfLoaded = [(PUCarouselSharingViewController *)self viewIfLoaded];
+  v5 = viewIfLoaded;
+  if (viewIfLoaded)
   {
-    v6 = [v4 effectiveUserInterfaceLayoutDirection];
-    v7 = [v16 input];
-    v8 = [v7 isEqualToString:*MEMORY[0x1E69DDF28]];
+    effectiveUserInterfaceLayoutDirection = [viewIfLoaded effectiveUserInterfaceLayoutDirection];
+    input = [keyCopy input];
+    v8 = [input isEqualToString:*MEMORY[0x1E69DDF28]];
 
     if (v8)
     {
-      if (v6 == 1)
+      if (effectiveUserInterfaceLayoutDirection == 1)
       {
         v9 = -1;
       }
@@ -2360,10 +2360,10 @@ LABEL_16:
 
     else
     {
-      v10 = [v16 input];
-      v11 = [v10 isEqualToString:*MEMORY[0x1E69DDF10]];
+      input2 = [keyCopy input];
+      v11 = [input2 isEqualToString:*MEMORY[0x1E69DDF10]];
 
-      if (v6 == 1)
+      if (effectiveUserInterfaceLayoutDirection == 1)
       {
         v12 = 1;
       }
@@ -2384,9 +2384,9 @@ LABEL_16:
       }
     }
 
-    v13 = [(PUCarouselSharingViewController *)self currentIndexPath];
-    v14 = [(PUCarouselSharingViewController *)self mainCollectionView];
-    v15 = [v14 next:v9 indexPathFromIndexPath:v13];
+    currentIndexPath = [(PUCarouselSharingViewController *)self currentIndexPath];
+    mainCollectionView = [(PUCarouselSharingViewController *)self mainCollectionView];
+    v15 = [mainCollectionView next:v9 indexPathFromIndexPath:currentIndexPath];
 
     if (v15)
     {
@@ -2395,14 +2395,14 @@ LABEL_16:
   }
 }
 
-- (void)_handleSelectionOption:(id)a3
+- (void)_handleSelectionOption:(id)option
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  optionCopy = option;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = optionCopy;
   }
 
   else
@@ -2415,8 +2415,8 @@ LABEL_16:
   v8 = [(PUCarouselSharingViewController *)self _assetAtIndexPath:v7];
   v9 = [(PUCarouselSharingViewController *)self _activityAssetItemForAsset:v8 createIfNecessary:0];
   v10 = -[PUCarouselSharingViewController _photoCollectionAtIndex:](self, "_photoCollectionAtIndex:", [v7 section]);
-  v11 = [(PUCarouselSharingViewController *)self photoSelectionManager];
-  v12 = [v11 isAssetAtIndexSelected:objc_msgSend(v7 inAssetCollection:{"item"), v10}];
+  photoSelectionManager = [(PUCarouselSharingViewController *)self photoSelectionManager];
+  v12 = [photoSelectionManager isAssetAtIndexSelected:objc_msgSend(v7 inAssetCollection:{"item"), v10}];
 
   if (v12)
   {
@@ -2426,24 +2426,24 @@ LABEL_16:
     v27 = v13;
     [(PUCarouselSharingViewController *)self _replaceActivityAssetItem:v9 withAssetItem:v13 notifyDelegate:1];
     [(PUCarouselSharingViewController *)self _updateOptionView:v6 atIndexPath:v7];
-    v15 = [v8 canPlayPhotoIris];
-    if ((v14 & 1) == 0 && v15)
+    canPlayPhotoIris = [v8 canPlayPhotoIris];
+    if ((v14 & 1) == 0 && canPlayPhotoIris)
     {
       [(PUCarouselSharingViewController *)self _playLivePhotoHintIfNeededAtIndexPath:v7];
     }
 
-    v16 = [(PUCarouselSharingViewController *)self mainCollectionView];
-    v17 = [v16 cellForItemAtIndexPath:v7];
+    mainCollectionView = [(PUCarouselSharingViewController *)self mainCollectionView];
+    v17 = [mainCollectionView cellForItemAtIndexPath:v7];
 
     v26 = v17;
-    v18 = [v17 photoView];
-    v19 = [v18 contentHelper];
+    photoView = [v17 photoView];
+    contentHelper = [photoView contentHelper];
 
-    [v19 setLivePhotoHidden:v14];
-    v20 = [(PUCarouselSharingViewController *)self analyticsEventsSent];
-    LOBYTE(v18) = [v20 containsObject:@"com.apple.photos.CPAnalytics.shareSheetCarouselLiveToggled"];
+    [contentHelper setLivePhotoHidden:v14];
+    analyticsEventsSent = [(PUCarouselSharingViewController *)self analyticsEventsSent];
+    LOBYTE(photoView) = [analyticsEventsSent containsObject:@"com.apple.photos.CPAnalytics.shareSheetCarouselLiveToggled"];
 
-    if ((v18 & 1) == 0)
+    if ((photoView & 1) == 0)
     {
       v25 = MEMORY[0x1E6991F28];
       v28 = *MEMORY[0x1E6991E20];
@@ -2453,8 +2453,8 @@ LABEL_16:
       v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:&v28 count:1];
       [v25 sendEvent:@"com.apple.photos.CPAnalytics.shareSheetCarouselLiveToggled" withPayload:v23];
 
-      v24 = [(PUCarouselSharingViewController *)self analyticsEventsSent];
-      [v24 addObject:@"com.apple.photos.CPAnalytics.shareSheetCarouselLiveToggled"];
+      analyticsEventsSent2 = [(PUCarouselSharingViewController *)self analyticsEventsSent];
+      [analyticsEventsSent2 addObject:@"com.apple.photos.CPAnalytics.shareSheetCarouselLiveToggled"];
     }
   }
 
@@ -2468,22 +2468,22 @@ LABEL_16:
 {
   if ([(PUCarouselSharingViewController *)self _isAnyAssetSelected])
   {
-    v3 = [(PUCarouselSharingViewController *)self photoSelectionManager];
-    v4 = [v3 localizedSelectionString];
+    photoSelectionManager = [(PUCarouselSharingViewController *)self photoSelectionManager];
+    localizedSelectionString = [photoSelectionManager localizedSelectionString];
   }
 
   else
   {
-    v4 = PULocalizedString(@"SHARING_HEADER_NO_ITEMS_TITLE");
+    localizedSelectionString = PULocalizedString(@"SHARING_HEADER_NO_ITEMS_TITLE");
   }
 
-  return v4;
+  return localizedSelectionString;
 }
 
-- (void)_updateOptionView:(id)a3 atIndexPath:(id)a4
+- (void)_updateOptionView:(id)view atIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   if ([(PUCarouselSharingViewController *)self selectionEnabled])
   {
     v8 = [(PUCarouselSharingViewController *)self sendAsAssetBundles]^ 1;
@@ -2494,59 +2494,59 @@ LABEL_16:
     v8 = 0;
   }
 
-  v16 = [(PUCarouselSharingViewController *)self _assetAtIndexPath:v6];
+  v16 = [(PUCarouselSharingViewController *)self _assetAtIndexPath:pathCopy];
   v9 = 1;
   v10 = [(PUCarouselSharingViewController *)self _activityAssetItemForAsset:v16 createIfNecessary:1];
-  v11 = [v16 playbackStyle];
-  v12 = -[PUCarouselSharingViewController _photoCollectionAtIndex:](self, "_photoCollectionAtIndex:", [v6 section]);
-  v13 = [(PUCarouselSharingViewController *)self photoSelectionManager];
-  v14 = [v6 item];
+  playbackStyle = [v16 playbackStyle];
+  v12 = -[PUCarouselSharingViewController _photoCollectionAtIndex:](self, "_photoCollectionAtIndex:", [pathCopy section]);
+  photoSelectionManager = [(PUCarouselSharingViewController *)self photoSelectionManager];
+  item = [pathCopy item];
 
-  v15 = [v13 isAssetAtIndexSelected:v14 inAssetCollection:v12];
+  v15 = [photoSelectionManager isAssetAtIndexSelected:item inAssetCollection:v12];
   if (v15)
   {
     v9 = [v10 excludeLiveness] ^ 1;
   }
 
-  [v7 setInteractive:v8];
-  [v7 setToggled:v9];
-  [v7 setHidden:v11 != 3];
+  [viewCopy setInteractive:v8];
+  [viewCopy setToggled:v9];
+  [viewCopy setHidden:playbackStyle != 3];
 }
 
-- (BOOL)isItemAtIndexPathSelected:(id)a3
+- (BOOL)isItemAtIndexPathSelected:(id)selected
 {
-  v4 = a3;
-  v5 = -[PUCarouselSharingViewController _photoCollectionAtIndex:](self, "_photoCollectionAtIndex:", [v4 section]);
-  v6 = [(PUCarouselSharingViewController *)self photoSelectionManager];
-  v7 = [v4 item];
+  selectedCopy = selected;
+  v5 = -[PUCarouselSharingViewController _photoCollectionAtIndex:](self, "_photoCollectionAtIndex:", [selectedCopy section]);
+  photoSelectionManager = [(PUCarouselSharingViewController *)self photoSelectionManager];
+  item = [selectedCopy item];
 
-  LOBYTE(v4) = [v6 isAssetAtIndexSelected:v7 inAssetCollection:v5];
-  return v4;
+  LOBYTE(selectedCopy) = [photoSelectionManager isAssetAtIndexSelected:item inAssetCollection:v5];
+  return selectedCopy;
 }
 
 - (BOOL)_isAnyAssetSelected
 {
-  v2 = self;
-  v3 = [(PUCarouselSharingViewController *)self photoSelectionManager];
-  LOBYTE(v2) = [v3 isAnyAssetSelectedInAssetCollections:v2->_photoCollectionsFetchResult];
+  selfCopy = self;
+  photoSelectionManager = [(PUCarouselSharingViewController *)self photoSelectionManager];
+  LOBYTE(selfCopy) = [photoSelectionManager isAnyAssetSelectedInAssetCollections:selfCopy->_photoCollectionsFetchResult];
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)_setSelected:(BOOL)a3 atIndexPath:(id)a4 animated:(BOOL)a5
+- (void)_setSelected:(BOOL)selected atIndexPath:(id)path animated:(BOOL)animated
 {
-  v5 = a3;
+  selectedCopy = selected;
   v27[1] = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = -[PUCarouselSharingViewController _photoCollectionAtIndex:](self, "_photoCollectionAtIndex:", [v7 section]);
+  pathCopy = path;
+  v8 = -[PUCarouselSharingViewController _photoCollectionAtIndex:](self, "_photoCollectionAtIndex:", [pathCopy section]);
   v25 = [(PUCarouselSharingViewController *)self assetsInAssetCollection:v8];
-  v9 = [v25 objectAtIndex:{objc_msgSend(v7, "item")}];
+  v9 = [v25 objectAtIndex:{objc_msgSend(pathCopy, "item")}];
   v10 = [(PUCarouselSharingViewController *)self _activityAssetItemForAsset:v9 createIfNecessary:1];
-  v11 = [(PUCarouselSharingViewController *)self photoSelectionManager];
-  v12 = [v7 item];
-  if (v5)
+  photoSelectionManager = [(PUCarouselSharingViewController *)self photoSelectionManager];
+  item = [pathCopy item];
+  if (selectedCopy)
   {
-    [v11 selectAssetAtIndex:v12 inAssetCollection:v8];
+    [photoSelectionManager selectAssetAtIndex:item inAssetCollection:v8];
 
     [(PUCarouselSharingViewController *)self _addActivityAssetItem:v10];
     v13 = @"com.apple.photos.CPAnalytics.shareSheetCarouselSelected";
@@ -2554,15 +2554,15 @@ LABEL_16:
 
   else
   {
-    [v11 deselectAssetAtIndex:v12 inAssetCollection:v8];
+    [photoSelectionManager deselectAssetAtIndex:item inAssetCollection:v8];
 
     [v10 setExcludeLiveness:0];
     [(PUCarouselSharingViewController *)self _removeActivityAssetItem:v10];
     v13 = @"com.apple.photos.CPAnalytics.shareSheetCarouselDeselected";
   }
 
-  v14 = [(PUCarouselSharingViewController *)self analyticsEventsSent];
-  v15 = [v14 containsObject:v13];
+  analyticsEventsSent = [(PUCarouselSharingViewController *)self analyticsEventsSent];
+  v15 = [analyticsEventsSent containsObject:v13];
 
   if ((v15 & 1) == 0)
   {
@@ -2574,75 +2574,75 @@ LABEL_16:
     v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:&v26 count:1];
     [v16 sendEvent:v13 withPayload:v19];
 
-    v20 = [(PUCarouselSharingViewController *)self analyticsEventsSent];
-    [v20 addObject:v13];
+    analyticsEventsSent2 = [(PUCarouselSharingViewController *)self analyticsEventsSent];
+    [analyticsEventsSent2 addObject:v13];
   }
 
-  v21 = [(PUCarouselSharingViewController *)self mainCollectionView];
-  v22 = [v21 cellForItemAtIndexPath:v7];
-  [v22 setSelected:v5];
-  v23 = [v21 _visibleSupplementaryViewOfKind:@"PUPhotosSharingSelectionBadgeKind" atIndexPath:v7];
-  [v23 setSelected:v5 animated:1];
+  mainCollectionView = [(PUCarouselSharingViewController *)self mainCollectionView];
+  v22 = [mainCollectionView cellForItemAtIndexPath:pathCopy];
+  [v22 setSelected:selectedCopy];
+  v23 = [mainCollectionView _visibleSupplementaryViewOfKind:@"PUPhotosSharingSelectionBadgeKind" atIndexPath:pathCopy];
+  [v23 setSelected:selectedCopy animated:1];
   if ([v9 playbackStyle] == 3)
   {
-    v24 = [v21 _visibleSupplementaryViewOfKind:@"PUPhotosSharingOptionBadgeKind" atIndexPath:v7];
-    [(PUCarouselSharingViewController *)self _updateOptionView:v24 atIndexPath:v7];
+    v24 = [mainCollectionView _visibleSupplementaryViewOfKind:@"PUPhotosSharingOptionBadgeKind" atIndexPath:pathCopy];
+    [(PUCarouselSharingViewController *)self _updateOptionView:v24 atIndexPath:pathCopy];
   }
 }
 
-- (void)_replaceActivityAssetItem:(id)a3 withAssetItem:(id)a4 notifyDelegate:(BOOL)a5
+- (void)_replaceActivityAssetItem:(id)item withAssetItem:(id)assetItem notifyDelegate:(BOOL)delegate
 {
-  v5 = a5;
-  v15 = a3;
-  v9 = a4;
-  v10 = [v15 asset];
-  v11 = [v9 asset];
-  if (([v10 isEqual:v11] & 1) == 0)
+  delegateCopy = delegate;
+  itemCopy = item;
+  assetItemCopy = assetItem;
+  asset = [itemCopy asset];
+  asset2 = [assetItemCopy asset];
+  if (([asset isEqual:asset2] & 1) == 0)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PUCarouselSharingViewController.m" lineNumber:786 description:{@"Invalid parameter not satisfying: %@", @"[previousAsset isEqual:asset]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUCarouselSharingViewController.m" lineNumber:786 description:{@"Invalid parameter not satisfying: %@", @"[previousAsset isEqual:asset]"}];
   }
 
-  v12 = [v10 localIdentifier];
-  [(NSMutableDictionary *)self->_assetItemsByAssetIdentifier setObject:v9 forKeyedSubscript:v12];
-  if (v5)
+  localIdentifier = [asset localIdentifier];
+  [(NSMutableDictionary *)self->_assetItemsByAssetIdentifier setObject:assetItemCopy forKeyedSubscript:localIdentifier];
+  if (delegateCopy)
   {
-    v13 = [(PUCarouselSharingViewController *)self delegate];
-    [v13 carouselSharingViewController:self replaceAssetItem:v15 withAssetItem:v9];
+    delegate = [(PUCarouselSharingViewController *)self delegate];
+    [delegate carouselSharingViewController:self replaceAssetItem:itemCopy withAssetItem:assetItemCopy];
   }
 }
 
-- (void)_removeActivityAssetItem:(id)a3
+- (void)_removeActivityAssetItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 asset];
-  v7 = [v5 localIdentifier];
+  itemCopy = item;
+  asset = [itemCopy asset];
+  localIdentifier = [asset localIdentifier];
 
-  [(NSMutableDictionary *)self->_assetItemsByAssetIdentifier setObject:0 forKeyedSubscript:v7];
-  v6 = [(PUCarouselSharingViewController *)self delegate];
-  [v6 carouselSharingViewController:self removeAssetItem:v4];
+  [(NSMutableDictionary *)self->_assetItemsByAssetIdentifier setObject:0 forKeyedSubscript:localIdentifier];
+  delegate = [(PUCarouselSharingViewController *)self delegate];
+  [delegate carouselSharingViewController:self removeAssetItem:itemCopy];
 }
 
-- (void)_addActivityAssetItem:(id)a3
+- (void)_addActivityAssetItem:(id)item
 {
-  v4 = a3;
-  v5 = [(PUCarouselSharingViewController *)self delegate];
-  [v5 carouselSharingViewController:self addAssetItem:v4];
+  itemCopy = item;
+  delegate = [(PUCarouselSharingViewController *)self delegate];
+  [delegate carouselSharingViewController:self addAssetItem:itemCopy];
 }
 
-- (id)_updatedActivityAssetItemsForAssets:(id)a3
+- (id)_updatedActivityAssetItemsForAssets:(id)assets
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E695DFA0]) initWithCapacity:{objc_msgSend(v4, "count")}];
-  v6 = [(NSMutableDictionary *)self->_assetItemsByAssetIdentifier allKeys];
-  v7 = [v6 mutableCopy];
+  assetsCopy = assets;
+  v5 = [objc_alloc(MEMORY[0x1E695DFA0]) initWithCapacity:{objc_msgSend(assetsCopy, "count")}];
+  allKeys = [(NSMutableDictionary *)self->_assetItemsByAssetIdentifier allKeys];
+  v7 = [allKeys mutableCopy];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = v4;
+  v8 = assetsCopy;
   v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
@@ -2661,8 +2661,8 @@ LABEL_16:
         v14 = [(PUCarouselSharingViewController *)self _activityAssetItemForAsset:v13 createIfNecessary:1, v17];
         [v5 addObject:v14];
 
-        v15 = [v13 localIdentifier];
-        [v7 removeObject:v15];
+        localIdentifier = [v13 localIdentifier];
+        [v7 removeObject:localIdentifier];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -2678,20 +2678,20 @@ LABEL_16:
 
 - (id)currentActivityAssetItems
 {
-  v3 = [(PUCarouselSharingViewController *)self photoSelectionManager];
-  v4 = [v3 orderedSelectedAssets];
+  photoSelectionManager = [(PUCarouselSharingViewController *)self photoSelectionManager];
+  orderedSelectedAssets = [photoSelectionManager orderedSelectedAssets];
 
-  v5 = [(PUCarouselSharingViewController *)self _updatedActivityAssetItemsForAssets:v4];
+  v5 = [(PUCarouselSharingViewController *)self _updatedActivityAssetItemsForAssets:orderedSelectedAssets];
 
   return v5;
 }
 
-- (id)_activityAssetItemForAsset:(id)a3 createIfNecessary:(BOOL)a4
+- (id)_activityAssetItemForAsset:(id)asset createIfNecessary:(BOOL)necessary
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 localIdentifier];
-  v8 = [(NSMutableDictionary *)self->_assetItemsByAssetIdentifier objectForKey:v7];
+  necessaryCopy = necessary;
+  assetCopy = asset;
+  localIdentifier = [assetCopy localIdentifier];
+  v8 = [(NSMutableDictionary *)self->_assetItemsByAssetIdentifier objectForKey:localIdentifier];
   if (v8)
   {
     v9 = 1;
@@ -2699,19 +2699,19 @@ LABEL_16:
 
   else
   {
-    v9 = !v4;
+    v9 = !necessaryCopy;
   }
 
   if (!v9)
   {
-    v8 = [[PUActivityAssetItem alloc] initWithAsset:v6];
-    [(NSMutableDictionary *)self->_assetItemsByAssetIdentifier setObject:v8 forKey:v7];
+    v8 = [[PUActivityAssetItem alloc] initWithAsset:assetCopy];
+    [(NSMutableDictionary *)self->_assetItemsByAssetIdentifier setObject:v8 forKey:localIdentifier];
     if (![(PUCarouselSharingViewController *)self sendAsAssetBundles])
     {
       v10 = +[PURootSettings sharedInstance];
-      v11 = [v10 irisUIEnabled];
+      irisUIEnabled = [v10 irisUIEnabled];
 
-      [(PUActivityAssetItem *)v8 setExcludeLiveness:v11 ^ 1u];
+      [(PUActivityAssetItem *)v8 setExcludeLiveness:irisUIEnabled ^ 1u];
       [(PUActivityAssetItem *)v8 setExcludeLocation:0];
       [(PUActivityAssetItem *)v8 setExcludeCaption:0];
       [(PUActivityAssetItem *)v8 setExcludeAccessibilityDescription:0];
@@ -2725,17 +2725,17 @@ LABEL_16:
 {
   if ([(PUCarouselSharingViewController *)self isReadyForInteraction]&& [(PUCarouselSharingViewController *)self _appearState]== 2)
   {
-    v3 = [(PUCarouselSharingViewController *)self _photoViewLoaderBlocks];
-    v4 = [v3 copy];
+    _photoViewLoaderBlocks = [(PUCarouselSharingViewController *)self _photoViewLoaderBlocks];
+    v4 = [_photoViewLoaderBlocks copy];
 
-    v5 = [(PUCarouselSharingViewController *)self _photoViewLoaderBlocks];
-    [v5 removeAllObjects];
+    _photoViewLoaderBlocks2 = [(PUCarouselSharingViewController *)self _photoViewLoaderBlocks];
+    [_photoViewLoaderBlocks2 removeAllObjects];
 
-    v6 = [(PUCarouselSharingViewController *)self _livePhotoViewLoaderBlocks];
-    v7 = [v6 copy];
+    _livePhotoViewLoaderBlocks = [(PUCarouselSharingViewController *)self _livePhotoViewLoaderBlocks];
+    v7 = [_livePhotoViewLoaderBlocks copy];
 
-    v8 = [(PUCarouselSharingViewController *)self _livePhotoViewLoaderBlocks];
-    [v8 removeAllObjects];
+    _livePhotoViewLoaderBlocks2 = [(PUCarouselSharingViewController *)self _livePhotoViewLoaderBlocks];
+    [_livePhotoViewLoaderBlocks2 removeAllObjects];
 
     objc_initWeak(&location, self);
     aBlock[0] = MEMORY[0x1E69E9820];
@@ -2850,18 +2850,18 @@ void __63__PUCarouselSharingViewController__handlePhotoViewLoaderBlocks__block_i
   if (self->_shouldPlayVitalityHintAfterViewDidAppear && [(PUCarouselSharingViewController *)self _appearState]== 2)
   {
     self->_shouldPlayVitalityHintAfterViewDidAppear = 0;
-    v3 = [(PUCarouselSharingViewController *)self _lastKnownReferenceIndexPath];
-    [(PUCarouselSharingViewController *)self _playLivePhotoHintIfNeededAtIndexPath:v3];
+    _lastKnownReferenceIndexPath = [(PUCarouselSharingViewController *)self _lastKnownReferenceIndexPath];
+    [(PUCarouselSharingViewController *)self _playLivePhotoHintIfNeededAtIndexPath:_lastKnownReferenceIndexPath];
   }
 }
 
-- (id)assetsInAssetCollection:(id)a3
+- (id)assetsInAssetCollection:(id)collection
 {
   v44 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  collectionCopy = collection;
   if ([MEMORY[0x1E696AF00] isMainThread])
   {
-    if (!v5)
+    if (!collectionCopy)
     {
       goto LABEL_17;
     }
@@ -2869,16 +2869,16 @@ void __63__PUCarouselSharingViewController__handlePhotoViewLoaderBlocks__block_i
 
   else
   {
-    v33 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v33 handleFailureInMethod:a2 object:self file:@"PUCarouselSharingViewController.m" lineNumber:661 description:{@"%s must be called on the main thread", "-[PUCarouselSharingViewController assetsInAssetCollection:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUCarouselSharingViewController.m" lineNumber:661 description:{@"%s must be called on the main thread", "-[PUCarouselSharingViewController assetsInAssetCollection:]"}];
 
-    if (!v5)
+    if (!collectionCopy)
     {
       goto LABEL_17;
     }
   }
 
-  v6 = [(NSMutableDictionary *)self->_resultsForAssetCollection objectForKey:v5];
+  v6 = [(NSMutableDictionary *)self->_resultsForAssetCollection objectForKey:collectionCopy];
   if (v6)
   {
     goto LABEL_18;
@@ -2889,29 +2889,29 @@ void __63__PUCarouselSharingViewController__handlePhotoViewLoaderBlocks__block_i
   {
     v8 = objc_opt_class();
     v9 = v8;
-    v10 = [v5 assetCollectionType];
-    v11 = [v5 assetCollectionSubtype];
-    v12 = [v5 uuid];
+    assetCollectionType = [collectionCopy assetCollectionType];
+    assetCollectionSubtype = [collectionCopy assetCollectionSubtype];
+    uuid = [collectionCopy uuid];
     *buf = 138413314;
     v35 = v8;
     v36 = 2048;
-    v37 = self;
+    selfCopy4 = self;
     v38 = 2048;
-    v39 = v10;
+    v39 = assetCollectionType;
     v40 = 2048;
-    v41 = v11;
+    v41 = assetCollectionSubtype;
     v42 = 2114;
-    v43 = v12;
+    v43 = uuid;
     _os_log_impl(&dword_1B36F3000, v7, OS_LOG_TYPE_DEFAULT, "<%@:%p>: no cached assets for assetCollection: assetCollectionType=%ld/%ld, uuid=%{public}@", buf, 0x34u);
   }
 
-  v13 = [(PUCarouselSharingViewController *)self photosDataSource];
-  v14 = [v13 sectionForAssetCollection:v5];
+  photosDataSource = [(PUCarouselSharingViewController *)self photosDataSource];
+  v14 = [photosDataSource sectionForAssetCollection:collectionCopy];
 
   if (v14 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v15 = [MEMORY[0x1E6978830] fetchOptionsWithPhotoLibrary:0 orObject:v5];
-    v6 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:v5 options:v15];
+    v15 = [MEMORY[0x1E6978830] fetchOptionsWithPhotoLibrary:0 orObject:collectionCopy];
+    v6 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:collectionCopy options:v15];
     v16 = PLShareSheetGetLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
@@ -2921,7 +2921,7 @@ void __63__PUCarouselSharingViewController__handlePhotoViewLoaderBlocks__block_i
       *buf = 138412802;
       v35 = v17;
       v36 = 2048;
-      v37 = self;
+      selfCopy4 = self;
       v38 = 2048;
       v39 = v19;
       _os_log_impl(&dword_1B36F3000, v16, OS_LOG_TYPE_DEFAULT, "<%@:%p>: will use [PHAsset fetchAssetsInAssetCollection:options] - %lu", buf, 0x20u);
@@ -2930,12 +2930,12 @@ void __63__PUCarouselSharingViewController__handlePhotoViewLoaderBlocks__block_i
 
   else
   {
-    v20 = [(PUCarouselSharingViewController *)self photosDataSource];
+    photosDataSource2 = [(PUCarouselSharingViewController *)self photosDataSource];
     v21 = [MEMORY[0x1E696AC90] indexSetWithIndex:v14];
-    [v20 forceAccurateSectionsIfNeeded:v21];
+    [photosDataSource2 forceAccurateSectionsIfNeeded:v21];
 
-    v22 = [(PUCarouselSharingViewController *)self photosDataSource];
-    v6 = [v22 assetsInSection:v14];
+    photosDataSource3 = [(PUCarouselSharingViewController *)self photosDataSource];
+    v6 = [photosDataSource3 assetsInSection:v14];
 
     v15 = PLShareSheetGetLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -2946,7 +2946,7 @@ void __63__PUCarouselSharingViewController__handlePhotoViewLoaderBlocks__block_i
       *buf = 138412802;
       v35 = v23;
       v36 = 2048;
-      v37 = self;
+      selfCopy4 = self;
       v38 = 2048;
       v39 = v25;
       _os_log_impl(&dword_1B36F3000, v15, OS_LOG_TYPE_DEFAULT, "<%@:%p>: will use [self.photosDataSource assetsInSection:] - %lu", buf, 0x20u);
@@ -2955,7 +2955,7 @@ void __63__PUCarouselSharingViewController__handlePhotoViewLoaderBlocks__block_i
 
   if (v6)
   {
-    [(NSMutableDictionary *)self->_resultsForAssetCollection setObject:v6 forKey:v5];
+    [(NSMutableDictionary *)self->_resultsForAssetCollection setObject:v6 forKey:collectionCopy];
     goto LABEL_18;
   }
 
@@ -2964,19 +2964,19 @@ void __63__PUCarouselSharingViewController__handlePhotoViewLoaderBlocks__block_i
   {
     v27 = objc_opt_class();
     v28 = v27;
-    v29 = [v5 assetCollectionType];
-    v30 = [v5 assetCollectionSubtype];
-    v31 = [v5 uuid];
+    assetCollectionType2 = [collectionCopy assetCollectionType];
+    assetCollectionSubtype2 = [collectionCopy assetCollectionSubtype];
+    uuid2 = [collectionCopy uuid];
     *buf = 138413314;
     v35 = v27;
     v36 = 2048;
-    v37 = self;
+    selfCopy4 = self;
     v38 = 2048;
-    v39 = v29;
+    v39 = assetCollectionType2;
     v40 = 2048;
-    v41 = v30;
+    v41 = assetCollectionSubtype2;
     v42 = 2114;
-    v43 = v31;
+    v43 = uuid2;
     _os_log_impl(&dword_1B36F3000, v26, OS_LOG_TYPE_ERROR, "<%@:%p>: fetched assets are nil for assetCollection: assetCollectionType=%ld/%ld, uuid=%{public}@", buf, 0x34u);
   }
 
@@ -2990,12 +2990,12 @@ LABEL_18:
 - (void)_updateVisibleCellBadges
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [(UICollectionView *)self->_mainCollectionView indexPathsForVisibleItems];
+  indexPathsForVisibleItems = [(UICollectionView *)self->_mainCollectionView indexPathsForVisibleItems];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v4 = [indexPathsForVisibleItems countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -3006,7 +3006,7 @@ LABEL_18:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(indexPathsForVisibleItems);
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
@@ -3017,7 +3017,7 @@ LABEL_18:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [indexPathsForVisibleItems countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -3031,8 +3031,8 @@ LABEL_18:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(UICollectionView *)self->_mainCollectionView indexPathsForVisibleItems];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  indexPathsForVisibleItems = [(UICollectionView *)self->_mainCollectionView indexPathsForVisibleItems];
+  v4 = [indexPathsForVisibleItems countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -3043,7 +3043,7 @@ LABEL_18:
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(indexPathsForVisibleItems);
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
@@ -3057,7 +3057,7 @@ LABEL_18:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [indexPathsForVisibleItems countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
@@ -3071,8 +3071,8 @@ LABEL_18:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(UICollectionView *)self->_mainCollectionView indexPathsForVisibleItems];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  indexPathsForVisibleItems = [(UICollectionView *)self->_mainCollectionView indexPathsForVisibleItems];
+  v4 = [indexPathsForVisibleItems countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -3083,7 +3083,7 @@ LABEL_18:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(indexPathsForVisibleItems);
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
@@ -3094,35 +3094,35 @@ LABEL_18:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [indexPathsForVisibleItems countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
   }
 }
 
-- (id)_indexPathOfAsset:(id)a3 sectionHint:(int64_t)a4
+- (id)_indexPathOfAsset:(id)asset sectionHint:(int64_t)hint
 {
-  v6 = a3;
+  assetCopy = asset;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
   v23 = __Block_byref_object_copy__68850;
   v24 = __Block_byref_object_dispose__68851;
   v25 = 0;
-  if (v6)
+  if (assetCopy)
   {
-    v7 = [(PUCarouselSharingViewController *)self photoCollectionsFetchResult];
-    v8 = v7;
-    if ((a4 & 0x8000000000000000) == 0 && [v7 count] > a4)
+    photoCollectionsFetchResult = [(PUCarouselSharingViewController *)self photoCollectionsFetchResult];
+    v8 = photoCollectionsFetchResult;
+    if ((hint & 0x8000000000000000) == 0 && [photoCollectionsFetchResult count] > hint)
     {
-      v9 = [v8 objectAtIndex:a4];
+      v9 = [v8 objectAtIndex:hint];
       v10 = [(PUCarouselSharingViewController *)self assetsInAssetCollection:v9];
 
-      v11 = [v10 indexOfObject:v6];
+      v11 = [v10 indexOfObject:assetCopy];
       if (v11 != 0x7FFFFFFFFFFFFFFFLL)
       {
-        v12 = [MEMORY[0x1E696AC88] indexPathForItem:v11 inSection:a4];
+        v12 = [MEMORY[0x1E696AC88] indexPathForItem:v11 inSection:hint];
         v13 = v21[5];
         v21[5] = v12;
       }
@@ -3135,7 +3135,7 @@ LABEL_18:
       v17[2] = __65__PUCarouselSharingViewController__indexPathOfAsset_sectionHint___block_invoke;
       v17[3] = &unk_1E7B7D240;
       v17[4] = self;
-      v18 = v6;
+      v18 = assetCopy;
       v19 = &v20;
       [v8 enumerateObjectsUsingBlock:v17];
     }
@@ -3170,59 +3170,59 @@ void __65__PUCarouselSharingViewController__indexPathOfAsset_sectionHint___block
   }
 }
 
-- (id)_assetAtIndexPath:(id)a3
+- (id)_assetAtIndexPath:(id)path
 {
-  v5 = a3;
-  v6 = [v5 section];
-  if (v6 >= [(PUCarouselSharingViewController *)self _numberOfSections])
+  pathCopy = path;
+  section = [pathCopy section];
+  if (section >= [(PUCarouselSharingViewController *)self _numberOfSections])
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    v13 = [v5 section];
-    v14 = [(PUCarouselSharingViewController *)self _numberOfSections];
-    v15 = [(PUCarouselSharingViewController *)self photoCollectionsFetchResult];
-    [v12 handleFailureInMethod:a2 object:self file:@"PUCarouselSharingViewController.m" lineNumber:584 description:{@"Out-of-bounds section %li/%li - sections: %@ ", v13, v14, v15}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    section2 = [pathCopy section];
+    _numberOfSections = [(PUCarouselSharingViewController *)self _numberOfSections];
+    photoCollectionsFetchResult = [(PUCarouselSharingViewController *)self photoCollectionsFetchResult];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUCarouselSharingViewController.m" lineNumber:584 description:{@"Out-of-bounds section %li/%li - sections: %@ ", section2, _numberOfSections, photoCollectionsFetchResult}];
   }
 
-  v7 = -[PUCarouselSharingViewController _photoCollectionAtIndex:](self, "_photoCollectionAtIndex:", [v5 section]);
-  v8 = [v5 item];
-  if (v8 >= -[PUCarouselSharingViewController _numberOfItemsInSection:](self, "_numberOfItemsInSection:", [v5 section]))
+  v7 = -[PUCarouselSharingViewController _photoCollectionAtIndex:](self, "_photoCollectionAtIndex:", [pathCopy section]);
+  item = [pathCopy item];
+  if (item >= -[PUCarouselSharingViewController _numberOfItemsInSection:](self, "_numberOfItemsInSection:", [pathCopy section]))
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    v22 = [v5 item];
-    v17 = -[PUCarouselSharingViewController _numberOfItemsInSection:](self, "_numberOfItemsInSection:", [v5 section]);
-    v18 = [v5 section];
-    v19 = [v7 assetCollectionType];
-    v20 = [v7 assetCollectionSubtype];
-    v21 = [v7 uuid];
-    [v16 handleFailureInMethod:a2 object:self file:@"PUCarouselSharingViewController.m" lineNumber:591 description:{@"Out-of-bounds item %li/%li from section %li - assetCollectionType=%ld/%ld, uuid=%@", v22, v17, v18, v19, v20, v21}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    item2 = [pathCopy item];
+    v17 = -[PUCarouselSharingViewController _numberOfItemsInSection:](self, "_numberOfItemsInSection:", [pathCopy section]);
+    section3 = [pathCopy section];
+    assetCollectionType = [v7 assetCollectionType];
+    assetCollectionSubtype = [v7 assetCollectionSubtype];
+    uuid = [v7 uuid];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUCarouselSharingViewController.m" lineNumber:591 description:{@"Out-of-bounds item %li/%li from section %li - assetCollectionType=%ld/%ld, uuid=%@", item2, v17, section3, assetCollectionType, assetCollectionSubtype, uuid}];
   }
 
   v9 = [(PUCarouselSharingViewController *)self assetsInAssetCollection:v7];
-  v10 = [v9 objectAtIndex:{objc_msgSend(v5, "item")}];
+  v10 = [v9 objectAtIndex:{objc_msgSend(pathCopy, "item")}];
 
   return v10;
 }
 
-- (id)_photoCollectionAtIndex:(int64_t)a3
+- (id)_photoCollectionAtIndex:(int64_t)index
 {
-  v4 = [(PUCarouselSharingViewController *)self photoCollectionsFetchResult];
-  v5 = [v4 objectAtIndex:a3];
+  photoCollectionsFetchResult = [(PUCarouselSharingViewController *)self photoCollectionsFetchResult];
+  v5 = [photoCollectionsFetchResult objectAtIndex:index];
 
   return v5;
 }
 
-- (unint64_t)_indexForPhotoCollection:(id)a3
+- (unint64_t)_indexForPhotoCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(PUCarouselSharingViewController *)self photoCollectionsFetchResult];
-  v6 = [v5 indexOfObject:v4];
+  collectionCopy = collection;
+  photoCollectionsFetchResult = [(PUCarouselSharingViewController *)self photoCollectionsFetchResult];
+  v6 = [photoCollectionsFetchResult indexOfObject:collectionCopy];
 
   return v6;
 }
 
-- (int64_t)_numberOfItemsInSection:(int64_t)a3
+- (int64_t)_numberOfItemsInSection:(int64_t)section
 {
-  v4 = [(PUCarouselSharingViewController *)self _photoCollectionAtIndex:a3];
+  v4 = [(PUCarouselSharingViewController *)self _photoCollectionAtIndex:section];
   v5 = [(PUCarouselSharingViewController *)self assetsInAssetCollection:v4];
   v6 = [v5 count];
 
@@ -3231,30 +3231,30 @@ void __65__PUCarouselSharingViewController__indexPathOfAsset_sectionHint___block
 
 - (int64_t)_numberOfSections
 {
-  v2 = [(PUCarouselSharingViewController *)self photoCollectionsFetchResult];
-  v3 = [v2 count];
+  photoCollectionsFetchResult = [(PUCarouselSharingViewController *)self photoCollectionsFetchResult];
+  v3 = [photoCollectionsFetchResult count];
 
   return v3;
 }
 
-- (id)_indexPathInCollectionView:(id)a3 closestToContentOffsetX:(double)a4
+- (id)_indexPathInCollectionView:(id)view closestToContentOffsetX:(double)x
 {
-  v6 = a3;
+  viewCopy = view;
   [(PUCarouselSharingViewController *)self _collectionViewContentFrame];
   MidY = CGRectGetMidY(v32);
-  v8 = [v6 indexPathForItemAtPoint:{a4, MidY}];
+  v8 = [viewCopy indexPathForItemAtPoint:{x, MidY}];
   if (v8)
   {
     v9 = v8;
     goto LABEL_22;
   }
 
-  v10 = [(PUCarouselSharingViewController *)self spec];
-  [v10 interItemSpacing];
+  spec = [(PUCarouselSharingViewController *)self spec];
+  [spec interItemSpacing];
   v12 = v11;
 
-  v13 = [v6 indexPathForItemAtPoint:{a4 - v12, MidY}];
-  v14 = [v6 indexPathForItemAtPoint:{v12 + a4, MidY}];
+  v13 = [viewCopy indexPathForItemAtPoint:{x - v12, MidY}];
+  v14 = [viewCopy indexPathForItemAtPoint:{v12 + x, MidY}];
   v15 = v14;
   if (v13)
   {
@@ -3268,10 +3268,10 @@ void __65__PUCarouselSharingViewController__indexPathOfAsset_sectionHint___block
 
   if (!v16)
   {
-    v19 = [v6 cellForItemAtIndexPath:v13];
-    v20 = [v6 cellForItemAtIndexPath:v15];
+    v19 = [viewCopy cellForItemAtIndexPath:v13];
+    v20 = [viewCopy cellForItemAtIndexPath:v15];
     [v19 frame];
-    v25 = a4 - CGRectGetMaxX(*&v21);
+    v25 = x - CGRectGetMaxX(*&v21);
     if (v25 >= 0.0)
     {
       v26 = v25;
@@ -3283,7 +3283,7 @@ void __65__PUCarouselSharingViewController__indexPathOfAsset_sectionHint___block
     }
 
     [v20 frame];
-    v27 = a4 - CGRectGetMinX(v33);
+    v27 = x - CGRectGetMinX(v33);
     if (v27 < 0.0)
     {
       v27 = -v27;
@@ -3330,29 +3330,29 @@ LABEL_22:
 
   v18 = 0;
 LABEL_23:
-  v29 = [(PUCarouselSharingViewController *)self _indexPathInCollectionView:v6 closestToPoint:a4, MidY];
+  midY = [(PUCarouselSharingViewController *)self _indexPathInCollectionView:viewCopy closestToPoint:x, MidY];
 
-  v9 = v29;
+  v9 = midY;
 LABEL_24:
 
   return v9;
 }
 
-- (id)_indexPathInCollectionView:(id)a3 closestToPoint:(CGPoint)a4
+- (id)_indexPathInCollectionView:(id)view closestToPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
+  y = point.y;
+  x = point.x;
   v28 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = [v7 indexPathForItemAtPoint:{x, y}];
+  viewCopy = view;
+  v8 = [viewCopy indexPathForItemAtPoint:{x, y}];
   if (!v8)
   {
-    v9 = [v7 visibleCells];
+    visibleCells = [viewCopy visibleCells];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v10 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    v10 = [visibleCells countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v10)
     {
       v11 = v10;
@@ -3365,11 +3365,11 @@ LABEL_24:
         {
           if (*v24 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(visibleCells);
           }
 
           v15 = *(*(&v23 + 1) + 8 * i);
-          v16 = [v7 indexPathForCell:v15];
+          v16 = [viewCopy indexPathForCell:v15];
           v17 = [(PUCarouselSharingViewController *)self _assetAtIndexPath:v16];
           if ([(PUCarouselSharingViewController *)self _shouldShowAsset:v17])
           {
@@ -3385,7 +3385,7 @@ LABEL_24:
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        v11 = [visibleCells countByEnumeratingWithState:&v23 objects:v27 count:16];
       }
 
       while (v11);
@@ -3400,66 +3400,66 @@ LABEL_24:
   return v8;
 }
 
-- (id)_indexPathOfCenterVisibleItemInCollectionView:(id)a3
+- (id)_indexPathOfCenterVisibleItemInCollectionView:(id)view
 {
-  v4 = a3;
-  [v4 bounds];
-  v5 = [(PUCarouselSharingViewController *)self _indexPathInCollectionView:v4 closestToContentOffsetX:CGRectGetMidX(v8)];
+  viewCopy = view;
+  [viewCopy bounds];
+  v5 = [(PUCarouselSharingViewController *)self _indexPathInCollectionView:viewCopy closestToContentOffsetX:CGRectGetMidX(v8)];
 
   return v5;
 }
 
-- (void)_pageToIndexPath:(id)a3 animated:(BOOL)a4
+- (void)_pageToIndexPath:(id)path animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v11 = [(PUCarouselSharingViewController *)self mainCollectionView];
-  [v11 contentOffset];
+  animatedCopy = animated;
+  pathCopy = path;
+  mainCollectionView = [(PUCarouselSharingViewController *)self mainCollectionView];
+  [mainCollectionView contentOffset];
   v8 = v7;
-  [(PUCarouselSharingViewController *)self _horizontalOffsetInCollectionView:v11 forCenteringOnItemAtIndexPath:v6];
+  [(PUCarouselSharingViewController *)self _horizontalOffsetInCollectionView:mainCollectionView forCenteringOnItemAtIndexPath:pathCopy];
   v10 = v9;
 
-  [v11 setContentOffset:v4 animated:{v10, v8}];
+  [mainCollectionView setContentOffset:animatedCopy animated:{v10, v8}];
 }
 
-- (void)_updateCell:(id)a3 forItemAtIndexPath:(id)a4
+- (void)_updateCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  cellCopy = cell;
+  pathCopy = path;
+  if (!cellCopy)
   {
-    v29 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v29 handleFailureInMethod:a2 object:self file:@"PUCarouselSharingViewController.m" lineNumber:463 description:@"expected cell"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUCarouselSharingViewController.m" lineNumber:463 description:@"expected cell"];
   }
 
-  v9 = -[PUCarouselSharingViewController _photoCollectionAtIndex:](self, "_photoCollectionAtIndex:", [v8 section]);
+  v9 = -[PUCarouselSharingViewController _photoCollectionAtIndex:](self, "_photoCollectionAtIndex:", [pathCopy section]);
   v10 = [(PUCarouselSharingViewController *)self assetsInAssetCollection:v9];
-  v11 = [v10 objectAtIndex:{objc_msgSend(v8, "item")}];
-  v12 = [v11 pixelWidth];
-  v13 = [v11 pixelHeight];
-  v14 = [v7 photoView];
-  v15 = [v14 contentHelper];
+  v11 = [v10 objectAtIndex:{objc_msgSend(pathCopy, "item")}];
+  pixelWidth = [v11 pixelWidth];
+  pixelHeight = [v11 pixelHeight];
+  photoView = [cellCopy photoView];
+  contentHelper = [photoView contentHelper];
 
-  [v15 setPreferredImageDynamicRange:0];
-  [v15 setPhotoSize:{v12, v13}];
-  [v15 setFillMode:1];
-  v16 = [(PUCarouselSharingViewController *)self spec];
-  [v16 contentCornerRadius];
-  [v15 setCornerRadius:?];
+  [contentHelper setPreferredImageDynamicRange:0];
+  [contentHelper setPhotoSize:{pixelWidth, pixelHeight}];
+  [contentHelper setFillMode:1];
+  spec = [(PUCarouselSharingViewController *)self spec];
+  [spec contentCornerRadius];
+  [contentHelper setCornerRadius:?];
 
-  v17 = [(PUCarouselSharingViewController *)self spec];
-  [v17 selectionBadgeOffset];
+  spec2 = [(PUCarouselSharingViewController *)self spec];
+  [spec2 selectionBadgeOffset];
   v19 = v18;
   v21 = v20;
 
-  [v15 setCustomPaddingForBadgeElements:{v19, v21}];
+  [contentHelper setCustomPaddingForBadgeElements:{v19, v21}];
   v31 = 0u;
   v32 = 0u;
-  v22 = [(PUCarouselSharingViewController *)self _badgeManager];
-  v23 = v22;
-  if (v22)
+  _badgeManager = [(PUCarouselSharingViewController *)self _badgeManager];
+  v23 = _badgeManager;
+  if (_badgeManager)
   {
-    [v22 badgeInfoForAsset:v11 inCollection:v9 options:8];
+    [_badgeManager badgeInfoForAsset:v11 inCollection:v9 options:8];
   }
 
   else
@@ -3470,97 +3470,97 @@ LABEL_24:
 
   v30[0] = v31;
   v30[1] = v32;
-  [v15 setBadgeInfo:v30];
-  v24 = [(PUCarouselSharingViewController *)self photoSelectionManager];
-  v25 = [v24 isAssetAtIndexSelected:objc_msgSend(v8 inAssetCollection:{"item"), v9}];
+  [contentHelper setBadgeInfo:v30];
+  photoSelectionManager = [(PUCarouselSharingViewController *)self photoSelectionManager];
+  v25 = [photoSelectionManager isAssetAtIndexSelected:objc_msgSend(pathCopy inAssetCollection:{"item"), v9}];
 
-  [v7 setSelected:v25];
-  [v15 setDelegate:self];
-  [(PUCarouselSharingViewController *)self _updatePhotoForAsset:v11 cell:v7 atIndexPath:v8];
-  [(PUCarouselSharingViewController *)self _updateAdditionalContentForAsset:v11 cell:v7];
+  [cellCopy setSelected:v25];
+  [contentHelper setDelegate:self];
+  [(PUCarouselSharingViewController *)self _updatePhotoForAsset:v11 cell:cellCopy atIndexPath:pathCopy];
+  [(PUCarouselSharingViewController *)self _updateAdditionalContentForAsset:v11 cell:cellCopy];
   v26 = [(PUCarouselSharingViewController *)self _activityAssetItemForAsset:v11 createIfNecessary:0];
   v27 = v26;
   if (v26)
   {
-    v28 = [v26 excludeLiveness];
+    excludeLiveness = [v26 excludeLiveness];
   }
 
   else
   {
-    v28 = 0;
+    excludeLiveness = 0;
   }
 
-  [v15 setLivePhotoHidden:v28];
+  [contentHelper setLivePhotoHidden:excludeLiveness];
 }
 
-- (void)_handleAnimatedImageResult:(id)a3 forCell:(id)a4 asset:(id)a5 tag:(int64_t)a6
+- (void)_handleAnimatedImageResult:(id)result forCell:(id)cell asset:(id)asset tag:(int64_t)tag
 {
-  v13 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v9 && [v9 tag] == a6)
+  resultCopy = result;
+  cellCopy = cell;
+  assetCopy = asset;
+  if (cellCopy && [cellCopy tag] == tag)
   {
-    v11 = [v9 photoView];
-    v12 = [v11 contentHelper];
+    photoView = [cellCopy photoView];
+    contentHelper = [photoView contentHelper];
 
-    [v12 setAnimatedImage:v13];
-  }
-}
-
-- (void)_handleLoopingVideoRequestResult:(id)a3 forCell:(id)a4 asset:(id)a5 tag:(int64_t)a6
-{
-  v14 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v10 && [v10 tag] == a6 && -[PUCarouselSharingViewController _isLoopingPlaybackAllowed](self, "_isLoopingPlaybackAllowed"))
-  {
-    v12 = [v10 photoView];
-    v13 = [v12 contentHelper];
-
-    [v13 setLoopingVideoAsset:v14];
+    [contentHelper setAnimatedImage:resultCopy];
   }
 }
 
-- (void)_handleLivePhotoRequestResult:(id)a3 forCell:(id)a4 tag:(int64_t)a5
+- (void)_handleLoopingVideoRequestResult:(id)result forCell:(id)cell asset:(id)asset tag:(int64_t)tag
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v9 && [v9 tag] == a5)
+  resultCopy = result;
+  cellCopy = cell;
+  assetCopy = asset;
+  if (cellCopy && [cellCopy tag] == tag && -[PUCarouselSharingViewController _isLoopingPlaybackAllowed](self, "_isLoopingPlaybackAllowed"))
   {
-    v11 = [(PUCarouselSharingViewController *)self sharingLog];
-    if (os_signpost_enabled(v11))
+    photoView = [cellCopy photoView];
+    contentHelper = [photoView contentHelper];
+
+    [contentHelper setLoopingVideoAsset:resultCopy];
+  }
+}
+
+- (void)_handleLivePhotoRequestResult:(id)result forCell:(id)cell tag:(int64_t)tag
+{
+  resultCopy = result;
+  cellCopy = cell;
+  v10 = cellCopy;
+  if (cellCopy && [cellCopy tag] == tag)
+  {
+    sharingLog = [(PUCarouselSharingViewController *)self sharingLog];
+    if (os_signpost_enabled(sharingLog))
     {
       *buf = 0;
-      _os_signpost_emit_with_name_impl(&dword_1B36F3000, v11, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "displayLivePhoto", "", buf, 2u);
+      _os_signpost_emit_with_name_impl(&dword_1B36F3000, sharingLog, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "displayLivePhoto", "", buf, 2u);
     }
 
-    v12 = [v10 photoView];
-    v13 = [v12 contentHelper];
-    [v13 setShowsLivePhoto:1];
+    photoView = [v10 photoView];
+    contentHelper = [photoView contentHelper];
+    [contentHelper setShowsLivePhoto:1];
 
     v14 = [(PUScrollViewSpeedometer *)self->_speedometer regime]!= 3;
-    v15 = [v10 photoView];
-    v16 = [v15 contentHelper];
+    photoView2 = [v10 photoView];
+    contentHelper2 = [photoView2 contentHelper];
 
-    [v16 setShouldPrepareForPlayback:v14];
-    [v16 setLivePhoto:v8];
-    v17 = [(PUCarouselSharingViewController *)self sharingLog];
-    if (os_signpost_enabled(v17))
+    [contentHelper2 setShouldPrepareForPlayback:v14];
+    [contentHelper2 setLivePhoto:resultCopy];
+    sharingLog2 = [(PUCarouselSharingViewController *)self sharingLog];
+    if (os_signpost_enabled(sharingLog2))
     {
       *v18 = 0;
-      _os_signpost_emit_with_name_impl(&dword_1B36F3000, v17, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "displayLivePhoto", "", v18, 2u);
+      _os_signpost_emit_with_name_impl(&dword_1B36F3000, sharingLog2, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "displayLivePhoto", "", v18, 2u);
     }
   }
 }
 
-- (void)_handleSchedulingLivePhotoRequestResult:(id)a3 forCell:(id)a4 tag:(int64_t)a5
+- (void)_handleSchedulingLivePhotoRequestResult:(id)result forCell:(id)cell tag:(int64_t)tag
 {
-  v8 = a3;
-  v9 = a4;
+  resultCopy = result;
+  cellCopy = cell;
   if ([(PUCarouselSharingViewController *)self isReadyForInteraction])
   {
-    [(PUCarouselSharingViewController *)self _handleLivePhotoRequestResult:v8 forCell:v9 tag:a5];
+    [(PUCarouselSharingViewController *)self _handleLivePhotoRequestResult:resultCopy forCell:cellCopy tag:tag];
   }
 
   else
@@ -3571,13 +3571,13 @@ LABEL_24:
     aBlock[2] = __87__PUCarouselSharingViewController__handleSchedulingLivePhotoRequestResult_forCell_tag___block_invoke;
     aBlock[3] = &unk_1E7B7D1F0;
     objc_copyWeak(v16, &location);
-    v14 = v8;
-    v15 = v9;
-    v16[1] = a5;
+    v14 = resultCopy;
+    v15 = cellCopy;
+    v16[1] = tag;
     v10 = _Block_copy(aBlock);
-    v11 = [(PUCarouselSharingViewController *)self _livePhotoViewLoaderBlocks];
+    _livePhotoViewLoaderBlocks = [(PUCarouselSharingViewController *)self _livePhotoViewLoaderBlocks];
     v12 = _Block_copy(v10);
-    [v11 addObject:v12];
+    [_livePhotoViewLoaderBlocks addObject:v12];
 
     objc_destroyWeak(v16);
     objc_destroyWeak(&location);
@@ -3590,41 +3590,41 @@ void __87__PUCarouselSharingViewController__handleSchedulingLivePhotoRequestResu
   [WeakRetained _handleLivePhotoRequestResult:*(a1 + 32) forCell:*(a1 + 40) tag:*(a1 + 56)];
 }
 
-- (void)_handleStillPhotoRequestResult:(id)a3 forCell:(id)a4 tag:(int64_t)a5
+- (void)_handleStillPhotoRequestResult:(id)result forCell:(id)cell tag:(int64_t)tag
 {
-  v15 = a3;
-  v7 = a4;
-  if ([v7 tag] == a5)
+  resultCopy = result;
+  cellCopy = cell;
+  if ([cellCopy tag] == tag)
   {
-    v8 = [v7 photoView];
-    v9 = [v8 contentHelper];
+    photoView = [cellCopy photoView];
+    contentHelper = [photoView contentHelper];
 
-    v10 = [v9 placeHolderImage];
-    v11 = [v10 isHighDynamicRange];
+    placeHolderImage = [contentHelper placeHolderImage];
+    isHighDynamicRange = [placeHolderImage isHighDynamicRange];
 
-    if (v11)
+    if (isHighDynamicRange)
     {
       v12 = +[PUOneUpSettings sharedInstance];
       [v12 hdrShareSheetCrossfadeAnimationDuration];
       v14 = v13;
 
-      [v9 animateCrossfadeToImage:v15 duration:v14];
+      [contentHelper animateCrossfadeToImage:resultCopy duration:v14];
     }
 
     else
     {
-      [v9 setPhotoImage:v15];
+      [contentHelper setPhotoImage:resultCopy];
     }
   }
 }
 
-- (void)_handleSchedulingStillPhotoRequestResult:(id)a3 forCell:(id)a4 tag:(int64_t)a5
+- (void)_handleSchedulingStillPhotoRequestResult:(id)result forCell:(id)cell tag:(int64_t)tag
 {
-  v8 = a3;
-  v9 = a4;
+  resultCopy = result;
+  cellCopy = cell;
   if ([(PUCarouselSharingViewController *)self isReadyForInteraction])
   {
-    [(PUCarouselSharingViewController *)self _handleStillPhotoRequestResult:v8 forCell:v9 tag:a5];
+    [(PUCarouselSharingViewController *)self _handleStillPhotoRequestResult:resultCopy forCell:cellCopy tag:tag];
   }
 
   else
@@ -3635,13 +3635,13 @@ void __87__PUCarouselSharingViewController__handleSchedulingLivePhotoRequestResu
     aBlock[2] = __88__PUCarouselSharingViewController__handleSchedulingStillPhotoRequestResult_forCell_tag___block_invoke;
     aBlock[3] = &unk_1E7B7D1F0;
     objc_copyWeak(v16, &location);
-    v14 = v8;
-    v15 = v9;
-    v16[1] = a5;
+    v14 = resultCopy;
+    v15 = cellCopy;
+    v16[1] = tag;
     v10 = _Block_copy(aBlock);
-    v11 = [(PUCarouselSharingViewController *)self _photoViewLoaderBlocks];
+    _photoViewLoaderBlocks = [(PUCarouselSharingViewController *)self _photoViewLoaderBlocks];
     v12 = _Block_copy(v10);
-    [v11 addObject:v12];
+    [_photoViewLoaderBlocks addObject:v12];
 
     objc_destroyWeak(v16);
     objc_destroyWeak(&location);
@@ -3654,48 +3654,48 @@ void __88__PUCarouselSharingViewController__handleSchedulingStillPhotoRequestRes
   [WeakRetained _handleStillPhotoRequestResult:*(a1 + 32) forCell:*(a1 + 40) tag:*(a1 + 56)];
 }
 
-- (void)_updateAdditionalContentForAsset:(id)a3 cell:(id)a4
+- (void)_updateAdditionalContentForAsset:(id)asset cell:(id)cell
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 tag];
-  if ([v6 playbackStyle] != 5)
+  assetCopy = asset;
+  cellCopy = cell;
+  v8 = [cellCopy tag];
+  if ([assetCopy playbackStyle] != 5)
   {
-    v10 = [v6 playbackStyle] == 2;
+    v10 = [assetCopy playbackStyle] == 2;
 LABEL_5:
-    if ([v6 playbackStyle] == 3)
+    if ([assetCopy playbackStyle] == 3)
     {
-      v11 = [v6 canPlayPhotoIris];
+      canPlayPhotoIris = [assetCopy canPlayPhotoIris];
       v12 = 0;
     }
 
     else
     {
       v12 = 0;
-      v11 = 0;
+      canPlayPhotoIris = 0;
     }
 
     goto LABEL_8;
   }
 
-  v9 = [(PUCarouselSharingViewController *)self _isLoopingPlaybackAllowed];
-  v10 = [v6 playbackStyle] == 2;
-  if (!v9)
+  _isLoopingPlaybackAllowed = [(PUCarouselSharingViewController *)self _isLoopingPlaybackAllowed];
+  v10 = [assetCopy playbackStyle] == 2;
+  if (!_isLoopingPlaybackAllowed)
   {
     goto LABEL_5;
   }
 
-  v11 = 0;
+  canPlayPhotoIris = 0;
   v12 = 1;
 LABEL_8:
-  v13 = [(PUCarouselSharingViewController *)self _isLoopingPlaybackAllowed];
-  v14 = [v7 photoView];
-  v15 = [v14 contentHelper];
-  [v15 setLoopingPlaybackAllowed:v13];
+  _isLoopingPlaybackAllowed2 = [(PUCarouselSharingViewController *)self _isLoopingPlaybackAllowed];
+  photoView = [cellCopy photoView];
+  contentHelper = [photoView contentHelper];
+  [contentHelper setLoopingPlaybackAllowed:_isLoopingPlaybackAllowed2];
 
   if (v12)
   {
-    v16 = [(PUCarouselSharingViewController *)self cachingImageManager];
+    cachingImageManager = [(PUCarouselSharingViewController *)self cachingImageManager];
     v17 = objc_alloc_init(MEMORY[0x1E6978B18]);
     [v17 setNetworkAccessAllowed:1];
     [v17 setVideoComplementAllowed:1];
@@ -3705,10 +3705,10 @@ LABEL_8:
     v40[2] = __73__PUCarouselSharingViewController__updateAdditionalContentForAsset_cell___block_invoke;
     v40[3] = &unk_1E7B7D1A0;
     objc_copyWeak(v43, location);
-    v41 = v7;
-    v42 = v6;
+    v41 = cellCopy;
+    v42 = assetCopy;
     v43[1] = v8;
-    [v16 requestAVAssetForVideo:v42 options:v17 resultHandler:v40];
+    [cachingImageManager requestAVAssetForVideo:v42 options:v17 resultHandler:v40];
 
     objc_destroyWeak(v43);
     objc_destroyWeak(location);
@@ -3716,24 +3716,24 @@ LABEL_8:
 
   else
   {
-    v18 = [v7 photoView];
-    v19 = [v18 contentHelper];
+    photoView2 = [cellCopy photoView];
+    contentHelper2 = [photoView2 contentHelper];
 
-    [v19 setLoopingVideoAsset:0];
+    [contentHelper2 setLoopingVideoAsset:0];
   }
 
-  v20 = [v7 photoView];
-  v21 = [v20 contentHelper];
+  photoView3 = [cellCopy photoView];
+  contentHelper3 = [photoView3 contentHelper];
 
   if (v10)
   {
     if ([(PUCarouselSharingViewController *)self _isLoopingPlaybackAllowed])
     {
-      v22 = [v21 animatedImage];
+      animatedImage = [contentHelper3 animatedImage];
 
-      if (!v22)
+      if (!animatedImage)
       {
-        v23 = [(PUCarouselSharingViewController *)self cachingImageManager];
+        cachingImageManager2 = [(PUCarouselSharingViewController *)self cachingImageManager];
         v24 = objc_alloc_init(MEMORY[0x1E6978868]);
         [v24 setVersion:2];
         [v24 setNetworkAccessAllowed:0];
@@ -3743,10 +3743,10 @@ LABEL_8:
         v36[2] = __73__PUCarouselSharingViewController__updateAdditionalContentForAsset_cell___block_invoke_3;
         v36[3] = &unk_1E7B7D1C8;
         objc_copyWeak(v39, location);
-        v37 = v7;
-        v38 = v6;
+        v37 = cellCopy;
+        v38 = assetCopy;
         v39[1] = v8;
-        [v23 requestAnimatedImageForAsset:v38 options:v24 resultHandler:v36];
+        [cachingImageManager2 requestAnimatedImageForAsset:v38 options:v24 resultHandler:v36];
 
         objc_destroyWeak(v39);
         objc_destroyWeak(location);
@@ -3756,24 +3756,24 @@ LABEL_8:
 
   else
   {
-    [v21 setAnimatedImage:0];
+    [contentHelper3 setAnimatedImage:0];
   }
 
-  v25 = [v7 photoView];
-  v26 = [v25 contentHelper];
-  v27 = v26;
-  if (!v11)
+  photoView4 = [cellCopy photoView];
+  contentHelper4 = [photoView4 contentHelper];
+  v27 = contentHelper4;
+  if (!canPlayPhotoIris)
   {
-    [v26 setShowsLivePhoto:0];
+    [contentHelper4 setShowsLivePhoto:0];
     goto LABEL_22;
   }
 
-  v28 = [v26 livePhoto];
+  livePhoto = [contentHelper4 livePhoto];
 
-  if (!v28)
+  if (!livePhoto)
   {
-    v25 = [(PUCarouselSharingViewController *)self cachingImageManager];
-    [v7 frame];
+    photoView4 = [(PUCarouselSharingViewController *)self cachingImageManager];
+    [cellCopy frame];
     v31 = PUPixelSizeFromPointSize(v29);
     v32 = v30;
     if (v31 == *MEMORY[0x1E695F060] && v30 == *(MEMORY[0x1E695F060] + 8))
@@ -3789,9 +3789,9 @@ LABEL_8:
     v33[2] = __73__PUCarouselSharingViewController__updateAdditionalContentForAsset_cell___block_invoke_239;
     v33[3] = &unk_1E7B7D218;
     objc_copyWeak(v35, location);
-    v34 = v7;
+    v34 = cellCopy;
     v35[1] = v8;
-    [v25 requestLivePhotoForAsset:v6 targetSize:0 contentMode:v27 options:v33 resultHandler:{v31, v32}];
+    [photoView4 requestLivePhotoForAsset:assetCopy targetSize:0 contentMode:v27 options:v33 resultHandler:{v31, v32}];
 
     objc_destroyWeak(v35);
     objc_destroyWeak(location);
@@ -3899,81 +3899,81 @@ void __73__PUCarouselSharingViewController__updateAdditionalContentForAsset_cell
   [WeakRetained _handleLoopingVideoRequestResult:*(a1 + 32) forCell:*(a1 + 40) asset:*(a1 + 48) tag:*(a1 + 64)];
 }
 
-- (void)_handleStillImageRequestResult:(id)a3 info:(id)a4 forCell:(id)a5 indexPath:(id)a6
+- (void)_handleStillImageRequestResult:(id)result info:(id)info forCell:(id)cell indexPath:(id)path
 {
-  v21 = a3;
-  v10 = a5;
-  v11 = a6;
-  v12 = [a4 objectForKeyedSubscript:*MEMORY[0x1E6978E50]];
-  v13 = [v12 BOOLValue];
+  resultCopy = result;
+  cellCopy = cell;
+  pathCopy = path;
+  v12 = [info objectForKeyedSubscript:*MEMORY[0x1E6978E50]];
+  bOOLValue = [v12 BOOLValue];
 
-  if (v13)
+  if (bOOLValue)
   {
-    v14 = [v10 photoView];
-    v15 = [v14 contentHelper];
+    photoView = [cellCopy photoView];
+    contentHelper = [photoView contentHelper];
 
-    v16 = [v15 placeHolderImage];
-    if (!v16)
+    placeHolderImage = [contentHelper placeHolderImage];
+    if (!placeHolderImage)
     {
-      v17 = [(PUCarouselSharingViewController *)self currentIndexPath];
-      v18 = [v17 isEqual:v11];
+      currentIndexPath = [(PUCarouselSharingViewController *)self currentIndexPath];
+      v18 = [currentIndexPath isEqual:pathCopy];
 
       if (v18)
       {
-        v19 = [(PUCarouselSharingViewController *)self assetTransitionInfo];
-        v20 = [v19 image];
+        assetTransitionInfo = [(PUCarouselSharingViewController *)self assetTransitionInfo];
+        image = [assetTransitionInfo image];
 
-        if (v20)
+        if (image)
         {
-          [v15 setPlaceHolderImage:v20];
+          [contentHelper setPlaceHolderImage:image];
         }
 
         else
         {
-          [v15 setPhotoImage:v21];
+          [contentHelper setPhotoImage:resultCopy];
         }
       }
 
       else
       {
-        [v15 setPhotoImage:v21];
+        [contentHelper setPhotoImage:resultCopy];
       }
     }
   }
 
   else
   {
-    -[PUCarouselSharingViewController _handleSchedulingStillPhotoRequestResult:forCell:tag:](self, "_handleSchedulingStillPhotoRequestResult:forCell:tag:", v21, v10, [v10 tag]);
+    -[PUCarouselSharingViewController _handleSchedulingStillPhotoRequestResult:forCell:tag:](self, "_handleSchedulingStillPhotoRequestResult:forCell:tag:", resultCopy, cellCopy, [cellCopy tag]);
   }
 }
 
-- (void)_updatePhotoForAsset:(id)a3 cell:(id)a4 atIndexPath:(id)a5
+- (void)_updatePhotoForAsset:(id)asset cell:(id)cell atIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = ([v9 tag] + 1);
-  [v9 setTag:v11];
+  assetCopy = asset;
+  cellCopy = cell;
+  pathCopy = path;
+  v11 = ([cellCopy tag] + 1);
+  [cellCopy setTag:v11];
   v12 = objc_opt_new();
   [v12 setNetworkAccessAllowed:1];
-  [v9 frame];
+  [cellCopy frame];
   v14 = PUPixelSizeFromPointSize(v13);
   v16 = v15;
   objc_initWeak(&location, self);
-  v17 = [(PUCarouselSharingViewController *)self cachingImageManager];
+  cachingImageManager = [(PUCarouselSharingViewController *)self cachingImageManager];
   v21 = MEMORY[0x1E69E9820];
   v22 = 3221225472;
   v23 = __73__PUCarouselSharingViewController__updatePhotoForAsset_cell_atIndexPath___block_invoke;
   v24 = &unk_1E7B7D178;
-  v18 = v8;
+  v18 = assetCopy;
   v25 = v18;
-  v19 = v9;
+  v19 = cellCopy;
   v26 = v19;
   v28[1] = v11;
   objc_copyWeak(v28, &location);
-  v20 = v10;
+  v20 = pathCopy;
   v27 = v20;
-  LODWORD(v11) = [v17 requestImageForAsset:v18 targetSize:0 contentMode:v12 options:&v21 resultHandler:{v14, v16}];
+  LODWORD(v11) = [cachingImageManager requestImageForAsset:v18 targetSize:0 contentMode:v12 options:&v21 resultHandler:{v14, v16}];
 
   [v19 setCurrentImageRequestID:{v11, v21, v22, v23, v24}];
   objc_destroyWeak(v28);
@@ -4000,21 +4000,21 @@ void __73__PUCarouselSharingViewController__updatePhotoForAsset_cell_atIndexPath
   }
 }
 
-- (double)_horizontalOffsetInCollectionView:(id)a3 forCenteringOnItemAtIndexPath:(id)a4
+- (double)_horizontalOffsetInCollectionView:(id)view forCenteringOnItemAtIndexPath:(id)path
 {
-  v5 = a3;
-  v6 = [v5 layoutAttributesForItemAtIndexPath:a4];
+  viewCopy = view;
+  v6 = [viewCopy layoutAttributesForItemAtIndexPath:path];
   [v6 center];
   v8 = v7;
-  [v5 bounds];
+  [viewCopy bounds];
   v10 = v9;
 
   return round(v8 + v10 * -0.5);
 }
 
-- (CGSize)_sizeForItemAtIndexPath:(id)a3
+- (CGSize)_sizeForItemAtIndexPath:(id)path
 {
-  v4 = [(PUCarouselSharingViewController *)self _assetAtIndexPath:a3];
+  v4 = [(PUCarouselSharingViewController *)self _assetAtIndexPath:path];
   if ([(PUCarouselSharingViewController *)self _shouldShowAsset:v4])
   {
     [(PUCarouselSharingViewController *)self _collectionViewContentFrame];
@@ -4022,10 +4022,10 @@ void __73__PUCarouselSharingViewController__updatePhotoForAsset_cell_atIndexPath
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    v13 = [v4 pixelWidth];
-    v14 = [v4 pixelHeight];
-    v15 = [(PUCarouselSharingViewController *)self spec];
-    [v15 interItemSpacing];
+    pixelWidth = [v4 pixelWidth];
+    pixelHeight = [v4 pixelHeight];
+    spec = [(PUCarouselSharingViewController *)self spec];
+    [spec interItemSpacing];
     v17 = v16;
 
     [(PUCarouselSharingViewController *)self px_safeAreaInsets];
@@ -4036,16 +4036,16 @@ void __73__PUCarouselSharingViewController__updatePhotoForAsset_cell_atIndexPath
     v50.origin.y = v19;
     v50.size.width = v22;
     v24 = CGRectGetWidth(v50) + v17 * -4.0;
-    v25 = [(PUCarouselSharingViewController *)self spec];
-    [v25 selectionBadgeSize];
+    spec2 = [(PUCarouselSharingViewController *)self spec];
+    [spec2 selectionBadgeSize];
     v27 = v26;
-    v28 = [(PUCarouselSharingViewController *)self spec];
-    [v28 selectionBadgeOffset];
+    spec3 = [(PUCarouselSharingViewController *)self spec];
+    [spec3 selectionBadgeOffset];
     v30 = v27 + v29 * 2.0;
 
-    if (v13)
+    if (pixelWidth)
     {
-      v31 = v14 == 0;
+      v31 = pixelHeight == 0;
     }
 
     else
@@ -4071,7 +4071,7 @@ void __73__PUCarouselSharingViewController__updatePhotoForAsset_cell_atIndexPath
 
     else
     {
-      v34 = v14;
+      v34 = pixelHeight;
     }
 
     if (v32)
@@ -4081,13 +4081,13 @@ void __73__PUCarouselSharingViewController__updatePhotoForAsset_cell_atIndexPath
 
     else
     {
-      v35 = v13;
+      v35 = pixelWidth;
     }
 
-    v36 = [(PUCarouselSharingViewController *)self spec];
-    v37 = [(PUCarouselSharingViewController *)self _existingView];
-    [v37 bounds];
-    v38 = [v36 maximizeImageHeightForBounds:?];
+    spec4 = [(PUCarouselSharingViewController *)self spec];
+    _existingView = [(PUCarouselSharingViewController *)self _existingView];
+    [_existingView bounds];
+    v38 = [spec4 maximizeImageHeightForBounds:?];
 
     if (v38)
     {
@@ -4168,18 +4168,18 @@ void __73__PUCarouselSharingViewController__updatePhotoForAsset_cell_atIndexPath
   return result;
 }
 
-- (void)_getFirstValidIndexPath:(id *)a3 lastValidIndexPath:(id *)a4
+- (void)_getFirstValidIndexPath:(id *)path lastValidIndexPath:(id *)indexPath
 {
-  v7 = [(PUCarouselSharingViewController *)self _numberOfSections];
-  v8 = v7 - 1;
-  if (v7 < 1)
+  _numberOfSections = [(PUCarouselSharingViewController *)self _numberOfSections];
+  v8 = _numberOfSections - 1;
+  if (_numberOfSections < 1)
   {
     v10 = 0;
     v14 = 0;
-    if (a3)
+    if (path)
     {
 LABEL_13:
-      *a3 = v14;
+      *path = v14;
     }
   }
 
@@ -4212,45 +4212,45 @@ LABEL_13:
     }
 
     while (v8 != -1);
-    if (a3)
+    if (path)
     {
       goto LABEL_13;
     }
   }
 
-  if (a4)
+  if (indexPath)
   {
     v13 = v10;
-    *a4 = v10;
+    *indexPath = v10;
   }
 }
 
-- (void)_updateInterfaceForModelReloadAnimated:(BOOL)a3
+- (void)_updateInterfaceForModelReloadAnimated:(BOOL)animated
 {
   [(PUCarouselSharingViewController *)self _resetPreheating];
-  v4 = [(PUCarouselSharingViewController *)self mainCollectionView];
-  [v4 reloadData];
+  mainCollectionView = [(PUCarouselSharingViewController *)self mainCollectionView];
+  [mainCollectionView reloadData];
 
   [(PUCarouselSharingViewController *)self _setViewInSyncWithModel:1];
 }
 
-- (void)_setLastKnownReferenceIndexPath:(id)a3
+- (void)_setLastKnownReferenceIndexPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   lastKnownReferenceIndexPath = self->__lastKnownReferenceIndexPath;
-  if (lastKnownReferenceIndexPath != v5)
+  if (lastKnownReferenceIndexPath != pathCopy)
   {
-    v7 = v5;
-    lastKnownReferenceIndexPath = [(NSIndexPath *)lastKnownReferenceIndexPath isEqual:v5];
-    v5 = v7;
+    v7 = pathCopy;
+    lastKnownReferenceIndexPath = [(NSIndexPath *)lastKnownReferenceIndexPath isEqual:pathCopy];
+    pathCopy = v7;
     if ((lastKnownReferenceIndexPath & 1) == 0)
     {
-      objc_storeStrong(&self->__lastKnownReferenceIndexPath, a3);
-      v5 = v7;
+      objc_storeStrong(&self->__lastKnownReferenceIndexPath, path);
+      pathCopy = v7;
     }
   }
 
-  MEMORY[0x1EEE66BB8](lastKnownReferenceIndexPath, v5);
+  MEMORY[0x1EEE66BB8](lastKnownReferenceIndexPath, pathCopy);
 }
 
 - (NSMutableSet)analyticsEventsSent
@@ -4270,11 +4270,11 @@ LABEL_13:
 
 - (void)dealloc
 {
-  v3 = [(PHFetchResult *)self->_photoCollectionsFetchResult photoLibrary];
-  [v3 px_unregisterChangeObserver:self];
+  photoLibrary = [(PHFetchResult *)self->_photoCollectionsFetchResult photoLibrary];
+  [photoLibrary px_unregisterChangeObserver:self];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(UITapGestureRecognizer *)self->_tapGestureRecognizer setDelegate:0];
   v5.receiver = self;
@@ -4282,15 +4282,15 @@ LABEL_13:
   [(PUCarouselSharingViewController *)&v5 dealloc];
 }
 
-- (PUCarouselSharingViewController)initWithPhotoCollectionsFetchResult:(id)a3 assetsFetchResultsByAssetCollection:(id)a4 selection:(id)a5
+- (PUCarouselSharingViewController)initWithPhotoCollectionsFetchResult:(id)result assetsFetchResultsByAssetCollection:(id)collection selection:(id)selection
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v12;
-  if (v10)
+  resultCopy = result;
+  collectionCopy = collection;
+  selectionCopy = selection;
+  v13 = selectionCopy;
+  if (resultCopy)
   {
-    if (v12)
+    if (selectionCopy)
     {
       goto LABEL_3;
     }
@@ -4298,8 +4298,8 @@ LABEL_13:
 
   else
   {
-    v33 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v33 handleFailureInMethod:a2 object:self file:@"PUCarouselSharingViewController.m" lineNumber:123 description:{@"Invalid parameter not satisfying: %@", @"photoCollectionsFetchResult"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUCarouselSharingViewController.m" lineNumber:123 description:{@"Invalid parameter not satisfying: %@", @"photoCollectionsFetchResult"}];
 
     if (v13)
     {
@@ -4307,8 +4307,8 @@ LABEL_13:
     }
   }
 
-  v34 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v34 handleFailureInMethod:a2 object:self file:@"PUCarouselSharingViewController.m" lineNumber:124 description:{@"Invalid parameter not satisfying: %@", @"selection"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUCarouselSharingViewController.m" lineNumber:124 description:{@"Invalid parameter not satisfying: %@", @"selection"}];
 
 LABEL_3:
   v35.receiver = self;
@@ -4320,28 +4320,28 @@ LABEL_3:
     spec = v14->_spec;
     v14->_spec = v15;
 
-    objc_storeStrong(&v14->_photoCollectionsFetchResult, a3);
-    objc_storeStrong(&v14->_photoSelectionManager, a5);
-    if (v11)
+    objc_storeStrong(&v14->_photoCollectionsFetchResult, result);
+    objc_storeStrong(&v14->_photoSelectionManager, selection);
+    if (collectionCopy)
     {
-      v17 = [v11 mutableCopy];
+      dictionary = [collectionCopy mutableCopy];
     }
 
     else
     {
-      v17 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
     }
 
-    v18 = v17;
-    objc_storeStrong(&v14->_resultsForAssetCollection, v17);
+    v18 = dictionary;
+    objc_storeStrong(&v14->_resultsForAssetCollection, dictionary);
 
-    v19 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     assetItemsByAssetIdentifier = v14->_assetItemsByAssetIdentifier;
-    v14->_assetItemsByAssetIdentifier = v19;
+    v14->_assetItemsByAssetIdentifier = dictionary2;
 
-    v21 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     indexPathsByOptionView = v14->_indexPathsByOptionView;
-    v14->_indexPathsByOptionView = v21;
+    v14->_indexPathsByOptionView = strongToStrongObjectsMapTable;
 
     v14->_shouldScrollToSelection = 1;
     v23 = objc_opt_new();
@@ -4364,8 +4364,8 @@ LABEL_3:
 
     v14->_readyForInteraction = 1;
     v14->_selectionEnabled = 1;
-    v31 = [v10 photoLibrary];
-    [v31 px_registerChangeObserver:v14];
+    photoLibrary = [resultCopy photoLibrary];
+    [photoLibrary px_registerChangeObserver:v14];
   }
 
   return v14;

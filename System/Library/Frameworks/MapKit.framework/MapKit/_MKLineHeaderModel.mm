@@ -5,9 +5,9 @@
 - (id)colorProvider;
 - (id)contentAttributedString;
 - (id)description;
-- (void)addToken:(id)a3;
-- (void)insertToken:(id)a3 atIndex:(unint64_t)a4;
-- (void)removeToken:(id)a3;
+- (void)addToken:(id)token;
+- (void)insertToken:(id)token atIndex:(unint64_t)index;
+- (void)removeToken:(id)token;
 @end
 
 @implementation _MKLineHeaderModel
@@ -53,8 +53,8 @@
   }
 
   v10 = MEMORY[0x1E696AEC0];
-  v11 = [(_MKLineHeaderModel *)self contentAttributedString];
-  v12 = [v10 stringWithFormat:@"%@\n%@", v11, v3, v14];
+  contentAttributedString = [(_MKLineHeaderModel *)self contentAttributedString];
+  v12 = [v10 stringWithFormat:@"%@\n%@", contentAttributedString, v3, v14];
 
   return v12;
 }
@@ -80,8 +80,8 @@
   if (colorProvider)
   {
     WeakRetained = objc_loadWeakRetained(&self->_ownerView);
-    v6 = [WeakRetained mk_theme];
-    v7 = colorProvider[2](colorProvider, v6);
+    mk_theme = [WeakRetained mk_theme];
+    v7 = colorProvider[2](colorProvider, mk_theme);
     [v28 setObject:v7 forKeyedSubscript:*MEMORY[0x1E69DB650]];
   }
 
@@ -108,13 +108,13 @@
         if ([v3 length] && (objc_msgSend(v12, "isEmpty") & 1) == 0)
         {
           v13 = objc_alloc(MEMORY[0x1E696AAB0]);
-          v14 = [(_MKLineHeaderModel *)self _placeCardHeaderSeparatorString];
-          v15 = [v13 initWithString:v14 attributes:v28];
+          _placeCardHeaderSeparatorString = [(_MKLineHeaderModel *)self _placeCardHeaderSeparatorString];
+          v15 = [v13 initWithString:_placeCardHeaderSeparatorString attributes:v28];
           [v3 appendAttributedString:v15];
         }
 
-        v16 = [v12 attributedString];
-        v17 = [v16 mutableCopy];
+        attributedString = [v12 attributedString];
+        v17 = [attributedString mutableCopy];
 
         if (v17)
         {
@@ -143,8 +143,8 @@
 
         else
         {
-          v20 = [v12 string];
-          v21 = [v20 length] == 0;
+          string = [v12 string];
+          v21 = [string length] == 0;
 
           if (v21)
           {
@@ -154,8 +154,8 @@
           else
           {
             v22 = objc_alloc(MEMORY[0x1E696AD40]);
-            v23 = [v12 string];
-            v17 = [v22 initWithString:v23 attributes:v28];
+            string2 = [v12 string];
+            v17 = [v22 initWithString:string2 attributes:v28];
           }
         }
 
@@ -183,33 +183,33 @@
   return v25;
 }
 
-- (void)removeToken:(id)a3
+- (void)removeToken:(id)token
 {
-  if (a3)
+  if (token)
   {
     [(NSMutableArray *)self->_tokens removeObject:?];
   }
 }
 
-- (void)insertToken:(id)a3 atIndex:(unint64_t)a4
+- (void)insertToken:(id)token atIndex:(unint64_t)index
 {
-  v6 = a3;
-  if (v6)
+  tokenCopy = token;
+  if (tokenCopy)
   {
-    v8 = v6;
+    v8 = tokenCopy;
     v7 = [(NSMutableArray *)self->_tokens count];
-    v6 = v8;
-    if (v7 > a4)
+    tokenCopy = v8;
+    if (v7 > index)
     {
-      [(NSMutableArray *)self->_tokens insertObject:v8 atIndex:a4];
-      v6 = v8;
+      [(NSMutableArray *)self->_tokens insertObject:v8 atIndex:index];
+      tokenCopy = v8;
     }
   }
 }
 
-- (void)addToken:(id)a3
+- (void)addToken:(id)token
 {
-  if (a3)
+  if (token)
   {
     [(NSMutableArray *)self->_tokens addObject:?];
   }

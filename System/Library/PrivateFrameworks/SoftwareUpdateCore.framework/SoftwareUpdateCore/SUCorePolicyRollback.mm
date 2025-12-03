@@ -1,11 +1,11 @@
 @interface SUCorePolicyRollback
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (SUCorePolicyRollback)init;
-- (SUCorePolicyRollback)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SUCorePolicyRollback)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)summary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SUCorePolicyRollback
@@ -31,20 +31,20 @@
   return v3;
 }
 
-- (SUCorePolicyRollback)initWithCoder:(id)a3
+- (SUCorePolicyRollback)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = SUCorePolicyRollback;
   v5 = [(SUCorePolicyRollback *)&v9 init];
   if (v5)
   {
-    v5->_performPhase = [v4 decodeBoolForKey:@"PerformPhase"];
-    v5->_performRollbackPreparePhase = [v4 decodeBoolForKey:@"PerformPreparePhase"];
-    v5->_performRollbackSuspendPhase = [v4 decodeBoolForKey:@"PerformSuspendPhase"];
-    v5->_performRollbackResumePhase = [v4 decodeBoolForKey:@"PerformResumePhase"];
-    v5->_performRollbackApplyPhase = [v4 decodeBoolForKey:@"PerformApplyPhase"];
-    v5->_skipCancelPreviousUpdate = [v4 decodeBoolForKey:@"SkipCancelPreviousUpdate"];
+    v5->_performPhase = [coderCopy decodeBoolForKey:@"PerformPhase"];
+    v5->_performRollbackPreparePhase = [coderCopy decodeBoolForKey:@"PerformPreparePhase"];
+    v5->_performRollbackSuspendPhase = [coderCopy decodeBoolForKey:@"PerformSuspendPhase"];
+    v5->_performRollbackResumePhase = [coderCopy decodeBoolForKey:@"PerformResumePhase"];
+    v5->_performRollbackApplyPhase = [coderCopy decodeBoolForKey:@"PerformApplyPhase"];
+    v5->_skipCancelPreviousUpdate = [coderCopy decodeBoolForKey:@"SkipCancelPreviousUpdate"];
     additionalOptions = v5->_additionalOptions;
     v5->_additionalOptions = 0;
 
@@ -55,41 +55,41 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[SUCorePolicyRollback performPhase](self forKey:{"performPhase"), @"PerformPhase"}];
-  [v4 encodeBool:-[SUCorePolicyRollback performRollbackPreparePhase](self forKey:{"performRollbackPreparePhase"), @"PerformPreparePhase"}];
-  [v4 encodeBool:-[SUCorePolicyRollback performRollbackSuspendPhase](self forKey:{"performRollbackSuspendPhase"), @"PerformSuspendPhase"}];
-  [v4 encodeBool:-[SUCorePolicyRollback performRollbackResumePhase](self forKey:{"performRollbackResumePhase"), @"PerformResumePhase"}];
-  [v4 encodeBool:-[SUCorePolicyRollback performRollbackApplyPhase](self forKey:{"performRollbackApplyPhase"), @"PerformApplyPhase"}];
-  [v4 encodeBool:-[SUCorePolicyRollback skipCancelPreviousUpdate](self forKey:{"skipCancelPreviousUpdate"), @"SkipCancelPreviousUpdate"}];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[SUCorePolicyRollback performPhase](self forKey:{"performPhase"), @"PerformPhase"}];
+  [coderCopy encodeBool:-[SUCorePolicyRollback performRollbackPreparePhase](self forKey:{"performRollbackPreparePhase"), @"PerformPreparePhase"}];
+  [coderCopy encodeBool:-[SUCorePolicyRollback performRollbackSuspendPhase](self forKey:{"performRollbackSuspendPhase"), @"PerformSuspendPhase"}];
+  [coderCopy encodeBool:-[SUCorePolicyRollback performRollbackResumePhase](self forKey:{"performRollbackResumePhase"), @"PerformResumePhase"}];
+  [coderCopy encodeBool:-[SUCorePolicyRollback performRollbackApplyPhase](self forKey:{"performRollbackApplyPhase"), @"PerformApplyPhase"}];
+  [coderCopy encodeBool:-[SUCorePolicyRollback skipCancelPreviousUpdate](self forKey:{"skipCancelPreviousUpdate"), @"SkipCancelPreviousUpdate"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v5 setPerformPhase:{-[SUCorePolicyRollback performPhase](self, "performPhase")}];
   [v5 setPerformRollbackPreparePhase:{-[SUCorePolicyRollback performRollbackPreparePhase](self, "performRollbackPreparePhase")}];
   [v5 setPerformRollbackSuspendPhase:{-[SUCorePolicyRollback performRollbackSuspendPhase](self, "performRollbackSuspendPhase")}];
   [v5 setPerformRollbackResumePhase:{-[SUCorePolicyRollback performRollbackResumePhase](self, "performRollbackResumePhase")}];
   [v5 setPerformRollbackApplyPhase:{-[SUCorePolicyRollback performRollbackApplyPhase](self, "performRollbackApplyPhase")}];
   [v5 setSkipCancelPreviousUpdate:{-[SUCorePolicyRollback skipCancelPreviousUpdate](self, "skipCancelPreviousUpdate")}];
-  v6 = [(SUCorePolicyRollback *)self baseRollbackOptions];
-  v7 = [v6 copyWithZone:a3];
+  baseRollbackOptions = [(SUCorePolicyRollback *)self baseRollbackOptions];
+  v7 = [baseRollbackOptions copyWithZone:zone];
   [v5 setBaseRollbackOptions:v7];
 
-  v8 = [(SUCorePolicyRollback *)self additionalOptions];
-  v9 = [v8 copyWithZone:a3];
+  additionalOptions = [(SUCorePolicyRollback *)self additionalOptions];
+  v9 = [additionalOptions copyWithZone:zone];
   [v5 setAdditionalOptions:v9];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v11) = 1;
   }
@@ -99,12 +99,12 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(SUCorePolicyRollback *)v5 performPhase];
-      if (v6 == [(SUCorePolicyRollback *)self performPhase]&& (v7 = [(SUCorePolicyRollback *)v5 performRollbackPreparePhase], v7 == [(SUCorePolicyRollback *)self performRollbackPreparePhase]) && (v8 = [(SUCorePolicyRollback *)v5 performRollbackSuspendPhase], v8 == [(SUCorePolicyRollback *)self performRollbackSuspendPhase]) && (v9 = [(SUCorePolicyRollback *)v5 performRollbackResumePhase], v9 == [(SUCorePolicyRollback *)self performRollbackResumePhase]) && (v10 = [(SUCorePolicyRollback *)v5 performRollbackApplyPhase], v10 == [(SUCorePolicyRollback *)self performRollbackApplyPhase]))
+      v5 = equalCopy;
+      performPhase = [(SUCorePolicyRollback *)v5 performPhase];
+      if (performPhase == [(SUCorePolicyRollback *)self performPhase]&& (v7 = [(SUCorePolicyRollback *)v5 performRollbackPreparePhase], v7 == [(SUCorePolicyRollback *)self performRollbackPreparePhase]) && (v8 = [(SUCorePolicyRollback *)v5 performRollbackSuspendPhase], v8 == [(SUCorePolicyRollback *)self performRollbackSuspendPhase]) && (v9 = [(SUCorePolicyRollback *)v5 performRollbackResumePhase], v9 == [(SUCorePolicyRollback *)self performRollbackResumePhase]) && (v10 = [(SUCorePolicyRollback *)v5 performRollbackApplyPhase], v10 == [(SUCorePolicyRollback *)self performRollbackApplyPhase]))
       {
-        v13 = [(SUCorePolicyRollback *)v5 skipCancelPreviousUpdate];
-        v11 = v13 ^ [(SUCorePolicyRollback *)self skipCancelPreviousUpdate]^ 1;
+        skipCancelPreviousUpdate = [(SUCorePolicyRollback *)v5 skipCancelPreviousUpdate];
+        v11 = skipCancelPreviousUpdate ^ [(SUCorePolicyRollback *)self skipCancelPreviousUpdate]^ 1;
       }
 
       else
@@ -182,26 +182,26 @@
     v3 = @"YES";
   }
 
-  v9 = [(SUCorePolicyRollback *)self baseRollbackOptions];
-  v10 = @"none";
-  if (v9)
+  baseRollbackOptions = [(SUCorePolicyRollback *)self baseRollbackOptions];
+  baseRollbackOptions2 = @"none";
+  if (baseRollbackOptions)
   {
-    v10 = [(SUCorePolicyRollback *)self baseRollbackOptions];
+    baseRollbackOptions2 = [(SUCorePolicyRollback *)self baseRollbackOptions];
   }
 
-  v11 = [(SUCorePolicyRollback *)self additionalOptions];
-  if (v11)
+  additionalOptions = [(SUCorePolicyRollback *)self additionalOptions];
+  if (additionalOptions)
   {
-    v12 = [(SUCorePolicyRollback *)self additionalOptions];
-    v13 = [v16 stringWithFormat:@"SUCorePolicyRollback(performPhase:%@|performRollbackPreparePhase:%@|performRollbackSuspendPhase:%@|performRollbackResumePhase:%@|performRollbackApplyPhase:%@|skipCancelPreviousUpdate:%@|baseRollbackOptions:%@|additionalOptions:%@)", v15, v5, v6, v7, v8, v3, v10, v12];
+    additionalOptions2 = [(SUCorePolicyRollback *)self additionalOptions];
+    v13 = [v16 stringWithFormat:@"SUCorePolicyRollback(performPhase:%@|performRollbackPreparePhase:%@|performRollbackSuspendPhase:%@|performRollbackResumePhase:%@|performRollbackApplyPhase:%@|skipCancelPreviousUpdate:%@|baseRollbackOptions:%@|additionalOptions:%@)", v15, v5, v6, v7, v8, v3, baseRollbackOptions2, additionalOptions2];
   }
 
   else
   {
-    v13 = [v16 stringWithFormat:@"SUCorePolicyRollback(performPhase:%@|performRollbackPreparePhase:%@|performRollbackSuspendPhase:%@|performRollbackResumePhase:%@|performRollbackApplyPhase:%@|skipCancelPreviousUpdate:%@|baseRollbackOptions:%@|additionalOptions:%@)", v15, v5, v6, v7, v8, v3, v10, @"none"];
+    v13 = [v16 stringWithFormat:@"SUCorePolicyRollback(performPhase:%@|performRollbackPreparePhase:%@|performRollbackSuspendPhase:%@|performRollbackResumePhase:%@|performRollbackApplyPhase:%@|skipCancelPreviousUpdate:%@|baseRollbackOptions:%@|additionalOptions:%@)", v15, v5, v6, v7, v8, v3, baseRollbackOptions2, @"none"];
   }
 
-  if (v9)
+  if (baseRollbackOptions)
   {
   }
 
@@ -255,8 +255,8 @@
     v3 = v8;
   }
 
-  v9 = [(SUCorePolicyRollback *)self baseRollbackOptions];
-  if (v9)
+  baseRollbackOptions = [(SUCorePolicyRollback *)self baseRollbackOptions];
+  if (baseRollbackOptions)
   {
     v10 = @"|withBaseRollbackOptions";
   }
@@ -268,8 +268,8 @@
 
   v11 = [(__CFString *)v3 stringByAppendingString:v10];
 
-  v12 = [(SUCorePolicyRollback *)self additionalOptions];
-  if (v12)
+  additionalOptions = [(SUCorePolicyRollback *)self additionalOptions];
+  if (additionalOptions)
   {
     v13 = @"|withAdditionalOptions";
   }

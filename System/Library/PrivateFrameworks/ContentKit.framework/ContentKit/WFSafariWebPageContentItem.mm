@@ -1,34 +1,34 @@
 @interface WFSafariWebPageContentItem
-+ (BOOL)supportedTypeMustBeDeterminedByInstance:(id)a3;
++ (BOOL)supportedTypeMustBeDeterminedByInstance:(id)instance;
 + (id)contentCategories;
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3;
-+ (id)localizedTypeDescriptionWithContext:(id)a3;
++ (id)localizedPluralTypeDescriptionWithContext:(id)context;
++ (id)localizedTypeDescriptionWithContext:(id)context;
 + (id)outputTypes;
 + (id)ownedPasteboardTypes;
 + (id)ownedTypes;
 + (id)propertyBuilders;
-- (BOOL)canGenerateRepresentationForType:(id)a3;
+- (BOOL)canGenerateRepresentationForType:(id)type;
 - (WFSafariWebPage)webPage;
-- (id)defaultSourceForRepresentation:(id)a3;
-- (id)generateFileRepresentationForType:(id)a3 options:(id)a4 error:(id *)a5;
-- (id)generateObjectRepresentationForClass:(Class)a3 options:(id)a4 error:(id *)a5;
-- (void)generateObjectRepresentations:(id)a3 options:(id)a4 forClass:(Class)a5;
-- (void)getSerializedItem:(id)a3;
+- (id)defaultSourceForRepresentation:(id)representation;
+- (id)generateFileRepresentationForType:(id)type options:(id)options error:(id *)error;
+- (id)generateObjectRepresentationForClass:(Class)class options:(id)options error:(id *)error;
+- (void)generateObjectRepresentations:(id)representations options:(id)options forClass:(Class)class;
+- (void)getSerializedItem:(id)item;
 @end
 
 @implementation WFSafariWebPageContentItem
 
-- (id)defaultSourceForRepresentation:(id)a3
+- (id)defaultSourceForRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [v4 wfType];
-  v6 = [v5 conformsToClass:objc_opt_class()];
+  representationCopy = representation;
+  wfType = [representationCopy wfType];
+  v6 = [wfType conformsToClass:objc_opt_class()];
 
   if (v6)
   {
-    v7 = [v4 object];
+    object = [representationCopy object];
 
-    v8 = [v7 URL];
+    v8 = [object URL];
     v9 = [WFURLContentItem attributionSetContentOfURL:v8];
   }
 
@@ -36,45 +36,45 @@
   {
     v11.receiver = self;
     v11.super_class = WFSafariWebPageContentItem;
-    v9 = [(WFContentItem *)&v11 defaultSourceForRepresentation:v4];
+    v9 = [(WFContentItem *)&v11 defaultSourceForRepresentation:representationCopy];
   }
 
   return v9;
 }
 
-- (BOOL)canGenerateRepresentationForType:(id)a3
+- (BOOL)canGenerateRepresentationForType:(id)type
 {
-  v4 = a3;
-  if (([v4 conformsToClass:objc_opt_class()] & 1) == 0)
+  typeCopy = type;
+  if (([typeCopy conformsToClass:objc_opt_class()] & 1) == 0)
   {
-    v6 = [(WFSafariWebPageContentItem *)self webPage];
-    if ([v4 conformsToUTType:*MEMORY[0x277CE1DA0]])
+    webPage = [(WFSafariWebPageContentItem *)self webPage];
+    if ([typeCopy conformsToUTType:*MEMORY[0x277CE1DA0]])
     {
-      v7 = [v6 selectionHTML];
-      if (v7)
+      selectionHTML = [webPage selectionHTML];
+      if (selectionHTML)
       {
         v5 = 1;
       }
 
       else
       {
-        v8 = [v6 documentHTML];
-        v5 = v8 != 0;
+        documentHTML = [webPage documentHTML];
+        v5 = documentHTML != 0;
       }
     }
 
     else
     {
-      if (([v4 conformsToUTType:*MEMORY[0x277CE1E20]] & 1) == 0 && !objc_msgSend(v4, "conformsToClass:", objc_opt_class()))
+      if (([typeCopy conformsToUTType:*MEMORY[0x277CE1E20]] & 1) == 0 && !objc_msgSend(typeCopy, "conformsToClass:", objc_opt_class()))
       {
         v10.receiver = self;
         v10.super_class = WFSafariWebPageContentItem;
-        v5 = [(WFContentItem *)&v10 canGenerateRepresentationForType:v4];
+        v5 = [(WFContentItem *)&v10 canGenerateRepresentationForType:typeCopy];
         goto LABEL_11;
       }
 
-      v7 = [v6 selectionText];
-      v5 = [v7 length] != 0;
+      selectionHTML = [webPage selectionText];
+      v5 = [selectionHTML length] != 0;
     }
 
 LABEL_11:
@@ -87,26 +87,26 @@ LABEL_12:
   return v5;
 }
 
-- (id)generateFileRepresentationForType:(id)a3 options:(id)a4 error:(id *)a5
+- (id)generateFileRepresentationForType:(id)type options:(id)options error:(id *)error
 {
-  v7 = a3;
-  if ([v7 conformsToUTType:*MEMORY[0x277CE1DA0]])
+  typeCopy = type;
+  if ([typeCopy conformsToUTType:*MEMORY[0x277CE1DA0]])
   {
-    v8 = [(WFSafariWebPageContentItem *)self webPage];
-    v9 = [v8 selectionHTML];
-    v10 = v9;
-    if (!v9)
+    webPage = [(WFSafariWebPageContentItem *)self webPage];
+    selectionHTML = [webPage selectionHTML];
+    documentHTML = selectionHTML;
+    if (!selectionHTML)
     {
-      v5 = [(WFSafariWebPageContentItem *)self webPage];
-      v10 = [v5 documentHTML];
+      webPage2 = [(WFSafariWebPageContentItem *)self webPage];
+      documentHTML = [webPage2 documentHTML];
     }
 
-    v11 = [(WFContentItem *)self name];
-    v12 = [(WFSafariWebPageContentItem *)self webPage];
-    v13 = [v12 URL];
-    v14 = [WFFileRepresentation fileWithData:v10 ofType:v7 proposedFilename:v11 originalURL:v13];
+    name = [(WFContentItem *)self name];
+    webPage3 = [(WFSafariWebPageContentItem *)self webPage];
+    v13 = [webPage3 URL];
+    v14 = [WFFileRepresentation fileWithData:documentHTML ofType:typeCopy proposedFilename:name originalURL:v13];
 
-    if (!v9)
+    if (!selectionHTML)
     {
     }
   }
@@ -119,55 +119,55 @@ LABEL_12:
   return v14;
 }
 
-- (id)generateObjectRepresentationForClass:(Class)a3 options:(id)a4 error:(id *)a5
+- (id)generateObjectRepresentationForClass:(Class)class options:(id)options error:(id *)error
 {
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
-    v8 = [(WFSafariWebPageContentItem *)self webPage];
-    v9 = [v8 URL];
+    webPage = [(WFSafariWebPageContentItem *)self webPage];
+    selectionText = [webPage URL];
   }
 
   else
   {
-    if (objc_opt_class() != a3)
+    if (objc_opt_class() != class)
     {
       v7 = 0;
       goto LABEL_7;
     }
 
-    v8 = [(WFSafariWebPageContentItem *)self webPage];
-    v9 = [v8 selectionText];
+    webPage = [(WFSafariWebPageContentItem *)self webPage];
+    selectionText = [webPage selectionText];
   }
 
-  v10 = v9;
-  v11 = [(WFContentItem *)self name];
-  v7 = [WFObjectRepresentation object:v10 named:v11];
+  v10 = selectionText;
+  name = [(WFContentItem *)self name];
+  v7 = [WFObjectRepresentation object:v10 named:name];
 
 LABEL_7:
 
   return v7;
 }
 
-- (void)generateObjectRepresentations:(id)a3 options:(id)a4 forClass:(Class)a5
+- (void)generateObjectRepresentations:(id)representations options:(id)options forClass:(Class)class
 {
-  v7 = a3;
-  if (objc_opt_class() == a5)
+  representationsCopy = representations;
+  if (objc_opt_class() == class)
   {
-    v8 = [(WFSafariWebPageContentItem *)self webPage];
-    v9 = [v8 URL];
-    v10 = [v8 documentHTML];
+    webPage = [(WFSafariWebPageContentItem *)self webPage];
+    v9 = [webPage URL];
+    documentHTML = [webPage documentHTML];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __77__WFSafariWebPageContentItem_generateObjectRepresentations_options_forClass___block_invoke;
     v11[3] = &unk_278347698;
-    v12 = v7;
-    [WFArticle fetchArticleFromURL:v9 pageHTML:v10 completionHandler:v11];
+    v12 = representationsCopy;
+    [WFArticle fetchArticleFromURL:v9 pageHTML:documentHTML completionHandler:v11];
   }
 
   else
   {
-    v8 = [objc_opt_class() badCoercionErrorForObjectClass:a5];
-    (*(v7 + 2))(v7, 0, v8);
+    webPage = [objc_opt_class() badCoercionErrorForObjectClass:class];
+    (*(representationsCopy + 2))(representationsCopy, 0, webPage);
   }
 }
 
@@ -192,16 +192,16 @@ void __77__WFSafariWebPageContentItem_generateObjectRepresentations_options_forC
   }
 }
 
-- (void)getSerializedItem:(id)a3
+- (void)getSerializedItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = objc_opt_class();
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__WFSafariWebPageContentItem_getSerializedItem___block_invoke;
   v7[3] = &unk_27834A430;
-  v8 = v4;
-  v6 = v4;
+  v8 = itemCopy;
+  v6 = itemCopy;
   [(WFContentItem *)self coerceToItemClass:v5 completionHandler:v7];
 }
 
@@ -228,20 +228,20 @@ void __48__WFSafariWebPageContentItem_getSerializedItem___block_invoke(uint64_t 
   return [(WFContentItem *)self objectForClass:v3];
 }
 
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3
++ (id)localizedPluralTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Safari Web Pages", @"Safari Web Pages");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-+ (id)localizedTypeDescriptionWithContext:(id)a3
++ (id)localizedTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Safari Web Page", @"Safari Web Page");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
@@ -286,19 +286,19 @@ void __48__WFSafariWebPageContentItem_getSerializedItem___block_invoke(uint64_t 
   return v4;
 }
 
-+ (BOOL)supportedTypeMustBeDeterminedByInstance:(id)a3
++ (BOOL)supportedTypeMustBeDeterminedByInstance:(id)instance
 {
-  v4 = a3;
-  if ([v4 conformsToClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v4, "conformsToUTType:", *MEMORY[0x277CE1DA0]) & 1) != 0 || (objc_msgSend(v4, "conformsToUTType:", *MEMORY[0x277CE1E20]) & 1) != 0 || (objc_msgSend(v4, "conformsToClass:", objc_opt_class()))
+  instanceCopy = instance;
+  if ([instanceCopy conformsToClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(instanceCopy, "conformsToUTType:", *MEMORY[0x277CE1DA0]) & 1) != 0 || (objc_msgSend(instanceCopy, "conformsToUTType:", *MEMORY[0x277CE1E20]) & 1) != 0 || (objc_msgSend(instanceCopy, "conformsToClass:", objc_opt_class()))
   {
     v5 = 1;
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___WFSafariWebPageContentItem;
-    v5 = objc_msgSendSuper2(&v7, sel_supportedTypeMustBeDeterminedByInstance_, v4);
+    v5 = objc_msgSendSuper2(&v7, sel_supportedTypeMustBeDeterminedByInstance_, instanceCopy);
   }
 
   return v5;

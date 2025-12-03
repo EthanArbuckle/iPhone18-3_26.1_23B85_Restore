@@ -1,21 +1,21 @@
 @interface SBIconLabelImage
-+ (BOOL)attributedText:(id)a3 fitsInRect:(CGRect)a4 textRect:(CGRect *)a5;
-+ (id)imageWithParameters:(id)a3 pool:(id)a4;
-+ (id)metricsForParameters:(id)a3;
-+ (void)applyKerning:(double)a3 whitespaceKerning:(double)a4 toAttributedString:(id)a5;
++ (BOOL)attributedText:(id)text fitsInRect:(CGRect)rect textRect:(CGRect *)textRect;
++ (id)imageWithParameters:(id)parameters pool:(id)pool;
++ (id)metricsForParameters:(id)parameters;
++ (void)applyKerning:(double)kerning whitespaceKerning:(double)whitespaceKerning toAttributedString:(id)string;
 - (BOOL)hasBaseline;
 - (NSString)description;
 - (UIEdgeInsets)alignmentRectInsets;
 - (double)baselineOffsetFromBottom;
-- (id)_initWithCGImage:(CGImage *)a3 scale:(double)a4 orientation:(int64_t)a5 parameters:(id)a6;
+- (id)_initWithCGImage:(CGImage *)image scale:(double)scale orientation:(int64_t)orientation parameters:(id)parameters;
 @end
 
 @implementation SBIconLabelImage
 
 - (UIEdgeInsets)alignmentRectInsets
 {
-  v2 = [(SBIconLabelImageParameters *)self->_parameters metrics];
-  [v2 alignmentRectInsets];
+  metrics = [(SBIconLabelImageParameters *)self->_parameters metrics];
+  [metrics alignmentRectInsets];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -34,30 +34,30 @@
 
 - (BOOL)hasBaseline
 {
-  v2 = [(SBIconLabelImageParameters *)self->_parameters metrics];
-  v3 = [v2 hasBaseline];
+  metrics = [(SBIconLabelImageParameters *)self->_parameters metrics];
+  hasBaseline = [metrics hasBaseline];
 
-  return v3;
+  return hasBaseline;
 }
 
 - (double)baselineOffsetFromBottom
 {
-  v2 = [(SBIconLabelImageParameters *)self->_parameters metrics];
-  [v2 baselineOffsetFromBottom];
+  metrics = [(SBIconLabelImageParameters *)self->_parameters metrics];
+  [metrics baselineOffsetFromBottom];
   v4 = v3;
 
   return v4;
 }
 
-- (id)_initWithCGImage:(CGImage *)a3 scale:(double)a4 orientation:(int64_t)a5 parameters:(id)a6
+- (id)_initWithCGImage:(CGImage *)image scale:(double)scale orientation:(int64_t)orientation parameters:(id)parameters
 {
-  v10 = a6;
+  parametersCopy = parameters;
   v15.receiver = self;
   v15.super_class = SBIconLabelImage;
-  v11 = [(SBIconLabelImage *)&v15 initWithCGImage:a3 scale:a5 orientation:a4];
+  v11 = [(SBIconLabelImage *)&v15 initWithCGImage:image scale:orientation orientation:scale];
   if (v11)
   {
-    v12 = [v10 copy];
+    v12 = [parametersCopy copy];
     parameters = v11->_parameters;
     v11->_parameters = v12;
   }
@@ -65,22 +65,22 @@
   return v11;
 }
 
-+ (id)metricsForParameters:(id)a3
++ (id)metricsForParameters:(id)parameters
 {
-  v4 = a3;
-  v5 = [v4 text];
-  v89 = v5;
-  if ([v5 length] >= 0x65)
+  parametersCopy = parameters;
+  text = [parametersCopy text];
+  v89 = text;
+  if ([text length] >= 0x65)
   {
-    v89 = [v5 substringToIndex:{objc_msgSend(v5, "rangeOfComposedCharacterSequenceAtIndex:", 100)}];
+    v89 = [text substringToIndex:{objc_msgSend(text, "rangeOfComposedCharacterSequenceAtIndex:", 100)}];
   }
 
-  v6 = [v4 contentSizeCategory];
-  v7 = v6;
-  if (v6)
+  contentSizeCategory = [parametersCopy contentSizeCategory];
+  v7 = contentSizeCategory;
+  if (contentSizeCategory)
   {
-    v8 = UIContentSizeCategoryCompareToCategory(v6, *MEMORY[0x1E69DDC70]);
-    v9 = [v4 font];
+    v8 = UIContentSizeCategoryCompareToCategory(contentSizeCategory, *MEMORY[0x1E69DDC70]);
+    font = [parametersCopy font];
     if (v8 == NSOrderedDescending)
     {
       v10 = 0;
@@ -90,13 +90,13 @@
 
   else
   {
-    v9 = [v4 font];
+    font = [parametersCopy font];
   }
 
-  LODWORD(v8) = [v4 canTruncate];
+  LODWORD(v8) = [parametersCopy canTruncate];
   v10 = 1;
 LABEL_8:
-  v11 = [v4 canTighten];
+  canTighten = [parametersCopy canTighten];
   v12 = objc_alloc_init(MEMORY[0x1E69DB7C8]);
   v13 = v12;
   if (v8)
@@ -112,25 +112,25 @@ LABEL_8:
   [v12 setLineBreakMode:v14];
   [v13 setAlignment:0];
   v15 = objc_alloc(MEMORY[0x1E695DF90]);
-  v86 = v9;
-  v16 = [v15 initWithObjectsAndKeys:{v9, *MEMORY[0x1E69DB648], v13, *MEMORY[0x1E69DB688], 0}];
-  v17 = [v4 textColor];
-  if (v17)
+  v86 = font;
+  v16 = [v15 initWithObjectsAndKeys:{font, *MEMORY[0x1E69DB648], v13, *MEMORY[0x1E69DB688], 0}];
+  textColor = [parametersCopy textColor];
+  if (textColor)
   {
-    [v16 setObject:v17 forKey:*MEMORY[0x1E69DB650]];
+    [v16 setObject:textColor forKey:*MEMORY[0x1E69DB650]];
   }
 
-  [v4 textInsets];
+  [parametersCopy textInsets];
   v19 = v18;
   v21 = v20;
   v23 = v22;
   v25 = v24;
-  [v4 maxSize];
+  [parametersCopy maxSize];
   v27 = v26;
   v28 = v26 - (v21 + v25);
   v90 = v29;
   v30 = v29 - (v19 + v23);
-  [v4 scale];
+  [parametersCopy scale];
   v91 = v31;
   v94.origin.x = v21 + 0.0;
   v94.origin.y = v19 + 0.0;
@@ -146,7 +146,7 @@ LABEL_8:
   v92.origin.y = v34;
   v92.size.width = v35;
   v92.size.height = v36;
-  if (((v8 | v11) & 1) != 0 && (Width = CGRectGetWidth(*&v33), v96.origin.x = v21 + 0.0, v96.origin.y = v19 + 0.0, v96.size.width = v28, v96.size.height = v30, Width > CGRectGetWidth(v96)))
+  if (((v8 | canTighten) & 1) != 0 && (Width = CGRectGetWidth(*&v33), v96.origin.x = v21 + 0.0, v96.origin.y = v19 + 0.0, v96.size.width = v28, v96.size.height = v30, Width > CGRectGetWidth(v96)))
   {
     v84 = v7;
     v38 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v89 attributes:v16];
@@ -173,10 +173,10 @@ LABEL_8:
     v41 = 1;
     while (v39)
     {
-      [a1 applyKerning:v38 whitespaceKerning:v41 * -0.1 toAttributedString:v40 * (v41 * -0.1)];
+      [self applyKerning:v38 whitespaceKerning:v41 * -0.1 toAttributedString:v40 * (v41 * -0.1)];
       --v39;
       ++v41;
-      if ([a1 attributedText:v38 fitsInRect:&v92 textRect:{v21 + 0.0, v19 + 0.0, v28, v30}])
+      if ([self attributedText:v38 fitsInRect:&v92 textRect:{v21 + 0.0, v19 + 0.0, v28, v30}])
       {
         goto LABEL_28;
       }
@@ -204,7 +204,7 @@ LABEL_28:
   v48 = v47;
   v50 = v49;
   v52 = v51;
-  [v4 fontLanguageInsets];
+  [parametersCopy fontLanguageInsets];
   v85 = v48;
   v82 = v52;
   v83 = v50;
@@ -270,34 +270,34 @@ LABEL_28:
   return v77;
 }
 
-+ (id)imageWithParameters:(id)a3 pool:(id)a4
++ (id)imageWithParameters:(id)parameters pool:(id)pool
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 overrideTraitCollection];
-  v54 = v7;
-  if (v7)
+  parametersCopy = parameters;
+  poolCopy = pool;
+  overrideTraitCollection = [parametersCopy overrideTraitCollection];
+  v54 = overrideTraitCollection;
+  if (overrideTraitCollection)
   {
-    v8 = v7;
-    v9 = [MEMORY[0x1E69DD1B8] currentTraitCollection];
+    v8 = overrideTraitCollection;
+    currentTraitCollection = [MEMORY[0x1E69DD1B8] currentTraitCollection];
     [MEMORY[0x1E69DD1B8] setCurrentTraitCollection:v8];
   }
 
   else
   {
-    v9 = 0;
+    currentTraitCollection = 0;
   }
 
-  v10 = [v5 metrics];
-  v11 = v10;
-  if (v10)
+  metrics = [parametersCopy metrics];
+  v11 = metrics;
+  if (metrics)
   {
-    v12 = v10;
+    v12 = metrics;
   }
 
   else
   {
-    v12 = [SBIconLabelImage metricsForParameters:v5];
+    v12 = [SBIconLabelImage metricsForParameters:parametersCopy];
   }
 
   v13 = v12;
@@ -319,11 +319,11 @@ LABEL_28:
   v29 = v28;
   v31 = v30;
   v33 = v32;
-  v34 = [v13 attributedText];
-  v35 = [v13 attributes];
-  v36 = [v13 drawingText];
-  v37 = [v5 focusHighlightColor];
-  if ([v5 isColorspaceGrayscale])
+  attributedText = [v13 attributedText];
+  attributes = [v13 attributes];
+  drawingText = [v13 drawingText];
+  focusHighlightColor = [parametersCopy focusHighlightColor];
+  if ([parametersCopy isColorspaceGrayscale])
   {
     v38 = 4;
   }
@@ -338,7 +338,7 @@ LABEL_28:
   v58[1] = 3221225472;
   v58[2] = __45__SBIconLabelImage_imageWithParameters_pool___block_invoke;
   v58[3] = &unk_1E808BD30;
-  v40 = v37;
+  v40 = focusHighlightColor;
   v59 = v40;
   v63 = v48;
   v64 = v22;
@@ -352,24 +352,24 @@ LABEL_28:
   v72 = v50;
   v73 = v17;
   v74 = v49;
-  v41 = v34;
+  v41 = attributedText;
   v60 = v41;
-  v42 = v36;
+  v42 = drawingText;
   v61 = v42;
-  v43 = v35;
+  v43 = attributes;
   v62 = v43;
   v55[0] = MEMORY[0x1E69E9820];
   v55[1] = 3221225472;
   v55[2] = __45__SBIconLabelImage_imageWithParameters_pool___block_invoke_2;
   v55[3] = &unk_1E808BD58;
-  v57 = a1;
-  v44 = v5;
+  selfCopy = self;
+  v44 = parametersCopy;
   v56 = v44;
-  v45 = [v39 sbf_imageFromContextWithSize:v38 scale:v6 type:v58 pool:v55 drawing:v17 encapsulation:{v49, v52}];
+  v45 = [v39 sbf_imageFromContextWithSize:v38 scale:poolCopy type:v58 pool:v55 drawing:v17 encapsulation:{v49, v52}];
 
-  if (v9)
+  if (currentTraitCollection)
   {
-    [MEMORY[0x1E69DD1B8] setCurrentTraitCollection:v9];
+    [MEMORY[0x1E69DD1B8] setCurrentTraitCollection:currentTraitCollection];
   }
 
   return v45;
@@ -422,19 +422,19 @@ id __45__SBIconLabelImage_imageWithParameters_pool___block_invoke_2(uint64_t a1,
   return v4;
 }
 
-+ (BOOL)attributedText:(id)a3 fitsInRect:(CGRect)a4 textRect:(CGRect *)a5
++ (BOOL)attributedText:(id)text fitsInRect:(CGRect)rect textRect:(CGRect *)textRect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  [a3 boundingRectWithSize:0 options:0 context:{1.79769313e308, 1.79769313e308}];
-  if (a5)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  [text boundingRectWithSize:0 options:0 context:{1.79769313e308, 1.79769313e308}];
+  if (textRect)
   {
-    a5->origin.x = v10;
-    a5->origin.y = v11;
-    a5->size.width = v12;
-    a5->size.height = v13;
+    textRect->origin.x = v10;
+    textRect->origin.y = v11;
+    textRect->size.width = v12;
+    textRect->size.height = v13;
   }
 
   v14 = round(CGRectGetWidth(*&v10));
@@ -445,13 +445,13 @@ id __45__SBIconLabelImage_imageWithParameters_pool___block_invoke_2(uint64_t a1,
   return v14 <= CGRectGetWidth(v16);
 }
 
-+ (void)applyKerning:(double)a3 whitespaceKerning:(double)a4 toAttributedString:(id)a5
++ (void)applyKerning:(double)kerning whitespaceKerning:(double)whitespaceKerning toAttributedString:(id)string
 {
-  v20 = a5;
-  v7 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-  v8 = [v20 string];
-  v9 = [v20 length];
-  v10 = [v8 rangeOfCharacterFromSet:v7];
+  stringCopy = string;
+  whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+  string = [stringCopy string];
+  v9 = [stringCopy length];
+  v10 = [string rangeOfCharacterFromSet:whitespaceCharacterSet];
   v12 = v11;
   v13 = 0;
   v14 = *MEMORY[0x1E69DB660];
@@ -459,17 +459,17 @@ id __45__SBIconLabelImage_imageWithParameters_pool___block_invoke_2(uint64_t a1,
   {
     v15 = v10 == 0x7FFFFFFFFFFFFFFFLL ? v9 : v10;
     v16 = v15 - v13;
-    v17 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-    v18 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
-    [v20 addAttribute:v14 value:v17 range:{v13, v16}];
+    v17 = [MEMORY[0x1E696AD98] numberWithDouble:kerning];
+    v18 = [MEMORY[0x1E696AD98] numberWithDouble:whitespaceKerning];
+    [stringCopy addAttribute:v14 value:v17 range:{v13, v16}];
     if (v10 == 0x7FFFFFFFFFFFFFFFLL)
     {
       break;
     }
 
-    [v20 addAttribute:v14 value:v18 range:{v10, v12}];
+    [stringCopy addAttribute:v14 value:v18 range:{v10, v12}];
     v13 = v10 + v12;
-    v10 = [v8 rangeOfCharacterFromSet:v7 options:0 range:{v10 + v12, v9 - (v10 + v12)}];
+    v10 = [string rangeOfCharacterFromSet:whitespaceCharacterSet options:0 range:{v10 + v12, v9 - (v10 + v12)}];
     v12 = v19;
   }
 }
@@ -485,14 +485,14 @@ id __45__SBIconLabelImage_imageWithParameters_pool___block_invoke_2(uint64_t a1,
   v6 = NSStringFromUIEdgeInsets(v14);
   v7 = [v3 appendObject:v6 withName:@"alignmentRectInsets"];
 
-  v8 = [(SBIconLabelImage *)self parameters];
-  v9 = [v3 appendObject:v8 withName:@"parameters"];
+  parameters = [(SBIconLabelImage *)self parameters];
+  v9 = [v3 appendObject:parameters withName:@"parameters"];
 
   [(SBIconLabelImage *)self baselineOffsetFromBottom];
   v10 = [v3 appendFloat:@"baselineOffsetFromBottom" withName:?];
-  v11 = [v3 build];
+  build = [v3 build];
 
-  return v11;
+  return build;
 }
 
 @end

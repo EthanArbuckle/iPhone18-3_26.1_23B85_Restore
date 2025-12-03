@@ -1,19 +1,19 @@
 @interface AVTUIStickerPlaceholderProviderFactory
-- (AVTUIStickerPlaceholderProviderFactory)initWithImageProvider:(id)a3;
+- (AVTUIStickerPlaceholderProviderFactory)initWithImageProvider:(id)provider;
 - (id)placeholderProvider;
 @end
 
 @implementation AVTUIStickerPlaceholderProviderFactory
 
-- (AVTUIStickerPlaceholderProviderFactory)initWithImageProvider:(id)a3
+- (AVTUIStickerPlaceholderProviderFactory)initWithImageProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v9.receiver = self;
   v9.super_class = AVTUIStickerPlaceholderProviderFactory;
   v5 = [(AVTUIStickerPlaceholderProviderFactory *)&v9 init];
   if (v5)
   {
-    v6 = MEMORY[0x1BFB0DE80](v4);
+    v6 = MEMORY[0x1BFB0DE80](providerCopy);
     imageProvider = v5->_imageProvider;
     v5->_imageProvider = v6;
   }

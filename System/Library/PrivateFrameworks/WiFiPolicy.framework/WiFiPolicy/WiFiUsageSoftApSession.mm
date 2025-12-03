@@ -1,19 +1,19 @@
 @interface WiFiUsageSoftApSession
-- (WiFiUsageSoftApSession)initWithInterfaceName:(id)a3 andCapabilities:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)eventDictionary:(BOOL)a3;
-- (void)addSoftApClientEvent:(BOOL)a3 identifier:(id)a4 isAppleClient:(BOOL)a5 isInstantHotspot:(BOOL)a6 isAutoHotspot:(BOOL)a7 isHidden:(BOOL)a8;
-- (void)addSoftApCoexEvent:(unint64_t)a3 deniedUnii1ChannelMap:(unint64_t)a4 deniedUnii2aChannelMap:(unint64_t)a5 deniedUnii2cChannelMap:(unint64_t)a6 deniedUnii3ChannelMap:(unint64_t)a7;
+- (WiFiUsageSoftApSession)initWithInterfaceName:(id)name andCapabilities:(id)capabilities;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)eventDictionary:(BOOL)dictionary;
+- (void)addSoftApClientEvent:(BOOL)event identifier:(id)identifier isAppleClient:(BOOL)client isInstantHotspot:(BOOL)hotspot isAutoHotspot:(BOOL)autoHotspot isHidden:(BOOL)hidden;
+- (void)addSoftApCoexEvent:(unint64_t)event deniedUnii1ChannelMap:(unint64_t)map deniedUnii2aChannelMap:(unint64_t)channelMap deniedUnii2cChannelMap:(unint64_t)unii2cChannelMap deniedUnii3ChannelMap:(unint64_t)unii3ChannelMap;
 - (void)summarizeSession;
 @end
 
 @implementation WiFiUsageSoftApSession
 
-- (WiFiUsageSoftApSession)initWithInterfaceName:(id)a3 andCapabilities:(id)a4
+- (WiFiUsageSoftApSession)initWithInterfaceName:(id)name andCapabilities:(id)capabilities
 {
   v6.receiver = self;
   v6.super_class = WiFiUsageSoftApSession;
-  v4 = [(WiFiUsageSession *)&v6 initWithSessionType:6 andInterfaceName:a3 andCapabilities:a4];
+  v4 = [(WiFiUsageSession *)&v6 initWithSessionType:6 andInterfaceName:name andCapabilities:capabilities];
   [(WiFiUsageSoftApSession *)v4 setTwoFourGHzDeniedChannelCount:0];
   [(WiFiUsageSoftApSession *)v4 setFiveGHzDeniedUnii1ChannelCount:0];
   [(WiFiUsageSoftApSession *)v4 setFiveGHzDeniedUnii2aChannelCount:0];
@@ -22,16 +22,16 @@
   return v4;
 }
 
-- (void)addSoftApClientEvent:(BOOL)a3 identifier:(id)a4 isAppleClient:(BOOL)a5 isInstantHotspot:(BOOL)a6 isAutoHotspot:(BOOL)a7 isHidden:(BOOL)a8
+- (void)addSoftApClientEvent:(BOOL)event identifier:(id)identifier isAppleClient:(BOOL)client isInstantHotspot:(BOOL)hotspot isAutoHotspot:(BOOL)autoHotspot isHidden:(BOOL)hidden
 {
-  v8 = a8;
-  v9 = a7;
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
-  v14 = a4;
-  v15 = v14;
-  if (v12)
+  hiddenCopy = hidden;
+  autoHotspotCopy = autoHotspot;
+  hotspotCopy = hotspot;
+  clientCopy = client;
+  eventCopy = event;
+  identifierCopy = identifier;
+  v15 = identifierCopy;
+  if (eventCopy)
   {
     if (self->_lastChannel >= 0xE)
     {
@@ -45,211 +45,211 @@
 
     ++*(&self->super.super.isa + *v16);
     v17 = &OBJC_IVAR___WiFiUsageSoftApSession__broadcastClientConnectCount;
-    if (v8)
+    if (hiddenCopy)
     {
       v17 = &OBJC_IVAR___WiFiUsageSoftApSession__hiddenClientConnectCount;
     }
 
     ++*(&self->super.super.isa + *v17);
     v18 = &OBJC_IVAR___WiFiUsageSoftApSession__otherClientConnectCount;
-    if (v11)
+    if (clientCopy)
     {
       v18 = &OBJC_IVAR___WiFiUsageSoftApSession__appleClientConnectCount;
     }
 
     ++*(&self->super.super.isa + *v18);
-    if (v10)
+    if (hotspotCopy)
     {
       ++self->_instantHotspotClientConnectCount;
     }
 
-    if (v9)
+    if (autoHotspotCopy)
     {
       ++self->_autoHotspotClientConnectCount;
     }
 
-    v19 = v14;
-    if (v14)
+    v19 = identifierCopy;
+    if (identifierCopy)
     {
-      [(NSMutableSet *)self->_connectedClients addObject:v14];
+      [(NSMutableSet *)self->_connectedClients addObject:identifierCopy];
     }
 
-    v14 = [(NSMutableSet *)self->_connectedClients count];
+    identifierCopy = [(NSMutableSet *)self->_connectedClients count];
     v15 = v19;
-    if (v14 > self->_maxConnectedClientCount)
+    if (identifierCopy > self->_maxConnectedClientCount)
     {
-      v14 = [(NSMutableSet *)self->_connectedClients count];
+      identifierCopy = [(NSMutableSet *)self->_connectedClients count];
       v15 = v19;
-      self->_maxConnectedClientCount = v14;
+      self->_maxConnectedClientCount = identifierCopy;
     }
   }
 
   else
   {
     ++self->_clientDisconnectCount;
-    if (v14)
+    if (identifierCopy)
     {
-      v20 = v14;
-      v14 = [(NSMutableSet *)self->_connectedClients removeObject:v14];
+      v20 = identifierCopy;
+      identifierCopy = [(NSMutableSet *)self->_connectedClients removeObject:identifierCopy];
       v15 = v20;
     }
   }
 
-  MEMORY[0x2821F96F8](v14, v15);
+  MEMORY[0x2821F96F8](identifierCopy, v15);
 }
 
-- (void)addSoftApCoexEvent:(unint64_t)a3 deniedUnii1ChannelMap:(unint64_t)a4 deniedUnii2aChannelMap:(unint64_t)a5 deniedUnii2cChannelMap:(unint64_t)a6 deniedUnii3ChannelMap:(unint64_t)a7
+- (void)addSoftApCoexEvent:(unint64_t)event deniedUnii1ChannelMap:(unint64_t)map deniedUnii2aChannelMap:(unint64_t)channelMap deniedUnii2cChannelMap:(unint64_t)unii2cChannelMap deniedUnii3ChannelMap:(unint64_t)unii3ChannelMap
 {
-  [(WiFiUsageSoftApSession *)self setTwoFourGHzDeniedChannelCount:a3];
-  [(WiFiUsageSoftApSession *)self setFiveGHzDeniedUnii1ChannelCount:a4];
-  [(WiFiUsageSoftApSession *)self setFiveGHzDeniedUnii2aChannelCount:a5];
-  [(WiFiUsageSoftApSession *)self setFiveGHzDeniedUnii2cChannelCount:a6];
+  [(WiFiUsageSoftApSession *)self setTwoFourGHzDeniedChannelCount:event];
+  [(WiFiUsageSoftApSession *)self setFiveGHzDeniedUnii1ChannelCount:map];
+  [(WiFiUsageSoftApSession *)self setFiveGHzDeniedUnii2aChannelCount:channelMap];
+  [(WiFiUsageSoftApSession *)self setFiveGHzDeniedUnii2cChannelCount:unii2cChannelMap];
 
-  [(WiFiUsageSoftApSession *)self setFiveGHzDeniedUnii3ChannelCount:a7];
+  [(WiFiUsageSoftApSession *)self setFiveGHzDeniedUnii3ChannelCount:unii3ChannelMap];
 }
 
-- (id)eventDictionary:(BOOL)a3
+- (id)eventDictionary:(BOOL)dictionary
 {
   v51[1] = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CBEB38] dictionary];
-  v6 = [(WiFiUsageSession *)self sessionName];
-  [v5 setObject:v6 forKeyedSubscript:@"SessionName"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  sessionName = [(WiFiUsageSession *)self sessionName];
+  [dictionary setObject:sessionName forKeyedSubscript:@"SessionName"];
 
   [(WiFiUsageSession *)self sessionDuration];
   v7 = [WiFiUsagePrivacyFilter numberWithDuration:?];
-  [v5 setObject:v7 forKeyedSubscript:@"SessionDuration"];
+  [dictionary setObject:v7 forKeyedSubscript:@"SessionDuration"];
 
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[WiFiUsageSession sessionPid](self, "sessionPid")}];
-  [v5 setObject:v8 forKeyedSubscript:@"SessionPid"];
+  [dictionary setObject:v8 forKeyedSubscript:@"SessionPid"];
 
   [(WiFiUsageSession *)self sessionTimeSinceLastSession];
   v9 = [WiFiUsagePrivacyFilter numberWithDuration:?];
-  [v5 setObject:v9 forKeyedSubscript:@"SessionTimeSinceLastSession"];
+  [dictionary setObject:v9 forKeyedSubscript:@"SessionTimeSinceLastSession"];
 
-  [v5 setObject:self->_requester forKeyedSubscript:@"Requester"];
-  [v5 setObject:self->_status forKeyedSubscript:@"Status"];
-  [v5 setObject:self->_tearDownReason forKeyedSubscript:@"TearDownReason"];
+  [dictionary setObject:self->_requester forKeyedSubscript:@"Requester"];
+  [dictionary setObject:self->_status forKeyedSubscript:@"Status"];
+  [dictionary setObject:self->_tearDownReason forKeyedSubscript:@"TearDownReason"];
   v10 = [MEMORY[0x277CCABB0] numberWithBool:self->_lastHiddenState];
-  [v5 setObject:v10 forKeyedSubscript:@"LastHiddenState"];
+  [dictionary setObject:v10 forKeyedSubscript:@"LastHiddenState"];
 
   v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_lastChannel];
-  [v5 setObject:v11 forKeyedSubscript:@"LastChannel"];
+  [dictionary setObject:v11 forKeyedSubscript:@"LastChannel"];
 
   v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_twoFourGHzChannelCount];
-  [v5 setObject:v12 forKeyedSubscript:@"TwoFourGHzChannelCount"];
+  [dictionary setObject:v12 forKeyedSubscript:@"TwoFourGHzChannelCount"];
 
   v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_fiveGHzChannelCount];
-  [v5 setObject:v13 forKeyedSubscript:@"FiveGHzChannelCount"];
+  [dictionary setObject:v13 forKeyedSubscript:@"FiveGHzChannelCount"];
 
   v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_appleClientConnectCount];
-  [v5 setObject:v14 forKeyedSubscript:@"AppleClientConnectCount"];
+  [dictionary setObject:v14 forKeyedSubscript:@"AppleClientConnectCount"];
 
   v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_otherClientConnectCount];
-  [v5 setObject:v15 forKeyedSubscript:@"OtherClientConnectCount"];
+  [dictionary setObject:v15 forKeyedSubscript:@"OtherClientConnectCount"];
 
   v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_hiddenClientConnectCount];
-  [v5 setObject:v16 forKeyedSubscript:@"HiddenClientConnectCount"];
+  [dictionary setObject:v16 forKeyedSubscript:@"HiddenClientConnectCount"];
 
   v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_broadcastClientConnectCount];
-  [v5 setObject:v17 forKeyedSubscript:@"BroadcastClientConnectCount"];
+  [dictionary setObject:v17 forKeyedSubscript:@"BroadcastClientConnectCount"];
 
   v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_autoHotspotClientConnectCount];
-  [v5 setObject:v18 forKeyedSubscript:@"AutoHotspotClientConnectCount"];
+  [dictionary setObject:v18 forKeyedSubscript:@"AutoHotspotClientConnectCount"];
 
   v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_instantHotspotClientConnectCount];
-  [v5 setObject:v19 forKeyedSubscript:@"InstantHotspotClientConnectCount"];
+  [dictionary setObject:v19 forKeyedSubscript:@"InstantHotspotClientConnectCount"];
 
   v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_twoFourGHzClientConnectCount];
-  [v5 setObject:v20 forKeyedSubscript:@"TwoFourGHzClientConnectCount"];
+  [dictionary setObject:v20 forKeyedSubscript:@"TwoFourGHzClientConnectCount"];
 
   v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_fiveGHzClientConnectCount];
-  [v5 setObject:v21 forKeyedSubscript:@"FiveGHzClientConnectCount"];
+  [dictionary setObject:v21 forKeyedSubscript:@"FiveGHzClientConnectCount"];
 
   v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_clientDisconnectCount];
-  [v5 setObject:v22 forKeyedSubscript:@"ClientDisconnectCount"];
+  [dictionary setObject:v22 forKeyedSubscript:@"ClientDisconnectCount"];
 
   v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_maxConnectedClientCount];
-  [v5 setObject:v23 forKeyedSubscript:@"MaxConnectedClientCount"];
+  [dictionary setObject:v23 forKeyedSubscript:@"MaxConnectedClientCount"];
 
   lowPowerModeDuration = self->_lowPowerModeDuration;
   [(WiFiUsageSession *)self sessionDuration];
   v26 = [WiFiUsagePrivacyFilter timePercentage:lowPowerModeDuration overTotalDuration:v25];
-  [v5 setObject:v26 forKeyedSubscript:@"LowPowerModeDuration"];
+  [dictionary setObject:v26 forKeyedSubscript:@"LowPowerModeDuration"];
 
   infraActiveDuration = self->_infraActiveDuration;
   [(WiFiUsageSession *)self sessionDuration];
   v29 = [WiFiUsagePrivacyFilter timePercentage:infraActiveDuration overTotalDuration:v28];
-  [v5 setObject:v29 forKeyedSubscript:@"InfraActiveDuration"];
+  [dictionary setObject:v29 forKeyedSubscript:@"InfraActiveDuration"];
 
   awdlActiveDuration = self->_awdlActiveDuration;
   [(WiFiUsageSession *)self sessionDuration];
   v32 = [WiFiUsagePrivacyFilter timePercentage:awdlActiveDuration overTotalDuration:v31];
-  [v5 setObject:v32 forKeyedSubscript:@"AwdlActiveDuration"];
+  [dictionary setObject:v32 forKeyedSubscript:@"AwdlActiveDuration"];
 
   v33 = [MEMORY[0x277CCABB0] numberWithDouble:self->_requestToUpLatency];
-  [v5 setObject:v33 forKeyedSubscript:@"RequestToUpLatency"];
+  [dictionary setObject:v33 forKeyedSubscript:@"RequestToUpLatency"];
 
   v34 = [WiFiUsagePrivacyFilter numberWithDuration:self->_idleTimeBeforeTeardownSec];
-  [v5 setObject:v34 forKeyedSubscript:@"IdleTimeBeforeTeardownSec"];
+  [dictionary setObject:v34 forKeyedSubscript:@"IdleTimeBeforeTeardownSec"];
 
   v35 = [WiFiUsagePrivacyFilter numberWithDuration:self->_idleTimeAfterLastClientDisconnectedSec];
-  [v5 setObject:v35 forKeyedSubscript:@"IdleTimeAfterLastClientDisconnectedSec"];
+  [dictionary setObject:v35 forKeyedSubscript:@"IdleTimeAfterLastClientDisconnectedSec"];
 
   v36 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_infraStateChangedCount];
-  [v5 setObject:v36 forKeyedSubscript:@"InfraStateChangedCount"];
+  [dictionary setObject:v36 forKeyedSubscript:@"InfraStateChangedCount"];
 
   v37 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_awdlStateChangedCount];
-  [v5 setObject:v37 forKeyedSubscript:@"AwdlStateChangedCount"];
+  [dictionary setObject:v37 forKeyedSubscript:@"AwdlStateChangedCount"];
 
   v38 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_knownNetworkScanCount];
-  [v5 setObject:v38 forKeyedSubscript:@"KnownNetworkScanCount"];
+  [dictionary setObject:v38 forKeyedSubscript:@"KnownNetworkScanCount"];
 
   v39 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_hiddenTransitionCount];
-  [v5 setObject:v39 forKeyedSubscript:@"HiddenTransitionCount"];
+  [dictionary setObject:v39 forKeyedSubscript:@"HiddenTransitionCount"];
 
   v40 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_bandTransitionCount];
-  [v5 setObject:v40 forKeyedSubscript:@"BandTransitionCount"];
+  [dictionary setObject:v40 forKeyedSubscript:@"BandTransitionCount"];
 
   v41 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_twoFourGHzDeniedChannelCount];
-  [v5 setObject:v41 forKeyedSubscript:@"TwoFourGHzDeniedChannelCount"];
+  [dictionary setObject:v41 forKeyedSubscript:@"TwoFourGHzDeniedChannelCount"];
 
   v42 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_fiveGHzDeniedUnii1ChannelCount];
-  [v5 setObject:v42 forKeyedSubscript:@"FiveGHzDeniedUnii1ChannelCount"];
+  [dictionary setObject:v42 forKeyedSubscript:@"FiveGHzDeniedUnii1ChannelCount"];
 
   v43 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_fiveGHzDeniedUnii2aChannelCount];
-  [v5 setObject:v43 forKeyedSubscript:@"FiveGHzDeniedUnii2aChannelCount"];
+  [dictionary setObject:v43 forKeyedSubscript:@"FiveGHzDeniedUnii2aChannelCount"];
 
   v44 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_fiveGHzDeniedUnii2cChannelCount];
-  [v5 setObject:v44 forKeyedSubscript:@"FiveGHzDeniedUnii2cChannelCount"];
+  [dictionary setObject:v44 forKeyedSubscript:@"FiveGHzDeniedUnii2cChannelCount"];
 
   v45 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_fiveGHzDeniedUnii3ChannelCount];
-  [v5 setObject:v45 forKeyedSubscript:@"FiveGHzDeniedUnii3ChannelCount"];
+  [dictionary setObject:v45 forKeyedSubscript:@"FiveGHzDeniedUnii3ChannelCount"];
 
   v51[0] = self->_appliedCountryCode;
   v46 = [MEMORY[0x277CCACA8] stringWithCString:v51 encoding:4];
-  [v5 setObject:v46 forKeyedSubscript:@"CountryCodeApplied"];
+  [dictionary setObject:v46 forKeyedSubscript:@"CountryCodeApplied"];
 
   v47 = [MEMORY[0x277CCABB0] numberWithBool:self->_compatibilityEnabled];
-  [v5 setObject:v47 forKeyedSubscript:@"MaximizeCompatibilityEnabled"];
+  [dictionary setObject:v47 forKeyedSubscript:@"MaximizeCompatibilityEnabled"];
 
-  if (!a3)
+  if (!dictionary)
   {
-    v48 = [(WiFiUsageSession *)self sessionStartTime];
-    [v5 setObject:v48 forKeyedSubscript:@"SessionStartTimestamp"];
+    sessionStartTime = [(WiFiUsageSession *)self sessionStartTime];
+    [dictionary setObject:sessionStartTime forKeyedSubscript:@"SessionStartTimestamp"];
   }
 
   v49 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return dictionary;
 }
 
 - (void)summarizeSession
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
-  v4 = v3;
+  date = [MEMORY[0x277CBEAA8] date];
+  v4 = date;
   if (self->_lastInfraActiveTime)
   {
-    [v3 timeIntervalSinceDate:?];
+    [date timeIntervalSinceDate:?];
     self->_infraActiveDuration = v5 + self->_infraActiveDuration;
     [(WiFiUsageSoftApSession *)self setLastInfraActiveTime:0];
   }
@@ -266,27 +266,27 @@
   [(WiFiUsageSession *)&v7 summarizeSession];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(WiFiUsageSession *)self type];
-  v6 = [(WiFiUsageSession *)self interfaceName];
-  v7 = [(WiFiUsageSession *)self capabilities];
-  v8 = [v4 initWithSessionType:v5 andInterfaceName:v6 andCapabilities:v7];
+  type = [(WiFiUsageSession *)self type];
+  interfaceName = [(WiFiUsageSession *)self interfaceName];
+  capabilities = [(WiFiUsageSession *)self capabilities];
+  v8 = [v4 initWithSessionType:type andInterfaceName:interfaceName andCapabilities:capabilities];
 
-  v9 = [(WiFiUsageSession *)self completionQueue];
-  [v8 setCompletionQueue:v9];
+  completionQueue = [(WiFiUsageSession *)self completionQueue];
+  [v8 setCompletionQueue:completionQueue];
 
-  v10 = [(WiFiUsageSession *)self completionContext];
-  [v8 setCompletionContext:v10];
+  completionContext = [(WiFiUsageSession *)self completionContext];
+  [v8 setCompletionContext:completionContext];
 
-  v11 = [(WiFiUsageSession *)self completionHandler];
-  [v8 setCompletionHandler:v11];
+  completionHandler = [(WiFiUsageSession *)self completionHandler];
+  [v8 setCompletionHandler:completionHandler];
 
   [(WiFiUsageSession *)self sessionDuration];
   [v8 setSessionDuration:?];
-  v12 = [(WiFiUsageSession *)self sessionStartTime];
-  [v8 setSessionStartTime:v12];
+  sessionStartTime = [(WiFiUsageSession *)self sessionStartTime];
+  [v8 setSessionStartTime:sessionStartTime];
 
   [v8 setIsSessionActive:{-[WiFiUsageSession isSessionActive](self, "isSessionActive")}];
   [v8 setSessionPid:{-[WiFiUsageSession sessionPid](self, "sessionPid")}];

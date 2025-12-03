@@ -3,56 +3,56 @@
 + (BOOL)showingIdealizedData;
 + (NCManager)sharedAppManager;
 + (NCManager)sharedComplicationManager;
-- (BOOL)isTrueNorthError:(id)a3;
+- (BOOL)isTrueNorthError:(id)error;
 - (NCAltitude)altitude;
 - (id)_newAltimeter;
-- (id)init:(BOOL)a3;
-- (id)startAltimeterUpdateWithHandler:(id)a3;
-- (id)startMotionUpdatesWithUpdateRate:(int64_t)a3 updateHandler:(id)a4 calibrationHandler:(id)a5;
+- (id)init:(BOOL)init;
+- (id)startAltimeterUpdateWithHandler:(id)handler;
+- (id)startMotionUpdatesWithUpdateRate:(int64_t)rate updateHandler:(id)handler calibrationHandler:(id)calibrationHandler;
 - (void)_initLocationDelegate;
-- (void)_queue_altimeterError:(id)a3;
+- (void)_queue_altimeterError:(id)error;
 - (void)_queue_altimeterUpdate;
-- (void)_queue_altimeterUpdate:(id)a3;
+- (void)_queue_altimeterUpdate:(id)update;
 - (void)_startAbsoluteAltimeterUpdate;
 - (void)_updateAltimeterRunning;
 - (void)_updateRunning;
 - (void)dealloc;
-- (void)end1HzMode:(id)a3;
-- (void)fetchGroundAltitudeNearCurrentLocationWithCompletion:(id)a3;
-- (void)fetchGroundAltitudeNearLocation:(id)a3 completion:(id)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setPaused:(BOOL)a3;
-- (void)setPaused:(BOOL)a3 forAltimeterToken:(id)a4;
-- (void)setWaypointComplicationIsActive:(BOOL)a3;
-- (void)start1HzMode:(id)a3;
-- (void)startMotionActivityUpdatesWithHandler:(id)a3;
-- (void)stopAltimeterUpdateForToken:(id)a3;
+- (void)end1HzMode:(id)mode;
+- (void)fetchGroundAltitudeNearCurrentLocationWithCompletion:(id)completion;
+- (void)fetchGroundAltitudeNearLocation:(id)location completion:(id)completion;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setPaused:(BOOL)paused;
+- (void)setPaused:(BOOL)paused forAltimeterToken:(id)token;
+- (void)setWaypointComplicationIsActive:(BOOL)active;
+- (void)start1HzMode:(id)mode;
+- (void)startMotionActivityUpdatesWithHandler:(id)handler;
+- (void)stopAltimeterUpdateForToken:(id)token;
 - (void)stopMotionActivityUpdates;
 @end
 
 @implementation NCManager
 
-- (id)startMotionUpdatesWithUpdateRate:(int64_t)a3 updateHandler:(id)a4 calibrationHandler:(id)a5
+- (id)startMotionUpdatesWithUpdateRate:(int64_t)rate updateHandler:(id)handler calibrationHandler:(id)calibrationHandler
 {
-  v6 = a5;
-  v7 = a4;
+  calibrationHandlerCopy = calibrationHandler;
+  handlerCopy = handler;
   v11 = objc_msgSend_idealizedHeading(NCHeading, v8, v9, v10);
   v15 = objc_msgSend_idealizedIncline(NCIncline, v12, v13, v14);
-  (*(a4 + 2))(v7, v11, v15);
+  (*(handler + 2))(handlerCopy, v11, v15);
 
-  if (v6)
+  if (calibrationHandlerCopy)
   {
-    v6[2](v6, 1, 0);
+    calibrationHandlerCopy[2](calibrationHandlerCopy, 1, 0);
   }
 
   return 0;
 }
 
-- (void)startMotionActivityUpdatesWithHandler:(id)a3
+- (void)startMotionActivityUpdatesWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v10 = objc_msgSend_locationDelegate(self, v5, v6, v7);
-  objc_msgSend_startMotionActivityUpdatesWithHandler_(v10, v8, v4, v9);
+  objc_msgSend_startMotionActivityUpdatesWithHandler_(v10, v8, handlerCopy, v9);
 }
 
 - (void)stopMotionActivityUpdates
@@ -95,7 +95,7 @@
   return byte_27E1C5038;
 }
 
-- (id)init:(BOOL)a3
+- (id)init:(BOOL)init
 {
   v55.receiver = self;
   v55.super_class = NCManager;
@@ -103,7 +103,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_complicationStyle = a3;
+    v4->_complicationStyle = init;
     v4->_externallyPaused = 1;
     v6 = objc_alloc(MEMORY[0x277CBEBD0]);
     v9 = objc_msgSend_initWithSuiteName_(v6, v7, @"com.apple.compass", v8);
@@ -174,9 +174,9 @@
   [(NCManager *)&v2 dealloc];
 }
 
-- (id)startAltimeterUpdateWithHandler:(id)a3
+- (id)startAltimeterUpdateWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if ((objc_msgSend_isAbsoluteAltimeterAvailable(self, v5, v6, v7) & 1) == 0)
   {
     v18 = NCLogForCategory(0);
@@ -191,7 +191,7 @@
 
   v10 = objc_msgSend_tokenWithValue_(NCManagerAltimeterToken, v8, self->_altimeterToken, v9);
   ++self->_altimeterToken;
-  v11 = MEMORY[0x23EEBBDF0](v4);
+  v11 = MEMORY[0x23EEBBDF0](handlerCopy);
   objc_msgSend_setObject_forKeyedSubscript_(self->_altimeterUpdateHandlers, v12, v11, v10);
 
   objc_msgSend__updateAltimeterRunning(self, v13, v14, v15);
@@ -200,19 +200,19 @@
   v21[2] = sub_23BD3B3C0;
   v21[3] = &unk_278B94398;
   v21[4] = self;
-  v22 = v4;
-  v16 = v4;
+  v22 = handlerCopy;
+  v16 = handlerCopy;
   dispatch_async(MEMORY[0x277D85CD0], v21);
 
   return v10;
 }
 
-- (void)stopAltimeterUpdateForToken:(id)a3
+- (void)stopAltimeterUpdateForToken:(id)token
 {
   altimeterUpdateHandlers = self->_altimeterUpdateHandlers;
-  v5 = a3;
-  objc_msgSend_removeObjectForKey_(altimeterUpdateHandlers, v6, v5, v7);
-  objc_msgSend_removeObject_(self->_altimeterPausedTokens, v8, v5, v9);
+  tokenCopy = token;
+  objc_msgSend_removeObjectForKey_(altimeterUpdateHandlers, v6, tokenCopy, v7);
+  objc_msgSend_removeObject_(self->_altimeterPausedTokens, v8, tokenCopy, v9);
 
   objc_msgSend__updateAltimeterRunning(self, v10, v11, v12);
 }
@@ -232,51 +232,51 @@
   return v6;
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
   v10 = *MEMORY[0x277D85DE8];
-  if (self->_externallyPaused != a3)
+  if (self->_externallyPaused != paused)
   {
-    v3 = a3;
+    pausedCopy = paused;
     v5 = NCLogForCategory(1uLL);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v9[0] = 67109120;
-      v9[1] = v3;
+      v9[1] = pausedCopy;
       _os_log_impl(&dword_23BD26000, v5, OS_LOG_TYPE_DEFAULT, "paused changed to: %d", v9, 8u);
     }
 
-    self->_externallyPaused = v3;
+    self->_externallyPaused = pausedCopy;
     objc_msgSend__updateRunning(self, v6, v7, v8);
   }
 }
 
-- (void)setWaypointComplicationIsActive:(BOOL)a3
+- (void)setWaypointComplicationIsActive:(BOOL)active
 {
   if (self->_complicationStyle)
   {
-    v4 = a3;
-    if ((objc_msgSend_isRunningInStoreDemoMode(MEMORY[0x277D75128], a2, a3, v3) & 1) == 0)
+    activeCopy = active;
+    if ((objc_msgSend_isRunningInStoreDemoMode(MEMORY[0x277D75128], a2, active, v3) & 1) == 0)
     {
       locationDelegate = self->_locationDelegate;
 
-      MEMORY[0x2821F9670](locationDelegate, sel_setWaypointComplicationActive_, v4, v6);
+      MEMORY[0x2821F9670](locationDelegate, sel_setWaypointComplicationActive_, activeCopy, v6);
     }
   }
 }
 
-- (void)setPaused:(BOOL)a3 forAltimeterToken:(id)a4
+- (void)setPaused:(BOOL)paused forAltimeterToken:(id)token
 {
-  v4 = a3;
-  v6 = a4;
+  pausedCopy = paused;
+  tokenCopy = token;
   altimeterPausedTokens = self->_altimeterPausedTokens;
-  v19 = v6;
-  if (v4)
+  v19 = tokenCopy;
+  if (pausedCopy)
   {
-    objc_msgSend_addObject_(altimeterPausedTokens, v6, v6, v7);
+    objc_msgSend_addObject_(altimeterPausedTokens, tokenCopy, tokenCopy, v7);
   }
 
-  else if (objc_msgSend_containsObject_(altimeterPausedTokens, v6, v6, v7))
+  else if (objc_msgSend_containsObject_(altimeterPausedTokens, tokenCopy, tokenCopy, v7))
   {
     objc_msgSend_removeObject_(self->_altimeterPausedTokens, v9, v19, v11);
     v14 = objc_msgSend_objectForKeyedSubscript_(self->_altimeterUpdateHandlers, v12, v19, v13);
@@ -420,14 +420,14 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_queue_altimeterUpdate:(id)a3
+- (void)_queue_altimeterUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v8 = objc_msgSend_altitude(self, v5, v6, v7);
-  objc_msgSend_accuracy(v4, v9, v10, v11);
+  objc_msgSend_accuracy(updateCopy, v9, v10, v11);
   if (v14 <= 490.0)
   {
-    v16 = objc_msgSend_initAltitude_(NCAltitude, v12, v4, v13);
+    v16 = objc_msgSend_initAltitude_(NCAltitude, v12, updateCopy, v13);
     objc_msgSend_setAltitude_(self, v22, v16, v23);
   }
 
@@ -480,19 +480,19 @@ LABEL_18:
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)_queue_altimeterError:(id)a3
+- (void)_queue_altimeterError:(id)error
 {
-  v3 = a3;
+  errorCopy = error;
   v4 = NCLogForCategory(0);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
   {
     sub_23BD65E78();
   }
 
-  v8 = objc_msgSend_domain(v3, v5, v6, v7);
+  v8 = objc_msgSend_domain(errorCopy, v5, v6, v7);
   v9 = *MEMORY[0x277CC1BC0];
 
-  if (v8 == v9 && (objc_msgSend_code(v3, v10, v11, v12) == 109 || objc_msgSend_code(v3, v13, v14, v15) == 110 || objc_msgSend_code(v3, v16, v17, v18) == 111 || objc_msgSend_code(v3, v19, v20, v21) == 104 || objc_msgSend_code(v3, v22, v23, v24) == 106 || objc_msgSend_code(v3, v25, v26, v27) == 105))
+  if (v8 == v9 && (objc_msgSend_code(errorCopy, v10, v11, v12) == 109 || objc_msgSend_code(errorCopy, v13, v14, v15) == 110 || objc_msgSend_code(errorCopy, v16, v17, v18) == 111 || objc_msgSend_code(errorCopy, v19, v20, v21) == 104 || objc_msgSend_code(errorCopy, v22, v23, v24) == 106 || objc_msgSend_code(errorCopy, v25, v26, v27) == 105))
   {
     v28 = NCLogForCategory(0);
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -502,10 +502,10 @@ LABEL_18:
   }
 }
 
-- (BOOL)isTrueNorthError:(id)a3
+- (BOOL)isTrueNorthError:(id)error
 {
-  v7 = a3;
-  if (v7)
+  errorCopy = error;
+  if (errorCopy)
   {
     if (self->_usesTrueNorth)
     {
@@ -517,7 +517,7 @@ LABEL_18:
       isLocationServiceOff = 0;
     }
 
-    v9 = (objc_msgSend_code(v7, v4, v5, v6) == 102) & isLocationServiceOff;
+    v9 = (objc_msgSend_code(errorCopy, v4, v5, v6) == 102) & isLocationServiceOff;
   }
 
   else
@@ -528,14 +528,14 @@ LABEL_18:
   return v9;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  isEqualToString = a5;
+  isEqualToString = change;
   v11 = isEqualToString;
-  if (a6 == &off_278B94378)
+  if (context == &off_278B94378)
   {
     v33 = isEqualToString;
-    isEqualToString = objc_msgSend_isEqualToString_(a3, isEqualToString, @"Bearing", v10);
+    isEqualToString = objc_msgSend_isEqualToString_(path, isEqualToString, @"Bearing", v10);
     v11 = v33;
     if (isEqualToString)
     {
@@ -574,12 +574,12 @@ LABEL_18:
   return byte_27E1C5048;
 }
 
-- (void)start1HzMode:(id)a3
+- (void)start1HzMode:(id)mode
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  modeCopy = mode;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v7 = objc_msgSend_containsObject_(self->_current1HzModes, v5, v4, v6);
+  v7 = objc_msgSend_containsObject_(self->_current1HzModes, v5, modeCopy, v6);
   v8 = NCLogForCategory(3uLL);
   v9 = v8;
   if (v7)
@@ -597,33 +597,33 @@ LABEL_18:
       v13 = objc_msgSend_allObjects(self->_current1HzModes, v10, v11, v12);
       v16 = objc_msgSend_componentsJoinedByString_(v13, v14, @", ", v15);
       v25 = 138543618;
-      v26 = v4;
+      v26 = modeCopy;
       v27 = 2114;
       v28 = v16;
       _os_log_impl(&dword_23BD26000, v9, OS_LOG_TYPE_DEFAULT, "Requesting 1Hz location updates for %{public}@. 1Hz update modes before adding incoming mode: [%{public}@].", &v25, 0x16u);
     }
 
-    objc_msgSend_addObject_(self->_current1HzModes, v17, v4, v18);
+    objc_msgSend_addObject_(self->_current1HzModes, v17, modeCopy, v18);
     v22 = objc_msgSend_count(self->_current1HzModes, v19, v20, v21) != 0;
     objc_msgSend_setForce1Hz_(self->_locationDelegate, v23, v22, v24);
   }
 }
 
-- (void)end1HzMode:(id)a3
+- (void)end1HzMode:(id)mode
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  modeCopy = mode;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  if (objc_msgSend_containsObject_(self->_current1HzModes, v5, v4, v6))
+  if (objc_msgSend_containsObject_(self->_current1HzModes, v5, modeCopy, v6))
   {
-    objc_msgSend_removeObject_(self->_current1HzModes, v7, v4, v8);
+    objc_msgSend_removeObject_(self->_current1HzModes, v7, modeCopy, v8);
     v9 = NCLogForCategory(3uLL);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v13 = objc_msgSend_allObjects(self->_current1HzModes, v10, v11, v12);
       v16 = objc_msgSend_componentsJoinedByString_(v13, v14, @", ", v15);
       v24 = 138543618;
-      v25 = v4;
+      v25 = modeCopy;
       v26 = 2114;
       v27 = v16;
       _os_log_impl(&dword_23BD26000, v9, OS_LOG_TYPE_DEFAULT, "Dropping 1Hz location updates for %{public}@. 1Hz update modes after dropping incoming mode: [%{public}@].", &v24, 0x16u);
@@ -643,10 +643,10 @@ LABEL_18:
   }
 }
 
-- (void)fetchGroundAltitudeNearCurrentLocationWithCompletion:(id)a3
+- (void)fetchGroundAltitudeNearCurrentLocationWithCompletion:(id)completion
 {
   v62 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v8 = objc_msgSend_altitude(self, v5, v6, v7);
 
   if (v8)
@@ -665,7 +665,7 @@ LABEL_18:
     v25 = objc_msgSend_altitude(self, v22, v23, v24);
     objc_msgSend_altitudeInMeters(v25, v26, v27, v28);
     v32 = objc_msgSend_numberWithDouble_(v21, v29, v30, v31);
-    v4[2](v4, v32);
+    completionCopy[2](completionCopy, v32);
   }
 
   else
@@ -688,7 +688,7 @@ LABEL_18:
 
       v54 = objc_msgSend_location(self, v51, v52, v53);
       v58 = objc_msgSend_rawLocation(v54, v55, v56, v57);
-      objc_msgSend_fetchGroundAltitudeNearLocation_completion_(self, v59, v58, v4);
+      objc_msgSend_fetchGroundAltitudeNearLocation_completion_(self, v59, v58, completionCopy);
     }
 
     else
@@ -699,17 +699,17 @@ LABEL_18:
         _os_log_impl(&dword_23BD26000, v39, OS_LOG_TYPE_DEFAULT, "Asked to fetch altitude for current location, but we do not have a reading from the altimeter, nor do we have a location fix.", &v60, 2u);
       }
 
-      v4[2](v4, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 }
 
-- (void)fetchGroundAltitudeNearLocation:(id)a3 completion:(id)a4
+- (void)fetchGroundAltitudeNearLocation:(id)location completion:(id)completion
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  objc_msgSend_verticalAccuracy(v6, v8, v9, v10);
+  locationCopy = location;
+  completionCopy = completion;
+  objc_msgSend_verticalAccuracy(locationCopy, v8, v9, v10);
   v12 = v11;
   v13 = NCLogForCategory(7uLL);
   v14 = v13;
@@ -718,19 +718,19 @@ LABEL_18:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       v35 = 134217984;
-      v36 = objc_msgSend_hash(v6, v31, v32, v33);
+      v36 = objc_msgSend_hash(locationCopy, v31, v32, v33);
       _os_log_impl(&dword_23BD26000, v14, OS_LOG_TYPE_INFO, "Fetching altitude for waypoint (%lu).", &v35, 0xCu);
     }
 
-    objc_msgSend_fetchGroundAltitudeNearLocation_completion_(self->_locationDelegate, v34, v6, v7);
+    objc_msgSend_fetchGroundAltitudeNearLocation_completion_(self->_locationDelegate, v34, locationCopy, completionCopy);
   }
 
   else
   {
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = objc_msgSend_hash(v6, v15, v16, v17);
-      objc_msgSend_altitude(v6, v19, v20, v21);
+      v18 = objc_msgSend_hash(locationCopy, v15, v16, v17);
+      objc_msgSend_altitude(locationCopy, v19, v20, v21);
       v35 = 134218240;
       v36 = v18;
       v37 = 2048;
@@ -739,11 +739,11 @@ LABEL_18:
     }
 
     v23 = MEMORY[0x277CCABB0];
-    objc_msgSend_altitude(v6, v24, v25, v26);
+    objc_msgSend_altitude(locationCopy, v24, v25, v26);
     v30 = objc_msgSend_numberWithDouble_(v23, v27, v28, v29);
-    v7[2](v7, v30);
+    completionCopy[2](completionCopy, v30);
 
-    v7 = v30;
+    completionCopy = v30;
   }
 }
 

@@ -1,45 +1,45 @@
 @interface PKPaymentSetupProduct
-+ (id)_displayNameForCardType:(id)a3;
-+ (id)_inAppProvisioningURLWthScheme:(id)a3 path:(id)a4;
-+ (id)productForIssuerProvisioningExtension:(id)a3 withStatus:(id)a4;
-+ (id)productsFromBrowseableBankApps:(id)a3;
-- (BOOL)hasPaymentOptionMatching:(int64_t)a3;
++ (id)_displayNameForCardType:(id)type;
++ (id)_inAppProvisioningURLWthScheme:(id)scheme path:(id)path;
++ (id)productForIssuerProvisioningExtension:(id)extension withStatus:(id)status;
++ (id)productsFromBrowseableBankApps:(id)apps;
+- (BOOL)hasPaymentOptionMatching:(int64_t)matching;
 - (BOOL)isCarKey;
-- (BOOL)supportsDevice:(id)a3;
-- (BOOL)supportsDeviceOS:(id)a3;
-- (BOOL)supportsOSVersion:(id)a3 deviceClass:(id)a4 minimumOSVersion:(id)a5;
-- (BOOL)supportsSetupProductMethodForType:(unint64_t)a3;
-- (BOOL)updateSupportWithOSVersion:(id)a3 deviceClass:(id)a4 deviceRegion:(id)a5 deviceVersion:(id)a6;
+- (BOOL)supportsDevice:(id)device;
+- (BOOL)supportsDeviceOS:(id)s;
+- (BOOL)supportsOSVersion:(id)version deviceClass:(id)class minimumOSVersion:(id)sVersion;
+- (BOOL)supportsSetupProductMethodForType:(unint64_t)type;
+- (BOOL)updateSupportWithOSVersion:(id)version deviceClass:(id)class deviceRegion:(id)region deviceVersion:(id)deviceVersion;
 - (NSString)badge;
 - (NSString)displayName;
 - (NSString)displayStatus;
 - (NSString)longLocalizedDescription;
 - (NSString)partnerName;
-- (PKPaymentSetupProduct)initWithFeatureIdentifier:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PKPaymentSetupProduct)initWithFeatureIdentifier:(unint64_t)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)partnerIdentifier;
 - (id)productIdentifier;
-- (id)provisioningMethodMetadataForMethod:(id)a3;
-- (id)provisioningMethodMetadataForType:(id)a3;
+- (id)provisioningMethodMetadataForMethod:(id)method;
+- (id)provisioningMethodMetadataForType:(id)type;
 - (id)provisioningMethodTypes;
-- (id)setupProductMethodOfType:(unint64_t)a3 withIdentifier:(id)a4;
-- (id)setupProductMethodsOfType:(unint64_t)a3;
+- (id)setupProductMethodOfType:(unint64_t)type withIdentifier:(id)identifier;
+- (id)setupProductMethodsOfType:(unint64_t)type;
 - (int64_t)allSupportedProtocols;
 - (int64_t)primaryCredentialType;
 - (unint64_t)supportedProvisioningMethods;
-- (void)_updateDebugConfigurationForState:(unint64_t)a3;
-- (void)addSetupProductMethod:(id)a3;
-- (void)augmentWithProduct:(id)a3;
+- (void)_updateDebugConfigurationForState:(unint64_t)state;
+- (void)addSetupProductMethod:(id)method;
+- (void)augmentWithProduct:(id)product;
 - (void)didAuthorizeProvisioningExtension;
-- (void)setProvisioningMethodMetadata:(id)a3 forMethod:(id)a4;
-- (void)setProvisioningMethodMetadata:(id)a3 forType:(id)a4;
-- (void)updateWithProductDictionary:(id)a3;
+- (void)setProvisioningMethodMetadata:(id)metadata forMethod:(id)method;
+- (void)setProvisioningMethodMetadata:(id)metadata forType:(id)type;
+- (void)updateWithProductDictionary:(id)dictionary;
 @end
 
 @implementation PKPaymentSetupProduct
 
-- (BOOL)hasPaymentOptionMatching:(int64_t)a3
+- (BOOL)hasPaymentOptionMatching:(int64_t)matching
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
@@ -61,7 +61,7 @@
           objc_enumerationMutation(v4);
         }
 
-        if ([*(*(&v11 + 1) + 8 * i) cardType] == a3)
+        if ([*(*(&v11 + 1) + 8 * i) cardType] == matching)
         {
           v9 = 1;
           goto LABEL_11;
@@ -84,29 +84,29 @@ LABEL_11:
   return v9;
 }
 
-- (void)updateWithProductDictionary:(id)a3
+- (void)updateWithProductDictionary:(id)dictionary
 {
   v161 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  dictionaryCopy = dictionary;
+  if (!dictionaryCopy)
   {
     setupProductMethods = self->_setupProductMethods;
     self->_setupProductMethods = 0;
   }
 
-  v6 = [[PKPaymentSetupProductConfiguration alloc] initWithProductDictionary:v4];
+  v6 = [[PKPaymentSetupProductConfiguration alloc] initWithProductDictionary:dictionaryCopy];
   configuration = self->_configuration;
   self->_configuration = v6;
 
-  v8 = [v4 PKStringForKey:@"localizedDescription"];
+  v8 = [dictionaryCopy PKStringForKey:@"localizedDescription"];
   localizedDescription = self->_localizedDescription;
   self->_localizedDescription = v8;
 
-  v10 = [v4 PKStringForKey:@"longLocalizedDescription"];
+  v10 = [dictionaryCopy PKStringForKey:@"longLocalizedDescription"];
   longLocalizedDescription = self->_longLocalizedDescription;
   self->_longLocalizedDescription = v10;
 
-  v12 = [v4 PKStringForKey:@"localizedProductName"];
+  v12 = [dictionaryCopy PKStringForKey:@"localizedProductName"];
   v13 = v12;
   if (v12)
   {
@@ -115,14 +115,14 @@ LABEL_11:
 
   else
   {
-    v14 = [v4 PKStringForKey:@"localizedDisplayName"];
+    v14 = [dictionaryCopy PKStringForKey:@"localizedDisplayName"];
   }
 
   displayName = self->_displayName;
   self->_displayName = v14;
 
-  [v4 PKArrayForKey:@"partners"];
-  v130 = v133 = v4;
+  [dictionaryCopy PKArrayForKey:@"partners"];
+  v130 = v133 = dictionaryCopy;
   if (v130)
   {
     v16 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -163,22 +163,22 @@ LABEL_11:
     self->_partners = v23;
   }
 
-  v25 = [v4 PKNumberForKey:@"minimumSupportedAge"];
-  v26 = [v4 PKNumberForKey:@"maximumSupportedAge"];
+  v25 = [dictionaryCopy PKNumberForKey:@"minimumSupportedAge"];
+  v26 = [dictionaryCopy PKNumberForKey:@"maximumSupportedAge"];
   v127 = v25;
   self->_minimumSupportedAge = [v25 integerValue];
   v126 = v26;
   self->_maximumSupportedAge = [v26 integerValue];
-  v125 = [v4 PKNumberForKey:@"minimumTargetUserSupportedAge"];
+  v125 = [dictionaryCopy PKNumberForKey:@"minimumTargetUserSupportedAge"];
   self->_minimumTargetUserSupportedAge = [v125 integerValue];
-  v27 = [v4 PKStringForKey:@"region"];
+  v27 = [dictionaryCopy PKStringForKey:@"region"];
   v28 = [v27 componentsSeparatedByString:{@", "}];
 
   if (v28)
   {
-    v29 = [v28 firstObject];
+    firstObject = [v28 firstObject];
     primaryRegion = self->_primaryRegion;
-    self->_primaryRegion = v29;
+    self->_primaryRegion = firstObject;
 
     v31 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:v28];
     v32 = [v31 copy];
@@ -188,45 +188,45 @@ LABEL_11:
 
   v124 = v28;
   v34 = [PKPaymentSetupProductRegionData alloc];
-  v35 = [v4 PKDictionaryForKey:@"regionData"];
+  v35 = [dictionaryCopy PKDictionaryForKey:@"regionData"];
   v36 = [(PKPaymentSetupProductRegionData *)v34 initWithRegionDataDictionary:v35];
   regionData = self->_regionData;
   self->_regionData = v36;
 
-  v38 = [v4 copy];
+  v38 = [dictionaryCopy copy];
   rawDictionary = self->_rawDictionary;
   self->_rawDictionary = v38;
 
-  v40 = [v4 PKURLForKey:@"termsURL"];
+  v40 = [dictionaryCopy PKURLForKey:@"termsURL"];
   v41 = [v40 copy];
   termsURL = self->_termsURL;
   self->_termsURL = v41;
 
-  v43 = [v4 PKDictionaryForKey:@"readerModeMetadata"];
+  v43 = [dictionaryCopy PKDictionaryForKey:@"readerModeMetadata"];
   v44 = [v43 copy];
   readerModeMetadata = self->_readerModeMetadata;
   self->_readerModeMetadata = v44;
 
-  v46 = [v4 PKArrayContaining:objc_opt_class() forKey:@"capabilities"];
+  v46 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"capabilities"];
   self->_flags = PKPaymentProductFlagsFromArray(v46);
 
-  v47 = [v4 PKStringForKey:@"hsa2Requirement"];
+  v47 = [dictionaryCopy PKStringForKey:@"hsa2Requirement"];
   self->_hsa2Requirement = PKPaymentSetupHSA2RequirementFromString(v47);
 
-  v48 = [MEMORY[0x1E695DF70] array];
-  v49 = [v4 PKArrayForKey:@"requiredFields"];
+  array = [MEMORY[0x1E695DF70] array];
+  v49 = [dictionaryCopy PKArrayForKey:@"requiredFields"];
   v50 = [v49 count];
 
-  v132 = self;
-  v129 = v48;
+  selfCopy = self;
+  v129 = array;
   if (v50)
   {
-    v51 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v146 = 0u;
     v147 = 0u;
     v148 = 0u;
     v149 = 0u;
-    v52 = [v4 PKArrayContaining:objc_opt_class() forKey:@"requiredFields"];
+    v52 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"requiredFields"];
     v53 = [v52 countByEnumeratingWithState:&v146 objects:v159 count:16];
     if (v53)
     {
@@ -242,12 +242,12 @@ LABEL_11:
           }
 
           v57 = *(*(&v146 + 1) + 8 * j);
-          v58 = [v4 PKDictionaryForKey:@"requiredFieldOptions"];
+          v58 = [dictionaryCopy PKDictionaryForKey:@"requiredFieldOptions"];
           v59 = [v58 PKDictionaryForKey:v57];
 
-          v4 = v133;
+          dictionaryCopy = v133;
           v60 = [PKPaymentSetupField paymentSetupFieldWithIdentifier:v57 configuration:v59];
-          [v51 safelyAddObject:v60];
+          [array2 safelyAddObject:v60];
         }
 
         v54 = [v52 countByEnumeratingWithState:&v146 objects:v159 count:16];
@@ -256,14 +256,14 @@ LABEL_11:
       while (v54);
     }
 
-    v61 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:v51];
+    v61 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:array2];
     requiredFields = self->_requiredFields;
     self->_requiredFields = v61;
 
-    v48 = v129;
+    array = v129;
   }
 
-  v63 = [v4 PKArrayForKey:@"paymentOptions"];
+  v63 = [dictionaryCopy PKArrayForKey:@"paymentOptions"];
   v142 = 0u;
   v143 = 0u;
   v144 = 0u;
@@ -283,7 +283,7 @@ LABEL_11:
         }
 
         v68 = [[PKPaymentSetupProductPaymentOption alloc] initWithPaymentOptionDictionary:*(*(&v142 + 1) + 8 * k)];
-        [v48 safelyAddObject:v68];
+        [array safelyAddObject:v68];
       }
 
       v65 = [v63 countByEnumeratingWithState:&v142 objects:v158 count:16];
@@ -292,12 +292,12 @@ LABEL_11:
     while (v65);
   }
 
-  [v48 sortUsingComparator:{&__block_literal_global_699_1, v63}];
-  v69 = [v48 copy];
+  [array sortUsingComparator:{&__block_literal_global_699_1, v63}];
+  v69 = [array copy];
   paymentOptions = self->_paymentOptions;
   self->_paymentOptions = v69;
 
-  v128 = [v4 PKArrayContaining:objc_opt_class() forKey:@"provisioningMethodDetailsList"];
+  v128 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"provisioningMethodDetailsList"];
   if (v128)
   {
     v71 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -322,16 +322,16 @@ LABEL_11:
 
           v76 = *(*(&v138 + 1) + 8 * m);
           v77 = [v76 PKStringForKey:@"provisioningMethodType"];
-          v78 = [(PKPaymentSetupProductConfiguration *)self->_configuration partnerIdentifier];
+          partnerIdentifier = [(PKPaymentSetupProductConfiguration *)self->_configuration partnerIdentifier];
           v79 = [v77 isEqualToString:@"digitalIssuance"];
           v80 = off_1E79C1918;
           if (v79 & 1) != 0 || (v81 = [v77 isEqualToString:@"readerMode"], v80 = off_1E79C1928, (v81) || (v82 = objc_msgSend(v77, "isEqualToString:", @"appClip"), v80 = off_1E79C1900, (v82) || (v83 = objc_msgSend(v77, "isEqualToString:", @"inApp"), v80 = off_1E79C1920, (v83) || (v84 = objc_msgSend(v77, "isEqualToString:", @"cameraCapture"), v80 = off_1E79C1910, (v84) || (v85 = objc_msgSend(v77, "isEqualToString:", @"web"), v80 = off_1E79C1930, v85))
           {
-            v86 = [objc_alloc(*v80) initWithDictionary:v76 partnerIdentifier:v78];
+            v86 = [objc_alloc(*v80) initWithDictionary:v76 partnerIdentifier:partnerIdentifier];
             [v71 safelyAddObject:v86];
           }
 
-          self = v132;
+          self = selfCopy;
         }
 
         v73 = [obj countByEnumeratingWithState:&v138 objects:v157 count:16];
@@ -344,12 +344,12 @@ LABEL_11:
     v88 = self->_setupProductMethods;
     self->_setupProductMethods = v87;
 
-    v4 = v133;
+    dictionaryCopy = v133;
   }
 
-  self->_showOtherProviders = [v4 PKBoolForKey:@"showOtherProvidersForAppProvisioningMethod"];
+  self->_showOtherProviders = [dictionaryCopy PKBoolForKey:@"showOtherProvidersForAppProvisioningMethod"];
   v89 = [PKPaymentSetupProductImageAssetURLs alloc];
-  v90 = [v4 PKDictionaryForKey:@"imageAssets"];
+  v90 = [dictionaryCopy PKDictionaryForKey:@"imageAssets"];
   v91 = [(PKPaymentSetupProductImageAssetURLs *)v89 initWithImageAssetsDictionary:v90];
   imageAssetURLs = self->_imageAssetURLs;
   self->_imageAssetURLs = v91;
@@ -358,7 +358,7 @@ LABEL_11:
   imageAssets = self->_imageAssets;
   self->_imageAssets = v93;
 
-  v95 = [v4 PKDictionaryForKey:@"minimumOSVersion"];
+  v95 = [dictionaryCopy PKDictionaryForKey:@"minimumOSVersion"];
   if (v95)
   {
     v96 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -380,13 +380,13 @@ LABEL_11:
   minimumOSVersion = self->_minimumOSVersion;
   self->_minimumOSVersion = v98;
 
-  v100 = [v4 PKArrayContaining:objc_opt_class() forKey:@"supportedTransitNetworkIdentifiers"];
+  v100 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"supportedTransitNetworkIdentifiers"];
   supportedTransitNetworkIdentifiers = self->_supportedTransitNetworkIdentifiers;
   self->_supportedTransitNetworkIdentifiers = v100;
 
-  self->_suppressPendingPurchases = [v4 PKBoolForKey:@"suppressPendingPurchases"];
+  self->_suppressPendingPurchases = [dictionaryCopy PKBoolForKey:@"suppressPendingPurchases"];
   v102 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v103 = [v4 PKArrayForKey:@"onboardingItems"];
+  v103 = [dictionaryCopy PKArrayForKey:@"onboardingItems"];
   v104 = v103;
   if (v103)
   {
@@ -429,27 +429,27 @@ LABEL_11:
   }
 
   v112 = [v102 copy];
-  onboardingItems = v132->_onboardingItems;
-  v132->_onboardingItems = v112;
+  onboardingItems = selfCopy->_onboardingItems;
+  selfCopy->_onboardingItems = v112;
 
   v114 = [v133 PKStringForKey:@"registrationRegionIdentifier"];
   v115 = [v114 copy];
-  regionIdentifier = v132->_regionIdentifier;
-  v132->_regionIdentifier = v115;
+  regionIdentifier = selfCopy->_regionIdentifier;
+  selfCopy->_regionIdentifier = v115;
 
   v117 = [v133 PKStringForKey:@"criteriaIdentifier"];
-  criteriaIdentifier = v132->_criteriaIdentifier;
-  v132->_criteriaIdentifier = v117;
+  criteriaIdentifier = selfCopy->_criteriaIdentifier;
+  selfCopy->_criteriaIdentifier = v117;
 
   v119 = [v133 PKDictionaryForKey:@"clientInfo"];
-  clientInfo = v132->_clientInfo;
-  v132->_clientInfo = v119;
+  clientInfo = selfCopy->_clientInfo;
+  selfCopy->_clientInfo = v119;
 
   v121 = [v133 PKArrayContaining:objc_opt_class() forKey:@"searchTerms"];
-  searchTerms = v132->_searchTerms;
-  v132->_searchTerms = v121;
+  searchTerms = selfCopy->_searchTerms;
+  selfCopy->_searchTerms = v121;
 
-  v132->_allowOnManagedAccount = [v133 PKBoolForKey:@"allowOnManagedAccount"];
+  selfCopy->_allowOnManagedAccount = [v133 PKBoolForKey:@"allowOnManagedAccount"];
 }
 
 uint64_t __53__PKPaymentSetupProduct_updateWithProductDictionary___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -473,19 +473,19 @@ uint64_t __53__PKPaymentSetupProduct_updateWithProductDictionary___block_invoke(
 
 - (int64_t)primaryCredentialType
 {
-  v2 = [(NSArray *)self->_paymentOptions firstObject];
-  v3 = [v2 cardType];
+  firstObject = [(NSArray *)self->_paymentOptions firstObject];
+  cardType = [firstObject cardType];
 
-  return v3;
+  return cardType;
 }
 
-- (void)addSetupProductMethod:(id)a3
+- (void)addSetupProductMethod:(id)method
 {
-  v4 = a3;
-  if (v4)
+  methodCopy = method;
+  if (methodCopy)
   {
     setupProductMethods = self->_setupProductMethods;
-    v10 = v4;
+    v10 = methodCopy;
     if (!setupProductMethods)
     {
       v6 = objc_alloc_init(MEMORY[0x1E695DEC8]);
@@ -499,14 +499,14 @@ uint64_t __53__PKPaymentSetupProduct_updateWithProductDictionary___block_invoke(
     v9 = self->_setupProductMethods;
     self->_setupProductMethods = v8;
 
-    v4 = v10;
+    methodCopy = v10;
   }
 }
 
-- (BOOL)supportsSetupProductMethodForType:(unint64_t)a3
+- (BOOL)supportsSetupProductMethodForType:(unint64_t)type
 {
   v18 = *MEMORY[0x1E69E9840];
-  if (!a3 && ![(NSArray *)self->_setupProductMethods count])
+  if (!type && ![(NSArray *)self->_setupProductMethods count])
   {
     return 1;
   }
@@ -531,7 +531,7 @@ uint64_t __53__PKPaymentSetupProduct_updateWithProductDictionary___block_invoke(
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        if ([v10 type] == a3 && (objc_msgSend(v10, "isSupported") & 1) != 0)
+        if ([v10 type] == type && (objc_msgSend(v10, "isSupported") & 1) != 0)
         {
           v11 = 1;
           goto LABEL_14;
@@ -554,10 +554,10 @@ LABEL_14:
   return v11;
 }
 
-- (id)setupProductMethodsOfType:(unint64_t)a3
+- (id)setupProductMethodsOfType:(unint64_t)type
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (a3 || [(NSArray *)self->_setupProductMethods count])
+  if (type || [(NSArray *)self->_setupProductMethods count])
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v14 = 0u;
@@ -580,7 +580,7 @@ LABEL_14:
           }
 
           v11 = *(*(&v14 + 1) + 8 * i);
-          if ([v11 type] == a3 && objc_msgSend(v11, "isSupported"))
+          if ([v11 type] == type && objc_msgSend(v11, "isSupported"))
           {
             [v5 addObject:v11];
           }
@@ -611,11 +611,11 @@ LABEL_14:
   return v12;
 }
 
-- (id)setupProductMethodOfType:(unint64_t)a3 withIdentifier:(id)a4
+- (id)setupProductMethodOfType:(unint64_t)type withIdentifier:(id)identifier
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (a3)
+  identifierCopy = identifier;
+  if (type)
   {
     if ([(NSArray *)self->_setupProductMethods count])
     {
@@ -639,16 +639,16 @@ LABEL_14:
             }
 
             v12 = *(*(&v16 + 1) + 8 * i);
-            if ([v12 type] == a3)
+            if ([v12 type] == type)
             {
-              v13 = [v12 partnerIdentifier];
-              if ([v13 isEqualToString:v6])
+              partnerIdentifier = [v12 partnerIdentifier];
+              if ([partnerIdentifier isEqualToString:identifierCopy])
               {
-                v14 = [v12 isSupported];
+                isSupported = [v12 isSupported];
 
-                if (v14)
+                if (isSupported)
                 {
-                  a3 = v12;
+                  type = v12;
                   goto LABEL_17;
                 }
               }
@@ -665,31 +665,31 @@ LABEL_14:
         while (v9);
       }
 
-      a3 = 0;
+      type = 0;
 LABEL_17:
     }
 
     else
     {
-      a3 = 0;
+      type = 0;
     }
   }
 
-  return a3;
+  return type;
 }
 
-- (PKPaymentSetupProduct)initWithFeatureIdentifier:(unint64_t)a3
+- (PKPaymentSetupProduct)initWithFeatureIdentifier:(unint64_t)identifier
 {
   v4 = [(PKPaymentSetupProduct *)self init];
   v5 = v4;
   if (v4)
   {
     [(PKPaymentSetupProduct *)v4 updateWithProductDictionary:0];
-    if (a3 > 1)
+    if (identifier > 1)
     {
-      if (a3 != 5)
+      if (identifier != 5)
       {
-        if (a3 == 2)
+        if (identifier == 2)
         {
           [(PKPaymentSetupProductConfiguration *)v5->_configuration setProductIdentifier:@"3-argon-CCS"];
           v5->_isServerDriven = 1;
@@ -702,12 +702,12 @@ LABEL_17:
       v7 = @"savings";
     }
 
-    else if (a3)
+    else if (identifier)
     {
-      if (a3 != 1)
+      if (identifier != 1)
       {
 LABEL_12:
-        [(PKPaymentSetupProductConfiguration *)v5->_configuration setFeatureIdentifier:a3];
+        [(PKPaymentSetupProductConfiguration *)v5->_configuration setFeatureIdentifier:identifier];
         [(PKPaymentSetupProductConfiguration *)v5->_configuration setType:7];
         [(PKPaymentSetupProductConfiguration *)v5->_configuration setState:0];
         return v5;
@@ -730,91 +730,91 @@ LABEL_12:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKPaymentSetupProduct allocWithZone:](PKPaymentSetupProduct init];
-  v6 = [(PKPaymentSetupProductConfiguration *)self->_configuration copyWithZone:a3];
+  v6 = [(PKPaymentSetupProductConfiguration *)self->_configuration copyWithZone:zone];
   configuration = v5->_configuration;
   v5->_configuration = v6;
 
-  v8 = [(NSString *)self->_displayName copyWithZone:a3];
+  v8 = [(NSString *)self->_displayName copyWithZone:zone];
   displayName = v5->_displayName;
   v5->_displayName = v8;
 
-  v10 = [(NSString *)self->_localizedDescription copyWithZone:a3];
+  v10 = [(NSString *)self->_localizedDescription copyWithZone:zone];
   localizedDescription = v5->_localizedDescription;
   v5->_localizedDescription = v10;
 
-  v12 = [(NSSet *)self->_regions copyWithZone:a3];
+  v12 = [(NSSet *)self->_regions copyWithZone:zone];
   regions = v5->_regions;
   v5->_regions = v12;
 
-  v14 = [(PKPaymentSetupProductRegionData *)self->_regionData copyWithZone:a3];
+  v14 = [(PKPaymentSetupProductRegionData *)self->_regionData copyWithZone:zone];
   regionData = v5->_regionData;
   v5->_regionData = v14;
 
-  v16 = [(NSArray *)self->_requiredFields copyWithZone:a3];
+  v16 = [(NSArray *)self->_requiredFields copyWithZone:zone];
   requiredFields = v5->_requiredFields;
   v5->_requiredFields = v16;
 
-  v18 = [(NSArray *)self->_supportedProtocols copyWithZone:a3];
+  v18 = [(NSArray *)self->_supportedProtocols copyWithZone:zone];
   supportedProtocols = v5->_supportedProtocols;
   v5->_supportedProtocols = v18;
 
-  v20 = [(NSURL *)self->_termsURL copyWithZone:a3];
+  v20 = [(NSURL *)self->_termsURL copyWithZone:zone];
   termsURL = v5->_termsURL;
   v5->_termsURL = v20;
 
-  v22 = [(NSDictionary *)self->_minimumOSVersion copyWithZone:a3];
+  v22 = [(NSDictionary *)self->_minimumOSVersion copyWithZone:zone];
   minimumOSVersion = v5->_minimumOSVersion;
   v5->_minimumOSVersion = v22;
 
-  v24 = [(NSArray *)self->_setupProductMethods copyWithZone:a3];
+  v24 = [(NSArray *)self->_setupProductMethods copyWithZone:zone];
   setupProductMethods = v5->_setupProductMethods;
   v5->_setupProductMethods = v24;
 
-  v26 = [(NSArray *)self->_paymentOptions copyWithZone:a3];
+  v26 = [(NSArray *)self->_paymentOptions copyWithZone:zone];
   paymentOptions = v5->_paymentOptions;
   v5->_paymentOptions = v26;
 
-  v28 = [(NSDictionary *)self->_rawDictionary copyWithZone:a3];
+  v28 = [(NSDictionary *)self->_rawDictionary copyWithZone:zone];
   rawDictionary = v5->_rawDictionary;
   v5->_rawDictionary = v28;
 
-  v30 = [(NSDictionary *)self->_readerModeMetadata copyWithZone:a3];
+  v30 = [(NSDictionary *)self->_readerModeMetadata copyWithZone:zone];
   readerModeMetadata = v5->_readerModeMetadata;
   v5->_readerModeMetadata = v30;
 
   v5->_flags = self->_flags;
   v5->_hsa2Requirement = self->_hsa2Requirement;
-  v32 = [(NSMutableDictionary *)self->_requestedProvisioningMethods mutableCopyWithZone:a3];
+  v32 = [(NSMutableDictionary *)self->_requestedProvisioningMethods mutableCopyWithZone:zone];
   requestedProvisioningMethods = v5->_requestedProvisioningMethods;
   v5->_requestedProvisioningMethods = v32;
 
-  v34 = [(PKPaymentSetupProductImageAssets *)self->_imageAssets copyWithZone:a3];
+  v34 = [(PKPaymentSetupProductImageAssets *)self->_imageAssets copyWithZone:zone];
   imageAssets = v5->_imageAssets;
   v5->_imageAssets = v34;
 
-  v36 = [(PKPaymentSetupProductImageAssetURLs *)self->_imageAssetURLs copyWithZone:a3];
+  v36 = [(PKPaymentSetupProductImageAssetURLs *)self->_imageAssetURLs copyWithZone:zone];
   imageAssetURLs = v5->_imageAssetURLs;
   v5->_imageAssetURLs = v36;
 
-  v38 = [(NSArray *)self->_supportedTransitNetworkIdentifiers copyWithZone:a3];
+  v38 = [(NSArray *)self->_supportedTransitNetworkIdentifiers copyWithZone:zone];
   supportedTransitNetworkIdentifiers = v5->_supportedTransitNetworkIdentifiers;
   v5->_supportedTransitNetworkIdentifiers = v38;
 
   v5->_preventsFeatureApplication = self->_preventsFeatureApplication;
   v5->_provisioningStatus = self->_provisioningStatus;
-  v40 = [(NSArray *)self->_featureApplications copyWithZone:a3];
+  v40 = [(NSArray *)self->_featureApplications copyWithZone:zone];
   featureApplications = v5->_featureApplications;
   v5->_featureApplications = v40;
 
-  v42 = [(NSArray *)self->_accounts copyWithZone:a3];
+  v42 = [(NSArray *)self->_accounts copyWithZone:zone];
   accounts = v5->_accounts;
   v5->_accounts = v42;
 
   v5->_suppressPendingPurchases = self->_suppressPendingPurchases;
-  v44 = [(NSArray *)self->_onboardingItems copyWithZone:a3];
+  v44 = [(NSArray *)self->_onboardingItems copyWithZone:zone];
   onboardingItems = v5->_onboardingItems;
   v5->_onboardingItems = v44;
 
@@ -822,17 +822,17 @@ LABEL_12:
   v5->_maximumSupportedAge = self->_maximumSupportedAge;
   v5->_minimumTargetUserSupportedAge = self->_minimumTargetUserSupportedAge;
   v5->_meetsAgeRequirements = self->_meetsAgeRequirements;
-  v46 = [(NSDictionary *)self->_clientInfo copyWithZone:a3];
+  v46 = [(NSDictionary *)self->_clientInfo copyWithZone:zone];
   clientInfo = v5->_clientInfo;
   v5->_clientInfo = v46;
 
-  v48 = [(NSArray *)self->_searchTerms copyWithZone:a3];
+  v48 = [(NSArray *)self->_searchTerms copyWithZone:zone];
   searchTerms = v5->_searchTerms;
   v5->_searchTerms = v48;
 
   v5->_allowOnManagedAccount = self->_allowOnManagedAccount;
   v5->_supportedProvisioningMethods = self->_supportedProvisioningMethods;
-  v50 = [(NSString *)self->_criteriaIdentifier copyWithZone:a3];
+  v50 = [(NSString *)self->_criteriaIdentifier copyWithZone:zone];
   criteriaIdentifier = v5->_criteriaIdentifier;
   v5->_criteriaIdentifier = v50;
 
@@ -843,7 +843,7 @@ LABEL_12:
 - (NSString)partnerName
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [(PKPaymentSetupProduct *)self partnerIdentifier];
+  partnerIdentifier = [(PKPaymentSetupProduct *)self partnerIdentifier];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -864,12 +864,12 @@ LABEL_12:
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
-        v10 = [v9 identifier];
-        v11 = [v10 isEqualToString:v3];
+        identifier = [v9 identifier];
+        v11 = [identifier isEqualToString:partnerIdentifier];
 
         if (v11)
         {
-          v13 = [v9 displayName];
+          displayName = [v9 displayName];
           goto LABEL_12;
         }
       }
@@ -887,10 +887,10 @@ LABEL_12:
   v12 = [(NSDictionary *)self->_rawDictionary PKStringForKey:@"localizedProductName"];
   if (v12)
   {
-    v13 = v12;
-    v4 = v13;
+    displayName = v12;
+    v4 = displayName;
 LABEL_12:
-    v14 = v13;
+    v14 = displayName;
   }
 
   else
@@ -942,12 +942,12 @@ LABEL_12:
   return v5;
 }
 
-- (id)provisioningMethodMetadataForMethod:(id)a3
+- (id)provisioningMethodMetadataForMethod:(id)method
 {
-  if (a3)
+  if (method)
   {
-    v4 = [a3 identifier];
-    v5 = [(NSMutableDictionary *)self->_requestedProvisioningMethods objectForKey:v4];
+    identifier = [method identifier];
+    v5 = [(NSMutableDictionary *)self->_requestedProvisioningMethods objectForKey:identifier];
   }
 
   else
@@ -958,9 +958,9 @@ LABEL_12:
   return v5;
 }
 
-- (id)provisioningMethodMetadataForType:(id)a3
+- (id)provisioningMethodMetadataForType:(id)type
 {
-  v4 = PKSetupProductMethodTypeFromString(a3);
+  v4 = PKSetupProductMethodTypeFromString(type);
   setupProductMethods = self->_setupProductMethods;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -981,10 +981,10 @@ LABEL_12:
   return v7;
 }
 
-- (void)setProvisioningMethodMetadata:(id)a3 forMethod:(id)a4
+- (void)setProvisioningMethodMetadata:(id)metadata forMethod:(id)method
 {
-  v11 = a3;
-  v6 = a4;
+  metadataCopy = metadata;
+  methodCopy = method;
   if (!self->_requestedProvisioningMethods)
   {
     v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -992,23 +992,23 @@ LABEL_12:
     self->_requestedProvisioningMethods = v7;
   }
 
-  v9 = [v6 identifier];
+  identifier = [methodCopy identifier];
   v10 = self->_requestedProvisioningMethods;
-  if (v11)
+  if (metadataCopy)
   {
-    [(NSMutableDictionary *)v10 setObject:v11 forKey:v9];
+    [(NSMutableDictionary *)v10 setObject:metadataCopy forKey:identifier];
   }
 
   else
   {
-    [(NSMutableDictionary *)v10 removeObjectForKey:v9];
+    [(NSMutableDictionary *)v10 removeObjectForKey:identifier];
   }
 }
 
-- (void)setProvisioningMethodMetadata:(id)a3 forType:(id)a4
+- (void)setProvisioningMethodMetadata:(id)metadata forType:(id)type
 {
-  v6 = a3;
-  v7 = PKSetupProductMethodTypeFromString(a4);
+  metadataCopy = metadata;
+  v7 = PKSetupProductMethodTypeFromString(type);
   setupProductMethods = self->_setupProductMethods;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -1018,7 +1018,7 @@ LABEL_12:
   v9 = [(NSArray *)setupProductMethods pk_firstObjectPassingTest:v10];
   if (v9)
   {
-    [(PKPaymentSetupProduct *)self setProvisioningMethodMetadata:v6 forMethod:v9];
+    [(PKPaymentSetupProduct *)self setProvisioningMethodMetadata:metadataCopy forMethod:v9];
   }
 }
 
@@ -1031,8 +1031,8 @@ LABEL_12:
     goto LABEL_14;
   }
 
-  v5 = [(PKPaymentSetupProductConfiguration *)self->_configuration featureIdentifier];
-  if (v5 == 4)
+  featureIdentifier = [(PKPaymentSetupProductConfiguration *)self->_configuration featureIdentifier];
+  if (featureIdentifier == 4)
   {
     v11 = @"APPLY_FLOW_NEW_APPLICATION_TITLE";
     v12 = 4;
@@ -1040,7 +1040,7 @@ LABEL_12:
 
   else
   {
-    if (v5 != 2)
+    if (featureIdentifier != 2)
     {
       v3 = 0;
       goto LABEL_14;
@@ -1075,10 +1075,10 @@ LABEL_14:
   longLocalizedDescription = self->_longLocalizedDescription;
   if (!longLocalizedDescription)
   {
-    v4 = [(PKPaymentSetupProductConfiguration *)self->_configuration type];
-    if (v4 != 3)
+    type = [(PKPaymentSetupProductConfiguration *)self->_configuration type];
+    if (type != 3)
     {
-      if (v4 == 7)
+      if (type == 7)
       {
         if ([(PKPaymentSetupProductConfiguration *)self->_configuration featureIdentifier]== 4)
         {
@@ -1089,7 +1089,7 @@ LABEL_10:
         }
       }
 
-      else if (v4 == 4)
+      else if (type == 4)
       {
         v5 = @"PAYMENT_SETUP_EMONEY_LONG_DESCRIPTION";
 LABEL_9:
@@ -1309,8 +1309,8 @@ LABEL_30:
   }
 
   supportedProvisioningMethods = self->_supportedProvisioningMethods;
-  v10 = [(PKPaymentSetupProductConfiguration *)self->_configuration type];
-  if (v10 == 7)
+  type = [(PKPaymentSetupProductConfiguration *)self->_configuration type];
+  if (type == 7)
   {
     if ([(PKPaymentSetupProductConfiguration *)self->_configuration featureIdentifier]== 2)
     {
@@ -1323,7 +1323,7 @@ LABEL_30:
     }
   }
 
-  else if (v10 == 5)
+  else if (type == 5)
   {
     return 16;
   }
@@ -1334,16 +1334,16 @@ LABEL_30:
   }
 }
 
-- (BOOL)supportsOSVersion:(id)a3 deviceClass:(id)a4 minimumOSVersion:(id)a5
+- (BOOL)supportsOSVersion:(id)version deviceClass:(id)class minimumOSVersion:(id)sVersion
 {
-  v7 = a3;
-  if (a5)
+  versionCopy = version;
+  if (sVersion)
   {
-    v8 = [a5 objectForKey:a4];
+    v8 = [sVersion objectForKey:class];
     v9 = v8;
     if (v8)
     {
-      v10 = ([v8 compare:v7 options:64] + 1) < 2;
+      v10 = ([v8 compare:versionCopy options:64] + 1) < 2;
     }
 
     else
@@ -1360,13 +1360,13 @@ LABEL_30:
   return v10;
 }
 
-- (BOOL)updateSupportWithOSVersion:(id)a3 deviceClass:(id)a4 deviceRegion:(id)a5 deviceVersion:(id)a6
+- (BOOL)updateSupportWithOSVersion:(id)version deviceClass:(id)class deviceRegion:(id)region deviceVersion:(id)deviceVersion
 {
   v34 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v28 = a5;
-  v11 = a6;
-  v12 = [(PKPaymentSetupProduct *)self supportsOSVersion:a3 deviceClass:v10 minimumOSVersion:self->_minimumOSVersion];
+  classCopy = class;
+  regionCopy = region;
+  deviceVersionCopy = deviceVersion;
+  v12 = [(PKPaymentSetupProduct *)self supportsOSVersion:version deviceClass:classCopy minimumOSVersion:self->_minimumOSVersion];
   v13 = v12;
   if (v12)
   {
@@ -1375,8 +1375,8 @@ LABEL_30:
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v14 = [(PKPaymentSetupProduct *)self setupProductMethods];
-    v15 = [v14 countByEnumeratingWithState:&v29 objects:v33 count:16];
+    setupProductMethods = [(PKPaymentSetupProduct *)self setupProductMethods];
+    v15 = [setupProductMethods countByEnumeratingWithState:&v29 objects:v33 count:16];
     if (v15)
     {
       v16 = v15;
@@ -1387,23 +1387,23 @@ LABEL_30:
         {
           if (*v30 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(setupProductMethods);
           }
 
           v19 = *(*(&v29 + 1) + 8 * i);
-          v20 = [v19 requiredOSVersionRange];
-          v21 = v20;
+          requiredOSVersionRange = [v19 requiredOSVersionRange];
+          v21 = requiredOSVersionRange;
           v22 = 1;
-          if (v10 && v11 && v20)
+          if (classCopy && deviceVersionCopy && requiredOSVersionRange)
           {
-            v22 = [v20 versionMeetsRequirements:v11 deviceClass:v10];
+            v22 = [requiredOSVersionRange versionMeetsRequirements:deviceVersionCopy deviceClass:classCopy];
           }
 
-          v23 = [v19 regions];
-          v24 = v23;
-          if (v23)
+          regions = [v19 regions];
+          v24 = regions;
+          if (regions)
           {
-            v25 = [v23 containsObject:v28];
+            v25 = [regions containsObject:regionCopy];
           }
 
           else
@@ -1414,7 +1414,7 @@ LABEL_30:
           [v19 setSupported:v22 & v25];
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v29 objects:v33 count:16];
+        v16 = [setupProductMethods countByEnumeratingWithState:&v29 objects:v33 count:16];
       }
 
       while (v16);
@@ -1426,28 +1426,28 @@ LABEL_30:
   return v13;
 }
 
-- (BOOL)supportsDevice:(id)a3
+- (BOOL)supportsDevice:(id)device
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 deviceVersion];
-  v6 = [v4 deviceClass];
-  v7 = [v4 deviceRegion];
+  deviceCopy = device;
+  deviceVersion = [deviceCopy deviceVersion];
+  deviceClass = [deviceCopy deviceClass];
+  deviceRegion = [deviceCopy deviceRegion];
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v4 cellularNetworkRegion];
+    cellularNetworkRegion = [deviceCopy cellularNetworkRegion];
   }
 
   else
   {
-    v8 = 0;
+    cellularNetworkRegion = 0;
   }
 
-  v9 = [v5 versionForDeviceClass:v6];
-  v10 = [v4 deviceVersion];
-  v11 = [(PKPaymentSetupProduct *)self updateSupportWithOSVersion:v9 deviceClass:v6 deviceRegion:v7 deviceVersion:v10];
+  v9 = [deviceVersion versionForDeviceClass:deviceClass];
+  deviceVersion2 = [deviceCopy deviceVersion];
+  v11 = [(PKPaymentSetupProduct *)self updateSupportWithOSVersion:v9 deviceClass:deviceClass deviceRegion:deviceRegion deviceVersion:deviceVersion2];
 
-  if (v11 && (v7 && -[NSSet containsObject:](self->_regions, "containsObject:", v7) || v8 && -[NSSet containsObject:](self->_regions, "containsObject:", v8)) && ((-[PKPaymentSetupProduct allSupportedProtocols](self, "allSupportedProtocols") & 4) == 0 || [v4 felicaSecureElementIsAvailable]))
+  if (v11 && (deviceRegion && -[NSSet containsObject:](self->_regions, "containsObject:", deviceRegion) || cellularNetworkRegion && -[NSSet containsObject:](self->_regions, "containsObject:", cellularNetworkRegion)) && ((-[PKPaymentSetupProduct allSupportedProtocols](self, "allSupportedProtocols") & 4) == 0 || [deviceCopy felicaSecureElementIsAvailable]))
   {
     if (objc_opt_respondsToSelector())
     {
@@ -1455,8 +1455,8 @@ LABEL_30:
       v20 = 0u;
       v17 = 0u;
       v18 = 0u;
-      v12 = [(PKPaymentSetupProduct *)self paymentOptions];
-      v13 = [v12 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      paymentOptions = [(PKPaymentSetupProduct *)self paymentOptions];
+      v13 = [paymentOptions countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v13)
       {
         v14 = *v18;
@@ -1466,17 +1466,17 @@ LABEL_30:
           {
             if (*v18 != v14)
             {
-              objc_enumerationMutation(v12);
+              objc_enumerationMutation(paymentOptions);
             }
 
-            if ([v4 supportsCredentialType:{objc_msgSend(*(*(&v17 + 1) + 8 * i), "cardType")}])
+            if ([deviceCopy supportsCredentialType:{objc_msgSend(*(*(&v17 + 1) + 8 * i), "cardType")}])
             {
               LOBYTE(v13) = 1;
               goto LABEL_25;
             }
           }
 
-          v13 = [v12 countByEnumeratingWithState:&v17 objects:v21 count:16];
+          v13 = [paymentOptions countByEnumeratingWithState:&v17 objects:v21 count:16];
           if (v13)
           {
             continue;
@@ -1503,21 +1503,21 @@ LABEL_25:
   return v13;
 }
 
-- (BOOL)supportsDeviceOS:(id)a3
+- (BOOL)supportsDeviceOS:(id)s
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 deviceVersion];
-  v6 = [v4 deviceClass];
-  v7 = [v5 versionForDeviceClass:v6];
-  if ([(PKPaymentSetupProduct *)self supportsOSVersion:v7 deviceClass:v6 minimumOSVersion:self->_minimumOSVersion])
+  sCopy = s;
+  deviceVersion = [sCopy deviceVersion];
+  deviceClass = [sCopy deviceClass];
+  v7 = [deviceVersion versionForDeviceClass:deviceClass];
+  if ([(PKPaymentSetupProduct *)self supportsOSVersion:v7 deviceClass:deviceClass minimumOSVersion:self->_minimumOSVersion])
   {
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v8 = [(PKPaymentSetupProduct *)self setupProductMethods];
-    v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    setupProductMethods = [(PKPaymentSetupProduct *)self setupProductMethods];
+    v9 = [setupProductMethods countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v9)
     {
       v10 = v9;
@@ -1528,18 +1528,18 @@ LABEL_25:
         {
           if (*v20 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(setupProductMethods);
           }
 
-          v13 = [*(*(&v19 + 1) + 8 * i) requiredOSVersionRange];
-          v14 = v13;
-          if (!v6 || (v13 ? (v15 = v5 == 0) : (v15 = 1), v15))
+          requiredOSVersionRange = [*(*(&v19 + 1) + 8 * i) requiredOSVersionRange];
+          v14 = requiredOSVersionRange;
+          if (!deviceClass || (requiredOSVersionRange ? (v15 = deviceVersion == 0) : (v15 = 1), v15))
           {
           }
 
           else
           {
-            v16 = [v13 versionMeetsRequirements:v5 deviceClass:v6];
+            v16 = [requiredOSVersionRange versionMeetsRequirements:deviceVersion deviceClass:deviceClass];
 
             if (!v16)
             {
@@ -1549,7 +1549,7 @@ LABEL_25:
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v10 = [setupProductMethods countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v10);
@@ -1567,72 +1567,72 @@ LABEL_19:
   return v17;
 }
 
-- (void)augmentWithProduct:(id)a3
+- (void)augmentWithProduct:(id)product
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  productCopy = product;
+  if (productCopy)
   {
-    objc_storeStrong(&self->_augmentedProduct, a3);
-    v6 = [v5 onboardingItems];
-    if (v6)
+    objc_storeStrong(&self->_augmentedProduct, product);
+    onboardingItems = [productCopy onboardingItems];
+    if (onboardingItems)
     {
       v7 = PKLogFacilityTypeGetObject(7uLL);
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         onboardingItems = self->_onboardingItems;
         v9 = 138412546;
-        v10 = onboardingItems;
+        selfCopy = onboardingItems;
         v11 = 2112;
-        v12 = v6;
+        v12 = onboardingItems;
         _os_log_impl(&dword_1AD337000, v7, OS_LOG_TYPE_DEFAULT, "augmentWithProduct: Replacing old onboardingItems (%@) with new onboardingItems (%@)", &v9, 0x16u);
       }
 
-      objc_storeStrong(&self->_onboardingItems, v6);
+      objc_storeStrong(&self->_onboardingItems, onboardingItems);
     }
   }
 
   else
   {
-    v6 = PKLogFacilityTypeGetObject(7uLL);
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    onboardingItems = PKLogFacilityTypeGetObject(7uLL);
+    if (os_log_type_enabled(onboardingItems, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412290;
-      v10 = self;
-      _os_log_impl(&dword_1AD337000, v6, OS_LOG_TYPE_DEFAULT, "Invalid request to augment self with nil augmenting product: %@", &v9, 0xCu);
+      selfCopy = self;
+      _os_log_impl(&dword_1AD337000, onboardingItems, OS_LOG_TYPE_DEFAULT, "Invalid request to augment self with nil augmenting product: %@", &v9, 0xCu);
     }
   }
 }
 
 - (BOOL)isCarKey
 {
-  v2 = [(PKPaymentSetupProduct *)self configuration];
-  v3 = [v2 type] == 11;
+  configuration = [(PKPaymentSetupProduct *)self configuration];
+  v3 = [configuration type] == 11;
 
   return v3;
 }
 
 - (id)productIdentifier
 {
-  v2 = [(PKPaymentSetupProduct *)self configuration];
-  v3 = [v2 productIdentifier];
+  configuration = [(PKPaymentSetupProduct *)self configuration];
+  productIdentifier = [configuration productIdentifier];
 
-  return v3;
+  return productIdentifier;
 }
 
 - (id)partnerIdentifier
 {
-  v2 = [(PKPaymentSetupProduct *)self configuration];
-  v3 = [v2 partnerIdentifier];
+  configuration = [(PKPaymentSetupProduct *)self configuration];
+  partnerIdentifier = [configuration partnerIdentifier];
 
-  return v3;
+  return partnerIdentifier;
 }
 
-- (void)_updateDebugConfigurationForState:(unint64_t)a3
+- (void)_updateDebugConfigurationForState:(unint64_t)state
 {
   v14[2] = *MEMORY[0x1E69E9840];
   [(PKPaymentSetupProductConfiguration *)self->_configuration setState:?];
-  if (a3 == 4)
+  if (state == 4)
   {
     v5 = objc_alloc_init(PKDynamicProvisioningPageContent);
     [(PKDynamicProvisioningPageContent *)v5 setPageNumber:0];
@@ -1645,7 +1645,7 @@ LABEL_19:
     goto LABEL_7;
   }
 
-  if (a3 == 3)
+  if (state == 3)
   {
     v5 = objc_alloc_init(PKDynamicProvisioningPageContent);
     [(PKDynamicProvisioningPageContent *)v5 setPageNumber:0];
@@ -1663,7 +1663,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (a3 != 1)
+  if (state != 1)
   {
     return;
   }
@@ -1693,8 +1693,8 @@ LABEL_8:
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@: %p ", objc_opt_class(), self];;
-  v4 = [(PKPaymentSetupProductConfiguration *)self->_configuration productIdentifier];
-  [v3 appendFormat:@"productIdentifier: '%@'; ", v4];
+  productIdentifier = [(PKPaymentSetupProductConfiguration *)self->_configuration productIdentifier];
+  [v3 appendFormat:@"productIdentifier: '%@'; ", productIdentifier];
 
   [v3 appendFormat:@"displayName: '%@'; ", self->_displayName];
   [v3 appendFormat:@">"];
@@ -1703,21 +1703,21 @@ LABEL_8:
   return v5;
 }
 
-+ (id)productsFromBrowseableBankApps:(id)a3
++ (id)productsFromBrowseableBankApps:(id)apps
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v30 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  appsCopy = apps;
+  v30 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(appsCopy, "count")}];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  obj = v4;
+  obj = appsCopy;
   v31 = [obj countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (v31)
   {
     v29 = *v36;
-    v32 = a1;
+    selfCopy = self;
     do
     {
       for (i = 0; i != v31; ++i)
@@ -1732,7 +1732,7 @@ LABEL_8:
         v8 = [v6 PKArrayContaining:objc_opt_class() forKey:@"inAppProvisioningSupport"];
         v9 = [v6 PKStringForKey:@"appLaunchURLScheme"];
         v10 = [v6 PKStringForKey:@"appLaunchURLPath"];
-        v11 = [a1 _inAppProvisioningURLWthScheme:v9 path:v10];
+        v11 = [self _inAppProvisioningURLWthScheme:v9 path:v10];
 
         v12 = objc_alloc_init(PKPaymentSetupProduct);
         v13 = [v6 PKStringForKey:@"displayName"];
@@ -1746,8 +1746,8 @@ LABEL_8:
         v17 = objc_alloc_init(PKPaymentSetupProductConfiguration);
         [(PKPaymentSetupProductConfiguration *)v17 setType:5];
         v18 = MEMORY[0x1E696AEC0];
-        v19 = [(PKPaymentSetupProduct *)v12 displayName];
-        v20 = [v18 stringWithFormat:@"%@%@", v19, v11];
+        displayName = [(PKPaymentSetupProduct *)v12 displayName];
+        v20 = [v18 stringWithFormat:@"%@%@", displayName, v11];
 
         [(PKPaymentSetupProductConfiguration *)v17 setProductIdentifier:v20];
         objc_storeStrong(&v12->_configuration, v17);
@@ -1757,12 +1757,12 @@ LABEL_8:
           v34[1] = 3221225472;
           v34[2] = __86__PKPaymentSetupProduct_PKBrowseableBankAppAdditions__productsFromBrowseableBankApps___block_invoke;
           v34[3] = &__block_descriptor_40_e28___NSString_16__0__NSString_8l;
-          v34[4] = a1;
+          v34[4] = self;
           v21 = [v7 pk_arrayByApplyingBlock:v34];
           v22 = [[PKSetupProductMethodCameraCapture alloc] initWithCardTypeSupport:v21 partnerIdentifier:v20];
           [(PKPaymentSetupProduct *)v12 addSetupProductMethod:v22];
 
-          a1 = v32;
+          self = selfCopy;
         }
 
         if ([v8 count])
@@ -1771,13 +1771,13 @@ LABEL_8:
           v33[1] = 3221225472;
           v33[2] = __86__PKPaymentSetupProduct_PKBrowseableBankAppAdditions__productsFromBrowseableBankApps___block_invoke_2;
           v33[3] = &__block_descriptor_40_e28___NSString_16__0__NSString_8l;
-          v33[4] = a1;
+          v33[4] = self;
           v23 = [v8 pk_arrayByApplyingBlock:v33];
           v24 = [v6 PKArrayContaining:objc_opt_class() forKey:@"associatedStoreIdentifiers"];
           v25 = [[PKSetupProductMethodInApp alloc] initWithURL:v11 identifiers:v24 cardTypeSupport:v23 identifier:v20];
           [(PKPaymentSetupProduct *)v12 addSetupProductMethod:v25];
 
-          a1 = v32;
+          self = selfCopy;
         }
 
         [v30 addObject:v12];
@@ -1794,28 +1794,28 @@ LABEL_8:
   return v26;
 }
 
-+ (id)_displayNameForCardType:(id)a3
++ (id)_displayNameForCardType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"credit"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"credit"])
   {
     v4 = @"CARD_TYPE_CREDIT_CARD";
   }
 
-  else if ([v3 isEqualToString:@"debit"])
+  else if ([typeCopy isEqualToString:@"debit"])
   {
     v4 = @"CARD_TYPE_DEBIT_CARD";
   }
 
-  else if ([v3 isEqualToString:@"prepaid"])
+  else if ([typeCopy isEqualToString:@"prepaid"])
   {
     v4 = @"CARD_TYPE_PREPAID_CARD";
   }
 
   else
   {
-    v5 = v3;
-    if (![v3 isEqualToString:@"bankcard"])
+    v5 = typeCopy;
+    if (![typeCopy isEqualToString:@"bankcard"])
     {
       goto LABEL_10;
     }
@@ -1830,23 +1830,23 @@ LABEL_10:
   return v5;
 }
 
-+ (id)_inAppProvisioningURLWthScheme:(id)a3 path:(id)a4
++ (id)_inAppProvisioningURLWthScheme:(id)scheme path:(id)path
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 length])
+  schemeCopy = scheme;
+  pathCopy = path;
+  if ([schemeCopy length])
   {
-    v7 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@://", v5];
-    if ([v6 length])
+    schemeCopy = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@://", schemeCopy];
+    if ([pathCopy length])
     {
-      v8 = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
-      v9 = [v6 stringByAddingPercentEncodingWithAllowedCharacters:v8];
+      uRLPathAllowedCharacterSet = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
+      v9 = [pathCopy stringByAddingPercentEncodingWithAllowedCharacters:uRLPathAllowedCharacterSet];
 
-      [v7 appendString:v9];
-      v6 = v9;
+      [schemeCopy appendString:v9];
+      pathCopy = v9;
     }
 
-    v10 = [MEMORY[0x1E695DFF8] URLWithString:v7];
+    v10 = [MEMORY[0x1E695DFF8] URLWithString:schemeCopy];
   }
 
   else
@@ -1857,40 +1857,40 @@ LABEL_10:
   return v10;
 }
 
-+ (id)productForIssuerProvisioningExtension:(id)a3 withStatus:(id)a4
++ (id)productForIssuerProvisioningExtension:(id)extension withStatus:(id)status
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  extensionCopy = extension;
+  statusCopy = status;
+  v7 = statusCopy;
   v8 = 0;
-  if (v5 && v6)
+  if (extensionCopy && statusCopy)
   {
-    if (([v6 passEntriesAvailable] & 1) != 0 || objc_msgSend(v7, "remotePassEntriesAvailable"))
+    if (([statusCopy passEntriesAvailable] & 1) != 0 || objc_msgSend(v7, "remotePassEntriesAvailable"))
     {
-      v9 = [v5 identifier];
+      identifier = [extensionCopy identifier];
       v10 = objc_alloc_init(PKPaymentSetupProductConfiguration);
       [(PKPaymentSetupProductConfiguration *)v10 setType:6];
-      [(PKPaymentSetupProductConfiguration *)v10 setProductIdentifier:v9];
-      [(PKPaymentSetupProductConfiguration *)v10 setPartnerIdentifier:v9];
+      [(PKPaymentSetupProductConfiguration *)v10 setProductIdentifier:identifier];
+      [(PKPaymentSetupProductConfiguration *)v10 setPartnerIdentifier:identifier];
       v8 = objc_alloc_init(PKPaymentSetupProduct);
       objc_storeStrong(&v8->_configuration, v10);
-      v11 = [v5 _plugIn];
-      v12 = [v11 localizedContainingName];
-      v13 = v12;
-      if (v12)
+      _plugIn = [extensionCopy _plugIn];
+      localizedContainingName = [_plugIn localizedContainingName];
+      v13 = localizedContainingName;
+      if (localizedContainingName)
       {
-        v14 = v12;
+        _localizedName = localizedContainingName;
       }
 
       else
       {
-        v14 = [v5 _localizedName];
+        _localizedName = [extensionCopy _localizedName];
       }
 
       displayName = v8->_displayName;
-      v8->_displayName = v14;
+      v8->_displayName = _localizedName;
 
-      v16 = -[PKSetupProductMethodAppExtension initWithExtension:status:partnerIdentifier:]([PKSetupProductMethodAppExtension alloc], "initWithExtension:status:partnerIdentifier:", v5, [v7 requiresAuthentication], v9);
+      v16 = -[PKSetupProductMethodAppExtension initWithExtension:status:partnerIdentifier:]([PKSetupProductMethodAppExtension alloc], "initWithExtension:status:partnerIdentifier:", extensionCopy, [v7 requiresAuthentication], identifier);
       [(PKPaymentSetupProduct *)v8 addSetupProductMethod:v16];
     }
 
@@ -1905,8 +1905,8 @@ LABEL_10:
 
 - (void)didAuthorizeProvisioningExtension
 {
-  v3 = [(PKPaymentSetupProduct *)self partnerIdentifier];
-  v4 = [(PKPaymentSetupProduct *)self setupProductMethodOfType:4 withIdentifier:v3];
+  partnerIdentifier = [(PKPaymentSetupProduct *)self partnerIdentifier];
+  v4 = [(PKPaymentSetupProduct *)self setupProductMethodOfType:4 withIdentifier:partnerIdentifier];
 
   [v4 setRequiresAuthorization:0];
 }

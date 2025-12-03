@@ -1,6 +1,6 @@
 @interface AccessibilityInfoPanel
 - (AccessibilityInfoPanel)init;
-- (AccessibilityInfoPanel)initWithTitle:(id)a3;
+- (AccessibilityInfoPanel)initWithTitle:(id)title;
 - (CGRect)_displayFrame;
 - (id)_accessibilityInfoPanelController;
 - (id)_accessibilityInfoPanelView;
@@ -22,16 +22,16 @@
   return [(AccessibilityInfoPanel *)&v3 init];
 }
 
-- (AccessibilityInfoPanel)initWithTitle:(id)a3
+- (AccessibilityInfoPanel)initWithTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   v8.receiver = self;
   v8.super_class = AccessibilityInfoPanel;
   v5 = [(AccessibilityInfoPanel *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(AccessibilityInfoPanel *)v5 setTitle:v4];
+    [(AccessibilityInfoPanel *)v5 setTitle:titleCopy];
     [(AccessibilityInfoPanel *)v6 _setup];
   }
 
@@ -54,21 +54,21 @@
 
 - (void)_setup
 {
-  v6 = [(AccessibilityInfoPanel *)self _rootView];
-  v3 = [(AccessibilityInfoPanel *)self _accessibilityInfoPanelView];
-  v4 = [(AccessibilityInfoPanel *)self _accessibilityInfoPanelWindow];
-  v5 = [(AccessibilityInfoPanel *)self _accessibilityInfoPanelController];
-  [v4 addSubview:v6];
-  [v6 addSubview:v3];
-  [v5 setView:v3];
-  [v6 layoutSubviews];
+  _rootView = [(AccessibilityInfoPanel *)self _rootView];
+  _accessibilityInfoPanelView = [(AccessibilityInfoPanel *)self _accessibilityInfoPanelView];
+  _accessibilityInfoPanelWindow = [(AccessibilityInfoPanel *)self _accessibilityInfoPanelWindow];
+  _accessibilityInfoPanelController = [(AccessibilityInfoPanel *)self _accessibilityInfoPanelController];
+  [_accessibilityInfoPanelWindow addSubview:_rootView];
+  [_rootView addSubview:_accessibilityInfoPanelView];
+  [_accessibilityInfoPanelController setView:_accessibilityInfoPanelView];
+  [_rootView layoutSubviews];
 }
 
 - (void)show
 {
-  v3 = [(AccessibilityInfoPanelWindow *)self->_accessibilityInfoPanelWindow isHidden];
+  isHidden = [(AccessibilityInfoPanelWindow *)self->_accessibilityInfoPanelWindow isHidden];
   accessibilityInfoPanelView = self->_accessibilityInfoPanelView;
-  if (v3)
+  if (isHidden)
   {
     [(UIView *)accessibilityInfoPanelView setAlpha:0.0];
     [(AccessibilityInfoPanelWindow *)self->_accessibilityInfoPanelWindow setHidden:0];
@@ -116,20 +116,20 @@ uint64_t __30__AccessibilityInfoPanel_show__block_invoke(uint64_t a1)
 
 - (CGRect)_displayFrame
 {
-  v3 = [MEMORY[0x29EDC7C40] mainScreen];
-  [v3 bounds];
+  mainScreen = [MEMORY[0x29EDC7C40] mainScreen];
+  [mainScreen bounds];
   v5 = v4;
   v7 = v6;
 
   displayOnBottomEdge = self->_displayOnBottomEdge;
-  v9 = [MEMORY[0x29EDC7A58] currentDevice];
-  v10 = [v9 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x29EDC7A58] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v11 = -v5;
   if (displayOnBottomEdge)
   {
     v12 = v7 + -80.0;
-    if (v10 == 1)
+    if (userInterfaceIdiom == 1)
     {
       v13 = 0.75;
     }
@@ -144,7 +144,7 @@ uint64_t __30__AccessibilityInfoPanel_show__block_invoke(uint64_t a1)
 
   else
   {
-    if (v10 == 1)
+    if (userInterfaceIdiom == 1)
     {
       v13 = 0.75;
       v14 = v5 + v11 * 0.75;
@@ -191,10 +191,10 @@ uint64_t __30__AccessibilityInfoPanel_show__block_invoke(uint64_t a1)
   accessibilityInfoPanelWindow = self->_accessibilityInfoPanelWindow;
   if (!accessibilityInfoPanelWindow)
   {
-    v4 = [(AccessibilityInfoPanel *)self _accessibilityInfoPanelController];
+    _accessibilityInfoPanelController = [(AccessibilityInfoPanel *)self _accessibilityInfoPanelController];
     v5 = [AccessibilityInfoPanelWindow alloc];
-    v6 = [MEMORY[0x29EDC7C40] mainScreen];
-    [v6 bounds];
+    mainScreen = [MEMORY[0x29EDC7C40] mainScreen];
+    [mainScreen bounds];
     v7 = [(AccessibilityInfoPanelWindow *)v5 initWithFrame:?];
     v8 = self->_accessibilityInfoPanelWindow;
     self->_accessibilityInfoPanelWindow = v7;
@@ -205,12 +205,12 @@ uint64_t __30__AccessibilityInfoPanel_show__block_invoke(uint64_t a1)
     [(AccessibilityInfoPanelWindow *)self->_accessibilityInfoPanelWindow setAccessibilityElementsHidden:1];
     [(AccessibilityInfoPanelWindow *)self->_accessibilityInfoPanelWindow _setAccessibilityWindowVisible:0];
     v9 = self->_accessibilityInfoPanelWindow;
-    v10 = [MEMORY[0x29EDC7A00] clearColor];
-    [(AccessibilityInfoPanelWindow *)v9 setBackgroundColor:v10];
+    clearColor = [MEMORY[0x29EDC7A00] clearColor];
+    [(AccessibilityInfoPanelWindow *)v9 setBackgroundColor:clearColor];
 
-    [(AccessibilityInfoPanelWindow *)self->_accessibilityInfoPanelWindow setRootViewController:v4];
+    [(AccessibilityInfoPanelWindow *)self->_accessibilityInfoPanelWindow setRootViewController:_accessibilityInfoPanelController];
     [(AccessibilityInfoPanelWindow *)self->_accessibilityInfoPanelWindow setUserInteractionEnabled:0];
-    [(AccessibilityInfoPanelWindow *)self->_accessibilityInfoPanelWindow setDelegate:v4];
+    [(AccessibilityInfoPanelWindow *)self->_accessibilityInfoPanelWindow setDelegate:_accessibilityInfoPanelController];
 
     accessibilityInfoPanelWindow = self->_accessibilityInfoPanelWindow;
   }
@@ -265,8 +265,8 @@ uint64_t __30__AccessibilityInfoPanel_show__block_invoke(uint64_t a1)
     [(UIView *)self->_accessibilityInfoPanelView setAccessibilityElementsHidden:1];
     [(UIView *)self->_accessibilityInfoPanelView setUserInteractionEnabled:0];
     v10 = self->_accessibilityInfoPanelView;
-    v11 = [MEMORY[0x29EDC7A00] clearColor];
-    [(UIView *)v10 setBackgroundColor:v11];
+    clearColor = [MEMORY[0x29EDC7A00] clearColor];
+    [(UIView *)v10 setBackgroundColor:clearColor];
 
     v12 = objc_alloc(MEMORY[0x29EDC7DA0]);
     [(UIView *)self->_accessibilityInfoPanelView bounds];
@@ -276,18 +276,18 @@ uint64_t __30__AccessibilityInfoPanel_show__block_invoke(uint64_t a1)
 
     [(UIView *)self->_backgroundView setAutoresizingMask:18];
     v15 = self->_backgroundView;
-    v16 = [MEMORY[0x29EDC7A00] grayColor];
-    [(UIView *)v15 setBackgroundColor:v16];
+    grayColor = [MEMORY[0x29EDC7A00] grayColor];
+    [(UIView *)v15 setBackgroundColor:grayColor];
 
-    v17 = [(UIView *)self->_backgroundView layer];
-    [v17 setCornerRadius:5.0];
+    layer = [(UIView *)self->_backgroundView layer];
+    [layer setCornerRadius:5.0];
 
-    v18 = [(UIView *)self->_backgroundView layer];
-    [v18 setShadowOffset:{3.0, 3.0}];
+    layer2 = [(UIView *)self->_backgroundView layer];
+    [layer2 setShadowOffset:{3.0, 3.0}];
 
-    v19 = [(UIView *)self->_backgroundView layer];
+    layer3 = [(UIView *)self->_backgroundView layer];
     LODWORD(v20) = 0.75;
-    [v19 setShadowOpacity:v20];
+    [layer3 setShadowOpacity:v20];
 
     [(UIView *)self->_backgroundView setTag:100];
     [(UIView *)self->_accessibilityInfoPanelView addSubview:self->_backgroundView];
@@ -299,20 +299,20 @@ uint64_t __30__AccessibilityInfoPanel_show__block_invoke(uint64_t a1)
     self->_labelView = v23;
 
     v25 = self->_labelView;
-    v26 = [MEMORY[0x29EDC7A00] clearColor];
-    [(UILabel *)v25 setBackgroundColor:v26];
+    clearColor2 = [MEMORY[0x29EDC7A00] clearColor];
+    [(UILabel *)v25 setBackgroundColor:clearColor2];
 
     [(UILabel *)self->_labelView setTextAlignment:1];
     [(UILabel *)self->_labelView setLineBreakMode:0];
     v27 = self->_labelView;
-    v28 = [MEMORY[0x29EDC7A00] whiteColor];
-    [(UILabel *)v27 setTextColor:v28];
+    whiteColor = [MEMORY[0x29EDC7A00] whiteColor];
+    [(UILabel *)v27 setTextColor:whiteColor];
 
     [(UILabel *)self->_labelView setNumberOfLines:0];
     [(UILabel *)self->_labelView setTag:200];
     v29 = self->_labelView;
-    v30 = [MEMORY[0x29EDC7A00] blackColor];
-    v31 = [v30 colorWithAlphaComponent:0.75];
+    blackColor = [MEMORY[0x29EDC7A00] blackColor];
+    v31 = [blackColor colorWithAlphaComponent:0.75];
     [(UILabel *)v29 setShadowColor:v31];
 
     [(UILabel *)self->_labelView setShadowOffset:1.0, 1.0];
@@ -333,9 +333,9 @@ uint64_t __30__AccessibilityInfoPanel_show__block_invoke(uint64_t a1)
   rootView = self->_rootView;
   if (!rootView)
   {
-    v4 = [(AccessibilityInfoPanel *)self _accessibilityInfoPanelWindow];
+    _accessibilityInfoPanelWindow = [(AccessibilityInfoPanel *)self _accessibilityInfoPanelWindow];
     v5 = objc_alloc(MEMORY[0x29EDC7DA0]);
-    [v4 bounds];
+    [_accessibilityInfoPanelWindow bounds];
     v6 = [v5 initWithFrame:?];
     v7 = self->_rootView;
     self->_rootView = v6;

@@ -41,8 +41,8 @@
 
     [(MRBaseComponentHandler *)v3 setFinishRepairTitle:@"FINISH_BATTERY_REPAIR_TITLE"];
     [(MRBaseComponentHandler *)v3 setFinishRepairMessage:@"FINISH_BATTERY_REPAIR_DESC"];
-    v6 = [(MRBaseComponentHandler *)v3 componentFollowupClientID];
-    v7 = [v6 stringByAppendingString:@"FINISH_REPAIR"];
+    componentFollowupClientID = [(MRBaseComponentHandler *)v3 componentFollowupClientID];
+    v7 = [componentFollowupClientID stringByAppendingString:@"FINISH_REPAIR"];
     [(MRBaseComponentHandler *)v3 setFinishRepairKey:v7];
 
     [(MRBaseComponentHandler *)v3 setDisplayNotification:0];
@@ -62,8 +62,8 @@
     [(MRBaseComponentHandler *)v3 setComponentDataCollectionPresentedKey:@"dataCollectionNoticePresentedForPartsAndService"];
     [(MRBaseComponentHandler *)v3 setComponentFirstUIDisplayedTimeKey:@"firstUIDisplayedTimeForBattery"];
     [(MRBaseComponentHandler *)v3 setLastKnownComponentIdentifierKey:@"lastKnownIDForBattery"];
-    v10 = [(MRBaseComponentHandler *)v3 componentName];
-    v11 = [CRFDRBaseDeviceHandler copySealingManifestDataInstanceForComponent:v10];
+    componentName = [(MRBaseComponentHandler *)v3 componentName];
+    v11 = [CRFDRBaseDeviceHandler copySealingManifestDataInstanceForComponent:componentName];
     [(MRBaseComponentHandler *)v3 setLastKnownComponentIdentifierValue:v11];
 
     v12 = objc_opt_new();
@@ -72,8 +72,8 @@
     v13 = +[NSUserDefaults groupStandardUserDefaults];
     v14 = [v13 BOOLForKey:@"overrideDisableUIForBattery"];
 
-    v15 = [(MRBaseComponentHandler *)v3 componentFollowupClientID];
-    v16 = [@"/var/mobile/Library/Preferences/" stringByAppendingString:v15];
+    componentFollowupClientID2 = [(MRBaseComponentHandler *)v3 componentFollowupClientID];
+    v16 = [@"/var/mobile/Library/Preferences/" stringByAppendingString:componentFollowupClientID2];
     v17 = [v16 stringByAppendingString:@".plist"];
     [(MRBaseComponentHandler *)v3 setStateFilePath:v17];
 
@@ -105,7 +105,7 @@
   if ([CRDeviceMap supportRepair:1024])
   {
     v3 = objc_opt_new();
-    [a1 handleComponentSUCase:@"hasDisplayedFollowupForBattery" lastAUthCheckBuildVersion:@"LastBatteryAuthCompleteBuildVersion" followUpItemID:@"com.apple.mobilerepair.BatteryRepair" queryString:@"Battery" suCasekey:@"SUcaseForBattery" startBuildVersion:@"17A800" componentAuth:v3];
+    [self handleComponentSUCase:@"hasDisplayedFollowupForBattery" lastAUthCheckBuildVersion:@"LastBatteryAuthCompleteBuildVersion" followUpItemID:@"com.apple.mobilerepair.BatteryRepair" queryString:@"Battery" suCasekey:@"SUcaseForBattery" startBuildVersion:@"17A800" componentAuth:v3];
   }
 }
 
@@ -115,7 +115,7 @@
   block[1] = 3221225472;
   block[2] = sub_100009440;
   block[3] = &unk_100018610;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10001EB58 != -1)
   {
     dispatch_once(&qword_10001EB58, block);

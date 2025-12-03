@@ -1,13 +1,13 @@
 @interface VCBasebandMetrics
 - (VCBasebandMetrics)init;
-- (double)updateTotalQueueDepth:(unsigned int)a3;
-- (tagVCStatisticsMessage)getBasebandMetricsWithNotification:(SEL)a3;
-- (void)addBDCDListWithNotificationArrivalTime:(double)a3 bdcd:(double)a4 queuingDelay:(double)a5;
-- (void)addInfoListWithNotification:(id *)a3;
-- (void)calculateBitratesAndDelaysWithTotalQueueDepth:(unsigned int)a3;
+- (double)updateTotalQueueDepth:(unsigned int)depth;
+- (tagVCStatisticsMessage)getBasebandMetricsWithNotification:(SEL)notification;
+- (void)addBDCDListWithNotificationArrivalTime:(double)time bdcd:(double)bdcd queuingDelay:(double)delay;
+- (void)addInfoListWithNotification:(id *)notification;
+- (void)calculateBitratesAndDelaysWithTotalQueueDepth:(unsigned int)depth;
 - (void)dealloc;
-- (void)normalizeBDCD:(double)a3;
-- (void)setIsTargetBitrateStabilized:(BOOL)a3;
+- (void)normalizeBDCD:(double)d;
+- (void)setIsTargetBitrateStabilized:(BOOL)stabilized;
 @end
 
 @implementation VCBasebandMetrics
@@ -36,9 +36,9 @@
   [(VCBasebandMetrics *)&v3 dealloc];
 }
 
-- (tagVCStatisticsMessage)getBasebandMetricsWithNotification:(SEL)a3
+- (tagVCStatisticsMessage)getBasebandMetricsWithNotification:(SEL)notification
 {
-  v5 = self;
+  selfCopy = self;
   *(&retstr->var0.addRemoveEndPoint + 21) = 0;
   *(&retstr->var0.addRemoveEndPoint + 17) = 0u;
   *(&retstr->var0.addRemoveEndPoint + 19) = 0u;
@@ -77,21 +77,21 @@
     {
       self[33].var0.nwConnection.var0.wifi.wifiObservedTxBitrate[5] = self[33].var0.feedback.packetReceived.totalReceivedKBytes;
       [(tagVCStatisticsMessage *)self addInfoListWithNotification:a4];
-      if (v5[33].var0.feedback.packetReceived.packetType < 2u)
+      if (selfCopy[33].var0.feedback.packetReceived.packetType < 2u)
       {
-        sampleRate = v5[33].var0.feedback.packetReceived.sampleRate;
-        v5[33].var0.feedback.packetReceived.totalReceivedKBytes = sampleRate;
-        *(&v5[33].var0.addRemoveEndPoint + 31) = sampleRate;
+        sampleRate = selfCopy[33].var0.feedback.packetReceived.sampleRate;
+        selfCopy[33].var0.feedback.packetReceived.totalReceivedKBytes = sampleRate;
+        *(&selfCopy[33].var0.addRemoveEndPoint + 31) = sampleRate;
       }
 
       else
       {
-        [(tagVCStatisticsMessage *)v5 calculateBitratesAndDelaysWithTotalQueueDepth:var6 + var5];
+        [(tagVCStatisticsMessage *)selfCopy calculateBitratesAndDelaysWithTotalQueueDepth:var6 + var5];
       }
 
-      memcpy(&v5->isVCRCInternal, a4, 0x17A0uLL);
-      targetJitterQueueSize = v5[33].var0.feedback.packetReceived.targetJitterQueueSize;
-      v18 = *(&v5[33].var0.addRemoveEndPoint + 18);
+      memcpy(&selfCopy->isVCRCInternal, a4, 0x17A0uLL);
+      targetJitterQueueSize = selfCopy[33].var0.feedback.packetReceived.targetJitterQueueSize;
+      v18 = *(&selfCopy[33].var0.addRemoveEndPoint + 18);
       if (targetJitterQueueSize <= v18)
       {
         v19 = 0.0;
@@ -102,21 +102,21 @@
         v19 = targetJitterQueueSize - v18;
       }
 
-      [(tagVCStatisticsMessage *)v5 normalizeBDCD:v19];
+      [(tagVCStatisticsMessage *)selfCopy normalizeBDCD:v19];
       retstr->type = 1;
       retstr->arrivalTime = a4->var2;
       *&v20 = *(&a4->var3.var2 + 1);
-      *(&v20 + 1) = *(&v5[33].var0.addRemoveEndPoint + 108);
+      *(&v20 + 1) = *(&selfCopy[33].var0.addRemoveEndPoint + 108);
       *&retstr->var0.baseband.queueDepth1 = v20;
-      retstr->var0.nwConnection.maxThroughputBps = *&v5[33].var0.feedback.packetReceived.receiveTimestamp;
+      retstr->var0.nwConnection.maxThroughputBps = *&selfCopy[33].var0.feedback.packetReceived.receiveTimestamp;
       v21 = a4->var3.var0.var7;
       v22 = a4->var3.var0.var8;
       retstr->var0.baseband.transmittedBytes = v21;
-      v23 = v5[33].var0.feedback.packetReceived.targetJitterQueueSize / 1000.0;
-      *&retstr->var0.baseband.averageQueueDepth = v5[33].var0.nwConnection.var0.wifi.accumulatedOffChannelTime;
+      v23 = selfCopy[33].var0.feedback.packetReceived.targetJitterQueueSize / 1000.0;
+      *&retstr->var0.baseband.averageQueueDepth = selfCopy[33].var0.nwConnection.var0.wifi.accumulatedOffChannelTime;
       retstr->var0.baseband.expectedQueuingDelay = v23;
       retstr->var0.baseband.bdcd = v19;
-      *(&retstr->var0.addRemoveEndPoint + 7) = *(&v5[30].var0.addRemoveEndPoint + 3);
+      *(&retstr->var0.addRemoveEndPoint + 7) = *(&selfCopy[30].var0.addRemoveEndPoint + 3);
       var0 = a4->var3.var0.var0;
       retstr->var0.baseband.radioTechnology = var0;
       return snprintf(retstr->var0.baseband.bbString, 0x40uLL, "%2u%2u%2u%2u%2u %6u\t%6u\t%u\t%u", a4->var1, var0, a4->var0, a4->var3.var0.var2, a4->var3.var0.var3, v20, DWORD1(v20), v21, v22);
@@ -131,7 +131,7 @@
   return self;
 }
 
-- (void)addInfoListWithNotification:(id *)a3
+- (void)addInfoListWithNotification:(id *)notification
 {
   rearIndex = self->_infoList.rearIndex;
   if (self->_infoList.size)
@@ -140,9 +140,9 @@
     self->_infoList.rearIndex = rearIndex;
   }
 
-  self->_infoList.time[rearIndex] = a3->var2;
-  self->_infoList.transmittedBytes[rearIndex] = a3->var3.var0.var7;
-  self->_infoList.nonFlushableQueueDepth[self->_infoList.rearIndex] = a3->var3.var0.var6;
+  self->_infoList.time[rearIndex] = notification->var2;
+  self->_infoList.transmittedBytes[rearIndex] = notification->var3.var0.var7;
+  self->_infoList.nonFlushableQueueDepth[self->_infoList.rearIndex] = notification->var3.var0.var6;
   size = self->_infoList.size;
   if (size >= 0xF)
   {
@@ -162,7 +162,7 @@
   }
 }
 
-- (void)calculateBitratesAndDelaysWithTotalQueueDepth:(unsigned int)a3
+- (void)calculateBitratesAndDelaysWithTotalQueueDepth:(unsigned int)depth
 {
   rearIndex = self->_infoList.rearIndex;
   v5 = (rearIndex + 14) % 15;
@@ -220,7 +220,7 @@
     }
   }
 
-  [(VCBasebandMetrics *)self updateTotalQueueDepth:*&a3];
+  [(VCBasebandMetrics *)self updateTotalQueueDepth:*&depth];
   v21 = v20;
   if (self->_averageBitrate)
   {
@@ -262,15 +262,15 @@
   }
 }
 
-- (double)updateTotalQueueDepth:(unsigned int)a3
+- (double)updateTotalQueueDepth:(unsigned int)depth
 {
   if (!self->_useAverageQueueDepthForDelay)
   {
-    return a3;
+    return depth;
   }
 
   averageQueueDepth = self->_averageQueueDepth;
-  result = a3;
+  result = depth;
   if (averageQueueDepth != 0.0)
   {
     v5 = 0.1;
@@ -286,14 +286,14 @@
   return result;
 }
 
-- (void)normalizeBDCD:(double)a3
+- (void)normalizeBDCD:(double)d
 {
   if (self->_averageBitrate)
   {
     v10 = &self->_lastBasebandNotification.notes.codecRateChange + 1016;
     if (self->_isTargetBitrateStabilized)
     {
-      [(VCBasebandMetrics *)self addBDCDListWithNotificationArrivalTime:self->_lastBasebandNotification.arrivalTime bdcd:a3 queuingDelay:self->_expectedQueuingDelay];
+      [(VCBasebandMetrics *)self addBDCDListWithNotificationArrivalTime:self->_lastBasebandNotification.arrivalTime bdcd:d queuingDelay:self->_expectedQueuingDelay];
       size = self->_bdcdList.size;
       if (size >= 4)
       {
@@ -384,7 +384,7 @@
   }
 }
 
-- (void)addBDCDListWithNotificationArrivalTime:(double)a3 bdcd:(double)a4 queuingDelay:(double)a5
+- (void)addBDCDListWithNotificationArrivalTime:(double)time bdcd:(double)bdcd queuingDelay:(double)delay
 {
   size = self->_bdcdList.size;
   rearIndex = self->_bdcdList.rearIndex;
@@ -394,10 +394,10 @@
     self->_bdcdList.rearIndex = rearIndex;
   }
 
-  self->_bdcdList.time[rearIndex] = a3;
+  self->_bdcdList.time[rearIndex] = time;
   v7 = (&self->super.isa + rearIndex);
-  v7[777] = a4;
-  v7[792] = a5;
+  v7[777] = bdcd;
+  v7[792] = delay;
   if (size < 0xF)
   {
     ++size;
@@ -410,16 +410,16 @@
   }
 }
 
-- (void)setIsTargetBitrateStabilized:(BOOL)a3
+- (void)setIsTargetBitrateStabilized:(BOOL)stabilized
 {
   v5 = &self->_lastBasebandNotification.notes.codecRateChange + 1016;
   isTargetBitrateStabilized = self->_isTargetBitrateStabilized;
-  if (a3 && !isTargetBitrateStabilized)
+  if (stabilized && !isTargetBitrateStabilized)
   {
     self->_resetAverageBitrateLong = 1;
   }
 
-  if (isTargetBitrateStabilized && !a3)
+  if (isTargetBitrateStabilized && !stabilized)
   {
     [(VCBasebandMetrics *)self resetBDCDList];
     logBasebandDump = self->_logBasebandDump;
@@ -429,7 +429,7 @@
     }
   }
 
-  LOBYTE(v5[672].currentBitrate) = a3;
+  LOBYTE(v5[672].currentBitrate) = stabilized;
 }
 
 @end

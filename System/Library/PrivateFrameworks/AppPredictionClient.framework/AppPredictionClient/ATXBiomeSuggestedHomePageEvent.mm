@@ -1,58 +1,58 @@
 @interface ATXBiomeSuggestedHomePageEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (ATXBiomeSuggestedHomePageEvent)initWithCoder:(id)a3;
-- (ATXBiomeSuggestedHomePageEvent)initWithPageType:(int64_t)a3 identifier:(id)a4 action:(int64_t)a5;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (ATXBiomeSuggestedHomePageEvent)initWithCoder:(id)coder;
+- (ATXBiomeSuggestedHomePageEvent)initWithPageType:(int64_t)type identifier:(id)identifier action:(int64_t)action;
 - (id)serialize;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXBiomeSuggestedHomePageEvent
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   pageType = self->_pageType;
-  v5 = a3;
-  [v5 encodeInteger:pageType forKey:@"ATXBiomeSuggestedHomePageEventPageType"];
-  [v5 encodeObject:self->_identifier forKey:@"ATXBiomeSuggestedHomePageEventIdentifier"];
-  [v5 encodeInteger:self->_action forKey:@"ATXBiomeSuggestedHomePageEventAction"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:pageType forKey:@"ATXBiomeSuggestedHomePageEventPageType"];
+  [coderCopy encodeObject:self->_identifier forKey:@"ATXBiomeSuggestedHomePageEventIdentifier"];
+  [coderCopy encodeInteger:self->_action forKey:@"ATXBiomeSuggestedHomePageEventAction"];
 }
 
-- (ATXBiomeSuggestedHomePageEvent)initWithCoder:(id)a3
+- (ATXBiomeSuggestedHomePageEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"ATXBiomeSuggestedHomePageEventPageType"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ATXBiomeSuggestedHomePageEventIdentifier"];
-  v7 = [v4 decodeIntegerForKey:@"ATXBiomeSuggestedHomePageEventAction"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"ATXBiomeSuggestedHomePageEventPageType"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ATXBiomeSuggestedHomePageEventIdentifier"];
+  v7 = [coderCopy decodeIntegerForKey:@"ATXBiomeSuggestedHomePageEventAction"];
 
   v8 = [[ATXBiomeSuggestedHomePageEvent alloc] initWithPageType:v5 identifier:v6 action:v7];
   return v8;
 }
 
-- (ATXBiomeSuggestedHomePageEvent)initWithPageType:(int64_t)a3 identifier:(id)a4 action:(int64_t)a5
+- (ATXBiomeSuggestedHomePageEvent)initWithPageType:(int64_t)type identifier:(id)identifier action:(int64_t)action
 {
-  v9 = a4;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = ATXBiomeSuggestedHomePageEvent;
   v10 = [(ATXBiomeSuggestedHomePageEvent *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    v10->_pageType = a3;
-    objc_storeStrong(&v10->_identifier, a4);
-    v11->_action = a5;
+    v10->_pageType = type;
+    objc_storeStrong(&v10->_identifier, identifier);
+    v11->_action = action;
   }
 
   return v11;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4 == 1)
+  if (version == 1)
   {
     v4 = MEMORY[0x1E696ACD0];
-    v5 = a3;
+    dataCopy = data;
     v9 = 0;
-    v6 = [v4 unarchivedObjectOfClass:objc_opt_class() fromData:v5 error:&v9];
+    v6 = [v4 unarchivedObjectOfClass:objc_opt_class() fromData:dataCopy error:&v9];
 
     v7 = 0;
     if (!v9)

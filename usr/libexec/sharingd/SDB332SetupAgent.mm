@@ -1,36 +1,36 @@
 @interface SDB332SetupAgent
 + (_TtC16DaemoniOSLibrary16SDB332SetupAgent)shared;
-- (BOOL)shouldAcceptNewConnection:(id)a3;
+- (BOOL)shouldAcceptNewConnection:(id)connection;
 - (NSString)machServiceName;
 - (NSXPCInterface)exportedInterface;
 - (NSXPCInterface)remoteObjectInterface;
 - (void)activate;
-- (void)blePairing:(id)a3 accessoryAttached:(id)a4 blePairingUUID:(id)a5 accInfoDict:(id)a6 supportedPairTypes:(id)a7;
-- (void)blePairing:(id)a3 accessoryDetached:(id)a4 blePairingUUID:(id)a5;
-- (void)blePairingDataUpdate:(id)a3 pairType:(int)a4 pairData:(id)a5 accessory:(id)a6 blePairingUUID:(id)a7;
-- (void)blePairingInfoUpdate:(id)a3 pairType:(int)a4 pairInfoList:(id)a5 accessory:(id)a6 blePairingUUID:(id)a7;
-- (void)blePairingStateUpdate:(id)a3 validMask:(unsigned int)a4 btRadioOn:(BOOL)a5 pairingState:(int)a6 pairingModeOn:(BOOL)a7 accessory:(id)a8 blePairingUUID:(id)a9;
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4;
-- (void)centralManager:(id)a3 didDisconnectPeripheral:(id)a4 error:(id)a5;
-- (void)centralManager:(id)a3 didDiscoverPeripheral:(id)a4 advertisementData:(id)a5 RSSI:(id)a6;
-- (void)centralManager:(id)a3 didFailToConnectPeripheral:(id)a4 error:(id)a5;
-- (void)centralManagerDidUpdateState:(id)a3;
-- (void)connectionEstablished:(id)a3;
-- (void)connectionInvalidated:(id)a3;
+- (void)blePairing:(id)pairing accessoryAttached:(id)attached blePairingUUID:(id)d accInfoDict:(id)dict supportedPairTypes:(id)types;
+- (void)blePairing:(id)pairing accessoryDetached:(id)detached blePairingUUID:(id)d;
+- (void)blePairingDataUpdate:(id)update pairType:(int)type pairData:(id)data accessory:(id)accessory blePairingUUID:(id)d;
+- (void)blePairingInfoUpdate:(id)update pairType:(int)type pairInfoList:(id)list accessory:(id)accessory blePairingUUID:(id)d;
+- (void)blePairingStateUpdate:(id)update validMask:(unsigned int)mask btRadioOn:(BOOL)on pairingState:(int)state pairingModeOn:(BOOL)modeOn accessory:(id)accessory blePairingUUID:(id)d;
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral;
+- (void)centralManager:(id)manager didDisconnectPeripheral:(id)peripheral error:(id)error;
+- (void)centralManager:(id)manager didDiscoverPeripheral:(id)peripheral advertisementData:(id)data RSSI:(id)i;
+- (void)centralManager:(id)manager didFailToConnectPeripheral:(id)peripheral error:(id)error;
+- (void)centralManagerDidUpdateState:(id)state;
+- (void)connectionEstablished:(id)established;
+- (void)connectionInvalidated:(id)invalidated;
 - (void)dealloc;
 - (void)enableBluetoothTapped;
 - (void)pairTapped;
-- (void)pairingAgent:(id)a3 peerDidCompletePairing:(id)a4;
-- (void)pairingAgent:(id)a3 peerDidFailToCompletePairing:(id)a4 error:(id)a5;
-- (void)pairingAgent:(id)a3 peerDidRequestPairing:(id)a4 type:(int64_t)a5 passkey:(id)a6;
-- (void)pairingAgent:(id)a3 peerDidUnpair:(id)a4;
-- (void)peripheral:(id)a3 didDiscoverServices:(id)a4;
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4;
-- (void)remoteAlertHandleDidActivate:(id)a3;
-- (void)remoteAlertHandleDidDeactivate:(id)a3;
-- (void)resetUIUpdatesFlagWithUndimScreen:(BOOL)a3;
+- (void)pairingAgent:(id)agent peerDidCompletePairing:(id)pairing;
+- (void)pairingAgent:(id)agent peerDidFailToCompletePairing:(id)pairing error:(id)error;
+- (void)pairingAgent:(id)agent peerDidRequestPairing:(id)pairing type:(int64_t)type passkey:(id)passkey;
+- (void)pairingAgent:(id)agent peerDidUnpair:(id)unpair;
+- (void)peripheral:(id)peripheral didDiscoverServices:(id)services;
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error;
+- (void)remoteAlertHandleDidActivate:(id)activate;
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate;
+- (void)resetUIUpdatesFlagWithUndimScreen:(BOOL)screen;
 - (void)showEducationUIIfNecessary;
-- (void)startBatteryScannerForPeripheral:(id)a3;
+- (void)startBatteryScannerForPeripheral:(id)peripheral;
 - (void)startScanning;
 - (void)stopBatteryScanner;
 - (void)stopScanning;
@@ -52,52 +52,52 @@
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CFNotificationCenterGetDarwinNotifyCenter();
-  CFNotificationCenterRemoveEveryObserver(v3, v2);
+  CFNotificationCenterRemoveEveryObserver(v3, selfCopy);
 
-  v4.receiver = v2;
+  v4.receiver = selfCopy;
   v4.super_class = type metadata accessor for SDB332SetupAgent(0);
   [(SDXPCDaemon *)&v4 dealloc];
 }
 
 - (void)activate
 {
-  v2 = self;
+  selfCopy = self;
   sub_1005F3E3C();
 }
 
-- (void)remoteAlertHandleDidActivate:(id)a3
+- (void)remoteAlertHandleDidActivate:(id)activate
 {
-  v4 = a3;
-  v5 = self;
+  activateCopy = activate;
+  selfCopy = self;
   sub_100620D24(&unk_1008EAF18, sub_100625244, &unk_1008EAF30);
 }
 
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
-  sub_1006159F4(v6, a4);
+  handleCopy = handle;
+  selfCopy = self;
+  errorCopy = error;
+  sub_1006159F4(handleCopy, error);
 }
 
-- (void)remoteAlertHandleDidDeactivate:(id)a3
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate
 {
-  v4 = a3;
-  v5 = self;
+  deactivateCopy = deactivate;
+  selfCopy = self;
   sub_100620FE4();
 }
 
 - (void)pairTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_100616038();
 }
 
 - (void)showEducationUIIfNecessary
 {
-  v2 = self;
+  selfCopy = self;
   sub_100620D24(&unk_1008EAE78, sub_100625230, &unk_1008EAE90);
 }
 
@@ -122,128 +122,128 @@
   return v2;
 }
 
-- (BOOL)shouldAcceptNewConnection:(id)a3
+- (BOOL)shouldAcceptNewConnection:(id)connection
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_10062144C(v4);
+  connectionCopy = connection;
+  selfCopy = self;
+  v6 = sub_10062144C(connectionCopy);
 
   return v6 & 1;
 }
 
-- (void)connectionEstablished:(id)a3
+- (void)connectionEstablished:(id)established
 {
-  v4 = a3;
-  v5 = self;
-  sub_10061661C(v4);
+  establishedCopy = established;
+  selfCopy = self;
+  sub_10061661C(establishedCopy);
 }
 
-- (void)connectionInvalidated:(id)a3
+- (void)connectionInvalidated:(id)invalidated
 {
-  v4 = a3;
-  v5 = self;
-  sub_1006169C8(v4);
+  invalidatedCopy = invalidated;
+  selfCopy = self;
+  sub_1006169C8(invalidatedCopy);
 }
 
-- (void)centralManagerDidUpdateState:(id)a3
+- (void)centralManagerDidUpdateState:(id)state
 {
-  v4 = a3;
-  v5 = self;
-  sub_100616D20(v4);
+  stateCopy = state;
+  selfCopy = self;
+  sub_100616D20(stateCopy);
 }
 
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1006216B0(v7);
+  managerCopy = manager;
+  peripheralCopy = peripheral;
+  selfCopy = self;
+  sub_1006216B0(peripheralCopy);
 }
 
-- (void)centralManager:(id)a3 didDisconnectPeripheral:(id)a4 error:(id)a5
+- (void)centralManager:(id)manager didDisconnectPeripheral:(id)peripheral error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  v11 = a5;
-  sub_100621804(v9);
+  managerCopy = manager;
+  peripheralCopy = peripheral;
+  selfCopy = self;
+  errorCopy = error;
+  sub_100621804(peripheralCopy);
 }
 
-- (void)centralManager:(id)a3 didFailToConnectPeripheral:(id)a4 error:(id)a5
+- (void)centralManager:(id)manager didFailToConnectPeripheral:(id)peripheral error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  v11 = a5;
-  sub_100621E8C(v9);
+  managerCopy = manager;
+  peripheralCopy = peripheral;
+  selfCopy = self;
+  errorCopy = error;
+  sub_100621E8C(peripheralCopy);
 }
 
-- (void)centralManager:(id)a3 didDiscoverPeripheral:(id)a4 advertisementData:(id)a5 RSSI:(id)a6
+- (void)centralManager:(id)manager didDiscoverPeripheral:(id)peripheral advertisementData:(id)data RSSI:(id)i
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = self;
-  sub_1006224DC(v9);
+  managerCopy = manager;
+  peripheralCopy = peripheral;
+  iCopy = i;
+  selfCopy = self;
+  sub_1006224DC(managerCopy);
 }
 
-- (void)pairingAgent:(id)a3 peerDidRequestPairing:(id)a4 type:(int64_t)a5 passkey:(id)a6
+- (void)pairingAgent:(id)agent peerDidRequestPairing:(id)pairing type:(int64_t)type passkey:(id)passkey
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = self;
-  sub_100622838(v10, v11, a5);
+  agentCopy = agent;
+  pairingCopy = pairing;
+  passkeyCopy = passkey;
+  selfCopy = self;
+  sub_100622838(agentCopy, pairingCopy, type);
 }
 
-- (void)pairingAgent:(id)a3 peerDidFailToCompletePairing:(id)a4 error:(id)a5
+- (void)pairingAgent:(id)agent peerDidFailToCompletePairing:(id)pairing error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v11 = a5;
-  v10 = self;
-  sub_1006230A0(v9);
+  agentCopy = agent;
+  pairingCopy = pairing;
+  errorCopy = error;
+  selfCopy = self;
+  sub_1006230A0(pairingCopy);
 }
 
-- (void)pairingAgent:(id)a3 peerDidCompletePairing:(id)a4
+- (void)pairingAgent:(id)agent peerDidCompletePairing:(id)pairing
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1006177F0(v6, v7);
+  agentCopy = agent;
+  pairingCopy = pairing;
+  selfCopy = self;
+  sub_1006177F0(agentCopy, pairingCopy);
 }
 
-- (void)pairingAgent:(id)a3 peerDidUnpair:(id)a4
+- (void)pairingAgent:(id)agent peerDidUnpair:(id)unpair
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_10061917C(v6, v7);
+  agentCopy = agent;
+  unpairCopy = unpair;
+  selfCopy = self;
+  sub_10061917C(agentCopy, unpairCopy);
 }
 
-- (void)peripheral:(id)a3 didDiscoverServices:(id)a4
+- (void)peripheral:(id)peripheral didDiscoverServices:(id)services
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
-  sub_100623718(v6);
+  peripheralCopy = peripheral;
+  selfCopy = self;
+  servicesCopy = services;
+  sub_100623718(peripheralCopy);
 }
 
-- (void)resetUIUpdatesFlagWithUndimScreen:(BOOL)a3
+- (void)resetUIUpdatesFlagWithUndimScreen:(BOOL)screen
 {
-  v4 = self;
-  sub_100619CA4(a3);
+  selfCopy = self;
+  sub_100619CA4(screen);
 }
 
-- (void)blePairing:(id)a3 accessoryAttached:(id)a4 blePairingUUID:(id)a5 accInfoDict:(id)a6 supportedPairTypes:(id)a7
+- (void)blePairing:(id)pairing accessoryAttached:(id)attached blePairingUUID:(id)d accInfoDict:(id)dict supportedPairTypes:(id)types
 {
   v12 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v14 = v13;
-  v15 = a3;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = self;
+  pairingCopy = pairing;
+  dCopy = d;
+  dictCopy = dict;
+  typesCopy = types;
+  selfCopy = self;
   v20 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v22 = v21;
 
@@ -257,13 +257,13 @@
   sub_100026AC0(v20, v22);
 }
 
-- (void)blePairing:(id)a3 accessoryDetached:(id)a4 blePairingUUID:(id)a5
+- (void)blePairing:(id)pairing accessoryDetached:(id)detached blePairingUUID:(id)d
 {
   v8 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
-  v11 = a3;
-  v12 = a5;
-  v13 = self;
+  pairingCopy = pairing;
+  dCopy = d;
+  selfCopy = self;
   v14 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v16 = v15;
 
@@ -271,24 +271,24 @@
   sub_100026AC0(v14, v16);
 }
 
-- (void)blePairingStateUpdate:(id)a3 validMask:(unsigned int)a4 btRadioOn:(BOOL)a5 pairingState:(int)a6 pairingModeOn:(BOOL)a7 accessory:(id)a8 blePairingUUID:(id)a9
+- (void)blePairingStateUpdate:(id)update validMask:(unsigned int)mask btRadioOn:(BOOL)on pairingState:(int)state pairingModeOn:(BOOL)modeOn accessory:(id)accessory blePairingUUID:(id)d
 {
-  v14 = a3;
-  v15 = a9;
-  v19 = self;
+  updateCopy = update;
+  dCopy = d;
+  selfCopy = self;
   v16 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v18 = v17;
 
-  sub_100624028(a4, a5, a6, a7);
+  sub_100624028(mask, on, state, modeOn);
   sub_100026AC0(v16, v18);
 }
 
-- (void)blePairingInfoUpdate:(id)a3 pairType:(int)a4 pairInfoList:(id)a5 accessory:(id)a6 blePairingUUID:(id)a7
+- (void)blePairingInfoUpdate:(id)update pairType:(int)type pairInfoList:(id)list accessory:(id)accessory blePairingUUID:(id)d
 {
   v10 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v11 = a3;
-  v12 = a7;
-  v13 = self;
+  updateCopy = update;
+  dCopy = d;
+  selfCopy = self;
   v14 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v16 = v15;
 
@@ -296,46 +296,46 @@
   sub_100026AC0(v14, v16);
 }
 
-- (void)blePairingDataUpdate:(id)a3 pairType:(int)a4 pairData:(id)a5 accessory:(id)a6 blePairingUUID:(id)a7
+- (void)blePairingDataUpdate:(id)update pairType:(int)type pairData:(id)data accessory:(id)accessory blePairingUUID:(id)d
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v22 = self;
+  updateCopy = update;
+  dataCopy = data;
+  accessoryCopy = accessory;
+  dCopy = d;
+  selfCopy = self;
   v16 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v18 = v17;
 
   v19 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v21 = v20;
 
-  sub_1006245E8(a4, v16, v18);
+  sub_1006245E8(type, v16, v18);
   sub_100026AC0(v19, v21);
   sub_100026AC0(v16, v18);
 }
 
 - (void)startScanning
 {
-  v2 = self;
+  selfCopy = self;
   sub_10061D5E0();
 }
 
 - (void)stopScanning
 {
-  v2 = self;
+  selfCopy = self;
   sub_10061D8B8();
 }
 
-- (void)startBatteryScannerForPeripheral:(id)a3
+- (void)startBatteryScannerForPeripheral:(id)peripheral
 {
-  v4 = a3;
-  v5 = self;
-  sub_10061DA24(v4);
+  peripheralCopy = peripheral;
+  selfCopy = self;
+  sub_10061DA24(peripheralCopy);
 }
 
 - (void)stopBatteryScanner
 {
-  v2 = self;
+  selfCopy = self;
   sub_10061F94C();
 }
 
@@ -357,11 +357,11 @@
     _os_log_impl(&_mh_execute_header, v1, v2, "enableBluetoothTapped", v3, 2u);
   }
 
-  v4 = [objc_opt_self() sharedMonitor];
-  if (v4)
+  sharedMonitor = [objc_opt_self() sharedMonitor];
+  if (sharedMonitor)
   {
-    v5 = v4;
-    [v4 setBluetoothEnabled:1];
+    v5 = sharedMonitor;
+    [sharedMonitor setBluetoothEnabled:1];
   }
 
   else

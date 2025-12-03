@@ -1,23 +1,23 @@
 @interface AVSinkSubscriber
-- (AVSinkSubscriber)initWithPublisher:(id)a3 requestingInitialValue:(BOOL)a4 sink:(id)a5;
+- (AVSinkSubscriber)initWithPublisher:(id)publisher requestingInitialValue:(BOOL)value sink:(id)sink;
 - (void)cancel;
 - (void)dealloc;
 @end
 
 @implementation AVSinkSubscriber
 
-- (AVSinkSubscriber)initWithPublisher:(id)a3 requestingInitialValue:(BOOL)a4 sink:(id)a5
+- (AVSinkSubscriber)initWithPublisher:(id)publisher requestingInitialValue:(BOOL)value sink:(id)sink
 {
-  v6 = a4;
+  valueCopy = value;
   v11.receiver = self;
   v11.super_class = AVSinkSubscriber;
   v8 = [(AVSinkSubscriber *)&v11 init];
   if (v8)
   {
-    v8->_publisher = a3;
-    v9 = [a5 copy];
+    v8->_publisher = publisher;
+    v9 = [sink copy];
     v8->_sink = v9;
-    v8->_token = [(AVPublisher *)v8->_publisher subscribeRequestingInitialValue:v6 block:v9];
+    v8->_token = [(AVPublisher *)v8->_publisher subscribeRequestingInitialValue:valueCopy block:v9];
     v8->_cancelMutex = FigSimpleMutexCreate();
   }
 

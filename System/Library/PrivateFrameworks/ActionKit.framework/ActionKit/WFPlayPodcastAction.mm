@@ -1,26 +1,26 @@
 @interface WFPlayPodcastAction
 - (BOOL)attemptContextualPlayback;
-- (BOOL)canOfferSuggestionsForParameterWithKey:(id)a3;
+- (BOOL)canOfferSuggestionsForParameterWithKey:(id)key;
 - (id)contentNotFoundError;
-- (id)errorPlayingPodcast:(unsigned int)a3;
+- (id)errorPlayingPodcast:(unsigned int)podcast;
 - (id)genericPlayPodcastFailedError;
-- (id)getPlaybackURLForContentItem:(id)a3 playbackOrder:(id)a4;
-- (id)serializedParametersForContextualActionMediaIntent:(id)a3;
-- (id)serializedParametersForDonatedIntent:(id)a3 allowDroppingUnconfigurableValues:(BOOL)a4;
-- (id)systemEntityCollectionIdentifierForDisambiguatingParameterWithKey:(id)a3;
-- (void)executePlayMediaIntent:(id)a3;
-- (void)fetchSuggestedEntitiesForParameterWithKey:(id)a3 completionHandler:(id)a4;
-- (void)playQueue:(_MRSystemAppPlaybackQueue *)a3 onPlayerPath:(void *)a4 completion:(id)a5;
-- (void)runAsynchronouslyWithInput:(id)a3;
+- (id)getPlaybackURLForContentItem:(id)item playbackOrder:(id)order;
+- (id)serializedParametersForContextualActionMediaIntent:(id)intent;
+- (id)serializedParametersForDonatedIntent:(id)intent allowDroppingUnconfigurableValues:(BOOL)values;
+- (id)systemEntityCollectionIdentifierForDisambiguatingParameterWithKey:(id)key;
+- (void)executePlayMediaIntent:(id)intent;
+- (void)fetchSuggestedEntitiesForParameterWithKey:(id)key completionHandler:(id)handler;
+- (void)playQueue:(_MRSystemAppPlaybackQueue *)queue onPlayerPath:(void *)path completion:(id)completion;
+- (void)runAsynchronouslyWithInput:(id)input;
 @end
 
 @implementation WFPlayPodcastAction
 
-- (void)executePlayMediaIntent:(id)a3
+- (void)executePlayMediaIntent:(id)intent
 {
   v4 = MEMORY[0x277D7C538];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithIntent:v5 donateInteraction:0 groupIdentifier:0];
+  intentCopy = intent;
+  v6 = [[v4 alloc] initWithIntent:intentCopy donateInteraction:0 groupIdentifier:0];
 
   [v6 setSkipResolveAndConfirm:1];
   [(WFPlayPodcastAction *)self setExecutor:v6];
@@ -35,28 +35,28 @@
 - (BOOL)attemptContextualPlayback
 {
   v3 = [(WFPlayPodcastAction *)self parameterValueForKey:@"WFPodcastShow" ofClass:objc_opt_class()];
-  v4 = [v3 intent];
+  intent = [v3 intent];
 
-  if (v4)
+  if (intent)
   {
-    v5 = [v3 intent];
-    [(WFPlayPodcastAction *)self executePlayMediaIntent:v5];
+    intent2 = [v3 intent];
+    [(WFPlayPodcastAction *)self executePlayMediaIntent:intent2];
   }
 
-  return v4 != 0;
+  return intent != 0;
 }
 
-- (id)serializedParametersForContextualActionMediaIntent:(id)a3
+- (id)serializedParametersForContextualActionMediaIntent:(id)intent
 {
   v12[1] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277D7C730];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithIntent:v4];
+  intentCopy = intent;
+  v5 = [[v3 alloc] initWithIntent:intentCopy];
 
   v6 = [objc_alloc(MEMORY[0x277D7C740]) initWithValue:v5];
   v11 = @"WFPodcastShow";
-  v7 = [v6 serializedRepresentation];
-  v12[0] = v7;
+  serializedRepresentation = [v6 serializedRepresentation];
+  v12[0] = serializedRepresentation;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
 
   v9 = *MEMORY[0x277D85DE8];
@@ -64,50 +64,50 @@
   return v8;
 }
 
-- (void)fetchSuggestedEntitiesForParameterWithKey:(id)a3 completionHandler:(id)a4
+- (void)fetchSuggestedEntitiesForParameterWithKey:(id)key completionHandler:(id)handler
 {
   v18[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WFPlayPodcastAction *)self systemEntityCollectionIdentifierForDisambiguatingParameterWithKey:v6];
+  keyCopy = key;
+  handlerCopy = handler;
+  v8 = [(WFPlayPodcastAction *)self systemEntityCollectionIdentifierForDisambiguatingParameterWithKey:keyCopy];
   if (v8)
   {
-    v9 = [MEMORY[0x277D7C840] sharedDataSource];
-    [v9 loadEntriesFor:objc_opt_class() parameterKey:v6 limit:20 collectionIdentifier:v8 completionHandler:v7];
+    mEMORY[0x277D7C840] = [MEMORY[0x277D7C840] sharedDataSource];
+    [mEMORY[0x277D7C840] loadEntriesFor:objc_opt_class() parameterKey:keyCopy limit:20 collectionIdentifier:v8 completionHandler:handlerCopy];
   }
 
   else
   {
-    v9 = WFLocalizedString(@"Suggestions Not Found");
+    mEMORY[0x277D7C840] = WFLocalizedString(@"Suggestions Not Found");
     v10 = WFLocalizedString(@"The specified action has no suggestions available");
     v11 = MEMORY[0x277CCA9B8];
     v12 = *MEMORY[0x277D7CB30];
     v13 = *MEMORY[0x277CCA450];
     v17[0] = *MEMORY[0x277CCA470];
     v17[1] = v13;
-    v18[0] = v9;
+    v18[0] = mEMORY[0x277D7C840];
     v18[1] = v10;
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:2];
     v15 = [v11 errorWithDomain:v12 code:5 userInfo:v14];
 
-    (*(v7 + 2))(v7, 0, v15);
+    (*(handlerCopy + 2))(handlerCopy, 0, v15);
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)canOfferSuggestionsForParameterWithKey:(id)a3
+- (BOOL)canOfferSuggestionsForParameterWithKey:(id)key
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == @"WFPodcastShow")
+  keyCopy = key;
+  v5 = keyCopy;
+  if (keyCopy == @"WFPodcastShow")
   {
     v6 = 1;
   }
 
-  else if (v4)
+  else if (keyCopy)
   {
-    v6 = [(__CFString *)v4 isEqualToString:@"WFPodcastShow"];
+    v6 = [(__CFString *)keyCopy isEqualToString:@"WFPodcastShow"];
   }
 
   else
@@ -130,16 +130,16 @@
   return v8;
 }
 
-- (id)systemEntityCollectionIdentifierForDisambiguatingParameterWithKey:(id)a3
+- (id)systemEntityCollectionIdentifierForDisambiguatingParameterWithKey:(id)key
 {
   v3 = [(WFPlayPodcastAction *)self parameterStateForKey:@"WFPodcastShow"];
-  v4 = [v3 variable];
-  if (v4)
+  variable = [v3 variable];
+  if (variable)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = variable;
     }
 
     else
@@ -155,43 +155,43 @@
 
   v6 = v5;
 
-  v7 = [v6 collectionFilter];
+  collectionFilter = [v6 collectionFilter];
 
-  v8 = [v7 namedQueryReference];
+  namedQueryReference = [collectionFilter namedQueryReference];
 
-  if (v8)
+  if (namedQueryReference)
   {
-    v9 = [v8 topHitSystemEntityCollectionIdentifier];
+    topHitSystemEntityCollectionIdentifier = [namedQueryReference topHitSystemEntityCollectionIdentifier];
   }
 
   else
   {
-    v9 = 0;
+    topHitSystemEntityCollectionIdentifier = 0;
   }
 
-  return v9;
+  return topHitSystemEntityCollectionIdentifier;
 }
 
-- (id)serializedParametersForDonatedIntent:(id)a3 allowDroppingUnconfigurableValues:(BOOL)a4
+- (id)serializedParametersForDonatedIntent:(id)intent allowDroppingUnconfigurableValues:(BOOL)values
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  intentCopy = intent;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
-    v7 = [v6 _codableDescription];
-    v8 = [v7 attributeByName:@"mediaContainer"];
+    v6 = intentCopy;
+    _codableDescription = [v6 _codableDescription];
+    v8 = [_codableDescription attributeByName:@"mediaContainer"];
     v9 = [(WFPlayPodcastAction *)self parameterForKey:@"WFPodcastShow"];
-    v10 = [v6 mediaContainer];
-    v11 = [v9 definition];
-    v12 = [v8 wf_parameterStateForIntentValue:v10 parameterDefinition:v11];
-    v13 = [v12 serializedRepresentation];
+    mediaContainer = [v6 mediaContainer];
+    definition = [v9 definition];
+    v12 = [v8 wf_parameterStateForIntentValue:mediaContainer parameterDefinition:definition];
+    serializedRepresentation = [v12 serializedRepresentation];
 
-    if (v13)
+    if (serializedRepresentation)
     {
       v17 = @"WFPodcastShow";
-      v18[0] = v13;
+      v18[0] = serializedRepresentation;
       v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:&v17 count:1];
     }
 
@@ -211,11 +211,11 @@
   return v14;
 }
 
-- (id)errorPlayingPodcast:(unsigned int)a3
+- (id)errorPlayingPodcast:(unsigned int)podcast
 {
-  if (a3)
+  if (podcast)
   {
-    if (a3 == 1)
+    if (podcast == 1)
     {
       [(WFPlayPodcastAction *)self contentNotFoundError];
     }
@@ -275,18 +275,18 @@
   return v8;
 }
 
-- (id)getPlaybackURLForContentItem:(id)a3 playbackOrder:(id)a4
+- (id)getPlaybackURLForContentItem:(id)item playbackOrder:(id)order
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  itemCopy = item;
+  orderCopy = order;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v13 = @"storeTrackId";
-    v7 = [v5 episode];
-    v8 = [v7 identifier];
-    v14[0] = v8;
+    episode = [itemCopy episode];
+    identifier = [episode identifier];
+    v14[0] = identifier;
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:&v13 count:1];
 
 LABEL_5:
@@ -296,8 +296,8 @@ LABEL_5:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v5 object];
-    v9 = [v7 podcastQueryDictionaryWithPlaybackOrder:v6];
+    episode = [itemCopy object];
+    v9 = [episode podcastQueryDictionaryWithPlaybackOrder:orderCopy];
     goto LABEL_5;
   }
 
@@ -310,19 +310,19 @@ LABEL_7:
   return v10;
 }
 
-- (void)playQueue:(_MRSystemAppPlaybackQueue *)a3 onPlayerPath:(void *)a4 completion:(id)a5
+- (void)playQueue:(_MRSystemAppPlaybackQueue *)queue onPlayerPath:(void *)path completion:(id)completion
 {
-  v8 = a5;
-  v9 = [(WFPlayPodcastAction *)self userInterface];
+  completionCopy = completion;
+  userInterface = [(WFPlayPodcastAction *)self userInterface];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __57__WFPlayPodcastAction_playQueue_onPlayerPath_completion___block_invoke;
   v11[3] = &unk_278C1A740;
-  v13 = a3;
-  v14 = a4;
-  v12 = v8;
-  v10 = v8;
-  WFConfigureAudioRoutesForUserInterface(v9, v11);
+  queueCopy = queue;
+  pathCopy = path;
+  v12 = completionCopy;
+  v10 = completionCopy;
+  WFConfigureAudioRoutesForUserInterface(userInterface, v11);
 }
 
 void __57__WFPlayPodcastAction_playQueue_onPlayerPath_completion___block_invoke(uint64_t a1)
@@ -340,10 +340,10 @@ void __57__WFPlayPodcastAction_playQueue_onPlayerPath_completion___block_invoke_
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
   v8[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  inputCopy = input;
   if (![(WFPlayPodcastAction *)self attemptContextualPlayback])
   {
     v8[0] = objc_opt_class();
@@ -354,7 +354,7 @@ void __57__WFPlayPodcastAction_playQueue_onPlayerPath_completion___block_invoke_
     v7[2] = __50__WFPlayPodcastAction_runAsynchronouslyWithInput___block_invoke;
     v7[3] = &unk_278C211D0;
     v7[4] = self;
-    [v4 generateCollectionByCoercingToItemClasses:v5 completionHandler:v7];
+    [inputCopy generateCollectionByCoercingToItemClasses:v5 completionHandler:v7];
   }
 
   v6 = *MEMORY[0x277D85DE8];

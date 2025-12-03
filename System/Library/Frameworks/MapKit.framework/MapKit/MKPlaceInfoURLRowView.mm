@@ -1,5 +1,5 @@
 @interface MKPlaceInfoURLRowView
-- (MKPlaceInfoURLRowView)initWithFrame:(CGRect)a3;
+- (MKPlaceInfoURLRowView)initWithFrame:(CGRect)frame;
 - (id)_valueString;
 - (id)draggableContent;
 @end
@@ -8,12 +8,12 @@
 
 - (id)draggableContent
 {
-  v2 = [(MKPlaceInfoContactRowView *)self labeledValue];
-  v3 = [v2 value];
+  labeledValue = [(MKPlaceInfoContactRowView *)self labeledValue];
+  value = [labeledValue value];
 
-  if (v3)
+  if (value)
   {
-    v4 = [MEMORY[0x1E695DFF8] URLWithString:v3];
+    v4 = [MEMORY[0x1E695DFF8] URLWithString:value];
   }
 
   else
@@ -26,24 +26,24 @@
 
 - (id)_valueString
 {
-  v2 = [(MKPlaceInfoContactRowView *)self labeledValue];
-  v3 = [v2 value];
+  labeledValue = [(MKPlaceInfoContactRowView *)self labeledValue];
+  value = [labeledValue value];
 
-  v4 = [MEMORY[0x1E696AEC0] _mapkit_shortenedURLStringForFullURLString:v3];
+  v4 = [MEMORY[0x1E696AEC0] _mapkit_shortenedURLStringForFullURLString:value];
 
   return v4;
 }
 
-- (MKPlaceInfoURLRowView)initWithFrame:(CGRect)a3
+- (MKPlaceInfoURLRowView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = MKPlaceInfoURLRowView;
-  v3 = [(MKPlaceInfoContactRowView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MKPlaceInfoContactRowView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(MKPlaceInfoContactRowView *)v3 valueLabel];
-    [v5 setLineBreakMode:1];
+    valueLabel = [(MKPlaceInfoContactRowView *)v3 valueLabel];
+    [valueLabel setLineBreakMode:1];
   }
 
   return v4;

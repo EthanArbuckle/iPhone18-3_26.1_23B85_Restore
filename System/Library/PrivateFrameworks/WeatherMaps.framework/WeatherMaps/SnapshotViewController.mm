@@ -1,38 +1,38 @@
 @interface SnapshotViewController
-- (_TtC11WeatherMaps22SnapshotViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC11WeatherMaps22SnapshotViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
 @end
 
 @implementation SnapshotViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_220F57070();
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_220F57650();
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
-  v4 = self;
-  sub_220F57810(a3);
+  selfCopy = self;
+  sub_220F57810(appearing);
 }
 
-- (_TtC11WeatherMaps22SnapshotViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC11WeatherMaps22SnapshotViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_220FC2700();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_220F594B8();
 }
 

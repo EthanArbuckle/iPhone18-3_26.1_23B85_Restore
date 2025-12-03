@@ -1,62 +1,62 @@
 @interface HMUserCloudShareRepairInfo
 - (HMUserCloudShareRepairInfo)init;
-- (HMUserCloudShareRepairInfo)initWithCoder:(id)a3;
-- (HMUserCloudShareRepairInfo)initWithIdentifier:(id)a3 version:(int64_t)a4;
-- (void)encodeWithCoder:(id)a3;
+- (HMUserCloudShareRepairInfo)initWithCoder:(id)coder;
+- (HMUserCloudShareRepairInfo)initWithIdentifier:(id)identifier version:(int64_t)version;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMUserCloudShareRepairInfo
 
-- (HMUserCloudShareRepairInfo)initWithCoder:(id)a3
+- (HMUserCloudShareRepairInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"version"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"version"];
 
   if (v6)
   {
-    v7 = [v6 integerValue];
+    integerValue = [v6 integerValue];
   }
 
   else
   {
-    v7 = 1;
+    integerValue = 1;
   }
 
-  v8 = [(HMUserCloudShareRepairInfo *)self initWithIdentifier:v5 version:v7];
+  v8 = [(HMUserCloudShareRepairInfo *)self initWithIdentifier:v5 version:integerValue];
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMUserCloudShareRepairInfo *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(HMUserCloudShareRepairInfo *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithInteger:{-[HMUserCloudShareRepairInfo version](self, "version")}];
-  [v4 encodeObject:v6 forKey:@"version"];
+  [coderCopy encodeObject:v6 forKey:@"version"];
 }
 
 - (HMUserCloudShareRepairInfo)init
 {
-  v3 = [MEMORY[0x1E696AFB0] UUID];
-  v4 = [(HMUserCloudShareRepairInfo *)self initWithIdentifier:v3 version:1];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  v4 = [(HMUserCloudShareRepairInfo *)self initWithIdentifier:uUID version:1];
 
   return v4;
 }
 
-- (HMUserCloudShareRepairInfo)initWithIdentifier:(id)a3 version:(int64_t)a4
+- (HMUserCloudShareRepairInfo)initWithIdentifier:(id)identifier version:(int64_t)version
 {
-  v7 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = HMUserCloudShareRepairInfo;
   v8 = [(HMUserCloudShareRepairInfo *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_identifier, a3);
-    v9->_version = a4;
+    objc_storeStrong(&v8->_identifier, identifier);
+    v9->_version = version;
   }
 
   return v9;

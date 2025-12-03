@@ -1,9 +1,9 @@
 @interface DictionaryCoder
 - (_TtC17IMSharedUtilities15DictionaryCoder)init;
-- (void)encodeBool:(BOOL)a3 forKey:(id)a4;
-- (void)encodeBytes:(const char *)a3 length:(int64_t)a4 forKey:(id)a5;
-- (void)encodeDouble:(double)a3 forKey:(id)a4;
-- (void)encodeObject:(id)a3 forKey:(id)a4;
+- (void)encodeBool:(BOOL)bool forKey:(id)key;
+- (void)encodeBytes:(const char *)bytes length:(int64_t)length forKey:(id)key;
+- (void)encodeDouble:(double)double forKey:(id)key;
+- (void)encodeObject:(id)object forKey:(id)key;
 @end
 
 @implementation DictionaryCoder
@@ -34,11 +34,11 @@
   return [(DictionaryCoder *)&v10 init];
 }
 
-- (void)encodeBool:(BOOL)a3 forKey:(id)a4
+- (void)encodeBool:(BOOL)bool forKey:(id)key
 {
   v5 = sub_1A88C82E8();
   v7 = v6;
-  v8 = self;
+  selfCopy = self;
   v9 = sub_1A88C86C8();
   v10[3] = sub_1A85FC408();
   v10[0] = v9;
@@ -47,15 +47,15 @@
   sub_1A85F1084(v10);
 }
 
-- (void)encodeBytes:(const char *)a3 length:(int64_t)a4 forKey:(id)a5
+- (void)encodeBytes:(const char *)bytes length:(int64_t)length forKey:(id)key
 {
   v8 = sub_1A88C82E8();
   v10 = v9;
-  if (a3)
+  if (bytes)
   {
     v11 = v8;
-    v12 = self;
-    v13 = sub_1A8861F2C(a3, a4);
+    selfCopy = self;
+    v13 = sub_1A8861F2C(bytes, length);
     v15[3] = MEMORY[0x1E6969088];
     v15[0] = v13;
     v15[1] = v14;
@@ -69,11 +69,11 @@
   }
 }
 
-- (void)encodeDouble:(double)a3 forKey:(id)a4
+- (void)encodeDouble:(double)double forKey:(id)key
 {
   v5 = sub_1A88C82E8();
   v7 = v6;
-  v8 = self;
+  selfCopy = self;
   v9 = sub_1A88C7758();
   v10[3] = sub_1A85FC408();
   v10[0] = v9;
@@ -82,12 +82,12 @@
   sub_1A85F1084(v10);
 }
 
-- (void)encodeObject:(id)a3 forKey:(id)a4
+- (void)encodeObject:(id)object forKey:(id)key
 {
-  if (a3)
+  if (object)
   {
-    v6 = a4;
-    v7 = self;
+    keyCopy = key;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1A88C8CB8();
     swift_unknownObjectRelease();
@@ -96,8 +96,8 @@
   else
   {
     memset(v13, 0, sizeof(v13));
-    v8 = a4;
-    v9 = self;
+    keyCopy2 = key;
+    selfCopy2 = self;
   }
 
   v10 = sub_1A88C82E8();

@@ -1,9 +1,9 @@
 @interface RTAuthorizedLocationZDRLocationsEnumerationOptions
 - (RTAuthorizedLocationZDRLocationsEnumerationOptions)init;
-- (RTAuthorizedLocationZDRLocationsEnumerationOptions)initWithCoder:(id)a3;
-- (RTAuthorizedLocationZDRLocationsEnumerationOptions)initWithOptions:(unint64_t)a3 startDate:(id)a4 endDate:(id)a5 maximumNumberOfItems:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (RTAuthorizedLocationZDRLocationsEnumerationOptions)initWithCoder:(id)coder;
+- (RTAuthorizedLocationZDRLocationsEnumerationOptions)initWithOptions:(unint64_t)options startDate:(id)date endDate:(id)endDate maximumNumberOfItems:(id)items;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTAuthorizedLocationZDRLocationsEnumerationOptions
@@ -27,50 +27,50 @@
   return v3;
 }
 
-- (RTAuthorizedLocationZDRLocationsEnumerationOptions)initWithOptions:(unint64_t)a3 startDate:(id)a4 endDate:(id)a5 maximumNumberOfItems:(id)a6
+- (RTAuthorizedLocationZDRLocationsEnumerationOptions)initWithOptions:(unint64_t)options startDate:(id)date endDate:(id)endDate maximumNumberOfItems:(id)items
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dateCopy = date;
+  endDateCopy = endDate;
+  itemsCopy = items;
   v17.receiver = self;
   v17.super_class = RTAuthorizedLocationZDRLocationsEnumerationOptions;
   v14 = [(RTAuthorizedLocationZDRLocationsEnumerationOptions *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    v14->_batchSize = a3;
-    objc_storeStrong(&v14->_startDate, a4);
-    objc_storeStrong(&v15->_endDate, a5);
-    objc_storeStrong(&v15->_maximumNumberOfItems, a6);
+    v14->_batchSize = options;
+    objc_storeStrong(&v14->_startDate, date);
+    objc_storeStrong(&v15->_endDate, endDate);
+    objc_storeStrong(&v15->_maximumNumberOfItems, items);
   }
 
   return v15;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = self;
+  selfCopy = self;
 
-  return [(RTAuthorizedLocationZDRLocationsEnumerationOptions *)v3 init];
+  return [(RTAuthorizedLocationZDRLocationsEnumerationOptions *)selfCopy init];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   batchSize = self->_batchSize;
-  v5 = a3;
-  [v5 encodeInteger:batchSize forKey:@"batchSize"];
-  [v5 encodeObject:self->_startDate forKey:@"startDate"];
-  [v5 encodeObject:self->_endDate forKey:@"endDate"];
-  [v5 encodeObject:self->_maximumNumberOfItems forKey:@"maximumNumberOfItems"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:batchSize forKey:@"batchSize"];
+  [coderCopy encodeObject:self->_startDate forKey:@"startDate"];
+  [coderCopy encodeObject:self->_endDate forKey:@"endDate"];
+  [coderCopy encodeObject:self->_maximumNumberOfItems forKey:@"maximumNumberOfItems"];
 }
 
-- (RTAuthorizedLocationZDRLocationsEnumerationOptions)initWithCoder:(id)a3
+- (RTAuthorizedLocationZDRLocationsEnumerationOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"batchSize"];
-  v6 = [v4 decodeObjectForKey:@"startDate"];
-  v7 = [v4 decodeObjectForKey:@"endDate"];
-  v8 = [v4 decodeObjectForKey:@"maximumNumberOfItems"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"batchSize"];
+  v6 = [coderCopy decodeObjectForKey:@"startDate"];
+  v7 = [coderCopy decodeObjectForKey:@"endDate"];
+  v8 = [coderCopy decodeObjectForKey:@"maximumNumberOfItems"];
 
   v9 = [(RTAuthorizedLocationZDRLocationsEnumerationOptions *)self initWithOptions:v5 startDate:v6 endDate:v7 maximumNumberOfItems:v8];
   return v9;

@@ -1,12 +1,12 @@
 @interface SecExperiment
 - (BOOL)experimentIsAllowedForProcess;
 - (BOOL)isSamplingDisabled;
-- (BOOL)isSamplingDisabledWithDefault:(BOOL)a3;
+- (BOOL)isSamplingDisabledWithDefault:(BOOL)default;
 - (NSString)identifier;
-- (SecExperiment)initWithName:(const char *)a3;
+- (SecExperiment)initWithName:(const char *)name;
 - (id)copyExperimentConfiguration;
 - (id)copyExperimentConfigurationFromUserDefaults;
-- (id)copyRandomExperimentConfigurationFromAsset:(id)a3;
+- (id)copyRandomExperimentConfigurationFromAsset:(id)asset;
 - (id)copyRemoteExperimentAsset;
 @end
 
@@ -14,27 +14,27 @@
 
 - (NSString)identifier
 {
-  v3 = [(SecExperiment *)self cachedConfig];
+  cachedConfig = [(SecExperiment *)self cachedConfig];
 
-  if (v3)
+  if (cachedConfig)
   {
-    v4 = [(SecExperiment *)self cachedConfig];
-    v5 = [v4 identifier];
+    cachedConfig2 = [(SecExperiment *)self cachedConfig];
+    identifier = [cachedConfig2 identifier];
   }
 
   else
   {
-    v5 = 0;
+    identifier = 0;
   }
 
-  return v5;
+  return identifier;
 }
 
 - (id)copyExperimentConfiguration
 {
-  v3 = [(SecExperiment *)self cachedConfig];
+  cachedConfig = [(SecExperiment *)self cachedConfig];
 
-  if (v3)
+  if (cachedConfig)
   {
     [(SecExperiment *)self cachedConfig];
     return objc_claimAutoreleasedReturnValue();
@@ -42,40 +42,40 @@
 
   else
   {
-    v5 = [(SecExperiment *)self copyExperimentConfigurationFromUserDefaults];
-    if (v5)
+    copyExperimentConfigurationFromUserDefaults = [(SecExperiment *)self copyExperimentConfigurationFromUserDefaults];
+    if (copyExperimentConfigurationFromUserDefaults)
     {
-      v6 = [[SecExperimentConfig alloc] initWithConfiguration:v5];
+      v6 = [[SecExperimentConfig alloc] initWithConfiguration:copyExperimentConfigurationFromUserDefaults];
       [(SecExperiment *)self setCachedConfig:v6];
 
-      v4 = [(SecExperiment *)self cachedConfig];
+      cachedConfig2 = [(SecExperiment *)self cachedConfig];
     }
 
     else
     {
-      v7 = [(SecExperiment *)self copyRemoteExperimentAsset];
-      if (v7)
+      copyRemoteExperimentAsset = [(SecExperiment *)self copyRemoteExperimentAsset];
+      if (copyRemoteExperimentAsset)
       {
-        v8 = [(SecExperiment *)self copyRandomExperimentConfigurationFromAsset:v7];
+        v8 = [(SecExperiment *)self copyRandomExperimentConfigurationFromAsset:copyRemoteExperimentAsset];
         v9 = [[SecExperimentConfig alloc] initWithConfiguration:v8];
         [(SecExperiment *)self setCachedConfig:v9];
 
-        v4 = [(SecExperiment *)self cachedConfig];
+        cachedConfig2 = [(SecExperiment *)self cachedConfig];
       }
 
       else
       {
-        v4 = 0;
+        cachedConfig2 = 0;
       }
     }
   }
 
-  return v4;
+  return cachedConfig2;
 }
 
-- (id)copyRandomExperimentConfigurationFromAsset:(id)a3
+- (id)copyRandomExperimentConfigurationFromAsset:(id)asset
 {
-  v3 = [a3 valueForKey:@"ConfigArray"];
+  v3 = [asset valueForKey:@"ConfigArray"];
   if (v3)
   {
     v4 = [v3 objectAtIndex:{arc4random() % objc_msgSend(v3, "count")}];
@@ -95,8 +95,8 @@
   v3 = SecTrustOTASecExperimentCopyAsset(&cf);
   if (v3)
   {
-    v4 = [(SecExperiment *)self name];
-    v5 = [v3 valueForKey:v4];
+    name = [(SecExperiment *)self name];
+    v5 = [v3 valueForKey:name];
   }
 
   else
@@ -116,21 +116,21 @@
 
 - (id)copyExperimentConfigurationFromUserDefaults
 {
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  if (v3)
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  if (standardUserDefaults)
   {
     v4 = [MEMORY[0x1E696AEC0] stringWithUTF8String:kSecExperimentDefaultsDomain];
-    v5 = [v3 persistentDomainForName:v4];
+    v5 = [standardUserDefaults persistentDomainForName:v4];
     v6 = [v5 mutableCopy];
 
     if (v6)
     {
-      v7 = [(SecExperiment *)self name];
-      v8 = [v6 objectForKeyedSubscript:v7];
+      name = [(SecExperiment *)self name];
+      v8 = [v6 objectForKeyedSubscript:name];
 
       if (v8)
       {
-        v8 = [v6 objectForKeyedSubscript:v7];
+        v8 = [v6 objectForKeyedSubscript:name];
       }
     }
 
@@ -150,18 +150,18 @@
 
 - (BOOL)isSamplingDisabled
 {
-  v3 = [(SecExperiment *)self samplingDisabled];
+  samplingDisabled = [(SecExperiment *)self samplingDisabled];
 
-  return [(SecExperiment *)self isSamplingDisabledWithDefault:v3];
+  return [(SecExperiment *)self isSamplingDisabledWithDefault:samplingDisabled];
 }
 
-- (BOOL)isSamplingDisabledWithDefault:(BOOL)a3
+- (BOOL)isSamplingDisabledWithDefault:(BOOL)default
 {
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  if (v4)
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  if (standardUserDefaults)
   {
     v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:kSecExperimentDefaultsDomain];
-    v6 = [v4 persistentDomainForName:v5];
+    v6 = [standardUserDefaults persistentDomainForName:v5];
     v7 = [v6 mutableCopy];
 
     if (v7)
@@ -172,12 +172,12 @@
       if (v9)
       {
         v10 = [v7 objectForKeyedSubscript:v8];
-        a3 = [v10 BOOLValue];
+        default = [v10 BOOLValue];
       }
     }
   }
 
-  return a3;
+  return default;
 }
 
 - (BOOL)experimentIsAllowedForProcess
@@ -225,31 +225,31 @@ uint64_t __46__SecExperiment_experimentIsAllowedForProcess__block_invoke_2(uint6
   return result;
 }
 
-- (SecExperiment)initWithName:(const char *)a3
+- (SecExperiment)initWithName:(const char *)name
 {
-  v3 = a3;
-  if (a3)
+  selfCopy2 = name;
+  if (name)
   {
     v7.receiver = self;
     v7.super_class = SecExperiment;
     self = [(SecExperiment *)&v7 init];
     if (self)
     {
-      v4 = self;
-      v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v3];
-      [(SecExperiment *)v4 setName:v5];
+      selfCopy = self;
+      v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:selfCopy2];
+      [(SecExperiment *)selfCopy setName:v5];
 
-      self = v4;
-      v3 = self;
+      self = selfCopy;
+      selfCopy2 = self;
     }
 
     else
     {
-      v3 = 0;
+      selfCopy2 = 0;
     }
   }
 
-  return v3;
+  return selfCopy2;
 }
 
 @end

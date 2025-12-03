@@ -1,33 +1,33 @@
 @interface BMPBHomeKitClientActionSetEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addAssociatedAccessoryUniqueIdentifiers:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addAssociatedAccessoryUniqueIdentifiers:(id)identifiers;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMPBHomeKitClientActionSetEvent
 
-- (void)addAssociatedAccessoryUniqueIdentifiers:(id)a3
+- (void)addAssociatedAccessoryUniqueIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   associatedAccessoryUniqueIdentifiers = self->_associatedAccessoryUniqueIdentifiers;
-  v8 = v4;
+  v8 = identifiersCopy;
   if (!associatedAccessoryUniqueIdentifiers)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_associatedAccessoryUniqueIdentifiers;
     self->_associatedAccessoryUniqueIdentifiers = v6;
 
-    v4 = v8;
+    identifiersCopy = v8;
     associatedAccessoryUniqueIdentifiers = self->_associatedAccessoryUniqueIdentifiers;
   }
 
-  [(NSMutableArray *)associatedAccessoryUniqueIdentifiers addObject:v4];
+  [(NSMutableArray *)associatedAccessoryUniqueIdentifiers addObject:identifiersCopy];
 }
 
 - (id)description
@@ -36,59 +36,59 @@
   v8.receiver = self;
   v8.super_class = BMPBHomeKitClientActionSetEvent;
   v4 = [(BMPBHomeKitClientActionSetEvent *)&v8 description];
-  v5 = [(BMPBHomeKitClientActionSetEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BMPBHomeKitClientActionSetEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   base = self->_base;
   if (base)
   {
-    v5 = [(BMPBHomeKitClientBase *)base dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"base"];
+    dictionaryRepresentation = [(BMPBHomeKitClientBase *)base dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"base"];
   }
 
   actionSetUniqueIdentifier = self->_actionSetUniqueIdentifier;
   if (actionSetUniqueIdentifier)
   {
-    [v3 setObject:actionSetUniqueIdentifier forKey:@"actionSetUniqueIdentifier"];
+    [dictionary setObject:actionSetUniqueIdentifier forKey:@"actionSetUniqueIdentifier"];
   }
 
   actionSetType = self->_actionSetType;
   if (actionSetType)
   {
-    [v3 setObject:actionSetType forKey:@"actionSetType"];
+    [dictionary setObject:actionSetType forKey:@"actionSetType"];
   }
 
   associatedAccessoryUniqueIdentifiers = self->_associatedAccessoryUniqueIdentifiers;
   if (associatedAccessoryUniqueIdentifiers)
   {
-    [v3 setObject:associatedAccessoryUniqueIdentifiers forKey:@"associatedAccessoryUniqueIdentifiers"];
+    [dictionary setObject:associatedAccessoryUniqueIdentifiers forKey:@"associatedAccessoryUniqueIdentifiers"];
   }
 
   actionSetName = self->_actionSetName;
   if (actionSetName)
   {
-    [v3 setObject:actionSetName forKey:@"actionSetName"];
+    [dictionary setObject:actionSetName forKey:@"actionSetName"];
   }
 
   homeName = self->_homeName;
   if (homeName)
   {
-    [v3 setObject:homeName forKey:@"homeName"];
+    [dictionary setObject:homeName forKey:@"homeName"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_base)
   {
     PBDataWriterWriteSubmessage();
@@ -149,65 +149,65 @@
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if (self->_base)
   {
-    [v9 setBase:?];
+    [toCopy setBase:?];
   }
 
   if (self->_actionSetUniqueIdentifier)
   {
-    [v9 setActionSetUniqueIdentifier:?];
+    [toCopy setActionSetUniqueIdentifier:?];
   }
 
   if (self->_actionSetType)
   {
-    [v9 setActionSetType:?];
+    [toCopy setActionSetType:?];
   }
 
   if ([(BMPBHomeKitClientActionSetEvent *)self associatedAccessoryUniqueIdentifiersCount])
   {
-    [v9 clearAssociatedAccessoryUniqueIdentifiers];
-    v4 = [(BMPBHomeKitClientActionSetEvent *)self associatedAccessoryUniqueIdentifiersCount];
-    if (v4)
+    [toCopy clearAssociatedAccessoryUniqueIdentifiers];
+    associatedAccessoryUniqueIdentifiersCount = [(BMPBHomeKitClientActionSetEvent *)self associatedAccessoryUniqueIdentifiersCount];
+    if (associatedAccessoryUniqueIdentifiersCount)
     {
-      v5 = v4;
+      v5 = associatedAccessoryUniqueIdentifiersCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(BMPBHomeKitClientActionSetEvent *)self associatedAccessoryUniqueIdentifiersAtIndex:i];
-        [v9 addAssociatedAccessoryUniqueIdentifiers:v7];
+        [toCopy addAssociatedAccessoryUniqueIdentifiers:v7];
       }
     }
   }
 
   if (self->_actionSetName)
   {
-    [v9 setActionSetName:?];
+    [toCopy setActionSetName:?];
   }
 
-  v8 = v9;
+  v8 = toCopy;
   if (self->_homeName)
   {
-    [v9 setHomeName:?];
-    v8 = v9;
+    [toCopy setHomeName:?];
+    v8 = toCopy;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(BMPBHomeKitClientBase *)self->_base copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(BMPBHomeKitClientBase *)self->_base copyWithZone:zone];
   v7 = v5[5];
   v5[5] = v6;
 
-  v8 = [(NSString *)self->_actionSetUniqueIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_actionSetUniqueIdentifier copyWithZone:zone];
   v9 = v5[3];
   v5[3] = v8;
 
-  v10 = [(NSString *)self->_actionSetType copyWithZone:a3];
+  v10 = [(NSString *)self->_actionSetType copyWithZone:zone];
   v11 = v5[2];
   v5[2] = v10;
 
@@ -231,7 +231,7 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v24 + 1) + 8 * v16) copyWithZone:{a3, v24}];
+        v17 = [*(*(&v24 + 1) + 8 * v16) copyWithZone:{zone, v24}];
         [v5 addAssociatedAccessoryUniqueIdentifiers:v17];
 
         ++v16;
@@ -244,11 +244,11 @@
     while (v14);
   }
 
-  v18 = [(NSString *)self->_actionSetName copyWithZone:a3];
+  v18 = [(NSString *)self->_actionSetName copyWithZone:zone];
   v19 = v5[1];
   v5[1] = v18;
 
-  v20 = [(NSString *)self->_homeName copyWithZone:a3];
+  v20 = [(NSString *)self->_homeName copyWithZone:zone];
   v21 = v5[6];
   v5[6] = v20;
 
@@ -256,13 +256,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((base = self->_base, !(base | v4[5])) || -[BMPBHomeKitClientBase isEqual:](base, "isEqual:")) && ((actionSetUniqueIdentifier = self->_actionSetUniqueIdentifier, !(actionSetUniqueIdentifier | v4[3])) || -[NSString isEqual:](actionSetUniqueIdentifier, "isEqual:")) && ((actionSetType = self->_actionSetType, !(actionSetType | v4[2])) || -[NSString isEqual:](actionSetType, "isEqual:")) && ((associatedAccessoryUniqueIdentifiers = self->_associatedAccessoryUniqueIdentifiers, !(associatedAccessoryUniqueIdentifiers | v4[4])) || -[NSMutableArray isEqual:](associatedAccessoryUniqueIdentifiers, "isEqual:")) && ((actionSetName = self->_actionSetName, !(actionSetName | v4[1])) || -[NSString isEqual:](actionSetName, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((base = self->_base, !(base | equalCopy[5])) || -[BMPBHomeKitClientBase isEqual:](base, "isEqual:")) && ((actionSetUniqueIdentifier = self->_actionSetUniqueIdentifier, !(actionSetUniqueIdentifier | equalCopy[3])) || -[NSString isEqual:](actionSetUniqueIdentifier, "isEqual:")) && ((actionSetType = self->_actionSetType, !(actionSetType | equalCopy[2])) || -[NSString isEqual:](actionSetType, "isEqual:")) && ((associatedAccessoryUniqueIdentifiers = self->_associatedAccessoryUniqueIdentifiers, !(associatedAccessoryUniqueIdentifiers | equalCopy[4])) || -[NSMutableArray isEqual:](associatedAccessoryUniqueIdentifiers, "isEqual:")) && ((actionSetName = self->_actionSetName, !(actionSetName | equalCopy[1])) || -[NSString isEqual:](actionSetName, "isEqual:")))
   {
     homeName = self->_homeName;
-    if (homeName | v4[6])
+    if (homeName | equalCopy[6])
     {
       v11 = [(NSString *)homeName isEqual:?];
     }
@@ -291,12 +291,12 @@
   return v6 ^ v7 ^ [(NSString *)self->_homeName hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   base = self->_base;
-  v6 = *(v4 + 5);
+  v6 = *(fromCopy + 5);
   if (base)
   {
     if (v6)
@@ -310,12 +310,12 @@
     [(BMPBHomeKitClientActionSetEvent *)self setBase:?];
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(BMPBHomeKitClientActionSetEvent *)self setActionSetUniqueIdentifier:?];
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(BMPBHomeKitClientActionSetEvent *)self setActionSetType:?];
   }
@@ -324,7 +324,7 @@
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = *(v4 + 4);
+  v7 = *(fromCopy + 4);
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
@@ -348,12 +348,12 @@
     while (v9);
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(BMPBHomeKitClientActionSetEvent *)self setActionSetName:?];
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(BMPBHomeKitClientActionSetEvent *)self setHomeName:?];
   }

@@ -1,12 +1,12 @@
 @interface BMPBUserFocusActivityEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMPBUserFocusActivityEvent
@@ -17,86 +17,86 @@
   v8.receiver = self;
   v8.super_class = BMPBUserFocusActivityEvent;
   v4 = [(BMPBUserFocusActivityEvent *)&v8 description];
-  v5 = [(BMPBUserFocusActivityEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BMPBUserFocusActivityEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:self->_isStart];
-    [v3 setObject:v4 forKey:@"isStart"];
+    [dictionary setObject:v4 forKey:@"isStart"];
   }
 
   mode = self->_mode;
   if (mode)
   {
-    [v3 setObject:mode forKey:@"mode"];
+    [dictionary setObject:mode forKey:@"mode"];
   }
 
   clientID = self->_clientID;
   if (clientID)
   {
-    [v3 setObject:clientID forKey:@"clientID"];
+    [dictionary setObject:clientID forKey:@"clientID"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (*&self->_has)
   {
     isStart = self->_isStart;
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_mode)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_clientID)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[24] = self->_isStart;
-    v4[28] |= 1u;
+    toCopy[24] = self->_isStart;
+    toCopy[28] |= 1u;
   }
 
-  v5 = v4;
+  v5 = toCopy;
   if (self->_mode)
   {
-    [v4 setMode:?];
-    v4 = v5;
+    [toCopy setMode:?];
+    toCopy = v5;
   }
 
   if (self->_clientID)
   {
     [v5 setClientID:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -104,37 +104,37 @@
     *(v5 + 28) |= 1u;
   }
 
-  v7 = [(NSString *)self->_mode copyWithZone:a3];
+  v7 = [(NSString *)self->_mode copyWithZone:zone];
   v8 = v6[2];
   v6[2] = v7;
 
-  v9 = [(NSString *)self->_clientID copyWithZone:a3];
+  v9 = [(NSString *)self->_clientID copyWithZone:zone];
   v10 = v6[1];
   v6[1] = v9;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_9;
   }
 
-  v5 = *(v4 + 28);
+  v5 = *(equalCopy + 28);
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0)
+    if ((*(equalCopy + 28) & 1) == 0)
     {
       goto LABEL_9;
     }
 
-    v5 = *(v4 + 24);
+    v5 = *(equalCopy + 24);
     if (self->_isStart)
     {
-      if (*(v4 + 24))
+      if (*(equalCopy + 24))
       {
         goto LABEL_4;
       }
@@ -152,13 +152,13 @@ LABEL_9:
 
 LABEL_4:
   mode = self->_mode;
-  if (mode | *(v4 + 2) && ![(NSString *)mode isEqual:?])
+  if (mode | *(equalCopy + 2) && ![(NSString *)mode isEqual:?])
   {
     goto LABEL_9;
   }
 
   clientID = self->_clientID;
-  if (clientID | *(v4 + 1))
+  if (clientID | *(equalCopy + 1))
   {
     v8 = [(NSString *)clientID isEqual:?];
   }
@@ -189,26 +189,26 @@ LABEL_10:
   return v4 ^ [(NSString *)self->_clientID hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[28])
+  fromCopy = from;
+  if (fromCopy[28])
   {
-    self->_isStart = v4[24];
+    self->_isStart = fromCopy[24];
     *&self->_has |= 1u;
   }
 
-  v5 = v4;
-  if (*(v4 + 2))
+  v5 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(BMPBUserFocusActivityEvent *)self setMode:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(BMPBUserFocusActivityEvent *)self setClientID:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

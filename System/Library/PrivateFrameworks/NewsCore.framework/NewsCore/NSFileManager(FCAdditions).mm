@@ -22,7 +22,7 @@
     v31 = 0u;
     v29 = 0;
     v27 = v8;
-    v9 = [a1 contentsOfDirectoryAtURL:v8 includingPropertiesForKeys:MEMORY[0x1E695E0F0] options:0 error:&v29];
+    v9 = [self contentsOfDirectoryAtURL:v8 includingPropertiesForKeys:MEMORY[0x1E695E0F0] options:0 error:&v29];
     v10 = v29;
     v11 = [v9 countByEnumeratingWithState:&v30 objects:v34 count:16];
     if (v11)
@@ -42,7 +42,7 @@
 
           v17 = *(*(&v30 + 1) + 8 * i);
           v28 = 0;
-          v18 = [a1 removeItemAtURL:v17 error:&v28];
+          v18 = [self removeItemAtURL:v17 error:&v28];
           v19 = v28;
           v20 = v19;
           if (v18)
@@ -100,28 +100,28 @@
   v9 = a5;
   v10 = a3;
   v11 = NSTemporaryDirectory();
-  v12 = [MEMORY[0x1E696AE30] processInfo];
-  v13 = [v12 globallyUniqueString];
-  v14 = [v11 stringByAppendingPathComponent:v13];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  globallyUniqueString = [processInfo globallyUniqueString];
+  v14 = [v11 stringByAppendingPathComponent:globallyUniqueString];
 
-  v15 = [v10 path];
+  path = [v10 path];
 
   v29 = 0;
-  LOBYTE(v12) = [a1 moveItemAtPath:v15 toPath:v14 error:&v29];
+  LOBYTE(processInfo) = [self moveItemAtPath:path toPath:v14 error:&v29];
   v16 = v29;
 
-  if (v12)
+  if (processInfo)
   {
     goto LABEL_2;
   }
 
-  v19 = [v16 domain];
-  v20 = v19;
-  if (v19 == *MEMORY[0x1E696A250])
+  domain = [v16 domain];
+  v20 = domain;
+  if (domain == *MEMORY[0x1E696A250])
   {
-    v21 = [v16 code];
+    code = [v16 code];
 
-    if (v21 == 4)
+    if (code == 4)
     {
 LABEL_2:
       v17 = dispatch_get_global_queue(-2, 0);
@@ -129,7 +129,7 @@ LABEL_2:
       block[1] = 3221225472;
       block[2] = __80__NSFileManager_FCAdditions__fc_quicklyClearDirectory_callbackQueue_completion___block_invoke_2;
       block[3] = &unk_1E7C42998;
-      block[4] = a1;
+      block[4] = self;
       v23 = v14;
       v25 = v9;
       v24 = v8;
@@ -254,19 +254,19 @@ LABEL_4:
     v22 = 0;
     if ([v6 getResourceValue:&v22 forKey:*MEMORY[0x1E695DB50] error:a4])
     {
-      v16 = [v22 unsignedLongLongValue];
+      unsignedLongLongValue = [v22 unsignedLongLongValue];
       goto LABEL_18;
     }
 
 LABEL_15:
-    v16 = 0;
+    unsignedLongLongValue = 0;
     goto LABEL_18;
   }
 
   v10 = *MEMORY[0x1E695DB50];
   v30[0] = *MEMORY[0x1E695DB50];
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:1];
-  v12 = [a1 enumeratorAtURL:v6 includingPropertiesForKeys:v11 options:0 errorHandler:0];
+  v12 = [self enumeratorAtURL:v6 includingPropertiesForKeys:v11 options:0 errorHandler:0];
 
   v26 = 0u;
   v27 = 0u;
@@ -277,7 +277,7 @@ LABEL_15:
   if (v14)
   {
     v15 = v14;
-    v16 = 0;
+    unsignedLongLongValue = 0;
     v17 = *v25;
     do
     {
@@ -292,7 +292,7 @@ LABEL_15:
         v23 = 0;
         if ([v19 getResourceValue:&v23 forKey:v10 error:0])
         {
-          v16 += [v23 unsignedLongLongValue];
+          unsignedLongLongValue += [v23 unsignedLongLongValue];
         }
       }
 
@@ -304,18 +304,18 @@ LABEL_15:
 
   else
   {
-    v16 = 0;
+    unsignedLongLongValue = 0;
   }
 
 LABEL_18:
   v20 = *MEMORY[0x1E69E9840];
-  return v16;
+  return unsignedLongLongValue;
 }
 
 - (uint64_t)fc_sizeOfItemAtPath:()FCAdditions error:
 {
   v6 = [MEMORY[0x1E695DFF8] fileURLWithPath:?];
-  v7 = [a1 fc_sizeOfItemAtURL:v6 error:a4];
+  v7 = [self fc_sizeOfItemAtURL:v6 error:a4];
 
   return v7;
 }

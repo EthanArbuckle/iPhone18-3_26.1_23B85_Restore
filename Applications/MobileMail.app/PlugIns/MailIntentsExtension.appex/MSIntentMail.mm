@@ -1,29 +1,29 @@
 @interface MSIntentMail
-- (MSIntentMail)initWithDictionary:(id)a3;
+- (MSIntentMail)initWithDictionary:(id)dictionary;
 @end
 
 @implementation MSIntentMail
 
-- (MSIntentMail)initWithDictionary:(id)a3
+- (MSIntentMail)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:MSResultsKeyMessageReference];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:MSResultsKeyMessageReference];
   v6 = MSResultsKeySubject;
-  v7 = [v4 objectForKeyedSubscript:MSResultsKeySubject];
+  v7 = [dictionaryCopy objectForKeyedSubscript:MSResultsKeySubject];
   v27.receiver = self;
   v27.super_class = MSIntentMail;
   v8 = [(MSIntentMail *)&v27 initWithIdentifier:v5 displayString:v7];
 
   if (v8)
   {
-    v9 = [v4 objectForKeyedSubscript:v6];
+    v9 = [dictionaryCopy objectForKeyedSubscript:v6];
     [(MSIntentMail *)v8 setSubject:v9];
 
-    v10 = [v4 objectForKeyedSubscript:MSResultsKeyBodySummary];
+    v10 = [dictionaryCopy objectForKeyedSubscript:MSResultsKeyBodySummary];
     [(MSIntentMail *)v8 setBody:v10];
 
     v11 = +[NSCalendar currentCalendar];
-    v12 = [v4 objectForKeyedSubscript:MSResultsKeyDateSent];
+    v12 = [dictionaryCopy objectForKeyedSubscript:MSResultsKeyDateSent];
     v13 = [v11 components:-1 fromDate:v12];
     [(MSIntentMail *)v8 setDateSent:v13];
 
@@ -34,19 +34,19 @@
     v14 = objc_alloc_init(MFPersonTransformer);
     v26 = v14;
     v15 = objc_retainBlock(v25);
-    v16 = [v4 objectForKeyedSubscript:MSResultsKeyRecipientTo];
+    v16 = [dictionaryCopy objectForKeyedSubscript:MSResultsKeyRecipientTo];
     v17 = (v15[2])(v15, v16);
     [(MSIntentMail *)v8 setTo:v17];
 
-    v18 = [v4 objectForKeyedSubscript:MSResultsKeyRecipientCc];
+    v18 = [dictionaryCopy objectForKeyedSubscript:MSResultsKeyRecipientCc];
     v19 = (v15[2])(v15, v18);
     [(MSIntentMail *)v8 setCc:v19];
 
-    v20 = [v4 objectForKeyedSubscript:MSResultsKeyRecipientBcc];
+    v20 = [dictionaryCopy objectForKeyedSubscript:MSResultsKeyRecipientBcc];
     v21 = (v15[2])(v15, v20);
     [(MSIntentMail *)v8 setBcc:v21];
 
-    v22 = [v4 objectForKeyedSubscript:MSResultsKeySender];
+    v22 = [dictionaryCopy objectForKeyedSubscript:MSResultsKeySender];
     v23 = [v14 transformedValue:v22];
     [(MSIntentMail *)v8 setSender:v23];
   }

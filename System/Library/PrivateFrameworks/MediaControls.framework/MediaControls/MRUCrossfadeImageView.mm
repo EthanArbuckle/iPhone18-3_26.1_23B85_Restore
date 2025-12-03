@@ -1,10 +1,10 @@
 @interface MRUCrossfadeImageView
-- (MRUCrossfadeImageView)initWithCoder:(id)a3;
+- (MRUCrossfadeImageView)initWithCoder:(id)coder;
 - (UIImage)image;
 - (int64_t)contentMode;
 - (void)layoutSubviews;
-- (void)setContentMode:(int64_t)a3;
-- (void)transitionTo:(id)a3;
+- (void)setContentMode:(int64_t)mode;
+- (void)transitionTo:(id)to;
 @end
 
 @implementation MRUCrossfadeImageView
@@ -13,17 +13,17 @@
 {
   v2 = (&self->super.super.super.isa + OBJC_IVAR___MRUCrossfadeImageView_primaryImageView);
   v3 = *(&self->super.super.super.isa + OBJC_IVAR___MRUCrossfadeImageView_primaryImageView);
-  v4 = self;
-  v5 = [v3 isHidden];
-  v6 = (&v4->super.super.super.isa + OBJC_IVAR___MRUCrossfadeImageView_secondaryImageView);
-  if (!v5)
+  selfCopy = self;
+  isHidden = [v3 isHidden];
+  v6 = (&selfCopy->super.super.super.isa + OBJC_IVAR___MRUCrossfadeImageView_secondaryImageView);
+  if (!isHidden)
   {
     v6 = v2;
   }
 
-  v7 = [*v6 image];
+  image = [*v6 image];
 
-  return v7;
+  return image;
 }
 
 - (int64_t)contentMode
@@ -33,17 +33,17 @@
   return [(MRUCrossfadeImageView *)&v3 contentMode];
 }
 
-- (void)setContentMode:(int64_t)a3
+- (void)setContentMode:(int64_t)mode
 {
   v5.receiver = self;
   v5.super_class = type metadata accessor for CrossfadeImageView();
   v4 = v5.receiver;
-  [(MRUCrossfadeImageView *)&v5 setContentMode:a3];
+  [(MRUCrossfadeImageView *)&v5 setContentMode:mode];
   [*&v4[OBJC_IVAR___MRUCrossfadeImageView_primaryImageView] setContentMode_];
   [*&v4[OBJC_IVAR___MRUCrossfadeImageView_secondaryImageView] setContentMode_];
 }
 
-- (MRUCrossfadeImageView)initWithCoder:(id)a3
+- (MRUCrossfadeImageView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR___MRUCrossfadeImageView_primaryImageView;
   *(&self->super.super.super.isa + v4) = [objc_allocWithZone(MEMORY[0x1E69DCAE0]) init];
@@ -68,11 +68,11 @@
   [v4 setFrame_];
 }
 
-- (void)transitionTo:(id)a3
+- (void)transitionTo:(id)to
 {
-  v5 = a3;
-  v6 = self;
-  sub_1A22B68F4(a3);
+  toCopy = to;
+  selfCopy = self;
+  sub_1A22B68F4(to);
 }
 
 @end

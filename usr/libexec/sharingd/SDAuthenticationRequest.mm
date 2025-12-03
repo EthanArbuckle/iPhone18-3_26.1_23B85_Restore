@@ -1,23 +1,23 @@
 @interface SDAuthenticationRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasSessionStartDate:(BOOL)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)setHasUnlockDate:(BOOL)a3;
-- (void)setHasVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasSessionStartDate:(BOOL)date;
+- (void)setHasType:(BOOL)type;
+- (void)setHasUnlockDate:(BOOL)date;
+- (void)setHasVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SDAuthenticationRequest
 
-- (void)setHasVersion:(BOOL)a3
+- (void)setHasVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 16;
   }
@@ -30,9 +30,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 8;
   }
@@ -45,9 +45,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasUnlockDate:(BOOL)a3
+- (void)setHasUnlockDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 4;
   }
@@ -60,9 +60,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasSessionStartDate:(BOOL)a3
+- (void)setHasSessionStartDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 2;
   }
@@ -80,8 +80,8 @@
   v7.receiver = self;
   v7.super_class = SDAuthenticationRequest;
   v3 = [(SDAuthenticationRequest *)&v7 description];
-  v4 = [(SDAuthenticationRequest *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(SDAuthenticationRequest *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -155,9 +155,9 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x10) != 0)
   {
@@ -216,76 +216,76 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x10) != 0)
   {
-    v4[19] = self->_version;
-    *(v4 + 80) |= 0x10u;
+    toCopy[19] = self->_version;
+    *(toCopy + 80) |= 0x10u;
     has = self->_has;
   }
 
   if ((has & 8) != 0)
   {
-    v4[18] = self->_type;
-    *(v4 + 80) |= 8u;
+    toCopy[18] = self->_type;
+    *(toCopy + 80) |= 8u;
   }
 
-  v6 = v4;
+  v6 = toCopy;
   if (self->_sessionID)
   {
-    [v4 setSessionID:?];
-    v4 = v6;
+    [toCopy setSessionID:?];
+    toCopy = v6;
   }
 
   if (self->_awdlInfo)
   {
     [v6 setAwdlInfo:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_rangingToken)
   {
     [v6 setRangingToken:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    *(v4 + 3) = *&self->_unlockDate;
-    *(v4 + 80) |= 4u;
+    *(toCopy + 3) = *&self->_unlockDate;
+    *(toCopy + 80) |= 4u;
   }
 
   if (self->_aksToken)
   {
     [v6 setAksToken:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 2) = *&self->_sessionStartDate;
-    *(v4 + 80) |= 2u;
+    *(toCopy + 2) = *&self->_sessionStartDate;
+    *(toCopy + 80) |= 2u;
   }
 
   if (self->_registrationID)
   {
     [v6 setRegistrationID:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = *&self->_arTrackingDistance;
-    *(v4 + 80) |= 1u;
+    *(toCopy + 1) = *&self->_arTrackingDistance;
+    *(toCopy + 80) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 0x10) != 0)
@@ -301,15 +301,15 @@
     *(v5 + 80) |= 8u;
   }
 
-  v8 = [(NSString *)self->_sessionID copyWithZone:a3];
+  v8 = [(NSString *)self->_sessionID copyWithZone:zone];
   v9 = v6[8];
   v6[8] = v8;
 
-  v10 = [(NSData *)self->_awdlInfo copyWithZone:a3];
+  v10 = [(NSData *)self->_awdlInfo copyWithZone:zone];
   v11 = v6[5];
   v6[5] = v10;
 
-  v12 = [(NSData *)self->_rangingToken copyWithZone:a3];
+  v12 = [(NSData *)self->_rangingToken copyWithZone:zone];
   v13 = v6[6];
   v6[6] = v12;
 
@@ -319,7 +319,7 @@
     *(v6 + 80) |= 4u;
   }
 
-  v14 = [(NSData *)self->_aksToken copyWithZone:a3];
+  v14 = [(NSData *)self->_aksToken copyWithZone:zone];
   v15 = v6[4];
   v6[4] = v14;
 
@@ -329,7 +329,7 @@
     *(v6 + 80) |= 2u;
   }
 
-  v16 = [(NSString *)self->_registrationID copyWithZone:a3];
+  v16 = [(NSString *)self->_registrationID copyWithZone:zone];
   v17 = v6[7];
   v6[7] = v16;
 
@@ -342,49 +342,49 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_38;
   }
 
-  v5 = *(v4 + 80);
+  v5 = *(equalCopy + 80);
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 80) & 0x10) == 0 || self->_version != *(v4 + 19))
+    if ((*(equalCopy + 80) & 0x10) == 0 || self->_version != *(equalCopy + 19))
     {
       goto LABEL_38;
     }
   }
 
-  else if ((*(v4 + 80) & 0x10) != 0)
+  else if ((*(equalCopy + 80) & 0x10) != 0)
   {
     goto LABEL_38;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 80) & 8) == 0 || self->_type != *(v4 + 18))
+    if ((*(equalCopy + 80) & 8) == 0 || self->_type != *(equalCopy + 18))
     {
       goto LABEL_38;
     }
   }
 
-  else if ((*(v4 + 80) & 8) != 0)
+  else if ((*(equalCopy + 80) & 8) != 0)
   {
     goto LABEL_38;
   }
 
   sessionID = self->_sessionID;
-  if (sessionID | *(v4 + 8) && ![(NSString *)sessionID isEqual:?])
+  if (sessionID | *(equalCopy + 8) && ![(NSString *)sessionID isEqual:?])
   {
     goto LABEL_38;
   }
 
   awdlInfo = self->_awdlInfo;
-  if (awdlInfo | *(v4 + 5))
+  if (awdlInfo | *(equalCopy + 5))
   {
     if (![(NSData *)awdlInfo isEqual:?])
     {
@@ -393,7 +393,7 @@
   }
 
   rangingToken = self->_rangingToken;
-  if (rangingToken | *(v4 + 6))
+  if (rangingToken | *(equalCopy + 6))
   {
     if (![(NSData *)rangingToken isEqual:?])
     {
@@ -402,22 +402,22 @@
   }
 
   has = self->_has;
-  v10 = *(v4 + 80);
+  v10 = *(equalCopy + 80);
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 80) & 4) == 0 || self->_unlockDate != *(v4 + 3))
+    if ((*(equalCopy + 80) & 4) == 0 || self->_unlockDate != *(equalCopy + 3))
     {
       goto LABEL_38;
     }
   }
 
-  else if ((*(v4 + 80) & 4) != 0)
+  else if ((*(equalCopy + 80) & 4) != 0)
   {
     goto LABEL_38;
   }
 
   aksToken = self->_aksToken;
-  if (aksToken | *(v4 + 4))
+  if (aksToken | *(equalCopy + 4))
   {
     if (![(NSData *)aksToken isEqual:?])
     {
@@ -427,22 +427,22 @@
     has = self->_has;
   }
 
-  v12 = *(v4 + 80);
+  v12 = *(equalCopy + 80);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 80) & 2) == 0 || self->_sessionStartDate != *(v4 + 2))
+    if ((*(equalCopy + 80) & 2) == 0 || self->_sessionStartDate != *(equalCopy + 2))
     {
       goto LABEL_38;
     }
   }
 
-  else if ((*(v4 + 80) & 2) != 0)
+  else if ((*(equalCopy + 80) & 2) != 0)
   {
     goto LABEL_38;
   }
 
   registrationID = self->_registrationID;
-  if (registrationID | *(v4 + 7))
+  if (registrationID | *(equalCopy + 7))
   {
     if ([(NSString *)registrationID isEqual:?])
     {
@@ -456,10 +456,10 @@ LABEL_38:
   }
 
 LABEL_34:
-  v14 = (*(v4 + 80) & 1) == 0;
+  v14 = (*(equalCopy + 80) & 1) == 0;
   if (has)
   {
-    if ((*(v4 + 80) & 1) == 0 || self->_arTrackingDistance != *(v4 + 1))
+    if ((*(equalCopy + 80) & 1) == 0 || self->_arTrackingDistance != *(equalCopy + 1))
     {
       goto LABEL_38;
     }
@@ -603,69 +603,69 @@ LABEL_6:
   return v3 ^ v28 ^ v4 ^ v5 ^ v6 ^ v9 ^ v13 ^ v16 ^ v20 ^ v23;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 80);
+  fromCopy = from;
+  v5 = *(fromCopy + 80);
   if ((v5 & 0x10) != 0)
   {
-    self->_version = *(v4 + 19);
+    self->_version = *(fromCopy + 19);
     *&self->_has |= 0x10u;
-    v5 = *(v4 + 80);
+    v5 = *(fromCopy + 80);
   }
 
   if ((v5 & 8) != 0)
   {
-    self->_type = *(v4 + 18);
+    self->_type = *(fromCopy + 18);
     *&self->_has |= 8u;
   }
 
-  v6 = v4;
-  if (*(v4 + 8))
+  v6 = fromCopy;
+  if (*(fromCopy + 8))
   {
     [(SDAuthenticationRequest *)self setSessionID:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(SDAuthenticationRequest *)self setAwdlInfo:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(SDAuthenticationRequest *)self setRangingToken:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if ((*(v4 + 80) & 4) != 0)
+  if ((*(fromCopy + 80) & 4) != 0)
   {
-    self->_unlockDate = *(v4 + 3);
+    self->_unlockDate = *(fromCopy + 3);
     *&self->_has |= 4u;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(SDAuthenticationRequest *)self setAksToken:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if ((*(v4 + 80) & 2) != 0)
+  if ((*(fromCopy + 80) & 2) != 0)
   {
-    self->_sessionStartDate = *(v4 + 2);
+    self->_sessionStartDate = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(SDAuthenticationRequest *)self setRegistrationID:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 80))
+  if (*(fromCopy + 80))
   {
-    self->_arTrackingDistance = *(v4 + 1);
+    self->_arTrackingDistance = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 }

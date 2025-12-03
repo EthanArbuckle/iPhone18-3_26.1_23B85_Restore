@@ -1,27 +1,27 @@
 @interface SSEngagementHandler
-+ (void)userEngagedResultWithIdentifier:(id)a3 forQueryString:(id)a4;
-+ (void)userEngagedResultWithIdentifier:(id)a3 forQueryString:(id)a4 bundle:(id)a5;
++ (void)userEngagedResultWithIdentifier:(id)identifier forQueryString:(id)string;
++ (void)userEngagedResultWithIdentifier:(id)identifier forQueryString:(id)string bundle:(id)bundle;
 @end
 
 @implementation SSEngagementHandler
 
-+ (void)userEngagedResultWithIdentifier:(id)a3 forQueryString:(id)a4
++ (void)userEngagedResultWithIdentifier:(id)identifier forQueryString:(id)string
 {
   v5 = MEMORY[0x1E696AAE8];
-  v6 = a4;
-  v7 = a3;
-  v9 = [v5 mainBundle];
-  v8 = [v9 bundleIdentifier];
-  [SSEngagementHandler userEngagedResultWithIdentifier:v7 forQueryString:v6 bundle:v8];
+  stringCopy = string;
+  identifierCopy = identifier;
+  mainBundle = [v5 mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  [SSEngagementHandler userEngagedResultWithIdentifier:identifierCopy forQueryString:stringCopy bundle:bundleIdentifier];
 }
 
-+ (void)userEngagedResultWithIdentifier:(id)a3 forQueryString:(id)a4 bundle:(id)a5
++ (void)userEngagedResultWithIdentifier:(id)identifier forQueryString:(id)string bundle:(id)bundle
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  bundleCopy = bundle;
+  stringCopy = string;
+  identifierCopy = identifier;
   v10 = +[PRSAnonymousPipelineManagerSession sharedManager];
-  [v10 userEngagedItemWithIdentifier:v9 forBundle:v7 forQuery:v8];
+  [v10 userEngagedItemWithIdentifier:identifierCopy forBundle:bundleCopy forQuery:stringCopy];
 }
 
 @end

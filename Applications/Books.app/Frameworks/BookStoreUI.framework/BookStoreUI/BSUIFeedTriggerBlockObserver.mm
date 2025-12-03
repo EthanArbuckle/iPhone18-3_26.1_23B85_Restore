@@ -1,8 +1,8 @@
 @interface BSUIFeedTriggerBlockObserver
 - (BSUIFeedTriggerBlockObserver)init;
-- (void)addObserver:(id)a3 forTrigger:(id)a4 inStateManager:(id)a5;
-- (void)handleTrigger:(id)a3 didChangeState:(unint64_t)a4 updateEvent:(unint64_t)a5;
-- (void)removeObserver:(id)a3 forTrigger:(id)a4 inStateManager:(id)a5;
+- (void)addObserver:(id)observer forTrigger:(id)trigger inStateManager:(id)manager;
+- (void)handleTrigger:(id)trigger didChangeState:(unint64_t)state updateEvent:(unint64_t)event;
+- (void)removeObserver:(id)observer forTrigger:(id)trigger inStateManager:(id)manager;
 @end
 
 @implementation BSUIFeedTriggerBlockObserver
@@ -22,13 +22,13 @@
   return v2;
 }
 
-- (void)addObserver:(id)a3 forTrigger:(id)a4 inStateManager:(id)a5
+- (void)addObserver:(id)observer forTrigger:(id)trigger inStateManager:(id)manager
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(BSUIFeedTriggerBlockObserver *)self observersByTrigger];
-  v11 = [v10 objectForKeyedSubscript:v8];
+  observerCopy = observer;
+  triggerCopy = trigger;
+  managerCopy = manager;
+  observersByTrigger = [(BSUIFeedTriggerBlockObserver *)self observersByTrigger];
+  v11 = [observersByTrigger objectForKeyedSubscript:triggerCopy];
 
   if ([v11 count])
   {
@@ -40,7 +40,7 @@
 
   else
   {
-    [v9 addObserver:self forTrigger:v8];
+    [managerCopy addObserver:self forTrigger:triggerCopy];
     if (v11)
     {
       goto LABEL_3;
@@ -49,42 +49,42 @@
 
   v11 = +[NSMutableSet set];
 LABEL_3:
-  v12 = objc_retainBlock(v14);
+  v12 = objc_retainBlock(observerCopy);
   [v11 addObject:v12];
 
-  v13 = [(BSUIFeedTriggerBlockObserver *)self observersByTrigger];
-  [v13 setObject:v11 forKeyedSubscript:v8];
+  observersByTrigger2 = [(BSUIFeedTriggerBlockObserver *)self observersByTrigger];
+  [observersByTrigger2 setObject:v11 forKeyedSubscript:triggerCopy];
 }
 
-- (void)removeObserver:(id)a3 forTrigger:(id)a4 inStateManager:(id)a5
+- (void)removeObserver:(id)observer forTrigger:(id)trigger inStateManager:(id)manager
 {
-  v14 = a4;
-  v7 = a3;
-  v8 = [(BSUIFeedTriggerBlockObserver *)self observersByTrigger];
-  v9 = [v8 objectForKeyedSubscript:v14];
+  triggerCopy = trigger;
+  observerCopy = observer;
+  observersByTrigger = [(BSUIFeedTriggerBlockObserver *)self observersByTrigger];
+  v9 = [observersByTrigger objectForKeyedSubscript:triggerCopy];
 
-  v10 = objc_retainBlock(v7);
+  v10 = objc_retainBlock(observerCopy);
   [v9 removeObject:v10];
 
   v11 = [v9 count];
-  v12 = [(BSUIFeedTriggerBlockObserver *)self observersByTrigger];
-  v13 = v12;
+  observersByTrigger2 = [(BSUIFeedTriggerBlockObserver *)self observersByTrigger];
+  v13 = observersByTrigger2;
   if (v11)
   {
-    [v12 setObject:v9 forKeyedSubscript:v14];
+    [observersByTrigger2 setObject:v9 forKeyedSubscript:triggerCopy];
   }
 
   else
   {
-    [v12 removeObjectForKey:v14];
+    [observersByTrigger2 removeObjectForKey:triggerCopy];
   }
 }
 
-- (void)handleTrigger:(id)a3 didChangeState:(unint64_t)a4 updateEvent:(unint64_t)a5
+- (void)handleTrigger:(id)trigger didChangeState:(unint64_t)state updateEvent:(unint64_t)event
 {
-  v6 = a3;
-  v7 = [(BSUIFeedTriggerBlockObserver *)self observersByTrigger];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  triggerCopy = trigger;
+  observersByTrigger = [(BSUIFeedTriggerBlockObserver *)self observersByTrigger];
+  v8 = [observersByTrigger objectForKeyedSubscript:triggerCopy];
 
   v18 = 0u;
   v19 = 0u;

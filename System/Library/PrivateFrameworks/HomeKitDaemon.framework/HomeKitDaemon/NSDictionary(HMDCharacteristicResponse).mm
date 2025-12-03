@@ -10,7 +10,7 @@
 {
   v39 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v29 = [a1 mutableCopy];
+  v29 = [self mutableCopy];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
@@ -20,7 +20,7 @@
   if (v33)
   {
     v32 = *v35;
-    v28 = a1;
+    selfCopy = self;
     do
     {
       for (i = 0; i != v33; ++i)
@@ -31,32 +31,32 @@
         }
 
         v6 = *(*(&v34 + 1) + 8 * i);
-        v7 = [v6 service];
-        v8 = [v7 instanceID];
-        v9 = [v8 stringValue];
+        service = [v6 service];
+        instanceID = [service instanceID];
+        stringValue = [instanceID stringValue];
 
-        v10 = [v7 accessory];
-        v11 = [v10 uuid];
-        v12 = [v11 UUIDString];
+        accessory = [service accessory];
+        uuid = [accessory uuid];
+        uUIDString = [uuid UUIDString];
 
-        v13 = [v6 instanceID];
-        v14 = [v13 stringValue];
+        instanceID2 = [v6 instanceID];
+        stringValue2 = [instanceID2 stringValue];
 
-        v15 = [a1 hmf_dictionaryForKey:v12];
+        v15 = [self hmf_dictionaryForKey:uUIDString];
         v16 = v15;
         if (v15)
         {
-          v17 = v9;
-          v18 = [v15 hmf_dictionaryForKey:v9];
+          v17 = stringValue;
+          v18 = [v15 hmf_dictionaryForKey:stringValue];
           v19 = v18;
           if (v18)
           {
-            v20 = [v18 hmf_dictionaryForKey:v14];
+            v20 = [v18 hmf_dictionaryForKey:stringValue2];
             if (v20)
             {
               v30 = v20;
               v21 = [v19 mutableCopy];
-              [v21 setObject:0 forKeyedSubscript:v14];
+              [v21 setObject:0 forKeyedSubscript:stringValue2];
               v22 = [v16 mutableCopy];
               if ([v21 count])
               {
@@ -72,21 +72,21 @@
               if ([v22 count])
               {
                 v24 = [v22 copy];
-                [v29 setObject:v24 forKeyedSubscript:v12];
+                [v29 setObject:v24 forKeyedSubscript:uUIDString];
               }
 
               else
               {
-                [v29 removeObjectForKey:v12];
+                [v29 removeObjectForKey:uUIDString];
               }
 
-              a1 = v28;
+              self = selfCopy;
 
               v20 = v30;
             }
           }
 
-          v9 = v17;
+          stringValue = v17;
         }
       }
 
@@ -106,25 +106,25 @@
 {
   v55 = *MEMORY[0x277D85DE8];
   v6 = a3;
-  v7 = [v6 service];
-  v8 = [v7 instanceID];
-  v9 = [v7 accessory];
-  v10 = [v9 uuid];
+  service = [v6 service];
+  instanceID = [service instanceID];
+  accessory = [service accessory];
+  uuid = [accessory uuid];
 
-  v11 = [v6 instanceID];
-  v12 = [v10 UUIDString];
-  v13 = [a1 hmf_dictionaryForKey:v12];
+  instanceID2 = [v6 instanceID];
+  uUIDString = [uuid UUIDString];
+  v13 = [self hmf_dictionaryForKey:uUIDString];
 
   if (v13)
   {
-    v14 = [v8 stringValue];
-    v15 = [v13 hmf_dictionaryForKey:v14];
+    stringValue = [instanceID stringValue];
+    v15 = [v13 hmf_dictionaryForKey:stringValue];
 
     if (v15)
     {
-      v44 = v11;
-      v16 = [v11 stringValue];
-      v17 = [v15 hmf_dictionaryForKey:v16];
+      v44 = instanceID2;
+      stringValue2 = [instanceID2 stringValue];
+      v17 = [v15 hmf_dictionaryForKey:stringValue2];
 
       if (v17)
       {
@@ -133,7 +133,7 @@
         v20 = v19;
         if (a4 && !v18)
         {
-          v40 = v8;
+          v40 = instanceID;
           v42 = v19;
           v21 = MEMORY[0x277CCAAC8];
           v22 = objc_opt_class();
@@ -170,7 +170,7 @@
             objc_autoreleasePoolPop(context);
           }
 
-          v8 = v40;
+          instanceID = v40;
         }
       }
 
@@ -187,9 +187,9 @@
           v49 = 2112;
           v50 = v44;
           v51 = 2112;
-          v52 = v8;
+          v52 = instanceID;
           v53 = 2112;
-          v54 = v10;
+          v54 = uuid;
           _os_log_impl(&dword_229538000, v33, OS_LOG_TYPE_ERROR, "%{public}@Missing entry for characteristic with iid of service with iid of accessory with uuid %@:%@:%@", buf, 0x2Au);
 
           v32 = v43;
@@ -208,7 +208,7 @@
         }
       }
 
-      v11 = v44;
+      instanceID2 = v44;
     }
 
     else
@@ -218,16 +218,16 @@
       if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
       {
         HMFGetLogIdentifier();
-        v31 = v45 = v11;
+        v31 = v45 = instanceID2;
         *buf = 138543874;
         v48 = v31;
         v49 = 2112;
-        v50 = v8;
+        v50 = instanceID;
         v51 = 2112;
-        v52 = v10;
+        v52 = uuid;
         _os_log_impl(&dword_229538000, v30, OS_LOG_TYPE_ERROR, "%{public}@Missing entry for service with iid of accessory with uuid %@:%@", buf, 0x20u);
 
-        v11 = v45;
+        instanceID2 = v45;
       }
 
       objc_autoreleasePoolPop(v29);
@@ -254,7 +254,7 @@
       *buf = 138543618;
       v48 = v28;
       v49 = 2112;
-      v50 = v10;
+      v50 = uuid;
       _os_log_impl(&dword_229538000, v27, OS_LOG_TYPE_ERROR, "%{public}@Missing entry for accessory with uuid in write response %@", buf, 0x16u);
     }
 
@@ -292,14 +292,14 @@
     v62 = 2112;
     v63 = v12;
     v64 = 2112;
-    v65 = a1;
+    selfCopy = self;
     _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@[Natural Lighting] Received response for requests %@:%@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v9);
-  v13 = [v8 characteristic];
+  characteristic = [v8 characteristic];
   v59 = 0;
-  v14 = [a1 hmd_valueOfCharacteristic:v13 error:&v59];
+  v14 = [self hmd_valueOfCharacteristic:characteristic error:&v59];
   v15 = v59;
 
   if (v14)
@@ -322,8 +322,8 @@
     if (v17)
     {
       v57 = v19;
-      v20 = [v8 value];
-      v21 = [v16 isEqual:v20];
+      value = [v8 value];
+      v21 = [v16 isEqual:value];
 
       v22 = objc_autoreleasePoolPush();
       v23 = HMFGetOSLogHandle();
@@ -348,11 +348,11 @@
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
         {
           v37 = HMFGetLogIdentifier();
-          v38 = [v16 hmf_hexadecimalRepresentation];
+          hmf_hexadecimalRepresentation = [v16 hmf_hexadecimalRepresentation];
           *buf = 138543618;
           v61 = v37;
           v62 = 2112;
-          v63 = v38;
+          v63 = hmf_hexadecimalRepresentation;
           _os_log_impl(&dword_229538000, v24, OS_LOG_TYPE_DEBUG, "%{public}@[Natural Lighting] Decoding value transition control response: %@", buf, 0x16u);
         }
 
@@ -377,9 +377,9 @@
           }
 
           objc_autoreleasePoolPop(v40);
-          v44 = [v8 characteristic];
-          v45 = [v44 service];
-          v46 = [v45 findCharacteristicWithType:*MEMORY[0x277CCF7D8]];
+          characteristic2 = [v8 characteristic];
+          service = [characteristic2 service];
+          v46 = [service findCharacteristicWithType:*MEMORY[0x277CCF7D8]];
 
           v47 = [v39 isNaturalLightingEnabledForCharacteristic:v46] ^ a4;
           if (v47 == 1)
@@ -396,7 +396,7 @@
               v62 = 2112;
               v63 = v49;
               v64 = 2112;
-              v65 = v50;
+              selfCopy = v50;
               _os_log_impl(&dword_229538000, v48, OS_LOG_TYPE_ERROR, "%{public}@[Natural Lighting] Write response indicates Natural Lighting was enabled: %@ expected: %@", buf, 0x20u);
             }
 
@@ -417,7 +417,7 @@
             v62 = 2112;
             v63 = v16;
             v64 = 2112;
-            v65 = v27;
+            selfCopy = v27;
             _os_log_impl(&dword_229538000, v42, OS_LOG_TYPE_ERROR, "%{public}@[Natural Lighting] Failed to parse Transition Control Response %@:%@", buf, 0x20u);
           }
 
@@ -453,7 +453,7 @@
         v62 = 2112;
         v63 = v8;
         v64 = 2112;
-        v65 = v16;
+        selfCopy = v16;
         v66 = 2112;
         v67 = v36;
         _os_log_impl(&dword_229538000, v33, OS_LOG_TYPE_ERROR, "%{public}@[Natural Lighting] Response value for request %@ is not of expected type %@:%@", buf, 0x2Au);
@@ -491,7 +491,7 @@
       v62 = 2112;
       v63 = v8;
       v64 = 2112;
-      v65 = v15;
+      selfCopy = v15;
       _os_log_impl(&dword_229538000, v29, OS_LOG_TYPE_ERROR, "%{public}@[Natural Lighting] Failed to parse response for request %@:%@", buf, 0x20u);
     }
 

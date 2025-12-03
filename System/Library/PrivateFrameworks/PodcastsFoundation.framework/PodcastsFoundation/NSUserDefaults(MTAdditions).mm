@@ -20,16 +20,16 @@
 
 + (id)_applePodcastsFoundationSettingsUserDefaults
 {
-  v2 = [MEMORY[0x1E695E000] appUserDefaultsForUnitTesting];
+  appUserDefaultsForUnitTesting = [MEMORY[0x1E695E000] appUserDefaultsForUnitTesting];
 
-  if (v2)
+  if (appUserDefaultsForUnitTesting)
   {
-    v3 = [MEMORY[0x1E695E000] appUserDefaultsForUnitTesting];
+    appUserDefaultsForUnitTesting2 = [MEMORY[0x1E695E000] appUserDefaultsForUnitTesting];
   }
 
   else
   {
-    if ([a1 shouldReadSettingsFromSharedUserDefaults])
+    if ([self shouldReadSettingsFromSharedUserDefaults])
     {
       [MEMORY[0x1E695E000] _applePodcastsFoundationSharedUserDefaults];
     }
@@ -38,15 +38,15 @@
     {
       [MEMORY[0x1E695E000] standardUserDefaults];
     }
-    v3 = ;
+    appUserDefaultsForUnitTesting2 = ;
   }
 
-  return v3;
+  return appUserDefaultsForUnitTesting2;
 }
 
 + (uint64_t)shouldReadSettingsFromSharedUserDefaults
 {
-  if ([a1 settingsAppWritesDirectlyToSharedUserDefaults])
+  if ([self settingsAppWritesDirectlyToSharedUserDefaults])
   {
     return 1;
   }

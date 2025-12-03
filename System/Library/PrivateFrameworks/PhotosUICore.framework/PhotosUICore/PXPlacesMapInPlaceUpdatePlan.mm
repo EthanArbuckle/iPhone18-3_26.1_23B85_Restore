@@ -1,10 +1,10 @@
 @interface PXPlacesMapInPlaceUpdatePlan
 - (PXPlacesMapInPlaceUpdatePlan)init;
 - (PXPlacesMapPipelineComponentProvider)pipelineComponentProvider;
-- (id)_changesBetweenSourceLayoutResult:(id)a3 targetLayoutResult:(id)a4;
-- (id)annotationForLayoutItem:(id)a3;
+- (id)_changesBetweenSourceLayoutResult:(id)result targetLayoutResult:(id)layoutResult;
+- (id)annotationForLayoutItem:(id)item;
 - (id)removalPlanResult;
-- (id)resultForNewLayoutResult:(id)a3;
+- (id)resultForNewLayoutResult:(id)result;
 - (void)reset;
 @end
 
@@ -31,58 +31,58 @@
   dispatch_semaphore_signal(sema);
 }
 
-- (id)annotationForLayoutItem:(id)a3
+- (id)annotationForLayoutItem:(id)item
 {
   sema = self->_sema;
-  v5 = a3;
+  itemCopy = item;
   dispatch_semaphore_wait(sema, 0xFFFFFFFFFFFFFFFFLL);
-  v6 = [(PXPlacesMapInPlaceUpdatePlan *)self currentLayoutItemToAnnotationTable];
-  v7 = [v6 objectForKey:v5];
+  currentLayoutItemToAnnotationTable = [(PXPlacesMapInPlaceUpdatePlan *)self currentLayoutItemToAnnotationTable];
+  v7 = [currentLayoutItemToAnnotationTable objectForKey:itemCopy];
 
   dispatch_semaphore_signal(self->_sema);
 
   return v7;
 }
 
-- (id)_changesBetweenSourceLayoutResult:(id)a3 targetLayoutResult:(id)a4
+- (id)_changesBetweenSourceLayoutResult:(id)result targetLayoutResult:(id)layoutResult
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [(PXPlacesMapLayoutDiffer *)[PXPlacesMapInPlaceLayoutDiffer alloc] initWithSourceLayoutResult:v6 targetLayoutResult:v5];
+  layoutResultCopy = layoutResult;
+  resultCopy = result;
+  v7 = [(PXPlacesMapLayoutDiffer *)[PXPlacesMapInPlaceLayoutDiffer alloc] initWithSourceLayoutResult:resultCopy targetLayoutResult:layoutResultCopy];
 
-  v8 = [(PXPlacesMapLayoutDiffer *)v7 computeChanges];
+  computeChanges = [(PXPlacesMapLayoutDiffer *)v7 computeChanges];
 
-  return v8;
+  return computeChanges;
 }
 
 - (id)removalPlanResult
 {
   v3 = objc_alloc_init(PXPlacesMapUpdatePlanResultImpl);
   dispatch_semaphore_wait(self->_sema, 0xFFFFFFFFFFFFFFFFLL);
-  v4 = [(PXPlacesMapUpdatePlanResultImpl *)v3 annotationsToRemoveImmediately];
-  v5 = [(PXPlacesMapInPlaceUpdatePlan *)self currentLayoutItemToAnnotationTable];
-  v6 = [v5 objectEnumerator];
-  v7 = [v6 allObjects];
-  [v4 addObjectsFromArray:v7];
+  annotationsToRemoveImmediately = [(PXPlacesMapUpdatePlanResultImpl *)v3 annotationsToRemoveImmediately];
+  currentLayoutItemToAnnotationTable = [(PXPlacesMapInPlaceUpdatePlan *)self currentLayoutItemToAnnotationTable];
+  objectEnumerator = [currentLayoutItemToAnnotationTable objectEnumerator];
+  allObjects = [objectEnumerator allObjects];
+  [annotationsToRemoveImmediately addObjectsFromArray:allObjects];
 
   dispatch_semaphore_signal(self->_sema);
 
   return v3;
 }
 
-- (id)resultForNewLayoutResult:(id)a3
+- (id)resultForNewLayoutResult:(id)result
 {
   v104 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  resultCopy = result;
   dispatch_semaphore_wait(self->_sema, 0xFFFFFFFFFFFFFFFFLL);
   v78 = objc_alloc_init(PXPlacesMapUpdatePlanResultImpl);
-  v5 = [(PXPlacesMapInPlaceUpdatePlan *)self currentLayoutResult];
-  v71 = v4;
-  v6 = [(PXPlacesMapInPlaceUpdatePlan *)self _changesBetweenSourceLayoutResult:v5 targetLayoutResult:v4];
+  currentLayoutResult = [(PXPlacesMapInPlaceUpdatePlan *)self currentLayoutResult];
+  v71 = resultCopy;
+  v6 = [(PXPlacesMapInPlaceUpdatePlan *)self _changesBetweenSourceLayoutResult:currentLayoutResult targetLayoutResult:resultCopy];
 
   v7 = [MEMORY[0x1E696AD18] mapTableWithKeyOptions:0 valueOptions:0];
-  v8 = [(PXPlacesMapInPlaceUpdatePlan *)self pipelineComponentProvider];
-  v75 = [v8 renderer];
+  pipelineComponentProvider = [(PXPlacesMapInPlaceUpdatePlan *)self pipelineComponentProvider];
+  renderer = [pipelineComponentProvider renderer];
 
   v77 = [MEMORY[0x1E695DFA8] set];
   v9 = [MEMORY[0x1E695DFA8] set];
@@ -106,16 +106,16 @@
         }
 
         v15 = *(*(&v95 + 1) + 8 * i);
-        v16 = [v15 sourceLayoutItem];
-        v17 = [v15 targetLayoutItem];
-        if (v16)
+        sourceLayoutItem = [v15 sourceLayoutItem];
+        targetLayoutItem = [v15 targetLayoutItem];
+        if (sourceLayoutItem)
         {
-          [v77 addObject:v16];
+          [v77 addObject:sourceLayoutItem];
         }
 
-        if (v17)
+        if (targetLayoutItem)
         {
-          [v9 addObject:v17];
+          [v9 addObject:targetLayoutItem];
         }
       }
 
@@ -125,7 +125,7 @@
     while (v12);
   }
 
-  v73 = self;
+  selfCopy = self;
 
   v93 = 0u;
   v94 = 0u;
@@ -150,24 +150,24 @@
         }
 
         v23 = *(*(&v91 + 1) + 8 * v22);
-        v24 = [v23 type];
-        v25 = [v23 sourceLayoutItem];
-        v26 = [v23 targetLayoutItem];
-        v27 = v26;
-        if (v24 == 2)
+        type = [v23 type];
+        sourceLayoutItem2 = [v23 sourceLayoutItem];
+        targetLayoutItem2 = [v23 targetLayoutItem];
+        v27 = targetLayoutItem2;
+        if (type == 2)
         {
-          if (v25)
+          if (sourceLayoutItem2)
           {
-            if (v26)
+            if (targetLayoutItem2)
             {
 LABEL_20:
-              v28 = [(dispatch_semaphore_t *)v73 currentLayoutItemToAnnotationTable];
-              v29 = [v28 objectForKey:v25];
+              currentLayoutItemToAnnotationTable = [(dispatch_semaphore_t *)selfCopy currentLayoutItemToAnnotationTable];
+              v29 = [currentLayoutItemToAnnotationTable objectForKey:sourceLayoutItem2];
 
               if (!v29)
               {
-                v37 = [MEMORY[0x1E696AAA8] currentHandler];
-                [v37 handleFailureInMethod:a2 object:v73 file:@"PXPlacesMapInPlaceUpdatePlan.m" lineNumber:87 description:@"annotation for sourceItem cannot be nil"];
+                currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+                [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"PXPlacesMapInPlaceUpdatePlan.m" lineNumber:87 description:@"annotation for sourceItem cannot be nil"];
               }
 
               v30 = v29;
@@ -182,20 +182,20 @@ LABEL_20:
               }
 
               [v7 setObject:v31 forKey:v27];
-              [v77 removeObject:v25];
+              [v77 removeObject:sourceLayoutItem2];
               [v9 removeObject:v27];
-              if (([v25 isEqualToLayoutItem:v27] & 1) == 0)
+              if (([sourceLayoutItem2 isEqualToLayoutItem:v27] & 1) == 0)
               {
                 [v7 setObject:v31 forKey:v27];
-                [v77 removeObject:v25];
+                [v77 removeObject:sourceLayoutItem2];
                 [v9 removeObject:v27];
-                v32 = [v27 geotaggables];
-                v33 = [v32 copy];
+                geotaggables = [v27 geotaggables];
+                v33 = [geotaggables copy];
                 [v31 setGeotaggables:v33];
 
                 v7 = v76;
-                v34 = [(PXPlacesMapUpdatePlanResultImpl *)v78 annotationsToRedraw];
-                [v34 addObject:v30];
+                annotationsToRedraw = [(PXPlacesMapUpdatePlanResultImpl *)v78 annotationsToRedraw];
+                [annotationsToRedraw addObject:v30];
 
                 v18 = v72;
               }
@@ -206,8 +206,8 @@ LABEL_20:
 
           else
           {
-            v35 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v35 handleFailureInMethod:a2 object:v73 file:@"PXPlacesMapInPlaceUpdatePlan.m" lineNumber:84 description:@"sourceItem cannot be nil for PXPlacesMapLayoutDiffTypeRelated"];
+            currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler2 handleFailureInMethod:a2 object:selfCopy file:@"PXPlacesMapInPlaceUpdatePlan.m" lineNumber:84 description:@"sourceItem cannot be nil for PXPlacesMapLayoutDiffTypeRelated"];
 
             if (v27)
             {
@@ -215,8 +215,8 @@ LABEL_20:
             }
           }
 
-          v36 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v36 handleFailureInMethod:a2 object:v73 file:@"PXPlacesMapInPlaceUpdatePlan.m" lineNumber:85 description:@"targetItem cannot be nil for PXPlacesMapLayoutDiffTypeRelated"];
+          currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler3 handleFailureInMethod:a2 object:selfCopy file:@"PXPlacesMapInPlaceUpdatePlan.m" lineNumber:85 description:@"targetItem cannot be nil for PXPlacesMapLayoutDiffTypeRelated"];
 
           goto LABEL_20;
         }
@@ -254,18 +254,18 @@ LABEL_29:
         }
 
         v43 = *(*(&v87 + 1) + 8 * j);
-        v44 = [v43 geotaggables];
+        geotaggables2 = [v43 geotaggables];
         [v43 coordinate];
-        v45 = [v75 annotationForGeotaggables:v44 initialCoordinate:?];
+        v45 = [renderer annotationForGeotaggables:geotaggables2 initialCoordinate:?];
 
         if (!v45)
         {
-          v47 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v47 handleFailureInMethod:a2 object:v73 file:@"PXPlacesMapInPlaceUpdatePlan.m" lineNumber:116 description:@"annotation for targetItem cannot be nil"];
+          currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler4 handleFailureInMethod:a2 object:selfCopy file:@"PXPlacesMapInPlaceUpdatePlan.m" lineNumber:116 description:@"annotation for targetItem cannot be nil"];
         }
 
-        v46 = [(PXPlacesMapUpdatePlanResultImpl *)v78 annotationsToAddImmediately];
-        [v46 addObject:v45];
+        annotationsToAddImmediately = [(PXPlacesMapUpdatePlanResultImpl *)v78 annotationsToAddImmediately];
+        [annotationsToAddImmediately addObject:v45];
 
         [v7 setObject:v45 forKey:v43];
       }
@@ -296,17 +296,17 @@ LABEL_29:
         }
 
         v53 = *(*(&v83 + 1) + 8 * k);
-        v54 = [(dispatch_semaphore_t *)v73 currentLayoutItemToAnnotationTable];
-        v55 = [v54 objectForKey:v53];
+        currentLayoutItemToAnnotationTable2 = [(dispatch_semaphore_t *)selfCopy currentLayoutItemToAnnotationTable];
+        v55 = [currentLayoutItemToAnnotationTable2 objectForKey:v53];
 
         if (!v55)
         {
-          v57 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v57 handleFailureInMethod:a2 object:v73 file:@"PXPlacesMapInPlaceUpdatePlan.m" lineNumber:125 description:@"annotation for sourceItem cannot be nil"];
+          currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler5 handleFailureInMethod:a2 object:selfCopy file:@"PXPlacesMapInPlaceUpdatePlan.m" lineNumber:125 description:@"annotation for sourceItem cannot be nil"];
         }
 
-        v56 = [(PXPlacesMapUpdatePlanResultImpl *)v78 annotationsToRemoveImmediately];
-        [v56 addObject:v55];
+        annotationsToRemoveImmediately = [(PXPlacesMapUpdatePlanResultImpl *)v78 annotationsToRemoveImmediately];
+        [annotationsToRemoveImmediately addObject:v55];
       }
 
       v50 = [v48 countByEnumeratingWithState:&v83 objects:v100 count:16];
@@ -319,8 +319,8 @@ LABEL_29:
   v82 = 0u;
   v79 = 0u;
   v80 = 0u;
-  v58 = [v71 layoutItems];
-  v59 = [v58 countByEnumeratingWithState:&v79 objects:v99 count:16];
+  layoutItems = [v71 layoutItems];
+  v59 = [layoutItems countByEnumeratingWithState:&v79 objects:v99 count:16];
   if (v59)
   {
     v60 = v59;
@@ -332,14 +332,14 @@ LABEL_29:
       {
         if (*v80 != v62)
         {
-          objc_enumerationMutation(v58);
+          objc_enumerationMutation(layoutItems);
         }
 
         v64 = [v76 objectForKey:*(*(&v79 + 1) + 8 * m)];
         if (!v64)
         {
-          v68 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v68 handleFailureInMethod:a2 object:v73 file:@"PXPlacesMapInPlaceUpdatePlan.m" lineNumber:135 description:@"annotation for layout item cannot be nil"];
+          currentHandler6 = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler6 handleFailureInMethod:a2 object:selfCopy file:@"PXPlacesMapInPlaceUpdatePlan.m" lineNumber:135 description:@"annotation for layout item cannot be nil"];
         }
 
         v65 = v64;
@@ -361,23 +361,23 @@ LABEL_66:
         if (v61 != [v66 index])
         {
           [v66 setIndex:v61];
-          v67 = [(PXPlacesMapUpdatePlanResultImpl *)v78 annotationsWithUpdatedIndex];
-          [v67 addObject:v66];
+          annotationsWithUpdatedIndex = [(PXPlacesMapUpdatePlanResultImpl *)v78 annotationsWithUpdatedIndex];
+          [annotationsWithUpdatedIndex addObject:v66];
         }
 
         ++v61;
 LABEL_67:
       }
 
-      v60 = [v58 countByEnumeratingWithState:&v79 objects:v99 count:16];
+      v60 = [layoutItems countByEnumeratingWithState:&v79 objects:v99 count:16];
     }
 
     while (v60);
   }
 
-  [(dispatch_semaphore_t *)v73 setCurrentLayoutResult:v71];
-  [(dispatch_semaphore_t *)v73 setCurrentLayoutItemToAnnotationTable:v76];
-  dispatch_semaphore_signal(v73[1]);
+  [(dispatch_semaphore_t *)selfCopy setCurrentLayoutResult:v71];
+  [(dispatch_semaphore_t *)selfCopy setCurrentLayoutItemToAnnotationTable:v76];
+  dispatch_semaphore_signal(selfCopy[1]);
 
   return v78;
 }

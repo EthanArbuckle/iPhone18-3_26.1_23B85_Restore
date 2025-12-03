@@ -1,9 +1,9 @@
 @interface MapsSuggestionsFakeStreamer
-- (_TtC15MapsSuggestions27MapsSuggestionsFakeStreamer)initWithLookAheadPeriod:(double)a3 pingInterval:(double)a4 notificationName:(id)a5 callBackBlock:(id)a6 simpleCallBack:(BOOL)a7 tenSecondEvent:(BOOL)a8 alreadyStartedEvent:(BOOL)a9 doubleEvent:(BOOL)a10;
-- (_TtC15MapsSuggestions27MapsSuggestionsFakeStreamer)initWithLookAheadPeriod:(double)a3 pingInterval:(double)a4 notificationName:(id)a5 identifyingName:(id)a6;
+- (_TtC15MapsSuggestions27MapsSuggestionsFakeStreamer)initWithLookAheadPeriod:(double)period pingInterval:(double)interval notificationName:(id)name callBackBlock:(id)block simpleCallBack:(BOOL)back tenSecondEvent:(BOOL)event alreadyStartedEvent:(BOOL)startedEvent doubleEvent:(BOOL)self0;
+- (_TtC15MapsSuggestions27MapsSuggestionsFakeStreamer)initWithLookAheadPeriod:(double)period pingInterval:(double)interval notificationName:(id)name identifyingName:(id)identifyingName;
 - (id)callBackBlock;
 - (void)scanForStreamableEvents;
-- (void)setCallBackBlock:(id)a3;
+- (void)setCallBackBlock:(id)block;
 @end
 
 @implementation MapsSuggestionsFakeStreamer
@@ -32,9 +32,9 @@
   return v4;
 }
 
-- (void)setCallBackBlock:(id)a3
+- (void)setCallBackBlock:(id)block
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -52,13 +52,13 @@
   v7 = *v6;
   *v6 = v4;
   v6[1] = v5;
-  v8 = self;
+  selfCopy = self;
   sub_1C513EDF0(v7);
 }
 
-- (_TtC15MapsSuggestions27MapsSuggestionsFakeStreamer)initWithLookAheadPeriod:(double)a3 pingInterval:(double)a4 notificationName:(id)a5 callBackBlock:(id)a6 simpleCallBack:(BOOL)a7 tenSecondEvent:(BOOL)a8 alreadyStartedEvent:(BOOL)a9 doubleEvent:(BOOL)a10
+- (_TtC15MapsSuggestions27MapsSuggestionsFakeStreamer)initWithLookAheadPeriod:(double)period pingInterval:(double)interval notificationName:(id)name callBackBlock:(id)block simpleCallBack:(BOOL)back tenSecondEvent:(BOOL)event alreadyStartedEvent:(BOOL)startedEvent doubleEvent:(BOOL)self0
 {
-  v16 = _Block_copy(a6);
+  v16 = _Block_copy(block);
   v17 = sub_1C529D72C();
   if (v16)
   {
@@ -78,16 +78,16 @@
     v22 = 0;
   }
 
-  return MapsSuggestionsFakeStreamer.init(lookAheadPeriod:pingInterval:notificationName:callBackBlock:simpleCallBack:tenSecondEvent:alreadyStartedEvent:doubleEvent:)(v17, v18, v23, v22, a7, a8, a9, a10, a3, a4);
+  return MapsSuggestionsFakeStreamer.init(lookAheadPeriod:pingInterval:notificationName:callBackBlock:simpleCallBack:tenSecondEvent:alreadyStartedEvent:doubleEvent:)(v17, v18, v23, v22, back, event, startedEvent, doubleEvent, period, interval);
 }
 
 - (void)scanForStreamableEvents
 {
-  v2 = self;
+  selfCopy = self;
   MapsSuggestionsFakeStreamer.scanForStreamableEvents()();
 }
 
-- (_TtC15MapsSuggestions27MapsSuggestionsFakeStreamer)initWithLookAheadPeriod:(double)a3 pingInterval:(double)a4 notificationName:(id)a5 identifyingName:(id)a6
+- (_TtC15MapsSuggestions27MapsSuggestionsFakeStreamer)initWithLookAheadPeriod:(double)period pingInterval:(double)interval notificationName:(id)name identifyingName:(id)identifyingName
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

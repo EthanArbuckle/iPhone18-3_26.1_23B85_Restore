@@ -1,26 +1,26 @@
 @interface MSPReceiverETAController
-- (BOOL)_allowMessageWithState:(id)a3 forGroup:(id)a4 fromID:(id)a5;
-- (BOOL)_cleanUpNecessaryForGroup:(id)a3;
-- (BOOL)subscribeToUpdatesToSharedTrip:(id)a3 error:(id *)a4;
-- (BOOL)unsubscribeFromUpdatesToSharedTrip:(id)a3 error:(id *)a4;
-- (MSPReceiverETAController)initWithRelay:(id)a3;
+- (BOOL)_allowMessageWithState:(id)state forGroup:(id)group fromID:(id)d;
+- (BOOL)_cleanUpNecessaryForGroup:(id)group;
+- (BOOL)subscribeToUpdatesToSharedTrip:(id)trip error:(id *)error;
+- (BOOL)unsubscribeFromUpdatesToSharedTrip:(id)trip error:(id *)error;
+- (MSPReceiverETAController)initWithRelay:(id)relay;
 - (MSPReceiverETAControllerDelegate)delegate;
 - (NSArray)allTrips;
-- (void)_cleanGroup:(id)a3;
+- (void)_cleanGroup:(id)group;
 - (void)_cleanupIfNecessary;
-- (void)_resolveContactIfNeeded:(id)a3 fromId:(id)a4 completion:(id)a5;
-- (void)_showOrUpdateNotificationIfNeeded:(id)a3;
-- (void)_updateData:(id)a3 forGroup:(id)a4 fromID:(id)a5;
-- (void)_updateDelegateWithUpdateState:(id)a3 to:(id)a4 freshAvailable:(BOOL)a5;
-- (void)blockSharedTrip:(id)a3;
+- (void)_resolveContactIfNeeded:(id)needed fromId:(id)id completion:(id)completion;
+- (void)_showOrUpdateNotificationIfNeeded:(id)needed;
+- (void)_updateData:(id)data forGroup:(id)group fromID:(id)d;
+- (void)_updateDelegateWithUpdateState:(id)state to:(id)to freshAvailable:(BOOL)available;
+- (void)blockSharedTrip:(id)trip;
 - (void)cleanTimer;
 - (void)clearBlockedTripIdentifiers;
 - (void)dealloc;
-- (void)groupSessionEnded:(id)a3;
+- (void)groupSessionEnded:(id)ended;
 - (void)purgeExpiredBlockedTripIdentifiers;
-- (void)relay:(id)a3 receiveData:(id)a4 info:(id)a5 fromID:(id)a6;
-- (void)relay:(id)a3 sharingClosed:(id)a4;
-- (void)storageController:(id)a3 updatedSharedTripGroupStorage:(id)a4;
+- (void)relay:(id)relay receiveData:(id)data info:(id)info fromID:(id)d;
+- (void)relay:(id)relay sharingClosed:(id)closed;
+- (void)storageController:(id)controller updatedSharedTripGroupStorage:(id)storage;
 - (void)updateContacts;
 @end
 
@@ -30,8 +30,8 @@
 {
   v20 = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_idsRelay);
-  v4 = [WeakRetained storageController];
-  [v4 initialiseStoredSessionsIfNeeded];
+  storageController = [WeakRetained storageController];
+  [storageController initialiseStoredSessionsIfNeeded];
 
   v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{-[NSMutableOrderedSet count](self->_orderedNavStateIdentifiers, "count")}];
   v15 = 0u;
@@ -72,16 +72,16 @@
   return v12;
 }
 
-- (MSPReceiverETAController)initWithRelay:(id)a3
+- (MSPReceiverETAController)initWithRelay:(id)relay
 {
-  v4 = a3;
+  relayCopy = relay;
   v22.receiver = self;
   v22.super_class = MSPReceiverETAController;
   v5 = [(MSPReceiverETAController *)&v22 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_idsRelay, v4);
+    objc_storeWeak(&v5->_idsRelay, relayCopy);
     v7 = +[MSPSharedTripBlocklist sharedInstance];
     blockedList = v6->_blockedList;
     v6->_blockedList = v7;
@@ -102,12 +102,12 @@
     orderedNavStateIdentifiers = v6->_orderedNavStateIdentifiers;
     v6->_orderedNavStateIdentifiers = v15;
 
-    v17 = [v4 storageController];
-    [v17 setDelegate:v6];
+    storageController = [relayCopy storageController];
+    [storageController setDelegate:v6];
 
-    [v4 setDelegate:v6];
-    v18 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v18 addObserver:v6 selector:sel_updateContacts name:*MEMORY[0x277CBD140] object:0];
+    [relayCopy setDelegate:v6];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel_updateContacts name:*MEMORY[0x277CBD140] object:0];
   }
 
   v19 = MSPGetSharedTripLog();
@@ -145,38 +145,38 @@
   self->_cleanupTimer = 0;
 }
 
-- (BOOL)subscribeToUpdatesToSharedTrip:(id)a3 error:(id *)a4
+- (BOOL)subscribeToUpdatesToSharedTrip:(id)trip error:(id *)error
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  tripCopy = trip;
   v7 = MSPGetSharedTripLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *v25 = 138412290;
-    *&v25[4] = v6;
+    *&v25[4] = tripCopy;
     _os_log_impl(&dword_25813A000, v7, OS_LOG_TYPE_DEFAULT, "MSPReceiverETAController subscribeToUpdatesToSharedTrip sharedTripIdentifier: %@", v25, 0xCu);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_idsRelay);
-  v9 = [WeakRetained storageController];
-  v10 = [v9 groupSessionInfoForKey:v6];
+  storageController = [WeakRetained storageController];
+  v10 = [storageController groupSessionInfoForKey:tripCopy];
 
   if ([v10 hasState])
   {
-    v11 = [v10 state];
-    if ([v11 closed])
+    state = [v10 state];
+    if ([state closed])
     {
 
       goto LABEL_7;
     }
 
-    v12 = [v10 state];
-    v13 = [v12 arrived];
+    state2 = [v10 state];
+    arrived = [state2 arrived];
 
-    if (v13)
+    if (arrived)
     {
 LABEL_7:
-      if (a4)
+      if (error)
       {
         v26[0] = *MEMORY[0x277CCA068];
         *v25 = @"Trip already ended";
@@ -185,7 +185,7 @@ LABEL_7:
 
         v16 = v15;
         v17 = 0;
-        *a4 = v15;
+        *error = v15;
       }
 
       else
@@ -197,11 +197,11 @@ LABEL_7:
     }
   }
 
-  v18 = [(NSMutableDictionary *)self->_sharedSessions objectForKeyedSubscript:v6];
+  v18 = [(NSMutableDictionary *)self->_sharedSessions objectForKeyedSubscript:tripCopy];
   if (!v18)
   {
-    v18 = [WeakRetained groupSessionForIdentifier:v6];
-    [(NSMutableDictionary *)self->_sharedSessions setObject:v18 forKeyedSubscript:v6];
+    v18 = [WeakRetained groupSessionForIdentifier:tripCopy];
+    [(NSMutableDictionary *)self->_sharedSessions setObject:v18 forKeyedSubscript:tripCopy];
     if (!self->_transaction)
     {
       v19 = os_transaction_create();
@@ -210,32 +210,32 @@ LABEL_7:
     }
   }
 
-  v21 = [v10 receivingHandle];
-  v22 = [v10 receivingAccountIdentifier];
-  v17 = [v18 joinLiveModeFromHandle:v21 fromAccountID:v22 error:a4];
+  receivingHandle = [v10 receivingHandle];
+  receivingAccountIdentifier = [v10 receivingAccountIdentifier];
+  v17 = [v18 joinLiveModeFromHandle:receivingHandle fromAccountID:receivingAccountIdentifier error:error];
 
 LABEL_13:
   v23 = *MEMORY[0x277D85DE8];
   return v17;
 }
 
-- (BOOL)unsubscribeFromUpdatesToSharedTrip:(id)a3 error:(id *)a4
+- (BOOL)unsubscribeFromUpdatesToSharedTrip:(id)trip error:(id *)error
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  tripCopy = trip;
   v7 = MSPGetSharedTripLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *v17 = 138412290;
-    *&v17[4] = v6;
+    *&v17[4] = tripCopy;
     _os_log_impl(&dword_25813A000, v7, OS_LOG_TYPE_DEFAULT, "MSPReceiverETAController unsubscribeFromUpdatesToSharedTrip sharedTripIdentifier: %@", v17, 0xCu);
   }
 
-  v8 = [(NSMutableDictionary *)self->_sharedSessions objectForKeyedSubscript:v6];
+  v8 = [(NSMutableDictionary *)self->_sharedSessions objectForKeyedSubscript:tripCopy];
   v9 = v8;
   if (!v8)
   {
-    if (a4)
+    if (error)
     {
       v18[0] = *MEMORY[0x277CCA068];
       *v17 = @"Invalid trip ID";
@@ -244,7 +244,7 @@ LABEL_13:
 
       v14 = v13;
       v11 = 0;
-      *a4 = v13;
+      *error = v13;
       goto LABEL_11;
     }
 
@@ -253,12 +253,12 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (![v8 leaveLiveModeIfNeeded:a4])
+  if (![v8 leaveLiveModeIfNeeded:error])
   {
     goto LABEL_10;
   }
 
-  [(NSMutableDictionary *)self->_sharedSessions setObject:0 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)self->_sharedSessions setObject:0 forKeyedSubscript:tripCopy];
   if (![(NSMutableDictionary *)self->_sharedSessions count])
   {
     transaction = self->_transaction;
@@ -272,20 +272,20 @@ LABEL_11:
   return v11;
 }
 
-- (void)blockSharedTrip:(id)a3
+- (void)blockSharedTrip:(id)trip
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  tripCopy = trip;
   v5 = MSPGetSharedTripLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v26 = v4;
+    v26 = tripCopy;
     _os_log_impl(&dword_25813A000, v5, OS_LOG_TYPE_DEFAULT, "MSPReceiverETAController blockSharedTrip identifier: %@", buf, 0xCu);
   }
 
-  [(MSPReceiverETAController *)self unsubscribeFromUpdatesToSharedTrip:v4 error:0];
-  [(MSPSharedTripBlocklist *)self->_blockedList blockIdentifier:v4];
+  [(MSPReceiverETAController *)self unsubscribeFromUpdatesToSharedTrip:tripCopy error:0];
+  [(MSPSharedTripBlocklist *)self->_blockedList blockIdentifier:tripCopy];
   v6 = MSPGetSharedTripLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -295,8 +295,8 @@ LABEL_11:
     _os_log_impl(&dword_25813A000, v6, OS_LOG_TYPE_DEFAULT, "MSPReceiverETAController blockSharedTrip _blockedList: %@", buf, 0xCu);
   }
 
-  v8 = [(NSMutableDictionary *)self->_sharedNavStates allValues];
-  v9 = [v8 copy];
+  allValues = [(NSMutableDictionary *)self->_sharedNavStates allValues];
+  v9 = [allValues copy];
 
   v22 = 0u;
   v23 = 0u;
@@ -319,13 +319,13 @@ LABEL_11:
 
         v15 = *(*(&v20 + 1) + 8 * i);
         v16 = self->_blockedList;
-        v17 = [v15 groupIdentifier];
-        LODWORD(v16) = [(MSPSharedTripBlocklist *)v16 containsIdentifier:v17];
+        groupIdentifier = [v15 groupIdentifier];
+        LODWORD(v16) = [(MSPSharedTripBlocklist *)v16 containsIdentifier:groupIdentifier];
 
         if (v16)
         {
-          v18 = [v15 groupIdentifier];
-          [(MSPReceiverETAController *)self _cleanGroup:v18];
+          groupIdentifier2 = [v15 groupIdentifier];
+          [(MSPReceiverETAController *)self _cleanGroup:groupIdentifier2];
         }
       }
 
@@ -362,20 +362,20 @@ LABEL_11:
   [(MSPSharedTripBlocklist *)self->_blockedList purgeExpiredIdentifiers];
 }
 
-- (void)_showOrUpdateNotificationIfNeeded:(id)a3
+- (void)_showOrUpdateNotificationIfNeeded:(id)needed
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  neededCopy = needed;
   if (GEOConfigGetBOOL())
   {
-    v5 = [(NSMutableDictionary *)self->_sharedNavStates objectForKeyedSubscript:v4];
+    v5 = [(NSMutableDictionary *)self->_sharedNavStates objectForKeyedSubscript:neededCopy];
     if ([v5 hasClosed] && objc_msgSend(v5, "closed"))
     {
       v6 = MSPGetSharedTripLog();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
         v30 = 138412290;
-        v31 = v4;
+        v31 = neededCopy;
         v7 = "[SR] _showOrUpdateNotification trip closed id %@";
 LABEL_10:
         _os_log_impl(&dword_25813A000, v6, OS_LOG_TYPE_DEFAULT, v7, &v30, 0xCu);
@@ -391,7 +391,7 @@ LABEL_10:
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
         v30 = 138412290;
-        v31 = v4;
+        v31 = neededCopy;
         v7 = "[SR] _showOrUpdateNotification trip muted id %@";
         goto LABEL_10;
       }
@@ -401,14 +401,14 @@ LABEL_31:
       goto LABEL_32;
     }
 
-    v6 = [(NSMutableDictionary *)self->_sharedSessions objectForKeyedSubscript:v4];
+    v6 = [(NSMutableDictionary *)self->_sharedSessions objectForKeyedSubscript:neededCopy];
     if ([v6 inLiveMode])
     {
       WeakRetained = MSPGetSharedTripLog();
       if (os_log_type_enabled(WeakRetained, OS_LOG_TYPE_DEFAULT))
       {
         v30 = 138412290;
-        v31 = v4;
+        v31 = neededCopy;
         _os_log_impl(&dword_25813A000, WeakRetained, OS_LOG_TYPE_DEFAULT, "[SR] _showOrUpdateNotification while in live mode %@", &v30, 0xCu);
       }
 
@@ -416,26 +416,26 @@ LABEL_31:
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_idsRelay);
-    v9 = [WeakRetained storageController];
-    v10 = [v9 receivingRulesForIdentifier:v4];
+    storageController = [WeakRetained storageController];
+    v10 = [storageController receivingRulesForIdentifier:neededCopy];
 
     if (v10)
     {
-      v11 = [v5 destinationWaypointInfo];
-      if (v11)
+      destinationWaypointInfo = [v5 destinationWaypointInfo];
+      if (destinationWaypointInfo)
       {
-        v12 = v11;
-        v13 = [v5 etaInfo];
-        if (v13)
+        v12 = destinationWaypointInfo;
+        etaInfo = [v5 etaInfo];
+        if (etaInfo)
         {
-          v14 = v13;
-          v15 = [v5 senderInfo];
-          v16 = [v15 localName];
+          v14 = etaInfo;
+          senderInfo = [v5 senderInfo];
+          localName = [senderInfo localName];
 
-          if (v16)
+          if (localName)
           {
-            v17 = [v5 etaInfo];
-            [v17 etaTimestamp];
+            etaInfo2 = [v5 etaInfo];
+            [etaInfo2 etaTimestamp];
             v19 = v18;
             [v5 updatedTimestamp];
             [v10 didReceiveUpdateWithETA:v19 lastUpdated:v20];
@@ -447,20 +447,20 @@ LABEL_31:
             {
               if (v23)
               {
-                v24 = [v5 mspDescription];
+                mspDescription = [v5 mspDescription];
                 v25 = MSPSharedTripNotificationTypeAsString(v21);
                 v30 = 138412802;
-                v31 = v4;
+                v31 = neededCopy;
                 v32 = 2112;
-                v33 = v24;
+                v33 = mspDescription;
                 v34 = 2114;
                 v35 = v25;
                 _os_log_impl(&dword_25813A000, v22, OS_LOG_TYPE_DEFAULT, "[SR] _showOrUpdateNotification id %@ state %@ notificationType: %{public}@", &v30, 0x20u);
               }
 
               mapsNotificationCenter = self->_mapsNotificationCenter;
-              v27 = [v5 data];
-              [(MDNotificationCenter *)mapsNotificationCenter showSharedTripNotification:v4 ofType:v21 forState:v27];
+              data = [v5 data];
+              [(MDNotificationCenter *)mapsNotificationCenter showSharedTripNotification:neededCopy ofType:v21 forState:data];
 
               [v10 didPostNotificationType:v21 forState:v5];
             }
@@ -474,8 +474,8 @@ LABEL_31:
               }
             }
 
-            v28 = [WeakRetained storageController];
-            [v28 receivingRulesTouched];
+            storageController2 = [WeakRetained storageController];
+            [storageController2 receivingRulesTouched];
 LABEL_29:
 
 LABEL_30:
@@ -489,14 +489,14 @@ LABEL_30:
       }
     }
 
-    v28 = MSPGetSharedTripLog();
-    if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
+    storageController2 = MSPGetSharedTripLog();
+    if (os_log_type_enabled(storageController2, OS_LOG_TYPE_DEFAULT))
     {
       v30 = 138412546;
       v31 = v10;
       v32 = 2112;
       v33 = v5;
-      _os_log_impl(&dword_25813A000, v28, OS_LOG_TYPE_DEFAULT, "[SR] _showOrUpdateNotification skipping notification, rules: %@ currentState: %@", &v30, 0x16u);
+      _os_log_impl(&dword_25813A000, storageController2, OS_LOG_TYPE_DEFAULT, "[SR] _showOrUpdateNotification skipping notification, rules: %@ currentState: %@", &v30, 0x16u);
     }
 
     goto LABEL_29;
@@ -507,26 +507,26 @@ LABEL_32:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_resolveContactIfNeeded:(id)a3 fromId:(id)a4 completion:(id)a5
+- (void)_resolveContactIfNeeded:(id)needed fromId:(id)id completion:(id)completion
 {
   v40 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  neededCopy = needed;
+  completionCopy = completion;
   sharedNavStates = self->_sharedNavStates;
-  v11 = a4;
-  v12 = [(NSMutableDictionary *)sharedNavStates objectForKeyedSubscript:v8];
-  v13 = [v11 componentsSeparatedByString:@":"];
+  idCopy = id;
+  v12 = [(NSMutableDictionary *)sharedNavStates objectForKeyedSubscript:neededCopy];
+  v13 = [idCopy componentsSeparatedByString:@":"];
 
-  v14 = [v13 lastObject];
-  v15 = [v12 senderInfo];
-  [v15 setFromIdentifier:v14];
+  lastObject = [v13 lastObject];
+  senderInfo = [v12 senderInfo];
+  [senderInfo setFromIdentifier:lastObject];
 
-  v16 = [v12 senderInfo];
-  v17 = [v16 hasLocalName];
+  senderInfo2 = [v12 senderInfo];
+  hasLocalName = [senderInfo2 hasLocalName];
 
-  if (v17)
+  if (hasLocalName)
   {
-    v9[2](v9);
+    completionCopy[2](completionCopy);
   }
 
   else
@@ -537,23 +537,23 @@ LABEL_32:
     v31[3] = &unk_279865EF8;
     v18 = v12;
     v32 = v18;
-    v19 = v14;
+    v19 = lastObject;
     v33 = v19;
     v20 = MEMORY[0x259C7AD60](v31);
-    v21 = [MEMORY[0x277CBDAB8] _maps_isAuthorized];
+    _maps_isAuthorized = [MEMORY[0x277CBDAB8] _maps_isAuthorized];
     v22 = MSPGetSharedTripLog();
     v23 = v22;
-    if (v21)
+    if (_maps_isAuthorized)
     {
       if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
       {
-        v24 = [v18 mspDescription];
+        mspDescription = [v18 mspDescription];
         *buf = 138478339;
         v35 = v19;
         v36 = 2112;
-        v37 = v8;
+        v37 = neededCopy;
         v38 = 2112;
-        v39 = v24;
+        v39 = mspDescription;
         _os_log_impl(&dword_25813A000, v23, OS_LOG_TYPE_INFO, "[SR] _resolveContact %{private}@ (id %@ state %@)", buf, 0x20u);
       }
 
@@ -563,7 +563,7 @@ LABEL_32:
       v27[3] = &unk_279865F20;
       v28 = v18;
       v29 = v20;
-      v30 = v9;
+      v30 = completionCopy;
       [MSPContact contactWithAccountIdentifier:v19 completion:v27];
     }
 
@@ -571,18 +571,18 @@ LABEL_32:
     {
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
-        v25 = [v18 mspDescription];
+        mspDescription2 = [v18 mspDescription];
         *buf = 138478339;
         v35 = v19;
         v36 = 2112;
-        v37 = v8;
+        v37 = neededCopy;
         v38 = 2112;
-        v39 = v25;
+        v39 = mspDescription2;
         _os_log_impl(&dword_25813A000, v23, OS_LOG_TYPE_ERROR, "[SR] _resolveContact [not authorized for Contacts access] %{private}@ (id %@ state %@)", buf, 0x20u);
       }
 
       v20[2](v20);
-      v9[2](v9);
+      completionCopy[2](completionCopy);
     }
   }
 
@@ -654,23 +654,23 @@ void __70__MSPReceiverETAController__resolveContactIfNeeded_fromId_completion___
         }
 
         v6 = *(*(&v17 + 1) + 8 * i);
-        v7 = [v6 senderInfo];
-        [v7 setLocalName:0];
+        senderInfo = [v6 senderInfo];
+        [senderInfo setLocalName:0];
 
-        v8 = [v6 senderInfo];
-        [v8 setLocalContactIdentifier:0];
+        senderInfo2 = [v6 senderInfo];
+        [senderInfo2 setLocalContactIdentifier:0];
 
         objc_initWeak(&location, self);
-        v9 = [v6 groupIdentifier];
-        v10 = [v6 senderInfo];
-        v11 = [v10 fromIdentifier];
+        groupIdentifier = [v6 groupIdentifier];
+        senderInfo3 = [v6 senderInfo];
+        fromIdentifier = [senderInfo3 fromIdentifier];
         v14[0] = MEMORY[0x277D85DD0];
         v14[1] = 3221225472;
         v14[2] = __42__MSPReceiverETAController_updateContacts__block_invoke;
         v14[3] = &unk_279865F48;
         objc_copyWeak(&v15, &location);
         v14[4] = v6;
-        [(MSPReceiverETAController *)self _resolveContactIfNeeded:v9 fromId:v11 completion:v14];
+        [(MSPReceiverETAController *)self _resolveContactIfNeeded:groupIdentifier fromId:fromIdentifier completion:v14];
 
         objc_destroyWeak(&v15);
         objc_destroyWeak(&location);
@@ -701,14 +701,14 @@ void __42__MSPReceiverETAController_updateContacts__block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)_allowMessageWithState:(id)a3 forGroup:(id)a4 fromID:(id)a5
+- (BOOL)_allowMessageWithState:(id)state forGroup:(id)group fromID:(id)d
 {
   v38 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
-  if ([(__CFString *)v7 length])
+  groupCopy = group;
+  dCopy = d;
+  if ([(__CFString *)groupCopy length])
   {
-    if ([(MSPSharedTripBlocklist *)self->_blockedList containsIdentifier:v7])
+    if ([(MSPSharedTripBlocklist *)self->_blockedList containsIdentifier:groupCopy])
     {
       v9 = MSPGetSharedTripLog();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -717,7 +717,7 @@ void __42__MSPReceiverETAController_updateContacts__block_invoke(uint64_t a1)
         v34 = 138412546;
         v35 = blockedList;
         v36 = 2112;
-        v37 = v7;
+        v37 = groupCopy;
         v11 = "[SR] _allowMessageWithState NO blocklist %@ contains identifier %@";
         v12 = v9;
         v13 = OS_LOG_TYPE_DEFAULT;
@@ -730,25 +730,25 @@ LABEL_7:
       goto LABEL_22;
     }
 
-    v9 = [(NSMutableDictionary *)self->_sharedSessions objectForKeyedSubscript:v7];
+    v9 = [(NSMutableDictionary *)self->_sharedSessions objectForKeyedSubscript:groupCopy];
     if (v9)
     {
-      v15 = [(__CFString *)v8 componentsSeparatedByString:@":"];
-      v16 = [v15 lastObject];
-      if (![v16 length])
+      v15 = [(__CFString *)dCopy componentsSeparatedByString:@":"];
+      lastObject = [v15 lastObject];
+      if (![lastObject length])
       {
 LABEL_21:
 
         goto LABEL_22;
       }
 
-      v17 = [(NSMutableDictionary *)self->_sharedSessions objectForKeyedSubscript:v7];
-      v18 = [v17 initiatorIdentifier];
-      v19 = [v18 isEqualToString:v8];
+      v17 = [(NSMutableDictionary *)self->_sharedSessions objectForKeyedSubscript:groupCopy];
+      initiatorIdentifier = [v17 initiatorIdentifier];
+      v19 = [initiatorIdentifier isEqualToString:dCopy];
 
-      v20 = [(NSMutableDictionary *)self->_sharedSessions objectForKeyedSubscript:v7];
-      v21 = [v20 accountIdentifiers];
-      v22 = [v21 containsObject:v16];
+      v20 = [(NSMutableDictionary *)self->_sharedSessions objectForKeyedSubscript:groupCopy];
+      accountIdentifiers = [v20 accountIdentifiers];
+      v22 = [accountIdentifiers containsObject:lastObject];
 
       if ((v19 & 1) == 0 && (v22 & 1) == 0)
       {
@@ -756,27 +756,27 @@ LABEL_21:
         if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
         {
           v34 = 138412290;
-          v35 = v8;
+          v35 = dCopy;
           _os_log_impl(&dword_25813A000, v23, OS_LOG_TYPE_ERROR, "fromID %@", &v34, 0xCu);
         }
 
         v24 = MSPGetSharedTripLog();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
         {
-          v25 = [(NSMutableDictionary *)self->_sharedSessions objectForKeyedSubscript:v7];
-          v26 = [v25 initiatorIdentifier];
+          v25 = [(NSMutableDictionary *)self->_sharedSessions objectForKeyedSubscript:groupCopy];
+          initiatorIdentifier2 = [v25 initiatorIdentifier];
           v34 = 138412290;
-          v35 = v26;
+          v35 = initiatorIdentifier2;
           _os_log_impl(&dword_25813A000, v24, OS_LOG_TYPE_ERROR, "initiatorIdentifier %@", &v34, 0xCu);
         }
 
         v27 = MSPGetSharedTripLog();
         if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
         {
-          v28 = [(NSMutableDictionary *)self->_sharedSessions objectForKeyedSubscript:v7];
-          v29 = [v28 accountIdentifiers];
+          v28 = [(NSMutableDictionary *)self->_sharedSessions objectForKeyedSubscript:groupCopy];
+          accountIdentifiers2 = [v28 accountIdentifiers];
           v34 = 138412290;
-          v35 = v29;
+          v35 = accountIdentifiers2;
           _os_log_impl(&dword_25813A000, v27, OS_LOG_TYPE_ERROR, "accountIdentifiers %@", &v34, 0xCu);
         }
 
@@ -817,32 +817,32 @@ LABEL_23:
   return v31;
 }
 
-- (void)_updateData:(id)a3 forGroup:(id)a4 fromID:(id)a5
+- (void)_updateData:(id)data forGroup:(id)group fromID:(id)d
 {
   v41 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [objc_alloc(MEMORY[0x277D0ED30]) initWithData:v8];
+  dataCopy = data;
+  groupCopy = group;
+  dCopy = d;
+  v11 = [objc_alloc(MEMORY[0x277D0ED30]) initWithData:dataCopy];
   if ([v11 hasEtaInfo] & 1) != 0 || (objc_msgSend(v11, "hasRouteInfo") & 1) != 0 || (objc_msgSend(v11, "hasDestinationInfo") & 1) != 0 || objc_msgSend(v11, "waypointInfosCount") || (objc_msgSend(v11, "hasSenderInfo"))
   {
-    if ([(MSPReceiverETAController *)self _allowMessageWithState:v11 forGroup:v9 fromID:v10])
+    if ([(MSPReceiverETAController *)self _allowMessageWithState:v11 forGroup:groupCopy fromID:dCopy])
     {
-      [v11 setGroupIdentifier:v9];
+      [v11 setGroupIdentifier:groupCopy];
       v12 = MSPGetSharedTripLog();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [v11 mspDescription];
+        mspDescription = [v11 mspDescription];
         *buf = 138412290;
-        v40 = v13;
+        v40 = mspDescription;
         _os_log_impl(&dword_25813A000, v12, OS_LOG_TYPE_DEFAULT, "[SR] processing incoming state %@", buf, 0xCu);
       }
 
-      v14 = [(NSMutableDictionary *)self->_sharedNavStates objectForKeyedSubscript:v9];
+      v14 = [(NSMutableDictionary *)self->_sharedNavStates objectForKeyedSubscript:groupCopy];
       v33 = [v11 copy];
       WeakRetained = objc_loadWeakRetained(&self->_idsRelay);
-      v16 = [WeakRetained storageController];
-      [v16 updateGroupSessionStorageWithState:v33];
+      storageController = [WeakRetained storageController];
+      [storageController updateGroupSessionStorageWithState:v33];
 
       if (v14)
       {
@@ -850,9 +850,9 @@ LABEL_23:
         v17 = MSPGetSharedTripLog();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
         {
-          v18 = [v14 mspDescription];
+          mspDescription2 = [v14 mspDescription];
           *buf = 138412290;
-          v40 = v18;
+          v40 = mspDescription2;
           _os_log_impl(&dword_25813A000, v17, OS_LOG_TYPE_INFO, "[SR] merge with existing state %@", buf, 0xCu);
         }
 
@@ -862,7 +862,7 @@ LABEL_23:
       else
       {
         v25 = v11;
-        v26 = [(NSMutableDictionary *)self->_waitingNavStates objectForKeyedSubscript:v9];
+        v26 = [(NSMutableDictionary *)self->_waitingNavStates objectForKeyedSubscript:groupCopy];
         v17 = v26;
         if (v26)
         {
@@ -872,9 +872,9 @@ LABEL_23:
           v27 = MSPGetSharedTripLog();
           if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
           {
-            v28 = [v19 mspDescription];
+            mspDescription3 = [v19 mspDescription];
             *buf = 138412290;
-            v40 = v28;
+            v40 = mspDescription3;
             _os_log_impl(&dword_25813A000, v27, OS_LOG_TYPE_INFO, "[SR] merge with waiting state %@", buf, 0xCu);
           }
         }
@@ -886,34 +886,34 @@ LABEL_23:
 
         if (([v19 hasDestinationInfo]& 1) == 0 && ![v19 waypointInfosCount]|| ([v19 hasSenderInfo]& 1) == 0)
         {
-          [(NSMutableDictionary *)self->_waitingNavStates setObject:v19 forKeyedSubscript:v9];
+          [(NSMutableDictionary *)self->_waitingNavStates setObject:v19 forKeyedSubscript:groupCopy];
           v29 = MSPGetSharedTripLog();
           if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
           {
-            v30 = [v19 mspDescription];
+            mspDescription4 = [v19 mspDescription];
             *buf = 138412290;
-            v40 = v30;
+            v40 = mspDescription4;
             _os_log_impl(&dword_25813A000, v29, OS_LOG_TYPE_INFO, "[SR] wait state %@", buf, 0xCu);
           }
 
           goto LABEL_33;
         }
 
-        [(NSMutableDictionary *)self->_waitingNavStates setObject:0 forKeyedSubscript:v9];
-        [(NSMutableDictionary *)self->_sharedNavStates setObject:v19 forKeyedSubscript:v9];
-        if (([(NSMutableOrderedSet *)self->_orderedNavStateIdentifiers containsObject:v9]& 1) == 0)
+        [(NSMutableDictionary *)self->_waitingNavStates setObject:0 forKeyedSubscript:groupCopy];
+        [(NSMutableDictionary *)self->_sharedNavStates setObject:v19 forKeyedSubscript:groupCopy];
+        if (([(NSMutableOrderedSet *)self->_orderedNavStateIdentifiers containsObject:groupCopy]& 1) == 0)
         {
-          [(NSMutableOrderedSet *)self->_orderedNavStateIdentifiers insertObject:v9 atIndex:0];
+          [(NSMutableOrderedSet *)self->_orderedNavStateIdentifiers insertObject:groupCopy atIndex:0];
         }
       }
 
-      v20 = [MEMORY[0x277CBEAA8] date];
-      [v20 timeIntervalSinceReferenceDate];
+      date = [MEMORY[0x277CBEAA8] date];
+      [date timeIntervalSinceReferenceDate];
       [v19 setLocalUpdatedTimestamp:?];
 
-      if ([(MSPReceiverETAController *)self _cleanUpNecessaryForGroup:v9])
+      if ([(MSPReceiverETAController *)self _cleanUpNecessaryForGroup:groupCopy])
       {
-        [(MSPReceiverETAController *)self _cleanGroup:v9];
+        [(MSPReceiverETAController *)self _cleanGroup:groupCopy];
       }
 
       else
@@ -937,7 +937,7 @@ LABEL_23:
         v19 = v19;
         v36 = v19;
         v38 = v14 == 0;
-        [(MSPReceiverETAController *)self _resolveContactIfNeeded:v9 fromId:v10 completion:v34];
+        [(MSPReceiverETAController *)self _resolveContactIfNeeded:groupCopy fromId:dCopy completion:v34];
 
         objc_destroyWeak(&v37);
         objc_destroyWeak(buf);
@@ -951,9 +951,9 @@ LABEL_33:
     v19 = MSPGetSharedTripLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = [v11 mspDescription];
+      mspDescription5 = [v11 mspDescription];
       *buf = 138412290;
-      v40 = v21;
+      v40 = mspDescription5;
       _os_log_impl(&dword_25813A000, v19, OS_LOG_TYPE_DEFAULT, "[SR] discarding message %@", buf, 0xCu);
     }
   }
@@ -963,9 +963,9 @@ LABEL_33:
     v19 = MSPGetSharedTripLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      v32 = [v11 mspDescription];
+      mspDescription6 = [v11 mspDescription];
       *buf = 138412290;
-      v40 = v32;
+      v40 = mspDescription6;
       _os_log_impl(&dword_25813A000, v19, OS_LOG_TYPE_ERROR, "[SR] incoming state is missing too many fields: %@", buf, 0xCu);
     }
   }
@@ -981,25 +981,25 @@ void __56__MSPReceiverETAController__updateData_forGroup_fromID___block_invoke(u
   [WeakRetained _updateDelegateWithUpdateState:*(a1 + 32) to:*(a1 + 40) freshAvailable:*(a1 + 56)];
 }
 
-- (void)_updateDelegateWithUpdateState:(id)a3 to:(id)a4 freshAvailable:(BOOL)a5
+- (void)_updateDelegateWithUpdateState:(id)state to:(id)to freshAvailable:(BOOL)available
 {
-  v5 = a5;
+  availableCopy = available;
   v44 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 hasRouteInfo];
-  v11 = [v8 hasDestinationInfo];
-  v12 = [v8 hasEtaInfo];
-  LODWORD(v13) = [v8 arrived];
-  v33 = [v8 closed];
-  if ([v8 hasMuted] && objc_msgSend(v8, "muted"))
+  stateCopy = state;
+  toCopy = to;
+  hasRouteInfo = [stateCopy hasRouteInfo];
+  hasDestinationInfo = [stateCopy hasDestinationInfo];
+  hasEtaInfo = [stateCopy hasEtaInfo];
+  LODWORD(v13) = [stateCopy arrived];
+  closed = [stateCopy closed];
+  if ([stateCopy hasMuted] && objc_msgSend(stateCopy, "muted"))
   {
     v14 = MSPGetSharedTripIDSTransportLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
-      v15 = [v8 mspDescription];
+      mspDescription = [stateCopy mspDescription];
       *buf = 138412290;
-      v35 = v15;
+      v35 = mspDescription;
       _os_log_impl(&dword_25813A000, v14, OS_LOG_TYPE_INFO, "[SR] _updateDelegateWithUpdateState update muted %@", buf, 0xCu);
     }
   }
@@ -1010,7 +1010,7 @@ void __56__MSPReceiverETAController__updateData_forGroup_fromID___block_invoke(u
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       v32 = v13;
-      if (v11)
+      if (hasDestinationInfo)
       {
         v17 = @"YES";
       }
@@ -1020,9 +1020,9 @@ void __56__MSPReceiverETAController__updateData_forGroup_fromID___block_invoke(u
         v17 = @"NO";
       }
 
-      v29 = self;
+      selfCopy = self;
       v18 = v17;
-      if (v10)
+      if (hasRouteInfo)
       {
         v19 = @"YES";
       }
@@ -1033,7 +1033,7 @@ void __56__MSPReceiverETAController__updateData_forGroup_fromID___block_invoke(u
       }
 
       v20 = v19;
-      if (v12)
+      if (hasEtaInfo)
       {
         v21 = @"YES";
       }
@@ -1043,7 +1043,7 @@ void __56__MSPReceiverETAController__updateData_forGroup_fromID___block_invoke(u
         v21 = @"NO";
       }
 
-      v31 = v12;
+      v31 = hasEtaInfo;
       v22 = v21;
       if (v13)
       {
@@ -1055,9 +1055,9 @@ void __56__MSPReceiverETAController__updateData_forGroup_fromID___block_invoke(u
         v23 = @"NO";
       }
 
-      v30 = v10;
+      v30 = hasRouteInfo;
       v24 = v23;
-      if (v33)
+      if (closed)
       {
         v25 = @"YES";
       }
@@ -1081,52 +1081,52 @@ void __56__MSPReceiverETAController__updateData_forGroup_fromID___block_invoke(u
       _os_log_impl(&dword_25813A000, v16, OS_LOG_TYPE_DEFAULT, "[SR] update delegate destination %@ route %@ eta %@ arrived %@ closed %@", buf, 0x34u);
 
       LOBYTE(v13) = v32;
-      v10 = v30;
+      hasRouteInfo = v30;
 
-      v12 = v31;
-      self = v29;
+      hasEtaInfo = v31;
+      self = selfCopy;
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v14 = WeakRetained;
-    if (v5)
+    if (availableCopy)
     {
-      [WeakRetained etaController:self sharedTripDidBecomeAvailable:v9];
+      [WeakRetained etaController:self sharedTripDidBecomeAvailable:toCopy];
     }
 
-    if (v33)
+    if (closed)
     {
-      [v9 stripArrivedOrClosedTrip];
-      [v14 etaController:self sharedTripDidClose:v9];
+      [toCopy stripArrivedOrClosedTrip];
+      [v14 etaController:self sharedTripDidClose:toCopy];
     }
 
     else if (v13)
     {
-      [v9 stripArrivedOrClosedTrip];
-      [v14 etaController:self didUpdateReachedDestinationForSharedTrip:v9];
+      [toCopy stripArrivedOrClosedTrip];
+      [v14 etaController:self didUpdateReachedDestinationForSharedTrip:toCopy];
     }
 
     else
     {
-      if (v11)
+      if (hasDestinationInfo)
       {
-        [v14 etaController:self didUpdateDestinationForSharedTrip:v9];
+        [v14 etaController:self didUpdateDestinationForSharedTrip:toCopy];
       }
 
-      if ((v10 | v12))
+      if ((hasRouteInfo | hasEtaInfo))
       {
-        [v9 truncatePointDataForPrivacy];
-        [v14 etaController:self didUpdateRouteForSharedTrip:v9];
+        [toCopy truncatePointDataForPrivacy];
+        [v14 etaController:self didUpdateRouteForSharedTrip:toCopy];
       }
 
-      if (v12)
+      if (hasEtaInfo)
       {
-        [v14 etaController:self didUpdateETAForSharedTrip:v9];
+        [v14 etaController:self didUpdateETAForSharedTrip:toCopy];
       }
     }
 
-    v27 = [v9 groupIdentifier];
-    [(MSPReceiverETAController *)self _showOrUpdateNotificationIfNeeded:v27];
+    groupIdentifier = [toCopy groupIdentifier];
+    [(MSPReceiverETAController *)self _showOrUpdateNotificationIfNeeded:groupIdentifier];
   }
 
   v28 = *MEMORY[0x277D85DE8];
@@ -1139,8 +1139,8 @@ void __56__MSPReceiverETAController__updateData_forGroup_fromID___block_invoke(u
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(NSMutableDictionary *)self->_sharedNavStates allKeys];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allKeys = [(NSMutableDictionary *)self->_sharedNavStates allKeys];
+  v4 = [allKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1151,7 +1151,7 @@ void __56__MSPReceiverETAController__updateData_forGroup_fromID___block_invoke(u
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
@@ -1161,7 +1161,7 @@ void __56__MSPReceiverETAController__updateData_forGroup_fromID___block_invoke(u
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -1170,11 +1170,11 @@ void __56__MSPReceiverETAController__updateData_forGroup_fromID___block_invoke(u
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_cleanUpNecessaryForGroup:(id)a3
+- (BOOL)_cleanUpNecessaryForGroup:(id)group
 {
   v47 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_sharedNavStates objectForKeyedSubscript:v4];
+  groupCopy = group;
+  v5 = [(NSMutableDictionary *)self->_sharedNavStates objectForKeyedSubscript:groupCopy];
   v6 = v5;
   if (v5)
   {
@@ -1184,7 +1184,7 @@ void __56__MSPReceiverETAController__updateData_forGroup_fromID___block_invoke(u
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
         v33 = 138412290;
-        v34 = v4;
+        v34 = groupCopy;
         _os_log_impl(&dword_25813A000, v8, OS_LOG_TYPE_ERROR, "_cleanUpNecessaryForGroup called for group %@ without update timestamp", &v33, 0xCu);
       }
 
@@ -1203,7 +1203,7 @@ void __56__MSPReceiverETAController__updateData_forGroup_fromID___block_invoke(u
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         v33 = 138412290;
-        v34 = v4;
+        v34 = groupCopy;
         _os_log_impl(&dword_25813A000, v12, OS_LOG_TYPE_DEFAULT, "_cleanUpNecessaryForGroup cleaning group %@ as abandoned", &v33, 0xCu);
       }
 
@@ -1219,32 +1219,32 @@ LABEL_37:
     v14 = [v6 hasArrived] && objc_msgSend(v6, "arrived") && objc_msgSend(v6, "numberOfIntermediateStopsRemaining") == 0;
     if ([v6 hasClosed])
     {
-      v15 = [v6 closed];
+      closed = [v6 closed];
     }
 
     else
     {
-      v15 = 0;
+      closed = 0;
     }
 
     v16 = MEMORY[0x277CBEAA8];
-    v17 = [v6 etaInfo];
-    [v17 etaTimestamp];
+    etaInfo = [v6 etaInfo];
+    [etaInfo etaTimestamp];
     v18 = [v16 dateWithTimeIntervalSinceReferenceDate:?];
     [v18 timeIntervalSinceNow];
     v20 = v19;
 
     if ([v6 hasClosureReason])
     {
-      v21 = [v6 closureReason];
-      if (v21 == 1)
+      closureReason = [v6 closureReason];
+      if (closureReason == 1)
       {
         v22 = 0.0;
         v23 = 1;
         goto LABEL_22;
       }
 
-      v23 = v21;
+      v23 = closureReason;
     }
 
     else
@@ -1256,7 +1256,7 @@ LABEL_37:
     v22 = v24;
 LABEL_22:
     v13 = 0;
-    if (v10 >= -v22 || !((v14 | v15) & 1 | (v20 < 0.0)))
+    if (v10 >= -v22 || !((v14 | closed) & 1 | (v20 < 0.0)))
     {
       goto LABEL_37;
     }
@@ -1275,7 +1275,7 @@ LABEL_22:
       }
 
       v26 = v25;
-      if (v15)
+      if (closed)
       {
         v27 = @"YES";
       }
@@ -1298,7 +1298,7 @@ LABEL_22:
 
       v30 = v29;
       v33 = 138544898;
-      v34 = v4;
+      v34 = groupCopy;
       v35 = 2048;
       v36 = v22;
       v37 = 2114;
@@ -1324,34 +1324,34 @@ LABEL_38:
   return v13;
 }
 
-- (void)_cleanGroup:(id)a3
+- (void)_cleanGroup:(id)group
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  groupCopy = group;
   v5 = MSPGetSharedTripIDSTransportLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v21 = v4;
+    v21 = groupCopy;
     _os_log_impl(&dword_25813A000, v5, OS_LOG_TYPE_DEFAULT, "[SR] cleanGroup %@", buf, 0xCu);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_idsRelay);
-  v7 = [WeakRetained storageController];
-  [v7 removeSession:v4];
+  storageController = [WeakRetained storageController];
+  [storageController removeSession:groupCopy];
 
-  v8 = [(NSMutableDictionary *)self->_sharedNavStates objectForKeyedSubscript:v4];
-  [(NSMutableDictionary *)self->_sharedSessions setObject:0 forKeyedSubscript:v4];
-  [(NSMutableDictionary *)self->_waitingNavStates setObject:0 forKeyedSubscript:v4];
-  [(NSMutableDictionary *)self->_sharedNavStates setObject:0 forKeyedSubscript:v4];
-  [(NSMutableOrderedSet *)self->_orderedNavStateIdentifiers removeObject:v4];
+  v8 = [(NSMutableDictionary *)self->_sharedNavStates objectForKeyedSubscript:groupCopy];
+  [(NSMutableDictionary *)self->_sharedSessions setObject:0 forKeyedSubscript:groupCopy];
+  [(NSMutableDictionary *)self->_waitingNavStates setObject:0 forKeyedSubscript:groupCopy];
+  [(NSMutableDictionary *)self->_sharedNavStates setObject:0 forKeyedSubscript:groupCopy];
+  [(NSMutableOrderedSet *)self->_orderedNavStateIdentifiers removeObject:groupCopy];
   if (v8)
   {
     v14 = MEMORY[0x277D85DD0];
     v15 = 3221225472;
     v16 = __40__MSPReceiverETAController__cleanGroup___block_invoke;
     v17 = &unk_279865EF8;
-    v18 = self;
+    selfCopy = self;
     v19 = v8;
     dispatch_async(MEMORY[0x277D85CD0], &v14);
   }
@@ -1381,34 +1381,34 @@ void __40__MSPReceiverETAController__cleanGroup___block_invoke(uint64_t a1)
   [WeakRetained etaController:*(a1 + 32) sharedTripDidBecomeUnavailable:*(a1 + 40)];
 }
 
-- (void)relay:(id)a3 receiveData:(id)a4 info:(id)a5 fromID:(id)a6
+- (void)relay:(id)relay receiveData:(id)data info:(id)info fromID:(id)d
 {
   v37 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  relayCopy = relay;
+  dataCopy = data;
+  infoCopy = info;
+  dCopy = d;
   v14 = MSPGetSharedTripIDSTransportLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v36 = v12;
+    v36 = infoCopy;
     _os_log_impl(&dword_25813A000, v14, OS_LOG_TYPE_INFO, "[SR] receiveData from %@", buf, 0xCu);
   }
 
-  v15 = [v12 objectForKeyedSubscript:@"chunkGroupIDKey"];
+  v15 = [infoCopy objectForKeyedSubscript:@"chunkGroupIDKey"];
   v16 = MEMORY[0x277D85CD0];
   v17 = MEMORY[0x277D85CD0];
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v29 = __58__MSPReceiverETAController_relay_receiveData_info_fromID___block_invoke;
   v30 = &unk_279865F98;
-  v31 = self;
-  v18 = v11;
+  selfCopy = self;
+  v18 = dataCopy;
   v32 = v18;
   v19 = v15;
   v33 = v19;
-  v20 = v13;
+  v20 = dCopy;
   v34 = v20;
   v21 = v16;
   v22 = v28;
@@ -1430,16 +1430,16 @@ void __40__MSPReceiverETAController__cleanGroup___block_invoke(uint64_t a1)
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)relay:(id)a3 sharingClosed:(id)a4
+- (void)relay:(id)relay sharingClosed:(id)closed
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  relayCopy = relay;
+  closedCopy = closed;
   v8 = MSPGetSharedTripIDSTransportLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v25 = v7;
+    v25 = closedCopy;
     _os_log_impl(&dword_25813A000, v8, OS_LOG_TYPE_INFO, "[SR] sharingClosed %@", buf, 0xCu);
   }
 
@@ -1449,8 +1449,8 @@ void __40__MSPReceiverETAController__cleanGroup___block_invoke(uint64_t a1)
   v19[1] = 3221225472;
   v20 = __48__MSPReceiverETAController_relay_sharingClosed___block_invoke;
   v21 = &unk_279865EF8;
-  v22 = self;
-  v11 = v7;
+  selfCopy = self;
+  v11 = closedCopy;
   v23 = v11;
   v12 = v9;
   v13 = v19;
@@ -1486,20 +1486,20 @@ uint64_t __48__MSPReceiverETAController_relay_sharingClosed___block_invoke(uint6
   return result;
 }
 
-- (void)storageController:(id)a3 updatedSharedTripGroupStorage:(id)a4
+- (void)storageController:(id)controller updatedSharedTripGroupStorage:(id)storage
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  storageCopy = storage;
   v6 = MSPGetSharedTripLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v29 = v5;
+    v29 = storageCopy;
     _os_log_impl(&dword_25813A000, v6, OS_LOG_TYPE_INFO, "[SR] updatedSharedTripGroupStorage %@", buf, 0xCu);
   }
 
-  v7 = [v5 allKeys];
-  v8 = [v7 copy];
+  allKeys = [storageCopy allKeys];
+  v8 = [allKeys copy];
 
   v25 = 0u;
   v26 = 0u;
@@ -1529,8 +1529,8 @@ uint64_t __48__MSPReceiverETAController_relay_sharingClosed___block_invoke(uint6
           _os_log_impl(&dword_25813A000, v14, OS_LOG_TYPE_INFO, "[SR] keys %@", buf, 0xCu);
         }
 
-        v15 = [v5 objectForKeyedSubscript:v13];
-        v16 = [v15 state];
+        v15 = [storageCopy objectForKeyedSubscript:v13];
+        state = [v15 state];
         v17 = [(NSMutableDictionary *)self->_sharedNavStates objectForKeyedSubscript:v13];
 
         if (!v17)
@@ -1543,9 +1543,9 @@ uint64_t __48__MSPReceiverETAController_relay_sharingClosed___block_invoke(uint6
             _os_log_impl(&dword_25813A000, v18, OS_LOG_TYPE_DEFAULT, "[SR] restore %@", buf, 0xCu);
           }
 
-          v19 = [v16 data];
-          v20 = [v15 fromID];
-          [(MSPReceiverETAController *)self _updateData:v19 forGroup:v13 fromID:v20];
+          data = [state data];
+          fromID = [v15 fromID];
+          [(MSPReceiverETAController *)self _updateData:data forGroup:v13 fromID:fromID];
         }
       }
 
@@ -1558,18 +1558,18 @@ uint64_t __48__MSPReceiverETAController_relay_sharingClosed___block_invoke(uint6
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)groupSessionEnded:(id)a3
+- (void)groupSessionEnded:(id)ended
 {
-  v4 = a3;
-  v5 = [v4 identifier];
+  endedCopy = ended;
+  identifier = [endedCopy identifier];
   v6 = MEMORY[0x277D85CD0];
   v7 = MEMORY[0x277D85CD0];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v16 = __46__MSPReceiverETAController_groupSessionEnded___block_invoke;
   v17 = &unk_279865EF8;
-  v18 = self;
-  v8 = v5;
+  selfCopy = self;
+  v8 = identifier;
   v19 = v8;
   v9 = v6;
   v10 = v15;

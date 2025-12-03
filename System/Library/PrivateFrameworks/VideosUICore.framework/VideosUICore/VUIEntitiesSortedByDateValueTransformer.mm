@@ -1,7 +1,7 @@
 @interface VUIEntitiesSortedByDateValueTransformer
 - (VUIEntitiesSortedByDateValueTransformer)init;
-- (VUIEntitiesSortedByDateValueTransformer)initWithDateForEntityBlock:(id)a3;
-- (id)transformedValue:(id)a3;
+- (VUIEntitiesSortedByDateValueTransformer)initWithDateForEntityBlock:(id)block;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation VUIEntitiesSortedByDateValueTransformer
@@ -16,15 +16,15 @@
   return 0;
 }
 
-- (VUIEntitiesSortedByDateValueTransformer)initWithDateForEntityBlock:(id)a3
+- (VUIEntitiesSortedByDateValueTransformer)initWithDateForEntityBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9.receiver = self;
   v9.super_class = VUIEntitiesSortedByDateValueTransformer;
   v5 = [(VUIEntitiesSortedByDateValueTransformer *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [blockCopy copy];
     dateForEntityBlock = v5->_dateForEntityBlock;
     v5->_dateForEntityBlock = v6;
   }
@@ -32,22 +32,22 @@
   return v5;
 }
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
-  v4 = a3;
-  v5 = [(VUIEntitiesSortedByDateValueTransformer *)self dateForEntityBlock];
-  v6 = [VUISortUtilities descendingDateSortComparatorWithBlock:v5];
+  valueCopy = value;
+  dateForEntityBlock = [(VUIEntitiesSortedByDateValueTransformer *)self dateForEntityBlock];
+  v6 = [VUISortUtilities descendingDateSortComparatorWithBlock:dateForEntityBlock];
 
-  v7 = [v4 sortedArrayUsingComparator:v6];
-  v8 = [(VUIEntitiesSortedByDateValueTransformer *)self maxEntities];
+  v7 = [valueCopy sortedArrayUsingComparator:v6];
+  maxEntities = [(VUIEntitiesSortedByDateValueTransformer *)self maxEntities];
   v9 = [v7 count];
   if (v9)
   {
     v10 = v9;
-    v11 = [(VUIEntitiesSortedByDateValueTransformer *)self earliestDate];
-    if (v11)
+    earliestDate = [(VUIEntitiesSortedByDateValueTransformer *)self earliestDate];
+    if (earliestDate)
     {
-      v12 = [(VUIEntitiesSortedByDateValueTransformer *)self dateForEntityBlock];
+      dateForEntityBlock2 = [(VUIEntitiesSortedByDateValueTransformer *)self dateForEntityBlock];
       v26[0] = 0;
       v26[1] = v26;
       v26[2] = 0x2020000000;
@@ -56,11 +56,11 @@
       v19 = 3221225472;
       v20 = __60__VUIEntitiesSortedByDateValueTransformer_transformedValue___block_invoke;
       v21 = &unk_279E21C90;
-      v13 = v12;
+      v13 = dateForEntityBlock2;
       v23 = v13;
       v24 = v26;
-      v25 = v8;
-      v22 = v11;
+      v25 = maxEntities;
+      v22 = earliestDate;
       v14 = [v7 indexesOfObjectsPassingTest:&v18];
       v15 = [v7 objectsAtIndexes:{v14, v18, v19, v20, v21}];
 
@@ -69,9 +69,9 @@
 
     else
     {
-      if (v8 && v10 > v8)
+      if (maxEntities && v10 > maxEntities)
       {
-        v16 = [v7 subarrayWithRange:{0, v8}];
+        v16 = [v7 subarrayWithRange:{0, maxEntities}];
       }
 
       else

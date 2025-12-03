@@ -1,10 +1,10 @@
 @interface SCNPhysicsBehavior
-- (SCNPhysicsBehavior)initWithCoder:(id)a3;
+- (SCNPhysicsBehavior)initWithCoder:(id)coder;
 @end
 
 @implementation SCNPhysicsBehavior
 
-- (SCNPhysicsBehavior)initWithCoder:(id)a3
+- (SCNPhysicsBehavior)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = SCNPhysicsBehavior;

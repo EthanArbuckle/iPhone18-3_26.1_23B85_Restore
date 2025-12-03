@@ -1,14 +1,14 @@
 @interface ThreadSafeProxy
-- (ThreadSafeProxy)initWithObject:(id)a3;
+- (ThreadSafeProxy)initWithObject:(id)object;
 - (void)dealloc;
-- (void)forwardInvocation:(id)a3;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation ThreadSafeProxy
 
-- (ThreadSafeProxy)initWithObject:(id)a3
+- (ThreadSafeProxy)initWithObject:(id)object
 {
-  self->_object = a3;
+  self->_object = object;
   label = 0;
   asprintf(&label, "com.apple.atc.Books.ThreadSafeProxy.%p", self);
   self->_queue = dispatch_queue_create(label, 0);
@@ -28,14 +28,14 @@
   [(ThreadSafeProxy *)&v3 dealloc];
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_11C90;
   v4[3] = &unk_20780;
-  v4[4] = a3;
+  v4[4] = invocation;
   v4[5] = self;
   dispatch_sync(queue, v4);
 }

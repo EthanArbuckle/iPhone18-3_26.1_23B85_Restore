@@ -1,6 +1,6 @@
 @interface HUQuickControlNavigationController
 - (CGSize)preferredContentSize;
-- (id)hu_prepareForDismissalAnimated:(BOOL)a3;
+- (id)hu_prepareForDismissalAnimated:(BOOL)animated;
 - (void)viewDidLoad;
 @end
 
@@ -22,16 +22,16 @@
   }
 
   [(HUQuickControlNavigationController *)self setModalPresentationStyle:v3];
-  v4 = [(HUQuickControlNavigationController *)self presentationController];
-  [v4 _setForcePresentationInPresenterScene:1];
+  presentationController = [(HUQuickControlNavigationController *)self presentationController];
+  [presentationController _setForcePresentationInPresenterScene:1];
 }
 
 - (CGSize)preferredContentSize
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v4)
+  if (userInterfaceIdiom)
   {
     v5 = 768.0;
     v6 = 375.0;
@@ -49,13 +49,13 @@
   return result;
 }
 
-- (id)hu_prepareForDismissalAnimated:(BOOL)a3
+- (id)hu_prepareForDismissalAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v4 = [(HUQuickControlNavigationController *)self topViewController];
-  if ([v4 conformsToProtocol:&unk_28255A3B0])
+  animatedCopy = animated;
+  topViewController = [(HUQuickControlNavigationController *)self topViewController];
+  if ([topViewController conformsToProtocol:&unk_28255A3B0])
   {
-    v5 = v4;
+    v5 = topViewController;
   }
 
   else
@@ -67,7 +67,7 @@
 
   if (v6)
   {
-    [v6 hu_prepareForDismissalAnimated:v3];
+    [v6 hu_prepareForDismissalAnimated:animatedCopy];
   }
 
   else

@@ -1,6 +1,6 @@
 @interface VCPCNNSmileDetector
 + (id)detector;
-- (int)detectSmileForFace:(CGRect)a3 inBuffer:(__CVBuffer *)a4 smile:(BOOL *)a5;
+- (int)detectSmileForFace:(CGRect)face inBuffer:(__CVBuffer *)buffer smile:(BOOL *)smile;
 @end
 
 @implementation VCPCNNSmileDetector
@@ -33,15 +33,15 @@ uint64_t __31__VCPCNNSmileDetector_detector__block_invoke()
   return result;
 }
 
-- (int)detectSmileForFace:(CGRect)a3 inBuffer:(__CVBuffer *)a4 smile:(BOOL *)a5
+- (int)detectSmileForFace:(CGRect)face inBuffer:(__CVBuffer *)buffer smile:(BOOL *)smile
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = face.size.height;
+  width = face.size.width;
+  y = face.origin.y;
+  x = face.origin.x;
   v38 = 0.0;
-  v12 = CVPixelBufferGetWidth(a4);
-  v13 = CVPixelBufferGetHeight(a4);
+  v12 = CVPixelBufferGetWidth(buffer);
+  v13 = CVPixelBufferGetHeight(buffer);
   v14 = (v12 - 1);
   v15 = x;
   if (v15 < v14)
@@ -98,11 +98,11 @@ uint64_t __31__VCPCNNSmileDetector_detector__block_invoke()
     v23 = v13 - v19;
   }
 
-  pixelBuffer = a4;
+  pixelBuffer = buffer;
   unlockFlags = 1;
-  if (a4)
+  if (buffer)
   {
-    v24 = CVPixelBufferLockBaseAddress(a4, 1uLL);
+    v24 = CVPixelBufferLockBaseAddress(buffer, 1uLL);
     v35 = v24;
     if (v24)
     {
@@ -115,9 +115,9 @@ uint64_t __31__VCPCNNSmileDetector_detector__block_invoke()
 
     else
     {
-      BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(a4, 0);
-      BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(a4, 0);
-      v28 = [(VCPCNNSmileDetector *)self getInputBuffer];
+      BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(buffer, 0);
+      BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(buffer, 0);
+      getInputBuffer = [(VCPCNNSmileDetector *)self getInputBuffer];
       v29 = 0;
       v30 = v21 / 40.0;
       v31 = v23 / 40.0;
@@ -140,11 +140,11 @@ uint64_t __31__VCPCNNSmileDetector_detector__block_invoke()
           LOBYTE(v32) = BaseAddressOfPlane[BytesPerRowOfPlane * v19 + v16 + BytesPerRowOfPlane * (v31 * v29) + *&v32];
           v32 = (*&v32 / 255.0 + -0.574000001) / 0.166999996;
           *&v32 = v32;
-          v28[i] = *&v32;
+          getInputBuffer[i] = *&v32;
         }
 
         ++v29;
-        v28 += 40;
+        getInputBuffer += 40;
       }
 
       while (v29 != 40);
@@ -154,7 +154,7 @@ uint64_t __31__VCPCNNSmileDetector_detector__block_invoke()
         v25 = [(VCPCNNSmileDetector *)self computeSmileScore:&v38];
         if (!v25)
         {
-          *a5 = v38 > 0.5;
+          *smile = v38 > 0.5;
         }
       }
     }

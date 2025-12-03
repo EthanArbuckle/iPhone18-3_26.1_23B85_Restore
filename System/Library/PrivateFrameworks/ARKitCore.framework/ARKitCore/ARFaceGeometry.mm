@@ -1,24 +1,24 @@
 @interface ARFaceGeometry
 - (ARFaceGeometry)initWithBlendShapes:(NSDictionary *)blendShapes;
-- (ARFaceGeometry)initWithCoder:(id)a3;
-- (ARFaceGeometry)initWithCustomVertices:(ARFaceGeometry *)self verticesCount:(SEL)a2;
-- (ARFaceGeometry)initWithFaceTrackingDataProtocol:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ARFaceGeometry)initWithCoder:(id)coder;
+- (ARFaceGeometry)initWithCustomVertices:(ARFaceGeometry *)self verticesCount:(SEL)count;
+- (ARFaceGeometry)initWithFaceTrackingDataProtocol:(id)protocol;
+- (BOOL)isEqual:(id)equal;
 - (NSUInteger)textureCoordinateCount;
 - (NSUInteger)triangleCount;
 - (NSUInteger)vertexCount;
-- (__n128)positionForLabeledFacePosition:(void *)a3;
+- (__n128)positionForLabeledFacePosition:(void *)position;
 - (const)textureCoordinates;
 - (const)triangleIndices;
 - (const)vertices;
-- (double)normalForLabeledFacePosition:(void *)a3;
+- (double)normalForLabeledFacePosition:(void *)position;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)initPrivate;
-- (signed)closestVertexIndexToLabeledFacePosition:(id)a3;
+- (signed)closestVertexIndexToLabeledFacePosition:(id)position;
 - (uint64_t)normals;
 - (unint64_t)normalCount;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ARFaceGeometry
@@ -38,27 +38,27 @@
     }
 
     self = v3;
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (ARFaceGeometry)initWithBlendShapes:(NSDictionary *)blendShapes
 {
   v46 = *MEMORY[0x1E69E9840];
   v4 = blendShapes;
-  v5 = [(ARFaceGeometry *)self initPrivate];
-  if (v5)
+  initPrivate = [(ARFaceGeometry *)self initPrivate];
+  if (initPrivate)
   {
     v6 = +[ARFaceAnchor blendShapeMapping];
-    v7 = [v6 allKeys];
-    std::vector<float>::vector[abi:ne200100](&__p, [v7 count]);
+    allKeys = [v6 allKeys];
+    std::vector<float>::vector[abi:ne200100](&__p, [allKeys count]);
 
     v39 = 0u;
     v40 = 0u;
@@ -85,8 +85,8 @@
             v14 = [(NSDictionary *)v8 objectForKeyedSubscript:v12];
             [v14 floatValue];
             v16 = v15;
-            v17 = [v13 intValue];
-            *(__p + v17) = v16;
+            intValue = [v13 intValue];
+            *(__p + intValue) = v16;
           }
         }
 
@@ -107,40 +107,40 @@
 
     v22 = [v21 length];
     v23 = v21;
-    v24 = [v21 bytes];
+    bytes = [v21 bytes];
     _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEEC2B8ne200100Em(&v34, (v22 / 0xC));
-    v26 = *v5->_anon_8;
+    v26 = *initPrivate->_anon_8;
     if (v26)
     {
-      *&v5->_anon_8[8] = v26;
+      *&initPrivate->_anon_8[8] = v26;
       operator delete(v26);
-      *v5->_anon_8 = 0;
-      *&v5->_anon_8[8] = 0;
-      *&v5->_anon_8[16] = 0;
+      *initPrivate->_anon_8 = 0;
+      *&initPrivate->_anon_8[8] = 0;
+      *&initPrivate->_anon_8[16] = 0;
     }
 
     v27 = v34;
-    *v5->_anon_8 = v34;
+    *initPrivate->_anon_8 = v34;
     v28 = v35;
-    *&v5->_anon_8[8] = v35;
+    *&initPrivate->_anon_8[8] = v35;
     if (v28 != v27)
     {
       v29 = 0;
-      v30 = (v24 + 8);
+      v30 = (bytes + 8);
       v31 = vdupq_n_s32(0x447A0000u);
       do
       {
         v25.i64[0] = *(v30 - 1);
         v25.i32[2] = *v30;
         *(v27 + 16 * v29) = v25;
-        v32 = *v5->_anon_8;
+        v32 = *initPrivate->_anon_8;
         v25 = vdivq_f32(*(v32 + 16 * v29), v31);
         *(v32 + 16 * v29++) = v25;
-        v27 = *v5->_anon_8;
+        v27 = *initPrivate->_anon_8;
         v30 += 3;
       }
 
-      while (v29 < (*&v5->_anon_8[8] - v27) >> 4);
+      while (v29 < (*&initPrivate->_anon_8[8] - v27) >> 4);
     }
 
     if (__p)
@@ -150,43 +150,43 @@
     }
   }
 
-  return v5;
+  return initPrivate;
 }
 
-- (ARFaceGeometry)initWithFaceTrackingDataProtocol:(id)a3
+- (ARFaceGeometry)initWithFaceTrackingDataProtocol:(id)protocol
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(ARFaceGeometry *)self initPrivate];
-  v7 = [v5 vertexCount];
+  protocolCopy = protocol;
+  initPrivate = [(ARFaceGeometry *)self initPrivate];
+  vertexCount = [protocolCopy vertexCount];
   v8 = +[ARNeutralFaceGeometry sharedNeutralGeometry];
-  v9 = [v8 vertexCount];
+  vertexCount2 = [v8 vertexCount];
 
-  if (v7 == v9)
+  if (vertexCount == vertexCount2)
   {
-    if (v6)
+    if (initPrivate)
     {
-      objc_storeStrong(v6 + 7, a3);
-      v10 = [v5 vertices];
-      v11 = [v5 vertices];
-      v12 = [v5 vertexCount];
+      objc_storeStrong(initPrivate + 7, protocol);
+      vertices = [protocolCopy vertices];
+      vertices2 = [protocolCopy vertices];
+      vertexCount3 = [protocolCopy vertexCount];
       memset(v19, 0, sizeof(v19));
-      _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEE16__init_with_sizeB8ne200100IPKS1_S7_EEvT_T0_m(v19, v10, v11 + 16 * v12, (v11 + 16 * v12 - v10) >> 4);
-      v13 = *(v6 + 1);
+      _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEE16__init_with_sizeB8ne200100IPKS1_S7_EEvT_T0_m(v19, vertices, vertices2 + 16 * vertexCount3, (vertices2 + 16 * vertexCount3 - vertices) >> 4);
+      v13 = *(initPrivate + 1);
       if (v13)
       {
-        *(v6 + 2) = v13;
+        *(initPrivate + 2) = v13;
         operator delete(v13);
-        *(v6 + 1) = 0;
-        *(v6 + 2) = 0;
-        *(v6 + 3) = 0;
+        *(initPrivate + 1) = 0;
+        *(initPrivate + 2) = 0;
+        *(initPrivate + 3) = 0;
       }
 
-      *(v6 + 8) = *v19;
-      *(v6 + 3) = *&v19[16];
+      *(initPrivate + 8) = *v19;
+      *(initPrivate + 3) = *&v19[16];
     }
 
-    v14 = v6;
+    v14 = initPrivate;
   }
 
   else
@@ -199,7 +199,7 @@
       *v19 = 138543618;
       *&v19[4] = v17;
       *&v19[12] = 2048;
-      *&v19[14] = v6;
+      *&v19[14] = initPrivate;
       _os_log_impl(&dword_1C241C000, v15, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: Error: Number of vertices must be consistent with neutral geometry", v19, 0x16u);
     }
 
@@ -209,39 +209,39 @@
   return v14;
 }
 
-- (ARFaceGeometry)initWithCustomVertices:(ARFaceGeometry *)self verticesCount:(SEL)a2
+- (ARFaceGeometry)initWithCustomVertices:(ARFaceGeometry *)self verticesCount:(SEL)count
 {
   v4 = v3;
   v5 = v2;
   v17 = *MEMORY[0x1E69E9840];
-  v6 = [(ARFaceGeometry *)self initPrivate];
+  initPrivate = [(ARFaceGeometry *)self initPrivate];
   v7 = +[ARNeutralFaceGeometry sharedNeutralGeometry];
-  v8 = [v7 vertexCount];
+  vertexCount = [v7 vertexCount];
 
-  if (v8 == v4)
+  if (vertexCount == v4)
   {
-    if (v6)
+    if (initPrivate)
     {
-      v9 = v6[7];
-      v6[7] = 0;
+      v9 = initPrivate[7];
+      initPrivate[7] = 0;
 
       memset(v16, 0, sizeof(v16));
       _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEE16__init_with_sizeB8ne200100IPKS1_S7_EEvT_T0_m(v16, v5, v5 + 16 * v4, v4);
-      v10 = v6[1];
+      v10 = initPrivate[1];
       if (v10)
       {
-        v6[2] = v10;
+        initPrivate[2] = v10;
         operator delete(v10);
-        v6[1] = 0;
-        v6[2] = 0;
-        v6[3] = 0;
+        initPrivate[1] = 0;
+        initPrivate[2] = 0;
+        initPrivate[3] = 0;
       }
 
-      *(v6 + 1) = *v16;
-      v6[3] = *&v16[16];
+      *(initPrivate + 1) = *v16;
+      initPrivate[3] = *&v16[16];
     }
 
-    v11 = v6;
+    v11 = initPrivate;
   }
 
   else
@@ -254,7 +254,7 @@
       *v16 = 138543618;
       *&v16[4] = v14;
       *&v16[12] = 2048;
-      *&v16[14] = v6;
+      *&v16[14] = initPrivate;
       _os_log_impl(&dword_1C241C000, v12, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: Error: Number of vertices must be consistent with neutral geometry", v16, 0x16u);
     }
 
@@ -264,9 +264,9 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initPrivate"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initPrivate"}];
   v5 = v4;
   if (v4)
   {
@@ -284,22 +284,22 @@
 
 - (const)vertices
 {
-  v2 = *self->_anon_8;
-  if (*&self->_anon_8[8] == v2)
+  vertices = *self->_anon_8;
+  if (*&self->_anon_8[8] == vertices)
   {
     v3 = +[ARNeutralFaceGeometry sharedNeutralGeometry];
-    v2 = [v3 vertices];
+    vertices = [v3 vertices];
   }
 
-  return v2;
+  return vertices;
 }
 
 - (NSUInteger)vertexCount
 {
   v2 = +[ARNeutralFaceGeometry sharedNeutralGeometry];
-  v3 = [v2 vertexCount];
+  vertexCount = [v2 vertexCount];
 
-  return v3;
+  return vertexCount;
 }
 
 - (unint64_t)normalCount
@@ -318,172 +318,172 @@
 
 - (uint64_t)normals
 {
-  dispatch_semaphore_wait(*(a1 + 64), 0xFFFFFFFFFFFFFFFFLL);
-  if (*(a1 + 56))
+  dispatch_semaphore_wait(*(self + 64), 0xFFFFFFFFFFFFFFFFLL);
+  if (*(self + 56))
   {
-    dispatch_semaphore_signal(*(a1 + 64));
-    v2 = *(a1 + 56);
+    dispatch_semaphore_signal(*(self + 64));
+    v2 = *(self + 56);
 
     return [v2 normals];
   }
 
   else
   {
-    v4 = *(a1 + 40) - *(a1 + 32);
-    if ([a1 vertexCount] != v4 >> 4)
+    v4 = *(self + 40) - *(self + 32);
+    if ([self vertexCount] != v4 >> 4)
     {
-      _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEE6resizeEm((a1 + 32), [a1 vertexCount]);
-      v5 = *(a1 + 32);
-      v6 = *(a1 + 40) - v5;
+      _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEE6resizeEm((self + 32), [self vertexCount]);
+      v5 = *(self + 32);
+      v6 = *(self + 40) - v5;
       if (v6 >= 1)
       {
         bzero(v5, v6);
       }
 
-      if ([a1 triangleCount])
+      if ([self triangleCount])
       {
         v7 = 0;
         v8 = 0;
         do
         {
-          v9 = *([a1 triangleIndices] + v7);
-          v10 = *([a1 triangleIndices] + v7 + 2);
-          v11 = *([a1 triangleIndices] + v7 + 4);
-          v20 = *([a1 vertices] + 16 * v9);
-          v19 = *([a1 vertices] + 16 * v10);
-          v12 = [a1 vertices];
+          v9 = *([self triangleIndices] + v7);
+          v10 = *([self triangleIndices] + v7 + 2);
+          v11 = *([self triangleIndices] + v7 + 4);
+          v20 = *([self vertices] + 16 * v9);
+          v19 = *([self vertices] + 16 * v10);
+          vertices = [self vertices];
           v13 = vsubq_f32(v19, v20);
-          v14 = vsubq_f32(*(v12 + 16 * v11), v20);
+          v14 = vsubq_f32(*(vertices + 16 * v11), v20);
           v15 = vmlaq_f32(vmulq_f32(vextq_s8(vuzp1q_s32(v14, v14), v14, 0xCuLL), vnegq_f32(v13)), v14, vextq_s8(vuzp1q_s32(v13, v13), v13, 0xCuLL));
           v16 = vmulq_f32(v15, v15);
           *&v17 = v16.f32[1] + (v16.f32[2] + v16.f32[0]);
           *v16.f32 = vrsqrte_f32(v17);
           *v16.f32 = vmul_f32(*v16.f32, vrsqrts_f32(v17, vmul_f32(*v16.f32, *v16.f32)));
           v18 = vmulq_n_f32(vextq_s8(vuzp1q_s32(v15, v15), v15, 0xCuLL), vmul_f32(*v16.f32, vrsqrts_f32(v17, vmul_f32(*v16.f32, *v16.f32))).f32[0]);
-          *(*(a1 + 32) + 16 * v9) = vaddq_f32(*(*(a1 + 32) + 16 * v9), v18);
-          *(*(a1 + 32) + 16 * v10) = vaddq_f32(v18, *(*(a1 + 32) + 16 * v10));
+          *(*(self + 32) + 16 * v9) = vaddq_f32(*(*(self + 32) + 16 * v9), v18);
+          *(*(self + 32) + 16 * v10) = vaddq_f32(v18, *(*(self + 32) + 16 * v10));
           ++v8;
-          *(*(a1 + 32) + 16 * v11) = vaddq_f32(v18, *(*(a1 + 32) + 16 * v11));
+          *(*(self + 32) + 16 * v11) = vaddq_f32(v18, *(*(self + 32) + 16 * v11));
           v7 += 6;
         }
 
-        while ([a1 triangleCount] > v8);
+        while ([self triangleCount] > v8);
       }
     }
 
-    dispatch_semaphore_signal(*(a1 + 64));
-    return *(a1 + 32);
+    dispatch_semaphore_signal(*(self + 64));
+    return *(self + 32);
   }
 }
 
 - (const)textureCoordinates
 {
   v2 = +[ARNeutralFaceGeometry sharedNeutralGeometry];
-  v3 = [v2 textureCoordinates];
+  textureCoordinates = [v2 textureCoordinates];
 
-  return v3;
+  return textureCoordinates;
 }
 
 - (NSUInteger)textureCoordinateCount
 {
   v2 = +[ARNeutralFaceGeometry sharedNeutralGeometry];
-  v3 = [v2 textureCoordinateCount];
+  textureCoordinateCount = [v2 textureCoordinateCount];
 
-  return v3;
+  return textureCoordinateCount;
 }
 
 - (const)triangleIndices
 {
   v2 = +[ARNeutralFaceGeometry sharedNeutralGeometry];
-  v3 = [v2 triangleIndices];
+  triangleIndices = [v2 triangleIndices];
 
-  return v3;
+  return triangleIndices;
 }
 
 - (NSUInteger)triangleCount
 {
   v2 = +[ARNeutralFaceGeometry sharedNeutralGeometry];
-  v3 = [v2 triangleCount];
+  triangleCount = [v2 triangleCount];
 
-  return v3;
+  return triangleCount;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
+  coderCopy = coder;
   v4 = [MEMORY[0x1E695DEF0] dataWithBytes:*self->_anon_8 length:*&self->_anon_8[8] - *self->_anon_8];
-  [v6 encodeObject:v4 forKey:@"customVertices"];
+  [coderCopy encodeObject:v4 forKey:@"customVertices"];
   v5 = [MEMORY[0x1E695DEF0] dataWithBytes:*self->_anon_20 length:*&self->_anon_20[8] - *self->_anon_20];
-  [v6 encodeObject:v5 forKey:@"normalsData"];
-  [v6 encodeObject:self->_trackingData forKey:@"trackingData"];
+  [coderCopy encodeObject:v5 forKey:@"normalsData"];
+  [coderCopy encodeObject:self->_trackingData forKey:@"trackingData"];
 }
 
-- (ARFaceGeometry)initWithCoder:(id)a3
+- (ARFaceGeometry)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ARFaceGeometry *)self initPrivate];
-  if (v5)
+  coderCopy = coder;
+  initPrivate = [(ARFaceGeometry *)self initPrivate];
+  if (initPrivate)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"customVertices"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"customVertices"];
     v7 = v6;
     if (v6)
     {
       v8 = [v6 length];
-      v9 = [v7 bytes];
+      bytes = [v7 bytes];
       v19 = 0uLL;
       v20 = 0;
-      _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEE16__init_with_sizeB8ne200100IPKS1_S7_EEvT_T0_m(&v19, v9, v9 + 16 * (v8 >> 4), (v8 >> 4));
-      v10 = *(v5 + 1);
+      _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEE16__init_with_sizeB8ne200100IPKS1_S7_EEvT_T0_m(&v19, bytes, bytes + 16 * (v8 >> 4), (v8 >> 4));
+      v10 = *(initPrivate + 1);
       if (v10)
       {
-        *(v5 + 2) = v10;
+        *(initPrivate + 2) = v10;
         operator delete(v10);
-        *(v5 + 1) = 0;
-        *(v5 + 2) = 0;
-        *(v5 + 3) = 0;
+        *(initPrivate + 1) = 0;
+        *(initPrivate + 2) = 0;
+        *(initPrivate + 3) = 0;
       }
 
-      *(v5 + 8) = v19;
-      *(v5 + 3) = v20;
+      *(initPrivate + 8) = v19;
+      *(initPrivate + 3) = v20;
     }
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"normalsData"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"normalsData"];
     v12 = v11;
     if (v11)
     {
       v13 = [v11 length];
-      v14 = [v12 bytes];
+      bytes2 = [v12 bytes];
       v19 = 0uLL;
       v20 = 0;
-      _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEE16__init_with_sizeB8ne200100IPKS1_S7_EEvT_T0_m(&v19, v14, v14 + 16 * (v13 >> 4), (v13 >> 4));
-      v15 = *(v5 + 4);
+      _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEE16__init_with_sizeB8ne200100IPKS1_S7_EEvT_T0_m(&v19, bytes2, bytes2 + 16 * (v13 >> 4), (v13 >> 4));
+      v15 = *(initPrivate + 4);
       if (v15)
       {
-        *(v5 + 5) = v15;
+        *(initPrivate + 5) = v15;
         operator delete(v15);
-        *(v5 + 4) = 0;
-        *(v5 + 5) = 0;
-        *(v5 + 6) = 0;
+        *(initPrivate + 4) = 0;
+        *(initPrivate + 5) = 0;
+        *(initPrivate + 6) = 0;
       }
 
-      *(v5 + 2) = v19;
-      *(v5 + 6) = v20;
+      *(initPrivate + 2) = v19;
+      *(initPrivate + 6) = v20;
     }
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"trackingData"];
-    v17 = *(v5 + 7);
-    *(v5 + 7) = v16;
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"trackingData"];
+    v17 = *(initPrivate + 7);
+    *(initPrivate + 7) = v16;
   }
 
-  return v5;
+  return initPrivate;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5;
     v7 = *(v5 + 1);
     v8 = *self->_anon_8;
@@ -542,23 +542,23 @@ LABEL_9:
   return v15;
 }
 
-- (__n128)positionForLabeledFacePosition:(void *)a3
+- (__n128)positionForLabeledFacePosition:(void *)position
 {
-  v4 = a3;
+  positionCopy = position;
   v19 = 0;
   v18 = 0;
   v17 = 0;
   v16 = 0.0;
-  if (ARFaceLandmarkDataFromLabeledFacePosition(v4, &v19 + 1, &v19, &v18, &v17 + 1, &v17, &v16))
+  if (ARFaceLandmarkDataFromLabeledFacePosition(positionCopy, &v19 + 1, &v19, &v18, &v17 + 1, &v17, &v16))
   {
-    v5 = [a1 vertices];
-    *v6.f32 = ARVector3ScalarMultiplication(*(v5 + 16 * SHIWORD(v19)), *(&v17 + 1));
+    vertices = [self vertices];
+    *v6.f32 = ARVector3ScalarMultiplication(*(vertices + 16 * SHIWORD(v19)), *(&v17 + 1));
     v14 = v6;
-    v7 = [a1 vertices];
-    *v8.f32 = ARVector3ScalarMultiplication(*(v7 + 16 * v19), *&v17);
+    vertices2 = [self vertices];
+    *v8.f32 = ARVector3ScalarMultiplication(*(vertices2 + 16 * v19), *&v17);
     v13 = v8;
-    v9 = [a1 vertices];
-    *v10.f32 = ARVector3ScalarMultiplication(*(v9 + 16 * v18), v16);
+    vertices3 = [self vertices];
+    *v10.f32 = ARVector3ScalarMultiplication(*(vertices3 + 16 * v18), v16);
     v11 = vaddq_f32(vaddq_f32(v14, v13), v10);
   }
 
@@ -572,19 +572,19 @@ LABEL_9:
   return v15;
 }
 
-- (double)normalForLabeledFacePosition:(void *)a3
+- (double)normalForLabeledFacePosition:(void *)position
 {
   v20 = 0;
   v19 = 0;
-  if (ARFaceLandmarkDataFromLabeledFacePosition(a3, &v20 + 1, &v20, &v19, &v18, &v17, &v16))
+  if (ARFaceLandmarkDataFromLabeledFacePosition(position, &v20 + 1, &v20, &v19, &v18, &v17, &v16))
   {
-    v4 = [a1 vertices];
-    v15 = *(v4 + 16 * SHIWORD(v20));
-    v5 = [a1 vertices];
-    v14 = *(v5 + 16 * v20);
-    v6 = [a1 vertices];
+    vertices = [self vertices];
+    v15 = *(vertices + 16 * SHIWORD(v20));
+    vertices2 = [self vertices];
+    v14 = *(vertices2 + 16 * v20);
+    vertices3 = [self vertices];
     v7 = vsubq_f32(v14, v15);
-    v8 = vsubq_f32(*(v6 + 16 * v19), v15);
+    v8 = vsubq_f32(*(vertices3 + 16 * v19), v15);
     v9 = vmlaq_f32(vmulq_f32(vextq_s8(vuzp1q_s32(v8, v8), v8, 0xCuLL), vnegq_f32(v7)), v8, vextq_s8(vuzp1q_s32(v7, v7), v7, 0xCuLL));
     v10 = vextq_s8(vuzp1q_s32(v9, v9), v9, 0xCuLL);
     v11 = vmulq_f32(v9, v9);
@@ -602,14 +602,14 @@ LABEL_9:
   return result;
 }
 
-- (signed)closestVertexIndexToLabeledFacePosition:(id)a3
+- (signed)closestVertexIndexToLabeledFacePosition:(id)position
 {
   v10 = 0;
   v9 = 0;
   v8 = 0.0;
   v6 = 0.0;
   v7 = 0.0;
-  if (!ARFaceLandmarkDataFromLabeledFacePosition(a3, &v10 + 1, &v10, &v9, &v8, &v7, &v6))
+  if (!ARFaceLandmarkDataFromLabeledFacePosition(position, &v10 + 1, &v10, &v9, &v8, &v7, &v6))
   {
     return -1;
   }

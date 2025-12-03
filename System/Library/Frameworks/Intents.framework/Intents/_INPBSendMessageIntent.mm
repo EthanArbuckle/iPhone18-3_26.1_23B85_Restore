@@ -1,25 +1,25 @@
 @interface _INPBSendMessageIntent
-- (BOOL)isEqual:(id)a3;
-- (_INPBSendMessageIntent)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBSendMessageIntent)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsEffect:(id)a3;
-- (int)StringAsOutgoingMessageType:(id)a3;
+- (int)StringAsEffect:(id)effect;
+- (int)StringAsOutgoingMessageType:(id)type;
 - (unint64_t)hash;
-- (void)addAttachments:(id)a3;
-- (void)addRecipient:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAlternativeConversationIdentifier:(id)a3;
-- (void)setAttachments:(id)a3;
-- (void)setConversationIdentifier:(id)a3;
-- (void)setEffect:(int)a3;
-- (void)setHasOutgoingMessageType:(BOOL)a3;
-- (void)setHasShouldHideSiriAttribution:(BOOL)a3;
-- (void)setNotificationThreadIdentifier:(id)a3;
-- (void)setOutgoingMessageType:(int)a3;
-- (void)setRecipients:(id)a3;
-- (void)setServiceName:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addAttachments:(id)attachments;
+- (void)addRecipient:(id)recipient;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAlternativeConversationIdentifier:(id)identifier;
+- (void)setAttachments:(id)attachments;
+- (void)setConversationIdentifier:(id)identifier;
+- (void)setEffect:(int)effect;
+- (void)setHasOutgoingMessageType:(BOOL)type;
+- (void)setHasShouldHideSiriAttribution:(BOOL)attribution;
+- (void)setNotificationThreadIdentifier:(id)identifier;
+- (void)setOutgoingMessageType:(int)type;
+- (void)setRecipients:(id)recipients;
+- (void)setServiceName:(id)name;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBSendMessageIntent
@@ -27,17 +27,17 @@
 - (id)dictionaryRepresentation
 {
   v53 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_alternativeConversationIdentifier)
   {
-    v4 = [(_INPBSendMessageIntent *)self alternativeConversationIdentifier];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"alternativeConversationIdentifier"];
+    alternativeConversationIdentifier = [(_INPBSendMessageIntent *)self alternativeConversationIdentifier];
+    v5 = [alternativeConversationIdentifier copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"alternativeConversationIdentifier"];
   }
 
   if ([(NSArray *)self->_attachments count])
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v47 = 0u;
     v48 = 0u;
     v49 = 0u;
@@ -57,8 +57,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v47 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v47 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSArray *)v7 countByEnumeratingWithState:&v47 objects:v52 count:16];
@@ -67,75 +67,75 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"attachments"];
+    [dictionary setObject:array forKeyedSubscript:@"attachments"];
   }
 
-  v13 = [(_INPBSendMessageIntent *)self content];
-  v14 = [v13 dictionaryRepresentation];
-  [v3 setObject:v14 forKeyedSubscript:@"content"];
+  content = [(_INPBSendMessageIntent *)self content];
+  dictionaryRepresentation2 = [content dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"content"];
 
   if (self->_conversationIdentifier)
   {
-    v15 = [(_INPBSendMessageIntent *)self conversationIdentifier];
-    v16 = [v15 copy];
-    [v3 setObject:v16 forKeyedSubscript:@"conversationIdentifier"];
+    conversationIdentifier = [(_INPBSendMessageIntent *)self conversationIdentifier];
+    v16 = [conversationIdentifier copy];
+    [dictionary setObject:v16 forKeyedSubscript:@"conversationIdentifier"];
   }
 
   if ([(_INPBSendMessageIntent *)self hasEffect])
   {
-    v17 = [(_INPBSendMessageIntent *)self effect];
-    if ((v17 - 1) >= 0xD)
+    effect = [(_INPBSendMessageIntent *)self effect];
+    if ((effect - 1) >= 0xD)
     {
-      v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v17];
+      v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", effect];
     }
 
     else
     {
-      v18 = off_1E7281848[(v17 - 1)];
+      v18 = off_1E7281848[(effect - 1)];
     }
 
-    [v3 setObject:v18 forKeyedSubscript:@"effect"];
+    [dictionary setObject:v18 forKeyedSubscript:@"effect"];
   }
 
-  v19 = [(_INPBSendMessageIntent *)self groupName];
-  v20 = [v19 dictionaryRepresentation];
-  [v3 setObject:v20 forKeyedSubscript:@"groupName"];
+  groupName = [(_INPBSendMessageIntent *)self groupName];
+  dictionaryRepresentation3 = [groupName dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"groupName"];
 
-  v21 = [(_INPBSendMessageIntent *)self intentMetadata];
-  v22 = [v21 dictionaryRepresentation];
-  [v3 setObject:v22 forKeyedSubscript:@"intentMetadata"];
+  intentMetadata = [(_INPBSendMessageIntent *)self intentMetadata];
+  dictionaryRepresentation4 = [intentMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"intentMetadata"];
 
   if (self->_notificationThreadIdentifier)
   {
-    v23 = [(_INPBSendMessageIntent *)self notificationThreadIdentifier];
-    v24 = [v23 copy];
-    [v3 setObject:v24 forKeyedSubscript:@"notificationThreadIdentifier"];
+    notificationThreadIdentifier = [(_INPBSendMessageIntent *)self notificationThreadIdentifier];
+    v24 = [notificationThreadIdentifier copy];
+    [dictionary setObject:v24 forKeyedSubscript:@"notificationThreadIdentifier"];
   }
 
   if ([(_INPBSendMessageIntent *)self hasOutgoingMessageType])
   {
-    v25 = [(_INPBSendMessageIntent *)self outgoingMessageType];
-    if (v25 == 1)
+    outgoingMessageType = [(_INPBSendMessageIntent *)self outgoingMessageType];
+    if (outgoingMessageType == 1)
     {
       v26 = @"OUTGOING_MESSAGE_TEXT";
     }
 
-    else if (v25 == 2)
+    else if (outgoingMessageType == 2)
     {
       v26 = @"OUTGOING_MESSAGE_AUDIO";
     }
 
     else
     {
-      v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v25];
+      v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", outgoingMessageType];
     }
 
-    [v3 setObject:v26 forKeyedSubscript:@"outgoingMessageType"];
+    [dictionary setObject:v26 forKeyedSubscript:@"outgoingMessageType"];
   }
 
   if ([(NSArray *)self->_recipients count])
   {
-    v27 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
@@ -155,8 +155,8 @@
             objc_enumerationMutation(v28);
           }
 
-          v33 = [*(*(&v43 + 1) + 8 * j) dictionaryRepresentation];
-          [v27 addObject:v33];
+          dictionaryRepresentation5 = [*(*(&v43 + 1) + 8 * j) dictionaryRepresentation];
+          [array2 addObject:dictionaryRepresentation5];
         }
 
         v30 = [(NSArray *)v28 countByEnumeratingWithState:&v43 objects:v51 count:16];
@@ -165,33 +165,33 @@
       while (v30);
     }
 
-    [v3 setObject:v27 forKeyedSubscript:@"recipient"];
+    [dictionary setObject:array2 forKeyedSubscript:@"recipient"];
   }
 
-  v34 = [(_INPBSendMessageIntent *)self sender];
-  v35 = [v34 dictionaryRepresentation];
-  [v3 setObject:v35 forKeyedSubscript:@"sender"];
+  sender = [(_INPBSendMessageIntent *)self sender];
+  dictionaryRepresentation6 = [sender dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"sender"];
 
   if (self->_serviceName)
   {
-    v36 = [(_INPBSendMessageIntent *)self serviceName];
-    v37 = [v36 copy];
-    [v3 setObject:v37 forKeyedSubscript:@"serviceName"];
+    serviceName = [(_INPBSendMessageIntent *)self serviceName];
+    v37 = [serviceName copy];
+    [dictionary setObject:v37 forKeyedSubscript:@"serviceName"];
   }
 
   if ([(_INPBSendMessageIntent *)self hasShouldHideSiriAttribution])
   {
     v38 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBSendMessageIntent shouldHideSiriAttribution](self, "shouldHideSiriAttribution")}];
-    [v3 setObject:v38 forKeyedSubscript:@"shouldHideSiriAttribution"];
+    [dictionary setObject:v38 forKeyedSubscript:@"shouldHideSiriAttribution"];
   }
 
-  v39 = [(_INPBSendMessageIntent *)self speakableGroupName];
-  v40 = [v39 dictionaryRepresentation];
-  [v3 setObject:v40 forKeyedSubscript:@"speakableGroupName"];
+  speakableGroupName = [(_INPBSendMessageIntent *)self speakableGroupName];
+  dictionaryRepresentation7 = [speakableGroupName dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"speakableGroupName"];
 
   v41 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -239,28 +239,28 @@
   return v15 ^ v16 ^ v14 ^ v13 ^ v3 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ [(_INPBDataString *)self->_speakableGroupName hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_69;
   }
 
-  v5 = [(_INPBSendMessageIntent *)self alternativeConversationIdentifier];
-  v6 = [v4 alternativeConversationIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  alternativeConversationIdentifier = [(_INPBSendMessageIntent *)self alternativeConversationIdentifier];
+  alternativeConversationIdentifier2 = [equalCopy alternativeConversationIdentifier];
+  if ((alternativeConversationIdentifier != 0) == (alternativeConversationIdentifier2 == 0))
   {
     goto LABEL_68;
   }
 
-  v7 = [(_INPBSendMessageIntent *)self alternativeConversationIdentifier];
-  if (v7)
+  alternativeConversationIdentifier3 = [(_INPBSendMessageIntent *)self alternativeConversationIdentifier];
+  if (alternativeConversationIdentifier3)
   {
-    v8 = v7;
-    v9 = [(_INPBSendMessageIntent *)self alternativeConversationIdentifier];
-    v10 = [v4 alternativeConversationIdentifier];
-    v11 = [v9 isEqual:v10];
+    v8 = alternativeConversationIdentifier3;
+    alternativeConversationIdentifier4 = [(_INPBSendMessageIntent *)self alternativeConversationIdentifier];
+    alternativeConversationIdentifier5 = [equalCopy alternativeConversationIdentifier];
+    v11 = [alternativeConversationIdentifier4 isEqual:alternativeConversationIdentifier5];
 
     if (!v11)
     {
@@ -272,20 +272,20 @@
   {
   }
 
-  v5 = [(_INPBSendMessageIntent *)self attachments];
-  v6 = [v4 attachments];
-  if ((v5 != 0) == (v6 == 0))
+  alternativeConversationIdentifier = [(_INPBSendMessageIntent *)self attachments];
+  alternativeConversationIdentifier2 = [equalCopy attachments];
+  if ((alternativeConversationIdentifier != 0) == (alternativeConversationIdentifier2 == 0))
   {
     goto LABEL_68;
   }
 
-  v12 = [(_INPBSendMessageIntent *)self attachments];
-  if (v12)
+  attachments = [(_INPBSendMessageIntent *)self attachments];
+  if (attachments)
   {
-    v13 = v12;
-    v14 = [(_INPBSendMessageIntent *)self attachments];
-    v15 = [v4 attachments];
-    v16 = [v14 isEqual:v15];
+    v13 = attachments;
+    attachments2 = [(_INPBSendMessageIntent *)self attachments];
+    attachments3 = [equalCopy attachments];
+    v16 = [attachments2 isEqual:attachments3];
 
     if (!v16)
     {
@@ -297,20 +297,20 @@
   {
   }
 
-  v5 = [(_INPBSendMessageIntent *)self content];
-  v6 = [v4 content];
-  if ((v5 != 0) == (v6 == 0))
+  alternativeConversationIdentifier = [(_INPBSendMessageIntent *)self content];
+  alternativeConversationIdentifier2 = [equalCopy content];
+  if ((alternativeConversationIdentifier != 0) == (alternativeConversationIdentifier2 == 0))
   {
     goto LABEL_68;
   }
 
-  v17 = [(_INPBSendMessageIntent *)self content];
-  if (v17)
+  content = [(_INPBSendMessageIntent *)self content];
+  if (content)
   {
-    v18 = v17;
-    v19 = [(_INPBSendMessageIntent *)self content];
-    v20 = [v4 content];
-    v21 = [v19 isEqual:v20];
+    v18 = content;
+    content2 = [(_INPBSendMessageIntent *)self content];
+    content3 = [equalCopy content];
+    v21 = [content2 isEqual:content3];
 
     if (!v21)
     {
@@ -322,20 +322,20 @@
   {
   }
 
-  v5 = [(_INPBSendMessageIntent *)self conversationIdentifier];
-  v6 = [v4 conversationIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  alternativeConversationIdentifier = [(_INPBSendMessageIntent *)self conversationIdentifier];
+  alternativeConversationIdentifier2 = [equalCopy conversationIdentifier];
+  if ((alternativeConversationIdentifier != 0) == (alternativeConversationIdentifier2 == 0))
   {
     goto LABEL_68;
   }
 
-  v22 = [(_INPBSendMessageIntent *)self conversationIdentifier];
-  if (v22)
+  conversationIdentifier = [(_INPBSendMessageIntent *)self conversationIdentifier];
+  if (conversationIdentifier)
   {
-    v23 = v22;
-    v24 = [(_INPBSendMessageIntent *)self conversationIdentifier];
-    v25 = [v4 conversationIdentifier];
-    v26 = [v24 isEqual:v25];
+    v23 = conversationIdentifier;
+    conversationIdentifier2 = [(_INPBSendMessageIntent *)self conversationIdentifier];
+    conversationIdentifier3 = [equalCopy conversationIdentifier];
+    v26 = [conversationIdentifier2 isEqual:conversationIdentifier3];
 
     if (!v26)
     {
@@ -347,38 +347,38 @@
   {
   }
 
-  v27 = [(_INPBSendMessageIntent *)self hasEffect];
-  if (v27 != [v4 hasEffect])
+  hasEffect = [(_INPBSendMessageIntent *)self hasEffect];
+  if (hasEffect != [equalCopy hasEffect])
   {
     goto LABEL_69;
   }
 
   if ([(_INPBSendMessageIntent *)self hasEffect])
   {
-    if ([v4 hasEffect])
+    if ([equalCopy hasEffect])
     {
       effect = self->_effect;
-      if (effect != [v4 effect])
+      if (effect != [equalCopy effect])
       {
         goto LABEL_69;
       }
     }
   }
 
-  v5 = [(_INPBSendMessageIntent *)self groupName];
-  v6 = [v4 groupName];
-  if ((v5 != 0) == (v6 == 0))
+  alternativeConversationIdentifier = [(_INPBSendMessageIntent *)self groupName];
+  alternativeConversationIdentifier2 = [equalCopy groupName];
+  if ((alternativeConversationIdentifier != 0) == (alternativeConversationIdentifier2 == 0))
   {
     goto LABEL_68;
   }
 
-  v29 = [(_INPBSendMessageIntent *)self groupName];
-  if (v29)
+  groupName = [(_INPBSendMessageIntent *)self groupName];
+  if (groupName)
   {
-    v30 = v29;
-    v31 = [(_INPBSendMessageIntent *)self groupName];
-    v32 = [v4 groupName];
-    v33 = [v31 isEqual:v32];
+    v30 = groupName;
+    groupName2 = [(_INPBSendMessageIntent *)self groupName];
+    groupName3 = [equalCopy groupName];
+    v33 = [groupName2 isEqual:groupName3];
 
     if (!v33)
     {
@@ -390,20 +390,20 @@
   {
   }
 
-  v5 = [(_INPBSendMessageIntent *)self intentMetadata];
-  v6 = [v4 intentMetadata];
-  if ((v5 != 0) == (v6 == 0))
+  alternativeConversationIdentifier = [(_INPBSendMessageIntent *)self intentMetadata];
+  alternativeConversationIdentifier2 = [equalCopy intentMetadata];
+  if ((alternativeConversationIdentifier != 0) == (alternativeConversationIdentifier2 == 0))
   {
     goto LABEL_68;
   }
 
-  v34 = [(_INPBSendMessageIntent *)self intentMetadata];
-  if (v34)
+  intentMetadata = [(_INPBSendMessageIntent *)self intentMetadata];
+  if (intentMetadata)
   {
-    v35 = v34;
-    v36 = [(_INPBSendMessageIntent *)self intentMetadata];
-    v37 = [v4 intentMetadata];
-    v38 = [v36 isEqual:v37];
+    v35 = intentMetadata;
+    intentMetadata2 = [(_INPBSendMessageIntent *)self intentMetadata];
+    intentMetadata3 = [equalCopy intentMetadata];
+    v38 = [intentMetadata2 isEqual:intentMetadata3];
 
     if (!v38)
     {
@@ -415,20 +415,20 @@
   {
   }
 
-  v5 = [(_INPBSendMessageIntent *)self notificationThreadIdentifier];
-  v6 = [v4 notificationThreadIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  alternativeConversationIdentifier = [(_INPBSendMessageIntent *)self notificationThreadIdentifier];
+  alternativeConversationIdentifier2 = [equalCopy notificationThreadIdentifier];
+  if ((alternativeConversationIdentifier != 0) == (alternativeConversationIdentifier2 == 0))
   {
     goto LABEL_68;
   }
 
-  v39 = [(_INPBSendMessageIntent *)self notificationThreadIdentifier];
-  if (v39)
+  notificationThreadIdentifier = [(_INPBSendMessageIntent *)self notificationThreadIdentifier];
+  if (notificationThreadIdentifier)
   {
-    v40 = v39;
-    v41 = [(_INPBSendMessageIntent *)self notificationThreadIdentifier];
-    v42 = [v4 notificationThreadIdentifier];
-    v43 = [v41 isEqual:v42];
+    v40 = notificationThreadIdentifier;
+    notificationThreadIdentifier2 = [(_INPBSendMessageIntent *)self notificationThreadIdentifier];
+    notificationThreadIdentifier3 = [equalCopy notificationThreadIdentifier];
+    v43 = [notificationThreadIdentifier2 isEqual:notificationThreadIdentifier3];
 
     if (!v43)
     {
@@ -440,38 +440,38 @@
   {
   }
 
-  v44 = [(_INPBSendMessageIntent *)self hasOutgoingMessageType];
-  if (v44 != [v4 hasOutgoingMessageType])
+  hasOutgoingMessageType = [(_INPBSendMessageIntent *)self hasOutgoingMessageType];
+  if (hasOutgoingMessageType != [equalCopy hasOutgoingMessageType])
   {
     goto LABEL_69;
   }
 
   if ([(_INPBSendMessageIntent *)self hasOutgoingMessageType])
   {
-    if ([v4 hasOutgoingMessageType])
+    if ([equalCopy hasOutgoingMessageType])
     {
       outgoingMessageType = self->_outgoingMessageType;
-      if (outgoingMessageType != [v4 outgoingMessageType])
+      if (outgoingMessageType != [equalCopy outgoingMessageType])
       {
         goto LABEL_69;
       }
     }
   }
 
-  v5 = [(_INPBSendMessageIntent *)self recipients];
-  v6 = [v4 recipients];
-  if ((v5 != 0) == (v6 == 0))
+  alternativeConversationIdentifier = [(_INPBSendMessageIntent *)self recipients];
+  alternativeConversationIdentifier2 = [equalCopy recipients];
+  if ((alternativeConversationIdentifier != 0) == (alternativeConversationIdentifier2 == 0))
   {
     goto LABEL_68;
   }
 
-  v46 = [(_INPBSendMessageIntent *)self recipients];
-  if (v46)
+  recipients = [(_INPBSendMessageIntent *)self recipients];
+  if (recipients)
   {
-    v47 = v46;
-    v48 = [(_INPBSendMessageIntent *)self recipients];
-    v49 = [v4 recipients];
-    v50 = [v48 isEqual:v49];
+    v47 = recipients;
+    recipients2 = [(_INPBSendMessageIntent *)self recipients];
+    recipients3 = [equalCopy recipients];
+    v50 = [recipients2 isEqual:recipients3];
 
     if (!v50)
     {
@@ -483,20 +483,20 @@
   {
   }
 
-  v5 = [(_INPBSendMessageIntent *)self sender];
-  v6 = [v4 sender];
-  if ((v5 != 0) == (v6 == 0))
+  alternativeConversationIdentifier = [(_INPBSendMessageIntent *)self sender];
+  alternativeConversationIdentifier2 = [equalCopy sender];
+  if ((alternativeConversationIdentifier != 0) == (alternativeConversationIdentifier2 == 0))
   {
     goto LABEL_68;
   }
 
-  v51 = [(_INPBSendMessageIntent *)self sender];
-  if (v51)
+  sender = [(_INPBSendMessageIntent *)self sender];
+  if (sender)
   {
-    v52 = v51;
-    v53 = [(_INPBSendMessageIntent *)self sender];
-    v54 = [v4 sender];
-    v55 = [v53 isEqual:v54];
+    v52 = sender;
+    sender2 = [(_INPBSendMessageIntent *)self sender];
+    sender3 = [equalCopy sender];
+    v55 = [sender2 isEqual:sender3];
 
     if (!v55)
     {
@@ -508,20 +508,20 @@
   {
   }
 
-  v5 = [(_INPBSendMessageIntent *)self serviceName];
-  v6 = [v4 serviceName];
-  if ((v5 != 0) == (v6 == 0))
+  alternativeConversationIdentifier = [(_INPBSendMessageIntent *)self serviceName];
+  alternativeConversationIdentifier2 = [equalCopy serviceName];
+  if ((alternativeConversationIdentifier != 0) == (alternativeConversationIdentifier2 == 0))
   {
     goto LABEL_68;
   }
 
-  v56 = [(_INPBSendMessageIntent *)self serviceName];
-  if (v56)
+  serviceName = [(_INPBSendMessageIntent *)self serviceName];
+  if (serviceName)
   {
-    v57 = v56;
-    v58 = [(_INPBSendMessageIntent *)self serviceName];
-    v59 = [v4 serviceName];
-    v60 = [v58 isEqual:v59];
+    v57 = serviceName;
+    serviceName2 = [(_INPBSendMessageIntent *)self serviceName];
+    serviceName3 = [equalCopy serviceName];
+    v60 = [serviceName2 isEqual:serviceName3];
 
     if (!v60)
     {
@@ -533,30 +533,30 @@
   {
   }
 
-  v61 = [(_INPBSendMessageIntent *)self hasShouldHideSiriAttribution];
-  if (v61 != [v4 hasShouldHideSiriAttribution])
+  hasShouldHideSiriAttribution = [(_INPBSendMessageIntent *)self hasShouldHideSiriAttribution];
+  if (hasShouldHideSiriAttribution != [equalCopy hasShouldHideSiriAttribution])
   {
     goto LABEL_69;
   }
 
   if ([(_INPBSendMessageIntent *)self hasShouldHideSiriAttribution])
   {
-    if ([v4 hasShouldHideSiriAttribution])
+    if ([equalCopy hasShouldHideSiriAttribution])
     {
       shouldHideSiriAttribution = self->_shouldHideSiriAttribution;
-      if (shouldHideSiriAttribution != [v4 shouldHideSiriAttribution])
+      if (shouldHideSiriAttribution != [equalCopy shouldHideSiriAttribution])
       {
         goto LABEL_69;
       }
     }
   }
 
-  v5 = [(_INPBSendMessageIntent *)self speakableGroupName];
-  v6 = [v4 speakableGroupName];
-  if ((v5 != 0) != (v6 == 0))
+  alternativeConversationIdentifier = [(_INPBSendMessageIntent *)self speakableGroupName];
+  alternativeConversationIdentifier2 = [equalCopy speakableGroupName];
+  if ((alternativeConversationIdentifier != 0) != (alternativeConversationIdentifier2 == 0))
   {
-    v63 = [(_INPBSendMessageIntent *)self speakableGroupName];
-    if (!v63)
+    speakableGroupName = [(_INPBSendMessageIntent *)self speakableGroupName];
+    if (!speakableGroupName)
     {
 
 LABEL_72:
@@ -564,10 +564,10 @@ LABEL_72:
       goto LABEL_70;
     }
 
-    v64 = v63;
-    v65 = [(_INPBSendMessageIntent *)self speakableGroupName];
-    v66 = [v4 speakableGroupName];
-    v67 = [v65 isEqual:v66];
+    v64 = speakableGroupName;
+    speakableGroupName2 = [(_INPBSendMessageIntent *)self speakableGroupName];
+    speakableGroupName3 = [equalCopy speakableGroupName];
+    v67 = [speakableGroupName2 isEqual:speakableGroupName3];
 
     if (v67)
     {
@@ -587,19 +587,19 @@ LABEL_70:
   return v68;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBSendMessageIntent allocWithZone:](_INPBSendMessageIntent init];
-  v6 = [(NSString *)self->_alternativeConversationIdentifier copyWithZone:a3];
+  v6 = [(NSString *)self->_alternativeConversationIdentifier copyWithZone:zone];
   [(_INPBSendMessageIntent *)v5 setAlternativeConversationIdentifier:v6];
 
-  v7 = [(NSArray *)self->_attachments copyWithZone:a3];
+  v7 = [(NSArray *)self->_attachments copyWithZone:zone];
   [(_INPBSendMessageIntent *)v5 setAttachments:v7];
 
-  v8 = [(_INPBString *)self->_content copyWithZone:a3];
+  v8 = [(_INPBString *)self->_content copyWithZone:zone];
   [(_INPBSendMessageIntent *)v5 setContent:v8];
 
-  v9 = [(NSString *)self->_conversationIdentifier copyWithZone:a3];
+  v9 = [(NSString *)self->_conversationIdentifier copyWithZone:zone];
   [(_INPBSendMessageIntent *)v5 setConversationIdentifier:v9];
 
   if ([(_INPBSendMessageIntent *)self hasEffect])
@@ -607,13 +607,13 @@ LABEL_70:
     [(_INPBSendMessageIntent *)v5 setEffect:[(_INPBSendMessageIntent *)self effect]];
   }
 
-  v10 = [(_INPBString *)self->_groupName copyWithZone:a3];
+  v10 = [(_INPBString *)self->_groupName copyWithZone:zone];
   [(_INPBSendMessageIntent *)v5 setGroupName:v10];
 
-  v11 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:a3];
+  v11 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:zone];
   [(_INPBSendMessageIntent *)v5 setIntentMetadata:v11];
 
-  v12 = [(NSString *)self->_notificationThreadIdentifier copyWithZone:a3];
+  v12 = [(NSString *)self->_notificationThreadIdentifier copyWithZone:zone];
   [(_INPBSendMessageIntent *)v5 setNotificationThreadIdentifier:v12];
 
   if ([(_INPBSendMessageIntent *)self hasOutgoingMessageType])
@@ -621,13 +621,13 @@ LABEL_70:
     [(_INPBSendMessageIntent *)v5 setOutgoingMessageType:[(_INPBSendMessageIntent *)self outgoingMessageType]];
   }
 
-  v13 = [(NSArray *)self->_recipients copyWithZone:a3];
+  v13 = [(NSArray *)self->_recipients copyWithZone:zone];
   [(_INPBSendMessageIntent *)v5 setRecipients:v13];
 
-  v14 = [(_INPBContact *)self->_sender copyWithZone:a3];
+  v14 = [(_INPBContact *)self->_sender copyWithZone:zone];
   [(_INPBSendMessageIntent *)v5 setSender:v14];
 
-  v15 = [(NSString *)self->_serviceName copyWithZone:a3];
+  v15 = [(NSString *)self->_serviceName copyWithZone:zone];
   [(_INPBSendMessageIntent *)v5 setServiceName:v15];
 
   if ([(_INPBSendMessageIntent *)self hasShouldHideSiriAttribution])
@@ -635,43 +635,43 @@ LABEL_70:
     [(_INPBSendMessageIntent *)v5 setShouldHideSiriAttribution:[(_INPBSendMessageIntent *)self shouldHideSiriAttribution]];
   }
 
-  v16 = [(_INPBDataString *)self->_speakableGroupName copyWithZone:a3];
+  v16 = [(_INPBDataString *)self->_speakableGroupName copyWithZone:zone];
   [(_INPBSendMessageIntent *)v5 setSpeakableGroupName:v16];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBSendMessageIntent *)self data];
+  coderCopy = coder;
+  data = [(_INPBSendMessageIntent *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBSendMessageIntent)initWithCoder:(id)a3
+- (_INPBSendMessageIntent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBSendMessageIntent *)self initWithData:v6];
+    self = [(_INPBSendMessageIntent *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v49 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_INPBSendMessageIntent *)self alternativeConversationIdentifier];
+  toCopy = to;
+  alternativeConversationIdentifier = [(_INPBSendMessageIntent *)self alternativeConversationIdentifier];
 
-  if (v5)
+  if (alternativeConversationIdentifier)
   {
     alternativeConversationIdentifier = self->_alternativeConversationIdentifier;
     PBDataWriterWriteStringField();
@@ -709,17 +709,17 @@ LABEL_70:
     while (v9);
   }
 
-  v13 = [(_INPBSendMessageIntent *)self content];
+  content = [(_INPBSendMessageIntent *)self content];
 
-  if (v13)
+  if (content)
   {
-    v14 = [(_INPBSendMessageIntent *)self content];
+    content2 = [(_INPBSendMessageIntent *)self content];
     PBDataWriterWriteSubmessage();
   }
 
-  v15 = [(_INPBSendMessageIntent *)self conversationIdentifier];
+  conversationIdentifier = [(_INPBSendMessageIntent *)self conversationIdentifier];
 
-  if (v15)
+  if (conversationIdentifier)
   {
     conversationIdentifier = self->_conversationIdentifier;
     PBDataWriterWriteStringField();
@@ -731,25 +731,25 @@ LABEL_70:
     PBDataWriterWriteInt32Field();
   }
 
-  v18 = [(_INPBSendMessageIntent *)self groupName];
+  groupName = [(_INPBSendMessageIntent *)self groupName];
 
-  if (v18)
+  if (groupName)
   {
-    v19 = [(_INPBSendMessageIntent *)self groupName];
+    groupName2 = [(_INPBSendMessageIntent *)self groupName];
     PBDataWriterWriteSubmessage();
   }
 
-  v20 = [(_INPBSendMessageIntent *)self intentMetadata];
+  intentMetadata = [(_INPBSendMessageIntent *)self intentMetadata];
 
-  if (v20)
+  if (intentMetadata)
   {
-    v21 = [(_INPBSendMessageIntent *)self intentMetadata];
+    intentMetadata2 = [(_INPBSendMessageIntent *)self intentMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v22 = [(_INPBSendMessageIntent *)self notificationThreadIdentifier];
+  notificationThreadIdentifier = [(_INPBSendMessageIntent *)self notificationThreadIdentifier];
 
-  if (v22)
+  if (notificationThreadIdentifier)
   {
     notificationThreadIdentifier = self->_notificationThreadIdentifier;
     PBDataWriterWriteStringField();
@@ -793,17 +793,17 @@ LABEL_70:
     while (v27);
   }
 
-  v31 = [(_INPBSendMessageIntent *)self sender];
+  sender = [(_INPBSendMessageIntent *)self sender];
 
-  if (v31)
+  if (sender)
   {
-    v32 = [(_INPBSendMessageIntent *)self sender];
+    sender2 = [(_INPBSendMessageIntent *)self sender];
     PBDataWriterWriteSubmessage();
   }
 
-  v33 = [(_INPBSendMessageIntent *)self serviceName];
+  serviceName = [(_INPBSendMessageIntent *)self serviceName];
 
-  if (v33)
+  if (serviceName)
   {
     serviceName = self->_serviceName;
     PBDataWriterWriteStringField();
@@ -815,20 +815,20 @@ LABEL_70:
     PBDataWriterWriteBOOLField();
   }
 
-  v36 = [(_INPBSendMessageIntent *)self speakableGroupName];
+  speakableGroupName = [(_INPBSendMessageIntent *)self speakableGroupName];
 
-  if (v36)
+  if (speakableGroupName)
   {
-    v37 = [(_INPBSendMessageIntent *)self speakableGroupName];
+    speakableGroupName2 = [(_INPBSendMessageIntent *)self speakableGroupName];
     PBDataWriterWriteSubmessage();
   }
 
   v38 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setHasShouldHideSiriAttribution:(BOOL)a3
+- (void)setHasShouldHideSiriAttribution:(BOOL)attribution
 {
-  if (a3)
+  if (attribution)
   {
     v3 = 4;
   }
@@ -841,49 +841,49 @@ LABEL_70:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setServiceName:(id)a3
+- (void)setServiceName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   serviceName = self->_serviceName;
   self->_serviceName = v4;
 
   MEMORY[0x1EEE66BB8](v4, serviceName);
 }
 
-- (void)addRecipient:(id)a3
+- (void)addRecipient:(id)recipient
 {
-  v4 = a3;
+  recipientCopy = recipient;
   recipients = self->_recipients;
-  v8 = v4;
+  v8 = recipientCopy;
   if (!recipients)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_recipients;
-    self->_recipients = v6;
+    self->_recipients = array;
 
-    v4 = v8;
+    recipientCopy = v8;
     recipients = self->_recipients;
   }
 
-  [(NSArray *)recipients addObject:v4];
+  [(NSArray *)recipients addObject:recipientCopy];
 }
 
-- (void)setRecipients:(id)a3
+- (void)setRecipients:(id)recipients
 {
-  v4 = [a3 mutableCopy];
+  v4 = [recipients mutableCopy];
   recipients = self->_recipients;
   self->_recipients = v4;
 
   MEMORY[0x1EEE66BB8](v4, recipients);
 }
 
-- (int)StringAsOutgoingMessageType:(id)a3
+- (int)StringAsOutgoingMessageType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   v4 = 1;
-  if (([v3 isEqualToString:@"OUTGOING_MESSAGE_TEXT"] & 1) == 0)
+  if (([typeCopy isEqualToString:@"OUTGOING_MESSAGE_TEXT"] & 1) == 0)
   {
-    if ([v3 isEqualToString:@"OUTGOING_MESSAGE_AUDIO"])
+    if ([typeCopy isEqualToString:@"OUTGOING_MESSAGE_AUDIO"])
     {
       v4 = 2;
     }
@@ -897,9 +897,9 @@ LABEL_70:
   return v4;
 }
 
-- (void)setHasOutgoingMessageType:(BOOL)a3
+- (void)setHasOutgoingMessageType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -912,10 +912,10 @@ LABEL_70:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setOutgoingMessageType:(int)a3
+- (void)setOutgoingMessageType:(int)type
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (type == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFD;
   }
@@ -923,83 +923,83 @@ LABEL_70:
   else
   {
     *&self->_has = has | 2;
-    self->_outgoingMessageType = a3;
+    self->_outgoingMessageType = type;
   }
 }
 
-- (void)setNotificationThreadIdentifier:(id)a3
+- (void)setNotificationThreadIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   notificationThreadIdentifier = self->_notificationThreadIdentifier;
   self->_notificationThreadIdentifier = v4;
 
   MEMORY[0x1EEE66BB8](v4, notificationThreadIdentifier);
 }
 
-- (int)StringAsEffect:(id)a3
+- (int)StringAsEffect:(id)effect
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"HAPPY_BIRTHDAY"])
+  effectCopy = effect;
+  if ([effectCopy isEqualToString:@"HAPPY_BIRTHDAY"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"CONFETTI"])
+  else if ([effectCopy isEqualToString:@"CONFETTI"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"LASERS"])
+  else if ([effectCopy isEqualToString:@"LASERS"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"FIREWORKS"])
+  else if ([effectCopy isEqualToString:@"FIREWORKS"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"SHOOTING_STAR"])
+  else if ([effectCopy isEqualToString:@"SHOOTING_STAR"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"INVISBLE_INK"])
+  else if ([effectCopy isEqualToString:@"INVISBLE_INK"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"GENTLE"])
+  else if ([effectCopy isEqualToString:@"GENTLE"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"LOUD"])
+  else if ([effectCopy isEqualToString:@"LOUD"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"IMPACT"])
+  else if ([effectCopy isEqualToString:@"IMPACT"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"SPARKLES"])
+  else if ([effectCopy isEqualToString:@"SPARKLES"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"HEART"])
+  else if ([effectCopy isEqualToString:@"HEART"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"ECHO"])
+  else if ([effectCopy isEqualToString:@"ECHO"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"SPOTLIGHT"])
+  else if ([effectCopy isEqualToString:@"SPOTLIGHT"])
   {
     v4 = 13;
   }
@@ -1012,10 +1012,10 @@ LABEL_70:
   return v4;
 }
 
-- (void)setEffect:(int)a3
+- (void)setEffect:(int)effect
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (effect == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -1023,49 +1023,49 @@ LABEL_70:
   else
   {
     *&self->_has = has | 1;
-    self->_effect = a3;
+    self->_effect = effect;
   }
 }
 
-- (void)setConversationIdentifier:(id)a3
+- (void)setConversationIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   conversationIdentifier = self->_conversationIdentifier;
   self->_conversationIdentifier = v4;
 
   MEMORY[0x1EEE66BB8](v4, conversationIdentifier);
 }
 
-- (void)addAttachments:(id)a3
+- (void)addAttachments:(id)attachments
 {
-  v4 = a3;
+  attachmentsCopy = attachments;
   attachments = self->_attachments;
-  v8 = v4;
+  v8 = attachmentsCopy;
   if (!attachments)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_attachments;
-    self->_attachments = v6;
+    self->_attachments = array;
 
-    v4 = v8;
+    attachmentsCopy = v8;
     attachments = self->_attachments;
   }
 
-  [(NSArray *)attachments addObject:v4];
+  [(NSArray *)attachments addObject:attachmentsCopy];
 }
 
-- (void)setAttachments:(id)a3
+- (void)setAttachments:(id)attachments
 {
-  v4 = [a3 mutableCopy];
+  v4 = [attachments mutableCopy];
   attachments = self->_attachments;
   self->_attachments = v4;
 
   MEMORY[0x1EEE66BB8](v4, attachments);
 }
 
-- (void)setAlternativeConversationIdentifier:(id)a3
+- (void)setAlternativeConversationIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   alternativeConversationIdentifier = self->_alternativeConversationIdentifier;
   self->_alternativeConversationIdentifier = v4;
 

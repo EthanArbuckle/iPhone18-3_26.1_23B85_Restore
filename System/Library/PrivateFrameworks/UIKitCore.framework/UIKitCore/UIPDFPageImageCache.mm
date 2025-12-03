@@ -1,19 +1,19 @@
 @interface UIPDFPageImageCache
-- (UIPDFPageImageCache)initWithDocument:(id)a3 cacheCount:(unint64_t)a4 lookAhead:(unint64_t)a5 withLookAheadResolution:(double)a6;
-- (id)getImageIfAvailableForPage:(unint64_t)a3;
-- (void)addRenderJob:(id)a3;
-- (void)cacheImageOfPage:(unint64_t)a3 maxSize:(CGSize)a4;
+- (UIPDFPageImageCache)initWithDocument:(id)document cacheCount:(unint64_t)count lookAhead:(unint64_t)ahead withLookAheadResolution:(double)resolution;
+- (id)getImageIfAvailableForPage:(unint64_t)page;
+- (void)addRenderJob:(id)job;
+- (void)cacheImageOfPage:(unint64_t)page maxSize:(CGSize)size;
 - (void)cancelPendingRenderOperations;
-- (void)cancelPendingRenderOperationsForTarget:(id)a3;
+- (void)cancelPendingRenderOperationsForTarget:(id)target;
 - (void)clearCache;
 - (void)dealloc;
-- (void)deliverImageOfPage:(unint64_t)a3 maxSize:(CGSize)a4 quality:(BOOL *)a5 receiver:(id)a6 selector:(SEL)a7 info:(id)a8;
-- (void)didReceiveMemoryWarning:(id)a3;
+- (void)deliverImageOfPage:(unint64_t)page maxSize:(CGSize)size quality:(BOOL *)quality receiver:(id)receiver selector:(SEL)selector info:(id)info;
+- (void)didReceiveMemoryWarning:(id)warning;
 @end
 
 @implementation UIPDFPageImageCache
 
-- (UIPDFPageImageCache)initWithDocument:(id)a3 cacheCount:(unint64_t)a4 lookAhead:(unint64_t)a5 withLookAheadResolution:(double)a6
+- (UIPDFPageImageCache)initWithDocument:(id)document cacheCount:(unint64_t)count lookAhead:(unint64_t)ahead withLookAheadResolution:(double)resolution
 {
   v16.receiver = self;
   v16.super_class = UIPDFPageImageCache;
@@ -21,13 +21,13 @@
   v11 = v10;
   if (v10)
   {
-    v10->_document = a3;
-    v10->_lookAhead = a5;
-    v10->_lookAheadResolution = a6;
-    v10->_jobCount = a4;
-    if (a4)
+    v10->_document = document;
+    v10->_lookAhead = ahead;
+    v10->_lookAheadResolution = resolution;
+    v10->_jobCount = count;
+    if (count)
     {
-      v12 = malloc_type_calloc(a4, 8uLL, 0x80040B8603338uLL);
+      v12 = malloc_type_calloc(count, 8uLL, 0x80040B8603338uLL);
     }
 
     else
@@ -36,14 +36,14 @@
     }
 
     v11->_jobsPrioritized = v12;
-    v13 = [a3 numberOfPages];
-    v11->_pageCount = v13;
-    if (v13)
+    numberOfPages = [document numberOfPages];
+    v11->_pageCount = numberOfPages;
+    if (numberOfPages)
     {
-      v13 = malloc_type_calloc(v13, 8uLL, 0x80040B8603338uLL);
+      numberOfPages = malloc_type_calloc(numberOfPages, 8uLL, 0x80040B8603338uLL);
     }
 
-    v11->_jobsByPage = v13;
+    v11->_jobsByPage = numberOfPages;
     v14 = objc_alloc_init(MEMORY[0x1E696ADC8]);
     v11->_renderQueue = v14;
     [(NSOperationQueue *)v14 setMaxConcurrentOperationCount:1];
@@ -83,14 +83,14 @@
 
   else
   {
-    v10 = [(NSOperationQueue *)renderQueue operations];
-    v11 = [(NSArray *)v10 count];
+    operations = [(NSOperationQueue *)renderQueue operations];
+    v11 = [(NSArray *)operations count];
     if (v11)
     {
       v12 = v11;
       for (j = 0; j != v12; ++j)
       {
-        [objc_msgSend(-[NSArray objectAtIndex:](v10 objectAtIndex:{j), "job"), "cancel"}];
+        [objc_msgSend(-[NSArray objectAtIndex:](operations objectAtIndex:{j), "job"), "cancel"}];
       }
     }
   }
@@ -108,7 +108,7 @@
   [(UIPDFPageImageCache *)&v3 dealloc];
 }
 
-- (void)addRenderJob:(id)a3
+- (void)addRenderJob:(id)job
 {
   if (self->_jobCount)
   {
@@ -125,10 +125,10 @@
       nextJobIndex = self->_nextJobIndex;
     }
 
-    jobsPrioritized[nextJobIndex] = a3;
+    jobsPrioritized[nextJobIndex] = job;
     v9 = self->_jobsByPage;
-    v9[[a3 pageIndex]] = a3;
-    v10 = a3;
+    v9[[job pageIndex]] = job;
+    jobCopy = job;
     v11 = self->_nextJobIndex;
     if (v11 + 1 < self->_jobCount)
     {
@@ -145,31 +145,31 @@
 
   else
   {
-    [a3 setReleaseWhenDone:1];
+    [job setReleaseWhenDone:1];
   }
 
-  -[NSOperationQueue addOperation:](self->_renderQueue, "addOperation:", [a3 operation]);
+  -[NSOperationQueue addOperation:](self->_renderQueue, "addOperation:", [job operation]);
 
-  [a3 releaseOperation];
+  [job releaseOperation];
 }
 
-- (void)cacheImageOfPage:(unint64_t)a3 maxSize:(CGSize)a4
+- (void)cacheImageOfPage:(unint64_t)page maxSize:(CGSize)size
 {
-  if (a3)
+  if (page)
   {
-    height = a4.height;
-    width = a4.width;
-    if ([(UIPDFPageImageCache *)self pageCount]>= a3)
+    height = size.height;
+    width = size.width;
+    if ([(UIPDFPageImageCache *)self pageCount]>= page)
     {
       lookAheadResolution = self->_lookAheadResolution;
       os_unfair_lock_lock(&self->_lock);
-      v9 = a3 - 1;
+      v9 = page - 1;
       if (!self->_jobsByPage[v9])
       {
         v10 = [(UIPDFDocument *)[(UIPDFPageImageCache *)self document] copyPageAtIndex:v9];
-        v11 = [[UIPDFPageRenderJob alloc] initWithPage:v10 maxSize:0 queuePriority:width * lookAheadResolution, height * lookAheadResolution];
+        lookAheadResolution = [[UIPDFPageRenderJob alloc] initWithPage:v10 maxSize:0 queuePriority:width * lookAheadResolution, height * lookAheadResolution];
 
-        [(UIPDFPageImageCache *)self addRenderJob:v11];
+        [(UIPDFPageImageCache *)self addRenderJob:lookAheadResolution];
       }
 
       os_unfair_lock_unlock(&self->_lock);
@@ -177,31 +177,31 @@
   }
 }
 
-- (void)deliverImageOfPage:(unint64_t)a3 maxSize:(CGSize)a4 quality:(BOOL *)a5 receiver:(id)a6 selector:(SEL)a7 info:(id)a8
+- (void)deliverImageOfPage:(unint64_t)page maxSize:(CGSize)size quality:(BOOL *)quality receiver:(id)receiver selector:(SEL)selector info:(id)info
 {
-  if (!a3)
+  if (!page)
   {
     return;
   }
 
-  height = a4.height;
-  width = a4.width;
-  if ([(UIPDFPageImageCache *)self pageCount]< a3)
+  height = size.height;
+  width = size.width;
+  if ([(UIPDFPageImageCache *)self pageCount]< page)
   {
     return;
   }
 
-  v51 = [(UIPDFDocument *)[(UIPDFPageImageCache *)self document] copyPageAtIndex:a3 - 1];
+  v51 = [(UIPDFDocument *)[(UIPDFPageImageCache *)self document] copyPageAtIndex:page - 1];
   os_unfair_lock_lock(&self->_lock);
-  v16 = [(UIPDFPageImageCache *)self lookAhead];
+  lookAhead = [(UIPDFPageImageCache *)self lookAhead];
   jobCount = self->_jobCount;
-  v18 = self->_jobsByPage[a3 - 1];
+  v18 = self->_jobsByPage[page - 1];
   v19 = v18;
   os_unfair_lock_unlock(&self->_lock);
   if (v18)
   {
     v49 = jobCount;
-    if (v16)
+    if (lookAhead)
     {
       v20 = [v18 priority] == 4;
       v21 = [v18 image] != 0;
@@ -214,12 +214,12 @@
       v20 = v23 == height && v22 == width;
     }
 
-    if (!*a5 || v20 || v21)
+    if (!*quality || v20 || v21)
     {
-      *a5 = v20;
-      [v18 sendImageTo:a6 callback:a7 userData:{a8, v49}];
+      *quality = v20;
+      [v18 sendImageTo:receiver callback:selector userData:{info, v49}];
 
-      if (!v50 || !v16)
+      if (!v50 || !lookAhead)
       {
         goto LABEL_48;
       }
@@ -231,12 +231,12 @@
   }
 
   os_unfair_lock_lock(&self->_lock);
-  *a5 = 1;
-  v24 = [[UIPDFPageRenderJob alloc] initWithPage:v51 maxSize:4 queuePriority:width, height];
-  [(UIPDFPageRenderJob *)v24 setTarget:a6 callback:a7 userData:a8];
-  if (!jobCount || !v16)
+  *quality = 1;
+  height = [[UIPDFPageRenderJob alloc] initWithPage:v51 maxSize:4 queuePriority:width, height];
+  [(UIPDFPageRenderJob *)height setTarget:receiver callback:selector userData:info];
+  if (!jobCount || !lookAhead)
   {
-    [(UIPDFPageImageCache *)self addRenderJob:v24, v49];
+    [(UIPDFPageImageCache *)self addRenderJob:height, v49];
 
     os_unfair_lock_unlock(&self->_lock);
     goto LABEL_48;
@@ -248,7 +248,7 @@
     v26 = -1;
     do
     {
-      v27 = a3 - 1 - [v25 pageIndex];
+      v27 = page - 1 - [v25 pageIndex];
       if (v27 >= 0)
       {
         v28 = v27;
@@ -280,7 +280,7 @@
     while (v25);
   }
 
-  [(UIPDFPageImageCache *)self addRenderJob:v24, v49];
+  [(UIPDFPageImageCache *)self addRenderJob:height, v49];
 
   os_unfair_lock_unlock(&self->_lock);
 LABEL_31:
@@ -312,18 +312,18 @@ LABEL_31:
     v38 = v36;
   }
 
-  v39 = [(UIPDFPageImageCache *)self lookAhead];
-  if (v39)
+  lookAhead2 = [(UIPDFPageImageCache *)self lookAhead];
+  if (lookAhead2)
   {
-    v40 = v39;
+    v40 = lookAhead2;
     v41 = 1;
     v42 = 1;
     do
     {
       if (v42)
       {
-        v43 = v41 + a3;
-        if (v41 + a3 <= [(UIPDFPageImageCache *)self pageCount])
+        v43 = v41 + page;
+        if (v41 + page <= [(UIPDFPageImageCache *)self pageCount])
         {
           goto LABEL_45;
         }
@@ -331,8 +331,8 @@ LABEL_31:
 
       else
       {
-        v43 = a3 - v41;
-        if (a3 > v41)
+        v43 = page - v41;
+        if (page > v41)
         {
 LABEL_45:
           if (v43)
@@ -357,22 +357,22 @@ LABEL_45:
 LABEL_48:
 }
 
-- (id)getImageIfAvailableForPage:(unint64_t)a3
+- (id)getImageIfAvailableForPage:(unint64_t)page
 {
   os_unfair_lock_lock(&self->_lock);
-  v5 = self->_jobsByPage[a3 - 1];
+  v5 = self->_jobsByPage[page - 1];
   if (v5)
   {
-    v6 = [v5 image];
+    image = [v5 image];
   }
 
   else
   {
-    v6 = 0;
+    image = 0;
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  return v6;
+  return image;
 }
 
 - (void)cancelPendingRenderOperations
@@ -396,7 +396,7 @@ LABEL_48:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)cancelPendingRenderOperationsForTarget:(id)a3
+- (void)cancelPendingRenderOperationsForTarget:(id)target
 {
   os_unfair_lock_lock(&self->_lock);
   jobCount = self->_jobCount;
@@ -407,7 +407,7 @@ LABEL_48:
       v7 = self->_jobsPrioritized[i];
       if (v7)
       {
-        [v7 cancelOperationForTarget:a3];
+        [v7 cancelOperationForTarget:target];
         jobCount = self->_jobCount;
       }
     }
@@ -416,7 +416,7 @@ LABEL_48:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)didReceiveMemoryWarning:(id)a3
+- (void)didReceiveMemoryWarning:(id)warning
 {
   os_unfair_lock_lock(&self->_lock);
   [(UIPDFPageImageCache *)self clearCache];

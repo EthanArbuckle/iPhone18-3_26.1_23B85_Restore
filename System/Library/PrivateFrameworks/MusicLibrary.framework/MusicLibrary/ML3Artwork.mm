@@ -1,31 +1,31 @@
 @interface ML3Artwork
-- (BOOL)isEqual:(id)a3;
-- (ML3Artwork)initWithToken:(id)a3 artworkType:(int64_t)a4 variantType:(int64_t)a5 musicLibrary:(id)a6;
-- (ML3Artwork)initWithToken:(id)a3 relativePath:(id)a4 artworkType:(int64_t)a5 variantType:(int64_t)a6 musicLibrary:(id)a7;
+- (BOOL)isEqual:(id)equal;
+- (ML3Artwork)initWithToken:(id)token artworkType:(int64_t)type variantType:(int64_t)variantType musicLibrary:(id)library;
+- (ML3Artwork)initWithToken:(id)token relativePath:(id)path artworkType:(int64_t)type variantType:(int64_t)variantType musicLibrary:(id)library;
 - (NSDictionary)interestDictionary;
-- (id)_interestDataFromInterestDictionary:(id)a3;
-- (id)_interestDictionaryFromInterestData:(id)a3;
-- (id)fileURLForEffect:(id)a3;
-- (id)fileURLForSize:(CGSize)a3;
+- (id)_interestDataFromInterestDictionary:(id)dictionary;
+- (id)_interestDictionaryFromInterestData:(id)data;
+- (id)fileURLForEffect:(id)effect;
+- (id)fileURLForSize:(CGSize)size;
 - (int64_t)artworkType;
 - (int64_t)sourceType;
 - (void)_onSerialQueue_faultInProperties;
-- (void)setInterestDictionary:(id)a3;
+- (void)setInterestDictionary:(id)dictionary;
 @end
 
 @implementation ML3Artwork
 
-- (id)_interestDataFromInterestDictionary:(id)a3
+- (id)_interestDataFromInterestDictionary:(id)dictionary
 {
   v19 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!dictionary)
   {
     v4 = 0;
     goto LABEL_10;
   }
 
   v14 = 0;
-  v4 = [MEMORY[0x277CCAAA0] dataWithJSONObject:a3 options:0 error:&v14];
+  v4 = [MEMORY[0x277CCAAA0] dataWithJSONObject:dictionary options:0 error:&v14];
   v5 = v14;
   v6 = os_log_create("com.apple.amp.medialibrary", "Artwork");
   v7 = v6;
@@ -33,9 +33,9 @@
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
-      v8 = [(ML3Artwork *)self artworkToken];
+      artworkToken = [(ML3Artwork *)self artworkToken];
       *buf = 138477827;
-      v16 = v8;
+      v16 = artworkToken;
       v9 = "Archived interest data for artwork_token %{private}@.";
       v10 = v7;
       v11 = OS_LOG_TYPE_INFO;
@@ -47,9 +47,9 @@ LABEL_8:
 
   else if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    v8 = [(ML3Artwork *)self artworkToken];
+    artworkToken = [(ML3Artwork *)self artworkToken];
     *buf = 138478083;
-    v16 = v8;
+    v16 = artworkToken;
     v17 = 2114;
     v18 = v5;
     v9 = "Failed to archive interest data for artwork_token %{private}@. Error=%{public}@";
@@ -64,17 +64,17 @@ LABEL_10:
   return v4;
 }
 
-- (id)_interestDictionaryFromInterestData:(id)a3
+- (id)_interestDictionaryFromInterestData:(id)data
 {
   v18 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!data)
   {
     v4 = 0;
     goto LABEL_10;
   }
 
   v13 = 0;
-  v4 = [MEMORY[0x277CCAAA0] JSONObjectWithData:a3 options:0 error:&v13];
+  v4 = [MEMORY[0x277CCAAA0] JSONObjectWithData:data options:0 error:&v13];
   v5 = v13;
   v6 = os_log_create("com.apple.amp.medialibrary", "Artwork");
   v7 = v6;
@@ -82,9 +82,9 @@ LABEL_10:
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
-      v8 = [(ML3Artwork *)self artworkToken];
+      artworkToken = [(ML3Artwork *)self artworkToken];
       *buf = 138478083;
-      v15 = v8;
+      v15 = artworkToken;
       v16 = 2113;
       v17 = v4;
       v9 = "Unarchived interest data for artwork_token %{private}@ with resulting dict: %{private}@";
@@ -97,9 +97,9 @@ LABEL_8:
 
   else if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    v8 = [(ML3Artwork *)self artworkToken];
+    artworkToken = [(ML3Artwork *)self artworkToken];
     *buf = 138478083;
-    v15 = v8;
+    v15 = artworkToken;
     v16 = 2114;
     v17 = v5;
     v9 = "Failed to unarchive data for artwork_token %{private}@. err=%{public}@";
@@ -115,13 +115,13 @@ LABEL_10:
 
 - (void)_onSerialQueue_faultInProperties
 {
-  v3 = [(ML3Artwork *)self musicLibrary];
+  musicLibrary = [(ML3Artwork *)self musicLibrary];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __46__ML3Artwork__onSerialQueue_faultInProperties__block_invoke;
   v4[3] = &unk_278766140;
   v4[4] = self;
-  [v3 databaseConnectionAllowingWrites:0 withBlock:v4];
+  [musicLibrary databaseConnectionAllowingWrites:0 withBlock:v4];
 }
 
 void __46__ML3Artwork__onSerialQueue_faultInProperties__block_invoke(uint64_t a1, void *a2)
@@ -159,17 +159,17 @@ void __46__ML3Artwork__onSerialQueue_faultInProperties__block_invoke_2(uint64_t 
   *a4 = 1;
 }
 
-- (void)setInterestDictionary:(id)a3
+- (void)setInterestDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __36__ML3Artwork_setInterestDictionary___block_invoke;
   v7[3] = &unk_2787660F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dictionaryCopy;
+  v6 = dictionaryCopy;
   dispatch_sync(serialQueue, v7);
 }
 
@@ -394,17 +394,17 @@ void *__25__ML3Artwork_artworkType__block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)fileURLForEffect:(id)a3
+- (id)fileURLForEffect:(id)effect
 {
   v13[2] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CCACA8];
-  v5 = a3;
-  v6 = [(ML3Artwork *)self musicLibrary];
-  v7 = [v6 artworkCacheDirectoryForEffect:v5];
+  effectCopy = effect;
+  musicLibrary = [(ML3Artwork *)self musicLibrary];
+  v7 = [musicLibrary artworkCacheDirectoryForEffect:effectCopy];
 
   v13[0] = v7;
-  v8 = [(ML3Artwork *)self relativePath];
-  v13[1] = v8;
+  relativePath = [(ML3Artwork *)self relativePath];
+  v13[1] = relativePath;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:2];
   v10 = [v4 pathWithComponents:v9];
 
@@ -413,35 +413,35 @@ void *__25__ML3Artwork_artworkType__block_invoke(uint64_t a1)
   return v11;
 }
 
-- (id)fileURLForSize:(CGSize)a3
+- (id)fileURLForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v16[2] = *MEMORY[0x277D85DE8];
-  v6 = [(ML3Artwork *)self originalFileURL];
+  originalFileURL = [(ML3Artwork *)self originalFileURL];
   if (width != 1.79769313e308 || height != 1.79769313e308)
   {
     v8 = MEMORY[0x277CCACA8];
-    v9 = [(ML3Artwork *)self musicLibrary];
-    v10 = [v9 artworkCacheDirectoryForSize:{width, height}];
+    musicLibrary = [(ML3Artwork *)self musicLibrary];
+    v10 = [musicLibrary artworkCacheDirectoryForSize:{width, height}];
     v16[0] = v10;
-    v11 = [(ML3Artwork *)self relativePath];
-    v16[1] = v11;
+    relativePath = [(ML3Artwork *)self relativePath];
+    v16[1] = relativePath;
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:2];
     v13 = [v8 pathWithComponents:v12];
 
     v14 = [MEMORY[0x277CBEBC0] fileURLWithPath:v13 isDirectory:0];
 
-    v6 = v14;
+    originalFileURL = v14;
   }
 
-  return v6;
+  return originalFileURL;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -466,7 +466,7 @@ void *__25__ML3Artwork_artworkType__block_invoke(uint64_t a1)
       v8[3] = &unk_278766058;
       v10 = &v16;
       v8[4] = self;
-      v9 = v4;
+      v9 = equalCopy;
       v11 = &v12;
       dispatch_sync(serialQueue, v8);
       v6 = 0;
@@ -496,16 +496,16 @@ uint64_t __22__ML3Artwork_isEqual___block_invoke(void *a1)
   return result;
 }
 
-- (ML3Artwork)initWithToken:(id)a3 relativePath:(id)a4 artworkType:(int64_t)a5 variantType:(int64_t)a6 musicLibrary:(id)a7
+- (ML3Artwork)initWithToken:(id)token relativePath:(id)path artworkType:(int64_t)type variantType:(int64_t)variantType musicLibrary:(id)library
 {
   v32[2] = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a7;
-  if (!v15)
+  tokenCopy = token;
+  pathCopy = path;
+  libraryCopy = library;
+  if (!pathCopy)
   {
-    v30 = [MEMORY[0x277CCA890] currentHandler];
-    [v30 handleFailureInMethod:a2 object:self file:@"ML3Artwork.m" lineNumber:48 description:@"Relative path cannot be nil."];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ML3Artwork.m" lineNumber:48 description:@"Relative path cannot be nil."];
   }
 
   v31.receiver = self;
@@ -518,15 +518,15 @@ uint64_t __22__ML3Artwork_isEqual___block_invoke(void *a1)
     serialQueue = v17->_serialQueue;
     v17->_serialQueue = v19;
 
-    objc_storeStrong(&v17->_artworkToken, a3);
-    objc_storeStrong(&v17->_relativePath, a4);
-    v17->_artworkType = a5;
-    v17->_variantType = a6;
+    objc_storeStrong(&v17->_artworkToken, token);
+    objc_storeStrong(&v17->_relativePath, path);
+    v17->_artworkType = type;
+    v17->_variantType = variantType;
     v21 = MEMORY[0x277CBEBC0];
     v22 = MEMORY[0x277CCACA8];
-    v23 = [v16 originalArtworkDirectory];
+    originalArtworkDirectory = [libraryCopy originalArtworkDirectory];
     relativePath = v17->_relativePath;
-    v32[0] = v23;
+    v32[0] = originalArtworkDirectory;
     v32[1] = relativePath;
     v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:2];
     v26 = [v22 pathWithComponents:v25];
@@ -534,18 +534,18 @@ uint64_t __22__ML3Artwork_isEqual___block_invoke(void *a1)
     originalFileURL = v17->_originalFileURL;
     v17->_originalFileURL = v27;
 
-    objc_storeStrong(&v17->_musicLibrary, a7);
+    objc_storeStrong(&v17->_musicLibrary, library);
   }
 
   return v17;
 }
 
-- (ML3Artwork)initWithToken:(id)a3 artworkType:(int64_t)a4 variantType:(int64_t)a5 musicLibrary:(id)a6
+- (ML3Artwork)initWithToken:(id)token artworkType:(int64_t)type variantType:(int64_t)variantType musicLibrary:(id)library
 {
-  v10 = a6;
-  v11 = a3;
-  v12 = [ML3MusicLibrary artworkRelativePathFromToken:v11 variantType:a5];
-  v13 = [(ML3Artwork *)self initWithToken:v11 relativePath:v12 artworkType:a4 variantType:a5 musicLibrary:v10];
+  libraryCopy = library;
+  tokenCopy = token;
+  v12 = [ML3MusicLibrary artworkRelativePathFromToken:tokenCopy variantType:variantType];
+  v13 = [(ML3Artwork *)self initWithToken:tokenCopy relativePath:v12 artworkType:type variantType:variantType musicLibrary:libraryCopy];
 
   return v13;
 }

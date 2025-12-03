@@ -1,73 +1,73 @@
 @interface ATXMissedNotificationRankingLoggingEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (ATXMissedNotificationRankingLoggingEvent)initWithCoder:(id)a3;
-- (ATXMissedNotificationRankingLoggingEvent)initWithMissedNotificationRanking:(id)a3 eventType:(int64_t)a4 timestamp:(double)a5;
-- (ATXMissedNotificationRankingLoggingEvent)initWithProto:(id)a3;
-- (ATXMissedNotificationRankingLoggingEvent)initWithProtoData:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (ATXMissedNotificationRankingLoggingEvent)initWithCoder:(id)coder;
+- (ATXMissedNotificationRankingLoggingEvent)initWithMissedNotificationRanking:(id)ranking eventType:(int64_t)type timestamp:(double)timestamp;
+- (ATXMissedNotificationRankingLoggingEvent)initWithProto:(id)proto;
+- (ATXMissedNotificationRankingLoggingEvent)initWithProtoData:(id)data;
 - (id)encodeAsProto;
-- (id)initFromJSON:(id)a3;
+- (id)initFromJSON:(id)n;
 - (id)json;
 - (id)jsonRepresentation;
 - (id)proto;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXMissedNotificationRankingLoggingEvent
 
-- (ATXMissedNotificationRankingLoggingEvent)initWithMissedNotificationRanking:(id)a3 eventType:(int64_t)a4 timestamp:(double)a5
+- (ATXMissedNotificationRankingLoggingEvent)initWithMissedNotificationRanking:(id)ranking eventType:(int64_t)type timestamp:(double)timestamp
 {
-  v9 = a3;
+  rankingCopy = ranking;
   v13.receiver = self;
   v13.super_class = ATXMissedNotificationRankingLoggingEvent;
   v10 = [(ATXMissedNotificationRankingLoggingEvent *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_missedNotificationRanking, a3);
-    v11->_eventType = a4;
-    v11->_timestamp = a5;
+    objc_storeStrong(&v10->_missedNotificationRanking, ranking);
+    v11->_eventType = type;
+    v11->_timestamp = timestamp;
   }
 
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ATXMissedNotificationRankingLoggingEvent *)self encodeAsProto];
-  [v4 encodeObject:v5 forKey:@"protobufData"];
+  coderCopy = coder;
+  encodeAsProto = [(ATXMissedNotificationRankingLoggingEvent *)self encodeAsProto];
+  [coderCopy encodeObject:encodeAsProto forKey:@"protobufData"];
 }
 
-- (ATXMissedNotificationRankingLoggingEvent)initWithCoder:(id)a3
+- (ATXMissedNotificationRankingLoggingEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
 
   if (v5)
   {
     self = [(ATXMissedNotificationRankingLoggingEvent *)self initWithProtoData:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)encodeAsProto
 {
-  v2 = [(ATXMissedNotificationRankingLoggingEvent *)self proto];
-  v3 = [v2 data];
+  proto = [(ATXMissedNotificationRankingLoggingEvent *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (ATXMissedNotificationRankingLoggingEvent)initWithProto:(id)a3
+- (ATXMissedNotificationRankingLoggingEvent)initWithProto:(id)proto
 {
-  v4 = a3;
+  protoCopy = proto;
   v15.receiver = self;
   v15.super_class = ATXMissedNotificationRankingLoggingEvent;
   v5 = [(ATXMissedNotificationRankingLoggingEvent *)&v15 init];
@@ -76,7 +76,7 @@
     goto LABEL_5;
   }
 
-  if (!v4)
+  if (!protoCopy)
   {
 LABEL_9:
     v12 = 0;
@@ -95,10 +95,10 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v6 = v4;
+  v6 = protoCopy;
   v7 = [ATXMissedNotificationRanking alloc];
-  v8 = [v6 missedNotificationRanking];
-  v9 = [(ATXMissedNotificationRanking *)v7 initWithProto:v8];
+  missedNotificationRanking = [v6 missedNotificationRanking];
+  v9 = [(ATXMissedNotificationRanking *)v7 initWithProto:missedNotificationRanking];
   missedNotificationRanking = v5->_missedNotificationRanking;
   v5->_missedNotificationRanking = v9;
 
@@ -114,23 +114,23 @@ LABEL_10:
   return v12;
 }
 
-- (ATXMissedNotificationRankingLoggingEvent)initWithProtoData:(id)a3
+- (ATXMissedNotificationRankingLoggingEvent)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[ATXPBMissedNotificationRankingLoggingEvent alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[ATXPBMissedNotificationRankingLoggingEvent alloc] initWithData:dataCopy];
 
     self = [(ATXMissedNotificationRankingLoggingEvent *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
@@ -139,17 +139,17 @@ LABEL_10:
   [v3 setEventType:{-[ATXMissedNotificationRankingLoggingEvent eventType](self, "eventType")}];
   [(ATXMissedNotificationRankingLoggingEvent *)self timestamp];
   [v3 setTimestamp:?];
-  v4 = [(ATXMissedNotificationRankingLoggingEvent *)self missedNotificationRanking];
-  v5 = [v4 proto];
-  [v3 setMissedNotificationRanking:v5];
+  missedNotificationRanking = [(ATXMissedNotificationRankingLoggingEvent *)self missedNotificationRanking];
+  proto = [missedNotificationRanking proto];
+  [v3 setMissedNotificationRanking:proto];
 
   return v3;
 }
 
-- (id)initFromJSON:(id)a3
+- (id)initFromJSON:(id)n
 {
-  v4 = a3;
-  v5 = [[ATXPBMissedNotificationRankingLoggingEvent alloc] initFromJSON:v4];
+  nCopy = n;
+  v5 = [[ATXPBMissedNotificationRankingLoggingEvent alloc] initFromJSON:nCopy];
 
   v6 = [(ATXMissedNotificationRankingLoggingEvent *)self initWithProto:v5];
   return v6;
@@ -157,27 +157,27 @@ LABEL_10:
 
 - (id)jsonRepresentation
 {
-  v2 = [(ATXMissedNotificationRankingLoggingEvent *)self proto];
-  v3 = [v2 jsonRepresentation];
+  proto = [(ATXMissedNotificationRankingLoggingEvent *)self proto];
+  jsonRepresentation = [proto jsonRepresentation];
 
-  return v3;
+  return jsonRepresentation;
 }
 
 - (id)json
 {
   v2 = MEMORY[0x1E696ACB0];
-  v3 = [(ATXMissedNotificationRankingLoggingEvent *)self jsonDict];
-  v4 = [v2 dataWithJSONObject:v3 options:1 error:0];
+  jsonDict = [(ATXMissedNotificationRankingLoggingEvent *)self jsonDict];
+  v4 = [v2 dataWithJSONObject:jsonDict options:1 error:0];
 
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4 == 1)
+  if (version == 1)
   {
-    v5 = a3;
-    v6 = [[a1 alloc] initWithProtoData:v5];
+    dataCopy = data;
+    v6 = [[self alloc] initWithProtoData:dataCopy];
   }
 
   else

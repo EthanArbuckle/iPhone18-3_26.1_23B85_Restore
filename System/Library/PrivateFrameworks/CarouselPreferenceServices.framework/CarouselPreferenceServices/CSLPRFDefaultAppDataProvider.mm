@@ -1,11 +1,11 @@
 @interface CSLPRFDefaultAppDataProvider
 - (CSLPRFAppDataProviderDelegate)delegate;
 - (CSLPRFDefaultAppDataProvider)init;
-- (void)applicationLibrary:(id)a3 didAddApplications:(id)a4;
-- (void)applicationLibrary:(id)a3 didRemoveApplications:(id)a4;
-- (void)applicationLibrary:(id)a3 didUpdateApplications:(id)a4;
+- (void)applicationLibrary:(id)library didAddApplications:(id)applications;
+- (void)applicationLibrary:(id)library didRemoveApplications:(id)applications;
+- (void)applicationLibrary:(id)library didUpdateApplications:(id)applications;
 - (void)dealloc;
-- (void)loadAppsWithCompletion:(id)a3 completionQueue:(id)a4;
+- (void)loadAppsWithCompletion:(id)completion completionQueue:(id)queue;
 @end
 
 @implementation CSLPRFDefaultAppDataProvider
@@ -17,28 +17,28 @@
   return WeakRetained;
 }
 
-- (void)applicationLibrary:(id)a3 didUpdateApplications:(id)a4
+- (void)applicationLibrary:(id)library didUpdateApplications:(id)applications
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained dataProviderDidChange:self];
 }
 
-- (void)applicationLibrary:(id)a3 didRemoveApplications:(id)a4
+- (void)applicationLibrary:(id)library didRemoveApplications:(id)applications
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained dataProviderDidChange:self];
 }
 
-- (void)applicationLibrary:(id)a3 didAddApplications:(id)a4
+- (void)applicationLibrary:(id)library didAddApplications:(id)applications
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained dataProviderDidChange:self];
 }
 
-- (void)loadAppsWithCompletion:(id)a3 completionQueue:(id)a4
+- (void)loadAppsWithCompletion:(id)completion completionQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  completionCopy = completion;
+  queueCopy = queue;
   os_unfair_lock_lock(&self->_lock);
   self->_lock_didLoadApps = 1;
   os_unfair_lock_unlock(&self->_lock);
@@ -47,10 +47,10 @@
   v11[1] = 3221225472;
   v11[2] = __71__CSLPRFDefaultAppDataProvider_loadAppsWithCompletion_completionQueue___block_invoke;
   v11[3] = &unk_278744F48;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = queueCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = queueCopy;
   [(CSLPRFApplicationLibrary *)applicationLibrary allApplicationsWithCompletion:v11];
 }
 

@@ -1,23 +1,23 @@
 @interface WDDataProviderTableViewCell
 - (CGSize)iconSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (WDDataProviderTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (WDDataProviderTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (id)_getSourceStatusLabelText;
 - (void)_setupUI;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setDisplayName:(id)a3;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)setIconImage:(id)a3;
+- (void)setDisplayName:(id)name;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setIconImage:(id)image;
 @end
 
 @implementation WDDataProviderTableViewCell
 
-- (WDDataProviderTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (WDDataProviderTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = WDDataProviderTableViewCell;
-  v4 = [(WDDataProviderTableViewCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(WDDataProviderTableViewCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -34,13 +34,13 @@
   sourceStatusLabel = self->_sourceStatusLabel;
   self->_sourceStatusLabel = v3;
 
-  v5 = [(WDDataProviderTableViewCell *)self detailTextLabel];
-  v6 = [v5 font];
-  [(UILabel *)self->_sourceStatusLabel setFont:v6];
+  detailTextLabel = [(WDDataProviderTableViewCell *)self detailTextLabel];
+  font = [detailTextLabel font];
+  [(UILabel *)self->_sourceStatusLabel setFont:font];
 
   [(UILabel *)self->_sourceStatusLabel setHidden:1];
-  v7 = [(WDDataProviderTableViewCell *)self _getSourceStatusLabelText];
-  [(UILabel *)self->_sourceStatusLabel setText:v7];
+  _getSourceStatusLabelText = [(WDDataProviderTableViewCell *)self _getSourceStatusLabelText];
+  [(UILabel *)self->_sourceStatusLabel setText:_getSourceStatusLabelText];
 
   [(UILabel *)self->_sourceStatusLabel setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UILabel *)self->_sourceStatusLabel setNumberOfLines:0];
@@ -56,55 +56,55 @@
   [(UIButton *)self->_checkmarkButton setImage:v8 forState:0];
   [(UIButton *)self->_checkmarkButton setImage:v39 forState:4];
   v11 = self->_checkmarkButton;
-  v12 = [MEMORY[0x277D75348] labelColor];
-  [(UIButton *)v11 setTitleColor:v12 forState:0];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  [(UIButton *)v11 setTitleColor:labelColor forState:0];
 
   [(UIButton *)self->_checkmarkButton setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIButton *)self->_checkmarkButton setUserInteractionEnabled:0];
-  v13 = [(WDDataProviderTableViewCell *)self contentView];
-  [v13 addSubview:self->_sourceStatusLabel];
+  contentView = [(WDDataProviderTableViewCell *)self contentView];
+  [contentView addSubview:self->_sourceStatusLabel];
 
-  v14 = [(WDDataProviderTableViewCell *)self contentView];
-  [v14 addSubview:self->_checkmarkButton];
+  contentView2 = [(WDDataProviderTableViewCell *)self contentView];
+  [contentView2 addSubview:self->_checkmarkButton];
 
-  v15 = [(UIButton *)self->_checkmarkButton widthAnchor];
+  widthAnchor = [(UIButton *)self->_checkmarkButton widthAnchor];
   [(UIButton *)self->_checkmarkButton intrinsicContentSize];
-  v16 = [v15 constraintEqualToConstant:?];
+  v16 = [widthAnchor constraintEqualToConstant:?];
   [v16 setActive:1];
 
-  v17 = [(UIButton *)self->_checkmarkButton leadingAnchor];
-  v18 = [(WDDataProviderTableViewCell *)self contentView];
-  v19 = [v18 leadingAnchor];
+  leadingAnchor = [(UIButton *)self->_checkmarkButton leadingAnchor];
+  contentView3 = [(WDDataProviderTableViewCell *)self contentView];
+  leadingAnchor2 = [contentView3 leadingAnchor];
   [(UIButton *)self->_checkmarkButton intrinsicContentSize];
-  v21 = [v17 constraintEqualToAnchor:v19 constant:-v20];
+  v21 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:-v20];
   [(WDDataProviderTableViewCell *)self setCheckmarkLeadingConstraint:v21];
 
-  v22 = [(WDDataProviderTableViewCell *)self checkmarkLeadingConstraint];
-  [v22 setActive:1];
+  checkmarkLeadingConstraint = [(WDDataProviderTableViewCell *)self checkmarkLeadingConstraint];
+  [checkmarkLeadingConstraint setActive:1];
 
   [(UIButton *)self->_checkmarkButton setAlpha:0.0];
-  v23 = [(UIButton *)self->_checkmarkButton centerYAnchor];
-  v24 = [(WDDataProviderTableViewCell *)self imageView];
-  v25 = [v24 centerYAnchor];
-  v26 = [v23 constraintEqualToAnchor:v25];
+  centerYAnchor = [(UIButton *)self->_checkmarkButton centerYAnchor];
+  imageView = [(WDDataProviderTableViewCell *)self imageView];
+  centerYAnchor2 = [imageView centerYAnchor];
+  v26 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v26 setActive:1];
 
-  v27 = [(UILabel *)self->_sourceStatusLabel topAnchor];
-  v28 = [(WDDataProviderTableViewCell *)self textLabel];
-  v29 = [v28 bottomAnchor];
-  v30 = [v27 constraintEqualToAnchor:v29];
+  topAnchor = [(UILabel *)self->_sourceStatusLabel topAnchor];
+  textLabel = [(WDDataProviderTableViewCell *)self textLabel];
+  bottomAnchor = [textLabel bottomAnchor];
+  v30 = [topAnchor constraintEqualToAnchor:bottomAnchor];
   [v30 setActive:1];
 
-  v31 = [(UILabel *)self->_sourceStatusLabel leadingAnchor];
-  v32 = [(WDDataProviderTableViewCell *)self textLabel];
-  v33 = [v32 leadingAnchor];
-  v34 = [v31 constraintEqualToAnchor:v33];
+  leadingAnchor3 = [(UILabel *)self->_sourceStatusLabel leadingAnchor];
+  textLabel2 = [(WDDataProviderTableViewCell *)self textLabel];
+  leadingAnchor4 = [textLabel2 leadingAnchor];
+  v34 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   [v34 setActive:1];
 
-  v35 = [(UILabel *)self->_sourceStatusLabel trailingAnchor];
-  v36 = [(WDDataProviderTableViewCell *)self contentView];
-  v37 = [v36 trailingAnchor];
-  v38 = [v35 constraintEqualToAnchor:v37 constant:10.0];
+  trailingAnchor = [(UILabel *)self->_sourceStatusLabel trailingAnchor];
+  contentView4 = [(WDDataProviderTableViewCell *)self contentView];
+  trailingAnchor2 = [contentView4 trailingAnchor];
+  v38 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:10.0];
   [v38 setActive:1];
 }
 
@@ -133,11 +133,11 @@ LABEL_7:
   return v5;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v11.receiver = self;
   v11.super_class = WDDataProviderTableViewCell;
-  [(WDDataProviderTableViewCell *)&v11 sizeThatFits:a3.width, a3.height];
+  [(WDDataProviderTableViewCell *)&v11 sizeThatFits:fits.width, fits.height];
   v5 = v4;
   v7 = v6;
   if (![(WDDataProviderTableViewCell *)self isActive])
@@ -158,15 +158,15 @@ LABEL_7:
   v59.receiver = self;
   v59.super_class = WDDataProviderTableViewCell;
   [(WDDataProviderTableViewCell *)&v59 layoutSubviews];
-  v3 = [(WDDataProviderTableViewCell *)self imageView];
-  [v3 frame];
+  imageView = [(WDDataProviderTableViewCell *)self imageView];
+  [imageView frame];
   v5 = v4;
   v53 = v6;
   v57 = v8;
   v58 = v7;
 
-  v9 = [(WDDataProviderTableViewCell *)self textLabel];
-  [v9 frame];
+  textLabel = [(WDDataProviderTableViewCell *)self textLabel];
+  [textLabel frame];
   v11 = v10;
   v13 = v12;
   v55 = v15;
@@ -185,47 +185,47 @@ LABEL_7:
       goto LABEL_6;
     }
 
-    v27 = [MEMORY[0x277D75348] labelColor];
-    v29 = [(WDDataProviderTableViewCell *)self textLabel];
-    [v29 setTextColor:v27];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    textLabel2 = [(WDDataProviderTableViewCell *)self textLabel];
+    [textLabel2 setTextColor:labelColor];
 
     v28 = 1;
   }
 
   else
   {
-    v24 = [(WDDataProviderTableViewCell *)self _getSourceStatusLabelText];
-    [(UILabel *)self->_sourceStatusLabel setText:v24];
+    _getSourceStatusLabelText = [(WDDataProviderTableViewCell *)self _getSourceStatusLabelText];
+    [(UILabel *)self->_sourceStatusLabel setText:_getSourceStatusLabelText];
 
-    v25 = [MEMORY[0x277D75348] secondaryLabelColor];
-    v26 = [(WDDataProviderTableViewCell *)self textLabel];
-    [v26 setTextColor:v25];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    textLabel3 = [(WDDataProviderTableViewCell *)self textLabel];
+    [textLabel3 setTextColor:secondaryLabelColor];
 
-    v27 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [(UILabel *)self->_sourceStatusLabel setTextColor:v27];
+    labelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    [(UILabel *)self->_sourceStatusLabel setTextColor:labelColor];
     v28 = 0;
   }
 
   [(UILabel *)self->_sourceStatusLabel setHidden:v28];
 LABEL_6:
   [(UIButton *)self->_checkmarkButton setSelected:[(WDDataProviderTableViewCell *)self isActive]];
-  v30 = [(WDDataProviderTableViewCell *)self isEditing];
+  isEditing = [(WDDataProviderTableViewCell *)self isEditing];
   checkmarkButton = self->_checkmarkButton;
   v32 = v22;
-  if (v30)
+  if (isEditing)
   {
     [(UIButton *)checkmarkButton setAlpha:1.0];
-    v33 = [(WDDataProviderTableViewCell *)self checkmarkLeadingConstraint];
-    [v33 setConstant:10.0];
+    checkmarkLeadingConstraint = [(WDDataProviderTableViewCell *)self checkmarkLeadingConstraint];
+    [checkmarkLeadingConstraint setConstant:10.0];
 
-    v34 = [(WDDataProviderTableViewCell *)self effectiveUserInterfaceLayoutDirection];
-    v35 = [(WDDataProviderTableViewCell *)self checkmarkLeadingConstraint];
-    [v35 constant];
+    effectiveUserInterfaceLayoutDirection = [(WDDataProviderTableViewCell *)self effectiveUserInterfaceLayoutDirection];
+    checkmarkLeadingConstraint2 = [(WDDataProviderTableViewCell *)self checkmarkLeadingConstraint];
+    [checkmarkLeadingConstraint2 constant];
     v37 = v36;
     [(UIButton *)self->_checkmarkButton intrinsicContentSize];
     v39 = v37 + v38;
     v40 = v20;
-    if (v34)
+    if (effectiveUserInterfaceLayoutDirection)
     {
       v41 = v39 + -4.0;
 
@@ -259,8 +259,8 @@ LABEL_6:
     v40 = v20;
     [(UIButton *)checkmarkButton intrinsicContentSize];
     v44 = -v43;
-    v45 = [(WDDataProviderTableViewCell *)self checkmarkLeadingConstraint];
-    [v45 setConstant:v44];
+    checkmarkLeadingConstraint3 = [(WDDataProviderTableViewCell *)self checkmarkLeadingConstraint];
+    [checkmarkLeadingConstraint3 setConstant:v44];
 
     [(UIButton *)self->_checkmarkButton setAlpha:0.0];
   }
@@ -291,11 +291,11 @@ LABEL_6:
   v62.size.width = v56;
   v62.size.height = v55;
   [(UILabel *)self->_sourceStatusLabel setFrame:v17, CGRectGetMaxY(v62), v40, v32];
-  v50 = [(WDDataProviderTableViewCell *)self imageView];
-  [v50 setFrame:{v54, v48, v58, v57}];
+  imageView2 = [(WDDataProviderTableViewCell *)self imageView];
+  [imageView2 setFrame:{v54, v48, v58, v57}];
 
-  v51 = [(WDDataProviderTableViewCell *)self textLabel];
-  [v51 setFrame:{v11, v49, v56, v55}];
+  textLabel4 = [(WDDataProviderTableViewCell *)self textLabel];
+  [textLabel4 setFrame:{v11, v49, v56, v55}];
 }
 
 - (void)prepareForReuse
@@ -305,22 +305,22 @@ LABEL_6:
   [(WDDataProviderTableViewCell *)&v6 prepareForReuse];
   [(UIButton *)self->_checkmarkButton intrinsicContentSize];
   v4 = -v3;
-  v5 = [(WDDataProviderTableViewCell *)self checkmarkLeadingConstraint];
-  [v5 setConstant:v4];
+  checkmarkLeadingConstraint = [(WDDataProviderTableViewCell *)self checkmarkLeadingConstraint];
+  [checkmarkLeadingConstraint setConstant:v4];
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__WDDataProviderTableViewCell_setEditing_animated___block_invoke;
   v7[3] = &unk_2796E7E98;
-  v8 = a3;
+  editingCopy = editing;
   v7[4] = self;
   v5 = MEMORY[0x253092270](v7, a2);
   v6 = v5;
-  if (v4)
+  if (animatedCopy)
   {
     [MEMORY[0x277D75D18] animateWithDuration:v5 animations:0.25];
   }
@@ -341,14 +341,14 @@ id __51__WDDataProviderTableViewCell_setEditing_animated___block_invoke(uint64_t
 
 - (CGSize)iconSize
 {
-  v3 = [(WDDataProviderTableViewCell *)self imageView];
-  v4 = [v3 image];
+  imageView = [(WDDataProviderTableViewCell *)self imageView];
+  image = [imageView image];
 
-  if (v4)
+  if (image)
   {
-    v5 = [(WDDataProviderTableViewCell *)self imageView];
-    v6 = [v5 image];
-    [v6 size];
+    imageView2 = [(WDDataProviderTableViewCell *)self imageView];
+    image2 = [imageView2 image];
+    [image2 size];
     v8 = v7;
     v10 = v9;
   }
@@ -366,18 +366,18 @@ id __51__WDDataProviderTableViewCell_setEditing_animated___block_invoke(uint64_t
   return result;
 }
 
-- (void)setDisplayName:(id)a3
+- (void)setDisplayName:(id)name
 {
-  v4 = a3;
-  v5 = [(WDDataProviderTableViewCell *)self textLabel];
-  [v5 setText:v4];
+  nameCopy = name;
+  textLabel = [(WDDataProviderTableViewCell *)self textLabel];
+  [textLabel setText:nameCopy];
 }
 
-- (void)setIconImage:(id)a3
+- (void)setIconImage:(id)image
 {
-  v4 = a3;
-  v5 = [(WDDataProviderTableViewCell *)self imageView];
-  [v5 setImage:v4];
+  imageCopy = image;
+  imageView = [(WDDataProviderTableViewCell *)self imageView];
+  [imageView setImage:imageCopy];
 }
 
 @end

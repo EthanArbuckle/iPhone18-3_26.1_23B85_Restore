@@ -1,6 +1,6 @@
 @interface PhoneRotateFromDayToWeekViewColdDelayTest
 - (void)_rotationTest;
-- (void)_willChangeOrientation:(id)a3;
+- (void)_willChangeOrientation:(id)orientation;
 @end
 
 @implementation PhoneRotateFromDayToWeekViewColdDelayTest
@@ -15,7 +15,7 @@
   [(RotationTest *)&v4 _rotationTest];
 }
 
-- (void)_willChangeOrientation:(id)a3
+- (void)_willChangeOrientation:(id)orientation
 {
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 removeObserver:self name:UIWindowWillRotateNotification object:0];

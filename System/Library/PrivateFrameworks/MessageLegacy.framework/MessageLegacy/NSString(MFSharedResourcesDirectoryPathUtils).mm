@@ -10,10 +10,10 @@
 
 - (uint64_t)mf_stringByReallyAbbreviatingSharedResourcesDirectoryWithTildeInPath
 {
-  v1 = [a1 mf_stringByAbbreviatingSharedResourcesDirectoryWithTildeInPath];
-  if ([v1 hasPrefix:@"~"])
+  mf_stringByAbbreviatingSharedResourcesDirectoryWithTildeInPath = [self mf_stringByAbbreviatingSharedResourcesDirectoryWithTildeInPath];
+  if ([mf_stringByAbbreviatingSharedResourcesDirectoryWithTildeInPath hasPrefix:@"~"])
   {
-    return v1;
+    return mf_stringByAbbreviatingSharedResourcesDirectoryWithTildeInPath;
   }
 
   if (!mf_stringByReallyAbbreviatingSharedResourcesDirectoryWithTildeInPath_homeDir)
@@ -28,12 +28,12 @@
     _MFUnlockGlobalLock();
   }
 
-  if (![v1 hasPrefix:?])
+  if (![mf_stringByAbbreviatingSharedResourcesDirectoryWithTildeInPath hasPrefix:?])
   {
-    return v1;
+    return mf_stringByAbbreviatingSharedResourcesDirectoryWithTildeInPath;
   }
 
-  v3 = [v1 substringFromIndex:{objc_msgSend(mf_stringByReallyAbbreviatingSharedResourcesDirectoryWithTildeInPath_homeDir, "length")}];
+  v3 = [mf_stringByAbbreviatingSharedResourcesDirectoryWithTildeInPath substringFromIndex:{objc_msgSend(mf_stringByReallyAbbreviatingSharedResourcesDirectoryWithTildeInPath_homeDir, "length")}];
 
   return [@"~" stringByAppendingString:v3];
 }
@@ -48,28 +48,28 @@
     mf_betterStringByResolvingSymlinksInPath_resolvedPaths = v2;
   }
 
-  v3 = [v2 objectForKey:a1];
+  stringByResolvingSymlinksInPath = [v2 objectForKey:self];
   _MFUnlockGlobalLock();
-  if (!v3)
+  if (!stringByResolvingSymlinksInPath)
   {
-    v3 = [a1 stringByResolvingSymlinksInPath];
-    if (v3)
+    stringByResolvingSymlinksInPath = [self stringByResolvingSymlinksInPath];
+    if (stringByResolvingSymlinksInPath)
     {
       _MFLockGlobalLock();
-      [mf_betterStringByResolvingSymlinksInPath_resolvedPaths setObject:v3 forKey:a1];
-      [mf_betterStringByResolvingSymlinksInPath_resolvedPaths setObject:v3 forKey:v3];
+      [mf_betterStringByResolvingSymlinksInPath_resolvedPaths setObject:stringByResolvingSymlinksInPath forKey:self];
+      [mf_betterStringByResolvingSymlinksInPath_resolvedPaths setObject:stringByResolvingSymlinksInPath forKey:stringByResolvingSymlinksInPath];
       _MFUnlockGlobalLock();
     }
   }
 
-  return v3;
+  return stringByResolvingSymlinksInPath;
 }
 
 - (uint64_t)mf_canonicalizedAbsolutePath
 {
-  v1 = [a1 fileSystemRepresentation];
+  fileSystemRepresentation = [self fileSystemRepresentation];
   v2 = malloc_type_malloc(0x400uLL, 0x100004077774924uLL);
-  realpath_DARWIN_EXTSN(v1, v2);
+  realpath_DARWIN_EXTSN(fileSystemRepresentation, v2);
   if (*v2)
   {
     v3 = [objc_msgSend(MEMORY[0x277CCAA00] "defaultManager")];
@@ -86,7 +86,7 @@
 
 - (uint64_t)mf_stringByExpandingTildeWithSharedResourcesDirectoryInPath
 {
-  v2 = [a1 length];
+  v2 = [self length];
   v3 = v2;
   if (v2 >= 0x400)
   {
@@ -99,7 +99,7 @@
   }
 
   v5 = malloc_type_malloc(0x800uLL, 0x1000040BDFB0063uLL);
-  [a1 getCharacters:v5 range:{0, v4}];
+  [self getCharacters:v5 range:{0, v4}];
   if (v3 < 2)
   {
     if (!v3)
@@ -149,9 +149,9 @@ LABEL_17:
 
 - (void)mf_stringByAbbreviatingSharedResourcesDirectoryWithTildeInPath
 {
-  v1 = a1;
+  selfCopy = self;
   v22[1] = *MEMORY[0x277D85DE8];
-  v2 = [a1 length];
+  v2 = [self length];
   if (v2 < 1)
   {
     goto LABEL_30;
@@ -163,7 +163,7 @@ LABEL_17:
   if (v4 >= 0x101)
   {
     v6 = malloc_type_malloc(2 * v4, 0x1000040BDFB0063uLL);
-    [v1 getCharacters:v6 range:{0, v3}];
+    [selfCopy getCharacters:v6 range:{0, v3}];
 LABEL_6:
     v7 = v3;
     while (v6[v7 - 1] == 47)
@@ -178,7 +178,7 @@ LABEL_6:
   }
 
   bzero(v6, 2 * v4);
-  [v1 getCharacters:v6 range:{0, v3}];
+  [selfCopy getCharacters:v6 range:{0, v3}];
   if (v3 != 1)
   {
     goto LABEL_6;
@@ -251,7 +251,7 @@ LABEL_11:
     }
   }
 
-  v1 = [MEMORY[0x277CCACA8] stringWithCharacters:v6 length:v7];
+  selfCopy = [MEMORY[0x277CCACA8] stringWithCharacters:v6 length:v7];
   if (v3 >= 0x101)
   {
     free(v6);
@@ -259,7 +259,7 @@ LABEL_11:
 
 LABEL_30:
   v20 = *MEMORY[0x277D85DE8];
-  return v1;
+  return selfCopy;
 }
 
 @end

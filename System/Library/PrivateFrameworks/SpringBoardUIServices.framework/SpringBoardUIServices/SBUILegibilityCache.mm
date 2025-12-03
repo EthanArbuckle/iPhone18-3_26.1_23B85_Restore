@@ -1,22 +1,22 @@
 @interface SBUILegibilityCache
-- (BOOL)containsTemplateForSettings:(id)a3;
-- (BOOL)isCachedTemplateImage:(id)a3;
-- (SBUILegibilityCache)initWithEngine:(id)a3;
+- (BOOL)containsTemplateForSettings:(id)settings;
+- (BOOL)isCachedTemplateImage:(id)image;
+- (SBUILegibilityCache)initWithEngine:(id)engine;
 - (SBUILegibilityEngine)engine;
-- (id)cachedStrengthForImage:(id)a3 strength:(double)a4 generator:(id)a5;
-- (id)memoryPoolForGraphicsContextType:(int64_t)a3 matchingSize:(CGSize)a4 scale:(double)a5;
-- (id)templateImageForSettings:(id)a3 matchingSize:(CGSize)a4;
+- (id)cachedStrengthForImage:(id)image strength:(double)strength generator:(id)generator;
+- (id)memoryPoolForGraphicsContextType:(int64_t)type matchingSize:(CGSize)size scale:(double)scale;
+- (id)templateImageForSettings:(id)settings matchingSize:(CGSize)size;
 - (void)_teardownMemoryPools;
-- (void)cacheTemplateShadowImage:(id)a3 settings:(id)a4 maxSize:(CGSize)a5;
+- (void)cacheTemplateShadowImage:(id)image settings:(id)settings maxSize:(CGSize)size;
 - (void)removeAllObjects;
 @end
 
 @implementation SBUILegibilityCache
 
-- (SBUILegibilityCache)initWithEngine:(id)a3
+- (SBUILegibilityCache)initWithEngine:(id)engine
 {
-  v5 = a3;
-  if (!v5)
+  engineCopy = engine;
+  if (!engineCopy)
   {
     [(SBUILegibilityCache *)a2 initWithEngine:?];
   }
@@ -27,22 +27,22 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeWeak(&v6->_engine, v5);
-    v8 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    objc_storeWeak(&v6->_engine, engineCopy);
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     templateImagesBySizeForSettings = v7->_templateImagesBySizeForSettings;
-    v7->_templateImagesBySizeForSettings = v8;
+    v7->_templateImagesBySizeForSettings = weakToStrongObjectsMapTable;
 
-    v10 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     cachedTemplatedImages = v7->_cachedTemplatedImages;
-    v7->_cachedTemplatedImages = v10;
+    v7->_cachedTemplatedImages = weakObjectsHashTable;
 
-    v12 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable2 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     strengthForImageLookupMap = v7->_strengthForImageLookupMap;
-    v7->_strengthForImageLookupMap = v12;
+    v7->_strengthForImageLookupMap = weakToStrongObjectsMapTable2;
 
-    v14 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable3 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     sortedTemplateImageKeysBySizeForSettings = v7->_sortedTemplateImageKeysBySizeForSettings;
-    v7->_sortedTemplateImageKeysBySizeForSettings = v14;
+    v7->_sortedTemplateImageKeysBySizeForSettings = weakToStrongObjectsMapTable3;
 
     v7->_unfairLock._os_unfair_lock_opaque = 0;
     v7->_memoryPoolLock._os_unfair_lock_opaque = 0;
@@ -54,41 +54,41 @@
   return v7;
 }
 
-- (BOOL)isCachedTemplateImage:(id)a3
+- (BOOL)isCachedTemplateImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   os_unfair_lock_lock(&self->_unfairLock);
-  v5 = [(NSHashTable *)self->_cachedTemplatedImages containsObject:v4];
+  v5 = [(NSHashTable *)self->_cachedTemplatedImages containsObject:imageCopy];
 
   os_unfair_lock_unlock(&self->_unfairLock);
   return v5;
 }
 
-- (BOOL)containsTemplateForSettings:(id)a3
+- (BOOL)containsTemplateForSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   os_unfair_lock_lock(&self->_unfairLock);
-  v5 = [(NSMapTable *)self->_templateImagesBySizeForSettings objectForKey:v4];
+  v5 = [(NSMapTable *)self->_templateImagesBySizeForSettings objectForKey:settingsCopy];
 
   os_unfair_lock_unlock(&self->_unfairLock);
   return v5 != 0;
 }
 
-- (id)templateImageForSettings:(id)a3 matchingSize:(CGSize)a4
+- (id)templateImageForSettings:(id)settings matchingSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v31 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  settingsCopy = settings;
   os_unfair_lock_lock(&self->_unfairLock);
-  v8 = [(NSMapTable *)self->_templateImagesBySizeForSettings objectForKey:v7];
-  v9 = [(NSMapTable *)self->_sortedTemplateImageKeysBySizeForSettings objectForKey:v7];
+  v8 = [(NSMapTable *)self->_templateImagesBySizeForSettings objectForKey:settingsCopy];
+  v9 = [(NSMapTable *)self->_sortedTemplateImageKeysBySizeForSettings objectForKey:settingsCopy];
   if (!v9)
   {
-    v10 = [v8 allKeys];
-    v9 = [v10 sortedArrayUsingComparator:&__block_literal_global_39];
+    allKeys = [v8 allKeys];
+    v9 = [allKeys sortedArrayUsingComparator:&__block_literal_global_39];
 
-    [(NSMapTable *)self->_sortedTemplateImageKeysBySizeForSettings setObject:v9 forKey:v7];
+    [(NSMapTable *)self->_sortedTemplateImageKeysBySizeForSettings setObject:v9 forKey:settingsCopy];
   }
 
   v28 = 0u;
@@ -101,8 +101,8 @@
   {
 
 LABEL_22:
-    v24 = [v11 lastObject];
-    v14 = [v8 objectForKey:v24];
+    lastObject = [v11 lastObject];
+    v14 = [v8 objectForKey:lastObject];
 
     goto LABEL_23;
   }
@@ -179,38 +179,38 @@ uint64_t __61__SBUILegibilityCache_templateImageForSettings_matchingSize___block
   }
 }
 
-- (void)cacheTemplateShadowImage:(id)a3 settings:(id)a4 maxSize:(CGSize)a5
+- (void)cacheTemplateShadowImage:(id)image settings:(id)settings maxSize:(CGSize)size
 {
-  v11 = a4;
-  v7 = a3;
+  settingsCopy = settings;
+  imageCopy = image;
   os_unfair_lock_lock(&self->_unfairLock);
-  v8 = [(NSMapTable *)self->_templateImagesBySizeForSettings objectForKey:v11];
+  v8 = [(NSMapTable *)self->_templateImagesBySizeForSettings objectForKey:settingsCopy];
   if (!v8)
   {
     v8 = objc_opt_new();
-    [(NSMapTable *)self->_templateImagesBySizeForSettings setObject:v8 forKey:v11];
+    [(NSMapTable *)self->_templateImagesBySizeForSettings setObject:v8 forKey:settingsCopy];
   }
 
   v9 = MEMORY[0x1E696B098];
-  [v7 size];
+  [imageCopy size];
   v10 = [v9 valueWithCGSize:?];
-  [v8 setObject:v7 forKey:v10];
-  [(NSHashTable *)self->_cachedTemplatedImages addObject:v7];
+  [v8 setObject:imageCopy forKey:v10];
+  [(NSHashTable *)self->_cachedTemplatedImages addObject:imageCopy];
 
-  [(NSMapTable *)self->_sortedTemplateImageKeysBySizeForSettings removeObjectForKey:v11];
+  [(NSMapTable *)self->_sortedTemplateImageKeysBySizeForSettings removeObjectForKey:settingsCopy];
   os_unfair_lock_unlock(&self->_unfairLock);
 }
 
-- (id)cachedStrengthForImage:(id)a3 strength:(double)a4 generator:(id)a5
+- (id)cachedStrengthForImage:(id)image strength:(double)strength generator:(id)generator
 {
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = [(SBUILegibilityCache *)self engine];
+  imageCopy = image;
+  generatorCopy = generator;
+  engine = [(SBUILegibilityCache *)self engine];
   os_unfair_lock_lock(&self->_unfairLock);
-  v11 = [(NSMapTable *)self->_strengthForImageLookupMap objectForKey:v8];
-  v12 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
-  v13 = [v11 objectForKey:v12];
+  strongToWeakObjectsMapTable = [(NSMapTable *)self->_strengthForImageLookupMap objectForKey:imageCopy];
+  v12 = [MEMORY[0x1E696AD98] numberWithDouble:strength];
+  v13 = [strongToWeakObjectsMapTable objectForKey:v12];
 
   if (v13)
   {
@@ -221,37 +221,37 @@ uint64_t __61__SBUILegibilityCache_templateImageForSettings_matchingSize___block
     }
 
     v18 = 138412802;
-    v19 = v10;
+    v19 = engine;
     v20 = 2112;
-    v21 = v8;
+    v21 = imageCopy;
     v22 = 2048;
-    v23 = a4;
+    strengthCopy2 = strength;
     v15 = "(%@) Skipped drawing strength for image %@ / %f";
     goto LABEL_13;
   }
 
-  v13 = v9[2](v9, v8, a4);
+  v13 = generatorCopy[2](generatorCopy, imageCopy, strength);
   if (v13)
   {
-    if (!v11)
+    if (!strongToWeakObjectsMapTable)
     {
-      v11 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
-      [(NSMapTable *)self->_strengthForImageLookupMap setObject:v11 forKey:v8];
+      strongToWeakObjectsMapTable = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+      [(NSMapTable *)self->_strengthForImageLookupMap setObject:strongToWeakObjectsMapTable forKey:imageCopy];
     }
 
-    v16 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
-    [v11 setObject:v13 forKey:v16];
+    v16 = [MEMORY[0x1E696AD98] numberWithDouble:strength];
+    [strongToWeakObjectsMapTable setObject:v13 forKey:v16];
   }
 
   v14 = SBLogLegibility();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
     v18 = 138412802;
-    v19 = v10;
+    v19 = engine;
     v20 = 2112;
-    v21 = v8;
+    v21 = imageCopy;
     v22 = 2048;
-    v23 = a4;
+    strengthCopy2 = strength;
     v15 = "(%@) Drawing strength for image %@ / %f";
 LABEL_13:
     _os_log_debug_impl(&dword_1A9A79000, v14, OS_LOG_TYPE_DEBUG, v15, &v18, 0x20u);
@@ -276,19 +276,19 @@ LABEL_9:
   [(SBUILegibilityCache *)self _teardownMemoryPools];
 }
 
-- (id)memoryPoolForGraphicsContextType:(int64_t)a3 matchingSize:(CGSize)a4 scale:(double)a5
+- (id)memoryPoolForGraphicsContextType:(int64_t)type matchingSize:(CGSize)size scale:(double)scale
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   os_unfair_lock_lock(&self->_memoryPoolLock);
-  v10 = [MEMORY[0x1E69DCAB8] sbf_bytesNeededForSize:a3 scale:width withContextType:{height, a5}];
-  v11 = [(NSMutableDictionary *)self->_memoryPoolLock_memoryPoolsBySlotSize allKeys];
+  v10 = [MEMORY[0x1E69DCAB8] sbf_bytesNeededForSize:type scale:width withContextType:{height, scale}];
+  allKeys = [(NSMutableDictionary *)self->_memoryPoolLock_memoryPoolsBySlotSize allKeys];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __75__SBUILegibilityCache_memoryPoolForGraphicsContextType_matchingSize_scale___block_invoke;
   v18[3] = &__block_descriptor_40_e18_B16__0__NSNumber_8l;
   v18[4] = v10;
-  v12 = [v11 bs_firstObjectPassingTest:v18];
+  v12 = [allKeys bs_firstObjectPassingTest:v18];
 
   if (v12)
   {

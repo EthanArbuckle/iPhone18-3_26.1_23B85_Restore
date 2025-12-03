@@ -1,27 +1,27 @@
 @interface BRCPeriodicSyncScheduler
-- (BRCPeriodicSyncScheduler)initWithContainerScheduler:(id)a3 session:(id)a4;
+- (BRCPeriodicSyncScheduler)initWithContainerScheduler:(id)scheduler session:(id)session;
 - (double)_timeIntervalSinceLastPeriodicSync;
-- (void)_appLibraryDidBoostForPresenterNotificationHandler:(id)a3;
+- (void)_appLibraryDidBoostForPresenterNotificationHandler:(id)handler;
 - (void)_cancelPeriodicSyncRequestScheduler;
 - (void)_markNeedPeriodicSync;
-- (void)_periodicSyncCompletionWithError:(id)a3;
+- (void)_periodicSyncCompletionWithError:(id)error;
 - (void)_registerToNotifications;
 - (void)_schedulePeriodicSyncRequest;
 - (void)_tiggerPeriodicSync;
 - (void)_unregisterToNotifications;
 - (void)close;
-- (void)networkReachabilityChanged:(BOOL)a3;
+- (void)networkReachabilityChanged:(BOOL)changed;
 - (void)resume;
-- (void)screenLockChanged:(BOOL)a3;
+- (void)screenLockChanged:(BOOL)changed;
 @end
 
 @implementation BRCPeriodicSyncScheduler
 
-- (BRCPeriodicSyncScheduler)initWithContainerScheduler:(id)a3 session:(id)a4
+- (BRCPeriodicSyncScheduler)initWithContainerScheduler:(id)scheduler session:(id)session
 {
   v39 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  schedulerCopy = scheduler;
+  sessionCopy = session;
   v32.receiver = self;
   v32.super_class = BRCPeriodicSyncScheduler;
   v9 = [(BRCPeriodicSyncScheduler *)&v32 init];
@@ -42,8 +42,8 @@
       _os_log_debug_impl(&dword_223E7A000, v11, OS_LOG_TYPE_DEBUG, "[DEBUG] ┏%llx Creating %@%@", buf, 0x20u);
     }
 
-    objc_storeStrong(&v9->_containerScheduler, a3);
-    objc_storeStrong(&v9->_session, a4);
+    objc_storeStrong(&v9->_containerScheduler, scheduler);
+    objc_storeStrong(&v9->_session, session);
     v12 = [BRCUserDefaults defaultsForMangledID:0];
     userDefaults = v9->_userDefaults;
     v9->_userDefaults = v12;
@@ -55,9 +55,9 @@
     syncQueue = v9->_syncQueue;
     v9->_syncQueue = v16;
 
-    v18 = [(BRCAccountSession *)v9->_session personaIdentifier];
+    personaIdentifier = [(BRCAccountSession *)v9->_session personaIdentifier];
     personaIdentifier = v9->_personaIdentifier;
-    v9->_personaIdentifier = v18;
+    v9->_personaIdentifier = personaIdentifier;
 
     periodicSyncRequestTimer = v9->_periodicSyncRequestTimer;
     v9->_periodicSyncRequestTimer = 0;
@@ -93,8 +93,8 @@
   [v5 addReachabilityObserver:self];
   [v5 addScreenLockObserver:self];
   v3 = [*MEMORY[0x277CFAB60] br_libnotifyPerPersonaNotificationName:self->_personaIdentifier];
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 addObserver:self selector:sel__appLibraryDidBoostForPresenterNotificationHandler_ name:v3 object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__appLibraryDidBoostForPresenterNotificationHandler_ name:v3 object:0];
 }
 
 - (void)_unregisterToNotifications
@@ -103,8 +103,8 @@
   [v5 removeReachabilityObserver:self];
   [v5 removeScreenLockObserver:self];
   v3 = [*MEMORY[0x277CFAB60] br_libnotifyPerPersonaNotificationName:self->_personaIdentifier];
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self name:v3 object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:v3 object:0];
 }
 
 - (void)close
@@ -153,13 +153,13 @@ void __33__BRCPeriodicSyncScheduler_close__block_invoke_2(uint64_t a1, void *a2)
 
 - (void)resume
 {
-  v3 = [(BRCAccountSession *)self->_session clientTruthWorkloop];
+  clientTruthWorkloop = [(BRCAccountSession *)self->_session clientTruthWorkloop];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __34__BRCPeriodicSyncScheduler_resume__block_invoke;
   block[3] = &unk_2784FF450;
   block[4] = self;
-  dispatch_async_and_wait(v3, block);
+  dispatch_async_and_wait(clientTruthWorkloop, block);
 
   [(BRCPeriodicSyncScheduler *)self _registerToNotifications];
   syncQueue = self->_syncQueue;
@@ -234,7 +234,7 @@ void __34__BRCPeriodicSyncScheduler_resume__block_invoke_10(uint64_t a1, void *a
   }
 }
 
-- (void)networkReachabilityChanged:(BOOL)a3
+- (void)networkReachabilityChanged:(BOOL)changed
 {
   if (!self->_closed)
   {
@@ -244,7 +244,7 @@ void __34__BRCPeriodicSyncScheduler_resume__block_invoke_10(uint64_t a1, void *a
     v4[2] = __55__BRCPeriodicSyncScheduler_networkReachabilityChanged___block_invoke;
     v4[3] = &unk_278500EE0;
     v4[4] = self;
-    v5 = a3;
+    changedCopy = changed;
     dispatch_async(syncQueue, v4);
   }
 }
@@ -327,7 +327,7 @@ void __55__BRCPeriodicSyncScheduler_networkReachabilityChanged___block_invoke_2(
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)screenLockChanged:(BOOL)a3
+- (void)screenLockChanged:(BOOL)changed
 {
   if (!self->_closed)
   {
@@ -337,7 +337,7 @@ void __55__BRCPeriodicSyncScheduler_networkReachabilityChanged___block_invoke_2(
     v4[2] = __46__BRCPeriodicSyncScheduler_screenLockChanged___block_invoke;
     v4[3] = &unk_278500EE0;
     v4[4] = self;
-    v5 = a3;
+    changedCopy = changed;
     dispatch_async(syncQueue, v4);
   }
 }
@@ -394,7 +394,7 @@ void __46__BRCPeriodicSyncScheduler_screenLockChanged___block_invoke_2(uint64_t 
   }
 }
 
-- (void)_appLibraryDidBoostForPresenterNotificationHandler:(id)a3
+- (void)_appLibraryDidBoostForPresenterNotificationHandler:(id)handler
 {
   if (!self->_closed)
   {
@@ -576,7 +576,7 @@ void __79__BRCPeriodicSyncScheduler__appLibraryDidBoostForPresenterNotificationH
       {
         v37 = self->_periodicSyncRequestTimer;
         *buf = 138413058;
-        v40 = self;
+        selfCopy = self;
         v41 = 2112;
         v42 = v37;
         v43 = 2048;
@@ -603,7 +603,7 @@ void __79__BRCPeriodicSyncScheduler__appLibraryDidBoostForPresenterNotificationH
     {
       periodicSyncRequestTimer = self->_periodicSyncRequestTimer;
       v8 = 138412802;
-      v9 = self;
+      selfCopy = self;
       v10 = 2112;
       v11 = periodicSyncRequestTimer;
       v12 = 2112;
@@ -640,14 +640,14 @@ void __47__BRCPeriodicSyncScheduler__tiggerPeriodicSync__block_invoke(uint64_t a
   [v2 schedulePeriodicSyncInGroup:v3 completion:v4];
 }
 
-- (void)_periodicSyncCompletionWithError:(id)a3
+- (void)_periodicSyncCompletionWithError:(id)error
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(BRCAccountSession *)self->_session clientDB];
-  [v5 assertOnQueue];
+  errorCopy = error;
+  clientDB = [(BRCAccountSession *)self->_session clientDB];
+  [clientDB assertOnQueue];
 
-  if (v4)
+  if (errorCopy)
   {
     v6 = brc_bread_crumbs();
     v7 = brc_default_log();
@@ -663,7 +663,7 @@ void __47__BRCPeriodicSyncScheduler__tiggerPeriodicSync__block_invoke(uint64_t a
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412802;
-    v18 = self;
+    selfCopy = self;
     v19 = 2112;
     v20 = v8;
     v21 = 2112;
@@ -671,8 +671,8 @@ void __47__BRCPeriodicSyncScheduler__tiggerPeriodicSync__block_invoke(uint64_t a
     _os_log_debug_impl(&dword_223E7A000, v10, OS_LOG_TYPE_DEBUG, "[DEBUG] %@ - persist last periodic sync date: %@%@", buf, 0x20u);
   }
 
-  v11 = [(BRCAccountSession *)self->_session clientState];
-  [v11 setObjectAndScheduleFlush:v8 forKey:@"periodicSyncDate"];
+  clientState = [(BRCAccountSession *)self->_session clientState];
+  [clientState setObjectAndScheduleFlush:v8 forKey:@"periodicSyncDate"];
 
   syncQueue = self->_syncQueue;
   v15[0] = MEMORY[0x277D85DD0];

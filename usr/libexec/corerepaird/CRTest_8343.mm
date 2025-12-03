@@ -1,5 +1,5 @@
 @interface CRTest_8343
-- (BOOL)shouldRun:(id)a3;
+- (BOOL)shouldRun:(id)run;
 - (CRTest_8343)init;
 @end
 
@@ -18,8 +18,8 @@
     if (os_variant_has_internal_content())
     {
       v4 = [[CRUserDefaults alloc] initWithSuiteName:@"com.apple.corerepaird.test"];
-      v5 = [(CRTest *)v3 name];
-      v6 = [v4 dictionaryForKey:v5];
+      name = [(CRTest *)v3 name];
+      v6 = [v4 dictionaryForKey:name];
       [(CRTest *)v3 setOverrides:v6];
     }
   }
@@ -27,36 +27,36 @@
   return v3;
 }
 
-- (BOOL)shouldRun:(id)a3
+- (BOOL)shouldRun:(id)run
 {
-  v4 = a3;
+  runCopy = run;
   v16.receiver = self;
   v16.super_class = CRTest_8343;
-  if (-[CRTest shouldRun:](&v16, "shouldRun:", v4) && ([v4 partSPC], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  if (-[CRTest shouldRun:](&v16, "shouldRun:", runCopy) && ([runCopy partSPC], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
     v6 = objc_opt_new();
     [(CRTest *)self setTestingRemovableSPC:v6];
 
-    v7 = [v4 partSPC];
-    v8 = [v7 containsObject:@"IPHONE COMP FACEID"];
+    partSPC = [runCopy partSPC];
+    v8 = [partSPC containsObject:@"IPHONE COMP FACEID"];
 
     if (v8)
     {
-      v9 = [(CRTest *)self testingRemovableSPC];
-      [v9 addObject:@"IPHONE COMP FACEID"];
+      testingRemovableSPC = [(CRTest *)self testingRemovableSPC];
+      [testingRemovableSPC addObject:@"IPHONE COMP FACEID"];
     }
 
-    v10 = [v4 partSPC];
-    v11 = [v10 containsObject:@"IPAD FRONT CAMERA"];
+    partSPC2 = [runCopy partSPC];
+    v11 = [partSPC2 containsObject:@"IPAD FRONT CAMERA"];
 
     if (v11)
     {
-      v12 = [(CRTest *)self testingRemovableSPC];
-      [v12 addObject:@"IPAD FRONT CAMERA"];
+      testingRemovableSPC2 = [(CRTest *)self testingRemovableSPC];
+      [testingRemovableSPC2 addObject:@"IPAD FRONT CAMERA"];
     }
 
-    v13 = [(CRTest *)self testingRemovableSPC];
-    v14 = [v13 count] != 0;
+    testingRemovableSPC3 = [(CRTest *)self testingRemovableSPC];
+    v14 = [testingRemovableSPC3 count] != 0;
   }
 
   else

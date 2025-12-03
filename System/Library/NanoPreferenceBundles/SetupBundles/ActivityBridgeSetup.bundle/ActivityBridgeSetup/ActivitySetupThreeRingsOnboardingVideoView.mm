@@ -1,8 +1,8 @@
 @interface ActivitySetupThreeRingsOnboardingVideoView
 - (CGSize)intrinsicContentSize;
 - (_TtC19ActivityBridgeSetup42ActivitySetupThreeRingsOnboardingVideoView)init;
-- (_TtC19ActivityBridgeSetup42ActivitySetupThreeRingsOnboardingVideoView)initWithCoder:(id)a3;
-- (_TtC19ActivityBridgeSetup42ActivitySetupThreeRingsOnboardingVideoView)initWithFrame:(CGRect)a3;
+- (_TtC19ActivityBridgeSetup42ActivitySetupThreeRingsOnboardingVideoView)initWithCoder:(id)coder;
+- (_TtC19ActivityBridgeSetup42ActivitySetupThreeRingsOnboardingVideoView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -23,8 +23,8 @@
 - (CGSize)intrinsicContentSize
 {
   v2 = objc_opt_self();
-  v3 = [v2 mainScreen];
-  [v3 bounds];
+  mainScreen = [v2 mainScreen];
+  [mainScreen bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -35,8 +35,8 @@
   v18.size.width = v9;
   v18.size.height = v11;
   v12 = CGRectGetWidth(v18) + -160.0;
-  v13 = [v2 mainScreen];
-  [v13 scale];
+  mainScreen2 = [v2 mainScreen];
+  [mainScreen2 scale];
 
   UIRoundToScale();
   v15 = v14;
@@ -61,7 +61,7 @@
   }
 }
 
-- (_TtC19ActivityBridgeSetup42ActivitySetupThreeRingsOnboardingVideoView)initWithCoder:(id)a3
+- (_TtC19ActivityBridgeSetup42ActivitySetupThreeRingsOnboardingVideoView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC19ActivityBridgeSetup42ActivitySetupThreeRingsOnboardingVideoView_player) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC19ActivityBridgeSetup42ActivitySetupThreeRingsOnboardingVideoView_playerLayer) = 0;
@@ -70,7 +70,7 @@
   return result;
 }
 
-- (_TtC19ActivityBridgeSetup42ActivitySetupThreeRingsOnboardingVideoView)initWithFrame:(CGRect)a3
+- (_TtC19ActivityBridgeSetup42ActivitySetupThreeRingsOnboardingVideoView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

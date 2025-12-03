@@ -1,24 +1,24 @@
 @interface PTTraceConfig
 + (BOOL)isInRecordingWorkflow;
 + (BOOL)resetConfig;
-+ (PTTraceConfig)configWithDictionary:(id)a3;
-+ (PTTraceConfig)configWithTemplate:(unint64_t)a3;
-+ (PTTraceConfig)configWithTracePlanName:(id)a3;
-+ (PTTraceConfig)configWithTracePlanURL:(id)a3;
++ (PTTraceConfig)configWithDictionary:(id)dictionary;
++ (PTTraceConfig)configWithTemplate:(unint64_t)template;
++ (PTTraceConfig)configWithTracePlanName:(id)name;
++ (PTTraceConfig)configWithTracePlanURL:(id)l;
 + (id)_defaultTraceRecordConfig;
 + (id)getCurrentConfig;
 - (BOOL)storeConfig;
-- (PTTraceConfig)initWithCoder:(id)a3;
+- (PTTraceConfig)initWithCoder:(id)coder;
 - (id)_getRemoteObjectProxy;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)_initConnection;
 - (void)_invalidateSession;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PTTraceConfig
 
-+ (PTTraceConfig)configWithTemplate:(unint64_t)a3
++ (PTTraceConfig)configWithTemplate:(unint64_t)template
 {
   v4 = objc_alloc_init(PTTraceConfig);
   [(PTTraceConfig *)v4 setSymbolicate:1];
@@ -54,7 +54,7 @@
 
   [(PTTraceConfig *)v4 setKernelBufferDrainQoS:25];
   [(PTTraceConfig *)v4 setKernelBufferDrainRateMS:500];
-  if (a3 - 1 < 2)
+  if (template - 1 < 2)
   {
     [NSMutableArray arrayWithObjects:&off_10001A670, &off_10001A688, &off_10001A6A0, &off_10001A6B8, &off_10001A6D0, 0];
     v7 = LABEL_9:;
@@ -62,7 +62,7 @@
     goto LABEL_12;
   }
 
-  if (a3 == 3)
+  if (template == 3)
   {
     [NSMutableArray arrayWithObjects:&off_10001A6E8, &off_10001A688, &off_10001A6D0, 0, v12, v13];
     goto LABEL_9;
@@ -81,9 +81,9 @@ LABEL_12:
   v8 = [NSString stringWithCString:buffer encoding:4];
   [(PTTraceConfig *)v4 setOwnerName:v8];
 
-  v9 = [(PTTraceConfig *)v4 ownerName];
+  ownerName = [(PTTraceConfig *)v4 ownerName];
 
-  if (!v9)
+  if (!ownerName)
   {
     v10 = [NSString stringWithCString:buffer encoding:1];
     [(PTTraceConfig *)v4 setOwnerName:v10];
@@ -94,15 +94,15 @@ LABEL_12:
   return v4;
 }
 
-+ (PTTraceConfig)configWithDictionary:(id)a3
++ (PTTraceConfig)configWithDictionary:(id)dictionary
 {
-  v3 = a3;
-  if (!v3 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  dictionaryCopy = dictionary;
+  if (!dictionaryCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     [NSException raise:NSInvalidArgumentException format:@"traceConfigurationDictionary is not a valid dictionary."];
   }
 
-  v4 = [v3 valueForKey:@"traceTemplate"];
+  v4 = [dictionaryCopy valueForKey:@"traceTemplate"];
 
   if (!v4)
   {
@@ -110,7 +110,7 @@ LABEL_12:
     goto LABEL_10;
   }
 
-  v5 = [v3 valueForKey:@"traceTemplate"];
+  v5 = [dictionaryCopy valueForKey:@"traceTemplate"];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -119,7 +119,7 @@ LABEL_12:
     [NSException raise:NSInvalidArgumentException format:@"traceTemplate is not a string."];
   }
 
-  v7 = [v3 valueForKey:@"traceTemplate"];
+  v7 = [dictionaryCopy valueForKey:@"traceTemplate"];
   v8 = traceConfigTemplateForString(v7);
 
   if (v8)
@@ -130,16 +130,16 @@ LABEL_10:
     goto LABEL_12;
   }
 
-  v11 = [v3 valueForKey:@"traceTemplate"];
+  v11 = [dictionaryCopy valueForKey:@"traceTemplate"];
   [NSException raise:NSInvalidArgumentException format:@"%@ is not a valid trace template.", v11];
 
   v10 = 0;
 LABEL_12:
-  v12 = [v3 valueForKey:@"callstackSamplingRateMS"];
+  v12 = [dictionaryCopy valueForKey:@"callstackSamplingRateMS"];
 
   if (v12)
   {
-    v13 = [v3 valueForKey:@"callstackSamplingRateMS"];
+    v13 = [dictionaryCopy valueForKey:@"callstackSamplingRateMS"];
     objc_opt_class();
     v14 = objc_opt_isKindOfClass();
 
@@ -148,15 +148,15 @@ LABEL_12:
       [NSException raise:NSInvalidArgumentException format:@"%@ is not an unsigned long type.", @"callstackSamplingRateMS"];
     }
 
-    v15 = [v3 valueForKey:@"callstackSamplingRateMS"];
+    v15 = [dictionaryCopy valueForKey:@"callstackSamplingRateMS"];
     -[PTTraceConfig setCallstackSamplingRateMS:](v10, "setCallstackSamplingRateMS:", [v15 unsignedLongValue]);
   }
 
-  v16 = [v3 valueForKey:@"traceName"];
+  v16 = [dictionaryCopy valueForKey:@"traceName"];
 
   if (v16)
   {
-    v17 = [v3 valueForKey:@"traceName"];
+    v17 = [dictionaryCopy valueForKey:@"traceName"];
     objc_opt_class();
     v18 = objc_opt_isKindOfClass();
 
@@ -165,16 +165,16 @@ LABEL_12:
       [NSException raise:NSInvalidArgumentException format:@"%@ is not a string type.", @"traceName"];
     }
 
-    v19 = [v3 valueForKey:@"traceName"];
+    v19 = [dictionaryCopy valueForKey:@"traceName"];
     v20 = [v19 copy];
     [(PTTraceConfig *)v10 setTraceName:v20];
   }
 
-  v21 = [v3 valueForKey:@"compressWhenFinished"];
+  v21 = [dictionaryCopy valueForKey:@"compressWhenFinished"];
 
   if (v21)
   {
-    v22 = [v3 valueForKey:@"compressWhenFinished"];
+    v22 = [dictionaryCopy valueForKey:@"compressWhenFinished"];
     objc_opt_class();
     v23 = objc_opt_isKindOfClass();
 
@@ -183,13 +183,13 @@ LABEL_12:
       [NSException raise:NSInvalidArgumentException format:@"%@ is not a BOOLean type.", @"compressWhenFinished"];
     }
 
-    v24 = [v3 valueForKey:@"compressWhenFinished"];
+    v24 = [dictionaryCopy valueForKey:@"compressWhenFinished"];
     if ([v24 unsignedLongValue])
     {
-      v25 = [v3 valueForKey:@"compressWhenFinished"];
-      v26 = [v25 unsignedLongValue];
+      v25 = [dictionaryCopy valueForKey:@"compressWhenFinished"];
+      unsignedLongValue = [v25 unsignedLongValue];
 
-      if (v26 != 1)
+      if (unsignedLongValue != 1)
       {
         [NSException raise:NSInvalidArgumentException format:@"%@ is not a BOOLean type.", @"compressWhenFinished"];
       }
@@ -199,15 +199,15 @@ LABEL_12:
     {
     }
 
-    v27 = [v3 valueForKey:@"compressWhenFinished"];
+    v27 = [dictionaryCopy valueForKey:@"compressWhenFinished"];
     -[PTTraceConfig setCompressWhenFinished:](v10, "setCompressWhenFinished:", [v27 BOOLValue]);
   }
 
-  v28 = [v3 valueForKey:@"includeOSLogs"];
+  v28 = [dictionaryCopy valueForKey:@"includeOSLogs"];
 
   if (v28)
   {
-    v29 = [v3 valueForKey:@"includeOSLogs"];
+    v29 = [dictionaryCopy valueForKey:@"includeOSLogs"];
     objc_opt_class();
     v30 = objc_opt_isKindOfClass();
 
@@ -216,13 +216,13 @@ LABEL_12:
       [NSException raise:NSInvalidArgumentException format:@"%@ is not a BOOLean type.", @"includeOSLogs"];
     }
 
-    v31 = [v3 valueForKey:@"includeOSLogs"];
+    v31 = [dictionaryCopy valueForKey:@"includeOSLogs"];
     if ([v31 unsignedLongValue])
     {
-      v32 = [v3 valueForKey:@"includeOSLogs"];
-      v33 = [v32 unsignedLongValue];
+      v32 = [dictionaryCopy valueForKey:@"includeOSLogs"];
+      unsignedLongValue2 = [v32 unsignedLongValue];
 
-      if (v33 != 1)
+      if (unsignedLongValue2 != 1)
       {
         [NSException raise:NSInvalidArgumentException format:@"%@ is not a BOOLean type.", @"includeOSLogs"];
       }
@@ -232,15 +232,15 @@ LABEL_12:
     {
     }
 
-    v34 = [v3 valueForKey:@"includeOSLogs"];
+    v34 = [dictionaryCopy valueForKey:@"includeOSLogs"];
     -[PTTraceConfig setIncludeOSLogs:](v10, "setIncludeOSLogs:", [v34 BOOLValue]);
   }
 
-  v35 = [v3 valueForKey:@"includeOSSignposts"];
+  v35 = [dictionaryCopy valueForKey:@"includeOSSignposts"];
 
   if (v35)
   {
-    v36 = [v3 valueForKey:@"includeOSSignposts"];
+    v36 = [dictionaryCopy valueForKey:@"includeOSSignposts"];
     objc_opt_class();
     v37 = objc_opt_isKindOfClass();
 
@@ -249,13 +249,13 @@ LABEL_12:
       [NSException raise:NSInvalidArgumentException format:@"%@ is not a BOOLean type.", @"includeOSSignposts"];
     }
 
-    v38 = [v3 valueForKey:@"includeOSSignposts"];
+    v38 = [dictionaryCopy valueForKey:@"includeOSSignposts"];
     if ([v38 unsignedLongValue])
     {
-      v39 = [v3 valueForKey:@"includeOSSignposts"];
-      v40 = [v39 unsignedLongValue];
+      v39 = [dictionaryCopy valueForKey:@"includeOSSignposts"];
+      unsignedLongValue3 = [v39 unsignedLongValue];
 
-      if (v40 != 1)
+      if (unsignedLongValue3 != 1)
       {
         [NSException raise:NSInvalidArgumentException format:@"%@ is not a BOOLean type.", @"includeOSSignposts"];
       }
@@ -265,15 +265,15 @@ LABEL_12:
     {
     }
 
-    v41 = [v3 valueForKey:@"includeOSSignposts"];
+    v41 = [dictionaryCopy valueForKey:@"includeOSSignposts"];
     -[PTTraceConfig setIncludeOSSignposts:](v10, "setIncludeOSSignposts:", [v41 BOOLValue]);
   }
 
-  v42 = [v3 valueForKey:@"traceTimeoutS"];
+  v42 = [dictionaryCopy valueForKey:@"traceTimeoutS"];
 
   if (v42)
   {
-    v43 = [v3 valueForKey:@"traceTimeoutS"];
+    v43 = [dictionaryCopy valueForKey:@"traceTimeoutS"];
     objc_opt_class();
     v44 = objc_opt_isKindOfClass();
 
@@ -282,15 +282,15 @@ LABEL_12:
       [NSException raise:NSInvalidArgumentException format:@"%@ is not an unsigned long type.", @"traceTimeoutS"];
     }
 
-    v45 = [v3 valueForKey:@"traceTimeoutS"];
+    v45 = [dictionaryCopy valueForKey:@"traceTimeoutS"];
     -[PTTraceConfig setTraceTimeoutS:](v10, "setTraceTimeoutS:", [v45 unsignedLongValue]);
   }
 
-  v46 = [v3 valueForKey:@"useTraceRecord"];
+  v46 = [dictionaryCopy valueForKey:@"useTraceRecord"];
 
   if (v46)
   {
-    v47 = [v3 valueForKey:@"useTraceRecord"];
+    v47 = [dictionaryCopy valueForKey:@"useTraceRecord"];
     objc_opt_class();
     v48 = objc_opt_isKindOfClass();
 
@@ -299,13 +299,13 @@ LABEL_12:
       [NSException raise:NSInvalidArgumentException format:@"%@ is not a BOOLean type.", @"useTraceRecord"];
     }
 
-    v49 = [v3 valueForKey:@"useTraceRecord"];
+    v49 = [dictionaryCopy valueForKey:@"useTraceRecord"];
     if ([v49 unsignedLongValue])
     {
-      v50 = [v3 valueForKey:@"useTraceRecord"];
-      v51 = [v50 unsignedLongValue];
+      v50 = [dictionaryCopy valueForKey:@"useTraceRecord"];
+      unsignedLongValue4 = [v50 unsignedLongValue];
 
-      if (v51 != 1)
+      if (unsignedLongValue4 != 1)
       {
         [NSException raise:NSInvalidArgumentException format:@"%@ is not a BOOLean type.", @"useTraceRecord"];
       }
@@ -315,15 +315,15 @@ LABEL_12:
     {
     }
 
-    v52 = [v3 valueForKey:@"useTraceRecord"];
+    v52 = [dictionaryCopy valueForKey:@"useTraceRecord"];
     -[PTTraceConfig setUseTraceRecord:](v10, "setUseTraceRecord:", [v52 BOOLValue]);
   }
 
-  v53 = [v3 valueForKey:@"traceDurationSecs"];
+  v53 = [dictionaryCopy valueForKey:@"traceDurationSecs"];
 
   if (v53)
   {
-    v54 = [v3 valueForKey:@"traceDurationSecs"];
+    v54 = [dictionaryCopy valueForKey:@"traceDurationSecs"];
     objc_opt_class();
     v55 = objc_opt_isKindOfClass();
 
@@ -332,15 +332,15 @@ LABEL_12:
       [NSException raise:NSInvalidArgumentException format:@"%@ is not an unsigned long type.", @"traceDurationSecs"];
     }
 
-    v56 = [v3 valueForKey:@"traceDurationSecs"];
+    v56 = [dictionaryCopy valueForKey:@"traceDurationSecs"];
     -[PTTraceConfig setTraceDurationSecs:](v10, "setTraceDurationSecs:", [v56 unsignedLongValue]);
   }
 
-  v57 = [v3 valueForKey:@"skipNotification"];
+  v57 = [dictionaryCopy valueForKey:@"skipNotification"];
 
   if (v57)
   {
-    v58 = [v3 valueForKey:@"skipNotification"];
+    v58 = [dictionaryCopy valueForKey:@"skipNotification"];
     objc_opt_class();
     v59 = objc_opt_isKindOfClass();
 
@@ -349,13 +349,13 @@ LABEL_12:
       [NSException raise:NSInvalidArgumentException format:@"%@ is not a BOOLean type.", @"skipNotification"];
     }
 
-    v60 = [v3 valueForKey:@"skipNotification"];
+    v60 = [dictionaryCopy valueForKey:@"skipNotification"];
     if ([v60 unsignedLongValue])
     {
-      v61 = [v3 valueForKey:@"skipNotification"];
-      v62 = [v61 unsignedLongValue];
+      v61 = [dictionaryCopy valueForKey:@"skipNotification"];
+      unsignedLongValue5 = [v61 unsignedLongValue];
 
-      if (v62 != 1)
+      if (unsignedLongValue5 != 1)
       {
         [NSException raise:NSInvalidArgumentException format:@"%@ is not a BOOLean type.", @"skipNotification"];
       }
@@ -365,15 +365,15 @@ LABEL_12:
     {
     }
 
-    v63 = [v3 valueForKey:@"skipNotification"];
+    v63 = [dictionaryCopy valueForKey:@"skipNotification"];
     -[PTTraceConfig setSkipNotification:](v10, "setSkipNotification:", [v63 BOOLValue]);
   }
 
-  v64 = [v3 valueForKey:@"includeKernelStacks"];
+  v64 = [dictionaryCopy valueForKey:@"includeKernelStacks"];
 
   if (v64)
   {
-    v65 = [v3 valueForKey:@"includeKernelStacks"];
+    v65 = [dictionaryCopy valueForKey:@"includeKernelStacks"];
     objc_opt_class();
     v66 = objc_opt_isKindOfClass();
 
@@ -382,13 +382,13 @@ LABEL_12:
       [NSException raise:NSInvalidArgumentException format:@"%@ is not a BOOLean type.", @"includeKernelStacks"];
     }
 
-    v67 = [v3 valueForKey:@"includeKernelStacks"];
+    v67 = [dictionaryCopy valueForKey:@"includeKernelStacks"];
     if ([v67 unsignedLongValue])
     {
-      v68 = [v3 valueForKey:@"includeKernelStacks"];
-      v69 = [v68 unsignedLongValue];
+      v68 = [dictionaryCopy valueForKey:@"includeKernelStacks"];
+      unsignedLongValue6 = [v68 unsignedLongValue];
 
-      if (v69 != 1)
+      if (unsignedLongValue6 != 1)
       {
         [NSException raise:NSInvalidArgumentException format:@"%@ is not a BOOLean type.", @"includeKernelStacks"];
       }
@@ -398,15 +398,15 @@ LABEL_12:
     {
     }
 
-    v70 = [v3 valueForKey:@"includeKernelStacks"];
+    v70 = [dictionaryCopy valueForKey:@"includeKernelStacks"];
     -[PTTraceConfig setIncludeKernelStacks:](v10, "setIncludeKernelStacks:", [v70 BOOLValue]);
   }
 
-  v71 = [v3 valueForKey:@"kernelBufferSizeMB"];
+  v71 = [dictionaryCopy valueForKey:@"kernelBufferSizeMB"];
 
   if (v71)
   {
-    v72 = [v3 valueForKey:@"kernelBufferSizeMB"];
+    v72 = [dictionaryCopy valueForKey:@"kernelBufferSizeMB"];
     objc_opt_class();
     v73 = objc_opt_isKindOfClass();
 
@@ -415,15 +415,15 @@ LABEL_12:
       [NSException raise:NSInvalidArgumentException format:@"%@ is not an unsigned long type.", @"kernelBufferSizeMB"];
     }
 
-    v74 = [v3 valueForKey:@"kernelBufferSizeMB"];
+    v74 = [dictionaryCopy valueForKey:@"kernelBufferSizeMB"];
     -[PTTraceConfig setKernelBufferSizeMB:](v10, "setKernelBufferSizeMB:", [v74 unsignedLongValue]);
   }
 
-  v75 = [v3 valueForKey:@"kernelBufferDrainRateMS"];
+  v75 = [dictionaryCopy valueForKey:@"kernelBufferDrainRateMS"];
 
   if (v75)
   {
-    v76 = [v3 valueForKey:@"kernelBufferDrainRateMS"];
+    v76 = [dictionaryCopy valueForKey:@"kernelBufferDrainRateMS"];
     objc_opt_class();
     v77 = objc_opt_isKindOfClass();
 
@@ -432,15 +432,15 @@ LABEL_12:
       [NSException raise:NSInvalidArgumentException format:@"%@ is not an unsigned long type.", @"kernelBufferDrainRateMS"];
     }
 
-    v78 = [v3 valueForKey:@"kernelBufferDrainRateMS"];
+    v78 = [dictionaryCopy valueForKey:@"kernelBufferDrainRateMS"];
     -[PTTraceConfig setKernelBufferDrainRateMS:](v10, "setKernelBufferDrainRateMS:", [v78 unsignedLongValue]);
   }
 
-  v79 = [v3 valueForKey:@"kernelBufferDrainQoS"];
+  v79 = [dictionaryCopy valueForKey:@"kernelBufferDrainQoS"];
 
   if (v79)
   {
-    v80 = [v3 valueForKey:@"kernelBufferDrainQoS"];
+    v80 = [dictionaryCopy valueForKey:@"kernelBufferDrainQoS"];
     objc_opt_class();
     v81 = objc_opt_isKindOfClass();
 
@@ -449,15 +449,15 @@ LABEL_12:
       [NSException raise:NSInvalidArgumentException format:@"%@ is not an unsigned integer type.", @"kernelBufferDrainQoS"];
     }
 
-    v82 = [v3 valueForKey:@"kernelBufferDrainQoS"];
+    v82 = [dictionaryCopy valueForKey:@"kernelBufferDrainQoS"];
     -[PTTraceConfig setKernelBufferDrainQoS:](v10, "setKernelBufferDrainQoS:", [v82 unsignedIntValue]);
   }
 
-  v83 = [v3 valueForKey:@"enableSwiftUITracing"];
+  v83 = [dictionaryCopy valueForKey:@"enableSwiftUITracing"];
 
   if (v83)
   {
-    v84 = [v3 valueForKey:@"enableSwiftUITracing"];
+    v84 = [dictionaryCopy valueForKey:@"enableSwiftUITracing"];
     objc_opt_class();
     v85 = objc_opt_isKindOfClass();
 
@@ -466,13 +466,13 @@ LABEL_12:
       [NSException raise:NSInvalidArgumentException format:@"%@ is not a BOOLean type.", @"enableSwiftUITracing"];
     }
 
-    v86 = [v3 valueForKey:@"enableSwiftUITracing"];
+    v86 = [dictionaryCopy valueForKey:@"enableSwiftUITracing"];
     if ([v86 unsignedLongValue])
     {
-      v87 = [v3 valueForKey:@"enableSwiftUITracing"];
-      v88 = [v87 unsignedLongValue];
+      v87 = [dictionaryCopy valueForKey:@"enableSwiftUITracing"];
+      unsignedLongValue7 = [v87 unsignedLongValue];
 
-      if (v88 != 1)
+      if (unsignedLongValue7 != 1)
       {
         [NSException raise:NSInvalidArgumentException format:@"%@ is not a BOOLean type.", @"enableSwiftUITracing"];
       }
@@ -482,16 +482,16 @@ LABEL_12:
     {
     }
 
-    v89 = [v3 valueForKey:@"enableSwiftUITracing"];
+    v89 = [dictionaryCopy valueForKey:@"enableSwiftUITracing"];
     -[PTTraceConfig setEnableSwiftUITracing:](v10, "setEnableSwiftUITracing:", [v89 BOOLValue]);
   }
 
-  v90 = [v3 valueForKey:@"traceRecordArgs"];
+  v90 = [dictionaryCopy valueForKey:@"traceRecordArgs"];
 
   if (v90)
   {
     v129 = v10;
-    v91 = [v3 valueForKey:@"traceRecordArgs"];
+    v91 = [dictionaryCopy valueForKey:@"traceRecordArgs"];
     objc_opt_class();
     v92 = objc_opt_isKindOfClass();
 
@@ -500,8 +500,8 @@ LABEL_12:
       [NSException raise:NSInvalidArgumentException format:@"%@ is not an array type.", @"traceRecordArgs"];
     }
 
-    v130 = v3;
-    [v3 valueForKey:@"traceRecordArgs"];
+    v130 = dictionaryCopy;
+    [dictionaryCopy valueForKey:@"traceRecordArgs"];
     v135 = 0u;
     v136 = 0u;
     v137 = 0u;
@@ -537,7 +537,7 @@ LABEL_12:
     v10 = v129;
     [(PTTraceConfig *)v129 setTraceRecordArgs:v93];
 
-    v3 = v130;
+    dictionaryCopy = v130;
   }
 
   if ([(PTTraceConfig *)v10 useTraceRecord])
@@ -546,11 +546,11 @@ LABEL_12:
     [(PTTraceConfig *)v10 setOverrideSymbolicate:0];
   }
 
-  v99 = [v3 valueForKey:@"symbolicate"];
+  v99 = [dictionaryCopy valueForKey:@"symbolicate"];
 
   if (v99)
   {
-    v100 = [v3 valueForKey:@"symbolicate"];
+    v100 = [dictionaryCopy valueForKey:@"symbolicate"];
     objc_opt_class();
     v101 = objc_opt_isKindOfClass();
 
@@ -559,13 +559,13 @@ LABEL_12:
       [NSException raise:NSInvalidArgumentException format:@"%@ is not a BOOLean type.", @"symbolicate"];
     }
 
-    v102 = [v3 valueForKey:@"symbolicate"];
+    v102 = [dictionaryCopy valueForKey:@"symbolicate"];
     if ([v102 unsignedLongValue])
     {
-      v103 = [v3 valueForKey:@"symbolicate"];
-      v104 = [v103 unsignedLongValue];
+      v103 = [dictionaryCopy valueForKey:@"symbolicate"];
+      unsignedLongValue8 = [v103 unsignedLongValue];
 
-      if (v104 != 1)
+      if (unsignedLongValue8 != 1)
       {
         [NSException raise:NSInvalidArgumentException format:@"%@ is not a BOOLean type.", @"symbolicate"];
       }
@@ -575,15 +575,15 @@ LABEL_12:
     {
     }
 
-    v105 = [v3 valueForKey:@"symbolicate"];
+    v105 = [dictionaryCopy valueForKey:@"symbolicate"];
     -[PTTraceConfig setSymbolicate:](v10, "setSymbolicate:", [v105 BOOLValue]);
   }
 
-  v106 = [v3 valueForKey:@"traceDirectoryURL"];
+  v106 = [dictionaryCopy valueForKey:@"traceDirectoryURL"];
 
   if (v106)
   {
-    v107 = [v3 valueForKey:@"traceDirectoryURL"];
+    v107 = [dictionaryCopy valueForKey:@"traceDirectoryURL"];
     objc_opt_class();
     v108 = objc_opt_isKindOfClass();
 
@@ -592,16 +592,16 @@ LABEL_12:
       [NSException raise:NSInvalidArgumentException format:@"traceDirectoryURL is not a string type."];
     }
 
-    v109 = [v3 valueForKey:@"traceDirectoryURL"];
+    v109 = [dictionaryCopy valueForKey:@"traceDirectoryURL"];
     v110 = [NSURL fileURLWithPath:v109];
     [(PTTraceConfig *)v10 setTraceDirectoryURL:v110];
   }
 
-  v111 = [v3 valueForKey:@"traceType"];
+  v111 = [dictionaryCopy valueForKey:@"traceType"];
 
   if (v111)
   {
-    v112 = [v3 valueForKey:@"traceType"];
+    v112 = [dictionaryCopy valueForKey:@"traceType"];
     objc_opt_class();
     v113 = objc_opt_isKindOfClass();
 
@@ -610,15 +610,15 @@ LABEL_12:
       [NSException raise:NSInvalidArgumentException format:@"traceType is not a string type."];
     }
 
-    v114 = [v3 valueForKey:@"traceType"];
+    v114 = [dictionaryCopy valueForKey:@"traceType"];
     [(PTTraceConfig *)v10 setTraceType:traceTypeForString(v114)];
   }
 
-  v115 = [v3 valueForKey:@"traceGroups"];
+  v115 = [dictionaryCopy valueForKey:@"traceGroups"];
 
   if (v115)
   {
-    v116 = [v3 valueForKey:@"traceGroups"];
+    v116 = [dictionaryCopy valueForKey:@"traceGroups"];
     objc_opt_class();
     v117 = objc_opt_isKindOfClass();
 
@@ -627,7 +627,7 @@ LABEL_12:
       [NSException raise:NSInvalidArgumentException format:@"traceGroups is not an NSArray type."];
     }
 
-    v118 = [v3 valueForKey:@"traceGroups"];
+    v118 = [dictionaryCopy valueForKey:@"traceGroups"];
     v119 = +[NSMutableArray array];
     v131 = 0u;
     v132 = 0u;
@@ -694,9 +694,9 @@ LABEL_12:
   v4 = [NSString stringWithCString:buffer encoding:4];
   [(PTTraceConfig *)v2 setOwnerName:v4];
 
-  v5 = [(PTTraceConfig *)v2 ownerName];
+  ownerName = [(PTTraceConfig *)v2 ownerName];
 
-  if (!v5)
+  if (!ownerName)
   {
     v6 = [NSString stringWithCString:buffer encoding:1];
     [(PTTraceConfig *)v2 setOwnerName:v6];
@@ -705,22 +705,22 @@ LABEL_12:
   return v2;
 }
 
-+ (PTTraceConfig)configWithTracePlanName:(id)a3
++ (PTTraceConfig)configWithTracePlanName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = +[PTTraceConfig _defaultTraceRecordConfig];
-  [v4 setPlanNameOrPath:v3];
+  [v4 setPlanNameOrPath:nameCopy];
 
   return v4;
 }
 
-+ (PTTraceConfig)configWithTracePlanURL:(id)a3
++ (PTTraceConfig)configWithTracePlanURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = +[PTTraceConfig _defaultTraceRecordConfig];
-  v5 = [v3 path];
+  path = [lCopy path];
 
-  [v4 setPlanNameOrPath:v5];
+  [v4 setPlanNameOrPath:path];
 
   return v4;
 }
@@ -740,21 +740,21 @@ LABEL_12:
   v12 = sub_10000C758;
   v13 = sub_10000C768;
   v14 = objc_alloc_init(PTTraceConfig);
-  v4 = [*(v10 + 5) connection];
+  connection = [*(v10 + 5) connection];
 
-  if (!v4)
+  if (!connection)
   {
     [*(v10 + 5) _initConnection];
   }
 
-  v5 = [*(v10 + 5) _getRemoteObjectProxy];
+  _getRemoteObjectProxy = [*(v10 + 5) _getRemoteObjectProxy];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10000C770;
   v8[3] = &unk_100018D98;
   v8[4] = buf;
-  v8[5] = a1;
-  [v5 getCurrentStoredConfig:v8];
+  v8[5] = self;
+  [_getRemoteObjectProxy getCurrentStoredConfig:v8];
 
   [*(v10 + 5) _invalidateSession];
   v6 = *(v10 + 5);
@@ -773,9 +773,9 @@ LABEL_12:
   }
 
   v3 = objc_alloc_init(PTTraceConfig);
-  v4 = [(PTTraceConfig *)v3 connection];
+  connection = [(PTTraceConfig *)v3 connection];
 
-  if (!v4)
+  if (!connection)
   {
     [(PTTraceConfig *)v3 _initConnection];
   }
@@ -784,19 +784,19 @@ LABEL_12:
   v9 = buf;
   v10 = 0x2020000000;
   v11 = 0;
-  v5 = [(PTTraceConfig *)v3 _getRemoteObjectProxy];
+  _getRemoteObjectProxy = [(PTTraceConfig *)v3 _getRemoteObjectProxy];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000C98C;
   v7[3] = &unk_100018640;
   v7[4] = buf;
-  [v5 resetConfig:v7];
+  [_getRemoteObjectProxy resetConfig:v7];
 
   [(PTTraceConfig *)v3 _invalidateSession];
-  LOBYTE(v5) = v9[24];
+  LOBYTE(_getRemoteObjectProxy) = v9[24];
   _Block_object_dispose(buf, 8);
 
-  return v5;
+  return _getRemoteObjectProxy;
 }
 
 + (BOOL)isInRecordingWorkflow
@@ -809,9 +809,9 @@ LABEL_12:
   }
 
   v3 = objc_alloc_init(PTTraceConfig);
-  v4 = [(PTTraceConfig *)v3 connection];
+  connection = [(PTTraceConfig *)v3 connection];
 
-  if (!v4)
+  if (!connection)
   {
     [(PTTraceConfig *)v3 _initConnection];
   }
@@ -820,19 +820,19 @@ LABEL_12:
   v9 = buf;
   v10 = 0x2020000000;
   v11 = 0;
-  v5 = [(PTTraceConfig *)v3 _getRemoteObjectProxy];
+  _getRemoteObjectProxy = [(PTTraceConfig *)v3 _getRemoteObjectProxy];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000CB94;
   v7[3] = &unk_100018DC0;
   v7[4] = buf;
-  [v5 isInRecordingWorkflow:v7];
+  [_getRemoteObjectProxy isInRecordingWorkflow:v7];
 
   [(PTTraceConfig *)v3 _invalidateSession];
-  LOBYTE(v5) = v9[24];
+  LOBYTE(_getRemoteObjectProxy) = v9[24];
   _Block_object_dispose(buf, 8);
 
-  return v5;
+  return _getRemoteObjectProxy;
 }
 
 - (BOOL)storeConfig
@@ -844,9 +844,9 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "Storing config", buf, 2u);
   }
 
-  v4 = [(PTTraceConfig *)self connection];
+  connection = [(PTTraceConfig *)self connection];
 
-  if (!v4)
+  if (!connection)
   {
     [(PTTraceConfig *)self _initConnection];
   }
@@ -855,13 +855,13 @@ LABEL_12:
   v10 = buf;
   v11 = 0x2020000000;
   v12 = 0;
-  v5 = [(PTTraceConfig *)self _getRemoteObjectProxy];
+  _getRemoteObjectProxy = [(PTTraceConfig *)self _getRemoteObjectProxy];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10000CDDC;
   v8[3] = &unk_100018640;
   v8[4] = buf;
-  [v5 applyConfig:self withError:v8];
+  [_getRemoteObjectProxy applyConfig:self withError:v8];
 
   [(PTTraceConfig *)self _invalidateSession];
   v6 = v10[24];
@@ -877,143 +877,143 @@ LABEL_12:
   [v5 setInvalidationHandler:&stru_100018DE0];
   [v5 setInterruptionHandler:&stru_100018E00];
   [(PTTraceConfig *)self setConnection:v5];
-  v4 = [(PTTraceConfig *)self connection];
-  [v4 resume];
+  connection = [(PTTraceConfig *)self connection];
+  [connection resume];
 }
 
 - (id)_getRemoteObjectProxy
 {
-  v2 = [(PTTraceConfig *)self connection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:&stru_100018E20];
+  connection = [(PTTraceConfig *)self connection];
+  v3 = [connection synchronousRemoteObjectProxyWithErrorHandler:&stru_100018E20];
 
   return v3;
 }
 
 - (void)_invalidateSession
 {
-  v3 = [(PTTraceConfig *)self connection];
+  connection = [(PTTraceConfig *)self connection];
 
-  if (v3)
+  if (connection)
   {
-    v4 = [(PTTraceConfig *)self connection];
-    [v4 invalidate];
+    connection2 = [(PTTraceConfig *)self connection];
+    [connection2 invalidate];
   }
 }
 
-- (PTTraceConfig)initWithCoder:(id)a3
+- (PTTraceConfig)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(PTTraceConfig *)self init];
   if (v5)
   {
-    -[PTTraceConfig setSymbolicate:](v5, "setSymbolicate:", [v4 decodeBoolForKey:@"symbolicate"]);
-    -[PTTraceConfig setCallstackSamplingRateMS:](v5, "setCallstackSamplingRateMS:", [v4 decodeIntForKey:@"callstackSamplingRateMS"]);
+    -[PTTraceConfig setSymbolicate:](v5, "setSymbolicate:", [coderCopy decodeBoolForKey:@"symbolicate"]);
+    -[PTTraceConfig setCallstackSamplingRateMS:](v5, "setCallstackSamplingRateMS:", [coderCopy decodeIntForKey:@"callstackSamplingRateMS"]);
     v6 = objc_opt_class();
     v7 = [NSSet setWithObjects:v6, objc_opt_class(), 0];
-    v8 = [v4 decodeObjectOfClasses:v7 forKey:@"traceGroups"];
+    v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"traceGroups"];
     v9 = [NSMutableArray arrayWithArray:v8];
     [(PTTraceConfig *)v5 setTraceGroups:v9];
 
-    -[PTTraceConfig setTraceType:](v5, "setTraceType:", [v4 decodeIntForKey:@"traceType"]);
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"traceDirectoryURL"];
+    -[PTTraceConfig setTraceType:](v5, "setTraceType:", [coderCopy decodeIntForKey:@"traceType"]);
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"traceDirectoryURL"];
     [(PTTraceConfig *)v5 setTraceDirectoryURL:v10];
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"traceName"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"traceName"];
     [(PTTraceConfig *)v5 setTraceName:v11];
 
-    -[PTTraceConfig setCompressWhenFinished:](v5, "setCompressWhenFinished:", [v4 decodeBoolForKey:@"compressWhenFinished"]);
-    -[PTTraceConfig setIncludeOSLogs:](v5, "setIncludeOSLogs:", [v4 decodeBoolForKey:@"includeOSLogs"]);
-    -[PTTraceConfig setIncludeOSSignposts:](v5, "setIncludeOSSignposts:", [v4 decodeBoolForKey:@"includeOSSignposts"]);
-    -[PTTraceConfig setTraceTimeoutS:](v5, "setTraceTimeoutS:", [v4 decodeIntForKey:@"traceTimeoutS"]);
-    -[PTTraceConfig setSkipNotification:](v5, "setSkipNotification:", [v4 decodeBoolForKey:@"skipNotification"]);
-    -[PTTraceConfig setIncludeKernelStacks:](v5, "setIncludeKernelStacks:", [v4 decodeBoolForKey:@"includeKernelStacks"]);
-    -[PTTraceConfig setKernelBufferSizeMB:](v5, "setKernelBufferSizeMB:", [v4 decodeIntForKey:@"kernelBufferSizeMB"]);
-    -[PTTraceConfig setKernelBufferDrainQoS:](v5, "setKernelBufferDrainQoS:", [v4 decodeIntForKey:@"kernelBufferDrainQoS"]);
-    -[PTTraceConfig setKernelBufferDrainRateMS:](v5, "setKernelBufferDrainRateMS:", [v4 decodeIntForKey:@"kernelBufferDrainRateMS"]);
-    -[PTTraceConfig setOwnerPID:](v5, "setOwnerPID:", [v4 decodeIntForKey:@"ownerPID"]);
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ownerName"];
+    -[PTTraceConfig setCompressWhenFinished:](v5, "setCompressWhenFinished:", [coderCopy decodeBoolForKey:@"compressWhenFinished"]);
+    -[PTTraceConfig setIncludeOSLogs:](v5, "setIncludeOSLogs:", [coderCopy decodeBoolForKey:@"includeOSLogs"]);
+    -[PTTraceConfig setIncludeOSSignposts:](v5, "setIncludeOSSignposts:", [coderCopy decodeBoolForKey:@"includeOSSignposts"]);
+    -[PTTraceConfig setTraceTimeoutS:](v5, "setTraceTimeoutS:", [coderCopy decodeIntForKey:@"traceTimeoutS"]);
+    -[PTTraceConfig setSkipNotification:](v5, "setSkipNotification:", [coderCopy decodeBoolForKey:@"skipNotification"]);
+    -[PTTraceConfig setIncludeKernelStacks:](v5, "setIncludeKernelStacks:", [coderCopy decodeBoolForKey:@"includeKernelStacks"]);
+    -[PTTraceConfig setKernelBufferSizeMB:](v5, "setKernelBufferSizeMB:", [coderCopy decodeIntForKey:@"kernelBufferSizeMB"]);
+    -[PTTraceConfig setKernelBufferDrainQoS:](v5, "setKernelBufferDrainQoS:", [coderCopy decodeIntForKey:@"kernelBufferDrainQoS"]);
+    -[PTTraceConfig setKernelBufferDrainRateMS:](v5, "setKernelBufferDrainRateMS:", [coderCopy decodeIntForKey:@"kernelBufferDrainRateMS"]);
+    -[PTTraceConfig setOwnerPID:](v5, "setOwnerPID:", [coderCopy decodeIntForKey:@"ownerPID"]);
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ownerName"];
     [(PTTraceConfig *)v5 setOwnerName:v12];
 
-    -[PTTraceConfig setSource:](v5, "setSource:", [v4 decodeIntForKey:@"source"]);
-    -[PTTraceConfig setTraceDurationSecs:](v5, "setTraceDurationSecs:", [v4 decodeIntForKey:@"traceDurationSecs"]);
-    -[PTTraceConfig setUseTraceRecord:](v5, "setUseTraceRecord:", [v4 decodeBoolForKey:@"useTraceRecord"]);
-    -[PTTraceConfig setEnableSwiftUITracing:](v5, "setEnableSwiftUITracing:", [v4 decodeBoolForKey:@"enableSwiftUITracing"]);
+    -[PTTraceConfig setSource:](v5, "setSource:", [coderCopy decodeIntForKey:@"source"]);
+    -[PTTraceConfig setTraceDurationSecs:](v5, "setTraceDurationSecs:", [coderCopy decodeIntForKey:@"traceDurationSecs"]);
+    -[PTTraceConfig setUseTraceRecord:](v5, "setUseTraceRecord:", [coderCopy decodeBoolForKey:@"useTraceRecord"]);
+    -[PTTraceConfig setEnableSwiftUITracing:](v5, "setEnableSwiftUITracing:", [coderCopy decodeBoolForKey:@"enableSwiftUITracing"]);
     v13 = objc_opt_class();
     v14 = [NSSet setWithObjects:v13, objc_opt_class(), 0];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"traceRecordArgs"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"traceRecordArgs"];
     v16 = [NSMutableArray arrayWithArray:v15];
     [(PTTraceConfig *)v5 setTraceRecordArgs:v16];
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"planNameOrPath"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"planNameOrPath"];
     [(PTTraceConfig *)v5 setPlanNameOrPath:v17];
 
-    -[PTTraceConfig setOverrideSymbolicate:](v5, "setOverrideSymbolicate:", [v4 decodeBoolForKey:@"overrideSymbolicate"]);
-    -[PTTraceConfig setOverrideIncludeOSSignposts:](v5, "setOverrideIncludeOSSignposts:", [v4 decodeBoolForKey:@"overrideIncludeOSSignposts"]);
-    -[PTTraceConfig setOverrideIncludeOSLogs:](v5, "setOverrideIncludeOSLogs:", [v4 decodeBoolForKey:@"overrideIncludeOSLogs"]);
+    -[PTTraceConfig setOverrideSymbolicate:](v5, "setOverrideSymbolicate:", [coderCopy decodeBoolForKey:@"overrideSymbolicate"]);
+    -[PTTraceConfig setOverrideIncludeOSSignposts:](v5, "setOverrideIncludeOSSignposts:", [coderCopy decodeBoolForKey:@"overrideIncludeOSSignposts"]);
+    -[PTTraceConfig setOverrideIncludeOSLogs:](v5, "setOverrideIncludeOSLogs:", [coderCopy decodeBoolForKey:@"overrideIncludeOSLogs"]);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v10 = a3;
-  [v10 encodeBool:-[PTTraceConfig symbolicate](self forKey:{"symbolicate"), @"symbolicate"}];
-  [v10 encodeInt:-[PTTraceConfig callstackSamplingRateMS](self forKey:{"callstackSamplingRateMS"), @"callstackSamplingRateMS"}];
-  v4 = [(PTTraceConfig *)self traceGroups];
-  [v10 encodeObject:v4 forKey:@"traceGroups"];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[PTTraceConfig symbolicate](self forKey:{"symbolicate"), @"symbolicate"}];
+  [coderCopy encodeInt:-[PTTraceConfig callstackSamplingRateMS](self forKey:{"callstackSamplingRateMS"), @"callstackSamplingRateMS"}];
+  traceGroups = [(PTTraceConfig *)self traceGroups];
+  [coderCopy encodeObject:traceGroups forKey:@"traceGroups"];
 
-  [v10 encodeInt:-[PTTraceConfig traceType](self forKey:{"traceType"), @"traceType"}];
-  v5 = [(PTTraceConfig *)self traceDirectoryURL];
-  [v10 encodeObject:v5 forKey:@"traceDirectoryURL"];
+  [coderCopy encodeInt:-[PTTraceConfig traceType](self forKey:{"traceType"), @"traceType"}];
+  traceDirectoryURL = [(PTTraceConfig *)self traceDirectoryURL];
+  [coderCopy encodeObject:traceDirectoryURL forKey:@"traceDirectoryURL"];
 
-  v6 = [(PTTraceConfig *)self traceName];
-  [v10 encodeObject:v6 forKey:@"traceName"];
+  traceName = [(PTTraceConfig *)self traceName];
+  [coderCopy encodeObject:traceName forKey:@"traceName"];
 
-  [v10 encodeBool:-[PTTraceConfig compressWhenFinished](self forKey:{"compressWhenFinished"), @"compressWhenFinished"}];
-  [v10 encodeBool:-[PTTraceConfig includeOSLogs](self forKey:{"includeOSLogs"), @"includeOSLogs"}];
-  [v10 encodeBool:-[PTTraceConfig includeOSSignposts](self forKey:{"includeOSSignposts"), @"includeOSSignposts"}];
-  [v10 encodeInt:-[PTTraceConfig traceTimeoutS](self forKey:{"traceTimeoutS"), @"traceTimeoutS"}];
-  [v10 encodeBool:-[PTTraceConfig skipNotification](self forKey:{"skipNotification"), @"skipNotification"}];
-  [v10 encodeBool:-[PTTraceConfig includeKernelStacks](self forKey:{"includeKernelStacks"), @"includeKernelStacks"}];
-  [v10 encodeInt:-[PTTraceConfig kernelBufferSizeMB](self forKey:{"kernelBufferSizeMB"), @"kernelBufferSizeMB"}];
-  [v10 encodeInt:-[PTTraceConfig kernelBufferDrainQoS](self forKey:{"kernelBufferDrainQoS"), @"kernelBufferDrainQoS"}];
-  [v10 encodeInt:-[PTTraceConfig kernelBufferDrainRateMS](self forKey:{"kernelBufferDrainRateMS"), @"kernelBufferDrainRateMS"}];
-  [v10 encodeInt:-[PTTraceConfig ownerPID](self forKey:{"ownerPID"), @"ownerPID"}];
-  v7 = [(PTTraceConfig *)self ownerName];
-  [v10 encodeObject:v7 forKey:@"ownerName"];
+  [coderCopy encodeBool:-[PTTraceConfig compressWhenFinished](self forKey:{"compressWhenFinished"), @"compressWhenFinished"}];
+  [coderCopy encodeBool:-[PTTraceConfig includeOSLogs](self forKey:{"includeOSLogs"), @"includeOSLogs"}];
+  [coderCopy encodeBool:-[PTTraceConfig includeOSSignposts](self forKey:{"includeOSSignposts"), @"includeOSSignposts"}];
+  [coderCopy encodeInt:-[PTTraceConfig traceTimeoutS](self forKey:{"traceTimeoutS"), @"traceTimeoutS"}];
+  [coderCopy encodeBool:-[PTTraceConfig skipNotification](self forKey:{"skipNotification"), @"skipNotification"}];
+  [coderCopy encodeBool:-[PTTraceConfig includeKernelStacks](self forKey:{"includeKernelStacks"), @"includeKernelStacks"}];
+  [coderCopy encodeInt:-[PTTraceConfig kernelBufferSizeMB](self forKey:{"kernelBufferSizeMB"), @"kernelBufferSizeMB"}];
+  [coderCopy encodeInt:-[PTTraceConfig kernelBufferDrainQoS](self forKey:{"kernelBufferDrainQoS"), @"kernelBufferDrainQoS"}];
+  [coderCopy encodeInt:-[PTTraceConfig kernelBufferDrainRateMS](self forKey:{"kernelBufferDrainRateMS"), @"kernelBufferDrainRateMS"}];
+  [coderCopy encodeInt:-[PTTraceConfig ownerPID](self forKey:{"ownerPID"), @"ownerPID"}];
+  ownerName = [(PTTraceConfig *)self ownerName];
+  [coderCopy encodeObject:ownerName forKey:@"ownerName"];
 
-  [v10 encodeInt:-[PTTraceConfig source](self forKey:{"source"), @"source"}];
-  [v10 encodeInt:-[PTTraceConfig traceDurationSecs](self forKey:{"traceDurationSecs"), @"traceDurationSecs"}];
-  [v10 encodeBool:-[PTTraceConfig useTraceRecord](self forKey:{"useTraceRecord"), @"useTraceRecord"}];
-  [v10 encodeBool:-[PTTraceConfig enableSwiftUITracing](self forKey:{"enableSwiftUITracing"), @"enableSwiftUITracing"}];
-  v8 = [(PTTraceConfig *)self traceRecordArgs];
-  [v10 encodeObject:v8 forKey:@"traceRecordArgs"];
+  [coderCopy encodeInt:-[PTTraceConfig source](self forKey:{"source"), @"source"}];
+  [coderCopy encodeInt:-[PTTraceConfig traceDurationSecs](self forKey:{"traceDurationSecs"), @"traceDurationSecs"}];
+  [coderCopy encodeBool:-[PTTraceConfig useTraceRecord](self forKey:{"useTraceRecord"), @"useTraceRecord"}];
+  [coderCopy encodeBool:-[PTTraceConfig enableSwiftUITracing](self forKey:{"enableSwiftUITracing"), @"enableSwiftUITracing"}];
+  traceRecordArgs = [(PTTraceConfig *)self traceRecordArgs];
+  [coderCopy encodeObject:traceRecordArgs forKey:@"traceRecordArgs"];
 
-  v9 = [(PTTraceConfig *)self planNameOrPath];
-  [v10 encodeObject:v9 forKey:@"planNameOrPath"];
+  planNameOrPath = [(PTTraceConfig *)self planNameOrPath];
+  [coderCopy encodeObject:planNameOrPath forKey:@"planNameOrPath"];
 
-  [v10 encodeBool:-[PTTraceConfig overrideSymbolicate](self forKey:{"overrideSymbolicate"), @"overrideSymbolicate"}];
-  [v10 encodeBool:-[PTTraceConfig overrideIncludeOSSignposts](self forKey:{"overrideIncludeOSSignposts"), @"overrideIncludeOSSignposts"}];
-  [v10 encodeBool:-[PTTraceConfig overrideIncludeOSLogs](self forKey:{"overrideIncludeOSLogs"), @"overrideIncludeOSLogs"}];
+  [coderCopy encodeBool:-[PTTraceConfig overrideSymbolicate](self forKey:{"overrideSymbolicate"), @"overrideSymbolicate"}];
+  [coderCopy encodeBool:-[PTTraceConfig overrideIncludeOSSignposts](self forKey:{"overrideIncludeOSSignposts"), @"overrideIncludeOSSignposts"}];
+  [coderCopy encodeBool:-[PTTraceConfig overrideIncludeOSLogs](self forKey:{"overrideIncludeOSLogs"), @"overrideIncludeOSLogs"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(PTTraceConfig);
   [(PTTraceConfig *)v4 setSymbolicate:[(PTTraceConfig *)self symbolicate]];
   [(PTTraceConfig *)v4 setCallstackSamplingRateMS:[(PTTraceConfig *)self callstackSamplingRateMS]];
-  v5 = [(PTTraceConfig *)self traceGroups];
-  v6 = [v5 copy];
+  traceGroups = [(PTTraceConfig *)self traceGroups];
+  v6 = [traceGroups copy];
   [(PTTraceConfig *)v4 setTraceGroups:v6];
 
   [(PTTraceConfig *)v4 setTraceType:[(PTTraceConfig *)self traceType]];
-  v7 = [(PTTraceConfig *)self traceDirectoryURL];
-  v8 = [v7 copy];
+  traceDirectoryURL = [(PTTraceConfig *)self traceDirectoryURL];
+  v8 = [traceDirectoryURL copy];
   [(PTTraceConfig *)v4 setTraceDirectoryURL:v8];
 
-  v9 = [(PTTraceConfig *)self traceName];
-  v10 = [v9 copy];
+  traceName = [(PTTraceConfig *)self traceName];
+  v10 = [traceName copy];
   [(PTTraceConfig *)v4 setTraceName:v10];
 
   [(PTTraceConfig *)v4 setCompressWhenFinished:[(PTTraceConfig *)self compressWhenFinished]];
@@ -1027,8 +1027,8 @@ LABEL_12:
   [(PTTraceConfig *)v4 setKernelBufferDrainRateMS:[(PTTraceConfig *)self kernelBufferDrainRateMS]];
   [(PTTraceConfig *)v4 setUseTraceRecord:[(PTTraceConfig *)self useTraceRecord]];
   [(PTTraceConfig *)v4 setEnableSwiftUITracing:[(PTTraceConfig *)self enableSwiftUITracing]];
-  v11 = [(PTTraceConfig *)self traceRecordArgs];
-  v12 = [v11 copy];
+  traceRecordArgs = [(PTTraceConfig *)self traceRecordArgs];
+  v12 = [traceRecordArgs copy];
   [(PTTraceConfig *)v4 setTraceRecordArgs:v12];
 
   [(PTTraceConfig *)v4 setOwnerPID:getpid()];
@@ -1036,9 +1036,9 @@ LABEL_12:
   v13 = [NSString stringWithCString:buffer encoding:4];
   [(PTTraceConfig *)v4 setOwnerName:v13];
 
-  v14 = [(PTTraceConfig *)v4 ownerName];
+  ownerName = [(PTTraceConfig *)v4 ownerName];
 
-  if (!v14)
+  if (!ownerName)
   {
     v15 = [NSString stringWithCString:buffer encoding:1];
     [(PTTraceConfig *)v4 setOwnerName:v15];

@@ -1,55 +1,55 @@
 @interface CSIntuitiveConvRequestHandler
-- (BOOL)_isRequestIdCurrent:(id)a3;
+- (BOOL)_isRequestIdCurrent:(id)current;
 - (CSIntuitiveConvRequestHandler)init;
-- (CSIntuitiveConvRequestHandler)initWithAudioSrcNode:(id)a3 endpointerNode:(id)a4 osdNode:(id)a5 ssrNode:(id)a6 speechRecognitionNode:(id)a7 uresNode:(id)a8 needsSSRNode:(BOOL)a9 aFtmNode:(id)a10 siriEnabledMonitor:(id)a11 siriClientBehaviorMonitor:(id)a12 intuitiveConvAudioCaptureMonitor:(id)a13 rcHandler:(id)a14 tcuGenerator:(id)a15 continuityEndDetector:(id)a16 bridgeMessageHandler:(id)a17 audioCoordinator:(id)a18 magusSupportedPolicy:(id)a19 supportsAcousticProgressiveChecker:(BOOL)a20 supportsUnderstandingOnDevice:(BOOL)a21 requireASROnDevice:(BOOL)a22 supportsHybridUnderstandingOnDevice:(BOOL)a23 supportsLogger:(BOOL)a24 supportTCU:(BOOL)a25 audioSessionInfoProvider:(id)a26 aggressiveECHandler:(id)a27;
+- (CSIntuitiveConvRequestHandler)initWithAudioSrcNode:(id)node endpointerNode:(id)endpointerNode osdNode:(id)osdNode ssrNode:(id)ssrNode speechRecognitionNode:(id)recognitionNode uresNode:(id)uresNode needsSSRNode:(BOOL)rNode aFtmNode:(id)self0 siriEnabledMonitor:(id)self1 siriClientBehaviorMonitor:(id)self2 intuitiveConvAudioCaptureMonitor:(id)self3 rcHandler:(id)self4 tcuGenerator:(id)self5 continuityEndDetector:(id)self6 bridgeMessageHandler:(id)self7 audioCoordinator:(id)self8 magusSupportedPolicy:(id)self9 supportsAcousticProgressiveChecker:(BOOL)checker supportsUnderstandingOnDevice:(BOOL)device requireASROnDevice:(BOOL)onDevice supportsHybridUnderstandingOnDevice:(BOOL)understandingOnDevice supportsLogger:(BOOL)logger supportTCU:(BOOL)u audioSessionInfoProvider:(id)provider aggressiveECHandler:(id)cHandler;
 - (id)_recordContextForContinuousConversation;
 - (id)_startStreamOption;
-- (id)_startStreamOptionWithMachAbsTime:(unint64_t)a3;
+- (id)_startStreamOptionWithMachAbsTime:(unint64_t)time;
 - (id)fetchCurrentRequestId;
 - (id)fetchDismissedRequestId;
 - (id)fetchRecordingEventUUIDToIgnore;
-- (void)CSSiriEnabledMonitor:(id)a3 didReceiveEnabled:(BOOL)a4;
-- (void)_attendingExitAndDismissalWithXpcDisconnect:(BOOL)a3;
-- (void)_cacheStartAttendingInfo:(id)a3 attendingDecision:(BOOL)a4;
+- (void)CSSiriEnabledMonitor:(id)monitor didReceiveEnabled:(BOOL)enabled;
+- (void)_attendingExitAndDismissalWithXpcDisconnect:(BOOL)disconnect;
+- (void)_cacheStartAttendingInfo:(id)info attendingDecision:(BOOL)decision;
 - (void)_configureAllNodes;
 - (void)_fetchMitigationAssets;
-- (void)_fetchRequiredAssetsForRecordContext:(id)a3;
+- (void)_fetchRequiredAssetsForRecordContext:(id)context;
 - (void)_fetchVoiceTriggerAssets;
-- (void)_generateStartAttendingHint:(id)a3 attendingDecision:(BOOL)a4;
-- (void)_handleClientDidStartStreamWithOption:(id)a3 successfully:(BOOL)a4;
-- (void)_handleClientDidStopWithOption:(id)a3;
-- (void)_handleClientPreparedAudioStream:(id)a3 successfully:(BOOL)a4;
-- (void)_handleClientWillStartStreamWithContext:(id)a3 option:(id)a4;
-- (void)_handleStartProcessingWithRecordContext:(id)a3 withAudioStartStreamOptions:(id)a4 completion:(id)a5;
-- (void)_handleStopProcessingForRequestId:(id)a3;
-- (void)_setupAudioSrcNodeWithSiriClientStream:(id)a3;
+- (void)_generateStartAttendingHint:(id)hint attendingDecision:(BOOL)decision;
+- (void)_handleClientDidStartStreamWithOption:(id)option successfully:(BOOL)successfully;
+- (void)_handleClientDidStopWithOption:(id)option;
+- (void)_handleClientPreparedAudioStream:(id)stream successfully:(BOOL)successfully;
+- (void)_handleClientWillStartStreamWithContext:(id)context option:(id)option;
+- (void)_handleStartProcessingWithRecordContext:(id)context withAudioStartStreamOptions:(id)options completion:(id)completion;
+- (void)_handleStopProcessingForRequestId:(id)id;
+- (void)_setupAudioSrcNodeWithSiriClientStream:(id)stream;
 - (void)_startMonitoringAudioSession;
 - (void)_stopMonitoringAudioSession;
-- (void)attSiriAudioSrcNodeDidStopUnexpectedly:(id)a3;
-- (void)attSiriNode:(id)a3 didDetectHardEndpointAtTime:(double)a4 withMetrics:(id)a5 usesAutomaticEndpointing:(BOOL)a6;
+- (void)attSiriAudioSrcNodeDidStopUnexpectedly:(id)unexpectedly;
+- (void)attSiriNode:(id)node didDetectHardEndpointAtTime:(double)time withMetrics:(id)metrics usesAutomaticEndpointing:(BOOL)endpointing;
 - (void)attendingXpcDisconnection;
-- (void)audioSessionInfoProvider:(id)a3 didReceiveAudioSessionRouteChangeNotificationWithUserInfo:(id)a4;
+- (void)audioSessionInfoProvider:(id)provider didReceiveAudioSessionRouteChangeNotificationWithUserInfo:(id)info;
 - (void)dismissAttendingRequested;
-- (void)emitRequestLinkEventForMHUUID:(id)a3 withRequestId:(id)a4;
-- (void)intuitiveConvAudioCaptureMonitor:(id)a3 didStartAudioCaptureSuccessfully:(BOOL)a4 option:(id)a5 eventUUID:(id)a6;
-- (void)intuitiveConvAudioCaptureMonitor:(id)a3 fetchedAudioStream:(id)a4 successfully:(BOOL)a5;
-- (void)intuitiveConvAudioCaptureMonitor:(id)a3 willStartAudioCaptureWithContext:(id)a4 option:(id)a5;
-- (void)intuitiveConvAudioCaptureMonitor:(id)a3 willStopAudioCaptureReason:(unint64_t)a4;
-- (void)intuitiveConvAudioCaptureMonitorDidStopAudioCapture:(id)a3 stopStreamOption:(id)a4 eventUUID:(id)a5;
-- (void)mxSessionMonitorSomeClientWentActive:(id)a3;
+- (void)emitRequestLinkEventForMHUUID:(id)d withRequestId:(id)id;
+- (void)intuitiveConvAudioCaptureMonitor:(id)monitor didStartAudioCaptureSuccessfully:(BOOL)successfully option:(id)option eventUUID:(id)d;
+- (void)intuitiveConvAudioCaptureMonitor:(id)monitor fetchedAudioStream:(id)stream successfully:(BOOL)successfully;
+- (void)intuitiveConvAudioCaptureMonitor:(id)monitor willStartAudioCaptureWithContext:(id)context option:(id)option;
+- (void)intuitiveConvAudioCaptureMonitor:(id)monitor willStopAudioCaptureReason:(unint64_t)reason;
+- (void)intuitiveConvAudioCaptureMonitorDidStopAudioCapture:(id)capture stopStreamOption:(id)option eventUUID:(id)d;
+- (void)mxSessionMonitorSomeClientWentActive:(id)active;
 - (void)notifyRequestCompletion;
-- (void)setRequestHandlerDelegate:(id)a3;
+- (void)setRequestHandlerDelegate:(id)delegate;
 - (void)setup;
-- (void)siriClientBehaviorMonitor:(id)a3 didStartStreamWithContext:(id)a4 successfully:(BOOL)a5 option:(id)a6 withEventUUID:(id)a7;
-- (void)siriClientBehaviorMonitor:(id)a3 didStopStream:(id)a4 withEventUUID:(id)a5;
-- (void)siriClientBehaviorMonitor:(id)a3 fetchedSiriClientAudioStream:(id)a4 successfully:(BOOL)a5;
-- (void)siriClientBehaviorMonitor:(id)a3 preparedSiriClientAudioStream:(id)a4 successfully:(BOOL)a5;
-- (void)siriClientBehaviorMonitor:(id)a3 willStartStreamWithContext:(id)a4 option:(id)a5 withEventUUID:(id)a6;
-- (void)siriClientBehaviorMonitor:(id)a3 willStopStream:(id)a4 reason:(unint64_t)a5 withEventUUID:(id)a6;
+- (void)siriClientBehaviorMonitor:(id)monitor didStartStreamWithContext:(id)context successfully:(BOOL)successfully option:(id)option withEventUUID:(id)d;
+- (void)siriClientBehaviorMonitor:(id)monitor didStopStream:(id)stream withEventUUID:(id)d;
+- (void)siriClientBehaviorMonitor:(id)monitor fetchedSiriClientAudioStream:(id)stream successfully:(BOOL)successfully;
+- (void)siriClientBehaviorMonitor:(id)monitor preparedSiriClientAudioStream:(id)stream successfully:(BOOL)successfully;
+- (void)siriClientBehaviorMonitor:(id)monitor willStartStreamWithContext:(id)context option:(id)option withEventUUID:(id)d;
+- (void)siriClientBehaviorMonitor:(id)monitor willStopStream:(id)stream reason:(unint64_t)reason withEventUUID:(id)d;
 - (void)siriPromptWillStart;
 - (void)siriUIDismissed;
 - (void)start;
-- (void)testDismissAttendingWithXPDisconnection:(BOOL)a3;
+- (void)testDismissAttendingWithXPDisconnection:(BOOL)disconnection;
 @end
 
 @implementation CSIntuitiveConvRequestHandler
@@ -131,14 +131,14 @@
   dispatch_async(queue, block);
 }
 
-- (void)testDismissAttendingWithXPDisconnection:(BOOL)a3
+- (void)testDismissAttendingWithXPDisconnection:(BOOL)disconnection
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10003D8B8;
   v4[3] = &unk_100253BF8;
-  v5 = a3;
+  disconnectionCopy = disconnection;
   v4[4] = self;
   dispatch_async(queue, v4);
 }
@@ -209,12 +209,12 @@
   return v3;
 }
 
-- (void)emitRequestLinkEventForMHUUID:(id)a3 withRequestId:(id)a4
+- (void)emitRequestLinkEventForMHUUID:(id)d withRequestId:(id)id
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CSIntuitiveConvRequestHandler *)self _createRequestLinkInfo:v7 component:1];
-  v9 = [(CSIntuitiveConvRequestHandler *)self _createRequestLinkInfo:v6 component:9];
+  dCopy = d;
+  idCopy = id;
+  v8 = [(CSIntuitiveConvRequestHandler *)self _createRequestLinkInfo:idCopy component:1];
+  v9 = [(CSIntuitiveConvRequestHandler *)self _createRequestLinkInfo:dCopy component:9];
   v10 = objc_alloc_init(SISchemaRequestLink);
   [v10 setSource:v8];
   [v10 setTarget:v9];
@@ -227,18 +227,18 @@
     v13 = 136315650;
     v14 = "[CSIntuitiveConvRequestHandler emitRequestLinkEventForMHUUID:withRequestId:]";
     v15 = 2112;
-    v16 = v6;
+    v16 = dCopy;
     v17 = 2112;
-    v18 = v7;
+    v18 = idCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "%s Emit link msg for mhId %@ with reqId %@", &v13, 0x20u);
   }
 }
 
-- (id)_startStreamOptionWithMachAbsTime:(unint64_t)a3
+- (id)_startStreamOptionWithMachAbsTime:(unint64_t)time
 {
   v4 = +[CSAudioStartStreamOption noAlertOption];
   [v4 setRequestHistoricalAudioDataWithHostTime:1];
-  [v4 setStartRecordingHostTime:a3];
+  [v4 setStartRecordingHostTime:time];
   [v4 setRequireSingleChannelLookup:1];
   [v4 setSelectedChannel:0];
 
@@ -252,20 +252,20 @@
   return [(CSIntuitiveConvRequestHandler *)self _startStreamOptionWithMachAbsTime:v3];
 }
 
-- (void)attSiriAudioSrcNodeDidStopUnexpectedly:(id)a3
+- (void)attSiriAudioSrcNodeDidStopUnexpectedly:(id)unexpectedly
 {
-  v4 = [(CSIntuitiveConvRequestHandler *)self queue];
+  queue = [(CSIntuitiveConvRequestHandler *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10003DFF8;
   block[3] = &unk_100253C20;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(queue, block);
 }
 
-- (BOOL)_isRequestIdCurrent:(id)a3
+- (BOOL)_isRequestIdCurrent:(id)current
 {
-  if (a3)
+  if (current)
   {
     return [(NSString *)self->_currentRequestId isEqualToString:?];
   }
@@ -276,20 +276,20 @@
   }
 }
 
-- (void)_handleStopProcessingForRequestId:(id)a3
+- (void)_handleStopProcessingForRequestId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v5 = CSLogCategoryRequest;
   if (os_log_type_enabled(CSLogCategoryRequest, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315394;
     v9 = "[CSIntuitiveConvRequestHandler _handleStopProcessingForRequestId:]";
     v10 = 2112;
-    v11 = v4;
+    v11 = idCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s requestId:%@", &v8, 0x16u);
   }
 
-  if ([(CSIntuitiveConvRequestHandler *)self _isRequestIdCurrent:v4])
+  if ([(CSIntuitiveConvRequestHandler *)self _isRequestIdCurrent:idCopy])
   {
     [(CSAttSiriEndpointerNode *)self->_endpointerNode stop];
     [(CSAttSiriOSDNode *)self->_osdNode stop];
@@ -307,7 +307,7 @@
       v8 = 136315650;
       v9 = "[CSIntuitiveConvRequestHandler _handleStopProcessingForRequestId:]";
       v10 = 2112;
-      v11 = v4;
+      v11 = idCopy;
       v12 = 2112;
       v13 = currentRequestId;
       _os_log_error_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "%s Stop received for invalid requestId:%@, currentRequestId:%@", &v8, 0x20u);
@@ -315,28 +315,28 @@
   }
 }
 
-- (void)_handleStartProcessingWithRecordContext:(id)a3 withAudioStartStreamOptions:(id)a4 completion:(id)a5
+- (void)_handleStartProcessingWithRecordContext:(id)context withAudioStartStreamOptions:(id)options completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  optionsCopy = options;
+  completionCopy = completion;
   v11 = CSLogCategoryRequest;
   if (os_log_type_enabled(CSLogCategoryRequest, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v43 = "[CSIntuitiveConvRequestHandler _handleStartProcessingWithRecordContext:withAudioStartStreamOptions:completion:]";
     v44 = 2112;
-    v45 = v8;
+    v45 = contextCopy;
     v46 = 2112;
-    v47 = v9;
+    v47 = optionsCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%s recordContext:%@, streamOptions:%@", buf, 0x20u);
   }
 
-  if ([v8 isVoiceTriggered])
+  if ([contextCopy isVoiceTriggered])
   {
     v12 = +[CSVoiceTriggerEventInfoProvider sharedInstance];
     v41 = 0;
-    [v12 fetchVoiceTriggerInfoWithAudioContext:v8 resultVoiceTriggerInfo:&v41 resultRTSTriggerInfo:0];
+    [v12 fetchVoiceTriggerInfoWithAudioContext:contextCopy resultVoiceTriggerInfo:&v41 resultRTSTriggerInfo:0];
     v13 = v41;
   }
 
@@ -345,7 +345,7 @@
     v13 = 0;
   }
 
-  if ([v8 type] == 17 || objc_msgSend(v8, "type") == 18)
+  if ([contextCopy type] == 17 || objc_msgSend(contextCopy, "type") == 18)
   {
     v14 = CSLogCategoryRequest;
     if (os_log_type_enabled(CSLogCategoryRequest, OS_LOG_TYPE_DEFAULT))
@@ -358,43 +358,43 @@
 
   else
   {
-    if ([v8 isContinuousConversation])
+    if ([contextCopy isContinuousConversation])
     {
-      [v9 setEnforceAutomaticEndpointing:1];
+      [optionsCopy setEnforceAutomaticEndpointing:1];
     }
 
     [(CSAttSiriOSDNode *)self->_osdNode setPrefetchedAsset:self->_mitigationAsset];
     [(CSAttSiriUresNode *)self->_uresNode setPrefetchedAsset:self->_mitigationAsset];
     [(CSAttSiriEagerMitigator *)self->_eagerMitigator setPrefetchedAsset:self->_mitigationAsset];
-    [(CSAttSiriSpeechRecognitionNode *)self->_speechRecognitionNode prepareToStartSpeechRequestWithStartStreamOption:v9 audioRecordContext:v8 voiceTriggerInfo:v13];
+    [(CSAttSiriSpeechRecognitionNode *)self->_speechRecognitionNode prepareToStartSpeechRequestWithStartStreamOption:optionsCopy audioRecordContext:contextCopy voiceTriggerInfo:v13];
     [(CSAttSiriSpeechRecognitionNode *)self->_speechRecognitionNode start];
-    v36 = -[CSEndpointerSettings initWithDisableEndpointer:]([CSEndpointerSettings alloc], "initWithDisableEndpointer:", [v9 disableEndpointer]);
-    [CSAttSiriOSDNode resetForNewRequestWithRecordContext:"resetForNewRequestWithRecordContext:endpointerSettings:voiceTriggerInfo:" endpointerSettings:v8 voiceTriggerInfo:?];
+    v36 = -[CSEndpointerSettings initWithDisableEndpointer:]([CSEndpointerSettings alloc], "initWithDisableEndpointer:", [optionsCopy disableEndpointer]);
+    [CSAttSiriOSDNode resetForNewRequestWithRecordContext:"resetForNewRequestWithRecordContext:endpointerSettings:voiceTriggerInfo:" endpointerSettings:contextCopy voiceTriggerInfo:?];
     endpointerNode = self->_endpointerNode;
     +[CSConfig inputRecordingSampleRate];
-    [(CSAttSiriEndpointerNode *)endpointerNode resetForNewRequestWithSampleRate:v16 recordContext:v8 recordOption:v9 voiceTriggerInfo:v13];
+    [(CSAttSiriEndpointerNode *)endpointerNode resetForNewRequestWithSampleRate:v16 recordContext:contextCopy recordOption:optionsCopy voiceTriggerInfo:v13];
     tcuGenerator = self->_tcuGenerator;
-    v18 = [v9 siriSessionUUID];
-    [(CSAttSiriTCUGenerator *)tcuGenerator startWithRecordContext:v8 withRequestId:v18];
+    siriSessionUUID = [optionsCopy siriSessionUUID];
+    [(CSAttSiriTCUGenerator *)tcuGenerator startWithRecordContext:contextCopy withRequestId:siriSessionUUID];
 
     [(CSEndpointDetectedSelfLogger *)self->_endpointDetectedSelfLogger reset];
-    -[CSAttSiriContinuityEndDetector setUpWithContinuityEndUsage:](self->_continuityEndDetector, "setUpWithContinuityEndUsage:", [v8 isDictation] ^ 1);
+    -[CSAttSiriContinuityEndDetector setUpWithContinuityEndUsage:](self->_continuityEndDetector, "setUpWithContinuityEndUsage:", [contextCopy isDictation] ^ 1);
     eagerMitigator = self->_eagerMitigator;
-    v20 = [v9 siriSessionUUID];
-    [(CSAttSiriEagerMitigator *)eagerMitigator requestStartedWithId:v20 forRecordContext:v8];
+    siriSessionUUID2 = [optionsCopy siriSessionUUID];
+    [(CSAttSiriEagerMitigator *)eagerMitigator requestStartedWithId:siriSessionUUID2 forRecordContext:contextCopy];
 
-    v21 = [(CSAsset *)self->_mitigationAsset getCategoryKeyWithRecordCtx:v8];
+    v21 = [(CSAsset *)self->_mitigationAsset getCategoryKeyWithRecordCtx:contextCopy];
     if ((CSIsCommunalDevice() & 1) != 0 || [(CSAsset *)self->_mitigationAsset shouldRunSpkrIdForCategory:v21])
     {
       [(CSAttSiriSSRNode *)self->_ssrNode setPrefetchedAsset:self->_vtAsset];
       ssrNode = self->_ssrNode;
-      v23 = [v9 siriSessionUUID];
-      [(CSAttSiriSSRNode *)ssrNode resetForNewRequestWithRecordContext:v8 voiceTriggerInfo:v13 withReqId:v23];
+      siriSessionUUID3 = [optionsCopy siriSessionUUID];
+      [(CSAttSiriSSRNode *)ssrNode resetForNewRequestWithRecordContext:contextCopy voiceTriggerInfo:v13 withReqId:siriSessionUUID3];
     }
 
     v24 = @"AcousticSLTaskTypeVoiceTrigger";
     v25 = @"AcousticSLTaskTypeVoiceTrigger";
-    if ([v8 isContinuousConversation])
+    if ([contextCopy isContinuousConversation])
     {
       v24 = @"AcousticSLTaskTypeContConv";
       v26 = @"AcousticSLTaskTypeContConv";
@@ -402,34 +402,34 @@
 
     [(CSAttSiriAFTMNode *)self->_aFTMNode setPrefetchedAsset:self->_mitigationAsset, v21];
     aFTMNode = self->_aFTMNode;
-    v28 = [v9 siriSessionUUID];
+    siriSessionUUID4 = [optionsCopy siriSessionUUID];
     v37[0] = _NSConcreteStackBlock;
     v37[1] = 3221225472;
     v37[2] = sub_10003E6F4;
     v37[3] = &unk_10024EFC0;
-    v38 = v8;
-    v39 = self;
-    v29 = v9;
+    v38 = contextCopy;
+    selfCopy = self;
+    v29 = optionsCopy;
     v40 = v29;
-    [(CSAttSiriAFTMNode *)aFTMNode startRequestWithContext:v38 withVtei:v13 taskType:v24 withRequestId:v28 completion:v37];
+    [(CSAttSiriAFTMNode *)aFTMNode startRequestWithContext:v38 withVtei:v13 taskType:v24 withRequestId:siriSessionUUID4 completion:v37];
 
     signalsLogger = self->_signalsLogger;
     audioRecordContext = self->_audioRecordContext;
-    v32 = [v29 siriSessionUUID];
-    [(CSIntuitiveConversationLogger *)signalsLogger startLoggingWithAudioRecordContext:audioRecordContext requestId:v32];
+    siriSessionUUID5 = [v29 siriSessionUUID];
+    [(CSIntuitiveConversationLogger *)signalsLogger startLoggingWithAudioRecordContext:audioRecordContext requestId:siriSessionUUID5];
 
     if (+[CSUtils supportsAudioMessage])
     {
       audioMessageRequestHandler = self->_audioMessageRequestHandler;
-      v34 = [v29 siriSessionUUID];
-      [(CSSiriAudioMessageRequestHandler *)audioMessageRequestHandler startLoggingWithRequestId:v34 recordContext:self->_audioRecordContext];
+      siriSessionUUID6 = [v29 siriSessionUUID];
+      [(CSSiriAudioMessageRequestHandler *)audioMessageRequestHandler startLoggingWithRequestId:siriSessionUUID6 recordContext:self->_audioRecordContext];
     }
   }
 }
 
-- (void)_setupAudioSrcNodeWithSiriClientStream:(id)a3
+- (void)_setupAudioSrcNodeWithSiriClientStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   v5 = CSLogCategoryRequest;
   if (os_log_type_enabled(CSLogCategoryRequest, OS_LOG_TYPE_INFO))
   {
@@ -440,15 +440,15 @@
 
   [(CSAttSiriAudioCoordinator *)self->_audioCoordinator reset];
   audioMetricsNode = self->_audioMetricsNode;
-  v7 = [v4 streamProvider];
-  [(CSAttSiriAudioMetricsNode *)audioMetricsNode setupWithStreamProviding:v7];
+  streamProvider = [streamCopy streamProvider];
+  [(CSAttSiriAudioMetricsNode *)audioMetricsNode setupWithStreamProviding:streamProvider];
 
-  [(CSAttSiriAudioSrcNode *)self->_audioSrcNode attachToMasterStream:v4 name:@"CSIntuitiveConvRequestHandler" completion:&stru_10024EF98];
+  [(CSAttSiriAudioSrcNode *)self->_audioSrcNode attachToMasterStream:streamCopy name:@"CSIntuitiveConvRequestHandler" completion:&stru_10024EF98];
 }
 
-- (void)_fetchRequiredAssetsForRecordContext:(id)a3
+- (void)_fetchRequiredAssetsForRecordContext:(id)context
 {
-  if (([a3 isDictation] & 1) == 0)
+  if (([context isDictation] & 1) == 0)
   {
     [(CSIntuitiveConvRequestHandler *)self _fetchVoiceTriggerAssets];
 
@@ -456,17 +456,17 @@
   }
 }
 
-- (void)mxSessionMonitorSomeClientWentActive:(id)a3
+- (void)mxSessionMonitorSomeClientWentActive:(id)active
 {
-  v4 = a3;
+  activeCopy = active;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10003EBDC;
   v7[3] = &unk_100253C48;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = activeCopy;
+  selfCopy = self;
+  v6 = activeCopy;
   dispatch_async(queue, v7);
 }
 
@@ -489,7 +489,7 @@
   }
 }
 
-- (void)audioSessionInfoProvider:(id)a3 didReceiveAudioSessionRouteChangeNotificationWithUserInfo:(id)a4
+- (void)audioSessionInfoProvider:(id)provider didReceiveAudioSessionRouteChangeNotificationWithUserInfo:(id)info
 {
   audioSrcNode = self->_audioSrcNode;
   if (audioSrcNode)
@@ -499,7 +499,7 @@
     v6[2] = sub_10003EDFC;
     v6[3] = &unk_10024EF50;
     v6[4] = self;
-    [(CSAttSiriAudioSrcNode *)audioSrcNode fetchRoutesWithCompletion:v6, a4];
+    [(CSAttSiriAudioSrcNode *)audioSrcNode fetchRoutesWithCompletion:v6, info];
   }
 }
 
@@ -525,9 +525,9 @@
   dispatch_async(queue, block);
 }
 
-- (void)_attendingExitAndDismissalWithXpcDisconnect:(BOOL)a3
+- (void)_attendingExitAndDismissalWithXpcDisconnect:(BOOL)disconnect
 {
-  if (a3)
+  if (disconnect)
   {
     objc_storeStrong(&self->_dismissedRequestId, self->_currentRequestId);
   }
@@ -537,14 +537,14 @@
     siriClientStream = self->_siriClientStream;
     if (siriClientStream)
     {
-      v5 = [(CSAudioStream *)siriClientStream startStreamOption];
+      startStreamOption = [(CSAudioStream *)siriClientStream startStreamOption];
 
-      if (v5)
+      if (startStreamOption)
       {
-        v6 = [(CSAudioStream *)self->_siriClientStream startStreamOption];
-        v7 = [v6 siriSessionUUID];
+        startStreamOption2 = [(CSAudioStream *)self->_siriClientStream startStreamOption];
+        siriSessionUUID = [startStreamOption2 siriSessionUUID];
         dismissedRequestId = self->_dismissedRequestId;
-        self->_dismissedRequestId = v7;
+        self->_dismissedRequestId = siriSessionUUID;
 
         v9 = CSLogCategoryRequest;
         if (os_log_type_enabled(CSLogCategoryRequest, OS_LOG_TYPE_DEFAULT))
@@ -596,7 +596,7 @@
   dispatch_async(queue, block);
 }
 
-- (void)attSiriNode:(id)a3 didDetectHardEndpointAtTime:(double)a4 withMetrics:(id)a5 usesAutomaticEndpointing:(BOOL)a6
+- (void)attSiriNode:(id)node didDetectHardEndpointAtTime:(double)time withMetrics:(id)metrics usesAutomaticEndpointing:(BOOL)endpointing
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -607,16 +607,16 @@
   dispatch_async(queue, block);
 }
 
-- (void)CSSiriEnabledMonitor:(id)a3 didReceiveEnabled:(BOOL)a4
+- (void)CSSiriEnabledMonitor:(id)monitor didReceiveEnabled:(BOOL)enabled
 {
-  v4 = a4;
+  enabledCopy = enabled;
   v6 = CSLogCategoryRequest;
   if (os_log_type_enabled(CSLogCategoryRequest, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v11 = "[CSIntuitiveConvRequestHandler CSSiriEnabledMonitor:didReceiveEnabled:]";
     v12 = 1026;
-    v13 = v4;
+    v13 = enabledCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s Siri enabled : %{public}d", buf, 0x12u);
   }
 
@@ -625,18 +625,18 @@
   v8[1] = 3221225472;
   v8[2] = sub_10003F700;
   v8[3] = &unk_100253BF8;
-  v9 = v4;
+  v9 = enabledCopy;
   v8[4] = self;
   dispatch_async(queue, v8);
 }
 
-- (void)_handleClientPreparedAudioStream:(id)a3 successfully:(BOOL)a4
+- (void)_handleClientPreparedAudioStream:(id)stream successfully:(BOOL)successfully
 {
-  v4 = a4;
-  v7 = a3;
-  if (v4)
+  successfullyCopy = successfully;
+  streamCopy = stream;
+  if (successfullyCopy)
   {
-    objc_storeStrong(&self->_siriClientStream, a3);
+    objc_storeStrong(&self->_siriClientStream, stream);
     v8 = CSLogCategoryRequest;
     if (os_log_type_enabled(CSLogCategoryRequest, OS_LOG_TYPE_DEFAULT))
     {
@@ -645,9 +645,9 @@
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s Cached siri client stream, attach after nodes start", &v12, 0xCu);
     }
 
-    v9 = [(CSAudioStream *)self->_siriClientStream streamRequest];
-    v10 = [v9 recordContext];
-    [(CSIntuitiveConvRequestHandler *)self _fetchRequiredAssetsForRecordContext:v10];
+    streamRequest = [(CSAudioStream *)self->_siriClientStream streamRequest];
+    recordContext = [streamRequest recordContext];
+    [(CSIntuitiveConvRequestHandler *)self _fetchRequiredAssetsForRecordContext:recordContext];
   }
 
   else
@@ -664,8 +664,8 @@
 
 - (id)_recordContextForContinuousConversation
 {
-  v3 = [(CSSiriClientBehaviorMonitor *)self->_siriClientBehaviorMonitor recordRoute];
-  v4 = [(CSSiriClientBehaviorMonitor *)self->_siriClientBehaviorMonitor deviceId];
+  recordRoute = [(CSSiriClientBehaviorMonitor *)self->_siriClientBehaviorMonitor recordRoute];
+  deviceId = [(CSSiriClientBehaviorMonitor *)self->_siriClientBehaviorMonitor deviceId];
   if ([(CSAudioRecordContext *)self->_audioRecordContext isContinuousConversation])
   {
     v5 = [(CSAudioRecordContext *)self->_audioRecordContext copy];
@@ -673,7 +673,7 @@
 
   else
   {
-    v5 = [CSAudioRecordContext contextForContinuousConversationWithRecordRoute:v3 deviceId:v4];
+    v5 = [CSAudioRecordContext contextForContinuousConversationWithRecordRoute:recordRoute deviceId:deviceId];
   }
 
   v6 = v5;
@@ -681,10 +681,10 @@
   return v6;
 }
 
-- (void)_generateStartAttendingHint:(id)a3 attendingDecision:(BOOL)a4
+- (void)_generateStartAttendingHint:(id)hint attendingDecision:(BOOL)decision
 {
-  v4 = a4;
-  v6 = a3;
+  decisionCopy = decision;
+  hintCopy = hint;
   v7 = CSLogCategoryRequest;
   if (os_log_type_enabled(CSLogCategoryRequest, OS_LOG_TYPE_DEFAULT))
   {
@@ -692,8 +692,8 @@
     *v16 = 136315650;
     *&v16[4] = "[CSIntuitiveConvRequestHandler _generateStartAttendingHint:attendingDecision:]";
     *&v16[12] = 2112;
-    *&v16[14] = v6;
-    if (v4)
+    *&v16[14] = hintCopy;
+    if (decisionCopy)
     {
       v8 = @"YES";
     }
@@ -703,11 +703,11 @@
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s rootRequestId : %@, shouldStartAttending : %@", v16, 0x20u);
   }
 
-  if (v4)
+  if (decisionCopy)
   {
     v9 = [CSAttendingStartHintInfo alloc];
-    v10 = [(CSIntuitiveConvRequestHandler *)self _recordContextForContinuousConversation];
-    v11 = [(CSAttendingStartHintInfo *)v9 initWithOrigin:1 reason:1 recordContext:v10 rootRequestId:v6 mhUUID:self->_requestMHUUID];
+    _recordContextForContinuousConversation = [(CSIntuitiveConvRequestHandler *)self _recordContextForContinuousConversation];
+    v11 = [(CSAttendingStartHintInfo *)v9 initWithOrigin:1 reason:1 recordContext:_recordContextForContinuousConversation rootRequestId:hintCopy mhUUID:self->_requestMHUUID];
 
     [(CSAttendingHintProviding *)self->_hintProvider postAttendingStartHintWithInfo:v11];
     aggressiveECHandler = self->_aggressiveECHandler;
@@ -718,16 +718,16 @@ LABEL_13:
   }
 
   v14 = 0;
-  if (v6)
+  if (hintCopy)
   {
     dismissedRequestId = self->_dismissedRequestId;
     if (dismissedRequestId)
     {
-      v14 = [(NSString *)dismissedRequestId isEqualToString:v6];
+      v14 = [(NSString *)dismissedRequestId isEqualToString:hintCopy];
     }
   }
 
-  v11 = [[CSAttendingMagusNotSupportedHintInfo alloc] initWithOrigin:1 reason:1 rootRequestId:v6];
+  v11 = [[CSAttendingMagusNotSupportedHintInfo alloc] initWithOrigin:1 reason:1 rootRequestId:hintCopy];
   [(CSAttendingHintProviding *)self->_hintProvider postAttendingMagusNotSupportedHintWithInfo:v11];
   [(CSAttSiriAssetDownloadPromptIOS *)self->_downloadPrompter checkIfNewAssetRequiredGivenCurrentVTAsset:self->_vtAsset mitigationAsset:self->_mitigationAsset];
   aggressiveECHandler = self->_aggressiveECHandler;
@@ -741,12 +741,12 @@ LABEL_13:
 LABEL_14:
 }
 
-- (void)_cacheStartAttendingInfo:(id)a3 attendingDecision:(BOOL)a4
+- (void)_cacheStartAttendingInfo:(id)info attendingDecision:(BOOL)decision
 {
-  v4 = a4;
-  v7 = a3;
-  objc_storeStrong(&self->_pendingAttendingStartRootRequestID, a3);
-  self->_pendingStartAttendingDecision = v4;
+  decisionCopy = decision;
+  infoCopy = info;
+  objc_storeStrong(&self->_pendingAttendingStartRootRequestID, info);
+  self->_pendingStartAttendingDecision = decisionCopy;
   v8 = CSLogCategoryRequest;
   if (os_log_type_enabled(CSLogCategoryRequest, OS_LOG_TYPE_DEFAULT))
   {
@@ -754,52 +754,52 @@ LABEL_14:
     v10 = 136315650;
     v11 = "[CSIntuitiveConvRequestHandler _cacheStartAttendingInfo:attendingDecision:]";
     v12 = 1024;
-    v13 = v4;
+    v13 = decisionCopy;
     v14 = 2112;
     v15 = pendingAttendingStartRootRequestID;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s Cached: startAttendingDecision:%u, attendingStartRootRequestID:%@", &v10, 0x1Cu);
   }
 }
 
-- (void)_handleClientDidStopWithOption:(id)a3
+- (void)_handleClientDidStopWithOption:(id)option
 {
-  v4 = a3;
-  v5 = [v4 requestId];
+  optionCopy = option;
+  requestId = [optionCopy requestId];
   v6 = CSLogCategoryRequest;
   if (os_log_type_enabled(CSLogCategoryRequest, OS_LOG_TYPE_DEFAULT))
   {
     v7 = v6;
-    v8 = [v4 description];
+    v8 = [optionCopy description];
     *buf = 136315650;
     v21 = "[CSIntuitiveConvRequestHandler _handleClientDidStopWithOption:]";
     v22 = 2114;
     v23 = v8;
     v24 = 2114;
-    v25 = v5;
+    v25 = requestId;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s stopOption : %{public}@, stopOptionRequestId : %{public}@", buf, 0x20u);
   }
 
-  if ([(CSIntuitiveConvRequestHandler *)self _isRequestIdCurrent:v5])
+  if ([(CSIntuitiveConvRequestHandler *)self _isRequestIdCurrent:requestId])
   {
-    [(CSIntuitiveConvRequestHandler *)self _handleStopProcessingForRequestId:v5];
-    v11 = [(CSAudioStream *)self->_siriClientStream startStreamOption];
-    v9 = [v11 siriSessionUUID];
+    [(CSIntuitiveConvRequestHandler *)self _handleStopProcessingForRequestId:requestId];
+    startStreamOption = [(CSAudioStream *)self->_siriClientStream startStreamOption];
+    siriSessionUUID = [startStreamOption siriSessionUUID];
 
     dismissedRequestId = self->_dismissedRequestId;
-    LOBYTE(v11) = 1;
-    if (dismissedRequestId && v9)
+    LOBYTE(startStreamOption) = 1;
+    if (dismissedRequestId && siriSessionUUID)
     {
-      LODWORD(v11) = ![(NSString *)dismissedRequestId isEqualToString:v9];
+      LODWORD(startStreamOption) = ![(NSString *)dismissedRequestId isEqualToString:siriSessionUUID];
     }
 
-    if ([v4 stopRecordingReason] == 5)
+    if ([optionCopy stopRecordingReason] == 5)
     {
       v12 = 0;
     }
 
     else
     {
-      v12 = [v4 supportsMagus] & v11;
+      v12 = [optionCopy supportsMagus] & startStreamOption;
     }
 
     audioSrcNode = self->_audioSrcNode;
@@ -808,9 +808,9 @@ LABEL_14:
     v17[2] = sub_10003FE38;
     v17[3] = &unk_10024EF78;
     v17[4] = self;
-    v18 = v9;
+    v18 = siriSessionUUID;
     v19 = v12;
-    v16 = v9;
+    v16 = siriSessionUUID;
     [CSAttSiriMagusBargeInDecisionChecker isBargeInAllowedForAudioSource:audioSrcNode withCompletion:v17];
   }
 
@@ -823,7 +823,7 @@ LABEL_14:
       *buf = 136315650;
       v21 = "[CSIntuitiveConvRequestHandler _handleClientDidStopWithOption:]";
       v22 = 2112;
-      v23 = v5;
+      v23 = requestId;
       v24 = 2112;
       v25 = currentRequestId;
       _os_log_error_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "%s Stop received for invalid requestId:%@, currentRequestId:%@", buf, 0x20u);
@@ -831,16 +831,16 @@ LABEL_14:
   }
 }
 
-- (void)_handleClientDidStartStreamWithOption:(id)a3 successfully:(BOOL)a4
+- (void)_handleClientDidStartStreamWithOption:(id)option successfully:(BOOL)successfully
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (v4)
+  successfullyCopy = successfully;
+  optionCopy = option;
+  v7 = optionCopy;
+  if (successfullyCopy)
   {
-    v8 = [v6 requestMHUUID];
+    requestMHUUID = [optionCopy requestMHUUID];
     requestMHUUID = self->_requestMHUUID;
-    self->_requestMHUUID = v8;
+    self->_requestMHUUID = requestMHUUID;
 
     v10 = CSLogCategoryRequest;
     if (os_log_type_enabled(CSLogCategoryRequest, OS_LOG_TYPE_DEFAULT))
@@ -874,8 +874,8 @@ LABEL_14:
 
   else
   {
-    v13 = [v6 siriSessionUUID];
-    [(CSIntuitiveConvRequestHandler *)self _handleStopProcessingForRequestId:v13];
+    siriSessionUUID = [optionCopy siriSessionUUID];
+    [(CSIntuitiveConvRequestHandler *)self _handleStopProcessingForRequestId:siriSessionUUID];
 
     v14 = CSLogCategoryRequest;
     if (os_log_type_enabled(CSLogCategoryRequest, OS_LOG_TYPE_INFO))
@@ -887,29 +887,29 @@ LABEL_14:
   }
 }
 
-- (void)_handleClientWillStartStreamWithContext:(id)a3 option:(id)a4
+- (void)_handleClientWillStartStreamWithContext:(id)context option:(id)option
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  optionCopy = option;
   v8 = CSLogCategoryRequest;
   if (os_log_type_enabled(CSLogCategoryRequest, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 136315394;
     v16 = "[CSIntuitiveConvRequestHandler _handleClientWillStartStreamWithContext:option:]";
     v17 = 2112;
-    v18 = v6;
+    v18 = contextCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s context : %@", &v15, 0x16u);
   }
 
-  v9 = [v7 siriSessionUUID];
+  siriSessionUUID = [optionCopy siriSessionUUID];
   currentRequestId = self->_currentRequestId;
-  self->_currentRequestId = v9;
+  self->_currentRequestId = siriSessionUUID;
 
-  v11 = [v6 copy];
+  v11 = [contextCopy copy];
   audioRecordContext = self->_audioRecordContext;
   self->_audioRecordContext = v11;
 
-  [(CSIntuitiveConvRequestHandler *)self _handleStartProcessingWithRecordContext:self->_audioRecordContext withAudioStartStreamOptions:v7 completion:0];
+  [(CSIntuitiveConvRequestHandler *)self _handleStartProcessingWithRecordContext:self->_audioRecordContext withAudioStartStreamOptions:optionCopy completion:0];
   if (self->_siriClientStream)
   {
     [(CSIntuitiveConvRequestHandler *)self _setupAudioSrcNodeWithSiriClientStream:?];
@@ -917,143 +917,143 @@ LABEL_14:
 
   v13 = [[CSAttendingStopHintInfo alloc] initWithOrigin:1 reason:1];
   [(CSAttendingHintProviding *)self->_hintProvider postAttendingStopHintWithInfo:v13];
-  v14 = [v7 requestMHUUID];
-  [(CSIntuitiveConvRequestHandler *)self emitRequestLinkEventForMHUUID:v14 withRequestId:self->_currentRequestId];
+  requestMHUUID = [optionCopy requestMHUUID];
+  [(CSIntuitiveConvRequestHandler *)self emitRequestLinkEventForMHUUID:requestMHUUID withRequestId:self->_currentRequestId];
 }
 
-- (void)siriClientBehaviorMonitor:(id)a3 preparedSiriClientAudioStream:(id)a4 successfully:(BOOL)a5
+- (void)siriClientBehaviorMonitor:(id)monitor preparedSiriClientAudioStream:(id)stream successfully:(BOOL)successfully
 {
-  v7 = a4;
+  streamCopy = stream;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000405C8;
   block[3] = &unk_100253900;
   block[4] = self;
-  v11 = v7;
-  v12 = a5;
-  v9 = v7;
+  v11 = streamCopy;
+  successfullyCopy = successfully;
+  v9 = streamCopy;
   dispatch_async(queue, block);
 }
 
-- (void)siriClientBehaviorMonitor:(id)a3 fetchedSiriClientAudioStream:(id)a4 successfully:(BOOL)a5
+- (void)siriClientBehaviorMonitor:(id)monitor fetchedSiriClientAudioStream:(id)stream successfully:(BOOL)successfully
 {
-  v7 = a4;
+  streamCopy = stream;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100040680;
   block[3] = &unk_100253900;
   block[4] = self;
-  v11 = v7;
-  v12 = a5;
-  v9 = v7;
+  v11 = streamCopy;
+  successfullyCopy = successfully;
+  v9 = streamCopy;
   dispatch_async(queue, block);
 }
 
-- (void)siriClientBehaviorMonitor:(id)a3 didStopStream:(id)a4 withEventUUID:(id)a5
+- (void)siriClientBehaviorMonitor:(id)monitor didStopStream:(id)stream withEventUUID:(id)d
 {
-  v7 = a4;
-  v8 = a5;
+  streamCopy = stream;
+  dCopy = d;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100040758;
   block[3] = &unk_100253680;
   block[4] = self;
-  v13 = v8;
-  v14 = v7;
-  v10 = v7;
-  v11 = v8;
+  v13 = dCopy;
+  v14 = streamCopy;
+  v10 = streamCopy;
+  v11 = dCopy;
   dispatch_async(queue, block);
 }
 
-- (void)siriClientBehaviorMonitor:(id)a3 willStopStream:(id)a4 reason:(unint64_t)a5 withEventUUID:(id)a6
+- (void)siriClientBehaviorMonitor:(id)monitor willStopStream:(id)stream reason:(unint64_t)reason withEventUUID:(id)d
 {
-  v9 = a4;
-  v10 = a6;
+  streamCopy = stream;
+  dCopy = d;
   queue = self->_queue;
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100040880;
   v14[3] = &unk_1002510C8;
   v14[4] = self;
-  v15 = v10;
-  v16 = v9;
-  v17 = a5;
-  v12 = v9;
-  v13 = v10;
+  v15 = dCopy;
+  v16 = streamCopy;
+  reasonCopy = reason;
+  v12 = streamCopy;
+  v13 = dCopy;
   dispatch_async(queue, v14);
 }
 
-- (void)siriClientBehaviorMonitor:(id)a3 didStartStreamWithContext:(id)a4 successfully:(BOOL)a5 option:(id)a6 withEventUUID:(id)a7
+- (void)siriClientBehaviorMonitor:(id)monitor didStartStreamWithContext:(id)context successfully:(BOOL)successfully option:(id)option withEventUUID:(id)d
 {
-  v10 = a6;
-  v11 = a7;
+  optionCopy = option;
+  dCopy = d;
   queue = self->_queue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1000409B0;
   v15[3] = &unk_100252420;
   v15[4] = self;
-  v16 = v11;
-  v17 = v10;
-  v18 = a5;
-  v13 = v10;
-  v14 = v11;
+  v16 = dCopy;
+  v17 = optionCopy;
+  successfullyCopy = successfully;
+  v13 = optionCopy;
+  v14 = dCopy;
   dispatch_async(queue, v15);
 }
 
-- (void)siriClientBehaviorMonitor:(id)a3 willStartStreamWithContext:(id)a4 option:(id)a5 withEventUUID:(id)a6
+- (void)siriClientBehaviorMonitor:(id)monitor willStartStreamWithContext:(id)context option:(id)option withEventUUID:(id)d
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  contextCopy = context;
+  optionCopy = option;
+  dCopy = d;
   queue = self->_queue;
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_100040AF8;
   v16[3] = &unk_100252F38;
-  v17 = v10;
-  v18 = self;
-  v19 = v11;
-  v20 = v9;
-  v13 = v9;
-  v14 = v11;
-  v15 = v10;
+  v17 = optionCopy;
+  selfCopy = self;
+  v19 = dCopy;
+  v20 = contextCopy;
+  v13 = contextCopy;
+  v14 = dCopy;
+  v15 = optionCopy;
   dispatch_async(queue, v16);
 }
 
-- (void)intuitiveConvAudioCaptureMonitor:(id)a3 fetchedAudioStream:(id)a4 successfully:(BOOL)a5
+- (void)intuitiveConvAudioCaptureMonitor:(id)monitor fetchedAudioStream:(id)stream successfully:(BOOL)successfully
 {
-  v7 = a4;
+  streamCopy = stream;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100040CD4;
   block[3] = &unk_100253900;
   block[4] = self;
-  v11 = v7;
-  v12 = a5;
-  v9 = v7;
+  v11 = streamCopy;
+  successfullyCopy = successfully;
+  v9 = streamCopy;
   dispatch_async(queue, block);
 }
 
-- (void)intuitiveConvAudioCaptureMonitorDidStopAudioCapture:(id)a3 stopStreamOption:(id)a4 eventUUID:(id)a5
+- (void)intuitiveConvAudioCaptureMonitorDidStopAudioCapture:(id)capture stopStreamOption:(id)option eventUUID:(id)d
 {
-  v6 = a4;
+  optionCopy = option;
   queue = self->_queue;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100040D7C;
   v9[3] = &unk_100253C48;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = optionCopy;
+  v8 = optionCopy;
   dispatch_async(queue, v9);
 }
 
-- (void)intuitiveConvAudioCaptureMonitor:(id)a3 willStopAudioCaptureReason:(unint64_t)a4
+- (void)intuitiveConvAudioCaptureMonitor:(id)monitor willStopAudioCaptureReason:(unint64_t)reason
 {
   queue = self->_queue;
   v5[0] = _NSConcreteStackBlock;
@@ -1061,53 +1061,53 @@ LABEL_14:
   v5[2] = sub_100040DFC;
   v5[3] = &unk_100253C98;
   v5[4] = self;
-  v5[5] = a4;
+  v5[5] = reason;
   dispatch_async(queue, v5);
 }
 
-- (void)intuitiveConvAudioCaptureMonitor:(id)a3 didStartAudioCaptureSuccessfully:(BOOL)a4 option:(id)a5 eventUUID:(id)a6
+- (void)intuitiveConvAudioCaptureMonitor:(id)monitor didStartAudioCaptureSuccessfully:(BOOL)successfully option:(id)option eventUUID:(id)d
 {
-  v8 = a5;
+  optionCopy = option;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100040EB4;
   block[3] = &unk_100253900;
-  v14 = a4;
-  v12 = v8;
-  v13 = self;
-  v10 = v8;
+  successfullyCopy = successfully;
+  v12 = optionCopy;
+  selfCopy = self;
+  v10 = optionCopy;
   dispatch_async(queue, block);
 }
 
-- (void)intuitiveConvAudioCaptureMonitor:(id)a3 willStartAudioCaptureWithContext:(id)a4 option:(id)a5
+- (void)intuitiveConvAudioCaptureMonitor:(id)monitor willStartAudioCaptureWithContext:(id)context option:(id)option
 {
-  v7 = a4;
-  v8 = a5;
+  contextCopy = context;
+  optionCopy = option;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100041050;
   block[3] = &unk_100253680;
   block[4] = self;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = contextCopy;
+  v14 = optionCopy;
+  v10 = optionCopy;
+  v11 = contextCopy;
   dispatch_async(queue, block);
 }
 
-- (void)setRequestHandlerDelegate:(id)a3
+- (void)setRequestHandlerDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000410F8;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_async(queue, v7);
 }
 
@@ -1216,8 +1216,8 @@ LABEL_14:
     [(CSAttSiriSpeechRecognitionNode *)self->_speechRecognitionNode addRecognitionTaskCompletionReceiver:self->_tcuGenerator];
     [(CSAttSiriContinuityEndDetector *)self->_continuityEndDetector addContinuityDetectionReceiver:self->_tcuGenerator];
     tcuGenerator = self->_tcuGenerator;
-    v11 = [(CSAttSiriEndpointerNode *)self->_endpointerNode eagerResultAnalyzer];
-    [(CSAttSiriTCUGenerator *)tcuGenerator registerEagerResultAnalyzer:v11];
+    eagerResultAnalyzer = [(CSAttSiriEndpointerNode *)self->_endpointerNode eagerResultAnalyzer];
+    [(CSAttSiriTCUGenerator *)tcuGenerator registerEagerResultAnalyzer:eagerResultAnalyzer];
 
     [(CSAttSiriRCHandler *)self->_rcHandler addResultCandidateReceiver:self->_tcuGenerator];
     [(CSAttSiriUresNode *)self->_uresNode registerTCUGenerator:self->_tcuGenerator];
@@ -1236,9 +1236,9 @@ LABEL_14:
   }
 
   v12 = +[CSFPreferences sharedPreferences];
-  v13 = [v12 isAttentiveSiriAudioLoggingEnabled];
+  isAttentiveSiriAudioLoggingEnabled = [v12 isAttentiveSiriAudioLoggingEnabled];
 
-  if (v13 && self->_signalsLogger)
+  if (isAttentiveSiriAudioLoggingEnabled && self->_signalsLogger)
   {
     [(CSAttSiriAudioCoordinator *)self->_audioCoordinator addReceiver:?];
   }
@@ -1302,27 +1302,27 @@ LABEL_14:
   [(CSAudioSessionInfoProvider *)self->_audioSessionInfoProvider registerObserver:self];
 }
 
-- (CSIntuitiveConvRequestHandler)initWithAudioSrcNode:(id)a3 endpointerNode:(id)a4 osdNode:(id)a5 ssrNode:(id)a6 speechRecognitionNode:(id)a7 uresNode:(id)a8 needsSSRNode:(BOOL)a9 aFtmNode:(id)a10 siriEnabledMonitor:(id)a11 siriClientBehaviorMonitor:(id)a12 intuitiveConvAudioCaptureMonitor:(id)a13 rcHandler:(id)a14 tcuGenerator:(id)a15 continuityEndDetector:(id)a16 bridgeMessageHandler:(id)a17 audioCoordinator:(id)a18 magusSupportedPolicy:(id)a19 supportsAcousticProgressiveChecker:(BOOL)a20 supportsUnderstandingOnDevice:(BOOL)a21 requireASROnDevice:(BOOL)a22 supportsHybridUnderstandingOnDevice:(BOOL)a23 supportsLogger:(BOOL)a24 supportTCU:(BOOL)a25 audioSessionInfoProvider:(id)a26 aggressiveECHandler:(id)a27
+- (CSIntuitiveConvRequestHandler)initWithAudioSrcNode:(id)node endpointerNode:(id)endpointerNode osdNode:(id)osdNode ssrNode:(id)ssrNode speechRecognitionNode:(id)recognitionNode uresNode:(id)uresNode needsSSRNode:(BOOL)rNode aFtmNode:(id)self0 siriEnabledMonitor:(id)self1 siriClientBehaviorMonitor:(id)self2 intuitiveConvAudioCaptureMonitor:(id)self3 rcHandler:(id)self4 tcuGenerator:(id)self5 continuityEndDetector:(id)self6 bridgeMessageHandler:(id)self7 audioCoordinator:(id)self8 magusSupportedPolicy:(id)self9 supportsAcousticProgressiveChecker:(BOOL)checker supportsUnderstandingOnDevice:(BOOL)device requireASROnDevice:(BOOL)onDevice supportsHybridUnderstandingOnDevice:(BOOL)understandingOnDevice supportsLogger:(BOOL)logger supportTCU:(BOOL)u audioSessionInfoProvider:(id)provider aggressiveECHandler:(id)cHandler
 {
-  v110 = a3;
-  v109 = a4;
-  v108 = a5;
-  obj = a6;
-  v102 = a6;
-  v105 = a7;
-  v104 = a8;
-  v103 = a10;
-  v32 = a11;
-  v33 = a12;
-  v34 = a13;
-  v35 = a14;
-  v36 = a15;
-  v37 = a16;
-  v38 = a17;
-  v39 = a18;
-  v40 = a19;
-  v107 = a26;
-  v106 = a27;
+  nodeCopy = node;
+  endpointerNodeCopy = endpointerNode;
+  osdNodeCopy = osdNode;
+  obj = ssrNode;
+  ssrNodeCopy = ssrNode;
+  recognitionNodeCopy = recognitionNode;
+  uresNodeCopy = uresNode;
+  ftmNodeCopy = ftmNode;
+  monitorCopy = monitor;
+  behaviorMonitorCopy = behaviorMonitor;
+  captureMonitorCopy = captureMonitor;
+  handlerCopy = handler;
+  generatorCopy = generator;
+  detectorCopy = detector;
+  messageHandlerCopy = messageHandler;
+  coordinatorCopy = coordinator;
+  policyCopy = policy;
+  providerCopy = provider;
+  cHandlerCopy = cHandler;
   v111.receiver = self;
   v111.super_class = CSIntuitiveConvRequestHandler;
   v41 = [(CSIntuitiveConvRequestHandler *)&v111 init];
@@ -1340,10 +1340,10 @@ LABEL_14:
     nodesCache = v41->_nodesCache;
     v41->_nodesCache = v46;
 
-    v41->_supportTCU = a25;
-    if (v110)
+    v41->_supportTCU = u;
+    if (nodeCopy)
     {
-      v48 = v110;
+      v48 = nodeCopy;
     }
 
     else
@@ -1354,10 +1354,10 @@ LABEL_14:
     audioSrcNode = v41->_audioSrcNode;
     v41->_audioSrcNode = v48;
 
-    v100 = v32;
-    if (v39)
+    v100 = monitorCopy;
+    if (coordinatorCopy)
     {
-      v50 = v39;
+      v50 = coordinatorCopy;
     }
 
     else
@@ -1368,9 +1368,9 @@ LABEL_14:
     audioCoordinator = v41->_audioCoordinator;
     v41->_audioCoordinator = v50;
 
-    if (v109)
+    if (endpointerNodeCopy)
     {
-      v52 = v109;
+      v52 = endpointerNodeCopy;
     }
 
     else
@@ -1381,7 +1381,7 @@ LABEL_14:
     endpointerNode = v41->_endpointerNode;
     v41->_endpointerNode = v52;
 
-    if (a9)
+    if (rNode)
     {
       if (+[CSUtils shouldDisableSpeakerRecognition])
       {
@@ -1394,7 +1394,7 @@ LABEL_14:
         }
       }
 
-      else if (v102)
+      else if (ssrNodeCopy)
       {
         objc_storeStrong(&v41->_ssrNode, obj);
       }
@@ -1407,11 +1407,11 @@ LABEL_14:
       }
     }
 
-    if (a22 || a23)
+    if (onDevice || understandingOnDevice)
     {
-      if (v105)
+      if (recognitionNodeCopy)
       {
-        v57 = v105;
+        v57 = recognitionNodeCopy;
       }
 
       else
@@ -1423,11 +1423,11 @@ LABEL_14:
       v41->_speechRecognitionNode = v57;
     }
 
-    if (a21 || a23)
+    if (device || understandingOnDevice)
     {
-      if (v104)
+      if (uresNodeCopy)
       {
-        v59 = v104;
+        v59 = uresNodeCopy;
       }
 
       else
@@ -1442,9 +1442,9 @@ LABEL_14:
       nldaClassifierNode = v41->_nldaClassifierNode;
       v41->_nldaClassifierNode = v61;
 
-      if (v35)
+      if (handlerCopy)
       {
-        v63 = v35;
+        v63 = handlerCopy;
       }
 
       else
@@ -1456,12 +1456,12 @@ LABEL_14:
       v41->_rcHandler = v63;
     }
 
-    v32 = v100;
-    if (a20)
+    monitorCopy = v100;
+    if (checker)
     {
-      if (v103)
+      if (ftmNodeCopy)
       {
-        v65 = v103;
+        v65 = ftmNodeCopy;
       }
 
       else
@@ -1473,9 +1473,9 @@ LABEL_14:
       v41->_aFTMNode = v65;
     }
 
-    if (v108)
+    if (osdNodeCopy)
     {
-      v67 = v108;
+      v67 = osdNodeCopy;
     }
 
     else
@@ -1488,9 +1488,9 @@ LABEL_14:
 
     if (v41->_supportTCU)
     {
-      if (v36)
+      if (generatorCopy)
       {
-        v69 = v36;
+        v69 = generatorCopy;
       }
 
       else
@@ -1502,9 +1502,9 @@ LABEL_14:
       v41->_tcuGenerator = v69;
     }
 
-    if (v37)
+    if (detectorCopy)
     {
-      v71 = v37;
+      v71 = detectorCopy;
     }
 
     else
@@ -1515,14 +1515,14 @@ LABEL_14:
     continuityEndDetector = v41->_continuityEndDetector;
     v41->_continuityEndDetector = v71;
 
-    if (v38)
+    if (messageHandlerCopy)
     {
-      v73 = v38;
+      v73 = messageHandlerCopy;
     }
 
     else
     {
-      v73 = [[CSAttSiriBridgeMessageHandler alloc] initWithSpeechRecognitionNode:v41->_speechRecognitionNode tcuGenerator:v41->_tcuGenerator supportTCU:a25];
+      v73 = [[CSAttSiriBridgeMessageHandler alloc] initWithSpeechRecognitionNode:v41->_speechRecognitionNode tcuGenerator:v41->_tcuGenerator supportTCU:u];
     }
 
     bridgeMessageHandler = v41->_bridgeMessageHandler;
@@ -1541,9 +1541,9 @@ LABEL_14:
     siriEnabledMonitor = v41->_siriEnabledMonitor;
     v41->_siriEnabledMonitor = v75;
 
-    if (v33)
+    if (behaviorMonitorCopy)
     {
-      v77 = v33;
+      v77 = behaviorMonitorCopy;
     }
 
     else
@@ -1554,9 +1554,9 @@ LABEL_14:
     siriClientBehaviorMonitor = v41->_siriClientBehaviorMonitor;
     v41->_siriClientBehaviorMonitor = v77;
 
-    if (v34)
+    if (captureMonitorCopy)
     {
-      v79 = v34;
+      v79 = captureMonitorCopy;
     }
 
     else
@@ -1567,9 +1567,9 @@ LABEL_14:
     intuitiveConvAudioCaptureMonitor = v41->_intuitiveConvAudioCaptureMonitor;
     v41->_intuitiveConvAudioCaptureMonitor = v79;
 
-    if (v106)
+    if (cHandlerCopy)
     {
-      v81 = v106;
+      v81 = cHandlerCopy;
     }
 
     else
@@ -1580,7 +1580,7 @@ LABEL_14:
     aggressiveECHandler = v41->_aggressiveECHandler;
     v41->_aggressiveECHandler = v81;
 
-    if (a24)
+    if (logger)
     {
       v83 = objc_alloc_init(CSIntuitiveConversationLogger);
       signalsLogger = v41->_signalsLogger;
@@ -1597,9 +1597,9 @@ LABEL_14:
     endpointDetectedSelfLogger = v41->_endpointDetectedSelfLogger;
     v41->_endpointDetectedSelfLogger = v87;
 
-    if (v40)
+    if (policyCopy)
     {
-      v89 = v40;
+      v89 = policyCopy;
     }
 
     else
@@ -1610,9 +1610,9 @@ LABEL_14:
     magusSupportedPolicy = v41->_magusSupportedPolicy;
     v41->_magusSupportedPolicy = v89;
 
-    if (v107)
+    if (providerCopy)
     {
-      v91 = v107;
+      v91 = providerCopy;
     }
 
     else

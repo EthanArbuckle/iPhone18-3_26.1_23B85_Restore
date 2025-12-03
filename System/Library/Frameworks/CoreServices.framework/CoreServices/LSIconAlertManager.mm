@@ -1,8 +1,8 @@
 @interface LSIconAlertManager
-- (BOOL)_hasOutstandingTokenForIdentity:(id)a3;
+- (BOOL)_hasOutstandingTokenForIdentity:(id)identity;
 - (LSIconAlertManager)init;
-- (id)iconChangeAlertTokenForIdentity:(id)a3 error:(id *)a4;
-- (void)_removeExtantToken:(id)a3;
+- (id)iconChangeAlertTokenForIdentity:(id)identity error:(id *)error;
+- (void)_removeExtantToken:(id)token;
 @end
 
 @implementation LSIconAlertManager
@@ -24,10 +24,10 @@
   return v2;
 }
 
-- (BOOL)_hasOutstandingTokenForIdentity:(id)a3
+- (BOOL)_hasOutstandingTokenForIdentity:(id)identity
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identityCopy = identity;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -46,8 +46,8 @@
           objc_enumerationMutation(v5);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) identity];
-        v10 = [v9 isEqual:v4];
+        identity = [*(*(&v13 + 1) + 8 * i) identity];
+        v10 = [identity isEqual:identityCopy];
 
         if (v10)
         {
@@ -72,16 +72,16 @@ LABEL_11:
   return v6;
 }
 
-- (id)iconChangeAlertTokenForIdentity:(id)a3 error:(id *)a4
+- (id)iconChangeAlertTokenForIdentity:(id)identity error:(id *)error
 {
-  v7 = a3;
-  if (!v7)
+  identityCopy = identity;
+  if (!identityCopy)
   {
     [LSIconAlertManager iconChangeAlertTokenForIdentity:a2 error:self];
   }
 
   os_unfair_lock_lock(&self->_lock);
-  if ([(LSIconAlertManager *)self _hasOutstandingTokenForIdentity:v7])
+  if ([(LSIconAlertManager *)self _hasOutstandingTokenForIdentity:identityCopy])
   {
     v8 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A798], 35, 0, "[LSIconAlertManager iconChangeAlertTokenForIdentity:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Workspace/LSIconAlertManager.m", 113);
     v9 = 0;
@@ -89,26 +89,26 @@ LABEL_11:
 
   else
   {
-    v9 = [[LSIconChangeAlertToken alloc] initWithIdentity:v7 manager:self];
+    v9 = [[LSIconChangeAlertToken alloc] initWithIdentity:identityCopy manager:self];
     [(NSMutableSet *)self->_extantTokens addObject:v9];
     v8 = 0;
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  if (a4 && !v9)
+  if (error && !v9)
   {
     v10 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
   return v9;
 }
 
-- (void)_removeExtantToken:(id)a3
+- (void)_removeExtantToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableSet *)self->_extantTokens removeObject:v4];
+  [(NSMutableSet *)self->_extantTokens removeObject:tokenCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }

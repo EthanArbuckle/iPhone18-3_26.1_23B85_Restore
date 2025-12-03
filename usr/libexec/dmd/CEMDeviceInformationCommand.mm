@@ -1,14 +1,14 @@
 @interface CEMDeviceInformationCommand
 + (id)deviceInfoDeviceChannelKeys;
-+ (id)deviceInfoKeyFromDMFKey:(id)a3;
++ (id)deviceInfoKeyFromDMFKey:(id)key;
 + (id)deviceInfoRMDKeys;
 + (id)deviceInfoSupervisedKeys;
 + (id)deviceInfoUserChannelKeys;
-+ (id)dmfKeyFromDeviceInfoKey:(id)a3;
-- (id)dmf_executeRequestWithContext:(id)a3 error:(id *)a4;
-- (id)dmf_statusForResult:(id)a3 context:(id)a4;
++ (id)dmfKeyFromDeviceInfoKey:(id)key;
+- (id)dmf_executeRequestWithContext:(id)context error:(id *)error;
+- (id)dmf_statusForResult:(id)result context:(id)context;
 - (id)filterQueryForScope;
-- (void)addRMDSpecificResultsToDictionary:(id)a3 errors:(id)a4;
+- (void)addRMDSpecificResultsToDictionary:(id)dictionary errors:(id)errors;
 @end
 
 @implementation CEMDeviceInformationCommand
@@ -61,37 +61,37 @@
   return v3;
 }
 
-+ (id)dmfKeyFromDeviceInfoKey:(id)a3
++ (id)dmfKeyFromDeviceInfoKey:(id)key
 {
   v3 = qword_1000FEF00;
-  v4 = a3;
+  keyCopy = key;
   if (v3 != -1)
   {
     sub_10007BC30();
   }
 
-  v5 = [qword_1000FEF08 objectForKeyedSubscript:v4];
+  v5 = [qword_1000FEF08 objectForKeyedSubscript:keyCopy];
 
   return v5;
 }
 
-+ (id)deviceInfoKeyFromDMFKey:(id)a3
++ (id)deviceInfoKeyFromDMFKey:(id)key
 {
   v3 = qword_1000FEF10;
-  v4 = a3;
+  keyCopy = key;
   if (v3 != -1)
   {
     sub_10007BC44();
   }
 
-  v5 = [qword_1000FEF18 objectForKeyedSubscript:v4];
+  v5 = [qword_1000FEF18 objectForKeyedSubscript:keyCopy];
 
   return v5;
 }
 
-- (id)dmf_executeRequestWithContext:(id)a3 error:(id *)a4
+- (id)dmf_executeRequestWithContext:(id)context error:(id *)error
 {
-  v4 = [(CEMDeviceInformationCommand *)self filterQueryForScope:a3];
+  v4 = [(CEMDeviceInformationCommand *)self filterQueryForScope:context];
   v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v4 count]);
   v14 = 0u;
   v15 = 0u;
@@ -131,28 +131,28 @@
   return v12;
 }
 
-- (id)dmf_statusForResult:(id)a3 context:(id)a4
+- (id)dmf_statusForResult:(id)result context:(id)context
 {
-  v5 = a3;
+  resultCopy = result;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v47 = v5;
-    v48 = self;
-    v6 = v5;
-    v7 = [v6 valuesByPropertyKey];
-    v8 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v7 count]);
+    v47 = resultCopy;
+    selfCopy = self;
+    v6 = resultCopy;
+    valuesByPropertyKey = [v6 valuesByPropertyKey];
+    v8 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [valuesByPropertyKey count]);
 
-    v9 = [v6 errorsByPropertyKey];
-    v10 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v9 count]);
+    errorsByPropertyKey = [v6 errorsByPropertyKey];
+    v10 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [errorsByPropertyKey count]);
 
     v61 = 0u;
     v62 = 0u;
     v59 = 0u;
     v60 = 0u;
     v50 = v6;
-    v11 = [v6 valuesByPropertyKey];
-    v12 = [v11 countByEnumeratingWithState:&v59 objects:v71 count:16];
+    valuesByPropertyKey2 = [v6 valuesByPropertyKey];
+    v12 = [valuesByPropertyKey2 countByEnumeratingWithState:&v59 objects:v71 count:16];
     if (v12)
     {
       v13 = v12;
@@ -163,13 +163,13 @@
         {
           if (*v60 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(valuesByPropertyKey2);
           }
 
           v16 = *(*(&v59 + 1) + 8 * i);
           v17 = [CEMDeviceInformationCommand deviceInfoKeyFromDMFKey:v16];
-          v18 = [v50 valuesByPropertyKey];
-          v19 = [v18 objectForKeyedSubscript:v16];
+          valuesByPropertyKey3 = [v50 valuesByPropertyKey];
+          v19 = [valuesByPropertyKey3 objectForKeyedSubscript:v16];
 
           objc_opt_class();
           if (objc_opt_isKindOfClass())
@@ -186,7 +186,7 @@
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v59 objects:v71 count:16];
+        v13 = [valuesByPropertyKey2 countByEnumeratingWithState:&v59 objects:v71 count:16];
       }
 
       while (v13);
@@ -194,11 +194,11 @@
 
     v46 = v8;
 
-    v21 = [(CEMDeviceInformationCommand *)v48 payloadQueries];
-    v22 = [NSMutableSet setWithArray:v21];
+    payloadQueries = [(CEMDeviceInformationCommand *)selfCopy payloadQueries];
+    v22 = [NSMutableSet setWithArray:payloadQueries];
 
-    v23 = [(CEMDeviceInformationCommand *)v48 filterQueryForScope];
-    [v22 minusSet:v23];
+    filterQueryForScope = [(CEMDeviceInformationCommand *)selfCopy filterQueryForScope];
+    [v22 minusSet:filterQueryForScope];
 
     v57 = 0u;
     v58 = 0u;
@@ -255,8 +255,8 @@
 
           v35 = *(*(&v51 + 1) + 8 * k);
           v36 = [CEMDeviceInformationCommand deviceInfoKeyFromDMFKey:v35, v44];
-          v37 = [v50 errorsByPropertyKey];
-          v38 = [v37 objectForKeyedSubscript:v35];
+          errorsByPropertyKey2 = [v50 errorsByPropertyKey];
+          v38 = [errorsByPropertyKey2 objectForKeyedSubscript:v35];
 
           v63[1] = @"ErrorChain";
           v64[0] = @"Failed";
@@ -273,10 +273,10 @@
       while (v32);
     }
 
-    [(CEMDeviceInformationCommand *)v48 addRMDSpecificResultsToDictionary:v46 errors:v10];
+    [(CEMDeviceInformationCommand *)selfCopy addRMDSpecificResultsToDictionary:v46 errors:v10];
     v41 = [NSMutableDictionary dictionaryWithCapacity:2];
     [v41 setObject:v46 forKeyedSubscript:@"QueryResponses"];
-    v5 = v47;
+    resultCopy = v47;
     if ([v10 count])
     {
       [v41 setObject:v10 forKeyedSubscript:@"ErrorResponses"];
@@ -295,8 +295,8 @@
 
 - (id)filterQueryForScope
 {
-  v2 = [(CEMDeviceInformationCommand *)self payloadQueries];
-  v3 = [NSMutableSet setWithArray:v2];
+  payloadQueries = [(CEMDeviceInformationCommand *)self payloadQueries];
+  v3 = [NSMutableSet setWithArray:payloadQueries];
 
   v4 = +[CEMDeviceInformationCommand deviceInfoDeviceChannelKeys];
   [v3 intersectSet:v4];
@@ -307,11 +307,11 @@
   return v3;
 }
 
-- (void)addRMDSpecificResultsToDictionary:(id)a3 errors:(id)a4
+- (void)addRMDSpecificResultsToDictionary:(id)dictionary errors:(id)errors
 {
-  v5 = a4;
-  v6 = [(CEMDeviceInformationCommand *)self payloadQueries];
-  v7 = [NSMutableSet setWithArray:v6];
+  errorsCopy = errors;
+  payloadQueries = [(CEMDeviceInformationCommand *)self payloadQueries];
+  v7 = [NSMutableSet setWithArray:payloadQueries];
 
   v8 = +[CEMDeviceInformationCommand deviceInfoRMDKeys];
   [v7 intersectSet:v8];
@@ -340,7 +340,7 @@
         v20 = @"Code";
         v21 = @"Not Supported";
         v15 = [NSDictionary dictionaryWithObjects:&v21 forKeys:&v20 count:1, v16];
-        [v5 setObject:v15 forKeyedSubscript:v14];
+        [errorsCopy setObject:v15 forKeyedSubscript:v14];
 
         v13 = v13 + 1;
       }

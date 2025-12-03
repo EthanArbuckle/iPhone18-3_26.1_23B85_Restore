@@ -1,23 +1,23 @@
 @interface IMStateCaptureAssistant
-+ (unint64_t)registerStateCaptureBlockWithObject:(id)a3 title:(id)a4 queue:(id)a5;
-- (IMStateCaptureAssistant)initWithObject:(id)a3 title:(id)a4 queue:(id)a5;
++ (unint64_t)registerStateCaptureBlockWithObject:(id)object title:(id)title queue:(id)queue;
+- (IMStateCaptureAssistant)initWithObject:(id)object title:(id)title queue:(id)queue;
 - (void)dealloc;
 - (void)deregister;
 @end
 
 @implementation IMStateCaptureAssistant
 
-- (IMStateCaptureAssistant)initWithObject:(id)a3 title:(id)a4 queue:(id)a5
+- (IMStateCaptureAssistant)initWithObject:(id)object title:(id)title queue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  objectCopy = object;
+  titleCopy = title;
+  queueCopy = queue;
   v13.receiver = self;
   v13.super_class = IMStateCaptureAssistant;
   v11 = [(IMStateCaptureAssistant *)&v13 init];
   if (v11)
   {
-    v11->_handle = [objc_opt_class() registerStateCaptureBlockWithObject:v8 title:v9 queue:v10];
+    v11->_handle = [objc_opt_class() registerStateCaptureBlockWithObject:objectCopy title:titleCopy queue:queueCopy];
   }
 
   return v11;
@@ -40,16 +40,16 @@
   }
 }
 
-+ (unint64_t)registerStateCaptureBlockWithObject:(id)a3 title:(id)a4 queue:(id)a5
++ (unint64_t)registerStateCaptureBlockWithObject:(id)object title:(id)title queue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v9 || (dispatch_get_global_queue(-32768, 0), (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+  objectCopy = object;
+  titleCopy = title;
+  queueCopy = queue;
+  if (queueCopy || (dispatch_get_global_queue(-32768, 0), (queueCopy = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v10 = v9;
-    objc_initWeak(&location, v7);
-    v11 = [v8 copy];
+    v10 = queueCopy;
+    objc_initWeak(&location, objectCopy);
+    v11 = [titleCopy copy];
     v12 = v11;
     if (v11)
     {
@@ -65,7 +65,7 @@
     v15 = v13;
 
     objc_copyWeak(&v18, &location);
-    v8 = v15;
+    titleCopy = v15;
     v16 = os_state_add_handler();
 
     objc_destroyWeak(&v18);

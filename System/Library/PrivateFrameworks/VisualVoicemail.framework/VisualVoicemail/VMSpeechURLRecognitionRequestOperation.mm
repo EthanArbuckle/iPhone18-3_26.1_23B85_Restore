@@ -1,98 +1,98 @@
 @interface VMSpeechURLRecognitionRequestOperation
 - (BOOL)forceOfflineRecognition;
-- (VMSpeechURLRecognitionRequestOperation)initWithLocale:(id)a3;
-- (VMSpeechURLRecognitionRequestOperation)initWithLocale:(id)a3 URL:(id)a4;
-- (VMSpeechURLRecognitionRequestOperation)initWithSpeechRecognizer:(id)a3;
-- (VMSpeechURLRecognitionRequestOperation)initWithSpeechRecognizer:(id)a3 speechRecognitionRequest:(id)a4;
-- (VMSpeechURLRecognitionRequestOperation)initWithSpeechRecognizer:(id)a3 speechURLRecognitionRequest:(id)a4;
+- (VMSpeechURLRecognitionRequestOperation)initWithLocale:(id)locale;
+- (VMSpeechURLRecognitionRequestOperation)initWithLocale:(id)locale URL:(id)l;
+- (VMSpeechURLRecognitionRequestOperation)initWithSpeechRecognizer:(id)recognizer;
+- (VMSpeechURLRecognitionRequestOperation)initWithSpeechRecognizer:(id)recognizer speechRecognitionRequest:(id)request;
+- (VMSpeechURLRecognitionRequestOperation)initWithSpeechRecognizer:(id)recognizer speechURLRecognitionRequest:(id)request;
 - (id)URL;
 - (id)speechURLRecognitionRequest;
 @end
 
 @implementation VMSpeechURLRecognitionRequestOperation
 
-- (VMSpeechURLRecognitionRequestOperation)initWithLocale:(id)a3
+- (VMSpeechURLRecognitionRequestOperation)initWithLocale:(id)locale
 {
   [(VMSpeechURLRecognitionRequestOperation *)self doesNotRecognizeSelector:a2];
 
   return 0;
 }
 
-- (VMSpeechURLRecognitionRequestOperation)initWithLocale:(id)a3 URL:(id)a4
+- (VMSpeechURLRecognitionRequestOperation)initWithLocale:(id)locale URL:(id)l
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[SFSpeechRecognizer alloc] initWithLocale:v7];
+  lCopy = l;
+  localeCopy = locale;
+  v8 = [[SFSpeechRecognizer alloc] initWithLocale:localeCopy];
 
   if (v8)
   {
-    v9 = [[SFSpeechURLRecognitionRequest alloc] initWithURL:v6];
+    v9 = [[SFSpeechURLRecognitionRequest alloc] initWithURL:lCopy];
     self = [(VMSpeechURLRecognitionRequestOperation *)self initWithSpeechRecognizer:v8 speechURLRecognitionRequest:v9];
 
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (VMSpeechURLRecognitionRequestOperation)initWithSpeechRecognizer:(id)a3
+- (VMSpeechURLRecognitionRequestOperation)initWithSpeechRecognizer:(id)recognizer
 {
   [(VMSpeechURLRecognitionRequestOperation *)self doesNotRecognizeSelector:a2];
 
   return 0;
 }
 
-- (VMSpeechURLRecognitionRequestOperation)initWithSpeechRecognizer:(id)a3 speechRecognitionRequest:(id)a4
+- (VMSpeechURLRecognitionRequestOperation)initWithSpeechRecognizer:(id)recognizer speechRecognitionRequest:(id)request
 {
-  [(VMSpeechURLRecognitionRequestOperation *)self doesNotRecognizeSelector:a2, a4];
+  [(VMSpeechURLRecognitionRequestOperation *)self doesNotRecognizeSelector:a2, request];
 
   return 0;
 }
 
-- (VMSpeechURLRecognitionRequestOperation)initWithSpeechRecognizer:(id)a3 speechURLRecognitionRequest:(id)a4
+- (VMSpeechURLRecognitionRequestOperation)initWithSpeechRecognizer:(id)recognizer speechURLRecognitionRequest:(id)request
 {
   v5.receiver = self;
   v5.super_class = VMSpeechURLRecognitionRequestOperation;
-  return [(VMSpeechRecognitionRequestOperation *)&v5 initWithSpeechRecognizer:a3 speechRecognitionRequest:a4];
+  return [(VMSpeechRecognitionRequestOperation *)&v5 initWithSpeechRecognizer:recognizer speechRecognitionRequest:request];
 }
 
 - (id)speechURLRecognitionRequest
 {
-  v3 = [(VMSpeechRecognitionRequestOperation *)self speechRecognitionRequest];
+  speechRecognitionRequest = [(VMSpeechRecognitionRequestOperation *)self speechRecognitionRequest];
 
-  if (v3)
+  if (speechRecognitionRequest)
   {
-    v4 = [(VMSpeechRecognitionRequestOperation *)self speechRecognitionRequest];
+    speechRecognitionRequest2 = [(VMSpeechRecognitionRequestOperation *)self speechRecognitionRequest];
   }
 
   else
   {
-    v4 = 0;
+    speechRecognitionRequest2 = 0;
   }
 
-  return v4;
+  return speechRecognitionRequest2;
 }
 
 - (BOOL)forceOfflineRecognition
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(VMSpeechRecognitionRequestOperation *)v2 speechRecognitionRequest];
-  v4 = [v3 _forceOfflineRecognition];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  speechRecognitionRequest = [(VMSpeechRecognitionRequestOperation *)selfCopy speechRecognitionRequest];
+  _forceOfflineRecognition = [speechRecognitionRequest _forceOfflineRecognition];
 
-  objc_sync_exit(v2);
-  return v4;
+  objc_sync_exit(selfCopy);
+  return _forceOfflineRecognition;
 }
 
 - (id)URL
 {
-  v2 = [(VMSpeechURLRecognitionRequestOperation *)self speechURLRecognitionRequest];
-  v3 = [v2 URL];
+  speechURLRecognitionRequest = [(VMSpeechURLRecognitionRequestOperation *)self speechURLRecognitionRequest];
+  v3 = [speechURLRecognitionRequest URL];
 
   return v3;
 }

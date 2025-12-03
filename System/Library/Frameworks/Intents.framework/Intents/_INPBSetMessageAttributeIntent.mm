@@ -1,50 +1,50 @@
 @interface _INPBSetMessageAttributeIntent
-- (BOOL)isEqual:(id)a3;
-- (_INPBSetMessageAttributeIntent)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBSetMessageAttributeIntent)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsAttribute:(id)a3;
+- (int)StringAsAttribute:(id)attribute;
 - (unint64_t)hash;
-- (void)addIdentifier:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAttribute:(int)a3;
-- (void)setIdentifiers:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addIdentifier:(id)identifier;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAttribute:(int)attribute;
+- (void)setIdentifiers:(id)identifiers;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBSetMessageAttributeIntent
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(_INPBSetMessageAttributeIntent *)self hasAttribute])
   {
-    v4 = [(_INPBSetMessageAttributeIntent *)self attribute];
-    if ((v4 - 1) >= 5)
+    attribute = [(_INPBSetMessageAttributeIntent *)self attribute];
+    if ((attribute - 1) >= 5)
     {
-      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v4];
+      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", attribute];
     }
 
     else
     {
-      v5 = off_1E7283DE0[(v4 - 1)];
+      v5 = off_1E7283DE0[(attribute - 1)];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"attribute"];
+    [dictionary setObject:v5 forKeyedSubscript:@"attribute"];
   }
 
   if (self->_identifiers)
   {
-    v6 = [(_INPBSetMessageAttributeIntent *)self identifiers];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"identifier"];
+    identifiers = [(_INPBSetMessageAttributeIntent *)self identifiers];
+    v7 = [identifiers copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"identifier"];
   }
 
-  v8 = [(_INPBSetMessageAttributeIntent *)self intentMetadata];
-  v9 = [v8 dictionaryRepresentation];
-  [v3 setObject:v9 forKeyedSubscript:@"intentMetadata"];
+  intentMetadata = [(_INPBSetMessageAttributeIntent *)self intentMetadata];
+  dictionaryRepresentation = [intentMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"intentMetadata"];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -63,46 +63,46 @@
   return v4 ^ [(_INPBIntentMetadata *)self->_intentMetadata hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
-  v5 = [(_INPBSetMessageAttributeIntent *)self hasAttribute];
-  if (v5 != [v4 hasAttribute])
+  hasAttribute = [(_INPBSetMessageAttributeIntent *)self hasAttribute];
+  if (hasAttribute != [equalCopy hasAttribute])
   {
     goto LABEL_16;
   }
 
   if ([(_INPBSetMessageAttributeIntent *)self hasAttribute])
   {
-    if ([v4 hasAttribute])
+    if ([equalCopy hasAttribute])
     {
       attribute = self->_attribute;
-      if (attribute != [v4 attribute])
+      if (attribute != [equalCopy attribute])
       {
         goto LABEL_16;
       }
     }
   }
 
-  v7 = [(_INPBSetMessageAttributeIntent *)self identifiers];
-  v8 = [v4 identifiers];
-  if ((v7 != 0) == (v8 == 0))
+  identifiers = [(_INPBSetMessageAttributeIntent *)self identifiers];
+  identifiers2 = [equalCopy identifiers];
+  if ((identifiers != 0) == (identifiers2 == 0))
   {
     goto LABEL_15;
   }
 
-  v9 = [(_INPBSetMessageAttributeIntent *)self identifiers];
-  if (v9)
+  identifiers3 = [(_INPBSetMessageAttributeIntent *)self identifiers];
+  if (identifiers3)
   {
-    v10 = v9;
-    v11 = [(_INPBSetMessageAttributeIntent *)self identifiers];
-    v12 = [v4 identifiers];
-    v13 = [v11 isEqual:v12];
+    v10 = identifiers3;
+    identifiers4 = [(_INPBSetMessageAttributeIntent *)self identifiers];
+    identifiers5 = [equalCopy identifiers];
+    v13 = [identifiers4 isEqual:identifiers5];
 
     if (!v13)
     {
@@ -114,12 +114,12 @@
   {
   }
 
-  v7 = [(_INPBSetMessageAttributeIntent *)self intentMetadata];
-  v8 = [v4 intentMetadata];
-  if ((v7 != 0) != (v8 == 0))
+  identifiers = [(_INPBSetMessageAttributeIntent *)self intentMetadata];
+  identifiers2 = [equalCopy intentMetadata];
+  if ((identifiers != 0) != (identifiers2 == 0))
   {
-    v14 = [(_INPBSetMessageAttributeIntent *)self intentMetadata];
-    if (!v14)
+    intentMetadata = [(_INPBSetMessageAttributeIntent *)self intentMetadata];
+    if (!intentMetadata)
     {
 
 LABEL_19:
@@ -127,10 +127,10 @@ LABEL_19:
       goto LABEL_17;
     }
 
-    v15 = v14;
-    v16 = [(_INPBSetMessageAttributeIntent *)self intentMetadata];
-    v17 = [v4 intentMetadata];
-    v18 = [v16 isEqual:v17];
+    v15 = intentMetadata;
+    intentMetadata2 = [(_INPBSetMessageAttributeIntent *)self intentMetadata];
+    intentMetadata3 = [equalCopy intentMetadata];
+    v18 = [intentMetadata2 isEqual:intentMetadata3];
 
     if (v18)
     {
@@ -150,7 +150,7 @@ LABEL_17:
   return v19;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBSetMessageAttributeIntent allocWithZone:](_INPBSetMessageAttributeIntent init];
   if ([(_INPBSetMessageAttributeIntent *)self hasAttribute])
@@ -158,43 +158,43 @@ LABEL_17:
     [(_INPBSetMessageAttributeIntent *)v5 setAttribute:[(_INPBSetMessageAttributeIntent *)self attribute]];
   }
 
-  v6 = [(NSArray *)self->_identifiers copyWithZone:a3];
+  v6 = [(NSArray *)self->_identifiers copyWithZone:zone];
   [(_INPBSetMessageAttributeIntent *)v5 setIdentifiers:v6];
 
-  v7 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:a3];
+  v7 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:zone];
   [(_INPBSetMessageAttributeIntent *)v5 setIntentMetadata:v7];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBSetMessageAttributeIntent *)self data];
+  coderCopy = coder;
+  data = [(_INPBSetMessageAttributeIntent *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBSetMessageAttributeIntent)initWithCoder:(id)a3
+- (_INPBSetMessageAttributeIntent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBSetMessageAttributeIntent *)self initWithData:v6];
+    self = [(_INPBSetMessageAttributeIntent *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if ([(_INPBSetMessageAttributeIntent *)self hasAttribute])
   {
     attribute = self->_attribute;
@@ -233,68 +233,68 @@ LABEL_17:
     while (v8);
   }
 
-  v12 = [(_INPBSetMessageAttributeIntent *)self intentMetadata];
+  intentMetadata = [(_INPBSetMessageAttributeIntent *)self intentMetadata];
 
-  if (v12)
+  if (intentMetadata)
   {
-    v13 = [(_INPBSetMessageAttributeIntent *)self intentMetadata];
+    intentMetadata2 = [(_INPBSetMessageAttributeIntent *)self intentMetadata];
     PBDataWriterWriteSubmessage();
   }
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addIdentifier:(id)a3
+- (void)addIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   identifiers = self->_identifiers;
-  v8 = v4;
+  v8 = identifierCopy;
   if (!identifiers)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_identifiers;
-    self->_identifiers = v6;
+    self->_identifiers = array;
 
-    v4 = v8;
+    identifierCopy = v8;
     identifiers = self->_identifiers;
   }
 
-  [(NSArray *)identifiers addObject:v4];
+  [(NSArray *)identifiers addObject:identifierCopy];
 }
 
-- (void)setIdentifiers:(id)a3
+- (void)setIdentifiers:(id)identifiers
 {
-  v4 = [a3 mutableCopy];
+  v4 = [identifiers mutableCopy];
   identifiers = self->_identifiers;
   self->_identifiers = v4;
 
   MEMORY[0x1EEE66BB8](v4, identifiers);
 }
 
-- (int)StringAsAttribute:(id)a3
+- (int)StringAsAttribute:(id)attribute
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"READ"])
+  attributeCopy = attribute;
+  if ([attributeCopy isEqualToString:@"READ"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"UNREAD"])
+  else if ([attributeCopy isEqualToString:@"UNREAD"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"FLAGGED"])
+  else if ([attributeCopy isEqualToString:@"FLAGGED"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"UNFLAGGED"])
+  else if ([attributeCopy isEqualToString:@"UNFLAGGED"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"PLAYED"])
+  else if ([attributeCopy isEqualToString:@"PLAYED"])
   {
     v4 = 5;
   }
@@ -307,10 +307,10 @@ LABEL_17:
   return v4;
 }
 
-- (void)setAttribute:(int)a3
+- (void)setAttribute:(int)attribute
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (attribute == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -318,7 +318,7 @@ LABEL_17:
   else
   {
     *&self->_has = has | 1;
-    self->_attribute = a3;
+    self->_attribute = attribute;
   }
 }
 

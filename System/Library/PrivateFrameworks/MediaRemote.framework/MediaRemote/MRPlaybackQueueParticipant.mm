@@ -1,87 +1,87 @@
 @interface MRPlaybackQueueParticipant
-+ (id)expectedIdentifierForUserIdentity:(id)a3 withRandomData:(id)a4;
-+ (void)fetchParticipantsWithRequest:(id)a3 forPlayerPath:(id)a4 queue:(id)a5 completion:(id)a6;
-+ (void)fetchPlaybackQueueParticipantIdentifierForLocalAccountWithDSID:(id)a3 completion:(id)a4;
-- (MRPlaybackQueueParticipant)initWithIdentifier:(id)a3 identity:(id)a4;
-- (MRPlaybackQueueParticipant)initWithProtobuf:(id)a3;
-- (MRPlaybackQueueParticipant)initWithProtobufData:(id)a3;
++ (id)expectedIdentifierForUserIdentity:(id)identity withRandomData:(id)data;
++ (void)fetchParticipantsWithRequest:(id)request forPlayerPath:(id)path queue:(id)queue completion:(id)completion;
++ (void)fetchPlaybackQueueParticipantIdentifierForLocalAccountWithDSID:(id)d completion:(id)completion;
+- (MRPlaybackQueueParticipant)initWithIdentifier:(id)identifier identity:(id)identity;
+- (MRPlaybackQueueParticipant)initWithProtobuf:(id)protobuf;
+- (MRPlaybackQueueParticipant)initWithProtobufData:(id)data;
 - (NSData)protobufData;
 - (NSDictionary)dictionaryRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)protobufWithEncoding:(int64_t)a3;
+- (id)protobufWithEncoding:(int64_t)encoding;
 @end
 
 @implementation MRPlaybackQueueParticipant
 
-- (MRPlaybackQueueParticipant)initWithIdentifier:(id)a3 identity:(id)a4
+- (MRPlaybackQueueParticipant)initWithIdentifier:(id)identifier identity:(id)identity
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  identityCopy = identity;
   v12.receiver = self;
   v12.super_class = MRPlaybackQueueParticipant;
   v9 = [(MRPlaybackQueueParticipant *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_identity, a4);
-    objc_storeStrong(&v10->_identifier, a3);
+    objc_storeStrong(&v9->_identity, identity);
+    objc_storeStrong(&v10->_identifier, identifier);
   }
 
   return v10;
 }
 
-- (MRPlaybackQueueParticipant)initWithProtobuf:(id)a3
+- (MRPlaybackQueueParticipant)initWithProtobuf:(id)protobuf
 {
-  if (a3)
+  if (protobuf)
   {
-    v4 = a3;
-    v5 = [v4 identifier];
+    protobufCopy = protobuf;
+    identifier = [protobufCopy identifier];
     v6 = [MRUserIdentity alloc];
-    v7 = [v4 identity];
+    identity = [protobufCopy identity];
 
-    v8 = [(MRUserIdentity *)v6 initWithProtobuf:v7];
-    self = [(MRPlaybackQueueParticipant *)self initWithIdentifier:v5 identity:v8];
+    v8 = [(MRUserIdentity *)v6 initWithProtobuf:identity];
+    self = [(MRPlaybackQueueParticipant *)self initWithIdentifier:identifier identity:v8];
 
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (MRPlaybackQueueParticipant)initWithProtobufData:(id)a3
+- (MRPlaybackQueueParticipant)initWithProtobufData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[_MRPlaybackQueueParticipantProtobuf alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[_MRPlaybackQueueParticipantProtobuf alloc] initWithData:dataCopy];
 
     self = [(MRPlaybackQueueParticipant *)self initWithProtobuf:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (id)protobufWithEncoding:(int64_t)a3
+- (id)protobufWithEncoding:(int64_t)encoding
 {
   v4 = objc_alloc_init(_MRPlaybackQueueParticipantProtobuf);
-  v5 = [(MRPlaybackQueueParticipant *)self identity];
-  v6 = [v5 protobuf];
-  [(_MRPlaybackQueueParticipantProtobuf *)v4 setIdentity:v6];
+  identity = [(MRPlaybackQueueParticipant *)self identity];
+  protobuf = [identity protobuf];
+  [(_MRPlaybackQueueParticipantProtobuf *)v4 setIdentity:protobuf];
 
-  v7 = [(MRPlaybackQueueParticipant *)self identifier];
-  [(_MRPlaybackQueueParticipantProtobuf *)v4 setIdentifier:v7];
+  identifier = [(MRPlaybackQueueParticipant *)self identifier];
+  [(_MRPlaybackQueueParticipantProtobuf *)v4 setIdentifier:identifier];
 
   return v4;
 }
@@ -89,12 +89,12 @@
 - (NSData)protobufData
 {
   v2 = [(MRPlaybackQueueParticipant *)self protobufWithEncoding:0];
-  v3 = [v2 data];
+  data = [v2 data];
 
-  return v3;
+  return data;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [MRPlaybackQueueParticipant alloc];
   v5 = [(MRPlaybackQueueParticipant *)self protobufWithEncoding:0];
@@ -108,9 +108,9 @@
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = objc_opt_class();
-  v5 = [(MRPlaybackQueueParticipant *)self identifier];
-  v6 = [(MRPlaybackQueueParticipant *)self identity];
-  v7 = [v3 initWithFormat:@"<%@: identifier=%@, identity=%@", v4, v5, v6];
+  identifier = [(MRPlaybackQueueParticipant *)self identifier];
+  identity = [(MRPlaybackQueueParticipant *)self identity];
+  v7 = [v3 initWithFormat:@"<%@: identifier=%@, identity=%@", v4, identifier, identity];
 
   return v7;
 }
@@ -118,28 +118,28 @@
 - (NSDictionary)dictionaryRepresentation
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(MRPlaybackQueueParticipant *)self identifier];
-  [v3 setObject:v4 forKeyedSubscript:@"identifier"];
+  identifier = [(MRPlaybackQueueParticipant *)self identifier];
+  [v3 setObject:identifier forKeyedSubscript:@"identifier"];
 
-  v5 = [(MRPlaybackQueueParticipant *)self identity];
-  [v3 setObject:v5 forKeyedSubscript:@"identity"];
+  identity = [(MRPlaybackQueueParticipant *)self identity];
+  [v3 setObject:identity forKeyedSubscript:@"identity"];
 
   return v3;
 }
 
-+ (void)fetchPlaybackQueueParticipantIdentifierForLocalAccountWithDSID:(id)a3 completion:(id)a4
++ (void)fetchPlaybackQueueParticipantIdentifierForLocalAccountWithDSID:(id)d completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  dCopy = d;
   v7 = MRGetSharedService();
   v8 = MRGroupSessionSubsystemGetNotificationQueue();
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __104__MRPlaybackQueueParticipant_fetchPlaybackQueueParticipantIdentifierForLocalAccountWithDSID_completion___block_invoke;
   v10[3] = &unk_1E769EA10;
-  v11 = v5;
-  v9 = v5;
-  [v7 userIdentityForDSID:v6 queue:v8 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [v7 userIdentityForDSID:dCopy queue:v8 completion:v10];
 }
 
 void __104__MRPlaybackQueueParticipant_fetchPlaybackQueueParticipantIdentifierForLocalAccountWithDSID_completion___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -153,29 +153,29 @@ void __104__MRPlaybackQueueParticipant_fetchPlaybackQueueParticipantIdentifierFo
   }
 }
 
-+ (void)fetchParticipantsWithRequest:(id)a3 forPlayerPath:(id)a4 queue:(id)a5 completion:(id)a6
++ (void)fetchParticipantsWithRequest:(id)request forPlayerPath:(id)path queue:(id)queue completion:(id)completion
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  requestCopy = request;
+  queueCopy = queue;
+  completionCopy = completion;
   v12 = MEMORY[0x1E696AFB0];
-  v13 = a4;
-  v14 = [v12 UUID];
-  v15 = [v14 UUIDString];
+  pathCopy = path;
+  uUID = [v12 UUID];
+  uUIDString = [uUID UUIDString];
 
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __90__MRPlaybackQueueParticipant_fetchParticipantsWithRequest_forPlayerPath_queue_completion___block_invoke;
   v20[3] = &unk_1E769EA38;
-  v21 = v10;
-  v22 = v15;
-  v23 = v9;
-  v24 = v11;
-  v16 = v9;
-  v17 = v15;
-  v18 = v11;
-  v19 = v10;
-  MRMediaRemoteNowPlayingResolvePlayerPath(v13, v19, v20);
+  v21 = queueCopy;
+  v22 = uUIDString;
+  v23 = requestCopy;
+  v24 = completionCopy;
+  v16 = requestCopy;
+  v17 = uUIDString;
+  v18 = completionCopy;
+  v19 = queueCopy;
+  MRMediaRemoteNowPlayingResolvePlayerPath(pathCopy, v19, v20);
 }
 
 void __90__MRPlaybackQueueParticipant_fetchParticipantsWithRequest_forPlayerPath_queue_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -298,16 +298,16 @@ uint64_t __90__MRPlaybackQueueParticipant_fetchParticipantsWithRequest_forPlayer
   return (*(v2 + 16))(v2, 0, v3);
 }
 
-+ (id)expectedIdentifierForUserIdentity:(id)a3 withRandomData:(id)a4
++ (id)expectedIdentifierForUserIdentity:(id)identity withRandomData:(id)data
 {
   v70[0] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 identifier];
-  v8 = v7;
-  if (v6)
+  identityCopy = identity;
+  dataCopy = data;
+  identifier = [identityCopy identifier];
+  v8 = identifier;
+  if (dataCopy)
   {
-    v9 = [v7 stringByAppendingString:v6];
+    v9 = [identifier stringByAppendingString:dataCopy];
 
     v8 = v9;
   }
@@ -518,9 +518,9 @@ LABEL_48:
   if (*v65 != 2000)
   {
 LABEL_52:
-    v62 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v63 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString * _Nonnull _MSVHashGetDigest(MSVHash)"];
-    [v62 handleFailureInFunction:v63 file:@"MSVHasher+Algorithms.h" lineNumber:356 description:@"Cannot obtain digest from unknown hasher algorithm"];
+    [currentHandler handleFailureInFunction:v63 file:@"MSVHasher+Algorithms.h" lineNumber:356 description:@"Cannot obtain digest from unknown hasher algorithm"];
 
     v59 = &stru_1F1513E38;
     goto LABEL_49;

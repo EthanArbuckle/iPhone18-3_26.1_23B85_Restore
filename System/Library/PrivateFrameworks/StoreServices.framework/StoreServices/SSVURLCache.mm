@@ -1,15 +1,15 @@
 @interface SSVURLCache
 - (SSVURLCache)init;
-- (SSVURLCache)initWithConfiguration:(id)a3;
-- (id)cachedConnectionResponseForRequestProperties:(id)a3 cachedResponse:(id *)a4;
-- (id)cachedResponseForRequest:(id)a3;
-- (void)configureRequest:(id)a3;
+- (SSVURLCache)initWithConfiguration:(id)configuration;
+- (id)cachedConnectionResponseForRequestProperties:(id)properties cachedResponse:(id *)response;
+- (id)cachedResponseForRequest:(id)request;
+- (void)configureRequest:(id)request;
 - (void)dealloc;
 - (void)loadMemoryCacheFromDisk;
 - (void)removeAllCachedResponses;
 - (void)saveMemoryCacheToDisk;
-- (void)storeCachedResponse:(id)a3 forRequest:(id)a4;
-- (void)storeConnectionResponse:(id)a3 forRequestProperties:(id)a4 userInfo:(id)a5;
+- (void)storeCachedResponse:(id)response forRequest:(id)request;
+- (void)storeConnectionResponse:(id)response forRequestProperties:(id)properties userInfo:(id)info;
 @end
 
 @implementation SSVURLCache
@@ -29,16 +29,16 @@
   return v2;
 }
 
-- (SSVURLCache)initWithConfiguration:(id)a3
+- (SSVURLCache)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v6 = [(SSVURLCache *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configuration, a3);
-    v8 = [(SSVURLCacheConfiguration *)v7->_configuration sessionIdentifier];
-    if (v8)
+    objc_storeStrong(&v6->_configuration, configuration);
+    sessionIdentifier = [(SSVURLCacheConfiguration *)v7->_configuration sessionIdentifier];
+    if (sessionIdentifier)
     {
       Mutable = CFDictionaryCreateMutable(0, 0, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
       if ([(SSVURLCacheConfiguration *)v7->_configuration supportsProcessSharing])
@@ -84,10 +84,10 @@
   [(SSVURLCache *)&v5 dealloc];
 }
 
-- (id)cachedResponseForRequest:(id)a3
+- (id)cachedResponseForRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 _CFURLRequest];
+  requestCopy = request;
+  _CFURLRequest = [requestCopy _CFURLRequest];
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -100,20 +100,20 @@
   block[2] = __40__SSVURLCache_cachedResponseForRequest___block_invoke;
   block[3] = &unk_1E84AD6B8;
   block[5] = &v19;
-  block[6] = v5;
+  block[6] = _CFURLRequest;
   block[4] = self;
   dispatch_sync(accessSerialQueue, block);
   v7 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytesNoCopy:"_SSVURLCPEB" length:11 freeWhenDone:0];
-  v8 = [v20[5] data];
-  v9 = [v8 isEqualToData:v7];
+  data = [v20[5] data];
+  v9 = [data isEqualToData:v7];
 
   if (v9)
   {
     v10 = objc_alloc(MEMORY[0x1E696AAF8]);
-    v11 = [v20[5] response];
-    v12 = [MEMORY[0x1E695DEF0] data];
-    v13 = [v20[5] userInfo];
-    v14 = [v10 initWithResponse:v11 data:v12 userInfo:v13 storagePolicy:{objc_msgSend(v20[5], "storagePolicy")}];
+    response = [v20[5] response];
+    data2 = [MEMORY[0x1E695DEF0] data];
+    userInfo = [v20[5] userInfo];
+    v14 = [v10 initWithResponse:response data:data2 userInfo:userInfo storagePolicy:{objc_msgSend(v20[5], "storagePolicy")}];
     v15 = v20[5];
     v20[5] = v14;
   }
@@ -143,42 +143,42 @@ void __40__SSVURLCache_cachedResponseForRequest___block_invoke(uint64_t a1)
   }
 }
 
-- (id)cachedConnectionResponseForRequestProperties:(id)a3 cachedResponse:(id *)a4
+- (id)cachedConnectionResponseForRequestProperties:(id)properties cachedResponse:(id *)response
 {
-  v6 = [a3 copyURLRequest];
-  if (!v6)
+  copyURLRequest = [properties copyURLRequest];
+  if (!copyURLRequest)
   {
     v8 = 0;
 LABEL_10:
     v12 = 0;
-    if (!a4)
+    if (!response)
     {
       goto LABEL_12;
     }
 
 LABEL_11:
     v16 = v8;
-    *a4 = v8;
+    *response = v8;
     goto LABEL_12;
   }
 
-  v7 = [(SSVURLCache *)self cachedResponseForRequest:v6];
+  v7 = [(SSVURLCache *)self cachedResponseForRequest:copyURLRequest];
   v8 = v7;
   if (!v7)
   {
     goto LABEL_10;
   }
 
-  v9 = [v7 response];
+  response = [v7 response];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v10 = [SSURLConnectionResponse alloc];
-    v11 = [v8 data];
-    v12 = [(SSURLConnectionResponse *)v10 initWithURLResponse:v9 bodyData:v11];
+    data = [v8 data];
+    v12 = [(SSURLConnectionResponse *)v10 initWithURLResponse:response bodyData:data];
 
-    v13 = [v8 userInfo];
-    v14 = [v13 objectForKey:@"metrics-page-event-body-dictionary"];
+    userInfo = [v8 userInfo];
+    v14 = [userInfo objectForKey:@"metrics-page-event-body-dictionary"];
     if (v14)
     {
       v15 = [(SSMetricsMutableEvent *)[SSMetricsPageEvent alloc] initWithBodyDictionary:v14];
@@ -194,7 +194,7 @@ LABEL_11:
     v12 = 0;
   }
 
-  if (a4)
+  if (response)
   {
     goto LABEL_11;
   }
@@ -205,14 +205,14 @@ LABEL_12:
   return v12;
 }
 
-- (void)configureRequest:(id)a3
+- (void)configureRequest:(id)request
 {
-  v5 = a3;
-  v6 = [a3 _CFURLRequest];
+  requestCopy = request;
+  _CFURLRequest = [request _CFURLRequest];
   if (self->_cacheStorageSession)
   {
 
-    MEMORY[0x1EEDB4B08](v6);
+    MEMORY[0x1EEDB4B08](_CFURLRequest);
   }
 }
 
@@ -282,37 +282,37 @@ uint64_t __36__SSVURLCache_saveMemoryCacheToDisk__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)storeCachedResponse:(id)a3 forRequest:(id)a4
+- (void)storeCachedResponse:(id)response forRequest:(id)request
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 data];
-  v9 = [v8 length];
+  responseCopy = response;
+  requestCopy = request;
+  data = [responseCopy data];
+  v9 = [data length];
 
   if (!v9)
   {
     v10 = objc_alloc(MEMORY[0x1E696AAF8]);
-    v11 = [v6 response];
+    response = [responseCopy response];
     v12 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytesNoCopy:"_SSVURLCPEB" length:11 freeWhenDone:0];
-    v13 = [v6 userInfo];
-    v14 = [v10 initWithResponse:v11 data:v12 userInfo:v13 storagePolicy:{objc_msgSend(v6, "storagePolicy")}];
+    userInfo = [responseCopy userInfo];
+    v14 = [v10 initWithResponse:response data:v12 userInfo:userInfo storagePolicy:{objc_msgSend(responseCopy, "storagePolicy")}];
 
-    v6 = v14;
+    responseCopy = v14;
   }
 
   if (self->_urlCache)
   {
-    v15 = [v7 _CFURLRequest];
-    [v6 _CFCachedURLResponse];
+    _CFURLRequest = [requestCopy _CFURLRequest];
+    [responseCopy _CFCachedURLResponse];
     CFURLCacheAddCachedResponseForRequest();
     accessSerialQueue = self->_accessSerialQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __46__SSVURLCache_storeCachedResponse_forRequest___block_invoke;
     block[3] = &unk_1E84AD6E0;
-    v18 = v6;
-    v19 = self;
-    v20 = v15;
+    v18 = responseCopy;
+    selfCopy = self;
+    v20 = _CFURLRequest;
     dispatch_async(accessSerialQueue, block);
   }
 }
@@ -368,31 +368,31 @@ void __46__SSVURLCache_storeCachedResponse_forRequest___block_invoke(uint64_t a1
   }
 }
 
-- (void)storeConnectionResponse:(id)a3 forRequestProperties:(id)a4 userInfo:(id)a5
+- (void)storeConnectionResponse:(id)response forRequestProperties:(id)properties userInfo:(id)info
 {
-  v20 = a3;
-  v8 = a5;
-  v9 = a4;
-  v10 = [v20 URLResponse];
-  v11 = [v9 copyURLRequest];
+  responseCopy = response;
+  infoCopy = info;
+  propertiesCopy = properties;
+  uRLResponse = [responseCopy URLResponse];
+  copyURLRequest = [propertiesCopy copyURLRequest];
 
-  if (v11 && v10)
+  if (copyURLRequest && uRLResponse)
   {
-    v12 = [v20 metricsPageEvent];
-    v13 = [v12 bodyDictionary];
-    v14 = v13;
-    if (v8)
+    metricsPageEvent = [responseCopy metricsPageEvent];
+    bodyDictionary = [metricsPageEvent bodyDictionary];
+    v14 = bodyDictionary;
+    if (infoCopy)
     {
-      v15 = [v8 mutableCopy];
+      v15 = [infoCopy mutableCopy];
       v16 = v15;
       if (!v14)
       {
 LABEL_10:
         v17 = objc_alloc(MEMORY[0x1E696AAF8]);
-        v18 = [v20 bodyData];
-        v19 = [v17 initWithResponse:v10 data:v18 userInfo:v16 storagePolicy:0];
+        bodyData = [responseCopy bodyData];
+        v19 = [v17 initWithResponse:uRLResponse data:bodyData userInfo:v16 storagePolicy:0];
 
-        [(SSVURLCache *)self storeCachedResponse:v19 forRequest:v11];
+        [(SSVURLCache *)self storeCachedResponse:v19 forRequest:copyURLRequest];
         goto LABEL_11;
       }
 
@@ -404,7 +404,7 @@ LABEL_9:
       }
     }
 
-    else if (!v13)
+    else if (!bodyDictionary)
     {
       v16 = 0;
       goto LABEL_10;

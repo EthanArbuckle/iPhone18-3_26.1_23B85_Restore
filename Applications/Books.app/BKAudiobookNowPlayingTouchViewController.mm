@@ -2,46 +2,46 @@
 - (AEAsset)asset;
 - (AEAssetAudiobookStatus)assetStatus;
 - (AEAssetViewControllerDelegate)assetViewControllerDelegate;
-- (BKAudiobookNowPlayingTouchViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (BKAudiobookNowPlayingTouchViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (BKAudiobookNowPlayingTouchViewControllerDelegate)delegate;
-- (BOOL)im_firstVisibleChildValidateWithItem:(id)a3;
+- (BOOL)im_firstVisibleChildValidateWithItem:(id)item;
 - (BOOL)isPlaying;
 - (BOOL)shouldCloseDueToAssetDeletion;
 - (CGRect)transitionCoverFrame;
 - (Class)transitionControlsViews;
 - (_TtC13BookAnalytics9BATracker)trackerForAudiobookAnalytics;
-- (id)coverAnimationHostSourceForItem:(id)a3;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
+- (id)coverAnimationHostSourceForItem:(id)item;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
 - (id)transitionContentView;
-- (int64_t)adaptivePresentationStyleForPresentationController:(id)a3;
-- (int64_t)adaptivePresentationStyleForPresentationController:(id)a3 traitCollection:(id)a4;
+- (int64_t)adaptivePresentationStyleForPresentationController:(id)controller;
+- (int64_t)adaptivePresentationStyleForPresentationController:(id)controller traitCollection:(id)collection;
 - (int64_t)coverContentMode;
-- (void)assetViewControllerDidOpenAnimated:(BOOL)a3;
+- (void)assetViewControllerDidOpenAnimated:(BOOL)animated;
 - (void)assetViewControllerPrepareForReload;
 - (void)assetViewControllerWillUnload;
 - (void)bc_analyticsForceEndSession;
-- (void)close:(BOOL)a3;
+- (void)close:(BOOL)close;
 - (void)dealloc;
-- (void)didPurchaseWithProductProfile:(id)a3 completion:(id)a4;
-- (void)engagement:(id)a3 didUpdateRequest:(id)a4 placement:(id)a5 serviceType:(id)a6;
-- (void)ensureAudiobookNotPlayingWithAssetID:(id)a3;
-- (void)messageViewController:(id)a3 didSelectActionWithURL:(id)a4;
-- (void)messageViewControllerDidSelectCancel:(id)a3;
-- (void)onAppWillEnterForeground:(id)a3;
-- (void)open:(BOOL)a3;
-- (void)openToLocation:(id)a3 animated:(BOOL)a4;
-- (void)requestClose:(BOOL)a3;
-- (void)setAssetViewControllerDelegate:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setDownloadState:(int64_t)a3 assetState:(signed __int16)a4 progressValue:(float)a5;
-- (void)setHelper:(id)a3 completion:(id)a4;
-- (void)setRecommendedTracker:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)didPurchaseWithProductProfile:(id)profile completion:(id)completion;
+- (void)engagement:(id)engagement didUpdateRequest:(id)request placement:(id)placement serviceType:(id)type;
+- (void)ensureAudiobookNotPlayingWithAssetID:(id)d;
+- (void)messageViewController:(id)controller didSelectActionWithURL:(id)l;
+- (void)messageViewControllerDidSelectCancel:(id)cancel;
+- (void)onAppWillEnterForeground:(id)foreground;
+- (void)open:(BOOL)open;
+- (void)openToLocation:(id)location animated:(BOOL)animated;
+- (void)requestClose:(BOOL)close;
+- (void)setAssetViewControllerDelegate:(id)delegate;
+- (void)setDelegate:(id)delegate;
+- (void)setDownloadState:(int64_t)state assetState:(signed __int16)assetState progressValue:(float)value;
+- (void)setHelper:(id)helper completion:(id)completion;
+- (void)setRecommendedTracker:(id)tracker;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation BKAudiobookNowPlayingTouchViewController
@@ -55,31 +55,31 @@
 
 - (AEAssetViewControllerDelegate)assetViewControllerDelegate
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AudiobookNowPlayingTouchViewController.assetViewControllerDelegate.getter();
 
   return v3;
 }
 
-- (void)setAssetViewControllerDelegate:(id)a3
+- (void)setAssetViewControllerDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   AudiobookNowPlayingTouchViewController.assetViewControllerDelegate.setter();
 }
 
 - (BKAudiobookNowPlayingTouchViewControllerDelegate)delegate
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10026E030();
 
   return v3;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_10026E114();
 }
 
@@ -87,32 +87,32 @@
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
   sub_10079B9A4();
 
   return v5;
 }
 
-- (void)setRecommendedTracker:(id)a3
+- (void)setRecommendedTracker:(id)tracker
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR___BKAudiobookNowPlayingTouchViewController_recommendedTracker);
-  *(&self->super.super.super.isa + OBJC_IVAR___BKAudiobookNowPlayingTouchViewController_recommendedTracker) = a3;
-  v3 = a3;
+  *(&self->super.super.super.isa + OBJC_IVAR___BKAudiobookNowPlayingTouchViewController_recommendedTracker) = tracker;
+  trackerCopy = tracker;
 }
 
 - (AEAssetAudiobookStatus)assetStatus
 {
-  v2 = [*(&self->super.super.super.isa + OBJC_IVAR___BKAudiobookNowPlayingTouchViewController_eventHandler) assetStatus];
+  assetStatus = [*(&self->super.super.super.isa + OBJC_IVAR___BKAudiobookNowPlayingTouchViewController_eventHandler) assetStatus];
 
-  return v2;
+  return assetStatus;
 }
 
 - (void)dealloc
 {
   v2 = *((swift_isaMask & self->super.super.super.isa) + 0x1E0);
-  v3 = self;
+  selfCopy = self;
   v2();
-  v4.receiver = v3;
+  v4.receiver = selfCopy;
   v4.super_class = type metadata accessor for AudiobookNowPlayingTouchViewController();
   [(BKAudiobookNowPlayingTouchViewController *)&v4 dealloc];
 }
@@ -123,8 +123,8 @@
   v4.super_class = type metadata accessor for AudiobookNowPlayingTouchViewController();
   v2 = v4.receiver;
   [(BKAudiobookNowPlayingTouchViewController *)&v4 viewDidLoad];
-  v3 = [objc_opt_self() defaultCenter];
-  [v3 addObserver:v2 selector:"onAppWillEnterForeground:" name:UIApplicationWillEnterForegroundNotification object:0];
+  defaultCenter = [objc_opt_self() defaultCenter];
+  [defaultCenter addObserver:v2 selector:"onAppWillEnterForeground:" name:UIApplicationWillEnterForegroundNotification object:0];
   sub_10026E9A4();
 }
 
@@ -147,37 +147,37 @@
   swift_unknownObjectRelease();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = type metadata accessor for AudiobookNowPlayingTouchViewController();
   v4 = v5.receiver;
-  [(BKAudiobookNowPlayingTouchViewController *)&v5 viewWillAppear:v3];
+  [(BKAudiobookNowPlayingTouchViewController *)&v5 viewWillAppear:appearCopy];
   [v4 setNeedsStatusBarAppearanceUpdate];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v7.receiver = self;
   v7.super_class = type metadata accessor for AudiobookNowPlayingTouchViewController();
   v4 = v7.receiver;
-  [(BKAudiobookNowPlayingTouchViewController *)&v7 viewDidAppear:v3];
-  v5 = [v4 ba_effectiveAnalyticsTracker];
+  [(BKAudiobookNowPlayingTouchViewController *)&v7 viewDidAppear:appearCopy];
+  ba_effectiveAnalyticsTracker = [v4 ba_effectiveAnalyticsTracker];
   v6 = *&v4[OBJC_IVAR___BKAudiobookNowPlayingTouchViewController_recommendedTracker];
-  *&v4[OBJC_IVAR___BKAudiobookNowPlayingTouchViewController_recommendedTracker] = v5;
+  *&v4[OBJC_IVAR___BKAudiobookNowPlayingTouchViewController_recommendedTracker] = ba_effectiveAnalyticsTracker;
 
   sub_10026F058();
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v6.receiver = self;
   v6.super_class = type metadata accessor for AudiobookNowPlayingTouchViewController();
   v4 = v6.receiver;
-  [(BKAudiobookNowPlayingTouchViewController *)&v6 viewWillDisappear:v3];
+  [(BKAudiobookNowPlayingTouchViewController *)&v6 viewWillDisappear:disappearCopy];
   v5 = sub_10026E030();
   if (v5)
   {
@@ -189,22 +189,22 @@
 - (void)bc_analyticsForceEndSession
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR___BKAudiobookNowPlayingTouchViewController_eventHandler);
-  v3 = self;
+  selfCopy = self;
   [v2 togglePlayPause];
   sub_100797C64();
 }
 
-- (void)setHelper:(id)a3 completion:(id)a4
+- (void)setHelper:(id)helper completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
     v8 = Strong;
     _Block_copy(v6);
     swift_unknownObjectRetain();
-    v9 = self;
-    sub_1003EFF64(a3, v8, v6);
+    selfCopy = self;
+    sub_1003EFF64(helper, v8, v6);
     _Block_release(v6);
     _Block_release(v6);
 
@@ -220,15 +220,15 @@
   }
 }
 
-- (void)ensureAudiobookNotPlayingWithAssetID:(id)a3
+- (void)ensureAudiobookNotPlayingWithAssetID:(id)d
 {
   v4 = sub_1007A2254();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_10026F8C4(v4, v6);
 }
 
-- (void)onAppWillEnterForeground:(id)a3
+- (void)onAppWillEnterForeground:(id)foreground
 {
   v4 = sub_100796594();
   v5 = *(v4 - 8);
@@ -236,12 +236,12 @@
   v7 = &v10 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_100796564();
   v8 = *(&self->super.super.super.isa + OBJC_IVAR___BKAudiobookNowPlayingTouchViewController_eventHandler);
-  v9 = self;
+  selfCopy = self;
   [v8 updateFollowingDormantPeriod];
   (*(v5 + 8))(v7, v4);
 }
 
-- (BKAudiobookNowPlayingTouchViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (BKAudiobookNowPlayingTouchViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -250,48 +250,48 @@
 
 - (AEAsset)asset
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AudiobookNowPlayingTouchViewController.asset.getter();
 
   return v3;
 }
 
-- (void)open:(BOOL)a3
+- (void)open:(BOOL)open
 {
-  v4 = self;
-  AudiobookNowPlayingTouchViewController.open(_:)(a3);
+  selfCopy = self;
+  AudiobookNowPlayingTouchViewController.open(_:)(open);
 }
 
-- (void)openToLocation:(id)a3 animated:(BOOL)a4
+- (void)openToLocation:(id)location animated:(BOOL)animated
 {
   swift_unknownObjectRetain();
-  v7 = self;
-  AudiobookNowPlayingTouchViewController.open(toLocation:animated:)(a3, a4);
+  selfCopy = self;
+  AudiobookNowPlayingTouchViewController.open(toLocation:animated:)(location, animated);
   swift_unknownObjectRelease();
 }
 
-- (void)close:(BOOL)a3
+- (void)close:(BOOL)close
 {
-  v4 = self;
-  AudiobookNowPlayingTouchViewController.close(_:)(a3);
+  selfCopy = self;
+  AudiobookNowPlayingTouchViewController.close(_:)(close);
 }
 
-- (void)requestClose:(BOOL)a3
+- (void)requestClose:(BOOL)close
 {
   if (swift_unknownObjectWeakLoadStrong())
   {
-    v5 = self;
-    sub_1002D6C60(a3);
+    selfCopy = self;
+    sub_1002D6C60(close);
 
     swift_unknownObjectRelease();
   }
 }
 
-- (void)assetViewControllerDidOpenAnimated:(BOOL)a3
+- (void)assetViewControllerDidOpenAnimated:(BOOL)animated
 {
   if (swift_unknownObjectWeakLoadStrong())
   {
-    v4 = self;
+    selfCopy = self;
     sub_1002D7578();
 
     swift_unknownObjectRelease();
@@ -300,7 +300,7 @@
 
 - (void)assetViewControllerWillUnload
 {
-  v2 = self;
+  selfCopy = self;
   AudiobookNowPlayingTouchViewController.assetViewControllerWillUnload()();
 }
 
@@ -313,24 +313,24 @@
   }
 }
 
-- (void)didPurchaseWithProductProfile:(id)a3 completion:(id)a4
+- (void)didPurchaseWithProductProfile:(id)profile completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   _Block_copy(v6);
   swift_unknownObjectRetain();
-  v7 = self;
-  sub_100272878(a3, v7, v6);
+  selfCopy = self;
+  sub_100272878(profile, selfCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
   swift_unknownObjectRelease();
 }
 
-- (void)setDownloadState:(int64_t)a3 assetState:(signed __int16)a4 progressValue:(float)a5
+- (void)setDownloadState:(int64_t)state assetState:(signed __int16)assetState progressValue:(float)value
 {
   if (swift_unknownObjectWeakLoadStrong())
   {
-    v9 = self;
-    sub_1002CE464(a3, a4, a5);
+    selfCopy = self;
+    sub_1002CE464(state, assetState, value);
 
     swift_unknownObjectRelease();
   }
@@ -340,7 +340,7 @@
 {
   if (swift_unknownObjectWeakLoadStrong())
   {
-    v3 = self;
+    selfCopy = self;
     v4 = sub_1002D6D08();
 
     swift_unknownObjectRelease();
@@ -356,9 +356,9 @@
 
 - (id)transitionContentView
 {
-  v2 = [(BKAudiobookNowPlayingTouchViewController *)self view];
+  view = [(BKAudiobookNowPlayingTouchViewController *)self view];
 
-  return v2;
+  return view;
 }
 
 - (CGRect)transitionCoverFrame
@@ -376,7 +376,7 @@
 
 - (int64_t)coverContentMode
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AudiobookNowPlayingTouchViewController.coverContentMode()();
 
   return v3;
@@ -384,29 +384,29 @@
 
 - (_TtC13BookAnalytics9BATracker)trackerForAudiobookAnalytics
 {
-  v2 = [(BKAudiobookNowPlayingTouchViewController *)self ba_effectiveAnalyticsTracker];
+  ba_effectiveAnalyticsTracker = [(BKAudiobookNowPlayingTouchViewController *)self ba_effectiveAnalyticsTracker];
 
-  return v2;
+  return ba_effectiveAnalyticsTracker;
 }
 
-- (void)engagement:(id)a3 didUpdateRequest:(id)a4 placement:(id)a5 serviceType:(id)a6
+- (void)engagement:(id)engagement didUpdateRequest:(id)request placement:(id)placement serviceType:(id)type
 {
   v9 = sub_1007A2254();
   v11 = v10;
-  v12 = a3;
-  v13 = a4;
-  v14 = self;
-  sub_100272A14(a4, v9, v11);
+  engagementCopy = engagement;
+  requestCopy = request;
+  selfCopy = self;
+  sub_100272A14(request, v9, v11);
 }
 
-- (void)messageViewControllerDidSelectCancel:(id)a3
+- (void)messageViewControllerDidSelectCancel:(id)cancel
 {
-  v4 = a3;
-  v5 = self;
-  AudiobookNowPlayingTouchViewController.messageViewControllerDidSelectCancel(_:)(v4);
+  cancelCopy = cancel;
+  selfCopy = self;
+  AudiobookNowPlayingTouchViewController.messageViewControllerDidSelectCancel(_:)(cancelCopy);
 }
 
-- (void)messageViewController:(id)a3 didSelectActionWithURL:(id)a4
+- (void)messageViewController:(id)controller didSelectActionWithURL:(id)l
 {
   v4 = sub_1007969B4();
   v5 = *(v4 - 8);
@@ -416,19 +416,19 @@
   (*(v5 + 8))(v7, v4);
 }
 
-- (int64_t)adaptivePresentationStyleForPresentationController:(id)a3
+- (int64_t)adaptivePresentationStyleForPresentationController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  v6 = [(BKAudiobookNowPlayingTouchViewController *)v5 traitCollection];
-  v7 = [(BKAudiobookNowPlayingTouchViewController *)v5 adaptivePresentationStyleForPresentationController:v4 traitCollection:v6];
+  controllerCopy = controller;
+  selfCopy = self;
+  traitCollection = [(BKAudiobookNowPlayingTouchViewController *)selfCopy traitCollection];
+  v7 = [(BKAudiobookNowPlayingTouchViewController *)selfCopy adaptivePresentationStyleForPresentationController:controllerCopy traitCollection:traitCollection];
 
   return v7;
 }
 
-- (int64_t)adaptivePresentationStyleForPresentationController:(id)a3 traitCollection:(id)a4
+- (int64_t)adaptivePresentationStyleForPresentationController:(id)controller traitCollection:(id)collection
 {
-  v4 = [a3 presentedViewController];
+  presentedViewController = [controller presentedViewController];
   objc_opt_self();
   v5 = swift_dynamicCastObjCClass();
 
@@ -443,34 +443,34 @@
   }
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  v12 = sub_100272FDC(v8);
+  interactionCopy = interaction;
+  requestCopy = request;
+  regionCopy = region;
+  selfCopy = self;
+  v12 = sub_100272FDC(interactionCopy);
 
   return v12;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = _s5Books38AudiobookNowPlayingTouchViewControllerC18pointerInteraction_8styleForSo14UIPointerStyleCSgSo0lI0C_So0L6RegionCtF_0(v6);
+  interactionCopy = interaction;
+  regionCopy = region;
+  selfCopy = self;
+  v9 = _s5Books38AudiobookNowPlayingTouchViewControllerC18pointerInteraction_8styleForSo14UIPointerStyleCSgSo0lI0C_So0L6RegionCtF_0(interactionCopy);
 
   return v9;
 }
 
-- (id)coverAnimationHostSourceForItem:(id)a3
+- (id)coverAnimationHostSourceForItem:(id)item
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_1007A3504();
   swift_unknownObjectRelease();
-  result = [(BKAudiobookNowPlayingTouchViewController *)v4 view];
+  result = [(BKAudiobookNowPlayingTouchViewController *)selfCopy view];
   if (result)
   {
     v6 = result;
@@ -495,11 +495,11 @@
   return result;
 }
 
-- (BOOL)im_firstVisibleChildValidateWithItem:(id)a3
+- (BOOL)im_firstVisibleChildValidateWithItem:(id)item
 {
-  if (a3)
+  if (item)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1007A3504();
     swift_unknownObjectRelease();
@@ -508,7 +508,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_10043422C(v8);

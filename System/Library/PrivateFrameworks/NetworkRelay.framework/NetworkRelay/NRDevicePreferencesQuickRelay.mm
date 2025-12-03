@@ -1,13 +1,13 @@
 @interface NRDevicePreferencesQuickRelay
-- (NRDevicePreferencesQuickRelay)initWithNRUUID:(id)a3;
+- (NRDevicePreferencesQuickRelay)initWithNRUUID:(id)d;
 - (uint64_t)assertAgent;
 - (void)addQuickRelayRequest;
 - (void)dealloc;
 - (void)removeAllQuickRelayRequests;
 - (void)removeQuickRelayRequest;
 - (void)resetInner;
-- (void)setAssertCount:(uint64_t)a1;
-- (void)updateAgentUUID:(uint64_t)a1;
+- (void)setAssertCount:(uint64_t)count;
+- (void)updateAgentUUID:(uint64_t)d;
 @end
 
 @implementation NRDevicePreferencesQuickRelay
@@ -34,9 +34,9 @@
 
 - (void)resetInner
 {
-  if (a1)
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 16));
+    dispatch_assert_queue_V2(*(self + 16));
     if (nrCopyLogObj_onceToken_1053 != -1)
     {
       dispatch_once(&nrCopyLogObj_onceToken_1053, &__block_literal_global_1054);
@@ -47,28 +47,28 @@
       _NRLogWithArgs(nrCopyLogObj_sNRLogObj_1055, 1, "%s%.30s:%-4d Resetting state", v2, v3, v4, v5, v6, "");
     }
 
-    [(NRDevicePreferencesQuickRelay *)a1 setAssertCount:?];
-    *(a1 + 8) = 0;
-    v7 = *(a1 + 32);
-    *(a1 + 32) = 0;
+    [(NRDevicePreferencesQuickRelay *)self setAssertCount:?];
+    *(self + 8) = 0;
+    v7 = *(self + 32);
+    *(self + 32) = 0;
 
-    v8 = *(a1 + 40);
-    *(a1 + 40) = 0;
+    v8 = *(self + 40);
+    *(self + 40) = 0;
 
-    if (*(a1 + 48))
+    if (*(self + 48))
     {
       nw_path_evaluator_cancel();
-      v9 = *(a1 + 48);
-      *(a1 + 48) = 0;
+      v9 = *(self + 48);
+      *(self + 48) = 0;
     }
   }
 }
 
-- (void)setAssertCount:(uint64_t)a1
+- (void)setAssertCount:(uint64_t)count
 {
-  if (a1)
+  if (count)
   {
-    dispatch_assert_queue_V2(*(a1 + 16));
+    dispatch_assert_queue_V2(*(count + 16));
     if (nrCopyLogObj_onceToken_1053 != -1)
     {
       dispatch_once(&nrCopyLogObj_onceToken_1053, &__block_literal_global_1054);
@@ -76,11 +76,11 @@
 
     if ((sNRCopyLogToStdErr & 1) != 0 || os_log_type_enabled(nrCopyLogObj_sNRLogObj_1055, OS_LOG_TYPE_INFO))
     {
-      v9 = *(a1 + 56);
+      v9 = *(count + 56);
       _NRLogWithArgs(nrCopyLogObj_sNRLogObj_1055, 1, "%s%.30s:%-4d Setting quick relay assert count: %ld -> %ld", v4, v5, v6, v7, v8, "");
     }
 
-    *(a1 + 56) = a2;
+    *(count + 56) = a2;
   }
 }
 
@@ -398,14 +398,14 @@ LABEL_52:
   }
 }
 
-- (void)updateAgentUUID:(uint64_t)a1
+- (void)updateAgentUUID:(uint64_t)d
 {
   v3 = a2;
-  if (a1)
+  if (d)
   {
-    dispatch_assert_queue_V2(*(a1 + 16));
-    v4 = *(a1 + 32);
-    *(a1 + 32) = 0;
+    dispatch_assert_queue_V2(*(d + 16));
+    v4 = *(d + 32);
+    *(d + 32) = 0;
 
     if (v3)
     {
@@ -417,7 +417,7 @@ LABEL_52:
         applier[1] = 3221225472;
         applier[2] = __49__NRDevicePreferencesQuickRelay_updateAgentUUID___block_invoke;
         applier[3] = &unk_27996B058;
-        applier[4] = a1;
+        applier[4] = d;
         xpc_dictionary_apply(v16, applier);
       }
 
@@ -740,11 +740,11 @@ uint64_t __50__NRDevicePreferencesQuickRelay_shouldAssertAgent__block_invoke(uin
   [(NRDevicePreferencesQuickRelay *)&v5 dealloc];
 }
 
-- (NRDevicePreferencesQuickRelay)initWithNRUUID:(id)a3
+- (NRDevicePreferencesQuickRelay)initWithNRUUID:(id)d
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  dCopy = d;
+  if (!dCopy)
   {
     v11 = nrCopyLogObj_1074();
     if (sNRCopyLogToStdErr == 1)
@@ -777,7 +777,7 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v5 = v4;
+  v5 = dCopy;
   v38.receiver = self;
   v38.super_class = NRDevicePreferencesQuickRelay;
   v6 = [(NRDevicePreferencesQuickRelay *)&v38 init];

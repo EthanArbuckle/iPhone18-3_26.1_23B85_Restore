@@ -1,18 +1,18 @@
 @interface MOContextPhotoMetaDataMO
-+ (id)managedObjectWithObject:(id)a3 inManagedObjectContext:(id)a4;
++ (id)managedObjectWithObject:(id)object inManagedObjectContext:(id)context;
 @end
 
 @implementation MOContextPhotoMetaDataMO
 
-+ (id)managedObjectWithObject:(id)a3 inManagedObjectContext:(id)a4
++ (id)managedObjectWithObject:(id)object inManagedObjectContext:(id)context
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[MOContextPhotoMetaDataMO alloc] initWithContext:v5];
+  contextCopy = context;
+  objectCopy = object;
+  v7 = [[MOContextPhotoMetaDataMO alloc] initWithContext:contextCopy];
 
-  v8 = [v6 photoAssetIdentifier];
+  photoAssetIdentifier = [objectCopy photoAssetIdentifier];
 
-  [(MOContextPhotoMetaDataMO *)v7 setPhotoAssetIdentifier:v8];
+  [(MOContextPhotoMetaDataMO *)v7 setPhotoAssetIdentifier:photoAssetIdentifier];
 
   return v7;
 }

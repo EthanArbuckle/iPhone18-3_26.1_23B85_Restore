@@ -1,12 +1,12 @@
 @interface MTEpisodeSyncStorage
 - (NSString)podcastsDomainVersion;
-- (id)feedUrlFromModernKey:(id)a3;
+- (id)feedUrlFromModernKey:(id)key;
 - (id)importContext;
-- (id)versionForKey:(id)a3;
+- (id)versionForKey:(id)key;
 - (void)resetVersionForAllFeedUrls;
-- (void)resetVersionForFeedUrl:(id)a3;
-- (void)setPodcastsDomainVersion:(id)a3;
-- (void)setVersion:(id)a3 forKey:(id)a4;
+- (void)resetVersionForFeedUrl:(id)url;
+- (void)setPodcastsDomainVersion:(id)version;
+- (void)setVersion:(id)version forKey:(id)key;
 @end
 
 @implementation MTEpisodeSyncStorage
@@ -14,66 +14,66 @@
 - (id)importContext
 {
   v2 = +[MTDB sharedInstance];
-  v3 = [v2 importContext];
+  importContext = [v2 importContext];
 
-  return v3;
+  return importContext;
 }
 
 - (NSString)podcastsDomainVersion
 {
   v2 = +[_TtC18PodcastsFoundation18SyncKeysRepository shared];
-  v3 = [v2 podcastsDomainVersion];
+  podcastsDomainVersion = [v2 podcastsDomainVersion];
 
-  return v3;
+  return podcastsDomainVersion;
 }
 
-- (void)setPodcastsDomainVersion:(id)a3
+- (void)setPodcastsDomainVersion:(id)version
 {
-  v3 = a3;
+  versionCopy = version;
   v4 = +[_TtC18PodcastsFoundation18SyncKeysRepository shared];
-  [v4 setPodcastsDomainVersion:v3];
+  [v4 setPodcastsDomainVersion:versionCopy];
 }
 
-- (id)versionForKey:(id)a3
+- (id)versionForKey:(id)key
 {
   v3 = MEMORY[0x1E695E000];
-  v4 = a3;
-  v5 = [v3 standardUserDefaults];
-  v6 = [v5 stringForKey:v4];
+  keyCopy = key;
+  standardUserDefaults = [v3 standardUserDefaults];
+  v6 = [standardUserDefaults stringForKey:keyCopy];
 
   return v6;
 }
 
-- (void)setVersion:(id)a3 forKey:(id)a4
+- (void)setVersion:(id)version forKey:(id)key
 {
   v5 = MEMORY[0x1E695E000];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 standardUserDefaults];
-  [v8 setObject:v7 forKey:v6];
+  keyCopy = key;
+  versionCopy = version;
+  standardUserDefaults = [v5 standardUserDefaults];
+  [standardUserDefaults setObject:versionCopy forKey:keyCopy];
 }
 
-- (void)resetVersionForFeedUrl:(id)a3
+- (void)resetVersionForFeedUrl:(id)url
 {
-  v6 = a3;
-  if ([v6 length])
+  urlCopy = url;
+  if ([urlCopy length])
   {
-    v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v5 = [(MTEpisodeSyncStorage *)self modernKeyFromFeedUrl:v6];
-    [v4 setObject:0 forKey:v5];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v5 = [(MTEpisodeSyncStorage *)self modernKeyFromFeedUrl:urlCopy];
+    [standardUserDefaults setObject:0 forKey:v5];
   }
 }
 
 - (void)resetVersionForAllFeedUrls
 {
   v15 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [v2 dictionaryRepresentation];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  dictionaryRepresentation = [standardUserDefaults dictionaryRepresentation];
+  v4 = [dictionaryRepresentation countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -84,17 +84,17 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(dictionaryRepresentation);
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
         if ([v8 hasPrefix:@"playState:"])
         {
-          [v2 setObject:0 forKey:v8];
+          [standardUserDefaults setObject:0 forKey:v8];
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [dictionaryRepresentation countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -103,10 +103,10 @@
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (id)feedUrlFromModernKey:(id)a3
+- (id)feedUrlFromModernKey:(id)key
 {
-  v3 = a3;
-  v4 = [v3 stringByReplacingCharactersInRange:0 withString:{objc_msgSend(@"playState:", "length"), &stru_1F548B930}];
+  keyCopy = key;
+  v4 = [keyCopy stringByReplacingCharactersInRange:0 withString:{objc_msgSend(@"playState:", "length"), &stru_1F548B930}];
 
   return v4;
 }

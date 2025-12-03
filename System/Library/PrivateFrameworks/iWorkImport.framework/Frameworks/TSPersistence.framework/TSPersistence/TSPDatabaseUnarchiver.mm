@@ -1,11 +1,11 @@
 @interface TSPDatabaseUnarchiver
-- (TSPDatabaseUnarchiver)initWithMessageType:(unsigned int)a3 unarchiveClass:(Class)a4 message:()unique_ptr<google:(std:(int64_t)a6 :()unique_ptr<TSP:(std:(unint64_t)a8 :(id)a9 default_delete<TSP:(BOOL)a10 :(id)a11 IdentifierMap<BOOL>>>)a7 :(id)a12 IdentifierMap<BOOL> default_delete<google:(id)a13 :protobuf::Message>>)a5 :protobuf::Message identifier:strongReferences:messageVersion:unknownContent:hasAlternateMessages:objectDelegate:lazyReferenceDelegate:delegate:;
-- (void)filterIdentifiers:(const void *)a3;
+- (TSPDatabaseUnarchiver)initWithMessageType:(unsigned int)type unarchiveClass:(Class)class message:()unique_ptr<google:(std:(int64_t)google :()unique_ptr<TSP:(std:(unint64_t)p :(id)a9 default_delete<TSP:(BOOL)self0 :(id)self1 IdentifierMap<BOOL>>>)a7 :(id)self2 IdentifierMap<BOOL> default_delete<google:(id)self3 :protobuf::Message>>)a5 :protobuf::Message identifier:strongReferences:messageVersion:unknownContent:hasAlternateMessages:objectDelegate:lazyReferenceDelegate:delegate:;
+- (void)filterIdentifiers:(const void *)identifiers;
 @end
 
 @implementation TSPDatabaseUnarchiver
 
-- (TSPDatabaseUnarchiver)initWithMessageType:(unsigned int)a3 unarchiveClass:(Class)a4 message:()unique_ptr<google:(std:(int64_t)a6 :()unique_ptr<TSP:(std:(unint64_t)a8 :(id)a9 default_delete<TSP:(BOOL)a10 :(id)a11 IdentifierMap<BOOL>>>)a7 :(id)a12 IdentifierMap<BOOL> default_delete<google:(id)a13 :protobuf::Message>>)a5 :protobuf::Message identifier:strongReferences:messageVersion:unknownContent:hasAlternateMessages:objectDelegate:lazyReferenceDelegate:delegate:
+- (TSPDatabaseUnarchiver)initWithMessageType:(unsigned int)type unarchiveClass:(Class)class message:()unique_ptr<google:(std:(int64_t)google :()unique_ptr<TSP:(std:(unint64_t)p :(id)a9 default_delete<TSP:(BOOL)self0 :(id)self1 IdentifierMap<BOOL>>>)a7 :(id)self2 IdentifierMap<BOOL> default_delete<google:(id)self3 :protobuf::Message>>)a5 :protobuf::Message identifier:strongReferences:messageVersion:unknownContent:hasAlternateMessages:objectDelegate:lazyReferenceDelegate:delegate:
 {
   v13 = a9;
   v14 = a11;
@@ -25,10 +25,10 @@
   objc_exception_throw(v29);
 }
 
-- (void)filterIdentifiers:(const void *)a3
+- (void)filterIdentifiers:(const void *)identifiers
 {
-  v4 = objc_msgSend_delegate(self, a2, a3);
-  v6 = objc_msgSend_filterIdentifiers_(v4, v5, a3);
+  v4 = objc_msgSend_delegate(self, a2, identifiers);
+  v6 = objc_msgSend_filterIdentifiers_(v4, v5, identifiers);
 
   if (!v6)
   {

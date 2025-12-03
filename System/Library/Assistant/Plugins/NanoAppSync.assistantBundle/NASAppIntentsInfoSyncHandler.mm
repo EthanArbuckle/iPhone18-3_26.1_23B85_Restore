@@ -1,23 +1,23 @@
 @interface NASAppIntentsInfoSyncHandler
 - (NASAppIntentsInfoSyncHandler)init;
-- (id)_pbLocalizedProjectsForVocabularyInfoDictionary:(id)a3;
-- (void)beginSyncWithAnchor:(id)a3 validity:(id)a4 count:(int64_t)a5 forKey:(id)a6 beginInfo:(id)a7;
-- (void)getChangeAfterAnchor:(id)a3 changeInfo:(id)a4;
+- (id)_pbLocalizedProjectsForVocabularyInfoDictionary:(id)dictionary;
+- (void)beginSyncWithAnchor:(id)anchor validity:(id)validity count:(int64_t)count forKey:(id)key beginInfo:(id)info;
+- (void)getChangeAfterAnchor:(id)anchor changeInfo:(id)info;
 - (void)syncDidEnd;
 @end
 
 @implementation NASAppIntentsInfoSyncHandler
 
-- (id)_pbLocalizedProjectsForVocabularyInfoDictionary:(id)a3
+- (id)_pbLocalizedProjectsForVocabularyInfoDictionary:(id)dictionary
 {
-  v3 = a3;
-  v56 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v3, "count")}];
-  v57 = v3;
+  dictionaryCopy = dictionary;
+  v56 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(dictionaryCopy, "count")}];
+  v57 = dictionaryCopy;
   v114 = 0u;
   v115 = 0u;
   v116 = 0u;
   v117 = 0u;
-  obj = [v3 allKeys];
+  obj = [dictionaryCopy allKeys];
   v58 = [obj countByEnumeratingWithState:&v114 objects:v125 count:16];
   if (v58)
   {
@@ -314,44 +314,44 @@
   self->_nanoAppInfo = 0;
 }
 
-- (void)getChangeAfterAnchor:(id)a3 changeInfo:(id)a4
+- (void)getChangeAfterAnchor:(id)anchor changeInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  anchorCopy = anchor;
+  infoCopy = info;
   group = self->_group;
   v9 = dispatch_time(0, 3000000000);
   dispatch_group_wait(group, v9);
   nanoAppInfo = self->_nanoAppInfo;
   if (nanoAppInfo)
   {
-    v62 = v7;
-    v64 = v6;
+    v62 = infoCopy;
+    v64 = anchorCopy;
     v11 = [(NSDictionary *)nanoAppInfo objectForKey:ACXIntentsSupportedAggregateKey];
     v12 = [NSSet setWithArray:v11];
 
     v13 = [(NSDictionary *)self->_nanoAppInfo objectForKey:ACXIntentsRestrictedWhileLockedAggregateKey];
     v14 = [NSSet setWithArray:v13];
 
-    v63 = self;
+    selfCopy = self;
     v61 = [(NSDictionary *)self->_nanoAppInfo objectForKey:ACXContainerAppBundleIdKey];
     v15 = [LSApplicationProxy applicationProxyForIdentifier:?];
-    v59 = [v15 bundleURL];
+    bundleURL = [v15 bundleURL];
     v60 = v15;
-    if (v59)
+    if (bundleURL)
     {
       v56 = v12;
       v57 = v14;
       v16 = [NSBundle alloc];
-      v17 = [v15 bundleURL];
-      v18 = [v16 initWithURL:v17];
+      bundleURL2 = [v15 bundleURL];
+      v18 = [v16 initWithURL:bundleURL2];
 
-      v19 = [v18 localizations];
-      v65 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v19, "count")}];
+      localizations = [v18 localizations];
+      v65 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(localizations, "count")}];
       v78 = 0u;
       v79 = 0u;
       v80 = 0u;
       v81 = 0u;
-      v20 = v19;
+      v20 = localizations;
       v21 = [v20 countByEnumeratingWithState:&v78 objects:v85 count:16];
       if (v21)
       {
@@ -458,7 +458,7 @@
     }
 
     [v28 addIntentSupport:v29];
-    v44 = [(NASAppIntentsInfoSyncHandler *)v63 _pbLocalizedProjectsForVocabularyInfoDictionary:v65];
+    v44 = [(NASAppIntentsInfoSyncHandler *)selfCopy _pbLocalizedProjectsForVocabularyInfoDictionary:v65];
     v66 = 0u;
     v67 = 0u;
     v68 = 0u;
@@ -486,8 +486,8 @@
       while (v46);
     }
 
-    v49 = [v28 data];
-    CC_SHA1([v49 bytes], objc_msgSend(v49, "length"), md);
+    data = [v28 data];
+    CC_SHA1([data bytes], objc_msgSend(data, "length"), md);
     v50 = [NSMutableString stringWithCapacity:40];
     for (n = 0; n != 20; ++n)
     {
@@ -496,56 +496,56 @@
 
     if ([v50 isEqualToString:v64])
     {
-      v7 = v62;
+      infoCopy = v62;
       [v62 setObject:0];
     }
 
     else
     {
       v52 = objc_alloc_init(SAIntentGroupProtobufMessage);
-      [v52 setData:v49];
+      [v52 setData:data];
       v58 = v52;
       [v52 setTypeName:@"sirikit.apps.AppBundleInfo"];
       v53 = objc_alloc_init(SAIntentGroupAceAppIntentPolicyAndVocab);
       [v53 setAceAppBundleInfo:v52];
-      v54 = [[NSString alloc] initWithFormat:@"x-apple-siri://nano/%@", v63->_nanoAppBundleId];
+      v54 = [[NSString alloc] initWithFormat:@"x-apple-siri://nano/%@", selfCopy->_nanoAppBundleId];
       v55 = [NSURL URLWithString:v54];
       [v53 setIdentifier:v55];
 
-      v7 = v62;
+      infoCopy = v62;
       [v62 setObject:v53];
     }
 
-    [v7 setPostAnchor:v50];
-    [v7 setIsDelete:0];
+    [infoCopy setPostAnchor:v50];
+    [infoCopy setIsDelete:0];
 
-    v6 = v64;
+    anchorCopy = v64;
   }
 
   else
   {
-    [v7 setObject:0];
-    [v7 setIsDelete:0];
-    [v7 setPostAnchor:0];
+    [infoCopy setObject:0];
+    [infoCopy setIsDelete:0];
+    [infoCopy setPostAnchor:0];
   }
 }
 
-- (void)beginSyncWithAnchor:(id)a3 validity:(id)a4 count:(int64_t)a5 forKey:(id)a6 beginInfo:(id)a7
+- (void)beginSyncWithAnchor:(id)anchor validity:(id)validity count:(int64_t)count forKey:(id)key beginInfo:(id)info
 {
-  v10 = a4;
-  v11 = a7;
+  validityCopy = validity;
+  infoCopy = info;
   dispatch_group_enter(self->_group);
   queue = self->_queue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1F54;
   v15[3] = &unk_8338;
-  v16 = v10;
-  v17 = v11;
-  v18 = self;
+  v16 = validityCopy;
+  v17 = infoCopy;
+  selfCopy = self;
   v19 = a2;
-  v13 = v11;
-  v14 = v10;
+  v13 = infoCopy;
+  v14 = validityCopy;
   dispatch_async(queue, v15);
 }
 

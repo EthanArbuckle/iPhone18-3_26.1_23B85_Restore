@@ -11,27 +11,27 @@
 - (id)appSessionController;
 - (id)entryPointsCoordinator;
 - (void)_objc_initiateDealloc;
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8;
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type;
 - (void)dealloc;
 - (void)rebuildContextsForCurrentAppState;
-- (void)scene:(id)a3 continueUserActivity:(id)a4;
-- (void)scene:(id)a3 openURLContexts:(id)a4;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidBecomeActive:(id)a3;
-- (void)sceneDidDisconnect:(id)a3;
-- (void)sceneDidEnterBackground:(id)a3;
-- (void)sceneWillEnterForeground:(id)a3;
-- (void)sceneWillResignActive:(id)a3;
+- (void)scene:(id)scene continueUserActivity:(id)activity;
+- (void)scene:(id)scene openURLContexts:(id)contexts;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidBecomeActive:(id)active;
+- (void)sceneDidDisconnect:(id)disconnect;
+- (void)sceneDidEnterBackground:(id)background;
+- (void)sceneWillEnterForeground:(id)foreground;
+- (void)sceneWillResignActive:(id)active;
 @end
 
 @implementation CarSceneDelegate
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    __class_setCustomDeallocInitiation(a1);
+    __class_setCustomDeallocInitiation(self);
   }
 }
 
@@ -47,13 +47,13 @@
   sceneType = self->_sceneType;
   if (sceneType == 6)
   {
-    v3 = [(CarSceneDelegate *)self chromeViewController];
-    v4 = [v3 topContext];
+    chromeViewController = [(CarSceneDelegate *)self chromeViewController];
+    topContext = [chromeViewController topContext];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = topContext;
     }
 
     else
@@ -65,8 +65,8 @@
 
     if (v6)
     {
-      v7 = [v6 currentDesiredCards];
-      v8 = [v7 containsObject:@"Guidance"] ^ 1;
+      currentDesiredCards = [v6 currentDesiredCards];
+      v8 = [currentDesiredCards containsObject:@"Guidance"] ^ 1;
     }
 
     else
@@ -88,17 +88,17 @@
   sceneController = self->_sceneController;
   if (!sceneController)
   {
-    v4 = [(CarSceneDelegate *)self sceneType];
-    if (v4 <= 6)
+    sceneType = [(CarSceneDelegate *)self sceneType];
+    if (sceneType <= 6)
     {
-      v5 = v4;
-      if (((1 << v4) & 0x54) != 0)
+      v5 = sceneType;
+      if (((1 << sceneType) & 0x54) != 0)
       {
         v6 = CarMapWidgetController;
         goto LABEL_7;
       }
 
-      if (((1 << v4) & 0x28) != 0)
+      if (((1 << sceneType) & 0x28) != 0)
       {
         v6 = CarSmallWidgetController;
 LABEL_7:
@@ -111,7 +111,7 @@ LABEL_8:
         goto LABEL_9;
       }
 
-      if (v4 == 1)
+      if (sceneType == 1)
       {
         v7 = +[CarDisplayController sharedInstance];
         goto LABEL_8;
@@ -129,54 +129,54 @@ LABEL_9:
 
 - (id)entryPointsCoordinator
 {
-  v3 = [(CarSceneDelegate *)self appSessionController];
-  v4 = [v3 primaryPlatformController];
-  v5 = [v4 entryPointsCoordinator];
+  appSessionController = [(CarSceneDelegate *)self appSessionController];
+  primaryPlatformController = [appSessionController primaryPlatformController];
+  entryPointsCoordinator = [primaryPlatformController entryPointsCoordinator];
 
-  v6 = [v5 delegate];
+  delegate = [entryPointsCoordinator delegate];
 
-  if (!v6)
+  if (!delegate)
   {
     v7 = [CarMapsActionController alloc];
-    v8 = [(CarSceneDelegate *)self appSessionController];
-    v9 = [v8 primaryPlatformController];
-    v10 = [(CarMapsActionController *)v7 initWithPlatformController:v9];
+    appSessionController2 = [(CarSceneDelegate *)self appSessionController];
+    primaryPlatformController2 = [appSessionController2 primaryPlatformController];
+    v10 = [(CarMapsActionController *)v7 initWithPlatformController:primaryPlatformController2];
 
-    [v5 setDelegate:v10];
+    [entryPointsCoordinator setDelegate:v10];
     carActionController = self->_carActionController;
     self->_carActionController = v10;
   }
 
-  return v5;
+  return entryPointsCoordinator;
 }
 
 - (id)appSessionController
 {
   v2 = +[UIApplication sharedMapsDelegate];
-  v3 = [v2 appSessionController];
+  appSessionController = [v2 appSessionController];
 
-  return v3;
+  return appSessionController;
 }
 
 - (ChromeViewController)chromeViewController
 {
-  v2 = [(CarSceneDelegate *)self sceneController];
-  v3 = [v2 chromeViewController];
+  sceneController = [(CarSceneDelegate *)self sceneController];
+  chromeViewController = [sceneController chromeViewController];
 
-  return v3;
+  return chromeViewController;
 }
 
 - (NSString)sceneIdentifier
 {
-  v2 = [(CarSceneDelegate *)self sceneType];
-  if (v2 > 6)
+  sceneType = [(CarSceneDelegate *)self sceneType];
+  if (sceneType > 6)
   {
     v3 = @".Unknown";
   }
 
   else
   {
-    v3 = off_1016386B8[v2];
+    v3 = off_1016386B8[sceneType];
   }
 
   return [NSString stringWithFormat:@"CarPlay%@", v3];
@@ -235,14 +235,14 @@ LABEL_6:
 
 - (void)rebuildContextsForCurrentAppState
 {
-  v2 = [(CarSceneDelegate *)self sceneController];
-  [v2 _mapsCar_rebuildContextsForCurrentAppState];
+  sceneController = [(CarSceneDelegate *)self sceneController];
+  [sceneController _mapsCar_rebuildContextsForCurrentAppState];
 }
 
 - (Class)_windowClass
 {
-  v3 = [(CarSceneDelegate *)self sceneType];
-  if (v3 <= 6 && (((1 << v3) & 0xD) != 0 || ((1 << v3) & 0x70) != 0))
+  sceneType = [(CarSceneDelegate *)self sceneType];
+  if (sceneType <= 6 && (((1 << sceneType) & 0xD) != 0 || ((1 << sceneType) & 0x70) != 0))
   {
     v4 = objc_opt_class();
   }
@@ -252,15 +252,15 @@ LABEL_6:
     v6 = sub_100005610();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v7 = [(CarSceneDelegate *)self sceneType];
-      if (v7 > 6)
+      sceneType2 = [(CarSceneDelegate *)self sceneType];
+      if (sceneType2 > 6)
       {
         v8 = @".Unknown";
       }
 
       else
       {
-        v8 = off_1016386B8[v7];
+        v8 = off_1016386B8[sceneType2];
       }
 
       v9 = 138412290;
@@ -274,42 +274,42 @@ LABEL_6:
   return v4;
 }
 
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v91 = a6;
-  v16 = a7;
-  v17 = [(CarSceneDelegate *)self scene];
+  sceneCopy = scene;
+  sSceneCopy = sScene;
+  diffCopy = diff;
+  settingsCopy = settings;
+  contextCopy = context;
+  scene = [(CarSceneDelegate *)self scene];
 
-  if (v17 != v13)
+  if (scene != sceneCopy)
   {
     v18 = sub_100005610();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      v19 = [(CarSceneDelegate *)self scene];
-      v20 = [v19 _FBSScene];
+      scene2 = [(CarSceneDelegate *)self scene];
+      _FBSScene = [scene2 _FBSScene];
       *buf = 138412546;
-      v93 = v20;
+      v93 = _FBSScene;
       v94 = 2112;
-      v95 = v14;
+      v95 = sSceneCopy;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "CarSceneController - FBSceneUpdateAction: received callback for _FBScene that differs from current scene's _FBScene, current: %@ new: %@", buf, 0x16u);
     }
 
     goto LABEL_68;
   }
 
-  v89 = v16;
-  v90 = v15;
-  v21 = [(CarSceneDelegate *)self sceneType];
-  v22 = v14;
-  v23 = [(__CFString *)v22 settings];
+  v89 = contextCopy;
+  v90 = diffCopy;
+  sceneType = [(CarSceneDelegate *)self sceneType];
+  v22 = sSceneCopy;
+  settings = [(__CFString *)v22 settings];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v25 = [(__CFString *)v22 settings];
-  v26 = v25;
+  settings2 = [(__CFString *)v22 settings];
+  settings3 = settings2;
   if ((isKindOfClass & 1) == 0)
   {
     objc_opt_class();
@@ -327,25 +327,25 @@ LABEL_6:
       goto LABEL_27;
     }
 
-    v26 = [(__CFString *)v22 settings];
-    v30 = [v26 itemType];
-    if (v30 > 1)
+    settings3 = [(__CFString *)v22 settings];
+    itemType = [settings3 itemType];
+    if (itemType > 1)
     {
-      if (v30 == 2)
+      if (itemType == 2)
       {
         v28 = 5;
         goto LABEL_26;
       }
 
-      if (v30 != 3)
+      if (itemType != 3)
       {
         goto LABEL_23;
       }
     }
 
-    else if (v30)
+    else if (itemType)
     {
-      if (v30 == 1)
+      if (itemType == 1)
       {
         v28 = 4;
         goto LABEL_26;
@@ -367,18 +367,18 @@ LABEL_6:
     goto LABEL_26;
   }
 
-  v27 = [v25 widgetStyle];
-  if ((v27 - 1) < 2)
+  widgetStyle = [settings2 widgetStyle];
+  if ((widgetStyle - 1) < 2)
   {
     v28 = 3;
 LABEL_26:
 
 LABEL_27:
-    v31 = [(__CFString *)v22 settings];
+    settings4 = [(__CFString *)v22 settings];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v32 = v31;
+      v32 = settings4;
     }
 
     else
@@ -402,7 +402,7 @@ LABEL_27:
 
     v35 = v34;
 
-    v36 = v91;
+    v36 = settingsCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -441,47 +441,47 @@ LABEL_27:
       [v39 safeAreaInsetsPortrait];
       v87 = v46 != v51 || v44 != v52 || v50 != v53 || v48 != v54;
       v55 = v18;
-      v56 = self;
+      selfCopy = self;
       v57 = v28;
-      v58 = v13;
-      v59 = v14;
-      v60 = v21;
+      v58 = sceneCopy;
+      v59 = sSceneCopy;
+      v60 = sceneType;
       v61 = v41;
-      v62 = [v41 layoutJustification];
-      v63 = v62 == [v35 layoutJustification];
+      layoutJustification = [v41 layoutJustification];
+      v63 = layoutJustification == [v35 layoutJustification];
       v41 = v61;
-      v21 = v60;
-      v14 = v59;
-      v13 = v58;
+      sceneType = v60;
+      sSceneCopy = v59;
+      sceneCopy = v58;
       v28 = v57;
-      self = v56;
+      self = selfCopy;
       v18 = v55;
       v64 = !v63;
       v42 = v87 | v64;
     }
 
-    if (v21 == v28)
+    if (sceneType == v28)
     {
-      if (((v21 == 6) & v42) == 0)
+      if (((sceneType == 6) & v42) == 0)
       {
         goto LABEL_67;
       }
     }
 
-    else if (v21 < 4 || v28 <= 3)
+    else if (sceneType < 4 || v28 <= 3)
     {
       v88 = v41;
-      v67 = sub_100005610();
-      if (os_log_type_enabled(v67, OS_LOG_TYPE_ERROR))
+      sceneController4 = sub_100005610();
+      if (os_log_type_enabled(sceneController4, OS_LOG_TYPE_ERROR))
       {
-        if (v21 > 6)
+        if (sceneType > 6)
         {
           v68 = @".Unknown";
         }
 
         else
         {
-          v68 = off_1016386B8[v21];
+          v68 = off_1016386B8[sceneType];
         }
 
         v85 = off_101638688[v28 - 1];
@@ -489,7 +489,7 @@ LABEL_27:
         v93 = v68;
         v94 = 2112;
         v95 = v85;
-        _os_log_impl(&_mh_execute_header, v67, OS_LOG_TYPE_ERROR, "CarSceneController - FBSceneUpdateAction: scene was of type: %@, update to scenetype: %@, which is not supported -> ignoring the call.", buf, 0x16u);
+        _os_log_impl(&_mh_execute_header, sceneController4, OS_LOG_TYPE_ERROR, "CarSceneController - FBSceneUpdateAction: scene was of type: %@, update to scenetype: %@, which is not supported -> ignoring the call.", buf, 0x16u);
       }
 
       goto LABEL_66;
@@ -500,80 +500,80 @@ LABEL_27:
     v65 = sub_100005610();
     if (os_log_type_enabled(v65, OS_LOG_TYPE_INFO))
     {
-      if (v21 - 4 > 2)
+      if (sceneType - 4 > 2)
       {
         v66 = @".Unknown";
       }
 
       else
       {
-        v66 = off_101638670[v21 - 4];
+        v66 = off_101638670[sceneType - 4];
       }
 
       v69 = v28;
       v70 = off_101638688[v28 - 1];
-      v71 = [(CarSceneDelegate *)self scene];
+      scene3 = [(CarSceneDelegate *)self scene];
       *buf = 138412802;
       v93 = v66;
       v94 = 2112;
       v95 = v70;
       v28 = v69;
       v96 = 2048;
-      v97 = [v71 activationState];
+      activationState = [scene3 activationState];
       _os_log_impl(&_mh_execute_header, v65, OS_LOG_TYPE_INFO, "CarSceneController - FBSceneUpdateAction: updating scene type from: %@, to: %@, sceneState: %ld", buf, 0x20u);
     }
 
-    v72 = [(CarSceneDelegate *)self window];
-    [v72 setRootViewController:0];
+    window = [(CarSceneDelegate *)self window];
+    [window setRootViewController:0];
 
-    v73 = [(CarSceneDelegate *)self sceneController];
-    v74 = [(CarSceneDelegate *)self scene];
-    [v73 sceneDidDisconnect:v74];
+    sceneController = [(CarSceneDelegate *)self sceneController];
+    scene4 = [(CarSceneDelegate *)self scene];
+    [sceneController sceneDidDisconnect:scene4];
 
     [(CarSceneDelegate *)self setSceneController:0];
     [(CarSceneDelegate *)self setSceneType:v28];
-    v75 = [(CarSceneDelegate *)self sceneController];
-    v76 = [(CarSceneDelegate *)self scene];
-    v77 = [(CarSceneDelegate *)self scene];
-    v78 = [v77 session];
-    [v75 _mapsCar_scene:v76 willConnectToSession:v78 options:0];
+    sceneController2 = [(CarSceneDelegate *)self sceneController];
+    scene5 = [(CarSceneDelegate *)self scene];
+    scene6 = [(CarSceneDelegate *)self scene];
+    session = [scene6 session];
+    [sceneController2 _mapsCar_scene:scene5 willConnectToSession:session options:0];
 
-    v79 = [(CarSceneDelegate *)self sceneController];
-    v80 = [v79 chromeViewController];
-    v81 = [(CarSceneDelegate *)self window];
-    [v81 setRootViewController:v80];
+    sceneController3 = [(CarSceneDelegate *)self sceneController];
+    chromeViewController = [sceneController3 chromeViewController];
+    window2 = [(CarSceneDelegate *)self window];
+    [window2 setRootViewController:chromeViewController];
 
     if ([(CarSceneDelegate *)self sceneType]== 6)
     {
       [(CarSceneDelegate *)self rebuildContextsForCurrentAppState];
     }
 
-    v82 = [(CarSceneDelegate *)self scene];
-    v83 = [v82 activationState];
+    scene7 = [(CarSceneDelegate *)self scene];
+    activationState2 = [scene7 activationState];
 
     v35 = v86;
-    if (v83 >= 2)
+    if (activationState2 >= 2)
     {
       v41 = v88;
-      if (v83 != 2)
+      if (activationState2 != 2)
       {
 LABEL_67:
 
-        v16 = v89;
-        v15 = v90;
+        contextCopy = v89;
+        diffCopy = v90;
         goto LABEL_68;
       }
 
-      v67 = [(CarSceneDelegate *)self sceneController];
-      v84 = [(CarSceneDelegate *)self scene];
-      [v67 sceneDidEnterBackground:v84];
+      sceneController4 = [(CarSceneDelegate *)self sceneController];
+      scene8 = [(CarSceneDelegate *)self scene];
+      [sceneController4 sceneDidEnterBackground:scene8];
     }
 
     else
     {
-      v67 = [(CarSceneDelegate *)self sceneController];
-      v84 = [(CarSceneDelegate *)self scene];
-      [v67 sceneWillEnterForeground:v84];
+      sceneController4 = [(CarSceneDelegate *)self sceneController];
+      scene8 = [(CarSceneDelegate *)self scene];
+      [sceneController4 sceneWillEnterForeground:scene8];
     }
 
 LABEL_66:
@@ -581,7 +581,7 @@ LABEL_66:
     goto LABEL_67;
   }
 
-  if (v27 == 3)
+  if (widgetStyle == 3)
   {
     v28 = 2;
     goto LABEL_26;
@@ -599,10 +599,10 @@ LABEL_23:
 LABEL_68:
 }
 
-- (void)scene:(id)a3 openURLContexts:(id)a4
+- (void)scene:(id)scene openURLContexts:(id)contexts
 {
-  v6 = a3;
-  v7 = a4;
+  sceneCopy = scene;
+  contextsCopy = contexts;
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v9 = dispatch_queue_get_label(0);
   if (label != v9)
@@ -642,8 +642,8 @@ LABEL_68:
     }
   }
 
-  v11 = v6;
-  [v7 anyObject];
+  v11 = sceneCopy;
+  [contextsCopy anyObject];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_100B26F70;
@@ -656,10 +656,10 @@ LABEL_68:
   dispatch_async(&_dispatch_main_q, v17);
 }
 
-- (void)scene:(id)a3 continueUserActivity:(id)a4
+- (void)scene:(id)scene continueUserActivity:(id)activity
 {
-  v6 = a3;
-  v7 = a4;
+  sceneCopy = scene;
+  activityCopy = activity;
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v9 = dispatch_queue_get_label(0);
   if (label != v9)
@@ -704,17 +704,17 @@ LABEL_68:
   v16[2] = sub_100B272B8;
   v16[3] = &unk_101656A00;
   v16[4] = self;
-  v17 = v7;
-  v18 = v6;
+  v17 = activityCopy;
+  v18 = sceneCopy;
   v19 = v18;
-  v11 = v7;
+  v11 = activityCopy;
   v12 = v18;
   dispatch_async(&_dispatch_main_q, v16);
 }
 
-- (void)sceneDidEnterBackground:(id)a3
+- (void)sceneDidEnterBackground:(id)background
 {
-  v4 = a3;
+  backgroundCopy = background;
   v5 = sub_100005610();
   if (os_signpost_enabled(v5))
   {
@@ -725,16 +725,16 @@ LABEL_68:
   v6 = sub_100005610();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [v4 description];
-    v8 = [(CarSceneDelegate *)self sceneType];
-    if (v8 > 6)
+    v7 = [backgroundCopy description];
+    sceneType = [(CarSceneDelegate *)self sceneType];
+    if (sceneType > 6)
     {
       v9 = @".Unknown";
     }
 
     else
     {
-      v9 = off_1016386B8[v8];
+      v9 = off_1016386B8[sceneType];
     }
 
     v16 = 138412546;
@@ -744,18 +744,18 @@ LABEL_68:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "-sceneDidEnterBackground: %@, carSceneType: %@", &v16, 0x16u);
   }
 
-  v10 = [(CarSceneDelegate *)self sceneController];
+  sceneController = [(CarSceneDelegate *)self sceneController];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    v12 = [(CarSceneDelegate *)self sceneController];
-    [v12 sceneDidEnterBackground:v4];
+    sceneController2 = [(CarSceneDelegate *)self sceneController];
+    [sceneController2 sceneDidEnterBackground:backgroundCopy];
   }
 
-  v13 = [(CarSceneDelegate *)self entryPointsCoordinator];
-  v14 = [v4 session];
-  [v13 didEnterBackgroundWithSession:v14];
+  entryPointsCoordinator = [(CarSceneDelegate *)self entryPointsCoordinator];
+  session = [backgroundCopy session];
+  [entryPointsCoordinator didEnterBackgroundWithSession:session];
 
   v15 = sub_100005610();
   if (os_signpost_enabled(v15))
@@ -765,9 +765,9 @@ LABEL_68:
   }
 }
 
-- (void)sceneWillEnterForeground:(id)a3
+- (void)sceneWillEnterForeground:(id)foreground
 {
-  v4 = a3;
+  foregroundCopy = foreground;
   v5 = sub_100005610();
   if (os_signpost_enabled(v5))
   {
@@ -778,16 +778,16 @@ LABEL_68:
   v6 = sub_100005610();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [v4 description];
-    v8 = [(CarSceneDelegate *)self sceneType];
-    if (v8 > 6)
+    v7 = [foregroundCopy description];
+    sceneType = [(CarSceneDelegate *)self sceneType];
+    if (sceneType > 6)
     {
       v9 = @".Unknown";
     }
 
     else
     {
-      v9 = off_1016386B8[v8];
+      v9 = off_1016386B8[sceneType];
     }
 
     v16 = 138412546;
@@ -797,18 +797,18 @@ LABEL_68:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "-sceneWillEnterForeground: %@, carSceneType: %@", &v16, 0x16u);
   }
 
-  v10 = [(CarSceneDelegate *)self sceneController];
+  sceneController = [(CarSceneDelegate *)self sceneController];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    v12 = [(CarSceneDelegate *)self sceneController];
-    [v12 sceneWillEnterForeground:v4];
+    sceneController2 = [(CarSceneDelegate *)self sceneController];
+    [sceneController2 sceneWillEnterForeground:foregroundCopy];
   }
 
-  v13 = [(CarSceneDelegate *)self entryPointsCoordinator];
-  v14 = [v4 session];
-  [v13 willEnterForegroundWithSession:v14];
+  entryPointsCoordinator = [(CarSceneDelegate *)self entryPointsCoordinator];
+  session = [foregroundCopy session];
+  [entryPointsCoordinator willEnterForegroundWithSession:session];
 
   v15 = sub_100005610();
   if (os_signpost_enabled(v15))
@@ -818,9 +818,9 @@ LABEL_68:
   }
 }
 
-- (void)sceneWillResignActive:(id)a3
+- (void)sceneWillResignActive:(id)active
 {
-  v4 = a3;
+  activeCopy = active;
   v5 = sub_100005610();
   if (os_signpost_enabled(v5))
   {
@@ -831,16 +831,16 @@ LABEL_68:
   v6 = sub_100005610();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [v4 description];
-    v8 = [(CarSceneDelegate *)self sceneType];
-    if (v8 > 6)
+    v7 = [activeCopy description];
+    sceneType = [(CarSceneDelegate *)self sceneType];
+    if (sceneType > 6)
     {
       v9 = @".Unknown";
     }
 
     else
     {
-      v9 = off_1016386B8[v8];
+      v9 = off_1016386B8[sceneType];
     }
 
     v16 = 138412546;
@@ -850,18 +850,18 @@ LABEL_68:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "-sceneWillResignActive: %@, carSceneType: %@", &v16, 0x16u);
   }
 
-  v10 = [(CarSceneDelegate *)self sceneController];
+  sceneController = [(CarSceneDelegate *)self sceneController];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    v12 = [(CarSceneDelegate *)self sceneController];
-    [v12 sceneWillResignActive:v4];
+    sceneController2 = [(CarSceneDelegate *)self sceneController];
+    [sceneController2 sceneWillResignActive:activeCopy];
   }
 
-  v13 = [(CarSceneDelegate *)self entryPointsCoordinator];
-  v14 = [v4 session];
-  [v13 willResignActiveWithSession:v14];
+  entryPointsCoordinator = [(CarSceneDelegate *)self entryPointsCoordinator];
+  session = [activeCopy session];
+  [entryPointsCoordinator willResignActiveWithSession:session];
 
   v15 = sub_100005610();
   if (os_signpost_enabled(v15))
@@ -871,9 +871,9 @@ LABEL_68:
   }
 }
 
-- (void)sceneDidBecomeActive:(id)a3
+- (void)sceneDidBecomeActive:(id)active
 {
-  v4 = a3;
+  activeCopy = active;
   v5 = sub_100005610();
   if (os_signpost_enabled(v5))
   {
@@ -884,16 +884,16 @@ LABEL_68:
   v6 = sub_100005610();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [v4 description];
-    v8 = [(CarSceneDelegate *)self sceneType];
-    if (v8 > 6)
+    v7 = [activeCopy description];
+    sceneType = [(CarSceneDelegate *)self sceneType];
+    if (sceneType > 6)
     {
       v9 = @".Unknown";
     }
 
     else
     {
-      v9 = off_1016386B8[v8];
+      v9 = off_1016386B8[sceneType];
     }
 
     v16 = 138412546;
@@ -903,18 +903,18 @@ LABEL_68:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "-sceneDidBecomeActive: %@, carSceneType: %@", &v16, 0x16u);
   }
 
-  v10 = [(CarSceneDelegate *)self sceneController];
+  sceneController = [(CarSceneDelegate *)self sceneController];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    v12 = [(CarSceneDelegate *)self sceneController];
-    [v12 sceneDidBecomeActive:v4];
+    sceneController2 = [(CarSceneDelegate *)self sceneController];
+    [sceneController2 sceneDidBecomeActive:activeCopy];
   }
 
-  v13 = [(CarSceneDelegate *)self entryPointsCoordinator];
-  v14 = [v4 session];
-  [v13 didBecomeActiveWithSession:v14];
+  entryPointsCoordinator = [(CarSceneDelegate *)self entryPointsCoordinator];
+  session = [activeCopy session];
+  [entryPointsCoordinator didBecomeActiveWithSession:session];
 
   v15 = sub_100005610();
   if (os_signpost_enabled(v15))
@@ -924,9 +924,9 @@ LABEL_68:
   }
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
-  v4 = a3;
+  disconnectCopy = disconnect;
   v5 = sub_100005610();
   if (os_signpost_enabled(v5))
   {
@@ -937,16 +937,16 @@ LABEL_68:
   v6 = sub_100005610();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [v4 description];
-    v8 = [(CarSceneDelegate *)self sceneType];
-    if (v8 > 6)
+    v7 = [disconnectCopy description];
+    sceneType = [(CarSceneDelegate *)self sceneType];
+    if (sceneType > 6)
     {
       v9 = @".Unknown";
     }
 
     else
     {
-      v9 = off_1016386B8[v8];
+      v9 = off_1016386B8[sceneType];
     }
 
     *buf = 138412546;
@@ -993,16 +993,16 @@ LABEL_68:
     }
   }
 
-  v12 = v4;
-  v13 = [(CarSceneDelegate *)self sceneType];
-  if (v13 > 6)
+  v12 = disconnectCopy;
+  sceneType2 = [(CarSceneDelegate *)self sceneType];
+  if (sceneType2 > 6)
   {
     v14 = @".Unknown";
   }
 
   else
   {
-    v14 = off_1016386B8[v13];
+    v14 = off_1016386B8[sceneType2];
   }
 
   v15 = [NSString stringWithFormat:@"%@_%p", v14, self];
@@ -1010,24 +1010,24 @@ LABEL_68:
 
   if ([(CarSceneDelegate *)self sceneType]!= 1)
   {
-    v16 = [(CarSceneDelegate *)self window];
-    [v16 setHidden:1];
+    window = [(CarSceneDelegate *)self window];
+    [window setHidden:1];
 
-    v17 = [(CarSceneDelegate *)self window];
+    window2 = [(CarSceneDelegate *)self window];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v19 = [(CarSceneDelegate *)self window];
-      [v19 invalidate];
+      window3 = [(CarSceneDelegate *)self window];
+      [window3 invalidate];
     }
 
     [(CarSceneDelegate *)self setWindow:0];
   }
 
-  v20 = [(CarSceneDelegate *)self sceneController];
-  [v20 sceneDidDisconnect:v12];
+  sceneController = [(CarSceneDelegate *)self sceneController];
+  [sceneController sceneDidDisconnect:v12];
 
   v21 = +[UIApplication sharedMapsDelegate];
   [v21 updateNavigationIdleTimerConfiguration];
@@ -1040,11 +1040,11 @@ LABEL_68:
   }
 }
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
   v11 = sub_100005610();
   if (os_signpost_enabled(v11))
   {
@@ -1069,25 +1069,25 @@ LABEL_68:
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v14, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "CarDisplayControllerPrepare", "", buf, 2u);
   }
 
-  v15 = v8;
+  v15 = sceneCopy;
   [(CarSceneDelegate *)self setScene:v15];
-  v16 = [v15 _FBSScene];
-  v17 = [v16 settings];
+  _FBSScene = [v15 _FBSScene];
+  settings = [_FBSScene settings];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v19 = [v16 settings];
-  v20 = v19;
+  settings2 = [_FBSScene settings];
+  settings3 = settings2;
   if (isKindOfClass)
   {
-    v21 = [v19 widgetStyle];
+    widgetStyle = [settings2 widgetStyle];
     v22 = 2;
-    if (v21 != 3)
+    if (widgetStyle != 3)
     {
       v22 = 0;
     }
 
-    if ((v21 - 1) >= 2)
+    if ((widgetStyle - 1) >= 2)
     {
       v23 = v22;
     }
@@ -1111,25 +1111,25 @@ LABEL_68:
       goto LABEL_19;
     }
 
-    v20 = [v16 settings];
-    v67 = [v20 itemType];
-    if (v67 > 1)
+    settings3 = [_FBSScene settings];
+    itemType = [settings3 itemType];
+    if (itemType > 1)
     {
-      if (v67 == 2)
+      if (itemType == 2)
       {
         v23 = 5;
         goto LABEL_13;
       }
 
-      if (v67 != 3)
+      if (itemType != 3)
       {
         goto LABEL_71;
       }
     }
 
-    else if (v67)
+    else if (itemType)
     {
-      if (v67 == 1)
+      if (itemType == 1)
       {
         v23 = 4;
 LABEL_13:
@@ -1159,17 +1159,17 @@ LABEL_71:
 LABEL_19:
 
   [(CarSceneDelegate *)self setSceneType:v23];
-  v76 = self;
-  v25 = [NSArray arrayWithObjects:&v76 count:1];
-  v26 = [(CarSceneDelegate *)self sceneType];
-  if (v26 > 6)
+  selfCopy = self;
+  v25 = [NSArray arrayWithObjects:&selfCopy count:1];
+  sceneType = [(CarSceneDelegate *)self sceneType];
+  if (sceneType > 6)
   {
     v27 = @".Unknown";
   }
 
   else
   {
-    v27 = off_1016386B8[v26];
+    v27 = off_1016386B8[sceneType];
   }
 
   v28 = [NSString stringWithFormat:@"%@_%p", v27, self];
@@ -1179,23 +1179,23 @@ LABEL_19:
   if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
   {
     v30 = [v15 description];
-    v31 = [(CarSceneDelegate *)self sceneType];
-    if (v31 > 6)
+    sceneType2 = [(CarSceneDelegate *)self sceneType];
+    if (sceneType2 > 6)
     {
       v32 = @".Unknown";
     }
 
     else
     {
-      v32 = off_1016386B8[v31];
+      v32 = off_1016386B8[sceneType2];
     }
 
     *buf = 138413058;
     v69 = v30;
     v70 = 2112;
-    v71 = v9;
+    v71 = sessionCopy;
     v72 = 2112;
-    v73 = v10;
+    v73 = optionsCopy;
     v74 = 2112;
     v75 = v32;
     _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_INFO, "-scene:willConnectToSession:withOptions: %@, %@, %@, carSceneType: %@", buf, 0x2Au);
@@ -1208,11 +1208,11 @@ LABEL_19:
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v33, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "PlatformController", "", buf, 2u);
   }
 
-  v34 = [(CarSceneDelegate *)self appSessionController];
-  v35 = [v34 primaryPlatformController];
+  appSessionController = [(CarSceneDelegate *)self appSessionController];
+  primaryPlatformController = [appSessionController primaryPlatformController];
 
   v36 = +[CarDisplayController sharedInstance];
-  [v36 setPlatformController:v35];
+  [v36 setPlatformController:primaryPlatformController];
 
   v37 = sub_100005610();
   if (os_signpost_enabled(v37))
@@ -1245,8 +1245,8 @@ LABEL_19:
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v41, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "SceneController", "", buf, 2u);
   }
 
-  v42 = [(CarSceneDelegate *)self sceneController];
-  [v42 _mapsCar_scene:v15 willConnectToSession:v9 options:v10];
+  sceneController = [(CarSceneDelegate *)self sceneController];
+  [sceneController _mapsCar_scene:v15 willConnectToSession:sessionCopy options:optionsCopy];
 
   v43 = sub_100005610();
   if (os_signpost_enabled(v43))
@@ -1255,13 +1255,13 @@ LABEL_19:
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v43, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "SceneController", "", buf, 2u);
   }
 
-  v44 = [v35 chromeViewController];
+  chromeViewController = [primaryPlatformController chromeViewController];
 
-  if (!v44)
+  if (!chromeViewController)
   {
     v45 = +[CarDisplayController sharedInstance];
-    v46 = [v45 chromeViewController];
-    [v35 setChromeViewController:v46];
+    chromeViewController2 = [v45 chromeViewController];
+    [primaryPlatformController setChromeViewController:chromeViewController2];
   }
 
   if ([(CarSceneDelegate *)self sceneType]!= 1)
@@ -1276,28 +1276,28 @@ LABEL_19:
     v48 = [objc_alloc(-[CarSceneDelegate _windowClass](self "_windowClass"))];
     [(CarSceneDelegate *)self setWindow:v48];
 
-    v49 = [(CarSceneDelegate *)self sceneType];
-    if (v49 > 6)
+    sceneType3 = [(CarSceneDelegate *)self sceneType];
+    if (sceneType3 > 6)
     {
       v50 = @".Unknown";
     }
 
     else
     {
-      v50 = off_1016386B8[v49];
+      v50 = off_1016386B8[sceneType3];
     }
 
     v51 = [@"Maps" stringByAppendingString:v50];
-    v52 = [(CarSceneDelegate *)self window];
-    [v52 setAccessibilityIdentifier:v51];
+    window = [(CarSceneDelegate *)self window];
+    [window setAccessibilityIdentifier:v51];
 
-    v53 = [(CarSceneDelegate *)self sceneController];
-    v54 = [v53 chromeViewController];
-    v55 = [(CarSceneDelegate *)self window];
-    [v55 setRootViewController:v54];
+    sceneController2 = [(CarSceneDelegate *)self sceneController];
+    chromeViewController3 = [sceneController2 chromeViewController];
+    window2 = [(CarSceneDelegate *)self window];
+    [window2 setRootViewController:chromeViewController3];
 
-    v56 = [(CarSceneDelegate *)self window];
-    [v56 setHidden:0];
+    window3 = [(CarSceneDelegate *)self window];
+    [window3 setHidden:0];
 
     v57 = sub_100005610();
     if (os_signpost_enabled(v57))
@@ -1332,10 +1332,10 @@ LABEL_19:
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v60, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "EntryPointCoordinator", "", buf, 2u);
   }
 
-  v61 = [(CarSceneDelegate *)self entryPointsCoordinator];
-  v62 = [v15 coordinateSpace];
-  [v62 bounds];
-  [v61 willConnectToSession:v9 options:v10 windowSize:v15 scene:{v63, v64}];
+  entryPointsCoordinator = [(CarSceneDelegate *)self entryPointsCoordinator];
+  coordinateSpace = [v15 coordinateSpace];
+  [coordinateSpace bounds];
+  [entryPointsCoordinator willConnectToSession:sessionCopy options:optionsCopy windowSize:v15 scene:{v63, v64}];
 
   v65 = sub_100005610();
   if (os_signpost_enabled(v65))

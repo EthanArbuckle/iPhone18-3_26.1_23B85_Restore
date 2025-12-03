@@ -1,43 +1,43 @@
 @interface HFZoneModule
 - (BOOL)canExpand;
 - (BOOL)toggleExpansion;
-- (HFZoneModule)initWithItemUpdater:(id)a3 room:(id)a4;
+- (HFZoneModule)initWithItemUpdater:(id)updater room:(id)room;
 - (NSSet)itemProviders;
-- (id)buildSectionsWithDisplayedItems:(id)a3;
+- (id)buildSectionsWithDisplayedItems:(id)items;
 - (void)_reloadItemProviders;
-- (void)home:(id)a3 didAddRoom:(id)a4 toZone:(id)a5;
-- (void)home:(id)a3 didAddZone:(id)a4;
-- (void)home:(id)a3 didRemoveRoom:(id)a4 fromZone:(id)a5;
-- (void)home:(id)a3 didRemoveZone:(id)a4;
-- (void)home:(id)a3 didUpdateNameForZone:(id)a4;
-- (void)setExpanded:(BOOL)a3;
+- (void)home:(id)home didAddRoom:(id)room toZone:(id)zone;
+- (void)home:(id)home didAddZone:(id)zone;
+- (void)home:(id)home didRemoveRoom:(id)room fromZone:(id)zone;
+- (void)home:(id)home didRemoveZone:(id)zone;
+- (void)home:(id)home didUpdateNameForZone:(id)zone;
+- (void)setExpanded:(BOOL)expanded;
 @end
 
 @implementation HFZoneModule
 
-- (HFZoneModule)initWithItemUpdater:(id)a3 room:(id)a4
+- (HFZoneModule)initWithItemUpdater:(id)updater room:(id)room
 {
-  v7 = a4;
+  roomCopy = room;
   v26.receiver = self;
   v26.super_class = HFZoneModule;
-  v8 = [(HFItemModule *)&v26 initWithItemUpdater:a3];
+  v8 = [(HFItemModule *)&v26 initWithItemUpdater:updater];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_room, a4);
+    objc_storeStrong(&v8->_room, room);
     v10 = [HFZoneItemProvider alloc];
-    v11 = [v7 home];
-    v12 = [(HFZoneItemProvider *)v10 initWithHome:v11];
+    home = [roomCopy home];
+    v12 = [(HFZoneItemProvider *)v10 initWithHome:home];
     zoneItemProvider = v9->_zoneItemProvider;
     v9->_zoneItemProvider = v12;
 
     v14 = [HFZoneSuggestionItemProvider alloc];
-    v15 = [v7 home];
-    v16 = [(HFZoneSuggestionItemProvider *)v14 initWithHome:v15];
+    home2 = [roomCopy home];
+    v16 = [(HFZoneSuggestionItemProvider *)v14 initWithHome:home2];
     zoneSuggestionItemProvider = v9->_zoneSuggestionItemProvider;
     v9->_zoneSuggestionItemProvider = v16;
 
-    v18 = [[HFCurrentZonesItem alloc] initWithRoom:v7];
+    v18 = [[HFCurrentZonesItem alloc] initWithRoom:roomCopy];
     currentZoneItem = v9->_currentZoneItem;
     v9->_currentZoneItem = v18;
 
@@ -65,22 +65,22 @@
   else
   {
     objc_initWeak(location, self);
-    v5 = [(HFZoneModule *)self room];
+    room = [(HFZoneModule *)self room];
     v6 = [HFStaticItem alloc];
     v36[0] = MEMORY[0x277D85DD0];
     v36[1] = 3221225472;
     v36[2] = __29__HFZoneModule_itemProviders__block_invoke;
     v36[3] = &unk_277DFA878;
     objc_copyWeak(&v38, location);
-    v7 = v5;
+    v7 = room;
     v37 = v7;
     v8 = [(HFStaticItem *)v6 initWithResultsBlock:v36];
     [(HFZoneModule *)self setCreateNewZoneItem:v8];
 
     v9 = [HFStaticItemProvider alloc];
     v10 = MEMORY[0x277CBEB98];
-    v11 = [(HFZoneModule *)self createNewZoneItem];
-    v12 = [v10 setWithObject:v11];
+    createNewZoneItem = [(HFZoneModule *)self createNewZoneItem];
+    v12 = [v10 setWithObject:createNewZoneItem];
     v13 = [(HFStaticItemProvider *)v9 initWithItems:v12];
     [(HFZoneModule *)self setCreateNewZoneItemProvider:v13];
 
@@ -93,20 +93,20 @@
     v34 = v14;
     v15 = _Block_copy(&aBlock);
     v16 = [HFTransformItemProvider alloc];
-    v17 = [(HFZoneModule *)self zoneItemProvider];
-    v18 = [(HFTransformItemProvider *)v16 initWithSourceProvider:v17 transformationBlock:v15];
+    zoneItemProvider = [(HFZoneModule *)self zoneItemProvider];
+    v18 = [(HFTransformItemProvider *)v16 initWithSourceProvider:zoneItemProvider transformationBlock:v15];
 
     v19 = [HFTransformItemProvider alloc];
-    v20 = [(HFZoneModule *)self zoneSuggestionItemProvider];
-    v21 = [(HFTransformItemProvider *)v19 initWithSourceProvider:v20 transformationBlock:v15];
+    zoneSuggestionItemProvider = [(HFZoneModule *)self zoneSuggestionItemProvider];
+    v21 = [(HFTransformItemProvider *)v19 initWithSourceProvider:zoneSuggestionItemProvider transformationBlock:v15];
 
     v22 = [HFTransformItemProvider alloc];
-    v23 = [(HFZoneModule *)self currentZoneItemProvider];
-    v24 = [(HFTransformItemProvider *)v22 initWithSourceProvider:v23 transformationBlock:v15];
+    currentZoneItemProvider = [(HFZoneModule *)self currentZoneItemProvider];
+    v24 = [(HFTransformItemProvider *)v22 initWithSourceProvider:currentZoneItemProvider transformationBlock:v15];
 
     v25 = MEMORY[0x277CBEB98];
-    v26 = [(HFZoneModule *)self createNewZoneItemProvider];
-    v27 = [v25 setWithObjects:{v18, v21, v26, v24, 0, aBlock, v31, v32, v33}];
+    createNewZoneItemProvider = [(HFZoneModule *)self createNewZoneItemProvider];
+    v27 = [v25 setWithObjects:{v18, v21, createNewZoneItemProvider, v24, 0, aBlock, v31, v32, v33}];
     v28 = self->_itemProviders;
     self->_itemProviders = v27;
 
@@ -243,20 +243,20 @@ LABEL_10:
   return v5;
 }
 
-- (id)buildSectionsWithDisplayedItems:(id)a3
+- (id)buildSectionsWithDisplayedItems:(id)items
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  itemsCopy = items;
+  if ([itemsCopy count])
   {
-    v5 = [v4 na_filter:&__block_literal_global_99];
+    v5 = [itemsCopy na_filter:&__block_literal_global_99];
     v6 = [v5 na_filter:&__block_literal_global_211];
-    v7 = [v6 allObjects];
-    v8 = [v7 sortedArrayUsingComparator:&__block_literal_global_214_0];
+    allObjects = [v6 allObjects];
+    v8 = [allObjects sortedArrayUsingComparator:&__block_literal_global_214_0];
 
     v9 = [v5 na_filter:&__block_literal_global_216_1];
-    v10 = [v9 allObjects];
-    v11 = [v10 sortedArrayUsingComparator:&__block_literal_global_219];
+    allObjects2 = [v9 allObjects];
+    v11 = [allObjects2 sortedArrayUsingComparator:&__block_literal_global_219];
 
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
@@ -268,13 +268,13 @@ LABEL_10:
     [v13 na_safeAddObject:v12];
     [v13 addObjectsFromArray:v8];
     [v13 addObjectsFromArray:v11];
-    v14 = [(HFZoneModule *)self createNewZoneItem];
-    v15 = [v4 containsObject:v14];
+    createNewZoneItem = [(HFZoneModule *)self createNewZoneItem];
+    v15 = [itemsCopy containsObject:createNewZoneItem];
 
     if (v15)
     {
-      v16 = [(HFZoneModule *)self createNewZoneItem];
-      [v13 na_safeAddObject:v16];
+      createNewZoneItem2 = [(HFZoneModule *)self createNewZoneItem];
+      [v13 na_safeAddObject:createNewZoneItem2];
     }
 
     if ([v13 count])
@@ -375,28 +375,28 @@ BOOL __48__HFZoneModule_buildSectionsWithDisplayedItems___block_invoke_6(uint64_
 
 - (BOOL)canExpand
 {
-  v3 = [(HFZoneModule *)self zoneItemProvider];
-  v4 = [v3 home];
-  v5 = [v4 hf_currentUserIsAdministrator];
+  zoneItemProvider = [(HFZoneModule *)self zoneItemProvider];
+  home = [zoneItemProvider home];
+  hf_currentUserIsAdministrator = [home hf_currentUserIsAdministrator];
 
-  if (v5)
+  if (hf_currentUserIsAdministrator)
   {
     return 1;
   }
 
-  v7 = [(HFZoneModule *)self room];
-  v8 = [v7 hf_allZones];
-  v6 = [v8 count] > 1;
+  room = [(HFZoneModule *)self room];
+  hf_allZones = [room hf_allZones];
+  v6 = [hf_allZones count] > 1;
 
   return v6;
 }
 
-- (void)setExpanded:(BOOL)a3
+- (void)setExpanded:(BOOL)expanded
 {
-  v3 = a3;
-  if ([(HFZoneModule *)self canExpand]&& self->_expanded != v3)
+  expandedCopy = expanded;
+  if ([(HFZoneModule *)self canExpand]&& self->_expanded != expandedCopy)
   {
-    self->_expanded = v3;
+    self->_expanded = expandedCopy;
 
     [(HFZoneModule *)self _reloadItemProviders];
   }
@@ -404,18 +404,18 @@ BOOL __48__HFZoneModule_buildSectionsWithDisplayedItems___block_invoke_6(uint64_
 
 - (void)_reloadItemProviders
 {
-  v4 = [(HFZoneModule *)self itemProviders];
-  v7 = [HFItemUpdateRequest requestToReloadItemProviders:v4 senderSelector:a2];
+  itemProviders = [(HFZoneModule *)self itemProviders];
+  v7 = [HFItemUpdateRequest requestToReloadItemProviders:itemProviders senderSelector:a2];
 
-  v5 = [(HFItemModule *)self itemUpdater];
-  v6 = [v5 performItemUpdateRequest:v7];
+  itemUpdater = [(HFItemModule *)self itemUpdater];
+  v6 = [itemUpdater performItemUpdateRequest:v7];
 }
 
-- (void)home:(id)a3 didAddZone:(id)a4
+- (void)home:(id)home didAddZone:(id)zone
 {
-  v5 = [a4 rooms];
-  v6 = [(HFZoneModule *)self room];
-  v7 = [v5 containsObject:v6];
+  rooms = [zone rooms];
+  room = [(HFZoneModule *)self room];
+  v7 = [rooms containsObject:room];
 
   if (v7)
   {
@@ -424,11 +424,11 @@ BOOL __48__HFZoneModule_buildSectionsWithDisplayedItems___block_invoke_6(uint64_
   }
 }
 
-- (void)home:(id)a3 didRemoveZone:(id)a4
+- (void)home:(id)home didRemoveZone:(id)zone
 {
-  v5 = [a4 rooms];
-  v6 = [(HFZoneModule *)self room];
-  v7 = [v5 containsObject:v6];
+  rooms = [zone rooms];
+  room = [(HFZoneModule *)self room];
+  v7 = [rooms containsObject:room];
 
   if (v7)
   {
@@ -437,11 +437,11 @@ BOOL __48__HFZoneModule_buildSectionsWithDisplayedItems___block_invoke_6(uint64_
   }
 }
 
-- (void)home:(id)a3 didUpdateNameForZone:(id)a4
+- (void)home:(id)home didUpdateNameForZone:(id)zone
 {
-  v5 = [a4 rooms];
-  v6 = [(HFZoneModule *)self room];
-  v7 = [v5 containsObject:v6];
+  rooms = [zone rooms];
+  room = [(HFZoneModule *)self room];
+  v7 = [rooms containsObject:room];
 
   if (v7)
   {
@@ -450,11 +450,11 @@ BOOL __48__HFZoneModule_buildSectionsWithDisplayedItems___block_invoke_6(uint64_
   }
 }
 
-- (void)home:(id)a3 didAddRoom:(id)a4 toZone:(id)a5
+- (void)home:(id)home didAddRoom:(id)room toZone:(id)zone
 {
-  v6 = a4;
-  v7 = [(HFZoneModule *)self room];
-  v8 = [v6 isEqual:v7];
+  roomCopy = room;
+  room = [(HFZoneModule *)self room];
+  v8 = [roomCopy isEqual:room];
 
   if (v8)
   {
@@ -463,11 +463,11 @@ BOOL __48__HFZoneModule_buildSectionsWithDisplayedItems___block_invoke_6(uint64_
   }
 }
 
-- (void)home:(id)a3 didRemoveRoom:(id)a4 fromZone:(id)a5
+- (void)home:(id)home didRemoveRoom:(id)room fromZone:(id)zone
 {
-  v6 = a4;
-  v7 = [(HFZoneModule *)self room];
-  v8 = [v6 isEqual:v7];
+  roomCopy = room;
+  room = [(HFZoneModule *)self room];
+  v8 = [roomCopy isEqual:room];
 
   if (v8)
   {

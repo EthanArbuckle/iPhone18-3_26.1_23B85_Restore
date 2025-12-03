@@ -1,28 +1,28 @@
 @interface GKMessageUtilities
-+ (id)contactFromEmailOrPhoneNumber:(id)a3 fromContactStore:(id)a4;
-+ (id)messagesRecipientHandleForContact:(id)a3;
-+ (id)playerWithPhoneNumberOrEmail:(id)a3 givenName:(id)a4;
-+ (id)predicateWithPhoneNumberOrEmail:(id)a3;
-+ (void)linkMetadataWithPlayerRange:(_NSRange)a3 shareURL:(id)a4 completionHandler:(id)a5;
++ (id)contactFromEmailOrPhoneNumber:(id)number fromContactStore:(id)store;
++ (id)messagesRecipientHandleForContact:(id)contact;
++ (id)playerWithPhoneNumberOrEmail:(id)email givenName:(id)name;
++ (id)predicateWithPhoneNumberOrEmail:(id)email;
++ (void)linkMetadataWithPlayerRange:(_NSRange)range shareURL:(id)l completionHandler:(id)handler;
 @end
 
 @implementation GKMessageUtilities
 
-+ (id)messagesRecipientHandleForContact:(id)a3
++ (id)messagesRecipientHandleForContact:(id)contact
 {
   v61 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  contactCopy = contact;
   v4 = MEMORY[0x277CBEB38];
-  v5 = [v3 phoneNumbers];
-  v49 = [v4 dictionaryWithCapacity:{objc_msgSend(v5, "count")}];
+  phoneNumbers = [contactCopy phoneNumbers];
+  v49 = [v4 dictionaryWithCapacity:{objc_msgSend(phoneNumbers, "count")}];
 
   v57 = 0u;
   v58 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v47 = v3;
-  v6 = [v3 phoneNumbers];
-  v7 = [v6 countByEnumeratingWithState:&v55 objects:v60 count:16];
+  v47 = contactCopy;
+  phoneNumbers2 = [contactCopy phoneNumbers];
+  v7 = [phoneNumbers2 countByEnumeratingWithState:&v55 objects:v60 count:16];
   if (v7)
   {
     v8 = v7;
@@ -38,28 +38,28 @@
       {
         if (*v56 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(phoneNumbers2);
         }
 
         v14 = *(*(&v55 + 1) + 8 * i);
-        v15 = [v14 label];
-        if (([v15 isEqualToString:v10] & 1) == 0 && (objc_msgSend(v15, "isEqualToString:", v11) & 1) == 0 && (objc_msgSend(v15, "isEqualToString:", v12) & 1) == 0 && (objc_msgSend(v15, "isEqualToString:", v50) & 1) == 0)
+        label = [v14 label];
+        if (([label isEqualToString:v10] & 1) == 0 && (objc_msgSend(label, "isEqualToString:", v11) & 1) == 0 && (objc_msgSend(label, "isEqualToString:", v12) & 1) == 0 && (objc_msgSend(label, "isEqualToString:", v50) & 1) == 0)
         {
-          v16 = [v14 label];
+          label2 = [v14 label];
 
-          if (v16)
+          if (label2)
           {
-            v17 = [v14 value];
-            v18 = [v17 stringValue];
-            v19 = [v14 label];
-            [v49 setObject:v18 forKeyedSubscript:v19];
+            value = [v14 value];
+            stringValue = [value stringValue];
+            label3 = [v14 label];
+            [v49 setObject:stringValue forKeyedSubscript:label3];
 
             v12 = v48;
           }
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v55 objects:v60 count:16];
+      v8 = [phoneNumbers2 countByEnumeratingWithState:&v55 objects:v60 count:16];
     }
 
     while (v8);
@@ -69,7 +69,7 @@
   v21 = [v49 objectForKeyedSubscript:*MEMORY[0x277CBD928]];
   if (v21)
   {
-    v22 = v21;
+    stringValue2 = v21;
     v23 = v47;
   }
 
@@ -79,28 +79,28 @@
     v23 = v47;
     if (v24 || ([v49 objectForKeyedSubscript:*MEMORY[0x277CBD900]], (v24 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v22 = v24;
+      stringValue2 = v24;
     }
 
     else
     {
-      v26 = [v47 phoneNumbers];
-      v27 = [v26 firstObject];
-      v28 = [v27 value];
-      v22 = [v28 stringValue];
+      phoneNumbers3 = [v47 phoneNumbers];
+      firstObject = [phoneNumbers3 firstObject];
+      value2 = [firstObject value];
+      stringValue2 = [value2 stringValue];
 
-      if (!v22)
+      if (!stringValue2)
       {
         v29 = MEMORY[0x277CBEB38];
-        v30 = [v47 emailAddresses];
-        v31 = [v29 dictionaryWithCapacity:{objc_msgSend(v30, "count")}];
+        emailAddresses = [v47 emailAddresses];
+        v31 = [v29 dictionaryWithCapacity:{objc_msgSend(emailAddresses, "count")}];
 
         v53 = 0u;
         v54 = 0u;
         v51 = 0u;
         v52 = 0u;
-        v32 = [v47 emailAddresses];
-        v33 = [v32 countByEnumeratingWithState:&v51 objects:v59 count:16];
+        emailAddresses2 = [v47 emailAddresses];
+        v33 = [emailAddresses2 countByEnumeratingWithState:&v51 objects:v59 count:16];
         if (v33)
         {
           v34 = v33;
@@ -111,26 +111,26 @@
             {
               if (*v52 != v35)
               {
-                objc_enumerationMutation(v32);
+                objc_enumerationMutation(emailAddresses2);
               }
 
               v37 = *(*(&v51 + 1) + 8 * j);
-              v38 = [v37 label];
-              if (v38)
+              label4 = [v37 label];
+              if (label4)
               {
-                v39 = v38;
-                v40 = [v37 value];
+                v39 = label4;
+                value3 = [v37 value];
 
-                if (v40)
+                if (value3)
                 {
-                  v41 = [v37 value];
-                  v42 = [v37 label];
-                  [v31 setObject:v41 forKeyedSubscript:v42];
+                  value4 = [v37 value];
+                  label5 = [v37 label];
+                  [v31 setObject:value4 forKeyedSubscript:label5];
                 }
               }
             }
 
-            v34 = [v32 countByEnumeratingWithState:&v51 objects:v59 count:16];
+            v34 = [emailAddresses2 countByEnumeratingWithState:&v51 objects:v59 count:16];
           }
 
           while (v34);
@@ -139,7 +139,7 @@
         v43 = [v31 objectForKeyedSubscript:*MEMORY[0x277CBD8D8]];
         if (v43)
         {
-          v22 = v43;
+          stringValue2 = v43;
           v20 = v49;
         }
 
@@ -149,45 +149,45 @@
           v20 = v49;
           if (v44)
           {
-            v22 = v44;
+            stringValue2 = v44;
           }
 
           else
           {
-            v45 = [v47 emailAddresses];
-            v46 = [v45 firstObject];
-            v22 = [v46 value];
+            emailAddresses3 = [v47 emailAddresses];
+            firstObject2 = [emailAddresses3 firstObject];
+            stringValue2 = [firstObject2 value];
           }
         }
       }
     }
   }
 
-  return v22;
+  return stringValue2;
 }
 
-+ (void)linkMetadataWithPlayerRange:(_NSRange)a3 shareURL:(id)a4 completionHandler:(id)a5
++ (void)linkMetadataWithPlayerRange:(_NSRange)range shareURL:(id)l completionHandler:(id)handler
 {
-  length = a3.length;
-  location = a3.location;
-  v8 = a4;
-  v9 = a5;
+  length = range.length;
+  location = range.location;
+  lCopy = l;
+  handlerCopy = handler;
   v10 = MEMORY[0x277D0C020];
   v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKMessageUtilities.m", 76, "+[GKMessageUtilities linkMetadataWithPlayerRange:shareURL:completionHandler:]"];
   v12 = [v10 dispatchGroupWithName:v11];
 
-  v13 = [MEMORY[0x277D0C048] currentGame];
-  v14 = [v13 bundleIdentifier];
+  currentGame = [MEMORY[0x277D0C048] currentGame];
+  bundleIdentifier = [currentGame bundleIdentifier];
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __77__GKMessageUtilities_linkMetadataWithPlayerRange_shareURL_completionHandler___block_invoke;
   v29[3] = &unk_279669B00;
-  v30 = v14;
+  v30 = bundleIdentifier;
   v15 = v12;
   v31 = v15;
-  v16 = v13;
+  v16 = currentGame;
   v32 = v16;
-  v17 = v14;
+  v17 = bundleIdentifier;
   [v15 perform:v29];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
@@ -197,10 +197,10 @@
   v24 = v15;
   v27 = location;
   v28 = length;
-  v25 = v8;
-  v26 = v9;
-  v18 = v9;
-  v19 = v8;
+  v25 = lCopy;
+  v26 = handlerCopy;
+  v18 = handlerCopy;
+  v19 = lCopy;
   v20 = v15;
   v21 = v16;
   [v20 notifyOnMainQueueWithBlock:v22];
@@ -306,15 +306,15 @@ void __77__GKMessageUtilities_linkMetadataWithPlayerRange_shareURL_completionHan
   (*(*(a1 + 56) + 16))();
 }
 
-+ (id)playerWithPhoneNumberOrEmail:(id)a3 givenName:(id)a4
++ (id)playerWithPhoneNumberOrEmail:(id)email givenName:(id)name
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  emailCopy = email;
+  nameCopy = name;
   v7 = objc_alloc_init(MEMORY[0x277CBDB38]);
-  if ([v5 containsString:@"@"])
+  if ([emailCopy containsString:@"@"])
   {
-    v8 = [objc_alloc(MEMORY[0x277CBDB20]) initWithLabel:&stru_28612D290 value:v5];
+    v8 = [objc_alloc(MEMORY[0x277CBDB20]) initWithLabel:&stru_28612D290 value:emailCopy];
     v14[0] = v8;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
     [v7 setEmailAddresses:v9];
@@ -322,16 +322,16 @@ void __77__GKMessageUtilities_linkMetadataWithPlayerRange_shareURL_completionHan
 
   else
   {
-    v8 = [objc_alloc(MEMORY[0x277CBDB70]) initWithStringValue:v5];
+    v8 = [objc_alloc(MEMORY[0x277CBDB70]) initWithStringValue:emailCopy];
     v9 = [objc_alloc(MEMORY[0x277CBDB20]) initWithLabel:&stru_28612D290 value:v8];
     v13 = v9;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:&v13 count:1];
     [v7 setPhoneNumbers:v10];
   }
 
-  if ([v6 length])
+  if ([nameCopy length])
   {
-    [v7 setGivenName:v6];
+    [v7 setGivenName:nameCopy];
   }
 
   v11 = [objc_alloc(MEMORY[0x277D0C170]) initWithContact:v7];
@@ -339,23 +339,23 @@ void __77__GKMessageUtilities_linkMetadataWithPlayerRange_shareURL_completionHan
   return v11;
 }
 
-+ (id)predicateWithPhoneNumberOrEmail:(id)a3
++ (id)predicateWithPhoneNumberOrEmail:(id)email
 {
-  v3 = a3;
-  if (!v3)
+  emailCopy = email;
+  if (!emailCopy)
   {
     goto LABEL_6;
   }
 
   if (IMStringIsEmail())
   {
-    v4 = [MEMORY[0x277CBDA58] predicateForContactsMatchingEmailAddress:v3];
+    v4 = [MEMORY[0x277CBDA58] predicateForContactsMatchingEmailAddress:emailCopy];
     goto LABEL_7;
   }
 
-  if (MEMORY[0x25303FEE0](v3))
+  if (MEMORY[0x25303FEE0](emailCopy))
   {
-    v5 = [objc_alloc(MEMORY[0x277CBDB70]) initWithStringValue:v3];
+    v5 = [objc_alloc(MEMORY[0x277CBDB70]) initWithStringValue:emailCopy];
     v4 = [MEMORY[0x277CBDA58] predicateForContactsMatchingPhoneNumber:v5];
   }
 
@@ -370,12 +370,12 @@ LABEL_7:
   return v4;
 }
 
-+ (id)contactFromEmailOrPhoneNumber:(id)a3 fromContactStore:(id)a4
++ (id)contactFromEmailOrPhoneNumber:(id)number fromContactStore:(id)store
 {
   v30[14] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [GKMessageUtilities predicateWithPhoneNumberOrEmail:v5];
+  numberCopy = number;
+  storeCopy = store;
+  v7 = [GKMessageUtilities predicateWithPhoneNumberOrEmail:numberCopy];
   if (v7)
   {
     v24 = 0;
@@ -415,7 +415,7 @@ LABEL_7:
     v23[2] = __69__GKMessageUtilities_contactFromEmailOrPhoneNumber_fromContactStore___block_invoke;
     v23[3] = &unk_279669B50;
     v23[4] = &v24;
-    [v6 enumerateContactsWithFetchRequest:v17 error:0 usingBlock:v23];
+    [storeCopy enumerateContactsWithFetchRequest:v17 error:0 usingBlock:v23];
     v18 = v25[5];
 
     _Block_object_dispose(&v24, 8);
@@ -433,7 +433,7 @@ LABEL_7:
 
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
     {
-      [GKMessageUtilities contactFromEmailOrPhoneNumber:v5 fromContactStore:v20];
+      [GKMessageUtilities contactFromEmailOrPhoneNumber:numberCopy fromContactStore:v20];
     }
 
     v18 = 0;

@@ -1,8 +1,8 @@
 @interface PPAdaptiveCoalescer
 - (PPAdaptiveCoalescer)init;
-- (void)coalesceRequestKey:(id)a3 handler:(id)a4 executeRequestAndInvokeHandlersBlock:(id)a5;
-- (void)coalesceRequestKey:(id)a3 handler:(id)a4 executeRequestAndInvokeHandlersBlock:(id)a5 nowDate:(id)a6;
-- (void)garbageCollectPendingKeysForNowDate:(id)a3;
+- (void)coalesceRequestKey:(id)key handler:(id)handler executeRequestAndInvokeHandlersBlock:(id)block;
+- (void)coalesceRequestKey:(id)key handler:(id)handler executeRequestAndInvokeHandlersBlock:(id)block nowDate:(id)date;
+- (void)garbageCollectPendingKeysForNowDate:(id)date;
 @end
 
 @implementation PPAdaptiveCoalescer
@@ -28,18 +28,18 @@
   return v2;
 }
 
-- (void)coalesceRequestKey:(id)a3 handler:(id)a4 executeRequestAndInvokeHandlersBlock:(id)a5 nowDate:(id)a6
+- (void)coalesceRequestKey:(id)key handler:(id)handler executeRequestAndInvokeHandlersBlock:(id)block nowDate:(id)date
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [a3 copyWithZone:0];
+  handlerCopy = handler;
+  blockCopy = block;
+  dateCopy = date;
+  v14 = [key copyWithZone:0];
   v41[0] = 0;
   v41[1] = v41;
   v41[2] = 0x3032000000;
   v41[3] = __Block_byref_object_copy__1852;
   v41[4] = __Block_byref_object_dispose__1853;
-  v42 = MEMORY[0x1AC568040](v12);
+  v42 = MEMORY[0x1AC568040](blockCopy);
   v15 = self->_lock;
   v35[0] = MEMORY[0x1E69E9820];
   v35[1] = 3221225472;
@@ -49,7 +49,7 @@
   v36 = v16;
   v17 = v14;
   v37 = v17;
-  v38 = self;
+  selfCopy = self;
   v39 = v41;
   v40 = a2;
   v18 = MEMORY[0x1AC568040](v35);
@@ -63,10 +63,10 @@
   v23[3] = &unk_1E77F6830;
   v19 = v17;
   v24 = v19;
-  v25 = self;
-  v20 = v13;
+  selfCopy2 = self;
+  v20 = dateCopy;
   v26 = v20;
-  v21 = v11;
+  v21 = handlerCopy;
   v27 = v21;
   v29 = &v31;
   v30 = v41;
@@ -222,16 +222,16 @@ void __95__PPAdaptiveCoalescer_coalesceRequestKey_handler_executeRequestAndInvok
   [v8[2] removeAllObjects];
 }
 
-- (void)garbageCollectPendingKeysForNowDate:(id)a3
+- (void)garbageCollectPendingKeysForNowDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   lock = self->_lock;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __59__PPAdaptiveCoalescer_garbageCollectPendingKeysForNowDate___block_invoke;
   v7[3] = &unk_1E77F67B8;
-  v8 = v4;
-  v6 = v4;
+  v8 = dateCopy;
+  v6 = dateCopy;
   [(_PASLock *)lock runWithLockAcquired:v7];
 }
 
@@ -259,14 +259,14 @@ void __59__PPAdaptiveCoalescer_garbageCollectPendingKeysForNowDate___block_invok
   }
 }
 
-- (void)coalesceRequestKey:(id)a3 handler:(id)a4 executeRequestAndInvokeHandlersBlock:(id)a5
+- (void)coalesceRequestKey:(id)key handler:(id)handler executeRequestAndInvokeHandlersBlock:(id)block
 {
   v8 = MEMORY[0x1E695DF00];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 date];
-  [(PPAdaptiveCoalescer *)self coalesceRequestKey:v11 handler:v10 executeRequestAndInvokeHandlersBlock:v9 nowDate:v12];
+  blockCopy = block;
+  handlerCopy = handler;
+  keyCopy = key;
+  date = [v8 date];
+  [(PPAdaptiveCoalescer *)self coalesceRequestKey:keyCopy handler:handlerCopy executeRequestAndInvokeHandlersBlock:blockCopy nowDate:date];
 }
 
 @end

@@ -1,17 +1,17 @@
 @interface ICNoteCryptoStrategyV2
 - (BOOL)decrypt;
-- (BOOL)writeEncryptedNoteData:(id)a3;
+- (BOOL)writeEncryptedNoteData:(id)data;
 - (id)decryptNotePrimitiveData;
-- (id)decryptTextDataOrSaveAsUnappliedRecordIfNotAuthenticated:(id)a3;
-- (void)mergeEncryptedData:(id)a3 mergeConflict:(id)a4;
-- (void)serializeToNoteDataAndUpdateArchivedAndLastViewedTimeStamps:(id)a3;
+- (id)decryptTextDataOrSaveAsUnappliedRecordIfNotAuthenticated:(id)authenticated;
+- (void)mergeEncryptedData:(id)data mergeConflict:(id)conflict;
+- (void)serializeToNoteDataAndUpdateArchivedAndLastViewedTimeStamps:(id)stamps;
 @end
 
 @implementation ICNoteCryptoStrategyV2
 
-- (BOOL)writeEncryptedNoteData:(id)a3
+- (BOOL)writeEncryptedNoteData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -21,7 +21,7 @@
   v7[2] = __49__ICNoteCryptoStrategyV2_writeEncryptedNoteData___block_invoke;
   v7[3] = &unk_278194B50;
   v7[4] = self;
-  v5 = v4;
+  v5 = dataCopy;
   v8 = v5;
   v9 = &v10;
   [(ICCryptoStrategyBase *)self performBlockIfNoteExists:v7];
@@ -178,9 +178,9 @@ LABEL_12:
 LABEL_13:
 }
 
-- (id)decryptTextDataOrSaveAsUnappliedRecordIfNotAuthenticated:(id)a3
+- (id)decryptTextDataOrSaveAsUnappliedRecordIfNotAuthenticated:(id)authenticated
 {
-  v4 = a3;
+  authenticatedCopy = authenticated;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -191,9 +191,9 @@ LABEL_13:
   v8[1] = 3221225472;
   v8[2] = __83__ICNoteCryptoStrategyV2_decryptTextDataOrSaveAsUnappliedRecordIfNotAuthenticated___block_invoke;
   v8[3] = &unk_278194B50;
-  v5 = v4;
+  v5 = authenticatedCopy;
   v9 = v5;
-  v10 = self;
+  selfCopy = self;
   v11 = &v12;
   [(ICCryptoStrategyBase *)self performBlockIfNoteExists:v8];
   v6 = v13[5];
@@ -333,16 +333,16 @@ LABEL_9:
   }
 }
 
-- (void)mergeEncryptedData:(id)a3 mergeConflict:(id)a4
+- (void)mergeEncryptedData:(id)data mergeConflict:(id)conflict
 {
-  v5 = a3;
+  dataCopy = data;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __59__ICNoteCryptoStrategyV2_mergeEncryptedData_mergeConflict___block_invoke;
   v7[3] = &unk_278198540;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = dataCopy;
+  v6 = dataCopy;
   [(ICCryptoStrategyBase *)self performBlockIfNoteExists:v7];
 }
 
@@ -365,15 +365,15 @@ void __59__ICNoteCryptoStrategyV2_mergeEncryptedData_mergeConflict___block_invok
   }
 }
 
-- (void)serializeToNoteDataAndUpdateArchivedAndLastViewedTimeStamps:(id)a3
+- (void)serializeToNoteDataAndUpdateArchivedAndLastViewedTimeStamps:(id)stamps
 {
-  v4 = a3;
+  stampsCopy = stamps;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __86__ICNoteCryptoStrategyV2_serializeToNoteDataAndUpdateArchivedAndLastViewedTimeStamps___block_invoke;
   v6[3] = &unk_278194C90;
-  v7 = v4;
-  v5 = v4;
+  v7 = stampsCopy;
+  v5 = stampsCopy;
   [(ICCryptoStrategyBase *)self performBlockIfNoteExists:v6];
 }
 

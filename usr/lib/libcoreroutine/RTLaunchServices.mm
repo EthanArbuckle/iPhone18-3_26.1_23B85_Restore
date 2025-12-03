@@ -1,22 +1,22 @@
 @interface RTLaunchServices
-+ (BOOL)canOpenApplication:(id)a3;
-+ (void)createProcessAssertionForPid:(int)a3 timeout:(double)a4 queue:(id)a5 timeoutHandler:(id)a6;
-+ (void)launchClientWithBundleIdentifier:(id)a3 restorationIdentifier:(id)a4 eventAgentManager:(id)a5 handler:(id)a6;
++ (BOOL)canOpenApplication:(id)application;
++ (void)createProcessAssertionForPid:(int)pid timeout:(double)timeout queue:(id)queue timeoutHandler:(id)handler;
++ (void)launchClientWithBundleIdentifier:(id)identifier restorationIdentifier:(id)restorationIdentifier eventAgentManager:(id)manager handler:(id)handler;
 @end
 
 @implementation RTLaunchServices
 
-+ (void)launchClientWithBundleIdentifier:(id)a3 restorationIdentifier:(id)a4 eventAgentManager:(id)a5 handler:(id)a6
++ (void)launchClientWithBundleIdentifier:(id)identifier restorationIdentifier:(id)restorationIdentifier eventAgentManager:(id)manager handler:(id)handler
 {
   v53[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (v10)
+  identifierCopy = identifier;
+  restorationIdentifierCopy = restorationIdentifier;
+  managerCopy = manager;
+  handlerCopy = handler;
+  v14 = handlerCopy;
+  if (identifierCopy)
   {
-    if (v11)
+    if (restorationIdentifierCopy)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
@@ -24,14 +24,14 @@
         if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
         {
           *buf = 138412546;
-          v47 = v10;
+          v47 = identifierCopy;
           v48 = 2112;
-          v49 = v11;
+          v49 = restorationIdentifierCopy;
           _os_log_impl(&dword_2304B3000, v15, OS_LOG_TYPE_INFO, "launch client with bundle identifier, %@, restoration identifier, %@", buf, 0x16u);
         }
       }
 
-      v16 = [a1 canOpenApplication:v10];
+      v16 = [self canOpenApplication:identifierCopy];
       v17 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO);
       if (v16)
       {
@@ -41,9 +41,9 @@
           if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
           {
             *buf = 138412546;
-            v47 = v10;
+            v47 = identifierCopy;
             v48 = 2112;
-            v49 = v11;
+            v49 = restorationIdentifierCopy;
             _os_log_impl(&dword_2304B3000, v18, OS_LOG_TYPE_INFO, "launch application for client with bundleIdentifier, %@, restorationIdentifier, %@", buf, 0x16u);
           }
         }
@@ -58,19 +58,19 @@
         v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v43 forKeys:&v42 count:1];
         v44[2] = @"RTLaunchServicesRestorationIdentifier";
         v45[1] = v21;
-        v45[2] = v11;
+        v45[2] = restorationIdentifierCopy;
         v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v45 forKeys:v44 count:3];
 
         v23 = [MEMORY[0x277D0AD60] optionsWithDictionary:v22];
-        v24 = [MEMORY[0x277D0AD78] serviceWithDefaultShellEndpoint];
+        serviceWithDefaultShellEndpoint = [MEMORY[0x277D0AD78] serviceWithDefaultShellEndpoint];
         v38[0] = MEMORY[0x277D85DD0];
         v38[1] = 3221225472;
         v38[2] = __101__RTLaunchServices_launchClientWithBundleIdentifier_restorationIdentifier_eventAgentManager_handler___block_invoke;
         v38[3] = &unk_2788CFA78;
-        v39 = v10;
-        v40 = v11;
+        v39 = identifierCopy;
+        v40 = restorationIdentifierCopy;
         v41 = v14;
-        [v24 openApplication:v39 withOptions:v23 completion:v38];
+        [serviceWithDefaultShellEndpoint openApplication:v39 withOptions:v23 completion:v38];
       }
 
       else
@@ -81,9 +81,9 @@
           if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
           {
             *buf = 138412546;
-            v47 = v10;
+            v47 = identifierCopy;
             v48 = 2112;
-            v49 = v11;
+            v49 = restorationIdentifierCopy;
             _os_log_impl(&dword_2304B3000, v33, OS_LOG_TYPE_INFO, "launched daemon for client with bundle id, %@, restorationIdentifier, %@", buf, 0x16u);
           }
         }
@@ -92,10 +92,10 @@
         v34[1] = 3221225472;
         v34[2] = __101__RTLaunchServices_launchClientWithBundleIdentifier_restorationIdentifier_eventAgentManager_handler___block_invoke_20;
         v34[3] = &unk_2788CFAA0;
-        v35 = v10;
-        v36 = v11;
+        v35 = identifierCopy;
+        v36 = restorationIdentifierCopy;
         v37 = v14;
-        [v12 launchDaemonWithRestorationIdentifier:v36 withReply:v34];
+        [managerCopy launchDaemonWithRestorationIdentifier:v36 withReply:v34];
 
         v22 = v35;
       }
@@ -103,7 +103,7 @@
       goto LABEL_23;
     }
 
-    if (v13)
+    if (handlerCopy)
     {
       v31 = MEMORY[0x277CCA9B8];
       v32 = *MEMORY[0x277D01448];
@@ -117,7 +117,7 @@
     }
   }
 
-  else if (v13)
+  else if (handlerCopy)
   {
     v25 = MEMORY[0x277CCA9B8];
     v26 = *MEMORY[0x277D01448];
@@ -219,28 +219,28 @@ void __101__RTLaunchServices_launchClientWithBundleIdentifier_restorationIdentif
   }
 }
 
-+ (BOOL)canOpenApplication:(id)a3
++ (BOOL)canOpenApplication:(id)application
 {
   v8 = 0;
   v3 = MEMORY[0x277D0AD78];
-  v4 = a3;
-  v5 = [v3 serviceWithDefaultShellEndpoint];
-  v6 = [v5 canOpenApplication:v4 reason:&v8];
+  applicationCopy = application;
+  serviceWithDefaultShellEndpoint = [v3 serviceWithDefaultShellEndpoint];
+  v6 = [serviceWithDefaultShellEndpoint canOpenApplication:applicationCopy reason:&v8];
 
   return v6;
 }
 
-+ (void)createProcessAssertionForPid:(int)a3 timeout:(double)a4 queue:(id)a5 timeoutHandler:(id)a6
++ (void)createProcessAssertionForPid:(int)pid timeout:(double)timeout queue:(id)queue timeoutHandler:(id)handler
 {
-  v8 = *&a3;
+  v8 = *&pid;
   v28[1] = *MEMORY[0x277D85DE8];
-  v9 = a5;
-  v10 = a6;
-  if (a4 >= 0.0)
+  queueCopy = queue;
+  handlerCopy = handler;
+  if (timeout >= 0.0)
   {
-    if (v9)
+    if (queueCopy)
     {
-      v12 = v9;
+      v12 = queueCopy;
     }
 
     else
@@ -261,13 +261,13 @@ void __101__RTLaunchServices_launchClientWithBundleIdentifier_restorationIdentif
     v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:1];
     v27 = [v14 initWithExplanation:@"com.apple.routined" target:v15 attributes:v17];
 
-    v18 = dispatch_time(0, (a4 * 1000000000.0));
+    v18 = dispatch_time(0, (timeout * 1000000000.0));
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __78__RTLaunchServices_createProcessAssertionForPid_timeout_queue_timeoutHandler___block_invoke;
     v19[3] = &unk_2788CD298;
     v21 = buf;
-    v20 = v10;
+    v20 = handlerCopy;
     dispatch_after(v18, v12, v19);
 
     _Block_object_dispose(buf, 8);
@@ -282,9 +282,9 @@ void __101__RTLaunchServices_launchClientWithBundleIdentifier_restorationIdentif
       _os_log_error_impl(&dword_2304B3000, v11, OS_LOG_TYPE_ERROR, "requested assertion timeout was less than 0, returning", buf, 2u);
     }
 
-    if (v10)
+    if (handlerCopy)
     {
-      v10[2](v10);
+      handlerCopy[2](handlerCopy);
     }
   }
 }

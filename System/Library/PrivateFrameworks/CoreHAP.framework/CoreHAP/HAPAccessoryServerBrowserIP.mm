@@ -1,52 +1,52 @@
 @interface HAPAccessoryServerBrowserIP
 + (id)logCategory;
-- (BOOL)_delegateRespondsToSelector:(SEL)a3;
+- (BOOL)_delegateRespondsToSelector:(SEL)selector;
 - (HAPAccessoryServerBrowserDelegate)delegate;
-- (HAPAccessoryServerBrowserIP)initWithQueue:(id)a3;
-- (HAPAccessoryServerBrowserIP)initWithQueue:(id)a3 cache:(id)a4;
-- (id)serverWithIdentifier:(id)a3 ignoreLPM:(BOOL)a4;
+- (HAPAccessoryServerBrowserIP)initWithQueue:(id)queue;
+- (HAPAccessoryServerBrowserIP)initWithQueue:(id)queue cache:(id)cache;
+- (id)serverWithIdentifier:(id)identifier ignoreLPM:(BOOL)m;
 - (id)visible2Pt4Networks;
 - (int)_initializeAndStartBonjourBrowser;
-- (int)_server:(id *)a3 forBonjourDevice:(id)a4;
-- (void)_doBonjourRemoveWithServer:(id)a3;
-- (void)_doReachabilityUpdateForServer:(id)a3 withDictionary:(id)a4;
+- (int)_server:(id *)_server forBonjourDevice:(id)device;
+- (void)_doBonjourRemoveWithServer:(id)server;
+- (void)_doReachabilityUpdateForServer:(id)server withDictionary:(id)dictionary;
 - (void)_doStartDiscoveringAccessoryServers;
-- (void)_handleBonjourAddOrUpdateWithEventInfo:(id)a3;
-- (void)_handleBonjourBrowserEvent:(unsigned int)a3 eventInfo:(id)a4;
-- (void)_handleBonjourRemoveWithEventInfo:(id)a3;
-- (void)_handleConnectionUpdateWithBonjourDeviceInfo:(id)a3 socketInfo:(id)a4;
-- (void)_invalidateAccessoryServers:(BOOL)a3;
-- (void)_invalidateAndRemoveAccessoryServer:(id)a3;
+- (void)_handleBonjourAddOrUpdateWithEventInfo:(id)info;
+- (void)_handleBonjourBrowserEvent:(unsigned int)event eventInfo:(id)info;
+- (void)_handleBonjourRemoveWithEventInfo:(id)info;
+- (void)_handleConnectionUpdateWithBonjourDeviceInfo:(id)info socketInfo:(id)socketInfo;
+- (void)_invalidateAccessoryServers:(BOOL)servers;
+- (void)_invalidateAndRemoveAccessoryServer:(id)server;
 - (void)_invalidateWACServers;
-- (void)_matchAccessoryServerWithSetupID:(id)a3 serverIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)_pendBonjourEvent:(id)a3;
-- (void)_pendBonjourRemoveEvent:(id)a3;
-- (void)_prePopulateBrowserFromCacheWithCompletion:(id)a3;
-- (void)_server:(id *)a3 forHAPWACAccessory:(id)a4;
-- (void)_timerDidExpire:(id)a3;
-- (void)devicePowerStateChanged:(unint64_t)a3;
-- (void)discoverAccessoryServerWithIdentifier:(id)a3;
-- (void)handleConnectionUpdateWithBonjourDeviceInfo:(id)a3 socketInfo:(id)a4;
-- (void)indicateNotificationFromServer:(id)a3 notifyType:(unint64_t)a4 withDictionary:(id)a5;
-- (void)matchAccessoryServerWithSetupID:(id)a3 serverIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)notifyDelegatesOfWACCompletionWithIdentifier:(id)a3 error:(id)a4;
-- (void)pendDelegateBlock:(id)a3 identifier:(id)a4;
-- (void)pendDelegateOperation:(id)a3 identifier:(id)a4;
-- (void)processPendingBonjourRemoveEvents:(id)a3;
-- (void)processPendingBonjourRemoveEventsForDeviceID:(id)a3;
-- (void)setDelegate:(id)a3 queue:(id)a4;
+- (void)_matchAccessoryServerWithSetupID:(id)d serverIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)_pendBonjourEvent:(id)event;
+- (void)_pendBonjourRemoveEvent:(id)event;
+- (void)_prePopulateBrowserFromCacheWithCompletion:(id)completion;
+- (void)_server:(id *)_server forHAPWACAccessory:(id)accessory;
+- (void)_timerDidExpire:(id)expire;
+- (void)devicePowerStateChanged:(unint64_t)changed;
+- (void)discoverAccessoryServerWithIdentifier:(id)identifier;
+- (void)handleConnectionUpdateWithBonjourDeviceInfo:(id)info socketInfo:(id)socketInfo;
+- (void)indicateNotificationFromServer:(id)server notifyType:(unint64_t)type withDictionary:(id)dictionary;
+- (void)matchAccessoryServerWithSetupID:(id)d serverIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)notifyDelegatesOfWACCompletionWithIdentifier:(id)identifier error:(id)error;
+- (void)pendDelegateBlock:(id)block identifier:(id)identifier;
+- (void)pendDelegateOperation:(id)operation identifier:(id)identifier;
+- (void)processPendingBonjourRemoveEvents:(id)events;
+- (void)processPendingBonjourRemoveEventsForDeviceID:(id)d;
+- (void)setDelegate:(id)delegate queue:(id)queue;
 - (void)startDiscoveringAccessoryServers;
-- (void)startDiscoveringAirPlayAccessoriesWithDelegate:(id)a3;
-- (void)startDiscoveringWACAccessoryServerWithIdentifier:(id)a3;
+- (void)startDiscoveringAirPlayAccessoriesWithDelegate:(id)delegate;
+- (void)startDiscoveringWACAccessoryServerWithIdentifier:(id)identifier;
 - (void)startDiscoveringWACAccessoryServers;
 - (void)stopDiscoveringAccessoryServers;
-- (void)stopDiscoveringWACAccessoryServersWithInvalidation:(BOOL)a3;
-- (void)timerDidFire:(id)a3;
-- (void)unitTest_handleBonjourBrowserEvent:(unsigned int)a3 eventInfo:(id)a4;
-- (void)updateCacheForDeviceID:(id)a3 ipData:(id)a4;
-- (void)wacBrowser:(id)a3 didFindHAPWACAccessory:(id)a4;
-- (void)wacBrowser:(id)a3 didFindUnconfiguredPairedHAPWACAccessory:(id)a4;
-- (void)wacBrowser:(id)a3 didRemoveHAPWACAccessory:(id)a4;
+- (void)stopDiscoveringWACAccessoryServersWithInvalidation:(BOOL)invalidation;
+- (void)timerDidFire:(id)fire;
+- (void)unitTest_handleBonjourBrowserEvent:(unsigned int)event eventInfo:(id)info;
+- (void)updateCacheForDeviceID:(id)d ipData:(id)data;
+- (void)wacBrowser:(id)browser didFindHAPWACAccessory:(id)accessory;
+- (void)wacBrowser:(id)browser didFindUnconfiguredPairedHAPWACAccessory:(id)accessory;
+- (void)wacBrowser:(id)browser didRemoveHAPWACAccessory:(id)accessory;
 @end
 
 @implementation HAPAccessoryServerBrowserIP
@@ -58,32 +58,32 @@
   return WeakRetained;
 }
 
-- (void)unitTest_handleBonjourBrowserEvent:(unsigned int)a3 eventInfo:(id)a4
+- (void)unitTest_handleBonjourBrowserEvent:(unsigned int)event eventInfo:(id)info
 {
-  v6 = a4;
-  v7 = [(HAPAccessoryServerBrowser *)self workQueue];
+  infoCopy = info;
+  workQueue = [(HAPAccessoryServerBrowser *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __76__HAPAccessoryServerBrowserIP_unitTest_handleBonjourBrowserEvent_eventInfo___block_invoke;
   block[3] = &unk_2786D4E70;
-  v11 = a3;
+  eventCopy = event;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
-  dispatch_sync(v7, block);
+  v10 = infoCopy;
+  v8 = infoCopy;
+  dispatch_sync(workQueue, block);
 }
 
-- (id)serverWithIdentifier:(id)a3 ignoreLPM:(BOOL)a4
+- (id)serverWithIdentifier:(id)identifier ignoreLPM:(BOOL)m
 {
-  v4 = a4;
+  mCopy = m;
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  identifierCopy = identifier;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v7 = [(HAPAccessoryServerBrowserIP *)self discoveredAccessoryServers];
-  v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  discoveredAccessoryServers = [(HAPAccessoryServerBrowserIP *)self discoveredAccessoryServers];
+  v8 = [discoveredAccessoryServers countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
   {
     v9 = v8;
@@ -94,12 +94,12 @@ LABEL_3:
     {
       if (*v19 != v10)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(discoveredAccessoryServers);
       }
 
       v12 = *(*(&v18 + 1) + 8 * v11);
-      v13 = [v12 identifier];
-      v14 = [v13 isEqual:v6];
+      identifier = [v12 identifier];
+      v14 = [identifier isEqual:identifierCopy];
 
       if (v14)
       {
@@ -108,7 +108,7 @@ LABEL_3:
 
       if (v9 == ++v11)
       {
-        v9 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v9 = [discoveredAccessoryServers countByEnumeratingWithState:&v18 objects:v22 count:16];
         if (v9)
         {
           goto LABEL_3;
@@ -118,7 +118,7 @@ LABEL_3:
       }
     }
 
-    if ((!v4 || ![v12 wakeNumber]) && (objc_msgSend(v12, "isWacAccessory") & 1) == 0)
+    if ((!mCopy || ![v12 wakeNumber]) && (objc_msgSend(v12, "isWacAccessory") & 1) == 0)
     {
       v15 = v12;
       goto LABEL_15;
@@ -134,18 +134,18 @@ LABEL_15:
   return v15;
 }
 
-- (void)wacBrowser:(id)a3 didFindUnconfiguredPairedHAPWACAccessory:(id)a4
+- (void)wacBrowser:(id)browser didFindUnconfiguredPairedHAPWACAccessory:(id)accessory
 {
-  v5 = a4;
-  v6 = [(HAPAccessoryServerBrowser *)self workQueue];
+  accessoryCopy = accessory;
+  workQueue = [(HAPAccessoryServerBrowser *)self workQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __83__HAPAccessoryServerBrowserIP_wacBrowser_didFindUnconfiguredPairedHAPWACAccessory___block_invoke;
   v8[3] = &unk_2786D7050;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  dispatch_async(v6, v8);
+  v9 = accessoryCopy;
+  v7 = accessoryCopy;
+  dispatch_async(workQueue, v8);
 }
 
 void __83__HAPAccessoryServerBrowserIP_wacBrowser_didFindUnconfiguredPairedHAPWACAccessory___block_invoke(uint64_t a1)
@@ -261,18 +261,18 @@ void __83__HAPAccessoryServerBrowserIP_wacBrowser_didFindUnconfiguredPairedHAPWA
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)wacBrowser:(id)a3 didRemoveHAPWACAccessory:(id)a4
+- (void)wacBrowser:(id)browser didRemoveHAPWACAccessory:(id)accessory
 {
-  v5 = a4;
-  v6 = [(HAPAccessoryServerBrowser *)self workQueue];
+  accessoryCopy = accessory;
+  workQueue = [(HAPAccessoryServerBrowser *)self workQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __67__HAPAccessoryServerBrowserIP_wacBrowser_didRemoveHAPWACAccessory___block_invoke;
   v8[3] = &unk_2786D7050;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  dispatch_async(v6, v8);
+  v9 = accessoryCopy;
+  v7 = accessoryCopy;
+  dispatch_async(workQueue, v8);
 }
 
 void __67__HAPAccessoryServerBrowserIP_wacBrowser_didRemoveHAPWACAccessory___block_invoke(uint64_t a1)
@@ -370,18 +370,18 @@ void __67__HAPAccessoryServerBrowserIP_wacBrowser_didRemoveHAPWACAccessory___blo
   [*(a1 + 32) accessoryServerBrowser:WeakRetained didRemoveAccessoryServer:*(a1 + 40) error:0];
 }
 
-- (void)wacBrowser:(id)a3 didFindHAPWACAccessory:(id)a4
+- (void)wacBrowser:(id)browser didFindHAPWACAccessory:(id)accessory
 {
-  v5 = a4;
-  v6 = [(HAPAccessoryServerBrowser *)self workQueue];
+  accessoryCopy = accessory;
+  workQueue = [(HAPAccessoryServerBrowser *)self workQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __65__HAPAccessoryServerBrowserIP_wacBrowser_didFindHAPWACAccessory___block_invoke;
   v8[3] = &unk_2786D7050;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  dispatch_async(v6, v8);
+  v9 = accessoryCopy;
+  v7 = accessoryCopy;
+  dispatch_async(workQueue, v8);
 }
 
 void __65__HAPAccessoryServerBrowserIP_wacBrowser_didFindHAPWACAccessory___block_invoke(uint64_t a1)
@@ -482,10 +482,10 @@ LABEL_18:
 
 - (void)_invalidateWACServers
 {
-  v2 = self;
+  selfCopy = self;
   v53 = *MEMORY[0x277D85DE8];
-  v3 = [(HAPAccessoryServerBrowserIP *)self discoveredAccessoryServers];
-  v4 = [v3 copy];
+  discoveredAccessoryServers = [(HAPAccessoryServerBrowserIP *)self discoveredAccessoryServers];
+  v4 = [discoveredAccessoryServers copy];
 
   v40 = 0u;
   v41 = 0u;
@@ -500,7 +500,7 @@ LABEL_18:
     *&v7 = 138543618;
     v34 = v7;
     v35 = v5;
-    v36 = v2;
+    v36 = selfCopy;
     v37 = *v39;
     do
     {
@@ -514,25 +514,25 @@ LABEL_18:
         v11 = *(*(&v38 + 1) + 8 * i);
         if ([v11 isWacAccessory])
         {
-          v12 = [v11 identifier];
-          v13 = [(HAPAccessoryServerBrowser *)v2 isPaired:v12];
+          identifier = [v11 identifier];
+          v13 = [(HAPAccessoryServerBrowser *)selfCopy isPaired:identifier];
 
           if (v13)
           {
             v14 = objc_autoreleasePoolPush();
-            v15 = v2;
+            v15 = selfCopy;
             v16 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
             {
               v17 = HMFGetLogIdentifier();
-              v18 = [v11 name];
-              v19 = [v11 identifier];
+              name = [v11 name];
+              identifier2 = [v11 identifier];
               *buf = 138543874;
               v43 = v17;
               v44 = 2112;
-              v45 = v18;
+              v45 = name;
               v46 = 2114;
-              v47 = v19;
+              v47 = identifier2;
               _os_log_impl(&dword_22AADC000, v16, OS_LOG_TYPE_INFO, "%{public}@Accessory Server %@/%{public}@ is already paired - not removing the accessory server", buf, 0x20u);
 
               v9 = v37;
@@ -544,13 +544,13 @@ LABEL_18:
           else if (([v11 hasBonjourDeviceInfo] & 1) != 0 || objc_msgSend(v11, "isWacLegacy") && objc_msgSend(v11, "isWacComplete"))
           {
             v20 = objc_autoreleasePoolPush();
-            v21 = v2;
+            v21 = selfCopy;
             v22 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
             {
               v23 = HMFGetLogIdentifier();
-              v24 = [v11 name];
-              v25 = [v11 identifier];
+              name2 = [v11 name];
+              identifier3 = [v11 identifier];
               [v11 isWacLegacy];
               v26 = HMFBooleanToString();
               [v11 isWacComplete];
@@ -558,16 +558,16 @@ LABEL_18:
               *buf = 138544386;
               v43 = v23;
               v44 = 2112;
-              v45 = v24;
+              v45 = name2;
               v46 = 2114;
-              v47 = v25;
+              v47 = identifier3;
               v48 = 2112;
               v49 = v26;
               v50 = 2112;
               v51 = v27;
               _os_log_impl(&dword_22AADC000, v22, OS_LOG_TYPE_INFO, "%{public}@Accessory Server %@/%{public}@ already has a Bonjour device info/completed WAC %@/%@ - not removing the accessory server", buf, 0x34u);
 
-              v2 = v36;
+              selfCopy = v36;
               v5 = v35;
             }
 
@@ -578,19 +578,19 @@ LABEL_18:
           else
           {
             v28 = objc_autoreleasePoolPush();
-            v29 = v2;
+            v29 = selfCopy;
             v30 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
             {
               v31 = HMFGetLogIdentifier();
-              v32 = [v11 identifier];
+              identifier4 = [v11 identifier];
               *buf = v34;
               v43 = v31;
               v44 = 2114;
-              v45 = v32;
+              v45 = identifier4;
               _os_log_impl(&dword_22AADC000, v30, OS_LOG_TYPE_INFO, "%{public}@Removing unpaired accessory %{public}@", buf, 0x16u);
 
-              v2 = v36;
+              selfCopy = v36;
               v5 = v35;
             }
 
@@ -609,12 +609,12 @@ LABEL_18:
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_timerDidExpire:(id)a3
+- (void)_timerDidExpire:(id)expire
 {
   v47 = *MEMORY[0x277D85DE8];
-  v33 = a3;
-  v4 = [(HAPAccessoryServerBrowserIP *)self pendingBonjourEvents];
-  v5 = [v4 copy];
+  expireCopy = expire;
+  pendingBonjourEvents = [(HAPAccessoryServerBrowserIP *)self pendingBonjourEvents];
+  v5 = [pendingBonjourEvents copy];
 
   v40 = 0u;
   v41 = 0u;
@@ -627,7 +627,7 @@ LABEL_18:
     v7 = *v39;
     v8 = 0x277CBE000uLL;
     v34 = v6;
-    v35 = self;
+    selfCopy = self;
     do
     {
       for (i = 0; i != v36; ++i)
@@ -640,8 +640,8 @@ LABEL_18:
         v10 = *(*(&v38 + 1) + 8 * i);
         v11 = [v10 objectForKeyedSubscript:@"kHAPBonjourEventReceivedTimeKey"];
         v12 = [v10 objectForKeyedSubscript:@"kHAPBonjourEventKey"];
-        v13 = [*(v8 + 2728) date];
-        [v13 timeIntervalSinceDate:v11];
+        date = [*(v8 + 2728) date];
+        [date timeIntervalSinceDate:v11];
         v15 = v14;
 
         if (v15 > 40.0)
@@ -653,7 +653,7 @@ LABEL_18:
           if (v16 && [v16 isSessionRestoreActive])
           {
             v18 = objc_autoreleasePoolPush();
-            v19 = self;
+            selfCopy2 = self;
             v20 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
             {
@@ -666,7 +666,7 @@ LABEL_18:
               _os_log_impl(&dword_22AADC000, v20, OS_LOG_TYPE_INFO, "%{public}@Timed out,  Not handling pending Bonjour for %{public}@, as session restore is active", buf, 0x16u);
 
               v6 = v34;
-              self = v35;
+              self = selfCopy;
             }
 
             objc_autoreleasePoolPop(v18);
@@ -675,7 +675,7 @@ LABEL_18:
           else
           {
             v23 = objc_autoreleasePoolPush();
-            v24 = self;
+            selfCopy3 = self;
             v25 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
             {
@@ -688,12 +688,12 @@ LABEL_18:
               _os_log_impl(&dword_22AADC000, v25, OS_LOG_TYPE_INFO, "%{public}@Timed out, handling pending Bonjour event for %{public}@", buf, 0x16u);
 
               v6 = v34;
-              self = v35;
+              self = selfCopy;
             }
 
             objc_autoreleasePoolPop(v23);
             v28 = [v12 objectForKeyedSubscript:@"deviceID"];
-            [(HAPAccessoryServerBrowserIP *)v24 _purgePendingBonjourEvents:v28 withProcessing:1];
+            [(HAPAccessoryServerBrowserIP *)selfCopy3 _purgePendingBonjourEvents:v28 withProcessing:1];
           }
 
           v8 = 0x277CBE000;
@@ -706,91 +706,91 @@ LABEL_18:
     while (v36);
   }
 
-  v29 = [(HAPAccessoryServerBrowserIP *)self pendingBonjourEvents];
-  v30 = [v29 count];
+  pendingBonjourEvents2 = [(HAPAccessoryServerBrowserIP *)self pendingBonjourEvents];
+  v30 = [pendingBonjourEvents2 count];
 
   if (v30)
   {
-    v31 = [(HAPAccessoryServerBrowserIP *)self bonjourEventTimer];
-    [v31 resume];
+    bonjourEventTimer = [(HAPAccessoryServerBrowserIP *)self bonjourEventTimer];
+    [bonjourEventTimer resume];
   }
 
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
-  v7 = a3;
-  v4 = [(HAPAccessoryServerBrowser *)self workQueue];
-  dispatch_assert_queue_V2(v4);
+  fireCopy = fire;
+  workQueue = [(HAPAccessoryServerBrowser *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v5 = [(HAPAccessoryServerBrowserIP *)self bonjourEventTimer];
+  bonjourEventTimer = [(HAPAccessoryServerBrowserIP *)self bonjourEventTimer];
 
-  v6 = v7;
-  if (v5 == v7)
+  v6 = fireCopy;
+  if (bonjourEventTimer == fireCopy)
   {
-    [(HAPAccessoryServerBrowserIP *)self _timerDidExpire:v7];
-    v6 = v7;
+    [(HAPAccessoryServerBrowserIP *)self _timerDidExpire:fireCopy];
+    v6 = fireCopy;
   }
 }
 
-- (void)devicePowerStateChanged:(unint64_t)a3
+- (void)devicePowerStateChanged:(unint64_t)changed
 {
-  if (a3 == 2)
+  if (changed == 2)
   {
-    v4 = [(HAPAccessoryServerBrowserIP *)self bonjourEventTimer];
-    v5 = [v4 isRunning];
+    bonjourEventTimer = [(HAPAccessoryServerBrowserIP *)self bonjourEventTimer];
+    isRunning = [bonjourEventTimer isRunning];
 
-    if (v5)
+    if (isRunning)
     {
-      v6 = [(HAPAccessoryServerBrowserIP *)self bonjourEventTimer];
-      [v6 kick];
+      bonjourEventTimer2 = [(HAPAccessoryServerBrowserIP *)self bonjourEventTimer];
+      [bonjourEventTimer2 kick];
     }
   }
 }
 
-- (void)processPendingBonjourRemoveEventsForDeviceID:(id)a3
+- (void)processPendingBonjourRemoveEventsForDeviceID:(id)d
 {
-  v4 = a3;
-  v5 = [(HAPAccessoryServerBrowser *)self workQueue];
+  dCopy = d;
+  workQueue = [(HAPAccessoryServerBrowser *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __76__HAPAccessoryServerBrowserIP_processPendingBonjourRemoveEventsForDeviceID___block_invoke;
   v7[3] = &unk_2786D7050;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = dCopy;
+  v6 = dCopy;
+  dispatch_async(workQueue, v7);
 }
 
-- (void)_pendBonjourEvent:(id)a3
+- (void)_pendBonjourEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(HAPAccessoryServerBrowserIP *)self pendingBonjourEvents];
-  v6 = [v5 count];
+  eventCopy = event;
+  pendingBonjourEvents = [(HAPAccessoryServerBrowserIP *)self pendingBonjourEvents];
+  v6 = [pendingBonjourEvents count];
 
   if (!v6)
   {
-    v7 = [(HAPAccessoryServerBrowserIP *)self bonjourEventTimer];
-    [v7 resume];
+    bonjourEventTimer = [(HAPAccessoryServerBrowserIP *)self bonjourEventTimer];
+    [bonjourEventTimer resume];
   }
 
-  v8 = [(HAPAccessoryServerBrowserIP *)self pendingBonjourEvents];
-  [v8 addObject:v4];
+  pendingBonjourEvents2 = [(HAPAccessoryServerBrowserIP *)self pendingBonjourEvents];
+  [pendingBonjourEvents2 addObject:eventCopy];
 }
 
-- (void)_pendBonjourRemoveEvent:(id)a3
+- (void)_pendBonjourRemoveEvent:(id)event
 {
   v44[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   v34 = 0;
-  [(HAPAccessoryServerBrowserIP *)self _server:&v34 forBonjourDevice:v4];
+  [(HAPAccessoryServerBrowserIP *)self _server:&v34 forBonjourDevice:eventCopy];
   v5 = v34;
   v6 = v5;
   if (v5 && ([v5 identifier], v7 = objc_claimAutoreleasedReturnValue(), v8 = -[HAPAccessoryServerBrowser isPaired:](self, "isPaired:", v7), v7, !v8))
   {
     v23 = objc_autoreleasePoolPush();
-    v24 = self;
+    selfCopy = self;
     v25 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
     {
@@ -798,20 +798,20 @@ LABEL_18:
       *buf = 138543874;
       v36 = v26;
       v37 = 2112;
-      v38 = v4;
+      v38 = eventCopy;
       v39 = 2114;
       v40 = v6;
       _os_log_impl(&dword_22AADC000, v25, OS_LOG_TYPE_INFO, "%{public}@Handling Bonjour remove event %@ for unpaired accessory server: %{public}@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v23);
-    v27 = [v4 hmf_stringForKey:@"deviceID"];
-    v28 = [(HAPAccessoryServerBrowserIP *)v24 _processPendingBonjourEvent:v27];
+    v27 = [eventCopy hmf_stringForKey:@"deviceID"];
+    v28 = [(HAPAccessoryServerBrowserIP *)selfCopy _processPendingBonjourEvent:v27];
 
     if (!v28)
     {
       v29 = objc_autoreleasePoolPush();
-      v30 = v24;
+      v30 = selfCopy;
       v31 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
       {
@@ -822,7 +822,7 @@ LABEL_18:
       }
 
       objc_autoreleasePoolPop(v29);
-      [(HAPAccessoryServerBrowserIP *)v30 _handleBonjourRemoveWithEventInfo:v4];
+      [(HAPAccessoryServerBrowserIP *)v30 _handleBonjourRemoveWithEventInfo:eventCopy];
     }
   }
 
@@ -831,26 +831,26 @@ LABEL_18:
     v44[0] = @"kHAPBonjourEventType_Remove";
     v43[0] = @"kHAPBonjourEventType";
     v43[1] = @"kHAPBonjourEventReceivedTimeKey";
-    v9 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     v43[2] = @"kHAPBonjourEventKey";
-    v44[1] = v9;
-    v44[2] = v4;
+    v44[1] = date;
+    v44[2] = eventCopy;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v44 forKeys:v43 count:3];
 
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy2 = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       v14 = HMFGetLogIdentifier();
-      v15 = [(HAPAccessoryServerBrowserIP *)v12 pendingBonjourEvents];
-      v16 = [v15 count];
+      pendingBonjourEvents = [(HAPAccessoryServerBrowserIP *)selfCopy2 pendingBonjourEvents];
+      v16 = [pendingBonjourEvents count];
       [v6 isSessionRestoreActive];
       v17 = HMFBooleanToString();
       *buf = 138544130;
       v36 = v14;
       v37 = 2112;
-      v38 = v4;
+      v38 = eventCopy;
       v39 = 2048;
       v40 = v16;
       v41 = 2114;
@@ -859,20 +859,20 @@ LABEL_18:
     }
 
     objc_autoreleasePoolPop(v11);
-    [(HAPAccessoryServerBrowserIP *)v12 _pendBonjourEvent:v10];
+    [(HAPAccessoryServerBrowserIP *)selfCopy2 _pendBonjourEvent:v10];
     if (v6 && ([v6 isSessionRestoreActive] & 1) == 0)
     {
       v18 = objc_autoreleasePoolPush();
-      v19 = v12;
+      v19 = selfCopy2;
       v20 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
       {
         v21 = HMFGetLogIdentifier();
-        v22 = [v6 identifier];
+        identifier = [v6 identifier];
         *buf = 138543618;
         v36 = v21;
         v37 = 2114;
-        v38 = v22;
+        v38 = identifier;
         _os_log_impl(&dword_22AADC000, v20, OS_LOG_TYPE_INFO, "%{public}@Marking all accessories for server %{public}@ as unreachable while confirming the remove event", buf, 0x16u);
       }
 
@@ -884,15 +884,15 @@ LABEL_18:
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_delegateRespondsToSelector:(SEL)a3
+- (BOOL)_delegateRespondsToSelector:(SEL)selector
 {
-  v4 = [(HAPAccessoryServerBrowserIP *)self delegate];
-  if (v4)
+  delegate = [(HAPAccessoryServerBrowserIP *)self delegate];
+  if (delegate)
   {
-    v5 = [(HAPAccessoryServerBrowserIP *)self delegateQueue];
-    if (v5)
+    delegateQueue = [(HAPAccessoryServerBrowserIP *)self delegateQueue];
+    if (delegateQueue)
     {
-      v6 = [(HAPAccessoryServerBrowserIP *)self delegate];
+      delegate2 = [(HAPAccessoryServerBrowserIP *)self delegate];
       v7 = objc_opt_respondsToSelector();
     }
 
@@ -910,13 +910,13 @@ LABEL_18:
   return v7 & 1;
 }
 
-- (void)_invalidateAccessoryServers:(BOOL)a3
+- (void)_invalidateAccessoryServers:(BOOL)servers
 {
-  v3 = a3;
+  serversCopy = servers;
   v22 = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CBEB98];
-  v6 = [(HAPAccessoryServerBrowserIP *)self discoveredAccessoryServers];
-  v7 = [v5 setWithSet:v6];
+  discoveredAccessoryServers = [(HAPAccessoryServerBrowserIP *)self discoveredAccessoryServers];
+  v7 = [v5 setWithSet:discoveredAccessoryServers];
 
   v19 = 0u;
   v20 = 0u;
@@ -939,7 +939,7 @@ LABEL_18:
         }
 
         v13 = *(*(&v17 + 1) + 8 * v12);
-        if (!v3 || ([*(*(&v17 + 1) + 8 * v12) identifier], v14 = objc_claimAutoreleasedReturnValue(), v15 = -[HAPAccessoryServerBrowser isPaired:](self, "isPaired:", v14), v14, !v15))
+        if (!serversCopy || ([*(*(&v17 + 1) + 8 * v12) identifier], v14 = objc_claimAutoreleasedReturnValue(), v15 = -[HAPAccessoryServerBrowser isPaired:](self, "isPaired:", v14), v14, !v15))
         {
           [(HAPAccessoryServerBrowserIP *)self _invalidateAndRemoveAccessoryServer:v13, v17];
         }
@@ -957,19 +957,19 @@ LABEL_18:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_server:(id *)a3 forHAPWACAccessory:(id)a4
+- (void)_server:(id *)_server forHAPWACAccessory:(id)accessory
 {
   v21 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (_server)
   {
-    *a3 = 0;
-    v6 = [a4 deviceId];
+    *_server = 0;
+    deviceId = [accessory deviceId];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v7 = [(HAPAccessoryServerBrowserIP *)self discoveredAccessoryServers];
-    v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    discoveredAccessoryServers = [(HAPAccessoryServerBrowserIP *)self discoveredAccessoryServers];
+    v8 = [discoveredAccessoryServers countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v8)
     {
       v9 = *v17;
@@ -979,12 +979,12 @@ LABEL_18:
         {
           if (*v17 != v9)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(discoveredAccessoryServers);
           }
 
           v11 = *(*(&v16 + 1) + 8 * i);
-          v12 = [v11 identifier];
-          v13 = [v12 isEqualToString:v6];
+          identifier = [v11 identifier];
+          v13 = [identifier isEqualToString:deviceId];
 
           if (v13)
           {
@@ -993,7 +993,7 @@ LABEL_18:
           }
         }
 
-        v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v8 = [discoveredAccessoryServers countByEnumeratingWithState:&v16 objects:v20 count:16];
         if (v8)
         {
           continue;
@@ -1006,24 +1006,24 @@ LABEL_18:
 LABEL_12:
 
     v14 = v8;
-    *a3 = v8;
+    *_server = v8;
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (int)_server:(id *)a3 forBonjourDevice:(id)a4
+- (int)_server:(id *)_server forBonjourDevice:(id)device
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  deviceCopy = device;
   v23 = 0;
   v7 = BonjourDevice_CopyCFString();
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = [(HAPAccessoryServerBrowserIP *)self discoveredAccessoryServers];
-  v9 = [v8 countByEnumeratingWithState:&v19 objects:v24 count:16];
+  discoveredAccessoryServers = [(HAPAccessoryServerBrowserIP *)self discoveredAccessoryServers];
+  v9 = [discoveredAccessoryServers countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v9)
   {
     v10 = *v20;
@@ -1033,12 +1033,12 @@ LABEL_12:
       {
         if (*v20 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(discoveredAccessoryServers);
         }
 
         v12 = *(*(&v19 + 1) + 8 * i);
-        v13 = [v12 identifier];
-        v14 = [v13 isEqualToString:v7];
+        identifier = [v12 identifier];
+        v14 = [identifier isEqualToString:v7];
 
         if (v14)
         {
@@ -1047,7 +1047,7 @@ LABEL_12:
         }
       }
 
-      v9 = [v8 countByEnumeratingWithState:&v19 objects:v24 count:16];
+      v9 = [discoveredAccessoryServers countByEnumeratingWithState:&v19 objects:v24 count:16];
       if (v9)
       {
         continue;
@@ -1065,19 +1065,19 @@ LABEL_11:
   }
 
   v15 = v9;
-  *a3 = v9;
+  *_server = v9;
   v16 = v23;
 
   v17 = *MEMORY[0x277D85DE8];
   return v16;
 }
 
-- (void)_handleBonjourRemoveWithEventInfo:(id)a3
+- (void)_handleBonjourRemoveWithEventInfo:(id)info
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  infoCopy = info;
   v17 = 0;
-  [(HAPAccessoryServerBrowserIP *)self _server:&v17 forBonjourDevice:v4];
+  [(HAPAccessoryServerBrowserIP *)self _server:&v17 forBonjourDevice:infoCopy];
   v5 = v17;
   if (v5)
   {
@@ -1087,11 +1087,11 @@ LABEL_11:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v9 = HMFGetLogIdentifier();
-      v10 = [v7 isPaired];
+      isPaired = [v7 isPaired];
       *buf = 138543618;
       v19 = v9;
       v20 = 1024;
-      LODWORD(v21) = v10;
+      LODWORD(v21) = isPaired;
       _os_log_impl(&dword_22AADC000, v8, OS_LOG_TYPE_INFO, "%{public}@Authenticated: %d", buf, 0x12u);
     }
 
@@ -1101,9 +1101,9 @@ LABEL_11:
 
   else
   {
-    v11 = [v4 objectForKeyedSubscript:@"name"];
+    v11 = [infoCopy objectForKeyedSubscript:@"name"];
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -1121,50 +1121,50 @@ LABEL_11:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_doBonjourRemoveWithServer:(id)a3
+- (void)_doBonjourRemoveWithServer:(id)server
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  serverCopy = server;
+  if (serverCopy)
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v8 = HMFGetLogIdentifier();
-      v9 = [v4 identifier];
+      identifier = [serverCopy identifier];
       v11 = 138543618;
       v12 = v8;
       v13 = 2114;
-      v14 = v9;
+      v14 = identifier;
       _os_log_impl(&dword_22AADC000, v7, OS_LOG_TYPE_INFO, "%{public}@Removing IP accessory server with device ID %{public}@", &v11, 0x16u);
     }
 
     objc_autoreleasePoolPop(v5);
-    [v4 unregisterForNotifications:v6];
-    [(HAPAccessoryServerBrowserIP *)v6 _invalidateAndRemoveAccessoryServer:v4];
+    [serverCopy unregisterForNotifications:selfCopy];
+    [(HAPAccessoryServerBrowserIP *)selfCopy _invalidateAndRemoveAccessoryServer:serverCopy];
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)indicateNotificationFromServer:(id)a3 notifyType:(unint64_t)a4 withDictionary:(id)a5
+- (void)indicateNotificationFromServer:(id)server notifyType:(unint64_t)type withDictionary:(id)dictionary
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(HAPAccessoryServerBrowser *)self workQueue];
+  serverCopy = server;
+  dictionaryCopy = dictionary;
+  workQueue = [(HAPAccessoryServerBrowser *)self workQueue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __88__HAPAccessoryServerBrowserIP_indicateNotificationFromServer_notifyType_withDictionary___block_invoke;
   v13[3] = &unk_2786D6E88;
-  v14 = v9;
-  v15 = self;
-  v16 = v8;
-  v17 = a4;
-  v11 = v8;
-  v12 = v9;
-  dispatch_async(v10, v13);
+  v14 = dictionaryCopy;
+  selfCopy = self;
+  v16 = serverCopy;
+  typeCopy = type;
+  v11 = serverCopy;
+  v12 = dictionaryCopy;
+  dispatch_async(workQueue, v13);
 }
 
 void __88__HAPAccessoryServerBrowserIP_indicateNotificationFromServer_notifyType_withDictionary___block_invoke(uint64_t a1)
@@ -1286,51 +1286,51 @@ LABEL_23:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_doReachabilityUpdateForServer:(id)a3 withDictionary:(id)a4
+- (void)_doReachabilityUpdateForServer:(id)server withDictionary:(id)dictionary
 {
   *&v24[13] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 reachabilityPingEnabled])
+  serverCopy = server;
+  dictionaryCopy = dictionary;
+  if ([serverCopy reachabilityPingEnabled])
   {
-    v8 = [v7 hmf_BOOLForKey:@"HAPAccessoryReachable"];
+    v8 = [dictionaryCopy hmf_BOOLForKey:@"HAPAccessoryReachable"];
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       v12 = HMFGetLogIdentifier();
-      v13 = [v6 identifier];
+      identifier = [serverCopy identifier];
       v21 = 138543874;
       v22 = v12;
       v23 = 1024;
       *v24 = v8;
       v24[2] = 2114;
-      *&v24[3] = v13;
+      *&v24[3] = identifier;
       _os_log_impl(&dword_22AADC000, v11, OS_LOG_TYPE_INFO, "%{public}@accessory server reachability via ping %d from accessory server %{public}@", &v21, 0x1Cu);
     }
 
     objc_autoreleasePoolPop(v9);
     if ((v8 & 1) == 0)
     {
-      v14 = [v6 identifier];
-      [(HAPAccessoryServerBrowserIP *)v10 _processPendingBonjourEvent:v14];
+      identifier2 = [serverCopy identifier];
+      [(HAPAccessoryServerBrowserIP *)selfCopy _processPendingBonjourEvent:identifier2];
     }
   }
 
   else
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy2 = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
       v18 = HMFGetLogIdentifier();
-      v19 = [v6 identifier];
+      identifier3 = [serverCopy identifier];
       v21 = 138543618;
       v22 = v18;
       v23 = 2114;
-      *v24 = v19;
+      *v24 = identifier3;
       _os_log_impl(&dword_22AADC000, v17, OS_LOG_TYPE_INFO, "%{public}@ignoring reachability update on browser - pings not enabled for accessory server %{public}@", &v21, 0x16u);
     }
 
@@ -1340,16 +1340,16 @@ LABEL_23:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_invalidateAndRemoveAccessoryServer:(id)a3
+- (void)_invalidateAndRemoveAccessoryServer:(id)server
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 isPreSoftAuthWacStarted];
+  serverCopy = server;
+  isPreSoftAuthWacStarted = [serverCopy isPreSoftAuthWacStarted];
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_INFO);
-  if (v5)
+  if (isPreSoftAuthWacStarted)
   {
     if (v9)
     {
@@ -1357,7 +1357,7 @@ LABEL_23:
       *buf = 138543618;
       v26 = v10;
       v27 = 2112;
-      v28 = v4;
+      v28 = serverCopy;
       _os_log_impl(&dword_22AADC000, v8, OS_LOG_TYPE_INFO, "%{public}@Not invalidating accessory server during WAC progress - %@", buf, 0x16u);
     }
 
@@ -1372,34 +1372,34 @@ LABEL_23:
       *buf = 138543618;
       v26 = v11;
       v27 = 2112;
-      v28 = v4;
+      v28 = serverCopy;
       _os_log_impl(&dword_22AADC000, v8, OS_LOG_TYPE_INFO, "%{public}@Removing from discoveredAccessoryServers: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v6);
-    v12 = [(HAPAccessoryServerBrowserIP *)v7 discoveredAccessoryServers];
-    [v12 removeObject:v4];
+    discoveredAccessoryServers = [(HAPAccessoryServerBrowserIP *)selfCopy discoveredAccessoryServers];
+    [discoveredAccessoryServers removeObject:serverCopy];
 
-    v13 = [(HAPAccessoryServerBrowserIP *)v7 delegate];
-    v14 = [[HAPAccessoryServerBrowserInvalidateServerOperation alloc] initWithServer:v4];
-    v15 = [v4 identifier];
-    [(HAPAccessoryServerBrowserIP *)v7 pendDelegateOperation:v14 identifier:v15];
+    delegate = [(HAPAccessoryServerBrowserIP *)selfCopy delegate];
+    v14 = [[HAPAccessoryServerBrowserInvalidateServerOperation alloc] initWithServer:serverCopy];
+    identifier = [serverCopy identifier];
+    [(HAPAccessoryServerBrowserIP *)selfCopy pendDelegateOperation:v14 identifier:identifier];
 
-    if (v13 && (objc_opt_respondsToSelector() & 1) != 0)
+    if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      objc_initWeak(buf, v7);
+      objc_initWeak(buf, selfCopy);
       v16 = MEMORY[0x277CCA8C8];
       v21[0] = MEMORY[0x277D85DD0];
       v21[1] = 3221225472;
       v21[2] = __67__HAPAccessoryServerBrowserIP__invalidateAndRemoveAccessoryServer___block_invoke;
       v21[3] = &unk_2786D6F50;
       objc_copyWeak(&v24, buf);
-      v22 = v13;
-      v17 = v4;
+      v22 = delegate;
+      v17 = serverCopy;
       v23 = v17;
       v18 = [v16 blockOperationWithBlock:v21];
-      v19 = [v17 identifier];
-      [(HAPAccessoryServerBrowserIP *)v7 pendDelegateOperation:v18 identifier:v19];
+      identifier2 = [v17 identifier];
+      [(HAPAccessoryServerBrowserIP *)selfCopy pendDelegateOperation:v18 identifier:identifier2];
 
       objc_destroyWeak(&v24);
       objc_destroyWeak(buf);
@@ -1415,43 +1415,43 @@ void __67__HAPAccessoryServerBrowserIP__invalidateAndRemoveAccessoryServer___blo
   [*(a1 + 32) accessoryServerBrowser:WeakRetained didRemoveAccessoryServer:*(a1 + 40) error:0];
 }
 
-- (void)_handleBonjourAddOrUpdateWithEventInfo:(id)a3
+- (void)_handleBonjourAddOrUpdateWithEventInfo:(id)info
 {
-  v5 = a3;
-  v4 = [(HAPAccessoryServerBrowser *)self workQueue];
-  dispatch_assert_queue_V2(v4);
+  infoCopy = info;
+  workQueue = [(HAPAccessoryServerBrowser *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  [(HAPAccessoryServerBrowserIP *)self _handleConnectionUpdateWithBonjourDeviceInfo:v5 socketInfo:0];
+  [(HAPAccessoryServerBrowserIP *)self _handleConnectionUpdateWithBonjourDeviceInfo:infoCopy socketInfo:0];
 }
 
-- (void)handleConnectionUpdateWithBonjourDeviceInfo:(id)a3 socketInfo:(id)a4
+- (void)handleConnectionUpdateWithBonjourDeviceInfo:(id)info socketInfo:(id)socketInfo
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HAPAccessoryServerBrowser *)self workQueue];
+  infoCopy = info;
+  socketInfoCopy = socketInfo;
+  workQueue = [(HAPAccessoryServerBrowser *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __86__HAPAccessoryServerBrowserIP_handleConnectionUpdateWithBonjourDeviceInfo_socketInfo___block_invoke;
   block[3] = &unk_2786D7078;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = infoCopy;
+  v13 = socketInfoCopy;
+  v9 = socketInfoCopy;
+  v10 = infoCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (void)_handleConnectionUpdateWithBonjourDeviceInfo:(id)a3 socketInfo:(id)a4
+- (void)_handleConnectionUpdateWithBonjourDeviceInfo:(id)info socketInfo:(id)socketInfo
 {
   v50 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  socketInfoCopy = socketInfo;
   v41 = 0;
-  [(HAPAccessoryServerBrowserIP *)self _server:&v41 forBonjourDevice:v6];
+  [(HAPAccessoryServerBrowserIP *)self _server:&v41 forBonjourDevice:infoCopy];
   v8 = v41;
   if (!v8)
   {
-    if (v7)
+    if (socketInfoCopy)
     {
       v15 = 2;
     }
@@ -1462,17 +1462,17 @@ void __67__HAPAccessoryServerBrowserIP__invalidateAndRemoveAccessoryServer___blo
     }
 
     v16 = [HAPAccessoryServerIP alloc];
-    v17 = [(HAPAccessoryServerBrowser *)self keyStore];
-    v18 = [(HAPAccessoryServerIP *)v16 initWithBonjourDeviceInfo:v6 keyStore:v17 browser:self discoveryMethod:v15];
+    keyStore = [(HAPAccessoryServerBrowser *)self keyStore];
+    v18 = [(HAPAccessoryServerIP *)v16 initWithBonjourDeviceInfo:infoCopy keyStore:keyStore browser:self discoveryMethod:v15];
 
-    v19 = [(HAPAccessoryServer *)v18 identifier];
-    v20 = [(HAPAccessoryServerBrowserIP *)self serverIdentifierToSkipBonjourUpdate];
-    v21 = [v19 isEqual:v20];
+    identifier = [(HAPAccessoryServer *)v18 identifier];
+    serverIdentifierToSkipBonjourUpdate = [(HAPAccessoryServerBrowserIP *)self serverIdentifierToSkipBonjourUpdate];
+    v21 = [identifier isEqual:serverIdentifierToSkipBonjourUpdate];
 
-    if (v7 || !v21)
+    if (socketInfoCopy || !v21)
     {
       v22 = objc_autoreleasePoolPush();
-      v23 = self;
+      selfCopy2 = self;
       v27 = HMFGetOSLogHandle();
       v24 = v27;
       if (v18)
@@ -1480,55 +1480,55 @@ void __67__HAPAccessoryServerBrowserIP__invalidateAndRemoveAccessoryServer___blo
         if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
         {
           v28 = HMFGetLogIdentifier();
-          v29 = [(HAPAccessoryServer *)v18 name];
-          v30 = [(HAPAccessoryServer *)v18 identifier];
+          name = [(HAPAccessoryServer *)v18 name];
+          identifier2 = [(HAPAccessoryServer *)v18 identifier];
           *buf = 138543874;
           v43 = v28;
           v44 = 2112;
-          v45 = v29;
+          v45 = name;
           v46 = 2114;
-          v47 = v30;
+          v47 = identifier2;
           _os_log_impl(&dword_22AADC000, v24, OS_LOG_TYPE_INFO, "%{public}@Discovered new accessory server %@/%{public}@ with BonjourDevice info", buf, 0x20u);
         }
 
         objc_autoreleasePoolPop(v22);
         [(HAPAccessoryServerIP *)v18 setIsSeenOnBonjour:1];
-        v31 = [(HAPAccessoryServerBrowserIP *)v23 discoveredAccessoryServers];
-        [v31 addObject:v18];
+        discoveredAccessoryServers = [(HAPAccessoryServerBrowserIP *)selfCopy2 discoveredAccessoryServers];
+        [discoveredAccessoryServers addObject:v18];
 
-        if (v7)
+        if (socketInfoCopy)
         {
           v32 = objc_autoreleasePoolPush();
-          v33 = v23;
+          v33 = selfCopy2;
           v34 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
           {
             v35 = HMFGetLogIdentifier();
-            v36 = [(HAPAccessoryServer *)v18 identifier];
+            identifier3 = [(HAPAccessoryServer *)v18 identifier];
             *buf = 138543618;
             v43 = v35;
             v44 = 2112;
-            v45 = v36;
+            v45 = identifier3;
             _os_log_impl(&dword_22AADC000, v34, OS_LOG_TYPE_INFO, "%{public}@Saving socket info for newly discovered server %@", buf, 0x16u);
           }
 
           objc_autoreleasePoolPop(v32);
-          [(HAPAccessoryServerIP *)v18 setCachedSocketInfo:v7];
+          [(HAPAccessoryServerIP *)v18 setCachedSocketInfo:socketInfoCopy];
         }
 
-        if ([(HAPAccessoryServerBrowserIP *)v23 _delegateRespondsToSelector:sel_accessoryServerBrowser_didFindAccessoryServer_stateChanged_stateNumber_])
+        if ([(HAPAccessoryServerBrowserIP *)selfCopy2 _delegateRespondsToSelector:sel_accessoryServerBrowser_didFindAccessoryServer_stateChanged_stateNumber_])
         {
           v39[0] = MEMORY[0x277D85DD0];
           v39[1] = 3221225472;
           v39[2] = __87__HAPAccessoryServerBrowserIP__handleConnectionUpdateWithBonjourDeviceInfo_socketInfo___block_invoke;
           v39[3] = &unk_2786D7050;
-          v39[4] = v23;
+          v39[4] = selfCopy2;
           v40 = v18;
-          v37 = [(HAPAccessoryServer *)v40 identifier];
-          [(HAPAccessoryServerBrowserIP *)v23 pendDelegateBlock:v39 identifier:v37];
+          identifier4 = [(HAPAccessoryServer *)v40 identifier];
+          [(HAPAccessoryServerBrowserIP *)selfCopy2 pendDelegateBlock:v39 identifier:identifier4];
         }
 
-        [(HAPAccessoryServer *)v18 registerForNotifications:v23];
+        [(HAPAccessoryServer *)v18 registerForNotifications:selfCopy2];
         goto LABEL_26;
       }
 
@@ -1538,7 +1538,7 @@ void __67__HAPAccessoryServerBrowserIP__invalidateAndRemoveAccessoryServer___blo
         *buf = 138543618;
         v43 = v25;
         v44 = 2112;
-        v45 = v6;
+        v45 = infoCopy;
         _os_log_impl(&dword_22AADC000, v24, OS_LOG_TYPE_ERROR, "%{public}@Failed to create an accessory server from the TXT record data after discovering BonjourDevice %@", buf, 0x16u);
         goto LABEL_24;
       }
@@ -1547,16 +1547,16 @@ void __67__HAPAccessoryServerBrowserIP__invalidateAndRemoveAccessoryServer___blo
     else
     {
       v22 = objc_autoreleasePoolPush();
-      v23 = self;
+      selfCopy2 = self;
       v24 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
       {
         v25 = HMFGetLogIdentifier();
-        v26 = [(HAPAccessoryServer *)v18 identifier];
+        identifier5 = [(HAPAccessoryServer *)v18 identifier];
         *buf = 138543618;
         v43 = v25;
         v44 = 2112;
-        v45 = v26;
+        v45 = identifier5;
         _os_log_impl(&dword_22AADC000, v24, OS_LOG_TYPE_INFO, "%{public}@*** Skipping bonjour add for %@.  Remove HAPServerIPBrowserSkipBonjourUpdateForIdentifier from preferences to clear", buf, 0x16u);
 
 LABEL_24:
@@ -1570,28 +1570,28 @@ LABEL_26:
   }
 
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy3 = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v12 = HMFGetLogIdentifier();
-    v13 = [v8 identifier];
+    identifier6 = [v8 identifier];
     [v8 isWacAccessory];
     v14 = HMFBooleanToString();
     *buf = 138544130;
     v43 = v12;
     v44 = 2114;
-    v45 = v13;
+    v45 = identifier6;
     v46 = 2114;
     v47 = v14;
     v48 = 2112;
-    v49 = v6;
+    v49 = infoCopy;
     _os_log_impl(&dword_22AADC000, v11, OS_LOG_TYPE_INFO, "%{public}@Updating IP accessory server %{public}@ wacAccessory:%{public}@ with new BonjourDevice info: %@", buf, 0x2Au);
   }
 
   objc_autoreleasePoolPop(v9);
-  [(HAPAccessoryServerBrowserIP *)v10 _setReachability:1 forServer:v8];
-  [v8 updateWithBonjourDeviceInfo:v6 socketInfo:v7];
+  [(HAPAccessoryServerBrowserIP *)selfCopy3 _setReachability:1 forServer:v8];
+  [v8 updateWithBonjourDeviceInfo:infoCopy socketInfo:socketInfoCopy];
   [v8 setIsSeenOnBonjour:1];
 LABEL_27:
 
@@ -1604,20 +1604,20 @@ void __87__HAPAccessoryServerBrowserIP__handleConnectionUpdateWithBonjourDeviceI
   [v2 accessoryServerBrowser:*(a1 + 32) didFindAccessoryServer:*(a1 + 40) stateChanged:0 stateNumber:0];
 }
 
-- (void)_handleBonjourBrowserEvent:(unsigned int)a3 eventInfo:(id)a4
+- (void)_handleBonjourBrowserEvent:(unsigned int)event eventInfo:(id)info
 {
   v60 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [v6 hmf_stringForKey:@"deviceID"];
-  v8 = [v6 hmf_stringForKey:@"name"];
-  if (a3 != 3)
+  infoCopy = info;
+  v7 = [infoCopy hmf_stringForKey:@"deviceID"];
+  v8 = [infoCopy hmf_stringForKey:@"name"];
+  if (event != 3)
   {
-    if (a3 != 2)
+    if (event != 2)
     {
-      if (a3 == 1 && v6)
+      if (event == 1 && infoCopy)
       {
         v9 = objc_autoreleasePoolPush();
-        v10 = self;
+        selfCopy = self;
         v11 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
         {
@@ -1633,7 +1633,7 @@ void __87__HAPAccessoryServerBrowserIP__handleConnectionUpdateWithBonjourDeviceI
 
         objc_autoreleasePoolPop(v9);
         v53 = 0;
-        [(HAPAccessoryServerBrowserIP *)v10 _server:&v53 forBonjourDevice:v6];
+        [(HAPAccessoryServerBrowserIP *)selfCopy _server:&v53 forBonjourDevice:infoCopy];
         v13 = v53;
         v14 = v13;
         if (v13)
@@ -1641,12 +1641,12 @@ void __87__HAPAccessoryServerBrowserIP__handleConnectionUpdateWithBonjourDeviceI
           [v13 setIsSeenOnBonjour:1];
         }
 
-        v15 = [(HAPAccessoryServerBrowserIP *)v10 _purgePendingBonjourEvents:v7 withProcessing:0];
+        v15 = [(HAPAccessoryServerBrowserIP *)selfCopy _purgePendingBonjourEvents:v7 withProcessing:0];
         if (v15)
         {
           v16 = v15;
           v17 = objc_autoreleasePoolPush();
-          v18 = v10;
+          v18 = selfCopy;
           v19 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
           {
@@ -1661,19 +1661,19 @@ void __87__HAPAccessoryServerBrowserIP__handleConnectionUpdateWithBonjourDeviceI
           objc_autoreleasePoolPop(v17);
         }
 
-        [(HAPAccessoryServerBrowserIP *)v10 _handleBonjourAddOrUpdateWithEventInfo:v6];
+        [(HAPAccessoryServerBrowserIP *)selfCopy _handleBonjourAddOrUpdateWithEventInfo:infoCopy];
       }
 
       goto LABEL_32;
     }
 
-    if (!v6)
+    if (!infoCopy)
     {
       goto LABEL_32;
     }
 
     v52 = 0;
-    [(HAPAccessoryServerBrowserIP *)self _server:&v52 forBonjourDevice:v6];
+    [(HAPAccessoryServerBrowserIP *)self _server:&v52 forBonjourDevice:infoCopy];
     v21 = v52;
     v22 = v21;
     if (v21)
@@ -1681,48 +1681,48 @@ void __87__HAPAccessoryServerBrowserIP__handleConnectionUpdateWithBonjourDeviceI
       [v21 setIsSeenOnBonjour:0];
     }
 
-    v23 = [v22 isSessionEstablished];
+    isSessionEstablished = [v22 isSessionEstablished];
     if ([v22 wakeNumber])
     {
       v24 = objc_autoreleasePoolPush();
-      v25 = self;
+      selfCopy2 = self;
       v26 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
       {
         v27 = HMFGetLogIdentifier();
-        v28 = [v22 identifier];
-        v29 = [v22 wakeNumber];
+        identifier = [v22 identifier];
+        wakeNumber = [v22 wakeNumber];
         *buf = 138543874;
         v55 = v27;
         v56 = 2114;
-        v57 = v28;
+        v57 = identifier;
         v58 = 2048;
-        v59 = v29;
+        v59 = wakeNumber;
         _os_log_impl(&dword_22AADC000, v26, OS_LOG_TYPE_INFO, "%{public}@pending bonjour remove event for suspended accessory server: %{public}@ with wake number %lu", buf, 0x20u);
       }
 
       objc_autoreleasePoolPop(v24);
-      v23 = 1;
+      isSessionEstablished = 1;
     }
 
-    v30 = [v22 primaryAccessory];
-    if ([v30 suspendedState] == 3)
+    primaryAccessory = [v22 primaryAccessory];
+    if ([primaryAccessory suspendedState] == 3)
     {
       v31 = objc_autoreleasePoolPush();
-      v32 = self;
+      selfCopy3 = self;
       v33 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
       {
         v34 = HMFGetLogIdentifier();
         [v22 identifier];
         v35 = v50 = v31;
-        v36 = [v30 suspendedState];
+        suspendedState = [primaryAccessory suspendedState];
         *buf = 138543874;
         v55 = v34;
         v56 = 2114;
         v57 = v35;
         v58 = 2048;
-        v59 = v36;
+        v59 = suspendedState;
         _os_log_impl(&dword_22AADC000, v33, OS_LOG_TYPE_INFO, "%{public}@pending bonjour remove event for suspended accessory server: %{public}@ with suspendedState %lu", buf, 0x20u);
 
         v31 = v50;
@@ -1731,12 +1731,12 @@ void __87__HAPAccessoryServerBrowserIP__handleConnectionUpdateWithBonjourDeviceI
       objc_autoreleasePoolPop(v31);
     }
 
-    else if (!v23)
+    else if (!isSessionEstablished)
     {
       if ([v22 isWacAccessory] && (objc_msgSend(v22, "isWacComplete") & 1) == 0)
       {
         v46 = objc_autoreleasePoolPush();
-        v47 = self;
+        selfCopy4 = self;
         v48 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v48, OS_LOG_TYPE_DEBUG))
         {
@@ -1754,7 +1754,7 @@ void __87__HAPAccessoryServerBrowserIP__handleConnectionUpdateWithBonjourDeviceI
       else
       {
         v42 = objc_autoreleasePoolPush();
-        v43 = self;
+        selfCopy5 = self;
         v44 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v44, OS_LOG_TYPE_INFO))
         {
@@ -1767,20 +1767,20 @@ void __87__HAPAccessoryServerBrowserIP__handleConnectionUpdateWithBonjourDeviceI
         }
 
         objc_autoreleasePoolPop(v42);
-        [(HAPAccessoryServerBrowserIP *)v43 _handleBonjourRemoveWithEventInfo:v6];
+        [(HAPAccessoryServerBrowserIP *)selfCopy5 _handleBonjourRemoveWithEventInfo:infoCopy];
       }
 
       goto LABEL_31;
     }
 
-    [(HAPAccessoryServerBrowserIP *)self _pendBonjourRemoveEvent:v6];
+    [(HAPAccessoryServerBrowserIP *)self _pendBonjourRemoveEvent:infoCopy];
 LABEL_31:
 
     goto LABEL_32;
   }
 
   v37 = objc_autoreleasePoolPush();
-  v38 = self;
+  selfCopy6 = self;
   v39 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
   {
@@ -1791,16 +1791,16 @@ LABEL_31:
   }
 
   objc_autoreleasePoolPop(v37);
-  [(HAPAccessoryServerBrowserIP *)v38 _purgePendingBonjourEvents:v7 withProcessing:1];
-  [(HAPAccessoryServerBrowserIP *)v38 _invalidateAccessoryServers:1];
-  if ([(HAPAccessoryServerBrowserIP *)v38 _delegateRespondsToSelector:sel_accessoryServerBrowser_didStopDiscoveringWithError_])
+  [(HAPAccessoryServerBrowserIP *)selfCopy6 _purgePendingBonjourEvents:v7 withProcessing:1];
+  [(HAPAccessoryServerBrowserIP *)selfCopy6 _invalidateAccessoryServers:1];
+  if ([(HAPAccessoryServerBrowserIP *)selfCopy6 _delegateRespondsToSelector:sel_accessoryServerBrowser_didStopDiscoveringWithError_])
   {
     v51[0] = MEMORY[0x277D85DD0];
     v51[1] = 3221225472;
     v51[2] = __68__HAPAccessoryServerBrowserIP__handleBonjourBrowserEvent_eventInfo___block_invoke;
     v51[3] = &unk_2786D6CA0;
-    v51[4] = v38;
-    [(HAPAccessoryServerBrowserIP *)v38 pendDelegateBlock:v51 identifier:0];
+    v51[4] = selfCopy6;
+    [(HAPAccessoryServerBrowserIP *)selfCopy6 pendDelegateBlock:v51 identifier:0];
   }
 
 LABEL_32:
@@ -1814,39 +1814,39 @@ void __68__HAPAccessoryServerBrowserIP__handleBonjourBrowserEvent_eventInfo___bl
   [v2 accessoryServerBrowser:*(a1 + 32) didStopDiscoveringWithError:0];
 }
 
-- (void)updateCacheForDeviceID:(id)a3 ipData:(id)a4
+- (void)updateCacheForDeviceID:(id)d ipData:(id)data
 {
-  v9 = a4;
-  v6 = a3;
-  v7 = [(HAPAccessoryServerBrowserIP *)self cache];
-  v8 = v7;
-  if (v9)
+  dataCopy = data;
+  dCopy = d;
+  cache = [(HAPAccessoryServerBrowserIP *)self cache];
+  v8 = cache;
+  if (dataCopy)
   {
-    [v7 saveData:v9 forDevice:v6];
+    [cache saveData:dataCopy forDevice:dCopy];
   }
 
   else
   {
-    [v7 deleteDataForDevice:v6];
+    [cache deleteDataForDevice:dCopy];
   }
 }
 
-- (void)_matchAccessoryServerWithSetupID:(id)a3 serverIdentifier:(id)a4 completionHandler:(id)a5
+- (void)_matchAccessoryServerWithSetupID:(id)d serverIdentifier:(id)identifier completionHandler:(id)handler
 {
   v46 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  dCopy = d;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v11 = [(HAPAccessoryServerBrowserIP *)self discoveredAccessoryServers];
-    v12 = [v11 allObjects];
+    discoveredAccessoryServers = [(HAPAccessoryServerBrowserIP *)self discoveredAccessoryServers];
+    allObjects = [discoveredAccessoryServers allObjects];
 
-    v13 = [v12 countByEnumeratingWithState:&v31 objects:v45 count:16];
+    v13 = [allObjects countByEnumeratingWithState:&v31 objects:v45 count:16];
     if (v13)
     {
       v14 = v13;
@@ -1857,22 +1857,22 @@ void __68__HAPAccessoryServerBrowserIP__handleBonjourBrowserEvent_eventInfo___bl
         {
           if (*v32 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(allObjects);
           }
 
           v17 = *(*(&v31 + 1) + 8 * i);
-          if ([v17 matchesSetupID:v8 serverIdentifier:v9])
+          if ([v17 matchesSetupID:dCopy serverIdentifier:identifierCopy])
           {
-            v20 = [v17 identifier];
-            v21 = [(HAPAccessoryServerBrowser *)self isPaired:v20];
+            identifier = [v17 identifier];
+            v21 = [(HAPAccessoryServerBrowser *)self isPaired:identifier];
 
-            v22 = [v17 hasPairings];
-            v19 = v21 | v22;
-            if (v21 | v22)
+            hasPairings = [v17 hasPairings];
+            v19 = v21 | hasPairings;
+            if (v21 | hasPairings)
             {
-              v23 = v22;
+              v23 = hasPairings;
               context = objc_autoreleasePoolPush();
-              v24 = self;
+              selfCopy = self;
               v25 = HMFGetOSLogHandle();
               if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
               {
@@ -1884,7 +1884,7 @@ void __68__HAPAccessoryServerBrowserIP__handleBonjourBrowserEvent_eventInfo___bl
                 v37 = 2112;
                 v38 = v17;
                 v39 = 2114;
-                v40 = v8;
+                v40 = dCopy;
                 v41 = 2114;
                 v42 = v26;
                 v43 = 2114;
@@ -1900,7 +1900,7 @@ void __68__HAPAccessoryServerBrowserIP__handleBonjourBrowserEvent_eventInfo___bl
           }
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v31 objects:v45 count:16];
+        v14 = [allObjects countByEnumeratingWithState:&v31 objects:v45 count:16];
         if (v14)
         {
           continue;
@@ -1914,58 +1914,58 @@ void __68__HAPAccessoryServerBrowserIP__handleBonjourBrowserEvent_eventInfo___bl
     v19 = 0;
 LABEL_16:
 
-    (v10)[2](v10, v19, v18);
+    (handlerCopy)[2](handlerCopy, v19, v18);
   }
 
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)matchAccessoryServerWithSetupID:(id)a3 serverIdentifier:(id)a4 completionHandler:(id)a5
+- (void)matchAccessoryServerWithSetupID:(id)d serverIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HAPAccessoryServerBrowser *)self workQueue];
+  dCopy = d;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  workQueue = [(HAPAccessoryServerBrowser *)self workQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __98__HAPAccessoryServerBrowserIP_matchAccessoryServerWithSetupID_serverIdentifier_completionHandler___block_invoke;
   v15[3] = &unk_2786D66C8;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = dCopy;
+  v17 = identifierCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = identifierCopy;
+  v14 = dCopy;
+  dispatch_async(workQueue, v15);
 }
 
-- (void)processPendingBonjourRemoveEvents:(id)a3
+- (void)processPendingBonjourRemoveEvents:(id)events
 {
-  v4 = a3;
-  v5 = [(HAPAccessoryServerBrowser *)self workQueue];
+  eventsCopy = events;
+  workQueue = [(HAPAccessoryServerBrowser *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __65__HAPAccessoryServerBrowserIP_processPendingBonjourRemoveEvents___block_invoke;
   v7[3] = &unk_2786D7050;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = eventsCopy;
+  v6 = eventsCopy;
+  dispatch_async(workQueue, v7);
 }
 
-- (void)discoverAccessoryServerWithIdentifier:(id)a3
+- (void)discoverAccessoryServerWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(HAPAccessoryServerBrowser *)self workQueue];
+  identifierCopy = identifier;
+  workQueue = [(HAPAccessoryServerBrowser *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __69__HAPAccessoryServerBrowserIP_discoverAccessoryServerWithIdentifier___block_invoke;
   v7[3] = &unk_2786D7050;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = identifierCopy;
+  v6 = identifierCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __69__HAPAccessoryServerBrowserIP_discoverAccessoryServerWithIdentifier___block_invoke(uint64_t a1)
@@ -2019,10 +2019,10 @@ void __69__HAPAccessoryServerBrowserIP_discoverAccessoryServerWithIdentifier___b
   [v2 accessoryServerBrowser:*(a1 + 32) didFailToDiscoverAccessoryServerWithIdentifier:*(a1 + 40)];
 }
 
-- (void)notifyDelegatesOfWACCompletionWithIdentifier:(id)a3 error:(id)a4
+- (void)notifyDelegatesOfWACCompletionWithIdentifier:(id)identifier error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  errorCopy = error;
   if ([(HAPAccessoryServerBrowserIP *)self _delegateRespondsToSelector:sel_accessoryServerBrowser_didFinishWACForAccessoryWithIdentifier_error_])
   {
     v8[0] = MEMORY[0x277D85DD0];
@@ -2030,8 +2030,8 @@ void __69__HAPAccessoryServerBrowserIP_discoverAccessoryServerWithIdentifier___b
     v8[2] = __82__HAPAccessoryServerBrowserIP_notifyDelegatesOfWACCompletionWithIdentifier_error___block_invoke;
     v8[3] = &unk_2786D7078;
     v8[4] = self;
-    v9 = v6;
-    v10 = v7;
+    v9 = identifierCopy;
+    v10 = errorCopy;
     [(HAPAccessoryServerBrowserIP *)self pendDelegateBlock:v8 identifier:v9];
   }
 }
@@ -2044,22 +2044,22 @@ void __82__HAPAccessoryServerBrowserIP_notifyDelegatesOfWACCompletionWithIdentif
 
 - (id)visible2Pt4Networks
 {
-  v2 = [(HAPAccessoryServerBrowserIP *)self hapWACBrowser];
-  v3 = [v2 visible2Pt4Networks];
+  hapWACBrowser = [(HAPAccessoryServerBrowserIP *)self hapWACBrowser];
+  visible2Pt4Networks = [hapWACBrowser visible2Pt4Networks];
 
-  return v3;
+  return visible2Pt4Networks;
 }
 
-- (void)stopDiscoveringWACAccessoryServersWithInvalidation:(BOOL)a3
+- (void)stopDiscoveringWACAccessoryServersWithInvalidation:(BOOL)invalidation
 {
-  v5 = [(HAPAccessoryServerBrowser *)self workQueue];
+  workQueue = [(HAPAccessoryServerBrowser *)self workQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __82__HAPAccessoryServerBrowserIP_stopDiscoveringWACAccessoryServersWithInvalidation___block_invoke;
   v6[3] = &unk_2786D6768;
   v6[4] = self;
-  v7 = a3;
-  dispatch_async(v5, v6);
+  invalidationCopy = invalidation;
+  dispatch_async(workQueue, v6);
 }
 
 void __82__HAPAccessoryServerBrowserIP_stopDiscoveringWACAccessoryServersWithInvalidation___block_invoke(uint64_t a1)
@@ -2090,13 +2090,13 @@ void __82__HAPAccessoryServerBrowserIP_stopDiscoveringWACAccessoryServersWithInv
 
 - (void)stopDiscoveringAccessoryServers
 {
-  v3 = [(HAPAccessoryServerBrowser *)self workQueue];
+  workQueue = [(HAPAccessoryServerBrowser *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __62__HAPAccessoryServerBrowserIP_stopDiscoveringAccessoryServers__block_invoke;
   block[3] = &unk_2786D6CA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 void __62__HAPAccessoryServerBrowserIP_stopDiscoveringAccessoryServers__block_invoke(uint64_t a1)
@@ -2130,38 +2130,38 @@ void __62__HAPAccessoryServerBrowserIP_stopDiscoveringAccessoryServers__block_in
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)pendDelegateOperation:(id)a3 identifier:(id)a4
+- (void)pendDelegateOperation:(id)operation identifier:(id)identifier
 {
-  v7 = a3;
-  if (a4)
+  operationCopy = operation;
+  if (identifier)
   {
-    [v7 setName:a4];
+    [operationCopy setName:identifier];
   }
 
-  v6 = [(HAPAccessoryServerBrowserIP *)self delegateOperationQueue];
-  [v6 addOperation:v7];
+  delegateOperationQueue = [(HAPAccessoryServerBrowserIP *)self delegateOperationQueue];
+  [delegateOperationQueue addOperation:operationCopy];
 }
 
-- (void)pendDelegateBlock:(id)a3 identifier:(id)a4
+- (void)pendDelegateBlock:(id)block identifier:(id)identifier
 {
   v6 = MEMORY[0x277CCA8C8];
-  v7 = a4;
-  v8 = [v6 blockOperationWithBlock:a3];
-  [(HAPAccessoryServerBrowserIP *)self pendDelegateOperation:v8 identifier:v7];
+  identifierCopy = identifier;
+  v8 = [v6 blockOperationWithBlock:block];
+  [(HAPAccessoryServerBrowserIP *)self pendDelegateOperation:v8 identifier:identifierCopy];
 }
 
-- (void)startDiscoveringAirPlayAccessoriesWithDelegate:(id)a3
+- (void)startDiscoveringAirPlayAccessoriesWithDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(HAPAccessoryServerBrowser *)self workQueue];
+  delegateCopy = delegate;
+  workQueue = [(HAPAccessoryServerBrowser *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __78__HAPAccessoryServerBrowserIP_startDiscoveringAirPlayAccessoriesWithDelegate___block_invoke;
   v7[3] = &unk_2786D7050;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = delegateCopy;
+  v6 = delegateCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __78__HAPAccessoryServerBrowserIP_startDiscoveringAirPlayAccessoriesWithDelegate___block_invoke(uint64_t a1)
@@ -2185,18 +2185,18 @@ void __78__HAPAccessoryServerBrowserIP_startDiscoveringAirPlayAccessoriesWithDel
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startDiscoveringWACAccessoryServerWithIdentifier:(id)a3
+- (void)startDiscoveringWACAccessoryServerWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(HAPAccessoryServerBrowser *)self workQueue];
+  identifierCopy = identifier;
+  workQueue = [(HAPAccessoryServerBrowser *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __80__HAPAccessoryServerBrowserIP_startDiscoveringWACAccessoryServerWithIdentifier___block_invoke;
   v7[3] = &unk_2786D7050;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = identifierCopy;
+  v6 = identifierCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __80__HAPAccessoryServerBrowserIP_startDiscoveringWACAccessoryServerWithIdentifier___block_invoke(uint64_t a1)
@@ -2225,13 +2225,13 @@ void __80__HAPAccessoryServerBrowserIP_startDiscoveringWACAccessoryServerWithIde
 
 - (void)startDiscoveringWACAccessoryServers
 {
-  v3 = [(HAPAccessoryServerBrowser *)self workQueue];
+  workQueue = [(HAPAccessoryServerBrowser *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __66__HAPAccessoryServerBrowserIP_startDiscoveringWACAccessoryServers__block_invoke;
   block[3] = &unk_2786D6CA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 void __66__HAPAccessoryServerBrowserIP_startDiscoveringWACAccessoryServers__block_invoke(uint64_t a1)
@@ -2259,7 +2259,7 @@ void __66__HAPAccessoryServerBrowserIP_startDiscoveringWACAccessoryServers__bloc
 {
   v16 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -2270,24 +2270,24 @@ void __66__HAPAccessoryServerBrowserIP_startDiscoveringWACAccessoryServers__bloc
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HAPAccessoryServerBrowserIP *)v4 _initializeAndStartBonjourBrowser];
-  if ([(HAPAccessoryServerBrowserIP *)v4 _delegateRespondsToSelector:sel_accessoryServerBrowser_didStartDiscoveringWithError_])
+  _initializeAndStartBonjourBrowser = [(HAPAccessoryServerBrowserIP *)selfCopy _initializeAndStartBonjourBrowser];
+  if ([(HAPAccessoryServerBrowserIP *)selfCopy _delegateRespondsToSelector:sel_accessoryServerBrowser_didStartDiscoveringWithError_])
   {
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __66__HAPAccessoryServerBrowserIP__doStartDiscoveringAccessoryServers__block_invoke;
     v12[3] = &unk_2786D6740;
-    v12[4] = v4;
-    v13 = v7;
-    [(HAPAccessoryServerBrowserIP *)v4 pendDelegateBlock:v12 identifier:0];
+    v12[4] = selfCopy;
+    v13 = _initializeAndStartBonjourBrowser;
+    [(HAPAccessoryServerBrowserIP *)selfCopy pendDelegateBlock:v12 identifier:0];
   }
 
   v8 = +[HAPPowerManager sharedInstance];
-  [(HAPAccessoryServerBrowserIP *)v4 setPowerManager:v8];
+  [(HAPAccessoryServerBrowserIP *)selfCopy setPowerManager:v8];
 
-  v9 = [(HAPAccessoryServerBrowserIP *)v4 powerManager];
-  v10 = [(HAPAccessoryServerBrowser *)v4 workQueue];
-  [v9 registerForSleepWake:v4 queue:v10];
+  powerManager = [(HAPAccessoryServerBrowserIP *)selfCopy powerManager];
+  workQueue = [(HAPAccessoryServerBrowser *)selfCopy workQueue];
+  [powerManager registerForSleepWake:selfCopy queue:workQueue];
 
   v11 = *MEMORY[0x277D85DE8];
 }
@@ -2300,25 +2300,25 @@ void __66__HAPAccessoryServerBrowserIP__doStartDiscoveringAccessoryServers__bloc
   [v4 accessoryServerBrowser:v2 didStartDiscoveringWithError:v3];
 }
 
-- (void)_prePopulateBrowserFromCacheWithCompletion:(id)a3
+- (void)_prePopulateBrowserFromCacheWithCompletion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   if ([(HAPAccessoryServerBrowserIP *)self isInitialCacheRestored])
   {
 LABEL_9:
-    v4[2](v4);
+    completionCopy[2](completionCopy);
     goto LABEL_10;
   }
 
   [(HAPAccessoryServerBrowserIP *)self setIsInitialCacheRestored:1];
-  v5 = [(HAPAccessoryServerBrowserIP *)self cache];
+  cache = [(HAPAccessoryServerBrowserIP *)self cache];
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_INFO);
-  if (!v5)
+  if (!cache)
   {
     if (v9)
     {
@@ -2341,14 +2341,14 @@ LABEL_9:
   }
 
   objc_autoreleasePoolPop(v6);
-  v11 = [(HAPAccessoryServerBrowserIP *)v7 cache];
+  cache2 = [(HAPAccessoryServerBrowserIP *)selfCopy cache];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __74__HAPAccessoryServerBrowserIP__prePopulateBrowserFromCacheWithCompletion___block_invoke;
   v14[3] = &unk_2786D4700;
-  v14[4] = v7;
-  v15 = v4;
-  [v11 retrieveCachedData:v14];
+  v14[4] = selfCopy;
+  v15 = completionCopy;
+  [cache2 retrieveCachedData:v14];
 
 LABEL_10:
   v13 = *MEMORY[0x277D85DE8];
@@ -2436,13 +2436,13 @@ void __74__HAPAccessoryServerBrowserIP__prePopulateBrowserFromCacheWithCompletio
 
 - (void)startDiscoveringAccessoryServers
 {
-  v3 = [(HAPAccessoryServerBrowser *)self workQueue];
+  workQueue = [(HAPAccessoryServerBrowser *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __63__HAPAccessoryServerBrowserIP_startDiscoveringAccessoryServers__block_invoke;
   block[3] = &unk_2786D6CA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 uint64_t __63__HAPAccessoryServerBrowserIP_startDiscoveringAccessoryServers__block_invoke(uint64_t a1)
@@ -2467,21 +2467,21 @@ void __63__HAPAccessoryServerBrowserIP_startDiscoveringAccessoryServers__block_i
   dispatch_async(v2, block);
 }
 
-- (void)setDelegate:(id)a3 queue:(id)a4
+- (void)setDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HAPAccessoryServerBrowser *)self workQueue];
+  delegateCopy = delegate;
+  queueCopy = queue;
+  workQueue = [(HAPAccessoryServerBrowser *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__HAPAccessoryServerBrowserIP_setDelegate_queue___block_invoke;
   block[3] = &unk_2786D7078;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = delegateCopy;
+  v13 = queueCopy;
+  v9 = queueCopy;
+  v10 = delegateCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __49__HAPAccessoryServerBrowserIP_setDelegate_queue___block_invoke(uint64_t a1)
@@ -2516,7 +2516,7 @@ void __49__HAPAccessoryServerBrowserIP_setDelegate_queue___block_invoke(uint64_t
   else
   {
     bonjourBrowser = self->_bonjourBrowser;
-    v7 = [(HAPAccessoryServerBrowser *)self workQueue];
+    workQueue = [(HAPAccessoryServerBrowser *)self workQueue];
     BonjourBrowser_SetDispatchQueue();
 
     v8 = self->_bonjourBrowser;
@@ -2541,27 +2541,27 @@ LABEL_7:
   return v5;
 }
 
-- (HAPAccessoryServerBrowserIP)initWithQueue:(id)a3 cache:(id)a4
+- (HAPAccessoryServerBrowserIP)initWithQueue:(id)queue cache:(id)cache
 {
-  v7 = a4;
-  v8 = [(HAPAccessoryServerBrowserIP *)self initWithQueue:a3];
+  cacheCopy = cache;
+  v8 = [(HAPAccessoryServerBrowserIP *)self initWithQueue:queue];
   v9 = v8;
   if (v8)
   {
     v8->_isInitialCacheRestored = 0;
-    objc_storeStrong(&v8->_cache, a4);
+    objc_storeStrong(&v8->_cache, cache);
   }
 
   return v9;
 }
 
-- (HAPAccessoryServerBrowserIP)initWithQueue:(id)a3
+- (HAPAccessoryServerBrowserIP)initWithQueue:(id)queue
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  queueCopy = queue;
   v33.receiver = self;
   v33.super_class = HAPAccessoryServerBrowserIP;
-  v5 = [(HAPAccessoryServerBrowser *)&v33 initWithQueue:v4];
+  v5 = [(HAPAccessoryServerBrowser *)&v33 initWithQueue:queueCopy];
   if (v5)
   {
     v6 = [MEMORY[0x277CBEB58] set];
@@ -2578,10 +2578,10 @@ LABEL_7:
 
     [(HMFTimer *)v5->_bonjourEventTimer setDelegate:v5];
     v12 = v5->_bonjourEventTimer;
-    v13 = [(HAPAccessoryServerBrowser *)v5 workQueue];
-    [(HMFTimer *)v12 setDelegateQueue:v13];
+    workQueue = [(HAPAccessoryServerBrowser *)v5 workQueue];
+    [(HMFTimer *)v12 setDelegateQueue:workQueue];
 
-    v14 = [[HAPWACAccessoryBrowser alloc] initWithDelegate:v5 queue:v4];
+    v14 = [[HAPWACAccessoryBrowser alloc] initWithDelegate:v5 queue:queueCopy];
     hapWACBrowser = v5->_hapWACBrowser;
     v5->_hapWACBrowser = v14;
 
@@ -2592,27 +2592,27 @@ LABEL_7:
 
     [(NSOperationQueue *)v5->_delegateOperationQueue setMaxConcurrentOperationCount:1];
     [(NSOperationQueue *)v5->_delegateOperationQueue setName:@"HAPAccessoryServerBrowserIPDelegateOperationQueue"];
-    v18 = [MEMORY[0x277D0F8D0] sharedPreferences];
-    v19 = [v18 preferenceForKey:@"HAPServerIPBrowserServerIdentifierToSkipBonjourUpdates"];
-    v20 = [v19 stringValue];
+    mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+    v19 = [mEMORY[0x277D0F8D0] preferenceForKey:@"HAPServerIPBrowserServerIdentifierToSkipBonjourUpdates"];
+    stringValue = [v19 stringValue];
     serverIdentifierToSkipBonjourUpdate = v5->_serverIdentifierToSkipBonjourUpdate;
-    v5->_serverIdentifierToSkipBonjourUpdate = v20;
+    v5->_serverIdentifierToSkipBonjourUpdate = stringValue;
 
-    v22 = [MEMORY[0x277D0F8D0] sharedPreferences];
-    v23 = [v22 preferenceForKey:@"HAPMaximumConsecutiveIPPairVerifyFailures"];
-    v24 = [v23 numberValue];
+    mEMORY[0x277D0F8D0]2 = [MEMORY[0x277D0F8D0] sharedPreferences];
+    v23 = [mEMORY[0x277D0F8D0]2 preferenceForKey:@"HAPMaximumConsecutiveIPPairVerifyFailures"];
+    numberValue = [v23 numberValue];
 
-    if (v24)
+    if (numberValue)
     {
-      v25 = [v24 unsignedIntValue];
+      unsignedIntValue = [numberValue unsignedIntValue];
     }
 
     else
     {
-      v25 = 2;
+      unsignedIntValue = 2;
     }
 
-    v5->_maximumNumberOfPairVeifiesAllowed = v25;
+    v5->_maximumNumberOfPairVeifiesAllowed = unsignedIntValue;
     if (v5->_serverIdentifierToSkipBonjourUpdate)
     {
       v26 = objc_autoreleasePoolPush();

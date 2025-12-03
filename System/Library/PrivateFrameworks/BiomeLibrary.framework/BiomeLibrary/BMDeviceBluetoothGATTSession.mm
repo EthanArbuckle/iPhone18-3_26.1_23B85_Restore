@@ -1,16 +1,16 @@
 @interface BMDeviceBluetoothGATTSession
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMDeviceBluetoothGATTSession)initWithBundleID:(id)a3 serviceUUID:(id)a4 sessionType:(id)a5 sessionState:(int)a6 supportsBackgrounding:(id)a7 supportsStateRestoration:(id)a8;
-- (BMDeviceBluetoothGATTSession)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMDeviceBluetoothGATTSession)initWithBundleID:(id)d serviceUUID:(id)iD sessionType:(id)type sessionState:(int)state supportsBackgrounding:(id)backgrounding supportsStateRestoration:(id)restoration;
+- (BMDeviceBluetoothGATTSession)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)_serviceUUIDJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMDeviceBluetoothGATTSession
@@ -37,25 +37,25 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMDeviceBluetoothGATTSession *)self bundleID];
-    v7 = [v5 bundleID];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    bundleID = [(BMDeviceBluetoothGATTSession *)self bundleID];
+    bundleID2 = [v5 bundleID];
+    v8 = bundleID2;
+    if (bundleID == bundleID2)
     {
     }
 
     else
     {
-      v9 = [(BMDeviceBluetoothGATTSession *)self bundleID];
-      v10 = [v5 bundleID];
-      v11 = [v9 isEqual:v10];
+      bundleID3 = [(BMDeviceBluetoothGATTSession *)self bundleID];
+      bundleID4 = [v5 bundleID];
+      v11 = [bundleID3 isEqual:bundleID4];
 
       if (!v11)
       {
@@ -63,18 +63,18 @@
       }
     }
 
-    v13 = [(BMDeviceBluetoothGATTSession *)self serviceUUID];
-    v14 = [v5 serviceUUID];
-    v15 = v14;
-    if (v13 == v14)
+    serviceUUID = [(BMDeviceBluetoothGATTSession *)self serviceUUID];
+    serviceUUID2 = [v5 serviceUUID];
+    v15 = serviceUUID2;
+    if (serviceUUID == serviceUUID2)
     {
     }
 
     else
     {
-      v16 = [(BMDeviceBluetoothGATTSession *)self serviceUUID];
-      v17 = [v5 serviceUUID];
-      v18 = [v16 isEqual:v17];
+      serviceUUID3 = [(BMDeviceBluetoothGATTSession *)self serviceUUID];
+      serviceUUID4 = [v5 serviceUUID];
+      v18 = [serviceUUID3 isEqual:serviceUUID4];
 
       if (!v18)
       {
@@ -82,18 +82,18 @@
       }
     }
 
-    v19 = [(BMDeviceBluetoothGATTSession *)self sessionType];
-    v20 = [v5 sessionType];
-    v21 = v20;
-    if (v19 == v20)
+    sessionType = [(BMDeviceBluetoothGATTSession *)self sessionType];
+    sessionType2 = [v5 sessionType];
+    v21 = sessionType2;
+    if (sessionType == sessionType2)
     {
     }
 
     else
     {
-      v22 = [(BMDeviceBluetoothGATTSession *)self sessionType];
-      v23 = [v5 sessionType];
-      v24 = [v22 isEqual:v23];
+      sessionType3 = [(BMDeviceBluetoothGATTSession *)self sessionType];
+      sessionType4 = [v5 sessionType];
+      v24 = [sessionType3 isEqual:sessionType4];
 
       if (!v24)
       {
@@ -101,8 +101,8 @@
       }
     }
 
-    v25 = [(BMDeviceBluetoothGATTSession *)self sessionState];
-    if (v25 == [v5 sessionState])
+    sessionState = [(BMDeviceBluetoothGATTSession *)self sessionState];
+    if (sessionState == [v5 sessionState])
     {
       if (!-[BMDeviceBluetoothGATTSession hasSupportsBackgrounding](self, "hasSupportsBackgrounding") && ![v5 hasSupportsBackgrounding] || -[BMDeviceBluetoothGATTSession hasSupportsBackgrounding](self, "hasSupportsBackgrounding") && objc_msgSend(v5, "hasSupportsBackgrounding") && (v26 = -[BMDeviceBluetoothGATTSession supportsBackgrounding](self, "supportsBackgrounding"), v26 == objc_msgSend(v5, "supportsBackgrounding")))
       {
@@ -114,8 +114,8 @@
 
         if (-[BMDeviceBluetoothGATTSession hasSupportsStateRestoration](self, "hasSupportsStateRestoration") && [v5 hasSupportsStateRestoration])
         {
-          v27 = [(BMDeviceBluetoothGATTSession *)self supportsStateRestoration];
-          v12 = v27 ^ [v5 supportsStateRestoration] ^ 1;
+          supportsStateRestoration = [(BMDeviceBluetoothGATTSession *)self supportsStateRestoration];
+          v12 = supportsStateRestoration ^ [v5 supportsStateRestoration] ^ 1;
 LABEL_27:
 
           goto LABEL_28;
@@ -137,9 +137,9 @@ LABEL_28:
 - (id)jsonDictionary
 {
   v23[6] = *MEMORY[0x1E69E9840];
-  v3 = [(BMDeviceBluetoothGATTSession *)self bundleID];
-  v4 = [(BMDeviceBluetoothGATTSession *)self _serviceUUIDJSONArray];
-  v5 = [(BMDeviceBluetoothGATTSession *)self sessionType];
+  bundleID = [(BMDeviceBluetoothGATTSession *)self bundleID];
+  _serviceUUIDJSONArray = [(BMDeviceBluetoothGATTSession *)self _serviceUUIDJSONArray];
+  sessionType = [(BMDeviceBluetoothGATTSession *)self sessionType];
   v6 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMDeviceBluetoothGATTSession sessionState](self, "sessionState")}];
   if ([(BMDeviceBluetoothGATTSession *)self hasSupportsBackgrounding])
   {
@@ -162,56 +162,56 @@ LABEL_28:
   }
 
   v22[0] = @"bundleID";
-  v9 = v3;
-  if (!v3)
+  null = bundleID;
+  if (!bundleID)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v20 = v9;
-  v21 = v3;
-  v23[0] = v9;
+  v20 = null;
+  v21 = bundleID;
+  v23[0] = null;
   v22[1] = @"serviceUUID";
-  v10 = v4;
-  if (!v4)
+  null2 = _serviceUUIDJSONArray;
+  if (!_serviceUUIDJSONArray)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18 = v10;
-  v23[1] = v10;
+  v18 = null2;
+  v23[1] = null2;
   v22[2] = @"sessionType";
-  v11 = v5;
-  if (!v5)
+  null3 = sessionType;
+  if (!sessionType)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[2] = v11;
+  v23[2] = null3;
   v22[3] = @"sessionState";
-  v12 = v6;
+  null4 = v6;
   if (!v6)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[3] = v12;
+  v23[3] = null4;
   v22[4] = @"supportsBackgrounding";
-  v13 = v7;
+  null5 = v7;
   if (!v7)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[4] = v13;
+  v23[4] = null5;
   v22[5] = @"supportsStateRestoration";
-  v14 = v8;
+  null6 = v8;
   if (!v8)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[5] = v14;
+  v23[5] = null6;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:v22 count:{6, v18}];
   if (v8)
   {
@@ -239,14 +239,14 @@ LABEL_21:
   if (v6)
   {
 LABEL_22:
-    if (v5)
+    if (sessionType)
     {
       goto LABEL_23;
     }
 
 LABEL_32:
 
-    if (v4)
+    if (_serviceUUIDJSONArray)
     {
       goto LABEL_24;
     }
@@ -256,13 +256,13 @@ LABEL_32:
 
 LABEL_31:
 
-  if (!v5)
+  if (!sessionType)
   {
     goto LABEL_32;
   }
 
 LABEL_23:
-  if (v4)
+  if (_serviceUUIDJSONArray)
   {
     goto LABEL_24;
   }
@@ -287,8 +287,8 @@ LABEL_24:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(BMDeviceBluetoothGATTSession *)self serviceUUID];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  serviceUUID = [(BMDeviceBluetoothGATTSession *)self serviceUUID];
+  v5 = [serviceUUID countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -299,13 +299,13 @@ LABEL_24:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(serviceUUID);
         }
 
         [v3 addObject:*(*(&v11 + 1) + 8 * i)];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [serviceUUID countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -316,18 +316,18 @@ LABEL_24:
   return v3;
 }
 
-- (BMDeviceBluetoothGATTSession)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMDeviceBluetoothGATTSession)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v84[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"bundleID"];
-  v63 = a4;
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"bundleID"];
+  errorCopy = error;
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v30 = objc_alloc(MEMORY[0x1E696ABC0]);
         v31 = *MEMORY[0x1E698F240];
@@ -335,7 +335,7 @@ LABEL_24:
         v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"bundleID"];
         v84[0] = v9;
         [MEMORY[0x1E695DF20] dictionaryWithObjects:v84 forKeys:&v83 count:1];
-        v12 = v32 = a4;
+        v12 = v32 = error;
         v8 = 0;
         v29 = 0;
         *v32 = [v30 initWithDomain:v31 code:2 userInfo:v12];
@@ -355,14 +355,14 @@ LABEL_24:
     v8 = 0;
   }
 
-  v9 = [v6 objectForKeyedSubscript:@"serviceUUID"];
-  v10 = [MEMORY[0x1E695DFB0] null];
-  v11 = [v9 isEqual:v10];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"serviceUUID"];
+  null = [MEMORY[0x1E695DFB0] null];
+  v11 = [v9 isEqual:null];
 
   v61 = v7;
   if (v11)
   {
-    v62 = self;
+    selfCopy2 = self;
 
     v9 = 0;
   }
@@ -374,7 +374,7 @@ LABEL_24:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (v63)
+        if (errorCopy)
         {
           v33 = objc_alloc(MEMORY[0x1E696ABC0]);
           v34 = *MEMORY[0x1E698F240];
@@ -383,7 +383,7 @@ LABEL_24:
           v82 = v12;
           v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v82 forKeys:&v81 count:1];
           v29 = 0;
-          *v63 = [v33 initWithDomain:v34 code:2 userInfo:v21];
+          *errorCopy = [v33 initWithDomain:v34 code:2 userInfo:v21];
           goto LABEL_59;
         }
 
@@ -392,7 +392,7 @@ LABEL_24:
       }
     }
 
-    v62 = self;
+    selfCopy2 = self;
   }
 
   v12 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v9, "count")}];
@@ -411,7 +411,7 @@ LABEL_24:
   v15 = *v65;
   while (2)
   {
-    v16 = v6;
+    v16 = dictionaryCopy;
     v17 = v8;
     for (i = 0; i != v14; ++i)
     {
@@ -424,7 +424,7 @@ LABEL_24:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        if (v63)
+        if (errorCopy)
         {
           v23 = objc_alloc(MEMORY[0x1E696ABC0]);
           v24 = *MEMORY[0x1E698F240];
@@ -437,25 +437,25 @@ LABEL_24:
 LABEL_30:
           v8 = v17;
           v29 = 0;
-          *v63 = [v25 initWithDomain:v26 code:2 userInfo:v22];
+          *errorCopy = [v25 initWithDomain:v26 code:2 userInfo:v22];
           v21 = v9;
-          v6 = v16;
+          dictionaryCopy = v16;
           goto LABEL_57;
         }
 
 LABEL_31:
         v29 = 0;
         v21 = v9;
-        self = v62;
+        self = selfCopy2;
         v8 = v17;
-        v6 = v16;
+        dictionaryCopy = v16;
         goto LABEL_59;
       }
 
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (v63)
+        if (errorCopy)
         {
           v27 = objc_alloc(MEMORY[0x1E696ABC0]);
           v28 = *MEMORY[0x1E698F240];
@@ -476,7 +476,7 @@ LABEL_31:
 
     v14 = [v9 countByEnumeratingWithState:&v64 objects:v80 count:16];
     v8 = v17;
-    v6 = v16;
+    dictionaryCopy = v16;
     if (v14)
     {
       continue;
@@ -487,19 +487,19 @@ LABEL_31:
 
 LABEL_18:
 
-  v20 = [v6 objectForKeyedSubscript:@"sessionType"];
+  v20 = [dictionaryCopy objectForKeyedSubscript:@"sessionType"];
   if (!v20 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v21 = 0;
     goto LABEL_21;
   }
 
-  v35 = v6;
+  v35 = dictionaryCopy;
   v36 = v8;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (v63)
+    if (errorCopy)
     {
       v38 = objc_alloc(MEMORY[0x1E696ABC0]);
       v39 = *MEMORY[0x1E698F240];
@@ -510,32 +510,32 @@ LABEL_18:
       v40 = [v38 initWithDomain:v39 code:2 userInfo:?];
       v21 = 0;
       v29 = 0;
-      *v63 = v40;
+      *errorCopy = v40;
       goto LABEL_77;
     }
 
     v21 = 0;
     v29 = 0;
-    v6 = v35;
+    dictionaryCopy = v35;
     goto LABEL_58;
   }
 
   v21 = v20;
-  v6 = v35;
+  dictionaryCopy = v35;
 LABEL_21:
-  v22 = [v6 objectForKeyedSubscript:@"sessionState"];
+  v22 = [dictionaryCopy objectForKeyedSubscript:@"sessionState"];
   v58 = v22;
   if (!v22)
   {
 LABEL_47:
-    v41 = [v6 objectForKeyedSubscript:@"supportsBackgrounding"];
+    v41 = [dictionaryCopy objectForKeyedSubscript:@"supportsBackgrounding"];
     v56 = v41;
     if (v41 && (v42 = v41, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!v63)
+        if (!errorCopy)
         {
           v59 = 0;
           v29 = 0;
@@ -553,7 +553,7 @@ LABEL_55:
         v48 = [v60 initWithDomain:v47 code:2 userInfo:v43];
         v59 = 0;
         v29 = 0;
-        *v63 = v48;
+        *errorCopy = v48;
         goto LABEL_54;
       }
 
@@ -565,13 +565,13 @@ LABEL_55:
       v59 = 0;
     }
 
-    v43 = [v6 objectForKeyedSubscript:@"supportsStateRestoration"];
+    v43 = [dictionaryCopy objectForKeyedSubscript:@"supportsStateRestoration"];
     if (v43 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (v63)
+        if (errorCopy)
         {
           v55 = objc_alloc(MEMORY[0x1E696ABC0]);
           v54 = *MEMORY[0x1E698F240];
@@ -579,7 +579,7 @@ LABEL_55:
           v49 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"supportsStateRestoration"];
           v69 = v49;
           v50 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v69 forKeys:&v68 count:1];
-          *v63 = [v55 initWithDomain:v54 code:2 userInfo:v50];
+          *errorCopy = [v55 initWithDomain:v54 code:2 userInfo:v50];
         }
 
         v44 = 0;
@@ -595,8 +595,8 @@ LABEL_55:
       v44 = 0;
     }
 
-    v29 = -[BMDeviceBluetoothGATTSession initWithBundleID:serviceUUID:sessionType:sessionState:supportsBackgrounding:supportsStateRestoration:](v62, "initWithBundleID:serviceUUID:sessionType:sessionState:supportsBackgrounding:supportsStateRestoration:", v8, v12, v21, [v22 intValue], v59, v44);
-    v62 = v29;
+    v29 = -[BMDeviceBluetoothGATTSession initWithBundleID:serviceUUID:sessionType:sessionState:supportsBackgrounding:supportsStateRestoration:](selfCopy2, "initWithBundleID:serviceUUID:sessionType:sessionState:supportsBackgrounding:supportsStateRestoration:", v8, v12, v21, [v22 intValue], v59, v44);
+    selfCopy2 = v29;
 LABEL_54:
 
     v42 = v56;
@@ -610,7 +610,7 @@ LABEL_54:
     goto LABEL_47;
   }
 
-  v35 = v6;
+  v35 = dictionaryCopy;
   v36 = v8;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -618,7 +618,7 @@ LABEL_54:
     v37 = v22;
 LABEL_46:
     v22 = v37;
-    v6 = v35;
+    dictionaryCopy = v35;
     goto LABEL_47;
   }
 
@@ -629,7 +629,7 @@ LABEL_46:
     goto LABEL_46;
   }
 
-  if (v63)
+  if (errorCopy)
   {
     v51 = objc_alloc(MEMORY[0x1E696ABC0]);
     v57 = *MEMORY[0x1E698F240];
@@ -640,8 +640,8 @@ LABEL_46:
     v53 = [v51 initWithDomain:v57 code:2 userInfo:v52];
     v22 = 0;
     v29 = 0;
-    *v63 = v53;
-    v6 = v35;
+    *errorCopy = v53;
+    dictionaryCopy = v35;
     v42 = v52;
     goto LABEL_55;
   }
@@ -650,13 +650,13 @@ LABEL_46:
   v29 = 0;
 LABEL_77:
   v8 = v36;
-  v6 = v35;
+  dictionaryCopy = v35;
 LABEL_56:
 
 LABEL_57:
 LABEL_58:
 
-  self = v62;
+  self = selfCopy2;
 LABEL_59:
 
   v7 = v61;
@@ -673,15 +673,15 @@ LABEL_62:
 {
   v3 = objc_opt_new();
   [(BMDeviceBluetoothGATTSession *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_bundleID)
   {
     PBDataWriterWriteStringField();
@@ -741,9 +741,9 @@ LABEL_62:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v49.receiver = self;
   v49.super_class = BMDeviceBluetoothGATTSession;
   v5 = [(BMEventBase *)&v49 init];
@@ -753,12 +753,12 @@ LABEL_62:
   }
 
   v6 = objc_opt_new();
-  v7 = [v4 position];
-  if (v7 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_69;
       }
@@ -769,18 +769,18 @@ LABEL_62:
       while (1)
       {
         v50 = 0;
-        v11 = [v4 position] + 1;
-        if (v11 >= [v4 position] && (v12 = objc_msgSend(v4, "position") + 1, v12 <= objc_msgSend(v4, "length")))
+        v11 = [fromCopy position] + 1;
+        if (v11 >= [fromCopy position] && (v12 = objc_msgSend(fromCopy, "position") + 1, v12 <= objc_msgSend(fromCopy, "length")))
         {
-          v13 = [v4 data];
-          [v13 getBytes:&v50 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v50 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v10 |= (v50 & 0x7F) << v8;
@@ -798,9 +798,9 @@ LABEL_62:
         }
       }
 
-      v15 = [v4 hasError] ? 0 : v10;
+      v15 = [fromCopy hasError] ? 0 : v10;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v15 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v15 & 7) == 4)
       {
         goto LABEL_69;
       }
@@ -846,8 +846,8 @@ LABEL_73:
       [v6 addObject:v34];
 
 LABEL_68:
-      v43 = [v4 position];
-      if (v43 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_69;
       }
@@ -863,18 +863,18 @@ LABEL_68:
         while (1)
         {
           v50 = 0;
-          v30 = [v4 position] + 1;
-          if (v30 >= [v4 position] && (v31 = objc_msgSend(v4, "position") + 1, v31 <= objc_msgSend(v4, "length")))
+          v30 = [fromCopy position] + 1;
+          if (v30 >= [fromCopy position] && (v31 = objc_msgSend(fromCopy, "position") + 1, v31 <= objc_msgSend(fromCopy, "length")))
           {
-            v32 = [v4 data];
-            [v32 getBytes:&v50 range:{objc_msgSend(v4, "position"), 1}];
+            data2 = [fromCopy data];
+            [data2 getBytes:&v50 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v29 |= (v50 & 0x7F) << v27;
@@ -892,7 +892,7 @@ LABEL_68:
           }
         }
 
-        v33 = (v29 != 0) & ~[v4 hasError];
+        v33 = (v29 != 0) & ~[fromCopy hasError];
 LABEL_60:
         v42 = 18;
         goto LABEL_67;
@@ -904,18 +904,18 @@ LABEL_60:
         while (1)
         {
           v50 = 0;
-          v39 = [v4 position] + 1;
-          if (v39 >= [v4 position] && (v40 = objc_msgSend(v4, "position") + 1, v40 <= objc_msgSend(v4, "length")))
+          v39 = [fromCopy position] + 1;
+          if (v39 >= [fromCopy position] && (v40 = objc_msgSend(fromCopy, "position") + 1, v40 <= objc_msgSend(fromCopy, "length")))
           {
-            v41 = [v4 data];
-            [v41 getBytes:&v50 range:{objc_msgSend(v4, "position"), 1}];
+            data3 = [fromCopy data];
+            [data3 getBytes:&v50 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v38 |= (v50 & 0x7F) << v36;
@@ -933,7 +933,7 @@ LABEL_60:
           }
         }
 
-        v33 = (v38 != 0) & ~[v4 hasError];
+        v33 = (v38 != 0) & ~[fromCopy hasError];
 LABEL_66:
         v42 = 16;
 LABEL_67:
@@ -946,18 +946,18 @@ LABEL_67:
         while (1)
         {
           v50 = 0;
-          v22 = [v4 position] + 1;
-          if (v22 >= [v4 position] && (v23 = objc_msgSend(v4, "position") + 1, v23 <= objc_msgSend(v4, "length")))
+          v22 = [fromCopy position] + 1;
+          if (v22 >= [fromCopy position] && (v23 = objc_msgSend(fromCopy, "position") + 1, v23 <= objc_msgSend(fromCopy, "length")))
           {
-            v24 = [v4 data];
-            [v24 getBytes:&v50 range:{objc_msgSend(v4, "position"), 1}];
+            data4 = [fromCopy data];
+            [data4 getBytes:&v50 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v21 |= (v50 & 0x7F) << v19;
@@ -973,7 +973,7 @@ LABEL_67:
           }
         }
 
-        if (([v4 hasError] & 1) != 0 || v21 > 5)
+        if (([fromCopy hasError] & 1) != 0 || v21 > 5)
         {
 LABEL_63:
           LODWORD(v21) = 0;
@@ -997,8 +997,8 @@ LABEL_69:
   serviceUUID = v5->_serviceUUID;
   v5->_serviceUUID = v44;
 
-  v46 = [v4 hasError];
-  if (v46)
+  hasError = [fromCopy hasError];
+  if (hasError)
   {
 LABEL_70:
     v47 = 0;
@@ -1016,38 +1016,38 @@ LABEL_71:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMDeviceBluetoothGATTSession *)self bundleID];
-  v5 = [(BMDeviceBluetoothGATTSession *)self serviceUUID];
-  v6 = [(BMDeviceBluetoothGATTSession *)self sessionType];
+  bundleID = [(BMDeviceBluetoothGATTSession *)self bundleID];
+  serviceUUID = [(BMDeviceBluetoothGATTSession *)self serviceUUID];
+  sessionType = [(BMDeviceBluetoothGATTSession *)self sessionType];
   v7 = BMDeviceBluetoothGATTSessionStateAsString([(BMDeviceBluetoothGATTSession *)self sessionState]);
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMDeviceBluetoothGATTSession supportsBackgrounding](self, "supportsBackgrounding")}];
   v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMDeviceBluetoothGATTSession supportsStateRestoration](self, "supportsStateRestoration")}];
-  v10 = [v3 initWithFormat:@"BMDeviceBluetoothGATTSession with bundleID: %@, serviceUUID: %@, sessionType: %@, sessionState: %@, supportsBackgrounding: %@, supportsStateRestoration: %@", v4, v5, v6, v7, v8, v9];
+  v10 = [v3 initWithFormat:@"BMDeviceBluetoothGATTSession with bundleID: %@, serviceUUID: %@, sessionType: %@, sessionState: %@, supportsBackgrounding: %@, supportsStateRestoration: %@", bundleID, serviceUUID, sessionType, v7, v8, v9];
 
   return v10;
 }
 
-- (BMDeviceBluetoothGATTSession)initWithBundleID:(id)a3 serviceUUID:(id)a4 sessionType:(id)a5 sessionState:(int)a6 supportsBackgrounding:(id)a7 supportsStateRestoration:(id)a8
+- (BMDeviceBluetoothGATTSession)initWithBundleID:(id)d serviceUUID:(id)iD sessionType:(id)type sessionState:(int)state supportsBackgrounding:(id)backgrounding supportsStateRestoration:(id)restoration
 {
-  v21 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
+  dCopy = d;
+  iDCopy = iD;
+  typeCopy = type;
+  backgroundingCopy = backgrounding;
+  restorationCopy = restoration;
   v22.receiver = self;
   v22.super_class = BMDeviceBluetoothGATTSession;
   v19 = [(BMEventBase *)&v22 init];
   if (v19)
   {
     v19->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v19->_bundleID, a3);
-    objc_storeStrong(&v19->_serviceUUID, a4);
-    objc_storeStrong(&v19->_sessionType, a5);
-    v19->_sessionState = a6;
-    if (v17)
+    objc_storeStrong(&v19->_bundleID, d);
+    objc_storeStrong(&v19->_serviceUUID, iD);
+    objc_storeStrong(&v19->_sessionType, type);
+    v19->_sessionState = state;
+    if (backgroundingCopy)
     {
       v19->_hasSupportsBackgrounding = 1;
-      v19->_supportsBackgrounding = [v17 BOOLValue];
+      v19->_supportsBackgrounding = [backgroundingCopy BOOLValue];
     }
 
     else
@@ -1056,10 +1056,10 @@ LABEL_71:
       v19->_supportsBackgrounding = 0;
     }
 
-    if (v18)
+    if (restorationCopy)
     {
       v19->_hasSupportsStateRestoration = 1;
-      v19->_supportsStateRestoration = [v18 BOOLValue];
+      v19->_supportsStateRestoration = [restorationCopy BOOLValue];
     }
 
     else
@@ -1103,9 +1103,9 @@ id __39__BMDeviceBluetoothGATTSession_columns__block_invoke(uint64_t a1, void *a
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1113,8 +1113,8 @@ id __39__BMDeviceBluetoothGATTSession_columns__block_invoke(uint64_t a1, void *a
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMDeviceBluetoothGATTSession alloc] initByReadFrom:v7];
     v4 = v8;

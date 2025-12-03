@@ -10,8 +10,8 @@
   v38.super_class = CPSDeveloperSettingsController;
   [(CPSDeveloperSettingsController *)&v38 viewDidLoad];
   v4 = OBJC_IVAR___PSViewController__specifier;
-  v5 = [*&self->PSViewController_opaque[OBJC_IVAR___PSViewController__specifier] identifier];
-  v6 = [v5 isEqualToString:@"APP_CLIPS_LOCAL_EXPERIENCES"];
+  identifier = [*&self->PSViewController_opaque[OBJC_IVAR___PSViewController__specifier] identifier];
+  v6 = [identifier isEqualToString:@"APP_CLIPS_LOCAL_EXPERIENCES"];
 
   if (v6)
   {
@@ -24,8 +24,8 @@
     goto LABEL_10;
   }
 
-  v8 = [*&self->PSViewController_opaque[v4] identifier];
-  v9 = [v8 isEqualToString:@"APP_CLIPS_DIAGNOSTICS"];
+  identifier2 = [*&self->PSViewController_opaque[v4] identifier];
+  v9 = [identifier2 isEqualToString:@"APP_CLIPS_DIAGNOSTICS"];
 
   if (v9)
   {
@@ -33,8 +33,8 @@
     goto LABEL_8;
   }
 
-  v10 = [*&self->PSViewController_opaque[v4] identifier];
-  v11 = [v10 isEqualToString:@"UNIVERSAL_LINKS_DIAGNOSTICS"];
+  identifier3 = [*&self->PSViewController_opaque[v4] identifier];
+  v11 = [identifier3 isEqualToString:@"UNIVERSAL_LINKS_DIAGNOSTICS"];
 
   if (!v11)
   {
@@ -53,41 +53,41 @@ LABEL_8:
   }
 
 LABEL_9:
-  v13 = [*&self->PSViewController_opaque[v4] name];
-  [(CPSDeveloperSettingsController *)self setTitle:v13];
+  name = [*&self->PSViewController_opaque[v4] name];
+  [(CPSDeveloperSettingsController *)self setTitle:name];
 
   [(CPSDeveloperSettingsController *)self addChildViewController:v12];
-  v14 = [(CPSDeveloperSettingsController *)self view];
-  v15 = [(CPSDeveloperSettingsLocalOverrideController *)v12 view];
-  [v14 addSubview:v15];
+  view = [(CPSDeveloperSettingsController *)self view];
+  view2 = [(CPSDeveloperSettingsLocalOverrideController *)v12 view];
+  [view addSubview:view2];
 
   [(CPSDeveloperSettingsLocalOverrideController *)v12 didMoveToParentViewController:self];
-  v16 = [(CPSDeveloperSettingsLocalOverrideController *)v12 view];
-  [v16 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view3 = [(CPSDeveloperSettingsLocalOverrideController *)v12 view];
+  [view3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v37 = [(CPSDeveloperSettingsLocalOverrideController *)v12 view];
-  v35 = [v37 centerXAnchor];
-  v36 = [(CPSDeveloperSettingsController *)self view];
-  v34 = [v36 centerXAnchor];
-  v33 = [v35 constraintEqualToAnchor:v34];
+  view4 = [(CPSDeveloperSettingsLocalOverrideController *)v12 view];
+  centerXAnchor = [view4 centerXAnchor];
+  view5 = [(CPSDeveloperSettingsController *)self view];
+  centerXAnchor2 = [view5 centerXAnchor];
+  v33 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v39[0] = v33;
-  v32 = [(CPSDeveloperSettingsLocalOverrideController *)v12 view];
-  v30 = [v32 centerYAnchor];
-  v31 = [(CPSDeveloperSettingsController *)self view];
-  v29 = [v31 centerYAnchor];
-  v28 = [v30 constraintEqualToAnchor:v29];
+  view6 = [(CPSDeveloperSettingsLocalOverrideController *)v12 view];
+  centerYAnchor = [view6 centerYAnchor];
+  view7 = [(CPSDeveloperSettingsController *)self view];
+  centerYAnchor2 = [view7 centerYAnchor];
+  v28 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v39[1] = v28;
-  v27 = [(CPSDeveloperSettingsLocalOverrideController *)v12 view];
-  v26 = [v27 widthAnchor];
-  v17 = [(CPSDeveloperSettingsController *)self view];
-  v18 = [v17 widthAnchor];
-  v19 = [v26 constraintEqualToAnchor:v18];
+  view8 = [(CPSDeveloperSettingsLocalOverrideController *)v12 view];
+  widthAnchor = [view8 widthAnchor];
+  view9 = [(CPSDeveloperSettingsController *)self view];
+  widthAnchor2 = [view9 widthAnchor];
+  v19 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   v39[2] = v19;
-  v20 = [(CPSDeveloperSettingsLocalOverrideController *)v12 view];
-  v21 = [v20 heightAnchor];
-  v22 = [(CPSDeveloperSettingsController *)self view];
-  v23 = [v22 heightAnchor];
-  v24 = [v21 constraintEqualToAnchor:v23];
+  view10 = [(CPSDeveloperSettingsLocalOverrideController *)v12 view];
+  heightAnchor = [view10 heightAnchor];
+  view11 = [(CPSDeveloperSettingsController *)self view];
+  heightAnchor2 = [view11 heightAnchor];
+  v24 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
   v39[3] = v24;
   v25 = [NSArray arrayWithObjects:v39 count:4];
   [NSLayoutConstraint activateConstraints:v25];

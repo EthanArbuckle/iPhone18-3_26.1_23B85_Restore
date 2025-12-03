@@ -1,28 +1,28 @@
 @interface PBFPosterExtensionDataStorePrewarmHelper
-- (PBFPosterExtensionDataStorePrewarmHelper)initWithPlan:(id)a3;
-- (id)_executePhase:(id)a3 executionBlock:(id)a4 context:(id)a5 timeout:(double)a6;
-- (void)_fireCompletionHandler:(id)a3 reason:(id)a4;
+- (PBFPosterExtensionDataStorePrewarmHelper)initWithPlan:(id)plan;
+- (id)_executePhase:(id)phase executionBlock:(id)block context:(id)context timeout:(double)timeout;
+- (void)_fireCompletionHandler:(id)handler reason:(id)reason;
 - (void)_markAsDoneAndFireCompletionHandlers;
-- (void)appendCompletionObserver:(id)a3;
+- (void)appendCompletionObserver:(id)observer;
 - (void)dealloc;
-- (void)executePrewarmWithExecutor:(id)a3 completion:(id)a4;
-- (void)finishedWithError:(id)a3;
+- (void)executePrewarmWithExecutor:(id)executor completion:(id)completion;
+- (void)finishedWithError:(id)error;
 - (void)invalidate;
-- (void)noteNonFatalError:(id)a3;
+- (void)noteNonFatalError:(id)error;
 @end
 
 @implementation PBFPosterExtensionDataStorePrewarmHelper
 
-- (PBFPosterExtensionDataStorePrewarmHelper)initWithPlan:(id)a3
+- (PBFPosterExtensionDataStorePrewarmHelper)initWithPlan:(id)plan
 {
   v43 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  planCopy = plan;
+  if (!planCopy)
   {
     [PBFPosterExtensionDataStorePrewarmHelper initWithPlan:a2];
   }
 
-  v6 = v5;
+  v6 = planCopy;
   v41.receiver = self;
   v41.super_class = PBFPosterExtensionDataStorePrewarmHelper;
   v7 = [(PBFPosterExtensionDataStorePrewarmHelper *)&v41 init];
@@ -57,8 +57,8 @@
     v39 = 0u;
     v40 = 0u;
     v36 = v6;
-    v21 = [v6 prewarmPhasePlan];
-    v22 = [v21 countByEnumeratingWithState:&v37 objects:v42 count:16];
+    prewarmPhasePlan = [v6 prewarmPhasePlan];
+    v22 = [prewarmPhasePlan countByEnumeratingWithState:&v37 objects:v42 count:16];
     if (v22)
     {
       v23 = v22;
@@ -70,7 +70,7 @@
         {
           if (*v38 != v24)
           {
-            objc_enumerationMutation(v21);
+            objc_enumerationMutation(prewarmPhasePlan);
           }
 
           v26 = *(*(&v37 + 1) + 8 * v25);
@@ -84,7 +84,7 @@
         }
 
         while (v23 != v25);
-        v23 = [v21 countByEnumeratingWithState:&v37 objects:v42 count:16];
+        v23 = [prewarmPhasePlan countByEnumeratingWithState:&v37 objects:v42 count:16];
       }
 
       while (v23);
@@ -118,34 +118,34 @@
   [(PBFPosterExtensionDataStorePrewarmHelper *)&v3 dealloc];
 }
 
-- (void)executePrewarmWithExecutor:(id)a3 completion:(id)a4
+- (void)executePrewarmWithExecutor:(id)executor completion:(id)completion
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  executorCopy = executor;
+  completionCopy = completion;
   if (![(BSAtomicFlag *)self->_invalidationFlag getFlag])
   {
-    v8 = [(PBFPosterExtensionDataStorePrewarmHelper *)self plan];
-    v9 = [(PBFPosterExtensionDataStorePrewarmHelper *)self activePhase];
-    v10 = [v9 isEqual:@"PBFPrewarmPhaseNull"];
+    plan = [(PBFPosterExtensionDataStorePrewarmHelper *)self plan];
+    activePhase = [(PBFPosterExtensionDataStorePrewarmHelper *)self activePhase];
+    v10 = [activePhase isEqual:@"PBFPrewarmPhaseNull"];
 
     if (v10)
     {
-      v11 = [v8 prewarmPhasePlan];
-      v12 = [v11 count];
+      prewarmPhasePlan = [plan prewarmPhasePlan];
+      v12 = [prewarmPhasePlan count];
 
       if (!v12)
       {
-        if (v7)
+        if (completionCopy)
         {
-          (*(v7 + 2))(v7, 1, 0, 0);
+          (*(completionCopy + 2))(completionCopy, 1, 0, 0);
         }
 
         goto LABEL_16;
       }
 
       os_unfair_lock_lock(&self->_lock);
-      v13 = [v7 copy];
+      v13 = [completionCopy copy];
       lock_completion = self->_lock_completion;
       self->_lock_completion = v13;
 
@@ -155,9 +155,9 @@
       v16 = PBFLogPrewarm();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = [v8 identifier];
+        identifier = [plan identifier];
         *buf = 138543362;
-        v33 = v17;
+        v33 = identifier;
         _os_log_impl(&dword_21B526000, v16, OS_LOG_TYPE_DEFAULT, "(%{public}@) Executing prewarm", buf, 0xCu);
       }
 
@@ -168,9 +168,9 @@
       v21 = v20;
       if (v19 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v20))
       {
-        v22 = [v8 prewarmPhasePlan];
+        prewarmPhasePlan2 = [plan prewarmPhasePlan];
         *buf = 138543362;
-        v33 = v22;
+        v33 = prewarmPhasePlan2;
         _os_signpost_emit_with_name_impl(&dword_21B526000, v21, OS_SIGNPOST_INTERVAL_BEGIN, v19, "ExecutePrewarm", "Phases: %{public}@", buf, 0xCu);
       }
 
@@ -181,18 +181,18 @@
       block[1] = 3221225472;
       block[2] = __82__PBFPosterExtensionDataStorePrewarmHelper_executePrewarmWithExecutor_completion___block_invoke;
       block[3] = &unk_2782C9400;
-      v27 = v8;
+      v27 = plan;
       v28 = v23;
       v31 = v19;
-      v29 = self;
-      v30 = v6;
+      selfCopy = self;
+      v30 = executorCopy;
       v25 = v23;
       dispatch_async(v24, block);
     }
 
     else
     {
-      if (!v7)
+      if (!completionCopy)
       {
 LABEL_16:
 
@@ -200,16 +200,16 @@ LABEL_16:
       }
 
       v25 = [MEMORY[0x277CCA9B8] errorWithDomain:PBFPosterExtensionDataStorePrewarmHelperErrorDomain code:-31339 userInfo:0];
-      (*(v7 + 2))(v7, 0, 0, v25);
+      (*(completionCopy + 2))(completionCopy, 0, 0, v25);
     }
 
     goto LABEL_16;
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    v8 = [MEMORY[0x277CCA9B8] errorWithDomain:PBFPosterExtensionDataStorePrewarmHelperErrorDomain code:-31342 userInfo:0];
-    (*(v7 + 2))(v7, 0, 0, v8);
+    plan = [MEMORY[0x277CCA9B8] errorWithDomain:PBFPosterExtensionDataStorePrewarmHelperErrorDomain code:-31342 userInfo:0];
+    (*(completionCopy + 2))(completionCopy, 0, 0, plan);
     goto LABEL_16;
   }
 
@@ -393,11 +393,11 @@ LABEL_35:
   }
 }
 
-- (void)appendCompletionObserver:(id)a3
+- (void)appendCompletionObserver:(id)observer
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
     os_unfair_lock_lock(&self->_lock);
     if (([(BSAtomicFlag *)self->_finishedFlag getFlag]& 1) != 0)
@@ -406,13 +406,13 @@ LABEL_35:
       v5 = PBFLogPrewarm();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
       {
-        v6 = [(PBFPosterExtensionDataStorePrewarmPlan *)self->_plan identifier];
+        identifier = [(PBFPosterExtensionDataStorePrewarmPlan *)self->_plan identifier];
         v12 = 138543362;
-        v13 = v6;
+        v13 = identifier;
         _os_log_impl(&dword_21B526000, v5, OS_LOG_TYPE_DEFAULT, "(%{public}@) Firing completion observer after finish", &v12, 0xCu);
       }
 
-      [(PBFPosterExtensionDataStorePrewarmHelper *)self _fireCompletionHandler:v4 reason:@"Post finish fire completion handler for prewarmer"];
+      [(PBFPosterExtensionDataStorePrewarmHelper *)self _fireCompletionHandler:observerCopy reason:@"Post finish fire completion handler for prewarmer"];
     }
 
     else
@@ -427,7 +427,7 @@ LABEL_35:
         lock_completionObservers = self->_lock_completionObservers;
       }
 
-      v10 = [v4 copy];
+      v10 = [observerCopy copy];
       v11 = _Block_copy(v10);
       [(NSMutableArray *)lock_completionObservers bs_safeAddObject:v11];
 
@@ -436,17 +436,17 @@ LABEL_35:
   }
 }
 
-- (id)_executePhase:(id)a3 executionBlock:(id)a4 context:(id)a5 timeout:(double)a6
+- (id)_executePhase:(id)phase executionBlock:(id)block context:(id)context timeout:(double)timeout
 {
   v49[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v10 && v11)
+  phaseCopy = phase;
+  blockCopy = block;
+  contextCopy = context;
+  if (phaseCopy && blockCopy)
   {
-    v13 = [(NSDictionary *)self->_dispatchGroupForPhase objectForKeyedSubscript:v10];
+    v13 = [(NSDictionary *)self->_dispatchGroupForPhase objectForKeyedSubscript:phaseCopy];
     dispatch_group_enter(v13);
-    v14 = v11[2](v11, v10, v12, self);
+    v14 = blockCopy[2](blockCopy, phaseCopy, contextCopy, self);
     v15 = [v14 copy];
 
     os_unfair_lock_lock(&self->_lock);
@@ -455,15 +455,15 @@ LABEL_35:
     self->_lock_cancellationHandlerForCurrentPhase = v16;
 
     os_unfair_lock_unlock(&self->_lock);
-    v18 = dispatch_time(0, (a6 * 1000000000.0));
+    v18 = dispatch_time(0, (timeout * 1000000000.0));
     if (dispatch_group_wait(v13, v18))
     {
       if (v15)
       {
-        v19 = [(NSDictionary *)self->_completionFlagForPhase objectForKeyedSubscript:v10];
-        v20 = [v19 getFlag];
+        v19 = [(NSDictionary *)self->_completionFlagForPhase objectForKeyedSubscript:phaseCopy];
+        getFlag = [v19 getFlag];
 
-        if ((v20 & 1) == 0)
+        if ((getFlag & 1) == 0)
         {
           block[0] = MEMORY[0x277D85DD0];
           block[1] = 3221225472;
@@ -477,7 +477,7 @@ LABEL_35:
       v21 = MEMORY[0x277CCA9B8];
       v22 = PBFPosterExtensionDataStorePrewarmHelperErrorDomain;
       v46 = @"phase";
-      v47 = v10;
+      v47 = phaseCopy;
       v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v47 forKeys:&v46 count:1];
       v24 = [v21 errorWithDomain:v22 code:-31340 userInfo:v23];
       [(PBFPosterExtensionDataStorePrewarmHelper *)self noteNonFatalError:v24];
@@ -488,13 +488,13 @@ LABEL_35:
         goto LABEL_18;
       }
 
-      v26 = [(PBFPosterExtensionDataStorePrewarmPlan *)self->_plan identifier];
+      identifier = [(PBFPosterExtensionDataStorePrewarmPlan *)self->_plan identifier];
       *buf = 138543874;
-      v41 = v26;
+      v41 = identifier;
       v42 = 2114;
-      v43 = v10;
+      v43 = phaseCopy;
       v44 = 2048;
-      v45 = a6;
+      timeoutCopy = timeout;
       _os_log_error_impl(&dword_21B526000, v25, OS_LOG_TYPE_ERROR, "(%{public}@) phase %{public}@ exceeded timeout of %f seconds", buf, 0x20u);
     }
 
@@ -509,36 +509,36 @@ LABEL_18:
         v32 = self->_lock_cancellationHandlerForCurrentPhase;
         self->_lock_cancellationHandlerForCurrentPhase = 0;
 
-        v31 = [(NSMutableDictionary *)self->_lock_fatalErrorForPhase objectForKeyedSubscript:v10];
-        v33 = [(NSMutableDictionary *)self->_lock_nonFatalErrorsForPhase objectForKey:v10];
+        v31 = [(NSMutableDictionary *)self->_lock_fatalErrorForPhase objectForKeyedSubscript:phaseCopy];
+        v33 = [(NSMutableDictionary *)self->_lock_nonFatalErrorsForPhase objectForKey:phaseCopy];
         if ([v33 count])
         {
           v34 = PBFLogPrewarm();
           if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
           {
-            v35 = [(PBFPosterExtensionDataStorePrewarmPlan *)self->_plan identifier];
+            identifier2 = [(PBFPosterExtensionDataStorePrewarmPlan *)self->_plan identifier];
             *buf = 138543874;
-            v41 = v35;
+            v41 = identifier2;
             v42 = 2114;
-            v43 = v10;
+            v43 = phaseCopy;
             v44 = 2114;
-            v45 = *&v33;
+            timeoutCopy = *&v33;
             _os_log_impl(&dword_21B526000, v34, OS_LOG_TYPE_DEFAULT, "(%{public}@) phase %{public}@ received non fatal errors: %{public}@", buf, 0x20u);
           }
         }
 
-        v36 = [(NSDictionary *)self->_completionFlagForPhase objectForKeyedSubscript:v10];
+        v36 = [(NSDictionary *)self->_completionFlagForPhase objectForKeyedSubscript:phaseCopy];
         [v36 setFlag:1];
 
         os_unfair_lock_unlock(&self->_lock);
         goto LABEL_23;
       }
 
-      v26 = [(PBFPosterExtensionDataStorePrewarmPlan *)self->_plan identifier];
+      identifier = [(PBFPosterExtensionDataStorePrewarmPlan *)self->_plan identifier];
       *buf = 138543618;
-      v41 = v26;
+      v41 = identifier;
       v42 = 2114;
-      v43 = v10;
+      v43 = phaseCopy;
       _os_log_impl(&dword_21B526000, v25, OS_LOG_TYPE_DEFAULT, "(%{public}@) phase %{public}@ received completion", buf, 0x16u);
     }
 
@@ -553,9 +553,9 @@ LABEL_18:
 
   v28 = MEMORY[0x277CCA9B8];
   v29 = PBFPosterExtensionDataStorePrewarmHelperErrorDomain;
-  if (v10)
+  if (phaseCopy)
   {
-    v30 = v10;
+    v30 = phaseCopy;
   }
 
   else
@@ -575,17 +575,17 @@ LABEL_23:
 - (void)_markAsDoneAndFireCompletionHandlers
 {
   OUTLINED_FUNCTION_5_5();
-  v6 = [OUTLINED_FUNCTION_4_5(v0) identifier];
+  identifier = [OUTLINED_FUNCTION_4_5(v0) identifier];
   OUTLINED_FUNCTION_9();
   _os_log_error_impl(v1, v2, v3, v4, v5, 0x16u);
 }
 
-- (void)_fireCompletionHandler:(id)a3 reason:(id)a4
+- (void)_fireCompletionHandler:(id)handler reason:(id)reason
 {
-  v6 = a3;
-  if (v6)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v7 = a4;
+    reasonCopy = reason;
     os_unfair_lock_lock(&self->_lock);
     v8 = self->_lock_finalizedAmalgamtedNonfatalErrors;
     v9 = self->_lock_finalizedError;
@@ -595,43 +595,43 @@ LABEL_23:
     v12[2] = __74__PBFPosterExtensionDataStorePrewarmHelper__fireCompletionHandler_reason___block_invoke;
     v12[3] = &unk_2782C6180;
     v14 = v8;
-    v15 = v6;
+    v15 = handlerCopy;
     v13 = v9;
     v10 = v8;
     v11 = v9;
-    PBFDispatchAsyncWithString(v7, QOS_CLASS_USER_INITIATED, v12);
+    PBFDispatchAsyncWithString(reasonCopy, QOS_CLASS_USER_INITIATED, v12);
   }
 }
 
 - (void)invalidate
 {
-  v6 = [OUTLINED_FUNCTION_4_5(a1) identifier];
+  identifier = [OUTLINED_FUNCTION_4_5(self) identifier];
   OUTLINED_FUNCTION_9();
   _os_log_error_impl(v1, v2, v3, v4, v5, 0xCu);
 }
 
-- (void)noteNonFatalError:(id)a3
+- (void)noteNonFatalError:(id)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  errorCopy = error;
+  if (errorCopy)
   {
     os_unfair_lock_lock(&self->_lock);
-    v5 = [(PBFPosterExtensionDataStorePrewarmHelper *)self activePhase];
-    v6 = [(BSAtomicFlag *)self->_invalidationFlag getFlag];
+    activePhase = [(PBFPosterExtensionDataStorePrewarmHelper *)self activePhase];
+    getFlag = [(BSAtomicFlag *)self->_invalidationFlag getFlag];
     v7 = PBFLogPrewarm();
     v8 = os_log_type_enabled(v7, OS_LOG_TYPE_ERROR);
-    if (v6)
+    if (getFlag)
     {
       if (v8)
       {
-        v9 = [(PBFPosterExtensionDataStorePrewarmPlan *)self->_plan identifier];
+        identifier = [(PBFPosterExtensionDataStorePrewarmPlan *)self->_plan identifier];
         v15 = 138543874;
-        v16 = v9;
+        v16 = identifier;
         v17 = 2114;
-        v18 = v5;
+        v18 = activePhase;
         v19 = 2114;
-        v20 = v4;
+        v20 = errorCopy;
         _os_log_error_impl(&dword_21B526000, v7, OS_LOG_TYPE_ERROR, "(%{public}@) Received non fatal error after invalidation for phase %{public}@: %{public}@", &v15, 0x20u);
       }
     }
@@ -640,34 +640,34 @@ LABEL_23:
     {
       if (v8)
       {
-        v14 = [(PBFPosterExtensionDataStorePrewarmPlan *)self->_plan identifier];
+        identifier2 = [(PBFPosterExtensionDataStorePrewarmPlan *)self->_plan identifier];
         v15 = 138543874;
-        v16 = v14;
+        v16 = identifier2;
         v17 = 2114;
-        v18 = v5;
+        v18 = activePhase;
         v19 = 2114;
-        v20 = v4;
+        v20 = errorCopy;
         _os_log_error_impl(&dword_21B526000, v7, OS_LOG_TYPE_ERROR, "(%{public}@) Received non fatal error for phase %{public}@: %{public}@", &v15, 0x20u);
       }
 
-      v10 = [(NSDictionary *)self->_completionFlagForPhase objectForKeyedSubscript:v5];
-      v11 = [v10 getFlag];
+      v10 = [(NSDictionary *)self->_completionFlagForPhase objectForKeyedSubscript:activePhase];
+      getFlag2 = [v10 getFlag];
 
-      if (v11)
+      if (getFlag2)
       {
         goto LABEL_12;
       }
 
-      v12 = [(NSMutableDictionary *)self->_lock_nonFatalErrorsForPhase objectForKeyedSubscript:v5];
+      v12 = [(NSMutableDictionary *)self->_lock_nonFatalErrorsForPhase objectForKeyedSubscript:activePhase];
 
       if (!v12)
       {
         v13 = objc_opt_new();
-        [(NSMutableDictionary *)self->_lock_nonFatalErrorsForPhase setObject:v13 forKeyedSubscript:v5];
+        [(NSMutableDictionary *)self->_lock_nonFatalErrorsForPhase setObject:v13 forKeyedSubscript:activePhase];
       }
 
-      v7 = [(NSMutableDictionary *)self->_lock_nonFatalErrorsForPhase objectForKeyedSubscript:v5];
-      [v7 addObject:v4];
+      v7 = [(NSMutableDictionary *)self->_lock_nonFatalErrorsForPhase objectForKeyedSubscript:activePhase];
+      [v7 addObject:errorCopy];
     }
 
 LABEL_12:
@@ -675,27 +675,27 @@ LABEL_12:
   }
 }
 
-- (void)finishedWithError:(id)a3
+- (void)finishedWithError:(id)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(PBFPosterExtensionDataStorePrewarmHelper *)self activePhase];
+  activePhase = [(PBFPosterExtensionDataStorePrewarmHelper *)self activePhase];
   if (([(BSAtomicFlag *)self->_invalidationFlag getFlag]& 1) != 0)
   {
     v6 = PBFLogPrewarm();
     v7 = v6;
-    if (v4)
+    if (errorCopy)
     {
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
       {
-        v8 = [(PBFPosterExtensionDataStorePrewarmPlan *)self->_plan identifier];
+        identifier = [(PBFPosterExtensionDataStorePrewarmPlan *)self->_plan identifier];
         v15 = 138543874;
-        v16 = v8;
+        v16 = identifier;
         v17 = 2114;
-        v18 = v5;
+        v18 = activePhase;
         v19 = 2114;
-        v20 = v4;
+        v20 = errorCopy;
         _os_log_error_impl(&dword_21B526000, v7, OS_LOG_TYPE_ERROR, "(%{public}@) Received fatal error after invalidation for phase %{public}@: %{public}@", &v15, 0x20u);
 LABEL_13:
       }
@@ -703,11 +703,11 @@ LABEL_13:
 
     else if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(PBFPosterExtensionDataStorePrewarmPlan *)self->_plan identifier];
+      identifier = [(PBFPosterExtensionDataStorePrewarmPlan *)self->_plan identifier];
       v15 = 138543618;
-      v16 = v8;
+      v16 = identifier;
       v17 = 2114;
-      v18 = v5;
+      v18 = activePhase;
       _os_log_impl(&dword_21B526000, v7, OS_LOG_TYPE_DEFAULT, "(%{public}@) Finished %{public}@ but prewarmer was invalidated", &v15, 0x16u);
       goto LABEL_13;
     }
@@ -715,7 +715,7 @@ LABEL_13:
     goto LABEL_15;
   }
 
-  v9 = [(NSDictionary *)self->_completionFlagForPhase objectForKeyedSubscript:v5];
+  v9 = [(NSDictionary *)self->_completionFlagForPhase objectForKeyedSubscript:activePhase];
   v10 = [v9 setFlag:1];
 
   if (!v10)
@@ -725,15 +725,15 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (v4)
+  if (errorCopy)
   {
-    [(NSMutableDictionary *)self->_lock_fatalErrorForPhase setObject:v4 forKeyedSubscript:v5];
+    [(NSMutableDictionary *)self->_lock_fatalErrorForPhase setObject:errorCopy forKeyedSubscript:activePhase];
   }
 
-  v11 = [(NSDictionary *)self->_dispatchGroupForPhase objectForKeyedSubscript:v5];
+  v11 = [(NSDictionary *)self->_dispatchGroupForPhase objectForKeyedSubscript:activePhase];
   v12 = PBFLogPrewarm();
   v13 = v12;
-  if (v4)
+  if (errorCopy)
   {
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -743,11 +743,11 @@ LABEL_15:
 
   else if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [(PBFPosterExtensionDataStorePrewarmPlan *)self->_plan identifier];
+    identifier2 = [(PBFPosterExtensionDataStorePrewarmPlan *)self->_plan identifier];
     v15 = 138543618;
-    v16 = v14;
+    v16 = identifier2;
     v17 = 2114;
-    v18 = v5;
+    v18 = activePhase;
     _os_log_impl(&dword_21B526000, v13, OS_LOG_TYPE_DEFAULT, "(%{public}@) received finish for phase %{public}@", &v15, 0x16u);
   }
 

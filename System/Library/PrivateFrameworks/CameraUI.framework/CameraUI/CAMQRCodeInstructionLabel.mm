@@ -1,44 +1,44 @@
 @interface CAMQRCodeInstructionLabel
-+ (BOOL)shouldDisplayInstructionForMRCResults:(id)a3 devicePosition:(int64_t)a4;
-+ (id)_textForMRCResults:(id)a3 devicePosition:(int64_t)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (void)_updateTextWithPriorMRCResults:(id)a3;
-- (void)setDevicePosition:(int64_t)a3;
-- (void)setMRCResults:(id)a3;
++ (BOOL)shouldDisplayInstructionForMRCResults:(id)results devicePosition:(int64_t)position;
++ (id)_textForMRCResults:(id)results devicePosition:(int64_t)position;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (void)_updateTextWithPriorMRCResults:(id)results;
+- (void)setDevicePosition:(int64_t)position;
+- (void)setMRCResults:(id)results;
 @end
 
 @implementation CAMQRCodeInstructionLabel
 
-- (void)setMRCResults:(id)a3
+- (void)setMRCResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   mrcResults = self->_mrcResults;
-  if (mrcResults != v4)
+  if (mrcResults != resultsCopy)
   {
-    v9 = v4;
-    v6 = v4;
+    v9 = resultsCopy;
+    v6 = resultsCopy;
     v7 = self->_mrcResults;
     self->_mrcResults = v6;
     v8 = mrcResults;
 
     [(CAMQRCodeInstructionLabel *)self _updateTextWithPriorMRCResults:v8];
-    v4 = v9;
+    resultsCopy = v9;
   }
 }
 
-- (void)setDevicePosition:(int64_t)a3
+- (void)setDevicePosition:(int64_t)position
 {
-  if (self->_devicePosition != a3)
+  if (self->_devicePosition != position)
   {
-    self->_devicePosition = a3;
+    self->_devicePosition = position;
     [(CAMQRCodeInstructionLabel *)self _updateTextWithPriorMRCResults:self->_mrcResults];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v9.receiver = self;
   v9.super_class = CAMQRCodeInstructionLabel;
   [(CAMInstructionLabel *)&v9 sizeThatFits:?];
@@ -52,12 +52,12 @@
   return result;
 }
 
-- (void)_updateTextWithPriorMRCResults:(id)a3
+- (void)_updateTextWithPriorMRCResults:(id)results
 {
-  v4 = a3;
-  v8 = [(CAMQRCodeInstructionLabel *)self mrcResults];
-  v5 = [objc_opt_class() _textForMRCResults:v8 devicePosition:{-[CAMQRCodeInstructionLabel devicePosition](self, "devicePosition")}];
-  v6 = [objc_opt_class() _textForMRCResults:v4 devicePosition:{-[CAMQRCodeInstructionLabel devicePosition](self, "devicePosition")}];
+  resultsCopy = results;
+  mrcResults = [(CAMQRCodeInstructionLabel *)self mrcResults];
+  v5 = [objc_opt_class() _textForMRCResults:mrcResults devicePosition:{-[CAMQRCodeInstructionLabel devicePosition](self, "devicePosition")}];
+  v6 = [objc_opt_class() _textForMRCResults:resultsCopy devicePosition:{-[CAMQRCodeInstructionLabel devicePosition](self, "devicePosition")}];
 
   if (v5)
   {
@@ -66,25 +66,25 @@
 
   if (([v5 isEqualToString:v6] & 1) == 0)
   {
-    v7 = [(CAMInstructionLabel *)self delegate];
-    [v7 instructionLabelDidChangeIntrinsicContentSize:self];
+    delegate = [(CAMInstructionLabel *)self delegate];
+    [delegate instructionLabelDidChangeIntrinsicContentSize:self];
   }
 }
 
-+ (BOOL)shouldDisplayInstructionForMRCResults:(id)a3 devicePosition:(int64_t)a4
++ (BOOL)shouldDisplayInstructionForMRCResults:(id)results devicePosition:(int64_t)position
 {
-  v4 = [a1 _textForMRCResults:a3 devicePosition:a4];
+  v4 = [self _textForMRCResults:results devicePosition:position];
   v5 = [v4 length] != 0;
 
   return v5;
 }
 
-+ (id)_textForMRCResults:(id)a3 devicePosition:(int64_t)a4
++ (id)_textForMRCResults:(id)results devicePosition:(int64_t)position
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (a4 == 1)
+  resultsCopy = results;
+  v6 = resultsCopy;
+  if (position == 1)
   {
 LABEL_13:
     v7 = 0;
@@ -92,7 +92,7 @@ LABEL_13:
 
   else
   {
-    v7 = [v5 count];
+    v7 = [resultsCopy count];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;

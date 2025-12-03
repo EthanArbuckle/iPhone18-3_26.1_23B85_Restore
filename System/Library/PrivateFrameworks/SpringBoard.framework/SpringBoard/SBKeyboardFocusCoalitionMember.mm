@@ -1,15 +1,15 @@
 @interface SBKeyboardFocusCoalitionMember
 - (NSString)debugDescription;
-- (SBKeyboardFocusCoalitionMember)initWithUniqueIdentifier:(id)a3 windowScene:(id)a4 delegate:(id)a5 coalition:(id)a6;
+- (SBKeyboardFocusCoalitionMember)initWithUniqueIdentifier:(id)identifier windowScene:(id)scene delegate:(id)delegate coalition:(id)coalition;
 - (SBKeyboardFocusCoalitionMemberDelegate)delegate;
 - (SBWindowScene)sbWindowScene;
 - (id)succinctDescription;
-- (id)updateCoalitionPreferencesWithReason:(id)a3;
-- (void)appendDescriptionToStream:(id)a3;
+- (id)updateCoalitionPreferencesWithReason:(id)reason;
+- (void)appendDescriptionToStream:(id)stream;
 - (void)dealloc;
 - (void)focusPolicyDidChange;
-- (void)requestArbitration:(id)a3;
-- (void)setHasFocus:(BOOL)a3;
+- (void)requestArbitration:(id)arbitration;
+- (void)setHasFocus:(BOOL)focus;
 @end
 
 @implementation SBKeyboardFocusCoalitionMember
@@ -20,24 +20,24 @@
   [WeakRetained coalitionMemberFocusDidChange:self];
 }
 
-- (SBKeyboardFocusCoalitionMember)initWithUniqueIdentifier:(id)a3 windowScene:(id)a4 delegate:(id)a5 coalition:(id)a6
+- (SBKeyboardFocusCoalitionMember)initWithUniqueIdentifier:(id)identifier windowScene:(id)scene delegate:(id)delegate coalition:(id)coalition
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!v11)
+  identifierCopy = identifier;
+  sceneCopy = scene;
+  delegateCopy = delegate;
+  coalitionCopy = coalition;
+  if (!identifierCopy)
   {
     [SBKeyboardFocusCoalitionMember initWithUniqueIdentifier:a2 windowScene:? delegate:? coalition:?];
   }
 
-  if (!v13)
+  if (!delegateCopy)
   {
     [SBKeyboardFocusCoalitionMember initWithUniqueIdentifier:a2 windowScene:? delegate:? coalition:?];
   }
 
-  v15 = v14;
-  if (!v14)
+  v15 = coalitionCopy;
+  if (!coalitionCopy)
   {
     [SBKeyboardFocusCoalitionMember initWithUniqueIdentifier:a2 windowScene:? delegate:? coalition:?];
   }
@@ -47,22 +47,22 @@
   v16 = [(SBKeyboardFocusCoalitionMember *)&v20 init];
   if (v16)
   {
-    v17 = [v11 copy];
+    v17 = [identifierCopy copy];
     uniqueIdentifier = v16->_uniqueIdentifier;
     v16->_uniqueIdentifier = v17;
 
-    objc_storeWeak(&v16->_sbWindowScene, v12);
-    objc_storeWeak(&v16->_delegate, v13);
+    objc_storeWeak(&v16->_sbWindowScene, sceneCopy);
+    objc_storeWeak(&v16->_delegate, delegateCopy);
     objc_storeWeak(&v16->_coalition, v15);
   }
 
   return v16;
 }
 
-- (void)requestArbitration:(id)a3
+- (void)requestArbitration:(id)arbitration
 {
-  v6 = a3;
-  if (!v6)
+  arbitrationCopy = arbitration;
+  if (!arbitrationCopy)
   {
     [SBKeyboardFocusCoalitionMember requestArbitration:a2];
   }
@@ -71,18 +71,18 @@
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    [(SBKeyboardFocusCoalitionMember *)v6 requestArbitration:a2];
+    [(SBKeyboardFocusCoalitionMember *)arbitrationCopy requestArbitration:a2];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_coalition);
-  [WeakRetained memberRequestsArbitration:self forReason:v6];
+  [WeakRetained memberRequestsArbitration:self forReason:arbitrationCopy];
 }
 
-- (id)updateCoalitionPreferencesWithReason:(id)a3
+- (id)updateCoalitionPreferencesWithReason:(id)reason
 {
-  v5 = a3;
+  reasonCopy = reason;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v7 = [WeakRetained generateUpdatedPreferencesForCoalitionMember:self reason:v5];
+  v7 = [WeakRetained generateUpdatedPreferencesForCoalitionMember:self reason:reasonCopy];
 
   v8 = v7;
   if (!v8)
@@ -119,12 +119,12 @@
   v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"gotta invalidate before dealloc, bud"];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    NSStringFromSelector(a1);
+    NSStringFromSelector(self);
     objc_claimAutoreleasedReturnValue();
     v5 = OUTLINED_FUNCTION_5_0();
     v6 = NSStringFromClass(v5);
     v7 = 138544642;
-    v8 = a1;
+    selfCopy = self;
     v9 = 2114;
     v10 = v6;
     v11 = 2048;
@@ -146,8 +146,8 @@
 - (id)succinctDescription
 {
   v3 = MEMORY[0x277CF0C08];
-  v4 = [MEMORY[0x277CF0C10] succinctStyle];
-  v5 = [v3 descriptionForRootObject:self withStyle:v4];
+  succinctStyle = [MEMORY[0x277CF0C10] succinctStyle];
+  v5 = [v3 descriptionForRootObject:self withStyle:succinctStyle];
 
   return v5;
 }
@@ -155,32 +155,32 @@
 - (NSString)debugDescription
 {
   v3 = MEMORY[0x277CF0C08];
-  v4 = [MEMORY[0x277CF0C10] debugStyle];
-  v5 = [v3 descriptionForRootObject:self withStyle:v4];
+  debugStyle = [MEMORY[0x277CF0C10] debugStyle];
+  v5 = [v3 descriptionForRootObject:self withStyle:debugStyle];
 
   return v5;
 }
 
-- (void)setHasFocus:(BOOL)a3
+- (void)setHasFocus:(BOOL)focus
 {
-  if (self->_hasFocus != a3)
+  if (self->_hasFocus != focus)
   {
-    self->_hasFocus = a3;
+    self->_hasFocus = focus;
     WeakRetained = objc_loadWeakRetained(&self->_coalition);
     [WeakRetained _memberDidUpdateSettings:self];
   }
 }
 
-- (void)appendDescriptionToStream:(id)a3
+- (void)appendDescriptionToStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = __60__SBKeyboardFocusCoalitionMember_appendDescriptionToStream___block_invoke;
   v12 = &unk_2783A92D8;
-  v5 = v4;
+  v5 = streamCopy;
   v13 = v5;
-  v14 = self;
+  selfCopy = self;
   [v5 appendProem:self block:&v9];
   if (([v5 hasSuccinctStyle] & 1) == 0)
   {

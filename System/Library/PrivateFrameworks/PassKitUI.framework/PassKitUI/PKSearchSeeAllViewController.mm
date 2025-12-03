@@ -1,26 +1,26 @@
 @interface PKSearchSeeAllViewController
-- (PKSearchSeeAllViewController)initWithSearchResultItems:(id)a3 itemPresenter:(id)a4 searchQuery:(id)a5;
+- (PKSearchSeeAllViewController)initWithSearchResultItems:(id)items itemPresenter:(id)presenter searchQuery:(id)query;
 - (PKSearchSeeAllViewControllerDelegate)seeAllViewControllerDelegate;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)dashboardPaymentSetupProductPresenter:(id)a3 actionButtonPressedOnCellAtIndexPath:(id)a4;
-- (void)updateWithItems:(id)a3;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)dashboardPaymentSetupProductPresenter:(id)presenter actionButtonPressedOnCellAtIndexPath:(id)path;
+- (void)updateWithItems:(id)items;
 - (void)viewDidLoad;
 @end
 
 @implementation PKSearchSeeAllViewController
 
-- (PKSearchSeeAllViewController)initWithSearchResultItems:(id)a3 itemPresenter:(id)a4 searchQuery:(id)a5
+- (PKSearchSeeAllViewController)initWithSearchResultItems:(id)items itemPresenter:(id)presenter searchQuery:(id)query
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [[PKSearchSeeAllDashboardDataSource alloc] initWithItems:v8 searchQuery:v10];
+  itemsCopy = items;
+  presenterCopy = presenter;
+  queryCopy = query;
+  v11 = [[PKSearchSeeAllDashboardDataSource alloc] initWithItems:itemsCopy searchQuery:queryCopy];
 
   v12 = objc_alloc_init(PKDashboardSearchSeeAllHeaderItemPresenter);
   v13 = objc_alloc_init(PKHeaderVerticalScrollingLayout);
   v18[0] = v12;
-  v18[1] = v9;
+  v18[1] = presenterCopy;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:2];
   v17.receiver = self;
   v17.super_class = PKSearchSeeAllViewController;
@@ -28,9 +28,9 @@
 
   if (v15)
   {
-    objc_storeStrong(&v15->_itemPresenter, a4);
+    objc_storeStrong(&v15->_itemPresenter, presenter);
     v15->_presentationCounter = 0;
-    if ([v8 count])
+    if ([itemsCopy count])
     {
       [(PKDashboardViewController *)v15 contentIsLoaded];
     }
@@ -39,11 +39,11 @@
   return v15;
 }
 
-- (void)updateWithItems:(id)a3
+- (void)updateWithItems:(id)items
 {
-  v4 = a3;
-  v5 = [(PKDashboardViewController *)self dataSource];
-  [v5 updateWithItems:v4];
+  itemsCopy = items;
+  dataSource = [(PKDashboardViewController *)self dataSource];
+  [dataSource updateWithItems:itemsCopy];
 
   [(PKDashboardViewController *)self updateContent];
 }
@@ -53,58 +53,58 @@
   v5.receiver = self;
   v5.super_class = PKSearchSeeAllViewController;
   [(PKDashboardViewController *)&v5 viewDidLoad];
-  v3 = [(PKSearchSeeAllViewController *)self view];
+  view = [(PKSearchSeeAllViewController *)self view];
   v4 = +[PKDashboardViewController backgroundColor];
-  [v3 setBackgroundColor:v4];
+  [view setBackgroundColor:v4];
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v13.receiver = self;
   v13.super_class = PKSearchSeeAllViewController;
-  [(PKDashboardViewController *)&v13 collectionView:v6 didSelectItemAtIndexPath:v7];
+  [(PKDashboardViewController *)&v13 collectionView:viewCopy didSelectItemAtIndexPath:pathCopy];
   ++self->_presentationCounter;
   WeakRetained = objc_loadWeakRetained(&self->_seeAllViewControllerDelegate);
   if (WeakRetained)
   {
-    v9 = [(PKDashboardViewController *)self dataSource];
-    v10 = [v9 itemAtIndexPath:v7];
+    dataSource = [(PKDashboardViewController *)self dataSource];
+    v10 = [dataSource itemAtIndexPath:pathCopy];
 
-    v11 = [(PKDashboardItemPresenter *)self->_itemPresenter itemClass];
-    if (v11 == objc_opt_class() && [(PKDashboardItemPresenter *)self->_itemPresenter conformsToProtocol:&unk_1F3D13340])
+    itemClass = [(PKDashboardItemPresenter *)self->_itemPresenter itemClass];
+    if (itemClass == objc_opt_class() && [(PKDashboardItemPresenter *)self->_itemPresenter conformsToProtocol:&unk_1F3D13340])
     {
-      v12 = [(PKDashboardItemPresenter *)self->_itemPresenter searchHistoryStringForItem:v10 inCollectionView:v6 atIndexPath:v7];
+      v12 = [(PKDashboardItemPresenter *)self->_itemPresenter searchHistoryStringForItem:v10 inCollectionView:viewCopy atIndexPath:pathCopy];
       [WeakRetained searchSeeAllViewController:self saveSearchHistory:v12];
     }
   }
 }
 
-- (void)dashboardPaymentSetupProductPresenter:(id)a3 actionButtonPressedOnCellAtIndexPath:(id)a4
+- (void)dashboardPaymentSetupProductPresenter:(id)presenter actionButtonPressedOnCellAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  presenterCopy = presenter;
+  pathCopy = path;
   v8 = (self->_presentationCounter + 1);
   self->_presentationCounter = v8;
   objc_initWeak(&location, self);
-  v9 = [v7 row];
-  v10 = [(PKDashboardViewController *)self dataSource];
-  v11 = [v10 items];
-  if (v9 < [v11 count])
+  v9 = [pathCopy row];
+  dataSource = [(PKDashboardViewController *)self dataSource];
+  items = [dataSource items];
+  if (v9 < [items count])
   {
-    v12 = [v11 objectAtIndex:v9];
+    v12 = [items objectAtIndex:v9];
     if (v12)
     {
-      v13 = [(PKSearchSeeAllViewController *)self collectionView];
-      v14 = [(PKSearchSeeAllViewController *)self navigationController];
+      collectionView = [(PKSearchSeeAllViewController *)self collectionView];
+      navigationController = [(PKSearchSeeAllViewController *)self navigationController];
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __107__PKSearchSeeAllViewController_dashboardPaymentSetupProductPresenter_actionButtonPressedOnCellAtIndexPath___block_invoke;
       v15[3] = &unk_1E8013C18;
       objc_copyWeak(v16, &location);
       v16[1] = v8;
-      [v6 performActionForItem:v12 inCollectionView:v13 atIndexPath:v7 navigationController:v14 canPresent:v15];
+      [presenterCopy performActionForItem:v12 inCollectionView:collectionView atIndexPath:pathCopy navigationController:navigationController canPresent:v15];
 
       objc_destroyWeak(v16);
     }

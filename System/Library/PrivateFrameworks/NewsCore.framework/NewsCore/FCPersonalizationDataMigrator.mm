@@ -1,20 +1,20 @@
 @interface FCPersonalizationDataMigrator
-- (FCPersonalizationDataMigrator)initWithTreatmentProvider:(id)a3;
-- (id)keyValueStore:(id)a3 migrateObject:(id)a4 forKey:(id)a5 fromVersion:(unint64_t)a6;
-- (void)upgradeFromVersion2:(id)a3;
+- (FCPersonalizationDataMigrator)initWithTreatmentProvider:(id)provider;
+- (id)keyValueStore:(id)store migrateObject:(id)object forKey:(id)key fromVersion:(unint64_t)version;
+- (void)upgradeFromVersion2:(id)version2;
 @end
 
 @implementation FCPersonalizationDataMigrator
 
-- (FCPersonalizationDataMigrator)initWithTreatmentProvider:(id)a3
+- (FCPersonalizationDataMigrator)initWithTreatmentProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v9.receiver = self;
   v9.super_class = FCPersonalizationDataMigrator;
   v5 = [(FCPersonalizationDataMigrator *)&v9 init];
   if (v5)
   {
-    v6 = _Block_copy(v4);
+    v6 = _Block_copy(providerCopy);
     treatmentProvider = v5->_treatmentProvider;
     v5->_treatmentProvider = v6;
   }
@@ -22,9 +22,9 @@
   return v5;
 }
 
-- (void)upgradeFromVersion2:(id)a3
+- (void)upgradeFromVersion2:(id)version2
 {
-  v4 = a3;
+  version2Copy = version2;
   v5 = FCPersonalizationLog;
   if (os_log_type_enabled(FCPersonalizationLog, OS_LOG_TYPE_DEFAULT))
   {
@@ -32,11 +32,11 @@
     _os_log_impl(&dword_1B63EF000, v5, OS_LOG_TYPE_DEFAULT, "upgrading personalization data store from v2 to v3", buf, 2u);
   }
 
-  v6 = [v4 remoteRecord];
-  v7 = v6;
-  if (v6)
+  remoteRecord = [version2Copy remoteRecord];
+  v7 = remoteRecord;
+  if (remoteRecord)
   {
-    v8 = [v6 objectForKeyedSubscript:@"data"];
+    v8 = [remoteRecord objectForKeyedSubscript:@"data"];
 
     if (!v8)
     {
@@ -51,49 +51,49 @@
     }
   }
 
-  v10 = [(FCPersonalizationDataMigrator *)self treatmentProvider];
-  v11 = v10[2]();
+  treatmentProvider = [(FCPersonalizationDataMigrator *)self treatmentProvider];
+  v11 = treatmentProvider[2]();
 
   v12 = [FCModifyPersonalizationOperation personalizationProfileFromRecord:v7];
-  v13 = [v4 closedChangeGroups];
-  [FCModifyPersonalizationOperation applyChangeGroups:v13 toProfile:v12 treatment:v11 prune:0];
+  closedChangeGroups = [version2Copy closedChangeGroups];
+  [FCModifyPersonalizationOperation applyChangeGroups:closedChangeGroups toProfile:v12 treatment:v11 prune:0];
 
-  v14 = [v4 openChangeGroupDeltas];
-  [FCModifyPersonalizationOperation applyDeltas:v14 toProfile:v12 treatment:v11 prune:1];
+  openChangeGroupDeltas = [version2Copy openChangeGroupDeltas];
+  [FCModifyPersonalizationOperation applyDeltas:openChangeGroupDeltas toProfile:v12 treatment:v11 prune:1];
 
-  [v4 setClosedChangeGroups:0];
-  [v4 setOpenChangeGroupDeltas:0];
-  v15 = [v12 aggregates];
-  [v4 setAggregates:v15];
+  [version2Copy setClosedChangeGroups:0];
+  [version2Copy setOpenChangeGroupDeltas:0];
+  aggregates = [v12 aggregates];
+  [version2Copy setAggregates:aggregates];
 }
 
-- (id)keyValueStore:(id)a3 migrateObject:(id)a4 forKey:(id)a5 fromVersion:(unint64_t)a6
+- (id)keyValueStore:(id)store migrateObject:(id)object forKey:(id)key fromVersion:(unint64_t)version
 {
   v33 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v11;
-  v14 = v13;
-  if (a6 == 1)
+  storeCopy = store;
+  objectCopy = object;
+  keyCopy = key;
+  v13 = objectCopy;
+  data = v13;
+  if (version == 1)
   {
-    v14 = v13;
-    if (![v12 isEqualToString:@"pb-data"])
+    data = v13;
+    if (![keyCopy isEqualToString:@"pb-data"])
     {
       goto LABEL_14;
     }
 
-    v27 = self;
+    selfCopy = self;
     v15 = [objc_alloc(MEMORY[0x1E69B6F00]) initWithData:v13];
-    v16 = [v15 openChangeGroupDeltas];
-    __80__FCPersonalizationDataMigrator_keyValueStore_migrateObject_forKey_fromVersion___block_invoke(v16);
+    openChangeGroupDeltas = [v15 openChangeGroupDeltas];
+    __80__FCPersonalizationDataMigrator_keyValueStore_migrateObject_forKey_fromVersion___block_invoke(openChangeGroupDeltas);
 
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v17 = [v15 closedChangeGroups];
-    v18 = [v17 countByEnumeratingWithState:&v28 objects:v32 count:16];
+    closedChangeGroups = [v15 closedChangeGroups];
+    v18 = [closedChangeGroups countByEnumeratingWithState:&v28 objects:v32 count:16];
     if (v18)
     {
       v19 = v18;
@@ -104,38 +104,38 @@
         {
           if (*v29 != v20)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(closedChangeGroups);
           }
 
-          v22 = [*(*(&v28 + 1) + 8 * i) deltas];
-          __80__FCPersonalizationDataMigrator_keyValueStore_migrateObject_forKey_fromVersion___block_invoke(v22);
+          deltas = [*(*(&v28 + 1) + 8 * i) deltas];
+          __80__FCPersonalizationDataMigrator_keyValueStore_migrateObject_forKey_fromVersion___block_invoke(deltas);
         }
 
-        v19 = [v17 countByEnumeratingWithState:&v28 objects:v32 count:16];
+        v19 = [closedChangeGroups countByEnumeratingWithState:&v28 objects:v32 count:16];
       }
 
       while (v19);
     }
 
-    self = v27;
-    [(FCPersonalizationDataMigrator *)v27 upgradeFromVersion2:v15];
-    v14 = [v15 data];
+    self = selfCopy;
+    [(FCPersonalizationDataMigrator *)selfCopy upgradeFromVersion2:v15];
+    data = [v15 data];
   }
 
-  if (a6 == 2 && [v12 isEqualToString:@"pb-data"])
+  if (version == 2 && [keyCopy isEqualToString:@"pb-data"])
   {
     v23 = [objc_alloc(MEMORY[0x1E69B6F00]) initWithData:v13];
     [(FCPersonalizationDataMigrator *)self upgradeFromVersion2:v23];
-    v24 = [v23 data];
+    data2 = [v23 data];
 
-    v14 = v24;
+    data = data2;
   }
 
 LABEL_14:
 
   v25 = *MEMORY[0x1E69E9840];
 
-  return v14;
+  return data;
 }
 
 void __80__FCPersonalizationDataMigrator_keyValueStore_migrateObject_forKey_fromVersion___block_invoke(void *a1)

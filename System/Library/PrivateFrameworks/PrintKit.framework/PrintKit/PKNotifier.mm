@@ -1,14 +1,14 @@
 @interface PKNotifier
 + (id)sharedNotifier;
 - (PKNotifier)init;
-- (id)makeAuthAlert:(id)a3 challenge:(id)a4;
-- (id)makeNotice:(id)a3 message:(id)a4;
-- (id)makeQuotaAlert:(id)a3 message:(id)a4 quotaURL:(id)a5;
-- (id)makeRetry:(id)a3 message:(id)a4;
-- (id)makeSimpleAlert:(id)a3 message:(id)a4;
-- (void)cancelNotification:(id)a3;
-- (void)notification:(__CFUserNotification *)a3 completedWithResult:(unint64_t)a4;
-- (void)startNotification:(id)a3 options:(unint64_t)a4 dict:(id)a5;
+- (id)makeAuthAlert:(id)alert challenge:(id)challenge;
+- (id)makeNotice:(id)notice message:(id)message;
+- (id)makeQuotaAlert:(id)alert message:(id)message quotaURL:(id)l;
+- (id)makeRetry:(id)retry message:(id)message;
+- (id)makeSimpleAlert:(id)alert message:(id)message;
+- (void)cancelNotification:(id)notification;
+- (void)notification:(__CFUserNotification *)notification completedWithResult:(unint64_t)result;
+- (void)startNotification:(id)notification options:(unint64_t)options dict:(id)dict;
 @end
 
 @implementation PKNotifier
@@ -19,7 +19,7 @@
   block[1] = 3221225472;
   block[2] = __28__PKNotifier_sharedNotifier__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[PKNotifier sharedNotifier]::sOnce != -1)
   {
     dispatch_once(&+[PKNotifier sharedNotifier]::sOnce, block);
@@ -45,9 +45,9 @@ void __28__PKNotifier_sharedNotifier__block_invoke()
   return [(PKNotifier *)&v3 init];
 }
 
-- (id)makeSimpleAlert:(id)a3 message:(id)a4
+- (id)makeSimpleAlert:(id)alert message:(id)message
 {
-  v4 = makeNotification<PKNotification>(self, a3, a4, 0);
+  v4 = makeNotification<PKNotification>(self, alert, message, 0);
   v5 = PKLocalizedString(&cfstr_Ok.isa, "Acknowledgement");
   [v4 setDefaultButtonTitle:v5];
 
@@ -57,15 +57,15 @@ void __28__PKNotifier_sharedNotifier__block_invoke()
   return v4;
 }
 
-- (id)makeQuotaAlert:(id)a3 message:(id)a4 quotaURL:(id)a5
+- (id)makeQuotaAlert:(id)alert message:(id)message quotaURL:(id)l
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  v12 = v8;
-  v13 = v9;
-  v14 = [(PKNotification *)[PKQuotaNotification alloc] initWithNotifier:v11 notifyKind:0];
+  alertCopy = alert;
+  messageCopy = message;
+  lCopy = l;
+  selfCopy = self;
+  v12 = alertCopy;
+  v13 = messageCopy;
+  v14 = [(PKNotification *)[PKQuotaNotification alloc] initWithNotifier:selfCopy notifyKind:0];
   [(PKNotification *)v14 setHeaderString:v12];
   [(PKNotification *)v14 setMessageString:v13];
 
@@ -75,23 +75,23 @@ void __28__PKNotifier_sharedNotifier__block_invoke()
   v16 = PKLocalizedString(&cfstr_Cancel.isa, "Cancel printing");
   [(PKNotification *)v14 setAlternateButtonTitle:v16];
 
-  [(PKQuotaNotification *)v14 setQuotaURL:v10];
+  [(PKQuotaNotification *)v14 setQuotaURL:lCopy];
 
   return v14;
 }
 
-- (id)makeNotice:(id)a3 message:(id)a4
+- (id)makeNotice:(id)notice message:(id)message
 {
-  v4 = makeNotification<PKNotification>(self, a3, a4, 1);
+  v4 = makeNotification<PKNotification>(self, notice, message, 1);
   v5 = PKLocalizedString(&cfstr_Ok.isa, "Acknowledgement");
   [v4 setDefaultButtonTitle:v5];
 
   return v4;
 }
 
-- (id)makeRetry:(id)a3 message:(id)a4
+- (id)makeRetry:(id)retry message:(id)message
 {
-  v4 = makeNotification<PKNotification>(self, a3, a4, 0);
+  v4 = makeNotification<PKNotification>(self, retry, message, 0);
   v5 = PKLocalizedString(&cfstr_TryAgain.isa, "Retry printing");
   [v4 setDefaultButtonTitle:v5];
 
@@ -101,19 +101,19 @@ void __28__PKNotifier_sharedNotifier__block_invoke()
   return v4;
 }
 
-- (id)makeAuthAlert:(id)a3 challenge:(id)a4
+- (id)makeAuthAlert:(id)alert challenge:(id)challenge
 {
-  v5 = a3;
+  alertCopy = alert;
   v6 = PKLocalizedString(&cfstr_PasswordRequir.isa, "Password prompt");
-  v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithValidatedFormat:v6 validFormatSpecifiers:@"%@" error:0, v5];
-  v8 = self;
-  v9 = v7;
-  v10 = [(PKNotification *)[PKAuthNotification alloc] initWithNotifier:v8 notifyKind:0];
+  alertCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithValidatedFormat:v6 validFormatSpecifiers:@"%@" error:0, alertCopy];
+  selfCopy = self;
+  v9 = alertCopy;
+  v10 = [(PKNotification *)[PKAuthNotification alloc] initWithNotifier:selfCopy notifyKind:0];
   [(PKNotification *)v10 setHeaderString:0];
   [(PKNotification *)v10 setMessageString:v9];
 
-  v11 = [(PKAuthNotification *)v10 defaultUsername];
-  v12 = [v11 isEqualToString:@"guest-only"];
+  defaultUsername = [(PKAuthNotification *)v10 defaultUsername];
+  v12 = [defaultUsername isEqualToString:@"guest-only"];
 
   if ((v12 & 1) == 0)
   {
@@ -127,22 +127,22 @@ void __28__PKNotifier_sharedNotifier__block_invoke()
   return v10;
 }
 
-- (void)notification:(__CFUserNotification *)a3 completedWithResult:(unint64_t)a4
+- (void)notification:(__CFUserNotification *)notification completedWithResult:(unint64_t)result
 {
-  v6 = self;
-  objc_sync_enter(v6);
-  if (v6->_outstandingRef == a3)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_outstandingRef == notification)
   {
-    v6->_outstandingRef = 0;
-    v10 = v6->_outstandingNote;
-    outstandingNote = v6->_outstandingNote;
-    v6->_outstandingNote = 0;
+    selfCopy->_outstandingRef = 0;
+    v10 = selfCopy->_outstandingNote;
+    outstandingNote = selfCopy->_outstandingNote;
+    selfCopy->_outstandingNote = 0;
 
-    outstandingSource = v6->_outstandingSource;
+    outstandingSource = selfCopy->_outstandingSource;
     if (outstandingSource)
     {
       CFRunLoopSourceInvalidate(outstandingSource);
-      v6->_outstandingSource = 0;
+      selfCopy->_outstandingSource = 0;
     }
   }
 
@@ -151,12 +151,12 @@ void __28__PKNotifier_sharedNotifier__block_invoke()
     v10 = 0;
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 
   if (v10)
   {
-    v9 = CFUserNotificationGetResponseDictionary(a3);
-    [(PKNotification *)v10 _interpretResult:a4 responseDict:v9];
+    v9 = CFUserNotificationGetResponseDictionary(notification);
+    [(PKNotification *)v10 _interpretResult:result responseDict:v9];
   }
 
   else
@@ -165,54 +165,54 @@ void __28__PKNotifier_sharedNotifier__block_invoke()
   }
 }
 
-- (void)startNotification:(id)a3 options:(unint64_t)a4 dict:(id)a5
+- (void)startNotification:(id)notification options:(unint64_t)options dict:(id)dict
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = [v9 resultHandler];
+  notificationCopy = notification;
+  dictCopy = dict;
+  resultHandler = [notificationCopy resultHandler];
 
-  if (!v11)
+  if (!resultHandler)
   {
-    [v9 setResultHandler:&__block_literal_global_3];
+    [notificationCopy setResultHandler:&__block_literal_global_3];
   }
 
-  v12 = [v9 resultQueue];
+  resultQueue = [notificationCopy resultQueue];
 
-  if (!v12)
+  if (!resultQueue)
   {
-    [v9 setResultQueue:MEMORY[0x277D85CD0]];
+    [notificationCopy setResultQueue:MEMORY[0x277D85CD0]];
   }
 
   error = 0;
   v13 = *MEMORY[0x277CBECE8];
-  v14 = CFUserNotificationCreate(*MEMORY[0x277CBECE8], 0.0, a4, &error, v10);
+  v14 = CFUserNotificationCreate(*MEMORY[0x277CBECE8], 0.0, options, &error, dictCopy);
   v15 = v14;
   if (v14)
   {
-    if (v11)
+    if (resultHandler)
     {
       RunLoopSource = CFUserNotificationCreateRunLoopSource(v13, v14, _notifyCallout, 0);
-      v17 = self;
-      objc_sync_enter(v17);
-      outstandingRef = v17->_outstandingRef;
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
+      outstandingRef = selfCopy->_outstandingRef;
       if (outstandingRef)
       {
         CFUserNotificationCancel(outstandingRef);
-        CFRelease(v17->_outstandingRef);
-        v17->_outstandingRef = 0;
+        CFRelease(selfCopy->_outstandingRef);
+        selfCopy->_outstandingRef = 0;
       }
 
-      outstandingSource = v17->_outstandingSource;
+      outstandingSource = selfCopy->_outstandingSource;
       if (outstandingSource)
       {
         CFRelease(outstandingSource);
-        v17->_outstandingSource = 0;
+        selfCopy->_outstandingSource = 0;
       }
 
-      v17->_outstandingRef = v15;
-      objc_storeStrong(&v17->_outstandingNote, a3);
-      v17->_outstandingSource = RunLoopSource;
-      objc_sync_exit(v17);
+      selfCopy->_outstandingRef = v15;
+      objc_storeStrong(&selfCopy->_outstandingNote, notification);
+      selfCopy->_outstandingSource = RunLoopSource;
+      objc_sync_exit(selfCopy);
 
       Main = CFRunLoopGetMain();
       CFRunLoopAddSource(Main, RunLoopSource, *MEMORY[0x277CBF048]);
@@ -226,18 +226,18 @@ void __28__PKNotifier_sharedNotifier__block_invoke()
 
   else
   {
-    [v9 _interpretResult:2 responseDict:0];
+    [notificationCopy _interpretResult:2 responseDict:0];
   }
 }
 
-- (void)cancelNotification:(id)a3
+- (void)cancelNotification:(id)notification
 {
   obj = self;
-  v4 = a3;
+  notificationCopy = notification;
   objc_sync_enter(obj);
   outstandingNote = obj->_outstandingNote;
 
-  if (outstandingNote == v4)
+  if (outstandingNote == notificationCopy)
   {
     outstandingRef = obj->_outstandingRef;
     if (outstandingRef)

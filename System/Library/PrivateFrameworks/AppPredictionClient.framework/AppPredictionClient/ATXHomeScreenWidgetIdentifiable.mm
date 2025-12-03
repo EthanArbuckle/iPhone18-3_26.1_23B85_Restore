@@ -1,36 +1,36 @@
 @interface ATXHomeScreenWidgetIdentifiable
 - (ATXHomeScreenPage)page;
 - (ATXHomeScreenWidgetIdentifiable)init;
-- (ATXHomeScreenWidgetIdentifiable)initWithCoder:(id)a3;
-- (ATXHomeScreenWidgetIdentifiable)initWithMemoryPressureMonitor:(id)a3;
-- (ATXHomeScreenWidgetIdentifiable)initWithProto:(id)a3;
-- (ATXHomeScreenWidgetIdentifiable)initWithProtoData:(id)a3;
-- (BOOL)checkAndReportDecodingFailureIfNeededForNSInteger:(int64_t)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7;
-- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isSameWidgetAsWidgetBundleId:(id)a3 widgetKind:(id)a4;
+- (ATXHomeScreenWidgetIdentifiable)initWithCoder:(id)coder;
+- (ATXHomeScreenWidgetIdentifiable)initWithMemoryPressureMonitor:(id)monitor;
+- (ATXHomeScreenWidgetIdentifiable)initWithProto:(id)proto;
+- (ATXHomeScreenWidgetIdentifiable)initWithProtoData:(id)data;
+- (BOOL)checkAndReportDecodingFailureIfNeededForNSInteger:(int64_t)integer key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code;
+- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)forid key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isSameWidgetAsWidgetBundleId:(id)id widgetKind:(id)kind;
 - (INIntent)intent;
 - (NSString)description;
-- (id)_dictionaryRepresentationIncludingFullIntent:(BOOL)a3;
+- (id)_dictionaryRepresentationIncludingFullIntent:(BOOL)intent;
 - (id)compactDescription;
 - (id)encodeAsProto;
-- (id)initFromDictionaryRepresentation:(id)a3;
+- (id)initFromDictionaryRepresentation:(id)representation;
 - (id)proto;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)handleMemoryPressure;
 - (void)intent;
 - (void)proto;
-- (void)setIntent:(id)a3;
+- (void)setIntent:(id)intent;
 @end
 
 @implementation ATXHomeScreenWidgetIdentifiable
 
 - (ATXHomeScreenWidgetIdentifiable)init
 {
-  v3 = [MEMORY[0x1E698B000] sharedInstance];
-  v4 = [(ATXHomeScreenWidgetIdentifiable *)self initWithMemoryPressureMonitor:v3];
+  mEMORY[0x1E698B000] = [MEMORY[0x1E698B000] sharedInstance];
+  v4 = [(ATXHomeScreenWidgetIdentifiable *)self initWithMemoryPressureMonitor:mEMORY[0x1E698B000]];
 
   return v4;
 }
@@ -56,25 +56,25 @@
 
 - (INIntent)intent
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  intent = v2->_intent;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  intent = selfCopy->_intent;
   if (intent)
   {
     v4 = intent;
   }
 
-  else if (v2->_intentProtoData)
+  else if (selfCopy->_intentProtoData)
   {
     v5 = objc_autoreleasePoolPush();
     v6 = MEMORY[0x1E696ACD0];
     v7 = objc_opt_class();
-    intentProtoData = v2->_intentProtoData;
+    intentProtoData = selfCopy->_intentProtoData;
     v14 = 0;
     v9 = [v6 unarchivedObjectOfClass:v7 fromData:intentProtoData error:&v14];
     v10 = v14;
-    v11 = v2->_intent;
-    v2->_intent = v9;
+    v11 = selfCopy->_intent;
+    selfCopy->_intent = v9;
 
     if (v10)
     {
@@ -85,7 +85,7 @@
       }
     }
 
-    v4 = v2->_intent;
+    v4 = selfCopy->_intent;
 
     objc_autoreleasePoolPop(v5);
   }
@@ -95,7 +95,7 @@
     v4 = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
@@ -121,9 +121,9 @@
   [(ATXPBHomeScreenWidgetIdentifiable *)v3 setOnboardingWidget:?];
   [(ATXPBHomeScreenWidgetIdentifiable *)v3 setScore:?];
   [(ATXPBHomeScreenWidgetIdentifiable *)v3 setPredictionSource:?];
-  v5 = self;
-  objc_sync_enter(v5);
-  intentProtoData = v5->_intentProtoData;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  intentProtoData = selfCopy->_intentProtoData;
   if (intentProtoData)
   {
     [(ATXPBHomeScreenWidgetIdentifiable *)v3 setIntent:?];
@@ -131,15 +131,15 @@
 
   else
   {
-    v7 = [(ATXHomeScreenWidgetIdentifiable *)v5 intent];
+    intent = [(ATXHomeScreenWidgetIdentifiable *)selfCopy intent];
 
-    if (v7)
+    if (intent)
     {
       v8 = objc_autoreleasePoolPush();
       v9 = MEMORY[0x1E696ACC8];
-      v10 = [(ATXHomeScreenWidgetIdentifiable *)v5 intent];
+      intent2 = [(ATXHomeScreenWidgetIdentifiable *)selfCopy intent];
       v15 = 0;
-      v11 = [v9 archivedDataWithRootObject:v10 requiringSecureCoding:1 error:&v15];
+      v11 = [v9 archivedDataWithRootObject:intent2 requiringSecureCoding:1 error:&v15];
       v12 = v15;
       [(ATXPBHomeScreenWidgetIdentifiable *)v3 setIntent:v11];
 
@@ -155,29 +155,29 @@
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (id)encodeAsProto
 {
-  v2 = [(ATXHomeScreenWidgetIdentifiable *)self proto];
-  v3 = [v2 data];
+  proto = [(ATXHomeScreenWidgetIdentifiable *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (ATXHomeScreenWidgetIdentifiable)initWithMemoryPressureMonitor:(id)a3
+- (ATXHomeScreenWidgetIdentifiable)initWithMemoryPressureMonitor:(id)monitor
 {
-  v5 = a3;
+  monitorCopy = monitor;
   v9.receiver = self;
   v9.super_class = ATXHomeScreenWidgetIdentifiable;
   v6 = [(ATXHomeScreenWidgetIdentifiable *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_memoryPressureMonitor, a3);
+    objc_storeStrong(&v6->_memoryPressureMonitor, monitor);
     [(ATXMemoryPressureMonitor *)v7->_memoryPressureMonitor registerObserver:v7];
   }
 
@@ -187,15 +187,15 @@
 - (NSString)description
 {
   v3 = [(ATXHomeScreenWidgetIdentifiable *)self _dictionaryRepresentationIncludingFullIntent:0];
-  v4 = [MEMORY[0x1E695DF58] currentLocale];
-  v5 = [v3 descriptionWithLocale:v4];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  v5 = [v3 descriptionWithLocale:currentLocale];
 
-  v6 = [(ATXHomeScreenWidgetIdentifiable *)self intent];
+  intent = [(ATXHomeScreenWidgetIdentifiable *)self intent];
 
-  if (v6)
+  if (intent)
   {
-    v7 = [(ATXHomeScreenWidgetIdentifiable *)self intent];
-    v8 = [v5 stringByAppendingFormat:@"\nFull Intent: %@\n", v7];
+    intent2 = [(ATXHomeScreenWidgetIdentifiable *)self intent];
+    v8 = [v5 stringByAppendingFormat:@"\nFull Intent: %@\n", intent2];
   }
 
   else
@@ -206,9 +206,9 @@
   return v8;
 }
 
-- (id)_dictionaryRepresentationIncludingFullIntent:(BOOL)a3
+- (id)_dictionaryRepresentationIncludingFullIntent:(BOOL)intent
 {
-  v3 = a3;
+  intentCopy = intent;
   v5 = objc_opt_new();
   [v5 setObject:self->_extensionBundleId forKeyedSubscript:@"widgetBundleId"];
   [v5 setObject:self->_appBundleId forKeyedSubscript:@"appBundleId"];
@@ -227,15 +227,15 @@
   [v5 setObject:v9 forKeyedSubscript:@"score"];
 
   [v5 setObject:self->_predictionSource forKeyedSubscript:@"predictionSource"];
-  v10 = [(ATXHomeScreenWidgetIdentifiable *)self intent];
-  v11 = v10;
-  if (v3)
+  intent = [(ATXHomeScreenWidgetIdentifiable *)self intent];
+  v11 = intent;
+  if (intentCopy)
   {
-    v12 = [v10 intentDescription];
-    if (!v12)
+    intentDescription = [intent intentDescription];
+    if (!intentDescription)
     {
-      v13 = [(ATXHomeScreenWidgetIdentifiable *)self intent];
-      v14 = [v13 description];
+      intent2 = [(ATXHomeScreenWidgetIdentifiable *)self intent];
+      v14 = [intent2 description];
       [v5 setObject:v14 forKeyedSubscript:@"intent"];
 
       goto LABEL_6;
@@ -244,57 +244,57 @@
 
   else
   {
-    v12 = [v10 typeName];
+    intentDescription = [intent typeName];
   }
 
-  [v5 setObject:v12 forKeyedSubscript:@"intent"];
+  [v5 setObject:intentDescription forKeyedSubscript:@"intent"];
 LABEL_6:
 
   return v5;
 }
 
-- (id)initFromDictionaryRepresentation:(id)a3
+- (id)initFromDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v23.receiver = self;
   v23.super_class = ATXHomeScreenWidgetIdentifiable;
   v5 = [(ATXHomeScreenWidgetIdentifiable *)&v23 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"widgetBundleId"];
+    v6 = [representationCopy objectForKeyedSubscript:@"widgetBundleId"];
 
     if (v6)
     {
-      v7 = [v4 objectForKeyedSubscript:@"widgetBundleId"];
+      v7 = [representationCopy objectForKeyedSubscript:@"widgetBundleId"];
       extensionBundleId = v5->_extensionBundleId;
       v5->_extensionBundleId = v7;
 
-      v9 = [v4 objectForKeyedSubscript:@"appBundleId"];
+      v9 = [representationCopy objectForKeyedSubscript:@"appBundleId"];
       appBundleId = v5->_appBundleId;
       v5->_appBundleId = v9;
 
-      v11 = [v4 objectForKeyedSubscript:@"widgetUniqueId"];
+      v11 = [representationCopy objectForKeyedSubscript:@"widgetUniqueId"];
       widgetUniqueId = v5->_widgetUniqueId;
       v5->_widgetUniqueId = v11;
 
-      v13 = [v4 objectForKeyedSubscript:@"widgetKind"];
+      v13 = [representationCopy objectForKeyedSubscript:@"widgetKind"];
       widgetKind = v5->_widgetKind;
       v5->_widgetKind = v13;
 
-      v15 = [v4 objectForKeyedSubscript:@"size"];
+      v15 = [representationCopy objectForKeyedSubscript:@"size"];
       v5->_size = [v15 unsignedIntegerValue];
 
-      v16 = [v4 objectForKeyedSubscript:@"suggestedWidget"];
+      v16 = [representationCopy objectForKeyedSubscript:@"suggestedWidget"];
       v5->_suggestedWidget = [v16 BOOLValue];
 
-      v17 = [v4 objectForKeyedSubscript:@"onboardingWidget"];
+      v17 = [representationCopy objectForKeyedSubscript:@"onboardingWidget"];
       v5->_onboardingWidget = [v17 BOOLValue];
 
-      v18 = [v4 objectForKeyedSubscript:@"score"];
+      v18 = [representationCopy objectForKeyedSubscript:@"score"];
       [v18 doubleValue];
       v5->_score = v19;
 
-      v20 = [v4 objectForKeyedSubscript:@"predictionSource"];
+      v20 = [representationCopy objectForKeyedSubscript:@"predictionSource"];
       predictionSource = v5->_predictionSource;
       v5->_predictionSource = v20;
 
@@ -310,25 +310,25 @@ LABEL_6:
   return v6;
 }
 
-- (void)setIntent:(id)a3
+- (void)setIntent:(id)intent
 {
-  v4 = a3;
+  intentCopy = intent;
   obj = self;
   objc_sync_enter(obj);
   intentProtoData = obj->_intentProtoData;
   obj->_intentProtoData = 0;
 
   intent = obj->_intent;
-  obj->_intent = v4;
+  obj->_intent = intentCopy;
 
   objc_sync_exit(obj);
 }
 
 - (void)handleMemoryPressure
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_intentProtoData && v2->_intent)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_intentProtoData && selfCopy->_intent)
   {
     v3 = __atxlog_handle_default();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -337,40 +337,40 @@ LABEL_6:
       _os_log_impl(&dword_1BF549000, v3, OS_LOG_TYPE_DEFAULT, "Purging intent proto data due to memory pressure", v5, 2u);
     }
 
-    intentProtoData = v2->_intentProtoData;
-    v2->_intentProtoData = 0;
+    intentProtoData = selfCopy->_intentProtoData;
+    selfCopy->_intentProtoData = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
-- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7
+- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)forid key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!a3)
+  keyCopy = key;
+  coderCopy = coder;
+  domainCopy = domain;
+  if (!forid)
   {
-    v15 = [v12 error];
+    error = [coderCopy error];
 
-    if (v15)
+    if (error)
     {
       v14 = 1;
       goto LABEL_7;
     }
 
-    if (([v12 containsValueForKey:v11] & 1) == 0)
+    if (([coderCopy containsValueForKey:keyCopy] & 1) == 0)
     {
       v16 = objc_alloc(MEMORY[0x1E696ABC0]);
       v21 = *MEMORY[0x1E696A578];
-      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to decode key %@", v11, v21];
+      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to decode key %@", keyCopy, v21];
       v22[0] = v17;
       v14 = 1;
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:&v21 count:1];
-      v19 = [v16 initWithDomain:v13 code:a7 userInfo:v18];
+      v19 = [v16 initWithDomain:domainCopy code:code userInfo:v18];
 
-      [v12 failWithError:v19];
+      [coderCopy failWithError:v19];
       goto LABEL_7;
     }
   }
@@ -381,33 +381,33 @@ LABEL_7:
   return v14;
 }
 
-- (BOOL)checkAndReportDecodingFailureIfNeededForNSInteger:(int64_t)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7
+- (BOOL)checkAndReportDecodingFailureIfNeededForNSInteger:(int64_t)integer key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!a3)
+  keyCopy = key;
+  coderCopy = coder;
+  domainCopy = domain;
+  if (!integer)
   {
-    v15 = [v12 error];
+    error = [coderCopy error];
 
-    if (v15)
+    if (error)
     {
       v14 = 1;
       goto LABEL_7;
     }
 
-    if (([v12 containsValueForKey:v11] & 1) == 0)
+    if (([coderCopy containsValueForKey:keyCopy] & 1) == 0)
     {
       v16 = objc_alloc(MEMORY[0x1E696ABC0]);
       v21 = *MEMORY[0x1E696A578];
-      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to decode key %@", v11, v21];
+      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to decode key %@", keyCopy, v21];
       v22[0] = v17;
       v14 = 1;
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:&v21 count:1];
-      v19 = [v16 initWithDomain:v13 code:a7 userInfo:v18];
+      v19 = [v16 initWithDomain:domainCopy code:code userInfo:v18];
 
-      [v12 failWithError:v19];
+      [coderCopy failWithError:v19];
       goto LABEL_7;
     }
   }
@@ -418,45 +418,45 @@ LABEL_7:
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ATXHomeScreenWidgetIdentifiable *)self encodeAsProto];
-  [v4 encodeObject:v5 forKey:@"protobufData"];
+  coderCopy = coder;
+  encodeAsProto = [(ATXHomeScreenWidgetIdentifiable *)self encodeAsProto];
+  [coderCopy encodeObject:encodeAsProto forKey:@"protobufData"];
 }
 
-- (ATXHomeScreenWidgetIdentifiable)initWithCoder:(id)a3
+- (ATXHomeScreenWidgetIdentifiable)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
 
   v6 = [(ATXHomeScreenWidgetIdentifiable *)self initWithProtoData:v5];
   return v6;
 }
 
-- (ATXHomeScreenWidgetIdentifiable)initWithProtoData:(id)a3
+- (ATXHomeScreenWidgetIdentifiable)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[ATXPBHomeScreenWidgetIdentifiable alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[ATXPBHomeScreenWidgetIdentifiable alloc] initWithData:dataCopy];
 
     self = [(ATXHomeScreenWidgetIdentifiable *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (ATXHomeScreenWidgetIdentifiable)initWithProto:(id)a3
+- (ATXHomeScreenWidgetIdentifiable)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (v4)
+  protoCopy = proto;
+  if (protoCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -467,7 +467,7 @@ LABEL_7:
         [(ATXHomeScreenWidgetIdentifiable *)self initWithProto:v5];
       }
 
-      v21 = 0;
+      selfCopy2 = 0;
       goto LABEL_11;
     }
 
@@ -476,69 +476,69 @@ LABEL_7:
     self = [(ATXHomeScreenWidgetIdentifiable *)&v23 init];
     if (self)
     {
-      v5 = v4;
-      v6 = self;
-      objc_sync_enter(v6);
-      v7 = [(ATXPBHomeScreenWidgetIdentifiable *)v5 intent];
+      v5 = protoCopy;
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
+      intent = [(ATXPBHomeScreenWidgetIdentifiable *)v5 intent];
 
-      if (v7)
+      if (intent)
       {
-        v8 = [(ATXPBHomeScreenWidgetIdentifiable *)v5 intent];
-        intentProtoData = v6->_intentProtoData;
-        v6->_intentProtoData = v8;
+        intent2 = [(ATXPBHomeScreenWidgetIdentifiable *)v5 intent];
+        intentProtoData = selfCopy->_intentProtoData;
+        selfCopy->_intentProtoData = intent2;
       }
 
-      objc_sync_exit(v6);
+      objc_sync_exit(selfCopy);
 
-      v10 = [(ATXPBHomeScreenWidgetIdentifiable *)v5 appBundleId];
-      appBundleId = v6->_appBundleId;
-      v6->_appBundleId = v10;
+      appBundleId = [(ATXPBHomeScreenWidgetIdentifiable *)v5 appBundleId];
+      appBundleId = selfCopy->_appBundleId;
+      selfCopy->_appBundleId = appBundleId;
 
-      v12 = [(ATXPBHomeScreenWidgetIdentifiable *)v5 extensionBundleId];
-      extensionBundleId = v6->_extensionBundleId;
-      v6->_extensionBundleId = v12;
+      extensionBundleId = [(ATXPBHomeScreenWidgetIdentifiable *)v5 extensionBundleId];
+      extensionBundleId = selfCopy->_extensionBundleId;
+      selfCopy->_extensionBundleId = extensionBundleId;
 
-      v14 = [(ATXPBHomeScreenWidgetIdentifiable *)v5 widgetUniqueId];
-      widgetUniqueId = v6->_widgetUniqueId;
-      v6->_widgetUniqueId = v14;
+      widgetUniqueId = [(ATXPBHomeScreenWidgetIdentifiable *)v5 widgetUniqueId];
+      widgetUniqueId = selfCopy->_widgetUniqueId;
+      selfCopy->_widgetUniqueId = widgetUniqueId;
 
-      v16 = [(ATXPBHomeScreenWidgetIdentifiable *)v5 widgetKind];
-      widgetKind = v6->_widgetKind;
-      v6->_widgetKind = v16;
+      widgetKind = [(ATXPBHomeScreenWidgetIdentifiable *)v5 widgetKind];
+      widgetKind = selfCopy->_widgetKind;
+      selfCopy->_widgetKind = widgetKind;
 
       v18 = [(ATXPBHomeScreenWidgetIdentifiable *)v5 size];
-      v6->_size = ATXStackLayoutSizeFromProto(v18);
-      v6->_suggestedWidget = [(ATXPBHomeScreenWidgetIdentifiable *)v5 suggestedWidget];
-      v6->_onboardingWidget = [(ATXPBHomeScreenWidgetIdentifiable *)v5 onboardingWidget];
-      v6->_score = [(ATXPBHomeScreenWidgetIdentifiable *)v5 score];
-      v19 = [(ATXPBHomeScreenWidgetIdentifiable *)v5 predictionSource];
-      predictionSource = v6->_predictionSource;
-      v6->_predictionSource = v19;
+      selfCopy->_size = ATXStackLayoutSizeFromProto(v18);
+      selfCopy->_suggestedWidget = [(ATXPBHomeScreenWidgetIdentifiable *)v5 suggestedWidget];
+      selfCopy->_onboardingWidget = [(ATXPBHomeScreenWidgetIdentifiable *)v5 onboardingWidget];
+      selfCopy->_score = [(ATXPBHomeScreenWidgetIdentifiable *)v5 score];
+      predictionSource = [(ATXPBHomeScreenWidgetIdentifiable *)v5 predictionSource];
+      predictionSource = selfCopy->_predictionSource;
+      selfCopy->_predictionSource = predictionSource;
 
-      self = v6;
-      v21 = self;
+      self = selfCopy;
+      selfCopy2 = self;
 LABEL_11:
 
       goto LABEL_12;
     }
   }
 
-  v21 = 0;
+  selfCopy2 = 0;
 LABEL_12:
 
-  return v21;
+  return selfCopy2;
 }
 
-- (BOOL)isSameWidgetAsWidgetBundleId:(id)a3 widgetKind:(id)a4
+- (BOOL)isSameWidgetAsWidgetBundleId:(id)id widgetKind:(id)kind
 {
-  v6 = a3;
-  v7 = a4;
-  if (![v6 isEqualToString:&stru_1F3E050C8])
+  idCopy = id;
+  kindCopy = kind;
+  if (![idCopy isEqualToString:&stru_1F3E050C8])
   {
     goto LABEL_14;
   }
 
-  if ([v7 isEqualToString:@"SBHSpecialAvocadoDescriptorKindSiri"])
+  if ([kindCopy isEqualToString:@"SBHSpecialAvocadoDescriptorKindSiri"])
   {
     extensionBundleId = self->_extensionBundleId;
     v9 = MEMORY[0x1E698AFC0];
@@ -547,14 +547,14 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if ([v7 isEqualToString:@"SBHSpecialAvocadoDescriptorKindAppPredictions"])
+  if ([kindCopy isEqualToString:@"SBHSpecialAvocadoDescriptorKindAppPredictions"])
   {
     extensionBundleId = self->_extensionBundleId;
     v9 = ATXAppPredictionPanelBundleIdentifier;
     goto LABEL_6;
   }
 
-  if (([v7 isEqualToString:@"SBHSpecialAvocadoDescriptorKindShortcutsFolder"] & 1) != 0 || objc_msgSend(v7, "isEqualToString:", @"SBHSpecialAvocadoDescriptorKindShortcutsSingle"))
+  if (([kindCopy isEqualToString:@"SBHSpecialAvocadoDescriptorKindShortcutsFolder"] & 1) != 0 || objc_msgSend(kindCopy, "isEqualToString:", @"SBHSpecialAvocadoDescriptorKindShortcutsSingle"))
   {
     extensionBundleId = self->_extensionBundleId;
     v10 = @"Shortcuts";
@@ -562,7 +562,7 @@ LABEL_6:
 
   else
   {
-    if (![v7 isEqualToString:@"SBHSpecialAvocadoDescriptorKindFiles"])
+    if (![kindCopy isEqualToString:@"SBHSpecialAvocadoDescriptorKindFiles"])
     {
       goto LABEL_14;
     }
@@ -575,7 +575,7 @@ LABEL_7:
   if (![(NSString *)extensionBundleId isEqualToString:v10])
   {
 LABEL_14:
-    v12 = [ATXWidgetPersonality stringRepresentationForExtensionBundleId:v6 kind:v7];
+    v12 = [ATXWidgetPersonality stringRepresentationForExtensionBundleId:idCopy kind:kindCopy];
     v13 = [ATXWidgetPersonality stringRepresentationForExtensionBundleId:self->_extensionBundleId kind:self->_widgetKind];
     v11 = [v12 isEqualToString:v13];
 
@@ -599,10 +599,10 @@ LABEL_15:
   return self->_onboardingWidget - v8 + 32 * v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -612,7 +612,7 @@ LABEL_15:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = equalCopy;
       size = self->_size;
       if (size != [(ATXHomeScreenWidgetIdentifiable *)v6 size])
       {
@@ -699,14 +699,14 @@ LABEL_23:
         }
       }
 
-      v20 = [(ATXHomeScreenWidgetIdentifiable *)self intent];
-      if (v20 || ([(ATXHomeScreenWidgetIdentifiable *)v6 intent], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+      intent = [(ATXHomeScreenWidgetIdentifiable *)self intent];
+      if (intent || ([(ATXHomeScreenWidgetIdentifiable *)v6 intent], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
       {
-        v21 = [(ATXHomeScreenWidgetIdentifiable *)self intent];
-        v22 = [(ATXHomeScreenWidgetIdentifiable *)v6 intent];
-        v12 = [v21 atx_isEqualToIntent:v22];
+        intent2 = [(ATXHomeScreenWidgetIdentifiable *)self intent];
+        intent3 = [(ATXHomeScreenWidgetIdentifiable *)v6 intent];
+        v12 = [intent2 atx_isEqualToIntent:intent3];
 
-        if (v20)
+        if (intent)
         {
 LABEL_32:
 
@@ -741,7 +741,7 @@ LABEL_24:
 {
   v4 = *MEMORY[0x1E69E9840];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1BF549000, a2, OS_LOG_TYPE_ERROR, "Could not unarchive intent for widget identifiable: %@", &v2, 0xCu);
 }
 
@@ -749,7 +749,7 @@ LABEL_24:
 {
   v4 = *MEMORY[0x1E69E9840];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1BF549000, a2, OS_LOG_TYPE_ERROR, "Could not serialize intent: %@", &v2, 0xCu);
 }
 

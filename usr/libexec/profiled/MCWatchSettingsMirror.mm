@@ -1,10 +1,10 @@
 @interface MCWatchSettingsMirror
 + (id)sharedMirror;
 - (MCWatchSettingsMirror)init;
-- (id)effectiveIntersectionValuesForSetting:(id)a3 pairingID:(id)a4 pairingDataStore:(id)a5;
-- (id)effectiveUnionValuesForSetting:(id)a3 pairingID:(id)a4 pairingDataStore:(id)a5;
-- (id)effectiveValueForSetting:(id)a3 pairingID:(id)a4 pairingDataStore:(id)a5;
-- (int)effectiveBoolValueForSetting:(id)a3 pairingID:(id)a4 pairingDataStore:(id)a5;
+- (id)effectiveIntersectionValuesForSetting:(id)setting pairingID:(id)d pairingDataStore:(id)store;
+- (id)effectiveUnionValuesForSetting:(id)setting pairingID:(id)d pairingDataStore:(id)store;
+- (id)effectiveValueForSetting:(id)setting pairingID:(id)d pairingDataStore:(id)store;
+- (int)effectiveBoolValueForSetting:(id)setting pairingID:(id)d pairingDataStore:(id)store;
 @end
 
 @implementation MCWatchSettingsMirror
@@ -44,29 +44,29 @@
   return v2;
 }
 
-- (int)effectiveBoolValueForSetting:(id)a3 pairingID:(id)a4 pairingDataStore:(id)a5
+- (int)effectiveBoolValueForSetting:(id)setting pairingID:(id)d pairingDataStore:(id)store
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MCWatchSettingsMirror *)self syncableSettings];
+  settingCopy = setting;
+  dCopy = d;
+  storeCopy = store;
+  syncableSettings = [(MCWatchSettingsMirror *)self syncableSettings];
   v12 = MCRestrictedBoolKey;
-  v13 = [v11 objectForKeyedSubscript:MCRestrictedBoolKey];
+  v13 = [syncableSettings objectForKeyedSubscript:MCRestrictedBoolKey];
 
-  if ([v13 containsObject:v8])
+  if ([v13 containsObject:settingCopy])
   {
-    v14 = [[NPSDomainAccessor alloc] initWithDomain:@"com.apple.ManagedConfiguration.WatchEffectiveSettingsMirror" pairingID:v9 pairingDataStore:v10];
-    v15 = [v14 synchronize];
-    if (v15)
+    v14 = [[NPSDomainAccessor alloc] initWithDomain:@"com.apple.ManagedConfiguration.WatchEffectiveSettingsMirror" pairingID:dCopy pairingDataStore:storeCopy];
+    synchronize = [v14 synchronize];
+    if (synchronize)
     {
       v16 = _MCLogObjects[2];
       v17 = 0;
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         v18 = v16;
-        v19 = [v15 localizedDescription];
+        localizedDescription = [synchronize localizedDescription];
         v25 = 138543362;
-        v26 = v19;
+        v26 = localizedDescription;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Unable to synchronize accessor. Error: %{public}@", &v25, 0xCu);
 
         v17 = 0;
@@ -79,7 +79,7 @@
       v21 = v20;
       if (v20)
       {
-        v22 = [v20 objectForKeyedSubscript:v8];
+        v22 = [v20 objectForKeyedSubscript:settingCopy];
         v23 = [v22 objectForKeyedSubscript:MCRestrictedBoolValueKey];
 
         if (v23)
@@ -116,28 +116,28 @@
   return v17;
 }
 
-- (id)effectiveValueForSetting:(id)a3 pairingID:(id)a4 pairingDataStore:(id)a5
+- (id)effectiveValueForSetting:(id)setting pairingID:(id)d pairingDataStore:(id)store
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MCWatchSettingsMirror *)self syncableSettings];
+  settingCopy = setting;
+  dCopy = d;
+  storeCopy = store;
+  syncableSettings = [(MCWatchSettingsMirror *)self syncableSettings];
   v12 = MCRestrictedValueKey;
-  v13 = [v11 objectForKeyedSubscript:MCRestrictedValueKey];
+  v13 = [syncableSettings objectForKeyedSubscript:MCRestrictedValueKey];
 
-  if ([v13 containsObject:v8])
+  if ([v13 containsObject:settingCopy])
   {
-    v14 = [[NPSDomainAccessor alloc] initWithDomain:@"com.apple.ManagedConfiguration.WatchEffectiveSettingsMirror" pairingID:v9 pairingDataStore:v10];
-    v15 = [v14 synchronize];
-    if (v15)
+    v14 = [[NPSDomainAccessor alloc] initWithDomain:@"com.apple.ManagedConfiguration.WatchEffectiveSettingsMirror" pairingID:dCopy pairingDataStore:storeCopy];
+    synchronize = [v14 synchronize];
+    if (synchronize)
     {
       v16 = _MCLogObjects[2];
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         v17 = v16;
-        v18 = [v15 localizedDescription];
+        localizedDescription = [synchronize localizedDescription];
         v25 = 138543362;
-        v26 = v18;
+        v26 = localizedDescription;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Unable to synchronize accessor. Error: %{public}@", &v25, 0xCu);
       }
 
@@ -150,7 +150,7 @@
       v21 = v20;
       if (v20)
       {
-        v22 = [v20 objectForKeyedSubscript:v8];
+        v22 = [v20 objectForKeyedSubscript:settingCopy];
         v23 = [v22 objectForKeyedSubscript:MCRestrictedValueValueKey];
       }
 
@@ -171,28 +171,28 @@
   return v19;
 }
 
-- (id)effectiveIntersectionValuesForSetting:(id)a3 pairingID:(id)a4 pairingDataStore:(id)a5
+- (id)effectiveIntersectionValuesForSetting:(id)setting pairingID:(id)d pairingDataStore:(id)store
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MCWatchSettingsMirror *)self syncableSettings];
+  settingCopy = setting;
+  dCopy = d;
+  storeCopy = store;
+  syncableSettings = [(MCWatchSettingsMirror *)self syncableSettings];
   v12 = MCIntersectionKey;
-  v13 = [v11 objectForKeyedSubscript:MCIntersectionKey];
+  v13 = [syncableSettings objectForKeyedSubscript:MCIntersectionKey];
 
-  if ([v13 containsObject:v8])
+  if ([v13 containsObject:settingCopy])
   {
-    v14 = [[NPSDomainAccessor alloc] initWithDomain:@"com.apple.ManagedConfiguration.WatchEffectiveSettingsMirror" pairingID:v9 pairingDataStore:v10];
-    v15 = [v14 synchronize];
-    if (v15)
+    v14 = [[NPSDomainAccessor alloc] initWithDomain:@"com.apple.ManagedConfiguration.WatchEffectiveSettingsMirror" pairingID:dCopy pairingDataStore:storeCopy];
+    synchronize = [v14 synchronize];
+    if (synchronize)
     {
       v16 = _MCLogObjects[2];
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         v17 = v16;
-        v18 = [v15 localizedDescription];
+        localizedDescription = [synchronize localizedDescription];
         v25 = 138543362;
-        v26 = v18;
+        v26 = localizedDescription;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Unable to synchronize accessor. Error: %{public}@", &v25, 0xCu);
       }
 
@@ -205,7 +205,7 @@
       v21 = v20;
       if (v20)
       {
-        v22 = [v20 objectForKeyedSubscript:v8];
+        v22 = [v20 objectForKeyedSubscript:settingCopy];
         v23 = [v22 objectForKeyedSubscript:MCIntersectionValuesKey];
       }
 
@@ -226,28 +226,28 @@
   return v19;
 }
 
-- (id)effectiveUnionValuesForSetting:(id)a3 pairingID:(id)a4 pairingDataStore:(id)a5
+- (id)effectiveUnionValuesForSetting:(id)setting pairingID:(id)d pairingDataStore:(id)store
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MCWatchSettingsMirror *)self syncableSettings];
+  settingCopy = setting;
+  dCopy = d;
+  storeCopy = store;
+  syncableSettings = [(MCWatchSettingsMirror *)self syncableSettings];
   v12 = MCUnionKey;
-  v13 = [v11 objectForKeyedSubscript:MCUnionKey];
+  v13 = [syncableSettings objectForKeyedSubscript:MCUnionKey];
 
-  if ([v13 containsObject:v8])
+  if ([v13 containsObject:settingCopy])
   {
-    v14 = [[NPSDomainAccessor alloc] initWithDomain:@"com.apple.ManagedConfiguration.WatchEffectiveSettingsMirror" pairingID:v9 pairingDataStore:v10];
-    v15 = [v14 synchronize];
-    if (v15)
+    v14 = [[NPSDomainAccessor alloc] initWithDomain:@"com.apple.ManagedConfiguration.WatchEffectiveSettingsMirror" pairingID:dCopy pairingDataStore:storeCopy];
+    synchronize = [v14 synchronize];
+    if (synchronize)
     {
       v16 = _MCLogObjects[2];
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         v17 = v16;
-        v18 = [v15 localizedDescription];
+        localizedDescription = [synchronize localizedDescription];
         v25 = 138543362;
-        v26 = v18;
+        v26 = localizedDescription;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Unable to synchronize accessor. Error: %{public}@", &v25, 0xCu);
       }
 
@@ -260,7 +260,7 @@
       v21 = v20;
       if (v20)
       {
-        v22 = [v20 objectForKeyedSubscript:v8];
+        v22 = [v20 objectForKeyedSubscript:settingCopy];
         v23 = [v22 objectForKeyedSubscript:MCUnionValuesKey];
       }
 

@@ -1,47 +1,47 @@
 @interface CNContainerGuardianStateDirtyDescription
-- (BOOL)setABValue:(void *)a3 onABSource:(void *)a4 error:(__CFError *)a5;
-- (id)CNValueForContainer:(id)a3;
-- (id)CNValueFromABValue:(void *)a3;
-- (void)ABValueFromCNValue:(id)a3;
-- (void)setCNValue:(id)a3 onContainer:(id)a4;
+- (BOOL)setABValue:(void *)value onABSource:(void *)source error:(__CFError *)error;
+- (id)CNValueForContainer:(id)container;
+- (id)CNValueFromABValue:(void *)value;
+- (void)ABValueFromCNValue:(id)value;
+- (void)setCNValue:(id)value onContainer:(id)container;
 @end
 
 @implementation CNContainerGuardianStateDirtyDescription
 
-- (id)CNValueForContainer:(id)a3
+- (id)CNValueForContainer:(id)container
 {
   v3 = MEMORY[0x1E696AD98];
-  v4 = [a3 isGuardianStateDirty];
+  isGuardianStateDirty = [container isGuardianStateDirty];
 
-  return [v3 numberWithBool:v4];
+  return [v3 numberWithBool:isGuardianStateDirty];
 }
 
-- (void)setCNValue:(id)a3 onContainer:(id)a4
+- (void)setCNValue:(id)value onContainer:(id)container
 {
-  v5 = a4;
-  [v5 setGuardianStateDirty:{objc_msgSend(a3, "BOOLValue")}];
+  containerCopy = container;
+  [containerCopy setGuardianStateDirty:{objc_msgSend(value, "BOOLValue")}];
 }
 
-- (BOOL)setABValue:(void *)a3 onABSource:(void *)a4 error:(__CFError *)a5
+- (BOOL)setABValue:(void *)value onABSource:(void *)source error:(__CFError *)error
 {
-  if (!a3)
+  if (!value)
   {
     return 1;
   }
 
-  v6 = a3;
+  valueCopy = value;
   [(CNContainerGuardianStateDirtyDescription *)self abPropertyID];
   ABRecordGetIntValue();
-  [v6 intValue];
+  [valueCopy intValue];
 
   [(CNContainerGuardianStateDirtyDescription *)self abPropertyID];
 
   return ABRecordSetIntValue();
 }
 
-- (void)ABValueFromCNValue:(id)a3
+- (void)ABValueFromCNValue:(id)value
 {
-  if ([a3 BOOLValue])
+  if ([value BOOLValue])
   {
     v3 = 8;
   }
@@ -66,9 +66,9 @@
   return CFAutorelease(v5);
 }
 
-- (id)CNValueFromABValue:(void *)a3
+- (id)CNValueFromABValue:(void *)value
 {
-  if (([a3 intValue] & 8) != 0)
+  if (([value intValue] & 8) != 0)
   {
     return MEMORY[0x1E695E118];
   }

@@ -1,13 +1,13 @@
 @interface MPMediaControlsStatusBarStyleOverridesCoordinator
 - (MPMediaControlsStatusBarStyleOverridesCoordinator)init;
-- (void)presentMediaControlsWithCompletion:(id)a3;
+- (void)presentMediaControlsWithCompletion:(id)completion;
 @end
 
 @implementation MPMediaControlsStatusBarStyleOverridesCoordinator
 
-- (void)presentMediaControlsWithCompletion:(id)a3
+- (void)presentMediaControlsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (MRAVOutputContextGetSharedAudioPresentationContext())
   {
     v5 = MRAVOutputContextCopyUniqueIdentifier();
@@ -31,10 +31,10 @@
   v12 = 3221225472;
   v13 = __88__MPMediaControlsStatusBarStyleOverridesCoordinator_presentMediaControlsWithCompletion___block_invoke;
   v14 = &unk_1E76824C8;
-  v15 = self;
-  v16 = v4;
+  selfCopy = self;
+  v16 = completionCopy;
   v9 = self->_mediaControls;
-  v10 = v4;
+  v10 = completionCopy;
   [(MPMediaControls *)v9 setDismissHandler:&v11];
   [(MPMediaControls *)self->_mediaControls present:v11];
 }

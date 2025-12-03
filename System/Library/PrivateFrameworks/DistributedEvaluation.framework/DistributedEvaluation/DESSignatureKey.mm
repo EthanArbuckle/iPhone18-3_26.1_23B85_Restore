@@ -1,20 +1,20 @@
 @interface DESSignatureKey
-+ (__SecKey)keyFromCertificateChain:(id)a3;
-+ (id)keyFromData:(id)a3;
-- (BOOL)validateBase64Signature:(id)a3 data:(id)a4 algorithm:(__CFString *)a5;
-- (BOOL)validateSignature:(id)a3 data:(id)a4 algorithm:(__CFString *)a5;
-- (DESSignatureKey)initWithKey:(__SecKey *)a3;
++ (__SecKey)keyFromCertificateChain:(id)chain;
++ (id)keyFromData:(id)data;
+- (BOOL)validateBase64Signature:(id)signature data:(id)data algorithm:(__CFString *)algorithm;
+- (BOOL)validateSignature:(id)signature data:(id)data algorithm:(__CFString *)algorithm;
+- (DESSignatureKey)initWithKey:(__SecKey *)key;
 - (void)dealloc;
 @end
 
 @implementation DESSignatureKey
 
-+ (id)keyFromData:(id)a3
++ (id)keyFromData:(id)data
 {
-  v3 = a3;
-  if (v3)
+  dataCopy = data;
+  if (dataCopy)
   {
-    v4 = [DESSignatureKey keyFromCertificateChain:v3];
+    v4 = [DESSignatureKey keyFromCertificateChain:dataCopy];
     if (v4)
     {
       v4 = [[DESSignatureKey alloc] initWithKey:v4];
@@ -35,10 +35,10 @@
   return v4;
 }
 
-+ (__SecKey)keyFromCertificateChain:(id)a3
++ (__SecKey)keyFromCertificateChain:(id)chain
 {
-  v33 = a3;
-  v3 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v33 encoding:4];
+  chainCopy = chain;
+  v3 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:chainCopy encoding:4];
   v4 = objc_opt_new();
   if ([v3 length])
   {
@@ -84,8 +84,8 @@
       [v4 addObject:v11];
 
       [v6 scanString:@"-----END CERTIFICATE-----" intoString:0];
-      v13 = [v6 string];
-      v14 = [v13 substringFromIndex:{objc_msgSend(v6, "scanLocation")}];
+      string = [v6 string];
+      v14 = [string substringFromIndex:{objc_msgSend(v6, "scanLocation")}];
 
       objc_autoreleasePoolPop(v5);
       v3 = v14;
@@ -120,7 +120,7 @@ LABEL_9:
     if (v16)
     {
       v17 = +[DESLogging coreChannel];
-      v18 = v33;
+      v18 = chainCopy;
       if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
       {
         +[DESSignatureKey keyFromCertificateChain:];
@@ -138,7 +138,7 @@ LABEL_32:
     if (![(__CFString *)commonName isEqualToString:@"DoDML"]|| (ApplePinned = SecPolicyCreateApplePinned()) == 0)
     {
       v27 = +[DESLogging coreChannel];
-      v18 = v33;
+      v18 = chainCopy;
       if (os_log_type_enabled(v27, OS_LOG_TYPE_FAULT))
       {
         +[DESSignatureKey keyFromCertificateChain:];
@@ -160,7 +160,7 @@ LABEL_32:
       }
 
       v20 = 0;
-      v18 = v33;
+      v18 = chainCopy;
       goto LABEL_42;
     }
 
@@ -170,7 +170,7 @@ LABEL_32:
       v29 = [v4 objectAtIndexedSubscript:0];
       v20 = SecCertificateCopyKey(v29);
 
-      v18 = v33;
+      v18 = chainCopy;
       if (v20)
       {
 LABEL_42:
@@ -208,7 +208,7 @@ LABEL_42:
         +[DESSignatureKey keyFromCertificateChain:];
       }
 
-      v18 = v33;
+      v18 = chainCopy;
     }
 
     v20 = 0;
@@ -224,20 +224,20 @@ LABEL_42:
   v20 = 0;
   v3 = v14;
 LABEL_27:
-  v18 = v33;
+  v18 = chainCopy;
 LABEL_33:
 
   return v20;
 }
 
-- (DESSignatureKey)initWithKey:(__SecKey *)a3
+- (DESSignatureKey)initWithKey:(__SecKey *)key
 {
   v5.receiver = self;
   v5.super_class = DESSignatureKey;
   result = [(DESSignatureKey *)&v5 init];
   if (result)
   {
-    result->_key = a3;
+    result->_key = key;
   }
 
   return result;
@@ -256,28 +256,28 @@ LABEL_33:
   [(DESSignatureKey *)&v4 dealloc];
 }
 
-- (BOOL)validateBase64Signature:(id)a3 data:(id)a4 algorithm:(__CFString *)a5
+- (BOOL)validateBase64Signature:(id)signature data:(id)data algorithm:(__CFString *)algorithm
 {
-  v8 = a4;
-  if (a3)
+  dataCopy = data;
+  if (signature)
   {
     v9 = MEMORY[0x277CBEA90];
-    v10 = a3;
-    a3 = [[v9 alloc] initWithBase64EncodedString:v10 options:1];
+    signatureCopy = signature;
+    signature = [[v9 alloc] initWithBase64EncodedString:signatureCopy options:1];
   }
 
-  v11 = [(DESSignatureKey *)self validateSignature:a3 data:v8 algorithm:a5];
+  v11 = [(DESSignatureKey *)self validateSignature:signature data:dataCopy algorithm:algorithm];
 
   return v11;
 }
 
-- (BOOL)validateSignature:(id)a3 data:(id)a4 algorithm:(__CFString *)a5
+- (BOOL)validateSignature:(id)signature data:(id)data algorithm:(__CFString *)algorithm
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
+  signatureCopy = signature;
+  dataCopy = data;
+  v11 = dataCopy;
   v12 = 0;
-  if (v9 && v10)
+  if (signatureCopy && dataCopy)
   {
     key = self->_key;
     if (!key)
@@ -286,10 +286,10 @@ LABEL_33:
       key = error;
     }
 
-    if (SecKeyIsAlgorithmSupported(key, kSecKeyOperationTypeVerify, a5))
+    if (SecKeyIsAlgorithmSupported(key, kSecKeyOperationTypeVerify, algorithm))
     {
       error = 0;
-      v14 = SecKeyVerifySignature(self->_key, a5, v11, v9, &error);
+      v14 = SecKeyVerifySignature(self->_key, algorithm, v11, signatureCopy, &error);
       v12 = v14 != 0;
       if (!v14)
       {

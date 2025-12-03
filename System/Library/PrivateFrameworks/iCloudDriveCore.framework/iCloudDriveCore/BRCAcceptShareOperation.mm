@@ -1,21 +1,21 @@
 @interface BRCAcceptShareOperation
-- (BRCAcceptShareOperation)initWithShareMetadata:(id)a3 syncContext:(id)a4 sessionContext:(id)a5;
-- (void)finishWithResult:(id)a3 error:(id)a4;
+- (BRCAcceptShareOperation)initWithShareMetadata:(id)metadata syncContext:(id)context sessionContext:(id)sessionContext;
+- (void)finishWithResult:(id)result error:(id)error;
 - (void)main;
 @end
 
 @implementation BRCAcceptShareOperation
 
-- (BRCAcceptShareOperation)initWithShareMetadata:(id)a3 syncContext:(id)a4 sessionContext:(id)a5
+- (BRCAcceptShareOperation)initWithShareMetadata:(id)metadata syncContext:(id)context sessionContext:(id)sessionContext
 {
-  v9 = a3;
+  metadataCopy = metadata;
   v13.receiver = self;
   v13.super_class = BRCAcceptShareOperation;
-  v10 = [(_BRCOperation *)&v13 initWithName:@"share/accept" syncContext:a4 sessionContext:a5];
+  v10 = [(_BRCOperation *)&v13 initWithName:@"share/accept" syncContext:context sessionContext:sessionContext];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_shareMetadata, a3);
+    objc_storeStrong(&v10->_shareMetadata, metadata);
   }
 
   return v11;
@@ -54,21 +54,21 @@
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)finishWithResult:(id)a3 error:(id)a4
+- (void)finishWithResult:(id)result error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BRCAcceptShareOperation *)self acceptShareCompletionBlock];
+  resultCopy = result;
+  errorCopy = error;
+  acceptShareCompletionBlock = [(BRCAcceptShareOperation *)self acceptShareCompletionBlock];
 
-  if (v8)
+  if (acceptShareCompletionBlock)
   {
-    v9 = [(BRCAcceptShareOperation *)self acceptShareCompletionBlock];
-    (v9)[2](v9, v6, v7);
+    acceptShareCompletionBlock2 = [(BRCAcceptShareOperation *)self acceptShareCompletionBlock];
+    (acceptShareCompletionBlock2)[2](acceptShareCompletionBlock2, resultCopy, errorCopy);
   }
 
   v10.receiver = self;
   v10.super_class = BRCAcceptShareOperation;
-  [(_BRCOperation *)&v10 finishWithResult:v6 error:v7];
+  [(_BRCOperation *)&v10 finishWithResult:resultCopy error:errorCopy];
 }
 
 @end

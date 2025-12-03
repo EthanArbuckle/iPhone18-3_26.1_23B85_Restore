@@ -1,19 +1,19 @@
 @interface ASTFileManagement
-+ (id)unprotectedFileHandleForFileURL:(id)a3 error:(id *)a4;
++ (id)unprotectedFileHandleForFileURL:(id)l error:(id *)error;
 @end
 
 @implementation ASTFileManagement
 
-+ (id)unprotectedFileHandleForFileURL:(id)a3 error:(id *)a4
++ (id)unprotectedFileHandleForFileURL:(id)l error:(id *)error
 {
-  v5 = a3;
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
-  v7 = [v5 URLByDeletingLastPathComponent];
-  v8 = [v6 createDirectoryAtURL:v7 withIntermediateDirectories:1 attributes:0 error:a4];
+  lCopy = l;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  uRLByDeletingLastPathComponent = [lCopy URLByDeletingLastPathComponent];
+  v8 = [defaultManager createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:error];
 
   if (v8)
   {
-    v9 = [MEMORY[0x277CCA9F8] fileHandleForCreatingURL:v5 protection:*MEMORY[0x277CCA1B8] error:a4];
+    v9 = [MEMORY[0x277CCA9F8] fileHandleForCreatingURL:lCopy protection:*MEMORY[0x277CCA1B8] error:error];
   }
 
   else
@@ -21,7 +21,7 @@
     v10 = ASTLogHandleForCategory(1);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [(ASTFileManagement *)v5 unprotectedFileHandleForFileURL:a4 error:v10];
+      [(ASTFileManagement *)lCopy unprotectedFileHandleForFileURL:error error:v10];
     }
 
     v9 = 0;

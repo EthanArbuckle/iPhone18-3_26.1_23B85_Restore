@@ -1,20 +1,20 @@
 @interface UIKeyboardCache
 + (BOOL)enabled;
-+ (BOOL)enabledForTraitCollection:(id)a3;
++ (BOOL)enabledForTraitCollection:(id)collection;
 + (id)sharedInstance;
-- (CGImage)cachedCompositeImageForCacheKeys:(id)a3 fromLayout:(id)a4 opacities:(id)a5;
-- (CGImage)cachedImageForKey:(id)a3 fromLayout:(id)a4;
-- (CGImage)cachedImageForKey:(id)a3 fromLayout:(id)a4 traitCollection:(id)a5;
+- (CGImage)cachedCompositeImageForCacheKeys:(id)keys fromLayout:(id)layout opacities:(id)opacities;
+- (CGImage)cachedImageForKey:(id)key fromLayout:(id)layout;
+- (CGImage)cachedImageForKey:(id)key fromLayout:(id)layout traitCollection:(id)collection;
 - (UIKeyboardCache)init;
-- (id)displayImagesForView:(id)a3 fromLayout:(id)a4 imageFlags:(id)a5;
-- (id)uniqueLayoutsFromInputModes:(id)a3;
+- (id)displayImagesForView:(id)view fromLayout:(id)layout imageFlags:(id)flags;
+- (id)uniqueLayoutsFromInputModes:(id)modes;
 - (void)_didIdle;
 - (void)_didIdleAndShouldWait;
 - (void)dealloc;
-- (void)decrementExpectedRender:(id)a3;
-- (void)drawCachedImage:(id)a3 alpha:(double)a4 inContext:(CGContext *)a5;
-- (void)incrementExpectedRender:(id)a3;
-- (void)updateCacheForInputModes:(id)a3;
+- (void)decrementExpectedRender:(id)render;
+- (void)drawCachedImage:(id)image alpha:(double)alpha inContext:(CGContext *)context;
+- (void)incrementExpectedRender:(id)render;
+- (void)updateCacheForInputModes:(id)modes;
 @end
 
 @implementation UIKeyboardCache
@@ -94,17 +94,17 @@
   }
 
   v3 = +[UIKeyboard activeKeyboard];
-  v4 = [v3 traitCollection];
-  v5 = [a1 enabledForTraitCollection:v4];
+  traitCollection = [v3 traitCollection];
+  v5 = [self enabledForTraitCollection:traitCollection];
 
   return v5;
 }
 
-+ (BOOL)enabledForTraitCollection:(id)a3
++ (BOOL)enabledForTraitCollection:(id)collection
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 userInterfaceIdiom] == 3)
+  collectionCopy = collection;
+  v4 = collectionCopy;
+  if (collectionCopy && [collectionCopy userInterfaceIdiom] == 3)
   {
     LOBYTE(v5) = 0;
   }
@@ -116,8 +116,8 @@
       dispatch_once(&TIGetKeyboardCachingDisabledValue_onceToken, &__block_literal_global_361);
     }
 
-    v6 = [MEMORY[0x1E69D9680] sharedPreferencesController];
-    v7 = [v6 valueForPreferenceKey:@"KeyboardCachingDisabled"];
+    mEMORY[0x1E69D9680] = [MEMORY[0x1E69D9680] sharedPreferencesController];
+    v7 = [mEMORY[0x1E69D9680] valueForPreferenceKey:@"KeyboardCachingDisabled"];
 
     v5 = [v7 BOOLValue] ^ 1;
   }
@@ -146,10 +146,10 @@
   [(UIKeyboardCache *)&v8 dealloc];
 }
 
-- (CGImage)cachedImageForKey:(id)a3 fromLayout:(id)a4
+- (CGImage)cachedImageForKey:(id)key fromLayout:(id)layout
 {
-  v6 = a4;
-  v7 = a3;
+  layoutCopy = layout;
+  keyCopy = key;
   if (pthread_main_np() != 1)
   {
     if (os_variant_has_internal_diagnostics())
@@ -174,23 +174,23 @@
   }
 
   v8 = +[UIKeyboard activeKeyboard];
-  v9 = [v8 traitCollection];
-  v10 = [(UIKeyboardCache *)self cachedImageForKey:v7 fromLayout:v6 traitCollection:v9];
+  traitCollection = [v8 traitCollection];
+  v10 = [(UIKeyboardCache *)self cachedImageForKey:keyCopy fromLayout:layoutCopy traitCollection:traitCollection];
 
   return v10;
 }
 
-- (CGImage)cachedImageForKey:(id)a3 fromLayout:(id)a4 traitCollection:(id)a5
+- (CGImage)cachedImageForKey:(id)key fromLayout:(id)layout traitCollection:(id)collection
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8 && [UIKeyboardCache enabledForTraitCollection:v10])
+  keyCopy = key;
+  layoutCopy = layout;
+  collectionCopy = collection;
+  if (keyCopy && [UIKeyboardCache enabledForTraitCollection:collectionCopy])
   {
-    v11 = self;
-    objc_sync_enter(v11);
-    v12 = [(TIImageCacheClient *)v11->_store copyImageForKey:v8 inGroup:v9];
-    objc_sync_exit(v11);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v12 = [(TIImageCacheClient *)selfCopy->_store copyImageForKey:keyCopy inGroup:layoutCopy];
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -201,47 +201,47 @@
   return v12;
 }
 
-- (CGImage)cachedCompositeImageForCacheKeys:(id)a3 fromLayout:(id)a4 opacities:(id)a5
+- (CGImage)cachedCompositeImageForCacheKeys:(id)keys fromLayout:(id)layout opacities:(id)opacities
 {
   v57 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (![v8 count] || !+[UIKeyboardCache enabled](UIKeyboardCache, "enabled"))
+  keysCopy = keys;
+  layoutCopy = layout;
+  opacitiesCopy = opacities;
+  if (![keysCopy count] || !+[UIKeyboardCache enabled](UIKeyboardCache, "enabled"))
   {
     Image = 0;
     goto LABEL_36;
   }
 
-  v50 = v10;
-  v11 = [MEMORY[0x1E696AD60] string];
-  v12 = [v8 count];
+  v50 = opacitiesCopy;
+  string = [MEMORY[0x1E696AD60] string];
+  v12 = [keysCopy count];
   if (v12)
   {
     v13 = v12;
     for (i = 0; i != v13; ++i)
     {
-      v15 = [v8 objectAtIndex:i];
-      [v11 appendFormat:@"%lul:", objc_msgSend(v15, "hash")];
+      v15 = [keysCopy objectAtIndex:i];
+      [string appendFormat:@"%lul:", objc_msgSend(v15, "hash")];
     }
   }
 
-  v16 = _nonPersistentCacheForKey(v11, 0);
+  v16 = _nonPersistentCacheForKey(string, 0);
   if (v16)
   {
     Image = CGImageRetain(v16);
-    v10 = v50;
+    opacitiesCopy = v50;
     goto LABEL_35;
   }
 
-  v48 = v11;
-  v51 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v8, "count")}];
+  v48 = string;
+  v51 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(keysCopy, "count")}];
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v49 = v8;
-  v18 = v8;
+  v49 = keysCopy;
+  v18 = keysCopy;
   v19 = [v18 countByEnumeratingWithState:&v52 objects:v56 count:16];
   if (!v19)
   {
@@ -262,7 +262,7 @@
         objc_enumerationMutation(v18);
       }
 
-      v24 = [(UIKeyboardCache *)self cachedImageForKey:*(*(&v52 + 1) + 8 * v23) fromLayout:v9];
+      v24 = [(UIKeyboardCache *)self cachedImageForKey:*(*(&v52 + 1) + 8 * v23) fromLayout:layoutCopy];
       v25 = [(UIImage *)[UIKBCachedImage alloc] initWithCGImage:v24];
       CGImageRelease(v24);
       if (!v22)
@@ -309,17 +309,17 @@ LABEL_27:
   if (v31)
   {
     v32 = v31;
-    v10 = v50;
+    opacitiesCopy = v50;
     v33 = [v50 count];
-    v34 = [v51 firstObject];
-    [v34 size];
+    firstObject = [v51 firstObject];
+    [firstObject size];
     v36 = v35;
     v38 = v37;
-    v47 = v34;
-    [v34 scale];
+    v47 = firstObject;
+    [firstObject scale];
     v40 = [UIKBRenderer imageContextWithSize:v22 scale:0 colorFormat:0 opaque:v36 invert:v38, v39];
     v41 = 0;
-    v8 = v49;
+    keysCopy = v49;
     do
     {
       v42 = [v30 objectAtIndex:v41];
@@ -341,15 +341,15 @@ LABEL_27:
     while (v32 != v41);
     Image = CGBitmapContextCreateImage(v40);
     CGContextRelease(v40);
-    v11 = v48;
+    string = v48;
     _nonPersistentCacheForKey(v48, Image);
   }
 
   else
   {
     Image = 0;
-    v10 = v50;
-    v11 = v48;
+    opacitiesCopy = v50;
+    string = v48;
   }
 
 LABEL_35:
@@ -358,14 +358,14 @@ LABEL_36:
   return Image;
 }
 
-- (void)drawCachedImage:(id)a3 alpha:(double)a4 inContext:(CGContext *)a5
+- (void)drawCachedImage:(id)image alpha:(double)alpha inContext:(CGContext *)context
 {
-  v7 = a3;
-  if (v7)
+  imageCopy = image;
+  if (imageCopy)
   {
-    v18 = v7;
-    CGContextSaveGState(a5);
-    CGContextSetAlpha(a5, a4);
+    v18 = imageCopy;
+    CGContextSaveGState(context);
+    CGContextSetAlpha(context, alpha);
     v9 = *MEMORY[0x1E695EFF8];
     v8 = *(MEMORY[0x1E695EFF8] + 8);
     [v18 size];
@@ -373,57 +373,57 @@ LABEL_36:
     v13 = v12;
     if ([v18 hasFormatColor])
     {
-      v14 = [v18 formatColor];
-      CGContextSetFillColorWithColor(a5, [v14 CGColor]);
+      formatColor = [v18 formatColor];
+      CGContextSetFillColorWithColor(context, [formatColor CGColor]);
 
       v15 = v18;
-      v16 = [v18 CGImage];
+      cGImage = [v18 CGImage];
       v20.origin.x = v9;
       v20.origin.y = v8;
       v20.size.width = v11;
       v20.size.height = v13;
-      CGContextClipToMask(a5, v20, v16);
+      CGContextClipToMask(context, v20, cGImage);
       v21.origin.x = v9;
       v21.origin.y = v8;
       v21.size.width = v11;
       v21.size.height = v13;
-      CGContextFillRect(a5, v21);
+      CGContextFillRect(context, v21);
     }
 
     else
     {
-      v17 = [v18 CGImage];
+      cGImage2 = [v18 CGImage];
       v22.origin.x = v9;
       v22.origin.y = v8;
       v22.size.width = v11;
       v22.size.height = v13;
-      CGContextDrawImage(a5, v22, v17);
+      CGContextDrawImage(context, v22, cGImage2);
     }
 
-    CGContextRestoreGState(a5);
-    v7 = v18;
+    CGContextRestoreGState(context);
+    imageCopy = v18;
   }
 }
 
-- (id)displayImagesForView:(id)a3 fromLayout:(id)a4 imageFlags:(id)a5
+- (id)displayImagesForView:(id)view fromLayout:(id)layout imageFlags:(id)flags
 {
   v123 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v91 = a4;
-  v8 = a5;
-  if (![v8 count])
+  viewCopy = view;
+  layoutCopy = layout;
+  flagsCopy = flags;
+  if (![flagsCopy count])
   {
 
-    v8 = &unk_1EFE2C670;
+    flagsCopy = &unk_1EFE2C670;
   }
 
-  v9 = [v7 cacheKeysForRenderFlags:v8];
-  v89 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v8, "count")}];
+  v9 = [viewCopy cacheKeysForRenderFlags:flagsCopy];
+  v89 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(flagsCopy, "count")}];
   v117 = 0u;
   v118 = 0u;
   v115 = 0u;
   v116 = 0u;
-  obj = v8;
+  obj = flagsCopy;
   v10 = [obj countByEnumeratingWithState:&v115 objects:v122 count:16];
   if (v10)
   {
@@ -439,20 +439,20 @@ LABEL_36:
 
         v13 = *(*(&v115 + 1) + 8 * i);
         v14 = [v9 objectForKey:v13];
-        if ([v7 keepNonPersistent] && (v15 = _nonPersistentCacheForKey(v14, 0), (v16 = CGImageRetain(v15)) != 0) || (v16 = -[UIKeyboardCache cachedImageForKey:fromLayout:](self, "cachedImageForKey:fromLayout:", v14, v91)) != 0)
+        if ([viewCopy keepNonPersistent] && (v15 = _nonPersistentCacheForKey(v14, 0), (v16 = CGImageRetain(v15)) != 0) || (v16 = -[UIKeyboardCache cachedImageForKey:fromLayout:](self, "cachedImageForKey:fromLayout:", v14, layoutCopy)) != 0)
         {
           Width = CGImageGetWidth(v16);
-          [v7 bounds];
+          [viewCopy bounds];
           v19 = v18;
-          [v7 contentScaleFactor];
+          [viewCopy contentScaleFactor];
           if (vabdd_f64(Width, v20 * v19) <= 1.0)
           {
             v21 = [UIKBCachedImage alloc];
-            [v7 contentScaleFactor];
+            [viewCopy contentScaleFactor];
             v22 = [(UIImage *)v21 initWithCGImage:v16 scale:0 orientation:?];
             [v89 setObject:v22 forKey:v13];
 
-            if ([v7 keepNonPersistent])
+            if ([viewCopy keepNonPersistent])
             {
               _nonPersistentCacheForKey(v14, v16);
             }
@@ -468,9 +468,9 @@ LABEL_36:
     while (v10);
   }
 
-  [v7 cachedWidth];
+  [viewCopy cachedWidth];
   v24 = v23;
-  [v7 bounds];
+  [viewCopy bounds];
   v26 = v25;
   v27 = [v89 count];
   if (v27 != [obj count] && (objc_opt_respondsToSelector() & 1) != 0)
@@ -494,7 +494,7 @@ LABEL_36:
 
       if (v29 == 1)
       {
-        v81 = [v7 displaysColorImage] ^ 1;
+        v81 = [viewCopy displaysColorImage] ^ 1;
       }
 
       else
@@ -504,7 +504,7 @@ LABEL_36:
 
       context = objc_autoreleasePoolPush();
       v86 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(obj, "count")}];
-      v84 = [v7 assetIdiom];
+      assetIdiom = [viewCopy assetIdiom];
       v113 = 0u;
       v114 = 0u;
       v111 = 0u;
@@ -528,12 +528,12 @@ LABEL_36:
 
             if (!v35)
             {
-              [v7 contentScaleFactor];
-              v37 = +[UIKBRenderer rendererWithContext:withSize:withScale:opaque:renderFlags:assetIdiom:](UIKBRenderer, "rendererWithContext:withSize:withScale:opaque:renderFlags:assetIdiom:", 0, [v7 isOpaque], objc_msgSend(v34, "integerValue"), v84, v24, v26, v36);
+              [viewCopy contentScaleFactor];
+              v37 = +[UIKBRenderer rendererWithContext:withSize:withScale:opaque:renderFlags:assetIdiom:](UIKBRenderer, "rendererWithContext:withSize:withScale:opaque:renderFlags:assetIdiom:", 0, [viewCopy isOpaque], objc_msgSend(v34, "integerValue"), assetIdiom, v24, v26, v36);
               v38 = [v9 objectForKey:v34];
               [v37 setCacheKey:v38];
 
-              if ([v7 displaysColorImage])
+              if ([viewCopy displaysColorImage])
               {
                 [v37 forceColorFormat:0];
               }
@@ -555,7 +555,7 @@ LABEL_36:
 
       if (v81)
       {
-        [v7 drawContentsOfRenderers:v86];
+        [viewCopy drawContentsOfRenderers:v86];
         v109 = 0u;
         v110 = 0u;
         v107 = 0u;
@@ -586,15 +586,15 @@ LABEL_36:
         }
       }
 
-      [v7 drawContentsOfRenderers:v86];
+      [viewCopy drawContentsOfRenderers:v86];
       if (objc_opt_respondsToSelector())
       {
-        v82 = [v7 cacheDeferPriority];
+        cacheDeferPriority = [viewCopy cacheDeferPriority];
       }
 
       else
       {
-        v82 = [v7 cacheDeferable];
+        cacheDeferPriority = [viewCopy cacheDeferable];
       }
 
       v105 = 0u;
@@ -616,32 +616,32 @@ LABEL_36:
             }
 
             v45 = *(*(&v103 + 1) + 8 * m);
-            v46 = [v45 renderedImage];
-            if (v46)
+            renderedImage = [v45 renderedImage];
+            if (renderedImage)
             {
               v47 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v45, "renderFlags")}];
-              [v89 setObject:v46 forKey:v47];
+              [v89 setObject:renderedImage forKey:v47];
             }
 
-            if ([v7 keepNonPersistent])
+            if ([viewCopy keepNonPersistent])
             {
-              v48 = [v45 cacheKey];
-              v49 = v46;
-              _nonPersistentCacheForKey(v48, [v46 CGImage]);
+              cacheKey = [v45 cacheKey];
+              v49 = renderedImage;
+              _nonPersistentCacheForKey(cacheKey, [renderedImage CGImage]);
             }
 
             if (+[UIKeyboardCache enabled])
             {
-              v50 = [v45 cacheKey];
-              v51 = v50 != 0;
+              cacheKey2 = [v45 cacheKey];
+              v51 = cacheKey2 != 0;
 
-              if (v51 && v82 == 0)
+              if (v51 && cacheDeferPriority == 0)
               {
                 if (v81)
                 {
                   if ([v45 contentColorFormat] == 2)
                   {
-                    v52 = 5;
+                    isOpaque = 5;
 LABEL_69:
                     v101[0] = 0;
                     v101[1] = v101;
@@ -654,22 +654,22 @@ LABEL_69:
                     [v53 size];
                     v56 = v55;
                     v58 = v57;
-                    v59 = [v53 singleColor];
-                    v60 = v59;
-                    v61 = [v59 CGColor];
+                    singleColor = [v53 singleColor];
+                    v60 = singleColor;
+                    cGColor = [singleColor CGColor];
                     [v53 scale];
                     v63 = v62;
-                    v64 = [v53 contextData];
+                    contextData = [v53 contextData];
                     v100[0] = MEMORY[0x1E69E9820];
                     v100[1] = 3221225472;
                     v100[2] = __62__UIKeyboardCache_displayImagesForView_fromLayout_imageFlags___block_invoke;
                     v100[3] = &unk_1E70F2F20;
                     v100[4] = v101;
-                    v65 = [v54 cacheItemWithSize:v52 format:v61 formatColor:v64 scale:v100 data:v56 dataReleaseHandler:{v58, v63}];
+                    v65 = [v54 cacheItemWithSize:isOpaque format:cGColor formatColor:contextData scale:v100 data:v56 dataReleaseHandler:{v58, v63}];
 
                     store = self->_store;
-                    v67 = [v53 cacheKey];
-                    [(TIImageCacheClient *)store storeImageDataForKey:v67 inGroup:v91 item:v65];
+                    cacheKey3 = [v53 cacheKey];
+                    [(TIImageCacheClient *)store storeImageDataForKey:cacheKey3 inGroup:layoutCopy item:v65];
 
                     _Block_object_dispose(v101, 8);
                     goto LABEL_70;
@@ -677,21 +677,21 @@ LABEL_69:
 
                   if ([v45 contentColorFormat] == 1)
                   {
-                    if ([v7 isOpaque])
+                    if ([viewCopy isOpaque])
                     {
-                      v52 = 4;
+                      isOpaque = 4;
                     }
 
                     else
                     {
-                      v52 = 3;
+                      isOpaque = 3;
                     }
 
                     goto LABEL_69;
                   }
                 }
 
-                v52 = [v7 isOpaque];
+                isOpaque = [viewCopy isOpaque];
                 goto LABEL_69;
               }
             }
@@ -706,8 +706,8 @@ LABEL_70:
       }
 
       v68 = +[UIKeyboardCache enabled];
-      v69 = v82;
-      if (v82)
+      v69 = cacheDeferPriority;
+      if (cacheDeferPriority)
       {
         v70 = v68;
       }
@@ -719,7 +719,7 @@ LABEL_70:
 
       if (v70)
       {
-        if (v82 == 2)
+        if (cacheDeferPriority == 2)
         {
           v71 = UIApp;
           v72 = objc_opt_class();
@@ -741,9 +741,9 @@ LABEL_70:
         block[3] = &unk_1E7114728;
         v93 = v83;
         v99 = v81;
-        v94 = v7;
-        v95 = self;
-        v96 = v91;
+        v94 = viewCopy;
+        selfCopy = self;
+        v96 = layoutCopy;
         v97 = v69;
         v98 = v74;
         dispatch_after(v78, MEMORY[0x1E69E96A0], block);
@@ -753,8 +753,8 @@ LABEL_70:
 
       else
       {
-        v75 = [(UIKeyboardCache *)self idleAction];
-        v76 = v75 == 0;
+        idleAction = [(UIKeyboardCache *)self idleAction];
+        v76 = idleAction == 0;
 
         if (!v76)
         {
@@ -917,16 +917,16 @@ void __62__UIKeyboardCache_displayImagesForView_fromLayout_imageFlags___block_in
   dispatch_after(v3, MEMORY[0x1E69E96A0], block);
 }
 
-- (id)uniqueLayoutsFromInputModes:(id)a3
+- (id)uniqueLayoutsFromInputModes:(id)modes
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  modesCopy = modes;
   v4 = [MEMORY[0x1E695DFA8] set];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = modesCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -958,12 +958,12 @@ void __62__UIKeyboardCache_displayImagesForView_fromLayout_imageFlags___block_in
   return v4;
 }
 
-- (void)updateCacheForInputModes:(id)a3
+- (void)updateCacheForInputModes:(id)modes
 {
-  v4 = a3;
+  modesCopy = modes;
   if (+[UIKeyboardCache enabled])
   {
-    v5 = [(UIKeyboardCache *)self uniqueLayoutsFromInputModes:v4];
+    v5 = [(UIKeyboardCache *)self uniqueLayoutsFromInputModes:modesCopy];
     if (![(NSSet *)self->_layouts isEqualToSet:v5])
     {
       v6 = [(NSSet *)self->_layouts mutableCopy];
@@ -984,11 +984,11 @@ void __62__UIKeyboardCache_displayImagesForView_fromLayout_imageFlags___block_in
   }
 }
 
-- (void)incrementExpectedRender:(id)a3
+- (void)incrementExpectedRender:(id)render
 {
   if (self->_activeRenderers)
   {
-    v4 = [MEMORY[0x1E696B098] valueWithNonretainedObject:a3];
+    v4 = [MEMORY[0x1E696B098] valueWithNonretainedObject:render];
     if (([(NSMutableSet *)self->_activeRenderers containsObject:?]& 1) == 0)
     {
       [(NSMutableSet *)self->_activeRenderers addObject:v4];
@@ -996,11 +996,11 @@ void __62__UIKeyboardCache_displayImagesForView_fromLayout_imageFlags___block_in
   }
 }
 
-- (void)decrementExpectedRender:(id)a3
+- (void)decrementExpectedRender:(id)render
 {
   if (self->_activeRenderers)
   {
-    v6 = [MEMORY[0x1E696B098] valueWithNonretainedObject:a3];
+    v6 = [MEMORY[0x1E696B098] valueWithNonretainedObject:render];
     if ([(NSMutableSet *)self->_activeRenderers containsObject:?])
     {
       [(NSMutableSet *)self->_activeRenderers removeObject:v6];
@@ -1009,8 +1009,8 @@ void __62__UIKeyboardCache_displayImagesForView_fromLayout_imageFlags___block_in
         activeRenderers = self->_activeRenderers;
         self->_activeRenderers = 0;
 
-        v5 = [MEMORY[0x1E696AD88] defaultCenter];
-        [v5 postNotificationName:@"UIKeyboardRenderDidFinishNotification" object:0];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+        [defaultCenter postNotificationName:@"UIKeyboardRenderDidFinishNotification" object:0];
       }
     }
   }

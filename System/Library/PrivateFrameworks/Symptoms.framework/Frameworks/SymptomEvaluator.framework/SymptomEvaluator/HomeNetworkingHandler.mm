@@ -1,8 +1,8 @@
 @interface HomeNetworkingHandler
-+ (id)configureClass:(id)a3;
++ (id)configureClass:(id)class;
 + (id)sharedInstance;
-- (BOOL)noteSymptom:(id)a3;
-- (int)read:(id)a3 returnedValues:(id)a4;
+- (BOOL)noteSymptom:(id)symptom;
+- (int)read:(id)read returnedValues:(id)values;
 @end
 
 @implementation HomeNetworkingHandler
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __39__HomeNetworkingHandler_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_pred != -1)
   {
     dispatch_once(&sharedInstance_pred, block);
@@ -36,31 +36,31 @@ void __39__HomeNetworkingHandler_sharedInstance__block_invoke(uint64_t a1)
   [ConfigurationHandler setConfigurationObject:v3 forName:v5];
 }
 
-+ (id)configureClass:(id)a3
++ (id)configureClass:(id)class
 {
-  v3 = a3;
+  classCopy = class;
   v4 = +[HomeNetworkingHandler sharedInstance];
-  [v4 configureInstance:v3];
+  [v4 configureInstance:classCopy];
 
   return v4;
 }
 
-- (int)read:(id)a3 returnedValues:(id)a4
+- (int)read:(id)read returnedValues:(id)values
 {
-  v4 = a4;
+  valuesCopy = values;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 setObject:v6 forKey:@"GENERIC_CONFIG_TARGET"];
+  [valuesCopy setObject:v6 forKey:@"GENERIC_CONFIG_TARGET"];
 
   return 0;
 }
 
-- (BOOL)noteSymptom:(id)a3
+- (BOOL)noteSymptom:(id)symptom
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = [a3 eventKey];
+  eventKey = [symptom eventKey];
   v4 = [SymptomStore keyFromSymptomName:@"com.apple.homed.network-diagnostic"];
-  v5 = [v3 isEqualToString:v4];
+  v5 = [eventKey isEqualToString:v4];
 
   if (v5)
   {
@@ -68,7 +68,7 @@ void __39__HomeNetworkingHandler_sharedInstance__block_invoke(uint64_t a1)
     if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412290;
-      v10 = v3;
+      v10 = eventKey;
       _os_log_impl(&dword_23255B000, v6, OS_LOG_TYPE_DEFAULT, "NDF: Received homed symptom %@ when NDF is enabled", &v9, 0xCu);
     }
   }

@@ -1,17 +1,17 @@
 @interface CBPreset
-+ (id)newActive:(unint64_t)a3;
-- (CBPreset)initWithCAPreset:(id)a3;
++ (id)newActive:(unint64_t)active;
+- (CBPreset)initWithCAPreset:(id)preset;
 @end
 
 @implementation CBPreset
 
-+ (id)newActive:(unint64_t)a3
++ (id)newActive:(unint64_t)active
 {
   v20 = *MEMORY[0x1E69E9840];
-  v18 = a1;
+  selfCopy = self;
   v17 = a2;
-  v16 = a3;
-  v15 = 0;
+  activeCopy = active;
+  currentPreset = 0;
   memset(__b, 0, sizeof(__b));
   obj = [MEMORY[0x1E6979328] displays];
   v12 = [obj countByEnumeratingWithState:__b objects:v19 count:16];
@@ -30,10 +30,10 @@
 
       v14 = 0;
       v14 = *(__b[1] + 8 * v9);
-      v3 = [v14 displayId];
-      if (v3 == v16)
+      displayId = [v14 displayId];
+      if (displayId == activeCopy)
       {
-        v15 = [v14 currentPreset];
+        currentPreset = [v14 currentPreset];
       }
 
       ++v9;
@@ -49,10 +49,10 @@
     }
   }
 
-  if (v15)
+  if (currentPreset)
   {
-    v4 = [v18 alloc];
-    v6 = [v4 initWithCAPreset:v15];
+    v4 = [selfCopy alloc];
+    v6 = [v4 initWithCAPreset:currentPreset];
   }
 
   else
@@ -64,31 +64,31 @@
   return v6;
 }
 
-- (CBPreset)initWithCAPreset:(id)a3
+- (CBPreset)initWithCAPreset:(id)preset
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
-  v12 = a3;
+  presetCopy = preset;
   v11.receiver = self;
   v11.super_class = CBPreset;
-  v14 = [(CBPreset *)&v11 init];
-  if (v14)
+  selfCopy = [(CBPreset *)&v11 init];
+  if (selfCopy)
   {
-    v3 = [v12 allowAutoBrightness];
-    v14->_autoBrighnessDisabled = (v3 ^ 1) & 1;
-    v4 = [v12 allowTrueTone];
-    v14->_trueToneDisabled = (v4 ^ 1) & 1;
-    v5 = [v12 allowNightShift];
-    v14->_nightShiftDisabled = (v5 ^ 1) & 1;
-    [v12 minSliderBrightness];
+    allowAutoBrightness = [presetCopy allowAutoBrightness];
+    selfCopy->_autoBrighnessDisabled = (allowAutoBrightness ^ 1) & 1;
+    allowTrueTone = [presetCopy allowTrueTone];
+    selfCopy->_trueToneDisabled = (allowTrueTone ^ 1) & 1;
+    allowNightShift = [presetCopy allowNightShift];
+    selfCopy->_nightShiftDisabled = (allowNightShift ^ 1) & 1;
+    [presetCopy minSliderBrightness];
     v10 = v6;
-    [v12 maxSliderBrightness];
-    v14->_brightnessDisabled = vabdd_f64(v10, v7) < 0.5;
-    v8 = [v12 isReference];
-    v14->_referenceMode = v8;
+    [presetCopy maxSliderBrightness];
+    selfCopy->_brightnessDisabled = vabdd_f64(v10, v7) < 0.5;
+    isReference = [presetCopy isReference];
+    selfCopy->_referenceMode = isReference;
   }
 
-  return v14;
+  return selfCopy;
 }
 
 @end

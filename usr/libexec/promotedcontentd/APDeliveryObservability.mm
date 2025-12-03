@@ -1,21 +1,21 @@
 @interface APDeliveryObservability
-- (APDeliveryObservability)initWithTransmitter:(id)a3;
-- (void)recordFailure:(int64_t)a3;
+- (APDeliveryObservability)initWithTransmitter:(id)transmitter;
+- (void)recordFailure:(int64_t)failure;
 - (void)recordSuccess;
 @end
 
 @implementation APDeliveryObservability
 
-- (APDeliveryObservability)initWithTransmitter:(id)a3
+- (APDeliveryObservability)initWithTransmitter:(id)transmitter
 {
-  v5 = a3;
+  transmitterCopy = transmitter;
   v9.receiver = self;
   v9.super_class = APDeliveryObservability;
   v6 = [(APDeliveryObservability *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_transmitter, a3);
+    objc_storeStrong(&v6->_transmitter, transmitter);
     v7->_successCount = 0;
     v7->_backoffIndex = 0;
   }
@@ -30,10 +30,10 @@
   [(APDeliveryObservability *)self setBackoffIndex:0];
 }
 
-- (void)recordFailure:(int64_t)a3
+- (void)recordFailure:(int64_t)failure
 {
-  v5 = [(APDeliveryObservability *)self transmitter];
-  [v5 sendDeliveryEventWithError:a3 successCount:-[APDeliveryObservability successCount](self backoffIndex:{"successCount"), -[APDeliveryObservability backoffIndex](self, "backoffIndex")}];
+  transmitter = [(APDeliveryObservability *)self transmitter];
+  [transmitter sendDeliveryEventWithError:failure successCount:-[APDeliveryObservability successCount](self backoffIndex:{"successCount"), -[APDeliveryObservability backoffIndex](self, "backoffIndex")}];
 
   [(APDeliveryObservability *)self setSuccessCount:0];
   v6 = [(APDeliveryObservability *)self backoffIndex]+ 1;

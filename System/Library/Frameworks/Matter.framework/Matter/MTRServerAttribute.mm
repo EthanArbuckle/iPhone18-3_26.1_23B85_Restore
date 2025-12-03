@@ -1,26 +1,26 @@
 @interface MTRServerAttribute
-+ (id)newFeatureMapAttributeWithInitialValue:(id)a3;
-- (BOOL)addToCluster:(const ConcreteClusterPath *)a3;
-- (BOOL)associateWithController:(id)a3;
++ (id)newFeatureMapAttributeWithInitialValue:(id)value;
+- (BOOL)addToCluster:(const ConcreteClusterPath *)cluster;
+- (BOOL)associateWithController:(id)controller;
 - (NSDictionary)value;
 - (const)parentCluster;
 - (id).cxx_construct;
 - (id)description;
 - (void)invalidate;
-- (void)updateParentCluster:(const ConcreteClusterPath *)a3;
+- (void)updateParentCluster:(const ConcreteClusterPath *)cluster;
 @end
 
 @implementation MTRServerAttribute
 
-+ (id)newFeatureMapAttributeWithInitialValue:(id)a3
++ (id)newFeatureMapAttributeWithInitialValue:(id)value
 {
   v10[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  valueCopy = value;
   v4 = [MTRServerAttribute alloc];
   v9[0] = @"type";
   v9[1] = @"value";
   v10[0] = @"UnsignedInteger";
-  v10[1] = v3;
+  v10[1] = valueCopy;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:v9 count:2];
   v6 = [(MTRServerAttribute *)v4 initReadonlyAttributeWithID:&unk_284C3E4B0 initialValue:v5 requiredPrivilege:1];
 
@@ -37,10 +37,10 @@
   return v3;
 }
 
-- (BOOL)associateWithController:(id)a3
+- (BOOL)associateWithController:(id)controller
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  controllerCopy = controller;
   os_unfair_lock_lock(&self->_lock);
   WeakRetained = objc_loadWeakRetained(&self->_deviceController);
   if (WeakRetained)
@@ -48,19 +48,19 @@
     v6 = sub_2393D9044(0);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v7 = [v4 uniqueIdentifier];
-      v8 = [WeakRetained uniqueIdentifier];
+      uniqueIdentifier = [controllerCopy uniqueIdentifier];
+      uniqueIdentifier2 = [WeakRetained uniqueIdentifier];
       *buf = 138412546;
-      v16 = v7;
+      v16 = uniqueIdentifier;
       v17 = 2112;
-      v18 = v8;
+      v18 = uniqueIdentifier2;
       _os_log_impl(&dword_238DAE000, v6, OS_LOG_TYPE_ERROR, "Cannot associate MTRServerAttribute with controller %@; already associated with controller %@", buf, 0x16u);
     }
 
     if (sub_2393D5398(1u))
     {
-      v9 = [v4 uniqueIdentifier];
-      v14 = [WeakRetained uniqueIdentifier];
+      uniqueIdentifier3 = [controllerCopy uniqueIdentifier];
+      uniqueIdentifier4 = [WeakRetained uniqueIdentifier];
       sub_2393D5320(0, 1);
 
 LABEL_10:
@@ -69,7 +69,7 @@ LABEL_10:
 
   else
   {
-    objc_storeWeak(&self->_deviceController, v4);
+    objc_storeWeak(&self->_deviceController, controllerCopy);
     v10 = sub_2393D9044(0);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
@@ -79,7 +79,7 @@ LABEL_10:
 
     if (sub_2393D5398(2u))
     {
-      v9 = sub_23952BEDC(self);
+      uniqueIdentifier3 = sub_23952BEDC(self);
       sub_2393D5320(0, 2);
       goto LABEL_10;
     }
@@ -98,14 +98,14 @@ LABEL_10:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (BOOL)addToCluster:(const ConcreteClusterPath *)a3
+- (BOOL)addToCluster:(const ConcreteClusterPath *)cluster
 {
   v21 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_lock);
   mClusterId = self->_parentCluster.mClusterId;
   if (mClusterId == -1)
   {
-    self->_parentCluster = *a3;
+    self->_parentCluster = *cluster;
   }
 
   else
@@ -113,8 +113,8 @@ LABEL_10:
     v6 = sub_2393D9044(0);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      mClusterId_high = HIWORD(a3->mClusterId);
-      v8 = a3->mClusterId;
+      mClusterId_high = HIWORD(cluster->mClusterId);
+      v8 = cluster->mClusterId;
       *buf = 67109888;
       v14 = mClusterId_high;
       v15 = 1024;
@@ -129,7 +129,7 @@ LABEL_10:
     if (sub_2393D5398(1u))
     {
       v12 = HIWORD(self->_parentCluster.mClusterId);
-      v11 = HIWORD(a3->mClusterId);
+      v11 = HIWORD(cluster->mClusterId);
       sub_2393D5320(0, 1);
     }
   }
@@ -139,10 +139,10 @@ LABEL_10:
   return mClusterId == -1;
 }
 
-- (void)updateParentCluster:(const ConcreteClusterPath *)a3
+- (void)updateParentCluster:(const ConcreteClusterPath *)cluster
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_parentCluster = *a3;
+  self->_parentCluster = *cluster;
 
   os_unfair_lock_unlock(&self->_lock);
 }

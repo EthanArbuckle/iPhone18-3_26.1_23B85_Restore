@@ -4,10 +4,10 @@
 - (void)dismiss;
 - (void)scrollToNext;
 - (void)scrollToPrevious;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SXFullscreenCanvasViewController
@@ -26,67 +26,67 @@
   if (_UISolariumFeatureFlagEnabled())
   {
     v5 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:self action:sel_dismiss];
-    v6 = [(SXFullscreenCanvasViewController *)self navigationItem];
-    [v6 setLeftBarButtonItem:v5];
+    navigationItem = [(SXFullscreenCanvasViewController *)self navigationItem];
+    [navigationItem setLeftBarButtonItem:v5];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = SXFullscreenCanvasViewController;
-  [(SXFullscreenCanvasViewController *)&v4 viewWillAppear:a3];
+  [(SXFullscreenCanvasViewController *)&v4 viewWillAppear:appear];
   [(SXFullscreenCanvasViewController *)self setNeedsStatusBarAppearanceUpdate];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = SXFullscreenCanvasViewController;
-  [(SXFullscreenCanvasViewController *)&v4 viewDidAppear:a3];
+  [(SXFullscreenCanvasViewController *)&v4 viewDidAppear:appear];
   [(SXFullscreenCanvasViewController *)self becomeFirstResponder];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v11.receiver = self;
   v11.super_class = SXFullscreenCanvasViewController;
-  [(SXFullscreenCanvasViewController *)&v11 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
-  v8 = [(SXFullscreenCanvasViewController *)self delegate];
+  [(SXFullscreenCanvasViewController *)&v11 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
+  delegate = [(SXFullscreenCanvasViewController *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(SXFullscreenCanvasViewController *)self delegate];
-    [v10 fullscreenCanvasViewController:self willTransitionToSize:v7 withTransitionCoordinator:{width, height}];
+    delegate2 = [(SXFullscreenCanvasViewController *)self delegate];
+    [delegate2 fullscreenCanvasViewController:self willTransitionToSize:coordinatorCopy withTransitionCoordinator:{width, height}];
   }
 }
 
 - (void)dismiss
 {
-  v3 = [(SXFullscreenCanvasViewController *)self delegate];
+  delegate = [(SXFullscreenCanvasViewController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(SXFullscreenCanvasViewController *)self delegate];
-    [v5 fullScreenCanvasViewControllerWantsToDismiss:self];
+    delegate2 = [(SXFullscreenCanvasViewController *)self delegate];
+    [delegate2 fullScreenCanvasViewControllerWantsToDismiss:self];
   }
 }
 
 - (void)scrollToNext
 {
-  v2 = [(SXFullscreenCanvasViewController *)self delegate];
-  [v2 handleNextCommand];
+  delegate = [(SXFullscreenCanvasViewController *)self delegate];
+  [delegate handleNextCommand];
 }
 
 - (void)scrollToPrevious
 {
-  v2 = [(SXFullscreenCanvasViewController *)self delegate];
-  [v2 handlePreviousCommand];
+  delegate = [(SXFullscreenCanvasViewController *)self delegate];
+  [delegate handlePreviousCommand];
 }
 
 - (id)keyCommands

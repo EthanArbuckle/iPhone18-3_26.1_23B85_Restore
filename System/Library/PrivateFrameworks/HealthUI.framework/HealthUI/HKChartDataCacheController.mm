@@ -1,44 +1,44 @@
 @interface HKChartDataCacheController
-- (BOOL)_anySampleShouldInvalidateCache:(id)a3;
-- (BOOL)_displayTypeIsActivity:(id)a3;
-- (HKChartDataCacheController)initWithHealthStore:(id)a3 unitController:(id)a4 updateController:(id)a5;
-- (id)_chartCacheForDisplayType:(id)a3 timeScope:(int64_t)a4 chartCachesByDisplayTypeIdentifier:(id)a5;
-- (id)_chartCacheIdentifiersFromSamples:(id)a3;
-- (id)_chartCacheIdentifiersFromStartDate:(id)a3 endDate:(id)a4;
-- (id)_createAlternateCurrentValueDataProviderForDisplayType:(id)a3 healthStore:(id)a4 updateController:(id)a5 dateCache:(id)a6;
-- (id)_createCurrentValueDataProviderForDisplayType:(id)a3 healthStore:(id)a4 updateController:(id)a5 dateCache:(id)a6;
-- (id)_generateChartCacheForDisplayType:(id)a3 timeScope:(int64_t)a4;
-- (id)_timeScopeBasedChartCacheForDisplayType:(id)a3 timeScope:(int64_t)a4;
-- (id)activitySummaryDataProviderWithHealthStore:(id)a3 dateCache:(id)a4 displayTypeController:(id)a5 unitController:(id)a6;
+- (BOOL)_anySampleShouldInvalidateCache:(id)cache;
+- (BOOL)_displayTypeIsActivity:(id)activity;
+- (HKChartDataCacheController)initWithHealthStore:(id)store unitController:(id)controller updateController:(id)updateController;
+- (id)_chartCacheForDisplayType:(id)type timeScope:(int64_t)scope chartCachesByDisplayTypeIdentifier:(id)identifier;
+- (id)_chartCacheIdentifiersFromSamples:(id)samples;
+- (id)_chartCacheIdentifiersFromStartDate:(id)date endDate:(id)endDate;
+- (id)_createAlternateCurrentValueDataProviderForDisplayType:(id)type healthStore:(id)store updateController:(id)controller dateCache:(id)cache;
+- (id)_createCurrentValueDataProviderForDisplayType:(id)type healthStore:(id)store updateController:(id)controller dateCache:(id)cache;
+- (id)_generateChartCacheForDisplayType:(id)type timeScope:(int64_t)scope;
+- (id)_timeScopeBasedChartCacheForDisplayType:(id)type timeScope:(int64_t)scope;
+- (id)activitySummaryDataProviderWithHealthStore:(id)store dateCache:(id)cache displayTypeController:(id)controller unitController:(id)unitController;
 - (id)allInteractiveChartsCaches;
-- (id)alternateCurrentValueDataProviderForDisplayType:(id)a3 healthStore:(id)a4 updateController:(id)a5 dateCache:(id)a6;
-- (id)currentValueDataProviderForDisplayType:(id)a3 healthStore:(id)a4 updateController:(id)a5 dateCache:(id)a6;
-- (id)findCustomCachesForDisplayType:(id)a3;
-- (id)interactiveChartsCacheForDisplayType:(id)a3 timeScope:(int64_t)a4;
-- (void)_removeCustomCachesForDisplayTypeIdentifier:(int64_t)a3;
-- (void)_subscribeForUpdatesForDisplayType:(id)a3;
-- (void)addCustomChartCache:(id)a3 forDisplayType:(id)a4;
-- (void)removeCachesForDisplayTypeIdentifier:(int64_t)a3;
-- (void)updateController:(id)a3 didReceiveHighFrequencyUpdateForType:(id)a4;
-- (void)updateController:(id)a3 didReceiveUpdateForType:(id)a4 samplesAdded:(id)a5 objectsRemoved:(id)a6 recoveringFromError:(BOOL)a7;
+- (id)alternateCurrentValueDataProviderForDisplayType:(id)type healthStore:(id)store updateController:(id)controller dateCache:(id)cache;
+- (id)currentValueDataProviderForDisplayType:(id)type healthStore:(id)store updateController:(id)controller dateCache:(id)cache;
+- (id)findCustomCachesForDisplayType:(id)type;
+- (id)interactiveChartsCacheForDisplayType:(id)type timeScope:(int64_t)scope;
+- (void)_removeCustomCachesForDisplayTypeIdentifier:(int64_t)identifier;
+- (void)_subscribeForUpdatesForDisplayType:(id)type;
+- (void)addCustomChartCache:(id)cache forDisplayType:(id)type;
+- (void)removeCachesForDisplayTypeIdentifier:(int64_t)identifier;
+- (void)updateController:(id)controller didReceiveHighFrequencyUpdateForType:(id)type;
+- (void)updateController:(id)controller didReceiveUpdateForType:(id)type samplesAdded:(id)added objectsRemoved:(id)removed recoveringFromError:(BOOL)error;
 @end
 
 @implementation HKChartDataCacheController
 
-- (HKChartDataCacheController)initWithHealthStore:(id)a3 unitController:(id)a4 updateController:(id)a5
+- (HKChartDataCacheController)initWithHealthStore:(id)store unitController:(id)controller updateController:(id)updateController
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  storeCopy = store;
+  controllerCopy = controller;
+  updateControllerCopy = updateController;
   v29.receiver = self;
   v29.super_class = HKChartDataCacheController;
   v11 = [(HKChartDataCacheController *)&v29 init];
   v12 = v11;
   if (v11)
   {
-    [(HKChartDataCacheController *)v11 setHealthStore:v8];
-    [(HKChartDataCacheController *)v12 setUnitController:v9];
-    [(HKChartDataCacheController *)v12 setUpdateController:v10];
+    [(HKChartDataCacheController *)v11 setHealthStore:storeCopy];
+    [(HKChartDataCacheController *)v12 setUnitController:controllerCopy];
+    [(HKChartDataCacheController *)v12 setUpdateController:updateControllerCopy];
     v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v14 = 8;
     do
@@ -78,17 +78,17 @@
   return v12;
 }
 
-- (id)interactiveChartsCacheForDisplayType:(id)a3 timeScope:(int64_t)a4
+- (id)interactiveChartsCacheForDisplayType:(id)type timeScope:(int64_t)scope
 {
-  v6 = a3;
-  if ([v6 hk_healthQueryChartDataSourceDependsOnTimeScope])
+  typeCopy = type;
+  if ([typeCopy hk_healthQueryChartDataSourceDependsOnTimeScope])
   {
-    [(HKChartDataCacheController *)self _timeScopeBasedChartCacheForDisplayType:v6 timeScope:a4];
+    [(HKChartDataCacheController *)self _timeScopeBasedChartCacheForDisplayType:typeCopy timeScope:scope];
   }
 
   else
   {
-    [(HKChartDataCacheController *)self _chartCacheForDisplayType:v6 timeScope:a4 chartCachesByDisplayTypeIdentifier:self->_chartCachesByDisplayTypeIdentifier];
+    [(HKChartDataCacheController *)self _chartCacheForDisplayType:typeCopy timeScope:scope chartCachesByDisplayTypeIdentifier:self->_chartCachesByDisplayTypeIdentifier];
   }
   v7 = ;
 
@@ -123,8 +123,8 @@
         v36 = 0u;
         v37 = 0u;
         v38 = 0u;
-        v10 = [v9 allValues];
-        v11 = [v10 countByEnumeratingWithState:&v35 objects:v45 count:16];
+        allValues = [v9 allValues];
+        v11 = [allValues countByEnumeratingWithState:&v35 objects:v45 count:16];
         if (v11)
         {
           v12 = v11;
@@ -135,13 +135,13 @@
             {
               if (*v36 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(allValues);
               }
 
               [v3 addObject:*(*(&v35 + 1) + 8 * j)];
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v35 objects:v45 count:16];
+            v12 = [allValues countByEnumeratingWithState:&v35 objects:v45 count:16];
           }
 
           while (v12);
@@ -158,8 +158,8 @@
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v15 = [(NSMutableDictionary *)self->_chartCachesByDisplayTypeIdentifier allValues];
-  v16 = [v15 countByEnumeratingWithState:&v31 objects:v44 count:16];
+  allValues2 = [(NSMutableDictionary *)self->_chartCachesByDisplayTypeIdentifier allValues];
+  v16 = [allValues2 countByEnumeratingWithState:&v31 objects:v44 count:16];
   if (v16)
   {
     v17 = v16;
@@ -170,13 +170,13 @@
       {
         if (*v32 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(allValues2);
         }
 
         [v3 addObject:*(*(&v31 + 1) + 8 * k)];
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v31 objects:v44 count:16];
+      v17 = [allValues2 countByEnumeratingWithState:&v31 objects:v44 count:16];
     }
 
     while (v17);
@@ -201,8 +201,8 @@
           objc_enumerationMutation(v20);
         }
 
-        v25 = [*(*(&v27 + 1) + 8 * m) chartCache];
-        [v3 addObject:v25];
+        chartCache = [*(*(&v27 + 1) + 8 * m) chartCache];
+        [v3 addObject:chartCache];
       }
 
       v22 = [(NSMutableArray *)v20 countByEnumeratingWithState:&v27 objects:v43 count:16];
@@ -214,39 +214,39 @@
   return v3;
 }
 
-- (id)_timeScopeBasedChartCacheForDisplayType:(id)a3 timeScope:(int64_t)a4
+- (id)_timeScopeBasedChartCacheForDisplayType:(id)type timeScope:(int64_t)scope
 {
   chartCachesByTimeScopeAndDisplayTypeIdentifier = self->_chartCachesByTimeScopeAndDisplayTypeIdentifier;
-  v7 = a3;
-  v8 = [(NSArray *)chartCachesByTimeScopeAndDisplayTypeIdentifier objectAtIndexedSubscript:a4];
-  v9 = [(HKChartDataCacheController *)self _chartCacheForDisplayType:v7 timeScope:a4 chartCachesByDisplayTypeIdentifier:v8];
+  typeCopy = type;
+  v8 = [(NSArray *)chartCachesByTimeScopeAndDisplayTypeIdentifier objectAtIndexedSubscript:scope];
+  v9 = [(HKChartDataCacheController *)self _chartCacheForDisplayType:typeCopy timeScope:scope chartCachesByDisplayTypeIdentifier:v8];
 
   return v9;
 }
 
-- (id)_chartCacheForDisplayType:(id)a3 timeScope:(int64_t)a4 chartCachesByDisplayTypeIdentifier:(id)a5
+- (id)_chartCacheForDisplayType:(id)type timeScope:(int64_t)scope chartCachesByDisplayTypeIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v8, "displayTypeIdentifier")}];
-  v11 = [v9 objectForKeyedSubscript:v10];
+  typeCopy = type;
+  identifierCopy = identifier;
+  v10 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(typeCopy, "displayTypeIdentifier")}];
+  v11 = [identifierCopy objectForKeyedSubscript:v10];
   if (!v11)
   {
-    v11 = [(HKChartDataCacheController *)self _generateChartCacheForDisplayType:v8 timeScope:a4];
+    v11 = [(HKChartDataCacheController *)self _generateChartCacheForDisplayType:typeCopy timeScope:scope];
     [v11 setShouldBufferFetchOperations:1];
-    [v9 setObject:v11 forKeyedSubscript:v10];
-    [(HKChartDataCacheController *)self _subscribeForUpdatesForDisplayType:v8];
+    [identifierCopy setObject:v11 forKeyedSubscript:v10];
+    [(HKChartDataCacheController *)self _subscribeForUpdatesForDisplayType:typeCopy];
   }
 
   return v11;
 }
 
-- (id)_generateChartCacheForDisplayType:(id)a3 timeScope:(int64_t)a4
+- (id)_generateChartCacheForDisplayType:(id)type timeScope:(int64_t)scope
 {
-  v6 = a3;
-  v7 = [(HKChartDataCacheController *)self healthStore];
-  v8 = [(HKChartDataCacheController *)self unitController];
-  v9 = [v6 hk_healthQueryChartCacheDataSourceForTimeScope:a4 healthStore:v7 unitController:v8];
+  typeCopy = type;
+  healthStore = [(HKChartDataCacheController *)self healthStore];
+  unitController = [(HKChartDataCacheController *)self unitController];
+  v9 = [typeCopy hk_healthQueryChartCacheDataSourceForTimeScope:scope healthStore:healthStore unitController:unitController];
 
   v10 = objc_alloc_init(HKChartCache);
   [(HKChartCache *)v10 setDataSource:v9];
@@ -256,11 +256,11 @@
   return v10;
 }
 
-- (void)updateController:(id)a3 didReceiveUpdateForType:(id)a4 samplesAdded:(id)a5 objectsRemoved:(id)a6 recoveringFromError:(BOOL)a7
+- (void)updateController:(id)controller didReceiveUpdateForType:(id)type samplesAdded:(id)added objectsRemoved:(id)removed recoveringFromError:(BOOL)error
 {
   v24 = *MEMORY[0x1E69E9840];
-  v10 = a5;
-  if ([a6 count])
+  addedCopy = added;
+  if ([removed count])
   {
     v11 = 0;
     v12 = 1;
@@ -270,11 +270,11 @@
   {
     v11 = 0;
     v12 = 1;
-    if (![(HKChartDataCacheController *)self _anySampleShouldInvalidateCache:v10]&& !a7)
+    if (![(HKChartDataCacheController *)self _anySampleShouldInvalidateCache:addedCopy]&& !error)
     {
-      if ([v10 count])
+      if ([addedCopy count])
       {
-        v11 = [(HKChartDataCacheController *)self _chartCacheIdentifiersFromSamples:v10];
+        v11 = [(HKChartDataCacheController *)self _chartCacheIdentifiersFromSamples:addedCopy];
         v12 = 0;
       }
 
@@ -290,8 +290,8 @@
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v13 = [(HKChartDataCacheController *)self allInteractiveChartsCaches];
-  v14 = [v13 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  allInteractiveChartsCaches = [(HKChartDataCacheController *)self allInteractiveChartsCaches];
+  v14 = [allInteractiveChartsCaches countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v14)
   {
     v15 = v14;
@@ -302,7 +302,7 @@
       {
         if (*v20 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(allInteractiveChartsCaches);
         }
 
         v18 = *(*(&v19 + 1) + 8 * i);
@@ -318,23 +318,23 @@
         }
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v15 = [allInteractiveChartsCaches countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v15);
   }
 }
 
-- (BOOL)_anySampleShouldInvalidateCache:(id)a3
+- (BOOL)_anySampleShouldInvalidateCache:(id)cache
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  cacheCopy = cache;
   v4 = [MEMORY[0x1E696C2E0] quantityTypeForIdentifier:*MEMORY[0x1E696C6B8]];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = cacheCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (!v6)
   {
@@ -364,8 +364,8 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v12 = [v10 quantityType];
-        v11 = v12 == v4;
+        quantityType = [v10 quantityType];
+        v11 = quantityType == v4;
 LABEL_16:
 
         goto LABEL_17;
@@ -374,9 +374,9 @@ LABEL_16:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v12 = [v10 categoryType];
+        quantityType = [v10 categoryType];
         v13 = [MEMORY[0x1E696C2E0] categoryTypeForIdentifier:*MEMORY[0x1E696B698]];
-        v11 = v12 == v13;
+        v11 = quantityType == v13;
 
         goto LABEL_16;
       }
@@ -397,16 +397,16 @@ LABEL_17:
   return v11;
 }
 
-- (void)updateController:(id)a3 didReceiveHighFrequencyUpdateForType:(id)a4
+- (void)updateController:(id)controller didReceiveHighFrequencyUpdateForType:(id)type
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [MEMORY[0x1E695DF00] date];
+  typeCopy = type;
+  date = [MEMORY[0x1E695DF00] date];
   objc_opt_class();
   v7 = 1.0;
   if (objc_opt_isKindOfClass())
   {
-    v8 = v5;
+    v8 = typeCopy;
     if ([v8 isMinimumDurationRestricted])
     {
       [v8 minimumAllowedDuration];
@@ -414,15 +414,15 @@ LABEL_17:
     }
   }
 
-  v10 = [v6 dateByAddingTimeInterval:-v7];
-  v11 = [(HKChartDataCacheController *)self _chartCacheIdentifiersFromStartDate:v10 endDate:v6];
-  v12 = [v11 allObjects];
+  v10 = [date dateByAddingTimeInterval:-v7];
+  v11 = [(HKChartDataCacheController *)self _chartCacheIdentifiersFromStartDate:v10 endDate:date];
+  allObjects = [v11 allObjects];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v13 = [(HKChartDataCacheController *)self allInteractiveChartsCaches];
-  v14 = [v13 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  allInteractiveChartsCaches = [(HKChartDataCacheController *)self allInteractiveChartsCaches];
+  v14 = [allInteractiveChartsCaches countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v14)
   {
     v15 = v14;
@@ -434,30 +434,30 @@ LABEL_17:
       {
         if (*v19 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(allInteractiveChartsCaches);
         }
 
-        [*(*(&v18 + 1) + 8 * v17++) invalidateResultsForIdentifiers:v12];
+        [*(*(&v18 + 1) + 8 * v17++) invalidateResultsForIdentifiers:allObjects];
       }
 
       while (v15 != v17);
-      v15 = [v13 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v15 = [allInteractiveChartsCaches countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v15);
   }
 }
 
-- (id)_chartCacheIdentifiersFromSamples:(id)a3
+- (id)_chartCacheIdentifiersFromSamples:(id)samples
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  samplesCopy = samples;
   v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = v4;
+  v6 = samplesCopy;
   v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
@@ -473,9 +473,9 @@ LABEL_17:
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        v12 = [v11 hasUndeterminedDuration];
-        v13 = [v11 startDate];
-        if (v12)
+        hasUndeterminedDuration = [v11 hasUndeterminedDuration];
+        startDate = [v11 startDate];
+        if (hasUndeterminedDuration)
         {
           [MEMORY[0x1E695DF00] now];
         }
@@ -485,7 +485,7 @@ LABEL_17:
           [v11 endDate];
         }
         v14 = ;
-        v15 = [(HKChartDataCacheController *)self _chartCacheIdentifiersFromStartDate:v13 endDate:v14];
+        v15 = [(HKChartDataCacheController *)self _chartCacheIdentifiersFromStartDate:startDate endDate:v14];
         [v5 unionSet:v15];
       }
 
@@ -495,23 +495,23 @@ LABEL_17:
     while (v8);
   }
 
-  v16 = [v5 allObjects];
+  allObjects = [v5 allObjects];
 
-  return v16;
+  return allObjects;
 }
 
-- (id)_chartCacheIdentifiersFromStartDate:(id)a3 endDate:(id)a4
+- (id)_chartCacheIdentifiersFromStartDate:(id)date endDate:(id)endDate
 {
-  v20 = a3;
-  v19 = a4;
+  dateCopy = date;
+  endDateCopy = endDate;
   v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   for (i = 0; i != 8; ++i)
   {
     v7 = [HKGraphZoomLevelConfiguration configurationForZoomLevel:i];
     [v7 approximateSeriesPointIntervalAtResolution:0];
     v9 = v8;
-    v10 = [v20 dateByAddingTimeInterval:-v8];
-    v11 = [v19 dateByAddingTimeInterval:v9];
+    v10 = [dateCopy dateByAddingTimeInterval:-v8];
+    v11 = [endDateCopy dateByAddingTimeInterval:v9];
     v12 = 0;
     v13 = 1;
     do
@@ -546,37 +546,37 @@ LABEL_17:
   return v5;
 }
 
-- (void)_subscribeForUpdatesForDisplayType:(id)a3
+- (void)_subscribeForUpdatesForDisplayType:(id)type
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 displayTypeIdentifier] == 80)
+  typeCopy = type;
+  if ([typeCopy displayTypeIdentifier] == 80)
   {
-    v5 = [MEMORY[0x1E696C2E0] quantityTypeForIdentifier:*MEMORY[0x1E696BC90]];
+    associatedBalanceMetricsTypes = [MEMORY[0x1E696C2E0] quantityTypeForIdentifier:*MEMORY[0x1E696BC90]];
     v6 = [MEMORY[0x1E696C2E0] quantityTypeForIdentifier:*MEMORY[0x1E696BC88]];
-    [(HKSampleTypeUpdateController *)self->_updateController addObserver:self forType:v5];
+    [(HKSampleTypeUpdateController *)self->_updateController addObserver:self forType:associatedBalanceMetricsTypes];
     [(HKSampleTypeUpdateController *)self->_updateController addObserver:self forType:v6];
   }
 
   else
   {
-    if ([(HKChartDataCacheController *)self _displayTypeIsActivity:v4])
+    if ([(HKChartDataCacheController *)self _displayTypeIsActivity:typeCopy])
     {
       goto LABEL_5;
     }
 
-    v7 = [v4 sampleType];
-    v8 = [v7 identifier];
+    sampleType = [typeCopy sampleType];
+    identifier = [sampleType identifier];
     v9 = *MEMORY[0x1E696C6A8];
 
-    if (v8 == v9)
+    if (identifier == v9)
     {
       v27 = 0u;
       v28 = 0u;
       v25 = 0u;
       v26 = 0u;
-      v5 = [MEMORY[0x1E696C3D0] associatedBalanceMetricsTypes];
-      v13 = [v5 countByEnumeratingWithState:&v25 objects:v30 count:16];
+      associatedBalanceMetricsTypes = [MEMORY[0x1E696C3D0] associatedBalanceMetricsTypes];
+      v13 = [associatedBalanceMetricsTypes countByEnumeratingWithState:&v25 objects:v30 count:16];
       if (v13)
       {
         v14 = v13;
@@ -587,13 +587,13 @@ LABEL_17:
           {
             if (*v26 != v15)
             {
-              objc_enumerationMutation(v5);
+              objc_enumerationMutation(associatedBalanceMetricsTypes);
             }
 
             [(HKSampleTypeUpdateController *)self->_updateController addObserver:self forType:*(*(&v25 + 1) + 8 * i)];
           }
 
-          v14 = [v5 countByEnumeratingWithState:&v25 objects:v30 count:16];
+          v14 = [associatedBalanceMetricsTypes countByEnumeratingWithState:&v25 objects:v30 count:16];
         }
 
         while (v14);
@@ -602,18 +602,18 @@ LABEL_17:
 
     else
     {
-      v10 = [v4 sampleType];
-      v11 = [v10 identifier];
+      sampleType2 = [typeCopy sampleType];
+      identifier2 = [sampleType2 identifier];
       v12 = *MEMORY[0x1E696C6B0];
 
-      if (v11 == v12)
+      if (identifier2 == v12)
       {
         v23 = 0u;
         v24 = 0u;
         v21 = 0u;
         v22 = 0u;
-        v5 = [MEMORY[0x1E696C3D0] associatedSleepScoreTypes];
-        v17 = [v5 countByEnumeratingWithState:&v21 objects:v29 count:16];
+        associatedBalanceMetricsTypes = [MEMORY[0x1E696C3D0] associatedSleepScoreTypes];
+        v17 = [associatedBalanceMetricsTypes countByEnumeratingWithState:&v21 objects:v29 count:16];
         if (v17)
         {
           v18 = v17;
@@ -624,13 +624,13 @@ LABEL_17:
             {
               if (*v22 != v19)
               {
-                objc_enumerationMutation(v5);
+                objc_enumerationMutation(associatedBalanceMetricsTypes);
               }
 
               [(HKSampleTypeUpdateController *)self->_updateController addObserver:self forType:*(*(&v21 + 1) + 8 * j)];
             }
 
-            v18 = [v5 countByEnumeratingWithState:&v21 objects:v29 count:16];
+            v18 = [associatedBalanceMetricsTypes countByEnumeratingWithState:&v21 objects:v29 count:16];
           }
 
           while (v18);
@@ -639,8 +639,8 @@ LABEL_17:
 
       else
       {
-        v5 = [v4 sampleType];
-        [(HKSampleTypeUpdateController *)self->_updateController addObserver:self forType:v5];
+        associatedBalanceMetricsTypes = [typeCopy sampleType];
+        [(HKSampleTypeUpdateController *)self->_updateController addObserver:self forType:associatedBalanceMetricsTypes];
       }
     }
   }
@@ -648,66 +648,66 @@ LABEL_17:
 LABEL_5:
 }
 
-- (BOOL)_displayTypeIsActivity:(id)a3
+- (BOOL)_displayTypeIsActivity:(id)activity
 {
-  v3 = a3;
+  activityCopy = activity;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 baseDisplayType];
-    v5 = [v4 isActivitySummary];
+    baseDisplayType = [activityCopy baseDisplayType];
+    isActivitySummary = [baseDisplayType isActivitySummary];
   }
 
   else
   {
-    v5 = [v3 isActivitySummary];
+    isActivitySummary = [activityCopy isActivitySummary];
   }
 
-  return v5;
+  return isActivitySummary;
 }
 
-- (id)currentValueDataProviderForDisplayType:(id)a3 healthStore:(id)a4 updateController:(id)a5 dateCache:(id)a6
+- (id)currentValueDataProviderForDisplayType:(id)type healthStore:(id)store updateController:(id)controller dateCache:(id)cache
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(NSMutableDictionary *)self->_currentValueDataProvidersByDisplayType objectForKeyedSubscript:v10];
+  typeCopy = type;
+  storeCopy = store;
+  controllerCopy = controller;
+  cacheCopy = cache;
+  v14 = [(NSMutableDictionary *)self->_currentValueDataProvidersByDisplayType objectForKeyedSubscript:typeCopy];
   if (!v14)
   {
-    v14 = [(HKChartDataCacheController *)self _createCurrentValueDataProviderForDisplayType:v10 healthStore:v11 updateController:v12 dateCache:v13];
+    v14 = [(HKChartDataCacheController *)self _createCurrentValueDataProviderForDisplayType:typeCopy healthStore:storeCopy updateController:controllerCopy dateCache:cacheCopy];
     if (v14)
     {
-      [(NSMutableDictionary *)self->_currentValueDataProvidersByDisplayType setObject:v14 forKeyedSubscript:v10];
+      [(NSMutableDictionary *)self->_currentValueDataProvidersByDisplayType setObject:v14 forKeyedSubscript:typeCopy];
     }
   }
 
   return v14;
 }
 
-- (id)alternateCurrentValueDataProviderForDisplayType:(id)a3 healthStore:(id)a4 updateController:(id)a5 dateCache:(id)a6
+- (id)alternateCurrentValueDataProviderForDisplayType:(id)type healthStore:(id)store updateController:(id)controller dateCache:(id)cache
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(NSMutableDictionary *)self->_alternateCurrentValueDataProvidersByDisplayType objectForKeyedSubscript:v10];
+  typeCopy = type;
+  storeCopy = store;
+  controllerCopy = controller;
+  cacheCopy = cache;
+  v14 = [(NSMutableDictionary *)self->_alternateCurrentValueDataProvidersByDisplayType objectForKeyedSubscript:typeCopy];
   if (!v14)
   {
-    v15 = [(HKChartDataCacheController *)self _createAlternateCurrentValueDataProviderForDisplayType:v10 healthStore:v11 updateController:v12 dateCache:v13];
+    v15 = [(HKChartDataCacheController *)self _createAlternateCurrentValueDataProviderForDisplayType:typeCopy healthStore:storeCopy updateController:controllerCopy dateCache:cacheCopy];
     if (v15)
     {
       v14 = v15;
-      [(NSMutableDictionary *)self->_alternateCurrentValueDataProvidersByDisplayType setObject:v15 forKeyedSubscript:v10];
+      [(NSMutableDictionary *)self->_alternateCurrentValueDataProvidersByDisplayType setObject:v15 forKeyedSubscript:typeCopy];
     }
 
     else
     {
-      v16 = [(HKChartDataCacheController *)self currentValueDataProviderForDisplayType:v10 healthStore:v11 updateController:v12 dateCache:v13];
+      v16 = [(HKChartDataCacheController *)self currentValueDataProviderForDisplayType:typeCopy healthStore:storeCopy updateController:controllerCopy dateCache:cacheCopy];
       v14 = v16;
       if (v16)
       {
-        [(NSMutableDictionary *)self->_alternateCurrentValueDataProvidersByDisplayType setObject:v16 forKeyedSubscript:v10];
+        [(NSMutableDictionary *)self->_alternateCurrentValueDataProvidersByDisplayType setObject:v16 forKeyedSubscript:typeCopy];
       }
     }
   }
@@ -715,27 +715,27 @@ LABEL_5:
   return v14;
 }
 
-- (id)_createCurrentValueDataProviderForDisplayType:(id)a3 healthStore:(id)a4 updateController:(id)a5 dateCache:(id)a6
+- (id)_createCurrentValueDataProviderForDisplayType:(id)type healthStore:(id)store updateController:(id)controller dateCache:(id)cache
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v9 presentation];
-  v14 = [v13 configurationForTimeScope:5];
-  v15 = [v14 currentValue];
+  typeCopy = type;
+  storeCopy = store;
+  controllerCopy = controller;
+  cacheCopy = cache;
+  presentation = [typeCopy presentation];
+  v14 = [presentation configurationForTimeScope:5];
+  currentValue = [v14 currentValue];
 
   v16 = 0;
-  if (v15 <= 2)
+  if (currentValue <= 2)
   {
-    if (v15 == 1)
+    if (currentValue == 1)
     {
       v23 = HKMostRecentValueDataProvider;
     }
 
     else
     {
-      if (v15 != 2)
+      if (currentValue != 2)
       {
         goto LABEL_15;
       }
@@ -746,30 +746,30 @@ LABEL_5:
 
   else
   {
-    if (v15 != 3)
+    if (currentValue != 3)
     {
-      if (v15 == 4)
+      if (currentValue == 4)
       {
         v17 = [HKCountCurrentValueDataProvider alloc];
-        v18 = v10;
-        v19 = v11;
-        v20 = v12;
-        v21 = v9;
+        v18 = storeCopy;
+        v19 = controllerCopy;
+        v20 = cacheCopy;
+        v21 = typeCopy;
         v22 = 0;
       }
 
       else
       {
-        if (v15 != 5)
+        if (currentValue != 5)
         {
           goto LABEL_15;
         }
 
         v17 = [HKCountCurrentValueDataProvider alloc];
-        v18 = v10;
-        v19 = v11;
-        v20 = v12;
-        v21 = v9;
+        v18 = storeCopy;
+        v19 = controllerCopy;
+        v20 = cacheCopy;
+        v21 = typeCopy;
         v22 = 1;
       }
 
@@ -780,7 +780,7 @@ LABEL_5:
     v23 = HKMostRecentTimePeriodCurrentValueDataProvider;
   }
 
-  v24 = [[v23 alloc] initWithHealthStore:v10 updateController:v11 dateCache:v12 displayType:v9];
+  v24 = [[v23 alloc] initWithHealthStore:storeCopy updateController:controllerCopy dateCache:cacheCopy displayType:typeCopy];
 LABEL_14:
   v16 = v24;
 LABEL_15:
@@ -788,19 +788,19 @@ LABEL_15:
   return v16;
 }
 
-- (id)_createAlternateCurrentValueDataProviderForDisplayType:(id)a3 healthStore:(id)a4 updateController:(id)a5 dateCache:(id)a6
+- (id)_createAlternateCurrentValueDataProviderForDisplayType:(id)type healthStore:(id)store updateController:(id)controller dateCache:(id)cache
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v9 presentation];
-  v14 = [v13 configurationForTimeScope:5];
-  v15 = [v14 currentValue];
+  typeCopy = type;
+  storeCopy = store;
+  controllerCopy = controller;
+  cacheCopy = cache;
+  presentation = [typeCopy presentation];
+  v14 = [presentation configurationForTimeScope:5];
+  currentValue = [v14 currentValue];
 
-  if (v15 == 6)
+  if (currentValue == 6)
   {
-    v16 = [(HKValueDataProvider *)[HKLastUpdatedDayCurrentValueDataProvider alloc] initWithHealthStore:v10 updateController:v11 dateCache:v12 displayType:v9];
+    v16 = [(HKValueDataProvider *)[HKLastUpdatedDayCurrentValueDataProvider alloc] initWithHealthStore:storeCopy updateController:controllerCopy dateCache:cacheCopy displayType:typeCopy];
   }
 
   else
@@ -811,16 +811,16 @@ LABEL_15:
   return v16;
 }
 
-- (id)activitySummaryDataProviderWithHealthStore:(id)a3 dateCache:(id)a4 displayTypeController:(id)a5 unitController:(id)a6
+- (id)activitySummaryDataProviderWithHealthStore:(id)store dateCache:(id)cache displayTypeController:(id)controller unitController:(id)unitController
 {
   activitySummaryDataProvider = self->_activitySummaryDataProvider;
   if (!activitySummaryDataProvider)
   {
-    v11 = a6;
-    v12 = a5;
-    v13 = a4;
-    v14 = a3;
-    v15 = [[HKActivitySummaryDataProvider alloc] initWithHealthStore:v14 dateCache:v13 displayTypeController:v12 unitController:v11];
+    unitControllerCopy = unitController;
+    controllerCopy = controller;
+    cacheCopy = cache;
+    storeCopy = store;
+    v15 = [[HKActivitySummaryDataProvider alloc] initWithHealthStore:storeCopy dateCache:cacheCopy displayTypeController:controllerCopy unitController:unitControllerCopy];
 
     v16 = self->_activitySummaryDataProvider;
     self->_activitySummaryDataProvider = v15;
@@ -831,17 +831,17 @@ LABEL_15:
   return activitySummaryDataProvider;
 }
 
-- (void)addCustomChartCache:(id)a3 forDisplayType:(id)a4
+- (void)addCustomChartCache:(id)cache forDisplayType:(id)type
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[_HKCustomCacheDisplayTypeTuple alloc] initWithCustomCache:v7 displayType:v6];
+  typeCopy = type;
+  cacheCopy = cache;
+  v8 = [[_HKCustomCacheDisplayTypeTuple alloc] initWithCustomCache:cacheCopy displayType:typeCopy];
 
   [(NSMutableArray *)self->_chartCachesByCustomDisplayType addObject:v8];
-  [(HKChartDataCacheController *)self _subscribeForUpdatesForDisplayType:v6];
+  [(HKChartDataCacheController *)self _subscribeForUpdatesForDisplayType:typeCopy];
 }
 
-- (void)_removeCustomCachesForDisplayTypeIdentifier:(int64_t)a3
+- (void)_removeCustomCachesForDisplayTypeIdentifier:(int64_t)identifier
 {
   v9 = objc_alloc_init(MEMORY[0x1E696AD50]);
   if ([(NSMutableArray *)self->_chartCachesByCustomDisplayType count])
@@ -850,10 +850,10 @@ LABEL_15:
     do
     {
       v6 = [(NSMutableArray *)self->_chartCachesByCustomDisplayType objectAtIndexedSubscript:v5];
-      v7 = [v6 displayType];
-      v8 = [v7 displayTypeIdentifier];
+      displayType = [v6 displayType];
+      displayTypeIdentifier = [displayType displayTypeIdentifier];
 
-      if (v8 == a3)
+      if (displayTypeIdentifier == identifier)
       {
         [v9 addIndex:v5];
       }
@@ -867,10 +867,10 @@ LABEL_15:
   [(NSMutableArray *)self->_chartCachesByCustomDisplayType removeObjectsAtIndexes:v9];
 }
 
-- (id)findCustomCachesForDisplayType:(id)a3
+- (id)findCustomCachesForDisplayType:(id)type
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  typeCopy = type;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v16 = 0u;
   v17 = 0u;
@@ -892,13 +892,13 @@ LABEL_15:
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v11 displayType];
-        v13 = [v12 isEqual:v4];
+        displayType = [v11 displayType];
+        v13 = [displayType isEqual:typeCopy];
 
         if (v13)
         {
-          v14 = [v11 chartCache];
-          [v5 addObject:v14];
+          chartCache = [v11 chartCache];
+          [v5 addObject:chartCache];
         }
       }
 
@@ -911,7 +911,7 @@ LABEL_15:
   return v5;
 }
 
-- (void)removeCachesForDisplayTypeIdentifier:(int64_t)a3
+- (void)removeCachesForDisplayTypeIdentifier:(int64_t)identifier
 {
   v16 = *MEMORY[0x1E69E9840];
   v5 = [MEMORY[0x1E696AD98] numberWithInteger:?];
@@ -946,7 +946,7 @@ LABEL_15:
   }
 
   [(NSMutableDictionary *)self->_chartCachesByDisplayTypeIdentifier removeObjectForKey:v5];
-  [(HKChartDataCacheController *)self _removeCustomCachesForDisplayTypeIdentifier:a3];
+  [(HKChartDataCacheController *)self _removeCustomCachesForDisplayTypeIdentifier:identifier];
 }
 
 @end

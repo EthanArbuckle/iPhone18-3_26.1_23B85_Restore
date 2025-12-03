@@ -1,13 +1,13 @@
 @interface PAOpenAutoLock
-- (void)performWithCompletion:(id)a3 serviceHelper:(id)a4;
+- (void)performWithCompletion:(id)completion serviceHelper:(id)helper;
 @end
 
 @implementation PAOpenAutoLock
 
-- (void)performWithCompletion:(id)a3 serviceHelper:(id)a4
+- (void)performWithCompletion:(id)completion serviceHelper:(id)helper
 {
-  v5 = a4;
-  v6 = a3;
+  helperCopy = helper;
+  completionCopy = completion;
   v7 = PALogForCategory(0);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -16,11 +16,11 @@
   }
 
   v8 = +[PSAutoLockSettingsDetail preferencesURL];
-  [v5 openSensitiveURL:v8];
+  [helperCopy openSensitiveURL:v8];
 
   v9 = objc_alloc_init(SACommandSucceeded);
-  v10 = [v9 dictionary];
-  v6[2](v6, v10);
+  dictionary = [v9 dictionary];
+  completionCopy[2](completionCopy, dictionary);
 }
 
 @end

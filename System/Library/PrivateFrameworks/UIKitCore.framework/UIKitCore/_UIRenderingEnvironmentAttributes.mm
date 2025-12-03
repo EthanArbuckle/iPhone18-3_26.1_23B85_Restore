@@ -1,9 +1,9 @@
 @interface _UIRenderingEnvironmentAttributes
-- (BOOL)isEqual:(id)a3;
-- (BOOL)refersToSameDisplayConfiguration:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)refersToSameDisplayConfiguration:(id)configuration;
 - (NSString)description;
 - (_UIRenderingEnvironmentAttributes)init;
-- (_UIRenderingEnvironmentAttributes)initWithDisplayConfiguration:(id)a3;
+- (_UIRenderingEnvironmentAttributes)initWithDisplayConfiguration:(id)configuration;
 @end
 
 @implementation _UIRenderingEnvironmentAttributes
@@ -15,41 +15,41 @@
   return 0;
 }
 
-- (_UIRenderingEnvironmentAttributes)initWithDisplayConfiguration:(id)a3
+- (_UIRenderingEnvironmentAttributes)initWithDisplayConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v8.receiver = self;
   v8.super_class = _UIRenderingEnvironmentAttributes;
   v5 = [(_UIRenderingEnvironmentAttributes *)&v8 init];
   if (v5)
   {
-    v6 = [v4 identity];
-    v5->_displayID = [v6 displayID];
+    identity = [configurationCopy identity];
+    v5->_displayID = [identity displayID];
   }
 
   return v5;
 }
 
-- (BOOL)refersToSameDisplayConfiguration:(id)a3
+- (BOOL)refersToSameDisplayConfiguration:(id)configuration
 {
   displayID = self->_displayID;
-  v4 = [a3 identity];
-  LOBYTE(displayID) = displayID == [v4 displayID];
+  identity = [configuration identity];
+  LOBYTE(displayID) = displayID == [identity displayID];
 
   return displayID;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
 
-  else if ([(_UIRenderingEnvironmentAttributes *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(_UIRenderingEnvironmentAttributes *)equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = self->_displayID == v4->_displayID;
+    v5 = self->_displayID == equalCopy->_displayID;
   }
 
   else

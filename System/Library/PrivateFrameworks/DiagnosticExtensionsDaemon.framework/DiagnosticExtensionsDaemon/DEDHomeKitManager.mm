@@ -2,7 +2,7 @@
 + (id)sharedInstance;
 - (BOOL)isHomeKitResident;
 - (NSString)homeKitIdentifier;
-- (id)stringForAirPlayPreference:(id)a3;
+- (id)stringForAirPlayPreference:(id)preference;
 - (void)start;
 @end
 
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __35__DEDHomeKitManager_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -34,9 +34,9 @@ uint64_t __35__DEDHomeKitManager_sharedInstance__block_invoke(uint64_t a1)
 
 - (void)start
 {
-  v3 = [(DEDHomeKitManager *)self homeKitManager];
+  homeKitManager = [(DEDHomeKitManager *)self homeKitManager];
 
-  if (!v3)
+  if (!homeKitManager)
   {
     v4 = [objc_alloc(MEMORY[0x277CD1A90]) initWithOptions:16];
     homeKitManager = self->_homeKitManager;
@@ -48,28 +48,28 @@ uint64_t __35__DEDHomeKitManager_sharedInstance__block_invoke(uint64_t a1)
 
 - (NSString)homeKitIdentifier
 {
-  v2 = [(DEDHomeKitManager *)self homeKitManager];
-  v3 = [v2 currentAccessory];
-  v4 = [v3 uniqueIdentifier];
-  v5 = [v4 UUIDString];
+  homeKitManager = [(DEDHomeKitManager *)self homeKitManager];
+  currentAccessory = [homeKitManager currentAccessory];
+  uniqueIdentifier = [currentAccessory uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
 
-  return v5;
+  return uUIDString;
 }
 
 - (BOOL)isHomeKitResident
 {
-  v2 = [(DEDHomeKitManager *)self homeKitManager];
-  v3 = [v2 isResidentEnabledForThisDevice];
+  homeKitManager = [(DEDHomeKitManager *)self homeKitManager];
+  isResidentEnabledForThisDevice = [homeKitManager isResidentEnabledForThisDevice];
 
-  return v3;
+  return isResidentEnabledForThisDevice;
 }
 
-- (id)stringForAirPlayPreference:(id)a3
+- (id)stringForAirPlayPreference:(id)preference
 {
   v3 = MEMORY[0x277CBEBD0];
-  v4 = a3;
+  preferenceCopy = preference;
   v5 = [[v3 alloc] initWithSuiteName:@"com.apple.airplay"];
-  v6 = [v5 stringForKey:v4];
+  v6 = [v5 stringForKey:preferenceCopy];
 
   return v6;
 }

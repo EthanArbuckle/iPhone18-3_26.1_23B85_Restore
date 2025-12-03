@@ -1,49 +1,49 @@
 @interface PXPhotoKitImportStatusManager
-- (id)initAllowingSimulation:(BOOL)a3;
-- (int64_t)_simulatedStateForAsset:(id)a3;
-- (int64_t)importStateForAsset:(id)a3;
-- (void)_notifySimulationObserversForAssetReference:(id)a3;
-- (void)addAssetImportStatusObserver:(id)a3;
-- (void)beginSimulatedImportForAssetReference:(id)a3;
-- (void)completeSimulatedImportForAssetReference:(id)a3 withSuccess:(BOOL)a4;
-- (void)removeAssetImportStatusObserver:(id)a3;
+- (id)initAllowingSimulation:(BOOL)simulation;
+- (int64_t)_simulatedStateForAsset:(id)asset;
+- (int64_t)importStateForAsset:(id)asset;
+- (void)_notifySimulationObserversForAssetReference:(id)reference;
+- (void)addAssetImportStatusObserver:(id)observer;
+- (void)beginSimulatedImportForAssetReference:(id)reference;
+- (void)completeSimulatedImportForAssetReference:(id)reference withSuccess:(BOOL)success;
+- (void)removeAssetImportStatusObserver:(id)observer;
 @end
 
 @implementation PXPhotoKitImportStatusManager
 
-- (void)removeAssetImportStatusObserver:(id)a3
+- (void)removeAssetImportStatusObserver:(id)observer
 {
-  v6 = a3;
+  observerCopy = observer;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"PXPhotoKitImportStatusManager.m" lineNumber:119 description:{@"%s must be called on the main thread", "-[PXPhotoKitImportStatusManager removeAssetImportStatusObserver:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitImportStatusManager.m" lineNumber:119 description:{@"%s must be called on the main thread", "-[PXPhotoKitImportStatusManager removeAssetImportStatusObserver:]"}];
   }
 
-  [(NSHashTable *)self->_statusObservers removeObject:v6];
+  [(NSHashTable *)self->_statusObservers removeObject:observerCopy];
 }
 
-- (void)addAssetImportStatusObserver:(id)a3
+- (void)addAssetImportStatusObserver:(id)observer
 {
-  v6 = a3;
+  observerCopy = observer;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"PXPhotoKitImportStatusManager.m" lineNumber:114 description:{@"%s must be called on the main thread", "-[PXPhotoKitImportStatusManager addAssetImportStatusObserver:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitImportStatusManager.m" lineNumber:114 description:{@"%s must be called on the main thread", "-[PXPhotoKitImportStatusManager addAssetImportStatusObserver:]"}];
   }
 
-  [(NSHashTable *)self->_statusObservers addObject:v6];
+  [(NSHashTable *)self->_statusObservers addObject:observerCopy];
 }
 
-- (int64_t)_simulatedStateForAsset:(id)a3
+- (int64_t)_simulatedStateForAsset:(id)asset
 {
-  v5 = a3;
-  if (!v5)
+  assetCopy = asset;
+  if (!assetCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
-    [v10 handleFailureInMethod:a2 object:self file:@"PXPhotoKitImportStatusManager.m" lineNumber:106 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"asset", v12}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitImportStatusManager.m" lineNumber:106 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"asset", v12}];
 LABEL_6:
 
     goto LABEL_3;
@@ -52,38 +52,38 @@ LABEL_6:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v13 = objc_opt_class();
     v12 = NSStringFromClass(v13);
-    v14 = [v5 px_descriptionForAssertionMessage];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXPhotoKitImportStatusManager.m" lineNumber:106 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"asset", v12, v14}];
+    px_descriptionForAssertionMessage = [assetCopy px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitImportStatusManager.m" lineNumber:106 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"asset", v12, px_descriptionForAssertionMessage}];
 
     goto LABEL_6;
   }
 
 LABEL_3:
-  v6 = [v5 localIdentifier];
-  v7 = [(NSMutableDictionary *)self->_simulatedStateByAssetID objectForKeyedSubscript:v6];
-  v8 = [v7 integerValue];
+  localIdentifier = [assetCopy localIdentifier];
+  v7 = [(NSMutableDictionary *)self->_simulatedStateByAssetID objectForKeyedSubscript:localIdentifier];
+  integerValue = [v7 integerValue];
 
-  return v8;
+  return integerValue;
 }
 
-- (void)completeSimulatedImportForAssetReference:(id)a3 withSuccess:(BOOL)a4
+- (void)completeSimulatedImportForAssetReference:(id)reference withSuccess:(BOOL)success
 {
-  v4 = a4;
-  v7 = a3;
-  v17 = v7;
+  successCopy = success;
+  referenceCopy = reference;
+  v17 = referenceCopy;
   if (!self->_supportsStateSimulation)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXPhotoKitImportStatusManager.m" lineNumber:94 description:{@"Invalid parameter not satisfying: %@", @"_supportsStateSimulation"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitImportStatusManager.m" lineNumber:94 description:{@"Invalid parameter not satisfying: %@", @"_supportsStateSimulation"}];
 
-    v7 = v17;
+    referenceCopy = v17;
   }
 
-  v8 = [v7 asset];
-  if (v8)
+  asset = [referenceCopy asset];
+  if (asset)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -91,24 +91,24 @@ LABEL_3:
       goto LABEL_5;
     }
 
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v15 = objc_opt_class();
     v14 = NSStringFromClass(v15);
-    v16 = [v8 px_descriptionForAssertionMessage];
-    [v12 handleFailureInMethod:a2 object:self file:@"PXPhotoKitImportStatusManager.m" lineNumber:97 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"assetReference.asset", v14, v16}];
+    px_descriptionForAssertionMessage = [asset px_descriptionForAssertionMessage];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXPhotoKitImportStatusManager.m" lineNumber:97 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"assetReference.asset", v14, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v13 = objc_opt_class();
     v14 = NSStringFromClass(v13);
-    [v12 handleFailureInMethod:a2 object:self file:@"PXPhotoKitImportStatusManager.m" lineNumber:97 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"assetReference.asset", v14}];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXPhotoKitImportStatusManager.m" lineNumber:97 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"assetReference.asset", v14}];
   }
 
 LABEL_5:
-  v9 = [v8 localIdentifier];
-  if (v4)
+  localIdentifier = [asset localIdentifier];
+  if (successCopy)
   {
     v10 = &unk_1F1909F70;
   }
@@ -118,24 +118,24 @@ LABEL_5:
     v10 = &unk_1F1909F88;
   }
 
-  [(NSMutableDictionary *)self->_simulatedStateByAssetID setObject:v10 forKeyedSubscript:v9];
+  [(NSMutableDictionary *)self->_simulatedStateByAssetID setObject:v10 forKeyedSubscript:localIdentifier];
   [(PXPhotoKitImportStatusManager *)self _notifySimulationObserversForAssetReference:v17];
 }
 
-- (void)beginSimulatedImportForAssetReference:(id)a3
+- (void)beginSimulatedImportForAssetReference:(id)reference
 {
-  v5 = a3;
-  v14 = v5;
+  referenceCopy = reference;
+  v14 = referenceCopy;
   if (!self->_supportsStateSimulation)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PXPhotoKitImportStatusManager.m" lineNumber:83 description:{@"Invalid parameter not satisfying: %@", @"_supportsStateSimulation"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitImportStatusManager.m" lineNumber:83 description:{@"Invalid parameter not satisfying: %@", @"_supportsStateSimulation"}];
 
-    v5 = v14;
+    referenceCopy = v14;
   }
 
-  v6 = [v5 asset];
-  if (v6)
+  asset = [referenceCopy asset];
+  if (asset)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -143,35 +143,35 @@ LABEL_5:
       goto LABEL_5;
     }
 
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v12 = objc_opt_class();
     v11 = NSStringFromClass(v12);
-    v13 = [v6 px_descriptionForAssertionMessage];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXPhotoKitImportStatusManager.m" lineNumber:86 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"assetReference.asset", v11, v13}];
+    px_descriptionForAssertionMessage = [asset px_descriptionForAssertionMessage];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXPhotoKitImportStatusManager.m" lineNumber:86 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"assetReference.asset", v11, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
-    [v9 handleFailureInMethod:a2 object:self file:@"PXPhotoKitImportStatusManager.m" lineNumber:86 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"assetReference.asset", v11}];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXPhotoKitImportStatusManager.m" lineNumber:86 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"assetReference.asset", v11}];
   }
 
 LABEL_5:
-  v7 = [v6 localIdentifier];
-  [(NSMutableDictionary *)self->_simulatedStateByAssetID setObject:&unk_1F1909F58 forKeyedSubscript:v7];
+  localIdentifier = [asset localIdentifier];
+  [(NSMutableDictionary *)self->_simulatedStateByAssetID setObject:&unk_1F1909F58 forKeyedSubscript:localIdentifier];
   [(PXPhotoKitImportStatusManager *)self _notifySimulationObserversForAssetReference:v14];
 }
 
-- (void)_notifySimulationObserversForAssetReference:(id)a3
+- (void)_notifySimulationObserversForAssetReference:(id)reference
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  referenceCopy = reference;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PXPhotoKitImportStatusManager.m" lineNumber:75 description:{@"%s must be called on the main thread", "-[PXPhotoKitImportStatusManager _notifySimulationObserversForAssetReference:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitImportStatusManager.m" lineNumber:75 description:{@"%s must be called on the main thread", "-[PXPhotoKitImportStatusManager _notifySimulationObserversForAssetReference:]"}];
   }
 
   v16 = 0u;
@@ -196,7 +196,7 @@ LABEL_5:
 
         v11 = *(*(&v14 + 1) + 8 * v10);
         v12 = objc_autoreleasePoolPush();
-        [v11 assetImportStatusManager:self didChangeStatusForAssetReference:v5];
+        [v11 assetImportStatusManager:self didChangeStatusForAssetReference:referenceCopy];
         objc_autoreleasePoolPop(v12);
         ++v10;
       }
@@ -209,25 +209,25 @@ LABEL_5:
   }
 }
 
-- (int64_t)importStateForAsset:(id)a3
+- (int64_t)importStateForAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   if (![(PXPhotoKitImportStatusManager *)self supportsStateSimulation])
   {
     if (objc_opt_respondsToSelector())
     {
-      v6 = [v4 destinationAssetCopyProperties];
-      v5 = v6;
-      if (!v6)
+      destinationAssetCopyProperties = [assetCopy destinationAssetCopyProperties];
+      v5 = destinationAssetCopyProperties;
+      if (!destinationAssetCopyProperties)
       {
         goto LABEL_8;
       }
 
-      v7 = [v6 destinationAssetCopyState];
+      destinationAssetCopyState = [destinationAssetCopyProperties destinationAssetCopyState];
 
-      if ((v7 + 1) <= 3)
+      if ((destinationAssetCopyState + 1) <= 3)
       {
-        v5 = qword_1A5381738[v7 + 1];
+        v5 = qword_1A5381738[destinationAssetCopyState + 1];
         goto LABEL_8;
       }
     }
@@ -236,30 +236,30 @@ LABEL_5:
     goto LABEL_8;
   }
 
-  v5 = [(PXPhotoKitImportStatusManager *)self _simulatedStateForAsset:v4];
+  v5 = [(PXPhotoKitImportStatusManager *)self _simulatedStateForAsset:assetCopy];
 LABEL_8:
 
   return v5;
 }
 
-- (id)initAllowingSimulation:(BOOL)a3
+- (id)initAllowingSimulation:(BOOL)simulation
 {
-  v3 = a3;
+  simulationCopy = simulation;
   v10.receiver = self;
   v10.super_class = PXPhotoKitImportStatusManager;
   v4 = [(PXPhotoKitImportStatusManager *)&v10 init];
   if (v4)
   {
-    v5 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     statusObservers = v4->_statusObservers;
-    v4->_statusObservers = v5;
+    v4->_statusObservers = weakObjectsHashTable;
 
-    v4->_supportsStateSimulation = v3;
-    if (v3)
+    v4->_supportsStateSimulation = simulationCopy;
+    if (simulationCopy)
     {
-      v7 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       simulatedStateByAssetID = v4->_simulatedStateByAssetID;
-      v4->_simulatedStateByAssetID = v7;
+      v4->_simulatedStateByAssetID = dictionary;
     }
   }
 

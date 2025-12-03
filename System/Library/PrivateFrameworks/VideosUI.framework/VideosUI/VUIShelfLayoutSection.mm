@@ -1,6 +1,6 @@
 @interface VUIShelfLayoutSection
 - (CGRect)firstItemFrame;
-- (CGRect)itemFrameAtIndex:(int64_t)a3;
+- (CGRect)itemFrameAtIndex:(int64_t)index;
 - (CGRect)itemsBoundingFrame;
 - (CGRect)lastItemFrame;
 - (CGRect)sectionHeaderFrame;
@@ -39,9 +39,9 @@
   }
 }
 
-- (CGRect)itemFrameAtIndex:(int64_t)a3
+- (CGRect)itemFrameAtIndex:(int64_t)index
 {
-  v3 = &self->_itemFrames[a3];
+  v3 = &self->_itemFrames[index];
   x = v3->origin.x;
   y = v3->origin.y;
   width = v3->size.width;

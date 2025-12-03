@@ -1,17 +1,17 @@
 @interface BRLTServiceTranslator
-- (BRLTServiceTranslator)initWithTable:(id)a3;
-- (id)_arrayFromData:(id)a3;
-- (id)_locationMapWithLength:(int64_t)a3 forArray:(id)a4 defaultLocation:(int64_t)a5;
-- (id)brailleForText:(id)a3 locations:(id *)a4;
-- (id)textForBraille:(id)a3 locations:(id *)a4;
+- (BRLTServiceTranslator)initWithTable:(id)table;
+- (id)_arrayFromData:(id)data;
+- (id)_locationMapWithLength:(int64_t)length forArray:(id)array defaultLocation:(int64_t)location;
+- (id)brailleForText:(id)text locations:(id *)locations;
+- (id)textForBraille:(id)braille locations:(id *)locations;
 @end
 
 @implementation BRLTServiceTranslator
 
-- (BRLTServiceTranslator)initWithTable:(id)a3
+- (BRLTServiceTranslator)initWithTable:(id)table
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  tableCopy = table;
   v29.receiver = self;
   v29.super_class = BRLTServiceTranslator;
   v6 = [(BRLTServiceTranslator *)&v29 init];
@@ -23,14 +23,14 @@ LABEL_13:
     goto LABEL_17;
   }
 
-  objc_storeStrong(&v6->_table, a3);
+  objc_storeStrong(&v6->_table, table);
   +[BRLTTableEnumerator tableEnumeratorWithSystemBundlePath];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v24 = v28 = 0u;
-  v8 = [v24 translatorBundles];
-  v9 = [v8 countByEnumeratingWithState:&v25 objects:v30 count:16];
+  translatorBundles = [v24 translatorBundles];
+  v9 = [translatorBundles countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v9)
   {
     v10 = v9;
@@ -41,13 +41,13 @@ LABEL_4:
     {
       if (*v26 != v11)
       {
-        objc_enumerationMutation(v8);
+        objc_enumerationMutation(translatorBundles);
       }
 
       v13 = *(*(&v25 + 1) + 8 * v12);
-      v14 = [v13 bundleIdentifier];
-      v15 = [v5 serviceIdentifier];
-      v16 = [v14 isEqualToString:v15];
+      bundleIdentifier = [v13 bundleIdentifier];
+      serviceIdentifier = [tableCopy serviceIdentifier];
+      v16 = [bundleIdentifier isEqualToString:serviceIdentifier];
 
       if (v16)
       {
@@ -56,7 +56,7 @@ LABEL_4:
 
       if (v10 == ++v12)
       {
-        v10 = [v8 countByEnumeratingWithState:&v25 objects:v30 count:16];
+        v10 = [translatorBundles countByEnumeratingWithState:&v25 objects:v30 count:16];
         if (v10)
         {
           goto LABEL_4;
@@ -86,7 +86,7 @@ LABEL_14:
   v21 = BRLTLog();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
   {
-    [(BRLTServiceTranslator *)v5 initWithTable:v21];
+    [(BRLTServiceTranslator *)tableCopy initWithTable:v21];
   }
 
   v20 = 0;
@@ -96,32 +96,32 @@ LABEL_17:
   return v20;
 }
 
-- (id)brailleForText:(id)a3 locations:(id *)a4
+- (id)brailleForText:(id)text locations:(id *)locations
 {
-  v6 = a3;
-  if ([v6 length])
+  textCopy = text;
+  if ([textCopy length])
   {
     v7 = [BRLTTranslationParameters alloc];
-    v8 = [(BRLTTable *)self->_table tableIdentifier];
-    v9 = [(BRLTTranslationParameters *)v7 initWithLanguage:v8 mode:1 partial:0 useTechnicalTable:0 textPositionsRange:0x7FFFFFFFFFFFFFFFLL textFormattingRanges:0, 0];
+    tableIdentifier = [(BRLTTable *)self->_table tableIdentifier];
+    v9 = [(BRLTTranslationParameters *)v7 initWithLanguage:tableIdentifier mode:1 partial:0 useTechnicalTable:0 textPositionsRange:0x7FFFFFFFFFFFFFFFLL textFormattingRanges:0, 0];
 
-    v10 = [(BRLTServiceTranslator *)self translator];
+    translator = [(BRLTServiceTranslator *)self translator];
     v15 = 0;
-    v11 = [v10 brailleForText:v6 parameters:v9 locations:&v15];
+    v11 = [translator brailleForText:textCopy parameters:v9 locations:&v15];
     v12 = v15;
 
-    if (a4)
+    if (locations)
     {
       v13 = [(BRLTServiceTranslator *)self _arrayFromData:v12];
-      *a4 = -[BRLTServiceTranslator _locationMapWithLength:forArray:defaultLocation:](self, "_locationMapWithLength:forArray:defaultLocation:", -[__CFString length](v11, "length"), v13, [v6 length] - 1);
+      *locations = -[BRLTServiceTranslator _locationMapWithLength:forArray:defaultLocation:](self, "_locationMapWithLength:forArray:defaultLocation:", -[__CFString length](v11, "length"), v13, [textCopy length] - 1);
     }
   }
 
   else
   {
-    if (a4)
+    if (locations)
     {
-      *a4 = MEMORY[0x277CBEBF8];
+      *locations = MEMORY[0x277CBEBF8];
     }
 
     v11 = &stru_2853FD1A8;
@@ -130,32 +130,32 @@ LABEL_17:
   return v11;
 }
 
-- (id)textForBraille:(id)a3 locations:(id *)a4
+- (id)textForBraille:(id)braille locations:(id *)locations
 {
-  v6 = a3;
-  if ([v6 length])
+  brailleCopy = braille;
+  if ([brailleCopy length])
   {
     v7 = [BRLTTranslationParameters alloc];
-    v8 = [(BRLTTable *)self->_table tableIdentifier];
-    v9 = [(BRLTTranslationParameters *)v7 initWithLanguage:v8 mode:1 partial:0 useTechnicalTable:0 textPositionsRange:0x7FFFFFFFFFFFFFFFLL textFormattingRanges:0, 0];
+    tableIdentifier = [(BRLTTable *)self->_table tableIdentifier];
+    v9 = [(BRLTTranslationParameters *)v7 initWithLanguage:tableIdentifier mode:1 partial:0 useTechnicalTable:0 textPositionsRange:0x7FFFFFFFFFFFFFFFLL textFormattingRanges:0, 0];
 
-    v10 = [(BRLTServiceTranslator *)self translator];
+    translator = [(BRLTServiceTranslator *)self translator];
     v15 = 0;
-    v11 = [v10 textForBraille:v6 parameters:v9 locations:&v15];
+    v11 = [translator textForBraille:brailleCopy parameters:v9 locations:&v15];
     v12 = v15;
 
-    if (a4)
+    if (locations)
     {
       v13 = [(BRLTServiceTranslator *)self _arrayFromData:v12];
-      *a4 = -[BRLTServiceTranslator _locationMapWithLength:forArray:defaultLocation:](self, "_locationMapWithLength:forArray:defaultLocation:", -[__CFString length](v11, "length"), v13, [v6 length] - 1);
+      *locations = -[BRLTServiceTranslator _locationMapWithLength:forArray:defaultLocation:](self, "_locationMapWithLength:forArray:defaultLocation:", -[__CFString length](v11, "length"), v13, [brailleCopy length] - 1);
     }
   }
 
   else
   {
-    if (a4)
+    if (locations)
     {
-      *a4 = MEMORY[0x277CBEBF8];
+      *locations = MEMORY[0x277CBEBF8];
     }
 
     v11 = &stru_2853FD1A8;
@@ -164,18 +164,18 @@ LABEL_17:
   return v11;
 }
 
-- (id)_arrayFromData:(id)a3
+- (id)_arrayFromData:(id)data
 {
-  v3 = a3;
-  v4 = [v3 length];
+  dataCopy = data;
+  v4 = [dataCopy length];
   v5 = v4 >> 3;
-  v6 = [v3 bytes];
+  bytes = [dataCopy bytes];
   v7 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:v4 >> 3];
   if (v4 >= 8)
   {
     do
     {
-      v8 = *v6++;
+      v8 = *bytes++;
       v9 = [MEMORY[0x277CCABB0] numberWithInteger:v8];
       [v7 addObject:v9];
 
@@ -188,30 +188,30 @@ LABEL_17:
   return v7;
 }
 
-- (id)_locationMapWithLength:(int64_t)a3 forArray:(id)a4 defaultLocation:(int64_t)a5
+- (id)_locationMapWithLength:(int64_t)length forArray:(id)array defaultLocation:(int64_t)location
 {
-  v7 = a4;
-  if ([v7 count] > a3)
+  arrayCopy = array;
+  if ([arrayCopy count] > length)
   {
-    v8 = [v7 subarrayWithRange:{0, a3}];
+    v8 = [arrayCopy subarrayWithRange:{0, length}];
 LABEL_5:
     v9 = v8;
     goto LABEL_6;
   }
 
-  if ([v7 count] == a3)
+  if ([arrayCopy count] == length)
   {
-    v8 = v7;
+    v8 = arrayCopy;
     goto LABEL_5;
   }
 
-  v11 = a3 - [v7 count];
-  v9 = [MEMORY[0x277CBEB18] arrayWithArray:v7];
+  v11 = length - [arrayCopy count];
+  v9 = [MEMORY[0x277CBEB18] arrayWithArray:arrayCopy];
   if (v11 >= 1)
   {
     do
     {
-      v12 = [MEMORY[0x277CCABB0] numberWithInteger:a5];
+      v12 = [MEMORY[0x277CCABB0] numberWithInteger:location];
       [v9 addObject:v12];
 
       --v11;

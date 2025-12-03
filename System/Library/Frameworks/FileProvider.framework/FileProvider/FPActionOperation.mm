@@ -1,31 +1,31 @@
 @interface FPActionOperation
-+ (id)newArrayRemovingFirstElement:(id)a3;
-- (FPActionOperation)initWithItemsOfDifferentProviders:(id)a3 action:(id)a4;
-- (FPActionOperation)initWithProvider:(id)a3 action:(id)a4;
++ (id)newArrayRemovingFirstElement:(id)element;
+- (FPActionOperation)initWithItemsOfDifferentProviders:(id)providers action:(id)action;
+- (FPActionOperation)initWithProvider:(id)provider action:(id)action;
 - (FPStitchingSession)stitcher;
 - (FPXOperationService)remoteService;
 - (FPXOperationService)remoteServiceProxy;
 - (id)operationDescription;
-- (id)replicateForItems:(id)a3;
+- (id)replicateForItems:(id)items;
 - (void)_dispatchToSubOperations;
 - (void)_preflightAndRun;
-- (void)_runUserInteractionsPreflight:(id)a3;
-- (void)finishWithResult:(id)a3 error:(id)a4;
-- (void)invokeErrorRecoveryHandlerWithService:(id)a3 fpProviderDomainId:(id)a4 error:(id)a5 completion:(id)a6;
+- (void)_runUserInteractionsPreflight:(id)preflight;
+- (void)finishWithResult:(id)result error:(id)error;
+- (void)invokeErrorRecoveryHandlerWithService:(id)service fpProviderDomainId:(id)id error:(id)error completion:(id)completion;
 - (void)main;
-- (void)preflightWithCompletion:(id)a3;
+- (void)preflightWithCompletion:(id)completion;
 - (void)resetStitcher;
-- (void)runUserInteractionsPreflight:(id)a3;
-- (void)tryRecoveringFromError:(id)a3 completion:(id)a4;
-- (void)tryRecoveringFromPreflightErrors:(id)a3 recoveryHandler:(id)a4 completion:(id)a5;
+- (void)runUserInteractionsPreflight:(id)preflight;
+- (void)tryRecoveringFromError:(id)error completion:(id)completion;
+- (void)tryRecoveringFromPreflightErrors:(id)errors recoveryHandler:(id)handler completion:(id)completion;
 @end
 
 @implementation FPActionOperation
 
-- (FPActionOperation)initWithProvider:(id)a3 action:(id)a4
+- (FPActionOperation)initWithProvider:(id)provider action:(id)action
 {
-  v7 = a3;
-  v8 = a4;
+  providerCopy = provider;
+  actionCopy = action;
   v21.receiver = self;
   v21.super_class = FPActionOperation;
   v9 = [(FPOperation *)&v21 init];
@@ -37,8 +37,8 @@
     v9->_haveStitching = 1;
     v9->_havePreflight = 1;
     v9->_skipPreflight = 0;
-    objc_storeStrong(&v9->_action, a4);
-    objc_storeStrong(&v10->_providerIdentifier, a3);
+    objc_storeStrong(&v9->_action, action);
+    objc_storeStrong(&v10->_providerIdentifier, provider);
     v11 = +[FPItemManager defaultManager];
     itemManager = v10->_itemManager;
     v10->_itemManager = v11;
@@ -82,29 +82,29 @@ void __45__FPActionOperation_initWithProvider_action___block_invoke(uint64_t a1)
   [WeakRetained cancel];
 }
 
-- (FPActionOperation)initWithItemsOfDifferentProviders:(id)a3 action:(id)a4
+- (FPActionOperation)initWithItemsOfDifferentProviders:(id)providers action:(id)action
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (![v6 count])
+  providersCopy = providers;
+  actionCopy = action;
+  if (![providersCopy count])
   {
     [FPActionOperation initWithItemsOfDifferentProviders:action:];
   }
 
-  v8 = [(FPActionOperation *)self initWithProvider:0 action:v7];
+  v8 = [(FPActionOperation *)self initWithProvider:0 action:actionCopy];
   v9 = v8;
   if (v8)
   {
     v8->_multiProviders = 1;
-    [(FPActionOperation *)v8 setSourceItemsToPreflight:v6];
+    [(FPActionOperation *)v8 setSourceItemsToPreflight:providersCopy];
     v10 = objc_opt_new();
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v22 = v6;
-    v11 = v6;
+    v22 = providersCopy;
+    v11 = providersCopy;
     v12 = [v11 countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v12)
     {
@@ -120,12 +120,12 @@ void __45__FPActionOperation_initWithProvider_action___block_invoke(uint64_t a1)
           }
 
           v16 = *(*(&v23 + 1) + 8 * i);
-          v17 = [v16 providerDomainID];
-          v18 = [(NSDictionary *)v10 objectForKeyedSubscript:v17];
+          providerDomainID = [v16 providerDomainID];
+          v18 = [(NSDictionary *)v10 objectForKeyedSubscript:providerDomainID];
           if (!v18)
           {
             v18 = objc_opt_new();
-            [(NSDictionary *)v10 setObject:v18 forKeyedSubscript:v17];
+            [(NSDictionary *)v10 setObject:v18 forKeyedSubscript:providerDomainID];
           }
 
           [v18 addObject:v16];
@@ -140,7 +140,7 @@ void __45__FPActionOperation_initWithProvider_action___block_invoke(uint64_t a1)
     itemsByDomainID = v9->_itemsByDomainID;
     v9->_itemsByDomainID = v10;
 
-    v6 = v22;
+    providersCopy = v22;
   }
 
   v20 = *MEMORY[0x1E69E9840];
@@ -188,10 +188,10 @@ void __45__FPActionOperation_initWithProvider_action___block_invoke(uint64_t a1)
   self->_stitcher = 0;
 }
 
-- (id)replicateForItems:(id)a3
+- (id)replicateForItems:(id)items
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"FPActionOperation.m" lineNumber:163 description:@"UNREACHABLE: this should be overridden by the concrete operation"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"FPActionOperation.m" lineNumber:163 description:@"UNREACHABLE: this should be overridden by the concrete operation"];
 
   return 0;
 }
@@ -252,7 +252,7 @@ void __45__FPActionOperation_initWithProvider_action___block_invoke(uint64_t a1)
           *buf = v14;
           v28 = v9;
           v29 = 2112;
-          v30 = self;
+          selfCopy = self;
           _os_log_debug_impl(&dword_1AAAE1000, v11, OS_LOG_TYPE_DEBUG, "[DEBUG] created suboperation %@ for %@", buf, 0x16u);
         }
 
@@ -267,14 +267,14 @@ void __45__FPActionOperation_initWithProvider_action___block_invoke(uint64_t a1)
     while (v4);
   }
 
-  v12 = [(FPOperation *)self callbackQueue];
+  callbackQueue = [(FPOperation *)self callbackQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __45__FPActionOperation__dispatchToSubOperations__block_invoke_24;
   block[3] = &unk_1E793AD20;
   block[4] = self;
   block[5] = v25;
-  dispatch_group_notify(v3, v12, block);
+  dispatch_group_notify(v3, callbackQueue, block);
 
   _Block_object_dispose(v25, 8);
   v13 = *MEMORY[0x1E69E9840];
@@ -333,43 +333,43 @@ void __45__FPActionOperation__dispatchToSubOperations__block_invoke_24(uint64_t 
   return [MEMORY[0x1E696AEC0] stringWithFormat:@" %@ ", providerIdentifier];
 }
 
-- (void)runUserInteractionsPreflight:(id)a3
+- (void)runUserInteractionsPreflight:(id)preflight
 {
-  v4 = a3;
-  v5 = [(FPActionOperation *)self action];
-  if (v5)
+  preflightCopy = preflight;
+  action = [(FPActionOperation *)self action];
+  if (action)
   {
-    v6 = v5;
-    v7 = [(FPActionOperation *)self setupRemoteOperationService];
+    v6 = action;
+    setupRemoteOperationService = [(FPActionOperation *)self setupRemoteOperationService];
 
-    if (v7)
+    if (setupRemoteOperationService)
     {
-      v8 = [(FPActionOperation *)self sourceItemsToPreflight];
-      v9 = [v8 firstObject];
-      if ([v9 isExcludedFromSync])
+      sourceItemsToPreflight = [(FPActionOperation *)self sourceItemsToPreflight];
+      firstObject = [sourceItemsToPreflight firstObject];
+      if ([firstObject isExcludedFromSync])
       {
       }
 
       else
       {
-        v10 = [(FPActionOperation *)self destinationItemToPreflight];
-        v11 = [v10 isExcludedFromSync];
+        destinationItemToPreflight = [(FPActionOperation *)self destinationItemToPreflight];
+        isExcludedFromSync = [destinationItemToPreflight isExcludedFromSync];
 
-        if (!v11)
+        if (!isExcludedFromSync)
         {
           v12 = self->_providerIdentifier;
-          v13 = [(FPActionOperation *)self remoteServiceProxy];
-          v14 = [(FPActionOperation *)self action];
-          v15 = [(FPActionOperation *)self sourceItemsToPreflight];
-          v16 = [(FPActionOperation *)self destinationItemToPreflight];
-          v17 = [(FPActionOperation *)self sourceItemKeysAllowList];
-          v18 = [(FPActionOperation *)self destinationItemKeysAllowList];
+          remoteServiceProxy = [(FPActionOperation *)self remoteServiceProxy];
+          action2 = [(FPActionOperation *)self action];
+          sourceItemsToPreflight2 = [(FPActionOperation *)self sourceItemsToPreflight];
+          destinationItemToPreflight2 = [(FPActionOperation *)self destinationItemToPreflight];
+          sourceItemKeysAllowList = [(FPActionOperation *)self sourceItemKeysAllowList];
+          destinationItemKeysAllowList = [(FPActionOperation *)self destinationItemKeysAllowList];
           v19[0] = MEMORY[0x1E69E9820];
           v19[1] = 3221225472;
           v19[2] = __50__FPActionOperation_runUserInteractionsPreflight___block_invoke;
           v19[3] = &unk_1E793CAB0;
-          v20 = v4;
-          [v13 userInteractionErrorsForPerformingAction:v14 sourceItems:v15 destinationItem:v16 fpProviderDomainId:v12 sourceItemKeysAllowList:v17 destinationItemKeysAllowList:v18 completionHandler:v19];
+          v20 = preflightCopy;
+          [remoteServiceProxy userInteractionErrorsForPerformingAction:action2 sourceItems:sourceItemsToPreflight2 destinationItem:destinationItemToPreflight2 fpProviderDomainId:v12 sourceItemKeysAllowList:sourceItemKeysAllowList destinationItemKeysAllowList:destinationItemKeysAllowList completionHandler:v19];
 
           goto LABEL_7;
         }
@@ -377,7 +377,7 @@ void __45__FPActionOperation__dispatchToSubOperations__block_invoke_24(uint64_t 
     }
   }
 
-  (*(v4 + 2))(v4, 0);
+  (*(preflightCopy + 2))(preflightCopy, 0);
 LABEL_7:
 }
 
@@ -411,17 +411,17 @@ void __50__FPActionOperation_runUserInteractionsPreflight___block_invoke(uint64_
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_runUserInteractionsPreflight:(id)a3
+- (void)_runUserInteractionsPreflight:(id)preflight
 {
-  v5 = a3;
+  preflightCopy = preflight;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __51__FPActionOperation__runUserInteractionsPreflight___block_invoke;
   v7[3] = &unk_1E793DEF8;
   v7[4] = self;
-  v8 = v5;
+  v8 = preflightCopy;
   v9 = a2;
-  v6 = v5;
+  v6 = preflightCopy;
   [(FPActionOperation *)self runUserInteractionsPreflight:v7];
 }
 
@@ -519,10 +519,10 @@ LABEL_6:
   return v6;
 }
 
-- (void)preflightWithCompletion:(id)a3
+- (void)preflightWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
+  completionCopy = completion;
+  v5 = completionCopy;
   if (self->_skipPreflight)
   {
     v6 = fp_current_or_default_log();
@@ -541,7 +541,7 @@ LABEL_6:
     v14[2] = __45__FPActionOperation_preflightWithCompletion___block_invoke;
     v14[3] = &unk_1E793DF20;
     v14[4] = self;
-    v15 = v4;
+    v15 = completionCopy;
     [(FPActionOperation *)self _runUserInteractionsPreflight:v14];
   }
 }
@@ -622,7 +622,7 @@ void __37__FPActionOperation__preflightAndRun__block_invoke_2(uint64_t a1)
 - (void)main
 {
   v5 = *MEMORY[0x1E69E9840];
-  v1 = *a1;
+  v1 = *self;
   OUTLINED_FUNCTION_14_0();
   OUTLINED_FUNCTION_1_0(&dword_1AAAE1000, v2, v3, "[DEBUG] ┳%llx starting action %@");
   v4 = *MEMORY[0x1E69E9840];
@@ -662,8 +662,8 @@ uint64_t __25__FPActionOperation_main__block_invoke_3(uint64_t a1)
 {
   if (!self->_setupRemoteOperationService)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"FPActionOperation.m" lineNumber:371 description:@"setupRemoteOperationService is not set"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"FPActionOperation.m" lineNumber:371 description:@"setupRemoteOperationService is not set"];
   }
 
   remoteService = self->_remoteService;
@@ -673,27 +673,27 @@ uint64_t __25__FPActionOperation_main__block_invoke_3(uint64_t a1)
 
 - (FPXOperationService)remoteServiceProxy
 {
-  v2 = [(FPActionOperation *)self remoteService];
-  v3 = [v2 remoteObjectProxy];
+  remoteService = [(FPActionOperation *)self remoteService];
+  remoteObjectProxy = [remoteService remoteObjectProxy];
 
-  return v3;
+  return remoteObjectProxy;
 }
 
-- (void)finishWithResult:(id)a3 error:(id)a4
+- (void)finishWithResult:(id)result error:(id)error
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  resultCopy = result;
+  errorCopy = error;
   [(FPActionOperation *)self resetStitcher];
   [(FPXOperationService *)self->_remoteService invalidate];
   remoteService = self->_remoteService;
   self->_remoteService = 0;
 
-  v9 = [(FPActionOperation *)self actionCompletionBlock];
-  v10 = v9;
-  if (v9)
+  actionCompletionBlock = [(FPActionOperation *)self actionCompletionBlock];
+  v10 = actionCompletionBlock;
+  if (actionCompletionBlock)
   {
-    (*(v9 + 16))(v9, v7);
+    (*(actionCompletionBlock + 16))(actionCompletionBlock, errorCopy);
     [(FPActionOperation *)self setActionCompletionBlock:0];
   }
 
@@ -704,21 +704,21 @@ uint64_t __25__FPActionOperation_main__block_invoke_3(uint64_t a1)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    v15 = v6;
+    v15 = resultCopy;
     if (isKindOfClass)
     {
-      v15 = FPAbbreviatedArrayDescription(v6);
+      v15 = FPAbbreviatedArrayDescription(resultCopy);
     }
 
-    v16 = [v7 fp_prettyDescription];
+    fp_prettyDescription = [errorCopy fp_prettyDescription];
     *buf = 134218754;
     v20 = logSection;
     v21 = 2112;
-    v22 = self;
+    selfCopy = self;
     v23 = 2112;
     v24 = v15;
     v25 = 2112;
-    v26 = v16;
+    v26 = fp_prettyDescription;
     _os_log_debug_impl(&dword_1AAAE1000, v12, OS_LOG_TYPE_DEBUG, "[DEBUG] ┳%llx action finished %@ with (result=%@, error=%@)", buf, 0x2Au);
 
     if (isKindOfClass)
@@ -728,22 +728,22 @@ uint64_t __25__FPActionOperation_main__block_invoke_3(uint64_t a1)
 
   v17.receiver = self;
   v17.super_class = FPActionOperation;
-  [(FPOperation *)&v17 finishWithResult:v6 error:v7];
+  [(FPOperation *)&v17 finishWithResult:resultCopy error:errorCopy];
   __fp_leave_section_Debug(&v18);
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)tryRecoveringFromError:(id)a3 completion:(id)a4
+- (void)tryRecoveringFromError:(id)error completion:(id)completion
 {
   v45 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(FPActionOperation *)self haveErrorRecovery];
-  v9 = [(FPActionOperation *)self errorRecoveryHandler];
-  if (v9)
+  errorCopy = error;
+  completionCopy = completion;
+  haveErrorRecovery = [(FPActionOperation *)self haveErrorRecovery];
+  errorRecoveryHandler = [(FPActionOperation *)self errorRecoveryHandler];
+  if (errorRecoveryHandler)
   {
-    v10 = v8;
+    v10 = haveErrorRecovery;
   }
 
   else
@@ -751,15 +751,15 @@ uint64_t __25__FPActionOperation_main__block_invoke_3(uint64_t a1)
     v10 = 0;
   }
 
-  v11 = [v6 localizedRecoveryOptions];
-  if (![v11 count])
+  localizedRecoveryOptions = [errorCopy localizedRecoveryOptions];
+  if (![localizedRecoveryOptions count])
   {
     v10 = 0;
   }
 
-  v12 = [v6 recoveryAttempter];
+  recoveryAttempter = [errorCopy recoveryAttempter];
 
-  if (!v12 || ([v6 recoveryAttempter], v13 = objc_claimAutoreleasedReturnValue(), v13, !v13))
+  if (!recoveryAttempter || ([errorCopy recoveryAttempter], v13 = objc_claimAutoreleasedReturnValue(), v13, !v13))
   {
     if (v10)
     {
@@ -783,21 +783,21 @@ LABEL_21:
   }
 
 LABEL_9:
-  v14 = [v6 userInfo];
-  v15 = [v14 objectForKey:@"FPCanBeSuppressed"];
-  v16 = [v15 BOOLValue];
+  userInfo = [errorCopy userInfo];
+  v15 = [userInfo objectForKey:@"FPCanBeSuppressed"];
+  bOOLValue = [v15 BOOLValue];
 
-  v17 = [v6 userInfo];
-  v18 = [v17 objectForKey:@"FPIsSuppressed"];
-  v19 = [v18 BOOLValue];
+  userInfo2 = [errorCopy userInfo];
+  v18 = [userInfo2 objectForKey:@"FPIsSuppressed"];
+  bOOLValue2 = [v18 BOOLValue];
 
   v20 = fp_current_or_default_log();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
   {
-    v32 = [MEMORY[0x1E696AD98] numberWithBool:v16];
-    v33 = [MEMORY[0x1E696AD98] numberWithBool:v19 & 1];
+    v32 = [MEMORY[0x1E696AD98] numberWithBool:bOOLValue];
+    v33 = [MEMORY[0x1E696AD98] numberWithBool:bOOLValue2 & 1];
     *buf = 138412802;
-    v40 = self;
+    selfCopy = self;
     v41 = 2112;
     v42 = v32;
     v43 = 2112;
@@ -805,7 +805,7 @@ LABEL_9:
     _os_log_debug_impl(&dword_1AAAE1000, v20, OS_LOG_TYPE_DEBUG, "[DEBUG] %@: Checking suppression: suppressionIsEnabledForPredicate = %@, suppressionIsCheckedForPredicate = %@", buf, 0x20u);
   }
 
-  if ((v16 & v19) != 0)
+  if ((bOOLValue & bOOLValue2) != 0)
   {
     v21 = fp_current_or_default_log();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
@@ -815,46 +815,46 @@ LABEL_9:
 
 LABEL_23:
 
-    (*(v7 + 2))(v7, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
     goto LABEL_24;
   }
 
-  if (!(v19 & 1 | ((v16 & 1) == 0)))
+  if (!(bOOLValue2 & 1 | ((bOOLValue & 1) == 0)))
   {
-    v22 = [v6 userInfo];
-    v23 = [v22 mutableCopy];
+    userInfo3 = [errorCopy userInfo];
+    v23 = [userInfo3 mutableCopy];
 
     v24 = [MEMORY[0x1E696AD98] numberWithBool:1];
     [v23 setValue:v24 forKey:@"FPErrorShowSuppressionCheckbox"];
 
     v25 = MEMORY[0x1E696ABC0];
-    v26 = [v6 domain];
-    v27 = [v25 errorWithDomain:v26 code:objc_msgSend(v6 userInfo:{"code"), v23}];
+    domain = [errorCopy domain];
+    v27 = [v25 errorWithDomain:domain code:objc_msgSend(errorCopy userInfo:{"code"), v23}];
 
-    v6 = v27;
+    errorCopy = v27;
   }
 
-  v28 = [v6 userInfo];
-  v29 = [v28 objectForKey:@"DomainIdentifier"];
+  userInfo4 = [errorCopy userInfo];
+  v29 = [userInfo4 objectForKey:@"DomainIdentifier"];
 
   if (v29)
   {
-    v30 = [(FPActionOperation *)self itemManager];
+    itemManager = [(FPActionOperation *)self itemManager];
     v35[0] = MEMORY[0x1E69E9820];
     v35[1] = 3221225472;
     v35[2] = __55__FPActionOperation_tryRecoveringFromError_completion___block_invoke;
     v35[3] = &unk_1E793DF98;
     v35[4] = self;
     v36 = v29;
-    v38 = v7;
-    v37 = v6;
-    [v30 fetchOperationServiceForProviderDomainID:v36 handler:v35];
+    v38 = completionCopy;
+    v37 = errorCopy;
+    [itemManager fetchOperationServiceForProviderDomainID:v36 handler:v35];
   }
 
   else
   {
-    v31 = [(FPActionOperation *)self remoteServiceProxy];
-    [(FPActionOperation *)self invokeErrorRecoveryHandlerWithService:v31 fpProviderDomainId:@"n/a" error:v6 completion:v7];
+    remoteServiceProxy = [(FPActionOperation *)self remoteServiceProxy];
+    [(FPActionOperation *)self invokeErrorRecoveryHandlerWithService:remoteServiceProxy fpProviderDomainId:@"n/a" error:errorCopy completion:completionCopy];
   }
 
 LABEL_24:
@@ -883,17 +883,17 @@ void __55__FPActionOperation_tryRecoveringFromError_completion___block_invoke(vo
   }
 }
 
-- (void)invokeErrorRecoveryHandlerWithService:(id)a3 fpProviderDomainId:(id)a4 error:(id)a5 completion:(id)a6
+- (void)invokeErrorRecoveryHandlerWithService:(id)service fpProviderDomainId:(id)id error:(id)error completion:(id)completion
 {
-  v10 = a6;
+  completionCopy = completion;
   v14 = MEMORY[0x1E69E9820];
   v15 = 3221225472;
   v16 = __95__FPActionOperation_invokeErrorRecoveryHandlerWithService_fpProviderDomainId_error_completion___block_invoke;
   v17 = &unk_1E793DFE8;
-  v18 = self;
-  v19 = v10;
-  v11 = v10;
-  v12 = [a5 fp_recoverableErrorWithBlock:&v14 fpProviderDomainId:a4 operationService:a3];
+  selfCopy = self;
+  v19 = completionCopy;
+  v11 = completionCopy;
+  v12 = [error fp_recoverableErrorWithBlock:&v14 fpProviderDomainId:id operationService:service];
   v13 = [(FPActionOperation *)self errorRecoveryHandler:v14];
   (v13)[2](v13, v12);
 }
@@ -910,14 +910,14 @@ void __95__FPActionOperation_invokeErrorRecoveryHandlerWithService_fpProviderDom
   dispatch_async(v4, v5);
 }
 
-- (void)tryRecoveringFromPreflightErrors:(id)a3 recoveryHandler:(id)a4 completion:(id)a5
+- (void)tryRecoveringFromPreflightErrors:(id)errors recoveryHandler:(id)handler completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count])
+  errorsCopy = errors;
+  handlerCopy = handler;
+  completionCopy = completion;
+  if ([errorsCopy count])
   {
-    v11 = [v8 fp_filter:&__block_literal_global_68_1];
+    v11 = [errorsCopy fp_filter:&__block_literal_global_68_1];
     if ([v11 count])
     {
       v12 = fp_current_or_default_log();
@@ -926,24 +926,24 @@ void __95__FPActionOperation_invokeErrorRecoveryHandlerWithService_fpProviderDom
         [FPActionOperation tryRecoveringFromPreflightErrors:recoveryHandler:completion:];
       }
 
-      v13 = [v11 firstObject];
-      v10[2](v10, 0, v13);
+      firstObject = [v11 firstObject];
+      completionCopy[2](completionCopy, 0, firstObject);
     }
 
     else
     {
-      v13 = [v8 objectAtIndexedSubscript:0];
-      v15 = [v13 fp_genericPreflightError];
+      firstObject = [errorsCopy objectAtIndexedSubscript:0];
+      fp_genericPreflightError = [firstObject fp_genericPreflightError];
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __81__FPActionOperation_tryRecoveringFromPreflightErrors_recoveryHandler_completion___block_invoke_69;
       v17[3] = &unk_1E793E058;
       v17[4] = self;
-      v20 = v9;
-      v18 = v15;
-      v21 = v10;
-      v19 = v8;
-      v16 = v15;
+      v20 = handlerCopy;
+      v18 = fp_genericPreflightError;
+      v21 = completionCopy;
+      v19 = errorsCopy;
+      v16 = fp_genericPreflightError;
       [(FPActionOperation *)self tryRecoveringFromError:v16 completion:v17];
     }
   }
@@ -956,7 +956,7 @@ void __95__FPActionOperation_invokeErrorRecoveryHandlerWithService_fpProviderDom
       [FPActionOperation tryRecoveringFromPreflightErrors:recoveryHandler:completion:];
     }
 
-    v10[2](v10, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 }
 
@@ -1010,10 +1010,10 @@ LABEL_9:
   [*(a1 + 48) tryRecoveringFromPreflightErrors:v7 recoveryHandler:*(a1 + 56) completion:*(a1 + 64)];
 }
 
-+ (id)newArrayRemovingFirstElement:(id)a3
++ (id)newArrayRemovingFirstElement:(id)element
 {
-  v3 = a3;
-  v4 = [v3 subarrayWithRange:{1, objc_msgSend(v3, "count") - 1}];
+  elementCopy = element;
+  v4 = [elementCopy subarrayWithRange:{1, objc_msgSend(elementCopy, "count") - 1}];
 
   return v4;
 }

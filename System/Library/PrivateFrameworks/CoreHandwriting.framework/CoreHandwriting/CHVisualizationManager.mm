@@ -1,25 +1,25 @@
 @interface CHVisualizationManager
-+ (BOOL)variableHeightForRecognitionSessionStatusKey:(id)a3;
-+ (CGColor)newColorForPrincipalLineType:(int)a3;
-+ (CGColor)newColorForVisualizedItemAtIndex:(int64_t)a3;
++ (BOOL)variableHeightForRecognitionSessionStatusKey:(id)key;
++ (CGColor)newColorForPrincipalLineType:(int)type;
++ (CGColor)newColorForVisualizedItemAtIndex:(int64_t)index;
 + (id)availableRecognitionSessionStatusKeys;
 + (id)availableVisualizationIdentifiers;
-+ (id)localizedNameForRecognitionSessionStatusKey:(id)a3;
-+ (id)localizedNameForVisualizationIdentifier:(id)a3;
-- (BOOL)isEnabledVisualizationForIdentifier:(id)a3;
++ (id)localizedNameForRecognitionSessionStatusKey:(id)key;
++ (id)localizedNameForVisualizationIdentifier:(id)identifier;
+- (BOOL)isEnabledVisualizationForIdentifier:(id)identifier;
 - (CHVisualizationManager)init;
-- (CHVisualizationManager)initWithRecognitionSession:(id)a3;
-- (id)valueForRecognitionStatusKey:(id)a3;
-- (int64_t)visualizationIndexForStrokeGroup:(id)a3;
+- (CHVisualizationManager)initWithRecognitionSession:(id)session;
+- (id)valueForRecognitionStatusKey:(id)key;
+- (int64_t)visualizationIndexForStrokeGroup:(id)group;
 - (void)dealloc;
-- (void)drawVisualizationInRect:(CGRect)a3 context:(CGContext *)a4 viewBounds:(CGRect)a5;
-- (void)recognitionSessionDidChangeStatus:(id)a3;
-- (void)recognitionSessionDidUpdateRecognitionResult:(id)a3;
-- (void)setEnabled:(BOOL)a3 forVisualizationIdentifier:(id)a4;
-- (void)setStatusReportingEnabled:(BOOL)a3;
-- (void)toggleSelectiveVisualizationsAtPoint:(CGPoint)a3;
-- (void)visualization:(id)a3 needsDisplayInRect:(CGRect)a4;
-- (void)visualizationNeedsDisplay:(id)a3;
+- (void)drawVisualizationInRect:(CGRect)rect context:(CGContext *)context viewBounds:(CGRect)bounds;
+- (void)recognitionSessionDidChangeStatus:(id)status;
+- (void)recognitionSessionDidUpdateRecognitionResult:(id)result;
+- (void)setEnabled:(BOOL)enabled forVisualizationIdentifier:(id)identifier;
+- (void)setStatusReportingEnabled:(BOOL)enabled;
+- (void)toggleSelectiveVisualizationsAtPoint:(CGPoint)point;
+- (void)visualization:(id)visualization needsDisplayInRect:(CGRect)rect;
+- (void)visualizationNeedsDisplay:(id)display;
 @end
 
 @implementation CHVisualizationManager
@@ -40,15 +40,15 @@
   return v3;
 }
 
-+ (id)localizedNameForVisualizationIdentifier:(id)a3
++ (id)localizedNameForVisualizationIdentifier:(id)identifier
 {
-  v7 = a3;
+  identifierCopy = identifier;
   if (qword_1EA84D128 != -1)
   {
     dispatch_once(&qword_1EA84D128, &unk_1EF1BEFF0);
   }
 
-  v8 = objc_msgSend_objectForKeyedSubscript_(qword_1EA84D120, v3, v7, v4, v5, v6);
+  v8 = objc_msgSend_objectForKeyedSubscript_(qword_1EA84D120, v3, identifierCopy, v4, v5, v6);
   v9 = v8;
   if (v8)
   {
@@ -83,15 +83,15 @@
   return v4;
 }
 
-+ (id)localizedNameForRecognitionSessionStatusKey:(id)a3
++ (id)localizedNameForRecognitionSessionStatusKey:(id)key
 {
-  v7 = a3;
+  keyCopy = key;
   if (qword_1EA84D148 != -1)
   {
     dispatch_once(&qword_1EA84D148, &unk_1EF1BF030);
   }
 
-  v8 = objc_msgSend_objectForKeyedSubscript_(qword_1EA84D140, v3, v7, v4, v5, v6);
+  v8 = objc_msgSend_objectForKeyedSubscript_(qword_1EA84D140, v3, keyCopy, v4, v5, v6);
   v9 = v8;
   if (v8)
   {
@@ -108,19 +108,19 @@
   return v10;
 }
 
-+ (BOOL)variableHeightForRecognitionSessionStatusKey:(id)a3
++ (BOOL)variableHeightForRecognitionSessionStatusKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v8 = objc_msgSend_setWithObjects_(MEMORY[0x1E695DFD8], v4, @"CHStatusKeyTranscript", v5, v6, v7, @"CHStatusKeyAllResults", @"CHStatusKeyAllMathResults", 0);
-  v13 = objc_msgSend_containsObject_(v8, v9, v3, v10, v11, v12);
+  v13 = objc_msgSend_containsObject_(v8, v9, keyCopy, v10, v11, v12);
 
   return v13;
 }
 
-+ (CGColor)newColorForVisualizedItemAtIndex:(int64_t)a3
++ (CGColor)newColorForVisualizedItemAtIndex:(int64_t)index
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = a3 % 10;
+  v3 = index % 10;
   DeviceRGB = CGColorSpaceCreateDeviceRGB();
   v5 = DeviceRGB;
   if (v3 <= 3)
@@ -195,21 +195,21 @@ LABEL_21:
   return v8;
 }
 
-+ (CGColor)newColorForPrincipalLineType:(int)a3
++ (CGColor)newColorForPrincipalLineType:(int)type
 {
   v11 = *MEMORY[0x1E69E9840];
   v4 = 0;
   DeviceRGB = CGColorSpaceCreateDeviceRGB();
   v6 = DeviceRGB;
-  if (a3 > 2)
+  if (type > 2)
   {
-    if (a3 == 3)
+    if (type == 3)
     {
       v7 = &xmmword_1839D99D0;
       goto LABEL_10;
     }
 
-    if (a3 == 4)
+    if (type == 4)
     {
       v7 = &xmmword_1839D99F0;
       goto LABEL_10;
@@ -218,13 +218,13 @@ LABEL_21:
 
   else
   {
-    if (a3 == 1)
+    if (type == 1)
     {
       v7 = &xmmword_1839D9990;
       goto LABEL_10;
     }
 
-    if (a3 == 2)
+    if (type == 2)
     {
       v7 = &xmmword_1839D99B0;
 LABEL_10:
@@ -278,16 +278,16 @@ LABEL_8:
   return 0;
 }
 
-- (CHVisualizationManager)initWithRecognitionSession:(id)a3
+- (CHVisualizationManager)initWithRecognitionSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   v19.receiver = self;
   v19.super_class = CHVisualizationManager;
   v6 = [(CHVisualizationManager *)&v19 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_recognitionSession, a3);
+    objc_storeStrong(&v6->_recognitionSession, session);
     v8 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     enabledVisualizationIDs = v7->__enabledVisualizationIDs;
     v7->__enabledVisualizationIDs = v8;
@@ -359,37 +359,37 @@ LABEL_8:
   [(CHVisualizationManager *)&v21 dealloc];
 }
 
-- (void)setEnabled:(BOOL)a3 forVisualizationIdentifier:(id)a4
+- (void)setEnabled:(BOOL)enabled forVisualizationIdentifier:(id)identifier
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v120 = *MEMORY[0x1E69E9840];
-  v112 = a4;
-  if (objc_msgSend_isEnabledVisualizationForIdentifier_(self, v6, v112, v7, v8, v9) == v4)
+  identifierCopy = identifier;
+  if (objc_msgSend_isEnabledVisualizationForIdentifier_(self, v6, identifierCopy, v7, v8, v9) == enabledCopy)
   {
     goto LABEL_44;
   }
 
-  if (v4)
+  if (enabledCopy)
   {
     if (self)
     {
-      objc_msgSend_addObject_(self->__enabledVisualizationIDs, v10, v112, v11, v12, v13);
+      objc_msgSend_addObject_(self->__enabledVisualizationIDs, v10, identifierCopy, v11, v12, v13);
     }
 
     else
     {
-      objc_msgSend_addObject_(0, v10, v112, v11, v12, v13);
+      objc_msgSend_addObject_(0, v10, identifierCopy, v11, v12, v13);
     }
   }
 
   else if (self)
   {
-    objc_msgSend_removeObject_(self->__enabledVisualizationIDs, v10, v112, v11, v12, v13);
+    objc_msgSend_removeObject_(self->__enabledVisualizationIDs, v10, identifierCopy, v11, v12, v13);
   }
 
   else
   {
-    objc_msgSend_removeObject_(0, v10, v112, v11, v12, v13);
+    objc_msgSend_removeObject_(0, v10, identifierCopy, v11, v12, v13);
   }
 
   if (!self)
@@ -533,17 +533,17 @@ LABEL_42:
 LABEL_44:
 }
 
-- (BOOL)isEnabledVisualizationForIdentifier:(id)a3
+- (BOOL)isEnabledVisualizationForIdentifier:(id)identifier
 {
-  v8 = a3;
+  identifierCopy = identifier;
   if (self)
   {
-    v9 = objc_msgSend_containsObject_(self->__enabledVisualizationIDs, v4, v8, v5, v6, v7);
+    v9 = objc_msgSend_containsObject_(self->__enabledVisualizationIDs, v4, identifierCopy, v5, v6, v7);
   }
 
   else
   {
-    v9 = objc_msgSend_containsObject_(0, v4, v8, v5, v6, v7);
+    v9 = objc_msgSend_containsObject_(0, v4, identifierCopy, v5, v6, v7);
   }
 
   v10 = v9;
@@ -551,18 +551,18 @@ LABEL_44:
   return v10;
 }
 
-- (void)setStatusReportingEnabled:(BOOL)a3
+- (void)setStatusReportingEnabled:(BOOL)enabled
 {
-  if (self->_statusReportingEnabled != a3)
+  if (self->_statusReportingEnabled != enabled)
   {
-    self->_statusReportingEnabled = a3;
+    self->_statusReportingEnabled = enabled;
     sub_1838BB6B0(self);
   }
 }
 
-- (id)valueForRecognitionStatusKey:(id)a3
+- (id)valueForRecognitionStatusKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   if (!objc_msgSend_statusReportingEnabled(self, v5, v6, v7, v8, v9))
   {
     v33 = objc_msgSend_mainBundle(MEMORY[0x1E696AAE8], v10, v11, v12, v13, v14);
@@ -572,7 +572,7 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  if (objc_msgSend_isEqualToString_(v4, v10, @"CHStatusKeyStatus", v12, v13, v14))
+  if (objc_msgSend_isEqualToString_(keyCopy, v10, @"CHStatusKeyStatus", v12, v13, v14))
   {
     v20 = objc_msgSend_recognitionSession(self, v15, v16, v17, v18, v19);
     v26 = objc_msgSend_status(v20, v21, v22, v23, v24, v25);
@@ -584,7 +584,7 @@ LABEL_27:
     v32 = 0;
   }
 
-  if (objc_msgSend_isEqualToString_(v4, v15, @"CHStatusKeyEnvironment", v17, v18, v19))
+  if (objc_msgSend_isEqualToString_(keyCopy, v15, @"CHStatusKeyEnvironment", v17, v18, v19))
   {
     v41 = objc_msgSend_mainBundle(MEMORY[0x1E696AAE8], v36, v37, v38, v39, v40);
     v33 = objc_msgSend_localizedStringForKey_value_table_(v41, v42, @"In process", &stru_1EF1C0318, 0, v43);
@@ -641,7 +641,7 @@ LABEL_26:
     goto LABEL_25;
   }
 
-  if (objc_msgSend_isEqualToString_(v4, v36, @"CHStatusKeyLocales", v38, v39, v40))
+  if (objc_msgSend_isEqualToString_(keyCopy, v36, @"CHStatusKeyLocales", v38, v39, v40))
   {
     v103 = objc_msgSend_recognitionSession(self, v98, v99, v100, v101, v102);
     v109 = objc_msgSend_lastRecognitionResult(v103, v104, v105, v106, v107, v108);
@@ -661,7 +661,7 @@ LABEL_26:
     goto LABEL_28;
   }
 
-  if (objc_msgSend_isEqualToString_(v4, v98, @"CHStatusKeyLastDurationTotal", v100, v101, v102))
+  if (objc_msgSend_isEqualToString_(keyCopy, v98, @"CHStatusKeyLastDurationTotal", v100, v101, v102))
   {
     v293 = 0;
     v291 = 0u;
@@ -691,7 +691,7 @@ LABEL_42:
     goto LABEL_28;
   }
 
-  if (objc_msgSend_isEqualToString_(v4, v120, @"CHStatusKeyLastDurationDetailed", v122, v123, v124))
+  if (objc_msgSend_isEqualToString_(keyCopy, v120, @"CHStatusKeyLastDurationDetailed", v122, v123, v124))
   {
     v293 = 0;
     v291 = 0u;
@@ -717,7 +717,7 @@ LABEL_42:
     goto LABEL_42;
   }
 
-  if (objc_msgSend_isEqualToString_(v4, v138, @"CHStatusStrokeCount", v140, v141, v142))
+  if (objc_msgSend_isEqualToString_(keyCopy, v138, @"CHStatusStrokeCount", v140, v141, v142))
   {
     v163 = objc_msgSend_recognitionSession(self, v158, v159, v160, v161, v162);
     v169 = objc_msgSend_latestStrokeProvider(v163, v164, v165, v166, v167, v168);
@@ -732,7 +732,7 @@ LABEL_39:
     goto LABEL_50;
   }
 
-  if (objc_msgSend_isEqualToString_(v4, v158, @"CHStatusKeyGroupCount", v160, v161, v162))
+  if (objc_msgSend_isEqualToString_(keyCopy, v158, @"CHStatusKeyGroupCount", v160, v161, v162))
   {
     v197 = objc_msgSend_recognitionSession(self, v192, v193, v194, v195, v196);
     v203 = objc_msgSend_lastRecognitionResult(v197, v198, v199, v200, v201, v202);
@@ -748,14 +748,14 @@ LABEL_39:
     goto LABEL_39;
   }
 
-  if (objc_msgSend_isEqualToString_(v4, v192, @"CHStatusKeyTranscript", v194, v195, v196))
+  if (objc_msgSend_isEqualToString_(keyCopy, v192, @"CHStatusKeyTranscript", v194, v195, v196))
   {
     v169 = objc_msgSend_recognitionSession(self, v243, v244, v245, v246, v247);
     v253 = objc_msgSend_lastRecognitionResult(v169, v248, v249, v250, v251, v252);
     v259 = objc_msgSend_highConfidenceDebugDescription(v253, v254, v255, v256, v257, v258);
   }
 
-  else if (objc_msgSend_isEqualToString_(v4, v243, @"CHStatusKeyAllResults", v245, v246, v247))
+  else if (objc_msgSend_isEqualToString_(keyCopy, v243, @"CHStatusKeyAllResults", v245, v246, v247))
   {
     v169 = objc_msgSend_recognitionSession(self, v260, v261, v262, v263, v264);
     v253 = objc_msgSend_lastRecognitionResult(v169, v265, v266, v267, v268, v269);
@@ -769,7 +769,7 @@ LABEL_39:
 
   else
   {
-    if (!objc_msgSend_isEqualToString_(v4, v260, @"CHStatusKeyAllMathResults", v262, v263, v264))
+    if (!objc_msgSend_isEqualToString_(keyCopy, v260, @"CHStatusKeyAllMathResults", v262, v263, v264))
     {
       goto LABEL_28;
     }
@@ -793,18 +793,18 @@ LABEL_28:
   return v32;
 }
 
-- (void)drawVisualizationInRect:(CGRect)a3 context:(CGContext *)a4 viewBounds:(CGRect)a5
+- (void)drawVisualizationInRect:(CGRect)rect context:(CGContext *)context viewBounds:(CGRect)bounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v13 = a3.size.height;
-  v14 = a3.size.width;
-  v15 = a3.origin.y;
-  v16 = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v13 = rect.size.height;
+  v14 = rect.size.width;
+  v15 = rect.origin.y;
+  v16 = rect.origin.x;
   v53 = *MEMORY[0x1E69E9840];
-  objc_msgSend_removeAllObjects(self->__renderedResults, a2, a4, v5, v6, v7);
+  objc_msgSend_removeAllObjects(self->__renderedResults, a2, context, v5, v6, v7);
   v50 = 0u;
   v51 = 0u;
   v48 = 0u;
@@ -830,9 +830,9 @@ LABEL_28:
 
         if (v30)
         {
-          CGContextSaveGState(a4);
-          objc_msgSend_drawVisualizationInRect_context_viewBounds_(v30, v31, a4, v32, v33, v34, v16, v15, v14, v13, x, y, width, height);
-          CGContextRestoreGState(a4);
+          CGContextSaveGState(context);
+          objc_msgSend_drawVisualizationInRect_context_viewBounds_(v30, v31, context, v32, v33, v34, v16, v15, v14, v13, x, y, width, height);
+          CGContextRestoreGState(context);
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
@@ -853,10 +853,10 @@ LABEL_28:
   }
 }
 
-- (void)toggleSelectiveVisualizationsAtPoint:(CGPoint)a3
+- (void)toggleSelectiveVisualizationsAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v25 = *MEMORY[0x1E69E9840];
   v20 = 0u;
   v21 = 0u;
@@ -891,26 +891,26 @@ LABEL_28:
   }
 }
 
-- (void)visualizationNeedsDisplay:(id)a3
+- (void)visualizationNeedsDisplay:(id)display
 {
-  v11 = objc_msgSend_delegate(self, a2, a3, v3, v4, v5);
+  v11 = objc_msgSend_delegate(self, a2, display, v3, v4, v5);
   objc_msgSend_visualizationManagerNeedsDisplay_(v11, v7, self, v8, v9, v10);
 }
 
-- (void)visualization:(id)a3 needsDisplayInRect:(CGRect)a4
+- (void)visualization:(id)visualization needsDisplayInRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v16 = objc_msgSend_delegate(self, a2, a3, v4, v5, v6);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v16 = objc_msgSend_delegate(self, a2, visualization, v4, v5, v6);
   objc_msgSend_visualizationManager_needsDisplayInRect_(v16, v12, self, v13, v14, v15, x, y, width, height);
 }
 
-- (int64_t)visualizationIndexForStrokeGroup:(id)a3
+- (int64_t)visualizationIndexForStrokeGroup:(id)group
 {
   v168 = *MEMORY[0x1E69E9840];
-  v157 = a3;
+  groupCopy = group;
   if (self)
   {
     strokeGroupIndexByAncestorID = self->__strokeGroupIndexByAncestorID;
@@ -923,7 +923,7 @@ LABEL_28:
 
   v5 = strokeGroupIndexByAncestorID;
   v6 = MEMORY[0x1E696AD98];
-  v12 = objc_msgSend_ancestorIdentifier(v157, v7, v8, v9, v10, v11);
+  v12 = objc_msgSend_ancestorIdentifier(groupCopy, v7, v8, v9, v10, v11);
   v17 = objc_msgSend_numberWithInteger_(v6, v13, v12, v14, v15, v16);
   v22 = objc_msgSend_objectForKeyedSubscript_(v5, v18, v17, v19, v20, v21);
 
@@ -1036,7 +1036,7 @@ LABEL_16:
 
     v132 = v131;
     v133 = MEMORY[0x1E696AD98];
-    v139 = objc_msgSend_ancestorIdentifier(v157, v134, v135, v136, v137, v138);
+    v139 = objc_msgSend_ancestorIdentifier(groupCopy, v134, v135, v136, v137, v138);
     v144 = objc_msgSend_numberWithInteger_(v133, v140, v139, v141, v142, v143);
     v22 = objc_msgSend_objectForKeyedSubscript_(v132, v145, v144, v146, v147, v148);
 
@@ -1055,20 +1055,20 @@ LABEL_23:
   return v154;
 }
 
-- (void)recognitionSessionDidUpdateRecognitionResult:(id)a3
+- (void)recognitionSessionDidUpdateRecognitionResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = sub_1838BD0DC;
   v6[3] = &unk_1E6DDC818;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = resultCopy;
+  selfCopy = self;
+  v5 = resultCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
-- (void)recognitionSessionDidChangeStatus:(id)a3
+- (void)recognitionSessionDidChangeStatus:(id)status
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;

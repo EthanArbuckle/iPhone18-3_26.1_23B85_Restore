@@ -11,7 +11,7 @@
     ec_isWhitespace_characterSet = [objc_msgSend(MEMORY[0x277CCA900] "ec_whitespaceNewlineAndTagCharacterSet")];
   }
 
-  return [a1 rangeOfCharacterFromSet:?] == 0x7FFFFFFFFFFFFFFFLL;
+  return [self rangeOfCharacterFromSet:?] == 0x7FFFFFFFFFFFFFFFLL;
 }
 
 @end

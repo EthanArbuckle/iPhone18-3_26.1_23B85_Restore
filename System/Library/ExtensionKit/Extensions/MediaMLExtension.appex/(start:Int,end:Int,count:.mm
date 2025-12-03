@@ -7,9 +7,9 @@
 
 - (uint64_t)Int)
 {
-  v1 = *a1;
+  v1 = *self;
 
-  return a1;
+  return self;
 }
 
 - (unint64_t)Int)

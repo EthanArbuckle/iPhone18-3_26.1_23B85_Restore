@@ -1,51 +1,51 @@
 @interface ENChaffTestResultSession
-+ (id)sessionWithConfiguration:(id)a3 URLSession:(id)a4 queue:(id)a5 error:(id *)a6;
-- (id)_initWithAgencyAPIKey:(id)a3 certificateURL:(id)a4 queue:(id)a5 region:(id)a6 uploadURL:(id)a7 URLSession:(id)a8 verifyURL:(id)a9;
-- (void)_callCompletionIfNecessaryWithError:(id)a3;
++ (id)sessionWithConfiguration:(id)configuration URLSession:(id)session queue:(id)queue error:(id *)error;
+- (id)_initWithAgencyAPIKey:(id)key certificateURL:(id)l queue:(id)queue region:(id)region uploadURL:(id)rL URLSession:(id)session verifyURL:(id)uRL;
+- (void)_callCompletionIfNecessaryWithError:(id)error;
 - (void)_invalidate;
 - (void)_sendCertificateChaffRequest;
-- (void)_sendChaffRequestWithURL:(id)a3 useAPIKey:(BOOL)a4 successHandler:(id)a5;
+- (void)_sendChaffRequestWithURL:(id)l useAPIKey:(BOOL)key successHandler:(id)handler;
 - (void)_sendUploadChaffRequest;
 - (void)_sendVerificationChaffRequest;
 - (void)dealloc;
-- (void)sendChaffMessagesWithCompletion:(id)a3;
+- (void)sendChaffMessagesWithCompletion:(id)completion;
 @end
 
 @implementation ENChaffTestResultSession
 
-- (id)_initWithAgencyAPIKey:(id)a3 certificateURL:(id)a4 queue:(id)a5 region:(id)a6 uploadURL:(id)a7 URLSession:(id)a8 verifyURL:(id)a9
+- (id)_initWithAgencyAPIKey:(id)key certificateURL:(id)l queue:(id)queue region:(id)region uploadURL:(id)rL URLSession:(id)session verifyURL:(id)uRL
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
+  keyCopy = key;
+  lCopy = l;
+  queueCopy = queue;
+  regionCopy = region;
+  rLCopy = rL;
+  sessionCopy = session;
+  uRLCopy = uRL;
   v34.receiver = self;
   v34.super_class = ENChaffTestResultSession;
   v22 = [(ENChaffTestResultSession *)&v34 init];
   if (v22)
   {
-    v23 = [v15 copy];
+    v23 = [keyCopy copy];
     agencyAPIKey = v22->_agencyAPIKey;
     v22->_agencyAPIKey = v23;
 
-    objc_storeStrong(&v22->_queue, a5);
-    v25 = [v18 copy];
+    objc_storeStrong(&v22->_queue, queue);
+    v25 = [regionCopy copy];
     region = v22->_region;
     v22->_region = v25;
 
-    objc_storeStrong(&v22->_URLSession, a8);
-    v27 = [v16 copy];
+    objc_storeStrong(&v22->_URLSession, session);
+    v27 = [lCopy copy];
     certificateURL = v22->_certificateURL;
     v22->_certificateURL = v27;
 
-    v29 = [v19 copy];
+    v29 = [rLCopy copy];
     uploadURL = v22->_uploadURL;
     v22->_uploadURL = v29;
 
-    v31 = [v21 copy];
+    v31 = [uRLCopy copy];
     verificationURL = v22->_verificationURL;
     v22->_verificationURL = v31;
   }
@@ -61,32 +61,32 @@
   [(ENChaffTestResultSession *)&v3 dealloc];
 }
 
-+ (id)sessionWithConfiguration:(id)a3 URLSession:(id)a4 queue:(id)a5 error:(id *)a6
++ (id)sessionWithConfiguration:(id)configuration URLSession:(id)session queue:(id)queue error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [v10 testVerificationAPIKey];
-  if (v13)
+  configurationCopy = configuration;
+  sessionCopy = session;
+  queueCopy = queue;
+  testVerificationAPIKey = [configurationCopy testVerificationAPIKey];
+  if (testVerificationAPIKey)
   {
-    v14 = [v10 testVerificationCertificateURL];
-    if (v14)
+    testVerificationCertificateURL = [configurationCopy testVerificationCertificateURL];
+    if (testVerificationCertificateURL)
     {
-      v15 = [v10 testVerificationURL];
-      if (v15)
+      testVerificationURL = [configurationCopy testVerificationURL];
+      if (testVerificationURL)
       {
-        v16 = [v10 tekUploadURL];
-        if (v16)
+        tekUploadURL = [configurationCopy tekUploadURL];
+        if (tekUploadURL)
         {
-          v17 = [a1 alloc];
-          v18 = [v10 region];
-          v19 = [v17 _initWithAgencyAPIKey:v13 certificateURL:v14 queue:v12 region:v18 uploadURL:v16 URLSession:v11 verifyURL:v15];
+          v17 = [self alloc];
+          region = [configurationCopy region];
+          v19 = [v17 _initWithAgencyAPIKey:testVerificationAPIKey certificateURL:testVerificationCertificateURL queue:queueCopy region:region uploadURL:tekUploadURL URLSession:sessionCopy verifyURL:testVerificationURL];
         }
 
-        else if (a6)
+        else if (error)
         {
           ENTestResultErrorF(10);
-          *a6 = v19 = 0;
+          *error = v19 = 0;
         }
 
         else
@@ -95,10 +95,10 @@
         }
       }
 
-      else if (a6)
+      else if (error)
       {
         ENTestResultErrorF(10);
-        *a6 = v19 = 0;
+        *error = v19 = 0;
       }
 
       else
@@ -107,10 +107,10 @@
       }
     }
 
-    else if (a6)
+    else if (error)
     {
       ENTestResultErrorF(10);
-      *a6 = v19 = 0;
+      *error = v19 = 0;
     }
 
     else
@@ -119,10 +119,10 @@
     }
   }
 
-  else if (a6)
+  else if (error)
   {
     ENTestResultErrorF(10);
-    *a6 = v19 = 0;
+    *error = v19 = 0;
   }
 
   else
@@ -133,11 +133,11 @@
   return v19;
 }
 
-- (void)sendChaffMessagesWithCompletion:(id)a3
+- (void)sendChaffMessagesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   state = self->_state;
-  v9 = v4;
+  v9 = completionCopy;
   if (state)
   {
     v8 = ENErrorF();
@@ -146,7 +146,7 @@
 
   else
   {
-    v6 = [v4 copy];
+    v6 = [completionCopy copy];
     completion = self->_completion;
     self->_completion = v6;
 
@@ -188,15 +188,15 @@ void __57__ENChaffTestResultSession__sendVerificationChaffRequest__block_invoke(
   dispatch_after(v8, v10, block);
 }
 
-- (void)_sendChaffRequestWithURL:(id)a3 useAPIKey:(BOOL)a4 successHandler:(id)a5
+- (void)_sendChaffRequestWithURL:(id)l useAPIKey:(BOOL)key successHandler:(id)handler
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [(ENTestResultNetworkRequest *)[ENTestResultChaffRequest alloc] initWithRequestURL:v9 URLSession:self->_URLSession queue:self->_queue];
+  keyCopy = key;
+  handlerCopy = handler;
+  lCopy = l;
+  v10 = [(ENTestResultNetworkRequest *)[ENTestResultChaffRequest alloc] initWithRequestURL:lCopy URLSession:self->_URLSession queue:self->_queue];
 
   [(ENTestResultNetworkRequest *)v10 setPaddedRequestSize:3072];
-  if (v5)
+  if (keyCopy)
   {
     agencyAPIKey = self->_agencyAPIKey;
   }
@@ -216,8 +216,8 @@ void __57__ENChaffTestResultSession__sendVerificationChaffRequest__block_invoke(
   v15[2] = __78__ENChaffTestResultSession__sendChaffRequestWithURL_useAPIKey_successHandler___block_invoke;
   v15[3] = &unk_278FD0FB8;
   v15[4] = self;
-  v16 = v8;
-  v14 = v8;
+  v16 = handlerCopy;
+  v14 = handlerCopy;
   [(ENTestResultNetworkRequest *)v13 resumeWithCompletionHandler:v15];
 }
 
@@ -240,16 +240,16 @@ void __78__ENChaffTestResultSession__sendChaffRequestWithURL_useAPIKey_successHa
   }
 }
 
-- (void)_callCompletionIfNecessaryWithError:(id)a3
+- (void)_callCompletionIfNecessaryWithError:(id)error
 {
-  v6 = a3;
+  errorCopy = error;
   v4 = MEMORY[0x24C214430](self->_completion);
   if (v4)
   {
     completion = self->_completion;
     self->_completion = 0;
 
-    (v4)[2](v4, v6);
+    (v4)[2](v4, errorCopy);
   }
 }
 

@@ -1,23 +1,23 @@
 @interface SXFontMatching
-+ (id)fontFaceWithAttributes:(id)a3 fromFamily:(id)a4;
-+ (id)matchFontFaceForAttributes:(id)a3 fromFamily:(id)a4;
-+ (int64_t)bestStyleForIntendedStyle:(int64_t)a3 forFonts:(id)a4;
-+ (int64_t)bestWeightForIntendedWeight:(int64_t)a3 forFonts:(id)a4;
-+ (int64_t)bestWidthForIntendedWidth:(int64_t)a3 forFonts:(id)a4;
-+ (int64_t)bolderWeightForWeight:(int64_t)a3;
-+ (int64_t)lighterWeightForWeight:(int64_t)a3;
++ (id)fontFaceWithAttributes:(id)attributes fromFamily:(id)family;
++ (id)matchFontFaceForAttributes:(id)attributes fromFamily:(id)family;
++ (int64_t)bestStyleForIntendedStyle:(int64_t)style forFonts:(id)fonts;
++ (int64_t)bestWeightForIntendedWeight:(int64_t)weight forFonts:(id)fonts;
++ (int64_t)bestWidthForIntendedWidth:(int64_t)width forFonts:(id)fonts;
++ (int64_t)bolderWeightForWeight:(int64_t)weight;
++ (int64_t)lighterWeightForWeight:(int64_t)weight;
 @end
 
 @implementation SXFontMatching
 
-+ (id)matchFontFaceForAttributes:(id)a3 fromFamily:(id)a4
++ (id)matchFontFaceForAttributes:(id)attributes fromFamily:(id)family
 {
-  v5 = a3;
-  v6 = a4;
+  attributesCopy = attributes;
+  familyCopy = family;
   v7 = objc_opt_class();
-  v8 = [v5 width];
-  v9 = [v6 fontFaces];
-  v10 = [v7 bestWidthForIntendedWidth:v8 forFonts:v9];
+  width = [attributesCopy width];
+  fontFaces = [familyCopy fontFaces];
+  v10 = [v7 bestWidthForIntendedWidth:width forFonts:fontFaces];
 
   if (v10 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -26,16 +26,16 @@
 
   else
   {
-    v12 = [v6 fontFaces];
+    fontFaces2 = [familyCopy fontFaces];
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __56__SXFontMatching_matchFontFaceForAttributes_fromFamily___block_invoke;
     v26[3] = &__block_descriptor_40_e39_B24__0___SXFontFace__8__NSDictionary_16l;
     v26[4] = v10;
     v13 = [MEMORY[0x1E696AE18] predicateWithBlock:v26];
-    v14 = [v12 filteredSetUsingPredicate:v13];
+    v14 = [fontFaces2 filteredSetUsingPredicate:v13];
 
-    v15 = [objc_opt_class() bestStyleForIntendedStyle:objc_msgSend(v5 forFonts:{"style"), v14}];
+    v15 = [objc_opt_class() bestStyleForIntendedStyle:objc_msgSend(attributesCopy forFonts:{"style"), v14}];
     if (v15 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v11 = 0;
@@ -52,13 +52,13 @@
       v17 = [MEMORY[0x1E696AE18] predicateWithBlock:v25];
       v18 = [v14 filteredSetUsingPredicate:v17];
 
-      v19 = [objc_opt_class() bestWeightForIntendedWeight:objc_msgSend(v5 forFonts:{"weight"), v18}];
+      v19 = [objc_opt_class() bestWeightForIntendedWeight:objc_msgSend(attributesCopy forFonts:{"weight"), v18}];
       v20 = [SXFontAttributes alloc];
-      v21 = [v6 familyName];
-      v22 = [v5 grade];
-      v23 = [(SXFontAttributes *)v20 initWithFamilyName:v21 weight:v19 width:v10 style:v16 grade:v22];
+      familyName = [familyCopy familyName];
+      grade = [attributesCopy grade];
+      v23 = [(SXFontAttributes *)v20 initWithFamilyName:familyName weight:v19 width:v10 style:v16 grade:grade];
 
-      v11 = [objc_opt_class() fontFaceWithAttributes:v23 fromFamily:v6];
+      v11 = [objc_opt_class() fontFaceWithAttributes:v23 fromFamily:familyCopy];
 
       v14 = v18;
     }
@@ -83,16 +83,16 @@ BOOL __56__SXFontMatching_matchFontFaceForAttributes_fromFamily___block_invoke_2
   return v4;
 }
 
-+ (int64_t)bestWidthForIntendedWidth:(int64_t)a3 forFonts:(id)a4
++ (int64_t)bestWidthForIntendedWidth:(int64_t)width forFonts:(id)fonts
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [MEMORY[0x1E696AD50] indexSet];
+  fontsCopy = fonts;
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = v5;
+  v7 = fontsCopy;
   v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v8)
   {
@@ -108,18 +108,18 @@ BOOL __56__SXFontMatching_matchFontFaceForAttributes_fromFamily___block_invoke_2
         }
 
         v12 = *(*(&v19 + 1) + 8 * i);
-        v13 = [v12 fontAttributes];
-        v14 = [v13 width];
+        fontAttributes = [v12 fontAttributes];
+        width = [fontAttributes width];
 
-        if (v14 == a3)
+        if (width == width)
         {
 
-          v16 = a3;
+          widthCopy = width;
           goto LABEL_17;
         }
 
-        v15 = [v12 fontAttributes];
-        [v6 addIndex:{objc_msgSend(v15, "width")}];
+        fontAttributes2 = [v12 fontAttributes];
+        [indexSet addIndex:{objc_msgSend(fontAttributes2, "width")}];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -132,48 +132,48 @@ BOOL __56__SXFontMatching_matchFontFaceForAttributes_fromFamily___block_invoke_2
     }
   }
 
-  v16 = 0x7FFFFFFFFFFFFFFFLL;
-  if (a3 != 0x7FFFFFFFFFFFFFFFLL)
+  widthCopy = 0x7FFFFFFFFFFFFFFFLL;
+  if (width != 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (a3 > 7)
+    if (width > 7)
     {
-      v17 = [v6 indexGreaterThanIndex:a3];
+      v17 = [indexSet indexGreaterThanIndex:width];
       if (v17 == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v17 = [v6 indexLessThanIndex:a3];
+        v17 = [indexSet indexLessThanIndex:width];
       }
     }
 
     else
     {
-      v17 = [v6 indexLessThanIndex:a3];
+      v17 = [indexSet indexLessThanIndex:width];
       if (v17 == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v17 = [v6 indexGreaterThanIndex:a3];
+        v17 = [indexSet indexGreaterThanIndex:width];
       }
     }
 
-    v16 = v17;
+    widthCopy = v17;
   }
 
 LABEL_17:
 
-  return v16;
+  return widthCopy;
 }
 
-+ (int64_t)bestStyleForIntendedStyle:(int64_t)a3 forFonts:(id)a4
++ (int64_t)bestStyleForIntendedStyle:(int64_t)style forFonts:(id)fonts
 {
   v31 = *MEMORY[0x1E69E9840];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v5 = a4;
-  v6 = [v5 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  fontsCopy = fonts;
+  v6 = [fontsCopy countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v6)
   {
     v7 = v6;
-    obj = v5;
+    obj = fontsCopy;
     LOBYTE(v8) = 0;
     LOBYTE(v9) = 0;
     LOBYTE(v10) = 0;
@@ -188,12 +188,12 @@ LABEL_3:
       }
 
       v13 = *(*(&v26 + 1) + 8 * v12);
-      v14 = [v13 fontAttributes];
-      v15 = [v14 style];
+      fontAttributes = [v13 fontAttributes];
+      style = [fontAttributes style];
 
-      if (v15 == a3)
+      if (style == style)
       {
-        v5 = obj;
+        fontsCopy = obj;
 
         goto LABEL_38;
       }
@@ -209,14 +209,14 @@ LABEL_3:
 
       else
       {
-        v18 = [v13 fontAttributes];
-        v8 = [v18 style] == 1;
+        fontAttributes2 = [v13 fontAttributes];
+        v8 = [fontAttributes2 style] == 1;
 
         if (!v9)
         {
 LABEL_9:
-          v16 = [v13 fontAttributes];
-          v9 = [v16 style] == 2;
+          fontAttributes3 = [v13 fontAttributes];
+          v9 = [fontAttributes3 style] == 2;
 
           if (v10)
           {
@@ -236,8 +236,8 @@ LABEL_13:
       }
 
 LABEL_10:
-      v17 = [v13 fontAttributes];
-      v10 = [v17 style] == 0;
+      fontAttributes4 = [v13 fontAttributes];
+      v10 = [fontAttributes4 style] == 0;
 
 LABEL_14:
       if (v7 == ++v12)
@@ -258,7 +258,7 @@ LABEL_14:
           v19 = 0x7FFFFFFFFFFFFFFFLL;
         }
 
-        v5 = obj;
+        fontsCopy = obj;
         goto LABEL_22;
       }
     }
@@ -297,50 +297,50 @@ LABEL_22:
     v23 = 1;
   }
 
-  if (!a3)
+  if (!style)
   {
     v20 = v23;
   }
 
-  if (a3 == 1)
+  if (style == 1)
   {
     v20 = v22;
   }
 
-  if (a3 == 2)
+  if (style == 2)
   {
-    a3 = v21;
+    style = v21;
   }
 
   else
   {
-    a3 = v20;
+    style = v20;
   }
 
 LABEL_38:
 
-  return a3;
+  return style;
 }
 
-+ (int64_t)bestWeightForIntendedWeight:(int64_t)a3 forFonts:(id)a4
++ (int64_t)bestWeightForIntendedWeight:(int64_t)weight forFonts:(id)fonts
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [MEMORY[0x1E696AD50] indexSet];
+  fontsCopy = fonts;
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = v5;
+  v7 = fontsCopy;
   v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (!v8)
   {
 LABEL_9:
 
-    if (a3 == 400)
+    if (weight == 400)
     {
-      v16 = 500;
-      if ([v6 containsIndex:500])
+      weightCopy = 500;
+      if ([indexSet containsIndex:500])
       {
         goto LABEL_23;
       }
@@ -348,10 +348,10 @@ LABEL_9:
 
     else
     {
-      if (a3 == 500)
+      if (weight == 500)
       {
-        v16 = 400;
-        if ([v6 containsIndex:400])
+        weightCopy = 400;
+        if ([indexSet containsIndex:400])
         {
           goto LABEL_23;
         }
@@ -359,25 +359,25 @@ LABEL_9:
         goto LABEL_14;
       }
 
-      if (a3 > 400)
+      if (weight > 400)
       {
 LABEL_14:
-        v17 = [v6 indexGreaterThanIndex:{a3, v19}];
+        v17 = [indexSet indexGreaterThanIndex:{weight, v19}];
         if (v17 == 0x7FFFFFFFFFFFFFFFLL)
         {
-          v17 = [v6 indexLessThanIndex:a3];
+          v17 = [indexSet indexLessThanIndex:weight];
         }
 
 LABEL_22:
-        v16 = v17;
+        weightCopy = v17;
         goto LABEL_23;
       }
     }
 
-    v17 = [v6 indexLessThanIndex:{a3, v19}];
+    v17 = [indexSet indexLessThanIndex:{weight, v19}];
     if (v17 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v17 = [v6 indexGreaterThanIndex:a3];
+      v17 = [indexSet indexGreaterThanIndex:weight];
     }
 
     goto LABEL_22;
@@ -395,16 +395,16 @@ LABEL_3:
     }
 
     v12 = *(*(&v19 + 1) + 8 * v11);
-    v13 = [v12 fontAttributes];
-    v14 = [v13 weight];
+    fontAttributes = [v12 fontAttributes];
+    weight = [fontAttributes weight];
 
-    if (v14 == a3)
+    if (weight == weight)
     {
       break;
     }
 
-    v15 = [v12 fontAttributes];
-    [v6 addIndex:{objc_msgSend(v15, "weight")}];
+    fontAttributes2 = [v12 fontAttributes];
+    [indexSet addIndex:{objc_msgSend(fontAttributes2, "weight")}];
 
     if (v9 == ++v11)
     {
@@ -418,25 +418,25 @@ LABEL_3:
     }
   }
 
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (weight == 0x7FFFFFFFFFFFFFFFLL)
   {
     goto LABEL_14;
   }
 
-  v16 = a3;
+  weightCopy = weight;
 LABEL_23:
 
-  return v16;
+  return weightCopy;
 }
 
-+ (int64_t)bolderWeightForWeight:(int64_t)a3
++ (int64_t)bolderWeightForWeight:(int64_t)weight
 {
   result = 0x7FFFFFFFFFFFFFFFLL;
-  if (a3 > 499)
+  if (weight > 499)
   {
-    if (a3 > 699)
+    if (weight > 699)
     {
-      if (a3 != 700 && a3 != 800 && a3 != 900)
+      if (weight != 700 && weight != 800 && weight != 900)
       {
         return result;
       }
@@ -444,9 +444,9 @@ LABEL_23:
       return 900;
     }
 
-    if (a3 != 500)
+    if (weight != 500)
     {
-      if (a3 != 600)
+      if (weight != 600)
       {
         return result;
       }
@@ -457,11 +457,11 @@ LABEL_23:
     return 700;
   }
 
-  if (a3 > 299)
+  if (weight > 299)
   {
-    if (a3 != 300)
+    if (weight != 300)
     {
-      if (a3 != 400)
+      if (weight != 400)
       {
         return result;
       }
@@ -472,7 +472,7 @@ LABEL_23:
     return 400;
   }
 
-  if (a3 == 100 || a3 == 200)
+  if (weight == 100 || weight == 200)
   {
     return 400;
   }
@@ -480,20 +480,20 @@ LABEL_23:
   return result;
 }
 
-+ (int64_t)lighterWeightForWeight:(int64_t)a3
++ (int64_t)lighterWeightForWeight:(int64_t)weight
 {
   result = 0x7FFFFFFFFFFFFFFFLL;
-  if (a3 <= 499)
+  if (weight <= 499)
   {
-    if (a3 > 299)
+    if (weight > 299)
     {
-      if (a3 != 300 && a3 != 400)
+      if (weight != 300 && weight != 400)
       {
         return result;
       }
     }
 
-    else if (a3 != 100 && a3 != 200)
+    else if (weight != 100 && weight != 200)
     {
       return result;
     }
@@ -501,11 +501,11 @@ LABEL_23:
     return 100;
   }
 
-  if (a3 <= 699)
+  if (weight <= 699)
   {
-    if (a3 != 500)
+    if (weight != 500)
     {
-      if (a3 != 600)
+      if (weight != 600)
       {
         return result;
       }
@@ -516,12 +516,12 @@ LABEL_23:
     return 100;
   }
 
-  if (a3 == 700)
+  if (weight == 700)
   {
     return 400;
   }
 
-  if (a3 == 800 || a3 == 900)
+  if (weight == 800 || weight == 900)
   {
     return 700;
   }
@@ -529,56 +529,56 @@ LABEL_23:
   return result;
 }
 
-+ (id)fontFaceWithAttributes:(id)a3 fromFamily:(id)a4
++ (id)fontFaceWithAttributes:(id)attributes fromFamily:(id)family
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  attributesCopy = attributes;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v6 = [a4 fontFaces];
-  v7 = [v6 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  fontFaces = [family fontFaces];
+  v7 = [fontFaces countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v7)
   {
     v8 = *v24;
-    v22 = v6;
+    v22 = fontFaces;
     do
     {
       for (i = 0; i != v7; i = i + 1)
       {
         if (*v24 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(fontFaces);
         }
 
         v10 = *(*(&v23 + 1) + 8 * i);
-        v11 = [v10 fontAttributes];
-        v12 = [v11 weight];
-        if (v12 != [v5 weight])
+        fontAttributes = [v10 fontAttributes];
+        weight = [fontAttributes weight];
+        if (weight != [attributesCopy weight])
         {
           goto LABEL_12;
         }
 
-        v13 = [v10 fontAttributes];
-        v14 = [v13 style];
-        if (v14 != [v5 style])
+        fontAttributes2 = [v10 fontAttributes];
+        style = [fontAttributes2 style];
+        if (style != [attributesCopy style])
         {
 
 LABEL_12:
           continue;
         }
 
-        v15 = [v10 fontAttributes];
-        v16 = [v15 width];
+        fontAttributes3 = [v10 fontAttributes];
+        width = [fontAttributes3 width];
         v17 = v7;
         v18 = v8;
-        v19 = [v5 width];
+        width2 = [attributesCopy width];
 
-        v20 = v16 == v19;
+        v20 = width == width2;
         v8 = v18;
         v7 = v17;
-        v6 = v22;
+        fontFaces = v22;
         if (v20)
         {
           v7 = v10;
@@ -586,7 +586,7 @@ LABEL_12:
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v7 = [fontFaces countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v7);

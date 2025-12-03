@@ -1,20 +1,20 @@
 @interface ICNoteCryptoStrategyV1
 - (BOOL)decrypt;
-- (BOOL)mainKeyDecryptsPrimaryData:(id)a3;
-- (BOOL)rewrapWithMainKey:(id)a3;
-- (BOOL)writeEncryptedNoteData:(id)a3;
+- (BOOL)mainKeyDecryptsPrimaryData:(id)data;
+- (BOOL)rewrapWithMainKey:(id)key;
+- (BOOL)writeEncryptedNoteData:(id)data;
 - (id)decryptNotePrimitiveData;
-- (id)decryptTextDataOrSaveAsUnappliedRecordIfNotAuthenticated:(id)a3;
+- (id)decryptTextDataOrSaveAsUnappliedRecordIfNotAuthenticated:(id)authenticated;
 - (id)unwrappedKey;
-- (void)mergeEncryptedData:(id)a3 mergeConflict:(id)a4;
-- (void)recoverMissingCryptoWrappedKeyIfNeededWithMainKey:(id)a3;
+- (void)mergeEncryptedData:(id)data mergeConflict:(id)conflict;
+- (void)recoverMissingCryptoWrappedKeyIfNeededWithMainKey:(id)key;
 @end
 
 @implementation ICNoteCryptoStrategyV1
 
-- (BOOL)writeEncryptedNoteData:(id)a3
+- (BOOL)writeEncryptedNoteData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -24,7 +24,7 @@
   v7[2] = __49__ICNoteCryptoStrategyV1_writeEncryptedNoteData___block_invoke;
   v7[3] = &unk_278194B50;
   v7[4] = self;
-  v5 = v4;
+  v5 = dataCopy;
   v8 = v5;
   v9 = &v10;
   [(ICCryptoStrategyBase *)self performBlockIfNoteExists:v7];
@@ -273,9 +273,9 @@ void __33__ICNoteCryptoStrategyV1_decrypt__block_invoke_9(uint64_t a1)
   [v5 ic_saveWithLogDescription:{@"Set fallback crypto goo {note: %@}", v4}];
 }
 
-- (id)decryptTextDataOrSaveAsUnappliedRecordIfNotAuthenticated:(id)a3
+- (id)decryptTextDataOrSaveAsUnappliedRecordIfNotAuthenticated:(id)authenticated
 {
-  v4 = a3;
+  authenticatedCopy = authenticated;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -286,9 +286,9 @@ void __33__ICNoteCryptoStrategyV1_decrypt__block_invoke_9(uint64_t a1)
   v8[1] = 3221225472;
   v8[2] = __83__ICNoteCryptoStrategyV1_decryptTextDataOrSaveAsUnappliedRecordIfNotAuthenticated___block_invoke;
   v8[3] = &unk_278194B50;
-  v5 = v4;
+  v5 = authenticatedCopy;
   v9 = v5;
-  v10 = self;
+  selfCopy = self;
   v11 = &v12;
   [(ICCryptoStrategyBase *)self performBlockIfNoteExists:v8];
   v6 = v13[5];
@@ -433,19 +433,19 @@ void __50__ICNoteCryptoStrategyV1_decryptNotePrimitiveData__block_invoke(uint64_
   }
 }
 
-- (void)mergeEncryptedData:(id)a3 mergeConflict:(id)a4
+- (void)mergeEncryptedData:(id)data mergeConflict:(id)conflict
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  conflictCopy = conflict;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __59__ICNoteCryptoStrategyV1_mergeEncryptedData_mergeConflict___block_invoke;
   v10[3] = &unk_278194C18;
   v10[4] = self;
-  v11 = v7;
-  v12 = v6;
-  v8 = v6;
-  v9 = v7;
+  v11 = conflictCopy;
+  v12 = dataCopy;
+  v8 = dataCopy;
+  v9 = conflictCopy;
   [(ICCryptoStrategyBase *)self performBlockIfNoteExists:v10];
 }
 
@@ -587,9 +587,9 @@ void __38__ICNoteCryptoStrategyV1_unwrappedKey__block_invoke(uint64_t a1, void *
   *(v7 + 40) = v6;
 }
 
-- (BOOL)mainKeyDecryptsPrimaryData:(id)a3
+- (BOOL)mainKeyDecryptsPrimaryData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -599,7 +599,7 @@ void __38__ICNoteCryptoStrategyV1_unwrappedKey__block_invoke(uint64_t a1, void *
   v7[2] = __53__ICNoteCryptoStrategyV1_mainKeyDecryptsPrimaryData___block_invoke;
   v7[3] = &unk_278194B50;
   v7[4] = self;
-  v5 = v4;
+  v5 = dataCopy;
   v8 = v5;
   v9 = &v10;
   [(ICCryptoStrategyBase *)self performBlockIfNoteExists:v7];
@@ -620,10 +620,10 @@ id __53__ICNoteCryptoStrategyV1_mainKeyDecryptsPrimaryData___block_invoke(uint64
   return result;
 }
 
-- (BOOL)rewrapWithMainKey:(id)a3
+- (BOOL)rewrapWithMainKey:(id)key
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyCopy = key;
   v5 = os_log_create("com.apple.notes", "Crypto");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -638,19 +638,19 @@ id __53__ICNoteCryptoStrategyV1_mainKeyDecryptsPrimaryData___block_invoke(uint64
   v13[1] = 3221225472;
   v13[2] = __44__ICNoteCryptoStrategyV1_rewrapWithMainKey___block_invoke;
   v13[3] = &unk_278194B50;
-  v6 = v4;
+  v6 = keyCopy;
   v14 = v6;
-  v15 = self;
+  selfCopy = self;
   v16 = &v17;
   [(ICCryptoStrategyBase *)self performBlockIfNoteExists:v13];
   v7 = os_log_create("com.apple.notes", "Crypto");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    v10 = [(ICCryptoStrategyBase *)self object];
-    v11 = [v10 shortLoggingDescription];
+    object = [(ICCryptoStrategyBase *)self object];
+    shortLoggingDescription = [object shortLoggingDescription];
     v12 = [MEMORY[0x277CCABB0] numberWithBool:*(v18 + 24)];
     *buf = 138413058;
-    v22 = v11;
+    v22 = shortLoggingDescription;
     v23 = 2112;
     v25 = 2080;
     v24 = v12;
@@ -830,15 +830,15 @@ void __44__ICNoteCryptoStrategyV1_rewrapWithMainKey___block_invoke(uint64_t a1, 
   }
 }
 
-- (void)recoverMissingCryptoWrappedKeyIfNeededWithMainKey:(id)a3
+- (void)recoverMissingCryptoWrappedKeyIfNeededWithMainKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __76__ICNoteCryptoStrategyV1_recoverMissingCryptoWrappedKeyIfNeededWithMainKey___block_invoke;
   v6[3] = &unk_278194C90;
-  v7 = v4;
-  v5 = v4;
+  v7 = keyCopy;
+  v5 = keyCopy;
   [(ICCryptoStrategyBase *)self performBlockIfNoteExists:v6];
 }
 

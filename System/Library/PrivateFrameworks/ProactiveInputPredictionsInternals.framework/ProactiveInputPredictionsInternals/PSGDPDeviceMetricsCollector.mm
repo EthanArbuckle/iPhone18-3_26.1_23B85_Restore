@@ -1,48 +1,48 @@
 @interface PSGDPDeviceMetricsCollector
-+ (BOOL)recordEngagementMetrics:(id)a3 selectedRecorder:(id)a4 ignoredRecorder:(id)a5;
-+ (BOOL)recordResponse:(id)a3 numTimesToLog:(unint64_t)a4 recorder:(id)a5 prefix:(id)a6;
-+ (BOOL)sendEngagementToDPUsingData:(id)a3;
-+ (id)getActiveTrialInformationWithWithXPCActivityManager:(id)a3 activity:(id)a4;
-+ (id)getPrefixFromRolloutID:(id)a3 factorPackId:(id)a4 experimentId:(id)a5 treatmentId:(id)a6;
-+ (id)onCompletionWithXPCActivityManager:(id)a3 activity:(id)a4 engagementMetrics:(id)a5 idsService:(id)a6 destinationDevice:(id)a7;
-+ (id)onDeltaRowWithXPCActivityManager:(id)a3 activity:(id)a4 engagementMetrics:(id)a5;
-+ (id)recorderForKey:(id)a3;
-- (BOOL)collectDeviceQREngagement:(id)a3;
-- (PSGDPDeviceMetricsCollector)initWithActivityManager:(id)a3;
-- (PSGDPDeviceMetricsCollector)initWithActivityManager:(id)a3 idsService:(id)a4 queue:(id)a5 store:(id)a6;
++ (BOOL)recordEngagementMetrics:(id)metrics selectedRecorder:(id)recorder ignoredRecorder:(id)ignoredRecorder;
++ (BOOL)recordResponse:(id)response numTimesToLog:(unint64_t)log recorder:(id)recorder prefix:(id)prefix;
++ (BOOL)sendEngagementToDPUsingData:(id)data;
++ (id)getActiveTrialInformationWithWithXPCActivityManager:(id)manager activity:(id)activity;
++ (id)getPrefixFromRolloutID:(id)d factorPackId:(id)id experimentId:(id)experimentId treatmentId:(id)treatmentId;
++ (id)onCompletionWithXPCActivityManager:(id)manager activity:(id)activity engagementMetrics:(id)metrics idsService:(id)service destinationDevice:(id)device;
++ (id)onDeltaRowWithXPCActivityManager:(id)manager activity:(id)activity engagementMetrics:(id)metrics;
++ (id)recorderForKey:(id)key;
+- (BOOL)collectDeviceQREngagement:(id)engagement;
+- (PSGDPDeviceMetricsCollector)initWithActivityManager:(id)manager;
+- (PSGDPDeviceMetricsCollector)initWithActivityManager:(id)manager idsService:(id)service queue:(id)queue store:(id)store;
 - (id)initAsDelegate;
-- (void)service:(id)a3 account:(id)a4 incomingData:(id)a5 fromID:(id)a6 context:(id)a7;
+- (void)service:(id)service account:(id)account incomingData:(id)data fromID:(id)d context:(id)context;
 @end
 
 @implementation PSGDPDeviceMetricsCollector
 
-- (void)service:(id)a3 account:(id)a4 incomingData:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingData:(id)data fromID:(id)d context:(id)context
 {
   v21 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  accountCopy = account;
+  dataCopy = data;
+  dCopy = d;
   v12 = psg_default_log_handle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v9 serviceName];
+    serviceName = [accountCopy serviceName];
     v15 = 138412802;
-    v16 = v13;
+    v16 = serviceName;
     v17 = 2112;
-    v18 = v11;
+    v18 = dCopy;
     v19 = 2048;
-    v20 = [v10 length];
+    v20 = [dataCopy length];
     _os_log_impl(&dword_260D36000, v12, OS_LOG_TYPE_DEFAULT, "Received file for service %@, identifier: %@; size: %tu", &v15, 0x20u);
   }
 
-  [PSGDPDeviceMetricsCollector sendEngagementToDPUsingData:v10];
+  [PSGDPDeviceMetricsCollector sendEngagementToDPUsingData:dataCopy];
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)collectDeviceQREngagement:(id)a3
+- (BOOL)collectDeviceQREngagement:(id)engagement
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  engagementCopy = engagement;
   v5 = psg_default_log_handle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -50,7 +50,7 @@
     _os_log_impl(&dword_260D36000, v5, OS_LOG_TYPE_DEFAULT, "Begin syncing QR engagement data", buf, 2u);
   }
 
-  v6 = [(SGXPCActivityManagerProtocol *)self->_xpcActivityManager shouldDefer:v4];
+  v6 = [(SGXPCActivityManagerProtocol *)self->_xpcActivityManager shouldDefer:engagementCopy];
   v7 = psg_default_log_handle();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
   if (!v6)
@@ -61,7 +61,7 @@
       _os_log_impl(&dword_260D36000, v7, OS_LOG_TYPE_DEFAULT, "Begin fetching device experiment information", buf, 2u);
     }
 
-    v10 = [PSGDPDeviceMetricsCollector getActiveTrialInformationWithWithXPCActivityManager:self->_xpcActivityManager activity:v4];
+    v10 = [PSGDPDeviceMetricsCollector getActiveTrialInformationWithWithXPCActivityManager:self->_xpcActivityManager activity:engagementCopy];
     v11 = v10;
     if (v10)
     {
@@ -78,7 +78,7 @@
         goto LABEL_28;
       }
 
-      v12 = [(SGXPCActivityManagerProtocol *)self->_xpcActivityManager shouldDefer:v4];
+      v12 = [(SGXPCActivityManagerProtocol *)self->_xpcActivityManager shouldDefer:engagementCopy];
       v13 = psg_default_log_handle();
       v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
       if (!v12)
@@ -95,14 +95,14 @@
         if (v16 && v17)
         {
           store = self->_store;
-          v20 = [PSGDPDeviceMetricsCollector onDeltaRowWithXPCActivityManager:self->_xpcActivityManager activity:v4 engagementMetrics:v11];
+          v20 = [PSGDPDeviceMetricsCollector onDeltaRowWithXPCActivityManager:self->_xpcActivityManager activity:engagementCopy engagementMetrics:v11];
           v23[0] = MEMORY[0x277D85DD0];
           v23[1] = 3221225472;
           v23[2] = __57__PSGDPDeviceMetricsCollector_collectDeviceQREngagement___block_invoke;
           v23[3] = &unk_279ABDFD0;
           v24 = v11;
-          v25 = self;
-          v26 = v4;
+          selfCopy = self;
+          v26 = engagementCopy;
           v27 = v16;
           v28 = v18;
           v9 = [(SGQuickResponsesStore *)store deltaForResponsesOnRow:v20 completion:v23];
@@ -137,7 +137,7 @@
       }
     }
 
-    [(SGXPCActivityManagerProtocol *)self->_xpcActivityManager setState:v4 state:3];
+    [(SGXPCActivityManagerProtocol *)self->_xpcActivityManager setState:engagementCopy state:3];
     v9 = 0;
 LABEL_28:
 
@@ -150,7 +150,7 @@ LABEL_28:
     _os_log_impl(&dword_260D36000, v7, OS_LOG_TYPE_DEFAULT, "Deferring engagement data syncing during eager initial check", buf, 2u);
   }
 
-  [(SGXPCActivityManagerProtocol *)self->_xpcActivityManager setState:v4 state:3];
+  [(SGXPCActivityManagerProtocol *)self->_xpcActivityManager setState:engagementCopy state:3];
   v9 = 0;
 LABEL_29:
 
@@ -253,36 +253,36 @@ LABEL_15:
   return 0;
 }
 
-- (PSGDPDeviceMetricsCollector)initWithActivityManager:(id)a3 idsService:(id)a4 queue:(id)a5 store:(id)a6
+- (PSGDPDeviceMetricsCollector)initWithActivityManager:(id)manager idsService:(id)service queue:(id)queue store:(id)store
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  managerCopy = manager;
+  serviceCopy = service;
+  queueCopy = queue;
+  storeCopy = store;
   v18.receiver = self;
   v18.super_class = PSGDPDeviceMetricsCollector;
   v15 = [(PSGDPDeviceMetricsCollector *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_xpcActivityManager, a3);
-    objc_storeStrong(&v16->_idsService, a4);
-    objc_storeStrong(&v16->_store, a6);
-    objc_storeStrong(&v16->_queue, a5);
+    objc_storeStrong(&v15->_xpcActivityManager, manager);
+    objc_storeStrong(&v16->_idsService, service);
+    objc_storeStrong(&v16->_store, store);
+    objc_storeStrong(&v16->_queue, queue);
     [(IDSService *)v16->_idsService addDelegate:v16 queue:v16->_queue];
   }
 
   return v16;
 }
 
-- (PSGDPDeviceMetricsCollector)initWithActivityManager:(id)a3
+- (PSGDPDeviceMetricsCollector)initWithActivityManager:(id)manager
 {
   v4 = MEMORY[0x277D18778];
-  v5 = a3;
+  managerCopy = manager;
   v6 = [[v4 alloc] initWithService:@"com.apple.private.alloy.suggestions.smartreplies"];
-  v7 = [MEMORY[0x277D025B8] sharedInstance];
+  mEMORY[0x277D025B8] = [MEMORY[0x277D025B8] sharedInstance];
   v8 = dispatch_queue_create("com.apple.dpwatchmetricscollection.idsSend", 0);
-  v9 = [(PSGDPDeviceMetricsCollector *)self initWithActivityManager:v5 idsService:v6 queue:v8 store:v7];
+  v9 = [(PSGDPDeviceMetricsCollector *)self initWithActivityManager:managerCopy idsService:v6 queue:v8 store:mEMORY[0x277D025B8]];
 
   return v9;
 }
@@ -308,10 +308,10 @@ LABEL_15:
   return v2;
 }
 
-+ (BOOL)sendEngagementToDPUsingData:(id)a3
++ (BOOL)sendEngagementToDPUsingData:(id)data
 {
   v98 = *MEMORY[0x277D85DE8];
-  v75 = a3;
+  dataCopy = data;
   v3 = psg_default_log_handle();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
@@ -337,8 +337,8 @@ LABEL_15:
   }
 
   v84 = 0;
-  v14 = v75;
-  v15 = [objc_alloc(MEMORY[0x277CCAAC8]) initForReadingFromData:v75 error:&v84];
+  v14 = dataCopy;
+  v15 = [objc_alloc(MEMORY[0x277CCAAC8]) initForReadingFromData:dataCopy error:&v84];
   v16 = v84;
   [v15 setRequiresSecureCoding:1];
   [v15 setClass:objc_opt_class() forClassName:@"SGQuickResponsesEngagementMetrics"];
@@ -551,23 +551,23 @@ LABEL_74:
                 v43 = psg_default_log_handle();
                 if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
                 {
-                  v44 = [v41 lang];
-                  v45 = [v41 rolloutId];
-                  v46 = [v41 factorPackId];
-                  v47 = [v41 experimentId];
-                  v48 = [v41 treatmentId];
-                  v49 = [v41 engagementDeltas];
-                  v50 = [v49 count];
+                  lang = [v41 lang];
+                  rolloutId = [v41 rolloutId];
+                  factorPackId = [v41 factorPackId];
+                  experimentId = [v41 experimentId];
+                  treatmentId = [v41 treatmentId];
+                  engagementDeltas = [v41 engagementDeltas];
+                  v50 = [engagementDeltas count];
                   *buf = 138413826;
-                  v86 = v44;
+                  v86 = lang;
                   v87 = 2112;
-                  *v88 = v45;
+                  *v88 = rolloutId;
                   *&v88[8] = 2112;
-                  *&v88[10] = v46;
+                  *&v88[10] = factorPackId;
                   *&v88[18] = 2112;
-                  v89 = v47;
+                  v89 = experimentId;
                   v90 = 2112;
-                  v91 = v48;
+                  v91 = treatmentId;
                   v92 = 2048;
                   v93 = v50;
                   v94 = 1024;
@@ -590,7 +590,7 @@ LABEL_74:
             }
 
             while (v39);
-            v14 = v75;
+            v14 = dataCopy;
             v16 = 0;
             v12 = v66;
             v15 = v65;
@@ -697,30 +697,30 @@ void __59__PSGDPDeviceMetricsCollector_sendEngagementToDPUsingData___block_invok
   v9 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)onCompletionWithXPCActivityManager:(id)a3 activity:(id)a4 engagementMetrics:(id)a5 idsService:(id)a6 destinationDevice:(id)a7
++ (id)onCompletionWithXPCActivityManager:(id)manager activity:(id)activity engagementMetrics:(id)metrics idsService:(id)service destinationDevice:(id)device
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  managerCopy = manager;
+  activityCopy = activity;
+  metricsCopy = metrics;
+  serviceCopy = service;
+  deviceCopy = device;
   v16 = [MEMORY[0x277CCA9B8] errorWithDomain:@"SGDPDeviceMetricsCollectorErrorDomain" code:0 userInfo:0];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __122__PSGDPDeviceMetricsCollector_onCompletionWithXPCActivityManager_activity_engagementMetrics_idsService_destinationDevice___block_invoke;
   v25[3] = &unk_279ABDFA8;
-  v26 = v13;
-  v27 = v11;
-  v28 = v12;
+  v26 = metricsCopy;
+  v27 = managerCopy;
+  v28 = activityCopy;
   v29 = v16;
-  v30 = v15;
-  v31 = v14;
-  v17 = v14;
-  v18 = v15;
+  v30 = deviceCopy;
+  v31 = serviceCopy;
+  v17 = serviceCopy;
+  v18 = deviceCopy;
   v19 = v16;
-  v20 = v12;
-  v21 = v11;
-  v22 = v13;
+  v20 = activityCopy;
+  v21 = managerCopy;
+  v22 = metricsCopy;
   v23 = MEMORY[0x2666EDC40](v25);
 
   return v23;
@@ -995,11 +995,11 @@ LABEL_62:
   return v14;
 }
 
-+ (id)onDeltaRowWithXPCActivityManager:(id)a3 activity:(id)a4 engagementMetrics:(id)a5
++ (id)onDeltaRowWithXPCActivityManager:(id)manager activity:(id)activity engagementMetrics:(id)metrics
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  managerCopy = manager;
+  activityCopy = activity;
+  metricsCopy = metrics;
   v10 = [MEMORY[0x277CCA9B8] errorWithDomain:@"SGDPDeviceMetricsCollectorErrorDomain" code:0 userInfo:0];
   v23[0] = 0;
   v23[1] = v23;
@@ -1009,15 +1009,15 @@ LABEL_62:
   v17[1] = 3221225472;
   v17[2] = __91__PSGDPDeviceMetricsCollector_onDeltaRowWithXPCActivityManager_activity_engagementMetrics___block_invoke;
   v17[3] = &unk_279ABDF80;
-  v18 = v7;
-  v19 = v8;
+  v18 = managerCopy;
+  v19 = activityCopy;
   v20 = v10;
-  v21 = v9;
+  v21 = metricsCopy;
   v22 = v23;
-  v11 = v9;
+  v11 = metricsCopy;
   v12 = v10;
-  v13 = v8;
-  v14 = v7;
+  v13 = activityCopy;
+  v14 = managerCopy;
   v15 = MEMORY[0x2666EDC40](v17);
 
   _Block_object_dispose(v23, 8);
@@ -1156,31 +1156,31 @@ LABEL_27:
   return v22;
 }
 
-+ (id)recorderForKey:(id)a3
++ (id)recorderForKey:(id)key
 {
   v3 = MEMORY[0x277D05310];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithKey:v4];
+  keyCopy = key;
+  v5 = [[v3 alloc] initWithKey:keyCopy];
 
   return v5;
 }
 
-+ (id)getActiveTrialInformationWithWithXPCActivityManager:(id)a3 activity:(id)a4
++ (id)getActiveTrialInformationWithWithXPCActivityManager:(id)manager activity:(id)activity
 {
   v43 = *MEMORY[0x277D85DE8];
-  v33 = a3;
-  v32 = a4;
+  managerCopy = manager;
+  activityCopy = activity;
   context = objc_autoreleasePoolPush();
   v28 = objc_opt_new();
   v31 = +[PSGExperimentResolver sharedInstance];
-  v5 = [v31 zkwLangAndNamespaces];
-  v6 = [v5 allKeys];
+  zkwLangAndNamespaces = [v31 zkwLangAndNamespaces];
+  allKeys = [zkwLangAndNamespaces allKeys];
 
   v40 = 0u;
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v7 = v6;
+  v7 = allKeys;
   v30 = [v7 countByEnumeratingWithState:&v38 objects:v42 count:16];
   v8 = 0;
   if (v30)
@@ -1200,7 +1200,7 @@ LABEL_3:
       v11 = *(*(&v38 + 1) + 8 * v9);
       v8 = [v31 getResponseSuggestionsExperimentConfig:v11 shouldDownloadAssets:0];
 
-      if ([v33 shouldDefer:v32])
+      if ([managerCopy shouldDefer:activityCopy])
       {
         v23 = psg_default_log_handle();
         v21 = v28;
@@ -1215,15 +1215,15 @@ LABEL_3:
         goto LABEL_17;
       }
 
-      v12 = [v8 rolloutIdentifiers];
-      if (v12)
+      rolloutIdentifiers = [v8 rolloutIdentifiers];
+      if (rolloutIdentifiers)
       {
         break;
       }
 
-      v13 = [v8 experimentIdentifiers];
+      experimentIdentifiers = [v8 experimentIdentifiers];
 
-      if (v13)
+      if (experimentIdentifiers)
       {
         goto LABEL_10;
       }
@@ -1246,15 +1246,15 @@ LABEL_11:
 
 LABEL_10:
     v34 = [PSGQuickResponsesEngagementMetrics alloc];
-    v36 = [v8 rolloutIdentifiers];
-    v35 = [v36 rolloutId];
-    v14 = [v8 rolloutIdentifiers];
-    v15 = [v14 factorPackId];
-    v16 = [v8 experimentIdentifiers];
-    v17 = [v16 experimentId];
-    v18 = [v8 experimentIdentifiers];
-    v19 = [v18 treatmentId];
-    v20 = [(PSGQuickResponsesEngagementMetrics *)v34 initWithLang:v11 rolloutId:v35 factorPackId:v15 experimentId:v17 treatmentId:v19];
+    rolloutIdentifiers2 = [v8 rolloutIdentifiers];
+    rolloutId = [rolloutIdentifiers2 rolloutId];
+    rolloutIdentifiers3 = [v8 rolloutIdentifiers];
+    factorPackId = [rolloutIdentifiers3 factorPackId];
+    experimentIdentifiers2 = [v8 experimentIdentifiers];
+    experimentId = [experimentIdentifiers2 experimentId];
+    experimentIdentifiers3 = [v8 experimentIdentifiers];
+    treatmentId = [experimentIdentifiers3 treatmentId];
+    v20 = [(PSGQuickResponsesEngagementMetrics *)v34 initWithLang:v11 rolloutId:rolloutId factorPackId:factorPackId experimentId:experimentId treatmentId:treatmentId];
     [v28 setObject:v20 forKeyedSubscript:v11];
 
     goto LABEL_11;
@@ -1272,24 +1272,24 @@ LABEL_17:
   return v22;
 }
 
-+ (BOOL)recordEngagementMetrics:(id)a3 selectedRecorder:(id)a4 ignoredRecorder:(id)a5
++ (BOOL)recordEngagementMetrics:(id)metrics selectedRecorder:(id)recorder ignoredRecorder:(id)ignoredRecorder
 {
   v40 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v30 = a4;
-  v29 = a5;
-  v8 = [v7 rolloutId];
-  v9 = [v7 factorPackId];
-  v10 = [v7 experimentId];
-  v11 = [v7 treatmentId];
-  v12 = [PSGDPDeviceMetricsCollector getPrefixFromRolloutID:v8 factorPackId:v9 experimentId:v10 treatmentId:v11];
+  metricsCopy = metrics;
+  recorderCopy = recorder;
+  ignoredRecorderCopy = ignoredRecorder;
+  rolloutId = [metricsCopy rolloutId];
+  factorPackId = [metricsCopy factorPackId];
+  experimentId = [metricsCopy experimentId];
+  treatmentId = [metricsCopy treatmentId];
+  v12 = [PSGDPDeviceMetricsCollector getPrefixFromRolloutID:rolloutId factorPackId:factorPackId experimentId:experimentId treatmentId:treatmentId];
 
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v28 = v7;
-  obj = [v7 engagementDeltas];
+  v28 = metricsCopy;
+  obj = [metricsCopy engagementDeltas];
   v13 = [obj countByEnumeratingWithState:&v32 objects:v39 count:16];
   if (v13)
   {
@@ -1306,8 +1306,8 @@ LABEL_17:
         }
 
         v18 = *(*(&v32 + 1) + 8 * i);
-        v19 = [v18 response];
-        if (!v19)
+        response = [v18 response];
+        if (!response)
         {
           v25 = psg_default_log_handle();
           if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
@@ -1319,16 +1319,16 @@ LABEL_17:
           goto LABEL_16;
         }
 
-        v20 = [v18 selected];
-        v21 = [v18 displayed];
-        v22 = v21 - [v18 selected];
-        if ((v20 & 0x80000000) != 0 || (v22 & 0x80000000) != 0)
+        selected = [v18 selected];
+        displayed = [v18 displayed];
+        v22 = displayed - [v18 selected];
+        if ((selected & 0x80000000) != 0 || (v22 & 0x80000000) != 0)
         {
           v25 = psg_default_log_handle();
           if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
           {
             *buf = 67109376;
-            *v37 = v20;
+            *v37 = selected;
             *&v37[4] = 1024;
             *&v37[6] = v22;
             _os_log_error_impl(&dword_260D36000, v25, OS_LOG_TYPE_ERROR, "Skipping DP logging for response because invalid count for selected %d or ignored %d", buf, 0xEu);
@@ -1343,14 +1343,14 @@ LABEL_16:
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134218240;
-          *v37 = v20;
+          *v37 = selected;
           *&v37[8] = 2048;
           v38 = v22;
           _os_log_impl(&dword_260D36000, v23, OS_LOG_TYPE_DEFAULT, "Logging message selected %tu, ignored %tu", buf, 0x16u);
         }
 
-        v24 = [PSGDPDeviceMetricsCollector recordResponse:v19 numTimesToLog:v20 recorder:v30 prefix:v12];
-        v16 &= [PSGDPDeviceMetricsCollector recordResponse:v19 numTimesToLog:v22 recorder:v29 prefix:v12]&& v24;
+        v24 = [PSGDPDeviceMetricsCollector recordResponse:response numTimesToLog:selected recorder:recorderCopy prefix:v12];
+        v16 &= [PSGDPDeviceMetricsCollector recordResponse:response numTimesToLog:v22 recorder:ignoredRecorderCopy prefix:v12]&& v24;
 LABEL_17:
       }
 
@@ -1369,22 +1369,22 @@ LABEL_21:
   return v16 & 1;
 }
 
-+ (BOOL)recordResponse:(id)a3 numTimesToLog:(unint64_t)a4 recorder:(id)a5 prefix:(id)a6
++ (BOOL)recordResponse:(id)response numTimesToLog:(unint64_t)log recorder:(id)recorder prefix:(id)prefix
 {
   v35[2] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  if ([v9 length])
+  responseCopy = response;
+  recorderCopy = recorder;
+  prefixCopy = prefix;
+  if ([responseCopy length])
   {
-    if (!a4)
+    if (!log)
     {
       v30 = 1;
       goto LABEL_35;
     }
 
-    v35[0] = v11;
-    v35[1] = v9;
+    v35[0] = prefixCopy;
+    v35[1] = responseCopy;
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v35 count:2];
     v13 = [v12 _pas_componentsJoinedByString:@"|"];
 
@@ -1392,7 +1392,7 @@ LABEL_21:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       v33 = 134217984;
-      v34 = a4;
+      logCopy = log;
       _os_log_impl(&dword_260D36000, v14, OS_LOG_TYPE_DEFAULT, "Preparing to log message %tu times", &v33, 0xCu);
     }
 
@@ -1403,22 +1403,22 @@ LABEL_21:
       v16 = 1;
     }
 
-    if (v16 >= a4)
+    if (v16 >= log)
     {
-      v17 = a4;
+      logCopy2 = log;
     }
 
     else
     {
-      v17 = v16;
+      logCopy2 = v16;
     }
 
-    v18 = a4 / v17;
-    v19 = a4 / v17 * v17;
-    v20 = a4 % v17;
-    v21 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:v17];
+    v18 = log / logCopy2;
+    v19 = log / logCopy2 * logCopy2;
+    v20 = log % logCopy2;
+    v21 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:logCopy2];
     v22 = v21;
-    while ([v21 count]< v17)
+    while ([v21 count]< logCopy2)
     {
       [v22 addObject:v13];
       v21 = v22;
@@ -1428,18 +1428,18 @@ LABEL_21:
     v24 = 0;
     do
     {
-      v25 = [v10 record:v22];
+      v25 = [recorderCopy record:v22];
       v24 += v25 ^ 1;
       v23 += v25;
     }
 
     while (v23 < v18 && v24 < 3);
-    if (a4 != v19 && v24 <= 2)
+    if (log != v19 && v24 <= 2)
     {
       v27 = [v22 subarrayWithRange:0, v20];
       do
       {
-        v28 = [v10 record:v27];
+        v28 = [recorderCopy record:v27];
         v24 += v28 ^ 1u;
       }
 
@@ -1452,7 +1452,7 @@ LABEL_21:
       if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
       {
         v33 = 134217984;
-        v34 = v24;
+        logCopy = v24;
         _os_log_error_impl(&dword_260D36000, v29, OS_LOG_TYPE_ERROR, "Call to recorder failed %tu times", &v33, 0xCu);
       }
     }
@@ -1470,27 +1470,27 @@ LABEL_21:
     }
 
     v30 = 0;
-    v13 = v9;
+    v13 = responseCopy;
   }
 
-  v9 = v13;
+  responseCopy = v13;
 LABEL_35:
 
   v31 = *MEMORY[0x277D85DE8];
   return v30;
 }
 
-+ (id)getPrefixFromRolloutID:(id)a3 factorPackId:(id)a4 experimentId:(id)a5 treatmentId:(id)a6
++ (id)getPrefixFromRolloutID:(id)d factorPackId:(id)id experimentId:(id)experimentId treatmentId:(id)treatmentId
 {
   v25[2] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  dCopy = d;
+  idCopy = id;
+  experimentIdCopy = experimentId;
+  treatmentIdCopy = treatmentId;
   v13 = &stru_287345C00;
-  if (v10)
+  if (idCopy)
   {
-    v14 = v10;
+    v14 = idCopy;
   }
 
   else
@@ -1499,9 +1499,9 @@ LABEL_35:
   }
 
   v15 = v14;
-  if (v11)
+  if (experimentIdCopy)
   {
-    v16 = v11;
+    v16 = experimentIdCopy;
   }
 
   else
@@ -1510,9 +1510,9 @@ LABEL_35:
   }
 
   v17 = v16;
-  if (v12)
+  if (treatmentIdCopy)
   {
-    v18 = v12;
+    v18 = treatmentIdCopy;
   }
 
   else
@@ -1520,9 +1520,9 @@ LABEL_35:
     v18 = &stru_287345C00;
   }
 
-  if (v12)
+  if (treatmentIdCopy)
   {
-    v19 = v11 != 0;
+    v19 = experimentIdCopy != 0;
   }
 
   else
@@ -1531,9 +1531,9 @@ LABEL_35:
   }
 
   v20 = v18;
-  if (v10)
+  if (idCopy)
   {
-    v21 = v9 == 0;
+    v21 = dCopy == 0;
   }
 
   else
@@ -1545,8 +1545,8 @@ LABEL_35:
   {
     if (v19)
     {
-      v25[0] = v11;
-      v25[1] = v12;
+      v25[0] = experimentIdCopy;
+      v25[1] = treatmentIdCopy;
       v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:2];
       v13 = [v22 _pas_componentsJoinedByString:@"|"];
     }

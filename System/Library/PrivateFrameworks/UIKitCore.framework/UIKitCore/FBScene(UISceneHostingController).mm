@@ -6,9 +6,9 @@
 
 - (void)uiSceneHostingController
 {
-  v1 = [a1 delegate];
+  delegate = [self delegate];
   v2 = objc_opt_class();
-  v3 = v1;
+  v3 = delegate;
   if (v2)
   {
     if (objc_opt_isKindOfClass())

@@ -1,28 +1,28 @@
 @interface FCNewsTabiRecipeTagSuggestionsConfiguration
-- (FCNewsTabiRecipeTagSuggestionsConfiguration)initWithDictionary:(id)a3;
+- (FCNewsTabiRecipeTagSuggestionsConfiguration)initWithDictionary:(id)dictionary;
 - (id)description;
 @end
 
 @implementation FCNewsTabiRecipeTagSuggestionsConfiguration
 
-- (FCNewsTabiRecipeTagSuggestionsConfiguration)initWithDictionary:(id)a3
+- (FCNewsTabiRecipeTagSuggestionsConfiguration)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [FCNewsTabiRecipeTagSuggestionsOutputConfiguration alloc];
-  v6 = FCAppConfigurationDictionaryValueWithDefaultValue(v4, @"bundleOutputConfiguration", 0);
+  v6 = FCAppConfigurationDictionaryValueWithDefaultValue(dictionaryCopy, @"bundleOutputConfiguration", 0);
   v7 = [(FCNewsTabiRecipeTagSuggestionsOutputConfiguration *)v5 initWithDictionary:v6];
 
   if (v7)
   {
     v8 = v7;
     v9 = [FCNewsTabiRecipeTagSuggestionsOutputConfiguration alloc];
-    v10 = FCAppConfigurationDictionaryValueWithDefaultValue(v4, @"nonBundleOutputConfiguration", 0);
+    v10 = FCAppConfigurationDictionaryValueWithDefaultValue(dictionaryCopy, @"nonBundleOutputConfiguration", 0);
     v11 = [(FCNewsTabiRecipeTagSuggestionsOutputConfiguration *)v9 initWithDictionary:v10];
 
     if (v11)
     {
       v12 = v11;
-      v13 = FCAppConfigurationDictionaryValueWithDefaultValue(v4, @"eventAggregationConfiguration", 0);
+      v13 = FCAppConfigurationDictionaryValueWithDefaultValue(dictionaryCopy, @"eventAggregationConfiguration", 0);
       v14 = v13;
       if (v13)
       {
@@ -45,7 +45,7 @@
           }
 
           self = p_isa;
-          v21 = self;
+          selfCopy = self;
         }
 
         else
@@ -55,7 +55,7 @@
           v25[2] = __66__FCNewsTabiRecipeTagSuggestionsConfiguration_initWithDictionary___block_invoke_11;
           v25[3] = &unk_1E7C36F98;
           v26 = v15;
-          v21 = __66__FCNewsTabiRecipeTagSuggestionsConfiguration_initWithDictionary___block_invoke_11(v25);
+          selfCopy = __66__FCNewsTabiRecipeTagSuggestionsConfiguration_initWithDictionary___block_invoke_11(v25);
           v18 = v26;
         }
 
@@ -68,8 +68,8 @@
         v27[1] = 3221225472;
         v27[2] = __66__FCNewsTabiRecipeTagSuggestionsConfiguration_initWithDictionary___block_invoke_9;
         v27[3] = &unk_1E7C36F98;
-        v28 = v4;
-        v21 = __66__FCNewsTabiRecipeTagSuggestionsConfiguration_initWithDictionary___block_invoke_9(v27);
+        v28 = dictionaryCopy;
+        selfCopy = __66__FCNewsTabiRecipeTagSuggestionsConfiguration_initWithDictionary___block_invoke_9(v27);
         v15 = v28;
       }
     }
@@ -80,8 +80,8 @@
       v29[1] = 3221225472;
       v29[2] = __66__FCNewsTabiRecipeTagSuggestionsConfiguration_initWithDictionary___block_invoke_8;
       v29[3] = &unk_1E7C36F98;
-      v30 = v4;
-      v21 = __66__FCNewsTabiRecipeTagSuggestionsConfiguration_initWithDictionary___block_invoke_8(v29);
+      v30 = dictionaryCopy;
+      selfCopy = __66__FCNewsTabiRecipeTagSuggestionsConfiguration_initWithDictionary___block_invoke_8(v29);
       v12 = v30;
     }
   }
@@ -92,12 +92,12 @@
     v31[1] = 3221225472;
     v31[2] = __66__FCNewsTabiRecipeTagSuggestionsConfiguration_initWithDictionary___block_invoke;
     v31[3] = &unk_1E7C36F98;
-    v32 = v4;
-    v21 = __66__FCNewsTabiRecipeTagSuggestionsConfiguration_initWithDictionary___block_invoke(v31);
+    v32 = dictionaryCopy;
+    selfCopy = __66__FCNewsTabiRecipeTagSuggestionsConfiguration_initWithDictionary___block_invoke(v31);
     v8 = v32;
   }
 
-  return v21;
+  return selfCopy;
 }
 
 uint64_t __66__FCNewsTabiRecipeTagSuggestionsConfiguration_initWithDictionary___block_invoke(uint64_t a1)
@@ -175,17 +175,17 @@ uint64_t __66__FCNewsTabiRecipeTagSuggestionsConfiguration_initWithDictionary___
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];;
-  v4 = [(FCNewsTabiRecipeTagSuggestionsConfiguration *)self bundleOutputConfiguration];
-  v5 = [v4 indentedDescription];
-  [v3 appendFormat:@"\n\tbundleOutputConfiguration: %@", v5];
+  bundleOutputConfiguration = [(FCNewsTabiRecipeTagSuggestionsConfiguration *)self bundleOutputConfiguration];
+  indentedDescription = [bundleOutputConfiguration indentedDescription];
+  [v3 appendFormat:@"\n\tbundleOutputConfiguration: %@", indentedDescription];
 
-  v6 = [(FCNewsTabiRecipeTagSuggestionsConfiguration *)self nonBundleOutputConfiguration];
-  v7 = [v6 indentedDescription];
-  [v3 appendFormat:@"\n\tnonBundleOutputConfiguration: %@", v7];
+  nonBundleOutputConfiguration = [(FCNewsTabiRecipeTagSuggestionsConfiguration *)self nonBundleOutputConfiguration];
+  indentedDescription2 = [nonBundleOutputConfiguration indentedDescription];
+  [v3 appendFormat:@"\n\tnonBundleOutputConfiguration: %@", indentedDescription2];
 
-  v8 = [(FCNewsTabiRecipeTagSuggestionsConfiguration *)self eventAggregationConfiguration];
-  v9 = [v8 indentedDescription];
-  [v3 appendFormat:@"\n\teventAggregationConfiguration: %@;", v9];
+  eventAggregationConfiguration = [(FCNewsTabiRecipeTagSuggestionsConfiguration *)self eventAggregationConfiguration];
+  indentedDescription3 = [eventAggregationConfiguration indentedDescription];
+  [v3 appendFormat:@"\n\teventAggregationConfiguration: %@;", indentedDescription3];
 
   [v3 appendString:@"\n>"];
 

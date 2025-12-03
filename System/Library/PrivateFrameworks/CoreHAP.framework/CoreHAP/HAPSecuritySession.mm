@@ -1,37 +1,37 @@
 @interface HAPSecuritySession
 + (id)logCategory;
-- (BOOL)_initializeSetupSession:(unint64_t)a3;
-- (HAPSecuritySession)initWithRole:(unint64_t)a3 resumeSessionID:(unint64_t)a4 delegate:(id)a5;
+- (BOOL)_initializeSetupSession:(unint64_t)session;
+- (HAPSecuritySession)initWithRole:(unint64_t)role resumeSessionID:(unint64_t)d delegate:(id)delegate;
 - (HAPSecuritySessionDelegate)delegate;
 - (NSData)broadcastKey;
 - (NSDictionary)additionalDerivedKeys;
 - (NSString)debugDescription;
 - (NSString)description;
-- (id)_handleLocalPairingIdentityRequestWithStatus:(int *)a3;
-- (id)_handlePeerPairingIdentityRequestWithIdentifier:(id)a3 status:(int *)a4;
+- (id)_handleLocalPairingIdentityRequestWithStatus:(int *)status;
+- (id)_handlePeerPairingIdentityRequestWithIdentifier:(id)identifier status:(int *)status;
 - (id)_inputInfo;
 - (id)_outputInfo;
-- (id)decryptData:(id)a3 additionalAuthenticatedData:(id)a4 error:(id *)a5;
-- (id)encryptData:(id)a3 additionalAuthenticatedData:(id)a4 error:(id *)a5;
+- (id)decryptData:(id)data additionalAuthenticatedData:(id)authenticatedData error:(id *)error;
+- (id)encryptData:(id)data additionalAuthenticatedData:(id)authenticatedData error:(id *)error;
 - (id)logIdentifier;
 - (unint64_t)resumeSessionID;
 - (unint64_t)state;
-- (void)_closeWithError:(id)a3;
+- (void)_closeWithError:(id)error;
 - (void)_handleSetupExchangeComplete;
 - (void)_initiateClientSessionSetupExchange;
 - (void)_notifyOpened;
 - (void)_notifyOpening;
-- (void)_processSetupExchangeData:(id)a3 error:(id)a4;
+- (void)_processSetupExchangeData:(id)data error:(id)error;
 - (void)close;
-- (void)closeWithError:(id)a3;
+- (void)closeWithError:(id)error;
 - (void)dealloc;
 - (void)open;
 - (void)reallyOpen;
-- (void)receivedSetupExchangeData:(id)a3 error:(id)a4;
-- (void)setAdditionalDerivedKeys:(id)a3;
-- (void)setBroadcastKey:(id)a3;
-- (void)setResumeSessionID:(unint64_t)a3;
-- (void)setState:(unint64_t)a3;
+- (void)receivedSetupExchangeData:(id)data error:(id)error;
+- (void)setAdditionalDerivedKeys:(id)keys;
+- (void)setBroadcastKey:(id)key;
+- (void)setResumeSessionID:(unint64_t)d;
+- (void)setState:(unint64_t)state;
 @end
 
 @implementation HAPSecuritySession
@@ -45,29 +45,29 @@
 
 - (id)logIdentifier
 {
-  v3 = [(HAPSecuritySession *)self delegate];
+  delegate = [(HAPSecuritySession *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   v5 = MEMORY[0x277CCACA8];
   v6 = objc_opt_class();
   if (v4)
   {
-    v7 = [(HAPSecuritySession *)self delegate];
-    v8 = [v7 shortDescription];
-    v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
+    delegate2 = [(HAPSecuritySession *)self delegate];
+    shortDescription = [delegate2 shortDescription];
+    v9 = [v5 stringWithFormat:@"%@ %@", v6, shortDescription];
   }
 
   else
   {
-    v10 = [(HAPSecuritySession *)self state];
-    if (v10 > 3)
+    state = [(HAPSecuritySession *)self state];
+    if (state > 3)
     {
       v11 = @"unknown";
     }
 
     else
     {
-      v11 = off_2786D3480[v10];
+      v11 = off_2786D3480[state];
     }
 
     v9 = [v5 stringWithFormat:@"%@ %@", v6, v11];
@@ -76,14 +76,14 @@
   return v9;
 }
 
-- (id)decryptData:(id)a3 additionalAuthenticatedData:(id)a4 error:(id *)a5
+- (id)decryptData:(id)data additionalAuthenticatedData:(id)authenticatedData error:(id *)error
 {
   v34 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  dataCopy = data;
+  authenticatedDataCopy = authenticatedData;
+  if (!dataCopy)
   {
-    if (a5)
+    if (error)
     {
       v14 = [MEMORY[0x277CCA9B8] errorWithDomain:@"HAPErrorDomain" code:-6705 userInfo:0];
       goto LABEL_9;
@@ -92,10 +92,10 @@
     goto LABEL_13;
   }
 
-  if ([v8 length] <= 0xF)
+  if ([dataCopy length] <= 0xF)
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -103,17 +103,17 @@
       *buf = 138543618;
       *&buf[4] = v13;
       *&buf[12] = 2048;
-      *&buf[14] = [v8 length];
+      *&buf[14] = [dataCopy length];
       _os_log_impl(&dword_22AADC000, v12, OS_LOG_TYPE_ERROR, "%{public}@The encrypted data has an invalid length of %tu bytes", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v10);
-    if (a5)
+    if (error)
     {
       v14 = [MEMORY[0x277CCA9B8] errorWithDomain:@"HAPErrorDomain" code:-6743 userInfo:0];
 LABEL_9:
       v15 = 0;
-      *a5 = v14;
+      *error = v14;
       goto LABEL_14;
     }
 
@@ -134,7 +134,7 @@ LABEL_13:
   v27 = __Block_byref_object_copy__2760;
   v28 = __Block_byref_object_dispose__2761;
   v29 = 0;
-  v16 = [(HAPSecuritySession *)self queue];
+  queue = [(HAPSecuritySession *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __68__HAPSecuritySession_decryptData_additionalAuthenticatedData_error___block_invoke;
@@ -142,13 +142,13 @@ LABEL_13:
   block[4] = self;
   v22 = &v24;
   v23 = buf;
-  v20 = v8;
-  v21 = v9;
-  dispatch_sync(v16, block);
+  v20 = dataCopy;
+  v21 = authenticatedDataCopy;
+  dispatch_sync(queue, block);
 
-  if (a5)
+  if (error)
   {
-    *a5 = v25[5];
+    *error = v25[5];
   }
 
   v15 = *(*&buf[8] + 40);
@@ -194,11 +194,11 @@ void __68__HAPSecuritySession_decryptData_additionalAuthenticatedData_error___bl
   }
 }
 
-- (id)encryptData:(id)a3 additionalAuthenticatedData:(id)a4 error:(id *)a5
+- (id)encryptData:(id)data additionalAuthenticatedData:(id)authenticatedData error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  dataCopy = data;
+  authenticatedDataCopy = authenticatedData;
+  if (dataCopy)
   {
     v24 = 0;
     v25 = &v24;
@@ -212,7 +212,7 @@ void __68__HAPSecuritySession_decryptData_additionalAuthenticatedData_error___bl
     v21 = __Block_byref_object_copy__2760;
     v22 = __Block_byref_object_dispose__2761;
     v23 = 0;
-    v10 = [(HAPSecuritySession *)self queue];
+    queue = [(HAPSecuritySession *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __68__HAPSecuritySession_encryptData_additionalAuthenticatedData_error___block_invoke;
@@ -220,13 +220,13 @@ void __68__HAPSecuritySession_decryptData_additionalAuthenticatedData_error___bl
     block[4] = self;
     v16 = &v18;
     v17 = &v24;
-    v14 = v8;
-    v15 = v9;
-    dispatch_sync(v10, block);
+    v14 = dataCopy;
+    v15 = authenticatedDataCopy;
+    dispatch_sync(queue, block);
 
-    if (a5)
+    if (error)
     {
-      *a5 = v19[5];
+      *error = v19[5];
     }
 
     v11 = v25[5];
@@ -235,10 +235,10 @@ void __68__HAPSecuritySession_decryptData_additionalAuthenticatedData_error___bl
     _Block_object_dispose(&v24, 8);
   }
 
-  else if (a5)
+  else if (error)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:@"HAPErrorDomain" code:-6705 userInfo:0];
-    *a5 = v11 = 0;
+    *error = v11 = 0;
   }
 
   else
@@ -271,100 +271,100 @@ uint64_t __68__HAPSecuritySession_encryptData_additionalAuthenticatedData_error_
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_closeWithError:(id)a3
+- (void)_closeWithError:(id)error
 {
-  v11 = a3;
+  errorCopy = error;
   v4 = [(HAPSecuritySession *)self state]== 3;
-  v5 = v11;
+  v5 = errorCopy;
   if (!v4)
   {
     os_unfair_lock_lock_with_options();
-    v6 = self;
-    pairingSession = v6->_pairingSession;
+    selfCopy = self;
+    pairingSession = selfCopy->_pairingSession;
     if (pairingSession)
     {
       CFRelease(pairingSession);
-      v6->_pairingSession = 0;
+      selfCopy->_pairingSession = 0;
     }
 
     v8 = objc_alloc_init(HAPSecuritySessionEncryption);
-    [(HAPSecuritySession *)v6 setEncryption:v8];
+    [(HAPSecuritySession *)selfCopy setEncryption:v8];
 
-    v6->_resumeSessionID = 0;
+    selfCopy->_resumeSessionID = 0;
     os_unfair_lock_unlock(&self->_lock);
-    [(HAPSecuritySession *)v6 setState:3];
-    v9 = [(HAPSecuritySession *)v6 delegate];
+    [(HAPSecuritySession *)selfCopy setState:3];
+    delegate = [(HAPSecuritySession *)selfCopy delegate];
     LOBYTE(v8) = objc_opt_respondsToSelector();
 
-    v5 = v11;
+    v5 = errorCopy;
     if (v8)
     {
-      v10 = [(HAPSecuritySession *)v6 delegate];
-      [v10 securitySession:v6 didCloseWithError:v11];
+      delegate2 = [(HAPSecuritySession *)selfCopy delegate];
+      [delegate2 securitySession:selfCopy didCloseWithError:errorCopy];
 
-      v5 = v11;
+      v5 = errorCopy;
     }
   }
 }
 
-- (void)closeWithError:(id)a3
+- (void)closeWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(HAPSecuritySession *)self queue];
+  errorCopy = error;
+  queue = [(HAPSecuritySession *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __37__HAPSecuritySession_closeWithError___block_invoke;
   v7[3] = &unk_2786D7050;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = errorCopy;
+  v6 = errorCopy;
+  dispatch_async(queue, v7);
 }
 
 - (void)close
 {
-  v3 = [(HAPSecuritySession *)self queue];
+  queue = [(HAPSecuritySession *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __27__HAPSecuritySession_close__block_invoke;
   block[3] = &unk_2786D6CA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)_notifyOpened
 {
-  v3 = [(HAPSecuritySession *)self delegate];
+  delegate = [(HAPSecuritySession *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(HAPSecuritySession *)self delegate];
-    [v5 securitySessionDidOpen:self];
+    delegate2 = [(HAPSecuritySession *)self delegate];
+    [delegate2 securitySessionDidOpen:self];
   }
 }
 
 - (void)_notifyOpening
 {
-  v3 = [(HAPSecuritySession *)self delegate];
+  delegate = [(HAPSecuritySession *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(HAPSecuritySession *)self delegate];
-    [v5 securitySessionIsOpening:self];
+    delegate2 = [(HAPSecuritySession *)self delegate];
+    [delegate2 securitySessionIsOpening:self];
   }
 }
 
 - (void)reallyOpen
 {
-  v3 = [(HAPSecuritySession *)self queue];
+  queue = [(HAPSecuritySession *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __32__HAPSecuritySession_reallyOpen__block_invoke;
   block[3] = &unk_2786D6CA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 uint64_t __32__HAPSecuritySession_reallyOpen__block_invoke(uint64_t a1)
@@ -395,7 +395,7 @@ uint64_t __32__HAPSecuritySession_reallyOpen__block_invoke(uint64_t a1)
   if ([(HAPSecuritySession *)self state])
   {
     v3 = objc_autoreleasePoolPush();
-    v4 = self;
+    selfCopy = self;
     v5 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
@@ -411,12 +411,12 @@ LABEL_5:
     return;
   }
 
-  v8 = [(HAPSecuritySession *)self delegate];
+  delegate = [(HAPSecuritySession *)self delegate];
 
-  if (!v8)
+  if (!delegate)
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy2 = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -428,7 +428,7 @@ LABEL_5:
 
     objc_autoreleasePoolPop(v10);
     v14 = [MEMORY[0x277CCA9B8] errorWithDomain:@"HAPErrorDomain" code:-6705 userInfo:0];
-    [(HAPSecuritySession *)v11 closeWithError:v14];
+    [(HAPSecuritySession *)selfCopy2 closeWithError:v14];
 
     goto LABEL_5;
   }
@@ -443,7 +443,7 @@ LABEL_5:
 {
   v59 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -454,17 +454,17 @@ LABEL_5:
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HAPSecuritySession *)v4 _inputInfo];
-  [(HAPSecuritySession *)v4 pairingSession];
-  [v7 bytes];
-  [v7 length];
+  _inputInfo = [(HAPSecuritySession *)selfCopy _inputInfo];
+  [(HAPSecuritySession *)selfCopy pairingSession];
+  [_inputInfo bytes];
+  [_inputInfo length];
   v8 = PairingSessionDeriveKey();
   v48 = v8;
   if (v8)
   {
-    v9 = [MEMORY[0x277CCA9B8] errorWithDomain:@"HAPErrorDomain" code:v8 userInfo:0];
+    _outputInfo = [MEMORY[0x277CCA9B8] errorWithDomain:@"HAPErrorDomain" code:v8 userInfo:0];
     v10 = objc_autoreleasePoolPush();
-    v11 = v4;
+    v11 = selfCopy;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -472,27 +472,27 @@ LABEL_5:
       *v53 = 138543618;
       v54 = v13;
       v55 = 2112;
-      v56 = v9;
+      v56 = _outputInfo;
       _os_log_impl(&dword_22AADC000, v12, OS_LOG_TYPE_ERROR, "%{public}@Failed to create input key with error: %@", v53, 0x16u);
     }
 
     objc_autoreleasePoolPop(v10);
-    [(HAPSecuritySession *)v11 _closeWithError:v9];
+    [(HAPSecuritySession *)v11 _closeWithError:_outputInfo];
   }
 
   else
   {
-    v9 = [(HAPSecuritySession *)v4 _outputInfo];
-    [(HAPSecuritySession *)v4 pairingSession];
-    [v9 bytes];
-    [v9 length];
+    _outputInfo = [(HAPSecuritySession *)selfCopy _outputInfo];
+    [(HAPSecuritySession *)selfCopy pairingSession];
+    [_outputInfo bytes];
+    [_outputInfo length];
     v14 = PairingSessionDeriveKey();
     v48 = v14;
     if (v14)
     {
-      v15 = [MEMORY[0x277CCA9B8] errorWithDomain:@"HAPErrorDomain" code:v14 userInfo:0];
+      _broadcastInfo = [MEMORY[0x277CCA9B8] errorWithDomain:@"HAPErrorDomain" code:v14 userInfo:0];
       v16 = objc_autoreleasePoolPush();
-      v17 = v4;
+      v17 = selfCopy;
       v18 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
@@ -500,22 +500,22 @@ LABEL_5:
         *v49 = 138543618;
         v50 = v19;
         v51 = 2112;
-        v52 = v15;
+        v52 = _broadcastInfo;
         _os_log_impl(&dword_22AADC000, v18, OS_LOG_TYPE_ERROR, "%{public}@Failed to create output key with error: %@", v49, 0x16u);
       }
 
       objc_autoreleasePoolPop(v16);
-      [(HAPSecuritySession *)v17 _closeWithError:v15];
+      [(HAPSecuritySession *)v17 _closeWithError:_broadcastInfo];
     }
 
     else
     {
       v47 = 0;
-      [(HAPSecuritySession *)v4 pairingSession];
+      [(HAPSecuritySession *)selfCopy pairingSession];
       if (!PairingSessionGetResumeInfo())
       {
         v20 = objc_autoreleasePoolPush();
-        v21 = v4;
+        v21 = selfCopy;
         v22 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
         {
@@ -531,26 +531,26 @@ LABEL_5:
         [(HAPSecuritySession *)v21 setResumeSessionID:v47];
       }
 
-      v15 = [(HAPSecuritySession *)v4 _broadcastInfo];
-      v24 = [(HAPSecuritySession *)v4 _handleLocalPairingIdentityRequestWithStatus:&v48];
+      _broadcastInfo = [(HAPSecuritySession *)selfCopy _broadcastInfo];
+      v24 = [(HAPSecuritySession *)selfCopy _handleLocalPairingIdentityRequestWithStatus:&v48];
       v25 = 0x277CBE000;
       if (v48)
       {
         goto LABEL_19;
       }
 
-      if ([(HAPSecuritySession *)v4 pairingSession])
+      if ([(HAPSecuritySession *)selfCopy pairingSession])
       {
-        [(HAPSecuritySession *)v4 pairingSession];
-        v43 = [v24 publicKey];
-        v26 = [v43 data];
-        [v26 bytes];
-        v27 = [v24 publicKey];
-        [v27 data];
+        [(HAPSecuritySession *)selfCopy pairingSession];
+        publicKey = [v24 publicKey];
+        data = [publicKey data];
+        [data bytes];
+        publicKey2 = [v24 publicKey];
+        [publicKey2 data];
         v28 = v44 = v24;
         [v28 length];
-        [v15 bytes];
-        [v15 length];
+        [_broadcastInfo bytes];
+        [_broadcastInfo length];
         v25 = 0x277CBE000uLL;
         v48 = PairingSessionDeriveKey();
 
@@ -560,51 +560,51 @@ LABEL_5:
       if (v48)
       {
 LABEL_19:
-        [(HAPSecuritySession *)v4 setBroadcastKey:0];
+        [(HAPSecuritySession *)selfCopy setBroadcastKey:0];
       }
 
       else
       {
         v42 = [*(v25 + 2704) dataWithBytes:v49 length:32];
-        [(HAPSecuritySession *)v4 setBroadcastKey:v42];
+        [(HAPSecuritySession *)selfCopy setBroadcastKey:v42];
       }
 
-      v29 = [(HAPSecuritySession *)v4 delegate];
+      delegate = [(HAPSecuritySession *)selfCopy delegate];
       v30 = objc_opt_respondsToSelector();
 
       if (v30)
       {
-        v31 = [(HAPSecuritySession *)v4 delegate];
-        v32 = [v31 securitySessionDidRequestAdditionalDerivedKeyTuples:v4];
+        delegate2 = [(HAPSecuritySession *)selfCopy delegate];
+        v32 = [delegate2 securitySessionDidRequestAdditionalDerivedKeyTuples:selfCopy];
 
         v33 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v32, "count")}];
         v45[0] = MEMORY[0x277D85DD0];
         v45[1] = 3221225472;
         v45[2] = __50__HAPSecuritySession__handleSetupExchangeComplete__block_invoke;
         v45[3] = &unk_2786D3460;
-        v45[4] = v4;
+        v45[4] = selfCopy;
         v46 = v33;
         v34 = v33;
         [v32 hmf_enumerateWithAutoreleasePoolUsingBlock:v45];
         v35 = [v34 copy];
-        [(HAPSecuritySession *)v4 setAdditionalDerivedKeys:v35];
+        [(HAPSecuritySession *)selfCopy setAdditionalDerivedKeys:v35];
       }
 
-      pairingSession = v4->_pairingSession;
+      pairingSession = selfCopy->_pairingSession;
       if (pairingSession)
       {
         CFRelease(pairingSession);
       }
 
-      v4->_pairingSession = 0;
+      selfCopy->_pairingSession = 0;
       v37 = [HAPSecuritySessionEncryption alloc];
       v38 = [*(v25 + 2704) dataWithBytes:buf length:32];
       v39 = [*(v25 + 2704) dataWithBytes:v53 length:32];
       v40 = [(HAPSecuritySessionEncryption *)v37 initWithInputKey:v38 outputKey:v39];
-      [(HAPSecuritySession *)v4 setEncryption:v40];
+      [(HAPSecuritySession *)selfCopy setEncryption:v40];
 
-      [(HAPSecuritySession *)v4 setState:2];
-      [(HAPSecuritySession *)v4 _notifyOpened];
+      [(HAPSecuritySession *)selfCopy setState:2];
+      [(HAPSecuritySession *)selfCopy _notifyOpened];
     }
   }
 
@@ -660,8 +660,8 @@ void __50__HAPSecuritySession__handleSetupExchangeComplete__block_invoke(uint64_
 
 - (id)_outputInfo
 {
-  v2 = [(HAPSecuritySession *)self role];
-  if (v2 == 1)
+  role = [(HAPSecuritySession *)self role];
+  if (role == 1)
   {
     v3 = MEMORY[0x277CBEA90];
     v4 = "Control-Read-Encryption-Key";
@@ -670,7 +670,7 @@ void __50__HAPSecuritySession__handleSetupExchangeComplete__block_invoke(uint64_
 
   else
   {
-    if (v2)
+    if (role)
     {
       goto LABEL_6;
     }
@@ -680,16 +680,16 @@ void __50__HAPSecuritySession__handleSetupExchangeComplete__block_invoke(uint64_
     v5 = 28;
   }
 
-  v2 = [v3 dataWithBytes:v4 length:v5];
+  role = [v3 dataWithBytes:v4 length:v5];
 LABEL_6:
 
-  return v2;
+  return role;
 }
 
 - (id)_inputInfo
 {
-  v2 = [(HAPSecuritySession *)self role];
-  if (v2 == 1)
+  role = [(HAPSecuritySession *)self role];
+  if (role == 1)
   {
     v3 = MEMORY[0x277CBEA90];
     v4 = "Control-Write-Encryption-Key";
@@ -698,7 +698,7 @@ LABEL_6:
 
   else
   {
-    if (v2)
+    if (role)
     {
       goto LABEL_6;
     }
@@ -708,27 +708,27 @@ LABEL_6:
     v5 = 27;
   }
 
-  v2 = [v3 dataWithBytes:v4 length:v5];
+  role = [v3 dataWithBytes:v4 length:v5];
 LABEL_6:
 
-  return v2;
+  return role;
 }
 
-- (void)_processSetupExchangeData:(id)a3 error:(id)a4
+- (void)_processSetupExchangeData:(id)data error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HAPSecuritySession *)self queue];
+  dataCopy = data;
+  errorCopy = error;
+  queue = [(HAPSecuritySession *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __54__HAPSecuritySession__processSetupExchangeData_error___block_invoke;
   block[3] = &unk_2786D7078;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v12 = errorCopy;
+  v13 = dataCopy;
+  v9 = dataCopy;
+  v10 = errorCopy;
+  dispatch_async(queue, block);
 }
 
 void __54__HAPSecuritySession__processSetupExchangeData_error___block_invoke(uint64_t a1)
@@ -873,21 +873,21 @@ LABEL_17:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)receivedSetupExchangeData:(id)a3 error:(id)a4
+- (void)receivedSetupExchangeData:(id)data error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HAPSecuritySession *)self queue];
+  dataCopy = data;
+  errorCopy = error;
+  queue = [(HAPSecuritySession *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __54__HAPSecuritySession_receivedSetupExchangeData_error___block_invoke;
   block[3] = &unk_2786D7078;
-  v12 = v7;
-  v13 = v6;
-  v14 = self;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v12 = errorCopy;
+  v13 = dataCopy;
+  selfCopy = self;
+  v9 = dataCopy;
+  v10 = errorCopy;
+  dispatch_async(queue, block);
 }
 
 void __54__HAPSecuritySession_receivedSetupExchangeData_error___block_invoke(uint64_t a1)
@@ -938,7 +938,7 @@ void __54__HAPSecuritySession_receivedSetupExchangeData_error___block_invoke(uin
 {
   v10 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -949,17 +949,17 @@ void __54__HAPSecuritySession_receivedSetupExchangeData_error___block_invoke(uin
   }
 
   objc_autoreleasePoolPop(v3);
-  [(HAPSecuritySession *)v4 _notifyOpening];
-  [(HAPSecuritySession *)v4 _processSetupExchangeData:0 error:0];
+  [(HAPSecuritySession *)selfCopy _notifyOpening];
+  [(HAPSecuritySession *)selfCopy _processSetupExchangeData:0 error:0];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_handlePeerPairingIdentityRequestWithIdentifier:(id)a3 status:(int *)a4
+- (id)_handlePeerPairingIdentityRequestWithIdentifier:(id)identifier status:(int *)status
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -967,17 +967,17 @@ void __54__HAPSecuritySession_receivedSetupExchangeData_error___block_invoke(uin
     *buf = 138543618;
     v27 = v10;
     v28 = 2112;
-    v29 = v6;
+    v29 = identifierCopy;
     _os_log_impl(&dword_22AADC000, v9, OS_LOG_TYPE_INFO, "%{public}@Received request for peer pairing identity with identifier: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v7);
-  v11 = [(HAPSecuritySession *)v8 delegate];
-  v12 = v11;
-  if (v11)
+  delegate = [(HAPSecuritySession *)selfCopy delegate];
+  v12 = delegate;
+  if (delegate)
   {
     v25 = 0;
-    v13 = [v11 securitySession:v8 didReceiveRequestForPeerPairingIdentityWithIdentifier:v6 error:&v25];
+    v13 = [delegate securitySession:selfCopy didReceiveRequestForPeerPairingIdentityWithIdentifier:identifierCopy error:&v25];
     v14 = v25;
     if (v13)
     {
@@ -985,7 +985,7 @@ void __54__HAPSecuritySession_receivedSetupExchangeData_error___block_invoke(uin
     }
 
     v15 = objc_autoreleasePoolPush();
-    v16 = v8;
+    v16 = selfCopy;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
@@ -998,9 +998,9 @@ void __54__HAPSecuritySession_receivedSetupExchangeData_error___block_invoke(uin
     }
 
     objc_autoreleasePoolPop(v15);
-    if (a4)
+    if (status)
     {
-      *a4 = -6727;
+      *status = -6727;
     }
 
     [(HAPSecuritySession *)v16 closeWithError:v14];
@@ -1009,7 +1009,7 @@ void __54__HAPSecuritySession_receivedSetupExchangeData_error___block_invoke(uin
   else
   {
     v19 = objc_autoreleasePoolPush();
-    v20 = v8;
+    v20 = selfCopy;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
@@ -1022,10 +1022,10 @@ void __54__HAPSecuritySession_receivedSetupExchangeData_error___block_invoke(uin
     objc_autoreleasePoolPop(v19);
     v14 = [MEMORY[0x277CCA9B8] hapErrorWithCode:9 description:@"Failed to get peer pairing identity." reason:@"The delegate is missing." suggestion:0 underlyingError:0];
     [(HAPSecuritySession *)v20 closeWithError:v14];
-    if (a4)
+    if (status)
     {
       v13 = 0;
-      *a4 = -6705;
+      *status = -6705;
       goto LABEL_15;
     }
   }
@@ -1038,11 +1038,11 @@ LABEL_15:
   return v13;
 }
 
-- (id)_handleLocalPairingIdentityRequestWithStatus:(int *)a3
+- (id)_handleLocalPairingIdentityRequestWithStatus:(int *)status
 {
   v28 = *MEMORY[0x277D85DE8];
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -1053,12 +1053,12 @@ LABEL_15:
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HAPSecuritySession *)v6 delegate];
-  v10 = v9;
-  if (v9)
+  delegate = [(HAPSecuritySession *)selfCopy delegate];
+  v10 = delegate;
+  if (delegate)
   {
     v23 = 0;
-    v11 = [v9 securitySession:v6 didReceiveLocalPairingIdentityRequestWithError:&v23];
+    v11 = [delegate securitySession:selfCopy didReceiveLocalPairingIdentityRequestWithError:&v23];
     v12 = v23;
     if (v11)
     {
@@ -1066,7 +1066,7 @@ LABEL_15:
     }
 
     v13 = objc_autoreleasePoolPush();
-    v14 = v6;
+    v14 = selfCopy;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -1079,9 +1079,9 @@ LABEL_15:
     }
 
     objc_autoreleasePoolPop(v13);
-    if (a3)
+    if (status)
     {
-      *a3 = -6727;
+      *status = -6727;
     }
 
     [(HAPSecuritySession *)v14 closeWithError:v12];
@@ -1090,7 +1090,7 @@ LABEL_15:
   else
   {
     v17 = objc_autoreleasePoolPush();
-    v18 = v6;
+    v18 = selfCopy;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
@@ -1103,10 +1103,10 @@ LABEL_15:
     objc_autoreleasePoolPop(v17);
     v12 = [MEMORY[0x277CCA9B8] hapErrorWithCode:9 description:@"Failed to get local pairing identity." reason:@"The delegate is missing." suggestion:0 underlyingError:0];
     [(HAPSecuritySession *)v18 closeWithError:v12];
-    if (a3)
+    if (status)
     {
       v11 = 0;
-      *a3 = -6705;
+      *status = -6705;
       goto LABEL_15;
     }
   }
@@ -1119,7 +1119,7 @@ LABEL_15:
   return v11;
 }
 
-- (BOOL)_initializeSetupSession:(unint64_t)a3
+- (BOOL)_initializeSetupSession:(unint64_t)session
 {
   v24 = *MEMORY[0x277D85DE8];
   pairingSession = self->_pairingSession;
@@ -1129,13 +1129,13 @@ LABEL_15:
     self->_pairingSession = 0;
   }
 
-  if (a3)
+  if (session)
   {
     [(HAPSecuritySession *)self role];
     if (!PairingSessionCreate())
     {
       v14 = objc_autoreleasePoolPush();
-      v15 = self;
+      selfCopy = self;
       v16 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
       {
@@ -1143,14 +1143,14 @@ LABEL_15:
         *buf = 138543618;
         v21 = v17;
         v22 = 2048;
-        v23 = a3;
+        sessionCopy = session;
         _os_log_impl(&dword_22AADC000, v16, OS_LOG_TYPE_INFO, "%{public}@Created pairing session with resumeSessionID: %llu", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v14);
       v18 = self->_pairingSession;
       PairingSessionSetResumeInfo();
-      v13 = v15;
+      selfCopy2 = selfCopy;
       goto LABEL_13;
     }
   }
@@ -1159,9 +1159,9 @@ LABEL_15:
   v6 = PairingSessionCreate();
   if (!v6)
   {
-    v13 = self;
+    selfCopy2 = self;
 LABEL_13:
-    [(HAPSecuritySession *)v13 pairingSession];
+    [(HAPSecuritySession *)selfCopy2 pairingSession];
     PairingSessionSetFlags();
     result = 1;
     goto LABEL_14;
@@ -1169,7 +1169,7 @@ LABEL_13:
 
   v7 = v6;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy3 = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
@@ -1177,7 +1177,7 @@ LABEL_13:
     *buf = 138543618;
     v21 = v11;
     v22 = 2048;
-    v23 = v7;
+    sessionCopy = v7;
     _os_log_impl(&dword_22AADC000, v10, OS_LOG_TYPE_ERROR, "%{public}@Failed to create pairing session with error: %ld", buf, 0x16u);
   }
 
@@ -1192,24 +1192,24 @@ LABEL_14:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(HAPSecuritySession *)self role];
+  role = [(HAPSecuritySession *)self role];
   v6 = @"unknown";
   v7 = @"server";
-  if (v5 != 1)
+  if (role != 1)
   {
     v7 = @"unknown";
   }
 
-  if (!v5)
+  if (!role)
   {
     v7 = @"client";
   }
 
   v8 = v7;
-  v9 = [(HAPSecuritySession *)self state];
-  if (v9 <= 3)
+  state = [(HAPSecuritySession *)self state];
+  if (state <= 3)
   {
-    v6 = off_2786D3480[v9];
+    v6 = off_2786D3480[state];
   }
 
   v10 = [v3 stringWithFormat:@"<%@, Role = %@, State = %@>", v4, v8, v6];
@@ -1221,24 +1221,24 @@ LABEL_14:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(HAPSecuritySession *)self role];
+  role = [(HAPSecuritySession *)self role];
   v6 = @"unknown";
   v7 = @"server";
-  if (v5 != 1)
+  if (role != 1)
   {
     v7 = @"unknown";
   }
 
-  if (!v5)
+  if (!role)
   {
     v7 = @"client";
   }
 
   v8 = v7;
-  v9 = [(HAPSecuritySession *)self state];
-  if (v9 <= 3)
+  state = [(HAPSecuritySession *)self state];
+  if (state <= 3)
   {
-    v6 = off_2786D3480[v9];
+    v6 = off_2786D3480[state];
   }
 
   v10 = [v3 stringWithFormat:@"<%@: %p, Role = %@, State = %@>", v4, self, v8, v6];
@@ -1246,10 +1246,10 @@ LABEL_14:
   return v10;
 }
 
-- (void)setResumeSessionID:(unint64_t)a3
+- (void)setResumeSessionID:(unint64_t)d
 {
   os_unfair_lock_lock_with_options();
-  self->_resumeSessionID = a3;
+  self->_resumeSessionID = d;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -1262,12 +1262,12 @@ LABEL_14:
   return resumeSessionID;
 }
 
-- (void)setAdditionalDerivedKeys:(id)a3
+- (void)setAdditionalDerivedKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   os_unfair_lock_lock_with_options();
   additionalDerivedKeys = self->_additionalDerivedKeys;
-  self->_additionalDerivedKeys = v4;
+  self->_additionalDerivedKeys = keysCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -1281,12 +1281,12 @@ LABEL_14:
   return v3;
 }
 
-- (void)setBroadcastKey:(id)a3
+- (void)setBroadcastKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   os_unfair_lock_lock_with_options();
   broadcastKey = self->_broadcastKey;
-  self->_broadcastKey = v4;
+  self->_broadcastKey = keyCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -1300,10 +1300,10 @@ LABEL_14:
   return v3;
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
   os_unfair_lock_lock_with_options();
-  self->_state = a3;
+  self->_state = state;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -1318,28 +1318,28 @@ LABEL_14:
 
 - (void)dealloc
 {
-  v2 = self;
-  pairingSession = v2->_pairingSession;
+  selfCopy = self;
+  pairingSession = selfCopy->_pairingSession;
   if (pairingSession)
   {
     CFRelease(pairingSession);
-    v2->_pairingSession = 0;
+    selfCopy->_pairingSession = 0;
   }
 
   v4 = objc_alloc_init(HAPSecuritySessionEncryption);
-  [(HAPSecuritySession *)v2 setEncryption:v4];
+  [(HAPSecuritySession *)selfCopy setEncryption:v4];
 
-  v2->_resumeSessionID = 0;
-  v5.receiver = v2;
+  selfCopy->_resumeSessionID = 0;
+  v5.receiver = selfCopy;
   v5.super_class = HAPSecuritySession;
   [(HAPSecuritySession *)&v5 dealloc];
 }
 
-- (HAPSecuritySession)initWithRole:(unint64_t)a3 resumeSessionID:(unint64_t)a4 delegate:(id)a5
+- (HAPSecuritySession)initWithRole:(unint64_t)role resumeSessionID:(unint64_t)d delegate:(id)delegate
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  if (v8)
+  delegateCopy = delegate;
+  if (delegateCopy)
   {
     v24.receiver = self;
     v24.super_class = HAPSecuritySession;
@@ -1353,24 +1353,24 @@ LABEL_14:
       queue = v10->_queue;
       v10->_queue = v13;
 
-      objc_storeWeak(&v10->_delegate, v8);
-      v10->_role = a3;
+      objc_storeWeak(&v10->_delegate, delegateCopy);
+      v10->_role = role;
       v15 = objc_alloc_init(HAPSecuritySessionEncryption);
       encryption = v10->_encryption;
       v10->_encryption = v15;
 
-      [(HAPSecuritySession *)v10 _initializeSetupSession:a4];
+      [(HAPSecuritySession *)v10 _initializeSetupSession:d];
       v10->_state = 0;
     }
 
-    v17 = v10;
-    v18 = v17;
+    selfCopy = v10;
+    v18 = selfCopy;
   }
 
   else
   {
     v19 = objc_autoreleasePoolPush();
-    v17 = self;
+    selfCopy = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {

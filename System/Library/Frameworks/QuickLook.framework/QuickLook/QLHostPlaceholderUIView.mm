@@ -1,12 +1,12 @@
 @interface QLHostPlaceholderUIView
-- (_TtC9QuickLook23QLHostPlaceholderUIView)initWithCoder:(id)a3;
-- (void)hostViewControllerDidActivate:(id)a3;
-- (void)hostViewControllerWillDeactivate:(id)a3 error:(id)a4;
+- (_TtC9QuickLook23QLHostPlaceholderUIView)initWithCoder:(id)coder;
+- (void)hostViewControllerDidActivate:(id)activate;
+- (void)hostViewControllerWillDeactivate:(id)deactivate error:(id)error;
 @end
 
 @implementation QLHostPlaceholderUIView
 
-- (_TtC9QuickLook23QLHostPlaceholderUIView)initWithCoder:(id)a3
+- (_TtC9QuickLook23QLHostPlaceholderUIView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC9QuickLook23QLHostPlaceholderUIView_hostingState;
   v5 = type metadata accessor for HostingState();
@@ -21,19 +21,19 @@
   return result;
 }
 
-- (void)hostViewControllerDidActivate:(id)a3
+- (void)hostViewControllerDidActivate:(id)activate
 {
-  v4 = a3;
-  v5 = self;
+  activateCopy = activate;
+  selfCopy = self;
   sub_23A7AA0CC();
 }
 
-- (void)hostViewControllerWillDeactivate:(id)a3 error:(id)a4
+- (void)hostViewControllerWillDeactivate:(id)deactivate error:(id)error
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
-  sub_23A7AA1C4(a4);
+  deactivateCopy = deactivate;
+  selfCopy = self;
+  errorCopy = error;
+  sub_23A7AA1C4(error);
 }
 
 @end

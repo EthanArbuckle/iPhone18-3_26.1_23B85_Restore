@@ -1,21 +1,21 @@
 @interface CardReaderErrorInternal
 - (NSString)description;
 - (_TtC19ProximityReaderCore23CardReaderErrorInternal)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CardReaderErrorInternal
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_2611D036C(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_2611D036C(coderCopy);
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_2611D054C();
 
   v3 = sub_26121CC50();

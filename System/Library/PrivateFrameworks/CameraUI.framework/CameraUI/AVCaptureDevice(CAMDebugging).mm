@@ -8,36 +8,36 @@
 
 - (void)cam_debugFocusState
 {
-  if ([a1 isFocusPointOfInterestSupported])
+  if ([self isFocusPointOfInterestSupported])
   {
-    [a1 focusPointOfInterest];
+    [self focusPointOfInterest];
     v3 = v2;
     v5 = v4;
-    v6 = [a1 focusMode];
-    if (v6 > 2)
+    focusMode = [self focusMode];
+    if (focusMode > 2)
     {
       v7 = @"Unknown focus mode";
     }
 
     else
     {
-      v7 = off_1E76F9570[v6];
+      v7 = off_1E76F9570[focusMode];
     }
 
-    NSLog(&cfstr_Focus2f2fSmoot.isa, v7, v3, v5, [a1 isSmoothAutoFocusEnabled]);
+    NSLog(&cfstr_Focus2f2fSmoot.isa, v7, v3, v5, [self isSmoothAutoFocusEnabled]);
   }
 
   else
   {
-    v8 = [a1 focusMode];
-    if (v8 > 2)
+    focusMode2 = [self focusMode];
+    if (focusMode2 > 2)
     {
       v9 = @"Unknown focus mode";
     }
 
     else
     {
-      v9 = off_1E76F9570[v8];
+      v9 = off_1E76F9570[focusMode2];
     }
 
     NSLog(&cfstr_Focus.isa, v9);
@@ -46,49 +46,49 @@
 
 - (void)cam_debugExposureState
 {
-  if ([a1 isExposurePointOfInterestSupported])
+  if ([self isExposurePointOfInterestSupported])
   {
-    [a1 exposurePointOfInterest];
+    [self exposurePointOfInterest];
     v3 = v2;
     v5 = v4;
-    v6 = [a1 exposureMode];
-    if (v6 > 2)
+    exposureMode = [self exposureMode];
+    if (exposureMode > 2)
     {
       v7 = @"Unknown exposure mode";
     }
 
     else
     {
-      v7 = off_1E76F9588[v6];
+      v7 = off_1E76F9588[exposureMode];
     }
 
-    [a1 exposureTargetBias];
+    [self exposureTargetBias];
     NSLog(&cfstr_Exposure2f2fBi.isa, v7, v3, v5, v10);
   }
 
   else
   {
-    v8 = [a1 exposureMode];
-    if (v8 > 2)
+    exposureMode2 = [self exposureMode];
+    if (exposureMode2 > 2)
     {
       v9 = @"Unknown exposure mode";
     }
 
     else
     {
-      v9 = off_1E76F9588[v8];
+      v9 = off_1E76F9588[exposureMode2];
     }
 
-    [a1 exposureTargetBias];
+    [self exposureTargetBias];
     NSLog(&cfstr_ExposureBias2f.isa, v9, v11);
   }
 }
 
 - (uint64_t)cam_debugFocusAndExposureState
 {
-  [a1 cam_debugFocusState];
+  [self cam_debugFocusState];
 
-  return [a1 cam_debugExposureState];
+  return [self cam_debugExposureState];
 }
 
 @end

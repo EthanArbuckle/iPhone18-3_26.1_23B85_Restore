@@ -1,31 +1,31 @@
 @interface _HKCDADocumentExtractedFields
-- (_HKCDADocumentExtractedFields)initWithDocumentData:(id)a3;
-- (id)_firstFrom:(id)a3 tagRule:(id)a4 nilOnFail:(BOOL)a5;
-- (id)_parseCDADate:(id)a3;
-- (id)_personNameFrom:(id)a3 familyTagRule:(id)a4 givenTagRule:(id)a5 nilOnFail:(BOOL)a6;
-- (void)extractHeaderFieldsFromDocumentData:(id)a3;
+- (_HKCDADocumentExtractedFields)initWithDocumentData:(id)data;
+- (id)_firstFrom:(id)from tagRule:(id)rule nilOnFail:(BOOL)fail;
+- (id)_parseCDADate:(id)date;
+- (id)_personNameFrom:(id)from familyTagRule:(id)rule givenTagRule:(id)tagRule nilOnFail:(BOOL)fail;
+- (void)extractHeaderFieldsFromDocumentData:(id)data;
 @end
 
 @implementation _HKCDADocumentExtractedFields
 
-- (_HKCDADocumentExtractedFields)initWithDocumentData:(id)a3
+- (_HKCDADocumentExtractedFields)initWithDocumentData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v8.receiver = self;
   v8.super_class = _HKCDADocumentExtractedFields;
   v5 = [(_HKCDADocumentExtractedFields *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(_HKCDADocumentExtractedFields *)v5 extractHeaderFieldsFromDocumentData:v4];
+    [(_HKCDADocumentExtractedFields *)v5 extractHeaderFieldsFromDocumentData:dataCopy];
   }
 
   return v6;
 }
 
-- (void)extractHeaderFieldsFromDocumentData:(id)a3
+- (void)extractHeaderFieldsFromDocumentData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v20 = objc_alloc_init(_HKXMLExtractor);
   [(_HKXMLExtractor *)v20 addTagSpecificationForExtraction:@"ClinicalDocument/effectiveTime/@value"];
   [(_HKXMLExtractor *)v20 addTagSpecificationForExtraction:@"ClinicalDocument/title"];
@@ -37,7 +37,7 @@
   [(_HKXMLExtractor *)v20 addTagSpecificationForExtraction:@"ClinicalDocument/author/assignedAuthor/assignedPerson/name/family"];
   [(_HKXMLExtractor *)v20 addTagSpecificationForExtraction:@"ClinicalDocument/author/assignedAuthor/assignedAuthoringDevice/softwareName"];
   [(_HKXMLExtractor *)v20 addTagSpecificationForExtraction:@"ClinicalDocument/custodian/assignedCustodian/representedCustodianOrganization/name"];
-  [(_HKXMLExtractor *)v20 parseWithData:v4];
+  [(_HKXMLExtractor *)v20 parseWithData:dataCopy];
 
   v5 = [(_HKCDADocumentExtractedFields *)self _firstFrom:v20 tagRule:@"ClinicalDocument/effectiveTime/@value" nilOnFail:1];
   if (v5)
@@ -78,16 +78,16 @@
   self->_extractedCustodianName = v18;
 }
 
-- (id)_firstFrom:(id)a3 tagRule:(id)a4 nilOnFail:(BOOL)a5
+- (id)_firstFrom:(id)from tagRule:(id)rule nilOnFail:(BOOL)fail
 {
   v7 = &stru_1F05FF230;
-  if (a5)
+  if (fail)
   {
     v7 = 0;
   }
 
   v8 = v7;
-  v9 = [a3 getDataForTagSpecification:a4];
+  v9 = [from getDataForTagSpecification:rule];
   if ([v9 count])
   {
     v10 = [v9 objectAtIndex:0];
@@ -98,17 +98,17 @@
   return v8;
 }
 
-- (id)_personNameFrom:(id)a3 familyTagRule:(id)a4 givenTagRule:(id)a5 nilOnFail:(BOOL)a6
+- (id)_personNameFrom:(id)from familyTagRule:(id)rule givenTagRule:(id)tagRule nilOnFail:(BOOL)fail
 {
-  v6 = a6;
+  failCopy = fail;
   v9 = MEMORY[0x1E696ADF0];
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  tagRuleCopy = tagRule;
+  ruleCopy = rule;
+  fromCopy = from;
   v13 = objc_alloc_init(v9);
-  v14 = [v12 getDataForTagSpecification:v11];
+  v14 = [fromCopy getDataForTagSpecification:ruleCopy];
 
-  v15 = [v12 getDataForTagSpecification:v10];
+  v15 = [fromCopy getDataForTagSpecification:tagRuleCopy];
 
   if ([v14 count] || (v16 = objc_msgSend(v15, "count")) != 0)
   {
@@ -134,7 +134,7 @@
 
   else
   {
-    v19 = v6;
+    v19 = failCopy;
   }
 
   if (v19)
@@ -150,10 +150,10 @@
   return v20;
 }
 
-- (id)_parseCDADate:(id)a3
+- (id)_parseCDADate:(id)date
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dateCopy = date;
   if (_HKDateFormatterParsers_onceToken != -1)
   {
     [_HKCDADocumentExtractedFields _parseCDADate:];
@@ -178,7 +178,7 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) dateFromString:{v3, v13}];
+        v9 = [*(*(&v13 + 1) + 8 * i) dateFromString:{dateCopy, v13}];
         if (v9)
         {
           v10 = v9;

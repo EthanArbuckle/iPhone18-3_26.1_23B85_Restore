@@ -19,7 +19,7 @@
   v18 = v7;
   v10 = v7;
   v11 = v6;
-  [a1 enumerateKeysAndObjectsUsingBlock:v15];
+  [self enumerateKeysAndObjectsUsingBlock:v15];
   v12 = v18;
   v13 = v9;
 

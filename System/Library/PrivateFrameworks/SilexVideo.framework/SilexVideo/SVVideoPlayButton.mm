@@ -1,7 +1,7 @@
 @interface SVVideoPlayButton
 + (id)disabledPlayImage;
 + (id)enabledPlayImage;
-- (SVVideoPlayButton)initWithFrame:(CGRect)a3;
+- (SVVideoPlayButton)initWithFrame:(CGRect)frame;
 - (id)accessibilityHint;
 - (id)accessibilityLabel;
 - (void)dealloc;
@@ -12,15 +12,15 @@
 
 @implementation SVVideoPlayButton
 
-- (SVVideoPlayButton)initWithFrame:(CGRect)a3
+- (SVVideoPlayButton)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = SVVideoPlayButton;
-  v3 = [(SVButton *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SVButton *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277D75348] whiteColor];
-    [(SVVideoPlayButton *)v3 setTintColor:v4];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(SVVideoPlayButton *)v3 setTintColor:whiteColor];
 
     v5 = MEMORY[0x277D75348];
     if (UIAccessibilityIsReduceTransparencyEnabled())
@@ -35,11 +35,11 @@
 
     v7 = [v5 colorWithRed:0.282352941 green:0.282352941 blue:0.290196078 alpha:v6];
     [(UIView *)v3 sv_setPlayButtonBackgroundWithFallback:v7];
-    v8 = [(SVVideoPlayButton *)v3 imageView];
-    [v8 setContentMode:4];
+    imageView = [(SVVideoPlayButton *)v3 imageView];
+    [imageView setContentMode:4];
 
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v9 addObserver:v3 selector:sel_updateBackgroundColor name:*MEMORY[0x277D764C8] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel_updateBackgroundColor name:*MEMORY[0x277D764C8] object:0];
 
     [(SVVideoPlayButton *)v3 displayAsPaused];
   }
@@ -49,8 +49,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D764C8] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D764C8] object:0];
 
   v4.receiver = self;
   v4.super_class = SVVideoPlayButton;
@@ -59,8 +59,8 @@
 
 - (void)updateBackgroundColor
 {
-  v3 = [(SVVideoPlayButton *)self backgroundColor];
-  v6 = [v3 colorWithAlphaComponent:0.9];
+  backgroundColor = [(SVVideoPlayButton *)self backgroundColor];
+  v6 = [backgroundColor colorWithAlphaComponent:0.9];
 
   if (UIAccessibilityIsReduceTransparencyEnabled())
   {
@@ -83,18 +83,18 @@
   v7.receiver = self;
   v7.super_class = SVVideoPlayButton;
   [(SVVideoPlayButton *)&v7 layoutSubviews];
-  v3 = [(SVVideoPlayButton *)self layer];
+  layer = [(SVVideoPlayButton *)self layer];
   [(SVVideoPlayButton *)self bounds];
-  [v3 setCornerRadius:CGRectGetHeight(v8) * 0.5];
+  [layer setCornerRadius:CGRectGetHeight(v8) * 0.5];
 
-  v4 = [(SVVideoPlayButton *)self imageView];
-  [v4 setFrame:{0.0, 0.0, 40.0, 40.0}];
+  imageView = [(SVVideoPlayButton *)self imageView];
+  [imageView setFrame:{0.0, 0.0, 40.0, 40.0}];
 
-  v5 = [(SVVideoPlayButton *)self imageView];
+  imageView2 = [(SVVideoPlayButton *)self imageView];
   [(SVVideoPlayButton *)self bounds];
   MidX = CGRectGetMidX(v9);
   [(SVVideoPlayButton *)self bounds];
-  [v5 setCenter:{MidX, CGRectGetMidY(v10)}];
+  [imageView2 setCenter:{MidX, CGRectGetMidY(v10)}];
 }
 
 - (id)accessibilityLabel

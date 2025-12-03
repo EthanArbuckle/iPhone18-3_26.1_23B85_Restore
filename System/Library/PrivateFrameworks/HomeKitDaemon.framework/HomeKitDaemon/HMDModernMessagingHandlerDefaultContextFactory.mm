@@ -1,40 +1,40 @@
 @interface HMDModernMessagingHandlerDefaultContextFactory
-- (HMDModernMessagingHandlerDefaultContextFactory)initWithAccountRegistry:(id)a3;
-- (id)createContextForRequestID:(id)a3;
-- (id)deviceForAddress:(id)a3;
+- (HMDModernMessagingHandlerDefaultContextFactory)initWithAccountRegistry:(id)registry;
+- (id)createContextForRequestID:(id)d;
+- (id)deviceForAddress:(id)address;
 @end
 
 @implementation HMDModernMessagingHandlerDefaultContextFactory
 
-- (id)deviceForAddress:(id)a3
+- (id)deviceForAddress:(id)address
 {
-  v4 = a3;
-  v5 = [(HMDModernMessagingHandlerDefaultContextFactory *)self accountRegistry];
-  v6 = [v5 deviceForAddress:v4];
+  addressCopy = address;
+  accountRegistry = [(HMDModernMessagingHandlerDefaultContextFactory *)self accountRegistry];
+  v6 = [accountRegistry deviceForAddress:addressCopy];
 
   return v6;
 }
 
-- (id)createContextForRequestID:(id)a3
+- (id)createContextForRequestID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = [HMDModernMessagingHandlerContext alloc];
-  v6 = [(HMDModernMessagingHandlerDefaultContextFactory *)self accountRegistry];
-  v7 = [(HMDModernMessagingHandlerContext *)v5 initForRequestID:v4 accountRegistry:v6];
+  accountRegistry = [(HMDModernMessagingHandlerDefaultContextFactory *)self accountRegistry];
+  v7 = [(HMDModernMessagingHandlerContext *)v5 initForRequestID:dCopy accountRegistry:accountRegistry];
 
   return v7;
 }
 
-- (HMDModernMessagingHandlerDefaultContextFactory)initWithAccountRegistry:(id)a3
+- (HMDModernMessagingHandlerDefaultContextFactory)initWithAccountRegistry:(id)registry
 {
-  v5 = a3;
+  registryCopy = registry;
   v9.receiver = self;
   v9.super_class = HMDModernMessagingHandlerDefaultContextFactory;
   v6 = [(HMDModernMessagingHandlerDefaultContextFactory *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_accountRegistry, a3);
+    objc_storeStrong(&v6->_accountRegistry, registry);
   }
 
   return v7;

@@ -1,68 +1,68 @@
 @interface PLCollectionShareSharedStreamBackend
-- (BOOL)_hasReachedLimitOfSubscribedStreamsInLibrary:(id)a3;
-- (BOOL)canAcceptPendingInvitationForCollectionShare:(id)a3 error:(id *)a4;
-- (BOOL)isSyncableChangeForCollectionShare:(id)a3;
-- (BOOL)supportsCloudUploadForCollectionShare:(id)a3;
-- (id)_sharedStreamCollectionShareDirectoryPathForCollectionShare:(id)a3;
-- (id)cplFullRecordForCollectionShare:(id)a3;
-- (id)cplScopeChangeForCollectionShare:(id)a3;
-- (id)createOwnedShareWithUUID:(id)a3 creationDate:(id)a4 title:(id)a5 inPhotoLibrary:(id)a6;
-- (void)_enqueueCloudSharedAssetsForPublishToServer:(id)a3 inCollectionShare:(id)a4;
-- (void)_reconcileNextRelationship:(id)a3 connection:(id)a4 personID:(id)a5 collectionShare:(id)a6 photoLibrary:(id)a7 completionHandler:(id)a8;
-- (void)_setCloudPersonIDForCollectionShare:(id)a3;
-- (void)_stripScopeIdentifierPrefixForCollectionShare:(id)a3;
-- (void)acceptCollectionShare:(id)a3 completionHandler:(id)a4;
-- (void)checkServerForChangesForCollectionShare:(id)a3;
-- (void)declineCollectionShare:(id)a3 completionHandler:(id)a4;
-- (void)deleteCollectionShareDirectory:(id)a3;
-- (void)deleteCollectionShareFromServer:(id)a3;
-- (void)deleteCommentWithGUIDFromServer:(id)a3;
-- (void)deleteSharedStreamAssetsFromServer:(id)a3;
-- (void)insertOwnedParticipantInLibrary:(id)a3 collectionShare:(id)a4 unitTestMode:(BOOL)a5;
-- (void)markAsViewedForCollectionShare:(id)a3;
-- (void)markPendingInvitationAsSpamForCollectionShare:(id)a3 completionHandler:(id)a4;
-- (void)prioritizeDownloadsForCollectionShare:(id)a3 shouldPrioritize:(BOOL)a4;
-- (void)publishAssets:(id)a3 withComment:(id)a4 collectionShare:(id)a5;
-- (void)publishCloudSharedCommentToServer:(id)a3;
-- (void)publishCollectionShare:(id)a3 completionHandler:(id)a4;
-- (void)reconcileModelRelationshipsForCollectionShare:(id)a3 completionHandler:(id)a4;
-- (void)recordCloudDeletionIfNeededForCollectionShare:(id)a3;
-- (void)removeParticipants:(id)a3 collectionShare:(id)a4;
-- (void)sendInvitationsForParticipants:(id)a3 collectionShare:(id)a4 completionHandler:(id)a5;
-- (void)trashCollectionShare:(id)a3;
-- (void)unsubscribeFromCollectionShare:(id)a3 completionHandler:(id)a4;
-- (void)updatePublicPermission:(int64_t)a3 collectionShare:(id)a4;
-- (void)updatePublicURLState:(signed __int16)a3 collectionShare:(id)a4;
-- (void)updateTitle:(id)a3 collectionShare:(id)a4;
+- (BOOL)_hasReachedLimitOfSubscribedStreamsInLibrary:(id)library;
+- (BOOL)canAcceptPendingInvitationForCollectionShare:(id)share error:(id *)error;
+- (BOOL)isSyncableChangeForCollectionShare:(id)share;
+- (BOOL)supportsCloudUploadForCollectionShare:(id)share;
+- (id)_sharedStreamCollectionShareDirectoryPathForCollectionShare:(id)share;
+- (id)cplFullRecordForCollectionShare:(id)share;
+- (id)cplScopeChangeForCollectionShare:(id)share;
+- (id)createOwnedShareWithUUID:(id)d creationDate:(id)date title:(id)title inPhotoLibrary:(id)library;
+- (void)_enqueueCloudSharedAssetsForPublishToServer:(id)server inCollectionShare:(id)share;
+- (void)_reconcileNextRelationship:(id)relationship connection:(id)connection personID:(id)d collectionShare:(id)share photoLibrary:(id)library completionHandler:(id)handler;
+- (void)_setCloudPersonIDForCollectionShare:(id)share;
+- (void)_stripScopeIdentifierPrefixForCollectionShare:(id)share;
+- (void)acceptCollectionShare:(id)share completionHandler:(id)handler;
+- (void)checkServerForChangesForCollectionShare:(id)share;
+- (void)declineCollectionShare:(id)share completionHandler:(id)handler;
+- (void)deleteCollectionShareDirectory:(id)directory;
+- (void)deleteCollectionShareFromServer:(id)server;
+- (void)deleteCommentWithGUIDFromServer:(id)server;
+- (void)deleteSharedStreamAssetsFromServer:(id)server;
+- (void)insertOwnedParticipantInLibrary:(id)library collectionShare:(id)share unitTestMode:(BOOL)mode;
+- (void)markAsViewedForCollectionShare:(id)share;
+- (void)markPendingInvitationAsSpamForCollectionShare:(id)share completionHandler:(id)handler;
+- (void)prioritizeDownloadsForCollectionShare:(id)share shouldPrioritize:(BOOL)prioritize;
+- (void)publishAssets:(id)assets withComment:(id)comment collectionShare:(id)share;
+- (void)publishCloudSharedCommentToServer:(id)server;
+- (void)publishCollectionShare:(id)share completionHandler:(id)handler;
+- (void)reconcileModelRelationshipsForCollectionShare:(id)share completionHandler:(id)handler;
+- (void)recordCloudDeletionIfNeededForCollectionShare:(id)share;
+- (void)removeParticipants:(id)participants collectionShare:(id)share;
+- (void)sendInvitationsForParticipants:(id)participants collectionShare:(id)share completionHandler:(id)handler;
+- (void)trashCollectionShare:(id)share;
+- (void)unsubscribeFromCollectionShare:(id)share completionHandler:(id)handler;
+- (void)updatePublicPermission:(int64_t)permission collectionShare:(id)share;
+- (void)updatePublicURLState:(signed __int16)state collectionShare:(id)share;
+- (void)updateTitle:(id)title collectionShare:(id)share;
 @end
 
 @implementation PLCollectionShareSharedStreamBackend
 
-- (id)_sharedStreamCollectionShareDirectoryPathForCollectionShare:(id)a3
+- (id)_sharedStreamCollectionShareDirectoryPathForCollectionShare:(id)share
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 scopeIdentifier];
-  if (([v4 hasPrefix:@"FS-"] & 1) != 0 || (v5 = v4, objc_msgSend(v4, "hasPrefix:", @"fs-")))
+  shareCopy = share;
+  scopeIdentifier = [shareCopy scopeIdentifier];
+  if (([scopeIdentifier hasPrefix:@"FS-"] & 1) != 0 || (v5 = scopeIdentifier, objc_msgSend(scopeIdentifier, "hasPrefix:", @"fs-")))
   {
-    v5 = [v4 substringFromIndex:3];
+    v5 = [scopeIdentifier substringFromIndex:3];
   }
 
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v5];
   if (v6)
   {
-    v7 = [v3 cloudPersonID];
-    v8 = [v3 managedObjectContext];
-    v9 = [v8 pathManager];
-    v10 = [v9 photoDirectoryWithType:23];
+    cloudPersonID = [shareCopy cloudPersonID];
+    managedObjectContext = [shareCopy managedObjectContext];
+    pathManager = [managedObjectContext pathManager];
+    v10 = [pathManager photoDirectoryWithType:23];
 
-    if ([v7 length])
+    if ([cloudPersonID length])
     {
-      if (v7)
+      if (cloudPersonID)
       {
 LABEL_7:
-        v11 = [v10 stringByAppendingPathComponent:v7];
-        v12 = [v11 stringByAppendingPathComponent:v4];
+        v11 = [v10 stringByAppendingPathComponent:cloudPersonID];
+        v12 = [v11 stringByAppendingPathComponent:scopeIdentifier];
 
 LABEL_13:
         goto LABEL_14;
@@ -74,7 +74,7 @@ LABEL_13:
       v15 = [v10 stringByAppendingPathComponent:@"personID"];
       v16 = [MEMORY[0x1E696AEC0] stringWithContentsOfFile:v15 encoding:4 error:0];
 
-      v7 = v16;
+      cloudPersonID = v16;
       if (v16)
       {
         goto LABEL_7;
@@ -88,11 +88,11 @@ LABEL_13:
   v13 = PLBackendSharingGetLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
   {
-    v14 = [v3 uuid];
+    uuid = [shareCopy uuid];
     v18 = 138412546;
-    v19 = v4;
+    v19 = scopeIdentifier;
     v20 = 2112;
-    v21 = v14;
+    v21 = uuid;
     _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_ERROR, "Invalid scopeIdentifier (%@) for sharedstream collection share (uuid: %@)", &v18, 0x16u);
   }
 
@@ -102,44 +102,44 @@ LABEL_14:
   return v12;
 }
 
-- (void)_setCloudPersonIDForCollectionShare:(id)a3
+- (void)_setCloudPersonIDForCollectionShare:(id)share
 {
-  v3 = a3;
+  shareCopy = share;
   v4 = +[PLPhotoSharingHelper sharingPersonID];
-  [v3 setCloudPersonID:v4];
+  [shareCopy setCloudPersonID:v4];
 }
 
-- (void)_stripScopeIdentifierPrefixForCollectionShare:(id)a3
+- (void)_stripScopeIdentifierPrefixForCollectionShare:(id)share
 {
-  v3 = a3;
-  v5 = [v3 scopeIdentifier];
-  v4 = [v5 substringFromIndex:17];
-  [v3 setScopeIdentifier:v4];
+  shareCopy = share;
+  scopeIdentifier = [shareCopy scopeIdentifier];
+  v4 = [scopeIdentifier substringFromIndex:17];
+  [shareCopy setScopeIdentifier:v4];
 }
 
-- (void)markAsViewedForCollectionShare:(id)a3
+- (void)markAsViewedForCollectionShare:(id)share
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if ([v5 collectionShareKind] != 2)
+  shareCopy = share;
+  if ([shareCopy collectionShareKind] != 2)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PLCollectionShareSharedStreamBackend.m" lineNumber:919 description:{@"expect SharedStream Collection Share but type is %d", objc_msgSend(v5, "collectionShareKind")}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLCollectionShareSharedStreamBackend.m" lineNumber:919 description:{@"expect SharedStream Collection Share but type is %d", objc_msgSend(shareCopy, "collectionShareKind")}];
   }
 
-  v6 = [v5 photoLibrary];
-  v7 = [v6 isUnitTesting];
+  photoLibrary = [shareCopy photoLibrary];
+  isUnitTesting = [photoLibrary isUnitTesting];
 
-  if ((v7 & 1) == 0)
+  if ((isUnitTesting & 1) == 0)
   {
-    v8 = [v5 scopeIdentifier];
-    if (v8)
+    scopeIdentifier = [shareCopy scopeIdentifier];
+    if (scopeIdentifier)
     {
-      v9 = v8;
+      v9 = scopeIdentifier;
       v10 = +[PLPhotoSharingHelper sharingPersonID];
       if (v10)
       {
-        v11 = [MEMORY[0x1E69B14F8] sharedConnection];
+        mEMORY[0x1E69B14F8] = [MEMORY[0x1E69B14F8] sharedConnection];
         v12 = PLPhotoSharingGetLog();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
@@ -150,51 +150,51 @@ LABEL_14:
           _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_DEFAULT, "about to call connection markAlbumGUIDAsViewed:%@ personID:%@ moveLastViewedAssetCollectionMarker:YES info:nil", buf, 0x16u);
         }
 
-        [v11 markAlbumGUIDAsViewed:v9 personID:v10 moveLastViewedAssetCollectionMarker:1 info:0];
+        [mEMORY[0x1E69B14F8] markAlbumGUIDAsViewed:v9 personID:v10 moveLastViewedAssetCollectionMarker:1 info:0];
       }
     }
   }
 }
 
-- (void)prioritizeDownloadsForCollectionShare:(id)a3 shouldPrioritize:(BOOL)a4
+- (void)prioritizeDownloadsForCollectionShare:(id)share shouldPrioritize:(BOOL)prioritize
 {
-  v4 = a4;
+  prioritizeCopy = prioritize;
   v23 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if ([v7 collectionShareKind] != 2)
+  shareCopy = share;
+  if ([shareCopy collectionShareKind] != 2)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"PLCollectionShareSharedStreamBackend.m" lineNumber:899 description:{@"expect SharedStream Collection Share but type is %d", objc_msgSend(v7, "collectionShareKind")}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLCollectionShareSharedStreamBackend.m" lineNumber:899 description:{@"expect SharedStream Collection Share but type is %d", objc_msgSend(shareCopy, "collectionShareKind")}];
   }
 
-  v8 = [v7 photoLibrary];
-  v9 = [v8 isUnitTesting];
+  photoLibrary = [shareCopy photoLibrary];
+  isUnitTesting = [photoLibrary isUnitTesting];
 
-  if ((v9 & 1) == 0)
+  if ((isUnitTesting & 1) == 0)
   {
     v10 = +[PLPhotoSharingHelper sharingPersonID];
     if (v10)
     {
       v11 = v10;
-      v12 = [MEMORY[0x1E69B14F8] sharedConnection];
+      mEMORY[0x1E69B14F8] = [MEMORY[0x1E69B14F8] sharedConnection];
       v13 = PLPhotoSharingGetLog();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [v7 scopeIdentifier];
+        scopeIdentifier = [shareCopy scopeIdentifier];
         *buf = 138412546;
-        v20 = v14;
+        v20 = scopeIdentifier;
         v21 = 2112;
         v22 = v11;
         _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_DEFAULT, "about to call connection setFocusAlbum:%@ personID:%@", buf, 0x16u);
       }
 
-      v15 = [MEMORY[0x1E6997F88] album];
-      v16 = [v7 scopeIdentifier];
-      [v15 setGUID:v16];
+      album = [MEMORY[0x1E6997F88] album];
+      scopeIdentifier2 = [shareCopy scopeIdentifier];
+      [album setGUID:scopeIdentifier2];
 
-      if (v4)
+      if (prioritizeCopy)
       {
-        v17 = v15;
+        v17 = album;
       }
 
       else
@@ -202,39 +202,39 @@ LABEL_14:
         v17 = 0;
       }
 
-      [v12 setFocusAlbum:v17 forPersonID:v11];
+      [mEMORY[0x1E69B14F8] setFocusAlbum:v17 forPersonID:v11];
     }
   }
 }
 
-- (void)_reconcileNextRelationship:(id)a3 connection:(id)a4 personID:(id)a5 collectionShare:(id)a6 photoLibrary:(id)a7 completionHandler:(id)a8
+- (void)_reconcileNextRelationship:(id)relationship connection:(id)connection personID:(id)d collectionShare:(id)share photoLibrary:(id)library completionHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = [v14 nextObject];
-  if (v20)
+  relationshipCopy = relationship;
+  connectionCopy = connection;
+  dCopy = d;
+  shareCopy = share;
+  libraryCopy = library;
+  handlerCopy = handler;
+  nextObject = [relationshipCopy nextObject];
+  if (nextObject)
   {
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __134__PLCollectionShareSharedStreamBackend__reconcileNextRelationship_connection_personID_collectionShare_photoLibrary_completionHandler___block_invoke;
     v21[3] = &unk_1E756A670;
-    v22 = v18;
-    v23 = v17;
-    v24 = self;
-    v25 = v14;
-    v26 = v15;
-    v27 = v16;
-    v28 = v19;
-    [v26 accessControlWithGUID:v20 personID:v27 completionBlock:v21];
+    v22 = libraryCopy;
+    v23 = shareCopy;
+    selfCopy = self;
+    v25 = relationshipCopy;
+    v26 = connectionCopy;
+    v27 = dCopy;
+    v28 = handlerCopy;
+    [v26 accessControlWithGUID:nextObject personID:v27 completionBlock:v21];
   }
 
   else
   {
-    v19[2](v19);
+    handlerCopy[2](handlerCopy);
   }
 }
 
@@ -325,23 +325,23 @@ void __134__PLCollectionShareSharedStreamBackend__reconcileNextRelationship_conn
   }
 }
 
-- (void)reconcileModelRelationshipsForCollectionShare:(id)a3 completionHandler:(id)a4
+- (void)reconcileModelRelationshipsForCollectionShare:(id)share completionHandler:(id)handler
 {
   v31 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if ([v7 collectionShareKind] != 2)
+  shareCopy = share;
+  handlerCopy = handler;
+  if ([shareCopy collectionShareKind] != 2)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"PLCollectionShareSharedStreamBackend.m" lineNumber:834 description:{@"expect SharedStream Collection Share but type is %d", objc_msgSend(v7, "collectionShareKind")}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLCollectionShareSharedStreamBackend.m" lineNumber:834 description:{@"expect SharedStream Collection Share but type is %d", objc_msgSend(shareCopy, "collectionShareKind")}];
   }
 
-  v9 = [v7 photoLibrary];
-  v10 = [v9 isUnitTesting];
+  photoLibrary = [shareCopy photoLibrary];
+  isUnitTesting = [photoLibrary isUnitTesting];
 
-  if (v10)
+  if (isUnitTesting)
   {
-    v8[2](v8);
+    handlerCopy[2](handlerCopy);
   }
 
   else
@@ -350,14 +350,14 @@ void __134__PLCollectionShareSharedStreamBackend__reconcileNextRelationship_conn
     if (v11)
     {
       v12 = v11;
-      v13 = [v7 scopeIdentifier];
-      v14 = [MEMORY[0x1E69B14F8] sharedConnection];
-      v15 = [v7 photoLibrary];
+      scopeIdentifier = [shareCopy scopeIdentifier];
+      mEMORY[0x1E69B14F8] = [MEMORY[0x1E69B14F8] sharedConnection];
+      photoLibrary2 = [shareCopy photoLibrary];
       v16 = PLPhotoSharingGetLog();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v28 = v13;
+        v28 = scopeIdentifier;
         v29 = 2112;
         v30 = v12;
         _os_log_impl(&dword_19BF1F000, v16, OS_LOG_TYPE_DEFAULT, "about to call connection accessControlGUIDsForAlbumWithGUID:%@ personID:%@", buf, 0x16u);
@@ -368,15 +368,15 @@ void __134__PLCollectionShareSharedStreamBackend__reconcileNextRelationship_conn
       v21[2] = __104__PLCollectionShareSharedStreamBackend_reconcileModelRelationshipsForCollectionShare_completionHandler___block_invoke;
       v21[3] = &unk_1E756A648;
       v21[4] = self;
-      v22 = v14;
+      v22 = mEMORY[0x1E69B14F8];
       v23 = v12;
-      v24 = v7;
-      v25 = v15;
-      v26 = v8;
-      v17 = v15;
+      v24 = shareCopy;
+      v25 = photoLibrary2;
+      v26 = handlerCopy;
+      v17 = photoLibrary2;
       v18 = v12;
-      v19 = v14;
-      [v19 accessControlGUIDsForAlbumWithGUID:v13 personID:v18 completionBlock:v21];
+      v19 = mEMORY[0x1E69B14F8];
+      [v19 accessControlGUIDsForAlbumWithGUID:scopeIdentifier personID:v18 completionBlock:v21];
     }
   }
 }
@@ -387,33 +387,33 @@ void __104__PLCollectionShareSharedStreamBackend_reconcileModelRelationshipsForC
   [*(a1 + 32) _reconcileNextRelationship:v3 connection:*(a1 + 40) personID:*(a1 + 48) collectionShare:*(a1 + 56) photoLibrary:*(a1 + 64) completionHandler:*(a1 + 72)];
 }
 
-- (void)checkServerForChangesForCollectionShare:(id)a3
+- (void)checkServerForChangesForCollectionShare:(id)share
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if ([v5 collectionShareKind] != 2)
+  shareCopy = share;
+  if ([shareCopy collectionShareKind] != 2)
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"PLCollectionShareSharedStreamBackend.m" lineNumber:772 description:{@"expect SharedStream Collection Share but type is %d", objc_msgSend(v5, "collectionShareKind")}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLCollectionShareSharedStreamBackend.m" lineNumber:772 description:{@"expect SharedStream Collection Share but type is %d", objc_msgSend(shareCopy, "collectionShareKind")}];
   }
 
-  v6 = [v5 photoLibrary];
-  v7 = [v6 isUnitTesting];
+  photoLibrary = [shareCopy photoLibrary];
+  isUnitTesting = [photoLibrary isUnitTesting];
 
-  if ((v7 & 1) == 0)
+  if ((isUnitTesting & 1) == 0)
   {
     v8 = +[PLPhotoSharingHelper sharingPersonID];
     if (v8)
     {
       v9 = v8;
-      v10 = [v5 scopeIdentifier];
-      v11 = [MEMORY[0x1E695DF90] dictionaryWithContentsOfFile:@"/tmp/_pollStreams.plist"];
-      if (!v11)
+      scopeIdentifier = [shareCopy scopeIdentifier];
+      dictionary = [MEMORY[0x1E695DF90] dictionaryWithContentsOfFile:@"/tmp/_pollStreams.plist"];
+      if (!dictionary)
       {
-        v11 = [MEMORY[0x1E695DF90] dictionary];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
       }
 
-      v12 = [v11 objectForKey:v10];
+      v12 = [dictionary objectForKey:scopeIdentifier];
       if (!v12 || ([MEMORY[0x1E695DF00] date], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v12, "compare:", v13), v13, v14 == -1))
       {
         v16 = MEMORY[0x1E695DF00];
@@ -422,14 +422,14 @@ void __104__PLCollectionShareSharedStreamBackend_reconcileModelRelationshipsForC
 
         if (v15)
         {
-          [v11 setObject:v15 forKey:v10];
-          v17 = [MEMORY[0x1E696AE40] dataWithPropertyList:v11 format:100 options:0 error:0];
+          [dictionary setObject:v15 forKey:scopeIdentifier];
+          v17 = [MEMORY[0x1E696AE40] dataWithPropertyList:dictionary format:100 options:0 error:0];
           v18 = [v17 writeToFile:@"/tmp/_pollStreams.plist" options:1073741825 error:0];
           v19 = PLPhotoSharingGetLog();
           if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412802;
-            v29 = v11;
+            v29 = dictionary;
             v30 = 2112;
             v31 = @"/tmp/_pollStreams.plist";
             v32 = 1024;
@@ -440,9 +440,9 @@ void __104__PLCollectionShareSharedStreamBackend_reconcileModelRelationshipsForC
 
         v20 = [MEMORY[0x1E69BF360] transaction:"-[PLCollectionShareSharedStreamBackend checkServerForChangesForCollectionShare:]"];
         v21 = dispatch_get_global_queue(0, 0);
-        v24 = v10;
+        v24 = scopeIdentifier;
         v25 = v9;
-        v26 = v5;
+        v26 = shareCopy;
         v27 = v20;
         v22 = v20;
         pl_dispatch_async();
@@ -663,29 +663,29 @@ void __80__PLCollectionShareSharedStreamBackend_checkServerForChangesForCollecti
   [PLCloudSharedCommentsJob assetsdLocallyProcessAddedComments:v3 assetGUID:a1[4] albumGUID:a1[5] info:0 libraryServicesManager:a1[6]];
 }
 
-- (void)sendInvitationsForParticipants:(id)a3 collectionShare:(id)a4 completionHandler:(id)a5
+- (void)sendInvitationsForParticipants:(id)participants collectionShare:(id)share completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if ([v10 collectionShareKind] != 2)
+  participantsCopy = participants;
+  shareCopy = share;
+  handlerCopy = handler;
+  if ([shareCopy collectionShareKind] != 2)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"PLCollectionShareSharedStreamBackend.m" lineNumber:714 description:{@"expect SharedStream Collection Share but type is %d", objc_msgSend(v10, "collectionShareKind")}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLCollectionShareSharedStreamBackend.m" lineNumber:714 description:{@"expect SharedStream Collection Share but type is %d", objc_msgSend(shareCopy, "collectionShareKind")}];
   }
 
-  v12 = [v10 photoLibrary];
-  if ([v12 isUnitTesting])
+  photoLibrary = [shareCopy photoLibrary];
+  if ([photoLibrary isUnitTesting])
   {
 
 LABEL_7:
-    v11[2](v11, 0);
+    handlerCopy[2](handlerCopy, 0);
     goto LABEL_8;
   }
 
-  v13 = [v10 isCurrentUserOwner];
+  isCurrentUserOwner = [shareCopy isCurrentUserOwner];
 
-  if (!v13)
+  if (!isCurrentUserOwner)
   {
     goto LABEL_7;
   }
@@ -696,13 +696,13 @@ LABEL_7:
   v29[3] = __Block_byref_object_copy__28477;
   v29[4] = __Block_byref_object_dispose__28478;
   v30 = 0;
-  v14 = [v10 photoLibrary];
+  photoLibrary2 = [shareCopy photoLibrary];
   v15 = +[PLPhotoSharingHelper sharingPersonID];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __105__PLCollectionShareSharedStreamBackend_sendInvitationsForParticipants_collectionShare_completionHandler___block_invoke;
   v26[3] = &unk_1E7578910;
-  v27 = v9;
+  v27 = participantsCopy;
   v28 = v29;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
@@ -710,13 +710,13 @@ LABEL_7:
   v19[3] = &unk_1E75780B0;
   v25 = v29;
   v19[4] = self;
-  v20 = v10;
+  v20 = shareCopy;
   v16 = v15;
   v21 = v16;
   v22 = v27;
-  v17 = v14;
+  v17 = photoLibrary2;
   v23 = v17;
-  v24 = v11;
+  v24 = handlerCopy;
   [v17 performBlockAndWait:v26 completionHandler:v19];
 
   _Block_object_dispose(v29, 8);
@@ -886,37 +886,37 @@ void __105__PLCollectionShareSharedStreamBackend_sendInvitationsForParticipants_
   [v1 setAcceptanceStatus:0];
 }
 
-- (void)removeParticipants:(id)a3 collectionShare:(id)a4
+- (void)removeParticipants:(id)participants collectionShare:(id)share
 {
   v43 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if ([v8 collectionShareKind] != 2)
+  participantsCopy = participants;
+  shareCopy = share;
+  if ([shareCopy collectionShareKind] != 2)
   {
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"PLCollectionShareSharedStreamBackend.m" lineNumber:693 description:{@"expect SharedStream Collection Share but type is %d", objc_msgSend(v8, "collectionShareKind")}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLCollectionShareSharedStreamBackend.m" lineNumber:693 description:{@"expect SharedStream Collection Share but type is %d", objc_msgSend(shareCopy, "collectionShareKind")}];
   }
 
-  v9 = [v8 photoLibrary];
-  if ([v9 isUnitTesting])
+  photoLibrary = [shareCopy photoLibrary];
+  if ([photoLibrary isUnitTesting])
   {
   }
 
   else
   {
-    v10 = [v8 isCurrentUserOwner];
+    isCurrentUserOwner = [shareCopy isCurrentUserOwner];
 
-    if (v10)
+    if (isCurrentUserOwner)
     {
-      v27 = v8;
+      v27 = shareCopy;
       v11 = +[PLPhotoSharingHelper sharingPersonID];
-      v12 = [MEMORY[0x1E69B14F8] sharedConnection];
+      mEMORY[0x1E69B14F8] = [MEMORY[0x1E69B14F8] sharedConnection];
       v33 = 0u;
       v34 = 0u;
       v35 = 0u;
       v36 = 0u;
-      v28 = v7;
-      v13 = v7;
+      v28 = participantsCopy;
+      v13 = participantsCopy;
       v14 = [v13 countByEnumeratingWithState:&v33 objects:v42 count:16];
       if (v14)
       {
@@ -931,18 +931,18 @@ void __105__PLCollectionShareSharedStreamBackend_sendInvitationsForParticipants_
               objc_enumerationMutation(v13);
             }
 
-            v18 = [*(*(&v33 + 1) + 8 * i) participantID];
+            participantID = [*(*(&v33 + 1) + 8 * i) participantID];
             v19 = PLPhotoSharingGetLog();
             if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412546;
-              v39 = v18;
+              v39 = participantID;
               v40 = 2112;
               v41 = v11;
               _os_log_impl(&dword_19BF1F000, v19, OS_LOG_TYPE_DEFAULT, " about to call connection removeAccessControlEntryWithGUID:%@ personID:%@", buf, 0x16u);
             }
 
-            [v12 removeAccessControlEntryWithGUID:v18 personID:v11];
+            [mEMORY[0x1E69B14F8] removeAccessControlEntryWithGUID:participantID personID:v11];
           }
 
           v15 = [v13 countByEnumeratingWithState:&v33 objects:v42 count:16];
@@ -951,22 +951,22 @@ void __105__PLCollectionShareSharedStreamBackend_sendInvitationsForParticipants_
         while (v15);
       }
 
-      v8 = v27;
-      v7 = v28;
+      shareCopy = v27;
+      participantsCopy = v28;
       goto LABEL_24;
     }
   }
 
-  v20 = [v8 photoLibrary];
-  v21 = [v20 isUnitTesting];
+  photoLibrary2 = [shareCopy photoLibrary];
+  isUnitTesting = [photoLibrary2 isUnitTesting];
 
-  if (v21)
+  if (isUnitTesting)
   {
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v11 = v7;
+    v11 = participantsCopy;
     v22 = [v11 countByEnumeratingWithState:&v29 objects:v37 count:16];
     if (v22)
     {
@@ -994,32 +994,32 @@ LABEL_24:
   }
 }
 
-- (void)markPendingInvitationAsSpamForCollectionShare:(id)a3 completionHandler:(id)a4
+- (void)markPendingInvitationAsSpamForCollectionShare:(id)share completionHandler:(id)handler
 {
   v23 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if ([v7 collectionShareKind] != 2)
+  shareCopy = share;
+  handlerCopy = handler;
+  if ([shareCopy collectionShareKind] != 2)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"PLCollectionShareSharedStreamBackend.m" lineNumber:667 description:{@"expect SharedStream Collection Share but type is %d", objc_msgSend(v7, "collectionShareKind")}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLCollectionShareSharedStreamBackend.m" lineNumber:667 description:{@"expect SharedStream Collection Share but type is %d", objc_msgSend(shareCopy, "collectionShareKind")}];
   }
 
-  v9 = [v7 photoLibrary];
-  if (([v9 isUnitTesting] & 1) == 0)
+  photoLibrary = [shareCopy photoLibrary];
+  if (([photoLibrary isUnitTesting] & 1) == 0)
   {
-    v10 = [v7 isCurrentUserOwner];
+    isCurrentUserOwner = [shareCopy isCurrentUserOwner];
 
-    if (v10)
+    if (isCurrentUserOwner)
     {
       goto LABEL_14;
     }
 
-    v9 = [MEMORY[0x1E69B14F8] sharedConnection];
-    v11 = [v7 phoneInvitationToken];
+    photoLibrary = [MEMORY[0x1E69B14F8] sharedConnection];
+    phoneInvitationToken = [shareCopy phoneInvitationToken];
     v12 = +[PLPhotoSharingHelper sharingPersonID];
-    v13 = [v7 scopeIdentifier];
-    v14 = [v11 length];
+    scopeIdentifier = [shareCopy scopeIdentifier];
+    v14 = [phoneInvitationToken length];
     v15 = PLPhotoSharingGetLog();
     v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
     if (v14)
@@ -1027,13 +1027,13 @@ LABEL_24:
       if (v16)
       {
         *buf = 138412546;
-        v20 = v11;
+        v20 = phoneInvitationToken;
         v21 = 2112;
         v22 = v12;
         _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_DEFAULT, "about to call connection markAsSpamInvitationWithToken:%@ personID:%@", buf, 0x16u);
       }
 
-      [v9 markAsSpamInvitationWithToken:v11 personID:v12 completionBlock:0];
+      [photoLibrary markAsSpamInvitationWithToken:phoneInvitationToken personID:v12 completionBlock:0];
     }
 
     else
@@ -1041,169 +1041,169 @@ LABEL_24:
       if (v16)
       {
         *buf = 138412546;
-        v20 = v13;
+        v20 = scopeIdentifier;
         v21 = 2112;
         v22 = v12;
         _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_DEFAULT, "about to call connection markAsSpamAlbumWithGUID:%@ personID:%@", buf, 0x16u);
       }
 
-      [v9 markAsSpamAlbumWithGUID:v13 personID:v12 completionBlock:0];
+      [photoLibrary markAsSpamAlbumWithGUID:scopeIdentifier personID:v12 completionBlock:0];
     }
   }
 
 LABEL_14:
-  if (v7)
+  if (shareCopy)
   {
     v17 = +[PLNotificationManager sharedManager];
-    [v17 noteDidDeleteCollectionShare:v7];
+    [v17 noteDidDeleteCollectionShare:shareCopy];
   }
 
-  v8[2](v8, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
-- (void)unsubscribeFromCollectionShare:(id)a3 completionHandler:(id)a4
+- (void)unsubscribeFromCollectionShare:(id)share completionHandler:(id)handler
 {
   v21 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if ([v7 collectionShareKind] != 2)
+  shareCopy = share;
+  handlerCopy = handler;
+  if ([shareCopy collectionShareKind] != 2)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PLCollectionShareSharedStreamBackend.m" lineNumber:647 description:{@"expect SharedStream Collection Share but type is %d", objc_msgSend(v7, "collectionShareKind")}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLCollectionShareSharedStreamBackend.m" lineNumber:647 description:{@"expect SharedStream Collection Share but type is %d", objc_msgSend(shareCopy, "collectionShareKind")}];
   }
 
-  v9 = [v7 photoLibrary];
-  if (([v9 isUnitTesting] & 1) == 0)
+  photoLibrary = [shareCopy photoLibrary];
+  if (([photoLibrary isUnitTesting] & 1) == 0)
   {
-    v10 = [v7 isCurrentUserOwner];
+    isCurrentUserOwner = [shareCopy isCurrentUserOwner];
 
-    if (v10)
+    if (isCurrentUserOwner)
     {
       goto LABEL_9;
     }
 
-    v9 = [MEMORY[0x1E69B14F8] sharedConnection];
+    photoLibrary = [MEMORY[0x1E69B14F8] sharedConnection];
     v11 = +[PLPhotoSharingHelper sharingPersonID];
     v12 = PLPhotoSharingGetLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v7 scopeIdentifier];
+      scopeIdentifier = [shareCopy scopeIdentifier];
       *buf = 138412546;
-      v18 = v13;
+      v18 = scopeIdentifier;
       v19 = 2112;
       v20 = v11;
       _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_DEFAULT, "about to call connection unsubscribeFromAlbumWithGUID:%@ personID %@", buf, 0x16u);
     }
 
-    v14 = [v7 scopeIdentifier];
-    [v9 unsubscribeFromAlbumWithGUID:v14 personID:v11];
+    scopeIdentifier2 = [shareCopy scopeIdentifier];
+    [photoLibrary unsubscribeFromAlbumWithGUID:scopeIdentifier2 personID:v11];
   }
 
 LABEL_9:
-  if (v7)
+  if (shareCopy)
   {
     v15 = +[PLNotificationManager sharedManager];
-    [v15 noteDidDeleteCollectionShare:v7];
+    [v15 noteDidDeleteCollectionShare:shareCopy];
   }
 
-  v8[2](v8, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
-- (void)declineCollectionShare:(id)a3 completionHandler:(id)a4
+- (void)declineCollectionShare:(id)share completionHandler:(id)handler
 {
   v21 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if ([v7 collectionShareKind] != 2)
+  shareCopy = share;
+  handlerCopy = handler;
+  if ([shareCopy collectionShareKind] != 2)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PLCollectionShareSharedStreamBackend.m" lineNumber:627 description:{@"expect SharedStream Collection Share but type is %d", objc_msgSend(v7, "collectionShareKind")}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLCollectionShareSharedStreamBackend.m" lineNumber:627 description:{@"expect SharedStream Collection Share but type is %d", objc_msgSend(shareCopy, "collectionShareKind")}];
   }
 
-  v9 = [v7 photoLibrary];
-  if (([v9 isUnitTesting] & 1) == 0)
+  photoLibrary = [shareCopy photoLibrary];
+  if (([photoLibrary isUnitTesting] & 1) == 0)
   {
-    v10 = [v7 isCurrentUserOwner];
+    isCurrentUserOwner = [shareCopy isCurrentUserOwner];
 
-    if (v10)
+    if (isCurrentUserOwner)
     {
       goto LABEL_9;
     }
 
-    v9 = [MEMORY[0x1E69B14F8] sharedConnection];
+    photoLibrary = [MEMORY[0x1E69B14F8] sharedConnection];
     v11 = +[PLPhotoSharingHelper sharingPersonID];
     v12 = PLPhotoSharingGetLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v7 scopeIdentifier];
+      scopeIdentifier = [shareCopy scopeIdentifier];
       *buf = 138412546;
-      v18 = v13;
+      v18 = scopeIdentifier;
       v19 = 2112;
       v20 = v11;
       _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_DEFAULT, "about to call connection unsubscribeFromAlbumWithGUID:%@ personID %@", buf, 0x16u);
     }
 
-    v14 = [v7 scopeIdentifier];
-    [v9 unsubscribeFromAlbumWithGUID:v14 personID:v11];
+    scopeIdentifier2 = [shareCopy scopeIdentifier];
+    [photoLibrary unsubscribeFromAlbumWithGUID:scopeIdentifier2 personID:v11];
   }
 
 LABEL_9:
-  if (v7)
+  if (shareCopy)
   {
     v15 = +[PLNotificationManager sharedManager];
-    [v15 noteDidDeleteCollectionShare:v7];
+    [v15 noteDidDeleteCollectionShare:shareCopy];
   }
 
-  v8[2](v8, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
-- (void)acceptCollectionShare:(id)a3 completionHandler:(id)a4
+- (void)acceptCollectionShare:(id)share completionHandler:(id)handler
 {
   v38 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if ([v7 collectionShareKind] != 2)
+  shareCopy = share;
+  handlerCopy = handler;
+  if ([shareCopy collectionShareKind] != 2)
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"PLCollectionShareSharedStreamBackend.m" lineNumber:589 description:{@"expect SharedStream Collection Share but type is %d", objc_msgSend(v7, "collectionShareKind")}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLCollectionShareSharedStreamBackend.m" lineNumber:589 description:{@"expect SharedStream Collection Share but type is %d", objc_msgSend(shareCopy, "collectionShareKind")}];
   }
 
   v33 = 0;
-  v9 = [(PLCollectionShareSharedStreamBackend *)self canAcceptPendingInvitationForCollectionShare:v7 error:&v33];
+  v9 = [(PLCollectionShareSharedStreamBackend *)self canAcceptPendingInvitationForCollectionShare:shareCopy error:&v33];
   v10 = v33;
   if (v9)
   {
-    v11 = [v7 photoLibrary];
+    photoLibrary = [shareCopy photoLibrary];
     v31[0] = MEMORY[0x1E69E9820];
     v31[1] = 3221225472;
     v31[2] = __80__PLCollectionShareSharedStreamBackend_acceptCollectionShare_completionHandler___block_invoke;
     v31[3] = &unk_1E75781E8;
-    v12 = v7;
+    v12 = shareCopy;
     v32 = v12;
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
     v29[2] = __80__PLCollectionShareSharedStreamBackend_acceptCollectionShare_completionHandler___block_invoke_2;
     v29[3] = &unk_1E7576AA0;
-    v13 = v8;
+    v13 = handlerCopy;
     v30 = v13;
-    [v11 performTransaction:v31 completionHandler:v29];
-    v14 = [v12 photoLibrary];
-    if (([v14 isUnitTesting] & 1) == 0)
+    [photoLibrary performTransaction:v31 completionHandler:v29];
+    photoLibrary2 = [v12 photoLibrary];
+    if (([photoLibrary2 isUnitTesting] & 1) == 0)
     {
-      v15 = [v12 isCurrentUserOwner];
+      isCurrentUserOwner = [v12 isCurrentUserOwner];
 
-      if (v15)
+      if (isCurrentUserOwner)
       {
 LABEL_17:
 
         goto LABEL_18;
       }
 
-      v14 = [MEMORY[0x1E69B14F8] sharedConnection];
-      v16 = [v12 phoneInvitationToken];
+      photoLibrary2 = [MEMORY[0x1E69B14F8] sharedConnection];
+      phoneInvitationToken = [v12 phoneInvitationToken];
       v17 = +[PLPhotoSharingHelper sharingPersonID];
-      v26 = v16;
-      v18 = [v16 length];
+      v26 = phoneInvitationToken;
+      v18 = [phoneInvitationToken length];
       v19 = PLPhotoSharingGetLog();
       v20 = os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT);
       if (v18)
@@ -1224,25 +1224,25 @@ LABEL_17:
         v27[2] = __80__PLCollectionShareSharedStreamBackend_acceptCollectionShare_completionHandler___block_invoke_99;
         v27[3] = &unk_1E7577430;
         v28 = v13;
-        [v14 acceptInvitationWithToken:v26 personID:v21 completionBlock:v27];
-        v23 = v28;
+        [photoLibrary2 acceptInvitationWithToken:v26 personID:v21 completionBlock:v27];
+        scopeIdentifier2 = v28;
       }
 
       else
       {
         if (v20)
         {
-          v24 = [v12 scopeIdentifier];
+          scopeIdentifier = [v12 scopeIdentifier];
           *buf = 138412546;
-          v35 = v24;
+          v35 = scopeIdentifier;
           v36 = 2112;
           v37 = v17;
           _os_log_impl(&dword_19BF1F000, v19, OS_LOG_TYPE_DEFAULT, "about to call connection subscribeToAlbumWithGUID:%@ personID:%@", buf, 0x16u);
         }
 
-        v23 = [v12 scopeIdentifier];
+        scopeIdentifier2 = [v12 scopeIdentifier];
         v21 = v17;
-        [v14 subscribeToAlbumWithGUID:v23 personID:v17];
+        [photoLibrary2 subscribeToAlbumWithGUID:scopeIdentifier2 personID:v17];
         v22 = v26;
       }
     }
@@ -1250,9 +1250,9 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  if (v8)
+  if (handlerCopy)
   {
-    (*(v8 + 2))(v8, v10);
+    (*(handlerCopy + 2))(handlerCopy, v10);
   }
 
 LABEL_18:
@@ -1280,52 +1280,52 @@ uint64_t __80__PLCollectionShareSharedStreamBackend_acceptCollectionShare_comple
   return result;
 }
 
-- (BOOL)_hasReachedLimitOfSubscribedStreamsInLibrary:(id)a3
+- (BOOL)_hasReachedLimitOfSubscribedStreamsInLibrary:(id)library
 {
-  v3 = a3;
+  libraryCopy = library;
   v4 = +[PLPhotoSharingHelper maxSubscribedStreams];
   v5 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d AND %K == %d", @"collectionShareKind", 2, @"status", 3];
-  v6 = [v3 managedObjectContext];
+  managedObjectContext = [libraryCopy managedObjectContext];
 
-  v7 = [(PLShare *)PLCollectionShare sharesWithPredicate:v5 fetchLimit:0 inManagedObjectContext:v6];
+  v7 = [(PLShare *)PLCollectionShare sharesWithPredicate:v5 fetchLimit:0 inManagedObjectContext:managedObjectContext];
 
   LOBYTE(v4) = [v7 count] >= v4;
   return v4;
 }
 
-- (BOOL)canAcceptPendingInvitationForCollectionShare:(id)a3 error:(id *)a4
+- (BOOL)canAcceptPendingInvitationForCollectionShare:(id)share error:(id *)error
 {
   v25[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if ([v7 collectionShareKind] == 2)
+  shareCopy = share;
+  if ([shareCopy collectionShareKind] == 2)
   {
-    if (v7)
+    if (shareCopy)
     {
 LABEL_3:
-      v8 = [v7 photoLibrary];
+      photoLibrary = [shareCopy photoLibrary];
       goto LABEL_6;
     }
   }
 
   else
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PLCollectionShareSharedStreamBackend.m" lineNumber:548 description:{@"expect SharedStream Collection Share but type is %d", objc_msgSend(v7, "collectionShareKind")}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLCollectionShareSharedStreamBackend.m" lineNumber:548 description:{@"expect SharedStream Collection Share but type is %d", objc_msgSend(shareCopy, "collectionShareKind")}];
 
-    if (v7)
+    if (shareCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v8 = +[PLPhotoLibrary cloudSharingPhotoLibrary];
+  photoLibrary = +[PLPhotoLibrary cloudSharingPhotoLibrary];
 LABEL_6:
-  v10 = v8;
-  v11 = [(PLCollectionShareSharedStreamBackend *)self _hasReachedLimitOfSubscribedStreamsInLibrary:v8];
+  v10 = photoLibrary;
+  v11 = [(PLCollectionShareSharedStreamBackend *)self _hasReachedLimitOfSubscribedStreamsInLibrary:photoLibrary];
   if (!v11)
   {
     v15 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_14;
     }
@@ -1333,8 +1333,8 @@ LABEL_6:
     goto LABEL_13;
   }
 
-  v12 = [v7 title];
-  if ([v12 length])
+  title = [shareCopy title];
+  if ([title length])
   {
     v13 = PLServicesLocalizedFrameworkString();
     v14 = PFStringWithValidatedFormat();
@@ -1358,11 +1358,11 @@ LABEL_6:
   v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:v24 count:{2, v23}];
   v15 = [v18 errorWithDomain:@"com.apple.photolibraryservices" code:4 userInfo:v20];
 
-  if (a4)
+  if (error)
   {
 LABEL_13:
     v21 = v15;
-    *a4 = v15;
+    *error = v15;
   }
 
 LABEL_14:
@@ -1370,69 +1370,69 @@ LABEL_14:
   return !v11;
 }
 
-- (void)insertOwnedParticipantInLibrary:(id)a3 collectionShare:(id)a4 unitTestMode:(BOOL)a5
+- (void)insertOwnedParticipantInLibrary:(id)library collectionShare:(id)share unitTestMode:(BOOL)mode
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  libraryCopy = library;
+  shareCopy = share;
   v9 = +[PLAccountStore pl_sharedAccountStore];
-  v10 = [v9 cachedPrimaryAppleAccount];
-  v11 = v10;
-  if (a5)
+  cachedPrimaryAppleAccount = [v9 cachedPrimaryAppleAccount];
+  v11 = cachedPrimaryAppleAccount;
+  if (mode)
   {
-    v12 = @"owner@unittest.com";
+    username = @"owner@unittest.com";
     goto LABEL_5;
   }
 
-  if (!v10)
+  if (!cachedPrimaryAppleAccount)
   {
-    v12 = PLBackendSharingGetLog();
-    if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    username = PLBackendSharingGetLog();
+    if (!os_log_type_enabled(username, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_9;
     }
 
-    v14 = [v8 compactDescription];
+    compactDescription = [shareCopy compactDescription];
     v22 = 138412290;
-    v23 = v14;
-    _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_ERROR, "Failed to fetch account store to insert owner participant into collection share %@", &v22, 0xCu);
+    v23 = compactDescription;
+    _os_log_impl(&dword_19BF1F000, username, OS_LOG_TYPE_ERROR, "Failed to fetch account store to insert owner participant into collection share %@", &v22, 0xCu);
 LABEL_8:
 
 LABEL_9:
     goto LABEL_10;
   }
 
-  v12 = [v10 username];
-  if (v12)
+  username = [cachedPrimaryAppleAccount username];
+  if (username)
   {
 LABEL_5:
-    v13 = [v7 managedObjectContext];
-    v14 = [PLShareParticipant insertInManagedObjectContext:v13];
+    managedObjectContext = [libraryCopy managedObjectContext];
+    compactDescription = [PLShareParticipant insertInManagedObjectContext:managedObjectContext];
 
-    [v14 setEmailAddress:v12];
-    v15 = [MEMORY[0x1E696AFB0] UUID];
-    v16 = [v15 UUIDString];
-    [v14 setUuid:v16];
+    [compactDescription setEmailAddress:username];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    [compactDescription setUuid:uUIDString];
 
-    [v14 setIsCurrentUser:1];
-    [v14 setRole:1];
-    [v14 setPermission:3];
-    [v14 setAcceptanceStatus:2];
-    [v14 setParticipantKind:1];
+    [compactDescription setIsCurrentUser:1];
+    [compactDescription setRole:1];
+    [compactDescription setPermission:3];
+    [compactDescription setAcceptanceStatus:2];
+    [compactDescription setParticipantKind:1];
     v17 = MEMORY[0x1E695DFD8];
-    v26[0] = v14;
+    v26[0] = compactDescription;
     v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
     v19 = [v17 setWithArray:v18];
-    [v8 setParticipants:v19];
+    [shareCopy setParticipants:v19];
 
     v20 = PLBackendSharingGetLog();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = [v8 compactDescription];
+      compactDescription2 = [shareCopy compactDescription];
       v22 = 138412546;
-      v23 = v14;
+      v23 = compactDescription;
       v24 = 2112;
-      v25 = v21;
+      v25 = compactDescription2;
       _os_log_impl(&dword_19BF1F000, v20, OS_LOG_TYPE_DEFAULT, "Inserted owner participant %@ into collection share %@", &v22, 0x16u);
     }
 
@@ -1442,114 +1442,114 @@ LABEL_5:
 LABEL_10:
 }
 
-- (void)deleteCommentWithGUIDFromServer:(id)a3
+- (void)deleteCommentWithGUIDFromServer:(id)server
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  serverCopy = server;
+  if (serverCopy)
   {
     v4 = +[PLPhotoSharingHelper sharingPersonID];
-    v5 = [MEMORY[0x1E69B14F8] sharedConnection];
+    mEMORY[0x1E69B14F8] = [MEMORY[0x1E69B14F8] sharedConnection];
     v6 = PLPhotoSharingGetLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138412546;
-      v8 = v3;
+      v8 = serverCopy;
       v9 = 2112;
       v10 = v4;
       _os_log_impl(&dword_19BF1F000, v6, OS_LOG_TYPE_DEFAULT, "about to call connection deleteCommentWithGUID:%@ personID:%@", &v7, 0x16u);
     }
 
-    [v5 deleteCommentWithGUID:v3 personID:v4];
+    [mEMORY[0x1E69B14F8] deleteCommentWithGUID:serverCopy personID:v4];
   }
 }
 
-- (void)publishCloudSharedCommentToServer:(id)a3
+- (void)publishCloudSharedCommentToServer:(id)server
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  serverCopy = server;
+  v4 = serverCopy;
+  if (serverCopy)
   {
-    v5 = [v3 asset];
-    v6 = [v5 cloudAssetGUID];
+    asset = [serverCopy asset];
+    cloudAssetGUID = [asset cloudAssetGUID];
 
-    if (v6)
+    if (cloudAssetGUID)
     {
-      v7 = [MEMORY[0x1E6997F98] comment];
-      v8 = [v4 cloudGUID];
-      [v7 setGUID:v8];
+      comment = [MEMORY[0x1E6997F98] comment];
+      cloudGUID = [v4 cloudGUID];
+      [comment setGUID:cloudGUID];
 
-      v9 = [v4 commentDate];
-      [v7 setTimestamp:v9];
+      commentDate = [v4 commentDate];
+      [comment setTimestamp:commentDate];
 
-      v10 = [v4 isCaption];
-      -[NSObject setIsCaption:](v7, "setIsCaption:", [v10 BOOLValue]);
+      isCaption = [v4 isCaption];
+      -[NSObject setIsCaption:](comment, "setIsCaption:", [isCaption BOOLValue]);
 
-      v11 = [v4 isBatchComment];
-      -[NSObject setIsBatchComment:](v7, "setIsBatchComment:", [v11 BOOLValue]);
+      isBatchComment = [v4 isBatchComment];
+      -[NSObject setIsBatchComment:](comment, "setIsBatchComment:", [isBatchComment BOOLValue]);
 
-      v12 = [v4 isLike];
-      v13 = [v12 BOOLValue];
+      isLike = [v4 isLike];
+      bOOLValue = [isLike BOOLValue];
 
-      if (v13)
+      if (bOOLValue)
       {
-        [v7 setIsLike:1];
+        [comment setIsLike:1];
       }
 
       else
       {
-        v14 = [v4 commentText];
-        [v7 setContent:v14];
+        commentText = [v4 commentText];
+        [comment setContent:commentText];
       }
 
-      v15 = [v4 isMyComment];
-      -[NSObject setIsMine:](v7, "setIsMine:", [v15 BOOLValue]);
+      isMyComment = [v4 isMyComment];
+      -[NSObject setIsMine:](comment, "setIsMine:", [isMyComment BOOLValue]);
 
-      [v7 setIsDeletable:1];
+      [comment setIsDeletable:1];
       v16 = +[PLPhotoSharingHelper sharingPersonID];
-      v17 = [MEMORY[0x1E69B14F8] sharedConnection];
+      mEMORY[0x1E69B14F8] = [MEMORY[0x1E69B14F8] sharedConnection];
       v18 = PLPhotoSharingGetLog();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
         v20 = 138412802;
-        v21 = v7;
+        v21 = comment;
         v22 = 2112;
-        v23 = v6;
+        v23 = cloudAssetGUID;
         v24 = 2112;
         v25 = v16;
         _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_DEFAULT, "about to call connection addComments:%@ toAssetCollectionWithGUID:%@ personID:%@", &v20, 0x20u);
       }
 
-      v19 = [MEMORY[0x1E695DEC8] arrayWithObject:v7];
-      [v17 addComments:v19 toAssetCollectionWithGUID:v6 personID:v16];
+      v19 = [MEMORY[0x1E695DEC8] arrayWithObject:comment];
+      [mEMORY[0x1E69B14F8] addComments:v19 toAssetCollectionWithGUID:cloudAssetGUID personID:v16];
     }
 
     else
     {
-      v7 = PLPhotoSharingGetLog();
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+      comment = PLPhotoSharingGetLog();
+      if (os_log_type_enabled(comment, OS_LOG_TYPE_ERROR))
       {
         LOWORD(v20) = 0;
-        _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_ERROR, "ERROR: couldn't find asset cloud GUID for comment, skipping comment deletion on server", &v20, 2u);
+        _os_log_impl(&dword_19BF1F000, comment, OS_LOG_TYPE_ERROR, "ERROR: couldn't find asset cloud GUID for comment, skipping comment deletion on server", &v20, 2u);
       }
     }
   }
 }
 
-- (void)deleteSharedStreamAssetsFromServer:(id)a3
+- (void)deleteSharedStreamAssetsFromServer:(id)server
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E69B14F8] sharedConnection];
+  serverCopy = server;
+  mEMORY[0x1E69B14F8] = [MEMORY[0x1E69B14F8] sharedConnection];
   v5 = +[PLPhotoSharingHelper sharingPersonID];
-  v6 = [MEMORY[0x1E695DF70] array];
-  v7 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = v3;
+  v8 = serverCopy;
   v9 = [v8 countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v9)
   {
@@ -1565,10 +1565,10 @@ LABEL_10:
         }
 
         v13 = *(*(&v18 + 1) + 8 * i);
-        v14 = [v13 cloudAssetGUID];
-        [v6 addObject:v14];
-        v15 = [v13 uuid];
-        [v7 addObject:v15];
+        cloudAssetGUID = [v13 cloudAssetGUID];
+        [array addObject:cloudAssetGUID];
+        uuid = [v13 uuid];
+        [array2 addObject:uuid];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v18 objects:v26 count:16];
@@ -1581,28 +1581,28 @@ LABEL_10:
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v23 = v6;
+    v23 = array;
     v24 = 2112;
     v25 = v5;
     _os_log_impl(&dword_19BF1F000, v16, OS_LOG_TYPE_DEFAULT, " about to call connection deleteAssetCollectionsWithGUIDs:%@ personID:%@", buf, 0x16u);
   }
 
-  [v4 deleteAssetCollectionsWithGUIDs:v6 personID:v5];
+  [mEMORY[0x1E69B14F8] deleteAssetCollectionsWithGUIDs:array personID:v5];
   v17 = +[PLNotificationManager sharedManager];
-  [v17 noteUserDidDeleteSharedAssetsWithUUIDs:v7];
+  [v17 noteUserDidDeleteSharedAssetsWithUUIDs:array2];
 }
 
-- (void)_enqueueCloudSharedAssetsForPublishToServer:(id)a3 inCollectionShare:(id)a4
+- (void)_enqueueCloudSharedAssetsForPublishToServer:(id)server inCollectionShare:(id)share
 {
   v120 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v78 = a4;
-  v96 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+  serverCopy = server;
+  shareCopy = share;
+  v96 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(serverCopy, "count")}];
   v113 = 0u;
   v114 = 0u;
   v115 = 0u;
   v116 = 0u;
-  obj = v5;
+  obj = serverCopy;
   v97 = [obj countByEnumeratingWithState:&v113 objects:v119 count:16];
   v6 = 0;
   if (v97)
@@ -1636,56 +1636,56 @@ LABEL_10:
 
         v11 = *(*(&v113 + 1) + 8 * i);
         v12 = objc_alloc_init(MEMORY[0x1E6997FA8]);
-        v13 = [v11 cloudAssetGUID];
-        [v12 setGUID:v13];
+        cloudAssetGUID = [v11 cloudAssetGUID];
+        [v12 setGUID:cloudAssetGUID];
 
-        v107 = [v11 uniformTypeIdentifier];
+        uniformTypeIdentifier = [v11 uniformTypeIdentifier];
         [v12 setType:?];
-        v14 = [v11 pathForOriginalFile];
-        [v12 setPath:v14];
+        pathForOriginalFile = [v11 pathForOriginalFile];
+        [v12 setPath:pathForOriginalFile];
 
         if ([v11 isVideo])
         {
           [v12 setMediaAssetType:4];
         }
 
-        v15 = [MEMORY[0x1E695DF90] dictionary];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
         v16 = MEMORY[0x1E695DFF8];
-        v17 = [v11 pathForOriginalFile];
-        v18 = [v16 fileURLWithPath:v17 isDirectory:0];
+        pathForOriginalFile2 = [v11 pathForOriginalFile];
+        v18 = [v16 fileURLWithPath:pathForOriginalFile2 isDirectory:0];
 
         v112 = 0;
         v106 = v18;
         [v18 getResourceValue:&v112 forKey:v102 error:0];
         v105 = v112;
-        [v15 setObject:? forKey:?];
+        [dictionary setObject:? forKey:?];
         v19 = [*(v9 + 3480) numberWithLongLong:{objc_msgSend(v11, "width")}];
         v20 = [*(v9 + 3480) numberWithLongLong:{objc_msgSend(v11, "height")}];
         v104 = v19;
-        [v15 setObject:v19 forKey:v99];
+        [dictionary setObject:v19 forKey:v99];
         v103 = v20;
-        [v15 setObject:v20 forKey:v98];
-        [v12 setMetadata:v15];
-        v21 = [MEMORY[0x1E695DF70] array];
+        [dictionary setObject:v20 forKey:v98];
+        [v12 setMetadata:dictionary];
+        array = [MEMORY[0x1E695DF70] array];
         v108 = v12;
-        [v21 addObject:v12];
+        [array addObject:v12];
         v22 = objc_alloc_init(MEMORY[0x1E6997F90]);
-        v23 = [MEMORY[0x1E695DF90] dictionary];
+        dictionary2 = [MEMORY[0x1E695DF90] dictionary];
         v24 = [*(v9 + 3480) numberWithUnsignedShort:{objc_msgSend(v11, "playbackVariation")}];
-        [v23 setObject:v24 forKey:v94];
+        [dictionary2 setObject:v24 forKey:v94];
 
-        v109 = [v11 mediaGroupUUID];
-        if ([v11 isPhotoIris] && v109)
+        mediaGroupUUID = [v11 mediaGroupUUID];
+        if ([v11 isPhotoIris] && mediaGroupUUID)
         {
           v93 = v6;
-          v25 = [v11 pathForVideoComplementFile];
-          v26 = [v25 pathExtension];
-          v27 = [v86 identifier];
-          v91 = v26;
-          v92 = v21;
-          if (v26)
+          pathForVideoComplementFile = [v11 pathForVideoComplementFile];
+          pathExtension = [pathForVideoComplementFile pathExtension];
+          identifier = [v86 identifier];
+          v91 = pathExtension;
+          v92 = array;
+          if (pathExtension)
           {
-            v28 = [PLManagedAsset uniformTypeIdentifierFromPathExtension:v26 assetType:1];
+            v28 = [PLManagedAsset uniformTypeIdentifierFromPathExtension:pathExtension assetType:1];
             v29 = v28;
             if (v28)
             {
@@ -1694,29 +1694,29 @@ LABEL_10:
 
             else
             {
-              v30 = v27;
+              v30 = identifier;
             }
 
             v31 = v30;
 
-            v27 = v31;
+            identifier = v31;
           }
 
           v32 = objc_alloc_init(MEMORY[0x1E6997FA8]);
-          v33 = [MEMORY[0x1E696AFB0] UUID];
-          v34 = [v33 UUIDString];
-          [v32 setGUID:v34];
+          uUID = [MEMORY[0x1E696AFB0] UUID];
+          uUIDString = [uUID UUIDString];
+          [v32 setGUID:uUIDString];
 
-          [v32 setType:v27];
-          v35 = [v11 pathForVideoComplementFile];
-          [v32 setPath:v35];
+          [v32 setType:identifier];
+          pathForVideoComplementFile2 = [v11 pathForVideoComplementFile];
+          [v32 setPath:pathForVideoComplementFile2];
 
           [v32 setMediaAssetType:4];
-          v101 = [MEMORY[0x1E695DF90] dictionary];
-          if (v25 && ([MEMORY[0x1E696AC08] defaultManager], v36 = objc_claimAutoreleasedReturnValue(), v37 = objc_msgSend(v36, "fileExistsAtPath:", v25), v36, v37))
+          dictionary3 = [MEMORY[0x1E695DF90] dictionary];
+          if (pathForVideoComplementFile && ([MEMORY[0x1E696AC08] defaultManager], v36 = objc_claimAutoreleasedReturnValue(), v37 = objc_msgSend(v36, "fileExistsAtPath:", pathForVideoComplementFile), v36, v37))
           {
-            v83 = v27;
-            v38 = [MEMORY[0x1E695DFF8] fileURLWithPath:v25 isDirectory:0];
+            v83 = identifier;
+            v38 = [MEMORY[0x1E695DFF8] fileURLWithPath:pathForVideoComplementFile isDirectory:0];
             v110 = 0;
             v111 = 0;
             v39 = [v38 getResourceValue:&v111 forKey:v102 error:&v110];
@@ -1724,7 +1724,7 @@ LABEL_10:
             v85 = v110;
             if (v39)
             {
-              [v101 setObject:v40 forKey:v100];
+              [dictionary3 setObject:v40 forKey:v100];
               [PLManagedAsset dimensionsForVideoAtURL:v38];
               v42 = v41;
               if (v43 == v7 && v41 == v8)
@@ -1733,7 +1733,7 @@ LABEL_10:
                 if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
                 {
                   LODWORD(buf.value) = 138412290;
-                  *(&buf.value + 4) = v25;
+                  *(&buf.value + 4) = pathForVideoComplementFile;
                   v45 = v44;
                   v46 = "ERROR: Unable to get dimensions for Iris video complement file %@";
                   v47 = 12;
@@ -1744,13 +1744,13 @@ LABEL_10:
               }
 
               v48 = [MEMORY[0x1E696AD98] numberWithDouble:?];
-              [v101 setObject:v48 forKey:v99];
+              [dictionary3 setObject:v48 forKey:v99];
 
               v49 = [MEMORY[0x1E696AD98] numberWithDouble:v42];
-              [v101 setObject:v49 forKey:v98];
+              [dictionary3 setObject:v49 forKey:v98];
 
-              [v32 setMetadata:v101];
-              [v23 setObject:v109 forKey:v81];
+              [v32 setMetadata:dictionary3];
+              [dictionary2 setObject:mediaGroupUUID forKey:v81];
               v50 = MEMORY[0x1E696AD98];
               if (v11)
               {
@@ -1763,7 +1763,7 @@ LABEL_10:
               }
 
               v51 = [v50 numberWithDouble:CMTimeGetSeconds(&buf)];
-              [v23 setObject:v51 forKey:v80];
+              [dictionary2 setObject:v51 forKey:v80];
 
               v52 = MEMORY[0x1E696AD98];
               if (v11)
@@ -1777,9 +1777,9 @@ LABEL_10:
               }
 
               v53 = [v52 numberWithDouble:CMTimeGetSeconds(&buf)];
-              [v23 setObject:v53 forKey:v79];
+              [dictionary2 setObject:v53 forKey:v79];
 
-              v21 = v92;
+              array = v92;
               [v92 addObject:v32];
             }
 
@@ -1789,7 +1789,7 @@ LABEL_10:
               if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
               {
                 LODWORD(buf.value) = 138412546;
-                *(&buf.value + 4) = v25;
+                *(&buf.value + 4) = pathForVideoComplementFile;
                 LOWORD(buf.flags) = 2112;
                 *(&buf.flags + 2) = v85;
                 v45 = v44;
@@ -1801,20 +1801,20 @@ LABEL_26:
 
 LABEL_27:
 
-              v21 = v92;
+              array = v92;
             }
 
-            v27 = v83;
+            identifier = v83;
           }
 
           else
           {
             v38 = PLPhotoSharingGetLog();
-            v21 = v92;
+            array = v92;
             if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
             {
               LODWORD(buf.value) = 138412290;
-              *(&buf.value + 4) = v25;
+              *(&buf.value + 4) = pathForVideoComplementFile;
               _os_log_impl(&dword_19BF1F000, v38, OS_LOG_TYPE_ERROR, "ERROR: Iris video complement file path is nil or does not exist: %@", &buf, 0xCu);
             }
           }
@@ -1823,40 +1823,40 @@ LABEL_27:
           v9 = 0x1E696A000uLL;
         }
 
-        v54 = v21;
-        [v22 setAssets:v21];
-        v55 = [v11 cloudAssetGUID];
-        [v22 setGUID:v55];
+        v54 = array;
+        [v22 setAssets:array];
+        cloudAssetGUID2 = [v11 cloudAssetGUID];
+        [v22 setGUID:cloudAssetGUID2];
 
-        v56 = [v11 originalFilename];
-        [v22 setFileName:v56];
+        originalFilename = [v11 originalFilename];
+        [v22 setFileName:originalFilename];
 
         [v22 setIsDeletable:{objc_msgSend(v11, "cloudIsDeletable")}];
         [v22 setIsMine:{objc_msgSend(v11, "cloudIsMyAsset")}];
-        v57 = [v11 cloudBatchID];
+        cloudBatchID = [v11 cloudBatchID];
 
-        if (v57)
+        if (cloudBatchID)
         {
-          v58 = [v11 cloudBatchID];
-          [v23 setObject:v58 forKey:v90];
+          cloudBatchID2 = [v11 cloudBatchID];
+          [dictionary2 setObject:cloudBatchID2 forKey:v90];
         }
 
-        v59 = [v11 cloudBatchPublishDate];
+        cloudBatchPublishDate = [v11 cloudBatchPublishDate];
 
-        if (v59)
+        if (cloudBatchPublishDate)
         {
-          v60 = [v11 cloudBatchPublishDate];
-          [v23 setObject:v60 forKey:v89];
+          cloudBatchPublishDate2 = [v11 cloudBatchPublishDate];
+          [dictionary2 setObject:cloudBatchPublishDate2 forKey:v89];
         }
 
-        v61 = [v11 dateCreated];
-        if (v61)
+        dateCreated = [v11 dateCreated];
+        if (dateCreated)
         {
-          [v23 setObject:v61 forKey:v88];
+          [dictionary2 setObject:dateCreated forKey:v88];
         }
 
         v62 = [*(v9 + 3480) numberWithBool:1];
-        [v23 setObject:v62 forKey:@"kPLJustEnqueuedAssetCollectionKey"];
+        [dictionary2 setObject:v62 forKey:@"kPLJustEnqueuedAssetCollectionKey"];
 
         if ([v11 isVideo])
         {
@@ -1865,19 +1865,19 @@ LABEL_27:
           {
             [PLSlalomUtilities durationForManagedAsset:v11 applyVideoAdjustments:1];
             v64 = [*(v9 + 3480) numberWithDouble:?];
-            [v23 setObject:v64 forKey:v84];
+            [dictionary2 setObject:v64 forKey:v84];
           }
 
-          v65 = [v11 location];
-          v66 = v65;
-          if (v65)
+          location = [v11 location];
+          v66 = location;
+          if (location)
           {
             v67 = v6;
-            v68 = [v65 iso6709Notation];
-            v69 = v68;
-            if (v68 && [v68 length])
+            iso6709Notation = [location iso6709Notation];
+            v69 = iso6709Notation;
+            if (iso6709Notation && [iso6709Notation length])
             {
-              [v23 setObject:v69 forKey:v82];
+              [dictionary2 setObject:v69 forKey:v82];
             }
 
             v6 = v67;
@@ -1886,11 +1886,11 @@ LABEL_27:
           v9 = 0x1E696A000;
         }
 
-        [v22 setMetadata:v23];
+        [v22 setMetadata:dictionary2];
         [v96 addObject:v22];
-        v70 = [v11 locationData];
+        locationData = [v11 locationData];
 
-        if (v70)
+        if (locationData)
         {
           ++v6;
         }
@@ -1904,34 +1904,34 @@ LABEL_27:
 
   if ([v96 count])
   {
-    v71 = [MEMORY[0x1E69B14F8] sharedConnection];
+    mEMORY[0x1E69B14F8] = [MEMORY[0x1E69B14F8] sharedConnection];
     v72 = +[PLPhotoSharingHelper sharingPersonID];
     v73 = PLPhotoSharingGetLog();
-    v74 = v78;
+    v74 = shareCopy;
     if (os_log_type_enabled(v73, OS_LOG_TYPE_DEFAULT))
     {
-      v75 = [v78 scopeIdentifier];
+      scopeIdentifier = [shareCopy scopeIdentifier];
       LODWORD(buf.value) = 138412802;
       *(&buf.value + 4) = v96;
       LOWORD(buf.flags) = 2112;
-      *(&buf.flags + 2) = v75;
+      *(&buf.flags + 2) = scopeIdentifier;
       HIWORD(buf.epoch) = 2112;
       v118 = v72;
       _os_log_impl(&dword_19BF1F000, v73, OS_LOG_TYPE_DEFAULT, " about to call connection addAssetCollections:%@ toAlbumWithGUID:%@ personID:%@", &buf, 0x20u);
     }
 
-    v76 = [v78 scopeIdentifier];
-    [v71 addAssetCollections:v96 toAlbumWithGUID:v76 personID:v72];
+    scopeIdentifier2 = [shareCopy scopeIdentifier];
+    [mEMORY[0x1E69B14F8] addAssetCollections:v96 toAlbumWithGUID:scopeIdentifier2 personID:v72];
   }
 
   else
   {
-    v71 = PLPhotoSharingGetLog();
-    v74 = v78;
-    if (os_log_type_enabled(v71, OS_LOG_TYPE_DEFAULT))
+    mEMORY[0x1E69B14F8] = PLPhotoSharingGetLog();
+    v74 = shareCopy;
+    if (os_log_type_enabled(mEMORY[0x1E69B14F8], OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(buf.value) = 0;
-      _os_log_impl(&dword_19BF1F000, v71, OS_LOG_TYPE_DEFAULT, " no asset collections to add", &buf, 2u);
+      _os_log_impl(&dword_19BF1F000, mEMORY[0x1E69B14F8], OS_LOG_TYPE_DEFAULT, " no asset collections to add", &buf, 2u);
     }
   }
 
@@ -1939,7 +1939,7 @@ LABEL_27:
   {
     if (v6 >= 1)
     {
-      v77 = [v74 title];
+      title = [v74 title];
       plslogGreenTea();
     }
 
@@ -1950,81 +1950,81 @@ LABEL_27:
   }
 }
 
-- (void)publishAssets:(id)a3 withComment:(id)a4 collectionShare:(id)a5
+- (void)publishAssets:(id)assets withComment:(id)comment collectionShare:(id)share
 {
-  v14 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v10 collectionShareKind] != 2)
+  assetsCopy = assets;
+  commentCopy = comment;
+  shareCopy = share;
+  if ([shareCopy collectionShareKind] != 2)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PLCollectionShareSharedStreamBackend.m" lineNumber:258 description:{@"expect SharedStream Collection Share but type is %d", objc_msgSend(v10, "collectionShareKind")}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLCollectionShareSharedStreamBackend.m" lineNumber:258 description:{@"expect SharedStream Collection Share but type is %d", objc_msgSend(shareCopy, "collectionShareKind")}];
   }
 
-  v11 = [v10 photoLibrary];
-  if ([v11 isUnitTesting])
+  photoLibrary = [shareCopy photoLibrary];
+  if ([photoLibrary isUnitTesting])
   {
   }
 
   else
   {
-    v12 = [v14 count];
+    v12 = [assetsCopy count];
 
     if (v12)
     {
-      [(PLCollectionShareSharedStreamBackend *)self _enqueueCloudSharedAssetsForPublishToServer:v14 inCollectionShare:v10];
-      if (v9)
+      [(PLCollectionShareSharedStreamBackend *)self _enqueueCloudSharedAssetsForPublishToServer:assetsCopy inCollectionShare:shareCopy];
+      if (commentCopy)
       {
-        [(PLCollectionShareSharedStreamBackend *)self publishCloudSharedCommentToServer:v9];
+        [(PLCollectionShareSharedStreamBackend *)self publishCloudSharedCommentToServer:commentCopy];
       }
     }
   }
 }
 
-- (void)updatePublicURLState:(signed __int16)a3 collectionShare:(id)a4
+- (void)updatePublicURLState:(signed __int16)state collectionShare:(id)share
 {
-  v4 = a3;
+  stateCopy = state;
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  if ([v7 collectionShareKind] != 2)
+  shareCopy = share;
+  if ([shareCopy collectionShareKind] != 2)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PLCollectionShareSharedStreamBackend.m" lineNumber:225 description:{@"expect SharedStream Collection Share but type is %d", objc_msgSend(v7, "collectionShareKind")}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLCollectionShareSharedStreamBackend.m" lineNumber:225 description:{@"expect SharedStream Collection Share but type is %d", objc_msgSend(shareCopy, "collectionShareKind")}];
   }
 
-  v8 = [v7 photoLibrary];
-  if ([v8 isUnitTesting])
+  photoLibrary = [shareCopy photoLibrary];
+  if ([photoLibrary isUnitTesting])
   {
     goto LABEL_8;
   }
 
-  v9 = [v7 isCurrentUserOwner];
+  isCurrentUserOwner = [shareCopy isCurrentUserOwner];
 
-  if (v9)
+  if (isCurrentUserOwner)
   {
-    v8 = [v7 scopeIdentifier];
+    photoLibrary = [shareCopy scopeIdentifier];
     v10 = +[PLPhotoSharingHelper sharingPersonID];
     v11 = PLPhotoSharingGetLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109634;
-      v19 = v4 == 2;
+      v19 = stateCopy == 2;
       v20 = 2112;
-      v21 = v8;
+      v21 = photoLibrary;
       v22 = 2112;
       v23 = v10;
       _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_DEFAULT, " about to call connection setPublicAccessEnabled:%i forAlbumWithGUID:%@ personID:%@", buf, 0x1Cu);
     }
 
-    v12 = [MEMORY[0x1E69B14F8] sharedConnection];
+    mEMORY[0x1E69B14F8] = [MEMORY[0x1E69B14F8] sharedConnection];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __77__PLCollectionShareSharedStreamBackend_updatePublicURLState_collectionShare___block_invoke;
     v14[3] = &unk_1E756A5F8;
-    v16 = v4;
-    v17 = v4 == 2;
-    v15 = v7;
-    [v12 setPublicAccessEnabled:v4 == 2 forAlbumWithGUID:v8 personID:v10 completionBlock:v14];
+    v16 = stateCopy;
+    v17 = stateCopy == 2;
+    v15 = shareCopy;
+    [mEMORY[0x1E69B14F8] setPublicAccessEnabled:stateCopy == 2 forAlbumWithGUID:photoLibrary personID:v10 completionBlock:v14];
 
 LABEL_8:
   }
@@ -2076,49 +2076,49 @@ void __77__PLCollectionShareSharedStreamBackend_updatePublicURLState_collectionS
   [v9 performTransaction:v10];
 }
 
-- (void)updatePublicPermission:(int64_t)a3 collectionShare:(id)a4
+- (void)updatePublicPermission:(int64_t)permission collectionShare:(id)share
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  if ([v7 collectionShareKind] != 2)
+  shareCopy = share;
+  if ([shareCopy collectionShareKind] != 2)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PLCollectionShareSharedStreamBackend.m" lineNumber:192 description:{@"expect SharedStream Collection Share but type is %d", objc_msgSend(v7, "collectionShareKind")}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLCollectionShareSharedStreamBackend.m" lineNumber:192 description:{@"expect SharedStream Collection Share but type is %d", objc_msgSend(shareCopy, "collectionShareKind")}];
   }
 
-  v8 = [v7 photoLibrary];
-  if ([v8 isUnitTesting])
+  photoLibrary = [shareCopy photoLibrary];
+  if ([photoLibrary isUnitTesting])
   {
     goto LABEL_8;
   }
 
-  v9 = [v7 isCurrentUserOwner];
+  isCurrentUserOwner = [shareCopy isCurrentUserOwner];
 
-  if (v9)
+  if (isCurrentUserOwner)
   {
-    v8 = [v7 scopeIdentifier];
+    photoLibrary = [shareCopy scopeIdentifier];
     v10 = +[PLPhotoSharingHelper sharingPersonID];
     v11 = PLPhotoSharingGetLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109634;
-      v19 = a3 == 3;
+      v19 = permission == 3;
       v20 = 2112;
-      v21 = v8;
+      v21 = photoLibrary;
       v22 = 2112;
       v23 = v10;
       _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_DEFAULT, " about to call connection setMultipleContributorsEnabled:%i forAlbumWithGUID:%@ personID:%@", buf, 0x1Cu);
     }
 
-    v12 = [MEMORY[0x1E69B14F8] sharedConnection];
+    mEMORY[0x1E69B14F8] = [MEMORY[0x1E69B14F8] sharedConnection];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __79__PLCollectionShareSharedStreamBackend_updatePublicPermission_collectionShare___block_invoke;
     v14[3] = &unk_1E756A5D0;
-    v16 = a3;
-    v17 = a3 == 3;
-    v15 = v7;
-    [v12 setMultipleContributorsEnabled:a3 == 3 forAlbumWithGUID:v8 personID:v10 completionBlock:v14];
+    permissionCopy = permission;
+    v17 = permission == 3;
+    v15 = shareCopy;
+    [mEMORY[0x1E69B14F8] setMultipleContributorsEnabled:permission == 3 forAlbumWithGUID:photoLibrary personID:v10 completionBlock:v14];
 
 LABEL_8:
   }
@@ -2170,71 +2170,71 @@ void __79__PLCollectionShareSharedStreamBackend_updatePublicPermission_collectio
   [v9 performTransaction:v10];
 }
 
-- (void)updateTitle:(id)a3 collectionShare:(id)a4
+- (void)updateTitle:(id)title collectionShare:(id)share
 {
   v20 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if ([v8 collectionShareKind] != 2)
+  titleCopy = title;
+  shareCopy = share;
+  if ([shareCopy collectionShareKind] != 2)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PLCollectionShareSharedStreamBackend.m" lineNumber:174 description:{@"expect SharedStream Collection Share but type is %d", objc_msgSend(v8, "collectionShareKind")}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLCollectionShareSharedStreamBackend.m" lineNumber:174 description:{@"expect SharedStream Collection Share but type is %d", objc_msgSend(shareCopy, "collectionShareKind")}];
   }
 
-  v9 = [v8 photoLibrary];
-  if (([v9 isUnitTesting] & 1) != 0 || (objc_msgSend(v8, "isCurrentUserOwner") & 1) == 0)
+  photoLibrary = [shareCopy photoLibrary];
+  if (([photoLibrary isUnitTesting] & 1) != 0 || (objc_msgSend(shareCopy, "isCurrentUserOwner") & 1) == 0)
   {
     goto LABEL_9;
   }
 
-  v10 = [v8 lastModifiedDate];
+  lastModifiedDate = [shareCopy lastModifiedDate];
 
-  if (v10)
+  if (lastModifiedDate)
   {
-    v9 = +[PLPhotoSharingHelper sharingPersonID];
-    v11 = [MEMORY[0x1E6997F88] album];
-    v12 = [v8 scopeIdentifier];
-    [v11 setGUID:v12];
+    photoLibrary = +[PLPhotoSharingHelper sharingPersonID];
+    album = [MEMORY[0x1E6997F88] album];
+    scopeIdentifier = [shareCopy scopeIdentifier];
+    [album setGUID:scopeIdentifier];
 
-    [v11 setMetadataValue:v7 forKey:*MEMORY[0x1E6997FE0]];
+    [album setMetadataValue:titleCopy forKey:*MEMORY[0x1E6997FE0]];
     v13 = PLPhotoSharingGetLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v17 = v11;
+      v17 = album;
       v18 = 2112;
-      v19 = v9;
+      v19 = photoLibrary;
       _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_DEFAULT, " about to call connection modifyAlbumMetadata:%@ personID:%@", buf, 0x16u);
     }
 
-    v14 = [MEMORY[0x1E69B14F8] sharedConnection];
-    [v14 modifyAlbumMetadata:v11 personID:v9];
+    mEMORY[0x1E69B14F8] = [MEMORY[0x1E69B14F8] sharedConnection];
+    [mEMORY[0x1E69B14F8] modifyAlbumMetadata:album personID:photoLibrary];
 
 LABEL_9:
   }
 }
 
-- (void)recordCloudDeletionIfNeededForCollectionShare:(id)a3
+- (void)recordCloudDeletionIfNeededForCollectionShare:(id)share
 {
-  v6 = a3;
-  if ([v6 collectionShareKind] != 2)
+  shareCopy = share;
+  if ([shareCopy collectionShareKind] != 2)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"PLCollectionShareSharedStreamBackend.m" lineNumber:168 description:{@"expect SharedStream Collection Share but type is %d", objc_msgSend(v6, "collectionShareKind")}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLCollectionShareSharedStreamBackend.m" lineNumber:168 description:{@"expect SharedStream Collection Share but type is %d", objc_msgSend(shareCopy, "collectionShareKind")}];
   }
 }
 
-- (void)deleteCollectionShareDirectory:(id)a3
+- (void)deleteCollectionShareDirectory:(id)directory
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if ([v5 collectionShareKind] != 2)
+  directoryCopy = directory;
+  if ([directoryCopy collectionShareKind] != 2)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PLCollectionShareSharedStreamBackend.m" lineNumber:153 description:{@"expect SharedStream Collection Share but type is %d", objc_msgSend(v5, "collectionShareKind")}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLCollectionShareSharedStreamBackend.m" lineNumber:153 description:{@"expect SharedStream Collection Share but type is %d", objc_msgSend(directoryCopy, "collectionShareKind")}];
   }
 
-  v6 = [(PLCollectionShareSharedStreamBackend *)self _sharedStreamCollectionShareDirectoryPathForCollectionShare:v5];
+  v6 = [(PLCollectionShareSharedStreamBackend *)self _sharedStreamCollectionShareDirectoryPathForCollectionShare:directoryCopy];
   if (v6)
   {
     v7 = PLPhotoSharingGetLog();
@@ -2245,9 +2245,9 @@ LABEL_9:
       _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_DEFAULT, "deleting sharedstream collection share directory path %@", buf, 0xCu);
     }
 
-    v8 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v13 = 0;
-    v9 = [v8 removeItemAtPath:v6 error:&v13];
+    v9 = [defaultManager removeItemAtPath:v6 error:&v13];
     v10 = v13;
 
     if ((v9 & 1) == 0)
@@ -2263,172 +2263,172 @@ LABEL_9:
   }
 }
 
-- (void)deleteCollectionShareFromServer:(id)a3
+- (void)deleteCollectionShareFromServer:(id)server
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if ([v5 collectionShareKind] != 2)
+  serverCopy = server;
+  if ([serverCopy collectionShareKind] != 2)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PLCollectionShareSharedStreamBackend.m" lineNumber:134 description:{@"expect SharedStream Collection Share but type is %d", objc_msgSend(v5, "collectionShareKind")}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLCollectionShareSharedStreamBackend.m" lineNumber:134 description:{@"expect SharedStream Collection Share but type is %d", objc_msgSend(serverCopy, "collectionShareKind")}];
   }
 
-  v6 = [v5 photoLibrary];
-  if ([v6 isUnitTesting])
+  photoLibrary = [serverCopy photoLibrary];
+  if ([photoLibrary isUnitTesting])
   {
     goto LABEL_10;
   }
 
-  v7 = [v5 isCurrentUserOwner];
+  isCurrentUserOwner = [serverCopy isCurrentUserOwner];
 
-  if (v7)
+  if (isCurrentUserOwner)
   {
-    v6 = +[PLPhotoSharingHelper sharingPersonID];
+    photoLibrary = +[PLPhotoSharingHelper sharingPersonID];
     v8 = PLPhotoSharingGetLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v5 scopeIdentifier];
+      scopeIdentifier = [serverCopy scopeIdentifier];
       *buf = 138412546;
-      v15 = v9;
+      v15 = scopeIdentifier;
       v16 = 2112;
-      v17 = v6;
+      v17 = photoLibrary;
       _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_DEFAULT, " about to call connection deleteAlbumWithGUID:%@ personID:%@", buf, 0x16u);
     }
 
-    v10 = [MEMORY[0x1E69B14F8] sharedConnection];
-    v11 = [v5 scopeIdentifier];
-    [v10 deleteAlbumWithGUID:v11 personID:v6];
+    mEMORY[0x1E69B14F8] = [MEMORY[0x1E69B14F8] sharedConnection];
+    scopeIdentifier2 = [serverCopy scopeIdentifier];
+    [mEMORY[0x1E69B14F8] deleteAlbumWithGUID:scopeIdentifier2 personID:photoLibrary];
 
-    if (v5)
+    if (serverCopy)
     {
       v12 = +[PLNotificationManager sharedManager];
-      [v12 noteDidDeleteCollectionShare:v5];
+      [v12 noteDidDeleteCollectionShare:serverCopy];
     }
 
 LABEL_10:
   }
 }
 
-- (void)trashCollectionShare:(id)a3
+- (void)trashCollectionShare:(id)share
 {
-  v6 = a3;
-  if ([v6 collectionShareKind] != 2)
+  shareCopy = share;
+  if ([shareCopy collectionShareKind] != 2)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"PLCollectionShareSharedStreamBackend.m" lineNumber:128 description:{@"expect SharedStream Collection Share but type is %d", objc_msgSend(v6, "collectionShareKind")}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLCollectionShareSharedStreamBackend.m" lineNumber:128 description:{@"expect SharedStream Collection Share but type is %d", objc_msgSend(shareCopy, "collectionShareKind")}];
   }
 }
 
-- (void)publishCollectionShare:(id)a3 completionHandler:(id)a4
+- (void)publishCollectionShare:(id)share completionHandler:(id)handler
 {
   v26 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if ([v7 collectionShareKind] != 2)
+  shareCopy = share;
+  handlerCopy = handler;
+  if ([shareCopy collectionShareKind] != 2)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"PLCollectionShareSharedStreamBackend.m" lineNumber:100 description:{@"expect SharedStream Collection Share but type is %d", objc_msgSend(v7, "collectionShareKind")}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLCollectionShareSharedStreamBackend.m" lineNumber:100 description:{@"expect SharedStream Collection Share but type is %d", objc_msgSend(shareCopy, "collectionShareKind")}];
   }
 
-  v9 = [v7 photoLibrary];
-  v10 = [v9 isUnitTesting];
+  photoLibrary = [shareCopy photoLibrary];
+  isUnitTesting = [photoLibrary isUnitTesting];
 
-  if ((v10 & 1) == 0)
+  if ((isUnitTesting & 1) == 0)
   {
     v11 = +[PLPhotoSharingHelper sharingPersonID];
-    v12 = [MEMORY[0x1E6997F88] album];
-    v13 = [v7 scopeIdentifier];
-    [v12 setGUID:v13];
+    album = [MEMORY[0x1E6997F88] album];
+    scopeIdentifier = [shareCopy scopeIdentifier];
+    [album setGUID:scopeIdentifier];
 
     v14 = MEMORY[0x1E695DF20];
-    v15 = [v7 title];
-    v16 = [v14 dictionaryWithObject:v15 forKey:*MEMORY[0x1E6997FE0]];
-    [v12 setMetadata:v16];
+    title = [shareCopy title];
+    v16 = [v14 dictionaryWithObject:title forKey:*MEMORY[0x1E6997FE0]];
+    [album setMetadata:v16];
 
-    if ([v7 publicURLState] == 2)
+    if ([shareCopy publicURLState] == 2)
     {
-      [v12 setMetadataValue:@"1" forKey:*MEMORY[0x1E6997FD8]];
+      [album setMetadataValue:@"1" forKey:*MEMORY[0x1E6997FD8]];
     }
 
-    if ([v7 publicPermission] == 3)
+    if ([shareCopy publicPermission] == 3)
     {
-      [v12 setMetadataValue:@"1" forKey:*MEMORY[0x1E6997FB8]];
+      [album setMetadataValue:@"1" forKey:*MEMORY[0x1E6997FB8]];
     }
 
-    v17 = [MEMORY[0x1E695DF00] date];
-    [v12 setMetadataValue:v17 forKey:*MEMORY[0x1E6997FC0]];
+    date = [MEMORY[0x1E695DF00] date];
+    [album setMetadataValue:date forKey:*MEMORY[0x1E6997FC0]];
 
-    v18 = [v7 clientBundleIdentifier];
-    [v12 setMetadataValue:v18 forKey:*MEMORY[0x1E6997FC8]];
+    clientBundleIdentifier = [shareCopy clientBundleIdentifier];
+    [album setMetadataValue:clientBundleIdentifier forKey:*MEMORY[0x1E6997FC8]];
 
     v19 = PLPhotoSharingGetLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v23 = v12;
+      v23 = album;
       v24 = 2112;
       v25 = v11;
       _os_log_impl(&dword_19BF1F000, v19, OS_LOG_TYPE_DEFAULT, " about to call connection addAlbum:%@ forPersonID:%@", buf, 0x16u);
     }
 
-    v20 = [MEMORY[0x1E69B14F8] sharedConnection];
-    [v20 addAlbum:v12 personID:v11];
+    mEMORY[0x1E69B14F8] = [MEMORY[0x1E69B14F8] sharedConnection];
+    [mEMORY[0x1E69B14F8] addAlbum:album personID:v11];
   }
 
-  (*(v8 + 2))(v8, 0, 0, 0);
+  (*(handlerCopy + 2))(handlerCopy, 0, 0, 0);
 }
 
-- (id)cplScopeChangeForCollectionShare:(id)a3
+- (id)cplScopeChangeForCollectionShare:(id)share
 {
-  v5 = a3;
-  if ([v5 collectionShareKind] != 2)
+  shareCopy = share;
+  if ([shareCopy collectionShareKind] != 2)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PLCollectionShareSharedStreamBackend.m" lineNumber:93 description:{@"expect SharedStream Collection Share but type is %d", objc_msgSend(v5, "collectionShareKind")}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLCollectionShareSharedStreamBackend.m" lineNumber:93 description:{@"expect SharedStream Collection Share but type is %d", objc_msgSend(shareCopy, "collectionShareKind")}];
   }
 
   return 0;
 }
 
-- (BOOL)supportsCloudUploadForCollectionShare:(id)a3
+- (BOOL)supportsCloudUploadForCollectionShare:(id)share
 {
-  v5 = a3;
-  if ([v5 collectionShareKind] != 2)
+  shareCopy = share;
+  if ([shareCopy collectionShareKind] != 2)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PLCollectionShareSharedStreamBackend.m" lineNumber:86 description:{@"expect SharedStream Collection Share but type is %d", objc_msgSend(v5, "collectionShareKind")}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLCollectionShareSharedStreamBackend.m" lineNumber:86 description:{@"expect SharedStream Collection Share but type is %d", objc_msgSend(shareCopy, "collectionShareKind")}];
   }
 
   return 0;
 }
 
-- (BOOL)isSyncableChangeForCollectionShare:(id)a3
+- (BOOL)isSyncableChangeForCollectionShare:(id)share
 {
-  v5 = a3;
-  if ([v5 collectionShareKind] != 2)
+  shareCopy = share;
+  if ([shareCopy collectionShareKind] != 2)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PLCollectionShareSharedStreamBackend.m" lineNumber:79 description:{@"expect SharedStream Collection Share but type is %d", objc_msgSend(v5, "collectionShareKind")}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLCollectionShareSharedStreamBackend.m" lineNumber:79 description:{@"expect SharedStream Collection Share but type is %d", objc_msgSend(shareCopy, "collectionShareKind")}];
   }
 
   return 0;
 }
 
-- (id)cplFullRecordForCollectionShare:(id)a3
+- (id)cplFullRecordForCollectionShare:(id)share
 {
-  v5 = a3;
-  if ([v5 collectionShareKind] != 2)
+  shareCopy = share;
+  if ([shareCopy collectionShareKind] != 2)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PLCollectionShareSharedStreamBackend.m" lineNumber:72 description:{@"expect SharedStream Collection Share but type is %d", objc_msgSend(v5, "collectionShareKind")}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLCollectionShareSharedStreamBackend.m" lineNumber:72 description:{@"expect SharedStream Collection Share but type is %d", objc_msgSend(shareCopy, "collectionShareKind")}];
   }
 
   return 0;
 }
 
-- (id)createOwnedShareWithUUID:(id)a3 creationDate:(id)a4 title:(id)a5 inPhotoLibrary:(id)a6
+- (id)createOwnedShareWithUUID:(id)d creationDate:(id)date title:(id)title inPhotoLibrary:(id)library
 {
-  v7 = [(PLShare *)PLCollectionShare createOwnedShareWithUUID:a3 creationDate:a4 title:a5 inPhotoLibrary:a6];
+  v7 = [(PLShare *)PLCollectionShare createOwnedShareWithUUID:d creationDate:date title:title inPhotoLibrary:library];
   [v7 setPublicPermission:3];
   [v7 setUnseenContentState:1];
   [v7 setNotificationState:0x7FFFLL];

@@ -1,25 +1,25 @@
 @interface AccountLinkButton
-- (AccountLinkButton)initWithFrame:(CGRect)a3;
-- (void)drawRect:(CGRect)a3;
-- (void)setHighlighted:(BOOL)a3;
+- (AccountLinkButton)initWithFrame:(CGRect)frame;
+- (void)drawRect:(CGRect)rect;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation AccountLinkButton
 
-- (AccountLinkButton)initWithFrame:(CGRect)a3
+- (AccountLinkButton)initWithFrame:(CGRect)frame
 {
   v13.receiver = self;
   v13.super_class = AccountLinkButton;
-  v3 = [(AccountLinkButton *)&v13 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AccountLinkButton *)&v13 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(AccountLinkButton *)v3 titleLabel];
-    [v5 setShadowOffset:{0.0, 1.0}];
+    titleLabel = [(AccountLinkButton *)v3 titleLabel];
+    [titleLabel setShadowOffset:{0.0, 1.0}];
 
     v6 = [UIFont boldSystemFontOfSize:16.0];
-    v7 = [(AccountLinkButton *)v4 titleLabel];
-    [v7 setFont:v6];
+    titleLabel2 = [(AccountLinkButton *)v4 titleLabel];
+    [titleLabel2 setFont:v6];
 
     v8 = [UIColor colorWithRed:0.298039228 green:0.337254912 blue:0.423529416 alpha:1.0];
     [(AccountLinkButton *)v4 setTitleColor:v8 forState:0];
@@ -37,17 +37,17 @@
   return v4;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v4.receiver = self;
   v4.super_class = AccountLinkButton;
-  [(AccountLinkButton *)&v4 setHighlighted:a3];
+  [(AccountLinkButton *)&v4 setHighlighted:highlighted];
   [(AccountLinkButton *)self setNeedsDisplay];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  [(AccountLinkButton *)self bounds:a3.origin.x];
+  [(AccountLinkButton *)self bounds:rect.origin.x];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -62,8 +62,8 @@
   }
 
   CurrentContext = UIGraphicsGetCurrentContext();
-  v15 = [(AccountLinkButton *)self state];
-  v16 = [(AccountLinkButton *)self titleColorForState:v15];
+  state = [(AccountLinkButton *)self state];
+  v16 = [(AccountLinkButton *)self titleColorForState:state];
   [v16 set];
 
   [(AccountLinkButton *)self contentRectForBounds:v5, v7, v9, v11];
@@ -88,7 +88,7 @@
   v33.origin.y = v22;
   v33.size.width = v23;
   CGContextFillRect(CurrentContext, v33);
-  v24 = [(AccountLinkButton *)self titleShadowColorForState:v15];
+  v24 = [(AccountLinkButton *)self titleShadowColorForState:state];
   [v24 set];
 
   v26 = 1.0;

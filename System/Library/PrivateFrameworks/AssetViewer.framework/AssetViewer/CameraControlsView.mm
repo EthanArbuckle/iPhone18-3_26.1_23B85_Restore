@@ -1,7 +1,7 @@
 @interface CameraControlsView
 - (CGSize)intrinsicContentSize;
-- (_TtC11AssetViewer18CameraControlsView)initWithFrame:(CGRect)a3;
-- (void)buttonPressedWithSender:(id)a3;
+- (_TtC11AssetViewer18CameraControlsView)initWithFrame:(CGRect)frame;
+- (void)buttonPressedWithSender:(id)sender;
 @end
 
 @implementation CameraControlsView
@@ -15,14 +15,14 @@
   return result;
 }
 
-- (void)buttonPressedWithSender:(id)a3
+- (void)buttonPressedWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
+  senderCopy = sender;
+  selfCopy = self;
   sub_24125AD8C();
 }
 
-- (_TtC11AssetViewer18CameraControlsView)initWithFrame:(CGRect)a3
+- (_TtC11AssetViewer18CameraControlsView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

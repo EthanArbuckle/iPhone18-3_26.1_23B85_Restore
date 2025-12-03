@@ -1,13 +1,13 @@
 @interface CloseButton.Coordinator
-- (void)doAction:(id)a3;
+- (void)doAction:(id)action;
 @end
 
 @implementation CloseButton.Coordinator
 
-- (void)doAction:(id)a3
+- (void)doAction:(id)action
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
   sub_1007EAC98();

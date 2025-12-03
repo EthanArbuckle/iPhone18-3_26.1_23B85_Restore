@@ -1,27 +1,27 @@
 @interface TACoreAnalyticMetricManager
-+ (id)computeMetricsInterVisit:(id)a3;
-+ (id)computeMetricsVisit:(id)a3 withFilterVisitsSettings:(id)a4;
++ (id)computeMetricsInterVisit:(id)visit;
++ (id)computeMetricsVisit:(id)visit withFilterVisitsSettings:(id)settings;
 @end
 
 @implementation TACoreAnalyticMetricManager
 
-+ (id)computeMetricsInterVisit:(id)a3
++ (id)computeMetricsInterVisit:(id)visit
 {
   v45 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  visitCopy = visit;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v29 = v3;
-  v5 = [v3 visitState];
-  v6 = [v5 interVisitMetricSnapshotBuffer];
-  v7 = [v6 bufferCopy];
-  v8 = [v7 reverseObjectEnumerator];
+  v29 = visitCopy;
+  visitState = [visitCopy visitState];
+  interVisitMetricSnapshotBuffer = [visitState interVisitMetricSnapshotBuffer];
+  bufferCopy = [interVisitMetricSnapshotBuffer bufferCopy];
+  reverseObjectEnumerator = [bufferCopy reverseObjectEnumerator];
 
-  obj = v8;
-  v32 = [v8 countByEnumeratingWithState:&v39 objects:v44 count:16];
+  obj = reverseObjectEnumerator;
+  v32 = [reverseObjectEnumerator countByEnumeratingWithState:&v39 objects:v44 count:16];
   if (v32)
   {
     v31 = *v40;
@@ -42,8 +42,8 @@ LABEL_4:
       v38 = 0u;
       v35 = 0u;
       v36 = 0u;
-      v11 = [v10 accumulatedDeviceMetrics];
-      v12 = [v11 countByEnumeratingWithState:&v35 objects:v43 count:16];
+      accumulatedDeviceMetrics = [v10 accumulatedDeviceMetrics];
+      v12 = [accumulatedDeviceMetrics countByEnumeratingWithState:&v35 objects:v43 count:16];
       if (!v12)
       {
         goto LABEL_20;
@@ -57,19 +57,19 @@ LABEL_4:
         {
           if (*v36 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(accumulatedDeviceMetrics);
           }
 
           v16 = *(*(&v35 + 1) + 8 * i);
-          v17 = [v10 accumulatedDeviceMetrics];
-          v18 = [v17 objectForKey:v16];
+          accumulatedDeviceMetrics2 = [v10 accumulatedDeviceMetrics];
+          v18 = [accumulatedDeviceMetrics2 objectForKey:v16];
 
-          v19 = [v4 objectForKey:v16];
+          v19 = [dictionary objectForKey:v16];
           if (v19)
           {
             v20 = v19;
-            v21 = [(TAMetricsInterVisit *)v19 totalInterVisitMetric];
-            [v21 accumulate:v18];
+            totalInterVisitMetric = [(TAMetricsInterVisit *)v19 totalInterVisitMetric];
+            [totalInterVisitMetric accumulate:v18];
 
 LABEL_14:
             goto LABEL_18;
@@ -81,13 +81,13 @@ LABEL_14:
             if (v22 > 0.0)
             {
               v20 = objc_alloc_init(TAMetricsInterVisit);
-              v23 = [(TAMetricsInterVisit *)v20 currentInterVisitMetric];
-              [v23 accumulate:v18];
+              currentInterVisitMetric = [(TAMetricsInterVisit *)v20 currentInterVisitMetric];
+              [currentInterVisitMetric accumulate:v18];
 
-              v24 = [(TAMetricsInterVisit *)v20 totalInterVisitMetric];
-              [v24 accumulate:v18];
+              totalInterVisitMetric2 = [(TAMetricsInterVisit *)v20 totalInterVisitMetric];
+              [totalInterVisitMetric2 accumulate:v18];
 
-              [v4 setObject:v20 forKey:v16];
+              [dictionary setObject:v20 forKey:v16];
               goto LABEL_14;
             }
           }
@@ -95,7 +95,7 @@ LABEL_14:
 LABEL_18:
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v35 objects:v43 count:16];
+        v13 = [accumulatedDeviceMetrics countByEnumeratingWithState:&v35 objects:v43 count:16];
         if (!v13)
         {
 LABEL_20:
@@ -125,41 +125,41 @@ LABEL_20:
       [TACoreAnalyticMetricManager computeMetricsInterVisit:v26];
     }
 
-    v25 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   }
 
   else
   {
 LABEL_22:
 
-    v25 = v4;
+    dictionary2 = dictionary;
   }
 
   v27 = *MEMORY[0x277D85DE8];
 
-  return v25;
+  return dictionary2;
 }
 
-+ (id)computeMetricsVisit:(id)a3 withFilterVisitsSettings:(id)a4
++ (id)computeMetricsVisit:(id)visit withFilterVisitsSettings:(id)settings
 {
   v34 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB38] dictionary];
-  v8 = v5;
-  v9 = [v5 visitState];
-  v10 = [v9 visitSnapshotBuffer];
-  v11 = [v10 lastObject];
+  visitCopy = visit;
+  settingsCopy = settings;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v8 = visitCopy;
+  visitState = [visitCopy visitState];
+  visitSnapshotBuffer = [visitState visitSnapshotBuffer];
+  lastObject = [visitSnapshotBuffer lastObject];
 
-  if ([v11 isClosed])
+  if ([lastObject isClosed])
   {
-    v28 = v7;
+    v28 = dictionary;
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v26 = v11;
-    obj = [v11 latestUtAdvertisements];
+    v26 = lastObject;
+    obj = [lastObject latestUtAdvertisements];
     v12 = [obj countByEnumeratingWithState:&v29 objects:v33 count:16];
     if (v12)
     {
@@ -176,10 +176,10 @@ LABEL_22:
 
           v16 = *(*(&v29 + 1) + 8 * i);
           v17 = [TAMetricsVisit alloc];
-          v18 = [v8 visitState];
-          v19 = [v18 visitSnapshotBuffer];
-          v20 = [v19 bufferCopy];
-          v21 = [(TAMetricsVisit *)v17 initWithSnapshotHistory:v20 andAddress:v16 andVisitFilterSettings:v6];
+          visitState2 = [v8 visitState];
+          visitSnapshotBuffer2 = [visitState2 visitSnapshotBuffer];
+          bufferCopy = [visitSnapshotBuffer2 bufferCopy];
+          v21 = [(TAMetricsVisit *)v17 initWithSnapshotHistory:bufferCopy andAddress:v16 andVisitFilterSettings:settingsCopy];
 
           if (v21)
           {
@@ -193,9 +193,9 @@ LABEL_22:
       while (v13);
     }
 
-    v7 = v28;
-    v22 = v28;
-    v11 = v26;
+    dictionary = v28;
+    dictionary2 = v28;
+    lastObject = v26;
   }
 
   else
@@ -206,12 +206,12 @@ LABEL_22:
       [TACoreAnalyticMetricManager computeMetricsVisit:v23 withFilterVisitsSettings:?];
     }
 
-    v22 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   }
 
   v24 = *MEMORY[0x277D85DE8];
 
-  return v22;
+  return dictionary2;
 }
 
 @end

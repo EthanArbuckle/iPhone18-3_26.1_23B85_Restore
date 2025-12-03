@@ -1,7 +1,7 @@
 @interface HMHomeAccessCode
-+ (id)homeAccessCodeWithValue:(id)a3 home:(id)a4;
++ (id)homeAccessCodeWithValue:(id)value home:(id)home;
 + (id)shortDescription;
-- (HMHomeAccessCode)initWithAccessCodeValue:(id)a3 userInformation:(id)a4;
+- (HMHomeAccessCode)initWithAccessCodeValue:(id)value userInformation:(id)information;
 - (NSArray)attributeDescriptions;
 - (NSString)shortDescription;
 - (id)createHomeAccessCodeValue;
@@ -13,12 +13,12 @@
 {
   v12[2] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v4 = [(HMHomeAccessCode *)self accessCodeValue];
-  v5 = [v3 initWithName:@"accessCodeValue" value:v4];
+  accessCodeValue = [(HMHomeAccessCode *)self accessCodeValue];
+  v5 = [v3 initWithName:@"accessCodeValue" value:accessCodeValue];
   v12[0] = v5;
   v6 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v7 = [(HMHomeAccessCode *)self userInformation];
-  v8 = [v6 initWithName:@"userInformation" value:v7];
+  userInformation = [(HMHomeAccessCode *)self userInformation];
+  v8 = [v6 initWithName:@"userInformation" value:userInformation];
   v12[1] = v8;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:2];
 
@@ -37,28 +37,28 @@
 - (id)createHomeAccessCodeValue
 {
   v3 = [HMHomeAccessCodeValue alloc];
-  v4 = [(HMHomeAccessCode *)self accessCodeValue];
-  v5 = [(HMHomeAccessCode *)self userInformation];
-  v6 = [v5 createAccessCodeUserInformationValue];
-  v7 = [(HMHomeAccessCodeValue *)v3 initWithAccessCodeValue:v4 userInformationValue:v6];
+  accessCodeValue = [(HMHomeAccessCode *)self accessCodeValue];
+  userInformation = [(HMHomeAccessCode *)self userInformation];
+  createAccessCodeUserInformationValue = [userInformation createAccessCodeUserInformationValue];
+  v7 = [(HMHomeAccessCodeValue *)v3 initWithAccessCodeValue:accessCodeValue userInformationValue:createAccessCodeUserInformationValue];
 
   return v7;
 }
 
-- (HMHomeAccessCode)initWithAccessCodeValue:(id)a3 userInformation:(id)a4
+- (HMHomeAccessCode)initWithAccessCodeValue:(id)value userInformation:(id)information
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  informationCopy = information;
   v12.receiver = self;
   v12.super_class = HMHomeAccessCode;
   v8 = [(HMHomeAccessCode *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [valueCopy copy];
     accessCodeValue = v8->_accessCodeValue;
     v8->_accessCodeValue = v9;
 
-    objc_storeStrong(&v8->_userInformation, a4);
+    objc_storeStrong(&v8->_userInformation, information);
   }
 
   return v8;
@@ -71,17 +71,17 @@
   return NSStringFromClass(v2);
 }
 
-+ (id)homeAccessCodeWithValue:(id)a3 home:(id)a4
++ (id)homeAccessCodeWithValue:(id)value home:(id)home
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 userInformationValue];
-  v8 = [HMAccessCodeUserInformation userInformationWithValue:v7 home:v5];
+  homeCopy = home;
+  valueCopy = value;
+  userInformationValue = [valueCopy userInformationValue];
+  v8 = [HMAccessCodeUserInformation userInformationWithValue:userInformationValue home:homeCopy];
 
   v9 = [HMHomeAccessCode alloc];
-  v10 = [v6 accessCodeValue];
+  accessCodeValue = [valueCopy accessCodeValue];
 
-  v11 = [(HMHomeAccessCode *)v9 initWithAccessCodeValue:v10 userInformation:v8];
+  v11 = [(HMHomeAccessCode *)v9 initWithAccessCodeValue:accessCodeValue userInformation:v8];
 
   return v11;
 }

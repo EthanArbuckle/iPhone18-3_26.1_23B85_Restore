@@ -1,14 +1,14 @@
 @interface _CNReputationPhoneNumberHandle
-- (void)configureBuilder:(id)a3;
+- (void)configureBuilder:(id)builder;
 @end
 
 @implementation _CNReputationPhoneNumberHandle
 
-- (void)configureBuilder:(id)a3
+- (void)configureBuilder:(id)builder
 {
-  v3 = a3;
-  [v3 addCoreRecentsTrust];
-  [v3 addContactsTrustForPhoneNumber];
+  builderCopy = builder;
+  [builderCopy addCoreRecentsTrust];
+  [builderCopy addContactsTrustForPhoneNumber];
 }
 
 @end

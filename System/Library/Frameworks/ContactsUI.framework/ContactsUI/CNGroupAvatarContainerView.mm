@@ -1,15 +1,15 @@
 @interface CNGroupAvatarContainerView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 @end
 
 @implementation CNGroupAvatarContainerView
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(CNGroupAvatarContainerView *)self underlyingContainerView];
-  [v5 sizeThatFits:{width, height}];
+  height = fits.height;
+  width = fits.width;
+  underlyingContainerView = [(CNGroupAvatarContainerView *)self underlyingContainerView];
+  [underlyingContainerView sizeThatFits:{width, height}];
   v7 = v6;
   v9 = v8;
 

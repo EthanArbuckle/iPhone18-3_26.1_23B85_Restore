@@ -1,19 +1,19 @@
 @interface VUITitleSortDescriptor
-+ (id)ascendingTitleSortComparatorWithKey:(id)a3;
-+ (id)descendingTitleSortComparatorWithKey:(id)a3;
-- (int64_t)compareObject:(id)a3 toObject:(id)a4;
++ (id)ascendingTitleSortComparatorWithKey:(id)key;
++ (id)descendingTitleSortComparatorWithKey:(id)key;
+- (int64_t)compareObject:(id)object toObject:(id)toObject;
 @end
 
 @implementation VUITitleSortDescriptor
 
-- (int64_t)compareObject:(id)a3 toObject:(id)a4
+- (int64_t)compareObject:(id)object toObject:(id)toObject
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(VUITitleSortDescriptor *)self ascending];
+  toObjectCopy = toObject;
+  objectCopy = object;
+  ascending = [(VUITitleSortDescriptor *)self ascending];
   v9 = objc_opt_class();
   v10 = [(VUITitleSortDescriptor *)self key];
-  if (v8)
+  if (ascending)
   {
     [v9 ascendingTitleSortComparatorWithKey:v10];
   }
@@ -24,19 +24,19 @@
   }
   v11 = ;
 
-  v12 = (v11)[2](v11, v7, v6);
+  v12 = (v11)[2](v11, objectCopy, toObjectCopy);
   return v12;
 }
 
-+ (id)ascendingTitleSortComparatorWithKey:(id)a3
++ (id)ascendingTitleSortComparatorWithKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __62__VUITitleSortDescriptor_ascendingTitleSortComparatorWithKey___block_invoke;
   v8[3] = &unk_279E214F8;
-  v9 = v3;
-  v4 = v3;
+  v9 = keyCopy;
+  v4 = keyCopy;
   v5 = MEMORY[0x2743B7C30](v8);
   v6 = MEMORY[0x2743B7C30]();
 
@@ -56,15 +56,15 @@ uint64_t __62__VUITitleSortDescriptor_ascendingTitleSortComparatorWithKey___bloc
   return v10;
 }
 
-+ (id)descendingTitleSortComparatorWithKey:(id)a3
++ (id)descendingTitleSortComparatorWithKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __63__VUITitleSortDescriptor_descendingTitleSortComparatorWithKey___block_invoke;
   v8[3] = &unk_279E214F8;
-  v9 = v3;
-  v4 = v3;
+  v9 = keyCopy;
+  v4 = keyCopy;
   v5 = MEMORY[0x2743B7C30](v8);
   v6 = MEMORY[0x2743B7C30]();
 

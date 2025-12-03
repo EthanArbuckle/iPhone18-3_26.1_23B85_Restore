@@ -1,5 +1,5 @@
 @interface ICLibraryAuthServiceBulkClientTokenResponse
-- (ICLibraryAuthServiceBulkClientTokenResponse)initWithResponseDictionary:(id)a3;
+- (ICLibraryAuthServiceBulkClientTokenResponse)initWithResponseDictionary:(id)dictionary;
 - (NSDictionary)tokenResults;
 @end
 
@@ -12,13 +12,13 @@
   return v2;
 }
 
-- (ICLibraryAuthServiceBulkClientTokenResponse)initWithResponseDictionary:(id)a3
+- (ICLibraryAuthServiceBulkClientTokenResponse)initWithResponseDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(ICLibraryAuthServiceBulkClientTokenResponse *)self init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dictionaryCopy copy];
     responseDictionary = v5->_responseDictionary;
     v5->_responseDictionary = v6;
 

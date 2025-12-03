@@ -14,7 +14,7 @@
     [UIApplication(SKUIMedusaAdditions) SKUI_isMedusaActive];
   }
 
-  return [a1 SKUI_isFullscreen] ^ 1;
+  return [self SKUI_isFullscreen] ^ 1;
 }
 
 - (BOOL)SKUI_isFullscreen
@@ -24,13 +24,13 @@
     [UIApplication(SKUIMedusaAdditions) SKUI_isFullscreen];
   }
 
-  v2 = [MEMORY[0x277D759A0] mainScreen];
-  [v2 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v4 = v3;
   v6 = v5;
 
-  v7 = [a1 keyWindow];
-  [v7 bounds];
+  keyWindow = [self keyWindow];
+  [keyWindow bounds];
   v9 = v8;
   v11 = v10;
 

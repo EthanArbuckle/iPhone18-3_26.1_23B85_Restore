@@ -1,31 +1,31 @@
 @interface PKAccessoryDeviceExpressAlertViewController
-- (CGSize)sizeForChildContentContainer:(id)a3 withParentContainerSize:(CGSize)a4;
+- (CGSize)sizeForChildContentContainer:(id)container withParentContainerSize:(CGSize)size;
 - (PKAccessoryDeviceExpressAlertViewController)init;
 - (id)_expressNotificationNames;
 - (void)_appearIfNecessary;
-- (void)_changeStateIfNecessaryTo:(int64_t)a3;
-- (void)_contactlessInterfaceSessionDidAuthorize:(id)a3;
-- (void)_contactlessInterfaceSessionFinishTransaction:(id)a3;
+- (void)_changeStateIfNecessaryTo:(int64_t)to;
+- (void)_contactlessInterfaceSessionDidAuthorize:(id)authorize;
+- (void)_contactlessInterfaceSessionFinishTransaction:(id)transaction;
 - (void)_dismissIfRestricted;
-- (void)_dismissImmediately:(BOOL)a3;
-- (void)_handleExpressNotification:(id)a3;
+- (void)_dismissImmediately:(BOOL)immediately;
+- (void)_handleExpressNotification:(id)notification;
 - (void)_invalidate;
-- (void)_paymentDidReceiveSuccessfulTransactionNotification:(id)a3;
-- (void)_registerForExpressTransactionNotifications:(BOOL)a3;
-- (void)_registerObserverForNotificationName:(id)a3 center:(id)a4 handler:(id)a5;
-- (void)accessoryDeviceDidChangeStateTo:(int64_t)a3;
+- (void)_paymentDidReceiveSuccessfulTransactionNotification:(id)notification;
+- (void)_registerForExpressTransactionNotifications:(BOOL)notifications;
+- (void)_registerObserverForNotificationName:(id)name center:(id)center handler:(id)handler;
+- (void)accessoryDeviceDidChangeStateTo:(int64_t)to;
 - (void)accessoryDeviceDidReachHardTimeout;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
+- (void)configureWithContext:(id)context completion:(id)completion;
 - (void)dealloc;
-- (void)didAttachSleeveAccessory:(id)a3;
+- (void)didAttachSleeveAccessory:(id)accessory;
 - (void)didDetachSleeveAccessory;
 - (void)didInvalidateForRemoteAlert;
-- (void)didTransitionToAttachedToWindowedAccessory:(BOOL)a3 windowedAccessoryCutoutFrameInScreen:(CGRect)a4;
-- (void)handleButtonActions:(id)a3;
+- (void)didTransitionToAttachedToWindowedAccessory:(BOOL)accessory windowedAccessoryCutoutFrameInScreen:(CGRect)screen;
+- (void)handleButtonActions:(id)actions;
 - (void)loadView;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -58,10 +58,10 @@
     v8 = *(MEMORY[0x1E695F050] + 16);
     v2->_windowedAccessoryCutoutFrameInScreen.origin = *MEMORY[0x1E695F050];
     v2->_windowedAccessoryCutoutFrameInScreen.size = v8;
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 addObserver:v2 selector:sel__paymentDidReceiveSuccessfulTransactionNotification_ name:*MEMORY[0x1E69BC068] object:0];
-    [v9 addObserver:v2 selector:sel__contactlessInterfaceSessionDidAuthorize_ name:*MEMORY[0x1E69BB7E0] object:0];
-    [v9 addObserver:v2 selector:sel__contactlessInterfaceSessionFinishTransaction_ name:*MEMORY[0x1E69BB7F0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__paymentDidReceiveSuccessfulTransactionNotification_ name:*MEMORY[0x1E69BC068] object:0];
+    [defaultCenter addObserver:v2 selector:sel__contactlessInterfaceSessionDidAuthorize_ name:*MEMORY[0x1E69BB7E0] object:0];
+    [defaultCenter addObserver:v2 selector:sel__contactlessInterfaceSessionFinishTransaction_ name:*MEMORY[0x1E69BB7F0] object:0];
   }
 
   return v2;
@@ -69,8 +69,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(PKAccessoryDeviceExpressAlertViewController *)self _registerForExpressTransactionNotifications:0];
   passbookForegroundAssertion = self->_passbookForegroundAssertion;
@@ -101,8 +101,8 @@
   v4.receiver = self;
   v4.super_class = PKAccessoryDeviceExpressAlertViewController;
   [(PKAccessoryDeviceExpressAlertViewController *)&v4 loadView];
-  v3 = [(PKAccessoryDeviceExpressAlertViewController *)self view];
-  [v3 setAutoresizingMask:0];
+  view = [(PKAccessoryDeviceExpressAlertViewController *)self view];
+  [view setAutoresizingMask:0];
 }
 
 - (void)viewWillLayoutSubviews
@@ -111,16 +111,16 @@
   v5.super_class = PKAccessoryDeviceExpressAlertViewController;
   [(PKAccessoryDeviceExpressAlertViewController *)&v5 viewWillLayoutSubviews];
   v3 = self->_accessoryDeviceView;
-  v4 = [(PKAccessoryDeviceExpressAlertViewController *)self view];
-  [v4 bounds];
+  view = [(PKAccessoryDeviceExpressAlertViewController *)self view];
+  [view bounds];
   [(PKAccessoryDeviceView *)v3 setFrame:?];
 
   [(PKAccessoryDeviceView *)v3 layoutIfNeeded];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v16.receiver = self;
   v16.super_class = PKAccessoryDeviceExpressAlertViewController;
   [(PKAccessoryDeviceExpressAlertViewController *)&v16 viewWillAppear:?];
@@ -135,7 +135,7 @@
 
   if (self->_notificationSuppressionAssertion)
   {
-    if (!v3)
+    if (!appearCopy)
     {
       return;
     }
@@ -153,7 +153,7 @@
     [v9 acquireAssertionOfType:4 withReason:@"Contactless Interface" completion:&v10];
     objc_destroyWeak(&v14);
     objc_destroyWeak(&location);
-    if (!v3)
+    if (!appearCopy)
     {
       return;
     }
@@ -237,11 +237,11 @@ void __62__PKAccessoryDeviceExpressAlertViewController_viewWillAppear___block_in
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PKAccessoryDeviceExpressAlertViewController;
-  [(PKAccessoryDeviceExpressAlertViewController *)&v4 viewDidAppear:a3];
+  [(PKAccessoryDeviceExpressAlertViewController *)&v4 viewDidAppear:appear];
   [(PKAccessoryDeviceExpressAlertViewController *)self _appearIfNecessary];
   self->_processHomeButtonEvents = 1;
 }
@@ -256,11 +256,11 @@ void __62__PKAccessoryDeviceExpressAlertViewController_viewWillAppear___block_in
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v11.receiver = self;
   v11.super_class = PKAccessoryDeviceExpressAlertViewController;
-  [(PKAccessoryDeviceExpressAlertViewController *)&v11 viewDidDisappear:a3];
+  [(PKAccessoryDeviceExpressAlertViewController *)&v11 viewDidDisappear:disappear];
   passbookForegroundAssertion = self->_passbookForegroundAssertion;
   if (passbookForegroundAssertion)
   {
@@ -290,11 +290,11 @@ void __62__PKAccessoryDeviceExpressAlertViewController_viewWillAppear___block_in
   [(PKAccessoryDeviceExpressAlertViewController *)self dismissViewControllerAnimated:0 completion:0];
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
   v66 = *MEMORY[0x1E69E9840];
-  v51 = a3;
-  v52 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v6 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -302,28 +302,28 @@ void __62__PKAccessoryDeviceExpressAlertViewController_viewWillAppear___block_in
     _os_log_impl(&dword_1BD026000, v6, OS_LOG_TYPE_DEFAULT, "PKAccessoryDeviceExpressAlertViewController: configuring with context.", buf, 2u);
   }
 
-  v54 = [(PKAccessoryDeviceExpressAlertViewController *)self _remoteViewControllerProxy];
+  _remoteViewControllerProxy = [(PKAccessoryDeviceExpressAlertViewController *)self _remoteViewControllerProxy];
   self->_deviceUILocked = PKDeviceUILocked() != 0;
-  [v54 setWallpaperStyle:1 withDuration:0.0];
-  [v54 setLaunchingInterfaceOrientation:1];
-  [v54 setAllowsSiri:0];
-  [v54 setDesiredHardwareButtonEvents:16];
-  [v54 setSwipeDismissalStyle:1];
-  [v54 setDismissalAnimationStyle:1];
+  [_remoteViewControllerProxy setWallpaperStyle:1 withDuration:0.0];
+  [_remoteViewControllerProxy setLaunchingInterfaceOrientation:1];
+  [_remoteViewControllerProxy setAllowsSiri:0];
+  [_remoteViewControllerProxy setDesiredHardwareButtonEvents:16];
+  [_remoteViewControllerProxy setSwipeDismissalStyle:1];
+  [_remoteViewControllerProxy setDismissalAnimationStyle:1];
   if (self->_deviceUILocked)
   {
-    [v54 setDesiredAutoLockDuration:30.0];
+    [_remoteViewControllerProxy setDesiredAutoLockDuration:30.0];
   }
 
-  v7 = [v51 userInfo];
-  v8 = [v7 valueForKey:*MEMORY[0x1E69BC030]];
+  userInfo = [contextCopy userInfo];
+  v8 = [userInfo valueForKey:*MEMORY[0x1E69BC030]];
   self->_presentationSource = [v8 integerValue];
 
-  v9 = [v7 valueForKey:*MEMORY[0x1E69BBFC8]];
+  v9 = [userInfo valueForKey:*MEMORY[0x1E69BBFC8]];
   self->_backlightActive = [v9 BOOLValue];
 
   v10 = *MEMORY[0x1E69BC038];
-  v11 = [v7 objectForKey:*MEMORY[0x1E69BC038]];
+  v11 = [userInfo objectForKey:*MEMORY[0x1E69BC038]];
   v12 = [v11 copy];
   passUniqueIdentifier = self->_passUniqueIdentifier;
   self->_passUniqueIdentifier = v12;
@@ -331,7 +331,7 @@ void __62__PKAccessoryDeviceExpressAlertViewController_viewWillAppear___block_in
   fieldProperties = self->_fieldProperties;
   self->_fieldProperties = 0;
 
-  v53 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69BBFE0]];
+  v53 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69BBFE0]];
   if (v53)
   {
     v15 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:v53 error:0];
@@ -341,7 +341,7 @@ void __62__PKAccessoryDeviceExpressAlertViewController_viewWillAppear___block_in
 
   if (self->_fieldProperties)
   {
-    v17 = [v7 objectForKey:*MEMORY[0x1E69BBFD8]];
+    v17 = [userInfo objectForKey:*MEMORY[0x1E69BBFD8]];
     v18 = [v17 copy];
     fieldPassUniqueIdentifiers = self->_fieldPassUniqueIdentifiers;
     self->_fieldPassUniqueIdentifiers = v18;
@@ -349,20 +349,20 @@ void __62__PKAccessoryDeviceExpressAlertViewController_viewWillAppear___block_in
 
   else
   {
-    v17 = [v7 objectForKey:v10];
+    v17 = [userInfo objectForKey:v10];
     v20 = [v17 copy];
     fieldPassUniqueIdentifiers = self->_passUniqueIdentifier;
     self->_passUniqueIdentifier = v20;
   }
 
   v21 = [(NSArray *)self->_fieldPassUniqueIdentifiers count];
-  v22 = [(UIViewController *)self pkui_frontMostViewController];
-  v23 = [v22 view];
+  pkui_frontMostViewController = [(UIViewController *)self pkui_frontMostViewController];
+  view = [pkui_frontMostViewController view];
 
   v24 = *MEMORY[0x1E69BBFB0];
-  v50 = [v7 objectForKey:*MEMORY[0x1E69BBFB0]];
+  v50 = [userInfo objectForKey:*MEMORY[0x1E69BBFB0]];
   v25 = *MEMORY[0x1E69BBFB8];
-  v49 = [v7 objectForKey:*MEMORY[0x1E69BBFB8]];
+  v49 = [userInfo objectForKey:*MEMORY[0x1E69BBFB8]];
   v26 = self->_passUniqueIdentifier;
   if (v26)
   {
@@ -377,10 +377,10 @@ void __62__PKAccessoryDeviceExpressAlertViewController_viewWillAppear___block_in
     accessoryDevice = self->_accessoryDevice;
     self->_accessoryDevice = v27;
 
-    v29 = [MEMORY[0x1E69B8A58] sharedInstance];
-    v30 = [v29 passWithUniqueID:self->_passUniqueIdentifier];
+    mEMORY[0x1E69B8A58] = [MEMORY[0x1E69B8A58] sharedInstance];
+    v30 = [mEMORY[0x1E69B8A58] passWithUniqueID:self->_passUniqueIdentifier];
 
-    v31 = [[PKAccessoryDeviceView alloc] initWithPass:v30 accessory:self->_accessoryDevice cutoutFrame:v23 parentView:self->_windowedAccessoryCutoutFrameInScreen.origin.x, self->_windowedAccessoryCutoutFrameInScreen.origin.y, self->_windowedAccessoryCutoutFrameInScreen.size.width, self->_windowedAccessoryCutoutFrameInScreen.size.height];
+    v31 = [[PKAccessoryDeviceView alloc] initWithPass:v30 accessory:self->_accessoryDevice cutoutFrame:view parentView:self->_windowedAccessoryCutoutFrameInScreen.origin.x, self->_windowedAccessoryCutoutFrameInScreen.origin.y, self->_windowedAccessoryCutoutFrameInScreen.size.width, self->_windowedAccessoryCutoutFrameInScreen.size.height];
     accessoryDeviceView = self->_accessoryDeviceView;
     self->_accessoryDeviceView = v31;
 
@@ -388,9 +388,9 @@ void __62__PKAccessoryDeviceExpressAlertViewController_viewWillAppear___block_in
     [(PKAccessoryDeviceView *)self->_accessoryDeviceView changeToState:self->_accessoryDeviceViewState];
 
 LABEL_22:
-    if (v52)
+    if (completionCopy)
     {
-      v52[2]();
+      completionCopy[2]();
     }
 
     [(PKAccessoryDeviceExpressAlertViewController *)self _dismissIfRestricted];
@@ -408,14 +408,14 @@ LABEL_22:
     }
 
     v42 = objc_alloc(MEMORY[0x1E69B8320]);
-    v43 = [v7 objectForKey:v24];
-    v44 = [v7 objectForKey:v25];
+    v43 = [userInfo objectForKey:v24];
+    v44 = [userInfo objectForKey:v25];
     v45 = [v42 initWithDictionary:v43 endpointUUID:v44];
     v46 = self->_accessoryDevice;
     self->_accessoryDevice = v45;
 
     self->_accessoryDeviceViewState = 3;
-    v47 = [[PKAccessoryDeviceView alloc] initWithState:self->_accessoryDeviceViewState accessory:self->_accessoryDevice cutoutFrame:v23 parentView:self->_windowedAccessoryCutoutFrameInScreen.origin.x, self->_windowedAccessoryCutoutFrameInScreen.origin.y, self->_windowedAccessoryCutoutFrameInScreen.size.width, self->_windowedAccessoryCutoutFrameInScreen.size.height];
+    v47 = [[PKAccessoryDeviceView alloc] initWithState:self->_accessoryDeviceViewState accessory:self->_accessoryDevice cutoutFrame:view parentView:self->_windowedAccessoryCutoutFrameInScreen.origin.x, self->_windowedAccessoryCutoutFrameInScreen.origin.y, self->_windowedAccessoryCutoutFrameInScreen.size.width, self->_windowedAccessoryCutoutFrameInScreen.size.height];
     v48 = self->_accessoryDeviceView;
     self->_accessoryDeviceView = v47;
 
@@ -430,9 +430,9 @@ LABEL_22:
     _os_log_impl(&dword_1BD026000, v6, OS_LOG_TYPE_DEFAULT, "PKAccessoryDeviceExpressAlertViewController Multi Pass Case: Field IDs are %@", buf, 0xCu);
   }
 
-  v35 = [(NSArray *)self->_fieldPassUniqueIdentifiers firstObject];
-  v36 = [MEMORY[0x1E69B8A58] sharedInstance];
-  v37 = [v36 passWithUniqueID:v35];
+  firstObject = [(NSArray *)self->_fieldPassUniqueIdentifiers firstObject];
+  mEMORY[0x1E69B8A58]2 = [MEMORY[0x1E69B8A58] sharedInstance];
+  v37 = [mEMORY[0x1E69B8A58]2 passWithUniqueID:firstObject];
 
   v38 = objc_alloc_init(MEMORY[0x1E69B88E0]);
   objc_initWeak(buf, self);
@@ -443,14 +443,14 @@ LABEL_22:
   objc_copyWeak(&v63, buf);
   v39 = v38;
   v56 = v39;
-  v40 = v35;
+  v40 = firstObject;
   v57 = v40;
   v58 = v50;
   v59 = v49;
   v41 = v37;
   v60 = v41;
-  v61 = v23;
-  v62 = v52;
+  v61 = view;
+  v62 = completionCopy;
   [v39 reloadGroupsWithCompletion:v55];
 
   objc_destroyWeak(&v63);
@@ -521,11 +521,11 @@ void __79__PKAccessoryDeviceExpressAlertViewController_configureWithContext_comp
   notificationSuppressionAssertion = self->_notificationSuppressionAssertion;
   self->_notificationSuppressionAssertion = 0;
 
-  v4 = [(PKAccessoryDeviceExpressAlertViewController *)self view];
-  [v4 setUserInteractionEnabled:0];
+  view = [(PKAccessoryDeviceExpressAlertViewController *)self view];
+  [view setUserInteractionEnabled:0];
 
-  v5 = [MEMORY[0x1E69DC668] sharedApplication];
-  [v5 pkui_resetSharedRootAuthenticationContext];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  [mEMORY[0x1E69DC668] pkui_resetSharedRootAuthenticationContext];
 
   staticGlyphResources = self->_staticGlyphResources;
   self->_staticGlyphResources = 0;
@@ -552,19 +552,19 @@ void __79__PKAccessoryDeviceExpressAlertViewController_configureWithContext_comp
     [v11 endAllowingBacklightRamping:self];
   }
 
-  v12 = [(PKAccessoryDeviceExpressAlertViewController *)self _remoteViewControllerProxy];
-  [v12 invalidate];
+  _remoteViewControllerProxy = [(PKAccessoryDeviceExpressAlertViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy invalidate];
 }
 
 - (void)_dismissIfRestricted
 {
-  v3 = [(PKAccessoryDeviceExpressAlertViewController *)self _remoteViewControllerProxy];
-  if (v3)
+  _remoteViewControllerProxy = [(PKAccessoryDeviceExpressAlertViewController *)self _remoteViewControllerProxy];
+  if (_remoteViewControllerProxy)
   {
-    v4 = [MEMORY[0x1E699C848] sharedInstance];
-    v5 = [v4 lostModeIsActive];
+    mEMORY[0x1E699C848] = [MEMORY[0x1E699C848] sharedInstance];
+    lostModeIsActive = [mEMORY[0x1E699C848] lostModeIsActive];
 
-    if (v5)
+    if (lostModeIsActive)
     {
       v6 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -578,25 +578,25 @@ void __79__PKAccessoryDeviceExpressAlertViewController_configureWithContext_comp
   }
 }
 
-- (void)_dismissImmediately:(BOOL)a3
+- (void)_dismissImmediately:(BOOL)immediately
 {
-  v3 = a3;
+  immediatelyCopy = immediately;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = *MEMORY[0x1E69DDBE8];
-  v5 = [MEMORY[0x1E69DC668] sharedApplication];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __67__PKAccessoryDeviceExpressAlertViewController__dismissImmediately___block_invoke;
   v14[3] = &unk_1E8011A18;
   v14[4] = &v15;
-  v6 = [v5 beginBackgroundTaskWithExpirationHandler:v14];
+  v6 = [mEMORY[0x1E69DC668] beginBackgroundTaskWithExpirationHandler:v14];
   v16[3] = v6;
 
   objc_initWeak(&location, self);
   accessoryDeviceView = self->_accessoryDeviceView;
-  if (v3)
+  if (immediatelyCopy)
   {
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
@@ -677,11 +677,11 @@ void __67__PKAccessoryDeviceExpressAlertViewController__dismissImmediately___blo
   }
 }
 
-- (void)handleButtonActions:(id)a3
+- (void)handleButtonActions:(id)actions
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  actionsCopy = actions;
+  v5 = actionsCopy;
   if (self->_processHomeButtonEvents)
   {
     [(PKAccessoryDeviceExpressAlertViewController *)self _dismiss];
@@ -693,7 +693,7 @@ void __67__PKAccessoryDeviceExpressAlertViewController__dismissImmediately___blo
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    v6 = [actionsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v6)
     {
       v7 = v6;
@@ -721,13 +721,13 @@ void __67__PKAccessoryDeviceExpressAlertViewController__dismissImmediately___blo
   }
 }
 
-- (void)didTransitionToAttachedToWindowedAccessory:(BOOL)a3 windowedAccessoryCutoutFrameInScreen:(CGRect)a4
+- (void)didTransitionToAttachedToWindowedAccessory:(BOOL)accessory windowedAccessoryCutoutFrameInScreen:(CGRect)screen
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3;
+  height = screen.size.height;
+  width = screen.size.width;
+  y = screen.origin.y;
+  x = screen.origin.x;
+  accessoryCopy = accessory;
   if ([(PKAccessoryDevice *)self->_accessoryDevice isMock]&& os_variant_has_internal_ui())
   {
     v10 = PKLogFacilityTypeGetObject();
@@ -737,8 +737,8 @@ void __67__PKAccessoryDeviceExpressAlertViewController__dismissImmediately___blo
       _os_log_impl(&dword_1BD026000, v10, OS_LOG_TYPE_DEFAULT, "Overriding window because using mock device", v14, 2u);
     }
 
-    v11 = [(PKAccessoryDeviceExpressAlertViewController *)self view];
-    [v11 bounds];
+    view = [(PKAccessoryDeviceExpressAlertViewController *)self view];
+    [view bounds];
     v13 = v12;
 
     width = v13 + -100.0;
@@ -748,7 +748,7 @@ void __67__PKAccessoryDeviceExpressAlertViewController__dismissImmediately___blo
     goto LABEL_7;
   }
 
-  if (v8)
+  if (accessoryCopy)
   {
 LABEL_7:
     self->_windowedAccessoryCutoutFrameInScreen.origin.x = x;
@@ -762,15 +762,15 @@ LABEL_7:
   [(PKAccessoryDeviceExpressAlertViewController *)self didDetachSleeveAccessory];
 }
 
-- (void)_paymentDidReceiveSuccessfulTransactionNotification:(id)a3
+- (void)_paymentDidReceiveSuccessfulTransactionNotification:(id)notification
 {
-  v3 = [a3 userInfo];
+  userInfo = [notification userInfo];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __99__PKAccessoryDeviceExpressAlertViewController__paymentDidReceiveSuccessfulTransactionNotification___block_invoke;
   block[3] = &unk_1E8010970;
-  v6 = v3;
-  v4 = v3;
+  v6 = userInfo;
+  v4 = userInfo;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -787,15 +787,15 @@ void __99__PKAccessoryDeviceExpressAlertViewController__paymentDidReceiveSuccess
   }
 }
 
-- (void)_contactlessInterfaceSessionDidAuthorize:(id)a3
+- (void)_contactlessInterfaceSessionDidAuthorize:(id)authorize
 {
-  v3 = [a3 userInfo];
+  userInfo = [authorize userInfo];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __88__PKAccessoryDeviceExpressAlertViewController__contactlessInterfaceSessionDidAuthorize___block_invoke;
   block[3] = &unk_1E8010970;
-  v6 = v3;
-  v4 = v3;
+  v6 = userInfo;
+  v4 = userInfo;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -812,15 +812,15 @@ void __88__PKAccessoryDeviceExpressAlertViewController__contactlessInterfaceSess
   }
 }
 
-- (void)_contactlessInterfaceSessionFinishTransaction:(id)a3
+- (void)_contactlessInterfaceSessionFinishTransaction:(id)transaction
 {
-  v3 = [a3 userInfo];
+  userInfo = [transaction userInfo];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __93__PKAccessoryDeviceExpressAlertViewController__contactlessInterfaceSessionFinishTransaction___block_invoke;
   block[3] = &unk_1E8010970;
-  v6 = v3;
-  v4 = v3;
+  v6 = userInfo;
+  v4 = userInfo;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -854,28 +854,28 @@ void __93__PKAccessoryDeviceExpressAlertViewController__contactlessInterfaceSess
   return v5;
 }
 
-- (void)_registerObserverForNotificationName:(id)a3 center:(id)a4 handler:(id)a5
+- (void)_registerObserverForNotificationName:(id)name center:(id)center handler:(id)handler
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(NSMutableDictionary *)self->_registeredExpressObservers objectForKeyedSubscript:v11];
+  nameCopy = name;
+  centerCopy = center;
+  handlerCopy = handler;
+  v10 = [(NSMutableDictionary *)self->_registeredExpressObservers objectForKeyedSubscript:nameCopy];
   if (!v10)
   {
-    v10 = [v8 addObserverForName:v11 object:0 queue:0 usingBlock:v9];
+    v10 = [centerCopy addObserverForName:nameCopy object:0 queue:0 usingBlock:handlerCopy];
     if (v10)
     {
-      [(NSMutableDictionary *)self->_registeredExpressObservers setObject:v10 forKeyedSubscript:v11];
+      [(NSMutableDictionary *)self->_registeredExpressObservers setObject:v10 forKeyedSubscript:nameCopy];
     }
   }
 }
 
-- (void)_registerForExpressTransactionNotifications:(BOOL)a3
+- (void)_registerForExpressTransactionNotifications:(BOOL)notifications
 {
-  v3 = a3;
+  notificationsCopy = notifications;
   v30 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E696ABB0] defaultCenter];
-  if (v3)
+  defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+  if (notificationsCopy)
   {
     objc_initWeak(&location, self);
     aBlock[0] = MEMORY[0x1E69E9820];
@@ -888,8 +888,8 @@ void __93__PKAccessoryDeviceExpressAlertViewController__contactlessInterfaceSess
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v7 = [(PKAccessoryDeviceExpressAlertViewController *)self _expressNotificationNames];
-    v8 = [v7 countByEnumeratingWithState:&v21 objects:v29 count:16];
+    _expressNotificationNames = [(PKAccessoryDeviceExpressAlertViewController *)self _expressNotificationNames];
+    v8 = [_expressNotificationNames countByEnumeratingWithState:&v21 objects:v29 count:16];
     if (v8)
     {
       v9 = *v22;
@@ -899,13 +899,13 @@ void __93__PKAccessoryDeviceExpressAlertViewController__contactlessInterfaceSess
         {
           if (*v22 != v9)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(_expressNotificationNames);
           }
 
-          [(PKAccessoryDeviceExpressAlertViewController *)self _registerObserverForNotificationName:*(*(&v21 + 1) + 8 * i) center:v5 handler:v6];
+          [(PKAccessoryDeviceExpressAlertViewController *)self _registerObserverForNotificationName:*(*(&v21 + 1) + 8 * i) center:defaultCenter handler:v6];
         }
 
-        v8 = [v7 countByEnumeratingWithState:&v21 objects:v29 count:16];
+        v8 = [_expressNotificationNames countByEnumeratingWithState:&v21 objects:v29 count:16];
       }
 
       while (v8);
@@ -921,8 +921,8 @@ void __93__PKAccessoryDeviceExpressAlertViewController__contactlessInterfaceSess
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v11 = [(PKAccessoryDeviceExpressAlertViewController *)self _expressNotificationNames];
-    v12 = [v11 countByEnumeratingWithState:&v17 objects:v28 count:16];
+    _expressNotificationNames2 = [(PKAccessoryDeviceExpressAlertViewController *)self _expressNotificationNames];
+    v12 = [_expressNotificationNames2 countByEnumeratingWithState:&v17 objects:v28 count:16];
     if (v12)
     {
       v13 = *v18;
@@ -932,19 +932,19 @@ void __93__PKAccessoryDeviceExpressAlertViewController__contactlessInterfaceSess
         {
           if (*v18 != v13)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(_expressNotificationNames2);
           }
 
           v15 = *(*(&v17 + 1) + 8 * j);
           v16 = [(NSMutableDictionary *)self->_registeredExpressObservers objectForKeyedSubscript:v15];
           if (v16)
           {
-            [v5 removeObserver:v16];
+            [defaultCenter removeObserver:v16];
             [(NSMutableDictionary *)self->_registeredExpressObservers removeObjectForKey:v15];
           }
         }
 
-        v12 = [v11 countByEnumeratingWithState:&v17 objects:v28 count:16];
+        v12 = [_expressNotificationNames2 countByEnumeratingWithState:&v17 objects:v28 count:16];
       }
 
       while (v12);
@@ -973,20 +973,20 @@ void __91__PKAccessoryDeviceExpressAlertViewController__registerForExpressTransa
   [WeakRetained _handleExpressNotification:*(a1 + 32)];
 }
 
-- (void)_changeStateIfNecessaryTo:(int64_t)a3
+- (void)_changeStateIfNecessaryTo:(int64_t)to
 {
-  if (self->_accessoryDeviceViewState != a3)
+  if (self->_accessoryDeviceViewState != to)
   {
-    self->_accessoryDeviceViewState = a3;
+    self->_accessoryDeviceViewState = to;
     [(PKAccessoryDeviceView *)self->_accessoryDeviceView changeToState:?];
-    if (a3 == 3)
+    if (to == 3)
     {
       v4 = 1395;
     }
 
     else
     {
-      if ((a3 - 1) > 1)
+      if ((to - 1) > 1)
       {
         return;
       }
@@ -998,12 +998,12 @@ void __91__PKAccessoryDeviceExpressAlertViewController__registerForExpressTransa
   }
 }
 
-- (void)_handleExpressNotification:(id)a3
+- (void)_handleExpressNotification:(id)notification
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = [a3 name];
+  name = [notification name];
   v5 = *MEMORY[0x1E69BB870];
-  v6 = v4;
+  v6 = name;
   v7 = v6;
   if (v6 == v5)
   {
@@ -1029,7 +1029,7 @@ LABEL_7:
       _os_log_impl(&dword_1BD026000, v9, OS_LOG_TYPE_DEFAULT, "Express Transaction has started (No Error)", v39, 2u);
     }
 
-    v10 = self;
+    selfCopy4 = self;
     v11 = 0;
     goto LABEL_41;
   }
@@ -1063,10 +1063,10 @@ LABEL_17:
     }
 
 LABEL_20:
-    v10 = self;
+    selfCopy4 = self;
     v11 = 1;
 LABEL_41:
-    [(PKAccessoryDeviceExpressAlertViewController *)v10 _changeStateIfNecessaryTo:v11, *v39];
+    [(PKAccessoryDeviceExpressAlertViewController *)selfCopy4 _changeStateIfNecessaryTo:v11, *v39];
     goto LABEL_42;
   }
 
@@ -1102,7 +1102,7 @@ LABEL_39:
 
 LABEL_40:
 
-    v10 = self;
+    selfCopy4 = self;
     v11 = 3;
     goto LABEL_41;
   }
@@ -1186,7 +1186,7 @@ LABEL_50:
 
     if (self->_hasMultiple)
     {
-      v10 = self;
+      selfCopy4 = self;
       v11 = 2;
       goto LABEL_41;
     }
@@ -1235,15 +1235,15 @@ LABEL_66:
 LABEL_42:
 }
 
-- (void)accessoryDeviceDidChangeStateTo:(int64_t)a3
+- (void)accessoryDeviceDidChangeStateTo:(int64_t)to
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (self->_accessoryDeviceViewState != a3)
+  if (self->_accessoryDeviceViewState != to)
   {
     v5 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = PKAccessoryDeviceViewStateToString(a3);
+      v6 = PKAccessoryDeviceViewStateToString(to);
       v7 = PKAccessoryDeviceViewStateToString(self->_accessoryDeviceViewState);
       v8 = 138412546;
       v9 = v6;
@@ -1252,7 +1252,7 @@ LABEL_42:
       _os_log_impl(&dword_1BD026000, v5, OS_LOG_TYPE_DEFAULT, "accessoryDeviceDidChangeStateTo %@ and existing state is %@", &v8, 0x16u);
     }
 
-    if (a3 == 3)
+    if (to == 3)
     {
       self->_accessoryDeviceViewState = 3;
       AudioServicesPlaySystemSound(0x573u);
@@ -1274,18 +1274,18 @@ LABEL_42:
   [(PKAccessoryDeviceExpressAlertViewController *)self _dismiss];
 }
 
-- (void)didAttachSleeveAccessory:(id)a3
+- (void)didAttachSleeveAccessory:(id)accessory
 {
   v11 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  objc_storeStrong(&self->_accessoryDevice, a3);
+  accessoryCopy = accessory;
+  objc_storeStrong(&self->_accessoryDevice, accessory);
   v6 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136315394;
     v8 = "/Library/Caches/com.apple.xbs/Sources/Wallet_PassKitUI/Framework/PKAccessoryDeviceExpressAlertViewController.m";
     v9 = 2112;
-    v10 = v5;
+    v10 = accessoryCopy;
     _os_log_impl(&dword_1BD026000, v6, OS_LOG_TYPE_DEFAULT, "%s - didAttachSleeveAccessory getting called with %@", &v7, 0x16u);
   }
 }
@@ -1309,11 +1309,11 @@ LABEL_42:
   }
 }
 
-- (CGSize)sizeForChildContentContainer:(id)a3 withParentContainerSize:(CGSize)a4
+- (CGSize)sizeForChildContentContainer:(id)container withParentContainerSize:(CGSize)size
 {
   v6.receiver = self;
   v6.super_class = PKAccessoryDeviceExpressAlertViewController;
-  [(PKAccessoryDeviceExpressAlertViewController *)&v6 sizeForChildContentContainer:a3 withParentContainerSize:a4.width, a4.height];
+  [(PKAccessoryDeviceExpressAlertViewController *)&v6 sizeForChildContentContainer:container withParentContainerSize:size.width, size.height];
   result.height = v5;
   result.width = v4;
   return result;

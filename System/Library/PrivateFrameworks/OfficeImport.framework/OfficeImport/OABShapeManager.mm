@@ -12,7 +12,7 @@
 - (BOOL)textPathSmallcaps;
 - (BOOL)textPathStrikethrough;
 - (BOOL)textPathUnderline;
-- (OABShapeManager)initWithShape:(void *)a3 masterShape:(void *)a4;
+- (OABShapeManager)initWithShape:(void *)shape masterShape:(void *)masterShape;
 - (id)textPathFontFamily;
 - (id)textPathUnicodeString;
 - (int)textPathFontSize;
@@ -25,13 +25,13 @@
 {
   v5.receiver = self;
   v5.super_class = OABShapeManager;
-  v3 = [(OABFillPropertiesManager *)&v5 isFilled];
-  if (v3)
+  isFilled = [(OABFillPropertiesManager *)&v5 isFilled];
+  if (isFilled)
   {
-    LOBYTE(v3) = [(OABShapeManager *)self isFillOK];
+    LOBYTE(isFilled) = [(OABShapeManager *)self isFillOK];
   }
 
-  return v3;
+  return isFilled;
 }
 
 - (BOOL)isTextPath
@@ -60,26 +60,26 @@
 {
   v5.receiver = self;
   v5.super_class = OABShapeManager;
-  v3 = [(OABShapeBaseManager *)&v5 isStroked];
-  if (v3)
+  isStroked = [(OABShapeBaseManager *)&v5 isStroked];
+  if (isStroked)
   {
-    LOBYTE(v3) = [(OABShapeManager *)self isStrokeOK];
+    LOBYTE(isStroked) = [(OABShapeManager *)self isStrokeOK];
   }
 
-  return v3;
+  return isStroked;
 }
 
 - (BOOL)isShadowed
 {
   v5.receiver = self;
   v5.super_class = OABShapeManager;
-  v3 = [(OABShapeBaseManager *)&v5 isShadowed];
-  if (v3)
+  isShadowed = [(OABShapeBaseManager *)&v5 isShadowed];
+  if (isShadowed)
   {
-    LOBYTE(v3) = [(OABShapeManager *)self isShadowOK];
+    LOBYTE(isShadowed) = [(OABShapeManager *)self isShadowOK];
   }
 
-  return v3;
+  return isShadowed;
 }
 
 - (BOOL)hidden
@@ -291,15 +291,15 @@
   }
 }
 
-- (OABShapeManager)initWithShape:(void *)a3 masterShape:(void *)a4
+- (OABShapeManager)initWithShape:(void *)shape masterShape:(void *)masterShape
 {
-  ShapeType = EshShapeProperties::getShapeType((a3 + 424));
+  ShapeType = EshShapeProperties::getShapeType((shape + 424));
   v9.receiver = self;
   v9.super_class = OABShapeManager;
-  result = [(OABShapeBaseManager *)&v9 initWithShapeBase:a3 shapeType:ShapeType masterShape:a4];
+  result = [(OABShapeBaseManager *)&v9 initWithShapeBase:shape shapeType:ShapeType masterShape:masterShape];
   if (result)
   {
-    result->mShape = a3;
+    result->mShape = shape;
   }
 
   return result;

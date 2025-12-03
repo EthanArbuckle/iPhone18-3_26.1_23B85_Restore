@@ -1,17 +1,17 @@
 @interface VoiceCmdsSchemaProvisionalVoiceCmdsWaitForRequestContextInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (VoiceCmdsSchemaProvisionalVoiceCmdsWaitForRequestContextInfo)initWithDictionary:(id)a3;
-- (VoiceCmdsSchemaProvisionalVoiceCmdsWaitForRequestContextInfo)initWithJSON:(id)a3;
+- (VoiceCmdsSchemaProvisionalVoiceCmdsWaitForRequestContextInfo)initWithDictionary:(id)dictionary;
+- (VoiceCmdsSchemaProvisionalVoiceCmdsWaitForRequestContextInfo)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation VoiceCmdsSchemaProvisionalVoiceCmdsWaitForRequestContextInfo
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = a3;
-  v4 = [v3 isMemberOfClass:objc_opt_class()];
+  equalCopy = equal;
+  v4 = [equalCopy isMemberOfClass:objc_opt_class()];
 
   return v4;
 }
@@ -26,10 +26,10 @@
 
 - (NSData)jsonData
 {
-  v2 = [(VoiceCmdsSchemaProvisionalVoiceCmdsWaitForRequestContextInfo *)self dictionaryRepresentation];
-  if ([NSJSONSerialization isValidJSONObject:v2])
+  dictionaryRepresentation = [(VoiceCmdsSchemaProvisionalVoiceCmdsWaitForRequestContextInfo *)self dictionaryRepresentation];
+  if ([NSJSONSerialization isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [NSJSONSerialization dataWithJSONObject:v2 options:0 error:0];
+    v3 = [NSJSONSerialization dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -40,25 +40,25 @@
   return v3;
 }
 
-- (VoiceCmdsSchemaProvisionalVoiceCmdsWaitForRequestContextInfo)initWithJSON:(id)a3
+- (VoiceCmdsSchemaProvisionalVoiceCmdsWaitForRequestContextInfo)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [NSJSONSerialization JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [NSJSONSerialization JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(VoiceCmdsSchemaProvisionalVoiceCmdsWaitForRequestContextInfo *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (VoiceCmdsSchemaProvisionalVoiceCmdsWaitForRequestContextInfo)initWithDictionary:(id)a3
+- (VoiceCmdsSchemaProvisionalVoiceCmdsWaitForRequestContextInfo)initWithDictionary:(id)dictionary
 {
   v7.receiver = self;
   v7.super_class = VoiceCmdsSchemaProvisionalVoiceCmdsWaitForRequestContextInfo;

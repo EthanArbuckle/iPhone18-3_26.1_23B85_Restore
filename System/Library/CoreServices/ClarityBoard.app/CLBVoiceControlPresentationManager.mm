@@ -1,5 +1,5 @@
 @interface CLBVoiceControlPresentationManager
-- (CLBVoiceControlPresentationManager)initWithDelegate:(id)a3;
+- (CLBVoiceControlPresentationManager)initWithDelegate:(id)delegate;
 - (NSString)entitlement_forStaging;
 - (NSString)identifier;
 @end
@@ -20,11 +20,11 @@
   return v2;
 }
 
-- (CLBVoiceControlPresentationManager)initWithDelegate:(id)a3
+- (CLBVoiceControlPresentationManager)initWithDelegate:(id)delegate
 {
   v5.receiver = self;
   v5.super_class = type metadata accessor for VoiceControlPresentationManager();
-  return [(CLBScenePresentationManager *)&v5 initWithDelegate:a3];
+  return [(CLBScenePresentationManager *)&v5 initWithDelegate:delegate];
 }
 
 @end

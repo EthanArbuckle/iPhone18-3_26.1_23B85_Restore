@@ -1,14 +1,14 @@
 @interface PXStoryModelTimelineLayout
 - (PXStoryModelTimelineLayout)init;
-- (PXStoryModelTimelineLayout)initWithModel:(id)a3;
-- (void)configureClipLayout:(id)a3;
+- (PXStoryModelTimelineLayout)initWithModel:(id)model;
+- (void)configureClipLayout:(id)layout;
 - (void)didUpdate;
 - (void)invalidateClipsCornerRadius;
 - (void)invalidateDisplayedRect;
 - (void)invalidateDisplayedTimeRange;
 - (void)invalidateDisplayedTimeline;
 - (void)invalidatePresentedTimelineTransition;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 - (void)update;
 - (void)updateDisplayedTimeRange;
 - (void)updateDisplayedTimeline;
@@ -18,12 +18,12 @@
 
 @implementation PXStoryModelTimelineLayout
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  if (ModelObservationContext_206293 == a5)
+  if (ModelObservationContext_206293 == context)
   {
 
-    [(PXStoryModelTimelineLayout *)self handleModelChange:a4];
+    [(PXStoryModelTimelineLayout *)self handleModelChange:change];
   }
 
   else
@@ -32,7 +32,7 @@
     v9 = v6;
     v7.receiver = self;
     v7.super_class = PXStoryModelTimelineLayout;
-    [(PXStoryTimelineLayout *)&v7 observable:a3 didChange:a4 context:?];
+    [(PXStoryTimelineLayout *)&v7 observable:observable didChange:change context:?];
   }
 }
 
@@ -52,9 +52,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 0x10) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryModelTimelineLayout invalidateClipsCornerRadius]"];
-      [v6 handleFailureInFunction:v7 file:@"PXStoryModelTimelineLayout.m" lineNumber:124 description:{@"invalidating %lu after it already has been updated", 16}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXStoryModelTimelineLayout.m" lineNumber:124 description:{@"invalidating %lu after it already has been updated", 16}];
 
       abort();
     }
@@ -92,9 +92,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 8) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryModelTimelineLayout invalidatePresentedTimelineTransition]"];
-      [v6 handleFailureInFunction:v7 file:@"PXStoryModelTimelineLayout.m" lineNumber:116 description:{@"invalidating %lu after it already has been updated", 8}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXStoryModelTimelineLayout.m" lineNumber:116 description:{@"invalidating %lu after it already has been updated", 8}];
 
       abort();
     }
@@ -118,10 +118,10 @@ LABEL_5:
 
 - (void)updateDisplayedTimelineRect
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryModelTimelineLayout.m" lineNumber:112 description:{@"Method %s is a responsibility of subclass %@", "-[PXStoryModelTimelineLayout updateDisplayedTimelineRect]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryModelTimelineLayout.m" lineNumber:112 description:{@"Method %s is a responsibility of subclass %@", "-[PXStoryModelTimelineLayout updateDisplayedTimelineRect]", v6}];
 
   abort();
 }
@@ -142,9 +142,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 4) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryModelTimelineLayout invalidateDisplayedRect]"];
-      [v6 handleFailureInFunction:v7 file:@"PXStoryModelTimelineLayout.m" lineNumber:108 description:{@"invalidating %lu after it already has been updated", 4}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXStoryModelTimelineLayout.m" lineNumber:108 description:{@"invalidating %lu after it already has been updated", 4}];
 
       abort();
     }
@@ -168,10 +168,10 @@ LABEL_5:
 
 - (void)updateDisplayedTimeRange
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryModelTimelineLayout.m" lineNumber:104 description:{@"Method %s is a responsibility of subclass %@", "-[PXStoryModelTimelineLayout updateDisplayedTimeRange]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryModelTimelineLayout.m" lineNumber:104 description:{@"Method %s is a responsibility of subclass %@", "-[PXStoryModelTimelineLayout updateDisplayedTimeRange]", v6}];
 
   abort();
 }
@@ -192,9 +192,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 2) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryModelTimelineLayout invalidateDisplayedTimeRange]"];
-      [v6 handleFailureInFunction:v7 file:@"PXStoryModelTimelineLayout.m" lineNumber:100 description:{@"invalidating %lu after it already has been updated", 2}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXStoryModelTimelineLayout.m" lineNumber:100 description:{@"invalidating %lu after it already has been updated", 2}];
 
       abort();
     }
@@ -218,10 +218,10 @@ LABEL_5:
 
 - (void)updateDisplayedTimeline
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryModelTimelineLayout.m" lineNumber:96 description:{@"Method %s is a responsibility of subclass %@", "-[PXStoryModelTimelineLayout updateDisplayedTimeline]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryModelTimelineLayout.m" lineNumber:96 description:{@"Method %s is a responsibility of subclass %@", "-[PXStoryModelTimelineLayout updateDisplayedTimeline]", v6}];
 
   abort();
 }
@@ -242,9 +242,9 @@ LABEL_6:
 LABEL_5:
     if (self->_updateFlags.updated)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryModelTimelineLayout invalidateDisplayedTimeline]"];
-      [v6 handleFailureInFunction:v7 file:@"PXStoryModelTimelineLayout.m" lineNumber:92 description:{@"invalidating %lu after it already has been updated", 1}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXStoryModelTimelineLayout.m" lineNumber:92 description:{@"invalidating %lu after it already has been updated", 1}];
 
       abort();
     }
@@ -273,9 +273,9 @@ LABEL_5:
   [(PXStoryTimelineLayout *)&v5 didUpdate];
   if (self->_updateFlags.willPerformUpdate)
   {
-    v3 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v4 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryModelTimelineLayout didUpdate]"];
-    [v3 handleFailureInFunction:v4 file:@"PXStoryModelTimelineLayout.m" lineNumber:88 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.willPerformUpdate"}];
+    [currentHandler handleFailureInFunction:v4 file:@"PXStoryModelTimelineLayout.m" lineNumber:88 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.willPerformUpdate"}];
   }
 }
 
@@ -288,9 +288,9 @@ LABEL_5:
   {
     if (self->_updateFlags.isPerformingUpdate)
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryModelTimelineLayout update]"];
-      [v9 handleFailureInFunction:v10 file:@"PXStoryModelTimelineLayout.m" lineNumber:66 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+      [currentHandler handleFailureInFunction:v10 file:@"PXStoryModelTimelineLayout.m" lineNumber:66 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
 
       needsUpdate = p_updateFlags->needsUpdate;
     }
@@ -303,9 +303,9 @@ LABEL_5:
       [(PXStoryModelTimelineLayout *)self updateDisplayedTimeline];
       if (!p_updateFlags->isPerformingUpdate)
       {
-        v11 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
         v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryModelTimelineLayout update]"];
-        [v11 handleFailureInFunction:v12 file:@"PXStoryModelTimelineLayout.m" lineNumber:70 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+        [currentHandler2 handleFailureInFunction:v12 file:@"PXStoryModelTimelineLayout.m" lineNumber:70 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
       }
     }
 
@@ -319,9 +319,9 @@ LABEL_5:
 
     if (!p_updateFlags->isPerformingUpdate)
     {
-      v13 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
       v14 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryModelTimelineLayout update]"];
-      [v13 handleFailureInFunction:v14 file:@"PXStoryModelTimelineLayout.m" lineNumber:73 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+      [currentHandler3 handleFailureInFunction:v14 file:@"PXStoryModelTimelineLayout.m" lineNumber:73 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
     }
 
     v6 = p_updateFlags->needsUpdate;
@@ -334,9 +334,9 @@ LABEL_5:
 
     if (!p_updateFlags->isPerformingUpdate)
     {
-      v15 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
       v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryModelTimelineLayout update]"];
-      [v15 handleFailureInFunction:v16 file:@"PXStoryModelTimelineLayout.m" lineNumber:76 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+      [currentHandler4 handleFailureInFunction:v16 file:@"PXStoryModelTimelineLayout.m" lineNumber:76 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
     }
 
     v7 = p_updateFlags->needsUpdate;
@@ -349,9 +349,9 @@ LABEL_5:
 
     if (!p_updateFlags->isPerformingUpdate)
     {
-      v17 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
       v18 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryModelTimelineLayout update]"];
-      [v17 handleFailureInFunction:v18 file:@"PXStoryModelTimelineLayout.m" lineNumber:79 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+      [currentHandler5 handleFailureInFunction:v18 file:@"PXStoryModelTimelineLayout.m" lineNumber:79 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
     }
 
     v8 = p_updateFlags->needsUpdate;
@@ -366,9 +366,9 @@ LABEL_5:
     p_updateFlags->isPerformingUpdate = 0;
     if (v8)
     {
-      v19 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler6 = [MEMORY[0x1E696AAA8] currentHandler];
       v20 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryModelTimelineLayout update]"];
-      [v19 handleFailureInFunction:v20 file:@"PXStoryModelTimelineLayout.m" lineNumber:82 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
+      [currentHandler6 handleFailureInFunction:v20 file:@"PXStoryModelTimelineLayout.m" lineNumber:82 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
     }
   }
 
@@ -385,32 +385,32 @@ LABEL_5:
   self->_updateFlags.willPerformUpdate = 1;
   if (self->_updateFlags.isPerformingUpdate)
   {
-    v3 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v4 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryModelTimelineLayout willUpdate]"];
-    [v3 handleFailureInFunction:v4 file:@"PXStoryModelTimelineLayout.m" lineNumber:62 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+    [currentHandler handleFailureInFunction:v4 file:@"PXStoryModelTimelineLayout.m" lineNumber:62 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
   }
 }
 
-- (void)configureClipLayout:(id)a3
+- (void)configureClipLayout:(id)layout
 {
   v6.receiver = self;
   v6.super_class = PXStoryModelTimelineLayout;
-  v4 = a3;
-  [(PXStoryTimelineLayout *)&v6 configureClipLayout:v4];
+  layoutCopy = layout;
+  [(PXStoryTimelineLayout *)&v6 configureClipLayout:layoutCopy];
   v5 = [(PXStoryModelTimelineLayout *)self model:v6.receiver];
-  [v4 setModel:v5];
+  [layoutCopy setModel:v5];
 }
 
-- (PXStoryModelTimelineLayout)initWithModel:(id)a3
+- (PXStoryModelTimelineLayout)initWithModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = PXStoryModelTimelineLayout;
   v6 = [(PXStoryTimelineLayout *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_model, a3);
+    objc_storeStrong(&v6->_model, model);
     [(PXStoryModel *)v7->_model registerChangeObserver:v7 context:ModelObservationContext_206293];
     [(PXStoryModelTimelineLayout *)v7 invalidateDisplayedTimeline];
     [(PXStoryModelTimelineLayout *)v7 invalidateDisplayedTimeRange];
@@ -424,8 +424,8 @@ LABEL_5:
 
 - (PXStoryModelTimelineLayout)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryModelTimelineLayout.m" lineNumber:35 description:{@"%s is not available as initializer", "-[PXStoryModelTimelineLayout init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryModelTimelineLayout.m" lineNumber:35 description:{@"%s is not available as initializer", "-[PXStoryModelTimelineLayout init]"}];
 
   abort();
 }

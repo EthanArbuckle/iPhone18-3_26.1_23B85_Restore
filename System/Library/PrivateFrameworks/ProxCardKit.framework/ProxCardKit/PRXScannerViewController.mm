@@ -1,23 +1,23 @@
 @interface PRXScannerViewController
-- (PRXScannerViewController)initWithScannerEngine:(id)a3;
+- (PRXScannerViewController)initWithScannerEngine:(id)engine;
 - (void)resetConfirmationRing;
 - (void)showConfirmationRing;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation PRXScannerViewController
 
-- (PRXScannerViewController)initWithScannerEngine:(id)a3
+- (PRXScannerViewController)initWithScannerEngine:(id)engine
 {
-  v5 = a3;
+  engineCopy = engine;
   v11.receiver = self;
   v11.super_class = PRXScannerViewController;
   v6 = [(PRXCardContentViewController *)&v11 initWithContentView:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_scannerEngine, a3);
+    objc_storeStrong(&v6->_scannerEngine, engine);
     v8 = objc_alloc_init(PRXScannerIndicatorView);
     indicatorView = v7->_indicatorView;
     v7->_indicatorView = v8;
@@ -33,154 +33,154 @@
   v89.super_class = PRXScannerViewController;
   [(PRXCardContentViewController *)&v89 viewDidLoad];
   [(PRXCardContentViewController *)self setDismissalType:1];
-  v3 = [(PRXScannerViewController *)self view];
-  [v3 setClipsToBounds:1];
+  view = [(PRXScannerViewController *)self view];
+  [view setClipsToBounds:1];
 
-  v4 = [MEMORY[0x277D75348] clearColor];
-  v5 = [(PRXCardContentViewController *)self contentView];
-  [v5 setBackgroundColor:v4];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  contentView = [(PRXCardContentViewController *)self contentView];
+  [contentView setBackgroundColor:clearColor];
 
-  v6 = [(PRXCardContentViewController *)self contentView];
-  [v6 setOpaque:0];
+  contentView2 = [(PRXCardContentViewController *)self contentView];
+  [contentView2 setOpaque:0];
 
-  v7 = [(PRXCardContentViewController *)self contentView];
-  v8 = [v7 titleView];
-  [v8 setOpaque:0];
+  contentView3 = [(PRXCardContentViewController *)self contentView];
+  titleView = [contentView3 titleView];
+  [titleView setOpaque:0];
 
-  v9 = [(PRXScannerViewController *)self indicatorView];
-  [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+  indicatorView = [(PRXScannerViewController *)self indicatorView];
+  [indicatorView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v10 = [(PRXScannerViewController *)self view];
-  v11 = [(PRXScannerViewController *)self indicatorView];
-  [v10 addSubview:v11];
+  view2 = [(PRXScannerViewController *)self view];
+  indicatorView2 = [(PRXScannerViewController *)self indicatorView];
+  [view2 addSubview:indicatorView2];
 
-  v12 = [(PRXScannerViewController *)self view];
-  v13 = [(PRXScannerViewController *)self indicatorView];
-  [v12 sendSubviewToBack:v13];
+  view3 = [(PRXScannerViewController *)self view];
+  indicatorView3 = [(PRXScannerViewController *)self indicatorView];
+  [view3 sendSubviewToBack:indicatorView3];
 
-  v14 = [(PRXScannerViewController *)self scannerEngine];
-  [(PRXScannerViewController *)self addChildViewController:v14];
+  scannerEngine = [(PRXScannerViewController *)self scannerEngine];
+  [(PRXScannerViewController *)self addChildViewController:scannerEngine];
 
-  v15 = [(PRXScannerViewController *)self scannerEngine];
-  v16 = [v15 view];
-  [v16 setTranslatesAutoresizingMaskIntoConstraints:0];
+  scannerEngine2 = [(PRXScannerViewController *)self scannerEngine];
+  view4 = [scannerEngine2 view];
+  [view4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v17 = [(PRXScannerViewController *)self view];
-  v18 = [(PRXScannerViewController *)self scannerEngine];
-  v19 = [v18 view];
-  [v17 addSubview:v19];
+  view5 = [(PRXScannerViewController *)self view];
+  scannerEngine3 = [(PRXScannerViewController *)self scannerEngine];
+  view6 = [scannerEngine3 view];
+  [view5 addSubview:view6];
 
-  v20 = [(PRXScannerViewController *)self view];
-  v21 = [(PRXScannerViewController *)self scannerEngine];
-  v22 = [v21 view];
-  [v20 sendSubviewToBack:v22];
+  view7 = [(PRXScannerViewController *)self view];
+  scannerEngine4 = [(PRXScannerViewController *)self scannerEngine];
+  view8 = [scannerEngine4 view];
+  [view7 sendSubviewToBack:view8];
 
   v23 = objc_alloc_init(MEMORY[0x277D756D0]);
   [v23 setIdentifier:@"PRXScannerIndicator"];
-  v24 = [(PRXCardContentViewController *)self contentView];
-  [v24 addLayoutGuide:v23];
+  contentView4 = [(PRXCardContentViewController *)self contentView];
+  [contentView4 addLayoutGuide:v23];
 
-  v25 = [(PRXCardContentViewController *)self contentView];
-  v26 = [v25 mainContentGuide];
+  contentView5 = [(PRXCardContentViewController *)self contentView];
+  mainContentGuide = [contentView5 mainContentGuide];
 
-  v27 = [(PRXScannerViewController *)self scannerEngine];
-  v28 = [v27 view];
+  scannerEngine5 = [(PRXScannerViewController *)self scannerEngine];
+  view9 = [scannerEngine5 view];
 
   v65 = MEMORY[0x277CCAAD0];
-  v87 = [v28 leftAnchor];
-  v88 = [(PRXScannerViewController *)self view];
-  v86 = [v88 leftAnchor];
-  v85 = [v87 constraintEqualToAnchor:v86];
+  leftAnchor = [view9 leftAnchor];
+  view10 = [(PRXScannerViewController *)self view];
+  leftAnchor2 = [view10 leftAnchor];
+  v85 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   v90[0] = v85;
-  v83 = [v28 rightAnchor];
-  v84 = [(PRXScannerViewController *)self view];
-  v82 = [v84 rightAnchor];
-  v80 = [v83 constraintEqualToAnchor:v82];
-  v81 = v28;
+  rightAnchor = [view9 rightAnchor];
+  view11 = [(PRXScannerViewController *)self view];
+  rightAnchor2 = [view11 rightAnchor];
+  v80 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
+  v81 = view9;
   v90[1] = v80;
-  v78 = [v28 heightAnchor];
-  v79 = [(PRXScannerViewController *)self view];
-  v77 = [v79 heightAnchor];
-  v76 = [v78 constraintEqualToAnchor:v77 multiplier:2.0];
+  heightAnchor = [view9 heightAnchor];
+  view12 = [(PRXScannerViewController *)self view];
+  heightAnchor2 = [view12 heightAnchor];
+  v76 = [heightAnchor constraintEqualToAnchor:heightAnchor2 multiplier:2.0];
   v90[2] = v76;
-  v74 = [v28 centerYAnchor];
-  v75 = [(PRXScannerViewController *)self view];
-  v73 = [v75 centerYAnchor];
-  v72 = [v74 constraintEqualToAnchor:v73];
+  centerYAnchor = [view9 centerYAnchor];
+  view13 = [(PRXScannerViewController *)self view];
+  centerYAnchor2 = [view13 centerYAnchor];
+  v72 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v90[3] = v72;
-  v71 = [(PRXScannerViewController *)self indicatorView];
-  v69 = [v71 leftAnchor];
-  v70 = [(PRXScannerViewController *)self view];
-  v68 = [v70 leftAnchor];
-  v67 = [v69 constraintEqualToAnchor:v68];
+  indicatorView4 = [(PRXScannerViewController *)self indicatorView];
+  leftAnchor3 = [indicatorView4 leftAnchor];
+  view14 = [(PRXScannerViewController *)self view];
+  leftAnchor4 = [view14 leftAnchor];
+  v67 = [leftAnchor3 constraintEqualToAnchor:leftAnchor4];
   v90[4] = v67;
-  v66 = [(PRXScannerViewController *)self indicatorView];
-  v63 = [v66 rightAnchor];
-  v64 = [(PRXScannerViewController *)self view];
-  v62 = [v64 rightAnchor];
-  v61 = [v63 constraintEqualToAnchor:v62];
+  indicatorView5 = [(PRXScannerViewController *)self indicatorView];
+  rightAnchor3 = [indicatorView5 rightAnchor];
+  view15 = [(PRXScannerViewController *)self view];
+  rightAnchor4 = [view15 rightAnchor];
+  v61 = [rightAnchor3 constraintEqualToAnchor:rightAnchor4];
   v90[5] = v61;
-  v58 = [(PRXScannerViewController *)self indicatorView];
-  v56 = [v58 heightAnchor];
-  v57 = [(PRXScannerViewController *)self view];
-  v55 = [v57 heightAnchor];
-  v54 = [v56 constraintEqualToAnchor:v55 multiplier:3.0];
+  indicatorView6 = [(PRXScannerViewController *)self indicatorView];
+  heightAnchor3 = [indicatorView6 heightAnchor];
+  view16 = [(PRXScannerViewController *)self view];
+  heightAnchor4 = [view16 heightAnchor];
+  v54 = [heightAnchor3 constraintEqualToAnchor:heightAnchor4 multiplier:3.0];
   v90[6] = v54;
-  v53 = [(PRXScannerViewController *)self indicatorView];
-  v52 = [v53 centerYAnchor];
-  v51 = [v23 centerYAnchor];
-  v50 = [v52 constraintEqualToAnchor:v51];
+  indicatorView7 = [(PRXScannerViewController *)self indicatorView];
+  centerYAnchor3 = [indicatorView7 centerYAnchor];
+  centerYAnchor4 = [v23 centerYAnchor];
+  v50 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   v90[7] = v50;
-  v49 = [v23 topAnchor];
-  v48 = [v26 topAnchor];
-  v47 = [v49 constraintEqualToAnchor:v48];
+  topAnchor = [v23 topAnchor];
+  topAnchor2 = [mainContentGuide topAnchor];
+  v47 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v90[8] = v47;
-  v46 = [v23 bottomAnchor];
-  v45 = [v26 bottomAnchor];
-  v44 = [v46 constraintEqualToAnchor:v45];
+  bottomAnchor = [v23 bottomAnchor];
+  bottomAnchor2 = [mainContentGuide bottomAnchor];
+  v44 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v90[9] = v44;
-  v43 = [v23 leadingAnchor];
-  v29 = v26;
-  v60 = v26;
-  v30 = [v26 leadingAnchor];
-  v31 = [v43 constraintEqualToAnchor:v30];
+  leadingAnchor = [v23 leadingAnchor];
+  v29 = mainContentGuide;
+  v60 = mainContentGuide;
+  leadingAnchor2 = [mainContentGuide leadingAnchor];
+  v31 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v90[10] = v31;
   v59 = v23;
-  v32 = [v23 trailingAnchor];
-  v33 = [v29 trailingAnchor];
-  v34 = [v32 constraintEqualToAnchor:v33];
+  trailingAnchor = [v23 trailingAnchor];
+  trailingAnchor2 = [v29 trailingAnchor];
+  v34 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v90[11] = v34;
-  v35 = [v23 heightAnchor];
-  v36 = [(PRXScannerViewController *)self view];
-  v37 = [v36 widthAnchor];
+  heightAnchor5 = [v23 heightAnchor];
+  view17 = [(PRXScannerViewController *)self view];
+  widthAnchor = [view17 widthAnchor];
   +[PRXScannerIndicatorView innerHoleRatio];
   v39 = v38;
   +[PRXScannerIndicatorView strokeWidth];
-  v41 = [v35 constraintEqualToAnchor:v37 multiplier:v39 constant:v40];
+  v41 = [heightAnchor5 constraintEqualToAnchor:widthAnchor multiplier:v39 constant:v40];
   v90[12] = v41;
   v42 = [MEMORY[0x277CBEA60] arrayWithObjects:v90 count:13];
   [v65 activateConstraints:v42];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = PRXScannerViewController;
-  [(PRXScannerViewController *)&v5 viewWillAppear:a3];
-  v4 = [(PRXScannerViewController *)self indicatorView];
-  [v4 reset];
+  [(PRXScannerViewController *)&v5 viewWillAppear:appear];
+  indicatorView = [(PRXScannerViewController *)self indicatorView];
+  [indicatorView reset];
 }
 
 - (void)showConfirmationRing
 {
-  v2 = [(PRXScannerViewController *)self indicatorView];
-  [v2 complete];
+  indicatorView = [(PRXScannerViewController *)self indicatorView];
+  [indicatorView complete];
 }
 
 - (void)resetConfirmationRing
 {
-  v2 = [(PRXScannerViewController *)self indicatorView];
-  [v2 reset];
+  indicatorView = [(PRXScannerViewController *)self indicatorView];
+  [indicatorView reset];
 }
 
 @end

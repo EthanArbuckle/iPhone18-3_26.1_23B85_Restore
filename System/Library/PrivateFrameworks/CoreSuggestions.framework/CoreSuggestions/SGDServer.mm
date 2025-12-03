@@ -1,24 +1,24 @@
 @interface SGDServer
 + (id)sharedServer;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (SGDServer)init;
-- (id)_daemonManagerForConnection:(id)a3 protocol:(id)a4;
-- (void)_localeChanged:(id)a3;
+- (id)_daemonManagerForConnection:(id)connection protocol:(id)protocol;
+- (void)_localeChanged:(id)changed;
 - (void)dealloc;
-- (void)setupWithConnectionListener:(id)a3 protocol:(id)a4 entitlement:(id)a5;
+- (void)setupWithConnectionListener:(id)listener protocol:(id)protocol entitlement:(id)entitlement;
 - (void)shutdown;
 @end
 
 @implementation SGDServer
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  v9 = [(NSMapTable *)v8->_xpcListeners objectForKey:v6];
-  objc_sync_exit(v8);
+  listenerCopy = listener;
+  connectionCopy = connection;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v9 = [(NSMapTable *)selfCopy->_xpcListeners objectForKey:listenerCopy];
+  objc_sync_exit(selfCopy);
 
   if (!v9)
   {
@@ -26,31 +26,31 @@
     goto LABEL_13;
   }
 
-  v10 = [v9 protocol];
-  v11 = [v9 entitlement];
-  v12 = [v7 sgd_clientName];
+  protocol = [v9 protocol];
+  entitlement = [v9 entitlement];
+  sgd_clientName = [connectionCopy sgd_clientName];
   v13 = ii_default_log_handle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
-    *v30 = protocol_getName(v10);
+    *v30 = protocol_getName(protocol);
     *&v30[8] = 2080;
-    *&v30[10] = [(__CFString *)v12 UTF8String];
+    *&v30[10] = [(__CFString *)sgd_clientName UTF8String];
     *&v30[18] = 1024;
-    *&v30[20] = [v7 processIdentifier];
+    *&v30[20] = [connectionCopy processIdentifier];
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "New %s connection from %s (%d)", buf, 0x1Cu);
   }
 
-  v14 = [v7 valueForEntitlement:v11];
+  v14 = [connectionCopy valueForEntitlement:entitlement];
   if (!v14 || (objc_opt_respondsToSelector() & 1) == 0 || ([v14 BOOLValue] & 1) == 0)
   {
     v15 = ii_default_log_handle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      v24 = [v7 processIdentifier];
-      if (v12)
+      processIdentifier = [connectionCopy processIdentifier];
+      if (sgd_clientName)
       {
-        v21 = v12;
+        v21 = sgd_clientName;
       }
 
       else
@@ -58,9 +58,9 @@
         v21 = @"(client name was nil)";
       }
 
-      if (v11)
+      if (entitlement)
       {
-        v22 = v11;
+        v22 = entitlement;
       }
 
       else
@@ -68,9 +68,9 @@
         v22 = @"(expected entitlement key was nil)";
       }
 
-      Name = protocol_getName(v10);
+      Name = protocol_getName(protocol);
       *buf = 67109890;
-      *v30 = v24;
+      *v30 = processIdentifier;
       *&v30[4] = 2112;
       *&v30[6] = v21;
       *&v30[14] = 2112;
@@ -83,7 +83,7 @@
     goto LABEL_10;
   }
 
-  v15 = [(SGDServer *)v8 _daemonManagerForConnection:v7 protocol:v10];
+  v15 = [(SGDServer *)selfCopy _daemonManagerForConnection:connectionCopy protocol:protocol];
   if (!v15)
   {
     v20 = ii_default_log_handle();
@@ -99,23 +99,23 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v16 = [SGDSuggestManagerInterface xpcInterfaceForProtocol:v10];
-  [v7 setExportedInterface:v16];
+  v16 = [SGDSuggestManagerInterface xpcInterfaceForProtocol:protocol];
+  [connectionCopy setExportedInterface:v16];
 
-  [v7 setExportedObject:v15];
-  objc_initWeak(buf, v7);
+  [connectionCopy setExportedObject:v15];
+  objc_initWeak(buf, connectionCopy);
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
   v25[2] = sub_100002CEC;
   v25[3] = &unk_10000C568;
   objc_copyWeak(&v28, buf);
-  v26 = v10;
-  v27 = v8;
-  [v7 setInvalidationHandler:v25];
-  v17 = v8;
+  v26 = protocol;
+  v27 = selfCopy;
+  [connectionCopy setInvalidationHandler:v25];
+  v17 = selfCopy;
   objc_sync_enter(v17);
-  [v17[2] addObject:v7];
-  [v7 resume];
+  [v17[2] addObject:connectionCopy];
+  [connectionCopy resume];
   objc_sync_exit(v17);
 
   objc_destroyWeak(&v28);
@@ -127,22 +127,22 @@ LABEL_13:
   return v18;
 }
 
-- (id)_daemonManagerForConnection:(id)a3 protocol:(id)a4
+- (id)_daemonManagerForConnection:(id)connection protocol:(id)protocol
 {
-  v4 = a3;
-  v5 = [v4 sgd_clientName];
-  v6 = [v5 isEqualToString:@"com.apple.imdpersistenceagent"];
+  connectionCopy = connection;
+  sgd_clientName = [connectionCopy sgd_clientName];
+  v6 = [sgd_clientName isEqualToString:@"com.apple.imdpersistenceagent"];
   v7 = [SGDSuggestManager alloc];
   if (v6)
   {
     v8 = +[SGSqlEntityStore defaultHarvestStore];
-    v9 = [v7 initWithMessagesConnection:v4 store:v8];
+    v9 = [v7 initWithMessagesConnection:connectionCopy store:v8];
   }
 
   else
   {
     v8 = +[SGSqlEntityStore defaultStore];
-    v9 = [v7 initWithConnection:v4 store:v8];
+    v9 = [v7 initWithConnection:connectionCopy store:v8];
   }
 
   v10 = v9;
@@ -152,7 +152,7 @@ LABEL_13:
   return v11;
 }
 
-- (void)_localeChanged:(id)a3
+- (void)_localeChanged:(id)changed
 {
   v3 = ii_default_log_handle();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
@@ -173,13 +173,13 @@ LABEL_13:
     _os_log_debug_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "suggestd shutting down, bye!", buf, 2u);
   }
 
-  v4 = self;
-  objc_sync_enter(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v11 = 0u;
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v5 = v4->_coreSuggestionClients;
+  v5 = selfCopy->_coreSuggestionClients;
   v6 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v9 objects:v14 count:16];
   if (v6)
   {
@@ -205,30 +205,30 @@ LABEL_13:
     while (v6);
   }
 
-  [(NSMutableArray *)v4->_coreSuggestionClients removeAllObjects];
-  objc_sync_exit(v4);
+  [(NSMutableArray *)selfCopy->_coreSuggestionClients removeAllObjects];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setupWithConnectionListener:(id)a3 protocol:(id)a4 entitlement:(id)a5
+- (void)setupWithConnectionListener:(id)listener protocol:(id)protocol entitlement:(id)entitlement
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = self;
-  objc_sync_enter(v10);
-  v11 = [(NSMapTable *)v10->_xpcListeners objectForKey:v13];
+  listenerCopy = listener;
+  protocolCopy = protocol;
+  entitlementCopy = entitlement;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v11 = [(NSMapTable *)selfCopy->_xpcListeners objectForKey:listenerCopy];
 
   if (!v11)
   {
     v12 = objc_opt_new();
-    [v12 setEntitlement:v9];
-    [v12 setProtocol:v8];
-    [(NSMapTable *)v10->_xpcListeners setObject:v12 forKey:v13];
-    [v13 setDelegate:v10];
-    [v13 resume];
+    [v12 setEntitlement:entitlementCopy];
+    [v12 setProtocol:protocolCopy];
+    [(NSMapTable *)selfCopy->_xpcListeners setObject:v12 forKey:listenerCopy];
+    [listenerCopy setDelegate:selfCopy];
+    [listenerCopy resume];
   }
 
-  objc_sync_exit(v10);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)dealloc

@@ -1,7 +1,7 @@
 @interface CDPDBuddyStateObserver
 - (CDPDBuddyStateObserver)init;
-- (void)eventReceived:(const char *)a3 eventValue:(unint64_t)a4;
-- (void)registerListener:(id)a3;
+- (void)eventReceived:(const char *)received eventValue:(unint64_t)value;
+- (void)registerListener:(id)listener;
 @end
 
 @implementation CDPDBuddyStateObserver
@@ -21,23 +21,23 @@
   return v2;
 }
 
-- (void)registerListener:(id)a3
+- (void)registerListener:(id)listener
 {
-  v4 = a3;
+  listenerCopy = listener;
   [(NSMutableOrderedSet *)self->_listeners addObject:?];
   if ([MEMORY[0x277CFD560] isBuddyFinished])
   {
-    [v4 buddyFinished];
+    [listenerCopy buddyFinished];
   }
 }
 
-- (void)eventReceived:(const char *)a3 eventValue:(unint64_t)a4
+- (void)eventReceived:(const char *)received eventValue:(unint64_t)value
 {
   v30 = *MEMORY[0x277D85DE8];
   v6 = _CDPLogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    [CDPDBuddyStateObserver eventReceived:a3 eventValue:v6];
+    [CDPDBuddyStateObserver eventReceived:received eventValue:v6];
   }
 
   v25 = 0;
@@ -64,7 +64,7 @@
   }
 
   v8 = *v7;
-  v9 = strcmp([v8 UTF8String], a3);
+  v9 = strcmp([v8 UTF8String], received);
 
   if (!v9)
   {

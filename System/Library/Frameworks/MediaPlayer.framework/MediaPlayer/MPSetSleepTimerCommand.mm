@@ -1,8 +1,8 @@
 @interface MPSetSleepTimerCommand
 - (id)_mediaRemoteCommandInfoOptions;
-- (void)setFireDate:(double)a3;
-- (void)setStopMode:(int64_t)a3;
-- (void)setTime:(double)a3;
+- (void)setFireDate:(double)date;
+- (void)setStopMode:(int64_t)mode;
+- (void)setTime:(double)time;
 @end
 
 @implementation MPSetSleepTimerCommand
@@ -24,29 +24,29 @@
   return v7;
 }
 
-- (void)setStopMode:(int64_t)a3
+- (void)setStopMode:(int64_t)mode
 {
-  if (self->_stopMode != a3)
+  if (self->_stopMode != mode)
   {
-    self->_stopMode = a3;
+    self->_stopMode = mode;
     [(MPRemoteCommand *)self notifyPropagatablePropertyChanged];
   }
 }
 
-- (void)setFireDate:(double)a3
+- (void)setFireDate:(double)date
 {
-  if (self->_fireDate != a3)
+  if (self->_fireDate != date)
   {
-    self->_fireDate = a3;
+    self->_fireDate = date;
     [(MPRemoteCommand *)self notifyPropagatablePropertyChanged];
   }
 }
 
-- (void)setTime:(double)a3
+- (void)setTime:(double)time
 {
-  if (self->_time != a3)
+  if (self->_time != time)
   {
-    self->_time = a3;
+    self->_time = time;
     [(MPRemoteCommand *)self notifyPropagatablePropertyChanged];
   }
 }

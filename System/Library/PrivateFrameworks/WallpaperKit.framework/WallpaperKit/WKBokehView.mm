@@ -1,27 +1,27 @@
 @interface WKBokehView
-+ (id)thumbnailImageWithBokehInput:(id)a3;
++ (id)thumbnailImageWithBokehInput:(id)input;
 - (CATransform3D)_contentTransform;
-- (WKBokehView)initWithBokehWallpaperInput:(id)a3;
+- (WKBokehView)initWithBokehWallpaperInput:(id)input;
 - (double)_parallaxTransform;
 - (void)_disableAnimation;
-- (void)_screenDidUpdate:(id)a3;
+- (void)_screenDidUpdate:(id)update;
 - (void)_updateRenderForCurrentBokehWallpaperInput;
 - (void)layoutSubviews;
-- (void)setAnimationEnabled:(BOOL)a3;
-- (void)setBokehWallpaperInput:(id)a3;
+- (void)setAnimationEnabled:(BOOL)enabled;
+- (void)setBokehWallpaperInput:(id)input;
 @end
 
 @implementation WKBokehView
 
-- (WKBokehView)initWithBokehWallpaperInput:(id)a3
+- (WKBokehView)initWithBokehWallpaperInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   v25.receiver = self;
   v25.super_class = WKBokehView;
   v5 = [(WKBokehView *)&v25 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   if (v5)
   {
-    v7 = [v4 copy];
+    v7 = [inputCopy copy];
     bokehWallpaperInput = v5->_bokehWallpaperInput;
     v5->_bokehWallpaperInput = v7;
 
@@ -33,25 +33,25 @@
     contentLayer = v5->_contentLayer;
     v5->_contentLayer = v11;
 
-    v13 = [(WKBokehView *)v5 layer];
-    [v13 addSublayer:v5->_contentLayer];
+    layer = [(WKBokehView *)v5 layer];
+    [layer addSublayer:v5->_contentLayer];
 
     displayLink = v5->_displayLink;
     v5->_displayLink = 0;
 
     [(WKBokehView *)v5 _disableAnimation];
     [(WKBokehView *)v5 setAutoresizingMask:18];
-    v24 = [(WKBokehWallpaperInput *)v5->_bokehWallpaperInput thumbnailSeed];
+    thumbnailSeed = [(WKBokehWallpaperInput *)v5->_bokehWallpaperInput thumbnailSeed];
     [(WKBokehWallpaperInput *)v5->_bokehWallpaperInput bubbleScale];
     v16 = v15;
-    v17 = [(WKBokehWallpaperInput *)v5->_bokehWallpaperInput bubbleCount];
+    bubbleCount = [(WKBokehWallpaperInput *)v5->_bokehWallpaperInput bubbleCount];
     memset(&v23, 0, sizeof(v23));
     CATransform3DMakeScale(&v23, v16, v16, 1.0);
     v18 = objc_alloc_init(MEMORY[0x1E695DF70]);
     bubbles = v5->_bubbles;
     v5->_bubbles = v18;
 
-    for (; v17; --v17)
+    for (; bubbleCount; --bubbleCount)
     {
       v20 = [[WKBokehBubble alloc] initWithSeed:?];
       v22 = v23;
@@ -61,8 +61,8 @@
     }
 
     [(WKBokehView *)&v5->super.super.super.isa _updateRenderForCurrentBokehWallpaperInput];
-    v21 = [MEMORY[0x1E69DC888] clearColor];
-    [(WKBokehView *)v5 setBackgroundColor:v21];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(WKBokehView *)v5 setBackgroundColor:clearColor];
   }
 
   return v5;
@@ -71,7 +71,7 @@
 - (void)_disableAnimation
 {
   v9 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v2 = WKLogForCategory(0);
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
@@ -81,27 +81,27 @@
       _os_log_impl(&dword_1E4A23000, v2, OS_LOG_TYPE_DEFAULT, "%{public}s: start.", &v7, 0xCu);
     }
 
-    [*(a1 + 432) invalidate];
-    v3 = *(a1 + 432);
-    *(a1 + 432) = 0;
+    [*(self + 432) invalidate];
+    v3 = *(self + 432);
+    *(self + 432) = 0;
 
-    [(WKBokehMotionFilter *)*(a1 + 408) pauseDeviceMotionUpdates];
-    [*(a1 + 416) convertTime:0 fromLayer:CACurrentMediaTime()];
+    [(WKBokehMotionFilter *)*(self + 408) pauseDeviceMotionUpdates];
+    [*(self + 416) convertTime:0 fromLayer:CACurrentMediaTime()];
     v5 = v4;
-    [*(a1 + 416) setSpeed:0.0];
-    [*(a1 + 416) setTimeOffset:v5];
+    [*(self + 416) setSpeed:0.0];
+    [*(self + 416) setTimeOffset:v5];
     __32__WKBokehView__disableAnimation__block_invoke();
   }
 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setBokehWallpaperInput:(id)a3
+- (void)setBokehWallpaperInput:(id)input
 {
-  v6 = a3;
-  if (([v6 isEqual:self->_bokehWallpaperInput] & 1) == 0)
+  inputCopy = input;
+  if (([inputCopy isEqual:self->_bokehWallpaperInput] & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [inputCopy copy];
     bokehWallpaperInput = self->_bokehWallpaperInput;
     self->_bokehWallpaperInput = v4;
 
@@ -109,9 +109,9 @@
   }
 }
 
-- (void)setAnimationEnabled:(BOOL)a3
+- (void)setAnimationEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v14 = *MEMORY[0x1E69E9840];
   v5 = WKLogForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -119,7 +119,7 @@
     *buf = 136446466;
     v11 = "[WKBokehView setAnimationEnabled:]";
     v12 = 1024;
-    v13 = v3;
+    v13 = enabledCopy;
     _os_log_impl(&dword_1E4A23000, v5, OS_LOG_TYPE_DEFAULT, "%{public}s: start %d.", buf, 0x12u);
   }
 
@@ -127,11 +127,11 @@
   aBlock[1] = 3221225472;
   aBlock[2] = __35__WKBokehView_setAnimationEnabled___block_invoke;
   aBlock[3] = &__block_descriptor_33_e5_v8__0l;
-  v9 = v3;
+  v9 = enabledCopy;
   v6 = _Block_copy(aBlock);
-  if ((((self->_displayLink == 0) ^ v3) & 1) == 0)
+  if ((((self->_displayLink == 0) ^ enabledCopy) & 1) == 0)
   {
-    if (v3)
+    if (enabledCopy)
     {
       [(WKBokehView *)self _enableAnimation];
     }
@@ -192,7 +192,7 @@ void __32__WKBokehView__disableAnimation__block_invoke()
   v1 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_screenDidUpdate:(id)a3
+- (void)_screenDidUpdate:(id)update
 {
   *&v4 = *&[(WKBokehMotionFilter *)self->_motionFilter updatePosition];
 
@@ -284,7 +284,7 @@ void __32__WKBokehView__disableAnimation__block_invoke()
 
 - (double)_parallaxTransform
 {
-  if (a1)
+  if (self)
   {
     v2 = MEMORY[0x1E69792E8];
     v3 = *(MEMORY[0x1E69792E8] + 96);
@@ -331,11 +331,11 @@ void __32__WKBokehView__disableAnimation__block_invoke()
   contentLayer = self->_contentLayer;
   v15 = v16;
   [(CAGradientLayer *)contentLayer setTransform:&v15];
-  v4 = [(WKBokehView *)self bokehWallpaperInput];
-  [v4 parallaxMultiplier];
+  bokehWallpaperInput = [(WKBokehView *)self bokehWallpaperInput];
+  [bokehWallpaperInput parallaxMultiplier];
   v6 = v5;
 
-  v7 = [(WKBokehMotionFilter *)self->_motionFilter position];
+  position = [(WKBokehMotionFilter *)self->_motionFilter position];
   v9 = *(MEMORY[0x1E69792E8] + 48);
   *&v13.m21 = *(MEMORY[0x1E69792E8] + 32);
   *&v13.m23 = v9;
@@ -347,7 +347,7 @@ void __32__WKBokehView__disableAnimation__block_invoke()
   *&v13.m33 = xmmword_1E4AADD70;
   *&v13.m41 = *(MEMORY[0x1E69792E8] + 96);
   *&v13.m43 = xmmword_1E4AADD80;
-  CATransform3DTranslate(&v15, &v13, v6 * v7, v6 * v8, 0.0);
+  CATransform3DTranslate(&v15, &v13, v6 * position, v6 * v8, 0.0);
   *&v13.m21 = *&v15.m21;
   *&v13.m23 = *&v15.m23;
   *&v13.m31 = *&v15.m31;
@@ -359,10 +359,10 @@ void __32__WKBokehView__disableAnimation__block_invoke()
   [MEMORY[0x1E6979518] commit];
 }
 
-+ (id)thumbnailImageWithBokehInput:(id)a3
++ (id)thumbnailImageWithBokehInput:(id)input
 {
   v58 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  inputCopy = input;
   v4 = WKLogForCategory(0);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -371,13 +371,13 @@ void __32__WKBokehView__disableAnimation__block_invoke()
     _os_log_impl(&dword_1E4A23000, v4, OS_LOG_TYPE_DEFAULT, "%{public}s: start.", &buf, 0xCu);
   }
 
-  v5 = [MEMORY[0x1E69DCEB0] mainScreen];
-  v6 = [v5 fixedCoordinateSpace];
-  [v6 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  fixedCoordinateSpace = [mainScreen fixedCoordinateSpace];
+  [fixedCoordinateSpace bounds];
   v8 = v7;
   v10 = v9;
 
-  v11 = [[WKBokehView alloc] initWithBokehWallpaperInput:v3];
+  v11 = [[WKBokehView alloc] initWithBokehWallpaperInput:inputCopy];
   p_isa = &v11->super.super.super.isa;
   v13 = v8 / 3.0;
   v14 = v10 / 3.0;
@@ -442,8 +442,8 @@ void __32__WKBokehView__disableAnimation__block_invoke()
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v28 = [p_isa[52] sublayers];
-  v29 = [v28 countByEnumeratingWithState:&v46 objects:v56 count:16];
+  sublayers = [p_isa[52] sublayers];
+  v29 = [sublayers countByEnumeratingWithState:&v46 objects:v56 count:16];
   if (v29)
   {
     v30 = *v47;
@@ -453,7 +453,7 @@ void __32__WKBokehView__disableAnimation__block_invoke()
       {
         if (*v47 != v30)
         {
-          objc_enumerationMutation(v28);
+          objc_enumerationMutation(sublayers);
         }
 
         v32 = *(*(&v46 + 1) + 8 * i);
@@ -479,7 +479,7 @@ void __32__WKBokehView__disableAnimation__block_invoke()
         [v32 setOpacity:v35];
       }
 
-      v29 = [v28 countByEnumeratingWithState:&v46 objects:v56 count:16];
+      v29 = [sublayers countByEnumeratingWithState:&v46 objects:v56 count:16];
     }
 
     while (v29);
@@ -527,25 +527,25 @@ void __44__WKBokehView_thumbnailImageWithBokehInput___block_invoke_22(uint64_t a
 - (void)_updateRenderForCurrentBokehWallpaperInput
 {
   v23 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v2 = [a1 bokehWallpaperInput];
-    v3 = [v2 backgroundColors];
-    v4 = [v3 na_map:&__block_literal_global_9];
+    bokehWallpaperInput = [self bokehWallpaperInput];
+    backgroundColors = [bokehWallpaperInput backgroundColors];
+    v4 = [backgroundColors na_map:&__block_literal_global_9];
 
-    [a1[52] setColors:v4];
-    v5 = [a1 bokehWallpaperInput];
-    v6 = [v5 bubbleColors];
+    [self[52] setColors:v4];
+    bokehWallpaperInput2 = [self bokehWallpaperInput];
+    bubbleColors = [bokehWallpaperInput2 bubbleColors];
 
-    v7 = [a1 bokehWallpaperInput];
-    v8 = [v7 thumbnailSeed];
+    bokehWallpaperInput3 = [self bokehWallpaperInput];
+    thumbnailSeed = [bokehWallpaperInput3 thumbnailSeed];
 
-    v21 = v8;
+    v21 = thumbnailSeed;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v9 = a1[53];
+    v9 = self[53];
     v10 = [v9 countByEnumeratingWithState:&v17 objects:v22 count:16];
     if (v10)
     {
@@ -562,7 +562,7 @@ void __44__WKBokehView_thumbnailImageWithBokehInput___block_invoke_22(uint64_t a
           }
 
           v14 = *(*(&v17 + 1) + 8 * v13);
-          v15 = [v6 objectAtIndex:{vcvtms_u32_f32((vcvts_n_f32_s32(rand_r(&v21), 0x1FuLL) * objc_msgSend(v6, "count", v17)) + 0.0)}];
+          v15 = [bubbleColors objectAtIndex:{vcvtms_u32_f32((vcvts_n_f32_s32(rand_r(&v21), 0x1FuLL) * objc_msgSend(bubbleColors, "count", v17)) + 0.0)}];
           [v14 setContentsMultiplyColor:{objc_msgSend(v15, "cgColor")}];
 
           ++v13;

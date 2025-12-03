@@ -1,33 +1,33 @@
 @interface TFFeedbackSession
-- (TFFeedbackSession)initWithBetaApplicationIdentifier:(id)a3;
+- (TFFeedbackSession)initWithBetaApplicationIdentifier:(id)identifier;
 - (TFFeedbackSessionDelegate)delegate;
 - (UIViewController)activeFormViewController;
 - (id)_associatePrefilledEmailIfNeeded;
 - (id)_currentContextStringDescription;
 - (id)_developerName;
-- (id)_displayableErrorMessageFromService:(id)a3 submissionError:(id)a4;
+- (id)_displayableErrorMessageFromService:(id)service submissionError:(id)error;
 - (id)_generateFormForCurrentState;
 - (id)createFeedbackViewControllerForCurrentState;
 - (id)feedbackAppName;
 - (id)feedbackDeveloperName;
 - (id)feedbackInitialScreenshotURLs;
 - (id)feedbackTesterEmailAddress;
-- (id)initForContext:(unint64_t)a3 betaApplicationBundleURL:(id)a4;
-- (id)initForContext:(unint64_t)a3 betaApplicationIdentifier:(id)a4;
-- (id)initForContext:(unint64_t)a3 betaApplicationLoadableBundleURL:(id)a4;
-- (id)initForContext:(unint64_t)a3 withTestingWithLaunchInfo:(id)a4;
+- (id)initForContext:(unint64_t)context betaApplicationBundleURL:(id)l;
+- (id)initForContext:(unint64_t)context betaApplicationIdentifier:(id)identifier;
+- (id)initForContext:(unint64_t)context betaApplicationLoadableBundleURL:(id)l;
+- (id)initForContext:(unint64_t)context withTestingWithLaunchInfo:(id)info;
 - (id)launchInfoForFeedbackPopulation;
-- (void)_abortFeedbackSubmissionForViewController:(id)a3 withError:(id)a4;
-- (void)_beginFeedbackSubmisionForViewController:(id)a3;
-- (void)_finishFeedbackSubmissionForViewController:(id)a3;
-- (void)associateComments:(id)a3;
-- (void)associateEmail:(id)a3;
-- (void)associateIncidentId:(id)a3;
-- (void)associateScreenshotImages:(id)a3;
+- (void)_abortFeedbackSubmissionForViewController:(id)controller withError:(id)error;
+- (void)_beginFeedbackSubmisionForViewController:(id)controller;
+- (void)_finishFeedbackSubmissionForViewController:(id)controller;
+- (void)associateComments:(id)comments;
+- (void)associateEmail:(id)email;
+- (void)associateIncidentId:(id)id;
+- (void)associateScreenshotImages:(id)images;
 - (void)cancelFeedbackForActiveFormViewController;
-- (void)commonInitWithContext:(unint64_t)a3;
-- (void)dataAggregator:(id)a3 didCompleteTasks:(id)a4;
-- (void)feedbackWillSendFeedbackSubmissionWithFeedbackText:(id)a3 emailAddress:(id)a4 screenshotURLs:(id)a5;
+- (void)commonInitWithContext:(unint64_t)context;
+- (void)dataAggregator:(id)aggregator didCompleteTasks:(id)tasks;
+- (void)feedbackWillSendFeedbackSubmissionWithFeedbackText:(id)text emailAddress:(id)address screenshotURLs:(id)ls;
 - (void)initiateFeedbackSnapshot;
 - (void)submitCrashFeedback;
 - (void)submitFeedbackForActiveFormViewController;
@@ -35,37 +35,37 @@
 
 @implementation TFFeedbackSession
 
-- (id)initForContext:(unint64_t)a3 betaApplicationIdentifier:(id)a4
+- (id)initForContext:(unint64_t)context betaApplicationIdentifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = TFFeedbackSession;
   v7 = [(TFFeedbackSession *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [identifierCopy copy];
     bundleIdentifier = v7->_bundleIdentifier;
     v7->_bundleIdentifier = v8;
 
-    [(TFFeedbackSession *)v7 commonInitWithContext:a3];
+    [(TFFeedbackSession *)v7 commonInitWithContext:context];
   }
 
   return v7;
 }
 
-- (id)initForContext:(unint64_t)a3 betaApplicationLoadableBundleURL:(id)a4
+- (id)initForContext:(unint64_t)context betaApplicationLoadableBundleURL:(id)l
 {
-  v6 = a4;
+  lCopy = l;
   v15.receiver = self;
   v15.super_class = TFFeedbackSession;
   v7 = [(TFFeedbackSession *)&v15 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [lCopy copy];
     bundleURL = v7->_bundleURL;
     v7->_bundleURL = v8;
 
-    v10 = [TFBundle bundleIdentifierForBundleURL:v6];
+    v10 = [TFBundle bundleIdentifierForBundleURL:lCopy];
     v11 = [v10 copy];
     bundleIdentifier = v7->_bundleIdentifier;
     v7->_bundleIdentifier = v11;
@@ -76,7 +76,7 @@
       goto LABEL_6;
     }
 
-    [(TFFeedbackSession *)v7 commonInitWithContext:a3];
+    [(TFFeedbackSession *)v7 commonInitWithContext:context];
   }
 
   v13 = v7;
@@ -85,35 +85,35 @@ LABEL_6:
   return v13;
 }
 
-- (id)initForContext:(unint64_t)a3 withTestingWithLaunchInfo:(id)a4
+- (id)initForContext:(unint64_t)context withTestingWithLaunchInfo:(id)info
 {
-  v7 = a4;
+  infoCopy = info;
   v17.receiver = self;
   v17.super_class = TFFeedbackSession;
   v8 = [(TFFeedbackSession *)&v17 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_launchInfo, a4);
-    v10 = [MEMORY[0x277CCA8D8] mainBundle];
-    v11 = [v10 bundleURL];
+    objc_storeStrong(&v8->_launchInfo, info);
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleURL = [mainBundle bundleURL];
     bundleURL = v9->_bundleURL;
-    v9->_bundleURL = v11;
+    v9->_bundleURL = bundleURL;
 
-    v13 = [MEMORY[0x277CCA8D8] mainBundle];
-    v14 = [v13 bundleIdentifier];
+    mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle2 bundleIdentifier];
     bundleIdentifier = v9->_bundleIdentifier;
-    v9->_bundleIdentifier = v14;
+    v9->_bundleIdentifier = bundleIdentifier;
 
-    [(TFFeedbackSession *)v9 commonInitWithContext:a3];
+    [(TFFeedbackSession *)v9 commonInitWithContext:context];
   }
 
   return v9;
 }
 
-- (void)commonInitWithContext:(unint64_t)a3
+- (void)commonInitWithContext:(unint64_t)context
 {
-  self->_context = a3;
+  self->_context = context;
   v4 = AMSGenerateLogCorrelationKey();
   logKey = self->_logKey;
   self->_logKey = v4;
@@ -140,174 +140,174 @@ LABEL_6:
 {
   v17 = *MEMORY[0x277D85DE8];
   v3 = +[TFLogConfiguration defaultConfiguration];
-  v4 = [v3 generatedLogger];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  generatedLogger = [v3 generatedLogger];
+  if (os_log_type_enabled(generatedLogger, OS_LOG_TYPE_DEFAULT))
   {
     v5 = objc_opt_class();
     v6 = v5;
-    v7 = [(TFFeedbackSession *)self bundleIdentifier];
-    v8 = [(TFFeedbackSession *)self logKey];
+    bundleIdentifier = [(TFFeedbackSession *)self bundleIdentifier];
+    logKey = [(TFFeedbackSession *)self logKey];
     v11 = 138543874;
     v12 = v5;
     v13 = 2114;
-    v14 = v7;
+    v14 = bundleIdentifier;
     v15 = 2112;
-    v16 = v8;
-    _os_log_impl(&dword_26D2C7000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@:%@] initiateFeedbackSnapshot", &v11, 0x20u);
+    v16 = logKey;
+    _os_log_impl(&dword_26D2C7000, generatedLogger, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@:%@] initiateFeedbackSnapshot", &v11, 0x20u);
   }
 
   [(TFFeedbackSession *)self setDidSnapshot:1];
   v9 = [TFDataAggregationTask snapshotTasksForSession:self];
-  v10 = [(TFFeedbackSession *)self aggregator];
-  [v10 runTasks:v9];
+  aggregator = [(TFFeedbackSession *)self aggregator];
+  [aggregator runTasks:v9];
 }
 
-- (void)associateIncidentId:(id)a3
+- (void)associateIncidentId:(id)id
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  idCopy = id;
   v5 = +[TFLogConfiguration defaultConfiguration];
-  v6 = [v5 generatedLogger];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  generatedLogger = [v5 generatedLogger];
+  if (os_log_type_enabled(generatedLogger, OS_LOG_TYPE_DEFAULT))
   {
     v7 = objc_opt_class();
     v8 = v7;
-    v9 = [(TFFeedbackSession *)self bundleIdentifier];
-    v10 = [(TFFeedbackSession *)self logKey];
+    bundleIdentifier = [(TFFeedbackSession *)self bundleIdentifier];
+    logKey = [(TFFeedbackSession *)self logKey];
     *buf = 138544130;
     v16 = v7;
     v17 = 2114;
-    v18 = v9;
+    v18 = bundleIdentifier;
     v19 = 2112;
-    v20 = v10;
+    v20 = logKey;
     v21 = 2114;
-    v22 = v4;
-    _os_log_impl(&dword_26D2C7000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@:%@] associateIncidentId incidentId=%{public}@", buf, 0x2Au);
+    v22 = idCopy;
+    _os_log_impl(&dword_26D2C7000, generatedLogger, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@:%@] associateIncidentId incidentId=%{public}@", buf, 0x2Au);
   }
 
-  v11 = [(TFFeedbackSession *)self dataContainer];
+  dataContainer = [(TFFeedbackSession *)self dataContainer];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __41__TFFeedbackSession_associateIncidentId___block_invoke;
   v13[3] = &unk_279D980C8;
-  v14 = v4;
-  v12 = v4;
-  [v11 performBatchUpdates:v13];
+  v14 = idCopy;
+  v12 = idCopy;
+  [dataContainer performBatchUpdates:v13];
 }
 
-- (void)associateScreenshotImages:(id)a3
+- (void)associateScreenshotImages:(id)images
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  imagesCopy = images;
   v5 = +[TFLogConfiguration defaultConfiguration];
-  v6 = [v5 generatedLogger];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  generatedLogger = [v5 generatedLogger];
+  if (os_log_type_enabled(generatedLogger, OS_LOG_TYPE_DEFAULT))
   {
     v7 = objc_opt_class();
     v8 = v7;
-    v9 = [(TFFeedbackSession *)self bundleIdentifier];
-    v10 = [(TFFeedbackSession *)self logKey];
+    bundleIdentifier = [(TFFeedbackSession *)self bundleIdentifier];
+    logKey = [(TFFeedbackSession *)self logKey];
     *buf = 138543874;
     v16 = v7;
     v17 = 2114;
-    v18 = v9;
+    v18 = bundleIdentifier;
     v19 = 2112;
-    v20 = v10;
-    _os_log_impl(&dword_26D2C7000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@:%@] associateScreenshotImages", buf, 0x20u);
+    v20 = logKey;
+    _os_log_impl(&dword_26D2C7000, generatedLogger, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@:%@] associateScreenshotImages", buf, 0x20u);
   }
 
-  v11 = [(TFFeedbackSession *)self dataContainer];
+  dataContainer = [(TFFeedbackSession *)self dataContainer];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __47__TFFeedbackSession_associateScreenshotImages___block_invoke;
   v13[3] = &unk_279D980C8;
-  v14 = v4;
-  v12 = v4;
-  [v11 performBatchUpdates:v13];
+  v14 = imagesCopy;
+  v12 = imagesCopy;
+  [dataContainer performBatchUpdates:v13];
 }
 
-- (void)associateComments:(id)a3
+- (void)associateComments:(id)comments
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  commentsCopy = comments;
   v5 = +[TFLogConfiguration defaultConfiguration];
-  v6 = [v5 generatedLogger];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  generatedLogger = [v5 generatedLogger];
+  if (os_log_type_enabled(generatedLogger, OS_LOG_TYPE_DEFAULT))
   {
     v7 = objc_opt_class();
     v8 = v7;
-    v9 = [(TFFeedbackSession *)self bundleIdentifier];
-    v10 = [(TFFeedbackSession *)self logKey];
+    bundleIdentifier = [(TFFeedbackSession *)self bundleIdentifier];
+    logKey = [(TFFeedbackSession *)self logKey];
     *buf = 138544130;
     v16 = v7;
     v17 = 2114;
-    v18 = v9;
+    v18 = bundleIdentifier;
     v19 = 2112;
-    v20 = v10;
+    v20 = logKey;
     v21 = 2114;
-    v22 = v4;
-    _os_log_impl(&dword_26D2C7000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@:%@] associateComments comments=%{public}@", buf, 0x2Au);
+    v22 = commentsCopy;
+    _os_log_impl(&dword_26D2C7000, generatedLogger, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@:%@] associateComments comments=%{public}@", buf, 0x2Au);
   }
 
-  v11 = [(TFFeedbackSession *)self dataContainer];
+  dataContainer = [(TFFeedbackSession *)self dataContainer];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __39__TFFeedbackSession_associateComments___block_invoke;
   v13[3] = &unk_279D980C8;
-  v14 = v4;
-  v12 = v4;
-  [v11 performBatchUpdates:v13];
+  v14 = commentsCopy;
+  v12 = commentsCopy;
+  [dataContainer performBatchUpdates:v13];
 }
 
-- (void)associateEmail:(id)a3
+- (void)associateEmail:(id)email
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  emailCopy = email;
   v5 = +[TFLogConfiguration defaultConfiguration];
-  v6 = [v5 generatedLogger];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  generatedLogger = [v5 generatedLogger];
+  if (os_log_type_enabled(generatedLogger, OS_LOG_TYPE_DEFAULT))
   {
     v7 = objc_opt_class();
     v8 = v7;
-    v9 = [(TFFeedbackSession *)self bundleIdentifier];
-    v10 = [(TFFeedbackSession *)self logKey];
+    bundleIdentifier = [(TFFeedbackSession *)self bundleIdentifier];
+    logKey = [(TFFeedbackSession *)self logKey];
     *buf = 138543874;
     v16 = v7;
     v17 = 2114;
-    v18 = v9;
+    v18 = bundleIdentifier;
     v19 = 2112;
-    v20 = v10;
-    _os_log_impl(&dword_26D2C7000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@:%@] associateEmail", buf, 0x20u);
+    v20 = logKey;
+    _os_log_impl(&dword_26D2C7000, generatedLogger, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@:%@] associateEmail", buf, 0x20u);
   }
 
-  v11 = [(TFFeedbackSession *)self dataContainer];
+  dataContainer = [(TFFeedbackSession *)self dataContainer];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __36__TFFeedbackSession_associateEmail___block_invoke;
   v13[3] = &unk_279D980C8;
-  v14 = v4;
-  v12 = v4;
-  [v11 performBatchUpdates:v13];
+  v14 = emailCopy;
+  v12 = emailCopy;
+  [dataContainer performBatchUpdates:v13];
 }
 
 - (id)createFeedbackViewControllerForCurrentState
 {
   v32 = *MEMORY[0x277D85DE8];
   v3 = +[TFLogConfiguration defaultConfiguration];
-  v4 = [v3 generatedLogger];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  generatedLogger = [v3 generatedLogger];
+  if (os_log_type_enabled(generatedLogger, OS_LOG_TYPE_DEFAULT))
   {
     v5 = objc_opt_class();
     v6 = v5;
-    v7 = [(TFFeedbackSession *)self bundleIdentifier];
-    v8 = [(TFFeedbackSession *)self logKey];
+    bundleIdentifier = [(TFFeedbackSession *)self bundleIdentifier];
+    logKey = [(TFFeedbackSession *)self logKey];
     v26 = 138543874;
     v27 = v5;
     v28 = 2114;
-    v29 = v7;
+    v29 = bundleIdentifier;
     v30 = 2112;
-    v31 = v8;
-    _os_log_impl(&dword_26D2C7000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@:%@] createFeedbackViewControllerForCurrentState", &v26, 0x20u);
+    v31 = logKey;
+    _os_log_impl(&dword_26D2C7000, generatedLogger, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@:%@] createFeedbackViewControllerForCurrentState", &v26, 0x20u);
   }
 
   if (![(TFFeedbackSession *)self didSnapshot])
@@ -316,41 +316,41 @@ LABEL_6:
   }
 
   v9 = [TFDataAggregationTask anytimeTasksForSession:self];
-  v10 = [(TFFeedbackSession *)self aggregator];
-  [v10 runTasks:v9];
+  aggregator = [(TFFeedbackSession *)self aggregator];
+  [aggregator runTasks:v9];
 
-  v11 = [(TFFeedbackSession *)self _generateFormForCurrentState];
-  v12 = [(TFFeedbackSession *)self dataContainer];
-  [v12 prepareInitialValuesForForm:v11];
+  _generateFormForCurrentState = [(TFFeedbackSession *)self _generateFormForCurrentState];
+  dataContainer = [(TFFeedbackSession *)self dataContainer];
+  [dataContainer prepareInitialValuesForForm:_generateFormForCurrentState];
 
-  v13 = [(TFFeedbackSession *)self activeFormViewController];
+  activeFormViewController = [(TFFeedbackSession *)self activeFormViewController];
 
-  if (v13)
+  if (activeFormViewController)
   {
     v14 = +[TFLogConfiguration defaultConfiguration];
-    v15 = [v14 generatedLogger];
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+    generatedLogger2 = [v14 generatedLogger];
+    if (os_log_type_enabled(generatedLogger2, OS_LOG_TYPE_ERROR))
     {
       v16 = objc_opt_class();
       v17 = v16;
-      v18 = [(TFFeedbackSession *)self bundleIdentifier];
-      v19 = [(TFFeedbackSession *)self logKey];
+      bundleIdentifier2 = [(TFFeedbackSession *)self bundleIdentifier];
+      logKey2 = [(TFFeedbackSession *)self logKey];
       v26 = 138543874;
       v27 = v16;
       v28 = 2114;
-      v29 = v18;
+      v29 = bundleIdentifier2;
       v30 = 2112;
-      v31 = v19;
-      _os_log_impl(&dword_26D2C7000, v15, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@:%@] Error - createFeedbackViewControllerForCurrentState is called when earlier view controller is still in alive. Deallocate earlier view controller.", &v26, 0x20u);
+      v31 = logKey2;
+      _os_log_impl(&dword_26D2C7000, generatedLogger2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@:%@] Error - createFeedbackViewControllerForCurrentState is called when earlier view controller is still in alive. Deallocate earlier view controller.", &v26, 0x20u);
     }
   }
 
   [(TFFeedbackSession *)self setCurrentPhase:0];
   v20 = [TFFeedbackFormPresenter alloc];
-  v21 = [(TFFeedbackSession *)self dataContainer];
-  v22 = [(TFFeedbackFormPresenter *)v20 initWithForm:v11 dataContainer:v21 session:self];
+  dataContainer2 = [(TFFeedbackSession *)self dataContainer];
+  v22 = [(TFFeedbackFormPresenter *)v20 initWithForm:_generateFormForCurrentState dataContainer:dataContainer2 session:self];
 
-  v23 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
   v24 = [_TtC14TestFlightCore16TestFlightCoreUI generateFeedbackViewWithDelegate:self];
   [(TFFeedbackSession *)self setActiveFormViewController:v24];
 
@@ -361,31 +361,31 @@ LABEL_6:
 {
   v18 = *MEMORY[0x277D85DE8];
   v3 = +[TFLogConfiguration defaultConfiguration];
-  v4 = [v3 generatedLogger];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  generatedLogger = [v3 generatedLogger];
+  if (os_log_type_enabled(generatedLogger, OS_LOG_TYPE_DEFAULT))
   {
     v5 = objc_opt_class();
     v6 = v5;
-    v7 = [(TFFeedbackSession *)self bundleIdentifier];
-    v8 = [(TFFeedbackSession *)self logKey];
+    bundleIdentifier = [(TFFeedbackSession *)self bundleIdentifier];
+    logKey = [(TFFeedbackSession *)self logKey];
     v12 = 138543874;
     v13 = v5;
     v14 = 2114;
-    v15 = v7;
+    v15 = bundleIdentifier;
     v16 = 2112;
-    v17 = v8;
-    _os_log_impl(&dword_26D2C7000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@:%@] submitCrashFeedback", &v12, 0x20u);
+    v17 = logKey;
+    _os_log_impl(&dword_26D2C7000, generatedLogger, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@:%@] submitCrashFeedback", &v12, 0x20u);
   }
 
-  v9 = [(TFFeedbackSession *)self _associatePrefilledEmailIfNeeded];
+  _associatePrefilledEmailIfNeeded = [(TFFeedbackSession *)self _associatePrefilledEmailIfNeeded];
   if (![(TFFeedbackSession *)self didSnapshot])
   {
     [(TFFeedbackSession *)self initiateFeedbackSnapshot];
   }
 
   v10 = [TFDataAggregationTask anytimeTasksForSession:self];
-  v11 = [(TFFeedbackSession *)self aggregator];
-  [v11 runTasks:v10];
+  aggregator = [(TFFeedbackSession *)self aggregator];
+  [aggregator runTasks:v10];
 
   [(TFFeedbackSession *)self setCurrentPhase:0];
   [(TFFeedbackSession *)self _beginFeedbackSubmisionForViewController:0];
@@ -395,47 +395,47 @@ LABEL_6:
 {
   v22 = *MEMORY[0x277D85DE8];
   v3 = +[TFLogConfiguration defaultConfiguration];
-  v4 = [v3 generatedLogger];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  generatedLogger = [v3 generatedLogger];
+  if (os_log_type_enabled(generatedLogger, OS_LOG_TYPE_DEFAULT))
   {
     v5 = objc_opt_class();
     v6 = v5;
-    v7 = [(TFFeedbackSession *)self bundleIdentifier];
-    v8 = [(TFFeedbackSession *)self logKey];
+    bundleIdentifier = [(TFFeedbackSession *)self bundleIdentifier];
+    logKey = [(TFFeedbackSession *)self logKey];
     v16 = 138543874;
     v17 = v5;
     v18 = 2114;
-    v19 = v7;
+    v19 = bundleIdentifier;
     v20 = 2112;
-    v21 = v8;
-    _os_log_impl(&dword_26D2C7000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@:%@] submitFeedbackForActiveFormViewController", &v16, 0x20u);
+    v21 = logKey;
+    _os_log_impl(&dword_26D2C7000, generatedLogger, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@:%@] submitFeedbackForActiveFormViewController", &v16, 0x20u);
   }
 
-  v9 = [(TFFeedbackSession *)self activeFormViewController];
+  activeFormViewController = [(TFFeedbackSession *)self activeFormViewController];
 
-  if (v9)
+  if (activeFormViewController)
   {
-    v10 = [(TFFeedbackSession *)self activeFormViewController];
-    [(TFFeedbackSession *)self _beginFeedbackSubmisionForViewController:v10];
+    activeFormViewController2 = [(TFFeedbackSession *)self activeFormViewController];
+    [(TFFeedbackSession *)self _beginFeedbackSubmisionForViewController:activeFormViewController2];
   }
 
   else
   {
-    v10 = +[TFLogConfiguration defaultConfiguration];
-    v11 = [v10 generatedLogger];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    activeFormViewController2 = +[TFLogConfiguration defaultConfiguration];
+    generatedLogger2 = [activeFormViewController2 generatedLogger];
+    if (os_log_type_enabled(generatedLogger2, OS_LOG_TYPE_ERROR))
     {
       v12 = objc_opt_class();
       v13 = v12;
-      v14 = [(TFFeedbackSession *)self bundleIdentifier];
-      v15 = [(TFFeedbackSession *)self logKey];
+      bundleIdentifier2 = [(TFFeedbackSession *)self bundleIdentifier];
+      logKey2 = [(TFFeedbackSession *)self logKey];
       v16 = 138543874;
       v17 = v12;
       v18 = 2114;
-      v19 = v14;
+      v19 = bundleIdentifier2;
       v20 = 2112;
-      v21 = v15;
-      _os_log_impl(&dword_26D2C7000, v11, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@:%@] submitFeedbackForActiveFormViewController called when there was no active UI.", &v16, 0x20u);
+      v21 = logKey2;
+      _os_log_impl(&dword_26D2C7000, generatedLogger2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@:%@] submitFeedbackForActiveFormViewController called when there was no active UI.", &v16, 0x20u);
     }
   }
 }
@@ -444,42 +444,42 @@ LABEL_6:
 {
   v22 = *MEMORY[0x277D85DE8];
   v3 = +[TFLogConfiguration defaultConfiguration];
-  v4 = [v3 generatedLogger];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  generatedLogger = [v3 generatedLogger];
+  if (os_log_type_enabled(generatedLogger, OS_LOG_TYPE_DEFAULT))
   {
     v5 = objc_opt_class();
     v6 = v5;
-    v7 = [(TFFeedbackSession *)self bundleIdentifier];
-    v8 = [(TFFeedbackSession *)self logKey];
+    bundleIdentifier = [(TFFeedbackSession *)self bundleIdentifier];
+    logKey = [(TFFeedbackSession *)self logKey];
     v16 = 138543874;
     v17 = v5;
     v18 = 2114;
-    v19 = v7;
+    v19 = bundleIdentifier;
     v20 = 2112;
-    v21 = v8;
-    _os_log_impl(&dword_26D2C7000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@:%@] cancelFeedbackForActiveFormViewController", &v16, 0x20u);
+    v21 = logKey;
+    _os_log_impl(&dword_26D2C7000, generatedLogger, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@:%@] cancelFeedbackForActiveFormViewController", &v16, 0x20u);
   }
 
   [(TFFeedbackSession *)self setCurrentPhase:0];
-  v9 = [(TFFeedbackSession *)self delegate];
+  delegate = [(TFFeedbackSession *)self delegate];
   v10 = objc_opt_respondsToSelector();
 
-  v11 = [(TFFeedbackSession *)self delegate];
-  v12 = v11;
+  delegate2 = [(TFFeedbackSession *)self delegate];
+  delegate3 = delegate2;
   if (v10)
   {
-    [v11 sessionDidCancelFeedback:self];
+    [delegate2 sessionDidCancelFeedback:self];
   }
 
   else
   {
     v13 = objc_opt_respondsToSelector();
 
-    v12 = [(TFFeedbackSession *)self delegate];
+    delegate3 = [(TFFeedbackSession *)self delegate];
     if (v13)
     {
-      v14 = [(TFFeedbackSession *)self activeFormViewController];
-      [v12 session:self didCancelFeedbackFromViewController:v14];
+      activeFormViewController = [(TFFeedbackSession *)self activeFormViewController];
+      [delegate3 session:self didCancelFeedbackFromViewController:activeFormViewController];
     }
 
     else
@@ -491,9 +491,9 @@ LABEL_6:
         return;
       }
 
-      v12 = [(TFFeedbackSession *)self delegate];
-      v14 = [(TFFeedbackSession *)self activeFormViewController];
-      [v12 session:self didSubmitFeedbackFromViewController:v14];
+      delegate3 = [(TFFeedbackSession *)self delegate];
+      activeFormViewController = [(TFFeedbackSession *)self activeFormViewController];
+      [delegate3 session:self didSubmitFeedbackFromViewController:activeFormViewController];
     }
   }
 }
@@ -502,41 +502,41 @@ LABEL_6:
 {
   v18 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277CC1E70]);
-  v4 = [(TFFeedbackSession *)self bundleIdentifier];
+  bundleIdentifier = [(TFFeedbackSession *)self bundleIdentifier];
   v13 = 0;
-  v5 = [v3 initWithBundleIdentifier:v4 allowPlaceholder:0 error:&v13];
+  v5 = [v3 initWithBundleIdentifier:bundleIdentifier allowPlaceholder:0 error:&v13];
   v6 = v13;
 
   if (!v5)
   {
     v7 = +[TFLogConfiguration defaultConfiguration];
-    v8 = [v7 generatedLogger];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    generatedLogger = [v7 generatedLogger];
+    if (os_log_type_enabled(generatedLogger, OS_LOG_TYPE_ERROR))
     {
-      v9 = [(TFFeedbackSession *)self bundleIdentifier];
+      bundleIdentifier2 = [(TFFeedbackSession *)self bundleIdentifier];
       *buf = 138412546;
-      v15 = v9;
+      v15 = bundleIdentifier2;
       v16 = 2112;
       v17 = v6;
-      _os_log_impl(&dword_26D2C7000, v8, OS_LOG_TYPE_ERROR, "Failed to load application record for %@: %@", buf, 0x16u);
+      _os_log_impl(&dword_26D2C7000, generatedLogger, OS_LOG_TYPE_ERROR, "Failed to load application record for %@: %@", buf, 0x16u);
     }
   }
 
-  v10 = [v5 iTunesMetadata];
-  v11 = [v10 artistName];
+  iTunesMetadata = [v5 iTunesMetadata];
+  artistName = [iTunesMetadata artistName];
 
-  return v11;
+  return artistName;
 }
 
 - (id)_associatePrefilledEmailIfNeeded
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = [(TFFeedbackSession *)self launchInfo];
-  v4 = [v3 testerEmail];
-  v5 = v4;
-  if (v4)
+  launchInfo = [(TFFeedbackSession *)self launchInfo];
+  testerEmail = [launchInfo testerEmail];
+  v5 = testerEmail;
+  if (testerEmail)
   {
-    v6 = v4;
+    v6 = testerEmail;
   }
 
   else
@@ -546,9 +546,9 @@ LABEL_6:
 
   v7 = v6;
 
-  v8 = [MEMORY[0x277CEC4C0] sharedInstance];
-  v9 = [(TFFeedbackSession *)self bundleIdentifier];
-  v10 = [v8 getEmailAddressForBundleID:v9];
+  mEMORY[0x277CEC4C0] = [MEMORY[0x277CEC4C0] sharedInstance];
+  bundleIdentifier = [(TFFeedbackSession *)self bundleIdentifier];
+  v10 = [mEMORY[0x277CEC4C0] getEmailAddressForBundleID:bundleIdentifier];
   v11 = v10;
   if (v10)
   {
@@ -611,10 +611,10 @@ LABEL_18:
 - (id)_generateFormForCurrentState
 {
   v3 = objc_alloc_init(TFFeedbackFormBuilder);
-  v4 = [(TFFeedbackSession *)self _developerName];
-  v5 = [(TFFeedbackSession *)self _associatePrefilledEmailIfNeeded];
-  v6 = [(TFFeedbackSession *)self dataContainer];
-  v7 = [v6 imageCollectionForIdentifer:@"c"];
+  _developerName = [(TFFeedbackSession *)self _developerName];
+  _associatePrefilledEmailIfNeeded = [(TFFeedbackSession *)self _associatePrefilledEmailIfNeeded];
+  dataContainer = [(TFFeedbackSession *)self dataContainer];
+  v7 = [dataContainer imageCollectionForIdentifer:@"c"];
 
   v8 = MEMORY[0x277CBEBF8];
   if (v7)
@@ -633,58 +633,58 @@ LABEL_18:
   }
 
   [(TFFeedbackSession *)self associateScreenshotImages:v8];
-  v11 = [(TFFeedbackFormBuilder *)v3 buildFormForContext:[(TFFeedbackSession *)self context] withDeveloperName:v4 prefilledEmail:v5 hasScreenshots:v10];
+  v11 = [(TFFeedbackFormBuilder *)v3 buildFormForContext:[(TFFeedbackSession *)self context] withDeveloperName:_developerName prefilledEmail:_associatePrefilledEmailIfNeeded hasScreenshots:v10];
 
   return v11;
 }
 
-- (void)_beginFeedbackSubmisionForViewController:(id)a3
+- (void)_beginFeedbackSubmisionForViewController:(id)controller
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  controllerCopy = controller;
   v5 = +[TFLogConfiguration defaultConfiguration];
-  v6 = [v5 generatedLogger];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  generatedLogger = [v5 generatedLogger];
+  if (os_log_type_enabled(generatedLogger, OS_LOG_TYPE_DEFAULT))
   {
     v7 = objc_opt_class();
     v8 = v7;
-    v9 = [(TFFeedbackSession *)self bundleIdentifier];
-    v10 = [(TFFeedbackSession *)self logKey];
-    v11 = [(TFFeedbackSession *)self _currentContextStringDescription];
+    bundleIdentifier = [(TFFeedbackSession *)self bundleIdentifier];
+    logKey = [(TFFeedbackSession *)self logKey];
+    _currentContextStringDescription = [(TFFeedbackSession *)self _currentContextStringDescription];
     *buf = 138544386;
     v27 = v7;
     v28 = 2114;
-    v29 = v9;
+    v29 = bundleIdentifier;
     v30 = 2112;
-    v31 = v10;
+    v31 = logKey;
     v32 = 2112;
-    v33 = v4;
+    v33 = controllerCopy;
     v34 = 2112;
-    v35 = v11;
-    _os_log_impl(&dword_26D2C7000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@:%@] _beginFeedbackSubmisionForViewController: formViewController=%@ context=%@", buf, 0x34u);
+    v35 = _currentContextStringDescription;
+    _os_log_impl(&dword_26D2C7000, generatedLogger, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@:%@] _beginFeedbackSubmisionForViewController: formViewController=%@ context=%@", buf, 0x34u);
   }
 
   [(TFFeedbackSession *)self setCurrentPhase:1];
-  v12 = [(TFFeedbackSession *)self dataContainer];
-  v13 = [v12 isLoading];
+  dataContainer = [(TFFeedbackSession *)self dataContainer];
+  isLoading = [dataContainer isLoading];
 
-  if (v13)
+  if (isLoading)
   {
     v14 = +[TFLogConfiguration defaultConfiguration];
-    v15 = [v14 generatedLogger];
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+    generatedLogger2 = [v14 generatedLogger];
+    if (os_log_type_enabled(generatedLogger2, OS_LOG_TYPE_DEFAULT))
     {
       v16 = objc_opt_class();
       v17 = v16;
-      v18 = [(TFFeedbackSession *)self bundleIdentifier];
-      v19 = [(TFFeedbackSession *)self logKey];
+      bundleIdentifier2 = [(TFFeedbackSession *)self bundleIdentifier];
+      logKey2 = [(TFFeedbackSession *)self logKey];
       *buf = 138543874;
       v27 = v16;
       v28 = 2114;
-      v29 = v18;
+      v29 = bundleIdentifier2;
       v30 = 2112;
-      v31 = v19;
-      _os_log_impl(&dword_26D2C7000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@:%@] Waiting for aggregator to complete", buf, 0x20u);
+      v31 = logKey2;
+      _os_log_impl(&dword_26D2C7000, generatedLogger2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@:%@] Waiting for aggregator to complete", buf, 0x20u);
     }
 
     [(TFFeedbackSession *)self setWaitingOnAggregatorForSubmission:1];
@@ -693,16 +693,16 @@ LABEL_18:
   else
   {
     objc_initWeak(buf, self);
-    v20 = [(TFFeedbackSession *)self submissionService];
-    v21 = [(TFFeedbackSession *)self bundleIdentifier];
-    v22 = [(TFFeedbackSession *)self dataContainer];
+    submissionService = [(TFFeedbackSession *)self submissionService];
+    bundleIdentifier3 = [(TFFeedbackSession *)self bundleIdentifier];
+    dataContainer2 = [(TFFeedbackSession *)self dataContainer];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __62__TFFeedbackSession__beginFeedbackSubmisionForViewController___block_invoke;
     v23[3] = &unk_279D98588;
     objc_copyWeak(&v25, buf);
-    v24 = v4;
-    [v20 submitFeedbackForBundleId:v21 withContentsOfDataSource:v22 completionHandler:v23];
+    v24 = controllerCopy;
+    [submissionService submitFeedbackForBundleId:bundleIdentifier3 withContentsOfDataSource:dataContainer2 completionHandler:v23];
 
     objc_destroyWeak(&v25);
     objc_destroyWeak(buf);
@@ -742,75 +742,75 @@ void __62__TFFeedbackSession__beginFeedbackSubmisionForViewController___block_in
   }
 }
 
-- (void)_abortFeedbackSubmissionForViewController:(id)a3 withError:(id)a4
+- (void)_abortFeedbackSubmissionForViewController:(id)controller withError:(id)error
 {
   v43 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  errorCopy = error;
   v8 = +[TFLogConfiguration defaultConfiguration];
-  v9 = [v8 generatedLogger];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  generatedLogger = [v8 generatedLogger];
+  if (os_log_type_enabled(generatedLogger, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = v6;
+    v10 = controllerCopy;
     v11 = objc_opt_class();
     v28 = v11;
-    v12 = [(TFFeedbackSession *)self bundleIdentifier];
-    v13 = [(TFFeedbackSession *)self logKey];
-    v14 = [(TFFeedbackSession *)self _currentContextStringDescription];
-    v15 = [v7 localizedDescription];
+    bundleIdentifier = [(TFFeedbackSession *)self bundleIdentifier];
+    logKey = [(TFFeedbackSession *)self logKey];
+    _currentContextStringDescription = [(TFFeedbackSession *)self _currentContextStringDescription];
+    localizedDescription = [errorCopy localizedDescription];
     *buf = 138544642;
     v32 = v11;
-    v6 = v10;
+    controllerCopy = v10;
     v33 = 2114;
-    v34 = v12;
+    v34 = bundleIdentifier;
     v35 = 2112;
-    v36 = v13;
+    v36 = logKey;
     v37 = 2112;
     v38 = v10;
     v39 = 2112;
-    v40 = v14;
+    v40 = _currentContextStringDescription;
     v41 = 2112;
-    v42 = v15;
-    _os_log_impl(&dword_26D2C7000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@:%@] _abortFeedbackSubmissionForViewController:withError: formViewController=%@ context=%@ | error=%@", buf, 0x3Eu);
+    v42 = localizedDescription;
+    _os_log_impl(&dword_26D2C7000, generatedLogger, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@:%@] _abortFeedbackSubmissionForViewController:withError: formViewController=%@ context=%@ | error=%@", buf, 0x3Eu);
   }
 
   [(TFFeedbackSession *)self setCurrentPhase:0];
-  v16 = [(TFFeedbackSession *)self activeFormViewController];
+  activeFormViewController = [(TFFeedbackSession *)self activeFormViewController];
 
-  if (v16)
+  if (activeFormViewController)
   {
-    v17 = [(TFFeedbackSession *)self submissionService];
-    v18 = [(TFFeedbackSession *)self _displayableErrorMessageFromService:v17 submissionError:v7];
+    submissionService = [(TFFeedbackSession *)self submissionService];
+    v18 = [(TFFeedbackSession *)self _displayableErrorMessageFromService:submissionService submissionError:errorCopy];
 
-    v19 = [(TFFeedbackSession *)self activeFormViewController];
+    activeFormViewController2 = [(TFFeedbackSession *)self activeFormViewController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v21 = [(TFFeedbackSession *)self activeFormViewController];
-      v22 = [v21 presenter];
-      [v22 showSubmissionFailureWithMessage:v18];
+      activeFormViewController3 = [(TFFeedbackSession *)self activeFormViewController];
+      presenter = [activeFormViewController3 presenter];
+      [presenter showSubmissionFailureWithMessage:v18];
     }
 
     else
     {
-      v21 = [MEMORY[0x277CCAB98] defaultCenter];
+      activeFormViewController3 = [MEMORY[0x277CCAB98] defaultCenter];
       v29 = @"message";
       v30 = v18;
-      v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v30 forKeys:&v29 count:1];
-      [v21 postNotificationName:@"com.apple.TestFlightCore.UpdateSubmitErrorPresentationNotification" object:self userInfo:v22];
+      presenter = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v30 forKeys:&v29 count:1];
+      [activeFormViewController3 postNotificationName:@"com.apple.TestFlightCore.UpdateSubmitErrorPresentationNotification" object:self userInfo:presenter];
     }
   }
 
-  v23 = [(TFFeedbackSession *)self delegate];
+  delegate = [(TFFeedbackSession *)self delegate];
   v24 = objc_opt_respondsToSelector();
 
-  v25 = [(TFFeedbackSession *)self delegate];
-  v26 = v25;
+  delegate2 = [(TFFeedbackSession *)self delegate];
+  delegate3 = delegate2;
   if (v24)
   {
-    [v25 sessionDidFailToSubmit:self withError:v7];
+    [delegate2 sessionDidFailToSubmit:self withError:errorCopy];
 LABEL_12:
 
     goto LABEL_13;
@@ -820,49 +820,49 @@ LABEL_12:
 
   if (v27)
   {
-    v26 = [(TFFeedbackSession *)self delegate];
-    [v26 session:self failedToSubmitFeedbackFromViewController:v6 withError:v7];
+    delegate3 = [(TFFeedbackSession *)self delegate];
+    [delegate3 session:self failedToSubmitFeedbackFromViewController:controllerCopy withError:errorCopy];
     goto LABEL_12;
   }
 
 LABEL_13:
 }
 
-- (void)_finishFeedbackSubmissionForViewController:(id)a3
+- (void)_finishFeedbackSubmissionForViewController:(id)controller
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  controllerCopy = controller;
   v5 = +[TFLogConfiguration defaultConfiguration];
-  v6 = [v5 generatedLogger];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  generatedLogger = [v5 generatedLogger];
+  if (os_log_type_enabled(generatedLogger, OS_LOG_TYPE_DEFAULT))
   {
     v7 = objc_opt_class();
     v8 = v7;
-    v9 = [(TFFeedbackSession *)self bundleIdentifier];
-    v10 = [(TFFeedbackSession *)self logKey];
-    v11 = [(TFFeedbackSession *)self _currentContextStringDescription];
+    bundleIdentifier = [(TFFeedbackSession *)self bundleIdentifier];
+    logKey = [(TFFeedbackSession *)self logKey];
+    _currentContextStringDescription = [(TFFeedbackSession *)self _currentContextStringDescription];
     v17 = 138544386;
     v18 = v7;
     v19 = 2114;
-    v20 = v9;
+    v20 = bundleIdentifier;
     v21 = 2112;
-    v22 = v10;
+    v22 = logKey;
     v23 = 2112;
-    v24 = v4;
+    v24 = controllerCopy;
     v25 = 2112;
-    v26 = v11;
-    _os_log_impl(&dword_26D2C7000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@:%@] _finishFeedbackSubmissionForViewController: formViewController=%@ context=%@", &v17, 0x34u);
+    v26 = _currentContextStringDescription;
+    _os_log_impl(&dword_26D2C7000, generatedLogger, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@:%@] _finishFeedbackSubmissionForViewController: formViewController=%@ context=%@", &v17, 0x34u);
   }
 
   [(TFFeedbackSession *)self setCurrentPhase:2];
-  v12 = [(TFFeedbackSession *)self delegate];
+  delegate = [(TFFeedbackSession *)self delegate];
   v13 = objc_opt_respondsToSelector();
 
-  v14 = [(TFFeedbackSession *)self delegate];
-  v15 = v14;
+  delegate2 = [(TFFeedbackSession *)self delegate];
+  delegate3 = delegate2;
   if (v13)
   {
-    [v14 sessionDidSubmitFeedback:self];
+    [delegate2 sessionDidSubmitFeedback:self];
 LABEL_7:
 
     goto LABEL_8;
@@ -872,17 +872,17 @@ LABEL_7:
 
   if (v16)
   {
-    v15 = [(TFFeedbackSession *)self delegate];
-    [v15 session:self didSubmitFeedbackFromViewController:v4];
+    delegate3 = [(TFFeedbackSession *)self delegate];
+    [delegate3 session:self didSubmitFeedbackFromViewController:controllerCopy];
     goto LABEL_7;
   }
 
 LABEL_8:
 }
 
-- (void)dataAggregator:(id)a3 didCompleteTasks:(id)a4
+- (void)dataAggregator:(id)aggregator didCompleteTasks:(id)tasks
 {
-  if ([(TFFeedbackSession *)self currentPhase:a3]== 1)
+  if ([(TFFeedbackSession *)self currentPhase:aggregator]== 1)
   {
     v5 = ![(TFFeedbackSession *)self isWaitingOnAggregatorForSubmission];
   }
@@ -892,10 +892,10 @@ LABEL_8:
     v5 = 1;
   }
 
-  v6 = [(TFFeedbackSession *)self dataContainer];
-  v7 = [v6 isLoading];
+  dataContainer = [(TFFeedbackSession *)self dataContainer];
+  isLoading = [dataContainer isLoading];
 
-  if ((v5 & 1) == 0 && (v7 & 1) == 0)
+  if ((v5 & 1) == 0 && (isLoading & 1) == 0)
   {
     [(TFFeedbackSession *)self submitFeedbackForActiveFormViewController];
 
@@ -905,59 +905,59 @@ LABEL_8:
 
 - (id)launchInfoForFeedbackPopulation
 {
-  v3 = [(TFFeedbackSession *)self launchInfo];
+  launchInfo = [(TFFeedbackSession *)self launchInfo];
 
-  if (v3)
+  if (launchInfo)
   {
-    v4 = [(TFFeedbackSession *)self launchInfo];
+    launchInfo2 = [(TFFeedbackSession *)self launchInfo];
   }
 
   else
   {
     v5 = objc_alloc(MEMORY[0x277CC1E70]);
-    v6 = [(TFFeedbackSession *)self bundleIdentifier];
+    bundleIdentifier = [(TFFeedbackSession *)self bundleIdentifier];
     v11 = 0;
-    v7 = [v5 initWithBundleIdentifier:v6 allowPlaceholder:0 error:&v11];
+    v7 = [v5 initWithBundleIdentifier:bundleIdentifier allowPlaceholder:0 error:&v11];
 
-    v8 = [MEMORY[0x277CEC4C0] sharedInstance];
-    v9 = [v7 bundleIdentifier];
-    v4 = [v8 getLaunchInfoForBundleID:v9];
+    mEMORY[0x277CEC4C0] = [MEMORY[0x277CEC4C0] sharedInstance];
+    bundleIdentifier2 = [v7 bundleIdentifier];
+    launchInfo2 = [mEMORY[0x277CEC4C0] getLaunchInfoForBundleID:bundleIdentifier2];
   }
 
-  return v4;
+  return launchInfo2;
 }
 
 - (id)feedbackAppName
 {
-  v2 = [(TFFeedbackSession *)self launchInfoForFeedbackPopulation];
-  v3 = [v2 displayNames];
-  v4 = [TFLocale preferredLocalizedDisplayNameFromDisplayNames:v3];
+  launchInfoForFeedbackPopulation = [(TFFeedbackSession *)self launchInfoForFeedbackPopulation];
+  displayNames = [launchInfoForFeedbackPopulation displayNames];
+  v4 = [TFLocale preferredLocalizedDisplayNameFromDisplayNames:displayNames];
 
   return v4;
 }
 
 - (id)feedbackDeveloperName
 {
-  v2 = [(TFFeedbackSession *)self launchInfoForFeedbackPopulation];
-  v3 = [v2 artistName];
+  launchInfoForFeedbackPopulation = [(TFFeedbackSession *)self launchInfoForFeedbackPopulation];
+  artistName = [launchInfoForFeedbackPopulation artistName];
 
-  return v3;
+  return artistName;
 }
 
 - (id)feedbackTesterEmailAddress
 {
-  v2 = [(TFFeedbackSession *)self launchInfoForFeedbackPopulation];
-  v3 = [v2 testerEmail];
+  launchInfoForFeedbackPopulation = [(TFFeedbackSession *)self launchInfoForFeedbackPopulation];
+  testerEmail = [launchInfoForFeedbackPopulation testerEmail];
 
-  return v3;
+  return testerEmail;
 }
 
 - (id)feedbackInitialScreenshotURLs
 {
-  v19 = [MEMORY[0x277CCAA00] defaultManager];
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(TFFeedbackSession *)self dataContainer];
-  v5 = [v4 imageCollectionForIdentifer:@"c"];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  array = [MEMORY[0x277CBEB18] array];
+  dataContainer = [(TFFeedbackSession *)self dataContainer];
+  v5 = [dataContainer imageCollectionForIdentifer:@"c"];
 
   v6 = [v5 count];
   if (v6 >= 1)
@@ -985,13 +985,13 @@ LABEL_7:
           v13 = TFLocalizedString(@"SCREEN_SHOT_FILE_NAME");
           v14 = [v12 stringWithFormat:v13, v8 + 1];
 
-          v15 = [v19 temporaryDirectory];
-          v16 = [v15 URLByAppendingPathComponent:v14];
+          temporaryDirectory = [defaultManager temporaryDirectory];
+          v16 = [temporaryDirectory URLByAppendingPathComponent:v14];
 
           v17 = [v16 URLByAppendingPathExtension:@"png"];
 
           [v11 writeToURL:v17 atomically:1];
-          [v3 addObject:v17];
+          [array addObject:v17];
         }
 
         goto LABEL_10;
@@ -1012,26 +1012,26 @@ LABEL_10:
 
 LABEL_11:
 
-  return v3;
+  return array;
 }
 
-- (void)feedbackWillSendFeedbackSubmissionWithFeedbackText:(id)a3 emailAddress:(id)a4 screenshotURLs:(id)a5
+- (void)feedbackWillSendFeedbackSubmissionWithFeedbackText:(id)text emailAddress:(id)address screenshotURLs:(id)ls
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(TFFeedbackSession *)self dataContainer];
+  textCopy = text;
+  addressCopy = address;
+  lsCopy = ls;
+  dataContainer = [(TFFeedbackSession *)self dataContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __100__TFFeedbackSession_feedbackWillSendFeedbackSubmissionWithFeedbackText_emailAddress_screenshotURLs___block_invoke;
   v15[3] = &unk_279D985B0;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  [v11 performBatchUpdates:v15];
+  v16 = textCopy;
+  v17 = addressCopy;
+  v18 = lsCopy;
+  v12 = lsCopy;
+  v13 = addressCopy;
+  v14 = textCopy;
+  [dataContainer performBatchUpdates:v15];
 
   [(TFFeedbackSession *)self submitFeedbackForActiveFormViewController];
 }
@@ -1092,24 +1092,24 @@ void __100__TFFeedbackSession_feedbackWillSendFeedbackSubmissionWithFeedbackText
   }
 }
 
-- (id)_displayableErrorMessageFromService:(id)a3 submissionError:(id)a4
+- (id)_displayableErrorMessageFromService:(id)service submissionError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = MEMORY[0x277CCACA8];
-  v7 = a3;
+  serviceCopy = service;
   v8 = TFLocalizedString(@"NUMBER_OF_CHARACTERS");
-  v9 = [v6 stringWithFormat:v8, objc_msgSend(v7, "maxNumberOfCommentSymbolsAllowed")];
+  v9 = [v6 stringWithFormat:v8, objc_msgSend(serviceCopy, "maxNumberOfCommentSymbolsAllowed")];
 
   v10 = MEMORY[0x277CCACA8];
   v11 = TFLocalizedString(@"NUMBER_OF_IMAGES");
-  v12 = [v7 maxNumberOfScreenshotsAllowed];
+  maxNumberOfScreenshotsAllowed = [serviceCopy maxNumberOfScreenshotsAllowed];
 
-  v13 = [v10 stringWithFormat:v11, v12];
+  v13 = [v10 stringWithFormat:v11, maxNumberOfScreenshotsAllowed];
 
-  v14 = [v5 code];
-  if (v14 > 400)
+  code = [errorCopy code];
+  if (code > 400)
   {
-    switch(v14)
+    switch(code)
     {
       case 401:
         v21 = MEMORY[0x277CCACA8];
@@ -1122,8 +1122,8 @@ void __100__TFFeedbackSession_feedbackWillSendFeedbackSubmissionWithFeedbackText
         [v22 stringWithFormat:v16, v9];
         break;
       case 404:
-        v15 = [v5 userInfo];
-        v16 = [v15 objectForKeyedSubscript:@"TFErrorImageName"];
+        userInfo = [errorCopy userInfo];
+        v16 = [userInfo objectForKeyedSubscript:@"TFErrorImageName"];
 
         if (v16)
         {
@@ -1146,14 +1146,14 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  if (v14 == 302)
+  if (code == 302)
   {
     v20 = @"ALERT_SUBMIT_FAILURE_MALFORMED_EMAIL";
   }
 
   else
   {
-    if (v14 != 303)
+    if (code != 303)
     {
 LABEL_16:
       v20 = @"ALERT_SUBMIT_FAILURE_GENERIC_MESSAGE";
@@ -1178,9 +1178,9 @@ LABEL_18:
   }
 
   v3 = _currentContextStringDescription_contextDescriptors;
-  v4 = [(TFFeedbackSession *)self context];
+  context = [(TFFeedbackSession *)self context];
 
-  return [v3 objectAtIndexedSubscript:v4];
+  return [v3 objectAtIndexedSubscript:context];
 }
 
 void __53__TFFeedbackSession__currentContextStringDescription__block_invoke()
@@ -1189,35 +1189,35 @@ void __53__TFFeedbackSession__currentContextStringDescription__block_invoke()
   _currentContextStringDescription_contextDescriptors = &unk_287EB4708;
 }
 
-- (TFFeedbackSession)initWithBetaApplicationIdentifier:(id)a3
+- (TFFeedbackSession)initWithBetaApplicationIdentifier:(id)identifier
 {
   v4 = MEMORY[0x277CEE620];
-  v5 = a3;
-  v6 = [v4 currentProcess];
-  v7 = [v6 bundleIdentifier];
-  v8 = -[TFFeedbackSession initForContext:betaApplicationIdentifier:](self, "initForContext:betaApplicationIdentifier:", [v7 containsString:@"Screenshot"], v5);
+  identifierCopy = identifier;
+  currentProcess = [v4 currentProcess];
+  bundleIdentifier = [currentProcess bundleIdentifier];
+  v8 = -[TFFeedbackSession initForContext:betaApplicationIdentifier:](self, "initForContext:betaApplicationIdentifier:", [bundleIdentifier containsString:@"Screenshot"], identifierCopy);
 
   return v8;
 }
 
-- (id)initForContext:(unint64_t)a3 betaApplicationBundleURL:(id)a4
+- (id)initForContext:(unint64_t)context betaApplicationBundleURL:(id)l
 {
-  v6 = a4;
+  lCopy = l;
   v14.receiver = self;
   v14.super_class = TFFeedbackSession;
   v7 = [(TFFeedbackSession *)&v14 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [lCopy copy];
     bundleURL = v7->_bundleURL;
     v7->_bundleURL = v8;
 
-    v10 = [TFBundle bundleIdentifierForBundleURL:v6];
+    v10 = [TFBundle bundleIdentifierForBundleURL:lCopy];
     v11 = [v10 copy];
     bundleIdentifier = v7->_bundleIdentifier;
     v7->_bundleIdentifier = v11;
 
-    [(TFFeedbackSession *)v7 commonInitWithContext:a3];
+    [(TFFeedbackSession *)v7 commonInitWithContext:context];
   }
 
   return v7;

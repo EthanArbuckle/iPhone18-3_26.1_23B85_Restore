@@ -1,28 +1,28 @@
 @interface _HDDatabaseConnectionWrapper
-- (id)initWithConnection:(void *)a3 flushGroup:(void *)a4 generation:;
+- (id)initWithConnection:(void *)connection flushGroup:(void *)group generation:;
 @end
 
 @implementation _HDDatabaseConnectionWrapper
 
-- (id)initWithConnection:(void *)a3 flushGroup:(void *)a4 generation:
+- (id)initWithConnection:(void *)connection flushGroup:(void *)group generation:
 {
   v8 = a2;
-  v9 = a3;
-  if (a1)
+  connectionCopy = connection;
+  if (self)
   {
-    v12.receiver = a1;
+    v12.receiver = self;
     v12.super_class = _HDDatabaseConnectionWrapper;
     v10 = objc_msgSendSuper2(&v12, sel_init);
-    a1 = v10;
+    self = v10;
     if (v10)
     {
       objc_storeStrong(v10 + 1, a2);
-      objc_storeStrong(a1 + 2, a3);
-      a1[3] = a4;
+      objc_storeStrong(self + 2, connection);
+      self[3] = group;
     }
   }
 
-  return a1;
+  return self;
 }
 
 @end

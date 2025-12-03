@@ -1,18 +1,18 @@
 @interface PKLegacyButtonInterfaceButton
-- (PKLegacyButtonInterfaceButton)initWithFrame:(CGRect)a3;
-- (void)setShowSpinner:(BOOL)a3;
-- (void)updateBackgroundColorWithColor:(id)a3;
-- (void)updateTitleColorWithColor:(id)a3;
-- (void)updateWithImage:(id)a3;
+- (PKLegacyButtonInterfaceButton)initWithFrame:(CGRect)frame;
+- (void)setShowSpinner:(BOOL)spinner;
+- (void)updateBackgroundColorWithColor:(id)color;
+- (void)updateTitleColorWithColor:(id)color;
+- (void)updateWithImage:(id)image;
 @end
 
 @implementation PKLegacyButtonInterfaceButton
 
-- (PKLegacyButtonInterfaceButton)initWithFrame:(CGRect)a3
+- (PKLegacyButtonInterfaceButton)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = PKLegacyButtonInterfaceButton;
-  v3 = [(PKLegacyButtonInterfaceButton *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKLegacyButtonInterfaceButton *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -37,48 +37,48 @@ void __47__PKLegacyButtonInterfaceButton_initWithFrame___block_invoke(uint64_t a
   [v2 setConfiguration:v4];
 }
 
-- (void)setShowSpinner:(BOOL)a3
+- (void)setShowSpinner:(BOOL)spinner
 {
-  if (self->_showSpinner != a3)
+  if (self->_showSpinner != spinner)
   {
-    self->_showSpinner = a3;
+    self->_showSpinner = spinner;
     [(PKLegacyButtonInterfaceButton *)self setNeedsUpdateConfiguration];
   }
 }
 
-- (void)updateBackgroundColorWithColor:(id)a3
+- (void)updateBackgroundColorWithColor:(id)color
 {
-  v5 = a3;
-  if (self->_overrideBackgroundColor != v5)
+  colorCopy = color;
+  if (self->_overrideBackgroundColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_overrideBackgroundColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_overrideBackgroundColor, color);
     [(PKLegacyButtonInterfaceButton *)self setNeedsUpdateConfiguration];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)updateTitleColorWithColor:(id)a3
+- (void)updateTitleColorWithColor:(id)color
 {
-  v5 = a3;
-  if (self->_overrideForegroundColor != v5)
+  colorCopy = color;
+  if (self->_overrideForegroundColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_overrideForegroundColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_overrideForegroundColor, color);
     [(PKLegacyButtonInterfaceButton *)self setNeedsUpdateConfiguration];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)updateWithImage:(id)a3
+- (void)updateWithImage:(id)image
 {
-  v5 = a3;
-  if (self->_image != v5)
+  imageCopy = image;
+  if (self->_image != imageCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_image, a3);
+    v6 = imageCopy;
+    objc_storeStrong(&self->_image, image);
     [(PKLegacyButtonInterfaceButton *)self setNeedsUpdateConfiguration];
-    v5 = v6;
+    imageCopy = v6;
   }
 }
 

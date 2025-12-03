@@ -7,10 +7,10 @@
 
 - (BOOL)isSUCoreInsufficientSpace
 {
-  v2 = [a1 domain];
-  if ([v2 isEqualToString:*MEMORY[0x277D646E0]])
+  domain = [self domain];
+  if ([domain isEqualToString:*MEMORY[0x277D646E0]])
   {
-    v3 = [a1 code] == 8600;
+    v3 = [self code] == 8600;
   }
 
   else
@@ -25,16 +25,16 @@
 {
   v18[1] = *MEMORY[0x277D85DE8];
   v5 = a4;
-  v6 = [v5 domain];
-  if (![v6 isEqualToString:@"com.apple.softwareupdateservices.errors"])
+  domain = [v5 domain];
+  if (![domain isEqualToString:@"com.apple.softwareupdateservices.errors"])
   {
 
     goto LABEL_5;
   }
 
-  v7 = [v5 code];
+  code = [v5 code];
 
-  if (v7 != 6)
+  if (code != 6)
   {
 LABEL_5:
     v8 = [SUUtility errorWithCode:6 originalError:v5];
@@ -46,8 +46,8 @@ LABEL_6:
   v9 = v8;
   if (a3)
   {
-    v10 = [v8 userInfo];
-    v11 = [v10 objectForKey:@"SUAdditionalSpaceRequired"];
+    userInfo = [v8 userInfo];
+    v11 = [userInfo objectForKey:@"SUAdditionalSpaceRequired"];
 
     if (!v11)
     {

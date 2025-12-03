@@ -1,44 +1,44 @@
 @interface SBWebClipService
-+ (id)bestWebClipForTargetContentIdentifier:(id)a3 fromWebClips:(id)a4;
-- (BOOL)_addActivationActionToSceneEntity:(id)a3 forWebClip:(id)a4;
-- (SBWebClipService)initWithWorkspace:(id)a3 sceneManager:(id)a4 placeholderController:(id)a5 applicationController:(id)a6 lockScreenManager:(id)a7;
-- (id)initForTestingWithPlaceholderController:(id)a3 applicationController:(id)a4;
-- (id)targetApplicationBundleIdentifierForWebClip:(id)a3;
-- (void)_applicationsDidChange:(id)a3;
-- (void)_beginWaitingForBundleIdentifier:(id)a3 webClipIdentifier:(id)a4 launchOrigin:(id)a5;
++ (id)bestWebClipForTargetContentIdentifier:(id)identifier fromWebClips:(id)clips;
+- (BOOL)_addActivationActionToSceneEntity:(id)entity forWebClip:(id)clip;
+- (SBWebClipService)initWithWorkspace:(id)workspace sceneManager:(id)manager placeholderController:(id)controller applicationController:(id)applicationController lockScreenManager:(id)screenManager;
+- (id)initForTestingWithPlaceholderController:(id)controller applicationController:(id)applicationController;
+- (id)targetApplicationBundleIdentifierForWebClip:(id)clip;
+- (void)_applicationsDidChange:(id)change;
+- (void)_beginWaitingForBundleIdentifier:(id)identifier webClipIdentifier:(id)clipIdentifier launchOrigin:(id)origin;
 - (void)_clearPendingLaunch;
-- (void)_generateUserActivityDataFromUserActivity:(id)a3 completion:(id)a4;
-- (void)_performActionIfContinuitySessionActive:(id)a3;
-- (void)_placeholdersDidChange:(id)a3;
-- (void)_queue_addConnection:(id)a3;
-- (void)_queue_removeConnection:(id)a3;
-- (void)buildLaunchActionsForAppClipWithWebClipIdentifier:(id)a3 completion:(id)a4;
-- (void)launchWebClipWithIdentifier:(id)a3 origin:(id)a4;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
-- (void)prepareToLaunchWebClipWithIdentifier:(id)a3 handler:(id)a4;
-- (void)updateWebClipPropertiesWithIdentifier:(id)a3;
+- (void)_generateUserActivityDataFromUserActivity:(id)activity completion:(id)completion;
+- (void)_performActionIfContinuitySessionActive:(id)active;
+- (void)_placeholdersDidChange:(id)change;
+- (void)_queue_addConnection:(id)connection;
+- (void)_queue_removeConnection:(id)connection;
+- (void)buildLaunchActionsForAppClipWithWebClipIdentifier:(id)identifier completion:(id)completion;
+- (void)launchWebClipWithIdentifier:(id)identifier origin:(id)origin;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
+- (void)prepareToLaunchWebClipWithIdentifier:(id)identifier handler:(id)handler;
+- (void)updateWebClipPropertiesWithIdentifier:(id)identifier;
 @end
 
 @implementation SBWebClipService
 
-- (SBWebClipService)initWithWorkspace:(id)a3 sceneManager:(id)a4 placeholderController:(id)a5 applicationController:(id)a6 lockScreenManager:(id)a7
+- (SBWebClipService)initWithWorkspace:(id)workspace sceneManager:(id)manager placeholderController:(id)controller applicationController:(id)applicationController lockScreenManager:(id)screenManager
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  workspaceCopy = workspace;
+  managerCopy = manager;
+  controllerCopy = controller;
+  applicationControllerCopy = applicationController;
+  screenManagerCopy = screenManager;
   v34.receiver = self;
   v34.super_class = SBWebClipService;
   v17 = [(SBWebClipService *)&v34 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeWeak(&v17->_workspace, v12);
-    objc_storeWeak(&v18->_sceneManager, v13);
-    objc_storeStrong(&v18->_placeholderController, a5);
-    objc_storeStrong(&v18->_applicationController, a6);
-    objc_storeStrong(&v18->_lockScreenManager, a7);
+    objc_storeWeak(&v17->_workspace, workspaceCopy);
+    objc_storeWeak(&v18->_sceneManager, managerCopy);
+    objc_storeStrong(&v18->_placeholderController, controller);
+    objc_storeStrong(&v18->_applicationController, applicationController);
+    objc_storeStrong(&v18->_lockScreenManager, screenManager);
     v19 = objc_alloc_init(MEMORY[0x277CBEB18]);
     connections = v18->_connections;
     v18->_connections = v19;
@@ -83,28 +83,28 @@ void __113__SBWebClipService_initWithWorkspace_sceneManager_placeholderControlle
   [v4 setDelegate:*(a1 + 32)];
 }
 
-- (id)initForTestingWithPlaceholderController:(id)a3 applicationController:(id)a4
+- (id)initForTestingWithPlaceholderController:(id)controller applicationController:(id)applicationController
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  applicationControllerCopy = applicationController;
   v9 = [(SBWebClipService *)self init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_placeholderController, a3);
-    objc_storeStrong(&v10->_applicationController, a4);
+    objc_storeStrong(&v9->_placeholderController, controller);
+    objc_storeStrong(&v10->_applicationController, applicationController);
     v10->_pendingLaunchTimeout = 5.0;
   }
 
   return v10;
 }
 
-- (void)prepareToLaunchWebClipWithIdentifier:(id)a3 handler:(id)a4
+- (void)prepareToLaunchWebClipWithIdentifier:(id)identifier handler:(id)handler
 {
   v71 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v52 = a4;
-  v7 = [MEMORY[0x277D75D70] webClipWithIdentifier:v6];
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  v7 = [MEMORY[0x277D75D70] webClipWithIdentifier:identifierCopy];
   if (!v7)
   {
     [SBWebClipService prepareToLaunchWebClipWithIdentifier:a2 handler:self];
@@ -124,20 +124,20 @@ void __113__SBWebClipService_initWithWorkspace_sceneManager_placeholderControlle
   [(SBWebClipService *)self _performActionIfContinuitySessionActive:v60];
   if (![v7 isAppClip])
   {
-    v10 = +[SBIconController sharedIconRepository];
-    v53 = [v10 bookmarkIconForWebClipIdentifier:v6];
+    applicationBundleIdentifier = +[SBIconController sharedIconRepository];
+    v53 = [applicationBundleIdentifier bookmarkIconForWebClipIdentifier:identifierCopy];
     if (![v53 isBookmarkIcon])
     {
       v22 = 0;
 LABEL_35:
       v9 = v22;
-      v52[2]();
+      handlerCopy[2]();
       goto LABEL_36;
     }
 
     v16 = v53;
-    v51 = [v16 applicationToLaunch];
-    if (v51)
+    applicationToLaunch = [v16 applicationToLaunch];
+    if (applicationToLaunch)
     {
       if (![v16 representsWebApp])
       {
@@ -156,8 +156,8 @@ LABEL_35:
         }
 
         v41 = v62[5];
-        v42 = [v41 displayIdentity];
-        v21 = [(SBDeviceApplicationSceneEntity *)v37 initWithApplication:v51 generatingNewPrimarySceneIfRequired:v40 sceneHandleProvider:v41 displayIdentity:v42];
+        displayIdentity = [v41 displayIdentity];
+        v21 = [(SBDeviceApplicationSceneEntity *)v37 initWithApplication:applicationToLaunch generatingNewPrimarySceneIfRequired:v40 sceneHandleProvider:v41 displayIdentity:displayIdentity];
 
         if ((v39 & 1) == 0)
         {
@@ -168,8 +168,8 @@ LABEL_35:
         {
           if (objc_opt_respondsToSelector())
           {
-            v43 = [v51 bundleIdentifier];
-            v44 = [v7 addTrustedClientBundleIdentifier:v43];
+            bundleIdentifier = [applicationToLaunch bundleIdentifier];
+            v44 = [v7 addTrustedClientBundleIdentifier:bundleIdentifier];
 
             if (v44)
             {
@@ -181,11 +181,11 @@ LABEL_35:
         goto LABEL_32;
       }
 
-      v17 = [SBWebApplication _webAppIdentifierFromWebClipIdentifier:v6];
+      v17 = [SBWebApplication _webAppIdentifierFromWebClipIdentifier:identifierCopy];
       v18 = [SBDeviceApplicationSceneEntity alloc];
       v19 = v62[5];
-      v20 = [v19 displayIdentity];
-      v21 = [(SBDeviceApplicationSceneEntity *)v18 initWithApplication:v51 uniqueIdentifier:v17 sceneHandleProvider:v19 displayIdentity:v20];
+      displayIdentity2 = [v19 displayIdentity];
+      v21 = [(SBDeviceApplicationSceneEntity *)v18 initWithApplication:applicationToLaunch uniqueIdentifier:v17 sceneHandleProvider:v19 displayIdentity:displayIdentity2];
     }
 
     else
@@ -198,9 +198,9 @@ LABEL_32:
     v34 = objc_alloc_init(SBActivationSettings);
     if (v33)
     {
-      v35 = [v16 bookmark];
-      v36 = [v35 launchURL];
-      [(SBActivationSettings *)v34 setObject:v36 forActivationSetting:5];
+      bookmark = [v16 bookmark];
+      launchURL = [bookmark launchURL];
+      [(SBActivationSettings *)v34 setObject:launchURL forActivationSetting:5];
     }
 
     [(SBWorkspaceEntity *)v21 applyActivationSettings:v34];
@@ -211,15 +211,15 @@ LABEL_32:
 
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
-  v10 = [v7 applicationBundleIdentifier];
-  if (!v10)
+  applicationBundleIdentifier = [v7 applicationBundleIdentifier];
+  if (!applicationBundleIdentifier)
   {
-    v45 = [MEMORY[0x277CCA890] currentHandler];
-    [v45 handleFailureInMethod:a2 object:self file:@"SBWebClipService.m" lineNumber:166 description:{@"%@ Expects a target bundle identifier to be laid down for web clip with identifier %@.", v9, v6}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SBWebClipService.m" lineNumber:166 description:{@"%@ Expects a target bundle identifier to be laid down for web clip with identifier %@.", v9, identifierCopy}];
   }
 
   v53 = +[SBIconController sharedIconRepository];
-  v11 = [v53 bookmarkIconForWebClipIdentifier:v6];
+  v11 = [v53 bookmarkIconForWebClipIdentifier:identifierCopy];
   v12 = v11 == 0;
 
   if (v12)
@@ -227,14 +227,14 @@ LABEL_32:
     v13 = [v53 addBookmarkIconForWebClip:v7];
   }
 
-  v50 = [v62[5] newSceneIdentifierForBundleIdentifier:v10 supportsMultiwindow:0];
-  v48 = [MEMORY[0x277D0AC98] storeForApplication:v10];
+  v50 = [v62[5] newSceneIdentifierForBundleIdentifier:applicationBundleIdentifier supportsMultiwindow:0];
+  v48 = [MEMORY[0x277D0AC98] storeForApplication:applicationBundleIdentifier];
   v14 = [v48 sceneStoreForIdentifier:v50 creatingIfNecessary:1];
-  [v14 setObject:v6 forKey:@"appClipIdentifier"];
+  [v14 setObject:identifierCopy forKey:@"appClipIdentifier"];
   v47 = v14;
-  if (v10)
+  if (applicationBundleIdentifier)
   {
-    v15 = [(SBApplicationController *)self->_applicationController applicationWithBundleIdentifier:v10];
+    v15 = [(SBApplicationController *)self->_applicationController applicationWithBundleIdentifier:applicationBundleIdentifier];
   }
 
   else
@@ -242,9 +242,9 @@ LABEL_32:
     v15 = 0;
   }
 
-  v23 = [(SBApplicationPlaceholderController *)self->_placeholderController placeholderForDisplayID:v10];
-  v24 = [v15 bundleIdentifier];
-  v25 = [SBAppClipPlaceholderWorkspaceEntity isAppClipUpdateAvailableForBundleIdentifier:v24];
+  v23 = [(SBApplicationPlaceholderController *)self->_placeholderController placeholderForDisplayID:applicationBundleIdentifier];
+  bundleIdentifier2 = [v15 bundleIdentifier];
+  v25 = [SBAppClipPlaceholderWorkspaceEntity isAppClipUpdateAvailableForBundleIdentifier:bundleIdentifier2];
 
   if (v15)
   {
@@ -261,11 +261,11 @@ LABEL_32:
   {
     if (v23 == 0 && !v25)
     {
-      v46 = [MEMORY[0x277CCA890] currentHandler];
-      [v46 handleFailureInMethod:a2 object:self file:@"SBWebClipService.m" lineNumber:200 description:{@"%@ Expects a placeholder application to be laid down for web clip with target bundle identifier %@.", v9, v10, v47}];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"SBWebClipService.m" lineNumber:200 description:{@"%@ Expects a placeholder application to be laid down for web clip with target bundle identifier %@.", v9, applicationBundleIdentifier, v47}];
     }
 
-    v28 = [[SBAppClipPlaceholderWorkspaceEntity alloc] initWithBundleIdentifier:v10 futureSceneIdentifier:v50 needsUpdate:v25];
+    v28 = [[SBAppClipPlaceholderWorkspaceEntity alloc] initWithBundleIdentifier:applicationBundleIdentifier futureSceneIdentifier:v50 needsUpdate:v25];
     v29 = SBLogWebClip();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
     {
@@ -276,14 +276,14 @@ LABEL_32:
       _os_log_impl(&dword_21ED4E000, v29, OS_LOG_TYPE_DEFAULT, "%{public}@ Will launch app clip placeholder with workspace entity: %{public}@", buf, 0x16u);
     }
 
-    (v52[2])(v52, v28);
+    (handlerCopy[2])(handlerCopy, v28);
   }
 
   else
   {
     v30 = v62[5];
-    v31 = [v30 displayIdentity];
-    v32 = [SBDeviceApplicationSceneEntity defaultEntityWithApplication:v15 sceneHandleProvider:v30 displayIdentity:v31];
+    displayIdentity3 = [v30 displayIdentity];
+    v32 = [SBDeviceApplicationSceneEntity defaultEntityWithApplication:v15 sceneHandleProvider:v30 displayIdentity:displayIdentity3];
 
     v54[0] = MEMORY[0x277D85DD0];
     v54[1] = 3221225472;
@@ -293,8 +293,8 @@ LABEL_32:
     v55 = v28;
     v56 = v9;
     v57 = v15;
-    v58 = v6;
-    v59 = v52;
+    v58 = identifierCopy;
+    v59 = handlerCopy;
     [(SBWebClipService *)self buildLaunchActionsForAppClipWithWebClipIdentifier:v58 completion:v54];
   }
 
@@ -333,18 +333,18 @@ uint64_t __65__SBWebClipService_prepareToLaunchWebClipWithIdentifier_handler___b
   return (*(*(a1 + 64) + 16))();
 }
 
-- (BOOL)_addActivationActionToSceneEntity:(id)a3 forWebClip:(id)a4
+- (BOOL)_addActivationActionToSceneEntity:(id)entity forWebClip:(id)clip
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 application];
-  v8 = [v7 info];
-  v9 = [v8 supportsYttrium];
+  entityCopy = entity;
+  clipCopy = clip;
+  application = [entityCopy application];
+  info = [application info];
+  supportsYttrium = [info supportsYttrium];
 
-  if (v9 && (objc_opt_respondsToSelector() & 1) != 0 && [v6 alternativeFullScreen] && (objc_opt_respondsToSelector() & 1) != 0)
+  if (supportsYttrium && (objc_opt_respondsToSelector() & 1) != 0 && [clipCopy alternativeFullScreen] && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v10 = [v6 uuid];
-    if (v10)
+    uuid = [clipCopy uuid];
+    if (uuid)
     {
       if (__loadBrowserSupportKitIfNecessary_onceToken != -1)
       {
@@ -366,7 +366,7 @@ uint64_t __65__SBWebClipService_prepareToLaunchWebClipWithIdentifier_handler___b
 LABEL_24:
         if (objc_opt_respondsToSelector())
         {
-          v11 = [MEMORY[0x277CF0B58] browserSupportKit_activationActionForWebClipWithUUID:v10];
+          v11 = [MEMORY[0x277CF0B58] browserSupportKit_activationActionForWebClipWithUUID:uuid];
           if (v11)
           {
             v12 = v11;
@@ -376,7 +376,7 @@ LABEL_24:
 
         if (objc_opt_respondsToSelector())
         {
-          v12 = [MEMORY[0x277CF0B58] browserKit_activationActionForWebClipWithUUID:v10];
+          v12 = [MEMORY[0x277CF0B58] browserKit_activationActionForWebClipWithUUID:uuid];
           if (!v12)
           {
 LABEL_21:
@@ -386,7 +386,7 @@ LABEL_21:
 
 LABEL_19:
           v14 = [MEMORY[0x277CBEB98] setWithObject:v12];
-          [v5 addActions:v14];
+          [entityCopy addActions:v14];
 
           LOBYTE(v12) = 1;
           goto LABEL_21;
@@ -404,19 +404,19 @@ LABEL_16:
   return v12;
 }
 
-+ (id)bestWebClipForTargetContentIdentifier:(id)a3 fromWebClips:(id)a4
++ (id)bestWebClipForTargetContentIdentifier:(id)identifier fromWebClips:(id)clips
 {
   v61 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 count];
+  identifierCopy = identifier;
+  clipsCopy = clips;
+  v7 = [clipsCopy count];
   if (!v7)
   {
     goto LABEL_19;
   }
 
   v8 = v7;
-  if (!v5)
+  if (!identifierCopy)
   {
     if (v7 != 1)
     {
@@ -424,20 +424,20 @@ LABEL_16:
     }
 
 LABEL_18:
-    v18 = [v6 firstObject];
+    firstObject = [clipsCopy firstObject];
     goto LABEL_20;
   }
 
-  v9 = [v5 length];
+  v9 = [identifierCopy length];
   if (v8 == 1 && !v9)
   {
     goto LABEL_18;
   }
 
-  if (![v5 length])
+  if (![identifierCopy length])
   {
 LABEL_19:
-    v18 = 0;
+    firstObject = 0;
     goto LABEL_20;
   }
 
@@ -445,7 +445,7 @@ LABEL_19:
   v58 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v10 = v6;
+  v10 = clipsCopy;
   v11 = [v10 countByEnumeratingWithState:&v55 objects:v60 count:16];
   if (v11)
   {
@@ -461,13 +461,13 @@ LABEL_19:
         }
 
         v15 = *(*(&v55 + 1) + 8 * i);
-        v16 = [v15 identifier];
-        v17 = v16;
-        if (v16 && [v16 length] && (objc_msgSend(v17, "isEqualToString:", v5) & 1) != 0)
+        identifier = [v15 identifier];
+        v17 = identifier;
+        if (identifier && [identifier length] && (objc_msgSend(v17, "isEqualToString:", identifierCopy) & 1) != 0)
         {
-          v18 = v15;
+          firstObject = v15;
 
-          if (v18)
+          if (firstObject)
           {
             goto LABEL_20;
           }
@@ -487,27 +487,27 @@ LABEL_19:
   }
 
 LABEL_24:
-  v20 = [MEMORY[0x277CBEBC0] URLWithString:v5];
+  v20 = [MEMORY[0x277CBEBC0] URLWithString:identifierCopy];
   if (!v20)
   {
-    v18 = 0;
+    firstObject = 0;
     goto LABEL_56;
   }
 
   v21 = 0x277CCA000uLL;
   v22 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:v20 resolvingAgainstBaseURL:0];
-  v23 = [v22 host];
-  if (!v23)
+  host = [v22 host];
+  if (!host)
   {
-    v18 = 0;
+    firstObject = 0;
     goto LABEL_55;
   }
 
   v40 = v22;
   v41 = v20;
-  v42 = v6;
-  v43 = v5;
-  v24 = [v20 pathComponents];
+  v42 = clipsCopy;
+  v43 = identifierCopy;
+  pathComponents = [v20 pathComponents];
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
@@ -520,7 +520,7 @@ LABEL_24:
     goto LABEL_54;
   }
 
-  v45 = v23;
+  v45 = host;
   v46 = 0;
   v44 = 0;
   v49 = *v52;
@@ -535,15 +535,15 @@ LABEL_24:
       }
 
       v26 = *(*(&v51 + 1) + 8 * v25);
-      v27 = [v26 pageURL];
-      v28 = [objc_alloc(*(v21 + 3296)) initWithURL:v27 resolvingAgainstBaseURL:0];
-      v29 = [v28 host];
-      v30 = [v27 pathComponents];
-      if (v29)
+      pageURL = [v26 pageURL];
+      v28 = [objc_alloc(*(v21 + 3296)) initWithURL:pageURL resolvingAgainstBaseURL:0];
+      host2 = [v28 host];
+      pathComponents2 = [pageURL pathComponents];
+      if (host2)
       {
         v48 = v26;
-        v31 = [v27 absoluteString];
-        if (![v31 length])
+        absoluteString = [pageURL absoluteString];
+        if (![absoluteString length])
         {
           goto LABEL_45;
         }
@@ -555,26 +555,26 @@ LABEL_24:
           goto LABEL_43;
         }
 
-        v33 = [v24 count];
-        if (v33 < [v30 count])
+        v33 = [pathComponents count];
+        if (v33 < [pathComponents2 count])
         {
           goto LABEL_43;
         }
 
         v34 = 0;
-        if (![v24 count])
+        if (![pathComponents count])
         {
 LABEL_41:
           if (v34 < v46)
           {
-            v23 = v45;
+            host = v45;
 LABEL_43:
             v21 = 0x277CCA000;
             goto LABEL_46;
           }
 
-          v31 = v44;
-          v23 = v45;
+          absoluteString = v44;
+          host = v45;
           v44 = v48;
           v46 = v34;
           v21 = 0x277CCA000;
@@ -585,15 +585,15 @@ LABEL_45:
 
         while (1)
         {
-          v35 = [v24 objectAtIndex:v34];
-          if (v34 >= [v30 count])
+          v35 = [pathComponents objectAtIndex:v34];
+          if (v34 >= [pathComponents2 count])
           {
 
             goto LABEL_41;
           }
 
-          v36 = v24;
-          v37 = [v30 objectAtIndex:v34];
+          v36 = pathComponents;
+          v37 = [pathComponents2 objectAtIndex:v34];
           v38 = BSEqualStrings();
 
           if (!v38)
@@ -602,16 +602,16 @@ LABEL_45:
           }
 
           ++v34;
-          v24 = v36;
+          pathComponents = v36;
           if (v34 >= [v36 count])
           {
             goto LABEL_41;
           }
         }
 
-        v23 = v45;
+        host = v45;
         v21 = 0x277CCA000;
-        v24 = v36;
+        pathComponents = v36;
       }
 
 LABEL_46:
@@ -627,53 +627,53 @@ LABEL_46:
   while (v39);
 LABEL_54:
 
-  v6 = v42;
-  v5 = v43;
+  clipsCopy = v42;
+  identifierCopy = v43;
   v22 = v40;
   v20 = v41;
-  v18 = v44;
+  firstObject = v44;
 LABEL_55:
 
 LABEL_56:
 LABEL_20:
 
-  return v18;
+  return firstObject;
 }
 
-- (id)targetApplicationBundleIdentifierForWebClip:(id)a3
+- (id)targetApplicationBundleIdentifierForWebClip:(id)clip
 {
-  v3 = [a3 identifier];
-  if (v3)
+  identifier = [clip identifier];
+  if (identifier)
   {
     v4 = +[SBIconController sharedIconRepository];
-    v5 = [v4 bookmarkIconForWebClipIdentifier:v3];
+    v5 = [v4 bookmarkIconForWebClipIdentifier:identifier];
     if ([v5 isBookmarkIcon])
     {
-      v6 = [v5 applicationToLaunch];
-      v7 = [v6 bundleIdentifier];
+      applicationToLaunch = [v5 applicationToLaunch];
+      bundleIdentifier = [applicationToLaunch bundleIdentifier];
     }
 
     else
     {
-      v7 = 0;
+      bundleIdentifier = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    bundleIdentifier = 0;
   }
 
-  return v7;
+  return bundleIdentifier;
 }
 
-- (void)launchWebClipWithIdentifier:(id)a3 origin:(id)a4
+- (void)launchWebClipWithIdentifier:(id)identifier origin:(id)origin
 {
   v30 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  originCopy = origin;
   [(SBWebClipService *)self _clearPendingLaunch];
-  v9 = [v8 unsignedIntegerValue];
+  unsignedIntegerValue = [originCopy unsignedIntegerValue];
   v10 = objc_opt_class();
   v11 = NSStringFromClass(v10);
   v12 = SBLogWebClip();
@@ -683,7 +683,7 @@ LABEL_20:
     *buf = 138543874;
     v25 = v11;
     v26 = 2114;
-    v27 = v7;
+    v27 = identifierCopy;
     v28 = 2114;
     v29 = v13;
     _os_log_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ Received request to launch web clip with identifier: %{public}@ origin: %{public}@", buf, 0x20u);
@@ -693,15 +693,15 @@ LABEL_20:
   v17[1] = 3221225472;
   v17[2] = __55__SBWebClipService_launchWebClipWithIdentifier_origin___block_invoke;
   v17[3] = &unk_2783C0F70;
-  v18 = v7;
-  v19 = self;
+  v18 = identifierCopy;
+  selfCopy = self;
   v22 = a2;
-  v23 = v9;
+  v23 = unsignedIntegerValue;
   v20 = v11;
-  v21 = v8;
-  v14 = v8;
+  v21 = originCopy;
+  v14 = originCopy;
   v15 = v11;
-  v16 = v7;
+  v16 = identifierCopy;
   dispatch_async(MEMORY[0x277D85CD0], v17);
 }
 
@@ -979,35 +979,35 @@ void __55__SBWebClipService_launchWebClipWithIdentifier_origin___block_invoke_88
   }
 }
 
-- (void)_beginWaitingForBundleIdentifier:(id)a3 webClipIdentifier:(id)a4 launchOrigin:(id)a5
+- (void)_beginWaitingForBundleIdentifier:(id)identifier webClipIdentifier:(id)clipIdentifier launchOrigin:(id)origin
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  originCopy = origin;
+  clipIdentifierCopy = clipIdentifier;
+  identifierCopy = identifier;
   [(SBWebClipService *)self _clearPendingLaunch];
-  v16 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v16 addObserver:self selector:sel__placeholdersDidChange_ name:@"SBApplicationPlaceholdersDidChangeNotification" object:self->_placeholderController];
-  [v16 addObserver:self selector:sel__applicationsDidChange_ name:@"SBInstalledApplicationsDidChangeNotification" object:self->_applicationController];
-  v11 = [v10 copy];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__placeholdersDidChange_ name:@"SBApplicationPlaceholdersDidChangeNotification" object:self->_placeholderController];
+  [defaultCenter addObserver:self selector:sel__applicationsDidChange_ name:@"SBInstalledApplicationsDidChangeNotification" object:self->_applicationController];
+  v11 = [identifierCopy copy];
 
   pendingBundleIdentifier = self->_pendingBundleIdentifier;
   self->_pendingBundleIdentifier = v11;
 
-  v13 = [v9 copy];
+  v13 = [clipIdentifierCopy copy];
   pendingWebClipIdentifier = self->_pendingWebClipIdentifier;
   self->_pendingWebClipIdentifier = v13;
 
   pendingLaunchOrigin = self->_pendingLaunchOrigin;
-  self->_pendingLaunchOrigin = v8;
+  self->_pendingLaunchOrigin = originCopy;
 }
 
 - (void)_clearPendingLaunch
 {
   if (self->_pendingBundleIdentifier)
   {
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 removeObserver:self name:@"SBApplicationPlaceholdersDidChangeNotification" object:self->_placeholderController];
-    [v6 removeObserver:self name:@"SBInstalledApplicationsDidChangeNotification" object:self->_applicationController];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self name:@"SBApplicationPlaceholdersDidChangeNotification" object:self->_placeholderController];
+    [defaultCenter removeObserver:self name:@"SBInstalledApplicationsDidChangeNotification" object:self->_applicationController];
     pendingBundleIdentifier = self->_pendingBundleIdentifier;
     self->_pendingBundleIdentifier = 0;
 
@@ -1021,13 +1021,13 @@ void __55__SBWebClipService_launchWebClipWithIdentifier_origin___block_invoke_88
   }
 }
 
-- (void)_placeholdersDidChange:(id)a3
+- (void)_placeholdersDidChange:(id)change
 {
   v29 = *MEMORY[0x277D85DE8];
   if (self->_pendingBundleIdentifier)
   {
-    v4 = [a3 userInfo];
-    v5 = [v4 objectForKey:@"__placeholdersAdded"];
+    userInfo = [change userInfo];
+    v5 = [userInfo objectForKey:@"__placeholdersAdded"];
 
     v20 = 0u;
     v21 = 0u;
@@ -1048,8 +1048,8 @@ void __55__SBWebClipService_launchWebClipWithIdentifier_origin___block_invoke_88
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v18 + 1) + 8 * i) applicationBundleID];
-          v12 = [v11 isEqualToString:self->_pendingBundleIdentifier];
+          applicationBundleID = [*(*(&v18 + 1) + 8 * i) applicationBundleID];
+          v12 = [applicationBundleID isEqualToString:self->_pendingBundleIdentifier];
 
           if (v12)
           {
@@ -1089,13 +1089,13 @@ LABEL_14:
   }
 }
 
-- (void)_applicationsDidChange:(id)a3
+- (void)_applicationsDidChange:(id)change
 {
   v27 = *MEMORY[0x277D85DE8];
   if (self->_pendingBundleIdentifier)
   {
-    v4 = [a3 userInfo];
-    v5 = [v4 objectForKey:@"SBInstalledApplicationsAddedBundleIDs"];
+    userInfo = [change userInfo];
+    v5 = [userInfo objectForKey:@"SBInstalledApplicationsAddedBundleIDs"];
 
     v18 = 0u;
     v19 = 0u;
@@ -1154,10 +1154,10 @@ LABEL_14:
   }
 }
 
-- (void)updateWebClipPropertiesWithIdentifier:(id)a3
+- (void)updateWebClipPropertiesWithIdentifier:(id)identifier
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
   v6 = SBLogWebClip();
@@ -1166,7 +1166,7 @@ LABEL_14:
     *buf = 138543618;
     v13 = v5;
     v14 = 2114;
-    v15 = v3;
+    v15 = identifierCopy;
     _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ Received request to update app clip properties with identifier: %{public}@", buf, 0x16u);
   }
 
@@ -1174,10 +1174,10 @@ LABEL_14:
   v9[1] = 3221225472;
   v9[2] = __58__SBWebClipService_updateWebClipPropertiesWithIdentifier___block_invoke;
   v9[3] = &unk_2783A92D8;
-  v10 = v3;
+  v10 = identifierCopy;
   v11 = v5;
   v7 = v5;
-  v8 = v3;
+  v8 = identifierCopy;
   dispatch_async(MEMORY[0x277D85CD0], v9);
 }
 
@@ -1229,10 +1229,10 @@ void __58__SBWebClipService_updateWebClipPropertiesWithIdentifier___block_invoke
   }
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  connectionCopy = connection;
   v7 = SBLogWebClip();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -1241,7 +1241,7 @@ void __58__SBWebClipService_updateWebClipPropertiesWithIdentifier___block_invoke
     *buf = 138412546;
     v26 = v9;
     v27 = 2114;
-    v28 = v6;
+    v28 = connectionCopy;
     _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "%@ Received connection: %{public}@", buf, 0x16u);
   }
 
@@ -1250,11 +1250,11 @@ void __58__SBWebClipService_updateWebClipPropertiesWithIdentifier___block_invoke
   v24[2] = __62__SBWebClipService_listener_didReceiveConnection_withContext___block_invoke;
   v24[3] = &unk_2783AB730;
   v24[4] = self;
-  [v6 configureConnection:v24];
+  [connectionCopy configureConnection:v24];
   clientAuthenticator = self->_clientAuthenticator;
-  v11 = [v6 remoteProcess];
-  v12 = [v11 auditToken];
-  if ([(FBServiceClientAuthenticator *)clientAuthenticator authenticateAuditToken:v12])
+  remoteProcess = [connectionCopy remoteProcess];
+  auditToken = [remoteProcess auditToken];
+  if ([(FBServiceClientAuthenticator *)clientAuthenticator authenticateAuditToken:auditToken])
   {
 
 LABEL_6:
@@ -1266,7 +1266,7 @@ LABEL_6:
       *buf = 138412546;
       v26 = v18;
       v27 = 2114;
-      v28 = v6;
+      v28 = connectionCopy;
       _os_log_impl(&dword_21ED4E000, v16, OS_LOG_TYPE_DEFAULT, "%@ Client authenticated, will add connection: %{public}@", buf, 0x16u);
     }
 
@@ -1276,7 +1276,7 @@ LABEL_6:
     block[2] = __62__SBWebClipService_listener_didReceiveConnection_withContext___block_invoke_96;
     block[3] = &unk_2783A92D8;
     block[4] = self;
-    v20 = v6;
+    v20 = connectionCopy;
     v23 = v20;
     dispatch_async(serviceQueue, block);
     [v20 activate];
@@ -1285,9 +1285,9 @@ LABEL_6:
   }
 
   legacyClientAuthenticator = self->_legacyClientAuthenticator;
-  v14 = [v6 remoteProcess];
-  v15 = [v14 auditToken];
-  LODWORD(legacyClientAuthenticator) = [(FBServiceClientAuthenticator *)legacyClientAuthenticator authenticateAuditToken:v15];
+  remoteProcess2 = [connectionCopy remoteProcess];
+  auditToken2 = [remoteProcess2 auditToken];
+  LODWORD(legacyClientAuthenticator) = [(FBServiceClientAuthenticator *)legacyClientAuthenticator authenticateAuditToken:auditToken2];
 
   if (legacyClientAuthenticator)
   {
@@ -1297,10 +1297,10 @@ LABEL_6:
   v21 = SBLogWebClip();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
   {
-    [SBWebClipService listener:v6 didReceiveConnection:v21 withContext:?];
+    [SBWebClipService listener:connectionCopy didReceiveConnection:v21 withContext:?];
   }
 
-  [v6 invalidate];
+  [connectionCopy invalidate];
 LABEL_12:
 }
 
@@ -1349,10 +1349,10 @@ void __62__SBWebClipService_listener_didReceiveConnection_withContext___block_in
   }
 }
 
-- (void)_queue_addConnection:(id)a3
+- (void)_queue_addConnection:(id)connection
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  connectionCopy = connection;
   v5 = SBLogWebClip();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1361,18 +1361,18 @@ void __62__SBWebClipService_listener_didReceiveConnection_withContext___block_in
     v8 = 138412546;
     v9 = v7;
     v10 = 2114;
-    v11 = v4;
+    v11 = connectionCopy;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "%@ Adding Connection: %{public}@", &v8, 0x16u);
   }
 
   dispatch_assert_queue_V2(self->_serviceQueue);
-  [(NSMutableArray *)self->_connections addObject:v4];
+  [(NSMutableArray *)self->_connections addObject:connectionCopy];
 }
 
-- (void)_queue_removeConnection:(id)a3
+- (void)_queue_removeConnection:(id)connection
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  connectionCopy = connection;
   v5 = SBLogWebClip();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1381,54 +1381,54 @@ void __62__SBWebClipService_listener_didReceiveConnection_withContext___block_in
     v8 = 138412546;
     v9 = v7;
     v10 = 2114;
-    v11 = v4;
+    v11 = connectionCopy;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "%@ Removing Connection: %{public}@", &v8, 0x16u);
   }
 
   dispatch_assert_queue_V2(self->_serviceQueue);
-  [(NSMutableArray *)self->_connections removeObject:v4];
+  [(NSMutableArray *)self->_connections removeObject:connectionCopy];
 }
 
-- (void)_performActionIfContinuitySessionActive:(id)a3
+- (void)_performActionIfContinuitySessionActive:(id)active
 {
-  v5 = a3;
+  activeCopy = active;
   if (+[SBContinuitySessionManager areContinuitySessionsAllowed])
   {
     v3 = +[SBContinuitySessionManager sharedInstance];
-    v4 = [v3 currentSession];
+    currentSession = [v3 currentSession];
 
-    if ([v4 state] == 11)
+    if ([currentSession state] == 11)
     {
-      v5[2](v5, v4);
+      activeCopy[2](activeCopy, currentSession);
     }
   }
 }
 
-- (void)buildLaunchActionsForAppClipWithWebClipIdentifier:(id)a3 completion:(id)a4
+- (void)buildLaunchActionsForAppClipWithWebClipIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a4;
-  v8 = [MEMORY[0x277D75D70] webClipWithIdentifier:a3];
+  completionCopy = completion;
+  v8 = [MEMORY[0x277D75D70] webClipWithIdentifier:identifier];
   if (!v8)
   {
     [SBWebClipService buildLaunchActionsForAppClipWithWebClipIdentifier:a2 completion:self];
   }
 
-  v9 = [v8 appClipUserActivity];
-  v10 = v9;
-  if (v9)
+  appClipUserActivity = [v8 appClipUserActivity];
+  v10 = appClipUserActivity;
+  if (appClipUserActivity)
   {
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __81__SBWebClipService_buildLaunchActionsForAppClipWithWebClipIdentifier_completion___block_invoke;
     v11[3] = &unk_2783C0F98;
-    v12 = v9;
-    v13 = v7;
+    v12 = appClipUserActivity;
+    v13 = completionCopy;
     [(SBWebClipService *)self _generateUserActivityDataFromUserActivity:v12 completion:v11];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -1455,17 +1455,17 @@ void __81__SBWebClipService_buildLaunchActionsForAppClipWithWebClipIdentifier_co
   (*(v8 + 16))(v8, v11);
 }
 
-- (void)_generateUserActivityDataFromUserActivity:(id)a3 completion:(id)a4
+- (void)_generateUserActivityDataFromUserActivity:(id)activity completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __73__SBWebClipService__generateUserActivityDataFromUserActivity_completion___block_invoke;
   v8[3] = &unk_2783C0FC0;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  [a3 _createUserActivityDataWithOptions:MEMORY[0x277CBEC10] completionHandler:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [activity _createUserActivityDataWithOptions:MEMORY[0x277CBEC10] completionHandler:v8];
 }
 
 void __73__SBWebClipService__generateUserActivityDataFromUserActivity_completion___block_invoke(uint64_t a1, void *a2, void *a3)

@@ -1,8 +1,8 @@
 @interface CombinedApprovalAndInstallSheetViewController
 - (CGSize)preferredContentSize;
-- (id)textView:(id)a3 primaryActionForTextItem:(id)a4 defaultAction:(id)a5;
+- (id)textView:(id)view primaryActionForTextItem:(id)item defaultAction:(id)action;
 - (void)cancelPressed;
-- (void)setPreferredContentSize:(CGSize)a3;
+- (void)setPreferredContentSize:(CGSize)size;
 @end
 
 @implementation CombinedApprovalAndInstallSheetViewController
@@ -24,7 +24,7 @@
   return result;
 }
 
-- (void)setPreferredContentSize:(CGSize)a3
+- (void)setPreferredContentSize:(CGSize)size
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -35,7 +35,7 @@
   }
 }
 
-- (id)textView:(id)a3 primaryActionForTextItem:(id)a4 defaultAction:(id)a5
+- (id)textView:(id)view primaryActionForTextItem:(id)item defaultAction:(id)action
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -45,11 +45,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = self;
-  v13 = sub_100040CCC(v10, v11);
+  viewCopy = view;
+  itemCopy = item;
+  actionCopy = action;
+  selfCopy = self;
+  v13 = sub_100040CCC(itemCopy, actionCopy);
 
   return v13;
 }
@@ -70,12 +70,12 @@
 
   v7 = type metadata accessor for TaskPriority();
   (*(*(v7 - 8) + 56))(v6, 1, 1, v7);
-  v8 = self;
+  selfCopy = self;
   v9 = static MainActor.shared.getter();
   v10 = swift_allocObject();
   v10[2] = v9;
   v10[3] = &protocol witness table for MainActor;
-  v10[4] = v8;
+  v10[4] = selfCopy;
   sub_100007954(0, 0, v6, &unk_100067240, v10);
 }
 

@@ -1,7 +1,7 @@
 @interface RPAutoBugCapture
 + (id)sharedReporter;
 - (RPAutoBugCapture)init;
-- (void)reportIssueOfType:(unint64_t)a3 issueContext:(id)a4 processName:(id)a5 triggerThresholdValues:(id)a6;
+- (void)reportIssueOfType:(unint64_t)type issueContext:(id)context processName:(id)name triggerThresholdValues:(id)values;
 @end
 
 @implementation RPAutoBugCapture
@@ -47,24 +47,24 @@ void __34__RPAutoBugCapture_sharedReporter__block_invoke()
   return v2;
 }
 
-- (void)reportIssueOfType:(unint64_t)a3 issueContext:(id)a4 processName:(id)a5 triggerThresholdValues:(id)a6
+- (void)reportIssueOfType:(unint64_t)type issueContext:(id)context processName:(id)name triggerThresholdValues:(id)values
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  contextCopy = context;
+  nameCopy = name;
+  valuesCopy = values;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __86__RPAutoBugCapture_reportIssueOfType_issueContext_processName_triggerThresholdValues___block_invoke;
   block[3] = &unk_1E7C94898;
-  v20 = v12;
-  v21 = a3;
+  v20 = valuesCopy;
+  typeCopy = type;
   block[4] = self;
-  v18 = v10;
-  v19 = v11;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
+  v18 = contextCopy;
+  v19 = nameCopy;
+  v14 = valuesCopy;
+  v15 = nameCopy;
+  v16 = contextCopy;
   dispatch_async(dispatchQueue, block);
 }
 

@@ -1,14 +1,14 @@
 @interface MailXPCServices
 + (id)log;
 + (id)sharedServer;
-- (BOOL)_connection:(id)a3 hasEntitlement:(id)a4;
-- (Class)_serviceClassForName:(id)a3;
+- (BOOL)_connection:(id)_connection hasEntitlement:(id)entitlement;
+- (Class)_serviceClassForName:(id)name;
 - (MailXPCServices)init;
-- (void)_dispatchMessage:(id)a3 onQueue:(id)a4 connectionState:(id)a5 completion:(id)a6;
-- (void)_enumerateServiceClasses:(id)a3;
-- (void)_registerConnection:(id)a3;
+- (void)_dispatchMessage:(id)message onQueue:(id)queue connectionState:(id)state completion:(id)completion;
+- (void)_enumerateServiceClasses:(id)classes;
+- (void)_registerConnection:(id)connection;
 - (void)dealloc;
-- (void)registerServiceClass:(Class)a3;
+- (void)registerServiceClass:(Class)class;
 - (void)start;
 - (void)stop;
 @end
@@ -21,7 +21,7 @@
   block[1] = 3221225472;
   block[2] = sub_10003409C;
   block[3] = &unk_1001562E8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100185628 != -1)
   {
     dispatch_once(&qword_100185628, block);
@@ -38,7 +38,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000341C0;
   block[3] = &unk_1001562E8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100185638 != -1)
   {
     dispatch_once(&qword_100185638, block);
@@ -142,14 +142,14 @@
   [(MailXPCServices *)self _enumerateServiceClasses:&stru_100157550];
 }
 
-- (void)_registerConnection:(id)a3
+- (void)_registerConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = +[MailXPCServices log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    pid = xpc_connection_get_pid(v4);
-    v7 = v4;
+    pid = xpc_connection_get_pid(connectionCopy);
+    v7 = connectionCopy;
     v8 = xpc_copy_description(v7);
     if (v8)
     {
@@ -163,7 +163,7 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "PID %d : new connection %@", &buf, 0x12u);
   }
 
-  v9 = [[MFXPCConnection alloc] initWithConnection:v4];
+  v9 = [[MFXPCConnection alloc] initWithConnection:connectionCopy];
   [(MFXPCConnection *)v9 setServiceManager:self];
   objc_initWeak(&buf, v9);
   v10 = _NSConcreteStackBlock;
@@ -171,7 +171,7 @@
   v12 = sub_1000348F0;
   v13 = &unk_100157578;
   objc_copyWeak(&v15, &buf);
-  v14 = self;
+  selfCopy = self;
   [(MFXPCConnection *)v9 setErrorHandler:&v10];
   [(NSLock *)self->_connectionsLock lock:v10];
   [(NSMutableArray *)self->_connections addObject:v9];
@@ -181,13 +181,13 @@
   objc_destroyWeak(&buf);
 }
 
-- (BOOL)_connection:(id)a3 hasEntitlement:(id)a4
+- (BOOL)_connection:(id)_connection hasEntitlement:(id)entitlement
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  _connectionCopy = _connection;
+  entitlementCopy = entitlement;
+  if (entitlementCopy)
   {
-    if (v5)
+    if (_connectionCopy)
     {
       *buf = 0u;
       v21 = 0u;
@@ -198,10 +198,10 @@
       if (v7)
       {
         error = 0;
-        v9 = SecTaskCopyValueForEntitlement(v7, v6, &error);
+        v9 = SecTaskCopyValueForEntitlement(v7, entitlementCopy, &error);
         if (objc_opt_respondsToSelector())
         {
-          v10 = [v9 BOOLValue];
+          bOOLValue = [v9 BOOLValue];
 LABEL_25:
           CFRelease(v8);
 
@@ -215,7 +215,7 @@ LABEL_25:
             v12 = +[MailXPCServices log];
             if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
             {
-              sub_10003485C(v5);
+              sub_10003485C(_connectionCopy);
               objc_claimAutoreleasedReturnValue();
               sub_1000D38C4();
             }
@@ -227,9 +227,9 @@ LABEL_25:
           v13 = +[MailXPCServices log];
           if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
           {
-            v16 = sub_10003485C(v5);
+            v16 = sub_10003485C(_connectionCopy);
             token.val[0] = 138412802;
-            *&token.val[1] = v6;
+            *&token.val[1] = entitlementCopy;
             LOWORD(token.val[3]) = 2112;
             *(&token.val[3] + 2) = v16;
             HIWORD(token.val[5]) = 2112;
@@ -243,7 +243,7 @@ LABEL_25:
           v13 = +[MailXPCServices log];
           if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
           {
-            v14 = v5;
+            v14 = _connectionCopy;
             v15 = xpc_copy_description(v14);
             if (v15)
             {
@@ -251,7 +251,7 @@ LABEL_25:
             }
 
             token.val[0] = 138412546;
-            *&token.val[1] = v6;
+            *&token.val[1] = entitlementCopy;
             LOWORD(token.val[3]) = 2112;
             *(&token.val[3] + 2) = v15;
             _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "entitlement '%@' missing on connection %@", &token, 0x16u);
@@ -259,7 +259,7 @@ LABEL_25:
         }
 
 LABEL_24:
-        v10 = 0;
+        bOOLValue = 0;
         goto LABEL_25;
       }
     }
@@ -270,31 +270,31 @@ LABEL_24:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        *&buf[4] = v6;
+        *&buf[4] = entitlementCopy;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "missing required connection to verify entitlement '%@'", buf, 0xCu);
       }
     }
 
-    v10 = 0;
+    bOOLValue = 0;
   }
 
   else
   {
-    v10 = 1;
+    bOOLValue = 1;
   }
 
 LABEL_26:
 
-  return v10;
+  return bOOLValue;
 }
 
-- (void)_dispatchMessage:(id)a3 onQueue:(id)a4 connectionState:(id)a5 completion:(id)a6
+- (void)_dispatchMessage:(id)message onQueue:(id)queue connectionState:(id)state completion:(id)completion
 {
-  v10 = a3;
-  queue = a4;
-  v31 = a5;
-  v11 = a6;
-  v12 = xpc_dictionary_get_remote_connection(v10);
+  messageCopy = message;
+  queue = queue;
+  stateCopy = state;
+  completionCopy = completion;
+  v12 = xpc_dictionary_get_remote_connection(messageCopy);
   v13 = +[MailXPCServices log];
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -308,8 +308,8 @@ LABEL_26:
       pid = -1;
     }
 
-    int64 = xpc_dictionary_get_int64(v10, [_MSMailServiceMessageIndex UTF8String]);
-    v16 = v10;
+    int64 = xpc_dictionary_get_int64(messageCopy, [_MSMailServiceMessageIndex UTF8String]);
+    v16 = messageCopy;
     v17 = xpc_copy_description(v16);
     if (v17)
     {
@@ -327,7 +327,7 @@ LABEL_26:
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "PID %d (%lld) : <connection: %p> handling message %@", buf, 0x26u);
   }
 
-  string = xpc_dictionary_get_string(v10, [_MSMailServiceName UTF8String]);
+  string = xpc_dictionary_get_string(messageCopy, [_MSMailServiceName UTF8String]);
   if (string)
   {
     v19 = [NSString stringWithUTF8String:string];
@@ -335,8 +335,8 @@ LABEL_26:
 
     if (v20)
     {
-      v21 = [(objc_class *)v20 requiredEntitlement];
-      v22 = [(MailXPCServices *)self _connection:v12 hasEntitlement:v21];
+      requiredEntitlement = [(objc_class *)v20 requiredEntitlement];
+      v22 = [(MailXPCServices *)self _connection:v12 hasEntitlement:requiredEntitlement];
 
       if (v22)
       {
@@ -366,11 +366,11 @@ LABEL_16:
   v37[1] = 3221225472;
   v37[2] = sub_10003528C;
   v37[3] = &unk_1001575A0;
-  v25 = v10;
+  v25 = messageCopy;
   v38 = v25;
   v26 = v12;
   v39 = v26;
-  v27 = v11;
+  v27 = completionCopy;
   v40 = v27;
   v28 = objc_retainBlock(v37);
   v29 = v28;
@@ -387,13 +387,13 @@ LABEL_16:
     block[3] = &unk_1001575C8;
     v36 = v20;
     v33 = v25;
-    v34 = v31;
+    v34 = stateCopy;
     v35 = v29;
     dispatch_async(queue, block);
   }
 }
 
-- (void)registerServiceClass:(Class)a3
+- (void)registerServiceClass:(Class)class
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -401,14 +401,14 @@ LABEL_16:
   block[2] = sub_100035700;
   block[3] = &unk_1001575F0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = class;
   block[6] = a2;
   dispatch_barrier_async(queue, block);
 }
 
-- (Class)_serviceClassForName:(id)a3
+- (Class)_serviceClassForName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2050000000;
@@ -418,10 +418,10 @@ LABEL_16:
   block[1] = 3221225472;
   block[2] = sub_100035954;
   block[3] = &unk_100157618;
-  v10 = v4;
+  v10 = nameCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = nameCopy;
   dispatch_sync(queue, block);
   v7 = v13[3];
 
@@ -430,17 +430,17 @@ LABEL_16:
   return v7;
 }
 
-- (void)_enumerateServiceClasses:(id)a3
+- (void)_enumerateServiceClasses:(id)classes
 {
-  v4 = a3;
+  classesCopy = classes;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100035A2C;
   v7[3] = &unk_100157668;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = classesCopy;
+  v6 = classesCopy;
   dispatch_sync(queue, v7);
 }
 

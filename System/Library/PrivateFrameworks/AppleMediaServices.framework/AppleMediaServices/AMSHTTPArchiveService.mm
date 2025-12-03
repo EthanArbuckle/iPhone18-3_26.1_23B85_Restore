@@ -1,6 +1,6 @@
 @interface AMSHTTPArchiveService
 + (id)_sharedProxy;
-+ (void)recordTrafficWithTaskInfo:(id)a3;
++ (void)recordTrafficWithTaskInfo:(id)info;
 - (AMSHTTPArchiveService)init;
 - (id)_createProxy;
 - (id)_createRemoteConnection;
@@ -114,14 +114,14 @@ void __37__AMSHTTPArchiveService__sharedProxy__block_invoke_2(uint64_t a1)
   v10 = __Block_byref_object_copy__36;
   v11 = __Block_byref_object_dispose__36;
   v12 = 0;
-  v3 = [(AMSHTTPArchiveService *)self queue];
+  queue = [(AMSHTTPArchiveService *)self queue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __37__AMSHTTPArchiveService__createProxy__block_invoke;
   v6[3] = &unk_1E73B82D0;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -151,12 +151,12 @@ void __37__AMSHTTPArchiveService__createProxy__block_invoke(uint64_t a1)
 
 - (id)_createRemoteConnection
 {
-  v3 = [(AMSHTTPArchiveService *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(AMSHTTPArchiveService *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:@"com.apple.xpc.amstoold" options:0];
-  v5 = [(AMSHTTPArchiveService *)self queue];
-  [v4 _setQueue:v5];
+  queue2 = [(AMSHTTPArchiveService *)self queue];
+  [v4 _setQueue:queue2];
 
   v6 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F07CE0A8];
   [v6 setClass:objc_opt_class() forSelector:sel_recordTrafficWithTaskInfo_ argumentIndex:0 ofReply:0];
@@ -189,11 +189,11 @@ void __37__AMSHTTPArchiveService__sharedProxy__block_invoke_3(uint64_t a1)
   *(v1 + 40) = 0;
 }
 
-+ (void)recordTrafficWithTaskInfo:(id)a3
++ (void)recordTrafficWithTaskInfo:(id)info
 {
-  v4 = a3;
-  v5 = [a1 _sharedProxy];
-  [v5 recordTrafficWithTaskInfo:v4];
+  infoCopy = info;
+  _sharedProxy = [self _sharedProxy];
+  [_sharedProxy recordTrafficWithTaskInfo:infoCopy];
 }
 
 - (void)dealloc
@@ -295,8 +295,8 @@ void __48__AMSHTTPArchiveService__createRemoteConnection__block_invoke_54(uint64
 
 - (void)_removeRemoteConnection
 {
-  v3 = [(AMSHTTPArchiveService *)self connection];
-  [v3 invalidate];
+  connection = [(AMSHTTPArchiveService *)self connection];
+  [connection invalidate];
 
   [(AMSHTTPArchiveService *)self setConnection:0];
 }

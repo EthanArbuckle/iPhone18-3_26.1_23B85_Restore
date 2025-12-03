@@ -1,29 +1,29 @@
 @interface NSData
-+ (void)_gkLoadRemoteImageDataForURL:(id)a3 subdirectory:(id)a4 filename:(id)a5 queue:(id)a6 handler:(id)a7;
++ (void)_gkLoadRemoteImageDataForURL:(id)l subdirectory:(id)subdirectory filename:(id)filename queue:(id)queue handler:(id)handler;
 - (id)_gkUnzippedData;
 - (id)_gkZippedData;
-- (void)_gkWriteToImageCacheWithURLString:(id)a3;
+- (void)_gkWriteToImageCacheWithURLString:(id)string;
 @end
 
 @implementation NSData
 
-+ (void)_gkLoadRemoteImageDataForURL:(id)a3 subdirectory:(id)a4 filename:(id)a5 queue:(id)a6 handler:(id)a7
++ (void)_gkLoadRemoteImageDataForURL:(id)l subdirectory:(id)subdirectory filename:(id)filename queue:(id)queue handler:(id)handler
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
+  handlerCopy = handler;
+  queueCopy = queue;
+  filenameCopy = filename;
+  subdirectoryCopy = subdirectory;
+  lCopy = l;
   v16 = +[NSURLSession _gkForGameDaemonProcess];
-  [NSData _gkLoadRemoteImageDataForURL:v15 session:v16 subdirectory:v14 filename:v13 queue:v12 handler:v11];
+  [NSData _gkLoadRemoteImageDataForURL:lCopy session:v16 subdirectory:subdirectoryCopy filename:filenameCopy queue:queueCopy handler:handlerCopy];
 }
 
 - (id)_gkZippedData
 {
-  v3 = [(NSData *)self bytes];
+  bytes = [(NSData *)self bytes];
   v4 = [(NSData *)self length];
   v5 = 0;
-  if (v3)
+  if (bytes)
   {
     v6 = v4;
     if (v4)
@@ -98,19 +98,19 @@ LABEL_9:
   return v3;
 }
 
-- (void)_gkWriteToImageCacheWithURLString:(id)a3
+- (void)_gkWriteToImageCacheWithURLString:(id)string
 {
-  v4 = [NSURL URLWithString:a3];
-  v5 = [v4 path];
-  v6 = [v5 stringByDeletingLastPathComponent];
+  v4 = [NSURL URLWithString:string];
+  path = [v4 path];
+  stringByDeletingLastPathComponent = [path stringByDeletingLastPathComponent];
   v7 = +[NSFileManager defaultManager];
-  v8 = [v7 fileExistsAtPath:v6];
+  v8 = [v7 fileExistsAtPath:stringByDeletingLastPathComponent];
 
   if ((v8 & 1) == 0)
   {
     v9 = +[NSFileManager defaultManager];
     v19 = 0;
-    [v9 createDirectoryAtPath:v6 withIntermediateDirectories:1 attributes:0 error:&v19];
+    [v9 createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v19];
     v10 = v19;
 
     if (v10)
@@ -129,7 +129,7 @@ LABEL_9:
   }
 
   v18 = 0;
-  [(NSData *)self writeToFile:v5 options:1 error:&v18];
+  [(NSData *)self writeToFile:path options:1 error:&v18];
   v13 = v18;
   if (v13)
   {
@@ -141,7 +141,7 @@ LABEL_9:
     v15 = os_log_GKError;
     if (os_log_type_enabled(os_log_GKError, OS_LOG_TYPE_ERROR))
     {
-      sub_100294A5C(v5, v13, v15);
+      sub_100294A5C(path, v13, v15);
     }
   }
 
@@ -156,7 +156,7 @@ LABEL_9:
     if (os_log_type_enabled(os_log_GKDaemon, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v21 = v5;
+      v21 = path;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "Saved new local player avatar image to image cache: %@", buf, 0xCu);
     }
 

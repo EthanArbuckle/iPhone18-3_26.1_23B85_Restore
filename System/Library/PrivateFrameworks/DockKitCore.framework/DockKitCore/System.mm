@@ -1,13 +1,13 @@
 @interface System
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSDictionary)components;
 - (NSString)description;
 - (_TtC11DockKitCore6System)init;
-- (_TtC11DockKitCore6System)initWithCoder:(id)a3;
-- (_TtC11DockKitCore6System)initWithId:(int64_t)a3 type:(int64_t)a4 name:(id)a5;
+- (_TtC11DockKitCore6System)initWithCoder:(id)coder;
+- (_TtC11DockKitCore6System)initWithId:(int64_t)id type:(int64_t)type name:(id)name;
 - (int64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setComponents:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setComponents:(id)components;
 @end
 
 @implementation System
@@ -21,7 +21,7 @@
   return v2;
 }
 
-- (void)setComponents:(id)a3
+- (void)setComponents:(id)components
 {
   type metadata accessor for Component();
   *(self + OBJC_IVAR____TtC11DockKitCore6System_components) = sub_224627C58();
@@ -29,7 +29,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_2245B4088();
 
   v3 = sub_224627CB8();
@@ -37,12 +37,12 @@
   return v3;
 }
 
-- (_TtC11DockKitCore6System)initWithId:(int64_t)a3 type:(int64_t)a4 name:(id)a5
+- (_TtC11DockKitCore6System)initWithId:(int64_t)id type:(int64_t)type name:(id)name
 {
   v8 = sub_224627CD8();
   *(self + OBJC_IVAR____TtC11DockKitCore6System_components) = MEMORY[0x277D84F98];
-  *(self + OBJC_IVAR____TtC11DockKitCore6System_id) = a3;
-  *(self + OBJC_IVAR____TtC11DockKitCore6System_type) = a4;
+  *(self + OBJC_IVAR____TtC11DockKitCore6System_id) = id;
+  *(self + OBJC_IVAR____TtC11DockKitCore6System_type) = type;
   v9 = (self + OBJC_IVAR____TtC11DockKitCore6System_name);
   *v9 = v8;
   v9[1] = v10;
@@ -51,11 +51,11 @@
   return [(System *)&v12 init];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_224628278();
     swift_unknownObjectRelease();
@@ -64,7 +64,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_2245B4398(v8);
@@ -78,23 +78,23 @@
   sub_2246287D8();
   MEMORY[0x22AA51BF0](*(self + OBJC_IVAR____TtC11DockKitCore6System_id));
   MEMORY[0x22AA51BF0](*(self + OBJC_IVAR____TtC11DockKitCore6System_type));
-  v3 = self;
+  selfCopy = self;
   sub_224627D78();
   v4 = sub_2246287B8();
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_2245B3BA4(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_2245B3BA4(coderCopy);
 }
 
-- (_TtC11DockKitCore6System)initWithCoder:(id)a3
+- (_TtC11DockKitCore6System)initWithCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   v4 = sub_2245B4A54();
 
   return v4;

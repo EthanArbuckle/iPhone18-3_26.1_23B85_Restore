@@ -1,24 +1,24 @@
 @interface SFPrivacyReportWebsiteDetailViewController
-- (SFPrivacyReportWebsiteDetailViewController)initWithWebsite:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (SFPrivacyReportWebsiteDetailViewController)initWithWebsite:(id)website;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_loadSections;
 - (void)viewDidLoad;
 @end
 
 @implementation SFPrivacyReportWebsiteDetailViewController
 
-- (SFPrivacyReportWebsiteDetailViewController)initWithWebsite:(id)a3
+- (SFPrivacyReportWebsiteDetailViewController)initWithWebsite:(id)website
 {
-  v5 = a3;
+  websiteCopy = website;
   v10.receiver = self;
   v10.super_class = SFPrivacyReportWebsiteDetailViewController;
   v6 = [(SFPrivacyReportWebsiteDetailViewController *)&v10 initWithStyle:1];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_website, a3);
+    objc_storeStrong(&v6->_website, website);
     v8 = v7;
   }
 
@@ -30,73 +30,73 @@
   v6.receiver = self;
   v6.super_class = SFPrivacyReportWebsiteDetailViewController;
   [(SFPrivacyReportWebsiteDetailViewController *)&v6 viewDidLoad];
-  v3 = [(WBSTrackedFirstParty *)self->_website domain];
-  [(SFPrivacyReportWebsiteDetailViewController *)self setTitle:v3];
+  domain = [(WBSTrackedFirstParty *)self->_website domain];
+  [(SFPrivacyReportWebsiteDetailViewController *)self setTitle:domain];
 
-  v4 = [(SFPrivacyReportWebsiteDetailViewController *)self tableView];
+  tableView = [(SFPrivacyReportWebsiteDetailViewController *)self tableView];
   v5 = *MEMORY[0x1E69DE3D0];
-  [v4 setRowHeight:*MEMORY[0x1E69DE3D0]];
-  [v4 setSectionHeaderHeight:v5];
+  [tableView setRowHeight:*MEMORY[0x1E69DE3D0]];
+  [tableView setSectionHeaderHeight:v5];
   [(SFPrivacyReportWebsiteDetailViewController *)self _loadSections];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(NSArray *)self->_sections objectAtIndexedSubscript:a4];
-  v5 = [v4 trackers];
-  v6 = [v5 count];
+  v4 = [(NSArray *)self->_sections objectAtIndexedSubscript:section];
+  trackers = [v4 trackers];
+  v6 = [trackers count];
 
   return v6;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"trackerCellIdentifier"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"trackerCellIdentifier"];
   if (!v7)
   {
     v7 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:3 reuseIdentifier:@"trackerCellIdentifier"];
   }
 
-  v8 = -[NSArray objectAtIndexedSubscript:](self->_sections, "objectAtIndexedSubscript:", [v6 section]);
-  v9 = [v8 trackers];
-  v10 = [v6 row];
+  v8 = -[NSArray objectAtIndexedSubscript:](self->_sections, "objectAtIndexedSubscript:", [pathCopy section]);
+  trackers = [v8 trackers];
+  v10 = [pathCopy row];
 
-  v11 = [v9 objectAtIndexedSubscript:v10];
+  v11 = [trackers objectAtIndexedSubscript:v10];
 
-  v12 = [v11 domain];
-  v13 = [v7 textLabel];
-  [v13 setText:v12];
+  domain = [v11 domain];
+  textLabel = [v7 textLabel];
+  [textLabel setText:domain];
 
-  v14 = [v7 detailTextLabel];
-  [v14 setNumberOfLines:0];
-  v15 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [v14 setTextColor:v15];
+  detailTextLabel = [v7 detailTextLabel];
+  [detailTextLabel setNumberOfLines:0];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [detailTextLabel setTextColor:secondaryLabelColor];
 
-  v16 = [v11 ownerName];
-  [v14 setText:v16];
+  ownerName = [v11 ownerName];
+  [detailTextLabel setText:ownerName];
 
   return v7;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v4 = [(NSArray *)self->_sections objectAtIndexedSubscript:a4];
-  v5 = [v4 title];
+  v4 = [(NSArray *)self->_sections objectAtIndexedSubscript:section];
+  title = [v4 title];
 
-  return v5;
+  return title;
 }
 
 - (void)_loadSections
 {
-  v13 = [MEMORY[0x1E695DF70] array];
-  v3 = [(WBSTrackedFirstParty *)self->_website blockedTrackers];
-  v4 = v3;
-  if (self->_separatesBlockedTrackers && [v3 count])
+  array = [MEMORY[0x1E695DF70] array];
+  blockedTrackers = [(WBSTrackedFirstParty *)self->_website blockedTrackers];
+  v4 = blockedTrackers;
+  if (self->_separatesBlockedTrackers && [blockedTrackers count])
   {
     v5 = _WBSLocalizedString();
     v6 = [[SFPrivacyReportWebsiteDetailSection alloc] initWithTitle:v5 trackers:v4];
-    [v13 addObject:v6];
+    [array addObject:v6];
   }
 
   website = self->_website;
@@ -114,10 +114,10 @@
   {
     v9 = _WBSLocalizedString();
     v10 = [[SFPrivacyReportWebsiteDetailSection alloc] initWithTitle:v9 trackers:v8];
-    [v13 addObject:v10];
+    [array addObject:v10];
   }
 
-  v11 = [v13 copy];
+  v11 = [array copy];
   sections = self->_sections;
   self->_sections = v11;
 }

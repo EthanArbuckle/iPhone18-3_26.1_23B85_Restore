@@ -1,48 +1,48 @@
 @interface AFLocalization
-+ (id)effectiveGenderKeyForKey:(id)a3 gender:(int64_t)a4;
++ (id)effectiveGenderKeyForKey:(id)key gender:(int64_t)gender;
 + (id)sharedInstance;
 - ($2AC1CA6B41BA5ED35C064565198F84D5)_voiceMaps;
 - (AFLocalization)init;
 - (id)_getVoiceOrdering;
-- (id)_localizedStringForKey:(id)a3 tables:(id)a4 localizations:(id)a5 bundle:(id)a6;
-- (id)_relevantTablesForTableName:(id)a3 tableExtension:(id)a4 bundle:(id)a5;
-- (id)_voicesFromVoiceMapWithLanguage:(id)a3;
-- (id)allOutputVoiceIdentifiersForSiriLanguage:(id)a3;
-- (id)baseLocaleToDialectMapForLanguage:(id)a3;
-- (id)compactDisplayNameInLanguage:(id)a3 forSiriLanguage:(id)a4;
-- (id)defaultOutputVoiceForSiriSessionLanguage:(id)a3;
-- (id)dialectForBaseLanguageCode:(id)a3;
+- (id)_localizedStringForKey:(id)key tables:(id)tables localizations:(id)localizations bundle:(id)bundle;
+- (id)_relevantTablesForTableName:(id)name tableExtension:(id)extension bundle:(id)bundle;
+- (id)_voicesFromVoiceMapWithLanguage:(id)language;
+- (id)allOutputVoiceIdentifiersForSiriLanguage:(id)language;
+- (id)baseLocaleToDialectMapForLanguage:(id)language;
+- (id)compactDisplayNameInLanguage:(id)language forSiriLanguage:(id)siriLanguage;
+- (id)defaultOutputVoiceForSiriSessionLanguage:(id)language;
+- (id)dialectForBaseLanguageCode:(id)code;
 - (id)dialectsMap;
-- (id)getBaseLocale:(id)a3;
-- (id)getValidOutputVoiceWithDialects:(id)a3;
-- (id)loadInfoForVoicesWithLanguageCode:(id)a3;
-- (id)localizedGenderOfOutputVoice:(id)a3 inDisplayLanguage:(id)a4;
-- (id)localizedNameOfOutputVoice:(id)a3 inDisplayLanguage:(id)a4;
-- (id)localizedNameOfOutputVoiceWithIdentifier:(id)a3 inDisplayLanguage:(id)a4;
-- (id)localizedNameOfVoiceGender:(int64_t)a3 inDisplayLanguage:(id)a4;
-- (id)localizedStringForKey:(id)a3 gender:(int64_t)a4 table:(id)a5 bundle:(id)a6 languageCode:(id)a7;
-- (id)localizedStringFromCatalogForKey:(id)a3 gender:(int64_t)a4 table:(id)a5 bundle:(id)a6 languageCode:(id)a7 defaultValue:(id)a8;
-- (id)localizedStringOrNilFromCatalogForKey:(id)a3 gender:(int64_t)a4 table:(id)a5 bundle:(id)a6 languageCode:(id)a7 defaultValue:(id)a8;
-- (id)localizedUIUtteranceForKey:(id)a3 languageCode:(id)a4;
-- (id)longDisplayNameInLanguage:(id)a3 forSiriLanguage:(id)a4;
-- (id)outputVoiceColorDescriptorForOutputLanguageCode:(id)a3 voiceName:(id)a4;
+- (id)getBaseLocale:(id)locale;
+- (id)getValidOutputVoiceWithDialects:(id)dialects;
+- (id)loadInfoForVoicesWithLanguageCode:(id)code;
+- (id)localizedGenderOfOutputVoice:(id)voice inDisplayLanguage:(id)language;
+- (id)localizedNameOfOutputVoice:(id)voice inDisplayLanguage:(id)language;
+- (id)localizedNameOfOutputVoiceWithIdentifier:(id)identifier inDisplayLanguage:(id)language;
+- (id)localizedNameOfVoiceGender:(int64_t)gender inDisplayLanguage:(id)language;
+- (id)localizedStringForKey:(id)key gender:(int64_t)gender table:(id)table bundle:(id)bundle languageCode:(id)code;
+- (id)localizedStringFromCatalogForKey:(id)key gender:(int64_t)gender table:(id)table bundle:(id)bundle languageCode:(id)code defaultValue:(id)value;
+- (id)localizedStringOrNilFromCatalogForKey:(id)key gender:(int64_t)gender table:(id)table bundle:(id)bundle languageCode:(id)code defaultValue:(id)value;
+- (id)localizedUIUtteranceForKey:(id)key languageCode:(id)code;
+- (id)longDisplayNameInLanguage:(id)language forSiriLanguage:(id)siriLanguage;
+- (id)outputVoiceColorDescriptorForOutputLanguageCode:(id)code voiceName:(id)name;
 - (id)outputVoiceComparator;
-- (id)outputVoiceDescriptorForOutputLanguageCode:(id)a3 voiceName:(id)a4;
-- (id)voiceNamesForOutputLanguageCode:(id)a3 gender:(int64_t)a4;
-- (id)voiceSimilarToVoice:(id)a3 inSiriSessionLanguage:(id)a4;
+- (id)outputVoiceDescriptorForOutputLanguageCode:(id)code voiceName:(id)name;
+- (id)voiceNamesForOutputLanguageCode:(id)code gender:(int64_t)gender;
+- (id)voiceSimilarToVoice:(id)voice inSiriSessionLanguage:(id)language;
 @end
 
 @implementation AFLocalization
 
-- (id)getValidOutputVoiceWithDialects:(id)a3
+- (id)getValidOutputVoiceWithDialects:(id)dialects
 {
   v57 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 languageCode];
-  v5 = [v3 name];
-  v6 = [v3 gender];
+  dialectsCopy = dialects;
+  languageCode = [dialectsCopy languageCode];
+  name = [dialectsCopy name];
+  gender = [dialectsCopy gender];
   v7 = +[AFLocalization sharedInstance];
-  v8 = [v7 allOutputVoiceIdentifiersForSiriLanguage:v4];
+  v8 = [v7 allOutputVoiceIdentifiersForSiriLanguage:languageCode];
 
   v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v41 = 0u;
@@ -55,9 +55,9 @@
   {
 
     v21 = v10;
-    if (v5)
+    if (name)
     {
-      [v9 containsObject:v5];
+      [v9 containsObject:name];
     }
 
     v11 = 0;
@@ -65,8 +65,8 @@
   }
 
   obj = v10;
-  v31 = v5;
-  v32 = v4;
+  v31 = name;
+  v32 = languageCode;
   v11 = 0;
   v34 = *v42;
   do
@@ -86,7 +86,7 @@
       v39 = 0u;
       v40 = 0u;
       v14 = +[AFLocalization sharedInstance];
-      v15 = [v14 voiceNamesForOutputLanguageCode:v13 gender:v6];
+      v15 = [v14 voiceNamesForOutputLanguageCode:v13 gender:gender];
 
       v16 = [v15 countByEnumeratingWithState:&v37 objects:v55 count:16];
       if (v16)
@@ -105,7 +105,7 @@
             v20 = *(*(&v37 + 1) + 8 * i);
             if (!v11)
             {
-              v11 = [[AFVoiceInfo alloc] initWithLanguageCode:v13 gender:v6 name:v20 footprint:2 isCustom:1];
+              v11 = [[AFVoiceInfo alloc] initWithLanguageCode:v13 gender:gender name:v20 footprint:2 isCustom:1];
             }
 
             [v9 addObject:v20];
@@ -127,10 +127,10 @@
   while (v35);
   v21 = obj;
 
-  v5 = v31;
+  name = v31;
   if (v31)
   {
-    v4 = v32;
+    languageCode = v32;
     if (([v9 containsObject:v31] & 1) != 0 || !v11)
     {
       goto LABEL_29;
@@ -139,18 +139,18 @@
 
   else
   {
-    v4 = v32;
+    languageCode = v32;
     if (!v11)
     {
 LABEL_29:
-      v27 = v3;
+      v27 = dialectsCopy;
       goto LABEL_30;
     }
   }
 
-  v22 = [(AFVoiceInfo *)v11 name];
+  name2 = [(AFVoiceInfo *)v11 name];
 
-  if (v22 == v31)
+  if (name2 == v31)
   {
     goto LABEL_29;
   }
@@ -159,18 +159,18 @@ LABEL_29:
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     v24 = v23;
-    v25 = [(AFVoiceInfo *)v11 name];
-    v26 = [(AFVoiceInfo *)v11 languageCode];
+    name3 = [(AFVoiceInfo *)v11 name];
+    languageCode2 = [(AFVoiceInfo *)v11 languageCode];
     *buf = 136316162;
     v46 = "[AFLocalization getValidOutputVoiceWithDialects:]";
     v47 = 2112;
     v48 = v31;
     v49 = 2112;
-    v50 = v4;
+    v50 = languageCode;
     v51 = 2112;
-    v52 = v25;
+    v52 = name3;
     v53 = 2112;
-    v54 = v26;
+    v54 = languageCode2;
     _os_log_impl(&dword_1912FE000, v24, OS_LOG_TYPE_INFO, "%s Invalid output voice '%@:%@' found. Updated to '%@:%@'", buf, 0x34u);
 
     v21 = obj;
@@ -186,29 +186,29 @@ LABEL_30:
   return v28;
 }
 
-- (id)voiceSimilarToVoice:(id)a3 inSiriSessionLanguage:(id)a4
+- (id)voiceSimilarToVoice:(id)voice inSiriSessionLanguage:(id)language
 {
   v61 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AFLocalization *)self defaultOutputVoiceForSiriSessionLanguage:v7];
+  voiceCopy = voice;
+  languageCopy = language;
+  v8 = [(AFLocalization *)self defaultOutputVoiceForSiriSessionLanguage:languageCopy];
   v9 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
   {
     *buf = 136315906;
     v54 = "[AFLocalization voiceSimilarToVoice:inSiriSessionLanguage:]";
     v55 = 2112;
-    v56 = v7;
+    v56 = languageCopy;
     v57 = 2112;
     v58 = v8;
     v59 = 2112;
-    v60 = v6;
+    v60 = voiceCopy;
     _os_log_impl(&dword_1912FE000, v9, OS_LOG_TYPE_INFO, "%s language code: %@ output language code: %@, output voice: %@", buf, 0x2Au);
   }
 
-  v10 = [v6 languageCode];
+  languageCode = [voiceCopy languageCode];
 
-  if (!v10)
+  if (!languageCode)
   {
     v35 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_ERROR))
@@ -216,32 +216,32 @@ LABEL_30:
       *buf = 136315394;
       v54 = "[AFLocalization voiceSimilarToVoice:inSiriSessionLanguage:]";
       v55 = 2112;
-      v56 = v6;
+      v56 = voiceCopy;
       _os_log_error_impl(&dword_1912FE000, v35, OS_LOG_TYPE_ERROR, "%s %@ missing languageCode", buf, 0x16u);
     }
 
     goto LABEL_24;
   }
 
-  v11 = [v6 name];
-  if (!v11)
+  name = [voiceCopy name];
+  if (!name)
   {
-    v12 = [v6 languageCode];
-    v13 = -[AFLocalization voiceNamesForOutputLanguageCode:gender:](self, "voiceNamesForOutputLanguageCode:gender:", v12, [v6 gender]);
-    v14 = [v13 firstObject];
+    languageCode2 = [voiceCopy languageCode];
+    v13 = -[AFLocalization voiceNamesForOutputLanguageCode:gender:](self, "voiceNamesForOutputLanguageCode:gender:", languageCode2, [voiceCopy gender]);
+    firstObject = [v13 firstObject];
 
-    if (v14)
+    if (firstObject)
     {
-      v11 = v14;
+      name = firstObject;
       v15 = AFSiriLogContextConnection;
       if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
       {
         *buf = 136315650;
         v54 = "[AFLocalization voiceSimilarToVoice:inSiriSessionLanguage:]";
         v55 = 2112;
-        v56 = v6;
+        v56 = voiceCopy;
         v57 = 2112;
-        v58 = v11;
+        v58 = name;
         _os_log_impl(&dword_1912FE000, v15, OS_LOG_TYPE_INFO, "%s Voice name not specified for %@, using %@", buf, 0x20u);
       }
 
@@ -254,7 +254,7 @@ LABEL_30:
       *buf = 136315394;
       v54 = "[AFLocalization voiceSimilarToVoice:inSiriSessionLanguage:]";
       v55 = 2112;
-      v56 = v6;
+      v56 = voiceCopy;
       _os_log_impl(&dword_1912FE000, v38, OS_LOG_TYPE_INFO, "%s Voice name not specified for %@, can't determine default name", buf, 0x16u);
     }
 
@@ -264,14 +264,14 @@ LABEL_24:
   }
 
 LABEL_9:
-  v42 = v7;
+  v42 = languageCopy;
   [(AFLocalization *)self _voiceMaps];
   v16 = v51;
   __destructor_8_s0_s8_s16_s24(v50);
-  v43 = v6;
-  v17 = [v6 languageCode];
-  v40 = v11;
-  v18 = [v17 stringByAppendingString:v11];
+  v43 = voiceCopy;
+  languageCode3 = [voiceCopy languageCode];
+  v40 = name;
+  v18 = [languageCode3 stringByAppendingString:name];
 
   v45 = v16;
   v39 = v18;
@@ -299,21 +299,21 @@ LABEL_9:
         }
 
         v26 = *(*(&v46 + 1) + 8 * i);
-        v27 = [v26 languageCode];
-        v28 = [v26 name];
-        v29 = [v27 stringByAppendingString:v28];
+        languageCode4 = [v26 languageCode];
+        name2 = [v26 name];
+        v29 = [languageCode4 stringByAppendingString:name2];
 
         v30 = [v45 objectForKey:v29];
-        v31 = [v30 integerValue];
-        v32 = [v19 integerValue];
-        if (v31 - v32 >= 0)
+        integerValue = [v30 integerValue];
+        integerValue2 = [v19 integerValue];
+        if (integerValue - integerValue2 >= 0)
         {
-          v33 = v31 - v32;
+          v33 = integerValue - integerValue2;
         }
 
         else
         {
-          v33 = v32 - v31;
+          v33 = integerValue2 - integerValue;
         }
 
         if (v33 < v24)
@@ -336,8 +336,8 @@ LABEL_9:
     v22 = 0;
   }
 
-  v7 = v42;
-  v6 = v43;
+  languageCopy = v42;
+  voiceCopy = v43;
   v8 = v41;
 LABEL_27:
 
@@ -462,16 +462,16 @@ LABEL_20:
   return v19;
 }
 
-- (id)voiceNamesForOutputLanguageCode:(id)a3 gender:(int64_t)a4
+- (id)voiceNamesForOutputLanguageCode:(id)code gender:(int64_t)gender
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [MEMORY[0x1E695DF70] array];
+  codeCopy = code;
+  array = [MEMORY[0x1E695DF70] array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = [(AFLocalization *)self _voicesFromVoiceMapWithLanguage:v6, 0];
+  v8 = [(AFLocalization *)self _voicesFromVoiceMapWithLanguage:codeCopy, 0];
   v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
@@ -487,10 +487,10 @@ LABEL_20:
         }
 
         v13 = *(*(&v17 + 1) + 8 * i);
-        if ([v13 gender] == a4)
+        if ([v13 gender] == gender)
         {
-          v14 = [v13 name];
-          [v7 addObject:v14];
+          name = [v13 name];
+          [array addObject:name];
         }
       }
 
@@ -502,7 +502,7 @@ LABEL_20:
 
   v15 = *MEMORY[0x1E69E9840];
 
-  return v7;
+  return array;
 }
 
 - ($2AC1CA6B41BA5ED35C064565198F84D5)_voiceMaps
@@ -609,17 +609,17 @@ void __28__AFLocalization__voiceMaps__block_invoke_2(uint64_t a1, void *a2, void
   return v2;
 }
 
-- (id)_voicesFromVoiceMapWithLanguage:(id)a3
+- (id)_voicesFromVoiceMapWithLanguage:(id)language
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  languageCopy = language;
+  if (languageCopy)
   {
-    v5 = [(AFLocalization *)self dialectForBaseLanguageCode:v4];
+    v5 = [(AFLocalization *)self dialectForBaseLanguageCode:languageCopy];
     if ([v5 count] == 1)
     {
       [(AFLocalization *)self _voiceMaps];
-      v6 = [v21[0] objectForKey:v4];
+      v6 = [v21[0] objectForKey:languageCopy];
       __destructor_8_s0_s8_s16_s24(v21);
     }
 
@@ -678,11 +678,11 @@ void __28__AFLocalization__voiceMaps__block_invoke_2(uint64_t a1, void *a2, void
   return v6;
 }
 
-- (id)loadInfoForVoicesWithLanguageCode:(id)a3
+- (id)loadInfoForVoicesWithLanguageCode:(id)code
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(AFLocalization *)self _voicesFromVoiceMapWithLanguage:v4];
+  codeCopy = code;
+  v5 = [(AFLocalization *)self _voicesFromVoiceMapWithLanguage:codeCopy];
   v6 = v5;
   if (v5)
   {
@@ -697,7 +697,7 @@ void __28__AFLocalization__voiceMaps__block_invoke_2(uint64_t a1, void *a2, void
       v11 = 136315394;
       v12 = "[AFLocalization loadInfoForVoicesWithLanguageCode:]";
       v13 = 2112;
-      v14 = v4;
+      v14 = codeCopy;
       _os_log_error_impl(&dword_1912FE000, v8, OS_LOG_TYPE_ERROR, "%s Missing voice map for language %@", &v11, 0x16u);
     }
 
@@ -709,12 +709,12 @@ void __28__AFLocalization__voiceMaps__block_invoke_2(uint64_t a1, void *a2, void
   return v7;
 }
 
-- (id)defaultOutputVoiceForSiriSessionLanguage:(id)a3
+- (id)defaultOutputVoiceForSiriSessionLanguage:(id)language
 {
-  v3 = a3;
-  if ([v3 length])
+  languageCopy = language;
+  if ([languageCopy length])
   {
-    v4 = AFOutputVoiceLanguageForRecognitionLanguage(v3);
+    v4 = AFOutputVoiceLanguageForRecognitionLanguage(languageCopy);
   }
 
   else
@@ -726,29 +726,29 @@ void __28__AFLocalization__voiceMaps__block_invoke_2(uint64_t a1, void *a2, void
   return v4;
 }
 
-- (id)dialectForBaseLanguageCode:(id)a3
+- (id)dialectForBaseLanguageCode:(id)code
 {
-  v4 = a3;
-  v5 = [(AFLocalization *)self baseLocaleToDialectMapForLanguage:v4];
-  v6 = [(AFLocalization *)self getBaseLocale:v4];
+  codeCopy = code;
+  v5 = [(AFLocalization *)self baseLocaleToDialectMapForLanguage:codeCopy];
+  v6 = [(AFLocalization *)self getBaseLocale:codeCopy];
 
   v7 = [v5 objectForKey:v6];
 
   return v7;
 }
 
-- (id)getBaseLocale:(id)a3
+- (id)getBaseLocale:(id)locale
 {
-  v3 = a3;
-  [v3 rangeOfString:@"[^-]+-[^-]+-" options:1024 range:{0, objc_msgSend(v3, "length")}];
+  localeCopy = locale;
+  [localeCopy rangeOfString:@"[^-]+-[^-]+-" options:1024 range:{0, objc_msgSend(localeCopy, "length")}];
   if (v4)
   {
-    v5 = [v3 substringToIndex:v4 - 1];
+    v5 = [localeCopy substringToIndex:v4 - 1];
   }
 
   else
   {
-    v5 = v3;
+    v5 = localeCopy;
   }
 
   v6 = v5;
@@ -756,11 +756,11 @@ void __28__AFLocalization__voiceMaps__block_invoke_2(uint64_t a1, void *a2, void
   return v6;
 }
 
-- (id)allOutputVoiceIdentifiersForSiriLanguage:(id)a3
+- (id)allOutputVoiceIdentifiersForSiriLanguage:(id)language
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 length])
+  languageCopy = language;
+  if ([languageCopy length])
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -772,7 +772,7 @@ void __28__AFLocalization__voiceMaps__block_invoke_2(uint64_t a1, void *a2, void
       dispatch_once(&allOutputVoiceIdentifiersForSiriLanguage__onceToken, block);
     }
 
-    v5 = [allOutputVoiceIdentifiersForSiriLanguage__dialectMapping objectForKey:v4];
+    v5 = [allOutputVoiceIdentifiersForSiriLanguage__dialectMapping objectForKey:languageCopy];
     v6 = v5;
     if (v5)
     {
@@ -781,7 +781,7 @@ void __28__AFLocalization__voiceMaps__block_invoke_2(uint64_t a1, void *a2, void
 
     else
     {
-      v12[0] = v4;
+      v12[0] = languageCopy;
       v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
     }
 
@@ -882,28 +882,28 @@ void __59__AFLocalization_allOutputVoiceIdentifiersForSiriLanguage___block_invok
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (id)baseLocaleToDialectMapForLanguage:(id)a3
+- (id)baseLocaleToDialectMapForLanguage:(id)language
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 length])
+  languageCopy = language;
+  if ([languageCopy length])
   {
     v11 = MEMORY[0x1E69E9820];
     v12 = 3221225472;
     v13 = __52__AFLocalization_baseLocaleToDialectMapForLanguage___block_invoke;
     v14 = &unk_1E73497C8;
-    v15 = self;
+    selfCopy = self;
     if (baseLocaleToDialectMapForLanguage__onceToken != -1)
     {
       dispatch_once(&baseLocaleToDialectMapForLanguage__onceToken, &v11);
     }
 
-    v5 = [(AFLocalization *)self getBaseLocale:v4, v11, v12, v13, v14, v15];
-    v6 = [baseLocaleToDialectMapForLanguage__rootLocaleMap objectForKey:v5];
+    selfCopy = [(AFLocalization *)self getBaseLocale:languageCopy, v11, v12, v13, v14, selfCopy];
+    v6 = [baseLocaleToDialectMapForLanguage__rootLocaleMap objectForKey:selfCopy];
     v7 = v6;
     if (v6)
     {
-      v16 = v5;
+      v16 = selfCopy;
       v17[0] = v6;
       v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
     }
@@ -991,20 +991,20 @@ void __52__AFLocalization_baseLocaleToDialectMapForLanguage___block_invoke(uint6
   return v4;
 }
 
-- (id)outputVoiceDescriptorForOutputLanguageCode:(id)a3 voiceName:(id)a4
+- (id)outputVoiceDescriptorForOutputLanguageCode:(id)code voiceName:(id)name
 {
   v47 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  codeCopy = code;
+  nameCopy = name;
   v8 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     *&buf[4] = "[AFLocalization outputVoiceDescriptorForOutputLanguageCode:voiceName:]";
     *&buf[12] = 2112;
-    *&buf[14] = v6;
+    *&buf[14] = codeCopy;
     *&buf[22] = 2112;
-    v46 = v7;
+    v46 = nameCopy;
     _os_log_impl(&dword_1912FE000, v8, OS_LOG_TYPE_INFO, "%s languageCode: %@, voiceName: %@", buf, 0x20u);
   }
 
@@ -1012,15 +1012,15 @@ void __52__AFLocalization_baseLocaleToDialectMapForLanguage___block_invoke(uint6
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
   v46 = 0x7FFFFFFFFFFFFFFFLL;
-  v9 = [(AFLocalization *)self _voicesFromVoiceMapWithLanguage:v6];
-  v10 = [(AFLocalization *)self outputVoiceComparator];
-  v11 = [v9 sortedArrayUsingComparator:v10];
+  v9 = [(AFLocalization *)self _voicesFromVoiceMapWithLanguage:codeCopy];
+  outputVoiceComparator = [(AFLocalization *)self outputVoiceComparator];
+  v11 = [v9 sortedArrayUsingComparator:outputVoiceComparator];
 
   v33 = MEMORY[0x1E69E9820];
   v34 = 3221225472;
   v35 = __71__AFLocalization_outputVoiceDescriptorForOutputLanguageCode_voiceName___block_invoke;
   v36 = &unk_1E73449F0;
-  v12 = v7;
+  v12 = nameCopy;
   v37 = v12;
   v38 = buf;
   [v11 enumerateObjectsUsingBlock:&v33];
@@ -1032,7 +1032,7 @@ void __52__AFLocalization_baseLocaleToDialectMapForLanguage___block_invoke(uint6
       *v39 = 136315650;
       v40 = "[AFLocalization outputVoiceDescriptorForOutputLanguageCode:voiceName:]";
       v41 = 2112;
-      v42 = v6;
+      v42 = codeCopy;
       v43 = 2112;
       v44 = v12;
       _os_log_error_impl(&dword_1912FE000, v13, OS_LOG_TYPE_ERROR, "%s No descriptor found for language code %@, voice name %@", v39, 0x20u);
@@ -1066,7 +1066,7 @@ void __52__AFLocalization_baseLocaleToDialectMapForLanguage___block_invoke(uint6
 
     v24 = [MEMORY[0x1E696AEC0] localizedStringWithFormat:v23, v19, *(*&buf[8] + 24) + 1, v33, v34, v35, v36];
 
-    v25 = [(AFLocalization *)self localizedNameOfOutputVoiceWithIdentifier:v6 inDisplayLanguage:0];
+    v25 = [(AFLocalization *)self localizedNameOfOutputVoiceWithIdentifier:codeCopy inDisplayLanguage:0];
     v26 = [(AFLocalization *)self localizedStringForKey:@"REGION_AND_VOICE" table:@"SiriLanguages" bundle:v15 languageCode:0];
     v27 = v26;
     v28 = @"%1$@ (%2$@)";
@@ -1100,16 +1100,16 @@ void __71__AFLocalization_outputVoiceDescriptorForOutputLanguageCode_voiceName__
   }
 }
 
-- (id)outputVoiceColorDescriptorForOutputLanguageCode:(id)a3 voiceName:(id)a4
+- (id)outputVoiceColorDescriptorForOutputLanguageCode:(id)code voiceName:(id)name
 {
-  v4 = [(AFLocalization *)self outputVoiceDescriptorForOutputLanguageCode:a3 voiceName:a4];
+  v4 = [(AFLocalization *)self outputVoiceDescriptorForOutputLanguageCode:code voiceName:name];
   if (v4)
   {
     v5 = [AFOutputVoiceColorDescriptor alloc];
-    v6 = [v4 localizedDisplay];
-    v7 = [v4 localizedDisplayWithRegion];
+    localizedDisplay = [v4 localizedDisplay];
+    localizedDisplayWithRegion = [v4 localizedDisplayWithRegion];
     LODWORD(v8) = 1.0;
-    v9 = [(AFOutputVoiceColorDescriptor *)v5 initWithHexColor:@"#1190E4" colorName:&stru_1F0512680 alpha:v6 localizedOutputVoiceColor:v7 localizedOutputVoice:v8];
+    v9 = [(AFOutputVoiceColorDescriptor *)v5 initWithHexColor:@"#1190E4" colorName:&stru_1F0512680 alpha:localizedDisplay localizedOutputVoiceColor:localizedDisplayWithRegion localizedOutputVoice:v8];
   }
 
   else
@@ -1120,62 +1120,62 @@ void __71__AFLocalization_outputVoiceDescriptorForOutputLanguageCode_voiceName__
   return v9;
 }
 
-- (id)localizedNameOfVoiceGender:(int64_t)a3 inDisplayLanguage:(id)a4
+- (id)localizedNameOfVoiceGender:(int64_t)gender inDisplayLanguage:(id)language
 {
-  if ((a3 - 1) > 2)
+  if ((gender - 1) > 2)
   {
     v5 = @"VOICE_GENDER_UNSPECIFIED";
   }
 
   else
   {
-    v5 = off_1E7344A68[a3 - 1];
+    v5 = off_1E7344A68[gender - 1];
   }
 
   v6 = MEMORY[0x1E696AAE8];
-  v7 = a4;
+  languageCopy = language;
   v8 = [v6 bundleForClass:objc_opt_class()];
-  v9 = [(AFLocalization *)self localizedStringForKey:v5 table:@"SiriLanguages" bundle:v8 languageCode:v7];
+  v9 = [(AFLocalization *)self localizedStringForKey:v5 table:@"SiriLanguages" bundle:v8 languageCode:languageCopy];
 
   return v9;
 }
 
-- (id)localizedGenderOfOutputVoice:(id)a3 inDisplayLanguage:(id)a4
+- (id)localizedGenderOfOutputVoice:(id)voice inDisplayLanguage:(id)language
 {
-  v6 = a4;
-  if (a3)
+  languageCopy = language;
+  if (voice)
   {
-    v7 = [a3 gender];
+    gender = [voice gender];
   }
 
   else
   {
-    v7 = 0;
+    gender = 0;
   }
 
-  v8 = [(AFLocalization *)self localizedNameOfVoiceGender:v7 inDisplayLanguage:v6];
+  v8 = [(AFLocalization *)self localizedNameOfVoiceGender:gender inDisplayLanguage:languageCopy];
 
   return v8;
 }
 
-- (id)localizedNameOfOutputVoice:(id)a3 inDisplayLanguage:(id)a4
+- (id)localizedNameOfOutputVoice:(id)voice inDisplayLanguage:(id)language
 {
-  v6 = a4;
-  v7 = [a3 languageCode];
-  v8 = [(AFLocalization *)self localizedNameOfOutputVoiceWithIdentifier:v7 inDisplayLanguage:v6];
+  languageCopy = language;
+  languageCode = [voice languageCode];
+  v8 = [(AFLocalization *)self localizedNameOfOutputVoiceWithIdentifier:languageCode inDisplayLanguage:languageCopy];
 
   return v8;
 }
 
-- (id)localizedNameOfOutputVoiceWithIdentifier:(id)a3 inDisplayLanguage:(id)a4
+- (id)localizedNameOfOutputVoiceWithIdentifier:(id)identifier inDisplayLanguage:(id)language
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length])
+  identifierCopy = identifier;
+  languageCopy = language;
+  if ([identifierCopy length])
   {
-    v8 = [@"VOICE_" stringByAppendingString:v6];
+    v8 = [@"VOICE_" stringByAppendingString:identifierCopy];
     v9 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-    v10 = [(AFLocalization *)self localizedStringForKey:v8 table:@"SiriLanguages" bundle:v9 languageCode:v7];
+    v10 = [(AFLocalization *)self localizedStringForKey:v8 table:@"SiriLanguages" bundle:v9 languageCode:languageCopy];
   }
 
   else
@@ -1186,15 +1186,15 @@ void __71__AFLocalization_outputVoiceDescriptorForOutputLanguageCode_voiceName__
   return v10;
 }
 
-- (id)compactDisplayNameInLanguage:(id)a3 forSiriLanguage:(id)a4
+- (id)compactDisplayNameInLanguage:(id)language forSiriLanguage:(id)siriLanguage
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 length])
+  languageCopy = language;
+  siriLanguageCopy = siriLanguage;
+  if ([siriLanguageCopy length])
   {
-    v8 = [@"COMPACT_" stringByAppendingString:v7];
+    v8 = [@"COMPACT_" stringByAppendingString:siriLanguageCopy];
     v9 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-    v10 = [(AFLocalization *)self localizedStringForKey:v8 table:@"SiriLanguages" bundle:v9 languageCode:v6];
+    v10 = [(AFLocalization *)self localizedStringForKey:v8 table:@"SiriLanguages" bundle:v9 languageCode:languageCopy];
   }
 
   else
@@ -1205,17 +1205,17 @@ void __71__AFLocalization_outputVoiceDescriptorForOutputLanguageCode_voiceName__
   return v10;
 }
 
-- (id)longDisplayNameInLanguage:(id)a3 forSiriLanguage:(id)a4
+- (id)longDisplayNameInLanguage:(id)language forSiriLanguage:(id)siriLanguage
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 length])
+  languageCopy = language;
+  siriLanguageCopy = siriLanguage;
+  if ([siriLanguageCopy length])
   {
-    v8 = [@"LONG_" stringByAppendingString:v7];
+    v8 = [@"LONG_" stringByAppendingString:siriLanguageCopy];
     v9 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-    v10 = [(AFLocalization *)self localizedStringForKey:v8 table:@"SiriLanguages" bundle:v9 languageCode:v6];
+    v10 = [(AFLocalization *)self localizedStringForKey:v8 table:@"SiriLanguages" bundle:v9 languageCode:languageCopy];
 
-    if (([v7 hasPrefix:@"zh"] & 1) != 0 || objc_msgSend(v7, "hasPrefix:", @"yue"))
+    if (([siriLanguageCopy hasPrefix:@"zh"] & 1) != 0 || objc_msgSend(siriLanguageCopy, "hasPrefix:", @"yue"))
     {
       if (AFHasGreenTeaCapability_onceToken != -1)
       {
@@ -1235,9 +1235,9 @@ void __71__AFLocalization_outputVoiceDescriptorForOutputLanguageCode_voiceName__
       if (AFIsChinaSKU_isRunningOnChinaSKU == 1)
       {
 LABEL_10:
-        v11 = [@"GREENTEA_" stringByAppendingString:v7];
+        v11 = [@"GREENTEA_" stringByAppendingString:siriLanguageCopy];
         v12 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-        v13 = [(AFLocalization *)self localizedStringForKey:v11 table:@"SiriLanguages" bundle:v12 languageCode:v6];
+        v13 = [(AFLocalization *)self localizedStringForKey:v11 table:@"SiriLanguages" bundle:v12 languageCode:languageCopy];
         v14 = v13;
         if (v13)
         {
@@ -1264,39 +1264,39 @@ LABEL_10:
   return v10;
 }
 
-- (id)localizedStringForKey:(id)a3 gender:(int64_t)a4 table:(id)a5 bundle:(id)a6 languageCode:(id)a7
+- (id)localizedStringForKey:(id)key gender:(int64_t)gender table:(id)table bundle:(id)bundle languageCode:(id)code
 {
   v41 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  keyCopy = key;
+  tableCopy = table;
+  bundleCopy = bundle;
+  codeCopy = code;
   v33 = 0;
   v34 = &v33;
   v35 = 0x3032000000;
   v36 = __Block_byref_object_copy__16988;
   v37 = __Block_byref_object_dispose__16989;
   v38 = 0;
-  v16 = [v14 bundleIdentifier];
-  if (![(__CFString *)v13 length])
+  bundleIdentifier = [bundleCopy bundleIdentifier];
+  if (![(__CFString *)tableCopy length])
   {
 
-    v13 = @"Localizable";
+    tableCopy = @"Localizable";
   }
 
-  if (![v15 length])
+  if (![codeCopy length])
   {
-    v17 = [MEMORY[0x1E695DF58] currentLocale];
-    v18 = [v17 objectForKey:*MEMORY[0x1E695D9A8]];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+    v18 = [currentLocale objectForKey:*MEMORY[0x1E695D9A8]];
 
-    v15 = v18;
+    codeCopy = v18;
   }
 
   v19 = 0;
-  if (v15 && v16)
+  if (codeCopy && bundleIdentifier)
   {
-    v20 = [objc_opt_class() effectiveGenderKeyForKey:v12 gender:a4];
-    if (v12 | v20)
+    v20 = [objc_opt_class() effectiveGenderKeyForKey:keyCopy gender:gender];
+    if (keyCopy | v20)
     {
       queue = self->_queue;
       v25[0] = MEMORY[0x1E69E9820];
@@ -1304,13 +1304,13 @@ LABEL_10:
       v25[2] = __73__AFLocalization_localizedStringForKey_gender_table_bundle_languageCode___block_invoke;
       v25[3] = &unk_1E73449C8;
       v25[4] = self;
-      v26 = v16;
-      v27 = v13;
-      v28 = v15;
+      v26 = bundleIdentifier;
+      v27 = tableCopy;
+      v28 = codeCopy;
       v29 = v20;
       v32 = &v33;
-      v30 = v12;
-      v31 = v14;
+      v30 = keyCopy;
+      v31 = bundleCopy;
       dispatch_sync(queue, v25);
       v19 = v34[5];
     }
@@ -1659,27 +1659,27 @@ LABEL_62:
   v57 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_localizedStringForKey:(id)a3 tables:(id)a4 localizations:(id)a5 bundle:(id)a6
+- (id)_localizedStringForKey:(id)key tables:(id)tables localizations:(id)localizations bundle:(id)bundle
 {
   v57 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (v9 && [v10 count] && (v13 = objc_msgSend(v11, "count"), v12) && v13)
+  keyCopy = key;
+  tablesCopy = tables;
+  localizationsCopy = localizations;
+  bundleCopy = bundle;
+  if (keyCopy && [tablesCopy count] && (v13 = objc_msgSend(localizationsCopy, "count"), bundleCopy) && v13)
   {
     v43 = 0u;
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v36 = v11;
-    v14 = v11;
+    v36 = localizationsCopy;
+    v14 = localizationsCopy;
     v32 = [v14 countByEnumeratingWithState:&v41 objects:v46 count:16];
     if (v32)
     {
       v15 = *v42;
       v34 = v14;
-      v35 = v10;
+      v35 = tablesCopy;
       v31 = *v42;
       do
       {
@@ -1697,7 +1697,7 @@ LABEL_62:
           v38 = 0u;
           v39 = 0u;
           v40 = 0u;
-          v18 = v10;
+          v18 = tablesCopy;
           v19 = [v18 countByEnumeratingWithState:&v37 objects:v45 count:16];
           if (v19)
           {
@@ -1713,13 +1713,13 @@ LABEL_62:
                 }
 
                 v23 = *(*(&v37 + 1) + 8 * i);
-                v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"NOT_FOUND:(%@)", v9];
-                v25 = [v12 localizedStringForKey:v9 value:v24 table:v23 localization:v17];
+                keyCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"NOT_FOUND:(%@)", keyCopy];
+                v25 = [bundleCopy localizedStringForKey:keyCopy value:keyCopy table:v23 localization:v17];
                 v26 = v25;
-                if (v25 && ![v25 isEqualToString:v24])
+                if (v25 && ![v25 isEqualToString:keyCopy])
                 {
 
-                  v10 = v35;
+                  tablesCopy = v35;
                   goto LABEL_31;
                 }
               }
@@ -1736,7 +1736,7 @@ LABEL_62:
 
           v16 = v33 + 1;
           v14 = v34;
-          v10 = v35;
+          tablesCopy = v35;
           v15 = v31;
         }
 
@@ -1753,19 +1753,19 @@ LABEL_62:
       *buf = 136316162;
       v48 = "[AFLocalization _localizedStringForKey:tables:localizations:bundle:]";
       v49 = 2112;
-      v50 = v9;
+      v50 = keyCopy;
       v51 = 2112;
-      v52 = v10;
+      v52 = tablesCopy;
       v53 = 2112;
       v54 = v14;
       v55 = 2112;
-      v56 = v12;
+      v56 = bundleCopy;
       _os_log_error_impl(&dword_1912FE000, v27, OS_LOG_TYPE_ERROR, "%s Could not find localization for key: %@, tables: %@, localizations: %@, bundle: %@", buf, 0x34u);
     }
 
     v26 = 0;
 LABEL_31:
-    v11 = v36;
+    localizationsCopy = v36;
   }
 
   else
@@ -1776,13 +1776,13 @@ LABEL_31:
       *buf = 136316162;
       v48 = "[AFLocalization _localizedStringForKey:tables:localizations:bundle:]";
       v49 = 2112;
-      v50 = v9;
+      v50 = keyCopy;
       v51 = 2112;
-      v52 = v10;
+      v52 = tablesCopy;
       v53 = 2112;
-      v54 = v11;
+      v54 = localizationsCopy;
       v55 = 2112;
-      v56 = v12;
+      v56 = bundleCopy;
       _os_log_error_impl(&dword_1912FE000, v28, OS_LOG_TYPE_ERROR, "%s Missing parameter(s). key: %@, tables: %@, localizations: %@, bundle: %@", buf, 0x34u);
     }
 
@@ -1794,39 +1794,39 @@ LABEL_31:
   return v26;
 }
 
-- (id)_relevantTablesForTableName:(id)a3 tableExtension:(id)a4 bundle:(id)a5
+- (id)_relevantTablesForTableName:(id)name tableExtension:(id)extension bundle:(id)bundle
 {
   v33 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
+  nameCopy = name;
+  extensionCopy = extension;
+  bundleCopy = bundle;
+  v10 = bundleCopy;
   v11 = 0;
-  if (!v7)
+  if (!nameCopy)
   {
     goto LABEL_21;
   }
 
-  if (!v9)
+  if (!bundleCopy)
   {
     goto LABEL_21;
   }
 
-  v12 = [v7 length];
+  v12 = [nameCopy length];
   v11 = 0;
-  if (!v8 || !v12)
+  if (!extensionCopy || !v12)
   {
     goto LABEL_21;
   }
 
-  if (![v8 length])
+  if (![extensionCopy length])
   {
 LABEL_20:
     v11 = 0;
     goto LABEL_21;
   }
 
-  if (([v8 isEqualToString:@"loctable"] & 1) == 0 && (objc_msgSend(v8, "isEqualToString:", @"strings") & 1) == 0)
+  if (([extensionCopy isEqualToString:@"loctable"] & 1) == 0 && (objc_msgSend(extensionCopy, "isEqualToString:", @"strings") & 1) == 0)
   {
     v21 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_ERROR))
@@ -1840,10 +1840,10 @@ LABEL_20:
   }
 
   v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"^%@-*\\w*\\.%@$", v7, v8];
+  extensionCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"^%@-*\\w*\\.%@$", nameCopy, extensionCopy];
   v13 = [MEMORY[0x1E696AE70] regularExpressionWithPattern:? options:? error:?];
   v25 = v10;
-  v14 = [v10 URLsForResourcesWithExtension:v8 subdirectory:0];
+  v14 = [v10 URLsForResourcesWithExtension:extensionCopy subdirectory:0];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -1862,11 +1862,11 @@ LABEL_20:
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v26 + 1) + 8 * i) lastPathComponent];
-        if ([v13 numberOfMatchesInString:v19 options:0 range:{0, objc_msgSend(v19, "length")}])
+        lastPathComponent = [*(*(&v26 + 1) + 8 * i) lastPathComponent];
+        if ([v13 numberOfMatchesInString:lastPathComponent options:0 range:{0, objc_msgSend(lastPathComponent, "length")}])
         {
-          v20 = [v19 stringByDeletingPathExtension];
-          [v11 addObject:v20];
+          stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
+          [v11 addObject:stringByDeletingPathExtension];
         }
       }
 
@@ -1884,20 +1884,20 @@ LABEL_21:
   return v11;
 }
 
-- (id)localizedUIUtteranceForKey:(id)a3 languageCode:(id)a4
+- (id)localizedUIUtteranceForKey:(id)key languageCode:(id)code
 {
-  v6 = a4;
-  v7 = a3;
+  codeCopy = code;
+  keyCopy = key;
   v8 = +[AFFeatureFlags isUIUtteranceJSStringCatalogEnabled];
   v9 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   if (v8)
   {
-    [(AFLocalization *)self localizedStringOrNilFromCatalogForKey:v7 gender:0 table:@"UIUtterances-JS-catalog" bundle:v9 languageCode:v6 defaultValue:0];
+    [(AFLocalization *)self localizedStringOrNilFromCatalogForKey:keyCopy gender:0 table:@"UIUtterances-JS-catalog" bundle:v9 languageCode:codeCopy defaultValue:0];
   }
 
   else
   {
-    [(AFLocalization *)self localizedStringForKey:v7 table:@"UIUtterances-JS" bundle:v9 languageCode:v6];
+    [(AFLocalization *)self localizedStringForKey:keyCopy table:@"UIUtterances-JS" bundle:v9 languageCode:codeCopy];
   }
   v10 = ;
 
@@ -1924,22 +1924,22 @@ LABEL_21:
   return v2;
 }
 
-+ (id)effectiveGenderKeyForKey:(id)a3 gender:(int64_t)a4
++ (id)effectiveGenderKeyForKey:(id)key gender:(int64_t)gender
 {
   v5 = @"_MALE";
-  if (a4 != 1)
+  if (gender != 1)
   {
     v5 = 0;
   }
 
-  if (a4 == 2)
+  if (gender == 2)
   {
     v5 = @"_FEMALE";
   }
 
   if (v5)
   {
-    v6 = [a3 stringByAppendingString:v5];
+    v6 = [key stringByAppendingString:v5];
   }
 
   else
@@ -1969,15 +1969,15 @@ void __32__AFLocalization_sharedInstance__block_invoke()
   sharedInstance_sLocalization = v0;
 }
 
-- (id)localizedStringFromCatalogForKey:(id)a3 gender:(int64_t)a4 table:(id)a5 bundle:(id)a6 languageCode:(id)a7 defaultValue:(id)a8
+- (id)localizedStringFromCatalogForKey:(id)key gender:(int64_t)gender table:(id)table bundle:(id)bundle languageCode:(id)code defaultValue:(id)value
 {
   v35 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
-  v18 = [objc_opt_class() effectiveGenderKeyForKey:v13 gender:a4];
+  keyCopy = key;
+  tableCopy = table;
+  bundleCopy = bundle;
+  codeCopy = code;
+  valueCopy = value;
+  v18 = [objc_opt_class() effectiveGenderKeyForKey:keyCopy gender:gender];
   if (!v18)
   {
     v21 = 0;
@@ -1988,15 +1988,15 @@ LABEL_8:
       *buf = 136315650;
       v30 = "[AFLocalization(StringCatalog) localizedStringFromCatalogForKey:gender:table:bundle:languageCode:defaultValue:]";
       v31 = 2112;
-      v32 = v13;
+      v32 = keyCopy;
       v33 = 2112;
-      v34 = v16;
+      v34 = codeCopy;
       _os_log_debug_impl(&dword_1912FE000, v22, OS_LOG_TYPE_DEBUG, "%s Getting localized string for key: %@ for locale: %@", buf, 0x20u);
     }
 
-    v27 = v16;
+    v27 = codeCopy;
     v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v27 count:1];
-    v24 = [v15 localizedStringForKey:v13 value:v17 table:v14 localizations:v23];
+    v24 = [bundleCopy localizedStringForKey:keyCopy value:valueCopy table:tableCopy localizations:v23];
 
     v21 = v24;
     goto LABEL_11;
@@ -2010,13 +2010,13 @@ LABEL_8:
     v31 = 2112;
     v32 = v18;
     v33 = 2112;
-    v34 = v16;
+    v34 = codeCopy;
     _os_log_debug_impl(&dword_1912FE000, v19, OS_LOG_TYPE_DEBUG, "%s Getting localized string for effective key: %@ for locale: %@", buf, 0x20u);
   }
 
-  v28 = v16;
+  v28 = codeCopy;
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v28 count:1];
-  v21 = [v15 localizedStringForKey:v18 value:v17 table:v14 localizations:v20];
+  v21 = [bundleCopy localizedStringForKey:v18 value:valueCopy table:tableCopy localizations:v20];
 
   if (!v21 || [v21 isEqual:@"default"])
   {
@@ -2030,24 +2030,24 @@ LABEL_11:
   return v21;
 }
 
-- (id)localizedStringOrNilFromCatalogForKey:(id)a3 gender:(int64_t)a4 table:(id)a5 bundle:(id)a6 languageCode:(id)a7 defaultValue:(id)a8
+- (id)localizedStringOrNilFromCatalogForKey:(id)key gender:(int64_t)gender table:(id)table bundle:(id)bundle languageCode:(id)code defaultValue:(id)value
 {
-  if (a8)
+  if (value)
   {
-    v14 = a8;
+    valueCopy = value;
   }
 
   else
   {
-    v14 = @"default";
+    valueCopy = @"default";
   }
 
-  v15 = v14;
-  v16 = a7;
-  v17 = a6;
-  v18 = a5;
-  v19 = a3;
-  v20 = [(AFLocalization *)self localizedStringFromCatalogForKey:v19 gender:a4 table:v18 bundle:v17 languageCode:v16 defaultValue:v15];
+  v15 = valueCopy;
+  codeCopy = code;
+  bundleCopy = bundle;
+  tableCopy = table;
+  keyCopy = key;
+  v20 = [(AFLocalization *)self localizedStringFromCatalogForKey:keyCopy gender:gender table:tableCopy bundle:bundleCopy languageCode:codeCopy defaultValue:v15];
 
   if ([v20 isEqual:@"default"])
   {

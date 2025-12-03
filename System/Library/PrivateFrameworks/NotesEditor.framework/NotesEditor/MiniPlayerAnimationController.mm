@@ -1,15 +1,15 @@
 @interface MiniPlayerAnimationController
 - (_TtC11NotesEditor29MiniPlayerAnimationController)init;
-- (id)interruptibleAnimatorForTransition:(id)a3;
+- (id)interruptibleAnimatorForTransition:(id)transition;
 @end
 
 @implementation MiniPlayerAnimationController
 
-- (id)interruptibleAnimatorForTransition:(id)a3
+- (id)interruptibleAnimatorForTransition:(id)transition
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  v6 = sub_2153C0360(a3);
+  selfCopy = self;
+  v6 = sub_2153C0360(transition);
   swift_unknownObjectRelease();
 
   return v6;

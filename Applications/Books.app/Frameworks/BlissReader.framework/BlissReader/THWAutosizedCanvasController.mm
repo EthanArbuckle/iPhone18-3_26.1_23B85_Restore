@@ -1,16 +1,16 @@
 @interface THWAutosizedCanvasController
 - (BOOL)allowSelectionPopover;
-- (BOOL)interactiveCanvasController:(id)a3 allowsEditMenuForRep:(id)a4;
-- (BOOL)interactiveCanvasController:(id)a3 shouldBeginEditingTHWPRep:(id)a4 withGesture:(id)a5;
-- (BOOL)interactiveCanvasControllerIsRelatedCanvasScrolling:(id)a3;
+- (BOOL)interactiveCanvasController:(id)controller allowsEditMenuForRep:(id)rep;
+- (BOOL)interactiveCanvasController:(id)controller shouldBeginEditingTHWPRep:(id)rep withGesture:(id)gesture;
+- (BOOL)interactiveCanvasControllerIsRelatedCanvasScrolling:(id)scrolling;
 - (CGSize)canvasLayoutSize;
-- (THWAutosizedCanvasController)initWithDelegate:(id)a3 documentRoot:(id)a4;
-- (id)interactiveCanvasController:(id)a3 delegateConformingToProtocol:(id)a4 forRep:(id)a5;
-- (id)interactiveCanvasController:(id)a3 layoutGeometryProviderForLayout:(id)a4;
-- (id)interactiveCanvasController:(id)a3 primaryTargetForGesture:(id)a4;
+- (THWAutosizedCanvasController)initWithDelegate:(id)delegate documentRoot:(id)root;
+- (id)interactiveCanvasController:(id)controller delegateConformingToProtocol:(id)protocol forRep:(id)rep;
+- (id)interactiveCanvasController:(id)controller layoutGeometryProviderForLayout:(id)layout;
+- (id)interactiveCanvasController:(id)controller primaryTargetForGesture:(id)gesture;
 - (void)dealloc;
-- (void)interactiveCanvasControllerDidLayout:(id)a3;
-- (void)interactiveCanvasControllerDidLayoutAndRenderOnBackgroundThread:(id)a3;
+- (void)interactiveCanvasControllerDidLayout:(id)layout;
+- (void)interactiveCanvasControllerDidLayoutAndRenderOnBackgroundThread:(id)thread;
 - (void)invalidateLayoutsAndFrames;
 - (void)setupImmediatePressGesture;
 - (void)teardown;
@@ -18,15 +18,15 @@
 
 @implementation THWAutosizedCanvasController
 
-- (THWAutosizedCanvasController)initWithDelegate:(id)a3 documentRoot:(id)a4
+- (THWAutosizedCanvasController)initWithDelegate:(id)delegate documentRoot:(id)root
 {
   v8.receiver = self;
   v8.super_class = THWAutosizedCanvasController;
   v6 = [(THWAutosizedCanvasController *)&v8 init];
   if (v6)
   {
-    v6->_documentRoot = a4;
-    v6->_delegate = a3;
+    v6->_documentRoot = root;
+    v6->_delegate = delegate;
     THCanvasCreate(v6, &v6->_interactiveCanvasController, &v6->_canvasViewController);
     [(TSDInteractiveCanvasController *)v6->_interactiveCanvasController disableAllGestures];
     [(TSDInteractiveCanvasController *)v6->_interactiveCanvasController setAllowLayoutAndRenderOnThread:1];
@@ -55,39 +55,39 @@
 
 - (BOOL)allowSelectionPopover
 {
-  v3 = [(THWAutosizedCanvasController *)self delegate];
+  delegate = [(THWAutosizedCanvasController *)self delegate];
 
-  return [(THWAutosizedCanvasControllerDelegate *)v3 allowSelectionPopoverForAutosizedCanvasController:self];
+  return [(THWAutosizedCanvasControllerDelegate *)delegate allowSelectionPopoverForAutosizedCanvasController:self];
 }
 
-- (id)interactiveCanvasController:(id)a3 layoutGeometryProviderForLayout:(id)a4
+- (id)interactiveCanvasController:(id)controller layoutGeometryProviderForLayout:(id)layout
 {
-  v6 = [(THWAutosizedCanvasController *)self delegate];
+  delegate = [(THWAutosizedCanvasController *)self delegate];
 
-  return [(THWAutosizedCanvasControllerDelegate *)v6 autosizedCanvasController:self geometryProviderForLayout:a4];
+  return [(THWAutosizedCanvasControllerDelegate *)delegate autosizedCanvasController:self geometryProviderForLayout:layout];
 }
 
-- (id)interactiveCanvasController:(id)a3 delegateConformingToProtocol:(id)a4 forRep:(id)a5
+- (id)interactiveCanvasController:(id)controller delegateConformingToProtocol:(id)protocol forRep:(id)rep
 {
-  v8 = [(THWAutosizedCanvasController *)self delegate];
+  delegate = [(THWAutosizedCanvasController *)self delegate];
 
-  return [(THWAutosizedCanvasControllerDelegate *)v8 autosizedCanvasController:self delegateConformingToProtocol:a4 forRep:a5];
+  return [(THWAutosizedCanvasControllerDelegate *)delegate autosizedCanvasController:self delegateConformingToProtocol:protocol forRep:rep];
 }
 
-- (id)interactiveCanvasController:(id)a3 primaryTargetForGesture:(id)a4
+- (id)interactiveCanvasController:(id)controller primaryTargetForGesture:(id)gesture
 {
-  v6 = [(THWAutosizedCanvasController *)self delegate];
+  delegate = [(THWAutosizedCanvasController *)self delegate];
 
-  return [(THWAutosizedCanvasControllerDelegate *)v6 autosizedCanvasController:self primaryTargetForGesture:a4];
+  return [(THWAutosizedCanvasControllerDelegate *)delegate autosizedCanvasController:self primaryTargetForGesture:gesture];
 }
 
-- (void)interactiveCanvasControllerDidLayout:(id)a3
+- (void)interactiveCanvasControllerDidLayout:(id)layout
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   v4 = sub_177DF4;
   v5 = &unk_45AE00;
-  v6 = self;
+  selfCopy = self;
   if (+[NSThread isMainThread])
   {
     v4(block);
@@ -99,7 +99,7 @@
   }
 }
 
-- (BOOL)interactiveCanvasControllerIsRelatedCanvasScrolling:(id)a3
+- (BOOL)interactiveCanvasControllerIsRelatedCanvasScrolling:(id)scrolling
 {
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
@@ -111,7 +111,7 @@
   return [(THWAutosizedCanvasControllerDelegate *)delegate autosizedCanvasControllerIsRelatedCanvasScrolling:self];
 }
 
-- (void)interactiveCanvasControllerDidLayoutAndRenderOnBackgroundThread:(id)a3
+- (void)interactiveCanvasControllerDidLayoutAndRenderOnBackgroundThread:(id)thread
 {
   if (objc_opt_respondsToSelector())
   {
@@ -121,20 +121,20 @@
   }
 }
 
-- (BOOL)interactiveCanvasController:(id)a3 allowsEditMenuForRep:(id)a4
+- (BOOL)interactiveCanvasController:(id)controller allowsEditMenuForRep:(id)rep
 {
-  v6 = [(THWAutosizedCanvasController *)self delegate];
+  delegate = [(THWAutosizedCanvasController *)self delegate];
 
-  return [(THWAutosizedCanvasControllerDelegate *)v6 autosizedCanvasController:self allowsEditMenuForRep:a4];
+  return [(THWAutosizedCanvasControllerDelegate *)delegate autosizedCanvasController:self allowsEditMenuForRep:rep];
 }
 
-- (BOOL)interactiveCanvasController:(id)a3 shouldBeginEditingTHWPRep:(id)a4 withGesture:(id)a5
+- (BOOL)interactiveCanvasController:(id)controller shouldBeginEditingTHWPRep:(id)rep withGesture:(id)gesture
 {
-  v6 = [(THWAutosizedCanvasController *)self delegate];
+  delegate = [(THWAutosizedCanvasController *)self delegate];
   objc_opt_class();
   v7 = TSUDynamicCast();
 
-  return [(THWAutosizedCanvasControllerDelegate *)v6 autosizedCanvasController:self allowsSelectionForRep:v7];
+  return [(THWAutosizedCanvasControllerDelegate *)delegate autosizedCanvasController:self allowsSelectionForRep:v7];
 }
 
 - (void)setupImmediatePressGesture
@@ -142,8 +142,8 @@
   if (!self->_immediatePressGesture)
   {
     v4 = [TSWPLongPressGestureRecognizer alloc];
-    v5 = [(TSDInteractiveCanvasController *)self->_interactiveCanvasController gestureDispatcher];
-    v6 = [v4 initWithGestureDispatcher:v5 gestureKind:TSWPImmediatePress];
+    gestureDispatcher = [(TSDInteractiveCanvasController *)self->_interactiveCanvasController gestureDispatcher];
+    v6 = [v4 initWithGestureDispatcher:gestureDispatcher gestureKind:TSWPImmediatePress];
     self->_immediatePressGesture = v6;
     [(TSWPLongPressGestureRecognizer *)v6 setNumberOfTapsRequired:0];
     [(TSWPLongPressGestureRecognizer *)self->_immediatePressGesture setNumberOfTouchesRequired:1];

@@ -1,138 +1,138 @@
 @interface MAAutoAssetInfoDesire
-- (MAAutoAssetInfoDesire)initWithCoder:(id)a3;
-- (MAAutoAssetInfoDesire)initWithDesiredCategory:(id)a3 forClientAssetPolicy:(id)a4 reasonDesired:(id)a5 withCheckWaitTimeout:(int64_t)a6 withLockWaitTimeout:(int64_t)a7 desiringProgress:(BOOL)a8;
+- (MAAutoAssetInfoDesire)initWithCoder:(id)coder;
+- (MAAutoAssetInfoDesire)initWithDesiredCategory:(id)category forClientAssetPolicy:(id)policy reasonDesired:(id)desired withCheckWaitTimeout:(int64_t)timeout withLockWaitTimeout:(int64_t)waitTimeout desiringProgress:(BOOL)progress;
 - (id)summary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MAAutoAssetInfoDesire
 
-- (MAAutoAssetInfoDesire)initWithDesiredCategory:(id)a3 forClientAssetPolicy:(id)a4 reasonDesired:(id)a5 withCheckWaitTimeout:(int64_t)a6 withLockWaitTimeout:(int64_t)a7 desiringProgress:(BOOL)a8
+- (MAAutoAssetInfoDesire)initWithDesiredCategory:(id)category forClientAssetPolicy:(id)policy reasonDesired:(id)desired withCheckWaitTimeout:(int64_t)timeout withLockWaitTimeout:(int64_t)waitTimeout desiringProgress:(BOOL)progress
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
+  categoryCopy = category;
+  policyCopy = policy;
+  desiredCopy = desired;
   v21.receiver = self;
   v21.super_class = MAAutoAssetInfoDesire;
   v18 = [(MAAutoAssetInfoDesire *)&v21 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_updateCategoryDesiredByClient, a3);
-    objc_storeStrong(&v19->_clientAssetPolicy, a4);
-    objc_storeStrong(&v19->_desireReason, a5);
-    v19->_checkWaitTimeoutSecs = a6;
-    v19->_lockWaitTimeoutSecs = a7;
-    v19->_downloadProgressDesired = a8;
+    objc_storeStrong(&v18->_updateCategoryDesiredByClient, category);
+    objc_storeStrong(&v19->_clientAssetPolicy, policy);
+    objc_storeStrong(&v19->_desireReason, desired);
+    v19->_checkWaitTimeoutSecs = timeout;
+    v19->_lockWaitTimeoutSecs = waitTimeout;
+    v19->_downloadProgressDesired = progress;
   }
 
   return v19;
 }
 
-- (MAAutoAssetInfoDesire)initWithCoder:(id)a3
+- (MAAutoAssetInfoDesire)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = MAAutoAssetInfoDesire;
   v5 = [(MAAutoAssetInfoDesire *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"updateCategoryDesiredByClient"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"updateCategoryDesiredByClient"];
     updateCategoryDesiredByClient = v5->_updateCategoryDesiredByClient;
     v5->_updateCategoryDesiredByClient = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientAssetPolicy"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientAssetPolicy"];
     clientAssetPolicy = v5->_clientAssetPolicy;
     v5->_clientAssetPolicy = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"desireReason"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"desireReason"];
     desireReason = v5->_desireReason;
     v5->_desireReason = v10;
 
-    v5->_checkWaitTimeoutSecs = [v4 decodeIntegerForKey:@"checkWaitTimeoutSecs"];
-    v5->_lockWaitTimeoutSecs = [v4 decodeIntegerForKey:@"lockWaitTimeoutSecs"];
-    v5->_downloadProgressDesired = [v4 decodeBoolForKey:@"downloadProgressDesired"];
+    v5->_checkWaitTimeoutSecs = [coderCopy decodeIntegerForKey:@"checkWaitTimeoutSecs"];
+    v5->_lockWaitTimeoutSecs = [coderCopy decodeIntegerForKey:@"lockWaitTimeoutSecs"];
+    v5->_downloadProgressDesired = [coderCopy decodeBoolForKey:@"downloadProgressDesired"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  v4 = [(MAAutoAssetInfoDesire *)self updateCategoryDesiredByClient];
-  [v7 encodeObject:v4 forKey:@"updateCategoryDesiredByClient"];
+  coderCopy = coder;
+  updateCategoryDesiredByClient = [(MAAutoAssetInfoDesire *)self updateCategoryDesiredByClient];
+  [coderCopy encodeObject:updateCategoryDesiredByClient forKey:@"updateCategoryDesiredByClient"];
 
-  v5 = [(MAAutoAssetInfoDesire *)self clientAssetPolicy];
-  [v7 encodeObject:v5 forKey:@"clientAssetPolicy"];
+  clientAssetPolicy = [(MAAutoAssetInfoDesire *)self clientAssetPolicy];
+  [coderCopy encodeObject:clientAssetPolicy forKey:@"clientAssetPolicy"];
 
-  v6 = [(MAAutoAssetInfoDesire *)self desireReason];
-  [v7 encodeObject:v6 forKey:@"desireReason"];
+  desireReason = [(MAAutoAssetInfoDesire *)self desireReason];
+  [coderCopy encodeObject:desireReason forKey:@"desireReason"];
 
-  [v7 encodeInteger:-[MAAutoAssetInfoDesire checkWaitTimeoutSecs](self forKey:{"checkWaitTimeoutSecs"), @"checkWaitTimeoutSecs"}];
-  [v7 encodeInteger:-[MAAutoAssetInfoDesire lockWaitTimeoutSecs](self forKey:{"lockWaitTimeoutSecs"), @"lockWaitTimeoutSecs"}];
-  [v7 encodeBool:-[MAAutoAssetInfoDesire downloadProgressDesired](self forKey:{"downloadProgressDesired"), @"downloadProgressDesired"}];
+  [coderCopy encodeInteger:-[MAAutoAssetInfoDesire checkWaitTimeoutSecs](self forKey:{"checkWaitTimeoutSecs"), @"checkWaitTimeoutSecs"}];
+  [coderCopy encodeInteger:-[MAAutoAssetInfoDesire lockWaitTimeoutSecs](self forKey:{"lockWaitTimeoutSecs"), @"lockWaitTimeoutSecs"}];
+  [coderCopy encodeBool:-[MAAutoAssetInfoDesire downloadProgressDesired](self forKey:{"downloadProgressDesired"), @"downloadProgressDesired"}];
 }
 
 - (id)summary
 {
   v3 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:&stru_1F0C1B388];
-  v4 = [(MAAutoAssetInfoDesire *)self updateCategoryDesiredByClient];
-  if (v4 || ([(MAAutoAssetInfoDesire *)self clientAssetPolicy], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+  updateCategoryDesiredByClient = [(MAAutoAssetInfoDesire *)self updateCategoryDesiredByClient];
+  if (updateCategoryDesiredByClient || ([(MAAutoAssetInfoDesire *)self clientAssetPolicy], (updateCategoryDesiredByClient = objc_claimAutoreleasedReturnValue()) != 0))
   {
   }
 
   else
   {
-    v14 = [(MAAutoAssetInfoDesire *)self desireReason];
+    desireReason = [(MAAutoAssetInfoDesire *)self desireReason];
 
-    if (!v14)
+    if (!desireReason)
     {
       [v3 appendString:@"byPolicy"];
       goto LABEL_17;
     }
   }
 
-  v5 = [(MAAutoAssetInfoDesire *)self updateCategoryDesiredByClient];
-  if (v5)
+  updateCategoryDesiredByClient2 = [(MAAutoAssetInfoDesire *)self updateCategoryDesiredByClient];
+  if (updateCategoryDesiredByClient2)
   {
   }
 
   else
   {
-    v6 = [(MAAutoAssetInfoDesire *)self clientAssetPolicy];
+    clientAssetPolicy = [(MAAutoAssetInfoDesire *)self clientAssetPolicy];
 
-    if (!v6)
+    if (!clientAssetPolicy)
     {
-      v13 = [(MAAutoAssetInfoDesire *)self desireReason];
-      [v3 appendString:v13];
+      desireReason2 = [(MAAutoAssetInfoDesire *)self desireReason];
+      [v3 appendString:desireReason2];
       goto LABEL_16;
     }
   }
 
-  v7 = [(MAAutoAssetInfoDesire *)self updateCategoryDesiredByClient];
+  updateCategoryDesiredByClient3 = [(MAAutoAssetInfoDesire *)self updateCategoryDesiredByClient];
 
-  if (v7)
+  if (updateCategoryDesiredByClient3)
   {
-    v8 = [(MAAutoAssetInfoDesire *)self updateCategoryDesiredByClient];
-    [v3 appendFormat:@"categ:%@", v8];
+    updateCategoryDesiredByClient4 = [(MAAutoAssetInfoDesire *)self updateCategoryDesiredByClient];
+    [v3 appendFormat:@"categ:%@", updateCategoryDesiredByClient4];
   }
 
-  v9 = [(MAAutoAssetInfoDesire *)self clientAssetPolicy];
+  clientAssetPolicy2 = [(MAAutoAssetInfoDesire *)self clientAssetPolicy];
 
-  if (v9)
+  if (clientAssetPolicy2)
   {
-    v10 = [(MAAutoAssetInfoDesire *)self clientAssetPolicy];
-    v11 = [v10 summary];
-    [v3 appendFormat:@"policy:%@", v11];
+    clientAssetPolicy3 = [(MAAutoAssetInfoDesire *)self clientAssetPolicy];
+    summary = [clientAssetPolicy3 summary];
+    [v3 appendFormat:@"policy:%@", summary];
   }
 
-  v12 = [(MAAutoAssetInfoDesire *)self desireReason];
+  desireReason3 = [(MAAutoAssetInfoDesire *)self desireReason];
 
-  if (v12)
+  if (desireReason3)
   {
-    v13 = [(MAAutoAssetInfoDesire *)self desireReason];
-    [v3 appendFormat:@"|%@", v13];
+    desireReason2 = [(MAAutoAssetInfoDesire *)self desireReason];
+    [v3 appendFormat:@"|%@", desireReason2];
 LABEL_16:
   }
 
@@ -174,9 +174,9 @@ LABEL_22:
   v16 = v18;
 LABEL_27:
   v19 = MEMORY[0x1E696AEC0];
-  v20 = [(MAAutoAssetInfoDesire *)self downloadProgressDesired];
+  downloadProgressDesired = [(MAAutoAssetInfoDesire *)self downloadProgressDesired];
   v21 = @"N";
-  if (v20)
+  if (downloadProgressDesired)
   {
     v21 = @"Y";
   }

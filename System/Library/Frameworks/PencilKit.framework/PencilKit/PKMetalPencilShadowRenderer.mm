@@ -1,75 +1,75 @@
 @interface PKMetalPencilShadowRenderer
 + (CGSize)maxBlurSize;
 + (CGSize)pixelSize;
-- (CGRect)renderInto:(id)a3 commandBuffer:(id)a4 position:(CGPoint)a5 azimuth:(double)a6 altitude:(double)a7 height:(double)a8 alpha:(double)a9 scale:(double)a10 clearFramebuffer:(BOOL)a11 grayscale:(double)a12;
-- (PKMetalPencilShadowRenderer)initWithDevice:(id)a3;
-- (PKMetalPencilShadowRenderer)initWithDevice:(id)a3 library:(id)a4;
+- (CGRect)renderInto:(id)into commandBuffer:(id)buffer position:(CGPoint)position azimuth:(double)azimuth altitude:(double)altitude height:(double)height alpha:(double)alpha scale:(double)self0 clearFramebuffer:(BOOL)self1 grayscale:(double)self2;
+- (PKMetalPencilShadowRenderer)initWithDevice:(id)device;
+- (PKMetalPencilShadowRenderer)initWithDevice:(id)device library:(id)library;
 - (id)current3DModel;
-- (id)grayscaleTextureFromCIImage:(void *)a3 context:(double)a4 extent:(double)a5;
-- (id)objectForModel:(uint64_t)a1;
-- (void)render3DModel:(void *)a3 oldObject:(double)a4 rollAngle:(double)a5 altitudeAngle:(double)a6 blendFactor:;
-- (void)updateInk:(id)a3 oldInk:(id)a4 rollAngle:(double)a5 altitudeAngle:(double)a6 progress:(double)a7;
-- (void)updateRoll:(double)a3 altitudeAngle:(double)a4;
+- (id)grayscaleTextureFromCIImage:(void *)image context:(double)context extent:(double)extent;
+- (id)objectForModel:(uint64_t)model;
+- (void)render3DModel:(void *)model oldObject:(double)object rollAngle:(double)angle altitudeAngle:(double)altitudeAngle blendFactor:;
+- (void)updateInk:(id)ink oldInk:(id)oldInk rollAngle:(double)angle altitudeAngle:(double)altitudeAngle progress:(double)progress;
+- (void)updateRoll:(double)roll altitudeAngle:(double)angle;
 @end
 
 @implementation PKMetalPencilShadowRenderer
 
-- (PKMetalPencilShadowRenderer)initWithDevice:(id)a3 library:(id)a4
+- (PKMetalPencilShadowRenderer)initWithDevice:(id)device library:(id)library
 {
   v53 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  deviceCopy = device;
+  libraryCopy = library;
   v47.receiver = self;
   v47.super_class = PKMetalPencilShadowRenderer;
   v9 = [(PKMetalPencilShadowRenderer *)&v47 init];
   if (v9)
   {
-    v10 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     objectsCache = v9->_objectsCache;
-    v9->_objectsCache = v10;
+    v9->_objectsCache = dictionary;
 
-    objc_storeStrong(&v9->_device, a3);
-    objc_storeStrong(&v9->_library, a4);
+    objc_storeStrong(&v9->_device, device);
+    objc_storeStrong(&v9->_library, library);
     v9->_currentPixelFormat = 0;
-    v12 = [(MTLDevice *)v9->_device newCommandQueue];
+    newCommandQueue = [(MTLDevice *)v9->_device newCommandQueue];
     commandQueue = v9->_commandQueue;
-    v9->_commandQueue = v12;
+    v9->_commandQueue = newCommandQueue;
 
     v14 = objc_alloc_init(MEMORY[0x1E69741E0]);
-    v15 = [v14 attributes];
-    v16 = [v15 objectAtIndexedSubscript:0];
+    attributes = [v14 attributes];
+    v16 = [attributes objectAtIndexedSubscript:0];
     [v16 setFormat:29];
 
-    v17 = [v14 attributes];
-    v18 = [v17 objectAtIndexedSubscript:0];
+    attributes2 = [v14 attributes];
+    v18 = [attributes2 objectAtIndexedSubscript:0];
     [v18 setOffset:0];
 
-    v19 = [v14 attributes];
-    v20 = [v19 objectAtIndexedSubscript:0];
+    attributes3 = [v14 attributes];
+    v20 = [attributes3 objectAtIndexedSubscript:0];
     [v20 setBufferIndex:0];
 
-    v21 = [v14 attributes];
-    v22 = [v21 objectAtIndexedSubscript:1];
+    attributes4 = [v14 attributes];
+    v22 = [attributes4 objectAtIndexedSubscript:1];
     [v22 setFormat:29];
 
-    v23 = [v14 attributes];
-    v24 = [v23 objectAtIndexedSubscript:1];
+    attributes5 = [v14 attributes];
+    v24 = [attributes5 objectAtIndexedSubscript:1];
     [v24 setOffset:8];
 
-    v25 = [v14 attributes];
-    v26 = [v25 objectAtIndexedSubscript:1];
+    attributes6 = [v14 attributes];
+    v26 = [attributes6 objectAtIndexedSubscript:1];
     [v26 setBufferIndex:0];
 
-    v27 = [v14 layouts];
-    v28 = [v27 objectAtIndexedSubscript:0];
+    layouts = [v14 layouts];
+    v28 = [layouts objectAtIndexedSubscript:0];
     [v28 setStride:16];
 
-    v29 = [v14 layouts];
-    v30 = [v29 objectAtIndexedSubscript:0];
+    layouts2 = [v14 layouts];
+    v30 = [layouts2 objectAtIndexedSubscript:0];
     [v30 setStepRate:1];
 
-    v31 = [v14 layouts];
-    v32 = [v31 objectAtIndexedSubscript:0];
+    layouts3 = [v14 layouts];
+    v32 = [layouts3 objectAtIndexedSubscript:0];
     [v32 setStepFunction:1];
 
     objc_storeStrong(&v9->_vertexDescriptor, v14);
@@ -81,8 +81,8 @@
     [v35 setVertexFunction:v33];
     [v35 setFragmentFunction:v34];
     [v35 setVertexDescriptor:v9->_vertexDescriptor];
-    v36 = [v35 colorAttachments];
-    v37 = [v36 objectAtIndexedSubscript:0];
+    colorAttachments = [v35 colorAttachments];
+    v37 = [colorAttachments objectAtIndexedSubscript:0];
     [v37 setPixelFormat:10];
 
     device = v9->_device;
@@ -97,9 +97,9 @@
       v42 = os_log_create("com.apple.pencilkit", "");
       if (os_log_type_enabled(v42, OS_LOG_TYPE_FAULT))
       {
-        v46 = [v40 localizedDescription];
+        localizedDescription = [v40 localizedDescription];
         *buf = 138412290;
-        *&buf[4] = v46;
+        *&buf[4] = localizedDescription;
         _os_log_fault_impl(&dword_1C7CCA000, v42, OS_LOG_TYPE_FAULT, "Failed to create pipeline state: %@", buf, 0xCu);
       }
     }
@@ -116,12 +116,12 @@
   return v9;
 }
 
-- (PKMetalPencilShadowRenderer)initWithDevice:(id)a3
+- (PKMetalPencilShadowRenderer)initWithDevice:(id)device
 {
-  v4 = a3;
-  v5 = [PKMetalResourceHandler sharedResourceHandlerWithDevice:v4];
-  v6 = [(PKMetalResourceHandler *)v5 shaderLibrary];
-  v7 = [(PKMetalPencilShadowRenderer *)self initWithDevice:v4 library:v6];
+  deviceCopy = device;
+  v5 = [PKMetalResourceHandler sharedResourceHandlerWithDevice:deviceCopy];
+  shaderLibrary = [(PKMetalResourceHandler *)v5 shaderLibrary];
+  v7 = [(PKMetalPencilShadowRenderer *)self initWithDevice:deviceCopy library:shaderLibrary];
 
   return v7;
 }
@@ -144,16 +144,16 @@
   return result;
 }
 
-- (id)grayscaleTextureFromCIImage:(void *)a3 context:(double)a4 extent:(double)a5
+- (id)grayscaleTextureFromCIImage:(void *)image context:(double)context extent:(double)extent
 {
   v57 = *MEMORY[0x1E69E9840];
   v13 = a2;
-  v14 = a3;
+  imageCopy = image;
   v45 = v13;
-  v46 = v14;
-  if (*(a1 + 216))
+  v46 = imageCopy;
+  if (*(self + 216))
   {
-    v15 = v14;
+    v15 = imageCopy;
     v16 = 0;
   }
 
@@ -163,37 +163,37 @@
     v54 = unk_1C801F834;
     v55 = xmmword_1C801F844;
     v56 = unk_1C801F854;
-    v17 = [*(a1 + 16) newBufferWithBytes:buf length:64 options:0];
-    v18 = *(a1 + 208);
-    *(a1 + 208) = v17;
+    v17 = [*(self + 16) newBufferWithBytes:buf length:64 options:0];
+    v18 = *(self + 208);
+    *(self + 208) = v17;
 
-    v19 = [*(a1 + 24) newFunctionWithName:@"pencilShadowVertex"];
-    v20 = [*(a1 + 24) newFunctionWithName:@"alphaToGrayscale"];
+    v19 = [*(self + 24) newFunctionWithName:@"pencilShadowVertex"];
+    v20 = [*(self + 24) newFunctionWithName:@"alphaToGrayscale"];
     v21 = objc_alloc_init(MEMORY[0x1E6974148]);
     [v21 setLabel:@"GrayscalePipeline"];
     [v21 setRasterSampleCount:1];
     [v21 setVertexFunction:v19];
     [v21 setFragmentFunction:v20];
-    [v21 setVertexDescriptor:*(a1 + 8)];
-    v22 = [v21 colorAttachments];
-    v23 = [v22 objectAtIndexedSubscript:0];
+    [v21 setVertexDescriptor:*(self + 8)];
+    colorAttachments = [v21 colorAttachments];
+    v23 = [colorAttachments objectAtIndexedSubscript:0];
     [v23 setPixelFormat:10];
 
-    v24 = *(a1 + 16);
+    v24 = *(self + 16);
     v48 = 0;
     v25 = [v24 newRenderPipelineStateWithDescriptor:v21 error:&v48];
     v16 = v48;
-    v26 = *(a1 + 216);
-    *(a1 + 216) = v25;
+    v26 = *(self + 216);
+    *(self + 216) = v25;
 
-    if (!*(a1 + 216))
+    if (!*(self + 216))
     {
       v27 = os_log_create("com.apple.pencilkit", "");
       if (os_log_type_enabled(v27, OS_LOG_TYPE_FAULT))
       {
-        v43 = [v16 localizedDescription];
+        localizedDescription = [v16 localizedDescription];
         *v51 = 138412290;
-        v52 = v43;
+        v52 = localizedDescription;
         _os_log_fault_impl(&dword_1C7CCA000, v27, OS_LOG_TYPE_FAULT, "Failed to create pipeline state: %@", v51, 0xCu);
       }
     }
@@ -202,10 +202,10 @@
     v15 = v46;
   }
 
-  v28 = [v15 createCGImage:v13 fromRect:{a4, a5, a6, a7}];
+  v28 = [v15 createCGImage:v13 fromRect:{context, extent, a6, a7}];
   if (v28)
   {
-    v29 = [objc_alloc(MEMORY[0x1E6974438]) initWithDevice:*(a1 + 16)];
+    v29 = [objc_alloc(MEMORY[0x1E6974438]) initWithDevice:*(self + 16)];
     v30 = *MEMORY[0x1E6974400];
     v49[0] = *MEMORY[0x1E6974408];
     v49[1] = v30;
@@ -221,9 +221,9 @@
       v33 = os_log_create("com.apple.pencilkit", "");
       if (os_log_type_enabled(v33, OS_LOG_TYPE_FAULT))
       {
-        v42 = [v44 localizedDescription];
+        localizedDescription2 = [v44 localizedDescription];
         *buf = 138412290;
-        *&buf[4] = v42;
+        *&buf[4] = localizedDescription2;
         _os_log_fault_impl(&dword_1C7CCA000, v33, OS_LOG_TYPE_FAULT, "Failed to create texture: %@", buf, 0xCu);
       }
     }
@@ -234,27 +234,27 @@
     [v34 setSampleCount:1];
     [v34 setUsage:5];
     [v34 setStorageMode:2];
-    v35 = [*(a1 + 16) newTextureWithDescriptor:v34];
+    v35 = [*(self + 16) newTextureWithDescriptor:v34];
     v36 = objc_alloc_init(MEMORY[0x1E6974128]);
-    v37 = [v36 colorAttachments];
-    v38 = [v37 objectAtIndexedSubscript:0];
+    colorAttachments2 = [v36 colorAttachments];
+    v38 = [colorAttachments2 objectAtIndexedSubscript:0];
 
     [v38 setTexture:v35];
     [v38 setLoadAction:0];
     [v38 setStoreAction:1];
-    v39 = [*(a1 + 168) commandBuffer];
-    v40 = [v39 renderCommandEncoderWithDescriptor:v36];
-    [v40 setRenderPipelineState:*(a1 + 216)];
+    commandBuffer = [*(self + 168) commandBuffer];
+    v40 = [commandBuffer renderCommandEncoderWithDescriptor:v36];
+    [v40 setRenderPipelineState:*(self + 216)];
     *buf = xmmword_1C801DE50;
     v54 = xmmword_1C801E950;
     v55 = xmmword_1C801E960;
     v56 = xmmword_1C801E970;
-    [v40 setVertexBuffer:*(a1 + 208) offset:0 atIndex:0];
+    [v40 setVertexBuffer:*(self + 208) offset:0 atIndex:0];
     [v40 setVertexBytes:buf length:64 atIndex:1];
     [v40 setFragmentTexture:v32 atIndex:0];
     [v40 drawPrimitives:4 vertexStart:0 vertexCount:4];
     [v40 endEncoding];
-    [v39 commit];
+    [commandBuffer commit];
 
     v16 = v44;
   }
@@ -267,19 +267,19 @@
   return v35;
 }
 
-- (void)render3DModel:(void *)a3 oldObject:(double)a4 rollAngle:(double)a5 altitudeAngle:(double)a6 blendFactor:
+- (void)render3DModel:(void *)model oldObject:(double)object rollAngle:(double)angle altitudeAngle:(double)altitudeAngle blendFactor:
 {
   v69 = *MEMORY[0x1E69E9840];
   v50 = a2;
-  v51 = a3;
-  if (a1)
+  modelCopy = model;
+  if (self)
   {
-    v12 = (a1 + 32);
-    v11 = *(a1 + 32);
-    *(a1 + 176) = a4;
-    *(a1 + 184) = a5;
+    v12 = (self + 32);
+    v11 = *(self + 32);
+    *(self + 176) = object;
+    *(self + 184) = angle;
     v53 = v11;
-    v55 = a1;
+    selfCopy = self;
     if (!v53 || [v53 width] != 172 || objc_msgSend(v53, "height") != 950)
     {
       v13 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:10 width:172 height:950 mipmapped:0];
@@ -287,39 +287,39 @@
       [v13 setSampleCount:1];
       [v13 setUsage:23];
       [v13 setStorageMode:2];
-      v14 = [*(a1 + 16) newTextureWithDescriptor:v13];
+      v14 = [*(self + 16) newTextureWithDescriptor:v13];
 
       objc_storeStrong(v12, v14);
       v53 = v14;
-      a1 = v55;
+      self = selfCopy;
     }
 
-    v15 = [*(a1 + 168) commandBuffer];
-    _ZF = a6 >= 0.99 || v51 == 0;
+    commandBuffer = [*(self + 168) commandBuffer];
+    _ZF = altitudeAngle >= 0.99 || modelCopy == 0;
     v17 = _ZF;
     if (_ZF)
     {
-      *(a1 + 248) = a4;
-      *(a1 + 256) = a5;
-      a6 = 1.0;
+      *(self + 248) = object;
+      *(self + 256) = angle;
+      altitudeAngle = 1.0;
       v18 = v53;
     }
 
     else
     {
-      *(a1 + 248) = vdupq_n_s64(0x7FEFFFFFFFFFFFFFuLL);
+      *(self + 248) = vdupq_n_s64(0x7FEFFFFFFFFFFFFFuLL);
       v18 = v53;
-      [(PKMetal3DObject *)v51 renderIntoTexture:v53 commandBuffer:v15 rollAngle:1 altitudeAngle:a4 blendFactor:a5 clear:1.0 - a6];
+      [(PKMetal3DObject *)modelCopy renderIntoTexture:v53 commandBuffer:commandBuffer rollAngle:1 altitudeAngle:object blendFactor:angle clear:1.0 - altitudeAngle];
     }
 
-    [(PKMetal3DObject *)v50 renderIntoTexture:v18 commandBuffer:v15 rollAngle:v17 altitudeAngle:a4 blendFactor:a5 clear:a6];
+    [(PKMetal3DObject *)v50 renderIntoTexture:v18 commandBuffer:commandBuffer rollAngle:v17 altitudeAngle:object blendFactor:angle clear:altitudeAngle];
     v49 = v18;
-    v54 = v15;
+    v54 = commandBuffer;
     objc_storeStrong(v12, v18);
-    v19 = [v49 width];
-    v20 = [v49 height];
+    width = [v49 width];
+    height = [v49 height];
     v21 = v49;
-    v22 = (v55 + 40);
+    v22 = (selfCopy + 40);
     *&v23 = 1.0;
     *v56 = v23;
     v24 = 4;
@@ -328,45 +328,45 @@
     {
       v25 = *v22;
       v26 = v25;
-      v57 = v20 / 2;
-      if (v25 && [v25 width] == v19 / 2 && objc_msgSend(v26, "height") == v57)
+      v57 = height / 2;
+      if (v25 && [v25 width] == width / 2 && objc_msgSend(v26, "height") == v57)
       {
         v27 = v26;
       }
 
       else
       {
-        v28 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:10 width:v19 / 2 height:v57 mipmapped:0];
+        v28 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:10 width:width / 2 height:v57 mipmapped:0];
         [v28 setTextureType:2];
         [v28 setSampleCount:1];
         [v28 setUsage:7];
         [v28 setStorageMode:2];
-        v27 = [*(v55 + 16) newTextureWithDescriptor:v28];
+        v27 = [*(selfCopy + 16) newTextureWithDescriptor:v28];
 
         objc_storeStrong(v22, v27);
       }
 
       v29 = objc_alloc_init(MEMORY[0x1E6974128]);
-      v30 = [v29 colorAttachments];
-      v31 = [v30 objectAtIndexedSubscript:0];
+      colorAttachments = [v29 colorAttachments];
+      v31 = [colorAttachments objectAtIndexedSubscript:0];
       [v31 setTexture:v27];
 
-      v32 = [v29 colorAttachments];
-      v33 = [v32 objectAtIndexedSubscript:0];
+      colorAttachments2 = [v29 colorAttachments];
+      v33 = [colorAttachments2 objectAtIndexedSubscript:0];
       [v33 setLoadAction:0];
 
-      v34 = [v29 colorAttachments];
-      v35 = [v34 objectAtIndexedSubscript:0];
+      colorAttachments3 = [v29 colorAttachments];
+      v35 = [colorAttachments3 objectAtIndexedSubscript:0];
       [v35 setStoreAction:1];
 
       v36 = [v54 renderCommandEncoderWithDescriptor:v29];
-      [v36 setRenderPipelineState:*(v55 + 200)];
-      v37.i64[0] = v19;
-      v37.i64[1] = v20;
+      [v36 setRenderPipelineState:*(selfCopy + 200)];
+      v37.i64[0] = width;
+      v37.i64[1] = height;
       *v58 = vcvt_f32_f64(vdivq_f64(vdupq_lane_s64(*&v56[0], 0), vcvtq_f64_s64(v37)));
       *&v58[8] = 1065353216;
       [v36 setFragmentBytes:v58 length:16 atIndex:0];
-      [v36 setVertexBuffer:*(v55 + 192) offset:0 atIndex:0];
+      [v36 setVertexBuffer:*(selfCopy + 192) offset:0 atIndex:0];
       [v36 setFragmentTexture:v21 atIndex:0];
       [v36 drawPrimitives:4 vertexStart:0 vertexCount:4];
       [v36 endEncoding];
@@ -375,18 +375,18 @@
       *(&v38 + 1) = v56[1];
       *&v38 = v56[0] * 1.2;
       *v56 = v38;
-      v19 /= 2;
-      v20 /= 2;
+      width /= 2;
+      height /= 2;
       v21 = v27;
       --v24;
     }
 
     while (v24);
-    v39 = [v52 width];
-    v40 = [v52 height];
-    v41 = v39 * 0.8;
+    width2 = [v52 width];
+    height2 = [v52 height];
+    v41 = width2 * 0.8;
     *v58 = v41 * -0.5;
-    v42 = v40 * 0.8;
+    v42 = height2 * 0.8;
     *&v58[4] = 3259498496;
     v59 = 0;
     v60 = v41 * 0.5;
@@ -400,32 +400,32 @@
     __asm { FMOV            V2.2S, #1.0 }
 
     v68 = _D2;
-    *(v55 + 88) = (v41 * -0.5);
-    *(v55 + 96) = 0xC049000000000000;
-    *(v55 + 104) = v41;
-    *(v55 + 112) = v42;
-    v47 = [*(v55 + 16) newBufferWithBytes:v58 length:64 options:0];
-    v48 = *(v55 + 80);
-    *(v55 + 80) = v47;
+    *(selfCopy + 88) = (v41 * -0.5);
+    *(selfCopy + 96) = 0xC049000000000000;
+    *(selfCopy + 104) = v41;
+    *(selfCopy + 112) = v42;
+    v47 = [*(selfCopy + 16) newBufferWithBytes:v58 length:64 options:0];
+    v48 = *(selfCopy + 80);
+    *(selfCopy + 80) = v47;
 
     [v54 commit];
   }
 }
 
-- (id)objectForModel:(uint64_t)a1
+- (id)objectForModel:(uint64_t)model
 {
   v3 = a2;
-  if (a1)
+  if (model)
   {
-    v4 = [*(a1 + 232) objectForKeyedSubscript:v3];
+    v4 = [*(model + 232) objectForKeyedSubscript:v3];
     if (!v4)
     {
       v5 = [PKMetal3DObject alloc];
-      v6 = *(a1 + 168);
-      v7 = *(a1 + 24);
+      v6 = *(model + 168);
+      v7 = *(model + 24);
       +[PKMetalPencilShadowRenderer pixelSize];
       v4 = [(PKMetal3DObject *)v5 initWithCommandQueue:v6 modelFile:v3 library:v7 pixelSize:v8 maxTextureBlur:v9, 50.0];
-      [*(a1 + 232) setObject:v4 forKeyedSubscript:v3];
+      [*(model + 232) setObject:v4 forKeyedSubscript:v3];
     }
   }
 
@@ -437,56 +437,56 @@
   return v4;
 }
 
-- (void)updateInk:(id)a3 oldInk:(id)a4 rollAngle:(double)a5 altitudeAngle:(double)a6 progress:(double)a7
+- (void)updateInk:(id)ink oldInk:(id)oldInk rollAngle:(double)angle altitudeAngle:(double)altitudeAngle progress:(double)progress
 {
   v66 = *MEMORY[0x1E69E9840];
-  v53 = a3;
-  v12 = a4;
-  if (v53)
+  inkCopy = ink;
+  oldInkCopy = oldInk;
+  if (inkCopy)
   {
-    v13 = [v53 _shadowModel];
-    if (v12)
+    _shadowModel = [inkCopy _shadowModel];
+    if (oldInkCopy)
     {
 LABEL_3:
-      v52 = [v12 _shadowModel];
+      _shadowModel2 = [oldInkCopy _shadowModel];
       goto LABEL_6;
     }
   }
 
   else
   {
-    v13 = @"BallpointPen3";
-    if (v12)
+    _shadowModel = @"BallpointPen3";
+    if (oldInkCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v52 = @"BallpointPen3";
+  _shadowModel2 = @"BallpointPen3";
 LABEL_6:
-  v14 = [(__CFString *)v13 isEqual:self->_currentModel]^ 1;
-  if (v12)
+  v14 = [(__CFString *)_shadowModel isEqual:self->_currentModel]^ 1;
+  if (oldInkCopy)
   {
     LOBYTE(v14) = 1;
   }
 
-  if ((v14 & 1) != 0 || self->_currentRenderedRoll != a5 || self->_currentRenderedAltitude != a6)
+  if ((v14 & 1) != 0 || self->_currentRenderedRoll != angle || self->_currentRenderedAltitude != altitudeAngle)
   {
-    objc_storeStrong(&self->_currentModel, v13);
-    if ([(__CFString *)v13 length]&& [(__CFString *)v52 length])
+    objc_storeStrong(&self->_currentModel, _shadowModel);
+    if ([(__CFString *)_shadowModel length]&& [(__CFString *)_shadowModel2 length])
     {
-      v15 = [(PKMetalPencilShadowRenderer *)self objectForModel:v13];
-      if (a7 >= 1.0)
+      v15 = [(PKMetalPencilShadowRenderer *)self objectForModel:_shadowModel];
+      if (progress >= 1.0)
       {
         v16 = 0;
       }
 
       else
       {
-        v16 = [(PKMetalPencilShadowRenderer *)self objectForModel:v52];
+        v16 = [(PKMetalPencilShadowRenderer *)self objectForModel:_shadowModel2];
       }
 
-      [(PKMetalPencilShadowRenderer *)self render3DModel:v15 oldObject:v16 rollAngle:a5 altitudeAngle:a6 blendFactor:a7];
+      [(PKMetalPencilShadowRenderer *)self render3DModel:v15 oldObject:v16 rollAngle:angle altitudeAngle:altitudeAngle blendFactor:progress];
     }
 
     else
@@ -497,10 +497,10 @@ LABEL_6:
         v18 = @"Outline Default";
         v19 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
         v20 = [MEMORY[0x1E69DCAB8] imageNamed:@"Outline Default" inBundle:v19];
-        v21 = [v20 CGImage];
-        if (v21)
+        cGImage = [v20 CGImage];
+        if (cGImage)
         {
-          v22 = [MEMORY[0x1E695F658] imageWithCGImage:v21];
+          v22 = [MEMORY[0x1E695F658] imageWithCGImage:cGImage];
         }
 
         else
@@ -532,9 +532,9 @@ LABEL_6:
       width = v69.size.width;
       height = v69.size.height;
       v32 = [(PKMetalPencilShadowRenderer *)self grayscaleTextureFromCIImage:v26 context:v25 extent:v69.origin.x, v69.origin.y, v69.size.width, v69.size.height];
-      v33 = [(PKMetalPencilShadowRenderer *)self grayscaleTextureFromCIImage:v27 context:v25 extent:x, y, width, height];
-      v34 = v33;
-      if (v32 && v33)
+      height = [(PKMetalPencilShadowRenderer *)self grayscaleTextureFromCIImage:v27 context:v25 extent:x, y, width, height];
+      v34 = height;
+      if (v32 && height)
       {
         objc_storeStrong(self->_textures, v32);
         objc_storeStrong(&self->_textures[4], v34);
@@ -542,9 +542,9 @@ LABEL_6:
         while (1)
         {
           v36 = [(CIImage *)v26 imageByApplyingGaussianBlurWithSigma:(v35 - 4) * 20.0 * 0.25];
-          v37 = [(PKMetalPencilShadowRenderer *)self grayscaleTextureFromCIImage:v36 context:v25 extent:x, y, width, height];
+          height2 = [(PKMetalPencilShadowRenderer *)self grayscaleTextureFromCIImage:v36 context:v25 extent:x, y, width, height];
           v38 = *(&self->super.isa + v35);
-          *(&self->super.isa + v35) = v37;
+          *(&self->super.isa + v35) = height2;
 
           if (!*(&self->super.isa + v35))
           {
@@ -611,41 +611,41 @@ LABEL_36:
 
 - (id)current3DModel
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    a1 = [a1[30] length];
-    if (a1)
+    selfCopy = self;
+    self = [self[30] length];
+    if (self)
     {
-      a1 = [v2[29] objectForKeyedSubscript:v2[30]];
+      self = [selfCopy[29] objectForKeyedSubscript:selfCopy[30]];
     }
 
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (void)updateRoll:(double)a3 altitudeAngle:(double)a4
+- (void)updateRoll:(double)roll altitudeAngle:(double)angle
 {
-  self->_currentRoll = a3;
-  self->_currentAltitude = a4;
-  v7 = [(PKMetalPencilShadowRenderer *)&self->super.isa current3DModel];
-  if (v7 && (self->_currentRenderedRoll != a3 || self->_currentRenderedAltitude != a4))
+  self->_currentRoll = roll;
+  self->_currentAltitude = angle;
+  current3DModel = [(PKMetalPencilShadowRenderer *)&self->super.isa current3DModel];
+  if (current3DModel && (self->_currentRenderedRoll != roll || self->_currentRenderedAltitude != angle))
   {
-    [(PKMetalPencilShadowRenderer *)self render3DModel:v7 oldObject:0 rollAngle:a3 altitudeAngle:a4 blendFactor:1.0];
+    [(PKMetalPencilShadowRenderer *)self render3DModel:current3DModel oldObject:0 rollAngle:roll altitudeAngle:angle blendFactor:1.0];
   }
 }
 
-- (CGRect)renderInto:(id)a3 commandBuffer:(id)a4 position:(CGPoint)a5 azimuth:(double)a6 altitude:(double)a7 height:(double)a8 alpha:(double)a9 scale:(double)a10 clearFramebuffer:(BOOL)a11 grayscale:(double)a12
+- (CGRect)renderInto:(id)into commandBuffer:(id)buffer position:(CGPoint)position azimuth:(double)azimuth altitude:(double)altitude height:(double)height alpha:(double)alpha scale:(double)self0 clearFramebuffer:(BOOL)self1 grayscale:(double)self2
 {
-  v13 = a11;
-  y = a5.y;
-  x = a5.x;
+  framebufferCopy = framebuffer;
+  y = position.y;
+  x = position.x;
   v114 = *MEMORY[0x1E69E9840];
-  v23 = a3;
-  v93 = a4;
-  v94 = v23;
+  intoCopy = into;
+  bufferCopy = buffer;
+  v94 = intoCopy;
   if (!self->_vertexBuffer || !self->_textures[0])
   {
     v71 = os_log_create("com.apple.pencilkit", "");
@@ -658,24 +658,24 @@ LABEL_36:
     goto LABEL_31;
   }
 
-  v24 = 1.57079633 - a7;
-  if (1.57079633 - a7 < 0.3)
+  v24 = 1.57079633 - altitude;
+  if (1.57079633 - altitude < 0.3)
   {
     v24 = pow(v24 * 3.33333333, 4.0);
-    a9 = v24 * a9;
+    alpha = v24 * alpha;
   }
 
-  v25 = [v23 pixelFormat];
-  v26 = v25;
+  pixelFormat = [intoCopy pixelFormat];
+  v26 = pixelFormat;
   currentPipelineState = self->_currentPipelineState;
-  if (self->_currentPixelFormat != v25 || !currentPipelineState)
+  if (self->_currentPixelFormat != pixelFormat || !currentPipelineState)
   {
-    self->_currentPixelFormat = v25;
+    self->_currentPixelFormat = pixelFormat;
     self->_currentPipelineState = 0;
 
     v28 = objc_alloc_init(MEMORY[0x1E6974148]);
-    v29 = [v28 colorAttachments];
-    v30 = [v29 objectAtIndexedSubscript:0];
+    colorAttachments = [v28 colorAttachments];
+    v30 = [colorAttachments objectAtIndexedSubscript:0];
 
     [v30 setPixelFormat:v26];
     [v30 setBlendingEnabled:1];
@@ -705,9 +705,9 @@ LABEL_36:
         v38 = os_log_create("com.apple.pencilkit", "");
         if (os_log_type_enabled(v38, OS_LOG_TYPE_FAULT))
         {
-          v90 = [v36 localizedDescription];
+          localizedDescription = [v36 localizedDescription];
           LODWORD(v108.a) = 138412290;
-          *(&v108.a + 4) = v90;
+          *(&v108.a + 4) = localizedDescription;
           _os_log_fault_impl(&dword_1C7CCA000, v38, OS_LOG_TYPE_FAULT, "Unable to create pipeline state: %@", &v108, 0xCu);
         }
       }
@@ -725,12 +725,12 @@ LABEL_31:
   }
 
   v39 = objc_alloc_init(MEMORY[0x1E6974128]);
-  v40 = [v39 colorAttachments];
-  v92 = a8;
-  v41 = [v40 objectAtIndexedSubscript:0];
+  colorAttachments2 = [v39 colorAttachments];
+  heightCopy = height;
+  v41 = [colorAttachments2 objectAtIndexedSubscript:0];
 
   [v41 setTexture:v94];
-  if (v13)
+  if (framebufferCopy)
   {
     v42 = 2;
   }
@@ -742,23 +742,23 @@ LABEL_31:
 
   [v41 setLoadAction:v42];
   [v41 setStoreAction:1];
-  if (v13)
+  if (framebufferCopy)
   {
     [v41 setClearColor:{0.0, 0.0, 0.0, 0.0}];
   }
 
-  v43 = [v93 renderCommandEncoderWithDescriptor:v39];
+  v43 = [bufferCopy renderCommandEncoderWithDescriptor:v39];
   [v43 setRenderPipelineState:self->_currentPipelineState];
-  v44 = [v94 width];
-  v45 = a12;
-  v46 = [v94 height];
+  width = [v94 width];
+  grayscaleCopy = grayscale;
+  height = [v94 height];
   v47.f32[0] = x;
-  v48 = v46 - y;
+  v48 = height - y;
   v47.f32[1] = v48;
   v47.i32[2] = 0;
   v47.i32[3] = 1.0;
   v91 = v47;
-  v49 = __sincos_stret(3.14159265 - a6);
+  v49 = __sincos_stret(3.14159265 - azimuth);
   v50 = 0;
   *&v51 = v49.__cosval;
   *&v52 = v49.__sinval;
@@ -777,12 +777,12 @@ LABEL_31:
   while (v50 != 64);
   v55 = 0;
   LODWORD(v56) = 0;
-  *(&v56 + 1) = a10;
+  *(&v56 + 1) = scale;
   v57 = *&v108.a;
   v58 = *&v108.c;
   v59 = *&v108.tx;
   v60 = v109;
-  *&v54 = a10;
+  *&v54 = scale;
   *&v107.m11 = v54;
   *&v107.m13 = v56;
   *&v107.m21 = xmmword_1C801E960;
@@ -807,8 +807,8 @@ LABEL_31:
   *&v107.m23 = v109;
   do
   {
-    v62.f32[0] = 2.0 / v44;
-    v63.f32[1] = 2.0 / v46;
+    v62.f32[0] = 2.0 / width;
+    v63.f32[1] = 2.0 / height;
     *(&v108.a + v61) = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(v62, COERCE_FLOAT(*(&v107.m11 + v61))), v63, *(&v107.m11 + v61), 1), xmmword_1C801E960, *(&v107.m11 + v61), 2), xmmword_1C801F7D0, *(&v107.m11 + v61), 3);
     v61 += 16;
   }
@@ -816,37 +816,37 @@ LABEL_31:
   while (v61 != 64);
   v102 = v108;
   v103 = v109;
-  v64 = [(PKMetalPencilShadowRenderer *)&self->super.isa current3DModel];
-  v65 = v64 == 0;
+  current3DModel = [(PKMetalPencilShadowRenderer *)&self->super.isa current3DModel];
+  v65 = current3DModel == 0;
 
   v66 = +[PKHoverSettings sharedSettings];
   [v66 toolPreviewMaxZDistance];
   if (v65)
   {
-    v76 = v92 / v67;
+    v76 = heightCopy / v67;
     v98 = v76;
 
-    v77 = a7 * 10.0 / 1.57079633;
+    v77 = altitude * 10.0 / 1.57079633;
     v99 = v77;
     v70 = -self->_imageMaxBlurredExtent.origin.y / self->_imageMaxBlurredExtent.size.height;
   }
 
   else
   {
-    v68 = v92 / v67 * 1.5;
+    v68 = heightCopy / v67 * 1.5;
     v98 = v68;
 
-    v69 = a7 * 32.0 / 1.57079633;
+    v69 = altitude * 32.0 / 1.57079633;
     v99 = v69;
     v70 = 0.094737;
   }
 
   v100 = v70;
-  v78 = v45;
+  v78 = grayscaleCopy;
   v79 = v78;
-  v80 = a9;
-  v81 = vmulq_n_f32(LODWORD(v79), v80);
-  v81.f32[3] = v80;
+  alphaCopy = alpha;
+  v81 = vmulq_n_f32(LODWORD(v79), alphaCopy);
+  v81.f32[3] = alphaCopy;
   v101 = v81;
   [v43 setVertexBuffer:self->_vertexBuffer offset:0 atIndex:{0, *&v91}];
   [v43 setVertexBytes:&v102 length:64 atIndex:1];
@@ -902,8 +902,8 @@ LABEL_38:
   v86 = v72;
   v87 = v73;
   v88 = width;
-  v89 = height;
-  result.size.height = v89;
+  heightCopy2 = height;
+  result.size.height = heightCopy2;
   result.size.width = v88;
   result.origin.y = v87;
   result.origin.x = v86;

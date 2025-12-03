@@ -1,8 +1,8 @@
 @interface _MFDAMSUpdateConsumer
-- (BOOL)handleItems:(id)a3;
+- (BOOL)handleItems:(id)items;
 - (void)drainMailbox;
-- (void)handleResponse:(id)a3 error:(id)a4;
-- (void)receiveSyncActions:(id)a3;
+- (void)handleResponse:(id)response error:(id)error;
+- (void)receiveSyncActions:(id)actions;
 @end
 
 @implementation _MFDAMSUpdateConsumer
@@ -12,16 +12,16 @@
   v13 = *MEMORY[0x1E69E9840];
   v3 = objc_autoreleasePoolPush();
   v4 = self->super.mailbox == 0;
-  v5 = DALoggingwithCategory();
-  v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
+  uRLString = DALoggingwithCategory();
+  v6 = os_log_type_enabled(uRLString, OS_LOG_TYPE_DEFAULT);
   if (v4)
   {
     if (v6)
     {
-      v9 = [(MFDAMailbox *)self->super.mailbox folderID];
+      folderID = [(MFDAMailbox *)self->super.mailbox folderID];
       v11 = 138412290;
-      v12 = v9;
-      _os_log_impl(&dword_1B0389000, v5, OS_LOG_TYPE_DEFAULT, "Failed erasing messages for folderID %@ - no such local mailbox.", &v11, 0xCu);
+      v12 = folderID;
+      _os_log_impl(&dword_1B0389000, uRLString, OS_LOG_TYPE_DEFAULT, "Failed erasing messages for folderID %@ - no such local mailbox.", &v11, 0xCu);
     }
   }
 
@@ -29,43 +29,43 @@
   {
     if (v6)
     {
-      v7 = [(MFDAMailbox *)self->super.mailbox folderID];
+      folderID2 = [(MFDAMailbox *)self->super.mailbox folderID];
       v11 = 138412290;
-      v12 = v7;
-      _os_log_impl(&dword_1B0389000, v5, OS_LOG_TYPE_DEFAULT, "Erasing locally cached messages for folderID %@", &v11, 0xCu);
+      v12 = folderID2;
+      _os_log_impl(&dword_1B0389000, uRLString, OS_LOG_TYPE_DEFAULT, "Erasing locally cached messages for folderID %@", &v11, 0xCu);
     }
 
     library = self->super.library;
-    v5 = [(MFMailboxUid *)self->super.mailbox URLString];
-    [(MFMailMessageLibrary *)library removeAllMessagesFromMailbox:v5 removeMailbox:0 andNotify:1];
+    uRLString = [(MFMailboxUid *)self->super.mailbox URLString];
+    [(MFMailMessageLibrary *)library removeAllMessagesFromMailbox:uRLString removeMailbox:0 andNotify:1];
   }
 
   objc_autoreleasePoolPop(v3);
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)handleItems:(id)a3
+- (BOOL)handleItems:(id)items
 {
   v68 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  itemsCopy = items;
+  v5 = itemsCopy;
   if (self->super.error)
   {
     goto LABEL_77;
   }
 
-  v46 = v4;
+  v46 = itemsCopy;
   v45 = objc_autoreleasePoolPush();
-  v49 = [MEMORY[0x1E695DF70] array];
-  v50 = [MEMORY[0x1E695DF70] array];
-  v55 = [MEMORY[0x1E695DF70] array];
-  v54 = [MEMORY[0x1E695DF70] array];
-  v53 = [MEMORY[0x1E695DF70] array];
-  v52 = [MEMORY[0x1E695DF70] array];
-  v51 = [MEMORY[0x1E695DF70] array];
-  v48 = [MEMORY[0x1E695DF70] array];
-  v47 = [MEMORY[0x1E695DF70] array];
-  v56 = [MEMORY[0x1E695DF90] dictionary];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  array3 = [MEMORY[0x1E695DF70] array];
+  array4 = [MEMORY[0x1E695DF70] array];
+  array5 = [MEMORY[0x1E695DF70] array];
+  array6 = [MEMORY[0x1E695DF70] array];
+  array7 = [MEMORY[0x1E695DF70] array];
+  array8 = [MEMORY[0x1E695DF70] array];
+  array9 = [MEMORY[0x1E695DF70] array];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v63 = 0u;
   v64 = 0u;
   v61 = 0u;
@@ -88,72 +88,72 @@
       }
 
       v10 = *(*(&v61 + 1) + 8 * i);
-      v11 = [v10 itemChangeType];
-      if (v11 == 2)
+      itemChangeType = [v10 itemChangeType];
+      if (itemChangeType == 2)
       {
-        v19 = [v10 message];
-        v12 = [v19 remoteID];
+        message = [v10 message];
+        remoteID = [message remoteID];
 
-        v15 = [(MFDAMessageStore *)self->super.store messageForRemoteID:v12];
-        if (v15)
+        v12RemoteID = [(MFDAMessageStore *)self->super.store messageForRemoteID:remoteID];
+        if (v12RemoteID)
         {
-          [v50 addObject:v15];
+          [array2 addObject:v12RemoteID];
         }
       }
 
       else
       {
-        if (v11 == 1)
+        if (itemChangeType == 1)
         {
-          v12 = [v10 message];
-          v15 = [v12 remoteID];
-          v16 = [(MFDAMessageStore *)self->super.store messageForRemoteID:v15];
+          remoteID = [v10 message];
+          v12RemoteID = [remoteID remoteID];
+          v16 = [(MFDAMessageStore *)self->super.store messageForRemoteID:v12RemoteID];
           if (v16)
           {
-            if ([v12 isDraft])
+            if ([remoteID isDraft])
             {
-              v18 = [[MFDAMessage alloc] initWithDAMailMessage:v12 mailbox:self->super.mailbox];
+              v18 = [[MFDAMessage alloc] initWithDAMailMessage:remoteID mailbox:self->super.mailbox];
               [(MFDAMessage *)v18 setMessageStore:self->super.store];
-              [v49 addObject:v18];
-              [v50 addObject:v16];
+              [array addObject:v18];
+              [array2 addObject:v16];
             }
 
             else
             {
-              [v56 setObject:v12 forKey:v16];
+              [dictionary setObject:remoteID forKey:v16];
             }
           }
         }
 
         else
         {
-          if (v11)
+          if (itemChangeType)
           {
             continue;
           }
 
-          v12 = [v10 message];
+          remoteID = [v10 message];
           store = self->super.store;
-          v14 = [v12 remoteID];
-          v15 = [(MFDAMessageStore *)store messageForRemoteID:v14];
+          v12RemoteID2 = [remoteID remoteID];
+          v12RemoteID = [(MFDAMessageStore *)store messageForRemoteID:v12RemoteID2];
 
-          if (v15)
+          if (v12RemoteID)
           {
             v16 = DALoggingwithCategory();
             if (os_log_type_enabled(&v16->super.super.super, OS_LOG_TYPE_DEFAULT))
             {
-              v17 = [v12 remoteID];
+              v12RemoteID3 = [remoteID remoteID];
               *buf = 138412290;
-              *&buf[4] = v17;
+              *&buf[4] = v12RemoteID3;
               _os_log_impl(&dword_1B0389000, &v16->super.super.super, OS_LOG_TYPE_DEFAULT, "received a redundant SyncAddAction for a message with remote-id %@", buf, 0xCu);
             }
           }
 
           else
           {
-            v16 = [[MFDAMessage alloc] initWithDAMailMessage:v12 mailbox:self->super.mailbox];
+            v16 = [[MFDAMessage alloc] initWithDAMailMessage:remoteID mailbox:self->super.mailbox];
             [(MFDAMessage *)v16 setMessageStore:self->super.store];
-            [v49 addObject:v16];
+            [array addObject:v16];
           }
         }
       }
@@ -165,14 +165,14 @@
   while (v7);
 LABEL_24:
 
-  if ([v56 count])
+  if ([dictionary count])
   {
     v59 = 0u;
     v60 = 0u;
     v57 = 0u;
     v58 = 0u;
-    v20 = [v56 allKeys];
-    v21 = [v20 countByEnumeratingWithState:&v57 objects:v65 count:16];
+    allKeys = [dictionary allKeys];
+    v21 = [allKeys countByEnumeratingWithState:&v57 objects:v65 count:16];
     if (!v21)
     {
       goto LABEL_49;
@@ -185,21 +185,21 @@ LABEL_24:
       {
         if (*v58 != v22)
         {
-          objc_enumerationMutation(v20);
+          objc_enumerationMutation(allKeys);
         }
 
         v24 = *(*(&v57 + 1) + 8 * j);
-        v25 = [v56 objectForKey:v24];
+        v25 = [dictionary objectForKey:v24];
         if ([v25 readIsSet])
         {
           if ([v25 read])
           {
-            v26 = v55;
+            v26 = array3;
           }
 
           else
           {
-            v26 = v54;
+            v26 = array4;
           }
 
           [v26 addObject:v24];
@@ -209,12 +209,12 @@ LABEL_24:
         {
           if ([v25 flagged])
           {
-            v27 = v53;
+            v27 = array5;
           }
 
           else
           {
-            v27 = v52;
+            v27 = array6;
           }
 
           [v27 addObject:v24];
@@ -222,23 +222,23 @@ LABEL_24:
 
         if ([v25 verbIsSet])
         {
-          v28 = [v25 lastVerb];
-          v29 = v51;
-          if (v28 == 1)
+          lastVerb = [v25 lastVerb];
+          v29 = array7;
+          if (lastVerb == 1)
           {
             goto LABEL_46;
           }
 
-          if (v28 == 3)
+          if (lastVerb == 3)
           {
-            v29 = v47;
+            v29 = array9;
 LABEL_46:
             [v29 addObject:v24];
             goto LABEL_47;
           }
 
-          v29 = v48;
-          if (v28 == 2)
+          v29 = array8;
+          if (lastVerb == 2)
           {
             goto LABEL_46;
           }
@@ -247,7 +247,7 @@ LABEL_46:
 LABEL_47:
       }
 
-      v21 = [v20 countByEnumeratingWithState:&v57 objects:v65 count:16];
+      v21 = [allKeys countByEnumeratingWithState:&v57 objects:v65 count:16];
       if (!v21)
       {
 LABEL_49:
@@ -257,12 +257,12 @@ LABEL_49:
     }
   }
 
-  if ([v49 count])
+  if ([array count])
   {
     *buf = 0;
     library = self->super.library;
-    v31 = [(MFLibraryStore *)self->super.store account];
-    self->super.numNewMessages = insertDAMessages(v49, library, v31, self->super.mailbox, 0, buf);
+    account = [(MFLibraryStore *)self->super.store account];
+    self->super.numNewMessages = insertDAMessages(array, library, account, self->super.mailbox, 0, buf);
 
     if ((buf[0] & 1) != 0 && (buf[0] & 8) != 0 && self->super.numNewMessages)
     {
@@ -286,54 +286,54 @@ LABEL_49:
     }
   }
 
-  v34 = [(MFMailMessageLibrary *)self->super.library persistence];
-  v35 = [v34 messageChangeManager];
+  persistence = [(MFMailMessageLibrary *)self->super.library persistence];
+  messageChangeManager = [persistence messageChangeManager];
 
-  if ([v54 count])
+  if ([array4 count])
   {
-    v36 = [MEMORY[0x1E699B300] clearRead];
-    [v35 reflectFlagChanges:v36 forMessages:v54];
+    clearRead = [MEMORY[0x1E699B300] clearRead];
+    [messageChangeManager reflectFlagChanges:clearRead forMessages:array4];
   }
 
-  if ([v55 count])
+  if ([array3 count])
   {
-    v37 = [MEMORY[0x1E699B300] setRead];
-    [v35 reflectFlagChanges:v37 forMessages:v55];
+    setRead = [MEMORY[0x1E699B300] setRead];
+    [messageChangeManager reflectFlagChanges:setRead forMessages:array3];
   }
 
-  if ([v52 count])
+  if ([array6 count])
   {
-    v38 = [MEMORY[0x1E699B300] clearFlagged];
-    [v35 reflectFlagChanges:v38 forMessages:v52];
+    clearFlagged = [MEMORY[0x1E699B300] clearFlagged];
+    [messageChangeManager reflectFlagChanges:clearFlagged forMessages:array6];
   }
 
-  if ([v53 count])
+  if ([array5 count])
   {
-    v39 = [MEMORY[0x1E699B300] setFlagged];
-    [v35 reflectFlagChanges:v39 forMessages:v53];
+    setFlagged = [MEMORY[0x1E699B300] setFlagged];
+    [messageChangeManager reflectFlagChanges:setFlagged forMessages:array5];
   }
 
-  if ([v51 count])
+  if ([array7 count])
   {
-    v40 = [MEMORY[0x1E699B300] setReplied];
-    [v35 reflectFlagChanges:v40 forMessages:v51];
+    setReplied = [MEMORY[0x1E699B300] setReplied];
+    [messageChangeManager reflectFlagChanges:setReplied forMessages:array7];
   }
 
-  if ([v48 count])
+  if ([array8 count])
   {
-    v41 = [MEMORY[0x1E699B300] setReplied];
-    [v35 reflectFlagChanges:v41 forMessages:v48];
+    setReplied2 = [MEMORY[0x1E699B300] setReplied];
+    [messageChangeManager reflectFlagChanges:setReplied2 forMessages:array8];
   }
 
-  if ([v47 count])
+  if ([array9 count])
   {
-    v42 = [MEMORY[0x1E699B300] setForwarded];
-    [v35 reflectFlagChanges:v42 forMessages:v47];
+    setForwarded = [MEMORY[0x1E699B300] setForwarded];
+    [messageChangeManager reflectFlagChanges:setForwarded forMessages:array9];
   }
 
-  if ([v50 count])
+  if ([array2 count])
   {
-    [v35 reflectDeletedMessages:v50];
+    [messageChangeManager reflectDeletedMessages:array2];
   }
 
   v5 = v46;
@@ -344,15 +344,15 @@ LABEL_77:
   return 1;
 }
 
-- (void)receiveSyncActions:(id)a3
+- (void)receiveSyncActions:(id)actions
 {
   v14 = *MEMORY[0x1E69E9840];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  actionsCopy = actions;
+  v5 = [actionsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = *v10;
@@ -363,14 +363,14 @@ LABEL_77:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(actionsCopy);
         }
 
         [(MFBufferedQueue *)self addItem:*(*(&v9 + 1) + 8 * v7++), v9];
       }
 
       while (v5 != v7);
-      v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [actionsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -379,26 +379,26 @@ LABEL_77:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleResponse:(id)a3 error:(id)a4
+- (void)handleResponse:(id)response error:(id)error
 {
   v14 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  responseCopy = response;
+  errorCopy = error;
+  if (!errorCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"MFDAMessageStore.m" lineNumber:1729 description:@"should only reach here in the error case."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MFDAMessageStore.m" lineNumber:1729 description:@"should only reach here in the error case."];
   }
 
   v9 = DALoggingwithCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
     v12 = 138412290;
-    v13 = v8;
+    v13 = errorCopy;
     _os_log_impl(&dword_1B0389000, v9, OS_LOG_TYPE_ERROR, "error syncing folder: %@", &v12, 0xCu);
   }
 
-  objc_storeStrong(&self->super.error, a4);
+  objc_storeStrong(&self->super.error, error);
   [(MFBufferedQueue *)self flush];
 
   v10 = *MEMORY[0x1E69E9840];

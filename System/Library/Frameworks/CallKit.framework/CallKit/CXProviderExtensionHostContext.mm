@@ -1,25 +1,25 @@
 @interface CXProviderExtensionHostContext
 - (CXProviderHostProtocol)delegate;
 - (id)remoteObjectProxy;
-- (id)remoteObjectProxyWithErrorHandler:(id)a3;
-- (void)actionCompleted:(id)a3 completionHandler:(id)a4;
-- (void)commitTransaction:(id)a3;
-- (void)handleActionTimeout:(id)a3;
-- (void)handleAudioSessionActivationStateChangedTo:(id)a3;
-- (void)registerWithConfiguration:(id)a3;
-- (void)reportAudioFinishedForCallWithUUID:(id)a3;
-- (void)reportCallWithUUID:(id)a3 changedFrequencyData:(id)a4 forDirection:(int64_t)a5;
-- (void)reportCallWithUUID:(id)a3 changedMeterLevel:(float)a4 forDirection:(int64_t)a5;
-- (void)reportCallWithUUID:(id)a3 crossDeviceIdentifier:(id)a4 changedBytesOfDataUsed:(int64_t)a5;
-- (void)reportCallWithUUID:(id)a3 endedAtDate:(id)a4 privateReason:(int64_t)a5 failureContext:(id)a6;
-- (void)reportCallWithUUID:(id)a3 receivedDTMFUpdate:(id)a4;
-- (void)reportCallWithUUID:(id)a3 updated:(id)a4;
-- (void)reportNewIncomingCallWithUUID:(id)a3 update:(id)a4 reply:(id)a5;
-- (void)reportNewOutgoingCallWithUUID:(id)a3 update:(id)a4;
-- (void)reportOutgoingCallWithUUID:(id)a3 connectedAtDate:(id)a4;
-- (void)reportOutgoingCallWithUUID:(id)a3 sentInvitationAtDate:(id)a4;
-- (void)reportOutgoingCallWithUUID:(id)a3 startedConnectingAtDate:(id)a4;
-- (void)requestTransaction:(id)a3 completionHandler:(id)a4;
+- (id)remoteObjectProxyWithErrorHandler:(id)handler;
+- (void)actionCompleted:(id)completed completionHandler:(id)handler;
+- (void)commitTransaction:(id)transaction;
+- (void)handleActionTimeout:(id)timeout;
+- (void)handleAudioSessionActivationStateChangedTo:(id)to;
+- (void)registerWithConfiguration:(id)configuration;
+- (void)reportAudioFinishedForCallWithUUID:(id)d;
+- (void)reportCallWithUUID:(id)d changedFrequencyData:(id)data forDirection:(int64_t)direction;
+- (void)reportCallWithUUID:(id)d changedMeterLevel:(float)level forDirection:(int64_t)direction;
+- (void)reportCallWithUUID:(id)d crossDeviceIdentifier:(id)identifier changedBytesOfDataUsed:(int64_t)used;
+- (void)reportCallWithUUID:(id)d endedAtDate:(id)date privateReason:(int64_t)reason failureContext:(id)context;
+- (void)reportCallWithUUID:(id)d receivedDTMFUpdate:(id)update;
+- (void)reportCallWithUUID:(id)d updated:(id)updated;
+- (void)reportNewIncomingCallWithUUID:(id)d update:(id)update reply:(id)reply;
+- (void)reportNewOutgoingCallWithUUID:(id)d update:(id)update;
+- (void)reportOutgoingCallWithUUID:(id)d connectedAtDate:(id)date;
+- (void)reportOutgoingCallWithUUID:(id)d sentInvitationAtDate:(id)date;
+- (void)reportOutgoingCallWithUUID:(id)d startedConnectingAtDate:(id)date;
+- (void)requestTransaction:(id)transaction completionHandler:(id)handler;
 @end
 
 @implementation CXProviderExtensionHostContext
@@ -28,192 +28,192 @@
 {
   v4.receiver = self;
   v4.super_class = CXProviderExtensionHostContext;
-  v2 = [(CXProviderExtensionContext *)&v4 remoteObjectProxy];
+  remoteObjectProxy = [(CXProviderExtensionContext *)&v4 remoteObjectProxy];
 
-  return v2;
+  return remoteObjectProxy;
 }
 
-- (id)remoteObjectProxyWithErrorHandler:(id)a3
+- (id)remoteObjectProxyWithErrorHandler:(id)handler
 {
   v5.receiver = self;
   v5.super_class = CXProviderExtensionHostContext;
-  v3 = [(CXProviderExtensionContext *)&v5 remoteObjectProxyWithErrorHandler:a3];
+  v3 = [(CXProviderExtensionContext *)&v5 remoteObjectProxyWithErrorHandler:handler];
 
   return v3;
 }
 
-- (void)commitTransaction:(id)a3
+- (void)commitTransaction:(id)transaction
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  transactionCopy = transaction;
   v5 = CXDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = transactionCopy;
     _os_log_impl(&dword_1B47F3000, v5, OS_LOG_TYPE_DEFAULT, "Committing transaction to extension vendor: %@", &v8, 0xCu);
   }
 
-  v6 = [(CXProviderExtensionHostContext *)self remoteObjectProxy];
-  [v6 commitTransaction:v4];
+  remoteObjectProxy = [(CXProviderExtensionHostContext *)self remoteObjectProxy];
+  [remoteObjectProxy commitTransaction:transactionCopy];
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleActionTimeout:(id)a3
+- (void)handleActionTimeout:(id)timeout
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  timeoutCopy = timeout;
   v5 = CXDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = timeoutCopy;
     _os_log_impl(&dword_1B47F3000, v5, OS_LOG_TYPE_DEFAULT, "Asking extension vendor to handle action timeout: %@", &v8, 0xCu);
   }
 
-  v6 = [(CXProviderExtensionHostContext *)self remoteObjectProxy];
-  [v6 handleActionTimeout:v4];
+  remoteObjectProxy = [(CXProviderExtensionHostContext *)self remoteObjectProxy];
+  [remoteObjectProxy handleActionTimeout:timeoutCopy];
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleAudioSessionActivationStateChangedTo:(id)a3
+- (void)handleAudioSessionActivationStateChangedTo:(id)to
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v5 = CXDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8[0] = 67109120;
-    v8[1] = [v4 BOOLValue];
+    v8[1] = [toCopy BOOLValue];
     _os_log_impl(&dword_1B47F3000, v5, OS_LOG_TYPE_DEFAULT, "Asking extension vendor to handle audio session activation state change to: %d", v8, 8u);
   }
 
-  v6 = [(CXProviderExtensionHostContext *)self remoteObjectProxy];
-  [v6 handleAudioSessionActivationStateChangedTo:v4];
+  remoteObjectProxy = [(CXProviderExtensionHostContext *)self remoteObjectProxy];
+  [remoteObjectProxy handleAudioSessionActivationStateChangedTo:toCopy];
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)registerWithConfiguration:(id)a3
+- (void)registerWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(CXProviderExtensionHostContext *)self delegate];
-  [v5 registerWithConfiguration:v4];
+  configurationCopy = configuration;
+  delegate = [(CXProviderExtensionHostContext *)self delegate];
+  [delegate registerWithConfiguration:configurationCopy];
 }
 
-- (void)reportNewIncomingCallWithUUID:(id)a3 update:(id)a4 reply:(id)a5
+- (void)reportNewIncomingCallWithUUID:(id)d update:(id)update reply:(id)reply
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(CXProviderExtensionHostContext *)self delegate];
-  [v11 reportNewIncomingCallWithUUID:v10 update:v9 reply:v8];
+  replyCopy = reply;
+  updateCopy = update;
+  dCopy = d;
+  delegate = [(CXProviderExtensionHostContext *)self delegate];
+  [delegate reportNewIncomingCallWithUUID:dCopy update:updateCopy reply:replyCopy];
 }
 
-- (void)reportCallWithUUID:(id)a3 updated:(id)a4
+- (void)reportCallWithUUID:(id)d updated:(id)updated
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CXProviderExtensionHostContext *)self delegate];
-  [v8 reportCallWithUUID:v7 updated:v6];
+  updatedCopy = updated;
+  dCopy = d;
+  delegate = [(CXProviderExtensionHostContext *)self delegate];
+  [delegate reportCallWithUUID:dCopy updated:updatedCopy];
 }
 
-- (void)reportCallWithUUID:(id)a3 receivedDTMFUpdate:(id)a4
+- (void)reportCallWithUUID:(id)d receivedDTMFUpdate:(id)update
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CXProviderExtensionHostContext *)self delegate];
-  [v8 reportCallWithUUID:v7 receivedDTMFUpdate:v6];
+  updateCopy = update;
+  dCopy = d;
+  delegate = [(CXProviderExtensionHostContext *)self delegate];
+  [delegate reportCallWithUUID:dCopy receivedDTMFUpdate:updateCopy];
 }
 
-- (void)reportOutgoingCallWithUUID:(id)a3 sentInvitationAtDate:(id)a4
+- (void)reportOutgoingCallWithUUID:(id)d sentInvitationAtDate:(id)date
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CXProviderExtensionHostContext *)self delegate];
-  [v8 reportOutgoingCallWithUUID:v7 sentInvitationAtDate:v6];
+  dateCopy = date;
+  dCopy = d;
+  delegate = [(CXProviderExtensionHostContext *)self delegate];
+  [delegate reportOutgoingCallWithUUID:dCopy sentInvitationAtDate:dateCopy];
 }
 
-- (void)reportOutgoingCallWithUUID:(id)a3 startedConnectingAtDate:(id)a4
+- (void)reportOutgoingCallWithUUID:(id)d startedConnectingAtDate:(id)date
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CXProviderExtensionHostContext *)self delegate];
-  [v8 reportOutgoingCallWithUUID:v7 startedConnectingAtDate:v6];
+  dateCopy = date;
+  dCopy = d;
+  delegate = [(CXProviderExtensionHostContext *)self delegate];
+  [delegate reportOutgoingCallWithUUID:dCopy startedConnectingAtDate:dateCopy];
 }
 
-- (void)reportOutgoingCallWithUUID:(id)a3 connectedAtDate:(id)a4
+- (void)reportOutgoingCallWithUUID:(id)d connectedAtDate:(id)date
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CXProviderExtensionHostContext *)self delegate];
-  [v8 reportOutgoingCallWithUUID:v7 connectedAtDate:v6];
+  dateCopy = date;
+  dCopy = d;
+  delegate = [(CXProviderExtensionHostContext *)self delegate];
+  [delegate reportOutgoingCallWithUUID:dCopy connectedAtDate:dateCopy];
 }
 
-- (void)reportCallWithUUID:(id)a3 endedAtDate:(id)a4 privateReason:(int64_t)a5 failureContext:(id)a6
+- (void)reportCallWithUUID:(id)d endedAtDate:(id)date privateReason:(int64_t)reason failureContext:(id)context
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  v13 = [(CXProviderExtensionHostContext *)self delegate];
-  [v13 reportCallWithUUID:v12 endedAtDate:v11 privateReason:a5 failureContext:v10];
+  contextCopy = context;
+  dateCopy = date;
+  dCopy = d;
+  delegate = [(CXProviderExtensionHostContext *)self delegate];
+  [delegate reportCallWithUUID:dCopy endedAtDate:dateCopy privateReason:reason failureContext:contextCopy];
 }
 
-- (void)reportAudioFinishedForCallWithUUID:(id)a3
+- (void)reportAudioFinishedForCallWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(CXProviderExtensionHostContext *)self delegate];
-  [v5 reportAudioFinishedForCallWithUUID:v4];
+  dCopy = d;
+  delegate = [(CXProviderExtensionHostContext *)self delegate];
+  [delegate reportAudioFinishedForCallWithUUID:dCopy];
 }
 
-- (void)reportCallWithUUID:(id)a3 changedFrequencyData:(id)a4 forDirection:(int64_t)a5
+- (void)reportCallWithUUID:(id)d changedFrequencyData:(id)data forDirection:(int64_t)direction
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(CXProviderExtensionHostContext *)self delegate];
-  [v10 reportCallWithUUID:v9 changedFrequencyData:v8 forDirection:a5];
+  dataCopy = data;
+  dCopy = d;
+  delegate = [(CXProviderExtensionHostContext *)self delegate];
+  [delegate reportCallWithUUID:dCopy changedFrequencyData:dataCopy forDirection:direction];
 }
 
-- (void)reportCallWithUUID:(id)a3 changedMeterLevel:(float)a4 forDirection:(int64_t)a5
+- (void)reportCallWithUUID:(id)d changedMeterLevel:(float)level forDirection:(int64_t)direction
 {
-  v8 = a3;
-  v10 = [(CXProviderExtensionHostContext *)self delegate];
-  *&v9 = a4;
-  [v10 reportCallWithUUID:v8 changedMeterLevel:a5 forDirection:v9];
+  dCopy = d;
+  delegate = [(CXProviderExtensionHostContext *)self delegate];
+  *&v9 = level;
+  [delegate reportCallWithUUID:dCopy changedMeterLevel:direction forDirection:v9];
 }
 
-- (void)reportCallWithUUID:(id)a3 crossDeviceIdentifier:(id)a4 changedBytesOfDataUsed:(int64_t)a5
+- (void)reportCallWithUUID:(id)d crossDeviceIdentifier:(id)identifier changedBytesOfDataUsed:(int64_t)used
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(CXProviderExtensionHostContext *)self delegate];
-  [v10 reportCallWithUUID:v9 crossDeviceIdentifier:v8 changedBytesOfDataUsed:a5];
+  identifierCopy = identifier;
+  dCopy = d;
+  delegate = [(CXProviderExtensionHostContext *)self delegate];
+  [delegate reportCallWithUUID:dCopy crossDeviceIdentifier:identifierCopy changedBytesOfDataUsed:used];
 }
 
-- (void)reportNewOutgoingCallWithUUID:(id)a3 update:(id)a4
+- (void)reportNewOutgoingCallWithUUID:(id)d update:(id)update
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CXProviderExtensionHostContext *)self delegate];
-  [v8 reportNewOutgoingCallWithUUID:v7 update:v6];
+  updateCopy = update;
+  dCopy = d;
+  delegate = [(CXProviderExtensionHostContext *)self delegate];
+  [delegate reportNewOutgoingCallWithUUID:dCopy update:updateCopy];
 }
 
-- (void)requestTransaction:(id)a3 completionHandler:(id)a4
+- (void)requestTransaction:(id)transaction completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CXProviderExtensionHostContext *)self delegate];
-  [v8 requestTransaction:v7 completionHandler:v6];
+  handlerCopy = handler;
+  transactionCopy = transaction;
+  delegate = [(CXProviderExtensionHostContext *)self delegate];
+  [delegate requestTransaction:transactionCopy completionHandler:handlerCopy];
 }
 
-- (void)actionCompleted:(id)a3 completionHandler:(id)a4
+- (void)actionCompleted:(id)completed completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CXProviderExtensionHostContext *)self delegate];
-  [v8 actionCompleted:v7 completionHandler:v6];
+  handlerCopy = handler;
+  completedCopy = completed;
+  delegate = [(CXProviderExtensionHostContext *)self delegate];
+  [delegate actionCompleted:completedCopy completionHandler:handlerCopy];
 }
 
 - (CXProviderHostProtocol)delegate

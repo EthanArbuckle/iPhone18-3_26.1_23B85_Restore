@@ -1,5 +1,5 @@
 @interface MPCMediaRemoteMiddlewarePlaybackStateOperation
-- (MPCMediaRemoteMiddlewarePlaybackStateOperation)initWithMiddleware:(id)a3;
+- (MPCMediaRemoteMiddlewarePlaybackStateOperation)initWithMiddleware:(id)middleware;
 - (id)timeoutDescription;
 - (void)execute;
 @end
@@ -33,38 +33,38 @@ uint64_t __57__MPCMediaRemoteMiddlewarePlaybackStateOperation_execute__block_inv
 - (void)execute
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v3 = [(MPCMediaRemoteMiddlewarePlaybackStateOperation *)self middleware];
-  v4 = [v3 controller];
+  middleware = [(MPCMediaRemoteMiddlewarePlaybackStateOperation *)self middleware];
+  controller = [middleware controller];
 
-  if (v4)
+  if (controller)
   {
     v5 = _Block_copy(self->_invalidationHandler);
-    v6 = [(MPCMediaRemoteMiddlewarePlaybackStateOperation *)self middleware];
-    v7 = [v6 controller];
-    v8 = [v7 playbackState];
-    [(MPCMediaRemoteMiddlewarePlaybackStateOperation *)self setPlaybackStateFuture:v8];
+    middleware2 = [(MPCMediaRemoteMiddlewarePlaybackStateOperation *)self middleware];
+    controller2 = [middleware2 controller];
+    playbackState = [controller2 playbackState];
+    [(MPCMediaRemoteMiddlewarePlaybackStateOperation *)self setPlaybackStateFuture:playbackState];
 
-    v9 = [(MPCMediaRemoteMiddlewarePlaybackStateOperation *)self playbackStateFuture];
+    playbackStateFuture = [(MPCMediaRemoteMiddlewarePlaybackStateOperation *)self playbackStateFuture];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __57__MPCMediaRemoteMiddlewarePlaybackStateOperation_execute__block_invoke;
     v19[3] = &unk_1E8239528;
     v20 = v5;
     v10 = v5;
-    v11 = [v9 onInvalid:v19];
+    v11 = [playbackStateFuture onInvalid:v19];
 
     v21[0] = v11;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1];
     invalidationObservers = self->_invalidationObservers;
     self->_invalidationObservers = v12;
 
-    v14 = [(MPCMediaRemoteMiddlewarePlaybackStateOperation *)self playbackStateFuture];
+    playbackStateFuture2 = [(MPCMediaRemoteMiddlewarePlaybackStateOperation *)self playbackStateFuture];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __57__MPCMediaRemoteMiddlewarePlaybackStateOperation_execute__block_invoke_2;
     v18[3] = &unk_1E82387D8;
     v18[4] = self;
-    v15 = [v14 onSuccess:v18];
+    v15 = [playbackStateFuture2 onSuccess:v18];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __57__MPCMediaRemoteMiddlewarePlaybackStateOperation_execute__block_invoke_3;
@@ -83,8 +83,8 @@ uint64_t __57__MPCMediaRemoteMiddlewarePlaybackStateOperation_execute__block_inv
 - (id)timeoutDescription
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(MPCMediaRemoteMiddlewarePlaybackStateOperation *)self playbackStateFuture];
-  v4 = [v2 stringWithFormat:@"playbackStateFuture=%@", v3];
+  playbackStateFuture = [(MPCMediaRemoteMiddlewarePlaybackStateOperation *)self playbackStateFuture];
+  v4 = [v2 stringWithFormat:@"playbackStateFuture=%@", playbackStateFuture];
 
   return v4;
 }
@@ -95,16 +95,16 @@ void __57__MPCMediaRemoteMiddlewarePlaybackStateOperation_execute__block_invoke_
   [*(a1 + 32) finishWithError:v3];
 }
 
-- (MPCMediaRemoteMiddlewarePlaybackStateOperation)initWithMiddleware:(id)a3
+- (MPCMediaRemoteMiddlewarePlaybackStateOperation)initWithMiddleware:(id)middleware
 {
-  v5 = a3;
+  middlewareCopy = middleware;
   v9.receiver = self;
   v9.super_class = MPCMediaRemoteMiddlewarePlaybackStateOperation;
   v6 = [(MPAsyncOperation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_middleware, a3);
+    objc_storeStrong(&v6->_middleware, middleware);
   }
 
   return v7;

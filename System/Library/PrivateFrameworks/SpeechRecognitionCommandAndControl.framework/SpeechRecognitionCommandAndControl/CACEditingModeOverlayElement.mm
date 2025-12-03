@@ -1,5 +1,5 @@
 @interface CACEditingModeOverlayElement
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)axFrame;
 - (CGRect)interfaceOrientedFrame;
 - (NSString)label;
@@ -8,24 +8,24 @@
 
 @implementation CACEditingModeOverlayElement
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if ([v5 isEqual:objc_opt_class()])
   {
-    v6 = v4;
-    v7 = [(CACEditingModeOverlayElement *)self range];
+    v6 = equalCopy;
+    range = [(CACEditingModeOverlayElement *)self range];
     v9 = v8;
     v11 = 0;
-    if (v7 == [v6 range] && v9 == v10)
+    if (range == [v6 range] && v9 == v10)
     {
-      v12 = [(CACEditingModeOverlayElement *)self number];
-      if (v12 == [v6 number])
+      number = [(CACEditingModeOverlayElement *)self number];
+      if (number == [v6 number])
       {
-        v13 = [(CACEditingModeOverlayElement *)self representedText];
-        v14 = [v6 representedText];
-        if ([v13 isEqual:v14])
+        representedText = [(CACEditingModeOverlayElement *)self representedText];
+        representedText2 = [v6 representedText];
+        if ([representedText isEqual:representedText2])
         {
           [(CACEditingModeOverlayElement *)self axFrame];
           v16 = v15;
@@ -67,9 +67,9 @@
 
 - (NSString)label
 {
-  v2 = [(CACEditingModeOverlayElement *)self number];
+  number = [(CACEditingModeOverlayElement *)self number];
 
-  return [CACLocaleUtilities displayStringForOverlayNumber:v2];
+  return [CACLocaleUtilities displayStringForOverlayNumber:number];
 }
 
 - (_NSRange)range

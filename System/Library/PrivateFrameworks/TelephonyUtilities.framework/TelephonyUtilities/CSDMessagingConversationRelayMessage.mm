@@ -1,15 +1,15 @@
 @interface CSDMessagingConversationRelayMessage
-- (BOOL)isEqual:(id)a3;
-- (CSDMessagingConversationRelayMessage)initWithConversation:(id)a3;
-- (CSDMessagingConversationRelayMessage)initWithRemoteMembers:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CSDMessagingConversationRelayMessage)initWithConversation:(id)conversation;
+- (CSDMessagingConversationRelayMessage)initWithRemoteMembers:(id)members;
 - (NSSet)tuConversationMembers;
 - (NSSet)tuConversationParticipants;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsAvMode:(id)a3;
-- (int)StringAsState:(id)a3;
-- (int)StringAsType:(id)a3;
+- (int)StringAsAvMode:(id)mode;
+- (int)StringAsState:(id)state;
+- (int)StringAsType:(id)type;
 - (int)avMode;
 - (int)state;
 - (int)type;
@@ -17,24 +17,24 @@
 - (int64_t)tuState;
 - (unint64_t)hash;
 - (unint64_t)tuAVMode;
-- (void)addActiveParticipants:(id)a3;
-- (void)addRemoteMembers:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setConversationMembers:(id)a3;
-- (void)setHasLocallyCreated:(BOOL)a3;
-- (void)setHasState:(BOOL)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)setHasVersion:(BOOL)a3;
-- (void)setStateforTUState:(int64_t)a3;
-- (void)writeTo:(id)a3;
+- (void)addActiveParticipants:(id)participants;
+- (void)addRemoteMembers:(id)members;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setConversationMembers:(id)members;
+- (void)setHasLocallyCreated:(BOOL)created;
+- (void)setHasState:(BOOL)state;
+- (void)setHasType:(BOOL)type;
+- (void)setHasVersion:(BOOL)version;
+- (void)setStateforTUState:(int64_t)state;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CSDMessagingConversationRelayMessage
 
-- (void)setHasVersion:(BOOL)a3
+- (void)setHasVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 8;
   }
@@ -60,9 +60,9 @@
   }
 }
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -75,20 +75,20 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"ConversationCreated"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"ConversationCreated"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"ConversationChanged"])
+  else if ([typeCopy isEqualToString:@"ConversationChanged"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ConversationRemoved"])
+  else if ([typeCopy isEqualToString:@"ConversationRemoved"])
   {
     v4 = 2;
   }
@@ -114,9 +114,9 @@
   }
 }
 
-- (void)setHasState:(BOOL)a3
+- (void)setHasState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 2;
   }
@@ -129,30 +129,30 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsState:(id)a3
+- (int)StringAsState:(id)state
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"ConversationStateWaiting"])
+  stateCopy = state;
+  if ([stateCopy isEqualToString:@"ConversationStateWaiting"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"ConversationStatePreparing"])
+  else if ([stateCopy isEqualToString:@"ConversationStatePreparing"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ConversationStateJoining"])
+  else if ([stateCopy isEqualToString:@"ConversationStateJoining"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"ConversationStateJoined"])
+  else if ([stateCopy isEqualToString:@"ConversationStateJoined"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"ConversationStateLeaving"])
+  else if ([stateCopy isEqualToString:@"ConversationStateLeaving"])
   {
     v4 = 4;
   }
@@ -165,9 +165,9 @@
   return v4;
 }
 
-- (void)setHasLocallyCreated:(BOOL)a3
+- (void)setHasLocallyCreated:(BOOL)created
 {
-  if (a3)
+  if (created)
   {
     v3 = 16;
   }
@@ -180,40 +180,40 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)addRemoteMembers:(id)a3
+- (void)addRemoteMembers:(id)members
 {
-  v4 = a3;
+  membersCopy = members;
   remoteMembers = self->_remoteMembers;
-  v8 = v4;
+  v8 = membersCopy;
   if (!remoteMembers)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_remoteMembers;
     self->_remoteMembers = v6;
 
-    v4 = v8;
+    membersCopy = v8;
     remoteMembers = self->_remoteMembers;
   }
 
-  [(NSMutableArray *)remoteMembers addObject:v4];
+  [(NSMutableArray *)remoteMembers addObject:membersCopy];
 }
 
-- (void)addActiveParticipants:(id)a3
+- (void)addActiveParticipants:(id)participants
 {
-  v4 = a3;
+  participantsCopy = participants;
   activeParticipants = self->_activeParticipants;
-  v8 = v4;
+  v8 = participantsCopy;
   if (!activeParticipants)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_activeParticipants;
     self->_activeParticipants = v6;
 
-    v4 = v8;
+    participantsCopy = v8;
     activeParticipants = self->_activeParticipants;
   }
 
-  [(NSMutableArray *)activeParticipants addObject:v4];
+  [(NSMutableArray *)activeParticipants addObject:participantsCopy];
 }
 
 - (int)avMode
@@ -229,20 +229,20 @@
   }
 }
 
-- (int)StringAsAvMode:(id)a3
+- (int)StringAsAvMode:(id)mode
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"None"])
+  modeCopy = mode;
+  if ([modeCopy isEqualToString:@"None"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Audio"])
+  else if ([modeCopy isEqualToString:@"Audio"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Video"])
+  else if ([modeCopy isEqualToString:@"Video"])
   {
     v4 = 2;
   }
@@ -260,8 +260,8 @@
   v7.receiver = self;
   v7.super_class = CSDMessagingConversationRelayMessage;
   v3 = [(CSDMessagingConversationRelayMessage *)&v7 description];
-  v4 = [(CSDMessagingConversationRelayMessage *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(CSDMessagingConversationRelayMessage *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -351,15 +351,15 @@ LABEL_14:
   initiator = self->_initiator;
   if (initiator)
   {
-    v15 = [(CSDMessagingHandle *)initiator dictionaryRepresentation];
-    [v3 setObject:v15 forKey:@"initiator"];
+    dictionaryRepresentation = [(CSDMessagingHandle *)initiator dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"initiator"];
   }
 
   localMember = self->_localMember;
   if (localMember)
   {
-    v17 = [(CSDMessagingConversationMember *)localMember dictionaryRepresentation];
-    [v3 setObject:v17 forKey:@"localMember"];
+    dictionaryRepresentation2 = [(CSDMessagingConversationMember *)localMember dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation2 forKey:@"localMember"];
   }
 
   if ([(NSMutableArray *)self->_remoteMembers count])
@@ -384,8 +384,8 @@ LABEL_14:
             objc_enumerationMutation(v19);
           }
 
-          v24 = [*(*(&v41 + 1) + 8 * i) dictionaryRepresentation];
-          [v18 addObject:v24];
+          dictionaryRepresentation3 = [*(*(&v41 + 1) + 8 * i) dictionaryRepresentation];
+          [v18 addObject:dictionaryRepresentation3];
         }
 
         v21 = [(NSMutableArray *)v19 countByEnumeratingWithState:&v41 objects:v46 count:16];
@@ -419,8 +419,8 @@ LABEL_14:
             objc_enumerationMutation(v26);
           }
 
-          v31 = [*(*(&v37 + 1) + 8 * j) dictionaryRepresentation];
-          [v25 addObject:v31];
+          dictionaryRepresentation4 = [*(*(&v37 + 1) + 8 * j) dictionaryRepresentation];
+          [v25 addObject:dictionaryRepresentation4];
         }
 
         v28 = [(NSMutableArray *)v26 countByEnumeratingWithState:&v37 objects:v45 count:16];
@@ -451,16 +451,16 @@ LABEL_14:
   reportData = self->_reportData;
   if (reportData)
   {
-    v35 = [(CSDMessagingConversationReport *)reportData dictionaryRepresentation];
-    [v3 setObject:v35 forKey:@"reportData"];
+    dictionaryRepresentation5 = [(CSDMessagingConversationReport *)reportData dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation5 forKey:@"reportData"];
   }
 
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -595,14 +595,14 @@ LABEL_5:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 8) != 0)
   {
-    v4[22] = self->_version;
-    *(v4 + 96) |= 8u;
+    toCopy[22] = self->_version;
+    *(toCopy + 96) |= 8u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -621,39 +621,39 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[19] = self->_type;
-  *(v4 + 96) |= 4u;
+  toCopy[19] = self->_type;
+  *(toCopy + 96) |= 4u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_4:
-    v4[18] = self->_state;
-    *(v4 + 96) |= 2u;
+    toCopy[18] = self->_state;
+    *(toCopy + 96) |= 2u;
   }
 
 LABEL_5:
-  v15 = v4;
+  v15 = toCopy;
   if (self->_uUIDString)
   {
-    [v4 setUUIDString:?];
-    v4 = v15;
+    [toCopy setUUIDString:?];
+    toCopy = v15;
   }
 
   if (self->_groupUUIDString)
   {
     [v15 setGroupUUIDString:?];
-    v4 = v15;
+    toCopy = v15;
   }
 
   if (self->_messagesGroupUUIDString)
   {
     [v15 setMessagesGroupUUIDString:?];
-    v4 = v15;
+    toCopy = v15;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    *(v4 + 92) = self->_locallyCreated;
-    *(v4 + 96) |= 0x10u;
+    *(toCopy + 92) = self->_locallyCreated;
+    *(toCopy + 96) |= 0x10u;
   }
 
   if (self->_initiator)
@@ -669,10 +669,10 @@ LABEL_5:
   if ([(CSDMessagingConversationRelayMessage *)self remoteMembersCount])
   {
     [v15 clearRemoteMembers];
-    v6 = [(CSDMessagingConversationRelayMessage *)self remoteMembersCount];
-    if (v6)
+    remoteMembersCount = [(CSDMessagingConversationRelayMessage *)self remoteMembersCount];
+    if (remoteMembersCount)
     {
-      v7 = v6;
+      v7 = remoteMembersCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(CSDMessagingConversationRelayMessage *)self remoteMembersAtIndex:i];
@@ -684,10 +684,10 @@ LABEL_5:
   if ([(CSDMessagingConversationRelayMessage *)self activeParticipantsCount])
   {
     [v15 clearActiveParticipants];
-    v10 = [(CSDMessagingConversationRelayMessage *)self activeParticipantsCount];
-    if (v10)
+    activeParticipantsCount = [(CSDMessagingConversationRelayMessage *)self activeParticipantsCount];
+    if (activeParticipantsCount)
     {
-      v11 = v10;
+      v11 = activeParticipantsCount;
       for (j = 0; j != v11; ++j)
       {
         v13 = [(CSDMessagingConversationRelayMessage *)self activeParticipantsAtIndex:j];
@@ -710,9 +710,9 @@ LABEL_5:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 8) != 0)
@@ -747,15 +747,15 @@ LABEL_4:
   }
 
 LABEL_5:
-  v8 = [(NSString *)self->_uUIDString copyWithZone:a3];
+  v8 = [(NSString *)self->_uUIDString copyWithZone:zone];
   v9 = v6[10];
   v6[10] = v8;
 
-  v10 = [(NSString *)self->_groupUUIDString copyWithZone:a3];
+  v10 = [(NSString *)self->_groupUUIDString copyWithZone:zone];
   v11 = v6[3];
   v6[3] = v10;
 
-  v12 = [(NSString *)self->_messagesGroupUUIDString copyWithZone:a3];
+  v12 = [(NSString *)self->_messagesGroupUUIDString copyWithZone:zone];
   v13 = v6[6];
   v6[6] = v12;
 
@@ -765,11 +765,11 @@ LABEL_5:
     *(v6 + 96) |= 0x10u;
   }
 
-  v14 = [(CSDMessagingHandle *)self->_initiator copyWithZone:a3];
+  v14 = [(CSDMessagingHandle *)self->_initiator copyWithZone:zone];
   v15 = v6[4];
   v6[4] = v14;
 
-  v16 = [(CSDMessagingConversationMember *)self->_localMember copyWithZone:a3];
+  v16 = [(CSDMessagingConversationMember *)self->_localMember copyWithZone:zone];
   v17 = v6[5];
   v6[5] = v16;
 
@@ -792,7 +792,7 @@ LABEL_5:
           objc_enumerationMutation(v18);
         }
 
-        v23 = [*(*(&v37 + 1) + 8 * i) copyWithZone:a3];
+        v23 = [*(*(&v37 + 1) + 8 * i) copyWithZone:zone];
         [v6 addRemoteMembers:v23];
       }
 
@@ -821,7 +821,7 @@ LABEL_5:
           objc_enumerationMutation(v24);
         }
 
-        v29 = [*(*(&v33 + 1) + 8 * j) copyWithZone:{a3, v33}];
+        v29 = [*(*(&v33 + 1) + 8 * j) copyWithZone:{zone, v33}];
         [v6 addActiveParticipants:v29];
       }
 
@@ -837,69 +837,69 @@ LABEL_5:
     *(v6 + 96) |= 1u;
   }
 
-  v30 = [(CSDMessagingConversationReport *)self->_reportData copyWithZone:a3, v33];
+  v30 = [(CSDMessagingConversationReport *)self->_reportData copyWithZone:zone, v33];
   v31 = v6[8];
   v6[8] = v30;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_37;
   }
 
-  v5 = *(v4 + 96);
+  v5 = *(equalCopy + 96);
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 96) & 8) == 0 || self->_version != *(v4 + 22))
+    if ((*(equalCopy + 96) & 8) == 0 || self->_version != *(equalCopy + 22))
     {
       goto LABEL_37;
     }
   }
 
-  else if ((*(v4 + 96) & 8) != 0)
+  else if ((*(equalCopy + 96) & 8) != 0)
   {
     goto LABEL_37;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 96) & 4) == 0 || self->_type != *(v4 + 19))
+    if ((*(equalCopy + 96) & 4) == 0 || self->_type != *(equalCopy + 19))
     {
       goto LABEL_37;
     }
   }
 
-  else if ((*(v4 + 96) & 4) != 0)
+  else if ((*(equalCopy + 96) & 4) != 0)
   {
     goto LABEL_37;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 96) & 2) == 0 || self->_state != *(v4 + 18))
+    if ((*(equalCopy + 96) & 2) == 0 || self->_state != *(equalCopy + 18))
     {
       goto LABEL_37;
     }
   }
 
-  else if ((*(v4 + 96) & 2) != 0)
+  else if ((*(equalCopy + 96) & 2) != 0)
   {
     goto LABEL_37;
   }
 
   uUIDString = self->_uUIDString;
-  if (uUIDString | *(v4 + 10) && ![(NSString *)uUIDString isEqual:?])
+  if (uUIDString | *(equalCopy + 10) && ![(NSString *)uUIDString isEqual:?])
   {
     goto LABEL_37;
   }
 
   groupUUIDString = self->_groupUUIDString;
-  if (groupUUIDString | *(v4 + 3))
+  if (groupUUIDString | *(equalCopy + 3))
   {
     if (![(NSString *)groupUUIDString isEqual:?])
     {
@@ -908,7 +908,7 @@ LABEL_5:
   }
 
   messagesGroupUUIDString = self->_messagesGroupUUIDString;
-  if (messagesGroupUUIDString | *(v4 + 6))
+  if (messagesGroupUUIDString | *(equalCopy + 6))
   {
     if (![(NSString *)messagesGroupUUIDString isEqual:?])
     {
@@ -916,42 +916,42 @@ LABEL_5:
     }
   }
 
-  v9 = *(v4 + 96);
+  v9 = *(equalCopy + 96);
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 96) & 0x10) == 0)
+    if ((*(equalCopy + 96) & 0x10) == 0)
     {
       goto LABEL_37;
     }
 
-    v17 = *(v4 + 92);
+    v17 = *(equalCopy + 92);
     if (self->_locallyCreated)
     {
-      if ((*(v4 + 92) & 1) == 0)
+      if ((*(equalCopy + 92) & 1) == 0)
       {
         goto LABEL_37;
       }
     }
 
-    else if (*(v4 + 92))
+    else if (*(equalCopy + 92))
     {
       goto LABEL_37;
     }
   }
 
-  else if ((*(v4 + 96) & 0x10) != 0)
+  else if ((*(equalCopy + 96) & 0x10) != 0)
   {
     goto LABEL_37;
   }
 
   initiator = self->_initiator;
-  if (initiator | *(v4 + 4) && ![(CSDMessagingHandle *)initiator isEqual:?])
+  if (initiator | *(equalCopy + 4) && ![(CSDMessagingHandle *)initiator isEqual:?])
   {
     goto LABEL_37;
   }
 
   localMember = self->_localMember;
-  if (localMember | *(v4 + 5))
+  if (localMember | *(equalCopy + 5))
   {
     if (![(CSDMessagingConversationMember *)localMember isEqual:?])
     {
@@ -960,7 +960,7 @@ LABEL_5:
   }
 
   remoteMembers = self->_remoteMembers;
-  if (remoteMembers | *(v4 + 7))
+  if (remoteMembers | *(equalCopy + 7))
   {
     if (![(NSMutableArray *)remoteMembers isEqual:?])
     {
@@ -969,7 +969,7 @@ LABEL_5:
   }
 
   activeParticipants = self->_activeParticipants;
-  if (activeParticipants | *(v4 + 1))
+  if (activeParticipants | *(equalCopy + 1))
   {
     if (![(NSMutableArray *)activeParticipants isEqual:?])
     {
@@ -977,10 +977,10 @@ LABEL_5:
     }
   }
 
-  v14 = *(v4 + 96);
+  v14 = *(equalCopy + 96);
   if ((*&self->_has & 1) == 0)
   {
-    if ((*(v4 + 96) & 1) == 0)
+    if ((*(equalCopy + 96) & 1) == 0)
     {
       goto LABEL_46;
     }
@@ -990,14 +990,14 @@ LABEL_37:
     goto LABEL_38;
   }
 
-  if ((*(v4 + 96) & 1) == 0 || self->_avMode != *(v4 + 4))
+  if ((*(equalCopy + 96) & 1) == 0 || self->_avMode != *(equalCopy + 4))
   {
     goto LABEL_37;
   }
 
 LABEL_46:
   reportData = self->_reportData;
-  if (reportData | *(v4 + 8))
+  if (reportData | *(equalCopy + 8))
   {
     v15 = [(CSDMessagingConversationReport *)reportData isEqual:?];
   }
@@ -1080,16 +1080,16 @@ LABEL_8:
   return v14 ^ v15 ^ v13 ^ v3 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ [(CSDMessagingConversationReport *)self->_reportData hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 96);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 96);
   if ((v6 & 8) != 0)
   {
-    self->_version = *(v4 + 22);
+    self->_version = *(fromCopy + 22);
     *&self->_has |= 8u;
-    v6 = *(v4 + 96);
+    v6 = *(fromCopy + 96);
     if ((v6 & 4) == 0)
     {
 LABEL_3:
@@ -1102,22 +1102,22 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 96) & 4) == 0)
+  else if ((*(fromCopy + 96) & 4) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_type = *(v4 + 19);
+  self->_type = *(fromCopy + 19);
   *&self->_has |= 4u;
-  if ((*(v4 + 96) & 2) != 0)
+  if ((*(fromCopy + 96) & 2) != 0)
   {
 LABEL_4:
-    self->_state = *(v4 + 18);
+    self->_state = *(fromCopy + 18);
     *&self->_has |= 2u;
   }
 
 LABEL_5:
-  if (*(v4 + 10))
+  if (*(fromCopy + 10))
   {
     [(CSDMessagingConversationRelayMessage *)self setUUIDString:?];
   }
@@ -1246,37 +1246,37 @@ LABEL_5:
   }
 }
 
-- (CSDMessagingConversationRelayMessage)initWithConversation:(id)a3
+- (CSDMessagingConversationRelayMessage)initWithConversation:(id)conversation
 {
-  v4 = a3;
-  v5 = [v4 remoteMembers];
-  v6 = [(CSDMessagingConversationRelayMessage *)self initWithRemoteMembers:v5];
+  conversationCopy = conversation;
+  remoteMembers = [conversationCopy remoteMembers];
+  v6 = [(CSDMessagingConversationRelayMessage *)self initWithRemoteMembers:remoteMembers];
 
-  -[CSDMessagingConversationRelayMessage setState:](v6, "setState:", [v4 state]);
-  v7 = [v4 UUID];
-  v8 = [v7 UUIDString];
-  [(CSDMessagingConversationRelayMessage *)v6 setUUIDString:v8];
+  -[CSDMessagingConversationRelayMessage setState:](v6, "setState:", [conversationCopy state]);
+  uUID = [conversationCopy UUID];
+  uUIDString = [uUID UUIDString];
+  [(CSDMessagingConversationRelayMessage *)v6 setUUIDString:uUIDString];
 
-  v9 = [v4 groupUUID];
-  v10 = [v9 UUIDString];
-  [(CSDMessagingConversationRelayMessage *)v6 setGroupUUIDString:v10];
+  groupUUID = [conversationCopy groupUUID];
+  uUIDString2 = [groupUUID UUIDString];
+  [(CSDMessagingConversationRelayMessage *)v6 setGroupUUIDString:uUIDString2];
 
-  v11 = [v4 messagesGroupUUID];
-  v12 = [v11 UUIDString];
-  [(CSDMessagingConversationRelayMessage *)v6 setMessagesGroupUUIDString:v12];
+  messagesGroupUUID = [conversationCopy messagesGroupUUID];
+  uUIDString3 = [messagesGroupUUID UUIDString];
+  [(CSDMessagingConversationRelayMessage *)v6 setMessagesGroupUUIDString:uUIDString3];
 
-  -[CSDMessagingConversationRelayMessage setLocallyCreated:](v6, "setLocallyCreated:", [v4 isLocallyCreated]);
-  v13 = [v4 initiator];
-  v14 = [CSDMessagingHandle handleWithTUHandle:v13];
+  -[CSDMessagingConversationRelayMessage setLocallyCreated:](v6, "setLocallyCreated:", [conversationCopy isLocallyCreated]);
+  initiator = [conversationCopy initiator];
+  v14 = [CSDMessagingHandle handleWithTUHandle:initiator];
   [(CSDMessagingConversationRelayMessage *)v6 setInitiator:v14];
 
   v15 = [CSDMessagingConversationReport alloc];
-  v16 = [v4 report];
-  v17 = [(CSDMessagingConversationReport *)v15 initWithTUConversationReport:v16];
+  report = [conversationCopy report];
+  v17 = [(CSDMessagingConversationReport *)v15 initWithTUConversationReport:report];
   [(CSDMessagingConversationRelayMessage *)v6 setReportData:v17];
 
-  v18 = [v4 localMember];
-  v19 = [CSDMessagingConversationMember memberWithTUConversationMember:v18];
+  localMember = [conversationCopy localMember];
+  v19 = [CSDMessagingConversationMember memberWithTUConversationMember:localMember];
   [(CSDMessagingConversationRelayMessage *)v6 setLocalMember:v19];
 
   v20 = objc_alloc_init(NSMutableArray);
@@ -1284,8 +1284,8 @@ LABEL_5:
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v21 = [v4 remoteMembers];
-  v22 = [v21 countByEnumeratingWithState:&v39 objects:v44 count:16];
+  remoteMembers2 = [conversationCopy remoteMembers];
+  v22 = [remoteMembers2 countByEnumeratingWithState:&v39 objects:v44 count:16];
   if (v22)
   {
     v23 = v22;
@@ -1297,7 +1297,7 @@ LABEL_5:
       {
         if (*v40 != v24)
         {
-          objc_enumerationMutation(v21);
+          objc_enumerationMutation(remoteMembers2);
         }
 
         v26 = [CSDMessagingConversationMember memberWithTUConversationMember:*(*(&v39 + 1) + 8 * v25)];
@@ -1307,7 +1307,7 @@ LABEL_5:
       }
 
       while (v23 != v25);
-      v23 = [v21 countByEnumeratingWithState:&v39 objects:v44 count:16];
+      v23 = [remoteMembers2 countByEnumeratingWithState:&v39 objects:v44 count:16];
     }
 
     while (v23);
@@ -1319,8 +1319,8 @@ LABEL_5:
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v28 = [v4 activeRemoteParticipants];
-  v29 = [v28 countByEnumeratingWithState:&v35 objects:v43 count:16];
+  activeRemoteParticipants = [conversationCopy activeRemoteParticipants];
+  v29 = [activeRemoteParticipants countByEnumeratingWithState:&v35 objects:v43 count:16];
   if (v29)
   {
     v30 = v29;
@@ -1332,7 +1332,7 @@ LABEL_5:
       {
         if (*v36 != v31)
         {
-          objc_enumerationMutation(v28);
+          objc_enumerationMutation(activeRemoteParticipants);
         }
 
         v33 = [CSDMessagingConversationParticipant participantWithTUConversationParticipant:*(*(&v35 + 1) + 8 * v32)];
@@ -1342,21 +1342,21 @@ LABEL_5:
       }
 
       while (v30 != v32);
-      v30 = [v28 countByEnumeratingWithState:&v35 objects:v43 count:16];
+      v30 = [activeRemoteParticipants countByEnumeratingWithState:&v35 objects:v43 count:16];
     }
 
     while (v30);
   }
 
   [(CSDMessagingConversationRelayMessage *)v6 setActiveParticipants:v27];
-  -[CSDMessagingConversationRelayMessage setAvMode:](v6, "setAvMode:", [v4 avMode]);
+  -[CSDMessagingConversationRelayMessage setAvMode:](v6, "setAvMode:", [conversationCopy avMode]);
 
   return v6;
 }
 
-- (CSDMessagingConversationRelayMessage)initWithRemoteMembers:(id)a3
+- (CSDMessagingConversationRelayMessage)initWithRemoteMembers:(id)members
 {
-  v4 = a3;
+  membersCopy = members;
   v8.receiver = self;
   v8.super_class = CSDMessagingConversationRelayMessage;
   v5 = [(CSDMessagingConversationRelayMessage *)&v8 init];
@@ -1365,7 +1365,7 @@ LABEL_5:
     v6 = objc_alloc_init(NSMutableArray);
     [(CSDMessagingConversationRelayMessage *)v5 setRemoteMembers:v6];
 
-    [(CSDMessagingConversationRelayMessage *)v5 setConversationMembers:v4];
+    [(CSDMessagingConversationRelayMessage *)v5 setConversationMembers:membersCopy];
   }
 
   return v5;
@@ -1378,8 +1378,8 @@ LABEL_5:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(CSDMessagingConversationRelayMessage *)self remoteMembers];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  remoteMembers = [(CSDMessagingConversationRelayMessage *)self remoteMembers];
+  v5 = [remoteMembers countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1390,14 +1390,14 @@ LABEL_5:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(remoteMembers);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) tuConversationMember];
-        [v3 addObject:v9];
+        tuConversationMember = [*(*(&v12 + 1) + 8 * i) tuConversationMember];
+        [v3 addObject:tuConversationMember];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [remoteMembers countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -1415,8 +1415,8 @@ LABEL_5:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(CSDMessagingConversationRelayMessage *)self activeParticipants];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  activeParticipants = [(CSDMessagingConversationRelayMessage *)self activeParticipants];
+  v5 = [activeParticipants countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1427,16 +1427,16 @@ LABEL_5:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(activeParticipants);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) csdConversationParticipant];
-        v10 = [v9 tuConversationParticipant];
+        csdConversationParticipant = [*(*(&v13 + 1) + 8 * i) csdConversationParticipant];
+        tuConversationParticipant = [csdConversationParticipant tuConversationParticipant];
 
-        [v3 addObject:v10];
+        [v3 addObject:tuConversationParticipant];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [activeParticipants countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -1447,28 +1447,28 @@ LABEL_5:
   return v11;
 }
 
-- (void)setConversationMembers:(id)a3
+- (void)setConversationMembers:(id)members
 {
-  v4 = a3;
-  v5 = [(CSDMessagingConversationRelayMessage *)self remoteMembers];
+  membersCopy = members;
+  remoteMembers = [(CSDMessagingConversationRelayMessage *)self remoteMembers];
 
-  if (v5)
+  if (remoteMembers)
   {
-    v6 = [(CSDMessagingConversationRelayMessage *)self remoteMembers];
-    [v6 removeAllObjects];
+    remoteMembers2 = [(CSDMessagingConversationRelayMessage *)self remoteMembers];
+    [remoteMembers2 removeAllObjects];
   }
 
   else
   {
-    v6 = objc_alloc_init(NSMutableArray);
-    [(CSDMessagingConversationRelayMessage *)self setRemoteMembers:v6];
+    remoteMembers2 = objc_alloc_init(NSMutableArray);
+    [(CSDMessagingConversationRelayMessage *)self setRemoteMembers:remoteMembers2];
   }
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = v4;
+  v7 = membersCopy;
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -1485,9 +1485,9 @@ LABEL_5:
         }
 
         v12 = *(*(&v15 + 1) + 8 * v11);
-        v13 = [(CSDMessagingConversationRelayMessage *)self remoteMembers];
+        remoteMembers3 = [(CSDMessagingConversationRelayMessage *)self remoteMembers];
         v14 = [CSDMessagingConversationMember memberWithTUConversationMember:v12];
-        [v13 addObject:v14];
+        [remoteMembers3 addObject:v14];
 
         v11 = v11 + 1;
       }
@@ -1500,13 +1500,13 @@ LABEL_5:
   }
 }
 
-- (void)setStateforTUState:(int64_t)a3
+- (void)setStateforTUState:(int64_t)state
 {
-  if (a3 <= 1)
+  if (state <= 1)
   {
-    if (a3)
+    if (state)
     {
-      if (a3 != 1)
+      if (state != 1)
       {
         return;
       }
@@ -1515,16 +1515,16 @@ LABEL_5:
     else
     {
       [(CSDMessagingConversationRelayMessage *)self setState:?];
-      a3 = 1;
+      state = 1;
     }
   }
 
-  else if (a3 != 2 && a3 != 3 && a3 != 4)
+  else if (state != 2 && state != 3 && state != 4)
   {
     return;
   }
 
-  [(CSDMessagingConversationRelayMessage *)self setState:a3];
+  [(CSDMessagingConversationRelayMessage *)self setState:state];
 }
 
 - (int64_t)tuState
@@ -1543,29 +1543,29 @@ LABEL_5:
 
 - (unint64_t)tuAVMode
 {
-  v2 = [(CSDMessagingConversationRelayMessage *)self avMode];
-  if (v2 == 2)
+  avMode = [(CSDMessagingConversationRelayMessage *)self avMode];
+  if (avMode == 2)
   {
     return 2;
   }
 
   else
   {
-    return v2 == 1;
+    return avMode == 1;
   }
 }
 
 - (int64_t)relayType
 {
-  v2 = [(CSDMessagingConversationRelayMessage *)self type];
-  if (v2 == 1)
+  type = [(CSDMessagingConversationRelayMessage *)self type];
+  if (type == 1)
   {
     return 2;
   }
 
   else
   {
-    return v2 == 2;
+    return type == 2;
   }
 }
 

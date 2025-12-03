@@ -1,8 +1,8 @@
 @interface PLDeletePersistentHistoryMaintenanceTask
-- (BOOL)runTaskWithTransaction:(id)a3;
+- (BOOL)runTaskWithTransaction:(id)transaction;
 - (int64_t)daysOfHistoryToKeep;
 - (int64_t)historyPercentThreshold;
-- (void)deletePersistentHistoryWithContext:(id)a3;
+- (void)deletePersistentHistoryWithContext:(id)context;
 @end
 
 @implementation PLDeletePersistentHistoryMaintenanceTask
@@ -49,25 +49,25 @@
   return v3;
 }
 
-- (void)deletePersistentHistoryWithContext:(id)a3
+- (void)deletePersistentHistoryWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [PLPersistentHistoryUtilities oldestTransactionWithContext:v4];
-  v6 = [PLPersistentHistoryUtilities newestTransactionWithContext:v4];
+  contextCopy = context;
+  v5 = [PLPersistentHistoryUtilities oldestTransactionWithContext:contextCopy];
+  v6 = [PLPersistentHistoryUtilities newestTransactionWithContext:contextCopy];
   if (v6)
   {
-    v7 = [(PLDeletePersistentHistoryMaintenanceTask *)self daysOfHistoryToKeep];
-    v8 = [v6 timestamp];
-    v9 = [NSDate dateWithTimeInterval:v8 sinceDate:-v7 * 86400.0];
+    daysOfHistoryToKeep = [(PLDeletePersistentHistoryMaintenanceTask *)self daysOfHistoryToKeep];
+    timestamp = [v6 timestamp];
+    v9 = [NSDate dateWithTimeInterval:timestamp sinceDate:-daysOfHistoryToKeep * 86400.0];
 
-    v10 = [(PLDeletePersistentHistoryMaintenanceTask *)self historyPercentThreshold];
+    historyPercentThreshold = [(PLDeletePersistentHistoryMaintenanceTask *)self historyPercentThreshold];
     v11 = PLBackendGetLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       v12 = PLDateToISO8160StringWithLocalTimeZone();
       [v9 timeIntervalSinceNow];
       v14 = v13;
-      v15 = [v5 _pl_prettyDescription];
+      _pl_prettyDescription = [v5 _pl_prettyDescription];
       [v6 _pl_prettyDescription];
       v17 = v16 = v5;
       *buf = 138413570;
@@ -75,11 +75,11 @@
       v33 = 2048;
       v34 = v14;
       v35 = 2048;
-      v36 = v7;
+      v36 = daysOfHistoryToKeep;
       v37 = 2048;
-      v38 = v10;
+      v38 = historyPercentThreshold;
       v39 = 2112;
-      v40 = v15;
+      v40 = _pl_prettyDescription;
       v41 = 2112;
       v42 = v17;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Delete Persistent History: Will delete before date %@ (%.1fs) (keeping %zd days before newest tx) when history percentage is > %zd%%, oldest and newest transactions:\n%@...\n%@", buf, 0x3Eu);
@@ -90,27 +90,27 @@
     +[NSDate timeIntervalSinceReferenceDate];
     v19 = v18;
     v30 = 0;
-    v20 = [PLPersistentHistoryUtilities deleteHistoryBeforeDate:v9 whenHistoryPercentageOfStoreIsGreaterThan:v10 withContext:v4 error:&v30];
+    v20 = [PLPersistentHistoryUtilities deleteHistoryBeforeDate:v9 whenHistoryPercentageOfStoreIsGreaterThan:historyPercentThreshold withContext:contextCopy error:&v30];
     v21 = v30;
     +[NSDate timeIntervalSinceReferenceDate];
     if (v20)
     {
       v23 = v22;
-      [v4 reset];
-      v24 = [PLPersistentHistoryUtilities oldestTransactionWithContext:v4];
-      v25 = [v24 transactionNumber];
-      v26 = [v5 transactionNumber];
+      [contextCopy reset];
+      v24 = [PLPersistentHistoryUtilities oldestTransactionWithContext:contextCopy];
+      transactionNumber = [v24 transactionNumber];
+      transactionNumber2 = [v5 transactionNumber];
       v27 = PLBackendGetLog();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
       {
-        v28 = v25 - v26;
-        v29 = [v24 _pl_prettyDescription];
+        v28 = transactionNumber - transactionNumber2;
+        _pl_prettyDescription2 = [v24 _pl_prettyDescription];
         *buf = 134218498;
         v32 = v28;
         v33 = 2048;
         v34 = v23 - v19;
         v35 = 2112;
-        v36 = v29;
+        v36 = _pl_prettyDescription2;
         _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_INFO, "Delete Persistent History: Successfully deleted %llu transaction(s) in %.1fs. Current oldest transaction:\n%@", buf, 0x20u);
       }
     }
@@ -138,14 +138,14 @@
   }
 }
 
-- (BOOL)runTaskWithTransaction:(id)a3
+- (BOOL)runTaskWithTransaction:(id)transaction
 {
   [(PLMaintenanceTask *)self photoLibrary];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10001111C;
   v7 = v6[3] = &unk_10002D9D8;
-  v8 = self;
+  selfCopy = self;
   v4 = v7;
   [v4 performTransactionAndWait:v6];
 

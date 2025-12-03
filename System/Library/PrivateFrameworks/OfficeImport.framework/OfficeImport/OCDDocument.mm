@@ -19,9 +19,9 @@
     mBlips = v2->mBlips;
     v2->mBlips = v5;
 
-    v7 = [[OADTextListStyle alloc] initWithDefaults];
+    initWithDefaults = [[OADTextListStyle alloc] initWithDefaults];
     mDefaultTextStyle = v2->mDefaultTextStyle;
-    v2->mDefaultTextStyle = v7;
+    v2->mDefaultTextStyle = initWithDefaults;
 
     v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
     mCharts = v2->mCharts;

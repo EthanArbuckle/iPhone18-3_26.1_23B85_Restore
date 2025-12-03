@@ -1,10 +1,10 @@
 @interface CATComputableWrapper
-- (id)valueForComputedProperty:(id)a3 typeName:(id)a4 propName:(id)a5 params:(id)a6;
+- (id)valueForComputedProperty:(id)property typeName:(id)name propName:(id)propName params:(id)params;
 @end
 
 @implementation CATComputableWrapper
 
-- (id)valueForComputedProperty:(id)a3 typeName:(id)a4 propName:(id)a5 params:(id)a6
+- (id)valueForComputedProperty:(id)property typeName:(id)name propName:(id)propName params:(id)params
 {
   v7 = sub_222D5292C();
   v9 = v8;
@@ -12,9 +12,9 @@
   v12 = v11;
   v13 = sub_222D5292C();
   v15 = v14;
-  v16 = a6;
+  paramsCopy = params;
 
-  sub_222CE8D40(v7, v9, v10, v12, v13, v15, v16);
+  sub_222CE8D40(v7, v9, v10, v12, v13, v15, paramsCopy);
 
   v17 = v26;
   if (v26)

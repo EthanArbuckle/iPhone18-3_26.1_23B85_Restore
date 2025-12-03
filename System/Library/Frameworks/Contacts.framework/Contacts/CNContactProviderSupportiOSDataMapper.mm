@@ -1,25 +1,25 @@
 @interface CNContactProviderSupportiOSDataMapper
 + (id)os_log;
-- (BOOL)executeSaveRequest:(id)a3 error:(id *)a4;
-- (BOOL)executeSaveRequest:(id)a3 response:(id *)a4 authorizationContext:(id)a5 error:(id *)a6;
-- (BOOL)fetchContactsForFetchRequest:(id)a3 error:(id *)a4 batchHandler:(id)a5;
-- (BOOL)fetchEncodedContactsForFetchRequest:(id)a3 error:(id *)a4 cancelationToken:(id)a5 batchHandler:(id)a6;
-- (CNContactProviderSupportiOSDataMapper)initWithConfiguration:(id)a3 addressBook:(id)a4;
-- (id)accountsMatchingPredicate:(id)a3 error:(id *)a4;
-- (id)authorizedKeysForContactKeys:(id)a3 error:(id *)a4;
-- (id)contactCountForFetchRequest:(id)a3 error:(id *)a4;
-- (id)contactObservableForFetchRequest:(id)a3;
-- (id)containersMatchingPredicate:(id)a3 error:(id *)a4;
+- (BOOL)executeSaveRequest:(id)request error:(id *)error;
+- (BOOL)executeSaveRequest:(id)request response:(id *)response authorizationContext:(id)context error:(id *)error;
+- (BOOL)fetchContactsForFetchRequest:(id)request error:(id *)error batchHandler:(id)handler;
+- (BOOL)fetchEncodedContactsForFetchRequest:(id)request error:(id *)error cancelationToken:(id)token batchHandler:(id)handler;
+- (CNContactProviderSupportiOSDataMapper)initWithConfiguration:(id)configuration addressBook:(id)book;
+- (id)accountsMatchingPredicate:(id)predicate error:(id *)error;
+- (id)authorizedKeysForContactKeys:(id)keys error:(id *)error;
+- (id)contactCountForFetchRequest:(id)request error:(id *)error;
+- (id)contactObservableForFetchRequest:(id)request;
+- (id)containersMatchingPredicate:(id)predicate error:(id *)error;
 - (id)currentHistoryAnchor;
 - (id)defaultContainerIdentifier;
 - (id)defaultContainerIdentifierImpl;
-- (id)encodedContactsCursorForFetchRequest:(id)a3 cursorCleanupBlock:(id)a4 error:(id *)a5;
-- (id)groupsMatchingPredicate:(id)a3 error:(id *)a4;
-- (id)meContactIdentifiers:(id *)a3;
-- (id)policyForContainerWithIdentifier:(id)a3 error:(id *)a4;
-- (id)policyWithDescription:(id)a3 error:(id *)a4;
-- (id)serverSearchContainersMatchingPredicate:(id)a3 error:(id *)a4;
-- (id)subgroupsOfGroupWithIdentifier:(id)a3 error:(id *)a4;
+- (id)encodedContactsCursorForFetchRequest:(id)request cursorCleanupBlock:(id)block error:(id *)error;
+- (id)groupsMatchingPredicate:(id)predicate error:(id *)error;
+- (id)meContactIdentifiers:(id *)identifiers;
+- (id)policyForContainerWithIdentifier:(id)identifier error:(id *)error;
+- (id)policyWithDescription:(id)description error:(id *)error;
+- (id)serverSearchContainersMatchingPredicate:(id)predicate error:(id *)error;
+- (id)subgroupsOfGroupWithIdentifier:(id)identifier error:(id *)error;
 - (void)updateManagedConfiguration;
 @end
 
@@ -47,26 +47,26 @@ uint64_t __47__CNContactProviderSupportiOSDataMapper_os_log__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (CNContactProviderSupportiOSDataMapper)initWithConfiguration:(id)a3 addressBook:(id)a4
+- (CNContactProviderSupportiOSDataMapper)initWithConfiguration:(id)configuration addressBook:(id)book
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  bookCopy = book;
   v17.receiver = self;
   v17.super_class = CNContactProviderSupportiOSDataMapper;
   v8 = [(CNContactProviderSupportiOSDataMapper *)&v17 init];
   if (v8)
   {
-    v9 = [[CNiOSAddressBookDataMapper alloc] initWithConfiguration:v6 addressBook:v7];
+    v9 = [[CNiOSAddressBookDataMapper alloc] initWithConfiguration:configurationCopy addressBook:bookCopy];
     dataMapper = v8->_dataMapper;
     v8->_dataMapper = v9;
 
-    v11 = [v6 contactProviderManager];
+    contactProviderManager = [configurationCopy contactProviderManager];
     contactProviderManager = v8->_contactProviderManager;
-    v8->_contactProviderManager = v11;
+    v8->_contactProviderManager = contactProviderManager;
 
-    v13 = [v6 managedConfiguration];
+    managedConfiguration = [configurationCopy managedConfiguration];
     managedConfiguration = v8->_managedConfiguration;
-    v8->_managedConfiguration = v13;
+    v8->_managedConfiguration = managedConfiguration;
 
     v15 = v8;
   }
@@ -106,7 +106,7 @@ id __67__CNContactProviderSupportiOSDataMapper_defaultContainerIdentifier__block
   return v3;
 }
 
-- (id)authorizedKeysForContactKeys:(id)a3 error:(id *)a4
+- (id)authorizedKeysForContactKeys:(id)keys error:(id *)error
 {
   objc_opt_class();
   v4 = +[CNContactProviderSupportiOSDataMapper os_log];
@@ -118,7 +118,7 @@ id __67__CNContactProviderSupportiOSDataMapper_defaultContainerIdentifier__block
   return MEMORY[0x1E695E0F0];
 }
 
-- (id)accountsMatchingPredicate:(id)a3 error:(id *)a4
+- (id)accountsMatchingPredicate:(id)predicate error:(id *)error
 {
   objc_opt_class();
   v4 = +[CNContactProviderSupportiOSDataMapper os_log];
@@ -130,7 +130,7 @@ id __67__CNContactProviderSupportiOSDataMapper_defaultContainerIdentifier__block
   return MEMORY[0x1E695E0F0];
 }
 
-- (id)serverSearchContainersMatchingPredicate:(id)a3 error:(id *)a4
+- (id)serverSearchContainersMatchingPredicate:(id)predicate error:(id *)error
 {
   objc_opt_class();
   v4 = +[CNContactProviderSupportiOSDataMapper os_log];
@@ -142,7 +142,7 @@ id __67__CNContactProviderSupportiOSDataMapper_defaultContainerIdentifier__block
   return MEMORY[0x1E695E0F0];
 }
 
-- (id)subgroupsOfGroupWithIdentifier:(id)a3 error:(id *)a4
+- (id)subgroupsOfGroupWithIdentifier:(id)identifier error:(id *)error
 {
   objc_opt_class();
   v4 = +[CNContactProviderSupportiOSDataMapper os_log];
@@ -154,7 +154,7 @@ id __67__CNContactProviderSupportiOSDataMapper_defaultContainerIdentifier__block
   return MEMORY[0x1E695E0F0];
 }
 
-- (id)contactCountForFetchRequest:(id)a3 error:(id *)a4
+- (id)contactCountForFetchRequest:(id)request error:(id *)error
 {
   objc_opt_class();
   v4 = +[CNContactProviderSupportiOSDataMapper os_log];
@@ -166,7 +166,7 @@ id __67__CNContactProviderSupportiOSDataMapper_defaultContainerIdentifier__block
   return &unk_1F0987300;
 }
 
-- (id)meContactIdentifiers:(id *)a3
+- (id)meContactIdentifiers:(id *)identifiers
 {
   objc_opt_class();
   v3 = +[CNContactProviderSupportiOSDataMapper os_log];
@@ -180,27 +180,27 @@ id __67__CNContactProviderSupportiOSDataMapper_defaultContainerIdentifier__block
 
 - (void)updateManagedConfiguration
 {
-  if (a1)
+  if (self)
   {
-    v2 = [*(a1 + 16) providerContainer];
-    v4 = v2;
-    if (v2)
+    providerContainer = [*(self + 16) providerContainer];
+    v4 = providerContainer;
+    if (providerContainer)
     {
-      v3 = [v2 identifier];
+      identifier = [providerContainer identifier];
     }
 
     else
     {
-      v3 = @"Extension not enabled";
+      identifier = @"Extension not enabled";
     }
 
-    [*(a1 + 24) setProviderContainerIdentifier:v3];
+    [*(self + 24) setProviderContainerIdentifier:identifier];
   }
 }
 
-- (id)contactObservableForFetchRequest:(id)a3
+- (id)contactObservableForFetchRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   objc_opt_class();
   v5 = +[CNContactProviderSupportiOSDataMapper os_log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -220,12 +220,12 @@ id __67__CNContactProviderSupportiOSDataMapper_defaultContainerIdentifier__block
     dataMapper = 0;
   }
 
-  v8 = [(CNiOSAddressBookDataMapper *)dataMapper contactObservableForFetchRequest:v4];
+  v8 = [(CNiOSAddressBookDataMapper *)dataMapper contactObservableForFetchRequest:requestCopy];
 
   return v8;
 }
 
-- (id)containersMatchingPredicate:(id)a3 error:(id *)a4
+- (id)containersMatchingPredicate:(id)predicate error:(id *)error
 {
   v13[1] = *MEMORY[0x1E69E9840];
   objc_opt_class();
@@ -247,11 +247,11 @@ id __67__CNContactProviderSupportiOSDataMapper_defaultContainerIdentifier__block
   }
 
   v8 = contactProviderManager;
-  v9 = [(CNContactProviderSupportManager *)v8 providerContainer];
+  providerContainer = [(CNContactProviderSupportManager *)v8 providerContainer];
 
-  if (v9)
+  if (providerContainer)
   {
-    v13[0] = v9;
+    v13[0] = providerContainer;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
   }
 
@@ -265,23 +265,23 @@ id __67__CNContactProviderSupportiOSDataMapper_defaultContainerIdentifier__block
 
 - (id)defaultContainerIdentifierImpl
 {
-  if (a1)
+  if (self)
   {
-    v1 = [*(a1 + 16) providerContainer];
-    v2 = [v1 identifier];
+    providerContainer = [*(self + 16) providerContainer];
+    identifier = [providerContainer identifier];
   }
 
   else
   {
-    v2 = 0;
+    identifier = 0;
   }
 
-  return v2;
+  return identifier;
 }
 
-- (BOOL)executeSaveRequest:(id)a3 error:(id *)a4
+- (BOOL)executeSaveRequest:(id)request error:(id *)error
 {
-  OUTLINED_FUNCTION_6_4(self, a2, a3);
+  OUTLINED_FUNCTION_6_4(self, a2, request);
   OUTLINED_FUNCTION_7_3();
   v6 = +[CNContactProviderSupportiOSDataMapper os_log];
   if (OUTLINED_FUNCTION_5_4(v6))
@@ -295,10 +295,10 @@ id __67__CNContactProviderSupportiOSDataMapper_defaultContainerIdentifier__block
   return v14;
 }
 
-- (BOOL)executeSaveRequest:(id)a3 response:(id *)a4 authorizationContext:(id)a5 error:(id *)a6
+- (BOOL)executeSaveRequest:(id)request response:(id *)response authorizationContext:(id)context error:(id *)error
 {
-  v10 = a5;
-  v11 = a3;
+  contextCopy = context;
+  requestCopy = request;
   objc_opt_class();
   v12 = +[CNContactProviderSupportiOSDataMapper os_log];
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
@@ -317,14 +317,14 @@ id __67__CNContactProviderSupportiOSDataMapper_defaultContainerIdentifier__block
     dataMapper = 0;
   }
 
-  v15 = [(CNiOSAddressBookDataMapper *)dataMapper executeSaveRequest:v11 response:a4 authorizationContext:v10 error:a6];
+  v15 = [(CNiOSAddressBookDataMapper *)dataMapper executeSaveRequest:requestCopy response:response authorizationContext:contextCopy error:error];
 
   return v15;
 }
 
-- (id)groupsMatchingPredicate:(id)a3 error:(id *)a4
+- (id)groupsMatchingPredicate:(id)predicate error:(id *)error
 {
-  OUTLINED_FUNCTION_6_4(self, a2, a3);
+  OUTLINED_FUNCTION_6_4(self, a2, predicate);
   OUTLINED_FUNCTION_7_3();
   v7 = +[CNContactProviderSupportiOSDataMapper os_log];
   if (OUTLINED_FUNCTION_5_4(v7))
@@ -339,9 +339,9 @@ id __67__CNContactProviderSupportiOSDataMapper_defaultContainerIdentifier__block
   return v15;
 }
 
-- (id)policyForContainerWithIdentifier:(id)a3 error:(id *)a4
+- (id)policyForContainerWithIdentifier:(id)identifier error:(id *)error
 {
-  OUTLINED_FUNCTION_6_4(self, a2, a3);
+  OUTLINED_FUNCTION_6_4(self, a2, identifier);
   OUTLINED_FUNCTION_7_3();
   v6 = +[CNContactProviderSupportiOSDataMapper os_log];
   if (OUTLINED_FUNCTION_5_4(v6))
@@ -355,9 +355,9 @@ id __67__CNContactProviderSupportiOSDataMapper_defaultContainerIdentifier__block
   return v14;
 }
 
-- (id)policyWithDescription:(id)a3 error:(id *)a4
+- (id)policyWithDescription:(id)description error:(id *)error
 {
-  OUTLINED_FUNCTION_6_4(self, a2, a3);
+  OUTLINED_FUNCTION_6_4(self, a2, description);
   OUTLINED_FUNCTION_7_3();
   v6 = +[CNContactProviderSupportiOSDataMapper os_log];
   if (OUTLINED_FUNCTION_5_4(v6))
@@ -371,10 +371,10 @@ id __67__CNContactProviderSupportiOSDataMapper_defaultContainerIdentifier__block
   return v14;
 }
 
-- (id)encodedContactsCursorForFetchRequest:(id)a3 cursorCleanupBlock:(id)a4 error:(id *)a5
+- (id)encodedContactsCursorForFetchRequest:(id)request cursorCleanupBlock:(id)block error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
+  blockCopy = block;
+  requestCopy = request;
   objc_opt_class();
   v10 = +[CNContactProviderSupportiOSDataMapper os_log];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
@@ -394,15 +394,15 @@ id __67__CNContactProviderSupportiOSDataMapper_defaultContainerIdentifier__block
     dataMapper = 0;
   }
 
-  v13 = [(CNiOSAddressBookDataMapper *)dataMapper encodedContactsCursorForFetchRequest:v9 cursorCleanupBlock:v8 error:a5];
+  v13 = [(CNiOSAddressBookDataMapper *)dataMapper encodedContactsCursorForFetchRequest:requestCopy cursorCleanupBlock:blockCopy error:error];
 
   return v13;
 }
 
-- (BOOL)fetchContactsForFetchRequest:(id)a3 error:(id *)a4 batchHandler:(id)a5
+- (BOOL)fetchContactsForFetchRequest:(id)request error:(id *)error batchHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a3;
+  handlerCopy = handler;
+  requestCopy = request;
   objc_opt_class();
   v10 = +[CNContactProviderSupportiOSDataMapper os_log];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
@@ -422,16 +422,16 @@ id __67__CNContactProviderSupportiOSDataMapper_defaultContainerIdentifier__block
     dataMapper = 0;
   }
 
-  v13 = [(CNiOSAddressBookDataMapper *)dataMapper fetchContactsForFetchRequest:v9 error:a4 batchHandler:v8];
+  v13 = [(CNiOSAddressBookDataMapper *)dataMapper fetchContactsForFetchRequest:requestCopy error:error batchHandler:handlerCopy];
 
   return v13;
 }
 
-- (BOOL)fetchEncodedContactsForFetchRequest:(id)a3 error:(id *)a4 cancelationToken:(id)a5 batchHandler:(id)a6
+- (BOOL)fetchEncodedContactsForFetchRequest:(id)request error:(id *)error cancelationToken:(id)token batchHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
+  handlerCopy = handler;
+  tokenCopy = token;
+  requestCopy = request;
   [(CNContactProviderSupportiOSDataMapper *)self updateManagedConfiguration];
   objc_opt_class();
   v13 = +[CNContactProviderSupportiOSDataMapper os_log];
@@ -451,7 +451,7 @@ id __67__CNContactProviderSupportiOSDataMapper_defaultContainerIdentifier__block
     dataMapper = 0;
   }
 
-  v16 = [(CNiOSAddressBookDataMapper *)dataMapper fetchEncodedContactsForFetchRequest:v12 error:a4 cancelationToken:v11 batchHandler:v10];
+  v16 = [(CNiOSAddressBookDataMapper *)dataMapper fetchEncodedContactsForFetchRequest:requestCopy error:error cancelationToken:tokenCopy batchHandler:handlerCopy];
 
   return v16;
 }
@@ -476,9 +476,9 @@ id __67__CNContactProviderSupportiOSDataMapper_defaultContainerIdentifier__block
     dataMapper = 0;
   }
 
-  v6 = [(CNiOSAddressBookDataMapper *)dataMapper currentHistoryAnchor];
+  currentHistoryAnchor = [(CNiOSAddressBookDataMapper *)dataMapper currentHistoryAnchor];
 
-  return v6;
+  return currentHistoryAnchor;
 }
 
 @end

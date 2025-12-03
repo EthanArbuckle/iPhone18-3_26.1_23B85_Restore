@@ -1,53 +1,53 @@
 @interface CARMessagingServiceConnector
-- (BOOL)unpairWithBluetoothLEIdentifier:(id)a3;
-- (CARMessagingServiceConnector)initWithVehicleStore:(id)a3;
+- (BOOL)unpairWithBluetoothLEIdentifier:(id)identifier;
+- (CARMessagingServiceConnector)initWithVehicleStore:(id)store;
 - (CARMessagingServiceConnectorDelegate)delegate;
 - (NSSet)connectedVehicles;
 - (id)_usbSerialNumber;
-- (id)vehicleAccessoryForCertificateSerial:(id)a3;
-- (id)vehicleAccessoryForiAPConnectionIdentifier:(unint64_t)a3;
-- (void)_updateCarKeyInformationForVehicleAccessory:(id)a3;
-- (void)accessoryManager:(id)a3 didConnectUnsupportedAccessoryWithBluetoothAddress:(id)a4;
-- (void)accessoryManager:(id)a3 didConnectVehicleAccessory:(id)a4;
-- (void)accessoryManager:(id)a3 didDisconnectVehicleAccessory:(id)a4;
-- (void)accessoryManager:(id)a3 didUpdateVehicleAccessory:(id)a4;
-- (void)beginWiredBluetoothPairingWithVehicle:(id)a3 completion:(id)a4;
-- (void)connectWithBluetoothLEIdentifier:(id)a3;
-- (void)pairWithBluetoothLEIdentifier:(id)a3 deviceName:(id)a4;
-- (void)requestWiFiCredentialsFromVehicle:(id)a3;
-- (void)sendDeviceTransportIdentifiersToVehicle:(id)a3;
-- (void)sendWiredCarPlayAvailable:(id)a3 wirelessCarPlayAvailable:(id)a4 themeAssetsAvailable:(id)a5 toVehicle:(id)a6;
-- (void)serviceConnector:(id)a3 completedPairingForBluetoothLEIdentifier:(id)a4 name:(id)a5;
-- (void)serviceConnector:(id)a3 didConnectVehicle:(id)a4;
-- (void)serviceConnector:(id)a3 didDisconnectVehicle:(id)a4;
-- (void)serviceConnector:(id)a3 failedPairingForBluetoothLEIdentifier:(id)a4 name:(id)a5 error:(id)a6;
-- (void)serviceConnector:(id)a3 requestsPairingConfirmationForBluetoothLEIdentifier:(id)a4 name:(id)a5 numericCode:(id)a6 responseHandler:(id)a7;
-- (void)serviceVehicle:(id)a3 receivedStartSessionMessage:(id)a4;
+- (id)vehicleAccessoryForCertificateSerial:(id)serial;
+- (id)vehicleAccessoryForiAPConnectionIdentifier:(unint64_t)identifier;
+- (void)_updateCarKeyInformationForVehicleAccessory:(id)accessory;
+- (void)accessoryManager:(id)manager didConnectUnsupportedAccessoryWithBluetoothAddress:(id)address;
+- (void)accessoryManager:(id)manager didConnectVehicleAccessory:(id)accessory;
+- (void)accessoryManager:(id)manager didDisconnectVehicleAccessory:(id)accessory;
+- (void)accessoryManager:(id)manager didUpdateVehicleAccessory:(id)accessory;
+- (void)beginWiredBluetoothPairingWithVehicle:(id)vehicle completion:(id)completion;
+- (void)connectWithBluetoothLEIdentifier:(id)identifier;
+- (void)pairWithBluetoothLEIdentifier:(id)identifier deviceName:(id)name;
+- (void)requestWiFiCredentialsFromVehicle:(id)vehicle;
+- (void)sendDeviceTransportIdentifiersToVehicle:(id)vehicle;
+- (void)sendWiredCarPlayAvailable:(id)available wirelessCarPlayAvailable:(id)playAvailable themeAssetsAvailable:(id)assetsAvailable toVehicle:(id)vehicle;
+- (void)serviceConnector:(id)connector completedPairingForBluetoothLEIdentifier:(id)identifier name:(id)name;
+- (void)serviceConnector:(id)connector didConnectVehicle:(id)vehicle;
+- (void)serviceConnector:(id)connector didDisconnectVehicle:(id)vehicle;
+- (void)serviceConnector:(id)connector failedPairingForBluetoothLEIdentifier:(id)identifier name:(id)name error:(id)error;
+- (void)serviceConnector:(id)connector requestsPairingConfirmationForBluetoothLEIdentifier:(id)identifier name:(id)name numericCode:(id)code responseHandler:(id)handler;
+- (void)serviceVehicle:(id)vehicle receivedStartSessionMessage:(id)message;
 @end
 
 @implementation CARMessagingServiceConnector
 
 - (NSSet)connectedVehicles
 {
-  v3 = [(CARMessagingServiceConnector *)self accessoryManager];
-  v4 = [v3 connectedVehicleAccessories];
+  accessoryManager = [(CARMessagingServiceConnector *)self accessoryManager];
+  connectedVehicleAccessories = [accessoryManager connectedVehicleAccessories];
 
-  v5 = [(CARMessagingServiceConnector *)self serviceConnector];
-  v6 = [v5 connectedVehicles];
+  serviceConnector = [(CARMessagingServiceConnector *)self serviceConnector];
+  connectedVehicles = [serviceConnector connectedVehicles];
 
-  if ([v4 count] && objc_msgSend(v6, "count"))
+  if ([connectedVehicleAccessories count] && objc_msgSend(connectedVehicles, "count"))
   {
-    v7 = [v4 setByAddingObjectsFromSet:v6];
+    v7 = [connectedVehicleAccessories setByAddingObjectsFromSet:connectedVehicles];
   }
 
-  else if ([v4 count])
+  else if ([connectedVehicleAccessories count])
   {
-    v7 = v4;
+    v7 = connectedVehicleAccessories;
   }
 
   else
   {
-    v7 = v6;
+    v7 = connectedVehicles;
   }
 
   v8 = v7;
@@ -55,9 +55,9 @@
   return v8;
 }
 
-- (CARMessagingServiceConnector)initWithVehicleStore:(id)a3
+- (CARMessagingServiceConnector)initWithVehicleStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v13.receiver = self;
   v13.super_class = CARMessagingServiceConnector;
   v5 = [(CARMessagingServiceConnector *)&v13 init];
@@ -73,7 +73,7 @@
     v5->_coreAccessoriesManager = v8;
 
     [(ACCConnectionInfo *)v5->_coreAccessoriesManager registerDelegate:v5];
-    v10 = [[CARCarPlayServiceConnector alloc] initWithVehicleStore:v4];
+    v10 = [[CARCarPlayServiceConnector alloc] initWithVehicleStore:storeCopy];
     serviceConnector = v5->_serviceConnector;
     v5->_serviceConnector = v10;
 
@@ -83,38 +83,38 @@
   return v5;
 }
 
-- (void)pairWithBluetoothLEIdentifier:(id)a3 deviceName:(id)a4
+- (void)pairWithBluetoothLEIdentifier:(id)identifier deviceName:(id)name
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CARMessagingServiceConnector *)self serviceConnector];
-  [v8 pairWithBluetoothLEIdentifier:v7 deviceName:v6];
+  nameCopy = name;
+  identifierCopy = identifier;
+  serviceConnector = [(CARMessagingServiceConnector *)self serviceConnector];
+  [serviceConnector pairWithBluetoothLEIdentifier:identifierCopy deviceName:nameCopy];
 }
 
-- (void)connectWithBluetoothLEIdentifier:(id)a3
+- (void)connectWithBluetoothLEIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CARMessagingServiceConnector *)self serviceConnector];
-  [v5 connectWithBluetoothLEIdentifier:v4];
+  identifierCopy = identifier;
+  serviceConnector = [(CARMessagingServiceConnector *)self serviceConnector];
+  [serviceConnector connectWithBluetoothLEIdentifier:identifierCopy];
 }
 
-- (BOOL)unpairWithBluetoothLEIdentifier:(id)a3
+- (BOOL)unpairWithBluetoothLEIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CARMessagingServiceConnector *)self serviceConnector];
-  v6 = [v5 unpairWithBluetoothLEIdentifier:v4];
+  identifierCopy = identifier;
+  serviceConnector = [(CARMessagingServiceConnector *)self serviceConnector];
+  v6 = [serviceConnector unpairWithBluetoothLEIdentifier:identifierCopy];
 
   return v6;
 }
 
-- (void)beginWiredBluetoothPairingWithVehicle:(id)a3 completion:(id)a4
+- (void)beginWiredBluetoothPairingWithVehicle:(id)vehicle completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  vehicleCopy = vehicle;
+  completionCopy = completion;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v5 beginWiredBluetoothPairing:v6];
+    [vehicleCopy beginWiredBluetoothPairing:completionCopy];
   }
 
   else
@@ -127,13 +127,13 @@
   }
 }
 
-- (void)requestWiFiCredentialsFromVehicle:(id)a3
+- (void)requestWiFiCredentialsFromVehicle:(id)vehicle
 {
-  v3 = a3;
+  vehicleCopy = vehicle;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v3 requestWiFiCredentials];
+    [vehicleCopy requestWiFiCredentials];
   }
 
   else
@@ -146,13 +146,13 @@
   }
 }
 
-- (void)sendDeviceTransportIdentifiersToVehicle:(id)a3
+- (void)sendDeviceTransportIdentifiersToVehicle:(id)vehicle
 {
-  v3 = a3;
+  vehicleCopy = vehicle;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v3 sendDeviceTransportIdentifiers];
+    [vehicleCopy sendDeviceTransportIdentifiers];
   }
 
   else
@@ -165,23 +165,23 @@
   }
 }
 
-- (void)sendWiredCarPlayAvailable:(id)a3 wirelessCarPlayAvailable:(id)a4 themeAssetsAvailable:(id)a5 toVehicle:(id)a6
+- (void)sendWiredCarPlayAvailable:(id)available wirelessCarPlayAvailable:(id)playAvailable themeAssetsAvailable:(id)assetsAvailable toVehicle:(id)vehicle
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if ([v10 BOOLValue])
+  availableCopy = available;
+  playAvailableCopy = playAvailable;
+  assetsAvailableCopy = assetsAvailable;
+  vehicleCopy = vehicle;
+  if ([availableCopy BOOLValue])
   {
-    v14 = [(CARMessagingServiceConnector *)self _usbSerialNumber];
+    _usbSerialNumber = [(CARMessagingServiceConnector *)self _usbSerialNumber];
   }
 
   else
   {
-    v14 = 0;
+    _usbSerialNumber = 0;
   }
 
-  if ([v11 BOOLValue])
+  if ([playAvailableCopy BOOLValue])
   {
     v15 = MGGetStringAnswer();
   }
@@ -196,14 +196,14 @@
   {
     v17 = @"NO";
     v18 = @"YES";
-    if (v10)
+    if (availableCopy)
     {
-      if (![v10 BOOLValue])
+      if (![availableCopy BOOLValue])
       {
         v18 = @"NO";
       }
 
-      if (v11)
+      if (playAvailableCopy)
       {
         goto LABEL_12;
       }
@@ -212,10 +212,10 @@
     else
     {
       v18 = @"unset";
-      if (v11)
+      if (playAvailableCopy)
       {
 LABEL_12:
-        if ([v11 BOOLValue])
+        if ([playAvailableCopy BOOLValue])
         {
           v17 = @"YES";
         }
@@ -226,9 +226,9 @@ LABEL_12:
 
     v17 = @"unset";
 LABEL_17:
-    if (v12)
+    if (assetsAvailableCopy)
     {
-      if ([v12 BOOLValue])
+      if ([assetsAvailableCopy BOOLValue])
       {
         v19 = @"YES";
       }
@@ -247,7 +247,7 @@ LABEL_17:
     *buf = 138544386;
     v22 = v18;
     v23 = 2112;
-    v24 = v14;
+    v24 = _usbSerialNumber;
     v25 = 2114;
     v26 = v17;
     v27 = 2112;
@@ -260,7 +260,7 @@ LABEL_17:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v13 sendWiredCarPlayAvailable:v10 usbIdentifier:v14 wirelessCarPlayAvailable:v11 bluetoothIdentifier:v15 themeAssetsAvailable:v12];
+    [vehicleCopy sendWiredCarPlayAvailable:availableCopy usbIdentifier:_usbSerialNumber wirelessCarPlayAvailable:playAvailableCopy bluetoothIdentifier:v15 themeAssetsAvailable:assetsAvailableCopy];
   }
 
   else
@@ -268,25 +268,25 @@ LABEL_17:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v20 = [[CARCarPlayServiceMessageAvailability alloc] initWithWirelessAvailable:v11 != 0 wiredAvailable:v10 usbIdentifier:v14 themeAssetsAvailable:v12];
-      [v13 sendCarPlayAvailability:v20];
+      v20 = [[CARCarPlayServiceMessageAvailability alloc] initWithWirelessAvailable:playAvailableCopy != 0 wiredAvailable:availableCopy usbIdentifier:_usbSerialNumber themeAssetsAvailable:assetsAvailableCopy];
+      [vehicleCopy sendCarPlayAvailability:v20];
     }
   }
 }
 
-- (id)vehicleAccessoryForiAPConnectionIdentifier:(unint64_t)a3
+- (id)vehicleAccessoryForiAPConnectionIdentifier:(unint64_t)identifier
 {
-  v4 = [(CARMessagingServiceConnector *)self accessoryManager];
-  v5 = [v4 vehicleAccessoryForiAPConnectionIdentifier:a3];
+  accessoryManager = [(CARMessagingServiceConnector *)self accessoryManager];
+  v5 = [accessoryManager vehicleAccessoryForiAPConnectionIdentifier:identifier];
 
   return v5;
 }
 
-- (id)vehicleAccessoryForCertificateSerial:(id)a3
+- (id)vehicleAccessoryForCertificateSerial:(id)serial
 {
-  v4 = a3;
-  v5 = [(CARMessagingServiceConnector *)self accessoryManager];
-  v6 = [v5 vehicleAccessoryForCertificateSerial:v4];
+  serialCopy = serial;
+  accessoryManager = [(CARMessagingServiceConnector *)self accessoryManager];
+  v6 = [accessoryManager vehicleAccessoryForCertificateSerial:serialCopy];
 
   return v6;
 }
@@ -317,124 +317,124 @@ LABEL_17:
   return v6;
 }
 
-- (void)serviceConnector:(id)a3 requestsPairingConfirmationForBluetoothLEIdentifier:(id)a4 name:(id)a5 numericCode:(id)a6 responseHandler:(id)a7
+- (void)serviceConnector:(id)connector requestsPairingConfirmationForBluetoothLEIdentifier:(id)identifier name:(id)name numericCode:(id)code responseHandler:(id)handler
 {
-  v15 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a7;
-  v14 = [(CARMessagingServiceConnector *)self delegate];
-  if (v14 && (objc_opt_respondsToSelector() & 1) != 0)
+  identifierCopy = identifier;
+  nameCopy = name;
+  codeCopy = code;
+  handlerCopy = handler;
+  delegate = [(CARMessagingServiceConnector *)self delegate];
+  if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v14 serviceConnector:self requestsPairingConfirmationForBluetoothLEIdentifier:v15 name:v11 numericCode:v12 responseHandler:v13];
+    [delegate serviceConnector:self requestsPairingConfirmationForBluetoothLEIdentifier:identifierCopy name:nameCopy numericCode:codeCopy responseHandler:handlerCopy];
   }
 }
 
-- (void)serviceConnector:(id)a3 failedPairingForBluetoothLEIdentifier:(id)a4 name:(id)a5 error:(id)a6
+- (void)serviceConnector:(id)connector failedPairingForBluetoothLEIdentifier:(id)identifier name:(id)name error:(id)error
 {
-  v12 = a4;
-  v9 = a5;
-  v10 = a6;
-  v11 = [(CARMessagingServiceConnector *)self delegate];
-  if (v11 && (objc_opt_respondsToSelector() & 1) != 0)
+  identifierCopy = identifier;
+  nameCopy = name;
+  errorCopy = error;
+  delegate = [(CARMessagingServiceConnector *)self delegate];
+  if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v11 serviceConnector:self failedPairingForBluetoothLEIdentifier:v12 name:v9 error:v10];
+    [delegate serviceConnector:self failedPairingForBluetoothLEIdentifier:identifierCopy name:nameCopy error:errorCopy];
   }
 }
 
-- (void)serviceConnector:(id)a3 completedPairingForBluetoothLEIdentifier:(id)a4 name:(id)a5
+- (void)serviceConnector:(id)connector completedPairingForBluetoothLEIdentifier:(id)identifier name:(id)name
 {
-  v9 = a4;
-  v7 = a5;
-  v8 = [(CARMessagingServiceConnector *)self delegate];
-  if (v8 && (objc_opt_respondsToSelector() & 1) != 0)
+  identifierCopy = identifier;
+  nameCopy = name;
+  delegate = [(CARMessagingServiceConnector *)self delegate];
+  if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v8 serviceConnector:self completedPairingForBluetoothLEIdentifier:v9 name:v7];
+    [delegate serviceConnector:self completedPairingForBluetoothLEIdentifier:identifierCopy name:nameCopy];
   }
 }
 
-- (void)serviceConnector:(id)a3 didConnectVehicle:(id)a4
+- (void)serviceConnector:(id)connector didConnectVehicle:(id)vehicle
 {
-  v6 = a4;
-  [v6 setDelegate:self];
-  v5 = [(CARMessagingServiceConnector *)self delegate];
-  if (v5 && (objc_opt_respondsToSelector() & 1) != 0)
+  vehicleCopy = vehicle;
+  [vehicleCopy setDelegate:self];
+  delegate = [(CARMessagingServiceConnector *)self delegate];
+  if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v5 serviceConnector:self didConnectVehicle:v6];
+    [delegate serviceConnector:self didConnectVehicle:vehicleCopy];
   }
 }
 
-- (void)serviceConnector:(id)a3 didDisconnectVehicle:(id)a4
+- (void)serviceConnector:(id)connector didDisconnectVehicle:(id)vehicle
 {
-  v6 = a4;
-  v5 = [(CARMessagingServiceConnector *)self delegate];
-  if (v5 && (objc_opt_respondsToSelector() & 1) != 0)
+  vehicleCopy = vehicle;
+  delegate = [(CARMessagingServiceConnector *)self delegate];
+  if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v5 serviceConnector:self didDisconnectVehicle:v6];
+    [delegate serviceConnector:self didDisconnectVehicle:vehicleCopy];
   }
 }
 
-- (void)serviceVehicle:(id)a3 receivedStartSessionMessage:(id)a4
+- (void)serviceVehicle:(id)vehicle receivedStartSessionMessage:(id)message
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(CARMessagingServiceConnector *)self delegate];
-  if (v7 && (objc_opt_respondsToSelector() & 1) != 0)
+  vehicleCopy = vehicle;
+  messageCopy = message;
+  delegate = [(CARMessagingServiceConnector *)self delegate];
+  if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v7 serviceConnector:self receivedStartSessionMessage:v6 fromVehicle:v8];
+    [delegate serviceConnector:self receivedStartSessionMessage:messageCopy fromVehicle:vehicleCopy];
   }
 }
 
-- (void)accessoryManager:(id)a3 didConnectVehicleAccessory:(id)a4
+- (void)accessoryManager:(id)manager didConnectVehicleAccessory:(id)accessory
 {
-  v6 = a4;
+  accessoryCopy = accessory;
   [(CARMessagingServiceConnector *)self _updateCarKeyInformationForVehicleAccessory:?];
-  v5 = [(CARMessagingServiceConnector *)self delegate];
-  if (v5 && (objc_opt_respondsToSelector() & 1) != 0)
+  delegate = [(CARMessagingServiceConnector *)self delegate];
+  if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v5 serviceConnector:self didConnectVehicle:v6];
+    [delegate serviceConnector:self didConnectVehicle:accessoryCopy];
   }
 }
 
-- (void)accessoryManager:(id)a3 didUpdateVehicleAccessory:(id)a4
+- (void)accessoryManager:(id)manager didUpdateVehicleAccessory:(id)accessory
 {
-  v6 = a4;
-  v5 = [(CARMessagingServiceConnector *)self delegate];
-  if (v5 && (objc_opt_respondsToSelector() & 1) != 0)
+  accessoryCopy = accessory;
+  delegate = [(CARMessagingServiceConnector *)self delegate];
+  if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v5 serviceConnector:self didUpdateVehicle:v6];
+    [delegate serviceConnector:self didUpdateVehicle:accessoryCopy];
   }
 }
 
-- (void)accessoryManager:(id)a3 didDisconnectVehicleAccessory:(id)a4
+- (void)accessoryManager:(id)manager didDisconnectVehicleAccessory:(id)accessory
 {
-  v6 = a4;
-  v5 = [(CARMessagingServiceConnector *)self delegate];
-  if (v5 && (objc_opt_respondsToSelector() & 1) != 0)
+  accessoryCopy = accessory;
+  delegate = [(CARMessagingServiceConnector *)self delegate];
+  if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v5 serviceConnector:self didDisconnectVehicle:v6];
+    [delegate serviceConnector:self didDisconnectVehicle:accessoryCopy];
   }
 }
 
-- (void)accessoryManager:(id)a3 didConnectUnsupportedAccessoryWithBluetoothAddress:(id)a4
+- (void)accessoryManager:(id)manager didConnectUnsupportedAccessoryWithBluetoothAddress:(id)address
 {
-  v6 = a4;
-  v5 = [(CARMessagingServiceConnector *)self delegate];
-  if (v5 && (objc_opt_respondsToSelector() & 1) != 0)
+  addressCopy = address;
+  delegate = [(CARMessagingServiceConnector *)self delegate];
+  if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v5 serviceConnector:self didConnectUnsupportedAccessoryWithBluetoothAddress:v6];
+    [delegate serviceConnector:self didConnectUnsupportedAccessoryWithBluetoothAddress:addressCopy];
   }
 }
 
-- (void)_updateCarKeyInformationForVehicleAccessory:(id)a3
+- (void)_updateCarKeyInformationForVehicleAccessory:(id)accessory
 {
-  v4 = a3;
-  v5 = [v4 coreAccessoriesEndpointUUID];
+  accessoryCopy = accessory;
+  coreAccessoriesEndpointUUID = [accessoryCopy coreAccessoriesEndpointUUID];
   v6 = sub_100002A68(0);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v5;
+    *(&buf + 4) = coreAccessoriesEndpointUUID;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "fetching digital car info for endpoint: %{public}@", &buf, 0xCu);
   }
 
@@ -445,7 +445,7 @@ LABEL_17:
   v26 = sub_1000118E4;
   v27 = 0;
   v7 = dispatch_semaphore_create(0);
-  v8 = [(CARMessagingServiceConnector *)self coreAccessoriesManager];
+  coreAccessoriesManager = [(CARMessagingServiceConnector *)self coreAccessoriesManager];
   v9 = kACCProperties_Endpoint_DigitalCarKey_Group;
   v15 = _NSConcreteStackBlock;
   v16 = 3221225472;
@@ -454,7 +454,7 @@ LABEL_17:
   p_buf = &buf;
   v10 = v7;
   v19 = v10;
-  [v8 accessoryProperty:v9 forEndpoint:v5 connection:&stru_1000E1378 withReply:&v15];
+  [coreAccessoriesManager accessoryProperty:v9 forEndpoint:coreAccessoriesEndpointUUID connection:&stru_1000E1378 withReply:&v15];
 
   v11 = dispatch_time(0, 5000000000);
   if (dispatch_semaphore_wait(v10, v11))
@@ -477,7 +477,7 @@ LABEL_17:
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "vehicle declared digital car key support: %{private}@", v21, 0xCu);
     }
 
-    [v4 setDigitalCarKeyInformation:{*(*(&buf + 1) + 40), v15, v16, v17, v18}];
+    [accessoryCopy setDigitalCarKeyInformation:{*(*(&buf + 1) + 40), v15, v16, v17, v18}];
   }
 
   _Block_object_dispose(&buf, 8);

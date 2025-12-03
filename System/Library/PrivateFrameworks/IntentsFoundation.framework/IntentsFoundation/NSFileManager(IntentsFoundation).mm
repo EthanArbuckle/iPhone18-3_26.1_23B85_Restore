@@ -12,21 +12,21 @@
 {
   v6 = a4;
   v7 = a3;
-  v8 = [a4 fileSystemRepresentation];
-  v9 = [v7 UTF8String];
+  fileSystemRepresentation = [a4 fileSystemRepresentation];
+  uTF8String = [v7 UTF8String];
 
-  return removexattr(v8, v9, 0) != -1;
+  return removexattr(fileSystemRepresentation, uTF8String, 0) != -1;
 }
 
 - (uint64_t)if_BOOLForExtendedAttributeName:()IntentsFoundation ofItemAtURL:
 {
   v6 = a4;
   v7 = a3;
-  v8 = [a4 fileSystemRepresentation];
-  v9 = [v7 UTF8String];
+  fileSystemRepresentation = [a4 fileSystemRepresentation];
+  uTF8String = [v7 UTF8String];
 
   value = 0;
-  getxattr(v8, v9, &value, 1uLL, 0, 0);
+  getxattr(fileSystemRepresentation, uTF8String, &value, 1uLL, 0, 0);
   return value;
 }
 
@@ -35,33 +35,33 @@
   value = a3;
   v7 = a5;
   v8 = a4;
-  v9 = [a5 fileSystemRepresentation];
-  v10 = [v8 UTF8String];
+  fileSystemRepresentation = [a5 fileSystemRepresentation];
+  uTF8String = [v8 UTF8String];
 
-  return setxattr(v9, v10, &value, 1uLL, 0, 0) != -1;
+  return setxattr(fileSystemRepresentation, uTF8String, &value, 1uLL, 0, 0) != -1;
 }
 
 - (ssize_t)if_auditTokenForExtendedAttributeNamed:()IntentsFoundation ofItemAtURL:
 {
-  v6 = a1;
+  selfCopy = self;
   v7 = a2;
-  v8 = [a1 fileSystemRepresentation];
-  v9 = [v7 UTF8String];
+  fileSystemRepresentation = [self fileSystemRepresentation];
+  uTF8String = [v7 UTF8String];
 
   *a3 = 0u;
   a3[1] = 0u;
 
-  return getxattr(v8, v9, a3, 0x20uLL, 0, 0);
+  return getxattr(fileSystemRepresentation, uTF8String, a3, 0x20uLL, 0, 0);
 }
 
 - (BOOL)if_setAuditToken:()IntentsFoundation forExtendedAttributeNamed:ofItemAtURL:
 {
   v8 = a5;
   v9 = a4;
-  v10 = [a5 fileSystemRepresentation];
-  v11 = [v9 UTF8String];
+  fileSystemRepresentation = [a5 fileSystemRepresentation];
+  uTF8String = [v9 UTF8String];
 
-  return setxattr(v10, v11, a3, 0x20uLL, 0, 0) != -1;
+  return setxattr(fileSystemRepresentation, uTF8String, a3, 0x20uLL, 0, 0) != -1;
 }
 
 @end

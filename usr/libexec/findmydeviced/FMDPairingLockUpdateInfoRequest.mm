@@ -1,5 +1,5 @@
 @interface FMDPairingLockUpdateInfoRequest
-- (FMDPairingLockUpdateInfoRequest)initWithAccount:(id)a3 updateRequestInfo:(id)a4;
+- (FMDPairingLockUpdateInfoRequest)initWithAccount:(id)account updateRequestInfo:(id)info;
 - (id)requestBody;
 - (id)requestHeaders;
 - (id)requestUrl;
@@ -7,20 +7,20 @@
 
 @implementation FMDPairingLockUpdateInfoRequest
 
-- (FMDPairingLockUpdateInfoRequest)initWithAccount:(id)a3 updateRequestInfo:(id)a4
+- (FMDPairingLockUpdateInfoRequest)initWithAccount:(id)account updateRequestInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  accountCopy = account;
+  infoCopy = info;
   v12.receiver = self;
   v12.super_class = FMDPairingLockUpdateInfoRequest;
-  v8 = [(FMDRequest *)&v12 initWithAccount:v6];
+  v8 = [(FMDRequest *)&v12 initWithAccount:accountCopy];
   if (v8)
   {
-    v9 = [v6 accessoryPairingURL];
+    accessoryPairingURL = [accountCopy accessoryPairingURL];
     baseURL = v8->_baseURL;
-    v8->_baseURL = v9;
+    v8->_baseURL = accessoryPairingURL;
 
-    objc_storeStrong(&v8->_updateRequestInfo, a4);
+    objc_storeStrong(&v8->_updateRequestInfo, info);
   }
 
   return v8;
@@ -30,15 +30,15 @@
 {
   v4.receiver = self;
   v4.super_class = FMDPairingLockUpdateInfoRequest;
-  v2 = [(FMDRequest *)&v4 requestHeaders];
+  requestHeaders = [(FMDRequest *)&v4 requestHeaders];
 
-  return v2;
+  return requestHeaders;
 }
 
 - (id)requestUrl
 {
-  v2 = [(FMDPairingLockUpdateInfoRequest *)self baseURL];
-  v3 = [NSString stringWithFormat:@"%@/type5/pairinglock/updatePairingInfo", v2];
+  baseURL = [(FMDPairingLockUpdateInfoRequest *)self baseURL];
+  v3 = [NSString stringWithFormat:@"%@/type5/pairinglock/updatePairingInfo", baseURL];
 
   v4 = [NSURL URLWithString:v3];
 
@@ -49,24 +49,24 @@
 {
   v13.receiver = self;
   v13.super_class = FMDPairingLockUpdateInfoRequest;
-  v3 = [(FMDRequest *)&v13 requestBody];
-  v4 = [(FMDPairingLockUpdateInfoRequest *)self updateRequestInfo];
-  v5 = [v4 pairingCheckToken];
-  [v3 fm_safelyMapKey:@"pairingCheckToken" toObject:v5];
+  requestBody = [(FMDRequest *)&v13 requestBody];
+  updateRequestInfo = [(FMDPairingLockUpdateInfoRequest *)self updateRequestInfo];
+  pairingCheckToken = [updateRequestInfo pairingCheckToken];
+  [requestBody fm_safelyMapKey:@"pairingCheckToken" toObject:pairingCheckToken];
 
-  v6 = [(FMDPairingLockUpdateInfoRequest *)self updateRequestInfo];
-  v7 = [v6 lostModePubKey];
-  [v3 fm_safelyMapKey:@"lostModePubKey" toObject:v7];
+  updateRequestInfo2 = [(FMDPairingLockUpdateInfoRequest *)self updateRequestInfo];
+  lostModePubKey = [updateRequestInfo2 lostModePubKey];
+  [requestBody fm_safelyMapKey:@"lostModePubKey" toObject:lostModePubKey];
 
-  v8 = [(FMDPairingLockUpdateInfoRequest *)self updateRequestInfo];
-  v9 = [v8 userPrivateKey];
-  [v3 fm_safelyMapKey:@"userPrivateKey" toObject:v9];
+  updateRequestInfo3 = [(FMDPairingLockUpdateInfoRequest *)self updateRequestInfo];
+  userPrivateKey = [updateRequestInfo3 userPrivateKey];
+  [requestBody fm_safelyMapKey:@"userPrivateKey" toObject:userPrivateKey];
 
-  v10 = [(FMDPairingLockUpdateInfoRequest *)self updateRequestInfo];
-  v11 = [v10 timeStamp];
-  [v3 fm_safelyMapKey:@"timestamp" toObject:v11];
+  updateRequestInfo4 = [(FMDPairingLockUpdateInfoRequest *)self updateRequestInfo];
+  timeStamp = [updateRequestInfo4 timeStamp];
+  [requestBody fm_safelyMapKey:@"timestamp" toObject:timeStamp];
 
-  return v3;
+  return requestBody;
 }
 
 @end

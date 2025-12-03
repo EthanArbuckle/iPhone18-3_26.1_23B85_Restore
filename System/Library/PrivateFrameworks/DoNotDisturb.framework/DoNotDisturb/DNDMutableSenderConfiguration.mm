@@ -1,84 +1,84 @@
 @interface DNDMutableSenderConfiguration
-- (void)removeAllowedContactMatchingContact:(id)a3;
-- (void)removeDeniedContactMatchingContact:(id)a3;
-- (void)setAllowedContactGroups:(id)a3;
-- (void)setAllowedContactTypes:(id)a3;
-- (void)setAllowedContacts:(id)a3;
-- (void)setDeniedContactGroups:(id)a3;
-- (void)setDeniedContactTypes:(id)a3;
-- (void)setDeniedContacts:(id)a3;
-- (void)setPhoneCallBypassSettings:(id)a3;
+- (void)removeAllowedContactMatchingContact:(id)contact;
+- (void)removeDeniedContactMatchingContact:(id)contact;
+- (void)setAllowedContactGroups:(id)groups;
+- (void)setAllowedContactTypes:(id)types;
+- (void)setAllowedContacts:(id)contacts;
+- (void)setDeniedContactGroups:(id)groups;
+- (void)setDeniedContactTypes:(id)types;
+- (void)setDeniedContacts:(id)contacts;
+- (void)setPhoneCallBypassSettings:(id)settings;
 @end
 
 @implementation DNDMutableSenderConfiguration
 
-- (void)setAllowedContactTypes:(id)a3
+- (void)setAllowedContactTypes:(id)types
 {
-  v4 = [a3 mutableCopy];
+  v4 = [types mutableCopy];
   allowedContactTypes = self->super._allowedContactTypes;
   self->super._allowedContactTypes = v4;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setDeniedContactTypes:(id)a3
+- (void)setDeniedContactTypes:(id)types
 {
-  v4 = [a3 mutableCopy];
+  v4 = [types mutableCopy];
   deniedContactTypes = self->super._deniedContactTypes;
   self->super._deniedContactTypes = v4;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setAllowedContactGroups:(id)a3
+- (void)setAllowedContactGroups:(id)groups
 {
-  v4 = [a3 mutableCopy];
+  v4 = [groups mutableCopy];
   allowedContactGroups = self->super._allowedContactGroups;
   self->super._allowedContactGroups = v4;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setDeniedContactGroups:(id)a3
+- (void)setDeniedContactGroups:(id)groups
 {
-  v4 = [a3 mutableCopy];
+  v4 = [groups mutableCopy];
   deniedContactGroups = self->super._deniedContactGroups;
   self->super._deniedContactGroups = v4;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setAllowedContacts:(id)a3
+- (void)setAllowedContacts:(id)contacts
 {
-  v4 = [a3 mutableCopy];
+  v4 = [contacts mutableCopy];
   allowedContacts = self->super._allowedContacts;
   self->super._allowedContacts = v4;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setDeniedContacts:(id)a3
+- (void)setDeniedContacts:(id)contacts
 {
-  v4 = [a3 mutableCopy];
+  v4 = [contacts mutableCopy];
   deniedContacts = self->super._deniedContacts;
   self->super._deniedContacts = v4;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setPhoneCallBypassSettings:(id)a3
+- (void)setPhoneCallBypassSettings:(id)settings
 {
-  v4 = [a3 copy];
+  v4 = [settings copy];
   phoneCallBypassSettings = self->super._phoneCallBypassSettings;
   self->super._phoneCallBypassSettings = v4;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)removeAllowedContactMatchingContact:(id)a3
+- (void)removeAllowedContactMatchingContact:(id)contact
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contactCopy = contact;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -99,7 +99,7 @@ LABEL_3:
       }
 
       v10 = *(*(&v13 + 1) + 8 * v9);
-      if ([v4 matchesContact:{v10, v13}])
+      if ([contactCopy matchesContact:{v10, v13}])
       {
         break;
       }
@@ -133,10 +133,10 @@ LABEL_13:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeDeniedContactMatchingContact:(id)a3
+- (void)removeDeniedContactMatchingContact:(id)contact
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contactCopy = contact;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -157,7 +157,7 @@ LABEL_3:
       }
 
       v10 = *(*(&v13 + 1) + 8 * v9);
-      if ([v4 matchesContact:{v10, v13}])
+      if ([contactCopy matchesContact:{v10, v13}])
       {
         break;
       }

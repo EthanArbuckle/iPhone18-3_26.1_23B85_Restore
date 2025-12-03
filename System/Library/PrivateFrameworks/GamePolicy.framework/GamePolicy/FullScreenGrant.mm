@@ -1,12 +1,12 @@
 @interface FullScreenGrant
 - (NSString)description;
 - (_TtC10GamePolicy15FullScreenGrant)init;
-- (_TtC10GamePolicy15FullScreenGrant)initWithCoder:(id)a3;
+- (_TtC10GamePolicy15FullScreenGrant)initWithCoder:(id)coder;
 @end
 
 @implementation FullScreenGrant
 
-- (_TtC10GamePolicy15FullScreenGrant)initWithCoder:(id)a3
+- (_TtC10GamePolicy15FullScreenGrant)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for GamePolicyAssertion.Attribute();

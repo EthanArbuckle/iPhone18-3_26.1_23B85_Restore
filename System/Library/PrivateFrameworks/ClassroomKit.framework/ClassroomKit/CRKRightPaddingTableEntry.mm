@@ -1,14 +1,14 @@
 @interface CRKRightPaddingTableEntry
-- (CRKRightPaddingTableEntry)initWithObject:(id)a3;
-- (id)stringValueWithLength:(unint64_t)a3;
+- (CRKRightPaddingTableEntry)initWithObject:(id)object;
+- (id)stringValueWithLength:(unint64_t)length;
 @end
 
 @implementation CRKRightPaddingTableEntry
 
-- (CRKRightPaddingTableEntry)initWithObject:(id)a3
+- (CRKRightPaddingTableEntry)initWithObject:(id)object
 {
-  v6 = a3;
-  if (!v6)
+  objectCopy = object;
+  if (!objectCopy)
   {
     [(CRKRightPaddingTableEntry *)a2 initWithObject:?];
   }
@@ -19,16 +19,16 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->mObject, a3);
+    objc_storeStrong(&v7->mObject, object);
   }
 
   return v8;
 }
 
-- (id)stringValueWithLength:(unint64_t)a3
+- (id)stringValueWithLength:(unint64_t)length
 {
-  v4 = [(CRKRightPaddingTableEntry *)self rawStringValue];
-  v5 = [v4 stringByPaddingToLength:a3 withString:@" " startingAtIndex:0];
+  rawStringValue = [(CRKRightPaddingTableEntry *)self rawStringValue];
+  v5 = [rawStringValue stringByPaddingToLength:length withString:@" " startingAtIndex:0];
 
   return v5;
 }

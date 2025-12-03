@@ -1,48 +1,48 @@
 @interface BCSConfigResolver
-- (id)initWithConfigCache:(void *)a3 cacheSkipper:(void *)a4 megashardFetchTrigger:(void *)a5 metricFactory:;
-- (void)configItemWithType:(int64_t)a3 clientBundleID:(id)a4 cacheOnly:(BOOL)a5 metric:(id)a6 completion:(id)a7;
+- (id)initWithConfigCache:(void *)cache cacheSkipper:(void *)skipper megashardFetchTrigger:(void *)trigger metricFactory:;
+- (void)configItemWithType:(int64_t)type clientBundleID:(id)d cacheOnly:(BOOL)only metric:(id)metric completion:(id)completion;
 @end
 
 @implementation BCSConfigResolver
 
-- (id)initWithConfigCache:(void *)a3 cacheSkipper:(void *)a4 megashardFetchTrigger:(void *)a5 metricFactory:
+- (id)initWithConfigCache:(void *)cache cacheSkipper:(void *)skipper megashardFetchTrigger:(void *)trigger metricFactory:
 {
   v10 = a2;
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (a1)
+  cacheCopy = cache;
+  skipperCopy = skipper;
+  triggerCopy = trigger;
+  if (self)
   {
-    v18.receiver = a1;
+    v18.receiver = self;
     v18.super_class = BCSConfigResolver;
     v14 = objc_msgSendSuper2(&v18, sel_init);
-    a1 = v14;
+    self = v14;
     if (v14)
     {
       objc_storeStrong(v14 + 1, a2);
-      objc_storeStrong(a1 + 2, a3);
-      objc_storeStrong(a1 + 3, a4);
-      objc_storeStrong(a1 + 4, a5);
+      objc_storeStrong(self + 2, cache);
+      objc_storeStrong(self + 3, skipper);
+      objc_storeStrong(self + 4, trigger);
       v15 = dispatch_queue_create("com.apple.businessservicesd.BCSConfigResolver", 0);
-      v16 = a1[5];
-      a1[5] = v15;
+      v16 = self[5];
+      self[5] = v15;
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (void)configItemWithType:(int64_t)a3 clientBundleID:(id)a4 cacheOnly:(BOOL)a5 metric:(id)a6 completion:(id)a7
+- (void)configItemWithType:(int64_t)type clientBundleID:(id)d cacheOnly:(BOOL)only metric:(id)metric completion:(id)completion
 {
-  v8 = a5;
+  onlyCopy = only;
   v36 = *MEMORY[0x277D85DE8];
-  v11 = a6;
-  v12 = a7;
-  if (v12)
+  metricCopy = metric;
+  completionCopy = completion;
+  if (completionCopy)
   {
     if (self)
     {
-      if (([(BCSConfigCacheSkipping *)self->_configCacheSkipper shouldSkipCacheForConfigItemOfType:a3]& 1) != 0)
+      if (([(BCSConfigCacheSkipping *)self->_configCacheSkipper shouldSkipCacheForConfigItemOfType:type]& 1) != 0)
       {
         v13 = 0;
         goto LABEL_7;
@@ -53,7 +53,7 @@
 
     else
     {
-      v27 = [0 shouldSkipCacheForConfigItemOfType:a3];
+      v27 = [0 shouldSkipCacheForConfigItemOfType:type];
       configCache = 0;
       v13 = 0;
       if (v27)
@@ -64,7 +64,7 @@ LABEL_7:
           v15 = ABSLogCommon();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
           {
-            v16 = NSStringFromBCSType(a3);
+            v16 = NSStringFromBCSType(type);
             *buf = 136315394;
             v33 = "[BCSConfigResolver configItemWithType:clientBundleID:cacheOnly:metric:completion:]";
             v34 = 2112;
@@ -87,16 +87,16 @@ LABEL_7:
           block[2] = __83__BCSConfigResolver_configItemWithType_clientBundleID_cacheOnly_metric_completion___block_invoke;
           block[3] = &unk_278D38768;
           block[4] = self;
-          block[5] = a3;
+          block[5] = type;
           dispatch_async(serialDispatchQueue, block);
         }
 
-        if (v8)
+        if (onlyCopy)
         {
           if (!v13)
           {
             v22 = [BCSError errorWithDomain:@"com.apple.businessservices" code:47 errorDescription:@"Query is cache-only, skipping config fetch"];
-            v12[2](v12, 0, v22);
+            completionCopy[2](completionCopy, 0, v22);
 
             goto LABEL_26;
           }
@@ -114,19 +114,19 @@ LABEL_7:
             metricFactory = 0;
           }
 
-          v19 = [(BCSMetricFactoryProtocol *)metricFactory measurementFactory];
-          v20 = [v19 configCacheHitMeasurementForConfigType:a3];
-          [v11 setCacheHitMeasurement:v20];
+          measurementFactory = [(BCSMetricFactoryProtocol *)metricFactory measurementFactory];
+          v20 = [measurementFactory configCacheHitMeasurementForConfigType:type];
+          [metricCopy setCacheHitMeasurement:v20];
 
-          v21 = [v11 cacheHitMeasurement];
-          [v21 setFlag:v13 != 0];
+          cacheHitMeasurement = [metricCopy cacheHitMeasurement];
+          [cacheHitMeasurement setFlag:v13 != 0];
 
           if (!v13)
           {
             v23 = ABSLogCommon();
             if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
             {
-              v26 = NSStringFromBCSType(a3);
+              v26 = NSStringFromBCSType(type);
               *buf = 136315394;
               v33 = "[BCSConfigResolver configItemWithType:clientBundleID:cacheOnly:metric:completion:]";
               v34 = 2112;
@@ -148,23 +148,23 @@ LABEL_7:
             v28[1] = 3221225472;
             v28[2] = __83__BCSConfigResolver_configItemWithType_clientBundleID_cacheOnly_metric_completion___block_invoke_4;
             v28[3] = &unk_278D38790;
-            v30 = a3;
+            typeCopy = type;
             v28[4] = self;
-            v29 = v12;
+            v29 = completionCopy;
             [(BCSFetchTrigger *)megashardFetchTrigger triggerFetchForReason:5 completion:v28];
 
             goto LABEL_26;
           }
         }
 
-        (v12)[2](v12, v13, 0);
+        (completionCopy)[2](completionCopy, v13, 0);
 LABEL_26:
 
         goto LABEL_27;
       }
     }
 
-    v13 = [(BCSConfigCaching *)configCache configItemForType:a3];
+    v13 = [(BCSConfigCaching *)configCache configItemForType:type];
     goto LABEL_7;
   }
 

@@ -1,24 +1,24 @@
 @interface AXInvertColors_PosterKit
-+ (void)installCategories:(id)a3;
-+ (void)performValidations:(id)a3;
++ (void)installCategories:(id)categories;
++ (void)performValidations:(id)validations;
 @end
 
 @implementation AXInvertColors_PosterKit
 
-+ (void)performValidations:(id)a3
++ (void)performValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PRPosterWindow"];
-  [v3 validateClass:@"PRRenderingBackdropView"];
-  [v3 validateClass:@"PRRenderingView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PRPosterWindow"];
+  [validationsCopy validateClass:@"PRRenderingBackdropView"];
+  [validationsCopy validateClass:@"PRRenderingView"];
 }
 
-+ (void)installCategories:(id)a3
++ (void)installCategories:(id)categories
 {
-  v3 = a3;
-  [v3 installSafeCategory:@"PRPosterWindowInvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"PRRenderingBackdropViewInvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"PRRenderingViewInvertColorsAccessibility" canInteractWithTargetClass:1];
+  categoriesCopy = categories;
+  [categoriesCopy installSafeCategory:@"PRPosterWindowInvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"PRRenderingBackdropViewInvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"PRRenderingViewInvertColorsAccessibility" canInteractWithTargetClass:1];
 }
 
 @end

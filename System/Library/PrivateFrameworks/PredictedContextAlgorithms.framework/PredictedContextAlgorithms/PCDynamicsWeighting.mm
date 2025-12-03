@@ -1,34 +1,34 @@
 @interface PCDynamicsWeighting
-- (PCDynamicsWeighting)initWithDirectionScaleFactorEstimator:(id)a3 ETAScaleFactorEstimator:(id)a4;
-- (void)modifyCandidateProbabilities:(id)a3 atTime:(double)a4 visitHistory:(id)a5 locationHistory:(id)a6 motionActivity:(id)a7;
+- (PCDynamicsWeighting)initWithDirectionScaleFactorEstimator:(id)estimator ETAScaleFactorEstimator:(id)factorEstimator;
+- (void)modifyCandidateProbabilities:(id)probabilities atTime:(double)time visitHistory:(id)history locationHistory:(id)locationHistory motionActivity:(id)activity;
 @end
 
 @implementation PCDynamicsWeighting
 
-- (PCDynamicsWeighting)initWithDirectionScaleFactorEstimator:(id)a3 ETAScaleFactorEstimator:(id)a4
+- (PCDynamicsWeighting)initWithDirectionScaleFactorEstimator:(id)estimator ETAScaleFactorEstimator:(id)factorEstimator
 {
-  v7 = a3;
-  v8 = a4;
+  estimatorCopy = estimator;
+  factorEstimatorCopy = factorEstimator;
   v12.receiver = self;
   v12.super_class = PCDynamicsWeighting;
   v9 = [(PCDynamicsWeighting *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_directionScaleFactorEstimator, a3);
-    objc_storeStrong(&v10->_etaScaleFactorEstimator, a4);
+    objc_storeStrong(&v9->_directionScaleFactorEstimator, estimator);
+    objc_storeStrong(&v10->_etaScaleFactorEstimator, factorEstimator);
   }
 
   return v10;
 }
 
-- (void)modifyCandidateProbabilities:(id)a3 atTime:(double)a4 visitHistory:(id)a5 locationHistory:(id)a6 motionActivity:(id)a7
+- (void)modifyCandidateProbabilities:(id)probabilities atTime:(double)time visitHistory:(id)history locationHistory:(id)locationHistory motionActivity:(id)activity
 {
   v80 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  probabilitiesCopy = probabilities;
+  historyCopy = history;
+  locationHistoryCopy = locationHistory;
+  activityCopy = activity;
   v16 = _plc_log_get_normal_handle(PCLogCategoryDynamicsWeighting);
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
@@ -36,14 +36,14 @@
     _os_log_impl(&dword_1CEE74000, v16, OS_LOG_TYPE_INFO, "predictions before apply dynamics weighting", buf, 2u);
   }
 
-  v64 = v14;
-  v65 = v13;
-  if (v12 && [v12 count])
+  v64 = locationHistoryCopy;
+  v65 = historyCopy;
+  if (probabilitiesCopy && [probabilitiesCopy count])
   {
     v17 = _plc_log_get_normal_handle(PCLogCategoryDynamicsWeighting);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
-      v18 = [v12 count];
+      v18 = [probabilitiesCopy count];
       *buf = 134217984;
       v79 = v18;
       _os_log_impl(&dword_1CEE74000, v17, OS_LOG_TYPE_INFO, "--- Location Predictions (%lu) ---", buf, 0xCu);
@@ -53,12 +53,12 @@
     v75 = 0u;
     v72 = 0u;
     v73 = 0u;
-    v19 = v12;
+    v19 = probabilitiesCopy;
     v20 = [v19 countByEnumeratingWithState:&v72 objects:v77 count:16];
     if (v20)
     {
       v21 = v20;
-      v62 = self;
+      selfCopy = self;
       v22 = *v73;
       do
       {
@@ -83,20 +83,20 @@
       }
 
       while (v21);
-      v13 = v65;
-      v26 = v62;
+      historyCopy = v65;
+      selfCopy3 = selfCopy;
     }
 
     else
     {
-      v26 = self;
+      selfCopy3 = self;
     }
   }
 
   else
   {
     v19 = _plc_log_get_normal_handle(PCLogCategoryDynamicsWeighting);
-    v26 = self;
+    selfCopy3 = self;
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
       *buf = 0;
@@ -106,27 +106,27 @@
 
   v71 = 0;
   v70 = 0.0;
-  v27 = [PCDynamicsUtils locationOfLastVisitWithVisitHistory:v13 currentTime:&v71 isInTransition:&v70 exitTime:a4];
-  v28 = [PCDynamicsUtils currentLocationWithLocationHistory:v14 currentTime:a4];
-  v61 = [PCDynamicsUtils filterValidLocationPredictions:v12];
+  v27 = [PCDynamicsUtils locationOfLastVisitWithVisitHistory:historyCopy currentTime:&v71 isInTransition:&v70 exitTime:time];
+  v28 = [PCDynamicsUtils currentLocationWithLocationHistory:locationHistoryCopy currentTime:time];
+  v61 = [PCDynamicsUtils filterValidLocationPredictions:probabilitiesCopy];
   v29 = [PCDynamicsUtils candidateDataMapFromVisits:?];
   v60 = v27;
   v30 = [PCDynamicsUtils computeProgressScaleFromCandidateDataMap:v29 lastVisit:v27 currentLocation:v28];
-  v31 = [PCDynamicsUtils computeTravelFeasibilityForCandidateDataMap:v29 currentLocation:v28 currentTime:a4];
-  v32 = [(PCDynamicsWeighting *)v26 directionScaleFactorEstimator];
-  [v32 computeScaleForCandidates:v29 locationHistory:v14 motionActivity:v15 currentLocation:v28 currentTime:v71 lastVisitExitTime:a4 isInTransition:v70];
-  v34 = v33 = v15;
+  v31 = [PCDynamicsUtils computeTravelFeasibilityForCandidateDataMap:v29 currentLocation:v28 currentTime:time];
+  directionScaleFactorEstimator = [(PCDynamicsWeighting *)selfCopy3 directionScaleFactorEstimator];
+  [directionScaleFactorEstimator computeScaleForCandidates:v29 locationHistory:locationHistoryCopy motionActivity:activityCopy currentLocation:v28 currentTime:v71 lastVisitExitTime:time isInTransition:v70];
+  v34 = v33 = activityCopy;
 
-  v35 = v26;
-  v36 = v12;
-  v37 = [(PCDynamicsWeighting *)v35 etaScaleFactorEstimator];
+  v35 = selfCopy3;
+  v36 = probabilitiesCopy;
+  etaScaleFactorEstimator = [(PCDynamicsWeighting *)v35 etaScaleFactorEstimator];
   v38 = v33;
   v63 = v28;
-  v39 = [v37 computeScaleForCandidates:v29 locationHistory:v14 motionActivity:v33 currentLocation:v28 currentTime:v71 lastVisitExitTime:a4 isInTransition:v70];
+  v39 = [etaScaleFactorEstimator computeScaleForCandidates:v29 locationHistory:locationHistoryCopy motionActivity:v33 currentLocation:v28 currentTime:v71 lastVisitExitTime:time isInTransition:v70];
 
   v58 = v34;
   v59 = v30;
-  [PCDynamicsUtils updateProbabilitiesForCandidateVisits:v36 withCandidateDataMap:v29 progressScaleByVisitMap:v30 feasibilityByVisitMap:v31 dirctionScaleByVisitMap:v34 etaScaleByVisitMap:v39 currentTime:a4];
+  [PCDynamicsUtils updateProbabilitiesForCandidateVisits:v36 withCandidateDataMap:v29 progressScaleByVisitMap:v30 feasibilityByVisitMap:v31 dirctionScaleByVisitMap:v34 etaScaleByVisitMap:v39 currentTime:time];
   v40 = _plc_log_get_normal_handle(PCLogCategoryDynamicsWeighting);
   if (os_log_type_enabled(v40, OS_LOG_TYPE_INFO))
   {
@@ -186,7 +186,7 @@
       while (v47);
       v36 = v57;
       v46 = v63;
-      v14 = v64;
+      locationHistoryCopy = v64;
       v52 = v60;
       v42 = v61;
       v31 = v55;

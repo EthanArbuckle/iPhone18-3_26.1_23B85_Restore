@@ -1,19 +1,19 @@
 @interface HeimCredDecoder
 + (id)allowedClasses;
-+ (id)copyCF2NS:(void *)a3;
-+ (id)copyUnarchiveObjectWithFileSecureEncoding:(id)a3;
-+ (void)archiveRootObject:(id)a3 toFile:(id)a4;
-+ (void)copyNS2CF:(id)a3;
++ (id)copyCF2NS:(void *)s;
++ (id)copyUnarchiveObjectWithFileSecureEncoding:(id)encoding;
++ (void)archiveRootObject:(id)object toFile:(id)file;
++ (void)copyNS2CF:(id)f;
 @end
 
 @implementation HeimCredDecoder
 
-+ (void)copyNS2CF:(id)a3
++ (void)copyNS2CF:(id)f
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, f);
   if (location[0])
   {
     objc_opt_class();
@@ -131,20 +131,20 @@
   return v15;
 }
 
-+ (id)copyCF2NS:(void *)a3
++ (id)copyCF2NS:(void *)s
 {
-  v19 = a1;
+  selfCopy = self;
   v18 = a2;
-  v17 = a3;
-  if (!a3)
+  sCopy = s;
+  if (!s)
   {
     return 0;
   }
 
-  v16 = CFGetTypeID(v17);
+  v16 = CFGetTypeID(sCopy);
   if (v16 == CFBooleanGetTypeID())
   {
-    if (CFBooleanGetValue(v17))
+    if (CFBooleanGetValue(sCopy))
     {
       return [[NSUUID alloc] initWithUUIDBytes:byte_100028CF8];
     }
@@ -157,40 +157,40 @@
 
   else if (v16 == CFStringGetTypeID())
   {
-    Copy = CFStringCreateCopy(0, v17);
+    Copy = CFStringCreateCopy(0, sCopy);
     v3 = Copy;
     return Copy;
   }
 
   else if (v16 == CFDataGetTypeID())
   {
-    v6 = CFDataCreateCopy(0, v17);
+    v6 = CFDataCreateCopy(0, sCopy);
     v4 = v6;
     return v6;
   }
 
   else if (v16 == CFNumberGetTypeID() || v16 == CFDateGetTypeID())
   {
-    return v17;
+    return sCopy;
   }
 
   else if (v16 == CFUUIDGetTypeID())
   {
     v15 = 0;
-    v15 = CFUUIDGetUUIDBytes(v17);
+    v15 = CFUUIDGetUUIDBytes(sCopy);
     return [[NSUUID alloc] initWithUUIDBytes:&v15];
   }
 
   else if (v16 == CFArrayGetTypeID())
   {
     i = 0;
-    Count = CFArrayGetCount(v17);
+    Count = CFArrayGetCount(sCopy);
     v12 = [[NSMutableArray alloc] initWithCapacity:Count];
     if (v12)
     {
       for (i = 0; i < Count; ++i)
       {
-        location = [HeimCredDecoder copyCF2NS:CFArrayGetValueAtIndex(v17, i)];
+        location = [HeimCredDecoder copyCF2NS:CFArrayGetValueAtIndex(sCopy, i)];
         if (location)
         {
           [v12 addObject:location];
@@ -214,11 +214,11 @@
 
   else if (v16 == CFDictionaryGetTypeID())
   {
-    v9 = CFDictionaryGetCount(v17);
+    v9 = CFDictionaryGetCount(sCopy);
     context = [[NSMutableDictionary alloc] initWithCapacity:v9];
     if (context)
     {
-      CFDictionaryApplyFunction(v17, sub_100018118, context);
+      CFDictionaryApplyFunction(sCopy, sub_100018118, context);
       v20 = context;
     }
 
@@ -239,12 +239,12 @@
   return v20;
 }
 
-+ (id)copyUnarchiveObjectWithFileSecureEncoding:(id)a3
++ (id)copyUnarchiveObjectWithFileSecureEncoding:(id)encoding
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, encoding);
   context = objc_autoreleasePoolPush();
   v12 = 0;
   v11 = [NSData dataWithContentsOfFile:location[0] options:1 error:0];
@@ -297,14 +297,14 @@
   return v14;
 }
 
-+ (void)archiveRootObject:(id)a3 toFile:(id)a4
++ (void)archiveRootObject:(id)object toFile:(id)file
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, object);
   v34 = 0;
-  objc_storeStrong(&v34, a4);
+  objc_storeStrong(&v34, file);
   context = objc_autoreleasePoolPush();
   v33 = sub_10000E120();
   v32 = 1;

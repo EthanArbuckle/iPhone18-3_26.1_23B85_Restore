@@ -1,10 +1,10 @@
 @interface HMTimerTrigger
-- (BOOL)mergeFromNewObject:(id)a3;
-- (HMTimerTrigger)initWithCoder:(id)a3;
-- (HMTimerTrigger)initWithDictionary:(id)a3 home:(id)a4;
-- (HMTimerTrigger)initWithName:(id)a3 fireDate:(id)a4 timeZone:(id)a5 recurrence:(id)a6;
-- (HMTimerTrigger)initWithName:(id)a3 fireDate:(id)a4 timeZone:(id)a5 recurrences:(id)a6;
-- (HMTimerTrigger)initWithName:(id)a3 significantEvent:(id)a4 significantEventOffset:(id)a5 recurrences:(id)a6;
+- (BOOL)mergeFromNewObject:(id)object;
+- (HMTimerTrigger)initWithCoder:(id)coder;
+- (HMTimerTrigger)initWithDictionary:(id)dictionary home:(id)home;
+- (HMTimerTrigger)initWithName:(id)name fireDate:(id)date timeZone:(id)zone recurrence:(id)recurrence;
+- (HMTimerTrigger)initWithName:(id)name fireDate:(id)date timeZone:(id)zone recurrences:(id)recurrences;
+- (HMTimerTrigger)initWithName:(id)name significantEvent:(id)event significantEventOffset:(id)offset recurrences:(id)recurrences;
 - (NSArray)recurrences;
 - (NSDate)fireDate;
 - (NSDateComponents)recurrence;
@@ -12,58 +12,58 @@
 - (NSString)significantEvent;
 - (NSTimeZone)timeZone;
 - (id)_serializeForAdd;
-- (void)_handleTriggerFired:(id)a3;
-- (void)_updateFireDate:(id)a3 completionHandler:(id)a4;
-- (void)_updateRecurrence:(id)a3 completionHandler:(id)a4;
-- (void)_updateRecurrences:(id)a3 completionHandler:(id)a4;
-- (void)_updateSignificantEvent:(id)a3 completionHandler:(id)a4;
-- (void)_updateSignificantEventOffset:(id)a3 completionHandler:(id)a4;
-- (void)_updateTimeZone:(id)a3 completionHandler:(id)a4;
-- (void)_updateTimerTriggerPropertiesFromResponse:(id)a3;
-- (void)_updateTimerTriggerWithResponse:(id)a3 payloadToSend:(id)a4;
-- (void)setFireDate:(id)a3;
-- (void)setRecurrence:(id)a3;
-- (void)setRecurrences:(id)a3;
-- (void)setSignificantEvent:(id)a3;
-- (void)setSignificantEventOffset:(id)a3;
-- (void)setTimeZone:(id)a3;
+- (void)_handleTriggerFired:(id)fired;
+- (void)_updateFireDate:(id)date completionHandler:(id)handler;
+- (void)_updateRecurrence:(id)recurrence completionHandler:(id)handler;
+- (void)_updateRecurrences:(id)recurrences completionHandler:(id)handler;
+- (void)_updateSignificantEvent:(id)event completionHandler:(id)handler;
+- (void)_updateSignificantEventOffset:(id)offset completionHandler:(id)handler;
+- (void)_updateTimeZone:(id)zone completionHandler:(id)handler;
+- (void)_updateTimerTriggerPropertiesFromResponse:(id)response;
+- (void)_updateTimerTriggerWithResponse:(id)response payloadToSend:(id)send;
+- (void)setFireDate:(id)date;
+- (void)setRecurrence:(id)recurrence;
+- (void)setRecurrences:(id)recurrences;
+- (void)setSignificantEvent:(id)event;
+- (void)setSignificantEventOffset:(id)offset;
+- (void)setTimeZone:(id)zone;
 - (void)updateFireDate:(NSDate *)fireDate completionHandler:(void *)completion;
 - (void)updateRecurrence:(NSDateComponents *)recurrence completionHandler:(void *)completion;
-- (void)updateRecurrences:(id)a3 completionHandler:(id)a4;
-- (void)updateSignificantEvent:(id)a3 completionHandler:(id)a4;
-- (void)updateSignificantEventOffset:(id)a3 completionHandler:(id)a4;
+- (void)updateRecurrences:(id)recurrences completionHandler:(id)handler;
+- (void)updateSignificantEvent:(id)event completionHandler:(id)handler;
+- (void)updateSignificantEventOffset:(id)offset completionHandler:(id)handler;
 - (void)updateTimeZone:(NSTimeZone *)timeZone completionHandler:(void *)completion;
 @end
 
 @implementation HMTimerTrigger
 
-- (BOOL)mergeFromNewObject:(id)a3
+- (BOOL)mergeFromNewObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v48.receiver = self;
   v48.super_class = HMTimerTrigger;
-  LODWORD(v5) = [(HMTrigger *)&v48 mergeFromNewObject:v4];
+  LODWORD(fireDate3) = [(HMTrigger *)&v48 mergeFromNewObject:objectCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v4;
-    v7 = [(HMTimerTrigger *)self fireDate];
-    v8 = [v6 fireDate];
-    v9 = [v7 isEqualToDate:v8];
+    v6 = objectCopy;
+    fireDate = [(HMTimerTrigger *)self fireDate];
+    fireDate2 = [v6 fireDate];
+    v9 = [fireDate isEqualToDate:fireDate2];
 
     if ((v9 & 1) == 0)
     {
-      v5 = [v6 fireDate];
-      [(HMTimerTrigger *)self setFireDate:v5];
+      fireDate3 = [v6 fireDate];
+      [(HMTimerTrigger *)self setFireDate:fireDate3];
 
-      LODWORD(v5) = 1;
+      LODWORD(fireDate3) = 1;
     }
 
-    v10 = [(HMTimerTrigger *)self timeZone];
+    timeZone = [(HMTimerTrigger *)self timeZone];
 
-    v11 = [v6 timeZone];
-    v12 = v11;
-    if (v10)
+    timeZone2 = [v6 timeZone];
+    v12 = timeZone2;
+    if (timeZone)
     {
 
       if (!v12)
@@ -72,18 +72,18 @@
         goto LABEL_11;
       }
 
-      v13 = [(HMTimerTrigger *)self timeZone];
-      v14 = [v6 timeZone];
-      v15 = [v13 isEqualToTimeZone:v14];
+      timeZone3 = [(HMTimerTrigger *)self timeZone];
+      timeZone4 = [v6 timeZone];
+      v15 = [timeZone3 isEqualToTimeZone:timeZone4];
 
       if (v15)
       {
 LABEL_12:
-        v17 = [(HMTimerTrigger *)self recurrence];
+        recurrence = [(HMTimerTrigger *)self recurrence];
 
-        v18 = [v6 recurrence];
-        v19 = v18;
-        if (v17)
+        recurrence2 = [v6 recurrence];
+        v19 = recurrence2;
+        if (recurrence)
         {
 
           if (!v19)
@@ -92,18 +92,18 @@ LABEL_12:
             goto LABEL_19;
           }
 
-          v20 = [(HMTimerTrigger *)self recurrence];
-          v21 = [v6 recurrence];
-          v22 = [v20 isEqual:v21];
+          recurrence3 = [(HMTimerTrigger *)self recurrence];
+          recurrence4 = [v6 recurrence];
+          v22 = [recurrence3 isEqual:recurrence4];
 
           if (v22)
           {
 LABEL_20:
-            v24 = [(HMTimerTrigger *)self recurrences];
+            recurrences = [(HMTimerTrigger *)self recurrences];
 
-            v25 = [v6 recurrences];
-            v26 = v25;
-            if (v24)
+            recurrences2 = [v6 recurrences];
+            v26 = recurrences2;
+            if (recurrences)
             {
 
               if (!v26)
@@ -112,18 +112,18 @@ LABEL_20:
                 goto LABEL_27;
               }
 
-              v27 = [(HMTimerTrigger *)self recurrences];
-              v28 = [v6 recurrences];
-              v29 = [v27 isEqual:v28];
+              recurrences3 = [(HMTimerTrigger *)self recurrences];
+              recurrences4 = [v6 recurrences];
+              v29 = [recurrences3 isEqual:recurrences4];
 
               if (v29)
               {
 LABEL_28:
-                v31 = [(HMTimerTrigger *)self significantEvent];
+                significantEvent = [(HMTimerTrigger *)self significantEvent];
 
-                v32 = [v6 significantEvent];
-                v33 = v32;
-                if (v31)
+                significantEvent2 = [v6 significantEvent];
+                v33 = significantEvent2;
+                if (significantEvent)
                 {
 
                   if (!v33)
@@ -132,18 +132,18 @@ LABEL_28:
                     goto LABEL_35;
                   }
 
-                  v34 = [(HMTimerTrigger *)self significantEvent];
-                  v35 = [v6 significantEvent];
-                  v36 = [v34 isEqual:v35];
+                  significantEvent3 = [(HMTimerTrigger *)self significantEvent];
+                  significantEvent4 = [v6 significantEvent];
+                  v36 = [significantEvent3 isEqual:significantEvent4];
 
                   if (v36)
                   {
 LABEL_36:
-                    v38 = [(HMTimerTrigger *)self significantEventOffset];
+                    significantEventOffset = [(HMTimerTrigger *)self significantEventOffset];
 
-                    v39 = [v6 significantEventOffset];
-                    v40 = v39;
-                    if (v38)
+                    significantEventOffset2 = [v6 significantEventOffset];
+                    v40 = significantEventOffset2;
+                    if (significantEventOffset)
                     {
 
                       if (!v40)
@@ -152,9 +152,9 @@ LABEL_36:
                         goto LABEL_44;
                       }
 
-                      v41 = [(HMTimerTrigger *)self significantEventOffset];
-                      v42 = [v6 significantEventOffset];
-                      v43 = [v41 isEqual:v42];
+                      significantEventOffset3 = [(HMTimerTrigger *)self significantEventOffset];
+                      significantEventOffset4 = [v6 significantEventOffset];
+                      v43 = [significantEventOffset3 isEqual:significantEventOffset4];
 
                       if (v43)
                       {
@@ -168,7 +168,7 @@ LABEL_36:
                       if (!v40)
                       {
 LABEL_39:
-                        if (!v5)
+                        if (!fireDate3)
                         {
                           goto LABEL_45;
                         }
@@ -177,20 +177,20 @@ LABEL_39:
                       }
                     }
 
-                    v44 = [v6 significantEventOffset];
-                    [(HMTimerTrigger *)self setSignificantEventOffset:v44];
+                    significantEventOffset5 = [v6 significantEventOffset];
+                    [(HMTimerTrigger *)self setSignificantEventOffset:significantEventOffset5];
 
 LABEL_44:
-                    v5 = [(HMTrigger *)self context];
-                    v45 = [v5 queue];
+                    fireDate3 = [(HMTrigger *)self context];
+                    queue = [fireDate3 queue];
                     block[0] = MEMORY[0x1E69E9820];
                     block[1] = 3221225472;
                     block[2] = __37__HMTimerTrigger_mergeFromNewObject___block_invoke;
                     block[3] = &unk_1E754E2A8;
                     block[4] = self;
-                    dispatch_async(v45, block);
+                    dispatch_async(queue, block);
 
-                    LOBYTE(v5) = 1;
+                    LOBYTE(fireDate3) = 1;
 LABEL_45:
 
                     goto LABEL_46;
@@ -206,11 +206,11 @@ LABEL_45:
                   }
                 }
 
-                v37 = [v6 significantEvent];
-                [(HMTimerTrigger *)self setSignificantEvent:v37];
+                significantEvent5 = [v6 significantEvent];
+                [(HMTimerTrigger *)self setSignificantEvent:significantEvent5];
 
 LABEL_35:
-                LODWORD(v5) = 1;
+                LODWORD(fireDate3) = 1;
                 goto LABEL_36;
               }
             }
@@ -224,11 +224,11 @@ LABEL_35:
               }
             }
 
-            v30 = [v6 recurrences];
-            [(HMTimerTrigger *)self setRecurrences:v30];
+            recurrences5 = [v6 recurrences];
+            [(HMTimerTrigger *)self setRecurrences:recurrences5];
 
 LABEL_27:
-            LODWORD(v5) = 1;
+            LODWORD(fireDate3) = 1;
             goto LABEL_28;
           }
         }
@@ -242,11 +242,11 @@ LABEL_27:
           }
         }
 
-        v23 = [v6 recurrence];
-        [(HMTimerTrigger *)self setRecurrence:v23];
+        recurrence5 = [v6 recurrence];
+        [(HMTimerTrigger *)self setRecurrence:recurrence5];
 
 LABEL_19:
-        LODWORD(v5) = 1;
+        LODWORD(fireDate3) = 1;
         goto LABEL_20;
       }
     }
@@ -260,17 +260,17 @@ LABEL_19:
       }
     }
 
-    v16 = [v6 timeZone];
-    [(HMTimerTrigger *)self setTimeZone:v16];
+    timeZone5 = [v6 timeZone];
+    [(HMTimerTrigger *)self setTimeZone:timeZone5];
 
 LABEL_11:
-    LODWORD(v5) = 1;
+    LODWORD(fireDate3) = 1;
     goto LABEL_12;
   }
 
 LABEL_46:
 
-  return v5;
+  return fireDate3;
 }
 
 void __37__HMTimerTrigger_mergeFromNewObject___block_invoke(uint64_t a1)
@@ -279,32 +279,32 @@ void __37__HMTimerTrigger_mergeFromNewObject___block_invoke(uint64_t a1)
   [v2 _notifyDelegateOfTriggerUpdated:*(a1 + 32)];
 }
 
-- (HMTimerTrigger)initWithCoder:(id)a3
+- (HMTimerTrigger)initWithCoder:(id)coder
 {
   v24[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = HMTimerTrigger;
-  v5 = [(HMTrigger *)&v23 initWithCoder:v4];
+  v5 = [(HMTrigger *)&v23 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timerTriggerInitialFireDate"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timerTriggerInitialFireDate"];
     fireDate = v5->_fireDate;
     v5->_fireDate = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timerTriggerTimeZone"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timerTriggerTimeZone"];
     timeZone = v5->_timeZone;
     v5->_timeZone = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.timerTriggerSignificantEvent"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.timerTriggerSignificantEvent"];
     significantEvent = v5->_significantEvent;
     v5->_significantEvent = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.timerTriggerSignificantEventOffset"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.timerTriggerSignificantEventOffset"];
     significantEventOffset = v5->_significantEventOffset;
     v5->_significantEventOffset = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timerTriggerRepeatInterval"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timerTriggerRepeatInterval"];
     recurrence = v5->_recurrence;
     v5->_recurrence = v14;
 
@@ -313,7 +313,7 @@ void __37__HMTimerTrigger_mergeFromNewObject___block_invoke(uint64_t a1)
     v24[1] = objc_opt_class();
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:2];
     v18 = [v16 setWithArray:v17];
-    v19 = [v4 decodeObjectOfClasses:v18 forKey:@"HM.timerTriggerRecurrences"];
+    v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"HM.timerTriggerRecurrences"];
     recurrences = v5->_recurrences;
     v5->_recurrences = v19;
   }
@@ -322,17 +322,17 @@ void __37__HMTimerTrigger_mergeFromNewObject___block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)_handleTriggerFired:(id)a3
+- (void)_handleTriggerFired:(id)fired
 {
   v3.receiver = self;
   v3.super_class = HMTimerTrigger;
-  [(HMTrigger *)&v3 _handleTriggerFired:a3];
+  [(HMTrigger *)&v3 _handleTriggerFired:fired];
 }
 
-- (void)_updateTimerTriggerPropertiesFromResponse:(id)a3
+- (void)_updateTimerTriggerPropertiesFromResponse:(id)response
 {
-  v23 = a3;
-  v4 = [v23 hmf_dateForKey:@"kTimerTriggerInitialFireDateKey"];
+  responseCopy = response;
+  v4 = [responseCopy hmf_dateForKey:@"kTimerTriggerInitialFireDateKey"];
   if (v4)
   {
     v5 = v4;
@@ -345,107 +345,107 @@ void __37__HMTimerTrigger_mergeFromNewObject___block_invoke(uint64_t a1)
 
   [(HMTimerTrigger *)self setFireDate:v5];
   v6 = MEMORY[0x1E695DFE8];
-  v7 = [v23 objectForKeyedSubscript:@"kTimerTriggerTimeZoneDataKey"];
+  v7 = [responseCopy objectForKeyedSubscript:@"kTimerTriggerTimeZoneDataKey"];
   v8 = [v6 hmf_unarchiveFromData:v7 error:0];
 
   if (v8)
   {
-    v9 = self;
+    selfCopy2 = self;
     v10 = v8;
   }
 
   else
   {
-    if (![v23 hmf_BOOLForKey:@"kTimerTriggerResetTimeZoneDataKey"])
+    if (![responseCopy hmf_BOOLForKey:@"kTimerTriggerResetTimeZoneDataKey"])
     {
       goto LABEL_9;
     }
 
-    v9 = self;
+    selfCopy2 = self;
     v10 = 0;
   }
 
-  [(HMTimerTrigger *)v9 setTimeZone:v10];
+  [(HMTimerTrigger *)selfCopy2 setTimeZone:v10];
 LABEL_9:
-  v11 = [v23 dateComponentsForKey:@"kTimerTriggerRecurrenceDataKey"];
+  v11 = [responseCopy dateComponentsForKey:@"kTimerTriggerRecurrenceDataKey"];
   if (v11)
   {
-    v12 = self;
+    selfCopy4 = self;
     v13 = v11;
   }
 
   else
   {
-    if (![v23 hmf_BOOLForKey:@"kTimerTriggerResetRecurrenceDataKey"])
+    if (![responseCopy hmf_BOOLForKey:@"kTimerTriggerResetRecurrenceDataKey"])
     {
       goto LABEL_14;
     }
 
-    v12 = self;
+    selfCopy4 = self;
     v13 = 0;
   }
 
-  [(HMTimerTrigger *)v12 setRecurrence:v13];
+  [(HMTimerTrigger *)selfCopy4 setRecurrence:v13];
 LABEL_14:
-  v14 = [v23 arrayOfDateComponentsFromDataForKey:@"kTimerTriggerRecurrencesKey"];
+  v14 = [responseCopy arrayOfDateComponentsFromDataForKey:@"kTimerTriggerRecurrencesKey"];
   if (v14)
   {
-    v15 = self;
+    selfCopy6 = self;
     v16 = v14;
   }
 
   else
   {
-    if (![v23 hmf_BOOLForKey:@"kTimerTriggerResetRecurrencesKey"])
+    if (![responseCopy hmf_BOOLForKey:@"kTimerTriggerResetRecurrencesKey"])
     {
       goto LABEL_19;
     }
 
-    v15 = self;
+    selfCopy6 = self;
     v16 = 0;
   }
 
-  [(HMTimerTrigger *)v15 setRecurrences:v16];
+  [(HMTimerTrigger *)selfCopy6 setRecurrences:v16];
 LABEL_19:
-  v17 = [v23 hmf_stringForKey:@"kTimerTriggerSignificantEventKey"];
+  v17 = [responseCopy hmf_stringForKey:@"kTimerTriggerSignificantEventKey"];
   if (v17)
   {
-    v18 = self;
+    selfCopy8 = self;
     v19 = v17;
   }
 
   else
   {
-    if (![v23 hmf_BOOLForKey:@"kTimerTriggerResetSignificantEventKey"])
+    if (![responseCopy hmf_BOOLForKey:@"kTimerTriggerResetSignificantEventKey"])
     {
       goto LABEL_24;
     }
 
-    v18 = self;
+    selfCopy8 = self;
     v19 = 0;
   }
 
-  [(HMTimerTrigger *)v18 setSignificantEvent:v19];
+  [(HMTimerTrigger *)selfCopy8 setSignificantEvent:v19];
 LABEL_24:
-  v20 = [v23 hmf_dateComponentsForKey:@"kTimerTriggerSignificantEventOffsetKey"];
+  v20 = [responseCopy hmf_dateComponentsForKey:@"kTimerTriggerSignificantEventOffsetKey"];
   if (v20)
   {
-    v21 = self;
+    selfCopy10 = self;
     v22 = v20;
   }
 
   else
   {
-    if (![v23 hmf_BOOLForKey:@"kTimerTriggerResetSignificantEventOffsetKey"])
+    if (![responseCopy hmf_BOOLForKey:@"kTimerTriggerResetSignificantEventOffsetKey"])
     {
       goto LABEL_29;
     }
 
-    v21 = self;
+    selfCopy10 = self;
     v22 = 0;
   }
 
-  [(HMTimerTrigger *)v21 setSignificantEventOffset:v22];
+  [(HMTimerTrigger *)selfCopy10 setSignificantEventOffset:v22];
 LABEL_29:
 }
 
@@ -454,24 +454,24 @@ LABEL_29:
   v3 = MEMORY[0x1E695DF90];
   v28.receiver = self;
   v28.super_class = HMTimerTrigger;
-  v4 = [(HMTrigger *)&v28 _serializeForAdd];
-  v5 = [v3 dictionaryWithDictionary:v4];
+  _serializeForAdd = [(HMTrigger *)&v28 _serializeForAdd];
+  v5 = [v3 dictionaryWithDictionary:_serializeForAdd];
 
-  v6 = [(HMTimerTrigger *)self fireDate];
+  fireDate = [(HMTimerTrigger *)self fireDate];
 
-  if (v6)
+  if (fireDate)
   {
-    v7 = [(HMTimerTrigger *)self fireDate];
-    [v5 setObject:v7 forKeyedSubscript:@"kTimerTriggerInitialFireDateKey"];
+    fireDate2 = [(HMTimerTrigger *)self fireDate];
+    [v5 setObject:fireDate2 forKeyedSubscript:@"kTimerTriggerInitialFireDateKey"];
   }
 
-  v8 = [(HMTimerTrigger *)self timeZone];
+  timeZone = [(HMTimerTrigger *)self timeZone];
 
-  if (v8)
+  if (timeZone)
   {
     v9 = MEMORY[0x1E696ACC8];
-    v10 = [(HMTimerTrigger *)self timeZone];
-    v11 = [v9 archivedDataWithRootObject:v10 requiringSecureCoding:1 error:0];
+    timeZone2 = [(HMTimerTrigger *)self timeZone];
+    v11 = [v9 archivedDataWithRootObject:timeZone2 requiringSecureCoding:1 error:0];
     [v5 setObject:v11 forKeyedSubscript:@"kTimerTriggerTimeZoneDataKey"];
   }
 
@@ -480,13 +480,13 @@ LABEL_29:
     [v5 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"kTimerTriggerResetTimeZoneDataKey"];
   }
 
-  v12 = [(HMTimerTrigger *)self recurrence];
+  recurrence = [(HMTimerTrigger *)self recurrence];
 
-  if (v12)
+  if (recurrence)
   {
     v13 = MEMORY[0x1E696ACC8];
-    v14 = [(HMTimerTrigger *)self recurrence];
-    v15 = [v13 archivedDataWithRootObject:v14 requiringSecureCoding:1 error:0];
+    recurrence2 = [(HMTimerTrigger *)self recurrence];
+    v15 = [v13 archivedDataWithRootObject:recurrence2 requiringSecureCoding:1 error:0];
     [v5 setObject:v15 forKeyedSubscript:@"kTimerTriggerRecurrenceDataKey"];
   }
 
@@ -495,13 +495,13 @@ LABEL_29:
     [v5 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"kTimerTriggerResetRecurrenceDataKey"];
   }
 
-  v16 = [(HMTimerTrigger *)self recurrences];
+  recurrences = [(HMTimerTrigger *)self recurrences];
 
-  if (v16)
+  if (recurrences)
   {
     v17 = MEMORY[0x1E696ACC8];
-    v18 = [(HMTimerTrigger *)self recurrences];
-    v19 = [v17 archivedDataWithRootObject:v18 requiringSecureCoding:1 error:0];
+    recurrences2 = [(HMTimerTrigger *)self recurrences];
+    v19 = [v17 archivedDataWithRootObject:recurrences2 requiringSecureCoding:1 error:0];
     [v5 setObject:v19 forKeyedSubscript:@"kTimerTriggerRecurrencesKey"];
   }
 
@@ -510,12 +510,12 @@ LABEL_29:
     [v5 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"kTimerTriggerResetRecurrencesKey"];
   }
 
-  v20 = [(HMTimerTrigger *)self significantEvent];
+  significantEvent = [(HMTimerTrigger *)self significantEvent];
 
-  if (v20)
+  if (significantEvent)
   {
-    v21 = [(HMTimerTrigger *)self significantEvent];
-    [v5 setObject:v21 forKeyedSubscript:@"kTimerTriggerSignificantEventKey"];
+    significantEvent2 = [(HMTimerTrigger *)self significantEvent];
+    [v5 setObject:significantEvent2 forKeyedSubscript:@"kTimerTriggerSignificantEventKey"];
   }
 
   else
@@ -523,13 +523,13 @@ LABEL_29:
     [v5 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"kTimerTriggerResetSignificantEventKey"];
   }
 
-  v22 = [(HMTimerTrigger *)self significantEventOffset];
+  significantEventOffset = [(HMTimerTrigger *)self significantEventOffset];
 
-  if (v22)
+  if (significantEventOffset)
   {
     v23 = MEMORY[0x1E696ACC8];
-    v24 = [(HMTimerTrigger *)self significantEventOffset];
-    v25 = [v23 archivedDataWithRootObject:v24 requiringSecureCoding:1 error:0];
+    significantEventOffset2 = [(HMTimerTrigger *)self significantEventOffset];
+    v25 = [v23 archivedDataWithRootObject:significantEventOffset2 requiringSecureCoding:1 error:0];
     [v5 setObject:v25 forKeyedSubscript:@"kTimerTriggerSignificantEventOffsetKey"];
   }
 
@@ -543,19 +543,19 @@ LABEL_29:
   return v26;
 }
 
-- (void)_updateTimerTriggerWithResponse:(id)a3 payloadToSend:(id)a4
+- (void)_updateTimerTriggerWithResponse:(id)response payloadToSend:(id)send
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMTrigger *)self context];
-  if (v8)
+  responseCopy = response;
+  sendCopy = send;
+  context = [(HMTrigger *)self context];
+  if (context)
   {
     v9 = MEMORY[0x1E69A2A10];
     v10 = objc_alloc(MEMORY[0x1E69A2A00]);
-    v11 = [(HMTrigger *)self uuid];
-    v12 = [v10 initWithTarget:v11];
-    v13 = [v9 messageWithName:@"kScheduleTimerTriggerRequestKey" destination:v12 payload:v7];
+    uuid = [(HMTrigger *)self uuid];
+    v12 = [v10 initWithTarget:uuid];
+    v13 = [v9 messageWithName:@"kScheduleTimerTriggerRequestKey" destination:v12 payload:sendCopy];
 
     objc_initWeak(location, self);
     v20 = MEMORY[0x1E69E9820];
@@ -563,10 +563,10 @@ LABEL_29:
     v22 = __64__HMTimerTrigger__updateTimerTriggerWithResponse_payloadToSend___block_invoke;
     v23 = &unk_1E754CFF8;
     objc_copyWeak(&v25, location);
-    v24 = v6;
+    v24 = responseCopy;
     [v13 setResponseHandler:&v20];
-    v14 = [v8 messageDispatcher];
-    [v14 sendMessage:v13 completionHandler:0];
+    messageDispatcher = [context messageDispatcher];
+    [messageDispatcher sendMessage:v13 completionHandler:0];
 
     objc_destroyWeak(&v25);
     objc_destroyWeak(location);
@@ -575,7 +575,7 @@ LABEL_29:
   else
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
@@ -628,17 +628,17 @@ void __64__HMTimerTrigger__updateTimerTriggerWithResponse_payloadToSend___block_
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateRecurrences:(id)a3 completionHandler:(id)a4
+- (void)_updateRecurrences:(id)recurrences completionHandler:(id)handler
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMTrigger *)self context];
-  if (!v7)
+  recurrencesCopy = recurrences;
+  handlerCopy = handler;
+  context = [(HMTrigger *)self context];
+  if (!handlerCopy)
   {
     v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMTimerTrigger _updateRecurrences:completionHandler:]", @"clientCompletionHandler"];
     v23 = objc_autoreleasePoolPush();
-    v24 = self;
+    selfCopy = self;
     v25 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
@@ -655,17 +655,17 @@ void __64__HMTimerTrigger__updateTimerTriggerWithResponse_payloadToSend___block_
     objc_exception_throw(v27);
   }
 
-  v9 = v8;
-  if (v8)
+  v9 = context;
+  if (context)
   {
-    v10 = [(HMTrigger *)self home];
-    if (v10)
+    home = [(HMTrigger *)self home];
+    if (home)
     {
-      v11 = v10;
-      if (v6)
+      v11 = home;
+      if (recurrencesCopy)
       {
         v30 = @"kTimerTriggerRecurrencesKey";
-        v12 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v6 requiringSecureCoding:1 error:0];
+        v12 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:recurrencesCopy requiringSecureCoding:1 error:0];
         v31 = v12;
         v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v31 forKeys:&v30 count:1];
       }
@@ -677,15 +677,15 @@ void __64__HMTimerTrigger__updateTimerTriggerWithResponse_payloadToSend___block_
         v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v29 forKeys:&v28 count:1];
       }
 
-      [(HMTimerTrigger *)self _updateTimerTriggerWithResponse:v7 payloadToSend:v13];
+      [(HMTimerTrigger *)self _updateTimerTriggerWithResponse:handlerCopy payloadToSend:v13];
     }
 
     else
     {
-      v18 = [(HMTrigger *)self context];
-      v19 = [v18 delegateCaller];
+      context2 = [(HMTrigger *)self context];
+      delegateCaller = [context2 delegateCaller];
       v20 = [MEMORY[0x1E696ABC0] errorWithDomain:@"HMErrorDomain" code:12 userInfo:0];
-      [v19 callCompletion:v7 error:v20];
+      [delegateCaller callCompletion:handlerCopy error:v20];
 
       v11 = 0;
     }
@@ -694,7 +694,7 @@ void __64__HMTimerTrigger__updateTimerTriggerWithResponse_payloadToSend___block_
   else
   {
     v14 = objc_autoreleasePoolPush();
-    v15 = self;
+    selfCopy2 = self;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
@@ -708,23 +708,23 @@ void __64__HMTimerTrigger__updateTimerTriggerWithResponse_payloadToSend___block_
 
     objc_autoreleasePoolPop(v14);
     v11 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-    v7[2](v7, v11);
+    handlerCopy[2](handlerCopy, v11);
   }
 
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateRecurrences:(id)a3 completionHandler:(id)a4
+- (void)updateRecurrences:(id)recurrences completionHandler:(id)handler
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMTrigger *)self context];
-  if (!v7)
+  recurrencesCopy = recurrences;
+  handlerCopy = handler;
+  context = [(HMTrigger *)self context];
+  if (!handlerCopy)
   {
     v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMTimerTrigger updateRecurrences:completionHandler:]", @"completion"];
     v18 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
@@ -741,24 +741,24 @@ void __64__HMTimerTrigger__updateTimerTriggerWithResponse_payloadToSend___block_
     objc_exception_throw(v22);
   }
 
-  v9 = v8;
-  if (v8)
+  v9 = context;
+  if (context)
   {
-    v10 = [v8 queue];
+    queue = [context queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __54__HMTimerTrigger_updateRecurrences_completionHandler___block_invoke;
     block[3] = &unk_1E754E0F8;
     block[4] = self;
-    v24 = v6;
-    v25 = v7;
-    dispatch_async(v10, block);
+    v24 = recurrencesCopy;
+    v25 = handlerCopy;
+    dispatch_async(queue, block);
   }
 
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy2 = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -772,27 +772,27 @@ void __64__HMTimerTrigger__updateTimerTriggerWithResponse_payloadToSend___block_
 
     objc_autoreleasePoolPop(v11);
     v15 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-    (*(v7 + 2))(v7, v15);
+    (*(handlerCopy + 2))(handlerCopy, v15);
   }
 
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateRecurrence:(id)a3 completionHandler:(id)a4
+- (void)_updateRecurrence:(id)recurrence completionHandler:(id)handler
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMTrigger *)self context];
-  if (v8)
+  recurrenceCopy = recurrence;
+  handlerCopy = handler;
+  context = [(HMTrigger *)self context];
+  if (context)
   {
-    v9 = [(HMTrigger *)self home];
-    if (v9)
+    home = [(HMTrigger *)self home];
+    if (home)
     {
-      if (v6)
+      if (recurrenceCopy)
       {
         v22 = @"kTimerTriggerRecurrenceDataKey";
-        v10 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v6 requiringSecureCoding:1 error:0];
+        v10 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:recurrenceCopy requiringSecureCoding:1 error:0];
         v23 = v10;
         v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v23 forKeys:&v22 count:1];
       }
@@ -804,22 +804,22 @@ void __64__HMTimerTrigger__updateTimerTriggerWithResponse_payloadToSend___block_
         v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v21 forKeys:&v20 count:1];
       }
 
-      [(HMTimerTrigger *)self _updateTimerTriggerWithResponse:v7 payloadToSend:v11];
+      [(HMTimerTrigger *)self _updateTimerTriggerWithResponse:handlerCopy payloadToSend:v11];
     }
 
     else
     {
-      v16 = [(HMTrigger *)self context];
-      v17 = [v16 delegateCaller];
+      context2 = [(HMTrigger *)self context];
+      delegateCaller = [context2 delegateCaller];
       v18 = [MEMORY[0x1E696ABC0] errorWithDomain:@"HMErrorDomain" code:12 userInfo:0];
-      [v17 callCompletion:v7 error:v18];
+      [delegateCaller callCompletion:handlerCopy error:v18];
     }
   }
 
   else
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -842,12 +842,12 @@ void __64__HMTimerTrigger__updateTimerTriggerWithResponse_payloadToSend___block_
   v30 = *MEMORY[0x1E69E9840];
   v6 = recurrence;
   v7 = completion;
-  v8 = [(HMTrigger *)self context];
+  context = [(HMTrigger *)self context];
   if (!v7)
   {
     v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMTimerTrigger updateRecurrence:completionHandler:]", @"completion"];
     v18 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
@@ -864,10 +864,10 @@ void __64__HMTimerTrigger__updateTimerTriggerWithResponse_payloadToSend___block_
     objc_exception_throw(v22);
   }
 
-  v9 = v8;
-  if (v8)
+  v9 = context;
+  if (context)
   {
-    v10 = [v8 queue];
+    queue = [context queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __53__HMTimerTrigger_updateRecurrence_completionHandler___block_invoke;
@@ -875,13 +875,13 @@ void __64__HMTimerTrigger__updateTimerTriggerWithResponse_payloadToSend___block_
     block[4] = self;
     v24 = v6;
     v25 = v7;
-    dispatch_async(v10, block);
+    dispatch_async(queue, block);
   }
 
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy2 = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -901,21 +901,21 @@ void __64__HMTimerTrigger__updateTimerTriggerWithResponse_payloadToSend___block_
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateSignificantEventOffset:(id)a3 completionHandler:(id)a4
+- (void)_updateSignificantEventOffset:(id)offset completionHandler:(id)handler
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMTrigger *)self context];
-  if (v8)
+  offsetCopy = offset;
+  handlerCopy = handler;
+  context = [(HMTrigger *)self context];
+  if (context)
   {
-    v9 = [(HMTrigger *)self home];
-    if (v9)
+    home = [(HMTrigger *)self home];
+    if (home)
     {
-      if (v6)
+      if (offsetCopy)
       {
         v22 = @"kTimerTriggerSignificantEventOffsetKey";
-        v10 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v6 requiringSecureCoding:1 error:0];
+        v10 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:offsetCopy requiringSecureCoding:1 error:0];
         v23 = v10;
         v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v23 forKeys:&v22 count:1];
       }
@@ -927,22 +927,22 @@ void __64__HMTimerTrigger__updateTimerTriggerWithResponse_payloadToSend___block_
         v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v21 forKeys:&v20 count:1];
       }
 
-      [(HMTimerTrigger *)self _updateTimerTriggerWithResponse:v7 payloadToSend:v11];
+      [(HMTimerTrigger *)self _updateTimerTriggerWithResponse:handlerCopy payloadToSend:v11];
     }
 
     else
     {
-      v16 = [(HMTrigger *)self context];
-      v17 = [v16 delegateCaller];
+      context2 = [(HMTrigger *)self context];
+      delegateCaller = [context2 delegateCaller];
       v18 = [MEMORY[0x1E696ABC0] errorWithDomain:@"HMErrorDomain" code:12 userInfo:0];
-      [v17 callCompletion:v7 error:v18];
+      [delegateCaller callCompletion:handlerCopy error:v18];
     }
   }
 
   else
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -960,17 +960,17 @@ void __64__HMTimerTrigger__updateTimerTriggerWithResponse_payloadToSend___block_
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateSignificantEventOffset:(id)a3 completionHandler:(id)a4
+- (void)updateSignificantEventOffset:(id)offset completionHandler:(id)handler
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMTrigger *)self context];
-  if (!v7)
+  offsetCopy = offset;
+  handlerCopy = handler;
+  context = [(HMTrigger *)self context];
+  if (!handlerCopy)
   {
     v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMTimerTrigger updateSignificantEventOffset:completionHandler:]", @"completion"];
     v18 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
@@ -987,24 +987,24 @@ void __64__HMTimerTrigger__updateTimerTriggerWithResponse_payloadToSend___block_
     objc_exception_throw(v22);
   }
 
-  v9 = v8;
-  if (v8)
+  v9 = context;
+  if (context)
   {
-    v10 = [v8 queue];
+    queue = [context queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __65__HMTimerTrigger_updateSignificantEventOffset_completionHandler___block_invoke;
     block[3] = &unk_1E754E0F8;
     block[4] = self;
-    v24 = v6;
-    v25 = v7;
-    dispatch_async(v10, block);
+    v24 = offsetCopy;
+    v25 = handlerCopy;
+    dispatch_async(queue, block);
   }
 
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy2 = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -1018,53 +1018,53 @@ void __64__HMTimerTrigger__updateTimerTriggerWithResponse_payloadToSend___block_
 
     objc_autoreleasePoolPop(v11);
     v15 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-    (*(v7 + 2))(v7, v15);
+    (*(handlerCopy + 2))(handlerCopy, v15);
   }
 
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateSignificantEvent:(id)a3 completionHandler:(id)a4
+- (void)_updateSignificantEvent:(id)event completionHandler:(id)handler
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMTrigger *)self context];
-  if (v8)
+  eventCopy = event;
+  handlerCopy = handler;
+  context = [(HMTrigger *)self context];
+  if (context)
   {
-    if (v6)
+    if (eventCopy)
     {
-      v9 = [(HMTrigger *)self home];
-      if (v9)
+      home = [(HMTrigger *)self home];
+      if (home)
       {
         v19 = @"kTimerTriggerSignificantEventKey";
-        v20 = v6;
+        v20 = eventCopy;
         v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v20 forKeys:&v19 count:1];
-        [(HMTimerTrigger *)self _updateTimerTriggerWithResponse:v7 payloadToSend:v10];
+        [(HMTimerTrigger *)self _updateTimerTriggerWithResponse:handlerCopy payloadToSend:v10];
 
 LABEL_11:
         goto LABEL_12;
       }
 
-      v15 = [(HMTrigger *)self context];
-      v16 = [v15 delegateCaller];
+      context2 = [(HMTrigger *)self context];
+      delegateCaller = [context2 delegateCaller];
       v17 = [MEMORY[0x1E696ABC0] errorWithDomain:@"HMErrorDomain" code:12 userInfo:0];
-      [v16 callCompletion:v7 error:v17];
+      [delegateCaller callCompletion:handlerCopy error:v17];
     }
 
     else
     {
-      v9 = [(HMTrigger *)self context];
-      v15 = [v9 delegateCaller];
-      v16 = [MEMORY[0x1E696ABC0] errorWithDomain:@"HMErrorDomain" code:20 userInfo:0];
-      [v15 callCompletion:v7 error:v16];
+      home = [(HMTrigger *)self context];
+      context2 = [home delegateCaller];
+      delegateCaller = [MEMORY[0x1E696ABC0] errorWithDomain:@"HMErrorDomain" code:20 userInfo:0];
+      [context2 callCompletion:handlerCopy error:delegateCaller];
     }
 
     goto LABEL_11;
   }
 
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
   {
@@ -1082,17 +1082,17 @@ LABEL_12:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateSignificantEvent:(id)a3 completionHandler:(id)a4
+- (void)updateSignificantEvent:(id)event completionHandler:(id)handler
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMTrigger *)self context];
-  if (!v7)
+  eventCopy = event;
+  handlerCopy = handler;
+  context = [(HMTrigger *)self context];
+  if (!handlerCopy)
   {
     v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMTimerTrigger updateSignificantEvent:completionHandler:]", @"completion"];
     v18 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
@@ -1109,24 +1109,24 @@ LABEL_12:
     objc_exception_throw(v22);
   }
 
-  v9 = v8;
-  if (v8)
+  v9 = context;
+  if (context)
   {
-    v10 = [v8 queue];
+    queue = [context queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __59__HMTimerTrigger_updateSignificantEvent_completionHandler___block_invoke;
     block[3] = &unk_1E754E0F8;
     block[4] = self;
-    v24 = v6;
-    v25 = v7;
-    dispatch_async(v10, block);
+    v24 = eventCopy;
+    v25 = handlerCopy;
+    dispatch_async(queue, block);
   }
 
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy2 = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -1140,27 +1140,27 @@ LABEL_12:
 
     objc_autoreleasePoolPop(v11);
     v15 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-    (*(v7 + 2))(v7, v15);
+    (*(handlerCopy + 2))(handlerCopy, v15);
   }
 
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateTimeZone:(id)a3 completionHandler:(id)a4
+- (void)_updateTimeZone:(id)zone completionHandler:(id)handler
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMTrigger *)self context];
-  if (v8)
+  zoneCopy = zone;
+  handlerCopy = handler;
+  context = [(HMTrigger *)self context];
+  if (context)
   {
-    v9 = [(HMTrigger *)self home];
-    if (v9)
+    home = [(HMTrigger *)self home];
+    if (home)
     {
-      if (v6)
+      if (zoneCopy)
       {
         v22 = @"kTimerTriggerTimeZoneDataKey";
-        v10 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v6 requiringSecureCoding:1 error:0];
+        v10 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:zoneCopy requiringSecureCoding:1 error:0];
         v23 = v10;
         v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v23 forKeys:&v22 count:1];
       }
@@ -1172,22 +1172,22 @@ LABEL_12:
         v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v21 forKeys:&v20 count:1];
       }
 
-      [(HMTimerTrigger *)self _updateTimerTriggerWithResponse:v7 payloadToSend:v11];
+      [(HMTimerTrigger *)self _updateTimerTriggerWithResponse:handlerCopy payloadToSend:v11];
     }
 
     else
     {
-      v16 = [(HMTrigger *)self context];
-      v17 = [v16 delegateCaller];
+      context2 = [(HMTrigger *)self context];
+      delegateCaller = [context2 delegateCaller];
       v18 = [MEMORY[0x1E696ABC0] errorWithDomain:@"HMErrorDomain" code:12 userInfo:0];
-      [v17 callCompletion:v7 error:v18];
+      [delegateCaller callCompletion:handlerCopy error:v18];
     }
   }
 
   else
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -1210,12 +1210,12 @@ LABEL_12:
   v30 = *MEMORY[0x1E69E9840];
   v6 = timeZone;
   v7 = completion;
-  v8 = [(HMTrigger *)self context];
+  context = [(HMTrigger *)self context];
   if (!v7)
   {
     v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMTimerTrigger updateTimeZone:completionHandler:]", @"completion"];
     v18 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
@@ -1232,10 +1232,10 @@ LABEL_12:
     objc_exception_throw(v22);
   }
 
-  v9 = v8;
-  if (v8)
+  v9 = context;
+  if (context)
   {
-    v10 = [v8 queue];
+    queue = [context queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __51__HMTimerTrigger_updateTimeZone_completionHandler___block_invoke;
@@ -1243,13 +1243,13 @@ LABEL_12:
     block[4] = self;
     v24 = v6;
     v25 = v7;
-    dispatch_async(v10, block);
+    dispatch_async(queue, block);
   }
 
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy2 = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -1269,17 +1269,17 @@ LABEL_12:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateFireDate:(id)a3 completionHandler:(id)a4
+- (void)_updateFireDate:(id)date completionHandler:(id)handler
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMTrigger *)self context];
-  if (!v7)
+  dateCopy = date;
+  handlerCopy = handler;
+  context = [(HMTrigger *)self context];
+  if (!handlerCopy)
   {
     v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMTimerTrigger _updateFireDate:completionHandler:]", @"clientCompletionHandler"];
     v24 = objc_autoreleasePoolPush();
-    v25 = self;
+    selfCopy = self;
     v26 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
@@ -1296,11 +1296,11 @@ LABEL_12:
     objc_exception_throw(v28);
   }
 
-  v9 = v8;
-  if (!v8)
+  v9 = context;
+  if (!context)
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy2 = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -1313,37 +1313,37 @@ LABEL_12:
     }
 
     objc_autoreleasePoolPop(v12);
-    v16 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-    v7[2](v7, v16);
+    context2 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
+    handlerCopy[2](handlerCopy, context2);
     goto LABEL_10;
   }
 
-  if (!v6)
+  if (!dateCopy)
   {
-    v16 = [(HMTrigger *)self context];
-    v17 = [v16 delegateCaller];
+    context2 = [(HMTrigger *)self context];
+    delegateCaller = [context2 delegateCaller];
     v18 = [MEMORY[0x1E696ABC0] errorWithDomain:@"HMErrorDomain" code:20 userInfo:0];
-    [v17 callCompletion:v7 error:v18];
+    [delegateCaller callCompletion:handlerCopy error:v18];
 
 LABEL_10:
     goto LABEL_13;
   }
 
-  v10 = [(HMTrigger *)self home];
-  if (v10)
+  home = [(HMTrigger *)self home];
+  if (home)
   {
     v29 = @"kTimerTriggerInitialFireDateKey";
-    v30 = v6;
+    v30 = dateCopy;
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v30 forKeys:&v29 count:1];
-    [(HMTimerTrigger *)self _updateTimerTriggerWithResponse:v7 payloadToSend:v11];
+    [(HMTimerTrigger *)self _updateTimerTriggerWithResponse:handlerCopy payloadToSend:v11];
   }
 
   else
   {
-    v19 = [(HMTrigger *)self context];
-    v20 = [v19 delegateCaller];
+    context3 = [(HMTrigger *)self context];
+    delegateCaller2 = [context3 delegateCaller];
     v21 = [MEMORY[0x1E696ABC0] errorWithDomain:@"HMErrorDomain" code:12 userInfo:0];
-    [v20 callCompletion:v7 error:v21];
+    [delegateCaller2 callCompletion:handlerCopy error:v21];
   }
 
 LABEL_13:
@@ -1355,12 +1355,12 @@ LABEL_13:
   v30 = *MEMORY[0x1E69E9840];
   v6 = fireDate;
   v7 = completion;
-  v8 = [(HMTrigger *)self context];
+  context = [(HMTrigger *)self context];
   if (!v7)
   {
     v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMTimerTrigger updateFireDate:completionHandler:]", @"completion"];
     v18 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
@@ -1377,10 +1377,10 @@ LABEL_13:
     objc_exception_throw(v22);
   }
 
-  v9 = v8;
-  if (v8)
+  v9 = context;
+  if (context)
   {
-    v10 = [v8 queue];
+    queue = [context queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __51__HMTimerTrigger_updateFireDate_completionHandler___block_invoke;
@@ -1388,13 +1388,13 @@ LABEL_13:
     block[4] = self;
     v24 = v6;
     v25 = v7;
-    dispatch_async(v10, block);
+    dispatch_async(queue, block);
   }
 
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy2 = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -1414,11 +1414,11 @@ LABEL_13:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setSignificantEventOffset:(id)a3
+- (void)setSignificantEventOffset:(id)offset
 {
-  v6 = a3;
+  offsetCopy = offset;
   os_unfair_lock_lock_with_options();
-  v4 = [v6 copy];
+  v4 = [offsetCopy copy];
   significantEventOffset = self->_significantEventOffset;
   self->_significantEventOffset = v4;
 
@@ -1434,11 +1434,11 @@ LABEL_13:
   return v3;
 }
 
-- (void)setSignificantEvent:(id)a3
+- (void)setSignificantEvent:(id)event
 {
-  v6 = a3;
+  eventCopy = event;
   os_unfair_lock_lock_with_options();
-  v4 = [v6 copy];
+  v4 = [eventCopy copy];
   significantEvent = self->_significantEvent;
   self->_significantEvent = v4;
 
@@ -1454,11 +1454,11 @@ LABEL_13:
   return v3;
 }
 
-- (void)setRecurrences:(id)a3
+- (void)setRecurrences:(id)recurrences
 {
-  v6 = a3;
+  recurrencesCopy = recurrences;
   os_unfair_lock_lock_with_options();
-  v4 = [v6 copy];
+  v4 = [recurrencesCopy copy];
   recurrences = self->_recurrences;
   self->_recurrences = v4;
 
@@ -1474,12 +1474,12 @@ LABEL_13:
   return v3;
 }
 
-- (void)setRecurrence:(id)a3
+- (void)setRecurrence:(id)recurrence
 {
-  v4 = a3;
+  recurrenceCopy = recurrence;
   os_unfair_lock_lock_with_options();
   recurrence = self->_recurrence;
-  self->_recurrence = v4;
+  self->_recurrence = recurrenceCopy;
 
   os_unfair_lock_unlock(&self->super._lock);
 }
@@ -1493,11 +1493,11 @@ LABEL_13:
   return v3;
 }
 
-- (void)setTimeZone:(id)a3
+- (void)setTimeZone:(id)zone
 {
-  v6 = a3;
+  zoneCopy = zone;
   os_unfair_lock_lock_with_options();
-  v4 = [v6 copy];
+  v4 = [zoneCopy copy];
   timeZone = self->_timeZone;
   self->_timeZone = v4;
 
@@ -1513,11 +1513,11 @@ LABEL_13:
   return v3;
 }
 
-- (void)setFireDate:(id)a3
+- (void)setFireDate:(id)date
 {
-  v6 = a3;
+  dateCopy = date;
   os_unfair_lock_lock_with_options();
-  v4 = [v6 copy];
+  v4 = [dateCopy copy];
   fireDate = self->_fireDate;
   self->_fireDate = v4;
 
@@ -1533,41 +1533,41 @@ LABEL_13:
   return v3;
 }
 
-- (HMTimerTrigger)initWithDictionary:(id)a3 home:(id)a4
+- (HMTimerTrigger)initWithDictionary:(id)dictionary home:(id)home
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v29.receiver = self;
   v29.super_class = HMTimerTrigger;
-  v7 = [(HMTrigger *)&v29 initWithDictionary:v6 home:a4];
+  v7 = [(HMTrigger *)&v29 initWithDictionary:dictionaryCopy home:home];
   if (v7)
   {
-    v8 = [v6 objectForKeyedSubscript:@"kTimerTriggerInitialFireDateKey"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"kTimerTriggerInitialFireDateKey"];
     fireDate = v7->_fireDate;
     v7->_fireDate = v8;
 
     v10 = MEMORY[0x1E695DFE8];
-    v11 = [v6 hmf_dataForKey:@"kTimerTriggerTimeZoneDataKey"];
+    v11 = [dictionaryCopy hmf_dataForKey:@"kTimerTriggerTimeZoneDataKey"];
     v12 = [v10 hmf_unarchiveFromData:v11 error:0];
     timeZone = v7->_timeZone;
     v7->_timeZone = v12;
 
     v14 = MEMORY[0x1E695DF10];
-    v15 = [v6 hmf_dataForKey:@"kTimerTriggerRecurrenceDataKey"];
+    v15 = [dictionaryCopy hmf_dataForKey:@"kTimerTriggerRecurrenceDataKey"];
     v16 = [v14 hmf_unarchiveFromData:v15 error:0];
     recurrence = v7->_recurrence;
     v7->_recurrence = v16;
 
-    v18 = [v6 hmf_stringForKey:@"kTimerTriggerSignificantEventKey"];
+    v18 = [dictionaryCopy hmf_stringForKey:@"kTimerTriggerSignificantEventKey"];
     significantEvent = v7->_significantEvent;
     v7->_significantEvent = v18;
 
     v20 = MEMORY[0x1E695DF10];
-    v21 = [v6 hmf_dataForKey:@"kTimerTriggerSignificantEventOffsetKey"];
+    v21 = [dictionaryCopy hmf_dataForKey:@"kTimerTriggerSignificantEventOffsetKey"];
     v22 = [v20 hmf_unarchiveFromData:v21 error:0];
     significantEventOffset = v7->_significantEventOffset;
     v7->_significantEventOffset = v22;
 
-    v24 = [v6 hmf_numberForKey:@"kTimerTriggerRecurrencesKey"];
+    v24 = [dictionaryCopy hmf_numberForKey:@"kTimerTriggerRecurrencesKey"];
     v25 = v24;
     if (v24)
     {
@@ -1576,7 +1576,7 @@ LABEL_13:
 
     else
     {
-      [v6 arrayOfDateComponentsFromDataForKey:@"kTimerTriggerRecurrencesKey"];
+      [dictionaryCopy arrayOfDateComponentsFromDataForKey:@"kTimerTriggerRecurrencesKey"];
     }
     v26 = ;
     recurrences = v7->_recurrences;
@@ -1586,13 +1586,13 @@ LABEL_13:
   return v7;
 }
 
-- (HMTimerTrigger)initWithName:(id)a3 significantEvent:(id)a4 significantEventOffset:(id)a5 recurrences:(id)a6
+- (HMTimerTrigger)initWithName:(id)name significantEvent:(id)event significantEventOffset:(id)offset recurrences:(id)recurrences
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v11)
+  nameCopy = name;
+  eventCopy = event;
+  offsetCopy = offset;
+  recurrencesCopy = recurrences;
+  if (!eventCopy)
   {
     v23 = MEMORY[0x1E695DF30];
     v24 = *MEMORY[0x1E695D940];
@@ -1603,17 +1603,17 @@ LABEL_13:
     objc_exception_throw(v26);
   }
 
-  v14 = v13;
+  v14 = recurrencesCopy;
   v28.receiver = self;
   v28.super_class = HMTimerTrigger;
-  v15 = [(HMTrigger *)&v28 initWithName:v10 configuredName:v10];
+  v15 = [(HMTrigger *)&v28 initWithName:nameCopy configuredName:nameCopy];
   if (v15)
   {
-    v16 = [v11 copy];
+    v16 = [eventCopy copy];
     significantEvent = v15->_significantEvent;
     v15->_significantEvent = v16;
 
-    v18 = [v12 copy];
+    v18 = [offsetCopy copy];
     significantEventOffset = v15->_significantEventOffset;
     v15->_significantEventOffset = v18;
 
@@ -1625,13 +1625,13 @@ LABEL_13:
   return v15;
 }
 
-- (HMTimerTrigger)initWithName:(id)a3 fireDate:(id)a4 timeZone:(id)a5 recurrences:(id)a6
+- (HMTimerTrigger)initWithName:(id)name fireDate:(id)date timeZone:(id)zone recurrences:(id)recurrences
 {
-  v10 = a6;
-  v11 = [(HMTimerTrigger *)self initWithName:a3 fireDate:a4 timeZone:a5 recurrence:0];
+  recurrencesCopy = recurrences;
+  v11 = [(HMTimerTrigger *)self initWithName:name fireDate:date timeZone:zone recurrence:0];
   if (v11)
   {
-    v12 = [v10 copy];
+    v12 = [recurrencesCopy copy];
     recurrences = v11->_recurrences;
     v11->_recurrences = v12;
   }
@@ -1639,13 +1639,13 @@ LABEL_13:
   return v11;
 }
 
-- (HMTimerTrigger)initWithName:(id)a3 fireDate:(id)a4 timeZone:(id)a5 recurrence:(id)a6
+- (HMTimerTrigger)initWithName:(id)name fireDate:(id)date timeZone:(id)zone recurrence:(id)recurrence
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v11)
+  nameCopy = name;
+  dateCopy = date;
+  zoneCopy = zone;
+  recurrenceCopy = recurrence;
+  if (!dateCopy)
   {
     v23 = MEMORY[0x1E695DF30];
     v24 = *MEMORY[0x1E695D940];
@@ -1656,17 +1656,17 @@ LABEL_13:
     objc_exception_throw(v26);
   }
 
-  v14 = v13;
+  v14 = recurrenceCopy;
   v28.receiver = self;
   v28.super_class = HMTimerTrigger;
-  v15 = [(HMTrigger *)&v28 initWithName:v10 configuredName:v10];
+  v15 = [(HMTrigger *)&v28 initWithName:nameCopy configuredName:nameCopy];
   if (v15)
   {
-    v16 = [v11 copy];
+    v16 = [dateCopy copy];
     fireDate = v15->_fireDate;
     v15->_fireDate = v16;
 
-    v18 = [v12 copy];
+    v18 = [zoneCopy copy];
     timeZone = v15->_timeZone;
     v15->_timeZone = v18;
 

@@ -1,33 +1,33 @@
 @interface FCSportsEventController
-- (FCSportsEventController)initWithContentDatabase:(id)a3 context:(id)a4 sportsEventRecordSource:(id)a5 tagController:(id)a6;
-- (id)_cachedSportsEventsForSportsEventID:(id)a3 fastCacheOnly:(BOOL)a4;
-- (id)_fetchOperationForSportsEventsWithIDs:(id)a3;
+- (FCSportsEventController)initWithContentDatabase:(id)database context:(id)context sportsEventRecordSource:(id)source tagController:(id)controller;
+- (id)_cachedSportsEventsForSportsEventID:(id)d fastCacheOnly:(BOOL)only;
+- (id)_fetchOperationForSportsEventsWithIDs:(id)ds;
 - (id)jsonEncodableObject;
-- (void)_fetchSportsEventForSportsEventID:(id)a3 cachePolicy:(id)a4 qualityOfService:(int64_t)a5 completionHandler:(id)a6;
-- (void)_fetchSportsEventsForSportsEventIDs:(id)a3 cachePolicy:(id)a4 qualityOfService:(int64_t)a5 completionHandler:(id)a6;
-- (void)_refreshSportsEventsBasedOnAgeForSportsEventIDs:(id)a3;
-- (void)_saveSportsEventsToCache:(id)a3;
+- (void)_fetchSportsEventForSportsEventID:(id)d cachePolicy:(id)policy qualityOfService:(int64_t)service completionHandler:(id)handler;
+- (void)_fetchSportsEventsForSportsEventIDs:(id)ds cachePolicy:(id)policy qualityOfService:(int64_t)service completionHandler:(id)handler;
+- (void)_refreshSportsEventsBasedOnAgeForSportsEventIDs:(id)ds;
+- (void)_saveSportsEventsToCache:(id)cache;
 @end
 
 @implementation FCSportsEventController
 
-- (FCSportsEventController)initWithContentDatabase:(id)a3 context:(id)a4 sportsEventRecordSource:(id)a5 tagController:(id)a6
+- (FCSportsEventController)initWithContentDatabase:(id)database context:(id)context sportsEventRecordSource:(id)source tagController:(id)controller
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  contextCopy = context;
+  sourceCopy = source;
+  controllerCopy = controller;
   v20.receiver = self;
   v20.super_class = FCSportsEventController;
   v13 = [(FCSportsEventController *)&v20 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_context, a4);
-    objc_storeStrong(&v14->_sportsEventRecordSource, a5);
-    objc_storeStrong(&v14->_tagController, a6);
-    v15 = [v10 news_core_ConfigurationManager];
+    objc_storeStrong(&v13->_context, context);
+    objc_storeStrong(&v14->_sportsEventRecordSource, source);
+    objc_storeStrong(&v14->_tagController, controller);
+    news_core_ConfigurationManager = [contextCopy news_core_ConfigurationManager];
     appConfigurationManager = v14->_appConfigurationManager;
-    v14->_appConfigurationManager = v15;
+    v14->_appConfigurationManager = news_core_ConfigurationManager;
 
     v17 = objc_alloc_init(MEMORY[0x1E695DEE0]);
     fastCache = v14->_fastCache;
@@ -37,17 +37,17 @@
   return v14;
 }
 
-- (void)_refreshSportsEventsBasedOnAgeForSportsEventIDs:(id)a3
+- (void)_refreshSportsEventsBasedOnAgeForSportsEventIDs:(id)ds
 {
-  v18 = self;
+  selfCopy = self;
   v25 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dsCopy = ds;
   v4 = [MEMORY[0x1E695E0F0] mutableCopy];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  obj = v3;
+  obj = dsCopy;
   v5 = [obj countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v5)
   {
@@ -63,15 +63,15 @@
         }
 
         v9 = *(*(&v20 + 1) + 8 * i);
-        v10 = [v9 loadDate];
-        v11 = [v10 dateByAddingTimeInterval:3600.0];
-        v12 = [MEMORY[0x1E695DF00] date];
-        v13 = [v11 fc_isEarlierThan:v12];
+        loadDate = [v9 loadDate];
+        v11 = [loadDate dateByAddingTimeInterval:3600.0];
+        date = [MEMORY[0x1E695DF00] date];
+        v13 = [v11 fc_isEarlierThan:date];
 
         if (v13)
         {
-          v14 = [v9 identifier];
-          [v4 addObject:v14];
+          identifier = [v9 identifier];
+          [v4 addObject:identifier];
         }
       }
 
@@ -83,7 +83,7 @@
 
   if ([v4 count])
   {
-    v15 = [(FCSportsEventController *)v18 _fetchOperationForSportsEventsWithIDs:v4];
+    v15 = [(FCSportsEventController *)selfCopy _fetchOperationForSportsEventsWithIDs:v4];
     [v15 setQualityOfService:17];
     [v15 setRelativePriority:-1];
     v16 = +[FCCachePolicy ignoreCacheCachePolicy];
@@ -95,13 +95,13 @@
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_fetchSportsEventForSportsEventID:(id)a3 cachePolicy:(id)a4 qualityOfService:(int64_t)a5 completionHandler:(id)a6
+- (void)_fetchSportsEventForSportsEventID:(id)d cachePolicy:(id)policy qualityOfService:(int64_t)service completionHandler:(id)handler
 {
   v27 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (!v10)
+  dCopy = d;
+  policyCopy = policy;
+  handlerCopy = handler;
+  if (!dCopy)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -116,29 +116,29 @@
       v26 = v15;
       _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-      if (!v12)
+      if (!handlerCopy)
       {
         goto LABEL_6;
       }
     }
 
-    else if (!v12)
+    else if (!handlerCopy)
     {
       goto LABEL_6;
     }
 
-    (*(v12 + 2))(v12, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
     goto LABEL_6;
   }
 
-  v18 = v10;
+  v18 = dCopy;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v18 count:1];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __108__FCSportsEventController__fetchSportsEventForSportsEventID_cachePolicy_qualityOfService_completionHandler___block_invoke;
   v16[3] = &unk_1E7C379A0;
-  v17 = v12;
-  [(FCSportsEventController *)self _fetchSportsEventsForSportsEventIDs:v13 cachePolicy:v11 qualityOfService:a5 completionHandler:v16];
+  v17 = handlerCopy;
+  [(FCSportsEventController *)self _fetchSportsEventsForSportsEventIDs:v13 cachePolicy:policyCopy qualityOfService:service completionHandler:v16];
 
 LABEL_6:
   v14 = *MEMORY[0x1E69E9840];
@@ -156,13 +156,13 @@ void __108__FCSportsEventController__fetchSportsEventForSportsEventID_cachePolic
   }
 }
 
-- (void)_fetchSportsEventsForSportsEventIDs:(id)a3 cachePolicy:(id)a4 qualityOfService:(int64_t)a5 completionHandler:(id)a6
+- (void)_fetchSportsEventsForSportsEventIDs:(id)ds cachePolicy:(id)policy qualityOfService:(int64_t)service completionHandler:(id)handler
 {
   v53 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (!v10 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  dsCopy = ds;
+  policyCopy = policy;
+  handlerCopy = handler;
+  if (!dsCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v26 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "sportsEventIDs != nil"];
     *buf = 136315906;
@@ -175,35 +175,35 @@ void __108__FCSportsEventController__fetchSportsEventForSportsEventID_cachePolic
     v52 = v26;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (v12)
+    if (handlerCopy)
     {
 LABEL_4:
-      if (v11)
+      if (policyCopy)
       {
         v39[0] = MEMORY[0x1E69E9820];
         v39[1] = 3221225472;
         v39[2] = __110__FCSportsEventController__fetchSportsEventsForSportsEventIDs_cachePolicy_qualityOfService_completionHandler___block_invoke_2;
         v39[3] = &unk_1E7C44FB0;
         v39[4] = self;
-        v40 = v10;
-        v43 = a5;
-        v41 = v11;
-        v42 = v12;
+        v40 = dsCopy;
+        serviceCopy = service;
+        v41 = policyCopy;
+        v42 = handlerCopy;
         __110__FCSportsEventController__fetchSportsEventsForSportsEventIDs_cachePolicy_qualityOfService_completionHandler___block_invoke_2(v39);
       }
 
       else
       {
-        v29 = a5;
-        v30 = v12;
-        v13 = [MEMORY[0x1E695DF90] dictionary];
-        v14 = [MEMORY[0x1E695DF70] array];
+        serviceCopy2 = service;
+        v30 = handlerCopy;
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
+        array = [MEMORY[0x1E695DF70] array];
         v35 = 0u;
         v36 = 0u;
         v37 = 0u;
         v38 = 0u;
-        v31 = v10;
-        v15 = v10;
+        v31 = dsCopy;
+        v15 = dsCopy;
         v16 = [v15 countByEnumeratingWithState:&v35 objects:v44 count:16];
         if (v16)
         {
@@ -219,17 +219,17 @@ LABEL_4:
               }
 
               v20 = *(*(&v35 + 1) + 8 * i);
-              v21 = [(FCSportsEventController *)self fastCache];
-              v22 = [v21 objectForKey:v20];
+              fastCache = [(FCSportsEventController *)self fastCache];
+              v22 = [fastCache objectForKey:v20];
 
               if (v22)
               {
-                [v13 setObject:v22 forKey:v20];
+                [dictionary setObject:v22 forKey:v20];
               }
 
               else
               {
-                [v14 addObject:v20];
+                [array addObject:v20];
               }
             }
 
@@ -239,49 +239,49 @@ LABEL_4:
           while (v17);
         }
 
-        if ([v14 count])
+        if ([array count])
         {
-          v23 = [(FCSportsEventController *)self _fetchOperationForSportsEventsWithIDs:v14];
-          [v23 setQualityOfService:v29];
-          v12 = v30;
-          if (v29 == 9)
+          v23 = [(FCSportsEventController *)self _fetchOperationForSportsEventsWithIDs:array];
+          [v23 setQualityOfService:serviceCopy2];
+          handlerCopy = v30;
+          if (serviceCopy2 == 9)
           {
             v24 = -1;
           }
 
           else
           {
-            v24 = v29 == 33 || v29 == 25;
+            v24 = serviceCopy2 == 33 || serviceCopy2 == 25;
           }
 
-          v10 = v31;
+          dsCopy = v31;
           [v23 setRelativePriority:v24];
           v32[0] = MEMORY[0x1E69E9820];
           v32[1] = 3221225472;
           v32[2] = __110__FCSportsEventController__fetchSportsEventsForSportsEventIDs_cachePolicy_qualityOfService_completionHandler___block_invoke_5;
           v32[3] = &unk_1E7C3C498;
           v34 = v30;
-          v33 = v13;
+          v33 = dictionary;
           [v23 setFetchCompletionHandler:v32];
-          v25 = [MEMORY[0x1E696ADC8] fc_sharedConcurrentQueue];
-          [v25 addOperation:v23];
+          fc_sharedConcurrentQueue = [MEMORY[0x1E696ADC8] fc_sharedConcurrentQueue];
+          [fc_sharedConcurrentQueue addOperation:v23];
         }
 
         else
         {
-          v12 = v30;
-          (v30)[2](v30, v13, 0);
-          v10 = v31;
+          handlerCopy = v30;
+          (v30)[2](v30, dictionary, 0);
+          dsCopy = v31;
         }
 
-        v11 = 0;
+        policyCopy = 0;
       }
 
       goto LABEL_29;
     }
   }
 
-  else if (v12)
+  else if (handlerCopy)
   {
     goto LABEL_4;
   }
@@ -374,11 +374,11 @@ void __110__FCSportsEventController__fetchSportsEventsForSportsEventIDs_cachePol
   }
 }
 
-- (id)_cachedSportsEventsForSportsEventID:(id)a3 fastCacheOnly:(BOOL)a4
+- (id)_cachedSportsEventsForSportsEventID:(id)d fastCacheOnly:(BOOL)only
 {
   v38 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  dCopy = d;
+  if (!dCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v21 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "sportsEventIDs != nil"];
     *buf = 136315906;
@@ -392,13 +392,13 @@ void __110__FCSportsEventController__fetchSportsEventsForSportsEventIDs_cachePol
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  v6 = [MEMORY[0x1E695DF90] dictionary];
-  v7 = [MEMORY[0x1E695DF70] array];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  array = [MEMORY[0x1E695DF70] array];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v8 = v5;
+  v8 = dCopy;
   v9 = [v8 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v9)
   {
@@ -414,17 +414,17 @@ void __110__FCSportsEventController__fetchSportsEventsForSportsEventIDs_cachePol
         }
 
         v13 = *(*(&v25 + 1) + 8 * i);
-        v14 = [(FCSportsEventController *)self fastCache];
-        v15 = [v14 objectForKey:v13];
+        fastCache = [(FCSportsEventController *)self fastCache];
+        v15 = [fastCache objectForKey:v13];
 
         if (v15)
         {
-          [v6 setObject:v15 forKey:v13];
+          [dictionary setObject:v15 forKey:v13];
         }
 
         else
         {
-          [v7 addObject:v13];
+          [array addObject:v13];
         }
       }
 
@@ -434,26 +434,26 @@ void __110__FCSportsEventController__fetchSportsEventsForSportsEventIDs_cachePol
     while (v10);
   }
 
-  if ([v7 count] && !a4)
+  if ([array count] && !only)
   {
-    v16 = [(FCSportsEventController *)self sportsEventRecordSource];
-    v17 = [v16 cachedRecordsWithIDs:v7];
+    sportsEventRecordSource = [(FCSportsEventController *)self sportsEventRecordSource];
+    v17 = [sportsEventRecordSource cachedRecordsWithIDs:array];
 
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __77__FCSportsEventController__cachedSportsEventsForSportsEventID_fastCacheOnly___block_invoke;
     v23[3] = &unk_1E7C44FF8;
     v23[4] = self;
-    v24 = v6;
+    v24 = dictionary;
     [v17 enumerateRecordsAndInterestTokensWithBlock:v23];
   }
 
-  v18 = [v6 allValues];
-  [(FCSportsEventController *)self _refreshSportsEventsBasedOnAgeForSportsEventIDs:v18];
+  allValues = [dictionary allValues];
+  [(FCSportsEventController *)self _refreshSportsEventsBasedOnAgeForSportsEventIDs:allValues];
 
   v19 = *MEMORY[0x1E69E9840];
 
-  return v6;
+  return dictionary;
 }
 
 void __77__FCSportsEventController__cachedSportsEventsForSportsEventID_fastCacheOnly___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -617,17 +617,17 @@ void __77__FCSportsEventController__cachedSportsEventsForSportsEventID_fastCache
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_saveSportsEventsToCache:(id)a3
+- (void)_saveSportsEventsToCache:(id)cache
 {
-  v4 = a3;
-  v5 = [(FCSportsEventController *)self fastCache];
+  cacheCopy = cache;
+  fastCache = [(FCSportsEventController *)self fastCache];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __52__FCSportsEventController__saveSportsEventsToCache___block_invoke;
   v7[3] = &unk_1E7C45020;
-  v8 = v5;
-  v6 = v5;
-  [v4 enumerateObjectsUsingBlock:v7];
+  v8 = fastCache;
+  v6 = fastCache;
+  [cacheCopy enumerateObjectsUsingBlock:v7];
 }
 
 void __52__FCSportsEventController__saveSportsEventsToCache___block_invoke(uint64_t a1, void *a2)
@@ -640,19 +640,19 @@ void __52__FCSportsEventController__saveSportsEventsToCache___block_invoke(uint6
 
 - (id)jsonEncodableObject
 {
-  v2 = [(FCSportsEventController *)self sportsEventRecordSource];
-  v3 = [v2 jsonEncodableObject];
+  sportsEventRecordSource = [(FCSportsEventController *)self sportsEventRecordSource];
+  jsonEncodableObject = [sportsEventRecordSource jsonEncodableObject];
 
-  return v3;
+  return jsonEncodableObject;
 }
 
-- (id)_fetchOperationForSportsEventsWithIDs:(id)a3
+- (id)_fetchOperationForSportsEventsWithIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v5 = [FCSportsEventsFetchOperation alloc];
-  v6 = [(FCSportsEventController *)self context];
-  v7 = [(FCSportsEventController *)self tagController];
-  v8 = [(FCSportsEventsFetchOperation *)v5 initWithContext:v6 tagController:v7 sportsEventIDs:v4 delegate:self];
+  context = [(FCSportsEventController *)self context];
+  tagController = [(FCSportsEventController *)self tagController];
+  v8 = [(FCSportsEventsFetchOperation *)v5 initWithContext:context tagController:tagController sportsEventIDs:dsCopy delegate:self];
 
   return v8;
 }

@@ -1,27 +1,27 @@
 @interface BMStoreBookmark
-- (BMStoreBookmark)initWithCoder:(id)a3;
-- (BMStoreBookmark)initWithProto:(id)a3;
-- (BMStoreBookmark)initWithProtoData:(id)a3;
-- (BMStoreBookmark)initWithStream:(id)a3 segment:(id)a4 iterationStartTime:(double)a5 offset:(unint64_t)a6;
-- (BOOL)checkAndReportDecodingFailureIfNeededFordouble:(double)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7;
-- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7;
-- (BOOL)isEqual:(id)a3;
+- (BMStoreBookmark)initWithCoder:(id)coder;
+- (BMStoreBookmark)initWithProto:(id)proto;
+- (BMStoreBookmark)initWithProtoData:(id)data;
+- (BMStoreBookmark)initWithStream:(id)stream segment:(id)segment iterationStartTime:(double)time offset:(unint64_t)offset;
+- (BOOL)checkAndReportDecodingFailureIfNeededFordouble:(double)fordouble key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code;
+- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)forid key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code;
+- (BOOL)isEqual:(id)equal;
 - (id)_descriptionDict;
 - (id)description;
 - (id)encodeAsProto;
 - (id)proto;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BMStoreBookmark
 
 - (id)encodeAsProto
 {
-  v2 = [(BMStoreBookmark *)self proto];
-  v3 = [v2 data];
+  proto = [(BMStoreBookmark *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
 - (id)proto
@@ -35,10 +35,10 @@
   return v3;
 }
 
-- (BMStoreBookmark)initWithStream:(id)a3 segment:(id)a4 iterationStartTime:(double)a5 offset:(unint64_t)a6
+- (BMStoreBookmark)initWithStream:(id)stream segment:(id)segment iterationStartTime:(double)time offset:(unint64_t)offset
 {
-  v10 = a3;
-  v11 = a4;
+  streamCopy = stream;
+  segmentCopy = segment;
   v19.receiver = self;
   v19.super_class = BMStoreBookmark;
   v12 = [(BMStoreBookmark *)&v19 init];
@@ -47,15 +47,15 @@
     goto LABEL_12;
   }
 
-  if (!v10)
+  if (!streamCopy)
   {
     [BMStoreBookmark initWithStream:segment:iterationStartTime:offset:];
   }
 
-  if (![v10 length])
+  if (![streamCopy length])
   {
     [BMStoreBookmark initWithStream:segment:iterationStartTime:offset:];
-    if (v11)
+    if (segmentCopy)
     {
       goto LABEL_6;
     }
@@ -65,13 +65,13 @@ LABEL_14:
     goto LABEL_6;
   }
 
-  if (!v11)
+  if (!segmentCopy)
   {
     goto LABEL_14;
   }
 
 LABEL_6:
-  if (![v11 length])
+  if (![segmentCopy length])
   {
     [BMStoreBookmark initWithStream:segment:iterationStartTime:offset:];
   }
@@ -85,17 +85,17 @@ LABEL_6:
 
   else
   {
-    v15 = v10;
+    v15 = streamCopy;
   }
 
   objc_storeStrong(&v12->_streamId, v15);
 
-  v16 = [v11 copy];
+  v16 = [segmentCopy copy];
   segmentName = v12->_segmentName;
   v12->_segmentName = v16;
 
-  v12->_iterationStartTime = a5;
-  v12->_offset = a6;
+  v12->_iterationStartTime = time;
+  v12->_offset = offset;
 LABEL_12:
 
   return v12;
@@ -142,17 +142,17 @@ LABEL_12:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(BMStoreBookmark *)self _descriptionDict];
-  v7 = [v6 description];
+  _descriptionDict = [(BMStoreBookmark *)self _descriptionDict];
+  v7 = [_descriptionDict description];
   v8 = [v3 stringWithFormat:@"%@ - %@", v5, v7];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -162,17 +162,17 @@ LABEL_12:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(BMStoreBookmark *)v5 streamId];
-      v7 = [(BMStoreBookmark *)self streamId];
-      if ([v6 isEqual:v7])
+      v5 = equalCopy;
+      streamId = [(BMStoreBookmark *)v5 streamId];
+      streamId2 = [(BMStoreBookmark *)self streamId];
+      if ([streamId isEqual:streamId2])
       {
-        v8 = [(BMStoreBookmark *)v5 segmentName];
-        v9 = [(BMStoreBookmark *)self segmentName];
-        if ([v8 isEqual:v9])
+        segmentName = [(BMStoreBookmark *)v5 segmentName];
+        segmentName2 = [(BMStoreBookmark *)self segmentName];
+        if ([segmentName isEqual:segmentName2])
         {
-          v10 = [(BMStoreBookmark *)v5 offset];
-          v11 = v10 == [(BMStoreBookmark *)self offset];
+          offset = [(BMStoreBookmark *)v5 offset];
+          v11 = offset == [(BMStoreBookmark *)self offset];
         }
 
         else
@@ -198,86 +198,86 @@ LABEL_12:
 
 - (unint64_t)hash
 {
-  v3 = [(BMStoreBookmark *)self streamId];
-  v4 = [v3 hash];
-  v5 = [(BMStoreBookmark *)self segmentName];
-  v6 = [v5 hash] ^ v4;
+  streamId = [(BMStoreBookmark *)self streamId];
+  v4 = [streamId hash];
+  segmentName = [(BMStoreBookmark *)self segmentName];
+  v6 = [segmentName hash] ^ v4;
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:{-[BMStoreBookmark offset](self, "offset")}];
   v8 = [v7 hash];
 
   return v6 ^ v8;
 }
 
-- (BMStoreBookmark)initWithProtoData:(id)a3
+- (BMStoreBookmark)initWithProtoData:(id)data
 {
-  v4 = a3;
-  v5 = [[BMPBStoreBookmark alloc] initWithData:v4];
+  dataCopy = data;
+  v5 = [[BMPBStoreBookmark alloc] initWithData:dataCopy];
 
   if (v5)
   {
     self = [(BMStoreBookmark *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (BMStoreBookmark)initWithProto:(id)a3
+- (BMStoreBookmark)initWithProto:(id)proto
 {
-  v4 = a3;
+  protoCopy = proto;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 streamId];
-    v7 = [v5 segmentName];
+    v5 = protoCopy;
+    streamId = [v5 streamId];
+    segmentName = [v5 segmentName];
     [v5 iterationStartTime];
     v9 = v8;
-    v10 = [v5 offset];
+    offset = [v5 offset];
 
-    self = [(BMStoreBookmark *)self initWithStream:v6 segment:v7 iterationStartTime:v10 offset:v9];
-    v11 = self;
+    self = [(BMStoreBookmark *)self initWithStream:streamId segment:segmentName iterationStartTime:offset offset:v9];
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7
+- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)forid key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!a3)
+  keyCopy = key;
+  coderCopy = coder;
+  domainCopy = domain;
+  if (!forid)
   {
-    v15 = [v12 error];
+    error = [coderCopy error];
 
-    if (v15)
+    if (error)
     {
       v14 = 1;
       goto LABEL_7;
     }
 
-    if (([v12 containsValueForKey:v11] & 1) == 0)
+    if (([coderCopy containsValueForKey:keyCopy] & 1) == 0)
     {
       v16 = MEMORY[0x1E696ABC0];
-      v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to decode key %@", v11, *MEMORY[0x1E696A578]];
+      v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to decode key %@", keyCopy, *MEMORY[0x1E696A578]];
       v23[0] = v17;
       v14 = 1;
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
-      v19 = [v16 errorWithDomain:v13 code:a7 userInfo:v18];
+      v19 = [v16 errorWithDomain:domainCopy code:code userInfo:v18];
 
-      [v12 failWithError:v19];
+      [coderCopy failWithError:v19];
       goto LABEL_7;
     }
   }
@@ -289,32 +289,32 @@ LABEL_7:
   return v14;
 }
 
-- (BOOL)checkAndReportDecodingFailureIfNeededFordouble:(double)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7
+- (BOOL)checkAndReportDecodingFailureIfNeededFordouble:(double)fordouble key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (a3 == 0.0)
+  keyCopy = key;
+  coderCopy = coder;
+  domainCopy = domain;
+  if (fordouble == 0.0)
   {
-    v15 = [v12 error];
+    error = [coderCopy error];
 
-    if (v15)
+    if (error)
     {
       v14 = 1;
       goto LABEL_7;
     }
 
-    if (([v12 containsValueForKey:v11] & 1) == 0)
+    if (([coderCopy containsValueForKey:keyCopy] & 1) == 0)
     {
       v16 = MEMORY[0x1E696ABC0];
-      v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to decode key %@", v11, *MEMORY[0x1E696A578]];
+      v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to decode key %@", keyCopy, *MEMORY[0x1E696A578]];
       v23[0] = v17;
       v14 = 1;
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
-      v19 = [v16 errorWithDomain:v13 code:a7 userInfo:v18];
+      v19 = [v16 errorWithDomain:domainCopy code:code userInfo:v18];
 
-      [v12 failWithError:v19];
+      [coderCopy failWithError:v19];
       goto LABEL_7;
     }
   }
@@ -326,59 +326,59 @@ LABEL_7:
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(BMStoreBookmark *)self encodeAsProto];
-  [v4 encodeObject:v5 forKey:@"data"];
+  coderCopy = coder;
+  encodeAsProto = [(BMStoreBookmark *)self encodeAsProto];
+  [coderCopy encodeObject:encodeAsProto forKey:@"data"];
 }
 
-- (BMStoreBookmark)initWithCoder:(id)a3
+- (BMStoreBookmark)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"data"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"data"];
   if (v7)
   {
     self = [(BMStoreBookmark *)self initWithProtoData:v7];
-    v8 = self;
+    selfCopy2 = self;
   }
 
   else
   {
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"streamId"];
-    if ([(BMStoreBookmark *)self checkAndReportDecodingFailureIfNeededForid:v9 key:@"streamId" coder:v4 errorDomain:v6 errorCode:-1])
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"streamId"];
+    if ([(BMStoreBookmark *)self checkAndReportDecodingFailureIfNeededForid:v9 key:@"streamId" coder:coderCopy errorDomain:v6 errorCode:-1])
     {
-      v8 = 0;
+      selfCopy2 = 0;
     }
 
     else
     {
-      v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"segmentName"];
-      if (-[BMStoreBookmark checkAndReportDecodingFailureIfNeededForid:key:coder:errorDomain:errorCode:](self, "checkAndReportDecodingFailureIfNeededForid:key:coder:errorDomain:errorCode:", v10, @"segmentName", v4, v6, -1) || ([v4 decodeDoubleForKey:@"iterationStartTime"], v12 = v11, -[BMStoreBookmark checkAndReportDecodingFailureIfNeededFordouble:key:coder:errorDomain:errorCode:](self, "checkAndReportDecodingFailureIfNeededFordouble:key:coder:errorDomain:errorCode:", @"iterationStartTime", v4, v6, -1)))
+      v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"segmentName"];
+      if (-[BMStoreBookmark checkAndReportDecodingFailureIfNeededForid:key:coder:errorDomain:errorCode:](self, "checkAndReportDecodingFailureIfNeededForid:key:coder:errorDomain:errorCode:", v10, @"segmentName", coderCopy, v6, -1) || ([coderCopy decodeDoubleForKey:@"iterationStartTime"], v12 = v11, -[BMStoreBookmark checkAndReportDecodingFailureIfNeededFordouble:key:coder:errorDomain:errorCode:](self, "checkAndReportDecodingFailureIfNeededFordouble:key:coder:errorDomain:errorCode:", @"iterationStartTime", coderCopy, v6, -1)))
       {
-        v8 = 0;
+        selfCopy2 = 0;
       }
 
       else
       {
-        v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"offset"];
-        if ([(BMStoreBookmark *)self checkAndReportDecodingFailureIfNeededForid:v13 key:@"offset" coder:v4 errorDomain:v6 errorCode:-1])
+        v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"offset"];
+        if ([(BMStoreBookmark *)self checkAndReportDecodingFailureIfNeededForid:v13 key:@"offset" coder:coderCopy errorDomain:v6 errorCode:-1])
         {
-          v8 = 0;
+          selfCopy2 = 0;
         }
 
         else
         {
           self = -[BMStoreBookmark initWithStream:segment:iterationStartTime:offset:](self, "initWithStream:segment:iterationStartTime:offset:", v9, v10, [v13 unsignedIntValue], v12);
-          v8 = self;
+          selfCopy2 = self;
         }
       }
     }
   }
 
-  return v8;
+  return selfCopy2;
 }
 
 - (void)initWithStream:segment:iterationStartTime:offset:.cold.1()

@@ -1,27 +1,27 @@
 @interface CLSActivityReport
-- (CLSActivityReport)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CLSActivityReport)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int64_t)compare:(id)a3;
-- (void)add:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)scalarMultiply:(double)a3;
+- (int64_t)compare:(id)compare;
+- (void)add:(id)add;
+- (void)encodeWithCoder:(id)coder;
+- (void)scalarMultiply:(double)multiply;
 @end
 
 @implementation CLSActivityReport
 
-- (CLSActivityReport)initWithCoder:(id)a3
+- (CLSActivityReport)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v56.receiver = self;
   v56.super_class = CLSActivityReport;
   v6 = [(CLSActivityReport *)&v56 init];
   if (v6)
   {
-    v6->_contextType = objc_msgSend_decodeIntegerForKey_(v4, v5, @"contextType");
+    v6->_contextType = objc_msgSend_decodeIntegerForKey_(coderCopy, v5, @"contextType");
     v7 = objc_opt_class();
-    v9 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v8, v7, @"contextTitle");
+    v9 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v8, v7, @"contextTitle");
     if (v9)
     {
       v10 = v9;
@@ -35,12 +35,12 @@
     v55 = v10;
     objc_storeStrong(&v6->_contextTitle, v10);
     v11 = objc_opt_class();
-    v13 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v12, v11, @"contextTopic");
+    v13 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v12, v11, @"contextTopic");
     contextTopic = v6->_contextTopic;
     v6->_contextTopic = v13;
 
     v15 = objc_opt_class();
-    v17 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v16, v15, @"contextAppBundleIdentifier");
+    v17 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v16, v15, @"contextAppBundleIdentifier");
     if (v17)
     {
       v18 = v17;
@@ -53,7 +53,7 @@
 
     objc_storeStrong(&v6->_contextAppBundleIdentifier, v18);
     v19 = objc_opt_class();
-    v21 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v20, v19, @"contextID");
+    v21 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v20, v19, @"contextID");
     if (v21)
     {
       v22 = v21;
@@ -66,7 +66,7 @@
 
     objc_storeStrong(&v6->_contextID, v22);
     v23 = objc_opt_class();
-    v25 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v24, v23, @"contextStableObjectID");
+    v25 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v24, v23, @"contextStableObjectID");
     if (v25)
     {
       v26 = v25;
@@ -82,17 +82,17 @@
     v28 = v26;
 
     v29 = objc_opt_class();
-    v31 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v30, v29, @"time");
+    v31 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v30, v29, @"time");
     time = v6->_time;
     v6->_time = v31;
 
     v33 = objc_opt_class();
-    v35 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v34, v33, @"progress");
+    v35 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v34, v33, @"progress");
     progress = v6->_progress;
     v6->_progress = v35;
 
     v37 = objc_opt_class();
-    v39 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v38, v37, @"primaryReportItem");
+    v39 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v38, v37, @"primaryReportItem");
     primaryReportItem = v6->_primaryReportItem;
     v6->_primaryReportItem = v39;
 
@@ -100,13 +100,13 @@
     v42 = objc_opt_class();
     v43 = objc_opt_class();
     v45 = objc_msgSend_setWithObjects_(v41, v44, v42, v43, 0);
-    v47 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v46, v45, @"additionalReportItems");
+    v47 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v46, v45, @"additionalReportItems");
     additionalReportItems = v6->_additionalReportItems;
     v6->_additionalReportItems = v47;
 
-    v6->_handoutAttachmentType = objc_msgSend_decodeInt32ForKey_(v4, v49, @"handoutAttachmentType");
+    v6->_handoutAttachmentType = objc_msgSend_decodeInt32ForKey_(coderCopy, v49, @"handoutAttachmentType");
     v50 = objc_opt_class();
-    v52 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v51, v50, @"handoutAuthorizedObjectID");
+    v52 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v51, v50, @"handoutAuthorizedObjectID");
     handoutAuthorizedObjectID = v6->_handoutAuthorizedObjectID;
     v6->_handoutAuthorizedObjectID = v52;
   }
@@ -114,29 +114,29 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   contextType = self->_contextType;
-  v17 = a3;
-  objc_msgSend_encodeInteger_forKey_(v17, v5, contextType, @"contextType");
-  objc_msgSend_encodeObject_forKey_(v17, v6, self->_contextTitle, @"contextTitle");
-  objc_msgSend_encodeObject_forKey_(v17, v7, self->_contextTopic, @"contextTopic");
-  objc_msgSend_encodeObject_forKey_(v17, v8, self->_contextAppBundleIdentifier, @"contextAppBundleIdentifier");
-  objc_msgSend_encodeObject_forKey_(v17, v9, self->_contextID, @"contextID");
-  objc_msgSend_encodeObject_forKey_(v17, v10, self->_contextStableObjectID, @"contextStableObjectID");
-  objc_msgSend_encodeObject_forKey_(v17, v11, self->_time, @"time");
-  objc_msgSend_encodeObject_forKey_(v17, v12, self->_progress, @"progress");
-  objc_msgSend_encodeObject_forKey_(v17, v13, self->_primaryReportItem, @"primaryReportItem");
-  objc_msgSend_encodeObject_forKey_(v17, v14, self->_additionalReportItems, @"additionalReportItems");
-  objc_msgSend_encodeInteger_forKey_(v17, v15, self->_handoutAttachmentType, @"handoutAttachmentType");
-  objc_msgSend_encodeObject_forKey_(v17, v16, self->_handoutAuthorizedObjectID, @"handoutAuthorizedObjectID");
+  coderCopy = coder;
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v5, contextType, @"contextType");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v6, self->_contextTitle, @"contextTitle");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v7, self->_contextTopic, @"contextTopic");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v8, self->_contextAppBundleIdentifier, @"contextAppBundleIdentifier");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v9, self->_contextID, @"contextID");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v10, self->_contextStableObjectID, @"contextStableObjectID");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v11, self->_time, @"time");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v12, self->_progress, @"progress");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v13, self->_primaryReportItem, @"primaryReportItem");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v14, self->_additionalReportItems, @"additionalReportItems");
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v15, self->_handoutAttachmentType, @"handoutAttachmentType");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v16, self->_handoutAuthorizedObjectID, @"handoutAuthorizedObjectID");
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v54.receiver = self;
   v54.super_class = CLSActivityReport;
-  v4 = [(CLSReportItem *)&v54 copyWithZone:a3];
+  v4 = [(CLSReportItem *)&v54 copyWithZone:zone];
   v7 = objc_msgSend_contextType(self, v5, v6);
   objc_msgSend_setContextType_(v4, v8, v7);
   v11 = objc_msgSend_contextTopic(self, v9, v10);
@@ -174,9 +174,9 @@
   return v4;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = objc_msgSend_convertToItemCompatibleWithItem_copyIfSameType_(a3, a2, self, 0);
+  v4 = objc_msgSend_convertToItemCompatibleWithItem_copyIfSameType_(compare, a2, self, 0);
   primaryReportItem = self->_primaryReportItem;
   v8 = objc_msgSend_primaryReportItem(v4, v6, v7);
   v10 = objc_msgSend_compare_(primaryReportItem, v9, v8);
@@ -184,20 +184,20 @@
   return v10;
 }
 
-- (void)add:(id)a3
+- (void)add:(id)add
 {
   v84 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  addCopy = add;
   v7 = objc_msgSend_time(self, v5, v6);
-  v10 = objc_msgSend_time(v4, v8, v9);
+  v10 = objc_msgSend_time(addCopy, v8, v9);
   objc_msgSend_add_(v7, v11, v10);
 
   v14 = objc_msgSend_progress(self, v12, v13);
-  v17 = objc_msgSend_progress(v4, v15, v16);
+  v17 = objc_msgSend_progress(addCopy, v15, v16);
   objc_msgSend_add_(v14, v18, v17);
 
   v21 = objc_msgSend_primaryReportItem(self, v19, v20);
-  v24 = objc_msgSend_primaryReportItem(v4, v22, v23);
+  v24 = objc_msgSend_primaryReportItem(addCopy, v22, v23);
   objc_msgSend_add_(v21, v25, v24);
 
   v26 = objc_opt_new();
@@ -242,8 +242,8 @@
   v77 = 0u;
   v74 = 0u;
   v75 = 0u;
-  v73 = v4;
-  v47 = objc_msgSend_additionalReportItems(v4, v45, v46);
+  v73 = addCopy;
+  v47 = objc_msgSend_additionalReportItems(addCopy, v45, v46);
   v49 = objc_msgSend_countByEnumeratingWithState_objects_count_(v47, v48, &v74, v82, 16);
   if (v49)
   {
@@ -293,19 +293,19 @@
   v72 = *MEMORY[0x277D85DE8];
 }
 
-- (void)scalarMultiply:(double)a3
+- (void)scalarMultiply:(double)multiply
 {
   v6 = objc_msgSend_time(self, a2, v3);
-  objc_msgSend_scalarMultiply_(v6, v7, v8, a3);
+  objc_msgSend_scalarMultiply_(v6, v7, v8, multiply);
 
   v11 = objc_msgSend_progress(self, v9, v10);
-  objc_msgSend_scalarMultiply_(v11, v12, v13, a3);
+  objc_msgSend_scalarMultiply_(v11, v12, v13, multiply);
 
   v16 = objc_msgSend_primaryReportItem(self, v14, v15);
-  objc_msgSend_scalarMultiply_(v16, v17, v18, a3);
+  objc_msgSend_scalarMultiply_(v16, v17, v18, multiply);
 
   v21 = objc_msgSend_additionalReportItems(self, v19, v20);
-  v24 = objc_msgSend_multiply_withScalar_(CLSReportItem, v22, v21, a3);
+  v24 = objc_msgSend_multiply_withScalar_(CLSReportItem, v22, v21, multiply);
 
   objc_msgSend_setAdditionalReportItems_(self, v23, v24);
 }
@@ -374,44 +374,44 @@
   v91 = *MEMORY[0x277D85DE8];
   v89.receiver = self;
   v89.super_class = CLSActivityReport;
-  v3 = [(CLSReportItem *)&v89 dictionaryRepresentation];
+  dictionaryRepresentation = [(CLSReportItem *)&v89 dictionaryRepresentation];
   v6 = objc_msgSend_contextType(self, v4, v5);
   v7 = DefaultNameFromContextType(v6);
-  objc_msgSend_setObject_forKeyedSubscript_(v3, v8, v7, @"contextType");
+  objc_msgSend_setObject_forKeyedSubscript_(dictionaryRepresentation, v8, v7, @"contextType");
 
   v11 = objc_msgSend_contextTopic(self, v9, v10);
-  objc_msgSend_setObject_forKeyedSubscript_(v3, v12, v11, @"contextTopic");
+  objc_msgSend_setObject_forKeyedSubscript_(dictionaryRepresentation, v12, v11, @"contextTopic");
 
   v15 = objc_msgSend_contextTitle(self, v13, v14);
-  objc_msgSend_setObject_forKeyedSubscript_(v3, v16, v15, @"contextTitle");
+  objc_msgSend_setObject_forKeyedSubscript_(dictionaryRepresentation, v16, v15, @"contextTitle");
 
   v19 = objc_msgSend_contextAppBundleIdentifier(self, v17, v18);
-  objc_msgSend_setObject_forKeyedSubscript_(v3, v20, v19, @"contextAppBundleIdentifier");
+  objc_msgSend_setObject_forKeyedSubscript_(dictionaryRepresentation, v20, v19, @"contextAppBundleIdentifier");
 
   v23 = objc_msgSend_contextID(self, v21, v22);
-  objc_msgSend_setObject_forKeyedSubscript_(v3, v24, v23, @"contextID");
+  objc_msgSend_setObject_forKeyedSubscript_(dictionaryRepresentation, v24, v23, @"contextID");
 
   v27 = objc_msgSend_contextStableObjectID(self, v25, v26);
-  objc_msgSend_setObject_forKeyedSubscript_(v3, v28, v27, @"contextStableObjectID");
+  objc_msgSend_setObject_forKeyedSubscript_(dictionaryRepresentation, v28, v27, @"contextStableObjectID");
 
   v31 = objc_msgSend_time(self, v29, v30);
   v34 = objc_msgSend_dictionaryRepresentation(v31, v32, v33);
-  objc_msgSend_setObject_forKeyedSubscript_(v3, v35, v34, @"time");
+  objc_msgSend_setObject_forKeyedSubscript_(dictionaryRepresentation, v35, v34, @"time");
 
   v38 = objc_msgSend_progress(self, v36, v37);
   v41 = objc_msgSend_dictionaryRepresentation(v38, v39, v40);
-  objc_msgSend_setObject_forKeyedSubscript_(v3, v42, v41, @"progress");
+  objc_msgSend_setObject_forKeyedSubscript_(dictionaryRepresentation, v42, v41, @"progress");
 
   v45 = objc_msgSend_handoutAuthorizedObjectID(self, v43, v44);
-  objc_msgSend_setObject_forKeyedSubscript_(v3, v46, v45, @"handoutAuthorizedObjectID");
+  objc_msgSend_setObject_forKeyedSubscript_(dictionaryRepresentation, v46, v45, @"handoutAuthorizedObjectID");
 
   v49 = objc_msgSend_handoutAttachmentType(self, v47, v48);
   v51 = NSStringFromHandoutAttachmentType(v49, v50);
-  objc_msgSend_setObject_forKeyedSubscript_(v3, v52, v51, @"handoutAttachmentType");
+  objc_msgSend_setObject_forKeyedSubscript_(dictionaryRepresentation, v52, v51, @"handoutAttachmentType");
 
   v55 = objc_msgSend_primaryReportItem(self, v53, v54);
   v58 = objc_msgSend_dictionaryRepresentation(v55, v56, v57);
-  objc_msgSend_setObject_forKeyedSubscript_(v3, v59, v58, @"primaryReportItem");
+  objc_msgSend_setObject_forKeyedSubscript_(dictionaryRepresentation, v59, v58, @"primaryReportItem");
 
   v62 = objc_msgSend_additionalReportItems(self, v60, v61);
   v65 = objc_msgSend_count(v62, v63, v64);
@@ -452,12 +452,12 @@
       while (v72);
     }
 
-    objc_msgSend_setObject_forKeyedSubscript_(v3, v82, v66, @"additionalReportItems");
+    objc_msgSend_setObject_forKeyedSubscript_(dictionaryRepresentation, v82, v66, @"additionalReportItems");
   }
 
   v83 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
 @end

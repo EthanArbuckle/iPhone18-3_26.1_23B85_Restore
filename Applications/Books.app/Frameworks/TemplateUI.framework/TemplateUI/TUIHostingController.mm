@@ -1,59 +1,59 @@
 @interface TUIHostingController
-- (BOOL)_shouldVendViewForIdentifier:(id)a3 inGroup:(id)a4;
-- (BOOL)hasProviderForIdentifier:(id)a3;
-- (BOOL)needsGeometryUpdateWithOldTraitCollection:(id)a3 newTraitCollection:(id)a4;
-- (TUIHostingController)initWithFeedId:(id)a3 delegate:(id)a4 viewController:(id)a5 manager:(id)a6;
+- (BOOL)_shouldVendViewForIdentifier:(id)identifier inGroup:(id)group;
+- (BOOL)hasProviderForIdentifier:(id)identifier;
+- (BOOL)needsGeometryUpdateWithOldTraitCollection:(id)collection newTraitCollection:(id)traitCollection;
+- (TUIHostingController)initWithFeedId:(id)id delegate:(id)delegate viewController:(id)controller manager:(id)manager;
 - (TUIHostingControllerDelegate)delegate;
-- (id)_determineSourceViewFromState:(id)a3 currentView:(id)a4;
-- (id)_groupIdentifierForIdentifier:(id)a3;
-- (id)_reusableViewForRefId:(id)a3 inCurrentView:(id)a4;
+- (id)_determineSourceViewFromState:(id)state currentView:(id)view;
+- (id)_groupIdentifierForIdentifier:(id)identifier;
+- (id)_reusableViewForRefId:(id)id inCurrentView:(id)view;
 - (id)newGeometryMap;
-- (id)viewStateForIdentifier:(id)a3;
-- (unint64_t)_popoverArrowDirectionFromProperties:(id)a3;
-- (void)_configurePopoverLayoutForViewState:(id)a3 superview:(id)a4 shouldPresentViewController:(BOOL)a5;
-- (void)_finishOngoingModalTransitionAnimationsWithCompletion:(id)a3;
+- (id)viewStateForIdentifier:(id)identifier;
+- (unint64_t)_popoverArrowDirectionFromProperties:(id)properties;
+- (void)_configurePopoverLayoutForViewState:(id)state superview:(id)superview shouldPresentViewController:(BOOL)controller;
+- (void)_finishOngoingModalTransitionAnimationsWithCompletion:(id)completion;
 - (void)_notifyGeometryUpdated;
-- (void)_notifyProviderObserversForIdentifier:(id)a3 notifyControllerObservers:(BOOL)a4;
-- (void)_removeProviderForViewState:(id)a3;
-- (void)_updateGeomtry:(id)a3 forIdentifier:(id)a4;
-- (void)addProvider:(id)a3 forIdentifier:(id)a4;
-- (void)addProviderObserver:(id)a3 forIdentifier:(id)a4;
-- (void)didEndDisplayForViewState:(id)a3;
-- (void)endViewUpdatesNotifyDelegate:(BOOL)a3;
-- (void)makeAvailableForReuse:(id)a3;
-- (void)removeProviderForIdentifier:(id)a3;
-- (void)removeProviderObserver:(id)a3 forIdentifier:(id)a4;
+- (void)_notifyProviderObserversForIdentifier:(id)identifier notifyControllerObservers:(BOOL)observers;
+- (void)_removeProviderForViewState:(id)state;
+- (void)_updateGeomtry:(id)geomtry forIdentifier:(id)identifier;
+- (void)addProvider:(id)provider forIdentifier:(id)identifier;
+- (void)addProviderObserver:(id)observer forIdentifier:(id)identifier;
+- (void)didEndDisplayForViewState:(id)state;
+- (void)endViewUpdatesNotifyDelegate:(BOOL)delegate;
+- (void)makeAvailableForReuse:(id)reuse;
+- (void)removeProviderForIdentifier:(id)identifier;
+- (void)removeProviderObserver:(id)observer forIdentifier:(id)identifier;
 - (void)reset;
-- (void)runAppearanceAnimationIfNeededForViewState:(id)a3;
-- (void)runAppearanceTransitionForViewState:(id)a3 barButtonItem:(id)a4;
-- (void)runAppearanceTransitionForViewState:(id)a3 superview:(id)a4;
-- (void)runDisappearanceTransitionForViewState:(id)a3;
-- (void)updateFrameIfNeeded:(BOOL)a3 forViewState:(id)a4 requestedSize:(CGSize)a5 insets:(UIEdgeInsets)a6;
-- (void)updateGeometryForViewState:(id)a3 requestedSize:(CGSize)a4 insets:(UIEdgeInsets)a5;
-- (void)updateHostingMap:(id)a3;
-- (void)updateTraitCollection:(id)a3;
-- (void)updateVisible:(BOOL)a3 forIdentifier:(id)a4;
+- (void)runAppearanceAnimationIfNeededForViewState:(id)state;
+- (void)runAppearanceTransitionForViewState:(id)state barButtonItem:(id)item;
+- (void)runAppearanceTransitionForViewState:(id)state superview:(id)superview;
+- (void)runDisappearanceTransitionForViewState:(id)state;
+- (void)updateFrameIfNeeded:(BOOL)needed forViewState:(id)state requestedSize:(CGSize)size insets:(UIEdgeInsets)insets;
+- (void)updateGeometryForViewState:(id)state requestedSize:(CGSize)size insets:(UIEdgeInsets)insets;
+- (void)updateHostingMap:(id)map;
+- (void)updateTraitCollection:(id)collection;
+- (void)updateVisible:(BOOL)visible forIdentifier:(id)identifier;
 @end
 
 @implementation TUIHostingController
 
-- (TUIHostingController)initWithFeedId:(id)a3 delegate:(id)a4 viewController:(id)a5 manager:(id)a6
+- (TUIHostingController)initWithFeedId:(id)id delegate:(id)delegate viewController:(id)controller manager:(id)manager
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  delegateCopy = delegate;
+  controllerCopy = controller;
+  managerCopy = manager;
   v30.receiver = self;
   v30.super_class = TUIHostingController;
   v13 = [(TUIHostingController *)&v30 init];
   v14 = v13;
   if (v13)
   {
-    v13->_feedId.uniqueIdentifier = a3.var0;
-    objc_storeWeak(&v13->_delegate, v10);
-    v14->_viewController = v11;
-    v15 = [(UIViewController *)v11 traitCollection];
+    v13->_feedId.uniqueIdentifier = id.var0;
+    objc_storeWeak(&v13->_delegate, delegateCopy);
+    v14->_viewController = controllerCopy;
+    traitCollection = [(UIViewController *)controllerCopy traitCollection];
     traitCollection = v14->_traitCollection;
-    v14->_traitCollection = v15;
+    v14->_traitCollection = traitCollection;
 
     v17 = objc_opt_new();
     statesMap = v14->_statesMap;
@@ -79,22 +79,22 @@
     controllerObservers = v14->_controllerObservers;
     v14->_controllerObservers = v27;
 
-    objc_storeStrong(&v14->_manager, a6);
+    objc_storeStrong(&v14->_manager, manager);
     *&v14->_flags = 0;
   }
 
   return v14;
 }
 
-- (void)addProvider:(id)a3 forIdentifier:(id)a4
+- (void)addProvider:(id)provider forIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)self->_statesMap objectForKeyedSubscript:v7];
+  providerCopy = provider;
+  identifierCopy = identifier;
+  v8 = [(NSMutableDictionary *)self->_statesMap objectForKeyedSubscript:identifierCopy];
 
   if (v8)
   {
-    [(TUIHostingController *)self removeProviderForIdentifier:v7];
+    [(TUIHostingController *)self removeProviderForIdentifier:identifierCopy];
   }
 
   v9 = TUIHostingLog();
@@ -104,45 +104,45 @@
     v12 = 134218498;
     v13 = uniqueIdentifier;
     v14 = 2112;
-    v15 = v6;
+    v15 = providerCopy;
     v16 = 2112;
-    v17 = v7;
+    v17 = identifierCopy;
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "[fid:%lu] adding provider=%@ for identifier=%@", &v12, 0x20u);
   }
 
-  v11 = [[_TUIHostedViewState alloc] initWithController:self provider:v6 identifier:v7];
-  [(NSMutableDictionary *)self->_statesMap setObject:v11 forKeyedSubscript:v7];
-  [(TUIHostingController *)self _notifyProviderObserversForIdentifier:v7 notifyControllerObservers:1];
+  v11 = [[_TUIHostedViewState alloc] initWithController:self provider:providerCopy identifier:identifierCopy];
+  [(NSMutableDictionary *)self->_statesMap setObject:v11 forKeyedSubscript:identifierCopy];
+  [(TUIHostingController *)self _notifyProviderObserversForIdentifier:identifierCopy notifyControllerObservers:1];
 }
 
-- (BOOL)hasProviderForIdentifier:(id)a3
+- (BOOL)hasProviderForIdentifier:(id)identifier
 {
-  v3 = [(NSMutableDictionary *)self->_statesMap objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_statesMap objectForKeyedSubscript:identifier];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (void)_removeProviderForViewState:(id)a3
+- (void)_removeProviderForViewState:(id)state
 {
-  v9 = a3;
+  stateCopy = state;
   statesMap = self->_statesMap;
-  v5 = [v9 identifier];
-  v6 = [(NSMutableDictionary *)statesMap objectForKeyedSubscript:v5];
+  identifier = [stateCopy identifier];
+  v6 = [(NSMutableDictionary *)statesMap objectForKeyedSubscript:identifier];
 
-  v7 = v9;
-  if (v6 == v9)
+  v7 = stateCopy;
+  if (v6 == stateCopy)
   {
-    v8 = [v9 identifier];
-    [(TUIHostingController *)self removeProviderForIdentifier:v8];
+    identifier2 = [stateCopy identifier];
+    [(TUIHostingController *)self removeProviderForIdentifier:identifier2];
 
-    v7 = v9;
+    v7 = stateCopy;
   }
 }
 
-- (void)removeProviderForIdentifier:(id)a3
+- (void)removeProviderForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = TUIHostingLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -150,24 +150,24 @@
     *buf = 134218242;
     v20 = uniqueIdentifier;
     v21 = 2112;
-    v22 = v4;
+    v22 = identifierCopy;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "[fid:%lu] remove provider for identifier=%@", buf, 0x16u);
   }
 
-  [(NSMutableDictionary *)self->_statesMap setObject:0 forKeyedSubscript:v4];
-  [(TUIHostingController *)self _updateGeomtry:0 forIdentifier:v4];
-  [(TUIHostingController *)self _notifyProviderObserversForIdentifier:v4 notifyControllerObservers:1];
-  v7 = [(TUIHostingMap *)self->_hostingMap objectForKeyedSubscript:v4];
-  v8 = [v7 groupIdentifier];
+  [(NSMutableDictionary *)self->_statesMap setObject:0 forKeyedSubscript:identifierCopy];
+  [(TUIHostingController *)self _updateGeomtry:0 forIdentifier:identifierCopy];
+  [(TUIHostingController *)self _notifyProviderObserversForIdentifier:identifierCopy notifyControllerObservers:1];
+  v7 = [(TUIHostingMap *)self->_hostingMap objectForKeyedSubscript:identifierCopy];
+  groupIdentifier = [v7 groupIdentifier];
 
-  if (v8)
+  if (groupIdentifier)
   {
-    [(NSMutableSet *)self->_activeGroups removeObject:v8];
+    [(NSMutableSet *)self->_activeGroups removeObject:groupIdentifier];
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v9 = [(TUIHostingMap *)self->_hostingMap reverseEnumeratorForGroup:v8, 0];
+    v9 = [(TUIHostingMap *)self->_hostingMap reverseEnumeratorForGroup:groupIdentifier, 0];
     v10 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v10)
     {
@@ -196,28 +196,28 @@
   }
 }
 
-- (void)updateHostingMap:(id)a3
+- (void)updateHostingMap:(id)map
 {
-  v5 = a3;
-  v6 = v5;
+  mapCopy = map;
+  v6 = mapCopy;
   p_hostingMap = &self->_hostingMap;
-  if (self->_hostingMap != v5)
+  if (self->_hostingMap != mapCopy)
   {
-    v8 = [(TUIHostingMap *)v5 identifiers];
-    v9 = [v8 mutableCopy];
-    v10 = [(TUIHostingMap *)*p_hostingMap identifiers];
-    [v9 intersectSet:v10];
+    identifiers = [(TUIHostingMap *)mapCopy identifiers];
+    v9 = [identifiers mutableCopy];
+    identifiers2 = [(TUIHostingMap *)*p_hostingMap identifiers];
+    [v9 intersectSet:identifiers2];
 
-    v11 = [v8 mutableCopy];
-    v12 = [(TUIHostingMap *)*p_hostingMap identifiers];
-    [v11 unionSet:v12];
+    v11 = [identifiers mutableCopy];
+    identifiers3 = [(TUIHostingMap *)*p_hostingMap identifiers];
+    [v11 unionSet:identifiers3];
 
     v28 = v9;
     [v11 minusSet:v9];
-    v13 = [(TUIHostingMap *)*p_hostingMap identifiers];
-    v14 = [v13 mutableCopy];
+    identifiers4 = [(TUIHostingMap *)*p_hostingMap identifiers];
+    v14 = [identifiers4 mutableCopy];
 
-    [v14 minusSet:v8];
+    [v14 minusSet:identifiers];
     v35 = 0u;
     v36 = 0u;
     v33 = 0u;
@@ -249,18 +249,18 @@
       while (v17);
     }
 
-    objc_storeStrong(&self->_hostingMap, a3);
+    objc_storeStrong(&self->_hostingMap, map);
     if ([v11 count])
     {
       v20 = TUIHostingLog();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
       {
         uniqueIdentifier = self->_feedId.uniqueIdentifier;
-        v27 = [(TUIHostingMap *)self->_hostingMap identifiers];
+        identifiers5 = [(TUIHostingMap *)self->_hostingMap identifiers];
         *buf = 134218498;
         v39 = uniqueIdentifier;
         v40 = 2112;
-        v41 = v27;
+        v41 = identifiers5;
         v42 = 2112;
         v43 = v11;
         _os_log_debug_impl(&dword_0, v20, OS_LOG_TYPE_DEBUG, "[fid:%lu] updated hosting map: identifiers=%@, differences=%@", buf, 0x20u);
@@ -300,7 +300,7 @@
   }
 }
 
-- (void)endViewUpdatesNotifyDelegate:(BOOL)a3
+- (void)endViewUpdatesNotifyDelegate:(BOOL)delegate
 {
   viewUpdates = self->_viewUpdates;
   if (viewUpdates)
@@ -315,7 +315,7 @@
         *&self->_flags = flags & 0xFD;
         if ((flags & 1) == 0)
         {
-          v7 = a3;
+          delegateCopy = delegate;
           v8 = TUIHostingLog();
           if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
           {
@@ -323,7 +323,7 @@
           }
 
           *&self->_flags |= 1u;
-          if (v7)
+          if (delegateCopy)
           {
             WeakRetained = objc_loadWeakRetained(&self->_delegate);
             [WeakRetained hostingControllerGeometryUpdated:self];
@@ -337,11 +337,11 @@
 - (void)reset
 {
   [(NSMutableDictionary *)self->_geometryMap removeAllObjects];
-  v3 = [(TUIHostingMap *)self->_hostingMap identifiers];
+  identifiers = [(TUIHostingMap *)self->_hostingMap identifiers];
   hostingMap = self->_hostingMap;
   self->_hostingMap = 0;
 
-  if ([v3 count])
+  if ([identifiers count])
   {
     v12 = 0u;
     v13 = 0u;
@@ -363,7 +363,7 @@
             objc_enumerationMutation(v5);
           }
 
-          [*(*(&v10 + 1) + 8 * v9) hostingController:self didChangeContentIdentifiers:{v3, v10}];
+          [*(*(&v10 + 1) + 8 * v9) hostingController:self didChangeContentIdentifiers:{identifiers, v10}];
           v9 = v9 + 1;
         }
 
@@ -379,11 +379,11 @@
   [(TUIHostingController *)self _notifyGeometryUpdated];
 }
 
-- (BOOL)_shouldVendViewForIdentifier:(id)a3 inGroup:(id)a4
+- (BOOL)_shouldVendViewForIdentifier:(id)identifier inGroup:(id)group
 {
-  v6 = a3;
-  v7 = a4;
-  if (([(NSMutableSet *)self->_activeGroups containsObject:v7]& 1) != 0)
+  identifierCopy = identifier;
+  groupCopy = group;
+  if (([(NSMutableSet *)self->_activeGroups containsObject:groupCopy]& 1) != 0)
   {
     v8 = 0;
   }
@@ -394,7 +394,7 @@
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v9 = [(TUIHostingMap *)self->_hostingMap reverseEnumeratorForGroup:v7, 0];
+    v9 = [(TUIHostingMap *)self->_hostingMap reverseEnumeratorForGroup:groupCopy, 0];
     v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v10)
     {
@@ -410,7 +410,7 @@ LABEL_5:
         }
 
         v14 = *(*(&v17 + 1) + 8 * v13);
-        if (v14 == v6 || ([v6 isEqual:*(*(&v17 + 1) + 8 * v13)] & 1) != 0)
+        if (v14 == identifierCopy || ([identifierCopy isEqual:*(*(&v17 + 1) + 8 * v13)] & 1) != 0)
         {
           break;
         }
@@ -444,38 +444,38 @@ LABEL_16:
   return v8;
 }
 
-- (id)viewStateForIdentifier:(id)a3
+- (id)viewStateForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(TUIManager *)self->_manager viewRegistry];
-  v6 = [v4 type];
-  v7 = [v5 useHostedViewFactoryForType:v6];
+  identifierCopy = identifier;
+  viewRegistry = [(TUIManager *)self->_manager viewRegistry];
+  type = [identifierCopy type];
+  v7 = [viewRegistry useHostedViewFactoryForType:type];
 
   if (v7)
   {
-    v8 = [v4 identifierWithoutModelIdentifier];
-    v9 = [(NSMutableDictionary *)self->_reuseMap objectForKeyedSubscript:v8];
+    identifierWithoutModelIdentifier = [identifierCopy identifierWithoutModelIdentifier];
+    v9 = [(NSMutableDictionary *)self->_reuseMap objectForKeyedSubscript:identifierWithoutModelIdentifier];
     if (v9)
     {
-      [(NSMutableDictionary *)self->_reuseMap removeObjectForKey:v8];
+      [(NSMutableDictionary *)self->_reuseMap removeObjectForKey:identifierWithoutModelIdentifier];
       v10 = v9;
     }
 
     else
     {
-      v11 = [(TUIManager *)self->_manager viewRegistry];
-      v12 = [v4 type];
-      v13 = [v11 hostedViewFactoryForType:v12];
+      viewRegistry2 = [(TUIManager *)self->_manager viewRegistry];
+      type2 = [identifierCopy type];
+      v13 = [viewRegistry2 hostedViewFactoryForType:type2];
 
       viewController = self->_viewController;
-      v15 = [v4 type];
-      v16 = [v4 identifier];
-      v17 = [v4 parameters];
-      v18 = [v13 viewController:viewController hostedViewWithType:v15 identifier:v16 parameters:v17];
+      type3 = [identifierCopy type];
+      identifier = [identifierCopy identifier];
+      parameters = [identifierCopy parameters];
+      v18 = [v13 viewController:viewController hostedViewWithType:type3 identifier:identifier parameters:parameters];
 
       if (v18)
       {
-        v10 = -[_TUIHostedFactoryViewState initWithIdentifier:view:flags:]([_TUIHostedFactoryViewState alloc], "initWithIdentifier:view:flags:", v4, v18, [v13 hostedViewFlags]);
+        v10 = -[_TUIHostedFactoryViewState initWithIdentifier:view:flags:]([_TUIHostedFactoryViewState alloc], "initWithIdentifier:view:flags:", identifierCopy, v18, [v13 hostedViewFlags]);
       }
 
       else
@@ -487,20 +487,20 @@ LABEL_16:
 
   else
   {
-    if (v4)
+    if (identifierCopy)
     {
-      v8 = [(NSMutableDictionary *)self->_statesMap objectForKeyedSubscript:v4];
+      identifierWithoutModelIdentifier = [(NSMutableDictionary *)self->_statesMap objectForKeyedSubscript:identifierCopy];
     }
 
     else
     {
-      v8 = 0;
+      identifierWithoutModelIdentifier = 0;
     }
 
-    if ([(_TUIHostedFactoryViewState *)v8 isAvailable])
+    if ([(_TUIHostedFactoryViewState *)identifierWithoutModelIdentifier isAvailable])
     {
-      v8 = v8;
-      v10 = v8;
+      identifierWithoutModelIdentifier = identifierWithoutModelIdentifier;
+      v10 = identifierWithoutModelIdentifier;
     }
 
     else
@@ -512,12 +512,12 @@ LABEL_16:
   return v10;
 }
 
-- (void)updateVisible:(BOOL)a3 forIdentifier:(id)a4
+- (void)updateVisible:(BOOL)visible forIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (a4)
+  visibleCopy = visible;
+  if (identifier)
   {
-    v5 = [(NSMutableDictionary *)self->_statesMap objectForKeyedSubscript:a4];
+    v5 = [(NSMutableDictionary *)self->_statesMap objectForKeyedSubscript:identifier];
   }
 
   else
@@ -526,40 +526,40 @@ LABEL_16:
   }
 
   v6 = v5;
-  [v5 setVisible:v4];
+  [v5 setVisible:visibleCopy];
 }
 
-- (void)updateGeometryForViewState:(id)a3 requestedSize:(CGSize)a4 insets:(UIEdgeInsets)a5
+- (void)updateGeometryForViewState:(id)state requestedSize:(CGSize)size insets:(UIEdgeInsets)insets
 {
-  right = a5.right;
-  bottom = a5.bottom;
-  left = a5.left;
-  top = a5.top;
-  height = a4.height;
-  width = a4.width;
-  v22 = a3;
-  v12 = [v22 identifier];
-  v13 = [(TUIHostingMap *)self->_hostingMap objectForKeyedSubscript:v12];
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  height = size.height;
+  width = size.width;
+  stateCopy = state;
+  identifier = [stateCopy identifier];
+  v13 = [(TUIHostingMap *)self->_hostingMap objectForKeyedSubscript:identifier];
   if (![v13 presentation])
   {
-    v14 = [v22 view];
+    view = [stateCopy view];
     v15 = UIEdgeInsetsZero.left;
     v20 = UIEdgeInsetsZero.right;
     v21 = UIEdgeInsetsZero.bottom;
-    [v14 bounds];
+    [view bounds];
     v18 = [[TUIHostingGeometry alloc] initWithRequestedSize:width layoutSize:height erasableInsets:left + right + v16, top + bottom + v17, UIEdgeInsetsZero.top, v15, v21, v20];
-    v19 = [(NSMutableDictionary *)self->_geometryMap objectForKeyedSubscript:v12];
+    v19 = [(NSMutableDictionary *)self->_geometryMap objectForKeyedSubscript:identifier];
     if (([v19 isEqualToGeometry:v18] & 1) == 0)
     {
-      [(TUIHostingController *)self _updateGeomtry:v18 forIdentifier:v12];
+      [(TUIHostingController *)self _updateGeomtry:v18 forIdentifier:identifier];
     }
   }
 }
 
-- (void)_updateGeomtry:(id)a3 forIdentifier:(id)a4
+- (void)_updateGeomtry:(id)geomtry forIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  geomtryCopy = geomtry;
+  identifierCopy = identifier;
   v8 = TUIHostingLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -567,13 +567,13 @@ LABEL_16:
     v10 = 134218498;
     v11 = uniqueIdentifier;
     v12 = 2112;
-    v13 = v6;
+    v13 = geomtryCopy;
     v14 = 2112;
-    v15 = v7;
+    v15 = identifierCopy;
     _os_log_debug_impl(&dword_0, v8, OS_LOG_TYPE_DEBUG, "[fid:%lu] updated geometry=%@ for identifier=%@", &v10, 0x20u);
   }
 
-  [(NSMutableDictionary *)self->_geometryMap setObject:v6 forKeyedSubscript:v7];
+  [(NSMutableDictionary *)self->_geometryMap setObject:geomtryCopy forKeyedSubscript:identifierCopy];
   [(TUIHostingController *)self _notifyGeometryUpdated];
 }
 
@@ -607,22 +607,22 @@ LABEL_16:
   }
 }
 
-- (BOOL)needsGeometryUpdateWithOldTraitCollection:(id)a3 newTraitCollection:(id)a4
+- (BOOL)needsGeometryUpdateWithOldTraitCollection:(id)collection newTraitCollection:(id)traitCollection
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 preferredContentSizeCategory];
-  v8 = [v6 preferredContentSizeCategory];
-  if (v7 != v8 || (v9 = [v5 horizontalSizeClass], v9 != objc_msgSend(v6, "horizontalSizeClass")) || (v10 = objc_msgSend(v5, "verticalSizeClass"), v10 != objc_msgSend(v6, "verticalSizeClass")) || (v11 = objc_msgSend(v5, "layoutDirection"), v11 != objc_msgSend(v6, "layoutDirection")))
+  collectionCopy = collection;
+  traitCollectionCopy = traitCollection;
+  preferredContentSizeCategory = [collectionCopy preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [traitCollectionCopy preferredContentSizeCategory];
+  if (preferredContentSizeCategory != preferredContentSizeCategory2 || (v9 = [collectionCopy horizontalSizeClass], v9 != objc_msgSend(traitCollectionCopy, "horizontalSizeClass")) || (v10 = objc_msgSend(collectionCopy, "verticalSizeClass"), v10 != objc_msgSend(traitCollectionCopy, "verticalSizeClass")) || (v11 = objc_msgSend(collectionCopy, "layoutDirection"), v11 != objc_msgSend(traitCollectionCopy, "layoutDirection")))
   {
 
     goto LABEL_8;
   }
 
-  v12 = [v5 legibilityWeight];
-  v13 = [v6 legibilityWeight];
+  legibilityWeight = [collectionCopy legibilityWeight];
+  legibilityWeight2 = [traitCollectionCopy legibilityWeight];
 
-  if (v12 != v13)
+  if (legibilityWeight != legibilityWeight2)
   {
 LABEL_8:
     v14 = 1;
@@ -635,11 +635,11 @@ LABEL_9:
   return v14;
 }
 
-- (void)updateTraitCollection:(id)a3
+- (void)updateTraitCollection:(id)collection
 {
-  v6 = a3;
+  collectionCopy = collection;
   v5 = [(TUIHostingController *)self needsGeometryUpdateWithOldTraitCollection:self->_traitCollection newTraitCollection:?];
-  objc_storeStrong(&self->_traitCollection, a3);
+  objc_storeStrong(&self->_traitCollection, collection);
   if (v5)
   {
     [(NSMutableDictionary *)self->_geometryMap removeAllObjects];
@@ -653,8 +653,8 @@ LABEL_9:
   {
     v3 = [TUIHostingGeometryMap alloc];
     geometryMap = self->_geometryMap;
-    v5 = [(TUIHostingMap *)self->_hostingMap identifiers];
-    v6 = [(TUIHostingGeometryMap *)v3 initWithMap:geometryMap identifiers:v5];
+    identifiers = [(TUIHostingMap *)self->_hostingMap identifiers];
+    v6 = [(TUIHostingGeometryMap *)v3 initWithMap:geometryMap identifiers:identifiers];
   }
 
   else
@@ -671,10 +671,10 @@ LABEL_9:
   return v6;
 }
 
-- (void)addProviderObserver:(id)a3 forIdentifier:(id)a4
+- (void)addProviderObserver:(id)observer forIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  identifierCopy = identifier;
   v8 = TUIHostingLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -682,26 +682,26 @@ LABEL_9:
     v11 = 134218498;
     v12 = uniqueIdentifier;
     v13 = 2048;
-    v14 = v6;
+    v14 = observerCopy;
     v15 = 2112;
-    v16 = v7;
+    v16 = identifierCopy;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "[fid:%lu] add observer=%p for identifier=%@", &v11, 0x20u);
   }
 
-  v10 = [(NSMutableDictionary *)self->_providerObserversMap objectForKeyedSubscript:v7];
+  v10 = [(NSMutableDictionary *)self->_providerObserversMap objectForKeyedSubscript:identifierCopy];
   if (!v10)
   {
     v10 = [NSHashTable hashTableWithOptions:517];
-    [(NSMutableDictionary *)self->_providerObserversMap setObject:v10 forKeyedSubscript:v7];
+    [(NSMutableDictionary *)self->_providerObserversMap setObject:v10 forKeyedSubscript:identifierCopy];
   }
 
-  [v10 addObject:v6];
+  [v10 addObject:observerCopy];
 }
 
-- (void)removeProviderObserver:(id)a3 forIdentifier:(id)a4
+- (void)removeProviderObserver:(id)observer forIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  identifierCopy = identifier;
   v8 = TUIHostingLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -709,24 +709,24 @@ LABEL_9:
     v11 = 134218498;
     v12 = uniqueIdentifier;
     v13 = 2048;
-    v14 = v6;
+    v14 = observerCopy;
     v15 = 2112;
-    v16 = v7;
+    v16 = identifierCopy;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "[fid:%lu] remove observer=%p for identifier=%@", &v11, 0x20u);
   }
 
-  v10 = [(NSMutableDictionary *)self->_providerObserversMap objectForKeyedSubscript:v7];
-  [v10 removeObject:v6];
+  v10 = [(NSMutableDictionary *)self->_providerObserversMap objectForKeyedSubscript:identifierCopy];
+  [v10 removeObject:observerCopy];
   if (v10 && ![v10 count])
   {
-    [(NSMutableDictionary *)self->_providerObserversMap setObject:0 forKeyedSubscript:v7];
+    [(NSMutableDictionary *)self->_providerObserversMap setObject:0 forKeyedSubscript:identifierCopy];
   }
 }
 
-- (void)_notifyProviderObserversForIdentifier:(id)a3 notifyControllerObservers:(BOOL)a4
+- (void)_notifyProviderObserversForIdentifier:(id)identifier notifyControllerObservers:(BOOL)observers
 {
-  v4 = a4;
-  v6 = a3;
+  observersCopy = observers;
+  identifierCopy = identifier;
   v7 = TUIHostingLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -734,17 +734,17 @@ LABEL_9:
     *buf = 134218242;
     v31 = uniqueIdentifier;
     v32 = 2112;
-    v33 = v6;
+    v33 = identifierCopy;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "[fid:%lu] notify observers for identifier=%@", buf, 0x16u);
   }
 
-  v9 = [(NSMutableDictionary *)self->_providerObserversMap objectForKeyedSubscript:v6];
+  v9 = [(NSMutableDictionary *)self->_providerObserversMap objectForKeyedSubscript:identifierCopy];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v10 = [v9 allObjects];
-  v11 = [v10 countByEnumeratingWithState:&v24 objects:v29 count:16];
+  allObjects = [v9 allObjects];
+  v11 = [allObjects countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v11)
   {
     v12 = v11;
@@ -756,28 +756,28 @@ LABEL_9:
       {
         if (*v25 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(allObjects);
         }
 
-        [*(*(&v24 + 1) + 8 * v14) hostingProviderUpdatedForIdentifier:v6];
+        [*(*(&v24 + 1) + 8 * v14) hostingProviderUpdatedForIdentifier:identifierCopy];
         v14 = v14 + 1;
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v24 objects:v29 count:16];
+      v12 = [allObjects countByEnumeratingWithState:&v24 objects:v29 count:16];
     }
 
     while (v12);
   }
 
-  if (v4)
+  if (observersCopy)
   {
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v15 = [(NSHashTable *)self->_controllerObservers allObjects];
-    v16 = [v15 countByEnumeratingWithState:&v20 objects:v28 count:16];
+    allObjects2 = [(NSHashTable *)self->_controllerObservers allObjects];
+    v16 = [allObjects2 countByEnumeratingWithState:&v20 objects:v28 count:16];
     if (v16)
     {
       v17 = v16;
@@ -789,7 +789,7 @@ LABEL_9:
         {
           if (*v21 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(allObjects2);
           }
 
           [*(*(&v20 + 1) + 8 * v19) hostingControllerProvidersUpdated:self];
@@ -797,7 +797,7 @@ LABEL_9:
         }
 
         while (v17 != v19);
-        v17 = [v15 countByEnumeratingWithState:&v20 objects:v28 count:16];
+        v17 = [allObjects2 countByEnumeratingWithState:&v20 objects:v28 count:16];
       }
 
       while (v17);
@@ -805,28 +805,28 @@ LABEL_9:
   }
 }
 
-- (void)_configurePopoverLayoutForViewState:(id)a3 superview:(id)a4 shouldPresentViewController:(BOOL)a5
+- (void)_configurePopoverLayoutForViewState:(id)state superview:(id)superview shouldPresentViewController:(BOOL)controller
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  controllerCopy = controller;
+  stateCopy = state;
+  superviewCopy = superview;
   hostingMap = self->_hostingMap;
-  v11 = [v8 identifier];
-  v12 = [(TUIHostingMap *)hostingMap objectForKeyedSubscript:v11];
+  identifier = [stateCopy identifier];
+  v12 = [(TUIHostingMap *)hostingMap objectForKeyedSubscript:identifier];
 
   if ([v12 presentation] == &dword_0 + 1)
   {
-    v13 = [v8 viewController];
-    v14 = [v13 isBeingPresented];
+    viewController = [stateCopy viewController];
+    isBeingPresented = [viewController isBeingPresented];
 
-    if ((v14 & 1) == 0)
+    if ((isBeingPresented & 1) == 0)
     {
-      v15 = [(TUIHostingController *)self _determineSourceViewFromState:v8 currentView:v9];
-      v16 = [v8 viewController];
-      v17 = [v16 popoverPresentationController];
-      v18 = [v17 sourceView];
+      v15 = [(TUIHostingController *)self _determineSourceViewFromState:stateCopy currentView:superviewCopy];
+      viewController2 = [stateCopy viewController];
+      popoverPresentationController = [viewController2 popoverPresentationController];
+      sourceView = [popoverPresentationController sourceView];
 
-      if (!v15 || v15 == v18)
+      if (!v15 || v15 == sourceView)
       {
         v27 = TUIHostingLog();
         if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
@@ -837,30 +837,30 @@ LABEL_9:
           v34 = 2112;
           v35 = v15;
           v36 = 2112;
-          v37 = v18;
+          v37 = sourceView;
           _os_log_debug_impl(&dword_0, v27, OS_LOG_TYPE_DEBUG, "[fid:%lu] no need to update layout sourceView=%@ oldSourceView=%@", buf, 0x20u);
         }
       }
 
       else
       {
-        v19 = [v8 viewController];
-        [v19 setModalPresentationStyle:7];
+        viewController3 = [stateCopy viewController];
+        [viewController3 setModalPresentationStyle:7];
 
-        v20 = [v8 viewController];
-        v21 = [v20 popoverPresentationController];
-        [v21 setDelegate:v8];
+        viewController4 = [stateCopy viewController];
+        popoverPresentationController2 = [viewController4 popoverPresentationController];
+        [popoverPresentationController2 setDelegate:stateCopy];
 
-        v22 = [v8 viewController];
-        v23 = [v22 popoverPresentationController];
-        [v23 setSourceView:v15];
+        viewController5 = [stateCopy viewController];
+        popoverPresentationController3 = [viewController5 popoverPresentationController];
+        [popoverPresentationController3 setSourceView:v15];
 
         v24 = [(TUIHostingController *)self _popoverArrowDirectionFromProperties:v12];
-        v25 = [v8 viewController];
-        v26 = [v25 popoverPresentationController];
-        [v26 setPermittedArrowDirections:v24];
+        viewController6 = [stateCopy viewController];
+        popoverPresentationController4 = [viewController6 popoverPresentationController];
+        [popoverPresentationController4 setPermittedArrowDirections:v24];
 
-        if (!v5)
+        if (!controllerCopy)
         {
 LABEL_10:
 
@@ -871,8 +871,8 @@ LABEL_10:
         v29[1] = 3221225472;
         v29[2] = sub_CB068;
         v29[3] = &unk_25DCA0;
-        v30 = v8;
-        v31 = self;
+        v30 = stateCopy;
+        selfCopy = self;
         [(TUIHostingController *)self _finishOngoingModalTransitionAnimationsWithCompletion:v29];
         v27 = v30;
       }
@@ -884,84 +884,84 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)runAppearanceTransitionForViewState:(id)a3 superview:(id)a4
+- (void)runAppearanceTransitionForViewState:(id)state superview:(id)superview
 {
-  v6 = a3;
-  v7 = a4;
+  stateCopy = state;
+  superviewCopy = superview;
   hostingMap = self->_hostingMap;
-  v9 = [v6 identifier];
-  v10 = [(TUIHostingMap *)hostingMap objectForKeyedSubscript:v9];
+  identifier = [stateCopy identifier];
+  v10 = [(TUIHostingMap *)hostingMap objectForKeyedSubscript:identifier];
 
   if ([v10 presentation])
   {
     if ([v10 presentation] == &dword_0 + 1)
     {
-      [(TUIHostingController *)self _presentPopoverLayoutForViewState:v6 superview:v7];
+      [(TUIHostingController *)self _presentPopoverLayoutForViewState:stateCopy superview:superviewCopy];
     }
   }
 
   else
   {
-    v11 = [v6 view];
-    [v11 setAutoresizingMask:0];
-    v12 = [v6 viewController];
-    [v12 beginAppearanceTransition:1 animated:0];
+    view = [stateCopy view];
+    [view setAutoresizingMask:0];
+    viewController = [stateCopy viewController];
+    [viewController beginAppearanceTransition:1 animated:0];
 
-    [v7 addSubview:v11];
-    v13 = [v6 viewController];
-    [v13 endAppearanceTransition];
+    [superviewCopy addSubview:view];
+    viewController2 = [stateCopy viewController];
+    [viewController2 endAppearanceTransition];
 
-    if (([v6 previouslyAppeared] & 1) == 0)
+    if (([stateCopy previouslyAppeared] & 1) == 0)
     {
       v14[0] = _NSConcreteStackBlock;
       v14[1] = 3221225472;
       v14[2] = sub_CB364;
       v14[3] = &unk_25E7C0;
       v14[4] = self;
-      v15 = v6;
-      v16 = v11;
+      v15 = stateCopy;
+      v16 = view;
       [UIView performWithoutAnimation:v14];
     }
   }
 }
 
-- (void)runAppearanceTransitionForViewState:(id)a3 barButtonItem:(id)a4
+- (void)runAppearanceTransitionForViewState:(id)state barButtonItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
+  stateCopy = state;
+  itemCopy = item;
   hostingMap = self->_hostingMap;
-  v9 = [v6 identifier];
-  v10 = [(TUIHostingMap *)hostingMap objectForKeyedSubscript:v9];
+  identifier = [stateCopy identifier];
+  v10 = [(TUIHostingMap *)hostingMap objectForKeyedSubscript:identifier];
 
   if ([v10 presentation] == &dword_0 + 1)
   {
-    v11 = [v6 viewController];
-    v12 = [v11 isBeingPresented];
+    viewController = [stateCopy viewController];
+    isBeingPresented = [viewController isBeingPresented];
 
-    if ((v12 & 1) == 0)
+    if ((isBeingPresented & 1) == 0)
     {
       v13[0] = _NSConcreteStackBlock;
       v13[1] = 3221225472;
       v13[2] = sub_CB4F0;
       v13[3] = &unk_25EB18;
-      v14 = v6;
-      v15 = v7;
-      v16 = self;
+      v14 = stateCopy;
+      v15 = itemCopy;
+      selfCopy = self;
       v17 = v10;
       [(TUIHostingController *)self _finishOngoingModalTransitionAnimationsWithCompletion:v13];
     }
   }
 }
 
-- (id)_determineSourceViewFromState:(id)a3 currentView:(id)a4
+- (id)_determineSourceViewFromState:(id)state currentView:(id)view
 {
-  v6 = a4;
-  v7 = [a3 identifier];
-  v8 = [(TUIHostingMap *)self->_hostingMap objectForKeyedSubscript:v7];
-  v9 = [v8 designatedIdentifier];
-  if (v9)
+  viewCopy = view;
+  identifier = [state identifier];
+  v8 = [(TUIHostingMap *)self->_hostingMap objectForKeyedSubscript:identifier];
+  designatedIdentifier = [v8 designatedIdentifier];
+  if (designatedIdentifier)
   {
-    v10 = [(TUIHostingController *)self _reusableViewForRefId:v9 inCurrentView:v6];
+    v10 = [(TUIHostingController *)self _reusableViewForRefId:designatedIdentifier inCurrentView:viewCopy];
     v11 = v10;
     if (v10)
     {
@@ -970,7 +970,7 @@ LABEL_11:
 
     else
     {
-      v12 = v6;
+      v12 = viewCopy;
     }
 
     v13 = v12;
@@ -978,34 +978,34 @@ LABEL_11:
 
   else
   {
-    v13 = v6;
+    v13 = viewCopy;
   }
 
   return v13;
 }
 
-- (id)_reusableViewForRefId:(id)a3 inCurrentView:(id)a4
+- (id)_reusableViewForRefId:(id)id inCurrentView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = TUIProtocolCast(&OBJC_PROTOCOL___TUIReusableRenderView, v7);
+  idCopy = id;
+  viewCopy = view;
+  v8 = TUIProtocolCast(&OBJC_PROTOCOL___TUIReusableRenderView, viewCopy);
   v9 = v8;
   if (!v8)
   {
     goto LABEL_5;
   }
 
-  v10 = [v8 layoutAttributes];
-  v11 = [v10 refId];
-  v12 = [v11 isEqualToString:v6];
+  layoutAttributes = [v8 layoutAttributes];
+  refId = [layoutAttributes refId];
+  v12 = [refId isEqualToString:idCopy];
 
   if (v12)
   {
-    v13 = v7;
+    v13 = viewCopy;
     goto LABEL_15;
   }
 
-  v13 = [v9 descendentViewWithRefId:v6];
+  v13 = [v9 descendentViewWithRefId:idCopy];
   if (!v13)
   {
 LABEL_5:
@@ -1013,8 +1013,8 @@ LABEL_5:
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v14 = [v7 subviews];
-    v15 = [v14 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    subviews = [viewCopy subviews];
+    v15 = [subviews countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v15)
     {
       v16 = v15;
@@ -1025,10 +1025,10 @@ LABEL_5:
         {
           if (*v22 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(subviews);
           }
 
-          v19 = [(TUIHostingController *)self _reusableViewForRefId:v6 inCurrentView:*(*(&v21 + 1) + 8 * i)];
+          v19 = [(TUIHostingController *)self _reusableViewForRefId:idCopy inCurrentView:*(*(&v21 + 1) + 8 * i)];
           if (v19)
           {
             v13 = v19;
@@ -1037,7 +1037,7 @@ LABEL_5:
           }
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v16 = [subviews countByEnumeratingWithState:&v21 objects:v25 count:16];
         if (v16)
         {
           continue;
@@ -1055,54 +1055,54 @@ LABEL_15:
   return v13;
 }
 
-- (void)_finishOngoingModalTransitionAnimationsWithCompletion:(id)a3
+- (void)_finishOngoingModalTransitionAnimationsWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v5 = [(UIViewController *)self->_viewController presentedViewController];
-    if ((([v5 isBeingDismissed] & 1) != 0 || objc_msgSend(v5, "isBeingPresented")) && (objc_msgSend(v5, "transitionCoordinator"), v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
+    presentedViewController = [(UIViewController *)self->_viewController presentedViewController];
+    if ((([presentedViewController isBeingDismissed] & 1) != 0 || objc_msgSend(presentedViewController, "isBeingPresented")) && (objc_msgSend(presentedViewController, "transitionCoordinator"), v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
     {
-      v7 = [v5 transitionCoordinator];
+      transitionCoordinator = [presentedViewController transitionCoordinator];
       v8[0] = _NSConcreteStackBlock;
       v8[1] = 3221225472;
       v8[2] = sub_CBADC;
       v8[3] = &unk_261490;
-      v9 = v4;
-      [v7 animateAlongsideTransition:&stru_261468 completion:v8];
+      v9 = completionCopy;
+      [transitionCoordinator animateAlongsideTransition:&stru_261468 completion:v8];
     }
 
     else
     {
-      v4[2](v4);
+      completionCopy[2](completionCopy);
     }
   }
 }
 
-- (void)runAppearanceAnimationIfNeededForViewState:(id)a3
+- (void)runAppearanceAnimationIfNeededForViewState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   hostingMap = self->_hostingMap;
-  v6 = [v4 identifier];
-  v7 = [(TUIHostingMap *)hostingMap objectForKeyedSubscript:v6];
+  identifier = [stateCopy identifier];
+  v7 = [(TUIHostingMap *)hostingMap objectForKeyedSubscript:identifier];
 
   if (![v7 presentation])
   {
-    v8 = [v4 view];
-    if (([v4 previouslyAppeared] & 1) == 0)
+    view = [stateCopy view];
+    if (([stateCopy previouslyAppeared] & 1) == 0)
     {
-      [v4 setPreviouslyAppeared:1];
+      [stateCopy setPreviouslyAppeared:1];
       v9 = TUIHostingLog();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
         uniqueIdentifier = self->_feedId.uniqueIdentifier;
-        v12 = [v4 identifier];
+        identifier2 = [stateCopy identifier];
         *buf = 134218498;
         v18 = uniqueIdentifier;
         v19 = 2112;
-        v20 = v12;
+        v20 = identifier2;
         v21 = 2048;
-        v22 = v8;
+        v22 = view;
         _os_log_debug_impl(&dword_0, v9, OS_LOG_TYPE_DEBUG, "[fid:%lu] show view for identifier=%@ view=%p", buf, 0x20u);
       }
 
@@ -1110,7 +1110,7 @@ LABEL_15:
       v15[1] = 3221225472;
       v15[2] = sub_CBD38;
       v15[3] = &unk_25DE30;
-      v10 = v8;
+      v10 = view;
       v16 = v10;
       [UIView performWithoutAnimation:v15];
       v13[0] = _NSConcreteStackBlock;
@@ -1123,46 +1123,46 @@ LABEL_15:
   }
 }
 
-- (void)runDisappearanceTransitionForViewState:(id)a3
+- (void)runDisappearanceTransitionForViewState:(id)state
 {
-  v4 = a3;
-  v5 = [v4 view];
-  v6 = [v4 viewController];
+  stateCopy = state;
+  view = [stateCopy view];
+  viewController = [stateCopy viewController];
 
-  if (v6)
+  if (viewController)
   {
-    v7 = [v4 viewController];
-    v8 = [v7 parentViewController];
+    viewController2 = [stateCopy viewController];
+    parentViewController = [viewController2 parentViewController];
 
-    if (v8)
+    if (parentViewController)
     {
       v9 = +[TUIFeedView areFeedUpdatesAnimated];
-      v10 = [v4 viewController];
-      v11 = v10;
+      viewController3 = [stateCopy viewController];
+      v11 = viewController3;
       if (!v9)
       {
-        [v10 beginAppearanceTransition:0 animated:0];
+        [viewController3 beginAppearanceTransition:0 animated:0];
 
-        [v4 recycleViewWithController:self];
-        v23 = [v4 viewController];
-        [v23 endAppearanceTransition];
+        [stateCopy recycleViewWithController:self];
+        viewController4 = [stateCopy viewController];
+        [viewController4 endAppearanceTransition];
 
         goto LABEL_12;
       }
 
-      [v10 beginAppearanceTransition:0 animated:1];
+      [viewController3 beginAppearanceTransition:0 animated:1];
 
       v12 = TUIHostingLog();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
       {
         uniqueIdentifier = self->_feedId.uniqueIdentifier;
-        v25 = [v4 identifier];
+        identifier = [stateCopy identifier];
         *buf = 134218498;
         v36 = uniqueIdentifier;
         v37 = 2112;
-        v38 = v25;
+        v38 = identifier;
         v39 = 2048;
-        v40 = v5;
+        v40 = view;
         _os_log_debug_impl(&dword_0, v12, OS_LOG_TYPE_DEBUG, "[fid:%lu] removing view for identifier=%@ view=%p", buf, 0x20u);
       }
 
@@ -1171,7 +1171,7 @@ LABEL_15:
       v33[1] = 3221225472;
       v33[2] = sub_CC218;
       v33[3] = &unk_25DE30;
-      v14 = v5;
+      v14 = view;
       v34 = v14;
       v15 = [v13 initWithDuration:v33 controlPoint1:0.2 controlPoint2:0.33 animations:{0.0, 0.67, 1.0}];
       v16 = [UIViewPropertyAnimator alloc];
@@ -1187,7 +1187,7 @@ LABEL_15:
       v28[2] = sub_CC27C;
       v28[3] = &unk_2614B8;
       v29 = v17;
-      v30 = v4;
+      v30 = stateCopy;
       [v18 addCompletion:v28];
       [v15 startAnimation];
       [v18 startAnimation];
@@ -1196,19 +1196,19 @@ LABEL_15:
       goto LABEL_10;
     }
 
-    v20 = [v4 viewController];
-    v21 = [v20 presentingViewController];
+    viewController5 = [stateCopy viewController];
+    presentingViewController = [viewController5 presentingViewController];
 
-    if (v21)
+    if (presentingViewController)
     {
-      v22 = [v4 identifier];
-      [(TUIHostingController *)self updateVisible:0 forIdentifier:v22];
+      identifier2 = [stateCopy identifier];
+      [(TUIHostingController *)self updateVisible:0 forIdentifier:identifier2];
 
       v26[0] = _NSConcreteStackBlock;
       v26[1] = 3221225472;
       v26[2] = sub_CC2D4;
       v26[3] = &unk_25DE30;
-      v27 = v4;
+      v27 = stateCopy;
       [(TUIHostingController *)self _finishOngoingModalTransitionAnimationsWithCompletion:v26];
       v19 = v27;
 LABEL_10:
@@ -1217,27 +1217,27 @@ LABEL_10:
 
   else
   {
-    [v4 recycleViewWithController:self];
+    [stateCopy recycleViewWithController:self];
   }
 
 LABEL_12:
 }
 
-- (void)didEndDisplayForViewState:(id)a3
+- (void)didEndDisplayForViewState:(id)state
 {
-  v4 = a3;
-  v5 = [v4 viewController];
-  [v5 beginAppearanceTransition:0 animated:0];
+  stateCopy = state;
+  viewController = [stateCopy viewController];
+  [viewController beginAppearanceTransition:0 animated:0];
 
-  [v4 recycleViewWithController:self];
-  v6 = [v4 viewController];
+  [stateCopy recycleViewWithController:self];
+  viewController2 = [stateCopy viewController];
 
-  [v6 endAppearanceTransition];
+  [viewController2 endAppearanceTransition];
 }
 
-- (void)makeAvailableForReuse:(id)a3
+- (void)makeAvailableForReuse:(id)reuse
 {
-  v4 = a3;
+  reuseCopy = reuse;
   reuseMap = self->_reuseMap;
   if (!reuseMap)
   {
@@ -1254,43 +1254,43 @@ LABEL_12:
     reuseMap = self->_reuseMap;
   }
 
-  v8 = [v4 identifier];
-  v9 = [v8 identifierWithoutModelIdentifier];
-  [(NSMutableDictionary *)reuseMap setObject:v4 forKeyedSubscript:v9];
+  identifier = [reuseCopy identifier];
+  identifierWithoutModelIdentifier = [identifier identifierWithoutModelIdentifier];
+  [(NSMutableDictionary *)reuseMap setObject:reuseCopy forKeyedSubscript:identifierWithoutModelIdentifier];
 }
 
-- (id)_groupIdentifierForIdentifier:(id)a3
+- (id)_groupIdentifierForIdentifier:(id)identifier
 {
-  v3 = [(TUIHostingMap *)self->_hostingMap objectForKeyedSubscript:a3];
-  v4 = [v3 groupIdentifier];
+  v3 = [(TUIHostingMap *)self->_hostingMap objectForKeyedSubscript:identifier];
+  groupIdentifier = [v3 groupIdentifier];
 
-  return v4;
+  return groupIdentifier;
 }
 
-- (void)updateFrameIfNeeded:(BOOL)a3 forViewState:(id)a4 requestedSize:(CGSize)a5 insets:(UIEdgeInsets)a6
+- (void)updateFrameIfNeeded:(BOOL)needed forViewState:(id)state requestedSize:(CGSize)size insets:(UIEdgeInsets)insets
 {
-  right = a6.right;
-  bottom = a6.bottom;
-  left = a6.left;
-  top = a6.top;
-  height = a5.height;
-  width = a5.width;
-  v12 = a3;
-  v14 = a4;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  height = size.height;
+  width = size.width;
+  neededCopy = needed;
+  stateCopy = state;
   hostingMap = self->_hostingMap;
-  v16 = [v14 identifier];
-  v17 = [(TUIHostingMap *)hostingMap objectForKeyedSubscript:v16];
-  v18 = [v17 presentation];
+  identifier = [stateCopy identifier];
+  v17 = [(TUIHostingMap *)hostingMap objectForKeyedSubscript:identifier];
+  presentation = [v17 presentation];
 
-  if (!v18)
+  if (!presentation)
   {
-    v19 = [v14 view];
+    view = [stateCopy view];
     v20 = TUIHostingLog();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
     {
       uniqueIdentifier = self->_feedId.uniqueIdentifier;
-      v37 = [v14 identifier];
-      v38 = [NSNumber numberWithBool:v12];
+      identifier2 = [stateCopy identifier];
+      v38 = [NSNumber numberWithBool:neededCopy];
       v53.width = width;
       v53.height = height;
       v39 = NSStringFromCGSize(v53);
@@ -1302,9 +1302,9 @@ LABEL_12:
       v41 = 134219266;
       v42 = uniqueIdentifier;
       v43 = 2112;
-      v44 = v19;
+      v44 = view;
       v45 = 2112;
-      v46 = v37;
+      v46 = identifier2;
       v47 = 2112;
       v48 = v38;
       v49 = 2112;
@@ -1314,12 +1314,12 @@ LABEL_12:
       _os_log_debug_impl(&dword_0, v20, OS_LOG_TYPE_DEBUG, "[fid:%lu] updateFrameIfNeeded view=%@ identifier=%@ needsUpdate=%@ requestedSize=%@ insets=%@", &v41, 0x3Eu);
     }
 
-    if (v12)
+    if (neededCopy)
     {
-      v21 = [v14 flags];
+      flags = [stateCopy flags];
       v22 = fmax(width - left - right, 0.0);
       v23 = fmax(height - top - bottom, 0.0);
-      if (v21)
+      if (flags)
       {
         v24 = 1.79769313e308;
       }
@@ -1329,7 +1329,7 @@ LABEL_12:
         v24 = v22;
       }
 
-      if ((v21 & 2) != 0)
+      if ((flags & 2) != 0)
       {
         v25 = 1.79769313e308;
       }
@@ -1339,17 +1339,17 @@ LABEL_12:
         v25 = v23;
       }
 
-      v26 = [v14 view];
-      [v26 sizeThatFits:{v24, v25}];
+      view2 = [stateCopy view];
+      [view2 sizeThatFits:{v24, v25}];
       v28 = v27;
       v30 = v29;
 
-      [v19 setFrame:{left, top, v28, v30}];
+      [view setFrame:{left, top, v28, v30}];
     }
 
     else
     {
-      [v19 bounds];
+      [view bounds];
       x = v54.origin.x;
       y = v54.origin.y;
       v33 = v54.size.width;
@@ -1359,22 +1359,22 @@ LABEL_12:
       v55.origin.y = y;
       v55.size.width = v33;
       v55.size.height = v34;
-      [v19 setCenter:{v35, top + CGRectGetMidY(v55)}];
+      [view setCenter:{v35, top + CGRectGetMidY(v55)}];
     }
   }
 }
 
-- (unint64_t)_popoverArrowDirectionFromProperties:(id)a3
+- (unint64_t)_popoverArrowDirectionFromProperties:(id)properties
 {
-  v3 = [a3 arrowDirection];
-  if ((v3 - 1) > 3)
+  arrowDirection = [properties arrowDirection];
+  if ((arrowDirection - 1) > 3)
   {
     return 15;
   }
 
   else
   {
-    return qword_24CE60[(v3 - 1)];
+    return qword_24CE60[(arrowDirection - 1)];
   }
 }
 

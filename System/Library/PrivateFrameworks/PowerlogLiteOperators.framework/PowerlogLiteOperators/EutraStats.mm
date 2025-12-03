@@ -1,28 +1,28 @@
 @interface EutraStats
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasActiveDuration:(BOOL)a3;
-- (void)setHasDeepSleepCycleCount:(BOOL)a3;
-- (void)setHasDeepSleepDuration:(BOOL)a3;
-- (void)setHasDuration:(BOOL)a3;
-- (void)setHasLightSleepCycleCount:(BOOL)a3;
-- (void)setHasLightSleepDuration:(BOOL)a3;
-- (void)setHasVoltHighDuration:(BOOL)a3;
-- (void)setHasVoltLowDuration:(BOOL)a3;
-- (void)setHasVoltMedDuration:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasActiveDuration:(BOOL)duration;
+- (void)setHasDeepSleepCycleCount:(BOOL)count;
+- (void)setHasDeepSleepDuration:(BOOL)duration;
+- (void)setHasDuration:(BOOL)duration;
+- (void)setHasLightSleepCycleCount:(BOOL)count;
+- (void)setHasLightSleepDuration:(BOOL)duration;
+- (void)setHasVoltHighDuration:(BOOL)duration;
+- (void)setHasVoltLowDuration:(BOOL)duration;
+- (void)setHasVoltMedDuration:(BOOL)duration;
+- (void)writeTo:(id)to;
 @end
 
 @implementation EutraStats
 
-- (void)setHasDuration:(BOOL)a3
+- (void)setHasDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 16;
   }
@@ -35,9 +35,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasActiveDuration:(BOOL)a3
+- (void)setHasActiveDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 2;
   }
@@ -50,9 +50,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasLightSleepDuration:(BOOL)a3
+- (void)setHasLightSleepDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 64;
   }
@@ -65,9 +65,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasDeepSleepDuration:(BOOL)a3
+- (void)setHasDeepSleepDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 8;
   }
@@ -80,9 +80,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasLightSleepCycleCount:(BOOL)a3
+- (void)setHasLightSleepCycleCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 32;
   }
@@ -95,9 +95,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasDeepSleepCycleCount:(BOOL)a3
+- (void)setHasDeepSleepCycleCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 4;
   }
@@ -110,9 +110,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasVoltLowDuration:(BOOL)a3
+- (void)setHasVoltLowDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 256;
   }
@@ -125,9 +125,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasVoltMedDuration:(BOOL)a3
+- (void)setHasVoltMedDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 512;
   }
@@ -140,9 +140,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasVoltHighDuration:(BOOL)a3
+- (void)setHasVoltHighDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 128;
   }
@@ -161,20 +161,20 @@
   v8.receiver = self;
   v8.super_class = EutraStats;
   v4 = [(EutraStats *)&v8 description];
-  v5 = [(EutraStats *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(EutraStats *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 0x10) != 0)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_duration];
-    [v3 setObject:v7 forKey:@"duration"];
+    [dictionary setObject:v7 forKey:@"duration"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -195,7 +195,7 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_activeDuration];
-  [v3 setObject:v8 forKey:@"active_duration"];
+  [dictionary setObject:v8 forKey:@"active_duration"];
 
   has = self->_has;
   if ((has & 0x40) == 0)
@@ -211,7 +211,7 @@ LABEL_4:
 
 LABEL_17:
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_lightSleepDuration];
-  [v3 setObject:v9 forKey:@"light_sleep_duration"];
+  [dictionary setObject:v9 forKey:@"light_sleep_duration"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -227,7 +227,7 @@ LABEL_5:
 
 LABEL_18:
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_deepSleepDuration];
-  [v3 setObject:v10 forKey:@"deep_sleep_duration"];
+  [dictionary setObject:v10 forKey:@"deep_sleep_duration"];
 
   has = self->_has;
   if ((has & 0x20) == 0)
@@ -243,7 +243,7 @@ LABEL_6:
 
 LABEL_19:
   v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_lightSleepCycleCount];
-  [v3 setObject:v11 forKey:@"light_sleep_cycle_count"];
+  [dictionary setObject:v11 forKey:@"light_sleep_cycle_count"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -259,7 +259,7 @@ LABEL_7:
 
 LABEL_20:
   v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_deepSleepCycleCount];
-  [v3 setObject:v12 forKey:@"deep_sleep_cycle_count"];
+  [dictionary setObject:v12 forKey:@"deep_sleep_cycle_count"];
 
   has = self->_has;
   if ((has & 0x100) == 0)
@@ -275,7 +275,7 @@ LABEL_8:
 
 LABEL_21:
   v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_voltLowDuration];
-  [v3 setObject:v13 forKey:@"volt_low_duration"];
+  [dictionary setObject:v13 forKey:@"volt_low_duration"];
 
   has = self->_has;
   if ((has & 0x200) == 0)
@@ -291,7 +291,7 @@ LABEL_9:
 
 LABEL_22:
   v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_voltMedDuration];
-  [v3 setObject:v14 forKey:@"volt_med_duration"];
+  [dictionary setObject:v14 forKey:@"volt_med_duration"];
 
   has = self->_has;
   if ((has & 0x80) == 0)
@@ -307,23 +307,23 @@ LABEL_10:
 
 LABEL_23:
   v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_voltHighDuration];
-  [v3 setObject:v15 forKey:@"volt_high_duration"];
+  [dictionary setObject:v15 forKey:@"volt_high_duration"];
 
   if (*&self->_has)
   {
 LABEL_11:
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_startTime];
-    [v3 setObject:v5 forKey:@"start_time"];
+    [dictionary setObject:v5 forKey:@"start_time"];
   }
 
 LABEL_12:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v15 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x10) != 0)
   {
@@ -464,14 +464,14 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x10) != 0)
   {
-    v4[7] = self->_duration;
-    *(v4 + 26) |= 0x10u;
+    toCopy[7] = self->_duration;
+    *(toCopy + 26) |= 0x10u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -490,8 +490,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[4] = self->_activeDuration;
-  *(v4 + 26) |= 2u;
+  toCopy[4] = self->_activeDuration;
+  *(toCopy + 26) |= 2u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -505,8 +505,8 @@ LABEL_4:
   }
 
 LABEL_17:
-  v4[9] = self->_lightSleepDuration;
-  *(v4 + 26) |= 0x40u;
+  toCopy[9] = self->_lightSleepDuration;
+  *(toCopy + 26) |= 0x40u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -520,8 +520,8 @@ LABEL_5:
   }
 
 LABEL_18:
-  v4[6] = self->_deepSleepDuration;
-  *(v4 + 26) |= 8u;
+  toCopy[6] = self->_deepSleepDuration;
+  *(toCopy + 26) |= 8u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -535,8 +535,8 @@ LABEL_6:
   }
 
 LABEL_19:
-  v4[8] = self->_lightSleepCycleCount;
-  *(v4 + 26) |= 0x20u;
+  toCopy[8] = self->_lightSleepCycleCount;
+  *(toCopy + 26) |= 0x20u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -550,8 +550,8 @@ LABEL_7:
   }
 
 LABEL_20:
-  v4[5] = self->_deepSleepCycleCount;
-  *(v4 + 26) |= 4u;
+  toCopy[5] = self->_deepSleepCycleCount;
+  *(toCopy + 26) |= 4u;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -565,8 +565,8 @@ LABEL_8:
   }
 
 LABEL_21:
-  v4[11] = self->_voltLowDuration;
-  *(v4 + 26) |= 0x100u;
+  toCopy[11] = self->_voltLowDuration;
+  *(toCopy + 26) |= 0x100u;
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -580,8 +580,8 @@ LABEL_9:
   }
 
 LABEL_22:
-  v4[12] = self->_voltMedDuration;
-  *(v4 + 26) |= 0x200u;
+  toCopy[12] = self->_voltMedDuration;
+  *(toCopy + 26) |= 0x200u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -595,21 +595,21 @@ LABEL_10:
   }
 
 LABEL_23:
-  v4[10] = self->_voltHighDuration;
-  *(v4 + 26) |= 0x80u;
+  toCopy[10] = self->_voltHighDuration;
+  *(toCopy + 26) |= 0x80u;
   if (*&self->_has)
   {
 LABEL_11:
-    *(v4 + 1) = self->_startTime;
-    *(v4 + 26) |= 1u;
+    *(toCopy + 1) = self->_startTime;
+    *(toCopy + 26) |= 1u;
   }
 
 LABEL_12:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 0x10) != 0)
   {
@@ -751,19 +751,19 @@ LABEL_11:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_52;
   }
 
   has = self->_has;
-  v6 = *(v4 + 26);
+  v6 = *(equalCopy + 26);
   if ((has & 0x10) != 0)
   {
-    if ((v6 & 0x10) == 0 || self->_duration != *(v4 + 7))
+    if ((v6 & 0x10) == 0 || self->_duration != *(equalCopy + 7))
     {
       goto LABEL_52;
     }
@@ -778,7 +778,7 @@ LABEL_52:
 
   if ((has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_activeDuration != *(v4 + 4))
+    if ((v6 & 2) == 0 || self->_activeDuration != *(equalCopy + 4))
     {
       goto LABEL_52;
     }
@@ -791,7 +791,7 @@ LABEL_52:
 
   if ((has & 0x40) != 0)
   {
-    if ((v6 & 0x40) == 0 || self->_lightSleepDuration != *(v4 + 9))
+    if ((v6 & 0x40) == 0 || self->_lightSleepDuration != *(equalCopy + 9))
     {
       goto LABEL_52;
     }
@@ -804,7 +804,7 @@ LABEL_52:
 
   if ((has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_deepSleepDuration != *(v4 + 6))
+    if ((v6 & 8) == 0 || self->_deepSleepDuration != *(equalCopy + 6))
     {
       goto LABEL_52;
     }
@@ -817,7 +817,7 @@ LABEL_52:
 
   if ((has & 0x20) != 0)
   {
-    if ((v6 & 0x20) == 0 || self->_lightSleepCycleCount != *(v4 + 8))
+    if ((v6 & 0x20) == 0 || self->_lightSleepCycleCount != *(equalCopy + 8))
     {
       goto LABEL_52;
     }
@@ -830,7 +830,7 @@ LABEL_52:
 
   if ((has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_deepSleepCycleCount != *(v4 + 5))
+    if ((v6 & 4) == 0 || self->_deepSleepCycleCount != *(equalCopy + 5))
     {
       goto LABEL_52;
     }
@@ -843,33 +843,33 @@ LABEL_52:
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(v4 + 26) & 0x100) == 0 || self->_voltLowDuration != *(v4 + 11))
+    if ((*(equalCopy + 26) & 0x100) == 0 || self->_voltLowDuration != *(equalCopy + 11))
     {
       goto LABEL_52;
     }
   }
 
-  else if ((*(v4 + 26) & 0x100) != 0)
+  else if ((*(equalCopy + 26) & 0x100) != 0)
   {
     goto LABEL_52;
   }
 
   if ((*&self->_has & 0x200) != 0)
   {
-    if ((*(v4 + 26) & 0x200) == 0 || self->_voltMedDuration != *(v4 + 12))
+    if ((*(equalCopy + 26) & 0x200) == 0 || self->_voltMedDuration != *(equalCopy + 12))
     {
       goto LABEL_52;
     }
   }
 
-  else if ((*(v4 + 26) & 0x200) != 0)
+  else if ((*(equalCopy + 26) & 0x200) != 0)
   {
     goto LABEL_52;
   }
 
   if ((has & 0x80) != 0)
   {
-    if ((v6 & 0x80) == 0 || self->_voltHighDuration != *(v4 + 10))
+    if ((v6 & 0x80) == 0 || self->_voltHighDuration != *(equalCopy + 10))
     {
       goto LABEL_52;
     }
@@ -882,7 +882,7 @@ LABEL_52:
 
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_startTime != *(v4 + 1))
+    if ((v6 & 1) == 0 || self->_startTime != *(equalCopy + 1))
     {
       goto LABEL_52;
     }
@@ -1039,15 +1039,15 @@ LABEL_11:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 26);
+  fromCopy = from;
+  v5 = *(fromCopy + 26);
   if ((v5 & 0x10) != 0)
   {
-    self->_duration = *(v4 + 7);
+    self->_duration = *(fromCopy + 7);
     *&self->_has |= 0x10u;
-    v5 = *(v4 + 26);
+    v5 = *(fromCopy + 26);
     if ((v5 & 2) == 0)
     {
 LABEL_3:
@@ -1065,9 +1065,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_activeDuration = *(v4 + 4);
+  self->_activeDuration = *(fromCopy + 4);
   *&self->_has |= 2u;
-  v5 = *(v4 + 26);
+  v5 = *(fromCopy + 26);
   if ((v5 & 0x40) == 0)
   {
 LABEL_4:
@@ -1080,9 +1080,9 @@ LABEL_4:
   }
 
 LABEL_17:
-  self->_lightSleepDuration = *(v4 + 9);
+  self->_lightSleepDuration = *(fromCopy + 9);
   *&self->_has |= 0x40u;
-  v5 = *(v4 + 26);
+  v5 = *(fromCopy + 26);
   if ((v5 & 8) == 0)
   {
 LABEL_5:
@@ -1095,9 +1095,9 @@ LABEL_5:
   }
 
 LABEL_18:
-  self->_deepSleepDuration = *(v4 + 6);
+  self->_deepSleepDuration = *(fromCopy + 6);
   *&self->_has |= 8u;
-  v5 = *(v4 + 26);
+  v5 = *(fromCopy + 26);
   if ((v5 & 0x20) == 0)
   {
 LABEL_6:
@@ -1110,9 +1110,9 @@ LABEL_6:
   }
 
 LABEL_19:
-  self->_lightSleepCycleCount = *(v4 + 8);
+  self->_lightSleepCycleCount = *(fromCopy + 8);
   *&self->_has |= 0x20u;
-  v5 = *(v4 + 26);
+  v5 = *(fromCopy + 26);
   if ((v5 & 4) == 0)
   {
 LABEL_7:
@@ -1125,9 +1125,9 @@ LABEL_7:
   }
 
 LABEL_20:
-  self->_deepSleepCycleCount = *(v4 + 5);
+  self->_deepSleepCycleCount = *(fromCopy + 5);
   *&self->_has |= 4u;
-  v5 = *(v4 + 26);
+  v5 = *(fromCopy + 26);
   if ((v5 & 0x100) == 0)
   {
 LABEL_8:
@@ -1140,9 +1140,9 @@ LABEL_8:
   }
 
 LABEL_21:
-  self->_voltLowDuration = *(v4 + 11);
+  self->_voltLowDuration = *(fromCopy + 11);
   *&self->_has |= 0x100u;
-  v5 = *(v4 + 26);
+  v5 = *(fromCopy + 26);
   if ((v5 & 0x200) == 0)
   {
 LABEL_9:
@@ -1155,9 +1155,9 @@ LABEL_9:
   }
 
 LABEL_22:
-  self->_voltMedDuration = *(v4 + 12);
+  self->_voltMedDuration = *(fromCopy + 12);
   *&self->_has |= 0x200u;
-  v5 = *(v4 + 26);
+  v5 = *(fromCopy + 26);
   if ((v5 & 0x80) == 0)
   {
 LABEL_10:
@@ -1170,12 +1170,12 @@ LABEL_10:
   }
 
 LABEL_23:
-  self->_voltHighDuration = *(v4 + 10);
+  self->_voltHighDuration = *(fromCopy + 10);
   *&self->_has |= 0x80u;
-  if (*(v4 + 26))
+  if (*(fromCopy + 26))
   {
 LABEL_11:
-    self->_startTime = *(v4 + 1);
+    self->_startTime = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 

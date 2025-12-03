@@ -10,7 +10,7 @@
 
 - (uint64_t)_ck_shouldInsertInCompositionAsAdaptiveImageGlyph
 {
-  if ([a1 isAnimated])
+  if ([self isAnimated])
   {
     v2 = IMLogHandleForCategory();
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEBUG))
@@ -23,8 +23,8 @@
 
   else
   {
-    v4 = [a1 hasLiveEffect];
-    if (v4)
+    hasLiveEffect = [self hasLiveEffect];
+    if (hasLiveEffect)
     {
       v5 = IMLogHandleForCategory();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -33,13 +33,13 @@
       }
     }
 
-    return v4 ^ 1u;
+    return hasLiveEffect ^ 1u;
   }
 }
 
 - (uint64_t)_ck_shouldInsertInTapbackAsAdaptiveImageGlyph
 {
-  if ([a1 isAnimated])
+  if ([self isAnimated])
   {
     v2 = IMLogHandleForCategory();
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEBUG))
@@ -52,7 +52,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if ([a1 hasLiveEffect])
+  if ([self hasLiveEffect])
   {
     v2 = IMLogHandleForCategory();
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEBUG))
@@ -63,8 +63,8 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v3 = [a1 _ck_stickerType];
-  if (v3 < 5)
+  _ck_stickerType = [self _ck_stickerType];
+  if (_ck_stickerType < 5)
   {
     v2 = IMLogHandleForCategory();
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEBUG))
@@ -75,7 +75,7 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  if (v3 != 5)
+  if (_ck_stickerType != 5)
   {
     return 0;
   }
@@ -94,17 +94,17 @@ LABEL_11:
 
 - (uint64_t)_ck_stickerType
 {
-  v2 = [a1 searchText];
-  v3 = [v2 length];
+  searchText = [self searchText];
+  v3 = [searchText length];
 
   if (!v3)
   {
-    v5 = [a1 externalURI];
-    if ([v5 length])
+    externalURI = [self externalURI];
+    if ([externalURI length])
     {
-      if ([v5 hasPrefix:@"sticker:///user/"])
+      if ([externalURI hasPrefix:@"sticker:///user/"])
       {
-        v6 = [a1 __ck_representationWithRole:@"com.apple.stickers.role.stillVariant_40"];
+        v6 = [self __ck_representationWithRole:@"com.apple.stickers.role.stillVariant_40"];
         if (v6)
         {
           v4 = 5;
@@ -118,7 +118,7 @@ LABEL_11:
         goto LABEL_16;
       }
 
-      if ([v5 hasPrefix:@"sticker:///memoji/"])
+      if ([externalURI hasPrefix:@"sticker:///memoji/"])
       {
         v4 = 3;
 LABEL_16:
@@ -126,13 +126,13 @@ LABEL_16:
         return v4;
       }
 
-      if ([v5 hasPrefix:@"sticker:///emoji/"])
+      if ([externalURI hasPrefix:@"sticker:///emoji/"])
       {
         v4 = 4;
         goto LABEL_16;
       }
 
-      if ([v5 hasPrefix:@"sticker:///third_party/"])
+      if ([externalURI hasPrefix:@"sticker:///third_party/"])
       {
         v4 = 2;
         goto LABEL_16;
@@ -150,7 +150,7 @@ LABEL_16:
 {
   v18 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  [a1 representations];
+  [self representations];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -169,8 +169,8 @@ LABEL_16:
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 role];
-        v11 = [v10 isEqualToString:v4];
+        role = [v9 role];
+        v11 = [role isEqualToString:v4];
 
         if (v11)
         {
@@ -196,10 +196,10 @@ LABEL_11:
 
 - (id)_ck_plainStringEmojiText
 {
-  v1 = [a1 externalURI];
-  if ([v1 hasPrefix:@"sticker:///emoji/identifier/"])
+  externalURI = [self externalURI];
+  if ([externalURI hasPrefix:@"sticker:///emoji/identifier/"])
   {
-    v2 = [v1 substringFromIndex:{objc_msgSend(@"sticker:///emoji/identifier/", "length")}];
+    v2 = [externalURI substringFromIndex:{objc_msgSend(@"sticker:///emoji/identifier/", "length")}];
     if ([v2 length])
     {
       v3 = [MEMORY[0x1E699BAF8] emojiTokenWithString:v2 localeData:0];

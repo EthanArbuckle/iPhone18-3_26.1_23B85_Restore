@@ -1,13 +1,13 @@
 @interface CAFUIHeaderFooterView
-- (_TtC5CAFUI21CAFUIHeaderFooterView)initWithCoder:(id)a3;
-- (_TtC5CAFUI21CAFUIHeaderFooterView)initWithReuseIdentifier:(id)a3;
+- (_TtC5CAFUI21CAFUIHeaderFooterView)initWithCoder:(id)coder;
+- (_TtC5CAFUI21CAFUIHeaderFooterView)initWithReuseIdentifier:(id)identifier;
 @end
 
 @implementation CAFUIHeaderFooterView
 
-- (_TtC5CAFUI21CAFUIHeaderFooterView)initWithReuseIdentifier:(id)a3
+- (_TtC5CAFUI21CAFUIHeaderFooterView)initWithReuseIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v5 = MEMORY[0x245D0D180](v4);
@@ -25,12 +25,12 @@
   return v6;
 }
 
-- (_TtC5CAFUI21CAFUIHeaderFooterView)initWithCoder:(id)a3
+- (_TtC5CAFUI21CAFUIHeaderFooterView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for CAFUIHeaderFooterView();
-  v4 = a3;
-  v5 = [(CAFUIHeaderFooterView *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(CAFUIHeaderFooterView *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

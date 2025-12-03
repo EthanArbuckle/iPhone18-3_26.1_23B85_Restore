@@ -1,14 +1,14 @@
 @interface ASCredentialRequestButton
-- (void)addTarget:(id)a3 action:(SEL)a4;
+- (void)addTarget:(id)target action:(SEL)action;
 @end
 
 @implementation ASCredentialRequestButton
 
-- (void)addTarget:(id)a3 action:(SEL)a4
+- (void)addTarget:(id)target action:(SEL)action
 {
-  v6 = a3;
+  targetCopy = target;
   [(ASCredentialRequestButton *)self removeTarget:0 action:0 forControlEvents:0xFFFFFFFFLL];
-  [(ASCredentialRequestButton *)self addTarget:v6 action:a4 forControlEvents:64];
+  [(ASCredentialRequestButton *)self addTarget:targetCopy action:action forControlEvents:64];
 }
 
 @end

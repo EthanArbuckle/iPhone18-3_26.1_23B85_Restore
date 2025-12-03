@@ -1,7 +1,7 @@
 @interface PGGraphPetIdentityProcessor
-+ (id)fetchInterestingEligiblePetsForWallpaperWithWorkingContext:(id)a3 curationContext:(id)a4;
++ (id)fetchInterestingEligiblePetsForWallpaperWithWorkingContext:(id)context curationContext:(id)curationContext;
 - (PGGraph)graph;
-- (PGGraphPetIdentityProcessor)initWithDetectionType:(signed __int16)a3 photoLibrary:(id)a4 graph:(id)a5 loggingConnection:(id)a6 cache:(id)a7;
+- (PGGraphPetIdentityProcessor)initWithDetectionType:(signed __int16)type photoLibrary:(id)library graph:(id)graph loggingConnection:(id)connection cache:(id)cache;
 - (PHPhotoLibrary)photoLibrary;
 - (id)fetchPetPersons;
 @end
@@ -25,40 +25,40 @@
 - (id)fetchPetPersons
 {
   v3 = objc_opt_class();
-  v4 = [(PGGraphPetIdentityProcessor *)self detectionType];
-  v5 = [(PGGraphPetIdentityProcessor *)self photoLibrary];
-  v6 = [v3 fetchPetPersonsWithDetectionType:v4 photoLibrary:v5];
+  detectionType = [(PGGraphPetIdentityProcessor *)self detectionType];
+  photoLibrary = [(PGGraphPetIdentityProcessor *)self photoLibrary];
+  v6 = [v3 fetchPetPersonsWithDetectionType:detectionType photoLibrary:photoLibrary];
 
   return v6;
 }
 
-- (PGGraphPetIdentityProcessor)initWithDetectionType:(signed __int16)a3 photoLibrary:(id)a4 graph:(id)a5 loggingConnection:(id)a6 cache:(id)a7
+- (PGGraphPetIdentityProcessor)initWithDetectionType:(signed __int16)type photoLibrary:(id)library graph:(id)graph loggingConnection:(id)connection cache:(id)cache
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  libraryCopy = library;
+  graphCopy = graph;
+  connectionCopy = connection;
+  cacheCopy = cache;
   v19.receiver = self;
   v19.super_class = PGGraphPetIdentityProcessor;
   v16 = [(PGGraphPetIdentityProcessor *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    v16->_detectionType = a3;
-    objc_storeWeak(&v16->_graph, v13);
-    objc_storeWeak(&v17->_photoLibrary, v12);
-    objc_storeStrong(&v17->_loggingConnection, a6);
-    objc_storeStrong(&v17->_cache, a7);
+    v16->_detectionType = type;
+    objc_storeWeak(&v16->_graph, graphCopy);
+    objc_storeWeak(&v17->_photoLibrary, libraryCopy);
+    objc_storeStrong(&v17->_loggingConnection, connection);
+    objc_storeStrong(&v17->_cache, cache);
   }
 
   return v17;
 }
 
-+ (id)fetchInterestingEligiblePetsForWallpaperWithWorkingContext:(id)a3 curationContext:(id)a4
++ (id)fetchInterestingEligiblePetsForWallpaperWithWorkingContext:(id)context curationContext:(id)curationContext
 {
   v45[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  contextCopy = context;
+  curationContextCopy = curationContext;
   v39 = 0;
   v40 = &v39;
   v41 = 0x3032000000;
@@ -70,12 +70,12 @@
   v38[2] = __106__PGGraphPetIdentityProcessor_fetchInterestingEligiblePetsForWallpaperWithWorkingContext_curationContext___block_invoke;
   v38[3] = &unk_27888A5C0;
   v38[4] = &v39;
-  [v5 performSynchronousConcurrentGraphReadUsingBlock:v38];
+  [contextCopy performSynchronousConcurrentGraphReadUsingBlock:v38];
   v7 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K IN %@", @"localIdentifier", v40[5]];
   v8 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %d", @"type", 1];
-  v9 = [v5 photoLibrary];
-  v10 = [v9 librarySpecificFetchOptions];
-  [v10 setIncludedDetectionTypes:&unk_2844854C0];
+  photoLibrary = [contextCopy photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setIncludedDetectionTypes:&unk_2844854C0];
   if ([v40[5] count])
   {
     v11 = MEMORY[0x277CCA920];
@@ -83,15 +83,15 @@
     v45[1] = v8;
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v45 count:2];
     v13 = [v11 orPredicateWithSubpredicates:v12];
-    [v10 setPredicate:v13];
+    [librarySpecificFetchOptions setPredicate:v13];
   }
 
   else
   {
-    [v10 setPredicate:v8];
+    [librarySpecificFetchOptions setPredicate:v8];
   }
 
-  v14 = [MEMORY[0x277CD9938] fetchPersonsWithOptions:v10];
+  v14 = [MEMORY[0x277CD9938] fetchPersonsWithOptions:librarySpecificFetchOptions];
   if ([v14 count])
   {
     v32 = 0;
@@ -106,9 +106,9 @@
     v31[3] = &unk_2788800B8;
     v31[4] = &v32;
     [v14 enumerateObjectsUsingBlock:v31];
-    v15 = [v6 userFeedbackCalculator];
-    v16 = [v33[5] allKeys];
-    v17 = [v15 userFeedbackTypeByPersonUUIDForPersonUUIDs:v16];
+    userFeedbackCalculator = [curationContextCopy userFeedbackCalculator];
+    allKeys = [v33[5] allKeys];
+    v17 = [userFeedbackCalculator userFeedbackTypeByPersonUUIDForPersonUUIDs:allKeys];
 
     v25 = 0;
     v26 = &v25;

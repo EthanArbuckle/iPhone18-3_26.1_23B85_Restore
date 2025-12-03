@@ -1,22 +1,22 @@
 @interface AMSMediaToken
-- (AMSMediaToken)initWithCoder:(id)a3;
-- (AMSMediaToken)initWithString:(id)a3 expirationDate:(id)a4 lifetime:(double)a5 valid:(BOOL)a6;
-- (BOOL)isEqual:(id)a3;
+- (AMSMediaToken)initWithCoder:(id)coder;
+- (AMSMediaToken)initWithString:(id)string expirationDate:(id)date lifetime:(double)lifetime valid:(BOOL)valid;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isExpired;
-- (BOOL)willExpireWithin:(double)a3;
+- (BOOL)willExpireWithin:(double)within;
 - (double)percentageOfLifetimeRemaining;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)invalidCopy;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AMSMediaToken
 
 - (BOOL)isExpired
 {
-  v2 = [(AMSMediaToken *)self expirationDate];
-  [v2 timeIntervalSinceNow];
+  expirationDate = [(AMSMediaToken *)self expirationDate];
+  [expirationDate timeIntervalSinceNow];
   v4 = v3 < 0.0;
 
   return v4;
@@ -24,8 +24,8 @@
 
 - (double)percentageOfLifetimeRemaining
 {
-  v3 = [(AMSMediaToken *)self expirationDate];
-  [v3 timeIntervalSinceNow];
+  expirationDate = [(AMSMediaToken *)self expirationDate];
+  [expirationDate timeIntervalSinceNow];
   v5 = v4;
   [(AMSMediaToken *)self lifetime];
   v7 = v5 / v6;
@@ -33,22 +33,22 @@
   return v7;
 }
 
-- (AMSMediaToken)initWithString:(id)a3 expirationDate:(id)a4 lifetime:(double)a5 valid:(BOOL)a6
+- (AMSMediaToken)initWithString:(id)string expirationDate:(id)date lifetime:(double)lifetime valid:(BOOL)valid
 {
-  v10 = a3;
-  v11 = a4;
+  stringCopy = string;
+  dateCopy = date;
   v16.receiver = self;
   v16.super_class = AMSMediaToken;
   v12 = [(AMSMediaToken *)&v16 init];
   if (v12)
   {
-    v13 = [v10 copy];
+    v13 = [stringCopy copy];
     tokenString = v12->_tokenString;
     v12->_tokenString = v13;
 
-    objc_storeStrong(&v12->_expirationDate, a4);
-    v12->_lifetime = a5;
-    v12->_valid = a6;
+    objc_storeStrong(&v12->_expirationDate, date);
+    v12->_lifetime = lifetime;
+    v12->_valid = valid;
   }
 
   return v12;
@@ -62,11 +62,11 @@
   return v2;
 }
 
-- (BOOL)willExpireWithin:(double)a3
+- (BOOL)willExpireWithin:(double)within
 {
-  v4 = [(AMSMediaToken *)self expirationDate];
-  [v4 timeIntervalSinceNow];
-  v6 = v5 < a3;
+  expirationDate = [(AMSMediaToken *)self expirationDate];
+  [expirationDate timeIntervalSinceNow];
+  v6 = v5 < within;
 
   return v6;
 }
@@ -74,11 +74,11 @@
 - (id)description
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(AMSMediaToken *)self tokenString];
-  [v3 ams_setNullableObject:v4 forKey:@"tokenString"];
+  tokenString = [(AMSMediaToken *)self tokenString];
+  [v3 ams_setNullableObject:tokenString forKey:@"tokenString"];
 
-  v5 = [(AMSMediaToken *)self expirationDate];
-  [v3 ams_setNullableObject:v5 forKey:@"expirationDate"];
+  expirationDate = [(AMSMediaToken *)self expirationDate];
+  [v3 ams_setNullableObject:expirationDate forKey:@"expirationDate"];
 
   v6 = MEMORY[0x1E696AD98];
   [(AMSMediaToken *)self lifetime];
@@ -101,31 +101,31 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v5 = 0;
     v13 = 0;
-    v6 = v4;
+    tokenString = equalCopy;
 LABEL_12:
 
     goto LABEL_13;
   }
 
-  v5 = v4;
+  v5 = equalCopy;
 
   if (v5)
   {
-    v6 = [(AMSMediaToken *)self tokenString];
-    v7 = [v5 tokenString];
-    if ([v6 isEqualToString:v7])
+    tokenString = [(AMSMediaToken *)self tokenString];
+    tokenString2 = [v5 tokenString];
+    if ([tokenString isEqualToString:tokenString2])
     {
-      v8 = [(AMSMediaToken *)self expirationDate];
-      v9 = [v5 expirationDate];
-      if ([v8 isEqualToDate:v9])
+      expirationDate = [(AMSMediaToken *)self expirationDate];
+      expirationDate2 = [v5 expirationDate];
+      if ([expirationDate isEqualToDate:expirationDate2])
       {
         [(AMSMediaToken *)self lifetime];
         v11 = v10;
@@ -153,52 +153,52 @@ LABEL_13:
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [AMSMediaToken alloc];
-  v6 = [(AMSMediaToken *)self tokenString];
-  v7 = [v6 copyWithZone:a3];
-  v8 = [(AMSMediaToken *)self expirationDate];
-  v9 = [v8 copyWithZone:a3];
+  tokenString = [(AMSMediaToken *)self tokenString];
+  v7 = [tokenString copyWithZone:zone];
+  expirationDate = [(AMSMediaToken *)self expirationDate];
+  v9 = [expirationDate copyWithZone:zone];
   [(AMSMediaToken *)self lifetime];
   v11 = [(AMSMediaToken *)v5 initWithString:v7 expirationDate:v9 lifetime:[(AMSMediaToken *)self isValid] valid:v10];
 
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(AMSMediaToken *)self expirationDate];
-  [v6 encodeObject:v4 forKey:@"e"];
+  coderCopy = coder;
+  expirationDate = [(AMSMediaToken *)self expirationDate];
+  [coderCopy encodeObject:expirationDate forKey:@"e"];
 
   [(AMSMediaToken *)self lifetime];
-  [v6 encodeDouble:@"l" forKey:?];
-  v5 = [(AMSMediaToken *)self tokenString];
-  [v6 encodeObject:v5 forKey:@"t"];
+  [coderCopy encodeDouble:@"l" forKey:?];
+  tokenString = [(AMSMediaToken *)self tokenString];
+  [coderCopy encodeObject:tokenString forKey:@"t"];
 
-  [v6 encodeBool:-[AMSMediaToken isValid](self forKey:{"isValid"), @"v"}];
+  [coderCopy encodeBool:-[AMSMediaToken isValid](self forKey:{"isValid"), @"v"}];
 }
 
-- (AMSMediaToken)initWithCoder:(id)a3
+- (AMSMediaToken)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = AMSMediaToken;
   v5 = [(AMSMediaToken *)&v12 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"e"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"e"];
     expirationDate = v5->_expirationDate;
     v5->_expirationDate = v6;
 
-    [v4 decodeDoubleForKey:@"l"];
+    [coderCopy decodeDoubleForKey:@"l"];
     v5->_lifetime = v8;
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"t"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"t"];
     tokenString = v5->_tokenString;
     v5->_tokenString = v9;
 
-    v5->_valid = [v4 decodeBoolForKey:@"v"];
+    v5->_valid = [coderCopy decodeBoolForKey:@"v"];
   }
 
   return v5;

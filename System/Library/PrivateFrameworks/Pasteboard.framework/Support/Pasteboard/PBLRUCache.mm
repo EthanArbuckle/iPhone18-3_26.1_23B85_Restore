@@ -1,11 +1,11 @@
 @interface PBLRUCache
-- (PBLRUCache)initWithLimit:(unint64_t)a3;
-- (id)evictedObjectForUsedObject:(id)a3;
+- (PBLRUCache)initWithLimit:(unint64_t)limit;
+- (id)evictedObjectForUsedObject:(id)object;
 @end
 
 @implementation PBLRUCache
 
-- (PBLRUCache)initWithLimit:(unint64_t)a3
+- (PBLRUCache)initWithLimit:(unint64_t)limit
 {
   v8.receiver = self;
   v8.super_class = PBLRUCache;
@@ -16,20 +16,20 @@
     cache = v4->_cache;
     v4->_cache = v5;
 
-    v4->_limit = a3;
+    v4->_limit = limit;
   }
 
   return v4;
 }
 
-- (id)evictedObjectForUsedObject:(id)a3
+- (id)evictedObjectForUsedObject:(id)object
 {
-  v4 = a3;
-  v5 = [(NSMutableOrderedSet *)self->_cache indexOfObject:v4];
+  objectCopy = object;
+  v5 = [(NSMutableOrderedSet *)self->_cache indexOfObject:objectCopy];
   cache = self->_cache;
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    [(NSMutableOrderedSet *)cache addObject:v4];
+    [(NSMutableOrderedSet *)cache addObject:objectCopy];
     if ([(NSMutableOrderedSet *)self->_cache count]> self->_limit)
     {
       v7 = [(NSMutableOrderedSet *)self->_cache objectAtIndexedSubscript:0];
@@ -41,7 +41,7 @@
   else
   {
     [(NSMutableOrderedSet *)cache removeObjectAtIndex:?];
-    [(NSMutableOrderedSet *)self->_cache addObject:v4];
+    [(NSMutableOrderedSet *)self->_cache addObject:objectCopy];
   }
 
   v7 = 0;

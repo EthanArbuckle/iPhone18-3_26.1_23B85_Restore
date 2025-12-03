@@ -14,7 +14,7 @@
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = [a1 tracksWithMediaType:*MEMORY[0x277CE5EA8]];
+  v4 = [self tracksWithMediaType:*MEMORY[0x277CE5EA8]];
   v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {

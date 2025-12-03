@@ -32,82 +32,82 @@
 
 - (uint64_t)checkedCode
 {
-  v1 = [a1 _deepestWithLayer];
-  v2 = v1;
-  if (v1)
+  _deepestWithLayer = [self _deepestWithLayer];
+  v2 = _deepestWithLayer;
+  if (_deepestWithLayer)
   {
-    v3 = [v1 code];
+    code = [_deepestWithLayer code];
   }
 
   else
   {
-    v3 = -1;
+    code = -1;
   }
 
-  return v3;
+  return code;
 }
 
 - (id)_deepestWithLayer
 {
-  v2 = [a1 checkedDepthCount];
-  if (v2 < 1)
+  checkedDepthCount = [self checkedDepthCount];
+  if (checkedDepthCount < 1)
   {
     goto LABEL_9;
   }
 
-  v3 = v2;
+  v3 = checkedDepthCount;
   do
   {
-    v4 = [a1 checkedForDepthIndex:v3];
+    v4 = [self checkedForDepthIndex:v3];
     if ([v4 _errorInStackLayer] > 10)
     {
-      v5 = v4;
+      selfCopy = v4;
     }
 
     else
     {
-      v5 = 0;
+      selfCopy = 0;
       --v3;
     }
   }
 
-  while (!v5 && v3 > 0);
-  if (!v5)
+  while (!selfCopy && v3 > 0);
+  if (!selfCopy)
   {
 LABEL_9:
-    if ([a1 _errorInStackLayer] >= 11)
+    if ([self _errorInStackLayer] >= 11)
     {
-      v5 = a1;
+      selfCopy = self;
     }
 
     else
     {
-      v5 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (uint64_t)checkedDepthCount
 {
-  v1 = [a1 userInfo];
+  userInfo = [self userInfo];
   v2 = *MEMORY[0x1E696AA08];
-  v3 = [v1 safeObjectForKey:*MEMORY[0x1E696AA08] ofClass:objc_opt_class()];
+  v3 = [userInfo safeObjectForKey:*MEMORY[0x1E696AA08] ofClass:objc_opt_class()];
   if (v3)
   {
     v4 = v3;
     v5 = 0;
-    v6 = v1;
+    v6 = userInfo;
     do
     {
       ++v5;
-      v1 = [v4 userInfo];
+      userInfo = [v4 userInfo];
 
-      v7 = [v1 safeObjectForKey:v2 ofClass:objc_opt_class()];
+      v7 = [userInfo safeObjectForKey:v2 ofClass:objc_opt_class()];
 
       v4 = v7;
-      v6 = v1;
+      v6 = userInfo;
     }
 
     while (v7);
@@ -123,65 +123,65 @@ LABEL_9:
 
 - (id)checkedDomain
 {
-  v1 = [a1 _deepestWithLayer];
-  v2 = v1;
-  if (v1)
+  _deepestWithLayer = [self _deepestWithLayer];
+  v2 = _deepestWithLayer;
+  if (_deepestWithLayer)
   {
-    v3 = [v1 domain];
+    domain = [_deepestWithLayer domain];
   }
 
   else
   {
-    v3 = 0;
+    domain = 0;
   }
 
-  return v3;
+  return domain;
 }
 
 - (id)checkedDescription
 {
-  v2 = [a1 checkedDepthCount];
-  v3 = [a1 _errorInStackLayer];
-  v4 = [SUCoreErrorInformation codeNameForError:a1];
-  v5 = [a1 checkedIndicationsDescription];
+  checkedDepthCount = [self checkedDepthCount];
+  _errorInStackLayer = [self _errorInStackLayer];
+  v4 = [SUCoreErrorInformation codeNameForError:self];
+  checkedIndicationsDescription = [self checkedIndicationsDescription];
   v6 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v7 = [a1 domain];
-  v8 = v7;
-  if (v3 > 10)
+  domain = [self domain];
+  v8 = domain;
+  if (_errorInStackLayer > 10)
   {
-    v9 = [SUCoreErrorInformation nameForSUCoreLayer:v3];
+    v9 = [SUCoreErrorInformation nameForSUCoreLayer:_errorInStackLayer];
     v11 = [v6 initWithFormat:@"%@(%@):%@", v8, v9, v4];
     v10 = [&stru_1F5BDE410 stringByAppendingString:v11];
   }
 
   else
   {
-    v9 = [v6 initWithFormat:@"%@:%@", v7, v4];
+    v9 = [v6 initWithFormat:@"%@:%@", domain, v4];
     v10 = [&stru_1F5BDE410 stringByAppendingString:v9];
   }
 
-  if (v2 <= 0)
+  if (checkedDepthCount <= 0)
   {
     v20 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v12 = [a1 localizedDescription];
-    v16 = [v20 initWithFormat:@" | %@", v12];
-    v19 = [v10 stringByAppendingString:v16];
+    localizedDescription = [self localizedDescription];
+    domain2 = [v20 initWithFormat:@" | %@", localizedDescription];
+    v19 = [v10 stringByAppendingString:domain2];
     v14 = v4;
   }
 
   else
   {
-    v12 = [a1 checkedForDepthIndex:v2];
-    v13 = [SUCoreErrorInformation layerForError:v12];
-    v14 = [SUCoreErrorInformation codeNameForError:v12];
+    localizedDescription = [self checkedForDepthIndex:checkedDepthCount];
+    v13 = [SUCoreErrorInformation layerForError:localizedDescription];
+    v14 = [SUCoreErrorInformation codeNameForError:localizedDescription];
 
     v15 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v16 = [v12 domain];
+    domain2 = [localizedDescription domain];
     if (v13 > 10)
     {
-      v17 = [SUCoreErrorInformation nameForSUCoreLayer:v13];
-      v18 = [v12 localizedDescription];
-      v21 = [v15 initWithFormat:@"_%d_%@(%@):%@ | %@", v2, v16, v17, v14, v18];
+      v12LocalizedDescription2 = [SUCoreErrorInformation nameForSUCoreLayer:v13];
+      v12LocalizedDescription = [localizedDescription localizedDescription];
+      v21 = [v15 initWithFormat:@"_%d_%@(%@):%@ | %@", checkedDepthCount, domain2, v12LocalizedDescription2, v14, v12LocalizedDescription];
       v19 = [v10 stringByAppendingString:v21];
 
       v10 = v21;
@@ -189,17 +189,17 @@ LABEL_9:
 
     else
     {
-      v17 = [v12 localizedDescription];
-      v18 = [v15 initWithFormat:@"_%d_%@:%@ | %@", v2, v16, v14, v17];
-      v19 = [v10 stringByAppendingString:v18];
+      v12LocalizedDescription2 = [localizedDescription localizedDescription];
+      v12LocalizedDescription = [v15 initWithFormat:@"_%d_%@:%@ | %@", checkedDepthCount, domain2, v14, v12LocalizedDescription2];
+      v19 = [v10 stringByAppendingString:v12LocalizedDescription];
     }
 
-    v10 = v17;
+    v10 = v12LocalizedDescription2;
   }
 
-  if (v5)
+  if (checkedIndicationsDescription)
   {
-    v22 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"\n%@", v5];
+    v22 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"\n%@", checkedIndicationsDescription];
     v23 = [v19 stringByAppendingString:v22];
 
     v19 = v23;
@@ -210,12 +210,12 @@ LABEL_9:
 
 - (id)checkedIndicationsDescription
 {
-  v1 = [a1 checkedIndications];
+  checkedIndications = [self checkedIndications];
   v2 = 0;
   v3 = 0;
   do
   {
-    if ((v1 & (1 << v2)) != 0)
+    if ((checkedIndications & (1 << v2)) != 0)
     {
       v4 = MEMORY[0x1E696AEC0];
       v5 = [SUCoreErrorAttributes descriptionForIndication:?];
@@ -245,15 +245,15 @@ LABEL_9:
 - (int64_t)checkedIndications
 {
   v17 = *MEMORY[0x1E69E9840];
-  v2 = [SUCoreErrorInformation allIndicationsForError:a1];
-  v3 = [a1 checkedDepthCount];
-  if (v3 >= 1)
+  v2 = [SUCoreErrorInformation allIndicationsForError:self];
+  checkedDepthCount = [self checkedDepthCount];
+  if (checkedDepthCount >= 1)
   {
-    v4 = v3;
-    v5 = v3;
+    v4 = checkedDepthCount;
+    v5 = checkedDepthCount;
     while (1)
     {
-      v6 = [a1 checkedForDepthIndex:v5];
+      v6 = [self checkedForDepthIndex:v5];
       if (!v6)
       {
         break;
@@ -269,18 +269,18 @@ LABEL_9:
     }
 
     v7 = +[SUCoreLog sharedLogger];
-    v8 = [v7 oslog];
+    oslog = [v7 oslog];
 
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
-      v11 = [a1 checkedDescription];
+      checkedDescription = [self checkedDescription];
       v12[0] = 67109634;
       v12[1] = v4;
       v13 = 1024;
       v14 = v5;
       v15 = 2114;
-      v16 = v11;
-      _os_log_error_impl(&dword_1E0F71000, v8, OS_LOG_TYPE_ERROR, "[CORE_ERROR] {checkedIndications} error with depthCount=%d yet no stack-error at checked depth(%d) | cannot determine if generic failure for error: %{public}@", v12, 0x18u);
+      v16 = checkedDescription;
+      _os_log_error_impl(&dword_1E0F71000, oslog, OS_LOG_TYPE_ERROR, "[CORE_ERROR] {checkedIndications} error with depthCount=%d yet no stack-error at checked depth(%d) | cannot determine if generic failure for error: %{public}@", v12, 0x18u);
     }
   }
 
@@ -291,33 +291,33 @@ LABEL_9:
 
 - (uint64_t)checkedLayer
 {
-  v1 = [a1 _deepestWithLayer];
-  v2 = v1;
-  if (v1)
+  _deepestWithLayer = [self _deepestWithLayer];
+  v2 = _deepestWithLayer;
+  if (_deepestWithLayer)
   {
-    v3 = [v1 _errorInStackLayer];
+    _errorInStackLayer = [_deepestWithLayer _errorInStackLayer];
   }
 
   else
   {
-    v3 = 10;
+    _errorInStackLayer = 10;
   }
 
-  return v3;
+  return _errorInStackLayer;
 }
 
 - (id)checkedOfLayer:()SUCoreError
 {
-  v5 = [a1 checkedDepthCount];
-  if (v5 < 1)
+  checkedDepthCount = [self checkedDepthCount];
+  if (checkedDepthCount < 1)
   {
     goto LABEL_9;
   }
 
-  v6 = v5;
+  v6 = checkedDepthCount;
   do
   {
-    v7 = [a1 checkedForDepthIndex:v6];
+    v7 = [self checkedForDepthIndex:v6];
     if ([v7 _errorInStackLayer] == a3)
     {
       v8 = v7;
@@ -334,7 +334,7 @@ LABEL_9:
   if (!v8)
   {
 LABEL_9:
-    v8 = [a1 _errorInStackOfLayer:a3];
+    v8 = [self _errorInStackOfLayer:a3];
   }
 
   return v8;
@@ -342,29 +342,29 @@ LABEL_9:
 
 - (id)checkedUserInfo
 {
-  v1 = [a1 _deepestWithLayer];
-  v2 = v1;
-  if (v1)
+  _deepestWithLayer = [self _deepestWithLayer];
+  v2 = _deepestWithLayer;
+  if (_deepestWithLayer)
   {
-    v3 = [v1 userInfo];
+    userInfo = [_deepestWithLayer userInfo];
   }
 
   else
   {
-    v3 = 0;
+    userInfo = 0;
   }
 
-  return v3;
+  return userInfo;
 }
 
 - (uint64_t)checkedSystemPartitionSize
 {
   v2 = +[SUCoreLog sharedLogger];
-  v3 = [v2 oslog];
+  oslog = [v2 oslog];
 
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
   {
-    [(NSError(SUCoreError) *)a1 checkedSystemPartitionSize];
+    [(NSError(SUCoreError) *)self checkedSystemPartitionSize];
   }
 
   return 0;
@@ -373,15 +373,15 @@ LABEL_9:
 - (int64_t)checkedIndicationsMatchingMask:()SUCoreError
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = [SUCoreErrorInformation indicationsForError:a1 matchingMask:a3];
-  v6 = [a1 checkedDepthCount];
-  if (v6 >= 1)
+  v5 = [SUCoreErrorInformation indicationsForError:self matchingMask:a3];
+  checkedDepthCount = [self checkedDepthCount];
+  if (checkedDepthCount >= 1)
   {
-    v7 = v6;
-    v8 = v6;
+    v7 = checkedDepthCount;
+    v8 = checkedDepthCount;
     while (1)
     {
-      v9 = [a1 checkedForDepthIndex:v8];
+      v9 = [self checkedForDepthIndex:v8];
       if (!v9)
       {
         break;
@@ -397,18 +397,18 @@ LABEL_9:
     }
 
     v10 = +[SUCoreLog sharedLogger];
-    v11 = [v10 oslog];
+    oslog = [v10 oslog];
 
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
-      v14 = [a1 checkedDescription];
+      checkedDescription = [self checkedDescription];
       v15[0] = 67109634;
       v15[1] = v7;
       v16 = 1024;
       v17 = v8;
       v18 = 2114;
-      v19 = v14;
-      _os_log_error_impl(&dword_1E0F71000, v11, OS_LOG_TYPE_ERROR, "[CORE_ERROR] {checkedIndicationsMatchingMask} error with depthCount=%d yet no stack-error at checked depth(%d) | cannot determine if generic failure for error: %{public}@", v15, 0x18u);
+      v19 = checkedDescription;
+      _os_log_error_impl(&dword_1E0F71000, oslog, OS_LOG_TYPE_ERROR, "[CORE_ERROR] {checkedIndicationsMatchingMask} error with depthCount=%d yet no stack-error at checked depth(%d) | cannot determine if generic failure for error: %{public}@", v15, 0x18u);
     }
   }
 
@@ -419,12 +419,12 @@ LABEL_9:
 
 - (__CFString)checkedIndicationsSummary
 {
-  v1 = [a1 checkedIndications];
+  checkedIndications = [self checkedIndications];
   v2 = 0;
   v3 = &stru_1F5BDE410;
   do
   {
-    if ((v1 & (1 << v2)) != 0)
+    if ((checkedIndications & (1 << v2)) != 0)
     {
       v4 = MEMORY[0x1E696AEC0];
       v5 = [SUCoreErrorAttributes nameForIndication:?];
@@ -456,9 +456,9 @@ LABEL_9:
 
 - (id)checkedForDepthIndex:()SUCoreError
 {
-  v4 = [a1 userInfo];
+  userInfo = [self userInfo];
   v5 = *MEMORY[0x1E696AA08];
-  v6 = [v4 safeObjectForKey:*MEMORY[0x1E696AA08] ofClass:objc_opt_class()];
+  v6 = [userInfo safeObjectForKey:*MEMORY[0x1E696AA08] ofClass:objc_opt_class()];
   v7 = a3 > 1;
   if (v6)
   {
@@ -475,11 +475,11 @@ LABEL_9:
     v9 = 2;
     do
     {
-      v10 = v4;
+      v10 = userInfo;
       v11 = v6;
-      v4 = [v6 userInfo];
+      userInfo = [v6 userInfo];
 
-      v6 = [v4 safeObjectForKey:v5 ofClass:objc_opt_class()];
+      v6 = [userInfo safeObjectForKey:v5 ofClass:objc_opt_class()];
 
       v7 = v9 < a3;
       if (v6)
@@ -513,15 +513,15 @@ LABEL_9:
 
 - (id)checkedNameForCode
 {
-  v2 = [a1 _deepestWithLayer];
-  if (v2)
+  _deepestWithLayer = [self _deepestWithLayer];
+  if (_deepestWithLayer)
   {
-    [SUCoreErrorInformation codeNameForError:v2];
+    [SUCoreErrorInformation codeNameForError:_deepestWithLayer];
   }
 
   else
   {
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"%d", objc_msgSend(a1, "code")];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"%d", objc_msgSend(self, "code")];
   }
   v3 = ;
 
@@ -530,28 +530,28 @@ LABEL_9:
 
 - (id)checkedSummary
 {
-  v2 = [a1 checkedDepthCount];
-  v3 = [a1 _errorInStackLayer];
-  v4 = [SUCoreErrorInformation codeNameForError:a1];
-  v24 = [a1 checkedIndicationsSummary];
+  checkedDepthCount = [self checkedDepthCount];
+  _errorInStackLayer = [self _errorInStackLayer];
+  v4 = [SUCoreErrorInformation codeNameForError:self];
+  checkedIndicationsSummary = [self checkedIndicationsSummary];
   v5 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v25 = a1;
-  v6 = [a1 domain];
-  v7 = v6;
-  if (v3 > 10)
+  selfCopy = self;
+  domain = [self domain];
+  v7 = domain;
+  if (_errorInStackLayer > 10)
   {
-    v8 = [SUCoreErrorInformation nameForSUCoreLayer:v3];
+    v8 = [SUCoreErrorInformation nameForSUCoreLayer:_errorInStackLayer];
     v10 = [v5 initWithFormat:@"[%@(%@):%@", v7, v8, v4];
     v9 = [&stru_1F5BDE410 stringByAppendingString:v10];
   }
 
   else
   {
-    v8 = [v5 initWithFormat:@"[%@:%@", v6, v4];
+    v8 = [v5 initWithFormat:@"[%@:%@", domain, v4];
     v9 = [&stru_1F5BDE410 stringByAppendingString:v8];
   }
 
-  if (v2 < 1)
+  if (checkedDepthCount < 1)
   {
     v19 = v9;
   }
@@ -562,13 +562,13 @@ LABEL_9:
     do
     {
       v12 = v4;
-      v13 = [v25 checkedForDepthIndex:v11];
+      v13 = [selfCopy checkedForDepthIndex:v11];
       v14 = [SUCoreErrorInformation layerForError:v13];
       v4 = [SUCoreErrorInformation codeNameForError:v13];
 
       v15 = objc_alloc(MEMORY[0x1E696AEC0]);
-      v16 = [v13 domain];
-      v17 = v16;
+      domain2 = [v13 domain];
+      v17 = domain2;
       if (v14 > 10)
       {
         v18 = [SUCoreErrorInformation nameForSUCoreLayer:v14];
@@ -580,21 +580,21 @@ LABEL_9:
 
       else
       {
-        v18 = [v15 initWithFormat:@"_%d_%@:%@", v11, v16, v4];
+        v18 = [v15 initWithFormat:@"_%d_%@:%@", v11, domain2, v4];
         v19 = [v9 stringByAppendingString:v18];
       }
 
       ++v11;
       v9 = v19;
-      --v2;
+      --checkedDepthCount;
     }
 
-    while (v2);
+    while (checkedDepthCount);
   }
 
-  if (v24)
+  if (checkedIndicationsSummary)
   {
-    v21 = [v19 stringByAppendingString:v24];
+    v21 = [v19 stringByAppendingString:checkedIndicationsSummary];
 
     v19 = v21;
   }
@@ -611,10 +611,10 @@ LABEL_9:
 
 - (uint64_t)_checkedIsSafe:()SUCoreError
 {
-  v4 = a1;
-  if (v4)
+  selfCopy = self;
+  if (selfCopy)
   {
-    v5 = v4;
+    v5 = selfCopy;
     v6 = *MEMORY[0x1E696AA08];
     while (1)
     {
@@ -636,15 +636,15 @@ LABEL_9:
         goto LABEL_13;
       }
 
-      v10 = [v5 userInfo];
+      userInfo = [v5 userInfo];
 
-      if (!v10)
+      if (!userInfo)
       {
         break;
       }
 
-      v11 = [v5 userInfo];
-      v12 = [v11 safeObjectForKey:v6 ofClass:objc_opt_class()];
+      userInfo2 = [v5 userInfo];
+      v12 = [userInfo2 safeObjectForKey:v6 ofClass:objc_opt_class()];
 
       v5 = v12;
       if (!v12)
@@ -668,9 +668,9 @@ LABEL_13:
 
 - (id)_checkedStackErrorAtDepth:()SUCoreError
 {
-  v4 = [a1 userInfo];
+  userInfo = [self userInfo];
   v5 = *MEMORY[0x1E696AA08];
-  v6 = [v4 safeObjectForKey:*MEMORY[0x1E696AA08] ofClass:objc_opt_class()];
+  v6 = [userInfo safeObjectForKey:*MEMORY[0x1E696AA08] ofClass:objc_opt_class()];
 
   if (v6)
   {
@@ -688,8 +688,8 @@ LABEL_13:
     while (1)
     {
       v9 = v6;
-      v10 = [v6 userInfo];
-      v6 = [v10 safeObjectForKey:v5 ofClass:objc_opt_class()];
+      userInfo2 = [v6 userInfo];
+      v6 = [userInfo2 safeObjectForKey:v5 ofClass:objc_opt_class()];
 
       if ((v8 - 1) >= 4)
       {
@@ -724,15 +724,15 @@ LABEL_13:
 - (int64_t)_checkedIndicationsMatching:()SUCoreError
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = [SUCoreErrorInformation indicationsForError:a1 matchingMask:a3];
-  v6 = [a1 checkedDepthCount];
-  if (v6 >= 1)
+  v5 = [SUCoreErrorInformation indicationsForError:self matchingMask:a3];
+  checkedDepthCount = [self checkedDepthCount];
+  if (checkedDepthCount >= 1)
   {
-    v7 = v6;
-    v8 = v6;
+    v7 = checkedDepthCount;
+    v8 = checkedDepthCount;
     while (1)
     {
-      v9 = [a1 checkedForDepthIndex:v8];
+      v9 = [self checkedForDepthIndex:v8];
       if (!v9)
       {
         break;
@@ -748,18 +748,18 @@ LABEL_13:
     }
 
     v10 = +[SUCoreLog sharedLogger];
-    v11 = [v10 oslog];
+    oslog = [v10 oslog];
 
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
-      v14 = [a1 checkedDescription];
+      checkedDescription = [self checkedDescription];
       v15[0] = 67109634;
       v15[1] = v7;
       v16 = 1024;
       v17 = v8;
       v18 = 2114;
-      v19 = v14;
-      _os_log_error_impl(&dword_1E0F71000, v11, OS_LOG_TYPE_ERROR, "[CORE_ERROR] {_checkedIndicationsMatching} error with depthCount=%d yet no stack-error at checked depth(%d) | cannot determine all indications for error: %{public}@", v15, 0x18u);
+      v19 = checkedDescription;
+      _os_log_error_impl(&dword_1E0F71000, oslog, OS_LOG_TYPE_ERROR, "[CORE_ERROR] {_checkedIndicationsMatching} error with depthCount=%d yet no stack-error at checked depth(%d) | cannot determine all indications for error: %{public}@", v15, 0x18u);
     }
   }
 
@@ -770,17 +770,17 @@ LABEL_9:
 
 - (id)_errorInStackOfLayer:()SUCoreError
 {
-  if ([SUCoreErrorInformation layerForError:a1]== a3)
+  if ([SUCoreErrorInformation layerForError:self]== a3)
   {
-    v4 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v4 = 0;
+    selfCopy = 0;
   }
 
-  return v4;
+  return selfCopy;
 }
 
 + (id)buildCheckedSUCoreError:()SUCoreError underlying:description:
@@ -801,11 +801,11 @@ LABEL_9:
   v10 = [v7 _buildCheckedErrorForDomain:@"SUCoreError" withCode:a3 safeUnderlying:v9 description:v8];
 
   v11 = +[SUCoreLog sharedLogger];
-  v12 = [v11 oslog];
+  oslog = [v11 oslog];
 
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
   {
-    [NSError(SUCoreError) buildAndLogCheckedSUCoreError:v10 underlying:v12 description:?];
+    [NSError(SUCoreError) buildAndLogCheckedSUCoreError:v10 underlying:oslog description:?];
   }
 
   return v10;
@@ -834,10 +834,10 @@ LABEL_9:
           v11 = v10;
           v12 = v9;
           v13 = MEMORY[0x1E696ABC0];
-          v14 = [v9 domain];
-          v15 = [v12 code];
-          v16 = [v12 localizedDescription];
-          v10 = [v13 _buildCheckedErrorForDomain:v14 withCode:v15 safeUnderlying:v11 description:v16];
+          domain = [v9 domain];
+          code = [v12 code];
+          localizedDescription = [v12 localizedDescription];
+          v10 = [v13 _buildCheckedErrorForDomain:domain withCode:code safeUnderlying:v11 description:localizedDescription];
 
           v9 = [v4 _checkedStackErrorAtDepth:v7 - 1];
 
@@ -858,10 +858,10 @@ LABEL_9:
       }
 
       v17 = MEMORY[0x1E696ABC0];
-      v18 = [v4 domain];
-      v19 = [v4 code];
-      v20 = [v4 localizedDescription];
-      v5 = [v17 _buildCheckedErrorForDomain:v18 withCode:v19 safeUnderlying:v10 description:v20];
+      domain2 = [v4 domain];
+      code2 = [v4 code];
+      localizedDescription2 = [v4 localizedDescription];
+      v5 = [v17 _buildCheckedErrorForDomain:domain2 withCode:code2 safeUnderlying:v10 description:localizedDescription2];
     }
   }
 
@@ -880,17 +880,17 @@ LABEL_9:
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 1;
-  v4 = [v3 userInfo];
+  userInfo = [v3 userInfo];
 
-  if (v4)
+  if (userInfo)
   {
-    v5 = [v3 userInfo];
+    userInfo2 = [v3 userInfo];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __47__NSError_SUCoreError___checkedIsSafeUserInfo___block_invoke;
     v8[3] = &unk_1E86FC990;
     v8[4] = &v9;
-    [v5 enumerateKeysAndObjectsUsingBlock:v8];
+    [userInfo2 enumerateKeysAndObjectsUsingBlock:v8];
   }
 
   v6 = *(v10 + 24);
@@ -901,9 +901,9 @@ LABEL_9:
 
 + (unint64_t)_checkedDepthCount:()SUCoreError
 {
-  v3 = [a3 userInfo];
+  userInfo = [a3 userInfo];
   v4 = *MEMORY[0x1E696AA08];
-  v5 = [v3 safeObjectForKey:*MEMORY[0x1E696AA08] ofClass:objc_opt_class()];
+  v5 = [userInfo safeObjectForKey:*MEMORY[0x1E696AA08] ofClass:objc_opt_class()];
 
   if (v5)
   {
@@ -911,8 +911,8 @@ LABEL_9:
     while (1)
     {
       v7 = v5;
-      v8 = [v5 userInfo];
-      v5 = [v8 safeObjectForKey:v4 ofClass:objc_opt_class()];
+      userInfo2 = [v5 userInfo];
+      v5 = [userInfo2 safeObjectForKey:v4 ofClass:objc_opt_class()];
 
       if (v5 && v6 >= 4)
       {
@@ -963,9 +963,9 @@ LABEL_9:
 - (void)checkedSystemPartitionSize
 {
   v7 = *MEMORY[0x1E69E9840];
-  v3 = [a1 checkedDescription];
+  checkedDescription = [self checkedDescription];
   v5 = 138543362;
-  v6 = v3;
+  v6 = checkedDescription;
   _os_log_error_impl(&dword_1E0F71000, a2, OS_LOG_TYPE_ERROR, "[CORE_ERROR] {checkedSystemPartitionSize} system partition size error attribute not yet implemented | cannot provide system partition size for error: %{public}@", &v5, 0xCu);
 
   v4 = *MEMORY[0x1E69E9840];

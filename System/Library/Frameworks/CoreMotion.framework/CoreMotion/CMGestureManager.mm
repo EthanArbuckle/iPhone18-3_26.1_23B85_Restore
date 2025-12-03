@@ -3,7 +3,7 @@
 + (BOOL)isGestureServiceEnabled;
 - (id)gestureHandler;
 - (void)dealloc;
-- (void)setGestureHandler:(id)a3;
+- (void)setGestureHandler:(id)handler;
 @end
 
 @implementation CMGestureManager
@@ -25,7 +25,7 @@
   [(CMGestureManager *)&v5 dealloc];
 }
 
-- (void)setGestureHandler:(id)a3
+- (void)setGestureHandler:(id)handler
 {
   internal = self->_internal;
   v4 = *(internal + 4);
@@ -34,7 +34,7 @@
   v5[2] = sub_19B6BE888;
   v5[3] = &unk_1E7532B90;
   v5[4] = internal;
-  v5[5] = a3;
+  v5[5] = handler;
   dispatch_async(v4, v5);
 }
 

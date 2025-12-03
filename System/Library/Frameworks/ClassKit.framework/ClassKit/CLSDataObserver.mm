@@ -1,24 +1,24 @@
 @interface CLSDataObserver
-+ (id)predicateForCollaborationStateForObjectWithID:(id)a3 ownerPersonID:(id)a4 domain:(int64_t)a5;
-+ (id)predicateForCollaborationStatesForObjectWithID:(id)a3 domain:(int64_t)a4;
-+ (id)predicateForObjectsWithParentObjectID:(id)a3 andRole:(unint64_t)a4;
-+ (id)predicateForObjectsWithPersonID:(id)a3 andRole:(unint64_t)a4;
++ (id)predicateForCollaborationStateForObjectWithID:(id)d ownerPersonID:(id)iD domain:(int64_t)domain;
++ (id)predicateForCollaborationStatesForObjectWithID:(id)d domain:(int64_t)domain;
++ (id)predicateForObjectsWithParentObjectID:(id)d andRole:(unint64_t)role;
++ (id)predicateForObjectsWithPersonID:(id)d andRole:(unint64_t)role;
 + (id)predicateForUnexpiredObjects;
 - (CLSDataObserver)init;
-- (CLSDataObserver)initWithObjectType:(Class)a3 predicate:(id)a4 sortDescriptors:(id)a5;
-- (CLSDataObserver)initWithObjectType:(Class)a3 predicate:(id)a4 sortDescriptors:(id)a5 error:(id *)a6;
-- (CLSDataObserver)initWithQuerySpecification:(id)a3 error:(id *)a4;
+- (CLSDataObserver)initWithObjectType:(Class)type predicate:(id)predicate sortDescriptors:(id)descriptors;
+- (CLSDataObserver)initWithObjectType:(Class)type predicate:(id)predicate sortDescriptors:(id)descriptors error:(id *)error;
+- (CLSDataObserver)initWithQuerySpecification:(id)specification error:(id *)error;
 - (CLSDataStore)dataStore;
 - (Class)objectType;
 - (NSString)description;
-- (id)normalizeKeyPath:(id)a3 forValue:(id)a4;
-- (id)normalizedValue:(id)a3 forKeyPath:(id)a4;
-- (void)clientRemote_entitiesChangedAdded:(id)a3 updated:(id)a4 deleted:(id)a5;
-- (void)clientRemote_entitiesChangedUpdatedMatchingPredicate:(id)a3 updatedNotMatchingPredicate:(id)a4;
-- (void)clientRemote_finishWithEntitiesChangedSince:(id)a3;
+- (id)normalizeKeyPath:(id)path forValue:(id)value;
+- (id)normalizedValue:(id)value forKeyPath:(id)path;
+- (void)clientRemote_entitiesChangedAdded:(id)added updated:(id)updated deleted:(id)deleted;
+- (void)clientRemote_entitiesChangedUpdatedMatchingPredicate:(id)predicate updatedNotMatchingPredicate:(id)matchingPredicate;
+- (void)clientRemote_finishWithEntitiesChangedSince:(id)since;
 - (void)clientRemote_invalidate;
-- (void)clientRemote_itemChanged:(unint64_t)a3;
-- (void)setSortDescriptors:(id)a3;
+- (void)clientRemote_itemChanged:(unint64_t)changed;
+- (void)setSortDescriptors:(id)descriptors;
 @end
 
 @implementation CLSDataObserver
@@ -37,18 +37,18 @@
   objc_exception_throw(v11);
 }
 
-- (CLSDataObserver)initWithQuerySpecification:(id)a3 error:(id *)a4
+- (CLSDataObserver)initWithQuerySpecification:(id)specification error:(id *)error
 {
   v51 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  specificationCopy = specification;
   v46.receiver = self;
   v46.super_class = CLSDataObserver;
   v8 = [(CLSDataObserver *)&v46 init];
-  v11 = objc_msgSend_predicate(v7, v9, v10);
+  v11 = objc_msgSend_predicate(specificationCopy, v9, v10);
 
   if (v11)
   {
-    v14 = objc_msgSend_predicate(v7, v12, v13);
+    v14 = objc_msgSend_predicate(specificationCopy, v12, v13);
     v45 = 0;
     v16 = objc_msgSend_cls_normalizedPredicate_error_(v14, v15, v8, &v45);
     v17 = v45;
@@ -65,7 +65,7 @@
 
     if (!v19)
     {
-      objc_msgSend_cls_assignError_fromError_(MEMORY[0x277CCA9B8], v18, a4, v17);
+      objc_msgSend_cls_assignError_fromError_(MEMORY[0x277CCA9B8], v18, error, v17);
       if (v17)
       {
         if (qword_280B2A720 != -1)
@@ -90,7 +90,7 @@
       goto LABEL_16;
     }
 
-    objc_msgSend_setPredicate_(v7, v18, v16);
+    objc_msgSend_setPredicate_(specificationCopy, v18, v16);
   }
 
   if (v8)
@@ -100,7 +100,7 @@
     observerID = v8->_observerID;
     v8->_observerID = v25;
 
-    objc_storeStrong(&v8->_querySpec, a3);
+    objc_storeStrong(&v8->_querySpec, specification);
     v8->_changeTag = -1;
     v27 = objc_opt_new();
     entitiesMatchingPredicate = v8->_entitiesMatchingPredicate;
@@ -134,11 +134,11 @@ LABEL_16:
   return v21;
 }
 
-- (CLSDataObserver)initWithObjectType:(Class)a3 predicate:(id)a4 sortDescriptors:(id)a5
+- (CLSDataObserver)initWithObjectType:(Class)type predicate:(id)predicate sortDescriptors:(id)descriptors
 {
-  v8 = a5;
-  v10 = objc_msgSend_querySpecificationWithObjectType_predicate_(CLSQuerySpecification, v9, a3, a4);
-  objc_msgSend_setSortDescriptors_(v10, v11, v8);
+  descriptorsCopy = descriptors;
+  v10 = objc_msgSend_querySpecificationWithObjectType_predicate_(CLSQuerySpecification, v9, type, predicate);
+  objc_msgSend_setSortDescriptors_(v10, v11, descriptorsCopy);
 
   v15 = 0;
   v13 = objc_msgSend_initWithQuerySpecification_error_(self, v12, v10, &v15);
@@ -146,13 +146,13 @@ LABEL_16:
   return v13;
 }
 
-- (CLSDataObserver)initWithObjectType:(Class)a3 predicate:(id)a4 sortDescriptors:(id)a5 error:(id *)a6
+- (CLSDataObserver)initWithObjectType:(Class)type predicate:(id)predicate sortDescriptors:(id)descriptors error:(id *)error
 {
-  v10 = a5;
-  v12 = objc_msgSend_querySpecificationWithObjectType_predicate_(CLSQuerySpecification, v11, a3, a4);
-  objc_msgSend_setSortDescriptors_(v12, v13, v10);
+  descriptorsCopy = descriptors;
+  v12 = objc_msgSend_querySpecificationWithObjectType_predicate_(CLSQuerySpecification, v11, type, predicate);
+  objc_msgSend_setSortDescriptors_(v12, v13, descriptorsCopy);
 
-  Specification_error = objc_msgSend_initWithQuerySpecification_error_(self, v14, v12, a6);
+  Specification_error = objc_msgSend_initWithQuerySpecification_error_(self, v14, v12, error);
   return Specification_error;
 }
 
@@ -164,53 +164,53 @@ LABEL_16:
   return v4;
 }
 
-- (void)setSortDescriptors:(id)a3
+- (void)setSortDescriptors:(id)descriptors
 {
-  v5 = objc_msgSend_copy(a3, a2, a3);
+  v5 = objc_msgSend_copy(descriptors, a2, descriptors);
   objc_msgSend_setSortDescriptors_(self->_querySpec, v4, v5);
 }
 
-+ (id)predicateForObjectsWithPersonID:(id)a3 andRole:(unint64_t)a4
++ (id)predicateForObjectsWithPersonID:(id)d andRole:(unint64_t)role
 {
   v5 = MEMORY[0x277CCAC30];
   v6 = MEMORY[0x277CCABB0];
-  v7 = a3;
-  v9 = objc_msgSend_numberWithUnsignedInteger_(v6, v8, a4);
-  v11 = objc_msgSend_predicateWithFormat_(v5, v10, @"%K == %@ && %K = %@", @"personID", v7, @"roles", v9);
+  dCopy = d;
+  v9 = objc_msgSend_numberWithUnsignedInteger_(v6, v8, role);
+  v11 = objc_msgSend_predicateWithFormat_(v5, v10, @"%K == %@ && %K = %@", @"personID", dCopy, @"roles", v9);
 
   return v11;
 }
 
-+ (id)predicateForObjectsWithParentObjectID:(id)a3 andRole:(unint64_t)a4
++ (id)predicateForObjectsWithParentObjectID:(id)d andRole:(unint64_t)role
 {
   v5 = MEMORY[0x277CCAC30];
   v6 = MEMORY[0x277CCABB0];
-  v7 = a3;
-  v9 = objc_msgSend_numberWithUnsignedInteger_(v6, v8, a4);
-  v11 = objc_msgSend_predicateWithFormat_(v5, v10, @"%K == %@ && %K = %@", @"parentObjectID", v7, @"roles", v9);
+  dCopy = d;
+  v9 = objc_msgSend_numberWithUnsignedInteger_(v6, v8, role);
+  v11 = objc_msgSend_predicateWithFormat_(v5, v10, @"%K == %@ && %K = %@", @"parentObjectID", dCopy, @"roles", v9);
 
   return v11;
 }
 
-+ (id)predicateForCollaborationStateForObjectWithID:(id)a3 ownerPersonID:(id)a4 domain:(int64_t)a5
++ (id)predicateForCollaborationStateForObjectWithID:(id)d ownerPersonID:(id)iD domain:(int64_t)domain
 {
   v7 = MEMORY[0x277CCAC30];
   v8 = MEMORY[0x277CCABB0];
-  v9 = a4;
-  v10 = a3;
-  v12 = objc_msgSend_numberWithInteger_(v8, v11, a5);
-  v14 = objc_msgSend_predicateWithFormat_(v7, v13, @"%K == %@ && %K = %@ && %K == %@", @"parentObjectID", v10, @"ownerPersonID", v9, @"domain", v12);
+  iDCopy = iD;
+  dCopy = d;
+  v12 = objc_msgSend_numberWithInteger_(v8, v11, domain);
+  v14 = objc_msgSend_predicateWithFormat_(v7, v13, @"%K == %@ && %K = %@ && %K == %@", @"parentObjectID", dCopy, @"ownerPersonID", iDCopy, @"domain", v12);
 
   return v14;
 }
 
-+ (id)predicateForCollaborationStatesForObjectWithID:(id)a3 domain:(int64_t)a4
++ (id)predicateForCollaborationStatesForObjectWithID:(id)d domain:(int64_t)domain
 {
   v5 = MEMORY[0x277CCAC30];
   v6 = MEMORY[0x277CCABB0];
-  v7 = a3;
-  v9 = objc_msgSend_numberWithInteger_(v6, v8, a4);
-  v11 = objc_msgSend_predicateWithFormat_(v5, v10, @"%K == %@ && %K == %@", @"parentObjectID", v7, @"domain", v9);
+  dCopy = d;
+  v9 = objc_msgSend_numberWithInteger_(v6, v8, domain);
+  v11 = objc_msgSend_predicateWithFormat_(v5, v10, @"%K == %@ && %K == %@", @"parentObjectID", dCopy, @"domain", v9);
 
   return v11;
 }
@@ -237,11 +237,11 @@ LABEL_16:
   }
 }
 
-- (void)clientRemote_itemChanged:(unint64_t)a3
+- (void)clientRemote_itemChanged:(unint64_t)changed
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = objc_msgSend_changeTag(self, a2, a3);
-  objc_msgSend_setChangeTag_(self, v6, a3);
+  v5 = objc_msgSend_changeTag(self, a2, changed);
+  objc_msgSend_setChangeTag_(self, v6, changed);
   if (self->_dataChanged)
   {
     if (qword_280B2A720 != -1)
@@ -253,11 +253,11 @@ LABEL_16:
     if (os_log_type_enabled(CLSLogDefault, OS_LOG_TYPE_DEBUG))
     {
       v9 = 138412802;
-      v10 = self;
+      selfCopy = self;
       v11 = 2048;
       v12 = v5;
       v13 = 2048;
-      v14 = a3;
+      changedCopy = changed;
       _os_log_debug_impl(&dword_236F71000, v7, OS_LOG_TYPE_DEBUG, "Calling dataChanged for CLSDataObserver: %@, old changeTag: %lu, new changeTag: %lu", &v9, 0x20u);
     }
 
@@ -267,28 +267,28 @@ LABEL_16:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)clientRemote_entitiesChangedAdded:(id)a3 updated:(id)a4 deleted:(id)a5
+- (void)clientRemote_entitiesChangedAdded:(id)added updated:(id)updated deleted:(id)deleted
 {
   entitiesChangedAddedIDs = self->_entitiesChangedAddedIDs;
-  v13 = a5;
-  v9 = a4;
-  objc_msgSend_unionSet_(entitiesChangedAddedIDs, v10, a3);
-  objc_msgSend_unionSet_(self->_entitiesChangedUpdatedIDs, v11, v9);
+  deletedCopy = deleted;
+  updatedCopy = updated;
+  objc_msgSend_unionSet_(entitiesChangedAddedIDs, v10, added);
+  objc_msgSend_unionSet_(self->_entitiesChangedUpdatedIDs, v11, updatedCopy);
 
-  objc_msgSend_unionSet_(self->_entitiesChangedDeletedIDs, v12, v13);
+  objc_msgSend_unionSet_(self->_entitiesChangedDeletedIDs, v12, deletedCopy);
 }
 
-- (void)clientRemote_entitiesChangedUpdatedMatchingPredicate:(id)a3 updatedNotMatchingPredicate:(id)a4
+- (void)clientRemote_entitiesChangedUpdatedMatchingPredicate:(id)predicate updatedNotMatchingPredicate:(id)matchingPredicate
 {
   entitiesChangedUpdatedMatchingPredicateIDs = self->_entitiesChangedUpdatedMatchingPredicateIDs;
-  v9 = a4;
-  objc_msgSend_unionSet_(entitiesChangedUpdatedMatchingPredicateIDs, v7, a3);
-  objc_msgSend_unionSet_(self->_entitiesChangedUpdatedNotMatchingPredicateIDs, v8, v9);
+  matchingPredicateCopy = matchingPredicate;
+  objc_msgSend_unionSet_(entitiesChangedUpdatedMatchingPredicateIDs, v7, predicate);
+  objc_msgSend_unionSet_(self->_entitiesChangedUpdatedNotMatchingPredicateIDs, v8, matchingPredicateCopy);
 }
 
-- (void)clientRemote_finishWithEntitiesChangedSince:(id)a3
+- (void)clientRemote_finishWithEntitiesChangedSince:(id)since
 {
-  v60 = a3;
+  sinceCopy = since;
   v6 = objc_msgSend_mutableCopy(self->_entitiesChangedAddedIDs, v4, v5);
   v9 = objc_msgSend_mutableCopy(self->_entitiesChangedUpdatedIDs, v7, v8);
   v12 = objc_msgSend_mutableCopy(self->_entitiesChangedDeletedIDs, v10, v11);
@@ -324,7 +324,7 @@ LABEL_16:
     v41 = objc_msgSend_copy(v6, v37, v38);
     v44 = objc_msgSend_copy(v9, v42, v43);
     v47 = objc_msgSend_copy(v12, v45, v46);
-    entitiesChanged[2](entitiesChanged, v60, v41, v44, v47);
+    entitiesChanged[2](entitiesChanged, sinceCopy, v41, v44, v47);
   }
 
   v48 = objc_msgSend_predicate(self->_querySpec, v37, v38);
@@ -406,17 +406,17 @@ LABEL_16:
   return v6;
 }
 
-- (id)normalizeKeyPath:(id)a3 forValue:(id)a4
+- (id)normalizeKeyPath:(id)path forValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  valueCopy = value;
   if (qword_280B2A5D0 != -1)
   {
     dispatch_once(&qword_280B2A5D0, &unk_284A07AA8);
   }
 
   v8 = qword_280B2A5C8;
-  if (objc_msgSend_containsObject_(v8, v9, v6))
+  if (objc_msgSend_containsObject_(v8, v9, pathCopy))
   {
     goto LABEL_4;
   }
@@ -430,7 +430,7 @@ LABEL_16:
     }
 
     v4 = qword_280B2A5D8;
-    if (objc_msgSend_containsObject_(v4, v18, v6))
+    if (objc_msgSend_containsObject_(v4, v18, pathCopy))
     {
 
 LABEL_4:
@@ -440,7 +440,7 @@ LABEL_5:
         dispatch_once(&qword_280B2A600, &unk_284A08368);
       }
 
-      v13 = objc_msgSend_objectForKeyedSubscript_(qword_280B2A5F8, v12, v6);
+      v13 = objc_msgSend_objectForKeyedSubscript_(qword_280B2A5F8, v12, pathCopy);
       if (v13)
       {
         v8 = v13;
@@ -449,7 +449,7 @@ LABEL_5:
 
       else
       {
-        v14 = v6;
+        v14 = pathCopy;
         v8 = 0;
       }
 
@@ -464,7 +464,7 @@ LABEL_18:
         dispatch_once(&qword_280B2A5F0, &unk_284A08348);
       }
 
-      v22 = objc_msgSend_containsObject_(qword_280B2A5E8, v21, v6);
+      v22 = objc_msgSend_containsObject_(qword_280B2A5E8, v21, pathCopy);
       if (isSearchEnabledProcess)
       {
       }
@@ -492,14 +492,14 @@ LABEL_27:
   return v14;
 }
 
-- (id)normalizedValue:(id)a3 forKeyPath:(id)a4
+- (id)normalizedValue:(id)value forKeyPath:(id)path
 {
-  v5 = a3;
-  v6 = a4;
-  v8 = v6;
-  if (!(v6 | @"personID") || v6 && @"personID" && objc_msgSend_isEqualToString_(v6, v7, @"personID")) && (objc_opt_class(), (objc_opt_isKindOfClass()))
+  valueCopy = value;
+  pathCopy = path;
+  v8 = pathCopy;
+  if (!(pathCopy | @"personID") || pathCopy && @"personID" && objc_msgSend_isEqualToString_(pathCopy, v7, @"personID")) && (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v11 = objc_msgSend_person(v5, v9, v10);
+    v11 = objc_msgSend_person(valueCopy, v9, v10);
     v14 = v11;
     if (v11)
     {
@@ -521,14 +521,14 @@ LABEL_27:
       v16 = @"parentObjectID";
       if (!(v8 | @"parentObjectID") || v8 && @"parentObjectID" && objc_msgSend_isEqualToString_(v8, v15, @"parentObjectID"))
       {
-        v17 = objc_msgSend_objectID(v5, v15, v16);
+        v17 = objc_msgSend_objectID(valueCopy, v15, v16);
 
-        v5 = v17;
+        valueCopy = v17;
       }
     }
 
-    v5 = v5;
-    v18 = v5;
+    valueCopy = valueCopy;
+    v18 = valueCopy;
   }
 
   return v18;

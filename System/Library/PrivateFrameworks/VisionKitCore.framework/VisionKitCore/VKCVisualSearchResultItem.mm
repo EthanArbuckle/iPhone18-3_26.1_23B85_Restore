@@ -3,39 +3,39 @@
 - (CGRect)normalizedBoundingBox;
 - (UIMenu)debugMenu;
 - (VKCImageAnalysis)analysis;
-- (VKCVisualSearchResultItem)initWithGatingResultItem:(id)a3 domain:(id)a4;
-- (VKCVisualSearchResultItem)initWithSearchResultItem:(id)a3;
+- (VKCVisualSearchResultItem)initWithGatingResultItem:(id)item domain:(id)domain;
+- (VKCVisualSearchResultItem)initWithSearchResultItem:(id)item;
 @end
 
 @implementation VKCVisualSearchResultItem
 
-- (VKCVisualSearchResultItem)initWithGatingResultItem:(id)a3 domain:(id)a4
+- (VKCVisualSearchResultItem)initWithGatingResultItem:(id)item domain:(id)domain
 {
-  v7 = a3;
-  v8 = a4;
+  itemCopy = item;
+  domainCopy = domain;
   v12.receiver = self;
   v12.super_class = VKCVisualSearchResultItem;
   v9 = [(VKCVisualSearchResultItem *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_resultItem, a3);
-    objc_storeStrong(&v10->_domainInfo, a4);
+    objc_storeStrong(&v9->_resultItem, item);
+    objc_storeStrong(&v10->_domainInfo, domain);
   }
 
   return v10;
 }
 
-- (VKCVisualSearchResultItem)initWithSearchResultItem:(id)a3
+- (VKCVisualSearchResultItem)initWithSearchResultItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v9.receiver = self;
   v9.super_class = VKCVisualSearchResultItem;
   v6 = [(VKCVisualSearchResultItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_searchItem, a3);
+    objc_storeStrong(&v6->_searchItem, item);
   }
 
   return v7;
@@ -94,20 +94,20 @@
 - (UIMenu)debugMenu
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(VKCVisualSearchResultItem *)self domainInfo];
-  v5 = [v4 domain];
+  domainInfo = [(VKCVisualSearchResultItem *)self domainInfo];
+  domain = [domainInfo domain];
 
-  v6 = [v5 rangeOfString:@"domain_key."];
-  v8 = [v5 vk_substringFromIndex:v6 + v7];
+  v6 = [domain rangeOfString:@"domain_key."];
+  v8 = [domain vk_substringFromIndex:v6 + v7];
   v9 = MEMORY[0x1E69DCAB8];
-  v10 = [(VKCVisualSearchResultItem *)self glyphName];
-  v11 = [v9 vk_symbolImageWithName:v10];
+  glyphName = [(VKCVisualSearchResultItem *)self glyphName];
+  v11 = [v9 vk_symbolImageWithName:glyphName];
 
   v12 = 0x1E696A000uLL;
   v13 = MEMORY[0x1E696AEC0];
-  v14 = [(VKCVisualSearchResultItem *)self domainInfo];
-  v15 = [v14 domain];
-  v16 = [v13 stringWithFormat:@"%@", v15];
+  domainInfo2 = [(VKCVisualSearchResultItem *)self domainInfo];
+  domain2 = [domainInfo2 domain];
+  v16 = [v13 stringWithFormat:@"%@", domain2];
 
   v17 = [MEMORY[0x1E69DC628] vk_itemWithTitle:@"Domain" subtitle:v16];
   [v3 addObject:v17];
@@ -140,8 +140,8 @@
   [v3 addObject:v33];
 
   v34 = MEMORY[0x1E69DCC60];
-  v35 = [v8 capitalizedString];
-  v36 = [v34 vk_menuWithItems:v3 title:v35 subtitle:0 image:v11];
+  capitalizedString = [v8 capitalizedString];
+  v36 = [v34 vk_menuWithItems:v3 title:capitalizedString subtitle:0 image:v11];
 
   return v36;
 }

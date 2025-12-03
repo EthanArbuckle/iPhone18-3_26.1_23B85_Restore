@@ -1,15 +1,15 @@
 @interface IMParentalControls
 + (id)standardControls;
-- (BOOL)accountHasAllowlist:(id)a3;
-- (BOOL)accountIsEnabled:(id)a3;
-- (BOOL)disableAccount:(id)a3;
-- (BOOL)disableService:(id)a3;
-- (BOOL)forceAllowlistForAccount:(id)a3;
-- (BOOL)forceAllowlistForService:(id)a3;
+- (BOOL)accountHasAllowlist:(id)allowlist;
+- (BOOL)accountIsEnabled:(id)enabled;
+- (BOOL)disableAccount:(id)account;
+- (BOOL)disableService:(id)service;
+- (BOOL)forceAllowlistForAccount:(id)account;
+- (BOOL)forceAllowlistForService:(id)service;
 - (IMParentalControls)init;
-- (id)_serviceWithName:(id)a3;
-- (id)allowlistForAccount:(id)a3;
-- (id)allowlistForService:(id)a3;
+- (id)_serviceWithName:(id)name;
+- (id)allowlistForAccount:(id)account;
+- (id)allowlistForService:(id)service;
 - (void)_updateParentalSettings;
 - (void)dealloc;
 @end
@@ -296,17 +296,17 @@
   [(IMParentalControls *)&v6 dealloc];
 }
 
-- (id)_serviceWithName:(id)a3
+- (id)_serviceWithName:(id)name
 {
-  v4 = a3;
-  if (objc_msgSend_length(v4, v5, v6))
+  nameCopy = name;
+  if (objc_msgSend_length(nameCopy, v5, v6))
   {
-    v8 = objc_msgSend_objectForKey_(self->_parentalControls, v7, v4);
+    v8 = objc_msgSend_objectForKey_(self->_parentalControls, v7, nameCopy);
     if (!v8)
     {
       v8 = objc_alloc_init(IMParentalControlsService);
-      objc_msgSend_setName_(v8, v9, v4);
-      objc_msgSend_setObject_forKey_(self->_parentalControls, v10, v8, v4);
+      objc_msgSend_setName_(v8, v9, nameCopy);
+      objc_msgSend_setObject_forKey_(self->_parentalControls, v10, v8, nameCopy);
     }
 
     v11 = v8;
@@ -320,14 +320,14 @@
   return v11;
 }
 
-- (BOOL)disableService:(id)a3
+- (BOOL)disableService:(id)service
 {
-  v6 = a3;
-  if (v6)
+  serviceCopy = service;
+  if (serviceCopy)
   {
     if (objc_msgSend_active(self, v4, v5))
     {
-      v9 = objc_msgSend_internalName(v6, v7, v8);
+      v9 = objc_msgSend_internalName(serviceCopy, v7, v8);
       v11 = objc_msgSend__serviceWithName_(self, v10, v9);
       v14 = objc_msgSend_disableService(v11, v12, v13);
     }
@@ -346,20 +346,20 @@
   return v14;
 }
 
-- (BOOL)disableAccount:(id)a3
+- (BOOL)disableAccount:(id)account
 {
-  v4 = objc_msgSend_service(a3, a2, a3);
+  v4 = objc_msgSend_service(account, a2, account);
   LOBYTE(self) = objc_msgSend_disableService_(self, v5, v4);
 
   return self;
 }
 
-- (id)allowlistForService:(id)a3
+- (id)allowlistForService:(id)service
 {
-  v6 = a3;
-  if (v6 && objc_msgSend_active(self, v4, v5))
+  serviceCopy = service;
+  if (serviceCopy && objc_msgSend_active(self, v4, v5))
   {
-    v9 = objc_msgSend_internalName(v6, v7, v8);
+    v9 = objc_msgSend_internalName(serviceCopy, v7, v8);
     v11 = objc_msgSend__serviceWithName_(self, v10, v9);
     v14 = objc_msgSend_allowlist(v11, v12, v13);
 
@@ -382,14 +382,14 @@
   return v17;
 }
 
-- (BOOL)forceAllowlistForService:(id)a3
+- (BOOL)forceAllowlistForService:(id)service
 {
-  v6 = a3;
-  if (v6)
+  serviceCopy = service;
+  if (serviceCopy)
   {
     if (objc_msgSend_active(self, v4, v5))
     {
-      v9 = objc_msgSend_internalName(v6, v7, v8);
+      v9 = objc_msgSend_internalName(serviceCopy, v7, v8);
       v11 = objc_msgSend__serviceWithName_(self, v10, v9);
       v14 = objc_msgSend_forceAllowlist(v11, v12, v13);
     }
@@ -408,33 +408,33 @@
   return v14;
 }
 
-- (id)allowlistForAccount:(id)a3
+- (id)allowlistForAccount:(id)account
 {
-  v4 = objc_msgSend_service(a3, a2, a3);
+  v4 = objc_msgSend_service(account, a2, account);
   v6 = objc_msgSend_allowlistForService_(self, v5, v4);
 
   return v6;
 }
 
-- (BOOL)forceAllowlistForAccount:(id)a3
+- (BOOL)forceAllowlistForAccount:(id)account
 {
-  v4 = objc_msgSend_service(a3, a2, a3);
+  v4 = objc_msgSend_service(account, a2, account);
   LOBYTE(self) = objc_msgSend_forceAllowlistForService_(self, v5, v4);
 
   return self;
 }
 
-- (BOOL)accountIsEnabled:(id)a3
+- (BOOL)accountIsEnabled:(id)enabled
 {
-  v4 = objc_msgSend_service(a3, a2, a3);
+  v4 = objc_msgSend_service(enabled, a2, enabled);
   LOBYTE(self) = objc_msgSend_disableService_(self, v5, v4);
 
   return self ^ 1;
 }
 
-- (BOOL)accountHasAllowlist:(id)a3
+- (BOOL)accountHasAllowlist:(id)allowlist
 {
-  v4 = objc_msgSend_service(a3, a2, a3);
+  v4 = objc_msgSend_service(allowlist, a2, allowlist);
   LOBYTE(self) = objc_msgSend_forceAllowlistForService_(self, v5, v4);
 
   return self;

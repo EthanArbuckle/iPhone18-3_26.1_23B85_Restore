@@ -1,15 +1,15 @@
 @interface AXInvertColors_SiriSystem
-+ (void)installCategories:(id)a3;
++ (void)installCategories:(id)categories;
 @end
 
 @implementation AXInvertColors_SiriSystem
 
-+ (void)installCategories:(id)a3
++ (void)installCategories:(id)categories
 {
-  v3 = a3;
-  [v3 installSafeCategory:@"SRTapToEditViewInvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"SRGuideViewCellInvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"SRGuideDetailPhraseViewCellInvertColorsAccessibility" canInteractWithTargetClass:1];
+  categoriesCopy = categories;
+  [categoriesCopy installSafeCategory:@"SRTapToEditViewInvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"SRGuideViewCellInvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"SRGuideDetailPhraseViewCellInvertColorsAccessibility" canInteractWithTargetClass:1];
 }
 
 @end

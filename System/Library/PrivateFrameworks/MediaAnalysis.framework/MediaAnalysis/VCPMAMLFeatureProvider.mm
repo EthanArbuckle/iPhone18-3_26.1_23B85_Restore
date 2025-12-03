@@ -1,32 +1,32 @@
 @interface VCPMAMLFeatureProvider
-+ (id)featureProviderWithCVPixelBuffer:(__CVBuffer *)a3 andFeatureName:(id)a4;
-- (VCPMAMLFeatureProvider)initWithCVPixelBuffer:(__CVBuffer *)a3 andFeatureName:(id)a4;
-- (id)featureValueForName:(id)a3;
++ (id)featureProviderWithCVPixelBuffer:(__CVBuffer *)buffer andFeatureName:(id)name;
+- (VCPMAMLFeatureProvider)initWithCVPixelBuffer:(__CVBuffer *)buffer andFeatureName:(id)name;
+- (id)featureValueForName:(id)name;
 - (void)dealloc;
 @end
 
 @implementation VCPMAMLFeatureProvider
 
-- (VCPMAMLFeatureProvider)initWithCVPixelBuffer:(__CVBuffer *)a3 andFeatureName:(id)a4
+- (VCPMAMLFeatureProvider)initWithCVPixelBuffer:(__CVBuffer *)buffer andFeatureName:(id)name
 {
-  v7 = a4;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = VCPMAMLFeatureProvider;
   v8 = [(VCPMAMLFeatureProvider *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_featureName, a4);
-    v9->_buffer = CVPixelBufferRetain(a3);
+    objc_storeStrong(&v8->_featureName, name);
+    v9->_buffer = CVPixelBufferRetain(buffer);
   }
 
   return v9;
 }
 
-+ (id)featureProviderWithCVPixelBuffer:(__CVBuffer *)a3 andFeatureName:(id)a4
++ (id)featureProviderWithCVPixelBuffer:(__CVBuffer *)buffer andFeatureName:(id)name
 {
-  v5 = a4;
-  v6 = [[VCPMAMLFeatureProvider alloc] initWithCVPixelBuffer:a3 andFeatureName:v5];
+  nameCopy = name;
+  v6 = [[VCPMAMLFeatureProvider alloc] initWithCVPixelBuffer:buffer andFeatureName:nameCopy];
 
   return v6;
 }
@@ -39,10 +39,10 @@
   [(VCPMAMLFeatureProvider *)&v3 dealloc];
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:self->_featureName] && self->_buffer)
+  nameCopy = name;
+  if ([nameCopy isEqualToString:self->_featureName] && self->_buffer)
   {
     v5 = [MEMORY[0x1E695FE60] featureValueWithPixelBuffer:?];
   }

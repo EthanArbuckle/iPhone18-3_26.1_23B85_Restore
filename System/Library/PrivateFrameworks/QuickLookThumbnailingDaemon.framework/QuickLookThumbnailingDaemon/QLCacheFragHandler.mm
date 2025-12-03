@@ -1,26 +1,26 @@
 @interface QLCacheFragHandler
 + (void)initialize;
-- (BOOL)canFindHoleForLen:(unint64_t)a3;
+- (BOOL)canFindHoleForLen:(unint64_t)len;
 - (BOOL)checkConsistency;
 - (BOOL)checkHolesLenConsistency;
 - (BOOL)save;
-- (QLCacheFragHandler)initWithCacheThread:(id)a3;
-- (QLCacheFragHandler)initWithDictionary:(id)a3 cacheThread:(id)a4;
-- (QLCacheFragHandler)initWithFilePath:(id)a3 cacheThread:(id)a4;
-- (QLCacheFragHandler)initWithHolePositions:(id)a3 holeLengths:(id)a4 totalLength:(int64_t)a5 holesLength:(int64_t)a6 cacheThread:(id)a7;
+- (QLCacheFragHandler)initWithCacheThread:(id)thread;
+- (QLCacheFragHandler)initWithDictionary:(id)dictionary cacheThread:(id)thread;
+- (QLCacheFragHandler)initWithFilePath:(id)path cacheThread:(id)thread;
+- (QLCacheFragHandler)initWithHolePositions:(id)positions holeLengths:(id)lengths totalLength:(int64_t)length holesLength:(int64_t)holesLength cacheThread:(id)thread;
 - (_QLCacheThread)cacheThread;
 - (float)frag;
 - (id)dataToSave;
 - (id)lastHole;
-- (unint64_t)allocateSpaceForLength:(unint64_t)a3 added:(BOOL *)a4;
-- (void)_insertHoleInRanks:(id)a3;
-- (void)_removeHoleFromRanks:(id)a3;
-- (void)assertSpaceIsRetainedAtPos:(unint64_t)a3 withLen:(unint64_t)a4;
+- (unint64_t)allocateSpaceForLength:(unint64_t)length added:(BOOL *)added;
+- (void)_insertHoleInRanks:(id)ranks;
+- (void)_removeHoleFromRanks:(id)ranks;
+- (void)assertSpaceIsRetainedAtPos:(unint64_t)pos withLen:(unint64_t)len;
 - (void)clear;
 - (void)compact;
-- (void)releaseSpaceAtPos:(unint64_t)a3 withLen:(unint64_t)a4;
+- (void)releaseSpaceAtPos:(unint64_t)pos withLen:(unint64_t)len;
 - (void)save;
-- (void)truncateFromPosition:(unint64_t)a3;
+- (void)truncateFromPosition:(unint64_t)position;
 - (void)truncateUselessSpaceAtEndOfFile;
 @end
 
@@ -49,9 +49,9 @@
     }
   }
 
-  v19 = [(QLCacheFragHandler *)self dataToSave];
+  dataToSave = [(QLCacheFragHandler *)self dataToSave];
   v25 = 0;
-  v20 = [MEMORY[0x277CCAC58] dataWithPropertyList:v19 format:200 options:0 error:&v25];
+  v20 = [MEMORY[0x277CCAC58] dataWithPropertyList:dataToSave format:200 options:0 error:&v25];
   v21 = v25;
   if (v20)
   {
@@ -76,7 +76,7 @@
 
 + (void)initialize
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___QLCacheFragHandler;
   objc_msgSendSuper2(&v2, sel_initialize);
   if (initialize_onceToken != -1)
@@ -92,18 +92,18 @@ uint64_t __32__QLCacheFragHandler_initialize__block_invoke()
   return result;
 }
 
-- (QLCacheFragHandler)initWithHolePositions:(id)a3 holeLengths:(id)a4 totalLength:(int64_t)a5 holesLength:(int64_t)a6 cacheThread:(id)a7
+- (QLCacheFragHandler)initWithHolePositions:(id)positions holeLengths:(id)lengths totalLength:(int64_t)length holesLength:(int64_t)holesLength cacheThread:(id)thread
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  positionsCopy = positions;
+  lengthsCopy = lengths;
+  threadCopy = thread;
   v32.receiver = self;
   v32.super_class = QLCacheFragHandler;
   v15 = [(QLCacheFragHandler *)&v32 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeWeak(&v15->_cacheThread, v14);
+    objc_storeWeak(&v15->_cacheThread, threadCopy);
     v17 = 20;
     v18 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:20];
     do
@@ -120,30 +120,30 @@ uint64_t __32__QLCacheFragHandler_initialize__block_invoke()
     orderedByStart = v16->_orderedByStart;
     v16->_orderedByStart = v20;
 
-    if (v12 && v13)
+    if (positionsCopy && lengthsCopy)
     {
-      v30 = v14;
-      v31 = a6;
-      v22 = [v12 count];
+      v30 = threadCopy;
+      holesLengthCopy = holesLength;
+      v22 = [positionsCopy count];
       if (v22)
       {
         v23 = v22;
         for (i = 0; i != v23; ++i)
         {
-          v25 = [v12 objectAtIndex:i];
-          v26 = [v25 integerValue];
-          v27 = [v13 objectAtIndex:i];
-          v28 = +[QLCacheHole holeWithLocation:length:](QLCacheHole, "holeWithLocation:length:", v26, [v27 integerValue]);
+          v25 = [positionsCopy objectAtIndex:i];
+          integerValue = [v25 integerValue];
+          v27 = [lengthsCopy objectAtIndex:i];
+          v28 = +[QLCacheHole holeWithLocation:length:](QLCacheHole, "holeWithLocation:length:", integerValue, [v27 integerValue]);
 
           [(NSMutableArray *)v16->_orderedByStart addObject:v28];
           [(QLCacheFragHandler *)v16 _insertHoleInRanks:v28];
         }
       }
 
-      v16->_totalLen = a5;
-      v16->_holesLen = v31;
+      v16->_totalLen = length;
+      v16->_holesLen = holesLengthCopy;
       v16->_isDirty = 0;
-      v14 = v30;
+      threadCopy = v30;
     }
 
     else
@@ -157,17 +157,17 @@ uint64_t __32__QLCacheFragHandler_initialize__block_invoke()
   return v16;
 }
 
-- (QLCacheFragHandler)initWithFilePath:(id)a3 cacheThread:(id)a4
+- (QLCacheFragHandler)initWithFilePath:(id)path cacheThread:(id)thread
 {
-  v6 = a3;
+  pathCopy = path;
   v7 = MEMORY[0x277CBEAC0];
-  v8 = a4;
-  v9 = [v7 dictionaryWithContentsOfFile:v6];
-  v10 = [(QLCacheFragHandler *)self initWithDictionary:v9 cacheThread:v8];
+  threadCopy = thread;
+  v9 = [v7 dictionaryWithContentsOfFile:pathCopy];
+  v10 = [(QLCacheFragHandler *)self initWithDictionary:v9 cacheThread:threadCopy];
 
   if (v10)
   {
-    v11 = [v6 copy];
+    v11 = [pathCopy copy];
     path = v10->_path;
     v10->_path = v11;
   }
@@ -175,37 +175,37 @@ uint64_t __32__QLCacheFragHandler_initialize__block_invoke()
   return v10;
 }
 
-- (QLCacheFragHandler)initWithDictionary:(id)a3 cacheThread:(id)a4
+- (QLCacheFragHandler)initWithDictionary:(id)dictionary cacheThread:(id)thread
 {
-  v6 = a4;
-  if (a3)
+  threadCopy = thread;
+  if (dictionary)
   {
-    v7 = a3;
-    a3 = [v7 objectForKey:@"orderedHolesPos"];
-    v8 = [v7 objectForKey:@"orderedHolesLen"];
-    v9 = [v7 objectForKey:@"totalLen"];
-    v10 = [v9 longLongValue];
+    dictionaryCopy = dictionary;
+    dictionary = [dictionaryCopy objectForKey:@"orderedHolesPos"];
+    v8 = [dictionaryCopy objectForKey:@"orderedHolesLen"];
+    v9 = [dictionaryCopy objectForKey:@"totalLen"];
+    longLongValue = [v9 longLongValue];
 
-    v11 = [v7 objectForKey:@"holesLen"];
+    v11 = [dictionaryCopy objectForKey:@"holesLen"];
 
-    v12 = [v11 longLongValue];
+    longLongValue2 = [v11 longLongValue];
   }
 
   else
   {
     v8 = 0;
-    v10 = 0;
-    v12 = 0;
+    longLongValue = 0;
+    longLongValue2 = 0;
   }
 
-  v13 = [(QLCacheFragHandler *)self initWithHolePositions:a3 holeLengths:v8 totalLength:v10 holesLength:v12 cacheThread:v6];
+  v13 = [(QLCacheFragHandler *)self initWithHolePositions:dictionary holeLengths:v8 totalLength:longLongValue holesLength:longLongValue2 cacheThread:threadCopy];
 
   return v13;
 }
 
-- (QLCacheFragHandler)initWithCacheThread:(id)a3
+- (QLCacheFragHandler)initWithCacheThread:(id)thread
 {
-  result = [(QLCacheFragHandler *)self initWithHolePositions:0 holeLengths:0 totalLength:0 holesLength:0 cacheThread:a3];
+  result = [(QLCacheFragHandler *)self initWithHolePositions:0 holeLengths:0 totalLength:0 holesLength:0 cacheThread:thread];
   if (result)
   {
     result->_isDirty = 0;
@@ -214,10 +214,10 @@ uint64_t __32__QLCacheFragHandler_initialize__block_invoke()
   return result;
 }
 
-- (void)_removeHoleFromRanks:(id)a3
+- (void)_removeHoleFromRanks:(id)ranks
 {
-  v10 = a3;
-  v4 = [v10 length];
+  ranksCopy = ranks;
+  v4 = [ranksCopy length];
   v5 = 64 - __clz(v4);
   if (v5 >= 0x13)
   {
@@ -238,20 +238,20 @@ uint64_t __32__QLCacheFragHandler_initialize__block_invoke()
   v8 = v7;
   if (_debugCacheFragHandler == 1)
   {
-    v9 = [v7 indexOfObject:v10];
+    v9 = [v7 indexOfObject:ranksCopy];
     if (v9 + 1 < [v8 count])
     {
-      [v8 indexOfObject:v10 inRange:{v9 + 1, objc_msgSend(v8, "count") + ~v9}];
+      [v8 indexOfObject:ranksCopy inRange:{v9 + 1, objc_msgSend(v8, "count") + ~v9}];
     }
   }
 
-  [v8 removeObject:v10];
+  [v8 removeObject:ranksCopy];
 }
 
-- (void)_insertHoleInRanks:(id)a3
+- (void)_insertHoleInRanks:(id)ranks
 {
-  v14 = a3;
-  v4 = [v14 length];
+  ranksCopy = ranks;
+  v4 = [ranksCopy length];
   v5 = v4;
   v6 = 64 - __clz(v4);
   if (v6 >= 0x13)
@@ -298,7 +298,7 @@ uint64_t __32__QLCacheFragHandler_initialize__block_invoke()
     v11 = 0;
   }
 
-  [v8 insertObject:v14 atIndex:v11];
+  [v8 insertObject:ranksCopy atIndex:v11];
 }
 
 - (void)clear
@@ -315,16 +315,16 @@ uint64_t __32__QLCacheFragHandler_initialize__block_invoke()
   self->_isDirty = 1;
 }
 
-- (unint64_t)allocateSpaceForLength:(unint64_t)a3 added:(BOOL *)a4
+- (unint64_t)allocateSpaceForLength:(unint64_t)length added:(BOOL *)added
 {
   v7 = 0;
-  v8 = 64 - __clz(a3);
+  v8 = 64 - __clz(length);
   if (v8 >= 0x13)
   {
     v8 = 19;
   }
 
-  if (a3)
+  if (length)
   {
     v9 = v8;
   }
@@ -346,7 +346,7 @@ uint64_t __32__QLCacheFragHandler_initialize__block_invoke()
       v13 = [v7 objectAtIndexedSubscript:0];
       v14 = [v13 length];
 
-      if (v14 >= a3)
+      if (v14 >= length)
       {
         break;
       }
@@ -356,7 +356,7 @@ uint64_t __32__QLCacheFragHandler_initialize__block_invoke()
     {
       totalLen = 0;
       v17 = 1;
-      if (!a4)
+      if (!added)
       {
         goto LABEL_12;
       }
@@ -369,7 +369,7 @@ uint64_t __32__QLCacheFragHandler_initialize__block_invoke()
   v20 = [v7 objectAtIndex:v12 - 1];
   v21 = [v20 length];
 
-  if (v21 <= a3)
+  if (v21 <= length)
   {
     if (v19 < 2)
     {
@@ -384,7 +384,7 @@ uint64_t __32__QLCacheFragHandler_initialize__block_invoke()
         v23 = [v7 objectAtIndex:((v19 + v22) / 2)];
         v24 = [v23 length];
 
-        if (v24 <= a3)
+        if (v24 <= length)
         {
           v25 = ((v19 + v22) / 2);
         }
@@ -394,7 +394,7 @@ uint64_t __32__QLCacheFragHandler_initialize__block_invoke()
           v25 = v19;
         }
 
-        if (v24 < a3)
+        if (v24 < length)
         {
           v19 = ((v19 + v22) / 2);
         }
@@ -415,7 +415,7 @@ uint64_t __32__QLCacheFragHandler_initialize__block_invoke()
     v27 = [v7 objectAtIndex:v19];
     v28 = [v27 length];
 
-    if (v28 < a3)
+    if (v28 < length)
     {
       v19 = v22;
     }
@@ -425,51 +425,51 @@ uint64_t __32__QLCacheFragHandler_initialize__block_invoke()
   [v7 removeObject:v29];
   v30 = [v29 length];
   totalLen = [v29 location];
-  if (v30 <= a3)
+  if (v30 <= length)
   {
     [(NSMutableArray *)self->_orderedByStart removeObject:v29];
   }
 
   else
   {
-    [v29 setLocation:totalLen + a3 length:{objc_msgSend(v29, "length") - a3}];
+    [v29 setLocation:totalLen + length length:{objc_msgSend(v29, "length") - length}];
     [(QLCacheFragHandler *)self _insertHoleInRanks:v29];
   }
 
   v17 = 0;
-  if (a4)
+  if (added)
   {
 LABEL_11:
-    *a4 = v17;
+    *added = v17;
   }
 
 LABEL_12:
   if (v17)
   {
     totalLen = self->_totalLen;
-    self->_totalLen = totalLen + a3;
+    self->_totalLen = totalLen + length;
   }
 
   else
   {
-    self->_holesLen -= a3;
+    self->_holesLen -= length;
   }
 
   self->_isDirty = 1;
   if (_debugCacheFragHandler == 1)
   {
-    [(QLCacheFragHandler *)self assertSpaceIsRetainedAtPos:totalLen withLen:a3];
+    [(QLCacheFragHandler *)self assertSpaceIsRetainedAtPos:totalLen withLen:length];
     [(QLCacheFragHandler *)self checkHolesLenConsistency];
   }
 
   return totalLen;
 }
 
-- (void)releaseSpaceAtPos:(unint64_t)a3 withLen:(unint64_t)a4
+- (void)releaseSpaceAtPos:(unint64_t)pos withLen:(unint64_t)len
 {
   if (_debugCacheFragHandler == 1)
   {
-    [(QLCacheFragHandler *)self assertSpaceIsRetainedAtPos:a3 withLen:a4];
+    [(QLCacheFragHandler *)self assertSpaceIsRetainedAtPos:pos withLen:len];
   }
 
   v7 = [(NSMutableArray *)self->_orderedByStart count];
@@ -491,9 +491,9 @@ LABEL_12:
     {
       v11 = (v10 + v9) / 2;
       v12 = [(NSMutableArray *)self->_orderedByStart objectAtIndex:v11];
-      v13 = [v12 location];
+      location = [v12 location];
 
-      if (v13 <= a3)
+      if (location <= pos)
       {
         v14 = v11 + 1;
       }
@@ -503,7 +503,7 @@ LABEL_12:
         v14 = v9;
       }
 
-      if (v13 > a3)
+      if (location > pos)
       {
         v15 = (v10 + v9) / 2;
       }
@@ -513,7 +513,7 @@ LABEL_12:
         v15 = v11 + 1;
       }
 
-      if (v13 < a3)
+      if (location < pos)
       {
         v9 = v11 + 1;
       }
@@ -523,7 +523,7 @@ LABEL_12:
         v9 = v14;
       }
 
-      if (v13 >= a3)
+      if (location >= pos)
       {
         v10 = v15;
       }
@@ -537,8 +537,8 @@ LABEL_12:
   }
 
   v26 = [(NSMutableArray *)self->_orderedByStart objectAtIndex:v10 - 1];
-  v16 = [v26 location];
-  if ([v26 length] + v16 == a3)
+  location2 = [v26 location];
+  if ([v26 length] + location2 == pos)
   {
     v17 = v26;
     goto LABEL_24;
@@ -569,11 +569,11 @@ LABEL_24:
 LABEL_30:
     v19 = v17;
     [(QLCacheFragHandler *)self _removeHoleFromRanks:v19];
-    v20 = [v19 location];
-    v21 = [v19 length] + a4;
+    location3 = [v19 location];
+    v21 = [v19 length] + len;
     if (v22)
     {
-      [v19 setLocation:v20 length:{v21 + objc_msgSend(v22, "length")}];
+      [v19 setLocation:location3 length:{v21 + objc_msgSend(v22, "length")}];
       [(QLCacheFragHandler *)self _removeHoleFromRanks:v22];
       [(NSMutableArray *)self->_orderedByStart removeObject:v22];
 LABEL_39:
@@ -582,15 +582,15 @@ LABEL_39:
     }
 
     v24 = v19;
-    v25 = v20;
+    posCopy = location3;
     v23 = v21;
 LABEL_38:
-    [v24 setLocation:v25 length:v23];
+    [v24 setLocation:posCopy length:v23];
     goto LABEL_39;
   }
 
   v22 = [(NSMutableArray *)self->_orderedByStart objectAtIndex:v10];
-  if (a4 + a3 != [v22 location])
+  if (len + pos != [v22 location])
   {
 
     v22 = 0;
@@ -607,18 +607,18 @@ LABEL_35:
   {
     v19 = v22;
     [(QLCacheFragHandler *)self _removeHoleFromRanks:v19];
-    v23 = [v19 length] + a4;
+    v23 = [v19 length] + len;
     v24 = v19;
-    v25 = a3;
+    posCopy = pos;
     goto LABEL_38;
   }
 
-  v19 = [QLCacheHole holeWithLocation:a3 length:a4];
+  v19 = [QLCacheHole holeWithLocation:pos length:len];
   self->_needsCompact = 1;
   [(QLCacheFragHandler *)self _insertHoleInRanks:v19];
   [(NSMutableArray *)self->_orderedByStart insertObject:v19 atIndex:v10];
 LABEL_40:
-  self->_holesLen += a4;
+  self->_holesLen += len;
   if (_debugCacheFragHandler == 1)
   {
     [(QLCacheFragHandler *)self checkHolesLenConsistency];
@@ -627,16 +627,16 @@ LABEL_40:
   self->_isDirty = 1;
 }
 
-- (BOOL)canFindHoleForLen:(unint64_t)a3
+- (BOOL)canFindHoleForLen:(unint64_t)len
 {
   v5 = 0;
-  v6 = 64 - __clz(a3);
+  v6 = 64 - __clz(len);
   if (v6 >= 0x13)
   {
     v6 = 19;
   }
 
-  if (a3)
+  if (len)
   {
     v7 = v6;
   }
@@ -657,7 +657,7 @@ LABEL_40:
       v10 = [v5 objectAtIndex:0];
       v11 = [v10 length];
 
-      if (v11 >= a3)
+      if (v11 >= len)
       {
         break;
       }
@@ -673,35 +673,35 @@ LABEL_40:
 
 - (id)lastHole
 {
-  v3 = [(NSMutableArray *)self->_orderedByStart count];
-  if (v3)
+  lastObject = [(NSMutableArray *)self->_orderedByStart count];
+  if (lastObject)
   {
-    v3 = [(NSMutableArray *)self->_orderedByStart lastObject];
+    lastObject = [(NSMutableArray *)self->_orderedByStart lastObject];
   }
 
-  return v3;
+  return lastObject;
 }
 
 - (void)truncateUselessSpaceAtEndOfFile
 {
-  v3 = [(NSMutableArray *)self->_orderedByStart lastObject];
-  if (v3)
+  lastObject = [(NSMutableArray *)self->_orderedByStart lastObject];
+  if (lastObject)
   {
-    v6 = v3;
-    v4 = [v3 location];
-    v5 = [v6 length] + v4;
-    v3 = v6;
+    v6 = lastObject;
+    location = [lastObject location];
+    v5 = [v6 length] + location;
+    lastObject = v6;
     if (v5 == self->_totalLen)
     {
       -[QLCacheFragHandler truncateFromPosition:](self, "truncateFromPosition:", [v6 location]);
-      v3 = v6;
+      lastObject = v6;
     }
   }
 }
 
-- (void)truncateFromPosition:(unint64_t)a3
+- (void)truncateFromPosition:(unint64_t)position
 {
-  if (self->_totalLen > a3)
+  if (self->_totalLen > position)
   {
     v5 = [(NSMutableArray *)self->_orderedByStart count];
     if (v5 - 1 >= 0)
@@ -710,7 +710,7 @@ LABEL_40:
       while (1)
       {
         v7 = [(NSMutableArray *)self->_orderedByStart objectAtIndex:--v6];
-        if ([v7 location] < a3)
+        if ([v7 location] < position)
         {
           break;
         }
@@ -728,7 +728,7 @@ LABEL_40:
     }
 
 LABEL_8:
-    self->_totalLen = a3;
+    self->_totalLen = position;
   }
 }
 
@@ -748,7 +748,7 @@ LABEL_8:
 
 - (id)dataToSave
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{-[NSMutableArray count](self->_orderedByStart, "count")}];
   v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{-[NSMutableArray count](self->_orderedByStart, "count")}];
   v6 = [(NSMutableArray *)self->_orderedByStart count];
@@ -767,15 +767,15 @@ LABEL_8:
   }
 
   v12 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_totalLen];
-  [v3 setObject:v12 forKey:@"totalLen"];
+  [dictionary setObject:v12 forKey:@"totalLen"];
 
   v13 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_holesLen];
-  [v3 setObject:v13 forKey:@"holesLen"];
+  [dictionary setObject:v13 forKey:@"holesLen"];
 
-  [v3 setObject:v4 forKey:@"orderedHolesPos"];
-  [v3 setObject:v5 forKey:@"orderedHolesLen"];
+  [dictionary setObject:v4 forKey:@"orderedHolesPos"];
+  [dictionary setObject:v5 forKey:@"orderedHolesLen"];
 
-  return v3;
+  return dictionary;
 }
 
 - (void)compact
@@ -807,7 +807,7 @@ LABEL_8:
   v29 = holesLen;
   v30 = totalLen;
   v18 = 0;
-  v19 = 0;
+  location2 = 0;
   v20 = *v32;
   v21 = 0x279ADC000uLL;
   do
@@ -822,15 +822,15 @@ LABEL_8:
       v23 = *(*(&v31 + 1) + 8 * i);
       if (v18)
       {
-        if (v19 + v18 == [*(*(&v31 + 1) + 8 * i) location])
+        if (location2 + v18 == [*(*(&v31 + 1) + 8 * i) location])
         {
           v24 = _log_1();
           if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
           {
-            v26 = [v23 location];
+            location = [v23 location];
             v27 = [v23 length];
             *buf = 134218240;
-            v36 = v26;
+            v36 = location;
             v21 = 0x279ADC000;
             v37 = 2048;
             v38 = v27;
@@ -842,17 +842,17 @@ LABEL_8:
 
         else
         {
-          v25 = [objc_alloc(*(v21 + 1984)) initWithLocation:v19 length:v18];
+          v25 = [objc_alloc(*(v21 + 1984)) initWithLocation:location2 length:v18];
           [(NSMutableArray *)self->_orderedByStart addObject:v25];
           [(QLCacheFragHandler *)self _insertHoleInRanks:v25];
-          v19 = [v23 location];
+          location2 = [v23 location];
           v18 = [v23 length];
         }
       }
 
       else
       {
-        v19 = [*(*(&v31 + 1) + 8 * i) location];
+        location2 = [*(*(&v31 + 1) + 8 * i) location];
         v18 = [v23 length];
       }
     }
@@ -866,7 +866,7 @@ LABEL_8:
   totalLen = v30;
   if (v18)
   {
-    v16 = [objc_alloc(*(v21 + 1984)) initWithLocation:v19 length:v18];
+    v16 = [objc_alloc(*(v21 + 1984)) initWithLocation:location2 length:v18];
     [(NSMutableArray *)self->_orderedByStart addObject:v16];
     [(QLCacheFragHandler *)self _insertHoleInRanks:v16];
 LABEL_19:
@@ -936,8 +936,8 @@ LABEL_19:
         v8 = 0;
       }
 
-      v11 = [v9 location];
-      v7 = [v9 length] + v11;
+      location = [v9 location];
+      v7 = [v9 length] + location;
 
       ++v6;
     }
@@ -954,9 +954,9 @@ LABEL_19:
   return v8 & 1;
 }
 
-- (void)assertSpaceIsRetainedAtPos:(unint64_t)a3 withLen:(unint64_t)a4
+- (void)assertSpaceIsRetainedAtPos:(unint64_t)pos withLen:(unint64_t)len
 {
-  v6 = [(NSMutableArray *)self->_orderedByStart count:a3];
+  v6 = [(NSMutableArray *)self->_orderedByStart count:pos];
   if (v6)
   {
     v7 = v6;
@@ -967,7 +967,7 @@ LABEL_19:
       v10 = v9;
       v11 = [(NSMutableArray *)self->_orderedByStart objectAtIndex:v8];
 
-      if ([v11 location] > a3)
+      if ([v11 location] > pos)
       {
         break;
       }
@@ -1010,7 +1010,7 @@ LABEL_8:
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_2615D3000, a2, OS_LOG_TYPE_ERROR, "failed to create plist data from dictionary: %@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

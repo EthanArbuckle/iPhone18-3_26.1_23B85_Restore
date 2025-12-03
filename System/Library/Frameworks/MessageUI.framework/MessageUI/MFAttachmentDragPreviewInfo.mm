@@ -1,60 +1,60 @@
 @interface MFAttachmentDragPreviewInfo
 - (CGPoint)center;
 - (CGSize)displaySize;
-- (MFAttachmentDragPreviewInfo)initWithCoder:(id)a3;
-- (id)targetedDragPreviewInContainer:(id)a3 centerOffset:(CGPoint)a4;
-- (void)encodeWithCoder:(id)a3;
+- (MFAttachmentDragPreviewInfo)initWithCoder:(id)coder;
+- (id)targetedDragPreviewInContainer:(id)container centerOffset:(CGPoint)offset;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MFAttachmentDragPreviewInfo
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(MFAttachmentDragPreviewInfo *)self image];
-  [v5 encodeObject:v4 forKey:@"imageData"];
+  coderCopy = coder;
+  image = [(MFAttachmentDragPreviewInfo *)self image];
+  [coderCopy encodeObject:image forKey:@"imageData"];
 
-  [v5 encodeBool:-[MFAttachmentDragPreviewInfo isInlineImage](self forKey:{"isInlineImage"), @"inlineImage"}];
+  [coderCopy encodeBool:-[MFAttachmentDragPreviewInfo isInlineImage](self forKey:{"isInlineImage"), @"inlineImage"}];
   [(MFAttachmentDragPreviewInfo *)self center];
-  [v5 encodeCGPoint:@"center" forKey:?];
+  [coderCopy encodeCGPoint:@"center" forKey:?];
   [(MFAttachmentDragPreviewInfo *)self displaySize];
-  [v5 encodeCGSize:@"displaySize" forKey:?];
+  [coderCopy encodeCGSize:@"displaySize" forKey:?];
 }
 
-- (MFAttachmentDragPreviewInfo)initWithCoder:(id)a3
+- (MFAttachmentDragPreviewInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = MFAttachmentDragPreviewInfo;
   v5 = [(MFAttachmentDragPreviewInfo *)&v8 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"imageData"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"imageData"];
     [(MFAttachmentDragPreviewInfo *)v5 setImage:v6];
 
-    -[MFAttachmentDragPreviewInfo setIsInlineImage:](v5, "setIsInlineImage:", [v4 decodeBoolForKey:@"inlineImage"]);
-    [v4 decodeCGPointForKey:@"center"];
+    -[MFAttachmentDragPreviewInfo setIsInlineImage:](v5, "setIsInlineImage:", [coderCopy decodeBoolForKey:@"inlineImage"]);
+    [coderCopy decodeCGPointForKey:@"center"];
     [(MFAttachmentDragPreviewInfo *)v5 setCenter:?];
-    [v4 decodeCGSizeForKey:@"displaySize"];
+    [coderCopy decodeCGSizeForKey:@"displaySize"];
     [(MFAttachmentDragPreviewInfo *)v5 setDisplaySize:?];
   }
 
   return v5;
 }
 
-- (id)targetedDragPreviewInContainer:(id)a3 centerOffset:(CGPoint)a4
+- (id)targetedDragPreviewInContainer:(id)container centerOffset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
+  y = offset.y;
+  x = offset.x;
   v29[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  containerCopy = container;
   [(MFAttachmentDragPreviewInfo *)self center];
   v9 = v8;
   [(MFAttachmentDragPreviewInfo *)self center];
   v11 = v10;
   v12 = objc_alloc(MEMORY[0x1E69DCAE0]);
-  v13 = [(MFAttachmentDragPreviewInfo *)self image];
-  v14 = [v12 initWithImage:v13];
+  image = [(MFAttachmentDragPreviewInfo *)self image];
+  v14 = [v12 initWithImage:image];
 
   [(MFAttachmentDragPreviewInfo *)self displaySize];
   if (v16 != *MEMORY[0x1E695F060] || v15 != *(MEMORY[0x1E695F060] + 8))
@@ -85,7 +85,7 @@
     v21 = [v24 initWithTextLineRects:v25];
   }
 
-  v26 = [objc_alloc(MEMORY[0x1E69DC9A8]) initWithContainer:v7 center:{x + v9, y + v11}];
+  v26 = [objc_alloc(MEMORY[0x1E69DC9A8]) initWithContainer:containerCopy center:{x + v9, y + v11}];
   v27 = [objc_alloc(MEMORY[0x1E69DD068]) initWithView:v14 parameters:v21 target:v26];
 
   return v27;

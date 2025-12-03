@@ -2,7 +2,7 @@
 + (id)PhotosSearchInsights;
 + (id)configurationForPhotosSearchInsights;
 + (id)storeConfigurationForPhotosSearchInsights;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
@@ -11,7 +11,7 @@
 + (id)PhotosSearchInsights
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForPhotosSearchInsights];
+  configurationForPhotosSearchInsights = [self configurationForPhotosSearchInsights];
   v3 = +[BMAeroMLPhotosSearchInsights columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -23,7 +23,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"AeroML.Insights.PhotosSearchInsights" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"AeroML.Insights.PhotosSearchInsights" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"AeroML.Insights.PhotosSearchInsights" schema:v9 configuration:configurationForPhotosSearchInsights];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -32,13 +32,13 @@
 
 + (id)configurationForPhotosSearchInsights
 {
-  v3 = [a1 storeConfigurationForPhotosSearchInsights];
-  v4 = [a1 syncPolicyForPhotosSearchInsights];
+  storeConfigurationForPhotosSearchInsights = [self storeConfigurationForPhotosSearchInsights];
+  syncPolicyForPhotosSearchInsights = [self syncPolicyForPhotosSearchInsights];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"C447AE9B-480C-4A3B-A2B9-AA9316EE4BEB"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"AeroML.Insights.PhotosSearchInsights" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"AeroML.Insights.PhotosSearchInsights" eventClass:objc_opt_class() storeConfig:storeConfigurationForPhotosSearchInsights syncPolicy:syncPolicyForPhotosSearchInsights legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -51,19 +51,19 @@
   return v3;
 }
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  if ([a3 isEqualToString:@"PhotosSearchInsights"])
+  if ([name isEqualToString:@"PhotosSearchInsights"])
   {
-    v4 = [a1 PhotosSearchInsights];
+    photosSearchInsights = [self PhotosSearchInsights];
   }
 
   else
   {
-    v4 = 0;
+    photosSearchInsights = 0;
   }
 
-  return v4;
+  return photosSearchInsights;
 }
 
 + (id)validKeyPaths

@@ -7,7 +7,7 @@
 
 - (void)createXPCListener
 {
-  v2 = self;
+  selfCopy = self;
   TracerouteService.createXPCListener()();
 }
 

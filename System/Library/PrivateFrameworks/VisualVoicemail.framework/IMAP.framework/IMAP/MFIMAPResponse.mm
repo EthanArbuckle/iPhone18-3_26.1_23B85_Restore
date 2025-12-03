@@ -1,10 +1,10 @@
 @interface MFIMAPResponse
 - (MFIMAPResponse)init;
-- (MFIMAPResponse)initWithConnection:(id)a3 responseConsumer:(id)a4;
-- (MFIMAPResponse)initWithString:(id)a3;
+- (MFIMAPResponse)initWithConnection:(id)connection responseConsumer:(id)consumer;
+- (MFIMAPResponse)initWithString:(id)string;
 - (id).cxx_construct;
 - (id)description;
-- (id)fetchResultWithType:(int)a3;
+- (id)fetchResultWithType:(int)type;
 - (id)fetchResults;
 - (id)mailboxName;
 - (id)responseInfo;
@@ -15,37 +15,37 @@
 - (unint64_t)number;
 - (void)dealloc;
 - (void)fetchResults;
-- (void)setCapabilities:(id)a3;
-- (void)setFetchResults:(id)a3;
-- (void)setFlags:(id)a3;
-- (void)setFlagsFetchResult:(id)a3;
-- (void)setMailboxAttributes:(unint64_t)a3 separator:(id)a4 mailboxName:(id)a5 extraAttributes:(id)a6;
-- (void)setMailboxName:(id)a3 quotaRootNames:(id)a4;
-- (void)setMailboxName:(id)a3 statusEntries:(id)a4;
-- (void)setNumber:(unint64_t)a3;
-- (void)setPrivateNamespaces:(id)a3;
-- (void)setPublicNamespaces:(id)a3;
-- (void)setQuotaRootName:(id)a3 quotas:(id)a4;
-- (void)setResponseName:(id)a3 parameters:(id)a4;
-- (void)setResponseType:(int)a3;
-- (void)setSearchResults:(id)a3;
-- (void)setServerInfo:(id)a3;
-- (void)setSharedNamespaces:(id)a3;
-- (void)setUids:(id)a3;
-- (void)setUserData:(id)a3 responseCode:(int)a4 responseInfo:(id)a5;
-- (void)setValue:(id)a3 forKey:(id)a4;
+- (void)setCapabilities:(id)capabilities;
+- (void)setFetchResults:(id)results;
+- (void)setFlags:(id)flags;
+- (void)setFlagsFetchResult:(id)result;
+- (void)setMailboxAttributes:(unint64_t)attributes separator:(id)separator mailboxName:(id)name extraAttributes:(id)extraAttributes;
+- (void)setMailboxName:(id)name quotaRootNames:(id)names;
+- (void)setMailboxName:(id)name statusEntries:(id)entries;
+- (void)setNumber:(unint64_t)number;
+- (void)setPrivateNamespaces:(id)namespaces;
+- (void)setPublicNamespaces:(id)namespaces;
+- (void)setQuotaRootName:(id)name quotas:(id)quotas;
+- (void)setResponseName:(id)name parameters:(id)parameters;
+- (void)setResponseType:(int)type;
+- (void)setSearchResults:(id)results;
+- (void)setServerInfo:(id)info;
+- (void)setSharedNamespaces:(id)namespaces;
+- (void)setUids:(id)uids;
+- (void)setUserData:(id)data responseCode:(int)code responseInfo:(id)info;
+- (void)setValue:(id)value forKey:(id)key;
 @end
 
 @implementation MFIMAPResponse
 
-- (void)setResponseType:(int)a3
+- (void)setResponseType:(int)type
   v5 = {;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(MFIMAPResponse *)a3 setResponseType:v5];
+    [(MFIMAPResponse *)type setResponseType:v5];
   }
 
-  *(self + 8) = a3;
+  *(self + 8) = type;
 }
 
 - (void)dealloc
@@ -122,13 +122,13 @@
 
 - (id)userString
 {
-  v2 = [(MFIMAPResponse *)self userData];
-  if (v2)
+  userData = [(MFIMAPResponse *)self userData];
+  if (userData)
   {
     v3 = MFCreateStringWithData();
     if (!v3)
     {
-      v3 = CFStringCreateWithBytes(0, [v2 bytes], objc_msgSend(v2, "length"), 0x600u, 0);
+      v3 = CFStringCreateWithBytes(0, [userData bytes], objc_msgSend(userData, "length"), 0x600u, 0);
     }
   }
 
@@ -140,31 +140,31 @@
   return v3;
 }
 
-- (void)setUserData:(id)a3 responseCode:(int)a4 responseInfo:(id)a5
+- (void)setUserData:(id)data responseCode:(int)code responseInfo:(id)info
 {
-  v8 = a3;
-  v9 = a5;
+  dataCopy = data;
+  infoCopy = info;
   if (*(self + 8) - 1 > 5)
   {
-    v10 = v8;
+    v10 = dataCopy;
     goto LABEL_13;
   }
 
-  self->_data.basic.responseCode = a4;
-  if ([MEMORY[0x277D24ED0] isValidBase64:v8])
+  self->_data.basic.responseCode = code;
+  if ([MEMORY[0x277D24ED0] isValidBase64:dataCopy])
   {
-    v16 = [v8 mf_decodeBase64];
+    mf_decodeBase64 = [dataCopy mf_decodeBase64];
 
-    if (!v9)
+    if (!infoCopy)
     {
 LABEL_4:
-      v10 = v16;
-      if (self->_data.basic.responseInfoAndOrUserData == v16)
+      v10 = mf_decodeBase64;
+      if (self->_data.basic.responseInfoAndOrUserData == mf_decodeBase64)
       {
         goto LABEL_13;
       }
 
-      v11 = v16;
+      v11 = mf_decodeBase64;
       responseInfoAndOrUserData = self->_data.basic.responseInfoAndOrUserData;
       v17 = v11;
       self->_data.basic.responseInfoAndOrUserData = v11;
@@ -174,26 +174,26 @@ LABEL_4:
 
   else
   {
-    v16 = v8;
-    if (!v9)
+    mf_decodeBase64 = dataCopy;
+    if (!infoCopy)
     {
       goto LABEL_4;
     }
   }
 
   v13 = objc_allocWithZone(MEMORY[0x277CBEA60]);
-  responseInfoAndOrUserData = v16;
-  if (!v16)
+  responseInfoAndOrUserData = mf_decodeBase64;
+  if (!mf_decodeBase64)
   {
     responseInfoAndOrUserData = [MEMORY[0x277CBEA90] data];
   }
 
-  v14 = [v13 initWithObjects:{v9, responseInfoAndOrUserData, 0}];
+  v14 = [v13 initWithObjects:{infoCopy, responseInfoAndOrUserData, 0}];
   v15 = self->_data.basic.responseInfoAndOrUserData;
   self->_data.basic.responseInfoAndOrUserData = v14;
 
-  v10 = v16;
-  if (!v16)
+  v10 = mf_decodeBase64;
+  if (!mf_decodeBase64)
   {
     v17 = 0;
 LABEL_12:
@@ -205,29 +205,29 @@ LABEL_13:
   v18 = v10;
 }
 
-- (void)setCapabilities:(id)a3
+- (void)setCapabilities:(id)capabilities
 {
-  v5 = a3;
+  capabilitiesCopy = capabilities;
   capabilities = self->_data.capabilities;
   p_capabilities = &self->_data.capabilities;
-  if (capabilities != v5)
+  if (capabilities != capabilitiesCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_capabilities, a3);
-    v5 = v8;
+    v8 = capabilitiesCopy;
+    objc_storeStrong(p_capabilities, capabilities);
+    capabilitiesCopy = v8;
   }
 }
 
-- (void)setServerInfo:(id)a3
+- (void)setServerInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   serverInfo = self->_data.serverInfo;
   p_serverInfo = &self->_data.serverInfo;
-  if (serverInfo != v5)
+  if (serverInfo != infoCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_serverInfo, a3);
-    v5 = v8;
+    v8 = infoCopy;
+    objc_storeStrong(p_serverInfo, info);
+    infoCopy = v8;
   }
 }
 
@@ -245,26 +245,26 @@ LABEL_13:
   }
 }
 
-- (void)setNumber:(unint64_t)a3
+- (void)setNumber:(unint64_t)number
 {
   v3 = *(self + 8) - 9;
   if (v3 <= 8 && ((0x107u >> v3) & 1) != 0)
   {
-    *(&self->super.isa + qword_2721700C8[(*(self + 8) - 9)]) = a3;
+    *(&self->super.isa + qword_2721700C8[(*(self + 8) - 9)]) = number;
   }
 }
 
-- (void)setFlags:(id)a3
+- (void)setFlags:(id)flags
 {
-  v4 = a3;
-  if (self->_data.flags != v4)
+  flagsCopy = flags;
+  if (self->_data.flags != flagsCopy)
   {
-    v7 = v4;
-    v5 = createFixedMutableArray(v4);
+    v7 = flagsCopy;
+    v5 = createFixedMutableArray(flagsCopy);
     flags = self->_data.flags;
     self->_data.flags = v5;
 
-    v4 = v7;
+    flagsCopy = v7;
   }
 }
 
@@ -317,18 +317,18 @@ LABEL_13:
   return v7;
 }
 
-- (void)setMailboxName:(id)a3 statusEntries:(id)a4
+- (void)setMailboxName:(id)name statusEntries:(id)entries
 {
-  v13 = a3;
-  v7 = a4;
-  if (self->_data.status.mailboxName != v13)
+  nameCopy = name;
+  entriesCopy = entries;
+  if (self->_data.status.mailboxName != nameCopy)
   {
-    objc_storeStrong(&self->_data.status.mailboxName, a3);
+    objc_storeStrong(&self->_data.status.mailboxName, name);
   }
 
-  if (self->_data.status.entries != v7)
+  if (self->_data.status.entries != entriesCopy)
   {
-    v8 = v7;
+    v8 = entriesCopy;
     v9 = [(NSDictionary *)v8 count];
     if (v9)
     {
@@ -354,17 +354,17 @@ LABEL_9:
   }
 }
 
-- (void)setSearchResults:(id)a3
+- (void)setSearchResults:(id)results
 {
-  v4 = a3;
-  if (self->_data.searchResults != v4)
+  resultsCopy = results;
+  if (self->_data.searchResults != resultsCopy)
   {
-    v7 = v4;
-    v5 = createFixedMutableArray(v4);
+    v7 = resultsCopy;
+    v5 = createFixedMutableArray(resultsCopy);
     searchResults = self->_data.searchResults;
     self->_data.searchResults = v5;
 
-    v4 = v7;
+    resultsCopy = v7;
   }
 }
 
@@ -383,21 +383,21 @@ LABEL_9:
   return v3;
 }
 
-- (void)setMailboxAttributes:(unint64_t)a3 separator:(id)a4 mailboxName:(id)a5 extraAttributes:(id)a6
+- (void)setMailboxAttributes:(unint64_t)attributes separator:(id)separator mailboxName:(id)name extraAttributes:(id)extraAttributes
 {
   values[2] = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  separatorCopy = separator;
+  nameCopy = name;
+  extraAttributesCopy = extraAttributes;
   p_separatorAndOrMboxName = &self->_data.list.separatorAndOrMboxName;
   separatorAndOrMboxName = self->_data.list.separatorAndOrMboxName;
-  self->_data.list.mailboxAttributes = a3;
-  if (separatorAndOrMboxName != v11)
+  self->_data.list.mailboxAttributes = attributes;
+  if (separatorAndOrMboxName != nameCopy)
   {
-    if (v10)
+    if (separatorCopy)
     {
-      values[0] = v10;
-      values[1] = v11;
+      values[0] = separatorCopy;
+      values[1] = nameCopy;
       v15 = CFArrayCreate(0, values, 2, MEMORY[0x277CBF128]);
       v16 = *p_separatorAndOrMboxName;
       *p_separatorAndOrMboxName = v15;
@@ -405,21 +405,21 @@ LABEL_9:
 
     else
     {
-      objc_storeStrong(&self->_data.list.separatorAndOrMboxName, a5);
+      objc_storeStrong(&self->_data.list.separatorAndOrMboxName, name);
     }
   }
 
   var0 = self->_data.list.var0;
   p_var0 = &self->_data.list.var0;
-  if (var0 != v12)
+  if (var0 != extraAttributesCopy)
   {
-    objc_storeStrong(p_var0, a6);
+    objc_storeStrong(p_var0, extraAttributes);
   }
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (id)fetchResultWithType:(int)a3
+- (id)fetchResultWithType:(int)type
 {
   v17 = *MEMORY[0x277D85DE8];
   [(MFIMAPResponse *)self fetchResults];
@@ -441,7 +441,7 @@ LABEL_9:
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
-        if ([v8 type] == a3)
+        if ([v8 type] == type)
         {
           v9 = v8;
           goto LABEL_11;
@@ -487,123 +487,123 @@ LABEL_11:
   return items;
 }
 
-- (void)setFetchResults:(id)a3
+- (void)setFetchResults:(id)results
 {
-  v4 = a3;
-  if (self->_data.fetch.items != v4)
+  resultsCopy = results;
+  if (self->_data.fetch.items != resultsCopy)
   {
-    v7 = v4;
-    v5 = createFixedMutableArray(v4);
+    v7 = resultsCopy;
+    v5 = createFixedMutableArray(resultsCopy);
     items = self->_data.fetch.items;
     self->_data.fetch.items = v5;
 
-    v4 = v7;
+    resultsCopy = v7;
   }
 }
 
-- (void)setMailboxName:(id)a3 quotaRootNames:(id)a4
+- (void)setMailboxName:(id)name quotaRootNames:(id)names
 {
-  v10 = a3;
-  v7 = a4;
-  if (self->_data.quotaRoot.mailboxName != v10)
+  nameCopy = name;
+  namesCopy = names;
+  if (self->_data.quotaRoot.mailboxName != nameCopy)
   {
-    objc_storeStrong(&self->_data.quotaRoot.mailboxName, a3);
+    objc_storeStrong(&self->_data.quotaRoot.mailboxName, name);
   }
 
-  if (self->_data.quotaRoot.quotaRootNames != v7)
+  if (self->_data.quotaRoot.quotaRootNames != namesCopy)
   {
-    v8 = createFixedMutableArray(v7);
+    v8 = createFixedMutableArray(namesCopy);
     quotaRootNames = self->_data.quotaRoot.quotaRootNames;
     self->_data.quotaRoot.quotaRootNames = v8;
   }
 }
 
-- (void)setQuotaRootName:(id)a3 quotas:(id)a4
+- (void)setQuotaRootName:(id)name quotas:(id)quotas
 {
-  v10 = a3;
-  v7 = a4;
-  if (self->_data.quota.quotaRootName != v10)
+  nameCopy = name;
+  quotasCopy = quotas;
+  if (self->_data.quota.quotaRootName != nameCopy)
   {
-    objc_storeStrong(&self->_data.quota.quotaRootName, a3);
+    objc_storeStrong(&self->_data.quota.quotaRootName, name);
   }
 
-  if (self->_data.quota.quotas != v7)
+  if (self->_data.quota.quotas != quotasCopy)
   {
-    v8 = createFixedMutableArray(v7);
+    v8 = createFixedMutableArray(quotasCopy);
     quotas = self->_data.quota.quotas;
     self->_data.quota.quotas = v8;
   }
 }
 
-- (void)setUids:(id)a3
+- (void)setUids:(id)uids
 {
-  v5 = a3;
+  uidsCopy = uids;
   uids = self->_data.uidFlags.uids;
   p_uidFlags = &self->_data.uidFlags;
-  if (uids != v5)
+  if (uids != uidsCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&p_uidFlags->uids, a3);
-    v5 = v8;
+    v8 = uidsCopy;
+    objc_storeStrong(&p_uidFlags->uids, uids);
+    uidsCopy = v8;
   }
 }
 
-- (void)setFlagsFetchResult:(id)a3
+- (void)setFlagsFetchResult:(id)result
 {
-  v5 = a3;
+  resultCopy = result;
   flagsFetchResult = self->_data.uidFlags.flagsFetchResult;
   p_flagsFetchResult = &self->_data.uidFlags.flagsFetchResult;
-  if (flagsFetchResult != v5)
+  if (flagsFetchResult != resultCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_flagsFetchResult, a3);
-    v5 = v8;
+    v8 = resultCopy;
+    objc_storeStrong(p_flagsFetchResult, result);
+    resultCopy = v8;
   }
 }
 
-- (void)setPrivateNamespaces:(id)a3
+- (void)setPrivateNamespaces:(id)namespaces
 {
-  v5 = a3;
+  namespacesCopy = namespaces;
   privateNamespaces = self->_data.namespaces.privateNamespaces;
   p_namespaces = &self->_data.namespaces;
-  if (privateNamespaces != v5)
+  if (privateNamespaces != namespacesCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&p_namespaces->privateNamespaces, a3);
-    v5 = v8;
+    v8 = namespacesCopy;
+    objc_storeStrong(&p_namespaces->privateNamespaces, namespaces);
+    namespacesCopy = v8;
   }
 }
 
-- (void)setPublicNamespaces:(id)a3
+- (void)setPublicNamespaces:(id)namespaces
 {
-  v5 = a3;
+  namespacesCopy = namespaces;
   publicNamespaces = self->_data.namespaces.publicNamespaces;
   p_publicNamespaces = &self->_data.namespaces.publicNamespaces;
-  if (publicNamespaces != v5)
+  if (publicNamespaces != namespacesCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_publicNamespaces, a3);
-    v5 = v8;
+    v8 = namespacesCopy;
+    objc_storeStrong(p_publicNamespaces, namespaces);
+    namespacesCopy = v8;
   }
 }
 
-- (void)setSharedNamespaces:(id)a3
+- (void)setSharedNamespaces:(id)namespaces
 {
-  v5 = a3;
+  namespacesCopy = namespaces;
   sharedNamespaces = self->_data.namespaces.sharedNamespaces;
   p_sharedNamespaces = &self->_data.namespaces.sharedNamespaces;
-  if (sharedNamespaces != v5)
+  if (sharedNamespaces != namespacesCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_sharedNamespaces, a3);
-    v5 = v8;
+    v8 = namespacesCopy;
+    objc_storeStrong(p_sharedNamespaces, namespaces);
+    namespacesCopy = v8;
   }
 }
 
-- (void)setValue:(id)a3 forKey:(id)a4
+- (void)setValue:(id)value forKey:(id)key
 {
-  v10 = a3;
-  v6 = a4;
+  valueCopy = value;
+  keyCopy = key;
   keyValuePairs = self->_keyValuePairs;
   if (!keyValuePairs)
   {
@@ -614,42 +614,42 @@ LABEL_11:
     keyValuePairs = self->_keyValuePairs;
   }
 
-  [(NSDictionary *)keyValuePairs setValue:v10 forKey:v6];
+  [(NSDictionary *)keyValuePairs setValue:valueCopy forKey:keyCopy];
 }
 
-- (void)setResponseName:(id)a3 parameters:(id)a4
+- (void)setResponseName:(id)name parameters:(id)parameters
 {
-  v10 = a3;
-  v7 = a4;
-  if (self->_data.other.name != v10)
+  nameCopy = name;
+  parametersCopy = parameters;
+  if (self->_data.other.name != nameCopy)
   {
-    objc_storeStrong(&self->_data.other.name, a3);
+    objc_storeStrong(&self->_data.other.name, name);
   }
 
   parameters = self->_data.other.parameters;
   p_parameters = &self->_data.other.parameters;
-  if (parameters != v7)
+  if (parameters != parametersCopy)
   {
-    objc_storeStrong(p_parameters, a4);
+    objc_storeStrong(p_parameters, parameters);
   }
 }
 
 - (id)description
 {
   v80 = *MEMORY[0x277D85DE8];
-  v67 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   if ([(MFIMAPResponse *)self isUntagged])
   {
-    [v67 appendString:@"* "];
+    [string appendString:@"* "];
   }
 
   if (self->_tag)
   {
-    [v67 appendString:?];
-    [v67 appendString:@" "];
+    [string appendString:?];
+    [string appendString:@" "];
   }
 
-  [v67 appendFormat:@"%s ", ResponseTypeTable[4 * *(self + 8) + 1]];
+  [string appendFormat:@"%s ", ResponseTypeTable[4 * *(self + 8) + 1]];
   switch(*(self + 8))
   {
     case 1:
@@ -658,112 +658,112 @@ LABEL_11:
     case 4:
     case 5:
     case 6:
-      v3 = [(MFIMAPResponse *)self responseCode];
-      v4 = ResponseCodeTable[v3];
-      v5 = [(MFIMAPResponse *)self responseInfo];
-      v6 = [(MFIMAPResponse *)self userString];
-      if (v3 || v5)
+      responseCode = [(MFIMAPResponse *)self responseCode];
+      v4 = ResponseCodeTable[responseCode];
+      responseInfo = [(MFIMAPResponse *)self responseInfo];
+      userString = [(MFIMAPResponse *)self userString];
+      if (responseCode || responseInfo)
       {
-        [v67 appendString:@"["];
-        if (v3)
+        [string appendString:@"["];
+        if (responseCode)
         {
-          [v67 appendFormat:@"%s", v4];
+          [string appendFormat:@"%s", v4];
         }
 
-        if (v5)
+        if (responseInfo)
         {
-          [v67 appendString:@" "];
-          v7 = [(__CFString *)v5 description];
-          [v67 appendString:v7];
+          [string appendString:@" "];
+          v7 = [(__CFString *)responseInfo description];
+          [string appendString:v7];
         }
 
-        [v67 appendString:@"]"];
+        [string appendString:@"]"];
       }
 
-      if ([v6 length])
+      if ([userString length])
       {
-        [v67 appendString:@" "];
-        [v67 appendString:v6];
+        [string appendString:@" "];
+        [string appendString:userString];
       }
 
       goto LABEL_72;
     case 7:
-      v8 = [(MFIMAPResponse *)self capabilities];
-      v9 = [v8 componentsJoinedByString:@" "];
-      [v67 appendString:v9];
+      capabilities = [(MFIMAPResponse *)self capabilities];
+      allKeys = [capabilities componentsJoinedByString:@" "];
+      [string appendString:allKeys];
       goto LABEL_63;
     case 8:
     case 0x15:
-      v8 = [(MFIMAPResponse *)self serverInfo];
-      v9 = [v8 allKeys];
-      v10 = [v9 count];
-      objc_msgSend(v67, "appendString:", @"(");
+      capabilities = [(MFIMAPResponse *)self serverInfo];
+      allKeys = [capabilities allKeys];
+      v10 = [allKeys count];
+      objc_msgSend(string, "appendString:", @"(");
       if (v10)
       {
         for (i = 0; i != v10; ++i)
         {
-          v12 = [v9 objectAtIndex:i];
+          v12 = [allKeys objectAtIndex:i];
           if (i)
           {
-            [v67 appendString:@" "];
+            [string appendString:@" "];
           }
 
-          v13 = [v8 objectForKey:v12];
-          [v67 appendFormat:@"%@ %@", v12, v13];
+          v13 = [capabilities objectForKey:v12];
+          [string appendFormat:@"%@ %@", v12, v13];
         }
       }
 
-      [v67 appendString:@""]);
+      [string appendString:@""]);
       goto LABEL_63;
     case 9:
     case 0xA:
     case 0xB:
-      [v67 appendFormat:@"%llu", -[MFIMAPResponse number](self, "number")];
+      [string appendFormat:@"%llu", -[MFIMAPResponse number](self, "number")];
       goto LABEL_99;
     case 0xC:
-      v8 = [(MFIMAPResponse *)self flags];
-      v9 = [v8 componentsJoinedByString:@" "];
-      [v67 appendFormat:@"(%@)", v9];
+      capabilities = [(MFIMAPResponse *)self flags];
+      allKeys = [capabilities componentsJoinedByString:@" "];
+      [string appendFormat:@"(%@)", allKeys];
 LABEL_63:
 
       goto LABEL_64;
     case 0xD:
-      v5 = [(MFIMAPResponse *)self statusEntries];
-      v20 = [(__CFString *)v5 allKeys];
-      v22 = [v20 count];
-      v23 = [(MFIMAPResponse *)self mailboxName];
-      [v67 appendFormat:@"%@", v23];
+      responseInfo = [(MFIMAPResponse *)self statusEntries];
+      allKeys2 = [(__CFString *)responseInfo allKeys];
+      v22 = [allKeys2 count];
+      mailboxName = [(MFIMAPResponse *)self mailboxName];
+      [string appendFormat:@"%@", mailboxName];
 
-      objc_msgSend(v67, "appendString:", @" (");
+      objc_msgSend(string, "appendString:", @" (");
       if (v22)
       {
         for (j = 0; j != v22; ++j)
         {
-          v25 = [v20 objectAtIndex:j];
+          v25 = [allKeys2 objectAtIndex:j];
           if (j)
           {
-            [v67 appendString:@" "];
+            [string appendString:@" "];
           }
 
-          v26 = [(__CFString *)v5 objectForKey:v25];
-          [v67 appendFormat:@"%@ %@", v25, v26];
+          v26 = [(__CFString *)responseInfo objectForKey:v25];
+          [string appendFormat:@"%@ %@", v25, v26];
         }
       }
 
-      [v67 appendString:@""]);
+      [string appendString:@""]);
       goto LABEL_97;
     case 0xF:
     case 0x10:
-      v5 = [(MFIMAPResponse *)self separator];
+      responseInfo = [(MFIMAPResponse *)self separator];
       obj = [(MFIMAPResponse *)self mailboxName];
-      v14 = [(MFIMAPResponse *)self mailboxAttributes];
+      mailboxAttributes = [(MFIMAPResponse *)self mailboxAttributes];
       v15 = 0;
       v16 = 0;
       do
       {
         v17 = (&IMAPMailboxAttributeEntries + v16);
         v18 = *(&IMAPMailboxAttributeEntries + v16 + 8);
-        if ((v18 & v14) != 0 && (v18 != 2 || ([*v17 isEqualToString:@"\\NonExistent"] & 1) == 0))
+        if ((v18 & mailboxAttributes) != 0 && (v18 != 2 || ([*v17 isEqualToString:@"\\NonExistent"] & 1) == 0))
         {
           if (v15)
           {
@@ -785,7 +785,7 @@ LABEL_63:
       while (!v19);
       if (v15)
       {
-        v20 = obj;
+        allKeys2 = obj;
         [v15 appendString:@""]);
         v21 = v15;
       }
@@ -793,70 +793,70 @@ LABEL_63:
       else
       {
         v21 = @"()";
-        v20 = obj;
+        allKeys2 = obj;
       }
 
-      [v67 appendString:v21];
-      [v67 appendString:@" "];
-      if (v5)
+      [string appendString:v21];
+      [string appendString:@" "];
+      if (responseInfo)
       {
-        [v67 appendFormat:@"%@", v5];
+        [string appendFormat:@"%@", responseInfo];
       }
 
       else
       {
-        [v67 appendString:@"NIL"];
+        [string appendString:@"NIL"];
       }
 
-      [v67 appendString:@" "];
-      [v67 appendFormat:@"%@", v20];
-      v60 = [(MFIMAPResponse *)self extraAttributes];
-      if ([v60 count])
+      [string appendString:@" "];
+      [string appendFormat:@"%@", allKeys2];
+      extraAttributes = [(MFIMAPResponse *)self extraAttributes];
+      if ([extraAttributes count])
       {
-        v61 = [v60 componentsJoinedByString:{@", "}];
-        [v67 appendFormat:@" ==> (%@)", v61];
+        v61 = [extraAttributes componentsJoinedByString:{@", "}];
+        [string appendFormat:@" ==> (%@)", v61];
       }
 
 LABEL_97:
       goto LABEL_98;
     case 0x11:
-      v8 = [(MFIMAPResponse *)self fetchResults];
-      v49 = [v8 count];
-      objc_msgSend(v67, "appendString:", @"(");
+      capabilities = [(MFIMAPResponse *)self fetchResults];
+      v49 = [capabilities count];
+      objc_msgSend(string, "appendString:", @"(");
       if (v49)
       {
         for (k = 0; k != v49; ++k)
         {
-          v51 = [v8 objectAtIndex:k];
+          v51 = [capabilities objectAtIndex:k];
           if (k)
           {
-            [v67 appendString:@" "];
+            [string appendString:@" "];
           }
 
           v52 = [v51 description];
-          [v67 appendString:v52];
+          [string appendString:v52];
         }
       }
 
-      [v67 appendString:@""]);
+      [string appendString:@""]);
 LABEL_64:
 
       goto LABEL_99;
     case 0x12:
-      v53 = [(MFIMAPResponse *)self mailboxName];
-      v54 = [(MFIMAPResponse *)self quotaRootNames];
+      mailboxName2 = [(MFIMAPResponse *)self mailboxName];
+      quotaRootNames = [(MFIMAPResponse *)self quotaRootNames];
       v55 = @"NIL";
-      if (v53)
+      if (mailboxName2)
       {
-        v55 = v53;
+        v55 = mailboxName2;
       }
 
-      [v67 appendFormat:@"%@", v55];
+      [string appendFormat:@"%@", v55];
       v76 = 0u;
       v77 = 0u;
       v74 = 0u;
       v75 = 0u;
-      v56 = v54;
+      v56 = quotaRootNames;
       v57 = [v56 countByEnumeratingWithState:&v74 objects:v79 count:16];
       if (v57)
       {
@@ -870,7 +870,7 @@ LABEL_64:
               objc_enumerationMutation(v56);
             }
 
-            [v67 appendFormat:@" %@", *(*(&v74 + 1) + 8 * m)];
+            [string appendFormat:@" %@", *(*(&v74 + 1) + 8 * m)];
           }
 
           v57 = [v56 countByEnumeratingWithState:&v74 objects:v79 count:16];
@@ -881,15 +881,15 @@ LABEL_64:
 
       goto LABEL_99;
     case 0x13:
-      v64 = [(MFIMAPResponse *)self quotas];
-      v28 = [(MFIMAPResponse *)self quotaRootName];
-      [v67 appendFormat:@"%@", v28];
+      quotas = [(MFIMAPResponse *)self quotas];
+      quotaRootName = [(MFIMAPResponse *)self quotaRootName];
+      [string appendFormat:@"%@", quotaRootName];
 
       v72 = 0u;
       v73 = 0u;
       v70 = 0u;
       v71 = 0u;
-      obja = v64;
+      obja = quotas;
       v29 = [obja countByEnumeratingWithState:&v70 objects:v78 count:16];
       if (v29)
       {
@@ -938,7 +938,7 @@ LABEL_64:
               v39 = @"0";
             }
 
-            [v67 appendFormat:@" (%@ %@/%@)", v37, v38, v39];
+            [string appendFormat:@" (%@ %@/%@)", v37, v38, v39];
           }
 
           v29 = [obja countByEnumeratingWithState:&v70 objects:v78 count:16];
@@ -953,38 +953,38 @@ LABEL_64:
       v68[1] = 3221225472;
       v68[2] = __29__MFIMAPResponse_description__block_invoke;
       v68[3] = &unk_279E353F8;
-      v44 = v67;
+      v44 = string;
       v69 = v44;
       v45 = MEMORY[0x2743C3100](v68);
-      v46 = [(MFIMAPResponse *)self privateNamespaces];
-      (v45)[2](v45, v46);
+      privateNamespaces = [(MFIMAPResponse *)self privateNamespaces];
+      (v45)[2](v45, privateNamespaces);
 
       [v44 appendString:@" "];
-      v47 = [(MFIMAPResponse *)self publicNamespaces];
-      (v45)[2](v45, v47);
+      publicNamespaces = [(MFIMAPResponse *)self publicNamespaces];
+      (v45)[2](v45, publicNamespaces);
 
       [v44 appendString:@" "];
-      v48 = [(MFIMAPResponse *)self sharedNamespaces];
-      (v45)[2](v45, v48);
+      sharedNamespaces = [(MFIMAPResponse *)self sharedNamespaces];
+      (v45)[2](v45, sharedNamespaces);
 
       goto LABEL_99;
     case 0x17:
-      v5 = [(MFIMAPResponse *)self responseName];
-      v6 = [(MFIMAPResponse *)self parameters];
-      if (v5)
+      responseInfo = [(MFIMAPResponse *)self responseName];
+      userString = [(MFIMAPResponse *)self parameters];
+      if (responseInfo)
       {
-        [v67 appendString:@" "];
-        [v67 appendString:v5];
+        [string appendString:@" "];
+        [string appendString:responseInfo];
       }
 
-      if (!v6)
+      if (!userString)
       {
         goto LABEL_72;
       }
 
-      [v67 appendString:@" "];
-      v27 = [v6 componentsJoinedByString:@" "];
-      [v67 appendString:v27];
+      [string appendString:@" "];
+      v27 = [userString componentsJoinedByString:@" "];
+      [string appendString:v27];
 LABEL_71:
 
 LABEL_72:
@@ -993,16 +993,16 @@ LABEL_98:
 LABEL_99:
       v62 = *MEMORY[0x277D85DE8];
 
-      return v67;
+      return string;
     case 0x18:
-      v40 = [(MFIMAPResponse *)self uidFlagsChange];
-      v5 = [(MFIMAPResponse *)self uids];
-      v41 = [(MFIMAPResponse *)self flagsFetchResult];
-      v6 = v41;
+      uidFlagsChange = [(MFIMAPResponse *)self uidFlagsChange];
+      responseInfo = [(MFIMAPResponse *)self uids];
+      flagsFetchResult = [(MFIMAPResponse *)self flagsFetchResult];
+      userString = flagsFetchResult;
       v27 = @"*nil*";
-      if (v5)
+      if (responseInfo)
       {
-        v42 = v5;
+        v42 = responseInfo;
       }
 
       else
@@ -1010,14 +1010,14 @@ LABEL_99:
         v42 = @"*nil*";
       }
 
-      v43 = byte_2721700C0[v40];
-      if (v41)
+      v43 = byte_2721700C0[uidFlagsChange];
+      if (flagsFetchResult)
       {
-        v27 = [v41 description];
+        v27 = [flagsFetchResult description];
       }
 
-      [v67 appendFormat:@" %@ %c%@", v42, v43, v27];
-      if (v6)
+      [string appendFormat:@" %@ %c%@", v42, v43, v27];
+      if (userString)
       {
         goto LABEL_71;
       }
@@ -1115,26 +1115,26 @@ void __29__MFIMAPResponse_description__block_invoke_2(uint64_t a1, void *a2, voi
   return [(MFIMAPResponse *)&v3 init];
 }
 
-- (MFIMAPResponse)initWithConnection:(id)a3 responseConsumer:(id)a4
+- (MFIMAPResponse)initWithConnection:(id)connection responseConsumer:(id)consumer
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  consumerCopy = consumer;
   v19.receiver = self;
   v19.super_class = MFIMAPResponse;
   v8 = [(MFIMAPResponse *)&v19 init];
   if (v8)
   {
     v9 = objc_autoreleasePoolPush();
-    [(MFIMAPResponse *)v8 setResponseConsumer:v7];
-    v10 = [v6 _readDataOfLength:-1];
+    [(MFIMAPResponse *)v8 setResponseConsumer:consumerCopy];
+    v10 = [connectionCopy _readDataOfLength:-1];
     if (v10)
     {
       v11 = [MFIMAPParseContext alloc];
       v12 = v10;
-      v13 = [v10 bytes];
+      bytes = [v10 bytes];
       v14 = v10;
-      v15 = -[MFIMAPParseContext initWithConnection:response:start:end:](v11, "initWithConnection:response:start:end:", v6, v8, v13, [v10 bytes] + objc_msgSend(v10, "length"));
+      v15 = -[MFIMAPParseContext initWithConnection:response:start:end:](v11, "initWithConnection:response:start:end:", connectionCopy, v8, bytes, [v10 bytes] + objc_msgSend(v10, "length"));
       response(v15);
       if ([(MFIMAPParseContext *)v15 isValid])
       {
@@ -1164,19 +1164,19 @@ void __29__MFIMAPResponse_description__block_invoke_2(uint64_t a1, void *a2, voi
   return v16;
 }
 
-- (MFIMAPResponse)initWithString:(id)a3
+- (MFIMAPResponse)initWithString:(id)string
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stringCopy = string;
   v13.receiver = self;
   v13.super_class = MFIMAPResponse;
   v5 = [(MFIMAPResponse *)&v13 init];
   if (v5)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = v4;
-    v8 = [v4 UTF8String];
-    v9 = -[MFIMAPParseContext initWithConnection:response:start:end:]([MFIMAPParseContext alloc], "initWithConnection:response:start:end:", 0, v5, v8, v8 + [v4 length]);
+    v7 = stringCopy;
+    uTF8String = [stringCopy UTF8String];
+    v9 = -[MFIMAPParseContext initWithConnection:response:start:end:]([MFIMAPParseContext alloc], "initWithConnection:response:start:end:", 0, v5, uTF8String, uTF8String + [stringCopy length]);
     response(v9);
     if ([(MFIMAPParseContext *)v9 isValid])
     {
@@ -1235,7 +1235,7 @@ void __29__MFIMAPResponse_description__block_invoke_2(uint64_t a1, void *a2, voi
 - (void)fetchResults
 {
   v10 = *MEMORY[0x277D85DE8];
-  v2 = *a1;
+  v2 = *self;
   v4 = 136315650;
   v5 = "";
   v6 = 2080;

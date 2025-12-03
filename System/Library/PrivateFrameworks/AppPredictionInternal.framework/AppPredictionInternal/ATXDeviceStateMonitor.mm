@@ -2,8 +2,8 @@
 + (BOOL)airplaneMode;
 + (BOOL)onWifi;
 + (id)SSID;
-+ (void)setAirplaneMode:(BOOL)a3;
-+ (void)setSSID:(id)a3;
++ (void)setAirplaneMode:(BOOL)mode;
++ (void)setSSID:(id)d;
 + (void)startMockingSystem;
 + (void)stopMockingSystem;
 @end
@@ -37,29 +37,29 @@
   pthread_mutex_lock(&lock);
   if (mocking == 1)
   {
-    v2 = mockSSID;
+    sSID = mockSSID;
   }
 
   else
   {
     v3 = +[ATXWifiStateMonitor sharedInstance];
-    v2 = [v3 SSID];
+    sSID = [v3 SSID];
   }
 
   pthread_mutex_unlock(&lock);
-  if (![(__CFString *)v2 length])
+  if (![(__CFString *)sSID length])
   {
 
-    v2 = @"- - - - - - - - none - - - - - - - -";
+    sSID = @"- - - - - - - - none - - - - - - - -";
   }
 
-  return v2;
+  return sSID;
 }
 
 + (BOOL)onWifi
 {
-  v2 = [a1 SSID];
-  v3 = [v2 isEqualToString:@"- - - - - - - - none - - - - - - - -"];
+  sSID = [self SSID];
+  v3 = [sSID isEqualToString:@"- - - - - - - - none - - - - - - - -"];
 
   return v3 ^ 1;
 }
@@ -86,29 +86,29 @@
   pthread_mutex_unlock(&lock);
 }
 
-+ (void)setAirplaneMode:(BOOL)a3
++ (void)setAirplaneMode:(BOOL)mode
 {
   pthread_mutex_lock(&lock);
   if ((mocking & 1) == 0)
   {
-    [(ATXDeviceStateMonitor *)a2 setAirplaneMode:a1];
+    [(ATXDeviceStateMonitor *)a2 setAirplaneMode:self];
   }
 
-  mockAirplaneMode = a3;
+  mockAirplaneMode = mode;
 
   pthread_mutex_unlock(&lock);
 }
 
-+ (void)setSSID:(id)a3
++ (void)setSSID:(id)d
 {
-  v7 = a3;
+  dCopy = d;
   pthread_mutex_lock(&lock);
   if ((mocking & 1) == 0)
   {
-    [(ATXDeviceStateMonitor *)a2 setSSID:a1];
+    [(ATXDeviceStateMonitor *)a2 setSSID:self];
   }
 
-  v5 = [v7 copy];
+  v5 = [dCopy copy];
   v6 = mockSSID;
   mockSSID = v5;
 

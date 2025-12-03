@@ -1,25 +1,25 @@
 @interface FPUIAuthenticationServerInfoViewController
-- (BOOL)tableView:(id)a3 shouldShowMenuForRowAtIndexPath:(id)a4;
+- (BOOL)tableView:(id)view shouldShowMenuForRowAtIndexPath:(id)path;
 - (FPUIAuthenticationServerInfoDelegate)serverInfoDelegate;
-- (FPUIAuthenticationServerInfoViewController)initWithServerRepresentation:(id)a3;
-- (void)removeButtonTapped:(id)a3;
+- (FPUIAuthenticationServerInfoViewController)initWithServerRepresentation:(id)representation;
+- (void)removeButtonTapped:(id)tapped;
 - (void)setupTableViewSections;
-- (void)tableView:(id)a3 performAction:(SEL)a4 forRowAtIndexPath:(id)a5 withSender:(id)a6;
+- (void)tableView:(id)view performAction:(SEL)action forRowAtIndexPath:(id)path withSender:(id)sender;
 - (void)viewDidLoad;
 @end
 
 @implementation FPUIAuthenticationServerInfoViewController
 
-- (FPUIAuthenticationServerInfoViewController)initWithServerRepresentation:(id)a3
+- (FPUIAuthenticationServerInfoViewController)initWithServerRepresentation:(id)representation
 {
-  v5 = a3;
+  representationCopy = representation;
   v9.receiver = self;
   v9.super_class = FPUIAuthenticationServerInfoViewController;
   v6 = [(FPUIAuthenticationTableViewController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_serverRepresentation, a3);
+    objc_storeStrong(&v6->_serverRepresentation, representation);
   }
 
   return v7;
@@ -30,8 +30,8 @@
   v4.receiver = self;
   v4.super_class = FPUIAuthenticationServerInfoViewController;
   [(FPUIAuthenticationTableViewController *)&v4 viewDidLoad];
-  v3 = [(FPUIAuthenticationServerRepresentation *)self->_serverRepresentation displayName];
-  [(FPUIAuthenticationTableViewController *)self setTitle:v3];
+  displayName = [(FPUIAuthenticationServerRepresentation *)self->_serverRepresentation displayName];
+  [(FPUIAuthenticationTableViewController *)self setTitle:displayName];
 }
 
 - (void)setupTableViewSections
@@ -120,10 +120,10 @@ void __68__FPUIAuthenticationServerInfoViewController_setupTableViewSections__bl
   [v2 removeButtonTapped:v4];
 }
 
-- (void)removeButtonTapped:(id)a3
+- (void)removeButtonTapped:(id)tapped
 {
   v9 = MEMORY[0x277D75110];
-  v10 = FPUILoc(@"REMOVE_SERVER", a2, a3, v3, v4, v5, v6, v7, v40[0]);
+  v10 = FPUILoc(@"REMOVE_SERVER", a2, tapped, v3, v4, v5, v6, v7, v40[0]);
   v18 = FPUILoc(@"REMOVE_SERVER_ALERT_MESSAGE", v11, v12, v13, v14, v15, v16, v17, v40[0]);
   v19 = [v9 alertControllerWithTitle:v10 message:v18 preferredStyle:1];
 
@@ -209,22 +209,22 @@ void __65__FPUIAuthenticationServerInfoViewController_removeButtonTapped___block
   [v4 deselectRowAtIndexPath:v3 animated:1];
 }
 
-- (BOOL)tableView:(id)a3 shouldShowMenuForRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldShowMenuForRowAtIndexPath:(id)path
 {
-  v4 = [a3 cellForRowAtIndexPath:a4];
-  v5 = [v4 reuseIdentifier];
-  v6 = [@"ServerAddress" isEqualToString:v5];
+  v4 = [view cellForRowAtIndexPath:path];
+  reuseIdentifier = [v4 reuseIdentifier];
+  v6 = [@"ServerAddress" isEqualToString:reuseIdentifier];
 
   return v6;
 }
 
-- (void)tableView:(id)a3 performAction:(SEL)a4 forRowAtIndexPath:(id)a5 withSender:(id)a6
+- (void)tableView:(id)view performAction:(SEL)action forRowAtIndexPath:(id)path withSender:(id)sender
 {
-  if (sel_copy_ == a4)
+  if (sel_copy_ == action)
   {
-    v8 = [(FPUIAuthenticationServerRepresentation *)self->_serverRepresentation displayName];
-    v7 = [MEMORY[0x277D75810] generalPasteboard];
-    [v7 setString:v8];
+    displayName = [(FPUIAuthenticationServerRepresentation *)self->_serverRepresentation displayName];
+    generalPasteboard = [MEMORY[0x277D75810] generalPasteboard];
+    [generalPasteboard setString:displayName];
   }
 }
 

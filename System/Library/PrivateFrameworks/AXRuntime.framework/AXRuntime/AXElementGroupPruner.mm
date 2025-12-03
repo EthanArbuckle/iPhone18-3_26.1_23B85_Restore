@@ -1,52 +1,52 @@
 @interface AXElementGroupPruner
-- (id)_prunedGroupable:(id)a3;
-- (id)pruneRootGroup:(id)a3;
+- (id)_prunedGroupable:(id)groupable;
+- (id)pruneRootGroup:(id)group;
 @end
 
 @implementation AXElementGroupPruner
 
-- (id)_prunedGroupable:(id)a3
+- (id)_prunedGroupable:(id)groupable
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 isGroup];
-  v6 = v4;
+  groupableCopy = groupable;
+  isGroup = [groupableCopy isGroup];
+  v6 = groupableCopy;
   v7 = v6;
   v8 = v6;
-  if (v5)
+  if (isGroup)
   {
     if ([v6 count] == 1)
     {
-      v9 = [v7 firstChild];
-      if ([v9 isGroup])
+      firstChild = [v7 firstChild];
+      if ([firstChild isGroup])
       {
-        v10 = [v9 groupTraits];
-        v11 = [v7 groupTraits];
-        v12 = [v9 userDefinedScanningBehaviorTraits];
-        v13 = [v7 userDefinedScanningBehaviorTraits];
-        v8 = [(AXElementGroupPruner *)self _prunedGroupable:v9];
+        groupTraits = [firstChild groupTraits];
+        groupTraits2 = [v7 groupTraits];
+        userDefinedScanningBehaviorTraits = [firstChild userDefinedScanningBehaviorTraits];
+        userDefinedScanningBehaviorTraits2 = [v7 userDefinedScanningBehaviorTraits];
+        v8 = [(AXElementGroupPruner *)self _prunedGroupable:firstChild];
         if ([v8 isGroup])
         {
-          v14 = [v9 label];
-          [v8 setLabel:v14];
+          label = [firstChild label];
+          [v8 setLabel:label];
 
-          v15 = [v9 identifier];
-          [v8 setIdentifier:v15];
+          identifier = [firstChild identifier];
+          [v8 setIdentifier:identifier];
 
-          [v8 setGroupTraits:v11 | v10];
-          [v8 setUserDefinedScanningBehaviorTraits:v13 | v12];
+          [v8 setGroupTraits:groupTraits2 | groupTraits];
+          [v8 setUserDefinedScanningBehaviorTraits:userDefinedScanningBehaviorTraits2 | userDefinedScanningBehaviorTraits];
         }
       }
 
       else
       {
-        v8 = [(AXElementGroupPruner *)self _prunedGroupable:v9];
+        v8 = [(AXElementGroupPruner *)self _prunedGroupable:firstChild];
       }
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v7, "count")}];
+      firstChild = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v7, "count")}];
       v25 = 0u;
       v26 = 0u;
       v27 = 0u;
@@ -69,7 +69,7 @@
             v21 = [(AXElementGroupPruner *)self _prunedGroupable:*(*(&v25 + 1) + 8 * i), v25];
             if (v21)
             {
-              [v9 addObject:v21];
+              [firstChild addObject:v21];
             }
           }
 
@@ -79,25 +79,25 @@
         while (v18);
       }
 
-      v22 = [v16 label];
-      v8 = [AXElementGroup groupWithElements:v9 label:v22];
+      label2 = [v16 label];
+      v8 = [AXElementGroup groupWithElements:firstChild label:label2];
 
       [v8 setGroupTraits:{objc_msgSend(v16, "groupTraits")}];
       [v8 setUserDefinedScanningBehaviorTraits:{objc_msgSend(v16, "userDefinedScanningBehaviorTraits")}];
-      v23 = [v16 identifier];
-      [v8 setIdentifier:v23];
+      identifier2 = [v16 identifier];
+      [v8 setIdentifier:identifier2];
     }
   }
 
   return v8;
 }
 
-- (id)pruneRootGroup:(id)a3
+- (id)pruneRootGroup:(id)group
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 elementCommunity];
-  v6 = [(AXElementGroupPruner *)self _prunedGroupable:v4];
+  groupCopy = group;
+  elementCommunity = [groupCopy elementCommunity];
+  v6 = [(AXElementGroupPruner *)self _prunedGroupable:groupCopy];
   if ([v6 isGroup])
   {
     v7 = v6;
@@ -115,11 +115,11 @@
     v7 = [AXElementGroup groupWithElements:v8];
   }
 
-  v4 = v7;
+  groupCopy = v7;
 LABEL_6:
-  [v4 setElementCommunity:v5];
+  [groupCopy setElementCommunity:elementCommunity];
 
-  return v4;
+  return groupCopy;
 }
 
 @end

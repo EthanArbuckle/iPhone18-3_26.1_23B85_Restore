@@ -1,15 +1,15 @@
 @interface HSKeylineLabel
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (HSKeylineLabel)init;
 - (NSAttributedString)attributedText;
 - (NSString)text;
 - (id)firstBaselineAnchor;
 - (id)lastBaselineAnchor;
 - (void)layoutSubviews;
-- (void)setAttributedText:(id)a3;
-- (void)setBackgroundColor:(id)a3;
-- (void)setText:(id)a3;
+- (void)setAttributedText:(id)text;
+- (void)setBackgroundColor:(id)color;
+- (void)setText:(id)text;
 @end
 
 @implementation HSKeylineLabel
@@ -31,10 +31,10 @@
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v5 = [(HSKeylineLabel *)v2 leadingKeylineLayer];
-    v33[0] = v5;
-    v6 = [(HSKeylineLabel *)v2 trailingKeylineLayer];
-    v33[1] = v6;
+    leadingKeylineLayer = [(HSKeylineLabel *)v2 leadingKeylineLayer];
+    v33[0] = leadingKeylineLayer;
+    trailingKeylineLayer = [(HSKeylineLabel *)v2 trailingKeylineLayer];
+    v33[1] = trailingKeylineLayer;
     v7 = [NSArray arrayWithObjects:v33 count:2];
 
     v8 = [v7 countByEnumeratingWithState:&v28 objects:v34 count:16];
@@ -56,8 +56,8 @@
           v13 = +[UIColor _externalSystemGrayColor];
           [v12 setBackgroundColor:{objc_msgSend(v13, "CGColor")}];
 
-          v14 = [(HSKeylineLabel *)v2 layer];
-          [v14 addSublayer:v12];
+          layer = [(HSKeylineLabel *)v2 layer];
+          [layer addSublayer:v12];
 
           v11 = v11 + 1;
         }
@@ -72,25 +72,25 @@
     v15 = objc_opt_new();
     [(HSKeylineLabel *)v2 setLabel:v15];
 
-    v16 = [(HSKeylineLabel *)v2 label];
-    [v16 setTranslatesAutoresizingMaskIntoConstraints:0];
+    label = [(HSKeylineLabel *)v2 label];
+    [label setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v17 = [(HSKeylineLabel *)v2 label];
-    [v17 setNumberOfLines:1];
+    label2 = [(HSKeylineLabel *)v2 label];
+    [label2 setNumberOfLines:1];
 
-    v18 = [(HSKeylineLabel *)v2 label];
-    [(HSKeylineLabel *)v2 addSubview:v18];
+    label3 = [(HSKeylineLabel *)v2 label];
+    [(HSKeylineLabel *)v2 addSubview:label3];
 
-    v19 = [(HSKeylineLabel *)v2 label];
-    v20 = [v19 centerXAnchor];
-    v21 = [(HSKeylineLabel *)v2 centerXAnchor];
-    v22 = [v20 constraintEqualToAnchor:v21];
+    label4 = [(HSKeylineLabel *)v2 label];
+    centerXAnchor = [label4 centerXAnchor];
+    centerXAnchor2 = [(HSKeylineLabel *)v2 centerXAnchor];
+    v22 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [v22 setActive:1];
 
-    v23 = [(HSKeylineLabel *)v2 label];
-    v24 = [v23 centerYAnchor];
-    v25 = [(HSKeylineLabel *)v2 centerYAnchor];
-    v26 = [v24 constraintEqualToAnchor:v25];
+    label5 = [(HSKeylineLabel *)v2 label];
+    centerYAnchor = [label5 centerYAnchor];
+    centerYAnchor2 = [(HSKeylineLabel *)v2 centerYAnchor];
+    v26 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v26 setActive:1];
 
     [(HSKeylineLabel *)v2 setMargin:8.0];
@@ -104,13 +104,13 @@
   v29.receiver = self;
   v29.super_class = HSKeylineLabel;
   [(HSKeylineLabel *)&v29 layoutSubviews];
-  v3 = [(HSKeylineLabel *)self window];
-  v4 = [v3 screen];
-  [v4 scale];
+  window = [(HSKeylineLabel *)self window];
+  screen = [window screen];
+  [screen scale];
   v28 = 1.0 / v5;
 
-  v6 = [(HSKeylineLabel *)self label];
-  [v6 frame];
+  label = [(HSKeylineLabel *)self label];
+  [label frame];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -144,17 +144,17 @@
   v22 = MaxX - CGRectGetMaxX(v34);
   [(HSKeylineLabel *)self margin];
   v24 = v22 - v23;
-  v25 = [(HSKeylineLabel *)self leadingKeylineLayer];
-  [v25 setFrame:{0.0, MidY, v16, v28}];
+  leadingKeylineLayer = [(HSKeylineLabel *)self leadingKeylineLayer];
+  [leadingKeylineLayer setFrame:{0.0, MidY, v16, v28}];
 
-  v26 = [(HSKeylineLabel *)self trailingKeylineLayer];
-  [v26 setFrame:{v19, v20, v24, v28}];
+  trailingKeylineLayer = [(HSKeylineLabel *)self trailingKeylineLayer];
+  [trailingKeylineLayer setFrame:{v19, v20, v24, v28}];
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = [(HSKeylineLabel *)self label];
-  [v2 intrinsicContentSize];
+  label = [(HSKeylineLabel *)self label];
+  [label intrinsicContentSize];
   v4 = v3;
   v6 = v5;
 
@@ -165,12 +165,12 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(HSKeylineLabel *)self label];
-  [v5 sizeThatFits:{width, height}];
+  height = fits.height;
+  width = fits.width;
+  label = [(HSKeylineLabel *)self label];
+  [label sizeThatFits:{width, height}];
   v7 = v6;
   v9 = v8;
 
@@ -181,23 +181,23 @@
   return result;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   v17.receiver = self;
   v17.super_class = HSKeylineLabel;
-  [(HSKeylineLabel *)&v17 setBackgroundColor:v4];
-  v5 = [(HSKeylineLabel *)self label];
-  [v5 setBackgroundColor:v4];
+  [(HSKeylineLabel *)&v17 setBackgroundColor:colorCopy];
+  label = [(HSKeylineLabel *)self label];
+  [label setBackgroundColor:colorCopy];
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [(HSKeylineLabel *)self leadingKeylineLayer];
-  v18[0] = v6;
-  v7 = [(HSKeylineLabel *)self trailingKeylineLayer];
-  v18[1] = v7;
+  leadingKeylineLayer = [(HSKeylineLabel *)self leadingKeylineLayer];
+  v18[0] = leadingKeylineLayer;
+  trailingKeylineLayer = [(HSKeylineLabel *)self trailingKeylineLayer];
+  v18[1] = trailingKeylineLayer;
   v8 = [NSArray arrayWithObjects:v18 count:2];
 
   v9 = [v8 countByEnumeratingWithState:&v13 objects:v19 count:16];
@@ -215,7 +215,7 @@
           objc_enumerationMutation(v8);
         }
 
-        [*(*(&v13 + 1) + 8 * v12) setBackgroundColor:{objc_msgSend(v4, "CGColor")}];
+        [*(*(&v13 + 1) + 8 * v12) setBackgroundColor:{objc_msgSend(colorCopy, "CGColor")}];
         v12 = v12 + 1;
       }
 
@@ -229,52 +229,52 @@
 
 - (id)firstBaselineAnchor
 {
-  v2 = [(HSKeylineLabel *)self label];
-  v3 = [v2 firstBaselineAnchor];
+  label = [(HSKeylineLabel *)self label];
+  firstBaselineAnchor = [label firstBaselineAnchor];
 
-  return v3;
+  return firstBaselineAnchor;
 }
 
 - (id)lastBaselineAnchor
 {
-  v2 = [(HSKeylineLabel *)self label];
-  v3 = [v2 lastBaselineAnchor];
+  label = [(HSKeylineLabel *)self label];
+  lastBaselineAnchor = [label lastBaselineAnchor];
 
-  return v3;
+  return lastBaselineAnchor;
 }
 
 - (NSString)text
 {
-  v2 = [(HSKeylineLabel *)self attributedText];
-  v3 = [v2 string];
+  attributedText = [(HSKeylineLabel *)self attributedText];
+  string = [attributedText string];
 
-  return v3;
+  return string;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v4 = a3;
-  v5 = [[NSAttributedString alloc] initWithString:v4];
+  textCopy = text;
+  v5 = [[NSAttributedString alloc] initWithString:textCopy];
 
   [(HSKeylineLabel *)self setAttributedText:v5];
 }
 
 - (NSAttributedString)attributedText
 {
-  v2 = [(HSKeylineLabel *)self label];
-  v3 = [v2 attributedText];
+  label = [(HSKeylineLabel *)self label];
+  attributedText = [label attributedText];
 
-  return v3;
+  return attributedText;
 }
 
-- (void)setAttributedText:(id)a3
+- (void)setAttributedText:(id)text
 {
-  v4 = a3;
-  v5 = [(HSKeylineLabel *)self label];
-  [v5 setAttributedText:v4];
+  textCopy = text;
+  label = [(HSKeylineLabel *)self label];
+  [label setAttributedText:textCopy];
 
-  v6 = [(HSKeylineLabel *)self label];
-  [v6 sizeToFit];
+  label2 = [(HSKeylineLabel *)self label];
+  [label2 sizeToFit];
 
   [(HSKeylineLabel *)self invalidateIntrinsicContentSize];
 

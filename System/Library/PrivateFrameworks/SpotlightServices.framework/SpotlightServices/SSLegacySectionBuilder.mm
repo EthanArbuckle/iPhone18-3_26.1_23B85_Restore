@@ -1,5 +1,5 @@
 @interface SSLegacySectionBuilder
-+ (id)compactCardSectionForResult:(id)a3;
++ (id)compactCardSectionForResult:(id)result;
 + (id)supportedBundleIds;
 - (id)buildSection;
 @end
@@ -16,16 +16,16 @@
   return v2;
 }
 
-+ (id)compactCardSectionForResult:(id)a3
++ (id)compactCardSectionForResult:(id)result
 {
-  v3 = [a3 compactCard];
-  v4 = [v3 cardSections];
-  v5 = [v4 firstObject];
+  compactCard = [result compactCard];
+  cardSections = [compactCard cardSections];
+  firstObject = [cardSections firstObject];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = firstObject;
   }
 
   else
@@ -40,35 +40,35 @@
 
 - (id)buildSection
 {
-  v2 = self;
+  selfCopy = self;
   v76 = *MEMORY[0x1E69E9840];
-  v3 = [(SSSectionBuilder *)self section];
-  v4 = [v3 mutableDeepCopy];
+  section = [(SSSectionBuilder *)self section];
+  mutableDeepCopy = [section mutableDeepCopy];
 
-  v5 = [(SSSectionBuilder *)v2 section];
-  v6 = [v5 results];
-  v7 = [v6 copy];
-  [v4 setResults:v7];
+  section2 = [(SSSectionBuilder *)selfCopy section];
+  results = [section2 results];
+  v7 = [results copy];
+  [mutableDeepCopy setResults:v7];
 
   v8 = objc_opt_new();
   v9 = objc_opt_new();
-  v10 = [(SSSectionBuilder *)v2 isTopHitSection];
+  isTopHitSection = [(SSSectionBuilder *)selfCopy isTopHitSection];
   v57 = objc_opt_new();
   v69 = 0u;
   v70 = 0u;
   v71 = 0u;
   v72 = 0u;
-  v11 = [v4 results];
+  results2 = [mutableDeepCopy results];
   v56 = v8;
-  v60 = [v11 countByEnumeratingWithState:&v69 objects:v75 count:16];
+  v60 = [results2 countByEnumeratingWithState:&v69 objects:v75 count:16];
   if (v60)
   {
     v59 = *v70;
-    v54 = v2;
-    v55 = v4;
+    v54 = selfCopy;
+    v55 = mutableDeepCopy;
     v53 = v9;
-    v52 = v10;
-    v51 = v11;
+    v52 = isTopHitSection;
+    v51 = results2;
     do
     {
       v12 = 0;
@@ -76,71 +76,71 @@
       {
         if (*v70 != v59)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(results2);
         }
 
         v13 = *(*(&v69 + 1) + 8 * v12);
-        v14 = [v13 inlineCard];
-        if (v14)
+        inlineCard = [v13 inlineCard];
+        if (inlineCard)
         {
-          v15 = v14;
+          v15 = inlineCard;
           v16 = v12;
-          v17 = v13;
+          buildResult = v13;
         }
 
         else
         {
-          v18 = [v13 compactCard];
+          compactCard = [v13 compactCard];
 
-          if (v18)
+          if (compactCard)
           {
             goto LABEL_10;
           }
 
           v16 = v12;
           v15 = [SSResultBuilder resultBuilderWithResult:v13];
-          v38 = [(SSSectionBuilder *)v2 queryContext];
-          [v15 setQueryContext:v38];
+          queryContext = [(SSSectionBuilder *)selfCopy queryContext];
+          [v15 setQueryContext:queryContext];
 
-          [v15 setIsTopHit:v10];
-          v17 = [v15 buildResult];
+          [v15 setIsTopHit:isTopHitSection];
+          buildResult = [v15 buildResult];
 
           if ([v15 supportsClearingBackendData])
           {
-            [v17 clearBackendData];
+            [buildResult clearBackendData];
           }
 
-          if (v17)
+          if (buildResult)
           {
-            [v57 addObject:v17];
+            [v57 addObject:buildResult];
           }
         }
 
-        v13 = v17;
+        v13 = buildResult;
         v12 = v16;
 LABEL_10:
-        v19 = [v4 results];
-        if (([v19 count] == 1) & v10) != 1 || (objc_msgSend(v13, "usesCompactDisplay"))
+        results3 = [mutableDeepCopy results];
+        if (([results3 count] == 1) & isTopHitSection) != 1 || (objc_msgSend(v13, "usesCompactDisplay"))
         {
 LABEL_31:
         }
 
         else
         {
-          v20 = [v13 shouldUseCompactDisplay];
+          shouldUseCompactDisplay = [v13 shouldUseCompactDisplay];
 
-          if ((v20 & 1) == 0)
+          if ((shouldUseCompactDisplay & 1) == 0)
           {
             v58 = v12;
-            v21 = [v13 inlineCard];
-            v22 = [v21 cardSections];
+            inlineCard2 = [v13 inlineCard];
+            cardSections = [inlineCard2 cardSections];
 
             v67 = 0u;
             v68 = 0u;
             v65 = 0u;
             v66 = 0u;
-            v19 = v22;
-            v23 = [v19 countByEnumeratingWithState:&v65 objects:v74 count:16];
+            results3 = cardSections;
+            v23 = [results3 countByEnumeratingWithState:&v65 objects:v74 count:16];
             v24 = 0x1E69C9000uLL;
             if (!v23)
             {
@@ -155,15 +155,15 @@ LABEL_31:
               {
                 if (*v66 != v26)
                 {
-                  objc_enumerationMutation(v19);
+                  objc_enumerationMutation(results3);
                 }
 
                 v28 = *(*(&v65 + 1) + 8 * i);
-                v29 = [v28 backgroundColor];
-                if (!v29)
+                backgroundColor = [v28 backgroundColor];
+                if (!backgroundColor)
                 {
-                  v30 = [v13 contentType];
-                  v31 = [v30 isEqualToString:@"com.apple.application-bundle"];
+                  contentType = [v13 contentType];
+                  v31 = [contentType isEqualToString:@"com.apple.application-bundle"];
 
                   if (v31)
                   {
@@ -171,45 +171,45 @@ LABEL_31:
                   }
 
                   v32 = *(v24 + 3712);
-                  v29 = objc_opt_new();
-                  v33 = [v13 relatedAppIdentifier];
-                  if (v33)
+                  backgroundColor = objc_opt_new();
+                  relatedAppIdentifier = [v13 relatedAppIdentifier];
+                  if (relatedAppIdentifier)
                   {
-                    [v29 setApplicationBundleIdentifier:v33];
+                    [backgroundColor setApplicationBundleIdentifier:relatedAppIdentifier];
                   }
 
                   else
                   {
-                    v34 = [v13 applicationBundleIdentifier];
-                    if (v34)
+                    applicationBundleIdentifier = [v13 applicationBundleIdentifier];
+                    if (applicationBundleIdentifier)
                     {
-                      [v29 setApplicationBundleIdentifier:v34];
+                      [backgroundColor setApplicationBundleIdentifier:applicationBundleIdentifier];
                     }
 
                     else
                     {
-                      v35 = [v13 sectionBundleIdentifier];
-                      [v29 setApplicationBundleIdentifier:v35];
+                      sectionBundleIdentifier = [v13 sectionBundleIdentifier];
+                      [backgroundColor setApplicationBundleIdentifier:sectionBundleIdentifier];
                     }
 
                     v24 = 0x1E69C9000;
                   }
 
-                  [v28 setBackgroundColor:v29];
+                  [v28 setBackgroundColor:backgroundColor];
                 }
               }
 
-              v25 = [v19 countByEnumeratingWithState:&v65 objects:v74 count:16];
+              v25 = [results3 countByEnumeratingWithState:&v65 objects:v74 count:16];
               if (!v25)
               {
 LABEL_30:
 
-                v2 = v54;
-                v4 = v55;
+                selfCopy = v54;
+                mutableDeepCopy = v55;
                 v8 = v56;
                 v9 = v53;
-                v10 = v52;
-                v11 = v51;
+                isTopHitSection = v52;
+                results2 = v51;
                 v12 = v58;
                 goto LABEL_31;
               }
@@ -234,7 +234,7 @@ LABEL_30:
       }
 
       while (v12 != v60);
-      v39 = [v11 countByEnumeratingWithState:&v69 objects:v75 count:16];
+      v39 = [results2 countByEnumeratingWithState:&v69 objects:v75 count:16];
       v60 = v39;
     }
 
@@ -279,13 +279,13 @@ LABEL_30:
     while (v43);
   }
 
-  [v4 setResults:v40];
-  v48 = [(SSSectionBuilder *)v2 buildButtonItem];
-  [v4 setButton:v48];
+  [mutableDeepCopy setResults:v40];
+  buildButtonItem = [(SSSectionBuilder *)selfCopy buildButtonItem];
+  [mutableDeepCopy setButton:buildButtonItem];
 
   v49 = *MEMORY[0x1E69E9840];
 
-  return v4;
+  return mutableDeepCopy;
 }
 
 @end

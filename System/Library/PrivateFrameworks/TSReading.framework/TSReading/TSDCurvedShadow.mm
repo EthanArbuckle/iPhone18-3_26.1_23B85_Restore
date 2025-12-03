@@ -1,50 +1,50 @@
 @interface TSDCurvedShadow
-+ (id)curvedShadowWithOffset:(double)a3 angle:(double)a4 radius:(double)a5 curve:(double)a6 opacity:(double)a7 color:(CGColor *)a8 enabled:(BOOL)a9;
-- (BOOL)isEqual:(id)a3;
-- (CGImage)newShadowImageForRep:(id)a3 withSize:(CGSize)a4 drawSelector:(SEL)a5 unflipped:(BOOL)a6;
-- (CGPoint)boundsShiftForSize:(CGSize)a3;
-- (CGRect)boundsForRep:(id)a3;
-- (CGRect)boundsInNaturalSpaceForRep:(id)a3;
-- (CGRect)expandedBoundsForRect:(CGRect)a3;
-- (CGRect)shadowBoundsForRect:(CGRect)a3 additionalTransform:(CGAffineTransform *)a4;
-- (TSDCurvedShadow)initWithOffset:(double)a3 angle:(double)a4 radius:(double)a5 curve:(double)a6 opacity:(double)a7 color:(CGColor *)a8 enabled:(BOOL)a9;
-- (double)getVerticalOffset:(CGSize)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)curvedShadowWithOffset:(double)offset angle:(double)angle radius:(double)radius curve:(double)curve opacity:(double)opacity color:(CGColor *)color enabled:(BOOL)enabled;
+- (BOOL)isEqual:(id)equal;
+- (CGImage)newShadowImageForRep:(id)rep withSize:(CGSize)size drawSelector:(SEL)selector unflipped:(BOOL)unflipped;
+- (CGPoint)boundsShiftForSize:(CGSize)size;
+- (CGRect)boundsForRep:(id)rep;
+- (CGRect)boundsInNaturalSpaceForRep:(id)rep;
+- (CGRect)expandedBoundsForRect:(CGRect)rect;
+- (CGRect)shadowBoundsForRect:(CGRect)rect additionalTransform:(CGAffineTransform *)transform;
+- (TSDCurvedShadow)initWithOffset:(double)offset angle:(double)angle radius:(double)radius curve:(double)curve opacity:(double)opacity color:(CGColor *)color enabled:(BOOL)enabled;
+- (double)getVerticalOffset:(CGSize)offset;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)newShadowClampedForSwatches;
-- (int64_t)mixingTypeWithObject:(id)a3;
+- (int64_t)mixingTypeWithObject:(id)object;
 @end
 
 @implementation TSDCurvedShadow
 
-+ (id)curvedShadowWithOffset:(double)a3 angle:(double)a4 radius:(double)a5 curve:(double)a6 opacity:(double)a7 color:(CGColor *)a8 enabled:(BOOL)a9
++ (id)curvedShadowWithOffset:(double)offset angle:(double)angle radius:(double)radius curve:(double)curve opacity:(double)opacity color:(CGColor *)color enabled:(BOOL)enabled
 {
-  v9 = [[a1 alloc] initWithOffset:a8 angle:a9 radius:a3 curve:a4 opacity:a5 color:a6 enabled:a7];
+  v9 = [[self alloc] initWithOffset:color angle:enabled radius:offset curve:angle opacity:radius color:curve enabled:opacity];
 
   return v9;
 }
 
-- (TSDCurvedShadow)initWithOffset:(double)a3 angle:(double)a4 radius:(double)a5 curve:(double)a6 opacity:(double)a7 color:(CGColor *)a8 enabled:(BOOL)a9
+- (TSDCurvedShadow)initWithOffset:(double)offset angle:(double)angle radius:(double)radius curve:(double)curve opacity:(double)opacity color:(CGColor *)color enabled:(BOOL)enabled
 {
-  v9 = a9;
-  if (!a8)
+  enabledCopy = enabled;
+  if (!color)
   {
-    v17 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDCurvedShadow initWithOffset:angle:radius:curve:opacity:color:enabled:]"];
-    [v17 handleFailureInFunction:v18 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDCurvedShadow.m"), 50, @"invalid nil value for '%s'", "color"}];
+    [currentHandler handleFailureInFunction:v18 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDCurvedShadow.m"), 50, @"invalid nil value for '%s'", "color"}];
   }
 
   v20.receiver = self;
   v20.super_class = TSDCurvedShadow;
-  result = [(TSDShadow *)&v20 i_initWithOpacity:a8 color:v9 enabled:a7];
+  result = [(TSDShadow *)&v20 i_initWithOpacity:color color:enabledCopy enabled:opacity];
   if (result)
   {
-    result->super.mOffset = a3;
-    result->super.mRadius = a5;
-    result->mCurve = a6;
-    result->super.mAngle = a4;
+    result->super.mOffset = offset;
+    result->super.mRadius = radius;
+    result->mCurve = curve;
+    result->super.mAngle = angle;
   }
 
   return result;
@@ -68,13 +68,13 @@
   return [v3 stringWithFormat:@"<%@ %p: angle=%g offset=%g radius=%g opacity=%g color=%p enabled=%@  curve=%f type=%@>", v5, self, *&self->super.mAngle, *&self->super.mOffset, *&self->super.mRadius, *&self->super.mOpacity, self->super.mColor, v6, *&self->mCurve, -[TSDShadow typeDescription](self, "typeDescription")];
 }
 
-- (CGRect)expandedBoundsForRect:(CGRect)a3
+- (CGRect)expandedBoundsForRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  [(TSDCurvedShadow *)self getVerticalOffset:a3.size.width, a3.size.height];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  [(TSDCurvedShadow *)self getVerticalOffset:rect.size.width, rect.size.height];
   v9 = v8;
   [(TSDCurvedShadow *)self paddingForBlur];
   v11 = -v10;
@@ -86,9 +86,9 @@
   return CGRectInset(*&v12, v11, -v9);
 }
 
-- (CGPoint)boundsShiftForSize:(CGSize)a3
+- (CGPoint)boundsShiftForSize:(CGSize)size
 {
-  [(TSDCurvedShadow *)self getVerticalOffset:a3.width, a3.height];
+  [(TSDCurvedShadow *)self getVerticalOffset:size.width, size.height];
   v5 = v4;
   [(TSDCurvedShadow *)self paddingForBlur];
   v7 = v5;
@@ -97,16 +97,16 @@
   return result;
 }
 
-- (double)getVerticalOffset:(CGSize)a3
+- (double)getVerticalOffset:(CGSize)offset
 {
-  v3 = a3.height * 0.3;
+  v3 = offset.height * 0.3;
   [(TSDCurvedShadow *)self paddingForBlur];
   return v3 + v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [TSDCurvedShadow allocWithZone:a3];
+  v4 = [TSDCurvedShadow allocWithZone:zone];
   [(TSDShadow *)self offset];
   v6 = v5;
   [(TSDShadow *)self angle];
@@ -117,15 +117,15 @@
   v12 = v11;
   [(TSDShadow *)self opacity];
   v14 = v13;
-  v15 = [(TSDShadow *)self color];
-  v16 = [(TSDShadow *)self isEnabled];
+  color = [(TSDShadow *)self color];
+  isEnabled = [(TSDShadow *)self isEnabled];
 
-  return [(TSDCurvedShadow *)v4 initWithOffset:v15 angle:v16 radius:v6 curve:v8 opacity:v10 color:v12 enabled:v14];
+  return [(TSDCurvedShadow *)v4 initWithOffset:color angle:isEnabled radius:v6 curve:v8 opacity:v10 color:v12 enabled:v14];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [TSDMutableCurvedShadow allocWithZone:a3];
+  v4 = [TSDMutableCurvedShadow allocWithZone:zone];
   [(TSDShadow *)self offset];
   v6 = v5;
   [(TSDShadow *)self angle];
@@ -136,10 +136,10 @@
   v12 = v11;
   [(TSDShadow *)self opacity];
   v14 = v13;
-  v15 = [(TSDShadow *)self color];
-  v16 = [(TSDShadow *)self isEnabled];
+  color = [(TSDShadow *)self color];
+  isEnabled = [(TSDShadow *)self isEnabled];
 
-  return [(TSDCurvedShadow *)v4 initWithOffset:v15 angle:v16 radius:v6 curve:v8 opacity:v10 color:v12 enabled:v14];
+  return [(TSDCurvedShadow *)v4 initWithOffset:color angle:isEnabled radius:v6 curve:v8 opacity:v10 color:v12 enabled:v14];
 }
 
 - (id)newShadowClampedForSwatches
@@ -157,15 +157,15 @@
   v11 = v10;
   [(TSDShadow *)self opacity];
   v13 = v12;
-  v14 = [(TSDShadow *)self color];
-  v15 = [(TSDShadow *)self isEnabled];
+  color = [(TSDShadow *)self color];
+  isEnabled = [(TSDShadow *)self isEnabled];
 
-  return [(TSDCurvedShadow *)v7 initWithOffset:v14 angle:v15 radius:v6 curve:v9 opacity:v11 color:v4 enabled:v13];
+  return [(TSDCurvedShadow *)v7 initWithOffset:color angle:isEnabled radius:v6 curve:v9 opacity:v11 color:v4 enabled:v13];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v9) = 1;
   }
@@ -181,12 +181,12 @@
     {
       v14.receiver = self;
       v14.super_class = TSDCurvedShadow;
-      v9 = [(TSDShadow *)&v14 isEqual:a3];
+      v9 = [(TSDShadow *)&v14 isEqual:equal];
       if (v9)
       {
         [(TSDCurvedShadow *)self curve];
         v11 = v10;
-        [a3 curve];
+        [equal curve];
         LOBYTE(v9) = v11 == v12;
       }
     }
@@ -200,12 +200,12 @@
   return v9;
 }
 
-- (CGRect)shadowBoundsForRect:(CGRect)a3 additionalTransform:(CGAffineTransform *)a4
+- (CGRect)shadowBoundsForRect:(CGRect)rect additionalTransform:(CGAffineTransform *)transform
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   if ([(TSDShadow *)self isEnabled])
   {
     [(TSDCurvedShadow *)self expandedBoundsForRect:x, y, width, height];
@@ -244,9 +244,9 @@
   return result;
 }
 
-- (CGRect)boundsInNaturalSpaceForRep:(id)a3
+- (CGRect)boundsInNaturalSpaceForRep:(id)rep
 {
-  [objc_msgSend(objc_msgSend(a3 "styledLayout")];
+  [objc_msgSend(objc_msgSend(rep "styledLayout")];
 
   [(TSDCurvedShadow *)self expandedBoundsForRect:0.0, 0.0];
   result.size.height = v7;
@@ -256,9 +256,9 @@
   return result;
 }
 
-- (CGRect)boundsForRep:(id)a3
+- (CGRect)boundsForRep:(id)rep
 {
-  [objc_msgSend(objc_msgSend(a3 "styledLayout")];
+  [objc_msgSend(objc_msgSend(rep "styledLayout")];
 
   [(TSDCurvedShadow *)self expandedBoundsForRect:?];
   result.size.height = v7;
@@ -268,11 +268,11 @@
   return result;
 }
 
-- (CGImage)newShadowImageForRep:(id)a3 withSize:(CGSize)a4 drawSelector:(SEL)a5 unflipped:(BOOL)a6
+- (CGImage)newShadowImageForRep:(id)rep withSize:(CGSize)size drawSelector:(SEL)selector unflipped:(BOOL)unflipped
 {
-  v6 = a6;
-  height = a4.height;
-  width = a4.width;
+  unflippedCopy = unflipped;
+  height = size.height;
+  width = size.width;
   v12 = [MEMORY[0x277D6C2A8] colorWithCGColor:{-[TSDShadow color](self, "color")}];
   if (![+[TSKApplicationDelegate sharedDelegate](TSKApplicationDelegate "sharedDelegate")] || (-[TSDShadow opacity](self, "opacity"), v13 == 0.0) || (objc_msgSend(v12, "alphaComponent"), v14 == 0.0))
   {
@@ -281,15 +281,15 @@ LABEL_4:
     return [(TSDShadow *)self i_newEmptyImageWithSize:width, height];
   }
 
-  [(TSDCurvedShadow *)self boundsForRep:a3];
+  [(TSDCurvedShadow *)self boundsForRep:rep];
   v17 = v16;
   v19 = v18;
   v21 = TSDBitmapContextCreate(3, v20);
   if (!v21)
   {
-    v25 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v26 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDCurvedShadow newShadowImageForRep:withSize:drawSelector:unflipped:]"];
-    [v25 handleFailureInFunction:v26 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDCurvedShadow.m"), 235, @"Cannot render curved shadow, the size is too large for the CGContext to render. Returning empty image instead"}];
+    [currentHandler handleFailureInFunction:v26 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDCurvedShadow.m"), 235, @"Cannot render curved shadow, the size is too large for the CGContext to render. Returning empty image instead"}];
     goto LABEL_4;
   }
 
@@ -297,10 +297,10 @@ LABEL_4:
   v23 = TSDBitmapContextCreate(11, width);
   CGContextTranslateCTM(v23, -v17, -v19);
   memset(&v38, 0, sizeof(v38));
-  v24 = [a3 styledLayout];
-  if (v24)
+  styledLayout = [rep styledLayout];
+  if (styledLayout)
   {
-    [v24 transformInRoot];
+    [styledLayout transformInRoot];
   }
 
   else
@@ -310,12 +310,12 @@ LABEL_4:
 
   transform = v38;
   CGContextConcatCTM(v23, &transform);
-  [a3 performSelector:a5 withObject:v23];
+  [rep performSelector:selector withObject:v23];
   Image = CGBitmapContextCreateImage(v23);
-  if (v6)
+  if (unflippedCopy)
   {
     memset(&transform, 0, sizeof(transform));
-    v28 = [objc_msgSend(a3 "layout")];
+    v28 = [objc_msgSend(rep "layout")];
     if (v28)
     {
       [v28 transform];
@@ -355,9 +355,9 @@ LABEL_4:
 
   if (!Image)
   {
-    v33 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v34 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDCurvedShadow newShadowImageForRep:withSize:drawSelector:unflipped:]"];
-    [v33 handleFailureInFunction:v34 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDCurvedShadow.m"), 265, @"invalid nil value for '%s'", "imageWithoutShadow"}];
+    [currentHandler2 handleFailureInFunction:v34 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDCurvedShadow.m"), 265, @"invalid nil value for '%s'", "imageWithoutShadow"}];
   }
 
   v35 = CGBitmapContextCreateImage(v22);
@@ -367,15 +367,15 @@ LABEL_4:
   return v35;
 }
 
-- (int64_t)mixingTypeWithObject:(id)a3
+- (int64_t)mixingTypeWithObject:(id)object
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __40__TSDCurvedShadow_mixingTypeWithObject___block_invoke;
   v4[3] = &unk_279D48738;
-  v4[4] = a3;
+  v4[4] = object;
   v4[5] = self;
-  return TSDMixingTypeWithObject(self, a3, v4);
+  return TSDMixingTypeWithObject(self, object, v4);
 }
 
 uint64_t __40__TSDCurvedShadow_mixingTypeWithObject___block_invoke(uint64_t a1)
@@ -447,16 +447,16 @@ uint64_t __40__TSDCurvedShadow_mixingTypeWithObject___block_invoke(uint64_t a1)
   }
 }
 
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __52__TSDCurvedShadow_mixedObjectWithFraction_ofObject___block_invoke;
   v5[3] = &unk_279D48760;
-  v5[4] = a4;
+  v5[4] = object;
   v5[5] = self;
-  *&v5[6] = a3;
-  return TSDMixingMixedObjectWithFraction(self, a4, v5);
+  *&v5[6] = fraction;
+  return TSDMixingMixedObjectWithFraction(self, object, v5);
 }
 
 TSDCurvedShadow *__52__TSDCurvedShadow_mixedObjectWithFraction_ofObject___block_invoke(uint64_t a1)

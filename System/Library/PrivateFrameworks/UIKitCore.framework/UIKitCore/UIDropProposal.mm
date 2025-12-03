@@ -2,7 +2,7 @@
 + (UIDropProposal)new;
 - (UIDropProposal)init;
 - (UIDropProposal)initWithDropOperation:(UIDropOperation)operation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,21 +24,21 @@
 
 - (UIDropProposal)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"UIDropInteraction.m" lineNumber:108 description:@"Not implemented"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UIDropInteraction.m" lineNumber:108 description:@"Not implemented"];
 
   return 0;
 }
 
 + (UIDropProposal)new
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"UIDropInteraction.m" lineNumber:114 description:@"Not implemented"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UIDropInteraction.m" lineNumber:114 description:@"Not implemented"];
 
   return 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [objc_alloc(objc_opt_class()) initWithDropOperation:{-[UIDropProposal operation](self, "operation")}];
   [v4 setPrecise:{-[UIDropProposal isPrecise](self, "isPrecise")}];
@@ -80,9 +80,9 @@
     v11 = [v3 appendName:@"preferredBadgeStyle" object:v10];
   }
 
-  v12 = [v3 string];
+  string = [v3 string];
 
-  return v12;
+  return string;
 }
 
 @end

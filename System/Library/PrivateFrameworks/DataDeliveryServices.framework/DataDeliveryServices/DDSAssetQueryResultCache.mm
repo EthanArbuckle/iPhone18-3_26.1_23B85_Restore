@@ -1,9 +1,9 @@
 @interface DDSAssetQueryResultCache
 - (DDSAssetQueryResultCache)init;
-- (id)cachedAssetsForQuery:(id)a3;
-- (void)cacheAssets:(id)a3 forQuery:(id)a4;
+- (id)cachedAssetsForQuery:(id)query;
+- (void)cacheAssets:(id)assets forQuery:(id)query;
 - (void)clearCache;
-- (void)clearCacheForAssetType:(id)a3;
+- (void)clearCacheForAssetType:(id)type;
 @end
 
 @implementation DDSAssetQueryResultCache
@@ -23,25 +23,25 @@
   return v2;
 }
 
-- (id)cachedAssetsForQuery:(id)a3
+- (id)cachedAssetsForQuery:(id)query
 {
-  v4 = a3;
-  v5 = [(DDSAssetQueryResultCache *)self cache];
-  v6 = [v4 cacheKey];
+  queryCopy = query;
+  cache = [(DDSAssetQueryResultCache *)self cache];
+  cacheKey = [queryCopy cacheKey];
 
-  v7 = [v5 objectForKey:v6];
+  v7 = [cache objectForKey:cacheKey];
 
   return v7;
 }
 
-- (void)cacheAssets:(id)a3 forQuery:(id)a4
+- (void)cacheAssets:(id)assets forQuery:(id)query
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(DDSAssetQueryResultCache *)self cache];
-  v8 = [v6 cacheKey];
+  queryCopy = query;
+  assetsCopy = assets;
+  cache = [(DDSAssetQueryResultCache *)self cache];
+  cacheKey = [queryCopy cacheKey];
 
-  [v9 cacheObject:v7 forKey:v8];
+  [cache cacheObject:assetsCopy forKey:cacheKey];
 }
 
 - (void)clearCache
@@ -53,24 +53,24 @@
     _os_log_impl(&dword_1DF7C6000, v3, OS_LOG_TYPE_DEFAULT, "Asked to clear cache...", v5, 2u);
   }
 
-  v4 = [(DDSAssetQueryResultCache *)self cache];
-  [v4 clearCache];
+  cache = [(DDSAssetQueryResultCache *)self cache];
+  [cache clearCache];
 }
 
-- (void)clearCacheForAssetType:(id)a3
+- (void)clearCacheForAssetType:(id)type
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  typeCopy = type;
   v5 = DefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = typeCopy;
     _os_log_impl(&dword_1DF7C6000, v5, OS_LOG_TYPE_DEFAULT, "Asked to clear cache for asset type: %@", &v8, 0xCu);
   }
 
-  v6 = [(DDSAssetQueryResultCache *)self cache];
-  [v6 removeEntriesWithPrefixKey:v4];
+  cache = [(DDSAssetQueryResultCache *)self cache];
+  [cache removeEntriesWithPrefixKey:typeCopy];
 
   v7 = *MEMORY[0x1E69E9840];
 }

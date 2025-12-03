@@ -2,16 +2,16 @@
 - (CGPoint)centroid;
 - (CGPoint)initialCentroid;
 - (CGPoint)translationWithoutScale;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SBScrunchGestureSwitcherModifierEvent
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = SBScrunchGestureSwitcherModifierEvent;
-  result = [(SBGestureSwitcherModifierEvent *)&v5 copyWithZone:a3];
+  result = [(SBGestureSwitcherModifierEvent *)&v5 copyWithZone:zone];
   *(result + 11) = self->_initialCentroid;
   *(result + 12) = self->_centroid;
   *(result + 21) = *&self->_absoluteScale;

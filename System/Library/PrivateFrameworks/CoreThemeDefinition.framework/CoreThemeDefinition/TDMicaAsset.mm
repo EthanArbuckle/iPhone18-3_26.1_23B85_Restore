@@ -1,15 +1,15 @@
 @interface TDMicaAsset
-- (id)_productionWithRenditionsInProductions:(id)a3;
+- (id)_productionWithRenditionsInProductions:(id)productions;
 - (id)copyDataFromAttributes;
 - (id)production;
-- (void)setAttributesFromCopyData:(id)a3;
+- (void)setAttributesFromCopyData:(id)data;
 @end
 
 @implementation TDMicaAsset
 
-- (id)_productionWithRenditionsInProductions:(id)a3
+- (id)_productionWithRenditionsInProductions:(id)productions
 {
-  v4 = [a3 filteredArrayUsingPredicate:{objc_msgSend(MEMORY[0x277CCAC30], "predicateWithFormat:", @"renditions != nil"}];
+  v4 = [productions filteredArrayUsingPredicate:{objc_msgSend(MEMORY[0x277CCAC30], "predicateWithFormat:", @"renditions != nil"}];
   v5 = [v4 count];
   if (!v5)
   {
@@ -79,9 +79,9 @@ LABEL_5:
   return [v7 copy];
 }
 
-- (void)setAttributesFromCopyData:(id)a3
+- (void)setAttributesFromCopyData:(id)data
 {
-  v4 = [MEMORY[0x277CCAC58] propertyListWithData:a3 options:0 format:0 error:0];
+  v4 = [MEMORY[0x277CCAC58] propertyListWithData:data options:0 format:0 error:0];
   v5 = [v4 objectForKey:@"category"];
   if (v5)
   {

@@ -1,20 +1,20 @@
 @interface KSAddKeyboardController
-+ (BOOL)shouldShowAddKeyboardControllerForInputModes:(id)a3;
++ (BOOL)shouldShowAddKeyboardControllerForInputModes:(id)modes;
 - (id)keyboardTypeSpecifiers;
-- (id)koreanEnglishBilingualInputModeIdentifier:(id)a3 enabledInputModes:(id)a4;
+- (id)koreanEnglishBilingualInputModeIdentifier:(id)identifier enabledInputModes:(id)modes;
 - (id)monolingualSpecifiers;
 - (id)multilingualSpecifiers;
 - (id)newSpecifiers;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)addCheckedInputModes;
 - (void)cancelButtonTapped;
 - (void)doneButtonTapped;
-- (void)enableMonolingualKeyboards:(id)a3;
-- (void)enableMultilingualKeyboards:(id)a3;
-- (void)setSpecifier:(id)a3;
-- (void)toggleInputMode:(id)a3;
-- (void)toggleMultilingualInputMode:(id)a3;
+- (void)enableMonolingualKeyboards:(id)keyboards;
+- (void)enableMultilingualKeyboards:(id)keyboards;
+- (void)setSpecifier:(id)specifier;
+- (void)toggleInputMode:(id)mode;
+- (void)toggleMultilingualInputMode:(id)mode;
 - (void)updateDoneButton;
 - (void)viewDidLoad;
 @end
@@ -60,11 +60,11 @@ uint64_t __66__KSAddKeyboardController_shouldAddInputMode_toEnabledInputModes___
   return result;
 }
 
-+ (BOOL)shouldShowAddKeyboardControllerForInputModes:(id)a3
++ (BOOL)shouldShowAddKeyboardControllerForInputModes:(id)modes
 {
   v20 = *MEMORY[0x277D85DE8];
   v4 = _os_feature_enabled_impl();
-  [a3 firstObject];
+  [modes firstObject];
   v5 = TIGetAddKeyboardUsesPickerForInputMode();
   v6 = v4 | v5;
   if (v4 && (v5 & 1) == 0)
@@ -73,7 +73,7 @@ uint64_t __66__KSAddKeyboardController_shouldAddInputMode_toEnabledInputModes___
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v7 = [a3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    v7 = [modes countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
       v8 = v7;
@@ -84,7 +84,7 @@ uint64_t __66__KSAddKeyboardController_shouldAddInputMode_toEnabledInputModes___
         {
           if (*v16 != v9)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(modes);
           }
 
           v11 = *(*(&v15 + 1) + 8 * i);
@@ -96,7 +96,7 @@ uint64_t __66__KSAddKeyboardController_shouldAddInputMode_toEnabledInputModes___
           }
         }
 
-        v8 = [a3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v8 = [modes countByEnumeratingWithState:&v15 objects:v19 count:16];
         v6 = 0;
         if (v8)
         {
@@ -118,14 +118,14 @@ LABEL_14:
   return v6 & 1;
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
   v20 = *MEMORY[0x277D85DE8];
   v18.receiver = self;
   v18.super_class = KSAddKeyboardController;
-  [(KSAddKeyboardController *)&v18 setSpecifier:a3];
+  [(KSAddKeyboardController *)&v18 setSpecifier:specifier];
   v4 = [objc_msgSend(MEMORY[0x277D75688] "sharedInputModeController")];
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v6 = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD20]) propertyForKey:*MEMORY[0x277D3FFB8]];
   if (_os_feature_enabled_impl())
   {
@@ -151,7 +151,7 @@ LABEL_14:
               objc_enumerationMutation(v7);
             }
 
-            [v5 addObjectsFromArray:{TIUIGetProposedMultilingualSetsForAddingInputMode(*(*(&v14 + 1) + 8 * v11++), v4)}];
+            [array addObjectsFromArray:{TIUIGetProposedMultilingualSetsForAddingInputMode(*(*(&v14 + 1) + 8 * v11++), v4)}];
           }
 
           while (v9 != v11);
@@ -173,7 +173,7 @@ LABEL_14:
     v12 = 0;
   }
 
-  [(KSAddKeyboardController *)self setProposedMultilingualInputModes:v5];
+  [(KSAddKeyboardController *)self setProposedMultilingualInputModes:array];
   [(KSAddKeyboardController *)self setKoreanEnglishBilingualInputModeIdentifier:v12];
   v13 = *MEMORY[0x277D85DE8];
 }
@@ -188,15 +188,15 @@ LABEL_14:
       return v3;
     }
 
-    v4 = [(KSAddKeyboardController *)self multilingualSpecifiers];
+    multilingualSpecifiers = [(KSAddKeyboardController *)self multilingualSpecifiers];
   }
 
   else
   {
-    v4 = [(KSAddKeyboardController *)self monolingualSpecifiers];
+    multilingualSpecifiers = [(KSAddKeyboardController *)self monolingualSpecifiers];
   }
 
-  [v3 addObjectsFromArray:v4];
+  [v3 addObjectsFromArray:multilingualSpecifiers];
   return v3;
 }
 
@@ -218,7 +218,7 @@ LABEL_14:
     v6 = [KSKeyboardListController keyboardDisplayNameForIdentifier:@"en"];
     v7 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:objc_msgSend(*(v5 + 3240) target:"localizedStringWithFormat:" set:objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8] get:"bundleForClass:" detail:objc_opt_class()) cell:"localizedStringForKey:value:table:" edit:{@"MULTILINGUAL_KEYBOARD_ADD_TITLE_WITH_LANGUAGE", &stru_28679E3A8, @"Keyboard", v6), self, 0, 0, 0, 3, 0}];
     [v7 setButtonAction:sel_enableMultilingualKeyboards_];
-    v8 = [(KSAddKeyboardController *)self koreanEnglishBilingualInputModeIdentifier];
+    koreanEnglishBilingualInputModeIdentifier = [(KSAddKeyboardController *)self koreanEnglishBilingualInputModeIdentifier];
     v9 = *MEMORY[0x277D3FFB8];
     goto LABEL_10;
   }
@@ -228,26 +228,26 @@ LABEL_14:
     v7 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8] target:"bundleForClass:" set:objc_opt_class()) get:"localizedStringForKey:value:table:" detail:@"MULTILINGUAL_KEYBOARD_ADD_TITLE" cell:&stru_28679E3A8 edit:{@"Keyboard", self, 0, 0, 0, 3, 0}];
     [v7 setButtonAction:sel_enableMultilingualKeyboards_];
     v9 = *MEMORY[0x277D3FFB8];
-    v8 = @"Multilingual";
+    koreanEnglishBilingualInputModeIdentifier = @"Multilingual";
 LABEL_10:
-    [v7 setProperty:v8 forKey:v9];
+    [v7 setProperty:koreanEnglishBilingualInputModeIdentifier forKey:v9];
     [v7 setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D3FD80]];
     goto LABEL_11;
   }
 
-  v10 = [(NSArray *)[(KSAddKeyboardController *)self proposedMultilingualInputModes] firstObject];
+  firstObject = [(NSArray *)[(KSAddKeyboardController *)self proposedMultilingualInputModes] firstObject];
   if (![(KSAddKeyboardController *)self showsMonolingualOption])
   {
-    MultilingualSet = TIUIProposedInputModeGetMultilingualSet(v10);
+    MultilingualSet = TIUIProposedInputModeGetMultilingualSet(firstObject);
     v13 = TIUIGetLocalizedConcatenatedLanguageNamesForInputModesWithStyle(MultilingualSet, 0);
     [v4 setProperty:objc_msgSend(MEMORY[0x277CCACA8] forKey:{"localizedStringWithFormat:", objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8], "bundleForClass:", objc_opt_class()), "localizedStringForKey:value:table:", @"MULTILINGUAL_KEYBOARD_ADD_FOOTER", &stru_28679E3A8, @"Keyboard", v13), *MEMORY[0x277D3FF88]}];
   }
 
-  Current = TIUIProposedInputModeGetCurrent(v10, v11);
+  Current = TIUIProposedInputModeGetCurrent(firstObject, v11);
   v15 = TIUIGetLocalizedConcatenatedLanguageNamesForInputModesWithStyle(Current, 0);
   v7 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:objc_msgSend(MEMORY[0x277CCACA8] target:"localizedStringWithFormat:" set:objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8] get:"bundleForClass:" detail:objc_opt_class()) cell:"localizedStringForKey:value:table:" edit:{@"MULTILINGUAL_KEYBOARD_ADD_TITLE_WITH_LANGUAGE", &stru_28679E3A8, @"Keyboard", v15), self, 0, 0, 0, 3, 0}];
   [v7 setButtonAction:sel_enableMultilingualKeyboards_];
-  [v7 setProperty:v10 forKey:*MEMORY[0x277D401A8]];
+  [v7 setProperty:firstObject forKey:*MEMORY[0x277D401A8]];
   v9 = *MEMORY[0x277D3FFB8];
   [v7 setProperty:@"Multilingual" forKey:*MEMORY[0x277D3FFB8]];
   [v7 setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D3FD80]];
@@ -270,7 +270,7 @@ LABEL_11:
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v3 = self;
+  selfCopy = self;
   obj = [(KSAddKeyboardController *)self proposedMultilingualInputModes];
   v4 = [(NSArray *)obj countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v4)
@@ -291,7 +291,7 @@ LABEL_11:
 
         v12 = *(*(&v19 + 1) + 8 * i);
         Current = TIUIProposedInputModeGetCurrent(v12, v5);
-        v14 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:TIUIGetLocalizedConcatenatedLanguageNamesForInputModesWithStyle(Current target:0) set:v3 get:0 detail:0 cell:0 edit:{3, 0}];
+        v14 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:TIUIGetLocalizedConcatenatedLanguageNamesForInputModesWithStyle(Current target:0) set:selfCopy get:0 detail:0 cell:0 edit:{3, 0}];
         [v14 setButtonAction:sel_toggleMultilingualInputMode_];
         [v14 setProperty:@"Multilingual" forKey:v8];
         [v14 setProperty:v12 forKey:v9];
@@ -406,11 +406,11 @@ LABEL_11:
                   if (v12 && v30 >= 2 && v29 >= 2)
                   {
                     v31 = MEMORY[0x277CCACA8];
-                    v14 = self;
+                    selfCopy = self;
                     v15 = MEMORY[0x277CCA8D8];
                     v16 = objc_opt_class();
                     v17 = v15;
-                    self = v14;
+                    self = selfCopy;
                     v13 = [v31 stringWithFormat:objc_msgSend(objc_msgSend(v17, "bundleForClass:", v16), "localizedStringForKey:value:table:", @"KEYBOARD_VARIANT_%@_WITH_LAYOUT_%@", &stru_28679E3A8, @"Keyboard", v10, v11];
                   }
 
@@ -456,19 +456,19 @@ LABEL_11:
   return v28;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v11.receiver = self;
   v11.super_class = KSAddKeyboardController;
-  v6 = [(KSAddKeyboardController *)&v11 tableView:a3 cellForRowAtIndexPath:?];
-  v7 = [(KSAddKeyboardController *)self specifierAtIndex:[(KSAddKeyboardController *)self indexForIndexPath:a4]];
+  v6 = [(KSAddKeyboardController *)&v11 tableView:view cellForRowAtIndexPath:?];
+  v7 = [(KSAddKeyboardController *)self specifierAtIndex:[(KSAddKeyboardController *)self indexForIndexPath:path]];
   v8 = [v7 propertyForKey:*MEMORY[0x277D3FFB8]];
   [v6 setAccessibilityIdentifier:v8];
   if ([v6 isUserInteractionEnabled])
   {
     if ([v8 isEqualToString:@"Multilingual"] || -[KSAddKeyboardController koreanEnglishBilingualInputModeIdentifier](self, "koreanEnglishBilingualInputModeIdentifier") && objc_msgSend(v8, "isEqualToString:", -[KSAddKeyboardController koreanEnglishBilingualInputModeIdentifier](self, "koreanEnglishBilingualInputModeIdentifier")))
     {
-      v9 = [(KSAddKeyboardController *)self showsMonolingualOption]^ 1;
+      showsMonolingualOption = [(KSAddKeyboardController *)self showsMonolingualOption]^ 1;
     }
 
     else
@@ -478,27 +478,27 @@ LABEL_11:
         return v6;
       }
 
-      v9 = [(KSAddKeyboardController *)self showsMonolingualOption];
+      showsMonolingualOption = [(KSAddKeyboardController *)self showsMonolingualOption];
     }
   }
 
   else
   {
-    v9 = 1;
+    showsMonolingualOption = 1;
   }
 
-  [v6 setChecked:v9];
+  [v6 setChecked:showsMonolingualOption];
   return v6;
 }
 
-- (id)koreanEnglishBilingualInputModeIdentifier:(id)a3 enabledInputModes:(id)a4
+- (id)koreanEnglishBilingualInputModeIdentifier:(id)identifier enabledInputModes:(id)modes
 {
   v29 = *MEMORY[0x277D85DE8];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = [KSKeyboardListController supportedBaseInputModesForLanguage:a3];
+  obj = [KSKeyboardListController supportedBaseInputModesForLanguage:identifier];
   v17 = [obj countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v17)
   {
@@ -513,7 +513,7 @@ LABEL_11:
         }
 
         v6 = *(*(&v23 + 1) + 8 * i);
-        if (![a4 count] || (objc_msgSend(a4, "firstObject"), (DefaultHardwareKeyboardForInputMode = objc_msgSend(TIInputModeGetComponentsFromIdentifier(), "objectForKey:", @"hw")) == 0))
+        if (![modes count] || (objc_msgSend(modes, "firstObject"), (DefaultHardwareKeyboardForInputMode = objc_msgSend(TIInputModeGetComponentsFromIdentifier(), "objectForKey:", @"hw")) == 0))
         {
           DefaultHardwareKeyboardForInputMode = UIKeyboardGetDefaultHardwareKeyboardForInputMode();
         }
@@ -547,7 +547,7 @@ LABEL_12:
                   v13 = UIKeyboardInputModeWithNewHWLayout();
                 }
 
-                if (![a4 containsObject:v13])
+                if (![modes containsObject:v13])
                 {
                   goto LABEL_25;
                 }
@@ -592,17 +592,17 @@ LABEL_25:
 - (void)addCheckedInputModes
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D75688] sharedInputModeController];
-  [v3 setDisableFloatingKeyboardFilter:1];
-  v17 = [v3 enabledInputModeIdentifiers];
-  v16 = [MEMORY[0x277CBEB18] array];
+  mEMORY[0x277D75688] = [MEMORY[0x277D75688] sharedInputModeController];
+  [mEMORY[0x277D75688] setDisableFloatingKeyboardFilter:1];
+  enabledInputModeIdentifiers = [mEMORY[0x277D75688] enabledInputModeIdentifiers];
+  array = [MEMORY[0x277CBEB18] array];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v18 = self;
-  v4 = [(KSAddKeyboardController *)self specifiers];
-  v5 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  selfCopy = self;
+  specifiers = [(KSAddKeyboardController *)self specifiers];
+  v5 = [specifiers countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v5)
   {
     v6 = v5;
@@ -616,33 +616,33 @@ LABEL_25:
       {
         if (*v20 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(specifiers);
         }
 
         v11 = *(*(&v19 + 1) + 8 * i);
         v12 = [v11 propertyForKey:{v8, v15}];
         v13 = [v11 propertyForKey:v9];
-        if ((![v13 isEqualToString:@"Multilingual"] || -[NSArray count](-[KSAddKeyboardController proposedMultilingualInputModes](v18, "proposedMultilingualInputModes"), "count") <= 1) && (objc_msgSend(v13, "isEqualToString:", @"Monolingual") & 1) == 0 && objc_msgSend(v12, "isChecked"))
+        if ((![v13 isEqualToString:@"Multilingual"] || -[NSArray count](-[KSAddKeyboardController proposedMultilingualInputModes](selfCopy, "proposedMultilingualInputModes"), "count") <= 1) && (objc_msgSend(v13, "isEqualToString:", @"Monolingual") & 1) == 0 && objc_msgSend(v12, "isChecked"))
         {
           if (_os_feature_enabled_impl() && [objc_msgSend(objc_msgSend(v11 "userInfo")])
           {
-            v17 = TIUIGetInputModesByAddingProposedInputMode([v11 propertyForKey:v15], v17);
+            enabledInputModeIdentifiers = TIUIGetInputModesByAddingProposedInputMode([v11 propertyForKey:v15], enabledInputModeIdentifiers);
           }
 
-          else if (([v17 containsObject:v13] & 1) == 0)
+          else if (([enabledInputModeIdentifiers containsObject:v13] & 1) == 0)
           {
-            [v16 addObject:v13];
+            [array addObject:v13];
           }
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v6 = [specifiers countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v6);
   }
 
-  +[KSKeyboardListController setInputModes:](KSKeyboardListController, "setInputModes:", [v17 arrayByAddingObjectsFromArray:v16]);
+  +[KSKeyboardListController setInputModes:](KSKeyboardListController, "setInputModes:", [enabledInputModeIdentifiers arrayByAddingObjectsFromArray:array]);
   v14 = *MEMORY[0x277D85DE8];
 }
 
@@ -653,8 +653,8 @@ LABEL_25:
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v2 = [(KSAddKeyboardController *)self specifiers];
-  v3 = [v2 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  specifiers = [(KSAddKeyboardController *)self specifiers];
+  v3 = [specifiers countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v3)
   {
     v4 = v3;
@@ -668,7 +668,7 @@ LABEL_25:
       {
         if (*v18 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(specifiers);
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
@@ -688,7 +688,7 @@ LABEL_25:
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v4 = [specifiers countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v4)
       {
         continue;
@@ -704,7 +704,7 @@ LABEL_16:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enableMultilingualKeyboards:(id)a3
+- (void)enableMultilingualKeyboards:(id)keyboards
 {
   [(KSAddKeyboardController *)self setShowsMonolingualOption:0];
   [(KSAddKeyboardController *)self reloadSpecifiers];
@@ -712,7 +712,7 @@ LABEL_16:
   [(KSAddKeyboardController *)self updateDoneButton];
 }
 
-- (void)enableMonolingualKeyboards:(id)a3
+- (void)enableMonolingualKeyboards:(id)keyboards
 {
   [(KSAddKeyboardController *)self setShowsMonolingualOption:1];
   [(KSAddKeyboardController *)self reloadSpecifiers];
@@ -720,23 +720,23 @@ LABEL_16:
   [(KSAddKeyboardController *)self updateDoneButton];
 }
 
-- (void)toggleInputMode:(id)a3
+- (void)toggleInputMode:(id)mode
 {
-  v4 = [a3 propertyForKey:*MEMORY[0x277D40148]];
+  v4 = [mode propertyForKey:*MEMORY[0x277D40148]];
   [v4 setChecked:{objc_msgSend(v4, "isChecked") ^ 1}];
 
   [(KSAddKeyboardController *)self updateDoneButton];
 }
 
-- (void)toggleMultilingualInputMode:(id)a3
+- (void)toggleMultilingualInputMode:(id)mode
 {
   v19 = *MEMORY[0x277D85DE8];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(KSAddKeyboardController *)self specifiers];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  specifiers = [(KSAddKeyboardController *)self specifiers];
+  v6 = [specifiers countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -748,7 +748,7 @@ LABEL_16:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(specifiers);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
@@ -759,29 +759,29 @@ LABEL_16:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [specifiers countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
   }
 
-  [(KSAddKeyboardController *)self toggleInputMode:a3];
+  [(KSAddKeyboardController *)self toggleInputMode:mode];
   v13 = *MEMORY[0x277D85DE8];
 }
 
 - (void)cancelButtonTapped
 {
-  v2 = [(KSAddKeyboardController *)self navigationController];
+  navigationController = [(KSAddKeyboardController *)self navigationController];
 
-  [v2 popViewControllerAnimated:1];
+  [navigationController popViewControllerAnimated:1];
 }
 
 - (void)doneButtonTapped
 {
   [(KSAddKeyboardController *)self addCheckedInputModes];
-  v3 = [(KSAddKeyboardController *)self parentController];
+  parentController = [(KSAddKeyboardController *)self parentController];
 
-  [v3 dismissForDone];
+  [parentController dismissForDone];
 }
 
 @end

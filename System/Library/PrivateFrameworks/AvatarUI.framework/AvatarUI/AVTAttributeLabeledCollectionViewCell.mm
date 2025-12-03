@@ -1,21 +1,21 @@
 @interface AVTAttributeLabeledCollectionViewCell
-- (AVTAttributeLabeledCollectionViewCell)initWithFrame:(CGRect)a3;
+- (AVTAttributeLabeledCollectionViewCell)initWithFrame:(CGRect)frame;
 - (CGRect)frameForAttributeView;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setLabelString:(id)a3;
-- (void)setShouldHideLabelBackground:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setLabelString:(id)string;
+- (void)setShouldHideLabelBackground:(BOOL)background;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateLabelBackgroundAppearance;
 @end
 
 @implementation AVTAttributeLabeledCollectionViewCell
 
-- (AVTAttributeLabeledCollectionViewCell)initWithFrame:(CGRect)a3
+- (AVTAttributeLabeledCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v19.receiver = self;
   v19.super_class = AVTAttributeLabeledCollectionViewCell;
-  v3 = [(AVTAttributeLabeledCollectionViewCell *)&v19 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AVTAttributeLabeledCollectionViewCell *)&v19 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E69DCC10]);
@@ -39,36 +39,36 @@
     v3->_labelBackgroundView = v13;
 
     [(AVTAttributeLabeledCollectionViewCell *)v3 updateLabelBackgroundAppearance];
-    v15 = [(UIVisualEffectView *)v3->_labelBackgroundView layer];
-    [v15 setCornerRadius:3.0];
+    layer = [(UIVisualEffectView *)v3->_labelBackgroundView layer];
+    [layer setCornerRadius:3.0];
 
     [(UIVisualEffectView *)v3->_labelBackgroundView setClipsToBounds:1];
-    v16 = [(UIVisualEffectView *)v3->_labelBackgroundView contentView];
-    [v16 addSubview:v3->_label];
+    contentView = [(UIVisualEffectView *)v3->_labelBackgroundView contentView];
+    [contentView addSubview:v3->_label];
 
-    v17 = [(AVTAttributeLabeledCollectionViewCell *)v3 contentView];
-    [v17 addSubview:v3->_labelBackgroundView];
+    contentView2 = [(AVTAttributeLabeledCollectionViewCell *)v3 contentView];
+    [contentView2 addSubview:v3->_labelBackgroundView];
   }
 
   return v3;
 }
 
-- (void)setShouldHideLabelBackground:(BOOL)a3
+- (void)setShouldHideLabelBackground:(BOOL)background
 {
-  if (self->_shouldHideLabelBackground != a3)
+  if (self->_shouldHideLabelBackground != background)
   {
-    self->_shouldHideLabelBackground = a3;
+    self->_shouldHideLabelBackground = background;
     [(AVTAttributeLabeledCollectionViewCell *)self updateLabelBackgroundAppearance];
   }
 }
 
 - (CGRect)frameForAttributeView
 {
-  v3 = [(AVTAttributeLabeledCollectionViewCell *)self contentView];
-  [v3 bounds];
+  contentView = [(AVTAttributeLabeledCollectionViewCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
-  v6 = [(AVTAttributeLabeledCollectionViewCell *)self contentView];
-  [v6 bounds];
+  contentView2 = [(AVTAttributeLabeledCollectionViewCell *)self contentView];
+  [contentView2 bounds];
   v8 = v7;
   [(AVTAttributeLabeledCollectionViewCell *)self labelVerticalSpace];
   v10 = v8 - v9;
@@ -84,38 +84,38 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   [(AVTAttributeLabeledCollectionViewCell *)self updateLabelBackgroundAppearance];
   v5.receiver = self;
   v5.super_class = AVTAttributeLabeledCollectionViewCell;
-  [(AVTAttributeLabeledCollectionViewCell *)&v5 traitCollectionDidChange:v4];
+  [(AVTAttributeLabeledCollectionViewCell *)&v5 traitCollectionDidChange:changeCopy];
 }
 
 - (void)updateLabelBackgroundAppearance
 {
   if ([(AVTAttributeLabeledCollectionViewCell *)self shouldHideLabelBackground])
   {
-    v6 = [MEMORY[0x1E69DC888] clearColor];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
     [(UIVisualEffectView *)self->_labelBackgroundView setBackgroundColor:?];
   }
 
   else
   {
-    v3 = [(AVTAttributeLabeledCollectionViewCell *)self traitCollection];
-    v4 = [v3 userInterfaceStyle];
+    traitCollection = [(AVTAttributeLabeledCollectionViewCell *)self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    if (v4 == 2)
+    if (userInterfaceStyle == 2)
     {
-      v6 = [MEMORY[0x1E69DC730] effectWithStyle:2];
+      clearColor = [MEMORY[0x1E69DC730] effectWithStyle:2];
       [(UIVisualEffectView *)self->_labelBackgroundView setEffect:?];
       [MEMORY[0x1E69DC888] systemGrayColor];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E69DC730] effectWithStyle:1];
+      clearColor = [MEMORY[0x1E69DC730] effectWithStyle:1];
       [(UIVisualEffectView *)self->_labelBackgroundView setEffect:?];
       [MEMORY[0x1E69DC888] systemGray6Color];
     }
@@ -130,24 +130,24 @@
   v80.receiver = self;
   v80.super_class = AVTAttributeLabeledCollectionViewCell;
   [(AVTAttributeLabeledCollectionViewCell *)&v80 layoutSubviews];
-  v3 = [(AVTAttributeCollectionViewCell *)self attributeView];
-  [v3 bounds];
+  attributeView = [(AVTAttributeCollectionViewCell *)self attributeView];
+  [attributeView bounds];
   v5 = v4;
-  v6 = [(AVTAttributeCollectionViewCell *)self attributeView];
-  [v6 bounds];
+  attributeView2 = [(AVTAttributeCollectionViewCell *)self attributeView];
+  [attributeView2 bounds];
   v8 = (v5 - v7) * 0.5;
 
   [(AVTAttributeLabeledCollectionViewCell *)self labelVerticalSpace];
   v10 = ceil(v9 + v8 + -7.0 + -4.0);
-  v11 = [(AVTAttributeLabeledCollectionViewCell *)self label];
-  v12 = [(AVTAttributeLabeledCollectionViewCell *)self contentView];
-  [v12 bounds];
-  [v11 sizeThatFits:{v13, v10}];
+  label = [(AVTAttributeLabeledCollectionViewCell *)self label];
+  contentView = [(AVTAttributeLabeledCollectionViewCell *)self contentView];
+  [contentView bounds];
+  [label sizeThatFits:{v13, v10}];
   v15 = v14;
   v17 = v16;
 
-  v18 = [(AVTAttributeLabeledCollectionViewCell *)self contentView];
-  [v18 bounds];
+  contentView2 = [(AVTAttributeLabeledCollectionViewCell *)self contentView];
+  [contentView2 bounds];
   v20 = v19;
 
   v21 = ceil(v15);
@@ -167,15 +167,15 @@
     v23 = v10;
   }
 
-  v24 = [(AVTAttributeLabeledCollectionViewCell *)self contentView];
-  [v24 bounds];
+  contentView3 = [(AVTAttributeLabeledCollectionViewCell *)self contentView];
+  [contentView3 bounds];
   v26 = v25 + -10.0;
 
   v27 = 10.0;
   if (v20 >= v26)
   {
-    v28 = [(AVTAttributeLabeledCollectionViewCell *)self contentView];
-    [v28 bounds];
+    contentView4 = [(AVTAttributeLabeledCollectionViewCell *)self contentView];
+    [contentView4 bounds];
     v30 = v29 + -4.0;
 
     v27 = 0.0;
@@ -185,41 +185,41 @@
     }
   }
 
-  v31 = [(AVTAttributeLabeledCollectionViewCell *)self label];
-  v32 = [v31 font];
-  [v32 lineHeight];
+  label2 = [(AVTAttributeLabeledCollectionViewCell *)self label];
+  font = [label2 font];
+  [font lineHeight];
   v34 = ceil(v33) + 3.0;
 
   if (v23 > v34)
   {
-    v35 = [(AVTAttributeLabeledCollectionViewCell *)self label];
-    v36 = [v35 text];
-    v37 = [(AVTAttributeLabeledCollectionViewCell *)self contentView];
-    [v37 bounds];
+    label3 = [(AVTAttributeLabeledCollectionViewCell *)self label];
+    text = [label3 text];
+    contentView5 = [(AVTAttributeLabeledCollectionViewCell *)self contentView];
+    [contentView5 bounds];
     v39 = v38 + -10.0 + -1.0;
     v40 = *MEMORY[0x1E69DB648];
     v85 = *MEMORY[0x1E69DB648];
-    v41 = [(AVTAttributeLabeledCollectionViewCell *)self label];
-    v42 = [v41 font];
-    v86[0] = v42;
+    label4 = [(AVTAttributeLabeledCollectionViewCell *)self label];
+    font2 = [label4 font];
+    v86[0] = font2;
     v43 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v86 forKeys:&v85 count:1];
-    [v36 boundingRectWithSize:1 options:v43 attributes:0 context:{v39, 1.79769313e308}];
+    [text boundingRectWithSize:1 options:v43 attributes:0 context:{v39, 1.79769313e308}];
     v45 = v44;
 
-    v46 = [(AVTAttributeLabeledCollectionViewCell *)self label];
-    v47 = [v46 text];
+    label5 = [(AVTAttributeLabeledCollectionViewCell *)self label];
+    text2 = [label5 text];
     if (ceil(v45) <= v10)
     {
       v83 = v40;
-      v61 = [(AVTAttributeLabeledCollectionViewCell *)self label];
-      v62 = [v61 font];
-      v84 = v62;
+      label6 = [(AVTAttributeLabeledCollectionViewCell *)self label];
+      font3 = [label6 font];
+      v84 = font3;
       v63 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v84 forKeys:&v83 count:1];
-      [v47 boundingRectWithSize:1 options:v63 attributes:0 context:{1.79769313e308, v34}];
+      [text2 boundingRectWithSize:1 options:v63 attributes:0 context:{1.79769313e308, v34}];
       v65 = v64;
 
-      v66 = [(AVTAttributeLabeledCollectionViewCell *)self contentView];
-      [v66 bounds];
+      contentView6 = [(AVTAttributeLabeledCollectionViewCell *)self contentView];
+      [contentView6 bounds];
       v68 = v67 + -10.0 + -1.0;
 
       v69 = ceil(v65) * 0.6;
@@ -238,23 +238,23 @@
 
     else
     {
-      v48 = [(AVTAttributeLabeledCollectionViewCell *)self contentView];
-      [v48 bounds];
+      contentView7 = [(AVTAttributeLabeledCollectionViewCell *)self contentView];
+      [contentView7 bounds];
       v50 = v49 + -4.0 + -1.0;
       v81 = v40;
-      v51 = [(AVTAttributeLabeledCollectionViewCell *)self label];
-      v52 = [v51 font];
-      v82 = v52;
+      label7 = [(AVTAttributeLabeledCollectionViewCell *)self label];
+      font4 = [label7 font];
+      v82 = font4;
       v53 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v82 forKeys:&v81 count:1];
-      [v47 boundingRectWithSize:1 options:v53 attributes:0 context:{v50, 1.79769313e308}];
+      [text2 boundingRectWithSize:1 options:v53 attributes:0 context:{v50, 1.79769313e308}];
       v55 = v54;
       v57 = v56;
 
       v27 = 0.0;
       if (ceil(v57) <= v10)
       {
-        v58 = [(AVTAttributeLabeledCollectionViewCell *)self contentView];
-        [v58 bounds];
+        contentView8 = [(AVTAttributeLabeledCollectionViewCell *)self contentView];
+        [contentView8 bounds];
         v20 = v59 + -4.0 + -1.0;
 
         v60 = ceil(v55);
@@ -268,37 +268,37 @@
     }
   }
 
-  v70 = [(AVTAttributeLabeledCollectionViewCell *)self contentView];
-  [v70 bounds];
+  contentView9 = [(AVTAttributeLabeledCollectionViewCell *)self contentView];
+  [contentView9 bounds];
   v72 = (v71 - (v27 + v20)) * 0.5;
 
-  v73 = [(AVTAttributeCollectionViewCell *)self attributeView];
-  [v73 bounds];
+  attributeView3 = [(AVTAttributeCollectionViewCell *)self attributeView];
+  [attributeView3 bounds];
   v75 = v74 - v8 + 7.0;
 
-  v76 = [(AVTAttributeLabeledCollectionViewCell *)self label];
-  [v76 setFrame:{v27 * 0.5, 2.0, v20, v23}];
+  label8 = [(AVTAttributeLabeledCollectionViewCell *)self label];
+  [label8 setFrame:{v27 * 0.5, 2.0, v20, v23}];
 
-  v77 = [(AVTAttributeLabeledCollectionViewCell *)self labelBackgroundView];
-  [v77 setFrame:{v72, v75, v27 + v20, v23 + 4.0}];
+  labelBackgroundView = [(AVTAttributeLabeledCollectionViewCell *)self labelBackgroundView];
+  [labelBackgroundView setFrame:{v72, v75, v27 + v20, v23 + 4.0}];
 
-  v78 = [(AVTAttributeLabeledCollectionViewCell *)self contentView];
-  v79 = [(AVTAttributeLabeledCollectionViewCell *)self labelBackgroundView];
-  [v78 bringSubviewToFront:v79];
+  contentView10 = [(AVTAttributeLabeledCollectionViewCell *)self contentView];
+  labelBackgroundView2 = [(AVTAttributeLabeledCollectionViewCell *)self labelBackgroundView];
+  [contentView10 bringSubviewToFront:labelBackgroundView2];
 }
 
-- (void)setLabelString:(id)a3
+- (void)setLabelString:(id)string
 {
-  v8 = a3;
+  stringCopy = string;
   if (![(NSString *)self->_labelString isEqualToString:?])
   {
-    v4 = [v8 copy];
+    v4 = [stringCopy copy];
     labelString = self->_labelString;
     self->_labelString = v4;
 
     v6 = self->_labelString;
-    v7 = [(AVTAttributeLabeledCollectionViewCell *)self label];
-    [v7 setText:v6];
+    label = [(AVTAttributeLabeledCollectionViewCell *)self label];
+    [label setText:v6];
 
     [(AVTAttributeLabeledCollectionViewCell *)self setNeedsLayout];
   }
@@ -307,8 +307,8 @@
 - (void)prepareForReuse
 {
   [(AVTAttributeLabeledCollectionViewCell *)self setLabelString:0];
-  v3 = [(AVTAttributeLabeledCollectionViewCell *)self label];
-  [v3 setText:0];
+  label = [(AVTAttributeLabeledCollectionViewCell *)self label];
+  [label setText:0];
 
   [(AVTAttributeLabeledCollectionViewCell *)self setNeedsLayout];
   v4.receiver = self;

@@ -1,13 +1,13 @@
 @interface APTimestampUtilities
 + (double)midnightUTCOfCurrentDay;
-+ (double)roundedTimestampFromInterval:(double)a3;
++ (double)roundedTimestampFromInterval:(double)interval;
 @end
 
 @implementation APTimestampUtilities
 
-+ (double)roundedTimestampFromInterval:(double)a3
++ (double)roundedTimestampFromInterval:(double)interval
 {
-  v3 = [NSNumber numberWithDouble:a3];
+  v3 = [NSNumber numberWithDouble:interval];
   v4 = v3;
   if (v3)
   {

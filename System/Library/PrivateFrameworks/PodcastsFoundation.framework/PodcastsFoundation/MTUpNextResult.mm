@@ -1,25 +1,25 @@
 @interface MTUpNextResult
-- (void)setModifiedDate:(double)a3;
-- (void)updateFor:(id)a3;
+- (void)setModifiedDate:(double)date;
+- (void)updateFor:(id)for;
 @end
 
 @implementation MTUpNextResult
 
-- (void)updateFor:(id)a3
+- (void)updateFor:(id)for
 {
-  v4 = a3;
-  v5 = [v4 uuid];
-  [(MTUpNextResult *)self setEpisodeUuid:v5];
+  forCopy = for;
+  uuid = [forCopy uuid];
+  [(MTUpNextResult *)self setEpisodeUuid:uuid];
 
-  v6 = [v4 listenNowEpisode];
+  listenNowEpisode = [forCopy listenNowEpisode];
 
-  [(MTUpNextResult *)self setNeedsUpdate:v6 ^ 1u];
+  [(MTUpNextResult *)self setNeedsUpdate:listenNowEpisode ^ 1u];
 }
 
-- (void)setModifiedDate:(double)a3
+- (void)setModifiedDate:(double)date
 {
   v6 = +[_TtC18PodcastsFoundation17FutureDateChecker lenientSharedInstance];
-  [v6 timestampBoundByNow:a3];
+  [v6 timestampBoundByNow:date];
   self->_modifiedDate = v5;
 }
 

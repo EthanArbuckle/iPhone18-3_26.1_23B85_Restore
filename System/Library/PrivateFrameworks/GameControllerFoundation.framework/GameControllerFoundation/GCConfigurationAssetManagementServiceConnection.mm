@@ -1,5 +1,5 @@
 @interface GCConfigurationAssetManagementServiceConnection
-- (id)currentAsset:(BOOL)a3;
+- (id)currentAsset:(BOOL)asset;
 @end
 
 @implementation GCConfigurationAssetManagementServiceConnection
@@ -16,13 +16,13 @@ void __57__GCConfigurationAssetManagementServiceConnection_assets__block_invoke(
   [a2 assetsWithReply:v6];
 }
 
-- (id)currentAsset:(BOOL)a3
+- (id)currentAsset:(BOOL)asset
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __64__GCConfigurationAssetManagementServiceConnection_currentAsset___block_invoke;
   v5[3] = &__block_descriptor_33_e81_v24__0___GCConfigurationAssetManagementServiceXPCInterface__8___v_____NSError__16l;
-  v6 = a3;
+  assetCopy = asset;
   v3 = [(GCConfigXPCServiceServiceConnection *)self serviceVendorRequestWithLabel:@"Current Asset" handler:v5];
 
   return v3;

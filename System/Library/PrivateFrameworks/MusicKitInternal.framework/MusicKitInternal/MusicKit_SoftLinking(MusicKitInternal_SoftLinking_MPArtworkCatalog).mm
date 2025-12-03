@@ -25,8 +25,8 @@
 
   v5 = v4;
   _Block_object_dispose(&v8, 8);
-  v6 = [v4 sharedStoreArtworkDataSource];
-  [v6 prewarmURLSessionWithCompletion:v3];
+  sharedStoreArtworkDataSource = [v4 sharedStoreArtworkDataSource];
+  [sharedStoreArtworkDataSource prewarmURLSessionWithCompletion:v3];
 }
 
 @end

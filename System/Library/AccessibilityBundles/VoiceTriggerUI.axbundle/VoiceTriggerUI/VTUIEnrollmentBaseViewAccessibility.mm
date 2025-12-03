@@ -1,17 +1,17 @@
 @interface VTUIEnrollmentBaseViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_setupUI;
 @end
 
 @implementation VTUIEnrollmentBaseViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VTUIEnrollmentBaseView" hasInstanceMethod:@"_setupUI" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"VTUIEnrollmentBaseView" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
-  [v3 validateClass:@"VTUIEnrollmentBaseView" hasInstanceVariable:@"_iconImageView" withType:"UIImageView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VTUIEnrollmentBaseView" hasInstanceMethod:@"_setupUI" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"VTUIEnrollmentBaseView" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"VTUIEnrollmentBaseView" hasInstanceVariable:@"_iconImageView" withType:"UIImageView"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

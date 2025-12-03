@@ -1,5 +1,5 @@
 @interface VEFrameOpticalFlow
-- (VEFrameOpticalFlow)initWithForwardFlow:(__CVBuffer *)a3 backwardFlow:(__CVBuffer *)a4;
+- (VEFrameOpticalFlow)initWithForwardFlow:(__CVBuffer *)flow backwardFlow:(__CVBuffer *)backwardFlow;
 - (void)dealloc;
 @end
 
@@ -14,7 +14,7 @@
   [(VEFrameOpticalFlow *)&v3 dealloc];
 }
 
-- (VEFrameOpticalFlow)initWithForwardFlow:(__CVBuffer *)a3 backwardFlow:(__CVBuffer *)a4
+- (VEFrameOpticalFlow)initWithForwardFlow:(__CVBuffer *)flow backwardFlow:(__CVBuffer *)backwardFlow
 {
   v10.receiver = self;
   v10.super_class = VEFrameOpticalFlow;
@@ -25,16 +25,16 @@
   }
 
   v7 = 0;
-  if (a3 && a4)
+  if (flow && backwardFlow)
   {
-    if (!CVPixelBufferGetIOSurface(a3) || !CVPixelBufferGetIOSurface(a4))
+    if (!CVPixelBufferGetIOSurface(flow) || !CVPixelBufferGetIOSurface(backwardFlow))
     {
       v7 = 0;
       goto LABEL_9;
     }
 
-    v6->_forwardFlow = CVPixelBufferRetain(a3);
-    v8 = CVPixelBufferRetain(a4);
+    v6->_forwardFlow = CVPixelBufferRetain(flow);
+    v8 = CVPixelBufferRetain(backwardFlow);
     v7 = 0;
     v6->_backwardFlow = v8;
     if (v6->_forwardFlow)

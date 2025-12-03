@@ -1,7 +1,7 @@
 @interface MTALabelEditCell
 - (BOOL)showingClearButton;
-- (MTALabelEditCell)initWithDelegate:(id)a3 currentTitle:(id)a4 isEmpty:(BOOL)a5;
-- (MTALabelEditCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (MTALabelEditCell)initWithDelegate:(id)delegate currentTitle:(id)title isEmpty:(BOOL)empty;
+- (MTALabelEditCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (MTALabelEditCellDelegate)delegate;
 - (id)getCurrentLabel;
 - (void)activate;
@@ -9,14 +9,14 @@
 - (void)awakeFromNib;
 - (void)dealloc;
 - (void)localSetup;
-- (void)setCurrentTitle:(id)a3;
-- (void)setFont:(id)a3;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4;
+- (void)setCurrentTitle:(id)title;
+- (void)setFont:(id)font;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated;
 - (void)setupLabel;
 - (void)setupLayoutConstraints;
 - (void)setupTextField;
-- (void)textFieldDidEndEditing:(id)a3;
-- (void)textValueChanged:(id)a3;
+- (void)textFieldDidEndEditing:(id)editing;
+- (void)textValueChanged:(id)changed;
 @end
 
 @implementation MTALabelEditCell
@@ -28,44 +28,44 @@
   [(MTALabelEditCell *)&v2 awakeFromNib];
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
   v4.receiver = self;
   v4.super_class = MTALabelEditCell;
-  [(MTALabelEditCell *)&v4 setSelected:a3 animated:a4];
+  [(MTALabelEditCell *)&v4 setSelected:selected animated:animated];
 }
 
-- (MTALabelEditCell)initWithDelegate:(id)a3 currentTitle:(id)a4 isEmpty:(BOOL)a5
+- (MTALabelEditCell)initWithDelegate:(id)delegate currentTitle:(id)title isEmpty:(BOOL)empty
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  emptyCopy = empty;
+  delegateCopy = delegate;
+  titleCopy = title;
   v10 = [(MTALabelEditCell *)self init];
   v11 = v10;
   if (v10)
   {
-    [(MTALabelEditCell *)v10 setDelegate:v8];
-    v12 = [(MTALabelEditCell *)v11 textfield];
-    v13 = v12;
-    if (v5)
+    [(MTALabelEditCell *)v10 setDelegate:delegateCopy];
+    textfield = [(MTALabelEditCell *)v11 textfield];
+    v13 = textfield;
+    if (emptyCopy)
     {
-      [v12 setPlaceholder:v9];
+      [textfield setPlaceholder:titleCopy];
     }
 
     else
     {
-      [v12 setText:v9];
+      [textfield setText:titleCopy];
     }
   }
 
   return v11;
 }
 
-- (MTALabelEditCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (MTALabelEditCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = MTALabelEditCell;
-  v4 = [(MTALabelEditCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(MTALabelEditCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -88,29 +88,29 @@
   v3 = objc_opt_new();
   [(MTALabelEditCell *)self setLabel:v3];
 
-  v4 = [(MTALabelEditCell *)self label];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  label = [(MTALabelEditCell *)self label];
+  [label setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v5 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-  v6 = [(MTALabelEditCell *)self label];
-  [v6 setFont:v5];
+  label2 = [(MTALabelEditCell *)self label];
+  [label2 setFont:v5];
 
   v7 = +[NSBundle mainBundle];
   v8 = [v7 localizedStringForKey:@"EDIT_LABEL" value:&stru_1000AEF10 table:0];
-  v9 = [(MTALabelEditCell *)self label];
-  [v9 setText:v8];
+  label3 = [(MTALabelEditCell *)self label];
+  [label3 setText:v8];
 
-  v10 = [(MTALabelEditCell *)self label];
+  label4 = [(MTALabelEditCell *)self label];
   LODWORD(v11) = 1144750080;
-  [v10 setContentHuggingPriority:0 forAxis:v11];
+  [label4 setContentHuggingPriority:0 forAxis:v11];
 
-  v12 = [(MTALabelEditCell *)self label];
+  label5 = [(MTALabelEditCell *)self label];
   LODWORD(v13) = 1148846080;
-  [v12 setContentCompressionResistancePriority:0 forAxis:v13];
+  [label5 setContentCompressionResistancePriority:0 forAxis:v13];
 
-  v15 = [(MTALabelEditCell *)self contentView];
-  v14 = [(MTALabelEditCell *)self label];
-  [v15 addSubview:v14];
+  contentView = [(MTALabelEditCell *)self contentView];
+  label6 = [(MTALabelEditCell *)self label];
+  [contentView addSubview:label6];
 }
 
 - (void)setupTextField
@@ -118,83 +118,83 @@
   v3 = objc_opt_new();
   [(MTALabelEditCell *)self setTextfield:v3];
 
-  v4 = [(MTALabelEditCell *)self textfield];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  textfield = [(MTALabelEditCell *)self textfield];
+  [textfield setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v5 = +[UIColor mtui_secondaryTextColor];
-  v6 = [(MTALabelEditCell *)self textfield];
-  [v6 setTextColor:v5];
+  textfield2 = [(MTALabelEditCell *)self textfield];
+  [textfield2 setTextColor:v5];
 
   v7 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-  v8 = [(MTALabelEditCell *)self textfield];
-  [v8 setFont:v7];
+  textfield3 = [(MTALabelEditCell *)self textfield];
+  [textfield3 setFont:v7];
 
-  v9 = [(MTALabelEditCell *)self textfield];
-  [v9 setDelegate:self];
+  textfield4 = [(MTALabelEditCell *)self textfield];
+  [textfield4 setDelegate:self];
 
-  v10 = [(MTALabelEditCell *)self textfield];
-  [v10 setTextAlignment:2];
+  textfield5 = [(MTALabelEditCell *)self textfield];
+  [textfield5 setTextAlignment:2];
 
-  v11 = [(MTALabelEditCell *)self textfield];
-  [v11 setReturnKeyType:9];
+  textfield6 = [(MTALabelEditCell *)self textfield];
+  [textfield6 setReturnKeyType:9];
 
-  v12 = [(MTALabelEditCell *)self textfield];
-  [v12 setClearButtonMode:1];
+  textfield7 = [(MTALabelEditCell *)self textfield];
+  [textfield7 setClearButtonMode:1];
 
-  v13 = [(MTALabelEditCell *)self textfield];
+  textfield8 = [(MTALabelEditCell *)self textfield];
   LODWORD(v14) = 1144750080;
-  [v13 setContentCompressionResistancePriority:0 forAxis:v14];
+  [textfield8 setContentCompressionResistancePriority:0 forAxis:v14];
 
   v15 = +[NSNotificationCenter defaultCenter];
-  v16 = [(MTALabelEditCell *)self textfield];
-  [v15 addObserver:self selector:"textValueChanged:" name:UITextFieldTextDidChangeNotification object:v16];
+  textfield9 = [(MTALabelEditCell *)self textfield];
+  [v15 addObserver:self selector:"textValueChanged:" name:UITextFieldTextDidChangeNotification object:textfield9];
 
-  v18 = [(MTALabelEditCell *)self contentView];
-  v17 = [(MTALabelEditCell *)self textfield];
-  [v18 addSubview:v17];
+  contentView = [(MTALabelEditCell *)self contentView];
+  textfield10 = [(MTALabelEditCell *)self textfield];
+  [contentView addSubview:textfield10];
 }
 
 - (void)setupLayoutConstraints
 {
   v31 = objc_opt_new();
-  v3 = [(MTALabelEditCell *)self label];
-  v4 = [v3 leadingAnchor];
-  v5 = [(MTALabelEditCell *)self contentView];
-  v6 = [v5 layoutMarginsGuide];
-  v7 = [v6 leadingAnchor];
-  v8 = [v4 constraintEqualToAnchor:v7];
+  label = [(MTALabelEditCell *)self label];
+  leadingAnchor = [label leadingAnchor];
+  contentView = [(MTALabelEditCell *)self contentView];
+  layoutMarginsGuide = [contentView layoutMarginsGuide];
+  leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+  v8 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v31 addObject:v8];
 
-  v9 = [(MTALabelEditCell *)self label];
-  v10 = [v9 centerYAnchor];
-  v11 = [(MTALabelEditCell *)self contentView];
-  v12 = [v11 centerYAnchor];
-  v13 = [v10 constraintEqualToAnchor:v12];
+  label2 = [(MTALabelEditCell *)self label];
+  centerYAnchor = [label2 centerYAnchor];
+  contentView2 = [(MTALabelEditCell *)self contentView];
+  centerYAnchor2 = [contentView2 centerYAnchor];
+  v13 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v31 addObject:v13];
 
-  v14 = [(MTALabelEditCell *)self textfield];
-  v15 = [v14 leadingAnchor];
-  v16 = [(MTALabelEditCell *)self label];
-  v17 = [v16 trailingAnchor];
-  v18 = [v15 constraintEqualToAnchor:v17 constant:8.0];
+  textfield = [(MTALabelEditCell *)self textfield];
+  leadingAnchor3 = [textfield leadingAnchor];
+  label3 = [(MTALabelEditCell *)self label];
+  trailingAnchor = [label3 trailingAnchor];
+  v18 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:8.0];
   [v31 addObject:v18];
 
-  v19 = [(MTALabelEditCell *)self textfield];
-  v20 = [v19 trailingAnchor];
-  v21 = [(MTALabelEditCell *)self contentView];
-  v22 = [v21 layoutMarginsGuide];
-  v23 = [v22 trailingAnchor];
-  v24 = [v20 constraintEqualToAnchor:v23];
+  textfield2 = [(MTALabelEditCell *)self textfield];
+  trailingAnchor2 = [textfield2 trailingAnchor];
+  contentView3 = [(MTALabelEditCell *)self contentView];
+  layoutMarginsGuide2 = [contentView3 layoutMarginsGuide];
+  trailingAnchor3 = [layoutMarginsGuide2 trailingAnchor];
+  v24 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
   [(MTALabelEditCell *)self setTextfieldTrailConstraint:v24];
 
-  v25 = [(MTALabelEditCell *)self textfieldTrailConstraint];
-  [v31 addObject:v25];
+  textfieldTrailConstraint = [(MTALabelEditCell *)self textfieldTrailConstraint];
+  [v31 addObject:textfieldTrailConstraint];
 
-  v26 = [(MTALabelEditCell *)self textfield];
-  v27 = [v26 centerYAnchor];
-  v28 = [(MTALabelEditCell *)self contentView];
-  v29 = [v28 centerYAnchor];
-  v30 = [v27 constraintEqualToAnchor:v29];
+  textfield3 = [(MTALabelEditCell *)self textfield];
+  centerYAnchor3 = [textfield3 centerYAnchor];
+  contentView4 = [(MTALabelEditCell *)self contentView];
+  centerYAnchor4 = [contentView4 centerYAnchor];
+  v30 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   [v31 addObject:v30];
 
   [NSLayoutConstraint activateConstraints:v31];
@@ -202,8 +202,8 @@
 
 - (void)activate
 {
-  v2 = [(MTALabelEditCell *)self textfield];
-  [v2 becomeFirstResponder];
+  textfield = [(MTALabelEditCell *)self textfield];
+  [textfield becomeFirstResponder];
 }
 
 - (void)dealloc
@@ -218,12 +218,12 @@
 
 - (BOOL)showingClearButton
 {
-  v3 = [(MTALabelEditCell *)self textfield];
-  if ([v3 isFirstResponder])
+  textfield = [(MTALabelEditCell *)self textfield];
+  if ([textfield isFirstResponder])
   {
-    v4 = [(MTALabelEditCell *)self textfield];
-    v5 = [v4 text];
-    v6 = [v5 length] != 0;
+    textfield2 = [(MTALabelEditCell *)self textfield];
+    text = [textfield2 text];
+    v6 = [text length] != 0;
   }
 
   else
@@ -236,73 +236,73 @@
 
 - (void)adjustClearButtonInset
 {
-  v3 = [(MTALabelEditCell *)self showingClearButton];
-  v4 = [(MTALabelEditCell *)self textfieldTrailConstraint];
-  v5 = v4;
+  showingClearButton = [(MTALabelEditCell *)self showingClearButton];
+  textfieldTrailConstraint = [(MTALabelEditCell *)self textfieldTrailConstraint];
+  v5 = textfieldTrailConstraint;
   v6 = 0.0;
-  if (v3)
+  if (showingClearButton)
   {
     v6 = 8.0;
   }
 
-  [v4 setConstant:v6];
+  [textfieldTrailConstraint setConstant:v6];
 
   [(MTALabelEditCell *)self setNeedsLayout];
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
   v7.receiver = self;
   v7.super_class = MTALabelEditCell;
-  v4 = a3;
-  [(MTALabelEditCell *)&v7 setFont:v4];
+  fontCopy = font;
+  [(MTALabelEditCell *)&v7 setFont:fontCopy];
   v5 = [(MTALabelEditCell *)self label:v7.receiver];
-  [v5 setFont:v4];
+  [v5 setFont:fontCopy];
 
-  v6 = [(MTALabelEditCell *)self textfield];
-  [v6 setFont:v4];
+  textfield = [(MTALabelEditCell *)self textfield];
+  [textfield setFont:fontCopy];
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
-  v4 = [a3 text];
+  text = [editing text];
   v5 = +[NSCharacterSet whitespaceAndNewlineCharacterSet];
-  v9 = [v4 stringByTrimmingCharactersInSet:v5];
+  v9 = [text stringByTrimmingCharactersInSet:v5];
 
   if (![v9 length])
   {
-    v6 = [(MTALabelEditCell *)self delegate];
-    v7 = [v6 defaultEditLabel];
-    v8 = [(MTALabelEditCell *)self textfield];
-    [v8 setPlaceholder:v7];
+    delegate = [(MTALabelEditCell *)self delegate];
+    defaultEditLabel = [delegate defaultEditLabel];
+    textfield = [(MTALabelEditCell *)self textfield];
+    [textfield setPlaceholder:defaultEditLabel];
   }
 
   [(MTALabelEditCell *)self adjustClearButtonInset];
 }
 
-- (void)textValueChanged:(id)a3
+- (void)textValueChanged:(id)changed
 {
-  v6 = [a3 object];
-  v4 = [(MTALabelEditCell *)self delegate];
-  v5 = [v6 text];
-  [v4 didUpdateWithLabel:v5 sender:self];
+  object = [changed object];
+  delegate = [(MTALabelEditCell *)self delegate];
+  text = [object text];
+  [delegate didUpdateWithLabel:text sender:self];
 
   [(MTALabelEditCell *)self adjustClearButtonInset];
 }
 
-- (void)setCurrentTitle:(id)a3
+- (void)setCurrentTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(MTALabelEditCell *)self textfield];
-  [v5 setText:v4];
+  titleCopy = title;
+  textfield = [(MTALabelEditCell *)self textfield];
+  [textfield setText:titleCopy];
 }
 
 - (id)getCurrentLabel
 {
-  v2 = [(MTALabelEditCell *)self textfield];
-  v3 = [v2 text];
+  textfield = [(MTALabelEditCell *)self textfield];
+  text = [textfield text];
 
-  return v3;
+  return text;
 }
 
 - (MTALabelEditCellDelegate)delegate

@@ -1,7 +1,7 @@
 @interface MFSpringAnimation
-+ (id)springAnimationWithKeyPath:(id)a3 fromValue:(id)a4 toValue:(id)a5;
++ (id)springAnimationWithKeyPath:(id)path fromValue:(id)value toValue:(id)toValue;
 - (MFSpringAnimation)init;
-- (void)addCompletionBlock:(id)a3;
+- (void)addCompletionBlock:(id)block;
 @end
 
 @implementation MFSpringAnimation
@@ -35,24 +35,24 @@
   return v3;
 }
 
-- (void)addCompletionBlock:(id)a3
+- (void)addCompletionBlock:(id)block
 {
-  aBlock = a3;
-  v4 = [(MFSpringAnimation *)self delegate];
-  v5 = [v4 completionBlocks];
+  aBlock = block;
+  delegate = [(MFSpringAnimation *)self delegate];
+  completionBlocks = [delegate completionBlocks];
   v6 = _Block_copy(aBlock);
-  [v5 addObject:v6];
+  [completionBlocks addObject:v6];
 }
 
-+ (id)springAnimationWithKeyPath:(id)a3 fromValue:(id)a4 toValue:(id)a5
++ (id)springAnimationWithKeyPath:(id)path fromValue:(id)value toValue:(id)toValue
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  pathCopy = path;
+  valueCopy = value;
+  toValueCopy = toValue;
   v10 = objc_alloc_init(MFSpringAnimation);
-  [(MFSpringAnimation *)v10 setKeyPath:v7];
-  [(MFSpringAnimation *)v10 setFromValue:v8];
-  [(MFSpringAnimation *)v10 setToValue:v9];
+  [(MFSpringAnimation *)v10 setKeyPath:pathCopy];
+  [(MFSpringAnimation *)v10 setFromValue:valueCopy];
+  [(MFSpringAnimation *)v10 setToValue:toValueCopy];
 
   return v10;
 }

@@ -1,20 +1,20 @@
 @interface OZFxPlugColorGamutHandler
-- (OZFxPlugColorGamutHandler)initWithPluginLock:(shared_ptr<OZFxPlugSharedLock>)a3;
+- (OZFxPlugColorGamutHandler)initWithPluginLock:(shared_ptr<OZFxPlugSharedLock>)lock;
 - (id).cxx_construct;
 - (id)colorMatrixFromDesiredRGBToYCbCr;
 - (id)colorMatrixFromYCbCrToDesiredRGB;
-- (id)pcFloat33MatrixToFxMatrix44:(const float *)a3;
+- (id)pcFloat33MatrixToFxMatrix44:(const float *)matrix44;
 - (unint64_t)colorPrimaries;
 @end
 
 @implementation OZFxPlugColorGamutHandler
 
-- (OZFxPlugColorGamutHandler)initWithPluginLock:(shared_ptr<OZFxPlugSharedLock>)a3
+- (OZFxPlugColorGamutHandler)initWithPluginLock:(shared_ptr<OZFxPlugSharedLock>)lock
 {
-  ptr = a3.__ptr_;
+  ptr = lock.__ptr_;
   v10.receiver = self;
   v10.super_class = OZFxPlugColorGamutHandler;
-  v4 = [(OZFxPlugColorGamutHandler *)&v10 init:a3.__ptr_];
+  v4 = [(OZFxPlugColorGamutHandler *)&v10 init:lock.__ptr_];
   v5 = v4;
   if (v4)
   {
@@ -37,7 +37,7 @@
   return v5;
 }
 
-- (id)pcFloat33MatrixToFxMatrix44:(const float *)a3
+- (id)pcFloat33MatrixToFxMatrix44:(const float *)matrix44
 {
   v3 = 0;
   v12 = *MEMORY[0x277D85DE8];
@@ -47,11 +47,11 @@
   {
     for (i = 0; i != 3; ++i)
     {
-      v4[i] = a3[i];
+      v4[i] = matrix44[i];
     }
 
     *(&v7[2 * v3++ + 1] + 1) = 0;
-    a3 += 3;
+    matrix44 += 3;
     v4 += 4;
   }
 

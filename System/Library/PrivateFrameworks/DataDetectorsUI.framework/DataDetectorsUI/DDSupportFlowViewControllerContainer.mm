@@ -1,7 +1,7 @@
 @interface DDSupportFlowViewControllerContainer
 - (UIViewController)controller;
 - (_TtC15DataDetectorsUI36DDSupportFlowViewControllerContainer)init;
-- (id)init:(id)a3;
+- (id)init:(id)init;
 @end
 
 @implementation DDSupportFlowViewControllerContainer
@@ -21,7 +21,7 @@
   return v3;
 }
 
-- (id)init:(id)a3
+- (id)init:(id)init
 {
   sub_21ABC66B4();
   sub_21ABC66A4();
@@ -31,7 +31,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(init);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = sub_21ABBC4A0(sub_21ABBC664, v5);

@@ -1,24 +1,24 @@
 @interface OKProducer
-- (BOOL)author:(BOOL)a3 progressBlock:(id)a4 requiresProducer:(BOOL *)a5 error:(id *)a6;
-- (BOOL)liveAuthorInitialBootstrap:(id)a3 error:(id *)a4;
-- (BOOL)migratePresentation:(id)a3 error:(id *)a4;
+- (BOOL)author:(BOOL)author progressBlock:(id)block requiresProducer:(BOOL *)producer error:(id *)error;
+- (BOOL)liveAuthorInitialBootstrap:(id)bootstrap error:(id *)error;
+- (BOOL)migratePresentation:(id)presentation error:(id *)error;
 - (BOOL)needsLiveAuthoring;
-- (BOOL)prepareLiveAuthoringIfNeeded:(id)a3 error:(id *)a4;
+- (BOOL)prepareLiveAuthoringIfNeeded:(id)needed error:(id *)error;
 - (BOOL)resetLiveAuthoring;
 - (OKProducer)init;
-- (OKProducer)initWithPresentation:(id)a3 andPlugin:(id)a4;
+- (OKProducer)initWithPresentation:(id)presentation andPlugin:(id)plugin;
 - (double)_continueLiveAuthoringDelay;
 - (float)currentLiveAuthoringProgress;
-- (float)liveAuthoringProgressForMediaItem:(id)a3;
-- (id)liveAuthorNextChunk:(id)a3 error:(id *)a4;
+- (float)liveAuthoringProgressForMediaItem:(id)item;
+- (id)liveAuthorNextChunk:(id)chunk error:(id *)error;
 - (id)liveAuthoringOperationQueue;
 - (unint64_t)totalNumberOfLiveAuthoringItems;
 - (void)_continueLiveAuthoring;
-- (void)cancelLiveAuthoring:(BOOL)a3;
-- (void)cleanupPresentation:(id)a3;
+- (void)cancelLiveAuthoring:(BOOL)authoring;
+- (void)cleanupPresentation:(id)presentation;
 - (void)dealloc;
-- (void)didChangeTextForWidget:(id)a3 toSettings:(id)a4;
-- (void)didPanMediaForWidget:(id)a3 toState:(id)a4;
+- (void)didChangeTextForWidget:(id)widget toSettings:(id)settings;
+- (void)didPanMediaForWidget:(id)widget toState:(id)state;
 - (void)startLiveAuthoringIfNeeded;
 - (void)updateSynopsisGuideline;
 @end
@@ -43,15 +43,15 @@
   return v3;
 }
 
-- (OKProducer)initWithPresentation:(id)a3 andPlugin:(id)a4
+- (OKProducer)initWithPresentation:(id)presentation andPlugin:(id)plugin
 {
   v6 = [(OKProducer *)self init];
   v7 = v6;
   if (v6)
   {
-    [(OKProducer *)v6 setPresentation:a3];
-    [(OKProducer *)v7 setPlugin:a4];
-    [a4 loadRetain];
+    [(OKProducer *)v6 setPresentation:presentation];
+    [(OKProducer *)v7 setPlugin:plugin];
+    [plugin loadRetain];
   }
 
   return v7;
@@ -88,16 +88,16 @@
   [(OKProducer *)&v6 dealloc];
 }
 
-- (BOOL)migratePresentation:(id)a3 error:(id *)a4
+- (BOOL)migratePresentation:(id)presentation error:(id *)error
 {
-  [(OKPresentationInfo *)[(OKPresentation *)self->_presentation info:a3] producerVersion];
+  [(OKPresentationInfo *)[(OKPresentation *)self->_presentation info:presentation] producerVersion];
   [(OKProducerBundle *)self->_plugin version];
   v7 = 0;
-  (*(a3 + 2))(a3, &v7, 1.0);
+  (*(presentation + 2))(presentation, &v7, 1.0);
   return 1;
 }
 
-- (void)cleanupPresentation:(id)a3
+- (void)cleanupPresentation:(id)presentation
 {
   v22 = *MEMORY[0x277D85DE8];
   [(OKPresentation *)[(OKProducer *)self presentation] removeAllFeeders];
@@ -106,13 +106,13 @@
   [(OKPresentation *)[(OKProducer *)self presentation] removeAllPages];
   [(OKPresentation *)[(OKProducer *)self presentation] removeAllCouches];
   [(OKPresentation *)[(OKProducer *)self presentation] removeMainScript];
-  v5 = [(OKPresentation *)[(OKProducer *)self presentation] guidelineAuthoringProducerMediaItems];
-  v6 = [MEMORY[0x277CBEB18] array];
+  guidelineAuthoringProducerMediaItems = [(OKPresentation *)[(OKProducer *)self presentation] guidelineAuthoringProducerMediaItems];
+  array = [MEMORY[0x277CBEB18] array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v7 = [guidelineAuthoringProducerMediaItems countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -124,48 +124,48 @@
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(guidelineAuthoringProducerMediaItems);
         }
 
         v11 = *(*(&v17 + 1) + 8 * v10);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [v6 addObject:{objc_msgSend(v11, "uniqueURL")}];
+          [array addObject:{objc_msgSend(v11, "uniqueURL")}];
         }
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [guidelineAuthoringProducerMediaItems countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v8);
   }
 
   v16 = 0;
-  if ([v6 count])
+  if ([array count])
   {
     if ([(OKPresentation *)[(OKProducer *)self presentation] document])
     {
-      v12 = [(OKPresentation *)[(OKProducer *)self presentation] document];
+      document = [(OKPresentation *)[(OKProducer *)self presentation] document];
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __34__OKProducer_cleanupPresentation___block_invoke;
       v15[3] = &unk_279C8FDA0;
-      v15[4] = a3;
-      if (![(OKDocument *)v12 deleteImportedResourceURLs:v6 progressBlock:v15 error:&v16]&& *MEMORY[0x277D62808] >= 4)
+      v15[4] = presentation;
+      if (![(OKDocument *)document deleteImportedResourceURLs:array progressBlock:v15 error:&v16]&& *MEMORY[0x277D62808] >= 4)
       {
         v13 = MEMORY[0x277D627B8];
-        v14 = [(UIDocument *)[(OKPresentation *)[(OKProducer *)self presentation] document] fileURL];
-        [v13 logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Producer/OKProducer.m" line:203 andFormat:@"Failed to cleanup presentation %@: %@", v14, objc_msgSend(v16, "localizedDescription")];
+        fileURL = [(UIDocument *)[(OKPresentation *)[(OKProducer *)self presentation] document] fileURL];
+        [v13 logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Producer/OKProducer.m" line:203 andFormat:@"Failed to cleanup presentation %@: %@", fileURL, objc_msgSend(v16, "localizedDescription")];
       }
     }
   }
 }
 
-- (BOOL)author:(BOOL)a3 progressBlock:(id)a4 requiresProducer:(BOOL *)a5 error:(id *)a6
+- (BOOL)author:(BOOL)author progressBlock:(id)block requiresProducer:(BOOL *)producer error:(id *)error
 {
   if (*MEMORY[0x277D62808] >= 4)
   {
@@ -175,8 +175,8 @@
     [v10 logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Producer/OKProducer.m" line:210 andFormat:@"%@ %@ MUST be subclassed and cannot be called directly from abstract class", v12, NSStringFromSelector(a2)];
   }
 
-  *a5 = !a3;
-  return !a6 || *a6 == 0;
+  *producer = !author;
+  return !error || *error == 0;
 }
 
 - (void)updateSynopsisGuideline
@@ -207,10 +207,10 @@
   return liveAuthoringOperationQueue;
 }
 
-- (BOOL)prepareLiveAuthoringIfNeeded:(id)a3 error:(id *)a4
+- (BOOL)prepareLiveAuthoringIfNeeded:(id)needed error:(id *)error
 {
   objc_sync_enter(self);
-  if (!self->_liveAuthoringInProgress && -[OKProducer supportsLiveAuthoring](self, "supportsLiveAuthoring") && -[OKProducer needsLiveAuthoring](self, "needsLiveAuthoring") && ((v15 = 0, [objc_msgSend(MEMORY[0x277CBEAA8] "date")], self->_startLiveAuthorTime = v7, v14[0] = MEMORY[0x277D85DD0], v14[1] = 3221225472, v14[2] = __49__OKProducer_prepareLiveAuthoringIfNeeded_error___block_invoke, v14[3] = &unk_279C8FDA0, v14[4] = a3, v8 = -[OKProducer liveAuthorNextChunk:error:](self, "liveAuthorNextChunk:error:", v14, &v15), (v9 = v15) == 0) ? (v10 = v8 == 0) : (v10 = 1), v10 ? (v11 = 0) : (v11 = 1), a4 && (v11 & 1) == 0))
+  if (!self->_liveAuthoringInProgress && -[OKProducer supportsLiveAuthoring](self, "supportsLiveAuthoring") && -[OKProducer needsLiveAuthoring](self, "needsLiveAuthoring") && ((v15 = 0, [objc_msgSend(MEMORY[0x277CBEAA8] "date")], self->_startLiveAuthorTime = v7, v14[0] = MEMORY[0x277D85DD0], v14[1] = 3221225472, v14[2] = __49__OKProducer_prepareLiveAuthoringIfNeeded_error___block_invoke, v14[3] = &unk_279C8FDA0, v14[4] = needed, v8 = -[OKProducer liveAuthorNextChunk:error:](self, "liveAuthorNextChunk:error:", v14, &v15), (v9 = v15) == 0) ? (v10 = v8 == 0) : (v10 = 1), v10 ? (v11 = 0) : (v11 = 1), error && (v11 & 1) == 0))
   {
     if (!v15)
     {
@@ -218,7 +218,7 @@
     }
 
     v12 = 0;
-    *a4 = v9;
+    *error = v9;
   }
 
   else
@@ -245,14 +245,14 @@ uint64_t __49__OKProducer_prepareLiveAuthoringIfNeeded_error___block_invoke(uint
 {
   [(OKProducer *)self currentLiveAuthoringProgress];
   v4 = v3;
-  v5 = [(OKProducer *)self totalNumberOfLiveAuthoringItems];
-  if (v4 == 0.0 || v5 == 0x7FFFFFFFFFFFFFFFLL)
+  totalNumberOfLiveAuthoringItems = [(OKProducer *)self totalNumberOfLiveAuthoringItems];
+  if (v4 == 0.0 || totalNumberOfLiveAuthoringItems == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0.0;
   }
 
-  v7 = v5;
-  if ((v4 * v5) <= 512.0)
+  v7 = totalNumberOfLiveAuthoringItems;
+  if ((v4 * totalNumberOfLiveAuthoringItems) <= 512.0)
   {
     return 0.0;
   }
@@ -293,8 +293,8 @@ uint64_t __49__OKProducer_prepareLiveAuthoringIfNeeded_error___block_invoke(uint
   objc_sync_exit(self);
   if (liveAuthoringInProgress)
   {
-    v4 = [(OKProducer *)self liveAuthoringOperationQueue];
-    v5 = [MEMORY[0x277D62800] weakReferenceHolderWithObject:v4];
+    liveAuthoringOperationQueue = [(OKProducer *)self liveAuthoringOperationQueue];
+    v5 = [MEMORY[0x277D62800] weakReferenceHolderWithObject:liveAuthoringOperationQueue];
     v6 = objc_alloc_init(MEMORY[0x277CCA8C8]);
     v7 = [MEMORY[0x277D62800] weakReferenceHolderWithObject:v6];
     v8 = [MEMORY[0x277D62800] weakReferenceHolderWithObject:self];
@@ -307,8 +307,8 @@ uint64_t __49__OKProducer_prepareLiveAuthoringIfNeeded_error___block_invoke(uint
     v9[6] = self;
     v9[7] = v5;
     [v6 addExecutionBlock:v9];
-    [v6 setQualityOfService:{objc_msgSend(v4, "qualityOfService")}];
-    [v4 addOperation:v6];
+    [v6 setQualityOfService:{objc_msgSend(liveAuthoringOperationQueue, "qualityOfService")}];
+    [liveAuthoringOperationQueue addOperation:v6];
     if (v6)
     {
     }
@@ -422,14 +422,14 @@ uint64_t __36__OKProducer__continueLiveAuthoring__block_invoke_3(uint64_t a1)
   objc_sync_exit(self);
 }
 
-- (void)cancelLiveAuthoring:(BOOL)a3
+- (void)cancelLiveAuthoring:(BOOL)authoring
 {
-  v3 = a3;
+  authoringCopy = authoring;
   objc_sync_enter(self);
   if (self->_liveAuthoringInProgress)
   {
     [(NSOperationQueue *)self->_liveAuthoringOperationQueue cancelAllOperations];
-    if (v3)
+    if (authoringCopy)
     {
       [(NSOperationQueue *)self->_liveAuthoringOperationQueue waitUntilAllOperationsAreFinished];
     }
@@ -466,7 +466,7 @@ uint64_t __36__OKProducer__continueLiveAuthoring__block_invoke_3(uint64_t a1)
   return 0;
 }
 
-- (BOOL)liveAuthorInitialBootstrap:(id)a3 error:(id *)a4
+- (BOOL)liveAuthorInitialBootstrap:(id)bootstrap error:(id *)error
 {
   if (*MEMORY[0x277D62808] >= 4)
   {
@@ -476,15 +476,15 @@ uint64_t __36__OKProducer__continueLiveAuthoring__block_invoke_3(uint64_t a1)
     [v6 logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Producer/OKProducer.m" line:466 andFormat:@"%@ %@ MUST be subclassed", v8, NSStringFromSelector(a2)];
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = [OKError errorForCode:-1];
+    *error = [OKError errorForCode:-1];
   }
 
   return 0;
 }
 
-- (id)liveAuthorNextChunk:(id)a3 error:(id *)a4
+- (id)liveAuthorNextChunk:(id)chunk error:(id *)error
 {
   if (*MEMORY[0x277D62808] >= 4)
   {
@@ -494,9 +494,9 @@ uint64_t __36__OKProducer__continueLiveAuthoring__block_invoke_3(uint64_t a1)
     [v6 logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Producer/OKProducer.m" line:478 andFormat:@"%@ %@ MUST be subclassed", v8, NSStringFromSelector(a2)];
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = [OKError errorForCode:-1];
+    *error = [OKError errorForCode:-1];
   }
 
   return 0;
@@ -528,7 +528,7 @@ uint64_t __36__OKProducer__continueLiveAuthoring__block_invoke_3(uint64_t a1)
   return 0.0;
 }
 
-- (float)liveAuthoringProgressForMediaItem:(id)a3
+- (float)liveAuthoringProgressForMediaItem:(id)item
 {
   if (*MEMORY[0x277D62808] >= 4)
   {
@@ -541,29 +541,29 @@ uint64_t __36__OKProducer__continueLiveAuthoring__block_invoke_3(uint64_t a1)
   return 0.0;
 }
 
-- (void)didPanMediaForWidget:(id)a3 toState:(id)a4
+- (void)didPanMediaForWidget:(id)widget toState:(id)state
 {
   v14[2] = *MEMORY[0x277D85DE8];
-  v7 = [MEMORY[0x277CBEBC0] URLWithString:{objc_msgSend(objc_msgSend(a3, "mergedSettings"), "objectForKeyedSubscript:", @"url"}];
+  v7 = [MEMORY[0x277CBEBC0] URLWithString:{objc_msgSend(objc_msgSend(widget, "mergedSettings"), "objectForKeyedSubscript:", @"url"}];
   if (v7)
   {
     v8 = v7;
-    v9 = [(OKProducer *)self presentation];
-    v10 = [v8 absoluteString];
+    presentation = [(OKProducer *)self presentation];
+    absoluteString = [v8 absoluteString];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __43__OKProducer_didPanMediaForWidget_toState___block_invoke;
     v12[3] = &unk_279C900C8;
-    v12[4] = a4;
-    [(OKPresentation *)v9 guidelineAuthoringMediaAttributesUpdateForKey:v10 updateBlock:v12];
+    v12[4] = state;
+    [(OKPresentation *)presentation guidelineAuthoringMediaAttributesUpdateForKey:absoluteString updateBlock:v12];
   }
 
   v13[0] = @"offset";
-  v11 = [a4 objectForKeyedSubscript:?];
+  v11 = [state objectForKeyedSubscript:?];
   v13[1] = @"scale";
   v14[0] = v11;
   v14[1] = &unk_287AF2268;
-  [a3 addSettingsFromDictionary:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v14, v13, 2)}];
+  [widget addSettingsFromDictionary:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v14, v13, 2)}];
 }
 
 uint64_t __43__OKProducer_didPanMediaForWidget_toState___block_invoke(uint64_t a1, void *a2)
@@ -574,15 +574,15 @@ uint64_t __43__OKProducer_didPanMediaForWidget_toState___block_invoke(uint64_t a
   return [a2 setScale:1.0];
 }
 
-- (void)didChangeTextForWidget:(id)a3 toSettings:(id)a4
+- (void)didChangeTextForWidget:(id)widget toSettings:(id)settings
 {
-  v7 = [a4 objectForKeyedSubscript:@"attributedText"];
+  v7 = [settings objectForKeyedSubscript:@"attributedText"];
   if (v7)
   {
     v8 = v7;
     if ([v7 length])
     {
-      if ([objc_msgSend(objc_msgSend(a3 "userData")])
+      if ([objc_msgSend(objc_msgSend(widget "userData")])
       {
         [(OKPresentation *)[(OKProducer *)self presentation] addGuideline:[OKPresentationGuideline guidelineAuthoringAttributedTitle:v8]];
         [(OKPresentation *)[(OKProducer *)self presentation] removeGuidelineForGlobalUniqueKey:[OKPresentationGuideline globalUniqueKeyForKey:@"authoringTitle"]];
@@ -590,22 +590,22 @@ uint64_t __43__OKProducer_didPanMediaForWidget_toState___block_invoke(uint64_t a
 
       else
       {
-        v9 = [MEMORY[0x277CBEBC0] URLWithString:{objc_msgSend(objc_msgSend(a3, "mergedSettings"), "objectForKeyedSubscript:", @"associatedMediaURL"}];
+        v9 = [MEMORY[0x277CBEBC0] URLWithString:{objc_msgSend(objc_msgSend(widget, "mergedSettings"), "objectForKeyedSubscript:", @"associatedMediaURL"}];
         if (v9)
         {
           v10 = v9;
-          v11 = [(OKProducer *)self presentation];
-          v12 = [v10 absoluteString];
+          presentation = [(OKProducer *)self presentation];
+          absoluteString = [v10 absoluteString];
           v13[0] = MEMORY[0x277D85DD0];
           v13[1] = 3221225472;
           v13[2] = __48__OKProducer_didChangeTextForWidget_toSettings___block_invoke;
           v13[3] = &unk_279C900C8;
           v13[4] = v8;
-          [(OKPresentation *)v11 guidelineAuthoringMediaAttributesUpdateForKey:v12 updateBlock:v13];
+          [(OKPresentation *)presentation guidelineAuthoringMediaAttributesUpdateForKey:absoluteString updateBlock:v13];
         }
       }
 
-      [a3 addSettingsFromDictionary:a4];
+      [widget addSettingsFromDictionary:settings];
     }
   }
 }

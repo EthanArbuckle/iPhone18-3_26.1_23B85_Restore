@@ -1,7 +1,7 @@
 @interface StoryAssetPicker
 - (_TtC12PhotosUICore16StoryAssetPicker)init;
-- (void)presentationControllerDidDismiss:(id)a3;
-- (void)storyPickerHelper:(id)a3 didFinishPicking:(id)a4 promotedAssets:(id)a5 demotedAssets:(id)a6;
+- (void)presentationControllerDidDismiss:(id)dismiss;
+- (void)storyPickerHelper:(id)helper didFinishPicking:(id)picking promotedAssets:(id)assets demotedAssets:(id)demotedAssets;
 @end
 
 @implementation StoryAssetPicker
@@ -17,25 +17,25 @@
   return result;
 }
 
-- (void)storyPickerHelper:(id)a3 didFinishPicking:(id)a4 promotedAssets:(id)a5 demotedAssets:(id)a6
+- (void)storyPickerHelper:(id)helper didFinishPicking:(id)picking promotedAssets:(id)assets demotedAssets:(id)demotedAssets
 {
-  v10 = a3;
+  helperCopy = helper;
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v11 = self;
-  sub_1A4988CC4(v10, a4, a5, a6);
+  selfCopy = self;
+  sub_1A4988CC4(helperCopy, picking, assets, demotedAssets);
 
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = self;
-  StoryAssetPicker.presentationControllerDidDismiss(_:)(v4);
+  dismissCopy = dismiss;
+  selfCopy = self;
+  StoryAssetPicker.presentationControllerDidDismiss(_:)(dismissCopy);
 }
 
 @end

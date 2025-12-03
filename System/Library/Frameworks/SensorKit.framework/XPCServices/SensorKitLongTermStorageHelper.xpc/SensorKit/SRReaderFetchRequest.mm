@@ -1,9 +1,9 @@
 @interface SRReaderFetchRequest
 - (NSString)description;
 - (SRReaderFetchRequest)init;
-- (SRReaderFetchRequest)initWithCoder:(id)a3;
+- (SRReaderFetchRequest)initWithCoder:(id)coder;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SRReaderFetchRequest
@@ -30,31 +30,31 @@
   [(SRReaderFetchRequest *)&v3 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->_readerRequest forKey:@"ReaderRequest"];
-  [a3 encodeBool:self->_bypassHoldingPeriod forKey:@"BypassHoldingPeriod"];
-  [a3 encodeDouble:@"From" forKey:self->_from];
-  [a3 encodeDouble:@"To" forKey:self->_to];
+  [coder encodeObject:self->_readerRequest forKey:@"ReaderRequest"];
+  [coder encodeBool:self->_bypassHoldingPeriod forKey:@"BypassHoldingPeriod"];
+  [coder encodeDouble:@"From" forKey:self->_from];
+  [coder encodeDouble:@"To" forKey:self->_to];
   cursor = self->_cursor;
 
-  [a3 encodeObject:cursor forKey:@"Cursor"];
+  [coder encodeObject:cursor forKey:@"Cursor"];
 }
 
-- (SRReaderFetchRequest)initWithCoder:(id)a3
+- (SRReaderFetchRequest)initWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = SRReaderFetchRequest;
   v4 = [(SRReaderFetchRequest *)&v8 init];
   if (v4)
   {
-    v4->_readerRequest = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"ReaderRequest"];
-    v4->_bypassHoldingPeriod = [a3 decodeBoolForKey:@"BypassHoldingPeriod"];
-    [a3 decodeDoubleForKey:@"From"];
+    v4->_readerRequest = [coder decodeObjectOfClass:objc_opt_class() forKey:@"ReaderRequest"];
+    v4->_bypassHoldingPeriod = [coder decodeBoolForKey:@"BypassHoldingPeriod"];
+    [coder decodeDoubleForKey:@"From"];
     v4->_from = v5;
-    [a3 decodeDoubleForKey:@"To"];
+    [coder decodeDoubleForKey:@"To"];
     v4->_to = v6;
-    v4->_cursor = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"Cursor"];
+    v4->_cursor = [coder decodeObjectOfClass:objc_opt_class() forKey:@"Cursor"];
   }
 
   return v4;

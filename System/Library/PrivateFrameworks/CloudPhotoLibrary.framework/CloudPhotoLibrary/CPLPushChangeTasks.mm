@@ -1,25 +1,25 @@
 @interface CPLPushChangeTasks
-+ (id)descriptionForTaskType:(int64_t)a3;
-- (CPLPushChangeTasks)initWithCoder:(id)a3;
-- (id)_descriptionFromTasksByType:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)descriptionForTaskType:(int64_t)type;
+- (CPLPushChangeTasks)initWithCoder:(id)coder;
+- (id)_descriptionFromTasksByType:(id)type;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)initEmpty;
 - (id)invalidRecordIdentifiers;
 - (id)invalidRecordScopedIdentifiers;
 - (void)_commitTasks;
-- (void)addTask:(int64_t)a3 forRecordWithScopedIdentifier:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateScopedTasksWithBlock:(id)a3;
-- (void)enumerateTasksWithBlock:(id)a3;
+- (void)addTask:(int64_t)task forRecordWithScopedIdentifier:(id)identifier;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateScopedTasksWithBlock:(id)block;
+- (void)enumerateTasksWithBlock:(id)block;
 @end
 
 @implementation CPLPushChangeTasks
 
 - (id)invalidRecordIdentifiers
 {
-  v2 = [(CPLPushChangeTasks *)self invalidRecordScopedIdentifiers];
-  v3 = [CPLScopedIdentifier unscopedIdentifiersFromSetOfScopedIdentifiers:v2];
+  invalidRecordScopedIdentifiers = [(CPLPushChangeTasks *)self invalidRecordScopedIdentifiers];
+  v3 = [CPLScopedIdentifier unscopedIdentifiersFromSetOfScopedIdentifiers:invalidRecordScopedIdentifiers];
 
   return v3;
 }
@@ -86,10 +86,10 @@ LABEL_6:
   return v6;
 }
 
-- (id)_descriptionFromTasksByType:(id)a3
+- (id)_descriptionFromTasksByType:(id)type
 {
   v3 = MEMORY[0x1E696AD60];
-  v4 = a3;
+  typeCopy = type;
   v5 = [v3 stringWithString:@"<"];
   v8 = MEMORY[0x1E69E9820];
   v9 = 3221225472;
@@ -98,7 +98,7 @@ LABEL_6:
   v13 = 1;
   v6 = v5;
   v12 = v6;
-  [v4 enumerateKeysAndObjectsUsingBlock:&v8];
+  [typeCopy enumerateKeysAndObjectsUsingBlock:&v8];
 
   [v6 appendString:{@">", v8, v9, v10, v11}];
 
@@ -128,11 +128,11 @@ void __50__CPLPushChangeTasks__descriptionFromTasksByType___block_invoke(uint64_
   [v5 appendFormat:v10, v11, v8];
 }
 
-- (void)addTask:(int64_t)a3 forRecordWithScopedIdentifier:(id)a4
+- (void)addTask:(int64_t)task forRecordWithScopedIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (v6)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     mutableTasksByType = self->_mutableTasksByType;
     if (!mutableTasksByType)
@@ -144,19 +144,19 @@ void __50__CPLPushChangeTasks__descriptionFromTasksByType___block_invoke(uint64_
       mutableTasksByType = self->_mutableTasksByType;
     }
 
-    v10 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v10 = [MEMORY[0x1E696AD98] numberWithInteger:task];
     v11 = [(NSMutableDictionary *)mutableTasksByType objectForKeyedSubscript:v10];
 
     if (v11)
     {
-      [v11 addObject:v6];
+      [v11 addObject:identifierCopy];
     }
 
     else
     {
-      v11 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithObjects:{v6, 0}];
+      v11 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithObjects:{identifierCopy, 0}];
       v14 = self->_mutableTasksByType;
-      v15 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+      v15 = [MEMORY[0x1E696AD98] numberWithInteger:task];
       [(NSMutableDictionary *)v14 setObject:v11 forKeyedSubscript:v15];
     }
   }
@@ -166,7 +166,7 @@ void __50__CPLPushChangeTasks__descriptionFromTasksByType___block_invoke(uint64_
     v12 = __CPLSessionOSLogDomain_18244();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v13 = [CPLPushChangeTasks descriptionForTaskType:a3];
+      v13 = [CPLPushChangeTasks descriptionForTaskType:task];
       *buf = 138543362;
       v18 = v13;
       _os_log_impl(&dword_1DC05A000, v12, OS_LOG_TYPE_ERROR, "Attempting to add a push change task %{public}@ for nil identifier", buf, 0xCu);
@@ -176,15 +176,15 @@ void __50__CPLPushChangeTasks__descriptionFromTasksByType___block_invoke(uint64_
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)enumerateTasksWithBlock:(id)a3
+- (void)enumerateTasksWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __46__CPLPushChangeTasks_enumerateTasksWithBlock___block_invoke;
   v6[3] = &unk_1E861F428;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(CPLPushChangeTasks *)self enumerateScopedTasksWithBlock:v6];
 }
 
@@ -195,17 +195,17 @@ void __46__CPLPushChangeTasks_enumerateTasksWithBlock___block_invoke(uint64_t a1
   (*(v6 + 16))(v6, a2, v7, a4);
 }
 
-- (void)enumerateScopedTasksWithBlock:(id)a3
+- (void)enumerateScopedTasksWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   [(CPLPushChangeTasks *)self _commitTasks];
   tasksByType = self->_tasksByType;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __52__CPLPushChangeTasks_enumerateScopedTasksWithBlock___block_invoke;
   v7[3] = &unk_1E861F400;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(NSDictionary *)tasksByType enumerateKeysAndObjectsUsingBlock:v7];
 }
 
@@ -235,27 +235,27 @@ uint64_t __52__CPLPushChangeTasks_enumerateScopedTasksWithBlock___block_invoke_2
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   [(CPLPushChangeTasks *)self _commitTasks];
-  v5 = [[CPLPushChangeTasks alloc] initEmpty];
-  v6 = [(NSDictionary *)self->_tasksByType copyWithZone:a3];
-  v7 = v5[1];
-  v5[1] = v6;
+  initEmpty = [[CPLPushChangeTasks alloc] initEmpty];
+  v6 = [(NSDictionary *)self->_tasksByType copyWithZone:zone];
+  v7 = initEmpty[1];
+  initEmpty[1] = v6;
 
-  return v5;
+  return initEmpty;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   [(CPLPushChangeTasks *)self _commitTasks];
-  [v4 encodeObject:self->_tasksByType forKey:@"tasks"];
+  [coderCopy encodeObject:self->_tasksByType forKey:@"tasks"];
 }
 
-- (CPLPushChangeTasks)initWithCoder:(id)a3
+- (CPLPushChangeTasks)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = CPLPushChangeTasks;
   v5 = [(CPLPushChangeTasks *)&v9 init];
@@ -266,7 +266,7 @@ uint64_t __52__CPLPushChangeTasks_enumerateScopedTasksWithBlock___block_invoke_2
       dispatch_once(&initWithCoder__onceToken_18261, &__block_literal_global_18262);
     }
 
-    v6 = [v4 decodeObjectOfClasses:initWithCoder__classes forKey:@"tasks"];
+    v6 = [coderCopy decodeObjectOfClasses:initWithCoder__classes forKey:@"tasks"];
     tasksByType = v5->_tasksByType;
     v5->_tasksByType = v6;
   }
@@ -334,19 +334,19 @@ void __34__CPLPushChangeTasks__commitTasks__block_invoke(uint64_t a1, void *a2, 
   }
 }
 
-+ (id)descriptionForTaskType:(int64_t)a3
++ (id)descriptionForTaskType:(int64_t)type
 {
-  if (a3 >= 0xA)
+  if (type >= 0xA)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"??(%ld)", a3];
+    type = [MEMORY[0x1E696AEC0] stringWithFormat:@"??(%ld)", type];
   }
 
   else
   {
-    v4 = off_1E861F4C0[a3];
+    type = off_1E861F4C0[type];
   }
 
-  return v4;
+  return type;
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface PXGPayloadTexture
 - (CGSize)pixelSize;
 - (PXGPayloadTexture)init;
-- (PXGPayloadTexture)initWithPayload:(id)a3 presentationType:(unsigned __int8)a4;
+- (PXGPayloadTexture)initWithPayload:(id)payload presentationType:(unsigned __int8)type;
 @end
 
 @implementation PXGPayloadTexture
@@ -17,25 +17,25 @@
 
 - (PXGPayloadTexture)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXGPayloadTexture.m" lineNumber:25 description:{@"%s is not available as initializer", "-[PXGPayloadTexture init]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXGPayloadTexture.m" lineNumber:25 description:{@"%s is not available as initializer", "-[PXGPayloadTexture init]"}];
 
   abort();
 }
 
-- (PXGPayloadTexture)initWithPayload:(id)a3 presentationType:(unsigned __int8)a4
+- (PXGPayloadTexture)initWithPayload:(id)payload presentationType:(unsigned __int8)type
 {
-  v6 = a3;
+  payloadCopy = payload;
   v11.receiver = self;
   v11.super_class = PXGPayloadTexture;
   v7 = [(PXGBaseTexture *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copyWithZone:0];
+    v8 = [payloadCopy copyWithZone:0];
     payload = v7->_payload;
     v7->_payload = v8;
 
-    v7->_presentationType = a4;
+    v7->_presentationType = type;
   }
 
   return v7;

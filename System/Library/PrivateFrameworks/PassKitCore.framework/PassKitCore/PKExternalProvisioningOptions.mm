@@ -1,20 +1,20 @@
 @interface PKExternalProvisioningOptions
 + (id)mockOptions;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToExternalProvisioningOptions:(id)a3;
-- (PKExternalProvisioningOptions)initWithCoder:(id)a3;
-- (PKExternalProvisioningOptions)initWithDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToExternalProvisioningOptions:(id)options;
+- (PKExternalProvisioningOptions)initWithCoder:(id)coder;
+- (PKExternalProvisioningOptions)initWithDictionary:(id)dictionary;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKExternalProvisioningOptions
 
-- (PKExternalProvisioningOptions)initWithDictionary:(id)a3
+- (PKExternalProvisioningOptions)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (v4)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
     v18.receiver = self;
     v18.super_class = PKExternalProvisioningOptions;
@@ -22,16 +22,16 @@
     if (v5)
     {
       v6 = [PKExternalProvisioningPolicy alloc];
-      v7 = [v4 PKDictionaryForKey:@"provisioningPolicy"];
+      v7 = [dictionaryCopy PKDictionaryForKey:@"provisioningPolicy"];
       v8 = [(PKExternalProvisioningPolicy *)v6 initWithDictionary:v7];
       policy = v5->_policy;
       v5->_policy = v8;
 
-      v10 = [v4 objectForKeyedSubscript:@"authorizationType"];
+      v10 = [dictionaryCopy objectForKeyedSubscript:@"authorizationType"];
 
       if (v10)
       {
-        v11 = [v4 PKStringForKey:@"authorizationType"];
+        v11 = [dictionaryCopy PKStringForKey:@"authorizationType"];
         v5->_authorizationType = PKExternalProvisioningAuthorizationTypeFromString(v11);
       }
 
@@ -40,7 +40,7 @@
         v5->_authorizationType = 1;
       }
 
-      v13 = [v4 PKArrayContaining:objc_opt_class() forKey:@"devices"];
+      v13 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"devices"];
       v14 = [v13 pk_arrayBySafelyApplyingBlock:&__block_literal_global_220];
       devices = v5->_devices;
       v5->_devices = v14;
@@ -54,15 +54,15 @@
     }
 
     self = v5;
-    v12 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
 PKExternalDestinationDevice *__52__PKExternalProvisioningOptions_initWithDictionary___block_invoke(uint64_t a1, void *a2)
@@ -80,25 +80,25 @@ PKExternalDestinationDevice *__52__PKExternalProvisioningOptions_initWithDiction
   return v2;
 }
 
-- (PKExternalProvisioningOptions)initWithCoder:(id)a3
+- (PKExternalProvisioningOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = PKExternalProvisioningOptions;
   v5 = [(PKExternalProvisioningOptions *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"policy"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"policy"];
     policy = v5->_policy;
     v5->_policy = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"authorizationType"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"authorizationType"];
     v5->_authorizationType = PKExternalProvisioningAuthorizationTypeFromString(v8);
 
     v9 = MEMORY[0x1E695DFD8];
     v10 = objc_opt_class();
     v11 = [v9 setWithObjects:{v10, objc_opt_class(), 0}];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"devices"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"devices"];
     devices = v5->_devices;
     v5->_devices = v12;
   }
@@ -106,11 +106,11 @@ PKExternalDestinationDevice *__52__PKExternalProvisioningOptions_initWithDiction
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   policy = self->_policy;
-  v8 = a3;
-  [v8 encodeObject:policy forKey:@"policy"];
+  coderCopy = coder;
+  [coderCopy encodeObject:policy forKey:@"policy"];
   authorizationType = self->_authorizationType;
   v6 = @"none";
   if (authorizationType != 1)
@@ -128,8 +128,8 @@ PKExternalDestinationDevice *__52__PKExternalProvisioningOptions_initWithDiction
     v7 = v6;
   }
 
-  [v8 encodeObject:v7 forKey:@"authorizationType"];
-  [v8 encodeObject:self->_devices forKey:@"devices"];
+  [coderCopy encodeObject:v7 forKey:@"authorizationType"];
+  [coderCopy encodeObject:self->_devices forKey:@"devices"];
 }
 
 - (id)description
@@ -158,33 +158,33 @@ PKExternalDestinationDevice *__52__PKExternalProvisioningOptions_initWithDiction
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKExternalProvisioningOptions *)self isEqualToExternalProvisioningOptions:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKExternalProvisioningOptions *)self isEqualToExternalProvisioningOptions:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToExternalProvisioningOptions:(id)a3
+- (BOOL)isEqualToExternalProvisioningOptions:(id)options
 {
-  v4 = a3;
-  if (!v4)
+  optionsCopy = options;
+  if (!optionsCopy)
   {
     goto LABEL_14;
   }
 
   policy = self->_policy;
-  v6 = v4[1];
+  v6 = optionsCopy[1];
   if (policy)
   {
     v7 = v6 == 0;
@@ -213,13 +213,13 @@ LABEL_14:
   }
 
 LABEL_10:
-  if (self->_authorizationType != v4[2])
+  if (self->_authorizationType != optionsCopy[2])
   {
     goto LABEL_14;
   }
 
   devices = self->_devices;
-  v9 = v4[3];
+  v9 = optionsCopy[3];
   if (devices && v9)
   {
     v10 = [(NSArray *)devices isEqual:?];

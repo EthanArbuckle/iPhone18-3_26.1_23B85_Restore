@@ -1,10 +1,10 @@
 @interface HelloMetalLayer
-- (_TtC23SetupAssistantSupportUI15HelloMetalLayer)initWithLayer:(id)a3;
+- (_TtC23SetupAssistantSupportUI15HelloMetalLayer)initWithLayer:(id)layer;
 @end
 
 @implementation HelloMetalLayer
 
-- (_TtC23SetupAssistantSupportUI15HelloMetalLayer)initWithLayer:(id)a3
+- (_TtC23SetupAssistantSupportUI15HelloMetalLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   sub_265AA78D0();

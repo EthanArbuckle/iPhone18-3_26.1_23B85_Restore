@@ -1,26 +1,26 @@
 @interface PHImageUtilities
-+ (UIEdgeInsets)transparencyInsetsForImage:(id)a3 requiringFullOpacity:(BOOL)a4;
-+ (id)croppedAndCenteredAvatarImageForImage:(id)a3 usingTransparencyInsets:(UIEdgeInsets)a4 widthMultiplier:(double)a5;
-+ (id)croppedAndCenteredAvatarImageForImage:(id)a3 widthMultiplier:(double)a4;
-+ (id)trimmedImageByTrimmingTransparentPixelsFromImage:(id)a3 requiringFullOpacity:(BOOL)a4;
++ (UIEdgeInsets)transparencyInsetsForImage:(id)image requiringFullOpacity:(BOOL)opacity;
++ (id)croppedAndCenteredAvatarImageForImage:(id)image usingTransparencyInsets:(UIEdgeInsets)insets widthMultiplier:(double)multiplier;
++ (id)croppedAndCenteredAvatarImageForImage:(id)image widthMultiplier:(double)multiplier;
++ (id)trimmedImageByTrimmingTransparentPixelsFromImage:(id)image requiringFullOpacity:(BOOL)opacity;
 @end
 
 @implementation PHImageUtilities
 
-+ (UIEdgeInsets)transparencyInsetsForImage:(id)a3 requiringFullOpacity:(BOOL)a4
++ (UIEdgeInsets)transparencyInsetsForImage:(id)image requiringFullOpacity:(BOOL)opacity
 {
-  v4 = a4;
-  v5 = a3;
-  Width = CGImageGetWidth([v5 CGImage]);
-  Height = CGImageGetHeight([v5 CGImage]);
+  opacityCopy = opacity;
+  imageCopy = image;
+  Width = CGImageGetWidth([imageCopy CGImage]);
+  Height = CGImageGetHeight([imageCopy CGImage]);
   v8 = malloc_type_calloc(Height * Width, 1uLL, 0x100004077774924uLL);
   v9 = CGBitmapContextCreate(v8, Width, Height, 8uLL, Width, 0, 7u);
-  v10 = [v5 CGImage];
+  cGImage = [imageCopy CGImage];
   v35.size.width = Width;
   v35.size.height = Height;
   v35.origin.x = 0.0;
   v35.origin.y = 0.0;
-  CGContextDrawImage(v9, v35, v10);
+  CGContextDrawImage(v9, v35, cGImage);
   v11 = malloc_type_calloc(Height, 2uLL, 0x1000040BDFB0063uLL);
   v12 = malloc_type_calloc(Width, 2uLL, 0x1000040BDFB0063uLL);
   v13 = v12;
@@ -47,7 +47,7 @@
         {
           v20 = *v16++;
           v19 = v20;
-          if (v4)
+          if (opacityCopy)
           {
             break;
           }
@@ -156,25 +156,25 @@ LABEL_27:
   return result;
 }
 
-+ (id)trimmedImageByTrimmingTransparentPixelsFromImage:(id)a3 requiringFullOpacity:(BOOL)a4
++ (id)trimmedImageByTrimmingTransparentPixelsFromImage:(id)image requiringFullOpacity:(BOOL)opacity
 {
-  v4 = a4;
-  v6 = a3;
-  [v6 size];
-  if (v7 >= 2.0 && ([v6 size], v8 >= 2.0))
+  opacityCopy = opacity;
+  imageCopy = image;
+  [imageCopy size];
+  if (v7 >= 2.0 && ([imageCopy size], v8 >= 2.0))
   {
-    [v6 size];
+    [imageCopy size];
     v12 = v11;
-    [v6 size];
+    [imageCopy size];
     v14 = v13;
-    v15 = [v6 pbui_CGImageBackedImage];
-    [a1 transparencyInsetsForImage:v15 requiringFullOpacity:v4];
+    pbui_CGImageBackedImage = [imageCopy pbui_CGImageBackedImage];
+    [self transparencyInsetsForImage:pbui_CGImageBackedImage requiringFullOpacity:opacityCopy];
     v17 = v16;
     v19 = v18;
     v21 = v20;
     v23 = v22;
 
-    v24 = v6;
+    v24 = imageCopy;
     v9 = v24;
     if (v17 != 0.0 || v21 != 0.0 || v19 != 0.0 || v23 != 0.0)
     {
@@ -193,43 +193,43 @@ LABEL_27:
 
   else
   {
-    v9 = v6;
+    v9 = imageCopy;
   }
 
   return v9;
 }
 
-+ (id)croppedAndCenteredAvatarImageForImage:(id)a3 widthMultiplier:(double)a4
++ (id)croppedAndCenteredAvatarImageForImage:(id)image widthMultiplier:(double)multiplier
 {
-  v5 = a3;
-  [a1 transparencyInsetsForImage:v5 requiringFullOpacity:0];
-  v6 = [a1 croppedAndCenteredAvatarImageForImage:v5 usingTransparencyInsets:? widthMultiplier:?];
+  imageCopy = image;
+  [self transparencyInsetsForImage:imageCopy requiringFullOpacity:0];
+  v6 = [self croppedAndCenteredAvatarImageForImage:imageCopy usingTransparencyInsets:? widthMultiplier:?];
 
   return v6;
 }
 
-+ (id)croppedAndCenteredAvatarImageForImage:(id)a3 usingTransparencyInsets:(UIEdgeInsets)a4 widthMultiplier:(double)a5
++ (id)croppedAndCenteredAvatarImageForImage:(id)image usingTransparencyInsets:(UIEdgeInsets)insets widthMultiplier:(double)multiplier
 {
-  bottom = a4.bottom;
-  top = a4.top;
-  v9 = a3;
-  [v9 size];
-  v11 = v10 * a5;
-  [v9 size];
+  bottom = insets.bottom;
+  top = insets.top;
+  imageCopy = image;
+  [imageCopy size];
+  v11 = v10 * multiplier;
+  [imageCopy size];
   v13 = v12;
-  [v9 scale];
+  [imageCopy scale];
   v15 = v14;
   v26.width = v11;
   v26.height = v13;
   UIGraphicsBeginImageContextWithOptions(v26, 0, v15);
   if (bottom == 0.0 || top == 0.0)
   {
-    v16 = v9;
+    v16 = imageCopy;
   }
 
   else
   {
-    v16 = [a1 trimmedImageByTrimmingTransparentPixelsFromImage:v9];
+    v16 = [self trimmedImageByTrimmingTransparentPixelsFromImage:imageCopy];
   }
 
   v17 = v16;

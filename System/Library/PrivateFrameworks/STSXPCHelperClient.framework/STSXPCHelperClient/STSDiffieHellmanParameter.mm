@@ -1,32 +1,32 @@
 @interface STSDiffieHellmanParameter
-- (BOOL)isEqual:(id)a3;
-- (STSDiffieHellmanParameter)initWithCoder:(id)a3;
-- (STSDiffieHellmanParameter)initWithKeyGroup:(unint64_t)a3 key:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (STSDiffieHellmanParameter)initWithCoder:(id)coder;
+- (STSDiffieHellmanParameter)initWithKeyGroup:(unint64_t)group key:(id)key;
 - (id)asData;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STSDiffieHellmanParameter
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   publicKeyGroup = self->_publicKeyGroup;
-  v7 = a3;
-  objc_msgSend_encodeInteger_forKey_(v7, v5, publicKeyGroup, @"publicKeyGroup");
-  objc_msgSend_encodeObject_forKey_(v7, v6, self->_publicKey, @"publicKey");
+  coderCopy = coder;
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v5, publicKeyGroup, @"publicKeyGroup");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v6, self->_publicKey, @"publicKey");
 }
 
-- (STSDiffieHellmanParameter)initWithCoder:(id)a3
+- (STSDiffieHellmanParameter)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = STSDiffieHellmanParameter;
   v6 = [(STSDiffieHellmanParameter *)&v12 init];
   if (v6)
   {
-    v6->_publicKeyGroup = objc_msgSend_decodeIntegerForKey_(v4, v5, @"publicKeyGroup");
+    v6->_publicKeyGroup = objc_msgSend_decodeIntegerForKey_(coderCopy, v5, @"publicKeyGroup");
     v7 = objc_opt_class();
-    v9 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v8, v7, @"dhInfo");
+    v9 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v8, v7, @"dhInfo");
     publicKey = v6->_publicKey;
     v6->_publicKey = v9;
   }
@@ -34,16 +34,16 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     isEqualToData = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     publicKeyGroup = self->_publicKeyGroup;
@@ -76,17 +76,17 @@
   return isEqualToData & 1;
 }
 
-- (STSDiffieHellmanParameter)initWithKeyGroup:(unint64_t)a3 key:(id)a4
+- (STSDiffieHellmanParameter)initWithKeyGroup:(unint64_t)group key:(id)key
 {
-  v7 = a4;
+  keyCopy = key;
   v11.receiver = self;
   v11.super_class = STSDiffieHellmanParameter;
   v8 = [(STSDiffieHellmanParameter *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_publicKeyGroup = a3;
-    objc_storeStrong(&v8->_publicKey, a4);
+    v8->_publicKeyGroup = group;
+    objc_storeStrong(&v8->_publicKey, key);
   }
 
   return v9;

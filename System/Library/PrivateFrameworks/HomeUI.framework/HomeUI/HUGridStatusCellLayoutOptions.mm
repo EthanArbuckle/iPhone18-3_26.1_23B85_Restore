@@ -1,18 +1,18 @@
 @interface HUGridStatusCellLayoutOptions
-+ (id)defaultOptionsForCellSizeSubclass:(int64_t)a3;
-- (CGPoint)badgeOffsetForUserInterfaceLayoutDirection:(int64_t)a3;
++ (id)defaultOptionsForCellSizeSubclass:(int64_t)subclass;
+- (CGPoint)badgeOffsetForUserInterfaceLayoutDirection:(int64_t)direction;
 - (double)cellHeight;
-- (double)cellWidthForAttributedTitle:(id)a3 shortTitle:(id)a4;
-- (double)cellWidthForTitle:(id)a3 shortTitle:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (double)cellWidthForAttributedTitle:(id)title shortTitle:(id)shortTitle;
+- (double)cellWidthForTitle:(id)title shortTitle:(id)shortTitle;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HUGridStatusCellLayoutOptions
 
-+ (id)defaultOptionsForCellSizeSubclass:(int64_t)a3
++ (id)defaultOptionsForCellSizeSubclass:(int64_t)subclass
 {
   v12[2] = *MEMORY[0x277D85DE8];
-  v10.receiver = a1;
+  v10.receiver = self;
   v10.super_class = &OBJC_METACLASS___HUGridStatusCellLayoutOptions;
   v4 = objc_msgSendSuper2(&v10, sel_defaultOptionsForCellSizeSubclass_);
   v5 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76940]];
@@ -30,7 +30,7 @@
   v12[0] = &unk_2824936C0;
   v12[1] = &unk_282493730;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:v11 count:2];
-  [v4 setBackgroundSize:{HUConstantForCellSizeSubclass(a3, v8)}];
+  [v4 setBackgroundSize:{HUConstantForCellSizeSubclass(subclass, v8)}];
 
   [v4 setIconSize:36.0];
   [v4 setDescriptionInnerMargin:6.0];
@@ -60,16 +60,16 @@ id __67__HUGridStatusCellLayoutOptions_defaultOptionsForCellSizeSubclass___block
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = HUGridStatusCellLayoutOptions;
-  v4 = [(HUGridCellLayoutOptions *)&v8 copyWithZone:a3];
-  v5 = [(HUGridStatusCellLayoutOptions *)self descriptionFont];
-  [v4 setDescriptionFont:v5];
+  v4 = [(HUGridCellLayoutOptions *)&v8 copyWithZone:zone];
+  descriptionFont = [(HUGridStatusCellLayoutOptions *)self descriptionFont];
+  [v4 setDescriptionFont:descriptionFont];
 
-  v6 = [(HUGridStatusCellLayoutOptions *)self largeDescriptionFont];
-  [v4 setLargeDescriptionFont:v6];
+  largeDescriptionFont = [(HUGridStatusCellLayoutOptions *)self largeDescriptionFont];
+  [v4 setLargeDescriptionFont:largeDescriptionFont];
 
   [(HUGridStatusCellLayoutOptions *)self descriptionInnerMargin];
   [v4 setDescriptionInnerMargin:?];
@@ -85,13 +85,13 @@ id __67__HUGridStatusCellLayoutOptions_defaultOptionsForCellSizeSubclass___block
 
 - (double)cellHeight
 {
-  v3 = [(HUGridStatusCellLayoutOptions *)self numberOfTitleLines];
-  v4 = [(HUGridCellLayoutOptions *)self font];
-  [v4 lineHeight];
+  numberOfTitleLines = [(HUGridStatusCellLayoutOptions *)self numberOfTitleLines];
+  font = [(HUGridCellLayoutOptions *)self font];
+  [font lineHeight];
   v6 = v5;
-  v7 = [(HUGridCellLayoutOptions *)self font];
-  [v7 leading];
-  v9 = v8 + v3 * v6 + 1.0;
+  font2 = [(HUGridCellLayoutOptions *)self font];
+  [font2 leading];
+  v9 = v8 + numberOfTitleLines * v6 + 1.0;
 
   [(HUGridCellLayoutOptions *)self iconSize];
   if (result < v9)
@@ -102,29 +102,29 @@ id __67__HUGridStatusCellLayoutOptions_defaultOptionsForCellSizeSubclass___block
   return result;
 }
 
-- (double)cellWidthForTitle:(id)a3 shortTitle:(id)a4
+- (double)cellWidthForTitle:(id)title shortTitle:(id)shortTitle
 {
-  v6 = a4;
-  if (a3)
+  shortTitleCopy = shortTitle;
+  if (title)
   {
     v7 = MEMORY[0x277CCA898];
-    v8 = a3;
-    a3 = [[v7 alloc] initWithString:v8];
+    titleCopy = title;
+    title = [[v7 alloc] initWithString:titleCopy];
   }
 
-  [(HUGridStatusCellLayoutOptions *)self cellWidthForAttributedTitle:a3 shortTitle:v6];
+  [(HUGridStatusCellLayoutOptions *)self cellWidthForAttributedTitle:title shortTitle:shortTitleCopy];
   v10 = v9;
 
   return v10;
 }
 
-- (double)cellWidthForAttributedTitle:(id)a3 shortTitle:(id)a4
+- (double)cellWidthForAttributedTitle:(id)title shortTitle:(id)shortTitle
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  titleCopy = title;
+  shortTitleCopy = shortTitle;
+  if (shortTitleCopy)
   {
-    v8 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v7];
+    v8 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:shortTitleCopy];
   }
 
   else
@@ -132,7 +132,7 @@ id __67__HUGridStatusCellLayoutOptions_defaultOptionsForCellSizeSubclass___block
     v8 = 0;
   }
 
-  v9 = HUGridStatusCell_legacyParseTextLines(v6, v8);
+  v9 = HUGridStatusCell_legacyParseTextLines(titleCopy, v8);
   v18[0] = 0;
   v18[1] = v18;
   v18[2] = 0x2020000000;
@@ -184,9 +184,9 @@ void __72__HUGridStatusCellLayoutOptions_cellWidthForAttributedTitle_shortTitle_
   }
 }
 
-- (CGPoint)badgeOffsetForUserInterfaceLayoutDirection:(int64_t)a3
+- (CGPoint)badgeOffsetForUserInterfaceLayoutDirection:(int64_t)direction
 {
-  if (a3 == 1)
+  if (direction == 1)
   {
     v4 = 5;
   }

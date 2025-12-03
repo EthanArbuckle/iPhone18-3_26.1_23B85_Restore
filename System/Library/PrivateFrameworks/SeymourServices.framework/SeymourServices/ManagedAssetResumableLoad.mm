@@ -1,14 +1,14 @@
 @interface ManagedAssetResumableLoad
-- (ManagedAssetResumableLoad)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (ManagedAssetResumableLoad)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 @end
 
 @implementation ManagedAssetResumableLoad
 
-- (ManagedAssetResumableLoad)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (ManagedAssetResumableLoad)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for ManagedAssetResumableLoad();
-  return [(ManagedAssetResumableLoad *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(ManagedAssetResumableLoad *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 @end

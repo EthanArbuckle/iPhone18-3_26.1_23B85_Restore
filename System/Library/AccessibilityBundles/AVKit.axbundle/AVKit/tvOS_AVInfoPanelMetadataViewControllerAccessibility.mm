@@ -1,19 +1,19 @@
 @interface tvOS_AVInfoPanelMetadataViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityHeaderElements;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation tvOS_AVInfoPanelMetadataViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AVInfoPanelMetadataViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"AVInfoPanelMetadataViewController" hasInstanceMethod:@"descriptionViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVInfoPanelDescriptionViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"AVInfoPanelDescriptionView" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVInfoPanelDescriptionView" hasInstanceMethod:@"summaryView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AVInfoPanelMetadataViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"AVInfoPanelMetadataViewController" hasInstanceMethod:@"descriptionViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVInfoPanelDescriptionViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"AVInfoPanelDescriptionView" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVInfoPanelDescriptionView" hasInstanceMethod:@"summaryView" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -26,8 +26,8 @@
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(tvOS_AVInfoPanelMetadataViewControllerAccessibility *)self accessibilityHeaderElements];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v15 count:16];
+  accessibilityHeaderElements = [(tvOS_AVInfoPanelMetadataViewControllerAccessibility *)self accessibilityHeaderElements];
+  v4 = [accessibilityHeaderElements countByEnumeratingWithState:&v10 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -40,14 +40,14 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(accessibilityHeaderElements);
         }
 
         [*(*(&v10 + 1) + 8 * v8++) setAccessibilityTraits:v7];
       }
 
       while (v5 != v8);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v15 count:16];
+      v5 = [accessibilityHeaderElements countByEnumeratingWithState:&v10 objects:v15 count:16];
     }
 
     while (v5);

@@ -7,12 +7,12 @@
 - (id)_CPS_recursiveSubviewsWithClass:()CarTableViewAdditions
 {
   v21 = *MEMORY[0x277D85DE8];
-  v19 = a1;
+  selfCopy = self;
   v18 = a2;
   v17 = a3;
-  v16 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   memset(__b, 0, sizeof(__b));
-  obj = [v19 subviews];
+  obj = [selfCopy subviews];
   v13 = [obj countByEnumeratingWithState:__b objects:v20 count:16];
   if (v13)
   {
@@ -28,13 +28,13 @@
       }
 
       v15 = *(__b[1] + 8 * v10);
-      v6 = v16;
+      v6 = array;
       v7 = [v15 _CPS_recursiveSubviewsWithClass:v17];
       [v6 addObjectsFromArray:?];
       MEMORY[0x277D82BD8](v7);
       if (objc_opt_isKindOfClass())
       {
-        [v16 addObject:v15];
+        [array addObject:v15];
       }
 
       ++v10;
@@ -51,8 +51,8 @@
   }
 
   *&v3 = MEMORY[0x277D82BD8](obj).n128_u64[0];
-  v5 = [v16 copy];
-  objc_storeStrong(&v16, 0);
+  v5 = [array copy];
+  objc_storeStrong(&array, 0);
 
   return v5;
 }

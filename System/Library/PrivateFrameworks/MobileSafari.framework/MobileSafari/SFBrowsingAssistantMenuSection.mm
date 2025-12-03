@@ -1,21 +1,21 @@
 @interface SFBrowsingAssistantMenuSection
 + (NSArray)moreMenuSections;
 + (SFBrowsingAssistantMenuSection)favoritesSection;
-+ (id)websiteSettingsSectionForDomain:(id)a3;
++ (id)websiteSettingsSectionForDomain:(id)domain;
 - (NSString)title;
 - (SFBrowsingAssistantMenuSection)init;
-- (SFBrowsingAssistantMenuSection)initWithIdentifier:(id)a3;
-- (void)setIdentifier:(id)a3;
-- (void)setTitle:(id)a3;
+- (SFBrowsingAssistantMenuSection)initWithIdentifier:(id)identifier;
+- (void)setIdentifier:(id)identifier;
+- (void)setTitle:(id)title;
 @end
 
 @implementation SFBrowsingAssistantMenuSection
 
 + (SFBrowsingAssistantMenuSection)favoritesSection
 {
-  v2 = [objc_allocWithZone(SFBrowsingAssistantMenuSection) initWithIdentifier_];
+  initWithIdentifier_ = [objc_allocWithZone(SFBrowsingAssistantMenuSection) initWithIdentifier_];
 
-  return v2;
+  return initWithIdentifier_;
 }
 
 + (NSArray)moreMenuSections
@@ -27,7 +27,7 @@
   return v2;
 }
 
-+ (id)websiteSettingsSectionForDomain:(id)a3
++ (id)websiteSettingsSectionForDomain:(id)domain
 {
   v3 = sub_18BC20BD8();
   v5 = sub_18B9EE438(v3, v4);
@@ -35,19 +35,19 @@
   return v5;
 }
 
-- (SFBrowsingAssistantMenuSection)initWithIdentifier:(id)a3
+- (SFBrowsingAssistantMenuSection)initWithIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = sub_18B9EE618(v3);
+  identifierCopy = identifier;
+  v4 = sub_18B9EE618(identifierCopy);
 
   return v4;
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
   v4 = *(self + OBJC_IVAR___SFBrowsingAssistantMenuSection_identifier);
-  *(self + OBJC_IVAR___SFBrowsingAssistantMenuSection_identifier) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___SFBrowsingAssistantMenuSection_identifier) = identifier;
+  identifierCopy = identifier;
 }
 
 - (NSString)title
@@ -59,7 +59,7 @@
   return v2;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   v4 = sub_18BC20BD8();
   v6 = v5;

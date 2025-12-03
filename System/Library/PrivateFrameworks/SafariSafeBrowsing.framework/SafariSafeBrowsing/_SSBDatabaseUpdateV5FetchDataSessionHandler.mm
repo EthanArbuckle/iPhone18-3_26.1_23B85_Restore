@@ -1,17 +1,17 @@
 @interface _SSBDatabaseUpdateV5FetchDataSessionHandler
-- (_SSBDatabaseUpdateV5FetchDataSessionHandler)initWithCompletionHandler:(void *)a3 provider:(int)a4;
+- (_SSBDatabaseUpdateV5FetchDataSessionHandler)initWithCompletionHandler:(void *)handler provider:(int)provider;
 - (id).cxx_construct;
 - (id)initWithCompletionHandler:provider:;
 - (uint64_t)initWithCompletionHandler:provider:;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
 - (void)initWithCompletionHandler:provider:;
 @end
 
 @implementation _SSBDatabaseUpdateV5FetchDataSessionHandler
 
-- (_SSBDatabaseUpdateV5FetchDataSessionHandler)initWithCompletionHandler:(void *)a3 provider:(int)a4
+- (_SSBDatabaseUpdateV5FetchDataSessionHandler)initWithCompletionHandler:(void *)handler provider:(int)provider
 {
   v26 = *MEMORY[0x277D85DE8];
   v17.receiver = self;
@@ -36,7 +36,7 @@
     objc_initWeak(&location, v6);
     std::allocate_shared[abi:sn200100]<ReadStream,std::allocator<ReadStream>,std::shared_ptr<ByteProvider> &,0>(v6 + 2, &v15);
     objc_copyWeak(&to, &location);
-    std::__function::__value_func<void ()(std::optional<Backend::Google::HashListsBatchGetResponse> &&,NSError *)>::__value_func[abi:sn200100](v20, a3);
+    std::__function::__value_func<void ()(std::optional<Backend::Google::HashListsBatchGetResponse> &&,NSError *)>::__value_func[abi:sn200100](v20, handler);
     v8 = operator new(8uLL);
     v18 = v15;
     v15 = 0uLL;
@@ -115,7 +115,7 @@
       std::__shared_weak_count::__release_shared[abi:sn200100](*(&v15 + 1));
     }
 
-    *(v6 + 12) = a4;
+    *(v6 + 12) = provider;
     v12 = v6;
     objc_destroyWeak(&location);
   }
@@ -124,32 +124,32 @@
   return v6;
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler
 {
-  v8 = a5;
-  v7 = a6;
-  v7[2](v7, [v8 statusCode] == 200);
+  responseCopy = response;
+  handlerCopy = handler;
+  handlerCopy[2](handlerCopy, [responseCopy statusCode] == 200);
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data
 {
-  v6 = a5;
-  self->_receivedBytes += [v6 length];
+  dataCopy = data;
+  self->_receivedBytes += [dataCopy length];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __82___SSBDatabaseUpdateV5FetchDataSessionHandler_URLSession_dataTask_didReceiveData___block_invoke;
   v7[3] = &unk_278564EC8;
   v7[4] = self;
-  [v6 enumerateByteRangesUsingBlock:v7];
+  [dataCopy enumerateByteRangesUsingBlock:v7];
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
-  v7 = a5;
+  errorCopy = error;
   logDataLength(self->_receivedBytes, self->_provider);
-  if (v7)
+  if (errorCopy)
   {
-    objc_storeStrong(&self->_error, a5);
+    objc_storeStrong(&self->_error, error);
     ByteProvider::readFailedWithError(self->_byteProvider.__ptr_);
   }
 
@@ -171,19 +171,19 @@
 {
   *a2 = &unk_2838CE010;
   v3 = a2 + 16;
-  objc_copyWeak((a2 + 8), (a1 + 8));
-  return std::__function::__value_func<void ()(std::optional<Backend::Google::HashListsBatchGetResponse> &&,NSError *)>::__value_func[abi:sn200100](v3, a1 + 16);
+  objc_copyWeak((a2 + 8), (self + 8));
+  return std::__function::__value_func<void ()(std::optional<Backend::Google::HashListsBatchGetResponse> &&,NSError *)>::__value_func[abi:sn200100](v3, self + 16);
 }
 
 - (void)initWithCompletionHandler:provider:
 {
-  WeakRetained = objc_loadWeakRetained((a1 + 8));
+  WeakRetained = objc_loadWeakRetained((self + 8));
   v5 = WeakRetained;
   if (WeakRetained && (v6 = *(WeakRetained + 5)) != 0)
   {
     v7[0] = 0;
     v8 = 0;
-    std::function<void ()(std::optional<Backend::Google::HashListsBatchGetResponse> &&,NSError *)>::operator()(a1 + 16, v7, v6);
+    std::function<void ()(std::optional<Backend::Google::HashListsBatchGetResponse> &&,NSError *)>::operator()(self + 16, v7, v6);
     if (v8 == 1)
     {
       v9 = v7;
@@ -193,7 +193,7 @@
 
   else
   {
-    std::function<void ()(std::optional<Backend::Google::HashListsBatchGetResponse> &&,NSError *)>::operator()(a1 + 16, a2, 0);
+    std::function<void ()(std::optional<Backend::Google::HashListsBatchGetResponse> &&,NSError *)>::operator()(self + 16, a2, 0);
   }
 }
 
@@ -201,8 +201,8 @@
 {
   v2 = operator new(0x30uLL);
   *v2 = &unk_2838CE010;
-  objc_copyWeak(v2 + 1, (a1 + 8));
-  std::__function::__value_func<void ()(std::optional<Backend::Google::HashListsBatchGetResponse> &&,NSError *)>::__value_func[abi:sn200100]((v2 + 2), a1 + 16);
+  objc_copyWeak(v2 + 1, (self + 8));
+  std::__function::__value_func<void ()(std::optional<Backend::Google::HashListsBatchGetResponse> &&,NSError *)>::__value_func[abi:sn200100]((v2 + 2), self + 16);
   return v2;
 }
 

@@ -15,7 +15,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 136315138;
-    v7 = "[VSAsyncOperation finishExecutionIfPossible]";
+    selfCopy = "[VSAsyncOperation finishExecutionIfPossible]";
     _os_log_impl(&dword_23AB8E000, v3, OS_LOG_TYPE_DEFAULT, "Entering %s", &v6, 0xCu);
   }
 
@@ -23,7 +23,7 @@
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 134217984;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_23AB8E000, v4, OS_LOG_TYPE_DEFAULT, "Finishing execution of operation %p.", &v6, 0xCu);
   }
 
@@ -76,7 +76,7 @@
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         v9 = 138412290;
-        v10 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_23AB8E000, v7, OS_LOG_TYPE_DEFAULT, "Will begin execution of %@", &v9, 0xCu);
       }
 
@@ -85,7 +85,7 @@
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         v9 = 138412290;
-        v10 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_23AB8E000, v8, OS_LOG_TYPE_DEFAULT, "Did begin execution of %@", &v9, 0xCu);
       }
     }
@@ -107,7 +107,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v7 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_23AB8E000, v3, OS_LOG_TYPE_DEFAULT, "Will cancel operation %@", buf, 0xCu);
   }
 
@@ -118,7 +118,7 @@
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v7 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_23AB8E000, v4, OS_LOG_TYPE_DEFAULT, "Did cancel operation %@", buf, 0xCu);
   }
 }

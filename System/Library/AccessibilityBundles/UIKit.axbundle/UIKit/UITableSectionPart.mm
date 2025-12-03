@@ -6,13 +6,13 @@
 
 - (CGRect)accessibilityFrame
 {
-  v10 = [(UITableSectionPart *)self accessibilityContainer];
-  [v10 accessibilityFrame];
+  accessibilityContainer = [(UITableSectionPart *)self accessibilityContainer];
+  [accessibilityContainer accessibilityFrame];
   v11 = v2;
   v12 = v3;
   v13 = v4;
   v14 = v5;
-  MEMORY[0x29EDC9740](v10);
+  MEMORY[0x29EDC9740](accessibilityContainer);
   v6 = v11;
   v7 = v12;
   v8 = v13;

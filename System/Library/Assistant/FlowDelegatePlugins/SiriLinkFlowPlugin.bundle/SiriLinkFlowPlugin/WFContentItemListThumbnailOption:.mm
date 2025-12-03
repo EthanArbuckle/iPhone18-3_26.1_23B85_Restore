@@ -6,7 +6,7 @@
 
 - (uint64_t)Any
 {
-  v5 = *__swift_project_boxed_opaque_existential_1((a1 + 32), *(a1 + 56));
+  v5 = *__swift_project_boxed_opaque_existential_1((self + 32), *(self + 56));
   if (a3)
   {
     type metadata accessor for WFContentItemListThumbnailOption(0);

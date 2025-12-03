@@ -1,178 +1,178 @@
 @interface NWProtocolTransform
 - (BOOL)disablePathFallback;
 - (BOOL)fastOpenForceEnable;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)noProxy;
 - (BOOL)prohibitDirect;
 - (BOOL)tfo;
 - (BOOL)tfoNoCookie;
 - (NWEndpoint)replacementEndpoint;
 - (NWProtocolTransform)init;
-- (NWProtocolTransform)initWithCTransform:(id)a3;
+- (NWProtocolTransform)initWithCTransform:(id)transform;
 - (id)description;
-- (id)descriptionWithIndent:(int)a3 showFullContent:(BOOL)a4;
+- (id)descriptionWithIndent:(int)indent showFullContent:(BOOL)content;
 - (id)privateDescription;
 - (int)dataMode;
 - (int)multipathService;
 - (unint64_t)fallbackMode;
 - (unint64_t)hash;
-- (void)appendProtocol:(id)a3 atLevel:(int)a4;
-- (void)clearProtocolsAtLevel:(int)a3;
-- (void)disableProtocol:(nw_protocol_identifier *)a3;
-- (void)setDataMode:(int)a3;
-- (void)setDisablePathFallback:(BOOL)a3;
-- (void)setFallbackMode:(unint64_t)a3;
-- (void)setFastOpenForceEnable:(BOOL)a3;
-- (void)setMultipathService:(int)a3;
-- (void)setNoProxy:(BOOL)a3;
-- (void)setProhibitDirect:(BOOL)a3;
-- (void)setReplacementEndpoint:(id)a3;
-- (void)setTfo:(BOOL)a3;
-- (void)setTfoNoCookie:(BOOL)a3;
+- (void)appendProtocol:(id)protocol atLevel:(int)level;
+- (void)clearProtocolsAtLevel:(int)level;
+- (void)disableProtocol:(nw_protocol_identifier *)protocol;
+- (void)setDataMode:(int)mode;
+- (void)setDisablePathFallback:(BOOL)fallback;
+- (void)setFallbackMode:(unint64_t)mode;
+- (void)setFastOpenForceEnable:(BOOL)enable;
+- (void)setMultipathService:(int)service;
+- (void)setNoProxy:(BOOL)proxy;
+- (void)setProhibitDirect:(BOOL)direct;
+- (void)setReplacementEndpoint:(id)endpoint;
+- (void)setTfo:(BOOL)tfo;
+- (void)setTfoNoCookie:(BOOL)cookie;
 @end
 
 @implementation NWProtocolTransform
 
-- (void)setDisablePathFallback:(BOOL)a3
+- (void)setDisablePathFallback:(BOOL)fallback
 {
-  v3 = [(NWProtocolTransform *)self internalTransform];
-  nw_protocol_transform_set_no_path_fallback(v3);
+  internalTransform = [(NWProtocolTransform *)self internalTransform];
+  nw_protocol_transform_set_no_path_fallback(internalTransform);
 }
 
 - (BOOL)disablePathFallback
 {
-  v2 = [(NWProtocolTransform *)self internalTransform];
-  no_path_fallback = nw_protocol_transform_get_no_path_fallback(v2);
+  internalTransform = [(NWProtocolTransform *)self internalTransform];
+  no_path_fallback = nw_protocol_transform_get_no_path_fallback(internalTransform);
 
   return no_path_fallback;
 }
 
-- (void)setDataMode:(int)a3
+- (void)setDataMode:(int)mode
 {
-  v4 = [(NWProtocolTransform *)self internalTransform];
-  nw_protocol_transform_set_data_mode(v4, a3);
+  internalTransform = [(NWProtocolTransform *)self internalTransform];
+  nw_protocol_transform_set_data_mode(internalTransform, mode);
 }
 
 - (int)dataMode
 {
-  v2 = [(NWProtocolTransform *)self internalTransform];
-  data_mode = nw_protocol_transform_get_data_mode(v2);
+  internalTransform = [(NWProtocolTransform *)self internalTransform];
+  data_mode = nw_protocol_transform_get_data_mode(internalTransform);
 
   return data_mode;
 }
 
-- (void)setFastOpenForceEnable:(BOOL)a3
+- (void)setFastOpenForceEnable:(BOOL)enable
 {
-  v3 = [(NWProtocolTransform *)self internalTransform];
-  nw_protocol_transform_set_fast_open_force_enable(v3);
+  internalTransform = [(NWProtocolTransform *)self internalTransform];
+  nw_protocol_transform_set_fast_open_force_enable(internalTransform);
 }
 
 - (BOOL)fastOpenForceEnable
 {
-  v2 = [(NWProtocolTransform *)self internalTransform];
-  fast_open_force_enable = nw_protocol_transform_get_fast_open_force_enable(v2);
+  internalTransform = [(NWProtocolTransform *)self internalTransform];
+  fast_open_force_enable = nw_protocol_transform_get_fast_open_force_enable(internalTransform);
 
   return fast_open_force_enable;
 }
 
-- (void)setTfoNoCookie:(BOOL)a3
+- (void)setTfoNoCookie:(BOOL)cookie
 {
-  v3 = [(NWProtocolTransform *)self internalTransform];
-  nw_protocol_transform_set_tfo_no_cookie(v3);
+  internalTransform = [(NWProtocolTransform *)self internalTransform];
+  nw_protocol_transform_set_tfo_no_cookie(internalTransform);
 }
 
 - (BOOL)tfoNoCookie
 {
-  v2 = [(NWProtocolTransform *)self internalTransform];
-  tfo_no_cookie = nw_protocol_transform_get_tfo_no_cookie(v2);
+  internalTransform = [(NWProtocolTransform *)self internalTransform];
+  tfo_no_cookie = nw_protocol_transform_get_tfo_no_cookie(internalTransform);
 
   return tfo_no_cookie;
 }
 
-- (void)setTfo:(BOOL)a3
+- (void)setTfo:(BOOL)tfo
 {
-  v3 = [(NWProtocolTransform *)self internalTransform];
-  nw_protocol_transform_set_tfo(v3);
+  internalTransform = [(NWProtocolTransform *)self internalTransform];
+  nw_protocol_transform_set_tfo(internalTransform);
 }
 
 - (BOOL)tfo
 {
-  v2 = [(NWProtocolTransform *)self internalTransform];
-  tfo = nw_protocol_transform_get_tfo(v2);
+  internalTransform = [(NWProtocolTransform *)self internalTransform];
+  tfo = nw_protocol_transform_get_tfo(internalTransform);
 
   return tfo;
 }
 
-- (void)setMultipathService:(int)a3
+- (void)setMultipathService:(int)service
 {
-  v4 = [(NWProtocolTransform *)self internalTransform];
-  nw_protocol_transform_set_multipath_service(v4, a3);
+  internalTransform = [(NWProtocolTransform *)self internalTransform];
+  nw_protocol_transform_set_multipath_service(internalTransform, service);
 }
 
 - (int)multipathService
 {
-  v2 = [(NWProtocolTransform *)self internalTransform];
-  multipath_service = nw_protocol_transform_get_multipath_service(v2);
+  internalTransform = [(NWProtocolTransform *)self internalTransform];
+  multipath_service = nw_protocol_transform_get_multipath_service(internalTransform);
 
   return multipath_service;
 }
 
-- (void)setNoProxy:(BOOL)a3
+- (void)setNoProxy:(BOOL)proxy
 {
-  v3 = [(NWProtocolTransform *)self internalTransform];
-  nw_protocol_transform_set_no_proxy(v3);
+  internalTransform = [(NWProtocolTransform *)self internalTransform];
+  nw_protocol_transform_set_no_proxy(internalTransform);
 }
 
 - (BOOL)noProxy
 {
-  v2 = [(NWProtocolTransform *)self internalTransform];
-  no_proxy = nw_protocol_transform_get_no_proxy(v2);
+  internalTransform = [(NWProtocolTransform *)self internalTransform];
+  no_proxy = nw_protocol_transform_get_no_proxy(internalTransform);
 
   return no_proxy;
 }
 
-- (void)setProhibitDirect:(BOOL)a3
+- (void)setProhibitDirect:(BOOL)direct
 {
-  v4 = [(NWProtocolTransform *)self internalTransform];
-  nw_protocol_transform_set_prohibit_direct(v4, a3);
+  internalTransform = [(NWProtocolTransform *)self internalTransform];
+  nw_protocol_transform_set_prohibit_direct(internalTransform, direct);
 }
 
 - (BOOL)prohibitDirect
 {
-  v2 = [(NWProtocolTransform *)self internalTransform];
-  prohibit_direct = nw_protocol_transform_get_prohibit_direct(v2);
+  internalTransform = [(NWProtocolTransform *)self internalTransform];
+  prohibit_direct = nw_protocol_transform_get_prohibit_direct(internalTransform);
 
   return prohibit_direct;
 }
 
-- (void)setFallbackMode:(unint64_t)a3
+- (void)setFallbackMode:(unint64_t)mode
 {
-  v3 = a3;
-  v4 = [(NWProtocolTransform *)self internalTransform];
-  nw_protocol_transform_set_fallback_mode(v4, v3);
+  modeCopy = mode;
+  internalTransform = [(NWProtocolTransform *)self internalTransform];
+  nw_protocol_transform_set_fallback_mode(internalTransform, modeCopy);
 }
 
 - (unint64_t)fallbackMode
 {
-  v2 = [(NWProtocolTransform *)self internalTransform];
-  fallback_mode = nw_protocol_transform_get_fallback_mode(v2);
+  internalTransform = [(NWProtocolTransform *)self internalTransform];
+  fallback_mode = nw_protocol_transform_get_fallback_mode(internalTransform);
 
   return fallback_mode;
 }
 
-- (void)setReplacementEndpoint:(id)a3
+- (void)setReplacementEndpoint:(id)endpoint
 {
-  v4 = a3;
-  v6 = [(NWProtocolTransform *)self internalTransform];
-  v5 = [v4 internalEndpoint];
+  endpointCopy = endpoint;
+  internalTransform = [(NWProtocolTransform *)self internalTransform];
+  internalEndpoint = [endpointCopy internalEndpoint];
 
-  nw_protocol_transform_replace_endpoint(v6, v5);
+  nw_protocol_transform_replace_endpoint(internalTransform, internalEndpoint);
 }
 
 - (NWEndpoint)replacementEndpoint
 {
-  v2 = [(NWProtocolTransform *)self internalTransform];
-  v3 = nw_protocol_transform_copy_endpoint(v2);
+  internalTransform = [(NWProtocolTransform *)self internalTransform];
+  v3 = nw_protocol_transform_copy_endpoint(internalTransform);
 
   if (v3)
   {
@@ -187,34 +187,34 @@
   return v4;
 }
 
-- (void)appendProtocol:(id)a3 atLevel:(int)a4
+- (void)appendProtocol:(id)protocol atLevel:(int)level
 {
-  v4 = *&a4;
-  v6 = a3;
-  v7 = [(NWProtocolTransform *)self internalTransform];
-  nw_protocol_transform_append_protocol(v7, v4, v6);
+  v4 = *&level;
+  protocolCopy = protocol;
+  internalTransform = [(NWProtocolTransform *)self internalTransform];
+  nw_protocol_transform_append_protocol(internalTransform, v4, protocolCopy);
 }
 
-- (void)clearProtocolsAtLevel:(int)a3
+- (void)clearProtocolsAtLevel:(int)level
 {
-  v3 = *&a3;
-  v4 = [(NWProtocolTransform *)self internalTransform];
-  nw_protocol_transform_clear_protocols_at_level(v4, v3);
+  v3 = *&level;
+  internalTransform = [(NWProtocolTransform *)self internalTransform];
+  nw_protocol_transform_clear_protocols_at_level(internalTransform, v3);
 }
 
-- (void)disableProtocol:(nw_protocol_identifier *)a3
+- (void)disableProtocol:(nw_protocol_identifier *)protocol
 {
-  v4 = [(NWProtocolTransform *)self internalTransform];
-  nw_protocol_transform_disable_protocol(v4, a3);
+  internalTransform = [(NWProtocolTransform *)self internalTransform];
+  nw_protocol_transform_disable_protocol(internalTransform, protocol);
 }
 
 - (unint64_t)hash
 {
-  v2 = [(NWProtocolTransform *)self internalTransform];
-  v3 = v2;
-  if (v2)
+  internalTransform = [(NWProtocolTransform *)self internalTransform];
+  v3 = internalTransform;
+  if (internalTransform)
   {
-    hash = _nw_protocol_transform_get_hash(v2);
+    hash = _nw_protocol_transform_get_hash(internalTransform);
   }
 
   else
@@ -225,16 +225,16 @@
   return hash;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && [v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (equalCopy && [equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
-    v6 = [(NWProtocolTransform *)self internalTransform];
-    v7 = [v5 internalTransform];
+    v5 = equalCopy;
+    internalTransform = [(NWProtocolTransform *)self internalTransform];
+    internalTransform2 = [v5 internalTransform];
 
-    is_equal = nw_protocol_transform_is_equal(v6, v7);
+    is_equal = nw_protocol_transform_is_equal(internalTransform, internalTransform2);
   }
 
   else
@@ -259,10 +259,10 @@
   return v2;
 }
 
-- (id)descriptionWithIndent:(int)a3 showFullContent:(BOOL)a4
+- (id)descriptionWithIndent:(int)indent showFullContent:(BOOL)content
 {
-  v4 = a4;
-  v5 = *&a3;
+  contentCopy = content;
+  v5 = *&indent;
   v7 = objc_alloc_init(MEMORY[0x1E696AD60]);
   if ([(NWProtocolTransform *)self fallbackMode]== 1)
   {
@@ -284,10 +284,10 @@
     v8 = @"Immediate";
   }
 
-  [v7 appendPrettyObject:v8 withName:@"fallbackMode" indent:v5 showFullContent:v4];
+  [v7 appendPrettyObject:v8 withName:@"fallbackMode" indent:v5 showFullContent:contentCopy];
 LABEL_8:
-  v9 = [(NWProtocolTransform *)self replacementEndpoint];
-  [v7 appendPrettyObject:v9 withName:@"replacementEndpoint" indent:v5 showFullContent:v4];
+  replacementEndpoint = [(NWProtocolTransform *)self replacementEndpoint];
+  [v7 appendPrettyObject:replacementEndpoint withName:@"replacementEndpoint" indent:v5 showFullContent:contentCopy];
 
   if ([(NWProtocolTransform *)self prohibitDirect])
   {
@@ -307,11 +307,11 @@ LABEL_8:
   return v7;
 }
 
-- (NWProtocolTransform)initWithCTransform:(id)a3
+- (NWProtocolTransform)initWithCTransform:(id)transform
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  transformCopy = transform;
+  if (transformCopy)
   {
     v23.receiver = self;
     v23.super_class = NWProtocolTransform;
@@ -319,7 +319,7 @@ LABEL_8:
     if (v6)
     {
       v7 = v6;
-      objc_storeStrong(&v6->_internalTransform, a3);
+      objc_storeStrong(&v6->_internalTransform, transform);
       goto LABEL_4;
     }
 

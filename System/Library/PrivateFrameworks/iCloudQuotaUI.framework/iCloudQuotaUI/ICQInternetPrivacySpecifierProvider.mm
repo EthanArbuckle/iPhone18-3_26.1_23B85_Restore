@@ -1,56 +1,56 @@
 @interface ICQInternetPrivacySpecifierProvider
 - (AAUISpecifierProviderDelegate)delegate;
-- (BOOL)_handleQuotaJourneyURL:(id)a3;
+- (BOOL)_handleQuotaJourneyURL:(id)l;
 - (BOOL)_shouldShowInternetPrivacySpecifier;
-- (BOOL)handleURL:(id)a3;
-- (ICQInternetPrivacySpecifierProvider)initWithAccountManager:(id)a3;
+- (BOOL)handleURL:(id)l;
+- (ICQInternetPrivacySpecifierProvider)initWithAccountManager:(id)manager;
 - (NSArray)specifiers;
 - (id)account;
 - (id)makeDefaultInternetPrivacySpecifier;
-- (void)_configureInternetPrivacySpecifier:(id)a3;
+- (void)_configureInternetPrivacySpecifier:(id)specifier;
 - (void)_controllerLoadAction;
-- (void)_fetchStatusWithCompletion:(id)a3;
-- (void)_internetPrivacySpecifierLoadJourney:(id)a3;
-- (void)_internetPrivacySpecifierWasTapped:(id)a3;
+- (void)_fetchStatusWithCompletion:(id)completion;
+- (void)_internetPrivacySpecifierLoadJourney:(id)journey;
+- (void)_internetPrivacySpecifierWasTapped:(id)tapped;
 - (void)_presentLearnMoreSubscriberPage;
 - (void)_registerForNSPDarwinNotification;
 - (void)_reloadSpecifiers;
-- (void)_setupWithAltDSID:(id)a3;
+- (void)_setupWithAltDSID:(id)d;
 - (void)_unregisterForNSPDarwinNotification;
 - (void)dealloc;
 - (void)reloadQuotaInfo;
-- (void)reloadSpecifer:(id)a3;
-- (void)upgradeFlowManagerDidCancel:(id)a3;
-- (void)upgradeFlowManagerDidComplete:(id)a3;
+- (void)reloadSpecifer:(id)specifer;
+- (void)upgradeFlowManagerDidCancel:(id)cancel;
+- (void)upgradeFlowManagerDidComplete:(id)complete;
 @end
 
 @implementation ICQInternetPrivacySpecifierProvider
 
-- (ICQInternetPrivacySpecifierProvider)initWithAccountManager:(id)a3
+- (ICQInternetPrivacySpecifierProvider)initWithAccountManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v12.receiver = self;
   v12.super_class = ICQInternetPrivacySpecifierProvider;
   v6 = [(ICQInternetPrivacySpecifierProvider *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_accountManager, a3);
-    v8 = [(AIDAAccountManager *)v7->_accountManager accounts];
-    v9 = [v8 objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
+    objc_storeStrong(&v6->_accountManager, manager);
+    accounts = [(AIDAAccountManager *)v7->_accountManager accounts];
+    v9 = [accounts objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
 
     if ([v9 aa_isAccountClass:*MEMORY[0x277CEC688]])
     {
-      v10 = [v9 aa_altDSID];
-      [(ICQInternetPrivacySpecifierProvider *)v7 _setupWithAltDSID:v10];
+      aa_altDSID = [v9 aa_altDSID];
+      [(ICQInternetPrivacySpecifierProvider *)v7 _setupWithAltDSID:aa_altDSID];
     }
 
     else
     {
-      v10 = _ICQGetLogSystem();
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+      aa_altDSID = _ICQGetLogSystem();
+      if (os_log_type_enabled(aa_altDSID, OS_LOG_TYPE_ERROR))
       {
-        [ICQInternetPrivacySpecifierProvider initWithAccountManager:v10];
+        [ICQInternetPrivacySpecifierProvider initWithAccountManager:aa_altDSID];
       }
     }
   }
@@ -60,13 +60,13 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   if (self->_observationToken)
   {
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 removeObserver:self->_observationToken];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 removeObserver:self->_observationToken];
   }
 
   [(ICQInternetPrivacySpecifierProvider *)self _unregisterForNSPDarwinNotification];
@@ -77,14 +77,14 @@
 
 - (id)account
 {
-  v2 = [(ICQInternetPrivacySpecifierProvider *)self accountManager];
-  v3 = [v2 accounts];
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
+  accountManager = [(ICQInternetPrivacySpecifierProvider *)self accountManager];
+  accounts = [accountManager accounts];
+  v4 = [accounts objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
 
   return v4;
 }
 
-- (void)reloadSpecifer:(id)a3
+- (void)reloadSpecifer:(id)specifer
 {
   v4 = _ICQGetLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -102,15 +102,15 @@
   v3 = _ICQGetLogSystem();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(ICQInternetPrivacySpecifierProvider *)self internetPrivacyAvailability];
-    if (v4 - 1 > 2)
+    internetPrivacyAvailability = [(ICQInternetPrivacySpecifierProvider *)self internetPrivacyAvailability];
+    if (internetPrivacyAvailability - 1 > 2)
     {
       v5 = @"Unknown";
     }
 
     else
     {
-      v5 = off_27A65AE00[v4 - 1];
+      v5 = off_27A65AE00[internetPrivacyAvailability - 1];
     }
 
     *buf = 138412290;
@@ -120,16 +120,16 @@
 
   if (!self->_specifiers)
   {
-    v10 = [(ICQInternetPrivacySpecifierProvider *)self internetPrivacySpecifier];
-    if (v10)
+    internetPrivacySpecifier = [(ICQInternetPrivacySpecifierProvider *)self internetPrivacySpecifier];
+    if (internetPrivacySpecifier)
     {
-      v11 = v10;
-      v12 = [(ICQInternetPrivacySpecifierProvider *)self _shouldShowInternetPrivacySpecifier];
+      v11 = internetPrivacySpecifier;
+      _shouldShowInternetPrivacySpecifier = [(ICQInternetPrivacySpecifierProvider *)self _shouldShowInternetPrivacySpecifier];
 
-      if (v12)
+      if (_shouldShowInternetPrivacySpecifier)
       {
-        v13 = [(ICQInternetPrivacySpecifierProvider *)self internetPrivacySpecifier];
-        v16 = v13;
+        internetPrivacySpecifier2 = [(ICQInternetPrivacySpecifierProvider *)self internetPrivacySpecifier];
+        v16 = internetPrivacySpecifier2;
         v14 = [MEMORY[0x277CBEA60] arrayWithObjects:&v16 count:1];
         specifiers = self->_specifiers;
         self->_specifiers = v14;
@@ -155,8 +155,8 @@
 {
   v4 = [(NSArray *)self->_specifiers copy];
   [(ICQInternetPrivacySpecifierProvider *)self setSpecifiers:0];
-  v3 = [(ICQInternetPrivacySpecifierProvider *)self delegate];
-  [v3 reloadSpecifiersForProvider:self oldSpecifiers:v4 animated:1];
+  delegate = [(ICQInternetPrivacySpecifierProvider *)self delegate];
+  [delegate reloadSpecifiersForProvider:self oldSpecifiers:v4 animated:1];
 }
 
 - (void)reloadQuotaInfo
@@ -168,21 +168,21 @@
     _os_log_impl(&dword_275623000, v2, OS_LOG_TYPE_DEFAULT, "Refreshing quota storage info.", v4, 2u);
   }
 
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 postNotificationName:@"QuotaDidChange" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"QuotaDidChange" object:0];
 }
 
-- (void)_setupWithAltDSID:(id)a3
+- (void)_setupWithAltDSID:(id)d
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = objc_alloc_init(ICQInternetPrivacyViewModel);
   viewModel = self->_viewModel;
   self->_viewModel = v5;
 
   self->_internetPrivacyAvailability = 0;
-  v7 = [MEMORY[0x277D262A0] sharedConnection];
-  self->_hasProfileRestriction = [v7 isCloudPrivateRelayAllowed] ^ 1;
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  self->_hasProfileRestriction = [mEMORY[0x277D262A0] isCloudPrivateRelayAllowed] ^ 1;
 
   v8 = _ICQGetLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -192,23 +192,23 @@
     _os_log_impl(&dword_275623000, v8, OS_LOG_TYPE_DEFAULT, "Loading internet privacy service availability for %{public}@", buf, 0xCu);
   }
 
-  v9 = [MEMORY[0x277CCA8D8] mainBundle];
-  v10 = [v9 bundleIdentifier];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  v11 = [(ICQInternetPrivacySpecifierProvider *)self makeDefaultInternetPrivacySpecifier];
-  [(ICQInternetPrivacySpecifierProvider *)self setInternetPrivacySpecifier:v11];
+  makeDefaultInternetPrivacySpecifier = [(ICQInternetPrivacySpecifierProvider *)self makeDefaultInternetPrivacySpecifier];
+  [(ICQInternetPrivacySpecifierProvider *)self setInternetPrivacySpecifier:makeDefaultInternetPrivacySpecifier];
 
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __57__ICQInternetPrivacySpecifierProvider__setupWithAltDSID___block_invoke;
   v17[3] = &unk_27A65AD68;
   v17[4] = self;
-  [MEMORY[0x277CFB450] requestGeoClassificationForFeatureID:@"networking.privacy.subscriber" bundleID:v10 altDSID:v4 ignoreCache:0 completion:v17];
-  v12 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v12 addObserver:self selector:sel_reloadSpecifer_ name:@"PorcupineStatusDidChange" object:0];
+  [MEMORY[0x277CFB450] requestGeoClassificationForFeatureID:@"networking.privacy.subscriber" bundleID:bundleIdentifier altDSID:dCopy ignoreCache:0 completion:v17];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_reloadSpecifer_ name:@"PorcupineStatusDidChange" object:0];
 
-  v13 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v13 addObserver:self selector:sel_reloadSpecifer_ name:*MEMORY[0x277D25CA0] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel_reloadSpecifer_ name:*MEMORY[0x277D25CA0] object:0];
 
   objc_initWeak(buf, self);
   v16[0] = MEMORY[0x277D85DD0];
@@ -298,22 +298,22 @@ uint64_t __57__ICQInternetPrivacySpecifierProvider__setupWithAltDSID___block_inv
     _os_log_impl(&dword_275623000, v3, OS_LOG_TYPE_DEFAULT, "Presenting sheet with identifier %@", &v8, 0xCu);
   }
 
-  v4 = [(ICQInternetPrivacySpecifierProvider *)self viewModel];
-  v5 = [ICQInternetPrivacySheetPresenter presenterWithIdentifier:@"com.apple.icloud.privaterelay.learnmoresubscriber" viewModel:v4];
+  viewModel = [(ICQInternetPrivacySpecifierProvider *)self viewModel];
+  v5 = [ICQInternetPrivacySheetPresenter presenterWithIdentifier:@"com.apple.icloud.privaterelay.learnmoresubscriber" viewModel:viewModel];
 
-  v6 = [(ICQInternetPrivacySpecifierProvider *)self delegate];
-  v7 = [v6 navigationController];
+  delegate = [(ICQInternetPrivacySpecifierProvider *)self delegate];
+  navigationController = [delegate navigationController];
 
-  [v5 setPresentingViewController:v7];
+  [v5 setPresentingViewController:navigationController];
   [v5 present];
 }
 
 - (id)makeDefaultInternetPrivacySpecifier
 {
   v3 = MEMORY[0x277D3FAD8];
-  v4 = [(ICQInternetPrivacySpecifierProvider *)self viewModel];
-  v5 = [v4 switchTitle];
-  v6 = [v3 preferenceSpecifierNamed:v5 target:self set:0 get:sel__valueForInternetPrivacySpecifier_ detail:objc_opt_class() cell:-1 edit:0];
+  viewModel = [(ICQInternetPrivacySpecifierProvider *)self viewModel];
+  switchTitle = [viewModel switchTitle];
+  v6 = [v3 preferenceSpecifierNamed:switchTitle target:self set:0 get:sel__valueForInternetPrivacySpecifier_ detail:objc_opt_class() cell:-1 edit:0];
 
   [v6 setIdentifier:@"INTERNET_PRIVACY"];
   v7 = [MEMORY[0x277D755B8] icqBundleImageNamed:@"PrivateRelayIcon"];
@@ -379,17 +379,17 @@ void __60__ICQInternetPrivacySpecifierProvider__controllerLoadAction__block_invo
   }
 }
 
-- (void)_configureInternetPrivacySpecifier:(id)a3
+- (void)_configureInternetPrivacySpecifier:(id)specifier
 {
-  v9 = a3;
-  v4 = [(ICQInternetPrivacySpecifierProvider *)self viewModel];
-  v5 = [v4 switchTitle];
-  [v9 setName:v5];
+  specifierCopy = specifier;
+  viewModel = [(ICQInternetPrivacySpecifierProvider *)self viewModel];
+  switchTitle = [viewModel switchTitle];
+  [specifierCopy setName:switchTitle];
 
-  v6 = [(ICQInternetPrivacySpecifierProvider *)self viewModel];
-  v7 = [v6 status];
+  viewModel2 = [(ICQInternetPrivacySpecifierProvider *)self viewModel];
+  status = [viewModel2 status];
 
-  if (v7 == 7)
+  if (status == 7)
   {
     v8 = -1;
   }
@@ -399,19 +399,19 @@ void __60__ICQInternetPrivacySpecifierProvider__controllerLoadAction__block_invo
     v8 = 2;
   }
 
-  [v9 setCellType:v8];
+  [specifierCopy setCellType:v8];
 }
 
-- (void)_fetchStatusWithCompletion:(id)a3
+- (void)_fetchStatusWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v14[0] = 0;
   v14[1] = v14;
   v14[2] = 0x2020000000;
-  v5 = [(ICQInternetPrivacySpecifierProvider *)self viewModel];
-  v6 = [v5 status];
+  viewModel = [(ICQInternetPrivacySpecifierProvider *)self viewModel];
+  status = [viewModel status];
 
-  v14[3] = v6;
+  v14[3] = status;
   v7 = _ICQGetLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -419,16 +419,16 @@ void __60__ICQInternetPrivacySpecifierProvider__controllerLoadAction__block_invo
     _os_log_impl(&dword_275623000, v7, OS_LOG_TYPE_DEFAULT, "fetching bannerModels from viewModel", buf, 2u);
   }
 
-  v8 = [(ICQInternetPrivacySpecifierProvider *)self viewModel];
+  viewModel2 = [(ICQInternetPrivacySpecifierProvider *)self viewModel];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __66__ICQInternetPrivacySpecifierProvider__fetchStatusWithCompletion___block_invoke;
   v10[3] = &unk_27A65ADB8;
   v10[4] = self;
   v12 = v14;
-  v9 = v4;
+  v9 = completionCopy;
   v11 = v9;
-  [v8 fetchBannerModels:v10];
+  [viewModel2 fetchBannerModels:v10];
 
   _Block_object_dispose(v14, 8);
 }
@@ -510,23 +510,23 @@ uint64_t __66__ICQInternetPrivacySpecifierProvider__fetchStatusWithCompletion___
   return result;
 }
 
-- (void)_internetPrivacySpecifierWasTapped:(id)a3
+- (void)_internetPrivacySpecifierWasTapped:(id)tapped
 {
   v16 = *MEMORY[0x277D85DE8];
   v4 = [ICQInternetPrivacyViewController alloc];
-  v5 = [(ICQInternetPrivacySpecifierProvider *)self viewModel];
-  v6 = [(ICQInternetPrivacySpecifierProvider *)self accountManager];
-  v7 = [(ICQInternetPrivacyViewController *)v4 initWithViewModel:v5 accountManager:v6];
+  viewModel = [(ICQInternetPrivacySpecifierProvider *)self viewModel];
+  accountManager = [(ICQInternetPrivacySpecifierProvider *)self accountManager];
+  v7 = [(ICQInternetPrivacyViewController *)v4 initWithViewModel:viewModel accountManager:accountManager];
   internetPrivacyController = self->_internetPrivacyController;
   self->_internetPrivacyController = v7;
 
   v9 = _ICQGetLogSystem();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(ICQInternetPrivacySpecifierProvider *)self viewModel];
-    v11 = [v10 serviceIsLimited];
+    viewModel2 = [(ICQInternetPrivacySpecifierProvider *)self viewModel];
+    serviceIsLimited = [viewModel2 serviceIsLimited];
     v12 = @"NO";
-    if (v11)
+    if (serviceIsLimited)
     {
       v12 = @"YES";
     }
@@ -536,11 +536,11 @@ uint64_t __66__ICQInternetPrivacySpecifierProvider__fetchStatusWithCompletion___
     _os_log_impl(&dword_275623000, v9, OS_LOG_TYPE_DEFAULT, "_internetPrivacySpecifierWasTapped country limited %@", &v14, 0xCu);
   }
 
-  v13 = [(ICQInternetPrivacySpecifierProvider *)self delegate];
-  [v13 specifierProvider:self showViewController:self->_internetPrivacyController];
+  delegate = [(ICQInternetPrivacySpecifierProvider *)self delegate];
+  [delegate specifierProvider:self showViewController:self->_internetPrivacyController];
 }
 
-- (void)_internetPrivacySpecifierLoadJourney:(id)a3
+- (void)_internetPrivacySpecifierLoadJourney:(id)journey
 {
   v4 = _ICQGetLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -598,8 +598,8 @@ void __76__ICQInternetPrivacySpecifierProvider__internetPrivacySpecifierLoadJour
 
 - (BOOL)_shouldShowInternetPrivacySpecifier
 {
-  v2 = [(ICQInternetPrivacySpecifierProvider *)self hasProfileRestriction];
-  if (v2)
+  hasProfileRestriction = [(ICQInternetPrivacySpecifierProvider *)self hasProfileRestriction];
+  if (hasProfileRestriction)
   {
     v3 = _ICQGetLogSystem();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -609,10 +609,10 @@ void __76__ICQInternetPrivacySpecifierProvider__internetPrivacySpecifierLoadJour
     }
   }
 
-  return !v2;
+  return !hasProfileRestriction;
 }
 
-- (void)upgradeFlowManagerDidCancel:(id)a3
+- (void)upgradeFlowManagerDidCancel:(id)cancel
 {
   v7 = *MEMORY[0x277D85DE8];
   v4 = _ICQGetLogSystem();
@@ -626,7 +626,7 @@ void __76__ICQInternetPrivacySpecifierProvider__internetPrivacySpecifierLoadJour
   [(ICQInternetPrivacySpecifierProvider *)self reloadSpecifer:0];
 }
 
-- (void)upgradeFlowManagerDidComplete:(id)a3
+- (void)upgradeFlowManagerDidComplete:(id)complete
 {
   v7 = *MEMORY[0x277D85DE8];
   v4 = _ICQGetLogSystem();
@@ -641,13 +641,13 @@ void __76__ICQInternetPrivacySpecifierProvider__internetPrivacySpecifierLoadJour
   [(ICQInternetPrivacySpecifierProvider *)self reloadQuotaInfo];
 }
 
-- (BOOL)handleURL:(id)a3
+- (BOOL)handleURL:(id)l
 {
-  v4 = a3;
-  v5 = [v4 valueForKey:@"path"];
+  lCopy = l;
+  v5 = [lCopy valueForKey:@"path"];
   if ([v5 containsString:@"INTERNET_PRIVACY"])
   {
-    v6 = [(ICQInternetPrivacySpecifierProvider *)self _handleQuotaJourneyURL:v4];
+    v6 = [(ICQInternetPrivacySpecifierProvider *)self _handleQuotaJourneyURL:lCopy];
   }
 
   else
@@ -658,11 +658,11 @@ void __76__ICQInternetPrivacySpecifierProvider__internetPrivacySpecifierLoadJour
   return v6;
 }
 
-- (BOOL)_handleQuotaJourneyURL:(id)a3
+- (BOOL)_handleQuotaJourneyURL:(id)l
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"learnMore"];
+  lCopy = l;
+  v5 = [lCopy objectForKeyedSubscript:@"learnMore"];
   v6 = v5;
   if (v5 && [v5 BOOLValue])
   {
@@ -676,14 +676,14 @@ void __76__ICQInternetPrivacySpecifierProvider__internetPrivacySpecifierLoadJour
 
   else
   {
-    v7 = [v4 objectForKeyedSubscript:@"showNotice"];
+    v7 = [lCopy objectForKeyedSubscript:@"showNotice"];
     if (v7)
     {
-      v8 = [v4 objectForKeyedSubscript:@"showNotice"];
-      v9 = [v8 BOOLValue];
+      v8 = [lCopy objectForKeyedSubscript:@"showNotice"];
+      bOOLValue = [v8 BOOLValue];
 
       v10 = @"false";
-      if (v9)
+      if (bOOLValue)
       {
         v10 = @"true";
       }

@@ -1,35 +1,35 @@
 @interface INFERENCESchemaINFERENCECRRTrainingSampleCollected
-- (BOOL)isEqual:(id)a3;
-- (INFERENCESchemaINFERENCECRRTrainingSampleCollected)initWithDictionary:(id)a3;
-- (INFERENCESchemaINFERENCECRRTrainingSampleCollected)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (INFERENCESchemaINFERENCECRRTrainingSampleCollected)initWithDictionary:(id)dictionary;
+- (INFERENCESchemaINFERENCECRRTrainingSampleCollected)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addAnonymizedContactIdentifiers:(id)a3;
-- (void)addMatches:(id)a3;
-- (void)setHasInteractionDurationInSecBucket:(BOOL)a3;
-- (void)setHasIsEntityCandidateRetrievalEnabled:(BOOL)a3;
-- (void)setHasIsInteractionExecuted:(BOOL)a3;
-- (void)setHasIsInteractionSuccess:(BOOL)a3;
-- (void)setHasIsPlusContactSuggesterEnabled:(BOOL)a3;
-- (void)setHasResolutionType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addAnonymizedContactIdentifiers:(id)identifiers;
+- (void)addMatches:(id)matches;
+- (void)setHasInteractionDurationInSecBucket:(BOOL)bucket;
+- (void)setHasIsEntityCandidateRetrievalEnabled:(BOOL)enabled;
+- (void)setHasIsInteractionExecuted:(BOOL)executed;
+- (void)setHasIsInteractionSuccess:(BOOL)success;
+- (void)setHasIsPlusContactSuggesterEnabled:(BOOL)enabled;
+- (void)setHasResolutionType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation INFERENCESchemaINFERENCECRRTrainingSampleCollected
 
-- (INFERENCESchemaINFERENCECRRTrainingSampleCollected)initWithDictionary:(id)a3
+- (INFERENCESchemaINFERENCECRRTrainingSampleCollected)initWithDictionary:(id)dictionary
 {
   v67 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v64.receiver = self;
   v64.super_class = INFERENCESchemaINFERENCECRRTrainingSampleCollected;
   v5 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)&v64 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"intentTypeName"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"intentTypeName"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -38,7 +38,7 @@
     }
 
     v53 = v6;
-    v8 = [v4 objectForKeyedSubscript:@"resolverConfig"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"resolverConfig"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -46,7 +46,7 @@
       [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)v5 setResolverConfig:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"trialEnrollment"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"trialEnrollment"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -56,7 +56,7 @@
 
     v51 = v10;
     v52 = v8;
-    v12 = [v4 objectForKeyedSubscript:@"modelVersion"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"modelVersion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -65,7 +65,7 @@
     }
 
     v50 = v12;
-    v14 = [v4 objectForKeyedSubscript:@"matches"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"matches"];
     objc_opt_class();
     v55 = v14;
     if (objc_opt_isKindOfClass())
@@ -105,21 +105,21 @@
       }
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"resolutionState"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"resolutionState"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCECRRTrainingSampleCollected setResolutionState:](v5, "setResolutionState:", [v22 intValue]);
     }
 
-    v23 = [v4 objectForKeyedSubscript:@"resolutionType"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"resolutionType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCECRRTrainingSampleCollected setResolutionType:](v5, "setResolutionType:", [v23 intValue]);
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"forcePrompt"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"forcePrompt"];
     objc_opt_class();
     v54 = v24;
     if (objc_opt_isKindOfClass())
@@ -130,7 +130,7 @@
 
     v48 = v23;
     v49 = v22;
-    v26 = [v4 objectForKeyedSubscript:@"anonymizedContactIdentifiers"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"anonymizedContactIdentifiers"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -172,14 +172,14 @@
       v26 = v46;
     }
 
-    v34 = [v4 objectForKeyedSubscript:@"isInteractionExecuted"];
+    v34 = [dictionaryCopy objectForKeyedSubscript:@"isInteractionExecuted"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCECRRTrainingSampleCollected setIsInteractionExecuted:](v5, "setIsInteractionExecuted:", [v34 BOOLValue]);
     }
 
-    v35 = [v4 objectForKeyedSubscript:@"isInteractionSuccess"];
+    v35 = [dictionaryCopy objectForKeyedSubscript:@"isInteractionSuccess"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -187,14 +187,14 @@
     }
 
     v47 = v34;
-    v36 = [v4 objectForKeyedSubscript:@"interactionDurationInSecBucket"];
+    v36 = [dictionaryCopy objectForKeyedSubscript:@"interactionDurationInSecBucket"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCECRRTrainingSampleCollected setInteractionDurationInSecBucket:](v5, "setInteractionDurationInSecBucket:", [v36 unsignedIntValue]);
     }
 
-    v37 = [v4 objectForKeyedSubscript:@"interactionContext"];
+    v37 = [dictionaryCopy objectForKeyedSubscript:@"interactionContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -202,21 +202,21 @@
       [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)v5 setInteractionContext:v38];
     }
 
-    v39 = [v4 objectForKeyedSubscript:@"isPlusContactSuggesterEnabled"];
+    v39 = [dictionaryCopy objectForKeyedSubscript:@"isPlusContactSuggesterEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCECRRTrainingSampleCollected setIsPlusContactSuggesterEnabled:](v5, "setIsPlusContactSuggesterEnabled:", [v39 BOOLValue]);
     }
 
-    v40 = [v4 objectForKeyedSubscript:@"isEntityCandidateRetrievalEnabled"];
+    v40 = [dictionaryCopy objectForKeyedSubscript:@"isEntityCandidateRetrievalEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCECRRTrainingSampleCollected setIsEntityCandidateRetrievalEnabled:](v5, "setIsEntityCandidateRetrievalEnabled:", [v40 BOOLValue]);
     }
 
-    v41 = [v4 objectForKeyedSubscript:@"crrCommsAppSelectionJointId"];
+    v41 = [dictionaryCopy objectForKeyedSubscript:@"crrCommsAppSelectionJointId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -233,30 +233,30 @@
   return v5;
 }
 
-- (INFERENCESchemaINFERENCECRRTrainingSampleCollected)initWithJSON:(id)a3
+- (INFERENCESchemaINFERENCECRRTrainingSampleCollected)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -270,66 +270,66 @@
 - (id)dictionaryRepresentation
 {
   v50 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_anonymizedContactIdentifiers)
   {
-    v4 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self anonymizedContactIdentifiers];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"anonymizedContactIdentifiers"];
+    anonymizedContactIdentifiers = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self anonymizedContactIdentifiers];
+    v5 = [anonymizedContactIdentifiers copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"anonymizedContactIdentifiers"];
   }
 
   if (self->_crrCommsAppSelectionJointId)
   {
-    v6 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self crrCommsAppSelectionJointId];
-    v7 = [v6 dictionaryRepresentation];
-    if (v7)
+    crrCommsAppSelectionJointId = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self crrCommsAppSelectionJointId];
+    dictionaryRepresentation = [crrCommsAppSelectionJointId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"crrCommsAppSelectionJointId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"crrCommsAppSelectionJointId"];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v8 forKeyedSubscript:@"crrCommsAppSelectionJointId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"crrCommsAppSelectionJointId"];
     }
   }
 
   if (self->_forcePrompt)
   {
-    v9 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self forcePrompt];
-    v10 = [v9 dictionaryRepresentation];
-    if (v10)
+    forcePrompt = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self forcePrompt];
+    dictionaryRepresentation2 = [forcePrompt dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v10 forKeyedSubscript:@"forcePrompt"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"forcePrompt"];
     }
 
     else
     {
-      v11 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v11 forKeyedSubscript:@"forcePrompt"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"forcePrompt"];
     }
   }
 
   if (self->_intentTypeName)
   {
-    v12 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self intentTypeName];
-    v13 = [v12 copy];
-    [v3 setObject:v13 forKeyedSubscript:@"intentTypeName"];
+    intentTypeName = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self intentTypeName];
+    v13 = [intentTypeName copy];
+    [dictionary setObject:v13 forKeyedSubscript:@"intentTypeName"];
   }
 
   if (self->_interactionContext)
   {
-    v14 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self interactionContext];
-    v15 = [v14 dictionaryRepresentation];
-    if (v15)
+    interactionContext = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self interactionContext];
+    dictionaryRepresentation3 = [interactionContext dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v15 forKeyedSubscript:@"interactionContext"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"interactionContext"];
     }
 
     else
     {
-      v16 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v16 forKeyedSubscript:@"interactionContext"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"interactionContext"];
     }
   }
 
@@ -337,7 +337,7 @@
   if ((has & 0x10) != 0)
   {
     v32 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[INFERENCESchemaINFERENCECRRTrainingSampleCollected interactionDurationInSecBucket](self, "interactionDurationInSecBucket")}];
-    [v3 setObject:v32 forKeyedSubscript:@"interactionDurationInSecBucket"];
+    [dictionary setObject:v32 forKeyedSubscript:@"interactionDurationInSecBucket"];
 
     has = self->_has;
     if ((has & 0x40) == 0)
@@ -358,7 +358,7 @@ LABEL_22:
   }
 
   v33 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCECRRTrainingSampleCollected isEntityCandidateRetrievalEnabled](self, "isEntityCandidateRetrievalEnabled")}];
-  [v3 setObject:v33 forKeyedSubscript:@"isEntityCandidateRetrievalEnabled"];
+  [dictionary setObject:v33 forKeyedSubscript:@"isEntityCandidateRetrievalEnabled"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -374,7 +374,7 @@ LABEL_23:
 
 LABEL_45:
   v34 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCECRRTrainingSampleCollected isInteractionExecuted](self, "isInteractionExecuted")}];
-  [v3 setObject:v34 forKeyedSubscript:@"isInteractionExecuted"];
+  [dictionary setObject:v34 forKeyedSubscript:@"isInteractionExecuted"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -390,19 +390,19 @@ LABEL_24:
 
 LABEL_46:
   v35 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCECRRTrainingSampleCollected isInteractionSuccess](self, "isInteractionSuccess")}];
-  [v3 setObject:v35 forKeyedSubscript:@"isInteractionSuccess"];
+  [dictionary setObject:v35 forKeyedSubscript:@"isInteractionSuccess"];
 
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_25:
     v18 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCECRRTrainingSampleCollected isPlusContactSuggesterEnabled](self, "isPlusContactSuggesterEnabled")}];
-    [v3 setObject:v18 forKeyedSubscript:@"isPlusContactSuggesterEnabled"];
+    [dictionary setObject:v18 forKeyedSubscript:@"isPlusContactSuggesterEnabled"];
   }
 
 LABEL_26:
   if ([(NSArray *)self->_matches count])
   {
-    v19 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v45 = 0u;
     v46 = 0u;
     v47 = 0u;
@@ -422,16 +422,16 @@ LABEL_26:
             objc_enumerationMutation(v20);
           }
 
-          v25 = [*(*(&v45 + 1) + 8 * i) dictionaryRepresentation];
-          if (v25)
+          dictionaryRepresentation4 = [*(*(&v45 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation4)
           {
-            [v19 addObject:v25];
+            [array addObject:dictionaryRepresentation4];
           }
 
           else
           {
-            v26 = [MEMORY[0x1E695DFB0] null];
-            [v19 addObject:v26];
+            null4 = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null4];
           }
         }
 
@@ -441,14 +441,14 @@ LABEL_26:
       while (v22);
     }
 
-    [v3 setObject:v19 forKeyedSubscript:@"matches"];
+    [dictionary setObject:array forKeyedSubscript:@"matches"];
   }
 
   if (self->_modelVersion)
   {
-    v27 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self modelVersion];
-    v28 = [v27 copy];
-    [v3 setObject:v28 forKeyedSubscript:@"modelVersion"];
+    modelVersion = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self modelVersion];
+    v28 = [modelVersion copy];
+    [dictionary setObject:v28 forKeyedSubscript:@"modelVersion"];
   }
 
   v29 = self->_has;
@@ -465,7 +465,7 @@ LABEL_26:
       v31 = off_1E78D89D0[v30];
     }
 
-    [v3 setObject:v31 forKeyedSubscript:@"resolutionState"];
+    [dictionary setObject:v31 forKeyedSubscript:@"resolutionState"];
     v29 = self->_has;
   }
 
@@ -482,44 +482,44 @@ LABEL_26:
       v37 = off_1E78D89F0[v36];
     }
 
-    [v3 setObject:v37 forKeyedSubscript:@"resolutionType"];
+    [dictionary setObject:v37 forKeyedSubscript:@"resolutionType"];
   }
 
   if (self->_resolverConfig)
   {
-    v38 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self resolverConfig];
-    v39 = [v38 dictionaryRepresentation];
-    if (v39)
+    resolverConfig = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self resolverConfig];
+    dictionaryRepresentation5 = [resolverConfig dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v39 forKeyedSubscript:@"resolverConfig"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"resolverConfig"];
     }
 
     else
     {
-      v40 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v40 forKeyedSubscript:@"resolverConfig"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"resolverConfig"];
     }
   }
 
   if (self->_trialEnrollment)
   {
-    v41 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self trialEnrollment];
-    v42 = [v41 dictionaryRepresentation];
-    if (v42)
+    trialEnrollment = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self trialEnrollment];
+    dictionaryRepresentation6 = [trialEnrollment dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v42 forKeyedSubscript:@"trialEnrollment"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"trialEnrollment"];
     }
 
     else
     {
-      v43 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v43 forKeyedSubscript:@"trialEnrollment"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"trialEnrollment"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -614,28 +614,28 @@ LABEL_15:
   return v17 ^ v18 ^ v16 ^ v15 ^ v14 ^ v3 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ [(SISchemaUUID *)self->_crrCommsAppSelectionJointId hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_72;
   }
 
-  v5 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self intentTypeName];
-  v6 = [v4 intentTypeName];
-  if ((v5 != 0) == (v6 == 0))
+  intentTypeName = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self intentTypeName];
+  intentTypeName2 = [equalCopy intentTypeName];
+  if ((intentTypeName != 0) == (intentTypeName2 == 0))
   {
     goto LABEL_71;
   }
 
-  v7 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self intentTypeName];
-  if (v7)
+  intentTypeName3 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self intentTypeName];
+  if (intentTypeName3)
   {
-    v8 = v7;
-    v9 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self intentTypeName];
-    v10 = [v4 intentTypeName];
-    v11 = [v9 isEqual:v10];
+    v8 = intentTypeName3;
+    intentTypeName4 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self intentTypeName];
+    intentTypeName5 = [equalCopy intentTypeName];
+    v11 = [intentTypeName4 isEqual:intentTypeName5];
 
     if (!v11)
     {
@@ -647,20 +647,20 @@ LABEL_15:
   {
   }
 
-  v5 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self resolverConfig];
-  v6 = [v4 resolverConfig];
-  if ((v5 != 0) == (v6 == 0))
+  intentTypeName = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self resolverConfig];
+  intentTypeName2 = [equalCopy resolverConfig];
+  if ((intentTypeName != 0) == (intentTypeName2 == 0))
   {
     goto LABEL_71;
   }
 
-  v12 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self resolverConfig];
-  if (v12)
+  resolverConfig = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self resolverConfig];
+  if (resolverConfig)
   {
-    v13 = v12;
-    v14 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self resolverConfig];
-    v15 = [v4 resolverConfig];
-    v16 = [v14 isEqual:v15];
+    v13 = resolverConfig;
+    resolverConfig2 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self resolverConfig];
+    resolverConfig3 = [equalCopy resolverConfig];
+    v16 = [resolverConfig2 isEqual:resolverConfig3];
 
     if (!v16)
     {
@@ -672,20 +672,20 @@ LABEL_15:
   {
   }
 
-  v5 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self trialEnrollment];
-  v6 = [v4 trialEnrollment];
-  if ((v5 != 0) == (v6 == 0))
+  intentTypeName = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self trialEnrollment];
+  intentTypeName2 = [equalCopy trialEnrollment];
+  if ((intentTypeName != 0) == (intentTypeName2 == 0))
   {
     goto LABEL_71;
   }
 
-  v17 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self trialEnrollment];
-  if (v17)
+  trialEnrollment = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self trialEnrollment];
+  if (trialEnrollment)
   {
-    v18 = v17;
-    v19 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self trialEnrollment];
-    v20 = [v4 trialEnrollment];
-    v21 = [v19 isEqual:v20];
+    v18 = trialEnrollment;
+    trialEnrollment2 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self trialEnrollment];
+    trialEnrollment3 = [equalCopy trialEnrollment];
+    v21 = [trialEnrollment2 isEqual:trialEnrollment3];
 
     if (!v21)
     {
@@ -697,20 +697,20 @@ LABEL_15:
   {
   }
 
-  v5 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self modelVersion];
-  v6 = [v4 modelVersion];
-  if ((v5 != 0) == (v6 == 0))
+  intentTypeName = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self modelVersion];
+  intentTypeName2 = [equalCopy modelVersion];
+  if ((intentTypeName != 0) == (intentTypeName2 == 0))
   {
     goto LABEL_71;
   }
 
-  v22 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self modelVersion];
-  if (v22)
+  modelVersion = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self modelVersion];
+  if (modelVersion)
   {
-    v23 = v22;
-    v24 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self modelVersion];
-    v25 = [v4 modelVersion];
-    v26 = [v24 isEqual:v25];
+    v23 = modelVersion;
+    modelVersion2 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self modelVersion];
+    modelVersion3 = [equalCopy modelVersion];
+    v26 = [modelVersion2 isEqual:modelVersion3];
 
     if (!v26)
     {
@@ -722,20 +722,20 @@ LABEL_15:
   {
   }
 
-  v5 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self matches];
-  v6 = [v4 matches];
-  if ((v5 != 0) == (v6 == 0))
+  intentTypeName = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self matches];
+  intentTypeName2 = [equalCopy matches];
+  if ((intentTypeName != 0) == (intentTypeName2 == 0))
   {
     goto LABEL_71;
   }
 
-  v27 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self matches];
-  if (v27)
+  matches = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self matches];
+  if (matches)
   {
-    v28 = v27;
-    v29 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self matches];
-    v30 = [v4 matches];
-    v31 = [v29 isEqual:v30];
+    v28 = matches;
+    matches2 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self matches];
+    matches3 = [equalCopy matches];
+    v31 = [matches2 isEqual:matches3];
 
     if (!v31)
     {
@@ -748,7 +748,7 @@ LABEL_15:
   }
 
   has = self->_has;
-  v33 = v4[104];
+  v33 = equalCopy[104];
   if ((*&has & 1) != (v33 & 1))
   {
     goto LABEL_72;
@@ -757,13 +757,13 @@ LABEL_15:
   if (*&has)
   {
     resolutionState = self->_resolutionState;
-    if (resolutionState != [v4 resolutionState])
+    if (resolutionState != [equalCopy resolutionState])
     {
       goto LABEL_72;
     }
 
     has = self->_has;
-    v33 = v4[104];
+    v33 = equalCopy[104];
   }
 
   v35 = (*&has >> 1) & 1;
@@ -775,26 +775,26 @@ LABEL_15:
   if (v35)
   {
     resolutionType = self->_resolutionType;
-    if (resolutionType != [v4 resolutionType])
+    if (resolutionType != [equalCopy resolutionType])
     {
       goto LABEL_72;
     }
   }
 
-  v5 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self forcePrompt];
-  v6 = [v4 forcePrompt];
-  if ((v5 != 0) == (v6 == 0))
+  intentTypeName = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self forcePrompt];
+  intentTypeName2 = [equalCopy forcePrompt];
+  if ((intentTypeName != 0) == (intentTypeName2 == 0))
   {
     goto LABEL_71;
   }
 
-  v37 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self forcePrompt];
-  if (v37)
+  forcePrompt = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self forcePrompt];
+  if (forcePrompt)
   {
-    v38 = v37;
-    v39 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self forcePrompt];
-    v40 = [v4 forcePrompt];
-    v41 = [v39 isEqual:v40];
+    v38 = forcePrompt;
+    forcePrompt2 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self forcePrompt];
+    forcePrompt3 = [equalCopy forcePrompt];
+    v41 = [forcePrompt2 isEqual:forcePrompt3];
 
     if (!v41)
     {
@@ -806,20 +806,20 @@ LABEL_15:
   {
   }
 
-  v5 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self anonymizedContactIdentifiers];
-  v6 = [v4 anonymizedContactIdentifiers];
-  if ((v5 != 0) == (v6 == 0))
+  intentTypeName = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self anonymizedContactIdentifiers];
+  intentTypeName2 = [equalCopy anonymizedContactIdentifiers];
+  if ((intentTypeName != 0) == (intentTypeName2 == 0))
   {
     goto LABEL_71;
   }
 
-  v42 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self anonymizedContactIdentifiers];
-  if (v42)
+  anonymizedContactIdentifiers = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self anonymizedContactIdentifiers];
+  if (anonymizedContactIdentifiers)
   {
-    v43 = v42;
-    v44 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self anonymizedContactIdentifiers];
-    v45 = [v4 anonymizedContactIdentifiers];
-    v46 = [v44 isEqual:v45];
+    v43 = anonymizedContactIdentifiers;
+    anonymizedContactIdentifiers2 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self anonymizedContactIdentifiers];
+    anonymizedContactIdentifiers3 = [equalCopy anonymizedContactIdentifiers];
+    v46 = [anonymizedContactIdentifiers2 isEqual:anonymizedContactIdentifiers3];
 
     if (!v46)
     {
@@ -833,7 +833,7 @@ LABEL_15:
 
   v47 = self->_has;
   v48 = (*&v47 >> 2) & 1;
-  v49 = v4[104];
+  v49 = equalCopy[104];
   if (v48 != ((v49 >> 2) & 1))
   {
     goto LABEL_72;
@@ -842,13 +842,13 @@ LABEL_15:
   if (v48)
   {
     isInteractionExecuted = self->_isInteractionExecuted;
-    if (isInteractionExecuted != [v4 isInteractionExecuted])
+    if (isInteractionExecuted != [equalCopy isInteractionExecuted])
     {
       goto LABEL_72;
     }
 
     v47 = self->_has;
-    v49 = v4[104];
+    v49 = equalCopy[104];
   }
 
   v51 = (*&v47 >> 3) & 1;
@@ -860,13 +860,13 @@ LABEL_15:
   if (v51)
   {
     isInteractionSuccess = self->_isInteractionSuccess;
-    if (isInteractionSuccess != [v4 isInteractionSuccess])
+    if (isInteractionSuccess != [equalCopy isInteractionSuccess])
     {
       goto LABEL_72;
     }
 
     v47 = self->_has;
-    v49 = v4[104];
+    v49 = equalCopy[104];
   }
 
   v53 = (*&v47 >> 4) & 1;
@@ -878,26 +878,26 @@ LABEL_15:
   if (v53)
   {
     interactionDurationInSecBucket = self->_interactionDurationInSecBucket;
-    if (interactionDurationInSecBucket != [v4 interactionDurationInSecBucket])
+    if (interactionDurationInSecBucket != [equalCopy interactionDurationInSecBucket])
     {
       goto LABEL_72;
     }
   }
 
-  v5 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self interactionContext];
-  v6 = [v4 interactionContext];
-  if ((v5 != 0) == (v6 == 0))
+  intentTypeName = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self interactionContext];
+  intentTypeName2 = [equalCopy interactionContext];
+  if ((intentTypeName != 0) == (intentTypeName2 == 0))
   {
     goto LABEL_71;
   }
 
-  v55 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self interactionContext];
-  if (v55)
+  interactionContext = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self interactionContext];
+  if (interactionContext)
   {
-    v56 = v55;
-    v57 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self interactionContext];
-    v58 = [v4 interactionContext];
-    v59 = [v57 isEqual:v58];
+    v56 = interactionContext;
+    interactionContext2 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self interactionContext];
+    interactionContext3 = [equalCopy interactionContext];
+    v59 = [interactionContext2 isEqual:interactionContext3];
 
     if (!v59)
     {
@@ -911,7 +911,7 @@ LABEL_15:
 
   v60 = self->_has;
   v61 = (*&v60 >> 5) & 1;
-  v62 = v4[104];
+  v62 = equalCopy[104];
   if (v61 != ((v62 >> 5) & 1))
   {
     goto LABEL_72;
@@ -920,13 +920,13 @@ LABEL_15:
   if (v61)
   {
     isPlusContactSuggesterEnabled = self->_isPlusContactSuggesterEnabled;
-    if (isPlusContactSuggesterEnabled != [v4 isPlusContactSuggesterEnabled])
+    if (isPlusContactSuggesterEnabled != [equalCopy isPlusContactSuggesterEnabled])
     {
       goto LABEL_72;
     }
 
     v60 = self->_has;
-    v62 = v4[104];
+    v62 = equalCopy[104];
   }
 
   v64 = (*&v60 >> 6) & 1;
@@ -938,23 +938,23 @@ LABEL_15:
   if (v64)
   {
     isEntityCandidateRetrievalEnabled = self->_isEntityCandidateRetrievalEnabled;
-    if (isEntityCandidateRetrievalEnabled != [v4 isEntityCandidateRetrievalEnabled])
+    if (isEntityCandidateRetrievalEnabled != [equalCopy isEntityCandidateRetrievalEnabled])
     {
       goto LABEL_72;
     }
   }
 
-  v5 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self crrCommsAppSelectionJointId];
-  v6 = [v4 crrCommsAppSelectionJointId];
-  if ((v5 != 0) == (v6 == 0))
+  intentTypeName = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self crrCommsAppSelectionJointId];
+  intentTypeName2 = [equalCopy crrCommsAppSelectionJointId];
+  if ((intentTypeName != 0) == (intentTypeName2 == 0))
   {
 LABEL_71:
 
     goto LABEL_72;
   }
 
-  v66 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self crrCommsAppSelectionJointId];
-  if (!v66)
+  crrCommsAppSelectionJointId = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self crrCommsAppSelectionJointId];
+  if (!crrCommsAppSelectionJointId)
   {
 
 LABEL_75:
@@ -962,10 +962,10 @@ LABEL_75:
     goto LABEL_73;
   }
 
-  v67 = v66;
-  v68 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self crrCommsAppSelectionJointId];
-  v69 = [v4 crrCommsAppSelectionJointId];
-  v70 = [v68 isEqual:v69];
+  v67 = crrCommsAppSelectionJointId;
+  crrCommsAppSelectionJointId2 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self crrCommsAppSelectionJointId];
+  crrCommsAppSelectionJointId3 = [equalCopy crrCommsAppSelectionJointId];
+  v70 = [crrCommsAppSelectionJointId2 isEqual:crrCommsAppSelectionJointId3];
 
   if (v70)
   {
@@ -979,36 +979,36 @@ LABEL_73:
   return v71;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self intentTypeName];
+  toCopy = to;
+  intentTypeName = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self intentTypeName];
 
-  if (v5)
+  if (intentTypeName)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self resolverConfig];
+  resolverConfig = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self resolverConfig];
 
-  if (v6)
+  if (resolverConfig)
   {
-    v7 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self resolverConfig];
+    resolverConfig2 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self resolverConfig];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self trialEnrollment];
+  trialEnrollment = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self trialEnrollment];
 
-  if (v8)
+  if (trialEnrollment)
   {
-    v9 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self trialEnrollment];
+    trialEnrollment2 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self trialEnrollment];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self modelVersion];
+  modelVersion = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self modelVersion];
 
-  if (v10)
+  if (modelVersion)
   {
     PBDataWriterWriteStringField();
   }
@@ -1053,11 +1053,11 @@ LABEL_73:
     PBDataWriterWriteInt32Field();
   }
 
-  v17 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self forcePrompt];
+  forcePrompt = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self forcePrompt];
 
-  if (v17)
+  if (forcePrompt)
   {
-    v18 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self forcePrompt];
+    forcePrompt2 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self forcePrompt];
     PBDataWriterWriteSubmessage();
   }
 
@@ -1119,11 +1119,11 @@ LABEL_32:
   }
 
 LABEL_33:
-  v25 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self interactionContext];
+  interactionContext = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self interactionContext];
 
-  if (v25)
+  if (interactionContext)
   {
-    v26 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self interactionContext];
+    interactionContext2 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self interactionContext];
     PBDataWriterWriteSubmessage();
   }
 
@@ -1139,18 +1139,18 @@ LABEL_33:
     PBDataWriterWriteBOOLField();
   }
 
-  v28 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self crrCommsAppSelectionJointId];
+  crrCommsAppSelectionJointId = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self crrCommsAppSelectionJointId];
 
-  if (v28)
+  if (crrCommsAppSelectionJointId)
   {
-    v29 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self crrCommsAppSelectionJointId];
+    crrCommsAppSelectionJointId2 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self crrCommsAppSelectionJointId];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (void)setHasIsEntityCandidateRetrievalEnabled:(BOOL)a3
+- (void)setHasIsEntityCandidateRetrievalEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 64;
   }
@@ -1163,9 +1163,9 @@ LABEL_33:
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasIsPlusContactSuggesterEnabled:(BOOL)a3
+- (void)setHasIsPlusContactSuggesterEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 32;
   }
@@ -1178,9 +1178,9 @@ LABEL_33:
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasInteractionDurationInSecBucket:(BOOL)a3
+- (void)setHasInteractionDurationInSecBucket:(BOOL)bucket
 {
-  if (a3)
+  if (bucket)
   {
     v3 = 16;
   }
@@ -1193,9 +1193,9 @@ LABEL_33:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasIsInteractionSuccess:(BOOL)a3
+- (void)setHasIsInteractionSuccess:(BOOL)success
 {
-  if (a3)
+  if (success)
   {
     v3 = 8;
   }
@@ -1208,9 +1208,9 @@ LABEL_33:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasIsInteractionExecuted:(BOOL)a3
+- (void)setHasIsInteractionExecuted:(BOOL)executed
 {
-  if (a3)
+  if (executed)
   {
     v3 = 4;
   }
@@ -1223,27 +1223,27 @@ LABEL_33:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)addAnonymizedContactIdentifiers:(id)a3
+- (void)addAnonymizedContactIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   anonymizedContactIdentifiers = self->_anonymizedContactIdentifiers;
-  v8 = v4;
+  v8 = identifiersCopy;
   if (!anonymizedContactIdentifiers)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_anonymizedContactIdentifiers;
-    self->_anonymizedContactIdentifiers = v6;
+    self->_anonymizedContactIdentifiers = array;
 
-    v4 = v8;
+    identifiersCopy = v8;
     anonymizedContactIdentifiers = self->_anonymizedContactIdentifiers;
   }
 
-  [(NSArray *)anonymizedContactIdentifiers addObject:v4];
+  [(NSArray *)anonymizedContactIdentifiers addObject:identifiersCopy];
 }
 
-- (void)setHasResolutionType:(BOOL)a3
+- (void)setHasResolutionType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -1256,75 +1256,75 @@ LABEL_33:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addMatches:(id)a3
+- (void)addMatches:(id)matches
 {
-  v4 = a3;
+  matchesCopy = matches;
   matches = self->_matches;
-  v8 = v4;
+  v8 = matchesCopy;
   if (!matches)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_matches;
-    self->_matches = v6;
+    self->_matches = array;
 
-    v4 = v8;
+    matchesCopy = v8;
     matches = self->_matches;
   }
 
-  [(NSArray *)matches addObject:v4];
+  [(NSArray *)matches addObject:matchesCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v24.receiver = self;
   v24.super_class = INFERENCESchemaINFERENCECRRTrainingSampleCollected;
-  v5 = [(SISchemaInstrumentationMessage *)&v24 applySensitiveConditionsPolicy:v4];
-  v6 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self resolverConfig];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v24 applySensitiveConditionsPolicy:policyCopy];
+  resolverConfig = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self resolverConfig];
+  v7 = [resolverConfig applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self deleteResolverConfig];
   }
 
-  v9 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self trialEnrollment];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  trialEnrollment = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self trialEnrollment];
+  v10 = [trialEnrollment applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self deleteTrialEnrollment];
   }
 
-  v12 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self matches];
-  v13 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v12 underConditions:v4];
+  matches = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self matches];
+  v13 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:matches underConditions:policyCopy];
   [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self setMatches:v13];
 
-  v14 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self forcePrompt];
-  v15 = [v14 applySensitiveConditionsPolicy:v4];
-  v16 = [v15 suppressMessage];
+  forcePrompt = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self forcePrompt];
+  v15 = [forcePrompt applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v15 suppressMessage];
 
-  if (v16)
+  if (suppressMessage3)
   {
     [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self deleteForcePrompt];
   }
 
-  v17 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self interactionContext];
-  v18 = [v17 applySensitiveConditionsPolicy:v4];
-  v19 = [v18 suppressMessage];
+  interactionContext = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self interactionContext];
+  v18 = [interactionContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v18 suppressMessage];
 
-  if (v19)
+  if (suppressMessage4)
   {
     [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self deleteInteractionContext];
   }
 
-  v20 = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self crrCommsAppSelectionJointId];
-  v21 = [v20 applySensitiveConditionsPolicy:v4];
-  v22 = [v21 suppressMessage];
+  crrCommsAppSelectionJointId = [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self crrCommsAppSelectionJointId];
+  v21 = [crrCommsAppSelectionJointId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v21 suppressMessage];
 
-  if (v22)
+  if (suppressMessage5)
   {
     [(INFERENCESchemaINFERENCECRRTrainingSampleCollected *)self deleteCrrCommsAppSelectionJointId];
   }

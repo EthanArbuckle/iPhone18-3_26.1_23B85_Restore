@@ -1,23 +1,23 @@
 @interface _WDDateWithDurationManualEntryItem
-- (_WDDateWithDurationManualEntryItem)initWithMaximumDate:(id)a3;
+- (_WDDateWithDurationManualEntryItem)initWithMaximumDate:(id)date;
 - (id)generateValue;
 - (id)tableViewCells;
 - (void)_setupEntryItems;
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
 @end
 
 @implementation _WDDateWithDurationManualEntryItem
 
-- (_WDDateWithDurationManualEntryItem)initWithMaximumDate:(id)a3
+- (_WDDateWithDurationManualEntryItem)initWithMaximumDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   v9.receiver = self;
   v9.super_class = _WDDateWithDurationManualEntryItem;
   v6 = [(_WDDateWithDurationManualEntryItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_maximumStartDate, a3);
+    objc_storeStrong(&v6->_maximumStartDate, date);
     [(_WDDateWithDurationManualEntryItem *)v7 _setupEntryItems];
   }
 
@@ -26,9 +26,9 @@
 
 - (id)tableViewCells
 {
-  v3 = [(WDAddDataManualEntryItem *)self->_startItem tableViewCells];
-  v4 = [(WDAddDataManualEntryItem *)self->_durationItem tableViewCells];
-  v5 = [v3 arrayByAddingObjectsFromArray:v4];
+  tableViewCells = [(WDAddDataManualEntryItem *)self->_startItem tableViewCells];
+  tableViewCells2 = [(WDAddDataManualEntryItem *)self->_durationItem tableViewCells];
+  v5 = [tableViewCells arrayByAddingObjectsFromArray:tableViewCells2];
 
   return v5;
 }
@@ -63,23 +63,23 @@
   [(WDAddDataManualEntryItem *)v17 setDelegate:self];
 }
 
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [(WDAddDataManualEntryItem *)self delegate];
-  [v10 presentViewController:v9 animated:v5 completion:v8];
+  animatedCopy = animated;
+  completionCopy = completion;
+  controllerCopy = controller;
+  delegate = [(WDAddDataManualEntryItem *)self delegate];
+  [delegate presentViewController:controllerCopy animated:animatedCopy completion:completionCopy];
 }
 
 - (id)generateValue
 {
-  v3 = [(WDAddDataManualEntryItem *)self->_startItem generateValue];
-  v4 = [(WDAddDataManualEntryItem *)self->_durationItem generateValue];
-  v5 = v4;
-  if (v4)
+  generateValue = [(WDAddDataManualEntryItem *)self->_startItem generateValue];
+  generateValue2 = [(WDAddDataManualEntryItem *)self->_durationItem generateValue];
+  v5 = generateValue2;
+  if (generateValue2)
   {
-    v6 = v3 == 0;
+    v6 = generateValue == 0;
   }
 
   else
@@ -95,9 +95,9 @@
   else
   {
     v7 = MEMORY[0x1E69A4520];
-    [v4 doubleValue];
-    v8 = [v3 dateByAddingTimeInterval:?];
-    v9 = [v7 valueRangeWithMinValue:v3 maxValue:v8];
+    [generateValue2 doubleValue];
+    v8 = [generateValue dateByAddingTimeInterval:?];
+    v9 = [v7 valueRangeWithMinValue:generateValue maxValue:v8];
   }
 
   return v9;

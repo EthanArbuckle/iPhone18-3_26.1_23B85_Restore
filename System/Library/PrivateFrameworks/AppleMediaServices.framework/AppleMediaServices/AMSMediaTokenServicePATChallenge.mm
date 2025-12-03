@@ -1,12 +1,12 @@
 @interface AMSMediaTokenServicePATChallenge
-+ (id)challengeWith:(id)a3;
++ (id)challengeWith:(id)with;
 @end
 
 @implementation AMSMediaTokenServicePATChallenge
 
-+ (id)challengeWith:(id)a3
++ (id)challengeWith:(id)with
 {
-  v3 = [AMSMediaTokenServicePATFetcher challengeDictFor:a3];
+  v3 = [AMSMediaTokenServicePATFetcher challengeDictFor:with];
   v4 = [v3 objectForKeyedSubscript:@"challenge"];
   v5 = [v3 objectForKeyedSubscript:@"token-key"];
   v6 = v5;
@@ -22,17 +22,17 @@
 
   if (v7)
   {
-    v8 = 0;
+    issuerName = 0;
   }
 
   else
   {
-    v9 = [v4 ams_dataFromBase64URLEncodedString];
-    v10 = [v6 ams_dataFromBase64URLEncodedString];
-    v11 = v10;
-    if (v9)
+    ams_dataFromBase64URLEncodedString = [v4 ams_dataFromBase64URLEncodedString];
+    ams_dataFromBase64URLEncodedString2 = [v6 ams_dataFromBase64URLEncodedString];
+    v11 = ams_dataFromBase64URLEncodedString2;
+    if (ams_dataFromBase64URLEncodedString)
     {
-      v12 = v10 == 0;
+      v12 = ams_dataFromBase64URLEncodedString2 == 0;
     }
 
     else
@@ -42,31 +42,31 @@
 
     if (v12)
     {
-      v8 = 0;
+      issuerName = 0;
     }
 
     else
     {
-      v13 = [objc_alloc(getNSPPrivateAccessTokenChallengeClass()) initWithData:v9];
-      v8 = [v13 issuerName];
+      v13 = [objc_alloc(getNSPPrivateAccessTokenChallengeClass()) initWithData:ams_dataFromBase64URLEncodedString];
+      issuerName = [v13 issuerName];
 
-      if (v8)
+      if (issuerName)
       {
-        v8 = objc_alloc_init(AMSMediaTokenServicePATChallenge);
-        [(AMSMediaTokenServicePATChallenge *)v8 setTokenKey:v11];
-        v14 = [v13 issuerName];
-        [(AMSMediaTokenServicePATChallenge *)v8 setIssuerName:v14];
+        issuerName = objc_alloc_init(AMSMediaTokenServicePATChallenge);
+        [(AMSMediaTokenServicePATChallenge *)issuerName setTokenKey:v11];
+        issuerName2 = [v13 issuerName];
+        [(AMSMediaTokenServicePATChallenge *)issuerName setIssuerName:issuerName2];
 
-        v15 = [v13 originName];
-        [(AMSMediaTokenServicePATChallenge *)v8 setOriginName:v15];
+        originName = [v13 originName];
+        [(AMSMediaTokenServicePATChallenge *)issuerName setOriginName:originName];
 
-        v16 = [v13 redemptionNonce];
-        [(AMSMediaTokenServicePATChallenge *)v8 setRedemptionNonce:v16];
+        redemptionNonce = [v13 redemptionNonce];
+        [(AMSMediaTokenServicePATChallenge *)issuerName setRedemptionNonce:redemptionNonce];
       }
     }
   }
 
-  return v8;
+  return issuerName;
 }
 
 @end

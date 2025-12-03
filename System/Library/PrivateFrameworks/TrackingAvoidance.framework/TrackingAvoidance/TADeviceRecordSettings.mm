@@ -1,66 +1,66 @@
 @interface TADeviceRecordSettings
-- (BOOL)isEqual:(id)a3;
-- (TADeviceRecordSettings)initWithCoder:(id)a3;
-- (TADeviceRecordSettings)initWithExpiryTimeInterval:(double)a3 futureExpiryTimeInterval:(double)a4 purgeTimeInterval:(double)a5 keepAliveInterval:(double)a6 minimumStagingInterval:(double)a7 stagingBackstopHour:(unint64_t)a8 assumedKeyRollHour:(unint64_t)a9 scanInterval:(double)a10 surfaceImmediatelyBeepOnMove:(BOOL)a11 surfaceAfterHyperStagingIntervalBetweenBackstopAndKeyroll:(BOOL)a12 maxExpectedHELEWildInterval:(double)a13 maxExpectedDurianWildInterval:(double)a14 shouldAlertHELEImmediatelyForImmediateTypes:(BOOL)a15 minimumHELEStagingInterval:(double)a16 stagingHELEBackstopHour:(unint64_t)a17 surfaceHELEAfterHyperStagingIntervalBetweenBackstopAndKeyroll:(BOOL)a18 hyperHELEStagingInterval:(double)a19 hyperStagingInterval:(double)a20;
-- (TADeviceRecordSettings)initWithExpiryTimeIntervalOrDefault:(id)a3 futureExpiryTimeIntervalOrDefault:(id)a4 purgeTimeIntervalOrDefault:(id)a5 keepAliveIntervalOrDefault:(id)a6 minimumStagingIntervalOrDefault:(id)a7 stagingBackstopHourOrDefault:(id)a8 assumedKeyRollHourOrDefault:(id)a9 scanIntervalOrDefault:(id)a10 surfaceImmediatelyBeepOnMoveOrDefault:(id)a11 surfaceAfterHyperStagingIntervalBetweenBackstopAndKeyrollOrDefault:(id)a12 maxExpectedHELEWildIntervalOrDefault:(id)a13 maxExpectedDurianWildIntervalOrDefault:(id)a14 shouldAlertHELEImmediatelyForImmediateTypesOrDefault:(id)a15 minimumHELEStagingIntervalOrDefault:(id)a16 stagingHELEBackstopHourOrDefault:(id)a17 surfaceHELEAfterHyperStagingIntervalBetweenBackstopAndKeyrollOrDefault:(id)a18 hyperHELEStagingIntervalOrDefault:(id)a19 hyperStagingIntervalOrDefault:(id)a20;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (TADeviceRecordSettings)initWithCoder:(id)coder;
+- (TADeviceRecordSettings)initWithExpiryTimeInterval:(double)interval futureExpiryTimeInterval:(double)timeInterval purgeTimeInterval:(double)purgeTimeInterval keepAliveInterval:(double)aliveInterval minimumStagingInterval:(double)stagingInterval stagingBackstopHour:(unint64_t)hour assumedKeyRollHour:(unint64_t)rollHour scanInterval:(double)self0 surfaceImmediatelyBeepOnMove:(BOOL)self1 surfaceAfterHyperStagingIntervalBetweenBackstopAndKeyroll:(BOOL)self2 maxExpectedHELEWildInterval:(double)self3 maxExpectedDurianWildInterval:(double)self4 shouldAlertHELEImmediatelyForImmediateTypes:(BOOL)self5 minimumHELEStagingInterval:(double)self6 stagingHELEBackstopHour:(unint64_t)self7 surfaceHELEAfterHyperStagingIntervalBetweenBackstopAndKeyroll:(BOOL)self8 hyperHELEStagingInterval:(double)self9 hyperStagingInterval:(double)hyperStagingInterval;
+- (TADeviceRecordSettings)initWithExpiryTimeIntervalOrDefault:(id)default futureExpiryTimeIntervalOrDefault:(id)orDefault purgeTimeIntervalOrDefault:(id)intervalOrDefault keepAliveIntervalOrDefault:(id)aliveIntervalOrDefault minimumStagingIntervalOrDefault:(id)stagingIntervalOrDefault stagingBackstopHourOrDefault:(id)hourOrDefault assumedKeyRollHourOrDefault:(id)rollHourOrDefault scanIntervalOrDefault:(id)self0 surfaceImmediatelyBeepOnMoveOrDefault:(id)self1 surfaceAfterHyperStagingIntervalBetweenBackstopAndKeyrollOrDefault:(id)self2 maxExpectedHELEWildIntervalOrDefault:(id)self3 maxExpectedDurianWildIntervalOrDefault:(id)self4 shouldAlertHELEImmediatelyForImmediateTypesOrDefault:(id)self5 minimumHELEStagingIntervalOrDefault:(id)self6 stagingHELEBackstopHourOrDefault:(id)self7 surfaceHELEAfterHyperStagingIntervalBetweenBackstopAndKeyrollOrDefault:(id)self8 hyperHELEStagingIntervalOrDefault:(id)self9 hyperStagingIntervalOrDefault:(id)hyperStagingIntervalOrDefault;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TADeviceRecordSettings
 
-- (TADeviceRecordSettings)initWithExpiryTimeInterval:(double)a3 futureExpiryTimeInterval:(double)a4 purgeTimeInterval:(double)a5 keepAliveInterval:(double)a6 minimumStagingInterval:(double)a7 stagingBackstopHour:(unint64_t)a8 assumedKeyRollHour:(unint64_t)a9 scanInterval:(double)a10 surfaceImmediatelyBeepOnMove:(BOOL)a11 surfaceAfterHyperStagingIntervalBetweenBackstopAndKeyroll:(BOOL)a12 maxExpectedHELEWildInterval:(double)a13 maxExpectedDurianWildInterval:(double)a14 shouldAlertHELEImmediatelyForImmediateTypes:(BOOL)a15 minimumHELEStagingInterval:(double)a16 stagingHELEBackstopHour:(unint64_t)a17 surfaceHELEAfterHyperStagingIntervalBetweenBackstopAndKeyroll:(BOOL)a18 hyperHELEStagingInterval:(double)a19 hyperStagingInterval:(double)a20
+- (TADeviceRecordSettings)initWithExpiryTimeInterval:(double)interval futureExpiryTimeInterval:(double)timeInterval purgeTimeInterval:(double)purgeTimeInterval keepAliveInterval:(double)aliveInterval minimumStagingInterval:(double)stagingInterval stagingBackstopHour:(unint64_t)hour assumedKeyRollHour:(unint64_t)rollHour scanInterval:(double)self0 surfaceImmediatelyBeepOnMove:(BOOL)self1 surfaceAfterHyperStagingIntervalBetweenBackstopAndKeyroll:(BOOL)self2 maxExpectedHELEWildInterval:(double)self3 maxExpectedDurianWildInterval:(double)self4 shouldAlertHELEImmediatelyForImmediateTypes:(BOOL)self5 minimumHELEStagingInterval:(double)self6 stagingHELEBackstopHour:(unint64_t)self7 surfaceHELEAfterHyperStagingIntervalBetweenBackstopAndKeyroll:(BOOL)self8 hyperHELEStagingInterval:(double)self9 hyperStagingInterval:(double)hyperStagingInterval
 {
   v35.receiver = self;
   v35.super_class = TADeviceRecordSettings;
   result = [(TADeviceRecordSettings *)&v35 init];
   if (result)
   {
-    result->_expiryTimeInterval = a3;
-    result->_futureExpiryTimeInterval = a4;
-    result->_purgeTimeInterval = a5;
-    result->_keepAliveInterval = a6;
-    result->_minimumStagingInterval = a7;
-    result->_stagingBackstopHour = a8;
-    result->_assumedKeyRollHour = a9;
-    result->_surfaceImmediatelyBeepOnMove = a11;
-    result->_surfaceAfterHyperStagingIntervalBetweenBackstopAndKeyroll = a12;
-    result->_scanInterval = a10;
-    result->_maxExpectedHELEWildInterval = a13;
-    result->_shouldAlertHELEImmediatelyForImmediateTypes = a15;
-    result->_maxExpectedDurianWildInterval = a14;
-    result->_minimumHELEStagingInterval = a16;
-    result->_stagingHELEBackstopHour = a17;
-    result->_surfaceHELEAfterHyperStagingIntervalBetweenBackstopAndKeyroll = a18;
-    result->_hyperHELEStagingInterval = a19;
-    result->_hyperStagingInterval = a20;
+    result->_expiryTimeInterval = interval;
+    result->_futureExpiryTimeInterval = timeInterval;
+    result->_purgeTimeInterval = purgeTimeInterval;
+    result->_keepAliveInterval = aliveInterval;
+    result->_minimumStagingInterval = stagingInterval;
+    result->_stagingBackstopHour = hour;
+    result->_assumedKeyRollHour = rollHour;
+    result->_surfaceImmediatelyBeepOnMove = move;
+    result->_surfaceAfterHyperStagingIntervalBetweenBackstopAndKeyroll = keyroll;
+    result->_scanInterval = scanInterval;
+    result->_maxExpectedHELEWildInterval = wildInterval;
+    result->_shouldAlertHELEImmediatelyForImmediateTypes = types;
+    result->_maxExpectedDurianWildInterval = durianWildInterval;
+    result->_minimumHELEStagingInterval = eStagingInterval;
+    result->_stagingHELEBackstopHour = backstopHour;
+    result->_surfaceHELEAfterHyperStagingIntervalBetweenBackstopAndKeyroll = andKeyroll;
+    result->_hyperHELEStagingInterval = lEStagingInterval;
+    result->_hyperStagingInterval = hyperStagingInterval;
   }
 
   return result;
 }
 
-- (TADeviceRecordSettings)initWithExpiryTimeIntervalOrDefault:(id)a3 futureExpiryTimeIntervalOrDefault:(id)a4 purgeTimeIntervalOrDefault:(id)a5 keepAliveIntervalOrDefault:(id)a6 minimumStagingIntervalOrDefault:(id)a7 stagingBackstopHourOrDefault:(id)a8 assumedKeyRollHourOrDefault:(id)a9 scanIntervalOrDefault:(id)a10 surfaceImmediatelyBeepOnMoveOrDefault:(id)a11 surfaceAfterHyperStagingIntervalBetweenBackstopAndKeyrollOrDefault:(id)a12 maxExpectedHELEWildIntervalOrDefault:(id)a13 maxExpectedDurianWildIntervalOrDefault:(id)a14 shouldAlertHELEImmediatelyForImmediateTypesOrDefault:(id)a15 minimumHELEStagingIntervalOrDefault:(id)a16 stagingHELEBackstopHourOrDefault:(id)a17 surfaceHELEAfterHyperStagingIntervalBetweenBackstopAndKeyrollOrDefault:(id)a18 hyperHELEStagingIntervalOrDefault:(id)a19 hyperStagingIntervalOrDefault:(id)a20
+- (TADeviceRecordSettings)initWithExpiryTimeIntervalOrDefault:(id)default futureExpiryTimeIntervalOrDefault:(id)orDefault purgeTimeIntervalOrDefault:(id)intervalOrDefault keepAliveIntervalOrDefault:(id)aliveIntervalOrDefault minimumStagingIntervalOrDefault:(id)stagingIntervalOrDefault stagingBackstopHourOrDefault:(id)hourOrDefault assumedKeyRollHourOrDefault:(id)rollHourOrDefault scanIntervalOrDefault:(id)self0 surfaceImmediatelyBeepOnMoveOrDefault:(id)self1 surfaceAfterHyperStagingIntervalBetweenBackstopAndKeyrollOrDefault:(id)self2 maxExpectedHELEWildIntervalOrDefault:(id)self3 maxExpectedDurianWildIntervalOrDefault:(id)self4 shouldAlertHELEImmediatelyForImmediateTypesOrDefault:(id)self5 minimumHELEStagingIntervalOrDefault:(id)self6 stagingHELEBackstopHourOrDefault:(id)self7 surfaceHELEAfterHyperStagingIntervalBetweenBackstopAndKeyrollOrDefault:(id)self8 hyperHELEStagingIntervalOrDefault:(id)self9 hyperStagingIntervalOrDefault:(id)hyperStagingIntervalOrDefault
 {
-  v78 = a3;
-  v77 = a4;
-  v76 = a5;
-  v71 = a6;
-  v25 = a7;
-  v26 = a8;
-  v27 = a9;
-  v75 = a10;
-  v28 = a11;
-  v29 = a12;
-  v30 = a13;
-  v31 = a14;
-  v32 = a15;
-  v74 = a16;
-  v73 = a17;
-  v72 = a18;
-  v79 = a19;
-  v33 = a20;
-  if (v78)
+  defaultCopy = default;
+  orDefaultCopy = orDefault;
+  intervalOrDefaultCopy = intervalOrDefault;
+  aliveIntervalOrDefaultCopy = aliveIntervalOrDefault;
+  stagingIntervalOrDefaultCopy = stagingIntervalOrDefault;
+  hourOrDefaultCopy = hourOrDefault;
+  rollHourOrDefaultCopy = rollHourOrDefault;
+  scanIntervalOrDefaultCopy = scanIntervalOrDefault;
+  moveOrDefaultCopy = moveOrDefault;
+  keyrollOrDefaultCopy = keyrollOrDefault;
+  wildIntervalOrDefaultCopy = wildIntervalOrDefault;
+  durianWildIntervalOrDefaultCopy = durianWildIntervalOrDefault;
+  typesOrDefaultCopy = typesOrDefault;
+  eStagingIntervalOrDefaultCopy = eStagingIntervalOrDefault;
+  backstopHourOrDefaultCopy = backstopHourOrDefault;
+  andKeyrollOrDefaultCopy = andKeyrollOrDefault;
+  lEStagingIntervalOrDefaultCopy = lEStagingIntervalOrDefault;
+  hyperStagingIntervalOrDefaultCopy = hyperStagingIntervalOrDefault;
+  if (defaultCopy)
   {
-    [v78 doubleValue];
+    [defaultCopy doubleValue];
   }
 
   else
@@ -69,9 +69,9 @@
   }
 
   v67 = *&v34;
-  if (v77)
+  if (orDefaultCopy)
   {
-    [v77 doubleValue];
+    [orDefaultCopy doubleValue];
   }
 
   else
@@ -80,9 +80,9 @@
   }
 
   v66 = *&v35;
-  if (v76)
+  if (intervalOrDefaultCopy)
   {
-    [v76 doubleValue];
+    [intervalOrDefaultCopy doubleValue];
   }
 
   else
@@ -91,10 +91,10 @@
   }
 
   v65 = *&v36;
-  v68 = v33;
-  if (v71)
+  v68 = hyperStagingIntervalOrDefaultCopy;
+  if (aliveIntervalOrDefaultCopy)
   {
-    [v71 doubleValue];
+    [aliveIntervalOrDefaultCopy doubleValue];
     v38 = v37;
   }
 
@@ -103,14 +103,14 @@
     v38 = 7200.0;
   }
 
-  if (v25)
+  if (stagingIntervalOrDefaultCopy)
   {
-    [v25 doubleValue];
+    [stagingIntervalOrDefaultCopy doubleValue];
     v40 = v39;
-    if (v26)
+    if (hourOrDefaultCopy)
     {
 LABEL_15:
-      v41 = [v26 unsignedIntValue];
+      unsignedIntValue = [hourOrDefaultCopy unsignedIntValue];
       goto LABEL_18;
     }
   }
@@ -118,34 +118,34 @@ LABEL_15:
   else
   {
     v40 = 28800.0;
-    if (v26)
+    if (hourOrDefaultCopy)
     {
       goto LABEL_15;
     }
   }
 
-  v41 = 22;
+  unsignedIntValue = 22;
 LABEL_18:
-  v64 = v41;
-  if (v27)
+  v64 = unsignedIntValue;
+  if (rollHourOrDefaultCopy)
   {
-    v42 = [v27 unsignedIntValue];
+    unsignedIntValue2 = [rollHourOrDefaultCopy unsignedIntValue];
   }
 
   else
   {
-    v42 = 4;
+    unsignedIntValue2 = 4;
   }
 
-  v63 = v42;
-  if (v75)
+  v63 = unsignedIntValue2;
+  if (scanIntervalOrDefaultCopy)
   {
-    [v75 doubleValue];
+    [scanIntervalOrDefaultCopy doubleValue];
     v44 = v43;
-    if (v28)
+    if (moveOrDefaultCopy)
     {
 LABEL_23:
-      v62 = [v28 BOOLValue];
+      bOOLValue = [moveOrDefaultCopy BOOLValue];
       goto LABEL_26;
     }
   }
@@ -153,27 +153,27 @@ LABEL_23:
   else
   {
     v44 = 3600.0;
-    if (v28)
+    if (moveOrDefaultCopy)
     {
       goto LABEL_23;
     }
   }
 
-  v62 = 1;
+  bOOLValue = 1;
 LABEL_26:
-  if (v29)
+  if (keyrollOrDefaultCopy)
   {
-    v61 = [v29 BOOLValue];
+    bOOLValue2 = [keyrollOrDefaultCopy BOOLValue];
   }
 
   else
   {
-    v61 = 1;
+    bOOLValue2 = 1;
   }
 
-  if (v30)
+  if (wildIntervalOrDefaultCopy)
   {
-    [v30 doubleValue];
+    [wildIntervalOrDefaultCopy doubleValue];
     v46 = v45;
   }
 
@@ -182,9 +182,9 @@ LABEL_26:
     v46 = 3600.0;
   }
 
-  if (v31)
+  if (durianWildIntervalOrDefaultCopy)
   {
-    [v31 doubleValue];
+    [durianWildIntervalOrDefaultCopy doubleValue];
     v48 = v47;
   }
 
@@ -193,20 +193,20 @@ LABEL_26:
     v48 = 960.0;
   }
 
-  v69 = v26;
-  if (v32)
+  v69 = hourOrDefaultCopy;
+  if (typesOrDefaultCopy)
   {
-    v49 = [v32 BOOLValue];
+    bOOLValue3 = [typesOrDefaultCopy BOOLValue];
   }
 
   else
   {
-    v49 = 1;
+    bOOLValue3 = 1;
   }
 
-  if (v74)
+  if (eStagingIntervalOrDefaultCopy)
   {
-    [v74 doubleValue];
+    [eStagingIntervalOrDefaultCopy doubleValue];
     v51 = v50;
   }
 
@@ -215,31 +215,31 @@ LABEL_26:
     v51 = 0x40DC200000000000;
   }
 
-  if (v73)
+  if (backstopHourOrDefaultCopy)
   {
-    v52 = [v73 unsignedIntValue];
+    unsignedIntValue3 = [backstopHourOrDefaultCopy unsignedIntValue];
   }
 
   else
   {
-    v52 = 22;
+    unsignedIntValue3 = 22;
   }
 
-  if (v72)
+  if (andKeyrollOrDefaultCopy)
   {
-    v53 = [v72 BOOLValue];
+    bOOLValue4 = [andKeyrollOrDefaultCopy BOOLValue];
   }
 
   else
   {
-    v53 = 1;
+    bOOLValue4 = 1;
   }
 
   v54 = 0x40AC200000000000;
   v55 = 0x40AC200000000000;
-  if (v79)
+  if (lEStagingIntervalOrDefaultCopy)
   {
-    [v79 doubleValue];
+    [lEStagingIntervalOrDefaultCopy doubleValue];
     v55 = v56;
   }
 
@@ -249,16 +249,16 @@ LABEL_26:
     v54 = v57;
   }
 
-  LOBYTE(v60) = v53;
-  v58 = [(TADeviceRecordSettings *)self initWithExpiryTimeInterval:v64 futureExpiryTimeInterval:v63 purgeTimeInterval:v62 keepAliveInterval:v61 minimumStagingInterval:v49 stagingBackstopHour:v52 assumedKeyRollHour:v67 scanInterval:v66 surfaceImmediatelyBeepOnMove:v65 surfaceAfterHyperStagingIntervalBetweenBackstopAndKeyroll:v38 maxExpectedHELEWildInterval:v40 maxExpectedDurianWildInterval:v44 shouldAlertHELEImmediatelyForImmediateTypes:v46 minimumHELEStagingInterval:v48 stagingHELEBackstopHour:v51 surfaceHELEAfterHyperStagingIntervalBetweenBackstopAndKeyroll:v60 hyperHELEStagingInterval:v55 hyperStagingInterval:v54];
+  LOBYTE(v60) = bOOLValue4;
+  v58 = [(TADeviceRecordSettings *)self initWithExpiryTimeInterval:v64 futureExpiryTimeInterval:v63 purgeTimeInterval:bOOLValue keepAliveInterval:bOOLValue2 minimumStagingInterval:bOOLValue3 stagingBackstopHour:unsignedIntValue3 assumedKeyRollHour:v67 scanInterval:v66 surfaceImmediatelyBeepOnMove:v65 surfaceAfterHyperStagingIntervalBetweenBackstopAndKeyroll:v38 maxExpectedHELEWildInterval:v40 maxExpectedDurianWildInterval:v44 shouldAlertHELEImmediatelyForImmediateTypes:v46 minimumHELEStagingInterval:v48 stagingHELEBackstopHour:v51 surfaceHELEAfterHyperStagingIntervalBetweenBackstopAndKeyroll:v60 hyperHELEStagingInterval:v55 hyperStagingInterval:v54];
 
   return v58;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v46 = 1;
   }
@@ -268,7 +268,7 @@ LABEL_26:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       [(TADeviceRecordSettings *)self expiryTimeInterval];
       v7 = v6;
       [(TADeviceRecordSettings *)v5 expiryTimeInterval];
@@ -309,14 +309,14 @@ LABEL_26:
         goto LABEL_23;
       }
 
-      v21 = [(TADeviceRecordSettings *)self stagingBackstopHour];
-      if (v21 != [(TADeviceRecordSettings *)v5 stagingBackstopHour])
+      stagingBackstopHour = [(TADeviceRecordSettings *)self stagingBackstopHour];
+      if (stagingBackstopHour != [(TADeviceRecordSettings *)v5 stagingBackstopHour])
       {
         goto LABEL_23;
       }
 
-      v22 = [(TADeviceRecordSettings *)self assumedKeyRollHour];
-      if (v22 != [(TADeviceRecordSettings *)v5 assumedKeyRollHour])
+      assumedKeyRollHour = [(TADeviceRecordSettings *)self assumedKeyRollHour];
+      if (assumedKeyRollHour != [(TADeviceRecordSettings *)v5 assumedKeyRollHour])
       {
         goto LABEL_23;
       }
@@ -329,14 +329,14 @@ LABEL_26:
         goto LABEL_23;
       }
 
-      v26 = [(TADeviceRecordSettings *)self surfaceImmediatelyBeepOnMove];
-      if (v26 != [(TADeviceRecordSettings *)v5 surfaceImmediatelyBeepOnMove])
+      surfaceImmediatelyBeepOnMove = [(TADeviceRecordSettings *)self surfaceImmediatelyBeepOnMove];
+      if (surfaceImmediatelyBeepOnMove != [(TADeviceRecordSettings *)v5 surfaceImmediatelyBeepOnMove])
       {
         goto LABEL_23;
       }
 
-      v27 = [(TADeviceRecordSettings *)self surfaceAfterHyperStagingIntervalBetweenBackstopAndKeyroll];
-      if (v27 != [(TADeviceRecordSettings *)v5 surfaceAfterHyperStagingIntervalBetweenBackstopAndKeyroll])
+      surfaceAfterHyperStagingIntervalBetweenBackstopAndKeyroll = [(TADeviceRecordSettings *)self surfaceAfterHyperStagingIntervalBetweenBackstopAndKeyroll];
+      if (surfaceAfterHyperStagingIntervalBetweenBackstopAndKeyroll != [(TADeviceRecordSettings *)v5 surfaceAfterHyperStagingIntervalBetweenBackstopAndKeyroll])
       {
         goto LABEL_23;
       }
@@ -357,8 +357,8 @@ LABEL_26:
         goto LABEL_23;
       }
 
-      v34 = [(TADeviceRecordSettings *)self shouldAlertHELEImmediatelyForImmediateTypes];
-      if (v34 != [(TADeviceRecordSettings *)v5 shouldAlertHELEImmediatelyForImmediateTypes])
+      shouldAlertHELEImmediatelyForImmediateTypes = [(TADeviceRecordSettings *)self shouldAlertHELEImmediatelyForImmediateTypes];
+      if (shouldAlertHELEImmediatelyForImmediateTypes != [(TADeviceRecordSettings *)v5 shouldAlertHELEImmediatelyForImmediateTypes])
       {
         goto LABEL_23;
       }
@@ -371,8 +371,8 @@ LABEL_26:
         goto LABEL_23;
       }
 
-      v38 = [(TADeviceRecordSettings *)self stagingHELEBackstopHour];
-      if (v38 == [(TADeviceRecordSettings *)v5 stagingHELEBackstopHour]&& (v39 = [(TADeviceRecordSettings *)self surfaceHELEAfterHyperStagingIntervalBetweenBackstopAndKeyroll], v39 == [(TADeviceRecordSettings *)v5 surfaceHELEAfterHyperStagingIntervalBetweenBackstopAndKeyroll]) && ([(TADeviceRecordSettings *)self hyperHELEStagingInterval], v41 = v40, [(TADeviceRecordSettings *)v5 hyperHELEStagingInterval], v41 == v42))
+      stagingHELEBackstopHour = [(TADeviceRecordSettings *)self stagingHELEBackstopHour];
+      if (stagingHELEBackstopHour == [(TADeviceRecordSettings *)v5 stagingHELEBackstopHour]&& (v39 = [(TADeviceRecordSettings *)self surfaceHELEAfterHyperStagingIntervalBetweenBackstopAndKeyroll], v39 == [(TADeviceRecordSettings *)v5 surfaceHELEAfterHyperStagingIntervalBetweenBackstopAndKeyroll]) && ([(TADeviceRecordSettings *)self hyperHELEStagingInterval], v41 = v40, [(TADeviceRecordSettings *)v5 hyperHELEStagingInterval], v41 == v42))
       {
         [(TADeviceRecordSettings *)self hyperStagingInterval];
         v44 = v43;
@@ -396,65 +396,65 @@ LABEL_23:
   return v46;
 }
 
-- (TADeviceRecordSettings)initWithCoder:(id)a3
+- (TADeviceRecordSettings)initWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 decodeDoubleForKey:@"ExpiryInterval"];
+  coderCopy = coder;
+  [coderCopy decodeDoubleForKey:@"ExpiryInterval"];
   v35 = v5;
-  [v4 decodeDoubleForKey:@"FutureExpiryInterval"];
+  [coderCopy decodeDoubleForKey:@"FutureExpiryInterval"];
   v34 = v6;
-  [v4 decodeDoubleForKey:@"PurgeInterval"];
+  [coderCopy decodeDoubleForKey:@"PurgeInterval"];
   v33 = v7;
-  [v4 decodeDoubleForKey:@"KeepAliveInterval"];
+  [coderCopy decodeDoubleForKey:@"KeepAliveInterval"];
   v9 = v8;
-  [v4 decodeDoubleForKey:@"MinStagingInterval"];
+  [coderCopy decodeDoubleForKey:@"MinStagingInterval"];
   v11 = v10;
-  v12 = [v4 decodeIntegerForKey:@"BackstopHour"];
-  v13 = [v4 decodeIntegerForKey:@"KeyRollHour"];
-  [v4 decodeDoubleForKey:@"ScanInterval"];
+  v12 = [coderCopy decodeIntegerForKey:@"BackstopHour"];
+  v13 = [coderCopy decodeIntegerForKey:@"KeyRollHour"];
+  [coderCopy decodeDoubleForKey:@"ScanInterval"];
   v15 = v14;
-  v16 = [v4 decodeIntegerForKey:@"SurfaceImmediatelyBeepOnMove"] != 0;
-  v17 = [v4 decodeIntegerForKey:@"surfaceAfterHyperStagingIntervalBetweenBackstopAndKeyroll"] != 0;
-  [v4 decodeDoubleForKey:@"MaxExpectedHELEWildInterval"];
+  v16 = [coderCopy decodeIntegerForKey:@"SurfaceImmediatelyBeepOnMove"] != 0;
+  v17 = [coderCopy decodeIntegerForKey:@"surfaceAfterHyperStagingIntervalBetweenBackstopAndKeyroll"] != 0;
+  [coderCopy decodeDoubleForKey:@"MaxExpectedHELEWildInterval"];
   v19 = v18;
-  [v4 decodeDoubleForKey:@"MaxExpectedDurianWildInterval"];
+  [coderCopy decodeDoubleForKey:@"MaxExpectedDurianWildInterval"];
   v21 = v20;
-  v22 = [v4 decodeBoolForKey:@"HELEImmediate"];
-  [v4 decodeDoubleForKey:@"MinHELEStagingInterval"];
+  v22 = [coderCopy decodeBoolForKey:@"HELEImmediate"];
+  [coderCopy decodeDoubleForKey:@"MinHELEStagingInterval"];
   v24 = v23;
-  v25 = [v4 decodeIntegerForKey:@"HELEBackstopHour"];
-  v26 = [v4 decodeIntegerForKey:@"surfaceHELEAfterHyperStagingIntervalBetweenBackstopAndKeyroll"] != 0;
-  [v4 decodeDoubleForKey:@"HyperHELEStagingInterval"];
+  v25 = [coderCopy decodeIntegerForKey:@"HELEBackstopHour"];
+  v26 = [coderCopy decodeIntegerForKey:@"surfaceHELEAfterHyperStagingIntervalBetweenBackstopAndKeyroll"] != 0;
+  [coderCopy decodeDoubleForKey:@"HyperHELEStagingInterval"];
   v28 = v27;
-  [v4 decodeDoubleForKey:@"HyperStagingInterval"];
+  [coderCopy decodeDoubleForKey:@"HyperStagingInterval"];
   v30 = v29;
 
   LOBYTE(v32) = v26;
   return [(TADeviceRecordSettings *)self initWithExpiryTimeInterval:v12 futureExpiryTimeInterval:v13 purgeTimeInterval:v16 keepAliveInterval:v17 minimumStagingInterval:v22 stagingBackstopHour:v25 assumedKeyRollHour:v35 scanInterval:v34 surfaceImmediatelyBeepOnMove:v33 surfaceAfterHyperStagingIntervalBetweenBackstopAndKeyroll:v9 maxExpectedHELEWildInterval:v11 maxExpectedDurianWildInterval:v15 shouldAlertHELEImmediatelyForImmediateTypes:v19 minimumHELEStagingInterval:v21 stagingHELEBackstopHour:v24 surfaceHELEAfterHyperStagingIntervalBetweenBackstopAndKeyroll:v32 hyperHELEStagingInterval:v28 hyperStagingInterval:v30];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   expiryTimeInterval = self->_expiryTimeInterval;
-  v5 = a3;
-  [v5 encodeDouble:@"ExpiryInterval" forKey:expiryTimeInterval];
-  [v5 encodeDouble:@"FutureExpiryInterval" forKey:self->_futureExpiryTimeInterval];
-  [v5 encodeDouble:@"PurgeInterval" forKey:self->_purgeTimeInterval];
-  [v5 encodeDouble:@"KeepAliveInterval" forKey:self->_keepAliveInterval];
-  [v5 encodeDouble:@"MinStagingInterval" forKey:self->_minimumStagingInterval];
-  [v5 encodeInteger:self->_stagingBackstopHour forKey:@"BackstopHour"];
-  [v5 encodeInteger:self->_assumedKeyRollHour forKey:@"KeyRollHour"];
-  [v5 encodeDouble:@"ScanInterval" forKey:self->_scanInterval];
-  [v5 encodeInteger:self->_surfaceImmediatelyBeepOnMove forKey:@"SurfaceImmediatelyBeepOnMove"];
-  [v5 encodeInteger:self->_surfaceAfterHyperStagingIntervalBetweenBackstopAndKeyroll forKey:@"surfaceAfterHyperStagingIntervalBetweenBackstopAndKeyroll"];
-  [v5 encodeDouble:@"MaxExpectedHELEWildInterval" forKey:self->_maxExpectedHELEWildInterval];
-  [v5 encodeDouble:@"MaxExpectedDurianWildInterval" forKey:self->_maxExpectedDurianWildInterval];
-  [v5 encodeBool:self->_shouldAlertHELEImmediatelyForImmediateTypes forKey:@"HELEImmediate"];
-  [v5 encodeDouble:@"MinHELEStagingInterval" forKey:self->_minimumHELEStagingInterval];
-  [v5 encodeInteger:self->_stagingHELEBackstopHour forKey:@"HELEBackstopHour"];
-  [v5 encodeInteger:self->_surfaceHELEAfterHyperStagingIntervalBetweenBackstopAndKeyroll forKey:@"surfaceHELEAfterHyperStagingIntervalBetweenBackstopAndKeyroll"];
-  [v5 encodeDouble:@"HyperHELEStagingInterval" forKey:self->_hyperHELEStagingInterval];
-  [v5 encodeDouble:@"HyperStagingInterval" forKey:self->_hyperStagingInterval];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"ExpiryInterval" forKey:expiryTimeInterval];
+  [coderCopy encodeDouble:@"FutureExpiryInterval" forKey:self->_futureExpiryTimeInterval];
+  [coderCopy encodeDouble:@"PurgeInterval" forKey:self->_purgeTimeInterval];
+  [coderCopy encodeDouble:@"KeepAliveInterval" forKey:self->_keepAliveInterval];
+  [coderCopy encodeDouble:@"MinStagingInterval" forKey:self->_minimumStagingInterval];
+  [coderCopy encodeInteger:self->_stagingBackstopHour forKey:@"BackstopHour"];
+  [coderCopy encodeInteger:self->_assumedKeyRollHour forKey:@"KeyRollHour"];
+  [coderCopy encodeDouble:@"ScanInterval" forKey:self->_scanInterval];
+  [coderCopy encodeInteger:self->_surfaceImmediatelyBeepOnMove forKey:@"SurfaceImmediatelyBeepOnMove"];
+  [coderCopy encodeInteger:self->_surfaceAfterHyperStagingIntervalBetweenBackstopAndKeyroll forKey:@"surfaceAfterHyperStagingIntervalBetweenBackstopAndKeyroll"];
+  [coderCopy encodeDouble:@"MaxExpectedHELEWildInterval" forKey:self->_maxExpectedHELEWildInterval];
+  [coderCopy encodeDouble:@"MaxExpectedDurianWildInterval" forKey:self->_maxExpectedDurianWildInterval];
+  [coderCopy encodeBool:self->_shouldAlertHELEImmediatelyForImmediateTypes forKey:@"HELEImmediate"];
+  [coderCopy encodeDouble:@"MinHELEStagingInterval" forKey:self->_minimumHELEStagingInterval];
+  [coderCopy encodeInteger:self->_stagingHELEBackstopHour forKey:@"HELEBackstopHour"];
+  [coderCopy encodeInteger:self->_surfaceHELEAfterHyperStagingIntervalBetweenBackstopAndKeyroll forKey:@"surfaceHELEAfterHyperStagingIntervalBetweenBackstopAndKeyroll"];
+  [coderCopy encodeDouble:@"HyperHELEStagingInterval" forKey:self->_hyperHELEStagingInterval];
+  [coderCopy encodeDouble:@"HyperStagingInterval" forKey:self->_hyperStagingInterval];
 }
 
 @end

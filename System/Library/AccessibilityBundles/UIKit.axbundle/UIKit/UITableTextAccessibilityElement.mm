@@ -40,8 +40,8 @@
 - (id)textDelegate;
 - (int64_t)_accessibilityScannerActivateBehavior;
 - (unint64_t)accessibilityTraits;
-- (void)_accessibilityGetBlockForAttribute:(int64_t)a3;
-- (void)_accessibilitySetSelectedTextRange:(_NSRange)a3;
+- (void)_accessibilityGetBlockForAttribute:(int64_t)attribute;
+- (void)_accessibilitySetSelectedTextRange:(_NSRange)range;
 - (void)accessibilityDecrement;
 - (void)accessibilityElementDidBecomeFocused;
 - (void)accessibilityElementDidLoseFocus;
@@ -52,38 +52,38 @@
 
 - (id)_tableViewCellTextDelegate
 {
-  if (a1)
+  if (self)
   {
-    v3 = [(UITableTextAccessibilityElement *)a1 textDelegate];
+    textDelegate = [(UITableTextAccessibilityElement *)self textDelegate];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    MEMORY[0x29EDC9740](v3);
+    MEMORY[0x29EDC9740](textDelegate);
     if (isKindOfClass)
     {
-      v2 = [(UITableTextAccessibilityElement *)a1 textDelegate];
-      v6 = [v2 safeValueForKey:@"tableViewCell"];
-      MEMORY[0x29EDC9740](v2);
+      textDelegate2 = [(UITableTextAccessibilityElement *)self textDelegate];
+      textDelegate3 = [textDelegate2 safeValueForKey:@"tableViewCell"];
+      MEMORY[0x29EDC9740](textDelegate2);
     }
 
     else
     {
-      v6 = [(UITableTextAccessibilityElement *)a1 textDelegate];
+      textDelegate3 = [(UITableTextAccessibilityElement *)self textDelegate];
     }
   }
 
   else
   {
-    v6 = 0;
+    textDelegate3 = 0;
   }
 
-  return v6;
+  return textDelegate3;
 }
 
 - (id)textDelegate
 {
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 56));
+    WeakRetained = objc_loadWeakRetained((self + 56));
   }
 
   else
@@ -96,78 +96,78 @@
 
 - (BOOL)_accessibilityElementServesAsHeadingLandmark
 {
-  v3 = [(UITableTextAccessibilityElement *)self _tableViewCellTextDelegate];
-  v4 = [v3 _accessibilityElementServesAsHeadingLandmark];
-  MEMORY[0x29EDC9740](v3);
-  return v4;
+  _tableViewCellTextDelegate = [(UITableTextAccessibilityElement *)self _tableViewCellTextDelegate];
+  _accessibilityElementServesAsHeadingLandmark = [_tableViewCellTextDelegate _accessibilityElementServesAsHeadingLandmark];
+  MEMORY[0x29EDC9740](_tableViewCellTextDelegate);
+  return _accessibilityElementServesAsHeadingLandmark;
 }
 
 - (void)accessibilityElementDidBecomeFocused
 {
-  v2 = [(UITableTextAccessibilityElement *)self _tableViewCellTextDelegate];
-  [v2 accessibilityElementDidBecomeFocused];
-  MEMORY[0x29EDC9740](v2);
+  _tableViewCellTextDelegate = [(UITableTextAccessibilityElement *)self _tableViewCellTextDelegate];
+  [_tableViewCellTextDelegate accessibilityElementDidBecomeFocused];
+  MEMORY[0x29EDC9740](_tableViewCellTextDelegate);
 }
 
 - (id)_accessibilityCustomActionGroupIdentifier
 {
-  v3 = [(UITableTextAccessibilityElement *)self _tableViewCellTextDelegate];
-  v4 = [v3 _accessibilityCustomActionGroupIdentifier];
-  MEMORY[0x29EDC9740](v3);
+  _tableViewCellTextDelegate = [(UITableTextAccessibilityElement *)self _tableViewCellTextDelegate];
+  _accessibilityCustomActionGroupIdentifier = [_tableViewCellTextDelegate _accessibilityCustomActionGroupIdentifier];
+  MEMORY[0x29EDC9740](_tableViewCellTextDelegate);
 
-  return v4;
+  return _accessibilityCustomActionGroupIdentifier;
 }
 
 - (id)_accessibilityScrollStatus
 {
-  v3 = [(UITableTextAccessibilityElement *)self _tableViewCellTextDelegate];
-  v4 = [v3 _accessibilityScrollStatus];
-  MEMORY[0x29EDC9740](v3);
+  _tableViewCellTextDelegate = [(UITableTextAccessibilityElement *)self _tableViewCellTextDelegate];
+  _accessibilityScrollStatus = [_tableViewCellTextDelegate _accessibilityScrollStatus];
+  MEMORY[0x29EDC9740](_tableViewCellTextDelegate);
 
-  return v4;
+  return _accessibilityScrollStatus;
 }
 
 - (void)accessibilityElementDidLoseFocus
 {
-  v2 = [(UITableTextAccessibilityElement *)self _tableViewCellTextDelegate];
-  [v2 accessibilityElementDidLoseFocus];
-  MEMORY[0x29EDC9740](v2);
+  _tableViewCellTextDelegate = [(UITableTextAccessibilityElement *)self _tableViewCellTextDelegate];
+  [_tableViewCellTextDelegate accessibilityElementDidLoseFocus];
+  MEMORY[0x29EDC9740](_tableViewCellTextDelegate);
 }
 
 - (id)_tableViewCellAttributeDelegate
 {
-  if (a1)
+  if (self)
   {
-    v3 = [(UITableTextAccessibilityElement *)a1 attributeDelegate];
+    attributeDelegate = [(UITableTextAccessibilityElement *)self attributeDelegate];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    MEMORY[0x29EDC9740](v3);
+    MEMORY[0x29EDC9740](attributeDelegate);
     if (isKindOfClass)
     {
-      v2 = [(UITableTextAccessibilityElement *)a1 attributeDelegate];
-      v6 = [v2 tableViewCell];
-      MEMORY[0x29EDC9740](v2);
+      attributeDelegate2 = [(UITableTextAccessibilityElement *)self attributeDelegate];
+      tableViewCell = [attributeDelegate2 tableViewCell];
+      MEMORY[0x29EDC9740](attributeDelegate2);
     }
 
     else
     {
-      v6 = [(UITableTextAccessibilityElement *)a1 attributeDelegate];
+      tableViewCell = [(UITableTextAccessibilityElement *)self attributeDelegate];
     }
   }
 
   else
   {
-    v6 = 0;
+    tableViewCell = 0;
   }
 
-  return v6;
+  return tableViewCell;
 }
 
 - (id)attributeDelegate
 {
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 64));
+    WeakRetained = objc_loadWeakRetained((self + 64));
   }
 
   else
@@ -180,40 +180,40 @@
 
 - (id)_accessibilityTextViewTextOperationResponder
 {
-  v5 = self;
+  selfCopy = self;
   v4[1] = a2;
   v4[0] = [(UITableTextAccessibilityElement *)self _tableViewCellAttributeDelegate];
   if (!v4[0])
   {
-    v4[0] = [(UITableTextAccessibilityElement *)v5 _tableViewCellTextDelegate];
+    v4[0] = [(UITableTextAccessibilityElement *)selfCopy _tableViewCellTextDelegate];
     MEMORY[0x29EDC9740](0);
   }
 
-  v3 = [v4[0] _accessibilityTextViewTextOperationResponder];
+  _accessibilityTextViewTextOperationResponder = [v4[0] _accessibilityTextViewTextOperationResponder];
   objc_storeStrong(v4, 0);
 
-  return v3;
+  return _accessibilityTextViewTextOperationResponder;
 }
 
 - (id)accessibilityLabel
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = [(UITableTextAccessibilityElement *)self _tableViewCellTextDelegate];
   if (location[0])
   {
-    v7 = [location[0] tableTextAccessibleLabel:v6];
+    accessibilityLabel = [location[0] tableTextAccessibleLabel:selfCopy];
   }
 
   else
   {
-    v4.receiver = v6;
+    v4.receiver = selfCopy;
     v4.super_class = UITableTextAccessibilityElement;
-    v7 = [(UITableTextAccessibilityElement *)&v4 accessibilityLabel];
+    accessibilityLabel = [(UITableTextAccessibilityElement *)&v4 accessibilityLabel];
   }
 
   objc_storeStrong(location, 0);
-  v2 = v7;
+  v2 = accessibilityLabel;
 
   return v2;
 }
@@ -239,91 +239,91 @@
 
 - (id)accessibilityValue
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = [(UITableTextAccessibilityElement *)self _tableViewCellAttributeDelegate];
   if (location[0])
   {
-    v8 = [location[0] accessibilityValue];
+    accessibilityValue = [location[0] accessibilityValue];
   }
 
   else
   {
-    v4.receiver = v7;
+    v4.receiver = selfCopy;
     v4.super_class = UITableTextAccessibilityElement;
-    v8 = [(UITableTextAccessibilityElement *)&v4 accessibilityValue];
+    accessibilityValue = [(UITableTextAccessibilityElement *)&v4 accessibilityValue];
   }
 
   v5 = 1;
   objc_storeStrong(location, 0);
-  v2 = v8;
+  v2 = accessibilityValue;
 
   return v2;
 }
 
 - (id)accessibilityHint
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = [(UITableTextAccessibilityElement *)self _tableViewCellAttributeDelegate];
   if (location[0])
   {
-    v8 = [location[0] accessibilityHint];
+    accessibilityHint = [location[0] accessibilityHint];
   }
 
   else
   {
-    v4.receiver = v7;
+    v4.receiver = selfCopy;
     v4.super_class = UITableTextAccessibilityElement;
-    v8 = [(UITableTextAccessibilityElement *)&v4 accessibilityHint];
+    accessibilityHint = [(UITableTextAccessibilityElement *)&v4 accessibilityHint];
   }
 
   v5 = 1;
   objc_storeStrong(location, 0);
-  v2 = v8;
+  v2 = accessibilityHint;
 
   return v2;
 }
 
 - (id)accessibilityIdentifier
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = [(UITableTextAccessibilityElement *)self _tableViewCellAttributeDelegate];
   if (location[0])
   {
-    v8 = [location[0] accessibilityIdentifier];
+    accessibilityIdentifier = [location[0] accessibilityIdentifier];
   }
 
   else
   {
-    v4.receiver = v7;
+    v4.receiver = selfCopy;
     v4.super_class = UITableTextAccessibilityElement;
-    v8 = [(UITableTextAccessibilityElement *)&v4 accessibilityIdentifier];
+    accessibilityIdentifier = [(UITableTextAccessibilityElement *)&v4 accessibilityIdentifier];
   }
 
   v5 = 1;
   objc_storeStrong(location, 0);
-  v2 = v8;
+  v2 = accessibilityIdentifier;
 
   return v2;
 }
 
 - (CGRect)accessibilityFrame
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = [(UITableTextAccessibilityElement *)self _tableViewCellAttributeDelegate];
   if (location[0])
   {
     if (objc_opt_respondsToSelector())
     {
-      [location[0] tableTextAccessibleFrame:v18];
+      [location[0] tableTextAccessibleFrame:selfCopy];
     }
 
     else
     {
-      v14.receiver = v18;
+      v14.receiver = selfCopy;
       v14.super_class = UITableTextAccessibilityElement;
       [(UITableTextAccessibilityElement *)&v14 accessibilityFrame];
     }
@@ -337,7 +337,7 @@
 
   else
   {
-    v16.receiver = v18;
+    v16.receiver = selfCopy;
     v16.super_class = UITableTextAccessibilityElement;
     [(UITableTextAccessibilityElement *)&v16 accessibilityFrame];
     v19 = v2;
@@ -361,123 +361,123 @@
 
 - (id)accessibilityLocalizedStringKey
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = [(UITableTextAccessibilityElement *)self _tableViewCellTextDelegate];
   if (location[0])
   {
-    v7 = [location[0] tableTextAccessibleStringKey:v6];
+    accessibilityLocalizedStringKey = [location[0] tableTextAccessibleStringKey:selfCopy];
   }
 
   else
   {
-    v4.receiver = v6;
+    v4.receiver = selfCopy;
     v4.super_class = UITableTextAccessibilityElement;
-    v7 = [(UITableTextAccessibilityElement *)&v4 accessibilityLocalizedStringKey];
+    accessibilityLocalizedStringKey = [(UITableTextAccessibilityElement *)&v4 accessibilityLocalizedStringKey];
   }
 
   objc_storeStrong(location, 0);
-  v2 = v7;
+  v2 = accessibilityLocalizedStringKey;
 
   return v2;
 }
 
 - (id)accessibilityLocalizationBundleID
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = [(UITableTextAccessibilityElement *)self _tableViewCellTextDelegate];
   if (location[0])
   {
-    v7 = [location[0] tableTextAccessibleLocalizationBundleID:v6];
+    accessibilityLocalizationBundleID = [location[0] tableTextAccessibleLocalizationBundleID:selfCopy];
   }
 
   else
   {
-    v4.receiver = v6;
+    v4.receiver = selfCopy;
     v4.super_class = UITableTextAccessibilityElement;
-    v7 = [(UITableTextAccessibilityElement *)&v4 accessibilityLocalizationBundleID];
+    accessibilityLocalizationBundleID = [(UITableTextAccessibilityElement *)&v4 accessibilityLocalizationBundleID];
   }
 
   objc_storeStrong(location, 0);
-  v2 = v7;
+  v2 = accessibilityLocalizationBundleID;
 
   return v2;
 }
 
 - (id)accessibilityLocalizationBundlePath
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = [(UITableTextAccessibilityElement *)self _tableViewCellTextDelegate];
   if (location[0])
   {
-    v7 = [location[0] tableTextAccessibleLocalizationBundlePath:v6];
+    accessibilityLocalizationBundlePath = [location[0] tableTextAccessibleLocalizationBundlePath:selfCopy];
   }
 
   else
   {
-    v4.receiver = v6;
+    v4.receiver = selfCopy;
     v4.super_class = UITableTextAccessibilityElement;
-    v7 = [(UITableTextAccessibilityElement *)&v4 accessibilityLocalizationBundlePath];
+    accessibilityLocalizationBundlePath = [(UITableTextAccessibilityElement *)&v4 accessibilityLocalizationBundlePath];
   }
 
   objc_storeStrong(location, 0);
-  v2 = v7;
+  v2 = accessibilityLocalizationBundlePath;
 
   return v2;
 }
 
 - (id)accessibilityLocalizedStringTableName
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = [(UITableTextAccessibilityElement *)self _tableViewCellTextDelegate];
   if (location[0])
   {
-    v7 = [location[0] tableTextAccessibleLocalizedTableName:v6];
+    accessibilityLocalizedStringTableName = [location[0] tableTextAccessibleLocalizedTableName:selfCopy];
   }
 
   else
   {
-    v4.receiver = v6;
+    v4.receiver = selfCopy;
     v4.super_class = UITableTextAccessibilityElement;
-    v7 = [(UITableTextAccessibilityElement *)&v4 accessibilityLocalizedStringTableName];
+    accessibilityLocalizedStringTableName = [(UITableTextAccessibilityElement *)&v4 accessibilityLocalizedStringTableName];
   }
 
   objc_storeStrong(location, 0);
-  v2 = v7;
+  v2 = accessibilityLocalizedStringTableName;
 
   return v2;
 }
 
 - (id)accessibilityLanguage
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = [(UITableTextAccessibilityElement *)self _tableViewCellAttributeDelegate];
   if (location[0])
   {
-    v8 = [location[0] accessibilityLanguage];
+    accessibilityLanguage = [location[0] accessibilityLanguage];
   }
 
   else
   {
-    v4.receiver = v7;
+    v4.receiver = selfCopy;
     v4.super_class = UITableTextAccessibilityElement;
-    v8 = [(UITableTextAccessibilityElement *)&v4 accessibilityLanguage];
+    accessibilityLanguage = [(UITableTextAccessibilityElement *)&v4 accessibilityLanguage];
   }
 
   v5 = 1;
   objc_storeStrong(location, 0);
-  v2 = v8;
+  v2 = accessibilityLanguage;
 
   return v2;
 }
 
 - (CGPoint)accessibilityActivationPoint
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = [(UITableTextAccessibilityElement *)self _tableViewCellAttributeDelegate];
   if (location[0])
@@ -487,7 +487,7 @@
 
   else
   {
-    v6.receiver = v9;
+    v6.receiver = selfCopy;
     v6.super_class = UITableTextAccessibilityElement;
     [(UITableTextAccessibilityElement *)&v6 accessibilityActivationPoint];
   }
@@ -505,28 +505,28 @@
 
 - (unint64_t)accessibilityTraits
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
   v4.receiver = self;
   v4.super_class = UITableTextAccessibilityElement;
-  v5 = [(UITableTextAccessibilityElement *)&v4 accessibilityTraits];
-  location = [(UITableTextAccessibilityElement *)v7 _tableViewCellAttributeDelegate];
+  accessibilityTraits = [(UITableTextAccessibilityElement *)&v4 accessibilityTraits];
+  location = [(UITableTextAccessibilityElement *)selfCopy _tableViewCellAttributeDelegate];
   if (location)
   {
-    v5 = [location accessibilityTraits];
-    v5 |= *MEMORY[0x29EDC7FD0];
-    v8 = v5;
+    accessibilityTraits = [location accessibilityTraits];
+    accessibilityTraits |= *MEMORY[0x29EDC7FD0];
+    v8 = accessibilityTraits;
   }
 
   else
   {
-    [(UITableTextAccessibilityElement *)v7 accessibilityFrame];
+    [(UITableTextAccessibilityElement *)selfCopy accessibilityFrame];
     if (CGRectGetHeight(v9) == 0.0)
     {
-      v5 |= *MEMORY[0x29EDC7578];
+      accessibilityTraits |= *MEMORY[0x29EDC7578];
     }
 
-    v8 = v5;
+    v8 = accessibilityTraits;
   }
 
   objc_storeStrong(&location, 0);
@@ -535,11 +535,11 @@
 
 - (_NSRange)accessibilityRowRange
 {
-  v5 = [(UITableTextAccessibilityElement *)self _tableViewCellTextDelegate];
-  v6 = [v5 accessibilityRowRange];
+  _tableViewCellTextDelegate = [(UITableTextAccessibilityElement *)self _tableViewCellTextDelegate];
+  accessibilityRowRange = [_tableViewCellTextDelegate accessibilityRowRange];
   v7 = v2;
-  MEMORY[0x29EDC9740](v5);
-  v3 = v6;
+  MEMORY[0x29EDC9740](_tableViewCellTextDelegate);
+  v3 = accessibilityRowRange;
   v4 = v7;
   result.length = v4;
   result.location = v3;
@@ -548,19 +548,19 @@
 
 - (BOOL)_accessibilityImplementsDefaultRowRange
 {
-  v3 = [(UITableTextAccessibilityElement *)self _tableViewCellTextDelegate];
-  v4 = [v3 _accessibilityImplementsDefaultRowRange];
-  MEMORY[0x29EDC9740](v3);
-  return v4;
+  _tableViewCellTextDelegate = [(UITableTextAccessibilityElement *)self _tableViewCellTextDelegate];
+  _accessibilityImplementsDefaultRowRange = [_tableViewCellTextDelegate _accessibilityImplementsDefaultRowRange];
+  MEMORY[0x29EDC9740](_tableViewCellTextDelegate);
+  return _accessibilityImplementsDefaultRowRange;
 }
 
 - (_NSRange)_accessibilityIndexPathAsRange
 {
-  v5 = [(UITableTextAccessibilityElement *)self _tableViewCellTextDelegate];
-  v6 = [v5 _accessibilityIndexPathAsRange];
+  _tableViewCellTextDelegate = [(UITableTextAccessibilityElement *)self _tableViewCellTextDelegate];
+  _accessibilityIndexPathAsRange = [_tableViewCellTextDelegate _accessibilityIndexPathAsRange];
   v7 = v2;
-  MEMORY[0x29EDC9740](v5);
-  v3 = v6;
+  MEMORY[0x29EDC9740](_tableViewCellTextDelegate);
+  v3 = _accessibilityIndexPathAsRange;
   v4 = v7;
   result.length = v4;
   result.location = v3;
@@ -572,9 +572,9 @@
   v4[2] = self;
   v4[1] = a2;
   v4[0] = [(UITableTextAccessibilityElement *)self _tableViewCellTextDelegate];
-  v3 = [v4[0] _accessibilityRetainsCustomRotorActionSetting];
+  _accessibilityRetainsCustomRotorActionSetting = [v4[0] _accessibilityRetainsCustomRotorActionSetting];
   objc_storeStrong(v4, 0);
-  return v3;
+  return _accessibilityRetainsCustomRotorActionSetting;
 }
 
 - (BOOL)_accessibilitySupportsActivateAction
@@ -582,9 +582,9 @@
   v4[2] = self;
   v4[1] = a2;
   v4[0] = [(UITableTextAccessibilityElement *)self _tableViewCellTextDelegate];
-  v3 = [v4[0] _accessibilitySupportsActivateAction];
+  _accessibilitySupportsActivateAction = [v4[0] _accessibilitySupportsActivateAction];
   objc_storeStrong(v4, 0);
-  return v3;
+  return _accessibilitySupportsActivateAction;
 }
 
 - (BOOL)accessibilityActivate
@@ -592,42 +592,42 @@
   v4[2] = self;
   v4[1] = a2;
   v4[0] = [(UITableTextAccessibilityElement *)self _tableViewCellTextDelegate];
-  v3 = [v4[0] accessibilityActivate];
+  accessibilityActivate = [v4[0] accessibilityActivate];
   objc_storeStrong(v4, 0);
-  return v3;
+  return accessibilityActivate;
 }
 
 - (double)_accessibilityDelayBeforeUpdatingOnActivation
 {
-  v4 = [(UITableTextAccessibilityElement *)self _tableViewCellTextDelegate];
-  [v4 _accessibilityDelayBeforeUpdatingOnActivation];
+  _tableViewCellTextDelegate = [(UITableTextAccessibilityElement *)self _tableViewCellTextDelegate];
+  [_tableViewCellTextDelegate _accessibilityDelayBeforeUpdatingOnActivation];
   v5 = v2;
-  MEMORY[0x29EDC9740](v4);
+  MEMORY[0x29EDC9740](_tableViewCellTextDelegate);
   return v5;
 }
 
-- (void)_accessibilitySetSelectedTextRange:(_NSRange)a3
+- (void)_accessibilitySetSelectedTextRange:(_NSRange)range
 {
-  v3 = [(UITableTextAccessibilityElement *)self _tableViewCellTextDelegate];
-  [v3 _accessibilitySetSelectedTextRange:{a3.location, a3.length}];
-  MEMORY[0x29EDC9740](v3);
+  _tableViewCellTextDelegate = [(UITableTextAccessibilityElement *)self _tableViewCellTextDelegate];
+  [_tableViewCellTextDelegate _accessibilitySetSelectedTextRange:{range.location, range.length}];
+  MEMORY[0x29EDC9740](_tableViewCellTextDelegate);
 }
 
 - (BOOL)_accessibilityIsAwayAlertElement
 {
-  v3 = [(UITableTextAccessibilityElement *)self _tableViewCellTextDelegate];
-  v4 = [v3 _accessibilityIsAwayAlertElement];
-  MEMORY[0x29EDC9740](v3);
-  return v4;
+  _tableViewCellTextDelegate = [(UITableTextAccessibilityElement *)self _tableViewCellTextDelegate];
+  _accessibilityIsAwayAlertElement = [_tableViewCellTextDelegate _accessibilityIsAwayAlertElement];
+  MEMORY[0x29EDC9740](_tableViewCellTextDelegate);
+  return _accessibilityIsAwayAlertElement;
 }
 
 - (_NSRange)_accessibilitySelectedTextRange
 {
-  v5 = [(UITableTextAccessibilityElement *)self _tableViewCellTextDelegate];
-  v6 = [v5 _accessibilitySelectedTextRange];
+  _tableViewCellTextDelegate = [(UITableTextAccessibilityElement *)self _tableViewCellTextDelegate];
+  _accessibilitySelectedTextRange = [_tableViewCellTextDelegate _accessibilitySelectedTextRange];
   v7 = v2;
-  MEMORY[0x29EDC9740](v5);
-  v3 = v6;
+  MEMORY[0x29EDC9740](_tableViewCellTextDelegate);
+  v3 = _accessibilitySelectedTextRange;
   v4 = v7;
   result.length = v4;
   result.location = v3;
@@ -636,38 +636,38 @@
 
 - (id)_accessibilityEquivalenceTag
 {
-  v3 = [(UITableTextAccessibilityElement *)self _tableViewCellTextDelegate];
-  v4 = [v3 _accessibilityEquivalenceTag];
-  MEMORY[0x29EDC9740](v3);
+  _tableViewCellTextDelegate = [(UITableTextAccessibilityElement *)self _tableViewCellTextDelegate];
+  _accessibilityEquivalenceTag = [_tableViewCellTextDelegate _accessibilityEquivalenceTag];
+  MEMORY[0x29EDC9740](_tableViewCellTextDelegate);
 
-  return v4;
+  return _accessibilityEquivalenceTag;
 }
 
 - (BOOL)_accessibilityIsSpeakThisElement
 {
-  v3 = [(UITableTextAccessibilityElement *)self _tableViewCellTextDelegate];
-  v4 = [v3 _accessibilityIsSpeakThisElement];
-  MEMORY[0x29EDC9740](v3);
-  return v4;
+  _tableViewCellTextDelegate = [(UITableTextAccessibilityElement *)self _tableViewCellTextDelegate];
+  _accessibilityIsSpeakThisElement = [_tableViewCellTextDelegate _accessibilityIsSpeakThisElement];
+  MEMORY[0x29EDC9740](_tableViewCellTextDelegate);
+  return _accessibilityIsSpeakThisElement;
 }
 
-- (void)_accessibilityGetBlockForAttribute:(int64_t)a3
+- (void)_accessibilityGetBlockForAttribute:(int64_t)attribute
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
-  v6 = a3;
-  if (a3 == 5)
+  attributeCopy = attribute;
+  if (attribute == 5)
   {
-    v4 = [(UITableTextAccessibilityElement *)v8 _tableViewCellTextDelegate];
-    v9 = [v4 _accessibilityGetBlockForAttribute:5];
-    MEMORY[0x29EDC9740](v4);
+    _tableViewCellTextDelegate = [(UITableTextAccessibilityElement *)selfCopy _tableViewCellTextDelegate];
+    v9 = [_tableViewCellTextDelegate _accessibilityGetBlockForAttribute:5];
+    MEMORY[0x29EDC9740](_tableViewCellTextDelegate);
   }
 
   else
   {
-    v5.receiver = v8;
+    v5.receiver = selfCopy;
     v5.super_class = UITableTextAccessibilityElement;
-    return [(UITableTextAccessibilityElement *)&v5 _accessibilityGetBlockForAttribute:v6];
+    return [(UITableTextAccessibilityElement *)&v5 _accessibilityGetBlockForAttribute:attributeCopy];
   }
 
   return v9;
@@ -675,7 +675,7 @@
 
 - (id)_accessibilitySpeakThisString
 {
-  v15 = self;
+  selfCopy = self;
   v14[1] = a2;
   v14[0] = 0;
   if (!_accessibilitySpeakThisString_BaseNSObjectMethod)
@@ -686,27 +686,27 @@
     _accessibilitySpeakThisString_BaseUIResponderMethod = class_getInstanceMethod(v3, 0x1FC1A25D1);
   }
 
-  location = [(UITableTextAccessibilityElement *)v15 _tableViewCellTextDelegate];
+  location = [(UITableTextAccessibilityElement *)selfCopy _tableViewCellTextDelegate];
   if (location)
   {
     v4 = objc_opt_class();
     InstanceMethod = class_getInstanceMethod(v4, sel__accessibilitySpeakThisString);
     if (InstanceMethod != _accessibilitySpeakThisString_BaseNSObjectMethod && InstanceMethod != _accessibilitySpeakThisString_BaseUIResponderMethod)
     {
-      v5 = [location _accessibilitySpeakThisString];
+      _accessibilitySpeakThisString = [location _accessibilitySpeakThisString];
       v6 = v14[0];
-      v14[0] = v5;
+      v14[0] = _accessibilitySpeakThisString;
       MEMORY[0x29EDC9740](v6);
     }
   }
 
   if (!v14[0])
   {
-    v11.receiver = v15;
+    v11.receiver = selfCopy;
     v11.super_class = UITableTextAccessibilityElement;
-    v7 = [(UITableTextAccessibilityElement *)&v11 _accessibilitySpeakThisString];
+    _accessibilitySpeakThisString2 = [(UITableTextAccessibilityElement *)&v11 _accessibilitySpeakThisString];
     v8 = v14[0];
-    v14[0] = v7;
+    v14[0] = _accessibilitySpeakThisString2;
     MEMORY[0x29EDC9740](v8);
   }
 
@@ -719,26 +719,26 @@
 
 - (int64_t)_accessibilityScannerActivateBehavior
 {
-  v3 = [(UITableTextAccessibilityElement *)self _tableViewCellAttributeDelegate];
-  v4 = [v3 _accessibilityScannerActivateBehavior];
-  MEMORY[0x29EDC9740](v3);
-  return v4;
+  _tableViewCellAttributeDelegate = [(UITableTextAccessibilityElement *)self _tableViewCellAttributeDelegate];
+  _accessibilityScannerActivateBehavior = [_tableViewCellAttributeDelegate _accessibilityScannerActivateBehavior];
+  MEMORY[0x29EDC9740](_tableViewCellAttributeDelegate);
+  return _accessibilityScannerActivateBehavior;
 }
 
 - (id)accessibilityUserInputLabels
 {
-  v14 = self;
+  selfCopy = self;
   v13[1] = a2;
   v13[0] = 0;
   location = [(UITableTextAccessibilityElement *)self _tableViewCellTextDelegate];
   if (location)
   {
-    v4 = [location accessibilityUserInputLabels];
+    accessibilityUserInputLabels = [location accessibilityUserInputLabels];
     v5 = v13[0];
-    v13[0] = v4;
-    if (![v4 count])
+    v13[0] = accessibilityUserInputLabels;
+    if (![accessibilityUserInputLabels count])
     {
-      v10 = [location tableTextAccessibleLabel:v14];
+      v10 = [location tableTextAccessibleLabel:selfCopy];
       v6 = MEMORY[0x29ED3D9A0]();
       v7 = v13[0];
       v13[0] = v6;
@@ -749,11 +749,11 @@
 
   else
   {
-    v11.receiver = v14;
+    v11.receiver = selfCopy;
     v11.super_class = UITableTextAccessibilityElement;
-    v2 = [(UITableTextAccessibilityElement *)&v11 accessibilityUserInputLabels];
+    accessibilityUserInputLabels2 = [(UITableTextAccessibilityElement *)&v11 accessibilityUserInputLabels];
     v3 = v13[0];
-    v13[0] = v2;
+    v13[0] = accessibilityUserInputLabels2;
     MEMORY[0x29EDC9740](v3);
   }
 
@@ -766,29 +766,29 @@
 
 - (void)accessibilityDecrement
 {
-  v2 = [(UITableTextAccessibilityElement *)self _tableViewCellTextDelegate];
-  [v2 accessibilityDecrement];
-  MEMORY[0x29EDC9740](v2);
+  _tableViewCellTextDelegate = [(UITableTextAccessibilityElement *)self _tableViewCellTextDelegate];
+  [_tableViewCellTextDelegate accessibilityDecrement];
+  MEMORY[0x29EDC9740](_tableViewCellTextDelegate);
 }
 
 - (void)accessibilityIncrement
 {
-  v2 = [(UITableTextAccessibilityElement *)self _tableViewCellTextDelegate];
-  [v2 accessibilityIncrement];
-  MEMORY[0x29EDC9740](v2);
+  _tableViewCellTextDelegate = [(UITableTextAccessibilityElement *)self _tableViewCellTextDelegate];
+  [_tableViewCellTextDelegate accessibilityIncrement];
+  MEMORY[0x29EDC9740](_tableViewCellTextDelegate);
 }
 
 - (id)description
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
   v3 = MEMORY[0x29EDBA0F8];
   v7.receiver = self;
   v7.super_class = UITableTextAccessibilityElement;
   v5 = [(UITableTextAccessibilityElement *)&v7 description];
-  v4 = [(UITableTextAccessibilityElement *)v9 accessibilityContainer];
-  v6 = [v3 stringWithFormat:@"%@ < %@", v5, v4];
-  MEMORY[0x29EDC9740](v4);
+  accessibilityContainer = [(UITableTextAccessibilityElement *)selfCopy accessibilityContainer];
+  v6 = [v3 stringWithFormat:@"%@ < %@", v5, accessibilityContainer];
+  MEMORY[0x29EDC9740](accessibilityContainer);
   MEMORY[0x29EDC9740](v5);
 
   return v6;
@@ -796,42 +796,42 @@
 
 - (id)_accessibilityAllDragSourceDescriptors
 {
-  v3 = [(UITableTextAccessibilityElement *)self textDelegate];
-  v4 = [v3 accessibilityDragSourceDescriptors];
-  MEMORY[0x29EDC9740](v3);
+  textDelegate = [(UITableTextAccessibilityElement *)self textDelegate];
+  accessibilityDragSourceDescriptors = [textDelegate accessibilityDragSourceDescriptors];
+  MEMORY[0x29EDC9740](textDelegate);
 
-  return v4;
+  return accessibilityDragSourceDescriptors;
 }
 
 - (id)_accessibilityAllDropPointDescriptors
 {
-  v3 = [(UITableTextAccessibilityElement *)self textDelegate];
-  v4 = [v3 accessibilityDropPointDescriptors];
-  MEMORY[0x29EDC9740](v3);
+  textDelegate = [(UITableTextAccessibilityElement *)self textDelegate];
+  accessibilityDropPointDescriptors = [textDelegate accessibilityDropPointDescriptors];
+  MEMORY[0x29EDC9740](textDelegate);
 
-  return v4;
+  return accessibilityDropPointDescriptors;
 }
 
 - (id)_accessibilityCapturedImages
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = [(UITableTextAccessibilityElement *)self _tableViewCellAttributeDelegate];
   if (location[0])
   {
-    v8 = [location[0] _accessibilityCapturedImages];
+    _accessibilityCapturedImages = [location[0] _accessibilityCapturedImages];
   }
 
   else
   {
-    v4.receiver = v7;
+    v4.receiver = selfCopy;
     v4.super_class = UITableTextAccessibilityElement;
-    v8 = [(UITableTextAccessibilityElement *)&v4 _accessibilityCapturedImages];
+    _accessibilityCapturedImages = [(UITableTextAccessibilityElement *)&v4 _accessibilityCapturedImages];
   }
 
   v5 = 1;
   objc_storeStrong(location, 0);
-  v2 = v8;
+  v2 = _accessibilityCapturedImages;
 
   return v2;
 }

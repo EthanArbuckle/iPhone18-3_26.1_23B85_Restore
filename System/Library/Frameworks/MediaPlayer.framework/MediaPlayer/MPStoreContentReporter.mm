@@ -1,23 +1,23 @@
 @interface MPStoreContentReporter
 + (MPStoreContentReporter)sharedReporter;
 - (MPStoreContentReporter)init;
-- (id)_deleteCommentURLComponentsFromBag:(id)a3;
-- (id)_deletePostURLComponentsFromBag:(id)a3;
-- (id)_dictionariesForType:(int64_t)a3;
+- (id)_deleteCommentURLComponentsFromBag:(id)bag;
+- (id)_deletePostURLComponentsFromBag:(id)bag;
+- (id)_dictionariesForType:(int64_t)type;
 - (id)_reportConcernBagDictionary;
 - (id)baseURLStringForReport;
-- (id)reportsForType:(int64_t)a3 contentID:(id)a4 aucType:(id)a5 commentText:(id)a6;
-- (void)_performWithBag:(id)a3;
-- (void)deleteComment:(id)a3 activityID:(id)a4 completion:(id)a5;
-- (void)deletePost:(id)a3 completion:(id)a4;
-- (void)submitReport:(id)a3 completion:(id)a4;
+- (id)reportsForType:(int64_t)type contentID:(id)d aucType:(id)aucType commentText:(id)text;
+- (void)_performWithBag:(id)bag;
+- (void)deleteComment:(id)comment activityID:(id)d completion:(id)completion;
+- (void)deletePost:(id)post completion:(id)completion;
+- (void)submitReport:(id)report completion:(id)completion;
 @end
 
 @implementation MPStoreContentReporter
 
-- (id)_deletePostURLComponentsFromBag:(id)a3
+- (id)_deletePostURLComponentsFromBag:(id)bag
 {
-  v3 = [a3 dictionaryForBagKey:*MEMORY[0x1E69E4310]];
+  v3 = [bag dictionaryForBagKey:*MEMORY[0x1E69E4310]];
   v4 = v3;
   if (v3)
   {
@@ -34,9 +34,9 @@
   return v7;
 }
 
-- (id)_deleteCommentURLComponentsFromBag:(id)a3
+- (id)_deleteCommentURLComponentsFromBag:(id)bag
 {
-  v3 = [a3 dictionaryForBagKey:*MEMORY[0x1E69E4310]];
+  v3 = [bag dictionaryForBagKey:*MEMORY[0x1E69E4310]];
   v4 = v3;
   if (v3)
   {
@@ -100,18 +100,18 @@ void __53__MPStoreContentReporter__reportConcernBagDictionary__block_invoke(uint
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)_dictionariesForType:(int64_t)a3
+- (id)_dictionariesForType:(int64_t)type
 {
-  if (a3 > 6)
+  if (type > 6)
   {
     v5 = 0;
   }
 
   else
   {
-    v3 = off_1E767C6C8[a3];
-    v4 = [(MPStoreContentReporter *)self _reportConcernBagDictionary];
-    v5 = [v4 objectForKey:v3];
+    v3 = off_1E767C6C8[type];
+    _reportConcernBagDictionary = [(MPStoreContentReporter *)self _reportConcernBagDictionary];
+    v5 = [_reportConcernBagDictionary objectForKey:v3];
   }
 
   return v5;
@@ -119,19 +119,19 @@ void __53__MPStoreContentReporter__reportConcernBagDictionary__block_invoke(uint
 
 - (id)baseURLStringForReport
 {
-  v2 = [(MPStoreContentReporter *)self _reportConcernBagDictionary];
-  v3 = [v2 objectForKey:@"url"];
+  _reportConcernBagDictionary = [(MPStoreContentReporter *)self _reportConcernBagDictionary];
+  v3 = [_reportConcernBagDictionary objectForKey:@"url"];
 
   return v3;
 }
 
-- (id)reportsForType:(int64_t)a3 contentID:(id)a4 aucType:(id)a5 commentText:(id)a6
+- (id)reportsForType:(int64_t)type contentID:(id)d aucType:(id)aucType commentText:(id)text
 {
   v30 = *MEMORY[0x1E69E9840];
-  v24 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [(MPStoreContentReporter *)self _dictionariesForType:a3];
+  dCopy = d;
+  aucTypeCopy = aucType;
+  textCopy = text;
+  v12 = [(MPStoreContentReporter *)self _dictionariesForType:type];
   v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v25 = 0u;
   v26 = 0u;
@@ -156,12 +156,12 @@ void __53__MPStoreContentReporter__reportConcernBagDictionary__block_invoke(uint
         v19 = [v18 objectForKey:@"label"];
         v20 = [v18 objectForKey:@"id"];
         v21 = objc_alloc_init(MPStoreContentReport);
-        [(MPStoreContentReport *)v21 setConcernItemType:a3];
+        [(MPStoreContentReport *)v21 setConcernItemType:type];
         [(MPStoreContentReport *)v21 setConcernTypeID:v20];
         [(MPStoreContentReport *)v21 setDisplayText:v19];
-        [(MPStoreContentReport *)v21 setContentID:v24];
-        [(MPStoreContentReport *)v21 setAucType:v10];
-        [(MPStoreContentReport *)v21 setCommentText:v11];
+        [(MPStoreContentReport *)v21 setContentID:dCopy];
+        [(MPStoreContentReport *)v21 setAucType:aucTypeCopy];
+        [(MPStoreContentReport *)v21 setCommentText:textCopy];
         [v13 addObject:v21];
       }
 
@@ -174,21 +174,21 @@ void __53__MPStoreContentReporter__reportConcernBagDictionary__block_invoke(uint
   return v13;
 }
 
-- (void)_performWithBag:(id)a3
+- (void)_performWithBag:(id)bag
 {
-  v3 = a3;
+  bagCopy = bag;
   v4 = objc_alloc(MEMORY[0x1E69E4618]);
-  v5 = [MEMORY[0x1E69E4680] activeAccount];
-  v6 = [v4 initWithIdentity:v5];
+  activeAccount = [MEMORY[0x1E69E4680] activeAccount];
+  v6 = [v4 initWithIdentity:activeAccount];
 
-  v7 = [MEMORY[0x1E69E4658] sharedBagProvider];
+  mEMORY[0x1E69E4658] = [MEMORY[0x1E69E4658] sharedBagProvider];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __42__MPStoreContentReporter__performWithBag___block_invoke;
   v9[3] = &unk_1E767C620;
-  v10 = v3;
-  v8 = v3;
-  [v7 getBagForRequestContext:v6 withCompletionHandler:v9];
+  v10 = bagCopy;
+  v8 = bagCopy;
+  [mEMORY[0x1E69E4658] getBagForRequestContext:v6 withCompletionHandler:v9];
 }
 
 uint64_t __42__MPStoreContentReporter__performWithBag___block_invoke(uint64_t result, uint64_t a2, uint64_t a3)
@@ -201,19 +201,19 @@ uint64_t __42__MPStoreContentReporter__performWithBag___block_invoke(uint64_t re
   return result;
 }
 
-- (void)deletePost:(id)a3 completion:(id)a4
+- (void)deletePost:(id)post completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  postCopy = post;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __48__MPStoreContentReporter_deletePost_completion___block_invoke;
   v10[3] = &unk_1E767C5F8;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = postCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = postCopy;
   [(MPStoreContentReporter *)self _performWithBag:v10];
 }
 
@@ -252,19 +252,19 @@ uint64_t __48__MPStoreContentReporter_deletePost_completion___block_invoke_2(uin
   return result;
 }
 
-- (void)deleteComment:(id)a3 activityID:(id)a4 completion:(id)a5
+- (void)deleteComment:(id)comment activityID:(id)d completion:(id)completion
 {
-  v7 = a3;
-  v8 = a5;
+  commentCopy = comment;
+  completionCopy = completion;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __62__MPStoreContentReporter_deleteComment_activityID_completion___block_invoke;
   v11[3] = &unk_1E767C5F8;
   v11[4] = self;
-  v12 = v7;
-  v13 = v8;
-  v9 = v8;
-  v10 = v7;
+  v12 = commentCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = commentCopy;
   [(MPStoreContentReporter *)self _performWithBag:v11];
 }
 
@@ -302,46 +302,46 @@ uint64_t __62__MPStoreContentReporter_deleteComment_activityID_completion___bloc
   return result;
 }
 
-- (void)submitReport:(id)a3 completion:(id)a4
+- (void)submitReport:(id)report completion:(id)completion
 {
   v54[5] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v41 = a4;
-  v42 = self;
+  reportCopy = report;
+  completionCopy = completion;
+  selfCopy = self;
   v7 = MEMORY[0x1E696AF20];
-  v8 = [(MPStoreContentReporter *)self baseURLStringForReport];
-  v9 = [v7 componentsWithString:v8];
+  baseURLStringForReport = [(MPStoreContentReporter *)self baseURLStringForReport];
+  v9 = [v7 componentsWithString:baseURLStringForReport];
 
   v10 = MEMORY[0x1E695DF70];
   v43 = v9;
-  v11 = [v9 queryItems];
-  v12 = [v10 arrayWithArray:v11];
+  queryItems = [v9 queryItems];
+  v12 = [v10 arrayWithArray:queryItems];
 
   v13 = MEMORY[0x1E695DF90];
   v53[0] = @"activity";
-  v14 = [v6 contentID];
-  v54[0] = v14;
+  contentID = [reportCopy contentID];
+  v54[0] = contentID;
   v53[1] = @"concernItemType";
-  v15 = [v6 concernItemType];
+  concernItemType = [reportCopy concernItemType];
   v16 = &stru_1F149ECA8;
-  if (v15 <= 6)
+  if (concernItemType <= 6)
   {
-    v16 = off_1E767C690[v15];
+    v16 = off_1E767C690[concernItemType];
   }
 
   v54[1] = v16;
   v53[2] = @"concernTypeId";
-  v17 = [v6 concernTypeID];
-  v54[2] = v17;
+  concernTypeID = [reportCopy concernTypeID];
+  v54[2] = concernTypeID;
   v53[3] = @"concernItemId";
-  v18 = [v6 contentID];
-  v54[3] = v18;
+  contentID2 = [reportCopy contentID];
+  v54[3] = contentID2;
   v53[4] = @"commentText";
-  v19 = [v6 commentText];
-  v20 = v19;
-  if (v19)
+  commentText = [reportCopy commentText];
+  v20 = commentText;
+  if (commentText)
   {
-    v21 = v19;
+    v21 = commentText;
   }
 
   else
@@ -386,14 +386,14 @@ uint64_t __62__MPStoreContentReporter_deleteComment_activityID_completion___bloc
     while (v26);
   }
 
-  v33 = [v6 aucType];
-  v34 = [v33 length];
+  aucType = [reportCopy aucType];
+  v34 = [aucType length];
 
   if (v34)
   {
     v35 = MEMORY[0x1E696AF60];
-    v36 = [v6 aucType];
-    v37 = [v35 queryItemWithName:@"concernItemAUCType" value:v36];
+    aucType2 = [reportCopy aucType];
+    v37 = [v35 queryItemWithName:@"concernItemAUCType" value:aucType2];
 
     [v12 addObject:v37];
   }
@@ -404,12 +404,12 @@ uint64_t __62__MPStoreContentReporter_deleteComment_activityID_completion___bloc
   v44[1] = 3221225472;
   v44[2] = __50__MPStoreContentReporter_submitReport_completion___block_invoke;
   v44[3] = &unk_1E767C5F8;
-  v46 = v42;
-  v47 = v41;
+  v46 = selfCopy;
+  v47 = completionCopy;
   v45 = v38;
-  v39 = v41;
+  v39 = completionCopy;
   v40 = v38;
-  [(MPStoreContentReporter *)v42 _performWithBag:v44];
+  [(MPStoreContentReporter *)selfCopy _performWithBag:v44];
 }
 
 void __50__MPStoreContentReporter_submitReport_completion___block_invoke(uint64_t a1)

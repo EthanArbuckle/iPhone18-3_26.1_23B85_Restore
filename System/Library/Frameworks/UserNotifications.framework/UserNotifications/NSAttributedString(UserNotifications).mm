@@ -51,12 +51,12 @@
 - (id)_un_RTFDData
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v2 = [a1 length];
+  v2 = [self length];
   v10 = @"DocumentType";
   v11[0] = @"NSRTFD";
   v3 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
   v9 = 0;
-  v4 = [a1 dataFromRange:0 documentAttributes:v2 error:{v3, &v9}];
+  v4 = [self dataFromRange:0 documentAttributes:v2 error:{v3, &v9}];
   v5 = v9;
   if (v5)
   {
@@ -74,30 +74,30 @@
 
 - (id)_un_truncatedAttributedStringToMaxLength:()UserNotifications
 {
-  if ([a1 length] <= a3)
+  if ([self length] <= a3)
   {
-    v5 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = [a1 attributedSubstringFromRange:{0, a3}];
+    selfCopy = [self attributedSubstringFromRange:{0, a3}];
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (id)_un_attributedStringByKeepingOnlyAttachmentAttributes
 {
-  v2 = [a1 mutableCopy];
-  v3 = [a1 length];
+  v2 = [self mutableCopy];
+  v3 = [self length];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __94__NSAttributedString_UserNotifications___un_attributedStringByKeepingOnlyAttachmentAttributes__block_invoke;
   v6[3] = &unk_1E7CFFAB8;
   v4 = v2;
   v7 = v4;
-  [a1 enumerateAttributesInRange:0 options:v3 usingBlock:{0, v6}];
+  [self enumerateAttributesInRange:0 options:v3 usingBlock:{0, v6}];
 
   return v4;
 }

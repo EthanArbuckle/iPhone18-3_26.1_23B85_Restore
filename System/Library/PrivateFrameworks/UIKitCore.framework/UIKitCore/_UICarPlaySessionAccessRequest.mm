@@ -1,24 +1,24 @@
 @interface _UICarPlaySessionAccessRequest
-- (_UICarPlaySessionAccessRequest)initWithTimeout:(double)a3 completion:(id)a4;
+- (_UICarPlaySessionAccessRequest)initWithTimeout:(double)timeout completion:(id)completion;
 - (void)_cancelTimer;
 - (void)dealloc;
 @end
 
 @implementation _UICarPlaySessionAccessRequest
 
-- (_UICarPlaySessionAccessRequest)initWithTimeout:(double)a3 completion:(id)a4
+- (_UICarPlaySessionAccessRequest)initWithTimeout:(double)timeout completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v19.receiver = self;
   v19.super_class = _UICarPlaySessionAccessRequest;
   v7 = [(_UICarPlaySessionAccessRequest *)&v19 init];
   if (v7)
   {
-    v8 = _Block_copy(v6);
+    v8 = _Block_copy(completionCopy);
     v9 = *(v7 + 2);
     *(v7 + 2) = v8;
 
-    if (a3 > 0.0)
+    if (timeout > 0.0)
     {
       v10 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, MEMORY[0x1E69E96A0]);
       v11 = *(v7 + 1);
@@ -33,8 +33,8 @@
       objc_copyWeak(&v17, &location);
       dispatch_source_set_event_handler(v12, v16);
       v13 = *(v7 + 1);
-      v14 = dispatch_time(0, (a3 * 1000000000.0));
-      dispatch_source_set_timer(v13, v14, 0xFFFFFFFFFFFFFFFFLL, (a3 / 10.0 * 1000000000.0));
+      v14 = dispatch_time(0, (timeout * 1000000000.0));
+      dispatch_source_set_timer(v13, v14, 0xFFFFFFFFFFFFFFFFLL, (timeout / 10.0 * 1000000000.0));
       dispatch_activate(*(v7 + 1));
       objc_destroyWeak(&v17);
       objc_destroyWeak(&location);

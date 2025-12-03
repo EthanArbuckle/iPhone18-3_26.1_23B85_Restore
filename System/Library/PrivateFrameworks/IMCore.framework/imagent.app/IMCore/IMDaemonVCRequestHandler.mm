@@ -1,13 +1,13 @@
 @interface IMDaemonVCRequestHandler
-- (void)clearPendingVCRequestsWithPerson:(id)a3 forAccount:(id)a4;
+- (void)clearPendingVCRequestsWithPerson:(id)person forAccount:(id)account;
 @end
 
 @implementation IMDaemonVCRequestHandler
 
-- (void)clearPendingVCRequestsWithPerson:(id)a3 forAccount:(id)a4
+- (void)clearPendingVCRequestsWithPerson:(id)person forAccount:(id)account
 {
-  v5 = a3;
-  v6 = a4;
+  personCopy = person;
+  accountCopy = account;
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();

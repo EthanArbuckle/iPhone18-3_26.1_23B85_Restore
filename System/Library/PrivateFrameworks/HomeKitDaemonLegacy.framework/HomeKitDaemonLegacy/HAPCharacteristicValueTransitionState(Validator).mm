@@ -6,15 +6,15 @@
 
 - (uint64_t)isValid
 {
-  v2 = [a1 activeTransitionContexts];
+  activeTransitionContexts = [self activeTransitionContexts];
 
-  if (!v2)
+  if (!activeTransitionContexts)
   {
     return 0;
   }
 
-  v3 = [a1 activeTransitionContexts];
-  v4 = [v3 na_allObjectsPassTest:&__block_literal_global_157193];
+  activeTransitionContexts2 = [self activeTransitionContexts];
+  v4 = [activeTransitionContexts2 na_allObjectsPassTest:&__block_literal_global_157193];
 
   return v4;
 }

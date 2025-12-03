@@ -1,25 +1,25 @@
 @interface STFamilyOrganization
-+ (id)fetchOrCreateFamilyOrganizationWithContext:(id)a3 error:(id *)a4;
++ (id)fetchOrCreateFamilyOrganizationWithContext:(id)context error:(id *)error;
 + (id)fetchRequest;
-+ (id)fetchWithContext:(id)a3 error:(id *)a4;
-- (BOOL)_validateNumberOfObjects:(id)a3;
-- (BOOL)validateForDelete:(id *)a3;
-- (BOOL)validateForInsert:(id *)a3;
-- (BOOL)validateForUpdate:(id *)a3;
++ (id)fetchWithContext:(id)context error:(id *)error;
+- (BOOL)_validateNumberOfObjects:(id)objects;
+- (BOOL)validateForDelete:(id *)delete;
+- (BOOL)validateForInsert:(id *)insert;
+- (BOOL)validateForUpdate:(id *)update;
 @end
 
 @implementation STFamilyOrganization
 
-+ (id)fetchWithContext:(id)a3 error:(id *)a4
++ (id)fetchWithContext:(id)context error:(id *)error
 {
   v64 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [a1 fetchRequest];
-  v8 = [v7 execute:a4];
+  contextCopy = context;
+  fetchRequest = [self fetchRequest];
+  v8 = [fetchRequest execute:error];
   v9 = v8;
   if (!v8)
   {
-    v29 = 0;
+    firstObject = 0;
     goto LABEL_39;
   }
 
@@ -32,7 +32,7 @@
     }
 
     v54 = 0;
-    v11 = [STCoreUser fetchLocalUserInContext:v6 error:&v54];
+    v11 = [STCoreUser fetchLocalUserInContext:contextCopy error:&v54];
     v12 = v54;
     if (!v11)
     {
@@ -43,12 +43,12 @@
       }
     }
 
-    v14 = [v11 familySettings];
-    v15 = [v14 organization];
+    familySettings = [v11 familySettings];
+    organization = [familySettings organization];
 
     v16 = +[STLog persistence];
     v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT);
-    if (v15)
+    if (organization)
     {
       if (v17)
       {
@@ -71,7 +71,7 @@
       v42 = v12;
       v43 = v11;
       v44 = v9;
-      v45 = v7;
+      v45 = fetchRequest;
       v21 = *v51;
       do
       {
@@ -83,10 +83,10 @@
           }
 
           v23 = *(*(&v50 + 1) + 8 * i);
-          if (v23 != v15)
+          if (v23 != organization)
           {
             v24 = v23;
-            v25 = v6;
+            v25 = contextCopy;
             v26 = +[STLog persistence];
             if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
             {
@@ -95,14 +95,14 @@
               _os_log_error_impl(&dword_1B831F000, v26, OS_LOG_TYPE_ERROR, "Deleting extraneous family organization: %{public}@", v62, 0xCu);
             }
 
-            v27 = [v24 settings];
+            settings = [v24 settings];
             *buf = MEMORY[0x1E69E9820];
             v56 = 3221225472;
             v57 = __deleteExtraneousFamilyOrganizationAndChildObjects_block_invoke;
             v58 = &unk_1E7CE7480;
             v59 = v25;
             v28 = v25;
-            [v27 enumerateObjectsUsingBlock:buf];
+            [settings enumerateObjectsUsingBlock:buf];
 
             [v28 deleteObject:v24];
           }
@@ -139,7 +139,7 @@
       v42 = v12;
       v43 = v11;
       v44 = v9;
-      v45 = v7;
+      v45 = fetchRequest;
       v33 = *v47;
       do
       {
@@ -151,7 +151,7 @@
           }
 
           v35 = *(*(&v46 + 1) + 8 * j);
-          v36 = v6;
+          v36 = contextCopy;
           v37 = +[STLog persistence];
           if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
           {
@@ -160,14 +160,14 @@
             _os_log_error_impl(&dword_1B831F000, v37, OS_LOG_TYPE_ERROR, "Deleting extraneous family organization: %{public}@", v62, 0xCu);
           }
 
-          v38 = [v35 settings];
+          settings2 = [v35 settings];
           *buf = MEMORY[0x1E69E9820];
           v56 = 3221225472;
           v57 = __deleteExtraneousFamilyOrganizationAndChildObjects_block_invoke;
           v58 = &unk_1E7CE7480;
           v59 = v36;
           v39 = v36;
-          [v38 enumerateObjectsUsingBlock:buf];
+          [settings2 enumerateObjectsUsingBlock:buf];
 
           [v39 deleteObject:v35];
         }
@@ -179,30 +179,30 @@
     }
 
     v9 = v44;
-    v7 = v45;
+    fetchRequest = v45;
     v12 = v42;
     v11 = v43;
 LABEL_37:
   }
 
-  v29 = [v9 firstObject];
+  firstObject = [v9 firstObject];
 LABEL_39:
 
   v40 = *MEMORY[0x1E69E9840];
 
-  return v29;
+  return firstObject;
 }
 
-+ (id)fetchOrCreateFamilyOrganizationWithContext:(id)a3 error:(id *)a4
++ (id)fetchOrCreateFamilyOrganizationWithContext:(id)context error:(id *)error
 {
   v64 = *MEMORY[0x1E69E9840];
-  v46 = a3;
-  v6 = [a1 fetchRequest];
-  v7 = [v6 execute:a4];
+  contextCopy = context;
+  fetchRequest = [self fetchRequest];
+  v7 = [fetchRequest execute:error];
   v8 = v7;
   if (!v7)
   {
-    v28 = 0;
+    firstObject = 0;
     goto LABEL_42;
   }
 
@@ -215,7 +215,7 @@ LABEL_39:
     }
 
     v55 = 0;
-    v10 = [STCoreUser fetchLocalUserInContext:v46 error:&v55];
+    v10 = [STCoreUser fetchLocalUserInContext:contextCopy error:&v55];
     v11 = v55;
     if (!v10)
     {
@@ -226,12 +226,12 @@ LABEL_39:
       }
     }
 
-    v13 = [v10 familySettings];
-    v14 = [v13 organization];
+    familySettings = [v10 familySettings];
+    organization = [familySettings organization];
 
     v15 = +[STLog persistence];
     v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
-    if (v14)
+    if (organization)
     {
       if (v16)
       {
@@ -254,7 +254,7 @@ LABEL_39:
       v42 = v11;
       v43 = v10;
       v44 = v8;
-      v45 = v6;
+      v45 = fetchRequest;
       v20 = *v52;
       do
       {
@@ -266,10 +266,10 @@ LABEL_39:
           }
 
           v22 = *(*(&v51 + 1) + 8 * i);
-          if (v22 != v14)
+          if (v22 != organization)
           {
             v23 = v22;
-            v24 = v46;
+            v24 = contextCopy;
             v25 = +[STLog persistence];
             if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
             {
@@ -278,14 +278,14 @@ LABEL_39:
               _os_log_error_impl(&dword_1B831F000, v25, OS_LOG_TYPE_ERROR, "Deleting extraneous family organization: %{public}@", v62, 0xCu);
             }
 
-            v26 = [v23 settings];
+            settings = [v23 settings];
             *&buf = MEMORY[0x1E69E9820];
             *(&buf + 1) = 3221225472;
             v59 = __deleteExtraneousFamilyOrganizationAndChildObjects_block_invoke;
             v60 = &unk_1E7CE7480;
             v61 = v24;
             v27 = v24;
-            [v26 enumerateObjectsUsingBlock:&buf];
+            [settings enumerateObjectsUsingBlock:&buf];
 
             [v27 deleteObject:v23];
           }
@@ -322,7 +322,7 @@ LABEL_39:
       v42 = v11;
       v43 = v10;
       v44 = v8;
-      v45 = v6;
+      v45 = fetchRequest;
       v32 = *v48;
       do
       {
@@ -334,7 +334,7 @@ LABEL_39:
           }
 
           v34 = *(*(&v47 + 1) + 8 * j);
-          v35 = v46;
+          v35 = contextCopy;
           v36 = +[STLog persistence];
           if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
           {
@@ -343,14 +343,14 @@ LABEL_39:
             _os_log_error_impl(&dword_1B831F000, v36, OS_LOG_TYPE_ERROR, "Deleting extraneous family organization: %{public}@", v62, 0xCu);
           }
 
-          v37 = [v34 settings];
+          settings2 = [v34 settings];
           *&buf = MEMORY[0x1E69E9820];
           *(&buf + 1) = 3221225472;
           v59 = __deleteExtraneousFamilyOrganizationAndChildObjects_block_invoke;
           v60 = &unk_1E7CE7480;
           v61 = v35;
           v38 = v35;
-          [v37 enumerateObjectsUsingBlock:&buf];
+          [settings2 enumerateObjectsUsingBlock:&buf];
 
           [v38 deleteObject:v34];
         }
@@ -362,21 +362,21 @@ LABEL_39:
     }
 
     v8 = v44;
-    v6 = v45;
+    fetchRequest = v45;
     v11 = v42;
     v10 = v43;
 LABEL_37:
   }
 
-  v28 = [v8 firstObject];
-  if (!v28)
+  firstObject = [v8 firstObject];
+  if (!firstObject)
   {
-    v28 = [[STFamilyOrganization alloc] initWithContext:v46];
+    firstObject = [[STFamilyOrganization alloc] initWithContext:contextCopy];
     v39 = +[STLog persistence];
     if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v28;
+      *(&buf + 4) = firstObject;
       _os_log_impl(&dword_1B831F000, v39, OS_LOG_TYPE_DEFAULT, "Created a family organization. Family Organization; %@", &buf, 0xCu);
     }
   }
@@ -385,19 +385,19 @@ LABEL_42:
 
   v40 = *MEMORY[0x1E69E9840];
 
-  return v28;
+  return firstObject;
 }
 
 + (id)fetchRequest
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___STFamilyOrganization;
   v2 = objc_msgSendSuper2(&v4, sel_fetchRequest);
 
   return v2;
 }
 
-- (BOOL)validateForUpdate:(id *)a3
+- (BOOL)validateForUpdate:(id *)update
 {
   v10.receiver = self;
   v10.super_class = STFamilyOrganization;
@@ -420,7 +420,7 @@ LABEL_42:
 
     v9.receiver = self;
     v9.super_class = STFamilyOrganization;
-    v7 = [(NSManagedObject *)&v9 parseValidationErrors:a3 otherErrors:v5];
+    v7 = [(NSManagedObject *)&v9 parseValidationErrors:update otherErrors:v5];
   }
 
   else
@@ -428,7 +428,7 @@ LABEL_42:
     v5 = +[STLog coreDataValidation];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
     {
-      [STFamilyOrganization validateForUpdate:a3];
+      [STFamilyOrganization validateForUpdate:update];
     }
 
     v7 = 0;
@@ -437,7 +437,7 @@ LABEL_42:
   return v7;
 }
 
-- (BOOL)validateForInsert:(id *)a3
+- (BOOL)validateForInsert:(id *)insert
 {
   v10.receiver = self;
   v10.super_class = STFamilyOrganization;
@@ -461,7 +461,7 @@ LABEL_42:
 
     v9.receiver = self;
     v9.super_class = STFamilyOrganization;
-    v7 = [(NSManagedObject *)&v9 parseValidationErrors:a3 otherErrors:v5];
+    v7 = [(NSManagedObject *)&v9 parseValidationErrors:insert otherErrors:v5];
   }
 
   else
@@ -469,7 +469,7 @@ LABEL_42:
     v5 = +[STLog coreDataValidation];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
     {
-      [STFamilyOrganization validateForInsert:a3];
+      [STFamilyOrganization validateForInsert:insert];
     }
 
     v7 = 0;
@@ -478,7 +478,7 @@ LABEL_42:
   return v7;
 }
 
-- (BOOL)validateForDelete:(id *)a3
+- (BOOL)validateForDelete:(id *)delete
 {
   v10.receiver = self;
   v10.super_class = STFamilyOrganization;
@@ -502,7 +502,7 @@ LABEL_42:
 
     v9.receiver = self;
     v9.super_class = STFamilyOrganization;
-    v7 = [(NSManagedObject *)&v9 parseValidationErrors:a3 otherErrors:v5];
+    v7 = [(NSManagedObject *)&v9 parseValidationErrors:delete otherErrors:v5];
   }
 
   else
@@ -510,7 +510,7 @@ LABEL_42:
     v5 = +[STLog coreDataValidation];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
     {
-      [STFamilyOrganization validateForDelete:a3];
+      [STFamilyOrganization validateForDelete:delete];
     }
 
     v7 = 0;
@@ -519,17 +519,17 @@ LABEL_42:
   return v7;
 }
 
-- (BOOL)_validateNumberOfObjects:(id)a3
+- (BOOL)_validateNumberOfObjects:(id)objects
 {
   v33[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  objectsCopy = objects;
   v4 = +[STCoreUser fetchRequestMatchingLocalUser];
   v27 = 0;
   v5 = [v4 execute:&v27];
   v6 = v27;
   if (v5)
   {
-    v7 = [v5 firstObject];
+    firstObject = [v5 firstObject];
     v8 = +[STFamilyOrganization fetchRequest];
     v26 = v6;
     v9 = [v8 execute:&v26];
@@ -537,23 +537,23 @@ LABEL_42:
 
     if (!v9)
     {
-      [v3 addObject:v10];
+      [objectsCopy addObject:v10];
 LABEL_17:
       v18 = 0;
       goto LABEL_18;
     }
 
-    v11 = [v7 familyMemberType];
-    v12 = v11;
-    if (v11 == @"Unknown")
+    familyMemberType = [firstObject familyMemberType];
+    v12 = familyMemberType;
+    if (familyMemberType == @"Unknown")
     {
     }
 
     else
     {
-      v13 = [v7 familyMemberType];
+      familyMemberType2 = [firstObject familyMemberType];
 
-      if (v13)
+      if (familyMemberType2)
       {
         if (![v9 count])
         {
@@ -580,7 +580,7 @@ LABEL_13:
           v21 = 506;
 LABEL_16:
           v23 = [v20 errorWithDomain:@"STErrorDomain" code:v21 userInfo:v19];
-          [v3 addObject:v23];
+          [objectsCopy addObject:v23];
 
           goto LABEL_17;
         }
@@ -607,7 +607,7 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  [v3 addObject:v6];
+  [objectsCopy addObject:v6];
   v18 = 0;
   v10 = v6;
 LABEL_19:

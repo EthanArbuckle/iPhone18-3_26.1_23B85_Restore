@@ -1,7 +1,7 @@
 @interface CRKOpenFileRequestItem
-- (CRKOpenFileRequestItem)initWithCoder:(id)a3;
+- (CRKOpenFileRequestItem)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CRKOpenFileRequestItem
@@ -10,28 +10,28 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CRKOpenFileRequestItem *)self fileName];
-  v6 = [(CRKOpenFileRequestItem *)self fileData];
-  v7 = [v3 stringWithFormat:@"<%@: %p { fileName = %@, fileData = %ld bytes }>", v4, self, v5, objc_msgSend(v6, "length")];
+  fileName = [(CRKOpenFileRequestItem *)self fileName];
+  fileData = [(CRKOpenFileRequestItem *)self fileData];
+  v7 = [v3 stringWithFormat:@"<%@: %p { fileName = %@, fileData = %ld bytes }>", v4, self, fileName, objc_msgSend(fileData, "length")];
 
   return v7;
 }
 
-- (CRKOpenFileRequestItem)initWithCoder:(id)a3
+- (CRKOpenFileRequestItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = CRKOpenFileRequestItem;
   v5 = [(CRKOpenFileRequestItem *)&v13 init];
   if (v5)
   {
     v6 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"fileData"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"fileData"];
     fileData = v5->_fileData;
     v5->_fileData = v7;
 
     v9 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"fileName"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"fileName"];
     fileName = v5->_fileName;
     v5->_fileName = v10;
   }
@@ -39,14 +39,14 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CRKOpenFileRequestItem *)self fileData];
-  [v4 encodeObject:v5 forKey:@"fileData"];
+  coderCopy = coder;
+  fileData = [(CRKOpenFileRequestItem *)self fileData];
+  [coderCopy encodeObject:fileData forKey:@"fileData"];
 
-  v6 = [(CRKOpenFileRequestItem *)self fileName];
-  [v4 encodeObject:v6 forKey:@"fileName"];
+  fileName = [(CRKOpenFileRequestItem *)self fileName];
+  [coderCopy encodeObject:fileName forKey:@"fileName"];
 }
 
 @end

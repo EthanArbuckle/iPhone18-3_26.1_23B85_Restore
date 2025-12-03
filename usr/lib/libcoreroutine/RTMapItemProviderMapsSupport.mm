@@ -1,23 +1,23 @@
 @interface RTMapItemProviderMapsSupport
-- (RTMapItemProviderMapsSupport)initWithDefaultsManager:(id)a3 distanceCalculator:(id)a4 mapsSupportManager:(id)a5;
-- (RTMapItemProviderMapsSupport)initWithDefaultsManager:(id)a3 distanceCalculator:(id)a4 mapsSupportManager:(id)a5 parameters:(id)a6;
-- (double)confidenceFromMapItemSource:(unint64_t)a3;
-- (id)mapItemsWithOptions:(id)a3 error:(id *)a4;
+- (RTMapItemProviderMapsSupport)initWithDefaultsManager:(id)manager distanceCalculator:(id)calculator mapsSupportManager:(id)supportManager;
+- (RTMapItemProviderMapsSupport)initWithDefaultsManager:(id)manager distanceCalculator:(id)calculator mapsSupportManager:(id)supportManager parameters:(id)parameters;
+- (double)confidenceFromMapItemSource:(unint64_t)source;
+- (id)mapItemsWithOptions:(id)options error:(id *)error;
 @end
 
 @implementation RTMapItemProviderMapsSupport
 
-- (RTMapItemProviderMapsSupport)initWithDefaultsManager:(id)a3 distanceCalculator:(id)a4 mapsSupportManager:(id)a5
+- (RTMapItemProviderMapsSupport)initWithDefaultsManager:(id)manager distanceCalculator:(id)calculator mapsSupportManager:(id)supportManager
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  managerCopy = manager;
+  calculatorCopy = calculator;
+  supportManagerCopy = supportManager;
+  if (managerCopy)
   {
-    v11 = [[RTMapItemProviderMapsSupportParameters alloc] initWithDefaultsManager:v8];
-    self = [(RTMapItemProviderMapsSupport *)self initWithDefaultsManager:v8 distanceCalculator:v9 mapsSupportManager:v10 parameters:v11];
+    v11 = [[RTMapItemProviderMapsSupportParameters alloc] initWithDefaultsManager:managerCopy];
+    self = [(RTMapItemProviderMapsSupport *)self initWithDefaultsManager:managerCopy distanceCalculator:calculatorCopy mapsSupportManager:supportManagerCopy parameters:v11];
 
-    v12 = self;
+    selfCopy = self;
   }
 
   else
@@ -29,28 +29,28 @@
       _os_log_error_impl(&dword_2304B3000, v13, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: defaultsManager", v15, 2u);
     }
 
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (RTMapItemProviderMapsSupport)initWithDefaultsManager:(id)a3 distanceCalculator:(id)a4 mapsSupportManager:(id)a5 parameters:(id)a6
+- (RTMapItemProviderMapsSupport)initWithDefaultsManager:(id)manager distanceCalculator:(id)calculator mapsSupportManager:(id)supportManager parameters:(id)parameters
 {
   v26 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (!v12)
+  managerCopy = manager;
+  calculatorCopy = calculator;
+  supportManagerCopy = supportManager;
+  parametersCopy = parameters;
+  v14 = parametersCopy;
+  if (!supportManagerCopy)
   {
     v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
 LABEL_12:
 
-      v19 = 0;
+      selfCopy = 0;
       goto LABEL_13;
     }
 
@@ -61,7 +61,7 @@ LABEL_15:
     goto LABEL_12;
   }
 
-  if (!v13)
+  if (!parametersCopy)
   {
     v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -76,12 +76,12 @@ LABEL_15:
 
   v23.receiver = self;
   v23.super_class = RTMapItemProviderMapsSupport;
-  v15 = [(RTMapItemProviderBase *)&v23 initWithDefaultsManager:v10 distanceCalculator:v11];
+  v15 = [(RTMapItemProviderBase *)&v23 initWithDefaultsManager:managerCopy distanceCalculator:calculatorCopy];
   p_isa = &v15->super.super.isa;
   if (v15)
   {
-    objc_storeStrong(&v15->_mapsSupportManager, a5);
-    objc_storeStrong(p_isa + 4, a6);
+    objc_storeStrong(&v15->_mapsSupportManager, supportManager);
+    objc_storeStrong(p_isa + 4, parameters);
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v17 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
@@ -96,33 +96,33 @@ LABEL_15:
   }
 
   self = p_isa;
-  v19 = self;
+  selfCopy = self;
 LABEL_13:
 
-  return v19;
+  return selfCopy;
 }
 
-- (id)mapItemsWithOptions:(id)a3 error:(id *)a4
+- (id)mapItemsWithOptions:(id)options error:(id *)error
 {
   v175 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [v4 distance];
+  optionsCopy = options;
+  [optionsCopy distance];
   v6 = v5;
-  v108 = v4;
-  v104 = [v4 location];
-  v7 = [v4 startDate];
-  v106 = [v4 endDate];
-  v105 = [MEMORY[0x277CBEAA8] dateWithTimeInterval:v7 sinceDate:-16200.0];
+  v108 = optionsCopy;
+  location = [optionsCopy location];
+  startDate = [optionsCopy startDate];
+  endDate = [optionsCopy endDate];
+  v105 = [MEMORY[0x277CBEAA8] dateWithTimeInterval:startDate sinceDate:-16200.0];
 
   v8 = 0;
-  if (v105 && v106)
+  if (v105 && endDate)
   {
-    v9 = [v105 earlierDate:v106];
+    v9 = [v105 earlierDate:endDate];
     v10 = [v9 isEqualToDate:v105];
 
     if (v10)
     {
-      v8 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v105 endDate:v106];
+      v8 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v105 endDate:endDate];
     }
 
     else
@@ -132,8 +132,8 @@ LABEL_13:
   }
 
   v102 = v8;
-  v107 = [[RTMapsSupportOptions alloc] initWithDateInterval:v8 location:v104 distance:v6];
-  v11 = [MEMORY[0x277CBEB18] array];
+  v107 = [[RTMapsSupportOptions alloc] initWithDateInterval:v8 location:location distance:v6];
+  array = [MEMORY[0x277CBEB18] array];
   v140 = 0;
   v141 = &v140;
   v142 = 0x3032000000;
@@ -147,7 +147,7 @@ LABEL_13:
   v138 = __Block_byref_object_dispose__137;
   v139 = 0;
   v12 = dispatch_semaphore_create(0);
-  v13 = [(RTMapItemProviderMapsSupport *)self mapsSupportManager];
+  mapsSupportManager = [(RTMapItemProviderMapsSupport *)self mapsSupportManager];
   v130[0] = MEMORY[0x277D85DD0];
   v130[1] = 3221225472;
   v130[2] = __58__RTMapItemProviderMapsSupport_mapItemsWithOptions_error___block_invoke;
@@ -156,7 +156,7 @@ LABEL_13:
   v133 = &v134;
   v14 = v12;
   v131 = v14;
-  [v13 fetchFavoritePlacesWithOptions:v107 handler:v130];
+  [mapsSupportManager fetchFavoritePlacesWithOptions:v107 handler:v130];
 
   v15 = v14;
   v16 = [MEMORY[0x277CBEAA8] now];
@@ -168,11 +168,11 @@ LABEL_13:
     v20 = v19;
     v21 = objc_opt_new();
     v22 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_88];
-    v23 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v24 = [v23 filteredArrayUsingPredicate:v22];
-    v25 = [v24 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v24 = [callStackSymbols filteredArrayUsingPredicate:v22];
+    firstObject = [v24 firstObject];
 
-    [v21 submitToCoreAnalytics:v25 type:1 duration:v20];
+    [v21 submitToCoreAnalytics:firstObject type:1 duration:v20];
     v26 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v26, OS_LOG_TYPE_FAULT))
     {
@@ -220,9 +220,9 @@ LABEL_13:
     else
     {
       v34 = 0;
-      if (a4)
+      if (error)
       {
-        *a4 = v135[5];
+        *error = v135[5];
       }
     }
   }
@@ -247,8 +247,8 @@ LABEL_13:
             objc_enumerationMutation(v35);
           }
 
-          v39 = [*(*(&v126 + 1) + 8 * i) mapItem];
-          [v11 addObject:v39];
+          mapItem = [*(*(&v126 + 1) + 8 * i) mapItem];
+          [array addObject:mapItem];
         }
 
         v36 = [v35 countByEnumeratingWithState:&v126 objects:v172 count:16];
@@ -271,7 +271,7 @@ LABEL_13:
     v165 = 0;
     v40 = dispatch_semaphore_create(0);
 
-    v41 = [(RTMapItemProviderMapsSupport *)self mapsSupportManager];
+    mapsSupportManager2 = [(RTMapItemProviderMapsSupport *)self mapsSupportManager];
     v122[0] = MEMORY[0x277D85DD0];
     v122[1] = 3221225472;
     v122[2] = __58__RTMapItemProviderMapsSupport_mapItemsWithOptions_error___block_invoke_2;
@@ -280,7 +280,7 @@ LABEL_13:
     v125 = &v160;
     v42 = v40;
     v123 = v42;
-    [v41 fetchHistoryEntryPlaceDisplaysWithOptions:v107 handler:v122];
+    [mapsSupportManager2 fetchHistoryEntryPlaceDisplaysWithOptions:v107 handler:v122];
 
     v15 = v42;
     v43 = [MEMORY[0x277CBEAA8] now];
@@ -295,11 +295,11 @@ LABEL_13:
     v47 = v46;
     v48 = objc_opt_new();
     v49 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_88];
-    v50 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v51 = [v50 filteredArrayUsingPredicate:v49];
-    v52 = [v51 firstObject];
+    callStackSymbols2 = [MEMORY[0x277CCACC8] callStackSymbols];
+    v51 = [callStackSymbols2 filteredArrayUsingPredicate:v49];
+    firstObject2 = [v51 firstObject];
 
-    [v48 submitToCoreAnalytics:v52 type:1 duration:v47];
+    [v48 submitToCoreAnalytics:firstObject2 type:1 duration:v47];
     v53 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v53, OS_LOG_TYPE_FAULT))
     {
@@ -344,9 +344,9 @@ LABEL_32:
       else
       {
         v34 = 0;
-        if (a4)
+        if (error)
         {
-          *a4 = v161[5];
+          *error = v161[5];
         }
       }
     }
@@ -371,8 +371,8 @@ LABEL_32:
               objc_enumerationMutation(v61);
             }
 
-            v65 = [*(*(&v118 + 1) + 8 * j) mapItem];
-            [v11 addObject:v65];
+            mapItem2 = [*(*(&v118 + 1) + 8 * j) mapItem];
+            [array addObject:mapItem2];
           }
 
           v62 = [v61 countByEnumeratingWithState:&v118 objects:v159 count:16];
@@ -395,7 +395,7 @@ LABEL_32:
       v152 = 0;
       v66 = dispatch_semaphore_create(0);
 
-      v67 = [(RTMapItemProviderMapsSupport *)self mapsSupportManager];
+      mapsSupportManager3 = [(RTMapItemProviderMapsSupport *)self mapsSupportManager];
       v114[0] = MEMORY[0x277D85DD0];
       v114[1] = 3221225472;
       v114[2] = __58__RTMapItemProviderMapsSupport_mapItemsWithOptions_error___block_invoke_3;
@@ -404,7 +404,7 @@ LABEL_32:
       v117 = &v147;
       v68 = v66;
       v115 = v68;
-      [v67 fetchHistoryEntryRoutesWithOptions:v107 handler:v114];
+      [mapsSupportManager3 fetchHistoryEntryRoutesWithOptions:v107 handler:v114];
 
       v15 = v68;
       v69 = [MEMORY[0x277CBEAA8] now];
@@ -419,11 +419,11 @@ LABEL_32:
       v73 = v72;
       v74 = objc_opt_new();
       v75 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_88];
-      v76 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v77 = [v76 filteredArrayUsingPredicate:v75];
-      v78 = [v77 firstObject];
+      callStackSymbols3 = [MEMORY[0x277CCACC8] callStackSymbols];
+      v77 = [callStackSymbols3 filteredArrayUsingPredicate:v75];
+      firstObject3 = [v77 firstObject];
 
-      [v74 submitToCoreAnalytics:v78 type:1 duration:v73];
+      [v74 submitToCoreAnalytics:firstObject3 type:1 duration:v73];
       v79 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v79, OS_LOG_TYPE_FAULT))
       {
@@ -468,9 +468,9 @@ LABEL_53:
         else
         {
           v34 = 0;
-          if (a4)
+          if (error)
           {
-            *a4 = v148[5];
+            *error = v148[5];
           }
         }
       }
@@ -496,20 +496,20 @@ LABEL_53:
               }
 
               v91 = *(*(&v110 + 1) + 8 * k);
-              v92 = [v91 originMapItem];
+              originMapItem = [v91 originMapItem];
 
-              if (v92)
+              if (originMapItem)
               {
-                v93 = [v91 originMapItem];
-                [v11 addObject:v93];
+                originMapItem2 = [v91 originMapItem];
+                [array addObject:originMapItem2];
               }
 
-              v94 = [v91 destinationMapItem];
+              destinationMapItem = [v91 destinationMapItem];
 
-              if (v94)
+              if (destinationMapItem)
               {
-                v95 = [v91 destinationMapItem];
-                [v11 addObject:v95];
+                destinationMapItem2 = [v91 destinationMapItem];
+                [array addObject:destinationMapItem2];
               }
             }
 
@@ -520,7 +520,7 @@ LABEL_53:
         }
 
         v96 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_112];
-        v97 = [v11 filteredArrayUsingPredicate:v96];
+        v97 = [array filteredArrayUsingPredicate:v96];
 
         v98 = [[_RTMap alloc] initWithInput:v97];
         v109[0] = MEMORY[0x277D85DD0];
@@ -530,7 +530,7 @@ LABEL_53:
         v109[4] = self;
         v99 = [(_RTMap *)v98 withBlock:v109];
 
-        v34 = [(RTMapItemProviderBase *)self filterInferredMapItems:v99 byDistance:v104 fromLocation:a4 error:v6];
+        v34 = [(RTMapItemProviderBase *)self filterInferredMapItems:v99 byDistance:location fromLocation:error error:v6];
       }
 
       _Block_object_dispose(&v147, 8);
@@ -631,36 +631,36 @@ id __58__RTMapItemProviderMapsSupport_mapItemsWithOptions_error___block_invoke_5
   return v7;
 }
 
-- (double)confidenceFromMapItemSource:(unint64_t)a3
+- (double)confidenceFromMapItemSource:(unint64_t)source
 {
   v12 = *MEMORY[0x277D85DE8];
-  if (a3 > 2047)
+  if (source > 2047)
   {
-    if (a3 < 0x10000)
+    if (source < 0x10000)
     {
-      if (a3 < 0x2000)
+      if (source < 0x2000)
       {
-        if (a3 != 2048 && a3 != 4096)
+        if (source != 2048 && source != 4096)
         {
           return 0.0;
         }
       }
 
-      else if (a3 != 0x2000 && a3 != 0x4000 && a3 != 0x8000)
+      else if (source != 0x2000 && source != 0x4000 && source != 0x8000)
       {
         return 0.0;
       }
     }
 
-    else if (a3 >= 0x80000)
+    else if (source >= 0x80000)
     {
-      if (a3 != 0x80000 && a3 != 0x100000 && a3 != 0x200000)
+      if (source != 0x80000 && source != 0x100000 && source != 0x200000)
       {
         return 0.0;
       }
     }
 
-    else if (a3 != 0x10000 && a3 != 0x20000 && a3 != 0x40000)
+    else if (source != 0x10000 && source != 0x20000 && source != 0x40000)
     {
       return 0.0;
     }
@@ -668,9 +668,9 @@ id __58__RTMapItemProviderMapsSupport_mapItemsWithOptions_error___block_invoke_5
     goto LABEL_35;
   }
 
-  if (a3 <= 15)
+  if (source <= 15)
   {
-    if (a3 >= 3 && a3 != 4 && a3 != 8)
+    if (source >= 3 && source != 4 && source != 8)
     {
       return 0.0;
     }
@@ -678,9 +678,9 @@ id __58__RTMapItemProviderMapsSupport_mapItemsWithOptions_error___block_invoke_5
     goto LABEL_35;
   }
 
-  if (a3 > 255)
+  if (source > 255)
   {
-    if (a3 != 256 && a3 != 512 && a3 != 1024)
+    if (source != 256 && source != 512 && source != 1024)
     {
       return 0.0;
     }
@@ -699,7 +699,7 @@ LABEL_35:
     return 0.0;
   }
 
-  switch(a3)
+  switch(source)
   {
     case 0x10uLL:
       parameters = self->_parameters;

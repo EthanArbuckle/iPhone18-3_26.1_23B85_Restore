@@ -1,25 +1,25 @@
 @interface PLAWDAuxMetrics
-+ (id)getSharedObjWithOperator:(id)a3;
-- (BOOL)doesInterfereWithChargerWithStartDate:(id)a3 withEndDate:(id)a4;
-- (BOOL)dropFirstEntryReceived:(id)a3 usingFilter:(id)a4 andStartTime:(id)a5;
-- (BOOL)submitDataToAWDServer:(id)a3 withAwdConn:(id)a4;
-- (PLAWDAuxMetrics)initWithOperator:(id)a3;
++ (id)getSharedObjWithOperator:(id)operator;
+- (BOOL)doesInterfereWithChargerWithStartDate:(id)date withEndDate:(id)endDate;
+- (BOOL)dropFirstEntryReceived:(id)received usingFilter:(id)filter andStartTime:(id)time;
+- (BOOL)submitDataToAWDServer:(id)server withAwdConn:(id)conn;
+- (PLAWDAuxMetrics)initWithOperator:(id)operator;
 - (PLOperator)operator;
-- (double)getRailEnergyWithEntry:(id)a3 withFilter:(id)a4 isRailForward:(BOOL)a5;
-- (void)handleChargerChangeWithState:(BOOL)a3 withDate:(id)a4;
-- (void)resetTableWithEntryKey:(id)a3;
-- (void)startMetricCollection:(id)a3;
-- (void)stopMetricCollection:(id)a3;
+- (double)getRailEnergyWithEntry:(id)entry withFilter:(id)filter isRailForward:(BOOL)forward;
+- (void)handleChargerChangeWithState:(BOOL)state withDate:(id)date;
+- (void)resetTableWithEntryKey:(id)key;
+- (void)startMetricCollection:(id)collection;
+- (void)stopMetricCollection:(id)collection;
 @end
 
 @implementation PLAWDAuxMetrics
 
-- (PLAWDAuxMetrics)initWithOperator:(id)a3
+- (PLAWDAuxMetrics)initWithOperator:(id)operator
 {
-  v4 = a3;
+  operatorCopy = operator;
   if (self)
   {
-    [(PLAWDAuxMetrics *)self setOperator:v4];
+    [(PLAWDAuxMetrics *)self setOperator:operatorCopy];
   }
 
   v5 = objc_opt_new();
@@ -48,7 +48,7 @@ uint64_t __36__PLAWDAuxMetrics_initWithOperator___block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)getSharedObjWithOperator:(id)a3
++ (id)getSharedObjWithOperator:(id)operator
 {
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
@@ -68,9 +68,9 @@ uint64_t __36__PLAWDAuxMetrics_initWithOperator___block_invoke()
       v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"PLAWD AUX class %@ not implementing getSharedObj", objc_opt_class(), block, v12, v13, v14, v15];
       v5 = MEMORY[0x277D3F178];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDAuxMetrics.m"];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent = [v6 lastPathComponent];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[PLAWDAuxMetrics getSharedObjWithOperator:]"];
-      [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:49];
+      [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:49];
 
       v9 = PLLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -90,7 +90,7 @@ uint64_t __44__PLAWDAuxMetrics_getSharedObjWithOperator___block_invoke(uint64_t 
   return result;
 }
 
-- (void)startMetricCollection:(id)a3
+- (void)startMetricCollection:(id)collection
 {
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
@@ -110,9 +110,9 @@ uint64_t __44__PLAWDAuxMetrics_getSharedObjWithOperator___block_invoke(uint64_t 
       v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"PLAWD AUX class %@ not implementing startMetricCollection", objc_opt_class(), block, v11, v12, v13, v14];
       v5 = MEMORY[0x277D3F178];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDAuxMetrics.m"];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent = [v6 lastPathComponent];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDAuxMetrics startMetricCollection:]"];
-      [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:55];
+      [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:55];
 
       v9 = PLLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -130,7 +130,7 @@ uint64_t __41__PLAWDAuxMetrics_startMetricCollection___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)stopMetricCollection:(id)a3
+- (void)stopMetricCollection:(id)collection
 {
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
@@ -150,9 +150,9 @@ uint64_t __41__PLAWDAuxMetrics_startMetricCollection___block_invoke(uint64_t a1)
       v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"PLAWD AUX class %@ not implementing stopMetricCollection", objc_opt_class(), block, v11, v12, v13, v14];
       v5 = MEMORY[0x277D3F178];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDAuxMetrics.m"];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent = [v6 lastPathComponent];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDAuxMetrics stopMetricCollection:]"];
-      [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:60];
+      [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:60];
 
       v9 = PLLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -170,7 +170,7 @@ uint64_t __40__PLAWDAuxMetrics_stopMetricCollection___block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)submitDataToAWDServer:(id)a3 withAwdConn:(id)a4
+- (BOOL)submitDataToAWDServer:(id)server withAwdConn:(id)conn
 {
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
@@ -190,9 +190,9 @@ uint64_t __40__PLAWDAuxMetrics_stopMetricCollection___block_invoke(uint64_t a1)
       v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"PLAWD AUX class %@ not implementing submitDataToAWDServer", objc_opt_class(), block, v13, v14, v15, v16];
       v6 = MEMORY[0x277D3F178];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDAuxMetrics.m"];
-      v8 = [v7 lastPathComponent];
+      lastPathComponent = [v7 lastPathComponent];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDAuxMetrics submitDataToAWDServer:withAwdConn:]"];
-      [v6 logMessage:v5 fromFile:v8 fromFunction:v9 fromLineNumber:65];
+      [v6 logMessage:v5 fromFile:lastPathComponent fromFunction:v9 fromLineNumber:65];
 
       v10 = PLLogCommon();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -212,20 +212,20 @@ uint64_t __53__PLAWDAuxMetrics_submitDataToAWDServer_withAwdConn___block_invoke(
   return result;
 }
 
-- (void)resetTableWithEntryKey:(id)a3
+- (void)resetTableWithEntryKey:(id)key
 {
-  v4 = a3;
-  v6 = [(PLAWDAuxMetrics *)self operator];
-  v5 = [v6 storage];
-  [v5 deleteAllEntriesForKey:v4];
+  keyCopy = key;
+  operator = [(PLAWDAuxMetrics *)self operator];
+  storage = [operator storage];
+  [storage deleteAllEntriesForKey:keyCopy];
 }
 
-- (void)handleChargerChangeWithState:(BOOL)a3 withDate:(id)a4
+- (void)handleChargerChangeWithState:(BOOL)state withDate:(id)date
 {
-  v4 = a3;
-  v11 = a4;
+  stateCopy = state;
+  dateCopy = date;
   v5 = [startChargerPeriods count];
-  if (v4)
+  if (stateCopy)
   {
     if (v5 != [endChargerPeriods count])
     {
@@ -234,9 +234,9 @@ uint64_t __53__PLAWDAuxMetrics_submitDataToAWDServer_withAwdConn___block_invoke(
 
     v6 = &startChargerPeriods;
 LABEL_6:
-    [*v6 addObject:v11];
+    [*v6 addObject:dateCopy];
 LABEL_7:
-    v8 = [MEMORY[0x277CBEAA8] dateWithTimeInterval:v11 sinceDate:-7200.0];
+    v8 = [MEMORY[0x277CBEAA8] dateWithTimeInterval:dateCopy sinceDate:-7200.0];
     while ([endChargerPeriods count])
     {
       v9 = [endChargerPeriods objectAtIndexedSubscript:0];
@@ -269,10 +269,10 @@ LABEL_7:
 LABEL_12:
 }
 
-- (BOOL)doesInterfereWithChargerWithStartDate:(id)a3 withEndDate:(id)a4
+- (BOOL)doesInterfereWithChargerWithStartDate:(id)date withEndDate:(id)endDate
 {
-  v5 = a3;
-  v6 = a4;
+  dateCopy = date;
+  endDateCopy = endDate;
   if ([startChargerPeriods count])
   {
     v7 = [startChargerPeriods count];
@@ -284,10 +284,10 @@ LABEL_12:
         if (v7 == v8 || i != [startChargerPeriods count] - 1)
         {
           v12 = [startChargerPeriods objectAtIndexedSubscript:i];
-          if ([v5 compare:v12] == -1)
+          if ([dateCopy compare:v12] == -1)
           {
             v13 = [startChargerPeriods objectAtIndexedSubscript:i];
-            v14 = [v6 compare:v13];
+            v14 = [endDateCopy compare:v13];
 
             if (v14 == 1)
             {
@@ -300,10 +300,10 @@ LABEL_12:
           }
 
           v15 = [endChargerPeriods objectAtIndexedSubscript:i];
-          if ([v5 compare:v15] == -1)
+          if ([dateCopy compare:v15] == -1)
           {
             v16 = [endChargerPeriods objectAtIndexedSubscript:i];
-            v17 = [v6 compare:v16];
+            v17 = [endDateCopy compare:v16];
 
             if (v17 == 1)
             {
@@ -316,10 +316,10 @@ LABEL_12:
           }
 
           v18 = [startChargerPeriods objectAtIndexedSubscript:i];
-          if ([v5 compare:v18] == 1)
+          if ([dateCopy compare:v18] == 1)
           {
             v19 = [endChargerPeriods objectAtIndexedSubscript:i];
-            v20 = [v6 compare:v19];
+            v20 = [endDateCopy compare:v19];
 
             if (v20 == -1)
             {
@@ -337,7 +337,7 @@ LABEL_20:
         else
         {
           v10 = [startChargerPeriods objectAtIndexedSubscript:i];
-          v11 = [v5 compare:v10];
+          v11 = [dateCopy compare:v10];
 
           if (v11 == 1)
           {
@@ -354,23 +354,23 @@ LABEL_21:
   return v21;
 }
 
-- (double)getRailEnergyWithEntry:(id)a3 withFilter:(id)a4 isRailForward:(BOOL)a5
+- (double)getRailEnergyWithEntry:(id)entry withFilter:(id)filter isRailForward:(BOOL)forward
 {
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  entryCopy = entry;
+  filterCopy = filter;
+  if (entryCopy)
   {
-    v10 = [(PLAWDAuxMetrics *)self operator];
-    v11 = [v10 storage];
-    v12 = [v8 entryKey];
-    v13 = [v11 entriesForKey:v12 startingFromRowID:objc_msgSend(v8 count:"entryID") - 1 withFilters:{-1, v9}];
+    operator = [(PLAWDAuxMetrics *)self operator];
+    storage = [operator storage];
+    entryKey = [entryCopy entryKey];
+    v13 = [storage entriesForKey:entryKey startingFromRowID:objc_msgSend(entryCopy count:"entryID") - 1 withFilters:{-1, filterCopy}];
 
     if ([v13 count] == 1)
     {
       v14 = [v13 objectAtIndexedSubscript:0];
       if (v14)
       {
-        if (a5)
+        if (forward)
         {
           goto LABEL_7;
         }
@@ -382,12 +382,12 @@ LABEL_21:
 
         [awdStartTime timeIntervalSince1970];
         v16 = v15;
-        v17 = [v14 entryDate];
-        [v17 timeIntervalSince1970];
+        entryDate = [v14 entryDate];
+        [entryDate timeIntervalSince1970];
         v19 = v16 - v18;
 
-        v20 = [v8 entryDate];
-        [v20 timeIntervalSince1970];
+        entryDate2 = [entryCopy entryDate];
+        [entryDate2 timeIntervalSince1970];
         v22 = v21;
         [awdStartTime timeIntervalSince1970];
         v24 = v22 - v23;
@@ -395,9 +395,9 @@ LABEL_21:
         if (v24 >= v19)
         {
 LABEL_7:
-          v25 = [v14 entryDate];
-          v26 = [v8 entryDate];
-          [(PLAWDAuxMetrics *)self doesInterfereWithChargerWithStartDate:v25 withEndDate:v26];
+          entryDate3 = [v14 entryDate];
+          entryDate4 = [entryCopy entryDate];
+          [(PLAWDAuxMetrics *)self doesInterfereWithChargerWithStartDate:entryDate3 withEndDate:entryDate4];
         }
       }
     }
@@ -406,19 +406,19 @@ LABEL_7:
   return 0.0;
 }
 
-- (BOOL)dropFirstEntryReceived:(id)a3 usingFilter:(id)a4 andStartTime:(id)a5
+- (BOOL)dropFirstEntryReceived:(id)received usingFilter:(id)filter andStartTime:(id)time
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
+  receivedCopy = received;
+  timeCopy = time;
+  v10 = timeCopy;
   v11 = 1;
-  if (v8 && v9)
+  if (receivedCopy && timeCopy)
   {
-    v12 = a4;
-    v13 = [(PLAWDAuxMetrics *)self operator];
-    v14 = [v13 storage];
-    v15 = [v8 entryKey];
-    v16 = [v14 entriesForKey:v15 startingFromRowID:objc_msgSend(v8 count:"entryID") - 1 withFilters:{-1, v12}];
+    filterCopy = filter;
+    operator = [(PLAWDAuxMetrics *)self operator];
+    storage = [operator storage];
+    entryKey = [receivedCopy entryKey];
+    v16 = [storage entriesForKey:entryKey startingFromRowID:objc_msgSend(receivedCopy count:"entryID") - 1 withFilters:{-1, filterCopy}];
 
     if ([v16 count] == 1)
     {
@@ -427,12 +427,12 @@ LABEL_7:
       {
         [v10 timeIntervalSince1970];
         v19 = v18;
-        v20 = [v17 entryDate];
-        [v20 timeIntervalSince1970];
+        entryDate = [v17 entryDate];
+        [entryDate timeIntervalSince1970];
         v22 = v19 - v21;
 
-        v23 = [v8 entryDate];
-        [v23 timeIntervalSince1970];
+        entryDate2 = [receivedCopy entryDate];
+        [entryDate2 timeIntervalSince1970];
         v25 = v24;
         [v10 timeIntervalSince1970];
         v27 = v25 - v26;

@@ -1,17 +1,17 @@
 @interface SUArrayCellConfiguration
-- (CGRect)frameForImageAtIndex:(unint64_t)a3;
-- (CGRect)frameForLabelAtIndex:(unint64_t)a3;
-- (SUArrayCellConfiguration)initWithStringCount:(unint64_t)a3 imageCount:(unint64_t)a4;
-- (id)imageAtIndex:(unint64_t)a3 withModifiers:(unint64_t)a4;
-- (id)stringForLabelAtIndex:(unint64_t)a3;
+- (CGRect)frameForImageAtIndex:(unint64_t)index;
+- (CGRect)frameForLabelAtIndex:(unint64_t)index;
+- (SUArrayCellConfiguration)initWithStringCount:(unint64_t)count imageCount:(unint64_t)imageCount;
+- (id)imageAtIndex:(unint64_t)index withModifiers:(unint64_t)modifiers;
+- (id)stringForLabelAtIndex:(unint64_t)index;
 - (void)dealloc;
 - (void)reloadData;
-- (void)setLayoutSize:(CGSize)a3;
+- (void)setLayoutSize:(CGSize)size;
 @end
 
 @implementation SUArrayCellConfiguration
 
-- (SUArrayCellConfiguration)initWithStringCount:(unint64_t)a3 imageCount:(unint64_t)a4
+- (SUArrayCellConfiguration)initWithStringCount:(unint64_t)count imageCount:(unint64_t)imageCount
 {
   v26.receiver = self;
   v26.super_class = SUArrayCellConfiguration;
@@ -22,11 +22,11 @@
     return v7;
   }
 
-  if (a4)
+  if (imageCount)
   {
-    v6->_imageFrames = malloc_type_malloc(32 * a4, 0x1000040E0EAB150uLL);
-    v7->_images = malloc_type_malloc(8 * a4, 0x80040B8603338uLL);
-    v8 = malloc_type_malloc(8 * a4, 0x80040B8603338uLL);
+    v6->_imageFrames = malloc_type_malloc(32 * imageCount, 0x1000040E0EAB150uLL);
+    v7->_images = malloc_type_malloc(8 * imageCount, 0x80040B8603338uLL);
+    v8 = malloc_type_malloc(8 * imageCount, 0x80040B8603338uLL);
     v7->_selectedImages = v8;
     if (!v7->_imageFrames)
     {
@@ -44,15 +44,15 @@
     }
 
     v10 = !v9;
-    if (!a3 || (v10 & 1) == 0)
+    if (!count || (v10 & 1) == 0)
     {
       if (v10)
       {
         p_numberOfImages = &v7->_numberOfImages;
-        v7->_numberOfImages = a4;
+        v7->_numberOfImages = imageCount;
         p_numberOfStrings = &v7->_numberOfStrings;
-        v7->_numberOfStrings = a3;
-        if (!a3)
+        v7->_numberOfStrings = count;
+        if (!count)
         {
           goto LABEL_26;
         }
@@ -66,7 +66,7 @@ LABEL_21:
     }
   }
 
-  else if (!a3)
+  else if (!count)
   {
     p_numberOfImages = &v6->_numberOfImages;
     v6->_numberOfImages = 0;
@@ -74,8 +74,8 @@ LABEL_21:
     goto LABEL_26;
   }
 
-  v7->_stringFrames = malloc_type_malloc(32 * a3, 0x1000040E0EAB150uLL);
-  v13 = malloc_type_malloc(8 * a3, 0x80040B8603338uLL);
+  v7->_stringFrames = malloc_type_malloc(32 * count, 0x1000040E0EAB150uLL);
+  v13 = malloc_type_malloc(8 * count, 0x80040B8603338uLL);
   v7->_strings = v13;
   if (v7->_stringFrames)
   {
@@ -93,9 +93,9 @@ LABEL_21:
   }
 
   p_numberOfImages = &v7->_numberOfImages;
-  v7->_numberOfImages = a4;
+  v7->_numberOfImages = imageCount;
   p_numberOfStrings = &v7->_numberOfStrings;
-  v7->_numberOfStrings = a3;
+  v7->_numberOfStrings = count;
 LABEL_22:
   v15 = 0;
   v16 = 0;
@@ -176,16 +176,16 @@ LABEL_26:
   [(SUCellConfiguration *)&v5 dealloc];
 }
 
-- (CGRect)frameForImageAtIndex:(unint64_t)a3
+- (CGRect)frameForImageAtIndex:(unint64_t)index
 {
-  if (self->_numberOfImages <= a3)
+  if (self->_numberOfImages <= index)
   {
     v3 = MEMORY[0x1E695F058];
   }
 
   else
   {
-    v3 = &self->_imageFrames[a3];
+    v3 = &self->_imageFrames[index];
   }
 
   width = v3->size.width;
@@ -199,16 +199,16 @@ LABEL_26:
   return result;
 }
 
-- (CGRect)frameForLabelAtIndex:(unint64_t)a3
+- (CGRect)frameForLabelAtIndex:(unint64_t)index
 {
-  if (self->_numberOfStrings <= a3)
+  if (self->_numberOfStrings <= index)
   {
     v3 = MEMORY[0x1E695F058];
   }
 
   else
   {
-    v3 = &self->_stringFrames[a3];
+    v3 = &self->_stringFrames[index];
   }
 
   width = v3->size.width;
@@ -222,17 +222,17 @@ LABEL_26:
   return result;
 }
 
-- (id)imageAtIndex:(unint64_t)a3 withModifiers:(unint64_t)a4
+- (id)imageAtIndex:(unint64_t)index withModifiers:(unint64_t)modifiers
 {
-  if (self->_numberOfImages <= a3)
+  if (self->_numberOfImages <= index)
   {
     return 0;
   }
 
-  v4 = self->_images[a3];
-  if ((a4 & 1) != 0 && self->_selectedImages[a3])
+  v4 = self->_images[index];
+  if ((modifiers & 1) != 0 && self->_selectedImages[index])
   {
-    return self->_selectedImages[a3];
+    return self->_selectedImages[index];
   }
 
   return v4;
@@ -249,15 +249,15 @@ LABEL_26:
   }
 }
 
-- (void)setLayoutSize:(CGSize)a3
+- (void)setLayoutSize:(CGSize)size
 {
-  width = a3.width;
+  width = size.width;
   height = self->super._layoutSize.height;
-  if (self->super._layoutSize.width != a3.width || height != a3.height)
+  if (self->super._layoutSize.width != size.width || height != size.height)
   {
     v7.receiver = self;
     v7.super_class = SUArrayCellConfiguration;
-    [(SUCellConfiguration *)&v7 setLayoutSize:a3.width, a3.height, height];
+    [(SUCellConfiguration *)&v7 setLayoutSize:size.width, size.height, height];
     if (width > 0.00000011920929)
     {
       [(SUArrayCellConfiguration *)self reloadLayoutInformation];
@@ -265,16 +265,16 @@ LABEL_26:
   }
 }
 
-- (id)stringForLabelAtIndex:(unint64_t)a3
+- (id)stringForLabelAtIndex:(unint64_t)index
 {
-  if (self->_numberOfStrings <= a3)
+  if (self->_numberOfStrings <= index)
   {
     return 0;
   }
 
   else
   {
-    return self->_strings[a3];
+    return self->_strings[index];
   }
 }
 

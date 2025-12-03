@@ -66,63 +66,63 @@
 - (int64_t)_grabberAction;
 - (int64_t)_indexOfActiveDetentForTappingGrabber;
 - (int64_t)_indexOfCurrentActiveOrDismissDetent;
-- (void)_boundingPathMayHaveChangedForView:(id)a3 relativeToBoundsOriginOnly:(BOOL)a4;
+- (void)_boundingPathMayHaveChangedForView:(id)view relativeToBoundsOriginOnly:(BOOL)only;
 - (void)_invalidateCurrentOffset;
 - (void)_invalidateDetents;
 - (void)_invalidatePreferredSize;
 - (void)_layout;
-- (void)_setAdditionalMinimumTopInset:(double)a3;
-- (void)_setAllowsAsymmetricVerticalMargins:(BOOL)a3;
-- (void)_setAllowsInteractiveDismissWhenFullScreen:(BOOL)a3;
-- (void)_setBackgroundEffect:(void *)a3;
-- (void)_setContainerSafeAreaInsets:(UIEdgeInsets)a3;
-- (void)_setContainerTraitCollection:(id)a3;
-- (void)_setContainerView:(id)a3;
-- (void)_setCurrentOffsetGetter:(id)a3;
-- (void)_setDetents:(id)a3;
-- (void)_setDisableSolariumInsets:(BOOL)a3;
-- (void)_setDismissible:(BOOL)a3;
-- (void)_setDragging:(BOOL)a3;
-- (void)_setGrabberBlurEnabled:(BOOL)a3;
-- (void)_setGrabberSpacing:(double)a3;
-- (void)_setHorizontalAlignment:(int64_t)a3;
-- (void)_setHostParentDepthLevel:(double)a3;
-- (void)_setInsetsContentViewForGrabber:(BOOL)a3;
-- (void)_setMarginInCompactHeight:(double)a3;
-- (void)_setMarginInRegularWidthRegularHeight:(double)a3;
-- (void)_setMode:(int64_t)a3;
-- (void)_setPreferredShadowOpacity:(double)a3;
-- (void)_setPrefersScrollingExpandsToLargerDetentWhenScrolledToEdge:(BOOL)a3;
-- (void)_setPrefersScrollingResizesWhenDetentDirectionIsDown:(BOOL)a3;
-- (void)_setPresentsWithGesture:(BOOL)a3;
-- (void)_setScreenSize:(CGSize)a3;
-- (void)_setSelectedDetentIdentifier:(id)a3;
-- (void)_setShadowRadius:(double)a3;
-- (void)_setShouldDismissWhenTappedOutside:(BOOL)a3;
-- (void)_setStandardAppearance:(id)a3;
-- (void)_setTucksIntoUnsafeAreaInCompactHeight:(BOOL)a3;
-- (void)_setWantsEdgeAttachedInCompactHeight:(BOOL)a3;
-- (void)_setWantsFullScreen:(BOOL)a3;
-- (void)_setWantsGrabber:(BOOL)a3;
-- (void)_setWidthFollowsPreferredContentSizeWhenEdgeAttached:(BOOL)a3;
-- (void)_setZooming:(BOOL)a3;
-- (void)set_indexOfCurrentActiveOrDismissDetentWasInvalidated:(id)a3;
-- (void)set_rubberBandExtentBeyondMaximumOffsetWasInvalidated:(id)a3;
-- (void)set_rubberBandExtentBeyondMinimumOffsetWasInvalidated:(id)a3;
+- (void)_setAdditionalMinimumTopInset:(double)inset;
+- (void)_setAllowsAsymmetricVerticalMargins:(BOOL)margins;
+- (void)_setAllowsInteractiveDismissWhenFullScreen:(BOOL)screen;
+- (void)_setBackgroundEffect:(void *)effect;
+- (void)_setContainerSafeAreaInsets:(UIEdgeInsets)insets;
+- (void)_setContainerTraitCollection:(id)collection;
+- (void)_setContainerView:(id)view;
+- (void)_setCurrentOffsetGetter:(id)getter;
+- (void)_setDetents:(id)detents;
+- (void)_setDisableSolariumInsets:(BOOL)insets;
+- (void)_setDismissible:(BOOL)dismissible;
+- (void)_setDragging:(BOOL)dragging;
+- (void)_setGrabberBlurEnabled:(BOOL)enabled;
+- (void)_setGrabberSpacing:(double)spacing;
+- (void)_setHorizontalAlignment:(int64_t)alignment;
+- (void)_setHostParentDepthLevel:(double)level;
+- (void)_setInsetsContentViewForGrabber:(BOOL)grabber;
+- (void)_setMarginInCompactHeight:(double)height;
+- (void)_setMarginInRegularWidthRegularHeight:(double)height;
+- (void)_setMode:(int64_t)mode;
+- (void)_setPreferredShadowOpacity:(double)opacity;
+- (void)_setPrefersScrollingExpandsToLargerDetentWhenScrolledToEdge:(BOOL)edge;
+- (void)_setPrefersScrollingResizesWhenDetentDirectionIsDown:(BOOL)down;
+- (void)_setPresentsWithGesture:(BOOL)gesture;
+- (void)_setScreenSize:(CGSize)size;
+- (void)_setSelectedDetentIdentifier:(id)identifier;
+- (void)_setShadowRadius:(double)radius;
+- (void)_setShouldDismissWhenTappedOutside:(BOOL)outside;
+- (void)_setStandardAppearance:(id)appearance;
+- (void)_setTucksIntoUnsafeAreaInCompactHeight:(BOOL)height;
+- (void)_setWantsEdgeAttachedInCompactHeight:(BOOL)height;
+- (void)_setWantsFullScreen:(BOOL)screen;
+- (void)_setWantsGrabber:(BOOL)grabber;
+- (void)_setWidthFollowsPreferredContentSizeWhenEdgeAttached:(BOOL)attached;
+- (void)_setZooming:(BOOL)zooming;
+- (void)set_indexOfCurrentActiveOrDismissDetentWasInvalidated:(id)invalidated;
+- (void)set_rubberBandExtentBeyondMaximumOffsetWasInvalidated:(id)invalidated;
+- (void)set_rubberBandExtentBeyondMinimumOffsetWasInvalidated:(id)invalidated;
 @end
 
 @implementation SheetLayoutInfo
 
-- (void)_setBackgroundEffect:(void *)a3
+- (void)_setBackgroundEffect:(void *)effect
 {
-  v5 = a3;
-  v6 = a1;
-  sub_189101AA0(a3);
+  effectCopy = effect;
+  selfCopy = self;
+  sub_189101AA0(effect);
 }
 
 - (double)_maximumDetentValue
 {
-  v1 = a1;
+  selfCopy = self;
   v2 = sub_18910614C();
 
   return v2;
@@ -142,11 +142,11 @@
   return Strong;
 }
 
-- (void)_setContainerView:(id)a3
+- (void)_setContainerView:(id)view
 {
-  v5 = a3;
-  v6 = self;
-  sub_1890FEFF4(a3);
+  viewCopy = view;
+  selfCopy = self;
+  sub_1890FEFF4(view);
 }
 
 - (void)_invalidatePreferredSize
@@ -154,16 +154,16 @@
   if (*(self + OBJC_IVAR____TtC5UIKit15SheetLayoutInfo_clean + 11) == 1)
   {
     *(self + OBJC_IVAR____TtC5UIKit15SheetLayoutInfo_clean + 11) = 0;
-    v3 = self;
+    selfCopy = self;
     sub_1890FBCCC();
     sub_188E0F52C();
   }
 }
 
-- (void)_boundingPathMayHaveChangedForView:(id)a3 relativeToBoundsOriginOnly:(BOOL)a4
+- (void)_boundingPathMayHaveChangedForView:(id)view relativeToBoundsOriginOnly:(BOOL)only
 {
-  v5 = a3;
-  v6 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_18910F620();
 }
 
@@ -189,11 +189,11 @@
   return result;
 }
 
-- (void)_setScreenSize:(CGSize)a3
+- (void)_setScreenSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
   sub_1890FF248(width, height);
 }
 
@@ -210,25 +210,25 @@
   return result;
 }
 
-- (void)_setContainerSafeAreaInsets:(UIEdgeInsets)a3
+- (void)_setContainerSafeAreaInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v9 = self;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  selfCopy = self;
   v7.f64[0] = top;
   v8.f64[0] = bottom;
   sub_1890FF344(v7, left, v8, right);
 }
 
-- (void)_setContainerTraitCollection:(id)a3
+- (void)_setContainerTraitCollection:(id)collection
 {
   v5 = *(self + OBJC_IVAR____TtC5UIKit15SheetLayoutInfo___containerTraitCollection);
-  *(self + OBJC_IVAR____TtC5UIKit15SheetLayoutInfo___containerTraitCollection) = a3;
+  *(self + OBJC_IVAR____TtC5UIKit15SheetLayoutInfo___containerTraitCollection) = collection;
   sub_188A34624(0, &qword_1ED490410);
-  v6 = a3;
-  v7 = self;
+  collectionCopy = collection;
+  selfCopy = self;
   if ((sub_18A4A7C88() & 1) == 0)
   {
     sub_1890FC994();
@@ -237,22 +237,22 @@
 
 - (BOOL)_effectiveSolariumInsetsAndCornerRadiusEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1890FF470();
 
   return v3 & 1;
 }
 
-- (void)_setAdditionalMinimumTopInset:(double)a3
+- (void)_setAdditionalMinimumTopInset:(double)inset
 {
-  v4 = self;
-  sub_1890FF5E4(a3);
+  selfCopy = self;
+  sub_1890FF5E4(inset);
 }
 
-- (void)_setMode:(int64_t)a3
+- (void)_setMode:(int64_t)mode
 {
-  v4 = self;
-  sub_1890FF7C4(a3);
+  selfCopy = self;
+  sub_1890FF7C4(mode);
 }
 
 - (CGRect)_sourceFrame
@@ -268,40 +268,40 @@
   return result;
 }
 
-- (void)_setHorizontalAlignment:(int64_t)a3
+- (void)_setHorizontalAlignment:(int64_t)alignment
 {
   v4 = *(self + OBJC_IVAR____TtC5UIKit15SheetLayoutInfo_horizontalAlignment);
-  *(self + OBJC_IVAR____TtC5UIKit15SheetLayoutInfo_horizontalAlignment) = a3;
-  if (v4 != a3)
+  *(self + OBJC_IVAR____TtC5UIKit15SheetLayoutInfo_horizontalAlignment) = alignment;
+  if (v4 != alignment)
   {
-    v5 = self;
+    selfCopy = self;
     sub_1890FCDD4();
   }
 }
 
-- (void)_setMarginInCompactHeight:(double)a3
+- (void)_setMarginInCompactHeight:(double)height
 {
-  v4 = self;
-  sub_1890FF9B8(&OBJC_IVAR____TtC5UIKit15SheetLayoutInfo_marginInCompactHeight, a3);
+  selfCopy = self;
+  sub_1890FF9B8(&OBJC_IVAR____TtC5UIKit15SheetLayoutInfo_marginInCompactHeight, height);
 }
 
-- (void)_setMarginInRegularWidthRegularHeight:(double)a3
+- (void)_setMarginInRegularWidthRegularHeight:(double)height
 {
-  v4 = self;
-  sub_1890FF9B8(&OBJC_IVAR____TtC5UIKit15SheetLayoutInfo_marginInRegularWidthRegularHeight, a3);
+  selfCopy = self;
+  sub_1890FF9B8(&OBJC_IVAR____TtC5UIKit15SheetLayoutInfo_marginInRegularWidthRegularHeight, height);
 }
 
-- (void)_setTucksIntoUnsafeAreaInCompactHeight:(BOOL)a3
+- (void)_setTucksIntoUnsafeAreaInCompactHeight:(BOOL)height
 {
-  v3 = a3;
-  v4 = self;
-  sub_1890FFA18(v3);
+  heightCopy = height;
+  selfCopy = self;
+  sub_1890FFA18(heightCopy);
 }
 
-- (void)_setAllowsAsymmetricVerticalMargins:(BOOL)a3
+- (void)_setAllowsAsymmetricVerticalMargins:(BOOL)margins
 {
-  v4 = self;
-  sub_1890FFB8C(a3);
+  selfCopy = self;
+  sub_1890FFB8C(margins);
 }
 
 - (CGRect)_keyboardFrame
@@ -330,13 +330,13 @@
   return result;
 }
 
-- (void)_setWantsFullScreen:(BOOL)a3
+- (void)_setWantsFullScreen:(BOOL)screen
 {
   v4 = *(self + OBJC_IVAR____TtC5UIKit15SheetLayoutInfo_wantsFullScreen);
-  *(self + OBJC_IVAR____TtC5UIKit15SheetLayoutInfo_wantsFullScreen) = a3;
-  if (v4 != a3)
+  *(self + OBJC_IVAR____TtC5UIKit15SheetLayoutInfo_wantsFullScreen) = screen;
+  if (v4 != screen)
   {
-    v5 = self;
+    selfCopy = self;
     sub_1890FDB10();
     sub_1890FD128();
     sub_1890FD1DC();
@@ -345,36 +345,36 @@
   }
 }
 
-- (void)_setWantsEdgeAttachedInCompactHeight:(BOOL)a3
+- (void)_setWantsEdgeAttachedInCompactHeight:(BOOL)height
 {
-  v4 = self;
-  sub_1890FFE7C(a3);
+  selfCopy = self;
+  sub_1890FFE7C(height);
 }
 
-- (void)_setWidthFollowsPreferredContentSizeWhenEdgeAttached:(BOOL)a3
+- (void)_setWidthFollowsPreferredContentSizeWhenEdgeAttached:(BOOL)attached
 {
-  v4 = self;
-  sub_18910005C(a3);
+  selfCopy = self;
+  sub_18910005C(attached);
 }
 
-- (void)_setZooming:(BOOL)a3
+- (void)_setZooming:(BOOL)zooming
 {
-  v3 = a3;
-  v4 = self;
-  sub_189100FC4(v3, &OBJC_IVAR____TtC5UIKit15SheetLayoutInfo_isZooming);
+  zoomingCopy = zooming;
+  selfCopy = self;
+  sub_189100FC4(zoomingCopy, &OBJC_IVAR____TtC5UIKit15SheetLayoutInfo_isZooming);
 }
 
-- (void)_setPresentsWithGesture:(BOOL)a3
+- (void)_setPresentsWithGesture:(BOOL)gesture
 {
-  v3 = a3;
-  v4 = self;
-  sub_189100FC4(v3, &OBJC_IVAR____TtC5UIKit15SheetLayoutInfo_presentsWithGesture);
+  gestureCopy = gesture;
+  selfCopy = self;
+  sub_189100FC4(gestureCopy, &OBJC_IVAR____TtC5UIKit15SheetLayoutInfo_presentsWithGesture);
 }
 
-- (void)_setDismissible:(BOOL)a3
+- (void)_setDismissible:(BOOL)dismissible
 {
-  v4 = self;
-  sub_18910048C(a3);
+  selfCopy = self;
+  sub_18910048C(dismissible);
 }
 
 - (_UIViewMaterial)_largeBackground
@@ -400,93 +400,93 @@
   return v2;
 }
 
-- (void)_setDetents:(id)a3
+- (void)_setDetents:(id)detents
 {
   sub_188A34624(0, &unk_1ED490400);
   v4 = sub_18A4A7548();
-  v5 = self;
+  selfCopy = self;
   sub_189100610(v4);
 }
 
 - (void)_invalidateDetents
 {
-  v2 = self;
+  selfCopy = self;
   sub_1890FC154();
 }
 
-- (void)_setSelectedDetentIdentifier:(id)a3
+- (void)_setSelectedDetentIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = self;
-  sub_18910082C(a3);
+  identifierCopy = identifier;
+  selfCopy = self;
+  sub_18910082C(identifier);
 }
 
-- (void)_setStandardAppearance:(id)a3
+- (void)_setStandardAppearance:(id)appearance
 {
-  v5 = a3;
-  v4 = self;
-  sub_18910F7F4(v5);
+  appearanceCopy = appearance;
+  selfCopy = self;
+  sub_18910F7F4(appearanceCopy);
 }
 
-- (void)_setShouldDismissWhenTappedOutside:(BOOL)a3
+- (void)_setShouldDismissWhenTappedOutside:(BOOL)outside
 {
-  v3 = a3;
-  v4 = self;
-  sub_189100EC0(v3);
+  outsideCopy = outside;
+  selfCopy = self;
+  sub_189100EC0(outsideCopy);
 }
 
-- (void)_setAllowsInteractiveDismissWhenFullScreen:(BOOL)a3
+- (void)_setAllowsInteractiveDismissWhenFullScreen:(BOOL)screen
 {
-  v3 = a3;
-  v4 = self;
-  sub_189100FC4(v3, &OBJC_IVAR____TtC5UIKit15SheetLayoutInfo_allowsInteractiveDismissWhenFullScreen);
+  screenCopy = screen;
+  selfCopy = self;
+  sub_189100FC4(screenCopy, &OBJC_IVAR____TtC5UIKit15SheetLayoutInfo_allowsInteractiveDismissWhenFullScreen);
 }
 
-- (void)_setPrefersScrollingResizesWhenDetentDirectionIsDown:(BOOL)a3
+- (void)_setPrefersScrollingResizesWhenDetentDirectionIsDown:(BOOL)down
 {
-  v3 = a3;
-  v4 = self;
-  sub_1891010BC(v3);
+  downCopy = down;
+  selfCopy = self;
+  sub_1891010BC(downCopy);
 }
 
-- (void)_setPrefersScrollingExpandsToLargerDetentWhenScrolledToEdge:(BOOL)a3
+- (void)_setPrefersScrollingExpandsToLargerDetentWhenScrolledToEdge:(BOOL)edge
 {
-  v3 = a3;
-  v4 = self;
-  sub_189101438(v3, &OBJC_IVAR____TtC5UIKit15SheetLayoutInfo_prefersScrollingExpandsToLargerDetentWhenScrolledToEdge);
+  edgeCopy = edge;
+  selfCopy = self;
+  sub_189101438(edgeCopy, &OBJC_IVAR____TtC5UIKit15SheetLayoutInfo_prefersScrollingExpandsToLargerDetentWhenScrolledToEdge);
 }
 
-- (void)_setWantsGrabber:(BOOL)a3
+- (void)_setWantsGrabber:(BOOL)grabber
 {
-  v3 = a3;
-  v4 = self;
-  sub_189101254(v3);
+  grabberCopy = grabber;
+  selfCopy = self;
+  sub_189101254(grabberCopy);
 }
 
-- (void)_setGrabberSpacing:(double)a3
+- (void)_setGrabberSpacing:(double)spacing
 {
-  v4 = self;
-  sub_1891017EC(&OBJC_IVAR____TtC5UIKit15SheetLayoutInfo_grabberSpacing, a3);
+  selfCopy = self;
+  sub_1891017EC(&OBJC_IVAR____TtC5UIKit15SheetLayoutInfo_grabberSpacing, spacing);
 }
 
-- (void)_setInsetsContentViewForGrabber:(BOOL)a3
+- (void)_setInsetsContentViewForGrabber:(BOOL)grabber
 {
-  v3 = a3;
-  v4 = self;
-  sub_189101438(v3, &OBJC_IVAR____TtC5UIKit15SheetLayoutInfo_insetsContentViewForGrabber);
+  grabberCopy = grabber;
+  selfCopy = self;
+  sub_189101438(grabberCopy, &OBJC_IVAR____TtC5UIKit15SheetLayoutInfo_insetsContentViewForGrabber);
 }
 
-- (void)_setGrabberBlurEnabled:(BOOL)a3
+- (void)_setGrabberBlurEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = self;
-  sub_189101438(v3, &OBJC_IVAR____TtC5UIKit15SheetLayoutInfo_isGrabberBlurEnabled);
+  enabledCopy = enabled;
+  selfCopy = self;
+  sub_189101438(enabledCopy, &OBJC_IVAR____TtC5UIKit15SheetLayoutInfo_isGrabberBlurEnabled);
 }
 
-- (void)_setDragging:(BOOL)a3
+- (void)_setDragging:(BOOL)dragging
 {
-  v4 = self;
-  sub_189101518(a3);
+  selfCopy = self;
+  sub_189101518(dragging);
 }
 
 - (CGRect)_dismissSourceFrame
@@ -502,16 +502,16 @@
   return result;
 }
 
-- (void)_setPreferredShadowOpacity:(double)a3
+- (void)_setPreferredShadowOpacity:(double)opacity
 {
-  v4 = self;
-  sub_1891016E4(a3);
+  selfCopy = self;
+  sub_1891016E4(opacity);
 }
 
-- (void)_setShadowRadius:(double)a3
+- (void)_setShadowRadius:(double)radius
 {
-  v4 = self;
-  sub_1891017EC(&OBJC_IVAR____TtC5UIKit15SheetLayoutInfo_shadowRadius, a3);
+  selfCopy = self;
+  sub_1891017EC(&OBJC_IVAR____TtC5UIKit15SheetLayoutInfo_shadowRadius, radius);
 }
 
 - (CGRect)_hostParentStackAlignmentFrame
@@ -540,13 +540,13 @@
   return result;
 }
 
-- (void)_setHostParentDepthLevel:(double)a3
+- (void)_setHostParentDepthLevel:(double)level
 {
   v4 = *(self + OBJC_IVAR____TtC5UIKit15SheetLayoutInfo_hostParentDepthLevel);
-  *(self + OBJC_IVAR____TtC5UIKit15SheetLayoutInfo_hostParentDepthLevel) = a3;
-  if (v4 != a3)
+  *(self + OBJC_IVAR____TtC5UIKit15SheetLayoutInfo_hostParentDepthLevel) = level;
+  if (v4 != level)
   {
-    v5 = self;
+    selfCopy = self;
     sub_1890FE48C();
   }
 }
@@ -573,9 +573,9 @@
   return v3;
 }
 
-- (void)_setCurrentOffsetGetter:(id)a3
+- (void)_setCurrentOffsetGetter:(id)getter
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(getter);
   if (v4)
   {
     v5 = v4;
@@ -593,7 +593,7 @@
   v8 = *(self + OBJC_IVAR____TtC5UIKit15SheetLayoutInfo_currentOffsetGetter);
   *v7 = v6;
   v7[1] = v4;
-  v9 = self;
+  selfCopy = self;
   sub_188A55B8C(v8);
 }
 
@@ -602,7 +602,7 @@
   if (*(self + OBJC_IVAR____TtC5UIKit15SheetLayoutInfo_clean + 38) == 1)
   {
     *(self + OBJC_IVAR____TtC5UIKit15SheetLayoutInfo_clean + 38) = 0;
-    v3 = self;
+    selfCopy = self;
     sub_1890FEBD0();
     sub_1890FCB68();
   }
@@ -615,15 +615,15 @@
   return Strong;
 }
 
-- (void)_setDisableSolariumInsets:(BOOL)a3
+- (void)_setDisableSolariumInsets:(BOOL)insets
 {
-  v4 = self;
-  sub_1891020A8(a3);
+  selfCopy = self;
+  sub_1891020A8(insets);
 }
 
-- (void)set_indexOfCurrentActiveOrDismissDetentWasInvalidated:(id)a3
+- (void)set_indexOfCurrentActiveOrDismissDetentWasInvalidated:(id)invalidated
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(invalidated);
   if (v4)
   {
     v5 = v4;
@@ -641,13 +641,13 @@
   v8 = *(self + OBJC_IVAR____TtC5UIKit15SheetLayoutInfo__indexOfCurrentActiveOrDismissDetentWasInvalidated);
   *v7 = v6;
   v7[1] = v4;
-  v9 = self;
+  selfCopy = self;
   sub_188A55B8C(v8);
 }
 
-- (void)set_rubberBandExtentBeyondMinimumOffsetWasInvalidated:(id)a3
+- (void)set_rubberBandExtentBeyondMinimumOffsetWasInvalidated:(id)invalidated
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(invalidated);
   if (v4)
   {
     v5 = v4;
@@ -665,13 +665,13 @@
   v8 = *(self + OBJC_IVAR____TtC5UIKit15SheetLayoutInfo__rubberBandExtentBeyondMinimumOffsetWasInvalidated);
   *v7 = v6;
   v7[1] = v4;
-  v9 = self;
+  selfCopy = self;
   sub_188A55B8C(v8);
 }
 
-- (void)set_rubberBandExtentBeyondMaximumOffsetWasInvalidated:(id)a3
+- (void)set_rubberBandExtentBeyondMaximumOffsetWasInvalidated:(id)invalidated
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(invalidated);
   if (v4)
   {
     v5 = v4;
@@ -689,7 +689,7 @@
   v8 = *(self + OBJC_IVAR____TtC5UIKit15SheetLayoutInfo__rubberBandExtentBeyondMaximumOffsetWasInvalidated);
   *v7 = v6;
   v7[1] = v4;
-  v9 = self;
+  selfCopy = self;
   sub_188A55B8C(v8);
 }
 
@@ -702,7 +702,7 @@
 
 - (double)_proposedDepthLevel
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1891054B0();
 
   return v3;
@@ -710,7 +710,7 @@
 
 - (double)_depthLevel
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1891057D0();
 
   return v3;
@@ -720,11 +720,11 @@
 {
   v2 = self + OBJC_IVAR____TtC5UIKit15SheetLayoutInfo_clean;
   v3 = *(self + OBJC_IVAR____TtC5UIKit15SheetLayoutInfo_clean + 17);
-  v4 = self;
-  v5 = v4;
+  selfCopy = self;
+  v5 = selfCopy;
   if ((v3 & 1) == 0)
   {
-    *(v4 + OBJC_IVAR____TtC5UIKit15SheetLayoutInfo___isEdgeAttached) = sub_189105A94(v4) & 1;
+    *(selfCopy + OBJC_IVAR____TtC5UIKit15SheetLayoutInfo___isEdgeAttached) = sub_189105A94(selfCopy) & 1;
     v2[17] = 1;
   }
 
@@ -735,7 +735,7 @@
 
 - (BOOL)_isInverted
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1891050DC();
 
   return v3 & 1;
@@ -743,7 +743,7 @@
 
 - (BOOL)_isFunctionallyFullScreen
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1890FF578();
 
   return v3 & 1;
@@ -781,7 +781,7 @@
 
 - (double)_fullDetentValue
 {
-  v2 = self;
+  selfCopy = self;
   sub_18910622C();
   v4 = v3;
 
@@ -800,7 +800,7 @@
 
 - (BOOL)_isExpanded
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_18910673C();
 
   return v3 & 1;
@@ -808,7 +808,7 @@
 
 - (BOOL)_isAnyDescendantDragging
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_189106E34();
 
   return v3 & 1;
@@ -816,7 +816,7 @@
 
 - (NSArray)_detentValues
 {
-  v2 = self;
+  selfCopy = self;
   sub_189103BFC();
 
   swift_beginAccess();
@@ -829,7 +829,7 @@
 
 - (double)_percentSafeAreaInsetToInclude
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_18910717C();
 
   return v3;
@@ -837,7 +837,7 @@
 
 - (double)_currentDetentValue
 {
-  v2 = self;
+  selfCopy = self;
   sub_1891072CC();
   v4 = v3;
 
@@ -846,7 +846,7 @@
 
 - (NSArray)_activeDetents
 {
-  v2 = self;
+  selfCopy = self;
   sub_189103BFC();
 
   sub_188A34624(0, &unk_1ED48C6A0);
@@ -857,17 +857,17 @@
 
 - (double)_smallestNonDismissDetentOffset
 {
-  v2 = self;
+  selfCopy = self;
   sub_189103BFC();
 
-  v3 = *(v2 + OBJC_IVAR____TtC5UIKit15SheetLayoutInfo___smallestNonDismissDetentOffset);
+  v3 = *(selfCopy + OBJC_IVAR____TtC5UIKit15SheetLayoutInfo___smallestNonDismissDetentOffset);
 
   return v3;
 }
 
 - (int64_t)_indexOfActiveDetentForTappingGrabber
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_18910767C();
 
   return v3;
@@ -875,7 +875,7 @@
 
 - (int64_t)_grabberAction
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_189107768();
 
   return v3;
@@ -883,7 +883,7 @@
 
 - (int64_t)_indexOfCurrentActiveOrDismissDetent
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_18910785C();
 
   return v3;
@@ -891,7 +891,7 @@
 
 - (double)_rubberBandExtentBeyondMinimumOffset
 {
-  v2 = self;
+  selfCopy = self;
   sub_1891079B0();
   v4 = v3;
 
@@ -900,7 +900,7 @@
 
 - (double)_rubberBandExtentBeyondMaximumOffset
 {
-  v2 = self;
+  selfCopy = self;
   sub_189107B64();
   v4 = v3;
 
@@ -949,7 +949,7 @@
 
   else
   {
-    v6 = self;
+    selfCopy = self;
     sub_1891082A8();
     v8 = v7;
     v10 = v9;
@@ -991,7 +991,7 @@
 
 - (double)_percentCapsular
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_189107218();
 
   return v3;
@@ -1019,7 +1019,7 @@
 
 - (double)_percentDimmed
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_189109E94();
 
   return v3;
@@ -1027,34 +1027,34 @@
 
 - (double)_confinedPercentDimmed
 {
-  v2 = self;
+  selfCopy = self;
   sub_189109E94();
-  v3 = *(v2 + OBJC_IVAR____TtC5UIKit15SheetLayoutInfo___confinedPercentDimmed);
+  v3 = *(selfCopy + OBJC_IVAR____TtC5UIKit15SheetLayoutInfo___confinedPercentDimmed);
 
   return v3;
 }
 
 - (double)_confinedPercentLightened
 {
-  v2 = self;
+  selfCopy = self;
   sub_189109E94();
-  v3 = *(v2 + OBJC_IVAR____TtC5UIKit15SheetLayoutInfo___confinedPercentLightened);
+  v3 = *(selfCopy + OBJC_IVAR____TtC5UIKit15SheetLayoutInfo___confinedPercentLightened);
 
   return v3;
 }
 
 - (double)_magicShadowOpacity
 {
-  v2 = self;
+  selfCopy = self;
   sub_189109E94();
-  v3 = *(v2 + OBJC_IVAR____TtC5UIKit15SheetLayoutInfo___magicShadowOpacity);
+  v3 = *(selfCopy + OBJC_IVAR____TtC5UIKit15SheetLayoutInfo___magicShadowOpacity);
 
   return v3;
 }
 
 - (double)_shadowOpacity
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_18910A2F8();
 
   return v3;
@@ -1062,7 +1062,7 @@
 
 - (double)_alpha
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_18910A420();
 
   return v3;
@@ -1070,7 +1070,7 @@
 
 - (double)_grabberAlpha
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_18910A5D0();
 
   return v3;
@@ -1078,7 +1078,7 @@
 
 - (_UIViewMaterial)_background
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1891102E0();
   swift_unknownObjectRetain();
 
@@ -1087,7 +1087,7 @@
 
 - (BOOL)_isInteractionEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_18910A850();
 
   return v3 & 1;
@@ -1095,7 +1095,7 @@
 
 - (BOOL)_isScrollInteractionEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_18910A9D4();
 
   return v3 & 1;
@@ -1103,7 +1103,7 @@
 
 - (BOOL)_shouldPresentedViewControllerControlStatusBarAppearance
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_18910AA74();
 
   return v3 & 1;
@@ -1111,7 +1111,7 @@
 
 - (BOOL)_shouldDimmingIgnoreTouches
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_18910AD28();
 
   return v3 & 1;
@@ -1119,7 +1119,7 @@
 
 - (BOOL)_isModelDimmingEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_18910AE98();
 
   return v3 & 1;
@@ -1127,7 +1127,7 @@
 
 - (BOOL)_isDimmingEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_18910B038();
 
   return v3 & 1;
@@ -1135,7 +1135,7 @@
 
 - (void)_layout
 {
-  v2 = self;
+  selfCopy = self;
   sub_18910B098();
 }
 
@@ -1152,13 +1152,13 @@
 
 - (double)_invertedDepthLevel
 {
-  v2 = self;
+  selfCopy = self;
   Strong = swift_unknownObjectWeakLoadStrong();
-  v4 = v2;
+  v4 = selfCopy;
   if (Strong)
   {
     v5 = Strong;
-    v6 = v2;
+    v6 = selfCopy;
     do
     {
       v4 = v5;

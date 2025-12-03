@@ -1,46 +1,46 @@
 @interface IDSCloudKitKeyTransparencyStore
 - (BOOL)initializeKVS;
 - (CKContainer)container;
-- (IDSCloudKitKeyTransparencyStore)initWithContainer:(id)a3 serverBag:(id)a4 kvStore:(id)a5 queue:(id)a6;
-- (IDSCloudKitKeyTransparencyStore)initWithQueue:(id)a3;
-- (id)_clientErrorWithCode:(int64_t)a3 debugDescription:(id)a4 underlyingError:(id)a5;
-- (id)_cloudKitRecordForDeviceRecord:(id)a3;
-- (id)_deviceRecordForCloudKitRecord:(id)a3;
+- (IDSCloudKitKeyTransparencyStore)initWithContainer:(id)container serverBag:(id)bag kvStore:(id)store queue:(id)queue;
+- (IDSCloudKitKeyTransparencyStore)initWithQueue:(id)queue;
+- (id)_clientErrorWithCode:(int64_t)code debugDescription:(id)description underlyingError:(id)error;
+- (id)_cloudKitRecordForDeviceRecord:(id)record;
+- (id)_deviceRecordForCloudKitRecord:(id)record;
 - (id)_no_timeout_no_cache_fetchKeyTransparencyDeviceRecords;
-- (id)_recordIDForDeviceRecord:(id)a3;
+- (id)_recordIDForDeviceRecord:(id)record;
 - (id)_zoneID;
 - (id)database;
 - (id)fetchAllEntries;
-- (id)fetchEntryForKey:(id)a3;
+- (id)fetchEntryForKey:(id)key;
 - (id)forceKVSSync;
-- (void)_copyDeviceRecord:(id)a3 toCloudKitRecordRef:(id *)a4;
-- (void)_createZoneIfNeededUsingTimeIntervalForRequest:(double)a3 isNonDiscretionary:(BOOL)a4 completion:(id)a5;
-- (void)_no_timeout_fetchKeyTransparencyDeviceRecordsWithCompletion:(id)a3;
-- (void)_no_timeout_nukeKeyTransparencyDeviceRecordsWithCompletion:(id)a3;
-- (void)_no_timeout_upsertKeyTransparencyDeviceRecord:(id)a3 recordsToModify:(id)a4 recordsToDelete:(id)a5 completion:(id)a6;
-- (void)_no_timeout_verifyEncryptionPrerequisitesWithCompletion:(id)a3;
-- (void)deleteKeyTransparencyDeviceRecordsForPushToken:(id)a3 completion:(id)a4;
-- (void)fetchAccountEligibilityForDeviceToDeviceEncryptionWithCompletion:(id)a3;
-- (void)fetchKeyTransparencyDeviceRecordsWithCompletion:(id)a3;
-- (void)handleKVSUpdate:(id)a3;
-- (void)insertDictionary:(id)a3 forKey:(id)a4;
-- (void)nukeKeyTransparencyDeviceRecordsWithCompletion:(id)a3;
+- (void)_copyDeviceRecord:(id)record toCloudKitRecordRef:(id *)ref;
+- (void)_createZoneIfNeededUsingTimeIntervalForRequest:(double)request isNonDiscretionary:(BOOL)discretionary completion:(id)completion;
+- (void)_no_timeout_fetchKeyTransparencyDeviceRecordsWithCompletion:(id)completion;
+- (void)_no_timeout_nukeKeyTransparencyDeviceRecordsWithCompletion:(id)completion;
+- (void)_no_timeout_upsertKeyTransparencyDeviceRecord:(id)record recordsToModify:(id)modify recordsToDelete:(id)delete completion:(id)completion;
+- (void)_no_timeout_verifyEncryptionPrerequisitesWithCompletion:(id)completion;
+- (void)deleteKeyTransparencyDeviceRecordsForPushToken:(id)token completion:(id)completion;
+- (void)fetchAccountEligibilityForDeviceToDeviceEncryptionWithCompletion:(id)completion;
+- (void)fetchKeyTransparencyDeviceRecordsWithCompletion:(id)completion;
+- (void)handleKVSUpdate:(id)update;
+- (void)insertDictionary:(id)dictionary forKey:(id)key;
+- (void)nukeKeyTransparencyDeviceRecordsWithCompletion:(id)completion;
 - (void)removeAllEntries;
-- (void)removeEntryForKey:(id)a3;
+- (void)removeEntryForKey:(id)key;
 - (void)setupContainerCache;
 - (void)systemDidLeaveFirstDataProtectionLock;
-- (void)upsertKeyTransparencyDeviceRecord:(id)a3 recordsToModify:(id)a4 recordsToDelete:(id)a5 completion:(id)a6;
+- (void)upsertKeyTransparencyDeviceRecord:(id)record recordsToModify:(id)modify recordsToDelete:(id)delete completion:(id)completion;
 @end
 
 @implementation IDSCloudKitKeyTransparencyStore
 
-- (IDSCloudKitKeyTransparencyStore)initWithQueue:(id)a3
+- (IDSCloudKitKeyTransparencyStore)initWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v5 = +[IMSystemMonitor sharedInstance];
-  v6 = [v5 isUnderFirstDataProtectionLock];
+  isUnderFirstDataProtectionLock = [v5 isUnderFirstDataProtectionLock];
 
-  if (v6)
+  if (isUnderFirstDataProtectionLock)
   {
     v7 = +[IDSFoundationLog KeyTransparency];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -64,27 +64,27 @@
   }
 
   v12 = [IDSServerBag sharedInstanceForBagType:0];
-  v13 = [(IDSCloudKitKeyTransparencyStore *)self initWithContainer:0 serverBag:v12 kvStore:v10 queue:v4];
+  v13 = [(IDSCloudKitKeyTransparencyStore *)self initWithContainer:0 serverBag:v12 kvStore:v10 queue:queueCopy];
 
   return v13;
 }
 
-- (IDSCloudKitKeyTransparencyStore)initWithContainer:(id)a3 serverBag:(id)a4 kvStore:(id)a5 queue:(id)a6
+- (IDSCloudKitKeyTransparencyStore)initWithContainer:(id)container serverBag:(id)bag kvStore:(id)store queue:(id)queue
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  containerCopy = container;
+  bagCopy = bag;
+  storeCopy = store;
+  queueCopy = queue;
   v20.receiver = self;
   v20.super_class = IDSCloudKitKeyTransparencyStore;
   v15 = [(IDSCloudKitKeyTransparencyStore *)&v20 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_container, a3);
-    objc_storeStrong(&v16->_serverBag, a4);
-    objc_storeStrong(&v16->_kvStore, a5);
-    objc_storeStrong(&v16->_queue, a6);
+    objc_storeStrong(&v15->_container, container);
+    objc_storeStrong(&v16->_serverBag, bag);
+    objc_storeStrong(&v16->_kvStore, store);
+    objc_storeStrong(&v16->_queue, queue);
     if (v16->_kvStore)
     {
       v17 = +[NSNotificationCenter defaultCenter];
@@ -148,10 +148,10 @@
 
 - (id)database
 {
-  v2 = [(IDSCloudKitKeyTransparencyStore *)self container];
-  v3 = [v2 privateCloudDatabase];
+  container = [(IDSCloudKitKeyTransparencyStore *)self container];
+  privateCloudDatabase = [container privateCloudDatabase];
 
-  return v3;
+  return privateCloudDatabase;
 }
 
 - (id)_zoneID
@@ -184,9 +184,9 @@
   return v5;
 }
 
-- (id)_recordIDForDeviceRecord:(id)a3
+- (id)_recordIDForDeviceRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   if (qword_100CBD2B8 != -1)
   {
     sub_10091DEB4();
@@ -205,29 +205,29 @@
   }
 
   v7 = [v5 alloc];
-  v8 = [v4 recordID];
-  v9 = [(IDSCloudKitKeyTransparencyStore *)self _zoneID];
-  v10 = [v7 initWithRecordName:v8 zoneID:v9];
+  recordID = [recordCopy recordID];
+  _zoneID = [(IDSCloudKitKeyTransparencyStore *)self _zoneID];
+  v10 = [v7 initWithRecordName:recordID zoneID:_zoneID];
 
   return v10;
 }
 
-- (id)_clientErrorWithCode:(int64_t)a3 debugDescription:(id)a4 underlyingError:(id)a5
+- (id)_clientErrorWithCode:(int64_t)code debugDescription:(id)description underlyingError:(id)error
 {
-  v7 = a4;
-  v8 = a5;
-  if (v7 | v8)
+  descriptionCopy = description;
+  errorCopy = error;
+  if (descriptionCopy | errorCopy)
   {
     v9 = objc_alloc_init(NSMutableDictionary);
     v10 = v9;
-    if (v7)
+    if (descriptionCopy)
     {
-      [v9 setObject:v7 forKeyedSubscript:NSDebugDescriptionErrorKey];
+      [v9 setObject:descriptionCopy forKeyedSubscript:NSDebugDescriptionErrorKey];
     }
 
-    if (v8)
+    if (errorCopy)
     {
-      [v10 setObject:v8 forKeyedSubscript:NSUnderlyingErrorKey];
+      [v10 setObject:errorCopy forKeyedSubscript:NSUnderlyingErrorKey];
     }
   }
 
@@ -236,25 +236,25 @@
     v10 = 0;
   }
 
-  v11 = [[NSError alloc] initWithDomain:@"IDSCloudKitKeyTransparencyStoreErrorDomain" code:a3 userInfo:v10];
+  v11 = [[NSError alloc] initWithDomain:@"IDSCloudKitKeyTransparencyStoreErrorDomain" code:code userInfo:v10];
 
   return v11;
 }
 
-- (id)_deviceRecordForCloudKitRecord:(id)a3
+- (id)_deviceRecordForCloudKitRecord:(id)record
 {
-  v3 = a3;
-  v4 = [v3 encryptedValues];
-  v5 = [v4 objectForKeyedSubscript:@"IDSKTDevice"];
+  recordCopy = record;
+  encryptedValues = [recordCopy encryptedValues];
+  v5 = [encryptedValues objectForKeyedSubscript:@"IDSKTDevice"];
 
-  v6 = [v3 objectForKeyedSubscript:@"IDSKTMetadata"];
+  v6 = [recordCopy objectForKeyedSubscript:@"IDSKTMetadata"];
   v7 = v6;
   if (v5 && v6)
   {
     v8 = [IDSCloudKitKeyTransparencyDeviceRecord alloc];
-    v9 = [v3 recordID];
-    v10 = [v9 recordName];
-    v11 = [(IDSCloudKitKeyTransparencyDeviceRecord *)v8 initWithDeviceData:v5 deviceMetadata:v7 recordID:v10];
+    recordID = [recordCopy recordID];
+    recordName = [recordID recordName];
+    v11 = [(IDSCloudKitKeyTransparencyDeviceRecord *)v8 initWithDeviceData:v5 deviceMetadata:v7 recordID:recordName];
   }
 
   else
@@ -263,7 +263,7 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       v14 = 138412802;
-      v15 = v3;
+      v15 = recordCopy;
       v16 = 2112;
       v17 = v5;
       v18 = 2112;
@@ -277,11 +277,11 @@
   return v11;
 }
 
-- (id)_cloudKitRecordForDeviceRecord:(id)a3
+- (id)_cloudKitRecordForDeviceRecord:(id)record
 {
-  v4 = a3;
-  v5 = [v4 deviceData];
-  if (v5 && (v6 = v5, [v4 deviceMetadata], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
+  recordCopy = record;
+  deviceData = [recordCopy deviceData];
+  if (deviceData && (v6 = deviceData, [recordCopy deviceMetadata], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
   {
     if (qword_100CBD2D8 != -1)
     {
@@ -301,12 +301,12 @@
     }
 
     v10 = [v8 alloc];
-    v11 = [(IDSCloudKitKeyTransparencyStore *)self _recordType];
-    v12 = [(IDSCloudKitKeyTransparencyStore *)self _recordIDForDeviceRecord:v4];
-    v13 = [v10 initWithRecordType:v11 recordID:v12];
+    _recordType = [(IDSCloudKitKeyTransparencyStore *)self _recordType];
+    v12 = [(IDSCloudKitKeyTransparencyStore *)self _recordIDForDeviceRecord:recordCopy];
+    v13 = [v10 initWithRecordType:_recordType recordID:v12];
 
     v16 = v13;
-    [(IDSCloudKitKeyTransparencyStore *)self _copyDeviceRecord:v4 toCloudKitRecordRef:&v16];
+    [(IDSCloudKitKeyTransparencyStore *)self _copyDeviceRecord:recordCopy toCloudKitRecordRef:&v16];
     v14 = v16;
   }
 
@@ -324,49 +324,49 @@
   return v14;
 }
 
-- (void)_copyDeviceRecord:(id)a3 toCloudKitRecordRef:(id *)a4
+- (void)_copyDeviceRecord:(id)record toCloudKitRecordRef:(id *)ref
 {
-  if (a4)
+  if (ref)
   {
-    v9 = *a4;
-    v5 = a3;
-    v6 = [v5 deviceData];
-    v7 = [v9 encryptedValues];
-    [v7 setObject:v6 forKeyedSubscript:@"IDSKTDevice"];
+    v9 = *ref;
+    recordCopy = record;
+    deviceData = [recordCopy deviceData];
+    encryptedValues = [v9 encryptedValues];
+    [encryptedValues setObject:deviceData forKeyedSubscript:@"IDSKTDevice"];
 
-    v8 = [v5 deviceMetadata];
+    deviceMetadata = [recordCopy deviceMetadata];
 
-    [v9 setObject:v8 forKeyedSubscript:@"IDSKTMetadata"];
+    [v9 setObject:deviceMetadata forKeyedSubscript:@"IDSKTMetadata"];
     [v9 setObject:&off_100C3C040 forKeyedSubscript:@"IDSKTState"];
   }
 }
 
-- (void)_createZoneIfNeededUsingTimeIntervalForRequest:(double)a3 isNonDiscretionary:(BOOL)a4 completion:(id)a5
+- (void)_createZoneIfNeededUsingTimeIntervalForRequest:(double)request isNonDiscretionary:(BOOL)discretionary completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = [(IDSCloudKitKeyTransparencyStore *)self cachedRecordZone];
+  discretionaryCopy = discretionary;
+  completionCopy = completion;
+  cachedRecordZone = [(IDSCloudKitKeyTransparencyStore *)self cachedRecordZone];
 
-  if (v9)
+  if (cachedRecordZone)
   {
     v10 = +[IDSFoundationLog KeyTransparency];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(IDSCloudKitKeyTransparencyStore *)self cachedRecordZone];
+      cachedRecordZone2 = [(IDSCloudKitKeyTransparencyStore *)self cachedRecordZone];
       *buf = 138412290;
-      v36 = v11;
+      v36 = cachedRecordZone2;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Cached record zone exists -- continuing without zone fetch {cachedRecordZone: %@}", buf, 0xCu);
     }
 
-    if (v8)
+    if (completionCopy)
     {
-      v8[2](v8, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 
   else
   {
-    v12 = [(IDSCloudKitKeyTransparencyStore *)self _zoneID];
+    _zoneID = [(IDSCloudKitKeyTransparencyStore *)self _zoneID];
     if (qword_100CBD2F8 != -1)
     {
       sub_10091E058();
@@ -385,33 +385,33 @@
     }
 
     v15 = [v13 alloc];
-    v34 = v12;
+    v34 = _zoneID;
     v16 = [NSArray arrayWithObjects:&v34 count:1];
     v17 = [v15 initWithRecordZoneIDs:v16];
 
-    v18 = [(IDSCloudKitKeyTransparencyStore *)self container];
-    v19 = [v17 configuration];
-    [v19 setContainer:v18];
+    container = [(IDSCloudKitKeyTransparencyStore *)self container];
+    configuration = [v17 configuration];
+    [configuration setContainer:container];
 
-    if (v5)
+    if (discretionaryCopy)
     {
-      v20 = [v17 configuration];
-      [v20 setDiscretionaryNetworkBehavior:0];
+      configuration2 = [v17 configuration];
+      [configuration2 setDiscretionaryNetworkBehavior:0];
     }
 
-    v21 = [v17 configuration];
-    [v21 setTimeoutIntervalForRequest:a3];
+    configuration3 = [v17 configuration];
+    [configuration3 setTimeoutIntervalForRequest:request];
 
     v25 = _NSConcreteStackBlock;
     v26 = 3221225472;
     v27 = sub_10041F570;
     v28 = &unk_100BDB898;
-    v29 = self;
-    v22 = v12;
+    selfCopy = self;
+    v22 = _zoneID;
     v30 = v22;
-    v33 = v5;
-    v32 = a3;
-    v31 = v8;
+    v33 = discretionaryCopy;
+    requestCopy = request;
+    v31 = completionCopy;
     [v17 setFetchRecordZonesCompletionBlock:&v25];
     v23 = [IDSFoundationLog KeyTransparency:v25];
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
@@ -421,8 +421,8 @@
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Starting CloudKit zone fetch {operation: %@}", buf, 0xCu);
     }
 
-    v24 = [(IDSCloudKitKeyTransparencyStore *)self database];
-    [v24 addOperation:v17];
+    database = [(IDSCloudKitKeyTransparencyStore *)self database];
+    [database addOperation:v17];
   }
 }
 
@@ -436,11 +436,11 @@
   [(IDSCloudKitKeyTransparencyStore *)self _no_timeout_verifyEncryptionPrerequisitesWithCompletion:v2];
 }
 
-- (void)fetchAccountEligibilityForDeviceToDeviceEncryptionWithCompletion:(id)a3
+- (void)fetchAccountEligibilityForDeviceToDeviceEncryptionWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(IDSCloudKitKeyTransparencyStore *)self queue];
-  dispatch_assert_queue_V2(v5);
+  completionCopy = completion;
+  queue = [(IDSCloudKitKeyTransparencyStore *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = +[IDSFoundationLog KeyTransparency];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -473,12 +473,12 @@
   v13[3] = &unk_100BDB988;
   v13[4] = self;
   v15 = buf;
-  v8 = v4;
+  v8 = completionCopy;
   v14 = v8;
   v16 = v24;
   v9 = objc_retainBlock(v13);
-  v10 = [(IDSCloudKitKeyTransparencyStore *)self serverBag];
-  v11 = sub_1004251A4(v10, @"ck-kt-account-timeout", 30.0);
+  serverBag = [(IDSCloudKitKeyTransparencyStore *)self serverBag];
+  v11 = sub_1004251A4(serverBag, @"ck-kt-account-timeout", 30.0);
 
   v12 = +[IDSFoundationLog KeyTransparency];
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -495,11 +495,11 @@
   _Block_object_dispose(v24, 8);
 }
 
-- (void)_no_timeout_verifyEncryptionPrerequisitesWithCompletion:(id)a3
+- (void)_no_timeout_verifyEncryptionPrerequisitesWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(IDSCloudKitKeyTransparencyStore *)self queue];
-  dispatch_assert_queue_V2(v5);
+  completionCopy = completion;
+  queue = [(IDSCloudKitKeyTransparencyStore *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = +[IDSFoundationLog KeyTransparency];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -508,35 +508,35 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Starting CloudKit container account info fetch", buf, 2u);
   }
 
-  v7 = [(IDSCloudKitKeyTransparencyStore *)self container];
+  container = [(IDSCloudKitKeyTransparencyStore *)self container];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100420680;
   v9[3] = &unk_100BDB9D0;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
-  [v7 accountInfoWithCompletionHandler:v9];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [container accountInfoWithCompletionHandler:v9];
 }
 
-- (void)upsertKeyTransparencyDeviceRecord:(id)a3 recordsToModify:(id)a4 recordsToDelete:(id)a5 completion:(id)a6
+- (void)upsertKeyTransparencyDeviceRecord:(id)record recordsToModify:(id)modify recordsToDelete:(id)delete completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(IDSCloudKitKeyTransparencyStore *)self queue];
-  dispatch_assert_queue_V2(v14);
+  recordCopy = record;
+  modifyCopy = modify;
+  deleteCopy = delete;
+  completionCopy = completion;
+  queue = [(IDSCloudKitKeyTransparencyStore *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v15 = +[IDSFoundationLog KeyTransparency];
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    *&buf[4] = v10;
+    *&buf[4] = recordCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v11;
+    *&buf[14] = modifyCopy;
     *&buf[22] = 2112;
-    v40 = v12;
+    v40 = deleteCopy;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Upserting trusted device record { deviceRecord: %@ }, { recordsToModify: %@ }, { recordsToDelete: %@ }", buf, 0x20u);
   }
 
@@ -551,11 +551,11 @@
   v32[2] = sub_100420C10;
   v32[3] = &unk_100BDBA48;
   v32[4] = self;
-  v16 = v10;
+  v16 = recordCopy;
   v33 = v16;
-  v17 = v11;
+  v17 = modifyCopy;
   v34 = v17;
-  v18 = v12;
+  v18 = deleteCopy;
   v35 = v18;
   v36 = buf;
   v19 = objc_retainBlock(v32);
@@ -563,9 +563,9 @@
   v26 = 3221225472;
   v27 = sub_100420E2C;
   v28 = &unk_100BDBA98;
-  v29 = self;
+  selfCopy = self;
   v31 = buf;
-  v20 = v13;
+  v20 = completionCopy;
   v30 = v20;
   v21 = objc_retainBlock(&v25);
   v22 = [(IDSCloudKitKeyTransparencyStore *)self serverBag:v25];
@@ -585,17 +585,17 @@
   _Block_object_dispose(buf, 8);
 }
 
-- (void)_no_timeout_upsertKeyTransparencyDeviceRecord:(id)a3 recordsToModify:(id)a4 recordsToDelete:(id)a5 completion:(id)a6
+- (void)_no_timeout_upsertKeyTransparencyDeviceRecord:(id)record recordsToModify:(id)modify recordsToDelete:(id)delete completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(IDSCloudKitKeyTransparencyStore *)self queue];
-  dispatch_assert_queue_V2(v14);
+  recordCopy = record;
+  modifyCopy = modify;
+  deleteCopy = delete;
+  completionCopy = completion;
+  queue = [(IDSCloudKitKeyTransparencyStore *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v15 = [(IDSCloudKitKeyTransparencyStore *)self lastSuccessfulUpsertDeviceRecord];
-  v16 = [v15 isEqual:v10];
+  lastSuccessfulUpsertDeviceRecord = [(IDSCloudKitKeyTransparencyStore *)self lastSuccessfulUpsertDeviceRecord];
+  v16 = [lastSuccessfulUpsertDeviceRecord isEqual:recordCopy];
 
   v17 = +[IDSFoundationLog KeyTransparency];
   v18 = os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT);
@@ -604,13 +604,13 @@
     if (v18)
     {
       *buf = 138412290;
-      v31 = v10;
+      v31 = recordCopy;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Last known successful upsert device record is identical to the current request -- short-circuiting without performing upsert {deviceRecord: %@}", buf, 0xCu);
     }
 
-    if (v13)
+    if (completionCopy)
     {
-      v13[2](v13, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 
@@ -622,45 +622,45 @@
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Verifying encryption prerequisites for trusted device record upsert", buf, 2u);
     }
 
-    v19 = [(IDSCloudKitKeyTransparencyStore *)self serverBag];
-    v20 = sub_1004251A4(v19, @"ck-kt-time-interval-for-requests", 60.0);
+    serverBag = [(IDSCloudKitKeyTransparencyStore *)self serverBag];
+    v20 = sub_1004251A4(serverBag, @"ck-kt-time-interval-for-requests", 60.0);
 
-    v21 = [(IDSCloudKitKeyTransparencyStore *)self serverBag];
-    v22 = sub_100425210(v21, 1);
+    serverBag2 = [(IDSCloudKitKeyTransparencyStore *)self serverBag];
+    v22 = sub_100425210(serverBag2, 1);
 
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = sub_1004212A4;
     v23[3] = &unk_100BDBB80;
-    v27 = v13;
+    v27 = completionCopy;
     v23[4] = self;
     v28 = v20;
     v29 = v22;
-    v24 = v10;
-    v25 = v11;
-    v26 = v12;
+    v24 = recordCopy;
+    v25 = modifyCopy;
+    v26 = deleteCopy;
     [(IDSCloudKitKeyTransparencyStore *)self _no_timeout_verifyEncryptionPrerequisitesWithCompletion:v23];
   }
 }
 
-- (void)deleteKeyTransparencyDeviceRecordsForPushToken:(id)a3 completion:(id)a4
+- (void)deleteKeyTransparencyDeviceRecordsForPushToken:(id)token completion:(id)completion
 {
-  v7 = a4;
-  v5 = [(IDSCloudKitKeyTransparencyStore *)self queue];
-  dispatch_assert_queue_V2(v5);
+  completionCopy = completion;
+  queue = [(IDSCloudKitKeyTransparencyStore *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (v7)
+  if (completionCopy)
   {
     v6 = [(IDSCloudKitKeyTransparencyStore *)self _clientErrorWithCode:-2000 debugDescription:@"Key transparency device record delete is not implemented" underlyingError:0];
-    v7[2](v7, v6);
+    completionCopy[2](completionCopy, v6);
   }
 }
 
-- (void)nukeKeyTransparencyDeviceRecordsWithCompletion:(id)a3
+- (void)nukeKeyTransparencyDeviceRecordsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(IDSCloudKitKeyTransparencyStore *)self queue];
-  dispatch_assert_queue_V2(v5);
+  completionCopy = completion;
+  queue = [(IDSCloudKitKeyTransparencyStore *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = +[IDSFoundationLog KeyTransparency];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -688,11 +688,11 @@
   v13[3] = &unk_100BDBA98;
   v13[4] = self;
   v15 = buf;
-  v8 = v4;
+  v8 = completionCopy;
   v14 = v8;
   v9 = objc_retainBlock(v13);
-  v10 = [(IDSCloudKitKeyTransparencyStore *)self serverBag];
-  v11 = sub_1004251A4(v10, @"ck-kt-nuke-timeout", 80.0);
+  serverBag = [(IDSCloudKitKeyTransparencyStore *)self serverBag];
+  v11 = sub_1004251A4(serverBag, @"ck-kt-nuke-timeout", 80.0);
 
   v12 = +[IDSFoundationLog KeyTransparency];
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -708,51 +708,51 @@
   _Block_object_dispose(buf, 8);
 }
 
-- (void)_no_timeout_nukeKeyTransparencyDeviceRecordsWithCompletion:(id)a3
+- (void)_no_timeout_nukeKeyTransparencyDeviceRecordsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(IDSCloudKitKeyTransparencyStore *)self queue];
-  dispatch_assert_queue_V2(v5);
+  completionCopy = completion;
+  queue = [(IDSCloudKitKeyTransparencyStore *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(IDSCloudKitKeyTransparencyStore *)self serverBag];
-  v7 = sub_1004251A4(v6, @"ck-kt-time-interval-for-requests", 60.0);
+  serverBag = [(IDSCloudKitKeyTransparencyStore *)self serverBag];
+  v7 = sub_1004251A4(serverBag, @"ck-kt-time-interval-for-requests", 60.0);
 
-  v8 = [(IDSCloudKitKeyTransparencyStore *)self serverBag];
-  v9 = sub_100425210(v8, 1);
+  serverBag2 = [(IDSCloudKitKeyTransparencyStore *)self serverBag];
+  v9 = sub_100425210(serverBag2, 1);
 
-  v10 = [(IDSCloudKitKeyTransparencyStore *)self _zoneID];
+  _zoneID = [(IDSCloudKitKeyTransparencyStore *)self _zoneID];
   v11 = +[IDSFoundationLog KeyTransparency];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v26 = v10;
+    v26 = _zoneID;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Deleting zone {zoneID: %@}", buf, 0xCu);
   }
 
   v12 = objc_alloc(sub_10041FAA4());
-  v24 = v10;
+  v24 = _zoneID;
   v13 = [NSArray arrayWithObjects:&v24 count:1];
   v14 = [v12 initWithRecordZonesToSave:0 recordZoneIDsToDelete:v13];
 
-  v15 = [(IDSCloudKitKeyTransparencyStore *)self container];
-  v16 = [v14 configuration];
-  [v16 setContainer:v15];
+  container = [(IDSCloudKitKeyTransparencyStore *)self container];
+  configuration = [v14 configuration];
+  [configuration setContainer:container];
 
   if (v9)
   {
-    v17 = [v14 configuration];
-    [v17 setDiscretionaryNetworkBehavior:0];
+    configuration2 = [v14 configuration];
+    [configuration2 setDiscretionaryNetworkBehavior:0];
   }
 
-  v18 = [v14 configuration];
-  [v18 setTimeoutIntervalForRequest:v7];
+  configuration3 = [v14 configuration];
+  [configuration3 setTimeoutIntervalForRequest:v7];
 
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_100422630;
   v22[3] = &unk_100BDB848;
   v22[4] = self;
-  v19 = v4;
+  v19 = completionCopy;
   v23 = v19;
   [v14 setModifyRecordZonesCompletionBlock:v22];
   v20 = +[IDSFoundationLog KeyTransparency];
@@ -763,15 +763,15 @@
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Starting CloudKit operation to delete KT zone {operation: %@}", buf, 0xCu);
   }
 
-  v21 = [(IDSCloudKitKeyTransparencyStore *)self database];
-  [v21 addOperation:v14];
+  database = [(IDSCloudKitKeyTransparencyStore *)self database];
+  [database addOperation:v14];
 }
 
-- (void)fetchKeyTransparencyDeviceRecordsWithCompletion:(id)a3
+- (void)fetchKeyTransparencyDeviceRecordsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(IDSCloudKitKeyTransparencyStore *)self queue];
-  dispatch_assert_queue_V2(v5);
+  completionCopy = completion;
+  queue = [(IDSCloudKitKeyTransparencyStore *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = +[IDSFoundationLog KeyTransparency];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -806,12 +806,12 @@
   v13[3] = &unk_100BDB988;
   v13[4] = self;
   v15 = v18;
-  v8 = v4;
+  v8 = completionCopy;
   v14 = v8;
   v16 = buf;
   v9 = objc_retainBlock(v13);
-  v10 = [(IDSCloudKitKeyTransparencyStore *)self serverBag];
-  v11 = sub_1004251A4(v10, @"ck-kt-fetch-timeout", 120.0);
+  serverBag = [(IDSCloudKitKeyTransparencyStore *)self serverBag];
+  v11 = sub_1004251A4(serverBag, @"ck-kt-fetch-timeout", 120.0);
 
   v12 = +[IDSFoundationLog KeyTransparency];
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -828,21 +828,21 @@
   _Block_object_dispose(buf, 8);
 }
 
-- (void)_no_timeout_fetchKeyTransparencyDeviceRecordsWithCompletion:(id)a3
+- (void)_no_timeout_fetchKeyTransparencyDeviceRecordsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(IDSCloudKitKeyTransparencyStore *)self queue];
-  dispatch_assert_queue_V2(v5);
+  completionCopy = completion;
+  queue = [(IDSCloudKitKeyTransparencyStore *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(IDSCloudKitKeyTransparencyStore *)self currentDeviceRecordsPromise];
-  if (v6 && (v7 = v6, [(IDSCloudKitKeyTransparencyStore *)self serverBag], v8 = objc_claimAutoreleasedReturnValue(), v9 = sub_100425210(v8, 1), v8, v7, (v9 & 1) != 0))
+  currentDeviceRecordsPromise = [(IDSCloudKitKeyTransparencyStore *)self currentDeviceRecordsPromise];
+  if (currentDeviceRecordsPromise && (v7 = currentDeviceRecordsPromise, [(IDSCloudKitKeyTransparencyStore *)self serverBag], v8 = objc_claimAutoreleasedReturnValue(), v9 = sub_100425210(v8, 1), v8, v7, (v9 & 1) != 0))
   {
     v10 = +[IDSFoundationLog KeyTransparency];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(IDSCloudKitKeyTransparencyStore *)self currentDeviceRecordsPromise];
+      currentDeviceRecordsPromise2 = [(IDSCloudKitKeyTransparencyStore *)self currentDeviceRecordsPromise];
       *buf = 138412290;
-      v29 = v11;
+      v29 = currentDeviceRecordsPromise2;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Cache hit for key transparency device records {promise: %@}", buf, 0xCu);
     }
   }
@@ -852,63 +852,63 @@
     v12 = +[IDSFoundationLog KeyTransparency];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(IDSCloudKitKeyTransparencyStore *)self currentDeviceRecordsPromise];
+      currentDeviceRecordsPromise3 = [(IDSCloudKitKeyTransparencyStore *)self currentDeviceRecordsPromise];
       *buf = 138412290;
-      v29 = v13;
+      v29 = currentDeviceRecordsPromise3;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Cache miss for key transparency device records -- starting fetch {promise: %@}", buf, 0xCu);
     }
 
-    v14 = [(IDSCloudKitKeyTransparencyStore *)self _no_timeout_no_cache_fetchKeyTransparencyDeviceRecords];
-    [(IDSCloudKitKeyTransparencyStore *)self setCurrentDeviceRecordsPromise:v14];
+    _no_timeout_no_cache_fetchKeyTransparencyDeviceRecords = [(IDSCloudKitKeyTransparencyStore *)self _no_timeout_no_cache_fetchKeyTransparencyDeviceRecords];
+    [(IDSCloudKitKeyTransparencyStore *)self setCurrentDeviceRecordsPromise:_no_timeout_no_cache_fetchKeyTransparencyDeviceRecords];
 
     v15 = +[IDSFoundationLog KeyTransparency];
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [(IDSCloudKitKeyTransparencyStore *)self currentDeviceRecordsPromise];
+      currentDeviceRecordsPromise4 = [(IDSCloudKitKeyTransparencyStore *)self currentDeviceRecordsPromise];
       *buf = 138412290;
-      v29 = v16;
+      v29 = currentDeviceRecordsPromise4;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Updated cached promise for key transparency device records {promise: %@}", buf, 0xCu);
     }
 
-    v17 = [(IDSCloudKitKeyTransparencyStore *)self serverBag];
-    v18 = sub_1004251A4(v17, @"ck-kt-cache-ttl", 30.0);
+    serverBag = [(IDSCloudKitKeyTransparencyStore *)self serverBag];
+    v18 = sub_1004251A4(serverBag, @"ck-kt-cache-ttl", 30.0);
 
     v19 = +[IDSFoundationLog KeyTransparency];
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [(IDSCloudKitKeyTransparencyStore *)self currentDeviceRecordsPromise];
+      currentDeviceRecordsPromise5 = [(IDSCloudKitKeyTransparencyStore *)self currentDeviceRecordsPromise];
       *buf = 138412546;
-      v29 = v20;
+      v29 = currentDeviceRecordsPromise5;
       v30 = 2048;
       v31 = v18;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Setting timer to clean up cached promise for key transparency device records {promise: %@, cleanUpDelay: %f}", buf, 0x16u);
     }
 
     v21 = dispatch_time(0, (v18 * 1000000000.0));
-    v22 = [(IDSCloudKitKeyTransparencyStore *)self queue];
+    queue2 = [(IDSCloudKitKeyTransparencyStore *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1004233E8;
     block[3] = &unk_100BD6ED0;
     block[4] = self;
-    dispatch_after(v21, v22, block);
+    dispatch_after(v21, queue2, block);
   }
 
-  v23 = [(IDSCloudKitKeyTransparencyStore *)self currentDeviceRecordsPromise];
+  currentDeviceRecordsPromise6 = [(IDSCloudKitKeyTransparencyStore *)self currentDeviceRecordsPromise];
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
   v25[2] = sub_1004234BC;
   v25[3] = &unk_100BDBC10;
   v25[4] = self;
-  v26 = v4;
-  v24 = v4;
-  [v23 registerResultBlock:v25];
+  v26 = completionCopy;
+  v24 = completionCopy;
+  [currentDeviceRecordsPromise6 registerResultBlock:v25];
 }
 
 - (id)_no_timeout_no_cache_fetchKeyTransparencyDeviceRecords
 {
-  v3 = [(IDSCloudKitKeyTransparencyStore *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(IDSCloudKitKeyTransparencyStore *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = +[IDSFoundationLog KeyTransparency];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -918,38 +918,38 @@
   }
 
   v5 = objc_alloc_init(CUTUnsafePromiseSeal);
-  v6 = [(IDSCloudKitKeyTransparencyStore *)self serverBag];
-  v7 = sub_1004251A4(v6, @"ck-kt-time-interval-for-requests", 60.0);
+  serverBag = [(IDSCloudKitKeyTransparencyStore *)self serverBag];
+  v7 = sub_1004251A4(serverBag, @"ck-kt-time-interval-for-requests", 60.0);
 
-  v8 = [(IDSCloudKitKeyTransparencyStore *)self serverBag];
-  v9 = sub_100425210(v8, 0);
+  serverBag2 = [(IDSCloudKitKeyTransparencyStore *)self serverBag];
+  v9 = sub_100425210(serverBag2, 0);
 
   v13 = _NSConcreteStackBlock;
   v14 = 3221225472;
   v15 = sub_100423718;
   v16 = &unk_100BDBD00;
   v17 = v5;
-  v18 = self;
+  selfCopy = self;
   v19 = v7;
   v20 = v9;
   v10 = v5;
   [(IDSCloudKitKeyTransparencyStore *)self _no_timeout_verifyEncryptionPrerequisitesWithCompletion:&v13];
-  v11 = [v10 promise];
+  promise = [v10 promise];
 
-  return v11;
+  return promise;
 }
 
-- (void)handleKVSUpdate:(id)a3
+- (void)handleKVSUpdate:(id)update
 {
-  v3 = [a3 userInfo];
-  v4 = [v3 objectForKey:NSUbiquitousKeyValueStoreChangeReasonKey];
-  v5 = [v4 integerValue];
-  if (v5 < 2)
+  userInfo = [update userInfo];
+  v4 = [userInfo objectForKey:NSUbiquitousKeyValueStoreChangeReasonKey];
+  integerValue = [v4 integerValue];
+  if (integerValue < 2)
   {
     goto LABEL_4;
   }
 
-  if (v5 == 2)
+  if (integerValue == 2)
   {
     v7 = +[IDSFoundationLog KeyTransparency];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -972,7 +972,7 @@
     goto LABEL_9;
   }
 
-  if (v5 == 3)
+  if (integerValue == 3)
   {
 LABEL_4:
     v6 = +[IDSFoundationLog KeyTransparency];
@@ -987,90 +987,90 @@ LABEL_9:
   }
 }
 
-- (void)insertDictionary:(id)a3 forKey:(id)a4
+- (void)insertDictionary:(id)dictionary forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  keyCopy = key;
   v8 = +[IDSFoundationLog KeyTransparency];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412546;
-    v12 = v7;
+    v12 = keyCopy;
     v13 = 2112;
-    v14 = v6;
+    v14 = dictionaryCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Inserting KVS entry {key: %@, value: %@}", &v11, 0x16u);
   }
 
-  v9 = [(IDSCloudKitKeyTransparencyStore *)self kvStore];
+  kvStore = [(IDSCloudKitKeyTransparencyStore *)self kvStore];
 
-  if (v9)
+  if (kvStore)
   {
-    v10 = [(IDSCloudKitKeyTransparencyStore *)self kvStore];
-    [v10 setDictionary:v6 forKey:v7];
+    kvStore2 = [(IDSCloudKitKeyTransparencyStore *)self kvStore];
+    [kvStore2 setDictionary:dictionaryCopy forKey:keyCopy];
   }
 
   else
   {
-    v10 = +[IDSFoundationLog KeyTransparency];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    kvStore2 = +[IDSFoundationLog KeyTransparency];
+    if (os_log_type_enabled(kvStore2, OS_LOG_TYPE_ERROR))
     {
       sub_10091E750();
     }
   }
 }
 
-- (void)removeEntryForKey:(id)a3
+- (void)removeEntryForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = +[IDSFoundationLog KeyTransparency];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = keyCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Removing KVS entry {key: %@}", &v8, 0xCu);
   }
 
-  v6 = [(IDSCloudKitKeyTransparencyStore *)self kvStore];
+  kvStore = [(IDSCloudKitKeyTransparencyStore *)self kvStore];
 
-  if (v6)
+  if (kvStore)
   {
-    v7 = [(IDSCloudKitKeyTransparencyStore *)self kvStore];
-    [v7 removeObjectForKey:v4];
+    kvStore2 = [(IDSCloudKitKeyTransparencyStore *)self kvStore];
+    [kvStore2 removeObjectForKey:keyCopy];
   }
 
   else
   {
-    v7 = +[IDSFoundationLog KeyTransparency];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    kvStore2 = +[IDSFoundationLog KeyTransparency];
+    if (os_log_type_enabled(kvStore2, OS_LOG_TYPE_ERROR))
     {
       sub_10091E750();
     }
   }
 }
 
-- (id)fetchEntryForKey:(id)a3
+- (id)fetchEntryForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = +[IDSFoundationLog KeyTransparency];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v4;
+    v11 = keyCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Fetching KVS entry. {key: %@}", &v10, 0xCu);
   }
 
-  v6 = [(IDSCloudKitKeyTransparencyStore *)self kvStore];
+  kvStore = [(IDSCloudKitKeyTransparencyStore *)self kvStore];
 
-  if (v6)
+  if (kvStore)
   {
-    v7 = [(IDSCloudKitKeyTransparencyStore *)self kvStore];
-    v8 = [v7 objectForKey:v4];
+    kvStore2 = [(IDSCloudKitKeyTransparencyStore *)self kvStore];
+    v8 = [kvStore2 objectForKey:keyCopy];
   }
 
   else
   {
-    v7 = +[IDSFoundationLog KeyTransparency];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    kvStore2 = +[IDSFoundationLog KeyTransparency];
+    if (os_log_type_enabled(kvStore2, OS_LOG_TYPE_ERROR))
     {
       sub_10091E750();
     }
@@ -1090,26 +1090,26 @@ LABEL_9:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Fetching all entries from KVS.", v8, 2u);
   }
 
-  v4 = [(IDSCloudKitKeyTransparencyStore *)self kvStore];
+  kvStore = [(IDSCloudKitKeyTransparencyStore *)self kvStore];
 
-  if (v4)
+  if (kvStore)
   {
-    v5 = [(IDSCloudKitKeyTransparencyStore *)self kvStore];
-    v6 = [v5 dictionaryRepresentation];
+    kvStore2 = [(IDSCloudKitKeyTransparencyStore *)self kvStore];
+    dictionaryRepresentation = [kvStore2 dictionaryRepresentation];
   }
 
   else
   {
-    v5 = +[IDSFoundationLog KeyTransparency];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    kvStore2 = +[IDSFoundationLog KeyTransparency];
+    if (os_log_type_enabled(kvStore2, OS_LOG_TYPE_ERROR))
     {
       sub_10091E750();
     }
 
-    v6 = &__NSDictionary0__struct;
+    dictionaryRepresentation = &__NSDictionary0__struct;
   }
 
-  return v6;
+  return dictionaryRepresentation;
 }
 
 - (void)removeAllEntries
@@ -1121,16 +1121,16 @@ LABEL_9:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Wiping all entries from KVS.", buf, 2u);
   }
 
-  v4 = [(IDSCloudKitKeyTransparencyStore *)self kvStore];
+  kvStore = [(IDSCloudKitKeyTransparencyStore *)self kvStore];
 
-  if (v4)
+  if (kvStore)
   {
-    v5 = [(IDSCloudKitKeyTransparencyStore *)self fetchAllEntries];
+    fetchAllEntries = [(IDSCloudKitKeyTransparencyStore *)self fetchAllEntries];
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = [v5 countByEnumeratingWithState:&v12 objects:v17 count:16];
+    v6 = [fetchAllEntries countByEnumeratingWithState:&v12 objects:v17 count:16];
     if (v6)
     {
       v7 = v6;
@@ -1141,15 +1141,15 @@ LABEL_9:
         {
           if (*v13 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(fetchAllEntries);
           }
 
           v10 = *(*(&v12 + 1) + 8 * i);
-          v11 = [(IDSCloudKitKeyTransparencyStore *)self kvStore];
-          [v11 removeObjectForKey:v10];
+          kvStore2 = [(IDSCloudKitKeyTransparencyStore *)self kvStore];
+          [kvStore2 removeObjectForKey:v10];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v12 objects:v17 count:16];
+        v7 = [fetchAllEntries countByEnumeratingWithState:&v12 objects:v17 count:16];
       }
 
       while (v7);
@@ -1158,8 +1158,8 @@ LABEL_9:
 
   else
   {
-    v5 = +[IDSFoundationLog KeyTransparency];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    fetchAllEntries = +[IDSFoundationLog KeyTransparency];
+    if (os_log_type_enabled(fetchAllEntries, OS_LOG_TYPE_ERROR))
     {
       sub_10091E750();
     }
@@ -1175,24 +1175,24 @@ LABEL_9:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Trying to force sync KVS.", buf, 2u);
   }
 
-  v4 = [(IDSCloudKitKeyTransparencyStore *)self kvStore];
+  kvStore = [(IDSCloudKitKeyTransparencyStore *)self kvStore];
 
-  if (v4)
+  if (kvStore)
   {
     if (!+[IMUserDefaults shouldForceFailKTKVSSync]|| !CUTIsInternalInstall())
     {
       v9 = objc_alloc_init(CUTUnsafePromiseSeal);
-      v10 = [(IDSCloudKitKeyTransparencyStore *)self kvStore];
+      kvStore2 = [(IDSCloudKitKeyTransparencyStore *)self kvStore];
       v15 = _NSConcreteStackBlock;
       v16 = 3221225472;
       v17 = sub_100424E20;
       v18 = &unk_100BDA900;
       v19 = v9;
-      v20 = self;
+      selfCopy = self;
       v11 = v9;
-      [v10 synchronizeWithCompletionHandler:&v15];
+      [kvStore2 synchronizeWithCompletionHandler:&v15];
 
-      v12 = [v11 promise];
+      promise = [v11 promise];
 
       goto LABEL_14;
     }
@@ -1205,7 +1205,7 @@ LABEL_9:
     }
 
     v6 = @"Force failing sync KVS.";
-    v7 = self;
+    selfCopy3 = self;
     v8 = -7000;
   }
 
@@ -1218,22 +1218,22 @@ LABEL_9:
     }
 
     v6 = @"KVS not yet loaded.";
-    v7 = self;
+    selfCopy3 = self;
     v8 = -5003;
   }
 
-  v11 = [(IDSCloudKitKeyTransparencyStore *)v7 _clientErrorWithCode:v8 debugDescription:v6 underlyingError:0];
-  v12 = [CUTUnsafePromise failedPromiseWithError:v11];
+  v11 = [(IDSCloudKitKeyTransparencyStore *)selfCopy3 _clientErrorWithCode:v8 debugDescription:v6 underlyingError:0];
+  promise = [CUTUnsafePromise failedPromiseWithError:v11];
 LABEL_14:
 
-  return v12;
+  return promise;
 }
 
 - (BOOL)initializeKVS
 {
-  v3 = [(IDSCloudKitKeyTransparencyStore *)self kvStore];
+  kvStore = [(IDSCloudKitKeyTransparencyStore *)self kvStore];
 
-  if (v3)
+  if (kvStore)
   {
     return 1;
   }
@@ -1241,9 +1241,9 @@ LABEL_14:
   v4 = [[NSUbiquitousKeyValueStore alloc] initWithStoreIdentifier:@"com.apple.private.ids.kt-kvs" type:2];
   [(IDSCloudKitKeyTransparencyStore *)self setKvStore:v4];
 
-  v5 = [(IDSCloudKitKeyTransparencyStore *)self kvStore];
+  kvStore2 = [(IDSCloudKitKeyTransparencyStore *)self kvStore];
 
-  if (v5)
+  if (kvStore2)
   {
     v6 = +[NSNotificationCenter defaultCenter];
     [v6 addObserver:self selector:"handleKVSUpdate:" name:NSUbiquitousKeyValueStoreDidChangeExternallyNotification object:self->_kvStore];

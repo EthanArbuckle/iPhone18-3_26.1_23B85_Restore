@@ -6,8 +6,8 @@
 
 - (void)tintColorDidChange
 {
-  v3 = [(_SFTranslationTargetLocaleAlertActionContentView *)self tintColor];
-  [(UILabel *)self->_titleLabel setTextColor:v3];
+  tintColor = [(_SFTranslationTargetLocaleAlertActionContentView *)self tintColor];
+  [(UILabel *)self->_titleLabel setTextColor:tintColor];
 }
 
 @end

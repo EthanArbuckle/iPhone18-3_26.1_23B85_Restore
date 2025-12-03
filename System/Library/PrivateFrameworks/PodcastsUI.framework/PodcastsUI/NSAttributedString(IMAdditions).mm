@@ -11,10 +11,10 @@
 - (id)attributedStringByTrimmingCharactersInCharacterSet:()IMAdditions
 {
   v4 = a3;
-  v5 = [a1 string];
-  v6 = [v4 invertedSet];
+  string = [self string];
+  invertedSet = [v4 invertedSet];
 
-  v7 = [v5 rangeOfCharacterFromSet:v6];
+  v7 = [string rangeOfCharacterFromSet:invertedSet];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:&stru_282CBB070];
@@ -23,8 +23,8 @@
   else
   {
     v9 = v7;
-    v10 = [v5 rangeOfCharacterFromSet:v6 options:4];
-    v8 = [a1 attributedSubstringFromRange:{v9, v11 - v9 + v10}];
+    v10 = [string rangeOfCharacterFromSet:invertedSet options:4];
+    v8 = [self attributedSubstringFromRange:{v9, v11 - v9 + v10}];
   }
 
   v12 = v8;
@@ -36,8 +36,8 @@
 {
   if (!attributedStringByTrimmingWhitespaceNewlinesAndObjectReplacementCharacters_whitespaceNewlineAndObjectReplacementCharacters)
   {
-    v2 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    v3 = [v2 mutableCopy];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    v3 = [whitespaceAndNewlineCharacterSet mutableCopy];
 
     [v3 addCharactersInString:@"\uFFFC"];
     v4 = [v3 copy];
@@ -45,7 +45,7 @@
     attributedStringByTrimmingWhitespaceNewlinesAndObjectReplacementCharacters_whitespaceNewlineAndObjectReplacementCharacters = v4;
   }
 
-  return [a1 attributedStringByTrimmingCharactersInCharacterSet:?];
+  return [self attributedStringByTrimmingCharactersInCharacterSet:?];
 }
 
 + (id)attributedStringWithTemplateString:()IMAdditions baseAttributes:snippetAttributes:snippets:
@@ -77,8 +77,8 @@
     v20 = v18;
     do
     {
-      v21 = [v16 string];
-      v22 = [v21 rangeOfString:@"%@"];
+      string = [v16 string];
+      v22 = [string rangeOfString:@"%@"];
       v24 = v23;
 
       if (v22 != 0x7FFFFFFFFFFFFFFFLL)
@@ -103,24 +103,24 @@
 
 - (id)attributedStringWithDefaultLineSpacing
 {
-  v2 = [a1 mutableCopy];
+  v2 = [self mutableCopy];
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 0;
-  v3 = [a1 length];
-  v4 = [MEMORY[0x277D74248] defaultParagraphStyle];
+  v3 = [self length];
+  defaultParagraphStyle = [MEMORY[0x277D74248] defaultParagraphStyle];
   v5 = *MEMORY[0x277D74118];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __73__NSAttributedString_IMAdditions__attributedStringWithDefaultLineSpacing__block_invoke;
   v11[3] = &unk_2782BE2F8;
-  v6 = v4;
+  v6 = defaultParagraphStyle;
   v12 = v6;
   v7 = v2;
   v13 = v7;
   v14 = &v15;
-  [a1 enumerateAttribute:v5 inRange:0 options:v3 usingBlock:{0, v11}];
+  [self enumerateAttribute:v5 inRange:0 options:v3 usingBlock:{0, v11}];
   if ((v16[3] & 1) == 0)
   {
     [v7 addAttribute:v5 value:v6 range:{0, v3}];
@@ -153,8 +153,8 @@
   v13 = [v12 mutableCopy];
 
   v14 = [v13 length];
-  v15 = [v13 string];
-  v16 = [v15 rangeOfString:@"\u2028" options:0 range:{0, v14}];
+  string = [v13 string];
+  v16 = [string rangeOfString:@"\u2028" options:0 range:{0, v14}];
   v18 = v17;
 
   if (v16 != 0x7FFFFFFFFFFFFFFFLL && v13)
@@ -168,8 +168,8 @@
         break;
       }
 
-      v20 = [v13 string];
-      v16 = [v20 rangeOfString:@"\u2028" options:0 range:{v19, v14 - v19}];
+      string2 = [v13 string];
+      v16 = [string2 rangeOfString:@"\u2028" options:0 range:{v19, v14 - v19}];
       v18 = v21;
     }
 

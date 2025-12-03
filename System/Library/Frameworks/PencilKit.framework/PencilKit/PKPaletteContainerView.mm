@@ -1,22 +1,22 @@
 @interface PKPaletteContainerView
-- (PKPaletteContainerView)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (PKPaletteContainerView)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)_installAccessoryView;
 - (void)_installContentView;
 - (void)_updateUI;
-- (void)setEdgeLocation:(unint64_t)a3;
-- (void)setScalingFactor:(double)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setEdgeLocation:(unint64_t)location;
+- (void)setScalingFactor:(double)factor;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateConstraints;
 @end
 
 @implementation PKPaletteContainerView
 
-- (PKPaletteContainerView)initWithFrame:(CGRect)a3
+- (PKPaletteContainerView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PKPaletteContainerView;
-  v3 = [(PKPaletteContainerView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKPaletteContainerView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -39,37 +39,37 @@
   [(PKAccessoryView *)self->_accessoryView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(PKAccessoryView *)self->_accessoryView setUserInteractionEnabled:0];
   [(PKPaletteContainerView *)self addSubview:self->_accessoryView];
-  v5 = [(PKAccessoryView *)self->_accessoryView topAnchor];
-  v6 = [(PKPaletteContainerView *)self topAnchor];
-  v7 = [v5 constraintEqualToAnchor:v6];
+  topAnchor = [(PKAccessoryView *)self->_accessoryView topAnchor];
+  topAnchor2 = [(PKPaletteContainerView *)self topAnchor];
+  v7 = [topAnchor constraintEqualToAnchor:topAnchor2];
   accessoryViewTopConstraint = self->_accessoryViewTopConstraint;
   self->_accessoryViewTopConstraint = v7;
 
-  v9 = [(PKAccessoryView *)self->_accessoryView bottomAnchor];
-  v10 = [(PKPaletteContainerView *)self bottomAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  bottomAnchor = [(PKAccessoryView *)self->_accessoryView bottomAnchor];
+  bottomAnchor2 = [(PKPaletteContainerView *)self bottomAnchor];
+  v11 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   accessoryViewBottomConstraint = self->_accessoryViewBottomConstraint;
   self->_accessoryViewBottomConstraint = v11;
 
-  v13 = [(PKAccessoryView *)self->_accessoryView leftAnchor];
-  v14 = [(PKPaletteContainerView *)self leftAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
+  leftAnchor = [(PKAccessoryView *)self->_accessoryView leftAnchor];
+  leftAnchor2 = [(PKPaletteContainerView *)self leftAnchor];
+  v15 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   accessoryViewLeftConstraint = self->_accessoryViewLeftConstraint;
   self->_accessoryViewLeftConstraint = v15;
 
-  v17 = [(PKAccessoryView *)self->_accessoryView rightAnchor];
-  v18 = [(PKPaletteContainerView *)self rightAnchor];
-  v19 = [v17 constraintEqualToAnchor:v18];
+  rightAnchor = [(PKAccessoryView *)self->_accessoryView rightAnchor];
+  rightAnchor2 = [(PKPaletteContainerView *)self rightAnchor];
+  v19 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   accessoryViewRightConstraint = self->_accessoryViewRightConstraint;
   self->_accessoryViewRightConstraint = v19;
 
-  v21 = [(PKAccessoryView *)self->_accessoryView widthAnchor];
-  v22 = [v21 constraintEqualToConstant:19.0];
+  widthAnchor = [(PKAccessoryView *)self->_accessoryView widthAnchor];
+  v22 = [widthAnchor constraintEqualToConstant:19.0];
   accessoryViewWidthConstraint = self->_accessoryViewWidthConstraint;
   self->_accessoryViewWidthConstraint = v22;
 
-  v24 = [(PKAccessoryView *)self->_accessoryView heightAnchor];
-  v25 = [v24 constraintEqualToConstant:19.0];
+  heightAnchor = [(PKAccessoryView *)self->_accessoryView heightAnchor];
+  v25 = [heightAnchor constraintEqualToConstant:19.0];
   accessoryViewHeightConstraint = self->_accessoryViewHeightConstraint;
   self->_accessoryViewHeightConstraint = v25;
 
@@ -93,27 +93,27 @@
 
   [(UIView *)self->_contentView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(PKPaletteContainerView *)self addSubview:self->_contentView];
-  v5 = [(UIView *)self->_contentView topAnchor];
-  v6 = [(PKPaletteContainerView *)self topAnchor];
-  v7 = [v5 constraintEqualToAnchor:v6];
+  topAnchor = [(UIView *)self->_contentView topAnchor];
+  topAnchor2 = [(PKPaletteContainerView *)self topAnchor];
+  v7 = [topAnchor constraintEqualToAnchor:topAnchor2];
   contentViewTopConstraint = self->_contentViewTopConstraint;
   self->_contentViewTopConstraint = v7;
 
-  v9 = [(UIView *)self->_contentView bottomAnchor];
-  v10 = [(PKPaletteContainerView *)self bottomAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  bottomAnchor = [(UIView *)self->_contentView bottomAnchor];
+  bottomAnchor2 = [(PKPaletteContainerView *)self bottomAnchor];
+  v11 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   contentViewBottomConstraint = self->_contentViewBottomConstraint;
   self->_contentViewBottomConstraint = v11;
 
-  v13 = [(UIView *)self->_contentView leftAnchor];
-  v14 = [(PKPaletteContainerView *)self leftAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
+  leftAnchor = [(UIView *)self->_contentView leftAnchor];
+  leftAnchor2 = [(PKPaletteContainerView *)self leftAnchor];
+  v15 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   contentViewLeftConstraint = self->_contentViewLeftConstraint;
   self->_contentViewLeftConstraint = v15;
 
-  v17 = [(UIView *)self->_contentView rightAnchor];
-  v18 = [(PKPaletteContainerView *)self rightAnchor];
-  v19 = [v17 constraintEqualToAnchor:v18];
+  rightAnchor = [(UIView *)self->_contentView rightAnchor];
+  rightAnchor2 = [(PKPaletteContainerView *)self rightAnchor];
+  v19 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   contentViewRightConstraint = self->_contentViewRightConstraint;
   self->_contentViewRightConstraint = v19;
 
@@ -130,28 +130,28 @@
 
 - (void)updateConstraints
 {
-  v3 = [(PKPaletteContainerView *)self accessoryViewHeightConstraint];
-  [v3 setConstant:0.0];
+  accessoryViewHeightConstraint = [(PKPaletteContainerView *)self accessoryViewHeightConstraint];
+  [accessoryViewHeightConstraint setConstant:0.0];
 
-  v4 = [(PKPaletteContainerView *)self accessoryViewWidthConstraint];
-  [v4 setConstant:0.0];
+  accessoryViewWidthConstraint = [(PKPaletteContainerView *)self accessoryViewWidthConstraint];
+  [accessoryViewWidthConstraint setConstant:0.0];
 
-  v5 = [(PKPaletteContainerView *)self contentViewTopConstraint];
-  [v5 setConstant:0.0];
+  contentViewTopConstraint = [(PKPaletteContainerView *)self contentViewTopConstraint];
+  [contentViewTopConstraint setConstant:0.0];
 
-  v6 = [(PKPaletteContainerView *)self contentViewBottomConstraint];
-  [v6 setConstant:0.0];
+  contentViewBottomConstraint = [(PKPaletteContainerView *)self contentViewBottomConstraint];
+  [contentViewBottomConstraint setConstant:0.0];
 
-  v7 = [(PKPaletteContainerView *)self contentViewLeftConstraint];
-  [v7 setConstant:0.0];
+  contentViewLeftConstraint = [(PKPaletteContainerView *)self contentViewLeftConstraint];
+  [contentViewLeftConstraint setConstant:0.0];
 
-  v8 = [(PKPaletteContainerView *)self contentViewRightConstraint];
-  [v8 setConstant:0.0];
+  contentViewRightConstraint = [(PKPaletteContainerView *)self contentViewRightConstraint];
+  [contentViewRightConstraint setConstant:0.0];
 
-  v9 = [(PKPaletteContainerView *)self traitCollection];
-  v10 = [(PKPaletteContainerView *)self window];
-  v11 = [v10 windowScene];
-  v12 = PKUseCompactSize(v9, v11);
+  traitCollection = [(PKPaletteContainerView *)self traitCollection];
+  window = [(PKPaletteContainerView *)self window];
+  windowScene = [window windowScene];
+  v12 = PKUseCompactSize(traitCollection, windowScene);
 
   if (!v12)
   {
@@ -159,37 +159,37 @@
     v14 = v13;
     [(PKPaletteContainerView *)self scalingFactor];
     v16 = v15;
-    v17 = [(PKPaletteContainerView *)self edgeLocation];
-    if (v17 <= 0xF)
+    edgeLocation = [(PKPaletteContainerView *)self edgeLocation];
+    if (edgeLocation <= 0xF)
     {
       v18 = v14 * 19.0;
       v19 = v16 * 19.0;
-      if (((1 << v17) & 0x8013) != 0)
+      if (((1 << edgeLocation) & 0x8013) != 0)
       {
-        v20 = [(PKPaletteContainerView *)self contentViewTopConstraint];
-        [v20 setConstant:v19];
+        contentViewTopConstraint2 = [(PKPaletteContainerView *)self contentViewTopConstraint];
+        [contentViewTopConstraint2 setConstant:v19];
 
-        v21 = [(PKPaletteContainerView *)self contentViewBottomConstraint];
-        [v21 setConstant:-v19];
+        contentViewBottomConstraint2 = [(PKPaletteContainerView *)self contentViewBottomConstraint];
+        [contentViewBottomConstraint2 setConstant:-v19];
 
-        v22 = [(PKPaletteContainerView *)self accessoryViewHeightConstraint];
+        accessoryViewHeightConstraint2 = [(PKPaletteContainerView *)self accessoryViewHeightConstraint];
 LABEL_7:
-        v25 = v22;
-        [v22 setConstant:v18];
+        v25 = accessoryViewHeightConstraint2;
+        [accessoryViewHeightConstraint2 setConstant:v18];
 
         goto LABEL_8;
       }
 
-      if (((1 << v17) & 0x104) != 0)
+      if (((1 << edgeLocation) & 0x104) != 0)
       {
-        v23 = [(PKPaletteContainerView *)self accessoryViewWidthConstraint];
-        [v23 setConstant:v18];
+        accessoryViewWidthConstraint2 = [(PKPaletteContainerView *)self accessoryViewWidthConstraint];
+        [accessoryViewWidthConstraint2 setConstant:v18];
 
-        v24 = [(PKPaletteContainerView *)self contentViewLeftConstraint];
-        [v24 setConstant:v19];
+        contentViewLeftConstraint2 = [(PKPaletteContainerView *)self contentViewLeftConstraint];
+        [contentViewLeftConstraint2 setConstant:v19];
 
         v18 = -v19;
-        v22 = [(PKPaletteContainerView *)self contentViewRightConstraint];
+        accessoryViewHeightConstraint2 = [(PKPaletteContainerView *)self contentViewRightConstraint];
         goto LABEL_7;
       }
     }
@@ -201,14 +201,14 @@ LABEL_8:
   [(PKPaletteContainerView *)&v26 updateConstraints];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v35 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = [(PKPaletteContainerView *)self contentView];
-  [(PKPaletteContainerView *)self convertPoint:v8 toView:x, y];
+  eventCopy = event;
+  contentView = [(PKPaletteContainerView *)self contentView];
+  [(PKPaletteContainerView *)self convertPoint:contentView toView:x, y];
   v10 = v9;
   v12 = v11;
 
@@ -216,11 +216,11 @@ LABEL_8:
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v13 = [(PKPaletteContainerView *)self contentView];
-  v14 = [v13 subviews];
-  v15 = [v14 reverseObjectEnumerator];
+  contentView2 = [(PKPaletteContainerView *)self contentView];
+  subviews = [contentView2 subviews];
+  reverseObjectEnumerator = [subviews reverseObjectEnumerator];
 
-  v16 = [v15 countByEnumeratingWithState:&v30 objects:v34 count:16];
+  v16 = [reverseObjectEnumerator countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v16)
   {
     v17 = v16;
@@ -231,16 +231,16 @@ LABEL_8:
       {
         if (*v31 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v20 = *(*(&v30 + 1) + 8 * i);
-        v21 = [(PKPaletteContainerView *)self contentView];
-        [v21 convertPoint:v20 toView:{v10, v12}];
+        contentView3 = [(PKPaletteContainerView *)self contentView];
+        [contentView3 convertPoint:v20 toView:{v10, v12}];
         v23 = v22;
         v25 = v24;
 
-        v26 = [v20 hitTest:v7 withEvent:{v23, v25}];
+        v26 = [v20 hitTest:eventCopy withEvent:{v23, v25}];
         if (v26)
         {
           v27 = v26;
@@ -249,7 +249,7 @@ LABEL_8:
         }
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v30 objects:v34 count:16];
+      v17 = [reverseObjectEnumerator countByEnumeratingWithState:&v30 objects:v34 count:16];
       if (v17)
       {
         continue;
@@ -261,50 +261,50 @@ LABEL_8:
 
   v29.receiver = self;
   v29.super_class = PKPaletteContainerView;
-  v27 = [(PKPaletteContainerView *)&v29 hitTest:v7 withEvent:x, y];
+  v27 = [(PKPaletteContainerView *)&v29 hitTest:eventCopy withEvent:x, y];
 LABEL_11:
 
   return v27;
 }
 
-- (void)setEdgeLocation:(unint64_t)a3
+- (void)setEdgeLocation:(unint64_t)location
 {
-  if (self->_edgeLocation != a3)
+  if (self->_edgeLocation != location)
   {
-    self->_edgeLocation = a3;
+    self->_edgeLocation = location;
     [(PKPaletteContainerView *)self _updateUI];
 
     [(PKPaletteContainerView *)self setNeedsUpdateConstraints];
   }
 }
 
-- (void)setScalingFactor:(double)a3
+- (void)setScalingFactor:(double)factor
 {
   scalingFactor = self->_scalingFactor;
-  if (scalingFactor != a3 && vabdd_f64(scalingFactor, a3) >= fabs(a3 * 0.000000999999997))
+  if (scalingFactor != factor && vabdd_f64(scalingFactor, factor) >= fabs(factor * 0.000000999999997))
   {
-    self->_scalingFactor = a3;
+    self->_scalingFactor = factor;
     [(PKPaletteContainerView *)self _updateUI];
 
     [(PKPaletteContainerView *)self setNeedsUpdateConstraints];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v10.receiver = self;
   v10.super_class = PKPaletteContainerView;
-  [(PKPaletteContainerView *)&v10 traitCollectionDidChange:v4];
-  v5 = [(PKPaletteContainerView *)self traitCollection];
-  v6 = [v5 verticalSizeClass];
-  if (v6 == [v4 verticalSizeClass])
+  [(PKPaletteContainerView *)&v10 traitCollectionDidChange:changeCopy];
+  traitCollection = [(PKPaletteContainerView *)self traitCollection];
+  verticalSizeClass = [traitCollection verticalSizeClass];
+  if (verticalSizeClass == [changeCopy verticalSizeClass])
   {
-    v7 = [(PKPaletteContainerView *)self traitCollection];
-    v8 = [v7 horizontalSizeClass];
-    v9 = [v4 horizontalSizeClass];
+    traitCollection2 = [(PKPaletteContainerView *)self traitCollection];
+    horizontalSizeClass = [traitCollection2 horizontalSizeClass];
+    horizontalSizeClass2 = [changeCopy horizontalSizeClass];
 
-    if (v8 == v9)
+    if (horizontalSizeClass == horizontalSizeClass2)
     {
       goto LABEL_6;
     }
@@ -322,75 +322,75 @@ LABEL_6:
 - (void)_updateUI
 {
   v33[6] = *MEMORY[0x1E69E9840];
-  v3 = [(PKPaletteContainerView *)self traitCollection];
-  v4 = [(PKPaletteContainerView *)self window];
-  v5 = [v4 windowScene];
-  v6 = PKUseCompactSize(v3, v5);
+  traitCollection = [(PKPaletteContainerView *)self traitCollection];
+  window = [(PKPaletteContainerView *)self window];
+  windowScene = [window windowScene];
+  v6 = PKUseCompactSize(traitCollection, windowScene);
 
   if (!v6)
   {
     v7 = MEMORY[0x1E696ACD8];
-    v8 = [(PKPaletteContainerView *)self accessoryViewTopConstraint];
-    v33[0] = v8;
-    v9 = [(PKPaletteContainerView *)self accessoryViewLeftConstraint];
-    v33[1] = v9;
-    v10 = [(PKPaletteContainerView *)self accessoryViewRightConstraint];
-    v33[2] = v10;
-    v11 = [(PKPaletteContainerView *)self accessoryViewBottomConstraint];
-    v33[3] = v11;
-    v12 = [(PKPaletteContainerView *)self accessoryViewHeightConstraint];
-    v33[4] = v12;
-    v13 = [(PKPaletteContainerView *)self accessoryViewWidthConstraint];
-    v33[5] = v13;
+    accessoryViewTopConstraint = [(PKPaletteContainerView *)self accessoryViewTopConstraint];
+    v33[0] = accessoryViewTopConstraint;
+    accessoryViewLeftConstraint = [(PKPaletteContainerView *)self accessoryViewLeftConstraint];
+    v33[1] = accessoryViewLeftConstraint;
+    accessoryViewRightConstraint = [(PKPaletteContainerView *)self accessoryViewRightConstraint];
+    v33[2] = accessoryViewRightConstraint;
+    accessoryViewBottomConstraint = [(PKPaletteContainerView *)self accessoryViewBottomConstraint];
+    v33[3] = accessoryViewBottomConstraint;
+    accessoryViewHeightConstraint = [(PKPaletteContainerView *)self accessoryViewHeightConstraint];
+    v33[4] = accessoryViewHeightConstraint;
+    accessoryViewWidthConstraint = [(PKPaletteContainerView *)self accessoryViewWidthConstraint];
+    v33[5] = accessoryViewWidthConstraint;
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:6];
     [v7 deactivateConstraints:v14];
 
-    v15 = [(PKPaletteContainerView *)self edgeLocation];
-    if (v15 <= 0xF)
+    edgeLocation = [(PKPaletteContainerView *)self edgeLocation];
+    if (edgeLocation <= 0xF)
     {
-      if (((1 << v15) & 0x8013) != 0)
+      if (((1 << edgeLocation) & 0x8013) != 0)
       {
         v16 = MEMORY[0x1E696ACD8];
-        v17 = [(PKPaletteContainerView *)self accessoryViewTopConstraint];
-        v32[0] = v17;
-        v18 = [(PKPaletteContainerView *)self accessoryViewLeftConstraint];
-        v32[1] = v18;
-        v19 = [(PKPaletteContainerView *)self accessoryViewRightConstraint];
-        v32[2] = v19;
-        v20 = [(PKPaletteContainerView *)self accessoryViewHeightConstraint];
-        v32[3] = v20;
+        accessoryViewTopConstraint2 = [(PKPaletteContainerView *)self accessoryViewTopConstraint];
+        v32[0] = accessoryViewTopConstraint2;
+        accessoryViewLeftConstraint2 = [(PKPaletteContainerView *)self accessoryViewLeftConstraint];
+        v32[1] = accessoryViewLeftConstraint2;
+        accessoryViewRightConstraint2 = [(PKPaletteContainerView *)self accessoryViewRightConstraint];
+        v32[2] = accessoryViewRightConstraint2;
+        accessoryViewHeightConstraint2 = [(PKPaletteContainerView *)self accessoryViewHeightConstraint];
+        v32[3] = accessoryViewHeightConstraint2;
         v21 = v32;
       }
 
-      else if (v15 == 2)
+      else if (edgeLocation == 2)
       {
         v16 = MEMORY[0x1E696ACD8];
-        v17 = [(PKPaletteContainerView *)self accessoryViewTopConstraint];
-        v31[0] = v17;
-        v18 = [(PKPaletteContainerView *)self accessoryViewRightConstraint];
-        v31[1] = v18;
-        v19 = [(PKPaletteContainerView *)self accessoryViewBottomConstraint];
-        v31[2] = v19;
-        v20 = [(PKPaletteContainerView *)self accessoryViewWidthConstraint];
-        v31[3] = v20;
+        accessoryViewTopConstraint2 = [(PKPaletteContainerView *)self accessoryViewTopConstraint];
+        v31[0] = accessoryViewTopConstraint2;
+        accessoryViewLeftConstraint2 = [(PKPaletteContainerView *)self accessoryViewRightConstraint];
+        v31[1] = accessoryViewLeftConstraint2;
+        accessoryViewRightConstraint2 = [(PKPaletteContainerView *)self accessoryViewBottomConstraint];
+        v31[2] = accessoryViewRightConstraint2;
+        accessoryViewHeightConstraint2 = [(PKPaletteContainerView *)self accessoryViewWidthConstraint];
+        v31[3] = accessoryViewHeightConstraint2;
         v21 = v31;
       }
 
       else
       {
-        if (v15 != 8)
+        if (edgeLocation != 8)
         {
           goto LABEL_6;
         }
 
         v16 = MEMORY[0x1E696ACD8];
-        v17 = [(PKPaletteContainerView *)self accessoryViewTopConstraint];
-        v18 = [(PKPaletteContainerView *)self accessoryViewLeftConstraint];
-        v30[1] = v18;
-        v19 = [(PKPaletteContainerView *)self accessoryViewBottomConstraint];
-        v30[2] = v19;
-        v20 = [(PKPaletteContainerView *)self accessoryViewWidthConstraint];
-        v30[3] = v20;
+        accessoryViewTopConstraint2 = [(PKPaletteContainerView *)self accessoryViewTopConstraint];
+        accessoryViewLeftConstraint2 = [(PKPaletteContainerView *)self accessoryViewLeftConstraint];
+        v30[1] = accessoryViewLeftConstraint2;
+        accessoryViewRightConstraint2 = [(PKPaletteContainerView *)self accessoryViewBottomConstraint];
+        v30[2] = accessoryViewRightConstraint2;
+        accessoryViewHeightConstraint2 = [(PKPaletteContainerView *)self accessoryViewWidthConstraint];
+        v30[3] = accessoryViewHeightConstraint2;
         v21 = v30;
       }
 
@@ -400,18 +400,18 @@ LABEL_6:
   }
 
 LABEL_6:
-  v23 = [(PKPaletteContainerView *)self edgeLocation];
-  v24 = [(PKPaletteContainerView *)self accessoryView];
-  [v24 setEdgeLocation:v23];
+  edgeLocation2 = [(PKPaletteContainerView *)self edgeLocation];
+  accessoryView = [(PKPaletteContainerView *)self accessoryView];
+  [accessoryView setEdgeLocation:edgeLocation2];
 
   [(PKPaletteContainerView *)self scalingFactor];
   v26 = v25;
-  v27 = [(PKPaletteContainerView *)self accessoryView];
-  [v27 setScalingFactor:v26];
+  accessoryView2 = [(PKPaletteContainerView *)self accessoryView];
+  [accessoryView2 setScalingFactor:v26];
 
   v28 = PKIsVisionDevice() || v6;
-  v29 = [(PKPaletteContainerView *)self accessoryView];
-  [v29 setHidden:v28];
+  accessoryView3 = [(PKPaletteContainerView *)self accessoryView];
+  [accessoryView3 setHidden:v28];
 }
 
 @end

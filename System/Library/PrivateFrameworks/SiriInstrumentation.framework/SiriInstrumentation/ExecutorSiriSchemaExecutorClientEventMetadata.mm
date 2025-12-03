@@ -1,26 +1,26 @@
 @interface ExecutorSiriSchemaExecutorClientEventMetadata
-- (BOOL)isEqual:(id)a3;
-- (ExecutorSiriSchemaExecutorClientEventMetadata)initWithDictionary:(id)a3;
-- (ExecutorSiriSchemaExecutorClientEventMetadata)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (ExecutorSiriSchemaExecutorClientEventMetadata)initWithDictionary:(id)dictionary;
+- (ExecutorSiriSchemaExecutorClientEventMetadata)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ExecutorSiriSchemaExecutorClientEventMetadata
 
-- (ExecutorSiriSchemaExecutorClientEventMetadata)initWithDictionary:(id)a3
+- (ExecutorSiriSchemaExecutorClientEventMetadata)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = ExecutorSiriSchemaExecutorClientEventMetadata;
   v5 = [(ExecutorSiriSchemaExecutorClientEventMetadata *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"ifRequestId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"ifRequestId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(ExecutorSiriSchemaExecutorClientEventMetadata *)v5 setIfRequestId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"executorId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"executorId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,7 +36,7 @@
       [(ExecutorSiriSchemaExecutorClientEventMetadata *)v5 setExecutorId:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"spanId"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"spanId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,30 +49,30 @@
   return v5;
 }
 
-- (ExecutorSiriSchemaExecutorClientEventMetadata)initWithJSON:(id)a3
+- (ExecutorSiriSchemaExecutorClientEventMetadata)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ExecutorSiriSchemaExecutorClientEventMetadata *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ExecutorSiriSchemaExecutorClientEventMetadata *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ExecutorSiriSchemaExecutorClientEventMetadata *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -85,48 +85,48 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_executorId)
   {
-    v4 = [(ExecutorSiriSchemaExecutorClientEventMetadata *)self executorId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    executorId = [(ExecutorSiriSchemaExecutorClientEventMetadata *)self executorId];
+    dictionaryRepresentation = [executorId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"executorId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"executorId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"executorId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"executorId"];
     }
   }
 
   if (self->_ifRequestId)
   {
-    v7 = [(ExecutorSiriSchemaExecutorClientEventMetadata *)self ifRequestId];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    ifRequestId = [(ExecutorSiriSchemaExecutorClientEventMetadata *)self ifRequestId];
+    dictionaryRepresentation2 = [ifRequestId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"ifRequestId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"ifRequestId"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"ifRequestId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"ifRequestId"];
     }
   }
 
   if (*&self->_has)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[ExecutorSiriSchemaExecutorClientEventMetadata spanId](self, "spanId")}];
-    [v3 setObject:v10 forKeyedSubscript:@"spanId"];
+    [dictionary setObject:v10 forKeyedSubscript:@"spanId"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -146,28 +146,28 @@
   return v4 ^ v3 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(ExecutorSiriSchemaExecutorClientEventMetadata *)self ifRequestId];
-  v6 = [v4 ifRequestId];
-  if ((v5 != 0) == (v6 == 0))
+  ifRequestId = [(ExecutorSiriSchemaExecutorClientEventMetadata *)self ifRequestId];
+  ifRequestId2 = [equalCopy ifRequestId];
+  if ((ifRequestId != 0) == (ifRequestId2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(ExecutorSiriSchemaExecutorClientEventMetadata *)self ifRequestId];
-  if (v7)
+  ifRequestId3 = [(ExecutorSiriSchemaExecutorClientEventMetadata *)self ifRequestId];
+  if (ifRequestId3)
   {
-    v8 = v7;
-    v9 = [(ExecutorSiriSchemaExecutorClientEventMetadata *)self ifRequestId];
-    v10 = [v4 ifRequestId];
-    v11 = [v9 isEqual:v10];
+    v8 = ifRequestId3;
+    ifRequestId4 = [(ExecutorSiriSchemaExecutorClientEventMetadata *)self ifRequestId];
+    ifRequestId5 = [equalCopy ifRequestId];
+    v11 = [ifRequestId4 isEqual:ifRequestId5];
 
     if (!v11)
     {
@@ -179,22 +179,22 @@
   {
   }
 
-  v5 = [(ExecutorSiriSchemaExecutorClientEventMetadata *)self executorId];
-  v6 = [v4 executorId];
-  if ((v5 != 0) == (v6 == 0))
+  ifRequestId = [(ExecutorSiriSchemaExecutorClientEventMetadata *)self executorId];
+  ifRequestId2 = [equalCopy executorId];
+  if ((ifRequestId != 0) == (ifRequestId2 == 0))
   {
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v12 = [(ExecutorSiriSchemaExecutorClientEventMetadata *)self executorId];
-  if (v12)
+  executorId = [(ExecutorSiriSchemaExecutorClientEventMetadata *)self executorId];
+  if (executorId)
   {
-    v13 = v12;
-    v14 = [(ExecutorSiriSchemaExecutorClientEventMetadata *)self executorId];
-    v15 = [v4 executorId];
-    v16 = [v14 isEqual:v15];
+    v13 = executorId;
+    executorId2 = [(ExecutorSiriSchemaExecutorClientEventMetadata *)self executorId];
+    executorId3 = [equalCopy executorId];
+    v16 = [executorId2 isEqual:executorId3];
 
     if (!v16)
     {
@@ -206,9 +206,9 @@ LABEL_11:
   {
   }
 
-  if ((*&self->_has & 1) == (v4[32] & 1))
+  if ((*&self->_has & 1) == (equalCopy[32] & 1))
   {
-    if ((*&self->_has & 1) == 0 || (spanId = self->_spanId, spanId == [v4 spanId]))
+    if ((*&self->_has & 1) == 0 || (spanId = self->_spanId, spanId == [equalCopy spanId]))
     {
       v17 = 1;
       goto LABEL_13;
@@ -222,22 +222,22 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(ExecutorSiriSchemaExecutorClientEventMetadata *)self ifRequestId];
+  toCopy = to;
+  ifRequestId = [(ExecutorSiriSchemaExecutorClientEventMetadata *)self ifRequestId];
 
-  if (v4)
+  if (ifRequestId)
   {
-    v5 = [(ExecutorSiriSchemaExecutorClientEventMetadata *)self ifRequestId];
+    ifRequestId2 = [(ExecutorSiriSchemaExecutorClientEventMetadata *)self ifRequestId];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(ExecutorSiriSchemaExecutorClientEventMetadata *)self executorId];
+  executorId = [(ExecutorSiriSchemaExecutorClientEventMetadata *)self executorId];
 
-  if (v6)
+  if (executorId)
   {
-    v7 = [(ExecutorSiriSchemaExecutorClientEventMetadata *)self executorId];
+    executorId2 = [(ExecutorSiriSchemaExecutorClientEventMetadata *)self executorId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -247,26 +247,26 @@ LABEL_13:
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = ExecutorSiriSchemaExecutorClientEventMetadata;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(ExecutorSiriSchemaExecutorClientEventMetadata *)self ifRequestId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  ifRequestId = [(ExecutorSiriSchemaExecutorClientEventMetadata *)self ifRequestId];
+  v7 = [ifRequestId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(ExecutorSiriSchemaExecutorClientEventMetadata *)self deleteIfRequestId];
   }
 
-  v9 = [(ExecutorSiriSchemaExecutorClientEventMetadata *)self executorId];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  executorId = [(ExecutorSiriSchemaExecutorClientEventMetadata *)self executorId];
+  v10 = [executorId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(ExecutorSiriSchemaExecutorClientEventMetadata *)self deleteExecutorId];
   }

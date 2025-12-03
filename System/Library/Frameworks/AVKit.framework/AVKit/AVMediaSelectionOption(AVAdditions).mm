@@ -12,11 +12,11 @@
 - (__CFString)avkit_title
 {
   v1 = MEMORY[0x1E6987FE0];
-  v2 = [a1 commonMetadata];
-  v3 = [v1 metadataItemsFromArray:v2 filteredByIdentifier:*MEMORY[0x1E6987668]];
-  v4 = [v3 firstObject];
-  v5 = [v4 stringValue];
-  v6 = [v5 copy];
+  commonMetadata = [self commonMetadata];
+  v3 = [v1 metadataItemsFromArray:commonMetadata filteredByIdentifier:*MEMORY[0x1E6987668]];
+  firstObject = [v3 firstObject];
+  stringValue = [firstObject stringValue];
+  v6 = [stringValue copy];
   v7 = v6;
   if (v6)
   {
@@ -36,11 +36,11 @@
 - (id)mediaRemoteIdentifier
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [a1 avkit_title];
-  v4 = v3;
-  if (v3)
+  avkit_title = [self avkit_title];
+  v4 = avkit_title;
+  if (avkit_title)
   {
-    v5 = v3;
+    v5 = avkit_title;
   }
 
   else
@@ -48,11 +48,11 @@
     v5 = &stru_1EFED57D8;
   }
 
-  v6 = [a1 extendedLanguageTag];
-  v7 = v6;
-  if (v6)
+  extendedLanguageTag = [self extendedLanguageTag];
+  v7 = extendedLanguageTag;
+  if (extendedLanguageTag)
   {
-    v8 = v6;
+    v8 = extendedLanguageTag;
   }
 
   else
@@ -60,11 +60,11 @@
     v8 = &stru_1EFED57D8;
   }
 
-  v9 = [a1 localizedDisplayName];
-  v10 = v9;
-  if (v9)
+  localizedDisplayName = [self localizedDisplayName];
+  v10 = localizedDisplayName;
+  if (localizedDisplayName)
   {
-    v11 = v9;
+    v11 = localizedDisplayName;
   }
 
   else
@@ -79,29 +79,29 @@
 
 - (id)localizedDisplayName
 {
-  v2 = [a1 avkit_displayName];
-  if (!v2)
+  avkit_displayName = [self avkit_displayName];
+  if (!avkit_displayName)
   {
-    v2 = [a1 displayName];
+    avkit_displayName = [self displayName];
   }
 
-  return v2;
+  return avkit_displayName;
 }
 
 - (id)avkit_displayName
 {
-  v2 = [MEMORY[0x1E6987FD8] avkit_offOption];
+  avkit_offOption = [MEMORY[0x1E6987FD8] avkit_offOption];
 
-  if (v2 == a1)
+  if (avkit_offOption == self)
   {
     v5 = @"MEDIA_SELECTION_OPTION_OFF_TITLE";
   }
 
   else
   {
-    v3 = [MEMORY[0x1E6987FD8] avkit_autoOption];
+    avkit_autoOption = [MEMORY[0x1E6987FD8] avkit_autoOption];
 
-    if (v3 != a1)
+    if (avkit_autoOption != self)
     {
       v4 = 0;
       goto LABEL_7;

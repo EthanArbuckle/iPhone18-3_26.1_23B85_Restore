@@ -1,14 +1,14 @@
 @interface AWDITesterCertApplePayTestFinish
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasTestIterations:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasTestIterations:(BOOL)iterations;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDITesterCertApplePayTestFinish
@@ -25,9 +25,9 @@
   [(AWDITesterCertApplePayTestFinish *)&v3 dealloc];
 }
 
-- (void)setHasTestIterations:(BOOL)a3
+- (void)setHasTestIterations:(BOOL)iterations
 {
-  if (a3)
+  if (iterations)
   {
     v3 = 2;
   }
@@ -49,51 +49,51 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if (*&self->_has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
   testUUID = self->_testUUID;
   if (testUUID)
   {
-    [v3 setObject:testUUID forKey:@"testUUID"];
+    [dictionary setObject:testUUID forKey:@"testUUID"];
   }
 
   testName = self->_testName;
   if (testName)
   {
-    [v3 setObject:testName forKey:@"testName"];
+    [dictionary setObject:testName forKey:@"testName"];
   }
 
   testStatus = self->_testStatus;
   if (testStatus)
   {
-    [v3 setObject:testStatus forKey:@"testStatus"];
+    [dictionary setObject:testStatus forKey:@"testStatus"];
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_testIterations), @"testIterations"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_testIterations), @"testIterations"}];
   }
 
   testResult = self->_testResult;
   if (testResult)
   {
-    [v3 setObject:testResult forKey:@"testResult"];
+    [dictionary setObject:testResult forKey:@"testResult"];
   }
 
   testErrorDescription = self->_testErrorDescription;
   if (testErrorDescription)
   {
-    [v3 setObject:testErrorDescription forKey:@"testErrorDescription"];
+    [dictionary setObject:testErrorDescription forKey:@"testErrorDescription"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {
@@ -134,50 +134,50 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 64) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 64) |= 1u;
   }
 
   if (self->_testUUID)
   {
-    [a3 setTestUUID:?];
+    [to setTestUUID:?];
   }
 
   if (self->_testName)
   {
-    [a3 setTestName:?];
+    [to setTestName:?];
   }
 
   if (self->_testStatus)
   {
-    [a3 setTestStatus:?];
+    [to setTestStatus:?];
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(a3 + 6) = self->_testIterations;
-    *(a3 + 64) |= 2u;
+    *(to + 6) = self->_testIterations;
+    *(to + 64) |= 2u;
   }
 
   if (self->_testResult)
   {
-    [a3 setTestResult:?];
+    [to setTestResult:?];
   }
 
   if (self->_testErrorDescription)
   {
 
-    [a3 setTestErrorDescription:?];
+    [to setTestErrorDescription:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -185,36 +185,36 @@
     *(v5 + 64) |= 1u;
   }
 
-  *(v6 + 56) = [(NSString *)self->_testUUID copyWithZone:a3];
-  *(v6 + 32) = [(NSString *)self->_testName copyWithZone:a3];
+  *(v6 + 56) = [(NSString *)self->_testUUID copyWithZone:zone];
+  *(v6 + 32) = [(NSString *)self->_testName copyWithZone:zone];
 
-  *(v6 + 48) = [(NSString *)self->_testStatus copyWithZone:a3];
+  *(v6 + 48) = [(NSString *)self->_testStatus copyWithZone:zone];
   if ((*&self->_has & 2) != 0)
   {
     *(v6 + 24) = self->_testIterations;
     *(v6 + 64) |= 2u;
   }
 
-  *(v6 + 40) = [(NSString *)self->_testResult copyWithZone:a3];
-  *(v6 + 16) = [(NSString *)self->_testErrorDescription copyWithZone:a3];
+  *(v6 + 40) = [(NSString *)self->_testResult copyWithZone:zone];
+  *(v6 + 16) = [(NSString *)self->_testErrorDescription copyWithZone:zone];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
-    v6 = *(a3 + 64);
+    v6 = *(equal + 64);
     if (*&self->_has)
     {
-      if ((*(a3 + 64) & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((*(equal + 64) & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_22;
       }
     }
 
-    else if (*(a3 + 64))
+    else if (*(equal + 64))
     {
 LABEL_22:
       LOBYTE(v5) = 0;
@@ -222,33 +222,33 @@ LABEL_22:
     }
 
     testUUID = self->_testUUID;
-    if (!(testUUID | *(a3 + 7)) || (v5 = [(NSString *)testUUID isEqual:?]) != 0)
+    if (!(testUUID | *(equal + 7)) || (v5 = [(NSString *)testUUID isEqual:?]) != 0)
     {
       testName = self->_testName;
-      if (!(testName | *(a3 + 4)) || (v5 = [(NSString *)testName isEqual:?]) != 0)
+      if (!(testName | *(equal + 4)) || (v5 = [(NSString *)testName isEqual:?]) != 0)
       {
         testStatus = self->_testStatus;
-        if (!(testStatus | *(a3 + 6)) || (v5 = [(NSString *)testStatus isEqual:?]) != 0)
+        if (!(testStatus | *(equal + 6)) || (v5 = [(NSString *)testStatus isEqual:?]) != 0)
         {
-          v10 = *(a3 + 64);
+          v10 = *(equal + 64);
           if ((*&self->_has & 2) != 0)
           {
-            if ((*(a3 + 64) & 2) == 0 || self->_testIterations != *(a3 + 6))
+            if ((*(equal + 64) & 2) == 0 || self->_testIterations != *(equal + 6))
             {
               goto LABEL_22;
             }
           }
 
-          else if ((*(a3 + 64) & 2) != 0)
+          else if ((*(equal + 64) & 2) != 0)
           {
             goto LABEL_22;
           }
 
           testResult = self->_testResult;
-          if (!(testResult | *(a3 + 5)) || (v5 = [(NSString *)testResult isEqual:?]) != 0)
+          if (!(testResult | *(equal + 5)) || (v5 = [(NSString *)testResult isEqual:?]) != 0)
           {
             testErrorDescription = self->_testErrorDescription;
-            if (testErrorDescription | *(a3 + 2))
+            if (testErrorDescription | *(equal + 2))
             {
 
               LOBYTE(v5) = [(NSString *)testErrorDescription isEqual:?];
@@ -297,41 +297,41 @@ LABEL_22:
   return v8 ^ v9 ^ [(NSString *)self->_testErrorDescription hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 64))
+  if (*(from + 64))
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(a3 + 7))
+  if (*(from + 7))
   {
     [(AWDITesterCertApplePayTestFinish *)self setTestUUID:?];
   }
 
-  if (*(a3 + 4))
+  if (*(from + 4))
   {
     [(AWDITesterCertApplePayTestFinish *)self setTestName:?];
   }
 
-  if (*(a3 + 6))
+  if (*(from + 6))
   {
     [(AWDITesterCertApplePayTestFinish *)self setTestStatus:?];
   }
 
-  if ((*(a3 + 64) & 2) != 0)
+  if ((*(from + 64) & 2) != 0)
   {
-    self->_testIterations = *(a3 + 6);
+    self->_testIterations = *(from + 6);
     *&self->_has |= 2u;
   }
 
-  if (*(a3 + 5))
+  if (*(from + 5))
   {
     [(AWDITesterCertApplePayTestFinish *)self setTestResult:?];
   }
 
-  if (*(a3 + 2))
+  if (*(from + 2))
   {
 
     [(AWDITesterCertApplePayTestFinish *)self setTestErrorDescription:?];

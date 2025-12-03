@@ -1,8 +1,8 @@
 @interface BKCellularSettingsUtilities
-+ (BOOL)_updateCachedNetworkLimitIfNeeded:(id)a3 outUpdatedValue:(unint64_t *)a4;
++ (BOOL)_updateCachedNetworkLimitIfNeeded:(id)needed outUpdatedValue:(unint64_t *)value;
 + (id)cellularSettingsForCurrentIdentity;
-+ (id)formattedNetworkLimitForDownloadKind:(id)a3 runBlockIfNeedsUpdate:(id)a4;
-+ (void)loadNetworkLimitForDownloadKind:(id)a3 runBlockIfNeedsUpdate:(id)a4;
++ (id)formattedNetworkLimitForDownloadKind:(id)kind runBlockIfNeedsUpdate:(id)update;
++ (void)loadNetworkLimitForDownloadKind:(id)kind runBlockIfNeedsUpdate:(id)update;
 @end
 
 @implementation BKCellularSettingsUtilities
@@ -32,18 +32,18 @@
   return v7;
 }
 
-+ (BOOL)_updateCachedNetworkLimitIfNeeded:(id)a3 outUpdatedValue:(unint64_t *)a4
++ (BOOL)_updateCachedNetworkLimitIfNeeded:(id)needed outUpdatedValue:(unint64_t *)value
 {
-  v5 = a3;
+  neededCopy = needed;
   keyExistsAndHasValidFormat = 0;
   AppIntegerValue = CFPreferencesGetAppIntegerValue(@"LastNetworkLimit", @"com.apple.iBooks", &keyExistsAndHasValidFormat);
-  if (!v5)
+  if (!neededCopy)
   {
     goto LABEL_8;
   }
 
   v7 = AppIntegerValue;
-  v8 = [v5 sizeLimitForNetworkType:AMSNetworkTypeCellular];
+  v8 = [neededCopy sizeLimitForNetworkType:AMSNetworkTypeCellular];
   v9 = v8;
   if (!keyExistsAndHasValidFormat)
   {
@@ -64,9 +64,9 @@ LABEL_8:
 
 LABEL_10:
   CFPreferencesSetAppValue(@"LastNetworkLimit", [NSNumber numberWithUnsignedLongLong:v8], @"com.apple.iBooks");
-  if (a4)
+  if (value)
   {
-    *a4 = v9;
+    *value = v9;
   }
 
   v11 = 1;
@@ -75,45 +75,45 @@ LABEL_13:
   return v11;
 }
 
-+ (void)loadNetworkLimitForDownloadKind:(id)a3 runBlockIfNeedsUpdate:(id)a4
++ (void)loadNetworkLimitForDownloadKind:(id)kind runBlockIfNeedsUpdate:(id)update
 {
-  v6 = a4;
-  v7 = a3;
+  updateCopy = update;
+  kindCopy = kind;
   v8 = +[BUBag defaultBag];
-  v9 = [AMSNetworkConstraints networkConstraintsForMediaType:v7 withBag:v8];
+  v9 = [AMSNetworkConstraints networkConstraintsForMediaType:kindCopy withBag:v8];
 
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_2830;
   v11[3] = &unk_14818;
-  v12 = v6;
-  v13 = a1;
-  v10 = v6;
+  v12 = updateCopy;
+  selfCopy = self;
+  v10 = updateCopy;
   [v9 addFinishBlock:v11];
 }
 
-+ (id)formattedNetworkLimitForDownloadKind:(id)a3 runBlockIfNeedsUpdate:(id)a4
++ (id)formattedNetworkLimitForDownloadKind:(id)kind runBlockIfNeedsUpdate:(id)update
 {
-  v6 = a4;
+  updateCopy = update;
   keyExistsAndHasValidFormat = 0;
-  v7 = a3;
+  kindCopy = kind;
   AppIntegerValue = CFPreferencesGetAppIntegerValue(@"LastNetworkLimit", @"com.apple.iBooks", &keyExistsAndHasValidFormat);
   v9 = keyExistsAndHasValidFormat;
   v10 = +[BUBag defaultBag];
-  v11 = [v10 mobileNetworkConstraints];
-  if ([v11 isLoaded])
+  mobileNetworkConstraints = [v10 mobileNetworkConstraints];
+  if ([mobileNetworkConstraints isLoaded])
   {
-    v12 = [AMSNetworkConstraints networkConstraintsForMediaType:v7 withBag:v10];
+    v12 = [AMSNetworkConstraints networkConstraintsForMediaType:kindCopy withBag:v10];
 
     v19 = 0;
     v13 = [v12 resultWithError:&v19];
     v14 = v19;
-    v7 = v12;
+    kindCopy = v12;
   }
 
   else
   {
-    [a1 loadNetworkLimitForDownloadKind:v7 runBlockIfNeedsUpdate:v6];
+    [self loadNetworkLimitForDownloadKind:kindCopy runBlockIfNeedsUpdate:updateCopy];
     v13 = 0;
     v14 = 0;
   }
@@ -124,7 +124,7 @@ LABEL_13:
   }
 
   v18 = 0;
-  if ([a1 _updateCachedNetworkLimitIfNeeded:v13 outUpdatedValue:&v18])
+  if ([self _updateCachedNetworkLimitIfNeeded:v13 outUpdatedValue:&v18])
   {
     v15 = v18;
   }

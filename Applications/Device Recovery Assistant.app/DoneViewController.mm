@@ -1,19 +1,19 @@
 @interface DoneViewController
-- (DoneViewController)initWithIssuesFound:(BOOL)a3;
+- (DoneViewController)initWithIssuesFound:(BOOL)found;
 - (DoneViewControllerDelegate)delegate;
-- (void)_didTapInfoButton:(id)a3;
-- (void)_didTapRestartButton:(id)a3;
+- (void)_didTapInfoButton:(id)button;
+- (void)_didTapRestartButton:(id)button;
 - (void)viewDidLoad;
 @end
 
 @implementation DoneViewController
 
-- (DoneViewController)initWithIssuesFound:(BOOL)a3
+- (DoneViewController)initWithIssuesFound:(BOOL)found
 {
-  v3 = a3;
+  foundCopy = found;
   v5 = +[NSBundle mainBundle];
   v6 = v5;
-  if (v3)
+  if (foundCopy)
   {
     v7 = @"DONE_SCREEN_TITLE";
   }
@@ -23,7 +23,7 @@
     v7 = @"DONE_SCREEN_TITLE_NO_ISSUES";
   }
 
-  if (v3)
+  if (foundCopy)
   {
     v8 = @"DONE_SCREEN_DESCRIPTION";
   }
@@ -49,17 +49,17 @@
     v15 = +[OBBoldTrayButton boldButton];
     [v15 setTitle:v13 forState:0];
     [v15 addTarget:v14 action:"_didTapRestartButton:" forControlEvents:0x2000];
-    v16 = [(DoneViewController *)v14 buttonTray];
-    [v16 addButton:v15];
+    buttonTray = [(DoneViewController *)v14 buttonTray];
+    [buttonTray addButton:v15];
 
-    if (!v3)
+    if (!foundCopy)
     {
       v17 = [UIBarButtonItem alloc];
       v18 = [UIImage systemImageNamed:@"info.circle"];
       v19 = [v17 initWithTitle:0 image:v18 target:v14 action:"_didTapInfoButton:" menu:0];
 
-      v20 = [(DoneViewController *)v14 navigationItem];
-      [v20 setRightBarButtonItem:v19];
+      navigationItem = [(DoneViewController *)v14 navigationItem];
+      [navigationItem setRightBarButtonItem:v19];
     }
   }
 
@@ -73,7 +73,7 @@
   [(DoneViewController *)&v2 viewDidLoad];
 }
 
-- (void)_didTapInfoButton:(id)a3
+- (void)_didTapInfoButton:(id)button
 {
   v4 = sub_100012608();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -84,11 +84,11 @@
   }
 
   v5 = objc_alloc_init(DetailsViewController);
-  v6 = [(DoneViewController *)self navigationController];
-  [v6 pushViewController:v5 animated:1];
+  navigationController = [(DoneViewController *)self navigationController];
+  [navigationController pushViewController:v5 animated:1];
 }
 
-- (void)_didTapRestartButton:(id)a3
+- (void)_didTapRestartButton:(id)button
 {
   v4 = sub_100012608();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -98,12 +98,12 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%{public}s: Reboot button pushed on done view of device.", &v7, 0xCu);
   }
 
-  v5 = [(DoneViewController *)self delegate];
+  delegate = [(DoneViewController *)self delegate];
 
-  if (v5)
+  if (delegate)
   {
-    v6 = [(DoneViewController *)self delegate];
-    [v6 doneViewControllerDidReboot:self];
+    delegate2 = [(DoneViewController *)self delegate];
+    [delegate2 doneViewControllerDidReboot:self];
   }
 }
 

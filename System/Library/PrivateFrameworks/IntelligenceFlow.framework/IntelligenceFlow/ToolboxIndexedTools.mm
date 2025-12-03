@@ -1,14 +1,14 @@
 @interface ToolboxIndexedTools
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ToolboxIndexedTools
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  ToolboxIndexedTools.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  ToolboxIndexedTools.encode(with:)(coderCopy);
 }
 
 @end

@@ -5,62 +5,62 @@
 - (BOOL)showsFileSizePicker;
 - (BOOL)showsPrompt;
 - (NSArray)mediaTypes;
-- (PUPhotoPickerRemoteViewControllerRequestOptions)initWithCoder:(id)a3;
-- (PUPhotoPickerRemoteViewControllerRequestOptions)initWithRequestedClassName:(id)a3 photoPickerProperties:(id)a4;
-- (PUPhotoPickerRemoteViewControllerRequestOptions)initWithRequestedIdentifier:(id)a3 photoPickerProperties:(id)a4;
+- (PUPhotoPickerRemoteViewControllerRequestOptions)initWithCoder:(id)coder;
+- (PUPhotoPickerRemoteViewControllerRequestOptions)initWithRequestedClassName:(id)name photoPickerProperties:(id)properties;
+- (PUPhotoPickerRemoteViewControllerRequestOptions)initWithRequestedIdentifier:(id)identifier photoPickerProperties:(id)properties;
 - (id)description;
 - (int64_t)modalPresentationStyle;
 - (int64_t)sourceType;
 - (unint64_t)multipleSelectionLimit;
 - (unint64_t)savingOptions;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PUPhotoPickerRemoteViewControllerRequestOptions
 
 - (int64_t)sourceType
 {
-  v2 = [(PUPhotoPickerRemoteViewControllerRequestOptions *)self photoPickerProperties];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x1E69DE990]];
-  v4 = [v3 integerValue];
+  photoPickerProperties = [(PUPhotoPickerRemoteViewControllerRequestOptions *)self photoPickerProperties];
+  v3 = [photoPickerProperties objectForKeyedSubscript:*MEMORY[0x1E69DE990]];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 - (int64_t)modalPresentationStyle
 {
-  v2 = [(PUPhotoPickerRemoteViewControllerRequestOptions *)self photoPickerProperties];
-  v3 = [v2 objectForKeyedSubscript:@"_UIImagePickerControllerModalPresentationStyle"];
-  v4 = [v3 integerValue];
+  photoPickerProperties = [(PUPhotoPickerRemoteViewControllerRequestOptions *)self photoPickerProperties];
+  v3 = [photoPickerProperties objectForKeyedSubscript:@"_UIImagePickerControllerModalPresentationStyle"];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 - (BOOL)convertAutoloopsToGIF
 {
-  v2 = [(PUPhotoPickerRemoteViewControllerRequestOptions *)self photoPickerProperties];
-  v3 = [v2 objectForKey:@"_UIImagePickerControllerConvertAutoloopsToGIF"];
+  photoPickerProperties = [(PUPhotoPickerRemoteViewControllerRequestOptions *)self photoPickerProperties];
+  v3 = [photoPickerProperties objectForKey:@"_UIImagePickerControllerConvertAutoloopsToGIF"];
 
-  LOBYTE(v2) = [v3 BOOLValue];
-  return v2;
+  LOBYTE(photoPickerProperties) = [v3 BOOLValue];
+  return photoPickerProperties;
 }
 
 - (BOOL)showsPrompt
 {
-  v2 = [(PUPhotoPickerRemoteViewControllerRequestOptions *)self photoPickerProperties];
-  v3 = [v2 objectForKey:*MEMORY[0x1E69DE988]];
+  photoPickerProperties = [(PUPhotoPickerRemoteViewControllerRequestOptions *)self photoPickerProperties];
+  v3 = [photoPickerProperties objectForKey:*MEMORY[0x1E69DE988]];
 
-  LOBYTE(v2) = [v3 BOOLValue];
-  return v2;
+  LOBYTE(photoPickerProperties) = [v3 BOOLValue];
+  return photoPickerProperties;
 }
 
 - (BOOL)showsFileSizePicker
 {
-  v2 = [(PUPhotoPickerRemoteViewControllerRequestOptions *)self photoPickerProperties];
-  v3 = [v2 objectForKeyedSubscript:@"_UIImagePickerControllerShowsFileSizePicker"];
+  photoPickerProperties = [(PUPhotoPickerRemoteViewControllerRequestOptions *)self photoPickerProperties];
+  v3 = [photoPickerProperties objectForKeyedSubscript:@"_UIImagePickerControllerShowsFileSizePicker"];
 
-  LOBYTE(v2) = [v3 BOOLValue];
-  return v2;
+  LOBYTE(photoPickerProperties) = [v3 BOOLValue];
+  return photoPickerProperties;
 }
 
 - (BOOL)requiresPickingConfirmation
@@ -70,71 +70,71 @@
     return 1;
   }
 
-  v4 = [(PUPhotoPickerRemoteViewControllerRequestOptions *)self photoPickerProperties];
-  v5 = [v4 objectForKeyedSubscript:@"_UIImagePickerControllerRequiresPickingConfirmation"];
+  photoPickerProperties = [(PUPhotoPickerRemoteViewControllerRequestOptions *)self photoPickerProperties];
+  v5 = [photoPickerProperties objectForKeyedSubscript:@"_UIImagePickerControllerRequiresPickingConfirmation"];
 
-  LOBYTE(v4) = [v5 BOOLValue];
-  return v4;
+  LOBYTE(photoPickerProperties) = [v5 BOOLValue];
+  return photoPickerProperties;
 }
 
 - (unint64_t)multipleSelectionLimit
 {
-  v2 = [(PUPhotoPickerRemoteViewControllerRequestOptions *)self photoPickerProperties];
-  v3 = [v2 objectForKey:*MEMORY[0x1E69DE958]];
+  photoPickerProperties = [(PUPhotoPickerRemoteViewControllerRequestOptions *)self photoPickerProperties];
+  v3 = [photoPickerProperties objectForKey:*MEMORY[0x1E69DE958]];
 
-  v4 = [v3 unsignedIntegerValue];
-  return v4;
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
+  return unsignedIntegerValue;
 }
 
 - (BOOL)allowsMultipleSelection
 {
-  v2 = [(PUPhotoPickerRemoteViewControllerRequestOptions *)self photoPickerProperties];
-  v3 = [v2 objectForKey:*MEMORY[0x1E69DE8C8]];
+  photoPickerProperties = [(PUPhotoPickerRemoteViewControllerRequestOptions *)self photoPickerProperties];
+  v3 = [photoPickerProperties objectForKey:*MEMORY[0x1E69DE8C8]];
 
-  LOBYTE(v2) = [v3 BOOLValue];
-  return v2;
+  LOBYTE(photoPickerProperties) = [v3 BOOLValue];
+  return photoPickerProperties;
 }
 
 - (NSArray)mediaTypes
 {
-  v2 = [(PUPhotoPickerRemoteViewControllerRequestOptions *)self photoPickerProperties];
-  v3 = [v2 objectForKey:*MEMORY[0x1E69DE950]];
+  photoPickerProperties = [(PUPhotoPickerRemoteViewControllerRequestOptions *)self photoPickerProperties];
+  v3 = [photoPickerProperties objectForKey:*MEMORY[0x1E69DE950]];
 
   return v3;
 }
 
 - (unint64_t)savingOptions
 {
-  v2 = [(PUPhotoPickerRemoteViewControllerRequestOptions *)self photoPickerProperties];
-  v3 = [v2 objectForKey:*MEMORY[0x1E69DE9D8]];
+  photoPickerProperties = [(PUPhotoPickerRemoteViewControllerRequestOptions *)self photoPickerProperties];
+  v3 = [photoPickerProperties objectForKey:*MEMORY[0x1E69DE9D8]];
 
-  v4 = [v3 integerValue];
-  return v4;
+  integerValue = [v3 integerValue];
+  return integerValue;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   requestedIdentifier = self->_requestedIdentifier;
-  v5 = a3;
-  [v5 encodeObject:requestedIdentifier forKey:@"requestedIdentifier"];
-  [v5 encodeObject:self->_requestedClassName forKey:@"requestedClassName"];
-  [v5 encodeObject:self->_photoPickerProperties forKey:@"photoPickerProperties"];
-  [v5 encodeBool:self->_onboardingHeaderDismissedBefore forKey:@"onboardingHeader"];
+  coderCopy = coder;
+  [coderCopy encodeObject:requestedIdentifier forKey:@"requestedIdentifier"];
+  [coderCopy encodeObject:self->_requestedClassName forKey:@"requestedClassName"];
+  [coderCopy encodeObject:self->_photoPickerProperties forKey:@"photoPickerProperties"];
+  [coderCopy encodeBool:self->_onboardingHeaderDismissedBefore forKey:@"onboardingHeader"];
 }
 
-- (PUPhotoPickerRemoteViewControllerRequestOptions)initWithCoder:(id)a3
+- (PUPhotoPickerRemoteViewControllerRequestOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = PUPhotoPickerRemoteViewControllerRequestOptions;
   v5 = [(PUPhotoPickerRemoteViewControllerRequestOptions *)&v19 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requestedIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requestedIdentifier"];
     requestedIdentifier = v5->_requestedIdentifier;
     v5->_requestedIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requestedClassName"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requestedClassName"];
     requestedClassName = v5->_requestedClassName;
     v5->_requestedClassName = v8;
 
@@ -144,11 +144,11 @@
     v13 = objc_opt_class();
     v14 = objc_opt_class();
     v15 = [v10 setWithObjects:{v11, v12, v13, v14, objc_opt_class(), 0}];
-    v16 = [v4 decodeObjectOfClasses:v15 forKey:@"photoPickerProperties"];
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"photoPickerProperties"];
     photoPickerProperties = v5->_photoPickerProperties;
     v5->_photoPickerProperties = v16;
 
-    v5->_onboardingHeaderDismissedBefore = [v4 decodeBoolForKey:@"onboardingHeader"];
+    v5->_onboardingHeaderDismissedBefore = [coderCopy decodeBoolForKey:@"onboardingHeader"];
   }
 
   return v5;
@@ -159,46 +159,46 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PUPhotoPickerRemoteViewControllerRequestOptions *)self requestedClassName];
-  v7 = [(PUPhotoPickerRemoteViewControllerRequestOptions *)self requestedIdentifier];
-  v8 = [v3 stringWithFormat:@"%@ requestedClassName %@ requestedIdentifier %@", v5, v6, v7];
+  requestedClassName = [(PUPhotoPickerRemoteViewControllerRequestOptions *)self requestedClassName];
+  requestedIdentifier = [(PUPhotoPickerRemoteViewControllerRequestOptions *)self requestedIdentifier];
+  v8 = [v3 stringWithFormat:@"%@ requestedClassName %@ requestedIdentifier %@", v5, requestedClassName, requestedIdentifier];
 
   return v8;
 }
 
-- (PUPhotoPickerRemoteViewControllerRequestOptions)initWithRequestedIdentifier:(id)a3 photoPickerProperties:(id)a4
+- (PUPhotoPickerRemoteViewControllerRequestOptions)initWithRequestedIdentifier:(id)identifier photoPickerProperties:(id)properties
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  propertiesCopy = properties;
   v13.receiver = self;
   v13.super_class = PUPhotoPickerRemoteViewControllerRequestOptions;
   v9 = [(PUPhotoPickerRemoteViewControllerRequestOptions *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_requestedIdentifier, a3);
-    objc_storeStrong(&v10->_photoPickerProperties, a4);
-    v11 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v10->_onboardingHeaderDismissedBefore = [v11 BOOLForKey:@"com.apple.photos.picker.header"];
+    objc_storeStrong(&v9->_requestedIdentifier, identifier);
+    objc_storeStrong(&v10->_photoPickerProperties, properties);
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v10->_onboardingHeaderDismissedBefore = [standardUserDefaults BOOLForKey:@"com.apple.photos.picker.header"];
   }
 
   return v10;
 }
 
-- (PUPhotoPickerRemoteViewControllerRequestOptions)initWithRequestedClassName:(id)a3 photoPickerProperties:(id)a4
+- (PUPhotoPickerRemoteViewControllerRequestOptions)initWithRequestedClassName:(id)name photoPickerProperties:(id)properties
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  propertiesCopy = properties;
   v13.receiver = self;
   v13.super_class = PUPhotoPickerRemoteViewControllerRequestOptions;
   v9 = [(PUPhotoPickerRemoteViewControllerRequestOptions *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_requestedClassName, a3);
-    objc_storeStrong(&v10->_photoPickerProperties, a4);
-    v11 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v10->_onboardingHeaderDismissedBefore = [v11 BOOLForKey:@"com.apple.photos.picker.header"];
+    objc_storeStrong(&v9->_requestedClassName, name);
+    objc_storeStrong(&v10->_photoPickerProperties, properties);
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v10->_onboardingHeaderDismissedBefore = [standardUserDefaults BOOLForKey:@"com.apple.photos.picker.header"];
   }
 
   return v10;

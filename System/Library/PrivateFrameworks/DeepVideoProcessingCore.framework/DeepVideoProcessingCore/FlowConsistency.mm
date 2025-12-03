@@ -1,24 +1,24 @@
 @interface FlowConsistency
 - (BOOL)createKernels;
-- (FlowConsistency)initWithDevice:(id)a3 commmandQueue:(id)a4;
-- (float)computeMaxConsisnteciesForwardConsistencyMap:(id)a3 backwardConsistencyMap:(id)a4;
-- (float)createFlowConsistencyMapsWithForwardFlow:(id)a3 backwardFlow:(id)a4 forwardConsistencyMap:(id)a5 backwardConsistencyMap:(id)a6;
+- (FlowConsistency)initWithDevice:(id)device commmandQueue:(id)queue;
+- (float)computeMaxConsisnteciesForwardConsistencyMap:(id)map backwardConsistencyMap:(id)consistencyMap;
+- (float)createFlowConsistencyMapsWithForwardFlow:(id)flow backwardFlow:(id)backwardFlow forwardConsistencyMap:(id)map backwardConsistencyMap:(id)consistencyMap;
 - (float)maxConsistency;
-- (float)maxValueInTexture:(id)a3;
-- (id)allocateLinearConsistencyMapWithWidth:(unint64_t)a3 height:(unint64_t)a4;
-- (void)encodeMapNormalizationToCommandBuffer:(id)a3 consisitencyMap:(id)a4 maxConsistency:(id)a5;
-- (void)encodeMapUpscalingToCommandBuffer:(id)a3 source:(id)a4 detination:(id)a5;
-- (void)encodeToCommandBuffer:(id)a3 forwardFlow:(id)a4 backwardFlow:(id)a5 forwardConsistencyMap:(id)a6 backwardConsistencyMap:(id)a7;
-- (void)encodeUnomalizedMapCreationToCommandBuffer:(id)a3 forwardFlow:(id)a4 backwardFlow:(id)a5 forwardConsistencyMap:(id)a6 backwardConsistencyMap:(id)a7;
+- (float)maxValueInTexture:(id)texture;
+- (id)allocateLinearConsistencyMapWithWidth:(unint64_t)width height:(unint64_t)height;
+- (void)encodeMapNormalizationToCommandBuffer:(id)buffer consisitencyMap:(id)map maxConsistency:(id)consistency;
+- (void)encodeMapUpscalingToCommandBuffer:(id)buffer source:(id)source detination:(id)detination;
+- (void)encodeToCommandBuffer:(id)buffer forwardFlow:(id)flow backwardFlow:(id)backwardFlow forwardConsistencyMap:(id)map backwardConsistencyMap:(id)consistencyMap;
+- (void)encodeUnomalizedMapCreationToCommandBuffer:(id)buffer forwardFlow:(id)flow backwardFlow:(id)backwardFlow forwardConsistencyMap:(id)map backwardConsistencyMap:(id)consistencyMap;
 @end
 
 @implementation FlowConsistency
 
-- (FlowConsistency)initWithDevice:(id)a3 commmandQueue:(id)a4
+- (FlowConsistency)initWithDevice:(id)device commmandQueue:(id)queue
 {
   v13.receiver = self;
   v13.super_class = FlowConsistency;
-  v4 = [(VEMetalBase *)&v13 initWithDevice:a3 commmandQueue:a4];
+  v4 = [(VEMetalBase *)&v13 initWithDevice:device commmandQueue:queue];
   if (!v4 || ([MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "pathForResource:ofType:", @"opticalFlowMetalLib.metallib", 0), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(objc_alloc(MEMORY[0x277CBEBC0]), "initWithString:", v6), v8 = -[MTLDevice newLibraryWithURL:error:](v4->super._device, "newLibraryWithURL:error:", v7, 0), mtlLibrary = v4->super._mtlLibrary, v4->super._mtlLibrary = v8, mtlLibrary, v4->_useSIMD = 1, v10 = -[FlowConsistency createKernels](v4, "createKernels"), v7, v6, v5, v11 = 0, v10))
   {
     v11 = v4;
@@ -59,23 +59,23 @@
   return self->_consistencyNormalizationKernel != 0;
 }
 
-- (float)createFlowConsistencyMapsWithForwardFlow:(id)a3 backwardFlow:(id)a4 forwardConsistencyMap:(id)a5 backwardConsistencyMap:(id)a6
+- (float)createFlowConsistencyMapsWithForwardFlow:(id)flow backwardFlow:(id)backwardFlow forwardConsistencyMap:(id)map backwardConsistencyMap:(id)consistencyMap
 {
   v27 = *MEMORY[0x277D85DE8];
-  v10 = a5;
-  v11 = a6;
+  mapCopy = map;
+  consistencyMapCopy = consistencyMap;
   commandQueue = self->super._commandQueue;
-  v13 = a4;
-  v14 = a3;
-  v15 = [(MTLCommandQueue *)commandQueue commandBuffer];
-  [(FlowConsistency *)self encodeUnomalizedMapCreationToCommandBuffer:v15 forwardFlow:v14 backwardFlow:v13 forwardConsistencyMap:v10 backwardConsistencyMap:v11];
+  backwardFlowCopy = backwardFlow;
+  flowCopy = flow;
+  commandBuffer = [(MTLCommandQueue *)commandQueue commandBuffer];
+  [(FlowConsistency *)self encodeUnomalizedMapCreationToCommandBuffer:commandBuffer forwardFlow:flowCopy backwardFlow:backwardFlowCopy forwardConsistencyMap:mapCopy backwardConsistencyMap:consistencyMapCopy];
 
-  [v15 commit];
-  [v15 waitUntilCompleted];
-  v16 = [(MTLBuffer *)self->_maxBuffer contents];
+  [commandBuffer commit];
+  [commandBuffer waitUntilCompleted];
+  contents = [(MTLBuffer *)self->_maxBuffer contents];
   if ((global_logLevel & 4) != 0)
   {
-    v17 = v16;
+    v17 = contents;
     v18 = global_logger;
     if (os_log_type_enabled(global_logger, OS_LOG_TYPE_INFO))
     {
@@ -86,7 +86,7 @@
     }
   }
 
-  [(FlowConsistency *)self computeMaxConsisnteciesForwardConsistencyMap:v10 backwardConsistencyMap:v11];
+  [(FlowConsistency *)self computeMaxConsisnteciesForwardConsistencyMap:mapCopy backwardConsistencyMap:consistencyMapCopy];
   v21 = v20;
   if ((global_logLevel & 4) != 0)
   {
@@ -99,45 +99,45 @@
     }
   }
 
-  v23 = [(MTLCommandQueue *)self->super._commandQueue commandBuffer];
+  commandBuffer2 = [(MTLCommandQueue *)self->super._commandQueue commandBuffer];
 
-  [(FlowConsistency *)self encodeMapNormalizationToCommandBuffer:v23 consisitencyMap:v10 maxConsistency:self->_maxBuffer];
-  [(FlowConsistency *)self encodeMapNormalizationToCommandBuffer:v23 consisitencyMap:v11 maxConsistency:self->_maxBuffer];
-  [v23 commit];
-  [v23 waitUntilCompleted];
+  [(FlowConsistency *)self encodeMapNormalizationToCommandBuffer:commandBuffer2 consisitencyMap:mapCopy maxConsistency:self->_maxBuffer];
+  [(FlowConsistency *)self encodeMapNormalizationToCommandBuffer:commandBuffer2 consisitencyMap:consistencyMapCopy maxConsistency:self->_maxBuffer];
+  [commandBuffer2 commit];
+  [commandBuffer2 waitUntilCompleted];
 
   return v21;
 }
 
-- (float)maxValueInTexture:(id)a3
+- (float)maxValueInTexture:(id)texture
 {
-  v3 = a3;
-  v4 = [v3 buffer];
-  if (v4)
+  textureCopy = texture;
+  buffer = [textureCopy buffer];
+  if (buffer)
   {
-    v5 = [v3 bufferBytesPerRow];
-    if ([v4 iosurface])
+    bufferBytesPerRow = [textureCopy bufferBytesPerRow];
+    if ([buffer iosurface])
     {
-      IOSurfaceLock([v4 iosurface], 1u, 0);
-      BaseAddress = IOSurfaceGetBaseAddress([v4 iosurface]);
+      IOSurfaceLock([buffer iosurface], 1u, 0);
+      BaseAddress = IOSurfaceGetBaseAddress([buffer iosurface]);
     }
 
     else
     {
-      BaseAddress = [v4 contents];
+      BaseAddress = [buffer contents];
     }
 
     v9 = BaseAddress;
     if (BaseAddress)
     {
-      if ([v3 height])
+      if ([textureCopy height])
       {
         v10 = 0;
-        v11 = 2 * (v5 >> 1);
+        v11 = 2 * (bufferBytesPerRow >> 1);
         LOWORD(_H8) = 0;
         do
         {
-          if ([v3 width])
+          if ([textureCopy width])
           {
             v13 = 0;
             do
@@ -145,14 +145,14 @@
               _H8 = fmaxl(v9[v13++], _H8);
             }
 
-            while ([v3 width] > v13);
+            while ([textureCopy width] > v13);
           }
 
           ++v10;
           v9 = (v9 + v11);
         }
 
-        while ([v3 height] > v10);
+        while ([textureCopy height] > v10);
         __asm { FCVT            S8, H8 }
       }
 
@@ -175,9 +175,9 @@
       }
     }
 
-    if ([v4 iosurface])
+    if ([buffer iosurface])
     {
-      IOSurfaceUnlock([v4 iosurface], 1u, 0);
+      IOSurfaceUnlock([buffer iosurface], 1u, 0);
     }
   }
 
@@ -197,89 +197,89 @@
   return _S8;
 }
 
-- (float)computeMaxConsisnteciesForwardConsistencyMap:(id)a3 backwardConsistencyMap:(id)a4
+- (float)computeMaxConsisnteciesForwardConsistencyMap:(id)map backwardConsistencyMap:(id)consistencyMap
 {
-  v6 = a4;
-  [(FlowConsistency *)self maxValueInTexture:a3];
+  consistencyMapCopy = consistencyMap;
+  [(FlowConsistency *)self maxValueInTexture:map];
   v8 = v7;
-  [(FlowConsistency *)self maxValueInTexture:v6];
+  [(FlowConsistency *)self maxValueInTexture:consistencyMapCopy];
   v10 = v9;
 
   return fmaxf(v8, v10);
 }
 
-- (void)encodeToCommandBuffer:(id)a3 forwardFlow:(id)a4 backwardFlow:(id)a5 forwardConsistencyMap:(id)a6 backwardConsistencyMap:(id)a7
+- (void)encodeToCommandBuffer:(id)buffer forwardFlow:(id)flow backwardFlow:(id)backwardFlow forwardConsistencyMap:(id)map backwardConsistencyMap:(id)consistencyMap
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a3;
-  [(FlowConsistency *)self encodeUnomalizedMapCreationToCommandBuffer:v14 forwardFlow:a4 backwardFlow:a5 forwardConsistencyMap:v13 backwardConsistencyMap:v12];
-  [(FlowConsistency *)self encodeMapNormalizationToCommandBuffer:v14 consisitencyMap:v13 maxConsistency:self->_maxBuffer];
+  consistencyMapCopy = consistencyMap;
+  mapCopy = map;
+  bufferCopy = buffer;
+  [(FlowConsistency *)self encodeUnomalizedMapCreationToCommandBuffer:bufferCopy forwardFlow:flow backwardFlow:backwardFlow forwardConsistencyMap:mapCopy backwardConsistencyMap:consistencyMapCopy];
+  [(FlowConsistency *)self encodeMapNormalizationToCommandBuffer:bufferCopy consisitencyMap:mapCopy maxConsistency:self->_maxBuffer];
 
-  [(FlowConsistency *)self encodeMapNormalizationToCommandBuffer:v14 consisitencyMap:v12 maxConsistency:self->_maxBuffer];
+  [(FlowConsistency *)self encodeMapNormalizationToCommandBuffer:bufferCopy consisitencyMap:consistencyMapCopy maxConsistency:self->_maxBuffer];
 }
 
-- (void)encodeUnomalizedMapCreationToCommandBuffer:(id)a3 forwardFlow:(id)a4 backwardFlow:(id)a5 forwardConsistencyMap:(id)a6 backwardConsistencyMap:(id)a7
+- (void)encodeUnomalizedMapCreationToCommandBuffer:(id)buffer forwardFlow:(id)flow backwardFlow:(id)backwardFlow forwardConsistencyMap:(id)map backwardConsistencyMap:(id)consistencyMap
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = [a3 computeCommandEncoder];
-  [v16 setComputePipelineState:self->_consistencyComputeKernel];
-  [v16 setTexture:v15 atIndex:0];
-  [v16 setTexture:v14 atIndex:1];
+  consistencyMapCopy = consistencyMap;
+  mapCopy = map;
+  backwardFlowCopy = backwardFlow;
+  flowCopy = flow;
+  computeCommandEncoder = [buffer computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:self->_consistencyComputeKernel];
+  [computeCommandEncoder setTexture:flowCopy atIndex:0];
+  [computeCommandEncoder setTexture:backwardFlowCopy atIndex:1];
 
-  [v16 setTexture:v13 atIndex:2];
-  [v16 setTexture:v12 atIndex:3];
+  [computeCommandEncoder setTexture:mapCopy atIndex:2];
+  [computeCommandEncoder setTexture:consistencyMapCopy atIndex:3];
 
   v17 = [(MTLDevice *)self->super._device newBufferWithLength:4 options:0];
   maxBuffer = self->_maxBuffer;
   self->_maxBuffer = v17;
 
-  [v16 setBuffer:self->_maxBuffer offset:0 atIndex:0];
-  v19 = ([v15 width] + 31) >> 5;
-  v20 = [v15 height];
+  [computeCommandEncoder setBuffer:self->_maxBuffer offset:0 atIndex:0];
+  v19 = ([flowCopy width] + 31) >> 5;
+  height = [flowCopy height];
 
   v23[0] = v19;
-  v23[1] = (v20 + 31) >> 5;
+  v23[1] = (height + 31) >> 5;
   v23[2] = 1;
   v21 = vdupq_n_s64(0x20uLL);
   v22 = 1;
-  [v16 dispatchThreadgroups:v23 threadsPerThreadgroup:&v21];
-  [v16 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:v23 threadsPerThreadgroup:&v21];
+  [computeCommandEncoder endEncoding];
 }
 
-- (void)encodeMapNormalizationToCommandBuffer:(id)a3 consisitencyMap:(id)a4 maxConsistency:(id)a5
+- (void)encodeMapNormalizationToCommandBuffer:(id)buffer consisitencyMap:(id)map maxConsistency:(id)consistency
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [a3 computeCommandEncoder];
-  [v10 setComputePipelineState:self->_consistencyNormalizationKernel];
-  [v10 setTexture:v9 atIndex:0];
-  [v10 setBuffer:v8 offset:0 atIndex:0];
+  consistencyCopy = consistency;
+  mapCopy = map;
+  computeCommandEncoder = [buffer computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:self->_consistencyNormalizationKernel];
+  [computeCommandEncoder setTexture:mapCopy atIndex:0];
+  [computeCommandEncoder setBuffer:consistencyCopy offset:0 atIndex:0];
 
-  v11 = ([v9 width] + 31) >> 5;
-  v12 = [v9 height];
+  v11 = ([mapCopy width] + 31) >> 5;
+  height = [mapCopy height];
 
   v15[0] = v11;
-  v15[1] = (v12 + 31) >> 5;
+  v15[1] = (height + 31) >> 5;
   v15[2] = 1;
   v13 = vdupq_n_s64(0x20uLL);
   v14 = 1;
-  [v10 dispatchThreadgroups:v15 threadsPerThreadgroup:&v13];
-  [v10 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:v15 threadsPerThreadgroup:&v13];
+  [computeCommandEncoder endEncoding];
 }
 
-- (id)allocateLinearConsistencyMapWithWidth:(unint64_t)a3 height:(unint64_t)a4
+- (id)allocateLinearConsistencyMapWithWidth:(unint64_t)width height:(unint64_t)height
 {
-  v5 = a3;
-  v7 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:25 width:a3 height:a4 mipmapped:0];
+  widthCopy = width;
+  v7 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:25 width:width height:height mipmapped:0];
   [v7 setUsage:3];
   [v7 setStorageMode:0];
-  v5 *= 2;
-  v8 = [(MTLDevice *)self->super._device newBufferWithLength:v5 * a4 options:0];
-  v9 = [v8 newTextureWithDescriptor:v7 offset:0 bytesPerRow:v5];
+  widthCopy *= 2;
+  v8 = [(MTLDevice *)self->super._device newBufferWithLength:widthCopy * height options:0];
+  v9 = [v8 newTextureWithDescriptor:v7 offset:0 bytesPerRow:widthCopy];
 
   return v9;
 }
@@ -298,25 +298,25 @@
   }
 }
 
-- (void)encodeMapUpscalingToCommandBuffer:(id)a3 source:(id)a4 detination:(id)a5
+- (void)encodeMapUpscalingToCommandBuffer:(id)buffer source:(id)source detination:(id)detination
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [a3 computeCommandEncoder];
-  [v10 setComputePipelineState:self->_consistencyUpscalingKernel];
-  [v10 setTexture:v9 atIndex:0];
+  detinationCopy = detination;
+  sourceCopy = source;
+  computeCommandEncoder = [buffer computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:self->_consistencyUpscalingKernel];
+  [computeCommandEncoder setTexture:sourceCopy atIndex:0];
 
-  [v10 setTexture:v8 atIndex:1];
-  v11 = ([v8 width] + 31) >> 5;
-  v12 = [v8 height];
+  [computeCommandEncoder setTexture:detinationCopy atIndex:1];
+  v11 = ([detinationCopy width] + 31) >> 5;
+  height = [detinationCopy height];
 
   v15[0] = v11;
-  v15[1] = (v12 + 31) >> 5;
+  v15[1] = (height + 31) >> 5;
   v15[2] = 1;
   v13 = vdupq_n_s64(0x20uLL);
   v14 = 1;
-  [v10 dispatchThreadgroups:v15 threadsPerThreadgroup:&v13];
-  [v10 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:v15 threadsPerThreadgroup:&v13];
+  [computeCommandEncoder endEncoding];
 }
 
 @end

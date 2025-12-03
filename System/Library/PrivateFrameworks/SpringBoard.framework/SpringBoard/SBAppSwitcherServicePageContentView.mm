@@ -1,19 +1,19 @@
 @interface SBAppSwitcherServicePageContentView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SBAppSwitcherServicePageContentView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SBAppSwitcherServicePageContentView)initWithFrame:(CGRect)frame;
 - (double)cornerRadius;
 - (unint64_t)maskedCorners;
-- (void)setMaskedCorners:(unint64_t)a3;
-- (void)setOrientation:(int64_t)a3;
+- (void)setMaskedCorners:(unint64_t)corners;
+- (void)setOrientation:(int64_t)orientation;
 @end
 
 @implementation SBAppSwitcherServicePageContentView
 
-- (SBAppSwitcherServicePageContentView)initWithFrame:(CGRect)a3
+- (SBAppSwitcherServicePageContentView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = SBAppSwitcherServicePageContentView;
-  v3 = [(SBAppSwitcherServicePageContentView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBAppSwitcherServicePageContentView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -25,45 +25,45 @@
 
 - (double)cornerRadius
 {
-  v2 = [(SBAppSwitcherServicePageContentView *)self layer];
-  [v2 cornerRadius];
+  layer = [(SBAppSwitcherServicePageContentView *)self layer];
+  [layer cornerRadius];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setMaskedCorners:(unint64_t)a3
+- (void)setMaskedCorners:(unint64_t)corners
 {
-  v4 = [(SBAppSwitcherServicePageContentView *)self layer];
-  [v4 setMaskedCorners:a3];
+  layer = [(SBAppSwitcherServicePageContentView *)self layer];
+  [layer setMaskedCorners:corners];
 }
 
 - (unint64_t)maskedCorners
 {
-  v2 = [(SBAppSwitcherServicePageContentView *)self layer];
-  v3 = [v2 maskedCorners];
+  layer = [(SBAppSwitcherServicePageContentView *)self layer];
+  maskedCorners = [layer maskedCorners];
 
-  return v3;
+  return maskedCorners;
 }
 
-- (void)setOrientation:(int64_t)a3
+- (void)setOrientation:(int64_t)orientation
 {
-  if (self->_orientation != a3)
+  if (self->_orientation != orientation)
   {
-    self->_orientation = a3;
+    self->_orientation = orientation;
     [(SBAppSwitcherServicePageContentView *)self setNeedsLayout];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v4 = [MEMORY[0x277D759A0] mainScreen];
-  [v4 _referenceBounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen _referenceBounds];
   v6 = v5;
   v8 = v7;
 
-  v9 = [(SBAppSwitcherServicePageContentView *)self orientation];
-  if ((v9 - 3) >= 2)
+  orientation = [(SBAppSwitcherServicePageContentView *)self orientation];
+  if ((orientation - 3) >= 2)
   {
     v10 = v6;
   }
@@ -73,7 +73,7 @@
     v10 = v8;
   }
 
-  if ((v9 - 3) >= 2)
+  if ((orientation - 3) >= 2)
   {
     v11 = v8;
   }

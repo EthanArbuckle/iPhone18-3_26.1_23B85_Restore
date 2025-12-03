@@ -1,16 +1,16 @@
 @interface STSBluetoothSession
 - (BOOL)isConnected;
-- (void)altCarrierSendData:(id)a3 completion:(id)a4;
+- (void)altCarrierSendData:(id)data completion:(id)completion;
 - (void)connectionEstablishmentTimedout;
 - (void)sessionTimedout;
 @end
 
 @implementation STSBluetoothSession
 
-- (void)altCarrierSendData:(id)a3 completion:(id)a4
+- (void)altCarrierSendData:(id)data completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  completionCopy = completion;
   if (![(STSBluetoothSession *)self isConnected])
   {
     sub_10002483C(OS_LOG_TYPE_ERROR, 0, "[STSBluetoothSession altCarrierSendData:completion:]", 297, self, @"Not connected", v8, v9, v24);
@@ -19,13 +19,13 @@
     v14 = [NSDictionary dictionaryWithObjects:&v29 forKeys:&v28 count:1];
     v11 = [NSError errorWithDomain:@"STSXPCHelperErrorDomain" code:8 userInfo:v14];
 
-    v7[2](v7, v11);
+    completionCopy[2](completionCopy, v11);
     goto LABEL_24;
   }
 
   sub_10002483C(OS_LOG_TYPE_DEFAULT, 1, "[STSBluetoothSession altCarrierSendData:completion:]", 302, self, &stru_100059C08, v8, v9, v24);
   v26 = @"responseSize";
-  v10 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v6 length]);
+  v10 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [dataCopy length]);
   v27 = v10;
   v11 = [NSDictionary dictionaryWithObjects:&v27 forKeys:&v26 count:1];
 
@@ -36,7 +36,7 @@
   {
     readerCentralInstance = 0;
 LABEL_15:
-    if (sub_10002F370(readerCentralInstance, v6))
+    if (sub_10002F370(readerCentralInstance, dataCopy))
     {
       p_lock = &self->_lock;
       os_unfair_lock_lock(&self->_lock);
@@ -64,7 +64,7 @@ LABEL_22:
     {
       if (type == 1)
       {
-        if ((sub_1000079A4(self->_readerPeripheralInstance, v6) & 1) == 0)
+        if ((sub_1000079A4(self->_readerPeripheralInstance, dataCopy) & 1) == 0)
         {
           goto LABEL_22;
         }
@@ -80,7 +80,7 @@ LABEL_13:
 LABEL_23:
       v23 = [NSError errorWithDomain:@"STSXPCHelperErrorDomain" code:v16 userInfo:v15];
 
-      v7[2](v7, v23);
+      completionCopy[2](completionCopy, v23);
       goto LABEL_24;
     }
 
@@ -90,7 +90,7 @@ LABEL_23:
 
   if (type == 2)
   {
-    if ((sub_10002F2E8(self->_isoCentralInstance, v6) & 1) == 0)
+    if ((sub_10002F2E8(self->_isoCentralInstance, dataCopy) & 1) == 0)
     {
       goto LABEL_22;
     }
@@ -103,7 +103,7 @@ LABEL_23:
       goto LABEL_13;
     }
 
-    if ((sub_10001748C(self->_isoPeripheralInstance, v6) & 1) == 0)
+    if ((sub_10001748C(self->_isoPeripheralInstance, dataCopy) & 1) == 0)
     {
       goto LABEL_22;
     }
@@ -114,7 +114,7 @@ LABEL_19:
   os_unfair_lock_lock(&self->_lock);
 LABEL_20:
   v19 = self->_sendCompletionHandler;
-  objc_setProperty_nonatomic_copy(self, v20, v7, 80);
+  objc_setProperty_nonatomic_copy(self, v20, completionCopy, 80);
   os_unfair_lock_unlock(p_lock);
   if (v19)
   {

@@ -1,36 +1,36 @@
 @interface IFTSchemaIFTAction
-- (BOOL)isEqual:(id)a3;
-- (IFTSchemaIFTAction)initWithDictionary:(id)a3;
-- (IFTSchemaIFTAction)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (IFTSchemaIFTAction)initWithDictionary:(id)dictionary;
+- (IFTSchemaIFTAction)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addActionParameterValues:(id)a3;
-- (void)setHasIsConfirmed:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addActionParameterValues:(id)values;
+- (void)setHasIsConfirmed:(BOOL)confirmed;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IFTSchemaIFTAction
 
-- (IFTSchemaIFTAction)initWithDictionary:(id)a3
+- (IFTSchemaIFTAction)initWithDictionary:(id)dictionary
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v35.receiver = self;
   v35.super_class = IFTSchemaIFTAction;
   v5 = [(IFTSchemaIFTAction *)&v35 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"exists"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"exists"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IFTSchemaIFTAction setExists:](v5, "setExists:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"statementId"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"statementId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -38,7 +38,7 @@
       [(IFTSchemaIFTAction *)v5 setStatementId:v8];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"toolId"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"toolId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -46,7 +46,7 @@
       [(IFTSchemaIFTAction *)v5 setToolId:v10];
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"bundleId"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"bundleId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -54,14 +54,14 @@
       [(IFTSchemaIFTAction *)v5 setBundleId:v12];
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"isConfirmed"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"isConfirmed"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IFTSchemaIFTAction setIsConfirmed:](v5, "setIsConfirmed:", [v13 BOOLValue]);
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"actionParameterValues"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"actionParameterValues"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -109,7 +109,7 @@
       v13 = v27;
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"planEventId"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"planEventId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -126,30 +126,30 @@
   return v5;
 }
 
-- (IFTSchemaIFTAction)initWithJSON:(id)a3
+- (IFTSchemaIFTAction)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(IFTSchemaIFTAction *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(IFTSchemaIFTAction *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(IFTSchemaIFTAction *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -163,10 +163,10 @@
 - (id)dictionaryRepresentation
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_actionParameterValues count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
@@ -186,16 +186,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v26 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v26 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -205,21 +205,21 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"actionParameterValues"];
+    [dictionary setObject:array forKeyedSubscript:@"actionParameterValues"];
   }
 
   if (self->_bundleId)
   {
-    v12 = [(IFTSchemaIFTAction *)self bundleId];
-    v13 = [v12 copy];
-    [v3 setObject:v13 forKeyedSubscript:@"bundleId"];
+    bundleId = [(IFTSchemaIFTAction *)self bundleId];
+    v13 = [bundleId copy];
+    [dictionary setObject:v13 forKeyedSubscript:@"bundleId"];
   }
 
   has = self->_has;
   if (has)
   {
     v15 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTAction exists](self, "exists")}];
-    [v3 setObject:v15 forKeyedSubscript:@"exists"];
+    [dictionary setObject:v15 forKeyedSubscript:@"exists"];
 
     has = self->_has;
   }
@@ -227,51 +227,51 @@
   if ((has & 2) != 0)
   {
     v16 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTAction isConfirmed](self, "isConfirmed")}];
-    [v3 setObject:v16 forKeyedSubscript:@"isConfirmed"];
+    [dictionary setObject:v16 forKeyedSubscript:@"isConfirmed"];
   }
 
   if (self->_planEventId)
   {
-    v17 = [(IFTSchemaIFTAction *)self planEventId];
-    v18 = [v17 dictionaryRepresentation];
-    if (v18)
+    planEventId = [(IFTSchemaIFTAction *)self planEventId];
+    dictionaryRepresentation2 = [planEventId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v18 forKeyedSubscript:@"planEventId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"planEventId"];
     }
 
     else
     {
-      v19 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v19 forKeyedSubscript:@"planEventId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"planEventId"];
     }
   }
 
   if (self->_statementId)
   {
-    v20 = [(IFTSchemaIFTAction *)self statementId];
-    v21 = [v20 dictionaryRepresentation];
-    if (v21)
+    statementId = [(IFTSchemaIFTAction *)self statementId];
+    dictionaryRepresentation3 = [statementId dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v21 forKeyedSubscript:@"statementId"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"statementId"];
     }
 
     else
     {
-      v22 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v22 forKeyedSubscript:@"statementId"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"statementId"];
     }
   }
 
   if (self->_toolId)
   {
-    v23 = [(IFTSchemaIFTAction *)self toolId];
-    v24 = [v23 copy];
-    [v3 setObject:v24 forKeyedSubscript:@"toolId"];
+    toolId = [(IFTSchemaIFTAction *)self toolId];
+    v24 = [toolId copy];
+    [dictionary setObject:v24 forKeyedSubscript:@"toolId"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v26];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v26];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -304,15 +304,15 @@
   return v8 ^ v9 ^ [(SISchemaUUID *)self->_planEventId hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_33;
   }
 
-  if ((*&self->_has & 1) != (v4[64] & 1))
+  if ((*&self->_has & 1) != (equalCopy[64] & 1))
   {
     goto LABEL_33;
   }
@@ -320,26 +320,26 @@
   if (*&self->_has)
   {
     exists = self->_exists;
-    if (exists != [v4 exists])
+    if (exists != [equalCopy exists])
     {
       goto LABEL_33;
     }
   }
 
-  v6 = [(IFTSchemaIFTAction *)self statementId];
-  v7 = [v4 statementId];
-  if ((v6 != 0) == (v7 == 0))
+  statementId = [(IFTSchemaIFTAction *)self statementId];
+  statementId2 = [equalCopy statementId];
+  if ((statementId != 0) == (statementId2 == 0))
   {
     goto LABEL_32;
   }
 
-  v8 = [(IFTSchemaIFTAction *)self statementId];
-  if (v8)
+  statementId3 = [(IFTSchemaIFTAction *)self statementId];
+  if (statementId3)
   {
-    v9 = v8;
-    v10 = [(IFTSchemaIFTAction *)self statementId];
-    v11 = [v4 statementId];
-    v12 = [v10 isEqual:v11];
+    v9 = statementId3;
+    statementId4 = [(IFTSchemaIFTAction *)self statementId];
+    statementId5 = [equalCopy statementId];
+    v12 = [statementId4 isEqual:statementId5];
 
     if (!v12)
     {
@@ -351,20 +351,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTAction *)self toolId];
-  v7 = [v4 toolId];
-  if ((v6 != 0) == (v7 == 0))
+  statementId = [(IFTSchemaIFTAction *)self toolId];
+  statementId2 = [equalCopy toolId];
+  if ((statementId != 0) == (statementId2 == 0))
   {
     goto LABEL_32;
   }
 
-  v13 = [(IFTSchemaIFTAction *)self toolId];
-  if (v13)
+  toolId = [(IFTSchemaIFTAction *)self toolId];
+  if (toolId)
   {
-    v14 = v13;
-    v15 = [(IFTSchemaIFTAction *)self toolId];
-    v16 = [v4 toolId];
-    v17 = [v15 isEqual:v16];
+    v14 = toolId;
+    toolId2 = [(IFTSchemaIFTAction *)self toolId];
+    toolId3 = [equalCopy toolId];
+    v17 = [toolId2 isEqual:toolId3];
 
     if (!v17)
     {
@@ -376,20 +376,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTAction *)self bundleId];
-  v7 = [v4 bundleId];
-  if ((v6 != 0) == (v7 == 0))
+  statementId = [(IFTSchemaIFTAction *)self bundleId];
+  statementId2 = [equalCopy bundleId];
+  if ((statementId != 0) == (statementId2 == 0))
   {
     goto LABEL_32;
   }
 
-  v18 = [(IFTSchemaIFTAction *)self bundleId];
-  if (v18)
+  bundleId = [(IFTSchemaIFTAction *)self bundleId];
+  if (bundleId)
   {
-    v19 = v18;
-    v20 = [(IFTSchemaIFTAction *)self bundleId];
-    v21 = [v4 bundleId];
-    v22 = [v20 isEqual:v21];
+    v19 = bundleId;
+    bundleId2 = [(IFTSchemaIFTAction *)self bundleId];
+    bundleId3 = [equalCopy bundleId];
+    v22 = [bundleId2 isEqual:bundleId3];
 
     if (!v22)
     {
@@ -402,7 +402,7 @@
   }
 
   v23 = (*&self->_has >> 1) & 1;
-  if (v23 != ((v4[64] >> 1) & 1))
+  if (v23 != ((equalCopy[64] >> 1) & 1))
   {
     goto LABEL_33;
   }
@@ -410,26 +410,26 @@
   if (v23)
   {
     isConfirmed = self->_isConfirmed;
-    if (isConfirmed != [v4 isConfirmed])
+    if (isConfirmed != [equalCopy isConfirmed])
     {
       goto LABEL_33;
     }
   }
 
-  v6 = [(IFTSchemaIFTAction *)self actionParameterValues];
-  v7 = [v4 actionParameterValues];
-  if ((v6 != 0) == (v7 == 0))
+  statementId = [(IFTSchemaIFTAction *)self actionParameterValues];
+  statementId2 = [equalCopy actionParameterValues];
+  if ((statementId != 0) == (statementId2 == 0))
   {
     goto LABEL_32;
   }
 
-  v25 = [(IFTSchemaIFTAction *)self actionParameterValues];
-  if (v25)
+  actionParameterValues = [(IFTSchemaIFTAction *)self actionParameterValues];
+  if (actionParameterValues)
   {
-    v26 = v25;
-    v27 = [(IFTSchemaIFTAction *)self actionParameterValues];
-    v28 = [v4 actionParameterValues];
-    v29 = [v27 isEqual:v28];
+    v26 = actionParameterValues;
+    actionParameterValues2 = [(IFTSchemaIFTAction *)self actionParameterValues];
+    actionParameterValues3 = [equalCopy actionParameterValues];
+    v29 = [actionParameterValues2 isEqual:actionParameterValues3];
 
     if (!v29)
     {
@@ -441,12 +441,12 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTAction *)self planEventId];
-  v7 = [v4 planEventId];
-  if ((v6 != 0) != (v7 == 0))
+  statementId = [(IFTSchemaIFTAction *)self planEventId];
+  statementId2 = [equalCopy planEventId];
+  if ((statementId != 0) != (statementId2 == 0))
   {
-    v30 = [(IFTSchemaIFTAction *)self planEventId];
-    if (!v30)
+    planEventId = [(IFTSchemaIFTAction *)self planEventId];
+    if (!planEventId)
     {
 
 LABEL_36:
@@ -454,10 +454,10 @@ LABEL_36:
       goto LABEL_34;
     }
 
-    v31 = v30;
-    v32 = [(IFTSchemaIFTAction *)self planEventId];
-    v33 = [v4 planEventId];
-    v34 = [v32 isEqual:v33];
+    v31 = planEventId;
+    planEventId2 = [(IFTSchemaIFTAction *)self planEventId];
+    planEventId3 = [equalCopy planEventId];
+    v34 = [planEventId2 isEqual:planEventId3];
 
     if (v34)
     {
@@ -477,33 +477,33 @@ LABEL_34:
   return v35;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteBOOLField();
   }
 
-  v5 = [(IFTSchemaIFTAction *)self statementId];
+  statementId = [(IFTSchemaIFTAction *)self statementId];
 
-  if (v5)
+  if (statementId)
   {
-    v6 = [(IFTSchemaIFTAction *)self statementId];
+    statementId2 = [(IFTSchemaIFTAction *)self statementId];
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(IFTSchemaIFTAction *)self toolId];
+  toolId = [(IFTSchemaIFTAction *)self toolId];
 
-  if (v7)
+  if (toolId)
   {
     PBDataWriterWriteStringField();
   }
 
-  v8 = [(IFTSchemaIFTAction *)self bundleId];
+  bundleId = [(IFTSchemaIFTAction *)self bundleId];
 
-  if (v8)
+  if (bundleId)
   {
     PBDataWriterWriteStringField();
   }
@@ -544,36 +544,36 @@ LABEL_34:
     while (v11);
   }
 
-  v14 = [(IFTSchemaIFTAction *)self planEventId];
+  planEventId = [(IFTSchemaIFTAction *)self planEventId];
 
-  if (v14)
+  if (planEventId)
   {
-    v15 = [(IFTSchemaIFTAction *)self planEventId];
+    planEventId2 = [(IFTSchemaIFTAction *)self planEventId];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (void)addActionParameterValues:(id)a3
+- (void)addActionParameterValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   actionParameterValues = self->_actionParameterValues;
-  v8 = v4;
+  v8 = valuesCopy;
   if (!actionParameterValues)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_actionParameterValues;
-    self->_actionParameterValues = v6;
+    self->_actionParameterValues = array;
 
-    v4 = v8;
+    valuesCopy = v8;
     actionParameterValues = self->_actionParameterValues;
   }
 
-  [(NSArray *)actionParameterValues addObject:v4];
+  [(NSArray *)actionParameterValues addObject:valuesCopy];
 }
 
-- (void)setHasIsConfirmed:(BOOL)a3
+- (void)setHasIsConfirmed:(BOOL)confirmed
 {
-  if (a3)
+  if (confirmed)
   {
     v3 = 2;
   }
@@ -586,36 +586,36 @@ LABEL_34:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v15.receiver = self;
   v15.super_class = IFTSchemaIFTAction;
-  v5 = [(SISchemaInstrumentationMessage *)&v15 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:4])
+  v5 = [(SISchemaInstrumentationMessage *)&v15 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:4])
   {
     [(IFTSchemaIFTAction *)self deleteToolId];
     [(IFTSchemaIFTAction *)self deleteBundleId];
   }
 
-  v6 = [(IFTSchemaIFTAction *)self statementId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  statementId = [(IFTSchemaIFTAction *)self statementId];
+  v7 = [statementId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(IFTSchemaIFTAction *)self deleteStatementId];
   }
 
-  v9 = [(IFTSchemaIFTAction *)self actionParameterValues];
-  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v9 underConditions:v4];
+  actionParameterValues = [(IFTSchemaIFTAction *)self actionParameterValues];
+  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:actionParameterValues underConditions:policyCopy];
   [(IFTSchemaIFTAction *)self setActionParameterValues:v10];
 
-  v11 = [(IFTSchemaIFTAction *)self planEventId];
-  v12 = [v11 applySensitiveConditionsPolicy:v4];
-  v13 = [v12 suppressMessage];
+  planEventId = [(IFTSchemaIFTAction *)self planEventId];
+  v12 = [planEventId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v12 suppressMessage];
 
-  if (v13)
+  if (suppressMessage2)
   {
     [(IFTSchemaIFTAction *)self deletePlanEventId];
   }

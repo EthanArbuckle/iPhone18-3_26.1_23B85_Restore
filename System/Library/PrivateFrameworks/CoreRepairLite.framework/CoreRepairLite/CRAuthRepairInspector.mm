@@ -1,5 +1,5 @@
 @interface CRAuthRepairInspector
-+ (BOOL)wasRepaired:(BOOL *)a3;
++ (BOOL)wasRepaired:(BOOL *)repaired;
 + (unint64_t)_getStatus;
 + (unint64_t)getStatus;
 @end
@@ -61,13 +61,13 @@
   return v3;
 }
 
-+ (BOOL)wasRepaired:(BOOL *)a3
++ (BOOL)wasRepaired:(BOOL *)repaired
 {
   v5 = 0;
   result = [CRFDRUtils isDcSignedSealingManifest:&v5];
-  if (a3)
+  if (repaired)
   {
-    *a3 = v5 == 0;
+    *repaired = v5 == 0;
   }
 
   return result;

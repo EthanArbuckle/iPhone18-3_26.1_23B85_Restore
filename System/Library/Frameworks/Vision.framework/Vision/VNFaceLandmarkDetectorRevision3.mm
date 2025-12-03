@@ -1,50 +1,50 @@
 @interface VNFaceLandmarkDetectorRevision3
-+ (void)recordDefaultConfigurationOptionsInDictionary:(id)a3;
-- (CGRect)normalizedFaceBBoxForLandmarks:(id)a3;
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9;
++ (void)recordDefaultConfigurationOptionsInDictionary:(id)dictionary;
+- (CGRect)normalizedFaceBBoxForLandmarks:(id)landmarks;
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler;
 @end
 
 @implementation VNFaceLandmarkDetectorRevision3
 
-+ (void)recordDefaultConfigurationOptionsInDictionary:(id)a3
++ (void)recordDefaultConfigurationOptionsInDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5.receiver = a1;
+  dictionaryCopy = dictionary;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___VNFaceLandmarkDetectorRevision3;
-  objc_msgSendSuper2(&v5, sel_recordDefaultConfigurationOptionsInDictionary_, v4);
-  [v4 setObject:&unk_1F19C15D0 forKeyedSubscript:@"VNFaceLandmarkDetectorDNNProcessOption_Constellation"];
+  objc_msgSendSuper2(&v5, sel_recordDefaultConfigurationOptionsInDictionary_, dictionaryCopy);
+  [dictionaryCopy setObject:&unk_1F19C15D0 forKeyedSubscript:@"VNFaceLandmarkDetectorDNNProcessOption_Constellation"];
 }
 
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler
 {
-  v12 = *&a6;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  v12 = *&class;
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
   v62[1] = *MEMORY[0x1E69E9840];
-  v19 = a5;
-  v20 = a7;
-  v21 = a9;
+  optionsCopy = options;
+  recorderCopy = recorder;
+  handlerCopy = handler;
   v61.receiver = self;
   v61.super_class = VNFaceLandmarkDetectorRevision3;
-  v22 = [(VNFaceLandmarkDetectorDNN *)&v61 processRegionOfInterest:a4 croppedPixelBuffer:v19 options:v12 qosClass:v20 warningRecorder:a8 error:v21 progressHandler:x, y, width, height];
-  v23 = v22;
-  if (!v22)
+  height = [(VNFaceLandmarkDetectorDNN *)&v61 processRegionOfInterest:buffer croppedPixelBuffer:optionsCopy options:v12 qosClass:recorderCopy warningRecorder:error error:handlerCopy progressHandler:x, y, width, height];
+  v23 = height;
+  if (!height)
   {
     v44 = 0;
     goto LABEL_44;
   }
 
-  v24 = [v22 firstObject];
-  if (v24)
+  firstObject = [height firstObject];
+  if (firstObject)
   {
     if ([v23 count] != 1)
     {
-      if (a8)
+      if (error)
       {
         [VNError errorForInternalErrorWithLocalizedDescription:@"Internal error while processing Face Landmarks"];
-        *a8 = v44 = 0;
+        *error = v44 = 0;
       }
 
       else
@@ -55,8 +55,8 @@
       goto LABEL_43;
     }
 
-    v25 = [VNValidationUtilities originatingRequestSpecifierInOptions:v19 error:a8];
-    if (!v25 || (v60 = 0, v59 = 0, ![(VNFaceLandmarkDetectorDNN *)self requestConstellation:&v60 cvmlConstellation:&v59 fromOptions:v19 error:a8]))
+    v25 = [VNValidationUtilities originatingRequestSpecifierInOptions:optionsCopy error:error];
+    if (!v25 || (v60 = 0, v59 = 0, ![(VNFaceLandmarkDetectorDNN *)self requestConstellation:&v60 cvmlConstellation:&v59 fromOptions:optionsCopy error:error]))
     {
       v44 = 0;
 LABEL_42:
@@ -64,7 +64,7 @@ LABEL_42:
       goto LABEL_43;
     }
 
-    v26 = [(VNDetector *)self validatedImageBufferFromOptions:v19 error:a8];
+    v26 = [(VNDetector *)self validatedImageBufferFromOptions:optionsCopy error:error];
     if (!v26)
     {
       v44 = 0;
@@ -76,7 +76,7 @@ LABEL_41:
     __p = 0;
     v57 = 0;
     v58 = 0;
-    if (!-[VNFaceLandmarkDetectorDNN getLandmarkPoints:forRequestConstellation:error:](self, "getLandmarkPoints:forRequestConstellation:error:", &__p, 2, a8) || (v27 = -[VNFaceLandmarkDetectorDNN landmarkPoints65](self, "landmarkPoints65"), !-[VNFaceLandmarkDetector postprocessLandmarkResultsForLandmarks:imageBuffer:outputFace:options:warningRecorder:error:](self, "postprocessLandmarkResultsForLandmarks:imageBuffer:outputFace:options:warningRecorder:error:", v27, v26, v24, v19, v20, a8)) || (v53 = *(__p + 6), std::vector<_Geometry2D_point2D_>::push_back[abi:ne200100](v27, &v53), v53 = *(__p + 13), std::vector<_Geometry2D_point2D_>::push_back[abi:ne200100](v27, &v53), !-[VNFaceLandmarkDetectorDNN translateAndNormalizeLandmarkPointsWrtLLCofAlignedFaceBBox:imageBuffer:outputFace:error:](self, "translateAndNormalizeLandmarkPointsWrtLLCofAlignedFaceBBox:imageBuffer:outputFace:error:", v27, v26, v24, a8)))
+    if (!-[VNFaceLandmarkDetectorDNN getLandmarkPoints:forRequestConstellation:error:](self, "getLandmarkPoints:forRequestConstellation:error:", &__p, 2, error) || (v27 = -[VNFaceLandmarkDetectorDNN landmarkPoints65](self, "landmarkPoints65"), !-[VNFaceLandmarkDetector postprocessLandmarkResultsForLandmarks:imageBuffer:outputFace:options:warningRecorder:error:](self, "postprocessLandmarkResultsForLandmarks:imageBuffer:outputFace:options:warningRecorder:error:", v27, v26, firstObject, optionsCopy, recorderCopy, error)) || (v53 = *(__p + 6), std::vector<_Geometry2D_point2D_>::push_back[abi:ne200100](v27, &v53), v53 = *(__p + 13), std::vector<_Geometry2D_point2D_>::push_back[abi:ne200100](v27, &v53), !-[VNFaceLandmarkDetectorDNN translateAndNormalizeLandmarkPointsWrtLLCofAlignedFaceBBox:imageBuffer:outputFace:error:](self, "translateAndNormalizeLandmarkPointsWrtLLCofAlignedFaceBBox:imageBuffer:outputFace:error:", v27, v26, firstObject, error)))
     {
       v44 = 0;
       goto LABEL_38;
@@ -86,13 +86,13 @@ LABEL_41:
     if (v28)
     {
       v52 = v28;
-      [v24 setLandmarkPoints65Data:? originatingRequestSpecifier:?];
-      if ([(VNFaceLandmarkDetectorDNN *)self translateAndNormalizeLandmarkPointsWrtLLCofAlignedFaceBBox:&__p imageBuffer:v26 outputFace:v24 error:a8])
+      [firstObject setLandmarkPoints65Data:? originatingRequestSpecifier:?];
+      if ([(VNFaceLandmarkDetectorDNN *)self translateAndNormalizeLandmarkPointsWrtLLCofAlignedFaceBBox:&__p imageBuffer:v26 outputFace:firstObject error:error])
       {
         v53 = 0;
         v54 = 0;
         v55 = 0;
-        if ([(VNFaceLandmarkDetectorDNN *)self getLandmarkErrorEstimates:&v53 forRequestConstellation:2 error:a8])
+        if ([(VNFaceLandmarkDetectorDNN *)self getLandmarkErrorEstimates:&v53 forRequestConstellation:2 error:error])
         {
           v30 = v53;
           if (v53 != v54)
@@ -136,7 +136,7 @@ LABEL_41:
             *&v29 = 1.0;
           }
 
-          [v24 setLandmarkScore:v29];
+          [firstObject setLandmarkScore:v29];
           if (v59 == 1)
           {
             goto LABEL_55;
@@ -149,7 +149,7 @@ LABEL_41:
             v49 = v38;
             if (v38)
             {
-              [v24 setLandmarkPointsData:v38 originatingRequestSpecifier:v25];
+              [firstObject setLandmarkPointsData:v38 originatingRequestSpecifier:v25];
               v39 = objc_alloc(MEMORY[0x1E695DF70]);
               v51 = [v39 initWithCapacity:(v54 - v53) >> 2];
               v42 = v53;
@@ -166,18 +166,18 @@ LABEL_41:
               }
 
               v48 = [v51 copy];
-              [v24 setLandmarkPrecisionEstimatesPerPoint:v48];
+              [firstObject setLandmarkPrecisionEstimatesPerPoint:v48];
 
 LABEL_55:
-              v62[0] = v24;
+              v62[0] = firstObject;
               v44 = [MEMORY[0x1E695DEC8] arrayWithObjects:v62 count:1];
               goto LABEL_56;
             }
 
-            if (a8)
+            if (error)
             {
               [VNError errorForInternalErrorWithLocalizedDescription:@"Internal error while processing Face Landmarks"];
-              *a8 = v44 = 0;
+              *error = v44 = 0;
 LABEL_56:
               if (v53)
               {
@@ -189,11 +189,11 @@ LABEL_56:
             }
           }
 
-          else if (a8)
+          else if (error)
           {
             v46 = objc_alloc(MEMORY[0x1E696AEC0]);
             v47 = [v46 initWithFormat:@"Unexpected landmarks constellation (%d) while processing Face Landmarks", v59];
-            *a8 = [VNError errorForInternalErrorWithLocalizedDescription:v47];
+            *error = [VNError errorForInternalErrorWithLocalizedDescription:v47];
           }
         }
 
@@ -206,7 +206,7 @@ LABEL_56:
 
     else
     {
-      if (!a8)
+      if (!error)
       {
         v44 = 0;
 LABEL_59:
@@ -223,7 +223,7 @@ LABEL_38:
 
       v52 = 0;
       [VNError errorForInternalErrorWithLocalizedDescription:@"Internal error while processing Face Landmarks"];
-      *a8 = v44 = 0;
+      *error = v44 = 0;
     }
 
 LABEL_58:
@@ -240,12 +240,12 @@ LABEL_44:
   return v44;
 }
 
-- (CGRect)normalizedFaceBBoxForLandmarks:(id)a3
+- (CGRect)normalizedFaceBBoxForLandmarks:(id)landmarks
 {
-  v4 = a3;
-  if ([v4 requestRevision] == 2 || objc_msgSend(v4, "requestRevision") == 3737841664)
+  landmarksCopy = landmarks;
+  if ([landmarksCopy requestRevision] == 2 || objc_msgSend(landmarksCopy, "requestRevision") == 3737841664)
   {
-    [v4 unalignedBoundingBox];
+    [landmarksCopy unalignedBoundingBox];
     v15 = CGRectInset(v14, v14.size.width * -0.399999976 * 0.5, v14.size.height * -0.399999976 * 0.5);
   }
 
@@ -253,7 +253,7 @@ LABEL_44:
   {
     v13.receiver = self;
     v13.super_class = VNFaceLandmarkDetectorRevision3;
-    [(VNFaceLandmarkDetector *)&v13 normalizedFaceBBoxForLandmarks:v4];
+    [(VNFaceLandmarkDetector *)&v13 normalizedFaceBBoxForLandmarks:landmarksCopy];
   }
 
   x = v15.origin.x;

@@ -6,8 +6,8 @@
 
 - (BOOL)scrollForNavigationTap
 {
-  v2 = [(WFAutomationListViewController *)self tableView];
-  v3 = [v2 wf_scrollToTopAnimated:1];
+  tableView = [(WFAutomationListViewController *)self tableView];
+  v3 = [tableView wf_scrollToTopAnimated:1];
 
   return v3;
 }

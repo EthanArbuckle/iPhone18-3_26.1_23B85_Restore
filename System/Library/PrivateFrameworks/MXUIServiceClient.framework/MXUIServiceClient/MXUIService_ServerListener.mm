@@ -1,27 +1,27 @@
 @interface MXUIService_ServerListener
-- (id)init:(id)a3;
+- (id)init:(id)init;
 - (void)dealloc;
 @end
 
 @implementation MXUIService_ServerListener
 
-- (id)init:(id)a3
+- (id)init:(id)init
 {
-  v3 = self;
-  if (!a3)
+  selfCopy = self;
+  if (!init)
   {
     goto LABEL_7;
   }
 
   v11.receiver = self;
   v11.super_class = MXUIService_ServerListener;
-  v3 = [(MXUIService_ServerListener *)&v11 init];
-  if (!v3)
+  selfCopy = [(MXUIService_ServerListener *)&v11 init];
+  if (!selfCopy)
   {
     goto LABEL_7;
   }
 
-  v5 = [[MXUIService_ServerDelegate alloc] init:a3];
+  v5 = [[MXUIService_ServerDelegate alloc] init:init];
   if (!v5)
   {
     goto LABEL_7;
@@ -38,8 +38,8 @@
   {
     v8 = v7;
     [v7 activate];
-    v3->_delegate = v6;
-    v3->_listener = v8;
+    selfCopy->_delegate = v6;
+    selfCopy->_listener = v8;
   }
 
   else
@@ -49,7 +49,7 @@ LABEL_7:
     return 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (void)dealloc

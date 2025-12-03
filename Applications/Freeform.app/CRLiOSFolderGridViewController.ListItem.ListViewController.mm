@@ -7,7 +7,7 @@
 
 - (void)updateViewConstraints
 {
-  v2 = self;
+  selfCopy = self;
   if (sub_100A4F68C())
   {
     sub_100A518F8();
@@ -16,7 +16,7 @@
     sub_100A531B8(0);
     sub_100A53560();
 
-    v3.receiver = v2;
+    v3.receiver = selfCopy;
     v3.super_class = _s8ListItemC18ListViewControllerCMa();
     [(CRLiOSFolderGridViewController.ListItem.ListViewController *)&v3 updateViewConstraints];
   }

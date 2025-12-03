@@ -1,45 +1,45 @@
 @interface SUUIJSNavigationDocument
-- (BOOL)isStopPageBagValueOverrideEnabledForTab:(id)a3;
-- (BOOL)isStopPageEnabledForTab:(id)a3;
-- (void)showStopPageForTab:(id)a3 replacementAppAdamId:(id)a4 title:(id)a5 subtitle:(id)a6 artwork:(id)a7 deeplinkUrl:(id)a8 force:(BOOL)a9 purchasesUrl:(id)a10 wishlistButtonTitle:(id)a11 showWishlistButton:(BOOL)a12;
+- (BOOL)isStopPageBagValueOverrideEnabledForTab:(id)tab;
+- (BOOL)isStopPageEnabledForTab:(id)tab;
+- (void)showStopPageForTab:(id)tab replacementAppAdamId:(id)id title:(id)title subtitle:(id)subtitle artwork:(id)artwork deeplinkUrl:(id)url force:(BOOL)force purchasesUrl:(id)self0 wishlistButtonTitle:(id)self1 showWishlistButton:(BOOL)self2;
 @end
 
 @implementation SUUIJSNavigationDocument
 
-- (void)showStopPageForTab:(id)a3 replacementAppAdamId:(id)a4 title:(id)a5 subtitle:(id)a6 artwork:(id)a7 deeplinkUrl:(id)a8 force:(BOOL)a9 purchasesUrl:(id)a10 wishlistButtonTitle:(id)a11 showWishlistButton:(BOOL)a12
+- (void)showStopPageForTab:(id)tab replacementAppAdamId:(id)id title:(id)title subtitle:(id)subtitle artwork:(id)artwork deeplinkUrl:(id)url force:(BOOL)force purchasesUrl:(id)self0 wishlistButtonTitle:(id)self1 showWishlistButton:(BOOL)self2
 {
-  v30 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  v22 = a8;
-  v23 = a10;
-  v24 = a11;
-  v25 = [(IKJSNavigationDocument *)self navigationControllerDelegate];
+  tabCopy = tab;
+  idCopy = id;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  artworkCopy = artwork;
+  urlCopy = url;
+  purchasesUrlCopy = purchasesUrl;
+  buttonTitleCopy = buttonTitle;
+  navigationControllerDelegate = [(IKJSNavigationDocument *)self navigationControllerDelegate];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v27 = [(IKJSNavigationDocument *)self navigationControllerDelegate];
-    LOBYTE(v29) = a12;
-    LOBYTE(v28) = a9;
-    [v27 showStopPageForTab:v30 replacementAppAdamId:v18 title:v19 subtitle:v20 artwork:v21 deeplinkUrl:v22 force:v28 purchasesUrl:v23 wishlistButtonTitle:v24 showWishlistButton:v29];
+    navigationControllerDelegate2 = [(IKJSNavigationDocument *)self navigationControllerDelegate];
+    LOBYTE(v29) = button;
+    LOBYTE(v28) = force;
+    [navigationControllerDelegate2 showStopPageForTab:tabCopy replacementAppAdamId:idCopy title:titleCopy subtitle:subtitleCopy artwork:artworkCopy deeplinkUrl:urlCopy force:v28 purchasesUrl:purchasesUrlCopy wishlistButtonTitle:buttonTitleCopy showWishlistButton:v29];
   }
 }
 
-- (BOOL)isStopPageEnabledForTab:(id)a3
+- (BOOL)isStopPageEnabledForTab:(id)tab
 {
-  v4 = a3;
-  v5 = [(IKJSNavigationDocument *)self navigationControllerDelegate];
+  tabCopy = tab;
+  navigationControllerDelegate = [(IKJSNavigationDocument *)self navigationControllerDelegate];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [(IKJSNavigationDocument *)self navigationControllerDelegate];
-    v8 = [v7 isStopPageEnabledForTab:v4];
+    navigationControllerDelegate2 = [(IKJSNavigationDocument *)self navigationControllerDelegate];
+    v8 = [navigationControllerDelegate2 isStopPageEnabledForTab:tabCopy];
   }
 
   else
@@ -50,17 +50,17 @@
   return v8;
 }
 
-- (BOOL)isStopPageBagValueOverrideEnabledForTab:(id)a3
+- (BOOL)isStopPageBagValueOverrideEnabledForTab:(id)tab
 {
-  v4 = a3;
-  v5 = [(IKJSNavigationDocument *)self navigationControllerDelegate];
+  tabCopy = tab;
+  navigationControllerDelegate = [(IKJSNavigationDocument *)self navigationControllerDelegate];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [(IKJSNavigationDocument *)self navigationControllerDelegate];
-    v8 = [v7 isStopPageBagValueOverrideEnabledForTab:v4];
+    navigationControllerDelegate2 = [(IKJSNavigationDocument *)self navigationControllerDelegate];
+    v8 = [navigationControllerDelegate2 isStopPageBagValueOverrideEnabledForTab:tabCopy];
   }
 
   else

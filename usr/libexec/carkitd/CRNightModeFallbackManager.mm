@@ -1,54 +1,54 @@
 @interface CRNightModeFallbackManager
-- (BOOL)_isNightForLocation:(id)a3;
+- (BOOL)_isNightForLocation:(id)location;
 - (BOOL)_shouldScheduleTimerForNextNightModeChange;
-- (CRNightModeFallbackManager)initWithSessionStatus:(id)a3;
+- (CRNightModeFallbackManager)initWithSessionStatus:(id)status;
 - (id)_nextNightModeChangeDate;
-- (void)_handleLocationUpdateToLocation:(id)a3;
+- (void)_handleLocationUpdateToLocation:(id)location;
 - (void)_start;
 - (void)_stop;
 - (void)_timeDidChangeSignificantly;
 - (void)_updateNightMode;
 - (void)_updateNightModeForNextSunsetOrSunrise;
 - (void)dealloc;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)sessionDidConnect:(id)a3;
-- (void)sessionDidDisconnect:(id)a3;
-- (void)setNightMode:(BOOL)a3;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)sessionDidConnect:(id)connect;
+- (void)sessionDidDisconnect:(id)disconnect;
+- (void)setNightMode:(BOOL)mode;
 @end
 
 @implementation CRNightModeFallbackManager
 
-- (CRNightModeFallbackManager)initWithSessionStatus:(id)a3
+- (CRNightModeFallbackManager)initWithSessionStatus:(id)status
 {
-  v5 = a3;
+  statusCopy = status;
   v9.receiver = self;
   v9.super_class = CRNightModeFallbackManager;
   v6 = [(CRNightModeFallbackManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sessionStatus, a3);
-    [v5 addSessionObserver:v7];
+    objc_storeStrong(&v6->_sessionStatus, status);
+    [statusCopy addSessionObserver:v7];
   }
 
   return v7;
 }
 
-- (void)setNightMode:(BOOL)a3
+- (void)setNightMode:(BOOL)mode
 {
   p_nightMode = &self->_nightMode;
-  if (self->_nightMode != a3)
+  if (self->_nightMode != mode)
   {
-    v4 = a3;
-    *p_nightMode = a3;
+    modeCopy = mode;
+    *p_nightMode = mode;
     v6 = CarGeneralLogging();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
       sub_10008120C(p_nightMode);
     }
 
-    notify_set_state(self->_nightModeChangeNotificationToken, v4);
+    notify_set_state(self->_nightModeChangeNotificationToken, modeCopy);
     notify_post("com.apple.private.carkit.fallbackNightModeChanged");
   }
 }
@@ -61,7 +61,7 @@
   [(CRNightModeFallbackManager *)&v3 dealloc];
 }
 
-- (void)sessionDidConnect:(id)a3
+- (void)sessionDidConnect:(id)connect
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -71,7 +71,7 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)sessionDidDisconnect:(id)a3
+- (void)sessionDidDisconnect:(id)disconnect
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -81,19 +81,19 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
-  v5 = [a4 lastObject];
-  [(CRNightModeFallbackManager *)self _handleLocationUpdateToLocation:v5];
+  lastObject = [locations lastObject];
+  [(CRNightModeFallbackManager *)self _handleLocationUpdateToLocation:lastObject];
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
-  v4 = a4;
+  errorCopy = error;
   v5 = CarGeneralLogging();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    sub_100081300(v4, v5);
+    sub_100081300(errorCopy, v5);
   }
 }
 
@@ -139,8 +139,8 @@
   [(CRNightModeFallbackManager *)self setLocationManager:0];
   [(CRNightModeFallbackManager *)self setCurrentLocation:0];
   [(CRNightModeFallbackManager *)self setInitialTimerLocation:0];
-  v3 = [(CRNightModeFallbackManager *)self nextNightModeChangeTimer];
-  [v3 invalidate];
+  nextNightModeChangeTimer = [(CRNightModeFallbackManager *)self nextNightModeChangeTimer];
+  [nextNightModeChangeTimer invalidate];
 
   [(CRNightModeFallbackManager *)self setNextNightModeChangeTimer:0];
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
@@ -149,19 +149,19 @@
   self->_nightModeChangeNotificationToken = 0;
 }
 
-- (BOOL)_isNightForLocation:(id)a3
+- (BOOL)_isNightForLocation:(id)location
 {
-  v4 = a3;
-  v5 = [(CRNightModeFallbackManager *)self almanac];
-  [v4 coordinate];
+  locationCopy = location;
+  almanac = [(CRNightModeFallbackManager *)self almanac];
+  [locationCopy coordinate];
   v7 = v6;
   v9 = v8;
 
-  [v5 calculateAstronomicalTimeForLocation:{v7, v9}];
-  v10 = [(CRNightModeFallbackManager *)self almanac];
-  LOBYTE(v4) = [v10 isDayLight];
+  [almanac calculateAstronomicalTimeForLocation:{v7, v9}];
+  almanac2 = [(CRNightModeFallbackManager *)self almanac];
+  LOBYTE(locationCopy) = [almanac2 isDayLight];
 
-  return v4 ^ 1;
+  return locationCopy ^ 1;
 }
 
 - (void)_updateNightModeForNextSunsetOrSunrise
@@ -172,8 +172,8 @@
     sub_100081438();
   }
 
-  v4 = [(CRNightModeFallbackManager *)self nextNightModeChangeTimer];
-  [v4 invalidate];
+  nextNightModeChangeTimer = [(CRNightModeFallbackManager *)self nextNightModeChangeTimer];
+  [nextNightModeChangeTimer invalidate];
 
   [(CRNightModeFallbackManager *)self setNextNightModeChangeTimer:0];
   [(CRNightModeFallbackManager *)self _updateNightMode];
@@ -181,8 +181,8 @@
 
 - (void)_updateNightMode
 {
-  v3 = [(CRNightModeFallbackManager *)self currentLocation];
-  [(CRNightModeFallbackManager *)self setNightMode:[(CRNightModeFallbackManager *)self _isNightForLocation:v3]];
+  currentLocation = [(CRNightModeFallbackManager *)self currentLocation];
+  [(CRNightModeFallbackManager *)self setNightMode:[(CRNightModeFallbackManager *)self _isNightForLocation:currentLocation]];
 
   if ([(CRNightModeFallbackManager *)self _shouldScheduleTimerForNextNightModeChange])
   {
@@ -192,28 +192,28 @@
       sub_10008146C();
     }
 
-    v5 = [(CRNightModeFallbackManager *)self nextNightModeChangeTimer];
-    [v5 invalidate];
+    nextNightModeChangeTimer = [(CRNightModeFallbackManager *)self nextNightModeChangeTimer];
+    [nextNightModeChangeTimer invalidate];
 
     [(CRNightModeFallbackManager *)self setNextNightModeChangeTimer:0];
-    v6 = [(CRNightModeFallbackManager *)self currentLocation];
-    [(CRNightModeFallbackManager *)self setInitialTimerLocation:v6];
+    currentLocation2 = [(CRNightModeFallbackManager *)self currentLocation];
+    [(CRNightModeFallbackManager *)self setInitialTimerLocation:currentLocation2];
 
-    v7 = [(CRNightModeFallbackManager *)self _nextNightModeChangeDate];
-    [v7 timeIntervalSinceNow];
+    _nextNightModeChangeDate = [(CRNightModeFallbackManager *)self _nextNightModeChangeDate];
+    [_nextNightModeChangeDate timeIntervalSinceNow];
     v8 = [NSTimer scheduledTimerWithTimeInterval:self target:"_updateNightModeForNextSunsetOrSunrise" selector:0 userInfo:0 repeats:?];
     [(CRNightModeFallbackManager *)self setNextNightModeChangeTimer:v8];
   }
 }
 
-- (void)_handleLocationUpdateToLocation:(id)a3
+- (void)_handleLocationUpdateToLocation:(id)location
 {
-  v4 = a3;
-  [v4 horizontalAccuracy];
+  locationCopy = location;
+  [locationCopy horizontalAccuracy];
   if (v5 < 0.0)
   {
-    v6 = CarGeneralLogging();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
+    currentLocation = CarGeneralLogging();
+    if (os_log_type_enabled(currentLocation, OS_LOG_TYPE_DEBUG))
     {
       sub_100081570();
     }
@@ -221,17 +221,17 @@
     goto LABEL_17;
   }
 
-  v6 = [(CRNightModeFallbackManager *)self currentLocation];
+  currentLocation = [(CRNightModeFallbackManager *)self currentLocation];
   v7 = CarGeneralLogging();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG);
-  if (v6)
+  if (currentLocation)
   {
     if (v8)
     {
       sub_1000814A0();
     }
 
-    [v4 distanceFromLocation:v6];
+    [locationCopy distanceFromLocation:currentLocation];
     if (v9 < 3000.0)
     {
       v10 = CarGeneralLogging();
@@ -258,7 +258,7 @@
     sub_10008153C();
   }
 
-  [(CRNightModeFallbackManager *)self setCurrentLocation:v4];
+  [(CRNightModeFallbackManager *)self setCurrentLocation:locationCopy];
   [(CRNightModeFallbackManager *)self _updateNightMode];
 LABEL_17:
 }
@@ -273,31 +273,31 @@ LABEL_17:
 
   [(CRNightModeFallbackManager *)self setCurrentLocation:0];
   [(CRNightModeFallbackManager *)self setInitialTimerLocation:0];
-  v4 = [(CRNightModeFallbackManager *)self nextNightModeChangeTimer];
-  [v4 invalidate];
+  nextNightModeChangeTimer = [(CRNightModeFallbackManager *)self nextNightModeChangeTimer];
+  [nextNightModeChangeTimer invalidate];
 
   [(CRNightModeFallbackManager *)self setNextNightModeChangeTimer:0];
 }
 
 - (BOOL)_shouldScheduleTimerForNextNightModeChange
 {
-  v3 = [(CRNightModeFallbackManager *)self currentLocation];
+  currentLocation = [(CRNightModeFallbackManager *)self currentLocation];
 
-  if (!v3)
+  if (!currentLocation)
   {
     return 0;
   }
 
-  v4 = [(CRNightModeFallbackManager *)self nextNightModeChangeTimer];
+  nextNightModeChangeTimer = [(CRNightModeFallbackManager *)self nextNightModeChangeTimer];
 
-  if (!v4)
+  if (!nextNightModeChangeTimer)
   {
     return 1;
   }
 
-  v5 = [(CRNightModeFallbackManager *)self initialTimerLocation];
-  v6 = [(CRNightModeFallbackManager *)self currentLocation];
-  [v5 distanceFromLocation:v6];
+  initialTimerLocation = [(CRNightModeFallbackManager *)self initialTimerLocation];
+  currentLocation2 = [(CRNightModeFallbackManager *)self currentLocation];
+  [initialTimerLocation distanceFromLocation:currentLocation2];
   v8 = v7 > 100000.0;
 
   return v8;
@@ -306,20 +306,20 @@ LABEL_17:
 - (id)_nextNightModeChangeDate
 {
   v3 = +[NSDate date];
-  v4 = [(GEOAlmanac *)self->_almanac sunset];
-  v5 = [(GEOAlmanac *)self->_almanac nextSunset];
-  v6 = v5;
-  if ([v4 compare:v3] == 1)
+  sunset = [(GEOAlmanac *)self->_almanac sunset];
+  nextSunset = [(GEOAlmanac *)self->_almanac nextSunset];
+  v6 = nextSunset;
+  if ([sunset compare:v3] == 1)
   {
-    v6 = v4;
+    v6 = sunset;
   }
 
-  v7 = [(GEOAlmanac *)self->_almanac sunrise];
-  v8 = [(GEOAlmanac *)self->_almanac nextSunrise];
-  v9 = v8;
-  if ([v7 compare:v3] == 1)
+  sunrise = [(GEOAlmanac *)self->_almanac sunrise];
+  nextSunrise = [(GEOAlmanac *)self->_almanac nextSunrise];
+  v9 = nextSunrise;
+  if ([sunrise compare:v3] == 1)
   {
-    v9 = v7;
+    v9 = sunrise;
   }
 
   v10 = v6;
@@ -336,13 +336,13 @@ LABEL_17:
     v15 = 138413826;
     v16 = v3;
     v17 = 2112;
-    v18 = v4;
+    v18 = sunset;
     v19 = 2112;
-    v20 = v5;
+    v20 = nextSunset;
     v21 = 2112;
-    v22 = v7;
+    v22 = sunrise;
     v23 = 2112;
-    v24 = v8;
+    v24 = nextSunrise;
     v25 = 2112;
     v26 = v11;
     v27 = 2048;

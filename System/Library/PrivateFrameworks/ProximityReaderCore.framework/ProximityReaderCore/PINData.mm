@@ -1,15 +1,15 @@
 @interface PINData
 - (_TtC19ProximityReaderCore7PINData)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PINData
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  PINData.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  PINData.encode(with:)(coderCopy);
 }
 
 - (_TtC19ProximityReaderCore7PINData)init

@@ -6,10 +6,10 @@
 
 - (id)popFirst
 {
-  if ([a1 count])
+  if ([self count])
   {
-    v2 = [a1 objectAtIndexedSubscript:0];
-    [a1 removeObjectAtIndex:0];
+    v2 = [self objectAtIndexedSubscript:0];
+    [self removeObjectAtIndex:0];
   }
 
   else

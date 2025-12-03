@@ -1,27 +1,27 @@
 @interface MIStashMetadata
-+ (id)metadataFromURL:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)serializeToURL:(id)a3 error:(id *)a4;
-- (MIStashMetadata)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)metadataFromURL:(id)l error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)serializeToURL:(id)l error:(id *)error;
+- (MIStashMetadata)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MIStashMetadata
 
-- (MIStashMetadata)initWithCoder:(id)a3
+- (MIStashMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(MIStashMetadata *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dateStashed"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dateStashed"];
     dateStashed = v5->_dateStashed;
     v5->_dateStashed = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dateOriginallyInstalled"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dateOriginallyInstalled"];
     dateOriginallyInstalled = v5->_dateOriginallyInstalled;
     v5->_dateOriginallyInstalled = v8;
   }
@@ -29,34 +29,34 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(MIStashMetadata *)self dateStashed];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  dateStashed = [(MIStashMetadata *)self dateStashed];
+  v6 = [dateStashed copy];
   [v4 setDateStashed:v6];
 
-  v7 = [(MIStashMetadata *)self dateOriginallyInstalled];
-  v8 = [v7 copy];
+  dateOriginallyInstalled = [(MIStashMetadata *)self dateOriginallyInstalled];
+  v8 = [dateOriginallyInstalled copy];
   [v4 setDateOriginallyInstalled:v8];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(MIStashMetadata *)self dateStashed];
-  [v4 encodeObject:v5 forKey:@"dateStashed"];
+  coderCopy = coder;
+  dateStashed = [(MIStashMetadata *)self dateStashed];
+  [coderCopy encodeObject:dateStashed forKey:@"dateStashed"];
 
-  v6 = [(MIStashMetadata *)self dateOriginallyInstalled];
-  [v4 encodeObject:v6 forKey:@"dateOriginallyInstalled"];
+  dateOriginallyInstalled = [(MIStashMetadata *)self dateOriginallyInstalled];
+  [coderCopy encodeObject:dateOriginallyInstalled forKey:@"dateOriginallyInstalled"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -66,16 +66,16 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(MIStashMetadata *)self dateStashed];
-      v7 = [(MIStashMetadata *)v5 dateStashed];
-      v8 = MICompareObjects(v6, v7);
+      v5 = equalCopy;
+      dateStashed = [(MIStashMetadata *)self dateStashed];
+      dateStashed2 = [(MIStashMetadata *)v5 dateStashed];
+      v8 = MICompareObjects(dateStashed, dateStashed2);
 
       if (v8)
       {
-        v9 = [(MIStashMetadata *)self dateOriginallyInstalled];
-        v10 = [(MIStashMetadata *)v5 dateOriginallyInstalled];
-        v11 = MICompareObjects(v9, v10);
+        dateOriginallyInstalled = [(MIStashMetadata *)self dateOriginallyInstalled];
+        dateOriginallyInstalled2 = [(MIStashMetadata *)v5 dateOriginallyInstalled];
+        v11 = MICompareObjects(dateOriginallyInstalled, dateOriginallyInstalled2);
       }
 
       else
@@ -95,10 +95,10 @@
 
 - (unint64_t)hash
 {
-  v3 = [(MIStashMetadata *)self dateStashed];
-  v4 = [v3 hash];
-  v5 = [(MIStashMetadata *)self dateOriginallyInstalled];
-  v6 = [v5 hash];
+  dateStashed = [(MIStashMetadata *)self dateStashed];
+  v4 = [dateStashed hash];
+  dateOriginallyInstalled = [(MIStashMetadata *)self dateOriginallyInstalled];
+  v6 = [dateOriginallyInstalled hash];
 
   return v6 ^ v4;
 }
@@ -108,28 +108,28 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(MIStashMetadata *)self dateStashed];
-  v7 = [(MIStashMetadata *)self dateOriginallyInstalled];
-  v8 = [v3 stringWithFormat:@"<%@<%p> dateStashed=%@ dateOriginallyInstalled=%@>", v5, self, v6, v7];
+  dateStashed = [(MIStashMetadata *)self dateStashed];
+  dateOriginallyInstalled = [(MIStashMetadata *)self dateOriginallyInstalled];
+  v8 = [v3 stringWithFormat:@"<%@<%p> dateStashed=%@ dateOriginallyInstalled=%@>", v5, self, dateStashed, dateOriginallyInstalled];
 
   return v8;
 }
 
-+ (id)metadataFromURL:(id)a3 error:(id *)a4
++ (id)metadataFromURL:(id)l error:(id *)error
 {
-  v5 = a3;
+  lCopy = l;
   v26 = 0;
-  v6 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v5 options:3 error:&v26];
+  v6 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:lCopy options:3 error:&v26];
   v7 = v26;
   v8 = v7;
   if (!v6)
   {
-    v16 = [v7 domain];
-    if ([v16 isEqualToString:*MEMORY[0x1E696A250]])
+    domain = [v7 domain];
+    if ([domain isEqualToString:*MEMORY[0x1E696A250]])
     {
-      v17 = [v8 code];
+      code = [v8 code];
 
-      if (v17 == 260)
+      if (code == 260)
       {
         goto LABEL_10;
       }
@@ -139,8 +139,8 @@
     {
     }
 
-    v20 = [v5 path];
-    v10 = _CreateAndLogError("+[MIStashMetadata metadataFromURL:error:]", 108, @"MIInstallerErrorDomain", 130, v8, 0, @"Failed to read stash metadata from %@", v21, v20);
+    path = [lCopy path];
+    v10 = _CreateAndLogError("+[MIStashMetadata metadataFromURL:error:]", 108, @"MIInstallerErrorDomain", 130, v8, 0, @"Failed to read stash metadata from %@", v21, path);
 
     v9 = 0;
     v11 = 0;
@@ -156,9 +156,9 @@
     v11 = [v9 decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x1E696A508]];
     if (!v11)
     {
-      v12 = [v9 error];
-      v13 = [v5 path];
-      v15 = _CreateAndLogError("+[MIStashMetadata metadataFromURL:error:]", 121, @"MIInstallerErrorDomain", 130, v12, 0, @"Failed to decode stash metadata from %@", v14, v13);
+      error = [v9 error];
+      path2 = [lCopy path];
+      v15 = _CreateAndLogError("+[MIStashMetadata metadataFromURL:error:]", 121, @"MIInstallerErrorDomain", 130, error, 0, @"Failed to decode stash metadata from %@", v14, path2);
 
       v10 = v15;
     }
@@ -166,7 +166,7 @@
     [v9 finishDecoding];
 LABEL_14:
     v8 = v10;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_17;
     }
@@ -174,13 +174,13 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v18 = [v5 path];
-  v8 = _CreateAndLogError("+[MIStashMetadata metadataFromURL:error:]", 115, @"MIInstallerErrorDomain", 130, v10, 0, @"Failed to read stash metadata from %@", v19, v18);
+  path3 = [lCopy path];
+  v8 = _CreateAndLogError("+[MIStashMetadata metadataFromURL:error:]", 115, @"MIInstallerErrorDomain", 130, v10, 0, @"Failed to read stash metadata from %@", v19, path3);
 
 LABEL_10:
   v9 = 0;
   v11 = 0;
-  if (!a4)
+  if (!error)
   {
     goto LABEL_17;
   }
@@ -189,7 +189,7 @@ LABEL_15:
   if (!v11)
   {
     v22 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
 LABEL_17:
@@ -198,30 +198,30 @@ LABEL_17:
   return v11;
 }
 
-- (BOOL)serializeToURL:(id)a3 error:(id *)a4
+- (BOOL)serializeToURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v7 = [objc_alloc(MEMORY[0x1E696ACC8]) initRequiringSecureCoding:1];
   [v7 encodeObject:self forKey:*MEMORY[0x1E696A508]];
-  v8 = [v7 encodedData];
+  encodedData = [v7 encodedData];
 
-  if (v8)
+  if (encodedData)
   {
     v16 = 0;
-    v9 = [v8 writeToURL:v6 options:268435457 error:&v16];
+    v9 = [encodedData writeToURL:lCopy options:268435457 error:&v16];
     v10 = v16;
     if ((v9 & 1) == 0)
     {
-      v11 = [v6 path];
-      v13 = _CreateAndLogError("[MIStashMetadata serializeToURL:error:]", 159, @"MIInstallerErrorDomain", 4, v10, 0, @"Failed to write serialized MIStashedBundleMetadata to %@", v12, v11);
+      path = [lCopy path];
+      v13 = _CreateAndLogError("[MIStashMetadata serializeToURL:error:]", 159, @"MIInstallerErrorDomain", 4, v10, 0, @"Failed to write serialized MIStashedBundleMetadata to %@", v12, path);
 
       v10 = v13;
     }
 
-    if (a4 && v10)
+    if (error && v10)
     {
       v14 = v10;
-      *a4 = v10;
+      *error = v10;
     }
   }
 

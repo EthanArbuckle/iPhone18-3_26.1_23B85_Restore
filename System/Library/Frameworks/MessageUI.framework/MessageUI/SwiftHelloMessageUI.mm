@@ -1,6 +1,6 @@
 @interface SwiftHelloMessageUI
 - (NSString)world;
-- (id)worldWithTruncated:(int64_t)a3;
+- (id)worldWithTruncated:(int64_t)truncated;
 @end
 
 @implementation SwiftHelloMessageUI
@@ -15,10 +15,10 @@
   return v4;
 }
 
-- (id)worldWithTruncated:(int64_t)a3
+- (id)worldWithTruncated:(int64_t)truncated
 {
   MEMORY[0x1E69E5928](self);
-  SwiftHelloMessageUI.world(truncated:)(a3);
+  SwiftHelloMessageUI.world(truncated:)(truncated);
   MEMORY[0x1E69E5920](self);
   v6 = sub_1BE94224C();
 

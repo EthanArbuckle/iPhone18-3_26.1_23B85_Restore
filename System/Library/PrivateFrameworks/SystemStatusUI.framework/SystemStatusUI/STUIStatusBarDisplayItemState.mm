@@ -1,35 +1,35 @@
 @interface STUIStatusBarDisplayItemState
-+ (id)stateForDisplayItemWithIdentifier:(id)a3 statusBar:(id)a4;
-+ (void)setupRelationsBetweenDisplayItemStates:(id)a3 visualProvider:(id)a4;
-- (BOOL)_resolveDependentItemStatesWithBlock:(id)a3;
-- (BOOL)_updatePlacementWithRecursionBlock:(id)a3;
++ (id)stateForDisplayItemWithIdentifier:(id)identifier statusBar:(id)bar;
++ (void)setupRelationsBetweenDisplayItemStates:(id)states visualProvider:(id)provider;
+- (BOOL)_resolveDependentItemStatesWithBlock:(id)block;
+- (BOOL)_updatePlacementWithRecursionBlock:(id)block;
 - (BOOL)_updateToNextPlacementStateIfNeeded;
-- (BOOL)isCurrentPlacement:(id)a3;
+- (BOOL)isCurrentPlacement:(id)placement;
 - (BOOL)isEnabled;
 - (BOOL)isEnabledIgnoringAnimations;
-- (BOOL)prepareAnimation:(id)a3;
+- (BOOL)prepareAnimation:(id)animation;
 - (BOOL)updatePlacement;
 - (NSArray)potentialPlacementRegionIdentifiers;
 - (STUIStatusBar)statusBar;
 - (STUIStatusBarDisplayItem)displayItem;
 - (STUIStatusBarDisplayItemPlacementState)currentPlacementState;
 - (STUIStatusBarItem)item;
-- (id)_animationWithUpdateAnimation:(id)a3;
-- (id)_descriptionBuilderWithMultilinePrefix:(id)a3 forDebug:(BOOL)a4;
-- (id)_effectiveStyleAttributesFromStyleAttributes:(id)a3 data:(id)a4 styleAttributesChanged:(BOOL *)a5;
-- (id)_updateForItem:(id)a3 data:(id)a4 styleAttributes:(id)a5;
-- (id)_updateForUpdatedData:(id)a3 updatedStyleAttributes:(id)a4 updatedEnability:(id)a5;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)placementStateForPlacement:(id)a3;
+- (id)_animationWithUpdateAnimation:(id)animation;
+- (id)_descriptionBuilderWithMultilinePrefix:(id)prefix forDebug:(BOOL)debug;
+- (id)_effectiveStyleAttributesFromStyleAttributes:(id)attributes data:(id)data styleAttributesChanged:(BOOL *)changed;
+- (id)_updateForItem:(id)item data:(id)data styleAttributes:(id)attributes;
+- (id)_updateForUpdatedData:(id)data updatedStyleAttributes:(id)attributes updatedEnability:(id)enability;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)placementStateForPlacement:(id)placement;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (id)updateWithData:(id)a3 styleAttributes:(id)a4;
+- (id)updateWithData:(id)data styleAttributes:(id)attributes;
 - (int64_t)_animationType;
 - (int64_t)priority;
 - (void)_cancelObsoleteAnimations;
 - (void)_updateStatuses;
-- (void)addPlacement:(id)a3 inRegion:(id)a4;
+- (void)addPlacement:(id)placement inRegion:(id)region;
 - (void)prepareForDataUpdate;
 - (void)updateToNextEnabledPlacement;
 @end
@@ -62,38 +62,38 @@
 
 - (BOOL)_updateToNextPlacementStateIfNeeded
 {
-  v3 = [(STUIStatusBarDisplayItemState *)self currentPlacementState];
-  if (v3)
+  currentPlacementState = [(STUIStatusBarDisplayItemState *)self currentPlacementState];
+  if (currentPlacementState)
   {
-    v4 = v3;
-    v5 = [(STUIStatusBarDisplayItemState *)self currentPlacementState];
-    v6 = [v5 isEnabled];
+    v4 = currentPlacementState;
+    currentPlacementState2 = [(STUIStatusBarDisplayItemState *)self currentPlacementState];
+    isEnabled = [currentPlacementState2 isEnabled];
 
-    if (v6)
+    if (isEnabled)
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(currentPlacementState) = 0;
     }
 
     else
     {
       ++self->_currentPlacementStateIndex;
-      LOBYTE(v3) = 1;
+      LOBYTE(currentPlacementState) = 1;
     }
   }
 
-  return v3;
+  return currentPlacementState;
 }
 
 - (void)_updateStatuses
 {
-  v3 = [(STUIStatusBarDisplayItemState *)self isEnabledIgnoringAnimations];
-  v4 = v3;
+  isEnabledIgnoringAnimations = [(STUIStatusBarDisplayItemState *)self isEnabledIgnoringAnimations];
+  v4 = isEnabledIgnoringAnimations;
   wasEnabled = self->_wasEnabled;
-  v6 = !v3;
+  v6 = !isEnabledIgnoringAnimations;
   if (wasEnabled || v6)
   {
-    v8 = v3 | ~wasEnabled;
-    v9 = wasEnabled & v3;
+    v8 = isEnabledIgnoringAnimations | ~wasEnabled;
+    v9 = wasEnabled & isEnabledIgnoringAnimations;
     if (v8)
     {
       v7 = v9;
@@ -149,56 +149,56 @@
     return 0;
   }
 
-  v3 = [(STUIStatusBarDisplayItemState *)self currentPlacementState];
+  currentPlacementState = [(STUIStatusBarDisplayItemState *)self currentPlacementState];
 
-  if (!v3)
+  if (!currentPlacementState)
   {
     return 0;
   }
 
-  v4 = [(STUIStatusBarDisplayItemState *)self currentPlacementState];
-  v5 = [v4 isEnabled];
+  currentPlacementState2 = [(STUIStatusBarDisplayItemState *)self currentPlacementState];
+  isEnabled = [currentPlacementState2 isEnabled];
 
-  return v5;
+  return isEnabled;
 }
 
 - (void)_cancelObsoleteAnimations
 {
-  v3 = [(STUIStatusBarDisplayItemState *)self _animationType];
-  if (v3 == 2)
+  _animationType = [(STUIStatusBarDisplayItemState *)self _animationType];
+  if (_animationType == 2)
   {
-    v6 = [(STUIStatusBarDisplayItemState *)self addingAnimation];
+    addingAnimation = [(STUIStatusBarDisplayItemState *)self addingAnimation];
 
-    if (v6)
+    if (addingAnimation)
     {
-      v7 = [(STUIStatusBarDisplayItemState *)self addingAnimation];
-      [v7 cancel];
+      addingAnimation2 = [(STUIStatusBarDisplayItemState *)self addingAnimation];
+      [addingAnimation2 cancel];
 
       [(STUIStatusBarDisplayItemState *)self setAddingAnimation:0];
     }
 
-    v8 = [(STUIStatusBarDisplayItemState *)self animations];
-    v9 = [v8 count];
+    animations = [(STUIStatusBarDisplayItemState *)self animations];
+    v9 = [animations count];
 
     if (v9)
     {
-      v10 = [(STUIStatusBarDisplayItemState *)self animations];
-      v12 = [v10 copy];
+      animations2 = [(STUIStatusBarDisplayItemState *)self animations];
+      v12 = [animations2 copy];
 
       [v12 makeObjectsPerformSelector:sel_cancel];
-      v11 = [(STUIStatusBarDisplayItemState *)self animations];
-      [v11 removeAllObjects];
+      animations3 = [(STUIStatusBarDisplayItemState *)self animations];
+      [animations3 removeAllObjects];
     }
   }
 
-  else if (v3 == 1)
+  else if (_animationType == 1)
   {
-    v4 = [(STUIStatusBarDisplayItemState *)self removingAnimation];
+    removingAnimation = [(STUIStatusBarDisplayItemState *)self removingAnimation];
 
-    if (v4)
+    if (removingAnimation)
     {
-      v5 = [(STUIStatusBarDisplayItemState *)self removingAnimation];
-      [v5 cancel];
+      removingAnimation2 = [(STUIStatusBarDisplayItemState *)self removingAnimation];
+      [removingAnimation2 cancel];
 
       [(STUIStatusBarDisplayItemState *)self setRemovingAnimation:0];
     }
@@ -267,7 +267,7 @@
 - (NSArray)potentialPlacementRegionIdentifiers
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   placementStates = self->_placementStates;
   v5 = STUIStatusBarGetPriorityComparator();
   v6 = [(NSMutableArray *)placementStates sortedArrayUsingComparator:v5];
@@ -292,14 +292,14 @@
         }
 
         v12 = *(*(&v18 + 1) + 8 * i);
-        v13 = [v12 region];
-        v14 = [v13 isEnabled];
+        region = [v12 region];
+        isEnabled = [region isEnabled];
 
-        if (v14)
+        if (isEnabled)
         {
-          v15 = [v12 region];
-          v16 = [v15 identifier];
-          [v3 addObject:v16];
+          region2 = [v12 region];
+          identifier = [region2 identifier];
+          [array addObject:identifier];
         }
       }
 
@@ -309,7 +309,7 @@
     while (v9);
   }
 
-  return v3;
+  return array;
 }
 
 - (STUIStatusBarDisplayItem)displayItem
@@ -319,26 +319,26 @@
   return WeakRetained;
 }
 
-+ (id)stateForDisplayItemWithIdentifier:(id)a3 statusBar:(id)a4
++ (id)stateForDisplayItemWithIdentifier:(id)identifier statusBar:(id)bar
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = objc_alloc_init(a1);
+  identifierCopy = identifier;
+  barCopy = bar;
+  v8 = objc_alloc_init(self);
   v9 = *(v8 + 3);
-  *(v8 + 3) = v6;
-  v10 = v6;
+  *(v8 + 3) = identifierCopy;
+  v10 = identifierCopy;
 
-  objc_storeWeak(v8 + 4, v7);
-  v11 = [MEMORY[0x277CBEB18] array];
+  objc_storeWeak(v8 + 4, barCopy);
+  array = [MEMORY[0x277CBEB18] array];
   v12 = *(v8 + 6);
-  *(v8 + 6) = v11;
+  *(v8 + 6) = array;
 
   v13 = [MEMORY[0x277CBEB58] set];
   v14 = *(v8 + 17);
   *(v8 + 17) = v13;
 
   v15 = [STUIStatusBarItem itemIdentifierForDisplayItemIdentifier:v10];
-  v16 = [v7 itemWithIdentifier:v15];
+  v16 = [barCopy itemWithIdentifier:v15];
 
   objc_storeWeak(v8 + 5, v16);
   WeakRetained = objc_loadWeakRetained(v8 + 5);
@@ -356,9 +356,9 @@
   }
 }
 
-- (void)addPlacement:(id)a3 inRegion:(id)a4
+- (void)addPlacement:(id)placement inRegion:(id)region
 {
-  v5 = [STUIStatusBarDisplayItemPlacementState stateForDisplayItemPlacement:a3 region:a4];
+  v5 = [STUIStatusBarDisplayItemPlacementState stateForDisplayItemPlacement:placement region:region];
   placementStates = self->_placementStates;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -379,10 +379,10 @@
   }
 }
 
-- (id)placementStateForPlacement:(id)a3
+- (id)placementStateForPlacement:(id)placement
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  placementCopy = placement;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -402,8 +402,8 @@
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 placement];
-        v11 = [v10 isEqual:v4];
+        placement = [v9 placement];
+        v11 = [placement isEqual:placementCopy];
 
         if (v11)
         {
@@ -427,18 +427,18 @@ LABEL_11:
   return v6;
 }
 
-+ (void)setupRelationsBetweenDisplayItemStates:(id)a3 visualProvider:(id)a4
++ (void)setupRelationsBetweenDisplayItemStates:(id)states visualProvider:(id)provider
 {
-  v5 = a3;
-  v6 = a4;
+  statesCopy = states;
+  providerCopy = provider;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __87__STUIStatusBarDisplayItemState_setupRelationsBetweenDisplayItemStates_visualProvider___block_invoke;
   v9[3] = &unk_279D38308;
-  v10 = v6;
-  v11 = v5;
-  v7 = v5;
-  v8 = v6;
+  v10 = providerCopy;
+  v11 = statesCopy;
+  v7 = statesCopy;
+  v8 = providerCopy;
   [v7 enumerateKeysAndObjectsUsingBlock:v9];
 }
 
@@ -664,18 +664,18 @@ void __87__STUIStatusBarDisplayItemState_setupRelationsBetweenDisplayItemStates_
   }
 }
 
-- (BOOL)_resolveDependentItemStatesWithBlock:(id)a3
+- (BOOL)_resolveDependentItemStatesWithBlock:(id)block
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v5 = [(STUIStatusBarDisplayItemState *)self currentPlacementState];
-  v6 = [v5 relations];
+  currentPlacementState = [(STUIStatusBarDisplayItemState *)self currentPlacementState];
+  relations = [currentPlacementState relations];
 
-  v7 = [v6 countByEnumeratingWithState:&v23 objects:v28 count:16];
+  v7 = [relations countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v7)
   {
     v8 = v7;
@@ -686,7 +686,7 @@ void __87__STUIStatusBarDisplayItemState_setupRelationsBetweenDisplayItemStates_
       {
         if (*v24 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(relations);
         }
 
         v11 = *(*(&v23 + 1) + 8 * i);
@@ -694,8 +694,8 @@ void __87__STUIStatusBarDisplayItemState_setupRelationsBetweenDisplayItemStates_
         v20 = 0u;
         v21 = 0u;
         v22 = 0u;
-        v12 = [v11 itemStates];
-        v13 = [v12 countByEnumeratingWithState:&v19 objects:v27 count:16];
+        itemStates = [v11 itemStates];
+        v13 = [itemStates countByEnumeratingWithState:&v19 objects:v27 count:16];
         if (v13)
         {
           v14 = v13;
@@ -706,10 +706,10 @@ void __87__STUIStatusBarDisplayItemState_setupRelationsBetweenDisplayItemStates_
             {
               if (*v20 != v15)
               {
-                objc_enumerationMutation(v12);
+                objc_enumerationMutation(itemStates);
               }
 
-              if (!v4[2](v4, *(*(&v19 + 1) + 8 * j)))
+              if (!blockCopy[2](blockCopy, *(*(&v19 + 1) + 8 * j)))
               {
 
                 v17 = 0;
@@ -717,7 +717,7 @@ void __87__STUIStatusBarDisplayItemState_setupRelationsBetweenDisplayItemStates_
               }
             }
 
-            v14 = [v12 countByEnumeratingWithState:&v19 objects:v27 count:16];
+            v14 = [itemStates countByEnumeratingWithState:&v19 objects:v27 count:16];
             if (v14)
             {
               continue;
@@ -728,7 +728,7 @@ void __87__STUIStatusBarDisplayItemState_setupRelationsBetweenDisplayItemStates_
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v23 objects:v28 count:16];
+      v8 = [relations countByEnumeratingWithState:&v23 objects:v28 count:16];
       v17 = 1;
     }
 
@@ -745,9 +745,9 @@ LABEL_19:
   return v17;
 }
 
-- (BOOL)_updatePlacementWithRecursionBlock:(id)a3
+- (BOOL)_updatePlacementWithRecursionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   WeakRetained = objc_loadWeakRetained(&self->_displayItem);
   -[STUIStatusBarDisplayItemState setFloating:](self, "setFloating:", [WeakRetained floating]);
 
@@ -760,30 +760,30 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v6 = [(STUIStatusBarDisplayItemState *)self removingAnimation];
+  removingAnimation = [(STUIStatusBarDisplayItemState *)self removingAnimation];
 
-  if (v6)
+  if (removingAnimation)
   {
     self->_currentPlacementStateIndex = self->_previousPlacementStateIndex;
-    [(STUIStatusBarDisplayItemState *)self _resolveDependentItemStatesWithBlock:v4];
+    [(STUIStatusBarDisplayItemState *)self _resolveDependentItemStatesWithBlock:blockCopy];
     goto LABEL_5;
   }
 
-  v9 = [(STUIStatusBarDisplayItemState *)self currentPlacementState];
+  currentPlacementState = [(STUIStatusBarDisplayItemState *)self currentPlacementState];
 
-  if (!v9)
+  if (!currentPlacementState)
   {
     goto LABEL_5;
   }
 
   while (1)
   {
-    v10 = [(STUIStatusBarDisplayItemState *)self currentPlacementState];
-    v11 = [v10 canBeEnabled];
+    currentPlacementState2 = [(STUIStatusBarDisplayItemState *)self currentPlacementState];
+    canBeEnabled = [currentPlacementState2 canBeEnabled];
 
-    if (v11)
+    if (canBeEnabled)
     {
-      if (![(STUIStatusBarDisplayItemState *)self _resolveDependentItemStatesWithBlock:v4])
+      if (![(STUIStatusBarDisplayItemState *)self _resolveDependentItemStatesWithBlock:blockCopy])
       {
         break;
       }
@@ -801,22 +801,22 @@ LABEL_6:
   return v7;
 }
 
-- (id)updateWithData:(id)a3 styleAttributes:(id)a4
+- (id)updateWithData:(id)data styleAttributes:(id)attributes
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  attributesCopy = attributes;
   if (self->_dataUpdateStatus == 2)
   {
-    v8 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     goto LABEL_23;
   }
 
   self->_dataUpdateStatus = 1;
-  v9 = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   WeakRetained = objc_loadWeakRetained(&self->_displayItem);
-  v11 = [WeakRetained clearPreviousTokenDisablementIfNecessary];
+  clearPreviousTokenDisablementIfNecessary = [WeakRetained clearPreviousTokenDisablementIfNecessary];
 
-  if (v11)
+  if (clearPreviousTokenDisablementIfNecessary)
   {
     [(STUIStatusBarDisplayItemState *)self setWasEnabled:0];
   }
@@ -838,23 +838,23 @@ LABEL_6:
   v39[1] = 3221225472;
   v39[2] = __64__STUIStatusBarDisplayItemState_updateWithData_styleAttributes___block_invoke;
   v39[3] = &unk_279D38350;
-  v15 = v6;
+  v15 = dataCopy;
   v40 = v15;
-  v16 = v7;
+  v16 = attributesCopy;
   v41 = v16;
-  v17 = v9;
+  v17 = array2;
   v42 = v17;
   if ([(STUIStatusBarDisplayItemState *)self _updatePlacementWithRecursionBlock:v39])
   {
     v18 = objc_loadWeakRetained(&self->_item);
     v19 = objc_loadWeakRetained(&self->_displayItem);
     v20 = objc_loadWeakRetained(&self->_statusBar);
-    v21 = [v20 currentAggregatedData];
-    -[STUIStatusBarDisplayItemState setDataEnabled:](self, "setDataEnabled:", [v18 canEnableDisplayItem:v19 fromData:v21]);
+    currentAggregatedData = [v20 currentAggregatedData];
+    -[STUIStatusBarDisplayItemState setDataEnabled:](self, "setDataEnabled:", [v18 canEnableDisplayItem:v19 fromData:currentAggregatedData]);
 
     [(STUIStatusBarDisplayItemState *)self _updateStatuses];
-    v22 = [(STUIStatusBarDisplayItemState *)self enabilityStatus];
-    switch(v22)
+    enabilityStatus = [(STUIStatusBarDisplayItemState *)self enabilityStatus];
+    switch(enabilityStatus)
     {
       case 1:
         v28 = objc_loadWeakRetained(&self->_item);
@@ -876,10 +876,10 @@ LABEL_6:
         goto LABEL_16;
       case 2:
         v23 = objc_loadWeakRetained(&self->_statusBar);
-        v24 = [v23 currentAggregatedData];
+        currentAggregatedData2 = [v23 currentAggregatedData];
         v25 = objc_loadWeakRetained(&self->_statusBar);
-        v26 = [v25 styleAttributes];
-        v27 = [(STUIStatusBarDisplayItemState *)self _updateForUpdatedData:v24 updatedStyleAttributes:v26 updatedEnability:MEMORY[0x277CBEC38]];
+        styleAttributes = [v25 styleAttributes];
+        v27 = [(STUIStatusBarDisplayItemState *)self _updateForUpdatedData:currentAggregatedData2 updatedStyleAttributes:styleAttributes updatedEnability:MEMORY[0x277CBEC38]];
 
         if (!v27)
         {
@@ -887,10 +887,10 @@ LABEL_6:
         }
 
 LABEL_16:
-        v29 = [(STUIStatusBarDisplayItemState *)self currentPlacementState];
-        v30 = [v29 placement];
-        v31 = [v30 itemInfo];
-        [v27 setPlacementInfo:v31];
+        currentPlacementState = [(STUIStatusBarDisplayItemState *)self currentPlacementState];
+        placement = [currentPlacementState placement];
+        itemInfo = [placement itemInfo];
+        [v27 setPlacementInfo:itemInfo];
 
         v32 = objc_loadWeakRetained(&self->_item);
         v33 = objc_loadWeakRetained(&self->_displayItem);
@@ -906,15 +906,15 @@ LABEL_19:
 
         if (v36)
         {
-          v37 = [(STUIStatusBarDisplayItemState *)self identifier];
-          [v36 setDisplayItemIdentifier:v37];
+          identifier = [(STUIStatusBarDisplayItemState *)self identifier];
+          [v36 setDisplayItemIdentifier:identifier];
 
           [v17 addObject:v36];
         }
 
         *&self->_dataUpdateStatus = xmmword_26C581630;
         self->_preferredPlacementStateIndex = self->_currentPlacementStateIndex;
-        v8 = v17;
+        array = v17;
 
         goto LABEL_22;
       default:
@@ -927,12 +927,12 @@ LABEL_19:
   }
 
   self->_dataUpdateStatus = 0;
-  v8 = MEMORY[0x277CBEBF8];
+  array = MEMORY[0x277CBEBF8];
 LABEL_22:
 
 LABEL_23:
 
-  return v8;
+  return array;
 }
 
 uint64_t __64__STUIStatusBarDisplayItemState_updateWithData_styleAttributes___block_invoke(uint64_t a1, void *a2)
@@ -957,21 +957,21 @@ LABEL_6:
   return v6;
 }
 
-- (id)_updateForItem:(id)a3 data:(id)a4 styleAttributes:(id)a5
+- (id)_updateForItem:(id)item data:(id)data styleAttributes:(id)attributes
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 needsUpdate];
-  if (v9)
+  itemCopy = item;
+  dataCopy = data;
+  attributesCopy = attributes;
+  needsUpdate = [itemCopy needsUpdate];
+  if (dataCopy)
   {
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v12 = [v8 dependentEntryKeys];
-    v13 = [v12 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    dependentEntryKeys = [itemCopy dependentEntryKeys];
+    v13 = [dependentEntryKeys countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v13)
     {
       v14 = v13;
@@ -982,10 +982,10 @@ LABEL_4:
       {
         if (*v24 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(dependentEntryKeys);
         }
 
-        v17 = [v9 valueForKey:*(*(&v23 + 1) + 8 * v16)];
+        v17 = [dataCopy valueForKey:*(*(&v23 + 1) + 8 * v16)];
 
         if (v17)
         {
@@ -994,7 +994,7 @@ LABEL_4:
 
         if (v14 == ++v16)
         {
-          v14 = [v12 countByEnumeratingWithState:&v23 objects:v27 count:16];
+          v14 = [dependentEntryKeys countByEnumeratingWithState:&v23 objects:v27 count:16];
           if (v14)
           {
             goto LABEL_4;
@@ -1004,9 +1004,9 @@ LABEL_4:
         }
       }
 
-      v18 = self;
-      v19 = v9;
-      if (!v10)
+      selfCopy3 = self;
+      v19 = dataCopy;
+      if (!attributesCopy)
       {
         goto LABEL_17;
       }
@@ -1017,20 +1017,20 @@ LABEL_4:
 LABEL_10:
   }
 
-  if (v10)
+  if (attributesCopy)
   {
-    v18 = self;
+    selfCopy3 = self;
     v19 = 0;
 LABEL_14:
-    v20 = v10;
+    v20 = attributesCopy;
 LABEL_18:
-    v21 = [(STUIStatusBarDisplayItemState *)v18 _updateForUpdatedData:v19 updatedStyleAttributes:v20 updatedEnability:0];
+    v21 = [(STUIStatusBarDisplayItemState *)selfCopy3 _updateForUpdatedData:v19 updatedStyleAttributes:v20 updatedEnability:0];
     goto LABEL_19;
   }
 
-  if (v11)
+  if (needsUpdate)
   {
-    v18 = self;
+    selfCopy3 = self;
     v19 = 0;
 LABEL_17:
     v20 = 0;
@@ -1043,66 +1043,66 @@ LABEL_19:
   return v21;
 }
 
-- (id)_updateForUpdatedData:(id)a3 updatedStyleAttributes:(id)a4 updatedEnability:(id)a5
+- (id)_updateForUpdatedData:(id)data updatedStyleAttributes:(id)attributes updatedEnability:(id)enability
 {
-  v8 = a3;
-  v9 = a5;
+  dataCopy = data;
+  enabilityCopy = enability;
   WeakRetained = STUIStatusBarItemUpdate;
-  v11 = a4;
+  attributesCopy = attributes;
   v12 = objc_alloc_init(STUIStatusBarItemUpdate);
-  [(STUIStatusBarItemUpdate *)v12 setDataChanged:v8 != 0];
-  if (v8)
+  [(STUIStatusBarItemUpdate *)v12 setDataChanged:dataCopy != 0];
+  if (dataCopy)
   {
-    [(STUIStatusBarItemUpdate *)v12 setData:v8];
+    [(STUIStatusBarItemUpdate *)v12 setData:dataCopy];
   }
 
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_statusBar);
-    v13 = [(__objc2_class *)WeakRetained currentAggregatedData];
-    [(STUIStatusBarItemUpdate *)v12 setData:v13];
+    currentAggregatedData = [(__objc2_class *)WeakRetained currentAggregatedData];
+    [(STUIStatusBarItemUpdate *)v12 setData:currentAggregatedData];
   }
 
-  v19 = v11 != 0;
-  v14 = v11;
-  if (!v11)
+  v19 = attributesCopy != 0;
+  styleAttributes = attributesCopy;
+  if (!attributesCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_statusBar);
-    v14 = [(__objc2_class *)WeakRetained styleAttributes];
+    styleAttributes = [(__objc2_class *)WeakRetained styleAttributes];
   }
 
-  v15 = [(STUIStatusBarItemUpdate *)v12 data];
-  v16 = [(STUIStatusBarDisplayItemState *)self _effectiveStyleAttributesFromStyleAttributes:v14 data:v15 styleAttributesChanged:&v19];
+  data = [(STUIStatusBarItemUpdate *)v12 data];
+  v16 = [(STUIStatusBarDisplayItemState *)self _effectiveStyleAttributesFromStyleAttributes:styleAttributes data:data styleAttributesChanged:&v19];
 
   [(STUIStatusBarItemUpdate *)v12 setStyleAttributes:v16];
-  if (!v11)
+  if (!attributesCopy)
   {
   }
 
   [(STUIStatusBarItemUpdate *)v12 setStyleAttributesChanged:v19];
-  [(STUIStatusBarItemUpdate *)v12 setEnablementChanged:v9 != 0];
-  if (v9)
+  [(STUIStatusBarItemUpdate *)v12 setEnablementChanged:enabilityCopy != 0];
+  if (enabilityCopy)
   {
-    v17 = [v9 BOOLValue];
+    bOOLValue = [enabilityCopy BOOLValue];
   }
 
   else
   {
-    v17 = 1;
+    bOOLValue = 1;
   }
 
-  [(STUIStatusBarItemUpdate *)v12 setEnabled:v17];
+  [(STUIStatusBarItemUpdate *)v12 setEnabled:bOOLValue];
 
   return v12;
 }
 
-- (id)_effectiveStyleAttributesFromStyleAttributes:(id)a3 data:(id)a4 styleAttributesChanged:(BOOL *)a5
+- (id)_effectiveStyleAttributesFromStyleAttributes:(id)attributes data:(id)data styleAttributesChanged:(BOOL *)changed
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v8;
-  v11 = [(STUIStatusBarDisplayItemState *)self currentPlacementState];
-  v12 = [v11 region];
+  attributesCopy = attributes;
+  dataCopy = data;
+  v10 = attributesCopy;
+  currentPlacementState = [(STUIStatusBarDisplayItemState *)self currentPlacementState];
+  region = [currentPlacementState region];
 
   v35 = 0;
   v36 = &v35;
@@ -1115,35 +1115,35 @@ LABEL_19:
   v32 = __106__STUIStatusBarDisplayItemState__effectiveStyleAttributesFromStyleAttributes_data_styleAttributesChanged___block_invoke;
   v33 = &unk_279D38378;
   v34 = &v35;
-  v13 = [v12 effectiveStyle];
-  if (v13 != 4)
+  effectiveStyle = [region effectiveStyle];
+  if (effectiveStyle != 4)
   {
     WeakRetained = objc_loadWeakRetained(&self->_statusBar);
-    v15 = [WeakRetained styleAttributesForStyle:v13];
+    v15 = [WeakRetained styleAttributesForStyle:effectiveStyle];
     v32(v31, v15);
   }
 
-  v16 = [v12 overriddenStyleAttributes];
-  v32(v31, v16);
+  overriddenStyleAttributes = [region overriddenStyleAttributes];
+  v32(v31, overriddenStyleAttributes);
 
   v17 = objc_loadWeakRetained(&self->_displayItem);
-  v18 = [v17 overriddenStyleAttributes];
-  v32(v31, v18);
+  overriddenStyleAttributes2 = [v17 overriddenStyleAttributes];
+  v32(v31, overriddenStyleAttributes2);
 
   v19 = objc_loadWeakRetained(&self->_item);
-  v20 = [v19 overriddenStyleAttributesForData:v9 identifier:self->_identifier];
+  v20 = [v19 overriddenStyleAttributesForData:dataCopy identifier:self->_identifier];
   v32(v31, v20);
 
   v21 = objc_loadWeakRetained(&self->_statusBar);
-  v22 = [v21 visualProvider];
+  visualProvider = [v21 visualProvider];
   v23 = objc_opt_respondsToSelector();
 
   if (v23)
   {
     v24 = objc_loadWeakRetained(&self->_statusBar);
-    v25 = [v24 visualProvider];
-    v26 = [(STUIStatusBarDisplayItemState *)self identifier];
-    v27 = [v25 overriddenStyleAttributesForDisplayItemWithIdentifier:v26];
+    visualProvider2 = [v24 visualProvider];
+    identifier = [(STUIStatusBarDisplayItemState *)self identifier];
+    v27 = [visualProvider2 overriddenStyleAttributesForDisplayItemWithIdentifier:identifier];
     v32(v31, v27);
   }
 
@@ -1151,7 +1151,7 @@ LABEL_19:
   if ((BSEqualObjects() & 1) == 0)
   {
     objc_storeStrong(p_overriddenStyleAttributes, v36[5]);
-    *a5 = 1;
+    *changed = 1;
   }
 
   v29 = [v10 styleAttributesWithOverrides:v36[5]];
@@ -1191,33 +1191,33 @@ uint64_t __106__STUIStatusBarDisplayItemState__effectiveStyleAttributesFromStyle
   return MEMORY[0x2821F96F8](v3, v4);
 }
 
-- (id)_animationWithUpdateAnimation:(id)a3
+- (id)_animationWithUpdateAnimation:(id)animation
 {
-  v4 = a3;
+  animationCopy = animation;
   WeakRetained = objc_loadWeakRetained(&self->_statusBar);
-  v6 = [WeakRetained areAnimationsEnabled];
+  areAnimationsEnabled = [WeakRetained areAnimationsEnabled];
 
-  if (!v6)
+  if (!areAnimationsEnabled)
   {
     goto LABEL_7;
   }
 
-  v7 = v4;
+  v7 = animationCopy;
   if (v7)
   {
     goto LABEL_8;
   }
 
-  v8 = [(STUIStatusBarDisplayItemState *)self _animationType];
-  if (v8 != 2)
+  _animationType = [(STUIStatusBarDisplayItemState *)self _animationType];
+  if (_animationType != 2)
   {
-    if (v8 == 1)
+    if (_animationType == 1)
     {
       v9 = objc_loadWeakRetained(&self->_item);
       v7 = [v9 additionAnimationForDisplayItemWithIdentifier:self->_identifier];
 
       v10 = objc_loadWeakRetained(&self->_statusBar);
-      v11 = [v10 visualProvider];
+      visualProvider = [v10 visualProvider];
       v12 = objc_opt_respondsToSelector();
 
       if ((v12 & 1) == 0)
@@ -1226,8 +1226,8 @@ uint64_t __106__STUIStatusBarDisplayItemState__effectiveStyleAttributesFromStyle
       }
 
       v13 = objc_loadWeakRetained(&self->_statusBar);
-      v14 = [v13 visualProvider];
-      v15 = [v14 additionAnimationForDisplayItemWithIdentifier:self->_identifier itemAnimation:v7];
+      visualProvider2 = [v13 visualProvider];
+      v15 = [visualProvider2 additionAnimationForDisplayItemWithIdentifier:self->_identifier itemAnimation:v7];
       goto LABEL_13;
     }
 
@@ -1240,7 +1240,7 @@ LABEL_7:
   v7 = [v17 removalAnimationForDisplayItemWithIdentifier:self->_identifier];
 
   v18 = objc_loadWeakRetained(&self->_statusBar);
-  v19 = [v18 visualProvider];
+  visualProvider3 = [v18 visualProvider];
   v20 = objc_opt_respondsToSelector();
 
   if ((v20 & 1) == 0)
@@ -1249,8 +1249,8 @@ LABEL_7:
   }
 
   v13 = objc_loadWeakRetained(&self->_statusBar);
-  v14 = [v13 visualProvider];
-  v15 = [v14 removalAnimationForDisplayItemWithIdentifier:self->_identifier itemAnimation:v7];
+  visualProvider2 = [v13 visualProvider];
+  v15 = [visualProvider2 removalAnimationForDisplayItemWithIdentifier:self->_identifier itemAnimation:v7];
 LABEL_13:
   v21 = v15;
 
@@ -1260,55 +1260,55 @@ LABEL_8:
   return v7;
 }
 
-- (BOOL)prepareAnimation:(id)a3
+- (BOOL)prepareAnimation:(id)animation
 {
-  v4 = a3;
+  animationCopy = animation;
   WeakRetained = objc_loadWeakRetained(&self->_statusBar);
-  v6 = [WeakRetained animationContextId];
+  animationContextId = [WeakRetained animationContextId];
 
-  v7 = [(STUIStatusBarDisplayItemState *)self _animationType];
+  _animationType = [(STUIStatusBarDisplayItemState *)self _animationType];
   v8 = 0;
-  if (v7 > 1)
+  if (_animationType > 1)
   {
-    if (v7 == 2)
+    if (_animationType == 2)
     {
-      [v4 setType:2];
+      [animationCopy setType:2];
       v14 = objc_loadWeakRetained(&self->_item);
       v15 = objc_loadWeakRetained(&self->_displayItem);
-      [v14 prepareAnimation:v4 forDisplayItem:v15];
+      [v14 prepareAnimation:animationCopy forDisplayItem:v15];
 
       v24[0] = MEMORY[0x277D85DD0];
       v24[1] = 3221225472;
       v24[2] = __50__STUIStatusBarDisplayItemState_prepareAnimation___block_invoke_2;
       v24[3] = &unk_279D383A0;
       v24[4] = self;
-      v25 = v6;
-      [v4 addCompletionHandler:v24];
-      [(STUIStatusBarDisplayItemState *)self setRemovingAnimation:v4];
+      v25 = animationContextId;
+      [animationCopy addCompletionHandler:v24];
+      [(STUIStatusBarDisplayItemState *)self setRemovingAnimation:animationCopy];
     }
 
     else
     {
-      if (v7 != 3)
+      if (_animationType != 3)
       {
         goto LABEL_11;
       }
 
-      [v4 setType:3];
+      [animationCopy setType:3];
       v11 = objc_loadWeakRetained(&self->_item);
       v12 = objc_loadWeakRetained(&self->_displayItem);
-      [v11 prepareAnimation:v4 forDisplayItem:v12];
+      [v11 prepareAnimation:animationCopy forDisplayItem:v12];
 
-      objc_initWeak(&location, v4);
+      objc_initWeak(&location, animationCopy);
       v17 = MEMORY[0x277D85DD0];
       v18 = 3221225472;
       v19 = __50__STUIStatusBarDisplayItemState_prepareAnimation___block_invoke_3;
       v20 = &unk_279D383C8;
-      v21 = self;
+      selfCopy = self;
       objc_copyWeak(&v22, &location);
-      [v4 addCompletionHandler:&v17];
+      [animationCopy addCompletionHandler:&v17];
       v13 = [(STUIStatusBarDisplayItemState *)self animations:v17];
-      [v13 addObject:v4];
+      [v13 addObject:animationCopy];
 
       objc_destroyWeak(&v22);
       objc_destroyWeak(&location);
@@ -1318,29 +1318,29 @@ LABEL_8:
     goto LABEL_11;
   }
 
-  if (v7)
+  if (_animationType)
   {
-    if (v7 == 1)
+    if (_animationType == 1)
     {
       v8 = 1;
-      [v4 setType:1];
+      [animationCopy setType:1];
       v9 = objc_loadWeakRetained(&self->_item);
       v10 = objc_loadWeakRetained(&self->_displayItem);
-      [v9 prepareAnimation:v4 forDisplayItem:v10];
+      [v9 prepareAnimation:animationCopy forDisplayItem:v10];
 
       v26[0] = MEMORY[0x277D85DD0];
       v26[1] = 3221225472;
       v26[2] = __50__STUIStatusBarDisplayItemState_prepareAnimation___block_invoke;
       v26[3] = &unk_279D37E28;
       v26[4] = self;
-      [v4 addCompletionHandler:v26];
-      [(STUIStatusBarDisplayItemState *)self setAddingAnimation:v4];
+      [animationCopy addCompletionHandler:v26];
+      [(STUIStatusBarDisplayItemState *)self setAddingAnimation:animationCopy];
     }
   }
 
   else
   {
-    [v4 cancel];
+    [animationCopy cancel];
     v8 = 0;
   }
 
@@ -1393,15 +1393,15 @@ void __50__STUIStatusBarDisplayItemState_prepareAnimation___block_invoke_3(uint6
   [v3 removeObject:WeakRetained];
 }
 
-- (BOOL)isCurrentPlacement:(id)a3
+- (BOOL)isCurrentPlacement:(id)placement
 {
-  v4 = a3;
-  v5 = [(STUIStatusBarDisplayItemState *)self currentPlacementState];
-  v6 = [v5 placement];
-  v7 = [v6 priority];
-  v8 = [v4 priority];
+  placementCopy = placement;
+  currentPlacementState = [(STUIStatusBarDisplayItemState *)self currentPlacementState];
+  placement = [currentPlacementState placement];
+  priority = [placement priority];
+  priority2 = [placementCopy priority];
 
-  v9 = v7 == v8 && [(STUIStatusBarDisplayItemState *)self isEnabled];
+  v9 = priority == priority2 && [(STUIStatusBarDisplayItemState *)self isEnabled];
   return v9;
 }
 
@@ -1412,48 +1412,48 @@ void __50__STUIStatusBarDisplayItemState_prepareAnimation___block_invoke_3(uint6
     return 0;
   }
 
-  v3 = [(STUIStatusBarDisplayItemState *)self currentPlacementState];
-  v4 = [v3 priority];
+  currentPlacementState = [(STUIStatusBarDisplayItemState *)self currentPlacementState];
+  priority = [currentPlacementState priority];
 
-  return v4;
+  return priority;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(STUIStatusBarDisplayItemState *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(STUIStatusBarDisplayItemState *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(STUIStatusBarDisplayItemState *)self identifier];
-  v5 = [v3 appendObject:v4 withName:@"identifier"];
+  identifier = [(STUIStatusBarDisplayItemState *)self identifier];
+  v5 = [v3 appendObject:identifier withName:@"identifier"];
 
   v6 = [v3 appendBool:-[STUIStatusBarDisplayItemState isEnabled](self withName:{"isEnabled"), @"enabled"}];
-  v7 = [(STUIStatusBarDisplayItemState *)self enabilityStatus];
-  if (v7 > 3)
+  enabilityStatus = [(STUIStatusBarDisplayItemState *)self enabilityStatus];
+  if (enabilityStatus > 3)
   {
     v8 = @"(unknown)";
   }
 
   else
   {
-    v8 = off_279D383E8[v7];
+    v8 = off_279D383E8[enabilityStatus];
   }
 
   [v3 appendString:v8 withName:@"enabilityStatus"];
-  v9 = [(STUIStatusBarDisplayItemState *)self visibilityStatus];
-  if (v9 > 3)
+  visibilityStatus = [(STUIStatusBarDisplayItemState *)self visibilityStatus];
+  if (visibilityStatus > 3)
   {
     v10 = @"(unknown)";
   }
 
   else
   {
-    v10 = off_279D38408[v9];
+    v10 = off_279D38408[visibilityStatus];
   }
 
   [v3 appendString:v10 withName:@"visibilityStatus"];
@@ -1463,31 +1463,31 @@ void __50__STUIStatusBarDisplayItemState_prepareAnimation___block_invoke_3(uint6
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STUIStatusBarDisplayItemState *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(STUIStatusBarDisplayItemState *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STUIStatusBarDisplayItemState *)self _descriptionBuilderWithMultilinePrefix:a3 forDebug:1];
-  v4 = [v3 build];
+  v3 = [(STUIStatusBarDisplayItemState *)self _descriptionBuilderWithMultilinePrefix:prefix forDebug:1];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)_descriptionBuilderWithMultilinePrefix:(id)a3 forDebug:(BOOL)a4
+- (id)_descriptionBuilderWithMultilinePrefix:(id)prefix forDebug:(BOOL)debug
 {
-  v4 = a4;
-  v6 = [(STUIStatusBarDisplayItemState *)self succinctDescriptionBuilder];
-  [v6 setUseDebugDescription:v4];
-  v7 = [(STUIStatusBarDisplayItemState *)self currentPlacementState];
-  v8 = [v6 appendObject:v7 withName:@"currentPlacementState" skipIfNil:1];
+  debugCopy = debug;
+  succinctDescriptionBuilder = [(STUIStatusBarDisplayItemState *)self succinctDescriptionBuilder];
+  [succinctDescriptionBuilder setUseDebugDescription:debugCopy];
+  currentPlacementState = [(STUIStatusBarDisplayItemState *)self currentPlacementState];
+  v8 = [succinctDescriptionBuilder appendObject:currentPlacementState withName:@"currentPlacementState" skipIfNil:1];
 
-  return v6;
+  return succinctDescriptionBuilder;
 }
 
 - (STUIStatusBar)statusBar

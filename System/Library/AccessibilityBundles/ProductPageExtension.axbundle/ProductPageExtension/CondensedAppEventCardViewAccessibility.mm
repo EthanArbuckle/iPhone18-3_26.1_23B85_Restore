@@ -1,18 +1,18 @@
 @interface CondensedAppEventCardViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation CondensedAppEventCardViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ProductPageExtension.CondensedAppEventCardView" hasSwiftField:@"appEventFormattedDateView" withSwiftType:"AppPromotionFormattedDateView"];
-  [v3 validateClass:@"ProductPageExtension.CondensedAppEventCardView" hasInstanceMethod:@"accessibilityTitleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ProductPageExtension.AppPromotionFormattedDateView"];
-  [v3 validateClass:@"ProductPageExtension.AppPromotionFormattedDateView" hasSwiftField:@"textLabel" withSwiftType:"DynamicTypeLabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ProductPageExtension.CondensedAppEventCardView" hasSwiftField:@"appEventFormattedDateView" withSwiftType:"AppPromotionFormattedDateView"];
+  [validationsCopy validateClass:@"ProductPageExtension.CondensedAppEventCardView" hasInstanceMethod:@"accessibilityTitleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ProductPageExtension.AppPromotionFormattedDateView"];
+  [validationsCopy validateClass:@"ProductPageExtension.AppPromotionFormattedDateView" hasSwiftField:@"textLabel" withSwiftType:"DynamicTypeLabel"];
 }
 
 - (id)accessibilityLabel

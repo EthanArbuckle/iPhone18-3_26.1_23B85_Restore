@@ -1,13 +1,13 @@
 @interface CalDAVPrincipalResult
-+ (id)resultFromResponse:(id)a3;
++ (id)resultFromResponse:(id)response;
 - (CalDAVPrincipalResult)init;
-- (CalDAVPrincipalResult)initWithResponse:(id)a3;
+- (CalDAVPrincipalResult)initWithResponse:(id)response;
 - (NSString)emailAddress;
 - (NSString)preferredCUAddress;
 - (id)convertToDAContactSearchResultElement;
 - (id)description;
-- (void)addCUAddress:(id)a3;
-- (void)addEmail:(id)a3;
+- (void)addCUAddress:(id)address;
+- (void)addEmail:(id)email;
 @end
 
 @implementation CalDAVPrincipalResult
@@ -15,29 +15,29 @@
 - (id)convertToDAContactSearchResultElement
 {
   v3 = objc_opt_new();
-  v4 = [(CalDAVPrincipalResult *)self firstName];
-  [v3 setFirstName:v4];
+  firstName = [(CalDAVPrincipalResult *)self firstName];
+  [v3 setFirstName:firstName];
 
-  v5 = [(CalDAVPrincipalResult *)self lastName];
-  [v3 setLastName:v5];
+  lastName = [(CalDAVPrincipalResult *)self lastName];
+  [v3 setLastName:lastName];
 
-  v6 = [(CalDAVPrincipalResult *)self displayName];
-  [v3 setDisplayName:v6];
+  displayName = [(CalDAVPrincipalResult *)self displayName];
+  [v3 setDisplayName:displayName];
 
-  v7 = [(CalDAVPrincipalResult *)self emailAddress];
-  [v3 setEmailAddress:v7];
+  emailAddress = [(CalDAVPrincipalResult *)self emailAddress];
+  [v3 setEmailAddress:emailAddress];
 
-  v8 = [(CalDAVPrincipalResult *)self principalPath];
-  [v3 setPrincipalPath:v8];
+  principalPath = [(CalDAVPrincipalResult *)self principalPath];
+  [v3 setPrincipalPath:principalPath];
 
-  v9 = [(CalDAVPrincipalResult *)self preferredCUAddress];
-  [v3 setPreferredUserAddress:v9];
+  preferredCUAddress = [(CalDAVPrincipalResult *)self preferredCUAddress];
+  [v3 setPreferredUserAddress:preferredCUAddress];
 
-  v10 = [(CalDAVPrincipalResult *)self cuAddresses];
-  [v3 setCuAddresses:v10];
+  cuAddresses = [(CalDAVPrincipalResult *)self cuAddresses];
+  [v3 setCuAddresses:cuAddresses];
 
-  v11 = [v3 preferredUserAddress];
-  [v3 setIdentifierOnServer:v11];
+  preferredUserAddress = [v3 preferredUserAddress];
+  [v3 setIdentifierOnServer:preferredUserAddress];
 
   return v3;
 }
@@ -65,90 +65,90 @@
   return v3;
 }
 
-- (CalDAVPrincipalResult)initWithResponse:(id)a3
+- (CalDAVPrincipalResult)initWithResponse:(id)response
 {
   v68 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = [(CalDAVPrincipalResult *)self init];
   if (!v5)
   {
     goto LABEL_30;
   }
 
-  v6 = [v4 successfulPropertiesToValues];
+  successfulPropertiesToValues = [responseCopy successfulPropertiesToValues];
   v64[0] = MEMORY[0x277D85DD0];
   v64[1] = 3221225472;
   v64[2] = __42__CalDAVPrincipalResult_initWithResponse___block_invoke;
   v64[3] = &unk_278F17E80;
-  v7 = v6;
+  v7 = successfulPropertiesToValues;
   v65 = v7;
   v8 = MEMORY[0x24C1D0520](v64);
   v9 = [v7 CDVObjectForKeyWithNameSpace:*MEMORY[0x277CFDEF8] andName:*MEMORY[0x277CFDFC0]];
-  v10 = [v9 href];
-  v11 = v10;
+  href = [v9 href];
+  v11 = href;
   v54 = v9;
-  if (v10)
+  if (href)
   {
-    v12 = v10;
+    firstHref = href;
   }
 
   else
   {
-    v12 = [v4 firstHref];
+    firstHref = [responseCopy firstHref];
   }
 
-  v13 = v12;
+  v13 = firstHref;
 
   v53 = v13;
-  v14 = [v13 payloadAsOriginalURL];
-  v15 = [v14 da_pathWithoutTrailingRemovingSlash];
-  [(CalDAVPrincipalResult *)v5 setPrincipalPath:v15];
+  payloadAsOriginalURL = [v13 payloadAsOriginalURL];
+  da_pathWithoutTrailingRemovingSlash = [payloadAsOriginalURL da_pathWithoutTrailingRemovingSlash];
+  [(CalDAVPrincipalResult *)v5 setPrincipalPath:da_pathWithoutTrailingRemovingSlash];
 
   v16 = v8[2](v8, 1);
-  v17 = [v16 payloadAsString];
-  [(CalDAVPrincipalResult *)v5 setFirstName:v17];
+  payloadAsString = [v16 payloadAsString];
+  [(CalDAVPrincipalResult *)v5 setFirstName:payloadAsString];
 
   v18 = v8[2](v8, 2);
-  v19 = [v18 payloadAsString];
-  [(CalDAVPrincipalResult *)v5 setLastName:v19];
+  payloadAsString2 = [v18 payloadAsString];
+  [(CalDAVPrincipalResult *)v5 setLastName:payloadAsString2];
 
   v20 = v8[2](v8, 3);
-  v21 = [v20 payloadAsString];
-  [(CalDAVPrincipalResult *)v5 setDisplayName:v21];
+  payloadAsString3 = [v20 payloadAsString];
+  [(CalDAVPrincipalResult *)v5 setDisplayName:payloadAsString3];
 
   v22 = v8[2](v8, 5);
-  v23 = [v22 payloadAsString];
-  v24 = [v23 da_trimWhiteSpace];
+  payloadAsString4 = [v22 payloadAsString];
+  da_trimWhiteSpace = [payloadAsString4 da_trimWhiteSpace];
 
   v25 = v8[2](v8, 7);
-  v26 = [v25 payloadAsString];
-  v27 = [v26 da_trimWhiteSpace];
+  payloadAsString5 = [v25 payloadAsString];
+  da_trimWhiteSpace2 = [payloadAsString5 da_trimWhiteSpace];
 
   [(CalDAVPrincipalResult *)v5 setResultType:CalDAVPrincipalResultType_Unknown];
-  if (v24)
+  if (da_trimWhiteSpace)
   {
-    [(CalDAVPrincipalResult *)v5 setResultType:v24];
+    [(CalDAVPrincipalResult *)v5 setResultType:da_trimWhiteSpace];
   }
 
-  else if (v27)
+  else if (da_trimWhiteSpace2)
   {
-    v28 = [MEMORY[0x277CF7020] resultTypeForRecordType:v27];
+    v28 = [MEMORY[0x277CF7020] resultTypeForRecordType:da_trimWhiteSpace2];
     [(CalDAVPrincipalResult *)v5 setResultType:v28];
   }
 
-  v52 = v27;
+  v52 = da_trimWhiteSpace2;
   v29 = v8[2](v8, 4);
   objc_opt_class();
   v55 = v7;
   if (objc_opt_isKindOfClass())
   {
-    v51 = v4;
+    v51 = responseCopy;
     v62 = 0u;
     v63 = 0u;
     v60 = 0u;
     v61 = 0u;
-    v30 = [v29 emailAddresses];
-    v31 = [v30 countByEnumeratingWithState:&v60 objects:v67 count:16];
+    emailAddresses = [v29 emailAddresses];
+    v31 = [emailAddresses countByEnumeratingWithState:&v60 objects:v67 count:16];
     if (v31)
     {
       v32 = v31;
@@ -159,20 +159,20 @@
         {
           if (*v61 != v33)
           {
-            objc_enumerationMutation(v30);
+            objc_enumerationMutation(emailAddresses);
           }
 
-          v35 = [*(*(&v60 + 1) + 8 * i) payloadAsString];
-          [(CalDAVPrincipalResult *)v5 addEmail:v35];
+          payloadAsString6 = [*(*(&v60 + 1) + 8 * i) payloadAsString];
+          [(CalDAVPrincipalResult *)v5 addEmail:payloadAsString6];
         }
 
-        v32 = [v30 countByEnumeratingWithState:&v60 objects:v67 count:16];
+        v32 = [emailAddresses countByEnumeratingWithState:&v60 objects:v67 count:16];
       }
 
       while (v32);
     }
 
-    v4 = v51;
+    responseCopy = v51;
     v7 = v55;
   }
 
@@ -181,13 +181,13 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v37 = v4;
+    v37 = responseCopy;
     v58 = 0u;
     v59 = 0u;
     v56 = 0u;
     v57 = 0u;
-    v38 = [v36 hrefs];
-    v39 = [v38 countByEnumeratingWithState:&v56 objects:v66 count:16];
+    hrefs = [v36 hrefs];
+    v39 = [hrefs countByEnumeratingWithState:&v56 objects:v66 count:16];
     if (v39)
     {
       v40 = v39;
@@ -198,20 +198,20 @@
         {
           if (*v57 != v41)
           {
-            objc_enumerationMutation(v38);
+            objc_enumerationMutation(hrefs);
           }
 
-          v43 = [*(*(&v56 + 1) + 8 * j) payloadAsString];
-          [(CalDAVPrincipalResult *)v5 addCUAddress:v43];
+          payloadAsString7 = [*(*(&v56 + 1) + 8 * j) payloadAsString];
+          [(CalDAVPrincipalResult *)v5 addCUAddress:payloadAsString7];
         }
 
-        v40 = [v38 countByEnumeratingWithState:&v56 objects:v66 count:16];
+        v40 = [hrefs countByEnumeratingWithState:&v56 objects:v66 count:16];
       }
 
       while (v40);
     }
 
-    v4 = v37;
+    responseCopy = v37;
     v44 = v54;
     v7 = v55;
     v45 = v53;
@@ -228,9 +228,9 @@
     }
   }
 
-  v47 = [(CalDAVPrincipalResult *)v5 principalPath];
+  principalPath = [(CalDAVPrincipalResult *)v5 principalPath];
 
-  if (!v47)
+  if (!principalPath)
   {
     v48 = 0;
   }
@@ -253,31 +253,31 @@ id __42__CalDAVPrincipalResult_initWithResponse___block_invoke(uint64_t a1, uint
   return v4;
 }
 
-+ (id)resultFromResponse:(id)a3
++ (id)resultFromResponse:(id)response
 {
-  v3 = a3;
-  v4 = [[CalDAVPrincipalResult alloc] initWithResponse:v3];
+  responseCopy = response;
+  v4 = [[CalDAVPrincipalResult alloc] initWithResponse:responseCopy];
 
   return v4;
 }
 
-- (void)addCUAddress:(id)a3
+- (void)addCUAddress:(id)address
 {
-  v5 = a3;
-  if ([v5 length])
+  addressCopy = address;
+  if ([addressCopy length])
   {
-    v4 = [(CalDAVPrincipalResult *)self mCUAddresses];
-    [v4 addObject:v5];
+    mCUAddresses = [(CalDAVPrincipalResult *)self mCUAddresses];
+    [mCUAddresses addObject:addressCopy];
   }
 }
 
-- (void)addEmail:(id)a3
+- (void)addEmail:(id)email
 {
-  v5 = a3;
-  if ([v5 length])
+  emailCopy = email;
+  if ([emailCopy length])
   {
-    v4 = [(CalDAVPrincipalResult *)self mEmailAddresses];
-    [v4 addObject:v5];
+    mEmailAddresses = [(CalDAVPrincipalResult *)self mEmailAddresses];
+    [mEmailAddresses addObject:emailCopy];
   }
 }
 
@@ -288,12 +288,12 @@ id __42__CalDAVPrincipalResult_initWithResponse___block_invoke(uint64_t a1, uint
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [(CalDAVPrincipalResult *)self cuAddresses];
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  cuAddresses = [(CalDAVPrincipalResult *)self cuAddresses];
+  v4 = [cuAddresses countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
-    v6 = 0;
+    cuAddresses2 = 0;
     v7 = *v15;
 LABEL_3:
     v8 = 0;
@@ -301,20 +301,20 @@ LABEL_3:
     {
       if (*v15 != v7)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(cuAddresses);
       }
 
       v9 = *(*(&v14 + 1) + 8 * v8);
-      if (!v6)
+      if (!cuAddresses2)
       {
         if ([*(*(&v14 + 1) + 8 * v8) da_hasPrefixCaseInsensitive:@"urn:uuid:"])
         {
-          v6 = v9;
+          cuAddresses2 = v9;
         }
 
         else
         {
-          v6 = 0;
+          cuAddresses2 = 0;
         }
       }
 
@@ -325,7 +325,7 @@ LABEL_3:
 
       if (v5 == ++v8)
       {
-        v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v5 = [cuAddresses countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v5)
         {
           goto LABEL_3;
@@ -335,40 +335,40 @@ LABEL_3:
       }
     }
 
-    v10 = v9;
+    principalPath = v9;
 
-    if (v10)
+    if (principalPath)
     {
       goto LABEL_22;
     }
 
-    if (!v6)
+    if (!cuAddresses2)
     {
 LABEL_19:
-      v6 = [(CalDAVPrincipalResult *)self cuAddresses];
-      if ([v6 count])
+      cuAddresses2 = [(CalDAVPrincipalResult *)self cuAddresses];
+      if ([cuAddresses2 count])
       {
-        v11 = [(CalDAVPrincipalResult *)self cuAddresses];
-        v10 = [v11 objectAtIndexedSubscript:0];
+        cuAddresses3 = [(CalDAVPrincipalResult *)self cuAddresses];
+        principalPath = [cuAddresses3 objectAtIndexedSubscript:0];
       }
 
       else
       {
-        v10 = [(CalDAVPrincipalResult *)self principalPath];
+        principalPath = [(CalDAVPrincipalResult *)self principalPath];
       }
 
 LABEL_22:
 
-      v6 = v10;
+      cuAddresses2 = principalPath;
     }
   }
 
   else
   {
-    v6 = 0;
+    cuAddresses2 = 0;
 LABEL_18:
 
-    if (!v6)
+    if (!cuAddresses2)
     {
       goto LABEL_19;
     }
@@ -376,27 +376,27 @@ LABEL_18:
 
   v12 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return cuAddresses2;
 }
 
 - (NSString)emailAddress
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [(CalDAVPrincipalResult *)self emailAddresses];
-  v4 = [v3 count];
+  emailAddresses = [(CalDAVPrincipalResult *)self emailAddresses];
+  v4 = [emailAddresses count];
 
   if (v4)
   {
-    v5 = [(CalDAVPrincipalResult *)self emailAddresses];
-    v6 = [v5 objectAtIndexedSubscript:0];
+    emailAddresses2 = [(CalDAVPrincipalResult *)self emailAddresses];
+    stringRemovingMailto = [emailAddresses2 objectAtIndexedSubscript:0];
 LABEL_3:
-    v7 = v6;
+    v7 = stringRemovingMailto;
   }
 
   else
   {
-    v8 = [(CalDAVPrincipalResult *)self cuAddresses];
-    v9 = [v8 count];
+    cuAddresses = [(CalDAVPrincipalResult *)self cuAddresses];
+    v9 = [cuAddresses count];
 
     if (v9)
     {
@@ -404,8 +404,8 @@ LABEL_3:
       v20 = 0u;
       v17 = 0u;
       v18 = 0u;
-      v5 = [(CalDAVPrincipalResult *)self cuAddresses];
-      v10 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      emailAddresses2 = [(CalDAVPrincipalResult *)self cuAddresses];
+      v10 = [emailAddresses2 countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v10)
       {
         v11 = v10;
@@ -416,18 +416,18 @@ LABEL_3:
           {
             if (*v18 != v12)
             {
-              objc_enumerationMutation(v5);
+              objc_enumerationMutation(emailAddresses2);
             }
 
             v14 = *(*(&v17 + 1) + 8 * i);
             if ([v14 hasMailto])
             {
-              v6 = [v14 stringRemovingMailto];
+              stringRemovingMailto = [v14 stringRemovingMailto];
               goto LABEL_3;
             }
           }
 
-          v11 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+          v11 = [emailAddresses2 countByEnumeratingWithState:&v17 objects:v21 count:16];
           if (v11)
           {
             continue;
@@ -449,9 +449,9 @@ LABEL_3:
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(CalDAVPrincipalResult *)self displayName];
-  v5 = [(CalDAVPrincipalResult *)self emailAddress];
-  if (v5)
+  displayName = [(CalDAVPrincipalResult *)self displayName];
+  emailAddress = [(CalDAVPrincipalResult *)self emailAddress];
+  if (emailAddress)
   {
     [(CalDAVPrincipalResult *)self emailAddress];
   }
@@ -461,8 +461,8 @@ LABEL_3:
     [(CalDAVPrincipalResult *)self preferredCUAddress];
   }
   v6 = ;
-  v7 = [(CalDAVPrincipalResult *)self resultType];
-  v8 = [v3 stringWithFormat:@"%@ <%@> (%@)", v4, v6, v7];
+  resultType = [(CalDAVPrincipalResult *)self resultType];
+  v8 = [v3 stringWithFormat:@"%@ <%@> (%@)", displayName, v6, resultType];
 
   return v8;
 }

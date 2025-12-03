@@ -32,15 +32,15 @@
 
 - (id)getDurationOfMOEventArray
 {
-  v3 = [(NSArray *)self sortMOEventArrayByStartDate];
-  v4 = [v3 firstObject];
+  sortMOEventArrayByStartDate = [(NSArray *)self sortMOEventArrayByStartDate];
+  firstObject = [sortMOEventArrayByStartDate firstObject];
 
-  v5 = [v4 startDate];
-  v6 = [(NSArray *)self sortMOEventArrayByEndDate];
-  v7 = [v6 lastObject];
+  startDate = [firstObject startDate];
+  sortMOEventArrayByEndDate = [(NSArray *)self sortMOEventArrayByEndDate];
+  lastObject = [sortMOEventArrayByEndDate lastObject];
 
-  v8 = [v7 endDate];
-  v9 = [[NSDateInterval alloc] initWithStartDate:v5 endDate:v8];
+  endDate = [lastObject endDate];
+  v9 = [[NSDateInterval alloc] initWithStartDate:startDate endDate:endDate];
 
   return v9;
 }
@@ -67,15 +67,15 @@
 
 - (id)getTimeSpanOfMOEventBundleArray
 {
-  v3 = [(NSArray *)self sortMOEventBundleArrayByStartDate];
-  v4 = [v3 firstObject];
+  sortMOEventBundleArrayByStartDate = [(NSArray *)self sortMOEventBundleArrayByStartDate];
+  firstObject = [sortMOEventBundleArrayByStartDate firstObject];
 
-  v5 = [v4 startDate];
-  v6 = [(NSArray *)self sortMOEventBundleArrayByEndDate];
-  v7 = [v6 lastObject];
+  startDate = [firstObject startDate];
+  sortMOEventBundleArrayByEndDate = [(NSArray *)self sortMOEventBundleArrayByEndDate];
+  lastObject = [sortMOEventBundleArrayByEndDate lastObject];
 
-  v8 = [v7 endDate];
-  v9 = [[NSDateInterval alloc] initWithStartDate:v5 endDate:v8];
+  endDate = [lastObject endDate];
+  v9 = [[NSDateInterval alloc] initWithStartDate:startDate endDate:endDate];
 
   return v9;
 }
@@ -127,8 +127,8 @@ int64_t __46__NSArray_MOExtensions__sortBundlesByTimespan__block_invoke(id a1, M
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v2 = self;
-  v3 = [(NSArray *)v2 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  selfCopy = self;
+  v3 = [(NSArray *)selfCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v3)
   {
     v4 = v3;
@@ -140,19 +140,19 @@ int64_t __46__NSArray_MOExtensions__sortBundlesByTimespan__block_invoke(id a1, M
       {
         if (*v16 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(selfCopy);
         }
 
         v8 = *(*(&v15 + 1) + 8 * i);
         v9 = [NSDateInterval alloc];
-        v10 = [v8 startDate];
-        v11 = [v8 endDate];
-        v12 = [v9 initWithStartDate:v10 endDate:v11];
+        startDate = [v8 startDate];
+        endDate = [v8 endDate];
+        v12 = [v9 initWithStartDate:startDate endDate:endDate];
         [v12 duration];
         v6 = v6 + v13;
       }
 
-      v4 = [(NSArray *)v2 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v4 = [(NSArray *)selfCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v4);

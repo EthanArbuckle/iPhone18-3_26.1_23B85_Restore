@@ -1,27 +1,27 @@
 @interface WFKnownNetworksManager
-- (BOOL)removeNetworks:(id)a3;
-- (WFKnownNetworksManager)initWithInterface:(id)a3;
+- (BOOL)removeNetworks:(id)networks;
+- (WFKnownNetworksManager)initWithInterface:(id)interface;
 - (id)allEditableNetworkProfiles;
 - (id)allNonEditableNetworkProfiles;
-- (id)passwordForNetworksWithSSID:(id)a3;
-- (id)privateAddressConfigForNetworkName:(id)a3;
+- (id)passwordForNetworksWithSSID:(id)d;
+- (id)privateAddressConfigForNetworkName:(id)name;
 @end
 
 @implementation WFKnownNetworksManager
 
-- (WFKnownNetworksManager)initWithInterface:(id)a3
+- (WFKnownNetworksManager)initWithInterface:(id)interface
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  interfaceCopy = interface;
   v16.receiver = self;
   v16.super_class = WFKnownNetworksManager;
   v6 = [(WFKnownNetworksManager *)&v16 init];
   v7 = v6;
   if (v6)
   {
-    if (v5)
+    if (interfaceCopy)
     {
-      objc_storeStrong(&v6->_interface, a3);
+      objc_storeStrong(&v6->_interface, interface);
     }
 
     else
@@ -58,12 +58,12 @@
 {
   v17 = *MEMORY[0x277D85DE8];
   v3 = objc_opt_new();
-  v4 = [(WFKnownNetworksManager *)self _getAllKnownProfiles];
+  _getAllKnownProfiles = [(WFKnownNetworksManager *)self _getAllKnownProfiles];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [_getAllKnownProfiles countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -74,7 +74,7 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_getAllKnownProfiles);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -84,7 +84,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [_getAllKnownProfiles countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -99,12 +99,12 @@
 {
   v17 = *MEMORY[0x277D85DE8];
   v3 = objc_opt_new();
-  v4 = [(WFKnownNetworksManager *)self _getAllKnownProfiles];
+  _getAllKnownProfiles = [(WFKnownNetworksManager *)self _getAllKnownProfiles];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [_getAllKnownProfiles countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -115,7 +115,7 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_getAllKnownProfiles);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -125,7 +125,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [_getAllKnownProfiles countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -136,10 +136,10 @@
   return v3;
 }
 
-- (BOOL)removeNetworks:(id)a3
+- (BOOL)removeNetworks:(id)networks
 {
   v43 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  networksCopy = networks;
   v4 = WFLogForCategory(0);
   v5 = OSLogForWFLogLevel(3uLL);
   if (WFCurrentLogLevel() >= 3 && v4)
@@ -148,23 +148,23 @@
     if (os_log_type_enabled(v6, v5))
     {
       *buf = 134217984;
-      v39 = [v3 count];
+      v39 = [networksCopy count];
       _os_log_impl(&dword_273ECD000, v6, v5, "Trying to forget %lu networks.", buf, 0xCu);
     }
   }
 
-  if (v3)
+  if (networksCopy)
   {
     v36 = 0u;
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v7 = v3;
+    v7 = networksCopy;
     v8 = [v7 countByEnumeratingWithState:&v34 objects:v42 count:16];
     if (v8)
     {
       v9 = v8;
-      v30 = v3;
+      v30 = networksCopy;
       v10 = 0;
       v11 = *v35;
       v12 = 1;
@@ -199,9 +199,9 @@
             v20 = v18;
             if (os_log_type_enabled(v20, v19))
             {
-              v21 = [v15 networkName];
+              networkName = [v15 networkName];
               *buf = 138412290;
-              v39 = v21;
+              v39 = networkName;
               _os_log_impl(&dword_273ECD000, v20, v19, "Trying to forget network: %@", buf, 0xCu);
             }
           }
@@ -220,11 +220,11 @@
               v25 = v23;
               if (os_log_type_enabled(v25, v24))
               {
-                v26 = [v15 networkName];
+                networkName2 = [v15 networkName];
                 *buf = 138412546;
                 v39 = v10;
                 v40 = 2112;
-                v41 = v26;
+                v41 = networkName2;
                 _os_log_impl(&dword_273ECD000, v25, v24, "Error:%@ happen when trying to remove network profile for %@", buf, 0x16u);
               }
             }
@@ -243,7 +243,7 @@
 
       while (v9);
 
-      v3 = v30;
+      networksCopy = v30;
     }
 
     else
@@ -273,10 +273,10 @@
   return v12 & 1;
 }
 
-- (id)passwordForNetworksWithSSID:(id)a3
+- (id)passwordForNetworksWithSSID:(id)d
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   [(WFKnownNetworksManager *)self _getAllKnownProfiles];
   v19 = 0u;
   v20 = 0u;
@@ -297,8 +297,8 @@ LABEL_3:
       }
 
       v10 = *(*(&v19 + 1) + 8 * v9);
-      v11 = [v10 networkName];
-      v12 = [v11 isEqualToString:v4];
+      networkName = [v10 networkName];
+      v12 = [networkName isEqualToString:dCopy];
 
       if (v12)
       {
@@ -325,7 +325,7 @@ LABEL_3:
     }
 
     v14 = [[WFNetworkProfile alloc] initWithCoreWiFiProfile:v13];
-    v15 = [(WFNetworkProfile *)v14 password];
+    password = [(WFNetworkProfile *)v14 password];
   }
 
   else
@@ -335,33 +335,33 @@ LABEL_9:
 LABEL_12:
     v13 = WFLogForCategory(0);
     v16 = OSLogForWFLogLevel(1uLL);
-    v15 = 0;
+    password = 0;
     if (WFCurrentLogLevel() && v13)
     {
       if (os_log_type_enabled(v13, v16))
       {
         *buf = 138412290;
-        v24 = v4;
+        v24 = dCopy;
         _os_log_impl(&dword_273ECD000, v13, v16, "failed to find password for network '%@'", buf, 0xCu);
       }
 
-      v15 = 0;
+      password = 0;
     }
   }
 
   v17 = *MEMORY[0x277D85DE8];
 
-  return v15;
+  return password;
 }
 
-- (id)privateAddressConfigForNetworkName:(id)a3
+- (id)privateAddressConfigForNetworkName:(id)name
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WFKnownNetworksManager *)self privateAddressConfigManager];
-  v6 = [v5 privateAddressConfig];
+  nameCopy = name;
+  privateAddressConfigManager = [(WFKnownNetworksManager *)self privateAddressConfigManager];
+  privateAddressConfig = [privateAddressConfigManager privateAddressConfig];
 
-  if (!v6)
+  if (!privateAddressConfig)
   {
     [WFKnownNetworksManager privateAddressConfigForNetworkName:?];
 LABEL_12:
@@ -374,14 +374,14 @@ LABEL_12:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = v6;
+  v7 = privateAddressConfig;
   v8 = [v7 countByEnumeratingWithState:&v18 objects:v23 count:16];
   if (!v8)
   {
 LABEL_10:
 
 LABEL_11:
-    [(WFKnownNetworksManager *)v4 privateAddressConfigForNetworkName:?];
+    [(WFKnownNetworksManager *)nameCopy privateAddressConfigForNetworkName:?];
     goto LABEL_12;
   }
 
@@ -398,7 +398,7 @@ LABEL_4:
 
     v12 = *(*(&v18 + 1) + 8 * v11);
     v13 = [v12 objectForKeyedSubscript:{@"SSID_STR", v18}];
-    v14 = [v13 isEqualToString:v4];
+    v14 = [v13 isEqualToString:nameCopy];
 
     if (v14)
     {

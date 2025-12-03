@@ -1,31 +1,31 @@
 @interface CalDAVCalendarServerResourceChangeUpdatedElement
 - (id)copyParseRules;
-- (void)addCalendarChange:(id)a3;
+- (void)addCalendarChange:(id)change;
 @end
 
 @implementation CalDAVCalendarServerResourceChangeUpdatedElement
 
-- (void)addCalendarChange:(id)a3
+- (void)addCalendarChange:(id)change
 {
-  v4 = a3;
-  v5 = [(CalDAVCalendarServerResourceChangeUpdatedElement *)self calendarChanges];
+  changeCopy = change;
+  calendarChanges = [(CalDAVCalendarServerResourceChangeUpdatedElement *)self calendarChanges];
 
-  if (!v5)
+  if (!calendarChanges)
   {
     v6 = [MEMORY[0x277CBEB58] setWithCapacity:1];
     [(CalDAVCalendarServerResourceChangeUpdatedElement *)self setCalendarChanges:v6];
   }
 
-  v7 = [(CalDAVCalendarServerResourceChangeUpdatedElement *)self calendarChanges];
-  [v7 addObject:v4];
+  calendarChanges2 = [(CalDAVCalendarServerResourceChangeUpdatedElement *)self calendarChanges];
+  [calendarChanges2 addObject:changeCopy];
 }
 
 - (id)copyParseRules
 {
   v16.receiver = self;
   v16.super_class = CalDAVCalendarServerResourceChangeUpdatedElement;
-  v15 = [(CalDAVCalendarServerResourceChangeElement *)&v16 copyParseRules];
-  v2 = [v15 mutableCopy];
+  copyParseRules = [(CalDAVCalendarServerResourceChangeElement *)&v16 copyParseRules];
+  v2 = [copyParseRules mutableCopy];
   v14 = objc_alloc(MEMORY[0x277CBEAC0]);
   v3 = *MEMORY[0x277CFDE90];
   v4 = [MEMORY[0x277CFDC50] ruleWithMinimumNumber:0 maximumNumber:1 nameSpace:*MEMORY[0x277CFDE90] elementName:@"content" objectClass:objc_opt_class() setterMethod:sel_addContentItem_];

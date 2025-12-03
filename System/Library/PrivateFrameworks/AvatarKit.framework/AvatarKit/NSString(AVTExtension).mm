@@ -10,16 +10,16 @@
   v27 = a3;
   v25 = a5;
   v28 = NSTemporaryDirectory();
-  v8 = [MEMORY[0x1E696AFB0] UUID];
-  v29 = [v8 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
-  v9 = [v29 stringByAppendingString:@"-old.shader"];
+  v9 = [uUIDString stringByAppendingString:@"-old.shader"];
   v26 = [v28 stringByAppendingPathComponent:v9];
 
-  v10 = [v29 stringByAppendingString:@"-new.shader"];
+  v10 = [uUIDString stringByAppendingString:@"-new.shader"];
   v11 = [v28 stringByAppendingPathComponent:v10];
 
-  [a1 writeToFile:v26 atomically:1 encoding:4 error:0];
+  [self writeToFile:v26 atomically:1 encoding:4 error:0];
   [v27 writeToFile:v11 atomically:1 encoding:4 error:0];
   v31 = 0;
   v32 = &v31;
@@ -31,15 +31,15 @@
   v30[3] = &unk_1E7F48E40;
   v30[4] = &v31;
   v12 = MEMORY[0x1BFB0EC20](v30);
-  [a1 enumerateLinesUsingBlock:v12];
+  [self enumerateLinesUsingBlock:v12];
   [v27 enumerateLinesUsingBlock:v12];
   v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"--width=%llu", v32[3]];
-  v14 = [MEMORY[0x1E696AE00] pipe];
-  v15 = [MEMORY[0x1E696AE00] pipe];
+  pipe = [MEMORY[0x1E696AE00] pipe];
+  pipe2 = [MEMORY[0x1E696AE00] pipe];
   v16 = objc_alloc_init(MEMORY[0x1E696AED8]);
   [v16 setLaunchPath:@"/usr/bin/sdiff"];
-  [v16 setStandardOutput:v14];
-  [v16 setStandardError:v15];
+  [v16 setStandardOutput:pipe];
+  [v16 setStandardError:pipe2];
   if (a4)
   {
     v36[0] = @"--expand-tabs";
@@ -63,16 +63,16 @@
 
   [v16 launch];
   [v16 waitUntilExit];
-  v18 = [v14 fileHandleForReading];
-  v19 = [v18 readDataToEndOfFile];
+  fileHandleForReading = [pipe fileHandleForReading];
+  readDataToEndOfFile = [fileHandleForReading readDataToEndOfFile];
 
-  v20 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v19 encoding:4];
-  v21 = [v15 fileHandleForReading];
-  v22 = [v21 readDataToEndOfFile];
+  v20 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:readDataToEndOfFile encoding:4];
+  fileHandleForReading2 = [pipe2 fileHandleForReading];
+  readDataToEndOfFile2 = [fileHandleForReading2 readDataToEndOfFile];
 
-  if ([v22 length])
+  if ([readDataToEndOfFile2 length])
   {
-    v23 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v22 encoding:4];
+    v23 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:readDataToEndOfFile2 encoding:4];
     NSLog(&stru_1F39A9678.isa, v23);
     v25[2](v25, 0, v23);
   }

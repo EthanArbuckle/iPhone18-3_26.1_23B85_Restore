@@ -10,8 +10,8 @@
   v6 = a3;
   v7 = a4;
   v8 = [v6 mutableCopy];
-  [v8 minusSet:a1];
-  v9 = [a1 mutableCopy];
+  [v8 minusSet:self];
+  v9 = [self mutableCopy];
   [v9 minusSet:v6];
   v27 = 0u;
   v28 = 0u;

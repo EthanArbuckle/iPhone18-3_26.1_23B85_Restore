@@ -1,5 +1,5 @@
 @interface _AFSpeechRecordingAlertPolicyMutation
-- (_AFSpeechRecordingAlertPolicyMutation)initWithBase:(id)a3;
+- (_AFSpeechRecordingAlertPolicyMutation)initWithBase:(id)base;
 - (id)getStartingAlertBehavior;
 - (id)getStoppedAlertBehavior;
 - (id)getStoppedWithErrorAlertBehavior;
@@ -11,57 +11,57 @@
 {
   if ((*&self->_mutationFlags & 8) != 0)
   {
-    v2 = self->_stoppedWithErrorAlertBehavior;
+    stoppedWithErrorAlertBehavior = self->_stoppedWithErrorAlertBehavior;
   }
 
   else
   {
-    v2 = [(AFSpeechRecordingAlertPolicy *)self->_base stoppedWithErrorAlertBehavior];
+    stoppedWithErrorAlertBehavior = [(AFSpeechRecordingAlertPolicy *)self->_base stoppedWithErrorAlertBehavior];
   }
 
-  return v2;
+  return stoppedWithErrorAlertBehavior;
 }
 
 - (id)getStoppedAlertBehavior
 {
   if ((*&self->_mutationFlags & 4) != 0)
   {
-    v2 = self->_stoppedAlertBehavior;
+    stoppedAlertBehavior = self->_stoppedAlertBehavior;
   }
 
   else
   {
-    v2 = [(AFSpeechRecordingAlertPolicy *)self->_base stoppedAlertBehavior];
+    stoppedAlertBehavior = [(AFSpeechRecordingAlertPolicy *)self->_base stoppedAlertBehavior];
   }
 
-  return v2;
+  return stoppedAlertBehavior;
 }
 
 - (id)getStartingAlertBehavior
 {
   if ((*&self->_mutationFlags & 2) != 0)
   {
-    v2 = self->_startingAlertBehavior;
+    startingAlertBehavior = self->_startingAlertBehavior;
   }
 
   else
   {
-    v2 = [(AFSpeechRecordingAlertPolicy *)self->_base startingAlertBehavior];
+    startingAlertBehavior = [(AFSpeechRecordingAlertPolicy *)self->_base startingAlertBehavior];
   }
 
-  return v2;
+  return startingAlertBehavior;
 }
 
-- (_AFSpeechRecordingAlertPolicyMutation)initWithBase:(id)a3
+- (_AFSpeechRecordingAlertPolicyMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _AFSpeechRecordingAlertPolicyMutation;
   v6 = [(_AFSpeechRecordingAlertPolicyMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

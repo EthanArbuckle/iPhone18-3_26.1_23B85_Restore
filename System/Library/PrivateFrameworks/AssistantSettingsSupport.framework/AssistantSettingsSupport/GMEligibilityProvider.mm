@@ -6,13 +6,13 @@
 - (_TtP24AssistantSettingsSupport29GMSpecifierControllerProcotol_)gmSpecifierController;
 - (int64_t)eligibility;
 - (int64_t)requestState;
-- (void)fetchStatusAndForceDownloadIfNeededWithPresenter:(id)a3;
-- (void)fetchStatusWithPresenter:(id)a3;
-- (void)setEligibility:(int64_t)a3;
-- (void)setPresenter:(id)a3;
-- (void)setRequestState:(int64_t)a3;
+- (void)fetchStatusAndForceDownloadIfNeededWithPresenter:(id)presenter;
+- (void)fetchStatusWithPresenter:(id)presenter;
+- (void)setEligibility:(int64_t)eligibility;
+- (void)setPresenter:(id)presenter;
+- (void)setRequestState:(int64_t)state;
 - (void)updateADMState;
-- (void)updateWithContext:(int64_t)a3;
+- (void)updateWithContext:(int64_t)context;
 @end
 
 @implementation GMEligibilityProvider
@@ -24,11 +24,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setEligibility:(int64_t)a3
+- (void)setEligibility:(int64_t)eligibility
 {
   v5 = OBJC_IVAR____TtC24AssistantSettingsSupport21GMEligibilityProvider_eligibility;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = eligibility;
 }
 
 - (int64_t)requestState
@@ -38,11 +38,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setRequestState:(int64_t)a3
+- (void)setRequestState:(int64_t)state
 {
   v5 = OBJC_IVAR____TtC24AssistantSettingsSupport21GMEligibilityProvider_requestState;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = state;
 }
 
 + (_TtC24AssistantSettingsSupport21GMEligibilityProvider)shared
@@ -64,13 +64,13 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setPresenter:(id)a3
+- (void)setPresenter:(id)presenter
 {
   v5 = OBJC_IVAR____TtC24AssistantSettingsSupport21GMEligibilityProvider_presenter;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = presenter;
+  presenterCopy = presenter;
 }
 
 - (_TtP24AssistantSettingsSupport29GMSpecifierControllerProcotol_)gmSpecifierController
@@ -103,30 +103,30 @@
   }
 }
 
-- (void)fetchStatusAndForceDownloadIfNeededWithPresenter:(id)a3
+- (void)fetchStatusAndForceDownloadIfNeededWithPresenter:(id)presenter
 {
   *(&self->super.isa + OBJC_IVAR____TtC24AssistantSettingsSupport21GMEligibilityProvider_shouldForceDownloadIfNeededOnFetch) = 1;
-  v5 = a3;
-  v6 = self;
-  sub_2414093A8(a3);
+  presenterCopy = presenter;
+  selfCopy = self;
+  sub_2414093A8(presenter);
 }
 
-- (void)fetchStatusWithPresenter:(id)a3
+- (void)fetchStatusWithPresenter:(id)presenter
 {
-  v5 = a3;
-  v6 = self;
-  sub_2414093A8(a3);
+  presenterCopy = presenter;
+  selfCopy = self;
+  sub_2414093A8(presenter);
 }
 
-- (void)updateWithContext:(int64_t)a3
+- (void)updateWithContext:(int64_t)context
 {
-  v4 = self;
-  sub_24140A3EC(a3);
+  selfCopy = self;
+  sub_24140A3EC(context);
 }
 
 - (void)updateADMState
 {
-  v2 = self;
+  selfCopy = self;
   sub_24140A8F4();
 }
 

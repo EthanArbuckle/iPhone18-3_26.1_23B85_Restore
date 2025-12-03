@@ -2,14 +2,14 @@
 - (UIView)view;
 - (UIViewController)viewController;
 - (WFAlert)presentedAlert;
-- (WFConcreteUIKitUserInterface)initWithView:(id)a3 viewController:(id)a4;
-- (id)presentationAnchorForActionUserInterface:(id)a3;
-- (void)actionUserInterface:(id)a3 showViewControllerInPlatter:(id)a4;
-- (void)dismissPlatterForActionUserInterface:(id)a3 completionHandler:(id)a4;
-- (void)dismissPresentedContentWithCompletionHandler:(id)a3;
-- (void)presentAlert:(id)a3;
-- (void)requestActionInterfacePresentationForActionClassName:(id)a3 classNamesByType:(id)a4 completionHandler:(id)a5;
-- (void)requestAuthorizationWithConfiguration:(id)a3 completionHandler:(id)a4;
+- (WFConcreteUIKitUserInterface)initWithView:(id)view viewController:(id)controller;
+- (id)presentationAnchorForActionUserInterface:(id)interface;
+- (void)actionUserInterface:(id)interface showViewControllerInPlatter:(id)platter;
+- (void)dismissPlatterForActionUserInterface:(id)interface completionHandler:(id)handler;
+- (void)dismissPresentedContentWithCompletionHandler:(id)handler;
+- (void)presentAlert:(id)alert;
+- (void)requestActionInterfacePresentationForActionClassName:(id)name classNamesByType:(id)type completionHandler:(id)handler;
+- (void)requestAuthorizationWithConfiguration:(id)configuration completionHandler:(id)handler;
 @end
 
 @implementation WFConcreteUIKitUserInterface
@@ -28,26 +28,26 @@
   return WeakRetained;
 }
 
-- (void)dismissPlatterForActionUserInterface:(id)a3 completionHandler:(id)a4
+- (void)dismissPlatterForActionUserInterface:(id)interface completionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = [(WFConcreteUIKitUserInterface *)self presentedViewController];
+  handlerCopy = handler;
+  presentedViewController = [(WFConcreteUIKitUserInterface *)self presentedViewController];
 
-  if (v6)
+  if (presentedViewController)
   {
-    v7 = [(WFConcreteUIKitUserInterface *)self presentedViewController];
+    presentedViewController2 = [(WFConcreteUIKitUserInterface *)self presentedViewController];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __87__WFConcreteUIKitUserInterface_dismissPlatterForActionUserInterface_completionHandler___block_invoke;
     v8[3] = &unk_279EF51F0;
     v8[4] = self;
-    v9 = v5;
-    [v7 dismissViewControllerAnimated:1 completion:v8];
+    v9 = handlerCopy;
+    [presentedViewController2 dismissViewControllerAnimated:1 completion:v8];
   }
 
   else
   {
-    v5[2](v5);
+    handlerCopy[2](handlerCopy);
   }
 }
 
@@ -59,71 +59,71 @@ uint64_t __87__WFConcreteUIKitUserInterface_dismissPlatterForActionUserInterface
   return v2();
 }
 
-- (void)actionUserInterface:(id)a3 showViewControllerInPlatter:(id)a4
+- (void)actionUserInterface:(id)interface showViewControllerInPlatter:(id)platter
 {
-  v6 = a4;
-  v5 = [(WFConcreteUIKitUserInterface *)self viewController];
-  [v5 presentViewController:v6 animated:1 completion:0];
+  platterCopy = platter;
+  viewController = [(WFConcreteUIKitUserInterface *)self viewController];
+  [viewController presentViewController:platterCopy animated:1 completion:0];
 
-  [(WFConcreteUIKitUserInterface *)self setPresentedViewController:v6];
+  [(WFConcreteUIKitUserInterface *)self setPresentedViewController:platterCopy];
 }
 
-- (id)presentationAnchorForActionUserInterface:(id)a3
+- (id)presentationAnchorForActionUserInterface:(id)interface
 {
-  v3 = [(WFConcreteUIKitUserInterface *)self view];
-  v4 = [v3 window];
+  view = [(WFConcreteUIKitUserInterface *)self view];
+  window = [view window];
 
-  return v4;
+  return window;
 }
 
-- (void)requestActionInterfacePresentationForActionClassName:(id)a3 classNamesByType:(id)a4 completionHandler:(id)a5
+- (void)requestActionInterfacePresentationForActionClassName:(id)name classNamesByType:(id)type completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  handlerCopy = handler;
+  typeCopy = type;
+  nameCopy = name;
   v11 = [WFActionUserInterfaceListener alloc];
-  v14 = [(WFActionUserInterfaceListener *)v11 initWithUserInterfaceType:*MEMORY[0x277CFC710] actionClassName:v10 classNamesByType:v9];
+  v14 = [(WFActionUserInterfaceListener *)v11 initWithUserInterfaceType:*MEMORY[0x277CFC710] actionClassName:nameCopy classNamesByType:typeCopy];
 
   if (v14)
   {
-    v12 = [(WFActionUserInterfaceListener *)v14 actionInterface];
-    [v12 setDelegate:self];
+    actionInterface = [(WFActionUserInterfaceListener *)v14 actionInterface];
+    [actionInterface setDelegate:self];
 
     [(WFConcreteUIKitUserInterface *)self setActionUserInterfaceListener:v14];
-    v13 = [(WFActionUserInterfaceListener *)v14 actionInterface];
-    v8[2](v8, v13, 0);
+    actionInterface2 = [(WFActionUserInterfaceListener *)v14 actionInterface];
+    handlerCopy[2](handlerCopy, actionInterface2, 0);
   }
 
   else
   {
-    v13 = [MEMORY[0x277CCA9B8] wfUnsupportedUserInterfaceError];
-    (v8)[2](v8, 0, v13);
+    actionInterface2 = [MEMORY[0x277CCA9B8] wfUnsupportedUserInterfaceError];
+    (handlerCopy)[2](handlerCopy, 0, actionInterface2);
   }
 }
 
-- (void)requestAuthorizationWithConfiguration:(id)a3 completionHandler:(id)a4
+- (void)requestAuthorizationWithConfiguration:(id)configuration completionHandler:(id)handler
 {
-  v5 = [a3 siriDialogAlertWithCompletionHandler:a4];
+  v5 = [configuration siriDialogAlertWithCompletionHandler:handler];
   [(WFConcreteUIKitUserInterface *)self presentAlert:v5];
 }
 
-- (void)presentAlert:(id)a3
+- (void)presentAlert:(id)alert
 {
-  v4 = a3;
-  [WFUIKitAlertPresenter presentAlert:v4 withUserInterface:self];
-  [(WFConcreteUIKitUserInterface *)self setPresentedAlert:v4];
+  alertCopy = alert;
+  [WFUIKitAlertPresenter presentAlert:alertCopy withUserInterface:self];
+  [(WFConcreteUIKitUserInterface *)self setPresentedAlert:alertCopy];
 }
 
-- (void)dismissPresentedContentWithCompletionHandler:(id)a3
+- (void)dismissPresentedContentWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __77__WFConcreteUIKitUserInterface_dismissPresentedContentWithCompletionHandler___block_invoke;
   v6[3] = &unk_279EF51F0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -217,30 +217,30 @@ void __77__WFConcreteUIKitUserInterface_dismissPresentedContentWithCompletionHan
   v4 = WeakRetained;
   if (WeakRetained)
   {
-    v5 = WeakRetained;
+    view = WeakRetained;
   }
 
   else
   {
     v6 = objc_loadWeakRetained(&self->_viewController);
-    v5 = [v6 view];
+    view = [v6 view];
   }
 
-  return v5;
+  return view;
 }
 
-- (WFConcreteUIKitUserInterface)initWithView:(id)a3 viewController:(id)a4
+- (WFConcreteUIKitUserInterface)initWithView:(id)view viewController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = WFConcreteUIKitUserInterface;
   v8 = [(WFConcreteUIKitUserInterface *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_view, v6);
-    objc_storeWeak(&v9->_viewController, v7);
+    objc_storeWeak(&v8->_view, viewCopy);
+    objc_storeWeak(&v9->_viewController, controllerCopy);
     v10 = v9;
   }
 

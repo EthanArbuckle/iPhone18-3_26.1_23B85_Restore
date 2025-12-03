@@ -1,13 +1,13 @@
 @interface TRAParticipant
 - (BOOL)hasAnyActuationContext;
 - (TRAArbiter)arbiter;
-- (TRAParticipant)initWithRole:(id)a3 uniqueIdentifier:(id)a4 delegate:(id)a5 arbiter:(id)a6;
+- (TRAParticipant)initWithRole:(id)role uniqueIdentifier:(id)identifier delegate:(id)delegate arbiter:(id)arbiter;
 - (TRAParticipantDelegate)delegate;
 - (double)currentZOrderLevel;
 - (double)previousZOrderLevel;
 - (id)_setupStateDump;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (int64_t)currentAmbientDisplayStyle;
@@ -22,17 +22,17 @@
 - (int64_t)previousUserInterfaceStyle;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setNeedsUpdatePreferencesWithReason:(id)a3;
-- (void)setNeedsUpdatePreferencesWithReason:(id)a3 force:(BOOL)a4 animate:(BOOL)a5;
-- (void)setOrientationPreferences:(id)a3;
-- (void)setZOrderLevelPreferences:(id)a3;
-- (void)updateAmbientPresentationSettingsWithBlock:(id)a3;
-- (void)updateOrientationPreferencesWithBlock:(id)a3;
-- (void)updateOrientationSettingsWithBlock:(id)a3;
+- (void)setNeedsUpdatePreferencesWithReason:(id)reason;
+- (void)setNeedsUpdatePreferencesWithReason:(id)reason force:(BOOL)force animate:(BOOL)animate;
+- (void)setOrientationPreferences:(id)preferences;
+- (void)setZOrderLevelPreferences:(id)preferences;
+- (void)updateAmbientPresentationSettingsWithBlock:(id)block;
+- (void)updateOrientationPreferencesWithBlock:(id)block;
+- (void)updateOrientationSettingsWithBlock:(id)block;
 - (void)updatePreferencesIfNeeded;
-- (void)updateUserInterfaceOrientationSettingsWithBlock:(id)a3;
-- (void)updateZOrderLevelPreferencesWithBlock:(id)a3;
-- (void)updateZOrderLevelSettingsWithBlock:(id)a3;
+- (void)updateUserInterfaceOrientationSettingsWithBlock:(id)block;
+- (void)updateZOrderLevelPreferencesWithBlock:(id)block;
+- (void)updateZOrderLevelSettingsWithBlock:(id)block;
 @end
 
 @implementation TRAParticipant
@@ -55,10 +55,10 @@
 
 - (int64_t)currentOrientation
 {
-  v2 = [(TRASettings *)self->_currentSettings orientationSettings];
-  v3 = [v2 orientation];
+  orientationSettings = [(TRASettings *)self->_currentSettings orientationSettings];
+  orientation = [orientationSettings orientation];
 
-  return v3;
+  return orientation;
 }
 
 - (TRAParticipantDelegate)delegate
@@ -70,8 +70,8 @@
 
 - (double)currentZOrderLevel
 {
-  v2 = [(TRASettings *)self->_currentSettings zOrderLevelSettings];
-  [v2 zOrderLevel];
+  zOrderLevelSettings = [(TRASettings *)self->_currentSettings zOrderLevelSettings];
+  [zOrderLevelSettings zOrderLevel];
   v4 = v3;
 
   return v4;
@@ -79,12 +79,12 @@
 
 - (int64_t)currentAmbientPresentedFlag
 {
-  v2 = [(TRASettings *)self->_currentSettings ambientPresentationSettings];
-  v3 = [v2 ambientPresentationInputs];
+  ambientPresentationSettings = [(TRASettings *)self->_currentSettings ambientPresentationSettings];
+  ambientPresentationInputs = [ambientPresentationSettings ambientPresentationInputs];
 
-  if (v3)
+  if (ambientPresentationInputs)
   {
-    [v3 isAmbientPresented];
+    [ambientPresentationInputs isAmbientPresented];
     v4 = BSSettingFlagForBool();
   }
 
@@ -98,16 +98,16 @@
 
 - (BOOL)hasAnyActuationContext
 {
-  v3 = [(TRAOrientationResolutionPolicyInfo *)self->_orientationResolutionPolicyInfo actuationContext];
-  if (v3)
+  actuationContext = [(TRAOrientationResolutionPolicyInfo *)self->_orientationResolutionPolicyInfo actuationContext];
+  if (actuationContext)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(TRAUserInterfaceStyleResolutionPolicyInfo *)self->_userInterfaceStyleResolutionPolicyInfo actuationContext];
-    v4 = v5 != 0;
+    actuationContext2 = [(TRAUserInterfaceStyleResolutionPolicyInfo *)self->_userInterfaceStyleResolutionPolicyInfo actuationContext];
+    v4 = actuationContext2 != 0;
   }
 
   return v4;
@@ -115,11 +115,11 @@
 
 - (int64_t)currentUserInterfaceStyle
 {
-  v2 = [(TRASettings *)self->_currentSettings userInterfaceStyleSettings];
-  v3 = [v2 userInterfaceStyleInputs];
-  v4 = [v3 userInterfaceStyle];
+  userInterfaceStyleSettings = [(TRASettings *)self->_currentSettings userInterfaceStyleSettings];
+  userInterfaceStyleInputs = [userInterfaceStyleSettings userInterfaceStyleInputs];
+  userInterfaceStyle = [userInterfaceStyleInputs userInterfaceStyle];
 
-  return v4;
+  return userInterfaceStyle;
 }
 
 - (void)updatePreferencesIfNeeded
@@ -130,12 +130,12 @@
 
 - (int64_t)previousAmbientPresentedFlag
 {
-  v2 = [(TRASettings *)self->_previousSettings ambientPresentationSettings];
-  v3 = [v2 ambientPresentationInputs];
+  ambientPresentationSettings = [(TRASettings *)self->_previousSettings ambientPresentationSettings];
+  ambientPresentationInputs = [ambientPresentationSettings ambientPresentationInputs];
 
-  if (v3)
+  if (ambientPresentationInputs)
   {
-    [v3 isAmbientPresented];
+    [ambientPresentationInputs isAmbientPresented];
     v4 = BSSettingFlagForBool();
   }
 
@@ -149,49 +149,49 @@
 
 - (int64_t)currentAmbientDisplayStyle
 {
-  v2 = [(TRASettings *)self->_currentSettings ambientPresentationSettings];
-  v3 = [v2 ambientPresentationInputs];
+  ambientPresentationSettings = [(TRASettings *)self->_currentSettings ambientPresentationSettings];
+  ambientPresentationInputs = [ambientPresentationSettings ambientPresentationInputs];
 
-  if (v3)
+  if (ambientPresentationInputs)
   {
-    v4 = [v3 ambientDisplayStyle];
+    ambientDisplayStyle = [ambientPresentationInputs ambientDisplayStyle];
   }
 
   else
   {
-    v4 = 0;
+    ambientDisplayStyle = 0;
   }
 
-  return v4;
+  return ambientDisplayStyle;
 }
 
 - (int64_t)previousAmbientDisplayStyle
 {
-  v2 = [(TRASettings *)self->_previousSettings ambientPresentationSettings];
-  v3 = [v2 ambientPresentationInputs];
+  ambientPresentationSettings = [(TRASettings *)self->_previousSettings ambientPresentationSettings];
+  ambientPresentationInputs = [ambientPresentationSettings ambientPresentationInputs];
 
-  if (v3)
+  if (ambientPresentationInputs)
   {
-    v4 = [v3 ambientDisplayStyle];
+    ambientDisplayStyle = [ambientPresentationInputs ambientDisplayStyle];
   }
 
   else
   {
-    v4 = 0;
+    ambientDisplayStyle = 0;
   }
 
-  return v4;
+  return ambientDisplayStyle;
 }
 
-- (TRAParticipant)initWithRole:(id)a3 uniqueIdentifier:(id)a4 delegate:(id)a5 arbiter:(id)a6
+- (TRAParticipant)initWithRole:(id)role uniqueIdentifier:(id)identifier delegate:(id)delegate arbiter:(id)arbiter
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v10)
+  roleCopy = role;
+  identifierCopy = identifier;
+  delegateCopy = delegate;
+  arbiterCopy = arbiter;
+  if (roleCopy)
   {
-    if (v11)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
@@ -200,17 +200,17 @@
   else
   {
     [TRAParticipant initWithRole:uniqueIdentifier:delegate:arbiter:];
-    if (v11)
+    if (identifierCopy)
     {
 LABEL_3:
-      if (v12)
+      if (delegateCopy)
       {
         goto LABEL_4;
       }
 
 LABEL_10:
       [TRAParticipant initWithRole:uniqueIdentifier:delegate:arbiter:];
-      if (v13)
+      if (arbiterCopy)
       {
         goto LABEL_5;
       }
@@ -220,13 +220,13 @@ LABEL_10:
   }
 
   [TRAParticipant initWithRole:uniqueIdentifier:delegate:arbiter:];
-  if (!v12)
+  if (!delegateCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_4:
-  if (v13)
+  if (arbiterCopy)
   {
     goto LABEL_5;
   }
@@ -241,19 +241,19 @@ LABEL_5:
   if (v14)
   {
     v14->_invalidated = 0;
-    v16 = [v10 copy];
+    v16 = [roleCopy copy];
     role = v15->_role;
     v15->_role = v16;
 
-    v18 = [v11 copy];
+    v18 = [identifierCopy copy];
     uniqueIdentifier = v15->_uniqueIdentifier;
     v15->_uniqueIdentifier = v18;
 
-    objc_storeWeak(&v15->_delegate, v12);
-    objc_storeWeak(&v15->_arbiter, v13);
-    v20 = [(TRAParticipant *)v15 _setupStateDump];
+    objc_storeWeak(&v15->_delegate, delegateCopy);
+    objc_storeWeak(&v15->_arbiter, arbiterCopy);
+    _setupStateDump = [(TRAParticipant *)v15 _setupStateDump];
     stateDumpHandle = v15->_stateDumpHandle;
-    v15->_stateDumpHandle = v20;
+    v15->_stateDumpHandle = _setupStateDump;
 
     v15->__debugDelegateDidValidateLastSettings = 1;
   }
@@ -261,23 +261,23 @@ LABEL_5:
   return v15;
 }
 
-- (void)setNeedsUpdatePreferencesWithReason:(id)a3
+- (void)setNeedsUpdatePreferencesWithReason:(id)reason
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  reasonCopy = reason;
+  v5 = reasonCopy;
+  if (!reasonCopy)
   {
     [TRAParticipant setNeedsUpdatePreferencesWithReason:];
-    v4 = 0;
+    reasonCopy = 0;
   }
 
-  [(TRAParticipant *)self setNeedsUpdatePreferencesWithReason:v4 force:0 animate:1];
+  [(TRAParticipant *)self setNeedsUpdatePreferencesWithReason:reasonCopy force:0 animate:1];
 }
 
-- (void)setNeedsUpdatePreferencesWithReason:(id)a3 force:(BOOL)a4 animate:(BOOL)a5
+- (void)setNeedsUpdatePreferencesWithReason:(id)reason force:(BOOL)force animate:(BOOL)animate
 {
-  v8 = a3;
-  if (!v8)
+  reasonCopy = reason;
+  if (!reasonCopy)
   {
     [TRAParticipant setNeedsUpdatePreferencesWithReason:force:animate:];
   }
@@ -287,11 +287,11 @@ LABEL_5:
   v13[1] = 3221225472;
   v13[2] = __68__TRAParticipant_setNeedsUpdatePreferencesWithReason_force_animate___block_invoke;
   v13[3] = &unk_279DD4918;
-  v16 = a4;
-  v14 = v8;
-  v15 = self;
-  v17 = a5;
-  v10 = v8;
+  forceCopy = force;
+  v14 = reasonCopy;
+  selfCopy = self;
+  animateCopy = animate;
+  v10 = reasonCopy;
   v11 = [(TRAArbiterUpdateContext *)v9 initWithBuilder:v13];
   WeakRetained = objc_loadWeakRetained(&self->_arbiter);
   [WeakRetained setNeedsUpdateArbitrationWithContext:v11];
@@ -334,19 +334,19 @@ void __68__TRAParticipant_setNeedsUpdatePreferencesWithReason_force_animate___bl
   [(TRAParticipant *)&v3 dealloc];
 }
 
-- (void)updateZOrderLevelPreferencesWithBlock:(id)a3
+- (void)updateZOrderLevelPreferencesWithBlock:(id)block
 {
-  v10 = a3;
-  if (!v10)
+  blockCopy = block;
+  if (!blockCopy)
   {
     [TRAParticipant updateZOrderLevelPreferencesWithBlock:];
   }
 
-  v4 = [(TRAParticipant *)self zOrderLevelPreferences];
-  if (v4)
+  zOrderLevelPreferences = [(TRAParticipant *)self zOrderLevelPreferences];
+  if (zOrderLevelPreferences)
   {
-    v5 = [(TRAParticipant *)self zOrderLevelPreferences];
-    v6 = [v5 mutableCopy];
+    zOrderLevelPreferences2 = [(TRAParticipant *)self zOrderLevelPreferences];
+    v6 = [zOrderLevelPreferences2 mutableCopy];
   }
 
   else
@@ -354,7 +354,7 @@ void __68__TRAParticipant_setNeedsUpdatePreferencesWithReason_force_animate___bl
     v6 = objc_alloc_init(TRAMutablePreferencesZOrderLevel);
   }
 
-  v10[2](v10, v6);
+  blockCopy[2](blockCopy, v6);
   if (![(TRAPreferencesZOrderLevel *)self->_zOrderLevelPreferences isEqualToZOrderLevelPreferences:v6])
   {
     v7 = [(TRAMutablePreferencesZOrderLevel *)v6 copy];
@@ -366,19 +366,19 @@ void __68__TRAParticipant_setNeedsUpdatePreferencesWithReason_force_animate___bl
   }
 }
 
-- (void)updateOrientationPreferencesWithBlock:(id)a3
+- (void)updateOrientationPreferencesWithBlock:(id)block
 {
-  v10 = a3;
-  if (!v10)
+  blockCopy = block;
+  if (!blockCopy)
   {
     [TRAParticipant updateOrientationPreferencesWithBlock:];
   }
 
-  v4 = [(TRAParticipant *)self orientationPreferences];
-  if (v4)
+  orientationPreferences = [(TRAParticipant *)self orientationPreferences];
+  if (orientationPreferences)
   {
-    v5 = [(TRAParticipant *)self orientationPreferences];
-    v6 = [v5 mutableCopy];
+    orientationPreferences2 = [(TRAParticipant *)self orientationPreferences];
+    v6 = [orientationPreferences2 mutableCopy];
   }
 
   else
@@ -386,7 +386,7 @@ void __68__TRAParticipant_setNeedsUpdatePreferencesWithReason_force_animate___bl
     v6 = objc_alloc_init(TRAMutablePreferencesOrientation);
   }
 
-  v10[2](v10, v6);
+  blockCopy[2](blockCopy, v6);
   if (![(TRAPreferencesOrientation *)self->_orientationPreferences isEqualToOrientationPreferences:v6])
   {
     v7 = [(TRAMutablePreferencesOrientation *)v6 copy];
@@ -398,49 +398,49 @@ void __68__TRAParticipant_setNeedsUpdatePreferencesWithReason_force_animate___bl
   }
 }
 
-- (void)setZOrderLevelPreferences:(id)a3
+- (void)setZOrderLevelPreferences:(id)preferences
 {
-  v4 = a3;
-  v7 = v4;
-  if (!v4)
+  preferencesCopy = preferences;
+  v7 = preferencesCopy;
+  if (!preferencesCopy)
   {
     [TRAParticipant setZOrderLevelPreferences:];
-    v4 = 0;
+    preferencesCopy = 0;
   }
 
-  v5 = [v4 copy];
+  v5 = [preferencesCopy copy];
   zOrderLevelPreferences = self->_zOrderLevelPreferences;
   self->_zOrderLevelPreferences = v5;
 }
 
-- (void)setOrientationPreferences:(id)a3
+- (void)setOrientationPreferences:(id)preferences
 {
-  v4 = a3;
-  v7 = v4;
-  if (!v4)
+  preferencesCopy = preferences;
+  v7 = preferencesCopy;
+  if (!preferencesCopy)
   {
     [TRAParticipant setOrientationPreferences:];
-    v4 = 0;
+    preferencesCopy = 0;
   }
 
-  v5 = [v4 copy];
+  v5 = [preferencesCopy copy];
   orientationPreferences = self->_orientationPreferences;
   self->_orientationPreferences = v5;
 }
 
-- (void)updateZOrderLevelSettingsWithBlock:(id)a3
+- (void)updateZOrderLevelSettingsWithBlock:(id)block
 {
-  v22 = a3;
-  if (!v22)
+  blockCopy = block;
+  if (!blockCopy)
   {
     [TRAParticipant updateZOrderLevelSettingsWithBlock:];
   }
 
-  v4 = [(TRASettings *)self->_currentSettings zOrderLevelSettings];
-  v5 = v4;
-  if (v4)
+  zOrderLevelSettings = [(TRASettings *)self->_currentSettings zOrderLevelSettings];
+  v5 = zOrderLevelSettings;
+  if (zOrderLevelSettings)
   {
-    v6 = [v4 mutableCopy];
+    v6 = [zOrderLevelSettings mutableCopy];
   }
 
   else
@@ -449,24 +449,24 @@ void __68__TRAParticipant_setNeedsUpdatePreferencesWithReason_force_animate___bl
   }
 
   v7 = v6;
-  v22[2](v22, v6);
+  blockCopy[2](blockCopy, v6);
   if (([v5 isEqualToZOrderLevelSettings:v7] & 1) == 0)
   {
     if (self->_currentSettings)
     {
       v8 = [TRASettings alloc];
-      v9 = [(TRASettings *)self->_currentSettings zOrderLevelSettings];
-      v10 = [(TRASettings *)self->_previousSettings orientationSettings];
-      v11 = [(TRASettings *)self->_previousSettings ambientPresentationSettings];
-      v12 = [(TRASettings *)self->_previousSettings userInterfaceStyleSettings];
-      v13 = [(TRASettings *)v8 initWithZOrderLevelSettings:v9 orientationSettings:v10 ambientPresentationSettings:v11 userInterfaceStyleSettings:v12];
+      zOrderLevelSettings2 = [(TRASettings *)self->_currentSettings zOrderLevelSettings];
+      orientationSettings = [(TRASettings *)self->_previousSettings orientationSettings];
+      ambientPresentationSettings = [(TRASettings *)self->_previousSettings ambientPresentationSettings];
+      userInterfaceStyleSettings = [(TRASettings *)self->_previousSettings userInterfaceStyleSettings];
+      v13 = [(TRASettings *)v8 initWithZOrderLevelSettings:zOrderLevelSettings2 orientationSettings:orientationSettings ambientPresentationSettings:ambientPresentationSettings userInterfaceStyleSettings:userInterfaceStyleSettings];
       previousSettings = self->_previousSettings;
       self->_previousSettings = v13;
     }
 
     else
     {
-      v9 = self->_previousSettings;
+      zOrderLevelSettings2 = self->_previousSettings;
       self->_previousSettings = 0;
     }
 
@@ -494,19 +494,19 @@ void __68__TRAParticipant_setNeedsUpdatePreferencesWithReason_force_animate___bl
   }
 }
 
-- (void)updateOrientationSettingsWithBlock:(id)a3
+- (void)updateOrientationSettingsWithBlock:(id)block
 {
-  v24 = a3;
-  if (!v24)
+  blockCopy = block;
+  if (!blockCopy)
   {
     [TRAParticipant updateOrientationSettingsWithBlock:];
   }
 
-  v4 = [(TRASettings *)self->_currentSettings orientationSettings];
-  v5 = v4;
-  if (v4)
+  orientationSettings = [(TRASettings *)self->_currentSettings orientationSettings];
+  v5 = orientationSettings;
+  if (orientationSettings)
   {
-    v6 = [v4 mutableCopy];
+    v6 = [orientationSettings mutableCopy];
   }
 
   else
@@ -515,27 +515,27 @@ void __68__TRAParticipant_setNeedsUpdatePreferencesWithReason_force_animate___bl
   }
 
   v7 = v6;
-  v24[2](v24, v6);
-  v8 = [(TRASettings *)self->_currentSettings orientationSettings];
-  v9 = [v8 isEqualToOrientationSettings:v7];
+  blockCopy[2](blockCopy, v6);
+  orientationSettings2 = [(TRASettings *)self->_currentSettings orientationSettings];
+  v9 = [orientationSettings2 isEqualToOrientationSettings:v7];
 
   if ((v9 & 1) == 0)
   {
     if (self->_currentSettings)
     {
       v10 = [TRASettings alloc];
-      v11 = [(TRASettings *)self->_previousSettings zOrderLevelSettings];
-      v12 = [(TRASettings *)self->_currentSettings orientationSettings];
-      v13 = [(TRASettings *)self->_previousSettings ambientPresentationSettings];
-      v14 = [(TRASettings *)self->_previousSettings userInterfaceStyleSettings];
-      v15 = [(TRASettings *)v10 initWithZOrderLevelSettings:v11 orientationSettings:v12 ambientPresentationSettings:v13 userInterfaceStyleSettings:v14];
+      zOrderLevelSettings = [(TRASettings *)self->_previousSettings zOrderLevelSettings];
+      orientationSettings3 = [(TRASettings *)self->_currentSettings orientationSettings];
+      ambientPresentationSettings = [(TRASettings *)self->_previousSettings ambientPresentationSettings];
+      userInterfaceStyleSettings = [(TRASettings *)self->_previousSettings userInterfaceStyleSettings];
+      v15 = [(TRASettings *)v10 initWithZOrderLevelSettings:zOrderLevelSettings orientationSettings:orientationSettings3 ambientPresentationSettings:ambientPresentationSettings userInterfaceStyleSettings:userInterfaceStyleSettings];
       previousSettings = self->_previousSettings;
       self->_previousSettings = v15;
     }
 
     else
     {
-      v11 = self->_previousSettings;
+      zOrderLevelSettings = self->_previousSettings;
       self->_previousSettings = 0;
     }
 
@@ -563,19 +563,19 @@ void __68__TRAParticipant_setNeedsUpdatePreferencesWithReason_force_animate___bl
   }
 }
 
-- (void)updateAmbientPresentationSettingsWithBlock:(id)a3
+- (void)updateAmbientPresentationSettingsWithBlock:(id)block
 {
-  v24 = a3;
-  if (!v24)
+  blockCopy = block;
+  if (!blockCopy)
   {
     [TRAParticipant updateAmbientPresentationSettingsWithBlock:];
   }
 
-  v4 = [(TRASettings *)self->_currentSettings ambientPresentationSettings];
-  v5 = v4;
-  if (v4)
+  ambientPresentationSettings = [(TRASettings *)self->_currentSettings ambientPresentationSettings];
+  v5 = ambientPresentationSettings;
+  if (ambientPresentationSettings)
   {
-    v6 = [v4 mutableCopy];
+    v6 = [ambientPresentationSettings mutableCopy];
   }
 
   else
@@ -584,27 +584,27 @@ void __68__TRAParticipant_setNeedsUpdatePreferencesWithReason_force_animate___bl
   }
 
   v7 = v6;
-  v24[2](v24, v6);
-  v8 = [(TRASettings *)self->_currentSettings ambientPresentationSettings];
-  v9 = [v8 isEqualToAmbientPresentationSettings:v7];
+  blockCopy[2](blockCopy, v6);
+  ambientPresentationSettings2 = [(TRASettings *)self->_currentSettings ambientPresentationSettings];
+  v9 = [ambientPresentationSettings2 isEqualToAmbientPresentationSettings:v7];
 
   if ((v9 & 1) == 0)
   {
     if (self->_currentSettings)
     {
       v10 = [TRASettings alloc];
-      v11 = [(TRASettings *)self->_previousSettings zOrderLevelSettings];
-      v12 = [(TRASettings *)self->_previousSettings orientationSettings];
-      v13 = [(TRASettings *)self->_currentSettings ambientPresentationSettings];
-      v14 = [(TRASettings *)self->_previousSettings userInterfaceStyleSettings];
-      v15 = [(TRASettings *)v10 initWithZOrderLevelSettings:v11 orientationSettings:v12 ambientPresentationSettings:v13 userInterfaceStyleSettings:v14];
+      zOrderLevelSettings = [(TRASettings *)self->_previousSettings zOrderLevelSettings];
+      orientationSettings = [(TRASettings *)self->_previousSettings orientationSettings];
+      ambientPresentationSettings3 = [(TRASettings *)self->_currentSettings ambientPresentationSettings];
+      userInterfaceStyleSettings = [(TRASettings *)self->_previousSettings userInterfaceStyleSettings];
+      v15 = [(TRASettings *)v10 initWithZOrderLevelSettings:zOrderLevelSettings orientationSettings:orientationSettings ambientPresentationSettings:ambientPresentationSettings3 userInterfaceStyleSettings:userInterfaceStyleSettings];
       previousSettings = self->_previousSettings;
       self->_previousSettings = v15;
     }
 
     else
     {
-      v11 = self->_previousSettings;
+      zOrderLevelSettings = self->_previousSettings;
       self->_previousSettings = 0;
     }
 
@@ -632,19 +632,19 @@ void __68__TRAParticipant_setNeedsUpdatePreferencesWithReason_force_animate___bl
   }
 }
 
-- (void)updateUserInterfaceOrientationSettingsWithBlock:(id)a3
+- (void)updateUserInterfaceOrientationSettingsWithBlock:(id)block
 {
-  v24 = a3;
-  if (!v24)
+  blockCopy = block;
+  if (!blockCopy)
   {
     [TRAParticipant updateUserInterfaceOrientationSettingsWithBlock:];
   }
 
-  v4 = [(TRASettings *)self->_currentSettings userInterfaceStyleSettings];
-  v5 = v4;
-  if (v4)
+  userInterfaceStyleSettings = [(TRASettings *)self->_currentSettings userInterfaceStyleSettings];
+  v5 = userInterfaceStyleSettings;
+  if (userInterfaceStyleSettings)
   {
-    v6 = [v4 mutableCopy];
+    v6 = [userInterfaceStyleSettings mutableCopy];
   }
 
   else
@@ -653,27 +653,27 @@ void __68__TRAParticipant_setNeedsUpdatePreferencesWithReason_force_animate___bl
   }
 
   v7 = v6;
-  v24[2](v24, v6);
-  v8 = [(TRASettings *)self->_currentSettings userInterfaceStyleSettings];
-  v9 = [v8 isEqualToUserInterfaceStyleSettings:v7];
+  blockCopy[2](blockCopy, v6);
+  userInterfaceStyleSettings2 = [(TRASettings *)self->_currentSettings userInterfaceStyleSettings];
+  v9 = [userInterfaceStyleSettings2 isEqualToUserInterfaceStyleSettings:v7];
 
   if ((v9 & 1) == 0)
   {
     if (self->_currentSettings)
     {
       v10 = [TRASettings alloc];
-      v11 = [(TRASettings *)self->_previousSettings zOrderLevelSettings];
-      v12 = [(TRASettings *)self->_previousSettings orientationSettings];
-      v13 = [(TRASettings *)self->_previousSettings ambientPresentationSettings];
-      v14 = [(TRASettings *)self->_currentSettings userInterfaceStyleSettings];
-      v15 = [(TRASettings *)v10 initWithZOrderLevelSettings:v11 orientationSettings:v12 ambientPresentationSettings:v13 userInterfaceStyleSettings:v14];
+      zOrderLevelSettings = [(TRASettings *)self->_previousSettings zOrderLevelSettings];
+      orientationSettings = [(TRASettings *)self->_previousSettings orientationSettings];
+      ambientPresentationSettings = [(TRASettings *)self->_previousSettings ambientPresentationSettings];
+      userInterfaceStyleSettings3 = [(TRASettings *)self->_currentSettings userInterfaceStyleSettings];
+      v15 = [(TRASettings *)v10 initWithZOrderLevelSettings:zOrderLevelSettings orientationSettings:orientationSettings ambientPresentationSettings:ambientPresentationSettings userInterfaceStyleSettings:userInterfaceStyleSettings3];
       previousSettings = self->_previousSettings;
       self->_previousSettings = v15;
     }
 
     else
     {
-      v11 = self->_previousSettings;
+      zOrderLevelSettings = self->_previousSettings;
       self->_previousSettings = 0;
     }
 
@@ -703,10 +703,10 @@ void __68__TRAParticipant_setNeedsUpdatePreferencesWithReason_force_animate___bl
 
 - (id)succinctDescription
 {
-  v2 = [(TRAParticipant *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(TRAParticipant *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -715,8 +715,8 @@ void __68__TRAParticipant_setNeedsUpdatePreferencesWithReason_force_animate___bl
   v4 = v3;
   if (self->_invalidated)
   {
-    v5 = [@"invalidated" uppercaseString];
-    [v4 appendString:v5 withName:0 skipIfEmpty:1];
+    uppercaseString = [@"invalidated" uppercaseString];
+    [v4 appendString:uppercaseString withName:0 skipIfEmpty:1];
   }
 
   else
@@ -730,33 +730,33 @@ void __68__TRAParticipant_setNeedsUpdatePreferencesWithReason_force_animate___bl
   return v4;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(TRAParticipant *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(TRAParticipant *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(TRAParticipant *)self succinctDescriptionBuilder];
+  succinctDescriptionBuilder = [(TRAParticipant *)self succinctDescriptionBuilder];
   if (!self->_invalidated)
   {
     WeakRetained = objc_loadWeakRetained(&self->_arbiter);
-    v6 = [v4 appendPointer:WeakRetained withName:@"arbiter"];
+    v6 = [succinctDescriptionBuilder appendPointer:WeakRetained withName:@"arbiter"];
 
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __56__TRAParticipant_descriptionBuilderWithMultilinePrefix___block_invoke;
     v8[3] = &unk_279DD4940;
-    v9 = v4;
+    v9 = succinctDescriptionBuilder;
     v10 = @"    ";
-    v11 = self;
+    selfCopy = self;
     [v9 appendBodySectionWithName:0 multilinePrefix:0 block:v8];
   }
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 void __56__TRAParticipant_descriptionBuilderWithMultilinePrefix___block_invoke(void *a1)
@@ -851,17 +851,17 @@ __CFString *__33__TRAParticipant__setupStateDump__block_invoke(uint64_t a1)
 
 - (int64_t)previousUserInterfaceStyle
 {
-  v2 = [(TRASettings *)self->_previousSettings userInterfaceStyleSettings];
-  v3 = [v2 userInterfaceStyleInputs];
-  v4 = [v3 userInterfaceStyle];
+  userInterfaceStyleSettings = [(TRASettings *)self->_previousSettings userInterfaceStyleSettings];
+  userInterfaceStyleInputs = [userInterfaceStyleSettings userInterfaceStyleInputs];
+  userInterfaceStyle = [userInterfaceStyleInputs userInterfaceStyle];
 
-  return v4;
+  return userInterfaceStyle;
 }
 
 - (double)previousZOrderLevel
 {
-  v2 = [(TRASettings *)self->_previousSettings zOrderLevelSettings];
-  [v2 zOrderLevel];
+  zOrderLevelSettings = [(TRASettings *)self->_previousSettings zOrderLevelSettings];
+  [zOrderLevelSettings zOrderLevel];
   v4 = v3;
 
   return v4;
@@ -869,28 +869,28 @@ __CFString *__33__TRAParticipant__setupStateDump__block_invoke(uint64_t a1)
 
 - (int64_t)previousOrientation
 {
-  v2 = [(TRASettings *)self->_previousSettings orientationSettings];
-  v3 = [v2 orientation];
+  orientationSettings = [(TRASettings *)self->_previousSettings orientationSettings];
+  orientation = [orientationSettings orientation];
 
-  return v3;
+  return orientation;
 }
 
 - (int64_t)currentDeviceOrientation
 {
-  v2 = [(TRASettings *)self->_currentSettings orientationSettings];
-  v3 = [v2 validatedOrientationInputs];
-  v4 = [v3 currentDeviceOrientation];
+  orientationSettings = [(TRASettings *)self->_currentSettings orientationSettings];
+  validatedOrientationInputs = [orientationSettings validatedOrientationInputs];
+  currentDeviceOrientation = [validatedOrientationInputs currentDeviceOrientation];
 
-  return v4;
+  return currentDeviceOrientation;
 }
 
 - (int64_t)previousDeviceOrientation
 {
-  v2 = [(TRASettings *)self->_previousSettings orientationSettings];
-  v3 = [v2 validatedOrientationInputs];
-  v4 = [v3 currentDeviceOrientation];
+  orientationSettings = [(TRASettings *)self->_previousSettings orientationSettings];
+  validatedOrientationInputs = [orientationSettings validatedOrientationInputs];
+  currentDeviceOrientation = [validatedOrientationInputs currentDeviceOrientation];
 
-  return v4;
+  return currentDeviceOrientation;
 }
 
 - (void)initWithRole:uniqueIdentifier:delegate:arbiter:.cold.1()

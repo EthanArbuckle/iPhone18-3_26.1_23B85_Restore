@@ -1,48 +1,48 @@
 @interface AKAnnotationLayer
-+ (id)newAnnotationLayerForAnnotation:(id)a3 withPageController:(id)a4;
++ (id)newAnnotationLayerForAnnotation:(id)annotation withPageController:(id)controller;
 - (AKPageController)pageController;
-- (id)_initWithAnnotation:(id)a3 andPageController:(id)a4;
+- (id)_initWithAnnotation:(id)annotation andPageController:(id)controller;
 - (void)_addDebugVisuals;
 - (void)_removeDebugVisuals;
 - (void)_startObservingAnnotation;
 - (void)_stopObservingAnnotation;
-- (void)_updateAnnotationLayerWithLoupeFastPath:(BOOL)a3;
+- (void)_updateAnnotationLayerWithLoupeFastPath:(BOOL)path;
 - (void)_updateLayerRange;
 - (void)dealloc;
-- (void)drawInContext:(CGContext *)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)drawInContext:(CGContext *)context;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)updateContents;
 - (void)updatePixelAlignment;
 @end
 
 @implementation AKAnnotationLayer
 
-+ (id)newAnnotationLayerForAnnotation:(id)a3 withPageController:(id)a4
++ (id)newAnnotationLayerForAnnotation:(id)annotation withPageController:(id)controller
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] _initWithAnnotation:v7 andPageController:v6];
+  controllerCopy = controller;
+  annotationCopy = annotation;
+  v8 = [[self alloc] _initWithAnnotation:annotationCopy andPageController:controllerCopy];
 
   return v8;
 }
 
-- (id)_initWithAnnotation:(id)a3 andPageController:(id)a4
+- (id)_initWithAnnotation:(id)annotation andPageController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  annotationCopy = annotation;
+  controllerCopy = controller;
   v28.receiver = self;
   v28.super_class = AKAnnotationLayer;
   v8 = [(AKAnnotationLayer *)&v28 init];
   v9 = v8;
   if (v8)
   {
-    [(AKAnnotationLayer *)v8 setAnnotation:v6];
-    [(AKAnnotationLayer *)v9 setPageController:v7];
+    [(AKAnnotationLayer *)v8 setAnnotation:annotationCopy];
+    [(AKAnnotationLayer *)v9 setPageController:controllerCopy];
     [(AKAnnotationLayer *)v9 setShouldRecalculateLoupeImage:1];
     [(AKAnnotationLayer *)v9 setDrawsAsynchronously:1];
-    v10 = [v7 geometryHelper];
-    v11 = [(AKAnnotationLayer *)v9 annotation];
-    [v10 annotationLayerFrameForAnnotation:v11 layerIsClipped:0];
+    geometryHelper = [controllerCopy geometryHelper];
+    annotation = [(AKAnnotationLayer *)v9 annotation];
+    [geometryHelper annotationLayerFrameForAnnotation:annotation layerIsClipped:0];
     v13 = v12;
     v15 = v14;
     v17 = v16;
@@ -69,7 +69,7 @@
       block[2] = sub_23F444214;
       block[3] = &unk_278C7B888;
       objc_copyWeak(&v26, &location);
-      v25 = v6;
+      v25 = annotationCopy;
       dispatch_async(MEMORY[0x277D85CD0], block);
 
       objc_destroyWeak(&v26);
@@ -95,39 +95,39 @@
   [(AKAnnotationLayer *)&v3 dealloc];
 }
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
-  CGContextSaveGState(a3);
+  CGContextSaveGState(context);
   v12.receiver = self;
   v12.super_class = AKAnnotationLayer;
-  [(AKAnnotationLayer *)&v12 drawInContext:a3];
+  [(AKAnnotationLayer *)&v12 drawInContext:context];
   [(AKAnnotationLayer *)self _updateLayerRange];
-  v5 = [(AKAnnotationLayer *)self pageController];
-  v6 = [v5 controller];
+  pageController = [(AKAnnotationLayer *)self pageController];
+  controller = [pageController controller];
   v7 = objc_alloc_init(AKAnnotationRendererOptions);
   [(AKAnnotationRendererOptions *)v7 setForDisplay:1];
-  v8 = [(AKAnnotationLayer *)self preferredDynamicRange];
-  if ([v8 isEqualToString:*MEMORY[0x277CD9DB0]])
+  preferredDynamicRange = [(AKAnnotationLayer *)self preferredDynamicRange];
+  if ([preferredDynamicRange isEqualToString:*MEMORY[0x277CD9DB0]])
   {
     [(AKAnnotationRendererOptions *)v7 setAllowHDR:1];
   }
 
   else
   {
-    v9 = [(AKAnnotationLayer *)self preferredDynamicRange];
-    -[AKAnnotationRendererOptions setAllowHDR:](v7, "setAllowHDR:", [v9 isEqualToString:*MEMORY[0x277CD9DB8]]);
+    preferredDynamicRange2 = [(AKAnnotationLayer *)self preferredDynamicRange];
+    -[AKAnnotationRendererOptions setAllowHDR:](v7, "setAllowHDR:", [preferredDynamicRange2 isEqualToString:*MEMORY[0x277CD9DB8]]);
   }
 
-  [v6 availableHeadroom];
+  [controller availableHeadroom];
   [(AKAnnotationRendererOptions *)v7 setAvailableHeadroom:?];
-  v10 = [v6 modelController];
-  [v10 annotationHeadroom];
+  modelController = [controller modelController];
+  [modelController annotationHeadroom];
   [(AKAnnotationRendererOptions *)v7 setDesiredHeadroom:?];
 
-  v11 = [(AKAnnotationLayer *)self annotation];
-  [AKAnnotationRenderer renderAnnotation:v11 intoContext:a3 options:v7 pageControllerOrNil:v5];
+  annotation = [(AKAnnotationLayer *)self annotation];
+  [AKAnnotationRenderer renderAnnotation:annotation intoContext:context options:v7 pageControllerOrNil:pageController];
 
-  CGContextRestoreGState(a3);
+  CGContextRestoreGState(context);
 }
 
 - (void)updateContents
@@ -139,13 +139,13 @@
 
 - (void)updatePixelAlignment
 {
-  v3 = [(AKAnnotationLayer *)self pageController];
-  if (v3)
+  pageController = [(AKAnnotationLayer *)self pageController];
+  if (pageController)
   {
-    v16 = v3;
-    v4 = [v3 geometryHelper];
-    v5 = [(AKAnnotationLayer *)self annotation];
-    [v4 annotationLayerFrameForAnnotation:v5 layerIsClipped:0];
+    v16 = pageController;
+    geometryHelper = [pageController geometryHelper];
+    annotation = [(AKAnnotationLayer *)self annotation];
+    [geometryHelper annotationLayerFrameForAnnotation:annotation layerIsClipped:0];
     v7 = v6;
     v9 = v8;
     v11 = v10;
@@ -171,37 +171,37 @@
 
     [(AKAnnotationLayer *)self setNeedsDisplay];
     [MEMORY[0x277CD9FF0] commit];
-    v3 = v16;
+    pageController = v16;
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  if (a6 == @"AKAnnotationLayer.modelAnnotationObservationContext")
+  pathCopy = path;
+  if (context == @"AKAnnotationLayer.modelAnnotationObservationContext")
   {
-    v11 = [(AKAnnotationLayer *)self pageController];
-    if (!v11)
+    pageController = [(AKAnnotationLayer *)self pageController];
+    if (!pageController)
     {
       goto LABEL_30;
     }
 
-    v12 = v11;
-    v13 = [(AKAnnotationLayer *)self lastRedrawWasForDrawingBounds];
+    v12 = pageController;
+    lastRedrawWasForDrawingBounds = [(AKAnnotationLayer *)self lastRedrawWasForDrawingBounds];
     [(AKAnnotationLayer *)self setLastRedrawWasForDrawingBounds:0];
-    -[AKAnnotationLayer setShouldRecalculateLoupeImage:](self, "setShouldRecalculateLoupeImage:", [v10 isEqualToString:@"strokeColor"] ^ 1);
-    if (![v10 isEqualToString:@"drawingBounds"])
+    -[AKAnnotationLayer setShouldRecalculateLoupeImage:](self, "setShouldRecalculateLoupeImage:", [pathCopy isEqualToString:@"strokeColor"] ^ 1);
+    if (![pathCopy isEqualToString:@"drawingBounds"])
     {
       [(AKAnnotationLayer *)self _updateLayerRange];
-      if (v13 && ([v10 isEqualToString:@"rectangle"] & 1) != 0)
+      if (lastRedrawWasForDrawingBounds && ([pathCopy isEqualToString:@"rectangle"] & 1) != 0)
       {
         goto LABEL_29;
       }
 
-      v26 = [(AKAnnotationLayer *)self annotation];
-      if ([v26 isTranslating])
+      annotation = [(AKAnnotationLayer *)self annotation];
+      if ([annotation isTranslating])
       {
-        v27 = [(AKAnnotationLayer *)self annotation];
+        annotation2 = [(AKAnnotationLayer *)self annotation];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
@@ -215,8 +215,8 @@
       {
       }
 
-      v38 = [(AKAnnotationLayer *)self annotation];
-      -[AKAnnotationLayer _updateAnnotationLayerWithLoupeFastPath:](self, "_updateAnnotationLayerWithLoupeFastPath:", [v38 isDraggingHandle]);
+      annotation3 = [(AKAnnotationLayer *)self annotation];
+      -[AKAnnotationLayer _updateAnnotationLayerWithLoupeFastPath:](self, "_updateAnnotationLayerWithLoupeFastPath:", [annotation3 isDraggingHandle]);
 
 LABEL_29:
       [(AKAnnotationLayer *)self setShouldRecalculateLoupeImage:1];
@@ -228,9 +228,9 @@ LABEL_29:
     v14 = 1;
     [MEMORY[0x277CD9FF0] setDisableActions:1];
     v42 = 0;
-    v15 = [v12 geometryHelper];
-    v16 = [(AKAnnotationLayer *)self annotation];
-    [v15 annotationLayerFrameForAnnotation:v16 layerIsClipped:&v42];
+    geometryHelper = [v12 geometryHelper];
+    annotation4 = [(AKAnnotationLayer *)self annotation];
+    [geometryHelper annotationLayerFrameForAnnotation:annotation4 layerIsClipped:&v42];
     v18 = v17;
     v20 = v19;
     v22 = v21;
@@ -238,34 +238,34 @@ LABEL_29:
 
     if (v42)
     {
-      v25 = 0;
+      wasLastDrawingClipped = 0;
     }
 
     else
     {
-      v25 = [(AKAnnotationLayer *)self wasLastDrawingClipped];
+      wasLastDrawingClipped = [(AKAnnotationLayer *)self wasLastDrawingClipped];
       v14 = v42;
     }
 
     [(AKAnnotationLayer *)self setWasLastDrawingClipped:v14 & 1];
-    v29 = [(AKAnnotationLayer *)self annotation];
+    annotation5 = [(AKAnnotationLayer *)self annotation];
     objc_opt_class();
     v30 = objc_opt_isKindOfClass();
 
-    if ((v42 & 1) == 0 && !v25 && (v30 & 1) == 0)
+    if ((v42 & 1) == 0 && !wasLastDrawingClipped && (v30 & 1) == 0)
     {
-      v31 = [(AKAnnotationLayer *)self annotation];
-      if ([v31 isTranslating])
+      annotation6 = [(AKAnnotationLayer *)self annotation];
+      if ([annotation6 isTranslating])
       {
-        v32 = [(AKAnnotationLayer *)self annotation];
-        v33 = [v32 isEditingText];
+        annotation7 = [(AKAnnotationLayer *)self annotation];
+        isEditingText = [annotation7 isEditingText];
 
-        if ((v33 & 1) == 0)
+        if ((isEditingText & 1) == 0)
         {
-          v34 = [(AKAnnotationLayer *)self annotation];
-          v35 = [v34 isTranslating];
+          annotation8 = [(AKAnnotationLayer *)self annotation];
+          isTranslating = [annotation8 isTranslating];
 
-          if (v35)
+          if (isTranslating)
           {
             [(AKAnnotationLayer *)self frame];
             v22 = v36;
@@ -284,16 +284,16 @@ LABEL_29:
 
     [(AKAnnotationLayer *)self setFrame:v18, v20, v22, v24];
     [(AKAnnotationLayer *)self setLastRedrawWasForDrawingBounds:1];
-    v39 = [(AKAnnotationLayer *)self annotation];
-    if ([v39 isTranslating])
+    annotation9 = [(AKAnnotationLayer *)self annotation];
+    if ([annotation9 isTranslating])
     {
       [(AKAnnotationLayer *)self _updateAnnotationLayerWithLoupeFastPath:1];
     }
 
     else
     {
-      v40 = [(AKAnnotationLayer *)self annotation];
-      -[AKAnnotationLayer _updateAnnotationLayerWithLoupeFastPath:](self, "_updateAnnotationLayerWithLoupeFastPath:", [v40 isDraggingHandle]);
+      annotation10 = [(AKAnnotationLayer *)self annotation];
+      -[AKAnnotationLayer _updateAnnotationLayerWithLoupeFastPath:](self, "_updateAnnotationLayerWithLoupeFastPath:", [annotation10 isDraggingHandle]);
     }
 
 LABEL_28:
@@ -303,7 +303,7 @@ LABEL_28:
 
   v41.receiver = self;
   v41.super_class = AKAnnotationLayer;
-  [(AKAnnotationLayer *)&v41 observeValueForKeyPath:v10 ofObject:a4 change:a5 context:a6];
+  [(AKAnnotationLayer *)&v41 observeValueForKeyPath:pathCopy ofObject:object change:change context:context];
 LABEL_30:
 }
 
@@ -316,38 +316,38 @@ LABEL_30:
 
   if (byte_27E39B600 == 1)
   {
-    v3 = [(AKAnnotationLayer *)self annotation];
-    v4 = [v3 conformsToProtocol:&unk_2851D6420];
+    annotation = [(AKAnnotationLayer *)self annotation];
+    akIsEDR = [annotation conformsToProtocol:&unk_2851D6420];
 
-    v5 = [(AKAnnotationLayer *)self annotation];
-    if ([v5 conformsToProtocol:&unk_2851D6300])
+    annotation2 = [(AKAnnotationLayer *)self annotation];
+    if ([annotation2 conformsToProtocol:&unk_2851D6300])
     {
       isKindOfClass = 1;
     }
 
     else
     {
-      v7 = [(AKAnnotationLayer *)self annotation];
+      annotation3 = [(AKAnnotationLayer *)self annotation];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
     }
 
-    v8 = [(AKAnnotationLayer *)self annotation];
-    v9 = [v8 conformsToProtocol:&unk_2851D6B08];
+    annotation4 = [(AKAnnotationLayer *)self annotation];
+    v9 = [annotation4 conformsToProtocol:&unk_2851D6B08];
 
-    if (v4)
+    if (akIsEDR)
     {
-      v10 = [(AKAnnotationLayer *)self annotation];
-      v11 = [v10 fillColorHDR];
-      if (v11)
+      annotation5 = [(AKAnnotationLayer *)self annotation];
+      fillColorHDR = [annotation5 fillColorHDR];
+      if (fillColorHDR)
       {
-        v12 = [v10 fillColorHDR];
-        v4 = [v12 akIsEDR];
+        fillColorHDR2 = [annotation5 fillColorHDR];
+        akIsEDR = [fillColorHDR2 akIsEDR];
       }
 
       else
       {
-        v4 = 0;
+        akIsEDR = 0;
       }
 
       if ((isKindOfClass & 1) == 0)
@@ -356,25 +356,25 @@ LABEL_10:
         if (!v9)
         {
 LABEL_24:
-          v20 = [(AKAnnotationLayer *)self annotation];
+          annotation6 = [(AKAnnotationLayer *)self annotation];
           objc_opt_class();
           v21 = objc_opt_isKindOfClass();
 
           if (v21)
           {
-            v22 = [(AKAnnotationLayer *)self annotation];
-            v23 = [v22 image];
+            annotation7 = [(AKAnnotationLayer *)self annotation];
+            image = [annotation7 image];
 
-            if (v23)
+            if (image)
             {
-              v24 = [v22 image];
-              v4 |= [v24 akIsHDR];
+              image2 = [annotation7 image];
+              akIsEDR |= [image2 akIsHDR];
             }
           }
 
-          v25 = [(AKAnnotationLayer *)self annotation];
+          annotation8 = [(AKAnnotationLayer *)self annotation];
           objc_opt_class();
-          v26 = v4 | objc_opt_isKindOfClass();
+          v26 = akIsEDR | objc_opt_isKindOfClass();
 
           v28 = v26 & 1;
           v27 = (v26 & 1) == 0;
@@ -407,24 +407,24 @@ LABEL_24:
         }
 
 LABEL_19:
-        v16 = [(AKAnnotationLayer *)self annotation];
-        v17 = [v16 annotationText];
-        v18 = [v16 foregroundColorHDR];
-        if (!v18)
+        annotation9 = [(AKAnnotationLayer *)self annotation];
+        annotationText = [annotation9 annotationText];
+        foregroundColorHDR = [annotation9 foregroundColorHDR];
+        if (!foregroundColorHDR)
         {
-          if ([v17 length])
+          if ([annotationText length])
           {
-            v19 = [v17 attributesAtIndex:0 effectiveRange:0];
-            v18 = [v19 objectForKey:@"NSColor"];
+            v19 = [annotationText attributesAtIndex:0 effectiveRange:0];
+            foregroundColorHDR = [v19 objectForKey:@"NSColor"];
           }
 
           else
           {
-            v18 = 0;
+            foregroundColorHDR = 0;
           }
         }
 
-        v4 |= [v18 akIsEDR];
+        akIsEDR |= [foregroundColorHDR akIsEDR];
 
         goto LABEL_24;
       }
@@ -435,12 +435,12 @@ LABEL_19:
       goto LABEL_10;
     }
 
-    v13 = [(AKAnnotationLayer *)self annotation];
-    v14 = [v13 strokeColorHDR];
-    if (v14)
+    annotation10 = [(AKAnnotationLayer *)self annotation];
+    strokeColorHDR = [annotation10 strokeColorHDR];
+    if (strokeColorHDR)
     {
-      v15 = [v13 strokeColorHDR];
-      v4 |= [v15 akIsEDR];
+      strokeColorHDR2 = [annotation10 strokeColorHDR];
+      akIsEDR |= [strokeColorHDR2 akIsEDR];
     }
 
     if (!v9)
@@ -452,13 +452,13 @@ LABEL_19:
   }
 }
 
-- (void)_updateAnnotationLayerWithLoupeFastPath:(BOOL)a3
+- (void)_updateAnnotationLayerWithLoupeFastPath:(BOOL)path
 {
-  v3 = a3;
-  v5 = [MEMORY[0x277CCACC8] currentThread];
-  v6 = [v5 threadDictionary];
+  pathCopy = path;
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary = [currentThread threadDictionary];
 
-  if (v3)
+  if (pathCopy)
   {
     v7 = MEMORY[0x277CBEC38];
   }
@@ -468,91 +468,91 @@ LABEL_19:
     v7 = MEMORY[0x277CBEC28];
   }
 
-  [v6 setObject:v7 forKey:@"AKAnnotationRendererIsFastPathRenderingOnCurrentThread"];
-  v8 = [(AKAnnotationLayer *)self annotation];
-  if (!v3 || ![AKAnnotationRenderer annotationShouldAvoidRedrawDuringLiveResize:v8])
+  [threadDictionary setObject:v7 forKey:@"AKAnnotationRendererIsFastPathRenderingOnCurrentThread"];
+  annotation = [(AKAnnotationLayer *)self annotation];
+  if (!pathCopy || ![AKAnnotationRenderer annotationShouldAvoidRedrawDuringLiveResize:annotation])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [(AKAnnotationLayer *)self pageController];
-      v10 = v8;
+      pageController = [(AKAnnotationLayer *)self pageController];
+      v10 = annotation;
       v11 = v10;
-      if (v3)
+      if (pathCopy)
       {
-        v12 = [(AKAnnotationLayer *)self fastPathLayer];
+        fastPathLayer = [(AKAnnotationLayer *)self fastPathLayer];
 
-        if (!v12)
+        if (!fastPathLayer)
         {
-          v13 = [MEMORY[0x277CD9F90] layer];
-          [v13 setFillRule:*MEMORY[0x277CDA248]];
+          layer = [MEMORY[0x277CD9F90] layer];
+          [layer setFillRule:*MEMORY[0x277CDA248]];
           v14 = [MEMORY[0x277D75348] colorWithWhite:1.0 alpha:1.0];
-          [v13 setFillColor:{objc_msgSend(v14, "CGColor")}];
+          [layer setFillColor:{objc_msgSend(v14, "CGColor")}];
 
-          v15 = [MEMORY[0x277CD9ED0] layer];
-          [(AKAnnotationLayer *)self setFastPathLayer:v15];
+          layer2 = [MEMORY[0x277CD9ED0] layer];
+          [(AKAnnotationLayer *)self setFastPathLayer:layer2];
 
-          v16 = [(AKAnnotationLayer *)self fastPathLayer];
-          [v16 setMask:v13];
+          fastPathLayer2 = [(AKAnnotationLayer *)self fastPathLayer];
+          [fastPathLayer2 setMask:layer];
 
           v17 = *MEMORY[0x277CDA5B8];
-          v18 = [(AKAnnotationLayer *)self fastPathLayer];
-          [v18 setMinificationFilter:v17];
+          fastPathLayer3 = [(AKAnnotationLayer *)self fastPathLayer];
+          [fastPathLayer3 setMinificationFilter:v17];
 
-          v19 = [(AKAnnotationLayer *)self fastPathLayer];
-          [v19 setMagnificationFilter:v17];
+          fastPathLayer4 = [(AKAnnotationLayer *)self fastPathLayer];
+          [fastPathLayer4 setMagnificationFilter:v17];
 
-          v20 = [(AKAnnotationLayer *)self superlayer];
-          v21 = [(AKAnnotationLayer *)self fastPathLayer];
-          [v20 addSublayer:v21];
+          superlayer = [(AKAnnotationLayer *)self superlayer];
+          fastPathLayer5 = [(AKAnnotationLayer *)self fastPathLayer];
+          [superlayer addSublayer:fastPathLayer5];
 
           [(AKAnnotationLayer *)self zPosition];
           v23 = v22 + -0.5;
-          v24 = [(AKAnnotationLayer *)self fastPathLayer];
-          [v24 setZPosition:v23];
+          fastPathLayer6 = [(AKAnnotationLayer *)self fastPathLayer];
+          [fastPathLayer6 setZPosition:v23];
 
-          v25 = [MEMORY[0x277D75348] whiteColor];
-          v26 = [v25 CGColor];
-          v27 = [(AKAnnotationLayer *)self fastPathLayer];
-          [v27 setBackgroundColor:v26];
+          whiteColor = [MEMORY[0x277D75348] whiteColor];
+          cGColor = [whiteColor CGColor];
+          fastPathLayer7 = [(AKAnnotationLayer *)self fastPathLayer];
+          [fastPathLayer7 setBackgroundColor:cGColor];
 
           v42 = 0u;
           v43 = 0u;
           v41 = 0u;
-          v28 = [(AKAnnotationLayer *)self fastPathLayer];
-          [AKLoupeAnnotationImageUpdaterHelper transformForFastPathLayer:v28 ofLoupeAnnotation:v11 onPageController:v9];
+          fastPathLayer8 = [(AKAnnotationLayer *)self fastPathLayer];
+          [AKLoupeAnnotationImageUpdaterHelper transformForFastPathLayer:fastPathLayer8 ofLoupeAnnotation:v11 onPageController:pageController];
 
           v38 = v41;
           v39 = v42;
           v40 = v43;
-          v29 = [(AKAnnotationLayer *)self fastPathLayer];
+          fastPathLayer9 = [(AKAnnotationLayer *)self fastPathLayer];
           v37[0] = v38;
           v37[1] = v39;
           v37[2] = v40;
-          [v29 setAffineTransform:v37];
+          [fastPathLayer9 setAffineTransform:v37];
         }
 
-        v30 = [(AKAnnotationLayer *)self fastPathLayer];
-        [AKLoupeAnnotationImageUpdaterHelper updateFastPathImageOnLoupeAnnotation:v11 withFastPathLayer:v30 onPageController:v9];
+        fastPathLayer10 = [(AKAnnotationLayer *)self fastPathLayer];
+        [AKLoupeAnnotationImageUpdaterHelper updateFastPathImageOnLoupeAnnotation:v11 withFastPathLayer:fastPathLayer10 onPageController:pageController];
       }
 
       else
       {
-        v31 = [v10 imageData];
-        if (!v31 || (v32 = v31, v33 = [(AKAnnotationLayer *)self shouldRecalculateLoupeImage], v32, v33))
+        imageData = [v10 imageData];
+        if (!imageData || (v32 = imageData, v33 = [(AKAnnotationLayer *)self shouldRecalculateLoupeImage], v32, v33))
         {
-          [AKLoupeAnnotationImageUpdaterHelper updateModelImageOnLoupeAnnotation:v11 onPageController:v9];
+          [AKLoupeAnnotationImageUpdaterHelper updateModelImageOnLoupeAnnotation:v11 onPageController:pageController];
         }
 
-        v34 = [(AKAnnotationLayer *)self fastPathLayer];
+        fastPathLayer11 = [(AKAnnotationLayer *)self fastPathLayer];
 
-        if (v34)
+        if (fastPathLayer11)
         {
-          v35 = [(AKAnnotationLayer *)self fastPathLayer];
-          [v35 removeFromSuperlayer];
+          fastPathLayer12 = [(AKAnnotationLayer *)self fastPathLayer];
+          [fastPathLayer12 removeFromSuperlayer];
 
-          v36 = [(AKAnnotationLayer *)self fastPathLayer];
-          [v36 setContents:0];
+          fastPathLayer13 = [(AKAnnotationLayer *)self fastPathLayer];
+          [fastPathLayer13 setContents:0];
 
           [(AKAnnotationLayer *)self setFastPathLayer:0];
         }
@@ -568,13 +568,13 @@ LABEL_19:
   v14 = *MEMORY[0x277D85DE8];
   if (![(AKAnnotationLayer *)self isObservingAnnotation])
   {
-    v3 = [(AKAnnotationLayer *)self annotation];
-    v4 = [v3 keysForValuesToObserveForRedrawing];
+    annotation = [(AKAnnotationLayer *)self annotation];
+    keysForValuesToObserveForRedrawing = [annotation keysForValuesToObserveForRedrawing];
     v9 = 0u;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    v5 = [keysForValuesToObserveForRedrawing countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v5)
     {
       v6 = v5;
@@ -586,14 +586,14 @@ LABEL_19:
         {
           if (*v10 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(keysForValuesToObserveForRedrawing);
           }
 
-          [v3 addObserver:self forKeyPath:*(*(&v9 + 1) + 8 * v8++) options:0 context:@"AKAnnotationLayer.modelAnnotationObservationContext"];
+          [annotation addObserver:self forKeyPath:*(*(&v9 + 1) + 8 * v8++) options:0 context:@"AKAnnotationLayer.modelAnnotationObservationContext"];
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v6 = [keysForValuesToObserveForRedrawing countByEnumeratingWithState:&v9 objects:v13 count:16];
       }
 
       while (v6);
@@ -608,13 +608,13 @@ LABEL_19:
   v14 = *MEMORY[0x277D85DE8];
   if ([(AKAnnotationLayer *)self isObservingAnnotation])
   {
-    v3 = [(AKAnnotationLayer *)self annotation];
-    v4 = [v3 keysForValuesToObserveForRedrawing];
+    annotation = [(AKAnnotationLayer *)self annotation];
+    keysForValuesToObserveForRedrawing = [annotation keysForValuesToObserveForRedrawing];
     v9 = 0u;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    v5 = [keysForValuesToObserveForRedrawing countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v5)
     {
       v6 = v5;
@@ -626,14 +626,14 @@ LABEL_19:
         {
           if (*v10 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(keysForValuesToObserveForRedrawing);
           }
 
-          [v3 removeObserver:self forKeyPath:*(*(&v9 + 1) + 8 * v8++) context:@"AKAnnotationLayer.modelAnnotationObservationContext"];
+          [annotation removeObserver:self forKeyPath:*(*(&v9 + 1) + 8 * v8++) context:@"AKAnnotationLayer.modelAnnotationObservationContext"];
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v6 = [keysForValuesToObserveForRedrawing countByEnumeratingWithState:&v9 objects:v13 count:16];
       }
 
       while (v6);
@@ -645,25 +645,25 @@ LABEL_19:
 
 - (void)_addDebugVisuals
 {
-  v3 = [MEMORY[0x277D75348] blackColor];
-  -[AKAnnotationLayer setBorderColor:](self, "setBorderColor:", [v3 CGColor]);
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  -[AKAnnotationLayer setBorderColor:](self, "setBorderColor:", [blackColor CGColor]);
 
   [(AKAnnotationLayer *)self setBorderWidth:1.0];
   v8 = objc_alloc_init(MEMORY[0x277CD9F90]);
   [v8 setZPosition:100.0];
-  v4 = [MEMORY[0x277D75348] greenColor];
-  [v8 setBackgroundColor:{objc_msgSend(v4, "CGColor")}];
+  greenColor = [MEMORY[0x277D75348] greenColor];
+  [v8 setBackgroundColor:{objc_msgSend(greenColor, "CGColor")}];
 
-  v5 = [MEMORY[0x277D75348] yellowColor];
-  [v8 setBorderColor:{objc_msgSend(v5, "CGColor")}];
+  yellowColor = [MEMORY[0x277D75348] yellowColor];
+  [v8 setBorderColor:{objc_msgSend(yellowColor, "CGColor")}];
 
   [v8 setBorderWidth:2.0];
   [v8 setAnchorPoint:{0.5, 0.5}];
   [v8 setBounds:{0.0, 0.0, 50.0, 50.0}];
   [v8 setPosition:{0.0, 0.0}];
   v6 = objc_alloc_init(MEMORY[0x277CD9F90]);
-  v7 = [MEMORY[0x277D75348] yellowColor];
-  [v6 setBackgroundColor:{objc_msgSend(v7, "CGColor")}];
+  yellowColor2 = [MEMORY[0x277D75348] yellowColor];
+  [v6 setBackgroundColor:{objc_msgSend(yellowColor2, "CGColor")}];
 
   [v6 setAnchorPoint:{0.0, 0.0}];
   [v6 setBounds:{0.0, 0.0, 12.5, 20.0}];
@@ -680,8 +680,8 @@ LABEL_19:
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(AKAnnotationLayer *)self sublayers];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  sublayers = [(AKAnnotationLayer *)self sublayers];
+  v4 = [sublayers countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -693,7 +693,7 @@ LABEL_19:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(sublayers);
         }
 
         v8 = *(*(&v10 + 1) + 8 * v7);
@@ -711,7 +711,7 @@ LABEL_19:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [sublayers countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);

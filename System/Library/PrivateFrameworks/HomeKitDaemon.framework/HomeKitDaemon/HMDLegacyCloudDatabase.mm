@@ -1,37 +1,37 @@
 @interface HMDLegacyCloudDatabase
-+ (id)recordZoneIDForLegacyName:(id)a3;
-- (HMDLegacyCloudDatabase)initWithLocalDatabase:(id)a3 configuration:(id)a4 error:(id *)a5;
-- (id)createLegacyZone:(id)a3 controllerIdentity:(id)a4 delegate:(id)a5 error:(id *)a6;
-- (id)mirrorLegacyZone:(id)a3 controllerIdentity:(id)a4 delegate:(id)a5 error:(id *)a6;
++ (id)recordZoneIDForLegacyName:(id)name;
+- (HMDLegacyCloudDatabase)initWithLocalDatabase:(id)database configuration:(id)configuration error:(id *)error;
+- (id)createLegacyZone:(id)zone controllerIdentity:(id)identity delegate:(id)delegate error:(id *)error;
+- (id)mirrorLegacyZone:(id)zone controllerIdentity:(id)identity delegate:(id)delegate error:(id *)error;
 @end
 
 @implementation HMDLegacyCloudDatabase
 
-- (id)createLegacyZone:(id)a3 controllerIdentity:(id)a4 delegate:(id)a5 error:(id *)a6
+- (id)createLegacyZone:(id)zone controllerIdentity:(id)identity delegate:(id)delegate error:(id *)error
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = [HMDLegacyCloudDatabase recordZoneIDForLegacyName:a3];
-  v13 = mirrorLegacyZone(self, 1, v12, v11, v10, a6);
+  delegateCopy = delegate;
+  identityCopy = identity;
+  v12 = [HMDLegacyCloudDatabase recordZoneIDForLegacyName:zone];
+  v13 = mirrorLegacyZone(self, 1, v12, identityCopy, delegateCopy, error);
 
   return v13;
 }
 
-- (id)mirrorLegacyZone:(id)a3 controllerIdentity:(id)a4 delegate:(id)a5 error:(id *)a6
+- (id)mirrorLegacyZone:(id)zone controllerIdentity:(id)identity delegate:(id)delegate error:(id *)error
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = [HMDLegacyCloudDatabase recordZoneIDForLegacyName:a3];
-  v13 = mirrorLegacyZone(self, 0, v12, v11, v10, a6);
+  delegateCopy = delegate;
+  identityCopy = identity;
+  v12 = [HMDLegacyCloudDatabase recordZoneIDForLegacyName:zone];
+  v13 = mirrorLegacyZone(self, 0, v12, identityCopy, delegateCopy, error);
 
   return v13;
 }
 
-- (HMDLegacyCloudDatabase)initWithLocalDatabase:(id)a3 configuration:(id)a4 error:(id *)a5
+- (HMDLegacyCloudDatabase)initWithLocalDatabase:(id)database configuration:(id)configuration error:(id *)error
 {
   v8.receiver = self;
   v8.super_class = HMDLegacyCloudDatabase;
-  v5 = [(HMBCloudDatabase *)&v8 initWithLocalDatabase:a3 configuration:a4 error:a5];
+  v5 = [(HMBCloudDatabase *)&v8 initWithLocalDatabase:database configuration:configuration error:error];
   v6 = v5;
   if (v5)
   {
@@ -82,12 +82,12 @@ id __68__HMDLegacyCloudDatabase_initWithLocalDatabase_configuration_error___bloc
   return v18;
 }
 
-+ (id)recordZoneIDForLegacyName:(id)a3
++ (id)recordZoneIDForLegacyName:(id)name
 {
   v3 = MEMORY[0x277CBC5F8];
-  v4 = a3;
+  nameCopy = name;
   v5 = [v3 alloc];
-  v6 = [v5 initWithZoneName:v4 ownerName:*MEMORY[0x277CBBF28]];
+  v6 = [v5 initWithZoneName:nameCopy ownerName:*MEMORY[0x277CBBF28]];
 
   return v6;
 }

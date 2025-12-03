@@ -1,11 +1,11 @@
 @interface SleepTimeDurationPickerView
-- (_TtC13SleepHealthUI27SleepTimeDurationPickerView)initWithCoder:(id)a3;
-- (_TtC13SleepHealthUI27SleepTimeDurationPickerView)initWithFrame:(CGRect)a3;
+- (_TtC13SleepHealthUI27SleepTimeDurationPickerView)initWithCoder:(id)coder;
+- (_TtC13SleepHealthUI27SleepTimeDurationPickerView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation SleepTimeDurationPickerView
 
-- (_TtC13SleepHealthUI27SleepTimeDurationPickerView)initWithCoder:(id)a3
+- (_TtC13SleepHealthUI27SleepTimeDurationPickerView)initWithCoder:(id)coder
 {
   sub_269D9A8E0();
   sub_269D9A8D0();
@@ -24,7 +24,7 @@
   return result;
 }
 
-- (_TtC13SleepHealthUI27SleepTimeDurationPickerView)initWithFrame:(CGRect)a3
+- (_TtC13SleepHealthUI27SleepTimeDurationPickerView)initWithFrame:(CGRect)frame
 {
   sub_269D9A8E0();
   sub_269D9A8D0();

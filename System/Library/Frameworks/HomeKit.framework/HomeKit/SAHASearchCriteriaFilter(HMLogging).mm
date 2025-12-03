@@ -6,84 +6,84 @@
 
 - (id)hm_shortDescription
 {
-  v2 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v3 = *MEMORY[0x1E69C7E78];
-  v4 = [a1 homeIdentifier];
-  appendToShortDescription(v2, v3, v4);
+  homeIdentifier = [self homeIdentifier];
+  appendToShortDescription(string, v3, homeIdentifier);
 
   v5 = *MEMORY[0x1E69C7E80];
-  v6 = [a1 homeName];
-  appendToShortDescription(v2, v5, v6);
+  homeName = [self homeName];
+  appendToShortDescription(string, v5, homeName);
 
   v7 = *MEMORY[0x1E69C7ED0];
-  v8 = [a1 zoneIdentifier];
-  appendToShortDescription(v2, v7, v8);
+  zoneIdentifier = [self zoneIdentifier];
+  appendToShortDescription(string, v7, zoneIdentifier);
 
   v9 = *MEMORY[0x1E69C7ED8];
-  v10 = [a1 zoneName];
-  appendToShortDescription(v2, v9, v10);
+  zoneName = [self zoneName];
+  appendToShortDescription(string, v9, zoneName);
 
   v11 = *MEMORY[0x1E69C7E88];
-  v12 = [a1 roomIdentifier];
-  appendToShortDescription(v2, v11, v12);
+  roomIdentifier = [self roomIdentifier];
+  appendToShortDescription(string, v11, roomIdentifier);
 
   v13 = *MEMORY[0x1E69C7E90];
-  v14 = [a1 roomName];
-  appendToShortDescription(v2, v13, v14);
+  roomName = [self roomName];
+  appendToShortDescription(string, v13, roomName);
 
   v15 = *MEMORY[0x1E69C7EB0];
-  v16 = [a1 serviceGroupIdentifier];
-  appendToShortDescription(v2, v15, v16);
+  serviceGroupIdentifier = [self serviceGroupIdentifier];
+  appendToShortDescription(string, v15, serviceGroupIdentifier);
 
   v17 = *MEMORY[0x1E69C7E70];
-  v18 = [a1 groupName];
-  appendToShortDescription(v2, v17, v18);
+  groupName = [self groupName];
+  appendToShortDescription(string, v17, groupName);
 
   v19 = *MEMORY[0x1E69C7EA0];
-  v20 = [a1 sceneName];
-  appendToShortDescription(v2, v19, v20);
+  sceneName = [self sceneName];
+  appendToShortDescription(string, v19, sceneName);
 
   v21 = *MEMORY[0x1E69C7E68];
-  v22 = [a1 entityType];
-  appendToShortDescription(v2, v21, v22);
+  entityType = [self entityType];
+  appendToShortDescription(string, v21, entityType);
 
   v23 = *MEMORY[0x1E69C7E50];
-  v24 = [a1 accessoryIdentifier];
-  appendToShortDescription(v2, v23, v24);
+  accessoryIdentifier = [self accessoryIdentifier];
+  appendToShortDescription(string, v23, accessoryIdentifier);
 
   v25 = *MEMORY[0x1E69C7E58];
-  v26 = [a1 accessoryName];
-  appendToShortDescription(v2, v25, v26);
+  accessoryName = [self accessoryName];
+  appendToShortDescription(string, v25, accessoryName);
 
   v27 = *MEMORY[0x1E69C7EC8];
-  v28 = [a1 serviceType];
-  appendToShortDescription(v2, v27, v28);
+  serviceType = [self serviceType];
+  appendToShortDescription(string, v27, serviceType);
 
   v29 = *MEMORY[0x1E69C7EB8];
-  v30 = [a1 serviceIdentifier];
-  appendToShortDescription(v2, v29, v30);
+  serviceIdentifier = [self serviceIdentifier];
+  appendToShortDescription(string, v29, serviceIdentifier);
 
   v31 = *MEMORY[0x1E69C7EC0];
-  v32 = [a1 serviceName];
-  appendToShortDescription(v2, v31, v32);
+  serviceName = [self serviceName];
+  appendToShortDescription(string, v31, serviceName);
 
   v33 = *MEMORY[0x1E69C7E98];
-  v34 = [a1 sceneIdentifier];
-  appendToShortDescription(v2, v33, v34);
+  sceneIdentifier = [self sceneIdentifier];
+  appendToShortDescription(string, v33, sceneIdentifier);
 
   v35 = *MEMORY[0x1E69C7EA8];
-  v36 = [a1 sceneType];
-  appendToShortDescription(v2, v35, v36);
+  sceneType = [self sceneType];
+  appendToShortDescription(string, v35, sceneType);
 
   v37 = *MEMORY[0x1E69C7E60];
-  v38 = [a1 attribute];
-  appendToShortDescription(v2, v37, v38);
+  attribute = [self attribute];
+  appendToShortDescription(string, v37, attribute);
 
-  [v2 appendString:@"  "];
-  v39 = [a1 attribute];
-  appendToShortDescription(v2, v37, v39);
+  [string appendString:@"  "];
+  attribute2 = [self attribute];
+  appendToShortDescription(string, v37, attribute2);
 
-  return v2;
+  return string;
 }
 
 @end

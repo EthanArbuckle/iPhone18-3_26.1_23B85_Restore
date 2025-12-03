@@ -1,12 +1,12 @@
 @interface PPSourceQuery
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSourceQuery:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSourceQuery:(id)query;
 - (PPSourceQuery)init;
-- (PPSourceQuery)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PPSourceQuery)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PPSourceQuery
@@ -20,10 +20,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -31,40 +31,40 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PPSourceQuery *)self isEqualToSourceQuery:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PPSourceQuery *)self isEqualToSourceQuery:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToSourceQuery:(id)a3
+- (BOOL)isEqualToSourceQuery:(id)query
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  queryCopy = query;
+  v5 = queryCopy;
+  if (queryCopy == self)
   {
     LOBYTE(v14) = 1;
   }
 
   else
   {
-    if (v4)
+    if (queryCopy)
     {
       limit = self->_limit;
-      if (limit == [(PPSourceQuery *)v4 limit])
+      if (limit == [(PPSourceQuery *)queryCopy limit])
       {
         v7 = self->_fromDate;
-        v8 = [(PPSourceQuery *)v5 fromDate];
-        if (v7 | v8)
+        fromDate = [(PPSourceQuery *)v5 fromDate];
+        if (v7 | fromDate)
         {
-          v13 = v8;
+          v13 = fromDate;
           LOBYTE(v14) = 0;
-          if (!v7 || !v8)
+          if (!v7 || !fromDate)
           {
             goto LABEL_31;
           }
 
-          v14 = [(NSDate *)v7 isEqualToDate:v8];
+          v14 = [(NSDate *)v7 isEqualToDate:fromDate];
 
           if (!v14)
           {
@@ -73,17 +73,17 @@
         }
 
         v7 = self->_toDate;
-        v9 = [(PPSourceQuery *)v5 toDate];
-        if (v7 | v9)
+        toDate = [(PPSourceQuery *)v5 toDate];
+        if (v7 | toDate)
         {
-          v13 = v9;
+          v13 = toDate;
           LOBYTE(v14) = 0;
-          if (!v7 || !v9)
+          if (!v7 || !toDate)
           {
             goto LABEL_31;
           }
 
-          v14 = [(NSDate *)v7 isEqualToDate:v9];
+          v14 = [(NSDate *)v7 isEqualToDate:toDate];
 
           if (!v14)
           {
@@ -92,17 +92,17 @@
         }
 
         v7 = self->_matchingBundleIds;
-        v10 = [(PPSourceQuery *)v5 matchingBundleIds];
-        if (v7 | v10)
+        matchingBundleIds = [(PPSourceQuery *)v5 matchingBundleIds];
+        if (v7 | matchingBundleIds)
         {
-          v13 = v10;
+          v13 = matchingBundleIds;
           LOBYTE(v14) = 0;
-          if (!v7 || !v10)
+          if (!v7 || !matchingBundleIds)
           {
             goto LABEL_31;
           }
 
-          v14 = [(NSDate *)v7 isEqualToSet:v10];
+          v14 = [(NSDate *)v7 isEqualToSet:matchingBundleIds];
 
           if (!v14)
           {
@@ -111,19 +111,19 @@
         }
 
         v7 = self->_matchingDocumentIds;
-        v11 = [(PPSourceQuery *)v5 matchingDocumentIds];
-        if (!(v7 | v11))
+        matchingDocumentIds = [(PPSourceQuery *)v5 matchingDocumentIds];
+        if (!(v7 | matchingDocumentIds))
         {
 LABEL_8:
           v7 = self->_matchingContactHandle;
-          v12 = [(PPSourceQuery *)v5 matchingContactHandle];
-          if (v7 | v12)
+          matchingContactHandle = [(PPSourceQuery *)v5 matchingContactHandle];
+          if (v7 | matchingContactHandle)
           {
-            v13 = v12;
+            v13 = matchingContactHandle;
             LOBYTE(v14) = 0;
-            if (v7 && v12)
+            if (v7 && matchingContactHandle)
             {
-              LOBYTE(v14) = [(NSDate *)v7 isEqualToString:v12];
+              LOBYTE(v14) = [(NSDate *)v7 isEqualToString:matchingContactHandle];
             }
           }
 
@@ -137,11 +137,11 @@ LABEL_8:
           goto LABEL_31;
         }
 
-        v13 = v11;
+        v13 = matchingDocumentIds;
         LOBYTE(v14) = 0;
-        if (v7 && v11)
+        if (v7 && matchingDocumentIds)
         {
-          v14 = [(NSDate *)v7 isEqualToSet:v11];
+          v14 = [(NSDate *)v7 isEqualToSet:matchingDocumentIds];
 
           if (!v14)
           {
@@ -165,9 +165,9 @@ LABEL_32:
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (v4)
   {
@@ -192,21 +192,21 @@ LABEL_32:
   return [(NSString *)self->_matchingContactHandle hash]- v7 + 32 * v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   limit = self->_limit;
-  v5 = a3;
-  [v5 encodeInteger:limit forKey:@"lmt"];
-  [v5 encodeObject:self->_fromDate forKey:@"fdt"];
-  [v5 encodeObject:self->_toDate forKey:@"tdt"];
-  [v5 encodeObject:self->_matchingBundleIds forKey:@"mbdl"];
-  [v5 encodeObject:self->_matchingDocumentIds forKey:@"mdids"];
-  [v5 encodeObject:self->_matchingContactHandle forKey:@"mch"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:limit forKey:@"lmt"];
+  [coderCopy encodeObject:self->_fromDate forKey:@"fdt"];
+  [coderCopy encodeObject:self->_toDate forKey:@"tdt"];
+  [coderCopy encodeObject:self->_matchingBundleIds forKey:@"mbdl"];
+  [coderCopy encodeObject:self->_matchingDocumentIds forKey:@"mdids"];
+  [coderCopy encodeObject:self->_matchingContactHandle forKey:@"mch"];
 }
 
-- (PPSourceQuery)initWithCoder:(id)a3
+- (PPSourceQuery)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = PPSourceQuery;
   v5 = [(PPSourceQuery *)&v21 init];
@@ -217,24 +217,24 @@ LABEL_32:
     v8 = objc_opt_class();
     v9 = [v7 initWithObjects:{v8, objc_opt_class(), 0}];
     objc_autoreleasePoolPop(v6);
-    v5->_limit = [v4 decodeIntegerForKey:@"lmt"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fdt"];
+    v5->_limit = [coderCopy decodeIntegerForKey:@"lmt"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fdt"];
     fromDate = v5->_fromDate;
     v5->_fromDate = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tdt"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tdt"];
     toDate = v5->_toDate;
     v5->_toDate = v12;
 
-    v14 = [v4 decodeObjectOfClasses:v9 forKey:@"mbdl"];
+    v14 = [coderCopy decodeObjectOfClasses:v9 forKey:@"mbdl"];
     matchingBundleIds = v5->_matchingBundleIds;
     v5->_matchingBundleIds = v14;
 
-    v16 = [v4 decodeObjectOfClasses:v9 forKey:@"mdids"];
+    v16 = [coderCopy decodeObjectOfClasses:v9 forKey:@"mdids"];
     matchingDocumentIds = v5->_matchingDocumentIds;
     v5->_matchingDocumentIds = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mch"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mch"];
     matchingContactHandle = v5->_matchingContactHandle;
     v5->_matchingContactHandle = v18;
   }

@@ -8,32 +8,32 @@
 {
   v25[1] = *MEMORY[0x277D85DE8];
   v3 = [HDCloudSyncCompoundOperation alloc];
-  v4 = [(HDCloudSyncOperation *)self configuration];
-  v5 = [(HDCloudSyncOperation *)self cloudState];
-  v6 = [(HDCloudSyncCompoundOperation *)v3 initWithConfiguration:v4 cloudState:v5 name:@"Sync Attachments" continueOnSubOperationError:0];
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  cloudState = [(HDCloudSyncOperation *)self cloudState];
+  v6 = [(HDCloudSyncCompoundOperation *)v3 initWithConfiguration:configuration cloudState:cloudState name:@"Sync Attachments" continueOnSubOperationError:0];
 
-  v7 = [(HDCloudSyncOperation *)self configuration];
-  v8 = [v7 repository];
-  v9 = [v8 profileType];
+  configuration2 = [(HDCloudSyncOperation *)self configuration];
+  repository = [configuration2 repository];
+  profileType = [repository profileType];
 
-  if (v9 == 1)
+  if (profileType == 1)
   {
     v10 = objc_alloc(MEMORY[0x277CBC5E8]);
     v11 = MEMORY[0x277CBC5F8];
-    v12 = [(HDCloudSyncOperation *)self configuration];
-    v13 = [v12 repository];
-    v14 = [v13 syncCircleIdentifier];
-    v15 = [v11 hd_attachmentZoneIDWithSyncCircleIdentifier:v14];
+    configuration3 = [(HDCloudSyncOperation *)self configuration];
+    repository2 = [configuration3 repository];
+    syncCircleIdentifier = [repository2 syncCircleIdentifier];
+    v15 = [v11 hd_attachmentZoneIDWithSyncCircleIdentifier:syncCircleIdentifier];
     v16 = [v10 initWithZoneID:v15];
 
     v17 = [HDCloudSyncCreateZonesOperation alloc];
-    v18 = [(HDCloudSyncOperation *)self configuration];
+    configuration4 = [(HDCloudSyncOperation *)self configuration];
     v25[0] = v16;
     v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:1];
-    v20 = [(HDCloudSyncOperation *)self configuration];
-    v21 = [v20 repository];
-    v22 = [v21 primaryCKContainer];
-    v23 = [(HDCloudSyncCreateZonesOperation *)v17 initWithConfiguration:v18 cloudState:0 zones:v19 container:v22];
+    configuration5 = [(HDCloudSyncOperation *)self configuration];
+    repository3 = [configuration5 repository];
+    primaryCKContainer = [repository3 primaryCKContainer];
+    v23 = [(HDCloudSyncCreateZonesOperation *)v17 initWithConfiguration:configuration4 cloudState:0 zones:v19 container:primaryCKContainer];
 
     [(HDCloudSyncCompoundOperation *)v6 addOperation:v23 transitionHandler:0];
   }

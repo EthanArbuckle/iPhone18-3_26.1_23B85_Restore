@@ -1,31 +1,31 @@
 @interface ALAssetsLibrary
 + (ALAuthorizationStatus)authorizationStatus;
 + (BOOL)_linkedBefore7;
-+ (CGImage)_aspectRatioThumbnailForAssetURL:(id)a3;
-+ (CGImage)_thumbnailForAssetURL:(id)a3;
-+ (id)_albumsInLibrary:(id)a3;
-+ (id)_exportSessionForVideoURL:(id)a3 fallbackFilePath:(id)a4 exportPreset:(id)a5;
-+ (id)_filePathForVideoURL:(id)a3 outMetadata:(id *)a4;
++ (CGImage)_aspectRatioThumbnailForAssetURL:(id)l;
++ (CGImage)_thumbnailForAssetURL:(id)l;
++ (id)_albumsInLibrary:(id)library;
++ (id)_exportSessionForVideoURL:(id)l fallbackFilePath:(id)path exportPreset:(id)preset;
++ (id)_filePathForVideoURL:(id)l outMetadata:(id *)metadata;
 + (id)_library;
-+ (id)_playerItemForVideoURL:(id)a3 fallbackFilePath:(id)a4;
-+ (int64_t)_estimatedOutputFileLengthForVideoURL:(id)a3 fallbackFilePath:(id)a4 exportPreset:(id)a5 exportProperties:(id)a6;
++ (id)_playerItemForVideoURL:(id)l fallbackFilePath:(id)path;
++ (int64_t)_estimatedOutputFileLengthForVideoURL:(id)l fallbackFilePath:(id)path exportPreset:(id)preset exportProperties:(id)properties;
 - (ALAssetsLibrary)init;
 - (BOOL)isValid;
 - (BOOL)videoAtPathIsCompatibleWithSavedPhotosAlbum:(NSURL *)videoPathURL;
-- (id)_copyGroupForURL:(id)a3;
-- (void)_addGroupForAlbum:(id)a3 ofType:(unint64_t)a4 toArray:(id)a5;
-- (void)_performBlock:(id)a3;
-- (void)_performBlockAndWait:(id)a3;
-- (void)_setBundlePropertiesOnPropertiesDictionary:(id)a3;
-- (void)_writeImageToSavedPhotosAlbum:(CGImage *)a3 orientation:(int64_t)a4 imageData:(id)a5 metadata:(id)a6 internalProperties:(id)a7 completionBlock:(id)a8;
-- (void)_writeVideoAtPathToSavedPhotosAlbum:(id)a3 internalProperties:(id)a4 completionBlock:(id)a5;
+- (id)_copyGroupForURL:(id)l;
+- (void)_addGroupForAlbum:(id)album ofType:(unint64_t)type toArray:(id)array;
+- (void)_performBlock:(id)block;
+- (void)_performBlockAndWait:(id)wait;
+- (void)_setBundlePropertiesOnPropertiesDictionary:(id)dictionary;
+- (void)_writeImageToSavedPhotosAlbum:(CGImage *)album orientation:(int64_t)orientation imageData:(id)data metadata:(id)metadata internalProperties:(id)properties completionBlock:(id)block;
+- (void)_writeVideoAtPathToSavedPhotosAlbum:(id)album internalProperties:(id)properties completionBlock:(id)block;
 - (void)addAssetsGroupAlbumWithName:(NSString *)name resultBlock:(ALAssetsLibraryGroupResultBlock)resultBlock failureBlock:(ALAssetsLibraryAccessFailureBlock)failureBlock;
 - (void)assetForURL:(NSURL *)assetURL resultBlock:(ALAssetsLibraryAssetForURLResultBlock)resultBlock failureBlock:(ALAssetsLibraryAccessFailureBlock)failureBlock;
-- (void)checkPhotosAccessAllowedWithScope:(int64_t)a3 handler:(id)a4;
+- (void)checkPhotosAccessAllowedWithScope:(int64_t)scope handler:(id)handler;
 - (void)dealloc;
 - (void)enumerateGroupsWithTypes:(ALAssetsGroupType)types usingBlock:(ALAssetsLibraryGroupsEnumerationResultsBlock)enumerationBlock failureBlock:(ALAssetsLibraryAccessFailureBlock)failureBlock;
 - (void)groupForURL:(NSURL *)groupURL resultBlock:(ALAssetsLibraryGroupResultBlock)resultBlock failureBlock:(ALAssetsLibraryAccessFailureBlock)failureBlock;
-- (void)registerAlbum:(id)a3 assetGroupPrivate:(id)a4;
+- (void)registerAlbum:(id)album assetGroupPrivate:(id)private;
 @end
 
 @implementation ALAssetsLibrary
@@ -247,7 +247,7 @@ uint64_t __56__ALAssetsLibrary_groupForURL_resultBlock_failureBlock___block_invo
   return result;
 }
 
-- (id)_copyGroupForURL:(id)a3
+- (id)_copyGroupForURL:(id)l
 {
   v6 = 0;
   v7 = &v6;
@@ -260,7 +260,7 @@ uint64_t __56__ALAssetsLibrary_groupForURL_resultBlock_failureBlock___block_invo
   v5[2] = __36__ALAssetsLibrary__copyGroupForURL___block_invoke;
   v5[3] = &unk_278A07AC8;
   v5[4] = self;
-  v5[5] = a3;
+  v5[5] = l;
   v5[6] = &v6;
   [(ALAssetsLibrary *)self _performBlockAndWait:v5];
   v3 = v7[5];
@@ -480,12 +480,12 @@ uint64_t __56__ALAssetsLibrary_assetForURL_resultBlock_failureBlock___block_invo
 - (BOOL)videoAtPathIsCompatibleWithSavedPhotosAlbum:(NSURL *)videoPathURL
 {
   v3 = MEMORY[0x277D3AD38];
-  v4 = [(NSURL *)videoPathURL path];
+  path = [(NSURL *)videoPathURL path];
 
-  return [v3 canSaveVideoToLibrary:v4];
+  return [v3 canSaveVideoToLibrary:path];
 }
 
-- (void)_writeVideoAtPathToSavedPhotosAlbum:(id)a3 internalProperties:(id)a4 completionBlock:(id)a5
+- (void)_writeVideoAtPathToSavedPhotosAlbum:(id)album internalProperties:(id)properties completionBlock:(id)block
 {
   if (pthread_main_np())
   {
@@ -501,11 +501,11 @@ uint64_t __56__ALAssetsLibrary_assetForURL_resultBlock_failureBlock___block_invo
   v10[1] = 3221225472;
   v10[2] = __90__ALAssetsLibrary__writeVideoAtPathToSavedPhotosAlbum_internalProperties_completionBlock___block_invoke;
   v10[3] = &unk_278A07A78;
-  v10[7] = a3;
-  v10[8] = a5;
+  v10[7] = album;
+  v10[8] = block;
   v10[4] = global_queue;
   v10[5] = self;
-  v10[6] = a4;
+  v10[6] = properties;
   [(ALAssetsLibrary *)self checkPhotosAccessAllowedWithScope:1 handler:v10];
 }
 
@@ -579,7 +579,7 @@ void __90__ALAssetsLibrary__writeVideoAtPathToSavedPhotosAlbum_internalPropertie
   }
 }
 
-- (void)_writeImageToSavedPhotosAlbum:(CGImage *)a3 orientation:(int64_t)a4 imageData:(id)a5 metadata:(id)a6 internalProperties:(id)a7 completionBlock:(id)a8
+- (void)_writeImageToSavedPhotosAlbum:(CGImage *)album orientation:(int64_t)orientation imageData:(id)data metadata:(id)metadata internalProperties:(id)properties completionBlock:(id)block
 {
   if (pthread_main_np())
   {
@@ -591,19 +591,19 @@ void __90__ALAssetsLibrary__writeVideoAtPathToSavedPhotosAlbum_internalPropertie
     global_queue = dispatch_get_global_queue(0, 0);
   }
 
-  CGImageRetain(a3);
+  CGImageRetain(album);
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __115__ALAssetsLibrary__writeImageToSavedPhotosAlbum_orientation_imageData_metadata_internalProperties_completionBlock___block_invoke;
   v16[3] = &unk_278A07A28;
   v16[4] = global_queue;
   v16[5] = self;
-  v16[6] = a7;
-  v16[7] = a6;
-  v16[10] = a3;
-  v16[11] = a4;
-  v16[8] = a5;
-  v16[9] = a8;
+  v16[6] = properties;
+  v16[7] = metadata;
+  v16[10] = album;
+  v16[11] = orientation;
+  v16[8] = data;
+  v16[9] = block;
   [(ALAssetsLibrary *)self checkPhotosAccessAllowedWithScope:1 handler:v16];
 }
 
@@ -1249,7 +1249,7 @@ uint64_t __68__ALAssetsLibrary_enumerateGroupsWithTypes_usingBlock_failureBlock_
   return result;
 }
 
-- (void)_setBundlePropertiesOnPropertiesDictionary:(id)a3
+- (void)_setBundlePropertiesOnPropertiesDictionary:(id)dictionary
 {
   v4 = [objc_msgSend(MEMORY[0x277CCA8D8] "mainBundle")];
   if (v4)
@@ -1257,7 +1257,7 @@ uint64_t __68__ALAssetsLibrary_enumerateGroupsWithTypes_usingBlock_failureBlock_
     v5 = v4;
     if ([v4 length])
     {
-      [a3 setObject:v5 forKey:*MEMORY[0x277D3B288]];
+      [dictionary setObject:v5 forKey:*MEMORY[0x277D3B288]];
     }
   }
 
@@ -1269,21 +1269,21 @@ uint64_t __68__ALAssetsLibrary_enumerateGroupsWithTypes_usingBlock_failureBlock_
     {
       v8 = *MEMORY[0x277D3B280];
 
-      [a3 setObject:v7 forKey:v8];
+      [dictionary setObject:v7 forKey:v8];
     }
   }
 }
 
-- (void)checkPhotosAccessAllowedWithScope:(int64_t)a3 handler:(id)a4
+- (void)checkPhotosAccessAllowedWithScope:(int64_t)scope handler:(id)handler
 {
-  v6 = [MEMORY[0x277D3B240] sharedInstance];
+  mEMORY[0x277D3B240] = [MEMORY[0x277D3B240] sharedInstance];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __61__ALAssetsLibrary_checkPhotosAccessAllowedWithScope_handler___block_invoke;
   v7[3] = &unk_278A078C0;
-  v7[4] = a4;
-  v7[5] = a3;
-  [v6 checkPhotosAccessAllowedWithScope:2 handler:v7];
+  v7[4] = handler;
+  v7[5] = scope;
+  [mEMORY[0x277D3B240] checkPhotosAccessAllowedWithScope:2 handler:v7];
 }
 
 uint64_t __61__ALAssetsLibrary_checkPhotosAccessAllowedWithScope_handler___block_invoke(uint64_t a1, uint64_t a2)
@@ -1298,51 +1298,51 @@ uint64_t __61__ALAssetsLibrary_checkPhotosAccessAllowedWithScope_handler___block
   return v3();
 }
 
-- (void)_addGroupForAlbum:(id)a3 ofType:(unint64_t)a4 toArray:(id)a5
+- (void)_addGroupForAlbum:(id)album ofType:(unint64_t)type toArray:(id)array
 {
-  if (a3 && ([a3 isInTrash] & 1) == 0)
+  if (album && ([album isInTrash] & 1) == 0)
   {
-    v9 = [[ALAssetsGroup alloc] initWithPhotoAlbum:a3 library:self type:a4];
-    [a5 addObject:v9];
+    v9 = [[ALAssetsGroup alloc] initWithPhotoAlbum:album library:self type:type];
+    [array addObject:v9];
   }
 }
 
-- (void)_performBlock:(id)a3
+- (void)_performBlock:(id)block
 {
-  v4 = [(ALAssetsLibraryPrivate *)[(ALAssetsLibrary *)self internal] photoLibrary];
+  photoLibrary = [(ALAssetsLibraryPrivate *)[(ALAssetsLibrary *)self internal] photoLibrary];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __33__ALAssetsLibrary__performBlock___block_invoke;
   v5[3] = &unk_278A07C30;
-  v5[4] = v4;
-  v5[5] = a3;
-  [(PLPhotoLibrary *)v4 performBlock:v5];
+  v5[4] = photoLibrary;
+  v5[5] = block;
+  [(PLPhotoLibrary *)photoLibrary performBlock:v5];
 }
 
-- (void)_performBlockAndWait:(id)a3
+- (void)_performBlockAndWait:(id)wait
 {
-  v4 = [(ALAssetsLibraryPrivate *)[(ALAssetsLibrary *)self internal] photoLibrary];
+  photoLibrary = [(ALAssetsLibraryPrivate *)[(ALAssetsLibrary *)self internal] photoLibrary];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __40__ALAssetsLibrary__performBlockAndWait___block_invoke;
   v5[3] = &unk_278A07C30;
-  v5[4] = v4;
-  v5[5] = a3;
-  [(PLPhotoLibrary *)v4 performBlockAndWait:v5];
+  v5[4] = photoLibrary;
+  v5[5] = wait;
+  [(PLPhotoLibrary *)photoLibrary performBlockAndWait:v5];
 }
 
-- (void)registerAlbum:(id)a3 assetGroupPrivate:(id)a4
+- (void)registerAlbum:(id)album assetGroupPrivate:(id)private
 {
-  v6 = [(ALAssetsLibrary *)self internal];
+  internal = [(ALAssetsLibrary *)self internal];
 
-  [(ALAssetsLibraryPrivate *)v6 registerAlbum:a3 assetGroupPrivate:a4];
+  [(ALAssetsLibraryPrivate *)internal registerAlbum:album assetGroupPrivate:private];
 }
 
 - (BOOL)isValid
 {
-  v2 = [(ALAssetsLibrary *)self internal];
+  internal = [(ALAssetsLibrary *)self internal];
 
-  return [(ALAssetsLibraryPrivate *)v2 isValid];
+  return [(ALAssetsLibraryPrivate *)internal isValid];
 }
 
 - (void)dealloc
@@ -1399,9 +1399,9 @@ uint64_t __33__ALAssetsLibrary__linkedBefore7__block_invoke()
   }
 }
 
-+ (id)_albumsInLibrary:(id)a3
++ (id)_albumsInLibrary:(id)library
 {
-  v3 = [objc_msgSend(MEMORY[0x277D3ACD8] albumListInPhotoLibrary:{a3), "albums"}];
+  v3 = [objc_msgSend(MEMORY[0x277D3ACD8] albumListInPhotoLibrary:{library), "albums"}];
 
   return [v3 array];
 }
@@ -1409,18 +1409,18 @@ uint64_t __33__ALAssetsLibrary__linkedBefore7__block_invoke()
 + (id)_library
 {
   v17 = *MEMORY[0x277D85DE8];
-  objc_sync_enter(a1);
+  objc_sync_enter(self);
   Weak = objc_loadWeak(&_library__assetsLibraryPhotoLibrary);
   if (!Weak)
   {
     v10 = 0;
-    v4 = [MEMORY[0x277D3B238] systemLibraryURL];
+    systemLibraryURL = [MEMORY[0x277D3B238] systemLibraryURL];
     v5 = objc_alloc_init(MEMORY[0x277D3AD40]);
     [v5 setRequiredState:6];
     [v5 setAutomaticallyMergesContext:1];
     [v5 setAutomaticallyPinToFirstFetch:0];
     [v5 setLibraryInitiator:1];
-    v6 = [MEMORY[0x277D3AD38] newPhotoLibraryWithName:"+[ALAssetsLibrary _library]" loadedFromURL:v4 options:v5 error:&v10];
+    v6 = [MEMORY[0x277D3AD38] newPhotoLibraryWithName:"+[ALAssetsLibrary _library]" loadedFromURL:systemLibraryURL options:v5 error:&v10];
     if (!v6)
     {
       Log = PLMigrationGetLog();
@@ -1429,7 +1429,7 @@ uint64_t __33__ALAssetsLibrary__linkedBefore7__block_invoke()
         *buf = 136446722;
         v12 = "+[ALAssetsLibrary _library]";
         v13 = 2112;
-        v14 = v4;
+        v14 = systemLibraryURL;
         v15 = 2112;
         v16 = v10;
         _os_log_impl(&dword_236A83000, Log, OS_LOG_TYPE_ERROR, "failed to load photo library %{public}s with url %@, %@", buf, 0x20u);
@@ -1440,57 +1440,57 @@ uint64_t __33__ALAssetsLibrary__linkedBefore7__block_invoke()
     Weak = objc_storeWeak(&_library__assetsLibraryPhotoLibrary, v6);
   }
 
-  objc_sync_exit(a1);
+  objc_sync_exit(self);
   v8 = *MEMORY[0x277D85DE8];
   return Weak;
 }
 
-+ (id)_playerItemForVideoURL:(id)a3 fallbackFilePath:(id)a4
++ (id)_playerItemForVideoURL:(id)l fallbackFilePath:(id)path
 {
   v6 = MEMORY[0x277D3ABF8];
-  v7 = [MEMORY[0x277D3AD38] systemPhotoLibrary];
+  systemPhotoLibrary = [MEMORY[0x277D3AD38] systemPhotoLibrary];
 
-  return [v6 playerItemForVideoURL:a3 fallbackFilePath:a4 library:v7];
+  return [v6 playerItemForVideoURL:l fallbackFilePath:path library:systemPhotoLibrary];
 }
 
-+ (id)_exportSessionForVideoURL:(id)a3 fallbackFilePath:(id)a4 exportPreset:(id)a5
++ (id)_exportSessionForVideoURL:(id)l fallbackFilePath:(id)path exportPreset:(id)preset
 {
   v8 = MEMORY[0x277D3ABF8];
-  v9 = [MEMORY[0x277D3AD38] systemPhotoLibrary];
+  systemPhotoLibrary = [MEMORY[0x277D3AD38] systemPhotoLibrary];
 
-  return [v8 exportSessionForVideoURL:a3 library:v9 fallbackFilePath:a4 exportPreset:a5];
+  return [v8 exportSessionForVideoURL:l library:systemPhotoLibrary fallbackFilePath:path exportPreset:preset];
 }
 
-+ (int64_t)_estimatedOutputFileLengthForVideoURL:(id)a3 fallbackFilePath:(id)a4 exportPreset:(id)a5 exportProperties:(id)a6
++ (int64_t)_estimatedOutputFileLengthForVideoURL:(id)l fallbackFilePath:(id)path exportPreset:(id)preset exportProperties:(id)properties
 {
   v10 = MEMORY[0x277D3ABF8];
-  v11 = [MEMORY[0x277D3AD38] systemPhotoLibrary];
+  systemPhotoLibrary = [MEMORY[0x277D3AD38] systemPhotoLibrary];
 
-  return [v10 estimatedOutputFileLengthForVideoURL:a3 library:v11 fallbackFilePath:a4 exportPreset:a5 exportProperties:a6];
+  return [v10 estimatedOutputFileLengthForVideoURL:l library:systemPhotoLibrary fallbackFilePath:path exportPreset:preset exportProperties:properties];
 }
 
-+ (id)_filePathForVideoURL:(id)a3 outMetadata:(id *)a4
++ (id)_filePathForVideoURL:(id)l outMetadata:(id *)metadata
 {
   v6 = MEMORY[0x277D3ABF8];
-  v7 = [MEMORY[0x277D3AD38] systemPhotoLibrary];
+  systemPhotoLibrary = [MEMORY[0x277D3AD38] systemPhotoLibrary];
 
-  return [v6 filePathForVideoURL:a3 library:v7 outMetadata:a4];
+  return [v6 filePathForVideoURL:l library:systemPhotoLibrary outMetadata:metadata];
 }
 
-+ (CGImage)_aspectRatioThumbnailForAssetURL:(id)a3
++ (CGImage)_aspectRatioThumbnailForAssetURL:(id)l
 {
   v4 = MEMORY[0x277D3ABF8];
-  v5 = [MEMORY[0x277D3AD38] systemPhotoLibrary];
+  systemPhotoLibrary = [MEMORY[0x277D3AD38] systemPhotoLibrary];
 
-  return [v4 aspectRatioThumbnailForAssetURL:a3 library:v5];
+  return [v4 aspectRatioThumbnailForAssetURL:l library:systemPhotoLibrary];
 }
 
-+ (CGImage)_thumbnailForAssetURL:(id)a3
++ (CGImage)_thumbnailForAssetURL:(id)l
 {
   v4 = MEMORY[0x277D3ABF8];
-  v5 = [MEMORY[0x277D3AD38] systemPhotoLibrary];
+  systemPhotoLibrary = [MEMORY[0x277D3AD38] systemPhotoLibrary];
 
-  return [v4 thumbnailForAssetURL:a3 library:v5];
+  return [v4 thumbnailForAssetURL:l library:systemPhotoLibrary];
 }
 
 @end

@@ -1,28 +1,28 @@
 @interface CRDocumentOutputRegionMetadata
-- (BOOL)isEqual:(id)a3;
-- (CRDocumentOutputRegionMetadata)initWithCRCodableDataRepresentation:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (CRDocumentOutputRegionMetadata)initWithCRCodableDataRepresentation:(id)representation;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)crCodableDataRepresentation;
 @end
 
 @implementation CRDocumentOutputRegionMetadata
 
-- (CRDocumentOutputRegionMetadata)initWithCRCodableDataRepresentation:(id)a3
+- (CRDocumentOutputRegionMetadata)initWithCRCodableDataRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v9.receiver = self;
   v9.super_class = CRDocumentOutputRegionMetadata;
   v5 = [(CRDocumentOutputRegionMetadata *)&v9 init];
   if (v5)
   {
     v8 = 0;
-    if ([CRCodingUtilities integerFromEncodingData:v4 offset:&v8]!= 1)
+    if ([CRCodingUtilities integerFromEncodingData:representationCopy offset:&v8]!= 1)
     {
       v6 = 0;
       goto LABEL_6;
     }
 
-    v5->_numFilteredRegions = [CRCodingUtilities unsignedIntegerFromEncodingData:v4 offset:&v8];
+    v5->_numFilteredRegions = [CRCodingUtilities unsignedIntegerFromEncodingData:representationCopy offset:&v8];
   }
 
   v6 = v5;
@@ -40,10 +40,10 @@ LABEL_6:
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -53,11 +53,11 @@ LABEL_6:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(CRDocumentOutputRegionMetadata *)self numFilteredRegions];
-      v7 = [(CRDocumentOutputRegionMetadata *)v5 numFilteredRegions];
+      v5 = equalCopy;
+      numFilteredRegions = [(CRDocumentOutputRegionMetadata *)self numFilteredRegions];
+      numFilteredRegions2 = [(CRDocumentOutputRegionMetadata *)v5 numFilteredRegions];
 
-      v8 = v6 == v7;
+      v8 = numFilteredRegions == numFilteredRegions2;
     }
 
     else
@@ -69,7 +69,7 @@ LABEL_6:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   [v4 setNumFilteredRegions:{-[CRDocumentOutputRegionMetadata numFilteredRegions](self, "numFilteredRegions")}];

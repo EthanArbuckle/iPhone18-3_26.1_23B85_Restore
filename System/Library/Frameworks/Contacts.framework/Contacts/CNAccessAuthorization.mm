@@ -1,20 +1,20 @@
 @interface CNAccessAuthorization
-+ (BOOL)canSetContactProperty:(id)a3;
++ (BOOL)canSetContactProperty:(id)property;
 + (id)allAuthorizationKeys;
 + (id)allAuthorizationKeysVector;
 + (id)new;
-+ (id)unauthorizedKeysVectorWithAuthorizer:(id)a3;
-+ (id)unauthorizedKeysWithAuthorizer:(id)a3;
-+ (void)removeUnavailableKeysFromContactKeyVector:(id)a3;
-- (BOOL)authorizeFetchRequest:(id)a3 accessError:(id *)a4;
++ (id)unauthorizedKeysVectorWithAuthorizer:(id)authorizer;
++ (id)unauthorizedKeysWithAuthorizer:(id)authorizer;
++ (void)removeUnavailableKeysFromContactKeyVector:(id)vector;
+- (BOOL)authorizeFetchRequest:(id)request accessError:(id *)error;
 - (CNAccessAuthorization)init;
-- (CNAccessAuthorization)initWithAuditToken:(id)a3;
-- (CNAccessAuthorization)initWithAuditToken:(id)a3 assumedIdentity:(id)a4;
-- (CNAccessAuthorization)initWithAuthorizer:(id)a3;
-- (id)authorizedKeysForContactKeys:(id)a3;
+- (CNAccessAuthorization)initWithAuditToken:(id)token;
+- (CNAccessAuthorization)initWithAuditToken:(id)token assumedIdentity:(id)identity;
+- (CNAccessAuthorization)initWithAuthorizer:(id)authorizer;
+- (id)authorizedKeysForContactKeys:(id)keys;
 - (id)unauthorizedKeysVector;
-- (void)performWork:(id)a3 authorizingFetchRequest:(id)a4 failureHandler:(id)a5;
-- (void)resetUnauthorizedKeysForFetchRequest:(id)a3;
+- (void)performWork:(id)work authorizingFetchRequest:(id)request failureHandler:(id)handler;
+- (void)resetUnauthorizedKeysForFetchRequest:(id)request;
 @end
 
 @implementation CNAccessAuthorization
@@ -22,8 +22,8 @@
 - (id)unauthorizedKeysVector
 {
   v3 = objc_opt_class();
-  v4 = [(CNAccessAuthorization *)self authorizer];
-  v5 = [v3 unauthorizedKeysVectorWithAuthorizer:v4];
+  authorizer = [(CNAccessAuthorization *)self authorizer];
+  v5 = [v3 unauthorizedKeysVectorWithAuthorizer:authorizer];
 
   return v5;
 }
@@ -66,7 +66,7 @@ void __45__CNAccessAuthorization_allAuthorizationKeys__block_invoke()
   block[1] = 3221225472;
   block[2] = __51__CNAccessAuthorization_allAuthorizationKeysVector__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (allAuthorizationKeysVector_cn_once_token_0 != -1)
   {
     dispatch_once(&allAuthorizationKeysVector_cn_once_token_0, block);
@@ -77,9 +77,9 @@ void __45__CNAccessAuthorization_allAuthorizationKeys__block_invoke()
   return v2;
 }
 
-+ (id)unauthorizedKeysVectorWithAuthorizer:(id)a3
++ (id)unauthorizedKeysVectorWithAuthorizer:(id)authorizer
 {
-  v3 = [a1 unauthorizedKeysWithAuthorizer:a3];
+  v3 = [self unauthorizedKeysWithAuthorizer:authorizer];
   v4 = [CNContactKeyVector keyVectorWithKeys:v3];
 
   v5 = +[CNContactKeyVector keyVector];
@@ -98,16 +98,16 @@ void __45__CNAccessAuthorization_allAuthorizationKeys__block_invoke()
   return v7;
 }
 
-+ (id)unauthorizedKeysWithAuthorizer:(id)a3
++ (id)unauthorizedKeysWithAuthorizer:(id)authorizer
 {
-  v3 = a3;
+  authorizerCopy = authorizer;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (([v3 isNotesAccessGranted] & 1) == 0)
+  if (([authorizerCopy isNotesAccessGranted] & 1) == 0)
   {
     [v4 addObject:@"note"];
   }
 
-  if (([v3 isAddressingGrammarAccessGranted] & 1) == 0)
+  if (([authorizerCopy isAddressingGrammarAccessGranted] & 1) == 0)
   {
     [v4 addObject:@"addressingGrammars"];
   }
@@ -117,83 +117,83 @@ void __45__CNAccessAuthorization_allAuthorizationKeys__block_invoke()
 
 - (CNAccessAuthorization)init
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CNInitializerUnavailableException();
   objc_exception_throw(v3);
 }
 
 + (id)new
 {
-  v2 = a1;
+  selfCopy = self;
   v3 = CNInitializerUnavailableException();
   objc_exception_throw(v3);
 }
 
-- (CNAccessAuthorization)initWithAuditToken:(id)a3
+- (CNAccessAuthorization)initWithAuditToken:(id)token
 {
   v4 = MEMORY[0x1E6996648];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithAuditToken:v5 assumedIdentity:0];
+  tokenCopy = token;
+  v6 = [[v4 alloc] initWithAuditToken:tokenCopy assumedIdentity:0];
 
   v7 = [(CNAccessAuthorization *)self initWithAuthorizer:v6];
   return v7;
 }
 
-- (CNAccessAuthorization)initWithAuditToken:(id)a3 assumedIdentity:(id)a4
+- (CNAccessAuthorization)initWithAuditToken:(id)token assumedIdentity:(id)identity
 {
   v6 = MEMORY[0x1E6996648];
-  v7 = a4;
-  v8 = a3;
-  v9 = [[v6 alloc] initWithAuditToken:v8 assumedIdentity:v7];
+  identityCopy = identity;
+  tokenCopy = token;
+  v9 = [[v6 alloc] initWithAuditToken:tokenCopy assumedIdentity:identityCopy];
 
   v10 = [(CNAccessAuthorization *)self initWithAuthorizer:v9];
   return v10;
 }
 
-- (CNAccessAuthorization)initWithAuthorizer:(id)a3
+- (CNAccessAuthorization)initWithAuthorizer:(id)authorizer
 {
-  v5 = a3;
+  authorizerCopy = authorizer;
   v10.receiver = self;
   v10.super_class = CNAccessAuthorization;
   v6 = [(CNAccessAuthorization *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_authorizer, a3);
+    objc_storeStrong(&v6->_authorizer, authorizer);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (void)performWork:(id)a3 authorizingFetchRequest:(id)a4 failureHandler:(id)a5
+- (void)performWork:(id)work authorizingFetchRequest:(id)request failureHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  workCopy = work;
+  handlerCopy = handler;
   v11 = 0;
-  LODWORD(self) = [(CNAccessAuthorization *)self authorizeFetchRequest:a4 accessError:&v11];
+  LODWORD(self) = [(CNAccessAuthorization *)self authorizeFetchRequest:request accessError:&v11];
   v10 = v11;
   if (self)
   {
-    v8[2](v8);
+    workCopy[2](workCopy);
   }
 
   else
   {
-    v9[2](v9, v10);
+    handlerCopy[2](handlerCopy, v10);
   }
 }
 
-- (BOOL)authorizeFetchRequest:(id)a3 accessError:(id *)a4
+- (BOOL)authorizeFetchRequest:(id)request accessError:(id *)error
 {
   v65 = *MEMORY[0x1E69E9840];
-  v34 = a3;
+  requestCopy = request;
   [(CNAccessAuthorization *)self resetUnauthorizedKeysForFetchRequest:?];
-  v5 = [(CNAccessAuthorization *)self unauthorizedKeysVector];
-  if (v5)
+  unauthorizedKeysVector = [(CNAccessAuthorization *)self unauthorizedKeysVector];
+  if (unauthorizedKeysVector)
   {
     objc_opt_class();
-    v6 = v34;
+    v6 = requestCopy;
     if (objc_opt_isKindOfClass())
     {
       v7 = v6;
@@ -224,8 +224,8 @@ void __45__CNAccessAuthorization_allAuthorizationKeys__block_invoke()
       v48 = 0u;
       v49 = 0u;
       v50 = 0u;
-      v9 = [v8 keysToFetch];
-      v10 = [v9 countByEnumeratingWithState:&v47 objects:v64 count:16];
+      keysToFetch = [v8 keysToFetch];
+      v10 = [keysToFetch countByEnumeratingWithState:&v47 objects:v64 count:16];
       if (v10)
       {
         v11 = *v48;
@@ -235,7 +235,7 @@ void __45__CNAccessAuthorization_allAuthorizationKeys__block_invoke()
           {
             if (*v48 != v11)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(keysToFetch);
             }
 
             v13 = *(*(&v47 + 1) + 8 * i);
@@ -248,25 +248,25 @@ void __45__CNAccessAuthorization_allAuthorizationKeys__block_invoke()
               v44 = __Block_byref_object_copy__21;
               v45 = __Block_byref_object_dispose__21;
               v46 = objc_alloc_init(CNMutableContactKeyVector);
-              v15 = [v13 _cn_requiredKeys];
-              v16 = [v15 intersectsKeyVector:v5];
+              _cn_requiredKeys = [v13 _cn_requiredKeys];
+              v16 = [_cn_requiredKeys intersectsKeyVector:unauthorizedKeysVector];
 
               if (v16)
               {
                 v17 = v42[5];
-                v18 = [v13 _cn_requiredKeys];
-                [v17 unionKeyVector:v18];
+                _cn_requiredKeys2 = [v13 _cn_requiredKeys];
+                [v17 unionKeyVector:_cn_requiredKeys2];
 
-                [v42[5] intersectKeyVector:v5];
+                [v42[5] intersectKeyVector:unauthorizedKeysVector];
                 if ((v14 & 1) == 0)
                 {
                   *(v52 + 24) = 0;
                 }
               }
 
-              v19 = [v13 _cn_optionalKeys];
+              _cn_optionalKeys = [v13 _cn_optionalKeys];
               v20 = +[CNContactKeyVector keyVector];
-              v21 = [v19 isEqualToKeyVector:v20];
+              v21 = [_cn_optionalKeys isEqualToKeyVector:v20];
 
               if ((v21 & 1) == 0)
               {
@@ -274,7 +274,7 @@ void __45__CNAccessAuthorization_allAuthorizationKeys__block_invoke()
                 v36[1] = 3221225472;
                 v36[2] = __59__CNAccessAuthorization_authorizeFetchRequest_accessError___block_invoke;
                 v36[3] = &unk_1E7415A40;
-                v37 = v5;
+                v37 = unauthorizedKeysVector;
                 v38 = &v41;
                 v40 = (v14 & 1) == 0;
                 v39 = &v51;
@@ -308,7 +308,7 @@ void __45__CNAccessAuthorization_allAuthorizationKeys__block_invoke()
             }
           }
 
-          v10 = [v9 countByEnumeratingWithState:&v47 objects:v64 count:16];
+          v10 = [keysToFetch countByEnumeratingWithState:&v47 objects:v64 count:16];
         }
 
         while (v10);
@@ -323,10 +323,10 @@ void __45__CNAccessAuthorization_allAuthorizationKeys__block_invoke()
       v63[1] = v27;
       v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v63 forKeys:v62 count:2];
       v29 = [CNErrorFactory errorWithCode:102 userInfo:v28];
-      if (a4 && (v26 & 1) == 0)
+      if (error && (v26 & 1) == 0)
       {
         v29 = v29;
-        *a4 = v29;
+        *error = v29;
       }
 
       _Block_object_dispose(&v51, 8);
@@ -372,12 +372,12 @@ void __59__CNAccessAuthorization_authorizeFetchRequest_accessError___block_invok
   [v2 addObject:v3];
 }
 
-- (void)resetUnauthorizedKeysForFetchRequest:(id)a3
+- (void)resetUnauthorizedKeysForFetchRequest:(id)request
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  requestCopy = request;
   objc_opt_class();
-  v4 = v3;
+  v4 = requestCopy;
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;
@@ -396,8 +396,8 @@ void __59__CNAccessAuthorization_authorizeFetchRequest_accessError___block_invok
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v7 = [v6 keysToFetch];
-    v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    keysToFetch = [v6 keysToFetch];
+    v8 = [keysToFetch countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v8)
     {
       v9 = v8;
@@ -409,7 +409,7 @@ void __59__CNAccessAuthorization_authorizeFetchRequest_accessError___block_invok
         {
           if (*v14 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(keysToFetch);
           }
 
           v12 = *(*(&v13 + 1) + 8 * v11);
@@ -422,7 +422,7 @@ void __59__CNAccessAuthorization_authorizeFetchRequest_accessError___block_invok
         }
 
         while (v9 != v11);
-        v9 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v9 = [keysToFetch countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v9);
@@ -430,24 +430,24 @@ void __59__CNAccessAuthorization_authorizeFetchRequest_accessError___block_invok
   }
 }
 
-- (id)authorizedKeysForContactKeys:(id)a3
+- (id)authorizedKeysForContactKeys:(id)keys
 {
-  v4 = a3;
-  v5 = [(CNAccessAuthorization *)self unauthorizedKeysVector];
-  v6 = v5;
-  if (v5)
+  keysCopy = keys;
+  unauthorizedKeysVector = [(CNAccessAuthorization *)self unauthorizedKeysVector];
+  v6 = unauthorizedKeysVector;
+  if (unauthorizedKeysVector)
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __54__CNAccessAuthorization_authorizedKeysForContactKeys___block_invoke;
     v9[3] = &unk_1E7415A90;
-    v10 = v5;
-    v7 = [v4 _cn_filter:v9];
+    v10 = unauthorizedKeysVector;
+    v7 = [keysCopy _cn_filter:v9];
   }
 
   else
   {
-    v7 = v4;
+    v7 = keysCopy;
   }
 
   return v7;
@@ -470,29 +470,29 @@ uint64_t __54__CNAccessAuthorization_authorizedKeysForContactKeys___block_invoke
   return v5;
 }
 
-+ (void)removeUnavailableKeysFromContactKeyVector:(id)a3
++ (void)removeUnavailableKeysFromContactKeyVector:(id)vector
 {
-  v7 = a3;
-  v4 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v5 = [v4 authorizationContext];
-  v6 = [a1 unauthorizedKeysVectorWithAuthorizer:v5];
+  vectorCopy = vector;
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  authorizationContext = [currentEnvironment authorizationContext];
+  v6 = [self unauthorizedKeysVectorWithAuthorizer:authorizationContext];
 
   if (v6)
   {
-    [v7 minusKeyVector:v6];
+    [vectorCopy minusKeyVector:v6];
   }
 }
 
-+ (BOOL)canSetContactProperty:(id)a3
++ (BOOL)canSetContactProperty:(id)property
 {
   v4 = MEMORY[0x1E69966E8];
-  v5 = a3;
-  v6 = [v4 currentEnvironment];
-  v7 = [v6 authorizationContext];
-  v8 = [a1 unauthorizedKeysWithAuthorizer:v7];
+  propertyCopy = property;
+  currentEnvironment = [v4 currentEnvironment];
+  authorizationContext = [currentEnvironment authorizationContext];
+  v8 = [self unauthorizedKeysWithAuthorizer:authorizationContext];
 
-  LOBYTE(v6) = [v8 containsObject:v5];
-  return v6 ^ 1;
+  LOBYTE(currentEnvironment) = [v8 containsObject:propertyCopy];
+  return currentEnvironment ^ 1;
 }
 
 @end

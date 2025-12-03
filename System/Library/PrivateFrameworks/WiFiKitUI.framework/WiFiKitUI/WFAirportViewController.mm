@@ -3,48 +3,48 @@
 - (BOOL)_refreshATJShownStateIfChanged;
 - (BOOL)_shouldContinueUpdateNetworkList;
 - (BOOL)showDiagnosticsCell;
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4;
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path;
 - (NSString)powerOffLocationWarning;
 - (NSString)userAutoJoinDisabledWarning;
 - (WFAirportViewController)init;
 - (WFAirportViewControllerDelegate)listDelegate;
 - (WFNetworkListRecord)joiningHotspot;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
 - (id)_askToJoinFooterString;
-- (id)_askToJoinFooterStringForMode:(int64_t)a3;
-- (id)_askToJoinStateStringForATJMode:(int64_t)a3;
+- (id)_askToJoinFooterStringForMode:(int64_t)mode;
+- (id)_askToJoinStateStringForATJMode:(int64_t)mode;
 - (id)_currentNetworkCell;
 - (id)_currentNetworkCellIndexPath;
 - (id)_defaultSectionsForEditing;
-- (id)_defaultSectionsForPowerState:(BOOL)a3;
-- (id)_getAutoHotspotOptionText:(int64_t)a3;
-- (id)_indexPathForNetworkName:(id)a3;
-- (id)_nameOfSection:(unint64_t)a3;
-- (id)_passcodePromptForViewingKnownNetworksIsChinaDevice:(BOOL)a3;
-- (id)_sectionNameAtIndex:(unint64_t)a3;
-- (id)_sortedProfilesFromSet:(id)a3;
-- (id)_tableCellForNetwork:(id)a3 tableView:(id)a4 indexPath:(id)a5;
-- (id)_touchIDPromptForKnownNetworksIsChinaDevice:(BOOL)a3;
-- (id)headerIdentifierForSectionType:(unint64_t)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (id)titleForHeaderInSection:(int64_t)a3;
+- (id)_defaultSectionsForPowerState:(BOOL)state;
+- (id)_getAutoHotspotOptionText:(int64_t)text;
+- (id)_indexPathForNetworkName:(id)name;
+- (id)_nameOfSection:(unint64_t)section;
+- (id)_passcodePromptForViewingKnownNetworksIsChinaDevice:(BOOL)device;
+- (id)_sectionNameAtIndex:(unint64_t)index;
+- (id)_sortedProfilesFromSet:(id)set;
+- (id)_tableCellForNetwork:(id)network tableView:(id)view indexPath:(id)path;
+- (id)_touchIDPromptForKnownNetworksIsChinaDevice:(BOOL)device;
+- (id)headerIdentifierForSectionType:(unint64_t)type;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (id)titleForHeaderInSection:(int64_t)section;
 - (int64_t)_askToJoinMode;
-- (int64_t)_askToJoinModeFromString:(id)a3;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (unint64_t)_sectionTypeAtSection:(int64_t)a3;
+- (int64_t)_askToJoinModeFromString:(id)string;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (unint64_t)_sectionTypeAtSection:(int64_t)section;
 - (unint64_t)powerState;
 - (void)_adjustNavigationItemsForEditingMode;
 - (void)_currentNetworkCellIndexPath;
 - (void)_dumpSections;
-- (void)_enableWAPISwitchChanged:(id)a3;
+- (void)_enableWAPISwitchChanged:(id)changed;
 - (void)_loadEditButton;
-- (void)_powerSwitchChanged:(id)a3;
+- (void)_powerSwitchChanged:(id)changed;
 - (void)_processPendingCurrentNetworkUpdate;
 - (void)_promptAuthToViewKnownNetworkList;
-- (void)_promptToJoinAdhoc:(id)a3;
+- (void)_promptToJoinAdhoc:(id)adhoc;
 - (void)_pushAskToJoinModeSelectionViewController;
 - (void)_pushAutoInstantHotspotOptionSelectionViewController;
 - (void)_reloadCurrentNetworkCell;
@@ -54,8 +54,8 @@
 - (void)_submitDeletion;
 - (void)_transitionToKnownNetworksList;
 - (void)_transitionToScanList;
-- (void)_updateAskToJoinMode:(int64_t)a3;
-- (void)_updateCellsWithNewData:(id)a3 oldData:(id)a4 inSection:(unint64_t)a5 insertSection:(BOOL)a6 datasourceSection:(unint64_t)a7;
+- (void)_updateAskToJoinMode:(int64_t)mode;
+- (void)_updateCellsWithNewData:(id)data oldData:(id)oldData inSection:(unint64_t)section insertSection:(BOOL)insertSection datasourceSection:(unint64_t)datasourceSection;
 - (void)_updateKnownNetworksDoneButtonForEditability;
 - (void)_updateNetworkRestrictionHeader;
 - (void)cancelEditing;
@@ -65,33 +65,33 @@
 - (void)knownNetworksWillEnterForeground;
 - (void)knownNetworksWillResignActive;
 - (void)loadView;
-- (void)managedAppleIDStateChange:(BOOL)a3;
-- (void)powerModificationStateDidChange:(BOOL)a3;
-- (void)powerStateDidChange:(BOOL)a3;
-- (void)powerStateDidChangeToggle:(unint64_t)a3;
+- (void)managedAppleIDStateChange:(BOOL)change;
+- (void)powerModificationStateDidChange:(BOOL)change;
+- (void)powerStateDidChange:(BOOL)change;
+- (void)powerStateDidChangeToggle:(unint64_t)toggle;
 - (void)promptConfirmAlert;
 - (void)refresh;
-- (void)refreshKnownNetworksUpdateTableView:(BOOL)a3;
-- (void)reloadCellsForNetworkNames:(id)a3;
-- (void)scrollToAirportCell:(unint64_t)a3;
-- (void)setAskToJoinMode:(int64_t)a3;
-- (void)setAutoInstantHotspotJoinOption:(int64_t)a3;
-- (void)setCurrentNetwork:(id)a3;
-- (void)setCurrentNetwork:(id)a3 previousNetwork:(id)a4 reason:(unint64_t)a5;
-- (void)setCurrentNetworkScaledRSSI:(float)a3;
-- (void)setCurrentNetworkState:(int64_t)a3;
-- (void)setCurrentNetworkSubtitle:(id)a3;
-- (void)setDeviceCapability:(int64_t)a3;
-- (void)setNetworks:(id)a3;
-- (void)setUserAutoJoinEnabled:(BOOL)a3;
-- (void)tableView:(id)a3 accessoryButtonTappedForRowWithIndexPath:(id)a4;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateAutoInstantHotspotSetting:(int64_t)a3;
-- (void)updateViewsForNetworks:(id)a3;
+- (void)refreshKnownNetworksUpdateTableView:(BOOL)view;
+- (void)reloadCellsForNetworkNames:(id)names;
+- (void)scrollToAirportCell:(unint64_t)cell;
+- (void)setAskToJoinMode:(int64_t)mode;
+- (void)setAutoInstantHotspotJoinOption:(int64_t)option;
+- (void)setCurrentNetwork:(id)network;
+- (void)setCurrentNetwork:(id)network previousNetwork:(id)previousNetwork reason:(unint64_t)reason;
+- (void)setCurrentNetworkScaledRSSI:(float)i;
+- (void)setCurrentNetworkState:(int64_t)state;
+- (void)setCurrentNetworkSubtitle:(id)subtitle;
+- (void)setDeviceCapability:(int64_t)capability;
+- (void)setNetworks:(id)networks;
+- (void)setUserAutoJoinEnabled:(BOOL)enabled;
+- (void)tableView:(id)view accessoryButtonTappedForRowWithIndexPath:(id)path;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateAutoInstantHotspotSetting:(int64_t)setting;
+- (void)updateViewsForNetworks:(id)networks;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willMoveToParentViewController:(id)a3;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willMoveToParentViewController:(id)controller;
 @end
 
 @implementation WFAirportViewController
@@ -113,19 +113,19 @@
   v4 = [(WFAirportViewController *)&v14 initWithStyle:v3];
   if (v4 && (v5 = dispatch_queue_create(0, 0), internalQueue = v4->_internalQueue, v4->_internalQueue = v5, internalQueue, v4->_internalQueue))
   {
-    v7 = [MEMORY[0x277CBEB70] orderedSet];
+    orderedSet = [MEMORY[0x277CBEB70] orderedSet];
     sections = v4->_sections;
-    v4->_sections = v7;
+    v4->_sections = orderedSet;
 
     v4->_showOtherNetwork = 1;
     v4->_userAutoJoinEnabled = 1;
     v4->_currentNetworkScaledRSSI = 1.0;
     v4->_askToJoinShown = [(WFAirportViewController *)v4 _askToJoinShouldBeVisible];
-    v9 = [(WFAirportViewController *)v4 listDelegate];
-    v4->_disablePowerModification = [v9 networkListViewControllerPowerModificationDisabled:v4];
+    listDelegate = [(WFAirportViewController *)v4 listDelegate];
+    v4->_disablePowerModification = [listDelegate networkListViewControllerPowerModificationDisabled:v4];
 
-    v10 = [(WFAirportViewController *)v4 listDelegate];
-    v4->_isManagedAppleID = [v10 networkListViewControllerIsManagedAppleID:v4];
+    listDelegate2 = [(WFAirportViewController *)v4 listDelegate];
+    v4->_isManagedAppleID = [listDelegate2 networkListViewControllerIsManagedAppleID:v4];
 
     v4->_isInEditingMode = 0;
     v4->_tableViewIsUpdating = 0;
@@ -155,79 +155,79 @@
   [(WFInsetTableViewController *)&v33 loadView];
   v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v4 = [MEMORY[0x277D757B0] nibWithNibName:@"WFNetworkListCell" bundle:v3];
-  v5 = [(WFAirportViewController *)self tableView];
-  [v5 registerNib:v4 forCellReuseIdentifier:@"WFNetworkCell"];
+  tableView = [(WFAirportViewController *)self tableView];
+  [tableView registerNib:v4 forCellReuseIdentifier:@"WFNetworkCell"];
 
   v6 = [MEMORY[0x277D757B0] nibWithNibName:@"WFHotspotCell" bundle:v3];
-  v7 = [(WFAirportViewController *)self tableView];
-  [v7 registerNib:v6 forCellReuseIdentifier:@"WFHotspotCell"];
+  tableView2 = [(WFAirportViewController *)self tableView];
+  [tableView2 registerNib:v6 forCellReuseIdentifier:@"WFHotspotCell"];
 
-  v8 = [(WFAirportViewController *)self tableView];
-  [v8 registerClass:objc_opt_class() forCellReuseIdentifier:@"WFWiFiPlacardCell"];
+  tableView3 = [(WFAirportViewController *)self tableView];
+  [tableView3 registerClass:objc_opt_class() forCellReuseIdentifier:@"WFWiFiPlacardCell"];
 
-  v9 = [(WFAirportViewController *)self tableView];
-  [v9 registerClass:objc_opt_class() forCellReuseIdentifier:@"WFOtherNetworkCell"];
+  tableView4 = [(WFAirportViewController *)self tableView];
+  [tableView4 registerClass:objc_opt_class() forCellReuseIdentifier:@"WFOtherNetworkCell"];
 
-  v10 = [(WFAirportViewController *)self tableView];
-  [v10 registerClass:objc_opt_class() forCellReuseIdentifier:@"WFPowerCell"];
+  tableView5 = [(WFAirportViewController *)self tableView];
+  [tableView5 registerClass:objc_opt_class() forCellReuseIdentifier:@"WFPowerCell"];
 
-  v11 = [(WFAirportViewController *)self tableView];
-  [v11 registerClass:objc_opt_class() forCellReuseIdentifier:@"WFUnconfiguredNetworkCell"];
+  tableView6 = [(WFAirportViewController *)self tableView];
+  [tableView6 registerClass:objc_opt_class() forCellReuseIdentifier:@"WFUnconfiguredNetworkCell"];
 
-  v12 = [(WFAirportViewController *)self tableView];
-  [v12 registerClass:objc_opt_class() forCellReuseIdentifier:@"WFDiagnosticsCell"];
+  tableView7 = [(WFAirportViewController *)self tableView];
+  [tableView7 registerClass:objc_opt_class() forCellReuseIdentifier:@"WFDiagnosticsCell"];
 
-  v13 = [(WFAirportViewController *)self tableView];
-  [v13 registerClass:objc_opt_class() forCellReuseIdentifier:@"kWFNetworkDataUsageCellIdentifier"];
+  tableView8 = [(WFAirportViewController *)self tableView];
+  [tableView8 registerClass:objc_opt_class() forCellReuseIdentifier:@"kWFNetworkDataUsageCellIdentifier"];
 
-  v14 = [(WFAirportViewController *)self tableView];
-  [v14 registerClass:objc_opt_class() forCellReuseIdentifier:@"kWFNetworkWAPICellIdentifier"];
+  tableView9 = [(WFAirportViewController *)self tableView];
+  [tableView9 registerClass:objc_opt_class() forCellReuseIdentifier:@"kWFNetworkWAPICellIdentifier"];
 
-  v15 = [(WFAirportViewController *)self tableView];
-  [v15 registerClass:objc_opt_class() forCellReuseIdentifier:@"WFNetworkKnownNetworksCellIdentifier"];
+  tableView10 = [(WFAirportViewController *)self tableView];
+  [tableView10 registerClass:objc_opt_class() forCellReuseIdentifier:@"WFNetworkKnownNetworksCellIdentifier"];
 
-  v16 = [(WFAirportViewController *)self tableView];
-  [v16 registerClass:objc_opt_class() forCellReuseIdentifier:@"kWFNetworkEditableNetworksListCellIdentifier"];
+  tableView11 = [(WFAirportViewController *)self tableView];
+  [tableView11 registerClass:objc_opt_class() forCellReuseIdentifier:@"kWFNetworkEditableNetworksListCellIdentifier"];
 
-  v17 = [(WFAirportViewController *)self tableView];
-  [v17 registerClass:objc_opt_class() forCellReuseIdentifier:@"kWFNetworkProfileNetworksListCellIdentifier"];
+  tableView12 = [(WFAirportViewController *)self tableView];
+  [tableView12 registerClass:objc_opt_class() forCellReuseIdentifier:@"kWFNetworkProfileNetworksListCellIdentifier"];
 
-  v18 = [(WFAirportViewController *)self tableView];
-  [v18 registerClass:objc_opt_class() forCellReuseIdentifier:@"kWFNetworkAlternativeCellIdentifier"];
+  tableView13 = [(WFAirportViewController *)self tableView];
+  [tableView13 registerClass:objc_opt_class() forCellReuseIdentifier:@"kWFNetworkAlternativeCellIdentifier"];
 
-  v19 = [(WFAirportViewController *)self tableView];
-  [v19 registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:@"kWFTableKnownHeaderIdentifier"];
+  tableView14 = [(WFAirportViewController *)self tableView];
+  [tableView14 registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:@"kWFTableKnownHeaderIdentifier"];
 
-  v20 = [(WFAirportViewController *)self tableView];
-  [v20 registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:@"kWFTableInfraHeaderIdentifier"];
+  tableView15 = [(WFAirportViewController *)self tableView];
+  [tableView15 registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:@"kWFTableInfraHeaderIdentifier"];
 
-  v21 = [(WFAirportViewController *)self tableView];
-  [v21 registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:@"kWFTablePopularHeaderIdentifier"];
+  tableView16 = [(WFAirportViewController *)self tableView];
+  [tableView16 registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:@"kWFTablePopularHeaderIdentifier"];
 
-  v22 = [(WFAirportViewController *)self tableView];
-  [v22 registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:@"kWFTableAdhocHeaderIdentifier"];
+  tableView17 = [(WFAirportViewController *)self tableView];
+  [tableView17 registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:@"kWFTableAdhocHeaderIdentifier"];
 
-  v23 = [(WFAirportViewController *)self tableView];
-  [v23 registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:@"kWFTableEditableHeaderIdentifier"];
+  tableView18 = [(WFAirportViewController *)self tableView];
+  [tableView18 registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:@"kWFTableEditableHeaderIdentifier"];
 
-  v24 = [(WFAirportViewController *)self tableView];
-  [v24 registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:@"kWFTableManagedHeaderIdentifier"];
+  tableView19 = [(WFAirportViewController *)self tableView];
+  [tableView19 registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:@"kWFTableManagedHeaderIdentifier"];
 
-  v25 = [(WFAirportViewController *)self tableView];
-  [v25 registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:@"kWFTableUnconfiguredHeaderIdentifier"];
+  tableView20 = [(WFAirportViewController *)self tableView];
+  [tableView20 registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:@"kWFTableUnconfiguredHeaderIdentifier"];
 
   v26 = *MEMORY[0x277D76F30];
-  v27 = [(WFAirportViewController *)self tableView];
-  [v27 setRowHeight:v26];
+  tableView21 = [(WFAirportViewController *)self tableView];
+  [tableView21 setRowHeight:v26];
 
-  v28 = [(WFAirportViewController *)self tableView];
-  [v28 setEstimatedRowHeight:v26];
+  tableView22 = [(WFAirportViewController *)self tableView];
+  [tableView22 setEstimatedRowHeight:v26];
 
-  v29 = [(WFAirportViewController *)self tableView];
-  [v29 setEstimatedSectionFooterHeight:0.0];
+  tableView23 = [(WFAirportViewController *)self tableView];
+  [tableView23 setEstimatedSectionFooterHeight:0.0];
 
-  v30 = [(WFAirportViewController *)self tableView];
-  [v30 setEstimatedSectionHeaderHeight:44.0];
+  tableView24 = [(WFAirportViewController *)self tableView];
+  [tableView24 setEstimatedSectionHeaderHeight:44.0];
 
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -283,29 +283,29 @@ void __35__WFAirportViewController_loadView__block_invoke(uint64_t a1)
   [(WFAirportViewController *)self _updateNetworkRestrictionHeader];
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
   v9.receiver = self;
   v9.super_class = WFAirportViewController;
   [(WFAirportViewController *)&v9 willMoveToParentViewController:?];
-  if (!a3)
+  if (!controller)
   {
-    v5 = [(WFAirportViewController *)self parentViewController];
-    v6 = [v5 navigationItem];
-    [v6 setTitleView:0];
+    parentViewController = [(WFAirportViewController *)self parentViewController];
+    navigationItem = [parentViewController navigationItem];
+    [navigationItem setTitleView:0];
 
-    v7 = [(WFAirportViewController *)self navigationItem];
-    [v7 setTitleView:0];
+    navigationItem2 = [(WFAirportViewController *)self navigationItem];
+    [navigationItem2 setTitleView:0];
 
-    v8 = [(WFAirportViewController *)self navigationItem];
-    [v8 setBackButtonTitle:0];
+    navigationItem3 = [(WFAirportViewController *)self navigationItem];
+    [navigationItem3 setBackButtonTitle:0];
   }
 }
 
-- (void)setDeviceCapability:(int64_t)a3
+- (void)setDeviceCapability:(int64_t)capability
 {
   v11 = *MEMORY[0x277D85DE8];
-  self->_deviceCapability = a3;
+  self->_deviceCapability = capability;
   v4 = WFLogForCategory(0);
   v5 = OSLogForWFLogLevel(3uLL);
   if (WFCurrentLogLevel() >= 3 && v4)
@@ -313,7 +313,7 @@ void __35__WFAirportViewController_loadView__block_invoke(uint64_t a1)
     v6 = v4;
     if (os_log_type_enabled(v6, v5))
     {
-      v7 = WFStringFromDeviceCapability(a3);
+      v7 = WFStringFromDeviceCapability(capability);
       v9 = 138412290;
       v10 = v7;
       _os_log_impl(&dword_273FB9000, v6, v5, "Device Capability: %@", &v9, 0xCu);
@@ -333,17 +333,17 @@ void __35__WFAirportViewController_loadView__block_invoke(uint64_t a1)
   return [(WFAirportViewController *)self showNANUI];
 }
 
-- (void)setCurrentNetworkState:(int64_t)a3
+- (void)setCurrentNetworkState:(int64_t)state
 {
   v23 = *MEMORY[0x277D85DE8];
   if ([(WFAirportViewController *)self isInEditingMode])
   {
-    v5 = WFLogForCategory(0);
+    joiningHotspot = WFLogForCategory(0);
     v6 = OSLogForWFLogLevel(1uLL);
-    if (WFCurrentLogLevel() && v5 && os_log_type_enabled(v5, v6))
+    if (WFCurrentLogLevel() && joiningHotspot && os_log_type_enabled(joiningHotspot, v6))
     {
       *buf = 0;
-      _os_log_impl(&dword_273FB9000, v5, v6, "Not setting current network state for current network in edit mode", buf, 2u);
+      _os_log_impl(&dword_273FB9000, joiningHotspot, v6, "Not setting current network state for current network in edit mode", buf, 2u);
     }
 
 LABEL_21:
@@ -351,20 +351,20 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  if (self->_currentNetworkState != a3)
+  if (self->_currentNetworkState != state)
   {
-    self->_currentNetworkState = a3;
-    v7 = [(WFAirportViewController *)self listDelegate];
-    v8 = [v7 airportSettingsViewControllerCurrentNetworkConnectionIsProblematic:self];
+    self->_currentNetworkState = state;
+    listDelegate = [(WFAirportViewController *)self listDelegate];
+    v8 = [listDelegate airportSettingsViewControllerCurrentNetworkConnectionIsProblematic:self];
 
-    v9 = [(WFAirportViewController *)self currentNetworkRowConfig];
-    [v9 setConnectionState:a3];
+    currentNetworkRowConfig = [(WFAirportViewController *)self currentNetworkRowConfig];
+    [currentNetworkRowConfig setConnectionState:state];
 
-    v10 = [(WFAirportViewController *)self currentNetworkRowConfig];
-    [v10 setProblematicConnection:v8];
+    currentNetworkRowConfig2 = [(WFAirportViewController *)self currentNetworkRowConfig];
+    [currentNetworkRowConfig2 setProblematicConnection:v8];
 
-    v5 = [(WFAirportViewController *)self joiningHotspot];
-    if (v5)
+    joiningHotspot = [(WFAirportViewController *)self joiningHotspot];
+    if (joiningHotspot)
     {
       v11 = WFLogForCategory(0);
       v12 = OSLogForWFLogLevel(3uLL);
@@ -373,7 +373,7 @@ LABEL_21:
         *buf = 136315394;
         v20 = "[WFAirportViewController setCurrentNetworkState:]";
         v21 = 2112;
-        v22 = v5;
+        v22 = joiningHotspot;
         _os_log_impl(&dword_273FB9000, v11, v12, "%s: joining hotspot %@", buf, 0x16u);
       }
 
@@ -385,11 +385,11 @@ LABEL_21:
       dispatch_async(MEMORY[0x277D85CD0], block);
     }
 
-    v13 = [(WFAirportViewController *)self _currentNetworkCell];
-    v14 = v13;
-    if (v13)
+    _currentNetworkCell = [(WFAirportViewController *)self _currentNetworkCell];
+    v14 = _currentNetworkCell;
+    if (_currentNetworkCell)
     {
-      [v13 setConnectionError:v8];
+      [_currentNetworkCell setConnectionError:v8];
       [v14 setState:self->_currentNetworkState];
     }
 
@@ -412,7 +412,7 @@ LABEL_22:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setCurrentNetworkScaledRSSI:(float)a3
+- (void)setCurrentNetworkScaledRSSI:(float)i
 {
   v18 = *MEMORY[0x277D85DE8];
   if ([(WFAirportViewController *)self isInEditingMode])
@@ -430,31 +430,31 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (self->_currentNetworkScaledRSSI != a3)
+  if (self->_currentNetworkScaledRSSI != i)
   {
-    self->_currentNetworkScaledRSSI = a3;
-    v7 = [(WFAirportViewController *)self listDelegate];
-    v8 = [v7 airportSettingsViewControllerCurrentNetworkConnectionIsProblematic:self];
+    self->_currentNetworkScaledRSSI = i;
+    listDelegate = [(WFAirportViewController *)self listDelegate];
+    v8 = [listDelegate airportSettingsViewControllerCurrentNetworkConnectionIsProblematic:self];
 
     v9 = WFSignalBarsFromScaledRSSI(self->_currentNetworkScaledRSSI);
-    v10 = [(WFAirportViewController *)self currentNetworkRowConfig];
-    [v10 setSignalBars:v9];
+    currentNetworkRowConfig = [(WFAirportViewController *)self currentNetworkRowConfig];
+    [currentNetworkRowConfig setSignalBars:v9];
 
-    v11 = [(WFAirportViewController *)self currentNetworkRowConfig];
-    [v11 setProblematicConnection:v8];
+    currentNetworkRowConfig2 = [(WFAirportViewController *)self currentNetworkRowConfig];
+    [currentNetworkRowConfig2 setProblematicConnection:v8];
 
-    v12 = [(WFAirportViewController *)self _currentNetworkCell];
-    v5 = v12;
-    if (v12)
+    _currentNetworkCell = [(WFAirportViewController *)self _currentNetworkCell];
+    v5 = _currentNetworkCell;
+    if (_currentNetworkCell)
     {
       if (v8)
       {
-        [v12 setConnectionError:1];
+        [_currentNetworkCell setConnectionError:1];
       }
 
       else
       {
-        [v12 setConnectionError:0];
+        [_currentNetworkCell setConnectionError:0];
         [v5 setBars:WFSignalBarsFromScaledRSSI(self->_currentNetworkScaledRSSI)];
       }
     }
@@ -478,9 +478,9 @@ LABEL_17:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setCurrentNetwork:(id)a3
+- (void)setCurrentNetwork:(id)network
 {
-  v4 = a3;
+  networkCopy = network;
   if ([(WFAirportViewController *)self isInEditingMode])
   {
     v5 = WFLogForCategory(0);
@@ -494,25 +494,25 @@ LABEL_17:
 
   else
   {
-    [(WFAirportViewController *)self setCurrentNetwork:v4 previousNetwork:0 reason:0];
+    [(WFAirportViewController *)self setCurrentNetwork:networkCopy previousNetwork:0 reason:0];
   }
 }
 
-- (void)setCurrentNetwork:(id)a3 previousNetwork:(id)a4 reason:(unint64_t)a5
+- (void)setCurrentNetwork:(id)network previousNetwork:(id)previousNetwork reason:(unint64_t)reason
 {
-  v8 = a3;
-  v9 = a4;
+  networkCopy = network;
+  previousNetworkCopy = previousNetwork;
   internalQueue = self->_internalQueue;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __68__WFAirportViewController_setCurrentNetwork_previousNetwork_reason___block_invoke;
   v13[3] = &unk_279EC5560;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a5;
-  v11 = v9;
-  v12 = v8;
+  v14 = networkCopy;
+  v15 = previousNetworkCopy;
+  reasonCopy = reason;
+  v11 = previousNetworkCopy;
+  v12 = networkCopy;
   dispatch_sync(internalQueue, v13);
 }
 
@@ -1671,10 +1671,10 @@ LABEL_53:
   v42 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setCurrentNetworkSubtitle:(id)a3
+- (void)setCurrentNetworkSubtitle:(id)subtitle
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  subtitleCopy = subtitle;
   if ([(WFAirportViewController *)self isInEditingMode])
   {
     v5 = WFLogForCategory(0);
@@ -1691,11 +1691,11 @@ LABEL_26:
   }
 
   currentNetworkSubtitle = self->_currentNetworkSubtitle;
-  if (currentNetworkSubtitle != v4)
+  if (currentNetworkSubtitle != subtitleCopy)
   {
-    if (v4)
+    if (subtitleCopy)
     {
-      v8 = [(NSString *)v4 copy];
+      v8 = [(NSString *)subtitleCopy copy];
       currentNetworkSubtitle = self->_currentNetworkSubtitle;
     }
 
@@ -1711,31 +1711,31 @@ LABEL_26:
     if (WFCurrentLogLevel() && v9 && os_log_type_enabled(v9, v10))
     {
       v20 = 138412290;
-      v21 = v4;
+      v21 = subtitleCopy;
       _os_log_impl(&dword_273FB9000, v9, v10, "Setting current network subtitle: %@", &v20, 0xCu);
     }
 
-    v11 = [(WFAirportViewController *)self currentNetworkRowConfig];
-    [v11 setSubtitle:v4];
+    currentNetworkRowConfig = [(WFAirportViewController *)self currentNetworkRowConfig];
+    [currentNetworkRowConfig setSubtitle:subtitleCopy];
 
-    v12 = [(WFAirportViewController *)self _currentNetworkCell];
-    v5 = v12;
-    if (v12)
+    _currentNetworkCell = [(WFAirportViewController *)self _currentNetworkCell];
+    v5 = _currentNetworkCell;
+    if (_currentNetworkCell)
     {
       if (self->_currentNetworkSubtitle)
       {
-        [v12 setSubtitle:?];
+        [_currentNetworkCell setSubtitle:?];
       }
 
       else
       {
-        v15 = [(WFAirportViewController *)self currentNetwork];
-        v16 = [v15 subtitle];
-        [v5 setSubtitle:v16];
+        currentNetwork = [(WFAirportViewController *)self currentNetwork];
+        subtitle = [currentNetwork subtitle];
+        [v5 setSubtitle:subtitle];
       }
 
-      v17 = [(WFAirportViewController *)self listDelegate];
-      v18 = [v17 airportSettingsViewControllerCurrentNetworkConnectionIsProblematic:self];
+      listDelegate = [(WFAirportViewController *)self listDelegate];
+      v18 = [listDelegate airportSettingsViewControllerCurrentNetworkConnectionIsProblematic:self];
 
       if (v18)
       {
@@ -1771,28 +1771,28 @@ LABEL_27:
 
 - (BOOL)_refreshATJShownStateIfChanged
 {
-  v3 = [(WFAirportViewController *)self listDelegate];
-  v4 = [v3 airportSettingsViewControllerAskToJoinMode:self] != -1;
+  listDelegate = [(WFAirportViewController *)self listDelegate];
+  v4 = [listDelegate airportSettingsViewControllerAskToJoinMode:self] != -1;
   askToJoinShown = self->_askToJoinShown;
   if (askToJoinShown != v4)
   {
-    self->_askToJoinShown = [v3 airportSettingsViewControllerAskToJoinMode:self] != -1;
+    self->_askToJoinShown = [listDelegate airportSettingsViewControllerAskToJoinMode:self] != -1;
   }
 
   return askToJoinShown != v4;
 }
 
-- (void)setNetworks:(id)a3
+- (void)setNetworks:(id)networks
 {
-  v4 = a3;
+  networksCopy = networks;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __39__WFAirportViewController_setNetworks___block_invoke;
   v7[3] = &unk_279EC5588;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = networksCopy;
+  v6 = networksCopy;
   dispatch_sync(internalQueue, v7);
 }
 
@@ -2741,13 +2741,13 @@ LABEL_227:
   [v28 performSelectorOnMainThread:sel_setNetworks_ withObject:v29 waitUntilDone:0];
 }
 
-- (void)_updateCellsWithNewData:(id)a3 oldData:(id)a4 inSection:(unint64_t)a5 insertSection:(BOOL)a6 datasourceSection:(unint64_t)a7
+- (void)_updateCellsWithNewData:(id)data oldData:(id)oldData inSection:(unint64_t)section insertSection:(BOOL)insertSection datasourceSection:(unint64_t)datasourceSection
 {
-  v7 = a6;
+  insertSectionCopy = insertSection;
   v101 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  if (v7)
+  dataCopy = data;
+  oldDataCopy = oldData;
+  if (insertSectionCopy)
   {
     v11 = WFLogForCategory(0);
     v12 = OSLogForWFLogLevel(4uLL);
@@ -2756,36 +2756,36 @@ LABEL_227:
       v13 = v11;
       if (os_log_type_enabled(v13, v12))
       {
-        v14 = [(WFAirportViewController *)self _sectionNameAtIndex:a5];
+        v14 = [(WFAirportViewController *)self _sectionNameAtIndex:section];
         *buf = 136315650;
         *&buf[4] = "[WFAirportViewController _updateCellsWithNewData:oldData:inSection:insertSection:datasourceSection:]";
         *&buf[12] = 2112;
         *&buf[14] = v14;
         *&buf[22] = 2048;
-        v98 = a5;
+        sectionCopy = section;
         _os_log_impl(&dword_273FB9000, v13, v12, "%s: inserting section %@ at index %lu", buf, 0x20u);
       }
     }
 
-    v15 = [(WFAirportViewController *)self tableView];
-    v16 = [MEMORY[0x277CCAA78] indexSetWithIndex:a5];
-    [v15 insertSections:v16 withRowAnimation:0];
+    tableView = [(WFAirportViewController *)self tableView];
+    v16 = [MEMORY[0x277CCAA78] indexSetWithIndex:section];
+    [tableView insertSections:v16 withRowAnimation:0];
   }
 
-  v58 = [v10 mutableCopy];
-  obj = [v9 mutableCopy];
-  if ([v10 count] >= 2 && objc_msgSend(v10, "count") >= 2)
+  v58 = [oldDataCopy mutableCopy];
+  obj = [dataCopy mutableCopy];
+  if ([oldDataCopy count] >= 2 && objc_msgSend(oldDataCopy, "count") >= 2)
   {
     v17 = 0;
     v18 = 1;
     do
     {
-      v19 = [v10 objectAtIndexedSubscript:v18];
-      v20 = [v19 ssid];
+      v19 = [oldDataCopy objectAtIndexedSubscript:v18];
+      ssid = [v19 ssid];
       v21 = v18 - 1;
-      v22 = [v10 objectAtIndexedSubscript:v18 - 1];
-      v23 = [v22 ssid];
-      v24 = [v20 isEqualToString:v23];
+      v22 = [oldDataCopy objectAtIndexedSubscript:v18 - 1];
+      ssid2 = [v22 ssid];
+      v24 = [ssid isEqualToString:ssid2];
 
       if (v24)
       {
@@ -2795,21 +2795,21 @@ LABEL_227:
       ++v18;
     }
 
-    while ([v10 count] > (v21 + 2));
+    while ([oldDataCopy count] > (v21 + 2));
   }
 
-  if ([v9 count] >= 2 && objc_msgSend(v9, "count") >= 2)
+  if ([dataCopy count] >= 2 && objc_msgSend(dataCopy, "count") >= 2)
   {
     v25 = 0;
     v26 = 1;
     do
     {
-      v27 = [v9 objectAtIndexedSubscript:v26];
-      v28 = [v27 ssid];
+      v27 = [dataCopy objectAtIndexedSubscript:v26];
+      ssid3 = [v27 ssid];
       v29 = v26 - 1;
-      v30 = [v9 objectAtIndexedSubscript:v26 - 1];
-      v31 = [v30 ssid];
-      v32 = [v28 isEqualToString:v31];
+      v30 = [dataCopy objectAtIndexedSubscript:v26 - 1];
+      ssid4 = [v30 ssid];
+      v32 = [ssid3 isEqualToString:ssid4];
 
       if (v32)
       {
@@ -2819,13 +2819,13 @@ LABEL_227:
       ++v26;
     }
 
-    while ([v9 count] > (v29 + 2));
+    while ([dataCopy count] > (v29 + 2));
   }
 
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x3032000000;
-  v98 = __Block_byref_object_copy__0;
+  sectionCopy = __Block_byref_object_copy__0;
   v99 = __Block_byref_object_dispose__0;
   v100 = &stru_288308678;
   v88[0] = MEMORY[0x277D85DD0];
@@ -2866,9 +2866,9 @@ LABEL_227:
     v39 = v37;
     if (os_log_type_enabled(v39, v38))
     {
-      v40 = [v10 count];
+      v40 = [oldDataCopy count];
       v41 = [v58 count];
-      v42 = [v9 count];
+      v42 = [dataCopy count];
       v43 = [obj count];
       *v89 = 134218752;
       v90 = v40;
@@ -2899,7 +2899,7 @@ LABEL_227:
   v74[3] = &unk_279EC5600;
   v49 = v48;
   v75 = v49;
-  v78 = a5;
+  sectionCopy2 = section;
   v50 = v46;
   v76 = v50;
   v51 = v45;
@@ -2913,13 +2913,13 @@ LABEL_227:
     v70[3] = &unk_279EC5628;
     v71 = v49;
     v72 = v44;
-    v73 = a5;
+    sectionCopy3 = section;
     [v71 enumerateKeysAndObjectsUsingBlock:v70];
   }
 
   if ([v44 count] || objc_msgSend(v51, "count") || objc_msgSend(v50, "count"))
   {
-    v52 = [(WFAirportViewController *)self tableView];
+    tableView2 = [(WFAirportViewController *)self tableView];
     v61[0] = MEMORY[0x277D85DD0];
     v61[1] = 3221225472;
     v61[2] = __101__WFAirportViewController__updateCellsWithNewData_oldData_inSection_insertSection_datasourceSection___block_invoke_4;
@@ -2930,16 +2930,16 @@ LABEL_227:
     v63 = v50;
     v64 = v44;
     v65 = obj;
-    v69 = a5;
-    v66 = v10;
-    v67 = v9;
+    sectionCopy4 = section;
+    v66 = oldDataCopy;
+    v67 = dataCopy;
     v60[0] = MEMORY[0x277D85DD0];
     v60[1] = 3221225472;
     v60[2] = __101__WFAirportViewController__updateCellsWithNewData_oldData_inSection_insertSection_datasourceSection___block_invoke_138;
     v60[3] = &unk_279EC5678;
     v60[4] = self;
     v60[5] = v55;
-    [v52 performBatchUpdates:v61 completion:v60];
+    [tableView2 performBatchUpdates:v61 completion:v60];
   }
 
   else if (v55 <= 2)
@@ -3452,20 +3452,20 @@ void __101__WFAirportViewController__updateCellsWithNewData_oldData_inSection_in
 
 - (BOOL)_shouldContinueUpdateNetworkList
 {
-  v3 = [(WFAirportViewController *)self sections];
-  v4 = [v3 containsObject:&unk_288322480];
+  sections = [(WFAirportViewController *)self sections];
+  v4 = [sections containsObject:&unk_288322480];
   v5 = v4 ^ ([(NSArray *)self->_knownNetworks count]!= 0);
 
-  v6 = [(WFAirportViewController *)self sections];
-  v7 = [v6 containsObject:&unk_288322468];
+  sections2 = [(WFAirportViewController *)self sections];
+  v7 = [sections2 containsObject:&unk_288322468];
   v8 = [(NSArray *)self->_popularNetworks count];
 
-  v9 = [(WFAirportViewController *)self sections];
-  v10 = [v9 containsObject:&unk_288322498];
+  sections3 = [(WFAirportViewController *)self sections];
+  v10 = [sections3 containsObject:&unk_288322498];
   v11 = [(NSArray *)self->_infraNetworks count]!= 0;
 
-  v12 = [(WFAirportViewController *)self sections];
-  v13 = [v12 containsObject:&unk_288322438];
+  sections4 = [(WFAirportViewController *)self sections];
+  v13 = [sections4 containsObject:&unk_288322438];
   v14 = [(NSArray *)self->_unconfiguredNetworks count]!= 0;
 
   v15 = 1;
@@ -3563,12 +3563,12 @@ LABEL_8:
   [v13 reloadData];
 }
 
-- (void)powerStateDidChange:(BOOL)a3
+- (void)powerStateDidChange:(BOOL)change
 {
   v5 = [(WFAirportViewController *)self _defaultSectionsForPowerState:?];
   [(WFAirportViewController *)self setSections:v5];
 
-  if (!a3)
+  if (!change)
   {
     infraNetworks = self->_infraNetworks;
     self->_infraNetworks = 0;
@@ -3596,10 +3596,10 @@ LABEL_8:
   [(WFAirportViewController *)self refresh];
 }
 
-- (void)powerStateDidChangeToggle:(unint64_t)a3
+- (void)powerStateDidChangeToggle:(unint64_t)toggle
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = [(WFAirportViewController *)self _defaultSectionsForPowerState:a3 == 1];
+  v5 = [(WFAirportViewController *)self _defaultSectionsForPowerState:toggle == 1];
   [(WFAirportViewController *)self setSections:v5];
 
   v6 = WFLogForCategory(0);
@@ -3609,7 +3609,7 @@ LABEL_8:
     v8 = v6;
     if (os_log_type_enabled(v8, v7))
     {
-      v9 = WFPowerStateToggleToString(a3);
+      v9 = WFPowerStateToggleToString(toggle);
       v22 = 136315394;
       v23 = "[WFAirportViewController powerStateDidChangeToggle:]";
       v24 = 2112;
@@ -3618,7 +3618,7 @@ LABEL_8:
     }
   }
 
-  if ((a3 & 0xFFFFFFFFFFFFFFFDLL) == 0)
+  if ((toggle & 0xFFFFFFFFFFFFFFFDLL) == 0)
   {
     infraNetworks = self->_infraNetworks;
     self->_infraNetworks = 0;
@@ -3661,16 +3661,16 @@ LABEL_8:
 
 - (unint64_t)powerState
 {
-  v3 = [(WFAirportViewController *)self listDelegate];
-  v4 = [v3 networkListViewControllerCurrentPowerStateToggle:self];
+  listDelegate = [(WFAirportViewController *)self listDelegate];
+  v4 = [listDelegate networkListViewControllerCurrentPowerStateToggle:self];
 
   return v4;
 }
 
-- (void)powerModificationStateDidChange:(BOOL)a3
+- (void)powerModificationStateDidChange:(BOOL)change
 {
   v9 = *MEMORY[0x277D85DE8];
-  if (self->_disablePowerModification == a3)
+  if (self->_disablePowerModification == change)
   {
     v3 = WFLogForCategory(0);
     v4 = OSLogForWFLogLevel(3uLL);
@@ -3686,17 +3686,17 @@ LABEL_8:
 
   else
   {
-    self->_disablePowerModification = a3;
+    self->_disablePowerModification = change;
     v6 = *MEMORY[0x277D85DE8];
 
     [(WFAirportViewController *)self _reloadPowerSection];
   }
 }
 
-- (void)managedAppleIDStateChange:(BOOL)a3
+- (void)managedAppleIDStateChange:(BOOL)change
 {
   v9 = *MEMORY[0x277D85DE8];
-  if (self->_isManagedAppleID == a3)
+  if (self->_isManagedAppleID == change)
   {
     v3 = WFLogForCategory(0);
     v4 = OSLogForWFLogLevel(3uLL);
@@ -3712,30 +3712,30 @@ LABEL_8:
 
   else
   {
-    self->_isManagedAppleID = a3;
+    self->_isManagedAppleID = change;
     v6 = *MEMORY[0x277D85DE8];
 
     [(WFAirportViewController *)self refresh];
   }
 }
 
-- (void)reloadCellsForNetworkNames:(id)a3
+- (void)reloadCellsForNetworkNames:(id)names
 {
   v4 = MEMORY[0x277CBEB58];
-  v5 = a3;
+  namesCopy = names;
   v6 = objc_alloc_init(v4);
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __54__WFAirportViewController_reloadCellsForNetworkNames___block_invoke;
   v13 = &unk_279EC56A0;
-  v14 = self;
+  selfCopy = self;
   v15 = v6;
   v7 = v6;
-  [v5 enumerateObjectsUsingBlock:&v10];
+  [namesCopy enumerateObjectsUsingBlock:&v10];
 
   v8 = [(WFAirportViewController *)self tableView:v10];
-  v9 = [v7 allObjects];
-  [v8 reloadRowsAtIndexPaths:v9 withRowAnimation:5];
+  allObjects = [v7 allObjects];
+  [v8 reloadRowsAtIndexPaths:allObjects withRowAnimation:5];
 }
 
 void __54__WFAirportViewController_reloadCellsForNetworkNames___block_invoke(uint64_t a1, void *a2)
@@ -3763,31 +3763,31 @@ void __54__WFAirportViewController_reloadCellsForNetworkNames___block_invoke(uin
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)scrollToAirportCell:(unint64_t)a3
+- (void)scrollToAirportCell:(unint64_t)cell
 {
-  if (a3 - 1 <= 2)
+  if (cell - 1 <= 2)
   {
-    v5 = qword_279EC5870[a3 - 1];
+    v5 = qword_279EC5870[cell - 1];
     v6 = MEMORY[0x277CCAA70];
-    v7 = [(WFAirportViewController *)self sections];
-    v9 = [v6 indexPathForRow:0 inSection:{objc_msgSend(v7, "indexOfObject:", v5)}];
+    sections = [(WFAirportViewController *)self sections];
+    v9 = [v6 indexPathForRow:0 inSection:{objc_msgSend(sections, "indexOfObject:", v5)}];
 
-    v8 = [(WFAirportViewController *)self tableView];
-    [v8 scrollToRowAtIndexPath:v9 atScrollPosition:1 animated:1];
+    tableView = [(WFAirportViewController *)self tableView];
+    [tableView scrollToRowAtIndexPath:v9 atScrollPosition:1 animated:1];
   }
 }
 
-- (id)_indexPathForNetworkName:(id)a3
+- (id)_indexPathForNetworkName:(id)name
 {
-  v4 = a3;
-  v5 = [(WFAirportViewController *)self currentNetwork];
-  v6 = [v5 ssid];
-  v7 = [v6 isEqualToString:v4];
+  nameCopy = name;
+  currentNetwork = [(WFAirportViewController *)self currentNetwork];
+  ssid = [currentNetwork ssid];
+  v7 = [ssid isEqualToString:nameCopy];
 
   if (v7)
   {
-    v8 = [(WFAirportViewController *)self sections];
-    v9 = [v8 indexOfObject:&unk_2883224B0];
+    sections = [(WFAirportViewController *)self sections];
+    v9 = [sections indexOfObject:&unk_2883224B0];
 
     v10 = [MEMORY[0x277CCAA70] indexPathForRow:1 inSection:v9];
   }
@@ -3798,19 +3798,19 @@ void __54__WFAirportViewController_reloadCellsForNetworkNames___block_invoke(uin
     v36 = &v35;
     v37 = 0x2020000000;
     v38 = 0x7FFFFFFFFFFFFFFFLL;
-    v11 = [(WFAirportViewController *)self knownNetworks];
+    knownNetworks = [(WFAirportViewController *)self knownNetworks];
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
     v32[2] = __52__WFAirportViewController__indexPathForNetworkName___block_invoke;
     v32[3] = &unk_279EC56C8;
-    v12 = v4;
+    v12 = nameCopy;
     v33 = v12;
     v34 = &v35;
-    [v11 enumerateObjectsUsingBlock:v32];
+    [knownNetworks enumerateObjectsUsingBlock:v32];
 
     if (v36[3] == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v13 = [(WFAirportViewController *)self popularNetworks];
+      popularNetworks = [(WFAirportViewController *)self popularNetworks];
       v29[0] = MEMORY[0x277D85DD0];
       v29[1] = 3221225472;
       v29[2] = __52__WFAirportViewController__indexPathForNetworkName___block_invoke_2;
@@ -3818,18 +3818,18 @@ void __54__WFAirportViewController_reloadCellsForNetworkNames___block_invoke(uin
       v14 = v12;
       v30 = v14;
       v31 = &v35;
-      [v13 enumerateObjectsUsingBlock:v29];
+      [popularNetworks enumerateObjectsUsingBlock:v29];
 
       if (v36[3] == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v15 = [(WFAirportViewController *)self infraNetworks];
+        infraNetworks = [(WFAirportViewController *)self infraNetworks];
         v23 = MEMORY[0x277D85DD0];
         v24 = 3221225472;
         v25 = __52__WFAirportViewController__indexPathForNetworkName___block_invoke_3;
         v26 = &unk_279EC56C8;
         v27 = v14;
         v28 = &v35;
-        [v15 enumerateObjectsUsingBlock:&v23];
+        [infraNetworks enumerateObjectsUsingBlock:&v23];
 
         if (v36[3] == 0x7FFFFFFFFFFFFFFFLL)
         {
@@ -3847,8 +3847,8 @@ void __54__WFAirportViewController_reloadCellsForNetworkNames___block_invoke(uin
 
       else
       {
-        v18 = [(WFAirportViewController *)self sections];
-        v19 = [v18 indexOfObject:&unk_288322468];
+        sections2 = [(WFAirportViewController *)self sections];
+        v19 = [sections2 indexOfObject:&unk_288322468];
 
         v10 = [MEMORY[0x277CCAA70] indexPathForRow:v36[3] inSection:v19];
       }
@@ -3856,8 +3856,8 @@ void __54__WFAirportViewController_reloadCellsForNetworkNames___block_invoke(uin
 
     else
     {
-      v16 = [(WFAirportViewController *)self sections];
-      v17 = [v16 indexOfObject:&unk_288322480];
+      sections3 = [(WFAirportViewController *)self sections];
+      v17 = [sections3 indexOfObject:&unk_288322480];
 
       v10 = [MEMORY[0x277CCAA70] indexPathForRow:v36[3] inSection:v17];
     }
@@ -3901,10 +3901,10 @@ void __52__WFAirportViewController__indexPathForNetworkName___block_invoke_3(uin
   }
 }
 
-- (void)updateViewsForNetworks:(id)a3
+- (void)updateViewsForNetworks:(id)networks
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  networksCopy = networks;
   if ([MEMORY[0x277CCACC8] isMainThread])
   {
     v5 = WFLogForCategory(0);
@@ -3914,19 +3914,19 @@ void __52__WFAirportViewController__indexPathForNetworkName___block_invoke_3(uin
       *buf = 136315394;
       v15 = "[WFAirportViewController updateViewsForNetworks:]";
       v16 = 2112;
-      v17 = v4;
+      v17 = networksCopy;
       _os_log_impl(&dword_273FB9000, v5, v6, "%s: updating views for %@", buf, 0x16u);
     }
 
-    if (v4)
+    if (networksCopy)
     {
       internalQueue = self->_internalQueue;
       v11[0] = MEMORY[0x277D85DD0];
       v11[1] = 3221225472;
       v11[2] = __50__WFAirportViewController_updateViewsForNetworks___block_invoke;
       v11[3] = &unk_279EC5588;
-      v12 = v4;
-      v13 = self;
+      v12 = networksCopy;
+      selfCopy = self;
       dispatch_sync(internalQueue, v11);
     }
 
@@ -3945,7 +3945,7 @@ void __52__WFAirportViewController__indexPathForNetworkName___block_invoke_3(uin
 
   else
   {
-    [(WFAirportViewController *)self performSelectorOnMainThread:sel_updateViewsForNetworks_ withObject:v4 waitUntilDone:0];
+    [(WFAirportViewController *)self performSelectorOnMainThread:sel_updateViewsForNetworks_ withObject:networksCopy waitUntilDone:0];
   }
 
   v10 = *MEMORY[0x277D85DE8];
@@ -4240,7 +4240,7 @@ void __50__WFAirportViewController_updateViewsForNetworks___block_invoke(uint64_
   v66 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setAskToJoinMode:(int64_t)a3
+- (void)setAskToJoinMode:(int64_t)mode
 {
   v23 = *MEMORY[0x277D85DE8];
   v5 = WFLogForCategory(0);
@@ -4250,12 +4250,12 @@ void __50__WFAirportViewController_updateViewsForNetworks___block_invoke(uint64_
     v19 = 136315394;
     v20 = "[WFAirportViewController setAskToJoinMode:]";
     v21 = 2048;
-    v22 = a3;
+    modeCopy = mode;
     _os_log_impl(&dword_273FB9000, v5, v6, "%s: setting atj mode to %ld", &v19, 0x16u);
   }
 
-  v7 = [(WFAirportViewController *)self sections];
-  v8 = [v7 indexOfObject:&unk_2883224C8];
+  sections = [(WFAirportViewController *)self sections];
+  v8 = [sections indexOfObject:&unk_2883224C8];
 
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -4273,26 +4273,26 @@ void __50__WFAirportViewController_updateViewsForNetworks___block_invoke(uint64_
 
   else
   {
-    v11 = [(WFAirportViewController *)self tableView];
+    tableView = [(WFAirportViewController *)self tableView];
     v12 = [MEMORY[0x277CCAA70] indexPathForRow:0 inSection:v8];
-    v13 = [v11 cellForRowAtIndexPath:v12];
+    v13 = [tableView cellForRowAtIndexPath:v12];
 
     if (v13)
     {
-      v14 = [(WFAirportViewController *)self _askToJoinStateStringForATJMode:a3];
-      v15 = [v13 detailTextLabel];
-      [v15 setText:v14];
+      v14 = [(WFAirportViewController *)self _askToJoinStateStringForATJMode:mode];
+      detailTextLabel = [v13 detailTextLabel];
+      [detailTextLabel setText:v14];
     }
 
-    v16 = [(WFAirportViewController *)self tableView];
+    tableView2 = [(WFAirportViewController *)self tableView];
     v17 = [MEMORY[0x277CCAA78] indexSetWithIndex:v8];
-    [v16 _reloadSectionHeaderFooters:v17 withRowAnimation:5];
+    [tableView2 _reloadSectionHeaderFooters:v17 withRowAnimation:5];
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setAutoInstantHotspotJoinOption:(int64_t)a3
+- (void)setAutoInstantHotspotJoinOption:(int64_t)option
 {
   v25 = *MEMORY[0x277D85DE8];
   v5 = WFLogForCategory(0);
@@ -4302,12 +4302,12 @@ void __50__WFAirportViewController_updateViewsForNetworks___block_invoke(uint64_
     v21 = 136315394;
     v22 = "[WFAirportViewController setAutoInstantHotspotJoinOption:]";
     v23 = 2048;
-    v24 = a3;
+    optionCopy = option;
     _os_log_impl(&dword_273FB9000, v5, v6, "%s: setting auto hotspot option to %ld", &v21, 0x16u);
   }
 
-  v7 = [(WFAirportViewController *)self sections];
-  v8 = [v7 indexOfObject:&unk_2883224E0];
+  sections = [(WFAirportViewController *)self sections];
+  v8 = [sections indexOfObject:&unk_2883224E0];
 
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -4325,38 +4325,38 @@ void __50__WFAirportViewController_updateViewsForNetworks___block_invoke(uint64_
 
   else
   {
-    v11 = [(WFAirportViewController *)self tableView];
+    tableView = [(WFAirportViewController *)self tableView];
     v12 = [MEMORY[0x277CCAA70] indexPathForRow:0 inSection:v8];
-    v13 = [v11 cellForRowAtIndexPath:v12];
+    v13 = [tableView cellForRowAtIndexPath:v12];
 
     if (v13)
     {
       v14 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-      v15 = [(WFAirportViewController *)self _getAutoHotspotOptionText:a3];
+      v15 = [(WFAirportViewController *)self _getAutoHotspotOptionText:option];
       v16 = [v14 localizedStringForKey:v15 value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
-      v17 = [v13 detailTextLabel];
-      [v17 setText:v16];
+      detailTextLabel = [v13 detailTextLabel];
+      [detailTextLabel setText:v16];
     }
 
-    v18 = [(WFAirportViewController *)self tableView];
+    tableView2 = [(WFAirportViewController *)self tableView];
     v19 = [MEMORY[0x277CCAA78] indexSetWithIndex:v8];
-    [v18 _reloadSectionHeaderFooters:v19 withRowAnimation:5];
+    [tableView2 _reloadSectionHeaderFooters:v19 withRowAnimation:5];
   }
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(WFAirportViewController *)self sections];
-  v4 = [v3 count];
+  sections = [(WFAirportViewController *)self sections];
+  v4 = [sections count];
 
   return v4;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(WFAirportViewController *)self _sectionTypeAtSection:a4];
+  v5 = [(WFAirportViewController *)self _sectionTypeAtSection:section];
   showOtherNetwork = 0;
   if (v5 > 5)
   {
@@ -4429,16 +4429,16 @@ void __50__WFAirportViewController_updateViewsForNetworks___block_invoke(uint64_
   if (!v5)
   {
     showOtherNetwork = [(WFAirportViewController *)self rowCountWithPlacardCell:1];
-    v11 = [(WFAirportViewController *)self currentNetwork];
-    if (v11)
+    currentNetwork = [(WFAirportViewController *)self currentNetwork];
+    if (currentNetwork)
     {
-      v12 = v11;
-      v13 = [(WFAirportViewController *)self currentNetwork];
-      if ([v13 canBeDisplayedAsCurrent])
+      v12 = currentNetwork;
+      currentNetwork2 = [(WFAirportViewController *)self currentNetwork];
+      if ([currentNetwork2 canBeDisplayedAsCurrent])
       {
-        v14 = [(WFAirportViewController *)self powered];
+        powered = [(WFAirportViewController *)self powered];
 
-        showOtherNetwork += v14;
+        showOtherNetwork += powered;
       }
 
       else
@@ -4473,26 +4473,26 @@ LABEL_33:
   return [v15 count];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v78 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = -[WFAirportViewController _sectionTypeAtSection:](self, "_sectionTypeAtSection:", [v8 section]);
-  v10 = [v8 row];
-  v11 = [(WFAirportViewController *)self listDelegate];
+  viewCopy = view;
+  pathCopy = path;
+  v9 = -[WFAirportViewController _sectionTypeAtSection:](self, "_sectionTypeAtSection:", [pathCopy section]);
+  v10 = [pathCopy row];
+  listDelegate = [(WFAirportViewController *)self listDelegate];
   switch(v9)
   {
     case 0uLL:
       v12 = 0;
       if ([(WFAirportViewController *)self usePlacardCell]&& !v10)
       {
-        v12 = [v7 dequeueReusableCellWithIdentifier:@"WFWiFiPlacardCell"];
+        v12 = [viewCopy dequeueReusableCellWithIdentifier:@"WFWiFiPlacardCell"];
       }
 
       if (v10 == [(WFAirportViewController *)self rowCountWithPlacardCell:0])
       {
-        v13 = [v7 dequeueReusableCellWithIdentifier:@"WFPowerCell"];
+        v13 = [viewCopy dequeueReusableCellWithIdentifier:@"WFPowerCell"];
 
         v14 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         if ([(WFAirportViewController *)self _isChinaDevice])
@@ -4506,13 +4506,13 @@ LABEL_33:
         }
 
         v16 = [v14 localizedStringForKey:v15 value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
-        v17 = [v13 textLabel];
-        [v17 setText:v16];
+        textLabel = [v13 textLabel];
+        [textLabel setText:v16];
 
         v18 = objc_alloc(MEMORY[0x277D75AE8]);
-        v19 = [v18 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
-        [v19 addTarget:self action:sel__powerSwitchChanged_ forControlEvents:4096];
-        v20 = [(WFAirportViewController *)self powerState];
+        defaultContentConfiguration = [v18 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
+        [defaultContentConfiguration addTarget:self action:sel__powerSwitchChanged_ forControlEvents:4096];
+        powerState = [(WFAirportViewController *)self powerState];
         v21 = WFLogForCategory(0);
         v22 = OSLogForWFLogLevel(3uLL);
         if (WFCurrentLogLevel() >= 3 && v21)
@@ -4520,7 +4520,7 @@ LABEL_33:
           v23 = v21;
           if (os_log_type_enabled(v23, v22))
           {
-            v73 = WFPowerStateToggleToString(v20);
+            v73 = WFPowerStateToggleToString(powerState);
             *buf = 136315394;
             v75 = "[WFAirportViewController tableView:cellForRowAtIndexPath:]";
             v76 = 2112;
@@ -4529,17 +4529,17 @@ LABEL_33:
           }
         }
 
-        if (v20 == 3)
+        if (powerState == 3)
         {
-          [v19 setEnabled:0];
+          [defaultContentConfiguration setEnabled:0];
           v59 = 0;
           goto LABEL_59;
         }
 
-        if (v20 != 2)
+        if (powerState != 2)
         {
-          [v19 setEnabled:{-[WFAirportViewController disablePowerModification](self, "disablePowerModification") ^ 1}];
-          v41 = [(WFAirportViewController *)self powered];
+          [defaultContentConfiguration setEnabled:{-[WFAirportViewController disablePowerModification](self, "disablePowerModification") ^ 1}];
+          powered = [(WFAirportViewController *)self powered];
           goto LABEL_58;
         }
 
@@ -4550,7 +4550,7 @@ LABEL_33:
 
       if (v10 == [(WFAirportViewController *)self rowCountWithPlacardCell:1]&& [(WFAirportViewController *)self showDiagnosticsCell])
       {
-        v13 = [v7 dequeueReusableCellWithIdentifier:@"WFDiagnosticsCell"];
+        v13 = [viewCopy dequeueReusableCellWithIdentifier:@"WFDiagnosticsCell"];
 
         v29 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v30 = v29;
@@ -4561,12 +4561,12 @@ LABEL_33:
       v56 = [(WFAirportViewController *)self rowCountWithPlacardCell:1];
       if (v10 == v56)
       {
-        v57 = [(WFAirportViewController *)self currentNetwork];
-        if (v57)
+        currentNetwork = [(WFAirportViewController *)self currentNetwork];
+        if (currentNetwork)
         {
-          v72 = v57;
-          v4 = [(WFAirportViewController *)self currentNetwork];
-          if ([v4 canBeDisplayedAsCurrent] && !-[WFAirportViewController showDiagnosticsCell](self, "showDiagnosticsCell"))
+          v72 = currentNetwork;
+          currentNetwork2 = [(WFAirportViewController *)self currentNetwork];
+          if ([currentNetwork2 canBeDisplayedAsCurrent] && !-[WFAirportViewController showDiagnosticsCell](self, "showDiagnosticsCell"))
           {
 
             goto LABEL_84;
@@ -4589,7 +4589,7 @@ LABEL_33:
 
       if (v10 != [(WFAirportViewController *)self rowCountWithPlacardCell:2])
       {
-        v65 = 0;
+        showDiagnosticsCell = 0;
         if (!v58)
         {
           goto LABEL_73;
@@ -4599,29 +4599,29 @@ LABEL_33:
       }
 
       v71 = v58;
-      v62 = [(WFAirportViewController *)self currentNetwork];
-      if (v62)
+      currentNetwork3 = [(WFAirportViewController *)self currentNetwork];
+      if (currentNetwork3)
       {
-        v63 = v62;
-        v70 = v4;
-        v64 = [(WFAirportViewController *)self currentNetwork];
-        if ([v64 canBeDisplayedAsCurrent])
+        v63 = currentNetwork3;
+        v70 = currentNetwork2;
+        currentNetwork4 = [(WFAirportViewController *)self currentNetwork];
+        if ([currentNetwork4 canBeDisplayedAsCurrent])
         {
-          v65 = [(WFAirportViewController *)self showDiagnosticsCell];
+          showDiagnosticsCell = [(WFAirportViewController *)self showDiagnosticsCell];
         }
 
         else
         {
 
-          v65 = 0;
+          showDiagnosticsCell = 0;
         }
 
-        v4 = v70;
+        currentNetwork2 = v70;
       }
 
       else
       {
-        v65 = 0;
+        showDiagnosticsCell = 0;
       }
 
       if (v71)
@@ -4633,7 +4633,7 @@ LABEL_73:
       if (v10 == v56)
       {
 
-        if (v65)
+        if (showDiagnosticsCell)
         {
           goto LABEL_84;
         }
@@ -4643,16 +4643,16 @@ LABEL_77:
         goto LABEL_62;
       }
 
-      if (!v65)
+      if (!showDiagnosticsCell)
       {
         goto LABEL_77;
       }
 
 LABEL_84:
-      v28 = [(WFAirportViewController *)self currentNetwork];
-      if (v11)
+      currentNetwork5 = [(WFAirportViewController *)self currentNetwork];
+      if (listDelegate)
       {
-        v66 = [v11 airportSettingsViewControllerCurrentNetworkConnectionIsProblematic:self];
+        v66 = [listDelegate airportSettingsViewControllerCurrentNetworkConnectionIsProblematic:self];
       }
 
       else
@@ -4660,24 +4660,24 @@ LABEL_84:
         v66 = 0;
       }
 
-      v67 = [(WFAirportViewController *)self currentNetworkSubtitle];
+      currentNetworkSubtitle = [(WFAirportViewController *)self currentNetworkSubtitle];
 
-      if (v67)
+      if (currentNetworkSubtitle)
       {
         [(WFAirportViewController *)self currentNetworkSubtitle];
       }
 
       else
       {
-        [v28 subtitle];
+        [currentNetwork5 subtitle];
       }
       v68 = ;
-      v13 = [v7 dequeueReusableCellWithIdentifier:@"WFNetworkCell" forIndexPath:v8];
-      v69 = [v28 title];
-      [v13 setTitle:v69];
+      v13 = [viewCopy dequeueReusableCellWithIdentifier:@"WFNetworkCell" forIndexPath:pathCopy];
+      title = [currentNetwork5 title];
+      [v13 setTitle:title];
 
       [v13 setSubtitle:v68];
-      [v13 setSecure:{objc_msgSend(v28, "isSecure")}];
+      [v13 setSecure:{objc_msgSend(currentNetwork5, "isSecure")}];
       [v13 setConnectionError:v66];
       if ((v66 & 1) == 0)
       {
@@ -4685,7 +4685,7 @@ LABEL_84:
       }
 
       [v13 setState:self->_currentNetworkState];
-      [v13 setPersonalHotspot:{objc_msgSend(v28, "iOSHotspot")}];
+      [v13 setPersonalHotspot:{objc_msgSend(currentNetwork5, "iOSHotspot")}];
       [v13 setAccessoryType:4];
 
 LABEL_20:
@@ -4706,11 +4706,11 @@ LABEL_63:
       infraNetworks = self->_infraNetworks;
       if (!infraNetworks || v10 == [(NSArray *)infraNetworks count]&& self->_showOtherNetwork)
       {
-        v13 = [v7 dequeueReusableCellWithIdentifier:@"WFOtherNetworkCell"];
+        v13 = [viewCopy dequeueReusableCellWithIdentifier:@"WFOtherNetworkCell"];
         v33 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v34 = [v33 localizedStringForKey:@"kWFLocOtherNetworkTitle" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
-        v35 = [v13 textLabel];
-        [v35 setText:v34];
+        textLabel2 = [v13 textLabel];
+        [textLabel2 setText:v34];
 
 LABEL_35:
       }
@@ -4719,8 +4719,8 @@ LABEL_35:
       {
         v42 = self->_infraNetworks;
 LABEL_32:
-        v19 = [(NSArray *)v42 objectAtIndex:v10];
-        v25 = [(WFAirportViewController *)self _tableCellForNetwork:v19 tableView:v7 indexPath:v8];
+        defaultContentConfiguration = [(NSArray *)v42 objectAtIndex:v10];
+        v25 = [(WFAirportViewController *)self _tableCellForNetwork:defaultContentConfiguration tableView:viewCopy indexPath:pathCopy];
 LABEL_33:
         v13 = v25;
 LABEL_61:
@@ -4734,103 +4734,103 @@ LABEL_31:
       goto LABEL_32;
     case 5uLL:
       v33 = [(NSArray *)self->_unconfiguredNetworks objectAtIndex:v10];
-      v13 = [v7 dequeueReusableCellWithIdentifier:@"WFUnconfiguredNetworkCell" forIndexPath:v8];
-      v43 = [v33 title];
-      v44 = [v13 textLabel];
-      [v44 setText:v43];
+      v13 = [viewCopy dequeueReusableCellWithIdentifier:@"WFUnconfiguredNetworkCell" forIndexPath:pathCopy];
+      title2 = [v33 title];
+      textLabel3 = [v13 textLabel];
+      [textLabel3 setText:title2];
 
       [v13 setAccessoryType:1];
       goto LABEL_35;
     case 6uLL:
-      v13 = [v7 dequeueReusableCellWithIdentifier:@"kWFNetworkDataUsageCellIdentifier"];
+      v13 = [viewCopy dequeueReusableCellWithIdentifier:@"kWFNetworkDataUsageCellIdentifier"];
       v29 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v30 = v29;
       v31 = @"kWFLocDataUsageTitle";
       goto LABEL_38;
     case 7uLL:
-      v13 = [v7 dequeueReusableCellWithIdentifier:@"kWFNetworkWAPICellIdentifier"];
+      v13 = [viewCopy dequeueReusableCellWithIdentifier:@"kWFNetworkWAPICellIdentifier"];
       v36 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v37 = [v36 localizedStringForKey:@"kWFLocEnableWAPITitle" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
-      v38 = [v13 textLabel];
-      [v38 setText:v37];
+      textLabel4 = [v13 textLabel];
+      [textLabel4 setText:v37];
 
-      v39 = [v13 textLabel];
-      [v39 setNumberOfLines:0];
+      textLabel5 = [v13 textLabel];
+      [textLabel5 setNumberOfLines:0];
 
       v40 = objc_alloc(MEMORY[0x277D75AE8]);
-      v19 = [v40 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
-      [v19 addTarget:self action:sel__enableWAPISwitchChanged_ forControlEvents:4096];
-      if (v11 && (objc_opt_respondsToSelector() & 1) != 0)
+      defaultContentConfiguration = [v40 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
+      [defaultContentConfiguration addTarget:self action:sel__enableWAPISwitchChanged_ forControlEvents:4096];
+      if (listDelegate && (objc_opt_respondsToSelector() & 1) != 0)
       {
-        v41 = [v11 networkListViewControllerWAPIEnabled:self];
+        powered = [listDelegate networkListViewControllerWAPIEnabled:self];
 LABEL_58:
-        v59 = v41;
+        v59 = powered;
 LABEL_59:
-        [v19 setOn:v59];
+        [defaultContentConfiguration setOn:v59];
       }
 
-      [v13 setAccessoryView:v19];
+      [v13 setAccessoryView:defaultContentConfiguration];
       [v13 setSelectionStyle:0];
       goto LABEL_61;
     case 8uLL:
-      v13 = [v7 dequeueReusableCellWithIdentifier:@"WFAskToJoinCell"];
+      v13 = [viewCopy dequeueReusableCellWithIdentifier:@"WFAskToJoinCell"];
       if (!v13)
       {
         v13 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:1 reuseIdentifier:@"WFAskToJoinCell"];
       }
 
-      v19 = [v13 defaultContentConfiguration];
+      defaultContentConfiguration = [v13 defaultContentConfiguration];
       v53 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v54 = [v53 localizedStringForKey:@"kWFLocAskToJoinTitle" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
-      [v19 setText:v54];
+      [defaultContentConfiguration setText:v54];
 
       v55 = [(WFAirportViewController *)self _askToJoinStateStringForATJMode:[(WFAirportViewController *)self _askToJoinMode]];
-      [v19 setSecondaryText:v55];
+      [defaultContentConfiguration setSecondaryText:v55];
 
       goto LABEL_45;
     case 9uLL:
-      v13 = [v7 dequeueReusableCellWithIdentifier:@"WFNetworkKnownNetworksCellIdentifier"];
+      v13 = [viewCopy dequeueReusableCellWithIdentifier:@"WFNetworkKnownNetworksCellIdentifier"];
       v29 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v30 = v29;
       v31 = @"kWFLocKnownNetworksTitle";
 LABEL_38:
       v45 = [v29 localizedStringForKey:v31 value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
-      v46 = [v13 textLabel];
-      [v46 setText:v45];
+      textLabel6 = [v13 textLabel];
+      [textLabel6 setText:v45];
 
       [v13 setAccessoryType:1];
       goto LABEL_62;
     case 0xAuLL:
-      v13 = [v7 dequeueReusableCellWithIdentifier:@"WFAutoInstantHotspotCell"];
+      v13 = [viewCopy dequeueReusableCellWithIdentifier:@"WFAutoInstantHotspotCell"];
       if (!v13)
       {
         v13 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:1 reuseIdentifier:@"WFAutoInstantHotspotCell"];
       }
 
-      v19 = [v13 defaultContentConfiguration];
+      defaultContentConfiguration = [v13 defaultContentConfiguration];
       v47 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v48 = [v47 localizedStringForKey:@"kWFLocAutoInstantHotspotTitle" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
-      [v19 setText:v48];
+      [defaultContentConfiguration setText:v48];
 
-      v49 = [v11 networkListViewControllerAutoInstantHotspotOption:self];
+      v49 = [listDelegate networkListViewControllerAutoInstantHotspotOption:self];
       v50 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v51 = [(WFAirportViewController *)self _getAutoHotspotOptionText:v49];
       v52 = [v50 localizedStringForKey:v51 value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
-      [v19 setSecondaryText:v52];
+      [defaultContentConfiguration setSecondaryText:v52];
 
 LABEL_45:
-      [v13 setContentConfiguration:v19];
+      [v13 setContentConfiguration:defaultContentConfiguration];
       [v13 setAccessoryType:1];
       goto LABEL_61;
     case 0xBuLL:
-      v19 = [(NSMutableArray *)self->_editableKnownNetworks objectAtIndex:v10];
-      v25 = [(WFAirportViewController *)self _tableCellForKnownNetwork:v19 tableView:v7 indexPath:v8 extraLeadingPadding:0];
+      defaultContentConfiguration = [(NSMutableArray *)self->_editableKnownNetworks objectAtIndex:v10];
+      v25 = [(WFAirportViewController *)self _tableCellForKnownNetwork:defaultContentConfiguration tableView:viewCopy indexPath:pathCopy extraLeadingPadding:0];
       goto LABEL_33;
     case 0xCuLL:
-      v27 = [(WFAirportViewController *)self managedKnownNetworks];
-      v28 = [v27 objectAtIndex:v10];
+      managedKnownNetworks = [(WFAirportViewController *)self managedKnownNetworks];
+      currentNetwork5 = [managedKnownNetworks objectAtIndex:v10];
 
-      v13 = [(WFAirportViewController *)self _tableCellForKnownNetwork:v28 tableView:v7 indexPath:v8 extraLeadingPadding:1];
+      v13 = [(WFAirportViewController *)self _tableCellForKnownNetwork:currentNetwork5 tableView:viewCopy indexPath:pathCopy extraLeadingPadding:1];
       goto LABEL_20;
     default:
       v13 = 0;
@@ -4838,36 +4838,36 @@ LABEL_45:
   }
 }
 
-- (id)_tableCellForNetwork:(id)a3 tableView:(id)a4 indexPath:(id)a5
+- (id)_tableCellForNetwork:(id)network tableView:(id)view indexPath:(id)path
 {
   v29 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
-  if ([v7 isInstantHotspot])
+  networkCopy = network;
+  pathCopy = path;
+  viewCopy = view;
+  if ([networkCopy isInstantHotspot])
   {
-    v10 = [v9 dequeueReusableCellWithIdentifier:@"WFHotspotCell" forIndexPath:v8];
+    v10 = [viewCopy dequeueReusableCellWithIdentifier:@"WFHotspotCell" forIndexPath:pathCopy];
 
     if (v10)
     {
-      if (v7)
+      if (networkCopy)
       {
-        v11 = [v7 title];
-        [v10 setTitle:v11];
+        title = [networkCopy title];
+        [v10 setTitle:title];
 
-        v12 = [v10 hotspotDetails];
+        hotspotDetails = [v10 hotspotDetails];
 
-        if (!v12)
+        if (!hotspotDetails)
         {
           v13 = objc_alloc_init(WFHotspotDetails);
-          v14 = [v7 hotspotBatteryLife];
-          [(WFHotspotDetails *)v13 setBatteryLife:v14];
+          hotspotBatteryLife = [networkCopy hotspotBatteryLife];
+          [(WFHotspotDetails *)v13 setBatteryLife:hotspotBatteryLife];
 
-          v15 = [v7 hotspotCellularProtocol];
-          [(WFHotspotDetails *)v13 setCellularProtocolString:v15];
+          hotspotCellularProtocol = [networkCopy hotspotCellularProtocol];
+          [(WFHotspotDetails *)v13 setCellularProtocolString:hotspotCellularProtocol];
 
-          v16 = [v7 hotspotSignalStrength];
-          [(WFHotspotDetails *)v13 setSignalStrength:v16];
+          hotspotSignalStrength = [networkCopy hotspotSignalStrength];
+          [(WFHotspotDetails *)v13 setSignalStrength:hotspotSignalStrength];
 
           [v10 setHotspotDetails:v13];
         }
@@ -4878,7 +4878,7 @@ LABEL_45:
       }
 
 LABEL_22:
-      [WFAirportViewController _tableCellForNetwork:v8 tableView:v26 indexPath:?];
+      [WFAirportViewController _tableCellForNetwork:pathCopy tableView:v26 indexPath:?];
       v24 = *v26;
       goto LABEL_23;
     }
@@ -4893,22 +4893,22 @@ LABEL_22:
 
   else
   {
-    v10 = [v9 dequeueReusableCellWithIdentifier:@"WFNetworkCell" forIndexPath:v8];
+    v10 = [viewCopy dequeueReusableCellWithIdentifier:@"WFNetworkCell" forIndexPath:pathCopy];
 
     if (v10)
     {
-      if (v7)
+      if (networkCopy)
       {
-        v19 = [v7 title];
-        [v10 setTitle:v19];
+        title2 = [networkCopy title];
+        [v10 setTitle:title2];
 
-        v20 = [v7 subtitle];
-        [v10 setSubtitle:v20];
+        subtitle = [networkCopy subtitle];
+        [v10 setSubtitle:subtitle];
 
-        [v10 setSecure:{objc_msgSend(v7, "isSecure")}];
-        [v7 scaledRSSI];
+        [v10 setSecure:{objc_msgSend(networkCopy, "isSecure")}];
+        [networkCopy scaledRSSI];
         [v10 setBars:WFSignalBarsFromScaledRSSI(v21)];
-        [v10 setPersonalHotspot:{objc_msgSend(v7, "iOSHotspot")}];
+        [v10 setPersonalHotspot:{objc_msgSend(networkCopy, "iOSHotspot")}];
         v17 = v10;
         v18 = 4;
 LABEL_10:
@@ -4929,9 +4929,9 @@ LABEL_10:
   }
 
   *v26 = 138543618;
-  *&v26[4] = v8;
+  *&v26[4] = pathCopy;
   v27 = 2114;
-  v28 = v7;
+  v28 = networkCopy;
   _os_log_impl(&dword_273FB9000, v24, v25, "Unable to create cell at indexPath %{public}@ for network %{public}@", v26, 0x16u);
 LABEL_23:
 
@@ -4943,14 +4943,14 @@ LABEL_11:
   return v10;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v5 = [(WFAirportViewController *)self _sectionTypeAtSection:a4];
+  v5 = [(WFAirportViewController *)self _sectionTypeAtSection:section];
   if (v5 == 10)
   {
-    v9 = [(WFAirportViewController *)self _isChinaDevice];
+    _isChinaDevice = [(WFAirportViewController *)self _isChinaDevice];
     v10 = @"kWFLocAutoInstantHotspotFooter";
-    if (v9)
+    if (_isChinaDevice)
     {
       v10 = @"kWFLocAutoInstantHotspotFooterCH";
     }
@@ -4979,24 +4979,24 @@ LABEL_6:
           goto LABEL_6;
         }
 
-        v8 = [(WFAirportViewController *)self userAutoJoinDisabledWarning];
+        userAutoJoinDisabledWarning = [(WFAirportViewController *)self userAutoJoinDisabledWarning];
       }
 
       else
       {
-        v8 = [(WFAirportViewController *)self powerOffLocationWarning];
+        userAutoJoinDisabledWarning = [(WFAirportViewController *)self powerOffLocationWarning];
       }
 
       goto LABEL_15;
     }
 
-    v7 = [(WFAirportViewController *)self _askToJoinShouldBeVisible];
+    _askToJoinShouldBeVisible = [(WFAirportViewController *)self _askToJoinShouldBeVisible];
     v6 = 0;
-    if ([(WFAirportViewController *)self userAutoJoinEnabled]&& v7)
+    if ([(WFAirportViewController *)self userAutoJoinEnabled]&& _askToJoinShouldBeVisible)
     {
-      v8 = [(WFAirportViewController *)self _askToJoinFooterString];
+      userAutoJoinDisabledWarning = [(WFAirportViewController *)self _askToJoinFooterString];
 LABEL_15:
-      v6 = v8;
+      v6 = userAutoJoinDisabledWarning;
     }
   }
 
@@ -5005,10 +5005,10 @@ LABEL_16:
   return v6;
 }
 
-- (id)titleForHeaderInSection:(int64_t)a3
+- (id)titleForHeaderInSection:(int64_t)section
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = [(WFAirportViewController *)self _sectionTypeAtSection:a3];
+  v4 = [(WFAirportViewController *)self _sectionTypeAtSection:section];
   v5 = 0;
   if (v4 <= 3)
   {
@@ -5028,11 +5028,11 @@ LABEL_16:
           goto LABEL_35;
         }
 
-        v7 = [(WFAirportViewController *)self sections];
-        v8 = [v7 indexOfObject:&unk_288322480];
+        sections = [(WFAirportViewController *)self sections];
+        v8 = [sections indexOfObject:&unk_288322480];
 
-        v9 = [(WFAirportViewController *)self sections];
-        v10 = [v9 indexOfObject:&unk_288322468];
+        sections2 = [(WFAirportViewController *)self sections];
+        v10 = [sections2 indexOfObject:&unk_288322468];
 
         v11 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v12 = v11;
@@ -5134,10 +5134,10 @@ LABEL_34:
 
   if (v4 == 5)
   {
-    v6 = [(WFAirportViewController *)self listDelegate];
-    if (v6 && (objc_opt_respondsToSelector() & 1) != 0)
+    listDelegate = [(WFAirportViewController *)self listDelegate];
+    if (listDelegate && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      v5 = [v6 airportSettingsViewController:self unconfiguredAccessoriesGroupHeaderTitle:self->_unconfiguredNetworks];
+      v5 = [listDelegate airportSettingsViewController:self unconfiguredAccessoriesGroupHeaderTitle:self->_unconfiguredNetworks];
     }
 
     else
@@ -5152,27 +5152,27 @@ LABEL_35:
   return v5;
 }
 
-- (id)headerIdentifierForSectionType:(unint64_t)a3
+- (id)headerIdentifierForSectionType:(unint64_t)type
 {
-  if (a3 - 1 > 0xB)
+  if (type - 1 > 0xB)
   {
     return 0;
   }
 
   else
   {
-    return off_279EC5888[a3 - 1];
+    return off_279EC5888[type - 1];
   }
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(WFAirportViewController *)self _sectionTypeAtSection:a4];
+  viewCopy = view;
+  v7 = [(WFAirportViewController *)self _sectionTypeAtSection:section];
   v8 = [(WFAirportViewController *)self headerIdentifierForSectionType:v7];
   if (v8)
   {
-    v9 = [v6 dequeueReusableHeaderFooterViewWithIdentifier:v8];
+    v9 = [viewCopy dequeueReusableHeaderFooterViewWithIdentifier:v8];
   }
 
   else
@@ -5185,7 +5185,7 @@ LABEL_35:
     [(WFAirportViewController *)self setChooseNetworkHeader:v9];
   }
 
-  v10 = [(WFAirportViewController *)self titleForHeaderInSection:a4];
+  v10 = [(WFAirportViewController *)self titleForHeaderInSection:section];
   if (v10)
   {
     [v9 setTitle:v10];
@@ -5194,10 +5194,10 @@ LABEL_35:
   return v9;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  if (a4 || (v7 = 18.0, [(WFAirportViewController *)self isInEditingMode]))
+  viewCopy = view;
+  if (section || (v7 = 18.0, [(WFAirportViewController *)self isInEditingMode]))
   {
     v7 = *MEMORY[0x277D76F30];
   }
@@ -5205,11 +5205,11 @@ LABEL_35:
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v122 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v7 = WFLogForCategory(0);
   v8 = OSLogForWFLogLevel(3uLL);
   if (WFCurrentLogLevel() >= 3 && v7 && os_log_type_enabled(v7, v8))
@@ -5217,18 +5217,18 @@ LABEL_35:
     *buf = 136315394;
     v116 = "[WFAirportViewController tableView:didSelectRowAtIndexPath:]";
     v117 = 2112;
-    v118 = v6;
+    v118 = pathCopy;
     _os_log_impl(&dword_273FB9000, v7, v8, "%s: indexPath %@", buf, 0x16u);
   }
 
-  v107 = v5;
-  v108 = v6;
+  v107 = viewCopy;
+  v108 = pathCopy;
 
   v113 = 0u;
   v114 = 0u;
   v111 = 0u;
   v112 = 0u;
-  v9 = self;
+  selfCopy4 = self;
   obj = [(WFAirportViewController *)self sections];
   v10 = [obj countByEnumeratingWithState:&v111 objects:v121 count:16];
   if (v10)
@@ -5249,13 +5249,13 @@ LABEL_35:
 
         v16 = *(*(&v111 + 1) + 8 * v14);
         v17 = MEMORY[0x277CCACA8];
-        v18 = -[WFAirportViewController _nameOfSection:](v9, "_nameOfSection:", [v16 intValue]);
-        v19 = [(WFAirportViewController *)v9 tableView];
-        v20 = [(WFAirportViewController *)v9 sections];
-        v21 = [v17 stringWithFormat:@"section: %@ has %ld items", v18, objc_msgSend(v19, "numberOfRowsInSection:", objc_msgSend(v20, "indexOfObject:", v16))];
+        v18 = -[WFAirportViewController _nameOfSection:](selfCopy4, "_nameOfSection:", [v16 intValue]);
+        tableView = [(WFAirportViewController *)selfCopy4 tableView];
+        sections = [(WFAirportViewController *)selfCopy4 sections];
+        v21 = [v17 stringWithFormat:@"section: %@ has %ld items", v18, objc_msgSend(tableView, "numberOfRowsInSection:", objc_msgSend(sections, "indexOfObject:", v16))];
         v13 = [(__CFString *)v15 stringByAppendingString:v21];
 
-        v9 = self;
+        selfCopy4 = self;
         ++v14;
         v15 = v13;
       }
@@ -5283,9 +5283,9 @@ LABEL_35:
 
   v24 = v108;
   v25 = [v108 row];
-  v26 = [(WFAirportViewController *)v9 joiningHotspot];
-  v27 = [(WFAirportViewController *)v9 listDelegate];
-  if (v26)
+  joiningHotspot = [(WFAirportViewController *)selfCopy4 joiningHotspot];
+  listDelegate = [(WFAirportViewController *)selfCopy4 listDelegate];
+  if (joiningHotspot)
   {
     v28 = WFLogForCategory(0);
     v29 = OSLogForWFLogLevel(3uLL);
@@ -5294,15 +5294,15 @@ LABEL_35:
       *buf = 136315394;
       v116 = "[WFAirportViewController tableView:didSelectRowAtIndexPath:]";
       v117 = 2112;
-      v118 = v26;
+      v118 = joiningHotspot;
       _os_log_impl(&dword_273FB9000, v28, v29, "%s: hotspot joining in progress %@", buf, 0x16u);
     }
 
-    v30 = [(WFAirportViewController *)v9 knownNetworks];
-    v31 = [v30 indexOfObject:v26];
+    knownNetworks = [(WFAirportViewController *)selfCopy4 knownNetworks];
+    v31 = [knownNetworks indexOfObject:joiningHotspot];
 
-    v32 = [(WFAirportViewController *)v9 sections];
-    v33 = [v32 indexOfObject:&unk_288322480];
+    sections2 = [(WFAirportViewController *)selfCopy4 sections];
+    v33 = [sections2 indexOfObject:&unk_288322480];
 
     if (v31 == 0x7FFFFFFFFFFFFFFFLL || v33 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -5318,11 +5318,11 @@ LABEL_35:
         v35 = v35;
         if (os_log_type_enabled(v35, v38))
         {
-          v39 = [(WFAirportViewController *)v9 knownNetworks];
+          knownNetworks2 = [(WFAirportViewController *)selfCopy4 knownNetworks];
           *buf = 138543618;
-          v116 = v26;
+          v116 = joiningHotspot;
           v117 = 2114;
-          v118 = v39;
+          v118 = knownNetworks2;
           _os_log_impl(&dword_273FB9000, v35, v38, "Joining hotspot %{public}@ can't be found in set %{public}@", buf, 0x16u);
         }
       }
@@ -5353,18 +5353,18 @@ LABEL_35:
     }
 
 LABEL_39:
-    [(WFAirportViewController *)v9 setJoiningHotspot:0];
+    [(WFAirportViewController *)selfCopy4 setJoiningHotspot:0];
   }
 
-  v40 = -[WFAirportViewController _sectionTypeAtSection:](v9, "_sectionTypeAtSection:", [v24 section]);
+  v40 = -[WFAirportViewController _sectionTypeAtSection:](selfCopy4, "_sectionTypeAtSection:", [v24 section]);
   if (v40 > 4)
   {
     if (v40 <= 7)
     {
       if (v40 == 5)
       {
-        v61 = [(WFAirportViewController *)v9 unconfiguredNetworks];
-        v42 = [v61 objectAtIndex:v25];
+        unconfiguredNetworks = [(WFAirportViewController *)selfCopy4 unconfiguredNetworks];
+        v42 = [unconfiguredNetworks objectAtIndex:v25];
 
         v62 = WFLogForCategory(0);
         v63 = OSLogForWFLogLevel(3uLL);
@@ -5377,14 +5377,14 @@ LABEL_39:
           _os_log_impl(&dword_273FB9000, v62, v63, "%s: tapped on unconfigured record %@", buf, 0x16u);
         }
 
-        v64 = v27;
-        v65 = v9;
+        v64 = listDelegate;
+        v65 = selfCopy4;
         goto LABEL_115;
       }
 
       if (v40 == 6)
       {
-        [v27 airportSettingsViewControllerDidTapDataUsage:v9];
+        [listDelegate airportSettingsViewControllerDidTapDataUsage:selfCopy4];
       }
     }
 
@@ -5402,10 +5402,10 @@ LABEL_39:
             _os_log_impl(&dword_273FB9000, v75, v76, "%s: tapped on ask to join row", buf, 0xCu);
           }
 
-          [(WFAirportViewController *)v9 _pushAskToJoinModeSelectionViewController];
+          [(WFAirportViewController *)selfCopy4 _pushAskToJoinModeSelectionViewController];
           break;
         case 9:
-          [v27 airportSettingsViewControllerDidTapKnownNetworks:v9];
+          [listDelegate airportSettingsViewControllerDidTapKnownNetworks:selfCopy4];
           break;
         case 10:
           v45 = WFLogForCategory(0);
@@ -5417,7 +5417,7 @@ LABEL_39:
             _os_log_impl(&dword_273FB9000, v45, v46, "%s: tapped on auto hotspot row", buf, 0xCu);
           }
 
-          [(WFAirportViewController *)v9 _pushAutoInstantHotspotOptionSelectionViewController];
+          [(WFAirportViewController *)selfCopy4 _pushAutoInstantHotspotOptionSelectionViewController];
           break;
       }
     }
@@ -5429,14 +5429,14 @@ LABEL_39:
     {
       if (v40 == 2)
       {
-        v66 = [(WFAirportViewController *)v9 popularNetworks];
-        v67 = v9;
-        v68 = [v66 count];
+        popularNetworks = [(WFAirportViewController *)selfCopy4 popularNetworks];
+        v67 = selfCopy4;
+        v68 = [popularNetworks count];
 
         if (v25 < v68)
         {
-          v69 = [(WFAirportViewController *)v67 popularNetworks];
-          v42 = [v69 objectAtIndex:v25];
+          popularNetworks2 = [(WFAirportViewController *)v67 popularNetworks];
+          v42 = [popularNetworks2 objectAtIndex:v25];
 
           v70 = WFLogForCategory(0);
           v71 = OSLogForWFLogLevel(3uLL);
@@ -5466,8 +5466,8 @@ LABEL_39:
         if (os_log_type_enabled(v85, v84))
         {
           v90 = [v24 row];
-          v87 = [(WFAirportViewController *)self popularNetworks];
-          v91 = [v87 count];
+          popularNetworks3 = [(WFAirportViewController *)self popularNetworks];
+          v91 = [popularNetworks3 count];
           *buf = 136315650;
           v116 = "[WFAirportViewController tableView:didSelectRowAtIndexPath:]";
           v117 = 2050;
@@ -5484,8 +5484,8 @@ LABEL_120:
       {
         if (v40 != 3)
         {
-          v41 = [(WFAirportViewController *)v9 adhocNetworks];
-          v42 = [v41 objectAtIndex:v25];
+          adhocNetworks = [(WFAirportViewController *)selfCopy4 adhocNetworks];
+          v42 = [adhocNetworks objectAtIndex:v25];
 
           v43 = WFLogForCategory(0);
           v44 = OSLogForWFLogLevel(3uLL);
@@ -5498,13 +5498,13 @@ LABEL_120:
             _os_log_impl(&dword_273FB9000, v43, v44, "%s: tapped on adhoc record %@", buf, 0x16u);
           }
 
-          [(WFAirportViewController *)v9 _promptToJoinAdhoc:v42];
+          [(WFAirportViewController *)selfCopy4 _promptToJoinAdhoc:v42];
           goto LABEL_122;
         }
 
-        v77 = [(WFAirportViewController *)v9 infraNetworks];
-        v67 = v9;
-        v78 = [v77 count];
+        infraNetworks = [(WFAirportViewController *)selfCopy4 infraNetworks];
+        v67 = selfCopy4;
+        v78 = [infraNetworks count];
 
         if (v25 == v78)
         {
@@ -5520,17 +5520,17 @@ LABEL_120:
           }
 
           [v107 deselectRowAtIndexPath:v24 animated:1];
-          [v27 networkListViewControllerDidTapOtherNetwork:self];
+          [listDelegate networkListViewControllerDidTapOtherNetwork:self];
           goto LABEL_123;
         }
 
-        v92 = [(WFAirportViewController *)v67 infraNetworks];
-        v93 = [v92 count];
+        infraNetworks2 = [(WFAirportViewController *)v67 infraNetworks];
+        v93 = [infraNetworks2 count];
 
         if (v25 < v93)
         {
-          v94 = [(WFAirportViewController *)v67 infraNetworks];
-          v42 = [v94 objectAtIndex:v25];
+          infraNetworks3 = [(WFAirportViewController *)v67 infraNetworks];
+          v42 = [infraNetworks3 objectAtIndex:v25];
 
           v70 = WFLogForCategory(0);
           v95 = OSLogForWFLogLevel(3uLL);
@@ -5550,7 +5550,7 @@ LABEL_113:
           _os_log_impl(&dword_273FB9000, v73, v74, v72, buf, 0x16u);
 LABEL_114:
 
-          v64 = v27;
+          v64 = listDelegate;
           v65 = v67;
 LABEL_115:
           [v64 networkListViewController:v65 didTapRecord:v42];
@@ -5570,8 +5570,8 @@ LABEL_122:
         if (os_log_type_enabled(v85, v84))
         {
           v96 = [v24 row];
-          v87 = [(WFAirportViewController *)self infraNetworks];
-          v97 = [v87 count];
+          popularNetworks3 = [(WFAirportViewController *)self infraNetworks];
+          v97 = [popularNetworks3 count];
           *buf = 136315650;
           v116 = "[WFAirportViewController tableView:didSelectRowAtIndexPath:]";
           v117 = 2050;
@@ -5595,9 +5595,9 @@ LABEL_121:
         goto LABEL_123;
       }
 
-      v47 = [(WFAirportViewController *)v9 knownNetworks];
-      v48 = v9;
-      v49 = [v47 count];
+      knownNetworks3 = [(WFAirportViewController *)selfCopy4 knownNetworks];
+      v48 = selfCopy4;
+      v49 = [knownNetworks3 count];
 
       if (v25 >= v49)
       {
@@ -5615,8 +5615,8 @@ LABEL_121:
         }
 
         v86 = [v24 row];
-        v87 = [(WFAirportViewController *)self knownNetworks];
-        v88 = [v87 count];
+        popularNetworks3 = [(WFAirportViewController *)self knownNetworks];
+        v88 = [popularNetworks3 count];
         *buf = 136315650;
         v116 = "[WFAirportViewController tableView:didSelectRowAtIndexPath:]";
         v117 = 2050;
@@ -5627,20 +5627,20 @@ LABEL_121:
         goto LABEL_120;
       }
 
-      v50 = [(WFAirportViewController *)v48 knownNetworks];
-      v51 = [v50 objectAtIndex:v25];
+      knownNetworks4 = [(WFAirportViewController *)v48 knownNetworks];
+      v51 = [knownNetworks4 objectAtIndex:v25];
 
-      v52 = v48;
+      selfCopy3 = v48;
       if ([v51 isInstantHotspot])
       {
-        v53 = [(WFAirportViewController *)v48 knownNetworks];
-        v54 = [v53 objectAtIndex:v25];
+        knownNetworks5 = [(WFAirportViewController *)v48 knownNetworks];
+        v54 = [knownNetworks5 objectAtIndex:v25];
 
         objc_storeWeak(&self->_joiningHotspot, v54);
         v55 = [v107 cellForRowAtIndexPath:v24];
         [v55 setState:1];
 
-        v52 = self;
+        selfCopy3 = self;
       }
 
       v56 = WFLogForCategory(0);
@@ -5650,45 +5650,45 @@ LABEL_121:
         v58 = v56;
         if (os_log_type_enabled(v58, v57))
         {
-          v59 = [v51 isInstantHotspot];
+          isInstantHotspot = [v51 isInstantHotspot];
           *buf = 136315650;
           v116 = "[WFAirportViewController tableView:didSelectRowAtIndexPath:]";
           v117 = 2112;
           v118 = v51;
           v119 = 1024;
-          LODWORD(v120) = v59;
+          LODWORD(v120) = isInstantHotspot;
           _os_log_impl(&dword_273FB9000, v58, v57, "%s: tapped on known record %@ (hotspot %d)", buf, 0x1Cu);
         }
 
         v24 = v108;
       }
 
-      [v27 networkListViewController:v52 didTapRecord:v51];
+      [listDelegate networkListViewController:selfCopy3 didTapRecord:v51];
     }
 
-    else if (-[WFAirportViewController showDiagnosticsCell](v9, "showDiagnosticsCell") && (v60 = [v24 row], v60 == -[WFAirportViewController rowCountWithPlacardCell:](v9, "rowCountWithPlacardCell:", 1)))
+    else if (-[WFAirportViewController showDiagnosticsCell](selfCopy4, "showDiagnosticsCell") && (v60 = [v24 row], v60 == -[WFAirportViewController rowCountWithPlacardCell:](selfCopy4, "rowCountWithPlacardCell:", 1)))
     {
-      [v27 airportSettingsViewControllerDidTapDiagnosticsMode:v9 showNANUI:{-[WFAirportViewController showNANUI](v9, "showNANUI")}];
+      [listDelegate airportSettingsViewControllerDidTapDiagnosticsMode:selfCopy4 showNANUI:{-[WFAirportViewController showNANUI](selfCopy4, "showNANUI")}];
     }
 
     else
     {
-      v81 = [(WFAirportViewController *)v9 currentNetwork];
-      if (v81)
+      currentNetwork = [(WFAirportViewController *)selfCopy4 currentNetwork];
+      if (currentNetwork)
       {
-        v82 = v81;
+        v82 = currentNetwork;
         v83 = [v24 row];
-        if (v83 == [(WFAirportViewController *)v9 rowCountWithPlacardCell:1])
+        if (v83 == [(WFAirportViewController *)selfCopy4 rowCountWithPlacardCell:1])
         {
         }
 
         else
         {
           v99 = [v24 row];
-          v100 = [(WFAirportViewController *)v9 rowCountWithPlacardCell:2];
+          v100 = [(WFAirportViewController *)selfCopy4 rowCountWithPlacardCell:2];
 
           v101 = v99 == v100;
-          v9 = self;
+          selfCopy4 = self;
           if (!v101)
           {
             goto LABEL_123;
@@ -5702,17 +5702,17 @@ LABEL_121:
           v104 = v102;
           if (os_log_type_enabled(v104, v103))
           {
-            v105 = [(WFAirportViewController *)v9 currentNetwork];
+            currentNetwork2 = [(WFAirportViewController *)selfCopy4 currentNetwork];
             *buf = 136315394;
             v116 = "[WFAirportViewController tableView:didSelectRowAtIndexPath:]";
             v117 = 2112;
-            v118 = v105;
+            v118 = currentNetwork2;
             _os_log_impl(&dword_273FB9000, v104, v103, "%s: tapped on current network %@", buf, 0x16u);
           }
         }
 
-        v106 = [(WFAirportViewController *)v9 currentNetwork];
-        [v27 networkListViewController:v9 didTapRecord:v106];
+        currentNetwork3 = [(WFAirportViewController *)selfCopy4 currentNetwork];
+        [listDelegate networkListViewController:selfCopy4 didTapRecord:currentNetwork3];
       }
     }
   }
@@ -5723,27 +5723,27 @@ LABEL_123:
   v98 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(WFAirportViewController *)self sections];
-  v7 = [v6 indexOfObject:&unk_2883224F8];
+  pathCopy = path;
+  sections = [(WFAirportViewController *)self sections];
+  v7 = [sections indexOfObject:&unk_2883224F8];
 
-  v8 = [v5 section];
-  return v8 == v7;
+  section = [pathCopy section];
+  return section == v7;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  v8 = [(WFAirportViewController *)self networksToBeDeleted];
-  v9 = [v8 count];
+  pathCopy = path;
+  networksToBeDeleted = [(WFAirportViewController *)self networksToBeDeleted];
+  v9 = [networksToBeDeleted count];
   v10 = MEMORY[0x277CBEB18];
   if (v9)
   {
-    v11 = [(WFAirportViewController *)self networksToBeDeleted];
-    v12 = [v10 arrayWithArray:v11];
+    networksToBeDeleted2 = [(WFAirportViewController *)self networksToBeDeleted];
+    v12 = [v10 arrayWithArray:networksToBeDeleted2];
   }
 
   else
@@ -5751,22 +5751,22 @@ LABEL_123:
     v12 = objc_opt_new();
   }
 
-  if (a4 == 1)
+  if (style == 1)
   {
-    v13 = [v7 section];
-    v14 = [(WFAirportViewController *)self sections];
-    v15 = [v14 indexOfObject:&unk_2883224F8];
+    section = [pathCopy section];
+    sections = [(WFAirportViewController *)self sections];
+    v15 = [sections indexOfObject:&unk_2883224F8];
 
-    if (v13 == v15)
+    if (section == v15)
     {
-      v16 = -[NSMutableArray objectAtIndex:](self->_editableKnownNetworks, "objectAtIndex:", [v7 row]);
+      v16 = -[NSMutableArray objectAtIndex:](self->_editableKnownNetworks, "objectAtIndex:", [pathCopy row]);
       [v12 addObject:v16];
 
-      -[NSMutableArray removeObjectAtIndex:](self->_editableKnownNetworks, "removeObjectAtIndex:", [v7 row]);
-      v17 = [(WFAirportViewController *)self tableView];
-      v20[0] = v7;
+      -[NSMutableArray removeObjectAtIndex:](self->_editableKnownNetworks, "removeObjectAtIndex:", [pathCopy row]);
+      tableView = [(WFAirportViewController *)self tableView];
+      v20[0] = pathCopy;
       v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:1];
-      [v17 deleteRowsAtIndexPaths:v18 withRowAnimation:0];
+      [tableView deleteRowsAtIndexPaths:v18 withRowAnimation:0];
     }
 
     [(WFAirportViewController *)self setNetworksToBeDeleted:v12];
@@ -5776,40 +5776,40 @@ LABEL_123:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)tableView:(id)a3 accessoryButtonTappedForRowWithIndexPath:(id)a4
+- (void)tableView:(id)view accessoryButtonTappedForRowWithIndexPath:(id)path
 {
   v37 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = -[WFAirportViewController _sectionTypeAtSection:](self, "_sectionTypeAtSection:", [v5 section]);
-  v7 = [v5 row];
+  pathCopy = path;
+  v6 = -[WFAirportViewController _sectionTypeAtSection:](self, "_sectionTypeAtSection:", [pathCopy section]);
+  v7 = [pathCopy row];
   if (v6 <= 2)
   {
     switch(v6)
     {
       case 0:
-        v15 = [(WFAirportViewController *)self currentNetwork];
+        currentNetwork = [(WFAirportViewController *)self currentNetwork];
         goto LABEL_24;
       case 1:
-        v20 = [(WFAirportViewController *)self knownNetworks];
-        v21 = [v20 count];
+        knownNetworks = [(WFAirportViewController *)self knownNetworks];
+        v21 = [knownNetworks count];
 
         if (v7 >= v21)
         {
           goto LABEL_33;
         }
 
-        v10 = [(WFAirportViewController *)self knownNetworks];
+        knownNetworks2 = [(WFAirportViewController *)self knownNetworks];
         break;
       case 2:
-        v11 = [(WFAirportViewController *)self popularNetworks];
-        v12 = [v11 count];
+        popularNetworks = [(WFAirportViewController *)self popularNetworks];
+        v12 = [popularNetworks count];
 
         if (v7 >= v12)
         {
           goto LABEL_33;
         }
 
-        v10 = [(WFAirportViewController *)self popularNetworks];
+        knownNetworks2 = [(WFAirportViewController *)self popularNetworks];
         break;
       default:
         goto LABEL_33;
@@ -5820,15 +5820,15 @@ LABEL_123:
   {
     if (v6 == 11)
     {
-      v18 = [(WFAirportViewController *)self editableKnownNetworks];
-      v19 = [v18 count];
+      editableKnownNetworks = [(WFAirportViewController *)self editableKnownNetworks];
+      v19 = [editableKnownNetworks count];
 
       if (v7 >= v19)
       {
         goto LABEL_33;
       }
 
-      v10 = [(WFAirportViewController *)self editableKnownNetworks];
+      knownNetworks2 = [(WFAirportViewController *)self editableKnownNetworks];
     }
 
     else
@@ -5838,29 +5838,29 @@ LABEL_123:
         goto LABEL_33;
       }
 
-      v13 = [(WFAirportViewController *)self managedKnownNetworks];
-      v14 = [v13 count];
+      managedKnownNetworks = [(WFAirportViewController *)self managedKnownNetworks];
+      v14 = [managedKnownNetworks count];
 
       if (v7 >= v14)
       {
         goto LABEL_33;
       }
 
-      v10 = [(WFAirportViewController *)self managedKnownNetworks];
+      knownNetworks2 = [(WFAirportViewController *)self managedKnownNetworks];
     }
   }
 
   else if (v6 == 3)
   {
-    v16 = [(WFAirportViewController *)self infraNetworks];
-    v17 = [v16 count];
+    infraNetworks = [(WFAirportViewController *)self infraNetworks];
+    v17 = [infraNetworks count];
 
     if (v7 >= v17)
     {
       goto LABEL_33;
     }
 
-    v10 = [(WFAirportViewController *)self infraNetworks];
+    knownNetworks2 = [(WFAirportViewController *)self infraNetworks];
   }
 
   else
@@ -5870,19 +5870,19 @@ LABEL_123:
       goto LABEL_33;
     }
 
-    v8 = [(WFAirportViewController *)self adhocNetworks];
-    v9 = [v8 count];
+    adhocNetworks = [(WFAirportViewController *)self adhocNetworks];
+    v9 = [adhocNetworks count];
 
     if (v7 >= v9)
     {
       goto LABEL_33;
     }
 
-    v10 = [(WFAirportViewController *)self adhocNetworks];
+    knownNetworks2 = [(WFAirportViewController *)self adhocNetworks];
   }
 
-  v22 = v10;
-  v15 = [v10 objectAtIndex:v7];
+  v22 = knownNetworks2;
+  currentNetwork = [knownNetworks2 objectAtIndex:v7];
 
 LABEL_24:
   if ((v6 - 11) >= 2)
@@ -5895,7 +5895,7 @@ LABEL_24:
     v23 = 2;
   }
 
-  if (v15)
+  if (currentNetwork)
   {
     v24 = WFLogForCategory(0);
     v25 = OSLogForWFLogLevel(3uLL);
@@ -5904,28 +5904,28 @@ LABEL_24:
       v29 = 136315906;
       v30 = "[WFAirportViewController tableView:accessoryButtonTappedForRowWithIndexPath:]";
       v31 = 2112;
-      v32 = v15;
+      v32 = currentNetwork;
       v33 = 2112;
-      v34 = v5;
+      v34 = pathCopy;
       v35 = 2048;
       v36 = v23;
       _os_log_impl(&dword_273FB9000, v24, v25, "%s: tapped on accessory for record %@ at indexPath %@, context: %ld", &v29, 0x2Au);
     }
 
-    v26 = [(WFAirportViewController *)self listDelegate];
-    [v26 networkListViewController:self showSettingsForNetwork:v15 context:v23];
+    listDelegate = [(WFAirportViewController *)self listDelegate];
+    [listDelegate networkListViewController:self showSettingsForNetwork:currentNetwork context:v23];
 
     goto LABEL_37;
   }
 
 LABEL_33:
-  v15 = WFLogForCategory(0);
+  currentNetwork = WFLogForCategory(0);
   v27 = OSLogForWFLogLevel(1uLL);
-  if (WFCurrentLogLevel() && v15 && os_log_type_enabled(v15, v27))
+  if (WFCurrentLogLevel() && currentNetwork && os_log_type_enabled(currentNetwork, v27))
   {
     v29 = 138543362;
-    v30 = v5;
-    _os_log_impl(&dword_273FB9000, v15, v27, "Accessory button tapped nil record at indexPath %{public}@", &v29, 0xCu);
+    v30 = pathCopy;
+    _os_log_impl(&dword_273FB9000, currentNetwork, v27, "Accessory button tapped nil record at indexPath %{public}@", &v29, 0xCu);
   }
 
 LABEL_37:
@@ -5933,14 +5933,14 @@ LABEL_37:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_promptToJoinAdhoc:(id)a3
+- (void)_promptToJoinAdhoc:(id)adhoc
 {
-  v4 = a3;
+  adhocCopy = adhoc;
   v5 = MEMORY[0x277CCACA8];
   v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v7 = [v6 localizedStringForKey:@"kWFLocAdhocJoinTitle" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
-  v8 = [v4 title];
-  v22 = [v5 stringWithFormat:v7, v8];
+  title = [adhocCopy title];
+  v22 = [v5 stringWithFormat:v7, title];
 
   v9 = MEMORY[0x277D75110];
   v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -5955,8 +5955,8 @@ LABEL_37:
   v23[2] = __46__WFAirportViewController__promptToJoinAdhoc___block_invoke;
   v23[3] = &unk_279EC56F0;
   v23[4] = self;
-  v24 = v4;
-  v16 = v4;
+  v24 = adhocCopy;
+  v16 = adhocCopy;
   v17 = [v13 actionWithTitle:v15 style:0 handler:v23];
 
   [v12 addAction:v17];
@@ -5980,9 +5980,9 @@ void __46__WFAirportViewController__promptToJoinAdhoc___block_invoke(uint64_t a1
   [v4 scrollToRowAtIndexPath:v3 atScrollPosition:1 animated:1];
 }
 
-- (id)_defaultSectionsForPowerState:(BOOL)a3
+- (id)_defaultSectionsForPowerState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   v5 = [MEMORY[0x277CBEB18] arrayWithObjects:{&unk_2883224B0, &unk_288322498, 0}];
   if ([(WFAirportViewController *)self _isChinaDevice])
   {
@@ -6031,7 +6031,7 @@ void __46__WFAirportViewController__promptToJoinAdhoc___block_invoke(uint64_t a1
     }
   }
 
-  if (v3)
+  if (stateCopy)
   {
     v10 = v5;
   }
@@ -6046,38 +6046,38 @@ void __46__WFAirportViewController__promptToJoinAdhoc___block_invoke(uint64_t a1
   return v11;
 }
 
-- (unint64_t)_sectionTypeAtSection:(int64_t)a3
+- (unint64_t)_sectionTypeAtSection:(int64_t)section
 {
-  v5 = [(WFAirportViewController *)self sections];
-  v6 = [v5 count];
+  sections = [(WFAirportViewController *)self sections];
+  v6 = [sections count];
 
-  if (v6 <= a3)
+  if (v6 <= section)
   {
-    [(WFAirportViewController *)a3 _sectionTypeAtSection:?];
+    [(WFAirportViewController *)section _sectionTypeAtSection:?];
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
   {
-    v7 = [(WFAirportViewController *)self sections];
-    v8 = [v7 objectAtIndex:a3];
-    v9 = [v8 integerValue];
+    sections2 = [(WFAirportViewController *)self sections];
+    v8 = [sections2 objectAtIndex:section];
+    integerValue = [v8 integerValue];
 
-    return v9;
+    return integerValue;
   }
 }
 
-- (void)_powerSwitchChanged:(id)a3
+- (void)_powerSwitchChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v5 = dispatch_time(0, 200000000);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__WFAirportViewController__powerSwitchChanged___block_invoke;
   v7[3] = &unk_279EC5588;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = changedCopy;
+  selfCopy = self;
+  v6 = changedCopy;
   dispatch_after(v5, MEMORY[0x277D85CD0], v7);
 }
 
@@ -6110,7 +6110,7 @@ void __47__WFAirportViewController__powerSwitchChanged___block_invoke(uint64_t a
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateAskToJoinMode:(int64_t)a3
+- (void)_updateAskToJoinMode:(int64_t)mode
 {
   v17 = *MEMORY[0x277D85DE8];
   v5 = WFLogForCategory(0);
@@ -6120,30 +6120,30 @@ void __47__WFAirportViewController__powerSwitchChanged___block_invoke(uint64_t a
     v13 = 136315394;
     v14 = "[WFAirportViewController _updateAskToJoinMode:]";
     v15 = 1024;
-    v16 = a3;
+    modeCopy = mode;
     _os_log_impl(&dword_273FB9000, v5, v6, "%s: ask to join state changed %d", &v13, 0x12u);
   }
 
-  v7 = [(WFAirportViewController *)self listDelegate];
-  [v7 airportSettingsViewController:self setAskToJoinMode:a3];
+  listDelegate = [(WFAirportViewController *)self listDelegate];
+  [listDelegate airportSettingsViewController:self setAskToJoinMode:mode];
 
-  v8 = [(WFAirportViewController *)self sections];
-  v9 = [v8 indexOfObject:&unk_2883224C8];
+  sections = [(WFAirportViewController *)self sections];
+  v9 = [sections indexOfObject:&unk_2883224C8];
 
   if (v9 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v10 = [(WFAirportViewController *)self tableView];
+    tableView = [(WFAirportViewController *)self tableView];
     v11 = [MEMORY[0x277CCAA78] indexSetWithIndex:v9];
-    [v10 _reloadSectionHeaderFooters:v11 withRowAnimation:100];
+    [tableView _reloadSectionHeaderFooters:v11 withRowAnimation:100];
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_enableWAPISwitchChanged:(id)a3
+- (void)_enableWAPISwitchChanged:(id)changed
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changedCopy = changed;
   v5 = WFLogForCategory(0);
   v6 = OSLogForWFLogLevel(3uLL);
   if (WFCurrentLogLevel() >= 3 && v5)
@@ -6154,21 +6154,21 @@ void __47__WFAirportViewController__powerSwitchChanged___block_invoke(uint64_t a
       v10 = 136315394;
       v11 = "[WFAirportViewController _enableWAPISwitchChanged:]";
       v12 = 1024;
-      v13 = [v4 isOn];
+      isOn = [changedCopy isOn];
       _os_log_impl(&dword_273FB9000, v7, v6, "%s: wapi state changed %d", &v10, 0x12u);
     }
   }
 
-  v8 = [(WFAirportViewController *)self listDelegate];
-  [v8 networkListViewController:self setWAPIEnabled:{objc_msgSend(v4, "isOn")}];
+  listDelegate = [(WFAirportViewController *)self listDelegate];
+  [listDelegate networkListViewController:self setWAPIEnabled:{objc_msgSend(changedCopy, "isOn")}];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_sectionNameAtIndex:(unint64_t)a3
+- (id)_sectionNameAtIndex:(unint64_t)index
 {
-  v5 = [(WFAirportViewController *)self sections];
-  v6 = [v5 objectAtIndexedSubscript:a3];
+  sections = [(WFAirportViewController *)self sections];
+  v6 = [sections objectAtIndexedSubscript:index];
 
   if (v6)
   {
@@ -6183,16 +6183,16 @@ void __47__WFAirportViewController__powerSwitchChanged___block_invoke(uint64_t a
   return v7;
 }
 
-- (id)_nameOfSection:(unint64_t)a3
+- (id)_nameOfSection:(unint64_t)section
 {
-  if (a3 > 0xC)
+  if (section > 0xC)
   {
     return @"<unknown>";
   }
 
   else
   {
-    return off_279EC58E8[a3];
+    return off_279EC58E8[section];
   }
 }
 
@@ -6203,8 +6203,8 @@ void __47__WFAirportViewController__powerSwitchChanged___block_invoke(uint64_t a
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [(WFAirportViewController *)self sections];
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v23 count:16];
+  sections = [(WFAirportViewController *)self sections];
+  v4 = [sections countByEnumeratingWithState:&v15 objects:v23 count:16];
   if (v4)
   {
     v5 = v4;
@@ -6216,7 +6216,7 @@ void __47__WFAirportViewController__powerSwitchChanged___block_invoke(uint64_t a
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(sections);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
@@ -6239,7 +6239,7 @@ void __47__WFAirportViewController__powerSwitchChanged___block_invoke(uint64_t a
         ++v6;
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v15 objects:v23 count:16];
+      v5 = [sections countByEnumeratingWithState:&v15 objects:v23 count:16];
     }
 
     while (v5);
@@ -6250,9 +6250,9 @@ void __47__WFAirportViewController__powerSwitchChanged___block_invoke(uint64_t a
 
 - (BOOL)_isChinaDevice
 {
-  v2 = [(WFAirportViewController *)self deviceCapability];
+  deviceCapability = [(WFAirportViewController *)self deviceCapability];
 
-  return WFCapabilityIsChinaDevice(v2);
+  return WFCapabilityIsChinaDevice(deviceCapability);
 }
 
 - (void)_pushAutoInstantHotspotOptionSelectionViewController
@@ -6269,11 +6269,11 @@ void __47__WFAirportViewController__powerSwitchChanged___block_invoke(uint64_t a
   v11 = [[WFValueListViewController alloc] initWithTitles:v10 switchTitle:0];
   v12 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v13 = [v12 localizedStringForKey:@"kWFLocAutoInstantHotspotTitle" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
-  v14 = [(WFValueListViewController *)v11 navigationItem];
-  [v14 setTitle:v13];
+  navigationItem = [(WFValueListViewController *)v11 navigationItem];
+  [navigationItem setTitle:v13];
 
-  v15 = [(WFAirportViewController *)self listDelegate];
-  v16 = -[WFAirportViewController _getAutoHotspotOptionText:](self, "_getAutoHotspotOptionText:", [v15 networkListViewControllerAutoInstantHotspotOption:self]);
+  listDelegate = [(WFAirportViewController *)self listDelegate];
+  v16 = -[WFAirportViewController _getAutoHotspotOptionText:](self, "_getAutoHotspotOptionText:", [listDelegate networkListViewControllerAutoInstantHotspotOption:self]);
   [(WFValueListViewController *)v11 setSelectedTitle:v16];
 
   v17[0] = MEMORY[0x277D85DD0];
@@ -6344,8 +6344,8 @@ LABEL_8:
   v11 = [[WFValueListViewController alloc] initWithTitles:v10 switchTitle:0];
   v12 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v13 = [v12 localizedStringForKey:@"kWFLocAskToJoinTitle" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
-  v14 = [(WFValueListViewController *)v11 navigationItem];
-  [v14 setTitle:v13];
+  navigationItem = [(WFValueListViewController *)v11 navigationItem];
+  [navigationItem setTitle:v13];
 
   v15 = [(WFAirportViewController *)self _askToJoinStateStringForATJMode:[(WFAirportViewController *)self _askToJoinMode]];
   [(WFValueListViewController *)v11 setSelectedTitle:v15];
@@ -6383,16 +6383,16 @@ uint64_t __68__WFAirportViewController__pushAskToJoinModeSelectionViewController
 
 - (void)_updateNetworkRestrictionHeader
 {
-  v25 = [(WFAirportViewController *)self listDelegate];
-  if (([v25 networkListViewControllerNetworkRestrictionActive:self] & 1) != 0 || (-[WFAirportViewController tableView](self, "tableView"), v3 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "tableHeaderView"), v4 = objc_claimAutoreleasedReturnValue(), v4, v3, v4))
+  listDelegate = [(WFAirportViewController *)self listDelegate];
+  if (([listDelegate networkListViewControllerNetworkRestrictionActive:self] & 1) != 0 || (-[WFAirportViewController tableView](self, "tableView"), v3 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "tableHeaderView"), v4 = objc_claimAutoreleasedReturnValue(), v4, v3, v4))
   {
-    if ([v25 networkListViewControllerNetworkRestrictionActive:self] && !-[WFAirportViewController isInEditingMode](self, "isInEditingMode"))
+    if ([listDelegate networkListViewControllerNetworkRestrictionActive:self] && !-[WFAirportViewController isInEditingMode](self, "isInEditingMode"))
     {
-      v6 = [(WFAirportViewController *)self tableView];
-      [v6 bounds];
+      tableView = [(WFAirportViewController *)self tableView];
+      [tableView bounds];
       v8 = v7;
 
-      v5 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{0.0, 0.0, v8, 0.0}];
+      tableView3 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{0.0, 0.0, v8, 0.0}];
       v9 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{0.0, 0.0, v8, 100.0}];
       v10 = [MEMORY[0x277D75348] colorWithRed:0.427450985 green:0.427450985 blue:0.447058827 alpha:1.0];
       [v9 setTextColor:v10];
@@ -6417,47 +6417,47 @@ uint64_t __68__WFAirportViewController__pushAskToJoinModeSelectionViewController
       [v9 setFont:v14];
 
       [v9 setText:v13];
-      [v5 addSubview:v9];
+      [tableView3 addSubview:v9];
       v15 = MEMORY[0x277CCAAD0];
       v16 = _NSDictionaryOfVariableBindings(&cfstr_Headerlabel.isa, v9, 0);
       v17 = [v15 constraintsWithVisualFormat:@"V:|-20-[headerLabel]-20-|" options:0 metrics:0 views:v16];
-      [v5 addConstraints:v17];
+      [tableView3 addConstraints:v17];
 
       v18 = MEMORY[0x277CCAAD0];
       v19 = _NSDictionaryOfVariableBindings(&cfstr_Headerlabel.isa, v9, 0);
       v20 = [v18 constraintsWithVisualFormat:@"|-40-[headerLabel]-40-|" options:0 metrics:0 views:v19];
-      [v5 addConstraints:v20];
+      [tableView3 addConstraints:v20];
 
-      v21 = [MEMORY[0x277CCAAD0] constraintWithItem:v5 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:v8];
-      [v5 addConstraint:v21];
-      [v5 systemLayoutSizeFittingSize:{*MEMORY[0x277D76C78], *(MEMORY[0x277D76C78] + 8)}];
+      v21 = [MEMORY[0x277CCAAD0] constraintWithItem:tableView3 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:v8];
+      [tableView3 addConstraint:v21];
+      [tableView3 systemLayoutSizeFittingSize:{*MEMORY[0x277D76C78], *(MEMORY[0x277D76C78] + 8)}];
       v23 = v22 + 40.0;
-      [v5 removeConstraint:v21];
-      [v5 setFrame:{0.0, 0.0, v8, v23}];
-      [v5 setTranslatesAutoresizingMaskIntoConstraints:1];
+      [tableView3 removeConstraint:v21];
+      [tableView3 setFrame:{0.0, 0.0, v8, v23}];
+      [tableView3 setTranslatesAutoresizingMaskIntoConstraints:1];
       [v9 setPreferredMaxLayoutWidth:v8];
-      v24 = [(WFAirportViewController *)self tableView];
-      [v24 setTableHeaderView:v5];
+      tableView2 = [(WFAirportViewController *)self tableView];
+      [tableView2 setTableHeaderView:tableView3];
     }
 
     else
     {
-      v5 = [(WFAirportViewController *)self tableView];
-      [v5 setTableHeaderView:0];
+      tableView3 = [(WFAirportViewController *)self tableView];
+      [tableView3 setTableHeaderView:0];
     }
   }
 }
 
-- (id)_askToJoinStateStringForATJMode:(int64_t)a3
+- (id)_askToJoinStateStringForATJMode:(int64_t)mode
 {
-  if (a3 > 2)
+  if (mode > 2)
   {
     v5 = 0;
   }
 
   else
   {
-    v3 = off_279EC5950[a3];
+    v3 = off_279EC5950[mode];
     v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v5 = [v4 localizedStringForKey:v3 value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
   }
@@ -6467,21 +6467,21 @@ uint64_t __68__WFAirportViewController__pushAskToJoinModeSelectionViewController
 
 - (id)_askToJoinFooterString
 {
-  v3 = [(WFAirportViewController *)self _askToJoinMode];
+  _askToJoinMode = [(WFAirportViewController *)self _askToJoinMode];
 
-  return [(WFAirportViewController *)self _askToJoinFooterStringForMode:v3];
+  return [(WFAirportViewController *)self _askToJoinFooterStringForMode:_askToJoinMode];
 }
 
-- (id)_askToJoinFooterStringForMode:(int64_t)a3
+- (id)_askToJoinFooterStringForMode:(int64_t)mode
 {
-  if (a3 > 2)
+  if (mode > 2)
   {
     v5 = 0;
   }
 
   else
   {
-    v3 = off_279EC5968[a3];
+    v3 = off_279EC5968[mode];
     v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v5 = [v4 localizedStringForKey:v3 value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
   }
@@ -6491,8 +6491,8 @@ uint64_t __68__WFAirportViewController__pushAskToJoinModeSelectionViewController
 
 - (int64_t)_askToJoinMode
 {
-  v3 = [(WFAirportViewController *)self listDelegate];
-  v4 = [v3 airportSettingsViewControllerAskToJoinMode:self];
+  listDelegate = [(WFAirportViewController *)self listDelegate];
+  v4 = [listDelegate airportSettingsViewControllerAskToJoinMode:self];
 
   return v4;
 }
@@ -6500,8 +6500,8 @@ uint64_t __68__WFAirportViewController__pushAskToJoinModeSelectionViewController
 - (void)_reloadCurrentNetworkCell
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = [(WFAirportViewController *)self _currentNetworkCellIndexPath];
-  if (v3)
+  _currentNetworkCellIndexPath = [(WFAirportViewController *)self _currentNetworkCellIndexPath];
+  if (_currentNetworkCellIndexPath)
   {
     v4 = WFLogForCategory(0);
     v5 = OSLogForWFLogLevel(4uLL);
@@ -6512,10 +6512,10 @@ uint64_t __68__WFAirportViewController__pushAskToJoinModeSelectionViewController
       _os_log_impl(&dword_273FB9000, v4, v5, "%s: reloading current network index path", buf, 0xCu);
     }
 
-    v6 = [(WFAirportViewController *)self tableView];
-    v9 = v3;
+    tableView = [(WFAirportViewController *)self tableView];
+    v9 = _currentNetworkCellIndexPath;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:&v9 count:1];
-    [v6 reloadRowsAtIndexPaths:v7 withRowAnimation:5];
+    [tableView reloadRowsAtIndexPaths:v7 withRowAnimation:5];
   }
 
   v8 = *MEMORY[0x277D85DE8];
@@ -6534,8 +6534,8 @@ uint64_t __68__WFAirportViewController__pushAskToJoinModeSelectionViewController
   }
 
   v4 = [(WFAirportViewController *)self rowCountWithPlacardCell:v3];
-  v5 = [(WFAirportViewController *)self sections];
-  v6 = [v5 indexOfObject:&unk_2883224B0];
+  sections = [(WFAirportViewController *)self sections];
+  v6 = [sections indexOfObject:&unk_2883224B0];
 
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -6554,43 +6554,43 @@ uint64_t __68__WFAirportViewController__pushAskToJoinModeSelectionViewController
 - (void)_reloadSectionForHotspotChange
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(WFAirportViewController *)self tableView];
-  [v3 beginUpdates];
+  tableView = [(WFAirportViewController *)self tableView];
+  [tableView beginUpdates];
 
-  v4 = [(WFAirportViewController *)self sections];
-  v5 = [v4 indexOfObject:&unk_288322480];
+  sections = [(WFAirportViewController *)self sections];
+  v5 = [sections indexOfObject:&unk_288322480];
 
-  v6 = WFLogForCategory(0);
+  tableView2 = WFLogForCategory(0);
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v7 = OSLogForWFLogLevel(3uLL);
-    if (WFCurrentLogLevel() >= 3 && v6 && os_log_type_enabled(v6, v7))
+    if (WFCurrentLogLevel() >= 3 && tableView2 && os_log_type_enabled(tableView2, v7))
     {
       v12 = 136315138;
       v13 = "[WFAirportViewController _reloadSectionForHotspotChange]";
-      _os_log_impl(&dword_273FB9000, v6, v7, "%s: hotspot section not found", &v12, 0xCu);
+      _os_log_impl(&dword_273FB9000, tableView2, v7, "%s: hotspot section not found", &v12, 0xCu);
     }
   }
 
   else
   {
     v8 = OSLogForWFLogLevel(4uLL);
-    if (WFCurrentLogLevel() >= 4 && v6 && os_log_type_enabled(v6, v8))
+    if (WFCurrentLogLevel() >= 4 && tableView2 && os_log_type_enabled(tableView2, v8))
     {
       v12 = 136315394;
       v13 = "[WFAirportViewController _reloadSectionForHotspotChange]";
       v14 = 1024;
       v15 = v5;
-      _os_log_impl(&dword_273FB9000, v6, v8, "%s: reloading hotspot in section %d", &v12, 0x12u);
+      _os_log_impl(&dword_273FB9000, tableView2, v8, "%s: reloading hotspot in section %d", &v12, 0x12u);
     }
 
-    v6 = [(WFAirportViewController *)self tableView];
+    tableView2 = [(WFAirportViewController *)self tableView];
     v9 = [MEMORY[0x277CCAA78] indexSetWithIndex:v5];
-    [v6 reloadSections:v9 withRowAnimation:5];
+    [tableView2 reloadSections:v9 withRowAnimation:5];
   }
 
-  v10 = [(WFAirportViewController *)self tableView];
-  [v10 endUpdates];
+  tableView3 = [(WFAirportViewController *)self tableView];
+  [tableView3 endUpdates];
 
   v11 = *MEMORY[0x277D85DE8];
 }
@@ -6635,12 +6635,12 @@ void __46__WFAirportViewController__reloadPowerSection__block_invoke(uint64_t a1
   }
 }
 
-- (void)setUserAutoJoinEnabled:(BOOL)a3
+- (void)setUserAutoJoinEnabled:(BOOL)enabled
 {
   v23 = *MEMORY[0x277D85DE8];
-  if (self->_userAutoJoinEnabled != a3)
+  if (self->_userAutoJoinEnabled != enabled)
   {
-    v3 = a3;
+    enabledCopy = enabled;
     v5 = WFLogForCategory(0);
     v6 = OSLogForWFLogLevel(3uLL);
     if (WFCurrentLogLevel() >= 3 && v5 && os_log_type_enabled(v5, v6))
@@ -6648,13 +6648,13 @@ void __46__WFAirportViewController__reloadPowerSection__block_invoke(uint64_t a1
       v19 = 136315394;
       v20 = "[WFAirportViewController setUserAutoJoinEnabled:]";
       v21 = 1024;
-      v22 = v3;
+      v22 = enabledCopy;
       _os_log_impl(&dword_273FB9000, v5, v6, "%s: userAutoJoinEnabled %d", &v19, 0x12u);
     }
 
-    self->_userAutoJoinEnabled = v3;
-    v7 = [(WFAirportViewController *)self sections];
-    v8 = [v7 indexOfObject:&unk_2883224B0];
+    self->_userAutoJoinEnabled = enabledCopy;
+    sections = [(WFAirportViewController *)self sections];
+    v8 = [sections indexOfObject:&unk_2883224B0];
 
     if (v8 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -6672,47 +6672,47 @@ void __46__WFAirportViewController__reloadPowerSection__block_invoke(uint64_t a1
 
     else
     {
-      v11 = [MEMORY[0x277CCAB58] indexSet];
-      [v11 addIndex:v8];
-      v12 = [(WFAirportViewController *)self sections];
-      v13 = [v12 indexOfObject:&unk_2883224C8];
+      indexSet = [MEMORY[0x277CCAB58] indexSet];
+      [indexSet addIndex:v8];
+      sections2 = [(WFAirportViewController *)self sections];
+      v13 = [sections2 indexOfObject:&unk_2883224C8];
 
       if (v13 != 0x7FFFFFFFFFFFFFFFLL)
       {
-        v14 = [(WFAirportViewController *)self tableView];
-        v15 = [(WFAirportViewController *)self sections];
-        v16 = [v14 numberOfRowsInSection:{objc_msgSend(v15, "indexOfObject:", &unk_2883224C8)}];
+        tableView = [(WFAirportViewController *)self tableView];
+        sections3 = [(WFAirportViewController *)self sections];
+        v16 = [tableView numberOfRowsInSection:{objc_msgSend(sections3, "indexOfObject:", &unk_2883224C8)}];
 
         if (v16)
         {
-          [v11 addIndex:v13];
+          [indexSet addIndex:v13];
         }
       }
 
-      v17 = [(WFAirportViewController *)self tableView];
-      [v17 _reloadSectionHeaderFooters:v11 withRowAnimation:100];
+      tableView2 = [(WFAirportViewController *)self tableView];
+      [tableView2 _reloadSectionHeaderFooters:indexSet withRowAnimation:100];
     }
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateAutoInstantHotspotSetting:(int64_t)a3
+- (void)updateAutoInstantHotspotSetting:(int64_t)setting
 {
-  v5 = [(WFAirportViewController *)self listDelegate];
-  [v5 networkListViewController:self setAutoInstantOption:a3];
+  listDelegate = [(WFAirportViewController *)self listDelegate];
+  [listDelegate networkListViewController:self setAutoInstantOption:setting];
 }
 
-- (id)_getAutoHotspotOptionText:(int64_t)a3
+- (id)_getAutoHotspotOptionText:(int64_t)text
 {
-  if (a3 > 2)
+  if (text > 2)
   {
     v5 = 0;
   }
 
   else
   {
-    v3 = off_279EC5980[a3];
+    v3 = off_279EC5980[text];
     v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v5 = [v4 localizedStringForKey:v3 value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
   }
@@ -6752,10 +6752,10 @@ void __46__WFAirportViewController__reloadPowerSection__block_invoke(uint64_t a1
   powerOffLocationWarning = self->_powerOffLocationWarning;
   if (!powerOffLocationWarning)
   {
-    v4 = [(WFAirportViewController *)self _isChinaDevice];
+    _isChinaDevice = [(WFAirportViewController *)self _isChinaDevice];
     v5 = MGGetBoolAnswer();
-    v6 = [(WFAirportViewController *)self listDelegate];
-    v7 = [v6 networkListViewControllerIsAutoUnlockEnabled:self];
+    listDelegate = [(WFAirportViewController *)self listDelegate];
+    v7 = [listDelegate networkListViewControllerIsAutoUnlockEnabled:self];
 
     v8 = WFLogForCategory(0);
     v9 = OSLogForWFLogLevel(3uLL);
@@ -6764,7 +6764,7 @@ void __46__WFAirportViewController__reloadPowerSection__block_invoke(uint64_t a1
       v20 = 136315906;
       v21 = "[WFAirportViewController powerOffLocationWarning]";
       v22 = 1024;
-      v23 = v4;
+      v23 = _isChinaDevice;
       v24 = 1024;
       v25 = v5;
       v26 = 1024;
@@ -6773,13 +6773,13 @@ void __46__WFAirportViewController__reloadPowerSection__block_invoke(uint64_t a1
     }
 
     v10 = @"kWFLocLocationServicesWarning";
-    if (v4)
+    if (_isChinaDevice)
     {
       v10 = @"kWFLocLocationServicesWarningCH";
     }
 
     v11 = @"kWFLocLocationServicesCellularWarning";
-    if (v4)
+    if (_isChinaDevice)
     {
       v11 = @"kWFLocLocationServicesCellularWarningCH";
     }
@@ -6791,7 +6791,7 @@ void __46__WFAirportViewController__reloadPowerSection__block_invoke(uint64_t a1
     }
 
     v13 = @"kWFLocAutoUnlockLocationServicesCellularWarning";
-    if (v4)
+    if (_isChinaDevice)
     {
       v12 = @"kWFLocAutoUnlockLocationServicesWarningCH";
       v13 = @"kWFLocAutoUnlockLocationServicesCellularWarningCH";
@@ -6821,12 +6821,12 @@ void __46__WFAirportViewController__reloadPowerSection__block_invoke(uint64_t a1
   return powerOffLocationWarning;
 }
 
-- (int64_t)_askToJoinModeFromString:(id)a3
+- (int64_t)_askToJoinModeFromString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"kWFLocAskToJoinDetailOff" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
-  v6 = [v3 isEqualToString:v5];
+  v6 = [stringCopy isEqualToString:v5];
 
   if (v6)
   {
@@ -6837,7 +6837,7 @@ void __46__WFAirportViewController__reloadPowerSection__block_invoke(uint64_t a1
   {
     v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v9 = [v8 localizedStringForKey:@"kWFLocAskToJoinDetailNotify" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
-    v10 = [v3 isEqualToString:v9];
+    v10 = [stringCopy isEqualToString:v9];
 
     if (v10)
     {
@@ -6848,7 +6848,7 @@ void __46__WFAirportViewController__reloadPowerSection__block_invoke(uint64_t a1
     {
       v11 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v12 = [v11 localizedStringForKey:@"kWFLocAskToJoinDetailAsk" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
-      v13 = [v3 isEqualToString:v12];
+      v13 = [stringCopy isEqualToString:v12];
 
       if (v13)
       {
@@ -6865,14 +6865,14 @@ void __46__WFAirportViewController__reloadPowerSection__block_invoke(uint64_t a1
   return v7;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v10.receiver = self;
   v10.super_class = WFAirportViewController;
-  v7 = a4;
-  [(WFAirportViewController *)&v10 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(WFAirportViewController *)&v10 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[4] = self;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -6883,7 +6883,7 @@ void __46__WFAirportViewController__reloadPowerSection__block_invoke(uint64_t a1
   v8[1] = 3221225472;
   v8[2] = __78__WFAirportViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke_2;
   v8[3] = &unk_279EC5768;
-  [v7 animateAlongsideTransition:v9 completion:v8];
+  [coordinatorCopy animateAlongsideTransition:v9 completion:v8];
 }
 
 void __78__WFAirportViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -6914,11 +6914,11 @@ void __78__WFAirportViewController_viewWillTransitionToSize_withTransitionCoordi
     *&buf[16] = 0x3032000000;
     v12 = __Block_byref_object_copy__0;
     v13 = __Block_byref_object_dispose__0;
-    v6 = [(WFPendingNetworkUpdate *)self->_pendingCurrentNetworkUpdate network];
-    if (v6)
+    network = [(WFPendingNetworkUpdate *)self->_pendingCurrentNetworkUpdate network];
+    if (network)
     {
-      v7 = [(WFPendingNetworkUpdate *)self->_pendingCurrentNetworkUpdate network];
-      v14 = [v7 copyWithZone:0];
+      network2 = [(WFPendingNetworkUpdate *)self->_pendingCurrentNetworkUpdate network];
+      v14 = [network2 copyWithZone:0];
     }
 
     else
@@ -6951,28 +6951,28 @@ void __78__WFAirportViewController_viewWillTransitionToSize_withTransitionCoordi
       v3 = [WFLockView alloc];
       v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v5 = [v4 localizedStringForKey:@"kWFLocKnownNetworksLockTitle" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
-      v6 = [(WFAirportViewController *)self navigationController];
-      v7 = [v6 topViewController];
-      v8 = [v7 view];
-      v9 = [(WFLockView *)v3 initWithTitle:v5 viewToCover:v8];
+      navigationController = [(WFAirportViewController *)self navigationController];
+      topViewController = [navigationController topViewController];
+      view = [topViewController view];
+      v9 = [(WFLockView *)v3 initWithTitle:v5 viewToCover:view];
       screenProtector = self->_screenProtector;
       self->_screenProtector = v9;
 
-      v11 = [(WFAirportViewController *)self navigationController];
-      [(WFLockView *)self->_screenProtector setBelongedNavigationController:v11];
+      navigationController2 = [(WFAirportViewController *)self navigationController];
+      [(WFLockView *)self->_screenProtector setBelongedNavigationController:navigationController2];
     }
 
-    v25 = [(WFLockView *)self->_screenProtector superview];
-    v12 = [(WFAirportViewController *)self view];
-    if ([v25 isEqual:v12])
+    superview = [(WFLockView *)self->_screenProtector superview];
+    view2 = [(WFAirportViewController *)self view];
+    if ([superview isEqual:view2])
     {
     }
 
     else
     {
-      v13 = [(WFAirportViewController *)self userTurnedOffPasscode];
+      userTurnedOffPasscode = [(WFAirportViewController *)self userTurnedOffPasscode];
 
-      if (!v13)
+      if (!userTurnedOffPasscode)
       {
         v14 = WFLogForCategory(0);
         v15 = OSLogForWFLogLevel(3uLL);
@@ -6982,20 +6982,20 @@ void __78__WFAirportViewController_viewWillTransitionToSize_withTransitionCoordi
           _os_log_impl(&dword_273FB9000, v14, v15, "Showing screen protector when preferences resign active in edit mode.", buf, 2u);
         }
 
-        v16 = [(WFAirportViewController *)self navigationController];
-        v17 = [v16 topViewController];
-        v18 = [v17 view];
-        [v18 addSubview:self->_screenProtector];
+        navigationController3 = [(WFAirportViewController *)self navigationController];
+        topViewController2 = [navigationController3 topViewController];
+        view3 = [topViewController2 view];
+        [view3 addSubview:self->_screenProtector];
 
-        v19 = [(WFAirportViewController *)self navigationController];
-        v20 = [v19 topViewController];
-        v21 = [v20 navigationItem];
-        [v21 setRightBarButtonItem:0];
+        navigationController4 = [(WFAirportViewController *)self navigationController];
+        topViewController3 = [navigationController4 topViewController];
+        navigationItem = [topViewController3 navigationItem];
+        [navigationItem setRightBarButtonItem:0];
 
-        v22 = [(WFAirportViewController *)self navigationController];
-        v23 = [v22 topViewController];
-        v24 = [v23 navigationItem];
-        [v24 setLeftBarButtonItem:0];
+        navigationController5 = [(WFAirportViewController *)self navigationController];
+        topViewController4 = [navigationController5 topViewController];
+        navigationItem2 = [topViewController4 navigationItem];
+        [navigationItem2 setLeftBarButtonItem:0];
       }
     }
   }
@@ -7221,9 +7221,9 @@ void __60__WFAirportViewController__promptAuthToViewKnownNetworkList__block_invo
     v7 = [v3 localizedStringForKey:@"kWFLocEditListButtonTitle" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
 
     v4 = [objc_alloc(MEMORY[0x277D751E0]) initWithTitle:v7 style:0 target:self action:sel_editKnownNetworks];
-    v5 = [(WFAirportViewController *)self parentViewController];
-    v6 = [v5 navigationItem];
-    [v6 setRightBarButtonItem:v4];
+    parentViewController = [(WFAirportViewController *)self parentViewController];
+    navigationItem = [parentViewController navigationItem];
+    [navigationItem setRightBarButtonItem:v4];
 
     [v4 setEnabled:1];
   }
@@ -7314,31 +7314,31 @@ void __44__WFAirportViewController_editKnownNetworks__block_invoke_2(uint64_t a1
 - (void)_transitionToKnownNetworksList
 {
   [(WFAirportViewController *)self setIsInEditingMode:1];
-  v3 = [(WFAirportViewController *)self tableView];
-  [v3 setAllowsSelectionDuringEditing:1];
+  tableView = [(WFAirportViewController *)self tableView];
+  [tableView setAllowsSelectionDuringEditing:1];
 
   [(WFAirportViewController *)self refreshKnownNetworksUpdateTableView:0];
   [(WFAirportViewController *)self _adjustNavigationItemsForEditingMode];
   [(WFAirportViewController *)self _updateNetworkRestrictionHeader];
-  v4 = [(WFAirportViewController *)self listDelegate];
+  listDelegate = [(WFAirportViewController *)self listDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(WFAirportViewController *)self listDelegate];
-    [v6 airportSettingsViewControllerDidStartEditingKnownNetworks:self];
+    listDelegate2 = [(WFAirportViewController *)self listDelegate];
+    [listDelegate2 airportSettingsViewControllerDidStartEditingKnownNetworks:self];
   }
 
-  v7 = [(WFAirportViewController *)self tableView];
-  [v7 setEditing:1];
+  tableView2 = [(WFAirportViewController *)self tableView];
+  [tableView2 setEditing:1];
 
-  v8 = [(WFAirportViewController *)self tableView];
+  tableView3 = [(WFAirportViewController *)self tableView];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __57__WFAirportViewController__transitionToKnownNetworksList__block_invoke;
   v9[3] = &unk_279EC5538;
   v9[4] = self;
-  [v8 performBatchUpdates:v9 completion:0];
+  [tableView3 performBatchUpdates:v9 completion:0];
 }
 
 void __57__WFAirportViewController__transitionToKnownNetworksList__block_invoke(uint64_t a1)
@@ -7356,11 +7356,11 @@ void __57__WFAirportViewController__transitionToKnownNetworksList__block_invoke(
   [v5 insertSections:v6 withRowAnimation:4];
 }
 
-- (id)_sortedProfilesFromSet:(id)a3
+- (id)_sortedProfilesFromSet:(id)set
 {
-  v3 = [a3 allObjects];
+  allObjects = [set allObjects];
   v4 = WFScanRecordAlphaSortCompartor();
-  v5 = [v3 sortedArrayUsingComparator:v4];
+  v5 = [allObjects sortedArrayUsingComparator:v4];
 
   return v5;
 }
@@ -7369,24 +7369,24 @@ void __57__WFAirportViewController__transitionToKnownNetworksList__block_invoke(
 {
   if ([(NSArray *)self->_managedKnownNetworks count])
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     if ([(NSMutableArray *)self->_editableKnownNetworks count])
     {
-      [v3 addObject:&unk_2883224F8];
+      [array addObject:&unk_2883224F8];
     }
 
     if ([(NSArray *)self->_managedKnownNetworks count])
     {
-      [v3 addObject:&unk_288322540];
+      [array addObject:&unk_288322540];
     }
   }
 
   else
   {
-    v3 = [MEMORY[0x277CBEB18] arrayWithObjects:{&unk_2883224F8, 0}];
+    array = [MEMORY[0x277CBEB18] arrayWithObjects:{&unk_2883224F8, 0}];
   }
 
-  v4 = [MEMORY[0x277CBEB70] orderedSetWithArray:v3];
+  v4 = [MEMORY[0x277CBEB70] orderedSetWithArray:array];
 
   return v4;
 }
@@ -7400,25 +7400,25 @@ void __57__WFAirportViewController__transitionToKnownNetworksList__block_invoke(
 
   else
   {
-    v3 = [(WFAirportViewController *)self parentViewController];
-    v4 = [v3 navigationItem];
-    v5 = [v4 leftBarButtonItem];
-    [(WFAirportViewController *)self setOriginalBackButtonItem:v5];
+    parentViewController = [(WFAirportViewController *)self parentViewController];
+    navigationItem = [parentViewController navigationItem];
+    leftBarButtonItem = [navigationItem leftBarButtonItem];
+    [(WFAirportViewController *)self setOriginalBackButtonItem:leftBarButtonItem];
   }
 
-  v6 = [(WFAirportViewController *)self parentViewController];
-  v7 = [v6 navigationItem];
-  [v7 setHidesBackButton:1];
+  parentViewController2 = [(WFAirportViewController *)self parentViewController];
+  navigationItem2 = [parentViewController2 navigationItem];
+  [navigationItem2 setHidesBackButton:1];
 
   v8 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel_cancelEditing];
-  v9 = [(WFAirportViewController *)self parentViewController];
-  v10 = [v9 navigationItem];
-  [v10 setLeftBarButtonItem:v8];
+  parentViewController3 = [(WFAirportViewController *)self parentViewController];
+  navigationItem3 = [parentViewController3 navigationItem];
+  [navigationItem3 setLeftBarButtonItem:v8];
 
   v11 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:self action:sel_finishEditing];
-  v12 = [(WFAirportViewController *)self parentViewController];
-  v13 = [v12 navigationItem];
-  [v13 setRightBarButtonItem:v11];
+  parentViewController4 = [(WFAirportViewController *)self parentViewController];
+  navigationItem4 = [parentViewController4 navigationItem];
+  [navigationItem4 setRightBarButtonItem:v11];
 
   [(WFAirportViewController *)self _updateKnownNetworksDoneButtonForEditability];
 }
@@ -7426,8 +7426,8 @@ void __57__WFAirportViewController__transitionToKnownNetworksList__block_invoke(
 - (void)finishEditing
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(WFAirportViewController *)self networksToBeDeleted];
-  v4 = [v3 count];
+  networksToBeDeleted = [(WFAirportViewController *)self networksToBeDeleted];
+  v4 = [networksToBeDeleted count];
 
   if (v4)
   {
@@ -7438,9 +7438,9 @@ void __57__WFAirportViewController__transitionToKnownNetworksList__block_invoke(
       v7 = v5;
       if (os_log_type_enabled(v7, v6))
       {
-        v8 = [(WFAirportViewController *)self networksToBeDeleted];
+        networksToBeDeleted2 = [(WFAirportViewController *)self networksToBeDeleted];
         v14 = 134217984;
-        v15 = [v8 count];
+        v15 = [networksToBeDeleted2 count];
         _os_log_impl(&dword_273FB9000, v7, v6, "Deleting %lu known networks,", &v14, 0xCu);
       }
     }
@@ -7460,9 +7460,9 @@ void __57__WFAirportViewController__transitionToKnownNetworksList__block_invoke(
     }
   }
 
-  v11 = [(WFAirportViewController *)self parentViewController];
-  v12 = [v11 navigationItem];
-  [v12 setHidesBackButton:0];
+  parentViewController = [(WFAirportViewController *)self parentViewController];
+  navigationItem = [parentViewController navigationItem];
+  [navigationItem setHidesBackButton:0];
 
   v13 = *MEMORY[0x277D85DE8];
 }
@@ -7479,9 +7479,9 @@ void __57__WFAirportViewController__transitionToKnownNetworksList__block_invoke(
 
   [(WFAirportViewController *)self _transitionToScanList];
   [(WFAirportViewController *)self _updateKnownNetworksDoneButtonForEditability];
-  v5 = [(WFAirportViewController *)self parentViewController];
-  v6 = [v5 navigationItem];
-  [v6 setHidesBackButton:0];
+  parentViewController = [(WFAirportViewController *)self parentViewController];
+  navigationItem = [parentViewController navigationItem];
+  [navigationItem setHidesBackButton:0];
 }
 
 - (void)promptConfirmAlert
@@ -7567,36 +7567,36 @@ void __45__WFAirportViewController_promptConfirmAlert__block_invoke_434()
 
 - (void)_transitionToScanList
 {
-  v3 = [(WFAirportViewController *)self originalBackButtonItem];
-  v4 = [(WFAirportViewController *)self parentViewController];
-  v5 = [v4 navigationItem];
-  [v5 setLeftBarButtonItem:v3];
+  originalBackButtonItem = [(WFAirportViewController *)self originalBackButtonItem];
+  parentViewController = [(WFAirportViewController *)self parentViewController];
+  navigationItem = [parentViewController navigationItem];
+  [navigationItem setLeftBarButtonItem:originalBackButtonItem];
 
-  v6 = [(WFAirportViewController *)self tableView];
-  [v6 setAllowsSelectionDuringEditing:0];
+  tableView = [(WFAirportViewController *)self tableView];
+  [tableView setAllowsSelectionDuringEditing:0];
 
   [(WFAirportViewController *)self _loadEditButton];
-  v7 = [(WFAirportViewController *)self listDelegate];
-  LOBYTE(v4) = objc_opt_respondsToSelector();
+  listDelegate = [(WFAirportViewController *)self listDelegate];
+  LOBYTE(parentViewController) = objc_opt_respondsToSelector();
 
-  if (v4)
+  if (parentViewController)
   {
-    v8 = [(WFAirportViewController *)self listDelegate];
-    [v8 airportSettingsViewControllerDidFinishEditingKnownNetworks:self];
+    listDelegate2 = [(WFAirportViewController *)self listDelegate];
+    [listDelegate2 airportSettingsViewControllerDidFinishEditingKnownNetworks:self];
   }
 
-  v9 = [(WFAirportViewController *)self tableView];
+  tableView2 = [(WFAirportViewController *)self tableView];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __48__WFAirportViewController__transitionToScanList__block_invoke;
   v11[3] = &unk_279EC5538;
   v11[4] = self;
-  [v9 performBatchUpdates:v11 completion:0];
+  [tableView2 performBatchUpdates:v11 completion:0];
 
   [(WFAirportViewController *)self setIsInEditingMode:0];
   [(WFAirportViewController *)self _updateNetworkRestrictionHeader];
-  v10 = [(WFAirportViewController *)self tableView];
-  [v10 setEditing:0];
+  tableView3 = [(WFAirportViewController *)self tableView];
+  [tableView3 setEditing:0];
 
   [(WFAirportViewController *)self setNetworksToBeDeleted:0];
 }
@@ -7629,14 +7629,14 @@ void __48__WFAirportViewController__transitionToScanList__block_invoke(uint64_t 
 - (void)_submitDeletion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(WFAirportViewController *)self networksToBeDeleted];
-  v4 = [v3 count];
+  networksToBeDeleted = [(WFAirportViewController *)self networksToBeDeleted];
+  v4 = [networksToBeDeleted count];
 
   if (v4)
   {
     WeakRetained = objc_loadWeakRetained(&self->_listDelegate);
-    v6 = [(WFAirportViewController *)self networksToBeDeleted];
-    v7 = [WeakRetained removeKnownNetworks:v6];
+    networksToBeDeleted2 = [(WFAirportViewController *)self networksToBeDeleted];
+    v7 = [WeakRetained removeKnownNetworks:networksToBeDeleted2];
 
     v8 = WFLogForCategory(0);
     v9 = OSLogForWFLogLevel(1uLL);
@@ -7658,9 +7658,9 @@ void __48__WFAirportViewController__transitionToScanList__block_invoke(uint64_t 
         v12 = v8;
         if (os_log_type_enabled(v12, v9))
         {
-          v13 = [(WFAirportViewController *)self networksToBeDeleted];
+          networksToBeDeleted3 = [(WFAirportViewController *)self networksToBeDeleted];
           v16 = 138412290;
-          v17 = v13;
+          v17 = networksToBeDeleted3;
           v14 = "Error occurred when trying to delete networks:%@";
 LABEL_15:
           _os_log_impl(&dword_273FB9000, v12, v9, v14, &v16, 0xCu);
@@ -7677,9 +7677,9 @@ LABEL_15:
       v12 = v8;
       if (os_log_type_enabled(v12, v9))
       {
-        v13 = [(WFAirportViewController *)self networksToBeDeleted];
+        networksToBeDeleted3 = [(WFAirportViewController *)self networksToBeDeleted];
         v16 = 134217984;
-        v17 = [v13 count];
+        v17 = [networksToBeDeleted3 count];
         v14 = "User deleted %lu networks successfully";
         goto LABEL_15;
       }
@@ -7696,8 +7696,8 @@ LABEL_16:
   v15 = *MEMORY[0x277D85DE8];
   if ([(WFAirportViewController *)self isInEditingMode])
   {
-    v3 = [(WFAirportViewController *)self networksToBeDeleted];
-    v4 = [v3 count] != 0;
+    networksToBeDeleted = [(WFAirportViewController *)self networksToBeDeleted];
+    v4 = [networksToBeDeleted count] != 0;
   }
 
   else
@@ -7716,20 +7716,20 @@ LABEL_16:
     _os_log_impl(&dword_273FB9000, v5, v6, "%s: done button enabled=%d", &v11, 0x12u);
   }
 
-  v7 = [(WFAirportViewController *)self parentViewController];
-  v8 = [v7 navigationItem];
-  v9 = [v8 rightBarButtonItem];
-  [v9 setEnabled:v4];
+  parentViewController = [(WFAirportViewController *)self parentViewController];
+  navigationItem = [parentViewController navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:v4];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_touchIDPromptForKnownNetworksIsChinaDevice:(BOOL)a3
+- (id)_touchIDPromptForKnownNetworksIsChinaDevice:(BOOL)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v5 = v4;
-  if (v3)
+  if (deviceCopy)
   {
     v6 = @"kWFLocTouchIDConfirmationKnownNetworks_CH";
   }
@@ -7744,9 +7744,9 @@ LABEL_16:
   return v7;
 }
 
-- (id)_passcodePromptForViewingKnownNetworksIsChinaDevice:(BOOL)a3
+- (id)_passcodePromptForViewingKnownNetworksIsChinaDevice:(BOOL)device
 {
-  if (a3)
+  if (device)
   {
     v3 = [@"kWFLocPasswordConfirmationKnownNetworks" stringByAppendingString:@"_CH"];
   }
@@ -7762,19 +7762,19 @@ LABEL_16:
   return v5;
 }
 
-- (void)refreshKnownNetworksUpdateTableView:(BOOL)a3
+- (void)refreshKnownNetworksUpdateTableView:(BOOL)view
 {
-  v3 = a3;
+  viewCopy = view;
   v25 = *MEMORY[0x277D85DE8];
-  v5 = [(WFAirportViewController *)self listDelegate];
-  v6 = [v5 managedKnownNetworks];
-  v7 = [(WFAirportViewController *)self _sortedProfilesFromSet:v6];
+  listDelegate = [(WFAirportViewController *)self listDelegate];
+  managedKnownNetworks = [listDelegate managedKnownNetworks];
+  v7 = [(WFAirportViewController *)self _sortedProfilesFromSet:managedKnownNetworks];
   [(WFAirportViewController *)self setManagedKnownNetworks:v7];
 
   v8 = MEMORY[0x277CBEB18];
-  v9 = [(WFAirportViewController *)self listDelegate];
-  v10 = [v9 editableKnownNetworks];
-  v11 = [(WFAirportViewController *)self _sortedProfilesFromSet:v10];
+  listDelegate2 = [(WFAirportViewController *)self listDelegate];
+  editableKnownNetworks = [listDelegate2 editableKnownNetworks];
+  v11 = [(WFAirportViewController *)self _sortedProfilesFromSet:editableKnownNetworks];
   v12 = [v8 arrayWithArray:v11];
   [(WFAirportViewController *)self setEditableKnownNetworks:v12];
 
@@ -7785,21 +7785,21 @@ LABEL_16:
     v15 = v13;
     if (os_log_type_enabled(v15, v14))
     {
-      v16 = [(WFAirportViewController *)self managedKnownNetworks];
-      v17 = [v16 count];
-      v18 = [(WFAirportViewController *)self editableKnownNetworks];
+      managedKnownNetworks2 = [(WFAirportViewController *)self managedKnownNetworks];
+      v17 = [managedKnownNetworks2 count];
+      editableKnownNetworks2 = [(WFAirportViewController *)self editableKnownNetworks];
       v21 = 134218240;
       v22 = v17;
       v23 = 2048;
-      v24 = [v18 count];
+      v24 = [editableKnownNetworks2 count];
       _os_log_impl(&dword_273FB9000, v15, v14, "managed networks=%lu editable networks=%lu", &v21, 0x16u);
     }
   }
 
-  if (v3)
+  if (viewCopy)
   {
-    v19 = [(WFAirportViewController *)self tableView];
-    [v19 reloadData];
+    tableView = [(WFAirportViewController *)self tableView];
+    [tableView reloadData];
   }
 
   v20 = *MEMORY[0x277D85DE8];
@@ -7821,11 +7821,11 @@ LABEL_16:
 
 - (id)_currentNetworkCell
 {
-  v3 = [(WFAirportViewController *)self _currentNetworkCellIndexPath];
-  if (v3)
+  _currentNetworkCellIndexPath = [(WFAirportViewController *)self _currentNetworkCellIndexPath];
+  if (_currentNetworkCellIndexPath)
   {
-    v4 = [(WFAirportViewController *)self tableView];
-    v5 = [v4 cellForRowAtIndexPath:v3];
+    tableView = [(WFAirportViewController *)self tableView];
+    v5 = [tableView cellForRowAtIndexPath:_currentNetworkCellIndexPath];
   }
 
   else
@@ -7989,7 +7989,7 @@ void __68__WFAirportViewController_setCurrentNetwork_previousNetwork_reason___bl
     v6 = v4;
     if (os_log_type_enabled(v6, v5))
     {
-      v7 = [a1 _nameOfSection:0];
+      v7 = [self _nameOfSection:0];
       v9 = 136315394;
       v10 = "[WFAirportViewController _currentNetworkCellIndexPath]";
       v11 = 2114;

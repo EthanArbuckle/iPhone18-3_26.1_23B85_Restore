@@ -1,55 +1,55 @@
 @interface CSDCoreTelephonyClient
-+ (BOOL)_isNSErrorFatal:(id)a3;
++ (BOOL)_isNSErrorFatal:(id)fatal;
 - (BOOL)isEmergencyCallbackModeEnabled;
-- (BOOL)isInHomeCountryForSubscriptionUUID:(id)a3;
+- (BOOL)isInHomeCountryForSubscriptionUUID:(id)d;
 - (CSDCarrierBundleProviderController)carrierBundleProviderController;
-- (CSDCoreTelephonyClient)initWithQueue:(id)a3 shouldRegisterForECBMNotification:(BOOL)a4;
+- (CSDCoreTelephonyClient)initWithQueue:(id)queue shouldRegisterForECBMNotification:(BOOL)notification;
 - (CSDCoreTelephonyClientDelegate)delegate;
 - (CTXPCContexts)activeContexts;
 - (NSDictionary)thumperDeviceInfo;
 - (NSSet)subscriptions;
 - (NSSet)telephonySubscriptions;
 - (NSUUID)preferredVoiceSubscriptionUUID;
-- (id)ISOCountryCodeForMobileCountryCode:(id)a3 mobileNetworkCode:(id)a4;
-- (id)ISOCountryCodeForSubscriptionUUID:(id)a3;
-- (id)_subscriptionWithUUID:(id)a3;
-- (id)accountISOCountryCodeForSubscriptionUUID:(id)a3;
-- (id)callCapabilitiesForSubscription:(id)a3;
-- (id)capabilityInfoForSubscription:(id)a3 capability:(id)a4;
+- (id)ISOCountryCodeForMobileCountryCode:(id)code mobileNetworkCode:(id)networkCode;
+- (id)ISOCountryCodeForSubscriptionUUID:(id)d;
+- (id)_subscriptionWithUUID:(id)d;
+- (id)accountISOCountryCodeForSubscriptionUUID:(id)d;
+- (id)callCapabilitiesForSubscription:(id)subscription;
+- (id)capabilityInfoForSubscription:(id)subscription capability:(id)capability;
 - (id)legacySystemCapabilities;
-- (id)mobileCountryCodeForSubscription:(id)a3 error:(id *)a4;
-- (id)mobileNetworkCodeForSubscription:(id)a3 error:(id *)a4;
-- (id)spamIdentifiersForSubscriptionUUID:(id)a3;
-- (id)systemCapabilitiesForSubscription:(id)a3;
+- (id)mobileCountryCodeForSubscription:(id)subscription error:(id *)error;
+- (id)mobileNetworkCodeForSubscription:(id)subscription error:(id *)error;
+- (id)spamIdentifiersForSubscriptionUUID:(id)d;
+- (id)systemCapabilitiesForSubscription:(id)subscription;
 - (void)activeSubscriptionsDidChange;
-- (void)addSecondaryThumperDeviceWithIDSDeviceIdentifier:(id)a3 toSubscription:(id)a4;
-- (void)callCapabilitiesChanged:(id)a3 capabilities:(id)a4;
-- (void)context:(id)a3 capabilitiesChanged:(id)a4;
-- (void)ctEmergencyCallbackModeStatusChangedWithUserInfo:(id)a3;
+- (void)addSecondaryThumperDeviceWithIDSDeviceIdentifier:(id)identifier toSubscription:(id)subscription;
+- (void)callCapabilitiesChanged:(id)changed capabilities:(id)capabilities;
+- (void)context:(id)context capabilitiesChanged:(id)changed;
+- (void)ctEmergencyCallbackModeStatusChangedWithUserInfo:(id)info;
 - (void)endEmergencyCallbackMode;
-- (void)legacyAddSecondaryThumperDeviceWithIDSDeviceIdentifier:(id)a3;
-- (void)legacyRecheckAccountStatusForCapability:(id)a3;
-- (void)legacyRemoveSecondaryThumperDeviceWithIDSDeviceIdentifier:(id)a3;
-- (void)phoneServicesCapabilitiesChanged:(id)a3;
-- (void)recheckAccountStatusForSubscription:(id)a3 capability:(id)a4;
-- (void)removeSecondaryThumperDeviceWithIDSDeviceIdentifier:(id)a3 fromSubscription:(id)a4;
-- (void)setLegacyCapability:(id)a3 enabled:(BOOL)a4 capabilityInformation:(id)a5;
+- (void)legacyAddSecondaryThumperDeviceWithIDSDeviceIdentifier:(id)identifier;
+- (void)legacyRecheckAccountStatusForCapability:(id)capability;
+- (void)legacyRemoveSecondaryThumperDeviceWithIDSDeviceIdentifier:(id)identifier;
+- (void)phoneServicesCapabilitiesChanged:(id)changed;
+- (void)recheckAccountStatusForSubscription:(id)subscription capability:(id)capability;
+- (void)removeSecondaryThumperDeviceWithIDSDeviceIdentifier:(id)identifier fromSubscription:(id)subscription;
+- (void)setLegacyCapability:(id)capability enabled:(BOOL)enabled capabilityInformation:(id)information;
 @end
 
 @implementation CSDCoreTelephonyClient
 
-- (CSDCoreTelephonyClient)initWithQueue:(id)a3 shouldRegisterForECBMNotification:(BOOL)a4
+- (CSDCoreTelephonyClient)initWithQueue:(id)queue shouldRegisterForECBMNotification:(BOOL)notification
 {
-  v4 = a4;
-  v7 = a3;
+  notificationCopy = notification;
+  queueCopy = queue;
   v20.receiver = self;
   v20.super_class = CSDCoreTelephonyClient;
   v8 = [(CSDCoreTelephonyClient *)&v20 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_queue, a3);
-    v10 = [[CoreTelephonyClient alloc] initWithQueue:v7];
+    objc_storeStrong(&v8->_queue, queue);
+    v10 = [[CoreTelephonyClient alloc] initWithQueue:queueCopy];
     client = v9->_client;
     v9->_client = v10;
 
@@ -62,7 +62,7 @@
     [(NSMutableDictionary *)v9->_mobileCodesToISOCountryCode setObject:v14 forKeyedSubscript:@"340"];
 
     objc_initWeak(&location, v9);
-    if (v4)
+    if (notificationCopy)
     {
       TUCTServerConnection();
       objc_copyWeak(&v18, &location);
@@ -86,15 +86,15 @@
 
 - (CTXPCContexts)activeContexts
 {
-  v3 = [(CSDCoreTelephonyClient *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDCoreTelephonyClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   activeContexts = self->_activeContexts;
   if (!activeContexts)
   {
-    v5 = [(CSDCoreTelephonyClient *)self client];
+    client = [(CSDCoreTelephonyClient *)self client];
     v11 = 0;
-    v6 = [v5 getActiveContexts:&v11];
+    v6 = [client getActiveContexts:&v11];
     v7 = v11;
     v8 = self->_activeContexts;
     self->_activeContexts = v6;
@@ -131,26 +131,26 @@
 
 - (NSUUID)preferredVoiceSubscriptionUUID
 {
-  v3 = [(CSDCoreTelephonyClient *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDCoreTelephonyClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(CSDCoreTelephonyClient *)self activeContexts];
-  v5 = [v4 voicePreferred];
+  activeContexts = [(CSDCoreTelephonyClient *)self activeContexts];
+  voicePreferred = [activeContexts voicePreferred];
 
-  return v5;
+  return voicePreferred;
 }
 
 - (NSSet)subscriptions
 {
-  v3 = [(CSDCoreTelephonyClient *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDCoreTelephonyClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(CSDCoreTelephonyClient *)self activeContexts];
-  v5 = [v4 subscriptions];
+  activeContexts = [(CSDCoreTelephonyClient *)self activeContexts];
+  subscriptions = [activeContexts subscriptions];
 
-  if (v5)
+  if (subscriptions)
   {
-    v6 = [NSSet setWithArray:v5];
+    v6 = [NSSet setWithArray:subscriptions];
   }
 
   else
@@ -163,16 +163,16 @@
 
 - (NSSet)telephonySubscriptions
 {
-  v3 = [(CSDCoreTelephonyClient *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDCoreTelephonyClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = +[NSMutableSet set];
-  v5 = [(CSDCoreTelephonyClient *)self subscriptions];
+  subscriptions = [(CSDCoreTelephonyClient *)self subscriptions];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v6 = [subscriptions countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -183,7 +183,7 @@
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(subscriptions);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
@@ -193,7 +193,7 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [subscriptions countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -222,12 +222,12 @@
 
 - (NSDictionary)thumperDeviceInfo
 {
-  v3 = [(CSDCoreTelephonyClient *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDCoreTelephonyClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(CSDCoreTelephonyClient *)self client];
+  client = [(CSDCoreTelephonyClient *)self client];
   v9 = 0;
-  v5 = [v4 getPhoneServicesDeviceInfo:&v9];
+  v5 = [client getPhoneServicesDeviceInfo:&v9];
   v6 = v9;
 
   if (!v5 && [objc_opt_class() _isNSErrorFatal:v6])
@@ -242,20 +242,20 @@
   return v5;
 }
 
-- (id)callCapabilitiesForSubscription:(id)a3
+- (id)callCapabilitiesForSubscription:(id)subscription
 {
-  v4 = a3;
-  if (([v4 csd_isUnknown] & 1) != 0 || (-[CSDCoreTelephonyClient client](self, "client"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_opt_respondsToSelector(), v5, (v6 & 1) == 0))
+  subscriptionCopy = subscription;
+  if (([subscriptionCopy csd_isUnknown] & 1) != 0 || (-[CSDCoreTelephonyClient client](self, "client"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_opt_respondsToSelector(), v5, (v6 & 1) == 0))
   {
     v11 = 0;
   }
 
   else
   {
-    v7 = [(CSDCoreTelephonyClient *)self client];
-    v8 = [v4 context];
+    client = [(CSDCoreTelephonyClient *)self client];
+    context = [subscriptionCopy context];
     v14 = 0;
-    v9 = [v7 getCallCapabilities:v8 error:&v14];
+    v9 = [client getCallCapabilities:context error:&v14];
     v10 = v14;
 
     if (v9)
@@ -281,14 +281,14 @@
   return v11;
 }
 
-- (id)capabilityInfoForSubscription:(id)a3 capability:(id)a4
+- (id)capabilityInfoForSubscription:(id)subscription capability:(id)capability
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CSDCoreTelephonyClient *)self queue];
-  dispatch_assert_queue_V2(v8);
+  subscriptionCopy = subscription;
+  capabilityCopy = capability;
+  queue = [(CSDCoreTelephonyClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if ([v6 csd_isUnknown])
+  if ([subscriptionCopy csd_isUnknown])
   {
     v9 = 0;
   }
@@ -296,10 +296,10 @@
   else
   {
     v16 = 0;
-    v10 = [(CSDCoreTelephonyClient *)self client];
-    v11 = [v6 context];
+    client = [(CSDCoreTelephonyClient *)self client];
+    context = [subscriptionCopy context];
     v15 = 0;
-    v12 = [v10 context:v11 getCapability:v7 status:&v16 with:&v15];
+    v12 = [client context:context getCapability:capabilityCopy status:&v16 with:&v15];
     v9 = v15;
 
     if (!v9 && [objc_opt_class() _isNSErrorFatal:v12])
@@ -315,23 +315,23 @@
   return v9;
 }
 
-- (id)systemCapabilitiesForSubscription:(id)a3
+- (id)systemCapabilitiesForSubscription:(id)subscription
 {
-  v4 = a3;
-  v5 = [(CSDCoreTelephonyClient *)self queue];
-  dispatch_assert_queue_V2(v5);
+  subscriptionCopy = subscription;
+  queue = [(CSDCoreTelephonyClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if ([v4 csd_isUnknown])
+  if ([subscriptionCopy csd_isUnknown])
   {
     v6 = 0;
   }
 
   else
   {
-    v7 = [(CSDCoreTelephonyClient *)self client];
-    v8 = [v4 context];
+    client = [(CSDCoreTelephonyClient *)self client];
+    context = [subscriptionCopy context];
     v12 = 0;
-    v6 = [v7 context:v8 getSystemCapabilities:&v12];
+    v6 = [client context:context getSystemCapabilities:&v12];
     v9 = v12;
 
     if (!v6 && [objc_opt_class() _isNSErrorFatal:v9])
@@ -347,89 +347,89 @@
   return v6;
 }
 
-- (void)addSecondaryThumperDeviceWithIDSDeviceIdentifier:(id)a3 toSubscription:(id)a4
+- (void)addSecondaryThumperDeviceWithIDSDeviceIdentifier:(id)identifier toSubscription:(id)subscription
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CSDCoreTelephonyClient *)self queue];
-  dispatch_assert_queue_V2(v8);
+  identifierCopy = identifier;
+  subscriptionCopy = subscription;
+  queue = [(CSDCoreTelephonyClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (([v7 csd_isUnknown] & 1) == 0)
+  if (([subscriptionCopy csd_isUnknown] & 1) == 0)
   {
     v9 = sub_100004778();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v15 = v6;
+      v15 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Calling [CoreTelephonyClient context:addPhoneServicesDevice:withCompletion:] with idsDeviceIdentifier: %@", buf, 0xCu);
     }
 
-    v10 = [(CSDCoreTelephonyClient *)self client];
-    v11 = [v7 context];
+    client = [(CSDCoreTelephonyClient *)self client];
+    context = [subscriptionCopy context];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_10023041C;
     v12[3] = &unk_10061A4C0;
-    v13 = v6;
-    [v10 context:v11 addPhoneServicesDevice:v13 withCompletion:v12];
+    v13 = identifierCopy;
+    [client context:context addPhoneServicesDevice:v13 withCompletion:v12];
   }
 }
 
-- (void)removeSecondaryThumperDeviceWithIDSDeviceIdentifier:(id)a3 fromSubscription:(id)a4
+- (void)removeSecondaryThumperDeviceWithIDSDeviceIdentifier:(id)identifier fromSubscription:(id)subscription
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CSDCoreTelephonyClient *)self queue];
-  dispatch_assert_queue_V2(v8);
+  identifierCopy = identifier;
+  subscriptionCopy = subscription;
+  queue = [(CSDCoreTelephonyClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (([v7 csd_isUnknown] & 1) == 0)
+  if (([subscriptionCopy csd_isUnknown] & 1) == 0)
   {
     v9 = sub_100004778();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v15 = v6;
+      v15 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Calling [CoreTelephonyClient context:removePhoneServicesDevice:withCompletion:] with idsDeviceIdentifier: %@", buf, 0xCu);
     }
 
-    v10 = [(CSDCoreTelephonyClient *)self client];
-    v11 = [v7 context];
+    client = [(CSDCoreTelephonyClient *)self client];
+    context = [subscriptionCopy context];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_100230600;
     v12[3] = &unk_10061A4C0;
-    v13 = v6;
-    [v10 context:v11 removePhoneServicesDevice:v13 withCompletion:v12];
+    v13 = identifierCopy;
+    [client context:context removePhoneServicesDevice:v13 withCompletion:v12];
   }
 }
 
-- (void)recheckAccountStatusForSubscription:(id)a3 capability:(id)a4
+- (void)recheckAccountStatusForSubscription:(id)subscription capability:(id)capability
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CSDCoreTelephonyClient *)self queue];
-  dispatch_assert_queue_V2(v8);
+  subscriptionCopy = subscription;
+  capabilityCopy = capability;
+  queue = [(CSDCoreTelephonyClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (([v6 csd_isUnknown] & 1) == 0)
+  if (([subscriptionCopy csd_isUnknown] & 1) == 0)
   {
     v9 = sub_100004778();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412290;
-      v14 = v7;
+      v14 = capabilityCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Calling [CoreTelephonyClient context:recheckPhoneServicesAccountStatus:] with capability: %@", &v13, 0xCu);
     }
 
-    v10 = [(CSDCoreTelephonyClient *)self client];
-    v11 = [v6 context];
-    v12 = [v10 context:v11 recheckPhoneServicesAccountStatus:v7];
+    client = [(CSDCoreTelephonyClient *)self client];
+    context = [subscriptionCopy context];
+    v12 = [client context:context recheckPhoneServicesAccountStatus:capabilityCopy];
   }
 }
 
 - (void)endEmergencyCallbackMode
 {
-  v2 = [(CSDCoreTelephonyClient *)self queue];
-  dispatch_assert_queue_V2(v2);
+  queue = [(CSDCoreTelephonyClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v3 = sub_100004778();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -451,20 +451,20 @@
   }
 }
 
-- (void)setLegacyCapability:(id)a3 enabled:(BOOL)a4 capabilityInformation:(id)a5
+- (void)setLegacyCapability:(id)capability enabled:(BOOL)enabled capabilityInformation:(id)information
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = a5;
+  enabledCopy = enabled;
+  capabilityCopy = capability;
+  informationCopy = information;
   v9 = sub_100004778();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412802;
-    v13 = v7;
+    v13 = capabilityCopy;
     v14 = 1024;
-    v15 = v6;
+    v15 = enabledCopy;
     v16 = 2112;
-    v17 = v8;
+    v17 = informationCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Calling _CTServerConnectionSetCapabilityExtended() with capability: %@ value: %d capabilityInformation: %@", &v12, 0x1Cu);
   }
 
@@ -476,7 +476,7 @@
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v12 = 138412802;
-      v13 = v7;
+      v13 = capabilityCopy;
       v14 = 1024;
       v15 = v10;
       v16 = 1024;
@@ -502,9 +502,9 @@
   return 0;
 }
 
-- (void)legacyAddSecondaryThumperDeviceWithIDSDeviceIdentifier:(id)a3
+- (void)legacyAddSecondaryThumperDeviceWithIDSDeviceIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = kCTCapabilityPhoneServices;
   v5 = sub_100004778();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -512,7 +512,7 @@
     v8 = 138412546;
     v9 = v4;
     v10 = 2112;
-    *v11 = v3;
+    *v11 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Calling _CTServerConnectionPhoneServicesAddDevice() with capability: %@ idsDeviceIdentifier: %@", &v8, 0x16u);
   }
 
@@ -534,9 +534,9 @@
   }
 }
 
-- (void)legacyRemoveSecondaryThumperDeviceWithIDSDeviceIdentifier:(id)a3
+- (void)legacyRemoveSecondaryThumperDeviceWithIDSDeviceIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = kCTCapabilityPhoneServices;
   v5 = sub_100004778();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -544,7 +544,7 @@
     v8 = 138412546;
     v9 = v4;
     v10 = 2112;
-    *v11 = v3;
+    *v11 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Calling _CTServerConnectionPhoneServicesRemoveDevice() with capability: %@ idsDeviceIdentifier: %@", &v8, 0x16u);
   }
 
@@ -566,19 +566,19 @@
   }
 }
 
-- (void)legacyRecheckAccountStatusForCapability:(id)a3
+- (void)legacyRecheckAccountStatusForCapability:(id)capability
 {
-  v3 = a3;
+  capabilityCopy = capability;
   v4 = sub_100004778();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v8 = v3;
+    v8 = capabilityCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Calling _CTServerConnectionPhoneServicesAccountStatusChanged() and _CTServerConnectionSendBarrier() with capability: %@", buf, 0xCu);
   }
 
   TUCTServerConnection();
-  v5 = v3;
+  v5 = capabilityCopy;
   v6 = &__kCFBooleanTrue;
   [NSDictionary dictionaryWithObjects:&v6 forKeys:&v5 count:1];
   _CTServerConnectionPhoneServicesAccountStatusChanged();
@@ -586,26 +586,26 @@
   _CTServerConnectionSendBarrier();
 }
 
-- (id)accountISOCountryCodeForSubscriptionUUID:(id)a3
+- (id)accountISOCountryCodeForSubscriptionUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(CSDCoreTelephonyClient *)self queue];
-  dispatch_assert_queue_V2(v5);
+  dCopy = d;
+  queue = [(CSDCoreTelephonyClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(CSDCoreTelephonyClient *)self _subscriptionWithUUID:v4];
+  v6 = [(CSDCoreTelephonyClient *)self _subscriptionWithUUID:dCopy];
   if (v6)
   {
-    v7 = [(CSDCoreTelephonyClient *)self client];
-    v8 = [v6 context];
+    client = [(CSDCoreTelephonyClient *)self client];
+    context = [v6 context];
     v17 = 0;
-    v9 = [v7 copyMobileSubscriberCountryCode:v8 error:&v17];
+    v9 = [client copyMobileSubscriberCountryCode:context error:&v17];
     v10 = v17;
 
     if (v9)
     {
-      v11 = [(CSDCoreTelephonyClient *)self client];
+      client2 = [(CSDCoreTelephonyClient *)self client];
       v16 = v10;
-      v12 = [v11 copyMobileSubscriberIsoCountryCode:v9 error:&v16];
+      v12 = [client2 copyMobileSubscriberIsoCountryCode:v9 error:&v16];
       v13 = v16;
 
       if ([v12 length] || !objc_msgSend(objc_opt_class(), "_isNSErrorFatal:", v13))
@@ -657,20 +657,20 @@ LABEL_17:
   return v12;
 }
 
-- (BOOL)isInHomeCountryForSubscriptionUUID:(id)a3
+- (BOOL)isInHomeCountryForSubscriptionUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(CSDCoreTelephonyClient *)self queue];
-  dispatch_assert_queue_V2(v5);
+  dCopy = d;
+  queue = [(CSDCoreTelephonyClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(CSDCoreTelephonyClient *)self _subscriptionWithUUID:v4];
+  v6 = [(CSDCoreTelephonyClient *)self _subscriptionWithUUID:dCopy];
 
   if (v6)
   {
     v7 = +[CTXPCServiceSubscriptionContext contextWithSlot:](CTXPCServiceSubscriptionContext, "contextWithSlot:", [v6 slotID]);
-    v8 = [(CSDCoreTelephonyClient *)self client];
+    client = [(CSDCoreTelephonyClient *)self client];
     v15 = 0;
-    v9 = [v8 getRoamingStatus:v7 error:&v15];
+    v9 = [client getRoamingStatus:v7 error:&v15];
     v10 = v15;
 
     if (v10)
@@ -708,25 +708,25 @@ LABEL_17:
   return v11;
 }
 
-- (id)spamIdentifiersForSubscriptionUUID:(id)a3
+- (id)spamIdentifiersForSubscriptionUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(CSDCoreTelephonyClient *)self queue];
-  dispatch_assert_queue_V2(v5);
+  dCopy = d;
+  queue = [(CSDCoreTelephonyClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(CSDCoreTelephonyClient *)self carrierBundleProviderController];
-  v7 = [v6 spamIdentifiersForSubscriptionUUID:v4];
+  carrierBundleProviderController = [(CSDCoreTelephonyClient *)self carrierBundleProviderController];
+  v7 = [carrierBundleProviderController spamIdentifiersForSubscriptionUUID:dCopy];
 
   return v7;
 }
 
-- (id)ISOCountryCodeForSubscriptionUUID:(id)a3
+- (id)ISOCountryCodeForSubscriptionUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(CSDCoreTelephonyClient *)self queue];
-  dispatch_assert_queue_V2(v5);
+  dCopy = d;
+  queue = [(CSDCoreTelephonyClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(CSDCoreTelephonyClient *)self _subscriptionWithUUID:v4];
+  v6 = [(CSDCoreTelephonyClient *)self _subscriptionWithUUID:dCopy];
   if (v6)
   {
     v17 = 0;
@@ -807,16 +807,16 @@ LABEL_21:
   return v13;
 }
 
-- (id)ISOCountryCodeForMobileCountryCode:(id)a3 mobileNetworkCode:(id)a4
+- (id)ISOCountryCodeForMobileCountryCode:(id)code mobileNetworkCode:(id)networkCode
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CSDCoreTelephonyClient *)self queue];
-  dispatch_assert_queue_V2(v8);
+  codeCopy = code;
+  networkCodeCopy = networkCode;
+  queue = [(CSDCoreTelephonyClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v9 = [(CSDCoreTelephonyClient *)self mobileCodesToISOCountryCode];
-  v10 = [v9 objectForKeyedSubscript:v6];
-  v11 = [v10 objectForKeyedSubscript:v7];
+  mobileCodesToISOCountryCode = [(CSDCoreTelephonyClient *)self mobileCodesToISOCountryCode];
+  v10 = [mobileCodesToISOCountryCode objectForKeyedSubscript:codeCopy];
+  v11 = [v10 objectForKeyedSubscript:networkCodeCopy];
 
   if ([v11 length])
   {
@@ -845,69 +845,69 @@ LABEL_21:
     *buf = 138412802;
     *&buf[4] = v12;
     v18 = 2112;
-    v19 = v6;
+    v19 = codeCopy;
     v20 = 2112;
-    v21 = v7;
+    v21 = networkCodeCopy;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Retrieved ISO country code %@ for mobile country code %@ and mobile network code %@", buf, 0x20u);
   }
 
   return v12;
 }
 
-- (id)mobileCountryCodeForSubscription:(id)a3 error:(id *)a4
+- (id)mobileCountryCodeForSubscription:(id)subscription error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CSDCoreTelephonyClient *)self queue];
-  dispatch_assert_queue_V2(v7);
+  subscriptionCopy = subscription;
+  queue = [(CSDCoreTelephonyClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if ([v6 csd_isUnknown])
+  if ([subscriptionCopy csd_isUnknown])
   {
     v8 = 0;
   }
 
   else
   {
-    v9 = [(CSDCoreTelephonyClient *)self client];
-    v10 = [v6 context];
-    v8 = [v9 copyMobileCountryCode:v10 error:a4];
+    client = [(CSDCoreTelephonyClient *)self client];
+    context = [subscriptionCopy context];
+    v8 = [client copyMobileCountryCode:context error:error];
   }
 
   return v8;
 }
 
-- (id)mobileNetworkCodeForSubscription:(id)a3 error:(id *)a4
+- (id)mobileNetworkCodeForSubscription:(id)subscription error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CSDCoreTelephonyClient *)self queue];
-  dispatch_assert_queue_V2(v7);
+  subscriptionCopy = subscription;
+  queue = [(CSDCoreTelephonyClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if ([v6 csd_isUnknown])
+  if ([subscriptionCopy csd_isUnknown])
   {
     v8 = 0;
   }
 
   else
   {
-    v9 = [(CSDCoreTelephonyClient *)self client];
-    v10 = [v6 context];
-    v8 = [v9 copyMobileNetworkCode:v10 error:a4];
+    client = [(CSDCoreTelephonyClient *)self client];
+    context = [subscriptionCopy context];
+    v8 = [client copyMobileNetworkCode:context error:error];
   }
 
   return v8;
 }
 
-+ (BOOL)_isNSErrorFatal:(id)a3
++ (BOOL)_isNSErrorFatal:(id)fatal
 {
-  v3 = a3;
-  v4 = v3 != 0;
-  v5 = [v3 domain];
-  if ([v5 isEqualToString:NSPOSIXErrorDomain])
+  fatalCopy = fatal;
+  v4 = fatalCopy != 0;
+  domain = [fatalCopy domain];
+  if ([domain isEqualToString:NSPOSIXErrorDomain])
   {
-    v6 = [v3 code];
+    code = [fatalCopy code];
 
-    if (v3)
+    if (fatalCopy)
     {
-      v7 = v6 == 35;
+      v7 = code == 35;
     }
 
     else
@@ -925,18 +925,18 @@ LABEL_21:
   return v4;
 }
 
-- (id)_subscriptionWithUUID:(id)a3
+- (id)_subscriptionWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(CSDCoreTelephonyClient *)self queue];
-  dispatch_assert_queue_V2(v5);
+  dCopy = d;
+  queue = [(CSDCoreTelephonyClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [(CSDCoreTelephonyClient *)self subscriptions];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  subscriptions = [(CSDCoreTelephonyClient *)self subscriptions];
+  v7 = [subscriptions countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = *v15;
@@ -946,12 +946,12 @@ LABEL_21:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(subscriptions);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 uuid];
-        v12 = [v11 isEqual:v4];
+        uuid = [v10 uuid];
+        v12 = [uuid isEqual:dCopy];
 
         if (v12)
         {
@@ -960,7 +960,7 @@ LABEL_21:
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [subscriptions countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v7)
       {
         continue;
@@ -977,24 +977,24 @@ LABEL_11:
 
 - (void)activeSubscriptionsDidChange
 {
-  v3 = [(CSDCoreTelephonyClient *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDCoreTelephonyClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   [(CSDCoreTelephonyClient *)self setActiveContexts:0];
-  v4 = [(CSDCoreTelephonyClient *)self delegate];
-  [v4 subscriptionsDidChangeForClient:self];
+  delegate = [(CSDCoreTelephonyClient *)self delegate];
+  [delegate subscriptionsDidChangeForClient:self];
 }
 
-- (void)callCapabilitiesChanged:(id)a3 capabilities:(id)a4
+- (void)callCapabilitiesChanged:(id)changed capabilities:(id)capabilities
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CSDCoreTelephonyClient *)self queue];
-  dispatch_assert_queue_V2(v8);
+  capabilitiesCopy = capabilities;
+  changedCopy = changed;
+  queue = [(CSDCoreTelephonyClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v9 = [v7 uuid];
+  uuid = [changedCopy uuid];
 
-  v10 = [(CSDCoreTelephonyClient *)self _subscriptionWithUUID:v9];
+  v10 = [(CSDCoreTelephonyClient *)self _subscriptionWithUUID:uuid];
 
   if (v10)
   {
@@ -1004,26 +1004,26 @@ LABEL_11:
       v14 = 138412546;
       v15 = v10;
       v16 = 2112;
-      v17 = v6;
+      v17 = capabilitiesCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Received delegate callback callCapabilitiesChanged: with context: %@ info: %@", &v14, 0x16u);
     }
 
-    v12 = [CSDCTCallCapabilities callCapabilitiesForCTCallCapabilities:v6];
-    v13 = [(CSDCoreTelephonyClient *)self delegate];
-    [v13 client:self subscription:v10 callCapabilitiesDidChange:v12];
+    v12 = [CSDCTCallCapabilities callCapabilitiesForCTCallCapabilities:capabilitiesCopy];
+    delegate = [(CSDCoreTelephonyClient *)self delegate];
+    [delegate client:self subscription:v10 callCapabilitiesDidChange:v12];
   }
 }
 
-- (void)context:(id)a3 capabilitiesChanged:(id)a4
+- (void)context:(id)context capabilitiesChanged:(id)changed
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CSDCoreTelephonyClient *)self queue];
-  dispatch_assert_queue_V2(v8);
+  changedCopy = changed;
+  contextCopy = context;
+  queue = [(CSDCoreTelephonyClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v9 = [v7 uuid];
+  uuid = [contextCopy uuid];
 
-  v10 = [(CSDCoreTelephonyClient *)self _subscriptionWithUUID:v9];
+  v10 = [(CSDCoreTelephonyClient *)self _subscriptionWithUUID:uuid];
 
   if (v10)
   {
@@ -1033,58 +1033,58 @@ LABEL_11:
       v13 = 138412546;
       v14 = v10;
       v15 = 2112;
-      v16 = v6;
+      v16 = changedCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Received context:capabilitiesChanged: with context: %@ info: %@", &v13, 0x16u);
     }
 
-    v12 = [(CSDCoreTelephonyClient *)self delegate];
-    [v12 client:self subscription:v10 capabilitiesDidChange:v6];
+    delegate = [(CSDCoreTelephonyClient *)self delegate];
+    [delegate client:self subscription:v10 capabilitiesDidChange:changedCopy];
   }
 }
 
-- (void)phoneServicesCapabilitiesChanged:(id)a3
+- (void)phoneServicesCapabilitiesChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v5 = sub_100004778();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
     v12 = objc_opt_class();
     v13 = 2112;
-    v14 = v4;
+    v14 = changedCopy;
     v6 = v12;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ is handling phoneServicesCapabilitiesChanged: with userInfo %@", buf, 0x16u);
   }
 
-  v7 = [(CSDCoreTelephonyClient *)self queue];
+  queue = [(CSDCoreTelephonyClient *)self queue];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100231F4C;
   v9[3] = &unk_100619D88;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
-  dispatch_async(v7, v9);
+  v10 = changedCopy;
+  v8 = changedCopy;
+  dispatch_async(queue, v9);
 }
 
-- (void)ctEmergencyCallbackModeStatusChangedWithUserInfo:(id)a3
+- (void)ctEmergencyCallbackModeStatusChangedWithUserInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = sub_100004778();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v9 = v4;
+    v9 = infoCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Received kCTEmergencyCallBackModeStatusNotification with userInfo %@", buf, 0xCu);
   }
 
-  v6 = [(CSDCoreTelephonyClient *)self queue];
+  queue = [(CSDCoreTelephonyClient *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1002320BC;
   block[3] = &unk_100619D38;
   block[4] = self;
-  dispatch_async(v6, block);
+  dispatch_async(queue, block);
 }
 
 - (CSDCoreTelephonyClientDelegate)delegate

@@ -1,24 +1,24 @@
 @interface SUSoftwareUpdateAssetMatcher
-+ (id)matcherForCurrentDeviceWithInfo:(id)a3;
-- (BOOL)_isDeviceEligibleForUpdate:(id)a3;
-- (BOOL)_isPossibleSoftwareUpdate:(id)a3;
-- (id)_copyMatchingAssetsAfterSortingAndFiltering:(id)a3;
-- (id)_createCleanOSVersionString:(id)a3;
-- (id)_createSortedAndFilteredAssetResults:(id)a3 usingFirstKey:(id)a4 secondKey:(id)a5;
-- (id)_filterPatchesIfNecessary:(id)a3;
-- (id)_findMatchFromCandidates:(id)a3 error:(id *)a4;
-- (unint64_t)_getIndexOfHighestVersionedAsset:(id)a3 usingFirstKey:(id)a4 secondKey:(id)a5;
-- (void)_modifyMADownloadOptions:(id)a3;
++ (id)matcherForCurrentDeviceWithInfo:(id)info;
+- (BOOL)_isDeviceEligibleForUpdate:(id)update;
+- (BOOL)_isPossibleSoftwareUpdate:(id)update;
+- (id)_copyMatchingAssetsAfterSortingAndFiltering:(id)filtering;
+- (id)_createCleanOSVersionString:(id)string;
+- (id)_createSortedAndFilteredAssetResults:(id)results usingFirstKey:(id)key secondKey:(id)secondKey;
+- (id)_filterPatchesIfNecessary:(id)necessary;
+- (id)_findMatchFromCandidates:(id)candidates error:(id *)error;
+- (unint64_t)_getIndexOfHighestVersionedAsset:(id)asset usingFirstKey:(id)key secondKey:(id)secondKey;
+- (void)_modifyMADownloadOptions:(id)options;
 - (void)dealloc;
 @end
 
 @implementation SUSoftwareUpdateAssetMatcher
 
-+ (id)matcherForCurrentDeviceWithInfo:(id)a3
++ (id)matcherForCurrentDeviceWithInfo:(id)info
 {
-  v3 = [[SUSoftwareUpdateAssetMatcher alloc] initWithVersion:+[SUUtility currentProductVersion](SUUtility build:"currentProductVersion") productType:+[SUUtility currentProductBuild](SUUtility releaseType:"currentProductBuild") interestedStates:+[SUUtility currentProductType](SUUtility matcherInfo:"currentProductType"), +[SUUtility currentReleaseType], 0, a3];
+  info = [[SUSoftwareUpdateAssetMatcher alloc] initWithVersion:+[SUUtility currentProductVersion](SUUtility build:"currentProductVersion") productType:+[SUUtility currentProductBuild](SUUtility releaseType:"currentProductBuild") interestedStates:+[SUUtility currentProductType](SUUtility matcherInfo:"currentProductType"), +[SUUtility currentReleaseType], 0, info];
 
-  return v3;
+  return info;
 }
 
 - (void)dealloc
@@ -28,18 +28,18 @@
   [(SUSoftwareUpdateAssetMatcher *)&v3 dealloc];
 }
 
-- (id)_findMatchFromCandidates:(id)a3 error:(id *)a4
+- (id)_findMatchFromCandidates:(id)candidates error:(id *)error
 {
   v43 = *MEMORY[0x277D85DE8];
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v7 = [a3 count];
+  v7 = [candidates count];
   if (v7)
   {
     v8 = v7;
     for (i = 0; i != v8; ++i)
     {
       v10 = objc_autoreleasePoolPush();
-      v11 = [a3 objectAtIndex:i];
+      v11 = [candidates objectAtIndex:i];
       if ([(SUSoftwareUpdateAssetMatcher *)self _isPossibleSoftwareUpdate:v11])
       {
         if (self->_checkTatsu && ![(SUSoftwareUpdateAssetMatcher *)self _isDeviceEligibleForUpdate:v11])
@@ -76,7 +76,7 @@
 
   if (v20 != 1)
   {
-    v23 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
@@ -96,7 +96,7 @@
             objc_enumerationMutation(v19);
           }
 
-          [v23 addObject:{objc_msgSend(*(*(&v38 + 1) + 8 * v34++), "attributes")}];
+          [array addObject:{objc_msgSend(*(*(&v38 + 1) + 8 * v34++), "attributes")}];
         }
 
         while (v32 != v34);
@@ -106,9 +106,9 @@
       while (v32);
     }
 
-    SULogInfo(@"Unable to find update due to ambiguous results: %@", v25, v26, v27, v28, v29, v30, v31, v23);
+    SULogInfo(@"Unable to find update due to ambiguous results: %@", v25, v26, v27, v28, v29, v30, v31, array);
 LABEL_23:
-    [SUUtility assignError:a4 withCode:3];
+    [SUUtility assignError:error withCode:3];
     v22 = 0;
     goto LABEL_24;
   }
@@ -120,7 +120,7 @@ LABEL_24:
   return v22;
 }
 
-- (void)_modifyMADownloadOptions:(id)a3
+- (void)_modifyMADownloadOptions:(id)options
 {
   if (MGGetBoolAnswer())
   {
@@ -132,19 +132,19 @@ LABEL_24:
     v5 = 30;
   }
 
-  [a3 setTimeoutIntervalForResource:v5];
-  [a3 setDiscretionary:0];
-  [a3 setAllowsCellularAccess:1];
-  [a3 setAllowsExpensiveAccess:1];
+  [options setTimeoutIntervalForResource:v5];
+  [options setDiscretionary:0];
+  [options setAllowsCellularAccess:1];
+  [options setAllowsExpensiveAccess:1];
   if ([objc_msgSend(MEMORY[0x277D262A0] "sharedConnection")])
   {
-    [a3 setSupervised:1];
+    [options setSupervised:1];
     v6 = [(NSDictionary *)self->_matcherInfo objectForKey:@"RequestedPMV"];
     if (v6)
     {
       v14 = v6;
       SULogInfo(@"Requesting PMV %@", v7, v8, v9, v10, v11, v12, v13, v6);
-      [a3 setRequestedProductVersion:v14];
+      [options setRequestedProductVersion:v14];
     }
 
     v15 = [(NSDictionary *)self->_matcherInfo objectForKey:@"delayPeriod"];
@@ -153,9 +153,9 @@ LABEL_24:
       v16 = v15;
       if ([v15 longValue] >= 1 && objc_msgSend(v16, "longValue") <= 90)
       {
-        v17 = [v16 longValue];
-        SULogInfo(@"Requesting delay period %lu", v18, v19, v20, v21, v22, v23, v24, v17);
-        [a3 setDelayPeriod:{objc_msgSend(v16, "longValue")}];
+        longValue = [v16 longValue];
+        SULogInfo(@"Requesting delay period %lu", v18, v19, v20, v21, v22, v23, v24, longValue);
+        [options setDelayPeriod:{objc_msgSend(v16, "longValue")}];
       }
     }
   }
@@ -164,44 +164,44 @@ LABEL_24:
   if (v25)
   {
     v26 = v25;
-    if (![a3 additionalServerParams])
+    if (![options additionalServerParams])
     {
-      [a3 setAdditionalServerParams:{objc_msgSend(MEMORY[0x277CBEB38], "dictionary")}];
+      [options setAdditionalServerParams:{objc_msgSend(MEMORY[0x277CBEB38], "dictionary")}];
     }
 
-    [objc_msgSend(a3 "additionalServerParams")];
+    [objc_msgSend(options "additionalServerParams")];
   }
 
   v27 = [(NSDictionary *)self->_matcherInfo objectForKey:kSUSessionIDKey];
   if (v27)
   {
     v28 = v27;
-    if (![a3 additionalServerParams])
+    if (![options additionalServerParams])
     {
-      [a3 setAdditionalServerParams:{objc_msgSend(MEMORY[0x277CBEB38], "dictionary")}];
+      [options setAdditionalServerParams:{objc_msgSend(MEMORY[0x277CBEB38], "dictionary")}];
     }
 
-    v29 = [a3 additionalServerParams];
+    additionalServerParams = [options additionalServerParams];
 
-    [v29 setSafeObject:v28 forKey:@"SessionId"];
+    [additionalServerParams setSafeObject:v28 forKey:@"SessionId"];
   }
 }
 
-- (id)_createCleanOSVersionString:(id)a3
+- (id)_createCleanOSVersionString:(id)string
 {
-  v3 = a3;
-  if ([a3 length] >= 4 && objc_msgSend(v3, "rangeOfString:options:range:", @"9.9.", 0, 0, 4) != 0x7FFFFFFFFFFFFFFFLL)
+  stringCopy = string;
+  if ([string length] >= 4 && objc_msgSend(stringCopy, "rangeOfString:options:range:", @"9.9.", 0, 0, 4) != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v3 = [v3 stringByReplacingCharactersInRange:0 withString:{4, &stru_287B45B60}];
-    SULogInfo(@"9.9. replaced in currSecond. New version string: %@", v4, v5, v6, v7, v8, v9, v10, v3);
+    stringCopy = [stringCopy stringByReplacingCharactersInRange:0 withString:{4, &stru_287B45B60}];
+    SULogInfo(@"9.9. replaced in currSecond. New version string: %@", v4, v5, v6, v7, v8, v9, v10, stringCopy);
   }
 
-  return v3;
+  return stringCopy;
 }
 
-- (unint64_t)_getIndexOfHighestVersionedAsset:(id)a3 usingFirstKey:(id)a4 secondKey:(id)a5
+- (unint64_t)_getIndexOfHighestVersionedAsset:(id)asset usingFirstKey:(id)key secondKey:(id)secondKey
 {
-  v18 = [a3 count];
+  v18 = [asset count];
   if (v18)
   {
     v7 = 0;
@@ -213,23 +213,23 @@ LABEL_24:
     while (1)
     {
       v12 = objc_autoreleasePoolPush();
-      v13 = [a3 objectAtIndex:v7];
+      v13 = [asset objectAtIndex:v7];
       v14 = v13;
-      if (a4 && (v9 = [objc_msgSend(v13 "attributes")], !objc_msgSend(a4, "compare:", @"OSVersion")))
+      if (key && (v9 = [objc_msgSend(v13 "attributes")], !objc_msgSend(key, "compare:", @"OSVersion")))
       {
         v9 = [(SUSoftwareUpdateAssetMatcher *)self _createCleanOSVersionString:v9];
-        if (a5)
+        if (secondKey)
         {
 LABEL_6:
           v8 = [objc_msgSend(v14 "attributes")];
-          if (![a5 compare:@"OSVersion"])
+          if (![secondKey compare:@"OSVersion"])
           {
             v8 = [(SUSoftwareUpdateAssetMatcher *)self _createCleanOSVersionString:v8];
           }
         }
       }
 
-      else if (a5)
+      else if (secondKey)
       {
         goto LABEL_6;
       }
@@ -252,10 +252,10 @@ LABEL_6:
   return 0;
 }
 
-- (id)_createSortedAndFilteredAssetResults:(id)a3 usingFirstKey:(id)a4 secondKey:(id)a5
+- (id)_createSortedAndFilteredAssetResults:(id)results usingFirstKey:(id)key secondKey:(id)secondKey
 {
-  v20 = [a3 objectAtIndex:{-[SUSoftwareUpdateAssetMatcher _getIndexOfHighestVersionedAsset:usingFirstKey:secondKey:](self, "_getIndexOfHighestVersionedAsset:usingFirstKey:secondKey:")}];
-  v7 = [a3 count];
+  v20 = [results objectAtIndex:{-[SUSoftwareUpdateAssetMatcher _getIndexOfHighestVersionedAsset:usingFirstKey:secondKey:](self, "_getIndexOfHighestVersionedAsset:usingFirstKey:secondKey:")}];
+  v7 = [results count];
   v16 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v18 = v7;
   if (v7)
@@ -263,25 +263,25 @@ LABEL_6:
     for (i = 0; v18 != i; ++i)
     {
       v9 = objc_autoreleasePoolPush();
-      v10 = [a3 objectAtIndex:i];
+      v10 = [results objectAtIndex:i];
       v21 = v10;
-      if (a4)
+      if (key)
       {
         v11 = [objc_msgSend(v10 "attributes")];
         v12 = [objc_msgSend(v20 "attributes")];
-        if (![a4 compare:@"OSVersion"])
+        if (![key compare:@"OSVersion"])
         {
           v11 = [(SUSoftwareUpdateAssetMatcher *)self _createCleanOSVersionString:v11];
           v12 = [(SUSoftwareUpdateAssetMatcher *)self _createCleanOSVersionString:v12];
         }
 
         v10 = v21;
-        if (a5)
+        if (secondKey)
         {
 LABEL_7:
           v13 = [objc_msgSend(v10 "attributes")];
           v14 = [objc_msgSend(v20 "attributes")];
-          if (![a5 compare:@"OSVersion"])
+          if (![secondKey compare:@"OSVersion"])
           {
             v13 = [(SUSoftwareUpdateAssetMatcher *)self _createCleanOSVersionString:v13];
             v14 = [(SUSoftwareUpdateAssetMatcher *)self _createCleanOSVersionString:v14];
@@ -295,7 +295,7 @@ LABEL_7:
       {
         v11 = 0;
         v12 = 0;
-        if (a5)
+        if (secondKey)
         {
           goto LABEL_7;
         }
@@ -316,51 +316,51 @@ LABEL_11:
   return v16;
 }
 
-- (id)_copyMatchingAssetsAfterSortingAndFiltering:(id)a3
+- (id)_copyMatchingAssetsAfterSortingAndFiltering:(id)filtering
 {
-  v3 = a3;
-  if (!a3)
+  filteringCopy = filtering;
+  if (!filtering)
   {
-    return v3;
+    return filteringCopy;
   }
 
-  if ([a3 count] <= 1)
+  if ([filtering count] <= 1)
   {
 
-    return [v3 copy];
+    return [filteringCopy copy];
   }
 
-  v6 = [(SUSoftwareUpdateAssetMatcher *)self _createSortedAndFilteredAssetResults:[(SUSoftwareUpdateAssetMatcher *)self _filterPatchesIfNecessary:v3] usingFirstKey:@"Build" secondKey:@"OSVersion"];
-  v3 = v6;
+  v6 = [(SUSoftwareUpdateAssetMatcher *)self _createSortedAndFilteredAssetResults:[(SUSoftwareUpdateAssetMatcher *)self _filterPatchesIfNecessary:filteringCopy] usingFirstKey:@"Build" secondKey:@"OSVersion"];
+  filteringCopy = v6;
   if (!v6 || [v6 count] < 2)
   {
-    return v3;
+    return filteringCopy;
   }
 
-  v7 = v3;
+  v7 = filteringCopy;
 
-  return [(SUSoftwareUpdateAssetMatcher *)self _createSortedAndFilteredAssetResults:v3 usingFirstKey:@"PrerequisiteBuild" secondKey:@"PrerequisiteOSVersion"];
+  return [(SUSoftwareUpdateAssetMatcher *)self _createSortedAndFilteredAssetResults:filteringCopy usingFirstKey:@"PrerequisiteBuild" secondKey:@"PrerequisiteOSVersion"];
 }
 
-- (id)_filterPatchesIfNecessary:(id)a3
+- (id)_filterPatchesIfNecessary:(id)necessary
 {
   v26 = *MEMORY[0x277D85DE8];
   v20 = +[SUState currentState];
-  v19 = [a3 mutableCopy];
-  if (!-[SUPreferences disableFullReplacementFallback](+[SUPreferences sharedInstance](SUPreferences, "sharedInstance"), "disableFullReplacementFallback") && [a3 count])
+  v19 = [necessary mutableCopy];
+  if (!-[SUPreferences disableFullReplacementFallback](+[SUPreferences sharedInstance](SUPreferences, "sharedInstance"), "disableFullReplacementFallback") && [necessary count])
   {
     v4 = 0;
     do
     {
-      v5 = [a3 objectAtIndex:v4];
+      v5 = [necessary objectAtIndex:v4];
       v6 = [objc_msgSend(v5 "attributes")];
       v7 = [objc_msgSend(v5 "attributes")];
       v21 = 0u;
       v22 = 0u;
       v23 = 0u;
       v24 = 0u;
-      v8 = [v20 failedPatchDescriptors];
-      v9 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      failedPatchDescriptors = [v20 failedPatchDescriptors];
+      v9 = [failedPatchDescriptors countByEnumeratingWithState:&v21 objects:v25 count:16];
       if (v9)
       {
         v10 = v9;
@@ -371,14 +371,14 @@ LABEL_11:
           {
             if (*v22 != v11)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(failedPatchDescriptors);
             }
 
             v13 = *(*(&v21 + 1) + 8 * i);
-            v14 = [v13 productBuildVersion];
-            if (v14)
+            productBuildVersion = [v13 productBuildVersion];
+            if (productBuildVersion)
             {
-              v15 = v6 == v14;
+              v15 = v6 == productBuildVersion;
             }
 
             else
@@ -393,7 +393,7 @@ LABEL_11:
             }
           }
 
-          v10 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
+          v10 = [failedPatchDescriptors countByEnumeratingWithState:&v21 objects:v25 count:16];
         }
 
         while (v10);
@@ -403,16 +403,16 @@ LABEL_19:
       ++v4;
     }
 
-    while ([a3 count] > v4);
+    while ([necessary count] > v4);
   }
 
   v17 = *MEMORY[0x277D85DE8];
   return v19;
 }
 
-- (BOOL)_isDeviceEligibleForUpdate:(id)a3
+- (BOOL)_isDeviceEligibleForUpdate:(id)update
 {
-  if (![objc_msgSend(a3 "attributes")])
+  if (![objc_msgSend(update "attributes")])
   {
     return 1;
   }
@@ -522,9 +522,9 @@ LABEL_13:
   return v27;
 }
 
-- (BOOL)_isPossibleSoftwareUpdate:(id)a3
+- (BOOL)_isPossibleSoftwareUpdate:(id)update
 {
-  v5 = [objc_msgSend(a3 "attributes")];
+  v5 = [objc_msgSend(update "attributes")];
   if (!v5)
   {
     SULogDebug(@"Missing key %@ from asset map entry or type wasn't a string", v6, v7, v8, v9, v10, v11, v12, @"OSVersion");
@@ -534,7 +534,7 @@ LABEL_19:
   }
 
   v13 = [(SUSoftwareUpdateAssetMatcher *)self _createCleanOSVersionString:v5];
-  v14 = [objc_msgSend(a3 "attributes")];
+  v14 = [objc_msgSend(update "attributes")];
   if (!v14)
   {
     SULogDebug(@"Missing key %@ from asset map entry or type wasn't a string.", v15, v16, v17, v18, v19, v20, v21, @"Build");
@@ -542,7 +542,7 @@ LABEL_19:
   }
 
   v22 = v14;
-  v23 = [objc_msgSend(a3 "attributes")];
+  v23 = [objc_msgSend(update "attributes")];
   if (v23)
   {
     objc_opt_class();
@@ -555,7 +555,7 @@ LABEL_17:
     }
   }
 
-  v31 = [objc_msgSend(a3 "attributes")];
+  v31 = [objc_msgSend(update "attributes")];
   if (!v31)
   {
     SULogDebug(@"Missing key %@ from asset map entry or type wasn't an array", v32, v33, v34, v35, v36, v37, v38, @"SupportedDevices");
@@ -564,8 +564,8 @@ LABEL_17:
 
   v39 = v31;
   v40 = @"PrerequisiteBuild";
-  v41 = [objc_msgSend(a3 "attributes")];
-  if (v41 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (v40 = @"PrerequisiteOSVersion", (v42 = [objc_msgSend(a3 "attributes")]) != 0) && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  v41 = [objc_msgSend(update "attributes")];
+  if (v41 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (v40 = @"PrerequisiteOSVersion", (v42 = [objc_msgSend(update "attributes")]) != 0) && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v48 = v40;
     goto LABEL_17;

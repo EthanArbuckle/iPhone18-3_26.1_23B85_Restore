@@ -1,9 +1,9 @@
 @interface MPAnalyticsLogger
 - (MPAnalyticsLogger)init;
 - (void)logCustomGreetingUpdated;
-- (void)logEvent:(id)a3;
-- (void)logEvent:(id)a3 withCoreAnalyticsDictionary:(id)a4;
-- (void)logSIMLineSelection:(BOOL)a3;
+- (void)logEvent:(id)event;
+- (void)logEvent:(id)event withCoreAnalyticsDictionary:(id)dictionary;
+- (void)logSIMLineSelection:(BOOL)selection;
 @end
 
 @implementation MPAnalyticsLogger
@@ -15,20 +15,20 @@
   return [(MPAnalyticsLogger *)&v3 init];
 }
 
-- (void)logEvent:(id)a3 withCoreAnalyticsDictionary:(id)a4
+- (void)logEvent:(id)event withCoreAnalyticsDictionary:(id)dictionary
 {
   v5 = sub_1CFB8FA90();
   v7 = v6;
   sub_1CFB5D38C(0, &qword_1EE04C158, 0x1E69E58C0);
   v8 = sub_1CFB8FA40();
-  v9 = self;
+  selfCopy = self;
   _sSo17MPAnalyticsLoggerC11CallsSearchE8logEvent_27withCoreAnalyticsDictionaryySS_SDySSSo8NSObjectCGtF_0(v5, v7, v8);
 }
 
-- (void)logEvent:(id)a3
+- (void)logEvent:(id)event
 {
   sub_1CFB5D38C(0, &qword_1EE04C150, 0x1E69E9BF8);
-  v4 = a3;
+  eventCopy = event;
   v5 = sub_1CFB8FE10();
   sub_1CFB8FCB0();
   sub_1CFB8F790();
@@ -46,14 +46,14 @@
 
 - (void)logCustomGreetingUpdated
 {
-  v2 = self;
+  selfCopy = self;
   MPAnalyticsLogger.logCustomGreetingUpdated()();
 }
 
-- (void)logSIMLineSelection:(BOOL)a3
+- (void)logSIMLineSelection:(BOOL)selection
 {
-  v4 = self;
-  MPAnalyticsLogger.logSIMLineSelection(_:)(a3);
+  selfCopy = self;
+  MPAnalyticsLogger.logSIMLineSelection(_:)(selection);
 }
 
 @end

@@ -1,19 +1,19 @@
 @interface WebBundleScriptMessageHandlerWithReply
-- (WebBundleScriptMessageHandlerWithReply)initWithDelegate:(id)a3;
-- (void)userContentController:(id)a3 didReceiveScriptMessage:(id)a4 replyHandler:(id)a5;
+- (WebBundleScriptMessageHandlerWithReply)initWithDelegate:(id)delegate;
+- (void)userContentController:(id)controller didReceiveScriptMessage:(id)message replyHandler:(id)handler;
 @end
 
 @implementation WebBundleScriptMessageHandlerWithReply
 
-- (void)userContentController:(id)a3 didReceiveScriptMessage:(id)a4 replyHandler:(id)a5
+- (void)userContentController:(id)controller didReceiveScriptMessage:(id)message replyHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [a4 body];
+  controllerCopy = controller;
+  handlerCopy = handler;
+  body = [message body];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = v10;
+    v11 = body;
   }
 
   else
@@ -26,7 +26,7 @@
   if (v12)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained didReceiveMessageFromUserContentController:v8 message:v12 replyHandler:v9];
+    [WeakRetained didReceiveMessageFromUserContentController:controllerCopy message:v12 replyHandler:handlerCopy];
   }
 
   else
@@ -41,16 +41,16 @@
   }
 }
 
-- (WebBundleScriptMessageHandlerWithReply)initWithDelegate:(id)a3
+- (WebBundleScriptMessageHandlerWithReply)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = WebBundleScriptMessageHandlerWithReply;
   v5 = [(WebBundleScriptMessageHandlerWithReply *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;

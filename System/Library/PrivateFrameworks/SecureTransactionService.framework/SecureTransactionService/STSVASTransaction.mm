@@ -1,26 +1,26 @@
 @interface STSVASTransaction
-+ (id)vasTransactionForCredential:(id)a3 withDictionary:(id)a4;
-- (STSVASTransaction)initWithCoder:(id)a3;
-- (id)initForCredential:(id)a3 withDictionary:(id)a4;
-- (void)encodeWithCoder:(id)a3;
++ (id)vasTransactionForCredential:(id)credential withDictionary:(id)dictionary;
+- (STSVASTransaction)initWithCoder:(id)coder;
+- (id)initForCredential:(id)credential withDictionary:(id)dictionary;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STSVASTransaction
 
-+ (id)vasTransactionForCredential:(id)a3 withDictionary:(id)a4
++ (id)vasTransactionForCredential:(id)credential withDictionary:(id)dictionary
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[STSVASTransaction alloc] initForCredential:v6 withDictionary:v5];
+  dictionaryCopy = dictionary;
+  credentialCopy = credential;
+  v7 = [[STSVASTransaction alloc] initForCredential:credentialCopy withDictionary:dictionaryCopy];
 
   return v7;
 }
 
-- (id)initForCredential:(id)a3 withDictionary:(id)a4
+- (id)initForCredential:(id)credential withDictionary:(id)dictionary
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 objectForKeyedSubscript:0x2876E4BF0];
+  credentialCopy = credential;
+  dictionaryCopy = dictionary;
+  v8 = [dictionaryCopy objectForKeyedSubscript:0x2876E4BF0];
   if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v9 = v8;
@@ -33,10 +33,10 @@
 
   v17.receiver = self;
   v17.super_class = STSVASTransaction;
-  v10 = [(STSAuxiliaryTransaction *)&v17 initWithCredential:v6 error:v9];
+  v10 = [(STSAuxiliaryTransaction *)&v17 initWithCredential:credentialCopy error:v9];
   if (v10)
   {
-    v11 = [v7 objectForKeyedSubscript:@"STSVASTransactionKeyMerchantId"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"STSVASTransactionKeyMerchantId"];
 
     if (v11)
     {
@@ -47,7 +47,7 @@
       }
     }
 
-    v12 = [v7 objectForKeyedSubscript:@"STSVASTransactionKeySignupUrl"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"STSVASTransactionKeySignupUrl"];
 
     if (v12)
     {
@@ -58,7 +58,7 @@
       }
     }
 
-    v13 = [v7 objectForKeyedSubscript:@"STSVASTransactionKeyTerminalAppVersion"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"STSVASTransactionKeyTerminalAppVersion"];
 
     if (v13)
     {
@@ -69,7 +69,7 @@
       }
     }
 
-    v8 = [v7 objectForKeyedSubscript:@"STSVASTransactionKeyTerminalMode"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"STSVASTransactionKeyTerminalMode"];
 
     if (v8)
     {
@@ -95,42 +95,42 @@
   return v10;
 }
 
-- (STSVASTransaction)initWithCoder:(id)a3
+- (STSVASTransaction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = STSVASTransaction;
-  v5 = [(STSAuxiliaryTransaction *)&v13 initWithCoder:v4];
+  v5 = [(STSAuxiliaryTransaction *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"STSVASTransactionKeyMerchantId"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"STSVASTransactionKeyMerchantId"];
     merchantId = v5->_merchantId;
     v5->_merchantId = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"STSVASTransactionKeySignupUrl"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"STSVASTransactionKeySignupUrl"];
     signupUrl = v5->_signupUrl;
     v5->_signupUrl = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"STSVASTransactionKeyTerminalAppVersion"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"STSVASTransactionKeyTerminalAppVersion"];
     terminalAppVersion = v5->_terminalAppVersion;
     v5->_terminalAppVersion = v10;
 
-    v5->_terminalMode = [v4 decodeIntForKey:@"STSVASTransactionKeyTerminalMode"];
+    v5->_terminalMode = [coderCopy decodeIntForKey:@"STSVASTransactionKeyTerminalMode"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = STSVASTransaction;
-  v4 = a3;
-  [(STSAuxiliaryTransaction *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_merchantId forKey:{@"STSVASTransactionKeyMerchantId", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_signupUrl forKey:@"STSVASTransactionKeySignupUrl"];
-  [v4 encodeObject:self->_terminalAppVersion forKey:@"STSVASTransactionKeyTerminalAppVersion"];
-  [v4 encodeInteger:self->_terminalMode forKey:@"STSVASTransactionKeyTerminalMode"];
+  coderCopy = coder;
+  [(STSAuxiliaryTransaction *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_merchantId forKey:{@"STSVASTransactionKeyMerchantId", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_signupUrl forKey:@"STSVASTransactionKeySignupUrl"];
+  [coderCopy encodeObject:self->_terminalAppVersion forKey:@"STSVASTransactionKeyTerminalAppVersion"];
+  [coderCopy encodeInteger:self->_terminalMode forKey:@"STSVASTransactionKeyTerminalMode"];
 }
 
 @end

@@ -1,17 +1,17 @@
 @interface SBUIActionViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityPerformEscape;
 - (id)accessibilityLabel;
 @end
 
 @implementation SBUIActionViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBUIActionView" hasInstanceVariable:@"_titleLabel" withType:"SBUIActionViewLabel"];
-  [v3 validateClass:@"SBUIActionView" hasInstanceVariable:@"_subtitleLabel" withType:"SBUIActionViewLabel"];
-  [v3 validateClass:@"SBUIActionViewLabel" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBUIActionView" hasInstanceVariable:@"_titleLabel" withType:"SBUIActionViewLabel"];
+  [validationsCopy validateClass:@"SBUIActionView" hasInstanceVariable:@"_subtitleLabel" withType:"SBUIActionViewLabel"];
+  [validationsCopy validateClass:@"SBUIActionViewLabel" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
@@ -29,8 +29,8 @@
 
 - (BOOL)accessibilityPerformEscape
 {
-  v2 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v2 postNotificationName:@"AXDismissShortcutMenu" object:0];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter postNotificationName:@"AXDismissShortcutMenu" object:0];
 
   return 1;
 }

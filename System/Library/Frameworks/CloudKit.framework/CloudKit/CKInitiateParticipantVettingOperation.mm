@@ -1,41 +1,41 @@
 @interface CKInitiateParticipantVettingOperation
-+ (void)applyDaemonCallbackInterfaceTweaks:(id)a3;
-- (BOOL)CKOperationShouldRun:(id *)a3;
-- (CKInitiateParticipantVettingOperation)initWithShareMetadata:(id)a3 participantID:(id)a4 address:(id)a5;
++ (void)applyDaemonCallbackInterfaceTweaks:(id)tweaks;
+- (BOOL)CKOperationShouldRun:(id *)run;
+- (CKInitiateParticipantVettingOperation)initWithShareMetadata:(id)metadata participantID:(id)d address:(id)address;
 - (id)participantVettingInitiatedBlock;
 - (id)participantVettingInitiationCompletionBlock;
-- (void)_finishOnCallbackQueueWithError:(id)a3;
+- (void)_finishOnCallbackQueueWithError:(id)error;
 - (void)ckSignpostBegin;
-- (void)ckSignpostEndWithError:(id)a3;
-- (void)fillFromOperationInfo:(id)a3;
-- (void)fillOutOperationInfo:(id)a3;
-- (void)handleParticipantVettingProgressWithError:(id)a3;
-- (void)retryTimes:(unint64_t)a3 container:(id)a4 participantVettingInitiatedBlock:(id)a5 participantVettingInitiationCompletionBlock:(id)a6;
-- (void)setParticipantVettingInitiatedBlock:(id)a3;
-- (void)setParticipantVettingInitiationCompletionBlock:(id)a3;
+- (void)ckSignpostEndWithError:(id)error;
+- (void)fillFromOperationInfo:(id)info;
+- (void)fillOutOperationInfo:(id)info;
+- (void)handleParticipantVettingProgressWithError:(id)error;
+- (void)retryTimes:(unint64_t)times container:(id)container participantVettingInitiatedBlock:(id)block participantVettingInitiationCompletionBlock:(id)completionBlock;
+- (void)setParticipantVettingInitiatedBlock:(id)block;
+- (void)setParticipantVettingInitiationCompletionBlock:(id)block;
 @end
 
 @implementation CKInitiateParticipantVettingOperation
 
-- (CKInitiateParticipantVettingOperation)initWithShareMetadata:(id)a3 participantID:(id)a4 address:(id)a5
+- (CKInitiateParticipantVettingOperation)initWithShareMetadata:(id)metadata participantID:(id)d address:(id)address
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  metadataCopy = metadata;
+  dCopy = d;
+  addressCopy = address;
   v25.receiver = self;
   v25.super_class = CKInitiateParticipantVettingOperation;
   v13 = [(CKOperation *)&v25 init];
   if (v13)
   {
-    v14 = objc_msgSend_copy(v8, v11, v12);
+    v14 = objc_msgSend_copy(metadataCopy, v11, v12);
     shareMetadata = v13->_shareMetadata;
     v13->_shareMetadata = v14;
 
-    v18 = objc_msgSend_copy(v9, v16, v17);
+    v18 = objc_msgSend_copy(dCopy, v16, v17);
     participantID = v13->_participantID;
     v13->_participantID = v18;
 
-    v22 = objc_msgSend_copy(v10, v20, v21);
+    v22 = objc_msgSend_copy(addressCopy, v20, v21);
     address = v13->_address;
     v13->_address = v22;
   }
@@ -43,9 +43,9 @@
   return v13;
 }
 
-- (void)setParticipantVettingInitiatedBlock:(id)a3
+- (void)setParticipantVettingInitiatedBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   if (__sTestOverridesAvailable[0] == 1 && objc_msgSend__ckRaiseInGeneratedCallbackImplementation(self, v4, v5))
   {
     objc_msgSend_raise_format_(MEMORY[0x1E695DF30], v4, *MEMORY[0x1E695D920], @"Callback check triggered");
@@ -59,16 +59,16 @@
     v12[2] = sub_1885F0D24;
     v12[3] = &unk_1E70BC940;
     v12[4] = self;
-    v13 = v6;
+    v13 = blockCopy;
     dispatch_sync(v11, v12);
 
     participantVettingInitiatedBlock = v13;
     goto LABEL_9;
   }
 
-  if (self->_participantVettingInitiatedBlock != v6)
+  if (self->_participantVettingInitiatedBlock != blockCopy)
   {
-    v9 = objc_msgSend_copy(v6, v7, v8);
+    v9 = objc_msgSend_copy(blockCopy, v7, v8);
     participantVettingInitiatedBlock = self->_participantVettingInitiatedBlock;
     self->_participantVettingInitiatedBlock = v9;
 LABEL_9:
@@ -111,9 +111,9 @@ LABEL_9:
   return v6;
 }
 
-- (void)setParticipantVettingInitiationCompletionBlock:(id)a3
+- (void)setParticipantVettingInitiationCompletionBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   if (__sTestOverridesAvailable[0] == 1 && objc_msgSend__ckRaiseInGeneratedCallbackImplementation(self, v4, v5))
   {
     objc_msgSend_raise_format_(MEMORY[0x1E695DF30], v4, *MEMORY[0x1E695D920], @"Callback check triggered");
@@ -127,16 +127,16 @@ LABEL_9:
     v12[2] = sub_1885F10B0;
     v12[3] = &unk_1E70BC940;
     v12[4] = self;
-    v13 = v6;
+    v13 = blockCopy;
     dispatch_sync(v11, v12);
 
     participantVettingInitiationCompletionBlock = v13;
     goto LABEL_9;
   }
 
-  if (self->_participantVettingInitiationCompletionBlock != v6)
+  if (self->_participantVettingInitiationCompletionBlock != blockCopy)
   {
-    v9 = objc_msgSend_copy(v6, v7, v8);
+    v9 = objc_msgSend_copy(blockCopy, v7, v8);
     participantVettingInitiationCompletionBlock = self->_participantVettingInitiationCompletionBlock;
     self->_participantVettingInitiationCompletionBlock = v9;
 LABEL_9:
@@ -179,70 +179,70 @@ LABEL_9:
   return v6;
 }
 
-- (void)fillOutOperationInfo:(id)a3
+- (void)fillOutOperationInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v7 = objc_msgSend_shareMetadata(self, v5, v6);
-  objc_msgSend_setShareMetadata_(v4, v8, v7);
+  objc_msgSend_setShareMetadata_(infoCopy, v8, v7);
 
   v11 = objc_msgSend_participantID(self, v9, v10);
-  objc_msgSend_setParticipantID_(v4, v12, v11);
+  objc_msgSend_setParticipantID_(infoCopy, v12, v11);
 
   v15 = objc_msgSend_address(self, v13, v14);
-  objc_msgSend_setAddress_(v4, v16, v15);
+  objc_msgSend_setAddress_(infoCopy, v16, v15);
 
   v17.receiver = self;
   v17.super_class = CKInitiateParticipantVettingOperation;
-  [(CKOperation *)&v17 fillOutOperationInfo:v4];
+  [(CKOperation *)&v17 fillOutOperationInfo:infoCopy];
 }
 
-- (void)fillFromOperationInfo:(id)a3
+- (void)fillFromOperationInfo:(id)info
 {
   v17.receiver = self;
   v17.super_class = CKInitiateParticipantVettingOperation;
-  v4 = a3;
-  [(CKOperation *)&v17 fillFromOperationInfo:v4];
-  v7 = objc_msgSend_shareMetadata(v4, v5, v6, v17.receiver, v17.super_class);
+  infoCopy = info;
+  [(CKOperation *)&v17 fillFromOperationInfo:infoCopy];
+  v7 = objc_msgSend_shareMetadata(infoCopy, v5, v6, v17.receiver, v17.super_class);
   objc_msgSend_setShareMetadata_(self, v8, v7);
 
-  v11 = objc_msgSend_participantID(v4, v9, v10);
+  v11 = objc_msgSend_participantID(infoCopy, v9, v10);
   objc_msgSend_setParticipantID_(self, v12, v11);
 
-  v15 = objc_msgSend_address(v4, v13, v14);
+  v15 = objc_msgSend_address(infoCopy, v13, v14);
 
   objc_msgSend_setAddress_(self, v16, v15);
 }
 
-- (BOOL)CKOperationShouldRun:(id *)a3
+- (BOOL)CKOperationShouldRun:(id *)run
 {
-  v5 = objc_msgSend_shareMetadata(self, a2, a3);
+  v5 = objc_msgSend_shareMetadata(self, a2, run);
   if (v5 && (v8 = v5, objc_msgSend_participantID(self, v6, v7), v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v9))
   {
     v14.receiver = self;
     v14.super_class = CKInitiateParticipantVettingOperation;
-    return [(CKOperation *)&v14 CKOperationShouldRun:a3];
+    return [(CKOperation *)&v14 CKOperationShouldRun:run];
   }
 
   else
   {
-    if (a3)
+    if (run)
     {
       v11 = objc_opt_class();
       v12 = NSStringFromClass(v11);
-      *a3 = objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v13, @"CKErrorDomain", 12, @"You must set share metadata and a participant ID on %@", v12);
+      *run = objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v13, @"CKErrorDomain", 12, @"You must set share metadata and a participant ID on %@", v12);
     }
 
     return 0;
   }
 }
 
-- (void)retryTimes:(unint64_t)a3 container:(id)a4 participantVettingInitiatedBlock:(id)a5 participantVettingInitiationCompletionBlock:(id)a6
+- (void)retryTimes:(unint64_t)times container:(id)container participantVettingInitiatedBlock:(id)block participantVettingInitiationCompletionBlock:(id)completionBlock
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a3 - 1;
-  objc_msgSend_setParticipantVettingInitiatedBlock_(self, v14, v11);
+  containerCopy = container;
+  blockCopy = block;
+  completionBlockCopy = completionBlock;
+  v13 = times - 1;
+  objc_msgSend_setParticipantVettingInitiatedBlock_(self, v14, blockCopy);
   v17 = objc_msgSend_description(self, v15, v16);
   v20 = objc_msgSend_shareMetadata(self, v18, v19);
   v23 = objc_msgSend_participantID(self, v21, v22);
@@ -255,25 +255,25 @@ LABEL_9:
   v41 = v20;
   v42 = v23;
   v43 = v26;
-  v44 = v10;
-  v45 = v12;
-  v46 = v11;
+  v44 = containerCopy;
+  v45 = completionBlockCopy;
+  v46 = blockCopy;
   v47 = v13;
-  v27 = v11;
-  v28 = v10;
+  v27 = blockCopy;
+  v28 = containerCopy;
   v29 = v26;
   v30 = v23;
   v31 = v20;
   v32 = v17;
-  v33 = v12;
+  v33 = completionBlockCopy;
   objc_msgSend_setParticipantVettingInitiationCompletionBlock_(self, v34, &v36);
   objc_msgSend_addOperation_(v28, v35, self, v36, v37, v38, v39);
 }
 
-- (void)handleParticipantVettingProgressWithError:(id)a3
+- (void)handleParticipantVettingProgressWithError:(id)error
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = objc_msgSend_CKClientSuitableError(a3, a2, a3);
+  v4 = objc_msgSend_CKClientSuitableError(error, a2, error);
   if (self)
   {
     signpost = self->super._signpost;
@@ -389,10 +389,10 @@ LABEL_22:
   v36 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_finishOnCallbackQueueWithError:(id)a3
+- (void)_finishOnCallbackQueueWithError:(id)error
 {
   v48 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   if (self)
   {
     signpost = self->super._signpost;
@@ -456,11 +456,11 @@ LABEL_22:
       v31 = objc_opt_class();
       v32 = NSStringFromClass(v31);
       v35 = objc_msgSend_ckShortDescription(self, v33, v34);
-      v38 = objc_msgSend_CKClientSuitableError(v4, v36, v37);
+      v38 = objc_msgSend_CKClientSuitableError(errorCopy, v36, v37);
       *buf = 138544130;
       v41 = v32;
       v42 = 2048;
-      v43 = self;
+      selfCopy = self;
       v44 = 2114;
       v45 = v35;
       v46 = 2112;
@@ -469,7 +469,7 @@ LABEL_22:
     }
 
     v24 = objc_msgSend_participantVettingInitiationCompletionBlock(self, v22, v23);
-    v27 = objc_msgSend_CKClientSuitableError(v4, v25, v26);
+    v27 = objc_msgSend_CKClientSuitableError(errorCopy, v25, v26);
     (v24)[2](v24, v27);
 
     objc_msgSend_setParticipantVettingInitiationCompletionBlock_(self, v28, 0);
@@ -478,7 +478,7 @@ LABEL_22:
   objc_msgSend_setParticipantVettingInitiatedBlock_(self, v20, 0);
   v39.receiver = self;
   v39.super_class = CKInitiateParticipantVettingOperation;
-  [(CKOperation *)&v39 _finishOnCallbackQueueWithError:v4];
+  [(CKOperation *)&v39 _finishOnCallbackQueueWithError:errorCopy];
 
   v29 = *MEMORY[0x1E69E9840];
 }
@@ -557,10 +557,10 @@ LABEL_22:
   v42 = *MEMORY[0x1E69E9840];
 }
 
-- (void)ckSignpostEndWithError:(id)a3
+- (void)ckSignpostEndWithError:(id)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   if (self)
   {
     signpost = self->super._signpost;
@@ -604,7 +604,7 @@ LABEL_22:
     if (v16 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
     {
       v18 = 138412290;
-      v19 = v4;
+      v19 = errorCopy;
       _os_signpost_emit_with_name_impl(&dword_1883EA000, v11, OS_SIGNPOST_INTERVAL_END, v16, "CKInitiateParticipantVettingOperation", "Error=%{signpost.description:attribute}@ ", &v18, 0xCu);
     }
   }
@@ -612,15 +612,15 @@ LABEL_22:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)applyDaemonCallbackInterfaceTweaks:(id)a3
++ (void)applyDaemonCallbackInterfaceTweaks:(id)tweaks
 {
-  v4 = a3;
+  tweaksCopy = tweaks;
   v5 = CKErrorUserInfoClasses();
-  objc_msgSend_setClasses_forSelector_argumentIndex_ofReply_(v4, v6, v5, sel_handleParticipantVettingProgressWithError_, 0, 0);
+  objc_msgSend_setClasses_forSelector_argumentIndex_ofReply_(tweaksCopy, v6, v5, sel_handleParticipantVettingProgressWithError_, 0, 0);
 
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___CKInitiateParticipantVettingOperation;
-  objc_msgSendSuper2(&v7, sel_applyDaemonCallbackInterfaceTweaks_, v4);
+  objc_msgSendSuper2(&v7, sel_applyDaemonCallbackInterfaceTweaks_, tweaksCopy);
 }
 
 @end

@@ -2,10 +2,10 @@
 + (id)sharedResolver;
 - (_UIApplicationDisplayConfigurationResolver)init;
 - (id)_init;
-- (id)displayConfigurationForContextID:(unsigned int)a3;
+- (id)displayConfigurationForContextID:(unsigned int)d;
 - (void)dealloc;
-- (void)displayConfigurationChanged:(id)a3;
-- (void)requestDisplayConfiguration:(id)a3 forContextID:(unsigned int)a4;
+- (void)displayConfigurationChanged:(id)changed;
+- (void)requestDisplayConfiguration:(id)configuration forContextID:(unsigned int)d;
 @end
 
 @implementation _UIApplicationDisplayConfigurationResolver
@@ -31,8 +31,8 @@
   if (v2)
   {
     UISSetDisplayConfigurationDataSource();
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 addObserver:v2 selector:sel_displayConfigurationChanged_ name:@"_UIScreenDisplayConfigurationUpdatedNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_displayConfigurationChanged_ name:@"_UIScreenDisplayConfigurationUpdatedNotification" object:0];
   }
 
   return v2;
@@ -51,7 +51,7 @@
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"_UIApplicationDisplayConfigurationResolver.m";
     v17 = 1024;
@@ -69,20 +69,20 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"_UIScreenDisplayConfigurationUpdatedNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"_UIScreenDisplayConfigurationUpdatedNotification" object:0];
 
   v4.receiver = self;
   v4.super_class = _UIApplicationDisplayConfigurationResolver;
   [(_UIApplicationDisplayConfigurationResolver *)&v4 dealloc];
 }
 
-- (void)displayConfigurationChanged:(id)a3
+- (void)displayConfigurationChanged:(id)changed
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v3 = [a3 object];
+  object = [changed object];
   v4 = objc_opt_class();
-  v5 = v3;
+  v5 = object;
   if (v4)
   {
     if (objc_opt_isKindOfClass())
@@ -121,25 +121,25 @@
       v17[0] = v10;
       v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
 
-      v12 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v12 postNotificationName:*MEMORY[0x1E69DECD0] object:0 userInfo:v11];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter postNotificationName:*MEMORY[0x1E69DECD0] object:0 userInfo:v11];
     }
   }
 }
 
-- (id)displayConfigurationForContextID:(unsigned int)a3
+- (id)displayConfigurationForContextID:(unsigned int)d
 {
   v17 = *MEMORY[0x1E69E9840];
   v4 = [UIWindow _windowWithContextId:?];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 _windowHostingScene];
-    v7 = v6;
-    if (v6)
+    _windowHostingScene = [v4 _windowHostingScene];
+    v7 = _windowHostingScene;
+    if (_windowHostingScene)
     {
-      v8 = [v6 _screen];
-      v9 = [v8 displayConfiguration];
+      _screen = [_windowHostingScene _screen];
+      displayConfiguration = [_screen displayConfiguration];
     }
 
     else
@@ -151,12 +151,12 @@
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
         {
           v15 = 67109120;
-          v16 = a3;
+          dCopy2 = d;
           _os_log_impl(&dword_188A29000, v14, OS_LOG_TYPE_ERROR, "Display configuration requested for context whose window is not in a scene. contextID: %i", &v15, 8u);
         }
       }
 
-      v9 = 0;
+      displayConfiguration = 0;
     }
   }
 
@@ -169,37 +169,37 @@
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
         v15 = 67109120;
-        v16 = a3;
+        dCopy2 = d;
         _os_log_impl(&dword_188A29000, v13, OS_LOG_TYPE_ERROR, "Display configuration requested for unknown context id: %i", &v15, 8u);
       }
     }
 
-    v9 = 0;
+    displayConfiguration = 0;
   }
 
-  return v9;
+  return displayConfiguration;
 }
 
-- (void)requestDisplayConfiguration:(id)a3 forContextID:(unsigned int)a4
+- (void)requestDisplayConfiguration:(id)configuration forContextID:(unsigned int)d
 {
-  v4 = *&a4;
+  v4 = *&d;
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  configurationCopy = configuration;
   v6 = [UIWindow _windowWithContextId:v4];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 _windowHostingScene];
-    v9 = v8;
-    if (v8)
+    _windowHostingScene = [v6 _windowHostingScene];
+    v9 = _windowHostingScene;
+    if (_windowHostingScene)
     {
-      v10 = [v8 _FBSScene];
+      _FBSScene = [_windowHostingScene _FBSScene];
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __87___UIApplicationDisplayConfigurationResolver_requestDisplayConfiguration_forContextID___block_invoke;
       v15[3] = &unk_1E70F44D8;
-      v16 = v5;
-      [v10 updateUIClientSettingsWithBlock:v15];
+      v16 = configurationCopy;
+      [_FBSScene updateUIClientSettingsWithBlock:v15];
     }
 
     else
@@ -211,7 +211,7 @@
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412546;
-          v18 = v5;
+          v18 = configurationCopy;
           v19 = 1024;
           v20 = v4;
           _os_log_impl(&dword_188A29000, v14, OS_LOG_TYPE_ERROR, "Display configuration %@ requested for context whose window is not in a scene. contextID: %i", buf, 0x12u);
@@ -229,7 +229,7 @@
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v18 = v5;
+        v18 = configurationCopy;
         v19 = 1024;
         v20 = v4;
         _os_log_impl(&dword_188A29000, v12, OS_LOG_TYPE_ERROR, "Display configuration %@ requested for unknown context id: %i", buf, 0x12u);

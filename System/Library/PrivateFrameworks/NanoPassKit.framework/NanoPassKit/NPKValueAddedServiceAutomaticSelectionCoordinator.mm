@@ -1,41 +1,41 @@
 @interface NPKValueAddedServiceAutomaticSelectionCoordinator
 - (NPKPassesDataSource)dataSource;
-- (NPKValueAddedServiceAutomaticSelectionCoordinator)initWithDelegate:(id)a3 passesDataSource:(id)a4;
+- (NPKValueAddedServiceAutomaticSelectionCoordinator)initWithDelegate:(id)delegate passesDataSource:(id)source;
 - (NPKValueAddedServiceAutomaticSelectionCoordinatorDelegate)delegate;
-- (void)_handleWalletPreferencesChanged:(id)a3;
+- (void)_handleWalletPreferencesChanged:(id)changed;
 - (void)_updateAutomaticSelectionPasses;
-- (void)passesDataSource:(id)a3 didAddPasses:(id)a4;
-- (void)passesDataSource:(id)a3 didRemovePasses:(id)a4;
-- (void)passesDataSource:(id)a3 didUpdatePasses:(id)a4;
-- (void)passesDataSource:(id)a3 didUpdateSettingsForPass:(id)a4;
-- (void)passesDataSourceDidReloadPasses:(id)a3;
-- (void)passesDataSourceDidReorderPasses:(id)a3;
+- (void)passesDataSource:(id)source didAddPasses:(id)passes;
+- (void)passesDataSource:(id)source didRemovePasses:(id)passes;
+- (void)passesDataSource:(id)source didUpdatePasses:(id)passes;
+- (void)passesDataSource:(id)source didUpdateSettingsForPass:(id)pass;
+- (void)passesDataSourceDidReloadPasses:(id)passes;
+- (void)passesDataSourceDidReorderPasses:(id)passes;
 @end
 
 @implementation NPKValueAddedServiceAutomaticSelectionCoordinator
 
-- (NPKValueAddedServiceAutomaticSelectionCoordinator)initWithDelegate:(id)a3 passesDataSource:(id)a4
+- (NPKValueAddedServiceAutomaticSelectionCoordinator)initWithDelegate:(id)delegate passesDataSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  sourceCopy = source;
   v13.receiver = self;
   v13.super_class = NPKValueAddedServiceAutomaticSelectionCoordinator;
   v8 = [(NPKValueAddedServiceAutomaticSelectionCoordinator *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_delegate, v6);
-    v10 = objc_storeWeak(&v9->_dataSource, v7);
-    [v7 registerObserver:v9];
+    objc_storeWeak(&v8->_delegate, delegateCopy);
+    v10 = objc_storeWeak(&v9->_dataSource, sourceCopy);
+    [sourceCopy registerObserver:v9];
 
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v11 addObserver:v9 selector:sel__handleWalletPreferencesChanged_ name:*MEMORY[0x277D38978] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v9 selector:sel__handleWalletPreferencesChanged_ name:*MEMORY[0x277D38978] object:0];
   }
 
   return v9;
 }
 
-- (void)passesDataSourceDidReloadPasses:(id)a3
+- (void)passesDataSourceDidReloadPasses:(id)passes
 {
   v4 = pk_General_log();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
@@ -53,7 +53,7 @@
   [(NPKValueAddedServiceAutomaticSelectionCoordinator *)self _updateAutomaticSelectionPasses];
 }
 
-- (void)passesDataSource:(id)a3 didAddPasses:(id)a4
+- (void)passesDataSource:(id)source didAddPasses:(id)passes
 {
   v5 = pk_General_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
@@ -71,7 +71,7 @@
   [(NPKValueAddedServiceAutomaticSelectionCoordinator *)self _updateAutomaticSelectionPasses];
 }
 
-- (void)passesDataSource:(id)a3 didUpdatePasses:(id)a4
+- (void)passesDataSource:(id)source didUpdatePasses:(id)passes
 {
   v5 = pk_General_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
@@ -89,7 +89,7 @@
   [(NPKValueAddedServiceAutomaticSelectionCoordinator *)self _updateAutomaticSelectionPasses];
 }
 
-- (void)passesDataSource:(id)a3 didRemovePasses:(id)a4
+- (void)passesDataSource:(id)source didRemovePasses:(id)passes
 {
   v5 = pk_General_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
@@ -107,7 +107,7 @@
   [(NPKValueAddedServiceAutomaticSelectionCoordinator *)self _updateAutomaticSelectionPasses];
 }
 
-- (void)passesDataSourceDidReorderPasses:(id)a3
+- (void)passesDataSourceDidReorderPasses:(id)passes
 {
   v4 = pk_General_log();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
@@ -125,10 +125,10 @@
   [(NPKValueAddedServiceAutomaticSelectionCoordinator *)self _updateAutomaticSelectionPasses];
 }
 
-- (void)passesDataSource:(id)a3 didUpdateSettingsForPass:(id)a4
+- (void)passesDataSource:(id)source didUpdateSettingsForPass:(id)pass
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  passCopy = pass;
   v6 = pk_General_log();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
 
@@ -137,9 +137,9 @@
     v8 = pk_General_log();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v5 uniqueID];
+      uniqueID = [passCopy uniqueID];
       v11 = 138412290;
-      v12 = v9;
+      v12 = uniqueID;
       _os_log_impl(&dword_25B300000, v8, OS_LOG_TYPE_DEFAULT, "Notice: VAS automatic selection coordinator got updated settings for pass %@", &v11, 0xCu);
     }
   }
@@ -149,7 +149,7 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleWalletPreferencesChanged:(id)a3
+- (void)_handleWalletPreferencesChanged:(id)changed
 {
   v4 = pk_Payment_log();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
@@ -170,17 +170,17 @@
 - (void)_updateAutomaticSelectionPasses
 {
   v35 = *MEMORY[0x277D85DE8];
-  v26 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v3 = [WeakRetained passes];
+  passes = [WeakRetained passes];
 
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  v27 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v5 = v3;
+  v5 = passes;
   v6 = [v5 countByEnumeratingWithState:&v28 objects:v34 count:16];
   if (v6)
   {
@@ -198,32 +198,32 @@
         v10 = *(*(&v28 + 1) + 8 * i);
         if (NPKIsValidVASPass(v10) && ([v10 hasStoredValue] & 1) == 0 && (objc_msgSend(v10, "settings") & 0x10) != 0)
         {
-          v11 = [v10 passTypeIdentifier];
-          v12 = [v4 objectForKeyedSubscript:v11];
+          passTypeIdentifier = [v10 passTypeIdentifier];
+          v12 = [dictionary objectForKeyedSubscript:passTypeIdentifier];
 
           if (!v12)
           {
             goto LABEL_12;
           }
 
-          v13 = [v10 passTypeIdentifier];
-          v14 = [v4 objectForKeyedSubscript:v13];
+          passTypeIdentifier2 = [v10 passTypeIdentifier];
+          uniqueID2 = [dictionary objectForKeyedSubscript:passTypeIdentifier2];
 
-          v15 = [v14 ingestedDate];
-          v16 = [v10 ingestedDate];
-          v17 = [v15 compare:v16];
+          ingestedDate = [uniqueID2 ingestedDate];
+          ingestedDate2 = [v10 ingestedDate];
+          v17 = [ingestedDate compare:ingestedDate2];
 
           if (v17 == 1)
           {
-            v18 = [v10 uniqueID];
-            [v27 removeObjectForKey:v18];
+            uniqueID = [v10 uniqueID];
+            [dictionary2 removeObjectForKey:uniqueID];
 
 LABEL_12:
-            v19 = [v10 passTypeIdentifier];
-            [v4 setObject:v10 forKeyedSubscript:v19];
+            passTypeIdentifier3 = [v10 passTypeIdentifier];
+            [dictionary setObject:v10 forKeyedSubscript:passTypeIdentifier3];
 
-            v14 = [v10 uniqueID];
-            [v27 setObject:v10 forKey:v14];
+            uniqueID2 = [v10 uniqueID];
+            [dictionary2 setObject:v10 forKey:uniqueID2];
           }
 
           continue;
@@ -244,15 +244,15 @@ LABEL_12:
     v22 = pk_General_log();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
-      v23 = [v27 count];
+      v23 = [dictionary2 count];
       *buf = 67109120;
       v33 = v23;
       _os_log_impl(&dword_25B300000, v22, OS_LOG_TYPE_DEFAULT, "Notice: Found %d VAS passes for automatic selection", buf, 8u);
     }
   }
 
-  v24 = objc_loadWeakRetained(&v26->_delegate);
-  [v24 valueAddedServiceAutomaticSelectionCoordinator:v26 didUpdatePasses:v27];
+  v24 = objc_loadWeakRetained(&selfCopy->_delegate);
+  [v24 valueAddedServiceAutomaticSelectionCoordinator:selfCopy didUpdatePasses:dictionary2];
 
   v25 = *MEMORY[0x277D85DE8];
 }

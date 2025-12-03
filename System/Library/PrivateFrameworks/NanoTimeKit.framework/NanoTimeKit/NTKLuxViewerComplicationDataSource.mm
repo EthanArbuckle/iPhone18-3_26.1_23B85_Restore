@@ -1,20 +1,20 @@
 @interface NTKLuxViewerComplicationDataSource
-+ (BOOL)acceptsComplicationType:(unint64_t)a3 forDevice:(id)a4;
-- (NTKLuxViewerComplicationDataSource)initWithComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5;
++ (BOOL)acceptsComplicationType:(unint64_t)type forDevice:(id)device;
+- (NTKLuxViewerComplicationDataSource)initWithComplication:(id)complication family:(int64_t)family forDevice:(id)device;
 - (id)_currentTimelineEntry;
 - (id)alwaysOnTemplate;
 - (id)currentSwitcherTemplate;
 - (void)dealloc;
-- (void)getCurrentTimelineEntryWithHandler:(id)a3;
+- (void)getCurrentTimelineEntryWithHandler:(id)handler;
 @end
 
 @implementation NTKLuxViewerComplicationDataSource
 
-- (NTKLuxViewerComplicationDataSource)initWithComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5
+- (NTKLuxViewerComplicationDataSource)initWithComplication:(id)complication family:(int64_t)family forDevice:(id)device
 {
   v6.receiver = self;
   v6.super_class = NTKLuxViewerComplicationDataSource;
-  return [(CLKCComplicationDataSource *)&v6 initWithComplication:a3 family:a4 forDevice:a5];
+  return [(CLKCComplicationDataSource *)&v6 initWithComplication:complication family:family forDevice:device];
 }
 
 - (void)dealloc
@@ -26,24 +26,24 @@
 
 - (id)currentSwitcherTemplate
 {
-  v2 = [(NTKLuxViewerComplicationDataSource *)self _currentTimelineEntry];
-  v3 = [v2 complicationTemplate];
+  _currentTimelineEntry = [(NTKLuxViewerComplicationDataSource *)self _currentTimelineEntry];
+  complicationTemplate = [_currentTimelineEntry complicationTemplate];
 
-  return v3;
+  return complicationTemplate;
 }
 
-- (void)getCurrentTimelineEntryWithHandler:(id)a3
+- (void)getCurrentTimelineEntryWithHandler:(id)handler
 {
-  v5 = a3;
-  v6 = [(NTKLuxViewerComplicationDataSource *)self _currentTimelineEntry];
-  (*(a3 + 2))(v5, v6);
+  handlerCopy = handler;
+  _currentTimelineEntry = [(NTKLuxViewerComplicationDataSource *)self _currentTimelineEntry];
+  (*(handler + 2))(handlerCopy, _currentTimelineEntry);
 }
 
-+ (BOOL)acceptsComplicationType:(unint64_t)a3 forDevice:(id)a4
++ (BOOL)acceptsComplicationType:(unint64_t)type forDevice:(id)device
 {
-  if (a3 == 50)
+  if (type == 50)
   {
-    return NTKInternalBuild(a1, a2, 50, a4);
+    return NTKInternalBuild(self, a2, 50, device);
   }
 
   else
@@ -56,9 +56,9 @@
 {
   v3 = +[NTKLuxViewerComplicationEntryModel tritiumModel];
   v4 = [v3 entryForComplicationFamily:{-[CLKCComplicationDataSource family](self, "family")}];
-  v5 = [v4 complicationTemplate];
+  complicationTemplate = [v4 complicationTemplate];
 
-  return v5;
+  return complicationTemplate;
 }
 
 - (id)_currentTimelineEntry

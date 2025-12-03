@@ -1,52 +1,52 @@
 @interface NPKProtoPhotosForFamilyMembersWithDSIDsResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addFamilyPhotos:(id)a3;
-- (void)addFamilyPhotosIDs:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addFamilyPhotos:(id)photos;
+- (void)addFamilyPhotosIDs:(id)ds;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoPhotosForFamilyMembersWithDSIDsResponse
 
-- (void)addFamilyPhotosIDs:(id)a3
+- (void)addFamilyPhotosIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   familyPhotosIDs = self->_familyPhotosIDs;
-  v8 = v4;
+  v8 = dsCopy;
   if (!familyPhotosIDs)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_familyPhotosIDs;
     self->_familyPhotosIDs = v6;
 
-    v4 = v8;
+    dsCopy = v8;
     familyPhotosIDs = self->_familyPhotosIDs;
   }
 
-  [(NSMutableArray *)familyPhotosIDs addObject:v4];
+  [(NSMutableArray *)familyPhotosIDs addObject:dsCopy];
 }
 
-- (void)addFamilyPhotos:(id)a3
+- (void)addFamilyPhotos:(id)photos
 {
-  v4 = a3;
+  photosCopy = photos;
   familyPhotos = self->_familyPhotos;
-  v8 = v4;
+  v8 = photosCopy;
   if (!familyPhotos)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_familyPhotos;
     self->_familyPhotos = v6;
 
-    v4 = v8;
+    photosCopy = v8;
     familyPhotos = self->_familyPhotos;
   }
 
-  [(NSMutableArray *)familyPhotos addObject:v4];
+  [(NSMutableArray *)familyPhotos addObject:photosCopy];
 }
 
 - (id)description
@@ -55,40 +55,40 @@
   v8.receiver = self;
   v8.super_class = NPKProtoPhotosForFamilyMembersWithDSIDsResponse;
   v4 = [(NPKProtoPhotosForFamilyMembersWithDSIDsResponse *)&v8 description];
-  v5 = [(NPKProtoPhotosForFamilyMembersWithDSIDsResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoPhotosForFamilyMembersWithDSIDsResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithBool:self->_success];
-    [v3 setObject:v4 forKey:@"success"];
+    [dictionary setObject:v4 forKey:@"success"];
   }
 
   familyPhotosIDs = self->_familyPhotosIDs;
   if (familyPhotosIDs)
   {
-    [v3 setObject:familyPhotosIDs forKey:@"familyPhotosIDs"];
+    [dictionary setObject:familyPhotosIDs forKey:@"familyPhotosIDs"];
   }
 
   familyPhotos = self->_familyPhotos;
   if (familyPhotos)
   {
-    [v3 setObject:familyPhotos forKey:@"familyPhotos"];
+    [dictionary setObject:familyPhotos forKey:@"familyPhotos"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     success = self->_success;
@@ -162,23 +162,23 @@
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[24] = self->_success;
-    v4[28] |= 1u;
+    toCopy[24] = self->_success;
+    toCopy[28] |= 1u;
   }
 
-  v13 = v4;
+  v13 = toCopy;
   if ([(NPKProtoPhotosForFamilyMembersWithDSIDsResponse *)self familyPhotosIDsCount])
   {
     [v13 clearFamilyPhotosIDs];
-    v5 = [(NPKProtoPhotosForFamilyMembersWithDSIDsResponse *)self familyPhotosIDsCount];
-    if (v5)
+    familyPhotosIDsCount = [(NPKProtoPhotosForFamilyMembersWithDSIDsResponse *)self familyPhotosIDsCount];
+    if (familyPhotosIDsCount)
     {
-      v6 = v5;
+      v6 = familyPhotosIDsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(NPKProtoPhotosForFamilyMembersWithDSIDsResponse *)self familyPhotosIDsAtIndex:i];
@@ -190,10 +190,10 @@
   if ([(NPKProtoPhotosForFamilyMembersWithDSIDsResponse *)self familyPhotosCount])
   {
     [v13 clearFamilyPhotos];
-    v9 = [(NPKProtoPhotosForFamilyMembersWithDSIDsResponse *)self familyPhotosCount];
-    if (v9)
+    familyPhotosCount = [(NPKProtoPhotosForFamilyMembersWithDSIDsResponse *)self familyPhotosCount];
+    if (familyPhotosCount)
     {
-      v10 = v9;
+      v10 = familyPhotosCount;
       for (j = 0; j != v10; ++j)
       {
         v12 = [(NPKProtoPhotosForFamilyMembersWithDSIDsResponse *)self familyPhotosAtIndex:j];
@@ -203,10 +203,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -234,7 +234,7 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v25 + 1) + 8 * v11) copyWithZone:a3];
+        v12 = [*(*(&v25 + 1) + 8 * v11) copyWithZone:zone];
         [v6 addFamilyPhotosIDs:v12];
 
         ++v11;
@@ -267,7 +267,7 @@
           objc_enumerationMutation(v13);
         }
 
-        v18 = [*(*(&v21 + 1) + 8 * v17) copyWithZone:{a3, v21}];
+        v18 = [*(*(&v21 + 1) + 8 * v17) copyWithZone:{zone, v21}];
         [v6 addFamilyPhotos:v18];
 
         ++v17;
@@ -284,26 +284,26 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_9;
   }
 
-  v5 = *(v4 + 28);
+  v5 = *(equalCopy + 28);
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0)
+    if ((*(equalCopy + 28) & 1) == 0)
     {
       goto LABEL_9;
     }
 
-    v5 = *(v4 + 24);
+    v5 = *(equalCopy + 24);
     if (self->_success)
     {
-      if (*(v4 + 24))
+      if (*(equalCopy + 24))
       {
         goto LABEL_4;
       }
@@ -321,13 +321,13 @@ LABEL_9:
 
 LABEL_4:
   familyPhotosIDs = self->_familyPhotosIDs;
-  if (familyPhotosIDs | *(v4 + 2) && ![(NSMutableArray *)familyPhotosIDs isEqual:?])
+  if (familyPhotosIDs | *(equalCopy + 2) && ![(NSMutableArray *)familyPhotosIDs isEqual:?])
   {
     goto LABEL_9;
   }
 
   familyPhotos = self->_familyPhotos;
-  if (familyPhotos | *(v4 + 1))
+  if (familyPhotos | *(equalCopy + 1))
   {
     v8 = [(NSMutableArray *)familyPhotos isEqual:?];
   }
@@ -358,14 +358,14 @@ LABEL_10:
   return v4 ^ [(NSMutableArray *)self->_familyPhotos hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 28))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 28))
   {
-    self->_success = *(v4 + 24);
+    self->_success = *(fromCopy + 24);
     *&self->_has |= 1u;
   }
 
@@ -373,7 +373,7 @@ LABEL_10:
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = *(v4 + 2);
+  v6 = *(fromCopy + 2);
   v7 = [v6 countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v7)
   {

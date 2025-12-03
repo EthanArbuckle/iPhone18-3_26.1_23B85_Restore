@@ -1,9 +1,9 @@
 @interface PCCGroupJob
-- (PCCGroupJob)initWithID:(id)a3 forTarget:(id)a4 options:(id)a5;
+- (PCCGroupJob)initWithID:(id)d forTarget:(id)target options:(id)options;
 - (id)description;
 - (id)result;
 - (void)prepareNext;
-- (void)registerResult:(BOOL)a3 error:(id)a4;
+- (void)registerResult:(BOOL)result error:(id)error;
 @end
 
 @implementation PCCGroupJob
@@ -19,23 +19,23 @@
   return errObj;
 }
 
-- (PCCGroupJob)initWithID:(id)a3 forTarget:(id)a4 options:(id)a5
+- (PCCGroupJob)initWithID:(id)d forTarget:(id)target options:(id)options
 {
   v58[6] = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  optionsCopy = options;
   v50.receiver = self;
   v50.super_class = PCCGroupJob;
-  v9 = [(PCCJob *)&v50 initWithID:a3 forTarget:a4 options:v8];
+  v9 = [(PCCJob *)&v50 initWithID:d forTarget:target options:optionsCopy];
   if (v9)
   {
     v10 = objc_opt_new();
     log_sets = v9->_log_sets;
     v9->_log_sets = v10;
 
-    v12 = [v8 objectForKeyedSubscript:@"allFiles"];
-    v13 = [v12 BOOLValue];
+    v12 = [optionsCopy objectForKeyedSubscript:@"allFiles"];
+    bOOLValue = [v12 BOOLValue];
 
-    if (v13)
+    if (bOOLValue)
     {
       v14 = @"xfer-all";
     }
@@ -46,26 +46,26 @@
     }
 
     objc_storeStrong(&v9->_group_type, v14);
-    v15 = [v8 objectForKeyedSubscript:@"<preserve>"];
-    v16 = [v15 BOOLValue];
+    v15 = [optionsCopy objectForKeyedSubscript:@"<preserve>"];
+    bOOLValue2 = [v15 BOOLValue];
 
     v17 = OSAIsRSDDisplay() ^ 1;
-    v18 = v17 & v16;
-    v19 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v19 addSuiteNamed:@"com.apple.osanalytics.factoryproxysync"];
-    v49 = v8;
+    v18 = v17 & bOOLValue2;
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults addSuiteNamed:@"com.apple.osanalytics.factoryproxysync"];
+    v49 = optionsCopy;
     if (OSAIsConfiguredRSDDevice())
     {
-      v20 = [v19 objectForKey:@"autoCleanupProxiedFiles"];
+      v20 = [standardUserDefaults objectForKey:@"autoCleanupProxiedFiles"];
 
       if (v20)
       {
-        v17 = [v19 BOOLForKey:@"autoCleanupProxiedFiles"];
+        v17 = [standardUserDefaults BOOLForKey:@"autoCleanupProxiedFiles"];
         v18 = v17 ^ 1;
       }
     }
 
-    v48 = v19;
+    v48 = standardUserDefaults;
     v21 = v9->_log_sets;
     v57[0] = @"routing";
     v57[1] = @"extensions";
@@ -74,8 +74,8 @@
     v58[2] = @"log-aggregated";
     v57[2] = @"<sort>";
     v57[3] = @"<exempt>";
-    [MEMORY[0x277CCABB0] numberWithBool:v13];
-    v22 = v47 = v13;
+    [MEMORY[0x277CCABB0] numberWithBool:bOOLValue];
+    v22 = v47 = bOOLValue;
     v58[3] = v22;
     v57[4] = @"<cleanup>";
     [MEMORY[0x277CCABB0] numberWithBool:v17];
@@ -131,15 +131,15 @@
     }
 
     v38 = objc_opt_new();
-    v39 = [MEMORY[0x277D36B80] sharedInstance];
-    v40 = [v39 pathSubmission];
-    [v38 addObject:v40];
+    mEMORY[0x277D36B80] = [MEMORY[0x277D36B80] sharedInstance];
+    pathSubmission = [mEMORY[0x277D36B80] pathSubmission];
+    [v38 addObject:pathSubmission];
 
     if ([MEMORY[0x277D36B68] isDataVaultEnabled])
     {
-      v41 = [MEMORY[0x277D36B80] sharedInstance];
-      v42 = [v41 pathSubmissionDataVault];
-      [v38 addObject:v42];
+      mEMORY[0x277D36B80]2 = [MEMORY[0x277D36B80] sharedInstance];
+      pathSubmissionDataVault = [mEMORY[0x277D36B80]2 pathSubmissionDataVault];
+      [v38 addObject:pathSubmissionDataVault];
     }
 
     v9->_total_count = [MEMORY[0x277D36B68] scanLogs:v9->_log_sets from:v38];
@@ -153,7 +153,7 @@
 
     [(PCCGroupJob *)v9 prepareNext];
 
-    v8 = v49;
+    optionsCopy = v49;
   }
 
   v44 = *MEMORY[0x277D85DE8];
@@ -166,8 +166,8 @@
   v4 = [(PCCJob *)self jid];
   success_count = self->_success_count;
   total_count = self->_total_count;
-  v7 = [(OSALog *)self->super._package filepath];
-  v8 = [v3 stringWithFormat:@"group %@ %d/%d %@", v4, success_count, total_count, v7];
+  filepath = [(OSALog *)self->super._package filepath];
+  v8 = [v3 stringWithFormat:@"group %@ %d/%d %@", v4, success_count, total_count, filepath];
 
   return v8;
 }
@@ -204,16 +204,16 @@ LABEL_3:
       if (v7)
       {
         v8 = [v5 objectForKeyedSubscript:@"<metadata>"];
-        v9 = [v8 BOOLValue];
+        bOOLValue = [v8 BOOLValue];
       }
 
       else
       {
-        v9 = 1;
+        bOOLValue = 1;
       }
 
       v58[0] = @"<metadata>";
-      v42 = [MEMORY[0x277CCABB0] numberWithBool:v9];
+      v42 = [MEMORY[0x277CCABB0] numberWithBool:bOOLValue];
       v59[0] = v42;
       v58[1] = @"<exempt>";
       v10 = MEMORY[0x277CCABB0];
@@ -234,7 +234,7 @@ LABEL_3:
 
       while ([v6 count])
       {
-        v20 = [v6 firstObject];
+        firstObject = [v6 firstObject];
         [v6 removeObjectAtIndex:0];
         v56[0] = @"current";
         v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_success_count + 1];
@@ -250,7 +250,7 @@ LABEL_3:
         v57[3] = v24;
         v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v57 forKeys:v56 count:4];
 
-        [(PCCJob *)self packageLog:v20 forRouting:v43 info:v25 options:v19];
+        [(PCCJob *)self packageLog:firstObject forRouting:v43 info:v25 options:v19];
         if (self->super._package)
         {
 
@@ -260,7 +260,7 @@ LABEL_3:
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          *v51 = v20;
+          *v51 = firstObject;
           _os_log_impl(&dword_25D12D000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "unable to package %@", buf, 0xCu);
         }
 
@@ -329,18 +329,18 @@ LABEL_3:
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerResult:(BOOL)a3 error:(id)a4
+- (void)registerResult:(BOOL)result error:(id)error
 {
-  v5 = a3;
+  resultCopy = result;
   v14 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  errorCopy = error;
   package = self->super._package;
   if (!package)
   {
     [PCCGroupJob registerResult:error:];
   }
 
-  if (v5)
+  if (resultCopy)
   {
     [(OSALog *)package retire:"transferred"];
     self->_consecutive_error_count = 0;
@@ -366,7 +366,7 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  objc_storeStrong(&self->super._errObj, a4);
+  objc_storeStrong(&self->super._errObj, error);
   v12 = self->super._package;
   self->super._package = 0;
 

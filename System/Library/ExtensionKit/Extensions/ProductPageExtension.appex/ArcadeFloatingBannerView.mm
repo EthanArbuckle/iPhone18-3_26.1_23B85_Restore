@@ -1,13 +1,13 @@
 @interface ArcadeFloatingBannerView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC20ProductPageExtension24ArcadeFloatingBannerView)initWithCoder:(id)a3;
-- (_TtC20ProductPageExtension24ArcadeFloatingBannerView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC20ProductPageExtension24ArcadeFloatingBannerView)initWithCoder:(id)coder;
+- (_TtC20ProductPageExtension24ArcadeFloatingBannerView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation ArcadeFloatingBannerView
 
-- (_TtC20ProductPageExtension24ArcadeFloatingBannerView)initWithCoder:(id)a3
+- (_TtC20ProductPageExtension24ArcadeFloatingBannerView)initWithCoder:(id)coder
 {
   result = sub_10077156C();
   __break(1u);
@@ -25,14 +25,14 @@
   [v3 setFrame:{v4.receiver, v4.super_class}];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension24ArcadeFloatingBannerView_lockupView);
-  v4 = self;
-  [(ArcadeFloatingBannerView *)v4 layoutMargins];
+  selfCopy = self;
+  [(ArcadeFloatingBannerView *)selfCopy layoutMargins];
   sub_100770ACC();
   [v3 sizeThatFits:?];
-  [(ArcadeFloatingBannerView *)v4 layoutMargins];
+  [(ArcadeFloatingBannerView *)selfCopy layoutMargins];
   sub_100770AEC();
   v6 = v5;
   v8 = v7;
@@ -44,7 +44,7 @@
   return result;
 }
 
-- (_TtC20ProductPageExtension24ArcadeFloatingBannerView)initWithFrame:(CGRect)a3
+- (_TtC20ProductPageExtension24ArcadeFloatingBannerView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

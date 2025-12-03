@@ -1,6 +1,6 @@
 @interface ADJasperColorInFieldCalibrationPipelineParameters
 + (id)defaults;
-- (id)initForDevice:(id)a3;
+- (id)initForDevice:(id)device;
 @end
 
 @implementation ADJasperColorInFieldCalibrationPipelineParameters
@@ -27,12 +27,12 @@
   return v3;
 }
 
-- (id)initForDevice:(id)a3
+- (id)initForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v17.receiver = self;
   v17.super_class = ADJasperColorInFieldCalibrationPipelineParameters;
-  v5 = [(ADPipelineParameters *)&v17 initForDevice:v4];
+  v5 = [(ADPipelineParameters *)&v17 initForDevice:deviceCopy];
   if (v5)
   {
     v6 = objc_opt_new();
@@ -50,14 +50,14 @@
     *(v5 + 12) = 1065353216;
     *(v5 + 13) = 1065353216;
     *(v5 + 33) = 0;
-    v11 = [objc_opt_class() defaults];
-    *(v5 + 32) = [v11 BOOLForKey:kADDeviceConfigurationKeyJasperColorInFieldForceRun];
+    defaults = [objc_opt_class() defaults];
+    *(v5 + 32) = [defaults BOOLForKey:kADDeviceConfigurationKeyJasperColorInFieldForceRun];
 
-    v12 = [objc_opt_class() defaults];
-    *(v5 + 33) = [v12 BOOLForKey:kADDeviceConfigurationKeyJasperColorInFieldDisableSDF];
+    defaults2 = [objc_opt_class() defaults];
+    *(v5 + 33) = [defaults2 BOOLForKey:kADDeviceConfigurationKeyJasperColorInFieldDisableSDF];
 
-    v13 = [objc_opt_class() defaults];
-    *(v5 + 15) = [v13 integerForKey:kADDeviceConfigurationKeyJasperColorInFieldSDFHistorySize];
+    defaults3 = [objc_opt_class() defaults];
+    *(v5 + 15) = [defaults3 integerForKey:kADDeviceConfigurationKeyJasperColorInFieldSDFHistorySize];
 
     *(v5 + 14) = 1056964608;
     *(v5 + 9) = 10;

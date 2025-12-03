@@ -1,5 +1,5 @@
 @interface ASVHitTestResult
-- (ASVHitTestResult)initWithType:(int64_t)a3 worldPosition:imagePoint:assetPosition:cameraPosition:;
+- (ASVHitTestResult)initWithType:(int64_t)type worldPosition:imagePoint:assetPosition:cameraPosition:;
 - (BOOL)isSynthesizedVeritcalPlane;
 - (double)cameraToPosition;
 - (float)distanceFromAsset;
@@ -8,7 +8,7 @@
 
 @implementation ASVHitTestResult
 
-- (ASVHitTestResult)initWithType:(int64_t)a3 worldPosition:imagePoint:assetPosition:cameraPosition:
+- (ASVHitTestResult)initWithType:(int64_t)type worldPosition:imagePoint:assetPosition:cameraPosition:
 {
   v11 = v5;
   v12 = v6;
@@ -19,7 +19,7 @@
   result = [(ASVHitTestResult *)&v13 init];
   if (result)
   {
-    result->_type = a3;
+    result->_type = type;
     *result->_imagePoint = v7;
     *result->_worldPosition = v10;
     *result->_assetPosition = v11;
@@ -55,9 +55,9 @@
 
 - (double)cameraToPosition
 {
-  [a1 worldPosition];
+  [self worldPosition];
   v5 = v2;
-  [a1 cameraPosition];
+  [self cameraPosition];
   *&result = vsubq_f32(v5, v3).u64[0];
   return result;
 }

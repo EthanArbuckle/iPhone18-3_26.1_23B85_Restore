@@ -4,7 +4,7 @@
 - (PKAppleAccountManager)init;
 - (id)_aidaAccount;
 - (id)_primaryAppleAccount;
-- (void)_renewAppleAccountSilently:(BOOL)a3 completion:(id)a4;
+- (void)_renewAppleAccountSilently:(BOOL)silently completion:(id)completion;
 @end
 
 @implementation PKAppleAccountManager
@@ -31,49 +31,49 @@ void __39__PKAppleAccountManager_sharedInstance__block_invoke()
 - (PKAppleAccountInformation)appleAccountInformation
 {
   v3 = objc_alloc_init(PKAppleAccountInformation);
-  v4 = [(PKAppleAccountManager *)self _aidaAccount];
-  v5 = [(PKAppleAccountManager *)self _primaryAppleAccount];
-  v6 = [MEMORY[0x1E698DC80] sharedInstance];
-  v7 = [v6 primaryAuthKitAccount];
-  v8 = [v6 altDSIDForAccount:v7];
+  _aidaAccount = [(PKAppleAccountManager *)self _aidaAccount];
+  _primaryAppleAccount = [(PKAppleAccountManager *)self _primaryAppleAccount];
+  mEMORY[0x1E698DC80] = [MEMORY[0x1E698DC80] sharedInstance];
+  primaryAuthKitAccount = [mEMORY[0x1E698DC80] primaryAuthKitAccount];
+  v8 = [mEMORY[0x1E698DC80] altDSIDForAccount:primaryAuthKitAccount];
   [(PKAppleAccountInformation *)v3 setAidaAlternateDSID:v8];
 
-  v9 = [v4 aida_tokenForService:@"com.apple.gs.pb.auth"];
+  v9 = [_aidaAccount aida_tokenForService:@"com.apple.gs.pb.auth"];
   [(PKAppleAccountInformation *)v3 setAidaToken:v9];
 
-  v10 = [v5 username];
-  [(PKAppleAccountInformation *)v3 setAppleID:v10];
+  username = [_primaryAppleAccount username];
+  [(PKAppleAccountInformation *)v3 setAppleID:username];
 
-  v11 = [v5 aa_personID];
-  [(PKAppleAccountInformation *)v3 setAaDSID:v11];
+  aa_personID = [_primaryAppleAccount aa_personID];
+  [(PKAppleAccountInformation *)v3 setAaDSID:aa_personID];
 
-  v12 = [v5 aa_altDSID];
-  [(PKAppleAccountInformation *)v3 setAaAlternateDSID:v12];
+  aa_altDSID = [_primaryAppleAccount aa_altDSID];
+  [(PKAppleAccountInformation *)v3 setAaAlternateDSID:aa_altDSID];
 
-  -[PKAppleAccountInformation setIsSandboxAccount:](v3, "setIsSandboxAccount:", [v5 aa_isSandboxAccount]);
-  v13 = [v5 aa_firstName];
-  [(PKAppleAccountInformation *)v3 setFirstName:v13];
+  -[PKAppleAccountInformation setIsSandboxAccount:](v3, "setIsSandboxAccount:", [_primaryAppleAccount aa_isSandboxAccount]);
+  aa_firstName = [_primaryAppleAccount aa_firstName];
+  [(PKAppleAccountInformation *)v3 setFirstName:aa_firstName];
 
-  v14 = [v5 aa_lastName];
-  [(PKAppleAccountInformation *)v3 setLastName:v14];
+  aa_lastName = [_primaryAppleAccount aa_lastName];
+  [(PKAppleAccountInformation *)v3 setLastName:aa_lastName];
 
-  v15 = [v5 aa_primaryEmail];
-  [(PKAppleAccountInformation *)v3 setPrimaryEmailAddress:v15];
+  aa_primaryEmail = [_primaryAppleAccount aa_primaryEmail];
+  [(PKAppleAccountInformation *)v3 setPrimaryEmailAddress:aa_primaryEmail];
 
-  v16 = [v5 creationDate];
-  [(PKAppleAccountInformation *)v3 setCreationDate:v16];
+  creationDate = [_primaryAppleAccount creationDate];
+  [(PKAppleAccountInformation *)v3 setCreationDate:creationDate];
 
-  -[PKAppleAccountInformation setIsManagedAppleAccount:](v3, "setIsManagedAppleAccount:", [v5 aa_isManagedAppleID]);
-  -[PKAppleAccountInformation setIsWalletEnabledOnManagedAppleAccount:](v3, "setIsWalletEnabledOnManagedAppleAccount:", [v5 isEnabledForDataclass:*MEMORY[0x1E6959700]]);
-  v17 = [v5 aa_ageCategory];
-  if (v17 > 9)
+  -[PKAppleAccountInformation setIsManagedAppleAccount:](v3, "setIsManagedAppleAccount:", [_primaryAppleAccount aa_isManagedAppleID]);
+  -[PKAppleAccountInformation setIsWalletEnabledOnManagedAppleAccount:](v3, "setIsWalletEnabledOnManagedAppleAccount:", [_primaryAppleAccount isEnabledForDataclass:*MEMORY[0x1E6959700]]);
+  aa_ageCategory = [_primaryAppleAccount aa_ageCategory];
+  if (aa_ageCategory > 9)
   {
     v18 = 1;
   }
 
   else
   {
-    v18 = qword_1ADB9A6B8[v17];
+    v18 = qword_1ADB9A6B8[aa_ageCategory];
   }
 
   [(PKAppleAccountInformation *)v3 setAgeCategory:v18];
@@ -98,18 +98,18 @@ void __39__PKAppleAccountManager_sharedInstance__block_invoke()
 
 - (id)_aidaAccount
 {
-  v2 = [(PKAppleAccountManager *)self accountStore];
-  v3 = [v2 aida_accountForPrimaryiCloudAccount];
+  accountStore = [(PKAppleAccountManager *)self accountStore];
+  aida_accountForPrimaryiCloudAccount = [accountStore aida_accountForPrimaryiCloudAccount];
 
-  return v3;
+  return aida_accountForPrimaryiCloudAccount;
 }
 
 - (id)_primaryAppleAccount
 {
-  v2 = [(PKAppleAccountManager *)self accountStore];
-  v3 = [v2 aa_primaryAppleAccount];
+  accountStore = [(PKAppleAccountManager *)self accountStore];
+  aa_primaryAppleAccount = [accountStore aa_primaryAppleAccount];
 
-  return v3;
+  return aa_primaryAppleAccount;
 }
 
 - (PKAppleAccountManager)init
@@ -127,25 +127,25 @@ void __39__PKAppleAccountManager_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)_renewAppleAccountSilently:(BOOL)a3 completion:(id)a4
+- (void)_renewAppleAccountSilently:(BOOL)silently completion:(id)completion
 {
-  v4 = a3;
+  silentlyCopy = silently;
   v24[3] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(PKAppleAccountManager *)self _aidaAccount];
+  completionCopy = completion;
+  _aidaAccount = [(PKAppleAccountManager *)self _aidaAccount];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __63__PKAppleAccountManager__renewAppleAccountSilently_completion___block_invoke;
   aBlock[3] = &unk_1E79D1960;
-  v8 = v6;
+  v8 = completionCopy;
   aBlock[4] = self;
   v21 = v8;
   v9 = _Block_copy(aBlock);
   v10 = PKLogFacilityTypeGetObject(7uLL);
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
-  if (v7)
+  if (_aidaAccount)
   {
-    if (v4)
+    if (silentlyCopy)
     {
       if (v11)
       {
@@ -168,15 +168,15 @@ LABEL_11:
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v22 count:1];
     v24[0] = v16;
     v23[1] = *MEMORY[0x1E6959AA8];
-    v17 = [MEMORY[0x1E696AD98] numberWithInt:v4 ^ 1];
+    v17 = [MEMORY[0x1E696AD98] numberWithInt:silentlyCopy ^ 1];
     v24[1] = v17;
     v23[2] = *MEMORY[0x1E6959AA0];
-    v18 = [MEMORY[0x1E696AD98] numberWithBool:v4];
+    v18 = [MEMORY[0x1E696AD98] numberWithBool:silentlyCopy];
     v24[2] = v18;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:v23 count:3];
 
-    v15 = [(PKAppleAccountManager *)self accountStore];
-    [v15 renewCredentialsForAccount:v7 options:v14 completion:v9];
+    accountStore = [(PKAppleAccountManager *)self accountStore];
+    [accountStore renewCredentialsForAccount:_aidaAccount options:v14 completion:v9];
     goto LABEL_13;
   }
 
@@ -186,12 +186,12 @@ LABEL_11:
     _os_log_impl(&dword_1AD337000, v10, OS_LOG_TYPE_DEFAULT, "Device doesn't have a Grandslam account, renewing the Apple Account to create one", v19, 2u);
   }
 
-  v13 = [(PKAppleAccountManager *)self _primaryAppleAccount];
-  if (v13)
+  _primaryAppleAccount = [(PKAppleAccountManager *)self _primaryAppleAccount];
+  if (_primaryAppleAccount)
   {
-    v14 = v13;
-    v15 = [(PKAppleAccountManager *)self accountStore];
-    [v15 renewCredentialsForAccount:v14 force:1 reason:0 completion:v9];
+    v14 = _primaryAppleAccount;
+    accountStore = [(PKAppleAccountManager *)self accountStore];
+    [accountStore renewCredentialsForAccount:v14 force:1 reason:0 completion:v9];
 LABEL_13:
 
     goto LABEL_14;

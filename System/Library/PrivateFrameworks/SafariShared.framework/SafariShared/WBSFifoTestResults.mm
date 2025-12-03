@@ -1,26 +1,26 @@
 @interface WBSFifoTestResults
-+ (BOOL)createFifoAtFileURL:(id)a3 error:(id *)a4;
-+ (id)readReportFromFifoHandle:(id)a3 error:(id *)a4;
-- (WBSFifoTestResults)initWithFifoURL:(id)a3 error:(id *)a4;
-- (void)_writeReportToFifo:(id)a3;
-- (void)reportActualResults:(id)a3 expectedResults:(id)a4 expectedResultsName:(id)a5 descriptiveResultsName:(id)a6 uniformTypeIdentifier:(id)a7 forStage:(id)a8 forTest:(id)a9 inBundle:(id)a10;
-- (void)reportError:(id)a3 descriptiveResultsName:(id)a4 forStage:(id)a5 forTest:(id)a6 inBundle:(id)a7;
-- (void)reportPerformance:(id)a3 forStage:(id)a4 forTest:(id)a5 inBundle:(id)a6;
-- (void)reportResults:(id)a3 resultsName:(id)a4 descriptiveResultsName:(id)a5 uniformTypeIdentifier:(id)a6 forStage:(id)a7 forTest:(id)a8 inBundle:(id)a9;
++ (BOOL)createFifoAtFileURL:(id)l error:(id *)error;
++ (id)readReportFromFifoHandle:(id)handle error:(id *)error;
+- (WBSFifoTestResults)initWithFifoURL:(id)l error:(id *)error;
+- (void)_writeReportToFifo:(id)fifo;
+- (void)reportActualResults:(id)results expectedResults:(id)expectedResults expectedResultsName:(id)name descriptiveResultsName:(id)resultsName uniformTypeIdentifier:(id)identifier forStage:(id)stage forTest:(id)test inBundle:(id)self0;
+- (void)reportError:(id)error descriptiveResultsName:(id)name forStage:(id)stage forTest:(id)test inBundle:(id)bundle;
+- (void)reportPerformance:(id)performance forStage:(id)stage forTest:(id)test inBundle:(id)bundle;
+- (void)reportResults:(id)results resultsName:(id)name descriptiveResultsName:(id)resultsName uniformTypeIdentifier:(id)identifier forStage:(id)stage forTest:(id)test inBundle:(id)bundle;
 @end
 
 @implementation WBSFifoTestResults
 
-- (WBSFifoTestResults)initWithFifoURL:(id)a3 error:(id *)a4
+- (WBSFifoTestResults)initWithFifoURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v19.receiver = self;
   v19.super_class = WBSFifoTestResults;
   v7 = [(WBSFifoTestResults *)&v19 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_fifoURL, a3);
+    objc_storeStrong(&v7->_fifoURL, l);
     v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.SafariShared.WBSFifoTestResults.%@.%p.internalQueue", objc_opt_class(), v8];
     v10 = dispatch_queue_create([v9 UTF8String], 0);
     internalQueue = v8->_internalQueue;
@@ -33,7 +33,7 @@
     block[3] = &unk_1E7FB6E30;
     v13 = v8;
     v17 = v13;
-    v18 = v6;
+    v18 = lCopy;
     dispatch_async(v12, block);
     v14 = v13;
   }
@@ -72,13 +72,13 @@ void __44__WBSFifoTestResults_initWithFifoURL_error___block_invoke(uint64_t a1)
   }
 }
 
-+ (BOOL)createFifoAtFileURL:(id)a3 error:(id *)a4
++ (BOOL)createFifoAtFileURL:(id)l error:(id *)error
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (([v5 isFileURL] & 1) == 0)
+  lCopy = l;
+  if (([lCopy isFileURL] & 1) == 0)
   {
-    if (!a4)
+    if (!error)
     {
 LABEL_8:
       v9 = 0;
@@ -88,29 +88,29 @@ LABEL_8:
     v17 = MEMORY[0x1E696ABC0];
     v18 = *MEMORY[0x1E696A798];
     v22 = *MEMORY[0x1E696A980];
-    v23[0] = v5;
+    v23[0] = lCopy;
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
     v14 = v17;
     v15 = v18;
     v16 = 45;
 LABEL_7:
-    *a4 = [v14 errorWithDomain:v15 code:v16 userInfo:v13];
+    *error = [v14 errorWithDomain:v15 code:v16 userInfo:v13];
 
     goto LABEL_8;
   }
 
-  v6 = [v5 path];
-  v7 = [v6 fileSystemRepresentation];
+  path = [lCopy path];
+  fileSystemRepresentation = [path fileSystemRepresentation];
 
-  v8 = mkfifo(v7, 0x180u);
+  v8 = mkfifo(fileSystemRepresentation, 0x180u);
   v9 = v8 == 0;
-  if (a4 && v8)
+  if (error && v8)
   {
     v10 = MEMORY[0x1E696ABC0];
     v11 = *MEMORY[0x1E696A798];
     v12 = *__error();
     v20 = *MEMORY[0x1E696A980];
-    v21 = v5;
+    v21 = lCopy;
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v21 forKeys:&v20 count:1];
     v14 = v10;
     v15 = v11;
@@ -123,16 +123,16 @@ LABEL_9:
   return v9;
 }
 
-+ (id)readReportFromFifoHandle:(id)a3 error:(id *)a4
++ (id)readReportFromFifoHandle:(id)handle error:(id *)error
 {
-  v5 = a3;
-  [v5 fileDescriptor];
+  handleCopy = handle;
+  [handleCopy fileDescriptor];
   if (WBSReadExactAmountOfBytesFromFileDescriptor() <= 0)
   {
-    if (a4)
+    if (error)
     {
       [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:57 userInfo:0];
-      *a4 = v8 = 0;
+      *error = v8 = 0;
     }
 
     else
@@ -143,11 +143,11 @@ LABEL_9:
 
   else
   {
-    [v5 fileDescriptor];
+    [handleCopy fileDescriptor];
     v6 = WBSReadExactAmountOfBytesFromFileDescriptorAsNSData();
     if (v6)
     {
-      v7 = [MEMORY[0x1E696AE40] propertyListWithData:v6 options:0 format:0 error:a4];
+      v7 = [MEMORY[0x1E696AE40] propertyListWithData:v6 options:0 format:0 error:error];
       if (v7)
       {
         v8 = [[WBSTestResultsReport alloc] initWithDictionaryRepresentation:v7];
@@ -159,10 +159,10 @@ LABEL_9:
       }
     }
 
-    else if (a4)
+    else if (error)
     {
       [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:57 userInfo:0];
-      *a4 = v8 = 0;
+      *error = v8 = 0;
     }
 
     else
@@ -174,14 +174,14 @@ LABEL_9:
   return v8;
 }
 
-- (void)_writeReportToFifo:(id)a3
+- (void)_writeReportToFifo:(id)fifo
 {
   if (self->_fifoHandle)
   {
     v4 = MEMORY[0x1E696AE40];
-    v5 = [a3 dictionaryRepresentation];
+    dictionaryRepresentation = [fifo dictionaryRepresentation];
     v12 = 0;
-    v6 = [v4 dataWithPropertyList:v5 format:200 options:0 error:&v12];
+    v6 = [v4 dataWithPropertyList:dictionaryRepresentation format:200 options:0 error:&v12];
     v7 = v12;
 
     if (v6)
@@ -223,15 +223,15 @@ LABEL_9:
   }
 }
 
-- (void)reportResults:(id)a3 resultsName:(id)a4 descriptiveResultsName:(id)a5 uniformTypeIdentifier:(id)a6 forStage:(id)a7 forTest:(id)a8 inBundle:(id)a9
+- (void)reportResults:(id)results resultsName:(id)name descriptiveResultsName:(id)resultsName uniformTypeIdentifier:(id)identifier forStage:(id)stage forTest:(id)test inBundle:(id)bundle
 {
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
-  v21 = [a3 copy];
+  nameCopy = name;
+  resultsNameCopy = resultsName;
+  identifierCopy = identifier;
+  stageCopy = stage;
+  testCopy = test;
+  bundleCopy = bundle;
+  v21 = [results copy];
   internalQueue = self->_internalQueue;
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
@@ -239,18 +239,18 @@ LABEL_9:
   v30[3] = &unk_1E7FB7280;
   v30[4] = self;
   v31 = v21;
-  v32 = v15;
-  v33 = v16;
-  v34 = v17;
-  v35 = v18;
-  v36 = v19;
-  v37 = v20;
-  v23 = v20;
-  v24 = v19;
-  v25 = v18;
-  v26 = v17;
-  v27 = v16;
-  v28 = v15;
+  v32 = nameCopy;
+  v33 = resultsNameCopy;
+  v34 = identifierCopy;
+  v35 = stageCopy;
+  v36 = testCopy;
+  v37 = bundleCopy;
+  v23 = bundleCopy;
+  v24 = testCopy;
+  v25 = stageCopy;
+  v26 = identifierCopy;
+  v27 = resultsNameCopy;
+  v28 = nameCopy;
   v29 = v21;
   dispatch_async(internalQueue, v30);
 }
@@ -262,17 +262,17 @@ void __119__WBSFifoTestResults_reportResults_resultsName_descriptiveResultsName_
   [v1 _writeReportToFifo:v2];
 }
 
-- (void)reportActualResults:(id)a3 expectedResults:(id)a4 expectedResultsName:(id)a5 descriptiveResultsName:(id)a6 uniformTypeIdentifier:(id)a7 forStage:(id)a8 forTest:(id)a9 inBundle:(id)a10
+- (void)reportActualResults:(id)results expectedResults:(id)expectedResults expectedResultsName:(id)name descriptiveResultsName:(id)resultsName uniformTypeIdentifier:(id)identifier forStage:(id)stage forTest:(id)test inBundle:(id)self0
 {
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
-  v21 = a10;
-  v22 = a4;
-  v23 = [a3 copy];
-  v24 = [v22 copy];
+  nameCopy = name;
+  resultsNameCopy = resultsName;
+  identifierCopy = identifier;
+  stageCopy = stage;
+  testCopy = test;
+  bundleCopy = bundle;
+  expectedResultsCopy = expectedResults;
+  v23 = [results copy];
+  v24 = [expectedResultsCopy copy];
 
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -282,18 +282,18 @@ void __119__WBSFifoTestResults_reportResults_resultsName_descriptiveResultsName_
   block[4] = self;
   v35 = v23;
   v36 = v24;
-  v37 = v16;
-  v38 = v17;
-  v39 = v18;
-  v40 = v19;
-  v41 = v20;
-  v42 = v21;
-  v26 = v21;
-  v27 = v20;
-  v28 = v19;
-  v29 = v18;
-  v30 = v17;
-  v31 = v16;
+  v37 = nameCopy;
+  v38 = resultsNameCopy;
+  v39 = identifierCopy;
+  v40 = stageCopy;
+  v41 = testCopy;
+  v42 = bundleCopy;
+  v26 = bundleCopy;
+  v27 = testCopy;
+  v28 = stageCopy;
+  v29 = identifierCopy;
+  v30 = resultsNameCopy;
+  v31 = nameCopy;
   v32 = v24;
   v33 = v23;
   dispatch_async(internalQueue, block);
@@ -306,12 +306,12 @@ void __149__WBSFifoTestResults_reportActualResults_expectedResults_expectedResul
   [v1 _writeReportToFifo:v2];
 }
 
-- (void)reportPerformance:(id)a3 forStage:(id)a4 forTest:(id)a5 inBundle:(id)a6
+- (void)reportPerformance:(id)performance forStage:(id)stage forTest:(id)test inBundle:(id)bundle
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [a3 copy];
+  stageCopy = stage;
+  testCopy = test;
+  bundleCopy = bundle;
+  v13 = [performance copy];
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -319,12 +319,12 @@ void __149__WBSFifoTestResults_reportActualResults_expectedResults_expectedResul
   block[3] = &unk_1E7FB72D0;
   block[4] = self;
   v20 = v13;
-  v21 = v10;
-  v22 = v11;
-  v23 = v12;
-  v15 = v12;
-  v16 = v11;
-  v17 = v10;
+  v21 = stageCopy;
+  v22 = testCopy;
+  v23 = bundleCopy;
+  v15 = bundleCopy;
+  v16 = testCopy;
+  v17 = stageCopy;
   v18 = v13;
   dispatch_async(internalQueue, block);
 }
@@ -336,29 +336,29 @@ void __66__WBSFifoTestResults_reportPerformance_forStage_forTest_inBundle___bloc
   [v1 _writeReportToFifo:v2];
 }
 
-- (void)reportError:(id)a3 descriptiveResultsName:(id)a4 forStage:(id)a5 forTest:(id)a6 inBundle:(id)a7
+- (void)reportError:(id)error descriptiveResultsName:(id)name forStage:(id)stage forTest:(id)test inBundle:(id)bundle
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  errorCopy = error;
+  nameCopy = name;
+  stageCopy = stage;
+  testCopy = test;
+  bundleCopy = bundle;
   internalQueue = self->_internalQueue;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __83__WBSFifoTestResults_reportError_descriptiveResultsName_forStage_forTest_inBundle___block_invoke;
   v23[3] = &unk_1E7FB72F8;
   v23[4] = self;
-  v24 = v12;
-  v25 = v13;
-  v26 = v14;
-  v27 = v15;
-  v28 = v16;
-  v18 = v16;
-  v19 = v15;
-  v20 = v14;
-  v21 = v13;
-  v22 = v12;
+  v24 = errorCopy;
+  v25 = nameCopy;
+  v26 = stageCopy;
+  v27 = testCopy;
+  v28 = bundleCopy;
+  v18 = bundleCopy;
+  v19 = testCopy;
+  v20 = stageCopy;
+  v21 = nameCopy;
+  v22 = errorCopy;
   dispatch_async(internalQueue, v23);
 }
 

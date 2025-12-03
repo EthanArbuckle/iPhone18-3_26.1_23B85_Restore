@@ -1,33 +1,33 @@
 @interface CRLiOSPencilTrayColorWell
-- (CRLiOSPencilTrayColorWell)initWithCoder:(id)a3;
-- (CRLiOSPencilTrayColorWell)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (CRLiOSPencilTrayColorWell)initWithCoder:(id)coder;
+- (CRLiOSPencilTrayColorWell)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (id)p_colorBulletOutlineColor;
 - (id)p_titleForColorPicker;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
-- (void)colorPickerViewController:(id)a3 didSelectColor:(id)a4 continuously:(BOOL)a5;
-- (void)colorPickerViewControllerDidFinish:(id)a3;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
+- (void)colorPickerViewController:(id)controller didSelectColor:(id)color continuously:(BOOL)continuously;
+- (void)colorPickerViewControllerDidFinish:(id)finish;
 - (void)layoutSubviews;
 - (void)p_commonInit;
 - (void)p_installBackgroundView;
-- (void)p_presentColorPicker:(id)a3 withCompletion:(id)a4;
+- (void)p_presentColorPicker:(id)picker withCompletion:(id)completion;
 - (void)p_updateColorBulletView;
 - (void)p_updateColorPickerIfNeeded;
 - (void)p_updateStrokeHoleMask;
-- (void)setForStrokeColor:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setSelectedColor:(id)a3;
+- (void)setForStrokeColor:(BOOL)color;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setSelectedColor:(id)color;
 - (void)toggleColorPickerPresentation;
 @end
 
 @implementation CRLiOSPencilTrayColorWell
 
-- (CRLiOSPencilTrayColorWell)initWithFrame:(CGRect)a3
+- (CRLiOSPencilTrayColorWell)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = CRLiOSPencilTrayColorWell;
-  v3 = [(CRLiOSPencilTrayColorWell *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CRLiOSPencilTrayColorWell *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -37,11 +37,11 @@
   return v4;
 }
 
-- (CRLiOSPencilTrayColorWell)initWithCoder:(id)a3
+- (CRLiOSPencilTrayColorWell)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = CRLiOSPencilTrayColorWell;
-  v3 = [(CRLiOSPencilTrayColorWell *)&v6 initWithCoder:a3];
+  v3 = [(CRLiOSPencilTrayColorWell *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -71,8 +71,8 @@
   v7 = [[UIPointerInteraction alloc] initWithDelegate:self];
   [(CRLiOSPencilTrayColorWell *)self setPointerInteraction:v7];
 
-  v8 = [(CRLiOSPencilTrayColorWell *)self pointerInteraction];
-  [(CRLiOSPencilTrayColorWell *)self addInteraction:v8];
+  pointerInteraction = [(CRLiOSPencilTrayColorWell *)self pointerInteraction];
+  [(CRLiOSPencilTrayColorWell *)self addInteraction:pointerInteraction];
 
   [(CRLiOSPencilTrayColorWell *)self setHitTestInsets:-12.0, -12.0, -12.0, -12.0];
   v11 = objc_opt_class();
@@ -148,24 +148,24 @@
   [(CRLiOSPencilTrayColorWell *)self addSubview:self->_rainbowBackgroundView];
 }
 
-- (void)setSelectedColor:(id)a3
+- (void)setSelectedColor:(id)color
 {
-  v5 = a3;
-  if (self->_selectedColor != v5)
+  colorCopy = color;
+  if (self->_selectedColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_selectedColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_selectedColor, color);
     [(CRLiOSPencilTrayColorWell *)self p_updateColorBulletView];
     [(CRLiOSPencilTrayColorWell *)self p_updateColorPickerIfNeeded];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setForStrokeColor:(BOOL)a3
+- (void)setForStrokeColor:(BOOL)color
 {
-  if (self->_isForStrokeColor != a3)
+  if (self->_isForStrokeColor != color)
   {
-    self->_isForStrokeColor = a3;
+    self->_isForStrokeColor = color;
     [(CRLiOSPencilTrayColorWell *)self p_updateStrokeHoleMask];
 
     [(CRLiOSPencilTrayColorWell *)self p_updateColorPickerIfNeeded];
@@ -174,10 +174,10 @@
 
 - (void)toggleColorPickerPresentation
 {
-  v3 = [(CRLiOSPencilTrayColorWell *)self window];
-  v4 = [v3 rootViewController];
+  window = [(CRLiOSPencilTrayColorWell *)self window];
+  rootViewController = [window rootViewController];
 
-  if (!v4)
+  if (!rootViewController)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -206,8 +206,8 @@
     [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:106 isFatal:0 description:"invalid nil value for '%{public}s'", "rootVC"];
   }
 
-  v8 = [v4 presentedViewController];
-  if (v8)
+  presentedViewController = [rootViewController presentedViewController];
+  if (presentedViewController)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -239,7 +239,7 @@
       [CRLAssertionHandler handleFailureInFunction:v10 file:v11 lineNumber:110 isFatal:0 description:"PencilKit should handle dismissing other presented view controllers before we get here."];
     }
 
-    [v4 dismissViewControllerAnimated:1 completion:0];
+    [rootViewController dismissViewControllerAnimated:1 completion:0];
   }
 
   else
@@ -248,30 +248,30 @@
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v9.receiver = self;
   v9.super_class = CRLiOSPencilTrayColorWell;
-  v5 = [(CRLiOSPencilTrayColorWell *)&v9 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(CRLiOSPencilTrayColorWell *)&v9 hitTest:event withEvent:test.x, test.y];
   v6 = v5;
   if (v5 && [(CRLiOSPencilTrayColorWell *)v5 isDescendantOfView:self])
   {
-    v7 = self;
+    selfCopy = self;
 
-    v6 = v7;
+    v6 = selfCopy;
   }
 
   return v6;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v6.receiver = self;
   v6.super_class = CRLiOSPencilTrayColorWell;
   [(CRLiOSPencilTrayColorWell *)&v6 setHighlighted:?];
   v5 = 1.0;
-  if (v3)
+  if (highlightedCopy)
   {
     v5 = 0.5;
   }
@@ -295,11 +295,11 @@
   v35.size.width = v8;
   v35.size.height = v10;
   v11 = CGRectGetWidth(v35) * 0.5;
-  v12 = [(UIView *)self->_rainbowBackgroundView layer];
-  [v12 setCornerRadius:v11];
+  layer = [(UIView *)self->_rainbowBackgroundView layer];
+  [layer setCornerRadius:v11];
 
-  v13 = [(CRLiOSPencilTrayColorWell *)self layer];
-  [v13 setCornerRadius:v11];
+  layer2 = [(CRLiOSPencilTrayColorWell *)self layer];
+  [layer2 setCornerRadius:v11];
 
   if (self->_colorBulletView)
   {
@@ -328,16 +328,16 @@
     v40.size.width = width;
     v40.size.height = height;
     v20 = CGRectGetWidth(v40) * 0.5;
-    v21 = [(UIView *)self->_colorBulletView layer];
-    [v21 setCornerRadius:v20];
+    layer3 = [(UIView *)self->_colorBulletView layer];
+    [layer3 setCornerRadius:v20];
 
-    v22 = [(UIView *)self->_colorBulletView layer];
-    [v22 setBorderWidth:0.5];
+    layer4 = [(UIView *)self->_colorBulletView layer];
+    [layer4 setBorderWidth:0.5];
 
-    v23 = [(CRLiOSPencilTrayColorWell *)self p_colorBulletOutlineColor];
-    v24 = [v23 CGColor];
-    v25 = [(UIView *)self->_colorBulletView layer];
-    [v25 setBorderColor:v24];
+    p_colorBulletOutlineColor = [(CRLiOSPencilTrayColorWell *)self p_colorBulletOutlineColor];
+    cGColor = [p_colorBulletOutlineColor CGColor];
+    layer5 = [(UIView *)self->_colorBulletView layer];
+    [layer5 setBorderColor:cGColor];
   }
 
   strokeHoleMask = self->_strokeHoleMask;
@@ -381,10 +381,10 @@
 
 - (id)p_colorBulletOutlineColor
 {
-  v2 = [(CRLiOSPencilTrayColorWell *)self traitCollection];
-  v3 = [v2 userInterfaceStyle];
+  traitCollection = [(CRLiOSPencilTrayColorWell *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v3 == 2)
+  if (userInterfaceStyle == 2)
   {
     v4 = +[UIColor whiteColor];
     v5 = v4;
@@ -405,10 +405,10 @@
 
 - (void)p_updateColorBulletView
 {
-  v3 = [(CRLiOSPencilTrayColorWell *)self selectedColor];
+  selectedColor = [(CRLiOSPencilTrayColorWell *)self selectedColor];
 
   colorBulletView = self->_colorBulletView;
-  if (v3 && !colorBulletView)
+  if (selectedColor && !colorBulletView)
   {
     v5 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
     v6 = self->_colorBulletView;
@@ -416,17 +416,17 @@
 
     [(CRLiOSPencilTrayColorWell *)self addSubview:self->_colorBulletView];
 LABEL_10:
-    v8 = [(CRLiOSPencilTrayColorWell *)self selectedColor];
-    v9 = [v8 colorWithAlphaComponent:1.0];
+    selectedColor2 = [(CRLiOSPencilTrayColorWell *)self selectedColor];
+    v9 = [selectedColor2 colorWithAlphaComponent:1.0];
     [(UIView *)self->_colorBulletView setBackgroundColor:v9];
 
     [(CRLiOSPencilTrayColorWell *)self setNeedsLayout];
     return;
   }
 
-  if (v3 || !colorBulletView)
+  if (selectedColor || !colorBulletView)
   {
-    if (!v3)
+    if (!selectedColor)
     {
       return;
     }
@@ -441,10 +441,10 @@ LABEL_10:
 
 - (void)p_updateStrokeHoleMask
 {
-  v3 = [(CRLiOSPencilTrayColorWell *)self isForStrokeColor];
-  v4 = v3;
+  isForStrokeColor = [(CRLiOSPencilTrayColorWell *)self isForStrokeColor];
+  v4 = isForStrokeColor;
   strokeHoleMask = self->_strokeHoleMask;
-  if (v3 && !strokeHoleMask)
+  if (isForStrokeColor && !strokeHoleMask)
   {
     v6 = objc_alloc_init(CAShapeLayer);
     v7 = self->_strokeHoleMask;
@@ -455,8 +455,8 @@ LABEL_10:
 
     [(CAShapeLayer *)self->_strokeHoleMask setFillRule:kCAFillRuleEvenOdd];
     v9 = self->_strokeHoleMask;
-    v10 = [(CRLiOSPencilTrayColorWell *)self layer];
-    [v10 setMask:v9];
+    layer = [(CRLiOSPencilTrayColorWell *)self layer];
+    [layer setMask:v9];
 LABEL_9:
 
     goto LABEL_10;
@@ -464,7 +464,7 @@ LABEL_9:
 
   if (strokeHoleMask)
   {
-    v11 = v3;
+    v11 = isForStrokeColor;
   }
 
   else
@@ -474,10 +474,10 @@ LABEL_9:
 
   if ((v11 & 1) == 0)
   {
-    v12 = [(CRLiOSPencilTrayColorWell *)self layer];
-    [v12 setMask:0];
+    layer2 = [(CRLiOSPencilTrayColorWell *)self layer];
+    [layer2 setMask:0];
 
-    v10 = self->_strokeHoleMask;
+    layer = self->_strokeHoleMask;
     self->_strokeHoleMask = 0;
     goto LABEL_9;
   }
@@ -490,13 +490,13 @@ LABEL_10:
   }
 }
 
-- (void)p_presentColorPicker:(id)a3 withCompletion:(id)a4
+- (void)p_presentColorPicker:(id)picker withCompletion:(id)completion
 {
-  v5 = a4;
-  v6 = [(CRLiOSPencilTrayColorWell *)self window];
-  v7 = [v6 rootViewController];
+  completionCopy = completion;
+  window = [(CRLiOSPencilTrayColorWell *)self window];
+  rootViewController = [window rootViewController];
 
-  if (!v7)
+  if (!rootViewController)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -525,8 +525,8 @@ LABEL_10:
     [CRLAssertionHandler handleFailureInFunction:v9 file:v10 lineNumber:250 isFatal:0 description:"invalid nil value for '%{public}s'", "rootVC"];
   }
 
-  v11 = [v7 presentedViewController];
-  if (!v11)
+  presentedViewController = [rootViewController presentedViewController];
+  if (!presentedViewController)
   {
     if (!self->_colorPicker)
     {
@@ -540,12 +540,12 @@ LABEL_10:
     }
 
     [(CRLiOSPencilTrayColorWell *)self p_updateColorPickerIfNeeded];
-    v14 = [(UIColorPickerViewController *)self->_colorPicker popoverPresentationController];
-    [v14 setSourceView:self];
+    popoverPresentationController = [(UIColorPickerViewController *)self->_colorPicker popoverPresentationController];
+    [popoverPresentationController setSourceView:self];
 
-    v15 = [(CRLiOSPencilTrayColorWell *)self window];
-    v16 = [v15 rootViewController];
-    [v16 presentViewController:self->_colorPicker animated:1 completion:v5];
+    window2 = [(CRLiOSPencilTrayColorWell *)self window];
+    rootViewController2 = [window2 rootViewController];
+    [rootViewController2 presentViewController:self->_colorPicker animated:1 completion:completionCopy];
   }
 }
 
@@ -556,8 +556,8 @@ LABEL_10:
   {
     [(UIColorPickerViewController *)colorPicker crl_ifVisuallyDifferentSetSelectedColor:self->_selectedColor];
     v4 = self->_colorPicker;
-    v5 = [(CRLiOSPencilTrayColorWell *)self p_titleForColorPicker];
-    [(UIColorPickerViewController *)v4 setTitle:v5];
+    p_titleForColorPicker = [(CRLiOSPencilTrayColorWell *)self p_titleForColorPicker];
+    [(UIColorPickerViewController *)v4 setTitle:p_titleForColorPicker];
   }
 }
 
@@ -581,17 +581,17 @@ LABEL_10:
   return v6;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v4 = a3;
+  interactionCopy = interaction;
   v5 = [UITargetedPreview alloc];
-  v6 = [v4 view];
-  v7 = [v5 initWithView:v6];
+  view = [interactionCopy view];
+  v7 = [v5 initWithView:view];
 
   v8 = [UIPointerHighlightEffect effectWithPreview:v7];
-  v9 = [v4 view];
+  view2 = [interactionCopy view];
 
-  [v9 bounds];
+  [view2 bounds];
   v10 = [UIBezierPath bezierPathWithOvalInRect:?];
   v11 = [UIPointerShape shapeWithPath:v10];
 
@@ -600,9 +600,9 @@ LABEL_10:
   return v12;
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
-  [a5 rect];
+  [region rect];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -620,10 +620,10 @@ LABEL_10:
   return [UIPointerRegion regionWithRect:0 identifier:v21.origin.x, v21.origin.y, v21.size.width, v21.size.height];
 }
 
-- (void)colorPickerViewController:(id)a3 didSelectColor:(id)a4 continuously:(BOOL)a5
+- (void)colorPickerViewController:(id)controller didSelectColor:(id)color continuously:(BOOL)continuously
 {
-  v8 = a4;
-  if (self->_colorPicker != a3)
+  colorCopy = color;
+  if (self->_colorPicker != controller)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -653,17 +653,17 @@ LABEL_10:
   }
 
   selectedColor = self->_selectedColor;
-  self->_selectedColor = v8;
+  self->_selectedColor = colorCopy;
 
-  self->_isUpdatingContinuously = a5;
+  self->_isUpdatingContinuously = continuously;
   [(CRLiOSPencilTrayColorWell *)self p_updateColorBulletView];
   [(CRLiOSPencilTrayColorWell *)self sendActionsForControlEvents:4096];
 }
 
-- (void)colorPickerViewControllerDidFinish:(id)a3
+- (void)colorPickerViewControllerDidFinish:(id)finish
 {
-  v4 = a3;
-  if (self->_colorPicker != v4)
+  finishCopy = finish;
+  if (self->_colorPicker != finishCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)

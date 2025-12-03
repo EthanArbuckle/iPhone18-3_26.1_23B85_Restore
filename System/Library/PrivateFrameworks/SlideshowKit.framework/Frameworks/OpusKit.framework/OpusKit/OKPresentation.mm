@@ -2,8 +2,8 @@
 - (BOOL)guidelineAuthoringDebuggingEnabled;
 - (BOOL)guidelineAuthoringFitToAudioDuration;
 - (BOOL)guidelineLiveAuthoringEnabled;
-- (BOOL)registerProducerPlugin:(id)a3;
-- (CGSize)bestResolutionSizeForDisplaySize:(CGSize)a3 keepAspectRatio:(BOOL *)a4;
+- (BOOL)registerProducerPlugin:(id)plugin;
+- (CGSize)bestResolutionSizeForDisplaySize:(CGSize)size keepAspectRatio:(BOOL *)ratio;
 - (OKPresentation)init;
 - (double)guidelineAuthoringCurrentPageDuration;
 - (double)guidelineAuthoringDurationFactor;
@@ -14,17 +14,17 @@
 - (id)_temporaryDiskCacheManager;
 - (id)allGuidelineGlobalUniqueKeys;
 - (id)allGuidelines;
-- (id)canvasForKeyPath:(id)a3;
-- (id)couchWithName:(id)a3;
+- (id)canvasForKeyPath:(id)path;
+- (id)couchWithName:(id)name;
 - (id)couchesDictionary;
 - (id)couchesNames;
-- (id)feederWithName:(id)a3;
+- (id)feederWithName:(id)name;
 - (id)feedersDictionary;
 - (id)feedersNames;
 - (id)guidelineAuthoringAttributedTitle;
 - (id)guidelineAuthoringInteractiveTransitionSettings;
 - (id)guidelineAuthoringMediaAttributes;
-- (id)guidelineAuthoringMediaAttributesForKey:(id)a3;
+- (id)guidelineAuthoringMediaAttributesForKey:(id)key;
 - (id)guidelineAuthoringProducerMediaItems;
 - (id)guidelineAuthoringProducerMediaURLs;
 - (id)guidelineAuthoringRecommendedResolutionSizes;
@@ -35,68 +35,68 @@
 - (id)guidelineAuthoringUserAudioURLs;
 - (id)guidelineAuthoringUserMediaItems;
 - (id)guidelineAuthoringUserMediaURLs;
-- (id)guidelineForGlobalUniqueKey:(id)a3;
-- (id)guidelineValueForGlobalUniqueKey:(id)a3;
+- (id)guidelineForGlobalUniqueKey:(id)key;
+- (id)guidelineValueForGlobalUniqueKey:(id)key;
 - (id)guidelinesDictionary;
-- (id)guidelinesForKey:(id)a3;
-- (id)guidelinesForMediaItem:(id)a3;
-- (id)guidelinesForMediaItem:(id)a3 andKey:(id)a4;
-- (id)guidelinesForPresentationCanvas:(id)a3;
-- (id)guidelinesForPresentationCanvas:(id)a3 andKey:(id)a4;
-- (id)guidelinesForProducerPlugin:(id)a3;
-- (id)guidelinesForType:(unint64_t)a3;
+- (id)guidelinesForKey:(id)key;
+- (id)guidelinesForMediaItem:(id)item;
+- (id)guidelinesForMediaItem:(id)item andKey:(id)key;
+- (id)guidelinesForPresentationCanvas:(id)canvas;
+- (id)guidelinesForPresentationCanvas:(id)canvas andKey:(id)key;
+- (id)guidelinesForProducerPlugin:(id)plugin;
+- (id)guidelinesForType:(unint64_t)type;
 - (id)mainScript;
-- (id)materialTemplateWithName:(id)a3;
+- (id)materialTemplateWithName:(id)name;
 - (id)materialTemplatesNames;
-- (id)mediaFeederWithName:(id)a3;
-- (id)mediaItemForURL:(id)a3;
-- (id)mediaItemsForURLs:(id)a3;
-- (id)metadataInMemoryForMediaItem:(id)a3;
-- (id)navigatorWithName:(id)a3;
+- (id)mediaFeederWithName:(id)name;
+- (id)mediaItemForURL:(id)l;
+- (id)mediaItemsForURLs:(id)ls;
+- (id)metadataInMemoryForMediaItem:(id)item;
+- (id)navigatorWithName:(id)name;
 - (id)navigatorsDictionary;
 - (id)navigatorsNames;
-- (id)pageTemplateWithName:(id)a3;
+- (id)pageTemplateWithName:(id)name;
 - (id)pageTemplatesNames;
-- (id)pageWithName:(id)a3;
+- (id)pageWithName:(id)name;
 - (id)pagesDictionary;
 - (id)pagesNames;
-- (id)registeredProducerPluginWithIdentifier:(id)a3;
+- (id)registeredProducerPluginWithIdentifier:(id)identifier;
 - (id)rootCouch;
 - (id)rootFeeder;
 - (id)rootMediaFeeder;
 - (id)rootNavigator;
 - (id)templatesDictionary;
-- (id)thumbnailImageInMemoryCacheForMediaItem:(id)a3 andResolution:(unint64_t)a4;
+- (id)thumbnailImageInMemoryCacheForMediaItem:(id)item andResolution:(unint64_t)resolution;
 - (id)trailerCouch;
 - (id)trailerNavigator;
-- (id)widgetTemplateWithName:(id)a3;
+- (id)widgetTemplateWithName:(id)name;
 - (id)widgetTemplatesNames;
 - (unint64_t)guidelineAuthoringRandomSeed;
 - (void)_commonInit;
-- (void)_didEnterBackgroundNotification:(id)a3;
-- (void)_didReceiveMemoryWarningNotification:(id)a3;
-- (void)_invalidateMemoryCachedMediaItem:(id)a3;
-- (void)_willTerminateNotification:(id)a3;
-- (void)addCouch:(id)a3;
-- (void)addFeeder:(id)a3;
-- (void)addGuideline:(id)a3;
-- (void)addGuidelines:(id)a3;
-- (void)addMainScript:(id)a3 extend:(BOOL)a4;
-- (void)addMaterialTemplate:(id)a3;
-- (void)addNavigator:(id)a3;
-- (void)addPage:(id)a3;
-- (void)addPageTemplate:(id)a3;
-- (void)addWidgetTemplate:(id)a3;
+- (void)_didEnterBackgroundNotification:(id)notification;
+- (void)_didReceiveMemoryWarningNotification:(id)notification;
+- (void)_invalidateMemoryCachedMediaItem:(id)item;
+- (void)_willTerminateNotification:(id)notification;
+- (void)addCouch:(id)couch;
+- (void)addFeeder:(id)feeder;
+- (void)addGuideline:(id)guideline;
+- (void)addGuidelines:(id)guidelines;
+- (void)addMainScript:(id)script extend:(BOOL)extend;
+- (void)addMaterialTemplate:(id)template;
+- (void)addNavigator:(id)navigator;
+- (void)addPage:(id)page;
+- (void)addPageTemplate:(id)template;
+- (void)addWidgetTemplate:(id)template;
 - (void)dealloc;
-- (void)guidelineAuthoringMediaAttributesUpdateForKey:(id)a3 updateBlock:(id)a4;
-- (void)invalidateMetadataMemoryCacheForMediaItem:(id)a3;
-- (void)invalidateThumbnailsMemoryCacheForMediaItem:(id)a3;
-- (void)reloadCouchesFromDictionary:(id)a3;
-- (void)reloadFeedersFromDictionary:(id)a3;
-- (void)reloadGuidelinesFromArray:(id)a3;
-- (void)reloadNavigatorsFromDictionary:(id)a3;
-- (void)reloadPagesFromDictionary:(id)a3;
-- (void)reloadTemplatesFromDictionary:(id)a3;
+- (void)guidelineAuthoringMediaAttributesUpdateForKey:(id)key updateBlock:(id)block;
+- (void)invalidateMetadataMemoryCacheForMediaItem:(id)item;
+- (void)invalidateThumbnailsMemoryCacheForMediaItem:(id)item;
+- (void)reloadCouchesFromDictionary:(id)dictionary;
+- (void)reloadFeedersFromDictionary:(id)dictionary;
+- (void)reloadGuidelinesFromArray:(id)array;
+- (void)reloadNavigatorsFromDictionary:(id)dictionary;
+- (void)reloadPagesFromDictionary:(id)dictionary;
+- (void)reloadTemplatesFromDictionary:(id)dictionary;
 - (void)removeAllCouches;
 - (void)removeAllFeeders;
 - (void)removeAllGuidelines;
@@ -106,24 +106,24 @@
 - (void)removeAllPages;
 - (void)removeAllTemplates;
 - (void)removeAllWidgetTemplates;
-- (void)removeCouchWithName:(id)a3;
-- (void)removeFeederWithName:(id)a3;
-- (void)removeGuideline:(id)a3;
-- (void)removeGuidelineForGlobalUniqueKey:(id)a3;
-- (void)removeGuidelines:(id)a3;
+- (void)removeCouchWithName:(id)name;
+- (void)removeFeederWithName:(id)name;
+- (void)removeGuideline:(id)guideline;
+- (void)removeGuidelineForGlobalUniqueKey:(id)key;
+- (void)removeGuidelines:(id)guidelines;
 - (void)removeMainScript;
-- (void)removeMaterialTemplateWithName:(id)a3;
-- (void)removeNavigatorWithName:(id)a3;
-- (void)removePageTemplateWithName:(id)a3;
-- (void)removePageWithName:(id)a3;
-- (void)removeWidgetTemplateWithName:(id)a3;
+- (void)removeMaterialTemplateWithName:(id)name;
+- (void)removeNavigatorWithName:(id)name;
+- (void)removePageTemplateWithName:(id)name;
+- (void)removePageWithName:(id)name;
+- (void)removeWidgetTemplateWithName:(id)name;
 - (void)resolveIfNeeded;
-- (void)setGuidelines:(id)a3;
-- (void)setMediaFeeder:(id)a3 withName:(id)a4;
-- (void)setMetadataToMemory:(id)a3 forMediaItem:(id)a4;
-- (void)setPresentationChanged:(BOOL)a3;
-- (void)setRootMediaFeeder:(id)a3;
-- (void)setThumbnailImageToMemoryCache:(id)a3 forMediaItem:(id)a4 andResolution:(unint64_t)a5;
+- (void)setGuidelines:(id)guidelines;
+- (void)setMediaFeeder:(id)feeder withName:(id)name;
+- (void)setMetadataToMemory:(id)memory forMediaItem:(id)item;
+- (void)setPresentationChanged:(BOOL)changed;
+- (void)setRootMediaFeeder:(id)feeder;
+- (void)setThumbnailImageToMemoryCache:(id)cache forMediaItem:(id)item andResolution:(unint64_t)resolution;
 @end
 
 @implementation OKPresentation
@@ -172,13 +172,13 @@
   objc_storeWeak(&self->_lookupDelegate, 0);
   self->_enableDisplayDebugging = 0;
   objc_storeWeak(&self->_document, 0);
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 addObserver:self selector:sel__didReceiveMemoryWarningNotification_ name:*MEMORY[0x277D76670] object:0];
-  [v7 addObserver:self selector:sel__didEnterBackgroundNotification_ name:*MEMORY[0x277D76660] object:0];
-  [v7 addObserver:self selector:sel__willEnterForegroundNotification_ name:*MEMORY[0x277D76758] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__didReceiveMemoryWarningNotification_ name:*MEMORY[0x277D76670] object:0];
+  [defaultCenter addObserver:self selector:sel__didEnterBackgroundNotification_ name:*MEMORY[0x277D76660] object:0];
+  [defaultCenter addObserver:self selector:sel__willEnterForegroundNotification_ name:*MEMORY[0x277D76758] object:0];
   v8 = *MEMORY[0x277D76770];
 
-  [v7 addObserver:self selector:sel__willTerminateNotification_ name:v8 object:0];
+  [defaultCenter addObserver:self selector:sel__willTerminateNotification_ name:v8 object:0];
 }
 
 - (OKPresentation)init
@@ -203,11 +203,11 @@
     [MEMORY[0x277D627B8] logMessageWithLevel:5 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Presentation/OKPresentation.m" line:247 andFormat:@"Deallocing %@", self];
   }
 
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D76670] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D76660] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D76758] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D76770] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76670] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76660] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76758] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76770] object:0];
   info = self->_info;
   if (info)
   {
@@ -374,7 +374,7 @@
   [(OKPresentation *)&v28 dealloc];
 }
 
-- (id)registeredProducerPluginWithIdentifier:(id)a3
+- (id)registeredProducerPluginWithIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x277D85DE8];
   producerPlugins = self->_producerPlugins;
@@ -421,15 +421,15 @@ LABEL_11:
   return v11;
 }
 
-- (BOOL)registerProducerPlugin:(id)a3
+- (BOOL)registerProducerPlugin:(id)plugin
 {
   producerPlugins = self->_producerPlugins;
   objc_sync_enter(producerPlugins);
   v6 = 1;
-  if (([(NSMutableArray *)self->_producerPlugins containsObject:a3]& 1) == 0)
+  if (([(NSMutableArray *)self->_producerPlugins containsObject:plugin]& 1) == 0)
   {
-    [(NSMutableArray *)self->_producerPlugins addObject:a3];
-    if (([a3 loadRetain] & 1) == 0)
+    [(NSMutableArray *)self->_producerPlugins addObject:plugin];
+    if (([plugin loadRetain] & 1) == 0)
     {
       v6 = 0;
     }
@@ -439,20 +439,20 @@ LABEL_11:
   return v6;
 }
 
-- (void)reloadTemplatesFromDictionary:(id)a3
+- (void)reloadTemplatesFromDictionary:(id)dictionary
 {
   v45 = *MEMORY[0x277D85DE8];
   materialTemplates = self->_materialTemplates;
   objc_sync_enter(materialTemplates);
   [(NSMutableDictionary *)self->_materialTemplates removeAllObjects];
-  v6 = [a3 objectForKey:@"materials"];
-  v29 = a3;
+  v6 = [dictionary objectForKey:@"materials"];
+  dictionaryCopy = dictionary;
   v40 = 0u;
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v7 = [v6 allKeys];
-  v8 = [v7 countByEnumeratingWithState:&v38 objects:v44 count:16];
+  allKeys = [v6 allKeys];
+  v8 = [allKeys countByEnumeratingWithState:&v38 objects:v44 count:16];
   if (v8)
   {
     v9 = *v39;
@@ -462,7 +462,7 @@ LABEL_11:
       {
         if (*v39 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allKeys);
         }
 
         v11 = *(*(&v38 + 1) + 8 * i);
@@ -471,7 +471,7 @@ LABEL_11:
         [(NSMutableDictionary *)self->_materialTemplates setObject:v12 forKey:v11];
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v38 objects:v44 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v38 objects:v44 count:16];
     }
 
     while (v8);
@@ -481,13 +481,13 @@ LABEL_11:
   widgetTemplates = self->_widgetTemplates;
   objc_sync_enter(widgetTemplates);
   [(NSMutableDictionary *)self->_widgetTemplates removeAllObjects];
-  v14 = [v29 objectForKey:@"widgets"];
+  v14 = [dictionaryCopy objectForKey:@"widgets"];
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v15 = [v14 allKeys];
-  v16 = [v15 countByEnumeratingWithState:&v34 objects:v43 count:16];
+  allKeys2 = [v14 allKeys];
+  v16 = [allKeys2 countByEnumeratingWithState:&v34 objects:v43 count:16];
   if (v16)
   {
     v17 = *v35;
@@ -497,7 +497,7 @@ LABEL_11:
       {
         if (*v35 != v17)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(allKeys2);
         }
 
         v19 = *(*(&v34 + 1) + 8 * j);
@@ -506,7 +506,7 @@ LABEL_11:
         [(NSMutableDictionary *)self->_widgetTemplates setObject:v20 forKey:v19];
       }
 
-      v16 = [v15 countByEnumeratingWithState:&v34 objects:v43 count:16];
+      v16 = [allKeys2 countByEnumeratingWithState:&v34 objects:v43 count:16];
     }
 
     while (v16);
@@ -516,13 +516,13 @@ LABEL_11:
   pageTemplates = self->_pageTemplates;
   objc_sync_enter(pageTemplates);
   [(NSMutableDictionary *)self->_pageTemplates removeAllObjects];
-  v22 = [v29 objectForKey:@"pages"];
+  v22 = [dictionaryCopy objectForKey:@"pages"];
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v23 = [v22 allKeys];
-  v24 = [v23 countByEnumeratingWithState:&v30 objects:v42 count:16];
+  allKeys3 = [v22 allKeys];
+  v24 = [allKeys3 countByEnumeratingWithState:&v30 objects:v42 count:16];
   if (v24)
   {
     v25 = *v31;
@@ -532,7 +532,7 @@ LABEL_11:
       {
         if (*v31 != v25)
         {
-          objc_enumerationMutation(v23);
+          objc_enumerationMutation(allKeys3);
         }
 
         v27 = *(*(&v30 + 1) + 8 * k);
@@ -541,7 +541,7 @@ LABEL_11:
         [(NSMutableDictionary *)self->_pageTemplates setObject:v28 forKey:v27];
       }
 
-      v24 = [v23 countByEnumeratingWithState:&v30 objects:v42 count:16];
+      v24 = [allKeys3 countByEnumeratingWithState:&v30 objects:v42 count:16];
     }
 
     while (v24);
@@ -559,15 +559,15 @@ LABEL_11:
   objc_sync_enter(obj);
   materialTemplates = self->_materialTemplates;
   objc_sync_enter(materialTemplates);
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  v5 = [MEMORY[0x277CBEB38] dictionary];
-  v6 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary3 = [MEMORY[0x277CBEB38] dictionary];
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v7 = [(NSMutableDictionary *)self->_pageTemplates allKeys];
-  v8 = [v7 countByEnumeratingWithState:&v32 objects:v40 count:16];
+  allKeys = [(NSMutableDictionary *)self->_pageTemplates allKeys];
+  v8 = [allKeys countByEnumeratingWithState:&v32 objects:v40 count:16];
   if (v8)
   {
     v9 = *v33;
@@ -577,13 +577,13 @@ LABEL_11:
       {
         if (*v33 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allKeys);
         }
 
-        [v4 setObject:objc_msgSend(-[NSMutableDictionary objectForKey:](self->_pageTemplates forKey:{"objectForKey:", *(*(&v32 + 1) + 8 * i), obj), "dictionary"), *(*(&v32 + 1) + 8 * i)}];
+        [dictionary setObject:objc_msgSend(-[NSMutableDictionary objectForKey:](self->_pageTemplates forKey:{"objectForKey:", *(*(&v32 + 1) + 8 * i), obj), "dictionary"), *(*(&v32 + 1) + 8 * i)}];
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v32 objects:v40 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v32 objects:v40 count:16];
     }
 
     while (v8);
@@ -593,8 +593,8 @@ LABEL_11:
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v11 = [(NSMutableDictionary *)self->_widgetTemplates allKeys];
-  v12 = [v11 countByEnumeratingWithState:&v28 objects:v39 count:16];
+  allKeys2 = [(NSMutableDictionary *)self->_widgetTemplates allKeys];
+  v12 = [allKeys2 countByEnumeratingWithState:&v28 objects:v39 count:16];
   if (v12)
   {
     v13 = *v29;
@@ -604,13 +604,13 @@ LABEL_11:
       {
         if (*v29 != v13)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(allKeys2);
         }
 
-        [v5 setObject:objc_msgSend(-[NSMutableDictionary objectForKey:](self->_widgetTemplates forKey:{"objectForKey:", *(*(&v28 + 1) + 8 * j)), "dictionary"), *(*(&v28 + 1) + 8 * j)}];
+        [dictionary2 setObject:objc_msgSend(-[NSMutableDictionary objectForKey:](self->_widgetTemplates forKey:{"objectForKey:", *(*(&v28 + 1) + 8 * j)), "dictionary"), *(*(&v28 + 1) + 8 * j)}];
       }
 
-      v12 = [v11 countByEnumeratingWithState:&v28 objects:v39 count:16];
+      v12 = [allKeys2 countByEnumeratingWithState:&v28 objects:v39 count:16];
     }
 
     while (v12);
@@ -620,8 +620,8 @@ LABEL_11:
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v15 = [(NSMutableDictionary *)self->_materialTemplates allKeys];
-  v16 = [v15 countByEnumeratingWithState:&v24 objects:v38 count:16];
+  allKeys3 = [(NSMutableDictionary *)self->_materialTemplates allKeys];
+  v16 = [allKeys3 countByEnumeratingWithState:&v24 objects:v38 count:16];
   if (v16)
   {
     v17 = *v25;
@@ -631,13 +631,13 @@ LABEL_11:
       {
         if (*v25 != v17)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(allKeys3);
         }
 
-        [v6 setObject:objc_msgSend(-[NSMutableDictionary objectForKey:](self->_materialTemplates forKey:{"objectForKey:", *(*(&v24 + 1) + 8 * k)), "dictionary"), *(*(&v24 + 1) + 8 * k)}];
+        [dictionary3 setObject:objc_msgSend(-[NSMutableDictionary objectForKey:](self->_materialTemplates forKey:{"objectForKey:", *(*(&v24 + 1) + 8 * k)), "dictionary"), *(*(&v24 + 1) + 8 * k)}];
       }
 
-      v16 = [v15 countByEnumeratingWithState:&v24 objects:v38 count:16];
+      v16 = [allKeys3 countByEnumeratingWithState:&v24 objects:v38 count:16];
     }
 
     while (v16);
@@ -645,10 +645,10 @@ LABEL_11:
 
   v36[0] = @"pages";
   v36[1] = @"widgets";
-  v37[0] = v4;
-  v37[1] = v5;
+  v37[0] = dictionary;
+  v37[1] = dictionary2;
   v36[2] = @"materials";
-  v37[2] = v6;
+  v37[2] = dictionary3;
   v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v37 forKeys:v36 count:3];
   objc_sync_exit(materialTemplates);
   objc_sync_exit(obja);
@@ -656,7 +656,7 @@ LABEL_11:
   return v19;
 }
 
-- (void)reloadPagesFromDictionary:(id)a3
+- (void)reloadPagesFromDictionary:(id)dictionary
 {
   v17 = *MEMORY[0x277D85DE8];
   pages = self->_pages;
@@ -666,8 +666,8 @@ LABEL_11:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [a3 allKeys];
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allKeys = [dictionary allKeys];
+  v7 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = *v13;
@@ -677,15 +677,15 @@ LABEL_11:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
-        v11 = -[OKPresentationPage initWithDictionary:andName:forPresentation:andParent:]([OKPresentationPage alloc], "initWithDictionary:andName:forPresentation:andParent:", [a3 objectForKey:v10], v10, self, 0);
+        v11 = -[OKPresentationPage initWithDictionary:andName:forPresentation:andParent:]([OKPresentationPage alloc], "initWithDictionary:andName:forPresentation:andParent:", [dictionary objectForKey:v10], v10, self, 0);
         [(NSMutableDictionary *)self->_pages setObject:v11 forKey:v10];
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -697,15 +697,15 @@ LABEL_11:
 - (id)pagesDictionary
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   pages = self->_pages;
   objc_sync_enter(pages);
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(NSMutableDictionary *)self->_pages allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allKeys = [(NSMutableDictionary *)self->_pages allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = *v11;
@@ -715,23 +715,23 @@ LABEL_11:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
-        [v3 setObject:objc_msgSend(-[NSMutableDictionary objectForKey:](self->_pages forKey:{"objectForKey:", *(*(&v10 + 1) + 8 * i)), "dictionary"), *(*(&v10 + 1) + 8 * i)}];
+        [dictionary setObject:objc_msgSend(-[NSMutableDictionary objectForKey:](self->_pages forKey:{"objectForKey:", *(*(&v10 + 1) + 8 * i)), "dictionary"), *(*(&v10 + 1) + 8 * i)}];
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
   }
 
   objc_sync_exit(pages);
-  return v3;
+  return dictionary;
 }
 
-- (void)reloadNavigatorsFromDictionary:(id)a3
+- (void)reloadNavigatorsFromDictionary:(id)dictionary
 {
   v17 = *MEMORY[0x277D85DE8];
   navigators = self->_navigators;
@@ -741,8 +741,8 @@ LABEL_11:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [a3 allKeys];
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allKeys = [dictionary allKeys];
+  v7 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = *v13;
@@ -752,15 +752,15 @@ LABEL_11:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
-        v11 = -[OKPresentationNavigator initWithDictionary:andName:forPresentation:andParent:]([OKPresentationNavigator alloc], "initWithDictionary:andName:forPresentation:andParent:", [a3 objectForKey:v10], v10, self, 0);
+        v11 = -[OKPresentationNavigator initWithDictionary:andName:forPresentation:andParent:]([OKPresentationNavigator alloc], "initWithDictionary:andName:forPresentation:andParent:", [dictionary objectForKey:v10], v10, self, 0);
         [(NSMutableDictionary *)self->_navigators setObject:v11 forKey:v10];
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -772,15 +772,15 @@ LABEL_11:
 - (id)navigatorsDictionary
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   navigators = self->_navigators;
   objc_sync_enter(navigators);
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(NSMutableDictionary *)self->_navigators allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allKeys = [(NSMutableDictionary *)self->_navigators allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = *v11;
@@ -790,23 +790,23 @@ LABEL_11:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
-        [v3 setObject:objc_msgSend(-[NSMutableDictionary objectForKey:](self->_navigators forKey:{"objectForKey:", *(*(&v10 + 1) + 8 * i)), "dictionary"), *(*(&v10 + 1) + 8 * i)}];
+        [dictionary setObject:objc_msgSend(-[NSMutableDictionary objectForKey:](self->_navigators forKey:{"objectForKey:", *(*(&v10 + 1) + 8 * i)), "dictionary"), *(*(&v10 + 1) + 8 * i)}];
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
   }
 
   objc_sync_exit(navigators);
-  return v3;
+  return dictionary;
 }
 
-- (void)reloadCouchesFromDictionary:(id)a3
+- (void)reloadCouchesFromDictionary:(id)dictionary
 {
   v17 = *MEMORY[0x277D85DE8];
   couches = self->_couches;
@@ -816,8 +816,8 @@ LABEL_11:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [a3 allKeys];
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allKeys = [dictionary allKeys];
+  v7 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = *v13;
@@ -827,15 +827,15 @@ LABEL_11:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
-        v11 = -[OKPresentationCouch initWithDictionary:andName:forPresentation:]([OKPresentationCouch alloc], "initWithDictionary:andName:forPresentation:", [a3 objectForKey:v10], v10, self);
+        v11 = -[OKPresentationCouch initWithDictionary:andName:forPresentation:]([OKPresentationCouch alloc], "initWithDictionary:andName:forPresentation:", [dictionary objectForKey:v10], v10, self);
         [(NSMutableDictionary *)self->_couches setObject:v11 forKey:v10];
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -847,15 +847,15 @@ LABEL_11:
 - (id)couchesDictionary
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   couches = self->_couches;
   objc_sync_enter(couches);
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(NSMutableDictionary *)self->_couches allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allKeys = [(NSMutableDictionary *)self->_couches allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = *v11;
@@ -865,23 +865,23 @@ LABEL_11:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
-        [v3 setObject:objc_msgSend(-[NSMutableDictionary objectForKey:](self->_couches forKey:{"objectForKey:", *(*(&v10 + 1) + 8 * i)), "dictionary"), *(*(&v10 + 1) + 8 * i)}];
+        [dictionary setObject:objc_msgSend(-[NSMutableDictionary objectForKey:](self->_couches forKey:{"objectForKey:", *(*(&v10 + 1) + 8 * i)), "dictionary"), *(*(&v10 + 1) + 8 * i)}];
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
   }
 
   objc_sync_exit(couches);
-  return v3;
+  return dictionary;
 }
 
-- (void)reloadGuidelinesFromArray:(id)a3
+- (void)reloadGuidelinesFromArray:(id)array
 {
   v15 = *MEMORY[0x277D85DE8];
   guidelines = self->_guidelines;
@@ -891,7 +891,7 @@ LABEL_11:
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v6 = [array countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = *v11;
@@ -901,7 +901,7 @@ LABEL_11:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(array);
         }
 
         v9 = [[OKPresentationGuideline alloc] initWithDictionary:*(*(&v10 + 1) + 8 * i)];
@@ -909,7 +909,7 @@ LABEL_11:
         [(NSMutableDictionary *)self->_guidelines setObject:v9 forKey:[(OKPresentationGuideline *)v9 globalUniqueKey]];
       }
 
-      v6 = [a3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [array countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -920,12 +920,12 @@ LABEL_11:
 
 - (id)guidelinesDictionary
 {
-  v2 = [(NSMutableDictionary *)self->_guidelines allValues];
+  allValues = [(NSMutableDictionary *)self->_guidelines allValues];
 
-  return [v2 valueForKey:@"dictionary"];
+  return [allValues valueForKey:@"dictionary"];
 }
 
-- (void)reloadFeedersFromDictionary:(id)a3
+- (void)reloadFeedersFromDictionary:(id)dictionary
 {
   v17 = *MEMORY[0x277D85DE8];
   feeders = self->_feeders;
@@ -935,8 +935,8 @@ LABEL_11:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [a3 allKeys];
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allKeys = [dictionary allKeys];
+  v7 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = *v13;
@@ -946,15 +946,15 @@ LABEL_11:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
-        v11 = -[OKPresentationFeeder initWithDictionary:andName:forPresentation:]([OKPresentationFeeder alloc], "initWithDictionary:andName:forPresentation:", [a3 objectForKey:v10], v10, self);
+        v11 = -[OKPresentationFeeder initWithDictionary:andName:forPresentation:]([OKPresentationFeeder alloc], "initWithDictionary:andName:forPresentation:", [dictionary objectForKey:v10], v10, self);
         [(NSMutableDictionary *)self->_feeders setObject:v11 forKey:v10];
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -966,15 +966,15 @@ LABEL_11:
 - (id)feedersDictionary
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   feeders = self->_feeders;
   objc_sync_enter(feeders);
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(NSMutableDictionary *)self->_feeders allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allKeys = [(NSMutableDictionary *)self->_feeders allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = *v11;
@@ -984,75 +984,75 @@ LABEL_11:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
-        [v3 setObject:objc_msgSend(-[NSMutableDictionary objectForKey:](self->_feeders forKey:{"objectForKey:", *(*(&v10 + 1) + 8 * i)), "dictionary"), *(*(&v10 + 1) + 8 * i)}];
+        [dictionary setObject:objc_msgSend(-[NSMutableDictionary objectForKey:](self->_feeders forKey:{"objectForKey:", *(*(&v10 + 1) + 8 * i)), "dictionary"), *(*(&v10 + 1) + 8 * i)}];
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
   }
 
   objc_sync_exit(feeders);
-  return v3;
+  return dictionary;
 }
 
-- (void)setPresentationChanged:(BOOL)a3
+- (void)setPresentationChanged:(BOOL)changed
 {
-  self->_haveGuidelinesChanged = a3;
-  self->_haveScriptsChanged = a3;
-  *&self->_haveTemplatesChanged = 16843009 * a3;
-  self->_haveFeedersChanged = a3;
+  self->_haveGuidelinesChanged = changed;
+  self->_haveScriptsChanged = changed;
+  *&self->_haveTemplatesChanged = 16843009 * changed;
+  self->_haveFeedersChanged = changed;
 }
 
 - (id)rootMediaFeeder
 {
   if ([(OKPresentationInfo *)self->_info mainFeederName])
   {
-    v3 = [(OKPresentationInfo *)self->_info mainFeederName];
+    mainFeederName = [(OKPresentationInfo *)self->_info mainFeederName];
   }
 
   else
   {
-    v3 = @"root";
+    mainFeederName = @"root";
   }
 
-  return [(OKPresentation *)self mediaFeederWithName:v3];
+  return [(OKPresentation *)self mediaFeederWithName:mainFeederName];
 }
 
-- (id)mediaFeederWithName:(id)a3
+- (id)mediaFeederWithName:(id)name
 {
   feedersMemoryCache = self->_feedersMemoryCache;
   objc_sync_enter(feedersMemoryCache);
-  v6 = [(OFLRUCache *)self->_feedersMemoryCache objectForKey:a3];
+  v6 = [(OFLRUCache *)self->_feedersMemoryCache objectForKey:name];
   if (!v6)
   {
-    v8 = [(OKPresentation *)self feederWithName:a3];
+    v8 = [(OKPresentation *)self feederWithName:name];
     v9 = v8;
     if (v8)
     {
-      v10 = [v8 className];
+      className = [v8 className];
       v11 = [+[OKProducerManager defaultManager](OKProducerManager "defaultManager")];
       if (v11 && [v11 isSubclassOfClass:objc_opt_class()])
       {
         v7 = +[OKSettings objectFromClass:withSettings:andResolution:](OKSettings, "objectFromClass:withSettings:andResolution:", v11, [v9 settings], 0);
         [v7 setPresentation:self];
-        [(OFLRUCache *)self->_feedersMemoryCache setObject:v7 forKey:a3];
+        [(OFLRUCache *)self->_feedersMemoryCache setObject:v7 forKey:name];
         goto LABEL_12;
       }
 
       if (*MEMORY[0x277D62808] >= 4)
       {
-        [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Presentation/OKPresentation.m" line:884 andFormat:@"Class %@ is invalid for creating feeder", v10];
+        [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Presentation/OKPresentation.m" line:884 andFormat:@"Class %@ is invalid for creating feeder", className];
       }
     }
 
     else if (*MEMORY[0x277D62808] >= 4)
     {
-      [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Presentation/OKPresentation.m" line:889 andFormat:@"Feeder name %@ does not exist", a3];
+      [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Presentation/OKPresentation.m" line:889 andFormat:@"Feeder name %@ does not exist", name];
     }
 
     v7 = 0;
@@ -1065,69 +1065,69 @@ LABEL_12:
   return v7;
 }
 
-- (void)setRootMediaFeeder:(id)a3
+- (void)setRootMediaFeeder:(id)feeder
 {
   if ([(OKPresentationInfo *)self->_info mainFeederName])
   {
-    v5 = [(OKPresentationInfo *)self->_info mainFeederName];
+    mainFeederName = [(OKPresentationInfo *)self->_info mainFeederName];
   }
 
   else
   {
-    v5 = @"root";
+    mainFeederName = @"root";
   }
 
-  [(OKPresentation *)self setMediaFeeder:a3 withName:v5];
+  [(OKPresentation *)self setMediaFeeder:feeder withName:mainFeederName];
 }
 
-- (void)setMediaFeeder:(id)a3 withName:(id)a4
+- (void)setMediaFeeder:(id)feeder withName:(id)name
 {
   feedersMemoryCache = self->_feedersMemoryCache;
   objc_sync_enter(feedersMemoryCache);
-  [a3 setPresentation:self];
-  [(OFLRUCache *)self->_feedersMemoryCache setObject:a3 forKey:a4];
-  if ([a3 canBePersisted])
+  [feeder setPresentation:self];
+  [(OFLRUCache *)self->_feedersMemoryCache setObject:feeder forKey:name];
+  if ([feeder canBePersisted])
   {
     v8 = objc_opt_class();
-    -[OKPresentation addFeeder:](self, "addFeeder:", +[OKPresentationFeeder feederWithName:className:settings:](OKPresentationFeeder, "feederWithName:className:settings:", a4, NSStringFromClass(v8), [a3 feederSettings]));
+    -[OKPresentation addFeeder:](self, "addFeeder:", +[OKPresentationFeeder feederWithName:className:settings:](OKPresentationFeeder, "feederWithName:className:settings:", name, NSStringFromClass(v8), [feeder feederSettings]));
   }
 
   objc_sync_exit(feedersMemoryCache);
 }
 
-- (id)mediaItemForURL:(id)a3
+- (id)mediaItemForURL:(id)l
 {
-  v3 = a3;
-  if (!a3)
+  lCopy = l;
+  if (!l)
   {
-    return v3;
+    return lCopy;
   }
 
-  v5 = [(OKPresentation *)self lookupDelegate];
-  if (!v5 || (v6 = [(OKPresentationLookupDelegate *)v5 mediaItemForURL:v3]) == 0)
+  lookupDelegate = [(OKPresentation *)self lookupDelegate];
+  if (!lookupDelegate || (v6 = [(OKPresentationLookupDelegate *)lookupDelegate mediaItemForURL:lCopy]) == 0)
   {
     mediaItemsMemoryCache = self->_mediaItemsMemoryCache;
     objc_sync_enter(mediaItemsMemoryCache);
-    v10 = [MEMORY[0x277CCACA8] normalizeString:{objc_msgSend(v3, "absoluteString")}];
+    v10 = [MEMORY[0x277CCACA8] normalizeString:{objc_msgSend(lCopy, "absoluteString")}];
     v11 = [(OFLRUCache *)self->_mediaItemsMemoryCache objectForKey:v10];
     if (v11)
     {
-      v3 = v11;
+      lCopy = v11;
     }
 
     else
     {
       v12 = [+[OKMediaManager defaultManager](OKMediaManager "defaultManager")];
-      v3 = v12;
+      lCopy = v12;
       if (v12)
       {
         [v12 setPresentation:self];
-        [(OFLRUCache *)self->_mediaItemsMemoryCache setObject:v3 forKey:v10];
+        [(OFLRUCache *)self->_mediaItemsMemoryCache setObject:lCopy forKey:v10];
       }
     }
 
     objc_sync_exit(mediaItemsMemoryCache);
-    return v3;
+    return lCopy;
   }
 
   v7 = v6;
@@ -1135,15 +1135,15 @@ LABEL_12:
   return v7;
 }
 
-- (id)mediaItemsForURLs:(id)a3
+- (id)mediaItemsForURLs:(id)ls
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [ls countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1155,37 +1155,37 @@ LABEL_12:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(ls);
         }
 
         v10 = [(OKPresentation *)self mediaItemForURL:*(*(&v12 + 1) + 8 * v9)];
         if (v10)
         {
-          [v5 addObject:v10];
+          [array addObject:v10];
         }
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [ls countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
   }
 
-  return v5;
+  return array;
 }
 
-- (void)_invalidateMemoryCachedMediaItem:(id)a3
+- (void)_invalidateMemoryCachedMediaItem:(id)item
 {
   mediaItemsMemoryCache = self->_mediaItemsMemoryCache;
   objc_sync_enter(mediaItemsMemoryCache);
-  -[OFLRUCache removeObjectForKey:](self->_mediaItemsMemoryCache, "removeObjectForKey:", [a3 uniqueURLNormalisedString]);
+  -[OFLRUCache removeObjectForKey:](self->_mediaItemsMemoryCache, "removeObjectForKey:", [item uniqueURLNormalisedString]);
   objc_sync_exit(mediaItemsMemoryCache);
-  [(OKPresentation *)self invalidateMetadataMemoryCacheForMediaItem:a3];
+  [(OKPresentation *)self invalidateMetadataMemoryCacheForMediaItem:item];
 
-  [(OKPresentation *)self invalidateThumbnailsMemoryCacheForMediaItem:a3];
+  [(OKPresentation *)self invalidateThumbnailsMemoryCacheForMediaItem:item];
 }
 
 - (id)_temporaryDiskCacheManager
@@ -1202,42 +1202,42 @@ LABEL_12:
   return temporaryDiskCacheManager;
 }
 
-- (id)metadataInMemoryForMediaItem:(id)a3
+- (id)metadataInMemoryForMediaItem:(id)item
 {
   metadataMemoryCache = self->_metadataMemoryCache;
-  v4 = [a3 uniqueURLNormalisedString];
+  uniqueURLNormalisedString = [item uniqueURLNormalisedString];
 
-  return [(OFLRUCache *)metadataMemoryCache objectForKey:v4];
+  return [(OFLRUCache *)metadataMemoryCache objectForKey:uniqueURLNormalisedString];
 }
 
-- (void)setMetadataToMemory:(id)a3 forMediaItem:(id)a4
+- (void)setMetadataToMemory:(id)memory forMediaItem:(id)item
 {
   metadataMemoryCache = self->_metadataMemoryCache;
-  v6 = [a4 uniqueURLNormalisedString];
+  uniqueURLNormalisedString = [item uniqueURLNormalisedString];
 
-  [(OFLRUCache *)metadataMemoryCache setObject:a3 forKey:v6];
+  [(OFLRUCache *)metadataMemoryCache setObject:memory forKey:uniqueURLNormalisedString];
 }
 
-- (void)invalidateMetadataMemoryCacheForMediaItem:(id)a3
+- (void)invalidateMetadataMemoryCacheForMediaItem:(id)item
 {
   metadataMemoryCache = self->_metadataMemoryCache;
-  v4 = [a3 uniqueURLNormalisedString];
+  uniqueURLNormalisedString = [item uniqueURLNormalisedString];
 
-  [(OFLRUCache *)metadataMemoryCache removeObjectForKey:v4];
+  [(OFLRUCache *)metadataMemoryCache removeObjectForKey:uniqueURLNormalisedString];
 }
 
-- (id)thumbnailImageInMemoryCacheForMediaItem:(id)a3 andResolution:(unint64_t)a4
+- (id)thumbnailImageInMemoryCacheForMediaItem:(id)item andResolution:(unint64_t)resolution
 {
-  if (a4 == 1)
+  if (resolution == 1)
   {
     lowThumbnailsMemoryCache = self->_lowThumbnailsMemoryCache;
-    v5 = [a3 uniqueURLNormalisedString];
+    uniqueURLNormalisedString = [item uniqueURLNormalisedString];
     v6 = lowThumbnailsMemoryCache;
   }
 
   else
   {
-    if (a4 > 0x200)
+    if (resolution > 0x200)
     {
       intermediate2ThumbnailsMemoryCache = self->_intermediate2ThumbnailsMemoryCache;
     }
@@ -1247,25 +1247,25 @@ LABEL_12:
       intermediate2ThumbnailsMemoryCache = self->_intermediate1ThumbnailsMemoryCache;
     }
 
-    v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%ld", objc_msgSend(a3, "uniqueURLNormalisedString"), a4];
+    uniqueURLNormalisedString = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%ld", objc_msgSend(item, "uniqueURLNormalisedString"), resolution];
     v6 = intermediate2ThumbnailsMemoryCache;
   }
 
-  return [(OFLRUCache *)v6 objectForKey:v5];
+  return [(OFLRUCache *)v6 objectForKey:uniqueURLNormalisedString];
 }
 
-- (void)setThumbnailImageToMemoryCache:(id)a3 forMediaItem:(id)a4 andResolution:(unint64_t)a5
+- (void)setThumbnailImageToMemoryCache:(id)cache forMediaItem:(id)item andResolution:(unint64_t)resolution
 {
-  if (a5 == 1)
+  if (resolution == 1)
   {
     lowThumbnailsMemoryCache = self->_lowThumbnailsMemoryCache;
-    v7 = [a4 uniqueURLNormalisedString];
+    uniqueURLNormalisedString = [item uniqueURLNormalisedString];
     v8 = lowThumbnailsMemoryCache;
   }
 
   else
   {
-    if (a5 > 0x200)
+    if (resolution > 0x200)
     {
       intermediate2ThumbnailsMemoryCache = self->_intermediate2ThumbnailsMemoryCache;
     }
@@ -1275,23 +1275,23 @@ LABEL_12:
       intermediate2ThumbnailsMemoryCache = self->_intermediate1ThumbnailsMemoryCache;
     }
 
-    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%ld", objc_msgSend(a4, "uniqueURLNormalisedString"), a5];
+    uniqueURLNormalisedString = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%ld", objc_msgSend(item, "uniqueURLNormalisedString"), resolution];
     v8 = intermediate2ThumbnailsMemoryCache;
   }
 
-  [(OFLRUCache *)v8 setObject:a3 forKey:v7];
+  [(OFLRUCache *)v8 setObject:cache forKey:uniqueURLNormalisedString];
 }
 
-- (void)invalidateThumbnailsMemoryCacheForMediaItem:(id)a3
+- (void)invalidateThumbnailsMemoryCacheForMediaItem:(id)item
 {
   v25 = *MEMORY[0x277D85DE8];
-  -[OFLRUCache removeObjectForKey:](self->_lowThumbnailsMemoryCache, "removeObjectForKey:", [a3 uniqueURLNormalisedString]);
+  -[OFLRUCache removeObjectForKey:](self->_lowThumbnailsMemoryCache, "removeObjectForKey:", [item uniqueURLNormalisedString]);
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [(OFLRUCache *)self->_intermediate1ThumbnailsMemoryCache allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v19 objects:v24 count:16];
+  allKeys = [(OFLRUCache *)self->_intermediate1ThumbnailsMemoryCache allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1303,19 +1303,19 @@ LABEL_12:
       {
         if (*v20 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
-        if ([*(*(&v19 + 1) + 8 * v9) hasPrefix:{objc_msgSend(a3, "uniqueURLNormalisedString")}])
+        if ([*(*(&v19 + 1) + 8 * v9) hasPrefix:{objc_msgSend(item, "uniqueURLNormalisedString")}])
         {
-          -[OFLRUCache removeObjectForKey:](self->_intermediate1ThumbnailsMemoryCache, "removeObjectForKey:", [a3 uniqueURLNormalisedString]);
+          -[OFLRUCache removeObjectForKey:](self->_intermediate1ThumbnailsMemoryCache, "removeObjectForKey:", [item uniqueURLNormalisedString]);
         }
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v19 objects:v24 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v19 objects:v24 count:16];
     }
 
     while (v7);
@@ -1325,8 +1325,8 @@ LABEL_12:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v10 = [(OFLRUCache *)self->_intermediate2ThumbnailsMemoryCache allKeys];
-  v11 = [v10 countByEnumeratingWithState:&v15 objects:v23 count:16];
+  allKeys2 = [(OFLRUCache *)self->_intermediate2ThumbnailsMemoryCache allKeys];
+  v11 = [allKeys2 countByEnumeratingWithState:&v15 objects:v23 count:16];
   if (v11)
   {
     v12 = v11;
@@ -1338,26 +1338,26 @@ LABEL_12:
       {
         if (*v16 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(allKeys2);
         }
 
-        if ([*(*(&v15 + 1) + 8 * v14) hasPrefix:{objc_msgSend(a3, "uniqueURLNormalisedString")}])
+        if ([*(*(&v15 + 1) + 8 * v14) hasPrefix:{objc_msgSend(item, "uniqueURLNormalisedString")}])
         {
-          -[OFLRUCache removeObjectForKey:](self->_intermediate2ThumbnailsMemoryCache, "removeObjectForKey:", [a3 uniqueURLNormalisedString]);
+          -[OFLRUCache removeObjectForKey:](self->_intermediate2ThumbnailsMemoryCache, "removeObjectForKey:", [item uniqueURLNormalisedString]);
         }
 
         ++v14;
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v15 objects:v23 count:16];
+      v12 = [allKeys2 countByEnumeratingWithState:&v15 objects:v23 count:16];
     }
 
     while (v12);
   }
 }
 
-- (void)_didReceiveMemoryWarningNotification:(id)a3
+- (void)_didReceiveMemoryWarningNotification:(id)notification
 {
   [(OFLRUCache *)self->_lowThumbnailsMemoryCache removeAllObjects];
   [(OFLRUCache *)self->_intermediate1ThumbnailsMemoryCache removeAllObjects];
@@ -1371,7 +1371,7 @@ LABEL_12:
   [(OFLRUCache *)metadataMemoryCache removeAllObjects];
 }
 
-- (void)_didEnterBackgroundNotification:(id)a3
+- (void)_didEnterBackgroundNotification:(id)notification
 {
   [(OFLRUCache *)self->_lowThumbnailsMemoryCache removeAllObjects];
   [(OFLRUCache *)self->_intermediate1ThumbnailsMemoryCache removeAllObjects];
@@ -1384,13 +1384,13 @@ LABEL_12:
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
-  v5 = [MEMORY[0x277D75128] sharedApplication];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __50__OKPresentation__didEnterBackgroundNotification___block_invoke;
   v9[3] = &unk_279C8EA68;
   v9[4] = &v10;
-  v6 = [v5 beginBackgroundTaskWithExpirationHandler:v9];
+  v6 = [mEMORY[0x277D75128] beginBackgroundTaskWithExpirationHandler:v9];
   v11[3] = v6;
   if (v6 != *MEMORY[0x277D767B0])
   {
@@ -1428,19 +1428,19 @@ uint64_t __50__OKPresentation__didEnterBackgroundNotification___block_invoke_2(u
   return [v2 endBackgroundTask:v3];
 }
 
-- (void)_willTerminateNotification:(id)a3
+- (void)_willTerminateNotification:(id)notification
 {
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v3 = [MEMORY[0x277D75128] sharedApplication];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__OKPresentation__willTerminateNotification___block_invoke;
   v7[3] = &unk_279C8EA68;
   v7[4] = &v8;
-  v4 = [v3 beginBackgroundTaskWithExpirationHandler:v7];
+  v4 = [mEMORY[0x277D75128] beginBackgroundTaskWithExpirationHandler:v7];
   v9[3] = v4;
   if (v4 != *MEMORY[0x277D767B0])
   {
@@ -1482,16 +1482,16 @@ uint64_t __45__OKPresentation__willTerminateNotification___block_invoke_2(uint64
 {
   feeders = self->_feeders;
   objc_sync_enter(feeders);
-  v4 = [(NSMutableDictionary *)self->_feeders allKeys];
+  allKeys = [(NSMutableDictionary *)self->_feeders allKeys];
   objc_sync_exit(feeders);
-  return v4;
+  return allKeys;
 }
 
-- (id)feederWithName:(id)a3
+- (id)feederWithName:(id)name
 {
   feeders = self->_feeders;
   objc_sync_enter(feeders);
-  v6 = [(NSMutableDictionary *)self->_feeders objectForKey:a3];
+  v6 = [(NSMutableDictionary *)self->_feeders objectForKey:name];
   objc_sync_exit(feeders);
   return v6;
 }
@@ -1500,35 +1500,35 @@ uint64_t __45__OKPresentation__willTerminateNotification___block_invoke_2(uint64
 {
   if ([(OKPresentationInfo *)self->_info mainFeederName])
   {
-    v3 = [(OKPresentationInfo *)self->_info mainFeederName];
+    mainFeederName = [(OKPresentationInfo *)self->_info mainFeederName];
   }
 
   else
   {
-    v3 = @"root";
+    mainFeederName = @"root";
   }
 
-  return [(OKPresentation *)self feederWithName:v3];
+  return [(OKPresentation *)self feederWithName:mainFeederName];
 }
 
-- (void)addFeeder:(id)a3
+- (void)addFeeder:(id)feeder
 {
   feeders = self->_feeders;
   objc_sync_enter(feeders);
-  [a3 setPresentation:self];
-  [a3 resolveIfNeeded];
-  -[NSMutableDictionary setObject:forKey:](self->_feeders, "setObject:forKey:", a3, [a3 name]);
+  [feeder setPresentation:self];
+  [feeder resolveIfNeeded];
+  -[NSMutableDictionary setObject:forKey:](self->_feeders, "setObject:forKey:", feeder, [feeder name]);
   self->_haveFeedersChanged = 1;
 
   objc_sync_exit(feeders);
 }
 
-- (void)removeFeederWithName:(id)a3
+- (void)removeFeederWithName:(id)name
 {
   feeders = self->_feeders;
   objc_sync_enter(feeders);
-  [(NSMutableDictionary *)self->_feeders removeObjectForKey:a3];
-  [(OFLRUCache *)self->_feedersMemoryCache removeObjectForKey:a3];
+  [(NSMutableDictionary *)self->_feeders removeObjectForKey:name];
+  [(OFLRUCache *)self->_feedersMemoryCache removeObjectForKey:name];
   self->_haveFeedersChanged = 1;
 
   objc_sync_exit(feeders);
@@ -1548,38 +1548,38 @@ uint64_t __45__OKPresentation__willTerminateNotification___block_invoke_2(uint64
 {
   pageTemplates = self->_pageTemplates;
   objc_sync_enter(pageTemplates);
-  v4 = [(NSMutableDictionary *)self->_pageTemplates allKeys];
+  allKeys = [(NSMutableDictionary *)self->_pageTemplates allKeys];
   objc_sync_exit(pageTemplates);
-  return v4;
+  return allKeys;
 }
 
-- (id)pageTemplateWithName:(id)a3
+- (id)pageTemplateWithName:(id)name
 {
   pageTemplates = self->_pageTemplates;
   objc_sync_enter(pageTemplates);
-  v6 = [(NSMutableDictionary *)self->_pageTemplates objectForKey:a3];
+  v6 = [(NSMutableDictionary *)self->_pageTemplates objectForKey:name];
   objc_sync_exit(pageTemplates);
   return v6;
 }
 
-- (void)addPageTemplate:(id)a3
+- (void)addPageTemplate:(id)template
 {
   pageTemplates = self->_pageTemplates;
   objc_sync_enter(pageTemplates);
-  [a3 setIsTemplate:1];
-  [a3 setPresentation:self];
-  [a3 resolveIfNeeded];
-  -[NSMutableDictionary setObject:forKey:](self->_pageTemplates, "setObject:forKey:", a3, [a3 name]);
+  [template setIsTemplate:1];
+  [template setPresentation:self];
+  [template resolveIfNeeded];
+  -[NSMutableDictionary setObject:forKey:](self->_pageTemplates, "setObject:forKey:", template, [template name]);
   self->_haveTemplatesChanged = 1;
 
   objc_sync_exit(pageTemplates);
 }
 
-- (void)removePageTemplateWithName:(id)a3
+- (void)removePageTemplateWithName:(id)name
 {
   pageTemplates = self->_pageTemplates;
   objc_sync_enter(pageTemplates);
-  [(NSMutableDictionary *)self->_pageTemplates removeObjectForKey:a3];
+  [(NSMutableDictionary *)self->_pageTemplates removeObjectForKey:name];
   self->_haveTemplatesChanged = 1;
 
   objc_sync_exit(pageTemplates);
@@ -1599,38 +1599,38 @@ uint64_t __45__OKPresentation__willTerminateNotification___block_invoke_2(uint64
 {
   widgetTemplates = self->_widgetTemplates;
   objc_sync_enter(widgetTemplates);
-  v4 = [(NSMutableDictionary *)self->_widgetTemplates allKeys];
+  allKeys = [(NSMutableDictionary *)self->_widgetTemplates allKeys];
   objc_sync_exit(widgetTemplates);
-  return v4;
+  return allKeys;
 }
 
-- (id)widgetTemplateWithName:(id)a3
+- (id)widgetTemplateWithName:(id)name
 {
   widgetTemplates = self->_widgetTemplates;
   objc_sync_enter(widgetTemplates);
-  v6 = [(NSMutableDictionary *)self->_widgetTemplates objectForKey:a3];
+  v6 = [(NSMutableDictionary *)self->_widgetTemplates objectForKey:name];
   objc_sync_exit(widgetTemplates);
   return v6;
 }
 
-- (void)addWidgetTemplate:(id)a3
+- (void)addWidgetTemplate:(id)template
 {
   widgetTemplates = self->_widgetTemplates;
   objc_sync_enter(widgetTemplates);
-  [a3 setIsTemplate:1];
-  [a3 setPresentation:self];
-  [a3 resolveIfNeeded];
-  -[NSMutableDictionary setObject:forKey:](self->_widgetTemplates, "setObject:forKey:", a3, [a3 name]);
+  [template setIsTemplate:1];
+  [template setPresentation:self];
+  [template resolveIfNeeded];
+  -[NSMutableDictionary setObject:forKey:](self->_widgetTemplates, "setObject:forKey:", template, [template name]);
   self->_haveTemplatesChanged = 1;
 
   objc_sync_exit(widgetTemplates);
 }
 
-- (void)removeWidgetTemplateWithName:(id)a3
+- (void)removeWidgetTemplateWithName:(id)name
 {
   widgetTemplates = self->_widgetTemplates;
   objc_sync_enter(widgetTemplates);
-  [(NSMutableDictionary *)self->_widgetTemplates removeObjectForKey:a3];
+  [(NSMutableDictionary *)self->_widgetTemplates removeObjectForKey:name];
   self->_haveTemplatesChanged = 1;
 
   objc_sync_exit(widgetTemplates);
@@ -1650,38 +1650,38 @@ uint64_t __45__OKPresentation__willTerminateNotification___block_invoke_2(uint64
 {
   materialTemplates = self->_materialTemplates;
   objc_sync_enter(materialTemplates);
-  v4 = [(NSMutableDictionary *)self->_materialTemplates allKeys];
+  allKeys = [(NSMutableDictionary *)self->_materialTemplates allKeys];
   objc_sync_exit(materialTemplates);
-  return v4;
+  return allKeys;
 }
 
-- (id)materialTemplateWithName:(id)a3
+- (id)materialTemplateWithName:(id)name
 {
   materialTemplates = self->_materialTemplates;
   objc_sync_enter(materialTemplates);
-  v6 = [(NSMutableDictionary *)self->_materialTemplates objectForKey:a3];
+  v6 = [(NSMutableDictionary *)self->_materialTemplates objectForKey:name];
   objc_sync_exit(materialTemplates);
   return v6;
 }
 
-- (void)addMaterialTemplate:(id)a3
+- (void)addMaterialTemplate:(id)template
 {
   materialTemplates = self->_materialTemplates;
   objc_sync_enter(materialTemplates);
-  [a3 setIsTemplate:1];
-  [a3 setPresentation:self];
-  [a3 resolveIfNeeded];
-  -[NSMutableDictionary setObject:forKey:](self->_materialTemplates, "setObject:forKey:", a3, [a3 name]);
+  [template setIsTemplate:1];
+  [template setPresentation:self];
+  [template resolveIfNeeded];
+  -[NSMutableDictionary setObject:forKey:](self->_materialTemplates, "setObject:forKey:", template, [template name]);
   self->_haveTemplatesChanged = 1;
 
   objc_sync_exit(materialTemplates);
 }
 
-- (void)removeMaterialTemplateWithName:(id)a3
+- (void)removeMaterialTemplateWithName:(id)name
 {
   materialTemplates = self->_materialTemplates;
   objc_sync_enter(materialTemplates);
-  [(NSMutableDictionary *)self->_materialTemplates removeObjectForKey:a3];
+  [(NSMutableDictionary *)self->_materialTemplates removeObjectForKey:name];
   self->_haveTemplatesChanged = 1;
 
   objc_sync_exit(materialTemplates);
@@ -1709,37 +1709,37 @@ uint64_t __45__OKPresentation__willTerminateNotification___block_invoke_2(uint64
 {
   pages = self->_pages;
   objc_sync_enter(pages);
-  v4 = [(NSMutableDictionary *)self->_pages allKeys];
+  allKeys = [(NSMutableDictionary *)self->_pages allKeys];
   objc_sync_exit(pages);
-  return v4;
+  return allKeys;
 }
 
-- (id)pageWithName:(id)a3
+- (id)pageWithName:(id)name
 {
   pages = self->_pages;
   objc_sync_enter(pages);
-  v6 = [(NSMutableDictionary *)self->_pages objectForKey:a3];
+  v6 = [(NSMutableDictionary *)self->_pages objectForKey:name];
   objc_sync_exit(pages);
   return v6;
 }
 
-- (void)addPage:(id)a3
+- (void)addPage:(id)page
 {
   pages = self->_pages;
   objc_sync_enter(pages);
-  [a3 setPresentation:self];
-  [a3 resolveIfNeeded];
-  -[NSMutableDictionary setObject:forKey:](self->_pages, "setObject:forKey:", a3, [a3 name]);
+  [page setPresentation:self];
+  [page resolveIfNeeded];
+  -[NSMutableDictionary setObject:forKey:](self->_pages, "setObject:forKey:", page, [page name]);
   self->_havePagesChanged = 1;
 
   objc_sync_exit(pages);
 }
 
-- (void)removePageWithName:(id)a3
+- (void)removePageWithName:(id)name
 {
   pages = self->_pages;
   objc_sync_enter(pages);
-  [(NSMutableDictionary *)self->_pages removeObjectForKey:a3];
+  [(NSMutableDictionary *)self->_pages removeObjectForKey:name];
   self->_havePagesChanged = 1;
 
   objc_sync_exit(pages);
@@ -1759,16 +1759,16 @@ uint64_t __45__OKPresentation__willTerminateNotification___block_invoke_2(uint64
 {
   navigators = self->_navigators;
   objc_sync_enter(navigators);
-  v4 = [(NSMutableDictionary *)self->_navigators allKeys];
+  allKeys = [(NSMutableDictionary *)self->_navigators allKeys];
   objc_sync_exit(navigators);
-  return v4;
+  return allKeys;
 }
 
-- (id)navigatorWithName:(id)a3
+- (id)navigatorWithName:(id)name
 {
   navigators = self->_navigators;
   objc_sync_enter(navigators);
-  v6 = [(NSMutableDictionary *)self->_navigators objectForKey:a3];
+  v6 = [(NSMutableDictionary *)self->_navigators objectForKey:name];
   objc_sync_exit(navigators);
   return v6;
 }
@@ -1777,49 +1777,49 @@ uint64_t __45__OKPresentation__willTerminateNotification___block_invoke_2(uint64
 {
   if ([(OKPresentationInfo *)self->_info mainNavigatorName])
   {
-    v3 = [(OKPresentationInfo *)self->_info mainNavigatorName];
+    mainNavigatorName = [(OKPresentationInfo *)self->_info mainNavigatorName];
   }
 
   else
   {
-    v3 = @"root";
+    mainNavigatorName = @"root";
   }
 
-  return [(OKPresentation *)self navigatorWithName:v3];
+  return [(OKPresentation *)self navigatorWithName:mainNavigatorName];
 }
 
 - (id)trailerNavigator
 {
   if ([(OKPresentationInfo *)self->_info trailerNavigatorName])
   {
-    v3 = [(OKPresentationInfo *)self->_info trailerNavigatorName];
+    trailerNavigatorName = [(OKPresentationInfo *)self->_info trailerNavigatorName];
   }
 
   else
   {
-    v3 = @"trailer";
+    trailerNavigatorName = @"trailer";
   }
 
-  return [(OKPresentation *)self navigatorWithName:v3];
+  return [(OKPresentation *)self navigatorWithName:trailerNavigatorName];
 }
 
-- (void)addNavigator:(id)a3
+- (void)addNavigator:(id)navigator
 {
   navigators = self->_navigators;
   objc_sync_enter(navigators);
-  [a3 setPresentation:self];
-  [a3 resolveIfNeeded];
-  -[NSMutableDictionary setObject:forKey:](self->_navigators, "setObject:forKey:", a3, [a3 name]);
+  [navigator setPresentation:self];
+  [navigator resolveIfNeeded];
+  -[NSMutableDictionary setObject:forKey:](self->_navigators, "setObject:forKey:", navigator, [navigator name]);
   self->_haveNavigatorsChanged = 1;
 
   objc_sync_exit(navigators);
 }
 
-- (void)removeNavigatorWithName:(id)a3
+- (void)removeNavigatorWithName:(id)name
 {
   navigators = self->_navigators;
   objc_sync_enter(navigators);
-  [(NSMutableDictionary *)self->_navigators removeObjectForKey:a3];
+  [(NSMutableDictionary *)self->_navigators removeObjectForKey:name];
   self->_haveNavigatorsChanged = 1;
 
   objc_sync_exit(navigators);
@@ -1839,16 +1839,16 @@ uint64_t __45__OKPresentation__willTerminateNotification___block_invoke_2(uint64
 {
   couches = self->_couches;
   objc_sync_enter(couches);
-  v4 = [(NSMutableDictionary *)self->_couches allKeys];
+  allKeys = [(NSMutableDictionary *)self->_couches allKeys];
   objc_sync_exit(couches);
-  return v4;
+  return allKeys;
 }
 
-- (id)couchWithName:(id)a3
+- (id)couchWithName:(id)name
 {
   couches = self->_couches;
   objc_sync_enter(couches);
-  v6 = [(NSMutableDictionary *)self->_couches objectForKey:a3];
+  v6 = [(NSMutableDictionary *)self->_couches objectForKey:name];
   objc_sync_exit(couches);
   return v6;
 }
@@ -1857,49 +1857,49 @@ uint64_t __45__OKPresentation__willTerminateNotification___block_invoke_2(uint64
 {
   if ([(OKPresentationInfo *)self->_info mainNavigatorName])
   {
-    v3 = [(OKPresentationInfo *)self->_info mainNavigatorName];
+    mainNavigatorName = [(OKPresentationInfo *)self->_info mainNavigatorName];
   }
 
   else
   {
-    v3 = @"root";
+    mainNavigatorName = @"root";
   }
 
-  return [(OKPresentation *)self couchWithName:v3];
+  return [(OKPresentation *)self couchWithName:mainNavigatorName];
 }
 
 - (id)trailerCouch
 {
   if ([(OKPresentationInfo *)self->_info trailerNavigatorName])
   {
-    v3 = [(OKPresentationInfo *)self->_info trailerNavigatorName];
+    trailerNavigatorName = [(OKPresentationInfo *)self->_info trailerNavigatorName];
   }
 
   else
   {
-    v3 = @"trailer";
+    trailerNavigatorName = @"trailer";
   }
 
-  return [(OKPresentation *)self couchWithName:v3];
+  return [(OKPresentation *)self couchWithName:trailerNavigatorName];
 }
 
-- (void)addCouch:(id)a3
+- (void)addCouch:(id)couch
 {
   couches = self->_couches;
   objc_sync_enter(couches);
-  [a3 setPresentation:self];
-  [a3 resolveIfNeeded];
-  -[NSMutableDictionary setObject:forKey:](self->_couches, "setObject:forKey:", a3, [a3 name]);
+  [couch setPresentation:self];
+  [couch resolveIfNeeded];
+  -[NSMutableDictionary setObject:forKey:](self->_couches, "setObject:forKey:", couch, [couch name]);
   self->_haveCouchesChanged = 1;
 
   objc_sync_exit(couches);
 }
 
-- (void)removeCouchWithName:(id)a3
+- (void)removeCouchWithName:(id)name
 {
   couches = self->_couches;
   objc_sync_enter(couches);
-  [(NSMutableDictionary *)self->_couches removeObjectForKey:a3];
+  [(NSMutableDictionary *)self->_couches removeObjectForKey:name];
   self->_haveCouchesChanged = 1;
 
   objc_sync_exit(couches);
@@ -1923,9 +1923,9 @@ uint64_t __45__OKPresentation__willTerminateNotification___block_invoke_2(uint64
   [-[OKPresentation rootNavigator](self "rootNavigator")];
   [-[OKPresentation trailerNavigator](self "trailerNavigator")];
   [-[OKPresentation rootCouch](self "rootCouch")];
-  v3 = [(OKPresentation *)self trailerCouch];
+  trailerCouch = [(OKPresentation *)self trailerCouch];
 
-  [v3 resolveIfNeeded];
+  [trailerCouch resolveIfNeeded];
 }
 
 - (id)mainScript
@@ -1937,20 +1937,20 @@ uint64_t __45__OKPresentation__willTerminateNotification___block_invoke_2(uint64
   return v4;
 }
 
-- (void)addMainScript:(id)a3 extend:(BOOL)a4
+- (void)addMainScript:(id)script extend:(BOOL)extend
 {
   mainScript = self->_mainScript;
   objc_sync_enter(mainScript);
   v8 = self->_mainScript;
-  if (a4)
+  if (extend)
   {
     [(NSMutableString *)v8 appendString:@"\n\n"];
-    [(NSMutableString *)self->_mainScript appendString:a3];
+    [(NSMutableString *)self->_mainScript appendString:script];
   }
 
   else
   {
-    [(NSMutableString *)v8 setString:a3];
+    [(NSMutableString *)v8 setString:script];
   }
 
   self->_haveScriptsChanged = 1;
@@ -1967,9 +1967,9 @@ uint64_t __45__OKPresentation__willTerminateNotification___block_invoke_2(uint64
   self->_haveScriptsChanged = 1;
 }
 
-- (id)canvasForKeyPath:(id)a3
+- (id)canvasForKeyPath:(id)path
 {
-  v4 = [a3 componentsSeparatedByString:@"."];
+  v4 = [path componentsSeparatedByString:@"."];
   if ([v4 count])
   {
     v5 = -[OKPresentation navigatorWithName:](self, "navigatorWithName:", [v4 objectAtIndexedSubscript:0]);
@@ -2013,18 +2013,18 @@ LABEL_10:
   }
 }
 
-- (void)addGuideline:(id)a3
+- (void)addGuideline:(id)guideline
 {
   guidelines = self->_guidelines;
   objc_sync_enter(guidelines);
-  [a3 setPresentation:self];
-  -[NSMutableDictionary setObject:forKey:](self->_guidelines, "setObject:forKey:", a3, [a3 globalUniqueKey]);
+  [guideline setPresentation:self];
+  -[NSMutableDictionary setObject:forKey:](self->_guidelines, "setObject:forKey:", guideline, [guideline globalUniqueKey]);
   self->_haveGuidelinesChanged = 1;
 
   objc_sync_exit(guidelines);
 }
 
-- (void)addGuidelines:(id)a3
+- (void)addGuidelines:(id)guidelines
 {
   v15 = *MEMORY[0x277D85DE8];
   guidelines = self->_guidelines;
@@ -2033,7 +2033,7 @@ LABEL_10:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v6 = [guidelines countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = *v11;
@@ -2043,7 +2043,7 @@ LABEL_10:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(guidelines);
         }
 
         v9 = *(*(&v10 + 1) + 8 * i);
@@ -2051,7 +2051,7 @@ LABEL_10:
         -[NSMutableDictionary setObject:forKey:](self->_guidelines, "setObject:forKey:", v9, [v9 globalUniqueKey]);
       }
 
-      v6 = [a3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [guidelines countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -2061,27 +2061,27 @@ LABEL_10:
   objc_sync_exit(guidelines);
 }
 
-- (void)removeGuideline:(id)a3
+- (void)removeGuideline:(id)guideline
 {
   guidelines = self->_guidelines;
   objc_sync_enter(guidelines);
-  -[NSMutableDictionary removeObjectForKey:](self->_guidelines, "removeObjectForKey:", [a3 globalUniqueKey]);
+  -[NSMutableDictionary removeObjectForKey:](self->_guidelines, "removeObjectForKey:", [guideline globalUniqueKey]);
   self->_haveGuidelinesChanged = 1;
 
   objc_sync_exit(guidelines);
 }
 
-- (void)removeGuidelineForGlobalUniqueKey:(id)a3
+- (void)removeGuidelineForGlobalUniqueKey:(id)key
 {
   guidelines = self->_guidelines;
   objc_sync_enter(guidelines);
-  [(NSMutableDictionary *)self->_guidelines removeObjectForKey:a3];
+  [(NSMutableDictionary *)self->_guidelines removeObjectForKey:key];
   self->_haveGuidelinesChanged = 1;
 
   objc_sync_exit(guidelines);
 }
 
-- (void)removeGuidelines:(id)a3
+- (void)removeGuidelines:(id)guidelines
 {
   v14 = *MEMORY[0x277D85DE8];
   guidelines = self->_guidelines;
@@ -2090,7 +2090,7 @@ LABEL_10:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v6 = [guidelines countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v6)
   {
     v7 = *v10;
@@ -2100,13 +2100,13 @@ LABEL_10:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(guidelines);
         }
 
         -[NSMutableDictionary removeObjectForKey:](self->_guidelines, "removeObjectForKey:", [*(*(&v9 + 1) + 8 * i) globalUniqueKey]);
       }
 
-      v6 = [a3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [guidelines countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
@@ -2126,23 +2126,23 @@ LABEL_10:
   objc_sync_exit(guidelines);
 }
 
-- (id)guidelineForGlobalUniqueKey:(id)a3
+- (id)guidelineForGlobalUniqueKey:(id)key
 {
   guidelines = self->_guidelines;
   objc_sync_enter(guidelines);
-  v6 = [(NSMutableDictionary *)self->_guidelines objectForKey:a3];
+  v6 = [(NSMutableDictionary *)self->_guidelines objectForKey:key];
   objc_sync_exit(guidelines);
   return v6;
 }
 
-- (id)guidelineValueForGlobalUniqueKey:(id)a3
+- (id)guidelineValueForGlobalUniqueKey:(id)key
 {
-  v3 = [(OKPresentation *)self guidelineForGlobalUniqueKey:a3];
+  v3 = [(OKPresentation *)self guidelineForGlobalUniqueKey:key];
 
   return [v3 value];
 }
 
-- (void)setGuidelines:(id)a3
+- (void)setGuidelines:(id)guidelines
 {
   v15 = *MEMORY[0x277D85DE8];
   guidelines = self->_guidelines;
@@ -2152,7 +2152,7 @@ LABEL_10:
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v6 = [guidelines countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = *v11;
@@ -2162,7 +2162,7 @@ LABEL_10:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(guidelines);
         }
 
         v9 = *(*(&v10 + 1) + 8 * i);
@@ -2170,7 +2170,7 @@ LABEL_10:
         -[NSMutableDictionary setObject:forKey:](self->_guidelines, "setObject:forKey:", v9, [v9 globalUniqueKey]);
       }
 
-      v6 = [a3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [guidelines countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -2180,12 +2180,12 @@ LABEL_10:
   objc_sync_exit(guidelines);
 }
 
-- (id)guidelinesForType:(unint64_t)a3
+- (id)guidelinesForType:(unint64_t)type
 {
   v18 = *MEMORY[0x277D85DE8];
   guidelines = self->_guidelines;
   objc_sync_enter(guidelines);
-  v6 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
@@ -2205,9 +2205,9 @@ LABEL_10:
         }
 
         v11 = *(*(&v13 + 1) + 8 * i);
-        if (([v11 type] & a3) != 0)
+        if (([v11 type] & type) != 0)
         {
-          [v6 addObject:v11];
+          [array addObject:v11];
         }
       }
 
@@ -2218,19 +2218,19 @@ LABEL_10:
   }
 
   objc_sync_exit(guidelines);
-  return v6;
+  return array;
 }
 
-- (id)guidelinesForKey:(id)a3
+- (id)guidelinesForKey:(id)key
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(NSMutableDictionary *)self->_guidelines keyEnumerator];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  keyEnumerator = [(NSMutableDictionary *)self->_guidelines keyEnumerator];
+  v7 = [keyEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -2241,37 +2241,37 @@ LABEL_10:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v11 = *(*(&v13 + 1) + 8 * i);
-        if ([v11 hasPrefix:a3])
+        if ([v11 hasPrefix:key])
         {
-          [v5 addObject:{-[NSMutableDictionary objectForKey:](self->_guidelines, "objectForKey:", v11)}];
+          [array addObject:{-[NSMutableDictionary objectForKey:](self->_guidelines, "objectForKey:", v11)}];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [keyEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
   }
 
-  return v5;
+  return array;
 }
 
-- (id)guidelinesForMediaItem:(id)a3
+- (id)guidelinesForMediaItem:(id)item
 {
   v18 = *MEMORY[0x277D85DE8];
   guidelines = self->_guidelines;
   objc_sync_enter(guidelines);
-  v6 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = [(NSMutableDictionary *)self->_guidelines objectEnumerator];
-  v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  objectEnumerator = [(NSMutableDictionary *)self->_guidelines objectEnumerator];
+  v8 = [objectEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
     v9 = *v14;
@@ -2281,38 +2281,38 @@ LABEL_10:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v11 = *(*(&v13 + 1) + 8 * i);
         if ([objc_msgSend(v11 "mediaItem")])
         {
-          [v6 addObject:v11];
+          [array addObject:v11];
         }
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [objectEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
   }
 
   objc_sync_exit(guidelines);
-  return v6;
+  return array;
 }
 
-- (id)guidelinesForMediaItem:(id)a3 andKey:(id)a4
+- (id)guidelinesForMediaItem:(id)item andKey:(id)key
 {
   v20 = *MEMORY[0x277D85DE8];
   guidelines = self->_guidelines;
   objc_sync_enter(guidelines);
-  v8 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v9 = [(NSMutableDictionary *)self->_guidelines objectEnumerator];
-  v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  objectEnumerator = [(NSMutableDictionary *)self->_guidelines objectEnumerator];
+  v10 = [objectEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v10)
   {
     v11 = *v16;
@@ -2322,38 +2322,38 @@ LABEL_10:
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v13 = *(*(&v15 + 1) + 8 * i);
-        if ([objc_msgSend(v13 "mediaItem")] && objc_msgSend(objc_msgSend(v13, "key"), "isEqualToString:", a4))
+        if ([objc_msgSend(v13 "mediaItem")] && objc_msgSend(objc_msgSend(v13, "key"), "isEqualToString:", key))
         {
-          [v8 addObject:v13];
+          [array addObject:v13];
         }
       }
 
-      v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v10 = [objectEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v10);
   }
 
   objc_sync_exit(guidelines);
-  return v8;
+  return array;
 }
 
-- (id)guidelinesForPresentationCanvas:(id)a3
+- (id)guidelinesForPresentationCanvas:(id)canvas
 {
   v19 = *MEMORY[0x277D85DE8];
   guidelines = self->_guidelines;
   objc_sync_enter(guidelines);
-  v6 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = [(NSMutableDictionary *)self->_guidelines objectEnumerator];
-  v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  objectEnumerator = [(NSMutableDictionary *)self->_guidelines objectEnumerator];
+  v8 = [objectEnumerator countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
     v9 = *v15;
@@ -2363,39 +2363,39 @@ LABEL_10:
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
-        v12 = [a3 keyPath];
-        if (v12 && [objc_msgSend(v11 "presentationCanvasKeyPath")])
+        keyPath = [canvas keyPath];
+        if (keyPath && [objc_msgSend(v11 "presentationCanvasKeyPath")])
         {
-          [v6 addObject:v11];
+          [array addObject:v11];
         }
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [objectEnumerator countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
   }
 
   objc_sync_exit(guidelines);
-  return v6;
+  return array;
 }
 
-- (id)guidelinesForPresentationCanvas:(id)a3 andKey:(id)a4
+- (id)guidelinesForPresentationCanvas:(id)canvas andKey:(id)key
 {
   v21 = *MEMORY[0x277D85DE8];
   guidelines = self->_guidelines;
   objc_sync_enter(guidelines);
-  v8 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v9 = [(NSMutableDictionary *)self->_guidelines objectEnumerator];
-  v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  objectEnumerator = [(NSMutableDictionary *)self->_guidelines objectEnumerator];
+  v10 = [objectEnumerator countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {
     v11 = *v17;
@@ -2405,39 +2405,39 @@ LABEL_10:
       {
         if (*v17 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v13 = *(*(&v16 + 1) + 8 * i);
-        v14 = [a3 keyPath];
-        if (v14 && [objc_msgSend(v13 "presentationCanvasKeyPath")] && objc_msgSend(objc_msgSend(v13, "key"), "isEqualToString:", a4))
+        keyPath = [canvas keyPath];
+        if (keyPath && [objc_msgSend(v13 "presentationCanvasKeyPath")] && objc_msgSend(objc_msgSend(v13, "key"), "isEqualToString:", key))
         {
-          [v8 addObject:v13];
+          [array addObject:v13];
         }
       }
 
-      v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v10 = [objectEnumerator countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v10);
   }
 
   objc_sync_exit(guidelines);
-  return v8;
+  return array;
 }
 
-- (id)guidelinesForProducerPlugin:(id)a3
+- (id)guidelinesForProducerPlugin:(id)plugin
 {
   v18 = *MEMORY[0x277D85DE8];
   guidelines = self->_guidelines;
   objc_sync_enter(guidelines);
-  v6 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = [(NSMutableDictionary *)self->_guidelines objectEnumerator];
-  v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  objectEnumerator = [(NSMutableDictionary *)self->_guidelines objectEnumerator];
+  v8 = [objectEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
     v9 = *v14;
@@ -2447,49 +2447,49 @@ LABEL_10:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v11 = *(*(&v13 + 1) + 8 * i);
         if ([objc_msgSend(v11 "producerPlugin")])
         {
-          [v6 addObject:v11];
+          [array addObject:v11];
         }
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [objectEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
   }
 
   objc_sync_exit(guidelines);
-  return v6;
+  return array;
 }
 
 - (id)allGuidelineGlobalUniqueKeys
 {
   guidelines = self->_guidelines;
   objc_sync_enter(guidelines);
-  v4 = [(NSMutableDictionary *)self->_guidelines allKeys];
+  allKeys = [(NSMutableDictionary *)self->_guidelines allKeys];
   objc_sync_exit(guidelines);
-  return v4;
+  return allKeys;
 }
 
 - (id)allGuidelines
 {
   guidelines = self->_guidelines;
   objc_sync_enter(guidelines);
-  v4 = [(NSMutableDictionary *)self->_guidelines allValues];
+  allValues = [(NSMutableDictionary *)self->_guidelines allValues];
   objc_sync_exit(guidelines);
-  return v4;
+  return allValues;
 }
 
 - (id)guidelineAuthoringUserMediaURLs
 {
   v14 = *MEMORY[0x277D85DE8];
   v2 = [-[OKPresentation guidelineForGlobalUniqueKey:](self guidelineForGlobalUniqueKey:{+[OKPresentationGuideline globalUniqueKeyForKey:](OKPresentationGuideline, "globalUniqueKeyForKey:", @"authoringUserMediaURLStrings", "value"}];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
@@ -2509,7 +2509,7 @@ LABEL_10:
           objc_enumerationMutation(v2);
         }
 
-        [v3 addObject:{objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:", *(*(&v9 + 1) + 8 * v7++))}];
+        [array addObject:{objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:", *(*(&v9 + 1) + 8 * v7++))}];
       }
 
       while (v5 != v7);
@@ -2519,21 +2519,21 @@ LABEL_10:
     while (v5);
   }
 
-  return v3;
+  return array;
 }
 
 - (id)guidelineAuthoringUserMediaItems
 {
-  v3 = [(OKPresentation *)self guidelineAuthoringUserMediaURLs];
+  guidelineAuthoringUserMediaURLs = [(OKPresentation *)self guidelineAuthoringUserMediaURLs];
 
-  return [(OKPresentation *)self mediaItemsForURLs:v3];
+  return [(OKPresentation *)self mediaItemsForURLs:guidelineAuthoringUserMediaURLs];
 }
 
 - (id)guidelineAuthoringProducerMediaURLs
 {
   v14 = *MEMORY[0x277D85DE8];
   v2 = [-[OKPresentation guidelineForGlobalUniqueKey:](self guidelineForGlobalUniqueKey:{+[OKPresentationGuideline globalUniqueKeyForKey:](OKPresentationGuideline, "globalUniqueKeyForKey:", @"authoringProducerMediaURLStrings", "value"}];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
@@ -2553,7 +2553,7 @@ LABEL_10:
           objc_enumerationMutation(v2);
         }
 
-        [v3 addObject:{objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:", *(*(&v9 + 1) + 8 * v7++))}];
+        [array addObject:{objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:", *(*(&v9 + 1) + 8 * v7++))}];
       }
 
       while (v5 != v7);
@@ -2563,21 +2563,21 @@ LABEL_10:
     while (v5);
   }
 
-  return v3;
+  return array;
 }
 
 - (id)guidelineAuthoringProducerMediaItems
 {
-  v3 = [(OKPresentation *)self guidelineAuthoringProducerMediaURLs];
+  guidelineAuthoringProducerMediaURLs = [(OKPresentation *)self guidelineAuthoringProducerMediaURLs];
 
-  return [(OKPresentation *)self mediaItemsForURLs:v3];
+  return [(OKPresentation *)self mediaItemsForURLs:guidelineAuthoringProducerMediaURLs];
 }
 
 - (id)guidelineAuthoringUserAudioURLs
 {
   v14 = *MEMORY[0x277D85DE8];
   v2 = [-[OKPresentation guidelineForGlobalUniqueKey:](self guidelineForGlobalUniqueKey:{+[OKPresentationGuideline globalUniqueKeyForKey:](OKPresentationGuideline, "globalUniqueKeyForKey:", @"authoringUserAudioURLStrings", "value"}];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
@@ -2597,7 +2597,7 @@ LABEL_10:
           objc_enumerationMutation(v2);
         }
 
-        [v3 addObject:{objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:", *(*(&v9 + 1) + 8 * v7++))}];
+        [array addObject:{objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:", *(*(&v9 + 1) + 8 * v7++))}];
       }
 
       while (v5 != v7);
@@ -2607,14 +2607,14 @@ LABEL_10:
     while (v5);
   }
 
-  return v3;
+  return array;
 }
 
 - (id)guidelineAuthoringUserAudioItems
 {
-  v3 = [(OKPresentation *)self guidelineAuthoringUserAudioURLs];
+  guidelineAuthoringUserAudioURLs = [(OKPresentation *)self guidelineAuthoringUserAudioURLs];
 
-  return [(OKPresentation *)self mediaItemsForURLs:v3];
+  return [(OKPresentation *)self mediaItemsForURLs:guidelineAuthoringUserAudioURLs];
 }
 
 - (unint64_t)guidelineAuthoringRandomSeed
@@ -2678,7 +2678,7 @@ LABEL_10:
   return v5;
 }
 
-- (id)guidelineAuthoringMediaAttributesForKey:(id)a3
+- (id)guidelineAuthoringMediaAttributesForKey:(id)key
 {
   guidelines = self->_guidelines;
   objc_sync_enter(guidelines);
@@ -2697,7 +2697,7 @@ LABEL_10:
   return v7;
 }
 
-- (void)guidelineAuthoringMediaAttributesUpdateForKey:(id)a3 updateBlock:(id)a4
+- (void)guidelineAuthoringMediaAttributesUpdateForKey:(id)key updateBlock:(id)block
 {
   guidelines = self->_guidelines;
   objc_sync_enter(guidelines);
@@ -2713,16 +2713,16 @@ LABEL_10:
   }
 
   v10 = v9;
-  v11 = [v9 objectForKeyedSubscript:a3];
+  v11 = [v9 objectForKeyedSubscript:key];
   if (!v11)
   {
     v11 = objc_alloc_init(OKProducerMediaAttributes);
-    [v10 setObject:v11 forKeyedSubscript:a3];
+    [v10 setObject:v11 forKeyedSubscript:key];
   }
 
-  if (a4)
+  if (block)
   {
-    (*(a4 + 2))(a4, v11);
+    (*(block + 2))(block, v11);
   }
 
   [(OKPresentation *)self addGuideline:[OKPresentationGuideline guidelineAuthoringMediaAttributes:v10]];
@@ -2738,9 +2738,9 @@ LABEL_10:
     return -1.0;
   }
 
-  v3 = [v2 value];
+  value = [v2 value];
 
-  [v3 doubleValue];
+  [value doubleValue];
   return result;
 }
 
@@ -2752,9 +2752,9 @@ LABEL_10:
     return -1.0;
   }
 
-  v3 = [v2 value];
+  value = [v2 value];
 
-  [v3 doubleValue];
+  [value doubleValue];
   return result;
 }
 
@@ -2818,10 +2818,10 @@ LABEL_10:
   return [v2 BOOLValue];
 }
 
-- (CGSize)bestResolutionSizeForDisplaySize:(CGSize)a3 keepAspectRatio:(BOOL *)a4
+- (CGSize)bestResolutionSizeForDisplaySize:(CGSize)size keepAspectRatio:(BOOL *)ratio
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v59 = *MEMORY[0x277D85DE8];
   v7 = *MEMORY[0x277CBF3A8];
   v8 = *(MEMORY[0x277CBF3A8] + 8);
@@ -2830,9 +2830,9 @@ LABEL_10:
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v45 = self;
-  v10 = [(OKPresentationInfo *)self->_info resolutions];
-  v11 = [(NSArray *)v10 countByEnumeratingWithState:&v54 objects:v58 count:16];
+  selfCopy = self;
+  resolutions = [(OKPresentationInfo *)self->_info resolutions];
+  v11 = [(NSArray *)resolutions countByEnumeratingWithState:&v54 objects:v58 count:16];
   if (!v11)
   {
     v13 = 0;
@@ -2859,7 +2859,7 @@ LABEL_10:
     {
       if (*v55 != v14)
       {
-        objc_enumerationMutation(v10);
+        objc_enumerationMutation(resolutions);
       }
 
       v18 = [*(*(&v54 + 1) + 8 * v17) componentsSeparatedByCharactersInSet:{objc_msgSend(MEMORY[0x277CCA900], "characterSetWithCharactersInString:", @"x=@"}];
@@ -2985,20 +2985,20 @@ LABEL_39:
     }
 
     while (v12 != v17);
-    v40 = [(NSArray *)v10 countByEnumeratingWithState:&v54 objects:v58 count:16];
+    v40 = [(NSArray *)resolutions countByEnumeratingWithState:&v54 objects:v58 count:16];
     v12 = v40;
   }
 
   while (v40);
 LABEL_51:
-  if (a4)
+  if (ratio)
   {
-    *a4 = v48 & 1;
+    *ratio = v48 & 1;
   }
 
   if (v13)
   {
-    [(OKPresentation *)v45 bestResolutionSizeForDisplaySize:a4 keepAspectRatio:v47, v15];
+    [(OKPresentation *)selfCopy bestResolutionSizeForDisplaySize:ratio keepAspectRatio:v47, v15];
     v7 = v41;
     v8 = v42;
   }
@@ -3010,9 +3010,9 @@ LABEL_51:
       [MEMORY[0x277D627B8] logMessageWithLevel:2 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Presentation/OKPresentation.m" line:2739 andFormat:@"Missing resolution for platform %@", v9];
     }
 
-    if (a4)
+    if (ratio)
     {
-      *a4 = 0;
+      *ratio = 0;
     }
 
     v7 = 1024.0;

@@ -1,32 +1,32 @@
 @interface MTImpressionsEventHandler
 - (id)eventType;
-- (id)eventVersion:(id)a3;
+- (id)eventVersion:(id)version;
 - (id)knownFields;
-- (id)xpViewableThreshold:(id)a3;
+- (id)xpViewableThreshold:(id)threshold;
 @end
 
 @implementation MTImpressionsEventHandler
 
 - (id)knownFields
 {
-  v3 = [(MTEventDataProvider *)self delegate];
+  delegate = [(MTEventDataProvider *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(MTEventDataProvider *)self delegate];
-    v6 = [v5 knownFields];
+    delegate2 = [(MTEventDataProvider *)self delegate];
+    knownFields = [delegate2 knownFields];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = MTImpressionsEventHandler;
-    v5 = [(MTImpressionableEventHandler *)&v9 knownFields];
-    v6 = [v5 arrayByAddingObject:@"xpViewableThreshold"];
+    delegate2 = [(MTImpressionableEventHandler *)&v9 knownFields];
+    knownFields = [delegate2 arrayByAddingObject:@"xpViewableThreshold"];
   }
 
-  v7 = v6;
+  v7 = knownFields;
 
   return v7;
 }
@@ -35,11 +35,11 @@
 {
   v7.receiver = self;
   v7.super_class = MTImpressionsEventHandler;
-  v2 = [(MTEventHandler *)&v7 eventType];
-  v3 = v2;
-  if (v2)
+  eventType = [(MTEventHandler *)&v7 eventType];
+  v3 = eventType;
+  if (eventType)
   {
-    v4 = v2;
+    v4 = eventType;
   }
 
   else
@@ -52,11 +52,11 @@
   return v4;
 }
 
-- (id)eventVersion:(id)a3
+- (id)eventVersion:(id)version
 {
   v8.receiver = self;
   v8.super_class = MTImpressionsEventHandler;
-  v3 = [(MTEventHandler *)&v8 eventVersion:a3];
+  v3 = [(MTEventHandler *)&v8 eventVersion:version];
   v4 = v3;
   if (v3)
   {
@@ -73,29 +73,29 @@
   return v5;
 }
 
-- (id)xpViewableThreshold:(id)a3
+- (id)xpViewableThreshold:(id)threshold
 {
-  v4 = a3;
-  v5 = [(MTEventDataProvider *)self delegate];
+  thresholdCopy = threshold;
+  delegate = [(MTEventDataProvider *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MTEventDataProvider *)self delegate];
-    v8 = [v7 xpViewableThreshold:v4];
+    delegate2 = [(MTEventDataProvider *)self delegate];
+    v8 = [delegate2 xpViewableThreshold:thresholdCopy];
   }
 
   else
   {
-    v7 = [(MTObject *)self metricsKit];
-    v9 = [v7 config];
+    delegate2 = [(MTObject *)self metricsKit];
+    config = [delegate2 config];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __49__MTImpressionsEventHandler_xpViewableThreshold___block_invoke;
     v11[3] = &unk_2798CE718;
-    v12 = v4;
-    v13 = self;
-    v8 = [v9 computeWithConfigSources:v11];
+    v12 = thresholdCopy;
+    selfCopy = self;
+    v8 = [config computeWithConfigSources:v11];
   }
 
   return v8;

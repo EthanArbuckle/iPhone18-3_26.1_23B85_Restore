@@ -1,10 +1,10 @@
 @interface SKStepWiFiPreflight
-- (BOOL)checkWiFiAndReturnError:(id *)a3;
+- (BOOL)checkWiFiAndReturnError:(id *)error;
 - (SKSetupBase)skSetupObject;
 - (SKStepWiFiPreflight)init;
 - (void)activate;
 - (void)dealloc;
-- (void)setLabel:(id)a3;
+- (void)setLabel:(id)label;
 @end
 
 @implementation SKStepWiFiPreflight
@@ -16,7 +16,7 @@
   return WeakRetained;
 }
 
-- (BOOL)checkWiFiAndReturnError:(id *)a3
+- (BOOL)checkWiFiAndReturnError:(id *)error
 {
   var0 = self->_ucat->var0;
   if (var0 <= 30)
@@ -49,7 +49,7 @@ LABEL_5:
   v8 = CFDictionaryGetTypedValue();
   if (!v8)
   {
-    if (!a3)
+    if (!error)
     {
       goto LABEL_30;
     }
@@ -57,7 +57,7 @@ LABEL_5:
     v14 = *MEMORY[0x277CCA590];
 LABEL_29:
     NSErrorF_safe();
-    *a3 = v12 = 0;
+    *error = v12 = 0;
     goto LABEL_19;
   }
 
@@ -70,10 +70,10 @@ LABEL_29:
       if (v10)
       {
         v15 = v10;
-        if (a3)
+        if (error)
         {
           v16 = *MEMORY[0x277CCA590];
-          *a3 = NSErrorF_safe();
+          *error = NSErrorF_safe();
         }
 
         goto LABEL_30;
@@ -83,7 +83,7 @@ LABEL_29:
 
   if (Int64Ranged >= 2)
   {
-    if (!a3)
+    if (!error)
     {
       goto LABEL_30;
     }
@@ -94,7 +94,7 @@ LABEL_29:
 
   if (self->_preventAppleWiFi && [v8 isEqual:@"AppleWiFi"])
   {
-    if (a3)
+    if (error)
     {
       v18 = *MEMORY[0x277CCA590];
       goto LABEL_29;
@@ -153,11 +153,11 @@ LABEL_19:
   }
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  objc_storeStrong(&self->_label, a3);
-  v4 = a3;
-  [v4 UTF8String];
+  objc_storeStrong(&self->_label, label);
+  labelCopy = label;
+  [labelCopy UTF8String];
 
   LogCategoryReplaceF();
 }

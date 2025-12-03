@@ -1,70 +1,70 @@
 @interface SBSCFUserNotificationGraphicIconDefinition
-- (SBSCFUserNotificationGraphicIconDefinition)initWithIconBundleIdentifier:(id)a3;
-- (SBSCFUserNotificationGraphicIconDefinition)initWithIconType:(id)a3;
-- (SBSCFUserNotificationGraphicIconDefinition)initWithIconType:(id)a3 iconBundleIdentifier:(id)a4 iconDecorationType:(id)a5 iconDecorationBundleIdentifier:(id)a6 iconDecorationPosition:(id)a7;
-- (id)_initWithDictionary:(id)a3;
-- (id)_initWithIconType:(id)a3 iconBundleIdentifier:(id)a4 iconDecorationType:(id)a5 iconDecorationBundleIdentifier:(id)a6 iconDecorationPosition:(id)a7;
+- (SBSCFUserNotificationGraphicIconDefinition)initWithIconBundleIdentifier:(id)identifier;
+- (SBSCFUserNotificationGraphicIconDefinition)initWithIconType:(id)type;
+- (SBSCFUserNotificationGraphicIconDefinition)initWithIconType:(id)type iconBundleIdentifier:(id)identifier iconDecorationType:(id)decorationType iconDecorationBundleIdentifier:(id)bundleIdentifier iconDecorationPosition:(id)position;
+- (id)_initWithDictionary:(id)dictionary;
+- (id)_initWithIconType:(id)type iconBundleIdentifier:(id)identifier iconDecorationType:(id)decorationType iconDecorationBundleIdentifier:(id)bundleIdentifier iconDecorationPosition:(id)position;
 - (id)build;
 @end
 
 @implementation SBSCFUserNotificationGraphicIconDefinition
 
-- (SBSCFUserNotificationGraphicIconDefinition)initWithIconType:(id)a3
+- (SBSCFUserNotificationGraphicIconDefinition)initWithIconType:(id)type
 {
-  v5 = a3;
+  typeCopy = type;
   v9.receiver = self;
   v9.super_class = SBSCFUserNotificationGraphicIconDefinition;
   v6 = [(SBSCFUserNotificationGraphicIconDefinition *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_iconType, a3);
+    objc_storeStrong(&v6->_iconType, type);
   }
 
   return v7;
 }
 
-- (SBSCFUserNotificationGraphicIconDefinition)initWithIconBundleIdentifier:(id)a3
+- (SBSCFUserNotificationGraphicIconDefinition)initWithIconBundleIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = SBSCFUserNotificationGraphicIconDefinition;
   v6 = [(SBSCFUserNotificationGraphicIconDefinition *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_iconBundleIdentifier, a3);
+    objc_storeStrong(&v6->_iconBundleIdentifier, identifier);
   }
 
   return v7;
 }
 
-- (SBSCFUserNotificationGraphicIconDefinition)initWithIconType:(id)a3 iconBundleIdentifier:(id)a4 iconDecorationType:(id)a5 iconDecorationBundleIdentifier:(id)a6 iconDecorationPosition:(id)a7
+- (SBSCFUserNotificationGraphicIconDefinition)initWithIconType:(id)type iconBundleIdentifier:(id)identifier iconDecorationType:(id)decorationType iconDecorationBundleIdentifier:(id)bundleIdentifier iconDecorationPosition:(id)position
 {
   v19.receiver = self;
   v19.super_class = SBSCFUserNotificationGraphicIconDefinition;
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
+  positionCopy = position;
+  bundleIdentifierCopy = bundleIdentifier;
+  decorationTypeCopy = decorationType;
+  identifierCopy = identifier;
+  typeCopy = type;
   v16 = [(SBSCFUserNotificationGraphicIconDefinition *)&v19 init];
-  v17 = [(SBSCFUserNotificationGraphicIconDefinition *)v16 _initWithIconType:v15 iconBundleIdentifier:v14 iconDecorationType:v13 iconDecorationBundleIdentifier:v12 iconDecorationPosition:v11, v19.receiver, v19.super_class];
+  v17 = [(SBSCFUserNotificationGraphicIconDefinition *)v16 _initWithIconType:typeCopy iconBundleIdentifier:identifierCopy iconDecorationType:decorationTypeCopy iconDecorationBundleIdentifier:bundleIdentifierCopy iconDecorationPosition:positionCopy, v19.receiver, v19.super_class];
 
   return v17;
 }
 
-- (id)_initWithIconType:(id)a3 iconBundleIdentifier:(id)a4 iconDecorationType:(id)a5 iconDecorationBundleIdentifier:(id)a6 iconDecorationPosition:(id)a7
+- (id)_initWithIconType:(id)type iconBundleIdentifier:(id)identifier iconDecorationType:(id)decorationType iconDecorationBundleIdentifier:(id)bundleIdentifier iconDecorationPosition:(id)position
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  obj = a7;
-  v17 = a7;
-  if (v13 | v14)
+  typeCopy = type;
+  identifierCopy = identifier;
+  decorationTypeCopy = decorationType;
+  bundleIdentifierCopy = bundleIdentifier;
+  obj = position;
+  positionCopy = position;
+  if (typeCopy | identifierCopy)
   {
-    if (v15)
+    if (decorationTypeCopy)
     {
       goto LABEL_6;
     }
@@ -73,13 +73,13 @@
   else
   {
     [SBSCFUserNotificationGraphicIconDefinition _initWithIconType:a2 iconBundleIdentifier:self iconDecorationType:? iconDecorationBundleIdentifier:? iconDecorationPosition:?];
-    if (v15)
+    if (decorationTypeCopy)
     {
       goto LABEL_6;
     }
   }
 
-  if (!v16 && v17)
+  if (!bundleIdentifierCopy && positionCopy)
   {
     [SBSCFUserNotificationGraphicIconDefinition _initWithIconType:a2 iconBundleIdentifier:self iconDecorationType:? iconDecorationBundleIdentifier:? iconDecorationPosition:?];
   }
@@ -87,27 +87,27 @@
 LABEL_6:
   if (self)
   {
-    objc_storeStrong(&self->_iconType, a3);
-    objc_storeStrong(&self->_iconBundleIdentifier, a4);
-    objc_storeStrong(&self->_iconDecorationType, a5);
-    objc_storeStrong(&self->_iconDecorationBundleIdentifier, a6);
+    objc_storeStrong(&self->_iconType, type);
+    objc_storeStrong(&self->_iconBundleIdentifier, identifier);
+    objc_storeStrong(&self->_iconDecorationType, decorationType);
+    objc_storeStrong(&self->_iconDecorationBundleIdentifier, bundleIdentifier);
     objc_storeStrong(&self->_iconDecorationPosition, obj);
   }
 
   return self;
 }
 
-- (id)_initWithDictionary:(id)a3
+- (id)_initWithDictionary:(id)dictionary
 {
   v12.receiver = self;
   v12.super_class = SBSCFUserNotificationGraphicIconDefinition;
-  v3 = a3;
-  v4 = [(SBSUserNotificationAssetDefinition *)&v12 _initWithDictionary:v3];
-  v5 = [v3 bs_safeStringForKey:{@"ISIconType", v12.receiver, v12.super_class}];
-  v6 = [v3 bs_safeStringForKey:@"ISIconApplicationBundleIdentifier"];
-  v7 = [v3 bs_safeStringForKey:@"ISIconDecorationType"];
-  v8 = [v3 bs_safeStringForKey:@"ISIconDecorationBundleIdentifier"];
-  v9 = [v3 bs_safeNumberForKey:@"ISIconDecorationPosition"];
+  dictionaryCopy = dictionary;
+  v4 = [(SBSUserNotificationAssetDefinition *)&v12 _initWithDictionary:dictionaryCopy];
+  v5 = [dictionaryCopy bs_safeStringForKey:{@"ISIconType", v12.receiver, v12.super_class}];
+  v6 = [dictionaryCopy bs_safeStringForKey:@"ISIconApplicationBundleIdentifier"];
+  v7 = [dictionaryCopy bs_safeStringForKey:@"ISIconDecorationType"];
+  v8 = [dictionaryCopy bs_safeStringForKey:@"ISIconDecorationBundleIdentifier"];
+  v9 = [dictionaryCopy bs_safeNumberForKey:@"ISIconDecorationPosition"];
 
   v10 = [v4 _initWithIconType:v5 iconBundleIdentifier:v6 iconDecorationType:v7 iconDecorationBundleIdentifier:v8 iconDecorationPosition:v9];
   return v10;
@@ -117,8 +117,8 @@ LABEL_6:
 {
   v7.receiver = self;
   v7.super_class = SBSCFUserNotificationGraphicIconDefinition;
-  v3 = [(SBSUserNotificationAssetDefinition *)&v7 build];
-  v4 = [v3 mutableCopy];
+  build = [(SBSUserNotificationAssetDefinition *)&v7 build];
+  v4 = [build mutableCopy];
 
   [v4 setObject:self->_iconType forKeyedSubscript:@"ISIconType"];
   [v4 setObject:self->_iconBundleIdentifier forKeyedSubscript:@"ISIconApplicationBundleIdentifier"];

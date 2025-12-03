@@ -1,6 +1,6 @@
 @interface W5BluetoothDeviceInternal
 - (BOOL)__isConnected;
-- (W5BluetoothDeviceInternal)initWithCBDevice:(id)a3;
+- (W5BluetoothDeviceInternal)initWithCBDevice:(id)device;
 - (id)__address;
 - (id)device;
 - (void)dealloc;
@@ -8,15 +8,15 @@
 
 @implementation W5BluetoothDeviceInternal
 
-- (W5BluetoothDeviceInternal)initWithCBDevice:(id)a3
+- (W5BluetoothDeviceInternal)initWithCBDevice:(id)device
 {
   v7.receiver = self;
   v7.super_class = W5BluetoothDeviceInternal;
   v4 = [(W5BluetoothDeviceInternal *)&v7 init];
   v5 = v4;
-  if (a3 && v4)
+  if (device && v4)
   {
-    v4->_device = a3;
+    v4->_device = device;
   }
 
   else
@@ -50,9 +50,9 @@
 
 - (id)__address
 {
-  v2 = [(CBDevice *)self->_device btAddressData];
+  btAddressData = [(CBDevice *)self->_device btAddressData];
 
-  return _CWFEthernetAddressStringFromData(v2);
+  return _CWFEthernetAddressStringFromData(btAddressData);
 }
 
 - (BOOL)__isConnected

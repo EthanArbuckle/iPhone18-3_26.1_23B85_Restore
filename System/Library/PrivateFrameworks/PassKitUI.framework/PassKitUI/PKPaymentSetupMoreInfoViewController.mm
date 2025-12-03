@@ -1,11 +1,11 @@
 @interface PKPaymentSetupMoreInfoViewController
 - (BOOL)_isExpressEducation;
 - (CGSize)_snapshotSize;
-- (PKPaymentSetupMoreInfoViewController)initWithMoreInfoItems:(id)a3 paymentPass:(id)a4 targetDevice:(id)a5 context:(int64_t)a6 dismissalHandler:(id)a7 reportingSource:(int64_t)a8;
+- (PKPaymentSetupMoreInfoViewController)initWithMoreInfoItems:(id)items paymentPass:(id)pass targetDevice:(id)device context:(int64_t)context dismissalHandler:(id)handler reportingSource:(int64_t)source;
 - (id)_nextItems;
 - (id)_paymentNetworkNamesForExpressReporting;
 - (id)_reportingSubject;
-- (void)_alternateActionWithCompletion:(id)a3;
+- (void)_alternateActionWithCompletion:(id)completion;
 - (void)_beginReportingIfNecessary;
 - (void)_endReportingIfNecessary;
 - (void)_handleDismissal;
@@ -13,45 +13,45 @@
 - (void)_linkTapped;
 - (void)_next;
 - (void)_reportDoneButtonTapped;
-- (void)_reportExpressEventIfNeeded:(id)a3;
+- (void)_reportExpressEventIfNeeded:(id)needed;
 - (void)_reportExpressModeDisable;
 - (void)_reportExpressModeEnable;
 - (void)_reportTurnOffExpressButtonTapped;
 - (void)_reportViewDidAppear;
-- (void)explanationViewDidSelectContinue:(id)a3;
-- (void)explanationViewDidSelectSetupLater:(id)a3;
+- (void)explanationViewDidSelectContinue:(id)continue;
+- (void)explanationViewDidSelectSetupLater:(id)later;
 - (void)loadView;
-- (void)showLoadingUI:(BOOL)a3 animated:(BOOL)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)showLoadingUI:(BOOL)i animated:(BOOL)animated;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation PKPaymentSetupMoreInfoViewController
 
-- (PKPaymentSetupMoreInfoViewController)initWithMoreInfoItems:(id)a3 paymentPass:(id)a4 targetDevice:(id)a5 context:(int64_t)a6 dismissalHandler:(id)a7 reportingSource:(int64_t)a8
+- (PKPaymentSetupMoreInfoViewController)initWithMoreInfoItems:(id)items paymentPass:(id)pass targetDevice:(id)device context:(int64_t)context dismissalHandler:(id)handler reportingSource:(int64_t)source
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
+  itemsCopy = items;
+  passCopy = pass;
+  deviceCopy = device;
+  handlerCopy = handler;
   v25.receiver = self;
   v25.super_class = PKPaymentSetupMoreInfoViewController;
-  v18 = [(PKExplanationViewController *)&v25 initWithContext:a6];
+  v18 = [(PKExplanationViewController *)&v25 initWithContext:context];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_pass, a4);
-    v20 = [v14 copy];
+    objc_storeStrong(&v18->_pass, pass);
+    v20 = [itemsCopy copy];
     moreInfoItems = v19->_moreInfoItems;
     v19->_moreInfoItems = v20;
 
-    objc_storeStrong(&v19->_targetDevice, a5);
-    v22 = [v17 copy];
+    objc_storeStrong(&v19->_targetDevice, device);
+    v22 = [handlerCopy copy];
     dismissalHandler = v19->_dismissalHandler;
     v19->_dismissalHandler = v22;
 
     v19->_isFinalViewController = 1;
-    v19->_reportingSource = a8;
+    v19->_reportingSource = source;
     [(PKSecureElementPass *)v19->_pass loadImageSetSync:0 preheat:1];
   }
 
@@ -63,113 +63,113 @@
   v21.receiver = self;
   v21.super_class = PKPaymentSetupMoreInfoViewController;
   [(PKExplanationViewController *)&v21 loadView];
-  v3 = [(PKPaymentSetupMoreInfoViewController *)self _currentItem];
-  v4 = [(PKExplanationViewController *)self explanationView];
-  v5 = [v4 dockView];
-  v6 = [v5 footerView];
-  v7 = [v3 title];
-  [v4 setTitleText:v7];
+  _currentItem = [(PKPaymentSetupMoreInfoViewController *)self _currentItem];
+  explanationView = [(PKExplanationViewController *)self explanationView];
+  dockView = [explanationView dockView];
+  footerView = [dockView footerView];
+  title = [_currentItem title];
+  [explanationView setTitleText:title];
 
-  v8 = [v3 body];
-  [v4 setBodyText:v8];
+  body = [_currentItem body];
+  [explanationView setBodyText:body];
 
   [(PKExplanationViewController *)self context];
   if ((PKPaymentSetupContextIsSetupAssistant() & 1) != 0 || !self->_isFinalViewController)
   {
-    v10 = [v3 nextAction];
+    nextAction = [_currentItem nextAction];
   }
 
   else
   {
-    v9 = [(PKPaymentSetupMoreInfoViewController *)self _nextItems];
-    if ([v9 count])
+    _nextItems = [(PKPaymentSetupMoreInfoViewController *)self _nextItems];
+    if ([_nextItems count])
     {
-      [v3 nextAction];
+      [_currentItem nextAction];
     }
 
     else
     {
-      [v3 doneAction];
+      [_currentItem doneAction];
     }
-    v10 = ;
+    nextAction = ;
   }
 
-  v11 = [v5 primaryButton];
-  [v11 setTitle:v10 forState:0];
+  primaryButton = [dockView primaryButton];
+  [primaryButton setTitle:nextAction forState:0];
 
-  if ([v3 hasAlternativeAction])
+  if ([_currentItem hasAlternativeAction])
   {
-    [v4 setForceShowSetupLaterButton:1];
-    v12 = [v6 setUpLaterButton];
-    v13 = [v3 alternativeAction];
-    [v12 setTitle:v13 forState:0];
+    [explanationView setForceShowSetupLaterButton:1];
+    setUpLaterButton = [footerView setUpLaterButton];
+    alternativeAction = [_currentItem alternativeAction];
+    [setUpLaterButton setTitle:alternativeAction forState:0];
   }
 
   else
   {
-    [v4 setForceShowSetupLaterButton:0];
+    [explanationView setForceShowSetupLaterButton:0];
   }
 
-  [v5 setRequiresAdditionalPrimaryButtonPadding:1];
+  [dockView setRequiresAdditionalPrimaryButtonPadding:1];
   [(PKExplanationViewController *)self context];
   if ((PKPaymentSetupContextIsiOSSetupAssistant() & 1) == 0)
   {
-    v14 = [v3 linkText];
-    [v4 setBodyButtonText:v14];
+    linkText = [_currentItem linkText];
+    [explanationView setBodyButtonText:linkText];
 
-    [v4 setBodyButtonNumberOfLines:0];
+    [explanationView setBodyButtonNumberOfLines:0];
   }
 
-  v15 = [v3 imageData];
+  imageData = [_currentItem imageData];
 
-  if (!v15 || (v16 = MEMORY[0x1E69DCAB8], [v3 imageData], v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "imageWithData:scale:", v17, PKUIScreenScale()), v18 = objc_claimAutoreleasedReturnValue(), v17, !v18))
+  if (!imageData || (v16 = MEMORY[0x1E69DCAB8], [_currentItem imageData], v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "imageWithData:scale:", v17, PKUIScreenScale()), v18 = objc_claimAutoreleasedReturnValue(), v17, !v18))
   {
     v19 = [[PKPassView alloc] initWithPass:self->_pass content:5 suppressedContent:1911];
     [(PKPaymentSetupMoreInfoViewController *)self _snapshotSize];
     v18 = [(PKPassView *)v19 snapshotOfFrontFaceWithRequestedSize:?];
   }
 
-  [v4 setImage:v18];
-  [v4 setShowPrivacyView:0];
-  [v4 setDelegate:self];
-  [v4 setNeedsLayout];
+  [explanationView setImage:v18];
+  [explanationView setShowPrivacyView:0];
+  [explanationView setDelegate:self];
+  [explanationView setNeedsLayout];
   [(PKExplanationViewController *)self setShowCancelButton:0];
   [(PKExplanationViewController *)self setShowDoneButton:0];
-  v20 = [(PKPaymentSetupMoreInfoViewController *)self navigationItem];
-  [v20 setHidesBackButton:1 animated:0];
+  navigationItem = [(PKPaymentSetupMoreInfoViewController *)self navigationItem];
+  [navigationItem setHidesBackButton:1 animated:0];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PKPaymentSetupMoreInfoViewController;
-  [(PKPaymentSetupMoreInfoViewController *)&v4 viewDidAppear:a3];
+  [(PKPaymentSetupMoreInfoViewController *)&v4 viewDidAppear:appear];
   [(PKPaymentSetupMoreInfoViewController *)self _beginReportingIfNecessary];
   [(PKPaymentSetupMoreInfoViewController *)self _reportExpressModeEnable];
   [(PKPaymentSetupMoreInfoViewController *)self _reportViewDidAppear];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PKPaymentSetupMoreInfoViewController;
-  [(PKPaymentSetupMoreInfoViewController *)&v4 viewDidDisappear:a3];
+  [(PKPaymentSetupMoreInfoViewController *)&v4 viewDidDisappear:disappear];
   [(PKPaymentSetupMoreInfoViewController *)self _endReportingIfNecessary];
 }
 
 - (id)_nextItems
 {
   moreInfoItems = self->_moreInfoItems;
-  v3 = [(PKPaymentSetupMoreInfoViewController *)self _currentItem];
-  v4 = [(NSArray *)moreInfoItems pk_arrayByRemovingObject:v3];
+  _currentItem = [(PKPaymentSetupMoreInfoViewController *)self _currentItem];
+  v4 = [(NSArray *)moreInfoItems pk_arrayByRemovingObject:_currentItem];
 
   return v4;
 }
 
 - (void)_next
 {
-  v3 = [(PKPaymentSetupMoreInfoViewController *)self _nextItems];
-  v4 = [v3 count];
+  _nextItems = [(PKPaymentSetupMoreInfoViewController *)self _nextItems];
+  v4 = [_nextItems count];
 
   if (v4)
   {
@@ -187,19 +187,19 @@
 - (void)_handlePush
 {
   v3 = objc_alloc(objc_opt_class());
-  v4 = [(PKPaymentSetupMoreInfoViewController *)self _nextItems];
-  v6 = [v3 initWithMoreInfoItems:v4 paymentPass:self->_pass targetDevice:self->_targetDevice context:-[PKExplanationViewController context](self dismissalHandler:{"context"), self->_dismissalHandler}];
+  _nextItems = [(PKPaymentSetupMoreInfoViewController *)self _nextItems];
+  v6 = [v3 initWithMoreInfoItems:_nextItems paymentPass:self->_pass targetDevice:self->_targetDevice context:-[PKExplanationViewController context](self dismissalHandler:{"context"), self->_dismissalHandler}];
 
   v6[1096] = self->_isFinalViewController;
-  v5 = [(PKPaymentSetupMoreInfoViewController *)self navigationController];
-  [v5 pushViewController:v6 animated:1];
+  navigationController = [(PKPaymentSetupMoreInfoViewController *)self navigationController];
+  [navigationController pushViewController:v6 animated:1];
 }
 
 - (void)_handleDismissal
 {
-  v3 = [(PKPaymentSetupMoreInfoViewController *)self navigationItem];
-  v4 = [v3 rightBarButtonItem];
-  [v4 setEnabled:0];
+  navigationItem = [(PKPaymentSetupMoreInfoViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:0];
 
   dismissalHandler = self->_dismissalHandler;
   if (dismissalHandler)
@@ -211,24 +211,24 @@
 
   else
   {
-    v7 = [(PKPaymentSetupMoreInfoViewController *)self presentingViewController];
-    [v7 dismissViewControllerAnimated:1 completion:0];
+    presentingViewController = [(PKPaymentSetupMoreInfoViewController *)self presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
   }
 }
 
-- (void)explanationViewDidSelectContinue:(id)a3
+- (void)explanationViewDidSelectContinue:(id)continue
 {
-  v4 = [a3 dockView];
-  [v4 setButtonsEnabled:0];
+  dockView = [continue dockView];
+  [dockView setButtonsEnabled:0];
 
   [(PKPaymentSetupMoreInfoViewController *)self _reportDoneButtonTapped];
 
   [(PKPaymentSetupMoreInfoViewController *)self _next];
 }
 
-- (void)explanationViewDidSelectSetupLater:(id)a3
+- (void)explanationViewDidSelectSetupLater:(id)later
 {
-  v4 = a3;
+  laterCopy = later;
   [(PKExplanationViewController *)self showSpinner:1];
   objc_initWeak(&location, self);
   v5[0] = MEMORY[0x1E69E9820];
@@ -269,23 +269,23 @@ void __75__PKPaymentSetupMoreInfoViewController_explanationViewDidSelectSetupLat
   }
 }
 
-- (void)_alternateActionWithCompletion:(id)a3
+- (void)_alternateActionWithCompletion:(id)completion
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __71__PKPaymentSetupMoreInfoViewController__alternateActionWithCompletion___block_invoke;
   aBlock[3] = &unk_1E8010AD8;
-  v5 = v4;
+  v5 = completionCopy;
   v22 = v5;
   v6 = _Block_copy(aBlock);
-  v7 = [(PKPaymentSetupMoreInfoViewController *)self _currentItem];
-  v8 = [v7 type];
+  _currentItem = [(PKPaymentSetupMoreInfoViewController *)self _currentItem];
+  type = [_currentItem type];
 
-  if ((v8 - 1) >= 2)
+  if ((type - 1) >= 2)
   {
-    if (!v8)
+    if (!type)
     {
       v6[2](v6, 1);
     }
@@ -305,14 +305,14 @@ void __75__PKPaymentSetupMoreInfoViewController_explanationViewDidSelectSetupLat
     targetDevice = self->_targetDevice;
     if (v10)
     {
-      v12 = [(PKSecureElementPass *)self->_pass uniqueID];
+      uniqueID = [(PKSecureElementPass *)self->_pass uniqueID];
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
       v19[2] = __71__PKPaymentSetupMoreInfoViewController__alternateActionWithCompletion___block_invoke_42;
       v19[3] = &unk_1E8015A18;
       v19[4] = self;
       v20 = v6;
-      [(PKPaymentWebServiceTargetDeviceProtocol *)targetDevice removeExpressPassWithUniqueIdentifierV2:v12 completion:v19];
+      [(PKPaymentWebServiceTargetDeviceProtocol *)targetDevice removeExpressPassWithUniqueIdentifierV2:uniqueID completion:v19];
 
       v13 = v20;
 LABEL_10:
@@ -323,14 +323,14 @@ LABEL_10:
     if (objc_opt_respondsToSelector())
     {
       v14 = self->_targetDevice;
-      v15 = [(PKSecureElementPass *)self->_pass uniqueID];
+      uniqueID2 = [(PKSecureElementPass *)self->_pass uniqueID];
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __71__PKPaymentSetupMoreInfoViewController__alternateActionWithCompletion___block_invoke_46;
       v17[3] = &unk_1E8015A18;
       v17[4] = self;
       v18 = v6;
-      [(PKPaymentWebServiceTargetDeviceProtocol *)v14 removeExpressPassWithUniqueIdentifier:v15 completion:v17];
+      [(PKPaymentWebServiceTargetDeviceProtocol *)v14 removeExpressPassWithUniqueIdentifier:uniqueID2 completion:v17];
 
       v13 = v18;
       goto LABEL_10;
@@ -403,10 +403,10 @@ void __71__PKPaymentSetupMoreInfoViewController__alternateActionWithCompletion__
 
 - (void)_linkTapped
 {
-  v5 = [MEMORY[0x1E6963608] defaultWorkspace];
-  v3 = [(PKPaymentSetupMoreInfoViewController *)self _currentItem];
-  v4 = [v3 linkURL];
-  [v5 openURL:v4 configuration:0 completionHandler:0];
+  defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
+  _currentItem = [(PKPaymentSetupMoreInfoViewController *)self _currentItem];
+  linkURL = [_currentItem linkURL];
+  [defaultWorkspace openURL:linkURL configuration:0 completionHandler:0];
 }
 
 - (CGSize)_snapshotSize
@@ -422,13 +422,13 @@ void __71__PKPaymentSetupMoreInfoViewController__alternateActionWithCompletion__
 {
   if ([(PKPaymentSetupMoreInfoViewController *)self _isExpressEducation])
   {
-    v4 = [(PKPaymentSetupMoreInfoViewController *)self _reportingSubject];
+    _reportingSubject = [(PKPaymentSetupMoreInfoViewController *)self _reportingSubject];
     v3 = [MEMORY[0x1E69B8540] reporterForSubject:?];
 
     if (!v3)
     {
       self->_didBeginReportingSubject = 1;
-      [MEMORY[0x1E69B8540] beginSubjectReporting:v4];
+      [MEMORY[0x1E69B8540] beginSubjectReporting:_reportingSubject];
     }
   }
 }
@@ -438,8 +438,8 @@ void __71__PKPaymentSetupMoreInfoViewController__alternateActionWithCompletion__
   if (self->_didBeginReportingSubject)
   {
     v3 = MEMORY[0x1E69B8540];
-    v4 = [(PKPaymentSetupMoreInfoViewController *)self _reportingSubject];
-    [v3 endSubjectReporting:v4];
+    _reportingSubject = [(PKPaymentSetupMoreInfoViewController *)self _reportingSubject];
+    [v3 endSubjectReporting:_reportingSubject];
   }
 }
 
@@ -458,7 +458,7 @@ void __71__PKPaymentSetupMoreInfoViewController__alternateActionWithCompletion__
   if (v5)
   {
     v6 = v5;
-    v7 = 0;
+    paymentType = 0;
     v8 = *v60;
     while (2)
     {
@@ -470,14 +470,14 @@ void __71__PKPaymentSetupMoreInfoViewController__alternateActionWithCompletion__
         }
 
         v10 = *(*(&v59 + 1) + 8 * i);
-        if (v7 && v7 != [*(*(&v59 + 1) + 8 * i) paymentType])
+        if (paymentType && paymentType != [*(*(&v59 + 1) + 8 * i) paymentType])
         {
 
           v11 = @"multiple";
           goto LABEL_13;
         }
 
-        v7 = [v10 paymentType];
+        paymentType = [v10 paymentType];
       }
 
       v6 = [v4 countByEnumeratingWithState:&v59 objects:v63 count:16];
@@ -502,32 +502,32 @@ LABEL_13:
   v16 = v15;
   if (v14 && v15)
   {
-    v17 = [(PKSecureElementPass *)v15 passType];
+    passType = [(PKSecureElementPass *)v15 passType];
     v18 = MEMORY[0x1E69BB3A8];
-    if ((v17 + 1) >= 3)
+    if ((passType + 1) >= 3)
     {
       v19 = *MEMORY[0x1E69BB3A8];
     }
 
     else
     {
-      v19 = off_1E8015A88[v17 + 1];
+      v19 = off_1E8015A88[passType + 1];
     }
 
     [v14 setObject:v19 forKeyedSubscript:*MEMORY[0x1E69BACA8]];
 
-    v20 = [(PKSecureElementPass *)v16 style];
-    v21 = [(PKSecureElementPass *)v16 secureElementPass];
-    v22 = [v21 isIdentityPass];
+    style = [(PKSecureElementPass *)v16 style];
+    secureElementPass = [(PKSecureElementPass *)v16 secureElementPass];
+    isIdentityPass = [secureElementPass isIdentityPass];
 
-    if (v22)
+    if (isIdentityPass)
     {
       v23 = @"identity";
     }
 
-    else if (v20 < 0xE && ((0x27FFu >> v20) & 1) != 0)
+    else if (style < 0xE && ((0x27FFu >> style) & 1) != 0)
     {
-      v23 = off_1E8015AA0[v20];
+      v23 = off_1E8015AA0[style];
     }
 
     else
@@ -537,18 +537,18 @@ LABEL_13:
 
     [v14 setObject:v23 forKeyedSubscript:*MEMORY[0x1E69BACA0]];
 
-    v24 = [(PKSecureElementPass *)v16 nfcPayload];
+    nfcPayload = [(PKSecureElementPass *)v16 nfcPayload];
     v25 = PKAnalyticsReportSwitchToggleResultValue();
     [v14 setObject:v25 forKeyedSubscript:*MEMORY[0x1E69BAC68]];
 
     v26 = v16;
     if ([(PKSecureElementPass *)v26 passType]== 1)
     {
-      v27 = [(PKSecureElementPass *)v26 secureElementPass];
-      v28 = [v27 cardType];
-      if (v28 <= 4)
+      secureElementPass2 = [(PKSecureElementPass *)v26 secureElementPass];
+      cardType = [secureElementPass2 cardType];
+      if (cardType <= 4)
       {
-        v25 = **(&unk_1E8015B10 + v28);
+        v25 = **(&unk_1E8015B10 + cardType);
       }
     }
 
@@ -558,19 +558,19 @@ LABEL_13:
     }
 
     [v14 setObject:v25 forKeyedSubscript:*MEMORY[0x1E69BAC90]];
-    v29 = [(PKSecureElementPass *)v26 secureElementPass];
-    if ([v29 isIdentityPass])
+    secureElementPass3 = [(PKSecureElementPass *)v26 secureElementPass];
+    if ([secureElementPass3 isIdentityPass])
     {
-      v30 = [v29 identityType];
-      if (v30 <= 2)
+      identityType = [secureElementPass3 identityType];
+      if (identityType <= 2)
       {
-        if (v30 == 1)
+        if (identityType == 1)
         {
           v31 = MEMORY[0x1E69BA648];
           goto LABEL_50;
         }
 
-        if (v30 == 2)
+        if (identityType == 2)
         {
           v31 = MEMORY[0x1E69BB2C8];
           goto LABEL_50;
@@ -579,7 +579,7 @@ LABEL_13:
 
       else
       {
-        switch(v30)
+        switch(identityType)
         {
           case 3:
             goto LABEL_34;
@@ -602,23 +602,23 @@ LABEL_51:
       goto LABEL_64;
     }
 
-    if (![v29 isAccessPass])
+    if (![secureElementPass3 isAccessPass])
     {
       goto LABEL_43;
     }
 
-    v32 = [v29 accessType];
-    v33 = [v29 accessReportingType];
-    v34 = v33;
-    if (v32 <= 2)
+    accessType = [secureElementPass3 accessType];
+    accessReportingType = [secureElementPass3 accessReportingType];
+    v34 = accessReportingType;
+    if (accessType <= 2)
     {
-      switch(v32)
+      switch(accessType)
       {
         case 0:
           v37 = @"general";
-          if (v33)
+          if (accessReportingType)
           {
-            v37 = v33;
+            v37 = accessReportingType;
           }
 
           goto LABEL_59;
@@ -632,44 +632,44 @@ LABEL_63:
 LABEL_64:
           [v14 setObject:v35 forKeyedSubscript:*MEMORY[0x1E69BAC88]];
 
-          v38 = [(PKSecureElementPass *)v26 secureElementPass];
-          v39 = [v38 devicePaymentApplications];
-          [v39 count];
+          secureElementPass4 = [(PKSecureElementPass *)v26 secureElementPass];
+          devicePaymentApplications = [secureElementPass4 devicePaymentApplications];
+          [devicePaymentApplications count];
 
           v40 = PKAnalyticsReportSwitchToggleResultValue();
 
           [v14 setObject:v40 forKeyedSubscript:*MEMORY[0x1E69BA4E0]];
-          v41 = [(PKSecureElementPass *)v26 secureElementPass];
+          secureElementPass5 = [(PKSecureElementPass *)v26 secureElementPass];
           v42 = *v18;
-          v43 = [v41 organizationName];
-          if ([v43 length])
+          organizationName = [secureElementPass5 organizationName];
+          if ([organizationName length])
           {
-            v44 = [v41 cardType];
-            if (v44 <= 4 && ((1 << v44) & 0x16) != 0)
+            cardType2 = [secureElementPass5 cardType];
+            if (cardType2 <= 4 && ((1 << cardType2) & 0x16) != 0)
             {
-              v45 = v43;
+              v45 = organizationName;
 
               v42 = v45;
             }
           }
 
           [v14 setObject:v42 forKeyedSubscript:*MEMORY[0x1E69BAA28]];
-          v46 = [(PKSecureElementPass *)v26 secureElementPass];
-          v47 = v46;
-          if (v46)
+          secureElementPass6 = [(PKSecureElementPass *)v26 secureElementPass];
+          v47 = secureElementPass6;
+          if (secureElementPass6)
           {
             v58 = v12;
-            v48 = [v46 devicePaymentApplications];
+            devicePaymentApplications2 = [secureElementPass6 devicePaymentApplications];
             v59 = 0u;
             v60 = 0u;
             v61 = 0u;
             v62 = 0u;
-            v49 = v48;
+            v49 = devicePaymentApplications2;
             v50 = [v49 countByEnumeratingWithState:&v59 objects:v63 count:16];
             if (v50)
             {
               v51 = v50;
-              v52 = 0;
+              paymentType2 = 0;
               v53 = *v60;
               while (2)
               {
@@ -681,14 +681,14 @@ LABEL_64:
                   }
 
                   v55 = *(*(&v59 + 1) + 8 * j);
-                  if (v52 && v52 != [*(*(&v59 + 1) + 8 * j) paymentType])
+                  if (paymentType2 && paymentType2 != [*(*(&v59 + 1) + 8 * j) paymentType])
                   {
 
                     v56 = @"multiple";
                     goto LABEL_81;
                   }
 
-                  v52 = [v55 paymentType];
+                  paymentType2 = [v55 paymentType];
                 }
 
                 v51 = [v49 countByEnumeratingWithState:&v59 objects:v63 count:16];
@@ -705,8 +705,8 @@ LABEL_64:
 LABEL_81:
 
             [v14 setObject:v56 forKeyedSubscript:v58];
-            v57 = [v47 issuerCountryCode];
-            [v14 setObject:v57 forKeyedSubscript:*MEMORY[0x1E69BAC78]];
+            issuerCountryCode = [v47 issuerCountryCode];
+            [v14 setObject:issuerCountryCode forKeyedSubscript:*MEMORY[0x1E69BAC78]];
           }
 
           goto LABEL_83;
@@ -715,9 +715,9 @@ LABEL_81:
 
     else
     {
-      if (v32 <= 4)
+      if (accessType <= 4)
       {
-        if (v32 == 3)
+        if (accessType == 3)
         {
           v35 = @"singlefamily";
         }
@@ -730,13 +730,13 @@ LABEL_81:
         goto LABEL_63;
       }
 
-      if (v32 == 5)
+      if (accessType == 5)
       {
         v35 = @"multifamily";
         goto LABEL_63;
       }
 
-      if (v32 == 6)
+      if (accessType == 6)
       {
         v35 = @"urbanmobility";
         goto LABEL_63;
@@ -756,8 +756,8 @@ LABEL_83:
 
 - (void)_reportExpressModeEnable
 {
-  v3 = [(PKPaymentSetupMoreInfoViewController *)self _reportingSubject];
-  v4 = [v3 isEqualToString:*MEMORY[0x1E69BB728]];
+  _reportingSubject = [(PKPaymentSetupMoreInfoViewController *)self _reportingSubject];
+  v4 = [_reportingSubject isEqualToString:*MEMORY[0x1E69BB728]];
 
   if (v4)
   {
@@ -794,11 +794,11 @@ LABEL_83:
   [(PKPaymentSetupMoreInfoViewController *)self _reportExpressEventIfNeeded:v3];
 }
 
-- (void)_reportExpressEventIfNeeded:(id)a3
+- (void)_reportExpressEventIfNeeded:(id)needed
 {
-  v12 = a3;
-  v4 = [(PKPaymentSetupMoreInfoViewController *)self _reportingSubject];
-  if ([(PKPaymentSetupMoreInfoViewController *)self _isExpressEducation]&& v4)
+  neededCopy = needed;
+  _reportingSubject = [(PKPaymentSetupMoreInfoViewController *)self _reportingSubject];
+  if ([(PKPaymentSetupMoreInfoViewController *)self _isExpressEducation]&& _reportingSubject)
   {
     [(PKExplanationViewController *)self context];
     IsBridge = PKPaymentSetupContextIsBridge();
@@ -808,26 +808,26 @@ LABEL_83:
       v6 = MEMORY[0x1E69BB118];
     }
 
-    [v12 setObject:*v6 forKey:*MEMORY[0x1E69BB0E0]];
-    v7 = [(PKPaymentSetupMoreInfoViewController *)self _paymentNetworkNamesForExpressReporting];
-    v8 = [v7 componentsJoinedByString:*MEMORY[0x1E69BA368]];
-    [v12 setObject:v8 forKey:*MEMORY[0x1E69BAD48]];
+    [neededCopy setObject:*v6 forKey:*MEMORY[0x1E69BB0E0]];
+    _paymentNetworkNamesForExpressReporting = [(PKPaymentSetupMoreInfoViewController *)self _paymentNetworkNamesForExpressReporting];
+    v8 = [_paymentNetworkNamesForExpressReporting componentsJoinedByString:*MEMORY[0x1E69BA368]];
+    [neededCopy setObject:v8 forKey:*MEMORY[0x1E69BAD48]];
 
-    v9 = [(PKPaymentSetupMoreInfoViewController *)self _currentItem];
-    v10 = [v9 reportingMetadata];
-    if (v10)
+    _currentItem = [(PKPaymentSetupMoreInfoViewController *)self _currentItem];
+    reportingMetadata = [_currentItem reportingMetadata];
+    if (reportingMetadata)
     {
-      [v12 addEntriesFromDictionary:v10];
+      [neededCopy addEntriesFromDictionary:reportingMetadata];
     }
 
-    if ([v4 isEqualToString:*MEMORY[0x1E69BB728]] && (reporter = self->_reporter) != 0)
+    if ([_reportingSubject isEqualToString:*MEMORY[0x1E69BB728]] && (reporter = self->_reporter) != 0)
     {
-      [(PKProvisioningAnalyticsSessionUIReporter *)reporter reportEvent:v12];
+      [(PKProvisioningAnalyticsSessionUIReporter *)reporter reportEvent:neededCopy];
     }
 
     else
     {
-      [MEMORY[0x1E69B8540] subject:v4 sendEvent:v12];
+      [MEMORY[0x1E69B8540] subject:_reportingSubject sendEvent:neededCopy];
     }
   }
 }
@@ -836,7 +836,7 @@ LABEL_83:
 {
   v33 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(PKSecureElementPass *)self->_pass paymentPass];
+  paymentPass = [(PKSecureElementPass *)self->_pass paymentPass];
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -849,7 +849,7 @@ LABEL_83:
   aBlock[3] = &unk_1E8015A40;
   aBlock[4] = self;
   v19 = _Block_copy(aBlock);
-  v5 = [objc_alloc(MEMORY[0x1E69B8858]) initForPaymentPass:v4 withTechologyTest:v19];
+  v5 = [objc_alloc(MEMORY[0x1E69B8858]) initForPaymentPass:paymentPass withTechologyTest:v19];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __79__PKPaymentSetupMoreInfoViewController__paymentNetworkNamesForExpressReporting__block_invoke_2;
@@ -858,12 +858,12 @@ LABEL_83:
   [v5 enumerateCredentialsUsingBlock:v24];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(PKPaymentWebServiceTargetDeviceProtocol *)self->_targetDevice upgradeRequestForPass:v4];
-    v7 = [v6 paymentApplicationIdentifiers];
+    v6 = [(PKPaymentWebServiceTargetDeviceProtocol *)self->_targetDevice upgradeRequestForPass:paymentPass];
+    paymentApplicationIdentifiers = [v6 paymentApplicationIdentifiers];
 
-    if (v7)
+    if (paymentApplicationIdentifiers)
     {
-      [v27[5] addObjectsFromArray:v7];
+      [v27[5] addObjectsFromArray:paymentApplicationIdentifiers];
     }
   }
 
@@ -886,7 +886,7 @@ LABEL_83:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [v4 devicePaymentApplicationForAID:*(*(&v20 + 1) + 8 * i)];
+        v13 = [paymentPass devicePaymentApplicationForAID:*(*(&v20 + 1) + 8 * i)];
         v14 = v13;
         if (v13)
         {
@@ -967,19 +967,19 @@ LABEL_5:
 
 - (BOOL)_isExpressEducation
 {
-  v2 = [(PKPaymentSetupMoreInfoViewController *)self _currentItem];
-  v3 = [v2 type];
+  _currentItem = [(PKPaymentSetupMoreInfoViewController *)self _currentItem];
+  type = [_currentItem type];
 
-  return (v3 - 1) < 2;
+  return (type - 1) < 2;
 }
 
-- (void)showLoadingUI:(BOOL)a3 animated:(BOOL)a4
+- (void)showLoadingUI:(BOOL)i animated:(BOOL)animated
 {
-  v4 = a3;
-  v6 = [(PKPaymentSetupMoreInfoViewController *)self view:a3];
-  [v6 setUserInteractionEnabled:v4 ^ 1];
+  iCopy = i;
+  v6 = [(PKPaymentSetupMoreInfoViewController *)self view:i];
+  [v6 setUserInteractionEnabled:iCopy ^ 1];
 
-  [(PKExplanationViewController *)self showSpinner:v4];
+  [(PKExplanationViewController *)self showSpinner:iCopy];
 }
 
 @end

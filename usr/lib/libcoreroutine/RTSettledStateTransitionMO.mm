@@ -1,15 +1,15 @@
 @interface RTSettledStateTransitionMO
-+ (id)managedObjectWithSettledStateTransition:(id)a3 inManagedObjectContext:(id)a4;
++ (id)managedObjectWithSettledStateTransition:(id)transition inManagedObjectContext:(id)context;
 @end
 
 @implementation RTSettledStateTransitionMO
 
-+ (id)managedObjectWithSettledStateTransition:(id)a3 inManagedObjectContext:(id)a4
++ (id)managedObjectWithSettledStateTransition:(id)transition inManagedObjectContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  transitionCopy = transition;
+  contextCopy = context;
+  v7 = contextCopy;
+  if (!transitionCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -24,7 +24,7 @@ LABEL_12:
     goto LABEL_7;
   }
 
-  if (v6)
+  if (contextCopy)
   {
     *buf = 0;
     v17 = buf;
@@ -37,8 +37,8 @@ LABEL_12:
     v12[2] = __93__RTSettledStateTransitionMO_managedObjectWithSettledStateTransition_inManagedObjectContext___block_invoke;
     v12[3] = &unk_2788C8DC8;
     v15 = buf;
-    v13 = v6;
-    v14 = v5;
+    v13 = contextCopy;
+    v14 = transitionCopy;
     [v13 performBlockAndWait:v12];
     v8 = *(v17 + 5);
 

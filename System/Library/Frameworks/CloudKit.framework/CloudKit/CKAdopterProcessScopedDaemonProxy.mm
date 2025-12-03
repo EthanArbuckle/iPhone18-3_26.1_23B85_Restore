@@ -1,8 +1,8 @@
 @interface CKAdopterProcessScopedDaemonProxy
 + (NSXPCInterface)CKXPCClientToDaemonAdopterProcessScopedInterface;
-- (CKAdopterProcessScopedDaemonProxy)initWithConnection:(id)a3;
+- (CKAdopterProcessScopedDaemonProxy)initWithConnection:(id)connection;
 - (CKXPCConnection)connection;
-- (id)globalDeviceIdentifierWithError:(id *)a3;
+- (id)globalDeviceIdentifierWithError:(id *)error;
 - (void)dealloc;
 @end
 
@@ -20,16 +20,16 @@
   return v3;
 }
 
-- (CKAdopterProcessScopedDaemonProxy)initWithConnection:(id)a3
+- (CKAdopterProcessScopedDaemonProxy)initWithConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v8.receiver = self;
   v8.super_class = CKAdopterProcessScopedDaemonProxy;
   v5 = [(CKAdopterProcessScopedDaemonProxy *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_connection, v4);
+    objc_storeWeak(&v5->_connection, connectionCopy);
   }
 
   return v6;
@@ -46,7 +46,7 @@
   [(CKAdopterProcessScopedDaemonProxy *)&v9 dealloc];
 }
 
-- (id)globalDeviceIdentifierWithError:(id *)a3
+- (id)globalDeviceIdentifierWithError:(id *)error
 {
   v5 = _os_activity_create(&dword_1883EA000, "client/global-device-identifier", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
@@ -88,9 +88,9 @@
   v10[4] = &v12;
   v10[5] = buf;
   objc_msgSend__getAdopterProcessScopedDaemonProxySynchronous_errorHandler_daemonProxyHandler_(self, v7, 1, v11, v10);
-  if (a3)
+  if (error)
   {
-    *a3 = v13[5];
+    *error = v13[5];
   }
 
   v8 = *(v19 + 5);

@@ -1,10 +1,10 @@
 @interface NTKSpectrumResourceManager
-+ (id)sharedInstanceWithPixelFormat:(unint64_t)a3;
-+ (void)_deallocInstance:(id)a3;
-- (NTKSpectrumResourceManager)initWithPixelFormat:(unint64_t)a3;
-- (id)_generatePipeline:(unint64_t)a3;
++ (id)sharedInstanceWithPixelFormat:(unint64_t)format;
++ (void)_deallocInstance:(id)instance;
+- (NTKSpectrumResourceManager)initWithPixelFormat:(unint64_t)format;
+- (id)_generatePipeline:(unint64_t)pipeline;
 - (id)overlayTexture;
-- (id)renderPipelineForConfig:(unint64_t)a3;
+- (id)renderPipelineForConfig:(unint64_t)config;
 - (id)vignetteTexture;
 - (void)_asyncDeallocInstance;
 - (void)_loadGeometry;
@@ -15,21 +15,21 @@
 
 @implementation NTKSpectrumResourceManager
 
-+ (id)sharedInstanceWithPixelFormat:(unint64_t)a3
++ (id)sharedInstanceWithPixelFormat:(unint64_t)format
 {
-  v4 = a1;
-  objc_sync_enter(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (!__sharedInstance)
   {
-    v5 = [[NTKSpectrumResourceManager alloc] initWithPixelFormat:a3];
+    v5 = [[NTKSpectrumResourceManager alloc] initWithPixelFormat:format];
     v6 = __sharedInstance;
     __sharedInstance = v5;
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   v7 = __sharedInstance;
-  if (*(__sharedInstance + 24) != a3)
+  if (*(__sharedInstance + 24) != format)
   {
     +[NTKSpectrumResourceManager sharedInstanceWithPixelFormat:];
   }
@@ -37,9 +37,9 @@
   return v7;
 }
 
-+ (void)_deallocInstance:(id)a3
++ (void)_deallocInstance:(id)instance
 {
-  obj = a1;
+  obj = self;
   objc_sync_enter(obj);
   v3 = __sharedInstance;
   __sharedInstance = 0;
@@ -47,16 +47,16 @@
   objc_sync_exit(obj);
 }
 
-- (NTKSpectrumResourceManager)initWithPixelFormat:(unint64_t)a3
+- (NTKSpectrumResourceManager)initWithPixelFormat:(unint64_t)format
 {
   v12.receiver = self;
   v12.super_class = NTKSpectrumResourceManager;
   v4 = [(NTKSpectrumResourceManager *)&v12 init];
   if (v4)
   {
-    v5 = [off_27877BF18 sharedDevice];
+    sharedDevice = [off_27877BF18 sharedDevice];
     device = v4->_device;
-    v4->_device = v5;
+    v4->_device = sharedDevice;
 
     v7 = v4->_device;
     v8 = NTKBundle();
@@ -64,7 +64,7 @@
     library = v4->_library;
     v4->_library = v9;
 
-    v4->_pixelFormat = a3;
+    v4->_pixelFormat = format;
     [(NTKSpectrumResourceManager *)v4 _loadGeometry];
   }
 
@@ -80,9 +80,9 @@
 
 - (void)_asyncDeallocInstance
 {
-  v2 = [MEMORY[0x277CCACC8] isMainThread];
+  isMainThread = [MEMORY[0x277CCACC8] isMainThread];
   v3 = objc_opt_class();
-  if (v2)
+  if (isMainThread)
   {
 
     [v3 _deallocInstance:0];
@@ -105,16 +105,16 @@
 
 - (void)removeClient
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_clients - 1;
-  v2->_clients = v3;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_clients - 1;
+  selfCopy->_clients = v3;
+  objc_sync_exit(selfCopy);
 
   if (!v3)
   {
 
-    [(NTKSpectrumResourceManager *)v2 _asyncDeallocInstance];
+    [(NTKSpectrumResourceManager *)selfCopy _asyncDeallocInstance];
   }
 }
 
@@ -152,14 +152,14 @@
   self->_verticesBuffer = v3;
 }
 
-- (id)_generatePipeline:(unint64_t)a3
+- (id)_generatePipeline:(unint64_t)pipeline
 {
-  v23 = a3 & 1;
-  v22 = (a3 & 2) != 0;
-  v21 = (a3 & 8) != 0;
-  v20 = (a3 & 0x10) != 0;
+  v23 = pipeline & 1;
+  v22 = (pipeline & 2) != 0;
+  v21 = (pipeline & 8) != 0;
+  v20 = (pipeline & 0x10) != 0;
   v4 = @"spectrumConicOverlayFrgShader";
-  if ((a3 & 4) == 0)
+  if ((pipeline & 4) == 0)
   {
     v4 = @"spectrumConicFrgShader";
   }
@@ -175,19 +175,19 @@
   p_device = &self->_device;
   v10 = [off_27877BF10 archiveWithName:@"NTKSpectrumShaders" bundle:v7 device:device];
 
-  v11 = [MEMORY[0x277CD6D78] functionDescriptor];
-  [v11 setName:@"spectrumPassVrtShader"];
-  v12 = [v10 newFunctionInLibrary:p_device[38] withDescriptor:v11];
-  [v11 setName:v5];
+  functionDescriptor = [MEMORY[0x277CD6D78] functionDescriptor];
+  [functionDescriptor setName:@"spectrumPassVrtShader"];
+  v12 = [v10 newFunctionInLibrary:p_device[38] withDescriptor:functionDescriptor];
+  [functionDescriptor setName:v5];
 
-  [v11 setConstantValues:v6];
-  v13 = [v10 newFunctionInLibrary:p_device[38] withDescriptor:v11];
+  [functionDescriptor setConstantValues:v6];
+  v13 = [v10 newFunctionInLibrary:p_device[38] withDescriptor:functionDescriptor];
   v14 = objc_alloc_init(MEMORY[0x277CD6F78]);
   [v14 setLabel:@"Spectrum Pipeline"];
   [v14 setVertexFunction:v12];
   [v14 setFragmentFunction:v13];
-  v15 = [v14 colorAttachments];
-  v16 = [v15 objectAtIndexedSubscript:0];
+  colorAttachments = [v14 colorAttachments];
+  v16 = [colorAttachments objectAtIndexedSubscript:0];
 
   [v16 setPixelFormat:p_device[2]];
   if ((v23 & 1) != 0 || v22)
@@ -214,15 +214,15 @@
   return v17;
 }
 
-- (id)renderPipelineForConfig:(unint64_t)a3
+- (id)renderPipelineForConfig:(unint64_t)config
 {
   pipelineStates = self->_pipelineStates;
-  v6 = self->_pipelineStates[a3];
+  v6 = self->_pipelineStates[config];
   if (!v6)
   {
-    v7 = [(NTKSpectrumResourceManager *)self _generatePipeline:a3];
-    v8 = pipelineStates[a3];
-    pipelineStates[a3] = v7;
+    v7 = [(NTKSpectrumResourceManager *)self _generatePipeline:config];
+    v8 = pipelineStates[config];
+    pipelineStates[config] = v7;
 
     v6 = v7;
   }

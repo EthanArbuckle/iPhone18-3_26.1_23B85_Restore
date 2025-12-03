@@ -1,13 +1,13 @@
 @interface MockWorkoutDomainAccessor
-- (BOOL)BOOLForKey:(id)a3;
-- (id)dataForPerGizmoDomainAndKey:(id)a3;
-- (void)writeBoolPerGizmoDomainAndKey:(id)a3 value:(BOOL)a4;
-- (void)writeDataPerGizmoDomainAndKey:(id)a3 data:(id)a4;
+- (BOOL)BOOLForKey:(id)key;
+- (id)dataForPerGizmoDomainAndKey:(id)key;
+- (void)writeBoolPerGizmoDomainAndKey:(id)key value:(BOOL)value;
+- (void)writeDataPerGizmoDomainAndKey:(id)key data:(id)data;
 @end
 
 @implementation MockWorkoutDomainAccessor
 
-- (BOOL)BOOLForKey:(id)a3
+- (BOOL)BOOLForKey:(id)key
 {
   v3 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = v4;
@@ -19,7 +19,7 @@
   return v3 & 1;
 }
 
-- (id)dataForPerGizmoDomainAndKey:(id)a3
+- (id)dataForPerGizmoDomainAndKey:(id)key
 {
   v3 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = v4;
@@ -42,11 +42,11 @@
   return v9;
 }
 
-- (void)writeDataPerGizmoDomainAndKey:(id)a3 data:(id)a4
+- (void)writeDataPerGizmoDomainAndKey:(id)key data:(id)data
 {
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
-  v9 = a4;
+  dataCopy = data;
 
   v10 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v12 = v11;
@@ -65,7 +65,7 @@
   outlined consume of Data._Representation(v10, v12);
 }
 
-- (void)writeBoolPerGizmoDomainAndKey:(id)a3 value:(BOOL)a4
+- (void)writeBoolPerGizmoDomainAndKey:(id)key value:(BOOL)value
 {
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
@@ -75,7 +75,7 @@
   isUniquelyReferenced_nonNull_native = swift_isUniquelyReferenced_nonNull_native();
   v11 = *&self->BOOLDictionary[4];
   *&self->BOOLDictionary[4] = 0x8000000000000000;
-  specialized _NativeDictionary.setValue(_:forKey:isUnique:)(a4, v6, v8, isUniquelyReferenced_nonNull_native);
+  specialized _NativeDictionary.setValue(_:forKey:isUnique:)(value, v6, v8, isUniquelyReferenced_nonNull_native);
   *&self->BOOLDictionary[4] = v11;
   swift_endAccess();
 }

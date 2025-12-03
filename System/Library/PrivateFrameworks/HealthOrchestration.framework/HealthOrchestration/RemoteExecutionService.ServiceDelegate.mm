@@ -1,37 +1,37 @@
 @interface RemoteExecutionService.ServiceDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (_TtCC19HealthOrchestration22RemoteExecutionService15ServiceDelegate)init;
-- (void)remote_runWithWorkPlan:(id)a3 provider:(id)a4 executor:(id)a5 with:(id)a6;
+- (void)remote_runWithWorkPlan:(id)plan provider:(id)provider executor:(id)executor with:(id)with;
 @end
 
 @implementation RemoteExecutionService.ServiceDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v6 = objc_opt_self();
-  v7 = a4;
-  v8 = self;
-  v9 = [v6 interfaceWithProtocol_];
-  [v7 setExportedInterface_];
+  connectionCopy = connection;
+  selfCopy = self;
+  interfaceWithProtocol_ = [v6 interfaceWithProtocol_];
+  [connectionCopy setExportedInterface_];
 
-  [v7 setExportedObject_];
-  [v7 resume];
+  [connectionCopy setExportedObject_];
+  [connectionCopy resume];
 
   return 1;
 }
 
-- (void)remote_runWithWorkPlan:(id)a3 provider:(id)a4 executor:(id)a5 with:(id)a6
+- (void)remote_runWithWorkPlan:(id)plan provider:(id)provider executor:(id)executor with:(id)with
 {
-  v8 = _Block_copy(a6);
+  v8 = _Block_copy(with);
   v9 = sub_22887F3A0();
   v11 = v10;
   v12 = sub_22887F3A0();
   v14 = v13;
   v15 = swift_allocObject();
   *(v15 + 16) = v8;
-  v16 = a3;
-  v17 = self;
-  sub_2288382A0(v16, v9, v11, v12, v14, sub_228838844, v15);
+  planCopy = plan;
+  selfCopy = self;
+  sub_2288382A0(planCopy, v9, v11, v12, v14, sub_228838844, v15);
 }
 
 - (_TtCC19HealthOrchestration22RemoteExecutionService15ServiceDelegate)init

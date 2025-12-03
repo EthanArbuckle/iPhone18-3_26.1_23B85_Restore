@@ -1,16 +1,16 @@
 @interface ICPDFPreviewHelper
-+ (BOOL)drawPreviewOfPDFDocument:(id)a3 inRect:(CGRect)a4;
++ (BOOL)drawPreviewOfPDFDocument:(id)document inRect:(CGRect)rect;
 @end
 
 @implementation ICPDFPreviewHelper
 
-+ (BOOL)drawPreviewOfPDFDocument:(id)a3 inRect:(CGRect)a4
++ (BOOL)drawPreviewOfPDFDocument:(id)document inRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = [a3 pageAtIndex:0];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v8 = [document pageAtIndex:0];
   if (!v8)
   {
     v11 = os_log_create("com.apple.notes", "UI");

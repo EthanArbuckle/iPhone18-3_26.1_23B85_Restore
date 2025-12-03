@@ -1,16 +1,16 @@
 @interface AccessoryDetailsHelper.ContainedServicesViewRepresentable.Coordinator
 - (_TtCVC6HomeUI22AccessoryDetailsHelperP33_8271E4BC195F45270057A2710E22519634ContainedServicesViewRepresentable11Coordinator)init;
-- (id)detailsViewControllerFor:(id)a3 item:(id)a4;
+- (id)detailsViewControllerFor:(id)for item:(id)item;
 @end
 
 @implementation AccessoryDetailsHelper.ContainedServicesViewRepresentable.Coordinator
 
-- (id)detailsViewControllerFor:(id)a3 item:(id)a4
+- (id)detailsViewControllerFor:(id)for item:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_20D059000(v6, v7);
+  forCopy = for;
+  itemCopy = item;
+  selfCopy = self;
+  v9 = sub_20D059000(forCopy, itemCopy);
 
   return v9;
 }

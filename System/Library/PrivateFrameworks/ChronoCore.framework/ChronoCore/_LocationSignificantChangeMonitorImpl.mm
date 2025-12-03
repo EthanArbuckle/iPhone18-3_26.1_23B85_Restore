@@ -1,7 +1,7 @@
 @interface _LocationSignificantChangeMonitorImpl
 - (_TtC10ChronoCore37_LocationSignificantChangeMonitorImpl)init;
 - (void)dealloc;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
 @end
 
 @implementation _LocationSignificantChangeMonitorImpl
@@ -22,10 +22,10 @@
   }
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
-  v5 = a3;
-  v6 = self;
+  managerCopy = manager;
+  selfCopy = self;
   sub_224BA4910();
 }
 

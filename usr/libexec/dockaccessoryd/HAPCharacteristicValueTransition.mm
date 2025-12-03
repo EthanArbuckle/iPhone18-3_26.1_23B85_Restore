@@ -1,34 +1,34 @@
 @interface HAPCharacteristicValueTransition
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)parsedFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HAPCharacteristicValueTransition)init;
-- (HAPCharacteristicValueTransition)initWithHAPInstanceID:(id)a3 controllerContext:(id)a4 endBehavior:(id)a5 linearTransition:(id)a6 linearDerivedTransition:(id)a7 valueUpdateTimeInterval:(id)a8 notifyValueChangeThreshold:(id)a9 notifyTimeIntervalThreshold:(id)a10;
+- (HAPCharacteristicValueTransition)initWithHAPInstanceID:(id)d controllerContext:(id)context endBehavior:(id)behavior linearTransition:(id)transition linearDerivedTransition:(id)derivedTransition valueUpdateTimeInterval:(id)interval notifyValueChangeThreshold:(id)threshold notifyTimeIntervalThreshold:(id)self0;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
 @end
 
 @implementation HAPCharacteristicValueTransition
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HAPCharacteristicValueTransition);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HAPCharacteristicValueTransition *)v6 parseFromData:v5 error:&v11];
+    [(HAPCharacteristicValueTransition *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else
@@ -48,41 +48,41 @@
   return [(HAPCharacteristicValueTransition *)&v3 init];
 }
 
-- (HAPCharacteristicValueTransition)initWithHAPInstanceID:(id)a3 controllerContext:(id)a4 endBehavior:(id)a5 linearTransition:(id)a6 linearDerivedTransition:(id)a7 valueUpdateTimeInterval:(id)a8 notifyValueChangeThreshold:(id)a9 notifyTimeIntervalThreshold:(id)a10
+- (HAPCharacteristicValueTransition)initWithHAPInstanceID:(id)d controllerContext:(id)context endBehavior:(id)behavior linearTransition:(id)transition linearDerivedTransition:(id)derivedTransition valueUpdateTimeInterval:(id)interval notifyValueChangeThreshold:(id)threshold notifyTimeIntervalThreshold:(id)self0
 {
-  v27 = a3;
-  v26 = a4;
-  v25 = a5;
-  v24 = a6;
-  v23 = a7;
-  v22 = a8;
-  v17 = a9;
-  v18 = a10;
+  dCopy = d;
+  contextCopy = context;
+  behaviorCopy = behavior;
+  transitionCopy = transition;
+  derivedTransitionCopy = derivedTransition;
+  intervalCopy = interval;
+  thresholdCopy = threshold;
+  intervalThresholdCopy = intervalThreshold;
   v28.receiver = self;
   v28.super_class = HAPCharacteristicValueTransition;
   v19 = [(HAPCharacteristicValueTransition *)&v28 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_HAPInstanceID, a3);
-    objc_storeStrong(&v20->_controllerContext, a4);
-    objc_storeStrong(&v20->_endBehavior, a5);
-    objc_storeStrong(&v20->_linearTransition, a6);
-    objc_storeStrong(&v20->_linearDerivedTransition, a7);
-    objc_storeStrong(&v20->_valueUpdateTimeInterval, a8);
-    objc_storeStrong(&v20->_notifyValueChangeThreshold, a9);
-    objc_storeStrong(&v20->_notifyTimeIntervalThreshold, a10);
+    objc_storeStrong(&v19->_HAPInstanceID, d);
+    objc_storeStrong(&v20->_controllerContext, context);
+    objc_storeStrong(&v20->_endBehavior, behavior);
+    objc_storeStrong(&v20->_linearTransition, transition);
+    objc_storeStrong(&v20->_linearDerivedTransition, derivedTransition);
+    objc_storeStrong(&v20->_valueUpdateTimeInterval, interval);
+    objc_storeStrong(&v20->_notifyValueChangeThreshold, threshold);
+    objc_storeStrong(&v20->_notifyTimeIntervalThreshold, intervalThreshold);
   }
 
   return v20;
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 bytes];
-  v56 = v6;
-  v8 = [v6 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v56 = dataCopy;
+  v8 = [dataCopy length];
   if (v8 < 1)
   {
     v38 = 0;
@@ -113,7 +113,7 @@ LABEL_46:
     goto LABEL_51;
   }
 
-  v52 = a4;
+  errorCopy = error;
   v53 = 0;
   v9 = 0;
   v57 = 0;
@@ -123,7 +123,7 @@ LABEL_46:
   v11 = 0;
   v12 = 0;
   v13 = 0;
-  v14 = v7 + v8;
+  v14 = bytes + v8;
   while (1)
   {
     v72 = 0;
@@ -137,10 +137,10 @@ LABEL_46:
       v43 = v13;
       v44 = v10;
       v45 = v12;
-      if (v52)
+      if (errorCopy)
       {
         sub_100041618(Next);
-        *v52 = v46 = 0;
+        *errorCopy = v46 = 0;
       }
 
       else
@@ -182,7 +182,7 @@ LABEL_46:
         }
 
         v60 = v9;
-        v16 = sub_100021B74(7, v7, v14, v70, &v60);
+        v16 = sub_100021B74(7, bytes, v14, v70, &v60);
         v31 = v60;
 
         if (!v31)
@@ -222,7 +222,7 @@ LABEL_23:
         }
 
         v63 = v9;
-        v16 = sub_100021B74(5, v7, v14, v70, &v63);
+        v16 = sub_100021B74(5, bytes, v14, v70, &v63);
         v31 = v63;
 
         if (!v31)
@@ -262,7 +262,7 @@ LABEL_23:
       if (v72 == 4)
       {
         v65 = v9;
-        v16 = sub_100021B74(4, v7, v14, v70, &v65);
+        v16 = sub_100021B74(4, bytes, v14, v70, &v65);
         v17 = v65;
 
         if (v17)
@@ -312,7 +312,7 @@ LABEL_28:
       if (v72 == 2)
       {
         v68 = v9;
-        v16 = sub_100021B74(2, v7, v14, v70, &v68);
+        v16 = sub_100021B74(2, bytes, v14, v70, &v68);
         v17 = v68;
 
         if (v17)
@@ -330,7 +330,7 @@ LABEL_28:
     }
 
 LABEL_31:
-    v7 = v70[0];
+    bytes = v70[0];
     if (v70[0] >= v14)
     {
       goto LABEL_42;
@@ -356,11 +356,11 @@ LABEL_42:
   v45 = v12;
   v38 = v57;
   v39 = v55;
-  if (v52)
+  if (errorCopy)
   {
     v48 = v9;
     v46 = 0;
-    *v52 = v9;
+    *errorCopy = v9;
   }
 
   else
@@ -376,7 +376,7 @@ LABEL_51:
   return v46;
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
   v69 = 0u;
   v70 = 0u;
@@ -400,13 +400,13 @@ LABEL_51:
   v52 = 0u;
   v50 = 0u;
   TLV8BufferInit();
-  v5 = [(HAPCharacteristicValueTransition *)self HAPInstanceID];
+  hAPInstanceID = [(HAPCharacteristicValueTransition *)self HAPInstanceID];
 
-  if (v5)
+  if (hAPInstanceID)
   {
-    v6 = [(HAPCharacteristicValueTransition *)self HAPInstanceID];
+    hAPInstanceID2 = [(HAPCharacteristicValueTransition *)self HAPInstanceID];
     v49 = 0;
-    v7 = [v6 serializeWithError:&v49];
+    v7 = [hAPInstanceID2 serializeWithError:&v49];
     v8 = v49;
 
     if (v8)
@@ -427,7 +427,7 @@ LABEL_6:
 
       if (v8)
       {
-        if (!a3)
+        if (!error)
         {
           goto LABEL_65;
         }
@@ -435,18 +435,18 @@ LABEL_6:
 LABEL_16:
         v15 = v8;
         v11 = 0;
-        *a3 = v8;
+        *error = v8;
         goto LABEL_66;
       }
 
       if (v9)
       {
-        if (a3)
+        if (error)
         {
 LABEL_11:
           sub_100041618(v9);
           v8 = 0;
-          *a3 = v11 = 0;
+          *error = v11 = 0;
           goto LABEL_66;
         }
 
@@ -460,13 +460,13 @@ LABEL_62:
     }
   }
 
-  v12 = [(HAPCharacteristicValueTransition *)self controllerContext];
+  controllerContext = [(HAPCharacteristicValueTransition *)self controllerContext];
 
-  if (v12)
+  if (controllerContext)
   {
-    v13 = [(HAPCharacteristicValueTransition *)self controllerContext];
+    controllerContext2 = [(HAPCharacteristicValueTransition *)self controllerContext];
     v48 = 0;
-    v14 = [v13 serializeWithError:&v48];
+    v14 = [controllerContext2 serializeWithError:&v48];
     v8 = v48;
 
     if (v8)
@@ -474,19 +474,19 @@ LABEL_62:
       goto LABEL_15;
     }
 
-    v16 = [v14 bytes];
-    v17 = [v14 length] + v16;
+    bytes = [v14 bytes];
+    v17 = [v14 length] + bytes;
     while (1)
     {
-      v18 = v17 - v16 >= 255 ? 255 : v17 - v16;
+      v18 = v17 - bytes >= 255 ? 255 : v17 - bytes;
       v19 = TLV8BufferAppend();
       if (v19)
       {
         break;
       }
 
-      v16 += v18;
-      if (v16 >= v17)
+      bytes += v18;
+      if (bytes >= v17)
       {
 
         goto LABEL_24;
@@ -496,7 +496,7 @@ LABEL_62:
 LABEL_63:
     v9 = v19;
 
-    if (a3)
+    if (error)
     {
       goto LABEL_11;
     }
@@ -507,13 +507,13 @@ LABEL_64:
   }
 
 LABEL_24:
-  v20 = [(HAPCharacteristicValueTransition *)self endBehavior];
+  endBehavior = [(HAPCharacteristicValueTransition *)self endBehavior];
 
-  if (v20)
+  if (endBehavior)
   {
-    v21 = [(HAPCharacteristicValueTransition *)self endBehavior];
+    endBehavior2 = [(HAPCharacteristicValueTransition *)self endBehavior];
     v47 = 0;
-    v7 = [v21 serializeWithError:&v47];
+    v7 = [endBehavior2 serializeWithError:&v47];
     v8 = v47;
 
     if (v8)
@@ -530,30 +530,30 @@ LABEL_24:
     }
   }
 
-  v22 = [(HAPCharacteristicValueTransition *)self linearTransition];
+  linearTransition = [(HAPCharacteristicValueTransition *)self linearTransition];
 
-  if (v22)
+  if (linearTransition)
   {
-    v23 = [(HAPCharacteristicValueTransition *)self linearTransition];
+    linearTransition2 = [(HAPCharacteristicValueTransition *)self linearTransition];
     v46 = 0;
-    v14 = [v23 serializeWithError:&v46];
+    v14 = [linearTransition2 serializeWithError:&v46];
     v8 = v46;
 
     if (!v8)
     {
-      v24 = [v14 bytes];
-      v25 = [v14 length] + v24;
+      bytes2 = [v14 bytes];
+      v25 = [v14 length] + bytes2;
       while (1)
       {
-        v26 = v25 - v24 >= 255 ? 255 : v25 - v24;
+        v26 = v25 - bytes2 >= 255 ? 255 : v25 - bytes2;
         v19 = TLV8BufferAppend();
         if (v19)
         {
           goto LABEL_63;
         }
 
-        v24 += v26;
-        if (v24 >= v25)
+        bytes2 += v26;
+        if (bytes2 >= v25)
         {
 
           goto LABEL_37;
@@ -565,30 +565,30 @@ LABEL_24:
   else
   {
 LABEL_37:
-    v27 = [(HAPCharacteristicValueTransition *)self linearDerivedTransition];
+    linearDerivedTransition = [(HAPCharacteristicValueTransition *)self linearDerivedTransition];
 
-    if (v27)
+    if (linearDerivedTransition)
     {
-      v28 = [(HAPCharacteristicValueTransition *)self linearDerivedTransition];
+      linearDerivedTransition2 = [(HAPCharacteristicValueTransition *)self linearDerivedTransition];
       v45 = 0;
-      v14 = [v28 serializeWithError:&v45];
+      v14 = [linearDerivedTransition2 serializeWithError:&v45];
       v8 = v45;
 
       if (!v8)
       {
-        v29 = [v14 bytes];
-        v30 = [v14 length] + v29;
+        bytes3 = [v14 bytes];
+        v30 = [v14 length] + bytes3;
         while (1)
         {
-          v31 = v30 - v29 >= 255 ? 255 : v30 - v29;
+          v31 = v30 - bytes3 >= 255 ? 255 : v30 - bytes3;
           v19 = TLV8BufferAppend();
           if (v19)
           {
             goto LABEL_63;
           }
 
-          v29 += v31;
-          if (v29 >= v30)
+          bytes3 += v31;
+          if (bytes3 >= v30)
           {
 
             goto LABEL_46;
@@ -600,13 +600,13 @@ LABEL_37:
     else
     {
 LABEL_46:
-      v32 = [(HAPCharacteristicValueTransition *)self valueUpdateTimeInterval];
+      valueUpdateTimeInterval = [(HAPCharacteristicValueTransition *)self valueUpdateTimeInterval];
 
-      if (v32)
+      if (valueUpdateTimeInterval)
       {
-        v33 = [(HAPCharacteristicValueTransition *)self valueUpdateTimeInterval];
+        valueUpdateTimeInterval2 = [(HAPCharacteristicValueTransition *)self valueUpdateTimeInterval];
         v44 = 0;
-        v7 = [v33 serializeWithError:&v44];
+        v7 = [valueUpdateTimeInterval2 serializeWithError:&v44];
         v8 = v44;
 
         if (v8)
@@ -623,21 +623,21 @@ LABEL_46:
         }
       }
 
-      v34 = [(HAPCharacteristicValueTransition *)self notifyValueChangeThreshold];
+      notifyValueChangeThreshold = [(HAPCharacteristicValueTransition *)self notifyValueChangeThreshold];
 
-      if (!v34)
+      if (!notifyValueChangeThreshold)
       {
 LABEL_59:
-        v39 = [(HAPCharacteristicValueTransition *)self notifyTimeIntervalThreshold];
+        notifyTimeIntervalThreshold = [(HAPCharacteristicValueTransition *)self notifyTimeIntervalThreshold];
 
-        if (!v39)
+        if (!notifyTimeIntervalThreshold)
         {
           goto LABEL_62;
         }
 
-        v40 = [(HAPCharacteristicValueTransition *)self notifyTimeIntervalThreshold];
+        notifyTimeIntervalThreshold2 = [(HAPCharacteristicValueTransition *)self notifyTimeIntervalThreshold];
         v42 = 0;
-        v7 = [v40 serializeWithError:&v42];
+        v7 = [notifyTimeIntervalThreshold2 serializeWithError:&v42];
         v8 = v42;
 
         if (v8)
@@ -651,26 +651,26 @@ LABEL_59:
         goto LABEL_5;
       }
 
-      v35 = [(HAPCharacteristicValueTransition *)self notifyValueChangeThreshold];
+      notifyValueChangeThreshold2 = [(HAPCharacteristicValueTransition *)self notifyValueChangeThreshold];
       v43 = 0;
-      v14 = [v35 serializeWithError:&v43];
+      v14 = [notifyValueChangeThreshold2 serializeWithError:&v43];
       v8 = v43;
 
       if (!v8)
       {
-        v36 = [v14 bytes];
-        v37 = [v14 length] + v36;
+        bytes4 = [v14 bytes];
+        v37 = [v14 length] + bytes4;
         while (1)
         {
-          v38 = v37 - v36 >= 255 ? 255 : v37 - v36;
+          v38 = v37 - bytes4 >= 255 ? 255 : v37 - bytes4;
           v19 = TLV8BufferAppend();
           if (v19)
           {
             goto LABEL_63;
           }
 
-          v36 += v38;
-          if (v36 >= v37)
+          bytes4 += v38;
+          if (bytes4 >= v37)
           {
 
             goto LABEL_59;
@@ -682,7 +682,7 @@ LABEL_59:
 
 LABEL_15:
 
-  if (a3)
+  if (error)
   {
     goto LABEL_16;
   }
@@ -695,26 +695,26 @@ LABEL_66:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HAPCharacteristicValueTransition allocWithZone:a3];
-  v5 = [(HAPCharacteristicValueTransition *)self HAPInstanceID];
-  v6 = [(HAPCharacteristicValueTransition *)self controllerContext];
-  v7 = [(HAPCharacteristicValueTransition *)self endBehavior];
-  v8 = [(HAPCharacteristicValueTransition *)self linearTransition];
-  v9 = [(HAPCharacteristicValueTransition *)self linearDerivedTransition];
-  v10 = [(HAPCharacteristicValueTransition *)self valueUpdateTimeInterval];
-  v11 = [(HAPCharacteristicValueTransition *)self notifyValueChangeThreshold];
-  v12 = [(HAPCharacteristicValueTransition *)self notifyTimeIntervalThreshold];
-  v13 = [(HAPCharacteristicValueTransition *)v4 initWithHAPInstanceID:v5 controllerContext:v6 endBehavior:v7 linearTransition:v8 linearDerivedTransition:v9 valueUpdateTimeInterval:v10 notifyValueChangeThreshold:v11 notifyTimeIntervalThreshold:v12];
+  v4 = [HAPCharacteristicValueTransition allocWithZone:zone];
+  hAPInstanceID = [(HAPCharacteristicValueTransition *)self HAPInstanceID];
+  controllerContext = [(HAPCharacteristicValueTransition *)self controllerContext];
+  endBehavior = [(HAPCharacteristicValueTransition *)self endBehavior];
+  linearTransition = [(HAPCharacteristicValueTransition *)self linearTransition];
+  linearDerivedTransition = [(HAPCharacteristicValueTransition *)self linearDerivedTransition];
+  valueUpdateTimeInterval = [(HAPCharacteristicValueTransition *)self valueUpdateTimeInterval];
+  notifyValueChangeThreshold = [(HAPCharacteristicValueTransition *)self notifyValueChangeThreshold];
+  notifyTimeIntervalThreshold = [(HAPCharacteristicValueTransition *)self notifyTimeIntervalThreshold];
+  v13 = [(HAPCharacteristicValueTransition *)v4 initWithHAPInstanceID:hAPInstanceID controllerContext:controllerContext endBehavior:endBehavior linearTransition:linearTransition linearDerivedTransition:linearDerivedTransition valueUpdateTimeInterval:valueUpdateTimeInterval notifyValueChangeThreshold:notifyValueChangeThreshold notifyTimeIntervalThreshold:notifyTimeIntervalThreshold];
 
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -724,34 +724,34 @@ LABEL_66:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(HAPCharacteristicValueTransition *)self HAPInstanceID];
-      v8 = [(HAPCharacteristicValueTransition *)v6 HAPInstanceID];
-      if (v7 != v8)
+      v6 = equalCopy;
+      hAPInstanceID = [(HAPCharacteristicValueTransition *)self HAPInstanceID];
+      hAPInstanceID2 = [(HAPCharacteristicValueTransition *)v6 HAPInstanceID];
+      if (hAPInstanceID != hAPInstanceID2)
       {
-        v9 = [(HAPCharacteristicValueTransition *)self HAPInstanceID];
-        v3 = [(HAPCharacteristicValueTransition *)v6 HAPInstanceID];
-        v59 = v9;
-        if (![v9 isEqual:v3])
+        hAPInstanceID3 = [(HAPCharacteristicValueTransition *)self HAPInstanceID];
+        hAPInstanceID4 = [(HAPCharacteristicValueTransition *)v6 HAPInstanceID];
+        v59 = hAPInstanceID3;
+        if (![hAPInstanceID3 isEqual:hAPInstanceID4])
         {
           v10 = 0;
           goto LABEL_45;
         }
       }
 
-      v11 = [(HAPCharacteristicValueTransition *)self controllerContext];
-      v12 = [(HAPCharacteristicValueTransition *)v6 controllerContext];
-      if (v11 != v12)
+      controllerContext = [(HAPCharacteristicValueTransition *)self controllerContext];
+      controllerContext2 = [(HAPCharacteristicValueTransition *)v6 controllerContext];
+      if (controllerContext != controllerContext2)
       {
-        v13 = [(HAPCharacteristicValueTransition *)self controllerContext];
-        v57 = [(HAPCharacteristicValueTransition *)v6 controllerContext];
-        if (![v13 isEqual:?])
+        controllerContext3 = [(HAPCharacteristicValueTransition *)self controllerContext];
+        controllerContext4 = [(HAPCharacteristicValueTransition *)v6 controllerContext];
+        if (![controllerContext3 isEqual:?])
         {
           v10 = 0;
 LABEL_43:
 
 LABEL_44:
-          if (v7 == v8)
+          if (hAPInstanceID == hAPInstanceID2)
           {
 LABEL_46:
 
@@ -763,26 +763,26 @@ LABEL_45:
           goto LABEL_46;
         }
 
-        v55 = v13;
+        v55 = controllerContext3;
       }
 
-      v14 = [(HAPCharacteristicValueTransition *)self endBehavior];
-      v15 = [(HAPCharacteristicValueTransition *)v6 endBehavior];
-      v58 = v14;
-      if (v14 != v15)
+      endBehavior = [(HAPCharacteristicValueTransition *)self endBehavior];
+      endBehavior2 = [(HAPCharacteristicValueTransition *)v6 endBehavior];
+      v58 = endBehavior;
+      if (endBehavior != endBehavior2)
       {
-        v16 = [(HAPCharacteristicValueTransition *)self endBehavior];
-        v52 = [(HAPCharacteristicValueTransition *)v6 endBehavior];
-        v53 = v16;
-        if (![v16 isEqual:?])
+        endBehavior3 = [(HAPCharacteristicValueTransition *)self endBehavior];
+        endBehavior4 = [(HAPCharacteristicValueTransition *)v6 endBehavior];
+        v53 = endBehavior3;
+        if (![endBehavior3 isEqual:?])
         {
           v10 = 0;
           v17 = v58;
 LABEL_41:
 
 LABEL_42:
-          v13 = v55;
-          if (v11 == v12)
+          controllerContext3 = v55;
+          if (controllerContext == controllerContext2)
           {
             goto LABEL_44;
           }
@@ -791,23 +791,23 @@ LABEL_42:
         }
       }
 
-      v18 = [(HAPCharacteristicValueTransition *)self linearTransition];
-      v54 = [(HAPCharacteristicValueTransition *)v6 linearTransition];
-      v56 = v18;
-      if (v18 != v54)
+      linearTransition = [(HAPCharacteristicValueTransition *)self linearTransition];
+      linearTransition2 = [(HAPCharacteristicValueTransition *)v6 linearTransition];
+      v56 = linearTransition;
+      if (linearTransition != linearTransition2)
       {
-        v19 = [(HAPCharacteristicValueTransition *)self linearTransition];
-        v48 = [(HAPCharacteristicValueTransition *)v6 linearTransition];
-        v49 = v19;
-        if (![v19 isEqual:?])
+        linearTransition3 = [(HAPCharacteristicValueTransition *)self linearTransition];
+        linearTransition4 = [(HAPCharacteristicValueTransition *)v6 linearTransition];
+        v49 = linearTransition3;
+        if (![linearTransition3 isEqual:?])
         {
           v10 = 0;
-          v20 = v54;
+          v20 = linearTransition2;
 LABEL_39:
 
 LABEL_40:
           v17 = v58;
-          if (v58 == v15)
+          if (v58 == endBehavior2)
           {
             goto LABEL_42;
           }
@@ -816,23 +816,23 @@ LABEL_40:
         }
       }
 
-      v21 = [(HAPCharacteristicValueTransition *)self linearDerivedTransition];
-      v50 = [(HAPCharacteristicValueTransition *)v6 linearDerivedTransition];
-      v51 = v21;
-      if (v21 != v50)
+      linearDerivedTransition = [(HAPCharacteristicValueTransition *)self linearDerivedTransition];
+      linearDerivedTransition2 = [(HAPCharacteristicValueTransition *)v6 linearDerivedTransition];
+      v51 = linearDerivedTransition;
+      if (linearDerivedTransition != linearDerivedTransition2)
       {
-        v22 = [(HAPCharacteristicValueTransition *)self linearDerivedTransition];
-        v44 = [(HAPCharacteristicValueTransition *)v6 linearDerivedTransition];
-        v45 = v22;
-        if (![v22 isEqual:?])
+        linearDerivedTransition3 = [(HAPCharacteristicValueTransition *)self linearDerivedTransition];
+        linearDerivedTransition4 = [(HAPCharacteristicValueTransition *)v6 linearDerivedTransition];
+        v45 = linearDerivedTransition3;
+        if (![linearDerivedTransition3 isEqual:?])
         {
           v10 = 0;
-          v23 = v50;
+          v23 = linearDerivedTransition2;
 LABEL_37:
 
 LABEL_38:
-          v20 = v54;
-          if (v56 == v54)
+          v20 = linearTransition2;
+          if (v56 == linearTransition2)
           {
             goto LABEL_40;
           }
@@ -841,23 +841,23 @@ LABEL_38:
         }
       }
 
-      v24 = [(HAPCharacteristicValueTransition *)self valueUpdateTimeInterval];
-      v46 = [(HAPCharacteristicValueTransition *)v6 valueUpdateTimeInterval];
-      v47 = v24;
-      if (v24 != v46)
+      valueUpdateTimeInterval = [(HAPCharacteristicValueTransition *)self valueUpdateTimeInterval];
+      valueUpdateTimeInterval2 = [(HAPCharacteristicValueTransition *)v6 valueUpdateTimeInterval];
+      v47 = valueUpdateTimeInterval;
+      if (valueUpdateTimeInterval != valueUpdateTimeInterval2)
       {
-        v25 = [(HAPCharacteristicValueTransition *)self valueUpdateTimeInterval];
-        v40 = [(HAPCharacteristicValueTransition *)v6 valueUpdateTimeInterval];
-        v41 = v25;
-        if (![v25 isEqual:?])
+        valueUpdateTimeInterval3 = [(HAPCharacteristicValueTransition *)self valueUpdateTimeInterval];
+        valueUpdateTimeInterval4 = [(HAPCharacteristicValueTransition *)v6 valueUpdateTimeInterval];
+        v41 = valueUpdateTimeInterval3;
+        if (![valueUpdateTimeInterval3 isEqual:?])
         {
           v10 = 0;
-          v26 = v46;
+          v26 = valueUpdateTimeInterval2;
 LABEL_35:
 
 LABEL_36:
-          v23 = v50;
-          if (v51 == v50)
+          v23 = linearDerivedTransition2;
+          if (v51 == linearDerivedTransition2)
           {
             goto LABEL_38;
           }
@@ -866,33 +866,33 @@ LABEL_36:
         }
       }
 
-      v27 = [(HAPCharacteristicValueTransition *)self notifyValueChangeThreshold];
-      v42 = [(HAPCharacteristicValueTransition *)v6 notifyValueChangeThreshold];
-      v43 = v27;
-      if (v27 == v42)
+      notifyValueChangeThreshold = [(HAPCharacteristicValueTransition *)self notifyValueChangeThreshold];
+      notifyValueChangeThreshold2 = [(HAPCharacteristicValueTransition *)v6 notifyValueChangeThreshold];
+      v43 = notifyValueChangeThreshold;
+      if (notifyValueChangeThreshold == notifyValueChangeThreshold2)
       {
-        v39 = v3;
+        v39 = hAPInstanceID4;
       }
 
       else
       {
-        v28 = [(HAPCharacteristicValueTransition *)self notifyValueChangeThreshold];
-        v37 = [(HAPCharacteristicValueTransition *)v6 notifyValueChangeThreshold];
-        v38 = v28;
-        if (![v28 isEqual:?])
+        notifyValueChangeThreshold3 = [(HAPCharacteristicValueTransition *)self notifyValueChangeThreshold];
+        notifyValueChangeThreshold4 = [(HAPCharacteristicValueTransition *)v6 notifyValueChangeThreshold];
+        v38 = notifyValueChangeThreshold3;
+        if (![notifyValueChangeThreshold3 isEqual:?])
         {
           v10 = 0;
-          v33 = v42;
+          v33 = notifyValueChangeThreshold2;
           goto LABEL_33;
         }
 
-        v39 = v3;
+        v39 = hAPInstanceID4;
       }
 
-      v29 = [(HAPCharacteristicValueTransition *)self notifyTimeIntervalThreshold];
-      v30 = [(HAPCharacteristicValueTransition *)v6 notifyTimeIntervalThreshold];
-      v31 = v30;
-      if (v29 == v30)
+      notifyTimeIntervalThreshold = [(HAPCharacteristicValueTransition *)self notifyTimeIntervalThreshold];
+      notifyTimeIntervalThreshold2 = [(HAPCharacteristicValueTransition *)v6 notifyTimeIntervalThreshold];
+      v31 = notifyTimeIntervalThreshold2;
+      if (notifyTimeIntervalThreshold == notifyTimeIntervalThreshold2)
       {
 
         v10 = 1;
@@ -900,20 +900,20 @@ LABEL_36:
 
       else
       {
-        v35 = [(HAPCharacteristicValueTransition *)self notifyTimeIntervalThreshold];
+        notifyTimeIntervalThreshold3 = [(HAPCharacteristicValueTransition *)self notifyTimeIntervalThreshold];
         [(HAPCharacteristicValueTransition *)v6 notifyTimeIntervalThreshold];
-        v32 = v36 = v29;
-        v10 = [v35 isEqual:v32];
+        v32 = v36 = notifyTimeIntervalThreshold;
+        v10 = [notifyTimeIntervalThreshold3 isEqual:v32];
       }
 
-      v33 = v42;
-      v3 = v39;
-      if (v43 == v42)
+      v33 = notifyValueChangeThreshold2;
+      hAPInstanceID4 = v39;
+      if (v43 == notifyValueChangeThreshold2)
       {
 LABEL_34:
 
-        v26 = v46;
-        if (v47 == v46)
+        v26 = valueUpdateTimeInterval2;
+        if (v47 == valueUpdateTimeInterval2)
         {
           goto LABEL_36;
         }
@@ -936,15 +936,15 @@ LABEL_47:
 
 - (NSString)description
 {
-  v3 = [(HAPCharacteristicValueTransition *)self HAPInstanceID];
-  v4 = [(HAPCharacteristicValueTransition *)self controllerContext];
-  v5 = [(HAPCharacteristicValueTransition *)self endBehavior];
-  v6 = [(HAPCharacteristicValueTransition *)self linearTransition];
-  v7 = [(HAPCharacteristicValueTransition *)self linearDerivedTransition];
-  v8 = [(HAPCharacteristicValueTransition *)self valueUpdateTimeInterval];
-  v9 = [(HAPCharacteristicValueTransition *)self notifyValueChangeThreshold];
-  v10 = [(HAPCharacteristicValueTransition *)self notifyTimeIntervalThreshold];
-  v11 = [NSString stringWithFormat:@"<HAPCharacteristicValueTransition HAPInstanceID=%@, controllerContext=%@, endBehavior=%@, linearTransition=%@, linearDerivedTransition=%@, valueUpdateTimeInterval=%@, notifyValueChangeThreshold=%@, notifyTimeIntervalThreshold=%@>", v3, v4, v5, v6, v7, v8, v9, v10];
+  hAPInstanceID = [(HAPCharacteristicValueTransition *)self HAPInstanceID];
+  controllerContext = [(HAPCharacteristicValueTransition *)self controllerContext];
+  endBehavior = [(HAPCharacteristicValueTransition *)self endBehavior];
+  linearTransition = [(HAPCharacteristicValueTransition *)self linearTransition];
+  linearDerivedTransition = [(HAPCharacteristicValueTransition *)self linearDerivedTransition];
+  valueUpdateTimeInterval = [(HAPCharacteristicValueTransition *)self valueUpdateTimeInterval];
+  notifyValueChangeThreshold = [(HAPCharacteristicValueTransition *)self notifyValueChangeThreshold];
+  notifyTimeIntervalThreshold = [(HAPCharacteristicValueTransition *)self notifyTimeIntervalThreshold];
+  v11 = [NSString stringWithFormat:@"<HAPCharacteristicValueTransition HAPInstanceID=%@, controllerContext=%@, endBehavior=%@, linearTransition=%@, linearDerivedTransition=%@, valueUpdateTimeInterval=%@, notifyValueChangeThreshold=%@, notifyTimeIntervalThreshold=%@>", hAPInstanceID, controllerContext, endBehavior, linearTransition, linearDerivedTransition, valueUpdateTimeInterval, notifyValueChangeThreshold, notifyTimeIntervalThreshold];
 
   return v11;
 }

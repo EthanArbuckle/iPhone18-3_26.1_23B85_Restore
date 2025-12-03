@@ -1,65 +1,65 @@
 @interface IAPHistoryService
-- (void)getAllIAPsForActiveAccountWithReplyHandler:(id)a3;
-- (void)getAppStoreConsumedIntroOfferFamilyIdsWithResultHandler:(id)a3;
-- (void)getCachedSubscriptionEntitlementsForSegment:(unint64_t)a3 withReplyHandler:(id)a4;
-- (void)getIAPsForActiveAccountWithAdamIDs:(id)a3 withReplyHandler:(id)a4;
-- (void)getSubscriptionEntitlementsForSegment:(unint64_t)a3 ignoreCaches:(BOOL)a4 isBackground:(BOOL)a5 requestingBundleId:(id)a6 withReplyHandler:(id)a7;
-- (void)getSubscriptionEntitlementsForSegment:(unint64_t)a3 ignoreCaches:(BOOL)a4 requestingBundleId:(id)a5 withReplyHandler:(id)a6;
-- (void)refreshIAPsForActiveAccountWithReplyHandler:(id)a3;
-- (void)setSubscriptionEntitlementsWithDictionary:(id)a3 forAccountID:(id)a4 segment:(unint64_t)a5;
+- (void)getAllIAPsForActiveAccountWithReplyHandler:(id)handler;
+- (void)getAppStoreConsumedIntroOfferFamilyIdsWithResultHandler:(id)handler;
+- (void)getCachedSubscriptionEntitlementsForSegment:(unint64_t)segment withReplyHandler:(id)handler;
+- (void)getIAPsForActiveAccountWithAdamIDs:(id)ds withReplyHandler:(id)handler;
+- (void)getSubscriptionEntitlementsForSegment:(unint64_t)segment ignoreCaches:(BOOL)caches isBackground:(BOOL)background requestingBundleId:(id)id withReplyHandler:(id)handler;
+- (void)getSubscriptionEntitlementsForSegment:(unint64_t)segment ignoreCaches:(BOOL)caches requestingBundleId:(id)id withReplyHandler:(id)handler;
+- (void)refreshIAPsForActiveAccountWithReplyHandler:(id)handler;
+- (void)setSubscriptionEntitlementsWithDictionary:(id)dictionary forAccountID:(id)d segment:(unint64_t)segment;
 @end
 
 @implementation IAPHistoryService
 
-- (void)getAllIAPsForActiveAccountWithReplyHandler:(id)a3
+- (void)getAllIAPsForActiveAccountWithReplyHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = sub_1003FA694(XPCRequestToken, 0);
   v5 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = v6;
-    v8 = [v4 processInfo];
-    v9 = [v8 bundleIdentifier];
+    processInfo = [v4 processInfo];
+    bundleIdentifier = [processInfo bundleIdentifier];
     v11 = 138412802;
     v12 = v6;
     v13 = 2114;
     v14 = v4;
     v15 = 2114;
-    v16 = v9;
+    v16 = bundleIdentifier;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[%@]: %{public}@ Getting IAPs for active account for client: %{public}@", &v11, 0x20u);
   }
 
   v10 = sub_100005CD4();
-  sub_10034AA74(v10, v4, v3);
+  sub_10034AA74(v10, v4, handlerCopy);
 }
 
-- (void)getIAPsForActiveAccountWithAdamIDs:(id)a3 withReplyHandler:(id)a4
+- (void)getIAPsForActiveAccountWithAdamIDs:(id)ds withReplyHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  dsCopy = ds;
+  handlerCopy = handler;
   v7 = sub_1003FA694(XPCRequestToken, 0);
-  if (v5 && [v5 count])
+  if (dsCopy && [dsCopy count])
   {
     v8 = ASDLogHandleForCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v9 = objc_opt_class();
       v10 = v9;
-      v11 = [v7 processInfo];
-      v12 = [v11 bundleIdentifier];
+      processInfo = [v7 processInfo];
+      bundleIdentifier = [processInfo bundleIdentifier];
       v19 = 138412802;
       v20 = v9;
       v21 = 2114;
       v22 = v7;
       v23 = 2114;
-      v24 = v12;
+      v24 = bundleIdentifier;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[%@]: %{public}@ Getting specific IAPs for active account for client: %{public}@", &v19, 0x20u);
     }
 
     v13 = sub_100005CD4();
-    sub_100349D3C(v13, v5, v7, v6);
+    sub_100349D3C(v13, dsCopy, v7, handlerCopy);
   }
 
   else
@@ -69,78 +69,78 @@
     {
       v15 = objc_opt_class();
       v16 = v15;
-      v17 = [v7 processInfo];
-      v18 = [v17 bundleIdentifier];
+      processInfo2 = [v7 processInfo];
+      bundleIdentifier2 = [processInfo2 bundleIdentifier];
       v19 = 138412802;
       v20 = v15;
       v21 = 2114;
       v22 = v7;
       v23 = 2114;
-      v24 = v18;
+      v24 = bundleIdentifier2;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "[%@]: %{public}@ Getting IAPs for active account for client: %{public}@", &v19, 0x20u);
     }
 
     v13 = sub_100005CD4();
-    sub_10034AA74(v13, v7, v6);
+    sub_10034AA74(v13, v7, handlerCopy);
   }
 }
 
-- (void)refreshIAPsForActiveAccountWithReplyHandler:(id)a3
+- (void)refreshIAPsForActiveAccountWithReplyHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = sub_1003FA694(XPCRequestToken, 0);
   v5 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = v6;
-    v8 = [v4 processInfo];
-    v9 = [v8 bundleIdentifier];
+    processInfo = [v4 processInfo];
+    bundleIdentifier = [processInfo bundleIdentifier];
     v11 = 138412802;
     v12 = v6;
     v13 = 2114;
     v14 = v4;
     v15 = 2114;
-    v16 = v9;
+    v16 = bundleIdentifier;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[%@]: %{public}@ Refreshing IAPs for active account for client: %{public}@", &v11, 0x20u);
   }
 
   v10 = sub_100005CD4();
-  sub_10034B07C(v10, v4, v3);
+  sub_10034B07C(v10, v4, handlerCopy);
 }
 
-- (void)setSubscriptionEntitlementsWithDictionary:(id)a3 forAccountID:(id)a4 segment:(unint64_t)a5
+- (void)setSubscriptionEntitlementsWithDictionary:(id)dictionary forAccountID:(id)d segment:(unint64_t)segment
 {
-  v7 = a4;
-  v8 = a3;
+  dCopy = d;
+  dictionaryCopy = dictionary;
   v9 = sub_1003FA694(XPCRequestToken, 0);
   v10 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = objc_opt_class();
     v12 = v11;
-    v13 = [v9 processInfo];
-    v14 = [v13 bundleIdentifier];
+    processInfo = [v9 processInfo];
+    bundleIdentifier = [processInfo bundleIdentifier];
     v16 = 138413058;
     v17 = v11;
     v18 = 2114;
-    v19 = v14;
+    v19 = bundleIdentifier;
     v20 = 2114;
-    v21 = v7;
+    v21 = dCopy;
     v22 = 2048;
-    v23 = a5;
+    segmentCopy = segment;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[%@]: Setting subscriptions for clientID: %{public}@ accountID: %{public}@ segment: %lu", &v16, 0x2Au);
   }
 
   v15 = +[SubscriptionEntitlementsCoordinator sharedInstance];
-  [v15 setCachedSubscriptionEntitlements:v8 forAccountID:v7 segment:a5];
+  [v15 setCachedSubscriptionEntitlements:dictionaryCopy forAccountID:dCopy segment:segment];
 }
 
-- (void)getSubscriptionEntitlementsForSegment:(unint64_t)a3 ignoreCaches:(BOOL)a4 requestingBundleId:(id)a5 withReplyHandler:(id)a6
+- (void)getSubscriptionEntitlementsForSegment:(unint64_t)segment ignoreCaches:(BOOL)caches requestingBundleId:(id)id withReplyHandler:(id)handler
 {
-  v7 = a4;
-  v9 = a6;
-  v10 = sub_1003FA694(XPCRequestToken, a5);
+  cachesCopy = caches;
+  handlerCopy = handler;
+  v10 = sub_1003FA694(XPCRequestToken, id);
   v11 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -161,33 +161,33 @@
     }
 
     v17 = Property;
-    v18 = [v10 processInfo];
-    v19 = [v18 bundleIdentifier];
+    processInfo = [v10 processInfo];
+    bundleIdentifier = [processInfo bundleIdentifier];
     *buf = 138413570;
     v24 = v12;
     v25 = 2048;
-    v26 = a3;
+    segmentCopy = segment;
     v27 = 2114;
     v28 = v14;
     v29 = 2114;
     v30 = v17;
     v31 = 2114;
-    v32 = v19;
+    v32 = bundleIdentifier;
     v33 = 1024;
-    v34 = v7;
+    v34 = cachesCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[%@] Handling subscription entitlements request for segment: %lu requestingBundleId: %{public}@ clientID: %{public}@ processInfoID: %{public}@ ignore caches: %{BOOL}d", buf, 0x3Au);
   }
 
   v20 = +[SubscriptionEntitlementsCoordinator sharedInstance];
-  sub_1002F4DEC(v20, a3, v10, v7, 0, 1, v9);
+  sub_1002F4DEC(v20, segment, v10, cachesCopy, 0, 1, handlerCopy);
 }
 
-- (void)getSubscriptionEntitlementsForSegment:(unint64_t)a3 ignoreCaches:(BOOL)a4 isBackground:(BOOL)a5 requestingBundleId:(id)a6 withReplyHandler:(id)a7
+- (void)getSubscriptionEntitlementsForSegment:(unint64_t)segment ignoreCaches:(BOOL)caches isBackground:(BOOL)background requestingBundleId:(id)id withReplyHandler:(id)handler
 {
-  LODWORD(v8) = a5;
-  v9 = a4;
-  v11 = a7;
-  v12 = sub_1003FA694(XPCRequestToken, a6);
+  LODWORD(v8) = background;
+  cachesCopy = caches;
+  handlerCopy = handler;
+  v12 = sub_1003FA694(XPCRequestToken, id);
   v13 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
@@ -209,20 +209,20 @@
     }
 
     v18 = Property;
-    v19 = [v12 processInfo];
-    v20 = [v19 bundleIdentifier];
+    processInfo = [v12 processInfo];
+    bundleIdentifier = [processInfo bundleIdentifier];
     *buf = 138413826;
     v26 = v8;
     v27 = 2048;
-    v28 = a3;
+    segmentCopy = segment;
     v29 = 2114;
     v30 = v15;
     v31 = 2114;
     v32 = v18;
     v33 = 2114;
-    v34 = v20;
+    v34 = bundleIdentifier;
     v35 = 1024;
-    v36 = v9;
+    v36 = cachesCopy;
     v37 = 1024;
     LOBYTE(v8) = v24;
     v38 = v24;
@@ -230,12 +230,12 @@
   }
 
   v21 = +[SubscriptionEntitlementsCoordinator sharedInstance];
-  sub_1002F4DEC(v21, a3, v12, v9, v8, 1, v11);
+  sub_1002F4DEC(v21, segment, v12, cachesCopy, v8, 1, handlerCopy);
 }
 
-- (void)getCachedSubscriptionEntitlementsForSegment:(unint64_t)a3 withReplyHandler:(id)a4
+- (void)getCachedSubscriptionEntitlementsForSegment:(unint64_t)segment withReplyHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v6 = sub_1003FA694(XPCRequestToken, 0);
   v7 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -256,21 +256,21 @@
     v14 = 138412802;
     v15 = v8;
     v16 = 2048;
-    v17 = a3;
+    segmentCopy = segment;
     v18 = 2114;
     v19 = v12;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[%@] Handling cached subscription entitlements request for segment: %lu clientID: %{public}@", &v14, 0x20u);
   }
 
   v13 = +[SubscriptionEntitlementsCoordinator sharedInstance];
-  sub_1002F5094(v13, a3, v6, v5);
+  sub_1002F5094(v13, segment, v6, handlerCopy);
 }
 
-- (void)getAppStoreConsumedIntroOfferFamilyIdsWithResultHandler:(id)a3
+- (void)getAppStoreConsumedIntroOfferFamilyIdsWithResultHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = +[SubscriptionEntitlementsCoordinator sharedInstance];
-  sub_1002F4A10(v4, v3);
+  sub_1002F4A10(v4, handlerCopy);
 }
 
 @end

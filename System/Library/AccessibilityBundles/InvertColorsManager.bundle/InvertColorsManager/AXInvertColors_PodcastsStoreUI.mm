@@ -1,14 +1,14 @@
 @interface AXInvertColors_PodcastsStoreUI
-+ (void)installCategories:(id)a3;
++ (void)installCategories:(id)categories;
 @end
 
 @implementation AXInvertColors_PodcastsStoreUI
 
-+ (void)installCategories:(id)a3
++ (void)installCategories:(id)categories
 {
-  v3 = a3;
-  [v3 installSafeCategory:@"PodcastsUIArtworkViewInvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"NowPlayingContentViewInvertColorsAccessibility" canInteractWithTargetClass:1];
+  categoriesCopy = categories;
+  [categoriesCopy installSafeCategory:@"PodcastsUIArtworkViewInvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"NowPlayingContentViewInvertColorsAccessibility" canInteractWithTargetClass:1];
 }
 
 @end

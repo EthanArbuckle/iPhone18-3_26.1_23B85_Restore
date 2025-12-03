@@ -1,14 +1,14 @@
 @interface TISmartPunctuationController
 + (id)_chineseContextualVariantMapping;
 - (TISmartPunctuationController)init;
-- (id)_alternatingStringForInputString:(id)a3 isLockedInput:(BOOL)a4 hasMarkedText:(BOOL)a5;
-- (id)_checkInput:(id)a3 forContextualChinesePunctuationInDocumentState:(id)a4;
-- (id)_checkInput:(id)a3 forContextualDashesInDocumentState:(id)a4;
-- (id)_checkInput:(id)a3 forContextualEllipsesInDocumentState:(id)a4;
-- (id)_checkInput:(id)a3 forContextualQuotesInDocumentState:(id)a4;
-- (id)smartPunctuationOutputForInput:(id)a3 isLockedInput:(BOOL)a4 documentState:(id)a5;
-- (id)smartPunctuationResultsForString:(id)a3;
-- (id)smartPunctuationedStringForString:(id)a3;
+- (id)_alternatingStringForInputString:(id)string isLockedInput:(BOOL)input hasMarkedText:(BOOL)text;
+- (id)_checkInput:(id)input forContextualChinesePunctuationInDocumentState:(id)state;
+- (id)_checkInput:(id)input forContextualDashesInDocumentState:(id)state;
+- (id)_checkInput:(id)input forContextualEllipsesInDocumentState:(id)state;
+- (id)_checkInput:(id)input forContextualQuotesInDocumentState:(id)state;
+- (id)smartPunctuationOutputForInput:(id)input isLockedInput:(BOOL)lockedInput documentState:(id)state;
+- (id)smartPunctuationResultsForString:(id)string;
+- (id)smartPunctuationedStringForString:(id)string;
 - (void)_initializeDashCharacterSetsIfNecessary;
 - (void)_initializeQuoteCharacterSetsIfNecessary;
 @end
@@ -29,10 +29,10 @@
   return result;
 }
 
-- (id)_checkInput:(id)a3 forContextualEllipsesInDocumentState:(id)a4
+- (id)_checkInput:(id)input forContextualEllipsesInDocumentState:(id)state
 {
-  v5 = a4;
-  if ([a3 isEqualToString:@"."] && (objc_msgSend(v5, "contextBeforeInput"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "hasSuffix:", @".."), v6, v7))
+  stateCopy = state;
+  if ([input isEqualToString:@"."] && (objc_msgSend(stateCopy, "contextBeforeInput"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "hasSuffix:", @".."), v6, v7))
   {
     v8 = objc_alloc_init(TIKeyboardOutput);
     [(TIKeyboardOutput *)v8 deleteBackward:2];
@@ -47,36 +47,36 @@
   return v8;
 }
 
-- (id)_checkInput:(id)a3 forContextualDashesInDocumentState:(id)a4
+- (id)_checkInput:(id)input forContextualDashesInDocumentState:(id)state
 {
-  v6 = a4;
-  if (![a3 isEqualToString:@"-"])
+  stateCopy = state;
+  if (![input isEqualToString:@"-"])
   {
     goto LABEL_18;
   }
 
   [(TISmartPunctuationController *)self _initializeDashCharacterSetsIfNecessary];
-  v7 = [v6 contextBeforeInput];
-  v8 = [v7 length];
+  contextBeforeInput = [stateCopy contextBeforeInput];
+  v8 = [contextBeforeInput length];
 
-  v9 = [v6 contextBeforeInput];
-  v10 = [v9 rangeOfCharacterFromSet:self->_dashCharacterSet options:12 range:{0, v8}];
+  contextBeforeInput2 = [stateCopy contextBeforeInput];
+  v10 = [contextBeforeInput2 rangeOfCharacterFromSet:self->_dashCharacterSet options:12 range:{0, v8}];
   v12 = v11;
 
-  v13 = [v6 contextBeforeInput];
-  v41 = [v13 rangeOfCharacterFromSet:self->_enDashCharacterSet options:12 range:{0, v8}];
+  contextBeforeInput3 = [stateCopy contextBeforeInput];
+  v41 = [contextBeforeInput3 rangeOfCharacterFromSet:self->_enDashCharacterSet options:12 range:{0, v8}];
   v15 = v14;
 
-  v16 = [v6 contextBeforeInput];
-  v42 = [v16 rangeOfCharacterFromSet:self->_emDashCharacterSet options:12 range:{0, v8}];
+  contextBeforeInput4 = [stateCopy contextBeforeInput];
+  v42 = [contextBeforeInput4 rangeOfCharacterFromSet:self->_emDashCharacterSet options:12 range:{0, v8}];
   v18 = v17;
 
   if (v10 && v10 != 0x7FFFFFFFFFFFFFFFLL)
   {
     do
     {
-      v19 = [v6 contextBeforeInput];
-      v20 = [v19 rangeOfCharacterFromSet:self->_dashCharacterSet options:12 range:{v10 - 1, 1}];
+      contextBeforeInput5 = [stateCopy contextBeforeInput];
+      v20 = [contextBeforeInput5 rangeOfCharacterFromSet:self->_dashCharacterSet options:12 range:{v10 - 1, 1}];
       v22 = v21;
 
       if (v20 == 0x7FFFFFFFFFFFFFFFLL)
@@ -107,8 +107,8 @@
 
   if (v12)
   {
-    v25 = [v6 contextBeforeInput];
-    v26 = v10 + v12 == [v25 length];
+    contextBeforeInput6 = [stateCopy contextBeforeInput];
+    v26 = v10 + v12 == [contextBeforeInput6 length];
 
     if (v15)
     {
@@ -133,14 +133,14 @@ LABEL_27:
 
 LABEL_14:
   v27 = v41 + v15;
-  v28 = [v6 contextBeforeInput];
-  v29 = v27 == [v28 length];
+  contextBeforeInput7 = [stateCopy contextBeforeInput];
+  v29 = v27 == [contextBeforeInput7 length];
 
   if (v18)
   {
 LABEL_15:
-    v30 = [v6 contextBeforeInput];
-    LODWORD(v18) = v42 + v18 == [v30 length];
+    contextBeforeInput8 = [stateCopy contextBeforeInput];
+    LODWORD(v18) = v42 + v18 == [contextBeforeInput8 length];
   }
 
 LABEL_16:
@@ -191,8 +191,8 @@ LABEL_18:
 
   else
   {
-    v33 = [v6 contextBeforeInput];
-    v34 = [v33 substringToIndex:v10];
+    contextBeforeInput9 = [stateCopy contextBeforeInput];
+    v34 = [contextBeforeInput9 substringToIndex:v10];
 
     v35 = -[NSCharacterSet characterIsMember:](self->_decimalDigitCharacterSet, "characterIsMember:", [v34 _lastLongCharacter]);
     if (v35)
@@ -218,34 +218,34 @@ LABEL_35:
   return v31;
 }
 
-- (id)_checkInput:(id)a3 forContextualChinesePunctuationInDocumentState:(id)a4
+- (id)_checkInput:(id)input forContextualChinesePunctuationInDocumentState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqualToString:@"「"])
+  inputCopy = input;
+  stateCopy = state;
+  if ([inputCopy isEqualToString:@"「"])
   {
     v8 = 1;
   }
 
   else
   {
-    v8 = [v6 isEqualToString:@"」"];
+    v8 = [inputCopy isEqualToString:@"」"];
   }
 
-  if ([v6 isEqualToString:@"《"])
+  if ([inputCopy isEqualToString:@"《"])
   {
     v9 = 1;
   }
 
   else
   {
-    v9 = [v6 isEqualToString:@"》"];
+    v9 = [inputCopy isEqualToString:@"》"];
   }
 
-  v10 = [(TISmartPunctuationController *)self smartPunctuationOptions];
-  v11 = [v10 locale];
-  v12 = [v11 localeIdentifier];
-  v13 = [v12 isEqualToString:@"zh-Hans"];
+  smartPunctuationOptions = [(TISmartPunctuationController *)self smartPunctuationOptions];
+  locale = [smartPunctuationOptions locale];
+  localeIdentifier = [locale localeIdentifier];
+  v13 = [localeIdentifier isEqualToString:@"zh-Hans"];
 
   if (v8)
   {
@@ -267,8 +267,8 @@ LABEL_35:
     }
 
     v16 = *(&self->super.isa + v15);
-    v17 = [v7 contextBeforeInput];
-    v18 = [v17 rangeOfCharacterFromSet:v16 options:4];
+    contextBeforeInput = [stateCopy contextBeforeInput];
+    v18 = [contextBeforeInput rangeOfCharacterFromSet:v16 options:4];
     if (v18 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v20 = 0;
@@ -276,9 +276,9 @@ LABEL_35:
 
     else
     {
-      v21 = [v17 substringWithRange:{v18, v19}];
-      v22 = [objc_opt_class() _chineseContextualVariantMapping];
-      v23 = [v22 objectForKeyedSubscript:v6];
+      v21 = [contextBeforeInput substringWithRange:{v18, v19}];
+      _chineseContextualVariantMapping = [objc_opt_class() _chineseContextualVariantMapping];
+      v23 = [_chineseContextualVariantMapping objectForKeyedSubscript:inputCopy];
       v24 = [v23 objectForKeyedSubscript:v21];
 
       if (v24)
@@ -302,15 +302,15 @@ LABEL_35:
   return v20;
 }
 
-- (id)_checkInput:(id)a3 forContextualQuotesInDocumentState:(id)a4
+- (id)_checkInput:(id)input forContextualQuotesInDocumentState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 rangeOfString:@"'"];
+  inputCopy = input;
+  stateCopy = state;
+  v8 = [inputCopy rangeOfString:@"'"];
   v10 = v8;
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v11 = [v6 rangeOfString:@""];
+    v11 = [inputCopy rangeOfString:@""];
     if (v11 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v13 = 0;
@@ -327,17 +327,17 @@ LABEL_35:
     v15 = v8;
   }
 
-  v16 = [(TISmartPunctuationController *)self smartPunctuationOptions];
-  if (v16)
+  smartPunctuationOptions = [(TISmartPunctuationController *)self smartPunctuationOptions];
+  if (smartPunctuationOptions)
   {
     [(TISmartPunctuationController *)self _initializeQuoteCharacterSetsIfNecessary];
-    v17 = [v7 contextBeforeInput];
-    v18 = v17;
-    v19 = v16;
+    contextBeforeInput = [stateCopy contextBeforeInput];
+    v18 = contextBeforeInput;
+    v19 = smartPunctuationOptions;
     v20 = v14;
-    if (v17)
+    if (contextBeforeInput)
     {
-      v21 = v17;
+      v21 = contextBeforeInput;
     }
 
     else
@@ -345,21 +345,21 @@ LABEL_35:
       v21 = &stru_1EF56D550;
     }
 
-    v22 = [v6 substringToIndex:v15];
+    v22 = [inputCopy substringToIndex:v15];
     v23 = [(__CFString *)v21 stringByAppendingString:v22];
 
     v54 = v15;
     v55 = v20;
     v24 = v15 + v20;
-    v16 = v19;
+    smartPunctuationOptions = v19;
     v25 = v23;
-    v26 = [v6 substringFromIndex:v24];
-    v56 = v7;
-    v27 = [v7 contextAfterInput];
-    v28 = v27;
-    if (v27)
+    v26 = [inputCopy substringFromIndex:v24];
+    v56 = stateCopy;
+    contextAfterInput = [stateCopy contextAfterInput];
+    v28 = contextAfterInput;
+    if (contextAfterInput)
     {
-      v29 = v27;
+      v29 = contextAfterInput;
     }
 
     else
@@ -369,22 +369,22 @@ LABEL_35:
 
     v30 = [v26 stringByAppendingString:v29];
 
-    v31 = [v25 _lastLongCharacter];
+    _lastLongCharacter = [v25 _lastLongCharacter];
     v53 = v30;
-    v52 = [v30 _firstLongCharacter];
+    _firstLongCharacter = [v30 _firstLongCharacter];
     v51 = [v25 length] == 0;
-    v32 = [(NSCharacterSet *)self->_whitespaceAndNewlineCharacterSet characterIsMember:v31];
-    v33 = [(NSCharacterSet *)self->_openerCharacterSet characterIsMember:v31];
-    v34 = [v16 leftSingleQuote];
-    [v25 rangeOfString:v34 options:12];
+    v32 = [(NSCharacterSet *)self->_whitespaceAndNewlineCharacterSet characterIsMember:_lastLongCharacter];
+    v33 = [(NSCharacterSet *)self->_openerCharacterSet characterIsMember:_lastLongCharacter];
+    leftSingleQuote = [smartPunctuationOptions leftSingleQuote];
+    [v25 rangeOfString:leftSingleQuote options:12];
     v50 = v35;
 
-    v36 = [v16 leftDoubleQuote];
-    [v25 rangeOfString:v36 options:12];
+    leftDoubleQuote = [smartPunctuationOptions leftDoubleQuote];
+    [v25 rangeOfString:leftDoubleQuote options:12];
     v38 = v37;
 
-    v39 = [(NSCharacterSet *)self->_alphanumericCharacterSet characterIsMember:v31];
-    v40 = [(NSCharacterSet *)self->_alphanumericCharacterSet characterIsMember:v52];
+    v39 = [(NSCharacterSet *)self->_alphanumericCharacterSet characterIsMember:_lastLongCharacter];
+    v40 = [(NSCharacterSet *)self->_alphanumericCharacterSet characterIsMember:_firstLongCharacter];
     v41 = v51 || v32 || v33;
     if (v10 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -398,7 +398,7 @@ LABEL_35:
       {
         [(TISmartPunctuationOptions *)smartPunctuationOptions rightDoubleQuote];
       }
-      v43 = ;
+      leftSingleQuote2 = ;
     }
 
     else
@@ -408,7 +408,7 @@ LABEL_35:
         v46 = v39 && v40;
         v47 = self->_smartPunctuationOptions;
         v45 = v55;
-        v7 = v56;
+        stateCopy = v56;
         if (v46 == 1)
         {
           [(TISmartPunctuationOptions *)v47 apostrophe];
@@ -422,14 +422,14 @@ LABEL_35:
         goto LABEL_26;
       }
 
-      v43 = [(TISmartPunctuationOptions *)self->_smartPunctuationOptions leftSingleQuote];
+      leftSingleQuote2 = [(TISmartPunctuationOptions *)self->_smartPunctuationOptions leftSingleQuote];
     }
 
-    v44 = v43;
+    v44 = leftSingleQuote2;
     v45 = v55;
-    v7 = v56;
+    stateCopy = v56;
 LABEL_26:
-    v48 = [v6 stringByReplacingCharactersInRange:v54 withString:{v45, v44, v50}];
+    v48 = [inputCopy stringByReplacingCharactersInRange:v54 withString:{v45, v44, v50}];
 
     v13 = objc_alloc_init(TIKeyboardOutput);
     [(TIKeyboardOutput *)v13 insertText:v48];
@@ -445,14 +445,14 @@ LABEL_28:
   return v13;
 }
 
-- (id)_alternatingStringForInputString:(id)a3 isLockedInput:(BOOL)a4 hasMarkedText:(BOOL)a5
+- (id)_alternatingStringForInputString:(id)string isLockedInput:(BOOL)input hasMarkedText:(BOOL)text
 {
-  v6 = a4;
-  v8 = a3;
+  inputCopy = input;
+  stringCopy = string;
   v9 = @"";
-  if (([v8 containsString:@""] & 1) == 0)
+  if (([stringCopy containsString:@""] & 1) == 0)
   {
-    v13 = [v8 containsString:@"'"];
+    v13 = [stringCopy containsString:@"'"];
     if (v13)
     {
       v11 = 0;
@@ -461,8 +461,8 @@ LABEL_28:
 
     else
     {
-      v11 = [v8 containsString:@"“"];
-      if (v11 & 1) != 0 || ([v8 containsString:@"”"])
+      v11 = [stringCopy containsString:@"“"];
+      if (v11 & 1) != 0 || ([stringCopy containsString:@"”"])
       {
         v13 = 0;
         v10 = v11 ^ 1;
@@ -470,7 +470,7 @@ LABEL_28:
         goto LABEL_17;
       }
 
-      if ([v8 containsString:@"‘"])
+      if ([stringCopy containsString:@"‘"])
       {
         v10 = 0;
         v11 = 1;
@@ -478,7 +478,7 @@ LABEL_28:
 
       else
       {
-        if (![v8 containsString:@"’"])
+        if (![stringCopy containsString:@"’"])
         {
           goto LABEL_6;
         }
@@ -488,7 +488,7 @@ LABEL_28:
       }
     }
 
-    if (!a5)
+    if (!text)
     {
       v9 = @"'";
       v12 = @"’";
@@ -510,7 +510,7 @@ LABEL_6:
   v15 = @"“";
 LABEL_11:
   p_leftDoubleQuotationMarkInserted = self + v14;
-  if (v13 && !v6)
+  if (v13 && !inputCopy)
   {
     if (*p_leftDoubleQuotationMarkInserted)
     {
@@ -522,7 +522,7 @@ LABEL_11:
       v18 = v15;
     }
 
-    v16 = [v8 stringByReplacingOccurrencesOfString:v9 withString:v18];
+    v16 = [stringCopy stringByReplacingOccurrencesOfString:v9 withString:v18];
     v11 = !*p_leftDoubleQuotationMarkInserted;
     goto LABEL_21;
   }
@@ -532,7 +532,7 @@ LABEL_17:
   if ((v11 & 1) == 0 && (v10 & 1) == 0)
   {
     v16 = 0;
-    if ((v13 & v6) != 1)
+    if ((v13 & inputCopy) != 1)
     {
       goto LABEL_22;
     }
@@ -547,12 +547,12 @@ LABEL_22:
   return v16;
 }
 
-- (id)smartPunctuationOutputForInput:(id)a3 isLockedInput:(BOOL)a4 documentState:(id)a5
+- (id)smartPunctuationOutputForInput:(id)input isLockedInput:(BOOL)lockedInput documentState:(id)state
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  if (!v8 || ![(TISmartPunctuationController *)self smartQuotesEnabled]&& ![(TISmartPunctuationController *)self smartDashesEnabled])
+  lockedInputCopy = lockedInput;
+  inputCopy = input;
+  stateCopy = state;
+  if (!inputCopy || ![(TISmartPunctuationController *)self smartQuotesEnabled]&& ![(TISmartPunctuationController *)self smartDashesEnabled])
   {
     v11 = 0;
     goto LABEL_27;
@@ -560,12 +560,12 @@ LABEL_22:
 
   if ([(TISmartPunctuationController *)self smartQuotesEnabled])
   {
-    if ([(TISmartPunctuationController *)self autoQuoteType]!= 2 || v6)
+    if ([(TISmartPunctuationController *)self autoQuoteType]!= 2 || lockedInputCopy)
     {
       if ([(TISmartPunctuationController *)self autoQuoteType]== 1)
       {
-        v12 = [v9 markedText];
-        v13 = -[TISmartPunctuationController _alternatingStringForInputString:isLockedInput:hasMarkedText:](self, "_alternatingStringForInputString:isLockedInput:hasMarkedText:", v8, v6, [v12 length] != 0);
+        markedText = [stateCopy markedText];
+        v13 = -[TISmartPunctuationController _alternatingStringForInputString:isLockedInput:hasMarkedText:](self, "_alternatingStringForInputString:isLockedInput:hasMarkedText:", inputCopy, lockedInputCopy, [markedText length] != 0);
 
         if (v13)
         {
@@ -587,12 +587,12 @@ LABEL_22:
 
     else
     {
-      v10 = [(TISmartPunctuationController *)self _checkInput:v8 forContextualQuotesInDocumentState:v9];
+      v10 = [(TISmartPunctuationController *)self _checkInput:inputCopy forContextualQuotesInDocumentState:stateCopy];
     }
 
-    if (!v10 && !v6)
+    if (!v10 && !lockedInputCopy)
     {
-      v10 = [(TISmartPunctuationController *)self _checkInput:v8 forContextualChinesePunctuationInDocumentState:v9];
+      v10 = [(TISmartPunctuationController *)self _checkInput:inputCopy forContextualChinesePunctuationInDocumentState:stateCopy];
     }
 
     if (![(TISmartPunctuationController *)self smartDashesEnabled])
@@ -608,8 +608,8 @@ LABEL_22:
     }
 
 LABEL_21:
-    v14 = [(TISmartPunctuationController *)self _checkInput:v8 forContextualDashesInDocumentState:v9];
-    v11 = [(TISmartPunctuationController *)self _checkInput:v8 forContextualEllipsesInDocumentState:v9];
+    v14 = [(TISmartPunctuationController *)self _checkInput:inputCopy forContextualDashesInDocumentState:stateCopy];
+    v11 = [(TISmartPunctuationController *)self _checkInput:inputCopy forContextualEllipsesInDocumentState:stateCopy];
     if (!v10)
     {
       if (!v14)
@@ -643,21 +643,21 @@ LABEL_27:
   return v11;
 }
 
-- (id)smartPunctuationedStringForString:(id)a3
+- (id)smartPunctuationedStringForString:(id)string
 {
-  v4 = a3;
-  if ([v4 length] && (-[TISmartPunctuationController smartQuotesEnabled](self, "smartQuotesEnabled") || -[TISmartPunctuationController smartDashesEnabled](self, "smartDashesEnabled")))
+  stringCopy = string;
+  if ([stringCopy length] && (-[TISmartPunctuationController smartQuotesEnabled](self, "smartQuotesEnabled") || -[TISmartPunctuationController smartDashesEnabled](self, "smartDashesEnabled")))
   {
-    v25 = [v4 mutableCopy];
+    v25 = [stringCopy mutableCopy];
     v27 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:@"-'"];
-    v5 = [v4 length];
+    v5 = [stringCopy length];
     if (v5)
     {
       v6 = v5;
-      v26 = self;
+      selfCopy = self;
       while (1)
       {
-        v7 = [v4 rangeOfCharacterFromSet:v27 options:4 range:{0, v6}];
+        v7 = [stringCopy rangeOfCharacterFromSet:v27 options:4 range:{0, v6}];
         if (v7 == 0x7FFFFFFFFFFFFFFFLL)
         {
           goto LABEL_12;
@@ -665,23 +665,23 @@ LABEL_27:
 
         v9 = v7;
         v10 = v8;
-        v11 = [v4 substringToIndex:v7];
-        v12 = [v4 substringFromIndex:v9 + v10];
-        v13 = [v4 substringWithRange:{v9, v10}];
+        v11 = [stringCopy substringToIndex:v7];
+        v12 = [stringCopy substringFromIndex:v9 + v10];
+        v13 = [stringCopy substringWithRange:{v9, v10}];
         v28 = v11;
         v14 = [TIDocumentState documentStateWithContextBefore:v11 selectedText:0 contextAfter:v12];
         v15 = [(TISmartPunctuationController *)self smartPunctuationOutputForInput:v13 isLockedInput:0 documentState:v14];
-        v16 = [v15 insertionText];
-        if (![v16 length])
+        insertionText = [v15 insertionText];
+        if (![insertionText length])
         {
           goto LABEL_10;
         }
 
         [v15 insertionText];
-        v18 = v17 = v4;
+        v18 = v17 = stringCopy;
         v19 = [v18 isEqualToString:v13];
 
-        v4 = v17;
+        stringCopy = v17;
         if ((v19 & 1) == 0)
         {
           break;
@@ -690,7 +690,7 @@ LABEL_27:
 LABEL_11:
         v6 = v9 - [v15 deletionCount];
 
-        self = v26;
+        self = selfCopy;
         if (!v6)
         {
           goto LABEL_12;
@@ -698,11 +698,11 @@ LABEL_11:
       }
 
       v20 = v9 - [v15 deletionCount];
-      v21 = [v15 deletionCount];
-      v16 = [v15 insertionText];
-      v22 = v21 + v10;
-      v4 = v17;
-      [v25 replaceCharactersInRange:v20 withString:{v22, v16}];
+      deletionCount = [v15 deletionCount];
+      insertionText = [v15 insertionText];
+      v22 = deletionCount + v10;
+      stringCopy = v17;
+      [v25 replaceCharactersInRange:v20 withString:{v22, insertionText}];
 LABEL_10:
 
       goto LABEL_11;
@@ -715,27 +715,27 @@ LABEL_12:
 
   else
   {
-    v23 = v4;
+    v23 = stringCopy;
   }
 
   return v23;
 }
 
-- (id)smartPunctuationResultsForString:(id)a3
+- (id)smartPunctuationResultsForString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   if ([(TISmartPunctuationController *)self smartQuotesEnabled]|| [(TISmartPunctuationController *)self smartDashesEnabled])
   {
-    v25 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v28 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:@"-'"];
-    v5 = [v4 length];
+    v5 = [stringCopy length];
     if (v5)
     {
       v6 = v5;
-      v27 = self;
+      selfCopy = self;
       while (1)
       {
-        v7 = [v4 rangeOfCharacterFromSet:v28 options:4 range:{0, v6}];
+        v7 = [stringCopy rangeOfCharacterFromSet:v28 options:4 range:{0, v6}];
         if (v7 == 0x7FFFFFFFFFFFFFFFLL)
         {
           goto LABEL_11;
@@ -743,23 +743,23 @@ LABEL_12:
 
         v9 = v7;
         v10 = v8;
-        v11 = [v4 substringToIndex:v7];
-        v12 = [v4 substringFromIndex:v9 + v10];
-        v13 = [v4 substringWithRange:{v9, v10}];
+        v11 = [stringCopy substringToIndex:v7];
+        v12 = [stringCopy substringFromIndex:v9 + v10];
+        v13 = [stringCopy substringWithRange:{v9, v10}];
         v29 = v11;
         v14 = [TIDocumentState documentStateWithContextBefore:v11 selectedText:0 contextAfter:v12];
         v15 = [(TISmartPunctuationController *)self smartPunctuationOutputForInput:v13 isLockedInput:0 documentState:v14];
-        v16 = [v15 insertionText];
-        if (![v16 length])
+        insertionText = [v15 insertionText];
+        if (![insertionText length])
         {
           goto LABEL_9;
         }
 
         [v15 insertionText];
-        v18 = v17 = v4;
+        v18 = v17 = stringCopy;
         v19 = [v18 isEqualToString:v13];
 
-        v4 = v17;
+        stringCopy = v17;
         if ((v19 & 1) == 0)
         {
           break;
@@ -768,7 +768,7 @@ LABEL_12:
 LABEL_10:
         v6 = v9 - [v15 deletionCount];
 
-        self = v27;
+        self = selfCopy;
         if (!v6)
         {
           goto LABEL_11;
@@ -776,14 +776,14 @@ LABEL_10:
       }
 
       v26 = v9 - [v15 deletionCount];
-      v20 = [v15 deletionCount];
+      deletionCount = [v15 deletionCount];
       v21 = objc_alloc(MEMORY[0x1E696AED0]);
-      v22 = [v15 insertionText];
+      insertionText2 = [v15 insertionText];
       v23 = v21;
-      v4 = v17;
-      v16 = [v23 initWithRange:v26 replacementString:{v20 + v10, v22}];
+      stringCopy = v17;
+      insertionText = [v23 initWithRange:v26 replacementString:{deletionCount + v10, insertionText2}];
 
-      [v25 addObject:v16];
+      [array addObject:insertionText];
 LABEL_9:
 
       goto LABEL_10;
@@ -794,19 +794,19 @@ LABEL_11:
 
   else
   {
-    v25 = MEMORY[0x1E695E0F0];
+    array = MEMORY[0x1E695E0F0];
   }
 
-  return v25;
+  return array;
 }
 
 - (void)_initializeDashCharacterSetsIfNecessary
 {
   if (!self->_decimalDigitCharacterSet)
   {
-    v3 = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
+    decimalDigitCharacterSet = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
     decimalDigitCharacterSet = self->_decimalDigitCharacterSet;
-    self->_decimalDigitCharacterSet = v3;
+    self->_decimalDigitCharacterSet = decimalDigitCharacterSet;
   }
 
   if (!self->_dashCharacterSet)
@@ -835,30 +835,30 @@ LABEL_11:
 {
   if (!self->_alphanumericCharacterSet)
   {
-    v3 = [MEMORY[0x1E696AB08] alphanumericCharacterSet];
+    alphanumericCharacterSet = [MEMORY[0x1E696AB08] alphanumericCharacterSet];
     alphanumericCharacterSet = self->_alphanumericCharacterSet;
-    self->_alphanumericCharacterSet = v3;
+    self->_alphanumericCharacterSet = alphanumericCharacterSet;
   }
 
   if (!self->_whitespaceAndNewlineCharacterSet)
   {
-    v5 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
     whitespaceAndNewlineCharacterSet = self->_whitespaceAndNewlineCharacterSet;
-    self->_whitespaceAndNewlineCharacterSet = v5;
+    self->_whitespaceAndNewlineCharacterSet = whitespaceAndNewlineCharacterSet;
   }
 
   if (!self->_decimalDigitCharacterSet)
   {
-    v7 = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
+    decimalDigitCharacterSet = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
     decimalDigitCharacterSet = self->_decimalDigitCharacterSet;
-    self->_decimalDigitCharacterSet = v7;
+    self->_decimalDigitCharacterSet = decimalDigitCharacterSet;
   }
 
   if (!self->_punctuationCharacterSet)
   {
-    v9 = [MEMORY[0x1E696AB08] punctuationCharacterSet];
+    punctuationCharacterSet = [MEMORY[0x1E696AB08] punctuationCharacterSet];
     punctuationCharacterSet = self->_punctuationCharacterSet;
-    self->_punctuationCharacterSet = v9;
+    self->_punctuationCharacterSet = punctuationCharacterSet;
   }
 
   if (!self->_openerCharacterSet)
@@ -905,7 +905,7 @@ LABEL_11:
   block[1] = 3221225472;
   block[2] = __64__TISmartPunctuationController__chineseContextualVariantMapping__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_chineseContextualVariantMapping___onceToken != -1)
   {
     dispatch_once(&_chineseContextualVariantMapping___onceToken, block);

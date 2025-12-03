@@ -1,9 +1,9 @@
 @interface FBAForgetDeviceViewController
 - (FBAForgetDeviceProtocol)delegate;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
 - (void)didReceiveMemoryWarning;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -14,11 +14,11 @@
   v5.receiver = self;
   v5.super_class = FBAForgetDeviceViewController;
   [(FBAForgetDeviceViewController *)&v5 viewDidLoad];
-  v3 = [(FBAForgetDeviceViewController *)self tableView];
-  [v3 setEstimatedSectionHeaderHeight:0.0];
+  tableView = [(FBAForgetDeviceViewController *)self tableView];
+  [tableView setEstimatedSectionHeaderHeight:0.0];
 
-  v4 = [(FBAForgetDeviceViewController *)self tableView];
-  [v4 setEstimatedSectionFooterHeight:0.0];
+  tableView2 = [(FBAForgetDeviceViewController *)self tableView];
+  [tableView2 setEstimatedSectionFooterHeight:0.0];
 
   [(FBAForgetDeviceViewController *)self setClearsSelectionOnViewWillAppear:0];
 }
@@ -30,22 +30,22 @@
   [(FBAForgetDeviceViewController *)&v2 didReceiveMemoryWarning];
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v5 = [NSBundle mainBundle:a3];
+  v5 = [NSBundle mainBundle:view];
   v6 = [v5 localizedStringForKey:@"FORGET_DEVICE_INSTRUCTION" value:&stru_1000E2210 table:0];
-  v7 = [(FBAForgetDeviceViewController *)self device];
-  v8 = [v7 name];
-  if ([v8 isEqualToString:&stru_1000E2210])
+  device = [(FBAForgetDeviceViewController *)self device];
+  name = [device name];
+  if ([name isEqualToString:&stru_1000E2210])
   {
-    v9 = +[NSBundle mainBundle];
-    [v9 localizedStringForKey:@"THIS_DEVICE" value:&stru_1000E2210 table:0];
+    device2 = +[NSBundle mainBundle];
+    [device2 localizedStringForKey:@"THIS_DEVICE" value:&stru_1000E2210 table:0];
   }
 
   else
   {
-    v9 = [(FBAForgetDeviceViewController *)self device];
-    [v9 name];
+    device2 = [(FBAForgetDeviceViewController *)self device];
+    [device2 name];
   }
   v10 = ;
   v11 = [NSString stringWithFormat:v6, v10];
@@ -53,32 +53,32 @@
   return v11;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v4 = [a3 dequeueReusableCellWithIdentifier:@"ForgetDeviceCell" forIndexPath:a4];
+  v4 = [view dequeueReusableCellWithIdentifier:@"ForgetDeviceCell" forIndexPath:path];
   v5 = +[iFBAConstants tintColor];
-  v6 = [v4 textLabel];
-  [v6 setTextColor:v5];
+  textLabel = [v4 textLabel];
+  [textLabel setTextColor:v5];
 
-  v7 = [v4 accessibilityTraits];
-  [v4 setAccessibilityTraits:UIAccessibilityTraitButton | v7];
+  accessibilityTraits = [v4 accessibilityTraits];
+  [v4 setAccessibilityTraits:UIAccessibilityTraitButton | accessibilityTraits];
 
   return v4;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v5 = [(FBAForgetDeviceViewController *)self delegate:a3];
+  v5 = [(FBAForgetDeviceViewController *)self delegate:view];
 
   if (v5)
   {
-    v6 = [(FBAForgetDeviceViewController *)self delegate];
-    v7 = [(FBAForgetDeviceViewController *)self device];
-    [v6 didTapForgetDevice:v7];
+    delegate = [(FBAForgetDeviceViewController *)self delegate];
+    device = [(FBAForgetDeviceViewController *)self device];
+    [delegate didTapForgetDevice:device];
   }
 
-  v9 = [(FBAForgetDeviceViewController *)self navigationController];
-  v8 = [v9 popViewControllerAnimated:1];
+  navigationController = [(FBAForgetDeviceViewController *)self navigationController];
+  v8 = [navigationController popViewControllerAnimated:1];
 }
 
 - (FBAForgetDeviceProtocol)delegate

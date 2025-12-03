@@ -1,24 +1,24 @@
 @interface SBResizeProgressSwitcherModifierEvent
-- (SBResizeProgressSwitcherModifierEvent)initWithProgress:(double)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SBResizeProgressSwitcherModifierEvent)initWithProgress:(double)progress;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SBResizeProgressSwitcherModifierEvent
 
-- (SBResizeProgressSwitcherModifierEvent)initWithProgress:(double)a3
+- (SBResizeProgressSwitcherModifierEvent)initWithProgress:(double)progress
 {
   v5.receiver = self;
   v5.super_class = SBResizeProgressSwitcherModifierEvent;
   result = [(SBWindowingModifierActivity *)&v5 init];
   if (result)
   {
-    result->_progress = a3;
+    result->_progress = progress;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [SBResizeProgressSwitcherModifierEvent alloc];
   progress = self->_progress;

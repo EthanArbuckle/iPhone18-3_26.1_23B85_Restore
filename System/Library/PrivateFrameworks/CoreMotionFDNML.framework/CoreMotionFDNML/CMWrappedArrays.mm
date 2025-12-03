@@ -1,9 +1,9 @@
 @interface CMWrappedArrays
 - (_TtC15CoreMotionFDNML15CMWrappedArrays)init;
 - (id)keys;
-- (void)addArrayWithName:(const char *)a3 type:(unsigned __int8)a4 shape:(const unsigned int *)a5 dimensions:(unsigned __int8)a6 byteArray:(const char *)a7 byteLength:(unint64_t)a8;
-- (void)shapeOfArrayWithKey:(id)a3 shape:(unsigned int *)a4 expectedShapeSize:(unsigned __int8)a5;
-- (void)writeBytesWithKey:(id)a3 ptr:(char *)a4 expectedByteLength:(unint64_t)a5;
+- (void)addArrayWithName:(const char *)name type:(unsigned __int8)type shape:(const unsigned int *)shape dimensions:(unsigned __int8)dimensions byteArray:(const char *)array byteLength:(unint64_t)length;
+- (void)shapeOfArrayWithKey:(id)key shape:(unsigned int *)shape expectedShapeSize:(unsigned __int8)size;
+- (void)writeBytesWithKey:(id)key ptr:(char *)ptr expectedByteLength:(unint64_t)length;
 @end
 
 @implementation CMWrappedArrays
@@ -17,10 +17,10 @@
   return [(CMWrappedArrays *)&v5 init];
 }
 
-- (void)addArrayWithName:(const char *)a3 type:(unsigned __int8)a4 shape:(const unsigned int *)a5 dimensions:(unsigned __int8)a6 byteArray:(const char *)a7 byteLength:(unint64_t)a8
+- (void)addArrayWithName:(const char *)name type:(unsigned __int8)type shape:(const unsigned int *)shape dimensions:(unsigned __int8)dimensions byteArray:(const char *)array byteLength:(unint64_t)length
 {
-  v14 = self;
-  sub_245F71F50(a3, a4, a5, a6, a7, a8);
+  selfCopy = self;
+  sub_245F71F50(name, type, shape, dimensions, array, length);
 }
 
 - (id)keys
@@ -35,20 +35,20 @@
   return v6;
 }
 
-- (void)shapeOfArrayWithKey:(id)a3 shape:(unsigned int *)a4 expectedShapeSize:(unsigned __int8)a5
+- (void)shapeOfArrayWithKey:(id)key shape:(unsigned int *)shape expectedShapeSize:(unsigned __int8)size
 {
   v8 = sub_245F76878();
   v10 = v9;
-  v11 = self;
-  sub_245F726E8(v8, v10, a4, a5);
+  selfCopy = self;
+  sub_245F726E8(v8, v10, shape, size);
 }
 
-- (void)writeBytesWithKey:(id)a3 ptr:(char *)a4 expectedByteLength:(unint64_t)a5
+- (void)writeBytesWithKey:(id)key ptr:(char *)ptr expectedByteLength:(unint64_t)length
 {
   v8 = sub_245F76878();
   v10 = v9;
-  v11 = self;
-  sub_245F728B8(v8, v10, a4, a5);
+  selfCopy = self;
+  sub_245F728B8(v8, v10, ptr, length);
 }
 
 @end

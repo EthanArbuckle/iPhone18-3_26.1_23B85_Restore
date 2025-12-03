@@ -1,13 +1,13 @@
 @interface ASCAgentListener
-- (ASCAgentListener)initWithPublicKeyCredentialManager:(id)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (ASCAgentListener)initWithPublicKeyCredentialManager:(id)manager;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 @end
 
 @implementation ASCAgentListener
 
-- (ASCAgentListener)initWithPublicKeyCredentialManager:(id)a3
+- (ASCAgentListener)initWithPublicKeyCredentialManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v15.receiver = self;
   v15.super_class = ASCAgentListener;
   v6 = [(ASCAgentListener *)&v15 init];
@@ -20,7 +20,7 @@
     v6->_listener = v9;
 
     [(NSXPCListener *)v6->_listener setDelegate:v6];
-    objc_storeStrong(&v6->_publicKeyCredentialManager, a3);
+    objc_storeStrong(&v6->_publicKeyCredentialManager, manager);
     v11 = objc_alloc_init(_TtC26AuthenticationServicesCore30ASPasswordSignInEventCollector);
     signInEventCollector = v6->_signInEventCollector;
     v6->_signInEventCollector = v11;
@@ -32,22 +32,22 @@
   return v6;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v8 = +[ASCAgentInterface xpcInterface];
-  [v7 setExportedInterface:v8];
+  [connectionCopy setExportedInterface:v8];
 
   v9 = [ASCAgent alloc];
   v10 = +[ASCAuthorizationTrafficController sharedInstance];
-  v11 = [(ASCAgent *)v9 initWithTrafficController:v10 connection:v7 publicKeyCredentialManager:self->_publicKeyCredentialManager signInEventCollector:self->_signInEventCollector];
+  v11 = [(ASCAgent *)v9 initWithTrafficController:v10 connection:connectionCopy publicKeyCredentialManager:self->_publicKeyCredentialManager signInEventCollector:self->_signInEventCollector];
 
-  [v7 setExportedObject:v11];
-  if (v7)
+  [connectionCopy setExportedObject:v11];
+  if (connectionCopy)
   {
-    [v7 auditToken];
+    [connectionCopy auditToken];
   }
 
   else
@@ -73,8 +73,8 @@
   v14 = v12;
   v21 = v14;
   objc_copyWeak(&v22, buf);
-  [v7 setInvalidationHandler:&v17];
-  [v7 resume];
+  [connectionCopy setInvalidationHandler:&v17];
+  [connectionCopy resume];
   objc_destroyWeak(&v22);
 
   objc_destroyWeak(buf);

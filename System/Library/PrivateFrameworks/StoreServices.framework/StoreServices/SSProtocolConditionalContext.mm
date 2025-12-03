@@ -1,5 +1,5 @@
 @interface SSProtocolConditionalContext
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
 @end
 
@@ -12,12 +12,12 @@
   [(SSProtocolConditionalContext *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v5[1] = [self->_itemLookupBlock copyWithZone:a3];
-  v5[2] = [(NSString *)self->_platformName copyWithZone:a3];
-  v5[3] = [(NSString *)self->_systemVersion copyWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  v5[1] = [self->_itemLookupBlock copyWithZone:zone];
+  v5[2] = [(NSString *)self->_platformName copyWithZone:zone];
+  v5[3] = [(NSString *)self->_systemVersion copyWithZone:zone];
   return v5;
 }
 

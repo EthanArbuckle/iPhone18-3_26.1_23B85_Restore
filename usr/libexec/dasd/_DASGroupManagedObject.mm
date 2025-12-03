@@ -6,13 +6,13 @@
 
 - (void)willSave
 {
-  v3 = [(_DASGroupManagedObject *)self activities];
-  v4 = [v3 count];
+  activities = [(_DASGroupManagedObject *)self activities];
+  v4 = [activities count];
 
   if (v4)
   {
-    v5 = [(_DASGroupManagedObject *)self managedObjectContext];
-    [v5 deleteObject:self];
+    managedObjectContext = [(_DASGroupManagedObject *)self managedObjectContext];
+    [managedObjectContext deleteObject:self];
   }
 }
 

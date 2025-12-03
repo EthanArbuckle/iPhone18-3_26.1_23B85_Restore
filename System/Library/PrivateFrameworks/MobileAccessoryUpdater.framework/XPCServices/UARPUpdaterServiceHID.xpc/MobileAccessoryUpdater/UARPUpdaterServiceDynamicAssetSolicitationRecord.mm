@@ -1,29 +1,29 @@
 @interface UARPUpdaterServiceDynamicAssetSolicitationRecord
-- (BOOL)addSolicitedResponse:(id)a3 modelNumber:(id)a4;
+- (BOOL)addSolicitedResponse:(id)response modelNumber:(id)number;
 - (BOOL)isDynamicAssetSolicitationComplete;
-- (UARPUpdaterServiceDynamicAssetSolicitationRecord)initWithModelNumbers:(id)a3 endpoint:(id)a4;
+- (UARPUpdaterServiceDynamicAssetSolicitationRecord)initWithModelNumbers:(id)numbers endpoint:(id)endpoint;
 - (id)allSolicitedResponses;
 - (void)addExpectedSolicitationResponse;
 @end
 
 @implementation UARPUpdaterServiceDynamicAssetSolicitationRecord
 
-- (UARPUpdaterServiceDynamicAssetSolicitationRecord)initWithModelNumbers:(id)a3 endpoint:(id)a4
+- (UARPUpdaterServiceDynamicAssetSolicitationRecord)initWithModelNumbers:(id)numbers endpoint:(id)endpoint
 {
-  v6 = a3;
-  v7 = a4;
+  numbersCopy = numbers;
+  endpointCopy = endpoint;
   v24.receiver = self;
   v24.super_class = UARPUpdaterServiceDynamicAssetSolicitationRecord;
   v8 = [(UARPUpdaterServiceDynamicAssetSolicitationRecord *)&v24 init];
   if (v8)
   {
-    v19 = v7;
+    v19 = endpointCopy;
     v9 = objc_opt_new();
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v10 = v6;
+    v10 = numbersCopy;
     v11 = [v10 countByEnumeratingWithState:&v20 objects:v25 count:16];
     if (v11)
     {
@@ -56,10 +56,10 @@
     responseRecords = v8->_responseRecords;
     v8->_responseRecords = v16;
 
-    objc_storeStrong(&v8->_solicitedAssetResponseEndpoint, a4);
+    objc_storeStrong(&v8->_solicitedAssetResponseEndpoint, endpoint);
     v8->_expectedSolicitedAssetResponseCount = 0;
 
-    v7 = v19;
+    endpointCopy = v19;
   }
 
   return v8;
@@ -73,17 +73,17 @@
   objc_sync_exit(obj);
 }
 
-- (BOOL)addSolicitedResponse:(id)a3 modelNumber:(id)a4
+- (BOOL)addSolicitedResponse:(id)response modelNumber:(id)number
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
+  responseCopy = response;
+  numberCopy = number;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v9 = v8->_responseRecords;
+  v9 = selfCopy->_responseRecords;
   v10 = [(NSArray *)v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
@@ -98,22 +98,22 @@
         }
 
         v13 = *(*(&v18 + 1) + 8 * i);
-        v14 = [v13 modelNumber];
-        v15 = [v14 isEqualToString:v7];
+        modelNumber = [v13 modelNumber];
+        v15 = [modelNumber isEqualToString:numberCopy];
 
         if (v15)
         {
-          if (v6)
+          if (responseCopy)
           {
-            [v13 addResponseURL:v6];
+            [v13 addResponseURL:responseCopy];
           }
 
           else
           {
-            expectedSolicitedAssetResponseCount = v8->_expectedSolicitedAssetResponseCount;
+            expectedSolicitedAssetResponseCount = selfCopy->_expectedSolicitedAssetResponseCount;
             if (expectedSolicitedAssetResponseCount)
             {
-              v8->_expectedSolicitedAssetResponseCount = expectedSolicitedAssetResponseCount - 1;
+              selfCopy->_expectedSolicitedAssetResponseCount = expectedSolicitedAssetResponseCount - 1;
             }
           }
 
@@ -134,29 +134,29 @@
 
 LABEL_15:
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
   return v10;
 }
 
 - (id)allSolicitedResponses
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [NSArray arrayWithArray:v2->_responseRecords];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [NSArray arrayWithArray:selfCopy->_responseRecords];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (BOOL)isDynamicAssetSolicitationComplete
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = v2->_responseRecords;
+  v3 = selfCopy->_responseRecords;
   v4 = 0;
   v5 = [(NSArray *)v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
@@ -172,8 +172,8 @@ LABEL_15:
           objc_enumerationMutation(v3);
         }
 
-        v8 = [*(*(&v11 + 1) + 8 * v7) getResponseURLs];
-        v9 = [v8 count];
+        getResponseURLs = [*(*(&v11 + 1) + 8 * v7) getResponseURLs];
+        v9 = [getResponseURLs count];
 
         v4 += v9;
         v7 = v7 + 1;
@@ -186,8 +186,8 @@ LABEL_15:
     while (v5);
   }
 
-  objc_sync_exit(v2);
-  return v4 == v2->_expectedSolicitedAssetResponseCount;
+  objc_sync_exit(selfCopy);
+  return v4 == selfCopy->_expectedSolicitedAssetResponseCount;
 }
 
 @end

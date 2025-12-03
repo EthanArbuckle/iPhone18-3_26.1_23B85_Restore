@@ -1,14 +1,14 @@
 @interface AAClient
 - (AAClient)init;
-- (AAClient)initWithIdentifier:(id)a3 name:(id)a4 version:(id)a5 build:(int64_t)a6;
-- (AAClient)initWithIdentifier:(id)a3 name:(id)a4 version:(id)a5 buildNumber:(id)a6;
+- (AAClient)initWithIdentifier:(id)identifier name:(id)name version:(id)version build:(int64_t)build;
+- (AAClient)initWithIdentifier:(id)identifier name:(id)name version:(id)version buildNumber:(id)number;
 - (NSString)fullVersion;
 - (int64_t)build;
 @end
 
 @implementation AAClient
 
-- (AAClient)initWithIdentifier:(id)a3 name:(id)a4 version:(id)a5 buildNumber:(id)a6
+- (AAClient)initWithIdentifier:(id)identifier name:(id)name version:(id)version buildNumber:(id)number
 {
   v7 = sub_1B6AB92E0();
   v9 = v8;
@@ -36,7 +36,7 @@
 
 - (int64_t)build
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B69F9390();
 
   return v3;
@@ -46,17 +46,17 @@
 {
   v5 = *(self + OBJC_IVAR___AAClient_version);
   v6 = *(self + OBJC_IVAR___AAClient_version + 8);
-  v2 = self;
+  selfCopy = self;
 
   MEMORY[0x1B8C97BE0](46, 0xE100000000000000);
-  MEMORY[0x1B8C97BE0](*(v2 + OBJC_IVAR___AAClient_buildNumber), *(v2 + OBJC_IVAR___AAClient_buildNumber + 8));
+  MEMORY[0x1B8C97BE0](*(selfCopy + OBJC_IVAR___AAClient_buildNumber), *(selfCopy + OBJC_IVAR___AAClient_buildNumber + 8));
 
   v3 = sub_1B6AB92B0();
 
   return v3;
 }
 
-- (AAClient)initWithIdentifier:(id)a3 name:(id)a4 version:(id)a5 build:(int64_t)a6
+- (AAClient)initWithIdentifier:(id)identifier name:(id)name version:(id)version build:(int64_t)build
 {
   sub_1B6AB92E0();
   sub_1B6AB92E0();

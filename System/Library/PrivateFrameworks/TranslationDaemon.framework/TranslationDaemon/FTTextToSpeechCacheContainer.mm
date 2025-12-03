@@ -1,20 +1,20 @@
 @interface FTTextToSpeechCacheContainer
-- (FTTextToSpeechCacheContainer)initWithFlatbuffData:(id)a3 root:(const TextToSpeechCacheContainer *)a4 verify:(BOOL)a5;
+- (FTTextToSpeechCacheContainer)initWithFlatbuffData:(id)data root:(const TextToSpeechCacheContainer *)root verify:(BOOL)verify;
 - (FTTextToSpeechCacheMetaInfo)cache_meta_info;
 - (NSArray)cache_object;
-- (Offset<siri::speech::schema_fb::TextToSpeechCacheContainer>)addObjectToBuffer:(void *)a3;
-- (id)cache_object_objectAtIndex:(unint64_t)a3;
+- (Offset<siri::speech::schema_fb::TextToSpeechCacheContainer>)addObjectToBuffer:(void *)buffer;
+- (id)cache_object_objectAtIndex:(unint64_t)index;
 - (id)flatbuffData;
 - (unint64_t)cache_object_count;
-- (void)cache_object_enumerateObjectsUsingBlock:(id)a3;
+- (void)cache_object_enumerateObjectsUsingBlock:(id)block;
 @end
 
 @implementation FTTextToSpeechCacheContainer
 
-- (FTTextToSpeechCacheContainer)initWithFlatbuffData:(id)a3 root:(const TextToSpeechCacheContainer *)a4 verify:(BOOL)a5
+- (FTTextToSpeechCacheContainer)initWithFlatbuffData:(id)data root:(const TextToSpeechCacheContainer *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v25.receiver = self;
   v25.super_class = FTTextToSpeechCacheContainer;
   v10 = [(FTTextToSpeechCacheContainer *)&v25 init];
@@ -23,35 +23,35 @@
     goto LABEL_13;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_14;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v11 = [(NSData *)v10->_data bytes];
-    a4 = v11 + *v11;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (!v5)
+  v10->_root = root;
+  if (!verifyCopy)
   {
     goto LABEL_13;
   }
 
-  v12 = [(NSData *)v10->_data bytes];
+  bytes2 = [(NSData *)v10->_data bytes];
   v13 = [(NSData *)v10->_data length];
   root = v10->_root;
-  if (root < v12 || root > v12 + v13)
+  if (root < bytes2 || root > bytes2 + v13)
   {
     goto LABEL_14;
   }
 
-  v16 = [(NSData *)v10->_data bytes];
+  bytes3 = [(NSData *)v10->_data bytes];
   v17 = [(NSData *)v10->_data length];
-  v21[0] = v16;
+  v21[0] = bytes3;
   v21[1] = v17;
   v22 = xmmword_233005E20;
   v23 = 0;
@@ -107,12 +107,12 @@ LABEL_13:
   v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"cache_object"];
   if (!v3)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __44__FTTextToSpeechCacheContainer_cache_object__block_invoke;
     v6[3] = &unk_2789B8AD8;
-    v3 = v4;
+    v3 = array;
     v7 = v3;
     [(FTTextToSpeechCacheContainer *)self cache_object_enumerateObjectsUsingBlock:v6];
     [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"cache_object"];
@@ -121,13 +121,13 @@ LABEL_13:
   return v3;
 }
 
-- (id)cache_object_objectAtIndex:(unint64_t)a3
+- (id)cache_object_objectAtIndex:(unint64_t)index
 {
   v5 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"cache_object"];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 objectAtIndexedSubscript:a3];
+    v7 = [v5 objectAtIndexedSubscript:index];
 LABEL_3:
     v8 = v7;
     goto LABEL_8;
@@ -140,7 +140,7 @@ LABEL_3:
     v11 = *v10[6].var0;
     if (v11)
     {
-      v12 = &root[4 * a3 + v11 + *root[v11].var0];
+      v12 = &root[4 * index + v11 + *root[v11].var0];
       v7 = [[FTTextToSpeechCacheObject alloc] initWithFlatbuffData:self->_data root:v12 + 4 + *(v12 + 4) verify:0];
       goto LABEL_3;
     }
@@ -179,14 +179,14 @@ LABEL_8:
   return v5;
 }
 
-- (void)cache_object_enumerateObjectsUsingBlock:(id)a3
+- (void)cache_object_enumerateObjectsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"cache_object"];
   v6 = v5;
   if (v5)
   {
-    [v5 enumerateObjectsUsingBlock:v4];
+    [v5 enumerateObjectsUsingBlock:blockCopy];
   }
 
   else
@@ -209,7 +209,7 @@ LABEL_8:
           do
           {
             v15 = [[FTTextToSpeechCacheObject alloc] initWithFlatbuffData:self->_data root:&v13[*v13->var0] verify:0];
-            v4[2](v4, v15, v12, &v18);
+            blockCopy[2](blockCopy, v15, v12, &v18);
             v16 = v18;
 
             if (v16)
@@ -230,23 +230,23 @@ LABEL_8:
   }
 }
 
-- (Offset<siri::speech::schema_fb::TextToSpeechCacheContainer>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::TextToSpeechCacheContainer>)addObjectToBuffer:(void *)buffer
 {
   v37 = *MEMORY[0x277D85DE8];
-  v5 = [(FTTextToSpeechCacheContainer *)self cache_meta_info];
-  v6 = [v5 addObjectToBuffer:a3];
+  cache_meta_info = [(FTTextToSpeechCacheContainer *)self cache_meta_info];
+  v6 = [cache_meta_info addObjectToBuffer:buffer];
 
   memset(&v35, 0, sizeof(v35));
-  v7 = [(FTTextToSpeechCacheContainer *)self cache_object];
-  std::vector<apple::aiml::flatbuffers2::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v35, [v7 count]);
+  cache_object = [(FTTextToSpeechCacheContainer *)self cache_object];
+  std::vector<apple::aiml::flatbuffers2::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v35, [cache_object count]);
 
   v33 = 0u;
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v8 = [(FTTextToSpeechCacheContainer *)self cache_object];
+  cache_object2 = [(FTTextToSpeechCacheContainer *)self cache_object];
   v30 = v6;
-  v9 = [v8 countByEnumeratingWithState:&v31 objects:v36 count:16];
+  v9 = [cache_object2 countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v9)
   {
     v10 = *v32;
@@ -256,10 +256,10 @@ LABEL_8:
       {
         if (*v32 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(cache_object2);
         }
 
-        v12 = [*(*(&v31 + 1) + 8 * i) addObjectToBuffer:a3];
+        v12 = [*(*(&v31 + 1) + 8 * i) addObjectToBuffer:buffer];
         end = v35.__end_;
         if (v35.__end_ >= v35.__end_cap_.__value_)
         {
@@ -315,7 +315,7 @@ LABEL_8:
         v35.__end_ = v14;
       }
 
-      v9 = [v8 countByEnumeratingWithState:&v31 objects:v36 count:16];
+      v9 = [cache_object2 countByEnumeratingWithState:&v31 objects:v36 count:16];
     }
 
     while (v9);
@@ -331,14 +331,14 @@ LABEL_8:
     v22 = v35.__begin_;
   }
 
-  v23 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateVector<apple::aiml::flatbuffers2::String>(a3, v22, v35.__end_ - v35.__begin_);
-  *(a3 + 70) = 1;
-  v24 = *(a3 + 8);
-  v25 = *(a3 + 12);
-  v26 = *(a3 + 10);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 4, v30);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v23);
-  v27.var0 = apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(a3, v24 - v25 + v26);
+  v23 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateVector<apple::aiml::flatbuffers2::String>(buffer, v22, v35.__end_ - v35.__begin_);
+  *(buffer + 70) = 1;
+  v24 = *(buffer + 8);
+  v25 = *(buffer + 12);
+  v26 = *(buffer + 10);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 4, v30);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v23);
+  v27.var0 = apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(buffer, v24 - v25 + v26);
   if (v35.__begin_)
   {
     v35.__end_ = v35.__begin_;

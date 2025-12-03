@@ -1,7 +1,7 @@
 @interface _GCDevicePhysicalInputMutableStateTable
-- (_WORD)initWithMagic:(void *)a1;
+- (_WORD)initWithMagic:(void *)magic;
 - (id)allocatePrimitiveSlot;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (uint64_t)allocateObjectSlot;
 - (void)dealloc;
 @end
@@ -27,7 +27,7 @@
   [(_GCDevicePhysicalInputMutableStateTable *)&v4 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [_GCDevicePhysicalInputStateTable stateTableWithMagic:[(_GCDevicePhysicalInputMutableStateTable *)self primitiveSlotCount] primitiveSlotCount:[(_GCDevicePhysicalInputMutableStateTable *)self objectSlotCount] objectSlotCount:?];
   if ([(_GCDevicePhysicalInputMutableStateTable *)self primitiveSlotCount])
@@ -59,20 +59,20 @@
 
 - (uint64_t)allocateObjectSlot
 {
-  [*(a1 + 32) addPointer:0];
-  v2 = *(a1 + 24);
+  [*(self + 32) addPointer:0];
+  v2 = *(self + 24);
 
   return [v2 addPointer:0];
 }
 
-- (_WORD)initWithMagic:(void *)a1
+- (_WORD)initWithMagic:(void *)magic
 {
-  if (!a1)
+  if (!magic)
   {
     return 0;
   }
 
-  v5.receiver = a1;
+  v5.receiver = magic;
   v5.super_class = _GCDevicePhysicalInputMutableStateTable;
   v3 = objc_msgSendSuper2(&v5, sel_init);
   v3[4] = a2;
@@ -87,9 +87,9 @@
   if (result)
   {
     v1 = result;
-    v2 = [result primitiveSlotCount];
+    primitiveSlotCount = [result primitiveSlotCount];
     [v1[2] addPointer:0];
-    return v2;
+    return primitiveSlotCount;
   }
 
   return result;

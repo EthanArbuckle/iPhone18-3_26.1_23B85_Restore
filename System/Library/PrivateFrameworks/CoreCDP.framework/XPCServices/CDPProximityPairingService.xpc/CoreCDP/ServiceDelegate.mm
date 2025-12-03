@@ -1,19 +1,19 @@
 @interface ServiceDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 @end
 
 @implementation ServiceDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v4 = a4;
+  connectionCopy = connection;
   v5 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___CDPProximityPairingServiceProtocol];
-  [v4 setExportedInterface:v5];
+  [connectionCopy setExportedInterface:v5];
 
   v6 = objc_opt_new();
-  [v4 setExportedObject:v6];
-  [v4 resume];
-  v7 = [v4 valueForEntitlement:@"com.apple.cdpproximitypairingservice.approvalserver"];
+  [connectionCopy setExportedObject:v6];
+  [connectionCopy resume];
+  v7 = [connectionCopy valueForEntitlement:@"com.apple.cdpproximitypairingservice.approvalserver"];
 
   if (!v7)
   {
@@ -23,7 +23,7 @@
       sub_100000ED0(v8);
     }
 
-    [v4 invalidate];
+    [connectionCopy invalidate];
   }
 
   return v7 != 0;

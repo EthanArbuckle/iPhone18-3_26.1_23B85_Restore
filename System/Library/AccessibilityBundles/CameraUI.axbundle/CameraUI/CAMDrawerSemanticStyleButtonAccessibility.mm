@@ -1,19 +1,19 @@
 @interface CAMDrawerSemanticStyleButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityValue;
 - (int64_t)_accessibilityExpandedStatus;
 @end
 
 @implementation CAMDrawerSemanticStyleButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateProtocol:@"CAMControlDrawerExpandableButton" hasMethod:@"isExpanded" isInstanceMethod:1 isRequired:1];
-  [v3 validateClass:@"CAMControlDrawerCustomButton" conformsToProtocol:@"CAMControlDrawerExpandableButton"];
-  [v3 validateClass:@"CAMDrawerSemanticStyleButton" isKindOfClass:@"CAMControlDrawerCustomButton"];
-  [v3 validateClass:@"CAMDrawerSemanticStyleButton" hasInstanceMethod:@"isOn" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CAMDrawerSemanticStyleButton" hasInstanceMethod:@"shouldShowSlashForCurrentState" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateProtocol:@"CAMControlDrawerExpandableButton" hasMethod:@"isExpanded" isInstanceMethod:1 isRequired:1];
+  [validationsCopy validateClass:@"CAMControlDrawerCustomButton" conformsToProtocol:@"CAMControlDrawerExpandableButton"];
+  [validationsCopy validateClass:@"CAMDrawerSemanticStyleButton" isKindOfClass:@"CAMControlDrawerCustomButton"];
+  [validationsCopy validateClass:@"CAMDrawerSemanticStyleButton" hasInstanceMethod:@"isOn" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CAMDrawerSemanticStyleButton" hasInstanceMethod:@"shouldShowSlashForCurrentState" withFullSignature:{"B", 0}];
 }
 
 - (int64_t)_accessibilityExpandedStatus

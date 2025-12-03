@@ -1,7 +1,7 @@
 @interface CAMKeyValueCoalescer
-- (CAMKeyValueCoalescer)initWithInterval:(double)a3 handler:(id)a4;
+- (CAMKeyValueCoalescer)initWithInterval:(double)interval handler:(id)handler;
 - (void)_pushCoalescedValues;
-- (void)coalesceValue:(id)a3 forKeyPath:(id)a4;
+- (void)coalesceValue:(id)value forKeyPath:(id)path;
 - (void)flush;
 @end
 
@@ -9,30 +9,30 @@
 
 - (void)_pushCoalescedValues
 {
-  v7 = [(CAMKeyValueCoalescer *)self _handler];
-  v3 = [(CAMKeyValueCoalescer *)self _values];
-  v4 = [(CAMKeyValueCoalescer *)self _previousValues];
-  if (v7)
+  _handler = [(CAMKeyValueCoalescer *)self _handler];
+  _values = [(CAMKeyValueCoalescer *)self _values];
+  _previousValues = [(CAMKeyValueCoalescer *)self _previousValues];
+  if (_handler)
   {
-    v5 = [v3 copy];
-    v6 = [v4 copy];
-    v7[2](v7, v5, v6);
+    v5 = [_values copy];
+    v6 = [_previousValues copy];
+    _handler[2](_handler, v5, v6);
   }
 
-  [v4 removeAllObjects];
-  [v4 addEntriesFromDictionary:v3];
-  [v3 removeAllObjects];
+  [_previousValues removeAllObjects];
+  [_previousValues addEntriesFromDictionary:_values];
+  [_values removeAllObjects];
 }
 
 - (void)flush
 {
-  v3 = [(CAMKeyValueCoalescer *)self _coalescingQueue];
+  _coalescingQueue = [(CAMKeyValueCoalescer *)self _coalescingQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __29__CAMKeyValueCoalescer_flush__block_invoke;
   block[3] = &unk_1E76F77B0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(_coalescingQueue, block);
 }
 
 void __29__CAMKeyValueCoalescer_flush__block_invoke(uint64_t a1)
@@ -48,17 +48,17 @@ void __29__CAMKeyValueCoalescer_flush__block_invoke(uint64_t a1)
   }
 }
 
-- (CAMKeyValueCoalescer)initWithInterval:(double)a3 handler:(id)a4
+- (CAMKeyValueCoalescer)initWithInterval:(double)interval handler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v20.receiver = self;
   v20.super_class = CAMKeyValueCoalescer;
   v7 = [(CAMKeyValueCoalescer *)&v20 init];
   v8 = v7;
   if (v7)
   {
-    v7->__interval = a3;
-    v9 = [v6 copy];
+    v7->__interval = interval;
+    v9 = [handlerCopy copy];
     handler = v8->__handler;
     v8->__handler = v9;
 
@@ -81,22 +81,22 @@ void __29__CAMKeyValueCoalescer_flush__block_invoke(uint64_t a1)
   return v8;
 }
 
-- (void)coalesceValue:(id)a3 forKeyPath:(id)a4
+- (void)coalesceValue:(id)value forKeyPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  valueCopy = value;
+  pathCopy = path;
+  v8 = pathCopy;
+  if (valueCopy && pathCopy)
   {
-    v9 = [(CAMKeyValueCoalescer *)self _coalescingQueue];
+    _coalescingQueue = [(CAMKeyValueCoalescer *)self _coalescingQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __49__CAMKeyValueCoalescer_coalesceValue_forKeyPath___block_invoke;
     block[3] = &unk_1E76F7938;
     block[4] = self;
-    v11 = v6;
+    v11 = valueCopy;
     v12 = v8;
-    dispatch_async(v9, block);
+    dispatch_async(_coalescingQueue, block);
   }
 }
 

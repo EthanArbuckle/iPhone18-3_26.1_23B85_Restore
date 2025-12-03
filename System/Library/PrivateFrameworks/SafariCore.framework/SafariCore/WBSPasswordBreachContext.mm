@@ -1,25 +1,25 @@
 @interface WBSPasswordBreachContext
-- (WBSPasswordBreachContext)initWithConfiguration:(id)a3 store:(id)a4;
+- (WBSPasswordBreachContext)initWithConfiguration:(id)configuration store:(id)store;
 @end
 
 @implementation WBSPasswordBreachContext
 
-- (WBSPasswordBreachContext)initWithConfiguration:(id)a3 store:(id)a4
+- (WBSPasswordBreachContext)initWithConfiguration:(id)configuration store:(id)store
 {
-  v7 = a3;
-  v8 = a4;
+  configurationCopy = configuration;
+  storeCopy = store;
   v15.receiver = self;
   v15.super_class = WBSPasswordBreachContext;
   v9 = [(WBSPasswordBreachContext *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_configuration, a3);
-    v11 = [[WBSPasswordBreachCryptographicOperations alloc] initWithConfiguration:v7];
+    objc_storeStrong(&v9->_configuration, configuration);
+    v11 = [[WBSPasswordBreachCryptographicOperations alloc] initWithConfiguration:configurationCopy];
     cryptographicOperations = v10->_cryptographicOperations;
     v10->_cryptographicOperations = v11;
 
-    objc_storeStrong(&v10->_store, a4);
+    objc_storeStrong(&v10->_store, store);
     v13 = v10;
   }
 

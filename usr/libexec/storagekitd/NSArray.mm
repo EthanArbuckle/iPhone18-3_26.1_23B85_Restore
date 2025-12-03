@@ -1,33 +1,33 @@
 @interface NSArray
-- (id)objectAtIndexOrNull:(unint64_t)a3;
+- (id)objectAtIndexOrNull:(unint64_t)null;
 @end
 
 @implementation NSArray
 
-- (id)objectAtIndexOrNull:(unint64_t)a3
+- (id)objectAtIndexOrNull:(unint64_t)null
 {
-  if ([(NSArray *)self count]<= a3)
+  if ([(NSArray *)self count]<= null)
   {
-    v7 = 0;
+    nextObject = 0;
   }
 
   else
   {
-    v5 = [(NSArray *)self objectAtIndex:a3];
+    v5 = [(NSArray *)self objectAtIndex:null];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v5 objectEnumerator];
-      v7 = [v6 nextObject];
+      objectEnumerator = [v5 objectEnumerator];
+      nextObject = [objectEnumerator nextObject];
     }
 
     else
     {
-      v7 = v5;
+      nextObject = v5;
     }
   }
 
-  return v7;
+  return nextObject;
 }
 
 @end

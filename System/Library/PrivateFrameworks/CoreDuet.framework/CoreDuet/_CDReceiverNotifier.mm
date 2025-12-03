@@ -1,10 +1,10 @@
 @interface _CDReceiverNotifier
 + (id)sharedInstance;
 - (_CDReceiverNotifier)init;
-- (void)_publishXPCEvent:(id)a3 uid:(unsigned int)a4;
-- (void)addSubscriber:(id)a3;
-- (void)handleXPCNotificationEvent:(id)a3;
-- (void)removeSubscriberWithToken:(unint64_t)a3 streamName:(id)a4;
+- (void)_publishXPCEvent:(id)event uid:(unsigned int)uid;
+- (void)addSubscriber:(id)subscriber;
+- (void)handleXPCNotificationEvent:(id)event;
+- (void)removeSubscriberWithToken:(unint64_t)token streamName:(id)name;
 @end
 
 @implementation _CDReceiverNotifier
@@ -30,17 +30,17 @@
   {
     v3 = objc_opt_class();
     v4 = NSStringFromClass(v3);
-    v5 = [v4 UTF8String];
+    uTF8String = [v4 UTF8String];
     v6 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v7 = dispatch_queue_create(v5, v6);
+    v7 = dispatch_queue_create(uTF8String, v6);
     queue = v2->_queue;
     v2->_queue = v7;
 
-    LODWORD(v5) = getuid();
-    v2->_isRootProcess = v5 == 0;
+    LODWORD(uTF8String) = getuid();
+    v2->_isRootProcess = uTF8String == 0;
     v9 = _logChannel();
     v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
-    if (v5)
+    if (uTF8String)
     {
       if (v10)
       {
@@ -58,23 +58,23 @@
       xpc_set_event_stream_handler("com.apple.coreduet.xpc.receiver", v11, handler);
       v12 = BiomeLibrary();
       v13 = [v12 App];
-      v14 = [v13 Intent];
-      v15 = [v14 source];
+      intent = [v13 Intent];
+      source = [intent source];
       intentSource = v2->_intentSource;
-      v2->_intentSource = v15;
+      v2->_intentSource = source;
 
       v17 = BiomeLibrary();
       v18 = [v17 App];
-      v19 = [v18 Activity];
-      v20 = [v19 source];
+      activity = [v18 Activity];
+      source2 = [activity source];
       activitySource = v2->_activitySource;
-      v2->_activitySource = v20;
+      v2->_activitySource = source2;
 
       v22 = BiomeLibrary();
       v23 = [v22 App];
-      v24 = [v23 RelevantShortcuts];
+      relevantShortcuts = [v23 RelevantShortcuts];
       relevantShortcutsStream = v2->_relevantShortcutsStream;
-      v2->_relevantShortcutsStream = v24;
+      v2->_relevantShortcutsStream = relevantShortcuts;
 
       objc_destroyWeak(&v34);
       objc_destroyWeak(buf);
@@ -103,13 +103,13 @@
   return v2;
 }
 
-- (void)_publishXPCEvent:(id)a3 uid:(unsigned int)a4
+- (void)_publishXPCEvent:(id)event uid:(unsigned int)uid
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  eventCopy = event;
   obj = self->_subscribers;
   objc_sync_enter(obj);
-  v7 = [(NSMutableDictionary *)self->_subscribers allValues];
+  allValues = [(NSMutableDictionary *)self->_subscribers allValues];
   v8 = _logChannel();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -120,7 +120,7 @@
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = v7;
+  v9 = allValues;
   v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
@@ -135,7 +135,7 @@
         }
 
         v13 = *(*(&v18 + 1) + 8 * i);
-        if ([v13 uid] == a4)
+        if ([v13 uid] == uid)
         {
           xpcPublisher = self->_xpcPublisher;
           v17[0] = MEMORY[0x1E69E9820];
@@ -143,7 +143,7 @@
           v17[2] = __44___CDReceiverNotifier__publishXPCEvent_uid___block_invoke;
           v17[3] = &unk_1E73675F8;
           v17[4] = v13;
-          [(_CDXPCEventPublisher *)xpcPublisher sendEvent:v6 toSubscriber:v13 handler:v17];
+          [(_CDXPCEventPublisher *)xpcPublisher sendEvent:eventCopy toSubscriber:v13 handler:v17];
         }
       }
 
@@ -157,10 +157,10 @@
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleXPCNotificationEvent:(id)a3
+- (void)handleXPCNotificationEvent:(id)event
 {
   v69 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  eventCopy = event;
   v5 = _logChannel();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -170,7 +170,7 @@
   v64 = 0;
   v65 = 0;
   v63 = 0;
-  v6 = [_CDXPCCodecs parseNotificationEvent:v4 registrationIdentifier:&v65 info:&v64 error:&v63];
+  v6 = [_CDXPCCodecs parseNotificationEvent:eventCopy registrationIdentifier:&v65 info:&v64 error:&v63];
   v7 = v65;
   v8 = v64;
   v9 = v63;
@@ -246,16 +246,16 @@
 
           v37 = [v8 objectForKeyedSubscript:@"_CDAppRelevantShortcutsKey"];
           v38 = [v8 objectForKeyedSubscript:@"_CDAppRelevantShortcutsBundleIDKey"];
-          v39 = [(BMStream *)self->_relevantShortcutsStream pruner];
+          pruner = [(BMStream *)self->_relevantShortcutsStream pruner];
           v53[0] = MEMORY[0x1E69E9820];
           v53[1] = 3221225472;
           v53[2] = __50___CDReceiverNotifier_handleXPCNotificationEvent___block_invoke;
           v53[3] = &unk_1E7369840;
           v46 = v38;
           v54 = v46;
-          [v39 deleteEventsPassingTest:v53];
+          [pruner deleteEventsPassingTest:v53];
 
-          v40 = [(BMStream *)self->_relevantShortcutsStream source];
+          source = [(BMStream *)self->_relevantShortcutsStream source];
           v49 = 0u;
           v50 = 0u;
           v51 = 0u;
@@ -276,7 +276,7 @@
                 }
 
                 v45 = [MEMORY[0x1E698EB30] eventWithData:*(*(&v49 + 1) + 8 * i) dataVersion:{objc_msgSend(MEMORY[0x1E698EB30], "latestDataVersion")}];
-                [v40 sendEvent:v45];
+                [source sendEvent:v45];
               }
 
               v42 = [v11 countByEnumeratingWithState:&v49 objects:v66 count:16];
@@ -400,9 +400,9 @@ LABEL_43:
   v34 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addSubscriber:(id)a3
+- (void)addSubscriber:(id)subscriber
 {
-  v4 = a3;
+  subscriberCopy = subscriber;
   v5 = _logChannel();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -410,18 +410,18 @@ LABEL_43:
     _os_log_impl(&dword_191750000, v5, OS_LOG_TYPE_DEFAULT, "Adding subscriber", buf, 2u);
   }
 
-  v6 = [v4 streamName];
-  v7 = [v4 token];
+  streamName = [subscriberCopy streamName];
+  token = [subscriberCopy token];
   v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"com.apple.coreduet.xpc.receiver"];
-  v9 = [v8 isEqualToString:v6];
+  v9 = [v8 isEqualToString:streamName];
 
   if (v9)
   {
     v10 = self->_subscribers;
     objc_sync_enter(v10);
     subscribers = self->_subscribers;
-    v12 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v7];
-    [(NSMutableDictionary *)subscribers setObject:v4 forKeyedSubscript:v12];
+    v12 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:token];
+    [(NSMutableDictionary *)subscribers setObject:subscriberCopy forKeyedSubscript:v12];
 
     v13 = _logChannel();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -443,9 +443,9 @@ LABEL_43:
   }
 }
 
-- (void)removeSubscriberWithToken:(unint64_t)a3 streamName:(id)a4
+- (void)removeSubscriberWithToken:(unint64_t)token streamName:(id)name
 {
-  v6 = a4;
+  nameCopy = name;
   v7 = _logChannel();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -454,14 +454,14 @@ LABEL_43:
   }
 
   v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"com.apple.coreduet.xpc.receiver"];
-  v9 = [v8 isEqualToString:v6];
+  v9 = [v8 isEqualToString:nameCopy];
 
   if (v9)
   {
     v10 = self->_subscribers;
     objc_sync_enter(v10);
     subscribers = self->_subscribers;
-    v12 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3];
+    v12 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:token];
     [(NSMutableDictionary *)subscribers setObject:0 forKeyedSubscript:v12];
 
     v13 = _logChannel();

@@ -1,9 +1,9 @@
 @interface NWURLLoaderData
 - (OS_nw_connection)underlyingConnection;
-- (void)readDataOfMinimumIncompleteLength:(unint64_t)a3 maximumLength:(unint64_t)a4 completionHandler:(id)a5;
-- (void)readResponse:(id)a3;
-- (void)start:(id)a3;
-- (void)writeData:(id)a3 complete:(BOOL)a4 completionHandler:(id)a5;
+- (void)readDataOfMinimumIncompleteLength:(unint64_t)length maximumLength:(unint64_t)maximumLength completionHandler:(id)handler;
+- (void)readResponse:(id)response;
+- (void)start:(id)start;
+- (void)writeData:(id)data complete:(BOOL)complete completionHandler:(id)handler;
 @end
 
 @implementation NWURLLoaderData
@@ -15,48 +15,48 @@
   return result;
 }
 
-- (void)writeData:(id)a3 complete:(BOOL)a4 completionHandler:(id)a5
+- (void)writeData:(id)data complete:(BOOL)complete completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a5;
+  dataCopy = data;
+  handlerCopy = handler;
   _os_crash();
   __break(1u);
 }
 
-- (void)readDataOfMinimumIncompleteLength:(unint64_t)a3 maximumLength:(unint64_t)a4 completionHandler:(id)a5
+- (void)readDataOfMinimumIncompleteLength:(unint64_t)length maximumLength:(unint64_t)maximumLength completionHandler:(id)handler
 {
-  v13 = a5;
+  handlerCopy = handler;
   if (self && (data = self->_data) != 0)
   {
     size = dispatch_data_get_size(self->_data);
     offset = self->_offset;
-    if (size - offset >= a4)
+    if (size - offset >= maximumLength)
     {
-      v10 = a4;
+      maximumLengthCopy = maximumLength;
     }
 
     else
     {
-      v10 = size - offset;
+      maximumLengthCopy = size - offset;
     }
 
-    subrange = dispatch_data_create_subrange(data, offset, v10);
-    self->_offset += v10;
-    v12 = v13[2];
+    subrange = dispatch_data_create_subrange(data, offset, maximumLengthCopy);
+    self->_offset += maximumLengthCopy;
+    v12 = handlerCopy[2];
   }
 
   else
   {
     subrange = [[NWURLError alloc] initWithErrorCode:-1000];
-    v12 = v13[2];
+    v12 = handlerCopy[2];
   }
 
   v12();
 }
 
-- (void)readResponse:(id)a3
+- (void)readResponse:(id)response
 {
-  v14 = a3;
+  responseCopy = response;
   if (self && self->_data)
   {
     v4 = objc_alloc(MEMORY[0x1E695AC70]);
@@ -67,7 +67,7 @@
     textEncodingName = self->_textEncodingName;
     v10 = data;
     v11 = [v4 initWithURL:v5 MIMEType:v6 expectedContentLength:size textEncodingName:textEncodingName];
-    v14[2](v14, v11, 0);
+    responseCopy[2](responseCopy, v11, 0);
   }
 
   else
@@ -85,14 +85,14 @@
     }
 
     [(NWURLError *)v12 setFailingURL:URL];
-    (v14)[2](v14, 0, v5);
+    (responseCopy)[2](responseCopy, 0, v5);
   }
 }
 
-- (void)start:(id)a3
+- (void)start:(id)start
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  startCopy = start;
   properties = 0;
   resourceData = 0;
   errorCode = 0;
@@ -109,10 +109,10 @@
   if (CFURLCreateDataAndPropertiesFromResource(*MEMORY[0x1E695E480], URL, &resourceData, &properties, 0, &errorCode))
   {
     v6 = resourceData;
-    v7 = [(__CFData *)resourceData _createDispatchData];
+    _createDispatchData = [(__CFData *)resourceData _createDispatchData];
     if (self)
     {
-      objc_storeStrong(&self->_data, v7);
+      objc_storeStrong(&self->_data, _createDispatchData);
     }
 
     v8 = properties;
@@ -128,7 +128,7 @@
       objc_storeStrong(&self->_textEncodingName, v10);
     }
 
-    v4[2](v4);
+    startCopy[2](startCopy);
   }
 
   else
@@ -146,7 +146,7 @@
       _os_log_impl(&dword_181A37000, v11, OS_LOG_TYPE_ERROR, "Failed to parse data URL %d", buf, 8u);
     }
 
-    v4[2](v4);
+    startCopy[2](startCopy);
   }
 }
 

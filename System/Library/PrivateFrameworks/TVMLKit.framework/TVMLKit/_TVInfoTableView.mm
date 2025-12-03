@@ -1,25 +1,25 @@
 @interface _TVInfoTableView
-+ (id)infoTableViewWithElement:(id)a3 existingView:(id)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
++ (id)infoTableViewWithElement:(id)element existingView:(id)view;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (double)_normalizedInfoHeaderWidth;
-- (id)impressionableElementsContainedInDocument:(id)a3;
+- (id)impressionableElementsContainedInDocument:(id)document;
 - (void)layoutSubviews;
-- (void)setFooterView:(id)a3;
-- (void)setHeaderView:(id)a3;
-- (void)setInfoViews:(id)a3;
+- (void)setFooterView:(id)view;
+- (void)setHeaderView:(id)view;
+- (void)setInfoViews:(id)views;
 @end
 
 @implementation _TVInfoTableView
 
-+ (id)infoTableViewWithElement:(id)a3 existingView:(id)a4
++ (id)infoTableViewWithElement:(id)element existingView:(id)view
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  elementCopy = element;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = viewCopy;
   }
 
   else
@@ -34,9 +34,9 @@
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v23 = v5;
-  v11 = [v5 children];
-  v12 = [v11 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  v23 = elementCopy;
+  children = [elementCopy children];
+  v12 = [children countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v12)
   {
     v13 = v12;
@@ -47,22 +47,22 @@
       {
         if (*v25 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(children);
         }
 
         v16 = *(*(&v24 + 1) + 8 * i);
-        v17 = [v16 tv_elementType];
-        switch(v17)
+        tv_elementType = [v16 tv_elementType];
+        switch(tv_elementType)
         {
           case 13:
             v21 = +[TVInterfaceFactory sharedInterfaceFactory];
-            v19 = [v21 _viewFromElement:v16 existingView:v6];
+            v19 = [v21 _viewFromElement:v16 existingView:viewCopy];
 
             [(_TVInfoTableView *)v9 setFooterView:v19];
             break;
           case 18:
             v20 = +[TVInterfaceFactory sharedInterfaceFactory];
-            v19 = [v20 _viewFromElement:v16 existingView:v6];
+            v19 = [v20 _viewFromElement:v16 existingView:viewCopy];
 
             if (!v19)
             {
@@ -73,7 +73,7 @@
             break;
           case 15:
             v18 = +[TVInterfaceFactory sharedInterfaceFactory];
-            v19 = [v18 _viewFromElement:v16 existingView:v6];
+            v19 = [v18 _viewFromElement:v16 existingView:viewCopy];
 
             [(_TVInfoTableView *)v9 setHeaderView:v19];
             break;
@@ -82,7 +82,7 @@
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v13 = [children countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v13);
@@ -93,15 +93,15 @@
   return v9;
 }
 
-- (void)setHeaderView:(id)a3
+- (void)setHeaderView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   headerView = self->_headerView;
-  v7 = v5;
-  if (headerView != v5)
+  v7 = viewCopy;
+  if (headerView != viewCopy)
   {
     [(UIView *)headerView removeFromSuperview];
-    objc_storeStrong(&self->_headerView, a3);
+    objc_storeStrong(&self->_headerView, view);
     if (self->_headerView)
     {
       [(_TVInfoTableView *)self addSubview:?];
@@ -111,14 +111,14 @@
   [(_TVInfoTableView *)self setNeedsLayout];
 }
 
-- (void)setInfoViews:(id)a3
+- (void)setInfoViews:(id)views
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (![(NSArray *)self->_infoViews isEqualToArray:v5])
+  viewsCopy = views;
+  if (![(NSArray *)self->_infoViews isEqualToArray:viewsCopy])
   {
     [(NSArray *)self->_infoViews makeObjectsPerformSelector:sel_removeFromSuperview];
-    objc_storeStrong(&self->_infoViews, a3);
+    objc_storeStrong(&self->_infoViews, views);
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
@@ -153,15 +153,15 @@
   [(_TVInfoTableView *)self setNeedsLayout];
 }
 
-- (void)setFooterView:(id)a3
+- (void)setFooterView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   footerView = self->_footerView;
-  v7 = v5;
-  if (footerView != v5)
+  v7 = viewCopy;
+  if (footerView != viewCopy)
   {
     [(UIView *)footerView removeFromSuperview];
-    objc_storeStrong(&self->_footerView, a3);
+    objc_storeStrong(&self->_footerView, view);
     if (self->_footerView)
     {
       [(_TVInfoTableView *)self addSubview:?];
@@ -171,10 +171,10 @@
   [(_TVInfoTableView *)self setNeedsLayout];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(UIView *)self tv_lineSpacing];
   v7 = v6;
   v24 = 0;
@@ -183,22 +183,22 @@
   v27 = 0;
   [(_TVInfoTableView *)self _normalizedInfoHeaderWidth];
   v9 = v8;
-  v10 = [(NSArray *)self->_infoViews firstObject];
+  firstObject = [(NSArray *)self->_infoViews firstObject];
   objc_opt_class();
   v11 = width;
   if (objc_opt_isKindOfClass())
   {
     v11 = width;
-    if ([v10 headerOnLeading])
+    if ([firstObject headerOnLeading])
     {
       if ([(_TVInfoTableView *)self effectiveUserInterfaceLayoutDirection]== 1)
       {
-        [v10 headerMargin];
+        [firstObject headerMargin];
       }
 
       else
       {
-        [v10 headerMargin];
+        [firstObject headerMargin];
         v12 = v13;
       }
 
@@ -262,16 +262,16 @@
   v10 = v9;
   [(_TVInfoTableView *)self _normalizedInfoHeaderWidth];
   v12 = v11;
-  v13 = [(NSArray *)self->_infoViews firstObject];
+  firstObject = [(NSArray *)self->_infoViews firstObject];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v14 = Width;
-    if ([v13 headerOnLeading])
+    if ([firstObject headerOnLeading])
     {
-      v15 = [(_TVInfoTableView *)self effectiveUserInterfaceLayoutDirection];
-      [v13 headerMargin];
-      if (v15 == 1)
+      effectiveUserInterfaceLayoutDirection = [(_TVInfoTableView *)self effectiveUserInterfaceLayoutDirection];
+      [firstObject headerMargin];
+      if (effectiveUserInterfaceLayoutDirection == 1)
       {
         v18 = v16;
       }
@@ -377,23 +377,23 @@
   [(UIView *)footerView setFrame:v48.origin.x, v48.origin.y, v48.size.width, v48.size.height];
 }
 
-- (id)impressionableElementsContainedInDocument:(id)a3
+- (id)impressionableElementsContainedInDocument:(id)document
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [self tv_associatedIKViewElement];
-  v6 = [v5 appDocument];
-  v7 = [v6 isEqual:v4];
+  documentCopy = document;
+  tv_associatedIKViewElement = [self tv_associatedIKViewElement];
+  appDocument = [tv_associatedIKViewElement appDocument];
+  v7 = [appDocument isEqual:documentCopy];
 
   if (v7)
   {
-    v8 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v9 = [(_TVInfoTableView *)self infoViews];
-    v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    infoViews = [(_TVInfoTableView *)self infoViews];
+    v10 = [infoViews countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v10)
     {
       v11 = v10;
@@ -404,30 +404,30 @@
         {
           if (*v22 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(infoViews);
           }
 
-          v14 = [*(*(&v21 + 1) + 8 * i) tv_impressionableElementsForDocument:v4];
-          [v8 addObjectsFromArray:v14];
+          v14 = [*(*(&v21 + 1) + 8 * i) tv_impressionableElementsForDocument:documentCopy];
+          [array addObjectsFromArray:v14];
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v11 = [infoViews countByEnumeratingWithState:&v21 objects:v25 count:16];
       }
 
       while (v11);
     }
 
-    v15 = [(_TVInfoTableView *)self headerView];
-    v16 = [v15 tv_impressionableElementsForDocument:v4];
-    [v8 addObjectsFromArray:v16];
+    headerView = [(_TVInfoTableView *)self headerView];
+    v16 = [headerView tv_impressionableElementsForDocument:documentCopy];
+    [array addObjectsFromArray:v16];
 
-    v17 = [(_TVInfoTableView *)self footerView];
-    v18 = [v17 tv_impressionableElementsForDocument:v4];
-    [v8 addObjectsFromArray:v18];
+    footerView = [(_TVInfoTableView *)self footerView];
+    v18 = [footerView tv_impressionableElementsForDocument:documentCopy];
+    [array addObjectsFromArray:v18];
 
-    if ([v8 count])
+    if ([array count])
     {
-      v19 = [MEMORY[0x277CBEA60] arrayWithArray:v8];
+      v19 = [MEMORY[0x277CBEA60] arrayWithArray:array];
     }
 
     else

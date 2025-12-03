@@ -1,17 +1,17 @@
 @interface EKCalendarInviteReplyNotification
-- (BOOL)acknowledgeWithEventStore:(id)a3 error:(id *)a4;
-- (EKCalendarInviteReplyNotification)initWithType:(int64_t)a3;
+- (BOOL)acknowledgeWithEventStore:(id)store error:(id *)error;
+- (EKCalendarInviteReplyNotification)initWithType:(int64_t)type;
 @end
 
 @implementation EKCalendarInviteReplyNotification
 
-- (EKCalendarInviteReplyNotification)initWithType:(int64_t)a3
+- (EKCalendarInviteReplyNotification)initWithType:(int64_t)type
 {
   v8.receiver = self;
   v8.super_class = EKCalendarInviteReplyNotification;
   v5 = [(EKCalendarNotification *)&v8 initWithType:?];
   v6 = v5;
-  if ((a3 - 11) <= 0xFFFFFFFFFFFFFFFDLL && v5)
+  if ((type - 11) <= 0xFFFFFFFFFFFFFFFDLL && v5)
   {
     [(EKCalendarInviteReplyNotification *)a2 initWithType:v5];
   }
@@ -19,13 +19,13 @@
   return v6;
 }
 
-- (BOOL)acknowledgeWithEventStore:(id)a3 error:(id *)a4
+- (BOOL)acknowledgeWithEventStore:(id)store error:(id *)error
 {
-  v6 = a3;
-  v7 = [(EKCalendarInviteReplyNotification *)self inviteReplyNotificationFromEventStore:v6];
+  storeCopy = store;
+  v7 = [(EKCalendarInviteReplyNotification *)self inviteReplyNotificationFromEventStore:storeCopy];
   if (v7)
   {
-    v8 = [v6 removeInviteReplyNotification:v7 error:a4];
+    v8 = [storeCopy removeInviteReplyNotification:v7 error:error];
   }
 
   else

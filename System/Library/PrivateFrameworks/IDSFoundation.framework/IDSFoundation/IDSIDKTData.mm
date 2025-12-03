@@ -1,44 +1,44 @@
 @interface IDSIDKTData
-- (BOOL)isEqual:(id)a3;
-- (IDSIDKTData)initWithCoder:(id)a3;
-- (IDSIDKTData)initWithVerifierResult:(id)a3 requestID:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (IDSIDKTData)initWithCoder:(id)coder;
+- (IDSIDKTData)initWithVerifierResult:(id)result requestID:(id)d;
 - (id)debugDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IDSIDKTData
 
-- (IDSIDKTData)initWithVerifierResult:(id)a3 requestID:(id)a4
+- (IDSIDKTData)initWithVerifierResult:(id)result requestID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
+  resultCopy = result;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = IDSIDKTData;
   v9 = [(IDSIDKTData *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_verifierResult, a3);
-    objc_storeStrong(&v10->_verificationRequestID, a4);
+    objc_storeStrong(&v9->_verifierResult, result);
+    objc_storeStrong(&v10->_verificationRequestID, d);
   }
 
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(IDSIDKTData *)self verificationRequestID];
-  [v4 encodeObject:v5 forKey:@"IDSIDKTDataVerificationRequestID"];
+  coderCopy = coder;
+  verificationRequestID = [(IDSIDKTData *)self verificationRequestID];
+  [coderCopy encodeObject:verificationRequestID forKey:@"IDSIDKTDataVerificationRequestID"];
 
-  v6 = [(IDSIDKTData *)self verifierResult];
-  [v4 encodeObject:v6 forKey:@"IDSIDKTDataVerifierResult"];
+  verifierResult = [(IDSIDKTData *)self verifierResult];
+  [coderCopy encodeObject:verifierResult forKey:@"IDSIDKTDataVerifierResult"];
 }
 
-- (IDSIDKTData)initWithCoder:(id)a3
+- (IDSIDKTData)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectForKey:@"IDSIDKTDataVerificationRequestID"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectForKey:@"IDSIDKTDataVerificationRequestID"];
   v12 = 0;
   v13 = &v12;
   v14 = 0x2050000000;
@@ -57,7 +57,7 @@
 
   v7 = v6;
   _Block_object_dispose(&v12, 8);
-  v8 = [v4 decodeObjectOfClass:v6 forKey:@"IDSIDKTDataVerifierResult"];
+  v8 = [coderCopy decodeObjectOfClass:v6 forKey:@"IDSIDKTDataVerifierResult"];
   v9 = [(IDSIDKTData *)self initWithVerifierResult:v8 requestID:v5];
 
   return v9;
@@ -66,17 +66,17 @@
 - (id)debugDescription
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(IDSIDKTData *)self verifierResult];
-  v5 = [(IDSIDKTData *)self verificationRequestID];
-  v6 = [v3 stringWithFormat:@"Verifier Result: %@, Request ID: %@", v4, v5];
+  verifierResult = [(IDSIDKTData *)self verifierResult];
+  verificationRequestID = [(IDSIDKTData *)self verificationRequestID];
+  v6 = [v3 stringWithFormat:@"Verifier Result: %@, Request ID: %@", verifierResult, verificationRequestID];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -86,15 +86,15 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       verifierResult = self->_verifierResult;
-      v7 = [(IDSIDKTData *)v5 verifierResult];
-      v8 = [(KTVerifierResult *)verifierResult isEqual:v7];
+      verifierResult = [(IDSIDKTData *)v5 verifierResult];
+      v8 = [(KTVerifierResult *)verifierResult isEqual:verifierResult];
       if ((v8 & 1) != 0 || (v9 = self->_verifierResult, [(IDSIDKTData *)v5 verifierResult], verifierResult = objc_claimAutoreleasedReturnValue(), v9 == verifierResult))
       {
         verificationRequestID = self->_verificationRequestID;
-        v12 = [(IDSIDKTData *)v5 verificationRequestID];
-        if (([(NSUUID *)verificationRequestID isEqual:v12]& 1) != 0)
+        verificationRequestID = [(IDSIDKTData *)v5 verificationRequestID];
+        if (([(NSUUID *)verificationRequestID isEqual:verificationRequestID]& 1) != 0)
         {
           v10 = 1;
         }
@@ -102,8 +102,8 @@
         else
         {
           v13 = self->_verificationRequestID;
-          v14 = [(IDSIDKTData *)v5 verificationRequestID];
-          v10 = v13 == v14;
+          verificationRequestID2 = [(IDSIDKTData *)v5 verificationRequestID];
+          v10 = v13 == verificationRequestID2;
         }
 
         if (v8)

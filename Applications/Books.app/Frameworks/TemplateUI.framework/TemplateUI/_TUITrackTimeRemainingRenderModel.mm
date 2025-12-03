@@ -1,26 +1,26 @@
 @interface _TUITrackTimeRemainingRenderModel
-- (BOOL)isEqualToRenderModel:(id)a3;
+- (BOOL)isEqualToRenderModel:(id)model;
 - (CGSize)size;
 - (unint64_t)hash;
 @end
 
 @implementation _TUITrackTimeRemainingRenderModel
 
-- (BOOL)isEqualToRenderModel:(id)a3
+- (BOOL)isEqualToRenderModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v5 = objc_opt_class();
-  v6 = TUIDynamicCast(v5, v4);
+  v6 = TUIDynamicCast(v5, modelCopy);
 
   if (TUIRenderModelIsEqualToRenderModel(self, v6))
   {
-    v7 = [(_TUITrackTimeRemainingRenderModel *)self style];
-    v8 = [v6 style];
-    if (v7 == v8 || [v7 isEqual:v8])
+    style = [(_TUITrackTimeRemainingRenderModel *)self style];
+    style2 = [v6 style];
+    if (style == style2 || [style isEqual:style2])
     {
-      v9 = [(_TUITrackTimeRemainingRenderModel *)self dynamicProgress];
-      v10 = [v6 dynamicProgress];
-      v11 = v9 == v10;
+      dynamicProgress = [(_TUITrackTimeRemainingRenderModel *)self dynamicProgress];
+      dynamicProgress2 = [v6 dynamicProgress];
+      v11 = dynamicProgress == dynamicProgress2;
     }
 
     else
@@ -39,8 +39,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(_TUITrackTimeRemainingRenderModel *)self identifier];
-  v3 = TUIIdentifierHash(v2);
+  identifier = [(_TUITrackTimeRemainingRenderModel *)self identifier];
+  v3 = TUIIdentifierHash(identifier);
 
   return v3;
 }

@@ -1,5 +1,5 @@
 @interface ARCoachingStateDeactivating
-- (id)doAction:(int64_t)a3;
+- (id)doAction:(int64_t)action;
 - (void)enter;
 @end
 
@@ -7,39 +7,39 @@
 
 - (void)enter
 {
-  v3 = [(ARCoachingState *)self view];
-  v4 = [v3 delegate];
+  view = [(ARCoachingState *)self view];
+  delegate = [view delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(ARCoachingState *)self view];
-    v7 = [v6 delegate];
-    v8 = [(ARCoachingState *)self view];
-    [v7 coachingOverlayViewWillDeactivate:v8];
+    view2 = [(ARCoachingState *)self view];
+    delegate2 = [view2 delegate];
+    view3 = [(ARCoachingState *)self view];
+    [delegate2 coachingOverlayViewWillDeactivate:view3];
   }
 
-  v9 = [(ARCoachingState *)self view];
-  [v9 fadeOut];
+  view4 = [(ARCoachingState *)self view];
+  [view4 fadeOut];
 
   v10 = [ARCoachingStateHidden alloc];
-  v13 = [(ARCoachingState *)self view];
-  v11 = [(ARCoachingState *)v10 initWithView:v13];
+  view5 = [(ARCoachingState *)self view];
+  v11 = [(ARCoachingState *)v10 initWithView:view5];
   nextState = self->_nextState;
   self->_nextState = v11;
 }
 
-- (id)doAction:(int64_t)a3
+- (id)doAction:(int64_t)action
 {
   v4 = 0;
-  if (a3 <= 2)
+  if (action <= 2)
   {
-    switch(a3)
+    switch(action)
     {
       case 0:
         v6 = [ARCoachingStateHidden alloc];
-        v7 = [(ARCoachingState *)self view];
-        v4 = [(ARCoachingState *)v6 initWithView:v7];
+        view = [(ARCoachingState *)self view];
+        v4 = [(ARCoachingState *)v6 initWithView:view];
 
         goto LABEL_21;
       case 1:
@@ -55,11 +55,11 @@
     goto LABEL_19;
   }
 
-  if (a3 > 5)
+  if (action > 5)
   {
-    if (a3 != 6)
+    if (action != 6)
     {
-      if (a3 != 7)
+      if (action != 7)
       {
         goto LABEL_21;
       }
@@ -77,9 +77,9 @@
 
   else
   {
-    if (a3 != 3)
+    if (action != 3)
     {
-      if (a3 != 5)
+      if (action != 5)
       {
         goto LABEL_21;
       }
@@ -87,16 +87,16 @@
       v5 = ARCoachingStateRelocalizing;
 LABEL_19:
       v10 = [v5 alloc];
-      v11 = [(ARCoachingState *)self view];
-      v12 = [v10 initWithView:v11];
+      view2 = [(ARCoachingState *)self view];
+      v12 = [v10 initWithView:view2];
       v13 = self->_nextState;
       self->_nextState = v12;
 
       goto LABEL_20;
     }
 
-    v8 = [(ARCoachingState *)self view];
-    if ([v8 isUIAnimating])
+    view3 = [(ARCoachingState *)self view];
+    if ([view3 isUIAnimating])
     {
 
 LABEL_20:

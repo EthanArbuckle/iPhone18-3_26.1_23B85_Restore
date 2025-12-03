@@ -1,49 +1,49 @@
 @interface HKHRAFibBurdenSevenDaySampleProperties
-- (HKHRAFibBurdenSevenDaySampleProperties)initWithBurdenPercentage:(id)a3 timeZone:(id)a4;
-- (HKHRAFibBurdenSevenDaySampleProperties)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (HKHRAFibBurdenSevenDaySampleProperties)initWithBurdenPercentage:(id)percentage timeZone:(id)zone;
+- (HKHRAFibBurdenSevenDaySampleProperties)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKHRAFibBurdenSevenDaySampleProperties
 
-- (HKHRAFibBurdenSevenDaySampleProperties)initWithBurdenPercentage:(id)a3 timeZone:(id)a4
+- (HKHRAFibBurdenSevenDaySampleProperties)initWithBurdenPercentage:(id)percentage timeZone:(id)zone
 {
-  v7 = a3;
-  v8 = a4;
+  percentageCopy = percentage;
+  zoneCopy = zone;
   v12.receiver = self;
   v12.super_class = HKHRAFibBurdenSevenDaySampleProperties;
   v9 = [(HKHRAFibBurdenSevenDaySampleProperties *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_burdenPercentage, a3);
-    objc_storeStrong(&v10->_timeZone, a4);
+    objc_storeStrong(&v9->_burdenPercentage, percentage);
+    objc_storeStrong(&v10->_timeZone, zone);
   }
 
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   burdenPercentage = self->_burdenPercentage;
-  v5 = a3;
-  [v5 encodeObject:burdenPercentage forKey:@"burdenPercentage"];
-  [v5 encodeObject:self->_timeZone forKey:@"timeZone"];
+  coderCopy = coder;
+  [coderCopy encodeObject:burdenPercentage forKey:@"burdenPercentage"];
+  [coderCopy encodeObject:self->_timeZone forKey:@"timeZone"];
 }
 
-- (HKHRAFibBurdenSevenDaySampleProperties)initWithCoder:(id)a3
+- (HKHRAFibBurdenSevenDaySampleProperties)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = HKHRAFibBurdenSevenDaySampleProperties;
   v5 = [(HKHRAFibBurdenSevenDaySampleProperties *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"burdenPercentage"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"burdenPercentage"];
     burdenPercentage = v5->_burdenPercentage;
     v5->_burdenPercentage = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timeZone"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timeZone"];
     timeZone = v5->_timeZone;
     v5->_timeZone = v8;
   }

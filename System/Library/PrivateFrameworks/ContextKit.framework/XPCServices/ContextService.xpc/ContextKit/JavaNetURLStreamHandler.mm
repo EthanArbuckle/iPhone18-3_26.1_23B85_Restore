@@ -1,53 +1,53 @@
 @interface JavaNetURLStreamHandler
-- (BOOL)equalsWithJavaNetURL:(id)a3 withJavaNetURL:(id)a4;
-- (BOOL)hostsEqualWithJavaNetURL:(id)a3 withJavaNetURL:(id)a4;
-- (BOOL)sameFileWithJavaNetURL:(id)a3 withJavaNetURL:(id)a4;
-- (id)getHostAddressWithJavaNetURL:(id)a3;
-- (id)toExternalFormWithJavaNetURL:(id)a3 withBoolean:(BOOL)a4;
-- (int)hashCodeWithJavaNetURL:(id)a3;
+- (BOOL)equalsWithJavaNetURL:(id)l withJavaNetURL:(id)rL;
+- (BOOL)hostsEqualWithJavaNetURL:(id)l withJavaNetURL:(id)rL;
+- (BOOL)sameFileWithJavaNetURL:(id)l withJavaNetURL:(id)rL;
+- (id)getHostAddressWithJavaNetURL:(id)l;
+- (id)toExternalFormWithJavaNetURL:(id)l withBoolean:(BOOL)boolean;
+- (int)hashCodeWithJavaNetURL:(id)l;
 @end
 
 @implementation JavaNetURLStreamHandler
 
-- (id)toExternalFormWithJavaNetURL:(id)a3 withBoolean:(BOOL)a4
+- (id)toExternalFormWithJavaNetURL:(id)l withBoolean:(BOOL)boolean
 {
-  v4 = a4;
+  booleanCopy = boolean;
   v6 = new_JavaLangStringBuilder_init();
-  if (!a3)
+  if (!l)
   {
     goto LABEL_27;
   }
 
   v7 = v6;
-  -[JavaLangStringBuilder appendWithNSString:](v6, "appendWithNSString:", [a3 getProtocol]);
+  -[JavaLangStringBuilder appendWithNSString:](v6, "appendWithNSString:", [l getProtocol]);
   [(JavaLangStringBuilder *)v7 appendWithChar:58];
-  v8 = [a3 getAuthority];
-  if (!v8)
+  getAuthority = [l getAuthority];
+  if (!getAuthority)
   {
-    v11 = [a3 getFile];
-    if (!v11)
+    getFile = [l getFile];
+    if (!getFile)
     {
       goto LABEL_17;
     }
 
-    v10 = v11;
-    if (v4)
+    getFile2 = getFile;
+    if (booleanCopy)
     {
       goto LABEL_11;
     }
 
 LABEL_16:
-    [(JavaLangStringBuilder *)v7 appendWithNSString:v10];
+    [(JavaLangStringBuilder *)v7 appendWithNSString:getFile2];
     goto LABEL_17;
   }
 
-  v9 = v8;
+  v9 = getAuthority;
   [(JavaLangStringBuilder *)v7 appendWithNSString:@"//"];
-  if (!v4)
+  if (!booleanCopy)
   {
     [(JavaLangStringBuilder *)v7 appendWithNSString:v9];
-    v10 = [a3 getFile];
-    if (!v10)
+    getFile2 = [l getFile];
+    if (!getFile2)
     {
       goto LABEL_17;
     }
@@ -66,8 +66,8 @@ LABEL_16:
   }
 
   [JavaNetURI_AUTHORITY_ENCODER_ appendPartiallyEncodedWithJavaLangStringBuilder:v7 withNSString:v9];
-  v10 = [a3 getFile];
-  if (!v10)
+  getFile2 = [l getFile];
+  if (!getFile2)
   {
     goto LABEL_17;
   }
@@ -83,17 +83,17 @@ LABEL_11:
     goto LABEL_27;
   }
 
-  [JavaNetURI_FILE_AND_QUERY_ENCODER_ appendPartiallyEncodedWithJavaLangStringBuilder:v7 withNSString:v10];
+  [JavaNetURI_FILE_AND_QUERY_ENCODER_ appendPartiallyEncodedWithJavaLangStringBuilder:v7 withNSString:getFile2];
 LABEL_17:
-  v12 = [a3 getRef];
-  if (!v12)
+  getRef = [l getRef];
+  if (!getRef)
   {
     goto LABEL_24;
   }
 
-  v13 = v12;
+  v13 = getRef;
   [(JavaLangStringBuilder *)v7 appendWithChar:35];
-  if (v4)
+  if (booleanCopy)
   {
     if ((atomic_load_explicit(JavaNetURI__initialized, memory_order_acquire) & 1) == 0)
     {
@@ -116,39 +116,39 @@ LABEL_24:
   return [(JavaLangStringBuilder *)v7 description];
 }
 
-- (BOOL)equalsWithJavaNetURL:(id)a3 withJavaNetURL:(id)a4
+- (BOOL)equalsWithJavaNetURL:(id)l withJavaNetURL:(id)rL
 {
   if (![JavaNetURLStreamHandler sameFileWithJavaNetURL:"sameFileWithJavaNetURL:withJavaNetURL:" withJavaNetURL:?])
   {
     return 0;
   }
 
-  if (!a3 || (v6 = [a3 getRef], !a4))
+  if (!l || (v6 = [l getRef], !rL))
   {
     JreThrowNullPointerException();
   }
 
-  if (!LibcoreUtilObjects_equalWithId_withId_(v6, [a4 getRef]))
+  if (!LibcoreUtilObjects_equalWithId_withId_(v6, [rL getRef]))
   {
     return 0;
   }
 
-  v7 = [a3 getQuery];
-  v8 = [a4 getQuery];
+  getQuery = [l getQuery];
+  getQuery2 = [rL getQuery];
 
-  return LibcoreUtilObjects_equalWithId_withId_(v7, v8);
+  return LibcoreUtilObjects_equalWithId_withId_(getQuery, getQuery2);
 }
 
-- (id)getHostAddressWithJavaNetURL:(id)a3
+- (id)getHostAddressWithJavaNetURL:(id)l
 {
-  if (!a3)
+  if (!l)
   {
     JreThrowNullPointerException();
   }
 
-  v3 = [a3 getHost];
-  v4 = v3;
-  if (v3 && [v3 length])
+  getHost = [l getHost];
+  v4 = getHost;
+  if (getHost && [getHost length])
   {
     return JavaNetInetAddress_getByNameWithNSString_(v4);
   }
@@ -159,9 +159,9 @@ LABEL_24:
   }
 }
 
-- (int)hashCodeWithJavaNetURL:(id)a3
+- (int)hashCodeWithJavaNetURL:(id)l
 {
-  v3 = [(JavaNetURLStreamHandler *)self toExternalFormWithJavaNetURL:a3];
+  v3 = [(JavaNetURLStreamHandler *)self toExternalFormWithJavaNetURL:l];
   if (!v3)
   {
     JreThrowNullPointerException();
@@ -170,16 +170,16 @@ LABEL_24:
   return [v3 hash];
 }
 
-- (BOOL)hostsEqualWithJavaNetURL:(id)a3 withJavaNetURL:(id)a4
+- (BOOL)hostsEqualWithJavaNetURL:(id)l withJavaNetURL:(id)rL
 {
-  if (!a3 || (v5 = [a3 getHost], !a4))
+  if (!l || (v5 = [l getHost], !rL))
   {
     JreThrowNullPointerException();
   }
 
   v6 = v5;
-  v7 = [a4 getHost];
-  if (v6 == v7)
+  getHost = [rL getHost];
+  if (v6 == getHost)
   {
     return 1;
   }
@@ -189,36 +189,36 @@ LABEL_24:
     return 0;
   }
 
-  return [v6 equalsIgnoreCase:v7];
+  return [v6 equalsIgnoreCase:getHost];
 }
 
-- (BOOL)sameFileWithJavaNetURL:(id)a3 withJavaNetURL:(id)a4
+- (BOOL)sameFileWithJavaNetURL:(id)l withJavaNetURL:(id)rL
 {
-  if (!a3 || (v7 = [a3 getProtocol], !a4))
+  if (!l || (v7 = [l getProtocol], !rL))
   {
     JreThrowNullPointerException();
   }
 
-  if (!LibcoreUtilObjects_equalWithId_withId_(v7, [a4 getProtocol]))
+  if (!LibcoreUtilObjects_equalWithId_withId_(v7, [rL getProtocol]))
   {
     return 0;
   }
 
-  if (![(JavaNetURLStreamHandler *)self hostsEqualWithJavaNetURL:a3 withJavaNetURL:a4])
+  if (![(JavaNetURLStreamHandler *)self hostsEqualWithJavaNetURL:l withJavaNetURL:rL])
   {
     return 0;
   }
 
-  v8 = [a3 getEffectivePort];
-  if (v8 != [a4 getEffectivePort])
+  getEffectivePort = [l getEffectivePort];
+  if (getEffectivePort != [rL getEffectivePort])
   {
     return 0;
   }
 
-  v9 = [a3 getFile];
-  v10 = [a4 getFile];
+  getFile = [l getFile];
+  getFile2 = [rL getFile];
 
-  return LibcoreUtilObjects_equalWithId_withId_(v9, v10);
+  return LibcoreUtilObjects_equalWithId_withId_(getFile, getFile2);
 }
 
 @end

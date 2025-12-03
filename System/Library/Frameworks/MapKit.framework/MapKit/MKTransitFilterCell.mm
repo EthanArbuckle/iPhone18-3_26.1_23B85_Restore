@@ -1,57 +1,57 @@
 @interface MKTransitFilterCell
-- (MKTransitFilterCell)initWithFrame:(CGRect)a3;
+- (MKTransitFilterCell)initWithFrame:(CGRect)frame;
 - (void)_contentSizeDidChange;
 - (void)_setupLabel;
-- (void)setSelected:(BOOL)a3;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation MKTransitFilterCell
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  if (a3)
+  if (selected)
   {
-    v4 = [MEMORY[0x1E69DC888] systemBlueColor];
-    v5 = [(MKTransitFilterCell *)self contentView];
-    [v5 setBackgroundColor:v4];
+    systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+    contentView = [(MKTransitFilterCell *)self contentView];
+    [contentView setBackgroundColor:systemBlueColor];
 
-    v6 = [MEMORY[0x1E69DC888] systemWhiteColor];
-    [(UILabel *)self->_label setTextColor:v6];
+    systemWhiteColor = [MEMORY[0x1E69DC888] systemWhiteColor];
+    [(UILabel *)self->_label setTextColor:systemWhiteColor];
 
     [MEMORY[0x1E69DC888] systemBlueColor];
   }
 
   else
   {
-    v7 = [MEMORY[0x1E69DC888] clearColor];
-    v8 = [(MKTransitFilterCell *)self contentView];
-    [v8 setBackgroundColor:v7];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    contentView2 = [(MKTransitFilterCell *)self contentView];
+    [contentView2 setBackgroundColor:clearColor];
 
-    v9 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)self->_label setTextColor:v9];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)self->_label setTextColor:labelColor];
 
     [MEMORY[0x1E69DC888] lightGrayColor];
   }
   v14 = ;
   v10 = v14;
-  v11 = [v14 CGColor];
-  v12 = [(MKTransitFilterCell *)self contentView];
-  v13 = [v12 layer];
-  [v13 setBorderColor:v11];
+  cGColor = [v14 CGColor];
+  contentView3 = [(MKTransitFilterCell *)self contentView];
+  layer = [contentView3 layer];
+  [layer setBorderColor:cGColor];
 }
 
 - (void)_contentSizeDidChange
 {
   v3 = +[MKFontManager sharedManager];
-  v4 = [v3 sectionHeaderFont];
-  [(UILabel *)self->_label setFont:v4];
+  sectionHeaderFont = [v3 sectionHeaderFont];
+  [(UILabel *)self->_label setFont:sectionHeaderFont];
 
   v9 = +[MKFontManager sharedManager];
-  v5 = [v9 sectionHeaderFont];
-  [v5 _mapkit_scaledValueForValue:32.0];
+  sectionHeaderFont2 = [v9 sectionHeaderFont];
+  [sectionHeaderFont2 _mapkit_scaledValueForValue:32.0];
   v7 = v6 * 0.5;
-  v8 = [(MKTransitFilterCell *)self contentView];
-  [v8 _setContinuousCornerRadius:v7];
+  contentView = [(MKTransitFilterCell *)self contentView];
+  [contentView _setContinuousCornerRadius:v7];
 }
 
 - (void)_setupLabel
@@ -66,68 +66,68 @@
   [(UILabel *)self->_label setTextAlignment:1];
   [(UILabel *)self->_label setNumberOfLines:1];
   v6 = +[MKFontManager sharedManager];
-  v7 = [v6 sectionHeaderFont];
-  [(UILabel *)self->_label setFont:v7];
+  sectionHeaderFont = [v6 sectionHeaderFont];
+  [(UILabel *)self->_label setFont:sectionHeaderFont];
 
-  v8 = [(MKTransitFilterCell *)self contentView];
-  [v8 addSubview:self->_label];
+  contentView = [(MKTransitFilterCell *)self contentView];
+  [contentView addSubview:self->_label];
   v18 = MEMORY[0x1E696ACD8];
-  v23 = [(UILabel *)self->_label leadingAnchor];
-  v22 = [v8 leadingAnchor];
-  v21 = [v23 constraintEqualToAnchor:v22];
+  leadingAnchor = [(UILabel *)self->_label leadingAnchor];
+  leadingAnchor2 = [contentView leadingAnchor];
+  v21 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v24[0] = v21;
-  v20 = [(UILabel *)self->_label trailingAnchor];
-  v19 = [v8 trailingAnchor];
-  v9 = [v20 constraintEqualToAnchor:v19];
+  trailingAnchor = [(UILabel *)self->_label trailingAnchor];
+  trailingAnchor2 = [contentView trailingAnchor];
+  v9 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v24[1] = v9;
-  v10 = [(UILabel *)self->_label topAnchor];
-  v11 = [v8 topAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  topAnchor = [(UILabel *)self->_label topAnchor];
+  topAnchor2 = [contentView topAnchor];
+  v12 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v24[2] = v12;
-  v13 = [(UILabel *)self->_label bottomAnchor];
-  v14 = [v8 bottomAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
+  bottomAnchor = [(UILabel *)self->_label bottomAnchor];
+  bottomAnchor2 = [contentView bottomAnchor];
+  v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v24[3] = v15;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:4];
   [v18 activateConstraints:v16];
 
-  v17 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v17 addObserver:self selector:sel__contentSizeDidChange name:*MEMORY[0x1E69DDC48] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__contentSizeDidChange name:*MEMORY[0x1E69DDC48] object:0];
 }
 
-- (MKTransitFilterCell)initWithFrame:(CGRect)a3
+- (MKTransitFilterCell)initWithFrame:(CGRect)frame
 {
   v21.receiver = self;
   v21.super_class = MKTransitFilterCell;
-  v3 = [(MKTransitFilterCell *)&v21 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MKTransitFilterCell *)&v21 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(MKTransitFilterCell *)v3 _setupLabel];
     v5 = +[MKFontManager sharedManager];
-    v6 = [v5 sectionHeaderFont];
-    [v6 _mapkit_scaledValueForValue:32.0];
+    sectionHeaderFont = [v5 sectionHeaderFont];
+    [sectionHeaderFont _mapkit_scaledValueForValue:32.0];
     v8 = v7 * 0.5;
-    v9 = [(MKTransitFilterCell *)v4 contentView];
-    [v9 _setContinuousCornerRadius:v8];
+    contentView = [(MKTransitFilterCell *)v4 contentView];
+    [contentView _setContinuousCornerRadius:v8];
 
-    v10 = [(MKTransitFilterCell *)v4 contentView];
-    v11 = [v10 layer];
-    [v11 setMasksToBounds:1];
+    contentView2 = [(MKTransitFilterCell *)v4 contentView];
+    layer = [contentView2 layer];
+    [layer setMasksToBounds:1];
 
-    v12 = [(MKTransitFilterCell *)v4 contentView];
-    v13 = [v12 layer];
-    [v13 setBorderWidth:1.0];
+    contentView3 = [(MKTransitFilterCell *)v4 contentView];
+    layer2 = [contentView3 layer];
+    [layer2 setBorderWidth:1.0];
 
-    v14 = [MEMORY[0x1E69DC888] lightGrayColor];
-    v15 = [v14 CGColor];
-    v16 = [(MKTransitFilterCell *)v4 contentView];
-    v17 = [v16 layer];
-    [v17 setBorderColor:v15];
+    lightGrayColor = [MEMORY[0x1E69DC888] lightGrayColor];
+    cGColor = [lightGrayColor CGColor];
+    contentView4 = [(MKTransitFilterCell *)v4 contentView];
+    layer3 = [contentView4 layer];
+    [layer3 setBorderColor:cGColor];
 
-    v18 = [MEMORY[0x1E69DC888] clearColor];
-    v19 = [(MKTransitFilterCell *)v4 contentView];
-    [v19 setBackgroundColor:v18];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    contentView5 = [(MKTransitFilterCell *)v4 contentView];
+    [contentView5 setBackgroundColor:clearColor];
   }
 
   return v4;

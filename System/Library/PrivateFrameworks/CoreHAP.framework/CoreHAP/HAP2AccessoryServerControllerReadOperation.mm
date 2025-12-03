@@ -1,6 +1,6 @@
 @interface HAP2AccessoryServerControllerReadOperation
-- (HAP2AccessoryServerControllerReadOperation)initWithName:(id)a3 controller:(id)a4 encoding:(id)a5 transport:(id)a6 readRequest:(id)a7 endpoint:(id)a8 mimeType:(id)a9 timeout:(double)a10 options:(unint64_t)a11 dscpPriority:(int64_t)a12;
-- (id)_HAP2AutoUpdateCachedCountdownCharacteristic:(id)a3;
+- (HAP2AccessoryServerControllerReadOperation)initWithName:(id)name controller:(id)controller encoding:(id)encoding transport:(id)transport readRequest:(id)request endpoint:(id)endpoint mimeType:(id)type timeout:(double)self0 options:(unint64_t)self1 dscpPriority:(int64_t)self2;
+- (id)_HAP2AutoUpdateCachedCountdownCharacteristic:(id)characteristic;
 - (void)_cleanUp;
 - (void)_sendRequest;
 @end
@@ -31,10 +31,10 @@
         }
 
         v8 = self->_readRequest;
-        v9 = [(HAP2ControllerReadRequest *)v8 originalCharacteristics];
+        originalCharacteristics = [(HAP2ControllerReadRequest *)v8 originalCharacteristics];
 
-        v10 = [(HAP2EncodedResponse *)v7 characteristics];
-        v11 = [v10 mutableCopy];
+        characteristics = [(HAP2EncodedResponse *)v7 characteristics];
+        v11 = [characteristics mutableCopy];
 
         cachedCharacteristicIndices = self->_cachedCharacteristicIndices;
         v19[0] = MEMORY[0x277D85DD0];
@@ -42,10 +42,10 @@
         v19[2] = __54__HAP2AccessoryServerControllerReadOperation__cleanUp__block_invoke;
         v19[3] = &unk_2786D3BE0;
         v19[4] = self;
-        v20 = v9;
+        v20 = originalCharacteristics;
         v21 = v11;
         v13 = v11;
-        v14 = v9;
+        v14 = originalCharacteristics;
         [(NSIndexSet *)cachedCharacteristicIndices enumerateIndexesUsingBlock:v19];
         v15 = [HAP2EncodedCharacteristicResponse alloc];
         v16 = [v13 copy];
@@ -72,43 +72,43 @@ void __54__HAP2AccessoryServerControllerReadOperation__cleanUp__block_invoke(uin
   [*(a1 + 48) insertObject:v7 atIndex:a2];
 }
 
-- (id)_HAP2AutoUpdateCachedCountdownCharacteristic:(id)a3
+- (id)_HAP2AutoUpdateCachedCountdownCharacteristic:(id)characteristic
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 type];
-  if (([v5 isEqual:@"000000D4-0000-1000-8000-0026BB765291"] & 1) == 0)
+  characteristicCopy = characteristic;
+  type = [characteristicCopy type];
+  if (([type isEqual:@"000000D4-0000-1000-8000-0026BB765291"] & 1) == 0)
   {
 
     goto LABEL_11;
   }
 
-  v6 = [v4 value];
-  v7 = [v6 unsignedIntValue];
+  value = [characteristicCopy value];
+  unsignedIntValue = [value unsignedIntValue];
 
-  if (!v7)
+  if (!unsignedIntValue)
   {
 LABEL_11:
-    v8 = v4;
+    v8 = characteristicCopy;
     goto LABEL_12;
   }
 
-  v8 = [v4 copy];
-  v9 = [MEMORY[0x277CBEAA8] date];
-  v10 = [v8 valueUpdatedTime];
-  [v9 timeIntervalSinceDate:v10];
+  v8 = [characteristicCopy copy];
+  date = [MEMORY[0x277CBEAA8] date];
+  valueUpdatedTime = [v8 valueUpdatedTime];
+  [date timeIntervalSinceDate:valueUpdatedTime];
   v12 = v11;
 
   if (v12)
   {
-    v13 = [v8 value];
-    v14 = [v13 unsignedIntegerValue];
+    value2 = [v8 value];
+    unsignedIntegerValue = [value2 unsignedIntegerValue];
 
-    if (v14 > v12)
+    if (unsignedIntegerValue > v12)
     {
       v15 = MEMORY[0x277CCABB0];
-      v16 = [v8 value];
-      v17 = [v15 numberWithInteger:{objc_msgSend(v16, "unsignedIntegerValue") - v12}];
+      value3 = [v8 value];
+      v17 = [v15 numberWithInteger:{objc_msgSend(value3, "unsignedIntegerValue") - v12}];
       [v8 setValue:v17];
 
       if (hap2LogInitialize_onceToken != -1)
@@ -120,11 +120,11 @@ LABEL_11:
       if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_DEFAULT))
       {
         v19 = v18;
-        v20 = [v8 value];
+        value4 = [v8 value];
         v23 = 138412546;
-        v24 = self;
+        selfCopy = self;
         v25 = 2112;
-        v26 = v20;
+        v26 = value4;
         _os_log_impl(&dword_22AADC000, v19, OS_LOG_TYPE_DEFAULT, "%@ Auto updating countdown counter value to: %@", &v23, 0x16u);
       }
     }
@@ -165,10 +165,10 @@ LABEL_26:
 
     v6 = MEMORY[0x277CBEB18];
     v7 = v5;
-    v8 = [(HAP2ControllerReadRequest *)v7 originalCharacteristics];
-    v9 = [v6 arrayWithCapacity:{objc_msgSend(v8, "count")}];
+    originalCharacteristics = [(HAP2ControllerReadRequest *)v7 originalCharacteristics];
+    v9 = [v6 arrayWithCapacity:{objc_msgSend(originalCharacteristics, "count")}];
 
-    v10 = [MEMORY[0x277CCAB58] indexSet];
+    indexSet = [MEMORY[0x277CCAB58] indexSet];
     if (self)
     {
       v11 = self->_readRequest;
@@ -180,18 +180,18 @@ LABEL_26:
     }
 
     v12 = v11;
-    v13 = [(HAP2ControllerReadRequest *)v12 originalCharacteristics];
+    originalCharacteristics2 = [(HAP2ControllerReadRequest *)v12 originalCharacteristics];
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
     v32[2] = __58__HAP2AccessoryServerControllerReadOperation__sendRequest__block_invoke;
     v32[3] = &unk_2786D3BB0;
     v32[4] = self;
-    v14 = v10;
+    v14 = indexSet;
     v33 = v14;
     v15 = v9;
 
     v34 = v15;
-    [v13 hmf_enumerateWithAutoreleasePoolUsingBlock:v32];
+    [originalCharacteristics2 hmf_enumerateWithAutoreleasePoolUsingBlock:v32];
 
     v16 = [v14 copy];
     if (self)
@@ -220,7 +220,7 @@ LABEL_26:
 
       if (v21)
       {
-        v23 = self;
+        selfCopy3 = self;
         v24 = v21;
       }
 
@@ -235,18 +235,18 @@ LABEL_26:
         if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412546;
-          v36 = self;
+          selfCopy4 = self;
           v37 = 2112;
           v38 = v22;
           _os_log_error_impl(&dword_22AADC000, v28, OS_LOG_TYPE_ERROR, "%@ Unable to create request for characteristics: %@", buf, 0x16u);
         }
 
         [(HAP2AccessoryServerControllerOperation *)self finishWithError:v22];
-        v23 = self;
+        selfCopy3 = self;
         v24 = 0;
       }
 
-      [(HAP2AccessoryServerControllerOperation *)v23 setRequest:v24];
+      [(HAP2AccessoryServerControllerOperation *)selfCopy3 setRequest:v24];
     }
 
     else
@@ -260,7 +260,7 @@ LABEL_26:
       if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v36 = self;
+        selfCopy4 = self;
         _os_log_impl(&dword_22AADC000, v25, OS_LOG_TYPE_INFO, "%@ All characteristics were cached, not sending request", buf, 0xCu);
       }
 
@@ -319,16 +319,16 @@ void __58__HAP2AccessoryServerControllerReadOperation__sendRequest__block_invoke
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (HAP2AccessoryServerControllerReadOperation)initWithName:(id)a3 controller:(id)a4 encoding:(id)a5 transport:(id)a6 readRequest:(id)a7 endpoint:(id)a8 mimeType:(id)a9 timeout:(double)a10 options:(unint64_t)a11 dscpPriority:(int64_t)a12
+- (HAP2AccessoryServerControllerReadOperation)initWithName:(id)name controller:(id)controller encoding:(id)encoding transport:(id)transport readRequest:(id)request endpoint:(id)endpoint mimeType:(id)type timeout:(double)self0 options:(unint64_t)self1 dscpPriority:(int64_t)self2
 {
-  v20 = a7;
+  requestCopy = request;
   v24.receiver = self;
   v24.super_class = HAP2AccessoryServerControllerReadOperation;
-  v21 = [(HAP2AccessoryServerControllerOperation *)&v24 initWithName:a3 controller:a4 encoding:a5 transport:a6 request:v20 endpoint:a8 mimeType:a10 timeout:a9 options:a11 dscpPriority:a12];
+  v21 = [(HAP2AccessoryServerControllerOperation *)&v24 initWithName:name controller:controller encoding:encoding transport:transport request:requestCopy endpoint:endpoint mimeType:timeout timeout:type options:options dscpPriority:priority];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_readRequest, a7);
+    objc_storeStrong(&v21->_readRequest, request);
   }
 
   return v22;

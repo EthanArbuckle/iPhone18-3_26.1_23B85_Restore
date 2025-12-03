@@ -1,16 +1,16 @@
 @interface DBWidgetViewController
 - (DBEnvironment)environment;
-- (DBWidgetViewController)initWithEnvironment:(id)a3;
+- (DBWidgetViewController)initWithEnvironment:(id)environment;
 - (NSArray)linearFocusItems;
-- (id)snapshotViewAfterScreenUpdates:(BOOL)a3;
+- (id)snapshotViewAfterScreenUpdates:(BOOL)updates;
 - (void)loadView;
-- (void)pressesBegan:(id)a3 withEvent:(id)a4;
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4;
-- (void)pressesEnded:(id)a3 withEvent:(id)a4;
-- (void)setHidden:(BOOL)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)pressesBegan:(id)began withEvent:(id)event;
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event;
+- (void)pressesEnded:(id)ended withEvent:(id)event;
+- (void)setHidden:(BOOL)hidden;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 - (void)updateAppearanceForWallpaper;
 @end
 
@@ -23,16 +23,16 @@
   return WeakRetained;
 }
 
-- (DBWidgetViewController)initWithEnvironment:(id)a3
+- (DBWidgetViewController)initWithEnvironment:(id)environment
 {
-  v4 = a3;
+  environmentCopy = environment;
   v8.receiver = self;
   v8.super_class = DBWidgetViewController;
   v5 = [(DBWidgetViewController *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_environment, v4);
+    objc_storeWeak(&v5->_environment, environmentCopy);
   }
 
   return v6;
@@ -42,123 +42,123 @@
 {
   v51[8] = *MEMORY[0x277D85DE8];
   v3 = [DBWidgetView alloc];
-  v4 = [(DBWidgetViewController *)self environment];
-  v5 = [v4 environmentConfiguration];
+  environment = [(DBWidgetViewController *)self environment];
+  environmentConfiguration = [environment environmentConfiguration];
   v6 = *MEMORY[0x277CBF3A0];
   v7 = *(MEMORY[0x277CBF3A0] + 8);
   v8 = *(MEMORY[0x277CBF3A0] + 16);
   v9 = *(MEMORY[0x277CBF3A0] + 24);
-  v10 = [(DBWidgetView *)v3 initWithFrame:self focusEnabledProvider:v5 environmentConfiguration:*MEMORY[0x277CBF3A0], v7, v8, v9];
+  v10 = [(DBWidgetView *)v3 initWithFrame:self focusEnabledProvider:environmentConfiguration environmentConfiguration:*MEMORY[0x277CBF3A0], v7, v8, v9];
 
-  v11 = [(DBWidgetView *)v10 contentView];
+  contentView = [(DBWidgetView *)v10 contentView];
   v12 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{v6, v7, v8, v9}];
   [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v12 setClipsToBounds:1];
-  v50 = [v12 layer];
-  [v50 setCornerRadius:18.0];
+  layer = [v12 layer];
+  [layer setCornerRadius:18.0];
   v13 = *MEMORY[0x277CDA138];
-  [v50 setCornerCurve:*MEMORY[0x277CDA138]];
-  v48 = self;
+  [layer setCornerCurve:*MEMORY[0x277CDA138]];
+  selfCopy = self;
   [(DBWidgetViewController *)self setContentView:v12];
-  [v11 addSubview:v12];
+  [contentView addSubview:v12];
   v14 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{v6, v7, v8, v9}];
-  v15 = [MEMORY[0x277D75348] blackColor];
-  [v14 setBackgroundColor:v15];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [v14 setBackgroundColor:blackColor];
 
   [v14 setAlpha:0.0];
   [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v16 = [v14 layer];
-  [v16 setCornerRadius:18.0];
-  v49 = v16;
-  [v16 setCornerCurve:v13];
+  layer2 = [v14 layer];
+  [layer2 setCornerRadius:18.0];
+  v49 = layer2;
+  [layer2 setCornerCurve:v13];
   v17 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA5D8]];
-  [v16 setCompositingFilter:v17];
+  [layer2 setCompositingFilter:v17];
 
   [(DBWidgetViewController *)self setDimmingView:v14];
-  [v11 addSubview:v14];
+  [contentView addSubview:v14];
   v35 = MEMORY[0x277CCAAD0];
-  v45 = [v12 topAnchor];
-  v44 = [v11 topAnchor];
-  v43 = [v45 constraintEqualToAnchor:v44];
+  topAnchor = [v12 topAnchor];
+  topAnchor2 = [contentView topAnchor];
+  v43 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v51[0] = v43;
-  v42 = [v12 bottomAnchor];
-  v41 = [v11 bottomAnchor];
-  v40 = [v42 constraintEqualToAnchor:v41];
+  bottomAnchor = [v12 bottomAnchor];
+  bottomAnchor2 = [contentView bottomAnchor];
+  v40 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v51[1] = v40;
   v47 = v12;
-  v39 = [v12 leftAnchor];
-  v46 = v11;
-  v38 = [v11 leftAnchor];
-  v37 = [v39 constraintEqualToAnchor:v38];
+  leftAnchor = [v12 leftAnchor];
+  v46 = contentView;
+  leftAnchor2 = [contentView leftAnchor];
+  v37 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   v51[2] = v37;
-  v36 = [v12 rightAnchor];
-  v34 = [v11 rightAnchor];
-  v33 = [v36 constraintEqualToAnchor:v34];
+  rightAnchor = [v12 rightAnchor];
+  rightAnchor2 = [contentView rightAnchor];
+  v33 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   v51[3] = v33;
-  v31 = [v14 topAnchor];
-  v30 = [(DBWidgetView *)v10 topAnchor];
-  v29 = [v31 constraintEqualToAnchor:v30];
+  topAnchor3 = [v14 topAnchor];
+  topAnchor4 = [(DBWidgetView *)v10 topAnchor];
+  v29 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v51[4] = v29;
-  v28 = [v14 bottomAnchor];
-  v18 = [(DBWidgetView *)v10 bottomAnchor];
-  v19 = [v28 constraintEqualToAnchor:v18];
+  bottomAnchor3 = [v14 bottomAnchor];
+  bottomAnchor4 = [(DBWidgetView *)v10 bottomAnchor];
+  v19 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v51[5] = v19;
-  v20 = [v14 leftAnchor];
+  leftAnchor3 = [v14 leftAnchor];
   v32 = v10;
-  v21 = [(DBWidgetView *)v10 leftAnchor];
-  v22 = [v20 constraintEqualToAnchor:v21];
+  leftAnchor4 = [(DBWidgetView *)v10 leftAnchor];
+  v22 = [leftAnchor3 constraintEqualToAnchor:leftAnchor4];
   v51[6] = v22;
-  v23 = [v14 rightAnchor];
-  v24 = [(DBWidgetView *)v10 rightAnchor];
-  v25 = [v23 constraintEqualToAnchor:v24];
+  rightAnchor3 = [v14 rightAnchor];
+  rightAnchor4 = [(DBWidgetView *)v10 rightAnchor];
+  v25 = [rightAnchor3 constraintEqualToAnchor:rightAnchor4];
   v51[7] = v25;
   v26 = [MEMORY[0x277CBEA60] arrayWithObjects:v51 count:8];
   [v35 activateConstraints:v26];
 
-  [(DBWidgetViewController *)v48 setView:v32];
-  v27 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v27 addObserver:v48 selector:sel__wallpaperChanged_ name:*MEMORY[0x277CF91E8] object:0];
+  [(DBWidgetViewController *)selfCopy setView:v32];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:selfCopy selector:sel__wallpaperChanged_ name:*MEMORY[0x277CF91E8] object:0];
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
-  self->_hidden = a3;
-  v5 = [(DBWidgetViewController *)self view];
-  v6 = [v5 shadowView];
-  [v6 setHidden:v3];
+  hiddenCopy = hidden;
+  self->_hidden = hidden;
+  view = [(DBWidgetViewController *)self view];
+  shadowView = [view shadowView];
+  [shadowView setHidden:hiddenCopy];
 
-  v7 = [(DBWidgetViewController *)self view];
-  [v7 setUserInteractionEnabled:v3 ^ 1];
+  view2 = [(DBWidgetViewController *)self view];
+  [view2 setUserInteractionEnabled:hiddenCopy ^ 1];
 
   [(DBWidgetViewController *)self setNeedsFocusUpdate];
 }
 
-- (id)snapshotViewAfterScreenUpdates:(BOOL)a3
+- (id)snapshotViewAfterScreenUpdates:(BOOL)updates
 {
-  v3 = a3;
-  v5 = [(DBWidgetViewController *)self contentView];
-  v6 = [v5 snapshotViewAfterScreenUpdates:v3];
+  updatesCopy = updates;
+  contentView = [(DBWidgetViewController *)self contentView];
+  v6 = [contentView snapshotViewAfterScreenUpdates:updatesCopy];
 
-  v7 = [(DBWidgetViewController *)self environment];
-  v8 = [v7 environmentConfiguration];
-  v9 = [v8 wallpaperPreferences];
-  v10 = [v9 currentWallpaper];
+  environment = [(DBWidgetViewController *)self environment];
+  environmentConfiguration = [environment environmentConfiguration];
+  wallpaperPreferences = [environmentConfiguration wallpaperPreferences];
+  currentWallpaper = [wallpaperPreferences currentWallpaper];
 
-  v11 = [v10 traits];
-  LODWORD(v8) = [v11 supportsDashboardPlatterMaterials];
+  traits = [currentWallpaper traits];
+  LODWORD(environmentConfiguration) = [traits supportsDashboardPlatterMaterials];
 
-  if (v8)
+  if (environmentConfiguration)
   {
     v12 = objc_alloc_init(_TtC9DashBoard20DBDashboardGlassView);
-    v13 = [(DBDashboardGlassView *)v12 layer];
-    [v13 setCornerRadius:18.0];
+    layer = [(DBDashboardGlassView *)v12 layer];
+    [layer setCornerRadius:18.0];
 
-    v14 = [(DBDashboardGlassView *)v12 layer];
-    [v14 setCornerCurve:*MEMORY[0x277CDA138]];
+    layer2 = [(DBDashboardGlassView *)v12 layer];
+    [layer2 setCornerCurve:*MEMORY[0x277CDA138]];
 
-    v15 = [(DBWidgetViewController *)self view];
-    [v15 bounds];
+    view = [(DBWidgetViewController *)self view];
+    [view bounds];
     [(DBDashboardGlassView *)v12 setFrame:?];
 
     [(DBDashboardGlassView *)v12 addSubview:v6];
@@ -174,26 +174,26 @@
 
 - (void)updateAppearanceForWallpaper
 {
-  v2 = [(DBWidgetViewController *)self view];
-  [v2 updateAppearanceForWallpaper];
+  view = [(DBWidgetViewController *)self view];
+  [view updateAppearanceForWallpaper];
 }
 
 - (NSArray)linearFocusItems
 {
   v5[1] = *MEMORY[0x277D85DE8];
-  v2 = [(DBWidgetViewController *)self view];
-  v5[0] = v2;
+  view = [(DBWidgetViewController *)self view];
+  v5[0] = view;
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v5 count:1];
 
   return v3;
 }
 
-- (void)pressesBegan:(id)a3 withEvent:(id)a4
+- (void)pressesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
+  beganCopy = began;
   v10.receiver = self;
   v10.super_class = DBWidgetViewController;
-  [(DBWidgetViewController *)&v10 pressesBegan:v6 withEvent:a4];
+  [(DBWidgetViewController *)&v10 pressesBegan:beganCopy withEvent:event];
   if ([(DBWidgetViewController *)self entireWidgetFocusable])
   {
     v11[0] = MEMORY[0x277D85DD0];
@@ -201,25 +201,25 @@
     v11[2] = ___DBPressesContainsPressType_block_invoke_1;
     v11[3] = &__block_descriptor_40_e21_B24__0__UIPress_8_B16l;
     v11[4] = 4;
-    v7 = [v6 objectsPassingTest:v11];
+    v7 = [beganCopy objectsPassingTest:v11];
     v8 = [v7 count];
 
     if (v8)
     {
-      v9 = [(DBWidgetViewController *)self view];
-      [v9 setPressed:1];
+      view = [(DBWidgetViewController *)self view];
+      [view setPressed:1];
     }
   }
 }
 
-- (void)pressesEnded:(id)a3 withEvent:(id)a4
+- (void)pressesEnded:(id)ended withEvent:(id)event
 {
-  v6 = a3;
+  endedCopy = ended;
   v10.receiver = self;
   v10.super_class = DBWidgetViewController;
-  [(DBWidgetViewController *)&v10 pressesEnded:v6 withEvent:a4];
-  v7 = [(DBWidgetViewController *)self view];
-  [v7 setPressed:0];
+  [(DBWidgetViewController *)&v10 pressesEnded:endedCopy withEvent:event];
+  view = [(DBWidgetViewController *)self view];
+  [view setPressed:0];
 
   if ([(DBWidgetViewController *)self entireWidgetFocusable])
   {
@@ -228,7 +228,7 @@
     v11[2] = ___DBPressesContainsPressType_block_invoke_1;
     v11[3] = &__block_descriptor_40_e21_B24__0__UIPress_8_B16l;
     v11[4] = 4;
-    v8 = [v6 objectsPassingTest:v11];
+    v8 = [endedCopy objectsPassingTest:v11];
     v9 = [v8 count];
 
     if (v9)
@@ -238,64 +238,64 @@
   }
 }
 
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event
 {
   v6.receiver = self;
   v6.super_class = DBWidgetViewController;
-  [(DBWidgetViewController *)&v6 pressesCancelled:a3 withEvent:a4];
-  v5 = [(DBWidgetViewController *)self view];
-  [v5 setPressed:0];
+  [(DBWidgetViewController *)&v6 pressesCancelled:cancelled withEvent:event];
+  view = [(DBWidgetViewController *)self view];
+  [view setPressed:0];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = DBWidgetViewController;
-  [(DBWidgetViewController *)&v7 touchesBegan:a3 withEvent:a4];
+  [(DBWidgetViewController *)&v7 touchesBegan:began withEvent:event];
   if ([(DBWidgetViewController *)self entireWidgetFocusable])
   {
-    v5 = [(DBWidgetViewController *)self dimmingView];
-    [v5 setAlpha:0.15];
+    dimmingView = [(DBWidgetViewController *)self dimmingView];
+    [dimmingView setAlpha:0.15];
 
-    v6 = [(DBWidgetViewController *)self view];
-    [v6 setPressed:1];
+    view = [(DBWidgetViewController *)self view];
+    [view setPressed:1];
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v6 = a3;
+  endedCopy = ended;
   v10.receiver = self;
   v10.super_class = DBWidgetViewController;
-  [(DBWidgetViewController *)&v10 touchesEnded:v6 withEvent:a4];
+  [(DBWidgetViewController *)&v10 touchesEnded:endedCopy withEvent:event];
   if ([(DBWidgetViewController *)self entireWidgetFocusable])
   {
-    v7 = [(DBWidgetViewController *)self dimmingView];
-    [v7 setAlpha:0.0];
+    dimmingView = [(DBWidgetViewController *)self dimmingView];
+    [dimmingView setAlpha:0.0];
 
-    v8 = [(DBWidgetViewController *)self view];
-    [v8 setPressed:0];
+    view = [(DBWidgetViewController *)self view];
+    [view setPressed:0];
   }
 
-  v9 = [v6 anyObject];
-  if (![v9 type])
+  anyObject = [endedCopy anyObject];
+  if (![anyObject type])
   {
     [(DBWidgetViewController *)self widgetViewTapped];
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = DBWidgetViewController;
-  [(DBWidgetViewController *)&v7 touchesEnded:a3 withEvent:a4];
+  [(DBWidgetViewController *)&v7 touchesEnded:cancelled withEvent:event];
   if ([(DBWidgetViewController *)self entireWidgetFocusable])
   {
-    v5 = [(DBWidgetViewController *)self dimmingView];
-    [v5 setAlpha:0.0];
+    dimmingView = [(DBWidgetViewController *)self dimmingView];
+    [dimmingView setAlpha:0.0];
 
-    v6 = [(DBWidgetViewController *)self view];
-    [v6 setPressed:0];
+    view = [(DBWidgetViewController *)self view];
+    [view setPressed:0];
   }
 }
 

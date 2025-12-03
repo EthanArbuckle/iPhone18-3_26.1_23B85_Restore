@@ -1,7 +1,7 @@
 @interface UninstallObserver
 - (UninstallObserver)init;
 - (UninstallObserverProtocol)delegate;
-- (void)applicationsDidUninstall:(id)a3;
+- (void)applicationsDidUninstall:(id)uninstall;
 - (void)dealloc;
 @end
 
@@ -31,11 +31,11 @@
   [(UninstallObserver *)&v4 dealloc];
 }
 
-- (void)applicationsDidUninstall:(id)a3
+- (void)applicationsDidUninstall:(id)uninstall
 {
-  v5 = a3;
-  v4 = [(UninstallObserver *)self delegate];
-  [v4 applicationsDidUninstall:v5];
+  uninstallCopy = uninstall;
+  delegate = [(UninstallObserver *)self delegate];
+  [delegate applicationsDidUninstall:uninstallCopy];
 }
 
 - (UninstallObserverProtocol)delegate

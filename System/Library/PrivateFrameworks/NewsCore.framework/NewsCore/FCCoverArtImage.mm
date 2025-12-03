@@ -1,15 +1,15 @@
 @interface FCCoverArtImage
 - (CGSize)dimensions;
-- (FCCoverArtImage)initWithDimensions:(CGSize)a3 URL:(id)a4;
+- (FCCoverArtImage)initWithDimensions:(CGSize)dimensions URL:(id)l;
 @end
 
 @implementation FCCoverArtImage
 
-- (FCCoverArtImage)initWithDimensions:(CGSize)a3 URL:(id)a4
+- (FCCoverArtImage)initWithDimensions:(CGSize)dimensions URL:(id)l
 {
-  height = a3.height;
-  width = a3.width;
-  v8 = a4;
+  height = dimensions.height;
+  width = dimensions.width;
+  lCopy = l;
   v12.receiver = self;
   v12.super_class = FCCoverArtImage;
   v9 = [(FCCoverArtImage *)&v12 init];
@@ -18,7 +18,7 @@
   {
     v9->_dimensions.width = width;
     v9->_dimensions.height = height;
-    objc_storeStrong(&v9->_URL, a4);
+    objc_storeStrong(&v9->_URL, l);
   }
 
   return v10;

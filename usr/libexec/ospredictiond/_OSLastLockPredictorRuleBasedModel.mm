@@ -1,7 +1,7 @@
 @interface _OSLastLockPredictorRuleBasedModel
 + (id)predictor;
 - (_OSLastLockPredictorRuleBasedModel)init;
-- (id)lastLockPredictionResultAtDate:(id)a3 withTimeSinceActive:(double)a4 withError:(id *)a5;
+- (id)lastLockPredictionResultAtDate:(id)date withTimeSinceActive:(double)active withError:(id *)error;
 - (void)initializeParameters;
 @end
 
@@ -45,9 +45,9 @@
   self->_maxPredictionDurationHours = 6.0;
 }
 
-- (id)lastLockPredictionResultAtDate:(id)a3 withTimeSinceActive:(double)a4 withError:(id *)a5
+- (id)lastLockPredictionResultAtDate:(id)date withTimeSinceActive:(double)active withError:(id *)error
 {
-  v6 = a3;
+  dateCopy = date;
   if (!self->_useTimeRestriction)
   {
     maxPredictionDurationHours = self->_maxPredictionDurationHours;
@@ -69,8 +69,8 @@ LABEL_9:
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Restricting entry between %d to %d", v22, 0xEu);
   }
 
-  v10 = [OSIntelligenceUtilities isInputDateInTimeRange:v6 withEarlyTimeOfDay:coreTimeRestrictionBedtimeHour andLateTimeOfDay:coreTimeRestrictionWakeupHour];
-  [OSIntelligenceUtilities secondsUntilHour:coreTimeRestrictionWakeupHour fromDate:v6];
+  v10 = [OSIntelligenceUtilities isInputDateInTimeRange:dateCopy withEarlyTimeOfDay:coreTimeRestrictionBedtimeHour andLateTimeOfDay:coreTimeRestrictionWakeupHour];
+  [OSIntelligenceUtilities secondsUntilHour:coreTimeRestrictionWakeupHour fromDate:dateCopy];
   maxPredictionDurationHours = 0.0;
   v13 = 0.0;
   if (v10)

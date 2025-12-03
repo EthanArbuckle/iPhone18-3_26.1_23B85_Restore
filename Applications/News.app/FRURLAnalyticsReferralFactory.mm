@@ -1,9 +1,9 @@
 @interface FRURLAnalyticsReferralFactory
 - (FRURLAnalyticsReferralFactory)init;
-- (FRURLAnalyticsReferralFactory)initWithAppActivityMonitor:(id)a3;
-- (id)_extractWidgetEngagementFromReferralURL:(id)a3;
-- (id)_removeAMSTokensFromUrl:(id)a3;
-- (id)analyticsReferralForURL:(id)a3 sourceApplication:(id)a4;
+- (FRURLAnalyticsReferralFactory)initWithAppActivityMonitor:(id)monitor;
+- (id)_extractWidgetEngagementFromReferralURL:(id)l;
+- (id)_removeAMSTokensFromUrl:(id)url;
+- (id)analyticsReferralForURL:(id)l sourceApplication:(id)application;
 @end
 
 @implementation FRURLAnalyticsReferralFactory
@@ -31,10 +31,10 @@
   objc_exception_throw(v4);
 }
 
-- (FRURLAnalyticsReferralFactory)initWithAppActivityMonitor:(id)a3
+- (FRURLAnalyticsReferralFactory)initWithAppActivityMonitor:(id)monitor
 {
-  v5 = a3;
-  if (!v5 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  monitorCopy = monitor;
+  if (!monitorCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_100068884();
   }
@@ -45,50 +45,50 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_appActivityMonitor, a3);
+    objc_storeStrong(&v6->_appActivityMonitor, monitor);
   }
 
   return v7;
 }
 
-- (id)analyticsReferralForURL:(id)a3 sourceApplication:(id)a4
+- (id)analyticsReferralForURL:(id)l sourceApplication:(id)application
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  lCopy = l;
+  applicationCopy = application;
+  if (!lCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_100068948();
   }
 
-  if ([v6 nss_isNewsURL])
+  if ([lCopy nss_isNewsURL])
   {
-    v8 = [v6 fr_campaignID];
-    v9 = [v6 fr_campaignType];
-    v10 = [v6 fr_creativeID];
-    v11 = [(FRURLAnalyticsReferralFactory *)self _removeAMSTokensFromUrl:v6];
-    v31 = [v11 absoluteString];
+    fr_campaignID = [lCopy fr_campaignID];
+    fr_campaignType = [lCopy fr_campaignType];
+    fr_creativeID = [lCopy fr_creativeID];
+    v11 = [(FRURLAnalyticsReferralFactory *)self _removeAMSTokensFromUrl:lCopy];
+    absoluteString = [v11 absoluteString];
 
-    v12 = v7;
-    v13 = [v6 fr_widgetModeGroupID];
+    v12 = applicationCopy;
+    fr_widgetModeGroupID = [lCopy fr_widgetModeGroupID];
     v14 = [v12 isEqualToString:FCNotificationMarketingExtensionBundleIdentifier];
-    v15 = [(FRURLAnalyticsReferralFactory *)self _extractWidgetEngagementFromReferralURL:v6];
-    v30 = [v6 fr_isFeldsparReferableURL];
-    v33 = v10;
-    v34 = v8;
-    v32 = v9;
-    if ([v6 fr_articleOpenedFrom] == 2)
+    v15 = [(FRURLAnalyticsReferralFactory *)self _extractWidgetEngagementFromReferralURL:lCopy];
+    fr_isFeldsparReferableURL = [lCopy fr_isFeldsparReferableURL];
+    v33 = fr_creativeID;
+    v34 = fr_campaignID;
+    v32 = fr_campaignType;
+    if ([lCopy fr_articleOpenedFrom] == 2)
     {
       v16 = 0;
       v17 = 12;
     }
 
-    else if ([v6 fr_isFromSafariSearchWithSourceApplication:v12])
+    else if ([lCopy fr_isFromSafariSearchWithSourceApplication:v12])
     {
       v16 = 0;
       v17 = 9;
     }
 
-    else if ([v8 isEqualToString:NSSSafariSearchCampaignID])
+    else if ([fr_campaignID isEqualToString:NSSSafariSearchCampaignID])
     {
       v16 = 0;
       v17 = 8;
@@ -109,15 +109,15 @@
       v16 = v14;
     }
 
-    v19 = [(FRURLAnalyticsReferralFactory *)self appActivityMonitor];
-    v20 = [v19 appSessionStartReferral];
+    appActivityMonitor = [(FRURLAnalyticsReferralFactory *)self appActivityMonitor];
+    appSessionStartReferral = [appActivityMonitor appSessionStartReferral];
 
-    v21 = [v20 referringURL];
-    v22 = [v21 isEqual:v31];
+    referringURL = [appSessionStartReferral referringURL];
+    v22 = [referringURL isEqual:absoluteString];
 
     if (v22)
     {
-      v18 = v20;
+      v18 = appSessionStartReferral;
       v24 = v33;
       v23 = v34;
       v25 = v32;
@@ -128,10 +128,10 @@
       v28 = v17;
       v29 = v16;
       v24 = v33;
-      LOBYTE(v27) = v30;
+      LOBYTE(v27) = fr_isFeldsparReferableURL;
       v23 = v34;
       v25 = v32;
-      v18 = [[FRAnalyticsReferral alloc] initWithUserActivityType:0 creativeID:v33 campaignID:v34 campaignType:v32 referringApplication:v12 referringURL:v31 appOpenedByUserActivity:v27 widgetModeGroupID:v13 widgetEngagement:v15 appSessionStartMethod:v28 appSessionStartNotificationType:v29];
+      v18 = [[FRAnalyticsReferral alloc] initWithUserActivityType:0 creativeID:v33 campaignID:v34 campaignType:v32 referringApplication:v12 referringURL:absoluteString appOpenedByUserActivity:v27 widgetModeGroupID:fr_widgetModeGroupID widgetEngagement:v15 appSessionStartMethod:v28 appSessionStartNotificationType:v29];
     }
   }
 
@@ -143,23 +143,23 @@
   return v18;
 }
 
-- (id)_extractWidgetEngagementFromReferralURL:(id)a3
+- (id)_extractWidgetEngagementFromReferralURL:(id)l
 {
-  v3 = a3;
-  if (!v3 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  lCopy = l;
+  if (!lCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_100068A0C();
   }
 
-  if (([v3 nss_isNewsURL] & 1) == 0 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  if (([lCopy nss_isNewsURL] & 1) == 0 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_100068AD0();
   }
 
-  v4 = [v3 fr_widgetEngagementFileURL];
-  if (v4)
+  fr_widgetEngagementFileURL = [lCopy fr_widgetEngagementFileURL];
+  if (fr_widgetEngagementFileURL)
   {
-    v5 = [[NSData alloc] initWithContentsOfURL:v4];
+    v5 = [[NSData alloc] initWithContentsOfURL:fr_widgetEngagementFileURL];
     if (v5)
     {
       v6 = [[NTPBWidgetEngagement alloc] initWithData:v5];
@@ -179,10 +179,10 @@
   return v6;
 }
 
-- (id)_removeAMSTokensFromUrl:(id)a3
+- (id)_removeAMSTokensFromUrl:(id)url
 {
-  v3 = a3;
-  v4 = [[NSURLComponents alloc] initWithURL:v3 resolvingAgainstBaseURL:0];
+  urlCopy = url;
+  v4 = [[NSURLComponents alloc] initWithURL:urlCopy resolvingAgainstBaseURL:0];
 
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
@@ -190,8 +190,8 @@
   v10[3] = &unk_1000C19E8;
   v11 = &off_1000CB328;
   v5 = [NSPredicate predicateWithBlock:v10];
-  v6 = [v4 queryItems];
-  v7 = [v6 filteredArrayUsingPredicate:v5];
+  queryItems = [v4 queryItems];
+  v7 = [queryItems filteredArrayUsingPredicate:v5];
   [v4 setQueryItems:v7];
 
   v8 = [v4 URL];

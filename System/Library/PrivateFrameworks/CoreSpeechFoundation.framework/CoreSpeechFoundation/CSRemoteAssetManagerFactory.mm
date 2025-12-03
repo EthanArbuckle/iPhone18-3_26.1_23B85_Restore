@@ -16,9 +16,9 @@
     v2 = off_1E8659A18;
   }
 
-  v3 = [(__objc2_class *)*v2 sharedManager];
+  sharedManager = [(__objc2_class *)*v2 sharedManager];
 
-  return v3;
+  return sharedManager;
 }
 
 @end

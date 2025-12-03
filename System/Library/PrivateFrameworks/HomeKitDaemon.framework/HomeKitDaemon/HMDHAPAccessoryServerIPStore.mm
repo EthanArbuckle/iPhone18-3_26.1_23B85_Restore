@@ -1,24 +1,24 @@
 @interface HMDHAPAccessoryServerIPStore
 + (id)logCategory;
-- (BOOL)writeDictionary:(id)a3 error:(id *)a4;
-- (HMDHAPAccessoryServerIPStore)initWithPath:(id)a3 andFilename:(id)a4;
-- (id)dictionaryFromStoreWithError:(id *)a3;
+- (BOOL)writeDictionary:(id)dictionary error:(id *)error;
+- (HMDHAPAccessoryServerIPStore)initWithPath:(id)path andFilename:(id)filename;
+- (id)dictionaryFromStoreWithError:(id *)error;
 @end
 
 @implementation HMDHAPAccessoryServerIPStore
 
-- (HMDHAPAccessoryServerIPStore)initWithPath:(id)a3 andFilename:(id)a4
+- (HMDHAPAccessoryServerIPStore)initWithPath:(id)path andFilename:(id)filename
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  pathCopy = path;
+  filenameCopy = filename;
+  if (!pathCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_7;
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = filenameCopy;
+  if (!filenameCopy)
   {
 LABEL_7:
     v15 = _HMFPreconditionFailure();
@@ -30,7 +30,7 @@ LABEL_7:
   v9 = [(HMDHAPAccessoryServerIPStore *)&v19 init];
   if (v9)
   {
-    v10 = [MEMORY[0x277CBEBC0] fileURLWithPath:v6 isDirectory:1];
+    v10 = [MEMORY[0x277CBEBC0] fileURLWithPath:pathCopy isDirectory:1];
     v11 = [v10 URLByAppendingPathComponent:v8];
     v12 = [v11 URLByAppendingPathExtension:@"plist"];
     url = v9->_url;
@@ -40,25 +40,25 @@ LABEL_7:
   return v9;
 }
 
-- (BOOL)writeDictionary:(id)a3 error:(id *)a4
+- (BOOL)writeDictionary:(id)dictionary error:(id *)error
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [MEMORY[0x277CBEB38] dictionary];
+  dictionaryCopy = dictionary;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __54__HMDHAPAccessoryServerIPStore_writeDictionary_error___block_invoke;
   v24[3] = &unk_278678AF8;
-  v8 = v7;
+  v8 = dictionary;
   v25 = v8;
-  [v6 enumerateKeysAndObjectsUsingBlock:v24];
+  [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v24];
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v12 = HMFGetLogIdentifier();
-    v13 = [v6 count];
+    v13 = [dictionaryCopy count];
     v14 = [v8 count];
     *buf = 138543874;
     v27 = v12;
@@ -70,19 +70,19 @@ LABEL_7:
   }
 
   objc_autoreleasePoolPop(v9);
-  v15 = [MEMORY[0x277CCAC58] dataWithPropertyList:v8 format:200 options:0 error:a4];
+  v15 = [MEMORY[0x277CCAC58] dataWithPropertyList:v8 format:200 options:0 error:error];
   if (v15)
   {
-    v16 = [(HMDHAPAccessoryServerIPStore *)v10 url];
-    v17 = [v15 writeToURL:v16 options:0 error:a4];
+    v16 = [(HMDHAPAccessoryServerIPStore *)selfCopy url];
+    v17 = [v15 writeToURL:v16 options:0 error:error];
   }
 
   else
   {
-    if ([v6 count])
+    if ([dictionaryCopy count])
     {
       v18 = objc_autoreleasePoolPush();
-      v19 = v10;
+      v19 = selfCopy;
       v20 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
@@ -90,7 +90,7 @@ LABEL_7:
         *buf = 138543618;
         v27 = v21;
         v28 = 2112;
-        v29 = v6;
+        v29 = dictionaryCopy;
         _os_log_impl(&dword_229538000, v20, OS_LOG_TYPE_ERROR, "%{public}@Error serializing data: %@", buf, 0x16u);
       }
 
@@ -111,26 +111,26 @@ void __54__HMDHAPAccessoryServerIPStore_writeDictionary_error___block_invoke(uin
   [*(a1 + 32) setObject:v6 forKeyedSubscript:v5];
 }
 
-- (id)dictionaryFromStoreWithError:(id *)a3
+- (id)dictionaryFromStoreWithError:(id *)error
 {
   v32 = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CBEAC0];
   v6 = [(HMDHAPAccessoryServerIPStore *)self url];
-  v7 = [v5 dictionaryWithContentsOfURL:v6 error:a3];
+  v7 = [v5 dictionaryWithContentsOfURL:v6 error:error];
 
   if (v7)
   {
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v20 = MEMORY[0x277D85DD0];
     v21 = 3221225472;
     v22 = __61__HMDHAPAccessoryServerIPStore_dictionaryFromStoreWithError___block_invoke;
     v23 = &unk_278689488;
-    v24 = self;
-    v9 = v8;
+    selfCopy = self;
+    v9 = dictionary;
     v25 = v9;
     [v7 enumerateKeysAndObjectsUsingBlock:&v20];
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy2 = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {

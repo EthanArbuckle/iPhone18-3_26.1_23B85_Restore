@@ -1,21 +1,21 @@
 @interface MUAspectRatioLayoutInternal
-- (MUAspectRatioLayoutInternal)initWithItem:(id)a3 aspectRatio:(double)a4;
+- (MUAspectRatioLayoutInternal)initWithItem:(id)item aspectRatio:(double)ratio;
 - (MULayoutItem)item;
 - (double)aspectRatio;
-- (void)setAspectRatio:(double)a3;
-- (void)setItem:(id)a3;
+- (void)setAspectRatio:(double)ratio;
+- (void)setItem:(id)item;
 @end
 
 @implementation MUAspectRatioLayoutInternal
 
-- (MUAspectRatioLayoutInternal)initWithItem:(id)a3 aspectRatio:(double)a4
+- (MUAspectRatioLayoutInternal)initWithItem:(id)item aspectRatio:(double)ratio
 {
   swift_unknownObjectRetain();
-  [a3 _mapsui_disableTranslatesAutoresizingMaskIntoConstraints];
+  [item _mapsui_disableTranslatesAutoresizingMaskIntoConstraints];
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EC1708A0, &unk_1C5878000);
   swift_unknownObjectRetain();
   sub_1C56236C4();
-  *&v10[1] = a4;
+  *&v10[1] = ratio;
   *(&self->super.super.isa + OBJC_IVAR___MUAspectRatioLayoutInternal_builder) = sub_1C562370C(v10);
 
   v8 = sub_1C562389C(v7, &off_1F44C6BC0);
@@ -26,7 +26,7 @@
 - (MULayoutItem)item
 {
   v2 = *(&self->super.super.isa + OBJC_IVAR___MUAspectRatioLayoutInternal_builder);
-  v3 = self;
+  selfCopy = self;
   sub_1C5623A68(v6);
   Strong = swift_unknownObjectWeakLoadStrong();
 
@@ -35,15 +35,15 @@
   return Strong;
 }
 
-- (void)setItem:(id)a3
+- (void)setItem:(id)item
 {
-  v4 = self;
-  if (a3)
+  selfCopy = self;
+  if (item)
   {
     [swift_unknownObjectRetain() _mapsui_disableTranslatesAutoresizingMaskIntoConstraints];
   }
 
-  v5 = *(&v4->super.super.isa + OBJC_IVAR___MUAspectRatioLayoutInternal_builder);
+  v5 = *(&selfCopy->super.super.isa + OBJC_IVAR___MUAspectRatioLayoutInternal_builder);
   sub_1C5623A68(v8);
   swift_unknownObjectWeakAssign();
   sub_1C5723648(v8, v7);
@@ -55,7 +55,7 @@
 - (double)aspectRatio
 {
   v2 = *(&self->super.super.isa + OBJC_IVAR___MUAspectRatioLayoutInternal_builder);
-  v3 = self;
+  selfCopy = self;
   sub_1C5623A68(v6);
 
   v4 = *&v6[1];
@@ -63,13 +63,13 @@
   return v4;
 }
 
-- (void)setAspectRatio:(double)a3
+- (void)setAspectRatio:(double)ratio
 {
   v5 = OBJC_IVAR___MUAspectRatioLayoutInternal_builder;
   v6 = *(&self->super.super.isa + OBJC_IVAR___MUAspectRatioLayoutInternal_builder);
-  v7 = self;
+  selfCopy = self;
   sub_1C5623A68(v11);
-  v12 = a3;
+  ratioCopy = ratio;
   v8 = *(&self->super.super.isa + v5);
   sub_1C5723648(v11, v10);
   sub_1C5623B40(v10, v9);

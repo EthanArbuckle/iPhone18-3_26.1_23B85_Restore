@@ -1,34 +1,34 @@
 @interface AFKUserSystemService
-- (AFKUserSystemService)initWithService:(unsigned int)a3;
-- (BOOL)setMatchedServiceProperties:(id)a3 proprties:(id)a4 error:(id *)a5;
-- (id)copyMatchedServiceProperties:(id)a3 key:(id)a4 error:(id *)a5;
-- (id)registry:(id *)a3;
+- (AFKUserSystemService)initWithService:(unsigned int)service;
+- (BOOL)setMatchedServiceProperties:(id)properties proprties:(id)proprties error:(id *)error;
+- (id)copyMatchedServiceProperties:(id)properties key:(id)key error:(id *)error;
+- (id)registry:(id *)registry;
 - (void)dealloc;
 @end
 
 @implementation AFKUserSystemService
 
-- (AFKUserSystemService)initWithService:(unsigned int)a3
+- (AFKUserSystemService)initWithService:(unsigned int)service
 {
-  if (!a3)
+  if (!service)
   {
     [AFKUserSystemService initWithService:?];
 LABEL_7:
-    v5 = 0;
+    selfCopy = 0;
     goto LABEL_4;
   }
 
-  if (IOObjectRetain(a3))
+  if (IOObjectRetain(service))
   {
     [AFKUserSystemService initWithService:?];
     goto LABEL_7;
   }
 
-  self->_service = a3;
-  v5 = self;
+  self->_service = service;
+  selfCopy = self;
 LABEL_4:
 
-  return v5;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -45,7 +45,7 @@ LABEL_4:
   [(AFKUserSystemService *)&v4 dealloc];
 }
 
-- (id)registry:(id *)a3
+- (id)registry:(id *)registry
 {
   v52[1] = *MEMORY[0x277D85DE8];
   service = self->_service;
@@ -112,10 +112,10 @@ LABEL_4:
   [v7 cancel];
   if (*(v35 + 6))
   {
-    if (a3)
+    if (registry)
     {
       [MEMORY[0x277CCA9B8] errorWithDomain:@"AFKUser" code:? userInfo:?];
-      *a3 = v13 = 0;
+      *registry = v13 = 0;
       goto LABEL_16;
     }
   }
@@ -280,20 +280,20 @@ void __33__AFKUserSystemService_registry___block_invoke_3(uint64_t a1, void *a2,
   }
 }
 
-- (BOOL)setMatchedServiceProperties:(id)a3 proprties:(id)a4 error:(id *)a5
+- (BOOL)setMatchedServiceProperties:(id)properties proprties:(id)proprties error:(id *)error
 {
   v28[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  propertiesCopy = properties;
+  proprtiesCopy = proprties;
   v27[0] = @"properties";
   v27[1] = @"service-matching";
-  v28[0] = v9;
-  v28[1] = v8;
+  v28[0] = proprtiesCopy;
+  v28[1] = propertiesCopy;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:v27 count:2];
   v11 = IOCFSerialize(v10, 1uLL);
   if (v11)
   {
-    v24 = a5;
+    errorCopy = error;
     v12 = [AFKEndpointInterface withService:self->_service];
     v13 = dispatch_queue_create("setMatchedServiceProperties", 0);
     v14 = dispatch_semaphore_create(0);
@@ -320,9 +320,9 @@ void __33__AFKUserSystemService_registry___block_invoke_3(uint64_t a1, void *a2,
         [AFKUserSystemService setMatchedServiceProperties:? proprties:? error:?];
       }
 
-      if (v24)
+      if (errorCopy)
       {
-        *v24 = [MEMORY[0x277CCA9B8] errorWithDomain:@"AFKUser" code:-536870186 userInfo:0];
+        *errorCopy = [MEMORY[0x277CCA9B8] errorWithDomain:@"AFKUser" code:-536870186 userInfo:0];
       }
     }
 
@@ -337,10 +337,10 @@ void __33__AFKUserSystemService_registry___block_invoke_3(uint64_t a1, void *a2,
       [AFKUserSystemService setMatchedServiceProperties:? proprties:? error:?];
     }
 
-    if (a5)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] errorWithDomain:@"AFKUser" code:-536870206 userInfo:0];
-      *a5 = v18 = 0;
+      *error = v18 = 0;
     }
 
     else
@@ -367,11 +367,11 @@ intptr_t __68__AFKUserSystemService_setMatchedServiceProperties_proprties_error_
   return dispatch_semaphore_signal(*(a1 + 40));
 }
 
-- (id)copyMatchedServiceProperties:(id)a3 key:(id)a4 error:(id *)a5
+- (id)copyMatchedServiceProperties:(id)properties key:(id)key error:(id *)error
 {
   v38[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  propertiesCopy = properties;
+  keyCopy = key;
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
@@ -380,9 +380,9 @@ intptr_t __68__AFKUserSystemService_setMatchedServiceProperties_proprties_error_
   v35 = 0;
   v37[0] = @"properties";
   v37[1] = @"service-matching";
-  v38[0] = v9;
-  v38[1] = v8;
-  v25 = v8;
+  v38[0] = keyCopy;
+  v38[1] = propertiesCopy;
+  v25 = propertiesCopy;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v38 forKeys:v37 count:2];
   v11 = IOCFSerialize(v10, 1uLL);
   if (v11)
@@ -397,7 +397,7 @@ intptr_t __68__AFKUserSystemService_setMatchedServiceProperties_proprties_error_
     v26[3] = &unk_278BBEA00;
     v26[4] = self;
     v28 = &v30;
-    v29 = a5;
+    errorCopy = error;
     v15 = v14;
     v27 = v15;
     [v12 setResponseHandler:v26];
@@ -412,10 +412,10 @@ intptr_t __68__AFKUserSystemService_setMatchedServiceProperties_proprties_error_
       v19 = _AFKUserLog();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
-        [AFKUserSystemService copyMatchedServiceProperties:v9 key:v36 error:[(AFKUserSystemService *)self regID]];
+        [AFKUserSystemService copyMatchedServiceProperties:keyCopy key:v36 error:[(AFKUserSystemService *)self regID]];
       }
 
-      *a5 = [MEMORY[0x277CCA9B8] errorWithDomain:@"AFKUser" code:-536870186 userInfo:0];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"AFKUser" code:-536870186 userInfo:0];
     }
 
     [v12 cancel];
@@ -430,10 +430,10 @@ intptr_t __68__AFKUserSystemService_setMatchedServiceProperties_proprties_error_
       [AFKUserSystemService copyMatchedServiceProperties:v10 key:v36 error:[(AFKUserSystemService *)self regID]];
     }
 
-    if (a5)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] errorWithDomain:@"AFKUser" code:-536870206 userInfo:0];
-      *a5 = v20 = 0;
+      *error = v20 = 0;
     }
 
     else

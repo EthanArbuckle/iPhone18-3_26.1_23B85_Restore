@@ -1,69 +1,69 @@
 @interface CAIssuerDelegate
-- (BOOL)fetchNext:(id)a3 context:(id)a4;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didFinishCollectingMetrics:(id)a5;
+- (BOOL)fetchNext:(id)next context:(id)context;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)URLSession:(id)session task:(id)task didFinishCollectingMetrics:(id)metrics;
 @end
 
 @implementation CAIssuerDelegate
 
-- (void)URLSession:(id)a3 task:(id)a4 didFinishCollectingMetrics:(id)a5
+- (void)URLSession:(id)session task:(id)task didFinishCollectingMetrics:(id)metrics
 {
-  v7 = a5;
-  v8 = [a4 originalRequest];
-  v9 = [v8 taskId];
+  metricsCopy = metrics;
+  originalRequest = [task originalRequest];
+  taskId = [originalRequest taskId];
 
-  v10 = [(TrustURLSessionDelegate *)self contextForTask:v9];
+  v10 = [(TrustURLSessionDelegate *)self contextForTask:taskId];
   v11 = v10;
   if (!v10)
   {
-    v14 = sub_1000027AC("http");
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+    taskInterval = sub_1000027AC("http");
+    if (os_log_type_enabled(taskInterval, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 138412290;
-      v17 = v9;
-      _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "failed to find context for %@", &v16, 0xCu);
+      v17 = taskId;
+      _os_log_impl(&_mh_execute_header, taskInterval, OS_LOG_TYPE_DEFAULT, "failed to find context for %@", &v16, 0xCu);
     }
 
     goto LABEL_7;
   }
 
-  v12 = [v10 context];
-  if (v12)
+  context = [v10 context];
+  if (context)
   {
-    v13 = v12[34];
+    v13 = context[34];
     if (v13)
     {
-      v14 = [v7 taskInterval];
-      [v14 duration];
+      taskInterval = [metricsCopy taskInterval];
+      [taskInterval duration];
       *(v13 + 32) += (v15 * 1000000000.0);
 LABEL_7:
     }
   }
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sessionCopy = session;
+  taskCopy = task;
+  errorCopy = error;
   v63.receiver = self;
   v63.super_class = CAIssuerDelegate;
-  [(TrustURLSessionDelegate *)&v63 URLSession:v8 task:v9 didCompleteWithError:v10];
-  v11 = [v9 originalRequest];
-  v12 = [v11 taskId];
+  [(TrustURLSessionDelegate *)&v63 URLSession:sessionCopy task:taskCopy didCompleteWithError:errorCopy];
+  originalRequest = [taskCopy originalRequest];
+  taskId = [originalRequest taskId];
 
-  v13 = [(TrustURLSessionDelegate *)self contextForTask:v12];
+  v13 = [(TrustURLSessionDelegate *)self contextForTask:taskId];
   v14 = v13;
   if (v13)
   {
     v59 = 0;
     v60 = &v59;
     v61 = 0x2020000000;
-    v62 = [v13 context];
+    context = [v13 context];
     v15 = v60[3];
     if (!v15)
     {
-      [(TrustURLSessionDelegate *)self removeTask:v12];
+      [(TrustURLSessionDelegate *)self removeTask:taskId];
 LABEL_37:
       _Block_object_dispose(&v59, 8);
       goto LABEL_38;
@@ -76,17 +76,17 @@ LABEL_37:
     v56 = sub_100038934;
     v57 = sub_100038944;
     v58 = 0;
-    if (v10)
+    if (errorCopy)
     {
       v16 = sub_1000027AC("caissuer");
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = [v9 originalRequest];
-        v18 = [v17 URL];
+        originalRequest2 = [taskCopy originalRequest];
+        v18 = [originalRequest2 URL];
         *buf = 138412546;
         *&buf[4] = v18;
         *&buf[12] = 2112;
-        *&buf[14] = v10;
+        *&buf[14] = errorCopy;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Failed to download issuer %@, with error %@", buf, 0x16u);
       }
 
@@ -98,15 +98,15 @@ LABEL_37:
       goto LABEL_23;
     }
 
-    v20 = [v14 response];
+    response = [v14 response];
 
-    if (!v20)
+    if (!response)
     {
       goto LABEL_23;
     }
 
-    v21 = [v14 response];
-    v22 = SecCertificateCreateWithData(0, v21);
+    response2 = [v14 response];
+    v22 = SecCertificateCreateWithData(0, response2);
     v23 = v22;
     if (v22)
     {
@@ -156,8 +156,8 @@ LABEL_23:
     v27 = v54[5];
     if (v27)
     {
-      v28 = [v9 originalRequest];
-      v29 = [v28 URL];
+      originalRequest3 = [taskCopy originalRequest];
+      v29 = [originalRequest3 URL];
       [v14 maxAge];
       v31 = v30;
       Current = CFAbsoluteTimeGetCurrent();
@@ -201,10 +201,10 @@ LABEL_23:
 
     else
     {
-      if (![(CAIssuerDelegate *)self fetchNext:v8 context:v14])
+      if (![(CAIssuerDelegate *)self fetchNext:sessionCopy context:v14])
       {
 LABEL_36:
-        [(TrustURLSessionDelegate *)self removeTask:v12, *&v39, block, v41, v42, v43, v44, v45, v46, v47, v48, v49, v50, v51, v52, v53];
+        [(TrustURLSessionDelegate *)self removeTask:taskId, *&v39, block, v41, v42, v43, v44, v45, v46, v47, v48, v49, v50, v51, v52, v53];
         _Block_object_dispose(&v53, 8);
 
         goto LABEL_37;
@@ -236,21 +236,21 @@ LABEL_36:
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    *&buf[4] = v12;
+    *&buf[4] = taskId;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "failed to find context for %@", buf, 0xCu);
   }
 
 LABEL_38:
 }
 
-- (BOOL)fetchNext:(id)a3 context:(id)a4
+- (BOOL)fetchNext:(id)next context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 context];
-  if (v8)
+  contextCopy = context;
+  nextCopy = next;
+  context = [contextCopy context];
+  if (context)
   {
-    v9 = v8[34];
+    v9 = context[34];
   }
 
   else
@@ -260,7 +260,7 @@ LABEL_38:
 
   v12.receiver = self;
   v12.super_class = CAIssuerDelegate;
-  v10 = [(TrustURLSessionDelegate *)&v12 fetchNext:v7 context:v6];
+  v10 = [(TrustURLSessionDelegate *)&v12 fetchNext:nextCopy context:contextCopy];
 
   if (!v10 && v9)
   {

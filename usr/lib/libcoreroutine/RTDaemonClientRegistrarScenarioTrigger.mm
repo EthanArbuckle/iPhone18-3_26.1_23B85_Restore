@@ -1,29 +1,29 @@
 @interface RTDaemonClientRegistrarScenarioTrigger
-- (RTDaemonClientRegistrarScenarioTrigger)initWithCoder:(id)a3;
-- (RTDaemonClientRegistrarScenarioTrigger)initWithScenarioTriggerManager:(id)a3 queue:(id)a4;
+- (RTDaemonClientRegistrarScenarioTrigger)initWithCoder:(id)coder;
+- (RTDaemonClientRegistrarScenarioTrigger)initWithScenarioTriggerManager:(id)manager queue:(id)queue;
 - (RTDaemonClientRegistrarScenarioTriggerProtocol)delegate;
-- (void)_logMonitoredScenarioTriggers:(unint64_t)a3;
-- (void)_onScenarioTriggerManagerNotification:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)onScenarioTriggerManagerNotification:(id)a3;
-- (void)startMonitoringForScenarioTriggerType:(unint64_t)a3;
-- (void)stopMonitoringForScenarioTriggerType:(unint64_t)a3;
+- (void)_logMonitoredScenarioTriggers:(unint64_t)triggers;
+- (void)_onScenarioTriggerManagerNotification:(id)notification;
+- (void)encodeWithCoder:(id)coder;
+- (void)onScenarioTriggerManagerNotification:(id)notification;
+- (void)startMonitoringForScenarioTriggerType:(unint64_t)type;
+- (void)stopMonitoringForScenarioTriggerType:(unint64_t)type;
 @end
 
 @implementation RTDaemonClientRegistrarScenarioTrigger
 
-- (RTDaemonClientRegistrarScenarioTrigger)initWithScenarioTriggerManager:(id)a3 queue:(id)a4
+- (RTDaemonClientRegistrarScenarioTrigger)initWithScenarioTriggerManager:(id)manager queue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  queueCopy = queue;
   v16.receiver = self;
   v16.super_class = RTDaemonClientRegistrarScenarioTrigger;
   v9 = [(RTDaemonClientRegistrarScenarioTrigger *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_queue, a4);
-    objc_storeStrong(&v10->_scenarioTriggerManager, a3);
+    objc_storeStrong(&v9->_queue, queue);
+    objc_storeStrong(&v10->_scenarioTriggerManager, manager);
     v11 = objc_opt_new();
     pendingScenarioInvocations = v10->_pendingScenarioInvocations;
     v10->_pendingScenarioInvocations = v11;
@@ -37,42 +37,42 @@
   return v10;
 }
 
-- (RTDaemonClientRegistrarScenarioTrigger)initWithCoder:(id)a3
+- (RTDaemonClientRegistrarScenarioTrigger)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = RTDaemonClientRegistrarScenarioTrigger;
-  v5 = [(RTDaemonClientRegistrar *)&v7 initWithCoder:v4];
+  v5 = [(RTDaemonClientRegistrar *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_monitoredScenarioTriggerTypes = [v4 decodeIntegerForKey:@"monitoredScenarioTriggerTypes"];
+    v5->_monitoredScenarioTriggerTypes = [coderCopy decodeIntegerForKey:@"monitoredScenarioTriggerTypes"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = RTDaemonClientRegistrarScenarioTrigger;
-  v4 = a3;
-  [(RTDaemonClientRegistrar *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_monitoredScenarioTriggerTypes forKey:{@"monitoredScenarioTriggerTypes", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(RTDaemonClientRegistrar *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_monitoredScenarioTriggerTypes forKey:{@"monitoredScenarioTriggerTypes", v5.receiver, v5.super_class}];
 }
 
-- (void)startMonitoringForScenarioTriggerType:(unint64_t)a3
+- (void)startMonitoringForScenarioTriggerType:(unint64_t)type
 {
   if ([(RTDaemonClientRegistrarScenarioTrigger *)self invocationsPending])
   {
     [(RTInvocationDispatcher *)self->_dispatcher dispatchPendingInvocations];
   }
 
-  for (; a3; a3 &= a3 - 1)
+  for (; type; type &= type - 1)
   {
-    v5 = a3 & -a3;
+    v5 = type & -type;
     if ((self->_monitoredScenarioTriggerTypes & v5) != 0)
     {
-      v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3 & -a3];
+      v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type & -type];
       v7 = [(NSMutableDictionary *)self->_pendingScenarioInvocations objectForKey:v6];
 
       if (v7)
@@ -89,7 +89,7 @@
 
     else
     {
-      v6 = [RTScenarioTriggerManager scenarioTriggerTypeToNotificationName:a3 & -a3];
+      v6 = [RTScenarioTriggerManager scenarioTriggerTypeToNotificationName:type & -type];
       if (v6)
       {
         self->_monitoredScenarioTriggerTypes |= v5;
@@ -103,17 +103,17 @@
   [(RTDaemonClientRegistrarScenarioTrigger *)self _logMonitoredScenarioTriggers:monitoredScenarioTriggerTypes];
 }
 
-- (void)onScenarioTriggerManagerNotification:(id)a3
+- (void)onScenarioTriggerManagerNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __79__RTDaemonClientRegistrarScenarioTrigger_onScenarioTriggerManagerNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
   dispatch_async(queue, v7);
 }
 
@@ -146,19 +146,19 @@ void __79__RTDaemonClientRegistrarScenarioTrigger_onScenarioTriggerManagerNotifi
   }
 }
 
-- (void)_onScenarioTriggerManagerNotification:(id)a3
+- (void)_onScenarioTriggerManagerNotification:(id)notification
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v4 scenarioTrigger];
-    v7 = v6;
-    if (v6)
+    scenarioTrigger = [notificationCopy scenarioTrigger];
+    v7 = scenarioTrigger;
+    if (scenarioTrigger)
     {
       monitoredScenarioTriggerTypes = self->_monitoredScenarioTriggerTypes;
-      if (([v6 type]& monitoredScenarioTriggerTypes) != 0)
+      if (([scenarioTrigger type]& monitoredScenarioTriggerTypes) != 0)
       {
         v12[0] = v7;
         v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
@@ -222,16 +222,16 @@ LABEL_15:
 LABEL_18:
 }
 
-- (void)stopMonitoringForScenarioTriggerType:(unint64_t)a3
+- (void)stopMonitoringForScenarioTriggerType:(unint64_t)type
 {
   [(RTInvocationDispatcher *)self->_dispatcher removeAllPendingInvocations];
-  if (a3)
+  if (type)
   {
-    v5 = ~a3;
+    v5 = ~type;
     do
     {
       monitoredScenarioTriggerTypes = self->_monitoredScenarioTriggerTypes;
-      if ((monitoredScenarioTriggerTypes & a3 & -a3) != 0)
+      if ((monitoredScenarioTriggerTypes & type & -type) != 0)
       {
         self->_monitoredScenarioTriggerTypes = monitoredScenarioTriggerTypes & v5;
         v7 = [RTScenarioTriggerManager scenarioTriggerTypeToNotificationName:?];
@@ -241,10 +241,10 @@ LABEL_18:
         }
       }
 
-      a3 &= a3 - 1;
+      type &= type - 1;
     }
 
-    while (a3);
+    while (type);
   }
 
   v8 = self->_monitoredScenarioTriggerTypes;
@@ -252,7 +252,7 @@ LABEL_18:
   [(RTDaemonClientRegistrarScenarioTrigger *)self _logMonitoredScenarioTriggers:v8];
 }
 
-- (void)_logMonitoredScenarioTriggers:(unint64_t)a3
+- (void)_logMonitoredScenarioTriggers:(unint64_t)triggers
 {
   v16 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))

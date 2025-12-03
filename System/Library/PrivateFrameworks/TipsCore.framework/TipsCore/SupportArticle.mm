@@ -2,8 +2,8 @@
 - (NSString)body;
 - (NSString)identifier;
 - (NSString)title;
-- (void)setBody:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setBody:(id)body;
+- (void)setTitle:(id)title;
 @end
 
 @implementation SupportArticle
@@ -26,9 +26,9 @@
   return v4;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  if (a3)
+  if (title)
   {
     v4 = sub_1C014C230();
     v6 = v5;
@@ -64,9 +64,9 @@
   return v4;
 }
 
-- (void)setBody:(id)a3
+- (void)setBody:(id)body
 {
-  if (a3)
+  if (body)
   {
     v4 = sub_1C014C230();
     v6 = v5;

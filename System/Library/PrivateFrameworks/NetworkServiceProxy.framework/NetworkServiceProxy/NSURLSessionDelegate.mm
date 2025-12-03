@@ -1,65 +1,65 @@
 @interface NSURLSessionDelegate
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5;
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler;
 @end
 
 @implementation NSURLSessionDelegate
 
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
   v63 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sessionCopy = session;
+  challengeCopy = challenge;
+  handlerCopy = handler;
   v11 = nplog_obj();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    v44 = [v8 sessionDescription];
-    v45 = [v9 protectionSpace];
+    sessionDescription = [sessionCopy sessionDescription];
+    protectionSpace = [challengeCopy protectionSpace];
     *buf = 138412546;
-    v58 = v44;
+    v58 = sessionDescription;
     v59 = 2048;
-    v60 = [v45 serverTrust];
+    serverTrust = [protectionSpace serverTrust];
     _os_log_debug_impl(&dword_1AE7E2000, v11, OS_LOG_TYPE_DEBUG, "Received an authentication challenge for %@, serverTrust = %p", buf, 0x16u);
   }
 
-  v12 = [v9 protectionSpace];
-  v13 = [v12 serverTrust];
+  protectionSpace2 = [challengeCopy protectionSpace];
+  serverTrust2 = [protectionSpace2 serverTrust];
 
-  if (!v13)
+  if (!serverTrust2)
   {
-    v10[2](v10, 1, 0);
+    handlerCopy[2](handlerCopy, 1, 0);
     goto LABEL_41;
   }
 
-  v14 = [v9 protectionSpace];
-  v15 = [v14 serverTrust];
+  protectionSpace3 = [challengeCopy protectionSpace];
+  serverTrust3 = [protectionSpace3 serverTrust];
 
   Mutable = CFArrayCreateMutable(*MEMORY[0x1E695E480], 2, MEMORY[0x1E695E9C0]);
   if (Mutable)
   {
     v17 = Mutable;
-    v18 = [(NSURLSessionDelegate *)self leafOID];
+    leafOID = [(NSURLSessionDelegate *)self leafOID];
 
-    if (v18)
+    if (leafOID)
     {
       v19 = nplog_obj();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
       {
-        v48 = [v8 sessionDescription];
-        v49 = [(NSURLSessionDelegate *)self validationHostname];
-        v50 = [(NSURLSessionDelegate *)self leafOID];
+        sessionDescription2 = [sessionCopy sessionDescription];
+        validationHostname = [(NSURLSessionDelegate *)self validationHostname];
+        leafOID2 = [(NSURLSessionDelegate *)self leafOID];
         *buf = 138412802;
-        v58 = v48;
+        v58 = sessionDescription2;
         v59 = 2112;
-        v60 = v49;
+        serverTrust = validationHostname;
         v61 = 2112;
-        v62 = v50;
+        v62 = leafOID2;
         _os_log_debug_impl(&dword_1AE7E2000, v19, OS_LOG_TYPE_DEBUG, "Creating a pinning policy with name %@, hostname %@, and leaf OID %@", buf, 0x20u);
       }
 
-      v20 = [v8 sessionDescription];
-      v21 = [(NSURLSessionDelegate *)self validationHostname];
-      v22 = [(NSURLSessionDelegate *)self leafOID];
+      sessionDescription3 = [sessionCopy sessionDescription];
+      validationHostname2 = [(NSURLSessionDelegate *)self validationHostname];
+      leafOID3 = [(NSURLSessionDelegate *)self leafOID];
       AppleSSLPinned = SecPolicyCreateAppleSSLPinned();
 
       if (!AppleSSLPinned)
@@ -67,15 +67,15 @@
         v40 = nplog_obj();
         if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
         {
-          v51 = [v8 sessionDescription];
-          v52 = [(NSURLSessionDelegate *)self validationHostname];
-          v53 = [(NSURLSessionDelegate *)self leafOID];
+          sessionDescription4 = [sessionCopy sessionDescription];
+          validationHostname3 = [(NSURLSessionDelegate *)self validationHostname];
+          leafOID4 = [(NSURLSessionDelegate *)self leafOID];
           *buf = 138412802;
-          v58 = v51;
+          v58 = sessionDescription4;
           v59 = 2112;
-          v60 = v52;
+          serverTrust = validationHostname3;
           v61 = 2112;
-          v62 = v53;
+          v62 = leafOID4;
           _os_log_error_impl(&dword_1AE7E2000, v40, OS_LOG_TYPE_ERROR, "Failed to create a pinning policy from name %@, hostname %@, and OID %@", buf, 0x20u);
         }
 
@@ -88,41 +88,41 @@
 
     else
     {
-      v25 = [(NSURLSessionDelegate *)self validationHostname];
+      validationHostname4 = [(NSURLSessionDelegate *)self validationHostname];
 
-      if (v25)
+      if (validationHostname4)
       {
-        v26 = [(NSURLSessionDelegate *)self validationHostname];
-        v27 = [v9 protectionSpace];
-        v28 = [v27 host];
-        v29 = [v28 isEqualToString:@"gateway.icloud.com"];
+        validationHostname5 = [(NSURLSessionDelegate *)self validationHostname];
+        protectionSpace4 = [challengeCopy protectionSpace];
+        host = [protectionSpace4 host];
+        v29 = [host isEqualToString:@"gateway.icloud.com"];
 
         if (v29)
         {
 
-          v26 = @"gateway.icloud.com";
+          validationHostname5 = @"gateway.icloud.com";
         }
 
         v30 = nplog_obj();
         if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138412290;
-          v58 = v26;
+          v58 = validationHostname5;
           _os_log_debug_impl(&dword_1AE7E2000, v30, OS_LOG_TYPE_DEBUG, "Creating a server trust policy with hostname %@", buf, 0xCu);
         }
 
-        SSL = SecPolicyCreateSSL(1u, v26);
+        SSL = SecPolicyCreateSSL(1u, validationHostname5);
         if (!SSL)
         {
           v47 = nplog_obj();
           if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
-            v58 = v26;
+            v58 = validationHostname5;
             _os_log_error_impl(&dword_1AE7E2000, v47, OS_LOG_TYPE_ERROR, "Failed to create a SSL policy from hostname %@", buf, 0xCu);
           }
 
-          v10[2](v10, 3, 0);
+          handlerCopy[2](handlerCopy, 3, 0);
           CFRelease(v17);
 
           goto LABEL_41;
@@ -161,25 +161,25 @@
       CFRelease(v35);
     }
 
-    v36 = SecTrustSetPolicies(v15, v17);
+    v36 = SecTrustSetPolicies(serverTrust3, v17);
     if (v36)
     {
       v37 = v36;
       v38 = nplog_obj();
       if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
       {
-        v39 = [v8 sessionDescription];
+        sessionDescription5 = [sessionCopy sessionDescription];
         *buf = 138412546;
-        v58 = v39;
+        v58 = sessionDescription5;
         v59 = 1024;
-        LODWORD(v60) = v37;
+        LODWORD(serverTrust) = v37;
         _os_log_error_impl(&dword_1AE7E2000, v38, OS_LOG_TYPE_ERROR, "Failed to set the trust policies for %@: %d", buf, 0x12u);
       }
 
 LABEL_39:
 
 LABEL_40:
-      v10[2](v10, 3, 0);
+      handlerCopy[2](handlerCopy, 3, 0);
       CFRelease(v17);
       goto LABEL_41;
     }
@@ -189,10 +189,10 @@ LABEL_40:
     result[2] = __73__NSURLSessionDelegate_URLSession_didReceiveChallenge_completionHandler___block_invoke;
     result[3] = &unk_1E7A31040;
     result[4] = self;
-    v55 = v8;
-    v41 = v10;
+    v55 = sessionCopy;
+    v41 = handlerCopy;
     v56 = v41;
-    v42 = SecTrustEvaluateAsyncWithError(v15, MEMORY[0x1E69E96A0], result);
+    v42 = SecTrustEvaluateAsyncWithError(serverTrust3, MEMORY[0x1E69E96A0], result);
     CFRelease(v17);
     if (v42)
     {
@@ -217,7 +217,7 @@ LABEL_40:
       _os_log_error_impl(&dword_1AE7E2000, v24, OS_LOG_TYPE_ERROR, "Failed to create an array to hold policies", buf, 2u);
     }
 
-    v10[2](v10, 3, 0);
+    handlerCopy[2](handlerCopy, 3, 0);
   }
 
 LABEL_41:

@@ -1,14 +1,14 @@
 @interface PSUsageSizeHeader
-- (PSUsageSizeHeader)initWithSpecifier:(id)a3;
+- (PSUsageSizeHeader)initWithSpecifier:(id)specifier;
 - (void)_setupSubviewsAndConstraints;
-- (void)setSize:(id)a3;
+- (void)setSize:(id)size;
 @end
 
 @implementation PSUsageSizeHeader
 
-- (PSUsageSizeHeader)initWithSpecifier:(id)a3
+- (PSUsageSizeHeader)initWithSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v14.receiver = self;
   v14.super_class = PSUsageSizeHeader;
   v5 = [(PSUsageSizeHeader *)&v14 init];
@@ -17,14 +17,14 @@
   {
     [(PSUsageSizeHeader *)v5 _setupSubviewsAndConstraints];
     v7 = MEMORY[0x1E696AAF0];
-    v8 = [v4 propertyForKey:@"SIZE"];
+    v8 = [specifierCopy propertyForKey:@"SIZE"];
     v9 = [v7 stringFromByteCount:objc_msgSend(v8 countStyle:{"longLongValue"), 2}];
-    v10 = [(PSUsageSizeHeader *)v6 sizeLabel];
-    [v10 setText:v9];
+    sizeLabel = [(PSUsageSizeHeader *)v6 sizeLabel];
+    [sizeLabel setText:v9];
 
-    v11 = [v4 name];
-    v12 = [(PSUsageSizeHeader *)v6 titleLabel];
-    [v12 setText:v11];
+    name = [specifierCopy name];
+    titleLabel = [(PSUsageSizeHeader *)v6 titleLabel];
+    [titleLabel setText:name];
   }
 
   return v6;
@@ -32,8 +32,8 @@
 
 - (void)_setupSubviewsAndConstraints
 {
-  v3 = [(PSUsageSizeHeader *)self _internalStackView];
-  [v3 removeFromSuperview];
+  _internalStackView = [(PSUsageSizeHeader *)self _internalStackView];
+  [_internalStackView removeFromSuperview];
 
   v4 = objc_alloc(MEMORY[0x1E69DCF90]);
   v5 = *MEMORY[0x1E695F058];
@@ -43,128 +43,128 @@
   v9 = [v4 initWithFrame:{*MEMORY[0x1E695F058], v6, v7, v8}];
   [(PSUsageSizeHeader *)self set_internalStackView:v9];
 
-  v10 = [(PSUsageSizeHeader *)self _internalStackView];
-  [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
+  _internalStackView2 = [(PSUsageSizeHeader *)self _internalStackView];
+  [_internalStackView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v11 = [(PSUsageSizeHeader *)self _internalStackView];
-  [v11 setAxis:0];
+  _internalStackView3 = [(PSUsageSizeHeader *)self _internalStackView];
+  [_internalStackView3 setAxis:0];
 
-  v12 = [(PSUsageSizeHeader *)self _internalStackView];
-  [v12 setDistribution:3];
+  _internalStackView4 = [(PSUsageSizeHeader *)self _internalStackView];
+  [_internalStackView4 setDistribution:3];
 
-  v13 = [(PSUsageSizeHeader *)self _internalStackView];
-  [v13 setAlignment:2];
+  _internalStackView5 = [(PSUsageSizeHeader *)self _internalStackView];
+  [_internalStackView5 setAlignment:2];
 
-  v14 = [(PSUsageSizeHeader *)self contentView];
-  v15 = [(PSUsageSizeHeader *)self _internalStackView];
-  [v14 addSubview:v15];
+  contentView = [(PSUsageSizeHeader *)self contentView];
+  _internalStackView6 = [(PSUsageSizeHeader *)self _internalStackView];
+  [contentView addSubview:_internalStackView6];
 
   v16 = +[PSListController appearance];
-  v17 = [v16 altTextColor];
-  if (v17)
+  altTextColor = [v16 altTextColor];
+  if (altTextColor)
   {
     v18 = +[PSListController appearance];
-    v66 = [v18 altTextColor];
+    altTextColor2 = [v18 altTextColor];
   }
 
   else
   {
-    v66 = PreferencesTableViewFooterColor();
+    altTextColor2 = PreferencesTableViewFooterColor();
   }
 
   v19 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v5, v6, v7, v8}];
   [(PSUsageSizeHeader *)self setTitleLabel:v19];
 
-  v20 = [(PSUsageSizeHeader *)self titleLabel];
-  [v20 setTranslatesAutoresizingMaskIntoConstraints:0];
+  titleLabel = [(PSUsageSizeHeader *)self titleLabel];
+  [titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v21 = [(PSUsageSizeHeader *)self titleLabel];
-  [v21 setAdjustsFontForContentSizeCategory:1];
+  titleLabel2 = [(PSUsageSizeHeader *)self titleLabel];
+  [titleLabel2 setAdjustsFontForContentSizeCategory:1];
 
   v22 = PreferencesTableViewHeaderFont();
-  v23 = [(PSUsageSizeHeader *)self titleLabel];
-  [v23 setFont:v22];
+  titleLabel3 = [(PSUsageSizeHeader *)self titleLabel];
+  [titleLabel3 setFont:v22];
 
-  v24 = [(PSUsageSizeHeader *)self titleLabel];
-  [v24 setTextColor:v66];
+  titleLabel4 = [(PSUsageSizeHeader *)self titleLabel];
+  [titleLabel4 setTextColor:altTextColor2];
 
-  v25 = [MEMORY[0x1E69DC888] clearColor];
-  v26 = [(PSUsageSizeHeader *)self titleLabel];
-  [v26 setBackgroundColor:v25];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  titleLabel5 = [(PSUsageSizeHeader *)self titleLabel];
+  [titleLabel5 setBackgroundColor:clearColor];
 
-  v27 = [(PSUsageSizeHeader *)self _internalStackView];
-  v28 = [(PSUsageSizeHeader *)self titleLabel];
-  [v27 addArrangedSubview:v28];
+  _internalStackView7 = [(PSUsageSizeHeader *)self _internalStackView];
+  titleLabel6 = [(PSUsageSizeHeader *)self titleLabel];
+  [_internalStackView7 addArrangedSubview:titleLabel6];
 
-  v29 = [(PSUsageSizeHeader *)self sizeLabel];
-  [v29 removeFromSuperview];
+  sizeLabel = [(PSUsageSizeHeader *)self sizeLabel];
+  [sizeLabel removeFromSuperview];
 
   v30 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v5, v6, v7, v8}];
   [(PSUsageSizeHeader *)self setSizeLabel:v30];
 
-  v31 = [(PSUsageSizeHeader *)self sizeLabel];
-  [v31 setTranslatesAutoresizingMaskIntoConstraints:0];
+  sizeLabel2 = [(PSUsageSizeHeader *)self sizeLabel];
+  [sizeLabel2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v32 = [(PSUsageSizeHeader *)self sizeLabel];
-  [v32 setAdjustsFontForContentSizeCategory:1];
+  sizeLabel3 = [(PSUsageSizeHeader *)self sizeLabel];
+  [sizeLabel3 setAdjustsFontForContentSizeCategory:1];
 
   v33 = PreferencesTableViewHeaderFont();
-  v34 = [(PSUsageSizeHeader *)self sizeLabel];
-  [v34 setFont:v33];
+  sizeLabel4 = [(PSUsageSizeHeader *)self sizeLabel];
+  [sizeLabel4 setFont:v33];
 
-  v35 = [(PSUsageSizeHeader *)self sizeLabel];
-  [v35 setTextColor:v66];
+  sizeLabel5 = [(PSUsageSizeHeader *)self sizeLabel];
+  [sizeLabel5 setTextColor:altTextColor2];
 
-  v36 = [(PSUsageSizeHeader *)self sizeLabel];
-  [v36 setTextAlignment:2];
+  sizeLabel6 = [(PSUsageSizeHeader *)self sizeLabel];
+  [sizeLabel6 setTextAlignment:2];
 
-  v37 = [MEMORY[0x1E69DC888] clearColor];
-  v38 = [(PSUsageSizeHeader *)self sizeLabel];
-  [v38 setBackgroundColor:v37];
+  clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+  sizeLabel7 = [(PSUsageSizeHeader *)self sizeLabel];
+  [sizeLabel7 setBackgroundColor:clearColor2];
 
-  v39 = [(PSUsageSizeHeader *)self _internalStackView];
-  v40 = [(PSUsageSizeHeader *)self sizeLabel];
-  [v39 addArrangedSubview:v40];
+  _internalStackView8 = [(PSUsageSizeHeader *)self _internalStackView];
+  sizeLabel8 = [(PSUsageSizeHeader *)self sizeLabel];
+  [_internalStackView8 addArrangedSubview:sizeLabel8];
 
-  v41 = [MEMORY[0x1E695DF70] array];
-  v42 = [(PSUsageSizeHeader *)self _internalStackView];
-  v43 = [v42 leadingAnchor];
-  v44 = [(PSUsageSizeHeader *)self contentView];
-  v45 = [v44 layoutMarginsGuide];
-  v46 = [v45 leadingAnchor];
-  v47 = [v43 constraintEqualToAnchor:v46];
-  [v41 addObject:v47];
+  array = [MEMORY[0x1E695DF70] array];
+  _internalStackView9 = [(PSUsageSizeHeader *)self _internalStackView];
+  leadingAnchor = [_internalStackView9 leadingAnchor];
+  contentView2 = [(PSUsageSizeHeader *)self contentView];
+  layoutMarginsGuide = [contentView2 layoutMarginsGuide];
+  leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+  v47 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
+  [array addObject:v47];
 
-  v48 = [(PSUsageSizeHeader *)self _internalStackView];
-  v49 = [v48 trailingAnchor];
-  v50 = [(PSUsageSizeHeader *)self contentView];
-  v51 = [v50 layoutMarginsGuide];
-  v52 = [v51 trailingAnchor];
-  v53 = [v49 constraintEqualToAnchor:v52];
-  [v41 addObject:v53];
+  _internalStackView10 = [(PSUsageSizeHeader *)self _internalStackView];
+  trailingAnchor = [_internalStackView10 trailingAnchor];
+  contentView3 = [(PSUsageSizeHeader *)self contentView];
+  layoutMarginsGuide2 = [contentView3 layoutMarginsGuide];
+  trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+  v53 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
+  [array addObject:v53];
 
-  v54 = [(PSUsageSizeHeader *)self _internalStackView];
-  v55 = [v54 topAnchor];
-  v56 = [(PSUsageSizeHeader *)self contentView];
-  v57 = [v56 layoutMarginsGuide];
-  v58 = [v57 topAnchor];
-  v59 = [v55 constraintEqualToAnchor:v58];
-  [v41 addObject:v59];
+  _internalStackView11 = [(PSUsageSizeHeader *)self _internalStackView];
+  topAnchor = [_internalStackView11 topAnchor];
+  contentView4 = [(PSUsageSizeHeader *)self contentView];
+  layoutMarginsGuide3 = [contentView4 layoutMarginsGuide];
+  topAnchor2 = [layoutMarginsGuide3 topAnchor];
+  v59 = [topAnchor constraintEqualToAnchor:topAnchor2];
+  [array addObject:v59];
 
-  v60 = [(PSUsageSizeHeader *)self _internalStackView];
-  v61 = [v60 bottomAnchor];
-  v62 = [(PSUsageSizeHeader *)self contentView];
-  v63 = [v62 layoutMarginsGuide];
-  v64 = [v63 bottomAnchor];
-  v65 = [v61 constraintEqualToAnchor:v64];
-  [v41 addObject:v65];
+  _internalStackView12 = [(PSUsageSizeHeader *)self _internalStackView];
+  bottomAnchor = [_internalStackView12 bottomAnchor];
+  contentView5 = [(PSUsageSizeHeader *)self contentView];
+  layoutMarginsGuide4 = [contentView5 layoutMarginsGuide];
+  bottomAnchor2 = [layoutMarginsGuide4 bottomAnchor];
+  v65 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
+  [array addObject:v65];
 
-  [MEMORY[0x1E696ACD8] activateConstraints:v41];
+  [MEMORY[0x1E696ACD8] activateConstraints:array];
 }
 
-- (void)setSize:(id)a3
+- (void)setSize:(id)size
 {
-  [(UILabel *)self->_sizeLabel setText:a3];
+  [(UILabel *)self->_sizeLabel setText:size];
   [(UILabel *)self->_sizeLabel sizeToFit];
 
   [(PSUsageSizeHeader *)self setNeedsLayout];

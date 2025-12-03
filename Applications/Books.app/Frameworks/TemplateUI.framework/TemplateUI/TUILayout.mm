@@ -14,22 +14,22 @@
 - ($E297CC25127479E857BE23A4F8632EA4)validatedIntrinsicHeightConsideringSpecified;
 - ($E297CC25127479E857BE23A4F8632EA4)validatedIntrinsicWidth;
 - ($E297CC25127479E857BE23A4F8632EA4)validatedIntrinsicWidthConsideringSpecified;
-- (BOOL)isDescendentOfLayout:(id)a3;
-- (BOOL)shouldUseDefaultGuideForLayout:(id)a3 edge:(unint64_t)a4;
-- (BOOL)shouldUseSubviewRenderModelWithContext:(id)a3;
+- (BOOL)isDescendentOfLayout:(id)layout;
+- (BOOL)shouldUseDefaultGuideForLayout:(id)layout edge:(unint64_t)edge;
+- (BOOL)shouldUseSubviewRenderModelWithContext:(id)context;
 - (CGAffineTransform)_computedFrameTransform;
-- (CGAffineTransform)computedTransformInAncestorLayout:(SEL)a3;
+- (CGAffineTransform)computedTransformInAncestorLayout:(SEL)layout;
 - (CGAffineTransform)renderTransform;
 - (CGAffineTransform)specifiedTransform;
 - (CGPoint)computedOrigin;
 - (CGRect)computedBounds;
-- (CGRect)computedBoundsPrimitiveWithFlags:(unint64_t)a3;
-- (CGRect)computedBoundsWithFlags:(unint64_t)a3;
+- (CGRect)computedBoundsPrimitiveWithFlags:(unint64_t)flags;
+- (CGRect)computedBoundsWithFlags:(unint64_t)flags;
 - (CGRect)computedErasableBounds;
 - (CGRect)computedFrame;
 - (CGSize)computedNaturalSize;
 - (CGSize)computedTransformedSize;
-- (CGSize)renderModelSizeWithContext:(id)a3;
+- (CGSize)renderModelSizeWithContext:(id)context;
 - (CGSize)validatedIntrinsicSize;
 - (NSString)description;
 - (TUIGuide)guideBottom;
@@ -37,13 +37,13 @@
 - (TUIGuide)guideTop;
 - (TUIGuide)guideTrailing;
 - (TUIGuideLayoutController)guideLayoutController;
-- (TUILayout)initWithModel:(id)a3 parent:(id)a4 controller:(id)a5;
+- (TUILayout)initWithModel:(id)model parent:(id)parent controller:(id)controller;
 - (TUILayout)layoutAncestor;
 - (TUILayoutContaining)parent;
 - (TUILayoutController)controller;
-- (UIEdgeInsets)erasableInsetsForContentsScale:(double)a3;
-- (double)_computeHeight:(BOOL)a3;
-- (double)_computeWidth:(BOOL)a3;
+- (UIEdgeInsets)erasableInsetsForContentsScale:(double)scale;
+- (double)_computeHeight:(BOOL)height;
+- (double)_computeWidth:(BOOL)width;
 - (double)computeDerivedHeight;
 - (double)computeDerivedWidth;
 - (double)computedScale;
@@ -52,37 +52,37 @@
 - (double)containingWidth;
 - (double)flexedHeight;
 - (double)flexedWidth;
-- (id)_transformedRenderModel:(id)a3 transform:(CGAffineTransform *)a4 context:(id)a5 allowCache:(BOOL)a6;
-- (id)axModelTreeWithCustomActionsCollector:(id)a3 scrollAncestorLayout:(id)a4 scrollAncestorTranslation:(CGPoint)a5 liveTransformAncestorLayout:(id)a6;
-- (id)computedRefIdWithContext:(id)a3;
-- (id)computedRefInstanceWithContext:(id)a3;
+- (id)_transformedRenderModel:(id)model transform:(CGAffineTransform *)transform context:(id)context allowCache:(BOOL)cache;
+- (id)axModelTreeWithCustomActionsCollector:(id)collector scrollAncestorLayout:(id)layout scrollAncestorTranslation:(CGPoint)translation liveTransformAncestorLayout:(id)ancestorLayout;
+- (id)computedRefIdWithContext:(id)context;
+- (id)computedRefInstanceWithContext:(id)context;
 - (id)guideProvider;
-- (id)hoverIdentifierWithName:(id)a3;
-- (id)inheritedRefIdWithContext:(id)a3;
-- (id)inheritedRefInstanceWithContext:(id)a3;
+- (id)hoverIdentifierWithName:(id)name;
+- (id)inheritedRefIdWithContext:(id)context;
+- (id)inheritedRefInstanceWithContext:(id)context;
 - (id)modelIdentifierForEnclosingScrollable;
-- (id)newLiveTransform:(CGAffineTransform *)a3;
+- (id)newLiveTransform:(CGAffineTransform *)transform;
 - (id)recursiveDescription;
 - (id)rootLayout;
-- (int64_t)computeZIndexWithDefault:(int64_t)a3;
+- (int64_t)computeZIndexWithDefault:(int64_t)default;
 - (unint64_t)computedLayoutDirection;
-- (unint64_t)pinPositionFromLiveTransformKind:(unint64_t)a3;
+- (unint64_t)pinPositionFromLiveTransformKind:(unint64_t)kind;
 - (void)_computeAspectConstrainedSpecifiedWidthHeight;
 - (void)_updateChildren;
 - (void)_validateLayout;
-- (void)_validateLayoutWithBlock:(id)a3;
-- (void)appendAnchorsToSet:(id)a3 inRoot:(id)a4;
-- (void)appendChildAnchorsToSet:(id)a3 inRoot:(id)a4;
-- (void)appendChildRenderModelCompatibleWithKind:(unint64_t)a3 context:(id)a4 transform:(CGAffineTransform *)a5 toModels:(id)a6;
-- (void)appendChilden:(id)a3 renderModelCompatibleWithKind:(unint64_t)a4 context:(id)a5 transform:(CGAffineTransform *)a6 toModels:(id)a7;
-- (void)appendEmbeddedIdentifierMaps:(id)a3 updateControllers:(id)a4 UUIDs:(id)a5;
-- (void)appendHoverRegions:(id)a3 relativeToLayout:(id)a4;
-- (void)appendLayoutsWithSpecifiedWidthModifiedToArray:(id)a3;
-- (void)appendRenderModelCompatibleWithKind:(unint64_t)a3 context:(id)a4 transform:(CGAffineTransform *)a5 toModels:(id)a6;
-- (void)appendRenderModelIgnoreHiddenCompatibleWithKind:(unint64_t)a3 context:(id)a4 transform:(CGAffineTransform *)a5 toModels:(id)a6;
-- (void)appendVisibleBoundsObservers:(id)a3 axis:(unint64_t)a4 offset:(double)a5;
+- (void)_validateLayoutWithBlock:(id)block;
+- (void)appendAnchorsToSet:(id)set inRoot:(id)root;
+- (void)appendChildAnchorsToSet:(id)set inRoot:(id)root;
+- (void)appendChildRenderModelCompatibleWithKind:(unint64_t)kind context:(id)context transform:(CGAffineTransform *)transform toModels:(id)models;
+- (void)appendChilden:(id)childen renderModelCompatibleWithKind:(unint64_t)kind context:(id)context transform:(CGAffineTransform *)transform toModels:(id)models;
+- (void)appendEmbeddedIdentifierMaps:(id)maps updateControllers:(id)controllers UUIDs:(id)ds;
+- (void)appendHoverRegions:(id)regions relativeToLayout:(id)layout;
+- (void)appendLayoutsWithSpecifiedWidthModifiedToArray:(id)array;
+- (void)appendRenderModelCompatibleWithKind:(unint64_t)kind context:(id)context transform:(CGAffineTransform *)transform toModels:(id)models;
+- (void)appendRenderModelIgnoreHiddenCompatibleWithKind:(unint64_t)kind context:(id)context transform:(CGAffineTransform *)transform toModels:(id)models;
+- (void)appendVisibleBoundsObservers:(id)observers axis:(unint64_t)axis offset:(double)offset;
 - (void)computeLayout;
-- (void)enumerateChildren:(id)a3;
+- (void)enumerateChildren:(id)children;
 - (void)invalidateLayout;
 - (void)invalidateRenderModel;
 - (void)notifyChildrenScaleDidChange;
@@ -94,22 +94,22 @@
 - (void)onSpecifiedHeightChanged;
 - (void)onSpecifiedWidthChanged;
 - (void)onViewSafeAreaInsetsDidChange;
-- (void)setComputedNaturalSize:(CGSize)a3;
-- (void)setComputedOrigin:(CGPoint)a3;
-- (void)setContainingHeight:(double)a3;
-- (void)setContainingMaxWidth:(double)a3;
-- (void)setContainingWidth:(double)a3;
-- (void)setFlexedHeight:(double)a3;
-- (void)setFlexedWidth:(double)a3;
-- (void)setHidden:(BOOL)a3;
-- (void)setInvalidChildren:(BOOL)a3;
-- (void)setSpecifiedHeightComputeInherited:(BOOL)a3;
-- (void)setSpecifiedWidthComputeInherited:(BOOL)a3;
-- (void)setSpecifiedWidthModified:(BOOL)a3;
+- (void)setComputedNaturalSize:(CGSize)size;
+- (void)setComputedOrigin:(CGPoint)origin;
+- (void)setContainingHeight:(double)height;
+- (void)setContainingMaxWidth:(double)width;
+- (void)setContainingWidth:(double)width;
+- (void)setFlexedHeight:(double)height;
+- (void)setFlexedWidth:(double)width;
+- (void)setHidden:(BOOL)hidden;
+- (void)setInvalidChildren:(BOOL)children;
+- (void)setSpecifiedHeightComputeInherited:(BOOL)inherited;
+- (void)setSpecifiedWidthComputeInherited:(BOOL)inherited;
+- (void)setSpecifiedWidthModified:(BOOL)modified;
 - (void)teardown;
-- (void)updateDesdendantSpecifiedWidthModifiedWithFlag:(BOOL)a3;
+- (void)updateDesdendantSpecifiedWidthModifiedWithFlag:(BOOL)flag;
 - (void)updateGuides;
-- (void)updateParent:(id)a3;
+- (void)updateParent:(id)parent;
 - (void)validateGuides;
 - (void)validateLayout;
 @end
@@ -118,20 +118,20 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (qword_2E6520 != -1)
     {
       sub_19B854();
     }
 
-    v2 = [qword_2E6518 bytes];
-    v3 = v2[1];
+    bytes = [qword_2E6518 bytes];
+    v3 = bytes[1];
     if (v3)
     {
-      v4 = v2;
+      v4 = bytes;
       v5 = 0;
-      v6 = (v2 + 2);
+      v6 = (bytes + 2);
       while (strcmp("layout", &v4[*&v6[v5]]))
       {
         v5 += 4;
@@ -209,11 +209,11 @@ LABEL_16:
   return result;
 }
 
-- (void)setSpecifiedWidthComputeInherited:(BOOL)a3
+- (void)setSpecifiedWidthComputeInherited:(BOOL)inherited
 {
-  if (((((*&self->_flags & 0x200) == 0) ^ a3) & 1) == 0)
+  if (((((*&self->_flags & 0x200) == 0) ^ inherited) & 1) == 0)
   {
-    if (a3)
+    if (inherited)
     {
       v3 = 512;
     }
@@ -228,11 +228,11 @@ LABEL_16:
   }
 }
 
-- (void)setSpecifiedWidthModified:(BOOL)a3
+- (void)setSpecifiedWidthModified:(BOOL)modified
 {
-  if (((((*&self->_flags & 0x400) == 0) ^ a3) & 1) == 0)
+  if (((((*&self->_flags & 0x400) == 0) ^ modified) & 1) == 0)
   {
-    if (a3)
+    if (modified)
     {
       v3 = 1024;
     }
@@ -247,11 +247,11 @@ LABEL_16:
   }
 }
 
-- (void)setSpecifiedHeightComputeInherited:(BOOL)a3
+- (void)setSpecifiedHeightComputeInherited:(BOOL)inherited
 {
-  if (((((*&self->_flags & 0x800) == 0) ^ a3) & 1) == 0)
+  if (((((*&self->_flags & 0x800) == 0) ^ inherited) & 1) == 0)
   {
-    if (a3)
+    if (inherited)
     {
       v3 = 2048;
     }
@@ -269,14 +269,14 @@ LABEL_16:
 - (void)onSpecifiedWidthChanged
 {
   [(TUILayout *)self invalidateLayout];
-  v3 = [(TUILayout *)self layoutAncestor];
-  [v3 onSpecifiedWidthChangedForChild:self];
+  layoutAncestor = [(TUILayout *)self layoutAncestor];
+  [layoutAncestor onSpecifiedWidthChangedForChild:self];
 }
 
 - (void)onSpecifiedHeightChanged
 {
-  v3 = [(TUILayout *)self layoutAncestor];
-  [v3 onSpecifiedHeightChangedForChild:self];
+  layoutAncestor = [(TUILayout *)self layoutAncestor];
+  [layoutAncestor onSpecifiedHeightChangedForChild:self];
 }
 
 - ($E297CC25127479E857BE23A4F8632EA4)specifiedWidth
@@ -284,29 +284,29 @@ LABEL_16:
   model = self->_model;
   if (model)
   {
-    v5 = [(TUIModelLayoutable *)model width];
+    width = [(TUIModelLayoutable *)model width];
   }
 
   else
   {
-    v5 = 0x7FC000007FC00000;
+    width = 0x7FC000007FC00000;
   }
 
   flags = self->_flags;
   if ((*&flags & 0x400) != 0)
   {
-    v8 = [(TUILayout *)self layoutAncestor];
-    v7 = [v8 modifiedSpecifiedWidthForChild:self];
+    layoutAncestor = [(TUILayout *)self layoutAncestor];
+    v7 = [layoutAncestor modifiedSpecifiedWidthForChild:self];
   }
 
   else if ((*&flags & 0x200) != 0)
   {
-    return (v5 & 0xFFFFFFFF00000000 | 0x7FC00000);
+    return (width & 0xFFFFFFFF00000000 | 0x7FC00000);
   }
 
   else
   {
-    return v5;
+    return width;
   }
 
   return v7;
@@ -333,11 +333,11 @@ LABEL_16:
   return result;
 }
 
-- (TUILayout)initWithModel:(id)a3 parent:(id)a4 controller:(id)a5
+- (TUILayout)initWithModel:(id)model parent:(id)parent controller:(id)controller
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  modelCopy = model;
+  parentCopy = parent;
+  controllerCopy = controller;
   v28.receiver = self;
   v28.super_class = TUILayout;
   v12 = [(TUILayout *)&v28 init];
@@ -347,10 +347,10 @@ LABEL_16:
   }
 
   v12->_storage._data = [objc_opt_class() _storageDataset] | 1;
-  v13 = v9;
-  objc_storeStrong(&v12->_model, a3);
-  objc_storeWeak(&v12->_parent, v10);
-  objc_storeWeak(&v12->_controller, v11);
+  v13 = modelCopy;
+  objc_storeStrong(&v12->_model, model);
+  objc_storeWeak(&v12->_parent, parentCopy);
+  objc_storeWeak(&v12->_controller, controllerCopy);
   bzero(&v12->_flags, 8uLL);
   if (v13)
   {
@@ -358,7 +358,7 @@ LABEL_16:
     v15 = v14;
     [v13 height];
     v17 = v16;
-    if (v10)
+    if (parentCopy)
     {
 LABEL_4:
       v18 = *&v12->_flags & 0xFFFFFDFF;
@@ -371,7 +371,7 @@ LABEL_4:
   {
     v15 = 0x200007FC00000;
     v17 = 0x200007FC00000;
-    if (v10)
+    if (parentCopy)
     {
       goto LABEL_4;
     }
@@ -426,9 +426,9 @@ LABEL_19:
   v12->_flags = v24;
   if (v13)
   {
-    v25 = [v13 layoutDirection];
+    layoutDirection = [v13 layoutDirection];
     v24 = v12->_flags;
-    v26 = (v25 & 3) << 7;
+    v26 = (layoutDirection & 3) << 7;
   }
 
   else
@@ -443,9 +443,9 @@ LABEL_23:
   return v12;
 }
 
-- (void)updateParent:(id)a3
+- (void)updateParent:(id)parent
 {
-  obj = a3;
+  obj = parent;
   WeakRetained = objc_loadWeakRetained(&self->_parent);
 
   v5 = obj;
@@ -464,8 +464,8 @@ LABEL_23:
   v10 = 0u;
   v7 = 0u;
   v8 = 0u;
-  v3 = [(TUILayout *)self children];
-  v4 = [v3 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  children = [(TUILayout *)self children];
+  v4 = [children countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v4)
   {
     v5 = *v8;
@@ -476,7 +476,7 @@ LABEL_23:
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(children);
         }
 
         [*(*(&v7 + 1) + 8 * v6) validateGuides];
@@ -484,7 +484,7 @@ LABEL_23:
       }
 
       while (v4 != v6);
-      v4 = [v3 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [children countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
@@ -494,64 +494,64 @@ LABEL_23:
 - (void)updateGuides
 {
   v3 = [(TUILayout *)self box];
-  v23 = [v3 guides];
+  guides = [v3 guides];
 
-  v4 = [(TUILayout *)self guideProvider];
-  if (v23 && v4)
+  guideProvider = [(TUILayout *)self guideProvider];
+  if (guides && guideProvider)
   {
-    v5 = [v23 leading];
-    v6 = v5;
-    if (!v5)
+    leading = [guides leading];
+    v6 = leading;
+    if (!leading)
     {
-      v6 = [v4 defaultGuideSpecForLayout:self edge:0];
+      v6 = [guideProvider defaultGuideSpecForLayout:self edge:0];
     }
 
-    v7 = [v4 guideForLayout:self spec:v6];
+    v7 = [guideProvider guideForLayout:self spec:v6];
     [(TUILayout *)self setGuideLeading:v7];
 
-    if (!v5)
+    if (!leading)
     {
     }
 
-    v8 = [v23 trailing];
-    v9 = v8;
-    if (!v8)
+    trailing = [guides trailing];
+    v9 = trailing;
+    if (!trailing)
     {
-      v9 = [v4 defaultGuideSpecForLayout:self edge:1];
+      v9 = [guideProvider defaultGuideSpecForLayout:self edge:1];
     }
 
-    v10 = [v4 guideForLayout:self spec:v9];
+    v10 = [guideProvider guideForLayout:self spec:v9];
     [(TUILayout *)self setGuideTrailing:v10];
 
-    if (!v8)
+    if (!trailing)
     {
     }
 
-    v11 = [v23 top];
+    v11 = [guides top];
     v12 = v11;
     if (!v11)
     {
-      v12 = [v4 defaultGuideSpecForLayout:self edge:2];
+      v12 = [guideProvider defaultGuideSpecForLayout:self edge:2];
     }
 
-    v13 = [v4 guideForLayout:self spec:v12];
+    v13 = [guideProvider guideForLayout:self spec:v12];
     [(TUILayout *)self setGuideTop:v13];
 
     if (!v11)
     {
     }
 
-    v14 = [v23 bottom];
-    v15 = v14;
-    if (!v14)
+    bottom = [guides bottom];
+    v15 = bottom;
+    if (!bottom)
     {
-      v15 = [v4 defaultGuideSpecForLayout:self edge:3];
+      v15 = [guideProvider defaultGuideSpecForLayout:self edge:3];
     }
 
-    v16 = [v4 guideForLayout:self spec:v15];
+    v16 = [guideProvider guideForLayout:self spec:v15];
     [(TUILayout *)self setGuideBottom:v16];
 
-    if (v14)
+    if (bottom)
     {
       goto LABEL_22;
     }
@@ -559,22 +559,22 @@ LABEL_23:
     goto LABEL_21;
   }
 
-  if (v4)
+  if (guideProvider)
   {
-    v17 = [v4 defaultGuideSpecForLayout:self edge:0];
-    v18 = [v4 guideForLayout:self spec:v17];
+    v17 = [guideProvider defaultGuideSpecForLayout:self edge:0];
+    v18 = [guideProvider guideForLayout:self spec:v17];
     [(TUILayout *)self setGuideLeading:v18];
 
-    v19 = [v4 defaultGuideSpecForLayout:self edge:1];
-    v20 = [v4 guideForLayout:self spec:v19];
+    v19 = [guideProvider defaultGuideSpecForLayout:self edge:1];
+    v20 = [guideProvider guideForLayout:self spec:v19];
     [(TUILayout *)self setGuideTrailing:v20];
 
-    v21 = [v4 defaultGuideSpecForLayout:self edge:2];
-    v22 = [v4 guideForLayout:self spec:v21];
+    v21 = [guideProvider defaultGuideSpecForLayout:self edge:2];
+    v22 = [guideProvider guideForLayout:self spec:v21];
     [(TUILayout *)self setGuideTop:v22];
 
-    v14 = [v4 defaultGuideSpecForLayout:self edge:3];
-    v15 = [v4 guideForLayout:self spec:v14];
+    bottom = [guideProvider defaultGuideSpecForLayout:self edge:3];
+    v15 = [guideProvider guideForLayout:self spec:bottom];
     [(TUILayout *)self setGuideBottom:v15];
 LABEL_21:
 
@@ -592,14 +592,14 @@ LABEL_23:
 - (TUILayout)layoutAncestor
 {
   WeakRetained = objc_loadWeakRetained(&self->_parent);
-  v3 = [WeakRetained layout];
+  layout = [WeakRetained layout];
 
-  return v3;
+  return layout;
 }
 
-- (void)enumerateChildren:(id)a3
+- (void)enumerateChildren:(id)children
 {
-  v4 = a3;
+  childrenCopy = children;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
@@ -619,7 +619,7 @@ LABEL_23:
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v9 + 1) + 8 * v8) enumerateLayout:{v4, v9}];
+        [*(*(&v9 + 1) + 8 * v8) enumerateLayout:{childrenCopy, v9}];
         v8 = v8 + 1;
       }
 
@@ -645,9 +645,9 @@ LABEL_23:
   self->_children = v4;
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  if (a3)
+  if (hidden)
   {
     v3 = 8;
   }
@@ -662,15 +662,15 @@ LABEL_23:
 
 - (unint64_t)computedLayoutDirection
 {
-  v2 = ((self->_flags >> 7) & 3);
-  if (!v2)
+  computedLayoutDirection = ((self->_flags >> 7) & 3);
+  if (!computedLayoutDirection)
   {
     WeakRetained = objc_loadWeakRetained(&self->_parent);
 
     if (WeakRetained)
     {
-      v5 = [(TUILayout *)self layoutAncestor];
-      v2 = [v5 computedLayoutDirection];
+      layoutAncestor = [(TUILayout *)self layoutAncestor];
+      computedLayoutDirection = [layoutAncestor computedLayoutDirection];
     }
 
     else
@@ -679,14 +679,14 @@ LABEL_23:
     }
   }
 
-  return v2;
+  return computedLayoutDirection;
 }
 
 - ($E297CC25127479E857BE23A4F8632EA4)validatedIntrinsicWidth
 {
   if ((*&self->_flags & 0x10) != 0)
   {
-    v4 = [(TUILayout *)self computeIntrinsicWidth];
+    computeIntrinsicWidth = [(TUILayout *)self computeIntrinsicWidth];
     v6 = v5;
     p_storage = &self->_storage;
     if ((v5 & 0x7000000000000) == 0x2000000000000)
@@ -697,7 +697,7 @@ LABEL_23:
         DataForKey = v8;
         TUI::Util::PartialStruct::Storage::markAsDefault(&self->_storage._data, 1u);
 LABEL_6:
-        *DataForKey = v4;
+        *DataForKey = computeIntrinsicWidth;
         DataForKey[1] = v6;
       }
     }
@@ -728,7 +728,7 @@ LABEL_6:
 {
   if ((*&self->_flags & 0x20) != 0)
   {
-    v4 = [(TUILayout *)self computeIntrinsicHeight];
+    computeIntrinsicHeight = [(TUILayout *)self computeIntrinsicHeight];
     v6 = v5;
     p_storage = &self->_storage;
     if ((v5 & 0x7000000000000) == 0x2000000000000)
@@ -739,7 +739,7 @@ LABEL_6:
         DataForKey = v8;
         TUI::Util::PartialStruct::Storage::markAsDefault(&self->_storage._data, 0xCu);
 LABEL_6:
-        *DataForKey = v4;
+        *DataForKey = computeIntrinsicHeight;
         DataForKey[1] = v6;
       }
     }
@@ -812,7 +812,7 @@ LABEL_6:
   return ObjectForKey;
 }
 
-- (void)setFlexedWidth:(double)a3
+- (void)setFlexedWidth:(double)width
 {
   v5 = TUI::Util::PartialStruct::Storage::dataForKey(&self->_storage, 6u);
   if (v5)
@@ -825,13 +825,13 @@ LABEL_6:
     v6 = NAN;
   }
 
-  if (!TUICGFloatIsEqualFloatOrBothNaN(v6, a3))
+  if (!TUICGFloatIsEqualFloatOrBothNaN(v6, width))
   {
-    v7 = a3;
+    widthCopy = width;
     DataForKey = TUI::Util::PartialStruct::Storage::allocateDataForKey(&self->_storage, 6u, 4uLL, 1);
     if (DataForKey)
     {
-      *DataForKey = v7;
+      *DataForKey = widthCopy;
     }
 
     [(TUILayout *)self invalidateLayout];
@@ -852,7 +852,7 @@ LABEL_6:
   }
 }
 
-- (void)setFlexedHeight:(double)a3
+- (void)setFlexedHeight:(double)height
 {
   v5 = TUI::Util::PartialStruct::Storage::dataForKey(&self->_storage, 5u);
   if (v5)
@@ -865,13 +865,13 @@ LABEL_6:
     v6 = NAN;
   }
 
-  if (!TUICGFloatIsEqualFloatOrBothNaN(v6, a3))
+  if (!TUICGFloatIsEqualFloatOrBothNaN(v6, height))
   {
-    v7 = a3;
+    heightCopy = height;
     DataForKey = TUI::Util::PartialStruct::Storage::allocateDataForKey(&self->_storage, 5u, 4uLL, 1);
     if (DataForKey)
     {
-      *DataForKey = v7;
+      *DataForKey = heightCopy;
     }
 
     [(TUILayout *)self invalidateLayout];
@@ -892,7 +892,7 @@ LABEL_6:
   }
 }
 
-- (void)setContainingWidth:(double)a3
+- (void)setContainingWidth:(double)width
 {
   v5 = TUI::Util::PartialStruct::Storage::dataForKey(&self->_storage, 0);
   if (v5)
@@ -905,13 +905,13 @@ LABEL_6:
     v6 = NAN;
   }
 
-  if (!TUICGFloatIsEqualFloatOrBothNaN(v6, a3))
+  if (!TUICGFloatIsEqualFloatOrBothNaN(v6, width))
   {
-    v7 = a3;
+    widthCopy = width;
     DataForKey = TUI::Util::PartialStruct::Storage::allocateDataForKey(&self->_storage, 0, 4uLL, 1);
     if (DataForKey)
     {
-      *DataForKey = v7;
+      *DataForKey = widthCopy;
     }
 
     [(TUILayout *)self onContainingWidthChange];
@@ -934,7 +934,7 @@ LABEL_6:
   }
 }
 
-- (void)setContainingMaxWidth:(double)a3
+- (void)setContainingMaxWidth:(double)width
 {
   v5 = TUI::Util::PartialStruct::Storage::dataForKey(&self->_storage, 2u);
   if (v5)
@@ -947,13 +947,13 @@ LABEL_6:
     v6 = NAN;
   }
 
-  if (!TUICGFloatIsEqualFloatOrBothNaN(v6, a3))
+  if (!TUICGFloatIsEqualFloatOrBothNaN(v6, width))
   {
-    v7 = a3;
+    widthCopy = width;
     DataForKey = TUI::Util::PartialStruct::Storage::allocateDataForKey(&self->_storage, 2u, 4uLL, 1);
     if (DataForKey)
     {
-      *DataForKey = v7;
+      *DataForKey = widthCopy;
     }
 
     [(TUILayout *)self invalidateLayout];
@@ -974,7 +974,7 @@ LABEL_6:
   }
 }
 
-- (void)setContainingHeight:(double)a3
+- (void)setContainingHeight:(double)height
 {
   v5 = TUI::Util::PartialStruct::Storage::dataForKey(&self->_storage, 7u);
   if (v5)
@@ -987,13 +987,13 @@ LABEL_6:
     v6 = NAN;
   }
 
-  if (!TUICGFloatIsEqualFloatOrBothNaN(v6, a3))
+  if (!TUICGFloatIsEqualFloatOrBothNaN(v6, height))
   {
-    v7 = a3;
+    heightCopy = height;
     DataForKey = TUI::Util::PartialStruct::Storage::allocateDataForKey(&self->_storage, 7u, 4uLL, 1);
     if (DataForKey)
     {
-      *DataForKey = v7;
+      *DataForKey = heightCopy;
     }
 
     [(TUILayout *)self invalidateLayout];
@@ -1016,27 +1016,27 @@ LABEL_6:
 
 - ($E297CC25127479E857BE23A4F8632EA4)validatedIntrinsicWidthConsideringSpecified
 {
-  v4 = [(TUILayout *)self specifiedWidth];
+  specifiedWidth = [(TUILayout *)self specifiedWidth];
   v6 = v5;
-  v8 = [(TUILayout *)self validatedIntrinsicWidth];
+  validatedIntrinsicWidth = [(TUILayout *)self validatedIntrinsicWidth];
 
-  return TUILengthCombineSpecifiedAndIntrinsic(v4, v6, v8, v7);
+  return TUILengthCombineSpecifiedAndIntrinsic(specifiedWidth, v6, validatedIntrinsicWidth, v7);
 }
 
 - ($E297CC25127479E857BE23A4F8632EA4)validatedIntrinsicHeightConsideringSpecified
 {
-  v4 = [(TUILayout *)self specifiedHeight];
+  specifiedHeight = [(TUILayout *)self specifiedHeight];
   v6 = v5;
-  v8 = [(TUILayout *)self validatedIntrinsicHeight];
+  validatedIntrinsicHeight = [(TUILayout *)self validatedIntrinsicHeight];
 
-  return TUILengthCombineSpecifiedAndIntrinsic(v4, v6, v8, v7);
+  return TUILengthCombineSpecifiedAndIntrinsic(specifiedHeight, v6, validatedIntrinsicHeight, v7);
 }
 
 - ($E297CC25127479E857BE23A4F8632EA4)computedWidth
 {
   [(TUILayout *)self aspectConstrainedSpecifiedWidth];
   v5 = v4 & 0x7000000000000;
-  v6 = [(TUILayout *)self aspectConstrainedSpecifiedWidth];
+  aspectConstrainedSpecifiedWidth = [(TUILayout *)self aspectConstrainedSpecifiedWidth];
   if (v5 < 0x2000000000001)
   {
     [(TUILayout *)self computedContentWidthConsideringTransform];
@@ -1046,10 +1046,10 @@ LABEL_6:
 
   else
   {
-    LODWORD(v7) = HIDWORD(v6);
+    LODWORD(v7) = HIDWORD(aspectConstrainedSpecifiedWidth);
     [(TUILayout *)self aspectConstrainedSpecifiedWidth];
     LODWORD(v9) = v8;
-    v10 = [(TUILayout *)self aspectConstrainedSpecifiedWidth];
+    aspectConstrainedSpecifiedWidth2 = [(TUILayout *)self aspectConstrainedSpecifiedWidth];
     [(TUILayout *)self computedTransformedSize];
     if (v11 <= -3.40282347e38)
     {
@@ -1067,7 +1067,7 @@ LABEL_6:
       }
     }
 
-    return (v12 | v10 & 0xFFFFFFFF00000000);
+    return (v12 | aspectConstrainedSpecifiedWidth2 & 0xFFFFFFFF00000000);
   }
 
   return result;
@@ -1077,7 +1077,7 @@ LABEL_6:
 {
   [(TUILayout *)self aspectConstrainedSpecifiedHeight];
   v5 = v4 & 0x7000000000000;
-  v6 = [(TUILayout *)self aspectConstrainedSpecifiedHeight];
+  aspectConstrainedSpecifiedHeight = [(TUILayout *)self aspectConstrainedSpecifiedHeight];
   if (v5 < 0x2000000000001)
   {
     [(TUILayout *)self computedContentHeightConsideringTransform];
@@ -1087,10 +1087,10 @@ LABEL_6:
 
   else
   {
-    LODWORD(v7) = HIDWORD(v6);
+    LODWORD(v7) = HIDWORD(aspectConstrainedSpecifiedHeight);
     [(TUILayout *)self aspectConstrainedSpecifiedHeight];
     LODWORD(v9) = v8;
-    v10 = [(TUILayout *)self aspectConstrainedSpecifiedHeight];
+    aspectConstrainedSpecifiedHeight2 = [(TUILayout *)self aspectConstrainedSpecifiedHeight];
     [(TUILayout *)self computedTransformedSize];
     if (v11 <= -3.40282347e38)
     {
@@ -1107,7 +1107,7 @@ LABEL_6:
       }
     }
 
-    return (v12 | v10 & 0xFFFFFFFF00000000);
+    return (v12 | aspectConstrainedSpecifiedHeight2 & 0xFFFFFFFF00000000);
   }
 
   return result;
@@ -1241,20 +1241,20 @@ LABEL_6:
   return result;
 }
 
-- (CGRect)computedBoundsWithFlags:(unint64_t)a3
+- (CGRect)computedBoundsWithFlags:(unint64_t)flags
 {
   [(TUILayout *)self computedBoundsPrimitiveWithFlags:?];
   x = v5;
   y = v7;
   width = v9;
   height = v11;
-  if (a3)
+  if (flags)
   {
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v13 = [(TUILayout *)self computedBoundsChildrenWithFlags:a3];
+    v13 = [(TUILayout *)self computedBoundsChildrenWithFlags:flags];
     v14 = [v13 countByEnumeratingWithState:&v31 objects:v35 count:16];
     if (v14)
     {
@@ -1269,7 +1269,7 @@ LABEL_6:
           }
 
           v17 = *(*(&v31 + 1) + 8 * i);
-          [v17 computedBoundsWithFlags:a3];
+          [v17 computedBoundsWithFlags:flags];
           v22 = v21;
           if (v21 > 0.0)
           {
@@ -1321,7 +1321,7 @@ LABEL_6:
   return result;
 }
 
-- (CGRect)computedBoundsPrimitiveWithFlags:(unint64_t)a3
+- (CGRect)computedBoundsPrimitiveWithFlags:(unint64_t)flags
 {
   v3 = 0.0;
   v4 = fmax(self->_computedNaturalSize.width, 0.0);
@@ -1336,11 +1336,11 @@ LABEL_6:
 
 - (double)computedScale
 {
-  v2 = [(TUILayout *)self layoutAncestor];
-  v3 = v2;
-  if (v2)
+  layoutAncestor = [(TUILayout *)self layoutAncestor];
+  v3 = layoutAncestor;
+  if (layoutAncestor)
   {
-    [v2 computedScale];
+    [layoutAncestor computedScale];
     v5 = v4;
   }
 
@@ -1365,8 +1365,8 @@ LABEL_6:
   v7 = 0u;
   v8 = 0u;
   v9 = 0u;
-  v2 = [(TUILayout *)self children];
-  v3 = [v2 countByEnumeratingWithState:&v6 objects:v10 count:16];
+  children = [(TUILayout *)self children];
+  v3 = [children countByEnumeratingWithState:&v6 objects:v10 count:16];
   if (v3)
   {
     v4 = *v7;
@@ -1377,7 +1377,7 @@ LABEL_6:
       {
         if (*v7 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(children);
         }
 
         [*(*(&v6 + 1) + 8 * v5) onComputedScaleDidChange];
@@ -1385,7 +1385,7 @@ LABEL_6:
       }
 
       while (v3 != v5);
-      v3 = [v2 countByEnumeratingWithState:&v6 objects:v10 count:16];
+      v3 = [children countByEnumeratingWithState:&v6 objects:v10 count:16];
     }
 
     while (v3);
@@ -1398,8 +1398,8 @@ LABEL_6:
   v7 = 0u;
   v8 = 0u;
   v9 = 0u;
-  v2 = [(TUILayout *)self children];
-  v3 = [v2 countByEnumeratingWithState:&v6 objects:v10 count:16];
+  children = [(TUILayout *)self children];
+  v3 = [children countByEnumeratingWithState:&v6 objects:v10 count:16];
   if (v3)
   {
     v4 = *v7;
@@ -1410,7 +1410,7 @@ LABEL_6:
       {
         if (*v7 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(children);
         }
 
         [*(*(&v6 + 1) + 8 * v5) onViewSafeAreaInsetsDidChange];
@@ -1418,7 +1418,7 @@ LABEL_6:
       }
 
       while (v3 != v5);
-      v3 = [v2 countByEnumeratingWithState:&v6 objects:v10 count:16];
+      v3 = [children countByEnumeratingWithState:&v6 objects:v10 count:16];
     }
 
     while (v3);
@@ -1432,7 +1432,7 @@ LABEL_6:
   return CGAffineTransformConcat(retstr, &t1, &v6);
 }
 
-- (CGAffineTransform)computedTransformInAncestorLayout:(SEL)a3
+- (CGAffineTransform)computedTransformInAncestorLayout:(SEL)layout
 {
   v6 = a4;
   if (v6 == self)
@@ -1449,11 +1449,11 @@ LABEL_6:
     *&retstr->tx = 0u;
     *&retstr->a = 0u;
     [(TUILayout *)self _computedFrameTransform];
-    v7 = [(TUILayout *)self layoutAncestor];
-    v8 = v7;
-    if (!v7 || v7 == v6)
+    layoutAncestor = [(TUILayout *)self layoutAncestor];
+    v8 = layoutAncestor;
+    if (!layoutAncestor || layoutAncestor == v6)
     {
-      v11 = v7;
+      layoutAncestor2 = layoutAncestor;
     }
 
     else
@@ -1470,17 +1470,17 @@ LABEL_6:
         *&retstr->a = *&v16.a;
         *&retstr->c = v10;
         *&retstr->tx = *&v16.tx;
-        v11 = [v8 layoutAncestor];
+        layoutAncestor2 = [v8 layoutAncestor];
 
-        if (!v11)
+        if (!layoutAncestor2)
         {
           break;
         }
 
-        v8 = v11;
+        v8 = layoutAncestor2;
       }
 
-      while (v11 != v6);
+      while (layoutAncestor2 != v6);
     }
   }
 
@@ -1526,8 +1526,8 @@ LABEL_6:
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v11 = [(TUILayout *)self children];
-  v12 = [v11 countByEnumeratingWithState:&v40 objects:v44 count:16];
+  children = [(TUILayout *)self children];
+  v12 = [children countByEnumeratingWithState:&v40 objects:v44 count:16];
   if (v12)
   {
     v13 = *v41;
@@ -1537,7 +1537,7 @@ LABEL_6:
       {
         if (*v41 != v13)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(children);
         }
 
         v15 = *(*(&v40 + 1) + 8 * i);
@@ -1604,7 +1604,7 @@ LABEL_6:
         }
       }
 
-      v12 = [v11 countByEnumeratingWithState:&v40 objects:v44 count:16];
+      v12 = [children countByEnumeratingWithState:&v40 objects:v44 count:16];
     }
 
     while (v12);
@@ -1659,7 +1659,7 @@ LABEL_6:
   }
 }
 
-- (double)_computeWidth:(BOOL)a3
+- (double)_computeWidth:(BOOL)width
 {
   [(TUILayout *)self specifiedWidth];
   v5 = v4;
@@ -1713,9 +1713,9 @@ LABEL_6:
   return v15;
 }
 
-- (double)_computeHeight:(BOOL)a3
+- (double)_computeHeight:(BOOL)height
 {
-  v4 = [(TUILayout *)self specifiedHeight];
+  specifiedHeight = [(TUILayout *)self specifiedHeight];
   v6 = v5;
   TUI::Util::PartialStruct::Storage::dataForKey(&self->_storage, 7u);
   v7 = TUI::Util::PartialStruct::Storage::dataForKey(&self->_storage, 5u);
@@ -1727,14 +1727,14 @@ LABEL_6:
 
   else
   {
-    v9 = *&v4;
+    v9 = *&specifiedHeight;
     v8 = 1;
   }
 
   [(TUILayout *)self constrainComputedHeight:v9];
   if (v8)
   {
-    return fmin(fmax(result, *(&v4 + 1)), v6);
+    return fmin(fmax(result, *(&specifiedHeight + 1)), v6);
   }
 
   return result;
@@ -1751,16 +1751,16 @@ LABEL_6:
 
 - ($E297CC25127479E857BE23A4F8632EA4)aspectConstrainedSpecifiedWidth
 {
-  v4 = [(TUILayout *)self specifiedWidth];
-  v5 = v4;
-  v6 = HIDWORD(v4);
+  specifiedWidth = [(TUILayout *)self specifiedWidth];
+  v5 = specifiedWidth;
+  v6 = HIDWORD(specifiedWidth);
   if ((*(&self->_flags + 1) & 0x30) != 0)
   {
     [(TUILayout *)self computeIntrinsicAspectRatio];
     if (v7 > 0.0)
     {
       v9 = v7;
-      v10 = [(TUILayout *)self specifiedHeight];
+      specifiedHeight = [(TUILayout *)self specifiedHeight];
       flags = self->_flags;
       if ((*&flags & 0x2000) != 0)
       {
@@ -1775,7 +1775,7 @@ LABEL_6:
         return (v5 | (v6 << 32));
       }
 
-      v12 = fmin(*&v6, fmaxf(*&v10, *(&v10 + 1)) / v9);
+      v12 = fmin(*&v6, fmaxf(*&specifiedHeight, *(&specifiedHeight + 1)) / v9);
       *&v6 = v12;
     }
   }
@@ -1785,16 +1785,16 @@ LABEL_6:
 
 - ($E297CC25127479E857BE23A4F8632EA4)aspectConstrainedSpecifiedHeight
 {
-  v4 = [(TUILayout *)self specifiedHeight];
-  v5 = v4;
-  v6 = HIDWORD(v4);
+  specifiedHeight = [(TUILayout *)self specifiedHeight];
+  v5 = specifiedHeight;
+  v6 = HIDWORD(specifiedHeight);
   if ((*(&self->_flags + 1) & 0xC0) != 0)
   {
     [(TUILayout *)self computeIntrinsicAspectRatio];
     if (v7 > 0.0)
     {
       v9 = v7;
-      v10 = [(TUILayout *)self specifiedWidth];
+      specifiedWidth = [(TUILayout *)self specifiedWidth];
       flags = self->_flags;
       if ((*&flags & 0x8000) != 0)
       {
@@ -1809,7 +1809,7 @@ LABEL_6:
         return (v5 | (v6 << 32));
       }
 
-      v12 = fmax(*&v6, v9 * fmaxf(*&v10, *(&v10 + 1)));
+      v12 = fmax(*&v6, v9 * fmaxf(*&specifiedWidth, *(&specifiedWidth + 1)));
       *&v6 = v12;
     }
   }
@@ -1819,16 +1819,16 @@ LABEL_6:
 
 - (void)_computeAspectConstrainedSpecifiedWidthHeight
 {
-  v3 = [(TUILayout *)self specifiedWidth];
+  specifiedWidth = [(TUILayout *)self specifiedWidth];
   v5 = v4;
-  v6 = [(TUILayout *)self specifiedHeight];
+  specifiedHeight = [(TUILayout *)self specifiedHeight];
   *&v7 = v5;
-  LODWORD(v9) = HIDWORD(v3);
+  LODWORD(v9) = HIDWORD(specifiedWidth);
   *&v12 = v11;
-  *&v10 = fmaxf(*&v3, *(&v3 + 1));
-  *&v14 = fmaxf(*&v6, *(&v6 + 1));
-  *&v13 = fminf(*&v6, v11);
-  *&v8 = fminf(*&v3, v5);
+  *&v10 = fmaxf(*&specifiedWidth, *(&specifiedWidth + 1));
+  *&v14 = fmaxf(*&specifiedHeight, *(&specifiedHeight + 1));
+  *&v13 = fminf(*&specifiedHeight, v11);
+  *&v8 = fminf(*&specifiedWidth, v5);
   [(TUILayout *)self computeIntrinsicAspectRatio:v10];
   if (v15 > 0.0)
   {
@@ -1851,23 +1851,23 @@ LABEL_6:
   *p_flags = (v16 | v17 | v20);
 }
 
-- (void)appendChildRenderModelCompatibleWithKind:(unint64_t)a3 context:(id)a4 transform:(CGAffineTransform *)a5 toModels:(id)a6
+- (void)appendChildRenderModelCompatibleWithKind:(unint64_t)kind context:(id)context transform:(CGAffineTransform *)transform toModels:(id)models
 {
-  v10 = a4;
-  v11 = a6;
-  v12 = [(TUILayout *)self children];
-  v13 = *&a5->c;
-  v14[0] = *&a5->a;
+  contextCopy = context;
+  modelsCopy = models;
+  children = [(TUILayout *)self children];
+  v13 = *&transform->c;
+  v14[0] = *&transform->a;
   v14[1] = v13;
-  v14[2] = *&a5->tx;
-  [(TUILayout *)self appendChilden:v12 renderModelCompatibleWithKind:a3 context:v10 transform:v14 toModels:v11];
+  v14[2] = *&transform->tx;
+  [(TUILayout *)self appendChilden:children renderModelCompatibleWithKind:kind context:contextCopy transform:v14 toModels:modelsCopy];
 }
 
-- (void)appendChilden:(id)a3 renderModelCompatibleWithKind:(unint64_t)a4 context:(id)a5 transform:(CGAffineTransform *)a6 toModels:(id)a7
+- (void)appendChilden:(id)childen renderModelCompatibleWithKind:(unint64_t)kind context:(id)context transform:(CGAffineTransform *)transform toModels:(id)models
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a7;
+  childenCopy = childen;
+  contextCopy = context;
+  modelsCopy = models;
   [(TUILayout *)self computedNaturalSize];
   v16 = v15;
   v18 = v17;
@@ -1875,7 +1875,7 @@ LABEL_6:
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v19 = v12;
+  v19 = childenCopy;
   v20 = [v19 countByEnumeratingWithState:&v36 objects:v40 count:16];
   if (v20)
   {
@@ -1898,13 +1898,13 @@ LABEL_6:
         [v25 computedTransformedSize];
         memset(&v35, 0, sizeof(v35));
         CGAffineTransformMakeTranslation(&t1, v27 + v30 * 0.5 + v22 * 0.5, v29 + v31 * 0.5 + v23 * 0.5);
-        v32 = *&a6->c;
-        *&v33.a = *&a6->a;
+        v32 = *&transform->c;
+        *&v33.a = *&transform->a;
         *&v33.c = v32;
-        *&v33.tx = *&a6->tx;
+        *&v33.tx = *&transform->tx;
         CGAffineTransformConcat(&v35, &t1, &v33);
         t1 = v35;
-        [v25 appendRenderModelCompatibleWithKind:a4 context:v13 transform:&t1 toModels:v14];
+        [v25 appendRenderModelCompatibleWithKind:kind context:contextCopy transform:&t1 toModels:modelsCopy];
       }
 
       v20 = [v19 countByEnumeratingWithState:&v36 objects:v40 count:16];
@@ -1916,51 +1916,51 @@ LABEL_6:
 
 - (id)rootLayout
 {
-  v2 = self;
-  v3 = [(TUILayout *)v2 layoutAncestor];
-  while (v3)
+  selfCopy = self;
+  layoutAncestor = [(TUILayout *)selfCopy layoutAncestor];
+  while (layoutAncestor)
   {
-    v4 = v2;
-    v2 = v3;
+    v4 = selfCopy;
+    selfCopy = layoutAncestor;
 
-    v3 = [(TUILayout *)v2 layoutAncestor];
+    layoutAncestor = [(TUILayout *)selfCopy layoutAncestor];
   }
 
-  return v2;
+  return selfCopy;
 }
 
-- (id)axModelTreeWithCustomActionsCollector:(id)a3 scrollAncestorLayout:(id)a4 scrollAncestorTranslation:(CGPoint)a5 liveTransformAncestorLayout:(id)a6
+- (id)axModelTreeWithCustomActionsCollector:(id)collector scrollAncestorLayout:(id)layout scrollAncestorTranslation:(CGPoint)translation liveTransformAncestorLayout:(id)ancestorLayout
 {
-  y = a5.y;
-  x = a5.x;
-  v95 = a3;
-  v84 = a4;
-  v85 = a6;
+  y = translation.y;
+  x = translation.x;
+  collectorCopy = collector;
+  layoutCopy = layout;
+  ancestorLayoutCopy = ancestorLayout;
   v86 = [(TUILayout *)self box];
-  v87 = self;
-  v11 = [(TUILayout *)self scrollAncestorForChildrenWithAncestor:v84];
+  selfCopy = self;
+  v11 = [(TUILayout *)self scrollAncestorForChildrenWithAncestor:layoutCopy];
   v12 = y;
   v13 = x;
   v93 = v11;
-  if (v11 != v84)
+  if (v11 != layoutCopy)
   {
     [(TUILayout *)v11 scrollAdditionalAXTranslation];
     v13 = v14;
     v12 = v15;
   }
 
-  v16 = [v86 liveTransformKind];
-  v17 = v85;
-  if (v16)
+  liveTransformKind = [v86 liveTransformKind];
+  selfCopy2 = ancestorLayoutCopy;
+  if (liveTransformKind)
   {
-    v17 = self;
+    selfCopy2 = self;
   }
 
-  v92 = v17;
+  v92 = selfCopy2;
   v18 = [TUIAXModel alloc];
-  v19 = [v86 identifier];
+  identifier = [v86 identifier];
   v20 = [objc_opt_class() description];
-  v88 = [(TUIAXModel *)v18 initWithIdentifier:v19 boxType:v20];
+  v88 = [(TUIAXModel *)v18 initWithIdentifier:identifier boxType:v20];
 
   [(TUIAXModel *)v88 setHidden:[(TUILayout *)self hidden]];
   v90 = objc_opt_new();
@@ -1985,15 +1985,15 @@ LABEL_6:
 
         v23 = *(*(&v105 + 1) + 8 * i);
         v24 = [v23 box];
-        v25 = [v24 isAXElement];
-        if (v95)
+        isAXElement = [v24 isAXElement];
+        if (collectorCopy)
         {
           v26 = 0;
         }
 
         else
         {
-          v26 = v25;
+          v26 = isAXElement;
         }
 
         if (v26)
@@ -2007,9 +2007,9 @@ LABEL_6:
         }
 
         v28 = objc_autoreleasePoolPush();
-        if (v95)
+        if (collectorCopy)
         {
-          v29 = v95;
+          v29 = collectorCopy;
         }
 
         else
@@ -2023,39 +2023,39 @@ LABEL_6:
         if (v27)
         {
           v31 = [v23 box];
-          v32 = [v31 axCustomActions];
-          v33 = [v32 count] == 0;
+          axCustomActions = [v31 axCustomActions];
+          v33 = [axCustomActions count] == 0;
 
           if (v33)
           {
-            v43 = [(TUIAXCustomActionsCollector *)v27 customActionsForPress];
-            v44 = [v43 count] == 0;
+            customActionsForPress = [(TUIAXCustomActionsCollector *)v27 customActionsForPress];
+            v44 = [customActionsForPress count] == 0;
 
             if (v44)
             {
               goto LABEL_36;
             }
 
-            v45 = [(TUIAXCustomActionsCollector *)v27 customActionsForPress];
-            v34 = [v45 firstObject];
+            customActionsForPress2 = [(TUIAXCustomActionsCollector *)v27 customActionsForPress];
+            firstObject = [customActionsForPress2 firstObject];
 
-            [v34 setIsDefault:1];
-            v109 = v34;
+            [firstObject setIsDefault:1];
+            v109 = firstObject;
             v46 = [NSArray arrayWithObjects:&v109 count:1];
             [v30 setResolvedCustomActions:v46];
           }
 
           else
           {
-            v34 = objc_opt_new();
+            firstObject = objc_opt_new();
             v103 = 0u;
             v104 = 0u;
             v101 = 0u;
             v102 = 0u;
             v35 = [v23 box];
-            v36 = [v35 axCustomActions];
+            axCustomActions2 = [v35 axCustomActions];
 
-            v37 = [v36 countByEnumeratingWithState:&v101 objects:v110 count:16];
+            v37 = [axCustomActions2 countByEnumeratingWithState:&v101 objects:v110 count:16];
             if (v37)
             {
               v38 = *v102;
@@ -2065,7 +2065,7 @@ LABEL_6:
                 {
                   if (*v102 != v38)
                   {
-                    objc_enumerationMutation(v36);
+                    objc_enumerationMutation(axCustomActions2);
                   }
 
                   v40 = *(*(&v101 + 1) + 8 * j);
@@ -2080,16 +2080,16 @@ LABEL_6:
                     }
                   }
 
-                  [v34 addObject:v40];
+                  [firstObject addObject:v40];
                 }
 
-                v37 = [v36 countByEnumeratingWithState:&v101 objects:v110 count:16];
+                v37 = [axCustomActions2 countByEnumeratingWithState:&v101 objects:v110 count:16];
               }
 
               while (v37);
             }
 
-            [rect setResolvedCustomActions:v34];
+            [rect setResolvedCustomActions:firstObject];
           }
         }
 
@@ -2107,8 +2107,8 @@ LABEL_36:
   }
 
   [(TUIAXModel *)v88 setChildren:v90];
-  v47 = [v86 axHasNonDefaultAttributess];
-  if (v47)
+  axHasNonDefaultAttributess = [v86 axHasNonDefaultAttributess];
+  if (axHasNonDefaultAttributess)
   {
     v48 = [[TUIAXAttributes alloc] initWithAXAttributes:v86];
   }
@@ -2119,58 +2119,58 @@ LABEL_36:
   }
 
   [(TUIAXModel *)v88 setAxAttributes:v48];
-  if (v47)
+  if (axHasNonDefaultAttributess)
   {
   }
 
-  v49 = [(TUILayout *)v84 box];
-  v50 = [v49 identifier];
-  [(TUIAXModel *)v88 setScrollAncestorIdentifier:v50];
+  v49 = [(TUILayout *)layoutCopy box];
+  identifier2 = [v49 identifier];
+  [(TUIAXModel *)v88 setScrollAncestorIdentifier:identifier2];
 
-  if (v93 == v87)
+  if (v93 == selfCopy)
   {
-    v51 = [(TUILayout *)v93 scrollAxis];
+    scrollAxis = [(TUILayout *)v93 scrollAxis];
   }
 
   else
   {
-    v51 = 0;
+    scrollAxis = 0;
   }
 
-  [(TUIAXModel *)v88 setShouldScrollHorizontally:v51 == &dword_0 + 1];
-  [(TUIAXModel *)v88 setShouldScrollVertically:v51 == &dword_0 + 2];
-  v52 = [(TUILayout *)v85 box];
-  v53 = [v52 identifier];
-  [(TUIAXModel *)v88 setLiveTransformAncestorIdentifier:v53];
+  [(TUIAXModel *)v88 setShouldScrollHorizontally:scrollAxis == &dword_0 + 1];
+  [(TUIAXModel *)v88 setShouldScrollVertically:scrollAxis == &dword_0 + 2];
+  v52 = [(TUILayout *)ancestorLayoutCopy box];
+  identifier3 = [v52 identifier];
+  [(TUIAXModel *)v88 setLiveTransformAncestorIdentifier:identifier3];
 
   -[TUIAXModel setLiveTransformKind:](v88, "setLiveTransformKind:", [v86 liveTransformKind]);
   memset(&v100, 0, sizeof(v100));
-  [(TUILayout *)v87 computedTransformInAncestorLayout:v84];
+  [(TUILayout *)selfCopy computedTransformInAncestorLayout:layoutCopy];
   v98 = v100;
   CGAffineTransformTranslate(&v99, &v98, x, y);
   v100 = v99;
-  [(TUILayout *)v87 computedBounds];
+  [(TUILayout *)selfCopy computedBounds];
   v55 = v54;
   v57 = v56;
   v59 = v58;
   v61 = v60;
-  v62 = [(TUILayout *)v87 computedLayoutDirection];
-  [(TUIAXModel *)v88 setFlipsHorizontal:v62 == &dword_0 + 2];
-  if (v62 == &dword_0 + 2)
+  computedLayoutDirection = [(TUILayout *)selfCopy computedLayoutDirection];
+  [(TUIAXModel *)v88 setFlipsHorizontal:computedLayoutDirection == &dword_0 + 2];
+  if (computedLayoutDirection == &dword_0 + 2)
   {
-    if (v84)
+    if (layoutCopy)
     {
-      v63 = v84;
+      rootLayout = layoutCopy;
     }
 
     else
     {
-      v63 = [(TUILayout *)v87 rootLayout];
+      rootLayout = [(TUILayout *)selfCopy rootLayout];
     }
 
-    v64 = v63;
+    v64 = rootLayout;
     recta = v61;
-    [(TUILayout *)v63 computedBounds];
+    [(TUILayout *)rootLayout computedBounds];
     v66 = v65;
     v68 = v67;
     v70 = v69;
@@ -2227,49 +2227,49 @@ LABEL_36:
   return v88;
 }
 
-- (id)_transformedRenderModel:(id)a3 transform:(CGAffineTransform *)a4 context:(id)a5 allowCache:(BOOL)a6
+- (id)_transformedRenderModel:(id)model transform:(CGAffineTransform *)transform context:(id)context allowCache:(BOOL)cache
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a5;
+  cacheCopy = cache;
+  modelCopy = model;
+  contextCopy = context;
   y = CGPointZero.y;
-  a = a4->a;
-  b = a4->b;
-  tx = a4->tx;
-  c = a4->c;
-  ty = a4->ty;
-  d = a4->d;
-  [v10 size];
+  a = transform->a;
+  b = transform->b;
+  tx = transform->tx;
+  c = transform->c;
+  ty = transform->ty;
+  d = transform->d;
+  [modelCopy size];
   v13 = v12;
-  [v10 size];
+  [modelCopy size];
   v15 = v14;
-  v17 = a4->a;
-  v16 = a4->b;
-  v18 = a4->c;
-  v19 = a4->d;
-  v20 = a4->tx;
-  v21 = a4->ty;
-  [v11 contentsScale];
+  v17 = transform->a;
+  v16 = transform->b;
+  v18 = transform->c;
+  v19 = transform->d;
+  v20 = transform->tx;
+  v21 = transform->ty;
+  [contextCopy contentsScale];
   v22 = v13 * -0.5;
   v23 = v20 + v15 * -0.5 * v18 + v17 * (v13 * -0.5);
   v24 = v21 + v15 * -0.5 * v19 + v16 * v22;
   v26 = tx + y * c + a * CGPointZero.x + TUIPointRoundedForScale(v23, v24, v25) - v23;
   v28 = ty + y * d + b * CGPointZero.x + v27 - v24;
-  v29 = *&a4->c;
-  *&t1.a = *&a4->a;
+  v29 = *&transform->c;
+  *&t1.a = *&transform->a;
   *&t1.c = v29;
-  *&t1.tx = *&a4->tx;
+  *&t1.tx = *&transform->tx;
   memset(&v57, 0, sizeof(v57));
   CGAffineTransformMakeTranslation(&t2, -v26, -v28);
   CGAffineTransformConcat(&v57, &t1, &t2);
   v30 = v57.tx;
-  [v11 contentsScale];
+  [contextCopy contentsScale];
   v57.tx = TUIFloatRoundedForScale(v30, v31);
   v32 = v57.ty;
-  [v11 contentsScale];
+  [contextCopy contentsScale];
   v57.ty = TUIFloatRoundedForScale(v32, v33);
   v34 = [(TUILayout *)self computeZIndexWithDefault:0];
-  if (!v6)
+  if (!cacheCopy)
   {
     goto LABEL_22;
   }
@@ -2280,12 +2280,12 @@ LABEL_36:
     goto LABEL_22;
   }
 
-  v36 = 0;
-  v37 = [(TUIRenderModelTransform *)cachedTransformModel submodel];
-  if (v37 != v10)
+  submodel2 = 0;
+  submodel = [(TUIRenderModelTransform *)cachedTransformModel submodel];
+  if (submodel != modelCopy)
   {
-    v36 = [(TUIRenderModelTransform *)self->_cachedTransformModel submodel];
-    if (![v36 isEqual:v10])
+    submodel2 = [(TUIRenderModelTransform *)self->_cachedTransformModel submodel];
+    if (![submodel2 isEqual:modelCopy])
     {
       goto LABEL_20;
     }
@@ -2312,7 +2312,7 @@ LABEL_36:
   if (!CGAffineTransformEqualToTransform(&t1, &t2))
   {
 LABEL_19:
-    if (v37 == v10)
+    if (submodel == modelCopy)
     {
 LABEL_21:
 
@@ -2324,34 +2324,34 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v42 = [(TUIRenderModelTransform *)self->_cachedTransformModel zIndex];
-  if (v37 != v10)
+  zIndex = [(TUIRenderModelTransform *)self->_cachedTransformModel zIndex];
+  if (submodel != modelCopy)
   {
   }
 
-  if (v42 == v34)
+  if (zIndex == v34)
   {
     v43 = self->_cachedTransformModel;
     goto LABEL_24;
   }
 
 LABEL_22:
-  v43 = [[TUIRenderModelTransform alloc] initWithSubmodel:v10];
+  v43 = [[TUIRenderModelTransform alloc] initWithSubmodel:modelCopy];
   [(TUIRenderModelTransform *)v43 setCenter:v26, v28];
   t1 = v57;
   [(TUIRenderModelTransform *)v43 setTransform:&t1];
   [(TUIRenderModelTransform *)v43 setZIndex:v34];
-  v44 = [(TUILayout *)self computedRefIdWithContext:v11];
+  v44 = [(TUILayout *)self computedRefIdWithContext:contextCopy];
   [(TUIRenderModelTransform *)v43 setRefId:v44];
 
-  v45 = [(TUILayout *)self computedRefInstanceWithContext:v11];
+  v45 = [(TUILayout *)self computedRefInstanceWithContext:contextCopy];
   [(TUIRenderModelTransform *)v43 setRefInstance:v45];
 
   v46 = [(TUILayout *)self box];
   [v46 renderOutsets];
   [(TUIRenderModelTransform *)v43 setOutsets:?];
 
-  if (v6)
+  if (cacheCopy)
   {
     *&self->_flags &= ~0x40u;
     objc_storeStrong(&self->_cachedTransformModel, v43);
@@ -2362,77 +2362,77 @@ LABEL_24:
   return v43;
 }
 
-- (BOOL)shouldUseSubviewRenderModelWithContext:(id)a3
+- (BOOL)shouldUseSubviewRenderModelWithContext:(id)context
 {
-  v4 = [a3 currentPointer];
-  v5 = [v4 refId];
+  currentPointer = [context currentPointer];
+  refId = [currentPointer refId];
   v6 = [(TUILayout *)self box];
-  v7 = [v6 refId];
-  v8 = [v5 isEqualToString:v7];
+  refId2 = [v6 refId];
+  v8 = [refId isEqualToString:refId2];
 
   return v8;
 }
 
-- (void)appendRenderModelCompatibleWithKind:(unint64_t)a3 context:(id)a4 transform:(CGAffineTransform *)a5 toModels:(id)a6
+- (void)appendRenderModelCompatibleWithKind:(unint64_t)kind context:(id)context transform:(CGAffineTransform *)transform toModels:(id)models
 {
-  v10 = a4;
-  v11 = a6;
+  contextCopy = context;
+  modelsCopy = models;
   if (![(TUILayout *)self hidden])
   {
-    v12 = *&a5->c;
-    v13[0] = *&a5->a;
+    v12 = *&transform->c;
+    v13[0] = *&transform->a;
     v13[1] = v12;
-    v13[2] = *&a5->tx;
-    [(TUILayout *)self appendRenderModelIgnoreHiddenCompatibleWithKind:a3 context:v10 transform:v13 toModels:v11];
+    v13[2] = *&transform->tx;
+    [(TUILayout *)self appendRenderModelIgnoreHiddenCompatibleWithKind:kind context:contextCopy transform:v13 toModels:modelsCopy];
   }
 }
 
-- (void)appendRenderModelIgnoreHiddenCompatibleWithKind:(unint64_t)a3 context:(id)a4 transform:(CGAffineTransform *)a5 toModels:(id)a6
+- (void)appendRenderModelIgnoreHiddenCompatibleWithKind:(unint64_t)kind context:(id)context transform:(CGAffineTransform *)transform toModels:(id)models
 {
-  v10 = a4;
-  v11 = a6;
+  contextCopy = context;
+  modelsCopy = models;
   [(TUILayout *)self computedTransform];
-  v12 = *&a5->c;
-  *&t2.a = *&a5->a;
+  v12 = *&transform->c;
+  *&t2.a = *&transform->a;
   *&t2.c = v12;
-  *&t2.tx = *&a5->tx;
+  *&t2.tx = *&transform->tx;
   CGAffineTransformConcat(&v31, &t1, &t2);
   v13 = *&v31.c;
-  *&a5->a = *&v31.a;
-  *&a5->c = v13;
-  *&a5->tx = *&v31.tx;
+  *&transform->a = *&v31.a;
+  *&transform->c = v13;
+  *&transform->tx = *&v31.tx;
   [(TUILayout *)self renderTransform];
-  v14 = *&a5->c;
-  *&t2.a = *&a5->a;
+  v14 = *&transform->c;
+  *&t2.a = *&transform->a;
   *&t2.c = v14;
-  *&t2.tx = *&a5->tx;
+  *&t2.tx = *&transform->tx;
   CGAffineTransformConcat(&v31, &t1, &t2);
   v15 = *&v31.c;
-  *&a5->a = *&v31.a;
-  *&a5->c = v15;
-  *&a5->tx = *&v31.tx;
+  *&transform->a = *&v31.a;
+  *&transform->c = v15;
+  *&transform->tx = *&v31.tx;
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
   v25[2] = sub_10D048;
   v25[3] = &unk_261D78;
   v25[4] = self;
-  v16 = v10;
+  v16 = contextCopy;
   v26 = v16;
-  v17 = v11;
+  v17 = modelsCopy;
   v27 = v17;
-  v28 = a3;
+  kindCopy = kind;
   v18 = objc_retainBlock(v25);
-  v19 = [v16 currentLiveTransform];
-  if (v19)
+  currentLiveTransform = [v16 currentLiveTransform];
+  if (currentLiveTransform)
   {
   }
 
   else
   {
-    v21 = *&a5->c;
-    *&v31.a = *&a5->a;
+    v21 = *&transform->c;
+    *&v31.a = *&transform->a;
     *&v31.c = v21;
-    *&v31.tx = *&a5->tx;
+    *&v31.tx = *&transform->tx;
     v22 = [(TUILayout *)self newLiveTransform:&v31];
     if (v22)
     {
@@ -2448,21 +2448,21 @@ LABEL_24:
     }
   }
 
-  v20 = *&a5->tx;
-  *&v31.c = *&a5->c;
+  v20 = *&transform->tx;
+  *&v31.c = *&transform->c;
   *&v31.tx = v20;
-  *&v31.a = *&a5->a;
+  *&v31.a = *&transform->a;
   (v18[2])(v18, &v31, 1);
 LABEL_6:
 }
 
-- (id)newLiveTransform:(CGAffineTransform *)a3
+- (id)newLiveTransform:(CGAffineTransform *)transform
 {
-  v4 = *&a3->c;
-  v5 = vaddq_f64(*&a3->tx, vmlaq_n_f64(vmulq_n_f64(v4, CGPointZero.y), *&a3->a, CGPointZero.x));
-  *&t1.a = *&a3->a;
+  v4 = *&transform->c;
+  v5 = vaddq_f64(*&transform->tx, vmlaq_n_f64(vmulq_n_f64(v4, CGPointZero.y), *&transform->a, CGPointZero.x));
+  *&t1.a = *&transform->a;
   *&t1.c = v4;
-  *&t1.tx = *&a3->tx;
+  *&t1.tx = *&transform->tx;
   memset(&v21, 0, sizeof(v21));
   v6 = v5;
   CGAffineTransformMakeTranslation(&t2, -v5.f64[0], -v5.f64[1]);
@@ -2471,9 +2471,9 @@ LABEL_6:
   v8 = v7;
   v10 = v9;
   v11 = [(TUILayout *)self box];
-  v12 = [v11 liveTransformKind];
+  liveTransformKind = [v11 liveTransformKind];
 
-  if ((v12 - 2) < 5)
+  if ((liveTransformKind - 2) < 5)
   {
     v13 = [(TUILayout *)self box];
     v14 = -[TUILayout pinPositionFromLiveTransformKind:](self, "pinPositionFromLiveTransformKind:", [v13 liveTransformKind]);
@@ -2483,13 +2483,13 @@ LABEL_6:
     return [(TUIPinningLiveTransform *)v15 initWithCenter:&t1 size:v14 transform:*&v6 pinPosition:v8, v10];
   }
 
-  if (v12 == &dword_0 + 1)
+  if (liveTransformKind == &dword_0 + 1)
   {
     v17 = TUIFloatingLiveTransform;
     goto LABEL_7;
   }
 
-  if (v12 == &dword_4 + 3)
+  if (liveTransformKind == &dword_4 + 3)
   {
     v17 = TUIOverscrollingLiveTransform;
 LABEL_7:
@@ -2501,29 +2501,29 @@ LABEL_7:
   return 0;
 }
 
-- (unint64_t)pinPositionFromLiveTransformKind:(unint64_t)a3
+- (unint64_t)pinPositionFromLiveTransformKind:(unint64_t)kind
 {
-  if (a3 - 2 > 4)
+  if (kind - 2 > 4)
   {
     return 0;
   }
 
   else
   {
-    return qword_24D318[a3 - 2];
+    return qword_24D318[kind - 2];
   }
 }
 
-- (void)appendHoverRegions:(id)a3 relativeToLayout:(id)a4
+- (void)appendHoverRegions:(id)regions relativeToLayout:(id)layout
 {
-  v6 = a3;
-  v7 = a4;
+  regionsCopy = regions;
+  layoutCopy = layout;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = [(TUILayout *)self childrenForHoverRegions];
-  v9 = [v8 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  childrenForHoverRegions = [(TUILayout *)self childrenForHoverRegions];
+  v9 = [childrenForHoverRegions countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v9)
   {
     v10 = *v13;
@@ -2534,15 +2534,15 @@ LABEL_7:
       {
         if (*v13 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(childrenForHoverRegions);
         }
 
-        [*(*(&v12 + 1) + 8 * v11) appendHoverRegions:v6 relativeToLayout:v7];
+        [*(*(&v12 + 1) + 8 * v11) appendHoverRegions:regionsCopy relativeToLayout:layoutCopy];
         v11 = v11 + 1;
       }
 
       while (v9 != v11);
-      v9 = [v8 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v9 = [childrenForHoverRegions countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v9);
@@ -2568,8 +2568,8 @@ LABEL_7:
   {
     v10 = objc_loadWeakRetained(&self->_controller);
     v6 = objc_loadWeakRetained(&self->_parent);
-    v7 = [v6 isLayout];
-    if (v7)
+    isLayout = [v6 isLayout];
+    if (isLayout)
     {
       v8 = objc_loadWeakRetained(&self->_parent);
     }
@@ -2580,33 +2580,33 @@ LABEL_7:
     }
 
     [v10 invalidateCachedRenderModelForLayout:v8];
-    if (v7)
+    if (isLayout)
     {
     }
   }
 }
 
-- (BOOL)isDescendentOfLayout:(id)a3
+- (BOOL)isDescendentOfLayout:(id)layout
 {
-  v4 = a3;
-  v5 = [(TUILayout *)self parent];
-  if (v5 == v4)
+  layoutCopy = layout;
+  parent = [(TUILayout *)self parent];
+  if (parent == layoutCopy)
   {
     v7 = 1;
   }
 
   else
   {
-    v6 = [(TUILayout *)self parent];
-    v7 = [v6 isDescendentOfLayout:v4];
+    parent2 = [(TUILayout *)self parent];
+    v7 = [parent2 isDescendentOfLayout:layoutCopy];
   }
 
   return v7;
 }
 
-- (void)setInvalidChildren:(BOOL)a3
+- (void)setInvalidChildren:(BOOL)children
 {
-  if (a3)
+  if (children)
   {
     v3 = 2;
   }
@@ -2648,43 +2648,43 @@ LABEL_7:
   TUI::Util::PartialStruct::Storage::compress(&self->_storage);
 }
 
-- (void)_validateLayoutWithBlock:(id)a3
+- (void)_validateLayoutWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   flags = self->_flags;
   self->_flags = (*&flags | 4);
-  v6 = v4;
-  v4[2]();
+  v6 = blockCopy;
+  blockCopy[2]();
   [(TUILayout *)self _computeAspectConstrainedSpecifiedWidthHeight];
   self->_flags = (*&self->_flags & 0xFFFFFFFB | (4 * ((*&flags >> 2) & 1)));
   TUI::Util::PartialStruct::Storage::compress(&self->_storage);
 }
 
-- (void)setComputedNaturalSize:(CGSize)a3
+- (void)setComputedNaturalSize:(CGSize)size
 {
-  if (fabs(a3.width) == INFINITY)
+  if (fabs(size.width) == INFINITY)
   {
-    a3.width = 0.0;
+    size.width = 0.0;
   }
 
-  if (fabs(a3.height) == INFINITY)
+  if (fabs(size.height) == INFINITY)
   {
-    a3.height = 0.0;
+    size.height = 0.0;
   }
 
-  if (self->_computedNaturalSize.width != a3.width || self->_computedNaturalSize.height != a3.height)
+  if (self->_computedNaturalSize.width != size.width || self->_computedNaturalSize.height != size.height)
   {
-    self->_computedNaturalSize = a3;
-    v5 = [(TUILayout *)self parent];
-    [v5 onChildTransformedSizeDidChange:self];
+    self->_computedNaturalSize = size;
+    parent = [(TUILayout *)self parent];
+    [parent onChildTransformedSizeDidChange:self];
   }
 }
 
-- (void)setComputedOrigin:(CGPoint)a3
+- (void)setComputedOrigin:(CGPoint)origin
 {
-  if (self->_computedOrigin.x != a3.x || self->_computedOrigin.y != a3.y)
+  if (self->_computedOrigin.x != origin.x || self->_computedOrigin.y != origin.y)
   {
-    self->_computedOrigin = a3;
+    self->_computedOrigin = origin;
     [(TUILayout *)self onComputedOriginDidChange];
   }
 }
@@ -2694,15 +2694,15 @@ LABEL_7:
   if (self->_cachedTransformModel)
   {
     *&self->_flags |= 0x40u;
-    v3 = [(TUILayout *)self parent];
-    [v3 onChildRenderModelInvalidate:self];
+    parent = [(TUILayout *)self parent];
+    [parent onChildRenderModelInvalidate:self];
   }
 }
 
 - (void)onInvalidate
 {
-  v4 = [(TUILayout *)self layoutAncestor];
-  if (v4 && (v4[16] & 4) == 0)
+  layoutAncestor = [(TUILayout *)self layoutAncestor];
+  if (layoutAncestor && (layoutAncestor[16] & 4) == 0)
   {
     WeakRetained = objc_loadWeakRetained(&self->_parent);
     [WeakRetained onChildInvalidate:self];
@@ -2714,8 +2714,8 @@ LABEL_7:
 - (void)onInvalidateIntrinsicSize
 {
   [(TUILayout *)self invalidateLayout];
-  v3 = [(TUILayout *)self parent];
-  [v3 onChildInvalidateIntrinsicSize:self];
+  parent = [(TUILayout *)self parent];
+  [parent onChildInvalidateIntrinsicSize:self];
 }
 
 - (void)onContainersUpdated
@@ -2725,9 +2725,9 @@ LABEL_7:
   [(TUILayout *)self onChildrenUpdated];
 }
 
-- (void)updateDesdendantSpecifiedWidthModifiedWithFlag:(BOOL)a3
+- (void)updateDesdendantSpecifiedWidthModifiedWithFlag:(BOOL)flag
 {
-  if (a3)
+  if (flag)
   {
 LABEL_12:
     flags = self->_flags;
@@ -2785,26 +2785,26 @@ LABEL_14:
   }
 }
 
-- (void)appendLayoutsWithSpecifiedWidthModifiedToArray:(id)a3
+- (void)appendLayoutsWithSpecifiedWidthModifiedToArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   if ((*(&self->_flags + 1) & 4) != 0)
   {
-    [v4 addObject:self];
+    [arrayCopy addObject:self];
   }
 }
 
-- (void)appendVisibleBoundsObservers:(id)a3 axis:(unint64_t)a4 offset:(double)a5
+- (void)appendVisibleBoundsObservers:(id)observers axis:(unint64_t)axis offset:(double)offset
 {
-  v8 = a3;
+  observersCopy = observers;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v9 = [(TUILayout *)self layout];
-  v10 = [v9 children];
+  layout = [(TUILayout *)self layout];
+  children = [layout children];
 
-  v11 = [v10 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v11 = [children countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v11)
   {
     v12 = *v15;
@@ -2815,15 +2815,15 @@ LABEL_14:
       {
         if (*v15 != v12)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(children);
         }
 
-        [*(*(&v14 + 1) + 8 * v13) appendVisibleBoundsObservers:v8 axis:a4 offset:a5];
+        [*(*(&v14 + 1) + 8 * v13) appendVisibleBoundsObservers:observersCopy axis:axis offset:offset];
         v13 = v13 + 1;
       }
 
       while (v11 != v13);
-      v11 = [v10 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v11 = [children countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v11);
@@ -2836,22 +2836,22 @@ LABEL_14:
   self->_cachedTransformModel = 0;
 }
 
-- (void)appendAnchorsToSet:(id)a3 inRoot:(id)a4
+- (void)appendAnchorsToSet:(id)set inRoot:(id)root
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TUIModelLayoutable *)self->_model anchorPosition];
-  if (!v8)
+  setCopy = set;
+  rootCopy = root;
+  anchorPosition = [(TUIModelLayoutable *)self->_model anchorPosition];
+  if (!anchorPosition)
   {
     goto LABEL_29;
   }
 
   width = self->_computedNaturalSize.width;
   height = self->_computedNaturalSize.height;
-  v11 = [v6 axis];
-  if (v11 == &dword_0 + 1)
+  axis = [setCopy axis];
+  if (axis == &dword_0 + 1)
   {
-    if (v8 == (&dword_0 + 1))
+    if (anchorPosition == (&dword_0 + 1))
     {
       v17 = height * 0.5;
       if ([(TUILayout *)self computedLayoutDirection]== &dword_0 + 1)
@@ -2862,7 +2862,7 @@ LABEL_14:
       goto LABEL_24;
     }
 
-    if (v8 == (&dword_0 + 2))
+    if (anchorPosition == (&dword_0 + 2))
     {
       v17 = height * 0.5;
       if ([(TUILayout *)self computedLayoutDirection]!= &dword_0 + 1)
@@ -2874,9 +2874,9 @@ LABEL_14:
     }
 
     v12 = NAN;
-    v13 = v8 == (&dword_0 + 3);
+    v13 = anchorPosition == (&dword_0 + 3);
     v14 = height * 0.5;
-    if (v8 == (&dword_0 + 3))
+    if (anchorPosition == (&dword_0 + 3))
     {
       width = width * 0.5;
     }
@@ -2891,7 +2891,7 @@ LABEL_14:
   {
     v12 = NAN;
     v14 = height * 0.5;
-    if (v8 == (&dword_4 + 1))
+    if (anchorPosition == (&dword_4 + 1))
     {
       v15 = width * 0.5;
     }
@@ -2901,12 +2901,12 @@ LABEL_14:
       v15 = NAN;
     }
 
-    if (v8 == (&dword_4 + 1))
+    if (anchorPosition == (&dword_4 + 1))
     {
       v12 = 0.0;
     }
 
-    if (v8 == &dword_4)
+    if (anchorPosition == &dword_4)
     {
       v16 = width * 0.5;
     }
@@ -2916,13 +2916,13 @@ LABEL_14:
       v16 = v15;
     }
 
-    if (v8 == &dword_4)
+    if (anchorPosition == &dword_4)
     {
       v12 = height;
     }
 
-    v13 = v8 == (&dword_0 + 3);
-    if (v8 == (&dword_0 + 3))
+    v13 = anchorPosition == (&dword_0 + 3);
+    if (anchorPosition == (&dword_0 + 3))
     {
       width = width * 0.5;
     }
@@ -2946,38 +2946,38 @@ LABEL_14:
 LABEL_24:
   if (CGFloatIsValid() && CGFloatIsValid())
   {
-    [(TUILayout *)self computedTransformInAncestorLayout:v7];
+    [(TUILayout *)self computedTransformInAncestorLayout:rootCopy];
     v18 = v17 * 0.0 + 0.0 * width + 0.0;
-    if (v11 != &dword_0 + 1)
+    if (axis != &dword_0 + 1)
     {
       v18 = v17 * 0.0 + 0.0 * width + 0.0;
     }
 
-    [v6 appendScrollAnchor:v18];
+    [setCopy appendScrollAnchor:v18];
   }
 
 LABEL_29:
   if ([(TUILayout *)self shouldAppendChildAnchorsForAncestor])
   {
-    [(TUILayout *)self appendChildAnchorsToSet:v6 inRoot:v7];
+    [(TUILayout *)self appendChildAnchorsToSet:setCopy inRoot:rootCopy];
   }
 
   else
   {
-    [(TUILayout *)self appendEmbeddedAnchorsToSet:v6 inRoot:v7];
+    [(TUILayout *)self appendEmbeddedAnchorsToSet:setCopy inRoot:rootCopy];
   }
 }
 
-- (void)appendChildAnchorsToSet:(id)a3 inRoot:(id)a4
+- (void)appendChildAnchorsToSet:(id)set inRoot:(id)root
 {
-  v6 = a3;
-  v7 = a4;
+  setCopy = set;
+  rootCopy = root;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = [(TUILayout *)self children];
-  v9 = [v8 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  children = [(TUILayout *)self children];
+  v9 = [children countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v9)
   {
     v10 = *v13;
@@ -2988,15 +2988,15 @@ LABEL_29:
       {
         if (*v13 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(children);
         }
 
-        [*(*(&v12 + 1) + 8 * v11) appendAnchorsToSet:v6 inRoot:v7];
+        [*(*(&v12 + 1) + 8 * v11) appendAnchorsToSet:setCopy inRoot:rootCopy];
         v11 = v11 + 1;
       }
 
       while (v9 != v11);
-      v9 = [v8 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v9 = [children countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v9);
@@ -3005,19 +3005,19 @@ LABEL_29:
 
 - (id)guideProvider
 {
-  v3 = [(TUILayout *)self layoutAncestor];
-  v4 = [v3 guideProviderForLayout:self];
+  layoutAncestor = [(TUILayout *)self layoutAncestor];
+  v4 = [layoutAncestor guideProviderForLayout:self];
 
   return v4;
 }
 
-- (BOOL)shouldUseDefaultGuideForLayout:(id)a3 edge:(unint64_t)a4
+- (BOOL)shouldUseDefaultGuideForLayout:(id)layout edge:(unint64_t)edge
 {
-  v6 = a3;
-  v7 = [(TUILayout *)self layoutAncestor];
-  LOBYTE(a4) = [v7 shouldUseDefaultGuideForLayout:v6 edge:a4];
+  layoutCopy = layout;
+  layoutAncestor = [(TUILayout *)self layoutAncestor];
+  LOBYTE(edge) = [layoutAncestor shouldUseDefaultGuideForLayout:layoutCopy edge:edge];
 
-  return a4;
+  return edge;
 }
 
 - (NSString)description
@@ -3029,36 +3029,36 @@ LABEL_29:
   v6 = NSStringFromCGRect(v19);
   v7 = [v3 initWithFormat:@"<%@ %p frame=%@", v5, self, v6];
 
-  v8 = [(TUILayout *)self guideTop];
+  guideTop = [(TUILayout *)self guideTop];
 
-  if (v8)
+  if (guideTop)
   {
-    v9 = [(TUILayout *)self guideTop];
-    [v7 appendFormat:@" top=%@", v9];
+    guideTop2 = [(TUILayout *)self guideTop];
+    [v7 appendFormat:@" top=%@", guideTop2];
   }
 
-  v10 = [(TUILayout *)self guideBottom];
+  guideBottom = [(TUILayout *)self guideBottom];
 
-  if (v10)
+  if (guideBottom)
   {
-    v11 = [(TUILayout *)self guideBottom];
-    [v7 appendFormat:@" bottom=%@", v11];
+    guideBottom2 = [(TUILayout *)self guideBottom];
+    [v7 appendFormat:@" bottom=%@", guideBottom2];
   }
 
-  v12 = [(TUILayout *)self guideLeading];
+  guideLeading = [(TUILayout *)self guideLeading];
 
-  if (v12)
+  if (guideLeading)
   {
-    v13 = [(TUILayout *)self guideLeading];
-    [v7 appendFormat:@" leading=%@", v13];
+    guideLeading2 = [(TUILayout *)self guideLeading];
+    [v7 appendFormat:@" leading=%@", guideLeading2];
   }
 
-  v14 = [(TUILayout *)self guideTrailing];
+  guideTrailing = [(TUILayout *)self guideTrailing];
 
-  if (v14)
+  if (guideTrailing)
   {
-    v15 = [(TUILayout *)self guideTrailing];
-    [v7 appendFormat:@" trailing=%@", v15];
+    guideTrailing2 = [(TUILayout *)self guideTrailing];
+    [v7 appendFormat:@" trailing=%@", guideTrailing2];
   }
 
   [v7 appendString:@">"];
@@ -3067,55 +3067,55 @@ LABEL_29:
   return v16;
 }
 
-- (int64_t)computeZIndexWithDefault:(int64_t)a3
+- (int64_t)computeZIndexWithDefault:(int64_t)default
 {
   v5 = [(TUILayout *)self box];
-  v6 = [v5 zIndex];
+  zIndex = [v5 zIndex];
 
-  if (v6 != 0x7FFFFFFFFFFFFFFFLL)
+  if (zIndex != 0x7FFFFFFFFFFFFFFFLL)
   {
-    return v6;
+    return zIndex;
   }
 
   v7 = [(TUILayout *)self box];
-  v8 = [v7 role];
+  role = [v7 role];
 
-  if (v8 == &dword_0 + 1)
+  if (role == &dword_0 + 1)
   {
     v9 = &TUIZIndexBackground;
 LABEL_6:
-    v6 = *v9;
+    zIndex = *v9;
     if (*v9 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      return v6;
+      return zIndex;
     }
 
     goto LABEL_7;
   }
 
-  if (v8 == &dword_0 + 3)
+  if (role == &dword_0 + 3)
   {
     v9 = &TUIZIndexForeground;
     goto LABEL_6;
   }
 
 LABEL_7:
-  v10 = [(TUILayout *)self layoutAncestor];
-  v11 = v10;
-  if (v10)
+  layoutAncestor = [(TUILayout *)self layoutAncestor];
+  v11 = layoutAncestor;
+  if (layoutAncestor)
   {
-    a3 = [v10 computeZIndexWithDefault:a3];
+    default = [layoutAncestor computeZIndexWithDefault:default];
   }
 
-  return a3;
+  return default;
 }
 
-- (id)inheritedRefIdWithContext:(id)a3
+- (id)inheritedRefIdWithContext:(id)context
 {
-  v4 = a3;
-  if ([(TUILayout *)self shouldDescendentsInheritRefSpecWithContext:v4])
+  contextCopy = context;
+  if ([(TUILayout *)self shouldDescendentsInheritRefSpecWithContext:contextCopy])
   {
-    v5 = [(TUILayout *)self computedRefIdWithContext:v4];
+    v5 = [(TUILayout *)self computedRefIdWithContext:contextCopy];
   }
 
   else
@@ -3126,12 +3126,12 @@ LABEL_7:
   return v5;
 }
 
-- (id)inheritedRefInstanceWithContext:(id)a3
+- (id)inheritedRefInstanceWithContext:(id)context
 {
-  v4 = a3;
-  if ([(TUILayout *)self shouldDescendentsInheritRefSpecWithContext:v4])
+  contextCopy = context;
+  if ([(TUILayout *)self shouldDescendentsInheritRefSpecWithContext:contextCopy])
   {
-    v5 = [(TUILayout *)self computedRefInstanceWithContext:v4];
+    v5 = [(TUILayout *)self computedRefInstanceWithContext:contextCopy];
   }
 
   else
@@ -3142,57 +3142,57 @@ LABEL_7:
   return v5;
 }
 
-- (id)computedRefIdWithContext:(id)a3
+- (id)computedRefIdWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = [(TUILayout *)self box];
-  v6 = [v5 refId];
-  v7 = v6;
-  if (v6)
+  refId = [v5 refId];
+  v7 = refId;
+  if (refId)
   {
-    v8 = v6;
+    v8 = refId;
   }
 
   else
   {
-    v9 = [(TUILayout *)self layoutAncestor];
-    v8 = [v9 inheritedRefIdWithContext:v4];
+    layoutAncestor = [(TUILayout *)self layoutAncestor];
+    v8 = [layoutAncestor inheritedRefIdWithContext:contextCopy];
   }
 
   return v8;
 }
 
-- (id)computedRefInstanceWithContext:(id)a3
+- (id)computedRefInstanceWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = [(TUILayout *)self box];
-  v6 = [v5 refInstance];
-  v7 = v6;
-  if (v6)
+  refInstance = [v5 refInstance];
+  v7 = refInstance;
+  if (refInstance)
   {
-    v8 = v6;
+    v8 = refInstance;
   }
 
   else
   {
-    v9 = [(TUILayout *)self layoutAncestor];
-    v8 = [v9 inheritedRefInstanceWithContext:v4];
+    layoutAncestor = [(TUILayout *)self layoutAncestor];
+    v8 = [layoutAncestor inheritedRefInstanceWithContext:contextCopy];
   }
 
   return v8;
 }
 
-- (void)appendEmbeddedIdentifierMaps:(id)a3 updateControllers:(id)a4 UUIDs:(id)a5
+- (void)appendEmbeddedIdentifierMaps:(id)maps updateControllers:(id)controllers UUIDs:(id)ds
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  mapsCopy = maps;
+  controllersCopy = controllers;
+  dsCopy = ds;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v11 = [(TUILayout *)self children];
-  v12 = [v11 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  children = [(TUILayout *)self children];
+  v12 = [children countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v12)
   {
     v13 = *v16;
@@ -3203,28 +3203,28 @@ LABEL_7:
       {
         if (*v16 != v13)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(children);
         }
 
-        [*(*(&v15 + 1) + 8 * v14) appendEmbeddedIdentifierMaps:v8 updateControllers:v9 UUIDs:v10];
+        [*(*(&v15 + 1) + 8 * v14) appendEmbeddedIdentifierMaps:mapsCopy updateControllers:controllersCopy UUIDs:dsCopy];
         v14 = v14 + 1;
       }
 
       while (v12 != v14);
-      v12 = [v11 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v12 = [children countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v12);
   }
 }
 
-- (CGSize)renderModelSizeWithContext:(id)a3
+- (CGSize)renderModelSizeWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   [(TUILayout *)self computedNaturalSize];
   v6 = v5;
   v8 = v7;
-  [v4 contentsScale];
+  [contextCopy contentsScale];
   v10 = TUISizeRoundedForScale(v6, v8, v9);
   v12 = v11;
 
@@ -3235,14 +3235,14 @@ LABEL_7:
   return result;
 }
 
-- (id)hoverIdentifierWithName:(id)a3
+- (id)hoverIdentifierWithName:(id)name
 {
-  v4 = a3;
-  v5 = self;
-  v6 = v5;
-  if (v5)
+  nameCopy = name;
+  selfCopy = self;
+  v6 = selfCopy;
+  if (selfCopy)
   {
-    v7 = v5;
+    v7 = selfCopy;
     do
     {
       if (objc_opt_respondsToSelector())
@@ -3250,12 +3250,12 @@ LABEL_7:
         break;
       }
 
-      v8 = [v7 layoutAncestor];
+      layoutAncestor = [v7 layoutAncestor];
 
-      v7 = v8;
+      v7 = layoutAncestor;
     }
 
-    while (v8);
+    while (layoutAncestor);
   }
 
   else
@@ -3263,12 +3263,12 @@ LABEL_7:
     v7 = 0;
   }
 
-  v9 = [v7 hoverIdentifierWithName:v4 forDescdendent:v6];
+  v9 = [v7 hoverIdentifierWithName:nameCopy forDescdendent:v6];
 
   return v9;
 }
 
-- (UIEdgeInsets)erasableInsetsForContentsScale:(double)a3
+- (UIEdgeInsets)erasableInsetsForContentsScale:(double)scale
 {
   [(TUILayout *)self computedBounds];
   v5 = v4;
@@ -3345,7 +3345,7 @@ LABEL_7:
     v20 = 0.0;
   }
 
-  *&v24 = TUIInsetsExtendedForScale(v21, v22, v23, v20, a3).u64[0];
+  *&v24 = TUIInsetsExtendedForScale(v21, v22, v23, v20, scale).u64[0];
   result.right = v27;
   result.bottom = v26;
   result.left = v25;
@@ -3355,23 +3355,23 @@ LABEL_7:
 
 - (id)modelIdentifierForEnclosingScrollable
 {
-  v2 = self;
+  selfCopy = self;
   do
   {
-    v3 = [(TUILayout *)v2 layoutAncestor];
+    layoutAncestor = [(TUILayout *)selfCopy layoutAncestor];
 
-    v4 = [(TUILayout *)v3 modelIdentifierForScrollable];
-    if (v4)
+    modelIdentifierForScrollable = [(TUILayout *)layoutAncestor modelIdentifierForScrollable];
+    if (modelIdentifierForScrollable)
     {
       break;
     }
 
-    v2 = v3;
+    selfCopy = layoutAncestor;
   }
 
-  while (v3);
+  while (layoutAncestor);
 
-  return v4;
+  return modelIdentifierForScrollable;
 }
 
 - (TUILayoutController)controller

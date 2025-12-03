@@ -36,125 +36,125 @@
 - (id)storeDemoModeEnabled;
 - (id)systemUptime;
 - (id)systemVersion;
-- (void)populateAttributes:(id)a3;
+- (void)populateAttributes:(id)attributes;
 @end
 
 @implementation ComponentSystemBase
 
-- (void)populateAttributes:(id)a3
+- (void)populateAttributes:(id)attributes
 {
-  v41 = a3;
-  v4 = [(ComponentSystemBase *)self systemUptime];
-  v5 = [v4 stringValue];
-  [v41 setObject:v5 forKeyedSubscript:@"systemUptime"];
+  attributesCopy = attributes;
+  systemUptime = [(ComponentSystemBase *)self systemUptime];
+  stringValue = [systemUptime stringValue];
+  [attributesCopy setObject:stringValue forKeyedSubscript:@"systemUptime"];
 
-  v6 = [(ComponentSystemBase *)self ECID];
-  [v41 setObject:v6 forKeyedSubscript:@"ecid"];
+  eCID = [(ComponentSystemBase *)self ECID];
+  [attributesCopy setObject:eCID forKeyedSubscript:@"ecid"];
 
-  v7 = [(ComponentSystemBase *)self deviceColor];
-  if ([v7 length])
+  deviceColor = [(ComponentSystemBase *)self deviceColor];
+  if ([deviceColor length])
   {
-    [v41 setObject:v7 forKeyedSubscript:@"deviceColor"];
+    [attributesCopy setObject:deviceColor forKeyedSubscript:@"deviceColor"];
   }
 
-  v8 = [(ComponentSystemBase *)self deviceType];
-  [v41 setObject:v8 forKeyedSubscript:@"deviceType"];
+  deviceType = [(ComponentSystemBase *)self deviceType];
+  [attributesCopy setObject:deviceType forKeyedSubscript:@"deviceType"];
 
-  v9 = [(ComponentSystemBase *)self deviceVersion];
-  [v41 setObject:v9 forKeyedSubscript:@"deviceVersion"];
+  deviceVersion = [(ComponentSystemBase *)self deviceVersion];
+  [attributesCopy setObject:deviceVersion forKeyedSubscript:@"deviceVersion"];
 
-  v10 = [(ComponentSystemBase *)self cpuArchitecture];
-  [v41 setObject:v10 forKeyedSubscript:@"cpuArchitecture"];
+  cpuArchitecture = [(ComponentSystemBase *)self cpuArchitecture];
+  [attributesCopy setObject:cpuArchitecture forKeyedSubscript:@"cpuArchitecture"];
 
-  v11 = [(ComponentSystemBase *)self UDID];
-  [v41 setObject:v11 forKeyedSubscript:@"udid"];
+  uDID = [(ComponentSystemBase *)self UDID];
+  [attributesCopy setObject:uDID forKeyedSubscript:@"udid"];
 
-  v12 = [(ComponentSystemBase *)self modelNumber];
-  [v41 setObject:v12 forKeyedSubscript:@"modelNumber"];
+  modelNumber = [(ComponentSystemBase *)self modelNumber];
+  [attributesCopy setObject:modelNumber forKeyedSubscript:@"modelNumber"];
 
-  v13 = [(ComponentSystemBase *)self regulatoryModelNumber];
-  [v41 setObject:v13 forKeyedSubscript:@"regulatoryModelNumber"];
+  regulatoryModelNumber = [(ComponentSystemBase *)self regulatoryModelNumber];
+  [attributesCopy setObject:regulatoryModelNumber forKeyedSubscript:@"regulatoryModelNumber"];
 
-  v14 = [(ComponentSystemBase *)self buildVersion];
-  [v41 setObject:v14 forKeyedSubscript:@"systemBuild"];
+  buildVersion = [(ComponentSystemBase *)self buildVersion];
+  [attributesCopy setObject:buildVersion forKeyedSubscript:@"systemBuild"];
 
-  v15 = [(ComponentSystemBase *)self diagnosticsBuild];
-  [v41 setObject:v15 forKeyedSubscript:@"diagnosticsBuild"];
+  diagnosticsBuild = [(ComponentSystemBase *)self diagnosticsBuild];
+  [attributesCopy setObject:diagnosticsBuild forKeyedSubscript:@"diagnosticsBuild"];
 
-  v16 = [(ComponentSystemBase *)self systemVersion];
-  [v41 setObject:v16 forKeyedSubscript:@"systemVersion"];
+  systemVersion = [(ComponentSystemBase *)self systemVersion];
+  [attributesCopy setObject:systemVersion forKeyedSubscript:@"systemVersion"];
 
-  v17 = [(ComponentSystemBase *)self serialNumber];
-  [v41 setObject:v17 forKeyedSubscript:@"deviceSerialNumber"];
+  serialNumber = [(ComponentSystemBase *)self serialNumber];
+  [attributesCopy setObject:serialNumber forKeyedSubscript:@"deviceSerialNumber"];
 
-  v18 = [(ComponentSystemBase *)self serialNumber];
-  [v41 setObject:v18 forKeyedSubscript:@"serialNumber"];
+  serialNumber2 = [(ComponentSystemBase *)self serialNumber];
+  [attributesCopy setObject:serialNumber2 forKeyedSubscript:@"serialNumber"];
 
-  v19 = [(ComponentSystemBase *)self diagnosticsVersion];
-  [v41 setObject:v19 forKeyedSubscript:@"diagnosticsVersion"];
+  diagnosticsVersion = [(ComponentSystemBase *)self diagnosticsVersion];
+  [attributesCopy setObject:diagnosticsVersion forKeyedSubscript:@"diagnosticsVersion"];
 
-  v20 = [(ComponentSystemBase *)self lastRestoreDate];
-  [v41 setObject:v20 forKeyedSubscript:@"lastRestoreDate"];
+  lastRestoreDate = [(ComponentSystemBase *)self lastRestoreDate];
+  [attributesCopy setObject:lastRestoreDate forKeyedSubscript:@"lastRestoreDate"];
 
-  v21 = [(ComponentSystemBase *)self lastUpdateDate];
-  [v41 setObject:v21 forKeyedSubscript:@"lastUpdateDate"];
+  lastUpdateDate = [(ComponentSystemBase *)self lastUpdateDate];
+  [attributesCopy setObject:lastUpdateDate forKeyedSubscript:@"lastUpdateDate"];
 
-  v22 = [(ComponentSystemBase *)self lastEraseDate];
-  [v41 setObject:v22 forKeyedSubscript:@"lastEraseDate"];
+  lastEraseDate = [(ComponentSystemBase *)self lastEraseDate];
+  [attributesCopy setObject:lastEraseDate forKeyedSubscript:@"lastEraseDate"];
 
-  v23 = [(ComponentSystemBase *)self setupCompletedDate];
-  [v41 setObject:v23 forKeyedSubscript:@"setupCompletedDate"];
+  setupCompletedDate = [(ComponentSystemBase *)self setupCompletedDate];
+  [attributesCopy setObject:setupCompletedDate forKeyedSubscript:@"setupCompletedDate"];
 
   v24 = +[NSTimeZone localTimeZone];
-  v25 = [v24 name];
-  [v41 setObject:v25 forKeyedSubscript:@"localTimeZone"];
+  name = [v24 name];
+  [attributesCopy setObject:name forKeyedSubscript:@"localTimeZone"];
 
-  v26 = [(ComponentSystemBase *)self localTime];
-  [v41 setObject:v26 forKeyedSubscript:@"localTime"];
+  localTime = [(ComponentSystemBase *)self localTime];
+  [attributesCopy setObject:localTime forKeyedSubscript:@"localTime"];
 
-  v27 = [(ComponentSystemBase *)self marketingVersion];
-  [v41 setObject:v27 forKeyedSubscript:@"marketingVersion"];
+  marketingVersion = [(ComponentSystemBase *)self marketingVersion];
+  [attributesCopy setObject:marketingVersion forKeyedSubscript:@"marketingVersion"];
 
-  v28 = [(ComponentSystemBase *)self chipID];
-  [v41 setObject:v28 forKeyedSubscript:@"chipID"];
+  chipID = [(ComponentSystemBase *)self chipID];
+  [attributesCopy setObject:chipID forKeyedSubscript:@"chipID"];
 
   v29 = [NSNumber numberWithBool:[(ComponentSystemBase *)self isBetaBuild]];
-  [v41 setObject:v29 forKeyedSubscript:@"isBetaBuild"];
+  [attributesCopy setObject:v29 forKeyedSubscript:@"isBetaBuild"];
 
   v30 = [NSNumber numberWithBool:[(ComponentSystemBase *)self isInternalInstall]];
-  [v41 setObject:v30 forKeyedSubscript:@"isInternalInstall"];
+  [attributesCopy setObject:v30 forKeyedSubscript:@"isInternalInstall"];
 
   v31 = [NSNumber numberWithBool:[(ComponentSystemBase *)self isProdDevice]];
-  [v41 setObject:v31 forKeyedSubscript:@"isProdDevice"];
+  [attributesCopy setObject:v31 forKeyedSubscript:@"isProdDevice"];
 
   v32 = [NSNumber numberWithBool:[(ComponentSystemBase *)self isGreenTeaDevice]];
-  [v41 setObject:v32 forKeyedSubscript:@"greenTeaDevice"];
+  [attributesCopy setObject:v32 forKeyedSubscript:@"greenTeaDevice"];
 
   v33 = [NSNumber numberWithBool:DiagnosticLogSubmissionEnabled()];
-  [v41 setObject:v33 forKeyedSubscript:@"analyticsEnabled"];
+  [attributesCopy setObject:v33 forKeyedSubscript:@"analyticsEnabled"];
 
-  v34 = [(ComponentSystemBase *)self storeDemoModeEnabled];
-  [v41 setObject:v34 forKeyedSubscript:@"storeDemoModeEnabled"];
+  storeDemoModeEnabled = [(ComponentSystemBase *)self storeDemoModeEnabled];
+  [attributesCopy setObject:storeDemoModeEnabled forKeyedSubscript:@"storeDemoModeEnabled"];
 
-  v35 = [(ComponentSystemBase *)self sikPublicKey];
-  [v41 setObject:v35 forKeyedSubscript:@"sik"];
+  sikPublicKey = [(ComponentSystemBase *)self sikPublicKey];
+  [attributesCopy setObject:sikPublicKey forKeyedSubscript:@"sik"];
 
-  v36 = [(ComponentSystemBase *)self marketingProductNumber];
-  [v41 setObject:v36 forKeyedSubscript:@"marketingProductNumber"];
+  marketingProductNumber = [(ComponentSystemBase *)self marketingProductNumber];
+  [attributesCopy setObject:marketingProductNumber forKeyedSubscript:@"marketingProductNumber"];
 
-  v37 = [(ComponentSystemBase *)self regionalEligibilityCheck];
-  [v41 setObject:v37 forKeyedSubscript:@"regionalEligibility"];
+  regionalEligibilityCheck = [(ComponentSystemBase *)self regionalEligibilityCheck];
+  [attributesCopy setObject:regionalEligibilityCheck forKeyedSubscript:@"regionalEligibility"];
 
   v38 = [NSNumber numberWithBool:[(ComponentSystemBase *)self exclavesSupport]];
-  [v41 setObject:v38 forKeyedSubscript:@"exclavesSupport"];
+  [attributesCopy setObject:v38 forKeyedSubscript:@"exclavesSupport"];
 
   v39 = [NSNumber numberWithBool:[(ComponentSystemBase *)self isInDiagnosticsMode]];
-  [v41 setObject:v39 forKeyedSubscript:@"inDiagnosticsMode"];
+  [attributesCopy setObject:v39 forKeyedSubscript:@"inDiagnosticsMode"];
 
-  v40 = [(ComponentSystemBase *)self activationConfigurationInformation];
-  if (v40)
+  activationConfigurationInformation = [(ComponentSystemBase *)self activationConfigurationInformation];
+  if (activationConfigurationInformation)
   {
-    [v41 addEntriesFromDictionary:v40];
+    [attributesCopy addEntriesFromDictionary:activationConfigurationInformation];
   }
 }
 
@@ -169,12 +169,12 @@
   }
 
   v3 = +[DSGeneralLogCollector latestUserLog];
-  v4 = [v3 restoreDate];
-  if (v4)
+  restoreDate = [v3 restoreDate];
+  if (restoreDate)
   {
     v5 = +[DSDateFormatter sharedFormatter];
     v6 = [v5 formatterWithType:0];
-    v7 = [v6 stringFromDate:v4];
+    v7 = [v6 stringFromDate:restoreDate];
   }
 
   else
@@ -198,12 +198,12 @@
   }
 
   v3 = +[DSGeneralLogCollector latestUserLog];
-  v4 = [v3 updateDate];
-  if (v4)
+  updateDate = [v3 updateDate];
+  if (updateDate)
   {
     v5 = +[DSDateFormatter sharedFormatter];
     v6 = [v5 formatterWithType:0];
-    v7 = [v6 stringFromDate:v4];
+    v7 = [v6 stringFromDate:updateDate];
   }
 
   else
@@ -226,8 +226,8 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%s", &v7, 0xCu);
   }
 
-  v4 = [(ComponentSystemBase *)self rootCreationDate];
-  v5 = stringOrNull(v4);
+  rootCreationDate = [(ComponentSystemBase *)self rootCreationDate];
+  v5 = stringOrNull(rootCreationDate);
 
   return v5;
 }
@@ -259,8 +259,8 @@
   }
 
   v3 = +[NSBundle mainBundle];
-  v4 = [v3 infoDictionary];
-  v5 = [v4 objectForKeyedSubscript:@"CFBundleShortVersionString"];
+  infoDictionary = [v3 infoDictionary];
+  v5 = [infoDictionary objectForKeyedSubscript:@"CFBundleShortVersionString"];
   v6 = stringOrNull(v5);
 
   return v6;
@@ -334,8 +334,8 @@
   }
 
   v3 = +[NSBundle mainBundle];
-  v4 = [v3 infoDictionary];
-  v5 = [v4 objectForKeyedSubscript:@"CFBundleVersion"];
+  infoDictionary = [v3 infoDictionary];
+  v5 = [infoDictionary objectForKeyedSubscript:@"CFBundleVersion"];
   v6 = stringOrNull(v5);
 
   return v6;
@@ -543,12 +543,12 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%s", &v10, 0xCu);
   }
 
-  v4 = [(ComponentSystemBase *)self setupAssistantCompletionDate];
-  if (v4)
+  setupAssistantCompletionDate = [(ComponentSystemBase *)self setupAssistantCompletionDate];
+  if (setupAssistantCompletionDate)
   {
     v5 = +[DSDateFormatter sharedFormatter];
     v6 = [v5 formatterWithType:0];
-    v7 = [v6 stringFromDate:v4];
+    v7 = [v6 stringFromDate:setupAssistantCompletionDate];
   }
 
   else
@@ -667,11 +667,11 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%s", &v8, 0xCu);
   }
 
-  v4 = [(ComponentSystemBase *)self setupAssistantCompletionDate];
-  if (v4)
+  setupAssistantCompletionDate = [(ComponentSystemBase *)self setupAssistantCompletionDate];
+  if (setupAssistantCompletionDate)
   {
     v5 = +[NSNull null];
-    v6 = [v4 isEqual:v5] ^ 1;
+    v6 = [setupAssistantCompletionDate isEqual:v5] ^ 1;
   }
 
   else
@@ -803,10 +803,10 @@
       if (v5)
       {
         v7 = [v5 objectForKeyedSubscript:@"DeviceConfigurationFlags"];
-        v8 = [v7 intValue];
-        v9 = (v8 >> 2) & 1;
+        intValue = [v7 intValue];
+        v9 = (intValue >> 2) & 1;
         v13[0] = @"demoActivated";
-        v6 = [NSNumber numberWithBool:(v8 >> 1) & 1];
+        v6 = [NSNumber numberWithBool:(intValue >> 1) & 1];
         v13[1] = @"pointOfSaleActivated";
         v14[0] = v6;
         v10 = [NSNumber numberWithBool:v9];
@@ -915,15 +915,15 @@ LABEL_18:
 
 - (id)marketingProductNumber
 {
-  v2 = [(ComponentSystemBase *)self modelNumber];
-  if (v2)
+  modelNumber = [(ComponentSystemBase *)self modelNumber];
+  if (modelNumber)
   {
     v3 = MGCopyAnswer();
     v4 = stringOrNull(v3);
 
     if (v4)
     {
-      v5 = [v2 stringByAppendingString:v4];
+      v5 = [modelNumber stringByAppendingString:v4];
     }
 
     else

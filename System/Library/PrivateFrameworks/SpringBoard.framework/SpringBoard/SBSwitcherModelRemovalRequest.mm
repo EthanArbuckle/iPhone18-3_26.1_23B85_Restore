@@ -1,17 +1,17 @@
 @interface SBSwitcherModelRemovalRequest
-- (void)setAction:(id)a3 forAppLayout:(id)a4;
+- (void)setAction:(id)action forAppLayout:(id)layout;
 @end
 
 @implementation SBSwitcherModelRemovalRequest
 
-- (void)setAction:(id)a3 forAppLayout:(id)a4
+- (void)setAction:(id)action forAppLayout:(id)layout
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = v13;
-  v8 = v6;
+  actionCopy = action;
+  layoutCopy = layout;
+  v7 = actionCopy;
+  v8 = layoutCopy;
   appLayoutToAction = self->_appLayoutToAction;
-  if (v13)
+  if (actionCopy)
   {
     if (!appLayoutToAction)
     {
@@ -19,7 +19,7 @@
       v11 = self->_appLayoutToAction;
       self->_appLayoutToAction = v10;
 
-      v7 = v13;
+      v7 = actionCopy;
       appLayoutToAction = self->_appLayoutToAction;
     }
 

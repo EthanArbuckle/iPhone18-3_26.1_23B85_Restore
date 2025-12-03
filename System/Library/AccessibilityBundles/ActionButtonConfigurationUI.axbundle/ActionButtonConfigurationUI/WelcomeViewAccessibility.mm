@@ -11,15 +11,15 @@
   v4 = __UIAccessibilityCastAsClass();
 
   objc_opt_class();
-  v5 = [v4 arrangedSubviews];
-  v6 = [v5 objectAtIndex:0];
+  arrangedSubviews = [v4 arrangedSubviews];
+  v6 = [arrangedSubviews objectAtIndex:0];
   v7 = __UIAccessibilityCastAsClass();
 
   if (v7)
   {
     v8 = [v7 _accessibilityFindDescendant:&__block_literal_global_0];
-    v9 = [v8 accessibilityTraits];
-    [v8 setAccessibilityTraits:*MEMORY[0x29EDC7F80] | v9];
+    accessibilityTraits = [v8 accessibilityTraits];
+    [v8 setAccessibilityTraits:*MEMORY[0x29EDC7F80] | accessibilityTraits];
   }
 
   v10.receiver = self;

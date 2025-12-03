@@ -1,75 +1,75 @@
 @interface ENExposureDatabase
-+ (void)_obliterateDatabaseAtURL:(id)a3 reason:(id)a4 generateStackshot:(BOOL)a5;
-- (BOOL)_checkDatabaseOpenWithError:(id *)a3;
-- (BOOL)_createOrMigrateSchemaFromVersion:(int64_t)a3 error:(id *)a4;
-- (BOOL)_createSchemaWithConnection:(id)a3 error:(id *)a4;
-- (BOOL)_getExistingPersistentTemporaryExposureKey:(id *)a3 rowID:(int64_t *)a4 keyData:(id)a5 connection:(id)a6 error:(id *)a7;
-- (BOOL)_insertAdvertisement:(id)a3 keyRowID:(int64_t)a4 connection:(id)a5 error:(id *)a6;
-- (BOOL)_insertExposureDetectionFile:(id)a3 sessionID:(id)a4 connection:(id)a5 error:(id *)a6;
-- (BOOL)_insertOrUpdateExposureDetectionHistorySession:(id)a3 connection:(id)a4 error:(id *)a5;
-- (BOOL)_insertPersistentTemporaryExposureKey:(id)a3 connection:(id)a4 error:(id *)a5;
-- (BOOL)_reallyOpenDatabaseWithError:(id *)a3;
-- (BOOL)deleteExposureDetectionHistoryWithError:(id *)a3;
-- (BOOL)enumerateExposureDetectionHistoryFilesForSessionUUID:(id)a3 error:(id *)a4 handler:(id)a5;
-- (BOOL)enumerateExposureDetectionHistorySessionsWithError:(id *)a3 handler:(id)a4;
-- (BOOL)enumerateMatchedAdvertisementsWithError:(id *)a3 handler:(id)a4;
-- (BOOL)getAdvertisementCount:(unsigned int *)a3 error:(id *)a4;
-- (BOOL)getValue:(id *)a3 forKey:(id)a4 ofClass:(Class)a5 connection:(id)a6 error:(id *)a7;
-- (BOOL)getValue:(id *)a3 forKey:(id)a4 ofClass:(Class)a5 error:(id *)a6;
-- (BOOL)insertExposureDetectionFile:(id)a3 session:(id)a4 error:(id *)a5;
-- (BOOL)openWithError:(id *)a3;
-- (BOOL)purgeRecordsWithInterval:(double)a3 nowDate:(id)a4 error:(id *)a5;
-- (BOOL)setPropertyListValue:(id)a3 forKey:(id)a4 expiryDate:(id)a5 error:(id *)a6;
-- (BOOL)setValue:(id)a3 forKey:(id)a4 expiryDate:(id)a5 error:(id *)a6;
-- (BOOL)setValue:(id)a3 forKey:(id)a4 type:(int64_t)a5 expiryDate:(id)a6 modDate:(id)a7 connection:(id)a8 error:(id *)a9;
-- (BOOL)upsertExposureDetectionHistorySession:(id)a3 error:(id *)a4;
-- (ENExposureDatabase)initWithDirectoryURL:(id)a3;
-- (ENExposureDatabase)initWithURL:(id)a3;
-- (id)_advertisementWithRPIData:(id)a3 encryptedAEMData:(id)a4 timestamp:(int64_t)a5 scanInterval:(int)a6 typicalRSSI:(int)a7 maxRSSI:(int)a8 saturated:(int)a9 counter:(int)a10;
-- (id)_advertisementsForTemporaryExposureKeyRowID:(int64_t)a3 connection:(id)a4 error:(id *)a5;
-- (id)_initWithURL:(id)a3;
-- (id)_persistentTemporaryExposureKeyWithKeyData:(id)a3 appBundleIdentifier:(id)a4 regionCountryCode:(id)a5 rollingStartNumber:(int64_t)a6 rollingPeriod:(int64_t)a7 daysSinceOnsetOfSymptoms:(int64_t)a8 diagnosisReportType:(int)a9 originalReportType:(int)a10 transmissionRiskLevel:(int)a11 variantOfConcernType:(int)a12 originalVariantOfConcernType:(int)a13;
-- (id)_sessionIDForUUID:(id)a3 connection:(id)a4 error:(id *)a5;
-- (id)advertisementCountsByTemporaryKeyDatasWithError:(id *)a3;
-- (int64_t)_updateExistingPersistentKeyIfNecessary:(id)a3 replacementKey:(id)a4 existingKeyID:(int64_t)a5 connection:(id)a6 error:(id *)a7;
-- (int64_t)insertMatchedAdvertisements:(id)a3 forKey:(id)a4 error:(id *)a5;
-- (void)_reportSQLiteResult:(int)a3;
++ (void)_obliterateDatabaseAtURL:(id)l reason:(id)reason generateStackshot:(BOOL)stackshot;
+- (BOOL)_checkDatabaseOpenWithError:(id *)error;
+- (BOOL)_createOrMigrateSchemaFromVersion:(int64_t)version error:(id *)error;
+- (BOOL)_createSchemaWithConnection:(id)connection error:(id *)error;
+- (BOOL)_getExistingPersistentTemporaryExposureKey:(id *)key rowID:(int64_t *)d keyData:(id)data connection:(id)connection error:(id *)error;
+- (BOOL)_insertAdvertisement:(id)advertisement keyRowID:(int64_t)d connection:(id)connection error:(id *)error;
+- (BOOL)_insertExposureDetectionFile:(id)file sessionID:(id)d connection:(id)connection error:(id *)error;
+- (BOOL)_insertOrUpdateExposureDetectionHistorySession:(id)session connection:(id)connection error:(id *)error;
+- (BOOL)_insertPersistentTemporaryExposureKey:(id)key connection:(id)connection error:(id *)error;
+- (BOOL)_reallyOpenDatabaseWithError:(id *)error;
+- (BOOL)deleteExposureDetectionHistoryWithError:(id *)error;
+- (BOOL)enumerateExposureDetectionHistoryFilesForSessionUUID:(id)d error:(id *)error handler:(id)handler;
+- (BOOL)enumerateExposureDetectionHistorySessionsWithError:(id *)error handler:(id)handler;
+- (BOOL)enumerateMatchedAdvertisementsWithError:(id *)error handler:(id)handler;
+- (BOOL)getAdvertisementCount:(unsigned int *)count error:(id *)error;
+- (BOOL)getValue:(id *)value forKey:(id)key ofClass:(Class)class connection:(id)connection error:(id *)error;
+- (BOOL)getValue:(id *)value forKey:(id)key ofClass:(Class)class error:(id *)error;
+- (BOOL)insertExposureDetectionFile:(id)file session:(id)session error:(id *)error;
+- (BOOL)openWithError:(id *)error;
+- (BOOL)purgeRecordsWithInterval:(double)interval nowDate:(id)date error:(id *)error;
+- (BOOL)setPropertyListValue:(id)value forKey:(id)key expiryDate:(id)date error:(id *)error;
+- (BOOL)setValue:(id)value forKey:(id)key expiryDate:(id)date error:(id *)error;
+- (BOOL)setValue:(id)value forKey:(id)key type:(int64_t)type expiryDate:(id)date modDate:(id)modDate connection:(id)connection error:(id *)error;
+- (BOOL)upsertExposureDetectionHistorySession:(id)session error:(id *)error;
+- (ENExposureDatabase)initWithDirectoryURL:(id)l;
+- (ENExposureDatabase)initWithURL:(id)l;
+- (id)_advertisementWithRPIData:(id)data encryptedAEMData:(id)mData timestamp:(int64_t)timestamp scanInterval:(int)interval typicalRSSI:(int)i maxRSSI:(int)sI saturated:(int)saturated counter:(int)self0;
+- (id)_advertisementsForTemporaryExposureKeyRowID:(int64_t)d connection:(id)connection error:(id *)error;
+- (id)_initWithURL:(id)l;
+- (id)_persistentTemporaryExposureKeyWithKeyData:(id)data appBundleIdentifier:(id)identifier regionCountryCode:(id)code rollingStartNumber:(int64_t)number rollingPeriod:(int64_t)period daysSinceOnsetOfSymptoms:(int64_t)symptoms diagnosisReportType:(int)type originalReportType:(int)self0 transmissionRiskLevel:(int)self1 variantOfConcernType:(int)self2 originalVariantOfConcernType:(int)self3;
+- (id)_sessionIDForUUID:(id)d connection:(id)connection error:(id *)error;
+- (id)advertisementCountsByTemporaryKeyDatasWithError:(id *)error;
+- (int64_t)_updateExistingPersistentKeyIfNecessary:(id)necessary replacementKey:(id)key existingKeyID:(int64_t)d connection:(id)connection error:(id *)error;
+- (int64_t)insertMatchedAdvertisements:(id)advertisements forKey:(id)key error:(id *)error;
+- (void)_reportSQLiteResult:(int)result;
 - (void)close;
-- (void)purgeAllAndCloseWithReason:(id)a3;
+- (void)purgeAllAndCloseWithReason:(id)reason;
 @end
 
 @implementation ENExposureDatabase
 
-- (ENExposureDatabase)initWithURL:(id)a3
+- (ENExposureDatabase)initWithURL:(id)l
 {
-  v5 = a3;
-  if (!v5)
+  lCopy = l;
+  if (!lCopy)
   {
     [(ENExposureDatabase *)a2 initWithURL:?];
   }
 
-  v6 = [(ENExposureDatabase *)self _initWithURL:v5];
+  v6 = [(ENExposureDatabase *)self _initWithURL:lCopy];
 
   return v6;
 }
 
-- (ENExposureDatabase)initWithDirectoryURL:(id)a3
+- (ENExposureDatabase)initWithDirectoryURL:(id)l
 {
-  v4 = [a3 URLByAppendingPathComponent:@"en_exposure.sqlite"];
+  v4 = [l URLByAppendingPathComponent:@"en_exposure.sqlite"];
   v5 = [(ENExposureDatabase *)self initWithURL:v4];
 
   return v5;
 }
 
-- (id)_initWithURL:(id)a3
+- (id)_initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = ENExposureDatabase;
   v5 = [(ENExposureDatabase *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [lCopy copy];
     databaseURL = v5->_databaseURL;
     v5->_databaseURL = v6;
   }
@@ -77,17 +77,17 @@
   return v5;
 }
 
-- (void)_reportSQLiteResult:(int)a3
+- (void)_reportSQLiteResult:(int)result
 {
-  if (a3 <= 12)
+  if (result <= 12)
   {
-    if (a3 == 1)
+    if (result == 1)
     {
       v3 = 4001;
       goto LABEL_8;
     }
 
-    if (a3 != 11)
+    if (result != 11)
     {
       return;
     }
@@ -95,14 +95,14 @@
     goto LABEL_9;
   }
 
-  if (a3 == 26)
+  if (result == 26)
   {
 LABEL_9:
     v3 = 4000;
     goto LABEL_8;
   }
 
-  if (a3 == 13)
+  if (result == 13)
   {
     v3 = 4002;
 LABEL_8:
@@ -110,21 +110,21 @@ LABEL_8:
   }
 }
 
-- (BOOL)openWithError:(id *)a3
+- (BOOL)openWithError:(id *)error
 {
   if (![(ENExposureDatabase *)self isOpen])
   {
     if (!self->_databaseURL)
     {
 LABEL_7:
-      v5 = [(ENExposureDatabase *)self _reallyOpenDatabaseWithError:a3];
+      v5 = [(ENExposureDatabase *)self _reallyOpenDatabaseWithError:error];
       if (!v5)
       {
         return v5;
       }
 
       v14 = 0;
-      if ([(ENSQLiteConnection *)self->_connection getUserVersion:&v14 error:a3]&& [(ENExposureDatabase *)self _createOrMigrateSchemaFromVersion:v14 error:a3])
+      if ([(ENSQLiteConnection *)self->_connection getUserVersion:&v14 error:error]&& [(ENExposureDatabase *)self _createOrMigrateSchemaFromVersion:v14 error:error])
       {
         if (gLogCategory_ENExposureDatabase <= 30 && (gLogCategory_ENExposureDatabase != -1 || _LogCategory_Initialize()))
         {
@@ -141,10 +141,10 @@ LABEL_27:
     }
 
     v6 = objc_alloc_init(MEMORY[0x277CCAA08]);
-    v7 = [(NSURL *)self->_databaseURL URLByDeletingLastPathComponent];
-    if ([v6 createDirectoryAtURL:v7 withIntermediateDirectories:1 attributes:0 error:a3])
+    uRLByDeletingLastPathComponent = [(NSURL *)self->_databaseURL URLByDeletingLastPathComponent];
+    if ([v6 createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:error])
     {
-      if ([v7 setResourceValue:MEMORY[0x277CBEC30] forKey:*MEMORY[0x277CBE870] error:a3])
+      if ([uRLByDeletingLastPathComponent setResourceValue:MEMORY[0x277CBEC30] forKey:*MEMORY[0x277CBE870] error:error])
       {
 
         goto LABEL_7;
@@ -156,8 +156,8 @@ LABEL_27:
         goto LABEL_26;
       }
 
-      v9 = [v7 path];
-      v12 = v9;
+      path = [uRLByDeletingLastPathComponent path];
+      v12 = path;
       LogPrintF_safe();
       v10 = 4005;
     }
@@ -171,9 +171,9 @@ LABEL_27:
       }
 
       v8 = objc_opt_class();
-      v9 = [v7 absoluteString];
+      path = [uRLByDeletingLastPathComponent absoluteString];
       v12 = v8;
-      v13 = v9;
+      v13 = path;
       LogPrintF_safe();
       v10 = 4004;
     }
@@ -204,7 +204,7 @@ LABEL_2:
   self->_connection = 0;
 }
 
-- (BOOL)_reallyOpenDatabaseWithError:(id *)a3
+- (BOOL)_reallyOpenDatabaseWithError:(id *)error
 {
   if (self->_connection)
   {
@@ -227,7 +227,7 @@ LABEL_2:
     self->_connection = v7;
   }
 
-  v9 = [(ENSQLiteConnection *)self->_connection openWithError:a3];
+  v9 = [(ENSQLiteConnection *)self->_connection openWithError:error];
   if (v9)
   {
     [(ENExposureDatabase *)self close];
@@ -253,21 +253,21 @@ LABEL_2:
   return v9 == 0;
 }
 
-- (BOOL)_checkDatabaseOpenWithError:(id *)a3
+- (BOOL)_checkDatabaseOpenWithError:(id *)error
 {
-  v4 = [(ENSQLiteConnection *)self->_connection isOpen];
-  v5 = v4;
-  if (a3 && !v4)
+  isOpen = [(ENSQLiteConnection *)self->_connection isOpen];
+  v5 = isOpen;
+  if (error && !isOpen)
   {
-    *a3 = ENErrorF();
+    *error = ENErrorF();
   }
 
   return v5;
 }
 
-- (BOOL)_createOrMigrateSchemaFromVersion:(int64_t)a3 error:(id *)a4
+- (BOOL)_createOrMigrateSchemaFromVersion:(int64_t)version error:(id *)error
 {
-  if (a3 == 8)
+  if (version == 8)
   {
     LOBYTE(v8) = 1;
     return v8;
@@ -277,14 +277,14 @@ LABEL_2:
   v26[6] = v6;
   v26[17] = v4;
   v26[18] = v5;
-  if ((a3 - 9) < 0xFFFFFFFFFFFFFFF9)
+  if ((version - 9) < 0xFFFFFFFFFFFFFFF9)
   {
     if (gLogCategory__ENExposureDatabase <= 90 && (gLogCategory__ENExposureDatabase != -1 || _LogCategory_Initialize()))
     {
       [ENExposureDatabase _createOrMigrateSchemaFromVersion:error:];
     }
 
-    if ([(ENSQLiteConnection *)self->_connection truncateWithError:a4])
+    if ([(ENSQLiteConnection *)self->_connection truncateWithError:error])
     {
       connection = self->_connection;
       v26[0] = MEMORY[0x277D85DD0];
@@ -292,7 +292,7 @@ LABEL_2:
       v26[2] = __62__ENExposureDatabase__createOrMigrateSchemaFromVersion_error___block_invoke;
       v26[3] = &unk_278FD2BD8;
       v26[4] = self;
-      LOBYTE(v8) = [(ENSQLiteConnection *)connection performTransactionWithType:1 error:a4 usingBlock:v26];
+      LOBYTE(v8) = [(ENSQLiteConnection *)connection performTransactionWithType:1 error:error usingBlock:v26];
     }
 
     else
@@ -317,7 +317,7 @@ LABEL_2:
   while (1)
   {
     v15 = *(v13 - 1);
-    if (v15 > a3)
+    if (v15 > version)
     {
       break;
     }
@@ -360,10 +360,10 @@ LABEL_16:
   }
 
   [(ENExposureDatabase *)self _reportErrorMetric:4003];
-  if (a4)
+  if (error)
   {
     v21 = v20;
-    *a4 = v20;
+    *error = v20;
   }
 
 LABEL_29:
@@ -387,17 +387,17 @@ uint64_t __62__ENExposureDatabase__createOrMigrateSchemaFromVersion_error___bloc
   return v6;
 }
 
-- (BOOL)_createSchemaWithConnection:(id)a3 error:(id *)a4
+- (BOOL)_createSchemaWithConnection:(id)connection error:(id *)error
 {
-  v5 = a3;
-  if (![v5 executeUncachedSQLStatements:&unk_285D6E138 error:a4])
+  connectionCopy = connection;
+  if (![connectionCopy executeUncachedSQLStatements:&unk_285D6E138 error:error])
   {
 LABEL_7:
     v6 = 0;
     goto LABEL_8;
   }
 
-  if (([v5 setUserVersion:8 error:a4] & 1) == 0)
+  if (([connectionCopy setUserVersion:8 error:error] & 1) == 0)
   {
     if (gLogCategory__ENExposureDatabase <= 90 && (gLogCategory__ENExposureDatabase != -1 || _LogCategory_Initialize()))
     {
@@ -413,11 +413,11 @@ LABEL_8:
   return v6;
 }
 
-- (int64_t)insertMatchedAdvertisements:(id)a3 forKey:(id)a4 error:(id *)a5
+- (int64_t)insertMatchedAdvertisements:(id)advertisements forKey:(id)key error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if ([(ENExposureDatabase *)self _checkDatabaseOpenWithError:a5])
+  advertisementsCopy = advertisements;
+  keyCopy = key;
+  if ([(ENExposureDatabase *)self _checkDatabaseOpenWithError:error])
   {
     v17 = 0;
     v18 = &v17;
@@ -429,10 +429,10 @@ LABEL_8:
     v13[2] = __63__ENExposureDatabase_insertMatchedAdvertisements_forKey_error___block_invoke;
     v13[3] = &unk_278FD2C20;
     v13[4] = self;
-    v14 = v9;
+    v14 = keyCopy;
     v16 = &v17;
-    v15 = v8;
-    if ([(ENSQLiteConnection *)connection performTransactionWithType:1 error:a5 usingBlock:v13])
+    v15 = advertisementsCopy;
+    if ([(ENSQLiteConnection *)connection performTransactionWithType:1 error:error usingBlock:v13])
     {
       v11 = v18[3];
     }
@@ -559,19 +559,19 @@ LABEL_24:
   return v12;
 }
 
-- (BOOL)_insertAdvertisement:(id)a3 keyRowID:(int64_t)a4 connection:(id)a5 error:(id *)a6
+- (BOOL)_insertAdvertisement:(id)advertisement keyRowID:(int64_t)d connection:(id)connection error:(id *)error
 {
-  v9 = a3;
+  advertisementCopy = advertisement;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __69__ENExposureDatabase__insertAdvertisement_keyRowID_connection_error___block_invoke;
   v12[3] = &unk_278FD2C48;
-  v13 = v9;
-  v14 = a4;
-  v10 = v9;
-  LOBYTE(a6) = [a5 executeSQL:@"INSERT OR REPLACE INTO advertisements (rpi error:encrypted_aem bindingHandler:timestamp enumerationHandler:{scan_interval, rssi, max_rssi, saturated, counter, tek_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", a6, v12, 0}];
+  v13 = advertisementCopy;
+  dCopy = d;
+  v10 = advertisementCopy;
+  LOBYTE(error) = [connection executeSQL:@"INSERT OR REPLACE INTO advertisements (rpi error:encrypted_aem bindingHandler:timestamp enumerationHandler:{scan_interval, rssi, max_rssi, saturated, counter, tek_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", error, v12, 0}];
 
-  return a6;
+  return error;
 }
 
 uint64_t __69__ENExposureDatabase__insertAdvertisement_keyRowID_connection_error___block_invoke(uint64_t a1, sqlite3_stmt *a2)
@@ -594,10 +594,10 @@ uint64_t __69__ENExposureDatabase__insertAdvertisement_keyRowID_connection_error
   return sqlite3_bind_int64(a2, 9, v7);
 }
 
-- (BOOL)_getExistingPersistentTemporaryExposureKey:(id *)a3 rowID:(int64_t *)a4 keyData:(id)a5 connection:(id)a6 error:(id *)a7
+- (BOOL)_getExistingPersistentTemporaryExposureKey:(id *)key rowID:(int64_t *)d keyData:(id)data connection:(id)connection error:(id *)error
 {
-  v12 = a5;
-  v13 = a6;
+  dataCopy = data;
+  connectionCopy = connection;
   v27 = 0;
   v28 = &v27;
   v29 = 0x2020000000;
@@ -612,7 +612,7 @@ uint64_t __69__ENExposureDatabase__insertAdvertisement_keyRowID_connection_error
   v19[1] = 3221225472;
   v19[2] = __96__ENExposureDatabase__getExistingPersistentTemporaryExposureKey_rowID_keyData_connection_error___block_invoke;
   v19[3] = &unk_278FD2C70;
-  v14 = v12;
+  v14 = dataCopy;
   v20 = v14;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
@@ -621,14 +621,14 @@ uint64_t __69__ENExposureDatabase__insertAdvertisement_keyRowID_connection_error
   v18[5] = &v27;
   v18[6] = &v21;
   v18[4] = self;
-  v15 = [v13 executeSQL:@"SELECT ROWID error:key bindingHandler:app_bundle_id enumerationHandler:{region_id, start, period, onset_days, report_type, original_report_type, transmission_risk, variant_of_concern_type, original_variant_of_concern_type FROM teks WHERE key = ?", a7, v19, v18}];
+  v15 = [connectionCopy executeSQL:@"SELECT ROWID error:key bindingHandler:app_bundle_id enumerationHandler:{region_id, start, period, onset_days, report_type, original_report_type, transmission_risk, variant_of_concern_type, original_variant_of_concern_type FROM teks WHERE key = ?", error, v19, v18}];
   if (v15)
   {
     v16 = v22[5];
     if (v16)
     {
-      *a3 = v16;
-      *a4 = v28[3];
+      *key = v16;
+      *d = v28[3];
     }
   }
 
@@ -670,33 +670,33 @@ uint64_t __108__ENExposureDatabase__updateExistingPersistentKeyIfNecessary_repla
   return sqlite3_bind_int64(a2, 3, v4);
 }
 
-- (id)_persistentTemporaryExposureKeyWithKeyData:(id)a3 appBundleIdentifier:(id)a4 regionCountryCode:(id)a5 rollingStartNumber:(int64_t)a6 rollingPeriod:(int64_t)a7 daysSinceOnsetOfSymptoms:(int64_t)a8 diagnosisReportType:(int)a9 originalReportType:(int)a10 transmissionRiskLevel:(int)a11 variantOfConcernType:(int)a12 originalVariantOfConcernType:(int)a13
+- (id)_persistentTemporaryExposureKeyWithKeyData:(id)data appBundleIdentifier:(id)identifier regionCountryCode:(id)code rollingStartNumber:(int64_t)number rollingPeriod:(int64_t)period daysSinceOnsetOfSymptoms:(int64_t)symptoms diagnosisReportType:(int)type originalReportType:(int)self0 transmissionRiskLevel:(int)self1 variantOfConcernType:(int)self2 originalVariantOfConcernType:(int)self3
 {
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
-  if (v18)
+  dataCopy = data;
+  identifierCopy = identifier;
+  codeCopy = code;
+  if (dataCopy)
   {
     v21 = objc_alloc_init(MEMORY[0x277CC5D28]);
-    [v21 setKeyData:v18];
-    [v21 setRollingStartNumber:a6];
-    [v21 setRollingPeriod:a7];
-    [v21 setDaysSinceOnsetOfSymptoms:a8];
-    [v21 setDiagnosisReportType:a9];
-    [v21 setTransmissionRiskLevel:a11];
-    [v21 setVariantOfConcernType:a12];
-    [v21 setOriginalVariantOfConcernType:a13];
-    v22 = [[ENPersistentTemporaryExposureKey alloc] initWithTemporaryExposureKey:v21 appBundleIdentifier:v19 regionCountryCode:v20];
-    [(ENPersistentTemporaryExposureKey *)v22 setOriginalReportType:a10];
-    [(ENPersistentTemporaryExposureKey *)v22 setOriginalVariantOfConcernType:a13];
+    [v21 setKeyData:dataCopy];
+    [v21 setRollingStartNumber:number];
+    [v21 setRollingPeriod:period];
+    [v21 setDaysSinceOnsetOfSymptoms:symptoms];
+    [v21 setDiagnosisReportType:type];
+    [v21 setTransmissionRiskLevel:level];
+    [v21 setVariantOfConcernType:concernType];
+    [v21 setOriginalVariantOfConcernType:ofConcernType];
+    v22 = [[ENPersistentTemporaryExposureKey alloc] initWithTemporaryExposureKey:v21 appBundleIdentifier:identifierCopy regionCountryCode:codeCopy];
+    [(ENPersistentTemporaryExposureKey *)v22 setOriginalReportType:reportType];
+    [(ENPersistentTemporaryExposureKey *)v22 setOriginalVariantOfConcernType:ofConcernType];
   }
 
   else
   {
     v23 = +[ENLoggingPrefs sharedENLoggingPrefs];
-    v24 = [v23 isSensitiveLoggingAllowed];
+    isSensitiveLoggingAllowed = [v23 isSensitiveLoggingAllowed];
 
-    if (v24 && gLogCategory_ENExposureDatabase <= 90 && (gLogCategory_ENExposureDatabase != -1 || _LogCategory_Initialize()))
+    if (isSensitiveLoggingAllowed && gLogCategory_ENExposureDatabase <= 90 && (gLogCategory_ENExposureDatabase != -1 || _LogCategory_Initialize()))
     {
       [ENExposureDatabase _persistentTemporaryExposureKeyWithKeyData:appBundleIdentifier:regionCountryCode:rollingStartNumber:rollingPeriod:daysSinceOnsetOfSymptoms:diagnosisReportType:originalReportType:transmissionRiskLevel:variantOfConcernType:originalVariantOfConcernType:];
     }
@@ -707,18 +707,18 @@ uint64_t __108__ENExposureDatabase__updateExistingPersistentKeyIfNecessary_repla
   return v22;
 }
 
-- (BOOL)_insertPersistentTemporaryExposureKey:(id)a3 connection:(id)a4 error:(id *)a5
+- (BOOL)_insertPersistentTemporaryExposureKey:(id)key connection:(id)connection error:(id *)error
 {
-  v7 = a3;
+  keyCopy = key;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __77__ENExposureDatabase__insertPersistentTemporaryExposureKey_connection_error___block_invoke;
   v10[3] = &unk_278FD2C70;
-  v11 = v7;
-  v8 = v7;
-  LOBYTE(a5) = [a4 executeSQL:@"INSERT INTO teks (app_bundle_id error:region_id bindingHandler:key enumerationHandler:{start, period, end, onset_days, report_type, original_report_type, transmission_risk, variant_of_concern_type, original_variant_of_concern_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", a5, v10, 0}];
+  v11 = keyCopy;
+  v8 = keyCopy;
+  LOBYTE(error) = [connection executeSQL:@"INSERT INTO teks (app_bundle_id error:region_id bindingHandler:key enumerationHandler:{start, period, end, onset_days, report_type, original_report_type, transmission_risk, variant_of_concern_type, original_variant_of_concern_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", error, v10, 0}];
 
-  return a5;
+  return error;
 }
 
 void __77__ENExposureDatabase__insertPersistentTemporaryExposureKey_connection_error___block_invoke(uint64_t a1, sqlite3_stmt *a2)
@@ -828,7 +828,7 @@ uint64_t __70__ENExposureDatabase_enumerateMatchedAdvertisementsWithError_handle
   return 1;
 }
 
-- (id)advertisementCountsByTemporaryKeyDatasWithError:(id *)a3
+- (id)advertisementCountsByTemporaryKeyDatasWithError:(id *)error
 {
   v5 = objc_alloc_init(MEMORY[0x277CBEB30]);
   v10[0] = MEMORY[0x277D85DD0];
@@ -837,7 +837,7 @@ uint64_t __70__ENExposureDatabase_enumerateMatchedAdvertisementsWithError_handle
   v10[3] = &unk_278FD2D30;
   v11 = v5;
   v6 = v5;
-  if ([(ENExposureDatabase *)self enumerateMatchedAdvertisementsWithError:a3 handler:v10])
+  if ([(ENExposureDatabase *)self enumerateMatchedAdvertisementsWithError:error handler:v10])
   {
     v7 = v6;
   }
@@ -864,16 +864,16 @@ void __70__ENExposureDatabase_advertisementCountsByTemporaryKeyDatasWithError___
   [v7 setObject:v10 forKeyedSubscript:v9];
 }
 
-- (id)_advertisementsForTemporaryExposureKeyRowID:(int64_t)a3 connection:(id)a4 error:(id *)a5
+- (id)_advertisementsForTemporaryExposureKeyRowID:(int64_t)d connection:(id)connection error:(id *)error
 {
   v8 = MEMORY[0x277CBEB10];
-  v9 = a4;
+  connectionCopy = connection;
   v10 = objc_alloc_init(v8);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __83__ENExposureDatabase__advertisementsForTemporaryExposureKeyRowID_connection_error___block_invoke;
   v17[3] = &__block_descriptor_40_e23_v16__0__sqlite3_stmt__8l;
-  v17[4] = a3;
+  v17[4] = d;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __83__ENExposureDatabase__advertisementsForTemporaryExposureKeyRowID_connection_error___block_invoke_2;
@@ -881,9 +881,9 @@ void __70__ENExposureDatabase_advertisementCountsByTemporaryKeyDatasWithError___
   v15[4] = self;
   v16 = v10;
   v11 = v10;
-  LODWORD(a5) = [v9 executeSQL:@"SELECT rpi error:encrypted_aem bindingHandler:timestamp enumerationHandler:{scan_interval, rssi, max_rssi, saturated, counter FROM advertisements WHERE tek_id = ?", a5, v17, v15}];
+  LODWORD(error) = [connectionCopy executeSQL:@"SELECT rpi error:encrypted_aem bindingHandler:timestamp enumerationHandler:{scan_interval, rssi, max_rssi, saturated, counter FROM advertisements WHERE tek_id = ?", error, v17, v15}];
 
-  if (a5)
+  if (error)
   {
     v12 = v11;
   }
@@ -929,29 +929,29 @@ uint64_t __83__ENExposureDatabase__advertisementsForTemporaryExposureKeyRowID_co
   return 1;
 }
 
-- (id)_advertisementWithRPIData:(id)a3 encryptedAEMData:(id)a4 timestamp:(int64_t)a5 scanInterval:(int)a6 typicalRSSI:(int)a7 maxRSSI:(int)a8 saturated:(int)a9 counter:(int)a10
+- (id)_advertisementWithRPIData:(id)data encryptedAEMData:(id)mData timestamp:(int64_t)timestamp scanInterval:(int)interval typicalRSSI:(int)i maxRSSI:(int)sI saturated:(int)saturated counter:(int)self0
 {
-  v10 = a8;
-  v11 = a7;
-  v12 = a6;
-  v15 = a3;
-  v16 = a4;
-  v17 = v15;
+  sICopy = sI;
+  iCopy = i;
+  intervalCopy = interval;
+  dataCopy = data;
+  mDataCopy = mData;
+  v17 = dataCopy;
   if (v17)
   {
     v18 = [ENAdvertisement alloc];
     v19 = v18;
-    if (v16)
+    if (mDataCopy)
     {
-      LOBYTE(v23) = a10;
-      v20 = [(ENAdvertisement *)v18 initWithRPI:v17 encryptedAEM:v16 timestamp:v12 scanInterval:v11 typicalRSSI:v10 maxRSSI:a9 != 0 saturated:a5 counter:v23];
+      LOBYTE(v23) = counter;
+      v20 = [(ENAdvertisement *)v18 initWithRPI:v17 encryptedAEM:mDataCopy timestamp:intervalCopy scanInterval:iCopy typicalRSSI:sICopy maxRSSI:saturated != 0 saturated:timestamp counter:v23];
     }
 
     else
     {
-      v21 = [MEMORY[0x277CBEA98] data];
-      LOBYTE(v23) = a10;
-      v20 = [(ENAdvertisement *)v19 initWithRPI:v17 encryptedAEM:v21 timestamp:v12 scanInterval:v11 typicalRSSI:v10 maxRSSI:a9 != 0 saturated:a5 counter:v23];
+      data = [MEMORY[0x277CBEA98] data];
+      LOBYTE(v23) = counter;
+      v20 = [(ENAdvertisement *)v19 initWithRPI:v17 encryptedAEM:data timestamp:intervalCopy scanInterval:iCopy typicalRSSI:sICopy maxRSSI:saturated != 0 saturated:timestamp counter:v23];
     }
   }
 
@@ -963,9 +963,9 @@ uint64_t __83__ENExposureDatabase__advertisementsForTemporaryExposureKeyRowID_co
   return v20;
 }
 
-- (BOOL)getAdvertisementCount:(unsigned int *)a3 error:(id *)a4
+- (BOOL)getAdvertisementCount:(unsigned int *)count error:(id *)error
 {
-  if (![(ENExposureDatabase *)self _checkDatabaseOpenWithError:a4])
+  if (![(ENExposureDatabase *)self _checkDatabaseOpenWithError:error])
   {
     return 0;
   }
@@ -980,34 +980,34 @@ uint64_t __83__ENExposureDatabase__advertisementsForTemporaryExposureKeyRowID_co
   v11[2] = __50__ENExposureDatabase_getAdvertisementCount_error___block_invoke;
   v11[3] = &unk_278FD2DA0;
   v11[4] = &v12;
-  v8 = [(ENSQLiteConnection *)connection executeSQL:@"SELECT COUNT(*) FROM advertisements" error:a4 bindingHandler:0 enumerationHandler:v11];
+  v8 = [(ENSQLiteConnection *)connection executeSQL:@"SELECT COUNT(*) FROM advertisements" error:error bindingHandler:0 enumerationHandler:v11];
   v9 = !v8;
-  if (!a3)
+  if (!count)
   {
     v9 = 1;
   }
 
   if ((v9 & 1) == 0)
   {
-    *a3 = *(v13 + 6);
+    *count = *(v13 + 6);
   }
 
   _Block_object_dispose(&v12, 8);
   return v8;
 }
 
-- (BOOL)_insertOrUpdateExposureDetectionHistorySession:(id)a3 connection:(id)a4 error:(id *)a5
+- (BOOL)_insertOrUpdateExposureDetectionHistorySession:(id)session connection:(id)connection error:(id *)error
 {
-  v7 = a3;
+  sessionCopy = session;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __86__ENExposureDatabase__insertOrUpdateExposureDetectionHistorySession_connection_error___block_invoke;
   v10[3] = &unk_278FD2C70;
-  v11 = v7;
-  v8 = v7;
-  LOBYTE(a5) = [a4 executeSQL:@"INSERT INTO session_history (uuid error:date bindingHandler:app_bundle_id enumerationHandler:{region_cc, region_sc, file_count, match_count, build, exp_class) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT(uuid) DO UPDATE SET date=excluded.date, app_bundle_id=excluded.app_bundle_id, region_cc=excluded.region_cc, region_sc=excluded.region_sc, file_count=excluded.file_count, match_count=excluded.match_count, build=excluded.build, exp_class=excluded.exp_class", a5, v10, 0}];
+  v11 = sessionCopy;
+  v8 = sessionCopy;
+  LOBYTE(error) = [connection executeSQL:@"INSERT INTO session_history (uuid error:date bindingHandler:app_bundle_id enumerationHandler:{region_cc, region_sc, file_count, match_count, build, exp_class) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT(uuid) DO UPDATE SET date=excluded.date, app_bundle_id=excluded.app_bundle_id, region_cc=excluded.region_cc, region_sc=excluded.region_sc, file_count=excluded.file_count, match_count=excluded.match_count, build=excluded.build, exp_class=excluded.exp_class", error, v10, 0}];
 
-  return a5;
+  return error;
 }
 
 void __86__ENExposureDatabase__insertOrUpdateExposureDetectionHistorySession_connection_error___block_invoke(uint64_t a1, sqlite3_stmt *a2)
@@ -1038,10 +1038,10 @@ void __86__ENExposureDatabase__insertOrUpdateExposureDetectionHistorySession_con
   ENSQLiteBindFoundationValue(a2, 9, v12);
 }
 
-- (id)_sessionIDForUUID:(id)a3 connection:(id)a4 error:(id *)a5
+- (id)_sessionIDForUUID:(id)d connection:(id)connection error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  connectionCopy = connection;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -1052,14 +1052,14 @@ void __86__ENExposureDatabase__insertOrUpdateExposureDetectionHistorySession_con
   v14[1] = 3221225472;
   v14[2] = __57__ENExposureDatabase__sessionIDForUUID_connection_error___block_invoke;
   v14[3] = &unk_278FD2C70;
-  v9 = v7;
+  v9 = dCopy;
   v15 = v9;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __57__ENExposureDatabase__sessionIDForUUID_connection_error___block_invoke_2;
   v13[3] = &unk_278FD2DA0;
   v13[4] = &v16;
-  if (![v8 executeSQL:@"SELECT ROWID FROM session_history WHERE uuid=?" error:a5 bindingHandler:v14 enumerationHandler:v13])
+  if (![connectionCopy executeSQL:@"SELECT ROWID FROM session_history WHERE uuid=?" error:error bindingHandler:v14 enumerationHandler:v13])
   {
     v10 = 0;
     goto LABEL_6;
@@ -1073,10 +1073,10 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (a5)
+  if (error)
   {
     ENErrorF();
-    *a5 = v11 = 0;
+    *error = v11 = 0;
   }
 
   else
@@ -1101,17 +1101,17 @@ uint64_t __57__ENExposureDatabase__sessionIDForUUID_connection_error___block_inv
   return 1;
 }
 
-- (BOOL)_insertExposureDetectionFile:(id)a3 sessionID:(id)a4 connection:(id)a5 error:(id *)a6
+- (BOOL)_insertExposureDetectionFile:(id)file sessionID:(id)d connection:(id)connection error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v9 metadata];
+  fileCopy = file;
+  dCopy = d;
+  connectionCopy = connection;
+  metadata = [fileCopy metadata];
   v13 = 0;
   v14 = 1;
-  while (v12 && (v14 & 1) != 0)
+  while (metadata && (v14 & 1) != 0)
   {
-    v15 = [MEMORY[0x277CCAC50] dataWithPropertyList:v12 format:200 options:0 error:a6];
+    v15 = [MEMORY[0x277CCAC50] dataWithPropertyList:metadata format:200 options:0 error:error];
 
     v14 = 0;
     v13 = v15;
@@ -1127,11 +1127,11 @@ uint64_t __57__ENExposureDatabase__sessionIDForUUID_connection_error___block_inv
   v19[1] = 3221225472;
   v19[2] = __78__ENExposureDatabase__insertExposureDetectionFile_sessionID_connection_error___block_invoke;
   v19[3] = &unk_278FD2E40;
-  v20 = v9;
-  v21 = v10;
+  v20 = fileCopy;
+  v21 = dCopy;
   v22 = v13;
   v17 = v13;
-  v16 = [v11 executeSQL:@"INSERT INTO file_history (hash error:date bindingHandler:session_id enumerationHandler:{key_count, match_count, app_bundle_id, region_cc, region_sc, metadata) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", a6, v19, 0}];
+  v16 = [connectionCopy executeSQL:@"INSERT INTO file_history (hash error:date bindingHandler:session_id enumerationHandler:{key_count, match_count, app_bundle_id, region_cc, region_sc, metadata) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", error, v19, 0}];
 
 LABEL_7:
   return v16;
@@ -1185,10 +1185,10 @@ uint64_t __89__ENExposureDatabase_enumerateExposureDetectionHistoryFilesForSessi
   return sqlite3_bind_int64(a2, 1, v3);
 }
 
-- (BOOL)getValue:(id *)a3 forKey:(id)a4 ofClass:(Class)a5 error:(id *)a6
+- (BOOL)getValue:(id *)value forKey:(id)key ofClass:(Class)class error:(id *)error
 {
-  v10 = a4;
-  if ([(ENExposureDatabase *)self _checkDatabaseOpenWithError:a6])
+  keyCopy = key;
+  if ([(ENExposureDatabase *)self _checkDatabaseOpenWithError:error])
   {
     v19 = 0;
     v20 = &v19;
@@ -1203,18 +1203,18 @@ uint64_t __89__ENExposureDatabase_enumerateExposureDetectionHistoryFilesForSessi
     v15[3] = &unk_278FD2E90;
     v15[4] = self;
     v17 = &v19;
-    v16 = v10;
-    v18 = a5;
-    v12 = [(ENSQLiteConnection *)connection performTransactionWithType:0 error:a6 usingBlock:v15];
+    v16 = keyCopy;
+    classCopy = class;
+    v12 = [(ENSQLiteConnection *)connection performTransactionWithType:0 error:error usingBlock:v15];
     v13 = !v12;
-    if (!a3)
+    if (!value)
     {
       v13 = 1;
     }
 
     if ((v13 & 1) == 0)
     {
-      *a3 = v20[5];
+      *value = v20[5];
     }
 
     _Block_object_dispose(&v19, 8);
@@ -1238,10 +1238,10 @@ uint64_t __52__ENExposureDatabase_getValue_forKey_ofClass_error___block_invoke(u
   return v5;
 }
 
-- (BOOL)getValue:(id *)a3 forKey:(id)a4 ofClass:(Class)a5 connection:(id)a6 error:(id *)a7
+- (BOOL)getValue:(id *)value forKey:(id)key ofClass:(Class)class connection:(id)connection error:(id *)error
 {
-  v11 = a4;
-  v12 = a6;
+  keyCopy = key;
+  connectionCopy = connection;
   v37 = 0;
   v38 = &v37;
   v39 = 0x3032000000;
@@ -1256,7 +1256,7 @@ uint64_t __52__ENExposureDatabase_getValue_forKey_ofClass_error___block_invoke(u
   v31[1] = 3221225472;
   v31[2] = __63__ENExposureDatabase_getValue_forKey_ofClass_connection_error___block_invoke;
   v31[3] = &unk_278FD2C70;
-  v13 = v11;
+  v13 = keyCopy;
   v32 = v13;
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
@@ -1264,7 +1264,7 @@ uint64_t __52__ENExposureDatabase_getValue_forKey_ofClass_error___block_invoke(u
   v30[3] = &unk_278FD2EB8;
   v30[4] = &v33;
   v30[5] = &v37;
-  if ([v12 executeSQL:@"SELECT type error:value FROM kvs WHERE key LIKE ?" bindingHandler:a7 enumerationHandler:{v31, v30}])
+  if ([connectionCopy executeSQL:@"SELECT type error:value FROM kvs WHERE key LIKE ?" bindingHandler:error enumerationHandler:{v31, v30}])
   {
     if (v38[5])
     {
@@ -1274,7 +1274,7 @@ uint64_t __52__ENExposureDatabase_getValue_forKey_ofClass_error___block_invoke(u
       {
         v19 = v38[5];
         v29 = 0;
-        v20 = [MEMORY[0x277CCAAC0] unarchivedObjectOfClass:a5 fromData:v19 error:&v29];
+        v20 = [MEMORY[0x277CCAAC0] unarchivedObjectOfClass:class fromData:v19 error:&v29];
         v21 = v29;
       }
 
@@ -1292,7 +1292,7 @@ uint64_t __52__ENExposureDatabase_getValue_forKey_ofClass_error___block_invoke(u
           v25 = v38[5];
           v26 = objc_opt_class();
           v19 = NSStringFromClass(v26);
-          v27 = NSStringFromClass(a5);
+          v27 = NSStringFromClass(class);
           v17 = ENErrorF();
 
           v18 = 0;
@@ -1303,13 +1303,13 @@ LABEL_14:
           if (v18)
           {
             v23 = v38[5];
-            a7 = a3;
+            error = value;
           }
 
           else
           {
             v23 = v17;
-            if (!a7)
+            if (!error)
             {
 LABEL_18:
 
@@ -1317,7 +1317,7 @@ LABEL_18:
             }
           }
 
-          *a7 = v23;
+          *error = v23;
           goto LABEL_18;
         }
 
@@ -1335,7 +1335,7 @@ LABEL_18:
       goto LABEL_13;
     }
 
-    *a3 = 0;
+    *value = 0;
     LOBYTE(v18) = 1;
   }
 
@@ -1363,12 +1363,12 @@ uint64_t __63__ENExposureDatabase_getValue_forKey_ofClass_connection_error___blo
   return 1;
 }
 
-- (BOOL)setValue:(id)a3 forKey:(id)a4 expiryDate:(id)a5 error:(id *)a6
+- (BOOL)setValue:(id)value forKey:(id)key expiryDate:(id)date error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (!v10 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  valueCopy = value;
+  keyCopy = key;
+  dateCopy = date;
+  if (!valueCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v13 = 3;
   }
@@ -1384,14 +1384,14 @@ uint64_t __63__ENExposureDatabase_getValue_forKey_ofClass_connection_error___blo
   v20[2] = __55__ENExposureDatabase_setValue_forKey_expiryDate_error___block_invoke;
   v20[3] = &unk_278FD2EE0;
   v20[4] = self;
-  v21 = v10;
-  v23 = v12;
+  v21 = valueCopy;
+  v23 = dateCopy;
   v24 = v13;
-  v22 = v11;
-  v15 = v12;
-  v16 = v11;
-  v17 = v10;
-  v18 = [(ENSQLiteConnection *)connection performTransactionWithType:1 error:a6 usingBlock:v20];
+  v22 = keyCopy;
+  v15 = dateCopy;
+  v16 = keyCopy;
+  v17 = valueCopy;
+  v18 = [(ENSQLiteConnection *)connection performTransactionWithType:1 error:error usingBlock:v20];
 
   return v18;
 }
@@ -1411,26 +1411,26 @@ uint64_t __55__ENExposureDatabase_setValue_forKey_expiryDate_error___block_invok
   return v12;
 }
 
-- (BOOL)setPropertyListValue:(id)a3 forKey:(id)a4 expiryDate:(id)a5 error:(id *)a6
+- (BOOL)setPropertyListValue:(id)value forKey:(id)key expiryDate:(id)date error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  valueCopy = value;
+  keyCopy = key;
+  dateCopy = date;
   connection = self->_connection;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __67__ENExposureDatabase_setPropertyListValue_forKey_expiryDate_error___block_invoke;
   v18[3] = &unk_278FD2F08;
   v18[4] = self;
-  v19 = v10;
-  v20 = v11;
-  v21 = v12;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
-  LOBYTE(a6) = [(ENSQLiteConnection *)connection performTransactionWithType:1 error:a6 usingBlock:v18];
+  v19 = valueCopy;
+  v20 = keyCopy;
+  v21 = dateCopy;
+  v14 = dateCopy;
+  v15 = keyCopy;
+  v16 = valueCopy;
+  LOBYTE(error) = [(ENSQLiteConnection *)connection performTransactionWithType:1 error:error usingBlock:v18];
 
-  return a6;
+  return error;
 }
 
 uint64_t __67__ENExposureDatabase_setPropertyListValue_forKey_expiryDate_error___block_invoke(void *a1, void *a2, uint64_t a3)
@@ -1447,28 +1447,28 @@ uint64_t __67__ENExposureDatabase_setPropertyListValue_forKey_expiryDate_error__
   return v11;
 }
 
-- (BOOL)setValue:(id)a3 forKey:(id)a4 type:(int64_t)a5 expiryDate:(id)a6 modDate:(id)a7 connection:(id)a8 error:(id *)a9
+- (BOOL)setValue:(id)value forKey:(id)key type:(int64_t)type expiryDate:(id)date modDate:(id)modDate connection:(id)connection error:(id *)error
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  valueCopy = value;
+  keyCopy = key;
+  dateCopy = date;
+  modDateCopy = modDate;
+  connectionCopy = connection;
   v19 = objc_autoreleasePoolPush();
-  if (!v14)
+  if (!valueCopy)
   {
     goto LABEL_5;
   }
 
-  if (a5 == 2)
+  if (type == 2)
   {
     v35 = 0;
-    v20 = [MEMORY[0x277CCAC50] dataWithPropertyList:v14 format:200 options:0 error:&v35];
+    v20 = [MEMORY[0x277CCAC50] dataWithPropertyList:valueCopy format:200 options:0 error:&v35];
     v21 = v35;
     goto LABEL_7;
   }
 
-  if (a5 != 1)
+  if (type != 1)
   {
 LABEL_5:
     v22 = 0;
@@ -1476,7 +1476,7 @@ LABEL_5:
   }
 
   v36 = 0;
-  v20 = [MEMORY[0x277CCAAB8] archivedDataWithRootObject:v14 requiringSecureCoding:1 error:&v36];
+  v20 = [MEMORY[0x277CCAAB8] archivedDataWithRootObject:valueCopy requiringSecureCoding:1 error:&v36];
   v21 = v36;
 LABEL_7:
   v22 = v21;
@@ -1488,29 +1488,29 @@ LABEL_7:
     goto LABEL_10;
   }
 
-  v14 = v20;
+  valueCopy = v20;
 LABEL_9:
   v34 = v22;
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __79__ENExposureDatabase_setValue_forKey_type_expiryDate_modDate_connection_error___block_invoke;
   v28[3] = &unk_278FD2F30;
-  v29 = v15;
-  v23 = v14;
+  v29 = keyCopy;
+  v23 = valueCopy;
   v30 = v23;
-  v33 = a5;
-  v31 = v17;
-  v32 = v16;
-  v24 = [v18 executeSQL:@"INSERT OR REPLACE INTO kvs(key error:value bindingHandler:type enumerationHandler:{mod_date, expiration_date) VALUES (?, ?, ?, ?, ?)", &v34, v28, 0}];
+  typeCopy = type;
+  v31 = modDateCopy;
+  v32 = dateCopy;
+  v24 = [connectionCopy executeSQL:@"INSERT OR REPLACE INTO kvs(key error:value bindingHandler:type enumerationHandler:{mod_date, expiration_date) VALUES (?, ?, ?, ?, ?)", &v34, v28, 0}];
   v25 = v34;
 
   v22 = v25;
 LABEL_10:
   objc_autoreleasePoolPop(v19);
-  if (a9 && !v24 && v22)
+  if (error && !v24 && v22)
   {
     v26 = v22;
-    *a9 = v22;
+    *error = v22;
   }
 
   return v24;
@@ -1541,9 +1541,9 @@ uint64_t __61__ENExposureDatabase_purgeRecordsWithInterval_nowDate_error___block
   return sqlite3_bind_double(a2, 1, v3);
 }
 
-- (void)purgeAllAndCloseWithReason:(id)a3
+- (void)purgeAllAndCloseWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   if (gLogCategory_ENExposureDatabase <= 50 && (gLogCategory_ENExposureDatabase != -1 || _LogCategory_Initialize()))
   {
     [ENExposureDatabase purgeAllAndCloseWithReason:?];
@@ -1568,7 +1568,7 @@ uint64_t __61__ENExposureDatabase_purgeRecordsWithInterval_nowDate_error___block
 
 LABEL_11:
     [(ENExposureDatabase *)self close];
-    [ENExposureDatabase _obliterateDatabaseAtURL:self->_databaseURL reason:v4 generateStackshot:0];
+    [ENExposureDatabase _obliterateDatabaseAtURL:self->_databaseURL reason:reasonCopy generateStackshot:0];
     goto LABEL_12;
   }
 
@@ -1576,18 +1576,18 @@ LABEL_11:
 LABEL_12:
 }
 
-+ (void)_obliterateDatabaseAtURL:(id)a3 reason:(id)a4 generateStackshot:(BOOL)a5
++ (void)_obliterateDatabaseAtURL:(id)l reason:(id)reason generateStackshot:(BOOL)stackshot
 {
-  v5 = a5;
+  stackshotCopy = stackshot;
   v43[3] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  if (!v9)
+  lCopy = l;
+  reasonCopy = reason;
+  if (!lCopy)
   {
-    [ENExposureDatabase _obliterateDatabaseAtURL:a2 reason:a1 generateStackshot:?];
+    [ENExposureDatabase _obliterateDatabaseAtURL:a2 reason:self generateStackshot:?];
   }
 
-  if (v5)
+  if (stackshotCopy)
   {
     v11 = 115;
   }
@@ -1599,12 +1599,12 @@ LABEL_12:
 
   if (v11 >= gLogCategory_ENExposureDatabase && (gLogCategory_ENExposureDatabase != -1 || _LogCategory_Initialize()))
   {
-    [ENExposureDatabase _obliterateDatabaseAtURL:v9 reason:? generateStackshot:?];
+    [ENExposureDatabase _obliterateDatabaseAtURL:lCopy reason:? generateStackshot:?];
   }
 
-  v35 = v10;
-  v36 = v9;
-  v43[0] = [v9 path];
+  v35 = reasonCopy;
+  v36 = lCopy;
+  v43[0] = [lCopy path];
   v12 = [v43[0] stringByAppendingString:@"-wal"];
   v43[1] = v12;
   v34 = v43[0];
@@ -1650,8 +1650,8 @@ LABEL_12:
           goto LABEL_30;
         }
 
-        v28 = [v25 domain];
-        if (![v28 isEqualToString:v21])
+        domain = [v25 domain];
+        if (![domain isEqualToString:v21])
         {
 
 LABEL_23:
@@ -1671,9 +1671,9 @@ LABEL_23:
           goto LABEL_30;
         }
 
-        v29 = [v26 code];
+        code = [v26 code];
 
-        v30 = v29 == 260;
+        v30 = code == 260;
         v18 = &unk_281346000;
         if (!v30)
         {
@@ -1692,26 +1692,26 @@ LABEL_30:
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)_updateExistingPersistentKeyIfNecessary:(id)a3 replacementKey:(id)a4 existingKeyID:(int64_t)a5 connection:(id)a6 error:(id *)a7
+- (int64_t)_updateExistingPersistentKeyIfNecessary:(id)necessary replacementKey:(id)key existingKeyID:(int64_t)d connection:(id)connection error:(id *)error
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  v13 = [v12 originalReportType];
-  v14 = [v12 key];
-  v15 = [v14 diagnosisReportType];
+  connectionCopy = connection;
+  keyCopy = key;
+  necessaryCopy = necessary;
+  originalReportType = [necessaryCopy originalReportType];
+  v14 = [necessaryCopy key];
+  diagnosisReportType = [v14 diagnosisReportType];
 
-  v16 = [v11 key];
-  v17 = [v16 diagnosisReportType];
+  v16 = [keyCopy key];
+  diagnosisReportType2 = [v16 diagnosisReportType];
 
-  v18 = [v12 key];
+  v18 = [necessaryCopy key];
 
-  v19 = [v18 variantOfConcernType];
-  v20 = [v11 key];
+  variantOfConcernType = [v18 variantOfConcernType];
+  v20 = [keyCopy key];
 
-  v21 = [v20 variantOfConcernType];
+  variantOfConcernType2 = [v20 variantOfConcernType];
   v22 = 4;
-  if (v13 && v13 == v15 && !v19)
+  if (originalReportType && originalReportType == diagnosisReportType && !variantOfConcernType)
   {
     v23 = ENCompareDiagnosisReportTypes();
     if (v23 != -1)
@@ -1719,7 +1719,7 @@ LABEL_30:
       if (v23)
       {
         v22 = 4;
-        if (!v21)
+        if (!variantOfConcernType2)
         {
           goto LABEL_10;
         }
@@ -1728,7 +1728,7 @@ LABEL_30:
       else
       {
         v22 = 2;
-        if (!v21)
+        if (!variantOfConcernType2)
         {
           goto LABEL_10;
         }
@@ -1739,9 +1739,9 @@ LABEL_30:
     OUTLINED_FUNCTION_9_0();
     v28[2] = __108__ENExposureDatabase__updateExistingPersistentKeyIfNecessary_replacementKey_existingKeyID_connection_error___block_invoke;
     v28[3] = &__block_descriptor_48_e23_v16__0__sqlite3_stmt__8l;
-    v29 = v17;
-    v30 = v21;
-    v28[4] = a5;
+    v29 = diagnosisReportType2;
+    v30 = variantOfConcernType2;
+    v28[4] = d;
     if (OUTLINED_FUNCTION_7_0(v24, v25, @"UPDATE teks SET (report_type, variant_of_concern_type) = (?, ?) WHERE ROWID = ?", v26, v28))
     {
       v22 = 3;
@@ -1758,7 +1758,7 @@ LABEL_10:
   return v22;
 }
 
-- (BOOL)enumerateMatchedAdvertisementsWithError:(id *)a3 handler:(id)a4
+- (BOOL)enumerateMatchedAdvertisementsWithError:(id *)error handler:(id)handler
 {
   OUTLINED_FUNCTION_5_2();
   v8 = v7;
@@ -1783,9 +1783,9 @@ LABEL_10:
   return v5;
 }
 
-- (BOOL)upsertExposureDetectionHistorySession:(id)a3 error:(id *)a4
+- (BOOL)upsertExposureDetectionHistorySession:(id)session error:(id *)error
 {
-  v7 = a3;
+  sessionCopy = session;
   if (OUTLINED_FUNCTION_6_1())
   {
     connection = self->_connection;
@@ -1793,21 +1793,21 @@ LABEL_10:
     OUTLINED_FUNCTION_9_0();
     v19 = __66__ENExposureDatabase_upsertExposureDetectionHistorySession_error___block_invoke;
     v20 = &unk_278FD2DC8;
-    v21 = self;
+    selfCopy = self;
     v22 = v4;
-    v9 = [(ENSQLiteConnection *)connection performTransactionWithType:1 error:a4 usingBlock:v18];
-    OUTLINED_FUNCTION_10_0(v9, v10, v11, v12, v13, v14, v15, v16, v18[0], v18[1], v19, v20, v21, v22);
+    v9 = [(ENSQLiteConnection *)connection performTransactionWithType:1 error:error usingBlock:v18];
+    OUTLINED_FUNCTION_10_0(v9, v10, v11, v12, v13, v14, v15, v16, v18[0], v18[1], v19, v20, selfCopy, v22);
   }
 
   else
   {
-    LOBYTE(a4) = 0;
+    LOBYTE(error) = 0;
   }
 
-  return a4;
+  return error;
 }
 
-- (BOOL)enumerateExposureDetectionHistorySessionsWithError:(id *)a3 handler:(id)a4
+- (BOOL)enumerateExposureDetectionHistorySessionsWithError:(id *)error handler:(id)handler
 {
   OUTLINED_FUNCTION_5_2();
   v8 = v7;
@@ -1870,16 +1870,16 @@ uint64_t __81__ENExposureDatabase_enumerateExposureDetectionHistorySessionsWithE
   return v5 & 1;
 }
 
-- (BOOL)insertExposureDetectionFile:(id)a3 session:(id)a4 error:(id *)a5
+- (BOOL)insertExposureDetectionFile:(id)file session:(id)session error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if ([(ENExposureDatabase *)self _checkDatabaseOpenWithError:a5])
+  fileCopy = file;
+  sessionCopy = session;
+  if ([(ENExposureDatabase *)self _checkDatabaseOpenWithError:error])
   {
     connection = self->_connection;
     OUTLINED_FUNCTION_0_9();
-    v13 = v9;
-    v14 = v8;
+    v13 = sessionCopy;
+    v14 = fileCopy;
     v11 = OUTLINED_FUNCTION_8_0();
   }
 
@@ -1913,16 +1913,16 @@ uint64_t __64__ENExposureDatabase_insertExposureDetectionFile_session_error___bl
   return v7;
 }
 
-- (BOOL)enumerateExposureDetectionHistoryFilesForSessionUUID:(id)a3 error:(id *)a4 handler:(id)a5
+- (BOOL)enumerateExposureDetectionHistoryFilesForSessionUUID:(id)d error:(id *)error handler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  if ([(ENExposureDatabase *)self _checkDatabaseOpenWithError:a4])
+  dCopy = d;
+  handlerCopy = handler;
+  if ([(ENExposureDatabase *)self _checkDatabaseOpenWithError:error])
   {
     connection = self->_connection;
     OUTLINED_FUNCTION_0_9();
-    v13 = v8;
-    v14 = v9;
+    v13 = dCopy;
+    v14 = handlerCopy;
     v11 = OUTLINED_FUNCTION_8_0();
   }
 
@@ -2041,14 +2041,14 @@ LABEL_22:
   return 1;
 }
 
-- (BOOL)deleteExposureDetectionHistoryWithError:(id *)a3
+- (BOOL)deleteExposureDetectionHistoryWithError:(id *)error
 {
   if (![(ENExposureDatabase *)self _checkDatabaseOpenWithError:?])
   {
     return 0;
   }
 
-  v5 = [(ENSQLiteConnection *)self->_connection executeUncachedSQL:@"DELETE FROM session_history" error:a3];
+  v5 = [(ENSQLiteConnection *)self->_connection executeUncachedSQL:@"DELETE FROM session_history" error:error];
   connection = self->_connection;
   v10 = 0;
   v7 = [(ENSQLiteConnection *)connection executeUncachedSQL:@"PRAGMA wal_checkpoint(TRUNCATE)" error:&v10];
@@ -2061,12 +2061,12 @@ LABEL_22:
   return v5;
 }
 
-- (BOOL)purgeRecordsWithInterval:(double)a3 nowDate:(id)a4 error:(id *)a5
+- (BOOL)purgeRecordsWithInterval:(double)interval nowDate:(id)date error:(id *)error
 {
-  v8 = a4;
-  if ([(ENExposureDatabase *)self _checkDatabaseOpenWithError:a5])
+  dateCopy = date;
+  if ([(ENExposureDatabase *)self _checkDatabaseOpenWithError:error])
   {
-    v9 = [v8 dateByAddingTimeInterval:-a3];
+    v9 = [dateCopy dateByAddingTimeInterval:-interval];
     [v9 timeIntervalSinceReferenceDate];
     v11 = ((v10 + *MEMORY[0x277CBECD8]) / 600.0);
     connection = self->_connection;
@@ -2075,7 +2075,7 @@ LABEL_22:
     v18[3] = __61__ENExposureDatabase_purgeRecordsWithInterval_nowDate_error___block_invoke;
     v18[4] = &unk_278FD2F78;
     v21 = v11;
-    v19 = v8;
+    v19 = dateCopy;
     v13 = v9;
     v20 = v13;
     v14 = OUTLINED_FUNCTION_8_0();

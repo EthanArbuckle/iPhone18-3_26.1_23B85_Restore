@@ -1,13 +1,13 @@
 @interface NLActivityRingsRelevanceEngineBundleConfiguration
-- (Class)dataSourceClassForKey:(id)a3;
+- (Class)dataSourceClassForKey:(id)key;
 @end
 
 @implementation NLActivityRingsRelevanceEngineBundleConfiguration
 
-- (Class)dataSourceClassForKey:(id)a3
+- (Class)dataSourceClassForKey:(id)key
 {
-  v3 = a3;
-  if ([v3 isEqualToString:RESampleDataSourceKey])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:RESampleDataSourceKey])
   {
     v4 = &off_81C0;
 LABEL_5:
@@ -16,7 +16,7 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if ([v3 isEqualToString:REPrimaryDataSourceKey])
+  if ([keyCopy isEqualToString:REPrimaryDataSourceKey])
   {
     v4 = off_81B8;
     goto LABEL_5;

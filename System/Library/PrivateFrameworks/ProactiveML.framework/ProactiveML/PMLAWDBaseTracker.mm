@@ -1,49 +1,49 @@
 @interface PMLAWDBaseTracker
-+ (id)trackerForModelName:(id)a3 modelVersion:(id)a4 modelLocale:(id)a5;
-+ (id)trackerForPlanId:(id)a3;
-- (PMLAWDBaseTracker)initWithModel:(id)a3;
++ (id)trackerForModelName:(id)name modelVersion:(id)version modelLocale:(id)locale;
++ (id)trackerForPlanId:(id)id;
+- (PMLAWDBaseTracker)initWithModel:(id)model;
 @end
 
 @implementation PMLAWDBaseTracker
 
-- (PMLAWDBaseTracker)initWithModel:(id)a3
+- (PMLAWDBaseTracker)initWithModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = PMLAWDBaseTracker;
   v6 = [(PMLAWDBaseTracker *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_modelInfo, a3);
+    objc_storeStrong(&v6->_modelInfo, model);
   }
 
   return v7;
 }
 
-+ (id)trackerForPlanId:(id)a3
++ (id)trackerForPlanId:(id)id
 {
-  v4 = [PMLPlanDescriptor descriptorFromPlanId:a3];
-  v5 = [v4 name];
-  v6 = [v4 version];
-  v7 = [v4 locale];
-  v8 = [a1 trackerForModelName:v5 modelVersion:v6 modelLocale:v7];
+  v4 = [PMLPlanDescriptor descriptorFromPlanId:id];
+  name = [v4 name];
+  version = [v4 version];
+  locale = [v4 locale];
+  v8 = [self trackerForModelName:name modelVersion:version modelLocale:locale];
 
   return v8;
 }
 
-+ (id)trackerForModelName:(id)a3 modelVersion:(id)a4 modelLocale:(id)a5
++ (id)trackerForModelName:(id)name modelVersion:(id)version modelLocale:(id)locale
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  localeCopy = locale;
+  versionCopy = version;
+  nameCopy = name;
   v11 = objc_opt_new();
-  [v11 setName:v10];
+  [v11 setName:nameCopy];
 
-  [v11 setVersion:v9];
-  [v11 setLocale:v8];
+  [v11 setVersion:versionCopy];
+  [v11 setLocale:localeCopy];
 
-  v12 = [[a1 alloc] initWithModel:v11];
+  v12 = [[self alloc] initWithModel:v11];
 
   return v12;
 }

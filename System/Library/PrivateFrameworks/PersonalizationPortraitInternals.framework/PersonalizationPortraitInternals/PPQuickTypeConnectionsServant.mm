@@ -1,30 +1,30 @@
 @interface PPQuickTypeConnectionsServant
 - (PPQuickTypeConnectionsServant)init;
-- (id)quickTypeItemsWithQuery:(id)a3 limit:(unint64_t)a4 explanationSet:(id)a5;
+- (id)quickTypeItemsWithQuery:(id)query limit:(unint64_t)limit explanationSet:(id)set;
 @end
 
 @implementation PPQuickTypeConnectionsServant
 
-- (id)quickTypeItemsWithQuery:(id)a3 limit:(unint64_t)a4 explanationSet:(id)a5
+- (id)quickTypeItemsWithQuery:(id)query limit:(unint64_t)limit explanationSet:(id)set
 {
-  v8 = a3;
-  v9 = a5;
+  queryCopy = query;
+  setCopy = set;
   v10 = +[PPSettings sharedInstance];
-  v11 = [v10 isAppConnectionsLocationsEnabled];
+  isAppConnectionsLocationsEnabled = [v10 isAppConnectionsLocationsEnabled];
 
-  if (v11)
+  if (isAppConnectionsLocationsEnabled)
   {
     v12 = [PPConnectionsMetricsTracker consumerStringForConsumerType:1];
-    v13 = [PPConnectionsMetricsTracker triggerFromCriteria:v8];
-    v50 = self;
+    v13 = [PPConnectionsMetricsTracker triggerFromCriteria:queryCopy];
+    selfCopy = self;
     metricsTracker = self->_metricsTracker;
-    v15 = [v8 bundleIdentifier];
+    bundleIdentifier = [queryCopy bundleIdentifier];
     v51 = v12;
     v53 = v13;
-    [(PPConnectionsMetricsTracker *)metricsTracker trackOpportunityForConsumer:v12 trigger:v13 targetApp:v15];
+    [(PPConnectionsMetricsTracker *)metricsTracker trackOpportunityForConsumer:v12 trigger:v13 targetApp:bundleIdentifier];
 
-    v16 = v8;
-    v52 = v9;
+    v16 = queryCopy;
+    v52 = setCopy;
     v17 = [PPConnectionsUtils isValidLinguisticQuery:v16];
     v18 = +[PPConnectionsUtils supportedLocationSemanticTypes];
     v19 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{objc_msgSend(v16, "semanticTag")}];
@@ -55,39 +55,39 @@
             [v52 push:4];
           }
 
-          v31 = 0;
+          firstObject = 0;
         }
 
         else
         {
-          v31 = 0;
+          firstObject = 0;
           v30 = v52;
         }
 
 LABEL_34:
 
         v39 = objc_opt_new();
-        if (v31)
+        if (firstObject)
         {
-          v40 = [v31 label];
-          v41 = [v31 value];
-          [v31 setShouldAggregate:{+[PPConnectionsUtils shouldAggregateLabel:withValue:query:](PPConnectionsUtils, "shouldAggregateLabel:withValue:query:", v40, v41, v16)}];
+          label = [firstObject label];
+          value = [firstObject value];
+          [firstObject setShouldAggregate:{+[PPConnectionsUtils shouldAggregateLabel:withValue:query:](PPConnectionsUtils, "shouldAggregateLabel:withValue:query:", label, value, v16)}];
 
-          v42 = [v31 quickTypeItem];
-          if (!v42)
+          quickTypeItem = [firstObject quickTypeItem];
+          if (!quickTypeItem)
           {
             [v52 push:2];
             v21 = 0;
             goto LABEL_39;
           }
 
-          v43 = v42;
-          [v39 addObject:v42];
-          v44 = v50->_metricsTracker;
-          v45 = [v31 source];
-          v46 = [v31 originatingBundleID];
-          v47 = [v16 bundleIdentifier];
-          [(PPConnectionsMetricsTracker *)v44 trackConversionGoalForConsumer:v26 source:v45 trigger:v53 originatingApp:v46 targetApp:v47 converted:0];
+          v43 = quickTypeItem;
+          [v39 addObject:quickTypeItem];
+          v44 = selfCopy->_metricsTracker;
+          source = [firstObject source];
+          originatingBundleID = [firstObject originatingBundleID];
+          bundleIdentifier2 = [v16 bundleIdentifier];
+          [(PPConnectionsMetricsTracker *)v44 trackConversionGoalForConsumer:v26 source:source trigger:v53 originatingApp:originatingBundleID targetApp:bundleIdentifier2 converted:0];
         }
 
         v21 = v39;
@@ -127,25 +127,25 @@ LABEL_39:
     }
 
     v32 = objc_alloc(MEMORY[0x277D3A340]);
-    v33 = [v24 bundleIdentifier];
-    v34 = [v32 initWithLocationField:v25 bundleIdentifier:v33];
+    bundleIdentifier3 = [v24 bundleIdentifier];
+    v34 = [v32 initWithLocationField:v25 bundleIdentifier:bundleIdentifier3];
 
     v35 = +[PPConnectionsParameters sharedInstance];
-    v36 = [v35 quickTypePredictionLimit];
+    quickTypePredictionLimit = [v35 quickTypePredictionLimit];
 
-    if (v36 <= a4)
+    if (quickTypePredictionLimit <= limit)
     {
-      v37 = a4;
+      limitCopy = limit;
     }
 
     else
     {
-      v37 = v36;
+      limitCopy = quickTypePredictionLimit;
     }
 
     v30 = v52;
-    v38 = [v23 recentLocationsForConsumer:1 criteria:v34 limit:v37 explanationSet:v52 timeout:v49 error:0];
-    v31 = [v38 firstObject];
+    v38 = [v23 recentLocationsForConsumer:1 criteria:v34 limit:limitCopy explanationSet:v52 timeout:v49 error:0];
+    firstObject = [v38 firstObject];
 
     v26 = v51;
     goto LABEL_34;

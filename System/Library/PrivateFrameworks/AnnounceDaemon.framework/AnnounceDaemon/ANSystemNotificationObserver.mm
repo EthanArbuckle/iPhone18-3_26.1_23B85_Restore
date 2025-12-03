@@ -1,7 +1,7 @@
 @interface ANSystemNotificationObserver
-+ (id)observer:(id)a3;
++ (id)observer:(id)observer;
 - (ANSystemNotificationObserver)init;
-- (ANSystemNotificationObserver)initWithHandler:(id)a3;
+- (ANSystemNotificationObserver)initWithHandler:(id)handler;
 - (void)_languageDidChange;
 - (void)dealloc;
 - (void)removeNotificationObservers;
@@ -17,13 +17,13 @@
   return [(ANSystemNotificationObserver *)&v3 init];
 }
 
-- (ANSystemNotificationObserver)initWithHandler:(id)a3
+- (ANSystemNotificationObserver)initWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [(ANSystemNotificationObserver *)self init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [handlerCopy copy];
     observerHandler = v5->_observerHandler;
     v5->_observerHandler = v6;
 
@@ -33,10 +33,10 @@
   return v5;
 }
 
-+ (id)observer:(id)a3
++ (id)observer:(id)observer
 {
-  v3 = a3;
-  v4 = [[ANSystemNotificationObserver alloc] initWithHandler:v3];
+  observerCopy = observer;
+  v4 = [[ANSystemNotificationObserver alloc] initWithHandler:observerCopy];
 
   return v4;
 }
@@ -84,8 +84,8 @@
     _os_log_impl(&dword_23F525000, v3, OS_LOG_TYPE_DEFAULT, "%@SystemNotificationObserver language did change.", &v6, 0xCu);
   }
 
-  v4 = [(ANSystemNotificationObserver *)self observerHandler];
-  v4[2](v4, 1);
+  observerHandler = [(ANSystemNotificationObserver *)self observerHandler];
+  observerHandler[2](observerHandler, 1);
 
   v5 = *MEMORY[0x277D85DE8];
 }

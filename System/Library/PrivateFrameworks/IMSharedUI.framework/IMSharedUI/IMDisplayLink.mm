@@ -1,6 +1,6 @@
 @interface IMDisplayLink
-+ (id)displayLinkWithTarget:(id)a3 selector:(SEL)a4;
-- (IMDisplayLink)initWithTarget:(id)a3 selector:(SEL)a4;
++ (id)displayLinkWithTarget:(id)target selector:(SEL)selector;
+- (IMDisplayLink)initWithTarget:(id)target selector:(SEL)selector;
 - (NSRunLoop)runLoop;
 - (SEL)selector;
 - (UIScreen)screen;
@@ -11,27 +11,27 @@
 
 @implementation IMDisplayLink
 
-- (IMDisplayLink)initWithTarget:(id)a3 selector:(SEL)a4
+- (IMDisplayLink)initWithTarget:(id)target selector:(SEL)selector
 {
-  v6 = a3;
+  targetCopy = target;
   v11.receiver = self;
   v11.super_class = IMDisplayLink;
   v7 = [(IMDisplayLink *)&v11 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_target, v6);
-    if (a4)
+    objc_storeWeak(&v7->_target, targetCopy);
+    if (selector)
     {
-      v9 = a4;
+      selectorCopy = selector;
     }
 
     else
     {
-      v9 = 0;
+      selectorCopy = 0;
     }
 
-    v8->_selector = v9;
+    v8->_selector = selectorCopy;
   }
 
   return v8;
@@ -76,11 +76,11 @@
   objc_msgSend_invalidate(self, v4, v5);
 }
 
-+ (id)displayLinkWithTarget:(id)a3 selector:(SEL)a4
++ (id)displayLinkWithTarget:(id)target selector:(SEL)selector
 {
-  v6 = a3;
-  v9 = objc_alloc(objc_msgSend__displayLinkClass(a1, v7, v8));
-  v11 = objc_msgSend_initWithTarget_selector_(v9, v10, v6, a4);
+  targetCopy = target;
+  v9 = objc_alloc(objc_msgSend__displayLinkClass(self, v7, v8));
+  v11 = objc_msgSend_initWithTarget_selector_(v9, v10, targetCopy, selector);
 
   return v11;
 }

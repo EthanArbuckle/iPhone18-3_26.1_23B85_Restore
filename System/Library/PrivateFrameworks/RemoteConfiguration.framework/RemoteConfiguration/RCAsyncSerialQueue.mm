@@ -1,16 +1,16 @@
 @interface RCAsyncSerialQueue
 - (BOOL)suspended;
-- (RCAsyncSerialQueue)initWithQualityOfService:(int64_t)a3;
+- (RCAsyncSerialQueue)initWithQualityOfService:(int64_t)service;
 - (void)cancelAllBlocks;
-- (void)enqueueBlock:(id)a3;
-- (void)enqueueBlockForMainThread:(id)a3;
-- (void)enqueueOperation:(id)a3;
-- (void)withQualityOfService:(int64_t)a3 enqueueBlockForMainThread:(id)a4;
+- (void)enqueueBlock:(id)block;
+- (void)enqueueBlockForMainThread:(id)thread;
+- (void)enqueueOperation:(id)operation;
+- (void)withQualityOfService:(int64_t)service enqueueBlockForMainThread:(id)thread;
 @end
 
 @implementation RCAsyncSerialQueue
 
-- (RCAsyncSerialQueue)initWithQualityOfService:(int64_t)a3
+- (RCAsyncSerialQueue)initWithQualityOfService:(int64_t)service
 {
   v8.receiver = self;
   v8.super_class = RCAsyncSerialQueue;
@@ -21,20 +21,20 @@
     serialOperationQueue = v4->_serialOperationQueue;
     v4->_serialOperationQueue = v5;
 
-    [(NSOperationQueue *)v4->_serialOperationQueue setQualityOfService:a3];
+    [(NSOperationQueue *)v4->_serialOperationQueue setQualityOfService:service];
     [(NSOperationQueue *)v4->_serialOperationQueue setMaxConcurrentOperationCount:1];
   }
 
   return v4;
 }
 
-- (void)enqueueBlock:(id)a3
+- (void)enqueueBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
-    v5 = [(RCAsyncSerialQueue *)self serialOperationQueue];
-    [v5 rc_addAsyncOperationWithBlock:v4];
+    serialOperationQueue = [(RCAsyncSerialQueue *)self serialOperationQueue];
+    [serialOperationQueue rc_addAsyncOperationWithBlock:blockCopy];
   }
 
   else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -43,17 +43,17 @@
   }
 }
 
-- (void)enqueueBlockForMainThread:(id)a3
+- (void)enqueueBlockForMainThread:(id)thread
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  threadCopy = thread;
+  v5 = threadCopy;
+  if (threadCopy)
   {
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __48__RCAsyncSerialQueue_enqueueBlockForMainThread___block_invoke;
     v6[3] = &unk_27822FB38;
-    v7 = v4;
+    v7 = threadCopy;
     [(RCAsyncSerialQueue *)self enqueueBlock:v6];
   }
 
@@ -76,15 +76,15 @@ void __48__RCAsyncSerialQueue_enqueueBlockForMainThread___block_invoke(uint64_t 
   dispatch_async(MEMORY[0x277D85CD0], v5);
 }
 
-- (void)withQualityOfService:(int64_t)a3 enqueueBlockForMainThread:(id)a4
+- (void)withQualityOfService:(int64_t)service enqueueBlockForMainThread:(id)thread
 {
-  v6 = a4;
-  if (v6)
+  threadCopy = thread;
+  if (threadCopy)
   {
-    v7 = [RCAsyncBlockOperation asyncBlockOperationWithMainThreadBlock:v6];
-    [v7 setQualityOfService:a3];
-    v8 = [(RCAsyncSerialQueue *)self serialOperationQueue];
-    [v8 addOperation:v7];
+    v7 = [RCAsyncBlockOperation asyncBlockOperationWithMainThreadBlock:threadCopy];
+    [v7 setQualityOfService:service];
+    serialOperationQueue = [(RCAsyncSerialQueue *)self serialOperationQueue];
+    [serialOperationQueue addOperation:v7];
   }
 
   else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -93,25 +93,25 @@ void __48__RCAsyncSerialQueue_enqueueBlockForMainThread___block_invoke(uint64_t 
   }
 }
 
-- (void)enqueueOperation:(id)a3
+- (void)enqueueOperation:(id)operation
 {
-  v4 = a3;
-  v5 = [(RCAsyncSerialQueue *)self serialOperationQueue];
-  [v5 addOperation:v4];
+  operationCopy = operation;
+  serialOperationQueue = [(RCAsyncSerialQueue *)self serialOperationQueue];
+  [serialOperationQueue addOperation:operationCopy];
 }
 
 - (void)cancelAllBlocks
 {
-  v2 = [(RCAsyncSerialQueue *)self serialOperationQueue];
-  [v2 cancelAllOperations];
+  serialOperationQueue = [(RCAsyncSerialQueue *)self serialOperationQueue];
+  [serialOperationQueue cancelAllOperations];
 }
 
 - (BOOL)suspended
 {
-  v2 = [(RCAsyncSerialQueue *)self serialOperationQueue];
-  v3 = [v2 isSuspended];
+  serialOperationQueue = [(RCAsyncSerialQueue *)self serialOperationQueue];
+  isSuspended = [serialOperationQueue isSuspended];
 
-  return v3;
+  return isSuspended;
 }
 
 - (void)enqueueBlock:.cold.1()

@@ -1,27 +1,27 @@
 @interface PMRSplitTime
-- (PMRSplitTime)initWithKey:(id)a3 comment:(id)a4 level:(int64_t)a5 duration:(unint64_t)a6 userInfo:(id)a7;
+- (PMRSplitTime)initWithKey:(id)key comment:(id)comment level:(int64_t)level duration:(unint64_t)duration userInfo:(id)info;
 - (id)_subtreeDescription;
 - (id)description;
 - (id)dumpTraceLog;
-- (void)addSplitTimesObject:(id)a3;
+- (void)addSplitTimesObject:(id)object;
 - (void)dealloc;
 @end
 
 @implementation PMRSplitTime
 
-- (PMRSplitTime)initWithKey:(id)a3 comment:(id)a4 level:(int64_t)a5 duration:(unint64_t)a6 userInfo:(id)a7
+- (PMRSplitTime)initWithKey:(id)key comment:(id)comment level:(int64_t)level duration:(unint64_t)duration userInfo:(id)info
 {
   v14.receiver = self;
   v14.super_class = PMRSplitTime;
   v12 = [(PMRSplitTime *)&v14 init];
   if (v12)
   {
-    v12->_key = [a3 copy];
-    v12->_comment = [a4 copy];
+    v12->_key = [key copy];
+    v12->_comment = [comment copy];
     v12->_splitTime = mach_absolute_time();
-    v12->_level = a5;
-    v12->_duration = a6;
-    v12->_userInfo = [a7 copy];
+    v12->_level = level;
+    v12->_duration = duration;
+    v12->_userInfo = [info copy];
   }
 
   return v12;
@@ -49,16 +49,16 @@
     v4 = &stru_2872E16E0;
   }
 
-  v5 = [(PMRSplitTime *)self duration];
+  duration = [(PMRSplitTime *)self duration];
   v6 = MEMORY[0x277CCACA8];
-  if (v5)
+  if (duration)
   {
     v13.receiver = self;
     v13.super_class = PMRSplitTime;
     v7 = [(PMRSplitTime *)&v13 description];
     key = self->_key;
-    v9 = [(PMRSplitTime *)self duration];
-    return [v6 stringWithFormat:@"%@ key: %@, duration: %.3f, splitTimes=%li, comment: %@", v7, key, (v9 * (info.numer / info.denom)) / 1000000000.0, -[NSMutableArray count](self->_splitTimes, "count"), v4];
+    duration2 = [(PMRSplitTime *)self duration];
+    return [v6 stringWithFormat:@"%@ key: %@, duration: %.3f, splitTimes=%li, comment: %@", v7, key, (duration2 * (info.numer / info.denom)) / 1000000000.0, -[NSMutableArray count](self->_splitTimes, "count"), v4];
   }
 
   else
@@ -73,7 +73,7 @@
 - (id)_subtreeDescription
 {
   v2 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{self, 0}];
-  v3 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   while ([v2 count])
   {
     v4 = [v2 objectAtIndex:0];
@@ -83,24 +83,24 @@
       v5 = 0;
       do
       {
-        [v3 appendString:@"    "];
+        [string appendString:@"    "];
         ++v5;
       }
 
       while (v5 < [v4 level]);
     }
 
-    [v3 appendFormat:@"%@\n", objc_msgSend(v4, "description")];
+    [string appendFormat:@"%@\n", objc_msgSend(v4, "description")];
     [v2 replaceObjectsInRange:0 withObjectsFromArray:{0, objc_msgSend(v4, "splitTimes")}];
   }
 
-  return v3;
+  return string;
 }
 
 - (id)dumpTraceLog
 {
   v2 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{self, 0}];
-  v3 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   while ([v2 count])
   {
     v4 = [v2 objectAtIndex:0];
@@ -110,7 +110,7 @@
       v5 = 0;
       do
       {
-        [v3 appendString:@"  "];
+        [string appendString:@"  "];
         ++v5;
       }
 
@@ -119,8 +119,8 @@
 
     if ([v4 comment])
     {
-      v6 = [v4 comment];
-      v7 = [objc_msgSend(v6 componentsSeparatedByCharactersInSet:{objc_msgSend(MEMORY[0x277CCA900], "newlineCharacterSet")), "objectAtIndex:", 0}];
+      comment = [v4 comment];
+      v7 = [objc_msgSend(comment componentsSeparatedByCharactersInSet:{objc_msgSend(MEMORY[0x277CCA900], "newlineCharacterSet")), "objectAtIndex:", 0}];
     }
 
     else
@@ -128,16 +128,16 @@
       v7 = &stru_2872E16E0;
     }
 
-    [v3 appendFormat:@"%@\n", objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"%@: %@", objc_msgSend(v4, "key"), v7)];
+    [string appendFormat:@"%@\n", objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"%@: %@", objc_msgSend(v4, "key"), v7)];
     [v2 replaceObjectsInRange:0 withObjectsFromArray:{0, objc_msgSend(v4, "splitTimes")}];
   }
 
-  return v3;
+  return string;
 }
 
-- (void)addSplitTimesObject:(id)a3
+- (void)addSplitTimesObject:(id)object
 {
-  if (a3)
+  if (object)
   {
     splitTimes = self->_splitTimes;
     if (!splitTimes)
@@ -146,7 +146,7 @@
       self->_splitTimes = splitTimes;
     }
 
-    [(NSMutableArray *)splitTimes addObject:a3];
+    [(NSMutableArray *)splitTimes addObject:object];
   }
 }
 

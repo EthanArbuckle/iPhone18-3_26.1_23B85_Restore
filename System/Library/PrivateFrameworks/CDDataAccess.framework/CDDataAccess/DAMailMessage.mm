@@ -1,7 +1,7 @@
 @interface DAMailMessage
-- (DAMailMessage)initWithCoder:(id)a3;
+- (DAMailMessage)initWithCoder:(id)coder;
 - (id)rfc822Data;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DAMailMessage
@@ -10,16 +10,16 @@
 {
   v3 = objc_opt_new();
   v4 = objc_opt_new();
-  v5 = [(DAMailMessage *)self from];
-  [v4 setAddressListForSender:v5];
+  from = [(DAMailMessage *)self from];
+  [v4 setAddressListForSender:from];
 
-  v6 = [(DAMailMessage *)self date];
-  if (v6)
+  date = [(DAMailMessage *)self date];
+  if (date)
   {
-    v7 = [MEMORY[0x277CBEBB0] systemTimeZone];
-    v8 = [v6 dateWithCalendarFormat:@"%a timeZone:%d %b %Y %H:%M:%S %z", v7];
+    systemTimeZone = [MEMORY[0x277CBEBB0] systemTimeZone];
+    v8 = [date dateWithCalendarFormat:@"%a timeZone:%d %b %Y %H:%M:%S %z", systemTimeZone];
 
-    v6 = [v8 description];
+    date = [v8 description];
   }
 
   else
@@ -27,7 +27,7 @@
     v8 = 0;
   }
 
-  [v4 setHeader:v6 forKey:*MEMORY[0x277D24E60]];
+  [v4 setHeader:date forKey:*MEMORY[0x277D24E60]];
   v9 = [(DAMailMessage *)self to];
   [v4 setAddressListForTo:v9];
 
@@ -37,25 +37,25 @@
   v11 = [(DAMailMessage *)self bcc];
   [v4 setAddressListForBcc:v11];
 
-  v12 = [(DAMailMessage *)self replyTo];
-  [v4 setAddressList:v12 forKey:*MEMORY[0x277D24EC8]];
+  replyTo = [(DAMailMessage *)self replyTo];
+  [v4 setAddressList:replyTo forKey:*MEMORY[0x277D24EC8]];
 
-  v13 = [(DAMailMessage *)self subject];
-  [v4 setHeader:v13 forKey:*MEMORY[0x277D24E70]];
+  subject = [(DAMailMessage *)self subject];
+  [v4 setHeader:subject forKey:*MEMORY[0x277D24E70]];
 
-  v14 = [v4 encodedHeaders];
-  if (v14)
+  encodedHeaders = [v4 encodedHeaders];
+  if (encodedHeaders)
   {
-    [v3 appendData:v14];
+    [v3 appendData:encodedHeaders];
   }
 
-  v15 = [(DAMailMessage *)self body];
-  v16 = [v15 length];
+  body = [(DAMailMessage *)self body];
+  v16 = [body length];
 
   if (v16)
   {
-    v17 = [(DAMailMessage *)self body];
-    v18 = [v17 dataUsingEncoding:4];
+    body2 = [(DAMailMessage *)self body];
+    v18 = [body2 dataUsingEncoding:4];
 
     [v3 appendData:v18];
   }
@@ -63,7 +63,7 @@
   return v3;
 }
 
-- (DAMailMessage)initWithCoder:(id)a3
+- (DAMailMessage)initWithCoder:(id)coder
 {
   v4 = DALoggingwithCategory();
   v5 = *(MEMORY[0x277CF3AF0] + 3);
@@ -76,7 +76,7 @@
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3 = DALoggingwithCategory();
   v4 = *(MEMORY[0x277CF3AF0] + 3);

@@ -1,12 +1,12 @@
 @interface CSLPRFCompanionQuickSwitchSettingsController
 - (CSLPRFCompanionQuickSwitchSettingsController)init;
-- (CSLPRFCompanionQuickSwitchSettingsController)initWithSettingsModel:(id)a3 quickSwitchModel:(id)a4;
-- (id)_isAppQuickSwitchEnabled:(id)a3;
-- (id)_isQuickSwitchEnabled:(id)a3;
-- (id)_makeQuickSwitchItemSpecifier:(id)a3;
+- (CSLPRFCompanionQuickSwitchSettingsController)initWithSettingsModel:(id)model quickSwitchModel:(id)switchModel;
+- (id)_isAppQuickSwitchEnabled:(id)enabled;
+- (id)_isQuickSwitchEnabled:(id)enabled;
+- (id)_makeQuickSwitchItemSpecifier:(id)specifier;
 - (id)specifiers;
-- (void)_setAppEnableQuickSwitch:(id)a3 forSpecifier:(id)a4;
-- (void)_setEnableQuickSwitch:(id)a3 forSpecifier:(id)a4;
+- (void)_setAppEnableQuickSwitch:(id)switch forSpecifier:(id)specifier;
+- (void)_setEnableQuickSwitch:(id)switch forSpecifier:(id)specifier;
 - (void)reloadSpecifiers;
 - (void)viewDidLoad;
 @end
@@ -22,18 +22,18 @@
   return v5;
 }
 
-- (CSLPRFCompanionQuickSwitchSettingsController)initWithSettingsModel:(id)a3 quickSwitchModel:(id)a4
+- (CSLPRFCompanionQuickSwitchSettingsController)initWithSettingsModel:(id)model quickSwitchModel:(id)switchModel
 {
-  v7 = a3;
-  v8 = a4;
+  modelCopy = model;
+  switchModelCopy = switchModel;
   v12.receiver = self;
   v12.super_class = CSLPRFCompanionQuickSwitchSettingsController;
   v9 = [(CSLPRFCompanionQuickSwitchSettingsController *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_settingsModel, a3);
-    objc_storeStrong(&v10->_quickSwitchModel, a4);
+    objc_storeStrong(&v9->_settingsModel, model);
+    objc_storeStrong(&v10->_quickSwitchModel, switchModel);
   }
 
   return v10;
@@ -90,8 +90,8 @@
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v16 = [(CSLPRFStingQuickSwitchModel *)self->_quickSwitchModel allQuickSwitchItems];
-    v17 = [v16 countByEnumeratingWithState:&v34 objects:v44 count:16];
+    allQuickSwitchItems = [(CSLPRFStingQuickSwitchModel *)self->_quickSwitchModel allQuickSwitchItems];
+    v17 = [allQuickSwitchItems countByEnumeratingWithState:&v34 objects:v44 count:16];
     if (v17)
     {
       v18 = v17;
@@ -102,7 +102,7 @@
         {
           if (*v35 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(allQuickSwitchItems);
           }
 
           v21 = [(CSLPRFCompanionQuickSwitchSettingsController *)self _makeQuickSwitchItemSpecifier:*(*(&v34 + 1) + 8 * i)];
@@ -110,20 +110,20 @@
           if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
           {
             quickSwitchModel = self->_quickSwitchModel;
-            v24 = [(CSLPRFStingQuickSwitchModel *)quickSwitchModel allQuickSwitchItems];
+            allQuickSwitchItems2 = [(CSLPRFStingQuickSwitchModel *)quickSwitchModel allQuickSwitchItems];
             *buf = 138412802;
-            v39 = self;
+            selfCopy2 = self;
             v40 = 2112;
             v41 = quickSwitchModel;
             v42 = 2112;
-            v43 = v24;
+            v43 = allQuickSwitchItems2;
             _os_log_debug_impl(&dword_0, v22, OS_LOG_TYPE_DEBUG, "%@: adding specifier %@ for quickSwitchItem %@", buf, 0x20u);
           }
 
           [v4 addObject:v21];
         }
 
-        v18 = [v16 countByEnumeratingWithState:&v34 objects:v44 count:16];
+        v18 = [allQuickSwitchItems countByEnumeratingWithState:&v34 objects:v44 count:16];
       }
 
       while (v18);
@@ -138,7 +138,7 @@
     {
       v28 = *&self->PSListController_opaque[v33];
       *buf = 138412546;
-      v39 = self;
+      selfCopy2 = self;
       v40 = 2112;
       v41 = v28;
       _os_log_impl(&dword_0, v27, OS_LOG_TYPE_DEFAULT, "%@: loaded specifiers %@", buf, 0x16u);
@@ -150,19 +150,19 @@
   return v3;
 }
 
-- (id)_makeQuickSwitchItemSpecifier:(id)a3
+- (id)_makeQuickSwitchItemSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [v4 settingsItem];
-  v6 = [v5 title];
-  v7 = [PSSpecifier preferenceSpecifierNamed:v6 target:self set:"_setAppEnableQuickSwitch:forSpecifier:" get:"_isAppQuickSwitchEnabled:" detail:0 cell:6 edit:0];
+  specifierCopy = specifier;
+  settingsItem = [specifierCopy settingsItem];
+  title = [settingsItem title];
+  v7 = [PSSpecifier preferenceSpecifierNamed:title target:self set:"_setAppEnableQuickSwitch:forSpecifier:" get:"_isAppQuickSwitchEnabled:" detail:0 cell:6 edit:0];
 
-  v8 = [v4 settingsItem];
-  v9 = [v8 assetName];
+  settingsItem2 = [specifierCopy settingsItem];
+  assetName = [settingsItem2 assetName];
 
-  if (v9)
+  if (assetName)
   {
-    v10 = [UIImage _systemImageNamed:v9];
+    v10 = [UIImage _systemImageNamed:assetName];
     v11 = +[UIColor systemWhiteColor];
     v12 = [v10 imageWithTintColor:v11 renderingMode:1];
 
@@ -172,49 +172,49 @@
     }
   }
 
-  [v7 setProperty:v4 forKey:@"kCSLPRFQuickSettingsModelKey"];
+  [v7 setProperty:specifierCopy forKey:@"kCSLPRFQuickSettingsModelKey"];
 
   return v7;
 }
 
-- (void)_setEnableQuickSwitch:(id)a3 forSpecifier:(id)a4
+- (void)_setEnableQuickSwitch:(id)switch forSpecifier:(id)specifier
 {
-  v5 = a3;
+  switchCopy = switch;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    -[CSLPRFStingQuickSwitchModel setQuickSwitchEnabled:](self->_quickSwitchModel, "setQuickSwitchEnabled:", [v5 BOOLValue]);
+    -[CSLPRFStingQuickSwitchModel setQuickSwitchEnabled:](self->_quickSwitchModel, "setQuickSwitchEnabled:", [switchCopy BOOLValue]);
   }
 }
 
-- (id)_isQuickSwitchEnabled:(id)a3
+- (id)_isQuickSwitchEnabled:(id)enabled
 {
-  v3 = [(CSLPRFStingQuickSwitchModel *)self->_quickSwitchModel isQuickSwitchEnabled];
+  isQuickSwitchEnabled = [(CSLPRFStingQuickSwitchModel *)self->_quickSwitchModel isQuickSwitchEnabled];
 
-  return [NSNumber numberWithBool:v3];
+  return [NSNumber numberWithBool:isQuickSwitchEnabled];
 }
 
-- (void)_setAppEnableQuickSwitch:(id)a3 forSpecifier:(id)a4
+- (void)_setAppEnableQuickSwitch:(id)switch forSpecifier:(id)specifier
 {
-  v6 = a3;
-  v7 = [a4 propertyForKey:@"kCSLPRFQuickSettingsModelKey"];
-  v8 = [v6 BOOLValue];
+  switchCopy = switch;
+  v7 = [specifier propertyForKey:@"kCSLPRFQuickSettingsModelKey"];
+  bOOLValue = [switchCopy BOOLValue];
 
-  [v7 setAvailableForQuickSwitch:v8];
+  [v7 setAvailableForQuickSwitch:bOOLValue];
   v9 = cslprf_sting_settings_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412546;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
     v13 = v7;
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "%@: changing %@", &v10, 0x16u);
   }
 }
 
-- (id)_isAppQuickSwitchEnabled:(id)a3
+- (id)_isAppQuickSwitchEnabled:(id)enabled
 {
-  v3 = [a3 propertyForKey:@"kCSLPRFQuickSettingsModelKey"];
+  v3 = [enabled propertyForKey:@"kCSLPRFQuickSettingsModelKey"];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 isAvailableForQuickSwitch]);
 
   return v4;

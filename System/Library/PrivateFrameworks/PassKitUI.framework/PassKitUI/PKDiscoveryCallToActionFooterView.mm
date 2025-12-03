@@ -1,30 +1,30 @@
 @interface PKDiscoveryCallToActionFooterView
-- (CGSize)_buttonSizeForBounds:(CGRect)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKDiscoveryCallToActionFooterView)initWithCallToAction:(id)a3 displayType:(int64_t)a4 itemIdentifier:(id)a5;
+- (CGSize)_buttonSizeForBounds:(CGRect)bounds;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKDiscoveryCallToActionFooterView)initWithCallToAction:(id)action displayType:(int64_t)type itemIdentifier:(id)identifier;
 - (PKDiscoveryCardViewDelegate)delegate;
-- (id)_createVisualEffectViewWithBlurEffect:(id)a3 vibrancyStyle:(int64_t)a4;
+- (id)_createVisualEffectViewWithBlurEffect:(id)effect vibrancyStyle:(int64_t)style;
 - (id)_subtitleLabelColor;
 - (id)_subtitleLabelFont;
-- (id)_subtitleLabelWithLocalizedSubtitle:(id)a3;
+- (id)_subtitleLabelWithLocalizedSubtitle:(id)subtitle;
 - (id)_titleLabelColor;
 - (id)_titleLabelFont;
-- (id)_titleLabelWithLocalizedTitle:(id)a3;
-- (void)_buttonPressed:(id)a3;
+- (id)_titleLabelWithLocalizedTitle:(id)title;
+- (void)_buttonPressed:(id)pressed;
 - (void)layoutSubviews;
-- (void)linkedApplicationDidChangeState:(id)a3;
-- (void)setCallToActionTappedOverride:(id)a3;
-- (void)setDisplayType:(int64_t)a3;
-- (void)setShowActivityIndicator:(BOOL)a3;
+- (void)linkedApplicationDidChangeState:(id)state;
+- (void)setCallToActionTappedOverride:(id)override;
+- (void)setDisplayType:(int64_t)type;
+- (void)setShowActivityIndicator:(BOOL)indicator;
 @end
 
 @implementation PKDiscoveryCallToActionFooterView
 
-- (PKDiscoveryCallToActionFooterView)initWithCallToAction:(id)a3 displayType:(int64_t)a4 itemIdentifier:(id)a5
+- (PKDiscoveryCallToActionFooterView)initWithCallToAction:(id)action displayType:(int64_t)type itemIdentifier:(id)identifier
 {
   v56[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v50 = a5;
+  actionCopy = action;
+  identifierCopy = identifier;
   v54.receiver = self;
   v54.super_class = PKDiscoveryCallToActionFooterView;
   v10 = [(PKDiscoveryCallToActionFooterView *)&v54 init];
@@ -34,22 +34,22 @@
     goto LABEL_27;
   }
 
-  v12 = [(PKDiscoveryCallToActionFooterView *)v10 traitCollection];
-  v13 = [v12 preferredContentSizeCategory];
-  v11->_useAccessibilityLayout = UIContentSizeCategoryIsAccessibilityCategory(v13);
+  traitCollection = [(PKDiscoveryCallToActionFooterView *)v10 traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  v11->_useAccessibilityLayout = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   [(PKDiscoveryCallToActionFooterView *)v11 setMaximumContentSizeCategory:*MEMORY[0x1E69DDC58]];
-  objc_storeStrong(&v11->_callToAction, a3);
-  v11->_displayType = a4;
-  objc_storeStrong(&v11->_itemIdentifier, a5);
-  v14 = [(PKDiscoveryCallToAction *)v11->_callToAction backgroundBlurStyle];
+  objc_storeStrong(&v11->_callToAction, action);
+  v11->_displayType = type;
+  objc_storeStrong(&v11->_itemIdentifier, identifier);
+  backgroundBlurStyle = [(PKDiscoveryCallToAction *)v11->_callToAction backgroundBlurStyle];
   v15 = 17;
-  if (v14 == 2)
+  if (backgroundBlurStyle == 2)
   {
     v15 = 18;
   }
 
-  if (v14 == 3)
+  if (backgroundBlurStyle == 3)
   {
     v16 = 19;
   }
@@ -72,27 +72,27 @@
   else
   {
     v20 = MEMORY[0x1E69DC888];
-    v21 = [(PKDiscoveryCallToAction *)v11->_callToAction backgroundColor];
-    v22 = [v20 pkui_colorWithPKColor:v21];
+    backgroundColor = [(PKDiscoveryCallToAction *)v11->_callToAction backgroundColor];
+    v22 = [v20 pkui_colorWithPKColor:backgroundColor];
 
     [(PKDiscoveryCallToActionFooterView *)v11 setBackgroundColor:v22];
   }
 
-  v23 = [(PKDiscoveryCallToAction *)v11->_callToAction localizedTitle];
-  if (v23)
+  localizedTitle = [(PKDiscoveryCallToAction *)v11->_callToAction localizedTitle];
+  if (localizedTitle)
   {
-    v24 = [(PKDiscoveryCallToActionFooterView *)v11 _titleLabelWithLocalizedTitle:v23];
+    v24 = [(PKDiscoveryCallToActionFooterView *)v11 _titleLabelWithLocalizedTitle:localizedTitle];
     titleLabel = v11->_titleLabel;
     v11->_titleLabel = v24;
 
     if (+[PKDiscoveryCardView usesMediumCards])
     {
       v26 = [(PKDiscoveryCallToActionFooterView *)v11 _createVisualEffectViewWithBlurEffect:v17 vibrancyStyle:0];
-      v27 = [(UIVisualEffectView *)v11->_backdropView contentView];
-      [v27 addSubview:v26];
+      contentView = [(UIVisualEffectView *)v11->_backdropView contentView];
+      [contentView addSubview:v26];
 
-      v28 = [v26 contentView];
-      [v28 addSubview:v11->_titleLabel];
+      contentView2 = [v26 contentView];
+      [contentView2 addSubview:v11->_titleLabel];
     }
 
     else
@@ -101,21 +101,21 @@
     }
   }
 
-  v29 = [(PKDiscoveryCallToAction *)v11->_callToAction localizedSubtitle];
-  if (v29)
+  localizedSubtitle = [(PKDiscoveryCallToAction *)v11->_callToAction localizedSubtitle];
+  if (localizedSubtitle)
   {
-    v30 = [(PKDiscoveryCallToActionFooterView *)v11 _subtitleLabelWithLocalizedSubtitle:v29];
+    v30 = [(PKDiscoveryCallToActionFooterView *)v11 _subtitleLabelWithLocalizedSubtitle:localizedSubtitle];
     subtitleLabel = v11->_subtitleLabel;
     v11->_subtitleLabel = v30;
 
     if (+[PKDiscoveryCardView usesMediumCards])
     {
       v32 = [(PKDiscoveryCallToActionFooterView *)v11 _createVisualEffectViewWithBlurEffect:v17 vibrancyStyle:1];
-      v33 = [(UIVisualEffectView *)v11->_backdropView contentView];
-      [v33 addSubview:v32];
+      contentView3 = [(UIVisualEffectView *)v11->_backdropView contentView];
+      [contentView3 addSubview:v32];
 
-      v34 = [v32 contentView];
-      [v34 addSubview:v11->_subtitleLabel];
+      contentView4 = [v32 contentView];
+      [contentView4 addSubview:v11->_subtitleLabel];
     }
 
     else
@@ -124,17 +124,17 @@
     }
   }
 
-  v35 = [v9 localizedButtonText];
-  if (v35)
+  localizedButtonText = [actionCopy localizedButtonText];
+  if (localizedButtonText)
   {
 
 LABEL_21:
-    v36 = [MEMORY[0x1E69DC740] filledButtonConfiguration];
-    [v36 setCornerStyle:4];
-    v37 = [(PKDiscoveryCallToAction *)v11->_callToAction localizedButtonText];
-    [v36 setTitle:v37];
+    filledButtonConfiguration = [MEMORY[0x1E69DC740] filledButtonConfiguration];
+    [filledButtonConfiguration setCornerStyle:4];
+    localizedButtonText2 = [(PKDiscoveryCallToAction *)v11->_callToAction localizedButtonText];
+    [filledButtonConfiguration setTitle:localizedButtonText2];
 
-    [v36 setActivityIndicatorColorTransformer:&__block_literal_global_66];
+    [filledButtonConfiguration setActivityIndicatorColorTransformer:&__block_literal_global_66];
     objc_initWeak(&location, v11);
     v38 = MEMORY[0x1E69DC628];
     v51[0] = MEMORY[0x1E69E9820];
@@ -143,7 +143,7 @@ LABEL_21:
     v51[3] = &unk_1E8010A60;
     objc_copyWeak(&v52, &location);
     v39 = [v38 actionWithHandler:v51];
-    v40 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v36 primaryAction:v39];
+    v40 = [MEMORY[0x1E69DC738] buttonWithConfiguration:filledButtonConfiguration primaryAction:v39];
     button = v11->_button;
     v11->_button = v40;
 
@@ -165,11 +165,11 @@ LABEL_21:
 LABEL_22:
   if ([(PKDiscoveryCallToAction *)v11->_callToAction action]== 8)
   {
-    v42 = [(PKDiscoveryCallToAction *)v11->_callToAction appStoreAppIdentifier];
-    if (v42)
+    appStoreAppIdentifier = [(PKDiscoveryCallToAction *)v11->_callToAction appStoreAppIdentifier];
+    if (appStoreAppIdentifier)
     {
       v43 = [PKLinkedApplication alloc];
-      v56[0] = v42;
+      v56[0] = appStoreAppIdentifier;
       v44 = [MEMORY[0x1E695DEC8] arrayWithObjects:v56 count:1];
       v45 = [(PKLinkedApplication *)v43 initWithStoreIDs:v44 defaultLaunchURL:0];
       linkedApplication = v11->_linkedApplication;
@@ -282,7 +282,7 @@ void __85__PKDiscoveryCallToActionFooterView_initWithCallToAction_displayType_it
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(PKDiscoveryCallToActionFooterView *)self _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(PKDiscoveryCallToActionFooterView *)self _shouldReverseLayoutDirection];
   memset(&slice, 0, sizeof(slice));
   v12 = v4 + 16.0;
   v13 = 0.0;
@@ -293,7 +293,7 @@ void __85__PKDiscoveryCallToActionFooterView_initWithCallToAction_displayType_it
   [(UIVisualEffectView *)self->_backdropView setFrame:v4, v6, v8, v10];
   if (self->_button)
   {
-    if (v11)
+    if (_shouldReverseLayoutDirection)
     {
       v14 = CGRectMinXEdge;
     }
@@ -335,8 +335,8 @@ void __85__PKDiscoveryCallToActionFooterView_initWithCallToAction_displayType_it
   CGRectDivide(remainder, &slice, &remainder, v13, CGRectMinYEdge);
   if (+[PKDiscoveryCardView usesMediumCards])
   {
-    v19 = [(UILabel *)self->_titleLabel font];
-    [v19 lineHeight];
+    font = [(UILabel *)self->_titleLabel font];
+    [font lineHeight];
     PKFloatRoundToPixel();
     v21 = v20;
 
@@ -367,10 +367,10 @@ void __85__PKDiscoveryCallToActionFooterView_initWithCallToAction_displayType_it
   [(UILabel *)subtitleLabel setFrame:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = [PKDiscoveryCardView usesMediumCards:a3.width];
+  width = fits.width;
+  v4 = [PKDiscoveryCardView usesMediumCards:fits.width];
   v5 = 90.0;
   if (!v4)
   {
@@ -383,44 +383,44 @@ void __85__PKDiscoveryCallToActionFooterView_initWithCallToAction_displayType_it
   return result;
 }
 
-- (void)linkedApplicationDidChangeState:(id)a3
+- (void)linkedApplicationDidChangeState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   [(PKDiscoveryCallToActionFooterView *)self setShowActivityIndicator:0];
-  v5 = [v4 isInstalled];
+  isInstalled = [stateCopy isInstalled];
 
   button = self->_button;
-  if (v5)
+  if (isInstalled)
   {
-    v7 = [(PKDiscoveryCallToAction *)self->_callToAction localizedButtonText];
-    [(UIButton *)button pkui_updateConfigurationWithTitle:v7];
+    localizedButtonText = [(PKDiscoveryCallToAction *)self->_callToAction localizedButtonText];
+    [(UIButton *)button pkui_updateConfigurationWithTitle:localizedButtonText];
   }
 
   else
   {
-    v7 = PKLocalizedString(&cfstr_ViewButton.isa);
-    v8 = [v7 pk_uppercaseStringForPreferredLocale];
-    [(UIButton *)button pkui_updateConfigurationWithTitle:v8];
+    localizedButtonText = PKLocalizedString(&cfstr_ViewButton.isa);
+    pk_uppercaseStringForPreferredLocale = [localizedButtonText pk_uppercaseStringForPreferredLocale];
+    [(UIButton *)button pkui_updateConfigurationWithTitle:pk_uppercaseStringForPreferredLocale];
   }
 
   [(PKDiscoveryCallToActionFooterView *)self setNeedsLayout];
 }
 
-- (void)setShowActivityIndicator:(BOOL)a3
+- (void)setShowActivityIndicator:(BOOL)indicator
 {
-  if (self->_showActivityIndicator == !a3)
+  if (self->_showActivityIndicator == !indicator)
   {
-    self->_showActivityIndicator = a3;
+    self->_showActivityIndicator = indicator;
     button = self->_button;
-    if (a3)
+    if (indicator)
     {
       [(UIButton *)self->_button pkui_updateConfigurationWithTitle:0];
     }
 
     else
     {
-      v5 = [(PKDiscoveryCallToAction *)self->_callToAction localizedButtonText];
-      [(UIButton *)button pkui_updateConfigurationWithTitle:v5];
+      localizedButtonText = [(PKDiscoveryCallToAction *)self->_callToAction localizedButtonText];
+      [(UIButton *)button pkui_updateConfigurationWithTitle:localizedButtonText];
     }
 
     [(UIButton *)self->_button pkui_updateConfigurationShowingActivityIndicator:self->_showActivityIndicator];
@@ -431,38 +431,38 @@ void __85__PKDiscoveryCallToActionFooterView_initWithCallToAction_displayType_it
   }
 }
 
-- (void)setCallToActionTappedOverride:(id)a3
+- (void)setCallToActionTappedOverride:(id)override
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(override);
   callToActionTappedOverride = self->_callToActionTappedOverride;
   self->_callToActionTappedOverride = v4;
 }
 
-- (void)setDisplayType:(int64_t)a3
+- (void)setDisplayType:(int64_t)type
 {
-  if (self->_displayType != a3)
+  if (self->_displayType != type)
   {
-    self->_displayType = a3;
+    self->_displayType = type;
     [(PKDiscoveryCallToActionFooterView *)self setNeedsLayout];
   }
 }
 
 - (id)_titleLabelColor
 {
-  v3 = [MEMORY[0x1E69DC888] systemWhiteColor];
+  systemWhiteColor = [MEMORY[0x1E69DC888] systemWhiteColor];
   if ([(PKDiscoveryCallToAction *)self->_callToAction foregroundContentMode]== 2)
   {
-    v4 = [MEMORY[0x1E69DC888] systemBlackColor];
+    systemBlackColor = [MEMORY[0x1E69DC888] systemBlackColor];
 
-    v3 = v4;
+    systemWhiteColor = systemBlackColor;
   }
 
-  return v3;
+  return systemWhiteColor;
 }
 
 - (id)_subtitleLabelColor
 {
-  v3 = [MEMORY[0x1E69DC888] systemWhiteColor];
+  systemWhiteColor = [MEMORY[0x1E69DC888] systemWhiteColor];
   if ([(PKDiscoveryCallToAction *)self->_callToAction foregroundContentMode]== 2)
   {
     if (self->_titleLabel)
@@ -476,13 +476,13 @@ void __85__PKDiscoveryCallToActionFooterView_initWithCallToAction_displayType_it
     }
     v4 = ;
 
-    v3 = v4;
+    systemWhiteColor = v4;
   }
 
-  return v3;
+  return systemWhiteColor;
 }
 
-- (void)_buttonPressed:(id)a3
+- (void)_buttonPressed:(id)pressed
 {
   callToActionTappedOverride = self->_callToActionTappedOverride;
   if (callToActionTappedOverride)
@@ -506,16 +506,16 @@ void __85__PKDiscoveryCallToActionFooterView_initWithCallToAction_displayType_it
   }
 }
 
-- (id)_titleLabelWithLocalizedTitle:(id)a3
+- (id)_titleLabelWithLocalizedTitle:(id)title
 {
   v4 = MEMORY[0x1E69DCC10];
-  v5 = a3;
+  titleCopy = title;
   v6 = [v4 alloc];
   v7 = [v6 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
-  [v7 setText:v5];
+  [v7 setText:titleCopy];
 
-  v8 = [(PKDiscoveryCallToActionFooterView *)self _titleLabelFont];
-  [v7 setFont:v8];
+  _titleLabelFont = [(PKDiscoveryCallToActionFooterView *)self _titleLabelFont];
+  [v7 setFont:_titleLabelFont];
 
   if (+[PKDiscoveryCardView usesMediumCards])
   {
@@ -530,8 +530,8 @@ void __85__PKDiscoveryCallToActionFooterView_initWithCallToAction_displayType_it
   [v7 setNumberOfLines:v9];
   if (!+[PKDiscoveryCardView usesMediumCards])
   {
-    v10 = [(PKDiscoveryCallToActionFooterView *)self _titleLabelColor];
-    [v7 setTextColor:v10];
+    _titleLabelColor = [(PKDiscoveryCallToActionFooterView *)self _titleLabelColor];
+    [v7 setTextColor:_titleLabelColor];
   }
 
   [v7 setAccessibilityIdentifier:*MEMORY[0x1E69B9D20]];
@@ -539,16 +539,16 @@ void __85__PKDiscoveryCallToActionFooterView_initWithCallToAction_displayType_it
   return v7;
 }
 
-- (id)_subtitleLabelWithLocalizedSubtitle:(id)a3
+- (id)_subtitleLabelWithLocalizedSubtitle:(id)subtitle
 {
   v4 = MEMORY[0x1E69DCC10];
-  v5 = a3;
+  subtitleCopy = subtitle;
   v6 = [v4 alloc];
   v7 = [v6 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
-  [v7 setText:v5];
+  [v7 setText:subtitleCopy];
 
-  v8 = [(PKDiscoveryCallToActionFooterView *)self _subtitleLabelFont];
-  [v7 setFont:v8];
+  _subtitleLabelFont = [(PKDiscoveryCallToActionFooterView *)self _subtitleLabelFont];
+  [v7 setFont:_subtitleLabelFont];
 
   if (+[PKDiscoveryCardView usesMediumCards])
   {
@@ -558,8 +558,8 @@ void __85__PKDiscoveryCallToActionFooterView_initWithCallToAction_displayType_it
   else
   {
     [v7 setNumberOfLines:0];
-    v9 = [(PKDiscoveryCallToActionFooterView *)self _subtitleLabelColor];
-    [v7 setTextColor:v9];
+    _subtitleLabelColor = [(PKDiscoveryCallToActionFooterView *)self _subtitleLabelColor];
+    [v7 setTextColor:_subtitleLabelColor];
   }
 
   [v7 setAccessibilityIdentifier:*MEMORY[0x1E69B9958]];
@@ -603,11 +603,11 @@ void __85__PKDiscoveryCallToActionFooterView_initWithCallToAction_displayType_it
   return v4;
 }
 
-- (CGSize)_buttonSizeForBounds:(CGRect)a3
+- (CGSize)_buttonSizeForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  v6 = [(UIButton *)self->_button titleLabel:a3.origin.x];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  v6 = [(UIButton *)self->_button titleLabel:bounds.origin.x];
   button = self->_button;
   v8 = *MEMORY[0x1E69DDD80];
   v9 = *MEMORY[0x1E69DDC58];
@@ -682,9 +682,9 @@ void __85__PKDiscoveryCallToActionFooterView_initWithCallToAction_displayType_it
   return result;
 }
 
-- (id)_createVisualEffectViewWithBlurEffect:(id)a3 vibrancyStyle:(int64_t)a4
+- (id)_createVisualEffectViewWithBlurEffect:(id)effect vibrancyStyle:(int64_t)style
 {
-  v4 = [MEMORY[0x1E69DD248] effectForBlurEffect:a3 style:a4];
+  v4 = [MEMORY[0x1E69DD248] effectForBlurEffect:effect style:style];
   v5 = [objc_alloc(MEMORY[0x1E69DD298]) initWithEffect:v4];
 
   return v5;

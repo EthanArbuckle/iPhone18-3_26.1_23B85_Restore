@@ -1,29 +1,29 @@
 @interface PaymentSetupVerificationOTPViewController
-- (_TtC9PassKitUI41PaymentSetupVerificationOTPViewController)initWithCoder:(id)a3;
-- (_TtC9PassKitUI41PaymentSetupVerificationOTPViewController)initWithWebService:(id)a3 context:(int64_t)a4 setupDelegate:(id)a5 setupFieldsModel:(id)a6;
+- (_TtC9PassKitUI41PaymentSetupVerificationOTPViewController)initWithCoder:(id)coder;
+- (_TtC9PassKitUI41PaymentSetupVerificationOTPViewController)initWithWebService:(id)service context:(int64_t)context setupDelegate:(id)delegate setupFieldsModel:(id)model;
 - (id)defaultFields;
 - (id)defaultHeaderViewSubTitle;
 - (id)defaultHeaderViewTitle;
 - (id)visibleFieldIdentifiers;
-- (void)_handlePassVerifiedNotificationWithNotification:(id)a3;
+- (void)_handlePassVerifiedNotificationWithNotification:(id)notification;
 - (void)_performVerificationButtonPressed;
 - (void)_selectDifferentMethodButtonPressed;
 - (void)_sendNewCodeButtonPressed;
 - (void)_skipCardButtonPressed;
 - (void)_startVerificationObserver;
 - (void)_stopVerificationObserver;
-- (void)handleNextButtonTapped:(id)a3;
+- (void)handleNextButtonTapped:(id)tapped;
 - (void)loadView;
-- (void)showLoadingUI:(BOOL)a3 animated:(BOOL)a4;
-- (void)verificationObserver:(id)a3 didObserveVerificationCode:(id)a4;
-- (void)verificationObserverDidTimeout:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)showLoadingUI:(BOOL)i animated:(BOOL)animated;
+- (void)verificationObserver:(id)observer didObserveVerificationCode:(id)code;
+- (void)verificationObserverDidTimeout:(id)timeout;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation PaymentSetupVerificationOTPViewController
 
-- (_TtC9PassKitUI41PaymentSetupVerificationOTPViewController)initWithCoder:(id)a3
+- (_TtC9PassKitUI41PaymentSetupVerificationOTPViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super._responderFlags + OBJC_IVAR____TtC9PassKitUI41PaymentSetupVerificationOTPViewController_delegate) = 0;
   swift_unknownObjectWeakInit();
@@ -35,34 +35,34 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD7F77EC();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(PKPaymentSetupFieldsViewController *)&v5 viewWillAppear:v3];
+  [(PKPaymentSetupFieldsViewController *)&v5 viewWillAppear:appearCopy];
   sub_1BD7F7FEC();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(PKPaymentSetupFieldsViewController *)&v5 viewDidAppear:v3];
+  [(PKPaymentSetupFieldsViewController *)&v5 viewDidAppear:appearCopy];
   [*&v4[OBJC_IVAR____TtC9PassKitUI41PaymentSetupVerificationOTPViewController_reporter] reportViewAppeared];
 }
 
 - (void)_performVerificationButtonPressed
 {
   v2 = *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC9PassKitUI41PaymentSetupVerificationOTPViewController_reporter);
-  v3 = self;
+  selfCopy = self;
   if (v2)
   {
     [v2 reportButtonPressed_];
@@ -73,23 +73,23 @@
 
 - (void)_skipCardButtonPressed
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD7F87E0();
 }
 
 - (void)_selectDifferentMethodButtonPressed
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD7F8B7C();
 }
 
 - (void)_sendNewCodeButtonPressed
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD7F8E88();
 }
 
-- (_TtC9PassKitUI41PaymentSetupVerificationOTPViewController)initWithWebService:(id)a3 context:(int64_t)a4 setupDelegate:(id)a5 setupFieldsModel:(id)a6
+- (_TtC9PassKitUI41PaymentSetupVerificationOTPViewController)initWithWebService:(id)service context:(int64_t)context setupDelegate:(id)delegate setupFieldsModel:(id)model
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -98,7 +98,7 @@
 
 - (id)visibleFieldIdentifiers
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1BD65A578();
 
   if (v3)
@@ -114,11 +114,11 @@
   return v4;
 }
 
-- (void)handleNextButtonTapped:(id)a3
+- (void)handleNextButtonTapped:(id)tapped
 {
-  if (a3)
+  if (tapped)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1BE053624();
     swift_unknownObjectRelease();
@@ -127,7 +127,7 @@
   else
   {
     memset(v7, 0, sizeof(v7));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC9PassKitUI41PaymentSetupVerificationOTPViewController_reporter);
@@ -143,7 +143,7 @@
 
 - (id)defaultHeaderViewTitle
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD7FAD34();
 
   v3 = sub_1BE052404();
@@ -153,7 +153,7 @@
 
 - (id)defaultHeaderViewSubTitle
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD7FAD34();
   v4 = v3;
 
@@ -179,43 +179,43 @@
 
 - (void)_startVerificationObserver
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD7F7FEC();
 }
 
 - (void)_stopVerificationObserver
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD7F89DC();
 }
 
-- (void)verificationObserver:(id)a3 didObserveVerificationCode:(id)a4
+- (void)verificationObserver:(id)observer didObserveVerificationCode:(id)code
 {
   v6 = sub_1BE052434();
   v8 = v7;
-  v9 = a3;
-  v10 = self;
-  sub_1BD7FB17C(v9, v6, v8);
+  observerCopy = observer;
+  selfCopy = self;
+  sub_1BD7FB17C(observerCopy, v6, v8);
 }
 
-- (void)verificationObserverDidTimeout:(id)a3
+- (void)verificationObserverDidTimeout:(id)timeout
 {
-  v4 = a3;
-  v5 = self;
+  timeoutCopy = timeout;
+  selfCopy = self;
   sub_1BD7FC040();
 }
 
-- (void)_handlePassVerifiedNotificationWithNotification:(id)a3
+- (void)_handlePassVerifiedNotificationWithNotification:(id)notification
 {
-  v4 = a3;
-  v5 = self;
-  sub_1BD7FB954(v4);
+  notificationCopy = notification;
+  selfCopy = self;
+  sub_1BD7FB954(notificationCopy);
 }
 
-- (void)showLoadingUI:(BOOL)a3 animated:(BOOL)a4
+- (void)showLoadingUI:(BOOL)i animated:(BOOL)animated
 {
-  v5 = self;
-  sub_1BD7FBF3C(a3);
+  selfCopy = self;
+  sub_1BD7FBF3C(i);
 }
 
 @end

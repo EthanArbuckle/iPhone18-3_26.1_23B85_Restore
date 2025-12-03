@@ -1,5 +1,5 @@
 @interface VUISidebandSeasonMediaCollection
-- (VUISidebandSeasonMediaCollection)initWithMediaLibrary:(id)a3 seasonManagedObject:(id)a4 requestedProperties:(id)a5;
+- (VUISidebandSeasonMediaCollection)initWithMediaLibrary:(id)library seasonManagedObject:(id)object requestedProperties:(id)properties;
 - (id)canonicalID;
 - (id)isLocal;
 - (id)seasonNumber;
@@ -9,21 +9,21 @@
 
 @implementation VUISidebandSeasonMediaCollection
 
-- (VUISidebandSeasonMediaCollection)initWithMediaLibrary:(id)a3 seasonManagedObject:(id)a4 requestedProperties:(id)a5
+- (VUISidebandSeasonMediaCollection)initWithMediaLibrary:(id)library seasonManagedObject:(id)object requestedProperties:(id)properties
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  libraryCopy = library;
+  objectCopy = object;
+  propertiesCopy = properties;
+  if (libraryCopy)
   {
-    if (v9)
+    if (objectCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"The %@ parameter must not be nil.", @"seasonManagedObject"}];
-    if (v10)
+    if (propertiesCopy)
     {
       goto LABEL_4;
     }
@@ -32,13 +32,13 @@ LABEL_8:
   }
 
   [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"The %@ parameter must not be nil.", @"mediaLibrary"}];
-  if (!v9)
+  if (!objectCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v10)
+  if (propertiesCopy)
   {
     goto LABEL_4;
   }
@@ -47,18 +47,18 @@ LABEL_9:
   [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"The %@ parameter must not be nil.", @"requestedProperties"}];
 LABEL_4:
   v11 = [VUISidebandMediaEntityIdentifier alloc];
-  v12 = [v9 objectID];
+  objectID = [objectCopy objectID];
   v13 = +[VUIMediaEntityType season];
-  v14 = [(VUISidebandMediaEntityIdentifier *)v11 initWithManagedObjectID:v12 mediaEntityType:v13];
+  v14 = [(VUISidebandMediaEntityIdentifier *)v11 initWithManagedObjectID:objectID mediaEntityType:v13];
 
   v15 = VUISidebandSeasonMediaCollectionKind();
   v18.receiver = self;
   v18.super_class = VUISidebandSeasonMediaCollection;
-  v16 = [(VUIMediaEntity *)&v18 initWithMediaLibrary:v8 identifier:v14 requestedProperties:v10 kind:v15];
+  v16 = [(VUIMediaEntity *)&v18 initWithMediaLibrary:libraryCopy identifier:v14 requestedProperties:propertiesCopy kind:v15];
 
   if (v16)
   {
-    objc_storeStrong(&v16->_seasonManagedObject, a4);
+    objc_storeStrong(&v16->_seasonManagedObject, object);
   }
 
   return v16;
@@ -66,22 +66,22 @@ LABEL_4:
 
 - (id)canonicalID
 {
-  v2 = [(VUISidebandSeasonMediaCollection *)self seasonManagedObject];
+  seasonManagedObject = [(VUISidebandSeasonMediaCollection *)self seasonManagedObject];
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy__3;
   v14 = __Block_byref_object_dispose__3;
   v15 = 0;
-  v3 = [v2 managedObjectContext];
+  managedObjectContext = [seasonManagedObject managedObjectContext];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __47__VUISidebandSeasonMediaCollection_canonicalID__block_invoke;
   v7[3] = &unk_1E872E5B0;
   v9 = &v10;
-  v4 = v2;
+  v4 = seasonManagedObject;
   v8 = v4;
-  [v3 performBlockAndWait:v7];
+  [managedObjectContext performBlockAndWait:v7];
 
   v5 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -99,22 +99,22 @@ void __47__VUISidebandSeasonMediaCollection_canonicalID__block_invoke(uint64_t a
 
 - (id)isLocal
 {
-  v2 = [(VUISidebandSeasonMediaCollection *)self seasonManagedObject];
+  seasonManagedObject = [(VUISidebandSeasonMediaCollection *)self seasonManagedObject];
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy__3;
   v14 = __Block_byref_object_dispose__3;
   v15 = MEMORY[0x1E695E110];
-  v3 = [v2 managedObjectContext];
+  managedObjectContext = [seasonManagedObject managedObjectContext];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __43__VUISidebandSeasonMediaCollection_isLocal__block_invoke;
   v7[3] = &unk_1E872DB58;
-  v4 = v2;
+  v4 = seasonManagedObject;
   v8 = v4;
   v9 = &v10;
-  [v3 performBlockAndWait:v7];
+  [managedObjectContext performBlockAndWait:v7];
 
   v5 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -175,16 +175,16 @@ LABEL_11:
   v13 = __Block_byref_object_copy__3;
   v14 = __Block_byref_object_dispose__3;
   v15 = 0;
-  v2 = [(VUISidebandSeasonMediaCollection *)self seasonManagedObject];
-  v3 = [v2 managedObjectContext];
+  seasonManagedObject = [(VUISidebandSeasonMediaCollection *)self seasonManagedObject];
+  managedObjectContext = [seasonManagedObject managedObjectContext];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50__VUISidebandSeasonMediaCollection_showIdentifier__block_invoke;
   v7[3] = &unk_1E872DB58;
-  v4 = v2;
+  v4 = seasonManagedObject;
   v8 = v4;
   v9 = &v10;
-  [v3 performBlockAndWait:v7];
+  [managedObjectContext performBlockAndWait:v7];
 
   v5 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -210,22 +210,22 @@ void __50__VUISidebandSeasonMediaCollection_showIdentifier__block_invoke(uint64_
 
 - (id)seasonNumber
 {
-  v2 = [(VUISidebandSeasonMediaCollection *)self seasonManagedObject];
+  seasonManagedObject = [(VUISidebandSeasonMediaCollection *)self seasonManagedObject];
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy__3;
   v14 = __Block_byref_object_dispose__3;
   v15 = 0;
-  v3 = [v2 managedObjectContext];
+  managedObjectContext = [seasonManagedObject managedObjectContext];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __48__VUISidebandSeasonMediaCollection_seasonNumber__block_invoke;
   v7[3] = &unk_1E872E5B0;
   v9 = &v10;
-  v4 = v2;
+  v4 = seasonManagedObject;
   v8 = v4;
-  [v3 performBlockAndWait:v7];
+  [managedObjectContext performBlockAndWait:v7];
 
   v5 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -243,22 +243,22 @@ void __48__VUISidebandSeasonMediaCollection_seasonNumber__block_invoke(uint64_t 
 
 - (id)title
 {
-  v2 = [(VUISidebandSeasonMediaCollection *)self seasonManagedObject];
+  seasonManagedObject = [(VUISidebandSeasonMediaCollection *)self seasonManagedObject];
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy__3;
   v14 = __Block_byref_object_dispose__3;
   v15 = 0;
-  v3 = [v2 managedObjectContext];
+  managedObjectContext = [seasonManagedObject managedObjectContext];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __41__VUISidebandSeasonMediaCollection_title__block_invoke;
   v7[3] = &unk_1E872E5B0;
   v9 = &v10;
-  v4 = v2;
+  v4 = seasonManagedObject;
   v8 = v4;
-  [v3 performBlockAndWait:v7];
+  [managedObjectContext performBlockAndWait:v7];
 
   v5 = v11[5];
   _Block_object_dispose(&v10, 8);

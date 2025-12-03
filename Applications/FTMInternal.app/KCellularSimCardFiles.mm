@@ -1,39 +1,39 @@
 @interface KCellularSimCardFiles
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addEf:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasSubsId:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addEf:(id)ef;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasSubsId:(BOOL)id;
+- (void)writeTo:(id)to;
 @end
 
 @implementation KCellularSimCardFiles
 
-- (void)addEf:(id)a3
+- (void)addEf:(id)ef
 {
-  v4 = a3;
+  efCopy = ef;
   efs = self->_efs;
-  v8 = v4;
+  v8 = efCopy;
   if (!efs)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_efs;
     self->_efs = v6;
 
-    v4 = v8;
+    efCopy = v8;
     efs = self->_efs;
   }
 
-  [(NSMutableArray *)efs addObject:v4];
+  [(NSMutableArray *)efs addObject:efCopy];
 }
 
-- (void)setHasSubsId:(BOOL)a3
+- (void)setHasSubsId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 2;
   }
@@ -51,8 +51,8 @@
   v7.receiver = self;
   v7.super_class = KCellularSimCardFiles;
   v3 = [(KCellularSimCardFiles *)&v7 description];
-  v4 = [(KCellularSimCardFiles *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(KCellularSimCardFiles *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -88,8 +88,8 @@
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
-          [v5 addObject:v11];
+          dictionaryRepresentation = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
+          [v5 addObject:dictionaryRepresentation];
         }
 
         v8 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -110,9 +110,9 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     timestamp = self->_timestamp;
@@ -158,23 +158,23 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 28) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 28) |= 1u;
   }
 
-  v9 = v4;
+  v9 = toCopy;
   if ([(KCellularSimCardFiles *)self efsCount])
   {
     [v9 clearEfs];
-    v5 = [(KCellularSimCardFiles *)self efsCount];
-    if (v5)
+    efsCount = [(KCellularSimCardFiles *)self efsCount];
+    if (efsCount)
     {
-      v6 = v5;
+      v6 = efsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(KCellularSimCardFiles *)self efAtIndex:i];
@@ -190,9 +190,9 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -220,7 +220,7 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v14 + 1) + 8 * v11) copyWithZone:{a3, v14}];
+        v12 = [*(*(&v14 + 1) + 8 * v11) copyWithZone:{zone, v14}];
         [v6 addEf:v12];
 
         v11 = v11 + 1;
@@ -242,31 +242,31 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
   has = self->_has;
-  v6 = *(v4 + 28);
+  v6 = *(equalCopy + 28);
   if (has)
   {
-    if ((*(v4 + 28) & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((*(equalCopy + 28) & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_14;
     }
   }
 
-  else if (*(v4 + 28))
+  else if (*(equalCopy + 28))
   {
     goto LABEL_14;
   }
 
   efs = self->_efs;
-  if (efs | *(v4 + 2))
+  if (efs | *(equalCopy + 2))
   {
     if (![(NSMutableArray *)efs isEqual:?])
     {
@@ -278,10 +278,10 @@ LABEL_14:
     has = self->_has;
   }
 
-  v8 = (*(v4 + 28) & 2) == 0;
+  v8 = (*(equalCopy + 28) & 2) == 0;
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 28) & 2) == 0 || self->_subsId != *(v4 + 6))
+    if ((*(equalCopy + 28) & 2) == 0 || self->_subsId != *(equalCopy + 6))
     {
       goto LABEL_14;
     }
@@ -320,13 +320,13 @@ LABEL_15:
   return v4 ^ v3 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 28))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 28))
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
@@ -334,7 +334,7 @@ LABEL_15:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v6 = *(v4 + 2);
+  v6 = *(fromCopy + 2);
   v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {

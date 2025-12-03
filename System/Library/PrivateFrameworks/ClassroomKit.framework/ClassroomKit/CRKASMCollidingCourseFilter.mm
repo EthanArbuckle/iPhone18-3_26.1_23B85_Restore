@@ -1,20 +1,20 @@
 @interface CRKASMCollidingCourseFilter
-+ (id)coursesByFilteringCollidingCoursesFromArray:(id)a3;
++ (id)coursesByFilteringCollidingCoursesFromArray:(id)array;
 @end
 
 @implementation CRKASMCollidingCourseFilter
 
-+ (id)coursesByFilteringCollidingCoursesFromArray:(id)a3
++ (id)coursesByFilteringCollidingCoursesFromArray:(id)array
 {
   v32[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  arrayCopy = array;
   v4 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"identifier.stringValue" ascending:1];
   v32[0] = v4;
   v5 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"name" ascending:1];
   v32[1] = v5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:2];
-  v23 = v3;
-  v7 = [v3 sortedArrayUsingDescriptors:v6];
+  v23 = arrayCopy;
+  v7 = [arrayCopy sortedArrayUsingDescriptors:v6];
 
   v24 = objc_opt_new();
   v25 = 0u;
@@ -39,13 +39,13 @@
         }
 
         v14 = *(*(&v25 + 1) + 8 * v13);
-        v15 = [v14 identifier];
-        if (v15 | v11 && (v16 = v15, [v14 identifier], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "isEqual:", v11), v17, v16, (v18 & 1) == 0))
+        identifier = [v14 identifier];
+        if (identifier | v11 && (v16 = identifier, [v14 identifier], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "isEqual:", v11), v17, v16, (v18 & 1) == 0))
         {
           [v24 addObject:v14];
-          v20 = [v14 identifier];
+          identifier2 = [v14 identifier];
 
-          v11 = v20;
+          v11 = identifier2;
         }
 
         else

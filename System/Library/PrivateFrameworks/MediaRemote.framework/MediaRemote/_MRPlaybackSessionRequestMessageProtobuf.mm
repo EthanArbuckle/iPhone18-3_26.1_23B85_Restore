@@ -1,11 +1,11 @@
 @interface _MRPlaybackSessionRequestMessageProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRPlaybackSessionRequestMessageProtobuf
@@ -16,87 +16,87 @@
   v8.receiver = self;
   v8.super_class = _MRPlaybackSessionRequestMessageProtobuf;
   v4 = [(_MRPlaybackSessionRequestMessageProtobuf *)&v8 description];
-  v5 = [(_MRPlaybackSessionRequestMessageProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRPlaybackSessionRequestMessageProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   request = self->_request;
   if (request)
   {
-    v5 = [(_MRPlaybackSessionRequestProtobuf *)request dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"request"];
+    dictionaryRepresentation = [(_MRPlaybackSessionRequestProtobuf *)request dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"request"];
   }
 
   playerPath = self->_playerPath;
   if (playerPath)
   {
-    v7 = [(_MRNowPlayingPlayerPathProtobuf *)playerPath dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"playerPath"];
+    dictionaryRepresentation2 = [(_MRNowPlayingPlayerPathProtobuf *)playerPath dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"playerPath"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_request)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_playerPath)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_request)
   {
-    [v4 setRequest:?];
-    v4 = v5;
+    [toCopy setRequest:?];
+    toCopy = v5;
   }
 
   if (self->_playerPath)
   {
     [v5 setPlayerPath:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(_MRPlaybackSessionRequestProtobuf *)self->_request copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(_MRPlaybackSessionRequestProtobuf *)self->_request copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(_MRNowPlayingPlayerPathProtobuf *)self->_playerPath copyWithZone:a3];
+  v8 = [(_MRNowPlayingPlayerPathProtobuf *)self->_playerPath copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((request = self->_request, !(request | v4[2])) || -[_MRPlaybackSessionRequestProtobuf isEqual:](request, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((request = self->_request, !(request | equalCopy[2])) || -[_MRPlaybackSessionRequestProtobuf isEqual:](request, "isEqual:")))
   {
     playerPath = self->_playerPath;
-    if (playerPath | v4[1])
+    if (playerPath | equalCopy[1])
     {
       v7 = [(_MRNowPlayingPlayerPathProtobuf *)playerPath isEqual:?];
     }
@@ -115,12 +115,12 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   request = self->_request;
-  v6 = v4[2];
-  v9 = v4;
+  v6 = fromCopy[2];
+  v9 = fromCopy;
   if (request)
   {
     if (!v6)
@@ -141,10 +141,10 @@
     [(_MRPlaybackSessionRequestMessageProtobuf *)self setRequest:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_7:
   playerPath = self->_playerPath;
-  v8 = v4[1];
+  v8 = fromCopy[1];
   if (playerPath)
   {
     if (!v8)
@@ -165,7 +165,7 @@ LABEL_7:
     [(_MRPlaybackSessionRequestMessageProtobuf *)self setPlayerPath:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_13:
 }
 

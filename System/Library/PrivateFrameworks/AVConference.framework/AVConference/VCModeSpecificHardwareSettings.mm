@@ -1,40 +1,40 @@
 @interface VCModeSpecificHardwareSettings
-+ (unsigned)encoderUsageTypeWithHardwareSettingsMode:(unsigned __int8)a3;
++ (unsigned)encoderUsageTypeWithHardwareSettingsMode:(unsigned __int8)mode;
 - (BOOL)vcpSupportsHEVCDecoder;
 - (BOOL)vcpSupportsHEVCEncoder;
-- (VCModeSpecificHardwareSettings)initWithHardwareSettingsMode:(unsigned __int8)a3;
-- (unsigned)numTilesPerVideoFrameForHDRMode:(unint64_t)a3;
+- (VCModeSpecificHardwareSettings)initWithHardwareSettingsMode:(unsigned __int8)mode;
+- (unsigned)numTilesPerVideoFrameForHDRMode:(unint64_t)mode;
 - (void)dealloc;
 - (void)initFeatureListString;
-- (void)vcpCodecGetPropertiesForID:(int)a3 block:(id)a4;
+- (void)vcpCodecGetPropertiesForID:(int)d block:(id)block;
 @end
 
 @implementation VCModeSpecificHardwareSettings
 
-+ (unsigned)encoderUsageTypeWithHardwareSettingsMode:(unsigned __int8)a3
++ (unsigned)encoderUsageTypeWithHardwareSettingsMode:(unsigned __int8)mode
 {
-  if ((a3 - 1) > 8)
+  if ((mode - 1) > 8)
   {
     return 0;
   }
 
   else
   {
-    return dword_1DBD51524[(a3 - 1)];
+    return dword_1DBD51524[(mode - 1)];
   }
 }
 
-- (VCModeSpecificHardwareSettings)initWithHardwareSettingsMode:(unsigned __int8)a3
+- (VCModeSpecificHardwareSettings)initWithHardwareSettingsMode:(unsigned __int8)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
   v6.super_class = VCModeSpecificHardwareSettings;
   v4 = [(VCModeSpecificHardwareSettings *)&v6 init];
   if (v4)
   {
-    v4->_vcpEncoderUsageMode = [VCModeSpecificHardwareSettings encoderUsageTypeWithHardwareSettingsMode:v3];
-    v4->_hardwareSettingsMode = v3;
+    v4->_vcpEncoderUsageMode = [VCModeSpecificHardwareSettings encoderUsageTypeWithHardwareSettingsMode:modeCopy];
+    v4->_hardwareSettingsMode = modeCopy;
     [(VCModeSpecificHardwareSettings *)v4 initFeatureListString];
     [(VCModeSpecificHardwareSettings *)v4 vcpSupportsHEVCDecoder];
     [(VCModeSpecificHardwareSettings *)v4 vcpSupportsHEVCEncoder];
@@ -54,7 +54,7 @@
   [(VCModeSpecificHardwareSettings *)&v3 dealloc];
 }
 
-- (unsigned)numTilesPerVideoFrameForHDRMode:(unint64_t)a3
+- (unsigned)numTilesPerVideoFrameForHDRMode:(unint64_t)mode
 {
   v20 = *MEMORY[0x1E69E9840];
   hardwareSettingsMode = self->_hardwareSettingsMode;
@@ -224,8 +224,8 @@ void __56__VCModeSpecificHardwareSettings_vcpSupportsHEVCEncoder__block_invoke(u
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
         vcpEncoderUsageMode = self->_vcpEncoderUsageMode;
-        v8 = [(NSString *)self->_featureListStringHEVC UTF8String];
-        v9 = [(NSString *)self->_featureListStringH264 UTF8String];
+        uTF8String = [(NSString *)self->_featureListStringHEVC UTF8String];
+        uTF8String2 = [(NSString *)self->_featureListStringH264 UTF8String];
         *buf = 136316418;
         v13 = v5;
         v14 = 2080;
@@ -235,9 +235,9 @@ void __56__VCModeSpecificHardwareSettings_vcpSupportsHEVCEncoder__block_invoke(u
         v18 = 1024;
         v19 = vcpEncoderUsageMode;
         v20 = 2080;
-        v21 = v8;
+        v21 = uTF8String;
         v22 = 2080;
-        v23 = v9;
+        v23 = uTF8String2;
         _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d [FLS] mode=%2d: HEVC=%s ; H264=%s", buf, 0x36u);
       }
     }
@@ -337,7 +337,7 @@ void __55__VCModeSpecificHardwareSettings_initFeatureListString__block_invoke_13
   }
 }
 
-- (void)vcpCodecGetPropertiesForID:(int)a3 block:(id)a4
+- (void)vcpCodecGetPropertiesForID:(int)d block:(id)block
 {
   if (VCPCodecCopyProperties())
   {

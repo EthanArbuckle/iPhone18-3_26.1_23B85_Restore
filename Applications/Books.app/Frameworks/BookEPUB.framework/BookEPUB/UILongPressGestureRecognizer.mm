@@ -1,8 +1,8 @@
 @interface UILongPressGestureRecognizer
 + (void)be_enableUIVariableDelayLoupeGestureOverrides;
 - (double)be_gestureDelay;
-- (void)be_setDelay:(double)a3;
-- (void)setBe_gestureDelay:(double)a3;
+- (void)be_setDelay:(double)delay;
+- (void)setBe_gestureDelay:(double)delay;
 @end
 
 @implementation UILongPressGestureRecognizer
@@ -24,24 +24,24 @@
   return v4;
 }
 
-- (void)setBe_gestureDelay:(double)a3
+- (void)setBe_gestureDelay:(double)delay
 {
   v5 = [NSNumber numberWithDouble:?];
   objc_setAssociatedObject(self, "be_gestureDelay", v5, &dword_0 + 1);
 
-  [(UILongPressGestureRecognizer *)self setDelay:a3];
+  [(UILongPressGestureRecognizer *)self setDelay:delay];
 }
 
-- (void)be_setDelay:(double)a3
+- (void)be_setDelay:(double)delay
 {
   v6 = objc_getAssociatedObject(self, "be_gestureDelay");
   if (v6)
   {
     [v6 doubleValue];
-    a3 = v5;
+    delay = v5;
   }
 
-  [(UILongPressGestureRecognizer *)self be_setDelay:a3];
+  [(UILongPressGestureRecognizer *)self be_setDelay:delay];
 }
 
 @end

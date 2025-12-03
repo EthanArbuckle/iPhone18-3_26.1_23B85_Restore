@@ -21,7 +21,7 @@
 - (void)setAllowedClassesForHostProtocol
 {
   v2 = [MEMORY[0x1E695DFD8] set];
-  [a1 setClasses:v2 forSelector:sel_shouldHostHandleMRCommand_completion_ argumentIndex:1 ofReply:1];
+  [self setClasses:v2 forSelector:sel_shouldHostHandleMRCommand_completion_ argumentIndex:1 ofReply:1];
 }
 
 + (id)clientInterface

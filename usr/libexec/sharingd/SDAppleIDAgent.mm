@@ -1,74 +1,74 @@
 @interface SDAppleIDAgent
 + (id)sharedAgent;
-- (BOOL)_isCertificateBlocklisted:(id)a3;
+- (BOOL)_isCertificateBlocklisted:(id)blocklisted;
 - (BOOL)eduModeEnabled;
 - (SDAppleIDAgent)init;
-- (__SecIdentity)_copyIdentityForAppleID:(id)a3;
-- (__SecIdentity)copyIdentityForAppleID:(id)a3;
+- (__SecIdentity)_copyIdentityForAppleID:(id)d;
+- (__SecIdentity)copyIdentityForAppleID:(id)d;
 - (id)_detailedDescription;
 - (id)_statusInfo;
-- (id)accountForAppleID:(id)a3;
-- (id)accountStatusForAppleID:(id)a3;
+- (id)accountForAppleID:(id)d;
+- (id)accountStatusForAppleID:(id)d;
 - (id)detailedDescription;
 - (id)myAccount;
 - (id)statusInfo;
-- (id)validationRecordInfoForAppleID:(id)a3;
-- (id)verifiedIdentityForCertificateChain:(id)a3 emailOrPhone:(id)a4 error:(id *)a5;
-- (id)verifiedIdentityForEmailOrPhone:(id)a3;
+- (id)validationRecordInfoForAppleID:(id)d;
+- (id)verifiedIdentityForCertificateChain:(id)chain emailOrPhone:(id)phone error:(id *)error;
+- (id)verifiedIdentityForEmailOrPhone:(id)phone;
 - (int)_ensureEduModeDevicesAreCleanedUp;
-- (int)_performKeyVerificationForIdentity:(id)a3;
+- (int)_performKeyVerificationForIdentity:(id)identity;
 - (int)_performKeychainCount;
 - (int64_t)_accountState;
 - (unint64_t)_keychainCleanupTag;
 - (void)_activate;
 - (void)_addObservers;
-- (void)_altDSIDLookupWithEmails:(id)a3 phoneNumbers:(id)a4 completion:(id)a5;
-- (void)_checkIfAppleIDCertificateChainIsValidForIdentity:(id)a3 completion:(id)a4;
-- (void)_cleanUpAccount:(id)a3;
+- (void)_altDSIDLookupWithEmails:(id)emails phoneNumbers:(id)numbers completion:(id)completion;
+- (void)_checkIfAppleIDCertificateChainIsValidForIdentity:(id)identity completion:(id)completion;
+- (void)_cleanUpAccount:(id)account;
 - (void)_clearAccount;
-- (void)_clearIdentityState:(id)a3;
+- (void)_clearIdentityState:(id)state;
 - (void)_ensurePeriodicVerifyTimerStarted;
 - (void)_ensurePeriodicVerifyTimerStopped;
 - (void)_ensurePushStarted;
 - (void)_ensurePushStopped;
-- (void)_ensureThrottledRetryTimerStartedWithSuggestedDelay:(unint64_t)a3;
+- (void)_ensureThrottledRetryTimerStartedWithSuggestedDelay:(unint64_t)delay;
 - (void)_ensureThrottledRetryTimerStopped;
 - (void)_handleAccountIdentifierValidationRecordMismatch;
-- (void)_handleAltDSIDLookupResponse:(id)a3 requestError:(id)a4 serverTask:(id)a5 completion:(id)a6;
+- (void)_handleAltDSIDLookupResponse:(id)response requestError:(id)error serverTask:(id)task completion:(id)completion;
 - (void)_handleAppleIDChangedNotification;
 - (void)_handleAppleIDSignedInNotification;
 - (void)_handleAppleIDSignedOutNotification;
-- (void)_handleCertificateStatusUpdate:(int64_t)a3 forAppleID:(id)a4;
-- (void)_handleFindPersonResponse:(id)a3 forRequest:(id)a4 emailOrPhone:(id)a5 withError:(id)a6 queue:(id)a7 completion:(id)a8;
-- (void)_handleInfoResponse:(id)a3 forAppleID:(id)a4 infoRequest:(id)a5 certificateSerialNumber:(id)a6 withError:(id)a7 completion:(id)a8;
+- (void)_handleCertificateStatusUpdate:(int64_t)update forAppleID:(id)d;
+- (void)_handleFindPersonResponse:(id)response forRequest:(id)request emailOrPhone:(id)phone withError:(id)error queue:(id)queue completion:(id)completion;
+- (void)_handleInfoResponse:(id)response forAppleID:(id)d infoRequest:(id)request certificateSerialNumber:(id)number withError:(id)error completion:(id)completion;
 - (void)_handleKeyBagFirstUnlockNotification;
 - (void)_handleKeyVerificationFailure;
 - (void)_handlePeriodicVerifyTimerFired;
-- (void)_handleReceivedCertificateToken:(id)a3 privateKeyPersistentReference:(id)a4 forAppleID:(id)a5;
-- (void)_handleReceivedIdentity:(id)a3 forAppleID:(id)a4 identityRequest:(id)a5 withError:(id)a6 completion:(id)a7;
-- (void)_handleServerTaskCompletionWithError:(id)a3;
+- (void)_handleReceivedCertificateToken:(id)token privateKeyPersistentReference:(id)reference forAppleID:(id)d;
+- (void)_handleReceivedIdentity:(id)identity forAppleID:(id)d identityRequest:(id)request withError:(id)error completion:(id)completion;
+- (void)_handleServerTaskCompletionWithError:(id)error;
 - (void)_handleThrottledRetryTimerFired;
 - (void)_handleUILockStatusChange;
 - (void)_handleUILockStatusChangedNotification;
 - (void)_invalidate;
-- (void)_performOtherTaskWithInfo:(id)a3 completion:(id)a4;
-- (void)_performServerTaskWithInfo:(id)a3 completion:(id)a4;
-- (void)_personInfoWithEmailOrPhone:(id)a3 queue:(id)a4 completion:(id)a5;
+- (void)_performOtherTaskWithInfo:(id)info completion:(id)completion;
+- (void)_performServerTaskWithInfo:(id)info completion:(id)completion;
+- (void)_personInfoWithEmailOrPhone:(id)phone queue:(id)queue completion:(id)completion;
 - (void)_prefsChanged;
 - (void)_removeObservers;
-- (void)_requestIdentityForAppleID:(id)a3 certificateToken:(id)a4 privateKeyPersistentReference:(id)a5 withCompletion:(id)a6;
-- (void)_requestInfoForAppleID:(id)a3 completion:(id)a4;
-- (void)_setMetaInfoValue:(id)a3 forKey:(id)a4;
+- (void)_requestIdentityForAppleID:(id)d certificateToken:(id)token privateKeyPersistentReference:(id)reference withCompletion:(id)completion;
+- (void)_requestInfoForAppleID:(id)d completion:(id)completion;
+- (void)_setMetaInfoValue:(id)value forKey:(id)key;
 - (void)_update;
 - (void)_updateAppleID;
 - (void)_updateMyInfo;
 - (void)_verifyState;
-- (void)_verifyStateWithDelay:(double)a3;
+- (void)_verifyStateWithDelay:(double)delay;
 - (void)activate;
-- (void)altDSIDLookupWithEmails:(id)a3 phoneNumbers:(id)a4 completion:(id)a5;
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4;
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4;
-- (void)connection:(id)a3 didReceiveToken:(id)a4 forTopic:(id)a5 identifier:(id)a6;
+- (void)altDSIDLookupWithEmails:(id)emails phoneNumbers:(id)numbers completion:(id)completion;
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message;
+- (void)connection:(id)connection didReceivePublicToken:(id)token;
+- (void)connection:(id)connection didReceiveToken:(id)token forTopic:(id)topic identifier:(id)identifier;
 - (void)dealloc;
 - (void)handleAppleIDChangedNotification;
 - (void)handleAppleIDSignedInNotification;
@@ -76,11 +76,11 @@
 - (void)handleKeyBagFirstUnlockNotification;
 - (void)handleUILockStatusChangedNotification;
 - (void)invalidate;
-- (void)personInfoWithEmailOrPhone:(id)a3 queue:(id)a4 completion:(id)a5;
+- (void)personInfoWithEmailOrPhone:(id)phone queue:(id)queue completion:(id)completion;
 - (void)prefsChanged;
-- (void)queryVerifiedIdentityForEmailOrPhone:(id)a3 queue:(id)a4 completion:(id)a5;
-- (void)requestWithInfo:(id)a3 completion:(id)a4;
-- (void)verifiedIdentityForEmailOrPhone:(id)a3 queue:(id)a4 completion:(id)a5;
+- (void)queryVerifiedIdentityForEmailOrPhone:(id)phone queue:(id)queue completion:(id)completion;
+- (void)requestWithInfo:(id)info completion:(id)completion;
+- (void)verifiedIdentityForEmailOrPhone:(id)phone queue:(id)queue completion:(id)completion;
 @end
 
 @implementation SDAppleIDAgent
@@ -101,10 +101,10 @@
 {
   if (self->_appleID)
   {
-    v3 = self;
-    objc_sync_enter(v3);
-    v4 = [(SDAppleIDAgent *)v3 _accountForAppleID:self->_appleID];
-    objc_sync_exit(v3);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v4 = [(SDAppleIDAgent *)selfCopy _accountForAppleID:self->_appleID];
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -117,12 +117,12 @@
 
 - (id)detailedDescription
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(SDAppleIDAgent *)v2 _detailedDescription];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  _detailedDescription = [(SDAppleIDAgent *)selfCopy _detailedDescription];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return _detailedDescription;
 }
 
 - (id)_detailedDescription
@@ -158,28 +158,28 @@
   if (self->_agentEnabled)
   {
     v8 = [(SDAppleIDDatabaseManager *)self->_dbManager accountForAppleID:self->_appleID, v94];
-    v9 = [v8 identity];
+    identity = [v8 identity];
     appleID = self->_appleID;
     NSAppendPrintF();
     v10 = v7;
 
-    v11 = [v8 contactInfo];
-    v96 = [v11 firstName];
+    contactInfo = [v8 contactInfo];
+    firstName = [contactInfo firstName];
     NSAppendPrintF();
     v12 = v10;
 
-    v13 = [v8 contactInfo];
-    v97 = [v13 lastName];
+    contactInfo2 = [v8 contactInfo];
+    lastName = [contactInfo2 lastName];
     NSAppendPrintF();
     v14 = v12;
 
-    v98 = [v8 altDSID];
+    altDSID = [v8 altDSID];
     NSAppendPrintF();
     v15 = v14;
 
-    v16 = [v8 validationRecord];
-    v17 = [v16 data];
-    if (v17)
+    validationRecord = [v8 validationRecord];
+    data = [validationRecord data];
+    if (data)
     {
       v18 = "yes";
     }
@@ -193,28 +193,28 @@
     NSAppendPrintF();
     v19 = v15;
 
-    v20 = [v8 validationRecord];
-    v100 = [v20 altDSID];
+    validationRecord2 = [v8 validationRecord];
+    altDSID2 = [validationRecord2 altDSID];
     NSAppendPrintF();
     v21 = v19;
 
-    v22 = [v8 validationRecord];
-    v101 = [v22 validStartDate];
+    validationRecord3 = [v8 validationRecord];
+    validStartDate = [validationRecord3 validStartDate];
     NSAppendPrintF();
     v23 = v21;
 
-    v24 = [v8 validationRecord];
-    v102 = [v24 suggestedValidDuration];
+    validationRecord4 = [v8 validationRecord];
+    suggestedValidDuration = [validationRecord4 suggestedValidDuration];
     NSAppendPrintF();
     v25 = v23;
 
-    v26 = [v8 validationRecord];
-    v103 = [v26 nextCheckDate];
+    validationRecord5 = [v8 validationRecord];
+    nextCheckDate = [validationRecord5 nextCheckDate];
     NSAppendPrintF();
     v27 = v25;
 
-    v28 = [v8 validationRecord];
-    if ([v28 needsUpdate])
+    validationRecord6 = [v8 validationRecord];
+    if ([validationRecord6 needsUpdate])
     {
       v29 = "yes";
     }
@@ -228,8 +228,8 @@
     NSAppendPrintF();
     v30 = v27;
 
-    v31 = [v8 validationRecord];
-    if ([v31 isInvalid])
+    validationRecord7 = [v8 validationRecord];
+    if ([validationRecord7 isInvalid])
     {
       v32 = "yes";
     }
@@ -243,33 +243,33 @@
     NSAppendPrintF();
     v33 = v30;
 
-    v34 = [v8 contactInfo];
-    v35 = [v34 validatedEmailAddresses];
-    v106 = [v35 componentsJoinedByString:{@", "}];
+    contactInfo3 = [v8 contactInfo];
+    validatedEmailAddresses = [contactInfo3 validatedEmailAddresses];
+    v106 = [validatedEmailAddresses componentsJoinedByString:{@", "}];
     NSAppendPrintF();
     v36 = v33;
 
-    v37 = [v8 validationRecord];
-    v38 = [v37 validatedEmailHashes];
+    validationRecord8 = [v8 validationRecord];
+    validatedEmailHashes = [validationRecord8 validatedEmailHashes];
     v107 = SFShortHashArrayDescription();
     NSAppendPrintF();
     v39 = v36;
 
-    v40 = [v8 contactInfo];
-    v41 = [v40 validatedPhoneNumbers];
-    v108 = [v41 componentsJoinedByString:{@", "}];
+    contactInfo4 = [v8 contactInfo];
+    validatedPhoneNumbers = [contactInfo4 validatedPhoneNumbers];
+    v108 = [validatedPhoneNumbers componentsJoinedByString:{@", "}];
     NSAppendPrintF();
-    v42 = v39;
+    accountIdentifier2 = v39;
 
-    v43 = [v8 validationRecord];
-    v44 = [v43 validatedPhoneHashes];
+    validationRecord9 = [v8 validationRecord];
+    validatedPhoneHashes = [validationRecord9 validatedPhoneHashes];
     v109 = SFShortHashArrayDescription();
     NSAppendPrintF();
-    v45 = v42;
+    v45 = accountIdentifier2;
 
-    v46 = [v8 privateKeyPersistentReference];
+    privateKeyPersistentReference = [v8 privateKeyPersistentReference];
     v47 = "yes";
-    if (!v46)
+    if (!privateKeyPersistentReference)
     {
       v47 = "no";
     }
@@ -278,8 +278,8 @@
     NSAppendPrintF();
     v48 = v45;
 
-    v49 = [v9 privateKeyPersistentReference];
-    if (v49)
+    privateKeyPersistentReference2 = [identity privateKeyPersistentReference];
+    if (privateKeyPersistentReference2)
     {
       v50 = "yes";
     }
@@ -293,8 +293,8 @@
     NSAppendPrintF();
     v51 = v48;
 
-    v52 = [v9 certificatePersistentReference];
-    if (v52)
+    certificatePersistentReference = [identity certificatePersistentReference];
+    if (certificatePersistentReference)
     {
       v53 = "yes";
     }
@@ -308,33 +308,33 @@
     NSAppendPrintF();
     v54 = v51;
 
-    v113 = [v9 accountIdentifier];
+    accountIdentifier = [identity accountIdentifier];
     NSAppendPrintF();
     v55 = v54;
 
-    v114 = [v9 certificateExpirationDate];
+    certificateExpirationDate = [identity certificateExpirationDate];
     NSAppendPrintF();
     v56 = v55;
 
-    v115 = [v9 serialNumber];
+    serialNumber = [identity serialNumber];
     NSAppendPrintF();
     v57 = v56;
 
-    v116 = [v8 certificateToken];
+    certificateToken = [v8 certificateToken];
     NSAppendPrintF();
     v58 = v57;
 
-    v59 = [v8 validationRecord];
+    validationRecord10 = [v8 validationRecord];
 
-    if (v59 && v9)
+    if (validationRecord10 && identity)
     {
-      v60 = [v8 validationRecord];
-      v61 = [v60 altDSID];
+      validationRecord11 = [v8 validationRecord];
+      altDSID3 = [validationRecord11 altDSID];
 
-      if (v61)
+      if (altDSID3)
       {
-        v42 = [v9 accountIdentifier];
-        if ([v42 hasSuffix:v61])
+        accountIdentifier2 = [identity accountIdentifier];
+        if ([accountIdentifier2 hasSuffix:altDSID3])
         {
           v62 = "yes";
         }
@@ -348,7 +348,7 @@
         NSAppendPrintF();
         v63 = v58;
 
-        v58 = v42;
+        v58 = accountIdentifier2;
       }
 
       else
@@ -360,8 +360,8 @@
       v58 = v63;
     }
 
-    v64 = [v9 intermediateCertificatePersistentReference];
-    if (v64)
+    intermediateCertificatePersistentReference = [identity intermediateCertificatePersistentReference];
+    if (intermediateCertificatePersistentReference)
     {
       v65 = "yes";
     }
@@ -375,19 +375,19 @@
     NSAppendPrintF();
     v66 = v58;
 
-    v119 = [v9 intermediateCertificateExpirationDate];
+    intermediateCertificateExpirationDate = [identity intermediateCertificateExpirationDate];
     NSAppendPrintF();
     v67 = v66;
 
-    v120 = [v9 intermediateCertificateSerialNumber];
+    intermediateCertificateSerialNumber = [identity intermediateCertificateSerialNumber];
     NSAppendPrintF();
     v68 = v67;
 
-    v69 = [v9 certificatePersistentReference];
-    if (v69)
+    certificatePersistentReference2 = [identity certificatePersistentReference];
+    if (certificatePersistentReference2)
     {
-      v42 = [v9 privateKeyPersistentReference];
-      if (v42)
+      accountIdentifier2 = [identity privateKeyPersistentReference];
+      if (accountIdentifier2)
       {
         v70 = "yes";
       }
@@ -407,11 +407,11 @@
     NSAppendPrintF();
     v71 = v68;
 
-    if (v69)
+    if (certificatePersistentReference2)
     {
     }
 
-    if ([v9 isInvalid])
+    if ([identity isInvalid])
     {
       v72 = "yes";
     }
@@ -425,7 +425,7 @@
     NSAppendPrintF();
     v73 = v71;
 
-    if ([v9 needsRenewal])
+    if ([identity needsRenewal])
     {
       v74 = "yes";
     }
@@ -493,26 +493,26 @@
       v83 = v84;
     }
 
-    v127 = [(SDAppleIDAgent *)self _metaInfoValueForKey:@"LastSignInDate", v126];
+    v1262 = [(SDAppleIDAgent *)self _metaInfoValueForKey:@"LastSignInDate", v126];
     NSAppendPrintF();
     v85 = v83;
 
-    v128 = [(SDAppleIDAgent *)self _metaInfoValueForKey:@"LastSignOutDate", v127];
+    v127 = [(SDAppleIDAgent *)self _metaInfoValueForKey:@"LastSignOutDate", v1262];
     NSAppendPrintF();
     v86 = v85;
 
-    v129 = [(SDAppleIDAgent *)self _metaInfoValueForKey:@"LastSignOutAppleID", v128];
+    v128 = [(SDAppleIDAgent *)self _metaInfoValueForKey:@"LastSignOutAppleID", v127];
     NSAppendPrintF();
     v87 = v86;
 
-    v130 = [(SDAppleIDAgent *)self _metaInfoValueForKey:@"LastAllGoodDate", v129];
+    v129 = [(SDAppleIDAgent *)self _metaInfoValueForKey:@"LastAllGoodDate", v128];
     NSAppendPrintF();
     v88 = v87;
 
-    v89 = [(SDAppleIDAgent *)self _accountState];
-    if (v89 <= 0xE)
+    _accountState = [(SDAppleIDAgent *)self _accountState];
+    if (_accountState <= 0xE)
     {
-      v90 = *(&off_1008D39E8 + v89);
+      v90 = *(&off_1008D39E8 + _accountState);
     }
 
     NSAppendPrintF();
@@ -549,9 +549,9 @@
   }
 
   v4 = +[SDStatusMonitor sharedMonitor];
-  v5 = [v4 deviceWasUnlockedOnce];
+  deviceWasUnlockedOnce = [v4 deviceWasUnlockedOnce];
 
-  if ((v5 & 1) == 0)
+  if ((deviceWasUnlockedOnce & 1) == 0)
   {
     if (dword_100972850 <= 30 && (dword_100972850 != -1 || _LogCategory_Initialize()))
     {
@@ -579,9 +579,9 @@
   }
 
   v7 = v6;
-  v8 = [v6 altDSID];
+  altDSID = [v6 altDSID];
 
-  if (!v8)
+  if (!altDSID)
   {
     if (dword_100972850 <= 60 && (dword_100972850 != -1 || _LogCategory_Initialize()))
     {
@@ -591,8 +591,8 @@
     goto LABEL_50;
   }
 
-  v9 = [v7 identity];
-  if (!v9)
+  identity = [v7 identity];
+  if (!identity)
   {
     if (self->_identityRequest)
     {
@@ -617,22 +617,22 @@ LABEL_50:
     goto LABEL_15;
   }
 
-  v10 = v9;
-  v11 = [v9 copyCertificate];
-  if (v11)
+  v10 = identity;
+  copyCertificate = [identity copyCertificate];
+  if (copyCertificate)
   {
-    v12 = v11;
-    v13 = [v10 copyIntermediateCertificate];
-    if (!v13)
+    v12 = copyCertificate;
+    copyIntermediateCertificate = [v10 copyIntermediateCertificate];
+    if (!copyIntermediateCertificate)
     {
       sub_1001E3F78(v12);
       v18 = 12;
       goto LABEL_15;
     }
 
-    v14 = v13;
-    v15 = [v10 copyPrivateKey];
-    if (v15)
+    v14 = copyIntermediateCertificate;
+    copyPrivateKey = [v10 copyPrivateKey];
+    if (copyPrivateKey)
     {
       if ([v10 certificateExpired])
       {
@@ -646,10 +646,10 @@ LABEL_50:
 
       else
       {
-        v16 = [v7 validationRecord];
-        v17 = [v16 isInvalid];
+        validationRecord = [v7 validationRecord];
+        isInvalid = [validationRecord isInvalid];
 
-        if (!v17)
+        if (!isInvalid)
         {
           v18 = 1;
           goto LABEL_13;
@@ -668,9 +668,9 @@ LABEL_50:
 LABEL_13:
     CFRelease(v12);
     CFRelease(v14);
-    if (v15)
+    if (copyPrivateKey)
     {
-      CFRelease(v15);
+      CFRelease(copyPrivateKey);
     }
 
     goto LABEL_15;
@@ -710,14 +710,14 @@ LABEL_15:
   if (self->_agentEnabled)
   {
     v3 = +[SDStatusMonitor sharedMonitor];
-    v4 = [v3 deviceWasUnlockedOnce];
+    deviceWasUnlockedOnce = [v3 deviceWasUnlockedOnce];
 
     if (dword_100972850 <= 30 && (dword_100972850 != -1 || _LogCategory_Initialize()))
     {
       LogPrintF();
     }
 
-    if (v4)
+    if (deviceWasUnlockedOnce)
     {
       if (self->_throttledRetryTimer)
       {
@@ -742,7 +742,7 @@ LABEL_15:
   if (!self->_agentEnabled)
   {
 LABEL_77:
-    v9 = 0;
+    metaInfo = 0;
     goto LABEL_78;
   }
 
@@ -753,9 +753,9 @@ LABEL_77:
   }
 
   v7 = +[SDStatusMonitor sharedMonitor];
-  v8 = [v7 deviceWasUnlockedOnce];
+  deviceWasUnlockedOnce = [v7 deviceWasUnlockedOnce];
 
-  if ((v8 & 1) == 0)
+  if ((deviceWasUnlockedOnce & 1) == 0)
   {
     sub_100023FA8();
     if (v5 ^ v6 | v4 && (v49 != -1 || _LogCategory_Initialize()))
@@ -768,7 +768,7 @@ LABEL_77:
 
   if (self->_dbManager)
   {
-    v9 = 0;
+    metaInfo = 0;
   }
 
   else
@@ -777,7 +777,7 @@ LABEL_77:
     dbManager = self->_dbManager;
     self->_dbManager = v10;
 
-    v9 = [(SDAppleIDDatabaseManager *)self->_dbManager metaInfo];
+    metaInfo = [(SDAppleIDDatabaseManager *)self->_dbManager metaInfo];
     v12 = +[NSMutableDictionary dictionary];
     agentMetaInfo = self->_agentMetaInfo;
     self->_agentMetaInfo = v12;
@@ -790,9 +790,9 @@ LABEL_78:
       goto LABEL_75;
     }
 
-    if (v9)
+    if (metaInfo)
     {
-      [(NSMutableDictionary *)v14 addEntriesFromDictionary:v9];
+      [(NSMutableDictionary *)v14 addEntriesFromDictionary:metaInfo];
     }
   }
 
@@ -830,9 +830,9 @@ LABEL_53:
 
   v16 = v15;
   [(SDAppleIDAgent *)self _cleanUpAccount:v15];
-  v17 = [v16 identity];
+  identity = [v16 identity];
 
-  if (!v17)
+  if (!identity)
   {
     sub_100023FA8();
     if (v5 ^ v6 | v4 && (v52 != -1 || _LogCategory_Initialize()))
@@ -841,8 +841,8 @@ LABEL_53:
     }
 
     v43 = self->_appleID;
-    v44 = [v16 certificateToken];
-    v45 = [v16 privateKeyPersistentReference];
+    certificateToken = [v16 certificateToken];
+    privateKeyPersistentReference = [v16 privateKeyPersistentReference];
     v61[0] = _NSConcreteStackBlock;
     v61[1] = 3221225472;
     v61[2] = sub_1001E014C;
@@ -852,8 +852,8 @@ LABEL_53:
     goto LABEL_37;
   }
 
-  v18 = [v16 identity];
-  if ([v18 isInvalid])
+  identity2 = [v16 identity];
+  if ([identity2 isInvalid])
   {
 
 LABEL_19:
@@ -864,8 +864,8 @@ LABEL_19:
     }
 
     v43 = self->_appleID;
-    v44 = [v16 certificateToken];
-    v45 = [v16 privateKeyPersistentReference];
+    certificateToken = [v16 certificateToken];
+    privateKeyPersistentReference = [v16 privateKeyPersistentReference];
     v60[0] = _NSConcreteStackBlock;
     v60[1] = 3221225472;
     v60[2] = sub_1001E01CC;
@@ -873,28 +873,28 @@ LABEL_19:
     v60[4] = self;
     v46 = v60;
 LABEL_37:
-    [(SDAppleIDAgent *)self _requestIdentityForAppleID:v43 certificateToken:v44 privateKeyPersistentReference:v45 withCompletion:v46];
+    [(SDAppleIDAgent *)self _requestIdentityForAppleID:v43 certificateToken:certificateToken privateKeyPersistentReference:privateKeyPersistentReference withCompletion:v46];
 
     goto LABEL_75;
   }
 
-  v19 = [v16 identity];
-  v20 = [v19 needsRenewal];
+  identity3 = [v16 identity];
+  needsRenewal = [identity3 needsRenewal];
 
-  if (v20)
+  if (needsRenewal)
   {
     goto LABEL_19;
   }
 
-  v22 = [v16 identity];
-  v23 = [(SDAppleIDAgent *)self _performKeyVerificationForIdentity:v22];
+  identity4 = [v16 identity];
+  v23 = [(SDAppleIDAgent *)self _performKeyVerificationForIdentity:identity4];
 
   if (!v23)
   {
     [(SDAppleIDAgent *)self _performKeychainCount];
-    v24 = [v16 validationRecord];
+    validationRecord = [v16 validationRecord];
 
-    if (!v24)
+    if (!validationRecord)
     {
       sub_100023FA8();
       if (v5 ^ v6 | v4 && (v54 != -1 || _LogCategory_Initialize()))
@@ -912,8 +912,8 @@ LABEL_37:
       goto LABEL_40;
     }
 
-    v25 = [v16 validationRecord];
-    if ([v25 needsUpdate])
+    validationRecord2 = [v16 validationRecord];
+    if ([validationRecord2 needsUpdate])
     {
 
 LABEL_27:
@@ -935,37 +935,37 @@ LABEL_40:
       goto LABEL_75;
     }
 
-    v26 = [v16 validationRecord];
-    v27 = [v26 isInvalid];
+    validationRecord3 = [v16 validationRecord];
+    isInvalid = [validationRecord3 isInvalid];
 
-    if (v27)
+    if (isInvalid)
     {
       goto LABEL_27;
     }
 
-    v29 = [v16 identity];
-    v30 = [v29 accountIdentifier];
-    if (v30)
+    identity5 = [v16 identity];
+    accountIdentifier = [identity5 accountIdentifier];
+    if (accountIdentifier)
     {
-      v31 = v30;
-      v32 = [v16 validationRecord];
-      v33 = [v32 altDSID];
-      if (v33)
+      v31 = accountIdentifier;
+      validationRecord4 = [v16 validationRecord];
+      altDSID = [validationRecord4 altDSID];
+      if (altDSID)
       {
-        v34 = v33;
+        v34 = altDSID;
         [v16 identity];
-        v35 = v57 = v9;
-        v36 = [v35 accountIdentifier];
-        v37 = [v16 validationRecord];
-        [v37 altDSID];
-        v38 = v56 = v29;
-        v39 = [v36 hasSuffix:v38];
+        v35 = v57 = metaInfo;
+        accountIdentifier2 = [v35 accountIdentifier];
+        validationRecord5 = [v16 validationRecord];
+        [validationRecord5 altDSID];
+        v38 = v56 = identity5;
+        v39 = [accountIdentifier2 hasSuffix:v38];
 
-        v9 = v57;
+        metaInfo = v57;
         if (v39)
         {
-          v40 = [v16 validationRecord];
-          v41 = [v40 data];
+          validationRecord6 = [v16 validationRecord];
+          data = [validationRecord6 data];
           dispatchQueue = self->_dispatchQueue;
           v16 = v16;
           SFAppleIDParseValidationRecordData();
@@ -1207,12 +1207,12 @@ LABEL_75:
   sub_1001BB994();
 }
 
-- (__SecIdentity)_copyIdentityForAppleID:(id)a3
+- (__SecIdentity)_copyIdentityForAppleID:(id)d
 {
-  v3 = [(SDAppleIDDatabaseManager *)self->_dbManager identityForAppleID:a3];
-  v4 = [v3 copyIdentity];
+  v3 = [(SDAppleIDDatabaseManager *)self->_dbManager identityForAppleID:d];
+  copyIdentity = [v3 copyIdentity];
 
-  return v4;
+  return copyIdentity;
 }
 
 - (void)_ensurePushStarted
@@ -1253,34 +1253,34 @@ LABEL_75:
   }
 }
 
-- (void)_checkIfAppleIDCertificateChainIsValidForIdentity:(id)a3 completion:(id)a4
+- (void)_checkIfAppleIDCertificateChainIsValidForIdentity:(id)identity completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  identityCopy = identity;
+  completionCopy = completion;
+  if (identityCopy)
   {
     v8 = 201203;
-    v9 = [v6 copyCertificate];
-    v10 = [v6 copyIntermediateCertificate];
-    v11 = v10;
-    if (v9)
+    copyCertificate = [identityCopy copyCertificate];
+    copyIntermediateCertificate = [identityCopy copyIntermediateCertificate];
+    v11 = copyIntermediateCertificate;
+    if (copyCertificate)
     {
-      if (v10)
+      if (copyIntermediateCertificate)
       {
-        v24[0] = v9;
-        v24[1] = v10;
+        v24[0] = copyCertificate;
+        v24[1] = copyIntermediateCertificate;
         v12 = [NSArray arrayWithObjects:v24 count:2];
         dispatchQueue = self->_dispatchQueue;
         v18 = _NSConcreteStackBlock;
         v19 = 3221225472;
         v20 = sub_1001DC420;
         v21 = &unk_1008D3700;
-        v22 = self;
-        v23 = v7;
+        selfCopy = self;
+        v23 = completionCopy;
         SFAppleIDVerifyCertificateChain();
 
 LABEL_5:
-        CFRelease(v9);
+        CFRelease(copyCertificate);
         goto LABEL_6;
       }
 
@@ -1290,24 +1290,24 @@ LABEL_5:
 
   else
   {
-    v9 = 0;
+    copyCertificate = 0;
     v11 = 0;
     v8 = -6705;
   }
 
-  if (v7)
+  if (completionCopy)
   {
     v14 = self->_dispatchQueue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1001DC494;
     block[3] = &unk_1008D0BE0;
-    v16 = v7;
+    v16 = completionCopy;
     v17 = v8;
     dispatch_async(v14, block);
   }
 
-  if (v9)
+  if (copyCertificate)
   {
     goto LABEL_5;
   }
@@ -1319,23 +1319,23 @@ LABEL_6:
   }
 }
 
-- (BOOL)_isCertificateBlocklisted:(id)a3
+- (BOOL)_isCertificateBlocklisted:(id)blocklisted
 {
-  v4 = [a3 copyCertificate];
-  if (v4)
+  copyCertificate = [blocklisted copyCertificate];
+  if (copyCertificate)
   {
     v5 = SecCertificateCopyIssuerSHA256Digest();
-    CFRelease(v4);
+    CFRelease(copyCertificate);
     if (v5)
     {
       v6 = objc_opt_new();
-      v7 = [v5 bytes];
+      bytes = [v5 bytes];
       if ([v5 length])
       {
         v8 = 0;
         do
         {
-          [v6 appendFormat:@"%02x", v7[v8++]];
+          [v6 appendFormat:@"%02x", bytes[v8++]];
         }
 
         while (v8 < [v5 length]);
@@ -1351,9 +1351,9 @@ LABEL_6:
         v9 = [v6 substringToIndex:16];
       }
 
-      v4 = v9;
+      copyCertificate = v9;
 
-      if (v4 && [(NSSet *)self->_blocklistedCertificateDigests containsObject:v4])
+      if (copyCertificate && [(NSSet *)self->_blocklistedCertificateDigests containsObject:copyCertificate])
       {
         if (dword_100972850 <= 50 && (dword_100972850 != -1 || _LogCategory_Initialize()))
         {
@@ -1367,7 +1367,7 @@ LABEL_6:
 
     else
     {
-      v4 = 0;
+      copyCertificate = 0;
     }
   }
 
@@ -1430,33 +1430,33 @@ LABEL_21:
   [(SDAppleIDAgent *)self _verifyStateWithDelay:15.0];
 }
 
-- (void)_handleCertificateStatusUpdate:(int64_t)a3 forAppleID:(id)a4
+- (void)_handleCertificateStatusUpdate:(int64_t)update forAppleID:(id)d
 {
-  v10 = a4;
-  if (([v10 isEqualToString:self->_appleID] & 1) == 0)
+  dCopy = d;
+  if (([dCopy isEqualToString:self->_appleID] & 1) == 0)
   {
-    sub_1001E44C8(v10, &v11);
+    sub_1001E44C8(dCopy, &v11);
 LABEL_28:
     v7 = v11;
     goto LABEL_18;
   }
 
-  v6 = [(SDAppleIDDatabaseManager *)self->_dbManager accountForAppleID:v10];
+  v6 = [(SDAppleIDDatabaseManager *)self->_dbManager accountForAppleID:dCopy];
   if (!v6)
   {
-    sub_1001E463C(v10, &v11);
+    sub_1001E463C(dCopy, &v11);
     goto LABEL_28;
   }
 
   v7 = v6;
-  if (a3 > 2)
+  if (update > 2)
   {
-    if ((a3 - 3) >= 3)
+    if ((update - 3) >= 3)
     {
 LABEL_21:
       if (dword_100972850 <= 60 && (dword_100972850 != -1 || _LogCategory_Initialize()))
       {
-        sub_1001E45DC(a3);
+        sub_1001E45DC(update);
       }
 
       goto LABEL_18;
@@ -1467,14 +1467,14 @@ LABEL_21:
 
   else
   {
-    if (a3)
+    if (update)
     {
-      if (a3 == 1)
+      if (update == 1)
       {
         goto LABEL_18;
       }
 
-      if (a3 == 2)
+      if (update == 2)
       {
         if (dword_100972850 <= 30 && (dword_100972850 != -1 || _LogCategory_Initialize()))
         {
@@ -1489,13 +1489,13 @@ LABEL_21:
 
     v8 = +[AKURLBag sharedBag];
     [v8 IDMSEnvironment];
-    v9 = [v7 altDSID];
+    altDSID = [v7 altDSID];
     SFMetricsLogUnexpectedEvent();
   }
 
   if (dword_100972850 <= 60 && (dword_100972850 != -1 || _LogCategory_Initialize()))
   {
-    sub_1001E4590(a3);
+    sub_1001E4590(update);
   }
 
   [(SDAppleIDAgent *)self _setCurrentAppleIDIdentity:0];
@@ -1503,15 +1503,15 @@ LABEL_21:
 LABEL_18:
 }
 
-- (void)_handleAltDSIDLookupResponse:(id)a3 requestError:(id)a4 serverTask:(id)a5 completion:(id)a6
+- (void)_handleAltDSIDLookupResponse:(id)response requestError:(id)error serverTask:(id)task completion:(id)completion
 {
-  v13 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  responseCopy = response;
+  errorCopy = error;
+  taskCopy = task;
+  completionCopy = completion;
   if (dword_100972850 > 30 || dword_100972850 == -1 && !_LogCategory_Initialize())
   {
-    if (!v12)
+    if (!completionCopy)
     {
       goto LABEL_6;
     }
@@ -1520,35 +1520,35 @@ LABEL_18:
   }
 
   sub_1001E46BC();
-  if (v12)
+  if (completionCopy)
   {
 LABEL_5:
-    v12[2](v12, v13, v10);
+    completionCopy[2](completionCopy, responseCopy, errorCopy);
   }
 
 LABEL_6:
-  [v11 invalidate];
-  [(NSMutableArray *)self->_altDSIDRequests removeObject:v11];
+  [taskCopy invalidate];
+  [(NSMutableArray *)self->_altDSIDRequests removeObject:taskCopy];
 }
 
-- (void)_handleInfoResponse:(id)a3 forAppleID:(id)a4 infoRequest:(id)a5 certificateSerialNumber:(id)a6 withError:(id)a7 completion:(id)a8
+- (void)_handleInfoResponse:(id)response forAppleID:(id)d infoRequest:(id)request certificateSerialNumber:(id)number withError:(id)error completion:(id)completion
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  responseCopy = response;
+  dCopy = d;
+  requestCopy = request;
+  numberCopy = number;
+  errorCopy = error;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v37 = v16;
-  if (!v15)
+  v37 = requestCopy;
+  if (!dCopy)
   {
     goto LABEL_40;
   }
 
-  if (v18)
+  if (errorCopy)
   {
-    v27 = v18;
+    v27 = errorCopy;
     v20 = 0;
 LABEL_36:
     v22 = 0;
@@ -1557,7 +1557,7 @@ LABEL_37:
     goto LABEL_12;
   }
 
-  if (!v14)
+  if (!responseCopy)
   {
 LABEL_40:
     sub_1001E47EC();
@@ -1566,7 +1566,7 @@ LABEL_40:
     goto LABEL_46;
   }
 
-  if (self->_infoRequest != v16)
+  if (self->_infoRequest != requestCopy)
   {
     if (dword_100972850 <= 60 && (dword_100972850 != -1 || _LogCategory_Initialize()))
     {
@@ -1579,7 +1579,7 @@ LABEL_40:
     goto LABEL_37;
   }
 
-  if (!v17 || ([v17 isEqualToString:&stru_1008EFBD0] & 1) != 0)
+  if (!numberCopy || ([numberCopy isEqualToString:&stru_1008EFBD0] & 1) != 0)
   {
     v20 = 0;
     goto LABEL_8;
@@ -1588,12 +1588,12 @@ LABEL_40:
   CFStringGetTypeID();
   v29 = CFDictionaryGetTypedValue();
   v20 = v29;
-  if (v29 && ([v29 isEqualToString:v17] & 1) == 0)
+  if (v29 && ([v29 isEqualToString:numberCopy] & 1) == 0)
   {
     if (dword_100972850 <= 60 && (dword_100972850 != -1 || _LogCategory_Initialize()))
     {
       v35 = v20;
-      v36 = v17;
+      v36 = numberCopy;
       LogPrintF();
     }
 
@@ -1628,21 +1628,21 @@ LABEL_40:
 LABEL_8:
   v21 = 0;
 LABEL_9:
-  [(SDAppleIDAgent *)self _handleCertificateStatusUpdate:v21 forAppleID:v15];
-  v22 = [[SFAppleIDContactInfo alloc] initWithDictionary:v14];
+  [(SDAppleIDAgent *)self _handleCertificateStatusUpdate:v21 forAppleID:dCopy];
+  v22 = [[SFAppleIDContactInfo alloc] initWithDictionary:responseCopy];
   if (v22)
   {
-    v23 = [[SFAppleIDValidationRecord alloc] initWithDictionary:v14];
+    v23 = [[SFAppleIDValidationRecord alloc] initWithDictionary:responseCopy];
     v24 = v23;
     if (v23)
     {
-      v25 = [v23 data];
+      data = [v23 data];
       dispatchQueue = self->_dispatchQueue;
-      v38 = v15;
+      v38 = dCopy;
       v24 = v24;
       v22 = v22;
-      v39 = v19;
-      v18 = 0;
+      v39 = completionCopy;
+      errorCopy = 0;
       SFAppleIDParseValidationRecordData();
 
       v27 = 0;
@@ -1668,7 +1668,7 @@ LABEL_12:
     if (dword_100972850 <= 90 && (dword_100972850 != -1 || _LogCategory_Initialize()))
     {
       sub_1001E48A4();
-      if (!v19)
+      if (!completionCopy)
       {
         goto LABEL_18;
       }
@@ -1676,10 +1676,10 @@ LABEL_12:
       goto LABEL_17;
     }
 
-    if (v19)
+    if (completionCopy)
     {
 LABEL_17:
-      (*(v19 + 2))(v19, v27);
+      (*(completionCopy + 2))(completionCopy, v27);
     }
   }
 
@@ -1709,19 +1709,19 @@ LABEL_18:
   [(SDAppleIDAgent *)self _verifyStateWithDelay:30.0];
 }
 
-- (void)_clearIdentityState:(id)a3
+- (void)_clearIdentityState:(id)state
 {
-  v9 = a3;
+  stateCopy = state;
   v4 = [(SDAppleIDDatabaseManager *)self->_dbManager accountForAppleID:self->_appleID];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 identity];
+    identity = [v4 identity];
 
-    if (v6)
+    if (identity)
     {
-      v7 = [v5 identity];
-      v8 = [v7 isEqual:v9];
+      identity2 = [v5 identity];
+      v8 = [identity2 isEqual:stateCopy];
 
       if (v8)
       {
@@ -1742,29 +1742,29 @@ LABEL_18:
   }
 }
 
-- (void)_handleReceivedIdentity:(id)a3 forAppleID:(id)a4 identityRequest:(id)a5 withError:(id)a6 completion:(id)a7
+- (void)_handleReceivedIdentity:(id)identity forAppleID:(id)d identityRequest:(id)request withError:(id)error completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  identityCopy = identity;
+  dCopy = d;
+  requestCopy = request;
+  errorCopy = error;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  if (v15)
+  if (errorCopy)
   {
-    v17 = v15;
+    v17 = errorCopy;
   }
 
   else
   {
-    if (v12)
+    if (identityCopy)
     {
-      if ([v13 isEqualToString:self->_appleID])
+      if ([dCopy isEqualToString:self->_appleID])
       {
-        if (self->_identityRequest == v14)
+        if (self->_identityRequest == requestCopy)
         {
-          [(SDAppleIDDatabaseManager *)self->_dbManager setCertificateToken:0 privateKeyPersistentReference:0 forAppleID:v13];
-          [(SDAppleIDAgent *)self _setCurrentAppleIDIdentity:v12];
+          [(SDAppleIDDatabaseManager *)self->_dbManager setCertificateToken:0 privateKeyPersistentReference:0 forAppleID:dCopy];
+          [(SDAppleIDAgent *)self _setCurrentAppleIDIdentity:identityCopy];
           v17 = 0;
           goto LABEL_6;
         }
@@ -1791,9 +1791,9 @@ LABEL_6:
   identityRequest = self->_identityRequest;
   self->_identityRequest = 0;
 
-  if (v16)
+  if (completionCopy)
   {
-    v16[2](v16, v17);
+    completionCopy[2](completionCopy, v17);
   }
 }
 
@@ -1835,10 +1835,10 @@ LABEL_6:
   return CFGetInt64();
 }
 
-- (int)_performKeyVerificationForIdentity:(id)a3
+- (int)_performKeyVerificationForIdentity:(id)identity
 {
-  v4 = a3;
-  if (v4)
+  identityCopy = identity;
+  if (identityCopy)
   {
     v5 = [(SDAppleIDAgent *)self _metaInfoValueForKey:@"LastKeyVerificationDate"];
     v6 = +[NSDate date];
@@ -1850,22 +1850,22 @@ LABEL_6:
         sub_1001E4BE0();
       }
 
-      v9 = 0;
+      verifyKeys = 0;
     }
 
     else
     {
       mach_absolute_time();
-      v9 = [v4 verifyKeys];
+      verifyKeys = [identityCopy verifyKeys];
       mach_absolute_time();
-      if (v9)
+      if (verifyKeys)
       {
         if (dword_100972850 <= 30 && (dword_100972850 != -1 || _LogCategory_Initialize()))
         {
           sub_1001E4C20();
         }
 
-        v10 = [v4 altDSID];
+        altDSID = [identityCopy altDSID];
         SFMetricsLogUnexpectedEvent();
       }
 
@@ -1875,7 +1875,7 @@ LABEL_6:
       v11 = [NSNumber numberWithUnsignedLongLong:UpTicksToMilliseconds()];
       v16[1] = v11;
       v15[2] = @"success";
-      v12 = [NSNumber numberWithInt:v9 == 0];
+      v12 = [NSNumber numberWithInt:verifyKeys == 0];
       v16[2] = v12;
       v13 = [NSDictionary dictionaryWithObjects:v16 forKeys:v15 count:3];
       SFMetricsLog();
@@ -1891,19 +1891,19 @@ LABEL_6:
       sub_1001E4C60();
     }
 
-    v9 = 0;
+    verifyKeys = 0;
     v5 = 0;
     v7 = 0;
   }
 
-  return v9;
+  return verifyKeys;
 }
 
-- (void)_performOtherTaskWithInfo:(id)a3 completion:(id)a4
+- (void)_performOtherTaskWithInfo:(id)info completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKeyedSubscript:@"requestType"];
+  infoCopy = info;
+  completionCopy = completion;
+  v8 = [infoCopy objectForKeyedSubscript:@"requestType"];
   if (![v8 isEqualToString:@"createAndFetchCert"])
   {
     if ([v8 isEqualToString:@"triggerPush"])
@@ -1919,7 +1919,7 @@ LABEL_6:
       block[2] = sub_1001DE1C0;
       block[3] = &unk_1008CE708;
       block[4] = self;
-      v37 = v7;
+      v37 = completionCopy;
       dispatch_async(dispatchQueue, block);
       v18 = v37;
     }
@@ -1932,7 +1932,7 @@ LABEL_6:
       }
 
       [(SDAppleIDAgent *)self _handlePeriodicVerifyTimerFired];
-      if (!v7)
+      if (!completionCopy)
       {
         goto LABEL_25;
       }
@@ -1942,7 +1942,7 @@ LABEL_6:
       v34[1] = 3221225472;
       v34[2] = sub_1001DE228;
       v34[3] = &unk_1008D08E0;
-      v35 = v7;
+      v35 = completionCopy;
       dispatch_async(v19, v34);
       v18 = v35;
     }
@@ -1958,11 +1958,11 @@ LABEL_6:
             sub_1001E4CBC();
           }
 
-          v21 = [v6 objectForKeyedSubscript:@"key"];
+          v21 = [infoCopy objectForKeyedSubscript:@"key"];
           if (v21)
           {
             v16 = v21;
-            v15 = [v6 objectForKeyedSubscript:@"value"];
+            v15 = [infoCopy objectForKeyedSubscript:@"value"];
             v22 = +[NSNull null];
             v23 = [v15 isEqual:v22];
 
@@ -1973,14 +1973,14 @@ LABEL_6:
             }
 
             [(SDAppleIDAgent *)self _setMetaInfoValue:v15 forKey:v16];
-            if (v7)
+            if (completionCopy)
             {
               v24 = self->_dispatchQueue;
               v30[0] = _NSConcreteStackBlock;
               v30[1] = 3221225472;
               v30[2] = sub_1001DE260;
               v30[3] = &unk_1008D08E0;
-              v31 = v7;
+              v31 = completionCopy;
               dispatch_async(v24, v30);
             }
 
@@ -1996,7 +1996,7 @@ LABEL_6:
         v9 = 0;
 LABEL_41:
         v25 = -6705;
-        if (!v7)
+        if (!completionCopy)
         {
 LABEL_43:
           v15 = 0;
@@ -2011,7 +2011,7 @@ LABEL_42:
         v27[1] = 3221225472;
         v27[2] = sub_1001DE27C;
         v27[3] = &unk_1008D0BE0;
-        v28 = v7;
+        v28 = completionCopy;
         v29 = v25;
         dispatch_async(v26, v27);
 
@@ -2024,7 +2024,7 @@ LABEL_42:
       }
 
       [(SDAppleIDAgent *)self _clearAccount];
-      if (!v7)
+      if (!completionCopy)
       {
 LABEL_25:
         v15 = 0;
@@ -2040,7 +2040,7 @@ LABEL_26:
       v32[1] = 3221225472;
       v32[2] = sub_1001DE244;
       v32[3] = &unk_1008D08E0;
-      v33 = v7;
+      v33 = completionCopy;
       dispatch_async(v20, v32);
       v18 = v33;
     }
@@ -2048,7 +2048,7 @@ LABEL_26:
     goto LABEL_25;
   }
 
-  v9 = [v6 objectForKeyedSubscript:@"appleID"];
+  v9 = [infoCopy objectForKeyedSubscript:@"appleID"];
   if (!v9)
   {
     goto LABEL_41;
@@ -2067,7 +2067,7 @@ LABEL_26:
   if (!v13)
   {
     v25 = -6728;
-    if (!v7)
+    if (!completionCopy)
     {
       goto LABEL_43;
     }
@@ -2082,7 +2082,7 @@ LABEL_26:
   v38[2] = sub_1001DE124;
   v38[3] = &unk_1008D3750;
   v38[4] = self;
-  v39 = v7;
+  v39 = completionCopy;
   [(SDAppleIDIdentityRequest *)v14 setResponseHandler:v38];
   objc_storeStrong(&self->_testIdentityRequest, v14);
   [(SDAppleIDIdentityRequest *)self->_testIdentityRequest activate];
@@ -2092,10 +2092,10 @@ LABEL_26:
 LABEL_27:
 }
 
-- (void)_performServerTaskWithInfo:(id)a3 completion:(id)a4
+- (void)_performServerTaskWithInfo:(id)info completion:(id)completion
 {
-  v6 = a3;
-  v44 = a4;
+  infoCopy = info;
+  completionCopy = completion;
   v61 = 0;
   v62 = &v61;
   v63 = 0x2020000000;
@@ -2108,11 +2108,11 @@ LABEL_27:
   v54 = &v53;
   v55 = 0x2020000000;
   v56 = 0;
-  v42 = v6;
-  v43 = [v6 objectForKeyedSubscript:@"requestType"];
+  v42 = infoCopy;
+  v43 = [infoCopy objectForKeyedSubscript:@"requestType"];
   if ([v43 isEqualToString:@"createCert"])
   {
-    v7 = [v6 objectForKeyedSubscript:@"appleID"];
+    v7 = [infoCopy objectForKeyedSubscript:@"appleID"];
     if (v7)
     {
       v8 = dispatch_semaphore_create(0);
@@ -2249,11 +2249,11 @@ LABEL_53:
   {
     if ([v43 isEqualToString:@"getMyInfo"])
     {
-      v7 = [v6 objectForKeyedSubscript:@"appleID"];
+      v7 = [infoCopy objectForKeyedSubscript:@"appleID"];
       if (v7)
       {
-        v20 = [v6 objectForKeyedSubscript:@"certificateSN"];
-        v21 = [v6 objectForKeyedSubscript:@"vrid"];
+        v20 = [infoCopy objectForKeyedSubscript:@"certificateSN"];
+        v21 = [infoCopy objectForKeyedSubscript:@"vrid"];
         v15 = v21;
         if (v20)
         {
@@ -2296,8 +2296,8 @@ LABEL_53:
 
     if ([v43 isEqualToString:@"findPerson"])
     {
-      v41 = [v6 objectForKeyedSubscript:@"emails"];
-      v26 = [v6 objectForKeyedSubscript:@"phones"];
+      v41 = [infoCopy objectForKeyedSubscript:@"emails"];
+      v26 = [infoCopy objectForKeyedSubscript:@"phones"];
       v40 = v26;
       if (__PAIR128__(v41, v26) != 0)
       {
@@ -2410,7 +2410,7 @@ LABEL_52:
     goto LABEL_53;
   }
 
-  v7 = [v6 objectForKeyedSubscript:@"appleID"];
+  v7 = [infoCopy objectForKeyedSubscript:@"appleID"];
   if (!v7)
   {
 LABEL_57:
@@ -2428,7 +2428,7 @@ LABEL_57:
     goto LABEL_52;
   }
 
-  v17 = [v6 objectForKeyedSubscript:@"certificateToken"];
+  v17 = [infoCopy objectForKeyedSubscript:@"certificateToken"];
   v18 = v17;
   if (!v17)
   {
@@ -2478,20 +2478,20 @@ LABEL_33:
   v48[3] = &unk_1008D37A0;
   v48[4] = self;
   v50 = v19;
-  v49 = v44;
+  v49 = completionCopy;
   [(SDAppleIDServerTask *)self->_task setResponseHandler:v48];
 
   [(SDAppleIDServerTask *)self->_task activate];
   *(v62 + 6) = 0;
 LABEL_36:
-  if (v44 && *(v62 + 6))
+  if (completionCopy && *(v62 + 6))
   {
     dispatchQueue = self->_dispatchQueue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1001DED78;
     block[3] = &unk_1008D0BB8;
-    v46 = v44;
+    v46 = completionCopy;
     v47 = &v61;
     dispatch_async(dispatchQueue, block);
   }
@@ -2502,21 +2502,21 @@ LABEL_36:
   _Block_object_dispose(&v61, 8);
 }
 
-- (void)_altDSIDLookupWithEmails:(id)a3 phoneNumbers:(id)a4 completion:(id)a5
+- (void)_altDSIDLookupWithEmails:(id)emails phoneNumbers:(id)numbers completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  emailsCopy = emails;
+  numbersCopy = numbers;
+  completionCopy = completion;
   if (dword_100972850 <= 30 && (dword_100972850 != -1 || _LogCategory_Initialize()))
   {
-    v17 = v8;
-    v18 = v9;
+    v17 = emailsCopy;
+    v18 = numbersCopy;
     LogPrintF();
   }
 
-  if (v8)
+  if (emailsCopy)
   {
-    v11 = v8;
+    v11 = emailsCopy;
   }
 
   else
@@ -2526,9 +2526,9 @@ LABEL_36:
 
   v22[0] = @"emails";
   v22[1] = @"phones";
-  if (v9)
+  if (numbersCopy)
   {
-    v12 = v9;
+    v12 = numbersCopy;
   }
 
   else
@@ -2547,8 +2547,8 @@ LABEL_36:
   v19[3] = &unk_1008D37C8;
   v19[4] = self;
   v20 = v14;
-  v21 = v10;
-  v15 = v10;
+  v21 = completionCopy;
+  v15 = completionCopy;
   v16 = v14;
   [(SDAppleIDServerTask *)v16 setResponseHandler:v19];
   [(NSMutableArray *)self->_altDSIDRequests addObject:v16];
@@ -2597,24 +2597,24 @@ LABEL_36:
 
   CFStringGetTypeID();
   v5 = CFPrefs_CopyTypedValue();
-  v6 = [v5 lowercaseString];
+  lowercaseString = [v5 lowercaseString];
 
-  if (([(__CFString *)v6 isEqualToString:@"production"]& 1) == 0 && ([(__CFString *)v6 isEqualToString:@"development"]& 1) == 0)
+  if (([(__CFString *)lowercaseString isEqualToString:@"production"]& 1) == 0 && ([(__CFString *)lowercaseString isEqualToString:@"development"]& 1) == 0)
   {
 
-    v6 = @"production";
+    lowercaseString = @"production";
   }
 
-  if (([(__CFString *)v6 isEqualToString:self->_pushEnvironment]& 1) == 0)
+  if (([(__CFString *)lowercaseString isEqualToString:self->_pushEnvironment]& 1) == 0)
   {
     if (dword_100972850 <= 40 && (dword_100972850 != -1 || _LogCategory_Initialize()))
     {
       pushEnvironment = self->_pushEnvironment;
-      v8 = v6;
+      v8 = lowercaseString;
       LogPrintF();
     }
 
-    objc_storeStrong(&self->_pushEnvironment, v6);
+    objc_storeStrong(&self->_pushEnvironment, lowercaseString);
     self->_updatePush = 1;
   }
 
@@ -2627,18 +2627,18 @@ LABEL_36:
   [v3 removeObserver:self];
 }
 
-- (void)_requestInfoForAppleID:(id)a3 completion:(id)a4
+- (void)_requestInfoForAppleID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  dCopy = d;
+  completionCopy = completion;
+  if (!dCopy)
   {
     sub_1001E4ED4(&v31);
 LABEL_22:
     v9 = 0;
-    v11 = 0;
+    serialNumber = 0;
     v16 = 0;
-    v13 = 0;
+    identifier = 0;
     goto LABEL_24;
   }
 
@@ -2653,26 +2653,26 @@ LABEL_22:
     sub_1001E4E94();
   }
 
-  v8 = [(SDAppleIDDatabaseManager *)self->_dbManager accountForAppleID:v6];
+  v8 = [(SDAppleIDDatabaseManager *)self->_dbManager accountForAppleID:dCopy];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 identity];
-    v11 = [v10 serialNumber];
+    identity = [v8 identity];
+    serialNumber = [identity serialNumber];
 
-    v12 = [v9 validationRecord];
-    v13 = [v12 identifier];
+    validationRecord = [v9 validationRecord];
+    identifier = [validationRecord identifier];
   }
 
   else
   {
-    v11 = 0;
-    v13 = 0;
+    serialNumber = 0;
+    identifier = 0;
   }
 
-  if (v11)
+  if (serialNumber)
   {
-    v14 = v11;
+    v14 = serialNumber;
   }
 
   else
@@ -2682,9 +2682,9 @@ LABEL_22:
 
   v32[0] = @"serialNumber";
   v32[1] = @"clientAidvrId";
-  if (v13)
+  if (identifier)
   {
-    v15 = v13;
+    v15 = identifier;
   }
 
   else
@@ -2695,7 +2695,7 @@ LABEL_22:
   v33[0] = v14;
   v33[1] = v15;
   v16 = [NSDictionary dictionaryWithObjects:v33 forKeys:v32 count:2];
-  v17 = [[SDAppleIDServerTask alloc] initWithType:2 appleID:v6 info:v16];
+  v17 = [[SDAppleIDServerTask alloc] initWithType:2 appleID:dCopy info:v16];
   [(SDAppleIDServerTask *)v17 setDispatchQueue:self->_dispatchQueue];
   if (v17)
   {
@@ -2704,12 +2704,12 @@ LABEL_22:
     v26[2] = sub_1001DF9C0;
     v26[3] = &unk_1008D37F0;
     v26[4] = self;
-    v27 = v6;
+    v27 = dCopy;
     v18 = v17;
     v28 = v18;
-    v11 = v11;
-    v29 = v11;
-    v30 = v7;
+    serialNumber = serialNumber;
+    v29 = serialNumber;
+    v30 = completionCopy;
     [(SDAppleIDServerTask *)v18 setResponseHandler:v26];
 
     infoRequest = self->_infoRequest;
@@ -2726,14 +2726,14 @@ LABEL_17:
   sub_1001E4734();
 LABEL_24:
   v21 = v31;
-  if (v7 && v31)
+  if (completionCopy && v31)
   {
     dispatchQueue = self->_dispatchQueue;
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = sub_1001DFA64;
     v23[3] = &unk_1008CF578;
-    v25 = v7;
+    v25 = completionCopy;
     v21 = v21;
     v24 = v21;
     dispatch_async(dispatchQueue, v23);
@@ -2745,45 +2745,45 @@ LABEL_24:
 LABEL_18:
 }
 
-- (void)_requestIdentityForAppleID:(id)a3 certificateToken:(id)a4 privateKeyPersistentReference:(id)a5 withCompletion:(id)a6
+- (void)_requestIdentityForAppleID:(id)d certificateToken:(id)token privateKeyPersistentReference:(id)reference withCompletion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v10)
+  dCopy = d;
+  tokenCopy = token;
+  referenceCopy = reference;
+  completionCopy = completion;
+  if (dCopy)
   {
     if (!self->_identityRequest)
     {
       if (dword_100972850 <= 30 && (dword_100972850 != -1 || _LogCategory_Initialize()))
       {
         v14 = "yes";
-        if (!v12)
+        if (!referenceCopy)
         {
           v14 = "no";
         }
 
-        v30 = v10;
-        v31 = v11;
+        v30 = dCopy;
+        v31 = tokenCopy;
         v32 = v14;
         LogPrintF();
       }
 
       v15 = [SDAppleIDIdentityRequest alloc];
-      if (v11 && v12)
+      if (tokenCopy && referenceCopy)
       {
-        v16 = [(SDAppleIDIdentityRequest *)v15 initWithAppleID:v10 certificateToken:v11 privateKeyPersistentReference:v12];
+        v16 = [(SDAppleIDIdentityRequest *)v15 initWithAppleID:dCopy certificateToken:tokenCopy privateKeyPersistentReference:referenceCopy];
       }
 
       else
       {
-        v16 = [(SDAppleIDIdentityRequest *)v15 initWithAppleID:v10, v30, v31, v32];
+        v16 = [(SDAppleIDIdentityRequest *)v15 initWithAppleID:dCopy, v30, v31, v32];
         v40[0] = _NSConcreteStackBlock;
         v40[1] = 3221225472;
         v40[2] = sub_1001DFEE4;
         v40[3] = &unk_1008D3818;
         v40[4] = self;
-        v41 = v10;
+        v41 = dCopy;
         [(SDAppleIDIdentityRequest *)v16 setCertificateTokenHandler:v40];
       }
 
@@ -2793,10 +2793,10 @@ LABEL_18:
       v36[2] = sub_1001DFF80;
       v36[3] = &unk_1008D3840;
       v36[4] = self;
-      v37 = v10;
+      v37 = dCopy;
       v17 = v16;
       v38 = v17;
-      v39 = v13;
+      v39 = completionCopy;
       [(SDAppleIDIdentityRequest *)v17 setResponseHandler:v36];
 
       identityRequest = self->_identityRequest;
@@ -2847,14 +2847,14 @@ LABEL_18:
 
   v20 = [NSError errorWithDomain:v25 code:v26 userInfo:v24];
 
-  if (v13 && v20)
+  if (completionCopy && v20)
   {
     dispatchQueue = self->_dispatchQueue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1001E0020;
     block[3] = &unk_1008CF578;
-    v35 = v13;
+    v35 = completionCopy;
     v20 = v20;
     v34 = v20;
     dispatch_async(dispatchQueue, block);
@@ -2864,9 +2864,9 @@ LABEL_14:
   }
 }
 
-- (void)_setMetaInfoValue:(id)a3 forKey:(id)a4
+- (void)_setMetaInfoValue:(id)value forKey:(id)key
 {
-  [(NSMutableDictionary *)self->_agentMetaInfo setObject:a3 forKeyedSubscript:a4];
+  [(NSMutableDictionary *)self->_agentMetaInfo setObject:value forKeyedSubscript:key];
   agentMetaInfo = self->_agentMetaInfo;
   dbManager = self->_dbManager;
 
@@ -2905,9 +2905,9 @@ LABEL_14:
   }
 }
 
-- (void)_verifyStateWithDelay:(double)a3
+- (void)_verifyStateWithDelay:(double)delay
 {
-  v4 = dispatch_time(0, (a3 * 1000000000.0));
+  v4 = dispatch_time(0, (delay * 1000000000.0));
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001E0934;
@@ -2916,13 +2916,13 @@ LABEL_14:
   dispatch_after(v4, &_dispatch_main_q, block);
 }
 
-- (id)accountForAppleID:(id)a3
+- (id)accountForAppleID:(id)d
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(SDAppleIDAgent *)v5 _accountForAppleID:v4];
-  objc_sync_exit(v5);
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(SDAppleIDAgent *)selfCopy _accountForAppleID:dCopy];
+  objc_sync_exit(selfCopy);
 
   if (dword_100972850 <= 30 && (dword_100972850 != -1 || _LogCategory_Initialize()))
   {
@@ -2932,26 +2932,26 @@ LABEL_14:
   return v6;
 }
 
-- (id)accountStatusForAppleID:(id)a3
+- (id)accountStatusForAppleID:(id)d
 {
-  v4 = self;
-  v5 = a3;
-  objc_sync_enter(v4);
-  v6 = v4->_appleID;
-  objc_sync_exit(v4);
+  selfCopy = self;
+  dCopy = d;
+  objc_sync_enter(selfCopy);
+  v6 = selfCopy->_appleID;
+  objc_sync_exit(selfCopy);
 
-  v7 = [(NSString *)v6 isEqualToString:v5];
+  v7 = [(NSString *)v6 isEqualToString:dCopy];
   if (v7)
   {
-    v8 = [(SDAppleIDAgent *)v4 statusInfo];
+    statusInfo = [(SDAppleIDAgent *)selfCopy statusInfo];
   }
 
   else
   {
-    v8 = 0;
+    statusInfo = 0;
   }
 
-  return v8;
+  return statusInfo;
 }
 
 - (void)activate
@@ -2962,9 +2962,9 @@ LABEL_14:
   objc_sync_exit(obj);
 }
 
-- (id)verifiedIdentityForEmailOrPhone:(id)a3
+- (id)verifiedIdentityForEmailOrPhone:(id)phone
 {
-  v4 = a3;
+  phoneCopy = phone;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -2982,7 +2982,7 @@ LABEL_14:
     v13 = &v14;
     v7 = v5;
     v12 = v7;
-    [(SDAppleIDAgent *)self verifiedIdentityForEmailOrPhone:v4 queue:v6 completion:v11];
+    [(SDAppleIDAgent *)self verifiedIdentityForEmailOrPhone:phoneCopy queue:v6 completion:v11];
 
     v8 = dispatch_time(0, 15000000000);
     if (dispatch_semaphore_wait(v7, v8))
@@ -3001,11 +3001,11 @@ LABEL_14:
   return v9;
 }
 
-- (id)verifiedIdentityForCertificateChain:(id)a3 emailOrPhone:(id)a4 error:(id *)a5
+- (id)verifiedIdentityForCertificateChain:(id)chain emailOrPhone:(id)phone error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  if (![v7 count])
+  chainCopy = chain;
+  phoneCopy = phone;
+  if (![chainCopy count])
   {
     v15 = NSOSStatusErrorDomain;
     v38 = NSLocalizedDescriptionKey;
@@ -3023,7 +3023,7 @@ LABEL_14:
     goto LABEL_16;
   }
 
-  if (!v8)
+  if (!phoneCopy)
   {
     v15 = NSOSStatusErrorDomain;
     v36 = NSLocalizedDescriptionKey;
@@ -3053,7 +3053,7 @@ LABEL_16:
     goto LABEL_7;
   }
 
-  v9 = [v7 objectAtIndexedSubscript:0];
+  v9 = [chainCopy objectAtIndexedSubscript:0];
 
   if (v9)
   {
@@ -3061,7 +3061,7 @@ LABEL_16:
     v11 = 0;
     if (!v10)
     {
-      v12 = [[SDAppleIDVerifiedIdentity alloc] initWithAccountIdentifier:v11 emailOrPhone:v8];
+      v12 = [[SDAppleIDVerifiedIdentity alloc] initWithAccountIdentifier:v11 emailOrPhone:phoneCopy];
       v13 = 0;
       goto LABEL_7;
     }
@@ -3101,11 +3101,11 @@ LABEL_21:
 LABEL_25:
 
   v12 = 0;
-  if (a5 && v13)
+  if (error && v13)
   {
     v31 = v13;
     v12 = 0;
-    *a5 = v13;
+    *error = v13;
   }
 
 LABEL_7:
@@ -3113,13 +3113,13 @@ LABEL_7:
   return v12;
 }
 
-- (__SecIdentity)copyIdentityForAppleID:(id)a3
+- (__SecIdentity)copyIdentityForAppleID:(id)d
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(SDAppleIDAgent *)v5 _copyIdentityForAppleID:v4];
-  objc_sync_exit(v5);
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(SDAppleIDAgent *)selfCopy _copyIdentityForAppleID:dCopy];
+  objc_sync_exit(selfCopy);
 
   if (dword_100972850 <= 30 && (dword_100972850 != -1 || _LogCategory_Initialize()))
   {
@@ -3137,26 +3137,26 @@ LABEL_7:
   objc_sync_exit(obj);
 }
 
-- (void)personInfoWithEmailOrPhone:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)personInfoWithEmailOrPhone:(id)phone queue:(id)queue completion:(id)completion
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = self;
-  objc_sync_enter(v10);
-  [(SDAppleIDAgent *)v10 _personInfoWithEmailOrPhone:v11 queue:v8 completion:v9];
-  objc_sync_exit(v10);
+  phoneCopy = phone;
+  queueCopy = queue;
+  completionCopy = completion;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(SDAppleIDAgent *)selfCopy _personInfoWithEmailOrPhone:phoneCopy queue:queueCopy completion:completionCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)altDSIDLookupWithEmails:(id)a3 phoneNumbers:(id)a4 completion:(id)a5
+- (void)altDSIDLookupWithEmails:(id)emails phoneNumbers:(id)numbers completion:(id)completion
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = self;
-  objc_sync_enter(v10);
-  [(SDAppleIDAgent *)v10 _altDSIDLookupWithEmails:v11 phoneNumbers:v8 completion:v9];
-  objc_sync_exit(v10);
+  emailsCopy = emails;
+  numbersCopy = numbers;
+  completionCopy = completion;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(SDAppleIDAgent *)selfCopy _altDSIDLookupWithEmails:emailsCopy phoneNumbers:numbersCopy completion:completionCopy];
+  objc_sync_exit(selfCopy);
 }
 
 - (void)prefsChanged
@@ -3167,53 +3167,53 @@ LABEL_7:
   objc_sync_exit(obj);
 }
 
-- (void)requestWithInfo:(id)a3 completion:(id)a4
+- (void)requestWithInfo:(id)info completion:(id)completion
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = [v9 objectForKeyedSubscript:@"requestType"];
+  infoCopy = info;
+  completionCopy = completion;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v8 = [infoCopy objectForKeyedSubscript:@"requestType"];
   if (([v8 isEqualToString:@"createCert"] & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", @"fetchCert") & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", @"getMyInfo") & 1) != 0 || objc_msgSend(v8, "isEqualToString:", @"findPerson"))
   {
-    [(SDAppleIDAgent *)v7 _performServerTaskWithInfo:v9 completion:v6];
+    [(SDAppleIDAgent *)selfCopy _performServerTaskWithInfo:infoCopy completion:completionCopy];
   }
 
   else
   {
-    [(SDAppleIDAgent *)v7 _performOtherTaskWithInfo:v9 completion:v6];
+    [(SDAppleIDAgent *)selfCopy _performOtherTaskWithInfo:infoCopy completion:completionCopy];
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
 - (id)statusInfo
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(SDAppleIDAgent *)v2 _statusInfo];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  _statusInfo = [(SDAppleIDAgent *)selfCopy _statusInfo];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return _statusInfo;
 }
 
-- (id)validationRecordInfoForAppleID:(id)a3
+- (id)validationRecordInfoForAppleID:(id)d
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v6 = +[NSMutableDictionary dictionary];
   if (v6)
   {
-    v7 = [(SDAppleIDAgent *)v5 _accountForAppleID:v4];
-    v8 = [v7 validationRecord];
-    v9 = [v8 data];
-    [v6 setValue:v9 forKey:@"AppleIDAccountValidationRecordData"];
+    v7 = [(SDAppleIDAgent *)selfCopy _accountForAppleID:dCopy];
+    validationRecord = [v7 validationRecord];
+    data = [validationRecord data];
+    [v6 setValue:data forKey:@"AppleIDAccountValidationRecordData"];
 
     v10 = v6;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
@@ -3250,12 +3250,12 @@ LABEL_7:
   objc_sync_exit(obj);
 }
 
-- (void)connection:(id)a3 didReceiveToken:(id)a4 forTopic:(id)a5 identifier:(id)a6
+- (void)connection:(id)connection didReceiveToken:(id)token forTopic:(id)topic identifier:(id)identifier
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  connectionCopy = connection;
+  tokenCopy = token;
+  topicCopy = topic;
+  identifierCopy = identifier;
   v13 = _os_activity_create(&_mh_execute_header, "Sharing/SDAppleIDAgent/didReceiveToken", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -3268,10 +3268,10 @@ LABEL_7:
   os_activity_scope_leave(&state);
 }
 
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4
+- (void)connection:(id)connection didReceivePublicToken:(id)token
 {
-  v5 = a3;
-  v6 = a4;
+  connectionCopy = connection;
+  tokenCopy = token;
   v7 = _os_activity_create(&_mh_execute_header, "Sharing/SDAppleIDAgent/didReceivePublicToken", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -3284,10 +3284,10 @@ LABEL_7:
   os_activity_scope_leave(&state);
 }
 
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  messageCopy = message;
   v8 = _os_activity_create(&_mh_execute_header, "Sharing/SDAppleIDAgent/didReceiveIncomingMessage", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -3295,33 +3295,33 @@ LABEL_7:
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (dword_100972850 <= 50 && (dword_100972850 != -1 || _LogCategory_Initialize()))
   {
-    v10 = [v7 topic];
+    topic = [messageCopy topic];
     LogPrintF();
   }
 
-  v9 = self;
-  objc_sync_enter(v9);
-  [(SDAppleIDAgent *)v9 _updateMyInfo];
-  objc_sync_exit(v9);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(SDAppleIDAgent *)selfCopy _updateMyInfo];
+  objc_sync_exit(selfCopy);
 
   os_activity_scope_leave(&state);
 }
 
-- (void)_cleanUpAccount:(id)a3
+- (void)_cleanUpAccount:(id)account
 {
-  v4 = a3;
-  v13 = v4;
-  if (v4)
+  accountCopy = account;
+  v13 = accountCopy;
+  if (accountCopy)
   {
-    v5 = [v4 certificateToken];
+    certificateToken = [accountCopy certificateToken];
 
-    if (v5)
+    if (certificateToken)
     {
-      v6 = [v13 certificateTokenCreationDate];
-      v5 = [v6 dateByAddingTimeInterval:259200.0];
+      certificateTokenCreationDate = [v13 certificateTokenCreationDate];
+      certificateToken = [certificateTokenCreationDate dateByAddingTimeInterval:259200.0];
 
-      v7 = [v13 certificateTokenCreationDate];
-      if (!v7 || (v8 = v7, +[NSDate date](NSDate, "date"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 compare:v5], v9, v8, v10 == 1))
+      certificateTokenCreationDate2 = [v13 certificateTokenCreationDate];
+      if (!certificateTokenCreationDate2 || (v8 = certificateTokenCreationDate2, +[NSDate date](NSDate, "date"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 compare:certificateToken], v9, v8, v10 == 1))
       {
         if (dword_100972850 <= 60 && (dword_100972850 != -1 || _LogCategory_Initialize()))
         {
@@ -3331,15 +3331,15 @@ LABEL_7:
         [v13 setCertificateToken:0];
         [v13 setPrivateKeyPersistentReference:0];
         dbManager = self->_dbManager;
-        v12 = [v13 appleID];
-        [(SDAppleIDDatabaseManager *)dbManager setCertificateToken:0 privateKeyPersistentReference:0 forAppleID:v12];
+        appleID = [v13 appleID];
+        [(SDAppleIDDatabaseManager *)dbManager setCertificateToken:0 privateKeyPersistentReference:0 forAppleID:appleID];
       }
     }
   }
 
   else
   {
-    v5 = 0;
+    certificateToken = 0;
   }
 }
 
@@ -3358,7 +3358,7 @@ LABEL_7:
       v12 = 0;
       v3 = v3;
       v10 = v3;
-      v11 = self;
+      selfCopy = self;
       dispatch_async(v4, block);
     }
   }
@@ -3388,7 +3388,7 @@ LABEL_7:
       v14 = 3221225472;
       v15 = sub_1001DC7B0;
       v16 = &unk_1008CDEA0;
-      v17 = self;
+      selfCopy = self;
       dispatch_source_set_event_handler(v11, handler);
       v12 = self->_periodicVerifyTimer;
       SFDispatchTimerSet();
@@ -3425,7 +3425,7 @@ LABEL_7:
   }
 }
 
-- (void)_ensureThrottledRetryTimerStartedWithSuggestedDelay:(unint64_t)a3
+- (void)_ensureThrottledRetryTimerStartedWithSuggestedDelay:(unint64_t)delay
 {
   if (self->_throttledRetryTimer)
   {
@@ -3452,7 +3452,7 @@ LABEL_26:
     goto LABEL_22;
   }
 
-  if (a3)
+  if (delay)
   {
     if (dword_100972850 <= 30 && (dword_100972850 != -1 || _LogCategory_Initialize()))
     {
@@ -3488,7 +3488,7 @@ LABEL_26:
   v18 = 3221225472;
   v19 = sub_1001DC820;
   v20 = &unk_1008CDEA0;
-  v21 = self;
+  selfCopy = self;
   dispatch_source_set_event_handler(v15, handler);
   v16 = self->_throttledRetryTimer;
   SFDispatchTimerSet();
@@ -3561,17 +3561,17 @@ LABEL_16:
   }
 }
 
-- (void)_handleFindPersonResponse:(id)a3 forRequest:(id)a4 emailOrPhone:(id)a5 withError:(id)a6 queue:(id)a7 completion:(id)a8
+- (void)_handleFindPersonResponse:(id)response forRequest:(id)request emailOrPhone:(id)phone withError:(id)error queue:(id)queue completion:(id)completion
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a8;
-  v18 = a4;
-  dispatch_assert_queue_V2(a7);
-  v37 = self;
-  v39 = v17;
-  if (!v17)
+  responseCopy = response;
+  phoneCopy = phone;
+  errorCopy = error;
+  completionCopy = completion;
+  requestCopy = request;
+  dispatch_assert_queue_V2(queue);
+  selfCopy = self;
+  v39 = completionCopy;
+  if (!completionCopy)
   {
     v19 = 0;
     v20 = 0;
@@ -3582,35 +3582,35 @@ LABEL_30:
     goto LABEL_16;
   }
 
-  if (v16)
+  if (errorCopy)
   {
-    v20 = v16;
+    v20 = errorCopy;
     v19 = 0;
-    LODWORD(v17) = 0;
+    LODWORD(completionCopy) = 0;
     goto LABEL_30;
   }
 
   v19 = 0;
-  LODWORD(v17) = -6762;
+  LODWORD(completionCopy) = -6762;
   v20 = 0;
-  if (v14)
+  if (responseCopy)
   {
     v40 = 0;
     v21 = 0;
     v22 = 0;
-    if (v15)
+    if (phoneCopy)
     {
-      v22 = [NSMutableDictionary dictionaryWithDictionary:v14];
+      v22 = [NSMutableDictionary dictionaryWithDictionary:responseCopy];
       CFStringGetTypeID();
       v23 = CFDictionaryGetTypedValue();
-      v44 = v15;
+      v44 = phoneCopy;
       v24 = [NSArray arrayWithObjects:&v44 count:1];
       v41 = 0;
-      LODWORD(v17) = sub_100004E00(v24, 1, &v41);
+      LODWORD(completionCopy) = sub_100004E00(v24, 1, &v41);
       v19 = v41;
 
       v40 = v23;
-      if (v17)
+      if (completionCopy)
       {
         v20 = 0;
         v21 = 0;
@@ -3618,21 +3618,21 @@ LABEL_30:
 
       else if (v19 && [v19 count] == 1)
       {
-        v25 = [v19 firstObject];
-        v26 = [v23 isEqualToString:v25];
+        firstObject = [v19 firstObject];
+        v26 = [v23 isEqualToString:firstObject];
 
         if (v26)
         {
-          [v22 setObject:v15 forKeyedSubscript:@"MatchedValue"];
+          [v22 setObject:phoneCopy forKeyedSubscript:@"MatchedValue"];
           v27 = [[SFAppleIDPersonInfo alloc] initWithDictionary:v22];
           if (v27)
           {
-            LODWORD(v17) = 0;
+            LODWORD(completionCopy) = 0;
           }
 
           else
           {
-            LODWORD(v17) = -6762;
+            LODWORD(completionCopy) = -6762;
           }
 
           v20 = 0;
@@ -3656,7 +3656,7 @@ LABEL_30:
 
           v20 = 0;
           v21 = 0;
-          LODWORD(v17) = -6712;
+          LODWORD(completionCopy) = -6712;
         }
       }
 
@@ -3664,7 +3664,7 @@ LABEL_30:
       {
         v20 = 0;
         v21 = 0;
-        LODWORD(v17) = -6762;
+        LODWORD(completionCopy) = -6762;
       }
     }
   }
@@ -3677,17 +3677,17 @@ LABEL_30:
   }
 
 LABEL_16:
-  [v18 invalidate];
-  [(NSMutableArray *)v37->_findPersonRequests removeObject:v18];
+  [requestCopy invalidate];
+  [(NSMutableArray *)selfCopy->_findPersonRequests removeObject:requestCopy];
 
-  if (v17)
+  if (completionCopy)
   {
-    v36 = v14;
-    v38 = v16;
-    v28 = v17;
+    v36 = responseCopy;
+    v38 = errorCopy;
+    v28 = completionCopy;
     v42 = NSLocalizedDescriptionKey;
     v29 = v22;
-    v30 = v15;
+    v30 = phoneCopy;
     sub_1001E23D8();
     v31 = [NSString stringWithUTF8String:DebugGetErrorString()];
     v32 = v31;
@@ -3701,11 +3701,11 @@ LABEL_16:
     v34 = [NSDictionary dictionaryWithObjects:&v43 forKeys:&v42 count:1];
     v35 = [NSError errorWithDomain:NSOSStatusErrorDomain code:v28 userInfo:v34];
 
-    v15 = v30;
+    phoneCopy = v30;
     v22 = v29;
     v20 = v35;
-    v14 = v36;
-    v16 = v38;
+    responseCopy = v36;
+    errorCopy = v38;
   }
 
   if (v20 && dword_100972850 <= 90 && (dword_100972850 != -1 || _LogCategory_Initialize()))
@@ -3719,17 +3719,17 @@ LABEL_16:
   }
 }
 
-- (void)_handleServerTaskCompletionWithError:(id)a3
+- (void)_handleServerTaskCompletionWithError:(id)error
 {
-  v10 = a3;
+  errorCopy = error;
   v4 = +[NSDate date];
   [(SDAppleIDDatabaseManager *)self->_dbManager setLastConnectionDate:v4];
-  v5 = v10;
-  if (v10)
+  v5 = errorCopy;
+  if (errorCopy)
   {
     if (dword_100972850 <= 60)
     {
-      if (dword_100972850 != -1 || (v6 = _LogCategory_Initialize(), v5 = v10, v6))
+      if (dword_100972850 != -1 || (v6 = _LogCategory_Initialize(), v5 = errorCopy, v6))
       {
         v9 = v5;
         LogPrintF();
@@ -3743,7 +3743,7 @@ LABEL_16:
         sub_100267564(self->_appleID);
       }
 
-      v7 = [v10 userInfo];
+      userInfo = [errorCopy userInfo];
       Int64 = CFDictionaryGetInt64();
 
       [(SDAppleIDAgent *)self _ensureThrottledRetryTimerStartedWithSuggestedDelay:Int64];
@@ -3758,15 +3758,15 @@ LABEL_16:
   }
 }
 
-- (void)_handleReceivedCertificateToken:(id)a3 privateKeyPersistentReference:(id)a4 forAppleID:(id)a5
+- (void)_handleReceivedCertificateToken:(id)token privateKeyPersistentReference:(id)reference forAppleID:(id)d
 {
-  v10 = a3;
-  v8 = a4;
-  v9 = a5;
+  tokenCopy = token;
+  referenceCopy = reference;
+  dCopy = d;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  if (v8 && v10 && v9)
+  if (referenceCopy && tokenCopy && dCopy)
   {
-    [(SDAppleIDDatabaseManager *)self->_dbManager setCertificateToken:v10 privateKeyPersistentReference:v8 forAppleID:v9];
+    [(SDAppleIDDatabaseManager *)self->_dbManager setCertificateToken:tokenCopy privateKeyPersistentReference:referenceCopy forAppleID:dCopy];
     sub_1001BB994();
   }
 }
@@ -3831,17 +3831,17 @@ LABEL_15:
   return v7;
 }
 
-- (void)_personInfoWithEmailOrPhone:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)_personInfoWithEmailOrPhone:(id)phone queue:(id)queue completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v10)
+  phoneCopy = phone;
+  queueCopy = queue;
+  completionCopy = completion;
+  if (!queueCopy)
   {
     v12 = self->_dispatchQueue;
     if (v12)
     {
-      if (v9)
+      if (phoneCopy)
       {
         goto LABEL_6;
       }
@@ -3853,7 +3853,7 @@ LABEL_15:
       [v23 handleFailureInMethod:a2 object:self file:@"SDAppleIDAgent.m" lineNumber:1853 description:@"inQueue and _dispatchQueue both nil."];
 
       v12 = 0;
-      if (v9)
+      if (phoneCopy)
       {
         goto LABEL_6;
       }
@@ -3861,7 +3861,7 @@ LABEL_15:
 
 LABEL_20:
     v13 = 0;
-    if (!v11)
+    if (!completionCopy)
     {
       v17 = 0;
       v16 = 0;
@@ -3874,14 +3874,14 @@ LABEL_20:
     goto LABEL_10;
   }
 
-  v12 = v10;
-  if (!v9)
+  v12 = queueCopy;
+  if (!phoneCopy)
   {
     goto LABEL_20;
   }
 
 LABEL_6:
-  if (!v11)
+  if (!completionCopy)
   {
     v13 = 0;
     v17 = 0;
@@ -3892,7 +3892,7 @@ LABEL_6:
   v13 = +[NSMutableDictionary dictionary];
   if (v13)
   {
-    v33 = v9;
+    v33 = phoneCopy;
     v14 = [NSArray arrayWithObjects:&v33 count:1];
     v32 = 0;
     v15 = sub_100004E00(v14, 0, &v32);
@@ -3907,7 +3907,7 @@ LABEL_6:
     {
       if (v16 && [v16 count] == 1)
       {
-        v19 = [v9 containsString:@"@"];
+        v19 = [phoneCopy containsString:@"@"];
         v20 = @"phones";
         if (v19)
         {
@@ -3928,9 +3928,9 @@ LABEL_6:
           v27[4] = self;
           v18 = v22;
           v28 = v18;
-          v29 = v9;
+          v29 = phoneCopy;
           v30 = v12;
-          v31 = v11;
+          v31 = completionCopy;
           [(SDAppleIDServerTask *)v18 setResponseHandler:v27];
 
           [(NSMutableArray *)self->_findPersonRequests addObject:v18];
@@ -3960,7 +3960,7 @@ LABEL_10:
   v24[1] = 3221225472;
   v24[2] = sub_1001DF230;
   v24[3] = &unk_1008D0BE0;
-  v25 = v11;
+  v25 = completionCopy;
   v26 = v15;
   dispatch_async(v12, v24);
 
@@ -3976,13 +3976,13 @@ LABEL_18:
   v3 = +[NSMutableDictionary dictionary];
   if (v3)
   {
-    v4 = [(SDAppleIDDatabaseManager *)self->_dbManager statusInfo];
-    [v3 addEntriesFromDictionary:v4];
+    statusInfo = [(SDAppleIDDatabaseManager *)self->_dbManager statusInfo];
+    [v3 addEntriesFromDictionary:statusInfo];
 
     v5 = [NSNumber numberWithInteger:[(SDAppleIDAgent *)self _accountState]];
     [v3 setObject:v5 forKeyedSubscript:@"AccountState"];
 
-    v6 = [(SDAppleIDAgent *)self _detailedDescription];
+    _detailedDescription = [(SDAppleIDAgent *)self _detailedDescription];
     [sub_1001E2428() setObject:? forKeyedSubscript:?];
 
     v7 = v3;
@@ -3991,44 +3991,44 @@ LABEL_18:
   return v3;
 }
 
-- (void)verifiedIdentityForEmailOrPhone:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)verifiedIdentityForEmailOrPhone:(id)phone queue:(id)queue completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  dispatchQueue = v9;
-  if (!v9)
+  phoneCopy = phone;
+  queueCopy = queue;
+  completionCopy = completion;
+  v11 = completionCopy;
+  dispatchQueue = queueCopy;
+  if (!queueCopy)
   {
     dispatchQueue = self->_dispatchQueue;
   }
 
-  if (v10)
+  if (completionCopy)
   {
     sub_1000089E8();
-    v14 = v8;
+    v14 = phoneCopy;
     v15 = v11;
     v13 = dispatchQueue;
     [sub_1001E2404() queryVerifiedIdentityForEmailOrPhone:? queue:? completion:?];
   }
 }
 
-- (void)queryVerifiedIdentityForEmailOrPhone:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)queryVerifiedIdentityForEmailOrPhone:(id)phone queue:(id)queue completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  dispatchQueue = v9;
-  if (!v9)
+  phoneCopy = phone;
+  queueCopy = queue;
+  completionCopy = completion;
+  v11 = completionCopy;
+  dispatchQueue = queueCopy;
+  if (!queueCopy)
   {
     dispatchQueue = self->_dispatchQueue;
   }
 
-  if (v10)
+  if (completionCopy)
   {
     sub_1000089E8();
-    v14 = v8;
+    v14 = phoneCopy;
     v15 = v11;
     v13 = dispatchQueue;
     [sub_1001E2404() personInfoWithEmailOrPhone:? queue:? completion:?];

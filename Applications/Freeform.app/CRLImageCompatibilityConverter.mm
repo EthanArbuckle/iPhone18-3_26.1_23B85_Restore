@@ -1,16 +1,16 @@
 @interface CRLImageCompatibilityConverter
 + (void)initialize;
-- (CRLImageCompatibilityConverter)initWithImageData:(id)a3 desiredCompatibilityLevel:(int64_t)a4 assetOwner:(id)a5;
-- (void)convertMediaWithCompletionHandler:(id)a3;
-- (void)p_completeConversionWithCompletionHandler:(id)a3;
-- (void)p_performAsyncMediaConversionWorkWithCompletionHandler:(id)a3;
+- (CRLImageCompatibilityConverter)initWithImageData:(id)data desiredCompatibilityLevel:(int64_t)level assetOwner:(id)owner;
+- (void)convertMediaWithCompletionHandler:(id)handler;
+- (void)p_completeConversionWithCompletionHandler:(id)handler;
+- (void)p_performAsyncMediaConversionWorkWithCompletionHandler:(id)handler;
 @end
 
 @implementation CRLImageCompatibilityConverter
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [[CRLWidthLimitedQueue alloc] initWithLimit:10];
     v3 = qword_101A34668;
@@ -18,11 +18,11 @@
   }
 }
 
-- (CRLImageCompatibilityConverter)initWithImageData:(id)a3 desiredCompatibilityLevel:(int64_t)a4 assetOwner:(id)a5
+- (CRLImageCompatibilityConverter)initWithImageData:(id)data desiredCompatibilityLevel:(int64_t)level assetOwner:(id)owner
 {
-  v9 = a3;
-  v10 = a5;
-  if (!v9)
+  dataCopy = data;
+  ownerCopy = owner;
+  if (!dataCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -57,13 +57,13 @@
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->mImageData, a3);
+    objc_storeStrong(&v14->mImageData, data);
     v16 = [[CRLBasicProgress alloc] initWithMaxValue:1.0];
     mProgress = v15->mProgress;
     v15->mProgress = v16;
 
-    v15->mDesiredCompatibilityLevel = a4;
-    objc_storeStrong(&v15->mAssetOwner, a5);
+    v15->mDesiredCompatibilityLevel = level;
+    objc_storeStrong(&v15->mAssetOwner, owner);
     if (v15->mDesiredCompatibilityLevel <= 2)
     {
       v18 = +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -97,9 +97,9 @@
   return v15;
 }
 
-- (void)convertMediaWithCompletionHandler:(id)a3
+- (void)convertMediaWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (!self->mImageData)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -135,25 +135,25 @@
   v10[2] = sub_100141650;
   v10[3] = &unk_10183FC10;
   v10[4] = self;
-  v11 = v4;
-  v9 = v4;
+  v11 = handlerCopy;
+  v9 = handlerCopy;
   [v8 performAsync:v10];
 }
 
-- (void)p_performAsyncMediaConversionWorkWithCompletionHandler:(id)a3
+- (void)p_performAsyncMediaConversionWorkWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(CRLAsset *)self->mImageData type];
+  handlerCopy = handler;
+  type = [(CRLAsset *)self->mImageData type];
   v6 = +[CRLIngestionTypes imageUTTypesThatRequireConversion];
-  if ([v5 crl_conformsToAnyUTType:v6])
+  if ([type crl_conformsToAnyUTType:v6])
   {
 
     goto LABEL_4;
   }
 
-  v7 = [(CRLAsset *)self->mImageData type];
+  type2 = [(CRLAsset *)self->mImageData type];
   v8 = +[CRLIngestionTypes highEfficiencyImageUTTypes];
-  v9 = [v7 crl_conformsToAnyUTType:v8];
+  v9 = [type2 crl_conformsToAnyUTType:v8];
 
   if (v9)
   {
@@ -169,8 +169,8 @@ LABEL_4:
       v15 = [CRLImageResamplingOperation alloc];
       [v14 naturalSize];
       v16 = [(CRLImageResamplingOperation *)v15 initWithImageProvider:v14 desiredSize:self->mAssetOwner assetOwner:?];
-      v17 = [(CRLAsset *)self->mImageData filename];
-      [(CRLImageResamplingOperation *)v16 setDisplayName:v17];
+      filename = [(CRLAsset *)self->mImageData filename];
+      [(CRLImageResamplingOperation *)v16 setDisplayName:filename];
 
       v18 = [(CRLImageResamplingOperation *)v16 performResampleOperationWithResampleOptions:16 bitmapContextOptions:9];
       if (!v18)
@@ -207,7 +207,7 @@ LABEL_4:
       v28[2] = sub_100141B30;
       v28[3] = &unk_10183FCB8;
       v28[4] = self;
-      v29 = v4;
+      v29 = handlerCopy;
       [v18 createAssetWithCompletionHandler:v28];
 
       goto LABEL_22;
@@ -221,7 +221,7 @@ LABEL_4:
       v26[2] = sub_100141D7C;
       v26[3] = &unk_10183FCB8;
       v26[4] = self;
-      v27 = v4;
+      v27 = handlerCopy;
       [v14 createAssetWithCompletionHandler:v26];
       v22 = v27;
 LABEL_21:
@@ -244,20 +244,20 @@ LABEL_22:
     v24[2] = sub_100141FC8;
     v24[3] = &unk_10183FCB8;
     v24[4] = self;
-    v25 = v4;
+    v25 = handlerCopy;
     [v14 createAssetWithCompletionHandler:v24];
     v22 = v25;
     goto LABEL_21;
   }
 
 LABEL_19:
-  [(CRLImageCompatibilityConverter *)self p_completeConversionWithCompletionHandler:v4];
+  [(CRLImageCompatibilityConverter *)self p_completeConversionWithCompletionHandler:handlerCopy];
 LABEL_23:
 }
 
-- (void)p_completeConversionWithCompletionHandler:(id)a3
+- (void)p_completeConversionWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (!self->mConvertedImageData)
   {
     v5 = atomic_load(&self->mIsCancelled);
@@ -280,9 +280,9 @@ LABEL_23:
   }
 
   [(CRLBasicProgress *)self->mProgress setValue:1.0];
-  if (v4)
+  if (handlerCopy)
   {
-    v4[2](v4);
+    handlerCopy[2](handlerCopy);
   }
 }
 

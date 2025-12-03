@@ -1,21 +1,21 @@
 @interface HKMedicalBaseUserDomainConcept
-- (BOOL)unitTesting_isIdentical:(id)a3;
+- (BOOL)unitTesting_isIdentical:(id)identical;
 - (HKMedicalBaseUserDomainConcept)init;
-- (HKMedicalBaseUserDomainConcept)initWithCategoryTypes:(id)a3 countryCode:(id)a4 codingCollection:(id)a5 propertyCollection:(id)a6;
-- (HKMedicalBaseUserDomainConcept)initWithCoder:(id)a3;
-- (HKMedicalBaseUserDomainConcept)initWithCodingCollection:(id)a3 linkCollection:(id)a4 propertyCollection:(id)a5;
+- (HKMedicalBaseUserDomainConcept)initWithCategoryTypes:(id)types countryCode:(id)code codingCollection:(id)collection propertyCollection:(id)propertyCollection;
+- (HKMedicalBaseUserDomainConcept)initWithCoder:(id)coder;
+- (HKMedicalBaseUserDomainConcept)initWithCodingCollection:(id)collection linkCollection:(id)linkCollection propertyCollection:(id)propertyCollection;
 - (NSDictionary)preferredNameByLocaleIdentifier;
 - (NSString)ontologyPreferredName;
-- (id)_dataDescriptionAllowedForPublic:(BOOL)a3;
+- (id)_dataDescriptionAllowedForPublic:(BOOL)public;
 - (id)_deepCopy;
 - (id)_generateSemanticIdentifier;
-- (id)medicalConceptByAddingCategoryType:(int64_t)a3;
-- (id)medicalConceptByReplacingCategoryTypes:(id)a3;
-- (id)medicalConceptByReplacingCategoryTypes:(id)a3 codingCollection:(id)a4 linkCollection:(id)a5;
+- (id)medicalConceptByAddingCategoryType:(int64_t)type;
+- (id)medicalConceptByReplacingCategoryTypes:(id)types;
+- (id)medicalConceptByReplacingCategoryTypes:(id)types codingCollection:(id)collection linkCollection:(id)linkCollection;
 - (id)semanticIdentifier;
-- (void)_setCategoryTypes:(id)a3;
-- (void)_setCountryCode:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_setCategoryTypes:(id)types;
+- (void)_setCountryCode:(id)code;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKMedicalBaseUserDomainConcept
@@ -30,7 +30,7 @@
   return 0;
 }
 
-- (HKMedicalBaseUserDomainConcept)initWithCodingCollection:(id)a3 linkCollection:(id)a4 propertyCollection:(id)a5
+- (HKMedicalBaseUserDomainConcept)initWithCodingCollection:(id)collection linkCollection:(id)linkCollection propertyCollection:(id)propertyCollection
 {
   v6 = MEMORY[0x1E695DF30];
   v7 = *MEMORY[0x1E695D940];
@@ -40,20 +40,20 @@
   return 0;
 }
 
-- (HKMedicalBaseUserDomainConcept)initWithCategoryTypes:(id)a3 countryCode:(id)a4 codingCollection:(id)a5 propertyCollection:(id)a6
+- (HKMedicalBaseUserDomainConcept)initWithCategoryTypes:(id)types countryCode:(id)code codingCollection:(id)collection propertyCollection:(id)propertyCollection
 {
-  v10 = a3;
-  v11 = a4;
+  typesCopy = types;
+  codeCopy = code;
   v18.receiver = self;
   v18.super_class = HKMedicalBaseUserDomainConcept;
-  v12 = [(HKUserDomainConcept *)&v18 initWithCodingCollection:a5 linkCollection:0 propertyCollection:a6];
+  v12 = [(HKUserDomainConcept *)&v18 initWithCodingCollection:collection linkCollection:0 propertyCollection:propertyCollection];
   if (v12)
   {
-    v13 = [v10 copy];
+    v13 = [typesCopy copy];
     categoryTypes = v12->_categoryTypes;
     v12->_categoryTypes = v13;
 
-    v15 = [v11 copy];
+    v15 = [codeCopy copy];
     countryCode = v12->_countryCode;
     v12->_countryCode = v15;
 
@@ -63,54 +63,54 @@
   return v12;
 }
 
-- (id)medicalConceptByReplacingCategoryTypes:(id)a3 codingCollection:(id)a4 linkCollection:(id)a5
+- (id)medicalConceptByReplacingCategoryTypes:(id)types codingCollection:(id)collection linkCollection:(id)linkCollection
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(HKUserDomainConcept *)self modificationCopy];
-  [v11 _setCategoryTypes:v10];
+  linkCollectionCopy = linkCollection;
+  collectionCopy = collection;
+  typesCopy = types;
+  modificationCopy = [(HKUserDomainConcept *)self modificationCopy];
+  [modificationCopy _setCategoryTypes:typesCopy];
 
-  [v11 _setCodingCollection:v9];
-  [v11 _setLinkCollection:v8];
+  [modificationCopy _setCodingCollection:collectionCopy];
+  [modificationCopy _setLinkCollection:linkCollectionCopy];
 
-  return v11;
+  return modificationCopy;
 }
 
-- (id)medicalConceptByReplacingCategoryTypes:(id)a3
+- (id)medicalConceptByReplacingCategoryTypes:(id)types
 {
-  v4 = a3;
-  v5 = [(HKUserDomainConcept *)self modificationCopy];
-  [v5 _setCategoryTypes:v4];
+  typesCopy = types;
+  modificationCopy = [(HKUserDomainConcept *)self modificationCopy];
+  [modificationCopy _setCategoryTypes:typesCopy];
 
-  return v5;
+  return modificationCopy;
 }
 
-- (id)medicalConceptByAddingCategoryType:(int64_t)a3
+- (id)medicalConceptByAddingCategoryType:(int64_t)type
 {
-  v5 = [(HKUserDomainConcept *)self modificationCopy];
+  modificationCopy = [(HKUserDomainConcept *)self modificationCopy];
   categoryTypes = self->_categoryTypes;
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:type];
   v8 = [(NSArray *)categoryTypes arrayByAddingObject:v7];
-  [v5 _setCategoryTypes:v8];
+  [modificationCopy _setCategoryTypes:v8];
 
-  return v5;
+  return modificationCopy;
 }
 
 - (id)_deepCopy
 {
   v5.receiver = self;
   v5.super_class = HKMedicalBaseUserDomainConcept;
-  v3 = [(HKUserDomainConcept *)&v5 _deepCopy];
-  [v3 _setCategoryTypes:self->_categoryTypes];
-  [v3 _setCountryCode:self->_countryCode];
+  _deepCopy = [(HKUserDomainConcept *)&v5 _deepCopy];
+  [_deepCopy _setCategoryTypes:self->_categoryTypes];
+  [_deepCopy _setCountryCode:self->_countryCode];
 
-  return v3;
+  return _deepCopy;
 }
 
-- (id)_dataDescriptionAllowedForPublic:(BOOL)a3
+- (id)_dataDescriptionAllowedForPublic:(BOOL)public
 {
-  if (a3)
+  if (public)
   {
     v3 = 0;
   }
@@ -118,25 +118,25 @@
   else
   {
     v5 = objc_alloc(MEMORY[0x1E696AD60]);
-    v6 = [(HKMedicalBaseUserDomainConcept *)self ontologyPreferredName];
-    v3 = [v5 initWithFormat:@"%@", v6];
+    ontologyPreferredName = [(HKMedicalBaseUserDomainConcept *)self ontologyPreferredName];
+    v3 = [v5 initWithFormat:@"%@", ontologyPreferredName];
 
-    v7 = [(HKMedicalBaseUserDomainConcept *)self countryCode];
+    countryCode = [(HKMedicalBaseUserDomainConcept *)self countryCode];
 
-    if (v7)
+    if (countryCode)
     {
-      v8 = [(HKMedicalBaseUserDomainConcept *)self countryCode];
-      [v3 appendFormat:@" %@", v8];
+      countryCode2 = [(HKMedicalBaseUserDomainConcept *)self countryCode];
+      [v3 appendFormat:@" %@", countryCode2];
     }
 
-    v9 = [(HKMedicalBaseUserDomainConcept *)self categoryTypes];
-    v10 = [v9 count];
+    categoryTypes = [(HKMedicalBaseUserDomainConcept *)self categoryTypes];
+    v10 = [categoryTypes count];
 
     if (v10)
     {
       objc_msgSend(v3, "appendString:", @" (");
-      v11 = [(HKMedicalBaseUserDomainConcept *)self categoryTypes];
-      [v3 hk_appendComponentsJoinedByString:@" container:" componentGenerator:{v11, &__block_literal_global_125}];
+      categoryTypes2 = [(HKMedicalBaseUserDomainConcept *)self categoryTypes];
+      [v3 hk_appendComponentsJoinedByString:@" container:" componentGenerator:{categoryTypes2, &__block_literal_global_125}];
 
       [v3 appendString:@""]);
     }
@@ -157,9 +157,9 @@ __CFString *__67__HKMedicalBaseUserDomainConcept__dataDescriptionAllowedForPubli
   os_unfair_lock_lock(&self->_computedPropertyLock);
   if (!self->_semanticIdentifier)
   {
-    v3 = [(HKMedicalBaseUserDomainConcept *)self _generateSemanticIdentifier];
+    _generateSemanticIdentifier = [(HKMedicalBaseUserDomainConcept *)self _generateSemanticIdentifier];
     semanticIdentifier = self->_semanticIdentifier;
-    self->_semanticIdentifier = v3;
+    self->_semanticIdentifier = _generateSemanticIdentifier;
   }
 
   os_unfair_lock_unlock(&self->_computedPropertyLock);
@@ -178,24 +178,24 @@ __CFString *__67__HKMedicalBaseUserDomainConcept__dataDescriptionAllowedForPubli
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = HKMedicalBaseUserDomainConcept;
-  v4 = a3;
-  [(HKUserDomainConcept *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_categoryTypes forKey:{@"categoryTypes", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_countryCode forKey:@"countryCode"];
+  coderCopy = coder;
+  [(HKUserDomainConcept *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_categoryTypes forKey:{@"categoryTypes", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_countryCode forKey:@"countryCode"];
 }
 
-- (HKMedicalBaseUserDomainConcept)initWithCoder:(id)a3
+- (HKMedicalBaseUserDomainConcept)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"categoryTypes"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"countryCode"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"categoryTypes"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"countryCode"];
   v9.receiver = self;
   v9.super_class = HKMedicalBaseUserDomainConcept;
-  v7 = [(HKUserDomainConcept *)&v9 initWithCoder:v4];
+  v7 = [(HKUserDomainConcept *)&v9 initWithCoder:coderCopy];
 
   if (v7)
   {
@@ -209,8 +209,8 @@ __CFString *__67__HKMedicalBaseUserDomainConcept__dataDescriptionAllowedForPubli
 
 - (NSString)ontologyPreferredName
 {
-  v2 = [(HKMedicalBaseUserDomainConcept *)self preferredNameByLocaleIdentifier];
-  v3 = [v2 objectForKeyedSubscript:@"(null)"];
+  preferredNameByLocaleIdentifier = [(HKMedicalBaseUserDomainConcept *)self preferredNameByLocaleIdentifier];
+  v3 = [preferredNameByLocaleIdentifier objectForKeyedSubscript:@"(null)"];
 
   return v3;
 }
@@ -220,8 +220,8 @@ __CFString *__67__HKMedicalBaseUserDomainConcept__dataDescriptionAllowedForPubli
   os_unfair_lock_lock(&self->_computedPropertyLock);
   if (!self->_preferredNameByLocaleIdentifier)
   {
-    v3 = [(HKUserDomainConcept *)self propertyCollection];
-    v4 = [v3 allPropertiesWithType:160012];
+    propertyCollection = [(HKUserDomainConcept *)self propertyCollection];
+    v4 = [propertyCollection allPropertiesWithType:160012];
 
     if (!v4 || ![v4 count])
     {
@@ -250,48 +250,48 @@ void __65__HKMedicalBaseUserDomainConcept_preferredNameByLocaleIdentifier__block
   (a3)[2](v5, v8, v7);
 }
 
-- (void)_setCategoryTypes:(id)a3
+- (void)_setCategoryTypes:(id)types
 {
-  v4 = [a3 copy];
+  v4 = [types copy];
   categoryTypes = self->_categoryTypes;
   self->_categoryTypes = v4;
 
   MEMORY[0x1EEE66BB8](v4, categoryTypes);
 }
 
-- (void)_setCountryCode:(id)a3
+- (void)_setCountryCode:(id)code
 {
-  v4 = [a3 copy];
+  v4 = [code copy];
   countryCode = self->_countryCode;
   self->_countryCode = v4;
 
   MEMORY[0x1EEE66BB8](v4, countryCode);
 }
 
-- (BOOL)unitTesting_isIdentical:(id)a3
+- (BOOL)unitTesting_isIdentical:(id)identical
 {
-  v4 = a3;
-  if (![(HKUserDomainConcept *)self isEqual:v4])
+  identicalCopy = identical;
+  if (![(HKUserDomainConcept *)self isEqual:identicalCopy])
   {
     goto LABEL_9;
   }
 
   v11.receiver = self;
   v11.super_class = HKMedicalBaseUserDomainConcept;
-  if (![(HKUserDomainConcept *)&v11 unitTesting_isIdentical:v4])
+  if (![(HKUserDomainConcept *)&v11 unitTesting_isIdentical:identicalCopy])
   {
     goto LABEL_9;
   }
 
   categoryTypes = self->_categoryTypes;
-  v6 = v4[17];
+  v6 = identicalCopy[17];
   if (categoryTypes != v6 && (!v6 || ![(NSArray *)categoryTypes isEqual:?]))
   {
     goto LABEL_9;
   }
 
   countryCode = self->_countryCode;
-  v8 = v4[18];
+  v8 = identicalCopy[18];
   if (countryCode == v8)
   {
     v9 = 1;

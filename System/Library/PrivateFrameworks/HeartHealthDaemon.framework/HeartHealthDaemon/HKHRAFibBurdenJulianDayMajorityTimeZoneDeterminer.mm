@@ -1,36 +1,36 @@
 @interface HKHRAFibBurdenJulianDayMajorityTimeZoneDeterminer
-- (HKHRAFibBurdenJulianDayMajorityTimeZoneDeterminer)initWithProfile:(id)a3 calendarCache:(id)a4;
-- (id)_totalDatePredicateForStartDayIndex:(int64_t)a3 endDayIndex:(int64_t)a4;
-- (id)determineJulianDayToMajorityTimeZoneForRange:(id)a3 error:(id *)a4;
+- (HKHRAFibBurdenJulianDayMajorityTimeZoneDeterminer)initWithProfile:(id)profile calendarCache:(id)cache;
+- (id)_totalDatePredicateForStartDayIndex:(int64_t)index endDayIndex:(int64_t)dayIndex;
+- (id)determineJulianDayToMajorityTimeZoneForRange:(id)range error:(id *)error;
 @end
 
 @implementation HKHRAFibBurdenJulianDayMajorityTimeZoneDeterminer
 
-- (HKHRAFibBurdenJulianDayMajorityTimeZoneDeterminer)initWithProfile:(id)a3 calendarCache:(id)a4
+- (HKHRAFibBurdenJulianDayMajorityTimeZoneDeterminer)initWithProfile:(id)profile calendarCache:(id)cache
 {
-  v6 = a3;
-  v7 = a4;
+  profileCopy = profile;
+  cacheCopy = cache;
   v13.receiver = self;
   v13.super_class = HKHRAFibBurdenJulianDayMajorityTimeZoneDeterminer;
   v8 = [(HKHRAFibBurdenJulianDayMajorityTimeZoneDeterminer *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_profile, v6);
-    v10 = [MEMORY[0x277CCD920] heartbeatSeriesType];
+    objc_storeWeak(&v8->_profile, profileCopy);
+    heartbeatSeriesType = [MEMORY[0x277CCD920] heartbeatSeriesType];
     seriesType = v9->_seriesType;
-    v9->_seriesType = v10;
+    v9->_seriesType = heartbeatSeriesType;
 
-    objc_storeStrong(&v9->_calendarCache, a4);
+    objc_storeStrong(&v9->_calendarCache, cache);
   }
 
   return v9;
 }
 
-- (id)determineJulianDayToMajorityTimeZoneForRange:(id)a3 error:(id *)a4
+- (id)determineJulianDayToMajorityTimeZoneForRange:(id)range error:(id *)error
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = range.var1;
+  var0 = range.var0;
   v37[1] = *MEMORY[0x277D85DE8];
   v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v9 = MEMORY[0x277D10848];
@@ -38,8 +38,8 @@
   WeakRetained = objc_loadWeakRetained(&self->_profile);
   v12 = [v9 entityEnumeratorWithType:seriesType profile:WeakRetained];
 
-  v13 = [(HKHRAFibBurdenJulianDayMajorityTimeZoneDeterminer *)self _totalDatePredicateForStartDayIndex:var0 endDayIndex:var0 + var1];
-  [v12 setPredicate:v13];
+  var1 = [(HKHRAFibBurdenJulianDayMajorityTimeZoneDeterminer *)self _totalDatePredicateForStartDayIndex:var0 endDayIndex:var0 + var1];
+  [v12 setPredicate:var1];
 
   [v12 setEncodingOption:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D10400]];
   v14 = [MEMORY[0x277D10B68] orderingTermWithProperty:*MEMORY[0x277D104A8] entityClass:objc_opt_class() ascending:1];
@@ -90,10 +90,10 @@
     v21 = v20;
     if (v20)
     {
-      if (a4)
+      if (error)
       {
         v22 = v20;
-        *a4 = v21;
+        *error = v21;
       }
 
       else
@@ -219,11 +219,11 @@ void __104__HKHRAFibBurdenJulianDayMajorityTimeZoneDeterminer_determineJulianDay
   }
 }
 
-- (id)_totalDatePredicateForStartDayIndex:(int64_t)a3 endDayIndex:(int64_t)a4
+- (id)_totalDatePredicateForStartDayIndex:(int64_t)index endDayIndex:(int64_t)dayIndex
 {
   v7 = objc_alloc(MEMORY[0x277CCA970]);
-  v8 = [MEMORY[0x277CBEAA8] hk_earliestPossibleDateWithDayIndex:a3];
-  v9 = [MEMORY[0x277CBEAA8] hk_latestPossibleDateWithDayIndex:a4];
+  v8 = [MEMORY[0x277CBEAA8] hk_earliestPossibleDateWithDayIndex:index];
+  v9 = [MEMORY[0x277CBEAA8] hk_latestPossibleDateWithDayIndex:dayIndex];
   v10 = [v7 initWithStartDate:v8 endDate:v9];
 
   seriesType = self->_seriesType;

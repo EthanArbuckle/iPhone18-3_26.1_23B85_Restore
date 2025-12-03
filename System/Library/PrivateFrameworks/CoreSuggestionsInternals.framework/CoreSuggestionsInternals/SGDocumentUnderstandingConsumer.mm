@@ -1,17 +1,17 @@
 @interface SGDocumentUnderstandingConsumer
 + (id)sharedInstance;
 - (SGDocumentUnderstandingConsumer)init;
-- (id)consumeMailContentWithContext:(id)a3;
-- (id)consumeMessagesContentWithContext:(id)a3;
-- (id)consumeNotesContentWithContext:(id)a3;
-- (id)consumeRemindersContentWithContext:(id)a3;
+- (id)consumeMailContentWithContext:(id)context;
+- (id)consumeMessagesContentWithContext:(id)context;
+- (id)consumeNotesContentWithContext:(id)context;
+- (id)consumeRemindersContentWithContext:(id)context;
 @end
 
 @implementation SGDocumentUnderstandingConsumer
 
-- (id)consumeRemindersContentWithContext:(id)a3
+- (id)consumeRemindersContentWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = sgLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -19,8 +19,8 @@
     _os_log_impl(&dword_231E60000, v5, OS_LOG_TYPE_DEFAULT, "SGDocumentUnderstandingConsumer: consumeRemindersContentWithContext", buf, 2u);
   }
 
-  v6 = [v4 content];
-  *buf = [v6 encodeAsProto];
+  content = [contextCopy content];
+  *buf = [content encodeAsProto];
   if (!*buf)
   {
     v7 = sgLogHandle();
@@ -51,9 +51,9 @@
   return v13;
 }
 
-- (id)consumeNotesContentWithContext:(id)a3
+- (id)consumeNotesContentWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = sgLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -61,8 +61,8 @@
     _os_log_impl(&dword_231E60000, v5, OS_LOG_TYPE_DEFAULT, "SGDocumentUnderstandingConsumer: consumeNotesContentWithContext", buf, 2u);
   }
 
-  v6 = [v4 content];
-  *buf = [v6 encodeAsProto];
+  content = [contextCopy content];
+  *buf = [content encodeAsProto];
   if (!*buf)
   {
     v7 = sgLogHandle();
@@ -93,9 +93,9 @@
   return v13;
 }
 
-- (id)consumeMessagesContentWithContext:(id)a3
+- (id)consumeMessagesContentWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = sgLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -103,8 +103,8 @@
     _os_log_impl(&dword_231E60000, v5, OS_LOG_TYPE_DEFAULT, "SGDocumentUnderstandingConsumer: consumeMessagesContentWithContext", buf, 2u);
   }
 
-  v6 = [v4 content];
-  *buf = [v6 encodeAsProto];
+  content = [contextCopy content];
+  *buf = [content encodeAsProto];
   if (!*buf)
   {
     v7 = sgLogHandle();
@@ -135,9 +135,9 @@
   return v13;
 }
 
-- (id)consumeMailContentWithContext:(id)a3
+- (id)consumeMailContentWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = sgLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -145,8 +145,8 @@
     _os_log_impl(&dword_231E60000, v5, OS_LOG_TYPE_DEFAULT, "SGDocumentUnderstandingConsumer: consumeMailContentWithContext", buf, 2u);
   }
 
-  v6 = [v4 content];
-  *buf = [v6 encodeAsProto];
+  content = [contextCopy content];
+  *buf = [content encodeAsProto];
   if (!*buf)
   {
     v7 = sgLogHandle();

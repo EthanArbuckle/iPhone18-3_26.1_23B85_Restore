@@ -1,13 +1,13 @@
 @interface PKOnBoardingViewController
-- (PKOnBoardingViewController)initWithParentFlowController:(id)a3 setupDelegate:(id)a4 context:(int64_t)a5 provisioningController:(id)a6 paymentSetupProduct:(id)a7 currentPage:(id)a8;
+- (PKOnBoardingViewController)initWithParentFlowController:(id)controller setupDelegate:(id)delegate context:(int64_t)context provisioningController:(id)provisioningController paymentSetupProduct:(id)product currentPage:(id)page;
 - (PKPaymentSetupViewControllerDelegate)setupDelegate;
 - (PKSetupFlowControllerProtocol)parentFlowController;
-- (id)nextOnboardingViewControllerWithPage:(id)a3 product:(id)a4;
-- (void)explanationViewDidSelectBodyButton:(id)a3;
-- (void)explanationViewDidSelectContinue:(id)a3;
+- (id)nextOnboardingViewControllerWithPage:(id)page product:(id)product;
+- (void)explanationViewDidSelectBodyButton:(id)button;
+- (void)explanationViewDidSelectContinue:(id)continue;
 - (void)handleNotifyRequested;
-- (void)preflightWithCompletion:(id)a3;
-- (void)setHeroImage:(id)a3;
+- (void)preflightWithCompletion:(id)completion;
+- (void)setHeroImage:(id)image;
 - (void)terminateSetupFlow;
 - (void)updateForHeroImage;
 - (void)viewDidLoad;
@@ -15,24 +15,24 @@
 
 @implementation PKOnBoardingViewController
 
-- (PKOnBoardingViewController)initWithParentFlowController:(id)a3 setupDelegate:(id)a4 context:(int64_t)a5 provisioningController:(id)a6 paymentSetupProduct:(id)a7 currentPage:(id)a8
+- (PKOnBoardingViewController)initWithParentFlowController:(id)controller setupDelegate:(id)delegate context:(int64_t)context provisioningController:(id)provisioningController paymentSetupProduct:(id)product currentPage:(id)page
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  controllerCopy = controller;
+  delegateCopy = delegate;
+  provisioningControllerCopy = provisioningController;
+  productCopy = product;
+  pageCopy = page;
   v22.receiver = self;
   v22.super_class = PKOnBoardingViewController;
-  v19 = [(PKExplanationViewController *)&v22 initWithContext:a5];
+  v19 = [(PKExplanationViewController *)&v22 initWithContext:context];
   v20 = v19;
   if (v19)
   {
-    objc_storeWeak(&v19->_parentFlowController, v14);
-    objc_storeWeak(&v20->_setupDelegate, v15);
-    objc_storeStrong(&v20->_provisioningController, a6);
-    objc_storeStrong(&v20->_paymentSetupProduct, a7);
-    objc_storeStrong(&v20->_currentPage, a8);
+    objc_storeWeak(&v19->_parentFlowController, controllerCopy);
+    objc_storeWeak(&v20->_setupDelegate, delegateCopy);
+    objc_storeStrong(&v20->_provisioningController, provisioningController);
+    objc_storeStrong(&v20->_paymentSetupProduct, product);
+    objc_storeStrong(&v20->_currentPage, page);
     [(PKExplanationViewController *)v20 setExplanationViewControllerDelegate:v20];
     [(PKOnBoardingViewController *)v20 setModalInPresentation:1];
   }
@@ -46,53 +46,53 @@
   v26.super_class = PKOnBoardingViewController;
   [(PKExplanationViewController *)&v26 viewDidLoad];
   [(PKExplanationViewController *)self setShowDoneButton:0];
-  v24 = [(PKOnBoardingViewController *)self navigationItem];
-  [v24 setHidesBackButton:1];
-  v3 = [(PKExplanationViewController *)self explanationView];
-  v4 = [v3 dockView];
-  v25 = [v4 footerView];
-  [v3 setShowPrivacyView:0];
+  navigationItem = [(PKOnBoardingViewController *)self navigationItem];
+  [navigationItem setHidesBackButton:1];
+  explanationView = [(PKExplanationViewController *)self explanationView];
+  dockView = [explanationView dockView];
+  footerView = [dockView footerView];
+  [explanationView setShowPrivacyView:0];
   [(PKExplanationViewController *)self setShowCancelButton:0];
-  v5 = [(PKDynamicProvisioningPageContent *)self->_currentPage title];
-  if (v5)
+  title = [(PKDynamicProvisioningPageContent *)self->_currentPage title];
+  if (title)
   {
-    [v3 setTitleText:v5];
+    [explanationView setTitleText:title];
   }
 
-  v6 = [(PKDynamicProvisioningPageContent *)self->_currentPage subtitle];
-  if (v6)
+  subtitle = [(PKDynamicProvisioningPageContent *)self->_currentPage subtitle];
+  if (subtitle)
   {
-    [v3 setBodyText:v6];
+    [explanationView setBodyText:subtitle];
   }
 
-  v7 = [(PKDynamicProvisioningPageContent *)self->_currentPage body];
-  if (v7)
+  body = [(PKDynamicProvisioningPageContent *)self->_currentPage body];
+  if (body)
   {
-    v8 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v7];
-    [v3 setAttributedSecondaryBodyText:v8];
+    v8 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:body];
+    [explanationView setAttributedSecondaryBodyText:v8];
   }
 
-  v23 = v5;
-  v21 = [(PKDynamicProvisioningPageContent *)self->_currentPage learnMore];
-  v9 = [v21 buttonTitle];
-  if (v9)
+  v23 = title;
+  learnMore = [(PKDynamicProvisioningPageContent *)self->_currentPage learnMore];
+  buttonTitle = [learnMore buttonTitle];
+  if (buttonTitle)
   {
-    [v3 setBodyButtonText:v9];
+    [explanationView setBodyButtonText:buttonTitle];
   }
 
-  v22 = v6;
-  v10 = [(PKDynamicProvisioningPageContent *)self->_currentPage disclosureTitle];
-  if (v10)
+  v22 = subtitle;
+  disclosureTitle = [(PKDynamicProvisioningPageContent *)self->_currentPage disclosureTitle];
+  if (disclosureTitle)
   {
-    [v4 setButtonExplanationText:v10];
+    [dockView setButtonExplanationText:disclosureTitle];
   }
 
-  v11 = [(PKDynamicProvisioningPageContent *)self->_currentPage primaryActionTitle];
-  v12 = [v4 primaryButton];
-  v13 = v12;
-  if (v11)
+  primaryActionTitle = [(PKDynamicProvisioningPageContent *)self->_currentPage primaryActionTitle];
+  primaryButton = [dockView primaryButton];
+  v13 = primaryButton;
+  if (primaryActionTitle)
   {
-    [v12 setTitle:v11 forState:0];
+    [primaryButton setTitle:primaryActionTitle forState:0];
   }
 
   else
@@ -101,21 +101,21 @@
     [v13 setTitle:v14 forState:0];
   }
 
-  v15 = [(PKDynamicProvisioningPageContent *)self->_currentPage secondaryActionTitle];
-  if (v15)
+  secondaryActionTitle = [(PKDynamicProvisioningPageContent *)self->_currentPage secondaryActionTitle];
+  if (secondaryActionTitle)
   {
-    [v3 setForceShowSetupLaterButton:1];
-    v16 = [v25 setUpLaterButton];
-    [v16 setTitle:v15 forState:0];
+    [explanationView setForceShowSetupLaterButton:1];
+    setUpLaterButton = [footerView setUpLaterButton];
+    [setUpLaterButton setTitle:secondaryActionTitle forState:0];
   }
 
   else
   {
-    [v3 setForceShowSetupLaterButton:0];
+    [explanationView setForceShowSetupLaterButton:0];
   }
 
   v17 = PKOBKTextAlignment();
-  v18 = [(PKDynamicProvisioningPageContent *)self->_currentPage contentAlignment];
+  contentAlignment = [(PKDynamicProvisioningPageContent *)self->_currentPage contentAlignment];
   if (v17 == 4)
   {
     v19 = 2;
@@ -126,7 +126,7 @@
     v19 = 4;
   }
 
-  if (v19 == v18)
+  if (v19 == contentAlignment)
   {
     if (v17 == 4)
     {
@@ -138,46 +138,46 @@
       v20 = 4;
     }
 
-    [v3 setTitleAlignment:v20];
-    [v3 setBodyTextAlignment:v20];
+    [explanationView setTitleAlignment:v20];
+    [explanationView setBodyTextAlignment:v20];
   }
 
   [(PKOnBoardingViewController *)self updateForHeroImage];
 }
 
-- (void)setHeroImage:(id)a3
+- (void)setHeroImage:(id)image
 {
-  objc_storeStrong(&self->_heroImage, a3);
+  objc_storeStrong(&self->_heroImage, image);
 
   [(PKOnBoardingViewController *)self updateForHeroImage];
 }
 
 - (void)updateForHeroImage
 {
-  v4 = [(PKExplanationViewController *)self explanationView];
+  explanationView = [(PKExplanationViewController *)self explanationView];
   if (self->_heroImage)
   {
-    [v4 setImage:?];
-    [v4 setTopBackgroundColor:0];
+    [explanationView setImage:?];
+    [explanationView setTopBackgroundColor:0];
   }
 
   else
   {
-    [v4 setImage:?];
+    [explanationView setImage:?];
     v3 = PKProvisioningSecondaryBackgroundColor();
-    [v4 setTopBackgroundColor:v3];
+    [explanationView setTopBackgroundColor:v3];
   }
 }
 
-- (void)preflightWithCompletion:(id)a3
+- (void)preflightWithCompletion:(id)completion
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  completionCopy = completion;
+  v5 = completionCopy;
   self->_preflightCalled = 1;
   if (self->_heroImage)
   {
-    if (v4)
+    if (completionCopy)
     {
 LABEL_3:
       v5[2](v5, 1);
@@ -186,11 +186,11 @@ LABEL_3:
 
   else
   {
-    v6 = [(PKDynamicProvisioningPageContent *)self->_currentPage heroImageURL];
-    if (v6)
+    heroImageURL = [(PKDynamicProvisioningPageContent *)self->_currentPage heroImageURL];
+    if (heroImageURL)
     {
-      v7 = v6;
-      v8 = [MEMORY[0x1E695DFF8] URLWithString:v6];
+      v7 = heroImageURL;
+      v8 = [MEMORY[0x1E695DFF8] URLWithString:heroImageURL];
       v9 = PKLogFacilityTypeGetObject();
       v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
       if (v8)
@@ -209,8 +209,8 @@ LABEL_3:
         v19 = v7;
         v20 = v5;
         v11 = _Block_copy(aBlock);
-        v12 = [MEMORY[0x1E69B8A08] sharedImageAssetDownloader];
-        v13 = [v12 cachedDataForURL:v8];
+        mEMORY[0x1E69B8A08] = [MEMORY[0x1E69B8A08] sharedImageAssetDownloader];
+        v13 = [mEMORY[0x1E69B8A08] cachedDataForURL:v8];
 
         if (v13)
         {
@@ -219,13 +219,13 @@ LABEL_3:
 
         else
         {
-          v15 = [MEMORY[0x1E69B8A08] sharedImageAssetDownloader];
+          mEMORY[0x1E69B8A08]2 = [MEMORY[0x1E69B8A08] sharedImageAssetDownloader];
           v16[0] = MEMORY[0x1E69E9820];
           v16[1] = 3221225472;
           v16[2] = __54__PKOnBoardingViewController_preflightWithCompletion___block_invoke_2;
           v16[3] = &unk_1E8013E70;
           v17 = v11;
-          [v15 downloadFromUrl:v8 completionHandler:v16];
+          [mEMORY[0x1E69B8A08]2 downloadFromUrl:v8 completionHandler:v16];
         }
       }
 
@@ -313,32 +313,32 @@ LABEL_7:
   }
 }
 
-- (void)explanationViewDidSelectContinue:(id)a3
+- (void)explanationViewDidSelectContinue:(id)continue
 {
   v4 = [(PKDynamicProvisioningPageContent *)self->_currentPage pageNumber]+ 1;
-  v5 = [(PKPaymentSetupProduct *)self->_paymentSetupProduct onboardingItems];
-  if (v4 < [v5 count] && (objc_msgSend(v5, "objectAtIndex:", v4), (v6 = objc_claimAutoreleasedReturnValue()) != 0))
+  onboardingItems = [(PKPaymentSetupProduct *)self->_paymentSetupProduct onboardingItems];
+  if (v4 < [onboardingItems count] && (objc_msgSend(onboardingItems, "objectAtIndex:", v4), (v6 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v7 = v6;
     v8 = [(PKOnBoardingViewController *)self nextOnboardingViewControllerWithPage:v6 product:self->_paymentSetupProduct];
     [(PKExplanationViewController *)self showNavigationBarSpinner:1];
-    v9 = [(PKOnBoardingViewController *)self navigationController];
+    navigationController = [(PKOnBoardingViewController *)self navigationController];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __63__PKOnBoardingViewController_explanationViewDidSelectContinue___block_invoke;
     v15[3] = &unk_1E8011D28;
     v15[4] = self;
-    [v9 pk_presentPaymentSetupViewController:v8 animated:1 completion:v15];
+    [navigationController pk_presentPaymentSetupViewController:v8 animated:1 completion:v15];
   }
 
   else
   {
-    v10 = [(PKPaymentSetupProduct *)self->_paymentSetupProduct configuration];
-    v11 = [v10 state];
+    configuration = [(PKPaymentSetupProduct *)self->_paymentSetupProduct configuration];
+    state = [configuration state];
 
-    if (v11 >= 3)
+    if (state >= 3)
     {
-      if (v11 == 3)
+      if (state == 3)
       {
         v13 = PKLogFacilityTypeGetObject();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -350,7 +350,7 @@ LABEL_7:
         [(PKOnBoardingViewController *)self handleNotifyRequested];
       }
 
-      else if (v11 == 4)
+      else if (state == 4)
       {
         v12 = PKLogFacilityTypeGetObject();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -370,38 +370,38 @@ LABEL_7:
   }
 }
 
-- (void)explanationViewDidSelectBodyButton:(id)a3
+- (void)explanationViewDidSelectBodyButton:(id)button
 {
-  v13 = [(PKDynamicProvisioningPageContent *)self->_currentPage learnMore];
-  v4 = [v13 buttonURL];
-  if (!v4)
+  learnMore = [(PKDynamicProvisioningPageContent *)self->_currentPage learnMore];
+  buttonURL = [learnMore buttonURL];
+  if (!buttonURL)
   {
     v5 = [[PKPaymentMoreInformationViewController alloc] initWithContext:[(PKExplanationViewController *)self context]];
-    v6 = [v13 title];
-    [(PKPaymentMoreInformationViewController *)v5 setDetailTitle:v6];
+    title = [learnMore title];
+    [(PKPaymentMoreInformationViewController *)v5 setDetailTitle:title];
 
-    v7 = [v13 subtitle];
-    [(PKPaymentMoreInformationViewController *)v5 setDetailSubtitle:v7];
+    subtitle = [learnMore subtitle];
+    [(PKPaymentMoreInformationViewController *)v5 setDetailSubtitle:subtitle];
 
-    v8 = [v13 body];
-    [(PKPaymentMoreInformationViewController *)v5 setDetailBody:v8];
+    body = [learnMore body];
+    [(PKPaymentMoreInformationViewController *)v5 setDetailBody:body];
 
-    v9 = [v13 businessChatIntentName];
-    [(PKPaymentMoreInformationViewController *)v5 setBusinessChatIntentName:v9];
+    businessChatIntentName = [learnMore businessChatIntentName];
+    [(PKPaymentMoreInformationViewController *)v5 setBusinessChatIntentName:businessChatIntentName];
 
-    v10 = [v13 businessChatButtonTitle];
-    [(PKPaymentMoreInformationViewController *)v5 setBusinessChatButtonTitle:v10];
+    businessChatButtonTitle = [learnMore businessChatButtonTitle];
+    [(PKPaymentMoreInformationViewController *)v5 setBusinessChatButtonTitle:businessChatButtonTitle];
 
     v11 = [[PKNavigationController alloc] initWithRootViewController:v5];
-    v12 = [(PKOnBoardingViewController *)self navigationController];
-    [v12 presentModalViewController:v11 withPaymentSetupContext:{-[PKExplanationViewController context](self, "context")}];
+    navigationController = [(PKOnBoardingViewController *)self navigationController];
+    [navigationController presentModalViewController:v11 withPaymentSetupContext:{-[PKExplanationViewController context](self, "context")}];
 
     goto LABEL_5;
   }
 
   if (PKIsURLHttpScheme())
   {
-    v5 = [objc_alloc(MEMORY[0x1E697A838]) initWithURL:v4];
+    v5 = [objc_alloc(MEMORY[0x1E697A838]) initWithURL:buttonURL];
     [(PKPaymentMoreInformationViewController *)v5 setModalPresentationStyle:2];
     [(PKOnBoardingViewController *)self presentViewController:v5 animated:1 completion:0];
 LABEL_5:
@@ -431,34 +431,34 @@ LABEL_7:
 
   else
   {
-    v6 = [(PKOnBoardingViewController *)self presentingViewController];
-    [v6 dismissViewControllerAnimated:1 completion:0];
+    presentingViewController = [(PKOnBoardingViewController *)self presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
   }
 }
 
 - (void)handleNotifyRequested
 {
-  v3 = [(PKPaymentProvisioningController *)self->_provisioningController webService];
-  v4 = [v3 targetDevice];
+  webService = [(PKPaymentProvisioningController *)self->_provisioningController webService];
+  targetDevice = [webService targetDevice];
 
   if (objc_opt_respondsToSelector())
   {
     [(PKExplanationViewController *)self showNavigationBarSpinner:1];
-    v5 = [(PKPaymentSetupProduct *)self->_paymentSetupProduct configuration];
-    v6 = [v5 productIdentifier];
+    configuration = [(PKPaymentSetupProduct *)self->_paymentSetupProduct configuration];
+    productIdentifier = [configuration productIdentifier];
 
     v7 = objc_alloc_init(MEMORY[0x1E69B8D40]);
     [v7 addDiagnosticReason:@"Product Action"];
     [v7 setAction:*MEMORY[0x1E69BC2C8]];
-    [v7 setProductIdentifier:v6];
+    [v7 setProductIdentifier:productIdentifier];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __51__PKOnBoardingViewController_handleNotifyRequested__block_invoke;
     v9[3] = &unk_1E80259B0;
-    v10 = v6;
-    v11 = self;
-    v8 = v6;
-    [v4 performProductActionRequest:v7 completion:v9];
+    v10 = productIdentifier;
+    selfCopy = self;
+    v8 = productIdentifier;
+    [targetDevice performProductActionRequest:v7 completion:v9];
   }
 
   else
@@ -552,14 +552,14 @@ LABEL_11:
 LABEL_13:
 }
 
-- (id)nextOnboardingViewControllerWithPage:(id)a3 product:(id)a4
+- (id)nextOnboardingViewControllerWithPage:(id)page product:(id)product
 {
-  v6 = a4;
-  v7 = a3;
+  productCopy = product;
+  pageCopy = page;
   v8 = [PKOnBoardingViewController alloc];
   WeakRetained = objc_loadWeakRetained(&self->_parentFlowController);
   v10 = objc_loadWeakRetained(&self->_setupDelegate);
-  v11 = [(PKOnBoardingViewController *)v8 initWithParentFlowController:WeakRetained setupDelegate:v10 context:[(PKExplanationViewController *)self context] provisioningController:self->_provisioningController paymentSetupProduct:v6 currentPage:v7];
+  v11 = [(PKOnBoardingViewController *)v8 initWithParentFlowController:WeakRetained setupDelegate:v10 context:[(PKExplanationViewController *)self context] provisioningController:self->_provisioningController paymentSetupProduct:productCopy currentPage:pageCopy];
 
   return v11;
 }

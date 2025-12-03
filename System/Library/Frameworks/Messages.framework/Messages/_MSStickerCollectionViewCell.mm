@@ -4,9 +4,9 @@
 - (MSStickerView)stickerView;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setAnimating:(BOOL)a3;
-- (void)setSticker:(id)a3;
-- (void)showCellBorder:(BOOL)a3;
+- (void)setAnimating:(BOOL)animating;
+- (void)setSticker:(id)sticker;
+- (void)showCellBorder:(BOOL)border;
 @end
 
 @implementation _MSStickerCollectionViewCell
@@ -19,8 +19,8 @@
   [(_MSStickerCollectionViewCell *)self setSticker:0];
   if (self->_borderLayer)
   {
-    v3 = [(_MSStickerCollectionViewCell *)self borderLayer];
-    [v3 setHidden:1];
+    borderLayer = [(_MSStickerCollectionViewCell *)self borderLayer];
+    [borderLayer setHidden:1];
   }
 }
 
@@ -29,8 +29,8 @@
   v28.receiver = self;
   v28.super_class = _MSStickerCollectionViewCell;
   [(_MSStickerCollectionViewCell *)&v28 layoutSubviews];
-  v3 = [(_MSStickerCollectionViewCell *)self contentView];
-  [v3 bounds];
+  contentView = [(_MSStickerCollectionViewCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v26 = v6;
   v27 = v4;
@@ -38,12 +38,12 @@
   v9 = v8;
   v11 = v10;
 
-  v12 = [(_MSStickerCollectionViewCell *)self stickerView];
-  [v12 sizeToFit];
-  [v12 sizeThatFits:{v9, v11}];
+  stickerView = [(_MSStickerCollectionViewCell *)self stickerView];
+  [stickerView sizeToFit];
+  [stickerView sizeThatFits:{v9, v11}];
   v14 = v13;
   v16 = v15;
-  [v12 frame];
+  [stickerView frame];
   v18 = v17;
   v20 = v19;
   v29.origin.x = v5;
@@ -65,18 +65,18 @@
   v32.origin.y = v20;
   v32.size.width = v14;
   v32.size.height = v16;
-  [v12 setFrame:{v22, v23 - CGRectGetHeight(v32) * 0.5, v14, v16}];
+  [stickerView setFrame:{v22, v23 - CGRectGetHeight(v32) * 0.5, v14, v16}];
   if (self->_borderLayer)
   {
-    v24 = [(_MSStickerCollectionViewCell *)self borderLayer];
-    [v24 setBounds:{0.0, 0.0, v9, 44.0}];
-    [v12 center];
-    [v24 setPosition:?];
+    borderLayer = [(_MSStickerCollectionViewCell *)self borderLayer];
+    [borderLayer setBounds:{0.0, 0.0, v9, 44.0}];
+    [stickerView center];
+    [borderLayer setPosition:?];
     v25 = [MEMORY[0x1E69DC888] colorWithRed:0.690196097 green:0.70588237 blue:0.729411781 alpha:1.0];
-    [v24 setBorderColor:{objc_msgSend(v25, "CGColor")}];
+    [borderLayer setBorderColor:{objc_msgSend(v25, "CGColor")}];
 
-    [v24 setBorderWidth:0.5];
-    [v24 setCornerRadius:5.0];
+    [borderLayer setBorderWidth:0.5];
+    [borderLayer setCornerRadius:5.0];
   }
 }
 
@@ -86,12 +86,12 @@
   if (!stickerView)
   {
     v4 = [MSStickerView alloc];
-    v5 = [(_MSStickerCollectionViewCell *)self contentView];
-    [v5 bounds];
+    contentView = [(_MSStickerCollectionViewCell *)self contentView];
+    [contentView bounds];
     v6 = [(MSStickerView *)v4 initWithFrame:0 sticker:?];
 
-    v7 = [(_MSStickerCollectionViewCell *)self contentView];
-    [v7 addSubview:v6];
+    contentView2 = [(_MSStickerCollectionViewCell *)self contentView];
+    [contentView2 addSubview:v6];
 
     v8 = self->_stickerView;
     self->_stickerView = v6;
@@ -107,13 +107,13 @@
   borderLayer = self->_borderLayer;
   if (!borderLayer)
   {
-    v4 = [MEMORY[0x1E6979398] layer];
+    layer = [MEMORY[0x1E6979398] layer];
     v5 = self->_borderLayer;
-    self->_borderLayer = v4;
+    self->_borderLayer = layer;
 
     [(CALayer *)self->_borderLayer setHidden:1];
-    v6 = [(_MSStickerCollectionViewCell *)self layer];
-    [v6 addSublayer:self->_borderLayer];
+    layer2 = [(_MSStickerCollectionViewCell *)self layer];
+    [layer2 addSublayer:self->_borderLayer];
 
     borderLayer = self->_borderLayer;
   }
@@ -123,22 +123,22 @@
 
 - (MSStickerPrivate)sticker
 {
-  v2 = [(_MSStickerCollectionViewCell *)self stickerView];
-  v3 = [v2 sticker];
+  stickerView = [(_MSStickerCollectionViewCell *)self stickerView];
+  sticker = [stickerView sticker];
 
-  return v3;
+  return sticker;
 }
 
-- (void)setSticker:(id)a3
+- (void)setSticker:(id)sticker
 {
-  v4 = a3;
-  v5 = [(_MSStickerCollectionViewCell *)self stickerView];
-  [v5 setSticker:v4];
+  stickerCopy = sticker;
+  stickerView = [(_MSStickerCollectionViewCell *)self stickerView];
+  [stickerView setSticker:stickerCopy];
 
   [(_MSStickerCollectionViewCell *)self setNeedsLayout];
 }
 
-- (void)showCellBorder:(BOOL)a3
+- (void)showCellBorder:(BOOL)border
 {
   if (self->_borderLayer)
   {
@@ -147,22 +147,22 @@
 
   else
   {
-    v4 = !a3;
+    v4 = !border;
   }
 
   if (!v4)
   {
-    v5 = a3;
-    v6 = [(_MSStickerCollectionViewCell *)self borderLayer];
-    [v6 setHidden:!v5];
+    borderCopy = border;
+    borderLayer = [(_MSStickerCollectionViewCell *)self borderLayer];
+    [borderLayer setHidden:!borderCopy];
   }
 }
 
-- (void)setAnimating:(BOOL)a3
+- (void)setAnimating:(BOOL)animating
 {
-  v3 = a3;
-  v4 = [(_MSStickerCollectionViewCell *)self stickerView];
-  [v4 setAnimating:v3];
+  animatingCopy = animating;
+  stickerView = [(_MSStickerCollectionViewCell *)self stickerView];
+  [stickerView setAnimating:animatingCopy];
 }
 
 @end

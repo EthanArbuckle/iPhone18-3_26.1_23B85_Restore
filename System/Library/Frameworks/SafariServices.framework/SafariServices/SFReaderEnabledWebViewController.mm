@@ -1,16 +1,16 @@
 @interface SFReaderEnabledWebViewController
-- (void)createReaderWebViewForReaderController:(id)a3;
+- (void)createReaderWebViewForReaderController:(id)controller;
 - (void)dealloc;
-- (void)didFindAppBannerWithContent:(id)a3;
+- (void)didFindAppBannerWithContent:(id)content;
 - (void)invalidate;
 - (void)loadView;
-- (void)readerController:(id)a3 contentDidBecomeReadyWithDetectedLanguage:(id)a4;
-- (void)readerController:(id)a3 didClickLinkInReaderWithRequest:(id)a4;
-- (void)readerController:(id)a3 didClickLinkRequestingNewWindowInReaderWithRequest:(id)a4;
-- (void)readerController:(id)a3 didDetermineAdditionalTextSamples:(id)a4 dueTo:(int64_t)a5;
-- (void)readerController:(id)a3 didDetermineReaderAvailability:(id)a4 dueTo:(int64_t)a5;
-- (void)setUpReaderWithReaderWebView:(id)a3;
-- (void)webView:(id)a3 didCommitNavigation:(id)a4;
+- (void)readerController:(id)controller contentDidBecomeReadyWithDetectedLanguage:(id)language;
+- (void)readerController:(id)controller didClickLinkInReaderWithRequest:(id)request;
+- (void)readerController:(id)controller didClickLinkRequestingNewWindowInReaderWithRequest:(id)request;
+- (void)readerController:(id)controller didDetermineAdditionalTextSamples:(id)samples dueTo:(int64_t)to;
+- (void)readerController:(id)controller didDetermineReaderAvailability:(id)availability dueTo:(int64_t)to;
+- (void)setUpReaderWithReaderWebView:(id)view;
+- (void)webView:(id)view didCommitNavigation:(id)navigation;
 @end
 
 @implementation SFReaderEnabledWebViewController
@@ -29,8 +29,8 @@
   v11.super_class = SFReaderEnabledWebViewController;
   [(SFWebViewController *)&v11 loadView];
   v3 = [_SFReaderController alloc];
-  v4 = [(SFWebViewController *)self webView];
-  v5 = [(_SFReaderController *)v3 initWithWebView:v4];
+  webView = [(SFWebViewController *)self webView];
+  v5 = [(_SFReaderController *)v3 initWithWebView:webView];
   readerController = self->_readerController;
   self->_readerController = v5;
 
@@ -39,27 +39,27 @@
   appBannerMetaTagContentObserverInterface = self->_appBannerMetaTagContentObserverInterface;
   self->_appBannerMetaTagContentObserverInterface = v7;
 
-  v9 = [(SFWebViewController *)self webView];
-  v10 = [v9 _remoteObjectRegistry];
-  [v10 registerExportedObject:self interface:self->_appBannerMetaTagContentObserverInterface];
+  webView2 = [(SFWebViewController *)self webView];
+  _remoteObjectRegistry = [webView2 _remoteObjectRegistry];
+  [_remoteObjectRegistry registerExportedObject:self interface:self->_appBannerMetaTagContentObserverInterface];
 }
 
-- (void)setUpReaderWithReaderWebView:(id)a3
+- (void)setUpReaderWithReaderWebView:(id)view
 {
-  v11 = a3;
+  viewCopy = view;
   [(_SFReaderController *)self->_readerController didCreateReaderWebView:?];
-  v4 = [(_SFReaderController *)self->_readerController configurationManager];
-  v5 = [v4 configurationToSendToWebPage];
+  configurationManager = [(_SFReaderController *)self->_readerController configurationManager];
+  configurationToSendToWebPage = [configurationManager configurationToSendToWebPage];
 
-  [(_SFReaderController *)self->_readerController setReaderInitialTopScrollOffset:0 configuration:v5 isViewingArchive:0];
-  [v11 setNavigationDelegate:self->_readerController];
+  [(_SFReaderController *)self->_readerController setReaderInitialTopScrollOffset:0 configuration:configurationToSendToWebPage isViewingArchive:0];
+  [viewCopy setNavigationDelegate:self->_readerController];
   v6 = MEMORY[0x1E695AC68];
-  v7 = [(_SFReaderController *)self->_readerController readerURL];
-  v8 = [v6 safari_nonAppInitiatedRequestWithURL:v7];
+  readerURL = [(_SFReaderController *)self->_readerController readerURL];
+  v8 = [v6 safari_nonAppInitiatedRequestWithURL:readerURL];
 
   v9 = [v8 safari_requestBySettingAdvancedPrivacyProtectionsFlagIsEnabled:self->_supportsAdvancedPrivacyProtections];
 
-  v10 = [v11 loadRequest:v9];
+  v10 = [viewCopy loadRequest:v9];
 }
 
 - (void)invalidate
@@ -69,95 +69,95 @@
   [(SFWebViewController *)&v6 invalidate];
   if (self->_appBannerMetaTagContentObserverInterface)
   {
-    v3 = [(SFWebViewController *)self webView];
-    v4 = [v3 _remoteObjectRegistry];
-    [v4 unregisterExportedObject:self interface:self->_appBannerMetaTagContentObserverInterface];
+    webView = [(SFWebViewController *)self webView];
+    _remoteObjectRegistry = [webView _remoteObjectRegistry];
+    [_remoteObjectRegistry unregisterExportedObject:self interface:self->_appBannerMetaTagContentObserverInterface];
 
     appBannerMetaTagContentObserverInterface = self->_appBannerMetaTagContentObserverInterface;
     self->_appBannerMetaTagContentObserverInterface = 0;
   }
 }
 
-- (void)webView:(id)a3 didCommitNavigation:(id)a4
+- (void)webView:(id)view didCommitNavigation:(id)navigation
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  navigationCopy = navigation;
   v8.receiver = self;
   v8.super_class = SFReaderEnabledWebViewController;
-  [(SFWebViewController *)&v8 webView:v6 didCommitNavigation:v7];
+  [(SFWebViewController *)&v8 webView:viewCopy didCommitNavigation:navigationCopy];
   [(_SFReaderController *)self->_readerController setReaderAvailable:0];
 }
 
-- (void)readerController:(id)a3 didDetermineReaderAvailability:(id)a4 dueTo:(int64_t)a5
+- (void)readerController:(id)controller didDetermineReaderAvailability:(id)availability dueTo:(int64_t)to
 {
-  v10 = a4;
-  v7 = [MEMORY[0x1E69C8810] sharedLogger];
-  [v7 didDetermineReaderAvailability:{objc_msgSend(v10, "isReaderAvailable")}];
+  availabilityCopy = availability;
+  mEMORY[0x1E69C8810] = [MEMORY[0x1E69C8810] sharedLogger];
+  [mEMORY[0x1E69C8810] didDetermineReaderAvailability:{objc_msgSend(availabilityCopy, "isReaderAvailable")}];
 
-  v8 = [(SFWebViewController *)self delegate];
-  [v8 webViewControllerDidDetermineReaderAvailability:self dueTo:a5];
+  delegate = [(SFWebViewController *)self delegate];
+  [delegate webViewControllerDidDetermineReaderAvailability:self dueTo:to];
   if (objc_opt_respondsToSelector())
   {
-    v9 = [v10 textSamples];
-    [v8 webViewController:self didExtractTextSamplesForTranslation:v9];
+    textSamples = [availabilityCopy textSamples];
+    [delegate webViewController:self didExtractTextSamplesForTranslation:textSamples];
   }
 }
 
-- (void)readerController:(id)a3 didDetermineAdditionalTextSamples:(id)a4 dueTo:(int64_t)a5
+- (void)readerController:(id)controller didDetermineAdditionalTextSamples:(id)samples dueTo:(int64_t)to
 {
   v13 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  samplesCopy = samples;
   v7 = WBS_LOG_CHANNEL_PREFIXTranslation();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    v10 = [v6 textSamples];
+    textSamples = [samplesCopy textSamples];
     v11 = 134217984;
-    v12 = [v10 count];
+    v12 = [textSamples count];
     _os_log_debug_impl(&dword_1D4644000, v7, OS_LOG_TYPE_DEBUG, "Determined %lu additional text samples for translation", &v11, 0xCu);
   }
 
-  v8 = [(SFWebViewController *)self delegate];
+  delegate = [(SFWebViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v9 = [v6 textSamples];
-    [v8 webViewController:self didExtractTextSamplesForTranslation:v9];
+    textSamples2 = [samplesCopy textSamples];
+    [delegate webViewController:self didExtractTextSamplesForTranslation:textSamples2];
   }
 }
 
-- (void)readerController:(id)a3 didClickLinkRequestingNewWindowInReaderWithRequest:(id)a4
+- (void)readerController:(id)controller didClickLinkRequestingNewWindowInReaderWithRequest:(id)request
 {
-  v6 = a4;
-  v5 = [(SFWebViewController *)self delegate];
-  [v5 webViewController:self didClickLinkInReaderWithRequest:v6];
+  requestCopy = request;
+  delegate = [(SFWebViewController *)self delegate];
+  [delegate webViewController:self didClickLinkInReaderWithRequest:requestCopy];
 }
 
-- (void)readerController:(id)a3 didClickLinkInReaderWithRequest:(id)a4
+- (void)readerController:(id)controller didClickLinkInReaderWithRequest:(id)request
 {
-  v6 = a4;
-  v5 = [(SFWebViewController *)self delegate];
-  [v5 webViewController:self didClickLinkInReaderWithRequest:v6];
+  requestCopy = request;
+  delegate = [(SFWebViewController *)self delegate];
+  [delegate webViewController:self didClickLinkInReaderWithRequest:requestCopy];
 }
 
-- (void)createReaderWebViewForReaderController:(id)a3
+- (void)createReaderWebViewForReaderController:(id)controller
 {
-  v4 = [(SFWebViewController *)self delegate];
-  [v4 createReaderWebViewForWebViewController:self];
+  delegate = [(SFWebViewController *)self delegate];
+  [delegate createReaderWebViewForWebViewController:self];
 }
 
-- (void)readerController:(id)a3 contentDidBecomeReadyWithDetectedLanguage:(id)a4
+- (void)readerController:(id)controller contentDidBecomeReadyWithDetectedLanguage:(id)language
 {
-  v5 = [(SFWebViewController *)self delegate:a3];
+  v5 = [(SFWebViewController *)self delegate:controller];
   if (objc_opt_respondsToSelector())
   {
     [v5 webViewControllerReaderDidBecomeReady:self];
   }
 }
 
-- (void)didFindAppBannerWithContent:(id)a3
+- (void)didFindAppBannerWithContent:(id)content
 {
-  v5 = a3;
-  v4 = [(SFWebViewController *)self delegate];
-  [v4 webViewController:self didFindAppBannerWithContent:v5];
+  contentCopy = content;
+  delegate = [(SFWebViewController *)self delegate];
+  [delegate webViewController:self didFindAppBannerWithContent:contentCopy];
 }
 
 @end

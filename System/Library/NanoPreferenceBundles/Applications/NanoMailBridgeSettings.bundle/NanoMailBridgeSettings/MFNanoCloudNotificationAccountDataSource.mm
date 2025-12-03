@@ -1,27 +1,27 @@
 @interface MFNanoCloudNotificationAccountDataSource
-- (MFNanoCloudNotificationAccountDataSource)initWithAccountDataSource:(id)a3;
+- (MFNanoCloudNotificationAccountDataSource)initWithAccountDataSource:(id)source;
 - (id)accounts;
-- (void)accountsSettingsDataSourceDidUpdate:(id)a3;
-- (void)saveAccount:(id)a3 completion:(id)a4;
+- (void)accountsSettingsDataSourceDidUpdate:(id)update;
+- (void)saveAccount:(id)account completion:(id)completion;
 @end
 
 @implementation MFNanoCloudNotificationAccountDataSource
 
-- (MFNanoCloudNotificationAccountDataSource)initWithAccountDataSource:(id)a3
+- (MFNanoCloudNotificationAccountDataSource)initWithAccountDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v10.receiver = self;
   v10.super_class = MFNanoCloudNotificationAccountDataSource;
   v5 = [(MFNanoCloudNotificationAccountDataSource *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    [(MFNanoCloudNotificationAccountDataSource *)v5 setAccountDataSource:v4];
+    [(MFNanoCloudNotificationAccountDataSource *)v5 setAccountDataSource:sourceCopy];
     v7 = [[NSHashTable alloc] initWithOptions:5 capacity:3];
     [(MFNanoCloudNotificationAccountDataSource *)v6 setObservers:v7];
 
-    v8 = [(MFNanoCloudNotificationAccountDataSource *)v6 accountDataSource];
-    [v8 addObserver:v6];
+    accountDataSource = [(MFNanoCloudNotificationAccountDataSource *)v6 accountDataSource];
+    [accountDataSource addObserver:v6];
   }
 
   return v6;
@@ -29,20 +29,20 @@
 
 - (id)accounts
 {
-  v2 = [(MFNanoAccountsSettingsDataSource *)self->_accountDataSource accounts];
-  v3 = [v2 ef_map:&stru_34C10];
+  accounts = [(MFNanoAccountsSettingsDataSource *)self->_accountDataSource accounts];
+  v3 = [accounts ef_map:&stru_34C10];
 
   return v3;
 }
 
-- (void)saveAccount:(id)a3 completion:(id)a4
+- (void)saveAccount:(id)account completion:(id)completion
 {
-  v6 = a4;
-  v5 = [a3 nnmkAccount];
-  [NNMKStandaloneAccountHelper saveLocalAccountProperties:v5 withCompletion:v6];
+  completionCopy = completion;
+  nnmkAccount = [account nnmkAccount];
+  [NNMKStandaloneAccountHelper saveLocalAccountProperties:nnmkAccount withCompletion:completionCopy];
 }
 
-- (void)accountsSettingsDataSourceDidUpdate:(id)a3
+- (void)accountsSettingsDataSourceDidUpdate:(id)update
 {
   v8 = 0u;
   v9 = 0u;

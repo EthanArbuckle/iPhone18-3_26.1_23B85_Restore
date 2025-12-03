@@ -1,18 +1,18 @@
 @interface AVTCoreModelColorVariation
-- (AVTCoreModelColorVariation)initWithColor:(id)a3 colorPreset:(id)a4;
-- (BOOL)isEqual:(id)a3;
+- (AVTCoreModelColorVariation)initWithColor:(id)color colorPreset:(id)preset;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation AVTCoreModelColorVariation
 
-- (AVTCoreModelColorVariation)initWithColor:(id)a3 colorPreset:(id)a4
+- (AVTCoreModelColorVariation)initWithColor:(id)color colorPreset:(id)preset
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7 || !v8)
+  colorCopy = color;
+  presetCopy = preset;
+  v9 = presetCopy;
+  if (!colorCopy || !presetCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"Missing color or colorPreset!"];
   }
@@ -23,17 +23,17 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_color, a3);
-    objc_storeStrong(&v11->_colorPreset, a4);
+    objc_storeStrong(&v10->_color, color);
+    objc_storeStrong(&v11->_colorPreset, preset);
   }
 
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (v5 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v13 = 1;
   }
@@ -43,21 +43,21 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [(AVTCoreModelColorVariation *)self color];
-      if (!v6)
+      color = [(AVTCoreModelColorVariation *)self color];
+      if (!color)
       {
-        v3 = [(AVTCoreModelColorVariation *)v5 color];
-        if (!v3)
+        color2 = [(AVTCoreModelColorVariation *)equalCopy color];
+        if (!color2)
         {
 LABEL_7:
-          v10 = [(AVTCoreModelColorVariation *)self colorPreset];
-          if (v10 || ([(AVTCoreModelColorVariation *)v5 colorPreset], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+          colorPreset = [(AVTCoreModelColorVariation *)self colorPreset];
+          if (colorPreset || ([(AVTCoreModelColorVariation *)equalCopy colorPreset], (color2 = objc_claimAutoreleasedReturnValue()) != 0))
           {
-            v11 = [(AVTCoreModelColorVariation *)self colorPreset];
-            v12 = [(AVTCoreModelColorVariation *)v5 colorPreset];
-            v13 = [v11 isEqual:v12];
+            colorPreset2 = [(AVTCoreModelColorVariation *)self colorPreset];
+            colorPreset3 = [(AVTCoreModelColorVariation *)equalCopy colorPreset];
+            v13 = [colorPreset2 isEqual:colorPreset3];
 
-            if (v10)
+            if (colorPreset)
             {
 LABEL_16:
 
@@ -74,11 +74,11 @@ LABEL_16:
         }
       }
 
-      v7 = [(AVTCoreModelColorVariation *)self color];
-      v8 = [(AVTCoreModelColorVariation *)v5 color];
-      v9 = [v7 isEqual:v8];
+      color3 = [(AVTCoreModelColorVariation *)self color];
+      color4 = [(AVTCoreModelColorVariation *)equalCopy color];
+      v9 = [color3 isEqual:color4];
 
-      if (v6)
+      if (color)
       {
 
         if (v9)
@@ -107,14 +107,14 @@ LABEL_17:
 
 - (unint64_t)hash
 {
-  v3 = [(AVTCoreModelColorVariation *)self color];
-  v4 = [v3 hash];
-  v5 = [(AVTCoreModelColorVariation *)self color];
+  color = [(AVTCoreModelColorVariation *)self color];
+  v4 = [color hash];
+  color2 = [(AVTCoreModelColorVariation *)self color];
   *(&v6 + 1) = v4;
-  *&v6 = [v5 hash];
+  *&v6 = [color2 hash];
   v7 = MEMORY[0x1E696AD98];
-  v8 = [(AVTCoreModelColorVariation *)self colorPreset];
-  [v8 variation];
+  colorPreset = [(AVTCoreModelColorVariation *)self colorPreset];
+  [colorPreset variation];
   v9 = [v7 numberWithFloat:?];
   v10 = [v9 hash];
 
@@ -128,17 +128,17 @@ LABEL_17:
   v3 = [(AVTCoreModelColorVariation *)&v14 description];
   v4 = [v3 mutableCopy];
 
-  v5 = [(AVTCoreModelColorVariation *)self colorPreset];
-  v6 = [v5 name];
-  [v4 appendFormat:@" name: %@", v6];
+  colorPreset = [(AVTCoreModelColorVariation *)self colorPreset];
+  name = [colorPreset name];
+  [v4 appendFormat:@" name: %@", name];
 
-  v7 = [(AVTCoreModelColorVariation *)self color];
-  v8 = AVTAvatarSettingKindDescription([v7 settingKind]);
+  color = [(AVTCoreModelColorVariation *)self color];
+  v8 = AVTAvatarSettingKindDescription([color settingKind]);
   [v4 appendFormat:@" settingKind: %@", v8];
 
   v9 = MEMORY[0x1E696AD98];
-  v10 = [(AVTCoreModelColorVariation *)self colorPreset];
-  [v10 variation];
+  colorPreset2 = [(AVTCoreModelColorVariation *)self colorPreset];
+  [colorPreset2 variation];
   v11 = [v9 numberWithFloat:?];
   [v4 appendFormat:@" variation: %@", v11];
 

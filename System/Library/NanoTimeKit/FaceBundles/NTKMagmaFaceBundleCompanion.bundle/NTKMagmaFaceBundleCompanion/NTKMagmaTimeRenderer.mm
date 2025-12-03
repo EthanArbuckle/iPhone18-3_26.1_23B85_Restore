@@ -1,22 +1,22 @@
 @interface NTKMagmaTimeRenderer
-+ ($F6FDA64D965730B2BB0321DC449E673D)renderTimeWithHour:(SEL)a3 minute:(id)a4 fontSize:(id)a5 lineSpacing:(double)a6;
-+ (CGRect)_opticalBoundsFromFrame:(__CTFrame *)a3 context:(CGContext *)a4;
++ ($F6FDA64D965730B2BB0321DC449E673D)renderTimeWithHour:(SEL)hour minute:(id)minute fontSize:(id)size lineSpacing:(double)spacing;
++ (CGRect)_opticalBoundsFromFrame:(__CTFrame *)frame context:(CGContext *)context;
 @end
 
 @implementation NTKMagmaTimeRenderer
 
-+ (CGRect)_opticalBoundsFromFrame:(__CTFrame *)a3 context:(CGContext *)a4
++ (CGRect)_opticalBoundsFromFrame:(__CTFrame *)frame context:(CGContext *)context
 {
-  v6 = CTFrameGetLines(a3);
+  v6 = CTFrameGetLines(frame);
   v7 = v6;
   if (v6 && [v6 count])
   {
     v18 = CGPointZero;
     v19.location = 0;
     v19.length = 1;
-    CTFrameGetLineOrigins(a3, v19, &v18);
+    CTFrameGetLineOrigins(frame, v19, &v18);
     v8 = [v7 objectAtIndexedSubscript:0];
-    ImageBounds = CTLineGetImageBounds(v8, a4);
+    ImageBounds = CTLineGetImageBounds(v8, context);
     x = ImageBounds.origin.x;
     y = ImageBounds.origin.y;
     width = ImageBounds.size.width;
@@ -44,10 +44,10 @@
   return result;
 }
 
-+ ($F6FDA64D965730B2BB0321DC449E673D)renderTimeWithHour:(SEL)a3 minute:(id)a4 fontSize:(id)a5 lineSpacing:(double)a6
++ ($F6FDA64D965730B2BB0321DC449E673D)renderTimeWithHour:(SEL)hour minute:(id)minute fontSize:(id)size lineSpacing:(double)spacing
 {
-  v12 = a4;
-  v13 = a5;
+  minuteCopy = minute;
+  sizeCopy = size;
   v14 = +[CLKDevice currentDevice];
   [v14 screenScale];
   v16 = v15;
@@ -57,7 +57,7 @@
   v19 = v18;
 
   v20 = CACurrentMediaTime();
-  v21 = [NTKVictoryLabel victoryFontWithSize:0 style:a6];
+  v21 = [NTKVictoryLabel victoryFontWithSize:0 style:spacing];
   if (!v21)
   {
     v22 = _NTKLoggingObjectForDomain();
@@ -67,7 +67,7 @@
     }
   }
 
-  v23 = [NTKVictoryLabel victoryFontWithSize:1 style:a6];
+  v23 = [NTKVictoryLabel victoryFontWithSize:1 style:spacing];
   if (!v23)
   {
     v24 = _NTKLoggingObjectForDomain();
@@ -81,9 +81,9 @@
   v36[1] = 3221225472;
   v36[2] = sub_85FC;
   v36[3] = &unk_14700;
-  v25 = v12;
+  v25 = minuteCopy;
   v37 = v25;
-  v26 = v13;
+  v26 = sizeCopy;
   v38 = v26;
   v39 = v19;
   v40 = a7;

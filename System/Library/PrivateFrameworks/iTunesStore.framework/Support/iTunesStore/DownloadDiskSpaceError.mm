@@ -1,7 +1,7 @@
 @interface DownloadDiskSpaceError
 - (id)copyUserNotification;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)performActionForResponseFlags:(unint64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)performActionForResponseFlags:(unint64_t)flags;
 @end
 
 @implementation DownloadDiskSpaceError
@@ -67,9 +67,9 @@ LABEL_13:
   return v17;
 }
 
-- (void)performActionForResponseFlags:(unint64_t)a3
+- (void)performActionForResponseFlags:(unint64_t)flags
 {
-  if (!a3)
+  if (!flags)
   {
     v5 = [[ISOpenURLRequest alloc] initWithURL:{+[NSURL URLWithString:](NSURL, "URLWithString:", @"prefs:root=General&path=USAGE"}];
     [v5 setITunesStoreURL:0];
@@ -78,11 +78,11 @@ LABEL_13:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = DownloadDiskSpaceError;
-  return [(DownloadError *)&v4 copyWithZone:a3];
+  return [(DownloadError *)&v4 copyWithZone:zone];
 }
 
 @end

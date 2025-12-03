@@ -1,16 +1,16 @@
 @interface PGMomentHasBirthdayFeatureExtractor
 - (NSArray)featureNames;
 - (PGMomentHasBirthdayFeatureExtractor)init;
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4;
+- (id)floatVectorWithEntity:(id)entity error:(id *)error;
 @end
 
 @implementation PGMomentHasBirthdayFeatureExtractor
 
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4
+- (id)floatVectorWithEntity:(id)entity error:(id *)error
 {
-  v5 = a3;
-  v6 = self;
-  MomentHasBirthdayFeatureExtractor.floatVector(withEntity:)(v5);
+  entityCopy = entity;
+  selfCopy = self;
+  MomentHasBirthdayFeatureExtractor.floatVector(withEntity:)(entityCopy);
   v8 = v7;
 
   return v8;

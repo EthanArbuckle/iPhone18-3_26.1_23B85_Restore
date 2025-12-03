@@ -1,21 +1,21 @@
 @interface BLSHAssertionService
-- (BLSHAssertionService)initWithOSInterfaceProvider:(id)a3 localOnly:(BOOL)a4;
+- (BLSHAssertionService)initWithOSInterfaceProvider:(id)provider localOnly:(BOOL)only;
 @end
 
 @implementation BLSHAssertionService
 
-- (BLSHAssertionService)initWithOSInterfaceProvider:(id)a3 localOnly:(BOOL)a4
+- (BLSHAssertionService)initWithOSInterfaceProvider:(id)provider localOnly:(BOOL)only
 {
-  v7 = a3;
+  providerCopy = provider;
   v24.receiver = self;
   v24.super_class = BLSHAssertionService;
   v8 = [(BLSHAssertionService *)&v24 init];
   if (v8)
   {
-    v9 = [[BLSHLocalAssertionService alloc] initWithOSInterfaceProvider:v7];
+    v9 = [[BLSHLocalAssertionService alloc] initWithOSInterfaceProvider:providerCopy];
     [MEMORY[0x277CF0868] setDefaultService:v9];
     objc_storeStrong(&v8->_localAssertionService, v9);
-    if (!a4)
+    if (!only)
     {
       v10 = [BLSHXPCAssertionServiceHostServer serverWithLocalAssertionService:v9];
       server = v8->_server;

@@ -1,32 +1,32 @@
 @interface UITextViewRepresentable.Coordinator
 - (_TtCV9TipsTryIt23UITextViewRepresentable11Coordinator)init;
-- (void)handleTapWithSender:(id)a3;
-- (void)textViewDidChange:(id)a3;
-- (void)textViewDidChangeSelection:(id)a3;
+- (void)handleTapWithSender:(id)sender;
+- (void)textViewDidChange:(id)change;
+- (void)textViewDidChangeSelection:(id)selection;
 @end
 
 @implementation UITextViewRepresentable.Coordinator
 
-- (void)handleTapWithSender:(id)a3
+- (void)handleTapWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
+  senderCopy = sender;
+  selfCopy = self;
   sub_26F141080();
 }
 
-- (void)textViewDidChange:(id)a3
+- (void)textViewDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  v6 = [v4 text];
-  if (v6)
+  changeCopy = change;
+  selfCopy = self;
+  text = [changeCopy text];
+  if (text)
   {
-    v7 = v6;
+    v7 = text;
     v8 = sub_26F180754();
     v10 = v9;
 
-    v11 = (v5 + OBJC_IVAR____TtCV9TipsTryIt23UITextViewRepresentable11Coordinator_text);
-    v12 = *&v5->_disableInteraction[OBJC_IVAR____TtCV9TipsTryIt23UITextViewRepresentable11Coordinator_text];
+    v11 = (selfCopy + OBJC_IVAR____TtCV9TipsTryIt23UITextViewRepresentable11Coordinator_text);
+    v12 = *&selfCopy->_disableInteraction[OBJC_IVAR____TtCV9TipsTryIt23UITextViewRepresentable11Coordinator_text];
     *v11 = v8;
     v11[1] = v10;
   }
@@ -37,11 +37,11 @@
   }
 }
 
-- (void)textViewDidChangeSelection:(id)a3
+- (void)textViewDidChangeSelection:(id)selection
 {
-  v4 = a3;
-  v5 = self;
-  sub_26F13EEA0(v4);
+  selectionCopy = selection;
+  selfCopy = self;
+  sub_26F13EEA0(selectionCopy);
 }
 
 - (_TtCV9TipsTryIt23UITextViewRepresentable11Coordinator)init

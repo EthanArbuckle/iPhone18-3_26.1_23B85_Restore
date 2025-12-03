@@ -2,7 +2,7 @@
 + (id)defaultTitleForCalendarItem;
 - (BOOL)attachmentsModifiedOnRecurrence;
 - (BOOL)hasUnsavedChanges;
-- (BOOL)saveCalendarItemWithSpan:(int64_t)a3 error:(id *)a4;
+- (BOOL)saveCalendarItemWithSpan:(int64_t)span error:(id *)error;
 - (CGSize)preferredContentSize;
 - (id)_calendarItemIndexSet;
 - (id)_editItems;
@@ -12,25 +12,25 @@
 - (id)defaultAlertTitle;
 - (id)preferredTitle;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_beginAutocompleteSearch:(id)a3;
+- (void)_beginAutocompleteSearch:(id)search;
 - (void)_cancelPendingAutocompleteAndCleanup;
 - (void)_focusAppearanceTarget;
 - (void)_hideAndCancelAutocompleteResults;
-- (void)_modifyCurrentEvent:(id)a3 withAutocompleteResult:(id)a4;
+- (void)_modifyCurrentEvent:(id)event withAutocompleteResult:(id)result;
 - (void)_revertEvent;
-- (void)_scheduleAutocompleteSearchWithString:(id)a3;
+- (void)_scheduleAutocompleteSearchWithString:(id)string;
 - (void)_scheduleAutocompleteTimerIfNeeded;
-- (void)_setAutocompleteResultsVisible:(BOOL)a3;
-- (void)_setEventTitleForTestingAutocomplete:(id)a3;
+- (void)_setAutocompleteResultsVisible:(BOOL)visible;
+- (void)_setEventTitleForTestingAutocomplete:(id)autocomplete;
 - (void)_showAutocompleteResults;
 - (void)_updateTitleEditItemSeparatorVisibility;
-- (void)autocompleteResultsEditItem:(id)a3 resultSelected:(id)a4;
-- (void)autocompleteResultsEditItemDidShowResults:(id)a3;
-- (void)confirmMultiPasteViewController:(id)a3 finishedWithCancel:(BOOL)a4;
-- (void)editItem:(id)a3 didSaveFromDetailViewController:(BOOL)a4;
-- (void)editItemDidStartEditing:(id)a3;
-- (void)editItemTextChanged:(id)a3;
-- (void)focus:(unint64_t)a3 select:(BOOL)a4;
+- (void)autocompleteResultsEditItem:(id)item resultSelected:(id)selected;
+- (void)autocompleteResultsEditItemDidShowResults:(id)results;
+- (void)confirmMultiPasteViewController:(id)controller finishedWithCancel:(BOOL)cancel;
+- (void)editItem:(id)item didSaveFromDetailViewController:(BOOL)controller;
+- (void)editItemDidStartEditing:(id)editing;
+- (void)editItemTextChanged:(id)changed;
+- (void)focus:(unint64_t)focus select:(BOOL)select;
 - (void)loadView;
 - (void)prepareEditItems;
 - (void)refreshAttachments;
@@ -39,15 +39,15 @@
 - (void)refreshRecurrence;
 - (void)refreshStartAndEndDates;
 - (void)refreshURL;
-- (void)reloadTableViewSectionsForTime:(BOOL)a3 invitees:(BOOL)a4 location:(BOOL)a5 recurrence:(BOOL)a6;
-- (void)setBackgroundColor:(id)a3;
-- (void)setDefaultCalendar:(id)a3;
-- (void)setEvent:(id)a3;
-- (void)setSuggestionKey:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)reloadTableViewSectionsForTime:(BOOL)time invitees:(BOOL)invitees location:(BOOL)location recurrence:(BOOL)recurrence;
+- (void)setBackgroundColor:(id)color;
+- (void)setDefaultCalendar:(id)calendar;
+- (void)setEvent:(id)event;
+- (void)setSuggestionKey:(id)key;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation EKEventEditor
@@ -57,13 +57,13 @@
   v6.receiver = self;
   v6.super_class = EKEventEditor;
   [(EKCalendarItemEditor *)&v6 loadView];
-  v3 = [(EKEventEditor *)self backgroundColor];
+  backgroundColor = [(EKEventEditor *)self backgroundColor];
 
-  if (v3)
+  if (backgroundColor)
   {
-    v4 = [(EKEventEditor *)self backgroundColor];
-    v5 = [(EKEventEditor *)self view];
-    [v5 setBackgroundColor:v4];
+    backgroundColor2 = [(EKEventEditor *)self backgroundColor];
+    view = [(EKEventEditor *)self view];
+    [view setBackgroundColor:backgroundColor2];
   }
 }
 
@@ -71,12 +71,12 @@
 {
   if (self->_isTransitioning)
   {
-    v2 = [(EKEventEditor *)self view];
-    v3 = [v2 window];
-    v4 = [v3 windowScene];
-    v5 = [v4 interfaceOrientation];
+    view = [(EKEventEditor *)self view];
+    window = [view window];
+    windowScene = [window windowScene];
+    interfaceOrientation = [windowScene interfaceOrientation];
 
-    return 1 << v5;
+    return 1 << interfaceOrientation;
   }
 
   else
@@ -87,156 +87,156 @@
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   self->_isTransitioning = 1;
   v4.receiver = self;
   v4.super_class = EKEventEditor;
-  [(EKCalendarItemEditor *)&v4 viewWillAppear:a3];
+  [(EKCalendarItemEditor *)&v4 viewWillAppear:appear];
   [(EKEventEditor *)self setNeedsUpdateOfSupportedInterfaceOrientations];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v49 = *MEMORY[0x1E69E9840];
   v30.receiver = self;
   v30.super_class = EKEventEditor;
-  [(EKCalendarItemEditor *)&v30 viewDidAppear:a3];
+  [(EKCalendarItemEditor *)&v30 viewDidAppear:appear];
   v4 = kEKUILogHandle;
   if (os_log_type_enabled(kEKUILogHandle, OS_LOG_TYPE_INFO))
   {
     log = v4;
     v5 = objc_opt_class();
     v29 = NSStringFromClass(v5);
-    v27 = [(EKEventEditor *)self event];
-    v28 = [v27 startDate];
-    v26 = [(EKEventEditor *)self event];
-    [v26 duration];
+    event = [(EKEventEditor *)self event];
+    startDate = [event startDate];
+    event2 = [(EKEventEditor *)self event];
+    [event2 duration];
     v7 = v6 / 60.0;
-    v25 = [(EKEventEditor *)self event];
-    v19 = [v25 isNew];
-    v24 = [(EKEventEditor *)self event];
-    v18 = [v24 UUID];
-    v22 = [(EKEventEditor *)self event];
-    v8 = [v22 uniqueID];
-    v21 = [(EKEventEditor *)self event];
-    v9 = [v21 externalURL];
-    v20 = [(EKEventEditor *)self event];
-    v10 = [v20 calendar];
-    v11 = [v10 calendarIdentifier];
-    v12 = [(EKEventEditor *)self event];
-    v13 = [v12 calendar];
-    v14 = [v13 source];
-    v15 = [v14 sourceIdentifier];
+    event3 = [(EKEventEditor *)self event];
+    isNew = [event3 isNew];
+    event4 = [(EKEventEditor *)self event];
+    uUID = [event4 UUID];
+    event5 = [(EKEventEditor *)self event];
+    uniqueID = [event5 uniqueID];
+    event6 = [(EKEventEditor *)self event];
+    externalURL = [event6 externalURL];
+    event7 = [(EKEventEditor *)self event];
+    calendar = [event7 calendar];
+    calendarIdentifier = [calendar calendarIdentifier];
+    event8 = [(EKEventEditor *)self event];
+    calendar2 = [event8 calendar];
+    source = [calendar2 source];
+    sourceIdentifier = [source sourceIdentifier];
     *buf = 138545410;
     v32 = v29;
     v33 = 2114;
-    v34 = v28;
+    v34 = startDate;
     v35 = 2048;
     v36 = v7;
     v37 = 1024;
-    v38 = v19;
+    v38 = isNew;
     v39 = 2114;
-    v40 = v18;
+    v40 = uUID;
     v41 = 2114;
-    v42 = v8;
+    v42 = uniqueID;
     v43 = 2114;
-    v44 = v9;
+    v44 = externalURL;
     v45 = 2114;
-    v46 = v11;
+    v46 = calendarIdentifier;
     v47 = 2114;
-    v48 = v15;
+    v48 = sourceIdentifier;
     _os_log_impl(&dword_1D3400000, log, OS_LOG_TYPE_INFO, "[UserStateLog] State -> %{public}@ viewDidAppear. startDate = %{public}@, duration = %.1f min, isNew = %d. UUID = %{public}@, uniqueID = %{public}@, externalURL = %{public}@, calendarIdentifier = %{public}@, sourceIdentifier = %{public}@", buf, 0x58u);
   }
 
   self->_isTransitioning = 0;
   [(EKEventEditor *)self setNeedsUpdateOfSupportedInterfaceOrientations];
-  v16 = [(EKEventEditor *)self navigationController];
-  v17 = [v16 presentationController];
-  [v17 preferredContentSizeDidChangeForChildContentContainer:self];
+  navigationController = [(EKEventEditor *)self navigationController];
+  presentationController = [navigationController presentationController];
+  [presentationController preferredContentSizeDidChangeForChildContentContainer:self];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   self->_isTransitioning = 1;
   v4.receiver = self;
   v4.super_class = EKEventEditor;
-  [(EKCalendarItemEditor *)&v4 viewWillDisappear:a3];
+  [(EKCalendarItemEditor *)&v4 viewWillDisappear:disappear];
   [(EKEventEditor *)self setNeedsUpdateOfSupportedInterfaceOrientations];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if (self->_shouldAutocomplete)
   {
     autocompleteTracker = self->_autocompleteTracker;
-    v6 = [(EKEventEditor *)self event];
-    [(EKUIAutocompleteTracker *)autocompleteTracker finalizeAutocompleteTrackingOnSave:0 withEvent:v6 selectedResult:0 selectedIndex:0 isZKW:0];
+    event = [(EKEventEditor *)self event];
+    [(EKUIAutocompleteTracker *)autocompleteTracker finalizeAutocompleteTrackingOnSave:0 withEvent:event selectedResult:0 selectedIndex:0 isZKW:0];
   }
 
   v7.receiver = self;
   v7.super_class = EKEventEditor;
-  [(EKCalendarItemEditor *)&v7 viewDidDisappear:v3];
+  [(EKCalendarItemEditor *)&v7 viewDidDisappear:disappearCopy];
   self->_isTransitioning = 0;
   [(EKEventEditor *)self setNeedsUpdateOfSupportedInterfaceOrientations];
 }
 
-- (void)setEvent:(id)a3
+- (void)setEvent:(id)event
 {
-  v4 = a3;
-  [v4 setPredictedLocationFrozen:1];
+  eventCopy = event;
+  [eventCopy setPredictedLocationFrozen:1];
   v13.receiver = self;
   v13.super_class = EKEventEditor;
-  [(EKCalendarItemEditor *)&v13 setCalendarItem:v4];
-  v5 = [(EKEventEditor *)self preferredTitle];
-  [(EKCalendarItemEditor *)self setTitle:v5];
+  [(EKCalendarItemEditor *)&v13 setCalendarItem:eventCopy];
+  preferredTitle = [(EKEventEditor *)self preferredTitle];
+  [(EKCalendarItemEditor *)self setTitle:preferredTitle];
 
   [(EKEventEditor *)self _updateTitleEditItemSeparatorVisibility];
-  self->_shouldAutocomplete = [v4 isNew];
+  self->_shouldAutocomplete = [eventCopy isNew];
   v6 = objc_alloc_init(EKUIAutocompleteTracker);
   autocompleteTracker = self->_autocompleteTracker;
   self->_autocompleteTracker = v6;
 
-  v8 = [v4 startDate];
-  [(EKUIAutocompleteTracker *)self->_autocompleteTracker setInitialStartDate:v8];
+  startDate = [eventCopy startDate];
+  [(EKUIAutocompleteTracker *)self->_autocompleteTracker setInitialStartDate:startDate];
 
-  v9 = [v4 endDateUnadjustedForLegacyClients];
-  [(EKUIAutocompleteTracker *)self->_autocompleteTracker setInitialEndDate:v9];
+  endDateUnadjustedForLegacyClients = [eventCopy endDateUnadjustedForLegacyClients];
+  [(EKUIAutocompleteTracker *)self->_autocompleteTracker setInitialEndDate:endDateUnadjustedForLegacyClients];
 
-  v10 = [v4 timeZone];
-  [(EKUIAutocompleteTracker *)self->_autocompleteTracker setInitialTimeZone:v10];
+  timeZone = [eventCopy timeZone];
+  [(EKUIAutocompleteTracker *)self->_autocompleteTracker setInitialTimeZone:timeZone];
 
-  -[EKUIAutocompleteTracker setInitialIsAllDay:](self->_autocompleteTracker, "setInitialIsAllDay:", [v4 isAllDay]);
-  v11 = [v4 calendar];
-  [(EKUIAutocompleteTracker *)self->_autocompleteTracker setInitialCalendar:v11];
+  -[EKUIAutocompleteTracker setInitialIsAllDay:](self->_autocompleteTracker, "setInitialIsAllDay:", [eventCopy isAllDay]);
+  calendar = [eventCopy calendar];
+  [(EKUIAutocompleteTracker *)self->_autocompleteTracker setInitialCalendar:calendar];
 
-  if (([v4 isNew] & 1) == 0)
+  if (([eventCopy isNew] & 1) == 0)
   {
-    v12 = [MEMORY[0x1E6966A10] sharedInstance];
-    [v12 prepareForEventUpdate:v4];
+    mEMORY[0x1E6966A10] = [MEMORY[0x1E6966A10] sharedInstance];
+    [mEMORY[0x1E6966A10] prepareForEventUpdate:eventCopy];
   }
 
-  [(UIResponder *)self EKUI_setDataOwnersFromEvent:v4];
+  [(UIResponder *)self EKUI_setDataOwnersFromEvent:eventCopy];
 }
 
-- (void)setSuggestionKey:(id)a3
+- (void)setSuggestionKey:(id)key
 {
   v42 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  keyCopy = key;
+  if (keyCopy)
   {
-    objc_storeStrong(&self->_suggestionKey, a3);
-    v6 = [(EKEventEditor *)self event];
+    objc_storeStrong(&self->_suggestionKey, key);
+    event = [(EKEventEditor *)self event];
 
-    if (v6)
+    if (event)
     {
-      v7 = [(EKCalendarItemEditor *)self store];
-      v8 = [v7 predicateForNaturalLanguageSuggestedEventsWithSearchString:0];
+      store = [(EKCalendarItemEditor *)self store];
+      v8 = [store predicateForNaturalLanguageSuggestedEventsWithSearchString:0];
 
-      v9 = [(EKCalendarItemEditor *)self store];
+      store2 = [(EKCalendarItemEditor *)self store];
       v36 = v8;
-      v10 = [v9 eventsMatchingPredicate:v8];
+      v10 = [store2 eventsMatchingPredicate:v8];
 
       v39 = 0u;
       v40 = 0u;
@@ -248,7 +248,7 @@
       if (v12)
       {
         v14 = v12;
-        v35 = v5;
+        v35 = keyCopy;
         v15 = *v38;
 LABEL_5:
         v16 = 0;
@@ -260,9 +260,9 @@ LABEL_5:
           }
 
           v17 = *(*(&v37 + 1) + 8 * v16);
-          v18 = [v17 suggestionInfo];
-          v19 = [v18 uniqueKey];
-          v20 = [v19 isEqualToString:self->_suggestionKey];
+          suggestionInfo = [v17 suggestionInfo];
+          uniqueKey = [suggestionInfo uniqueKey];
+          v20 = [uniqueKey isEqualToString:self->_suggestionKey];
 
           if (v20)
           {
@@ -278,14 +278,14 @@ LABEL_5:
             }
 
             v13 = v11;
-            v5 = v35;
+            keyCopy = v35;
             goto LABEL_14;
           }
         }
 
         v13 = v17;
 
-        v5 = v35;
+        keyCopy = v35;
         if (!v13)
         {
           goto LABEL_15;
@@ -293,24 +293,24 @@ LABEL_5:
 
         v34 = EKWeakLinkStringConstant();
         v33 = [v13 customObjectForKey:v34];
-        v21 = [(EKEventEditor *)self event];
-        [v21 setCustomObject:v33 forKey:v34];
+        event2 = [(EKEventEditor *)self event];
+        [event2 setCustomObject:v33 forKey:v34];
 
         v31 = objc_alloc(MEMORY[0x1E6966B20]);
-        v22 = [v13 suggestionInfo];
-        v23 = [v22 opaqueKey];
-        v24 = [v13 suggestionInfo];
-        v25 = [v24 uniqueKey];
-        v26 = [v13 suggestionInfo];
-        v27 = [v26 extractionGroupIdentifier];
-        v32 = [v31 initWithOpaqueKey:v23 uniqueKey:v25 extractionGroupIdentifier:v27];
+        suggestionInfo2 = [v13 suggestionInfo];
+        opaqueKey = [suggestionInfo2 opaqueKey];
+        suggestionInfo3 = [v13 suggestionInfo];
+        uniqueKey2 = [suggestionInfo3 uniqueKey];
+        suggestionInfo4 = [v13 suggestionInfo];
+        extractionGroupIdentifier = [suggestionInfo4 extractionGroupIdentifier];
+        v32 = [v31 initWithOpaqueKey:opaqueKey uniqueKey:uniqueKey2 extractionGroupIdentifier:extractionGroupIdentifier];
 
-        v28 = [(EKEventEditor *)self event];
-        [v28 setSuggestionInfo:v32];
+        event3 = [(EKEventEditor *)self event];
+        [event3 setSuggestionInfo:v32];
 
         v29 = [v13 URL];
-        v30 = [(EKEventEditor *)self event];
-        [v30 setURL:v29];
+        event4 = [(EKEventEditor *)self event];
+        [event4 setURL:v29];
       }
 
 LABEL_14:
@@ -324,27 +324,27 @@ LABEL_15:
 {
   if (self->_autocompleteResultsVisible)
   {
-    v3 = 1;
+    isPrediction = 1;
   }
 
   else
   {
-    v4 = [(EKEventEditor *)self event];
-    v5 = [v4 preferredLocation];
-    v3 = [v5 isPrediction];
+    event = [(EKEventEditor *)self event];
+    preferredLocation = [event preferredLocation];
+    isPrediction = [preferredLocation isPrediction];
   }
 
   v6 = MEMORY[0x1D38B98D0]() ^ 1;
   titleInlineEditItem = self->_titleInlineEditItem;
 
-  [(EKCalendarItemTitleInlineEditItem *)titleInlineEditItem setDrawsOwnRowSeparators:v6 & v3];
+  [(EKCalendarItemTitleInlineEditItem *)titleInlineEditItem setDrawsOwnRowSeparators:v6 & isPrediction];
 }
 
-- (void)setDefaultCalendar:(id)a3
+- (void)setDefaultCalendar:(id)calendar
 {
   v4.receiver = self;
   v4.super_class = EKEventEditor;
-  [(EKCalendarItemEditor *)&v4 setDefaultCalendar:a3];
+  [(EKCalendarItemEditor *)&v4 setDefaultCalendar:calendar];
   [(EKCalendarItemEditItem *)self->_calendarEditItem refreshFromCalendarItemAndStore];
 }
 
@@ -398,20 +398,20 @@ LABEL_15:
   [(EKEventAttachmentsEditItem *)self->_attachmentsEditItem refreshFromCalendarItemAndStore];
 }
 
-- (void)reloadTableViewSectionsForTime:(BOOL)a3 invitees:(BOOL)a4 location:(BOOL)a5 recurrence:(BOOL)a6
+- (void)reloadTableViewSectionsForTime:(BOOL)time invitees:(BOOL)invitees location:(BOOL)location recurrence:(BOOL)recurrence
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  recurrenceCopy = recurrence;
+  locationCopy = location;
+  inviteesCopy = invitees;
+  timeCopy = time;
   v12 = objc_opt_new();
-  if (v9)
+  if (timeCopy)
   {
     [v12 addIndex:{-[EKCalendarItemEditor tableSectionForEditItem:](self, "tableSectionForEditItem:", self->_dateItem)}];
-    if (!v8)
+    if (!inviteesCopy)
     {
 LABEL_3:
-      if (!v7)
+      if (!locationCopy)
       {
         goto LABEL_4;
       }
@@ -420,16 +420,16 @@ LABEL_3:
     }
   }
 
-  else if (!v8)
+  else if (!inviteesCopy)
   {
     goto LABEL_3;
   }
 
   [v12 addIndex:{-[EKCalendarItemEditor tableSectionForEditItem:](self, "tableSectionForEditItem:", self->_attendeesEditItem)}];
-  if (!v7)
+  if (!locationCopy)
   {
 LABEL_4:
-    if (!v6)
+    if (!recurrenceCopy)
     {
       goto LABEL_6;
     }
@@ -439,15 +439,15 @@ LABEL_4:
 
 LABEL_11:
   [v12 addIndex:{-[EKCalendarItemEditor tableSectionForEditItem:](self, "tableSectionForEditItem:", self->_locationInlineEditItem)}];
-  if (v6)
+  if (recurrenceCopy)
   {
 LABEL_5:
     [v12 addIndex:{-[EKCalendarItemEditor tableSectionForEditItem:](self, "tableSectionForEditItem:", self->_recurrenceEditItem)}];
   }
 
 LABEL_6:
-  v11 = [(EKEventEditor *)self tableView];
-  [v11 reloadSections:v12 withRowAnimation:5];
+  tableView = [(EKEventEditor *)self tableView];
+  [tableView reloadSections:v12 withRowAnimation:5];
 }
 
 - (id)_calendarItemIndexSet
@@ -478,8 +478,8 @@ LABEL_6:
     v8 = objc_alloc_init(EKEventURLAndNotesInlineEditItem);
     v30 = objc_alloc_init(EKEventDeleteButtonEditItem);
     [(EKEventDeleteButtonEditItem *)v30 setDeleteButtonTarget:self action:sel_deleteClicked_];
-    v9 = [(EKEventEditor *)self event];
-    -[EKEventDateEditItem setShowsAllDay:](v5, "setShowsAllDay:", [v9 changingAllDayPropertyIsAllowed]);
+    event = [(EKEventEditor *)self event];
+    -[EKEventDateEditItem setShowsAllDay:](v5, "setShowsAllDay:", [event changingAllDayPropertyIsAllowed]);
 
     objc_storeStrong(&self->_dateItem, v5);
     objc_storeStrong(&self->_titleInlineEditItem, v4);
@@ -511,8 +511,8 @@ LABEL_6:
     [(NSArray *)v11 addObject:v7];
     [(NSArray *)v11 addObject:v35];
     [(NSArray *)v11 addObject:v8];
-    v13 = [(EKCalendarItemEditor *)self calendarItem];
-    LOBYTE(v6) = [v13 isNew];
+    calendarItem = [(EKCalendarItemEditor *)self calendarItem];
+    LOBYTE(v6) = [calendarItem isNew];
 
     if ((v6 & 1) == 0)
     {
@@ -559,10 +559,10 @@ LABEL_6:
     v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v41 count:1];
     [(NSArray *)v12 addObject:v22];
 
-    v23 = [(EKCalendarItemEditor *)self calendarItem];
-    v24 = [v23 isNew];
+    calendarItem2 = [(EKCalendarItemEditor *)self calendarItem];
+    isNew = [calendarItem2 isNew];
 
-    if ((v24 & 1) == 0)
+    if ((isNew & 1) == 0)
     {
       v40 = v30;
       v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v40 count:1];
@@ -587,7 +587,7 @@ LABEL_6:
   orderedEditItems = self->super._orderedEditItems;
   if (!orderedEditItems)
   {
-    v4 = [(EKEventEditor *)self _editItems];
+    _editItems = [(EKEventEditor *)self _editItems];
     orderedEditItems = self->super._orderedEditItems;
   }
 
@@ -608,19 +608,19 @@ LABEL_6:
 
 - (BOOL)attachmentsModifiedOnRecurrence
 {
-  v3 = [(EKEventAttachmentsEditItem *)self->_attachmentsEditItem attachmentsModified];
-  if (v3)
+  attachmentsModified = [(EKEventAttachmentsEditItem *)self->_attachmentsEditItem attachmentsModified];
+  if (attachmentsModified)
   {
-    v4 = [(EKEventEditor *)self event];
-    v5 = [v4 isOrWasPartOfRecurringSeries];
+    event = [(EKEventEditor *)self event];
+    isOrWasPartOfRecurringSeries = [event isOrWasPartOfRecurringSeries];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(attachmentsModified) = isOrWasPartOfRecurringSeries;
   }
 
-  return v3;
+  return attachmentsModified;
 }
 
-- (BOOL)saveCalendarItemWithSpan:(int64_t)a3 error:(id *)a4
+- (BOOL)saveCalendarItemWithSpan:(int64_t)span error:(id *)error
 {
   v7 = EKUILogSignpostHandle();
   if (os_signpost_enabled(v7))
@@ -629,7 +629,7 @@ LABEL_6:
     _os_signpost_emit_with_name_impl(&dword_1D3400000, v7, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "SaveEvent", " enableTelemetry=YES ", buf, 2u);
   }
 
-  v8 = [(EKEventEditor *)self event];
+  event = [(EKEventEditor *)self event];
   if (self->_shouldAutocomplete)
   {
     p_zeroKeywordResult = &self->_zeroKeywordResult;
@@ -644,124 +644,124 @@ LABEL_6:
     }
 
     autocompleteTracker = self->_autocompleteTracker;
-    v12 = [(EKEventEditor *)self event];
-    [(EKUIAutocompleteTracker *)autocompleteTracker finalizeAutocompleteTrackingOnSave:1 withEvent:v12 selectedResult:self->_selectedAutocompleteResult selectedIndex:self->_selectedAutocompleteResultIndex isZKW:v10];
+    event2 = [(EKEventEditor *)self event];
+    [(EKUIAutocompleteTracker *)autocompleteTracker finalizeAutocompleteTrackingOnSave:1 withEvent:event2 selectedResult:self->_selectedAutocompleteResult selectedIndex:self->_selectedAutocompleteResultIndex isZKW:v10];
 
     if (v10)
     {
-      v13 = a4;
+      errorCopy2 = error;
       v14 = 14;
 LABEL_12:
       v15 = [objc_msgSend(objc_opt_class() "_SGSuggestionsServiceClass")];
-      v16 = [(EKAutocompleteSearchResult *)*p_zeroKeywordResult suggestionInfo];
-      v17 = [v16 uniqueKey];
-      [v15 logEventInteractionForEventWithUniqueKey:v17 interface:v14 actionType:6];
+      suggestionInfo = [(EKAutocompleteSearchResult *)*p_zeroKeywordResult suggestionInfo];
+      uniqueKey = [suggestionInfo uniqueKey];
+      [v15 logEventInteractionForEventWithUniqueKey:uniqueKey interface:v14 actionType:6];
 
-      a4 = v13;
+      error = errorCopy2;
       goto LABEL_13;
     }
 
     p_zeroKeywordResult = &self->_naturalLanguageResult;
     if (self->_naturalLanguageResult && [(EKAutocompleteSearchResult *)self->_selectedAutocompleteResult isEqual:?])
     {
-      v13 = a4;
+      errorCopy2 = error;
       v14 = 15;
       goto LABEL_12;
     }
   }
 
 LABEL_13:
-  v18 = [(EKEventEditor *)self suggestionKey];
+  suggestionKey = [(EKEventEditor *)self suggestionKey];
 
-  if (v18)
+  if (suggestionKey)
   {
     v19 = [objc_msgSend(objc_opt_class() "_SGSuggestionsServiceClass")];
-    v20 = [(EKEventEditor *)self suggestionKey];
-    [v19 logEventInteractionForEventWithUniqueKey:v20 interface:20 actionType:6];
+    suggestionKey2 = [(EKEventEditor *)self suggestionKey];
+    [v19 logEventInteractionForEventWithUniqueKey:suggestionKey2 interface:20 actionType:6];
   }
 
-  v21 = [v8 isNew];
-  if (a3 || v21)
+  isNew = [event isNew];
+  if (span || isNew)
   {
-    v22 = [v8 recurrenceRules];
-    v23 = [v22 firstObject];
+    recurrenceRules = [event recurrenceRules];
+    firstObject = [recurrenceRules firstObject];
 
-    v24 = [v23 recurrenceEnd];
-    v25 = [v24 endDate];
+    recurrenceEnd = [firstObject recurrenceEnd];
+    endDate = [recurrenceEnd endDate];
 
-    if (v25)
+    if (endDate)
     {
       v26 = CUIKCalendar();
-      [v26 components:30 fromDate:v25];
-      v60 = a3;
-      v28 = v27 = a4;
-      v29 = [v8 startDate];
-      v30 = [v26 components:224 fromDate:v29];
+      [v26 components:30 fromDate:endDate];
+      spanCopy = span;
+      v28 = v27 = error;
+      startDate = [event startDate];
+      v30 = [v26 components:224 fromDate:startDate];
 
       [v28 setHour:{objc_msgSend(v30, "hour")}];
       [v28 setMinute:{objc_msgSend(v30, "minute")}];
       [v28 setSecond:{objc_msgSend(v30, "second")}];
       v31 = [v26 dateFromComponents:v28];
       v32 = [MEMORY[0x1E6966AB8] recurrenceEndWithEndDate:v31];
-      [v23 setRecurrenceEnd:v32];
+      [firstObject setRecurrenceEnd:v32];
 
-      a4 = v27;
-      a3 = v60;
+      error = v27;
+      span = spanCopy;
     }
   }
 
-  if ([v8 hasAttendees] && (objc_msgSend(v8, "allowsAttendeesModifications") & 1) == 0)
+  if ([event hasAttendees] && (objc_msgSend(event, "allowsAttendeesModifications") & 1) == 0)
   {
-    [v8 setAttendees:0];
+    [event setAttendees:0];
   }
 
-  v33 = [v8 structuredLocation];
-  if ([v33 isStructured])
+  structuredLocation = [event structuredLocation];
+  if ([structuredLocation isStructured])
   {
-    v34 = [v8 calendar];
-    v35 = [v34 source];
-    v36 = [v35 constraints];
-    v37 = [v36 supportsStructuredLocations];
+    calendar = [event calendar];
+    source = [calendar source];
+    constraints = [source constraints];
+    supportsStructuredLocations = [constraints supportsStructuredLocations];
 
-    if (v37)
+    if (supportsStructuredLocations)
     {
       goto LABEL_27;
     }
 
     v38 = MEMORY[0x1E6966B08];
-    v33 = [v8 location];
-    v39 = [v38 locationWithTitle:v33];
-    [v8 setStructuredLocation:v39];
+    structuredLocation = [event location];
+    v39 = [v38 locationWithTitle:structuredLocation];
+    [event setStructuredLocation:v39];
   }
 
 LABEL_27:
-  v40 = [(EKCalendarItemEditor *)self calendarItemCreationViewStart];
-  if (v40 > 5)
+  calendarItemCreationViewStart = [(EKCalendarItemEditor *)self calendarItemCreationViewStart];
+  if (calendarItemCreationViewStart > 5)
   {
     v41 = &unk_1F4F32758;
   }
 
   else
   {
-    v41 = qword_1E8442370[v40];
+    v41 = qword_1E8442370[calendarItemCreationViewStart];
   }
 
-  v42 = [v8 isNew];
-  v43 = [MEMORY[0x1E6966A10] sharedInstance];
-  v44 = v43;
-  if (v42)
+  isNew2 = [event isNew];
+  mEMORY[0x1E6966A10] = [MEMORY[0x1E6966A10] sharedInstance];
+  v44 = mEMORY[0x1E6966A10];
+  if (isNew2)
   {
-    [v43 handleEventCreation:v8];
+    [mEMORY[0x1E6966A10] handleEventCreation:event];
 
-    v45 = [v8 isReminderIntegrationEvent];
-    v46 = [v8 attendees];
-    v47 = [v46 count] != 0;
+    isReminderIntegrationEvent = [event isReminderIntegrationEvent];
+    attendees = [event attendees];
+    v47 = [attendees count] != 0;
 
     v63 = MEMORY[0x1E69E9820];
     v64 = 3221225472;
     v65 = __48__EKEventEditor_saveCalendarItemWithSpan_error___block_invoke;
     v66 = &unk_1E8442300;
-    v68 = v45;
+    v68 = isReminderIntegrationEvent;
     v69 = v47;
     v48 = v67;
     v67[0] = v41;
@@ -771,22 +771,22 @@ LABEL_27:
 
   else
   {
-    [v43 handleEventUpdate:v8];
+    [mEMORY[0x1E6966A10] handleEventUpdate:event];
 
     v48 = &v61;
-    v61 = v8;
+    v61 = event;
     v62 = v41;
     CalAnalyticsSendEventLazy();
   }
 
-  v49 = [(EKCalendarItemEditor *)self editorDelegate];
-  v50 = [v49 editorForCalendarItemEditor:self];
+  editorDelegate = [(EKCalendarItemEditor *)self editorDelegate];
+  v50 = [editorDelegate editorForCalendarItemEditor:self];
 
   if (self->_shouldRecordPrecommitEvent)
   {
-    v51 = [v50 saveEventForOOPModificationRecording:v8 span:a3 error:a4];
-    v52 = objc_alloc_init(_TtC10EventKitUI33EKRemoteUIObjectSerializerWrapper);
-    v53 = [(EKRemoteUIObjectSerializerWrapper *)v52 serializedRepresentationWithEkObject:v8];
+    v51 = [v50 saveEventForOOPModificationRecording:event span:span error:error];
+    store = objc_alloc_init(_TtC10EventKitUI33EKRemoteUIObjectSerializerWrapper);
+    v53 = [(EKRemoteUIObjectSerializerWrapper *)store serializedRepresentationWithEkObject:event];
     precommitSerializedEvent = self->_precommitSerializedEvent;
     self->_precommitSerializedEvent = v53;
 
@@ -796,7 +796,7 @@ LABEL_27:
       goto LABEL_41;
     }
 
-    v55 = [v50 commitEventForOOPModificationRecording:v8 error:a4];
+    v55 = [v50 commitEventForOOPModificationRecording:event error:error];
 
     if ((v55 & 1) == 0)
     {
@@ -806,17 +806,17 @@ LABEL_36:
     }
   }
 
-  else if (![v50 saveEvent:v8 span:a3 error:a4])
+  else if (![v50 saveEvent:event span:span error:error])
   {
     goto LABEL_36;
   }
 
-  v57 = [v8 suggestionInfo];
+  suggestionInfo2 = [event suggestionInfo];
 
-  if (v57)
+  if (suggestionInfo2)
   {
-    v52 = [(EKCalendarItemEditor *)self store];
-    [(EKRemoteUIObjectSerializerWrapper *)v52 confirmSuggestedEvent:v8];
+    store = [(EKCalendarItemEditor *)self store];
+    [(EKRemoteUIObjectSerializerWrapper *)store confirmSuggestedEvent:event];
     v56 = 1;
 LABEL_41:
 
@@ -902,9 +902,9 @@ void __48__EKEventEditor_saveCalendarItemWithSpan_error___block_invoke_2(uint64_
 
 - (id)preferredTitle
 {
-  v2 = [(EKEventEditor *)self event];
-  v3 = v2;
-  if (v2 && ![v2 isNew])
+  event = [(EKEventEditor *)self event];
+  v3 = event;
+  if (event && ![event isNew])
   {
     v4 = @"Edit Event";
   }
@@ -944,17 +944,17 @@ void __48__EKEventEditor_saveCalendarItemWithSpan_error___block_invoke_2(uint64_
   return v3;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v5 = a3;
-  if (self->_backgroundColor != v5)
+  colorCopy = color;
+  if (self->_backgroundColor != colorCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_backgroundColor, a3);
+    v7 = colorCopy;
+    objc_storeStrong(&self->_backgroundColor, color);
     if ([(EKEventEditor *)self isViewLoaded])
     {
-      v6 = [(EKEventEditor *)self view];
-      [v6 setBackgroundColor:v7];
+      view = [(EKEventEditor *)self view];
+      [view setBackgroundColor:v7];
     }
   }
 
@@ -965,8 +965,8 @@ void __48__EKEventEditor_saveCalendarItemWithSpan_error___block_invoke_2(uint64_
 {
   v3 = EKUIContainedControllerIdealWidth();
   v4 = EKUIContainedControllerIdealHeight();
-  v5 = [(EKEventEditor *)self view];
-  [v5 sizeThatFits:{v3, v4}];
+  view = [(EKEventEditor *)self view];
+  [view sizeThatFits:{v3, v4}];
   v7 = v6;
 
   v8 = v3;
@@ -993,14 +993,14 @@ void __48__EKEventEditor_saveCalendarItemWithSpan_error___block_invoke_2(uint64_
     if (dateItem)
     {
       v9 = [(EKEventDateEditItem *)dateItem cellForSubitemAtIndex:1];
-      v5 = [(EKEventEditor *)self tableView];
-      v6 = [v5 indexPathForCell:v9];
+      tableView = [(EKEventEditor *)self tableView];
+      v6 = [tableView indexPathForCell:v9];
 
-      v7 = [(EKEventEditor *)self tableView];
-      [v7 selectRowAtIndexPath:v6 animated:1 scrollPosition:0];
+      tableView2 = [(EKEventEditor *)self tableView];
+      [tableView2 selectRowAtIndexPath:v6 animated:1 scrollPosition:0];
 
-      v8 = [(EKEventEditor *)self tableView];
-      [(EKCalendarItemEditor *)self tableView:v8 didSelectRowAtIndexPath:v6];
+      tableView3 = [(EKEventEditor *)self tableView];
+      [(EKCalendarItemEditor *)self tableView:tableView3 didSelectRowAtIndexPath:v6];
 
       self->_focusOnAppearanceTarget = 0;
     }
@@ -1015,62 +1015,62 @@ void __48__EKEventEditor_saveCalendarItemWithSpan_error___block_invoke_2(uint64_
   }
 }
 
-- (void)focus:(unint64_t)a3 select:(BOOL)a4
+- (void)focus:(unint64_t)focus select:(BOOL)select
 {
-  self->_focusOnAppearanceTarget = a3;
-  self->_selectOnFocus = a4;
+  self->_focusOnAppearanceTarget = focus;
+  self->_selectOnFocus = select;
   [(EKEventEditor *)self _focusAppearanceTarget];
 }
 
 - (void)_revertEvent
 {
-  v3 = [(EKEventEditor *)self event];
-  [v3 rollback];
+  event = [(EKEventEditor *)self event];
+  [event rollback];
 
-  v4 = [(EKEventEditor *)self event];
-  [v4 forceLocationPredictionUpdate];
+  event2 = [(EKEventEditor *)self event];
+  [event2 forceLocationPredictionUpdate];
 }
 
 - (id)_viewForSheet
 {
-  v3 = [(EKCalendarItemEditor *)self currentEditItem];
+  currentEditItem = [(EKCalendarItemEditor *)self currentEditItem];
 
-  if (!v3 || (-[EKCalendarItemEditor currentEditItem](self, "currentEditItem"), v4 = objc_claimAutoreleasedReturnValue(), [v4 viewForActionSheet], v5 = objc_claimAutoreleasedReturnValue(), v4, !v5))
+  if (!currentEditItem || (-[EKCalendarItemEditor currentEditItem](self, "currentEditItem"), v4 = objc_claimAutoreleasedReturnValue(), [v4 viewForActionSheet], view = objc_claimAutoreleasedReturnValue(), v4, !view))
   {
-    v5 = [(EKEventEditor *)self view];
+    view = [(EKEventEditor *)self view];
   }
 
-  return v5;
+  return view;
 }
 
-- (void)_setEventTitleForTestingAutocomplete:(id)a3
+- (void)_setEventTitleForTestingAutocomplete:(id)autocomplete
 {
-  v5 = a3;
-  v4 = [(EKEventEditor *)self event];
-  [v4 setTitle:v5];
+  autocompleteCopy = autocomplete;
+  event = [(EKEventEditor *)self event];
+  [event setTitle:autocompleteCopy];
 
-  [(EKCalendarItemTitleInlineEditItem *)self->_titleInlineEditItem setTitle:v5];
-  [(EKEventEditor *)self _scheduleAutocompleteSearchWithString:v5];
+  [(EKCalendarItemTitleInlineEditItem *)self->_titleInlineEditItem setTitle:autocompleteCopy];
+  [(EKEventEditor *)self _scheduleAutocompleteSearchWithString:autocompleteCopy];
 }
 
-- (void)editItemTextChanged:(id)a3
+- (void)editItemTextChanged:(id)changed
 {
-  v4 = a3;
-  if (self->_titleInlineEditItem == v4)
+  changedCopy = changed;
+  if (self->_titleInlineEditItem == changedCopy)
   {
     [(EKEventEditor *)self _showAutocompleteResults];
   }
 
   v5.receiver = self;
   v5.super_class = EKEventEditor;
-  [(EKCalendarItemEditor *)&v5 editItemTextChanged:v4];
+  [(EKCalendarItemEditor *)&v5 editItemTextChanged:changedCopy];
 }
 
-- (void)editItemDidStartEditing:(id)a3
+- (void)editItemDidStartEditing:(id)editing
 {
   titleInlineEditItem = self->_titleInlineEditItem;
-  v6 = a3;
-  if (titleInlineEditItem == a3)
+  editingCopy = editing;
+  if (titleInlineEditItem == editing)
   {
     [(EKEventEditor *)self _showAutocompleteResults];
   }
@@ -1082,24 +1082,24 @@ void __48__EKEventEditor_saveCalendarItemWithSpan_error___block_invoke_2(uint64_
 
   v7.receiver = self;
   v7.super_class = EKEventEditor;
-  [(EKCalendarItemEditor *)&v7 editItemDidStartEditing:v6];
+  [(EKCalendarItemEditor *)&v7 editItemDidStartEditing:editingCopy];
 }
 
-- (void)editItem:(id)a3 didSaveFromDetailViewController:(BOOL)a4
+- (void)editItem:(id)item didSaveFromDetailViewController:(BOOL)controller
 {
-  v4 = a4;
-  v6 = a3;
-  if (self->_calendarEditItem == v6)
+  controllerCopy = controller;
+  itemCopy = item;
+  if (self->_calendarEditItem == itemCopy)
   {
-    v7 = [(EKEventEditor *)self event];
-    [(UIResponder *)self EKUI_setDataOwnersFromEvent:v7];
+    event = [(EKEventEditor *)self event];
+    [(UIResponder *)self EKUI_setDataOwnersFromEvent:event];
   }
 
   if ([-[EKEventEditor superclass](self "superclass")])
   {
     v8.receiver = self;
     v8.super_class = EKEventEditor;
-    [(EKCalendarItemEditor *)&v8 editItem:v6 didSaveFromDetailViewController:v4];
+    [(EKCalendarItemEditor *)&v8 editItem:itemCopy didSaveFromDetailViewController:controllerCopy];
   }
 }
 
@@ -1107,8 +1107,8 @@ void __48__EKEventEditor_saveCalendarItemWithSpan_error___block_invoke_2(uint64_
 {
   if (self->_shouldAutocomplete && !self->_selectedAutocompleteResult)
   {
-    v3 = [(EKCalendarItemTitleInlineEditItem *)self->_titleInlineEditItem searchStringForEventAutocomplete];
-    [(EKEventEditor *)self _scheduleAutocompleteSearchWithString:v3];
+    searchStringForEventAutocomplete = [(EKCalendarItemTitleInlineEditItem *)self->_titleInlineEditItem searchStringForEventAutocomplete];
+    [(EKEventEditor *)self _scheduleAutocompleteSearchWithString:searchStringForEventAutocomplete];
   }
 }
 
@@ -1130,15 +1130,15 @@ uint64_t __50__EKEventEditor__hideAndCancelAutocompleteResults__block_invoke(uin
   return [v2 _cancelPendingAutocompleteAndCleanup];
 }
 
-- (void)_scheduleAutocompleteSearchWithString:(id)a3
+- (void)_scheduleAutocompleteSearchWithString:(id)string
 {
-  v7 = a3;
-  v5 = [MEMORY[0x1E6993470] sharedPreferences];
-  v6 = [v5 eventAutocompleteEnabled];
+  stringCopy = string;
+  mEMORY[0x1E6993470] = [MEMORY[0x1E6993470] sharedPreferences];
+  eventAutocompleteEnabled = [mEMORY[0x1E6993470] eventAutocompleteEnabled];
 
-  if (v6)
+  if (eventAutocompleteEnabled)
   {
-    objc_storeStrong(&self->_autocompleteSearchString, a3);
+    objc_storeStrong(&self->_autocompleteSearchString, string);
     [(EKEventEditor *)self _scheduleAutocompleteTimerIfNeeded];
   }
 }
@@ -1164,9 +1164,9 @@ uint64_t __50__EKEventEditor__hideAndCancelAutocompleteResults__block_invoke(uin
   }
 }
 
-- (void)_beginAutocompleteSearch:(id)a3
+- (void)_beginAutocompleteSearch:(id)search
 {
-  v22 = a3;
+  searchCopy = search;
   v4 = self->_autocompleteSearchString;
   v5 = v4;
   if (v4)
@@ -1191,8 +1191,8 @@ uint64_t __50__EKEventEditor__hideAndCancelAutocompleteResults__block_invoke(uin
 LABEL_6:
   if ([*MEMORY[0x1E69DDA98] isRunningTest])
   {
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 postNotificationName:_EventKitUI_EventEditorDidBeginAutocompleteSearchNotification object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:_EventKitUI_EventEditorDidBeginAutocompleteSearchNotification object:self];
   }
 
   if (!self->_suggestionGenerator)
@@ -1202,30 +1202,30 @@ LABEL_6:
     self->_suggestionGenerator = v8;
   }
 
-  v10 = [(EKCalendarItemEditor *)self timeImplicitlySet];
+  timeImplicitlySet = [(EKCalendarItemEditor *)self timeImplicitlySet];
   v11 = 52;
-  if (v10)
+  if (timeImplicitlySet)
   {
     v11 = 20;
   }
 
   v20 = v11;
   v12 = self->_suggestionGenerator;
-  v13 = [(EKEventEditor *)self event];
-  v14 = [v13 calendar];
-  v15 = [(EKEventEditor *)self event];
-  v16 = [v15 startDate];
-  v17 = [(EKCalendarItemEditor *)self editorDelegate];
-  v18 = [v17 pasteboardManagerForCalendarItemEditor:self];
+  event = [(EKEventEditor *)self event];
+  calendar = [event calendar];
+  event2 = [(EKEventEditor *)self event];
+  startDate = [event2 startDate];
+  editorDelegate = [(EKCalendarItemEditor *)self editorDelegate];
+  v18 = [editorDelegate pasteboardManagerForCalendarItemEditor:self];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __42__EKEventEditor__beginAutocompleteSearch___block_invoke;
   v23[3] = &unk_1E8442350;
   v24 = v5;
-  v25 = self;
+  selfCopy = self;
   v26 = v21;
   v19 = v5;
-  [(EKEventSuggestionGenerator *)v12 eventSuggestionsFromString:v19 defaultCalendar:v14 referenceDate:v16 pasteboardItemProvider:v18 defaultSuggestionVisibility:1 options:v20 handler:v23];
+  [(EKEventSuggestionGenerator *)v12 eventSuggestionsFromString:v19 defaultCalendar:calendar referenceDate:startDate pasteboardItemProvider:v18 defaultSuggestionVisibility:1 options:v20 handler:v23];
 }
 
 void __42__EKEventEditor__beginAutocompleteSearch___block_invoke(uint64_t a1, void *a2)
@@ -1270,54 +1270,54 @@ void __42__EKEventEditor__beginAutocompleteSearch___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)autocompleteResultsEditItem:(id)a3 resultSelected:(id)a4
+- (void)autocompleteResultsEditItem:(id)item resultSelected:(id)selected
 {
-  v32 = a3;
-  v6 = a4;
+  itemCopy = item;
+  selectedCopy = selected;
   [(EKEventEditor *)self _cancelPendingAutocompleteAndCleanup];
-  objc_storeStrong(&self->_selectedAutocompleteResult, a4);
-  v7 = [(EKEventAutocompleteResultsEditItem *)self->_autocompleteEditItem results];
-  self->_selectedAutocompleteResultIndex = [v7 indexOfObject:v6];
+  objc_storeStrong(&self->_selectedAutocompleteResult, selected);
+  results = [(EKEventAutocompleteResultsEditItem *)self->_autocompleteEditItem results];
+  self->_selectedAutocompleteResultIndex = [results indexOfObject:selectedCopy];
 
-  v8 = [v6 pasteboardResults];
-  v9 = [v8 count];
+  pasteboardResults = [selectedCopy pasteboardResults];
+  v9 = [pasteboardResults count];
 
   if (v9 >= 2)
   {
     v10 = [EKUIConfirmMultiPasteViewController alloc];
-    v11 = [(EKCalendarItemEditor *)self editorDelegate];
-    v12 = [v11 pasteboardManagerForCalendarItemEditor:self];
-    v13 = [(EKEventEditor *)self event];
-    v14 = [v13 eventStore];
-    v15 = [(EKEventEditor *)self event];
-    v16 = [v15 startDate];
-    v17 = [(EKUIConfirmMultiPasteViewController *)v10 initWithSearchResult:v6 pasteboardManager:v12 eventStore:v14 dateForPaste:v16];
+    editorDelegate = [(EKCalendarItemEditor *)self editorDelegate];
+    v12 = [editorDelegate pasteboardManagerForCalendarItemEditor:self];
+    event = [(EKEventEditor *)self event];
+    eventStore = [event eventStore];
+    event2 = [(EKEventEditor *)self event];
+    startDate = [event2 startDate];
+    v17 = [(EKUIConfirmMultiPasteViewController *)v10 initWithSearchResult:selectedCopy pasteboardManager:v12 eventStore:eventStore dateForPaste:startDate];
 
     [(EKUIConfirmMultiPasteViewController *)v17 setDelegate:self];
     v18 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v17];
     [v18 setModalPresentationStyle:16];
-    [(EKCalendarItemEditor *)self editItem:v32 wantsViewControllerPresented:v18];
+    [(EKCalendarItemEditor *)self editItem:itemCopy wantsViewControllerPresented:v18];
 
     goto LABEL_19;
   }
 
-  v19 = [(EKEventEditor *)self event];
-  [(EKEventEditor *)self _modifyCurrentEvent:v19 withAutocompleteResult:v6];
+  event3 = [(EKEventEditor *)self event];
+  [(EKEventEditor *)self _modifyCurrentEvent:event3 withAutocompleteResult:selectedCopy];
 
-  v20 = [v6 preferredLocation];
-  v21 = [v20 isPrediction];
+  preferredLocation = [selectedCopy preferredLocation];
+  isPrediction = [preferredLocation isPrediction];
 
   v22 = MEMORY[0x1E6966B10];
-  if (v21)
+  if (isPrediction)
   {
-    v23 = [v6 preferredLocation];
-    v24 = [v23 predictedLOI];
-    [v22 userInteractionWithPredictedLocationOfInterest:v24 interaction:0];
+    preferredLocation2 = [selectedCopy preferredLocation];
+    predictedLOI = [preferredLocation2 predictedLOI];
+    [v22 userInteractionWithPredictedLocationOfInterest:predictedLOI interaction:0];
   }
 
   else
   {
-    if ([v32 hasSuggestedLocationResult])
+    if ([itemCopy hasSuggestedLocationResult])
     {
       v25 = 1;
     }
@@ -1346,16 +1346,16 @@ void __42__EKEventEditor__beginAutocompleteSearch___block_invoke_2(uint64_t a1)
   }
 
   v27 = [objc_msgSend(objc_opt_class() "_SGSuggestionsServiceClass")];
-  v28 = [(EKAutocompleteSearchResult *)self->_selectedAutocompleteResult suggestionInfo];
-  v29 = [v28 uniqueKey];
-  [v27 logEventInteractionForEventWithUniqueKey:v29 interface:v26 actionType:5];
+  suggestionInfo = [(EKAutocompleteSearchResult *)self->_selectedAutocompleteResult suggestionInfo];
+  uniqueKey = [suggestionInfo uniqueKey];
+  [v27 logEventInteractionForEventWithUniqueKey:uniqueKey interface:v26 actionType:5];
 
 LABEL_16:
   [(EKEventEditor *)self editItemTextChanged:self->_titleInlineEditItem];
-  v30 = [(EKEventEditor *)self event];
-  v31 = [v30 notes];
+  event4 = [(EKEventEditor *)self event];
+  notes = [event4 notes];
 
-  if (v31)
+  if (notes)
   {
     [(EKEventURLAndNotesInlineEditItem *)self->_notesEditItem reset];
   }
@@ -1365,18 +1365,18 @@ LABEL_16:
 LABEL_19:
 }
 
-- (void)_modifyCurrentEvent:(id)a3 withAutocompleteResult:(id)a4
+- (void)_modifyCurrentEvent:(id)event withAutocompleteResult:(id)result
 {
-  v16 = a3;
-  v6 = a4;
-  if ([v6 source] == 4 && (objc_msgSend(v6, "pasteboardResults"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "count"), v7, v8 == 1))
+  eventCopy = event;
+  resultCopy = result;
+  if ([resultCopy source] == 4 && (objc_msgSend(resultCopy, "pasteboardResults"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "count"), v7, v8 == 1))
   {
-    v9 = [v6 pasteboardResults];
-    v10 = [v9 firstObject];
+    pasteboardResults = [resultCopy pasteboardResults];
+    firstObject = [pasteboardResults firstObject];
 
-    v11 = [(EKCalendarItemEditor *)self editorDelegate];
-    v12 = [v11 pasteboardManagerForCalendarItemEditor:self];
-    v13 = [v12 calendarToPasteTo];
+    editorDelegate = [(EKCalendarItemEditor *)self editorDelegate];
+    v12 = [editorDelegate pasteboardManagerForCalendarItemEditor:self];
+    calendarToPasteTo = [v12 calendarToPasteTo];
 
     v14 = 1;
   }
@@ -1384,31 +1384,31 @@ LABEL_19:
   else
   {
     v14 = 0;
-    v13 = 0;
-    v10 = v6;
+    calendarToPasteTo = 0;
+    firstObject = resultCopy;
   }
 
-  [v10 updateEventFromSelf:v16 updateTimeProperties:1 updateTravelTimeProperties:v14 updateMode:0 overrideCalendar:v13];
-  v15 = [v10 attendees];
-  -[EKCalendarItemEditor setHasModifiedAttendeesFromSuggestion:](self, "setHasModifiedAttendeesFromSuggestion:", [v15 count] != 0);
+  [firstObject updateEventFromSelf:eventCopy updateTimeProperties:1 updateTravelTimeProperties:v14 updateMode:0 overrideCalendar:calendarToPasteTo];
+  attendees = [firstObject attendees];
+  -[EKCalendarItemEditor setHasModifiedAttendeesFromSuggestion:](self, "setHasModifiedAttendeesFromSuggestion:", [attendees count] != 0);
 }
 
-- (void)autocompleteResultsEditItemDidShowResults:(id)a3
+- (void)autocompleteResultsEditItemDidShowResults:(id)results
 {
   [(EKEventEditor *)self _setAutocompleteResultsVisible:1];
   if ([*MEMORY[0x1E69DDA98] isRunningTest])
   {
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 postNotificationName:_EventKitUI_EventEditorDidShowAutocompleteResultsNotification object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:_EventKitUI_EventEditorDidShowAutocompleteResultsNotification object:self];
   }
 }
 
-- (void)_setAutocompleteResultsVisible:(BOOL)a3
+- (void)_setAutocompleteResultsVisible:(BOOL)visible
 {
   v23 = *MEMORY[0x1E69E9840];
-  if (self->_autocompleteResultsVisible != a3)
+  if (self->_autocompleteResultsVisible != visible)
   {
-    self->_autocompleteResultsVisible = a3;
+    self->_autocompleteResultsVisible = visible;
     [(EKEventEditor *)self _updateTitleEditItemSeparatorVisibility];
     if (self->_autocompleteResultsVisible)
     {
@@ -1417,8 +1417,8 @@ LABEL_19:
       v19 = 0u;
       v20 = 0u;
       v21 = 0u;
-      v5 = [(EKEventAutocompleteResultsEditItem *)self->_autocompleteEditItem results];
-      v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      results = [(EKEventAutocompleteResultsEditItem *)self->_autocompleteEditItem results];
+      v6 = [results countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v6)
       {
         v7 = v6;
@@ -1430,7 +1430,7 @@ LABEL_19:
           {
             if (*v19 != v9)
             {
-              objc_enumerationMutation(v5);
+              objc_enumerationMutation(results);
             }
 
             v11 = *(*(&v18 + 1) + 8 * i);
@@ -1445,7 +1445,7 @@ LABEL_19:
             }
           }
 
-          v7 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+          v7 = [results countByEnumeratingWithState:&v18 objects:v22 count:16];
         }
 
         while (v7);
@@ -1457,9 +1457,9 @@ LABEL_19:
             self->_hasShownZeroKeywordResult = 1;
             [(EKUIAutocompleteTracker *)self->_autocompleteTracker trackZKWResultShown];
             v12 = [objc_msgSend(objc_opt_class() "_SGSuggestionsServiceClass")];
-            v13 = [(EKAutocompleteSearchResult *)v4 suggestionInfo];
-            v14 = [v13 uniqueKey];
-            [v12 logEventInteractionForEventWithUniqueKey:v14 interface:14 actionType:4];
+            suggestionInfo = [(EKAutocompleteSearchResult *)v4 suggestionInfo];
+            uniqueKey = [suggestionInfo uniqueKey];
+            [v12 logEventInteractionForEventWithUniqueKey:uniqueKey interface:14 actionType:4];
           }
 
 LABEL_23:
@@ -1479,9 +1479,9 @@ LABEL_23:
         {
           self->_hasShownNaturalLanguageResult = 1;
           v15 = [objc_msgSend(objc_opt_class() "_SGSuggestionsServiceClass")];
-          v16 = [(EKAutocompleteSearchResult *)self->_naturalLanguageResult suggestionInfo];
-          v17 = [v16 uniqueKey];
-          [v15 logEventInteractionForEventWithUniqueKey:v17 interface:15 actionType:4];
+          suggestionInfo2 = [(EKAutocompleteSearchResult *)self->_naturalLanguageResult suggestionInfo];
+          uniqueKey2 = [suggestionInfo2 uniqueKey];
+          [v15 logEventInteractionForEventWithUniqueKey:uniqueKey2 interface:15 actionType:4];
         }
 
         [(EKUIAutocompleteTracker *)self->_autocompleteTracker trackNLResultShown];
@@ -1492,9 +1492,9 @@ LABEL_23:
   }
 }
 
-- (void)confirmMultiPasteViewController:(id)a3 finishedWithCancel:(BOOL)a4
+- (void)confirmMultiPasteViewController:(id)controller finishedWithCancel:(BOOL)cancel
 {
-  if (a4)
+  if (cancel)
   {
     [(EKEventEditor *)self focus:1 select:0];
   }

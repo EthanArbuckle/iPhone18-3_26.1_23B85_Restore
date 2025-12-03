@@ -1,38 +1,38 @@
 @interface KVProfileInfo
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToProfileInfo:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToProfileInfo:(id)info;
 - (KVProfileInfo)init;
-- (KVProfileInfo)initWithBuffer:(id)a3 error:(id *)a4;
-- (KVProfileInfo)initWithDatasetCount:(unsigned int)a3 capturedTime:(id)a4 deviceType:(id)a5 buildVersion:(id)a6 error:(id *)a7;
-- (id)JSONWithIndent:(unsigned __int8)a3;
+- (KVProfileInfo)initWithBuffer:(id)buffer error:(id *)error;
+- (KVProfileInfo)initWithDatasetCount:(unsigned int)count capturedTime:(id)time deviceType:(id)type buildVersion:(id)version error:(id *)error;
+- (id)JSONWithIndent:(unsigned __int8)indent;
 - (id)buildVersion;
 - (id)capturedTime;
 - (id)deviceType;
-- (id)initFromDictionary:(id)a3 error:(id *)a4;
+- (id)initFromDictionary:(id)dictionary error:(id *)error;
 - (unsigned)datasetCount;
 @end
 
 @implementation KVProfileInfo
 
-- (BOOL)isEqualToProfileInfo:(id)a3
+- (BOOL)isEqualToProfileInfo:(id)info
 {
   buffer = self->_buffer;
-  v7 = objc_msgSend_buffer(a3, a2, a3, v3, v4, v5);
+  v7 = objc_msgSend_buffer(info, a2, info, v3, v4, v5);
   LOBYTE(buffer) = objc_msgSend_isEqual_(buffer, v8, v7, v9, v10, v11);
 
   return buffer;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     isEqualToProfileInfo = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     isEqualToProfileInfo = objc_msgSend_isEqualToProfileInfo_(self, v6, v5, v7, v8, v9);
   }
@@ -45,24 +45,24 @@
   return isEqualToProfileInfo;
 }
 
-- (id)initFromDictionary:(id)a3 error:(id *)a4
+- (id)initFromDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
-  v11 = objc_msgSend_objectForKey_(v6, v7, @"datasetCount", v8, v9, v10);
+  dictionaryCopy = dictionary;
+  v11 = objc_msgSend_objectForKey_(dictionaryCopy, v7, @"datasetCount", v8, v9, v10);
   v17 = objc_msgSend_unsignedIntValue(v11, v12, v13, v14, v15, v16);
-  v22 = objc_msgSend_objectForKey_(v6, v18, @"capturedTime", v19, v20, v21);
+  v22 = objc_msgSend_objectForKey_(dictionaryCopy, v18, @"capturedTime", v19, v20, v21);
   v23 = sub_2559A6CD4(v22);
-  v28 = objc_msgSend_objectForKey_(v6, v24, @"deviceType", v25, v26, v27);
-  v33 = objc_msgSend_objectForKey_(v6, v29, @"buildVersion", v30, v31, v32);
-  v35 = objc_msgSend_initWithDatasetCount_capturedTime_deviceType_buildVersion_error_(self, v34, v17, v23, v28, v33, a4);
+  v28 = objc_msgSend_objectForKey_(dictionaryCopy, v24, @"deviceType", v25, v26, v27);
+  v33 = objc_msgSend_objectForKey_(dictionaryCopy, v29, @"buildVersion", v30, v31, v32);
+  v35 = objc_msgSend_initWithDatasetCount_capturedTime_deviceType_buildVersion_error_(self, v34, v17, v23, v28, v33, error);
 
   return v35;
 }
 
-- (id)JSONWithIndent:(unsigned __int8)a3
+- (id)JSONWithIndent:(unsigned __int8)indent
 {
-  v5 = sub_2559C2C40(a3);
-  v6 = sub_2559C2C40(a3 + 1);
+  v5 = sub_2559C2C40(indent);
+  v6 = sub_2559C2C40(indent + 1);
   v7 = objc_alloc_init(MEMORY[0x277CCAB68]);
   objc_msgSend_appendFormat_(v7, v8, @"%@{\n", v9, v10, v11, v5);
   v17 = objc_msgSend_capturedTime(self, v12, v13, v14, v15, v16);
@@ -165,10 +165,10 @@
   }
 }
 
-- (KVProfileInfo)initWithBuffer:(id)a3 error:(id *)a4
+- (KVProfileInfo)initWithBuffer:(id)buffer error:(id *)error
 {
   v71[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  bufferCopy = buffer;
   v67.receiver = self;
   v67.super_class = KVProfileInfo;
   v8 = [(KVProfileInfo *)&v67 init];
@@ -176,7 +176,7 @@
   v10 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_buffer, a3);
+    objc_storeStrong(&v8->_buffer, buffer);
     buffer = v9->_buffer;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && objc_msgSend_length(v9->_buffer, v12, v13, v14, v15, v16))
@@ -265,10 +265,10 @@
       v69 = @"ProfileInfo failed verification";
       v56 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v31, &v69, &v68, 1, v32);
       v59 = objc_msgSend_errorWithDomain_code_userInfo_(v55, v57, @"com.apple.koa.profile", 5, v56, v58);
-      if (a4 && v59)
+      if (error && v59)
       {
         v59 = v59;
-        *a4 = v59;
+        *error = v59;
       }
     }
 
@@ -280,10 +280,10 @@
       v71[0] = v39;
       v42 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v40, v71, &v70, 1, v41);
       v45 = objc_msgSend_errorWithDomain_code_userInfo_(v38, v43, @"com.apple.koa.profile", 5, v42, v44);
-      if (a4 && v45)
+      if (error && v45)
       {
         v45 = v45;
-        *a4 = v45;
+        *error = v45;
       }
     }
 
@@ -299,12 +299,12 @@ LABEL_41:
   return v54;
 }
 
-- (KVProfileInfo)initWithDatasetCount:(unsigned int)a3 capturedTime:(id)a4 deviceType:(id)a5 buildVersion:(id)a6 error:(id *)a7
+- (KVProfileInfo)initWithDatasetCount:(unsigned int)count capturedTime:(id)time deviceType:(id)type buildVersion:(id)version error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  countCopy = count;
+  timeCopy = time;
+  typeCopy = type;
+  versionCopy = version;
   v75 = 0;
   v76 = 0;
   v77 = xmmword_2559D02C0;
@@ -314,9 +314,9 @@ LABEL_41:
   v81 = 1;
   v82 = 256;
   v83 = 0;
-  if (objc_msgSend_length(v11, v13, v14, v15, v16, v17))
+  if (objc_msgSend_length(typeCopy, v13, v14, v15, v16, v17))
   {
-    v23 = v11;
+    v23 = typeCopy;
     v29 = objc_msgSend_UTF8String(v23, v24, v25, v26, v27, v28);
     v30 = strlen(v29);
     v31 = sub_2559A7B04(&v75, v29, v30);
@@ -327,10 +327,10 @@ LABEL_41:
     v31 = 0;
   }
 
-  if (!objc_msgSend_length(v12, v18, v19, v20, v21, v22, a7, self))
+  if (!objc_msgSend_length(versionCopy, v18, v19, v20, v21, v22, error, self))
   {
     v45 = 0;
-    if (v10)
+    if (timeCopy)
     {
       goto LABEL_6;
     }
@@ -340,17 +340,17 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v37 = v12;
+  v37 = versionCopy;
   v43 = objc_msgSend_UTF8String(v37, v38, v39, v40, v41, v42);
   v44 = strlen(v43);
   v45 = sub_2559A7B04(&v75, v43, v44);
-  if (!v10)
+  if (!timeCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_6:
-  v46 = objc_msgSend_ISO8601String(v10, v32, v33, v34, v35, v36);
+  v46 = objc_msgSend_ISO8601String(timeCopy, v32, v33, v34, v35, v36);
   v47 = v46;
   v53 = objc_msgSend_UTF8String(v47, v48, v49, v50, v51, v52);
   v54 = strlen(v53);
@@ -366,7 +366,7 @@ LABEL_9:
   sub_2559A7C14(&v75, 4, v55);
   sub_2559A7C14(&v75, 6, v31);
   sub_2559A7C14(&v75, 8, v45);
-  sub_2559A7C64(&v75, 10, v9);
+  sub_2559A7C64(&v75, 10, countCopy);
   v59 = sub_2559A7D18(&v75, v57 - v56 + v58);
   sub_2559A7FB4(&v75, v59, 0, 0);
   v60 = objc_alloc(MEMORY[0x277CBEA90]);

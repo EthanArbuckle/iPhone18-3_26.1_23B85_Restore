@@ -1,19 +1,19 @@
 @interface HKMCScheduledAnalysisMetric
-- (HKMCScheduledAnalysisMetric)initWithTimeSuccessful:(int64_t)a3;
+- (HKMCScheduledAnalysisMetric)initWithTimeSuccessful:(int64_t)successful;
 - (NSDictionary)eventPayload;
 - (id)description;
 @end
 
 @implementation HKMCScheduledAnalysisMetric
 
-- (HKMCScheduledAnalysisMetric)initWithTimeSuccessful:(int64_t)a3
+- (HKMCScheduledAnalysisMetric)initWithTimeSuccessful:(int64_t)successful
 {
   v5.receiver = self;
   v5.super_class = HKMCScheduledAnalysisMetric;
   result = [(HKMCScheduledAnalysisMetric *)&v5 init];
   if (result)
   {
-    result->_timeSuccessful = a3;
+    result->_timeSuccessful = successful;
   }
 
   return result;

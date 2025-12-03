@@ -1,127 +1,127 @@
 @interface WFWorkflowRunningContext
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isShortcutsApp;
-- (WFWorkflowRunningContext)initWithCoder:(id)a3;
-- (WFWorkflowRunningContext)initWithWorkflowIdentifier:(id)a3;
-- (id)addProgressSubscriberUsingPublishingHandler:(id)a3;
-- (id)copyWithCustomIdentity:(id)a3;
+- (WFWorkflowRunningContext)initWithCoder:(id)coder;
+- (WFWorkflowRunningContext)initWithWorkflowIdentifier:(id)identifier;
+- (id)addProgressSubscriberUsingPublishingHandler:(id)handler;
+- (id)copyWithCustomIdentity:(id)identity;
 - (id)copyWithNewIdentity;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)progressForPublishingWithTotalUnitCount:(int64_t)a3 cancellationHandler:(id)a4;
+- (id)progressForPublishingWithTotalUnitCount:(int64_t)count cancellationHandler:(id)handler;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFWorkflowRunningContext
 
 - (BOOL)isShortcutsApp
 {
-  v2 = [(WFWorkflowRunningContext *)self originatingBundleIdentifier];
-  v3 = VCIsShortcutsAppBundleIdentifier(v2);
+  originatingBundleIdentifier = [(WFWorkflowRunningContext *)self originatingBundleIdentifier];
+  v3 = VCIsShortcutsAppBundleIdentifier(originatingBundleIdentifier);
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v14 = a3;
-  v4 = [(WFWorkflowRunningContext *)self identifier];
-  [v14 encodeObject:v4 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(WFWorkflowRunningContext *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v5 = [(WFWorkflowRunningContext *)self workflowIdentifier];
-  [v14 encodeObject:v5 forKey:@"workflowIdentifier"];
+  workflowIdentifier = [(WFWorkflowRunningContext *)self workflowIdentifier];
+  [coderCopy encodeObject:workflowIdentifier forKey:@"workflowIdentifier"];
 
-  v6 = [(WFWorkflowRunningContext *)self progressCategory];
-  [v14 encodeObject:v6 forKey:@"progressCategory"];
+  progressCategory = [(WFWorkflowRunningContext *)self progressCategory];
+  [coderCopy encodeObject:progressCategory forKey:@"progressCategory"];
 
-  v7 = [(WFWorkflowRunningContext *)self creationDate];
-  [v14 encodeObject:v7 forKey:@"creationDate"];
+  creationDate = [(WFWorkflowRunningContext *)self creationDate];
+  [coderCopy encodeObject:creationDate forKey:@"creationDate"];
 
-  v8 = [(WFWorkflowRunningContext *)self originatingBundleIdentifier];
-  [v14 encodeObject:v8 forKey:@"originatingBundleIdentifier"];
+  originatingBundleIdentifier = [(WFWorkflowRunningContext *)self originatingBundleIdentifier];
+  [coderCopy encodeObject:originatingBundleIdentifier forKey:@"originatingBundleIdentifier"];
 
-  [v14 encodeBool:-[WFWorkflowRunningContext allowsDialogNotifications](self forKey:{"allowsDialogNotifications"), @"allowsDialogNotifications"}];
-  v9 = [(WFWorkflowRunningContext *)self automationType];
-  [v14 encodeObject:v9 forKey:@"automationType"];
+  [coderCopy encodeBool:-[WFWorkflowRunningContext allowsDialogNotifications](self forKey:{"allowsDialogNotifications"), @"allowsDialogNotifications"}];
+  automationType = [(WFWorkflowRunningContext *)self automationType];
+  [coderCopy encodeObject:automationType forKey:@"automationType"];
 
-  v10 = [(WFWorkflowRunningContext *)self rootWorkflowIdentifier];
-  [v14 encodeObject:v10 forKey:@"rootWorkflowIdentifier"];
+  rootWorkflowIdentifier = [(WFWorkflowRunningContext *)self rootWorkflowIdentifier];
+  [coderCopy encodeObject:rootWorkflowIdentifier forKey:@"rootWorkflowIdentifier"];
 
-  v11 = [(WFWorkflowRunningContext *)self runSource];
-  [v14 encodeObject:v11 forKey:@"runSource"];
+  runSource = [(WFWorkflowRunningContext *)self runSource];
+  [coderCopy encodeObject:runSource forKey:@"runSource"];
 
-  v12 = [(WFWorkflowRunningContext *)self runKind];
-  [v14 encodeObject:v12 forKey:@"runKind"];
+  runKind = [(WFWorkflowRunningContext *)self runKind];
+  [coderCopy encodeObject:runKind forKey:@"runKind"];
 
-  [v14 encodeInteger:-[WFWorkflowRunningContext outputBehavior](self forKey:{"outputBehavior"), @"outputBehavior"}];
-  [v14 encodeInteger:-[WFWorkflowRunningContext presentationMode](self forKey:{"presentationMode"), @"presentationMode"}];
-  v13 = [(WFWorkflowRunningContext *)self runViewSource];
-  [v14 encodeObject:v13 forKey:@"runViewSource"];
+  [coderCopy encodeInteger:-[WFWorkflowRunningContext outputBehavior](self forKey:{"outputBehavior"), @"outputBehavior"}];
+  [coderCopy encodeInteger:-[WFWorkflowRunningContext presentationMode](self forKey:{"presentationMode"), @"presentationMode"}];
+  runViewSource = [(WFWorkflowRunningContext *)self runViewSource];
+  [coderCopy encodeObject:runViewSource forKey:@"runViewSource"];
 
-  [v14 encodeBool:-[WFWorkflowRunningContext isStepwise](self forKey:{"isStepwise"), @"stepwise"}];
-  [v14 encodeBool:-[WFWorkflowRunningContext shouldForwardDialogRequests](self forKey:{"shouldForwardDialogRequests"), @"shouldForwardDialogRequests"}];
-  [v14 encodeBool:-[WFWorkflowRunningContext shouldForwardSiriActionRequests](self forKey:{"shouldForwardSiriActionRequests"), @"shouldForwardSiriActionRequests"}];
-  [v14 encodeBool:-[WFWorkflowRunningContext isRunningInPersistentMode](self forKey:{"isRunningInPersistentMode"), @"runningInPersistentMode"}];
-  [v14 encodeObject:@"locale"];
+  [coderCopy encodeBool:-[WFWorkflowRunningContext isStepwise](self forKey:{"isStepwise"), @"stepwise"}];
+  [coderCopy encodeBool:-[WFWorkflowRunningContext shouldForwardDialogRequests](self forKey:{"shouldForwardDialogRequests"), @"shouldForwardDialogRequests"}];
+  [coderCopy encodeBool:-[WFWorkflowRunningContext shouldForwardSiriActionRequests](self forKey:{"shouldForwardSiriActionRequests"), @"shouldForwardSiriActionRequests"}];
+  [coderCopy encodeBool:-[WFWorkflowRunningContext isRunningInPersistentMode](self forKey:{"isRunningInPersistentMode"), @"runningInPersistentMode"}];
+  [coderCopy encodeObject:@"locale"];
 }
 
-- (WFWorkflowRunningContext)initWithCoder:(id)a3
+- (WFWorkflowRunningContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v30.receiver = self;
   v30.super_class = WFWorkflowRunningContext;
   v5 = [(WFWorkflowRunningContext *)&v30 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"workflowIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"workflowIdentifier"];
     workflowIdentifier = v5->_workflowIdentifier;
     v5->_workflowIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"progressCategory"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"progressCategory"];
     progressCategory = v5->_progressCategory;
     v5->_progressCategory = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
     creationDate = v5->_creationDate;
     v5->_creationDate = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"automationType"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"automationType"];
     automationType = v5->_automationType;
     v5->_automationType = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rootWorkflowIdentifier"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rootWorkflowIdentifier"];
     rootWorkflowIdentifier = v5->_rootWorkflowIdentifier;
     v5->_rootWorkflowIdentifier = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"originatingBundleIdentifier"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"originatingBundleIdentifier"];
     originatingBundleIdentifier = v5->_originatingBundleIdentifier;
     v5->_originatingBundleIdentifier = v18;
 
-    v5->_allowsDialogNotifications = [v4 decodeBoolForKey:@"allowsDialogNotifications"];
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"runSource"];
+    v5->_allowsDialogNotifications = [coderCopy decodeBoolForKey:@"allowsDialogNotifications"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"runSource"];
     runSource = v5->_runSource;
     v5->_runSource = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"runKind"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"runKind"];
     runKind = v5->_runKind;
     v5->_runKind = v22;
 
-    v5->_outputBehavior = [v4 decodeIntegerForKey:@"outputBehavior"];
-    v5->_presentationMode = [v4 decodeIntegerForKey:@"presentationMode"];
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"runViewSource"];
+    v5->_outputBehavior = [coderCopy decodeIntegerForKey:@"outputBehavior"];
+    v5->_presentationMode = [coderCopy decodeIntegerForKey:@"presentationMode"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"runViewSource"];
     runViewSource = v5->_runViewSource;
     v5->_runViewSource = v24;
 
-    v5->_stepwise = [v4 decodeBoolForKey:@"stepwise"];
-    v5->_shouldForwardDialogRequests = [v4 decodeBoolForKey:@"shouldForwardDialogRequests"];
-    v5->_shouldForwardSiriActionRequests = [v4 decodeBoolForKey:@"shouldForwardSiriActionRequests"];
-    v5->_runningInPersistentMode = [v4 decodeBoolForKey:@"runningInPersistentMode"];
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"locale"];
+    v5->_stepwise = [coderCopy decodeBoolForKey:@"stepwise"];
+    v5->_shouldForwardDialogRequests = [coderCopy decodeBoolForKey:@"shouldForwardDialogRequests"];
+    v5->_shouldForwardSiriActionRequests = [coderCopy decodeBoolForKey:@"shouldForwardSiriActionRequests"];
+    v5->_runningInPersistentMode = [coderCopy decodeBoolForKey:@"runningInPersistentMode"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"locale"];
     locale = v5->_locale;
     v5->_locale = v26;
 
@@ -131,11 +131,11 @@
   return v5;
 }
 
-- (id)copyWithCustomIdentity:(id)a3
+- (id)copyWithCustomIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   v5 = [(WFWorkflowRunningContext *)self copy];
-  v6 = [v4 copy];
+  v6 = [identityCopy copy];
 
   [v5 setIdentifier:v6];
   return v5;
@@ -143,85 +143,85 @@
 
 - (id)copyWithNewIdentity
 {
-  v2 = self;
-  v3 = [(WFWorkflowRunningContext *)v2 workflowIdentifier];
-  v4 = [(WFWorkflowRunningContext *)v2 initWithWorkflowIdentifier:v3];
+  selfCopy = self;
+  workflowIdentifier = [(WFWorkflowRunningContext *)selfCopy workflowIdentifier];
+  v4 = [(WFWorkflowRunningContext *)selfCopy initWithWorkflowIdentifier:workflowIdentifier];
 
-  v5 = [(WFWorkflowRunningContext *)v2 automationType];
-  [(WFWorkflowRunningContext *)v4 setAutomationType:v5];
+  automationType = [(WFWorkflowRunningContext *)selfCopy automationType];
+  [(WFWorkflowRunningContext *)v4 setAutomationType:automationType];
 
-  v6 = [(WFWorkflowRunningContext *)v2 rootWorkflowIdentifier];
-  [(WFWorkflowRunningContext *)v4 setRootWorkflowIdentifier:v6];
+  rootWorkflowIdentifier = [(WFWorkflowRunningContext *)selfCopy rootWorkflowIdentifier];
+  [(WFWorkflowRunningContext *)v4 setRootWorkflowIdentifier:rootWorkflowIdentifier];
 
-  v7 = [(WFWorkflowRunningContext *)v2 runSource];
-  [(WFWorkflowRunningContext *)v4 setRunSource:v7];
+  runSource = [(WFWorkflowRunningContext *)selfCopy runSource];
+  [(WFWorkflowRunningContext *)v4 setRunSource:runSource];
 
-  v8 = [(WFWorkflowRunningContext *)v2 runKind];
-  [(WFWorkflowRunningContext *)v4 setRunKind:v8];
+  runKind = [(WFWorkflowRunningContext *)selfCopy runKind];
+  [(WFWorkflowRunningContext *)v4 setRunKind:runKind];
 
-  [(WFWorkflowRunningContext *)v4 setOutputBehavior:[(WFWorkflowRunningContext *)v2 outputBehavior]];
-  v9 = [(WFWorkflowRunningContext *)v2 originatingBundleIdentifier];
-  [(WFWorkflowRunningContext *)v4 setOriginatingBundleIdentifier:v9];
+  [(WFWorkflowRunningContext *)v4 setOutputBehavior:[(WFWorkflowRunningContext *)selfCopy outputBehavior]];
+  originatingBundleIdentifier = [(WFWorkflowRunningContext *)selfCopy originatingBundleIdentifier];
+  [(WFWorkflowRunningContext *)v4 setOriginatingBundleIdentifier:originatingBundleIdentifier];
 
-  [(WFWorkflowRunningContext *)v4 setAllowsDialogNotifications:[(WFWorkflowRunningContext *)v2 allowsDialogNotifications]];
-  v10 = [(WFWorkflowRunningContext *)v2 contextualAction];
-  [(WFWorkflowRunningContext *)v4 setContextualAction:v10];
+  [(WFWorkflowRunningContext *)v4 setAllowsDialogNotifications:[(WFWorkflowRunningContext *)selfCopy allowsDialogNotifications]];
+  contextualAction = [(WFWorkflowRunningContext *)selfCopy contextualAction];
+  [(WFWorkflowRunningContext *)v4 setContextualAction:contextualAction];
 
-  v11 = [(WFWorkflowRunningContext *)v2 contextualActionContext];
-  [(WFWorkflowRunningContext *)v4 setContextualActionContext:v11];
+  contextualActionContext = [(WFWorkflowRunningContext *)selfCopy contextualActionContext];
+  [(WFWorkflowRunningContext *)v4 setContextualActionContext:contextualActionContext];
 
-  v12 = [(WFWorkflowRunningContext *)v2 runViewSource];
-  [(WFWorkflowRunningContext *)v4 setRunViewSource:v12];
+  runViewSource = [(WFWorkflowRunningContext *)selfCopy runViewSource];
+  [(WFWorkflowRunningContext *)v4 setRunViewSource:runViewSource];
 
-  [(WFWorkflowRunningContext *)v4 setStepwise:[(WFWorkflowRunningContext *)v2 isStepwise]];
-  [(WFWorkflowRunningContext *)v4 setShouldForwardDialogRequests:[(WFWorkflowRunningContext *)v2 shouldForwardDialogRequests]];
-  [(WFWorkflowRunningContext *)v4 setShouldForwardSiriActionRequests:[(WFWorkflowRunningContext *)v2 shouldForwardSiriActionRequests]];
-  [(WFWorkflowRunningContext *)v4 setRunningInPersistentMode:[(WFWorkflowRunningContext *)v2 isRunningInPersistentMode]];
-  v13 = [(WFWorkflowRunningContext *)v2 locale];
-  [(WFWorkflowRunningContext *)v4 setLocale:v13];
+  [(WFWorkflowRunningContext *)v4 setStepwise:[(WFWorkflowRunningContext *)selfCopy isStepwise]];
+  [(WFWorkflowRunningContext *)v4 setShouldForwardDialogRequests:[(WFWorkflowRunningContext *)selfCopy shouldForwardDialogRequests]];
+  [(WFWorkflowRunningContext *)v4 setShouldForwardSiriActionRequests:[(WFWorkflowRunningContext *)selfCopy shouldForwardSiriActionRequests]];
+  [(WFWorkflowRunningContext *)v4 setRunningInPersistentMode:[(WFWorkflowRunningContext *)selfCopy isRunningInPersistentMode]];
+  locale = [(WFWorkflowRunningContext *)selfCopy locale];
+  [(WFWorkflowRunningContext *)v4 setLocale:locale];
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(WFWorkflowRunningContext *)self identifier];
-  v6 = [v5 copy];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  identifier = [(WFWorkflowRunningContext *)self identifier];
+  v6 = [identifier copy];
   [v4 setIdentifier:v6];
 
-  v7 = [(WFWorkflowRunningContext *)self workflowIdentifier];
-  v8 = [v7 copy];
+  workflowIdentifier = [(WFWorkflowRunningContext *)self workflowIdentifier];
+  v8 = [workflowIdentifier copy];
   [v4 setWorkflowIdentifier:v8];
 
-  v9 = [(WFWorkflowRunningContext *)self creationDate];
-  [v4 setCreationDate:v9];
+  creationDate = [(WFWorkflowRunningContext *)self creationDate];
+  [v4 setCreationDate:creationDate];
 
-  v10 = [(WFWorkflowRunningContext *)self automationType];
-  [v4 setAutomationType:v10];
+  automationType = [(WFWorkflowRunningContext *)self automationType];
+  [v4 setAutomationType:automationType];
 
-  v11 = [(WFWorkflowRunningContext *)self rootWorkflowIdentifier];
-  [v4 setRootWorkflowIdentifier:v11];
+  rootWorkflowIdentifier = [(WFWorkflowRunningContext *)self rootWorkflowIdentifier];
+  [v4 setRootWorkflowIdentifier:rootWorkflowIdentifier];
 
-  v12 = [(WFWorkflowRunningContext *)self runSource];
-  [v4 setRunSource:v12];
+  runSource = [(WFWorkflowRunningContext *)self runSource];
+  [v4 setRunSource:runSource];
 
-  v13 = [(WFWorkflowRunningContext *)self runKind];
-  [v4 setRunKind:v13];
+  runKind = [(WFWorkflowRunningContext *)self runKind];
+  [v4 setRunKind:runKind];
 
   [v4 setOutputBehavior:{-[WFWorkflowRunningContext outputBehavior](self, "outputBehavior")}];
-  v14 = [(WFWorkflowRunningContext *)self originatingBundleIdentifier];
-  [v4 setOriginatingBundleIdentifier:v14];
+  originatingBundleIdentifier = [(WFWorkflowRunningContext *)self originatingBundleIdentifier];
+  [v4 setOriginatingBundleIdentifier:originatingBundleIdentifier];
 
-  v15 = [(WFWorkflowRunningContext *)self runViewSource];
-  [v4 setRunViewSource:v15];
+  runViewSource = [(WFWorkflowRunningContext *)self runViewSource];
+  [v4 setRunViewSource:runViewSource];
 
   [v4 setStepwise:{-[WFWorkflowRunningContext isStepwise](self, "isStepwise")}];
   [v4 setShouldForwardDialogRequests:{-[WFWorkflowRunningContext shouldForwardDialogRequests](self, "shouldForwardDialogRequests")}];
   [v4 setShouldForwardSiriActionRequests:{-[WFWorkflowRunningContext shouldForwardSiriActionRequests](self, "shouldForwardSiriActionRequests")}];
   [v4 setRunningInPersistentMode:{-[WFWorkflowRunningContext isRunningInPersistentMode](self, "isRunningInPersistentMode")}];
-  v16 = [(WFWorkflowRunningContext *)self locale];
-  [v4 setLocale:v16];
+  locale = [(WFWorkflowRunningContext *)self locale];
+  [v4 setLocale:locale];
 
   return v4;
 }
@@ -231,17 +231,17 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(WFWorkflowRunningContext *)self identifier];
-  v7 = [(WFWorkflowRunningContext *)self workflowIdentifier];
-  v8 = [v3 stringWithFormat:@"<%@: %p, id: %@, workflow id: %@>", v5, self, v6, v7];
+  identifier = [(WFWorkflowRunningContext *)self identifier];
+  workflowIdentifier = [(WFWorkflowRunningContext *)self workflowIdentifier];
+  v8 = [v3 stringWithFormat:@"<%@: %p, id: %@, workflow id: %@>", v5, self, identifier, workflowIdentifier];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -251,11 +251,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(WFWorkflowRunningContext *)self identifier];
-      v7 = [(WFWorkflowRunningContext *)v5 identifier];
+      v5 = equalCopy;
+      identifier = [(WFWorkflowRunningContext *)self identifier];
+      identifier2 = [(WFWorkflowRunningContext *)v5 identifier];
 
-      v8 = [v6 isEqualToString:v7];
+      v8 = [identifier isEqualToString:identifier2];
     }
 
     else
@@ -269,25 +269,25 @@
 
 - (unint64_t)hash
 {
-  v2 = [(WFWorkflowRunningContext *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(WFWorkflowRunningContext *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (id)progressForPublishingWithTotalUnitCount:(int64_t)a3 cancellationHandler:(id)a4
+- (id)progressForPublishingWithTotalUnitCount:(int64_t)count cancellationHandler:(id)handler
 {
   v6 = MEMORY[0x1E696AE38];
-  v7 = a4;
-  v8 = [v6 progressWithTotalUnitCount:a3];
-  [v8 setCancellationHandler:v7];
+  handlerCopy = handler;
+  v8 = [v6 progressWithTotalUnitCount:count];
+  [v8 setCancellationHandler:handlerCopy];
 
   [v8 setUserInfoObject:@"com.apple.shortcuts.progress" forKey:*MEMORY[0x1E696A7F8]];
-  v9 = [(WFWorkflowRunningContext *)self identifier];
-  [v8 setUserInfoObject:v9 forKey:@"contextIdentifier"];
+  identifier = [(WFWorkflowRunningContext *)self identifier];
+  [v8 setUserInfoObject:identifier forKey:@"contextIdentifier"];
 
-  v10 = [(WFWorkflowRunningContext *)self workflowIdentifier];
-  [v8 setUserInfoObject:v10 forKey:@"workflowIdentifier"];
+  workflowIdentifier = [(WFWorkflowRunningContext *)self workflowIdentifier];
+  [v8 setUserInfoObject:workflowIdentifier forKey:@"workflowIdentifier"];
 
   [v8 setUserInfoObject:&unk_1F2931338 forKey:@"runningState"];
   [v8 publish];
@@ -295,17 +295,17 @@
   return v8;
 }
 
-- (id)addProgressSubscriberUsingPublishingHandler:(id)a3
+- (id)addProgressSubscriberUsingPublishingHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = MEMORY[0x1E696AE38];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __72__WFWorkflowRunningContext_addProgressSubscriberUsingPublishingHandler___block_invoke;
   v9[3] = &unk_1E7B02308;
   v9[4] = self;
-  v10 = v4;
-  v6 = v4;
+  v10 = handlerCopy;
+  v6 = handlerCopy;
   v7 = [v5 _addSubscriberForCategory:@"com.apple.shortcuts.progress" usingPublishingHandler:v9];
 
   return v7;
@@ -332,20 +332,20 @@ id __72__WFWorkflowRunningContext_addProgressSubscriberUsingPublishingHandler___
   return v8;
 }
 
-- (WFWorkflowRunningContext)initWithWorkflowIdentifier:(id)a3
+- (WFWorkflowRunningContext)initWithWorkflowIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v19.receiver = self;
   v19.super_class = WFWorkflowRunningContext;
   v5 = [(WFWorkflowRunningContext *)&v19 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E696AFB0] UUID];
-    v7 = [v6 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     identifier = v5->_identifier;
-    v5->_identifier = v7;
+    v5->_identifier = uUIDString;
 
-    v9 = [v4 copy];
+    v9 = [identifierCopy copy];
     workflowIdentifier = v5->_workflowIdentifier;
     v5->_workflowIdentifier = v9;
 
@@ -353,17 +353,17 @@ id __72__WFWorkflowRunningContext_addProgressSubscriberUsingPublishingHandler___
     progressCategory = v5->_progressCategory;
     v5->_progressCategory = v11;
 
-    v13 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     creationDate = v5->_creationDate;
-    v5->_creationDate = v13;
+    v5->_creationDate = date;
 
     v5->_allowsDialogNotifications = 1;
     v5->_outputBehavior = 0;
     *&v5->_stepwise = 0;
     v5->_shouldForwardDialogRequests = 0;
-    v15 = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
+    autoupdatingCurrentLocale = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
     locale = v5->_locale;
-    v5->_locale = v15;
+    v5->_locale = autoupdatingCurrentLocale;
 
     v5->_runningInPersistentMode = 1;
     v17 = v5;

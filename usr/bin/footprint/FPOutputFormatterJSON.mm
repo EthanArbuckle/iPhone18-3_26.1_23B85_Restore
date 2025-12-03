@@ -2,17 +2,17 @@
 - (void)close;
 - (void)configureForMultipleOutputs;
 - (void)dealloc;
-- (void)endAtTime:(id)a3;
-- (void)printGlobalAuxData:(id)a3;
-- (void)printProcessAuxData:(id)a3 forProcess:(id)a4;
-- (void)printProcessCategories:(id)a3 total:(id *)a4 forProcess:(id)a5;
-- (void)printProcessHeader:(id)a3;
-- (void)printProcessTotal:(id)a3 forProcess:(id)a4;
-- (void)printProcessesWithWarnings:(id)a3 processesWithErrors:(id)a4 globalErrors:(id)a5;
-- (void)printSharedCache:(id)a3 categories:(id)a4 sharedWith:(id)a5 total:(id *)a6;
-- (void)printSharedCategories:(id)a3 sharedWith:(id)a4 forProcess:(id)a5 hasProcessView:(BOOL)a6 total:(id *)a7;
-- (void)printSummaryCategories:(id)a3 total:(id *)a4 hadErrors:(BOOL)a5;
-- (void)startAtTime:(id)a3;
+- (void)endAtTime:(id)time;
+- (void)printGlobalAuxData:(id)data;
+- (void)printProcessAuxData:(id)data forProcess:(id)process;
+- (void)printProcessCategories:(id)categories total:(id *)total forProcess:(id)process;
+- (void)printProcessHeader:(id)header;
+- (void)printProcessTotal:(id)total forProcess:(id)process;
+- (void)printProcessesWithWarnings:(id)warnings processesWithErrors:(id)errors globalErrors:(id)globalErrors;
+- (void)printSharedCache:(id)cache categories:(id)categories sharedWith:(id)with total:(id *)total;
+- (void)printSharedCategories:(id)categories sharedWith:(id)with forProcess:(id)process hasProcessView:(BOOL)view total:(id *)total;
+- (void)printSummaryCategories:(id)categories total:(id *)total hadErrors:(BOOL)errors;
+- (void)startAtTime:(id)time;
 @end
 
 @implementation FPOutputFormatterJSON
@@ -51,10 +51,10 @@
   }
 }
 
-- (void)startAtTime:(id)a3
+- (void)startAtTime:(id)time
 {
-  v4 = a3;
-  v12 = v4;
+  timeCopy = time;
+  v12 = timeCopy;
   if (self->_multipleOutputs)
   {
     json = self->_json;
@@ -68,11 +68,11 @@
 
       fputc(123, json->var0);
       self->_json->var1 = 0;
-      v4 = v12;
+      timeCopy = v12;
     }
   }
 
-  sub_100013528(self, v4, "start_time");
+  sub_100013528(self, timeCopy, "start_time");
   v6 = self->_json;
   if (v6)
   {
@@ -98,9 +98,9 @@
   self->_addedProcessGroups = v10;
 }
 
-- (void)printProcessHeader:(id)a3
+- (void)printProcessHeader:(id)header
 {
-  v4 = a3;
+  headerCopy = header;
   json = self->_json;
   if (json)
   {
@@ -117,8 +117,8 @@
     v7 = self->_json;
     v7->var1 = 0;
     var0 = v7->var0;
-    v9 = [v4 name];
-    v10 = [v9 stringByReplacingOccurrencesOfString:@" withString:@"\];
+    name = [headerCopy name];
+    v10 = [name stringByReplacingOccurrencesOfString:@" withString:@"\];
     fprintf(var0, "%s", [v10 UTF8String]);
 
     v11 = self->_json;
@@ -127,7 +127,7 @@
     fwrite("pid:", 6uLL, 1uLL, self->_json->var0);
     v12 = self->_json;
     v12->var1 = 0;
-    fprintf(v12->var0, "%d", [v4 pid]);
+    fprintf(v12->var0, "%d", [headerCopy pid]);
     v13 = self->_json;
     v13->var1 = 1;
     fputc(44, v13->var0);
@@ -135,7 +135,7 @@
     v14 = self->_json;
     v14->var1 = 0;
     v15 = v14->var0;
-    if ([v4 isTranslated])
+    if ([headerCopy isTranslated])
     {
       v16 = "true";
     }
@@ -152,12 +152,12 @@
     fwrite("page size:", 0xCuLL, 1uLL, self->_json->var0);
     v18 = self->_json;
     v18->var1 = 0;
-    fprintf(v18->var0, "%lu", [v4 pageSize]);
+    fprintf(v18->var0, "%lu", [headerCopy pageSize]);
     self->_json->var1 = 1;
   }
 
-  v19 = [v4 errors];
-  v20 = [v19 count];
+  errors = [headerCopy errors];
+  v20 = [errors count];
 
   if (v20)
   {
@@ -181,8 +181,8 @@
     v55 = 0u;
     v52 = 0u;
     v53 = 0u;
-    v23 = [v4 errors];
-    v24 = [v23 countByEnumeratingWithState:&v52 objects:v57 count:16];
+    errors2 = [headerCopy errors];
+    v24 = [errors2 countByEnumeratingWithState:&v52 objects:v57 count:16];
     if (v24)
     {
       v25 = v24;
@@ -193,7 +193,7 @@
         {
           if (*v53 != v26)
           {
-            objc_enumerationMutation(v23);
+            objc_enumerationMutation(errors2);
           }
 
           v28 = self->_json;
@@ -208,7 +208,7 @@
           }
         }
 
-        v25 = [v23 countByEnumeratingWithState:&v52 objects:v57 count:16];
+        v25 = [errors2 countByEnumeratingWithState:&v52 objects:v57 count:16];
       }
 
       while (v25);
@@ -222,8 +222,8 @@
     }
   }
 
-  v31 = [v4 warnings];
-  v32 = [v31 count];
+  warnings = [headerCopy warnings];
+  v32 = [warnings count];
 
   if (v32)
   {
@@ -247,8 +247,8 @@
     v51 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v35 = [v4 warnings];
-    v36 = [v35 countByEnumeratingWithState:&v48 objects:v56 count:16];
+    warnings2 = [headerCopy warnings];
+    v36 = [warnings2 countByEnumeratingWithState:&v48 objects:v56 count:16];
     if (v36)
     {
       v37 = v36;
@@ -259,7 +259,7 @@
         {
           if (*v49 != v38)
           {
-            objc_enumerationMutation(v35);
+            objc_enumerationMutation(warnings2);
           }
 
           v40 = self->_json;
@@ -274,7 +274,7 @@
           }
         }
 
-        v37 = [v35 countByEnumeratingWithState:&v48 objects:v56 count:16];
+        v37 = [warnings2 countByEnumeratingWithState:&v48 objects:v56 count:16];
       }
 
       while (v37);
@@ -306,13 +306,13 @@
       self->_json->var1 = 0;
     }
 
-    v45 = [v4 memoryRegions];
+    memoryRegions = [headerCopy memoryRegions];
     v47[0] = _NSConcreteStackBlock;
     v47[1] = 3221225472;
     v47[2] = sub_100013DD4;
     v47[3] = &unk_100029E68;
     v47[4] = self;
-    [v45 fp_enumerateObjectsWithBatchSize:128 usingBlock:v47];
+    [memoryRegions fp_enumerateObjectsWithBatchSize:128 usingBlock:v47];
 
     v46 = self->_json;
     if (v46)
@@ -324,14 +324,14 @@
 
   if (!self->_pageSize)
   {
-    self->_pageSize = [v4 pageSize];
+    self->_pageSize = [headerCopy pageSize];
   }
 }
 
-- (void)printProcessTotal:(id)a3 forProcess:(id)a4
+- (void)printProcessTotal:(id)total forProcess:(id)process
 {
-  v9 = a3;
-  v6 = a4;
+  totalCopy = total;
+  processCopy = process;
   json = self->_json;
   if (json)
   {
@@ -344,15 +344,15 @@
     fwrite("footprint:", 0xCuLL, 1uLL, json->var0);
     v8 = self->_json;
     v8->var1 = 0;
-    fprintf(v8->var0, "%llu", [v9 unsignedLongLongValue]);
+    fprintf(v8->var0, "%llu", [totalCopy unsignedLongLongValue]);
     self->_json->var1 = 1;
   }
 }
 
-- (void)printProcessCategories:(id)a3 total:(id *)a4 forProcess:(id)a5
+- (void)printProcessCategories:(id)categories total:(id *)total forProcess:(id)process
 {
-  v11 = a3;
-  v7 = a5;
+  categoriesCopy = categories;
+  processCopy = process;
   json = self->_json;
   if (json)
   {
@@ -369,7 +369,7 @@
     self->_json->var1 = 0;
   }
 
-  sub_100014B24(self, v11);
+  sub_100014B24(self, categoriesCopy);
   v10 = self->_json;
   if (v10)
   {
@@ -378,32 +378,32 @@
   }
 }
 
-- (void)printSharedCategories:(id)a3 sharedWith:(id)a4 forProcess:(id)a5 hasProcessView:(BOOL)a6 total:(id *)a7
+- (void)printSharedCategories:(id)categories sharedWith:(id)with forProcess:(id)process hasProcessView:(BOOL)view total:(id *)total
 {
-  v7 = a6;
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (!v7)
+  viewCopy = view;
+  categoriesCopy = categories;
+  withCopy = with;
+  processCopy = process;
+  if (!viewCopy)
   {
-    if (([(NSMutableSet *)self->_addedProcessGroups containsObject:v12]& 1) != 0)
+    if (([(NSMutableSet *)self->_addedProcessGroups containsObject:withCopy]& 1) != 0)
     {
       goto LABEL_14;
     }
 
-    [(NSMutableSet *)self->_addedProcessGroups addObject:v12];
+    [(NSMutableSet *)self->_addedProcessGroups addObject:withCopy];
   }
 
-  v26 = v13;
-  v14 = [v12 processes];
-  v15 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v14 count]);
+  v26 = processCopy;
+  processes = [withCopy processes];
+  v15 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [processes count]);
 
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v16 = [v12 processes];
-  v17 = [v16 countByEnumeratingWithState:&v27 objects:v33 count:16];
+  processes2 = [withCopy processes];
+  v17 = [processes2 countByEnumeratingWithState:&v27 objects:v33 count:16];
   if (v17)
   {
     v18 = v17;
@@ -415,17 +415,17 @@
       {
         if (*v28 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(processes2);
         }
 
-        v21 = [*(*(&v27 + 1) + 8 * v20) asNumber];
-        [v15 addObject:v21];
+        asNumber = [*(*(&v27 + 1) + 8 * v20) asNumber];
+        [v15 addObject:asNumber];
 
         v20 = v20 + 1;
       }
 
       while (v18 != v20);
-      v18 = [v16 countByEnumeratingWithState:&v27 objects:v33 count:16];
+      v18 = [processes2 countByEnumeratingWithState:&v27 objects:v33 count:16];
     }
 
     while (v18);
@@ -435,15 +435,15 @@
   v31[0] = @"pids";
   v31[1] = @"categories";
   v32[0] = v15;
-  v32[1] = v11;
+  v32[1] = categoriesCopy;
   v23 = [NSDictionary dictionaryWithObjects:v32 forKeys:v31 count:2];
   v24 = [v22 initWithDictionary:v23];
 
-  v13 = v26;
-  if (v7)
+  processCopy = v26;
+  if (viewCopy)
   {
-    v25 = [v26 asNumber];
-    [v24 setObject:v25 forKeyedSubscript:@"specific_to_pid"];
+    asNumber2 = [v26 asNumber];
+    [v24 setObject:asNumber2 forKeyedSubscript:@"specific_to_pid"];
   }
 
   [(NSMutableArray *)self->_shared addObject:v24];
@@ -451,20 +451,20 @@
 LABEL_14:
 }
 
-- (void)printSharedCache:(id)a3 categories:(id)a4 sharedWith:(id)a5 total:(id *)a6
+- (void)printSharedCache:(id)cache categories:(id)categories sharedWith:(id)with total:(id *)total
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v11 processes];
-  v13 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v12 count]);
+  cacheCopy = cache;
+  categoriesCopy = categories;
+  withCopy = with;
+  processes = [withCopy processes];
+  v13 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [processes count]);
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v14 = [v11 processes];
-  v15 = [v14 countByEnumeratingWithState:&v23 objects:v29 count:16];
+  processes2 = [withCopy processes];
+  v15 = [processes2 countByEnumeratingWithState:&v23 objects:v29 count:16];
   if (v15)
   {
     v16 = v15;
@@ -476,17 +476,17 @@ LABEL_14:
       {
         if (*v24 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(processes2);
         }
 
-        v19 = [*(*(&v23 + 1) + 8 * v18) asNumber];
-        [v13 addObject:v19];
+        asNumber = [*(*(&v23 + 1) + 8 * v18) asNumber];
+        [v13 addObject:asNumber];
 
         v18 = v18 + 1;
       }
 
       while (v16 != v18);
-      v16 = [v14 countByEnumeratingWithState:&v23 objects:v29 count:16];
+      v16 = [processes2 countByEnumeratingWithState:&v23 objects:v29 count:16];
     }
 
     while (v16);
@@ -495,11 +495,11 @@ LABEL_14:
   v27[0] = @"pids";
   v27[1] = @"categories";
   v28[0] = v13;
-  v28[1] = v10;
+  v28[1] = categoriesCopy;
   v27[2] = @"shared-cache";
-  if (v9)
+  if (cacheCopy)
   {
-    v20 = v9[2];
+    v20 = cacheCopy[2];
   }
 
   else
@@ -514,10 +514,10 @@ LABEL_14:
   [(NSMutableArray *)self->_shared addObject:v22];
 }
 
-- (void)printProcessAuxData:(id)a3 forProcess:(id)a4
+- (void)printProcessAuxData:(id)data forProcess:(id)process
 {
-  v9 = a3;
-  v6 = a4;
+  dataCopy = data;
+  processCopy = process;
   json = self->_json;
   if (json)
   {
@@ -531,7 +531,7 @@ LABEL_14:
     self->_json->var1 = 0;
   }
 
-  sub_1000150B4(self, v9);
+  sub_1000150B4(self, dataCopy);
   v8 = self->_json;
   if (v8)
   {
@@ -540,11 +540,11 @@ LABEL_14:
   }
 }
 
-- (void)printProcessesWithWarnings:(id)a3 processesWithErrors:(id)a4 globalErrors:(id)a5
+- (void)printProcessesWithWarnings:(id)warnings processesWithErrors:(id)errors globalErrors:(id)globalErrors
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  warningsCopy = warnings;
+  errorsCopy = errors;
+  globalErrorsCopy = globalErrors;
   json = self->_json;
   if (json)
   {
@@ -552,14 +552,14 @@ LABEL_14:
     self->_json->var1 = 1;
   }
 
-  v48 = v10;
-  v12 = [NSMutableArray arrayWithArray:v10];
+  v48 = globalErrorsCopy;
+  v12 = [NSMutableArray arrayWithArray:globalErrorsCopy];
   v13 = objc_opt_new();
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
-  v14 = v8;
+  v14 = warningsCopy;
   v15 = [v14 countByEnumeratingWithState:&v61 objects:v68 count:16];
   if (v15)
   {
@@ -574,8 +574,8 @@ LABEL_14:
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v61 + 1) + 8 * i) warnings];
-        [v13 addObjectsFromArray:v19];
+        warnings = [*(*(&v61 + 1) + 8 * i) warnings];
+        [v13 addObjectsFromArray:warnings];
       }
 
       v16 = [v14 countByEnumeratingWithState:&v61 objects:v68 count:16];
@@ -588,7 +588,7 @@ LABEL_14:
   v60 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v20 = v9;
+  v20 = errorsCopy;
   v21 = [v20 countByEnumeratingWithState:&v57 objects:v67 count:16];
   if (v21)
   {
@@ -603,8 +603,8 @@ LABEL_14:
           objc_enumerationMutation(v20);
         }
 
-        v25 = [*(*(&v57 + 1) + 8 * j) errors];
-        [v12 addObjectsFromArray:v25];
+        errors = [*(*(&v57 + 1) + 8 * j) errors];
+        [v12 addObjectsFromArray:errors];
       }
 
       v22 = [v20 countByEnumeratingWithState:&v57 objects:v67 count:16];
@@ -727,11 +727,11 @@ LABEL_14:
   }
 }
 
-- (void)printSummaryCategories:(id)a3 total:(id *)a4 hadErrors:(BOOL)a5
+- (void)printSummaryCategories:(id)categories total:(id *)total hadErrors:(BOOL)errors
 {
-  v7 = a3;
+  categoriesCopy = categories;
   json = self->_json;
-  v27 = v7;
+  v27 = categoriesCopy;
   if (json)
   {
     if (json->var1)
@@ -746,13 +746,13 @@ LABEL_14:
     fputc(123, v9->var0);
     json = self->_json;
     json->var1 = 0;
-    v7 = v27;
+    categoriesCopy = v27;
   }
 
-  if (v7)
+  if (categoriesCopy)
   {
     sub_100014B24(self, v27);
-    v7 = v27;
+    categoriesCopy = v27;
     json = self->_json;
   }
 
@@ -773,42 +773,42 @@ LABEL_14:
     fwrite("dirty:", 8uLL, 1uLL, v11->var0);
     v12 = self->_json;
     v12->var1 = 0;
-    fprintf(v12->var0, "%llu", a4->var1 + a4->var0);
+    fprintf(v12->var0, "%llu", total->var1 + total->var0);
     v13 = self->_json;
     v13->var1 = 1;
     fputc(44, v13->var0);
     fwrite("swapped:", 0xAuLL, 1uLL, self->_json->var0);
     v14 = self->_json;
     v14->var1 = 0;
-    fprintf(v14->var0, "%llu", a4->var1);
+    fprintf(v14->var0, "%llu", total->var1);
     v15 = self->_json;
     v15->var1 = 1;
     fputc(44, v15->var0);
     fwrite("clean:", 8uLL, 1uLL, self->_json->var0);
     v16 = self->_json;
     v16->var1 = 0;
-    fprintf(v16->var0, "%llu", a4->var2);
+    fprintf(v16->var0, "%llu", total->var2);
     v17 = self->_json;
     v17->var1 = 1;
     fputc(44, v17->var0);
     fwrite("reclaimable:", 0xEuLL, 1uLL, self->_json->var0);
     v18 = self->_json;
     v18->var1 = 0;
-    fprintf(v18->var0, "%llu", a4->var3);
+    fprintf(v18->var0, "%llu", total->var3);
     v19 = self->_json;
     v19->var1 = 1;
     fputc(44, v19->var0);
     fwrite("wired:", 8uLL, 1uLL, self->_json->var0);
     v20 = self->_json;
     v20->var1 = 0;
-    fprintf(v20->var0, "%llu", a4->var4);
+    fprintf(v20->var0, "%llu", total->var4);
     v21 = self->_json;
     v21->var1 = 1;
     fputc(44, v21->var0);
     fwrite("regions:", 0xAuLL, 1uLL, self->_json->var0);
     v22 = self->_json;
     v22->var1 = 0;
-    fprintf(v22->var0, "%u", a4->var5);
+    fprintf(v22->var0, "%u", total->var5);
     v23 = self->_json;
     v23->var1 = 1;
     fputc(125, v23->var0);
@@ -821,19 +821,19 @@ LABEL_14:
     fwrite("total footprint:", 0x12uLL, 1uLL, self->_json->var0);
     v26 = self->_json;
     v26->var1 = 0;
-    fprintf(v26->var0, "%llu", a4->var1 + a4->var0);
+    fprintf(v26->var0, "%llu", total->var1 + total->var0);
     self->_json->var1 = 1;
-    v7 = v27;
+    categoriesCopy = v27;
   }
 }
 
-- (void)printGlobalAuxData:(id)a3
+- (void)printGlobalAuxData:(id)data
 {
-  v4 = a3;
-  if (v4)
+  dataCopy = data;
+  if (dataCopy)
   {
     json = self->_json;
-    v6 = v4;
+    v6 = dataCopy;
     if (json)
     {
       if (json->var1)
@@ -847,13 +847,13 @@ LABEL_14:
     }
 
     sub_1000150B4(self, v6);
-    v4 = v6;
+    dataCopy = v6;
   }
 }
 
-- (void)endAtTime:(id)a3
+- (void)endAtTime:(id)time
 {
-  v4 = a3;
+  timeCopy = time;
   json = self->_json;
   if (json)
   {
@@ -992,8 +992,8 @@ LABEL_14:
           v25 = self->_json;
           v25->var1 = 0;
           var0 = v25->var0;
-          v27 = [v23 UUIDString];
-          fprintf(var0, "%s", [v27 UTF8String]);
+          uUIDString = [v23 UUIDString];
+          fprintf(var0, "%s", [uUIDString UTF8String]);
 
           v24 = self->_json;
           v24->var1 = 1;
@@ -1047,7 +1047,7 @@ LABEL_41:
     self->_json->var1 = 1;
   }
 
-  sub_100013528(self, v4, "end_time");
+  sub_100013528(self, timeCopy, "end_time");
   if (self->_multipleOutputs)
   {
     v33 = self->_json;

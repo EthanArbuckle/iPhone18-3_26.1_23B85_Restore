@@ -1,12 +1,12 @@
 @interface VKSharedResourcesManager
 + (id)sharedManager;
 + (id)sharedResources;
-+ (id)sharedResourcesCreateIfNil:(BOOL)a3 addResourceUser:(BOOL)a4;
++ (id)sharedResourcesCreateIfNil:(BOOL)nil addResourceUser:(BOOL)user;
 + (void)removeResourceUser;
 - (BOOL)hasResources;
 - (VKSharedResourcesManager)init;
 - (id).cxx_construct;
-- (id)resourcesCreateIfNil:(BOOL)a3 addResourceUser:(BOOL)a4;
+- (id)resourcesCreateIfNil:(BOOL)nil addResourceUser:(BOOL)user;
 - (void)_removeResourceUser;
 @end
 
@@ -85,18 +85,18 @@ void __41__VKSharedResourcesManager_sharedManager__block_invoke()
       v4 = *(self + 9);
       *(self + 9) = 0;
 
-      v5 = [MEMORY[0x1E69A2610] modernLoader];
-      [v5 clearAllCaches];
+      modernLoader = [MEMORY[0x1E69A2610] modernLoader];
+      [modernLoader clearAllCaches];
     }
   }
 
   std::mutex::unlock((self + 8));
 }
 
-- (id)resourcesCreateIfNil:(BOOL)a3 addResourceUser:(BOOL)a4
+- (id)resourcesCreateIfNil:(BOOL)nil addResourceUser:(BOOL)user
 {
-  v4 = a4;
-  v5 = a3;
+  userCopy = user;
+  nilCopy = nil;
   std::mutex::lock((self + 8));
   v7 = *(self + 9);
   if (v7)
@@ -106,7 +106,7 @@ void __41__VKSharedResourcesManager_sharedManager__block_invoke()
 
   else
   {
-    v8 = !v5;
+    v8 = !nilCopy;
   }
 
   if (!v8)
@@ -116,7 +116,7 @@ void __41__VKSharedResourcesManager_sharedManager__block_invoke()
 
   if (v7)
   {
-    v9 = !v4;
+    v9 = !userCopy;
   }
 
   else
@@ -144,12 +144,12 @@ void __41__VKSharedResourcesManager_sharedManager__block_invoke()
   return v3;
 }
 
-+ (id)sharedResourcesCreateIfNil:(BOOL)a3 addResourceUser:(BOOL)a4
++ (id)sharedResourcesCreateIfNil:(BOOL)nil addResourceUser:(BOOL)user
 {
-  v4 = a4;
-  v5 = a3;
+  userCopy = user;
+  nilCopy = nil;
   v6 = +[VKSharedResourcesManager sharedManager];
-  v7 = [v6 resourcesCreateIfNil:v5 addResourceUser:v4];
+  v7 = [v6 resourcesCreateIfNil:nilCopy addResourceUser:userCopy];
 
   return v7;
 }

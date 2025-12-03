@@ -1,34 +1,34 @@
 @interface SRDeviceUsageReport
-+ (SRDeviceUsageReport)deviceUsageReportWithInterval:(id)a3;
++ (SRDeviceUsageReport)deviceUsageReportWithInterval:(id)interval;
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSDictionary)applicationUsageByCategory;
 - (NSDictionary)notificationUsageByCategory;
 - (NSDictionary)webUsageByCategory;
 - (NSString)description;
 - (NSString)version;
-- (SRDeviceUsageReport)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5;
-- (SRDeviceUsageReport)initWithCoder:(id)a3;
+- (SRDeviceUsageReport)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp;
+- (SRDeviceUsageReport)initWithCoder:(id)coder;
 - (id)_activityLevels;
 - (id)_motionActivities;
 - (id)sr_dictionaryRepresentation;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SRDeviceUsageReport
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     SRLogUsageReport = os_log_create("com.apple.SensorKit", "SRDeviceUsageReport");
   }
 }
 
-- (SRDeviceUsageReport)initWithCoder:(id)a3
+- (SRDeviceUsageReport)initWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
@@ -38,79 +38,79 @@
   v6 = [(SRDeviceUsageReport *)&v29 init];
   if (v6)
   {
-    v6->_totalScreenWakes = [a3 decodeIntegerForKey:@"totalScreenWakes"];
-    [a3 decodeDoubleForKey:@"totalScreenWakeDuration"];
+    v6->_totalScreenWakes = [coder decodeIntegerForKey:@"totalScreenWakes"];
+    [coder decodeDoubleForKey:@"totalScreenWakeDuration"];
     v6->_totalScreenWakeDuration = v7;
-    v6->_totalUnlocks = [a3 decodeIntegerForKey:@"totalUnlocks"];
-    [a3 decodeDoubleForKey:@"totalUnlockDuration"];
+    v6->_totalUnlocks = [coder decodeIntegerForKey:@"totalUnlocks"];
+    [coder decodeDoubleForKey:@"totalUnlockDuration"];
     v6->_totalUnlockDuration = v8;
-    [a3 decodeDoubleForKey:@"totalChargingDuration"];
+    [coder decodeDoubleForKey:@"totalChargingDuration"];
     v6->__totalChargingDuration = v9;
-    [a3 decodeDoubleForKey:@"startTime"];
+    [coder decodeDoubleForKey:@"startTime"];
     v6->_startTime = v10;
-    [a3 decodeDoubleForKey:@"duration"];
+    [coder decodeDoubleForKey:@"duration"];
     v6->_duration = v11;
-    v6->_version = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"version"];
+    v6->_version = [coder decodeObjectOfClass:objc_opt_class() forKey:@"version"];
     v12 = MEMORY[0x1E695DFD8];
     v13 = objc_opt_class();
     v14 = objc_opt_class();
     v15 = objc_opt_class();
-    v6->_mutableApplicationUsageByCategory = [objc_msgSend(a3 decodeObjectOfClasses:objc_msgSend(v12 forKey:{"setWithObjects:", v13, v14, v15, objc_opt_class(), 0), @"applicationUsage", "mutableCopy"}];
+    v6->_mutableApplicationUsageByCategory = [objc_msgSend(coder decodeObjectOfClasses:objc_msgSend(v12 forKey:{"setWithObjects:", v13, v14, v15, objc_opt_class(), 0), @"applicationUsage", "mutableCopy"}];
     v16 = MEMORY[0x1E695DFD8];
     v17 = objc_opt_class();
     v18 = objc_opt_class();
     v19 = objc_opt_class();
-    v6->_mutableNotificationUsageByCategory = [objc_msgSend(a3 decodeObjectOfClasses:objc_msgSend(v16 forKey:{"setWithObjects:", v17, v18, v19, objc_opt_class(), 0), @"notificationsUsage", "mutableCopy"}];
+    v6->_mutableNotificationUsageByCategory = [objc_msgSend(coder decodeObjectOfClasses:objc_msgSend(v16 forKey:{"setWithObjects:", v17, v18, v19, objc_opt_class(), 0), @"notificationsUsage", "mutableCopy"}];
     v20 = MEMORY[0x1E695DFD8];
     v21 = objc_opt_class();
     v22 = objc_opt_class();
     v23 = objc_opt_class();
-    v6->_mutableWebUsageByCategory = [objc_msgSend(a3 decodeObjectOfClasses:objc_msgSend(v20 forKey:{"setWithObjects:", v21, v22, v23, objc_opt_class(), 0), @"webUsage", "mutableCopy"}];
+    v6->_mutableWebUsageByCategory = [objc_msgSend(coder decodeObjectOfClasses:objc_msgSend(v20 forKey:{"setWithObjects:", v21, v22, v23, objc_opt_class(), 0), @"webUsage", "mutableCopy"}];
     v24 = MEMORY[0x1E695DFD8];
     v25 = objc_opt_class();
-    v6->__mutableMotionActivities = [objc_msgSend(a3 decodeObjectOfClasses:objc_msgSend(v24 forKey:{"setWithObjects:", v25, objc_opt_class(), 0), @"motionActivities", "mutableCopy"}];
+    v6->__mutableMotionActivities = [objc_msgSend(coder decodeObjectOfClasses:objc_msgSend(v24 forKey:{"setWithObjects:", v25, objc_opt_class(), 0), @"motionActivities", "mutableCopy"}];
     v26 = MEMORY[0x1E695DFD8];
     v27 = objc_opt_class();
-    v6->__mutableActivityLevels = [objc_msgSend(a3 decodeObjectOfClasses:objc_msgSend(v26 forKey:{"setWithObjects:", v27, objc_opt_class(), 0), @"activityLevels", "mutableCopy"}];
+    v6->__mutableActivityLevels = [objc_msgSend(coder decodeObjectOfClasses:objc_msgSend(v26 forKey:{"setWithObjects:", v27, objc_opt_class(), 0), @"activityLevels", "mutableCopy"}];
     v6->__reportApplicationIdentifierByBundleIdentifier = objc_alloc_init(MEMORY[0x1E695DF90]);
   }
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  [a3 encodeDouble:@"startTime" forKey:self->_startTime];
-  [a3 encodeDouble:@"duration" forKey:self->_duration];
-  [a3 encodeObject:-[SRDeviceUsageReport mutableNotificationUsageByCategory](self forKey:{"mutableNotificationUsageByCategory"), @"notificationsUsage"}];
-  [a3 encodeObject:-[SRDeviceUsageReport mutableApplicationUsageByCategory](self forKey:{"mutableApplicationUsageByCategory"), @"applicationUsage"}];
-  [a3 encodeObject:-[SRDeviceUsageReport mutableWebUsageByCategory](self forKey:{"mutableWebUsageByCategory"), @"webUsage"}];
-  [a3 encodeInteger:-[SRDeviceUsageReport totalScreenWakes](self forKey:{"totalScreenWakes"), @"totalScreenWakes"}];
+  [coder encodeDouble:@"startTime" forKey:self->_startTime];
+  [coder encodeDouble:@"duration" forKey:self->_duration];
+  [coder encodeObject:-[SRDeviceUsageReport mutableNotificationUsageByCategory](self forKey:{"mutableNotificationUsageByCategory"), @"notificationsUsage"}];
+  [coder encodeObject:-[SRDeviceUsageReport mutableApplicationUsageByCategory](self forKey:{"mutableApplicationUsageByCategory"), @"applicationUsage"}];
+  [coder encodeObject:-[SRDeviceUsageReport mutableWebUsageByCategory](self forKey:{"mutableWebUsageByCategory"), @"webUsage"}];
+  [coder encodeInteger:-[SRDeviceUsageReport totalScreenWakes](self forKey:{"totalScreenWakes"), @"totalScreenWakes"}];
   [(SRDeviceUsageReport *)self totalScreenWakeDuration];
-  [a3 encodeDouble:@"totalScreenWakeDuration" forKey:?];
-  [a3 encodeInteger:-[SRDeviceUsageReport totalUnlocks](self forKey:{"totalUnlocks"), @"totalUnlocks"}];
+  [coder encodeDouble:@"totalScreenWakeDuration" forKey:?];
+  [coder encodeInteger:-[SRDeviceUsageReport totalUnlocks](self forKey:{"totalUnlocks"), @"totalUnlocks"}];
   [(SRDeviceUsageReport *)self totalUnlockDuration];
-  [a3 encodeDouble:@"totalUnlockDuration" forKey:?];
+  [coder encodeDouble:@"totalUnlockDuration" forKey:?];
   [(SRDeviceUsageReport *)self _totalChargingDuration];
-  [a3 encodeDouble:@"totalChargingDuration" forKey:?];
-  [a3 encodeObject:-[SRDeviceUsageReport _mutableMotionActivities](self forKey:{"_mutableMotionActivities"), @"motionActivities"}];
-  [a3 encodeObject:-[SRDeviceUsageReport _mutableActivityLevels](self forKey:{"_mutableActivityLevels"), @"activityLevels"}];
-  v6 = [(SRDeviceUsageReport *)self version];
+  [coder encodeDouble:@"totalChargingDuration" forKey:?];
+  [coder encodeObject:-[SRDeviceUsageReport _mutableMotionActivities](self forKey:{"_mutableMotionActivities"), @"motionActivities"}];
+  [coder encodeObject:-[SRDeviceUsageReport _mutableActivityLevels](self forKey:{"_mutableActivityLevels"), @"activityLevels"}];
+  version = [(SRDeviceUsageReport *)self version];
 
-  [a3 encodeObject:v6 forKey:@"version"];
+  [coder encodeObject:version forKey:@"version"];
 }
 
-+ (SRDeviceUsageReport)deviceUsageReportWithInterval:(id)a3
++ (SRDeviceUsageReport)deviceUsageReportWithInterval:(id)interval
 {
   v4 = objc_alloc_init(SRDeviceUsageReport);
-  [objc_msgSend(a3 "startDate")];
+  [objc_msgSend(interval "startDate")];
   [(SRDeviceUsageReport *)v4 setStartTime:?];
-  [a3 duration];
+  [interval duration];
   [(SRDeviceUsageReport *)v4 setDuration:?];
   -[SRDeviceUsageReport setMutableWebUsageByCategory:](v4, "setMutableWebUsageByCategory:", [MEMORY[0x1E695DF90] dictionary]);
   -[SRDeviceUsageReport setMutableApplicationUsageByCategory:](v4, "setMutableApplicationUsageByCategory:", [MEMORY[0x1E695DF90] dictionary]);
@@ -139,9 +139,9 @@
   [(SRDeviceUsageReport *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v13) = 1;
   }
@@ -155,38 +155,38 @@
     }
 
     startTime = self->_startTime;
-    [a3 startTime];
+    [equal startTime];
     if (startTime != v6)
     {
       goto LABEL_17;
     }
 
     duration = self->_duration;
-    [a3 duration];
-    if (duration == v8 && (totalScreenWakes = self->_totalScreenWakes, totalScreenWakes == [a3 totalScreenWakes]) && (totalScreenWakeDuration = self->_totalScreenWakeDuration, objc_msgSend(a3, "totalScreenWakeDuration"), totalScreenWakeDuration == v11) && (totalUnlocks = self->_totalUnlocks, totalUnlocks == objc_msgSend(a3, "totalUnlocks")))
+    [equal duration];
+    if (duration == v8 && (totalScreenWakes = self->_totalScreenWakes, totalScreenWakes == [equal totalScreenWakes]) && (totalScreenWakeDuration = self->_totalScreenWakeDuration, objc_msgSend(equal, "totalScreenWakeDuration"), totalScreenWakeDuration == v11) && (totalUnlocks = self->_totalUnlocks, totalUnlocks == objc_msgSend(equal, "totalUnlocks")))
     {
-      v13 = -[NSString isEqualToString:](-[SRDeviceUsageReport version](self, "version"), "isEqualToString:", [a3 version]);
+      v13 = -[NSString isEqualToString:](-[SRDeviceUsageReport version](self, "version"), "isEqualToString:", [equal version]);
       if (v13)
       {
-        v13 = -[NSMutableDictionary isEqualToDictionary:](self->_mutableWebUsageByCategory, "isEqualToDictionary:", [a3 mutableWebUsageByCategory]);
+        v13 = -[NSMutableDictionary isEqualToDictionary:](self->_mutableWebUsageByCategory, "isEqualToDictionary:", [equal mutableWebUsageByCategory]);
         if (v13)
         {
-          v13 = -[NSMutableDictionary isEqualToDictionary:](self->_mutableApplicationUsageByCategory, "isEqualToDictionary:", [a3 mutableApplicationUsageByCategory]);
+          v13 = -[NSMutableDictionary isEqualToDictionary:](self->_mutableApplicationUsageByCategory, "isEqualToDictionary:", [equal mutableApplicationUsageByCategory]);
           if (v13)
           {
-            v13 = -[NSMutableDictionary isEqualToDictionary:](self->_mutableNotificationUsageByCategory, "isEqualToDictionary:", [a3 mutableNotificationUsageByCategory]);
+            v13 = -[NSMutableDictionary isEqualToDictionary:](self->_mutableNotificationUsageByCategory, "isEqualToDictionary:", [equal mutableNotificationUsageByCategory]);
             if (v13)
             {
-              v13 = -[NSMutableArray isEqualToArray:](self->__mutableMotionActivities, "isEqualToArray:", [a3 _mutableMotionActivities]);
+              v13 = -[NSMutableArray isEqualToArray:](self->__mutableMotionActivities, "isEqualToArray:", [equal _mutableMotionActivities]);
               if (v13)
               {
-                v13 = -[NSMutableArray isEqualToArray:](self->__mutableActivityLevels, "isEqualToArray:", [a3 _mutableActivityLevels]);
+                v13 = -[NSMutableArray isEqualToArray:](self->__mutableActivityLevels, "isEqualToArray:", [equal _mutableActivityLevels]);
                 if (v13)
                 {
                   reportApplicationIdentifierByBundleIdentifier = self->__reportApplicationIdentifierByBundleIdentifier;
-                  v15 = [a3 _reportApplicationIdentifierByBundleIdentifier];
+                  _reportApplicationIdentifierByBundleIdentifier = [equal _reportApplicationIdentifierByBundleIdentifier];
 
-                  LOBYTE(v13) = [(NSMutableDictionary *)reportApplicationIdentifierByBundleIdentifier isEqualToDictionary:v15];
+                  LOBYTE(v13) = [(NSMutableDictionary *)reportApplicationIdentifierByBundleIdentifier isEqualToDictionary:_reportApplicationIdentifierByBundleIdentifier];
                 }
               }
             }
@@ -205,16 +205,16 @@ LABEL_17:
   return v13;
 }
 
-- (SRDeviceUsageReport)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5
+- (SRDeviceUsageReport)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp
 {
-  if ([a3 length])
+  if ([representation length])
   {
     v11.receiver = self;
     v11.super_class = SRDeviceUsageReport;
     v7 = [(SRDeviceUsageReport *)&v11 init];
     if (v7)
     {
-      v8 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:a3 error:0];
+      v8 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:representation error:0];
       if (v8)
       {
         v9 = v8;
@@ -242,14 +242,14 @@ LABEL_17:
   v7 = v6;
   [(SRDeviceUsageReport *)self duration];
   v9 = v8;
-  v10 = [(SRDeviceUsageReport *)self totalScreenWakes];
+  totalScreenWakes = [(SRDeviceUsageReport *)self totalScreenWakes];
   [(SRDeviceUsageReport *)self totalScreenWakeDuration];
   v12 = v11;
-  v13 = [(SRDeviceUsageReport *)self totalUnlocks];
+  totalUnlocks = [(SRDeviceUsageReport *)self totalUnlocks];
   [(SRDeviceUsageReport *)self totalUnlockDuration];
   v15 = v14;
   [(SRDeviceUsageReport *)self _totalChargingDuration];
-  return [v3 stringWithFormat:@"%@ {Start time: %f, duration: %f, total screen wakes: %lu, total screen wake duration: %f, total Unlocks: %lu, Total Unlock Duration: %f, total charging duration: %f, version: %@, Application Use By Category: %@\nNotification Use By Category: %@\nWeb Use By Category: %@\nMotionActivities: %@\nActivityLevels: %@\n}", v5, v7, v9, v10, v12, v13, v15, v16, -[SRDeviceUsageReport version](self, "version"), -[SRDeviceUsageReport mutableApplicationUsageByCategory](self, "mutableApplicationUsageByCategory"), -[SRDeviceUsageReport mutableNotificationUsageByCategory](self, "mutableNotificationUsageByCategory"), -[SRDeviceUsageReport mutableWebUsageByCategory](self, "mutableWebUsageByCategory"), -[SRDeviceUsageReport _motionActivities](self, "_motionActivities"), -[SRDeviceUsageReport _activityLevels](self, "_activityLevels")];
+  return [v3 stringWithFormat:@"%@ {Start time: %f, duration: %f, total screen wakes: %lu, total screen wake duration: %f, total Unlocks: %lu, Total Unlock Duration: %f, total charging duration: %f, version: %@, Application Use By Category: %@\nNotification Use By Category: %@\nWeb Use By Category: %@\nMotionActivities: %@\nActivityLevels: %@\n}", v5, v7, v9, totalScreenWakes, v12, totalUnlocks, v15, v16, -[SRDeviceUsageReport version](self, "version"), -[SRDeviceUsageReport mutableApplicationUsageByCategory](self, "mutableApplicationUsageByCategory"), -[SRDeviceUsageReport mutableNotificationUsageByCategory](self, "mutableNotificationUsageByCategory"), -[SRDeviceUsageReport mutableWebUsageByCategory](self, "mutableWebUsageByCategory"), -[SRDeviceUsageReport _motionActivities](self, "_motionActivities"), -[SRDeviceUsageReport _activityLevels](self, "_activityLevels")];
 }
 
 - (NSDictionary)applicationUsageByCategory

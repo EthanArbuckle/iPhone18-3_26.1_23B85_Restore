@@ -1,19 +1,19 @@
 @interface VFXAudioSource
-+ (VFXAudioSource)audioSourceWithAVAudioPCMBuffer:(id)a3;
-+ (id)audioSourceNamed:(id)a3;
-- (VFXAudioSource)initWithAVAudioPCMBuffer:(id)a3;
-- (VFXAudioSource)initWithCoder:(id)a3;
-- (VFXAudioSource)initWithFileNamed:(id)a3;
-- (VFXAudioSource)initWithFileNamed:(id)a3 inBundle:(id)a4;
-- (VFXAudioSource)initWithURL:(id)a3;
++ (VFXAudioSource)audioSourceWithAVAudioPCMBuffer:(id)buffer;
++ (id)audioSourceNamed:(id)named;
+- (VFXAudioSource)initWithAVAudioPCMBuffer:(id)buffer;
+- (VFXAudioSource)initWithCoder:(id)coder;
+- (VFXAudioSource)initWithFileNamed:(id)named;
+- (VFXAudioSource)initWithFileNamed:(id)named inBundle:(id)bundle;
+- (VFXAudioSource)initWithURL:(id)l;
 - (double)duration;
 - (id)audioBufferFormat;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)renderingAlgorithm;
-- (void)_customDecodingOfVFXAudioSource:(id)a3;
-- (void)_customEncodingOfVFXAudioSource:(id)a3;
+- (void)_customDecodingOfVFXAudioSource:(id)source;
+- (void)_customEncodingOfVFXAudioSource:(id)source;
 - (void)_load;
-- (void)_loadURLWithBundle:(id)a3;
+- (void)_loadURLWithBundle:(id)bundle;
 - (void)dealloc;
 - (void)load;
 - (void)loadIfNeeded;
@@ -21,20 +21,20 @@
 
 @implementation VFXAudioSource
 
-+ (VFXAudioSource)audioSourceWithAVAudioPCMBuffer:(id)a3
++ (VFXAudioSource)audioSourceWithAVAudioPCMBuffer:(id)buffer
 {
-  v4 = [a1 alloc];
-  v7 = objc_msgSend_initWithAVAudioPCMBuffer_(v4, v5, a3, v6);
+  v4 = [self alloc];
+  v7 = objc_msgSend_initWithAVAudioPCMBuffer_(v4, v5, buffer, v6);
 
   return v7;
 }
 
-- (VFXAudioSource)initWithAVAudioPCMBuffer:(id)a3
+- (VFXAudioSource)initWithAVAudioPCMBuffer:(id)buffer
 {
-  v5 = objc_msgSend_init(self, a2, a3, v3);
+  v5 = objc_msgSend_init(self, a2, buffer, v3);
   if (v5)
   {
-    v5->_audioBuffer = a3;
+    v5->_audioBuffer = buffer;
     objc_msgSend_setPositional_(v5, v6, 1, v7);
     LODWORD(v8) = 1.0;
     objc_msgSend_setVolume_(v5, v9, v10, v11, v8);
@@ -58,30 +58,30 @@
   }
 }
 
-- (void)_loadURLWithBundle:(id)a3
+- (void)_loadURLWithBundle:(id)bundle
 {
   p_audioName = &self->_audioName;
   audioName = self->_audioName;
   if (audioName)
   {
-    v8 = objc_msgSend_pathExtension(audioName, a2, a3, v3);
+    v8 = objc_msgSend_pathExtension(audioName, a2, bundle, v3);
     if (v8 && (v12 = v8, objc_msgSend_length(v8, v9, v10, v11)))
     {
       v15 = objc_msgSend_stringByDeletingPathExtension(*p_audioName, v9, v13, v14);
-      v17 = objc_msgSend_URLForResource_withExtension_(a3, v16, v15, v12);
+      v17 = objc_msgSend_URLForResource_withExtension_(bundle, v16, v15, v12);
     }
 
     else
     {
-      v17 = objc_msgSend_URLForResource_withExtension_(a3, v9, *p_audioName, @"caf");
-      if (v17 || (v17 = objc_msgSend_URLForResource_withExtension_(a3, v19, *p_audioName, @"caff")) != 0)
+      v17 = objc_msgSend_URLForResource_withExtension_(bundle, v9, *p_audioName, @"caf");
+      if (v17 || (v17 = objc_msgSend_URLForResource_withExtension_(bundle, v19, *p_audioName, @"caff")) != 0)
       {
 LABEL_11:
         self->_audioURL = v17;
         return;
       }
 
-      v17 = objc_msgSend_URLForResource_withExtension_(a3, v20, *p_audioName, @"aiff");
+      v17 = objc_msgSend_URLForResource_withExtension_(bundle, v20, *p_audioName, @"aiff");
     }
 
     if (!v17)
@@ -99,38 +99,38 @@ LABEL_11:
   }
 }
 
-- (VFXAudioSource)initWithFileNamed:(id)a3 inBundle:(id)a4
+- (VFXAudioSource)initWithFileNamed:(id)named inBundle:(id)bundle
 {
-  v6 = objc_msgSend_init(self, a2, a3, a4);
+  v6 = objc_msgSend_init(self, a2, named, bundle);
   if (v6)
   {
-    v6->_audioName = a3;
+    v6->_audioName = named;
     objc_msgSend_setPositional_(v6, v7, 1, v8);
     LODWORD(v9) = 1.0;
     objc_msgSend_setVolume_(v6, v10, v11, v12, v9);
     LODWORD(v13) = 1.0;
     objc_msgSend_setRate_(v6, v14, v15, v16, v13);
-    objc_msgSend__loadURLWithBundle_(v6, v17, a4, v18);
+    objc_msgSend__loadURLWithBundle_(v6, v17, bundle, v18);
   }
 
   return v6;
 }
 
-- (VFXAudioSource)initWithFileNamed:(id)a3
+- (VFXAudioSource)initWithFileNamed:(id)named
 {
-  v6 = objc_msgSend_mainBundle(MEMORY[0x1E696AAE8], a2, a3, v3);
+  v6 = objc_msgSend_mainBundle(MEMORY[0x1E696AAE8], a2, named, v3);
 
-  return MEMORY[0x1EEE66B58](self, sel_initWithFileNamed_inBundle_, a3, v6);
+  return MEMORY[0x1EEE66B58](self, sel_initWithFileNamed_inBundle_, named, v6);
 }
 
-- (VFXAudioSource)initWithURL:(id)a3
+- (VFXAudioSource)initWithURL:(id)l
 {
   v16.receiver = self;
   v16.super_class = VFXAudioSource;
   v4 = [(VFXAudioSource *)&v16 init];
   if (v4)
   {
-    v4->_audioURL = a3;
+    v4->_audioURL = l;
     objc_msgSend_setPositional_(v4, v5, 1, v6);
     LODWORD(v7) = 1.0;
     objc_msgSend_setVolume_(v4, v8, v9, v10, v7);
@@ -141,22 +141,22 @@ LABEL_11:
   return v4;
 }
 
-+ (id)audioSourceNamed:(id)a3
++ (id)audioSourceNamed:(id)named
 {
   if (qword_1EB658850 != -1)
   {
     sub_1AFDF4A38();
   }
 
-  result = objc_msgSend_objectForKey_(qword_1EB658848, a2, a3, v3);
+  result = objc_msgSend_objectForKey_(qword_1EB658848, a2, named, v3);
   if (!result)
   {
     v6 = [VFXAudioSource alloc];
-    v9 = objc_msgSend_initWithFileNamed_(v6, v7, a3, v8);
+    v9 = objc_msgSend_initWithFileNamed_(v6, v7, named, v8);
     v11 = v9;
-    if (a3 && v9)
+    if (named && v9)
     {
-      objc_msgSend_setObject_forKey_(qword_1EB658848, v10, v9, a3);
+      objc_msgSend_setObject_forKey_(qword_1EB658848, v10, v9, named);
     }
 
     return v11;
@@ -263,7 +263,7 @@ LABEL_11:
   return v16 / v21;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   audioName = self->_audioName;
   if (audioName)
@@ -307,17 +307,17 @@ LABEL_7:
   return v12;
 }
 
-- (void)_customEncodingOfVFXAudioSource:(id)a3
+- (void)_customEncodingOfVFXAudioSource:(id)source
 {
   audioName = self->_audioName;
   if (audioName)
   {
-    objc_msgSend_encodeObject_forKey_(a3, a2, audioName, @"name");
+    objc_msgSend_encodeObject_forKey_(source, a2, audioName, @"name");
   }
 
   else if (self->_audioURL)
   {
-    objc_msgSend_encodeObject_forKey_(a3, a2, 0, @"url");
+    objc_msgSend_encodeObject_forKey_(source, a2, 0, @"url");
   }
 
   else
@@ -330,20 +330,20 @@ LABEL_7:
   }
 
   objc_msgSend_volume(self, v6, v7, v8);
-  objc_msgSend_encodeFloat_forKey_(a3, v9, @"volume", v10);
+  objc_msgSend_encodeFloat_forKey_(source, v9, @"volume", v10);
   objc_msgSend_rate(self, v11, v12, v13);
-  objc_msgSend_encodeFloat_forKey_(a3, v14, @"rate", v15);
+  objc_msgSend_encodeFloat_forKey_(source, v14, @"rate", v15);
   objc_msgSend_reverbBlend(self, v16, v17, v18);
-  objc_msgSend_encodeFloat_forKey_(a3, v19, @"reverbBlend", v20);
+  objc_msgSend_encodeFloat_forKey_(source, v19, @"reverbBlend", v20);
   isPositional = objc_msgSend_isPositional(self, v21, v22, v23);
-  objc_msgSend_encodeBool_forKey_(a3, v25, isPositional, @"positional");
+  objc_msgSend_encodeBool_forKey_(source, v25, isPositional, @"positional");
   v29 = objc_msgSend_loops(self, v26, v27, v28);
-  objc_msgSend_encodeBool_forKey_(a3, v30, v29, @"loops");
+  objc_msgSend_encodeBool_forKey_(source, v30, v29, @"loops");
   shouldStream = objc_msgSend_shouldStream(self, v31, v32, v33);
-  objc_msgSend_encodeBool_forKey_(a3, v35, shouldStream, @"shouldStream");
+  objc_msgSend_encodeBool_forKey_(source, v35, shouldStream, @"shouldStream");
 }
 
-- (void)_customDecodingOfVFXAudioSource:(id)a3
+- (void)_customDecodingOfVFXAudioSource:(id)source
 {
   p_audioName = &self->_audioName;
   if (self->_audioName)
@@ -363,31 +363,31 @@ LABEL_7:
   }
 
   v8 = objc_opt_class();
-  *p_audioName = objc_msgSend_decodeObjectOfClass_forKey_(a3, v9, v8, v7);
+  *p_audioName = objc_msgSend_decodeObjectOfClass_forKey_(source, v9, v8, v7);
 LABEL_6:
-  objc_msgSend_decodeFloatForKey_(a3, a2, @"volume", v3);
+  objc_msgSend_decodeFloatForKey_(source, a2, @"volume", v3);
   objc_msgSend_setVolume_(self, v10, v11, v12);
-  objc_msgSend_decodeFloatForKey_(a3, v13, @"rate", v14);
+  objc_msgSend_decodeFloatForKey_(source, v13, @"rate", v14);
   objc_msgSend_setRate_(self, v15, v16, v17);
-  objc_msgSend_decodeFloatForKey_(a3, v18, @"reverbBlend", v19);
+  objc_msgSend_decodeFloatForKey_(source, v18, @"reverbBlend", v19);
   objc_msgSend_setReverbBlend_(self, v20, v21, v22);
-  v25 = objc_msgSend_decodeBoolForKey_(a3, v23, @"positional", v24);
+  v25 = objc_msgSend_decodeBoolForKey_(source, v23, @"positional", v24);
   objc_msgSend_setPositional_(self, v26, v25, v27);
-  v30 = objc_msgSend_decodeBoolForKey_(a3, v28, @"loops", v29);
+  v30 = objc_msgSend_decodeBoolForKey_(source, v28, @"loops", v29);
   objc_msgSend_setLoops_(self, v31, v30, v32);
-  v35 = objc_msgSend_decodeBoolForKey_(a3, v33, @"shouldStream", v34);
+  v35 = objc_msgSend_decodeBoolForKey_(source, v33, @"shouldStream", v34);
   objc_msgSend_setShouldStream_(self, v36, v35, v37);
 
   objc_msgSend_loadIfNeeded(self, v38, v39, v40);
 }
 
-- (VFXAudioSource)initWithCoder:(id)a3
+- (VFXAudioSource)initWithCoder:(id)coder
 {
-  v5 = objc_msgSend_init(self, a2, a3, v3);
+  v5 = objc_msgSend_init(self, a2, coder, v3);
   v8 = v5;
   if (v5)
   {
-    objc_msgSend__customDecodingOfVFXAudioSource_(v5, v6, a3, v7);
+    objc_msgSend__customDecodingOfVFXAudioSource_(v5, v6, coder, v7);
   }
 
   return v8;

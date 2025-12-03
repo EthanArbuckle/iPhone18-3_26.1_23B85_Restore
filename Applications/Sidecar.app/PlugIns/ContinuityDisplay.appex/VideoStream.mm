@@ -1,82 +1,82 @@
 @interface VideoStream
-- (void)qosMonitor:(id)a3 didReceiveReport:(id)a4 streamToken:(int64_t)a5;
-- (void)stream:(id)a3 didPause:(BOOL)a4 error:(id)a5;
-- (void)stream:(id)a3 didResume:(BOOL)a4 error:(id)a5;
-- (void)stream:(id)a3 didStart:(BOOL)a4 error:(id)a5;
-- (void)stream:(id)a3 didUpdateVideoConfiguration:(BOOL)a4 error:(id)a5;
-- (void)streamDidRTCPTimeOut:(id)a3;
-- (void)streamDidRTPTimeOut:(id)a3;
-- (void)streamDidServerDie:(id)a3;
-- (void)streamDidStop:(id)a3;
+- (void)qosMonitor:(id)monitor didReceiveReport:(id)report streamToken:(int64_t)token;
+- (void)stream:(id)stream didPause:(BOOL)pause error:(id)error;
+- (void)stream:(id)stream didResume:(BOOL)resume error:(id)error;
+- (void)stream:(id)stream didStart:(BOOL)start error:(id)error;
+- (void)stream:(id)stream didUpdateVideoConfiguration:(BOOL)configuration error:(id)error;
+- (void)streamDidRTCPTimeOut:(id)out;
+- (void)streamDidRTPTimeOut:(id)out;
+- (void)streamDidServerDie:(id)die;
+- (void)streamDidStop:(id)stop;
 @end
 
 @implementation VideoStream
 
-- (void)qosMonitor:(id)a3 didReceiveReport:(id)a4 streamToken:(int64_t)a5
+- (void)qosMonitor:(id)monitor didReceiveReport:(id)report streamToken:(int64_t)token
 {
   v7 = sub_1000579B0();
-  v8 = a3;
-  v9 = self;
-  VideoStream.qosMonitor(_:didReceiveReport:streamToken:)(v9, v7);
+  monitorCopy = monitor;
+  selfCopy = self;
+  VideoStream.qosMonitor(_:didReceiveReport:streamToken:)(selfCopy, v7);
 }
 
-- (void)stream:(id)a3 didStart:(BOOL)a4 error:(id)a5
+- (void)stream:(id)stream didStart:(BOOL)start error:(id)error
 {
-  v7 = a3;
-  v8 = self;
-  v9 = a5;
+  streamCopy = stream;
+  selfCopy = self;
+  errorCopy = error;
   VideoStream.stream(_:didStart:error:)();
 }
 
-- (void)streamDidStop:(id)a3
+- (void)streamDidStop:(id)stop
 {
-  v4 = a3;
-  v5 = self;
+  stopCopy = stop;
+  selfCopy = self;
   VideoStream.streamDidStop(_:)();
 }
 
-- (void)streamDidServerDie:(id)a3
+- (void)streamDidServerDie:(id)die
 {
-  v4 = a3;
-  v5 = self;
+  dieCopy = die;
+  selfCopy = self;
   VideoStream.streamDidServerDie(_:)();
 }
 
-- (void)stream:(id)a3 didPause:(BOOL)a4 error:(id)a5
+- (void)stream:(id)stream didPause:(BOOL)pause error:(id)error
 {
-  v7 = a3;
-  v8 = self;
-  v9 = a5;
+  streamCopy = stream;
+  selfCopy = self;
+  errorCopy = error;
   VideoStream.stream(_:didPause:error:)();
 }
 
-- (void)stream:(id)a3 didResume:(BOOL)a4 error:(id)a5
+- (void)stream:(id)stream didResume:(BOOL)resume error:(id)error
 {
-  v7 = a3;
-  v8 = self;
-  v9 = a5;
+  streamCopy = stream;
+  selfCopy = self;
+  errorCopy = error;
   VideoStream.stream(_:didResume:error:)();
 }
 
-- (void)stream:(id)a3 didUpdateVideoConfiguration:(BOOL)a4 error:(id)a5
+- (void)stream:(id)stream didUpdateVideoConfiguration:(BOOL)configuration error:(id)error
 {
-  v7 = a3;
-  v8 = self;
-  v9 = a5;
+  streamCopy = stream;
+  selfCopy = self;
+  errorCopy = error;
   VideoStream.stream(_:didUpdateVideoConfiguration:error:)();
 }
 
-- (void)streamDidRTPTimeOut:(id)a3
+- (void)streamDidRTPTimeOut:(id)out
 {
-  v4 = a3;
-  v5 = self;
+  outCopy = out;
+  selfCopy = self;
   VideoStream.streamDidRTPTimeOut(_:)();
 }
 
-- (void)streamDidRTCPTimeOut:(id)a3
+- (void)streamDidRTCPTimeOut:(id)out
 {
-  v4 = a3;
-  v5 = self;
+  outCopy = out;
+  selfCopy = self;
   VideoStream.streamDidRTCPTimeOut(_:)();
 }
 

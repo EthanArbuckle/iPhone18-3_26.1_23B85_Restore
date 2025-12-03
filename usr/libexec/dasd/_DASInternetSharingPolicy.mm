@@ -1,9 +1,9 @@
 @interface _DASInternetSharingPolicy
 + (id)policyInstance;
-- (BOOL)appliesToActivity:(id)a3;
-- (BOOL)hasStateForNetworkType:(__CFString *)a3 interfaceName:(__CFString *)a4;
+- (BOOL)appliesToActivity:(id)activity;
+- (BOOL)hasStateForNetworkType:(__CFString *)type interfaceName:(__CFString *)name;
 - (_DASInternetSharingPolicy)init;
-- (id)responseForActivity:(id)a3 withState:(id)a4;
+- (id)responseForActivity:(id)activity withState:(id)state;
 - (void)handleWirelessModemDynamicStoreChanged;
 @end
 
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = sub_10004BC2C;
   block[3] = &unk_1001B54A0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10020B108 != -1)
   {
     dispatch_once(&qword_10020B108, block);
@@ -54,24 +54,24 @@
   return v3;
 }
 
-- (BOOL)appliesToActivity:(id)a3
+- (BOOL)appliesToActivity:(id)activity
 {
-  v3 = a3;
-  v4 = [v3 schedulingPriority];
-  if (v4 < _DASSchedulingPriorityUtility && ([v3 requiresNetwork] & 1) != 0)
+  activityCopy = activity;
+  schedulingPriority = [activityCopy schedulingPriority];
+  if (schedulingPriority < _DASSchedulingPriorityUtility && ([activityCopy requiresNetwork] & 1) != 0)
   {
-    v5 = 1;
+    requiresDeviceInactivity = 1;
   }
 
   else
   {
-    v5 = [v3 requiresDeviceInactivity];
+    requiresDeviceInactivity = [activityCopy requiresDeviceInactivity];
   }
 
-  return v5;
+  return requiresDeviceInactivity;
 }
 
-- (id)responseForActivity:(id)a3 withState:(id)a4
+- (id)responseForActivity:(id)activity withState:(id)state
 {
   v5 = [[_DASPolicyResponseRationale alloc] initWithPolicyName:@"Internet Sharing Policy"];
   if ([(_DASInternetSharingPolicy *)self enabled])
@@ -145,9 +145,9 @@ LABEL_16:
   }
 }
 
-- (BOOL)hasStateForNetworkType:(__CFString *)a3 interfaceName:(__CFString *)a4
+- (BOOL)hasStateForNetworkType:(__CFString *)type interfaceName:(__CFString *)name
 {
-  NetworkInterfaceEntity = SCDynamicStoreKeyCreateNetworkInterfaceEntity(kCFAllocatorDefault, kSCDynamicStoreDomainState, a4, a3);
+  NetworkInterfaceEntity = SCDynamicStoreKeyCreateNetworkInterfaceEntity(kCFAllocatorDefault, kSCDynamicStoreDomainState, name, type);
   if (!NetworkInterfaceEntity)
   {
     return 0;

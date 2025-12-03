@@ -1,33 +1,33 @@
 @interface SBSMutableDisplayModeSettings
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setOverscanCompensation:(int64_t)a3;
-- (void)setScale:(unint64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setOverscanCompensation:(int64_t)compensation;
+- (void)setScale:(unint64_t)scale;
 @end
 
 @implementation SBSMutableDisplayModeSettings
 
-- (void)setScale:(unint64_t)a3
+- (void)setScale:(unint64_t)scale
 {
-  if (a3 >= 3)
+  if (scale >= 3)
   {
     [(SBSMutableDisplayModeSettings *)a2 setScale:?];
   }
 
-  self->super._scale = a3;
+  self->super._scale = scale;
 }
 
-- (void)setOverscanCompensation:(int64_t)a3
+- (void)setOverscanCompensation:(int64_t)compensation
 {
-  if (a3 >= 3)
+  if (compensation >= 3)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"SBSDisplayModeSettings.m" lineNumber:229 description:{@"Invalid parameter not satisfying: %@", @"overscanCompensation == SBSDisplayOverscanCompensationNone || overscanCompensation == SBSDisplayOverscanCompensationInsetBounds || overscanCompensation == SBSDisplayOverscanCompensationScaleContent"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SBSDisplayModeSettings.m" lineNumber:229 description:{@"Invalid parameter not satisfying: %@", @"overscanCompensation == SBSDisplayOverscanCompensationNone || overscanCompensation == SBSDisplayOverscanCompensationInsetBounds || overscanCompensation == SBSDisplayOverscanCompensationScaleContent"}];
   }
 
-  self->super._overscanCompensation = a3;
+  self->super._overscanCompensation = compensation;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [SBSDisplayModeSettings alloc];
 

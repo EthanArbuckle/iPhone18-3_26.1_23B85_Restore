@@ -1,13 +1,13 @@
 @interface FPProcess
-+ (id)_nameForBsdInfo:(proc_bsdinfo *)a3;
-+ (id)allProcessesExcludingPids:(id)a3;
-+ (id)childPidsForPids:(id)a3;
-+ (id)pidsForStringDescriptions:(id)a3 errors:(id *)a4;
-+ (id)processWithBsdInfo:(proc_bsdinfo *)a3;
-+ (id)processWithPid:(int)a3;
-+ (id)removeIdleExitCleanProcessesFrom:(id)a3;
++ (id)_nameForBsdInfo:(proc_bsdinfo *)info;
++ (id)allProcessesExcludingPids:(id)pids;
++ (id)childPidsForPids:(id)pids;
++ (id)pidsForStringDescriptions:(id)descriptions errors:(id *)errors;
++ (id)processWithBsdInfo:(proc_bsdinfo *)info;
++ (id)processWithPid:(int)pid;
++ (id)removeIdleExitCleanProcessesFrom:(id)from;
 - (FPProcess)init;
-- (FPProcess)initWithBsdInfo:(proc_bsdinfo *)a3;
+- (FPProcess)initWithBsdInfo:(proc_bsdinfo *)info;
 - (id)description;
 @end
 
@@ -41,26 +41,26 @@
   return v3;
 }
 
-- (FPProcess)initWithBsdInfo:(proc_bsdinfo *)a3
+- (FPProcess)initWithBsdInfo:(proc_bsdinfo *)info
 {
   v4 = [(FPProcess *)self init];
   v5 = v4;
   if (v4)
   {
-    [(FPProcess *)v4 setPid:a3->pbi_pid];
-    v5->_is64bit = (a3->pbi_flags & 0x10) != 0;
+    [(FPProcess *)v4 setPid:info->pbi_pid];
+    v5->_is64bit = (info->pbi_flags & 0x10) != 0;
     if (![(FPProcess *)v5 _populateTask])
     {
       v11 = 0;
       goto LABEL_6;
     }
 
-    v6 = [FPProcess _nameForBsdInfo:a3];
+    v6 = [FPProcess _nameForBsdInfo:info];
     [(FPProcess *)v5 setName:v6];
 
     v7 = MEMORY[0x29EDBA0F8];
-    v8 = [(FPProcess *)v5 name];
-    v9 = [v7 stringWithFormat:@"%@ [%d]", v8, -[FPProcess pid](v5, "pid")];
+    name = [(FPProcess *)v5 name];
+    v9 = [v7 stringWithFormat:@"%@ [%d]", name, -[FPProcess pid](v5, "pid")];
     displayString = v5->_displayString;
     v5->_displayString = v9;
 
@@ -73,14 +73,14 @@ LABEL_6:
   return v11;
 }
 
-+ (id)processWithBsdInfo:(proc_bsdinfo *)a3
++ (id)processWithBsdInfo:(proc_bsdinfo *)info
 {
-  v3 = [[FPUserProcess alloc] initWithBsdInfo:a3];
+  v3 = [[FPUserProcess alloc] initWithBsdInfo:info];
 
   return v3;
 }
 
-+ (id)processWithPid:(int)a3
++ (id)processWithPid:(int)pid
 {
   v17 = *MEMORY[0x29EDCA608];
   v16 = 0;
@@ -92,9 +92,9 @@ LABEL_6:
   v11 = 0u;
   v8 = 0u;
   v9 = 0u;
-  if (proc_pidinfo(a3, 3, 0, &v8, 136) != 136)
+  if (proc_pidinfo(pid, 3, 0, &v8, 136) != 136)
   {
-    if (a3)
+    if (pid)
     {
       v5 = 0;
       goto LABEL_6;
@@ -111,14 +111,14 @@ LABEL_6:
     v11 = unk_297E40780;
   }
 
-  v5 = [a1 processWithBsdInfo:&v8];
+  v5 = [self processWithBsdInfo:&v8];
 LABEL_6:
   v6 = *MEMORY[0x29EDCA608];
 
   return v5;
 }
 
-+ (id)_nameForBsdInfo:(proc_bsdinfo *)a3
++ (id)_nameForBsdInfo:(proc_bsdinfo *)info
 {
   v21 = *MEMORY[0x29EDCA608];
   *v19 = 0x800000001;
@@ -127,7 +127,7 @@ LABEL_6:
   if (!sysctl(v19, 2u, &size, &v18, 0, 0))
   {
     *v19 = 0x3100000001;
-    pbi_pid = a3->pbi_pid;
+    pbi_pid = info->pbi_pid;
     v4 = malloc_type_malloc(size, 0x100004077774924uLL);
     if (v4)
     {
@@ -171,7 +171,7 @@ LABEL_6:
           if (size > v10)
           {
             v13 = [objc_alloc(MEMORY[0x29EDBA0F8]) initWithUTF8String:&v5[v6 - 2]];
-            v14 = [v13 lastPathComponent];
+            lastPathComponent = [v13 lastPathComponent];
 
             free(v5);
             goto LABEL_18;
@@ -183,22 +183,22 @@ LABEL_6:
     }
   }
 
-  v14 = sub_297E2E5B4(FPProcess, a3);
+  lastPathComponent = sub_297E2E5B4(FPProcess, info);
 LABEL_18:
   v15 = *MEMORY[0x29EDCA608];
 
-  return v14;
+  return lastPathComponent;
 }
 
-+ (id)allProcessesExcludingPids:(id)a3
++ (id)allProcessesExcludingPids:(id)pids
 {
-  v3 = a3;
+  pidsCopy = pids;
   v19 = 0;
   v4 = sub_297E2E948(&v19);
   if (v4)
   {
     v5 = v4;
-    v18 = [MEMORY[0x29EDBA028] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x29EDBA028] strongToStrongObjectsMapTable];
     v6 = v19;
     if (v19)
     {
@@ -208,8 +208,8 @@ LABEL_18:
       {
         v9 = &v5[136 * v7];
         v10 = *(v9 + 3);
-        v11 = [MEMORY[0x29EDBA070] numberWithInt:{v10, v18}];
-        v12 = [v3 containsObject:v11];
+        v11 = [MEMORY[0x29EDBA070] numberWithInt:{v10, strongToStrongObjectsMapTable}];
+        v12 = [pidsCopy containsObject:v11];
 
         if ((v12 & 1) == 0)
         {
@@ -217,7 +217,7 @@ LABEL_18:
           if (v13)
           {
             v14 = [MEMORY[0x29EDBA070] numberWithInt:v10];
-            [v18 setObject:v13 forKey:v14];
+            [strongToStrongObjectsMapTable setObject:v13 forKey:v14];
           }
         }
 
@@ -228,7 +228,7 @@ LABEL_18:
     }
 
     free(v5);
-    v16 = v18;
+    v16 = strongToStrongObjectsMapTable;
   }
 
   else
@@ -239,16 +239,16 @@ LABEL_18:
   return v16;
 }
 
-+ (id)pidsForStringDescriptions:(id)a3 errors:(id *)a4
++ (id)pidsForStringDescriptions:(id)descriptions errors:(id *)errors
 {
   v59 = *MEMORY[0x29EDCA608];
-  v6 = a3;
+  descriptionsCopy = descriptions;
   v56 = 0;
   v39 = sub_297E2E948(&v56);
   if (v39)
   {
-    v7 = [MEMORY[0x29EDB8E00] dictionary];
-    if (a4)
+    dictionary = [MEMORY[0x29EDB8E00] dictionary];
+    if (errors)
     {
       v36 = objc_opt_new();
     }
@@ -262,15 +262,15 @@ LABEL_18:
     v55 = 0u;
     v52 = 0u;
     v53 = 0u;
-    v35 = v6;
-    obj = v6;
+    v35 = descriptionsCopy;
+    obj = descriptionsCopy;
     v42 = [obj countByEnumeratingWithState:&v52 objects:v58 count:16];
     if (v42)
     {
       v8 = v56;
       v40 = v56;
       v41 = *v53;
-      v38 = a4;
+      errorsCopy = errors;
       do
       {
         v9 = 0;
@@ -287,7 +287,7 @@ LABEL_18:
           v51 = -1;
           v44 = v11;
           v12 = [v11 scanInt:&v51];
-          v46 = [MEMORY[0x29EDB8E00] dictionary];
+          dictionary2 = [MEMORY[0x29EDB8E00] dictionary];
           context = objc_autoreleasePoolPush();
           if (v8)
           {
@@ -298,11 +298,11 @@ LABEL_18:
             while (1)
             {
               v17 = v15[3];
-              v18 = [a1 _nameForBsdInfo:v15];
+              v18 = [self _nameForBsdInfo:v15];
               if ([v10 isEqualToString:v18])
               {
                 v13 = 1;
-                v19 = v7;
+                v19 = dictionary;
               }
 
               else
@@ -321,18 +321,18 @@ LABEL_18:
 
                   if (v21 == 1)
                   {
-                    v31 = [MEMORY[0x29EDB8E28] null];
+                    null = [MEMORY[0x29EDB8E28] null];
                     v32 = [MEMORY[0x29EDBA070] numberWithInt:v17];
-                    [v7 setObject:v31 forKeyedSubscript:v32];
+                    [dictionary setObject:null forKeyedSubscript:v32];
 
-                    a4 = v38;
+                    errors = errorsCopy;
                     goto LABEL_41;
                   }
 
                   goto LABEL_23;
                 }
 
-                v19 = v46;
+                v19 = dictionary2;
               }
 
               v20 = [MEMORY[0x29EDBA070] numberWithInt:v17];
@@ -344,8 +344,8 @@ LABEL_23:
               v15 += 34;
               if (!--v16)
               {
-                a4 = v38;
-                if (!((v38 == 0) | v14 & 1))
+                errors = errorsCopy;
+                if (!((errorsCopy == 0) | v14 & 1))
                 {
                   v22 = [objc_alloc(MEMORY[0x29EDBA0F8]) initWithFormat:@"Unable to find pid for process matching '%@'", v10];
                   [v36 addObject:v22];
@@ -361,7 +361,7 @@ LABEL_23:
             }
           }
 
-          if (a4)
+          if (errors)
           {
             v23 = [objc_alloc(MEMORY[0x29EDBA0F8]) initWithFormat:@"Unable to find pid for process matching '%@'", v10];
             [v36 addObject:v23];
@@ -372,7 +372,7 @@ LABEL_30:
           v50 = 0u;
           v47 = 0u;
           v48 = 0u;
-          v18 = v46;
+          v18 = dictionary2;
           v24 = [v18 countByEnumeratingWithState:&v47 objects:v57 count:16];
           if (v24)
           {
@@ -388,12 +388,12 @@ LABEL_30:
                 }
 
                 v28 = *(*(&v47 + 1) + 8 * i);
-                v29 = [v7 objectForKeyedSubscript:v28];
+                v29 = [dictionary objectForKeyedSubscript:v28];
 
                 if (!v29)
                 {
                   v30 = [v18 objectForKeyedSubscript:v28];
-                  [v7 setObject:v30 forKeyedSubscript:v28];
+                  [dictionary setObject:v30 forKeyedSubscript:v28];
                 }
               }
 
@@ -419,40 +419,40 @@ LABEL_42:
       while (v42);
     }
 
-    if (a4 && [v36 count])
+    if (errors && [v36 count])
     {
-      *a4 = [v36 copy];
+      *errors = [v36 copy];
     }
 
     free(v39);
 
-    v6 = v35;
+    descriptionsCopy = v35;
   }
 
   else
   {
-    v7 = 0;
-    if (a4)
+    dictionary = 0;
+    if (errors)
     {
-      *a4 = &unk_2A1E95150;
+      *errors = &unk_2A1E95150;
     }
   }
 
   v33 = *MEMORY[0x29EDCA608];
 
-  return v7;
+  return dictionary;
 }
 
-+ (id)childPidsForPids:(id)a3
++ (id)childPidsForPids:(id)pids
 {
   v27 = *MEMORY[0x29EDCA608];
-  v3 = a3;
+  pidsCopy = pids;
   v25 = 0;
   v4 = sub_297E2E948(&v25);
   if (v4)
   {
-    v20 = [MEMORY[0x29EDB8DE8] array];
-    v5 = [v3 mutableCopy];
+    array = [MEMORY[0x29EDB8DE8] array];
+    v5 = [pidsCopy mutableCopy];
     v19 = objc_alloc_init(MEMORY[0x29EDB8DE8]);
     if (v5)
     {
@@ -493,7 +493,7 @@ LABEL_42:
                   if (v9 == [*(*(&v21 + 1) + 8 * j) longValue])
                   {
                     v16 = [MEMORY[0x29EDBA070] numberWithLong:v10];
-                    if (([v3 containsObject:v16] & 1) == 0 && (objc_msgSend(v20, "containsObject:", v16) & 1) == 0)
+                    if (([pidsCopy containsObject:v16] & 1) == 0 && (objc_msgSend(array, "containsObject:", v16) & 1) == 0)
                     {
                       [v19 addObject:v16];
                     }
@@ -516,7 +516,7 @@ LABEL_19:
           }
         }
 
-        [v20 addObjectsFromArray:v19];
+        [array addObjectsFromArray:v19];
         [v6 removeAllObjects];
         v5 = v19;
 
@@ -536,7 +536,7 @@ LABEL_22:
     }
 
     free(v4);
-    v4 = v20;
+    v4 = array;
   }
 
   v17 = *MEMORY[0x29EDCA608];
@@ -544,17 +544,17 @@ LABEL_22:
   return v4;
 }
 
-+ (id)removeIdleExitCleanProcessesFrom:(id)a3
++ (id)removeIdleExitCleanProcessesFrom:(id)from
 {
   v19 = *MEMORY[0x29EDCA608];
-  v3 = a3;
-  v4 = [v3 mutableCopy];
+  fromCopy = from;
+  v4 = [fromCopy mutableCopy];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v3 objectEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  objectEnumerator = [fromCopy objectEnumerator];
+  v6 = [objectEnumerator countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -565,7 +565,7 @@ LABEL_22:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
@@ -576,7 +576,7 @@ LABEL_22:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [objectEnumerator countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
@@ -591,8 +591,8 @@ LABEL_22:
 {
   v3 = MEMORY[0x29EDBA0F8];
   v4 = [(FPProcess *)self pid];
-  v5 = [(FPProcess *)self name];
-  v6 = [v3 stringWithFormat:@"FPProcess[%d] %@", v4, v5];
+  name = [(FPProcess *)self name];
+  v6 = [v3 stringWithFormat:@"FPProcess[%d] %@", v4, name];
 
   return v6;
 }

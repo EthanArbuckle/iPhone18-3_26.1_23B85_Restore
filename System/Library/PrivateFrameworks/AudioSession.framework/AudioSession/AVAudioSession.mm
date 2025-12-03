@@ -3,10 +3,10 @@
 + (id)auxiliarySession;
 - (AVAudioSession)autorelease;
 - (AVAudioSession)init;
-- (AVAudioSession)initWithSessionID:(unsigned int)a3;
-- (AVAudioSession)initWithSessionType:(unint64_t)a3;
-- (AVAudioSession)initWithSiriEndpointIdentifier:(id)a3;
-- (AVAudioSession)initWithSpecification:(id)a3;
+- (AVAudioSession)initWithSessionID:(unsigned int)d;
+- (AVAudioSession)initWithSessionType:(unint64_t)type;
+- (AVAudioSession)initWithSiriEndpointIdentifier:(id)identifier;
+- (AVAudioSession)initWithSpecification:(id)specification;
 - (AVAudioSession)retain;
 - (AVAudioSessionCategory)category;
 - (AVAudioSessionCategoryOptions)categoryOptions;
@@ -23,8 +23,8 @@
 - (BOOL)allowEnhanceDialogue;
 - (BOOL)allowHapticsAndSystemSoundsDuringRecording;
 - (BOOL)allowMixableAudioWhileRecording;
-- (BOOL)clearInputPreferences:(id *)a3;
-- (BOOL)deactivateAndSetInterruptionPriority:(int64_t)a3 error:(id *)a4;
+- (BOOL)clearInputPreferences:(id *)preferences;
+- (BOOL)deactivateAndSetInterruptionPriority:(int64_t)priority error:(id *)error;
 - (BOOL)decoupledIO;
 - (BOOL)eligibleForBTSmartRoutingConsideration;
 - (BOOL)eligibleForBTTriangleConsideration;
@@ -46,8 +46,8 @@
 - (BOOL)isOtherAudioPlaying;
 - (BOOL)isOutputMuted;
 - (BOOL)isPiPAvailable;
-- (BOOL)isPropertyCached:(id)a3;
-- (BOOL)isRelatedSession:(id)a3;
+- (BOOL)isPropertyCached:(id)cached;
+- (BOOL)isRelatedSession:(id)session;
 - (BOOL)isSessionInputMuted;
 - (BOOL)lastActivationStoppedNowPlayingApp;
 - (BOOL)needsHighPowerBudgeting;
@@ -66,63 +66,63 @@
 - (BOOL)prefersNoMicrophoneUsageIndicator;
 - (BOOL)prefersToAcquireHWControlFromOtherSessions;
 - (BOOL)prefersToVibeWhenVibrationsAreDisabled;
-- (BOOL)privateSetActive:(BOOL)a3 withOptions:(unint64_t)a4 error:(id *)a5 core:(const void *)a6;
-- (BOOL)privateSetRouteSharingPolicy:(unint64_t)a3 error:(id *)a4;
+- (BOOL)privateSetActive:(BOOL)active withOptions:(unint64_t)options error:(id *)error core:(const void *)core;
+- (BOOL)privateSetRouteSharingPolicy:(unint64_t)policy error:(id *)error;
 - (BOOL)recordingFromRemoteInput;
 - (BOOL)requiresNoAudioResources;
 - (BOOL)secondaryAudioShouldBeSilencedHint;
-- (BOOL)selectIndependentRoutingContext:(id *)a3;
-- (BOOL)setActivationContext:(id)a3 error:(id *)a4;
+- (BOOL)selectIndependentRoutingContext:(id *)context;
+- (BOOL)setActivationContext:(id)context error:(id *)error;
 - (BOOL)setAggregatedIOPreference:(AVAudioSessionIOType)inIOType error:(NSError *)outError;
-- (BOOL)setAudioClockDevice:(id)a3 error:(id *)a4;
-- (BOOL)setAudioHardwareControlFlags:(unint64_t)a3 error:(id *)a4;
-- (BOOL)setAudioIOProperties:(id)a3 propertyErrors:(id *)a4;
-- (BOOL)setAuditTokensForProcessAssertion:(id)a3 error:(id *)a4;
+- (BOOL)setAudioClockDevice:(id)device error:(id *)error;
+- (BOOL)setAudioHardwareControlFlags:(unint64_t)flags error:(id *)error;
+- (BOOL)setAudioIOProperties:(id)properties propertyErrors:(id *)errors;
+- (BOOL)setAuditTokensForProcessAssertion:(id)assertion error:(id *)error;
 - (BOOL)setCategory:(AVAudioSessionCategory)category error:(NSError *)outError;
 - (BOOL)setCategory:(AVAudioSessionCategory)category mode:(AVAudioSessionMode)mode options:(AVAudioSessionCategoryOptions)options error:(NSError *)outError;
 - (BOOL)setCategory:(AVAudioSessionCategory)category mode:(AVAudioSessionMode)mode routeSharingPolicy:(AVAudioSessionRouteSharingPolicy)policy options:(AVAudioSessionCategoryOptions)options error:(NSError *)outError;
 - (BOOL)setCategory:(AVAudioSessionCategory)category withOptions:(AVAudioSessionCategoryOptions)options error:(NSError *)outError;
-- (BOOL)setCategoryOptions:(unint64_t)a3 error:(id *)a4;
-- (BOOL)setConformsToSessionBehavior:(id)a3 error:(id *)a4;
-- (BOOL)setDefaultChatMode:(id)a3 error:(id *)a4;
-- (BOOL)setDisallowedPorts:(id)a3 error:(id *)a4;
-- (BOOL)setDuckToLevelDB:(id)a3 error:(id *)a4;
-- (BOOL)setDuckToLevelScalar:(id)a3 error:(id *)a4;
-- (BOOL)setDuckToLevelScalar:(id)a3 unduckToLevelScalar:(id)a4 error:(id *)a5;
-- (BOOL)setDuckingFadeOutDuration:(id)a3 fadeInDuration:(id)a4 error:(id *)a5;
-- (BOOL)setHapticThermalGain:(float)a3 error:(id *)a4;
-- (BOOL)setHostProcessAttribution:(id)a3 error:(id *)a4;
-- (BOOL)setInhibitSpeechDetection:(BOOL)a3 error:(id *)a4;
+- (BOOL)setCategoryOptions:(unint64_t)options error:(id *)error;
+- (BOOL)setConformsToSessionBehavior:(id)behavior error:(id *)error;
+- (BOOL)setDefaultChatMode:(id)mode error:(id *)error;
+- (BOOL)setDisallowedPorts:(id)ports error:(id *)error;
+- (BOOL)setDuckToLevelDB:(id)b error:(id *)error;
+- (BOOL)setDuckToLevelScalar:(id)scalar error:(id *)error;
+- (BOOL)setDuckToLevelScalar:(id)scalar unduckToLevelScalar:(id)levelScalar error:(id *)error;
+- (BOOL)setDuckingFadeOutDuration:(id)duration fadeInDuration:(id)inDuration error:(id *)error;
+- (BOOL)setHapticThermalGain:(float)gain error:(id *)error;
+- (BOOL)setHostProcessAttribution:(id)attribution error:(id *)error;
+- (BOOL)setInhibitSpeechDetection:(BOOL)detection error:(id *)error;
 - (BOOL)setInputDataSource:(AVAudioSessionDataSourceDescription *)dataSource error:(NSError *)outError;
 - (BOOL)setInputGain:(float)gain error:(NSError *)outError;
-- (BOOL)setInterruptionFadeDuration:(id)a3 error:(id *)a4;
-- (BOOL)setInterruptionPriority:(int64_t)a3 error:(id *)a4;
-- (BOOL)setMXProperties:(id)a3 propertyErrors:(id *)a4;
-- (BOOL)setMXSessionProperty:(id)a3 value:(id)a4 error:(id *)a5;
+- (BOOL)setInterruptionFadeDuration:(id)duration error:(id *)error;
+- (BOOL)setInterruptionPriority:(int64_t)priority error:(id *)error;
+- (BOOL)setMXProperties:(id)properties propertyErrors:(id *)errors;
+- (BOOL)setMXSessionProperty:(id)property value:(id)value error:(id *)error;
 - (BOOL)setMode:(AVAudioSessionMode)mode error:(NSError *)outError;
 - (BOOL)setOutputDataSource:(AVAudioSessionDataSourceDescription *)dataSource error:(NSError *)outError;
-- (BOOL)setParticipatesInMutePriority:(BOOL)a3 error:(id *)a4;
-- (BOOL)setPowerProfile:(id)a3 error:(id *)a4;
-- (BOOL)setPreferredAudioFormat:(int64_t)a3 error:(id *)a4;
+- (BOOL)setParticipatesInMutePriority:(BOOL)priority error:(id *)error;
+- (BOOL)setPowerProfile:(id)profile error:(id *)error;
+- (BOOL)setPreferredAudioFormat:(int64_t)format error:(id *)error;
 - (BOOL)setPreferredIOBufferDuration:(NSTimeInterval)duration error:(NSError *)outError;
-- (BOOL)setPreferredIOBufferFrameSize:(unint64_t)a3 error:(id *)a4;
+- (BOOL)setPreferredIOBufferFrameSize:(unint64_t)size error:(id *)error;
 - (BOOL)setPreferredInput:(AVAudioSessionPortDescription *)inPort error:(NSError *)outError;
 - (BOOL)setPreferredInputNumberOfChannels:(NSInteger)count error:(NSError *)outError;
 - (BOOL)setPreferredInputOrientation:(AVAudioStereoOrientation)orientation error:(NSError *)outError;
-- (BOOL)setPreferredInputSampleRate:(double)a3 error:(id *)a4;
-- (BOOL)setPreferredMicrophoneInjectionMode:(int64_t)a3 error:(id *)a4;
+- (BOOL)setPreferredInputSampleRate:(double)rate error:(id *)error;
+- (BOOL)setPreferredMicrophoneInjectionMode:(int64_t)mode error:(id *)error;
 - (BOOL)setPreferredOutputNumberOfChannels:(NSInteger)count error:(NSError *)outError;
-- (BOOL)setPreferredOutputSampleRate:(double)a3 error:(id *)a4;
-- (BOOL)setPreferredPersistentInputUIDs:(id)a3 outputUIDs:(id)a4 error:(id *)a5;
-- (BOOL)setPreferredRouteControlConfig:(id)a3 error:(id *)a4;
+- (BOOL)setPreferredOutputSampleRate:(double)rate error:(id *)error;
+- (BOOL)setPreferredPersistentInputUIDs:(id)ds outputUIDs:(id)iDs error:(id *)error;
+- (BOOL)setPreferredRouteControlConfig:(id)config error:(id *)error;
 - (BOOL)setPreferredSampleRate:(double)sampleRate error:(NSError *)outError;
-- (BOOL)setPrefersAggressiveCaching:(BOOL)a3 error:(id *)a4;
-- (BOOL)setReporterID:(int64_t)a3 error:(id *)a4;
-- (BOOL)setRoutingContextUID:(id)a3 error:(id *)a4;
-- (BOOL)setSpeakerThermalGain:(float)a3 error:(id *)a4;
+- (BOOL)setPrefersAggressiveCaching:(BOOL)caching error:(id *)error;
+- (BOOL)setReporterID:(int64_t)d error:(id *)error;
+- (BOOL)setRoutingContextUID:(id)d error:(id *)error;
+- (BOOL)setSpeakerThermalGain:(float)gain error:(id *)error;
 - (BOOL)setSupportsMultichannelContent:(BOOL)inValue error:(NSError *)outError;
-- (BOOL)silenceOutput:(unint64_t)a3 error:(id *)a4;
-- (BOOL)subscribeToNotifications:(id)a3 error:(id *)a4;
+- (BOOL)silenceOutput:(unint64_t)output error:(id *)error;
+- (BOOL)subscribeToNotifications:(id)notifications error:(id *)error;
 - (BOOL)supportsMultichannelContent;
 - (NSArray)availableCategories;
 - (NSArray)availableModes;
@@ -156,17 +156,17 @@
 - (id)IOController;
 - (id)activeAudioRoute;
 - (id)activeSessionDisplayIDs;
-- (id)addObserverForType:(unint64_t)a3 name:(id)a4 block:(id)a5;
+- (id)addObserverForType:(unint64_t)type name:(id)name block:(id)block;
 - (id)audioClockDevice;
 - (id)audioFormats;
 - (id)auditTokensForProcessAssertion;
-- (id)cachedPropertyValue:(id)a3;
+- (id)cachedPropertyValue:(id)value;
 - (id)consolidatedSourceContentInfo;
 - (id)decoupledInputIOController;
 - (id)defaultChatMode;
 - (id)getAllSessionInformation;
-- (id)getMXProperties:(id)a3 propertyErrors:(id *)a4;
-- (id)getMXSessionProperty:(id)a3 error:(id *)a4;
+- (id)getMXProperties:(id)properties propertyErrors:(id *)errors;
+- (id)getMXSessionProperty:(id)property error:(id *)error;
 - (id)hostProcessAttribution;
 - (id)initAuxiliarySession;
 - (id)initSessionForIndependentInputRoute;
@@ -178,17 +178,17 @@
 - (id)preferredPersistentInputUIDs;
 - (id)preferredPersistentOutputUIDs;
 - (id)preferredRouteControlConfig;
-- (id)privateGetDataSources:(BOOL)a3 core:(const void *)a4;
+- (id)privateGetDataSources:(BOOL)sources core:(const void *)core;
 - (id)privateGetDataSources:core:;
-- (id)privateGetRouteControlConfigWithDictionaryKey:(id)a3 withFeaturesKey:(id)a4;
-- (id)privateMakePreferredPersistentRouteDictWithInputUIDs:(id)a3 outputUIDs:(id)a4;
+- (id)privateGetRouteControlConfigWithDictionaryKey:(id)key withFeaturesKey:(id)featuresKey;
+- (id)privateMakePreferredPersistentRouteDictWithInputUIDs:(id)ds outputUIDs:(id)iDs;
 - (id)privateReadPreferredPersistentRoute;
 - (id)privateRefreshAvailableInputs;
 - (id)privateRefreshAvailableOutputs;
 - (id)routeControlConfig;
 - (id)routingContextUID;
 - (id)spatialPreferences;
-- (id)spatialPreferences:(int64_t)a3;
+- (id)spatialPreferences:(int64_t)preferences;
 - (id)supportedOutputChannelLayouts;
 - (int64_t)audioFormat;
 - (int64_t)interruptionPriority;
@@ -209,7 +209,7 @@
 - (uint64_t)sampleRate;
 - (uint64_t)speechDetectionStyle;
 - (unint64_t)IOBufferFrameSize;
-- (unint64_t)availableRouteControlOptions:(id *)a3;
+- (unint64_t)availableRouteControlOptions:(id *)options;
 - (unint64_t)preferredIOBufferFrameSize;
 - (unint64_t)retainCount;
 - (unint64_t)sessionType;
@@ -217,12 +217,12 @@
 - (unsigned)opaqueSessionID;
 - (unsigned)sourceSessionID;
 - (void)activateWithOptions:(AVAudioSessionActivationOptions)options completionHandler:(void *)handler;
-- (void)addToCache:(id)a3 value:(id)a4;
+- (void)addToCache:(id)cache value:(id)value;
 - (void)dealloc;
 - (void)invalidateCache;
 - (void)privateGetDataSources:core:;
 - (void)release;
-- (void)removeObserverForType:(unint64_t)a3 observer:(id)a4 name:(id)a5;
+- (void)removeObserverForType:(unint64_t)type observer:(id)observer name:(id)name;
 - (void)requestRecordPermission:(void *)response;
 @end
 
@@ -230,22 +230,22 @@
 
 - (unsigned)opaqueSessionID
 {
-  v2 = [(AVAudioSession *)self sessionCore];
+  sessionCore = [(AVAudioSession *)self sessionCore];
 
-  return avas::client::SessionCore::sessionID(v2);
+  return avas::client::SessionCore::sessionID(sessionCore);
 }
 
 - (AVAudioSession)retain
 {
-  v2 = self;
+  selfCopy = self;
   if (!self->_impl || [(AVAudioSession *)self sessionType]!= 1886546285)
   {
-    v4.receiver = v2;
+    v4.receiver = selfCopy;
     v4.super_class = AVAudioSession;
     return [(AVAudioSession *)&v4 retain];
   }
 
-  return v2;
+  return selfCopy;
 }
 
 + (AVAudioSession)sharedInstance
@@ -254,7 +254,7 @@
   block[1] = 3221225472;
   block[2] = __32__AVAudioSession_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[AVAudioSession sharedInstance]::onceToken != -1)
   {
     dispatch_once(&+[AVAudioSession sharedInstance]::onceToken, block);
@@ -286,22 +286,22 @@ void __32__AVAudioSession_sharedInstance__block_invoke(uint64_t a1)
 
 - (AVAudioSession)autorelease
 {
-  v2 = self;
+  selfCopy = self;
   if (!self->_impl || [(AVAudioSession *)self sessionType]!= 1886546285)
   {
-    v4.receiver = v2;
+    v4.receiver = selfCopy;
     v4.super_class = AVAudioSession;
     return [(AVAudioSession *)&v4 autorelease];
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (unint64_t)sessionType
 {
-  v2 = [(AVAudioSession *)self sessionCore];
+  sessionCore = [(AVAudioSession *)self sessionCore];
 
-  return avas::client::SessionCore::sessionType(v2);
+  return avas::client::SessionCore::sessionType(sessionCore);
 }
 
 - (id)initAuxiliarySession
@@ -320,7 +320,7 @@ void __32__AVAudioSession_sharedInstance__block_invoke(uint64_t a1)
 {
   v5[0] = 1;
   v6 = 3397;
-  v7 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v8 = 0;
   v9 = 0;
   v10 = 0;
@@ -333,17 +333,17 @@ void __32__AVAudioSession_sharedInstance__block_invoke(uint64_t a1)
 
 - (unsigned)sourceSessionID
 {
-  v2 = [(AVAudioSession *)self sessionCore];
-  if (avas::client::SessionCore::sessionType(v2) == 1935830119 || avas::client::SessionCore::sessionType(v2) == 1886550137)
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  if (avas::client::SessionCore::sessionType(sessionCore) == 1935830119 || avas::client::SessionCore::sessionType(sessionCore) == 1886550137)
   {
 
-    return avas::client::SessionCore::sourceSessionID(v2);
+    return avas::client::SessionCore::sourceSessionID(sessionCore);
   }
 
   else
   {
 
-    return avas::client::SessionCore::sessionID(v2);
+    return avas::client::SessionCore::sessionID(sessionCore);
   }
 }
 
@@ -351,7 +351,7 @@ void __32__AVAudioSession_sharedInstance__block_invoke(uint64_t a1)
 {
   v5[0] = 1;
   v6 = 3073;
-  v7 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v8 = 0;
   v9 = 0;
   v10 = 0;
@@ -364,16 +364,16 @@ void __32__AVAudioSession_sharedInstance__block_invoke(uint64_t a1)
 
 - (id)inputTimeObserver
 {
-  v2 = [(AVAudioSession *)self sessionCore];
+  sessionCore = [(AVAudioSession *)self sessionCore];
 
-  return avas::client::SessionCoreLegacy_iOS::inputTimeObserver(v2);
+  return avas::client::SessionCoreLegacy_iOS::inputTimeObserver(sessionCore);
 }
 
 - (int64_t)reporterID
 {
   v5[0] = 1;
   v6 = 3390;
-  v7 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v8 = 0;
   v9 = 0;
   v10 = 0;
@@ -387,7 +387,7 @@ void __32__AVAudioSession_sharedInstance__block_invoke(uint64_t a1)
 {
   v11[0] = 1;
   v12 = 3080;
-  v13 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v14 = 0;
   v15 = 0;
   v16 = 0;
@@ -429,25 +429,25 @@ uint64_t __34__AVAudioSession_recordPermission__block_invoke(uint64_t result, ui
 
 - (BOOL)isOtherAudioPlaying
 {
-  v2 = self;
+  selfCopy = self;
   v5[0] = 1;
   v6 = 3119;
-  v7 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v8 = 0;
   v9 = 0;
   v10 = 0;
   kdebug_trace();
-  v3 = [(AVAudioSession *)v2 sessionCore];
-  LOBYTE(v2) = avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(v3, *MEMORY[0x1E69B0410], 1);
+  sessionCore = [(AVAudioSession *)selfCopy sessionCore];
+  LOBYTE(selfCopy) = avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(sessionCore, *MEMORY[0x1E69B0410], 1);
   avas::ScopedTrace::~ScopedTrace(v5);
-  return v2;
+  return selfCopy;
 }
 
 - (id)privateRefreshAvailableInputs
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = [(AVAudioSession *)self sessionCore];
-  v4 = avas::client::SessionCore::GetPropertyMX_DefaultToZero<NSArray * {__strong}>(v3, *MEMORY[0x1E69B03D8]);
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  v4 = avas::client::SessionCore::GetPropertyMX_DefaultToZero<NSArray * {__strong}>(sessionCore, *MEMORY[0x1E69B03D8]);
   if (v4)
   {
     v5 = [AVAudioSessionPortDescription privateCreateArray:v4 owningSession:self];
@@ -475,34 +475,34 @@ uint64_t __34__AVAudioSession_recordPermission__block_invoke(uint64_t result, ui
 
 - (id)outputTimeObserver
 {
-  v2 = [(AVAudioSession *)self sessionCore];
+  sessionCore = [(AVAudioSession *)self sessionCore];
 
-  return avas::client::SessionCoreLegacy_iOS::outputTimeObserver(v2);
+  return avas::client::SessionCoreLegacy_iOS::outputTimeObserver(sessionCore);
 }
 
 + (id)auxiliarySession
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___AVAudioSession;
-  v2 = [objc_msgSendSuper2(&v4 allocWithZone_];
+  allocWithZone_ = [objc_msgSendSuper2(&v4 allocWithZone_];
 
-  return v2;
+  return allocWithZone_;
 }
 
 - (BOOL)lastActivationStoppedNowPlayingApp
 {
-  v2 = self;
+  selfCopy = self;
   v5[0] = 1;
   v6 = 3382;
-  v7 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v8 = 0;
   v9 = 0;
   v10 = 0;
   kdebug_trace();
-  v3 = [(AVAudioSession *)v2 sessionCore];
-  LOBYTE(v2) = avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(v3, *MEMORY[0x1E69B0158], 1);
+  sessionCore = [(AVAudioSession *)selfCopy sessionCore];
+  LOBYTE(selfCopy) = avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(sessionCore, *MEMORY[0x1E69B0158], 1);
   avas::ScopedTrace::~ScopedTrace(v5);
-  return v2;
+  return selfCopy;
 }
 
 - (id)pickedRoute
@@ -510,13 +510,13 @@ uint64_t __34__AVAudioSession_recordPermission__block_invoke(uint64_t result, ui
   v20 = *MEMORY[0x1E69E9840];
   v10[0] = 1;
   v11 = 3402;
-  v12 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v13 = 0;
   v14 = 0;
   v15 = 0;
   kdebug_trace();
-  v3 = [(AVAudioSession *)self sessionCore];
-  v4 = avas::client::SessionCore::GetPropertyMX_DefaultToZero<NSDictionary * {__strong}>(v3, *MEMORY[0x1E69B01C0]);
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  v4 = avas::client::SessionCore::GetPropertyMX_DefaultToZero<NSDictionary * {__strong}>(sessionCore, *MEMORY[0x1E69B01C0]);
   v5 = v4;
   if (v4)
   {
@@ -548,13 +548,13 @@ uint64_t __34__AVAudioSession_recordPermission__block_invoke(uint64_t result, ui
 {
   v8[0] = 1;
   v9 = 3331;
-  v10 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v11 = 0;
   v12 = 0;
   v13 = 0;
   kdebug_trace();
-  v3 = [(AVAudioSession *)self sessionCore];
-  v4 = avas::client::SessionCore::GetPropertyMX_DefaultToZero<NSArray * {__strong}>(v3, *MEMORY[0x1E69AFDD8]);
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  v4 = avas::client::SessionCore::GetPropertyMX_DefaultToZero<NSArray * {__strong}>(sessionCore, *MEMORY[0x1E69AFDD8]);
   v5 = v4;
   if (v4)
   {
@@ -574,8 +574,8 @@ uint64_t __34__AVAudioSession_recordPermission__block_invoke(uint64_t result, ui
 - (int64_t)renderingMode
 {
   v14 = *MEMORY[0x1E69E9840];
-  v2 = [(AVAudioSession *)self sessionCore];
-  v3 = avas::client::SessionCore::GetPropertyMX_DefaultToZero<NSString * {__strong}>(v2, *MEMORY[0x1E69AFD38]);
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  v3 = avas::client::SessionCore::GetPropertyMX_DefaultToZero<NSString * {__strong}>(sessionCore, *MEMORY[0x1E69AFD38]);
   v5 = v3;
   if (v3)
   {
@@ -605,7 +605,7 @@ uint64_t __34__AVAudioSession_recordPermission__block_invoke(uint64_t result, ui
 {
   v5[0] = 1;
   v6 = 3124;
-  v7 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v8 = 0;
   v9 = 0;
   v10 = 0;
@@ -620,13 +620,13 @@ uint64_t __34__AVAudioSession_recordPermission__block_invoke(uint64_t result, ui
 {
   v6[0] = 1;
   v7 = 3379;
-  v8 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v9 = 0;
   v10 = 0;
   v11 = 0;
   kdebug_trace();
-  v3 = [(AVAudioSession *)self sessionCore];
-  Property_DefaultTo = avas::client::SessionCore::GetProperty_DefaultToZero<double>(v3, *MEMORY[0x1E69AFE90], 1);
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  Property_DefaultTo = avas::client::SessionCore::GetProperty_DefaultToZero<double>(sessionCore, *MEMORY[0x1E69AFE90], 1);
   avas::ScopedTrace::~ScopedTrace(v6);
   return Property_DefaultTo;
 }
@@ -636,15 +636,15 @@ uint64_t __34__AVAudioSession_recordPermission__block_invoke(uint64_t result, ui
   v14[4] = *MEMORY[0x1E69E9840];
   v8[0] = 1;
   v9 = 3113;
-  v10 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v11 = 0;
   v12 = 0;
   v13 = 0;
   kdebug_trace();
-  v7 = [(AVAudioSession *)self sessionCore];
-  v3 = v7[5];
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  v3 = sessionCore[5];
   v14[0] = &unk_1F215D900;
-  v14[1] = &v7;
+  v14[1] = &sessionCore;
   v14[3] = v14;
   updated = avas::client::KVOProperty<double>::UpdateIfDirty(v3 + 680, v14);
   std::__function::__value_func<double ()(void)>::~__value_func[abi:ne200100](v14);
@@ -657,13 +657,13 @@ uint64_t __34__AVAudioSession_recordPermission__block_invoke(uint64_t result, ui
 {
   v6[0] = 1;
   v7 = 3117;
-  v8 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v9 = 0;
   v10 = 0;
   v11 = 0;
   kdebug_trace();
-  v3 = [(AVAudioSession *)self sessionCore];
-  Property_DefaultTo = avas::client::SessionCore::GetProperty_DefaultToZero<float>(v3, *MEMORY[0x1E69AFE70], 1);
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  Property_DefaultTo = avas::client::SessionCore::GetProperty_DefaultToZero<float>(sessionCore, *MEMORY[0x1E69AFE70], 1);
   avas::ScopedTrace::~ScopedTrace(v6);
   return Property_DefaultTo;
 }
@@ -671,8 +671,8 @@ uint64_t __34__AVAudioSession_recordPermission__block_invoke(uint64_t result, ui
 - (id)privateRefreshAvailableOutputs
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = [(AVAudioSession *)self sessionCore];
-  v4 = avas::client::SessionCore::GetPropertyMX_DefaultToZero<NSArray * {__strong}>(v3, *MEMORY[0x1E69B03E0]);
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  v4 = avas::client::SessionCore::GetPropertyMX_DefaultToZero<NSArray * {__strong}>(sessionCore, *MEMORY[0x1E69B03E0]);
   if (v4)
   {
     v5 = [AVAudioSessionPortDescription privateCreateArray:v4 owningSession:self];
@@ -702,30 +702,30 @@ uint64_t __34__AVAudioSession_recordPermission__block_invoke(uint64_t result, ui
 {
   v6[0] = 1;
   v7 = 3116;
-  v8 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v9 = 0;
   v10 = 0;
   v11 = 0;
   kdebug_trace();
-  v3 = [(AVAudioSession *)self sessionCore];
-  Property_DefaultTo = avas::client::SessionCore::GetProperty_DefaultToZero<float>(v3, *MEMORY[0x1E69AFE48], 1);
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  Property_DefaultTo = avas::client::SessionCore::GetProperty_DefaultToZero<float>(sessionCore, *MEMORY[0x1E69AFE48], 1);
   avas::ScopedTrace::~ScopedTrace(v6);
   return Property_DefaultTo;
 }
 
-- (BOOL)isPropertyCached:(id)a3
+- (BOOL)isPropertyCached:(id)cached
 {
-  v4 = a3;
-  LOBYTE(self) = avas::client::CacheManager::isPropertyCached(*([(AVAudioSession *)self sessionCore]+ 96), v4);
+  cachedCopy = cached;
+  LOBYTE(self) = avas::client::CacheManager::isPropertyCached(*([(AVAudioSession *)self sessionCore]+ 96), cachedCopy);
 
   return self;
 }
 
-- (id)cachedPropertyValue:(id)a3
+- (id)cachedPropertyValue:(id)value
 {
   v11[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  avas::client::CacheManager::getCachedValue(*([(AVAudioSession *)self sessionCore]+ 96), v4, &v9);
+  valueCopy = value;
+  avas::client::CacheManager::getCachedValue(*([(AVAudioSession *)self sessionCore]+ 96), valueCopy, &v9);
   v5 = [MEMORY[0x1E696AD98] numberWithInt:v9];
   v11[0] = v5;
   v11[1] = v10;
@@ -743,20 +743,20 @@ uint64_t __34__AVAudioSession_recordPermission__block_invoke(uint64_t result, ui
   avas::client::CacheManager::invalidateCache(v2);
 }
 
-- (void)addToCache:(id)a3 value:(id)a4
+- (void)addToCache:(id)cache value:(id)value
 {
-  v7 = a3;
-  v6 = a4;
-  avas::client::CacheManager::updateCache(*([(AVAudioSession *)self sessionCore]+ 96), v7, v6);
+  cacheCopy = cache;
+  valueCopy = value;
+  avas::client::CacheManager::updateCache(*([(AVAudioSession *)self sessionCore]+ 96), cacheCopy, valueCopy);
 }
 
 - (AVAudioSession)init
 {
-  v2 = self;
+  selfCopy = self;
   if (avfaudio::gAVAudioSession)
   {
 
-    v2 = 0;
+    selfCopy = 0;
   }
 
   v3 = +[AVAudioSession sharedInstance];
@@ -764,22 +764,22 @@ uint64_t __34__AVAudioSession_recordPermission__block_invoke(uint64_t result, ui
   return v3;
 }
 
-- (AVAudioSession)initWithSessionType:(unint64_t)a3
+- (AVAudioSession)initWithSessionType:(unint64_t)type
 {
   v5 = objc_opt_new();
-  [v5 setSessionType:a3];
+  [v5 setSessionType:type];
   [v5 setAutoReconnect:1];
   v6 = [(AVAudioSession *)self initWithSpecification:v5];
 
   return v6;
 }
 
-- (AVAudioSession)initWithSpecification:(id)a3
+- (AVAudioSession)initWithSpecification:(id)specification
 {
-  v4 = a3;
+  specificationCopy = specification;
   avas::client::PerformanceTracker::PerformanceTracker(v9, "[AVAudioSession initWithSpecification:]", 0, 1);
   std::mutex::lock(&GetSessionInitMutex(void)::sMutex);
-  if ([(_anonymous_namespace_ *)v4 sessionType]== 1886546285 && avfaudio::gAVAudioSession)
+  if ([(_anonymous_namespace_ *)specificationCopy sessionType]== 1886546285 && avfaudio::gAVAudioSession)
   {
 
     v10 = avas::client::SessionCore::reporterID([avfaudio::gAVAudioSession sessionCore]);
@@ -820,13 +820,13 @@ uint64_t __40__AVAudioSession_initWithSpecification___block_invoke(avas::client 
   return result;
 }
 
-- (AVAudioSession)initWithSessionID:(unsigned int)a3
+- (AVAudioSession)initWithSessionID:(unsigned int)d
 {
   v18 = *MEMORY[0x1E69E9840];
   avas::client::PerformanceTracker::PerformanceTracker(v16, "[AVAudioSession initWithSessionID:]", 0, 1);
   std::mutex::lock(&GetSessionInitMutex(void)::sMutex);
   v5 = CADeprecated::TSingleton<avfaudio::SessionMap>::instance();
-  v6 = avfaudio::SessionMap::LookupSession(v5, a3);
+  v6 = avfaudio::SessionMap::LookupSession(v5, d);
   v7 = v6;
   if (v6)
   {
@@ -865,14 +865,14 @@ LABEL_9:
   return v11;
 }
 
-- (AVAudioSession)initWithSiriEndpointIdentifier:(id)a3
+- (AVAudioSession)initWithSiriEndpointIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && (v4 = [(avas::client *)v4 length]) != 0)
+  identifierCopy = identifier;
+  v5 = identifierCopy;
+  if (identifierCopy && (identifierCopy = [(avas::client *)identifierCopy length]) != 0)
   {
-    v6 = *avas::client::gSessionClientLog(v4);
+    v6 = *avas::client::gSessionClientLog(identifierCopy);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v12 = 136315650;
@@ -890,12 +890,12 @@ LABEL_9:
     [v7 setAutoReconnect:1];
     self = [(AVAudioSession *)self initWithSpecification:v7];
 
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = *avas::client::gSessionClientLog(v4);
+    v9 = *avas::client::gSessionClientLog(identifierCopy);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       v12 = 136315394;
@@ -905,11 +905,11 @@ LABEL_9:
       _os_log_impl(&dword_1AC8A4000, v9, OS_LOG_TYPE_ERROR, "%25s:%-5d Cannot create side kick session: Invalid device ID", &v12, 0x12u);
     }
 
-    v8 = 0;
+    selfCopy = 0;
   }
 
   v10 = *MEMORY[0x1E69E9840];
-  return v8;
+  return selfCopy;
 }
 
 - (id)initSessionForIndependentInputRoute
@@ -940,14 +940,14 @@ LABEL_9:
   v22[4] = *MEMORY[0x1E69E9840];
   if (self->_impl && ![(AVAudioSession *)self isPrimary])
   {
-    v3 = [(AVAudioSession *)self sessionCore];
-    v4 = avas::client::SessionCore::sessionType(v3);
-    avas::client::SessionCore::resetSessionCreationHandler(v3);
-    avas::client::SessionCoreLegacy_iOS::unregisterForAvailableInputOutputChange(v3);
+    sessionCore = [(AVAudioSession *)self sessionCore];
+    v4 = avas::client::SessionCore::sessionType(sessionCore);
+    avas::client::SessionCore::resetSessionCreationHandler(sessionCore);
+    avas::client::SessionCoreLegacy_iOS::unregisterForAvailableInputOutputChange(sessionCore);
     if (v4 != 1702392942)
     {
-      v5 = avas::client::SessionCore::sessionID(v3);
-      v6 = v3[10];
+      v5 = avas::client::SessionCore::sessionID(sessionCore);
+      v6 = sessionCore[10];
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __25__AVAudioSession_dealloc__block_invoke;
@@ -962,12 +962,12 @@ LABEL_9:
       _ZNSt3__110__function12__value_funcIFvP7NSErrorONS_5tupleIJEEEEED2B8ne200100Ev(v19);
       GetPendingSessionDestroySet();
       os_unfair_lock_lock(&dword_1ED6D3760);
-      v16 = avas::client::SessionCore::sessionID(v3);
+      v16 = avas::client::SessionCore::sessionID(sessionCore);
       std::__tree<unsigned int>::__emplace_unique_key_args<unsigned int,unsigned int>(&qword_1ED6D3768, &v16);
       os_unfair_lock_unlock(&dword_1ED6D3760);
       v7 = objc_autoreleasePoolPush();
       v8 = caulk::xpc::message<objc_object  {objcproto25SessionManagerXPCProtocol}* {__strong}>::async_proxy(&v21);
-      v9 = avas::client::SessionCore::sessionID(v3);
+      v9 = avas::client::SessionCore::sessionID(sessionCore);
       v10 = caulk::xpc::message<objc_object  {objcproto25SessionManagerXPCProtocol}* {__strong}>::reply(&v21);
       [v8 destroySession:v9 reply:v10];
 
@@ -1034,7 +1034,7 @@ void __25__AVAudioSession_dealloc__block_invoke(uint64_t a1, void *a2)
 {
   v5[0] = 1;
   v6 = 3074;
-  v7 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v8 = 0;
   v9 = 0;
   v10 = 0;
@@ -1048,7 +1048,7 @@ void __25__AVAudioSession_dealloc__block_invoke(uint64_t a1, void *a2)
 {
   v5[0] = 1;
   v6 = 3075;
-  v7 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v8 = 0;
   v9 = 0;
   v10 = 0;
@@ -1131,21 +1131,21 @@ void __25__AVAudioSession_dealloc__block_invoke(uint64_t a1, void *a2)
   return v13;
 }
 
-- (BOOL)setCategoryOptions:(unint64_t)a3 error:(id *)a4
+- (BOOL)setCategoryOptions:(unint64_t)options error:(id *)error
 {
   v11[0] = 1;
   v12 = 3443;
-  v13 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v14 = 0;
   v15 = 0;
   v16 = 0;
   kdebug_trace();
   v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v7 = [(AVAudioSession *)self sessionCore];
-  v8 = avas::client::SessionCore::category(v7);
-  avas::client::SessionCore::addCategoryOptionsToDictionary(v7, v6, v8, a3);
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  v8 = avas::client::SessionCore::category(sessionCore);
+  avas::client::SessionCore::addCategoryOptionsToDictionary(sessionCore, v6, v8, options);
 
-  avas::client::SessionCore::SetBatchPropertiesMX(v7, v6);
+  avas::client::SessionCore::SetBatchPropertiesMX(sessionCore, v6);
   v9 = FormatNSErrorForReturn();
 
   avas::ScopedTrace::~ScopedTrace(v11);
@@ -1154,16 +1154,16 @@ void __25__AVAudioSession_dealloc__block_invoke(uint64_t a1, void *a2)
 
 - (BOOL)isActive
 {
-  v2 = [(AVAudioSession *)self sessionCore];
+  sessionCore = [(AVAudioSession *)self sessionCore];
 
-  return avas::client::SessionCore::isActive(v2);
+  return avas::client::SessionCore::isActive(sessionCore);
 }
 
-- (BOOL)privateSetActive:(BOOL)a3 withOptions:(unint64_t)a4 error:(id *)a5 core:(const void *)a6
+- (BOOL)privateSetActive:(BOOL)active withOptions:(unint64_t)options error:(id *)error core:(const void *)core
 {
-  v9 = a3;
+  activeCopy = active;
   v51 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (active)
   {
     v11 = 3087;
   }
@@ -1175,13 +1175,13 @@ void __25__AVAudioSession_dealloc__block_invoke(uint64_t a1, void *a2)
 
   v33[0] = 1;
   v34 = v11;
-  v35 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v36 = 0;
   v37 = 0;
   v38 = 0;
   kdebug_trace();
-  v12 = avas::client::SessionCore::reporterID(a6);
-  if (v9)
+  v12 = avas::client::SessionCore::reporterID(core);
+  if (activeCopy)
   {
     v13 = "[AVAudioSession setActive:activate]";
   }
@@ -1192,42 +1192,42 @@ void __25__AVAudioSession_dealloc__block_invoke(uint64_t a1, void *a2)
   }
 
   avas::client::PerformanceTracker::PerformanceTracker(v32, v13, v12, 0);
-  v14 = avas::client::SessionCore::clientPrefersLongFormRouteSharingPolicy(a6);
+  v14 = avas::client::SessionCore::clientPrefersLongFormRouteSharingPolicy(core);
   if (v14)
   {
-    v15 = a4 | 0x4000000;
+    optionsCopy = options | 0x4000000;
   }
 
   else
   {
-    v15 = a4;
+    optionsCopy = options;
   }
 
-  v16 = *(a6 + 10);
+  v16 = *(core + 10);
   if (v16 && (v17 = atomic_load((v16 + 32)), (v17 & 1) != 0))
   {
-    avas::client::XPCConnection::sync_message<>(*(a6 + 10), buf);
+    avas::client::XPCConnection::sync_message<>(*(core + 10), buf);
     v18 = objc_autoreleasePoolPush();
     v19 = caulk::xpc::message<objc_object  {objcproto25SessionManagerXPCProtocol}* {__strong}>::sync_proxy(buf);
-    v20 = [(AVAudioSession *)self opaqueSessionID];
+    opaqueSessionID2 = [(AVAudioSession *)self opaqueSessionID];
     v21 = caulk::xpc::message<objc_object  {objcproto25SessionManagerXPCProtocol}* {__strong}>::reply(buf);
-    if (v9)
+    if (activeCopy)
     {
-      [v19 activateSession:v20 options:v15 requestID:0 reply:v21];
+      [v19 activateSession:opaqueSessionID2 options:optionsCopy requestID:0 reply:v21];
     }
 
     else
     {
-      [v19 deactivateSession:v20 options:v15 priority:0 requestID:0 reply:v21];
+      [v19 deactivateSession:opaqueSessionID2 options:optionsCopy priority:0 requestID:0 reply:v21];
     }
 
     objc_autoreleasePoolPop(v18);
     v25 = v50 == 0;
     if (v50)
     {
-      if (a5)
+      if (error)
       {
-        *a5 = v50;
+        *error = v50;
       }
     }
 
@@ -1236,21 +1236,21 @@ void __25__AVAudioSession_dealloc__block_invoke(uint64_t a1, void *a2)
       v27 = *avas::client::gSessionClientLog(v26);
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
       {
-        v28 = [(AVAudioSession *)self opaqueSessionID];
+        opaqueSessionID3 = [(AVAudioSession *)self opaqueSessionID];
         v29 = "Deactivated";
         v40 = "AVAudioSession_iOS.mm";
         v42 = 984;
         v43 = 2080;
         *v39 = 136315906;
         v41 = 1024;
-        if (v9)
+        if (activeCopy)
         {
           v29 = "Activated";
         }
 
         v44 = v29;
         v45 = 1024;
-        v46 = v28;
+        v46 = opaqueSessionID3;
         _os_log_impl(&dword_1AC8A4000, v27, OS_LOG_TYPE_DEFAULT, "%25s:%-5d %s session 0x%x", v39, 0x22u);
       }
     }
@@ -1271,7 +1271,7 @@ void __25__AVAudioSession_dealloc__block_invoke(uint64_t a1, void *a2)
     }
 
     v23 = @"deactivation";
-    if (v9)
+    if (activeCopy)
     {
       v23 = @"activation";
     }
@@ -1291,7 +1291,7 @@ void __25__AVAudioSession_dealloc__block_invoke(uint64_t a1, void *a2)
   v8 = *MEMORY[0x1E69E9840];
   v5 = handler;
   LODWORD(v7) = 3089;
-  v6 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   std::allocate_shared[abi:ne200100]<avas::ScopedTrace,std::allocator<avas::ScopedTrace>,avas::AudioSessionTraceCode,unsigned int,0>();
 }
 
@@ -1417,22 +1417,22 @@ void __56__AVAudioSession_activateWithOptions_completionHandler___block_invoke_1
   }
 }
 
-- (BOOL)deactivateAndSetInterruptionPriority:(int64_t)a3 error:(id *)a4
+- (BOOL)deactivateAndSetInterruptionPriority:(int64_t)priority error:(id *)error
 {
   v33 = *MEMORY[0x1E69E9840];
   v18[0] = 1;
   v19 = 3419;
-  v20 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v21 = 0;
   v22 = 0;
   v23 = 0;
   kdebug_trace();
-  v7 = [(AVAudioSession *)self sessionCore];
-  avas::client::XPCConnection::sync_message<>(v7[10], &v30);
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  avas::client::XPCConnection::sync_message<>(sessionCore[10], &v30);
   v8 = objc_autoreleasePoolPush();
   v9 = caulk::xpc::message<objc_object  {objcproto25SessionManagerXPCProtocol}* {__strong}>::sync_proxy(&v30);
-  v10 = avas::client::SessionCore::sessionID(v7);
-  v11 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v10 = avas::client::SessionCore::sessionID(sessionCore);
+  v11 = [MEMORY[0x1E696AD98] numberWithInteger:priority];
   v12 = caulk::xpc::message<objc_object  {objcproto25SessionManagerXPCProtocol}* {__strong}>::reply(&v30);
   [v9 deactivateSession:v10 options:0 priority:v11 requestID:0 reply:v12];
 
@@ -1440,9 +1440,9 @@ void __56__AVAudioSession_activateWithOptions_completionHandler___block_invoke_1
   v14 = v32;
   if (v32)
   {
-    if (a4)
+    if (error)
     {
-      *a4 = v32;
+      *error = v32;
     }
   }
 
@@ -1456,11 +1456,11 @@ void __56__AVAudioSession_activateWithOptions_completionHandler___block_invoke_1
       v26 = 1024;
       v27 = 1130;
       v28 = 1024;
-      v29 = avas::client::SessionCore::sessionID(v7);
+      v29 = avas::client::SessionCore::sessionID(sessionCore);
       _os_log_impl(&dword_1AC8A4000, v15, OS_LOG_TYPE_DEFAULT, "%25s:%-5d Deactivated session 0x%x", buf, 0x18u);
     }
 
-    avas::client::KVOManager::markPropertiesDirtyAll(v7[5]);
+    avas::client::KVOManager::markPropertiesDirtyAll(sessionCore[5]);
   }
 
   _ZNSt3__110__function12__value_funcIFvP7NSErrorONS_5tupleIJEEEEED2B8ne200100Ev(&v31);
@@ -1545,7 +1545,7 @@ void __42__AVAudioSession_requestRecordPermission___block_invoke(uint64_t a1, ui
   v18[2] = *MEMORY[0x1E69E9840];
   LOBYTE(v15) = 1;
   HIDWORD(v15) = 3090;
-  v16 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   kdebug_trace();
   v6 = [(AVAudioSession *)self sessionCore:v15];
   v7 = *MEMORY[0x1E69B0230];
@@ -1570,50 +1570,50 @@ void __42__AVAudioSession_requestRecordPermission___block_invoke(uint64_t a1, ui
 {
   v10[0] = 1;
   v11 = 3092;
-  v12 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v13 = 0;
   v14 = 0;
   v15 = 0;
   kdebug_trace();
-  v6 = [(AVAudioSession *)self sessionCore];
+  sessionCore = [(AVAudioSession *)self sessionCore];
   v7 = [MEMORY[0x1E696AD98] numberWithDouble:duration];
-  avas::client::SessionCore::SetProperty(v6, *MEMORY[0x1E69B01F0], v7, 1);
+  avas::client::SessionCore::SetProperty(sessionCore, *MEMORY[0x1E69B01F0], v7, 1);
 
   v8 = FormatNSErrorForReturn();
   avas::ScopedTrace::~ScopedTrace(v10);
   return v8;
 }
 
-- (BOOL)setPreferredIOBufferFrameSize:(unint64_t)a3 error:(id *)a4
+- (BOOL)setPreferredIOBufferFrameSize:(unint64_t)size error:(id *)error
 {
   v10[0] = 1;
   v11 = 3373;
-  v12 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v13 = 0;
   v14 = 0;
   v15 = 0;
   kdebug_trace();
-  v6 = [(AVAudioSession *)self sessionCore];
-  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  avas::client::SessionCore::SetProperty(v6, *MEMORY[0x1E69B0208], v7, 1);
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:size];
+  avas::client::SessionCore::SetProperty(sessionCore, *MEMORY[0x1E69B0208], v7, 1);
 
   v8 = FormatNSErrorForReturn();
   avas::ScopedTrace::~ScopedTrace(v10);
   return v8;
 }
 
-- (BOOL)setInterruptionPriority:(int64_t)a3 error:(id *)a4
+- (BOOL)setInterruptionPriority:(int64_t)priority error:(id *)error
 {
   v10[0] = 1;
   v11 = 3380;
-  v12 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v13 = 0;
   v14 = 0;
   v15 = 0;
   kdebug_trace();
-  v6 = [(AVAudioSession *)self sessionCore];
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  avas::client::SessionCore::SetProperty(v6, *MEMORY[0x1E69AFDB0], v7, 1);
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:priority];
+  avas::client::SessionCore::SetProperty(sessionCore, *MEMORY[0x1E69AFDB0], v7, 1);
 
   v8 = FormatNSErrorForReturn();
   avas::ScopedTrace::~ScopedTrace(v10);
@@ -1624,14 +1624,14 @@ void __42__AVAudioSession_requestRecordPermission___block_invoke(uint64_t a1, ui
 {
   v10[0] = 1;
   v11 = 3094;
-  v12 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v13 = 0;
   v14 = 0;
   v15 = 0;
   kdebug_trace();
-  v6 = [(AVAudioSession *)self sessionCore];
+  sessionCore = [(AVAudioSession *)self sessionCore];
   v7 = [MEMORY[0x1E696AD98] numberWithInteger:count];
-  avas::client::SessionCore::SetProperty(v6, *MEMORY[0x1E69B0250], v7, 1);
+  avas::client::SessionCore::SetProperty(sessionCore, *MEMORY[0x1E69B0250], v7, 1);
 
   v8 = FormatNSErrorForReturn();
   avas::ScopedTrace::~ScopedTrace(v10);
@@ -1642,14 +1642,14 @@ void __42__AVAudioSession_requestRecordPermission___block_invoke(uint64_t a1, ui
 {
   v10[0] = 1;
   v11 = 3096;
-  v12 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v13 = 0;
   v14 = 0;
   v15 = 0;
   kdebug_trace();
-  v6 = [(AVAudioSession *)self sessionCore];
+  sessionCore = [(AVAudioSession *)self sessionCore];
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:count];
-  avas::client::SessionCore::SetProperty(v6, *MEMORY[0x1E69B0260], v7, 1);
+  avas::client::SessionCore::SetProperty(sessionCore, *MEMORY[0x1E69B0260], v7, 1);
 
   v8 = FormatNSErrorForReturn();
   avas::ScopedTrace::~ScopedTrace(v10);
@@ -1660,21 +1660,21 @@ void __42__AVAudioSession_requestRecordPermission___block_invoke(uint64_t a1, ui
 {
   v14[0] = 1;
   v15 = 3103;
-  v16 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v17 = 0;
   v18 = 0;
   v19 = 0;
   kdebug_trace();
-  v6 = [(AVAudioSession *)self sessionCore];
+  sessionCore = [(AVAudioSession *)self sessionCore];
   v7 = *MEMORY[0x1E69B0000];
   *&v8 = gain;
   v9 = [MEMORY[0x1E696AD98] numberWithFloat:v8];
-  v10 = avas::client::SessionCore::SetProperty(v6, v7, v9, 1);
+  v10 = avas::client::SessionCore::SetProperty(sessionCore, v7, v9, 1);
 
   if (!v10)
   {
-    Property_DefaultTo = avas::client::SessionCore::GetProperty_DefaultToZero<float>(v6, v7, 1);
-    avas::client::KVOProperty<float>::UpdateAndNotify((v6[5] + 56), &Property_DefaultTo, 0);
+    Property_DefaultTo = avas::client::SessionCore::GetProperty_DefaultToZero<float>(sessionCore, v7, 1);
+    avas::client::KVOProperty<float>::UpdateAndNotify((sessionCore[5] + 56), &Property_DefaultTo, 0);
   }
 
   v11 = FormatNSErrorForReturn();
@@ -1687,17 +1687,17 @@ void __42__AVAudioSession_requestRecordPermission___block_invoke(uint64_t a1, ui
   v6 = dataSource;
   v12[0] = 1;
   v13 = 3109;
-  v14 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v15 = 0;
   v16 = 0;
   v17 = 0;
   kdebug_trace();
-  v7 = [(AVAudioSession *)self currentRoute];
-  v8 = [v7 inputs];
+  currentRoute = [(AVAudioSession *)self currentRoute];
+  inputs = [currentRoute inputs];
 
-  if ([v8 count])
+  if ([inputs count])
   {
-    v9 = [v8 objectAtIndex:0];
+    v9 = [inputs objectAtIndex:0];
   }
 
   else
@@ -1720,18 +1720,18 @@ void __42__AVAudioSession_requestRecordPermission___block_invoke(uint64_t a1, ui
   v6 = dataSource;
   v14[0] = 1;
   v15 = 3112;
-  v16 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v17 = 0;
   v18 = 0;
   v19 = 0;
   kdebug_trace();
-  v7 = [(AVAudioSession *)self currentRoute];
-  v8 = [v7 outputs];
-  if ([v8 count])
+  currentRoute = [(AVAudioSession *)self currentRoute];
+  outputs = [currentRoute outputs];
+  if ([outputs count])
   {
-    v9 = [(AVAudioSession *)self currentRoute];
-    v10 = [v9 outputs];
-    v11 = [v10 objectAtIndex:0];
+    currentRoute2 = [(AVAudioSession *)self currentRoute];
+    outputs2 = [currentRoute2 outputs];
+    v11 = [outputs2 objectAtIndex:0];
   }
 
   else
@@ -1754,15 +1754,15 @@ void __42__AVAudioSession_requestRecordPermission___block_invoke(uint64_t a1, ui
   v24 = *MEMORY[0x1E69E9840];
   v14[0] = 1;
   v15 = 3098;
-  v16 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v17 = 0;
   v18 = 0;
   v19 = 0;
   kdebug_trace();
-  v6 = [(AVAudioSession *)self sessionCore];
+  sessionCore = [(AVAudioSession *)self sessionCore];
   if ((orientation - 1) > 3)
   {
-    v10 = *avas::client::gSessionClientLog(v6);
+    v10 = *avas::client::gSessionClientLog(sessionCore);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315394;
@@ -1777,7 +1777,7 @@ void __42__AVAudioSession_requestRecordPermission___block_invoke(uint64_t a1, ui
 
   else
   {
-    v7 = v6;
+    v7 = sessionCore;
     v8 = [MEMORY[0x1E696AD98] numberWithInteger:orientation];
     avas::client::SessionCore::SetProperty(v7, *MEMORY[0x1E69B0290], v8, 1);
 
@@ -1792,30 +1792,30 @@ void __42__AVAudioSession_requestRecordPermission___block_invoke(uint64_t a1, ui
 
 - (AVAudioStereoOrientation)preferredInputOrientation
 {
-  v3 = [(AVAudioSession *)self sessionCore];
+  sessionCore = [(AVAudioSession *)self sessionCore];
   v6[0] = 1;
   v7 = 3099;
-  v8 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v9 = 0;
   v10 = 0;
   v11 = 0;
   kdebug_trace();
-  Property_DefaultTo = avas::client::SessionCore::GetProperty_DefaultToZero<unsigned int>(v3, *MEMORY[0x1E69B0290], 1);
+  Property_DefaultTo = avas::client::SessionCore::GetProperty_DefaultToZero<unsigned int>(sessionCore, *MEMORY[0x1E69B0290], 1);
   avas::ScopedTrace::~ScopedTrace(v6);
   return Property_DefaultTo;
 }
 
 - (AVAudioStereoOrientation)inputOrientation
 {
-  v3 = [(AVAudioSession *)self sessionCore];
+  sessionCore = [(AVAudioSession *)self sessionCore];
   v6[0] = 1;
   v7 = 3100;
-  v8 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v9 = 0;
   v10 = 0;
   v11 = 0;
   kdebug_trace();
-  Property_DefaultTo = avas::client::SessionCore::GetProperty_DefaultToZero<unsigned int>(v3, *MEMORY[0x1E69AFEA0], 1);
+  Property_DefaultTo = avas::client::SessionCore::GetProperty_DefaultToZero<unsigned int>(sessionCore, *MEMORY[0x1E69AFEA0], 1);
   avas::ScopedTrace::~ScopedTrace(v6);
   return Property_DefaultTo;
 }
@@ -1823,17 +1823,17 @@ void __42__AVAudioSession_requestRecordPermission___block_invoke(uint64_t a1, ui
 - (float)outputVolume
 {
   v14[4] = *MEMORY[0x1E69E9840];
-  v13 = [(AVAudioSession *)self sessionCore];
+  sessionCore = [(AVAudioSession *)self sessionCore];
   v7[0] = 1;
   v8 = 3121;
-  v9 = avas::client::SessionCore::sessionID(v13);
+  v9 = avas::client::SessionCore::sessionID(sessionCore);
   v10 = 0;
   v11 = 0;
   v12 = 0;
   kdebug_trace();
-  v2 = *(v13 + 5);
+  v2 = *(sessionCore + 5);
   v14[0] = &unk_1F215D708;
-  v14[1] = &v13;
+  v14[1] = &sessionCore;
   v14[3] = v14;
   updated = avas::client::KVOProperty<float>::UpdateIfDirty(v2 + 8, v14);
   if (updated != 0.0 && updated != 1.0)
@@ -1849,41 +1849,41 @@ void __42__AVAudioSession_requestRecordPermission___block_invoke(uint64_t a1, ui
 
 - (AVAudioSessionPromptStyle)promptStyle
 {
-  v2 = self;
+  selfCopy = self;
   v13[4] = *MEMORY[0x1E69E9840];
   v7[0] = 1;
   v8 = 3122;
-  v9 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v10 = 0;
   v11 = 0;
   v12 = 0;
   kdebug_trace();
-  v6 = [(AVAudioSession *)v2 sessionCore];
-  v3 = *(v6 + 40);
+  sessionCore = [(AVAudioSession *)selfCopy sessionCore];
+  v3 = *(sessionCore + 40);
   v13[0] = &unk_1F215D750;
-  v13[1] = &v6;
+  v13[1] = &sessionCore;
   v13[3] = v13;
-  LODWORD(v2) = avas::client::KVOProperty<unsigned int>::UpdateIfDirty(v3 + 296, v13);
+  LODWORD(selfCopy) = avas::client::KVOProperty<unsigned int>::UpdateIfDirty(v3 + 296, v13);
   std::__function::__value_func<unsigned int ()(void)>::~__value_func[abi:ne200100](v13);
   avas::ScopedTrace::~ScopedTrace(v7);
   v4 = *MEMORY[0x1E69E9840];
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)allowHapticsAndSystemSoundsDuringRecording
 {
-  v2 = self;
+  selfCopy = self;
   v5[0] = 1;
   v6 = 3079;
-  v7 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v8 = 0;
   v9 = 0;
   v10 = 0;
   kdebug_trace();
-  v3 = [(AVAudioSession *)v2 sessionCore];
-  LOBYTE(v2) = avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(v3, *MEMORY[0x1E69AFC68], 1);
+  sessionCore = [(AVAudioSession *)selfCopy sessionCore];
+  LOBYTE(selfCopy) = avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(sessionCore, *MEMORY[0x1E69AFC68], 1);
   avas::ScopedTrace::~ScopedTrace(v5);
-  return v2;
+  return selfCopy;
 }
 
 - (id)audioFormats
@@ -1891,15 +1891,15 @@ void __42__AVAudioSession_requestRecordPermission___block_invoke(uint64_t a1, ui
   v14[4] = *MEMORY[0x1E69E9840];
   v8[0] = 1;
   v9 = 3329;
-  v10 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v11 = 0;
   v12 = 0;
   v13 = 0;
   kdebug_trace();
-  v7 = [(AVAudioSession *)self sessionCore];
-  v3 = v7[5];
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  v3 = sessionCore[5];
   v14[0] = &unk_1F215D798;
-  v14[1] = &v7;
+  v14[1] = &sessionCore;
   v14[3] = v14;
   v4 = avas::client::KVOProperty<NSArray * {__strong}>::UpdateIfDirty(v3 + 200, v14);
   std::__function::__value_func<NSArray * ()(void)>::~__value_func[abi:ne200100](v14);
@@ -1922,31 +1922,31 @@ void __63__AVAudioSession_handleMediaDaemonTerminationEvent_daemonName___block_i
 {
   v8[0] = 1;
   v9 = 3330;
-  v10 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v11 = 0;
   v12 = 0;
   v13 = 0;
   kdebug_trace();
-  v3 = [(AVAudioSession *)self sessionCore];
-  v4 = avas::client::SessionCore::GetPropertyMX_DefaultToZero<NSString * {__strong}>(v3, *MEMORY[0x1E69AFE00]);
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  v4 = avas::client::SessionCore::GetPropertyMX_DefaultToZero<NSString * {__strong}>(sessionCore, *MEMORY[0x1E69AFE00]);
   v6 = avas::client::TranslateFromMXAudioHardwareFormat(v4, v5);
 
   avas::ScopedTrace::~ScopedTrace(v8);
   return v6;
 }
 
-- (BOOL)setPreferredAudioFormat:(int64_t)a3 error:(id *)a4
+- (BOOL)setPreferredAudioFormat:(int64_t)format error:(id *)error
 {
   v10[0] = 1;
   v11 = 3456;
-  v12 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v13 = 0;
   v14 = 0;
   v15 = 0;
   kdebug_trace();
-  v6 = [(AVAudioSession *)self sessionCore];
-  v7 = avas::client::TranslateToMXAudioHardwareFormat(a3);
-  avas::client::SessionCore::SetProperty(v6, *MEMORY[0x1E69B01E8], v7, 1);
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  v7 = avas::client::TranslateToMXAudioHardwareFormat(format);
+  avas::client::SessionCore::SetProperty(sessionCore, *MEMORY[0x1E69B01E8], v7, 1);
   v8 = FormatNSErrorForReturn();
 
   avas::ScopedTrace::~ScopedTrace(v10);
@@ -1957,13 +1957,13 @@ void __63__AVAudioSession_handleMediaDaemonTerminationEvent_daemonName___block_i
 {
   v8[0] = 1;
   v9 = 3457;
-  v10 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v11 = 0;
   v12 = 0;
   v13 = 0;
   kdebug_trace();
-  v3 = [(AVAudioSession *)self sessionCore];
-  v4 = avas::client::SessionCore::GetPropertyMX_DefaultToZero<NSString * {__strong}>(v3, *MEMORY[0x1E69B01E8]);
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  v4 = avas::client::SessionCore::GetPropertyMX_DefaultToZero<NSString * {__strong}>(sessionCore, *MEMORY[0x1E69B01E8]);
   v6 = avas::client::TranslateFromMXAudioHardwareFormat(v4, v5);
 
   avas::ScopedTrace::~ScopedTrace(v8);
@@ -1972,55 +1972,55 @@ void __63__AVAudioSession_handleMediaDaemonTerminationEvent_daemonName___block_i
 
 - (BOOL)isDolbyDigitalEncoderAvailable
 {
-  v2 = self;
+  selfCopy = self;
   v4[0] = 1;
   v5 = 3332;
-  v6 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v7 = 0;
   v8 = 0;
   v9 = 0;
   kdebug_trace();
-  LOBYTE(v2) = avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>([(AVAudioSession *)v2 sessionCore], @"DolbyDigitalEncoderAvailable", 0);
+  LOBYTE(selfCopy) = avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>([(AVAudioSession *)selfCopy sessionCore], @"DolbyDigitalEncoderAvailable", 0);
   avas::ScopedTrace::~ScopedTrace(v4);
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)isEarpieceActiveNoiseCancelationEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v4[0] = 1;
   v5 = 3334;
-  v6 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v7 = 0;
   v8 = 0;
   v9 = 0;
   kdebug_trace();
-  LOBYTE(v2) = avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>([(AVAudioSession *)v2 sessionCore], @"EarpieceANCEnabled", 0);
+  LOBYTE(selfCopy) = avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>([(AVAudioSession *)selfCopy sessionCore], @"EarpieceANCEnabled", 0);
   avas::ScopedTrace::~ScopedTrace(v4);
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)isPiPAvailable
 {
-  v2 = self;
+  selfCopy = self;
   v13[4] = *MEMORY[0x1E69E9840];
   v7[0] = 1;
   v8 = 3335;
-  v9 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v10 = 0;
   v11 = 0;
   v12 = 0;
   kdebug_trace();
-  v6 = [(AVAudioSession *)v2 sessionCore];
-  v3 = *(v6 + 40);
+  sessionCore = [(AVAudioSession *)selfCopy sessionCore];
+  v3 = *(sessionCore + 40);
   v13[0] = &unk_1F215D7E0;
-  v13[1] = &v6;
+  v13[1] = &sessionCore;
   v13[3] = v13;
-  LOBYTE(v2) = avas::client::KVOProperty<unsigned int>::UpdateIfDirty(v3 + 440, v13) != 0;
+  LOBYTE(selfCopy) = avas::client::KVOProperty<unsigned int>::UpdateIfDirty(v3 + 440, v13) != 0;
   std::__function::__value_func<unsigned int ()(void)>::~__value_func[abi:ne200100](v13);
   avas::ScopedTrace::~ScopedTrace(v7);
   v4 = *MEMORY[0x1E69E9840];
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)isEchoCancelledInputAvailable
@@ -2028,7 +2028,7 @@ void __63__AVAudioSession_handleMediaDaemonTerminationEvent_daemonName___block_i
   v18 = *MEMORY[0x1E69E9840];
   v8[0] = 1;
   v9 = 3459;
-  v10 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v11 = 0;
   v12 = 0;
   v13 = 0;
@@ -2051,79 +2051,79 @@ void __63__AVAudioSession_handleMediaDaemonTerminationEvent_daemonName___block_i
 
 - (BOOL)isOutputMuted
 {
-  v2 = self;
+  selfCopy = self;
   v5[0] = 1;
   v6 = 3137;
-  v7 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v8 = 0;
   v9 = 0;
   v10 = 0;
   kdebug_trace();
-  v3 = [(AVAudioSession *)v2 sessionCore];
-  LOBYTE(v2) = avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(v3, *MEMORY[0x1E69B00B0], 1);
+  sessionCore = [(AVAudioSession *)selfCopy sessionCore];
+  LOBYTE(selfCopy) = avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(sessionCore, *MEMORY[0x1E69B00B0], 1);
   avas::ScopedTrace::~ScopedTrace(v5);
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)forceSoundCheck
 {
-  v2 = self;
+  selfCopy = self;
   v5[0] = 1;
   v6 = 3336;
-  v7 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v8 = 0;
   v9 = 0;
   v10 = 0;
   kdebug_trace();
-  v3 = [(AVAudioSession *)v2 sessionCore];
-  LOBYTE(v2) = avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(v3, *MEMORY[0x1E69AFF70], 1);
+  sessionCore = [(AVAudioSession *)selfCopy sessionCore];
+  LOBYTE(selfCopy) = avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(sessionCore, *MEMORY[0x1E69AFF70], 1);
   avas::ScopedTrace::~ScopedTrace(v5);
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)requiresNoAudioResources
 {
-  v2 = self;
+  selfCopy = self;
   v5[0] = 1;
   v6 = 3338;
-  v7 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v8 = 0;
   v9 = 0;
   v10 = 0;
   kdebug_trace();
-  v3 = [(AVAudioSession *)v2 sessionCore];
-  LOBYTE(v2) = avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(v3, *MEMORY[0x1E69AFF20], 1);
+  sessionCore = [(AVAudioSession *)selfCopy sessionCore];
+  LOBYTE(selfCopy) = avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(sessionCore, *MEMORY[0x1E69AFF20], 1);
   avas::ScopedTrace::~ScopedTrace(v5);
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)allowMixableAudioWhileRecording
 {
-  v2 = self;
+  selfCopy = self;
   v5[0] = 1;
   v6 = 3340;
-  v7 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v8 = 0;
   v9 = 0;
   v10 = 0;
   kdebug_trace();
-  v3 = [(AVAudioSession *)v2 sessionCore];
-  LOBYTE(v2) = avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(v3, *MEMORY[0x1E69AFC58], 1);
+  sessionCore = [(AVAudioSession *)selfCopy sessionCore];
+  LOBYTE(selfCopy) = avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(sessionCore, *MEMORY[0x1E69AFC58], 1);
   avas::ScopedTrace::~ScopedTrace(v5);
-  return v2;
+  return selfCopy;
 }
 
-- (BOOL)setConformsToSessionBehavior:(id)a3 error:(id *)a4
+- (BOOL)setConformsToSessionBehavior:(id)behavior error:(id *)error
 {
-  v5 = a3;
+  behaviorCopy = behavior;
   v8[0] = 1;
   v9 = 3461;
-  v10 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v11 = 0;
   v12 = 0;
   v13 = 0;
   kdebug_trace();
-  avas::client::SessionCore::SetProperty([(AVAudioSession *)self sessionCore], @"ShadowingAudioSessionOptions", v5, 1);
+  avas::client::SessionCore::SetProperty([(AVAudioSession *)self sessionCore], @"ShadowingAudioSessionOptions", behaviorCopy, 1);
   v6 = FormatNSErrorForReturn();
   avas::ScopedTrace::~ScopedTrace(v8);
 
@@ -2132,96 +2132,96 @@ void __63__AVAudioSession_handleMediaDaemonTerminationEvent_daemonName___block_i
 
 - (BOOL)participatesInNowPlayingAppPolicy
 {
-  v2 = self;
+  selfCopy = self;
   v4[0] = 1;
   v5 = 3342;
-  v6 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v7 = 0;
   v8 = 0;
   v9 = 0;
   kdebug_trace();
-  LOBYTE(v2) = avas::client::SessionCoreLegacy_iOS::participatesInNowPlayingAppPolicy([(AVAudioSession *)v2 sessionCore]);
+  LOBYTE(selfCopy) = avas::client::SessionCoreLegacy_iOS::participatesInNowPlayingAppPolicy([(AVAudioSession *)selfCopy sessionCore]);
   avas::ScopedTrace::~ScopedTrace(v4);
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)eligibleForBTSmartRoutingConsideration
 {
-  v2 = self;
+  selfCopy = self;
   v5[0] = 1;
   v6 = 3344;
-  v7 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v8 = 0;
   v9 = 0;
   v10 = 0;
   kdebug_trace();
-  v3 = [(AVAudioSession *)v2 sessionCore];
-  LOBYTE(v2) = avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(v3, *MEMORY[0x1E69B0040], 1);
+  sessionCore = [(AVAudioSession *)selfCopy sessionCore];
+  LOBYTE(selfCopy) = avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(sessionCore, *MEMORY[0x1E69B0040], 1);
   avas::ScopedTrace::~ScopedTrace(v5);
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)eligibleForBTTriangleConsideration
 {
-  v2 = self;
+  selfCopy = self;
   v5[0] = 1;
   v6 = 3433;
-  v7 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v8 = 0;
   v9 = 0;
   v10 = 0;
   kdebug_trace();
-  v3 = [(AVAudioSession *)v2 sessionCore];
-  LOBYTE(v2) = avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(v3, *MEMORY[0x1E69B0050], 1);
+  sessionCore = [(AVAudioSession *)selfCopy sessionCore];
+  LOBYTE(selfCopy) = avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(sessionCore, *MEMORY[0x1E69B0050], 1);
   avas::ScopedTrace::~ScopedTrace(v5);
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)prefersToAcquireHWControlFromOtherSessions
 {
-  v2 = self;
+  selfCopy = self;
   v5[0] = 1;
   v6 = 3346;
-  v7 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v8 = 0;
   v9 = 0;
   v10 = 0;
   kdebug_trace();
-  v3 = [(AVAudioSession *)v2 sessionCore];
-  LOBYTE(v2) = avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(v3, *MEMORY[0x1E69B0350], 1);
+  sessionCore = [(AVAudioSession *)selfCopy sessionCore];
+  LOBYTE(selfCopy) = avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(sessionCore, *MEMORY[0x1E69B0350], 1);
   avas::ScopedTrace::~ScopedTrace(v5);
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)inhibitSpeechDetection
 {
-  v2 = self;
+  selfCopy = self;
   v5[0] = 1;
   v6 = 3447;
-  v7 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v8 = 0;
   v9 = 0;
   v10 = 0;
   kdebug_trace();
-  v3 = [(AVAudioSession *)v2 sessionCore];
-  LOBYTE(v2) = avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(v3, *MEMORY[0x1E69B0320], 1);
+  sessionCore = [(AVAudioSession *)selfCopy sessionCore];
+  LOBYTE(selfCopy) = avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(sessionCore, *MEMORY[0x1E69B0320], 1);
   avas::ScopedTrace::~ScopedTrace(v5);
-  return v2 ^ 1;
+  return selfCopy ^ 1;
 }
 
-- (BOOL)setInhibitSpeechDetection:(BOOL)a3 error:(id *)a4
+- (BOOL)setInhibitSpeechDetection:(BOOL)detection error:(id *)error
 {
-  v4 = a3;
+  detectionCopy = detection;
   v10[0] = 1;
   v11 = 3448;
-  v12 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v13 = 0;
   v14 = 0;
   v15 = 0;
   kdebug_trace();
-  v6 = [(AVAudioSession *)self sessionCore];
-  v7 = [MEMORY[0x1E696AD98] numberWithBool:!v4];
-  avas::client::SessionCore::SetProperty(v6, *MEMORY[0x1E69B0320], v7, 1);
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  v7 = [MEMORY[0x1E696AD98] numberWithBool:!detectionCopy];
+  avas::client::SessionCore::SetProperty(sessionCore, *MEMORY[0x1E69B0320], v7, 1);
 
   v8 = FormatNSErrorForReturn();
   avas::ScopedTrace::~ScopedTrace(v10);
@@ -2230,49 +2230,49 @@ void __63__AVAudioSession_handleMediaDaemonTerminationEvent_daemonName___block_i
 
 - (BOOL)prefersNoMicrophoneUsageIndicator
 {
-  v2 = self;
+  selfCopy = self;
   v5[0] = 1;
   v6 = 3348;
-  v7 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v8 = 0;
   v9 = 0;
   v10 = 0;
   kdebug_trace();
-  v3 = [(AVAudioSession *)v2 sessionCore];
-  LOBYTE(v2) = avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(v3, *MEMORY[0x1E69B0328], 1);
+  sessionCore = [(AVAudioSession *)selfCopy sessionCore];
+  LOBYTE(selfCopy) = avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(sessionCore, *MEMORY[0x1E69B0328], 1);
   avas::ScopedTrace::~ScopedTrace(v5);
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)participatesInMutePriority
 {
-  v2 = self;
+  selfCopy = self;
   v5[0] = 1;
   v6 = 3350;
-  v7 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v8 = 0;
   v9 = 0;
   v10 = 0;
   kdebug_trace();
-  v3 = [(AVAudioSession *)v2 sessionCore];
-  LOBYTE(v2) = avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(v3, *MEMORY[0x1E69B0160], 1);
+  sessionCore = [(AVAudioSession *)selfCopy sessionCore];
+  LOBYTE(selfCopy) = avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(sessionCore, *MEMORY[0x1E69B0160], 1);
   avas::ScopedTrace::~ScopedTrace(v5);
-  return v2 ^ 1;
+  return selfCopy ^ 1;
 }
 
-- (BOOL)setParticipatesInMutePriority:(BOOL)a3 error:(id *)a4
+- (BOOL)setParticipatesInMutePriority:(BOOL)priority error:(id *)error
 {
-  v4 = a3;
+  priorityCopy = priority;
   v10[0] = 1;
   v11 = 3351;
-  v12 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v13 = 0;
   v14 = 0;
   v15 = 0;
   kdebug_trace();
-  v6 = [(AVAudioSession *)self sessionCore];
-  v7 = [MEMORY[0x1E696AD98] numberWithBool:!v4];
-  avas::client::SessionCore::SetProperty(v6, *MEMORY[0x1E69B0160], v7, 1);
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  v7 = [MEMORY[0x1E696AD98] numberWithBool:!priorityCopy];
+  avas::client::SessionCore::SetProperty(sessionCore, *MEMORY[0x1E69B0160], v7, 1);
 
   v8 = FormatNSErrorForReturn();
   avas::ScopedTrace::~ScopedTrace(v10);
@@ -2281,108 +2281,108 @@ void __63__AVAudioSession_handleMediaDaemonTerminationEvent_daemonName___block_i
 
 - (BOOL)recordingFromRemoteInput
 {
-  v2 = self;
+  selfCopy = self;
   v4[0] = 1;
   v5 = 3352;
-  v6 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v7 = 0;
   v8 = 0;
   v9 = 0;
   kdebug_trace();
-  LOBYTE(v2) = avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>([(AVAudioSession *)v2 sessionCore], @"RecordingFromRemoteInput", 0);
+  LOBYTE(selfCopy) = avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>([(AVAudioSession *)selfCopy sessionCore], @"RecordingFromRemoteInput", 0);
   avas::ScopedTrace::~ScopedTrace(v4);
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)iAmTheAssistant
 {
-  v2 = self;
+  selfCopy = self;
   v5[0] = 1;
   v6 = 3356;
-  v7 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v8 = 0;
   v9 = 0;
   v10 = 0;
   kdebug_trace();
-  v3 = [(AVAudioSession *)v2 sessionCore];
-  LOBYTE(v2) = avas::client::SessionCore::GetProperty_DefaultToZero<unsigned int>(v3, *MEMORY[0x1E69AFFA8], 1) != 0;
+  sessionCore = [(AVAudioSession *)selfCopy sessionCore];
+  LOBYTE(selfCopy) = avas::client::SessionCore::GetProperty_DefaultToZero<unsigned int>(sessionCore, *MEMORY[0x1E69AFFA8], 1) != 0;
   avas::ScopedTrace::~ScopedTrace(v5);
-  return v2;
+  return selfCopy;
 }
 
-- (BOOL)setAudioHardwareControlFlags:(unint64_t)a3 error:(id *)a4
+- (BOOL)setAudioHardwareControlFlags:(unint64_t)flags error:(id *)error
 {
-  v4 = a3;
+  flagsCopy = flags;
   v10[0] = 1;
   v11 = 3384;
-  v12 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v13 = 0;
   v14 = 0;
   v15 = 0;
   kdebug_trace();
-  v6 = [(AVAudioSession *)self sessionCore];
-  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:avas::client::MapToMxHWCtrlFlags(v4)];
-  avas::client::SessionCore::SetProperty(v6, *MEMORY[0x1E69AFCD8], v7, 1);
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:avas::client::MapToMxHWCtrlFlags(flagsCopy)];
+  avas::client::SessionCore::SetProperty(sessionCore, *MEMORY[0x1E69AFCD8], v7, 1);
 
   v8 = FormatNSErrorForReturn();
   avas::ScopedTrace::~ScopedTrace(v10);
   return v8;
 }
 
-- (BOOL)setInterruptionFadeDuration:(id)a3 error:(id *)a4
+- (BOOL)setInterruptionFadeDuration:(id)duration error:(id *)error
 {
-  v5 = a3;
+  durationCopy = duration;
   v9[0] = 1;
   v10 = 3385;
-  v11 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v12 = 0;
   v13 = 0;
   v14 = 0;
   kdebug_trace();
-  v6 = [(AVAudioSession *)self sessionCore];
-  avas::client::SessionCore::SetProperty(v6, *MEMORY[0x1E69B0010], v5, 1);
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  avas::client::SessionCore::SetProperty(sessionCore, *MEMORY[0x1E69B0010], durationCopy, 1);
   v7 = FormatNSErrorForReturn();
   avas::ScopedTrace::~ScopedTrace(v9);
 
   return v7;
 }
 
-- (BOOL)setDuckingFadeOutDuration:(id)a3 fadeInDuration:(id)a4 error:(id *)a5
+- (BOOL)setDuckingFadeOutDuration:(id)duration fadeInDuration:(id)inDuration error:(id *)error
 {
   v23[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  durationCopy = duration;
+  inDurationCopy = inDuration;
   LOBYTE(v17) = 1;
   HIDWORD(v17) = 3386;
-  v18 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v19 = 0;
   v20 = 0;
   v21 = 0;
   kdebug_trace();
   v9 = *MEMORY[0x1E69AFF28];
   v22[0] = v9;
-  v10 = v7;
-  if (!v7)
+  null = durationCopy;
+  if (!durationCopy)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[0] = v10;
+  v23[0] = null;
   v11 = *MEMORY[0x1E69B0458];
   v22[1] = v11;
-  v12 = v8;
-  if (!v8)
+  null2 = inDurationCopy;
+  if (!inDurationCopy)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[1] = v12;
+  v23[1] = null2;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:v22 count:{2, v17}];
-  if (!v8)
+  if (!inDurationCopy)
   {
   }
 
-  if (!v7)
+  if (!durationCopy)
   {
   }
 
@@ -2394,39 +2394,39 @@ void __63__AVAudioSession_handleMediaDaemonTerminationEvent_daemonName___block_i
   return v14;
 }
 
-- (BOOL)setDuckToLevelScalar:(id)a3 unduckToLevelScalar:(id)a4 error:(id *)a5
+- (BOOL)setDuckToLevelScalar:(id)scalar unduckToLevelScalar:(id)levelScalar error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  scalarCopy = scalar;
+  levelScalarCopy = levelScalar;
   v15[0] = 1;
   v16 = 3446;
-  v17 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v18 = 0;
   v19 = 0;
   v20 = 0;
   kdebug_trace();
   v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v10 = v9;
-  if (v7 | v8)
+  if (scalarCopy | levelScalarCopy)
   {
-    if (v7)
+    if (scalarCopy)
     {
-      [v9 setObject:v7 forKeyedSubscript:*MEMORY[0x1E69AFF48]];
+      [v9 setObject:scalarCopy forKeyedSubscript:*MEMORY[0x1E69AFF48]];
     }
 
-    if (v8)
+    if (levelScalarCopy)
     {
-      [v10 setObject:v8 forKeyedSubscript:*MEMORY[0x1E69B0468]];
+      [v10 setObject:levelScalarCopy forKeyedSubscript:*MEMORY[0x1E69B0468]];
     }
   }
 
   else
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
-    [v10 setObject:v11 forKeyedSubscript:*MEMORY[0x1E69AFF48]];
+    null = [MEMORY[0x1E695DFB0] null];
+    [v10 setObject:null forKeyedSubscript:*MEMORY[0x1E69AFF48]];
 
-    v12 = [MEMORY[0x1E695DFB0] null];
-    [v10 setObject:v12 forKeyedSubscript:*MEMORY[0x1E69B0468]];
+    null2 = [MEMORY[0x1E695DFB0] null];
+    [v10 setObject:null2 forKeyedSubscript:*MEMORY[0x1E69B0468]];
   }
 
   avas::client::SessionCore::SetBatchPropertiesMX([(AVAudioSession *)self sessionCore], v10);
@@ -2436,36 +2436,36 @@ void __63__AVAudioSession_handleMediaDaemonTerminationEvent_daemonName___block_i
   return v13;
 }
 
-- (BOOL)setDuckToLevelDB:(id)a3 error:(id *)a4
+- (BOOL)setDuckToLevelDB:(id)b error:(id *)error
 {
-  v5 = a3;
+  bCopy = b;
   v9[0] = 1;
   v10 = 3387;
-  v11 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v12 = 0;
   v13 = 0;
   v14 = 0;
   kdebug_trace();
-  v6 = [(AVAudioSession *)self sessionCore];
-  avas::client::SessionCore::SetProperty(v6, *MEMORY[0x1E69AFF40], v5, 1);
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  avas::client::SessionCore::SetProperty(sessionCore, *MEMORY[0x1E69AFF40], bCopy, 1);
   v7 = FormatNSErrorForReturn();
   avas::ScopedTrace::~ScopedTrace(v9);
 
   return v7;
 }
 
-- (BOOL)setDuckToLevelScalar:(id)a3 error:(id *)a4
+- (BOOL)setDuckToLevelScalar:(id)scalar error:(id *)error
 {
-  v5 = a3;
+  scalarCopy = scalar;
   v9[0] = 1;
   v10 = 3388;
-  v11 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v12 = 0;
   v13 = 0;
   v14 = 0;
   kdebug_trace();
-  v6 = [(AVAudioSession *)self sessionCore];
-  avas::client::SessionCore::SetProperty(v6, *MEMORY[0x1E69AFF48], v5, 1);
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  avas::client::SessionCore::SetProperty(sessionCore, *MEMORY[0x1E69AFF48], scalarCopy, 1);
   v7 = FormatNSErrorForReturn();
   avas::ScopedTrace::~ScopedTrace(v9);
 
@@ -2474,10 +2474,10 @@ void __63__AVAudioSession_handleMediaDaemonTerminationEvent_daemonName___block_i
 
 - (BOOL)isExpanseMediaSession
 {
-  v2 = [(AVAudioSession *)self sessionCore];
+  sessionCore = [(AVAudioSession *)self sessionCore];
   v3 = *MEMORY[0x1E69B0070];
 
-  return avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(v2, v3, 1);
+  return avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(sessionCore, v3, 1);
 }
 
 - (BOOL)prefersAggressiveCaching
@@ -2487,39 +2487,39 @@ void __63__AVAudioSession_handleMediaDaemonTerminationEvent_daemonName___block_i
   return avas::client::CacheManager::getCachingPreference(v2);
 }
 
-- (BOOL)setPrefersAggressiveCaching:(BOOL)a3 error:(id *)a4
+- (BOOL)setPrefersAggressiveCaching:(BOOL)caching error:(id *)error
 {
-  avas::client::CacheManager::setCachingPreference(*([(AVAudioSession *)self sessionCore]+ 96), a3);
+  avas::client::CacheManager::setCachingPreference(*([(AVAudioSession *)self sessionCore]+ 96), caching);
 
   return FormatNSErrorForReturn();
 }
 
 - (BOOL)prefersConcurrentAirPlayAudio
 {
-  v2 = [(AVAudioSession *)self sessionCore];
+  sessionCore = [(AVAudioSession *)self sessionCore];
   v3 = *MEMORY[0x1E69B02C0];
 
-  return avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(v2, v3, 1);
+  return avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(sessionCore, v3, 1);
 }
 
-- (BOOL)setReporterID:(int64_t)a3 error:(id *)a4
+- (BOOL)setReporterID:(int64_t)d error:(id *)error
 {
   v18[1] = *MEMORY[0x1E69E9840];
   v12[0] = 1;
   v13 = 3389;
-  v14 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v15 = 0;
   v16 = 0;
   v17 = 0;
   kdebug_trace();
-  v6 = [(AVAudioSession *)self sessionCore];
-  v7 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  v7 = [MEMORY[0x1E696AD98] numberWithLongLong:d];
   v18[0] = v7;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
 
-  if (!avas::client::SessionCore::SetProperty(v6, *MEMORY[0x1E69B0378], v8, 1))
+  if (!avas::client::SessionCore::SetProperty(sessionCore, *MEMORY[0x1E69B0378], v8, 1))
   {
-    avas::client::SessionCore::setReporterID(v6, a3);
+    avas::client::SessionCore::setReporterID(sessionCore, d);
   }
 
   v9 = FormatNSErrorForReturn();
@@ -2531,18 +2531,18 @@ void __63__AVAudioSession_handleMediaDaemonTerminationEvent_daemonName___block_i
 
 - (BOOL)isHardwareFormatFixedToMultiChannel
 {
-  v2 = self;
+  selfCopy = self;
   v5[0] = 1;
   v6 = 3354;
-  v7 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v8 = 0;
   v9 = 0;
   v10 = 0;
   kdebug_trace();
-  v3 = [(AVAudioSession *)v2 sessionCore];
-  LOBYTE(v2) = avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(v3, *MEMORY[0x1E69AFF00], 1);
+  sessionCore = [(AVAudioSession *)selfCopy sessionCore];
+  LOBYTE(selfCopy) = avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(sessionCore, *MEMORY[0x1E69AFF00], 1);
   avas::ScopedTrace::~ScopedTrace(v5);
-  return v2;
+  return selfCopy;
 }
 
 - (float)inputGain
@@ -2550,15 +2550,15 @@ void __63__AVAudioSession_handleMediaDaemonTerminationEvent_daemonName___block_i
   v14[4] = *MEMORY[0x1E69E9840];
   v8[0] = 1;
   v9 = 3104;
-  v10 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v11 = 0;
   v12 = 0;
   v13 = 0;
   kdebug_trace();
-  v7 = [(AVAudioSession *)self sessionCore];
-  v3 = v7[5];
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  v3 = sessionCore[5];
   v14[0] = &unk_1F215D828;
-  v14[1] = &v7;
+  v14[1] = &sessionCore;
   v14[3] = v14;
   updated = avas::client::KVOProperty<float>::UpdateIfDirty(v3 + 56, v14);
   std::__function::__value_func<float ()(void)>::~__value_func[abi:ne200100](v14);
@@ -2567,11 +2567,11 @@ void __63__AVAudioSession_handleMediaDaemonTerminationEvent_daemonName___block_i
   return updated;
 }
 
-- (id)privateGetDataSources:(BOOL)a3 core:(const void *)a4
+- (id)privateGetDataSources:(BOOL)sources core:(const void *)core
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = *(a4 + 5);
-  if (a3)
+  v5 = *(core + 5);
+  if (sources)
   {
     v6 = 104;
   }
@@ -2581,10 +2581,10 @@ void __63__AVAudioSession_handleMediaDaemonTerminationEvent_daemonName___block_i
     v6 = 152;
   }
 
-  v7 = self;
+  selfCopy = self;
   v11[0] = &unk_1F215D870;
-  v11[1] = v7;
-  v12 = a3;
+  v11[1] = selfCopy;
+  sourcesCopy = sources;
   memset(v13, 0, sizeof(v13));
   v14 = v11;
   v8 = avas::client::KVOProperty<NSArray * {__strong}>::UpdateIfDirty(v5 + v6, v11);
@@ -2599,7 +2599,7 @@ void __63__AVAudioSession_handleMediaDaemonTerminationEvent_daemonName___block_i
 {
   v5[0] = 1;
   v6 = 3107;
-  v7 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v8 = 0;
   v9 = 0;
   v10 = 0;
@@ -2614,7 +2614,7 @@ void __63__AVAudioSession_handleMediaDaemonTerminationEvent_daemonName___block_i
 {
   v5[0] = 1;
   v6 = 3108;
-  v7 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v8 = 0;
   v9 = 0;
   v10 = 0;
@@ -2629,7 +2629,7 @@ void __63__AVAudioSession_handleMediaDaemonTerminationEvent_daemonName___block_i
 {
   v5[0] = 1;
   v6 = 3110;
-  v7 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v8 = 0;
   v9 = 0;
   v10 = 0;
@@ -2644,7 +2644,7 @@ void __63__AVAudioSession_handleMediaDaemonTerminationEvent_daemonName___block_i
 {
   v5[0] = 1;
   v6 = 3111;
-  v7 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v8 = 0;
   v9 = 0;
   v10 = 0;
@@ -2657,77 +2657,77 @@ void __63__AVAudioSession_handleMediaDaemonTerminationEvent_daemonName___block_i
 
 - (BOOL)isInputGainSettable
 {
-  v2 = self;
+  selfCopy = self;
   v5[0] = 1;
   v6 = 3105;
-  v7 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v8 = 0;
   v9 = 0;
   v10 = 0;
   kdebug_trace();
-  v3 = [(AVAudioSession *)v2 sessionCore];
-  LOBYTE(v2) = avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(v3, *MEMORY[0x1E69AFFF0], 1);
+  sessionCore = [(AVAudioSession *)selfCopy sessionCore];
+  LOBYTE(selfCopy) = avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(sessionCore, *MEMORY[0x1E69AFFF0], 1);
   avas::ScopedTrace::~ScopedTrace(v5);
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)getInputAvailable
 {
-  v2 = [(AVAudioSession *)self sessionCore];
+  sessionCore = [(AVAudioSession *)self sessionCore];
 
-  return avas::client::SessionCore::isInputAvailable(v2);
+  return avas::client::SessionCore::isInputAvailable(sessionCore);
 }
 
 - (BOOL)isInputAvailable
 {
-  v2 = self;
+  selfCopy = self;
   v13[4] = *MEMORY[0x1E69E9840];
   v7[0] = 1;
   v8 = 3106;
-  v9 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v10 = 0;
   v11 = 0;
   v12 = 0;
   kdebug_trace();
-  v6 = [(AVAudioSession *)v2 sessionCore];
-  v3 = *(v6 + 40);
+  sessionCore = [(AVAudioSession *)selfCopy sessionCore];
+  v3 = *(sessionCore + 40);
   v13[0] = &unk_1F215D8B8;
-  v13[1] = &v6;
+  v13[1] = &sessionCore;
   v13[3] = v13;
-  LOBYTE(v2) = avas::client::KVOProperty<unsigned int>::UpdateIfDirty(v3 + 488, v13) != 0;
+  LOBYTE(selfCopy) = avas::client::KVOProperty<unsigned int>::UpdateIfDirty(v3 + 488, v13) != 0;
   std::__function::__value_func<unsigned int ()(void)>::~__value_func[abi:ne200100](v13);
   avas::ScopedTrace::~ScopedTrace(v7);
   v4 = *MEMORY[0x1E69E9840];
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)secondaryAudioShouldBeSilencedHint
 {
-  v2 = self;
+  selfCopy = self;
   v5[0] = 1;
   v6 = 3120;
-  v7 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v8 = 0;
   v9 = 0;
   v10 = 0;
   kdebug_trace();
-  v3 = [(AVAudioSession *)v2 sessionCore];
-  LOBYTE(v2) = avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(v3, *MEMORY[0x1E69B0420], 1);
+  sessionCore = [(AVAudioSession *)selfCopy sessionCore];
+  LOBYTE(selfCopy) = avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(sessionCore, *MEMORY[0x1E69B0420], 1);
   avas::ScopedTrace::~ScopedTrace(v5);
-  return v2;
+  return selfCopy;
 }
 
 - (double)inputSafetyOffset
 {
   v6[0] = 1;
   v7 = 3371;
-  v8 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v9 = 0;
   v10 = 0;
   v11 = 0;
   kdebug_trace();
-  v3 = [(AVAudioSession *)self sessionCore];
-  Property_DefaultTo = avas::client::SessionCore::GetProperty_DefaultToZero<float>(v3, *MEMORY[0x1E69AEDC8], 1);
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  Property_DefaultTo = avas::client::SessionCore::GetProperty_DefaultToZero<float>(sessionCore, *MEMORY[0x1E69AEDC8], 1);
   avas::ScopedTrace::~ScopedTrace(v6);
   return Property_DefaultTo;
 }
@@ -2736,13 +2736,13 @@ void __63__AVAudioSession_handleMediaDaemonTerminationEvent_daemonName___block_i
 {
   v6[0] = 1;
   v7 = 3372;
-  v8 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v9 = 0;
   v10 = 0;
   v11 = 0;
   kdebug_trace();
-  v3 = [(AVAudioSession *)self sessionCore];
-  Property_DefaultTo = avas::client::SessionCore::GetProperty_DefaultToZero<float>(v3, *MEMORY[0x1E69AEDE0], 1);
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  Property_DefaultTo = avas::client::SessionCore::GetProperty_DefaultToZero<float>(sessionCore, *MEMORY[0x1E69AEDE0], 1);
   avas::ScopedTrace::~ScopedTrace(v6);
   return Property_DefaultTo;
 }
@@ -2752,13 +2752,13 @@ void __63__AVAudioSession_handleMediaDaemonTerminationEvent_daemonName___block_i
   v20 = *MEMORY[0x1E69E9840];
   v10[0] = 1;
   v11 = 3368;
-  v12 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v13 = 0;
   v14 = 0;
   v15 = 0;
   kdebug_trace();
-  v3 = [(AVAudioSession *)self sessionCore];
-  v4 = avas::client::SessionCore::GetPropertyMX_DefaultToZero<NSArray * {__strong}>(v3, *MEMORY[0x1E69AEDF8]);
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  v4 = avas::client::SessionCore::GetPropertyMX_DefaultToZero<NSArray * {__strong}>(sessionCore, *MEMORY[0x1E69AEDF8]);
   v5 = v4;
   if (v4 && (v4 = [(avas::client *)v4 count]) != 0)
   {
@@ -2791,15 +2791,15 @@ void __63__AVAudioSession_handleMediaDaemonTerminationEvent_daemonName___block_i
   v14[4] = *MEMORY[0x1E69E9840];
   v8[0] = 1;
   v9 = 3118;
-  v10 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v11 = 0;
   v12 = 0;
   v13 = 0;
   kdebug_trace();
-  v7 = [(AVAudioSession *)self sessionCore];
-  v3 = v7[5];
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  v3 = sessionCore[5];
   v14[0] = &unk_1F215D948;
-  v14[1] = &v7;
+  v14[1] = &sessionCore;
   v14[3] = v14;
   updated = avas::client::KVOProperty<double>::UpdateIfDirty(v3 + 728, v14);
   std::__function::__value_func<double ()(void)>::~__value_func[abi:ne200100](v14);
@@ -2812,7 +2812,7 @@ void __63__AVAudioSession_handleMediaDaemonTerminationEvent_daemonName___block_i
 {
   v5[0] = 1;
   v6 = 3375;
-  v7 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v8 = 0;
   v9 = 0;
   v10 = 0;
@@ -2827,13 +2827,13 @@ void __63__AVAudioSession_handleMediaDaemonTerminationEvent_daemonName___block_i
   v20 = *MEMORY[0x1E69E9840];
   v10[0] = 1;
   v11 = 3135;
-  v12 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v13 = 0;
   v14 = 0;
   v15 = 0;
   kdebug_trace();
-  v3 = [(AVAudioSession *)self sessionCore];
-  v4 = avas::client::SessionCore::GetPropertyMX_DefaultToZero<NSArray * {__strong}>(v3, *MEMORY[0x1E69B0440]);
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  v4 = avas::client::SessionCore::GetPropertyMX_DefaultToZero<NSArray * {__strong}>(sessionCore, *MEMORY[0x1E69B0440]);
   v5 = v4;
   if (v4)
   {
@@ -2863,38 +2863,38 @@ void __63__AVAudioSession_handleMediaDaemonTerminationEvent_daemonName___block_i
 
 - (unint64_t)speechDetectionStyle
 {
-  v2 = self;
+  selfCopy = self;
   v13[4] = *MEMORY[0x1E69E9840];
   v7[0] = 1;
   v8 = 3449;
-  v9 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v10 = 0;
   v11 = 0;
   v12 = 0;
   kdebug_trace();
-  v6 = [(AVAudioSession *)v2 sessionCore];
-  v3 = *(v6 + 40);
+  sessionCore = [(AVAudioSession *)selfCopy sessionCore];
+  v3 = *(sessionCore + 40);
   v13[0] = &unk_1F215D990;
-  v13[1] = &v6;
+  v13[1] = &sessionCore;
   v13[3] = v13;
-  LODWORD(v2) = avas::client::KVOProperty<unsigned int>::UpdateIfDirty(v3 + 536, v13);
+  LODWORD(selfCopy) = avas::client::KVOProperty<unsigned int>::UpdateIfDirty(v3 + 536, v13);
   std::__function::__value_func<unsigned int ()(void)>::~__value_func[abi:ne200100](v13);
   avas::ScopedTrace::~ScopedTrace(v7);
   v4 = *MEMORY[0x1E69E9840];
-  return v2;
+  return selfCopy;
 }
 
 - (int64_t)interruptionPriority
 {
   v6[0] = 1;
   v7 = 3381;
-  v8 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v9 = 0;
   v10 = 0;
   v11 = 0;
   kdebug_trace();
-  v3 = [(AVAudioSession *)self sessionCore];
-  Property_DefaultTo = avas::client::SessionCore::GetProperty_DefaultToZero<int>(v3, *MEMORY[0x1E69AFDB0], 1);
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  Property_DefaultTo = avas::client::SessionCore::GetProperty_DefaultToZero<int>(sessionCore, *MEMORY[0x1E69AFDB0], 1);
   avas::ScopedTrace::~ScopedTrace(v6);
   return Property_DefaultTo;
 }
@@ -2903,23 +2903,23 @@ void __63__AVAudioSession_handleMediaDaemonTerminationEvent_daemonName___block_i
 {
   v9[0] = 1;
   v10 = 3091;
-  v11 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v12 = 0;
   v13 = 0;
   v14 = 0;
   kdebug_trace();
-  v3 = [(AVAudioSession *)self sessionCore];
-  v4 = avas::client::SessionCore::category(v3);
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  v4 = avas::client::SessionCore::category(sessionCore);
   v5 = [v4 isEqualToString:@"AVAudioSessionCategoryRecord"];
 
   if (v5)
   {
-    Property_DefaultTo = avas::client::SessionCore::GetProperty_DefaultToZero<double>(v3, *MEMORY[0x1E69B0230], 1);
+    Property_DefaultTo = avas::client::SessionCore::GetProperty_DefaultToZero<double>(sessionCore, *MEMORY[0x1E69B0230], 1);
   }
 
   else
   {
-    Property_DefaultTo = avas::client::SessionCore::GetProperty_DefaultToZero<double>(v3, *MEMORY[0x1E69B0268], 1);
+    Property_DefaultTo = avas::client::SessionCore::GetProperty_DefaultToZero<double>(sessionCore, *MEMORY[0x1E69B0268], 1);
   }
 
   v7 = Property_DefaultTo;
@@ -2931,13 +2931,13 @@ void __63__AVAudioSession_handleMediaDaemonTerminationEvent_daemonName___block_i
 {
   v6[0] = 1;
   v7 = 3093;
-  v8 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v9 = 0;
   v10 = 0;
   v11 = 0;
   kdebug_trace();
-  v3 = [(AVAudioSession *)self sessionCore];
-  Property_DefaultTo = avas::client::SessionCore::GetProperty_DefaultToZero<double>(v3, *MEMORY[0x1E69B01F0], 1);
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  Property_DefaultTo = avas::client::SessionCore::GetProperty_DefaultToZero<double>(sessionCore, *MEMORY[0x1E69B01F0], 1);
   avas::ScopedTrace::~ScopedTrace(v6);
   return Property_DefaultTo;
 }
@@ -2946,13 +2946,13 @@ void __63__AVAudioSession_handleMediaDaemonTerminationEvent_daemonName___block_i
 {
   v6[0] = 1;
   v7 = 3374;
-  v8 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v9 = 0;
   v10 = 0;
   v11 = 0;
   kdebug_trace();
-  v3 = [(AVAudioSession *)self sessionCore];
-  Property_DefaultTo = avas::client::SessionCore::GetProperty_DefaultToZero<unsigned long>(v3, *MEMORY[0x1E69B0208], 1);
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  Property_DefaultTo = avas::client::SessionCore::GetProperty_DefaultToZero<unsigned long>(sessionCore, *MEMORY[0x1E69B0208], 1);
   avas::ScopedTrace::~ScopedTrace(v6);
   return Property_DefaultTo;
 }
@@ -2961,13 +2961,13 @@ void __63__AVAudioSession_handleMediaDaemonTerminationEvent_daemonName___block_i
 {
   v6[0] = 1;
   v7 = 3095;
-  v8 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v9 = 0;
   v10 = 0;
   v11 = 0;
   kdebug_trace();
-  v3 = [(AVAudioSession *)self sessionCore];
-  Property_DefaultTo = avas::client::SessionCore::GetProperty_DefaultToZero<long>(v3, *MEMORY[0x1E69B0250], 1);
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  Property_DefaultTo = avas::client::SessionCore::GetProperty_DefaultToZero<long>(sessionCore, *MEMORY[0x1E69B0250], 1);
   avas::ScopedTrace::~ScopedTrace(v6);
   return Property_DefaultTo;
 }
@@ -2976,74 +2976,74 @@ void __63__AVAudioSession_handleMediaDaemonTerminationEvent_daemonName___block_i
 {
   v6[0] = 1;
   v7 = 3097;
-  v8 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v9 = 0;
   v10 = 0;
   v11 = 0;
   kdebug_trace();
-  v3 = [(AVAudioSession *)self sessionCore];
-  Property_DefaultTo = avas::client::SessionCore::GetProperty_DefaultToZero<long>(v3, *MEMORY[0x1E69B0260], 1);
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  Property_DefaultTo = avas::client::SessionCore::GetProperty_DefaultToZero<long>(sessionCore, *MEMORY[0x1E69B0260], 1);
   avas::ScopedTrace::~ScopedTrace(v6);
   return Property_DefaultTo;
 }
 
 - (NSInteger)inputNumberOfChannels
 {
-  v2 = self;
+  selfCopy = self;
   v13[4] = *MEMORY[0x1E69E9840];
   v7[0] = 1;
   v8 = 3114;
-  v9 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v10 = 0;
   v11 = 0;
   v12 = 0;
   kdebug_trace();
-  v6 = [(AVAudioSession *)v2 sessionCore];
-  v3 = *(v6 + 40);
+  sessionCore = [(AVAudioSession *)selfCopy sessionCore];
+  v3 = *(sessionCore + 40);
   v13[0] = &unk_1F215D9D8;
-  v13[1] = &v6;
+  v13[1] = &sessionCore;
   v13[3] = v13;
-  LODWORD(v2) = avas::client::KVOProperty<unsigned int>::UpdateIfDirty(v3 + 344, v13);
+  LODWORD(selfCopy) = avas::client::KVOProperty<unsigned int>::UpdateIfDirty(v3 + 344, v13);
   std::__function::__value_func<unsigned int ()(void)>::~__value_func[abi:ne200100](v13);
   avas::ScopedTrace::~ScopedTrace(v7);
   v4 = *MEMORY[0x1E69E9840];
-  return v2;
+  return selfCopy;
 }
 
 - (NSInteger)outputNumberOfChannels
 {
-  v2 = self;
+  selfCopy = self;
   v13[4] = *MEMORY[0x1E69E9840];
   v7[0] = 1;
   v8 = 3115;
-  v9 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v10 = 0;
   v11 = 0;
   v12 = 0;
   kdebug_trace();
-  v6 = [(AVAudioSession *)v2 sessionCore];
-  v3 = *(v6 + 40);
+  sessionCore = [(AVAudioSession *)selfCopy sessionCore];
+  v3 = *(sessionCore + 40);
   v13[0] = &unk_1F215DA20;
-  v13[1] = &v6;
+  v13[1] = &sessionCore;
   v13[3] = v13;
-  LODWORD(v2) = avas::client::KVOProperty<unsigned int>::UpdateIfDirty(v3 + 392, v13);
+  LODWORD(selfCopy) = avas::client::KVOProperty<unsigned int>::UpdateIfDirty(v3 + 392, v13);
   std::__function::__value_func<unsigned int ()(void)>::~__value_func[abi:ne200100](v13);
   avas::ScopedTrace::~ScopedTrace(v7);
   v4 = *MEMORY[0x1E69E9840];
-  return v2;
+  return selfCopy;
 }
 
 - (NSInteger)maximumInputNumberOfChannels
 {
   v6[0] = 1;
   v7 = 3101;
-  v8 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v9 = 0;
   v10 = 0;
   v11 = 0;
   kdebug_trace();
-  v3 = [(AVAudioSession *)self sessionCore];
-  Property_DefaultTo = avas::client::SessionCore::GetProperty_DefaultToZero<long>(v3, *MEMORY[0x1E69B0118], 1);
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  Property_DefaultTo = avas::client::SessionCore::GetProperty_DefaultToZero<long>(sessionCore, *MEMORY[0x1E69B0118], 1);
   avas::ScopedTrace::~ScopedTrace(v6);
   return Property_DefaultTo;
 }
@@ -3052,13 +3052,13 @@ void __63__AVAudioSession_handleMediaDaemonTerminationEvent_daemonName___block_i
 {
   v6[0] = 1;
   v7 = 3102;
-  v8 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v9 = 0;
   v10 = 0;
   v11 = 0;
   kdebug_trace();
-  v3 = [(AVAudioSession *)self sessionCore];
-  Property_DefaultTo = avas::client::SessionCore::GetProperty_DefaultToZero<long>(v3, *MEMORY[0x1E69B0120], 1);
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  Property_DefaultTo = avas::client::SessionCore::GetProperty_DefaultToZero<long>(sessionCore, *MEMORY[0x1E69B0120], 1);
   avas::ScopedTrace::~ScopedTrace(v6);
   return Property_DefaultTo;
 }
@@ -3085,7 +3085,7 @@ void __63__AVAudioSession_handleMediaDaemonTerminationEvent_daemonName___block_i
 {
   v5[0] = 1;
   v6 = 3077;
-  v7 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v8 = 0;
   v9 = 0;
   v10 = 0;
@@ -3102,7 +3102,7 @@ void __63__AVAudioSession_handleMediaDaemonTerminationEvent_daemonName___block_i
   v6 = mode;
   v15[0] = 1;
   v16 = 3076;
-  v17 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v18 = 0;
   v19 = 0;
   v20 = 0;
@@ -3122,8 +3122,8 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v8 = [(AVAudioSession *)self sessionCore];
-  v9 = avas::client::SessionCore::SetProperty(v8, *MEMORY[0x1E69AFCE8], v7, 1);
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  v9 = avas::client::SessionCore::SetProperty(sessionCore, *MEMORY[0x1E69AFCE8], v7, 1);
   v10 = v9;
   if (v9)
   {
@@ -3145,7 +3145,7 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  avas::client::KVOManager::markPropertiesDirty(v8[5], -33);
+  avas::client::KVOManager::markPropertiesDirty(sessionCore[5], -33);
   v12 = 1;
 LABEL_10:
 
@@ -3154,13 +3154,13 @@ LABEL_10:
   return v12;
 }
 
-- (BOOL)privateSetRouteSharingPolicy:(unint64_t)a3 error:(id *)a4
+- (BOOL)privateSetRouteSharingPolicy:(unint64_t)policy error:(id *)error
 {
-  v5 = [(AVAudioSession *)self sessionCore];
-  avas::client::SessionCore::setClientPrefersLongFormRouteSharingPolicy(v5, (a3 & 0xFFFFFFFFFFFFFFFDLL) == 1);
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  avas::client::SessionCore::setClientPrefersLongFormRouteSharingPolicy(sessionCore, (policy & 0xFFFFFFFFFFFFFFFDLL) == 1);
   v6 = *MEMORY[0x1E69B03B0];
-  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  avas::client::SessionCore::SetProperty(v5, v6, v7, 1);
+  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:policy];
+  avas::client::SessionCore::SetProperty(sessionCore, v6, v7, 1);
 
   return FormatNSErrorForReturn();
 }
@@ -3169,13 +3169,13 @@ LABEL_10:
 {
   v8[0] = 1;
   v9 = 3391;
-  v10 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v11 = 0;
   v12 = 0;
   v13 = 0;
   kdebug_trace();
-  v3 = [(AVAudioSession *)self sessionCore];
-  v4 = avas::client::SessionCore::GetPropertyMX_DefaultToZero<NSArray * {__strong}>(v3, *MEMORY[0x1E69B0368]);
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  v4 = avas::client::SessionCore::GetPropertyMX_DefaultToZero<NSArray * {__strong}>(sessionCore, *MEMORY[0x1E69B0368]);
   v5 = v4;
   if (v4)
   {
@@ -3192,18 +3192,18 @@ LABEL_10:
   return v6;
 }
 
-- (BOOL)setAuditTokensForProcessAssertion:(id)a3 error:(id *)a4
+- (BOOL)setAuditTokensForProcessAssertion:(id)assertion error:(id *)error
 {
-  v5 = a3;
+  assertionCopy = assertion;
   v9[0] = 1;
   v10 = 3392;
-  v11 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v12 = 0;
   v13 = 0;
   v14 = 0;
   kdebug_trace();
-  v6 = [(AVAudioSession *)self sessionCore];
-  avas::client::SessionCore::SetProperty(v6, *MEMORY[0x1E69B0368], v5, 1);
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  avas::client::SessionCore::SetProperty(sessionCore, *MEMORY[0x1E69B0368], assertionCopy, 1);
   v7 = FormatNSErrorForReturn();
   avas::ScopedTrace::~ScopedTrace(v9);
 
@@ -3215,13 +3215,13 @@ LABEL_10:
   v20 = *MEMORY[0x1E69E9840];
   v10[0] = 1;
   v11 = 3395;
-  v12 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v13 = 0;
   v14 = 0;
   v15 = 0;
   kdebug_trace();
-  v3 = [(AVAudioSession *)self sessionCore];
-  v4 = avas::client::SessionCore::GetPropertyMX_DefaultToZero<NSDictionary * {__strong}>(v3, *MEMORY[0x1E69B01D0]);
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  v4 = avas::client::SessionCore::GetPropertyMX_DefaultToZero<NSDictionary * {__strong}>(sessionCore, *MEMORY[0x1E69B01D0]);
   v5 = v4;
   if (v4)
   {
@@ -3254,13 +3254,13 @@ LABEL_10:
   v20 = *MEMORY[0x1E69E9840];
   v10[0] = 1;
   v11 = 3393;
-  v12 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v13 = 0;
   v14 = 0;
   v15 = 0;
   kdebug_trace();
-  v3 = [(AVAudioSession *)self sessionCore];
-  v4 = avas::client::SessionCore::GetPropertyMX_DefaultToZero<NSDictionary * {__strong}>(v3, *MEMORY[0x1E69B01D8]);
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  v4 = avas::client::SessionCore::GetPropertyMX_DefaultToZero<NSDictionary * {__strong}>(sessionCore, *MEMORY[0x1E69B01D8]);
   v5 = v4;
   if (v4)
   {
@@ -3288,45 +3288,45 @@ LABEL_10:
   return v6;
 }
 
-- (BOOL)setPowerProfile:(id)a3 error:(id *)a4
+- (BOOL)setPowerProfile:(id)profile error:(id *)error
 {
-  v5 = a3;
+  profileCopy = profile;
   v9[0] = 1;
   v10 = 3394;
-  v11 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v12 = 0;
   v13 = 0;
   v14 = 0;
   kdebug_trace();
-  v6 = [(AVAudioSession *)self sessionCore];
-  avas::client::SessionCore::SetProperty(v6, *MEMORY[0x1E69B01D8], v5, 1);
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  avas::client::SessionCore::SetProperty(sessionCore, *MEMORY[0x1E69B01D8], profileCopy, 1);
   v7 = FormatNSErrorForReturn();
   avas::ScopedTrace::~ScopedTrace(v9);
 
   return v7;
 }
 
-- (BOOL)subscribeToNotifications:(id)a3 error:(id *)a4
+- (BOOL)subscribeToNotifications:(id)notifications error:(id *)error
 {
   v33 = *MEMORY[0x1E69E9840];
-  v20 = a3;
+  notificationsCopy = notifications;
   v22[0] = 1;
   v23 = 3396;
-  v24 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v25 = 0;
   v26 = 0;
   v27 = 0;
   kdebug_trace();
-  if (v20)
+  if (notificationsCopy)
   {
-    v18 = self;
-    v19 = a4;
+    selfCopy = self;
+    errorCopy = error;
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v7 = v20;
+    v7 = notificationsCopy;
     v8 = [v7 countByEnumeratingWithState:&v28 objects:v32 count:16];
     if (v8)
     {
@@ -3344,7 +3344,7 @@ LABEL_10:
           }
 
           v13 = *(*(&v28 + 1) + 8 * i);
-          if ([v13 isEqual:{@"AVAudioSessionBeaconBudgetChangeNotification", v18, v19}])
+          if ([v13 isEqual:{@"AVAudioSessionBeaconBudgetChangeNotification", selfCopy, errorCopy}])
           {
             [v6 addObject:v11];
           }
@@ -3366,7 +3366,7 @@ LABEL_10:
       while (v8);
     }
 
-    self = v18;
+    self = selfCopy;
   }
 
   else
@@ -3374,7 +3374,7 @@ LABEL_10:
     v6 = 0;
   }
 
-  v14 = [(AVAudioSession *)self sessionCore:v18];
+  v14 = [(AVAudioSession *)self sessionCore:selfCopy];
   avas::client::SessionCore::SetProperty(v14, *MEMORY[0x1E69B0430], v6, 1);
   v15 = FormatNSErrorForReturn();
 
@@ -3383,20 +3383,20 @@ LABEL_10:
   return v15;
 }
 
-- (BOOL)setRoutingContextUID:(id)a3 error:(id *)a4
+- (BOOL)setRoutingContextUID:(id)d error:(id *)error
 {
-  v5 = a3;
+  dCopy = d;
   v9[0] = 1;
   v10 = 3398;
-  v11 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v12 = 0;
   v13 = 0;
   v14 = 0;
   kdebug_trace();
-  v6 = [(AVAudioSession *)self sessionCore];
-  if (!avas::client::SessionCore::SetProperty(v6, *MEMORY[0x1E69B03C8], v5, 1))
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  if (!avas::client::SessionCore::SetProperty(sessionCore, *MEMORY[0x1E69B03C8], dCopy, 1))
   {
-    avas::client::SessionCoreLegacy_iOS::initializeAVOutputContextObject(v6, v5, 1);
+    avas::client::SessionCoreLegacy_iOS::initializeAVOutputContextObject(sessionCore, dCopy, 1);
   }
 
   v7 = FormatNSErrorForReturn();
@@ -3409,7 +3409,7 @@ LABEL_10:
 {
   v7[0] = 1;
   v8 = 3399;
-  v9 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v10 = 0;
   v11 = 0;
   v12 = 0;
@@ -3431,42 +3431,42 @@ LABEL_10:
   return v5;
 }
 
-- (BOOL)setHostProcessAttribution:(id)a3 error:(id *)a4
+- (BOOL)setHostProcessAttribution:(id)attribution error:(id *)error
 {
-  v5 = a3;
+  attributionCopy = attribution;
   v8[0] = 1;
   v9 = 3400;
-  v10 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v11 = 0;
   v12 = 0;
   v13 = 0;
   kdebug_trace();
-  avas::client::SessionCore::SetProperty([(AVAudioSession *)self sessionCore], @"AS_HostProcessAttribution", v5, 0);
+  avas::client::SessionCore::SetProperty([(AVAudioSession *)self sessionCore], @"AS_HostProcessAttribution", attributionCopy, 0);
   v6 = FormatNSErrorForReturn();
   avas::ScopedTrace::~ScopedTrace(v8);
 
   return v6;
 }
 
-- (BOOL)selectIndependentRoutingContext:(id *)a3
+- (BOOL)selectIndependentRoutingContext:(id *)context
 {
   v6[0] = 1;
   v7 = 3401;
-  v8 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v9 = 0;
   v10 = 0;
   v11 = 0;
   kdebug_trace();
-  LOBYTE(a3) = [(AVAudioSession *)self privateSetRouteSharingPolicy:2 error:a3];
+  LOBYTE(context) = [(AVAudioSession *)self privateSetRouteSharingPolicy:2 error:context];
   avas::ScopedTrace::~ScopedTrace(v6);
-  return a3;
+  return context;
 }
 
 - (BOOL)overrideOutputAudioPort:(AVAudioSessionPortOverride)portOverride error:(NSError *)outError
 {
   v10[0] = 1;
   v11 = 3082;
-  v12 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v13 = 0;
   v14 = 0;
   v15 = 0;
@@ -3481,12 +3481,12 @@ LABEL_10:
     v6 = 0;
   }
 
-  v7 = [(AVAudioSession *)self sessionCore];
-  avas::client::SessionCore::SetProperty(v7, *MEMORY[0x1E69B0180], v6, 1);
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  avas::client::SessionCore::SetProperty(sessionCore, *MEMORY[0x1E69B0180], v6, 1);
   v8 = FormatNSErrorForReturn();
   if (v8)
   {
-    avas::client::KVOManager::markPropertiesDirty(v7[5], 40);
+    avas::client::KVOManager::markPropertiesDirty(sessionCore[5], 40);
   }
 
   avas::ScopedTrace::~ScopedTrace(v10);
@@ -3498,7 +3498,7 @@ LABEL_10:
   v5 = inPort;
   v8[0] = 1;
   v9 = 3083;
-  v10 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v11 = 0;
   v12 = 0;
   v13 = 0;
@@ -3514,7 +3514,7 @@ LABEL_10:
 {
   v5[0] = 1;
   v6 = 3084;
-  v7 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v8 = 0;
   v9 = 0;
   v10 = 0;
@@ -3527,8 +3527,8 @@ LABEL_10:
 
 - (id)activeAudioRoute
 {
-  v2 = [(AVAudioSession *)self sessionCore];
-  v3 = avas::client::SessionCore::GetPropertyMX_DefaultToZero<NSString * {__strong}>(v2, *MEMORY[0x1E69AFC38]);
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  v3 = avas::client::SessionCore::GetPropertyMX_DefaultToZero<NSString * {__strong}>(sessionCore, *MEMORY[0x1E69AFC38]);
 
   return v3;
 }
@@ -3538,7 +3538,7 @@ LABEL_10:
   v4 = inValue;
   v11[0] = 1;
   v12 = 3126;
-  v13 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v14 = 0;
   v15 = 0;
   v16 = 0;
@@ -3550,8 +3550,8 @@ LABEL_10:
   }
 
   v7 = *v6;
-  v8 = [(AVAudioSession *)self sessionCore];
-  avas::client::SessionCore::SetProperty(v8, *MEMORY[0x1E69AFD40], v7, 1);
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  avas::client::SessionCore::SetProperty(sessionCore, *MEMORY[0x1E69AFD40], v7, 1);
   v9 = FormatNSErrorForReturn();
 
   avas::ScopedTrace::~ScopedTrace(v11);
@@ -3563,13 +3563,13 @@ LABEL_10:
   v20 = *MEMORY[0x1E69E9840];
   v10[0] = 1;
   v11 = 3127;
-  v12 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v13 = 0;
   v14 = 0;
   v15 = 0;
   kdebug_trace();
-  v3 = [(AVAudioSession *)self sessionCore];
-  v4 = avas::client::SessionCore::GetPropertyMX_DefaultToZero<NSString * {__strong}>(v3, *MEMORY[0x1E69AFD40]);
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  v4 = avas::client::SessionCore::GetPropertyMX_DefaultToZero<NSString * {__strong}>(sessionCore, *MEMORY[0x1E69AFD40]);
   v5 = v4;
   if (v4)
   {
@@ -3598,32 +3598,32 @@ LABEL_10:
 
 - (BOOL)prefersInterruptionOnRouteDisconnect
 {
-  v2 = self;
+  selfCopy = self;
   v5[0] = 1;
   v6 = 3134;
-  v7 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v8 = 0;
   v9 = 0;
   v10 = 0;
   kdebug_trace();
-  v3 = [(AVAudioSession *)v2 sessionCore];
-  LOBYTE(v2) = avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(v3, *MEMORY[0x1E69B02D8], 1);
+  sessionCore = [(AVAudioSession *)selfCopy sessionCore];
+  LOBYTE(selfCopy) = avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(sessionCore, *MEMORY[0x1E69B02D8], 1);
   avas::ScopedTrace::~ScopedTrace(v5);
-  return v2;
+  return selfCopy;
 }
 
-- (BOOL)setAudioClockDevice:(id)a3 error:(id *)a4
+- (BOOL)setAudioClockDevice:(id)device error:(id *)error
 {
-  v5 = a3;
+  deviceCopy = device;
   v9[0] = 1;
   v10 = 3421;
-  v11 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v12 = 0;
   v13 = 0;
   v14 = 0;
   kdebug_trace();
-  v6 = [(AVAudioSession *)self sessionCore];
-  avas::client::SessionCore::SetProperty(v6, *MEMORY[0x1E69AFCC8], v5, 1);
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  avas::client::SessionCore::SetProperty(sessionCore, *MEMORY[0x1E69AFCC8], deviceCopy, 1);
   v7 = FormatNSErrorForReturn();
   avas::ScopedTrace::~ScopedTrace(v9);
 
@@ -3634,13 +3634,13 @@ LABEL_10:
 {
   v8[0] = 1;
   v9 = 3420;
-  v10 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v11 = 0;
   v12 = 0;
   v13 = 0;
   kdebug_trace();
-  v3 = [(AVAudioSession *)self sessionCore];
-  v4 = avas::client::SessionCore::GetPropertyMX_DefaultToZero<NSString * {__strong}>(v3, *MEMORY[0x1E69AFCC8]);
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  v4 = avas::client::SessionCore::GetPropertyMX_DefaultToZero<NSString * {__strong}>(sessionCore, *MEMORY[0x1E69AFCC8]);
   v5 = v4;
   if (v4)
   {
@@ -3661,33 +3661,33 @@ LABEL_10:
 {
   v6[0] = 1;
   v7 = 3379;
-  v8 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v9 = 0;
   v10 = 0;
   v11 = 0;
   kdebug_trace();
-  v3 = [(AVAudioSession *)self sessionCore];
-  Property_DefaultTo = avas::client::SessionCore::GetProperty_DefaultToZero<double>(v3, *MEMORY[0x1E69AFE90], 1);
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  Property_DefaultTo = avas::client::SessionCore::GetProperty_DefaultToZero<double>(sessionCore, *MEMORY[0x1E69AFE90], 1);
   avas::ScopedTrace::~ScopedTrace(v6);
   return Property_DefaultTo;
 }
 
-- (id)privateMakePreferredPersistentRouteDictWithInputUIDs:(id)a3 outputUIDs:(id)a4
+- (id)privateMakePreferredPersistentRouteDictWithInputUIDs:(id)ds outputUIDs:(id)iDs
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5 | v6)
+  dsCopy = ds;
+  iDsCopy = iDs;
+  if (dsCopy | iDsCopy)
   {
     v8 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:2];
     v7 = v8;
-    if (v5)
+    if (dsCopy)
     {
-      [v8 setObject:v5 forKeyedSubscript:*MEMORY[0x1E69B05C0]];
+      [v8 setObject:dsCopy forKeyedSubscript:*MEMORY[0x1E69B05C0]];
     }
 
-    if (v6)
+    if (iDsCopy)
     {
-      [v7 setObject:v6 forKeyedSubscript:*MEMORY[0x1E69B05C8]];
+      [v7 setObject:iDsCopy forKeyedSubscript:*MEMORY[0x1E69B05C8]];
     }
   }
 
@@ -3703,32 +3703,32 @@ LABEL_10:
 {
   v6[0] = 1;
   v7 = 3445;
-  v8 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v9 = 0;
   v10 = 0;
   v11 = 0;
   kdebug_trace();
-  v3 = [(AVAudioSession *)self sessionCore];
-  v4 = avas::client::SessionCore::GetPropertyMX_DefaultToZero<NSDictionary * {__strong}>(v3, *MEMORY[0x1E69B0278]);
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  v4 = avas::client::SessionCore::GetPropertyMX_DefaultToZero<NSDictionary * {__strong}>(sessionCore, *MEMORY[0x1E69B0278]);
   avas::ScopedTrace::~ScopedTrace(v6);
 
   return v4;
 }
 
-- (BOOL)setPreferredPersistentInputUIDs:(id)a3 outputUIDs:(id)a4 error:(id *)a5
+- (BOOL)setPreferredPersistentInputUIDs:(id)ds outputUIDs:(id)iDs error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  dsCopy = ds;
+  iDsCopy = iDs;
   v13[0] = 1;
   v14 = 3444;
-  v15 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v16 = 0;
   v17 = 0;
   v18 = 0;
   kdebug_trace();
-  v9 = [(AVAudioSession *)self privateMakePreferredPersistentRouteDictWithInputUIDs:v7 outputUIDs:v8];
-  v10 = [(AVAudioSession *)self sessionCore];
-  avas::client::SessionCore::SetProperty(v10, *MEMORY[0x1E69B0278], v9, 1);
+  v9 = [(AVAudioSession *)self privateMakePreferredPersistentRouteDictWithInputUIDs:dsCopy outputUIDs:iDsCopy];
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  avas::client::SessionCore::SetProperty(sessionCore, *MEMORY[0x1E69B0278], v9, 1);
   v11 = FormatNSErrorForReturn();
 
   avas::ScopedTrace::~ScopedTrace(v13);
@@ -3737,40 +3737,40 @@ LABEL_10:
 
 - (id)preferredPersistentInputUIDs
 {
-  v2 = [(AVAudioSession *)self privateReadPreferredPersistentRoute];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x1E69B05C0]];
+  privateReadPreferredPersistentRoute = [(AVAudioSession *)self privateReadPreferredPersistentRoute];
+  v3 = [privateReadPreferredPersistentRoute objectForKeyedSubscript:*MEMORY[0x1E69B05C0]];
 
   return v3;
 }
 
 - (id)preferredPersistentOutputUIDs
 {
-  v2 = [(AVAudioSession *)self privateReadPreferredPersistentRoute];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x1E69B05C8]];
+  privateReadPreferredPersistentRoute = [(AVAudioSession *)self privateReadPreferredPersistentRoute];
+  v3 = [privateReadPreferredPersistentRoute objectForKeyedSubscript:*MEMORY[0x1E69B05C8]];
 
   return v3;
 }
 
-- (BOOL)setActivationContext:(id)a3 error:(id *)a4
+- (BOOL)setActivationContext:(id)context error:(id *)error
 {
-  v5 = a3;
+  contextCopy = context;
   v13[0] = 1;
   v14 = 3367;
-  v15 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v16 = 0;
   v17 = 0;
   v18 = 0;
   kdebug_trace();
-  if (avas::client::ValidateActivationContext(v5, v6))
+  if (avas::client::ValidateActivationContext(contextCopy, v6))
   {
-    v7 = [(AVAudioSession *)self sessionCore];
-    v8 = [v5 mutableCopy];
+    sessionCore = [(AVAudioSession *)self sessionCore];
+    v8 = [contextCopy mutableCopy];
     v10 = avas::client::TranslateActivationContextForMX(v8, v9);
-    avas::client::SessionCore::SetProperty(v7, *MEMORY[0x1E69AFC30], v10, 1);
+    avas::client::SessionCore::SetProperty(sessionCore, *MEMORY[0x1E69AFC30], v10, 1);
 
     if (FormatNSErrorForReturn())
     {
-      avas::client::KVOManager::markPropertiesDirty(v7[5], 12);
+      avas::client::KVOManager::markPropertiesDirty(sessionCore[5], 12);
       v11 = 1;
     }
 
@@ -3790,44 +3790,44 @@ LABEL_10:
   return v11;
 }
 
-- (BOOL)setDisallowedPorts:(id)a3 error:(id *)a4
+- (BOOL)setDisallowedPorts:(id)ports error:(id *)error
 {
-  v5 = a3;
+  portsCopy = ports;
   v9[0] = 1;
   v10 = 3370;
-  v11 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v12 = 0;
   v13 = 0;
   v14 = 0;
   kdebug_trace();
-  v6 = [(AVAudioSession *)self sessionCore];
-  avas::client::SessionCore::SetProperty(v6, *MEMORY[0x1E69AFF58], v5, 1);
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  avas::client::SessionCore::SetProperty(sessionCore, *MEMORY[0x1E69AFF58], portsCopy, 1);
   v7 = FormatNSErrorForReturn();
   avas::ScopedTrace::~ScopedTrace(v9);
 
   return v7;
 }
 
-- (BOOL)silenceOutput:(unint64_t)a3 error:(id *)a4
+- (BOOL)silenceOutput:(unint64_t)output error:(id *)error
 {
-  v4 = a4;
+  errorCopy = error;
   v34 = *MEMORY[0x1E69E9840];
-  v7 = [(AVAudioSession *)self sessionCore];
+  sessionCore = [(AVAudioSession *)self sessionCore];
   v19[0] = 1;
   v20 = 3376;
-  v21 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v22 = 0;
   v23 = 0;
   v24 = 0;
   kdebug_trace();
-  v8 = avas::client::SessionCore::reporterID(v7);
+  v8 = avas::client::SessionCore::reporterID(sessionCore);
   avas::client::PerformanceTracker::PerformanceTracker(v18, "[AVAudioSession silenceOutput:error:]", v8, 1);
-  avas::client::XPCConnection::sync_message<>(v7[10], &v31);
+  avas::client::XPCConnection::sync_message<>(sessionCore[10], &v31);
   v9 = objc_autoreleasePoolPush();
   v10 = caulk::xpc::message<objc_object  {objcproto25SessionManagerXPCProtocol}* {__strong}>::sync_proxy(&v31);
-  v11 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID2 = [(AVAudioSession *)self opaqueSessionID];
   v12 = caulk::xpc::message<objc_object  {objcproto25SessionManagerXPCProtocol}* {__strong}>::reply(&v31);
-  [v10 silenceOutput:v11 options:a3 reply:v12];
+  [v10 silenceOutput:opaqueSessionID2 options:output reply:v12];
 
   objc_autoreleasePoolPop(v9);
   v13 = v33;
@@ -3847,38 +3847,38 @@ LABEL_10:
     }
 
     [(avas::client *)v14 code];
-    v4 = FormatNSErrorForReturn();
+    errorCopy = FormatNSErrorForReturn();
   }
 
   _ZNSt3__110__function12__value_funcIFvP7NSErrorONS_5tupleIJEEEEED2B8ne200100Ev(&v32);
   avas::client::PerformanceTracker::~PerformanceTracker(v18);
   avas::ScopedTrace::~ScopedTrace(v19);
   v16 = *MEMORY[0x1E69E9840];
-  return (v14 == 0) | v4 & 1;
+  return (v14 == 0) | errorCopy & 1;
 }
 
 - (BOOL)isSessionInputMuted
 {
   v7[0] = 1;
   v8 = 3377;
-  v9 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v10 = 0;
   v11 = 0;
   v12 = 0;
   kdebug_trace();
-  v3 = [(AVAudioSession *)self sessionCore];
+  sessionCore = [(AVAudioSession *)self sessionCore];
   {
     avas::AudioSessionMuteEnabled(void)::enabled = _os_feature_enabled_impl();
   }
 
   if (avas::AudioSessionMuteEnabled(void)::enabled == 1)
   {
-    Property_DefaultTo = avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(v3, *MEMORY[0x1E69B00D8], 1);
+    Property_DefaultTo = avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(sessionCore, *MEMORY[0x1E69B00D8], 1);
   }
 
   else
   {
-    Property_DefaultTo = avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(v3, @"MuteSessionInputs", 0);
+    Property_DefaultTo = avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(sessionCore, @"MuteSessionInputs", 0);
   }
 
   v5 = Property_DefaultTo;
@@ -3890,13 +3890,13 @@ LABEL_10:
 {
   v9[0] = 1;
   v10 = 3441;
-  v11 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v12 = 0;
   v13 = 0;
   v14 = 0;
   kdebug_trace();
-  v3 = [(AVAudioSession *)self sessionCore];
-  v4 = avas::client::SessionCore::GetPropertyMX_DefaultToZero<NSString * {__strong}>(v3, *MEMORY[0x1E69AFED0]);
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  v4 = avas::client::SessionCore::GetPropertyMX_DefaultToZero<NSString * {__strong}>(sessionCore, *MEMORY[0x1E69AFED0]);
   v5 = v4;
   if (v4)
   {
@@ -3915,50 +3915,50 @@ LABEL_10:
   return v7;
 }
 
-- (BOOL)setDefaultChatMode:(id)a3 error:(id *)a4
+- (BOOL)setDefaultChatMode:(id)mode error:(id *)error
 {
-  v6 = a3;
+  modeCopy = mode;
   v12[0] = 1;
   v13 = 3366;
-  v14 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v15 = 0;
   v16 = 0;
   v17 = 0;
   kdebug_trace();
-  if (![v6 compare:@"AVAudioSessionModeVoiceChat"])
+  if (![modeCopy compare:@"AVAudioSessionModeVoiceChat"])
   {
     v9 = MEMORY[0x1E69AF988];
 LABEL_11:
     v7 = *v9;
-    v10 = [(AVAudioSession *)self sessionCore];
-    avas::client::SessionCore::SetProperty(v10, *MEMORY[0x1E69AFED0], v7, 1);
+    sessionCore = [(AVAudioSession *)self sessionCore];
+    avas::client::SessionCore::SetProperty(sessionCore, *MEMORY[0x1E69AFED0], v7, 1);
     v8 = FormatNSErrorForReturn();
     goto LABEL_12;
   }
 
-  if (![v6 compare:@"AVAudioSessionModeGameChat"])
+  if (![modeCopy compare:@"AVAudioSessionModeGameChat"])
   {
     v9 = MEMORY[0x1E69AF848];
     goto LABEL_11;
   }
 
-  if (![v6 compare:@"AVAudioSessionModeVideoChat"])
+  if (![modeCopy compare:@"AVAudioSessionModeVideoChat"])
   {
     v9 = MEMORY[0x1E69AF950];
     goto LABEL_11;
   }
 
-  if (![v6 compare:@"AVAudioSessionModeVideoChatForMedia"])
+  if (![modeCopy compare:@"AVAudioSessionModeVideoChatForMedia"])
   {
     v9 = MEMORY[0x1E69AF960];
     goto LABEL_11;
   }
 
-  if (a4)
+  if (error)
   {
     [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:-50 userInfo:0];
     v7 = 0;
-    *a4 = v8 = 0;
+    *error = v8 = 0;
   }
 
   else
@@ -3975,137 +3975,137 @@ LABEL_12:
 
 - (BOOL)prefersNoInterruptionsFromSystemAlerts
 {
-  v2 = self;
+  selfCopy = self;
   v5[0] = 1;
   v6 = 3086;
-  v7 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v8 = 0;
   v9 = 0;
   v10 = 0;
   kdebug_trace();
-  v3 = [(AVAudioSession *)v2 sessionCore];
-  LOBYTE(v2) = avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(v3, *MEMORY[0x1E69B0308], 1);
+  sessionCore = [(AVAudioSession *)selfCopy sessionCore];
+  LOBYTE(selfCopy) = avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(sessionCore, *MEMORY[0x1E69B0308], 1);
   avas::ScopedTrace::~ScopedTrace(v5);
-  return v2;
+  return selfCopy;
 }
 
-- (BOOL)setPreferredMicrophoneInjectionMode:(int64_t)a3 error:(id *)a4
+- (BOOL)setPreferredMicrophoneInjectionMode:(int64_t)mode error:(id *)error
 {
-  v5 = [(AVAudioSession *)self sessionCore];
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  avas::client::SessionCore::SetProperty(v5, @"PreferredMicrophoneInjectionMode", v6, 0);
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:mode];
+  avas::client::SessionCore::SetProperty(sessionCore, @"PreferredMicrophoneInjectionMode", v6, 0);
 
   return FormatNSErrorForReturn();
 }
 
 - (BOOL)isMicrophoneInjectionAvailable
 {
-  v2 = [(AVAudioSession *)self sessionCore];
+  sessionCore = [(AVAudioSession *)self sessionCore];
 
-  return avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(v2, @"MicrophoneInjectionIsEnabled", 0);
+  return avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(sessionCore, @"MicrophoneInjectionIsEnabled", 0);
 }
 
 - (BOOL)isMicrophoneInjectionServiceEnabledByUser
 {
-  v2 = [(AVAudioSession *)self sessionCore];
+  sessionCore = [(AVAudioSession *)self sessionCore];
 
-  return avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(v2, @"MicrophoneInjectionIsAllowedByUser", 0);
+  return avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(sessionCore, @"MicrophoneInjectionIsAllowedByUser", 0);
 }
 
 - (BOOL)prefersNoDucking
 {
-  v2 = self;
+  selfCopy = self;
   v5[0] = 1;
   v6 = 3358;
-  v7 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v8 = 0;
   v9 = 0;
   v10 = 0;
   kdebug_trace();
-  v3 = [(AVAudioSession *)v2 sessionCore];
-  LOBYTE(v2) = avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(v3, *MEMORY[0x1E69B02F0], 1);
+  sessionCore = [(AVAudioSession *)selfCopy sessionCore];
+  LOBYTE(selfCopy) = avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(sessionCore, *MEMORY[0x1E69B02F0], 1);
   avas::ScopedTrace::~ScopedTrace(v5);
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)needsHighPowerBudgeting
 {
-  v2 = self;
+  selfCopy = self;
   v5[0] = 1;
   v6 = 3360;
-  v7 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v8 = 0;
   v9 = 0;
   v10 = 0;
   kdebug_trace();
-  v3 = [(AVAudioSession *)v2 sessionCore];
-  LOBYTE(v2) = avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(v3, *MEMORY[0x1E69B0138], 1);
+  sessionCore = [(AVAudioSession *)selfCopy sessionCore];
+  LOBYTE(selfCopy) = avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(sessionCore, *MEMORY[0x1E69B0138], 1);
   avas::ScopedTrace::~ScopedTrace(v5);
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)participatesInVolumePolicy
 {
-  v2 = self;
+  selfCopy = self;
   v5[0] = 1;
   v6 = 3362;
-  v7 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v8 = 0;
   v9 = 0;
   v10 = 0;
   kdebug_trace();
-  v3 = [(AVAudioSession *)v2 sessionCore];
-  LOBYTE(v2) = avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(v3, *MEMORY[0x1E69B04B0], 1);
+  sessionCore = [(AVAudioSession *)selfCopy sessionCore];
+  LOBYTE(selfCopy) = avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(sessionCore, *MEMORY[0x1E69B04B0], 1);
   avas::ScopedTrace::~ScopedTrace(v5);
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)prefersToVibeWhenVibrationsAreDisabled
 {
-  v2 = self;
+  selfCopy = self;
   v5[0] = 1;
   v6 = 3364;
-  v7 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v8 = 0;
   v9 = 0;
   v10 = 0;
   kdebug_trace();
-  v3 = [(AVAudioSession *)v2 sessionCore];
-  LOBYTE(v2) = avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(v3, *MEMORY[0x1E69B0358], 1);
+  sessionCore = [(AVAudioSession *)selfCopy sessionCore];
+  LOBYTE(selfCopy) = avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(sessionCore, *MEMORY[0x1E69B0358], 1);
   avas::ScopedTrace::~ScopedTrace(v5);
-  return v2;
+  return selfCopy;
 }
 
 - (float)defaultCalibratedOutputSPL
 {
   v6[0] = 1;
   v7 = 3435;
-  v8 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v9 = 0;
   v10 = 0;
   v11 = 0;
   kdebug_trace();
-  v3 = [(AVAudioSession *)self sessionCore];
-  Property_DefaultTo = avas::client::SessionCore::GetProperty_DefaultToZero<float>(v3, *MEMORY[0x1E69AFEC0], 1);
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  Property_DefaultTo = avas::client::SessionCore::GetProperty_DefaultToZero<float>(sessionCore, *MEMORY[0x1E69AFEC0], 1);
   avas::ScopedTrace::~ScopedTrace(v6);
   return Property_DefaultTo;
 }
 
-- (BOOL)clearInputPreferences:(id *)a3
+- (BOOL)clearInputPreferences:(id *)preferences
 {
   v7[0] = 1;
   v8 = 3369;
-  v9 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v10 = 0;
   v11 = 0;
   v12 = 0;
   kdebug_trace();
-  v4 = [(AVAudioSession *)self sessionCore];
-  avas::client::SessionCore::SetProperty(v4, *MEMORY[0x1E69AFED8], MEMORY[0x1E695E0F0], 1);
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  avas::client::SessionCore::SetProperty(sessionCore, *MEMORY[0x1E69AFED8], MEMORY[0x1E695E0F0], 1);
   v5 = FormatNSErrorForReturn();
   if (v5)
   {
-    avas::client::SessionCoreLegacy_iOS::setPreferredInputPort(v4, 0);
+    avas::client::SessionCoreLegacy_iOS::setPreferredInputPort(sessionCore, 0);
   }
 
   avas::ScopedTrace::~ScopedTrace(v7);
@@ -4116,14 +4116,14 @@ LABEL_12:
 {
   v10[0] = 1;
   v11 = 3125;
-  v12 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v13 = 0;
   v14 = 0;
   v15 = 0;
   kdebug_trace();
-  v6 = [(AVAudioSession *)self sessionCore];
-  v7 = [MEMORY[0x1E696AD98] numberWithBool:inIOType != AVAudioSessionIOTypeNotSpecified];
-  avas::client::SessionCore::SetProperty(v6, *MEMORY[0x1E69B0388], v7, 1);
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  aVAudioSessionIOTypeNotSpecified = [MEMORY[0x1E696AD98] numberWithBool:inIOType != AVAudioSessionIOTypeNotSpecified];
+  avas::client::SessionCore::SetProperty(sessionCore, *MEMORY[0x1E69B0388], aVAudioSessionIOTypeNotSpecified, 1);
 
   v8 = FormatNSErrorForReturn();
   avas::ScopedTrace::~ScopedTrace(v10);
@@ -4132,32 +4132,32 @@ LABEL_12:
 
 - (BOOL)decoupledIO
 {
-  v2 = self;
+  selfCopy = self;
   v5[0] = 1;
   v6 = 3411;
-  v7 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v8 = 0;
   v9 = 0;
   v10 = 0;
   kdebug_trace();
-  v3 = [(AVAudioSession *)v2 sessionCore];
-  LOBYTE(v2) = avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(v3, *MEMORY[0x1E69B0080], 1);
+  sessionCore = [(AVAudioSession *)selfCopy sessionCore];
+  LOBYTE(selfCopy) = avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(sessionCore, *MEMORY[0x1E69B0080], 1);
   avas::ScopedTrace::~ScopedTrace(v5);
-  return v2;
+  return selfCopy;
 }
 
-- (BOOL)setPreferredInputSampleRate:(double)a3 error:(id *)a4
+- (BOOL)setPreferredInputSampleRate:(double)rate error:(id *)error
 {
   v10[0] = 1;
   v11 = 3412;
-  v12 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v13 = 0;
   v14 = 0;
   v15 = 0;
   kdebug_trace();
-  v6 = [(AVAudioSession *)self sessionCore];
-  v7 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  avas::client::SessionCore::SetProperty(v6, *MEMORY[0x1E69B0230], v7, 1);
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  v7 = [MEMORY[0x1E696AD98] numberWithDouble:rate];
+  avas::client::SessionCore::SetProperty(sessionCore, *MEMORY[0x1E69B0230], v7, 1);
 
   v8 = FormatNSErrorForReturn();
   avas::ScopedTrace::~ScopedTrace(v10);
@@ -4168,29 +4168,29 @@ LABEL_12:
 {
   v6[0] = 1;
   v7 = 3414;
-  v8 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v9 = 0;
   v10 = 0;
   v11 = 0;
   kdebug_trace();
-  v3 = [(AVAudioSession *)self sessionCore];
-  Property_DefaultTo = avas::client::SessionCore::GetProperty_DefaultToZero<double>(v3, *MEMORY[0x1E69B0230], 1);
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  Property_DefaultTo = avas::client::SessionCore::GetProperty_DefaultToZero<double>(sessionCore, *MEMORY[0x1E69B0230], 1);
   avas::ScopedTrace::~ScopedTrace(v6);
   return Property_DefaultTo;
 }
 
-- (BOOL)setPreferredOutputSampleRate:(double)a3 error:(id *)a4
+- (BOOL)setPreferredOutputSampleRate:(double)rate error:(id *)error
 {
   v10[0] = 1;
   v11 = 3413;
-  v12 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v13 = 0;
   v14 = 0;
   v15 = 0;
   kdebug_trace();
-  v6 = [(AVAudioSession *)self sessionCore];
-  v7 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  avas::client::SessionCore::SetProperty(v6, *MEMORY[0x1E69B0268], v7, 1);
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  v7 = [MEMORY[0x1E696AD98] numberWithDouble:rate];
+  avas::client::SessionCore::SetProperty(sessionCore, *MEMORY[0x1E69B0268], v7, 1);
 
   v8 = FormatNSErrorForReturn();
   avas::ScopedTrace::~ScopedTrace(v10);
@@ -4201,13 +4201,13 @@ LABEL_12:
 {
   v6[0] = 1;
   v7 = 3415;
-  v8 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v9 = 0;
   v10 = 0;
   v11 = 0;
   kdebug_trace();
-  v3 = [(AVAudioSession *)self sessionCore];
-  Property_DefaultTo = avas::client::SessionCore::GetProperty_DefaultToZero<double>(v3, *MEMORY[0x1E69B0268], 1);
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  Property_DefaultTo = avas::client::SessionCore::GetProperty_DefaultToZero<double>(sessionCore, *MEMORY[0x1E69B0268], 1);
   avas::ScopedTrace::~ScopedTrace(v6);
   return Property_DefaultTo;
 }
@@ -4217,15 +4217,15 @@ LABEL_12:
   v14[4] = *MEMORY[0x1E69E9840];
   v8[0] = 1;
   v9 = 3416;
-  v10 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v11 = 0;
   v12 = 0;
   v13 = 0;
   kdebug_trace();
-  v7 = [(AVAudioSession *)self sessionCore];
-  v3 = v7[5];
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  v3 = sessionCore[5];
   v14[0] = &unk_1F215DA68;
-  v14[1] = &v7;
+  v14[1] = &sessionCore;
   v14[3] = v14;
   updated = avas::client::KVOProperty<double>::UpdateIfDirty(v3 + 584, v14);
   std::__function::__value_func<double ()(void)>::~__value_func[abi:ne200100](v14);
@@ -4239,15 +4239,15 @@ LABEL_12:
   v14[4] = *MEMORY[0x1E69E9840];
   v8[0] = 1;
   v9 = 3417;
-  v10 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v11 = 0;
   v12 = 0;
   v13 = 0;
   kdebug_trace();
-  v7 = [(AVAudioSession *)self sessionCore];
-  v3 = v7[5];
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  v3 = sessionCore[5];
   v14[0] = &unk_1F215DAB0;
-  v14[1] = &v7;
+  v14[1] = &sessionCore;
   v14[3] = v14;
   updated = avas::client::KVOProperty<double>::UpdateIfDirty(v3 + 632, v14);
   std::__function::__value_func<double ()(void)>::~__value_func[abi:ne200100](v14);
@@ -4256,38 +4256,38 @@ LABEL_12:
   return updated;
 }
 
-- (BOOL)setSpeakerThermalGain:(float)a3 error:(id *)a4
+- (BOOL)setSpeakerThermalGain:(float)gain error:(id *)error
 {
   v11[0] = 1;
   v12 = 3406;
-  v13 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v14 = 0;
   v15 = 0;
   v16 = 0;
   kdebug_trace();
-  v6 = [(AVAudioSession *)self sessionCore];
-  *&v7 = a3;
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  *&v7 = gain;
   v8 = [MEMORY[0x1E696AD98] numberWithFloat:v7];
-  avas::client::SessionCore::SetProperty(v6, *MEMORY[0x1E69AEE20], v8, 1);
+  avas::client::SessionCore::SetProperty(sessionCore, *MEMORY[0x1E69AEE20], v8, 1);
 
   v9 = FormatNSErrorForReturn();
   avas::ScopedTrace::~ScopedTrace(v11);
   return v9;
 }
 
-- (BOOL)setHapticThermalGain:(float)a3 error:(id *)a4
+- (BOOL)setHapticThermalGain:(float)gain error:(id *)error
 {
   v11[0] = 1;
   v12 = 3408;
-  v13 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v14 = 0;
   v15 = 0;
   v16 = 0;
   kdebug_trace();
-  v6 = [(AVAudioSession *)self sessionCore];
-  *&v7 = a3;
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  *&v7 = gain;
   v8 = [MEMORY[0x1E696AD98] numberWithFloat:v7];
-  avas::client::SessionCore::SetProperty(v6, *MEMORY[0x1E69AEE10], v8, 1);
+  avas::client::SessionCore::SetProperty(sessionCore, *MEMORY[0x1E69AEE10], v8, 1);
 
   v9 = FormatNSErrorForReturn();
   avas::ScopedTrace::~ScopedTrace(v11);
@@ -4298,13 +4298,13 @@ LABEL_12:
 {
   v6[0] = 1;
   v7 = 3407;
-  v8 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v9 = 0;
   v10 = 0;
   v11 = 0;
   kdebug_trace();
-  v3 = [(AVAudioSession *)self sessionCore];
-  Property_DefaultTo = avas::client::SessionCore::GetProperty_DefaultToZero<float>(v3, *MEMORY[0x1E69AEE20], 1);
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  Property_DefaultTo = avas::client::SessionCore::GetProperty_DefaultToZero<float>(sessionCore, *MEMORY[0x1E69AEE20], 1);
   avas::ScopedTrace::~ScopedTrace(v6);
   return Property_DefaultTo;
 }
@@ -4313,13 +4313,13 @@ LABEL_12:
 {
   v6[0] = 1;
   v7 = 3409;
-  v8 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v9 = 0;
   v10 = 0;
   v11 = 0;
   kdebug_trace();
-  v3 = [(AVAudioSession *)self sessionCore];
-  Property_DefaultTo = avas::client::SessionCore::GetProperty_DefaultToZero<float>(v3, *MEMORY[0x1E69AEE10], 1);
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  Property_DefaultTo = avas::client::SessionCore::GetProperty_DefaultToZero<float>(sessionCore, *MEMORY[0x1E69AEE10], 1);
   avas::ScopedTrace::~ScopedTrace(v6);
   return Property_DefaultTo;
 }
@@ -4328,35 +4328,35 @@ LABEL_12:
 {
   v6[0] = 1;
   v7 = 3405;
-  v8 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v9 = 0;
   v10 = 0;
   v11 = 0;
   kdebug_trace();
-  v3 = [(AVAudioSession *)self sessionCore];
-  Property_DefaultTo = avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(v3, *MEMORY[0x1E69B02E0], 1);
-  atomic_store(Property_DefaultTo | 0x100, v3 + 76);
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  Property_DefaultTo = avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(sessionCore, *MEMORY[0x1E69B02E0], 1);
+  atomic_store(Property_DefaultTo | 0x100, sessionCore + 76);
   avas::ScopedTrace::~ScopedTrace(v6);
   return Property_DefaultTo;
 }
 
-- (unint64_t)availableRouteControlOptions:(id *)a3
+- (unint64_t)availableRouteControlOptions:(id *)options
 {
   LOBYTE(v11) = 1;
   HIDWORD(v11) = 3452;
-  v12 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v13 = 0;
   v14 = 0;
   v15 = 0;
   kdebug_trace();
   avas::ScopedTrace::~ScopedTrace(&v11);
-  v4 = [(AVAudioSession *)self sessionCore];
-  v5 = avas::client::SessionCore::GetPropertyMX_DefaultToZero<NSDictionary * {__strong}>(v4, *MEMORY[0x1E69AFD28]);
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  v5 = avas::client::SessionCore::GetPropertyMX_DefaultToZero<NSDictionary * {__strong}>(sessionCore, *MEMORY[0x1E69AFD28]);
   v6 = v5;
   if (v5)
   {
     v7 = [v5 objectForKeyedSubscript:*MEMORY[0x1E69AFD30]];
-    NSLog(&cfstr_Availableroute.isa, v7, v11, v12, v13, v14, v15);
+    NSLog(&cfstr_Availableroute.isa, v7, v11, opaqueSessionID, v13, v14, v15);
   }
 
   else
@@ -4367,19 +4367,19 @@ LABEL_12:
   return v9;
 }
 
-- (BOOL)setPreferredRouteControlConfig:(id)a3 error:(id *)a4
+- (BOOL)setPreferredRouteControlConfig:(id)config error:(id *)error
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  configCopy = config;
   LOBYTE(v21) = 1;
   HIDWORD(v21) = 3453;
-  v22 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   kdebug_trace();
-  v6 = v5;
-  v7 = [v6 routeControlOptions];
-  v8 = [v6 constantOutputVolumeLeveldB];
+  v6 = configCopy;
+  routeControlOptions = [v6 routeControlOptions];
+  constantOutputVolumeLeveldB = [v6 constantOutputVolumeLeveldB];
 
-  if (v7 == 1)
+  if (routeControlOptions == 1)
   {
     v9 = 3;
   }
@@ -4389,14 +4389,14 @@ LABEL_12:
     v9 = 2;
   }
 
-  if (v8)
+  if (constantOutputVolumeLeveldB)
   {
     v10 = v9;
   }
 
   else
   {
-    v10 = v7 == 1;
+    v10 = routeControlOptions == 1;
   }
 
   v11 = *MEMORY[0x1E69B0288];
@@ -4405,16 +4405,16 @@ LABEL_12:
   v24[0] = v12;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:&v23 count:1];
 
-  v14 = [(AVAudioSession *)self sessionCore];
-  if (!avas::client::SessionCore::SetProperty(v14, *MEMORY[0x1E69B0280], v13, 1))
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  if (!avas::client::SessionCore::SetProperty(sessionCore, *MEMORY[0x1E69B0280], v13, 1))
   {
-    v15 = [v6 constantOutputVolumeLeveldB];
-    v16 = v15 == 0;
+    constantOutputVolumeLeveldB2 = [v6 constantOutputVolumeLeveldB];
+    v16 = constantOutputVolumeLeveldB2 == 0;
 
     if (!v16)
     {
-      v17 = [v6 constantOutputVolumeLeveldB];
-      avas::client::SessionCore::SetProperty(v14, *MEMORY[0x1E69AFDE0], v17, 1);
+      constantOutputVolumeLeveldB3 = [v6 constantOutputVolumeLeveldB];
+      avas::client::SessionCore::SetProperty(sessionCore, *MEMORY[0x1E69AFDE0], constantOutputVolumeLeveldB3, 1);
     }
   }
 
@@ -4425,13 +4425,13 @@ LABEL_12:
   return v18;
 }
 
-- (id)privateGetRouteControlConfigWithDictionaryKey:(id)a3 withFeaturesKey:(id)a4
+- (id)privateGetRouteControlConfigWithDictionaryKey:(id)key withFeaturesKey:(id)featuresKey
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AVAudioSession *)self sessionCore];
-  v9 = avas::client::SessionCore::GetPropertyMX_DefaultToZero<NSDictionary * {__strong}>(v8, v6);
+  keyCopy = key;
+  featuresKeyCopy = featuresKey;
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  v9 = avas::client::SessionCore::GetPropertyMX_DefaultToZero<NSDictionary * {__strong}>(sessionCore, keyCopy);
   v10 = v9;
   if (!v9)
   {
@@ -4439,11 +4439,11 @@ LABEL_12:
     goto LABEL_11;
   }
 
-  v11 = [v9 objectForKeyedSubscript:v7];
+  v11 = [v9 objectForKeyedSubscript:featuresKeyCopy];
   v12 = objc_alloc_init(AVAudioSessionRouteControl);
   if (([(AVAudioSessionRouteControl *)v12 routeControlOptions]& 2) != 0)
   {
-    avas::client::SessionCore::GetProperty(v8, *MEMORY[0x1E69AFDE0], 1, &v19);
+    avas::client::SessionCore::GetProperty(sessionCore, *MEMORY[0x1E69AFDE0], 1, &v19);
     if (v19)
     {
       v15 = *avas::client::gSessionClientLog(v14);
@@ -4478,7 +4478,7 @@ LABEL_11:
 {
   v5[0] = 1;
   v6 = 3455;
-  v7 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v8 = 0;
   v9 = 0;
   v10 = 0;
@@ -4493,7 +4493,7 @@ LABEL_11:
 {
   v5[0] = 1;
   v6 = 3454;
-  v7 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v8 = 0;
   v9 = 0;
   v10 = 0;
@@ -4508,7 +4508,7 @@ LABEL_11:
 {
   v5[0] = 1;
   v6 = 3438;
-  v7 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v8 = 0;
   v9 = 0;
   v10 = 0;
@@ -4523,7 +4523,7 @@ LABEL_11:
 {
   v5[0] = 1;
   v6 = 3439;
-  v7 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v8 = 0;
   v9 = 0;
   v10 = 0;
@@ -4539,16 +4539,16 @@ LABEL_11:
   v21 = *MEMORY[0x1E69E9840];
   v11[0] = 1;
   v12 = 3440;
-  v13 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v14 = 0;
   v15 = 0;
   v16 = 0;
   kdebug_trace();
-  v3 = [(AVAudioSession *)self sessionCore];
-  avas::client::XPCConnection::sync_message<AVAudioSessionSpatialPreferences * {__strong}>(v3[10], &v17);
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  avas::client::XPCConnection::sync_message<AVAudioSessionSpatialPreferences * {__strong}>(sessionCore[10], &v17);
   v4 = objc_autoreleasePoolPush();
   v5 = caulk::xpc::message<objc_object  {objcproto25SessionManagerXPCProtocol}* {__strong},AVAudioSessionSpatialPreferences * {__strong}>::sync_proxy(&v17);
-  v6 = avas::client::SessionCore::sessionID(v3);
+  v6 = avas::client::SessionCore::sessionID(sessionCore);
   v7 = caulk::xpc::message<objc_object  {objcproto25SessionManagerXPCProtocol}* {__strong},AVAudioSessionSpatialPreferences * {__strong}>::reply(&v17);
   [v5 getSpatialPreferencesForSession:v6 reply:v7];
 
@@ -4570,23 +4570,23 @@ LABEL_11:
   return v8;
 }
 
-- (id)spatialPreferences:(int64_t)a3
+- (id)spatialPreferences:(int64_t)preferences
 {
   v23 = *MEMORY[0x1E69E9840];
   v13[0] = 1;
   v14 = 3440;
-  v15 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v16 = 0;
   v17 = 0;
   v18 = 0;
   kdebug_trace();
-  v5 = [(AVAudioSession *)self sessionCore];
-  avas::client::XPCConnection::sync_message<AVAudioSessionSpatialPreferences * {__strong}>(v5[10], &v19);
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  avas::client::XPCConnection::sync_message<AVAudioSessionSpatialPreferences * {__strong}>(sessionCore[10], &v19);
   v6 = objc_autoreleasePoolPush();
   v7 = caulk::xpc::message<objc_object  {objcproto25SessionManagerXPCProtocol}* {__strong},AVAudioSessionSpatialPreferences * {__strong}>::sync_proxy(&v19);
-  v8 = avas::client::SessionCore::sessionID(v5);
+  v8 = avas::client::SessionCore::sessionID(sessionCore);
   v9 = caulk::xpc::message<objc_object  {objcproto25SessionManagerXPCProtocol}* {__strong},AVAudioSessionSpatialPreferences * {__strong}>::reply(&v19);
-  [v7 getSpatialPreferencesForSession:v8 contentType:a3 reply:v9];
+  [v7 getSpatialPreferencesForSession:v8 contentType:preferences reply:v9];
 
   objc_autoreleasePoolPop(v6);
   if (v21)
@@ -4606,11 +4606,11 @@ LABEL_11:
   return v10;
 }
 
-- (BOOL)isRelatedSession:(id)a3
+- (BOOL)isRelatedSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   LODWORD(self) = [(AVAudioSession *)self sourceSessionID];
-  LOBYTE(self) = self == [v4 sourceSessionID];
+  LOBYTE(self) = self == [sessionCopy sourceSessionID];
 
   return self;
 }
@@ -4618,15 +4618,15 @@ LABEL_11:
 - (BOOL)prefersEchoCancelledInput
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [(AVAudioSession *)self sessionCore];
-  avas::client::SessionCore::GetProperty(v3, *MEMORY[0x1E69B02C8], 1, &v11);
+  sessionCore = [(AVAudioSession *)self sessionCore];
+  avas::client::SessionCore::GetProperty(sessionCore, *MEMORY[0x1E69B02C8], 1, &v11);
   if (v11 || (v4 = v12) == 0)
   {
     v5 = *avas::client::gSessionClientLog(v4);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       v6 = v11;
-      v7 = [(AVAudioSession *)self opaqueSessionID];
+      opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
       *buf = 136315906;
       v14 = "AVAudioSession_iOS.mm";
       v15 = 1024;
@@ -4634,28 +4634,28 @@ LABEL_11:
       v17 = 1024;
       v18 = v6;
       v19 = 1024;
-      v20 = v7;
+      v20 = opaqueSessionID;
       _os_log_impl(&dword_1AC8A4000, v5, OS_LOG_TYPE_ERROR, "%25s:%-5d Failed to get prefersEchoCancelledInput, error: %d, session 0x%x", buf, 0x1Eu);
     }
 
-    v8 = 0;
+    bOOLValue = 0;
   }
 
   else
   {
-    v8 = [v12 BOOLValue];
+    bOOLValue = [v12 BOOLValue];
   }
 
   v9 = *MEMORY[0x1E69E9840];
-  return v8;
+  return bOOLValue;
 }
 
 - (BOOL)isEchoCancelledInputEnabled
 {
-  v2 = [(AVAudioSession *)self sessionCore];
+  sessionCore = [(AVAudioSession *)self sessionCore];
   v3 = *MEMORY[0x1E69AFF78];
 
-  return avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(v2, v3, 1);
+  return avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(sessionCore, v3, 1);
 }
 
 - (BOOL)allowEnhanceDialogue
@@ -4665,7 +4665,7 @@ LABEL_11:
   }
 
   v3 = avas::EnhanceDialogueBriocheEnabled(void)::enhanceDialogueBriocheEnabled;
-  v4 = [(AVAudioSession *)self sessionCore];
+  sessionCore = [(AVAudioSession *)self sessionCore];
   if (v3 == 1)
   {
     v5 = *MEMORY[0x1E69AFC50];
@@ -4678,7 +4678,7 @@ LABEL_11:
     v6 = 0;
   }
 
-  return avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(v4, v5, v6);
+  return avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(sessionCore, v5, v6);
 }
 
 - (BOOL)prefersEnhanceDialogue
@@ -4692,10 +4692,10 @@ LABEL_11:
     return 0;
   }
 
-  v3 = [(AVAudioSession *)self sessionCore];
+  sessionCore = [(AVAudioSession *)self sessionCore];
   v4 = *MEMORY[0x1E69B02D0];
 
-  return avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(v3, v4, 1);
+  return avas::client::SessionCore::GetProperty_DefaultToZero<BOOL>(sessionCore, v4, 1);
 }
 
 - (uint64_t)outputVolume
@@ -4708,7 +4708,7 @@ LABEL_11:
 
 - (uint64_t)promptStyle
 {
-  v1 = avas::client::SessionCore::GetPropertyMX_DefaultToZero<NSString * {__strong}>(**(a1 + 8), *MEMORY[0x1E69AEE28]);
+  v1 = avas::client::SessionCore::GetPropertyMX_DefaultToZero<NSString * {__strong}>(**(self + 8), *MEMORY[0x1E69AEE28]);
   v2 = TranslateMXVoicePromptStyleToAVASVoicePromptStyle(v1);
 
   return v2;
@@ -4741,21 +4741,21 @@ LABEL_11:
 - (void)privateGetDataSources:core:
 {
 
-  operator delete(a1);
+  operator delete(self);
 }
 
 - (id)privateGetDataSources:core:
 {
-  v2 = [*(a1 + 8) currentRoute];
-  v3 = v2;
-  if (*(a1 + 16) == 1)
+  currentRoute = [*(self + 8) currentRoute];
+  v3 = currentRoute;
+  if (*(self + 16) == 1)
   {
-    [v2 inputs];
+    [currentRoute inputs];
   }
 
   else
   {
-    [v2 outputs];
+    [currentRoute outputs];
   }
   v4 = ;
   if ([v4 count])
@@ -4768,9 +4768,9 @@ LABEL_11:
     v5 = 0;
   }
 
-  v6 = [v5 dataSources];
+  dataSources = [v5 dataSources];
 
-  return v6;
+  return dataSources;
 }
 
 - (uint64_t)isInputAvailable
@@ -4849,36 +4849,36 @@ LABEL_11:
   return [(AVAudioSession *)&v4 retainCount];
 }
 
-- (id)addObserverForType:(unint64_t)a3 name:(id)a4 block:(id)a5
+- (id)addObserverForType:(unint64_t)type name:(id)name block:(id)block
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = avas::client::SessionCore::addObserverForType([(AVAudioSession *)self sessionCore], a3, v8, v9);
+  nameCopy = name;
+  blockCopy = block;
+  v10 = avas::client::SessionCore::addObserverForType([(AVAudioSession *)self sessionCore], type, nameCopy, blockCopy);
 
   return v10;
 }
 
-- (void)removeObserverForType:(unint64_t)a3 observer:(id)a4 name:(id)a5
+- (void)removeObserverForType:(unint64_t)type observer:(id)observer name:(id)name
 {
-  v9 = a4;
-  v8 = a5;
-  avas::client::SessionCore::removeObserverForType([(AVAudioSession *)self sessionCore], a3, v9, v8);
+  observerCopy = observer;
+  nameCopy = name;
+  avas::client::SessionCore::removeObserverForType([(AVAudioSession *)self sessionCore], type, observerCopy, nameCopy);
 }
 
-- (id)getMXSessionProperty:(id)a3 error:(id *)a4
+- (id)getMXSessionProperty:(id)property error:(id *)error
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  propertyCopy = property;
   v12[0] = 1;
   v13 = 3426;
-  v14 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v15 = 0;
   v16 = 0;
   v17 = 0;
   v7 = kdebug_trace();
-  if (v6)
+  if (propertyCopy)
   {
-    avas::client::SessionCore::GetPropertyMX_GenericPipe([(AVAudioSession *)self sessionCore], v6, buf);
+    avas::client::SessionCore::GetPropertyMX_GenericPipe([(AVAudioSession *)self sessionCore], propertyCopy, buf);
     if (buf[8])
     {
       v8 = *buf;
@@ -4887,9 +4887,9 @@ LABEL_11:
     else
     {
       v8 = 0;
-      if (a4)
+      if (error)
       {
-        *a4 = *buf;
+        *error = *buf;
       }
     }
   }
@@ -4906,10 +4906,10 @@ LABEL_11:
       _os_log_impl(&dword_1AC8A4000, v9, OS_LOG_TYPE_ERROR, "%25s:%-5d getMXSessionProperty: Invalid MXProperty provided", buf, 0x12u);
     }
 
-    if (a4)
+    if (error)
     {
       [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:2003329396 userInfo:0];
-      *a4 = v8 = 0;
+      *error = v8 = 0;
     }
 
     else
@@ -4925,30 +4925,30 @@ LABEL_11:
   return v8;
 }
 
-- (BOOL)setMXSessionProperty:(id)a3 value:(id)a4 error:(id *)a5
+- (BOOL)setMXSessionProperty:(id)property value:(id)value error:(id *)error
 {
   v29 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  propertyCopy = property;
+  valueCopy = value;
   v17[0] = 1;
   v18 = 3427;
-  v19 = [(AVAudioSession *)self opaqueSessionID];
+  opaqueSessionID = [(AVAudioSession *)self opaqueSessionID];
   v20 = 0;
   v21 = 0;
   v22 = 0;
   v9 = kdebug_trace();
-  if (v7)
+  if (propertyCopy)
   {
-    if (!v8)
+    if (!valueCopy)
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
+      valueCopy = [MEMORY[0x1E695DFB0] null];
     }
 
-    v10 = [(AVAudioSession *)self sessionCore];
-    v23 = v7;
-    v24 = v8;
+    sessionCore = [(AVAudioSession *)self sessionCore];
+    v23 = propertyCopy;
+    v24 = valueCopy;
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v24 forKeys:&v23 count:1];
-    avas::client::SessionCore::SetBatchProperties(v10, v11, 0, 2, 1, 1);
+    avas::client::SessionCore::SetBatchProperties(sessionCore, v11, 0, 2, 1, 1);
 
     v12 = FormatNSErrorForReturn();
   }
@@ -4975,13 +4975,13 @@ LABEL_11:
   return v14;
 }
 
-- (BOOL)setMXProperties:(id)a3 propertyErrors:(id *)a4
+- (BOOL)setMXProperties:(id)properties propertyErrors:(id *)errors
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (v6)
+  propertiesCopy = properties;
+  if (propertiesCopy)
   {
-    v7 = avas::client::SessionCore::SetBatchProperties([(AVAudioSession *)self sessionCore], v6, a4, 2, 1, 1);
+    v7 = avas::client::SessionCore::SetBatchProperties([(AVAudioSession *)self sessionCore], propertiesCopy, errors, 2, 1, 1);
     v8 = v7;
     if (!v7)
     {
@@ -5029,13 +5029,13 @@ LABEL_10:
   return v14;
 }
 
-- (id)getMXProperties:(id)a3 propertyErrors:(id *)a4
+- (id)getMXProperties:(id)properties propertyErrors:(id *)errors
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (v6)
+  propertiesCopy = properties;
+  if (propertiesCopy)
   {
-    v7 = avas::client::SessionCore::GetBatchPropertiesMX([(AVAudioSession *)self sessionCore], v6, a4);
+    v7 = avas::client::SessionCore::GetBatchPropertiesMX([(AVAudioSession *)self sessionCore], propertiesCopy, errors);
   }
 
   else
@@ -5058,13 +5058,13 @@ LABEL_10:
   return v7;
 }
 
-- (BOOL)setAudioIOProperties:(id)a3 propertyErrors:(id *)a4
+- (BOOL)setAudioIOProperties:(id)properties propertyErrors:(id *)errors
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (v6)
+  propertiesCopy = properties;
+  if (propertiesCopy)
   {
-    v7 = avas::client::SessionCore::SetAudioIOProperties([(AVAudioSession *)self sessionCore], v6, a4) == 0;
+    v7 = avas::client::SessionCore::SetAudioIOProperties([(AVAudioSession *)self sessionCore], propertiesCopy, errors) == 0;
   }
 
   else

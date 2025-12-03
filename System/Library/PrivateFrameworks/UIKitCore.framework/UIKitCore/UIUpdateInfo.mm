@@ -1,17 +1,17 @@
 @interface UIUpdateInfo
-- (void)initWithUpdateParameters:(void *)a1;
+- (void)initWithUpdateParameters:(void *)parameters;
 @end
 
 @implementation UIUpdateInfo
 
-- (void)initWithUpdateParameters:(void *)a1
+- (void)initWithUpdateParameters:(void *)parameters
 {
-  if (!a1)
+  if (!parameters)
   {
     return 0;
   }
 
-  v8.receiver = a1;
+  v8.receiver = parameters;
   v8.super_class = UIUpdateInfo;
   v3 = objc_msgSendSuper2(&v8, sel_init);
   if (v3)

@@ -1,7 +1,7 @@
 @interface AVMutableMetadataItem
 + (AVMutableMetadataItem)metadataItem;
 - (AVMetadataIdentifier)identifier;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)value;
 - (void)setDataType:(NSString *)dataType;
 - (void)setDuration:(CMTime *)duration;
@@ -11,7 +11,7 @@
 - (void)setKey:(id)key;
 - (void)setKeySpace:(AVMetadataKeySpace)keySpace;
 - (void)setLocale:(NSLocale *)locale;
-- (void)setPreferredStorageLocation:(id)a3;
+- (void)setPreferredStorageLocation:(id)location;
 - (void)setStartDate:(NSDate *)startDate;
 - (void)setTime:(CMTime *)time;
 - (void)setValue:(id)value;
@@ -107,14 +107,14 @@
   }
 }
 
-- (void)setPreferredStorageLocation:(id)a3
+- (void)setPreferredStorageLocation:(id)location
 {
   priv = self->super._priv;
   preferredStorageLocation = priv->preferredStorageLocation;
-  if (preferredStorageLocation != a3)
+  if (preferredStorageLocation != location)
   {
 
-    self->super._priv->preferredStorageLocation = [a3 copy];
+    self->super._priv->preferredStorageLocation = [location copy];
     priv = self->super._priv;
   }
 
@@ -221,12 +221,12 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [AVMetadataItem alloc];
-  v5 = [(AVMetadataItem *)self _figMetadataDictionary];
+  _figMetadataDictionary = [(AVMetadataItem *)self _figMetadataDictionary];
 
-  return [(AVMetadataItem *)v4 _initWithFigMetadataDictionary:v5];
+  return [(AVMetadataItem *)v4 _initWithFigMetadataDictionary:_figMetadataDictionary];
 }
 
 @end

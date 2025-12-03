@@ -1,23 +1,23 @@
 @interface GKDashboardHostViewController
 + (id)dashboardExtension;
-- (GKDashboardHostViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (GKDashboardHostViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (GKGameCenterViewController)delegate;
 - (id)extensionObjectProxy;
 - (void)extensionIsCanceling;
 - (void)extensionIsFinishing;
-- (void)finishWithMatch:(id)a3;
-- (void)hostDidChangeLeaderboardIdentifier:(id)a3;
-- (void)hostDidChangeLeaderboardPlayerScope:(id)a3;
-- (void)hostDidChangeLeaderboardTimeScope:(id)a3;
-- (void)hostDidChangeViewState:(id)a3;
-- (void)hostSupportsShowingPlayForChallenge:(BOOL)a3;
-- (void)hostSupportsShowingPlayForTurnBasedMatch:(BOOL)a3;
-- (void)hostSupportsShowingQuitForTurnBasedMatch:(BOOL)a3;
-- (void)messageFromExtension:(id)a3;
-- (void)playPressedForChallenge:(id)a3;
-- (void)playerQuitMatch:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)finishWithMatch:(id)match;
+- (void)hostDidChangeLeaderboardIdentifier:(id)identifier;
+- (void)hostDidChangeLeaderboardPlayerScope:(id)scope;
+- (void)hostDidChangeLeaderboardTimeScope:(id)scope;
+- (void)hostDidChangeViewState:(id)state;
+- (void)hostSupportsShowingPlayForChallenge:(BOOL)challenge;
+- (void)hostSupportsShowingPlayForTurnBasedMatch:(BOOL)match;
+- (void)hostSupportsShowingQuitForTurnBasedMatch:(BOOL)match;
+- (void)messageFromExtension:(id)extension;
+- (void)playPressedForChallenge:(id)challenge;
+- (void)playerQuitMatch:(id)match;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation GKDashboardHostViewController
@@ -57,11 +57,11 @@ void __51__GKDashboardHostViewController_dashboardExtension__block_invoke()
   }
 }
 
-- (GKDashboardHostViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (GKDashboardHostViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v8.receiver = self;
   v8.super_class = GKDashboardHostViewController;
-  v4 = [(GKDashboardHostViewController *)&v8 initWithNibName:a3 bundle:a4];
+  v4 = [(GKDashboardHostViewController *)&v8 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x277D82BB8]);
@@ -72,34 +72,34 @@ void __51__GKDashboardHostViewController_dashboardExtension__block_invoke()
   return v4;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
-  v5 = [MEMORY[0x277D0C138] local];
-  [v5 hideAccessPoint];
+  appearCopy = appear;
+  local = [MEMORY[0x277D0C138] local];
+  [local hideAccessPoint];
 
   v6.receiver = self;
   v6.super_class = GKDashboardHostViewController;
-  [(GKExtensionRemoteViewController *)&v6 viewWillAppear:v3];
+  [(GKExtensionRemoteViewController *)&v6 viewWillAppear:appearCopy];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = GKDashboardHostViewController;
-  [(GKExtensionRemoteViewController *)&v4 viewDidDisappear:a3];
-  v3 = [MEMORY[0x277D0C138] local];
-  [v3 showAccessPoint];
+  [(GKExtensionRemoteViewController *)&v4 viewDidDisappear:disappear];
+  local = [MEMORY[0x277D0C138] local];
+  [local showAccessPoint];
 }
 
 - (id)extensionObjectProxy
 {
-  v3 = [(GKExtensionRemoteViewController *)self extension];
-  v4 = [(GKExtensionRemoteViewController *)self requestIdentifier];
-  v5 = [v3 _extensionContextForUUID:v4];
+  extension = [(GKExtensionRemoteViewController *)self extension];
+  requestIdentifier = [(GKExtensionRemoteViewController *)self requestIdentifier];
+  v5 = [extension _extensionContextForUUID:requestIdentifier];
 
-  v6 = [v5 _auxiliaryConnection];
-  v7 = [v6 remoteObjectProxyWithErrorHandler:&__block_literal_global_9_0];
+  _auxiliaryConnection = [v5 _auxiliaryConnection];
+  v7 = [_auxiliaryConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_9_0];
 
   return v7;
 }
@@ -119,105 +119,105 @@ void __53__GKDashboardHostViewController_extensionObjectProxy__block_invoke(uint
   }
 }
 
-- (void)hostDidChangeViewState:(id)a3
+- (void)hostDidChangeViewState:(id)state
 {
   v8[2] = *MEMORY[0x277D85DE8];
   v7[0] = @"MessageCommandKey";
   v7[1] = @"MessageParamKey";
   v8[0] = &unk_2861890A8;
-  v8[1] = a3;
+  v8[1] = state;
   v4 = MEMORY[0x277CBEAC0];
-  v5 = a3;
+  stateCopy = state;
   v6 = [v4 dictionaryWithObjects:v8 forKeys:v7 count:2];
 
   [(GKExtensionRemoteViewController *)self sendMessageToExtension:v6];
 }
 
-- (void)hostDidChangeLeaderboardIdentifier:(id)a3
+- (void)hostDidChangeLeaderboardIdentifier:(id)identifier
 {
   v8[2] = *MEMORY[0x277D85DE8];
   v7[0] = @"MessageCommandKey";
   v7[1] = @"MessageParamKey";
   v8[0] = &unk_2861890C0;
-  v8[1] = a3;
+  v8[1] = identifier;
   v4 = MEMORY[0x277CBEAC0];
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = [v4 dictionaryWithObjects:v8 forKeys:v7 count:2];
 
   [(GKExtensionRemoteViewController *)self sendMessageToExtension:v6];
 }
 
-- (void)hostDidChangeLeaderboardTimeScope:(id)a3
+- (void)hostDidChangeLeaderboardTimeScope:(id)scope
 {
   v8[2] = *MEMORY[0x277D85DE8];
   v7[0] = @"MessageCommandKey";
   v7[1] = @"MessageParamKey";
   v8[0] = &unk_2861890D8;
-  v8[1] = a3;
+  v8[1] = scope;
   v4 = MEMORY[0x277CBEAC0];
-  v5 = a3;
+  scopeCopy = scope;
   v6 = [v4 dictionaryWithObjects:v8 forKeys:v7 count:2];
 
   [(GKExtensionRemoteViewController *)self sendMessageToExtension:v6];
 }
 
-- (void)hostDidChangeLeaderboardPlayerScope:(id)a3
+- (void)hostDidChangeLeaderboardPlayerScope:(id)scope
 {
   v8[2] = *MEMORY[0x277D85DE8];
   v7[0] = @"MessageCommandKey";
   v7[1] = @"MessageParamKey";
   v8[0] = &unk_2861890F0;
-  v8[1] = a3;
+  v8[1] = scope;
   v4 = MEMORY[0x277CBEAC0];
-  v5 = a3;
+  scopeCopy = scope;
   v6 = [v4 dictionaryWithObjects:v8 forKeys:v7 count:2];
 
   [(GKExtensionRemoteViewController *)self sendMessageToExtension:v6];
 }
 
-- (void)hostSupportsShowingPlayForChallenge:(BOOL)a3
+- (void)hostSupportsShowingPlayForChallenge:(BOOL)challenge
 {
   v7[2] = *MEMORY[0x277D85DE8];
   v6[0] = @"MessageCommandKey";
   v6[1] = @"MessageParamKey";
   v7[0] = &unk_286189108;
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:challenge];
   v7[1] = v4;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:v6 count:2];
   [(GKExtensionRemoteViewController *)self sendMessageToExtension:v5];
 }
 
-- (void)hostSupportsShowingPlayForTurnBasedMatch:(BOOL)a3
+- (void)hostSupportsShowingPlayForTurnBasedMatch:(BOOL)match
 {
   v7[2] = *MEMORY[0x277D85DE8];
   v6[0] = @"MessageCommandKey";
   v6[1] = @"MessageParamKey";
   v7[0] = &unk_286189120;
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:match];
   v7[1] = v4;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:v6 count:2];
   [(GKExtensionRemoteViewController *)self sendMessageToExtension:v5];
 }
 
-- (void)hostSupportsShowingQuitForTurnBasedMatch:(BOOL)a3
+- (void)hostSupportsShowingQuitForTurnBasedMatch:(BOOL)match
 {
   v7[2] = *MEMORY[0x277D85DE8];
   v6[0] = @"MessageCommandKey";
   v6[1] = @"MessageParamKey";
   v7[0] = &unk_286189138;
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:match];
   v7[1] = v4;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:v6 count:2];
   [(GKExtensionRemoteViewController *)self sendMessageToExtension:v5];
 }
 
-- (void)messageFromExtension:(id)a3
+- (void)messageFromExtension:(id)extension
 {
-  v4 = a3;
+  extensionCopy = extension;
   v5 = MEMORY[0x277CCAAC8];
   v6 = GKExtensionProtocolSecureCodedClasses();
   v16 = 0;
-  v7 = [v5 unarchivedObjectOfClasses:v6 fromData:v4 error:&v16];
+  v7 = [v5 unarchivedObjectOfClasses:v6 fromData:extensionCopy error:&v16];
   v8 = v16;
 
   if (v8)
@@ -235,24 +235,24 @@ void __53__GKDashboardHostViewController_extensionObjectProxy__block_invoke(uint
   }
 
   v11 = [v7 objectForKeyedSubscript:@"MessageCommandKey"];
-  v12 = [v11 integerValue];
+  integerValue = [v11 integerValue];
 
   v13 = [v7 objectForKeyedSubscript:@"MessageParamKey"];
-  if (v12 <= 7)
+  if (integerValue <= 7)
   {
-    switch(v12)
+    switch(integerValue)
     {
       case 5:
-        v14 = [(GKDashboardHostViewController *)self delegate];
-        [v14 setViewStateFromExtension:{objc_msgSend(v13, "integerValue")}];
+        delegate = [(GKDashboardHostViewController *)self delegate];
+        [delegate setViewStateFromExtension:{objc_msgSend(v13, "integerValue")}];
         goto LABEL_23;
       case 6:
-        v14 = [(GKDashboardHostViewController *)self delegate];
-        [v14 setLeaderboardIdentifierFromExtension:v13];
+        delegate = [(GKDashboardHostViewController *)self delegate];
+        [delegate setLeaderboardIdentifierFromExtension:v13];
         goto LABEL_23;
       case 7:
-        v14 = [(GKDashboardHostViewController *)self delegate];
-        [v14 setLeaderboardTimeScopeFromExtension:{objc_msgSend(v13, "integerValue")}];
+        delegate = [(GKDashboardHostViewController *)self delegate];
+        [delegate setLeaderboardTimeScopeFromExtension:{objc_msgSend(v13, "integerValue")}];
 LABEL_23:
 
         goto LABEL_24;
@@ -261,35 +261,35 @@ LABEL_23:
 LABEL_19:
     v15.receiver = self;
     v15.super_class = GKDashboardHostViewController;
-    [(GKExtensionRemoteViewController *)&v15 messageFromExtension:v4];
+    [(GKExtensionRemoteViewController *)&v15 messageFromExtension:extensionCopy];
     goto LABEL_24;
   }
 
-  if (v12 > 10)
+  if (integerValue > 10)
   {
-    if (v12 == 11)
+    if (integerValue == 11)
     {
       [(GKDashboardHostViewController *)self playerQuitMatch:v13];
       goto LABEL_24;
     }
 
-    if (v12 == 50)
+    if (integerValue == 50)
     {
-      v14 = [(GKDashboardHostViewController *)self delegate];
-      [v14 setLeaderboardPlayerScopeFromExtension:{objc_msgSend(v13, "integerValue")}];
+      delegate = [(GKDashboardHostViewController *)self delegate];
+      [delegate setLeaderboardPlayerScopeFromExtension:{objc_msgSend(v13, "integerValue")}];
       goto LABEL_23;
     }
 
     goto LABEL_19;
   }
 
-  if (v12 == 8)
+  if (integerValue == 8)
   {
     [(GKDashboardHostViewController *)self playPressedForChallenge:v13];
     goto LABEL_24;
   }
 
-  if (v12 != 10)
+  if (integerValue != 10)
   {
     goto LABEL_19;
   }
@@ -298,48 +298,48 @@ LABEL_19:
 LABEL_24:
 }
 
-- (void)playPressedForChallenge:(id)a3
+- (void)playPressedForChallenge:(id)challenge
 {
-  v7 = [MEMORY[0x277D0BFF0] challengeForInternalRepresentation:a3];
-  v3 = [MEMORY[0x277D0BFF8] challengeEventHandler];
-  v4 = [v3 delegate];
+  v7 = [MEMORY[0x277D0BFF0] challengeForInternalRepresentation:challenge];
+  challengeEventHandler = [MEMORY[0x277D0BFF8] challengeEventHandler];
+  delegate = [challengeEventHandler delegate];
 
   if (objc_opt_respondsToSelector())
   {
-    [v4 localPlayerDidSelectChallenge:v7];
+    [delegate localPlayerDidSelectChallenge:v7];
   }
 
-  v5 = [MEMORY[0x277D0C138] localPlayer];
-  v6 = [v5 eventEmitter];
-  [v6 player:v5 wantsToPlayChallenge:v7];
+  localPlayer = [MEMORY[0x277D0C138] localPlayer];
+  eventEmitter = [localPlayer eventEmitter];
+  [eventEmitter player:localPlayer wantsToPlayChallenge:v7];
 }
 
-- (void)finishWithMatch:(id)a3
+- (void)finishWithMatch:(id)match
 {
   v3 = MEMORY[0x277D0C138];
-  v4 = a3;
-  v7 = [v3 localPlayer];
-  v5 = [v7 eventEmitter];
-  v6 = [objc_alloc(MEMORY[0x277D0C238]) initWithInternalRepresentation:v4];
+  matchCopy = match;
+  localPlayer = [v3 localPlayer];
+  eventEmitter = [localPlayer eventEmitter];
+  v6 = [objc_alloc(MEMORY[0x277D0C238]) initWithInternalRepresentation:matchCopy];
 
-  [v5 player:v7 receivedTurnEventForMatch:v6 didBecomeActive:1];
+  [eventEmitter player:localPlayer receivedTurnEventForMatch:v6 didBecomeActive:1];
 }
 
-- (void)playerQuitMatch:(id)a3
+- (void)playerQuitMatch:(id)match
 {
   v3 = MEMORY[0x277D0C138];
-  v4 = a3;
-  v7 = [v3 localPlayer];
-  v5 = [v7 eventEmitter];
-  v6 = [objc_alloc(MEMORY[0x277D0C238]) initWithInternalRepresentation:v4];
+  matchCopy = match;
+  localPlayer = [v3 localPlayer];
+  eventEmitter = [localPlayer eventEmitter];
+  v6 = [objc_alloc(MEMORY[0x277D0C238]) initWithInternalRepresentation:matchCopy];
 
-  [v5 player:v7 wantsToQuitMatch:v6];
+  [eventEmitter player:localPlayer wantsToQuitMatch:v6];
 }
 
 - (void)extensionIsCanceling
 {
-  v3 = [(GKDashboardHostViewController *)self delegate];
-  [v3 notifyDelegateOnWillFinish];
+  delegate = [(GKDashboardHostViewController *)self delegate];
+  [delegate notifyDelegateOnWillFinish];
 
   v4.receiver = self;
   v4.super_class = GKDashboardHostViewController;
@@ -348,8 +348,8 @@ LABEL_24:
 
 - (void)extensionIsFinishing
 {
-  v3 = [(GKDashboardHostViewController *)self delegate];
-  [v3 notifyDelegateOnWillFinish];
+  delegate = [(GKDashboardHostViewController *)self delegate];
+  [delegate notifyDelegateOnWillFinish];
 
   v4.receiver = self;
   v4.super_class = GKDashboardHostViewController;

@@ -1,47 +1,47 @@
 @interface SGStructuredAddress
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addDependentLocality:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addDependentLocality:(id)locality;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SGStructuredAddress
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 3))
+  fromCopy = from;
+  if (*(fromCopy + 3))
   {
     [(SGStructuredAddress *)self setCountry:?];
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(SGStructuredAddress *)self setCountryCode:?];
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(SGStructuredAddress *)self setAdministrativeArea:?];
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(SGStructuredAddress *)self setAdministrativeAreaCode:?];
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(SGStructuredAddress *)self setSubAdministrativeArea:?];
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(SGStructuredAddress *)self setLocality:?];
   }
@@ -50,7 +50,7 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(v4 + 5);
+  v5 = *(fromCopy + 5);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -74,17 +74,17 @@
     while (v7);
   }
 
-  if (*(v4 + 10))
+  if (*(fromCopy + 10))
   {
     [(SGStructuredAddress *)self setThoroughfare:?];
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(SGStructuredAddress *)self setSubThroughfare:?];
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(SGStructuredAddress *)self setPostCode:?];
   }
@@ -106,16 +106,16 @@
   return v9 ^ v11 ^ [(NSString *)self->_postCode hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
   country = self->_country;
-  if (country | v4[3])
+  if (country | equalCopy[3])
   {
     if (![(NSString *)country isEqual:?])
     {
@@ -124,15 +124,15 @@
   }
 
   countryCode = self->_countryCode;
-  if (countryCode | v4[4] && ![(NSString *)countryCode isEqual:?])
+  if (countryCode | equalCopy[4] && ![(NSString *)countryCode isEqual:?])
   {
     goto LABEL_22;
   }
 
-  if (((administrativeArea = self->_administrativeArea, !(administrativeArea | v4[1])) || [(NSString *)administrativeArea isEqual:?]) && ((administrativeAreaCode = self->_administrativeAreaCode, !(administrativeAreaCode | v4[2])) || [(NSString *)administrativeAreaCode isEqual:?]) && ((subAdministrativeArea = self->_subAdministrativeArea, !(subAdministrativeArea | v4[8])) || [(NSString *)subAdministrativeArea isEqual:?]) && ((locality = self->_locality, !(locality | v4[6])) || [(NSString *)locality isEqual:?]) && ((dependentLocalitys = self->_dependentLocalitys, !(dependentLocalitys | v4[5])) || [(NSMutableArray *)dependentLocalitys isEqual:?]) && ((thoroughfare = self->_thoroughfare, !(thoroughfare | v4[10])) || [(NSString *)thoroughfare isEqual:?]) && ((subThroughfare = self->_subThroughfare, !(subThroughfare | v4[9])) || [(NSString *)subThroughfare isEqual:?]))
+  if (((administrativeArea = self->_administrativeArea, !(administrativeArea | equalCopy[1])) || [(NSString *)administrativeArea isEqual:?]) && ((administrativeAreaCode = self->_administrativeAreaCode, !(administrativeAreaCode | equalCopy[2])) || [(NSString *)administrativeAreaCode isEqual:?]) && ((subAdministrativeArea = self->_subAdministrativeArea, !(subAdministrativeArea | equalCopy[8])) || [(NSString *)subAdministrativeArea isEqual:?]) && ((locality = self->_locality, !(locality | equalCopy[6])) || [(NSString *)locality isEqual:?]) && ((dependentLocalitys = self->_dependentLocalitys, !(dependentLocalitys | equalCopy[5])) || [(NSMutableArray *)dependentLocalitys isEqual:?]) && ((thoroughfare = self->_thoroughfare, !(thoroughfare | equalCopy[10])) || [(NSString *)thoroughfare isEqual:?]) && ((subThroughfare = self->_subThroughfare, !(subThroughfare | equalCopy[9])) || [(NSString *)subThroughfare isEqual:?]))
   {
     postCode = self->_postCode;
-    if (postCode | v4[7])
+    if (postCode | equalCopy[7])
     {
       v15 = [(NSString *)postCode isEqual:?];
     }
@@ -152,31 +152,31 @@ LABEL_22:
   return v15;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v37 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_country copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_country copyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
-  v8 = [(NSString *)self->_countryCode copyWithZone:a3];
+  v8 = [(NSString *)self->_countryCode copyWithZone:zone];
   v9 = v5[4];
   v5[4] = v8;
 
-  v10 = [(NSString *)self->_administrativeArea copyWithZone:a3];
+  v10 = [(NSString *)self->_administrativeArea copyWithZone:zone];
   v11 = v5[1];
   v5[1] = v10;
 
-  v12 = [(NSString *)self->_administrativeAreaCode copyWithZone:a3];
+  v12 = [(NSString *)self->_administrativeAreaCode copyWithZone:zone];
   v13 = v5[2];
   v5[2] = v12;
 
-  v14 = [(NSString *)self->_subAdministrativeArea copyWithZone:a3];
+  v14 = [(NSString *)self->_subAdministrativeArea copyWithZone:zone];
   v15 = v5[8];
   v5[8] = v14;
 
-  v16 = [(NSString *)self->_locality copyWithZone:a3];
+  v16 = [(NSString *)self->_locality copyWithZone:zone];
   v17 = v5[6];
   v5[6] = v16;
 
@@ -200,7 +200,7 @@ LABEL_22:
           objc_enumerationMutation(v18);
         }
 
-        v23 = [*(*(&v32 + 1) + 8 * v22) copyWithZone:{a3, v32}];
+        v23 = [*(*(&v32 + 1) + 8 * v22) copyWithZone:{zone, v32}];
         [v5 addDependentLocality:v23];
 
         ++v22;
@@ -213,15 +213,15 @@ LABEL_22:
     while (v20);
   }
 
-  v24 = [(NSString *)self->_thoroughfare copyWithZone:a3];
+  v24 = [(NSString *)self->_thoroughfare copyWithZone:zone];
   v25 = v5[10];
   v5[10] = v24;
 
-  v26 = [(NSString *)self->_subThroughfare copyWithZone:a3];
+  v26 = [(NSString *)self->_subThroughfare copyWithZone:zone];
   v27 = v5[9];
   v5[9] = v26;
 
-  v28 = [(NSString *)self->_postCode copyWithZone:a3];
+  v28 = [(NSString *)self->_postCode copyWithZone:zone];
   v29 = v5[7];
   v5[7] = v28;
 
@@ -229,77 +229,77 @@ LABEL_22:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if (self->_country)
   {
-    [v9 setCountry:?];
+    [toCopy setCountry:?];
   }
 
   if (self->_countryCode)
   {
-    [v9 setCountryCode:?];
+    [toCopy setCountryCode:?];
   }
 
   if (self->_administrativeArea)
   {
-    [v9 setAdministrativeArea:?];
+    [toCopy setAdministrativeArea:?];
   }
 
   if (self->_administrativeAreaCode)
   {
-    [v9 setAdministrativeAreaCode:?];
+    [toCopy setAdministrativeAreaCode:?];
   }
 
   if (self->_subAdministrativeArea)
   {
-    [v9 setSubAdministrativeArea:?];
+    [toCopy setSubAdministrativeArea:?];
   }
 
   if (self->_locality)
   {
-    [v9 setLocality:?];
+    [toCopy setLocality:?];
   }
 
   if ([(SGStructuredAddress *)self dependentLocalitysCount])
   {
-    [v9 clearDependentLocalitys];
-    v4 = [(SGStructuredAddress *)self dependentLocalitysCount];
-    if (v4)
+    [toCopy clearDependentLocalitys];
+    dependentLocalitysCount = [(SGStructuredAddress *)self dependentLocalitysCount];
+    if (dependentLocalitysCount)
     {
-      v5 = v4;
+      v5 = dependentLocalitysCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(SGStructuredAddress *)self dependentLocalityAtIndex:i];
-        [v9 addDependentLocality:v7];
+        [toCopy addDependentLocality:v7];
       }
     }
   }
 
   if (self->_thoroughfare)
   {
-    [v9 setThoroughfare:?];
+    [toCopy setThoroughfare:?];
   }
 
-  v8 = v9;
+  v8 = toCopy;
   if (self->_subThroughfare)
   {
-    [v9 setSubThroughfare:?];
-    v8 = v9;
+    [toCopy setSubThroughfare:?];
+    v8 = toCopy;
   }
 
   if (self->_postCode)
   {
-    [v9 setPostCode:?];
-    v8 = v9;
+    [toCopy setPostCode:?];
+    v8 = toCopy;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_country)
   {
     PBDataWriterWriteStringField();
@@ -382,12 +382,12 @@ LABEL_22:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   country = self->_country;
   if (country)
   {
-    [v3 setObject:country forKey:@"country"];
+    [dictionary setObject:country forKey:@"country"];
   }
 
   countryCode = self->_countryCode;
@@ -453,28 +453,28 @@ LABEL_22:
   v8.receiver = self;
   v8.super_class = SGStructuredAddress;
   v4 = [(SGStructuredAddress *)&v8 description];
-  v5 = [(SGStructuredAddress *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SGStructuredAddress *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addDependentLocality:(id)a3
+- (void)addDependentLocality:(id)locality
 {
-  v4 = a3;
+  localityCopy = locality;
   dependentLocalitys = self->_dependentLocalitys;
-  v8 = v4;
+  v8 = localityCopy;
   if (!dependentLocalitys)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_dependentLocalitys;
     self->_dependentLocalitys = v6;
 
-    v4 = v8;
+    localityCopy = v8;
     dependentLocalitys = self->_dependentLocalitys;
   }
 
-  [(NSMutableArray *)dependentLocalitys addObject:v4];
+  [(NSMutableArray *)dependentLocalitys addObject:localityCopy];
 }
 
 @end

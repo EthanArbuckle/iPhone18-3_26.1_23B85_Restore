@@ -1,27 +1,27 @@
 @interface AVAssetReaderOutput
-+ (id)_figAssetReaderVideoScalingPropertiesFromVideoSettings:(id)a3 withFormatDescription:(id)a4;
++ (id)_figAssetReaderVideoScalingPropertiesFromVideoSettings:(id)settings withFormatDescription:(id)description;
 - (AVAssetReaderOutput)init;
 - (AVMediaType)mediaType;
-- (BOOL)_enableTrackExtractionReturningError:(id *)a3;
-- (BOOL)_prepareForReadingReturningError:(id *)a3;
-- (BOOL)_updateTimeRangesOnFigAssetReaderReturningError:(id *)a3;
+- (BOOL)_enableTrackExtractionReturningError:(id *)error;
+- (BOOL)_prepareForReadingReturningError:(id *)error;
+- (BOOL)_updateTimeRangesOnFigAssetReaderReturningError:(id *)error;
 - (CMSampleBufferRef)copyNextSampleBuffer;
 - (NSDictionary)_figAssetReaderExtractionOptions;
 - (id)_asset;
 - (int64_t)_status;
-- (void)_attachToWeakReferenceToAssetReader:(id)a3;
+- (void)_attachToWeakReferenceToAssetReader:(id)reader;
 - (void)_figAssetReaderDecodeError;
 - (void)_figAssetReaderFailed;
-- (void)_figAssetReaderSampleBufferDidBecomeAvailableForExtractionID:(int)a3;
+- (void)_figAssetReaderSampleBufferDidBecomeAvailableForExtractionID:(int)d;
 - (void)_figAssetReaderServerConnectionDied;
 - (void)_markAsFinished;
-- (void)_setFigAssetReader:(OpaqueFigAssetReader *)a3;
+- (void)_setFigAssetReader:(OpaqueFigAssetReader *)reader;
 - (void)dealloc;
 - (void)markConfigurationAsFinal;
 - (void)resetForReadingTimeRanges:(NSArray *)timeRanges;
 - (void)setAlwaysCopiesSampleData:(BOOL)alwaysCopiesSampleData;
-- (void)setDisablesMultithreadedAndAsyncVideoDecompression:(BOOL)a3;
-- (void)setMaximizePowerEfficiency:(BOOL)a3;
+- (void)setDisablesMultithreadedAndAsyncVideoDecompression:(BOOL)decompression;
+- (void)setMaximizePowerEfficiency:(BOOL)efficiency;
 - (void)setSupportsRandomAccess:(BOOL)supportsRandomAccess;
 @end
 
@@ -123,7 +123,7 @@ LABEL_7:
   internal->alwaysCopiesSampleData = v3;
 }
 
-- (void)setMaximizePowerEfficiency:(BOOL)a3
+- (void)setMaximizePowerEfficiency:(BOOL)efficiency
 {
   if ([(AVAssetReaderOutput *)self _status]>= 1)
   {
@@ -131,10 +131,10 @@ LABEL_7:
     objc_exception_throw(v11);
   }
 
-  self->_internal->maximizePowerEfficiency = a3;
+  self->_internal->maximizePowerEfficiency = efficiency;
 }
 
-- (void)setDisablesMultithreadedAndAsyncVideoDecompression:(BOOL)a3
+- (void)setDisablesMultithreadedAndAsyncVideoDecompression:(BOOL)decompression
 {
   if (![(NSString *)[(AVAssetReaderOutput *)self mediaType] isEqualToString:@"vide"])
   {
@@ -154,7 +154,7 @@ LABEL_6:
     objc_exception_throw(v14);
   }
 
-  self->_internal->disablesMultithreadedAndAsyncVideoDecompression = a3;
+  self->_internal->disablesMultithreadedAndAsyncVideoDecompression = decompression;
 }
 
 - (void)setSupportsRandomAccess:(BOOL)supportsRandomAccess
@@ -188,9 +188,9 @@ LABEL_6:
   return 0;
 }
 
-- (void)_setFigAssetReader:(OpaqueFigAssetReader *)a3
+- (void)_setFigAssetReader:(OpaqueFigAssetReader *)reader
 {
-  if (self->_internal->figAssetReader != a3)
+  if (self->_internal->figAssetReader != reader)
   {
     v5 = [AVCMNotificationDispatcher notificationDispatcherForCMNotificationCenter:CMNotificationCenterGetDefaultLocalCenter()];
     v6 = v5;
@@ -212,7 +212,7 @@ LABEL_6:
       internal = self->_internal;
     }
 
-    internal->figAssetReader = a3;
+    internal->figAssetReader = reader;
     figAssetReader = self->_internal->figAssetReader;
     if (figAssetReader)
     {
@@ -232,14 +232,14 @@ LABEL_6:
   }
 }
 
-- (void)_attachToWeakReferenceToAssetReader:(id)a3
+- (void)_attachToWeakReferenceToAssetReader:(id)reader
 {
   if (self->_internal->weakReferenceToAssetReader)
   {
     [(AVAssetReaderOutput *)a2 _attachToWeakReferenceToAssetReader:?];
   }
 
-  self->_internal->weakReferenceToAssetReader = a3;
+  self->_internal->weakReferenceToAssetReader = reader;
   v5 = [-[AVWeakReference referencedObject](self->_internal->weakReferenceToAssetReader "referencedObject")];
 
   [(AVAssetReaderOutput *)self _setFigAssetReader:v5];
@@ -259,14 +259,14 @@ LABEL_6:
 
 - (NSDictionary)_figAssetReaderExtractionOptions
 {
-  v3 = [(AVAssetReaderOutput *)self _trimsSampleDurations];
-  v4 = [(AVAssetReaderOutput *)self supportsRandomAccess];
+  _trimsSampleDurations = [(AVAssetReaderOutput *)self _trimsSampleDurations];
+  supportsRandomAccess = [(AVAssetReaderOutput *)self supportsRandomAccess];
   v15 = MEMORY[0x1E695DF20];
-  v5 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+  v5 = [MEMORY[0x1E696AD98] numberWithBool:_trimsSampleDurations];
   v6 = *MEMORY[0x1E6971380];
   v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[AVAssetReaderOutput alwaysCopiesSampleData](self, "alwaysCopiesSampleData")}];
   v8 = *MEMORY[0x1E6971340];
-  v9 = [MEMORY[0x1E696AD98] numberWithBool:v4];
+  v9 = [MEMORY[0x1E696AD98] numberWithBool:supportsRandomAccess];
   v10 = *MEMORY[0x1E69735B0];
   v11 = [MEMORY[0x1E696AD98] numberWithBool:{-[AVAssetReaderOutput maximizePowerEfficiency](self, "maximizePowerEfficiency")}];
   v12 = *MEMORY[0x1E6971378];
@@ -274,13 +274,13 @@ LABEL_6:
   return [v15 dictionaryWithObjectsAndKeys:{v5, v6, v7, v8, v9, v10, v11, v12, v13, *MEMORY[0x1E6971350], 0}];
 }
 
-+ (id)_figAssetReaderVideoScalingPropertiesFromVideoSettings:(id)a3 withFormatDescription:(id)a4
++ (id)_figAssetReaderVideoScalingPropertiesFromVideoSettings:(id)settings withFormatDescription:(id)description
 {
   v9 = 0;
   v10 = 0;
   v8 = 0;
-  v6 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:{objc_msgSend(a3, "videoScalingProperties")}];
-  [a3 colorPropertiesConsideringFormatDescriptions:a4 colorPrimaries:&v10 transferFunction:&v9 ycbcrMatrix:&v8];
+  v6 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:{objc_msgSend(settings, "videoScalingProperties")}];
+  [settings colorPropertiesConsideringFormatDescriptions:description colorPrimaries:&v10 transferFunction:&v9 ycbcrMatrix:&v8];
   if (v10)
   {
     [v6 setObject:v10 forKeyedSubscript:*MEMORY[0x1E6983DC0]];
@@ -299,31 +299,31 @@ LABEL_6:
   return v6;
 }
 
-- (BOOL)_updateTimeRangesOnFigAssetReaderReturningError:(id *)a3
+- (BOOL)_updateTimeRangesOnFigAssetReaderReturningError:(id *)error
 {
-  v5 = [(AVAssetReaderOutput *)self currentTimeRanges];
-  v6 = [(AVAssetReaderOutput *)self _figAssetReader];
-  if (!v6)
+  currentTimeRanges = [(AVAssetReaderOutput *)self currentTimeRanges];
+  _figAssetReader = [(AVAssetReaderOutput *)self _figAssetReader];
+  if (!_figAssetReader)
   {
     v8 = 0;
     goto LABEL_9;
   }
 
-  v7 = [v5 count];
+  v7 = [currentTimeRanges count];
   v8 = malloc_type_calloc(v7, 0x30uLL, 0x1000040EED21634uLL);
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __71__AVAssetReaderOutput__updateTimeRangesOnFigAssetReaderReturningError___block_invoke;
   v12[3] = &__block_descriptor_40_e15_v32__0_8Q16_B24l;
   v12[4] = v8;
-  [v5 enumerateObjectsUsingBlock:v12];
+  [currentTimeRanges enumerateObjectsUsingBlock:v12];
   self->_internal->extractionCompleteForCurrentConfiguration = 0;
-  v9 = [(AVAssetReaderOutput *)self _extractionID];
+  _extractionID = [(AVAssetReaderOutput *)self _extractionID];
   v10 = *(*(CMBaseObjectGetVTable() + 16) + 128);
   if (v10)
   {
-    v6 = v10(v6, v9, v8, v7);
-    if (!a3)
+    _figAssetReader = v10(_figAssetReader, _extractionID, v8, v7);
+    if (!error)
     {
       goto LABEL_9;
     }
@@ -331,22 +331,22 @@ LABEL_6:
 
   else
   {
-    v6 = 4294954514;
-    if (!a3)
+    _figAssetReader = 4294954514;
+    if (!error)
     {
       goto LABEL_9;
     }
   }
 
-  if (v6)
+  if (_figAssetReader)
   {
-    *a3 = [(AVAssetReaderOutput *)self _errorForOSStatus:v6];
-    LODWORD(v6) = 1;
+    *error = [(AVAssetReaderOutput *)self _errorForOSStatus:_figAssetReader];
+    LODWORD(_figAssetReader) = 1;
   }
 
 LABEL_9:
   free(v8);
-  return v6 == 0;
+  return _figAssetReader == 0;
 }
 
 __n128 __71__AVAssetReaderOutput__updateTimeRangesOnFigAssetReaderReturningError___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -372,17 +372,17 @@ __n128 __71__AVAssetReaderOutput__updateTimeRangesOnFigAssetReaderReturningError
   return result;
 }
 
-- (BOOL)_prepareForReadingReturningError:(id *)a3
+- (BOOL)_prepareForReadingReturningError:(id *)error
 {
   if (![(AVAssetReaderOutput *)self supportsRandomAccess])
   {
     self->_internal->currentConfigurationIsFinal = 1;
   }
 
-  return [(AVAssetReaderOutput *)self _enableTrackExtractionReturningError:a3];
+  return [(AVAssetReaderOutput *)self _enableTrackExtractionReturningError:error];
 }
 
-- (BOOL)_enableTrackExtractionReturningError:(id *)a3
+- (BOOL)_enableTrackExtractionReturningError:(id *)error
 {
   v5 = objc_opt_class();
   AVRequestConcreteImplementation(self, a2, v5);
@@ -399,13 +399,13 @@ __n128 __71__AVAssetReaderOutput__updateTimeRangesOnFigAssetReaderReturningError
 
 - (CMSampleBufferRef)copyNextSampleBuffer
 {
-  v4 = [(AVAssetReaderOutput *)self _status];
-  if (v4 > 1)
+  _status = [(AVAssetReaderOutput *)self _status];
+  if (_status > 1)
   {
     return 0;
   }
 
-  if (!v4)
+  if (!_status)
   {
     v17 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"cannot copy next sample buffer before adding this output to an instance of AVAssetReader (using -addOutput:) and calling -startReading on that asset reader", v5, v6, v7, v8, v9, v18), 0}];
     objc_exception_throw(v17);
@@ -416,10 +416,10 @@ __n128 __71__AVAssetReaderOutput__updateTimeRangesOnFigAssetReaderReturningError
   [(NSCondition *)self->_internal->sampleBufferAvailabilityCondition lock];
   for (i = *MEMORY[0x1E6961580]; ; [(AVRunLoopCondition *)sampleBufferAvailabilityCondition waitInMode:i])
   {
-    v12 = [(AVAssetReaderOutput *)self _figAssetReader];
-    v13 = [(AVAssetReaderOutput *)self _extractionID];
+    _figAssetReader = [(AVAssetReaderOutput *)self _figAssetReader];
+    _extractionID = [(AVAssetReaderOutput *)self _extractionID];
     v14 = *(*(CMBaseObjectGetVTable() + 16) + 104);
-    v15 = v14 ? v14(v12, v13, 0, &v18 + 7, &v19) : 4294954514;
+    v15 = v14 ? v14(_figAssetReader, _extractionID, 0, &v18 + 7, &v19) : 4294954514;
     sampleBufferAvailabilityCondition = self->_internal->sampleBufferAvailabilityCondition;
     if (v15 || v19 || HIBYTE(v18))
     {
@@ -453,10 +453,10 @@ __n128 __71__AVAssetReaderOutput__updateTimeRangesOnFigAssetReaderReturningError
   }
 }
 
-- (void)_figAssetReaderSampleBufferDidBecomeAvailableForExtractionID:(int)a3
+- (void)_figAssetReaderSampleBufferDidBecomeAvailableForExtractionID:(int)d
 {
   internal = self->_internal;
-  if (internal->extractionID == a3)
+  if (internal->extractionID == d)
   {
     [(NSCondition *)internal->sampleBufferAvailabilityCondition lock];
     [(AVRunLoopCondition *)self->_internal->sampleBufferAvailabilityCondition signal];
@@ -555,7 +555,7 @@ LABEL_14:
         v19 = *MEMORY[0x1E695D940];
         v20 = @"Start time of each time range must be greater than or equal to the end time of the previous time range";
 LABEL_26:
-        v22 = self;
+        selfCopy2 = self;
         goto LABEL_27;
       }
 
@@ -574,18 +574,18 @@ LABEL_17:
     v19 = *MEMORY[0x1E695D930];
     v20 = @"cannot be called before reading has started";
 LABEL_34:
-    v22 = self;
+    selfCopy2 = self;
 LABEL_27:
-    v23 = [v18 exceptionWithName:v19 reason:AVMethodExceptionReasonWithObjectAndSelector(v22 userInfo:{a2, v20, v3, v4, v5, v6, v7, v25), 0}];
+    v23 = [v18 exceptionWithName:v19 reason:AVMethodExceptionReasonWithObjectAndSelector(selfCopy2 userInfo:{a2, v20, v3, v4, v5, v6, v7, v25), 0}];
     objc_exception_throw(v23);
   }
 
   if (!self->_internal->extractionCompleteForCurrentConfiguration)
   {
-    v24 = [(AVAssetReaderOutput *)self _status];
+    _status = [(AVAssetReaderOutput *)self _status];
     v18 = MEMORY[0x1E695DF30];
     v19 = *MEMORY[0x1E695D930];
-    if (v24 == 3)
+    if (_status == 3)
     {
       v20 = @"cannot be called after the asset reader has entered a failure state";
     }

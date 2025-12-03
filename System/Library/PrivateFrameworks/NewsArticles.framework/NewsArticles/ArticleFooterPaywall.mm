@@ -1,8 +1,8 @@
 @interface ArticleFooterPaywall
 - (NAArticleFooterDelegate)footerDelegate;
-- (_TtC12NewsArticles20ArticleFooterPaywall)initWithCoder:(id)a3;
-- (_TtC12NewsArticles20ArticleFooterPaywall)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)setFooterDelegate:(id)a3;
+- (_TtC12NewsArticles20ArticleFooterPaywall)initWithCoder:(id)coder;
+- (_TtC12NewsArticles20ArticleFooterPaywall)initWithNibName:(id)name bundle:(id)bundle;
+- (void)setFooterDelegate:(id)delegate;
 - (void)viewDidLoad;
 @end
 
@@ -15,15 +15,15 @@
   return v2;
 }
 
-- (void)setFooterDelegate:(id)a3
+- (void)setFooterDelegate:(id)delegate
 {
-  *(&self->super.super.super.isa + OBJC_IVAR____TtC12NewsArticles20ArticleFooterPaywall_footerDelegate) = a3;
+  *(&self->super.super.super.isa + OBJC_IVAR____TtC12NewsArticles20ArticleFooterPaywall_footerDelegate) = delegate;
   swift_unknownObjectRetain();
 
   swift_unknownObjectRelease();
 }
 
-- (_TtC12NewsArticles20ArticleFooterPaywall)initWithCoder:(id)a3
+- (_TtC12NewsArticles20ArticleFooterPaywall)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC12NewsArticles20ArticleFooterPaywall_footerDelegate) = 0;
   result = sub_1D7D3160C();
@@ -33,11 +33,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D7BE9C94();
 }
 
-- (_TtC12NewsArticles20ArticleFooterPaywall)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC12NewsArticles20ArticleFooterPaywall)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

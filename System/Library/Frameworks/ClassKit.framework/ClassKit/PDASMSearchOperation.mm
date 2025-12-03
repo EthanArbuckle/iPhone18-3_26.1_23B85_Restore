@@ -1,35 +1,35 @@
 @interface PDASMSearchOperation
 + (id)defaultEndpointInfo;
 - (BOOL)haveIncompleteSyncData;
-- (BOOL)isValidASMSearchSpecification:(id)a3;
+- (BOOL)isValidASMSearchSpecification:(id)specification;
 - (BOOL)needsToMakeNetworkRequest;
-- (BOOL)postFilterWillAcceptPerson:(id)a3 withRoleLocations:(id)a4;
-- (BOOL)processClassMember:(id)a3;
-- (BOOL)processClassPayload:(id)a3;
-- (BOOL)processGroupMember:(id)a3;
-- (BOOL)processGroupPayload:(id)a3;
-- (BOOL)processOrganization:(id)a3;
-- (BOOL)processPerson:(id)a3;
-- (BOOL)processResponseZone:(id)a3;
+- (BOOL)postFilterWillAcceptPerson:(id)person withRoleLocations:(id)locations;
+- (BOOL)processClassMember:(id)member;
+- (BOOL)processClassPayload:(id)payload;
+- (BOOL)processGroupMember:(id)member;
+- (BOOL)processGroupPayload:(id)payload;
+- (BOOL)processOrganization:(id)organization;
+- (BOOL)processPerson:(id)person;
+- (BOOL)processResponseZone:(id)zone;
 - (BOOL)shouldProcessResponseBody;
 - (BOOL)wantsToExecute;
-- (PDASMSearchOperation)initWithDatabase:(id)a3;
-- (PDASMSearchOperation)initWithDatabase:(id)a3 objectsMatching:(id)a4 enumerationBlock:(id)a5 finishBlock:(id)a6;
-- (PDASMSearchOperation)initWithDatabase:(id)a3 rosterQuery:(id)a4 enumerationBlock:(id)a5 finishBlock:(id)a6;
-- (id)createQueryIfNoneExists:(id)a3;
-- (id)createSearchRequestZoneForZoneName:(id)a3 usingQuery:(id)a4;
-- (id)criteriaForFieldName:(id)a3 andValue:(id)a4;
-- (id)criteriaForFieldName:(id)a3 andValues:(id)a4 withFormat:(id)a5;
+- (PDASMSearchOperation)initWithDatabase:(id)database;
+- (PDASMSearchOperation)initWithDatabase:(id)database objectsMatching:(id)matching enumerationBlock:(id)block finishBlock:(id)finishBlock;
+- (PDASMSearchOperation)initWithDatabase:(id)database rosterQuery:(id)query enumerationBlock:(id)block finishBlock:(id)finishBlock;
+- (id)createQueryIfNoneExists:(id)exists;
+- (id)createSearchRequestZoneForZoneName:(id)name usingQuery:(id)query;
+- (id)criteriaForFieldName:(id)name andValue:(id)value;
+- (id)criteriaForFieldName:(id)name andValues:(id)values withFormat:(id)format;
 - (id)customRequestHeaders;
-- (id)generateFilterQueryForZoneName:(id)a3;
-- (id)postFilterWillAcceptClassMember:(id)a3;
-- (id)postFilterWillAcceptGroupMember:(id)a3;
-- (id)processClassLocationIDsSearchQuery:(id)a3;
-- (id)processClassMemberSearchQuery:(id)a3;
-- (id)processGroupLocationIDsSearchQuery:(id)a3;
-- (id)processGroupMemberSearchQuery:(id)a3;
-- (id)processOrganizationSearchQuery:(id)a3;
-- (id)processPersonSearchQuery:(id)a3;
+- (id)generateFilterQueryForZoneName:(id)name;
+- (id)postFilterWillAcceptClassMember:(id)member;
+- (id)postFilterWillAcceptGroupMember:(id)member;
+- (id)processClassLocationIDsSearchQuery:(id)query;
+- (id)processClassMemberSearchQuery:(id)query;
+- (id)processGroupLocationIDsSearchQuery:(id)query;
+- (id)processGroupMemberSearchQuery:(id)query;
+- (id)processOrganizationSearchQuery:(id)query;
+- (id)processPersonSearchQuery:(id)query;
 - (id)requestData;
 - (id)requestDataForRosterQuery;
 - (id)requestDataForSearchSpec;
@@ -60,12 +60,12 @@
   return v3;
 }
 
-- (PDASMSearchOperation)initWithDatabase:(id)a3
+- (PDASMSearchOperation)initWithDatabase:(id)database
 {
-  v4 = a3;
+  databaseCopy = database;
   v14.receiver = self;
   v14.super_class = PDASMSearchOperation;
-  v5 = [(PDASMPayloadOperation *)&v14 initWithDatabase:v4];
+  v5 = [(PDASMPayloadOperation *)&v14 initWithDatabase:databaseCopy];
   v6 = v5;
   if (v5)
   {
@@ -74,10 +74,10 @@
     v8 = *(&v6->_rosterQuery + 2);
     *(&v6->_rosterQuery + 2) = v7;
 
-    v9 = sub_1000BA854(v4);
-    v10 = [(PDASMSearchOperation *)v6 resultsWillExpire];
+    v9 = sub_1000BA854(databaseCopy);
+    resultsWillExpire = [(PDASMSearchOperation *)v6 resultsWillExpire];
     v11 = 0.0;
-    if (v10)
+    if (resultsWillExpire)
     {
       v12 = v9 == 0;
     }
@@ -100,23 +100,23 @@
   return v6;
 }
 
-- (PDASMSearchOperation)initWithDatabase:(id)a3 objectsMatching:(id)a4 enumerationBlock:(id)a5 finishBlock:(id)a6
+- (PDASMSearchOperation)initWithDatabase:(id)database objectsMatching:(id)matching enumerationBlock:(id)block finishBlock:(id)finishBlock
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(PDASMSearchOperation *)self initWithDatabase:a3];
+  matchingCopy = matching;
+  blockCopy = block;
+  finishBlockCopy = finishBlock;
+  v13 = [(PDASMSearchOperation *)self initWithDatabase:database];
   if (v13)
   {
-    v14 = [v10 copy];
+    v14 = [matchingCopy copy];
     v15 = *(&v13->_postFilterPersonsByRequiredClassMemberRole + 1);
     *(&v13->_postFilterPersonsByRequiredClassMemberRole + 1) = v14;
 
-    v16 = objc_retainBlock(v11);
+    v16 = objc_retainBlock(blockCopy);
     v17 = *(&v13->super._unresolvedMissingEntityIDs + 2);
     *(&v13->super._unresolvedMissingEntityIDs + 2) = v16;
 
-    v18 = objc_retainBlock(v12);
+    v18 = objc_retainBlock(finishBlockCopy);
     v19 = *(&v13->_resultsBlock + 2);
     *(&v13->_resultsBlock + 2) = v18;
 
@@ -129,21 +129,21 @@
   return v13;
 }
 
-- (PDASMSearchOperation)initWithDatabase:(id)a3 rosterQuery:(id)a4 enumerationBlock:(id)a5 finishBlock:(id)a6
+- (PDASMSearchOperation)initWithDatabase:(id)database rosterQuery:(id)query enumerationBlock:(id)block finishBlock:(id)finishBlock
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(PDASMSearchOperation *)self initWithDatabase:a3];
+  queryCopy = query;
+  blockCopy = block;
+  finishBlockCopy = finishBlock;
+  v14 = [(PDASMSearchOperation *)self initWithDatabase:database];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong((&v14->_searchSpec + 2), a4);
-    v16 = objc_retainBlock(v12);
+    objc_storeStrong((&v14->_searchSpec + 2), query);
+    v16 = objc_retainBlock(blockCopy);
     v17 = *(&v15->super._unresolvedMissingEntityIDs + 2);
     *(&v15->super._unresolvedMissingEntityIDs + 2) = v16;
 
-    v18 = objc_retainBlock(v13);
+    v18 = objc_retainBlock(finishBlockCopy);
     v19 = *(&v15->_resultsBlock + 2);
     *(&v15->_resultsBlock + 2) = v18;
 
@@ -155,43 +155,43 @@
 
 - (id)customRequestHeaders
 {
-  v3 = [(PDASMSearchOperation *)self searchSpec];
-  if (!v3)
+  searchSpec = [(PDASMSearchOperation *)self searchSpec];
+  if (!searchSpec)
   {
     goto LABEL_6;
   }
 
-  v4 = v3;
-  v5 = [(PDASMSearchOperation *)self searchSpec];
-  v6 = [v5 adminRequestor];
+  v4 = searchSpec;
+  searchSpec2 = [(PDASMSearchOperation *)self searchSpec];
+  adminRequestor = [searchSpec2 adminRequestor];
 
-  if (v6)
+  if (adminRequestor)
   {
-    v7 = [(PDASMSearchOperation *)self searchSpec];
-    v8 = [v7 adminRequestor];
+    searchSpec3 = [(PDASMSearchOperation *)self searchSpec];
+    adminRequestor2 = [searchSpec3 adminRequestor];
 
-    v9 = [(PDOperation *)self database];
+    database = [(PDOperation *)self database];
     v10 = objc_opt_class();
-    v11 = [v8 objectID];
-    v12 = [v9 select:v10 identity:v11];
+    objectID = [adminRequestor2 objectID];
+    v12 = [database select:v10 identity:objectID];
 
     if (v12)
     {
-      [v8 setState:{objc_msgSend(v12, "state")}];
-      v13 = [v12 serverRequestHeaders];
-      [v8 setServerRequestHeaders:v13];
+      [adminRequestor2 setState:{objc_msgSend(v12, "state")}];
+      serverRequestHeaders = [v12 serverRequestHeaders];
+      [adminRequestor2 setServerRequestHeaders:serverRequestHeaders];
     }
 
-    v14 = [v8 serverRequestHeaders];
+    serverRequestHeaders2 = [adminRequestor2 serverRequestHeaders];
   }
 
   else
   {
 LABEL_6:
-    v14 = 0;
+    serverRequestHeaders2 = 0;
   }
 
-  return v14;
+  return serverRequestHeaders2;
 }
 
 - (void)callFinishBlockIfNeeded
@@ -200,17 +200,17 @@ LABEL_6:
   if (*(&self->_resultsBlock + 2) && (self->_finisherLock._os_unfair_lock_opaque & 1) == 0)
   {
     CLSInitLog();
-    v3 = [(PDASMSearchOperation *)self logSubsystem];
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
+    logSubsystem = [(PDASMSearchOperation *)self logSubsystem];
+    if (os_log_type_enabled(logSubsystem, OS_LOG_TYPE_DEBUG))
     {
       v4 = objc_opt_class();
       v5 = v4;
-      v6 = [(PDURLRequestOperation *)self operationID];
+      operationID = [(PDURLRequestOperation *)self operationID];
       v7 = 138543618;
       v8 = v4;
       v9 = 2114;
-      v10 = v6;
-      _os_log_debug_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ Calling ASM Search finish block.", &v7, 0x16u);
+      v10 = operationID;
+      _os_log_debug_impl(&_mh_execute_header, logSubsystem, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ Calling ASM Search finish block.", &v7, 0x16u);
     }
 
     (*(&self->_resultsBlock + 2))[2]();
@@ -241,30 +241,30 @@ LABEL_6:
   if (BYTE6(self->_expireRecordsAfterSeconds) == 1)
   {
     v3 = [PDASMExpandMissingGroupReferencesOperation alloc];
-    v4 = [(PDOperation *)self database];
-    v5 = [(PDASMExpandMissingGroupReferencesOperation *)v3 initWithDatabase:v4];
+    database = [(PDOperation *)self database];
+    v5 = [(PDASMExpandMissingGroupReferencesOperation *)v3 initWithDatabase:database];
 
     if ([(PDASMExpandMissingGroupReferencesOperation *)v5 wantsToExecute])
     {
-      v6 = [(PDOperation *)self manager];
-      sub_1001232E0(v6, v5);
+      manager = [(PDOperation *)self manager];
+      sub_1001232E0(manager, v5);
     }
   }
 }
 
-- (BOOL)isValidASMSearchSpecification:(id)a3
+- (BOOL)isValidASMSearchSpecification:(id)specification
 {
-  v4 = a3;
-  if (([v4 options] & 0xB) != 0)
+  specificationCopy = specification;
+  if (([specificationCopy options] & 0xB) != 0)
   {
-    v5 = [v4 searchString];
-    if (v5)
+    searchString = [specificationCopy searchString];
+    if (searchString)
     {
-      v6 = v5;
-      v7 = [v4 searchString];
-      v8 = [v7 length];
-      v9 = [(PDOperation *)self database];
-      v10 = sub_1000BA854(v9);
+      v6 = searchString;
+      searchString2 = [specificationCopy searchString];
+      v8 = [searchString2 length];
+      database = [(PDOperation *)self database];
+      v10 = sub_1000BA854(database);
       if (v10)
       {
         v11 = v10[6];
@@ -351,8 +351,8 @@ LABEL_6:
         }
 
         v15 = *(*(&v20 + 1) + 8 * i);
-        v16 = [(PDOperation *)self database];
-        v17 = [v16 select:objc_opt_class() identity:v15];
+        database = [(PDOperation *)self database];
+        v17 = [database select:objc_opt_class() identity:v15];
 
         if (!v17 || v17[3] != 1)
         {
@@ -385,12 +385,12 @@ LABEL_25:
 
 - (BOOL)needsToMakeNetworkRequest
 {
-  v2 = self;
-  if ([(PDASMSearchOperation *)self isValidASMSearchSpecification:*(&self->_postFilterPersonsByRequiredClassMemberRole + 1)]|| *(&v2->_searchSpec + 2))
+  selfCopy = self;
+  if ([(PDASMSearchOperation *)self isValidASMSearchSpecification:*(&self->_postFilterPersonsByRequiredClassMemberRole + 1)]|| *(&selfCopy->_searchSpec + 2))
   {
-    v3 = [(PDOperation *)v2 database];
-    v4 = sub_1000BA854(v3);
-    v5 = v4;
+    database = [(PDOperation *)selfCopy database];
+    v4 = sub_1000BA854(database);
+    manager = v4;
     if (v4 && (*(v4 + 10) & 1) != 0)
     {
       LOBYTE(v6) = 1;
@@ -398,19 +398,19 @@ LABEL_25:
 
     else
     {
-      v7 = [(PDASMSearchOperation *)v2 haveIncompleteSyncData];
+      haveIncompleteSyncData = [(PDASMSearchOperation *)selfCopy haveIncompleteSyncData];
 
-      if (v7)
+      if (haveIncompleteSyncData)
       {
         LOBYTE(v6) = 1;
         goto LABEL_11;
       }
 
-      if (![*(&v2->_postFilterPersonsByRequiredClassMemberRole + 1) isOrganizationSearch])
+      if (![*(&selfCopy->_postFilterPersonsByRequiredClassMemberRole + 1) isOrganizationSearch])
       {
         LOBYTE(v6) = 0;
 LABEL_11:
-        if ([*(&v2->_postFilterPersonsByRequiredClassMemberRole + 1) isClassMemberSearch])
+        if ([*(&selfCopy->_postFilterPersonsByRequiredClassMemberRole + 1) isClassMemberSearch])
         {
           v24 = v6;
           v8 = objc_opt_new();
@@ -418,9 +418,9 @@ LABEL_11:
           v27 = 0u;
           v28 = 0u;
           v29 = 0u;
-          v25 = v2;
-          v9 = [*(&v2->_postFilterPersonsByRequiredClassMemberRole + 1) requiredClassMemberClassIDs];
-          v10 = [v9 countByEnumeratingWithState:&v26 objects:v30 count:16];
+          v25 = selfCopy;
+          requiredClassMemberClassIDs = [*(&selfCopy->_postFilterPersonsByRequiredClassMemberRole + 1) requiredClassMemberClassIDs];
+          v10 = [requiredClassMemberClassIDs countByEnumeratingWithState:&v26 objects:v30 count:16];
           if (v10)
           {
             v11 = v10;
@@ -431,26 +431,26 @@ LABEL_11:
               {
                 if (*v27 != v12)
                 {
-                  objc_enumerationMutation(v9);
+                  objc_enumerationMutation(requiredClassMemberClassIDs);
                 }
 
                 v14 = *(*(&v26 + 1) + 8 * i);
-                v15 = [v3 select:objc_opt_class() identity:v14];
-                v16 = [v15 dateExpires];
+                v15 = [database select:objc_opt_class() identity:v14];
+                dateExpires = [v15 dateExpires];
 
-                if (v16)
+                if (dateExpires)
                 {
                   [v8 addObject:v14];
                 }
               }
 
-              v11 = [v9 countByEnumeratingWithState:&v26 objects:v30 count:16];
+              v11 = [requiredClassMemberClassIDs countByEnumeratingWithState:&v26 objects:v30 count:16];
             }
 
             while (v11);
           }
 
-          v2 = v25;
+          selfCopy = v25;
           LOBYTE(v6) = v24;
           if ([v8 count])
           {
@@ -463,7 +463,7 @@ LABEL_11:
           }
         }
 
-        v19 = *(&v2->_searchSpec + 2);
+        v19 = *(&selfCopy->_searchSpec + 2);
         if (!v19)
         {
           goto LABEL_33;
@@ -477,7 +477,7 @@ LABEL_33:
           return v6;
         }
 
-        v20 = sub_1000BA854(v3);
+        v20 = sub_1000BA854(database);
         v21 = v20;
         if (v20 && (v20[10] & 1) != 0)
         {
@@ -485,9 +485,9 @@ LABEL_33:
 
         else
         {
-          v22 = [(PDASMSearchOperation *)v2 haveIncompleteSyncData];
+          haveIncompleteSyncData2 = [(PDASMSearchOperation *)selfCopy haveIncompleteSyncData];
 
-          if ((v22 & 1) == 0)
+          if ((haveIncompleteSyncData2 & 1) == 0)
           {
             goto LABEL_33;
           }
@@ -497,8 +497,8 @@ LABEL_33:
         goto LABEL_33;
       }
 
-      v5 = [(PDOperation *)v2 manager];
-      v6 = !sub_100121714(v5);
+      manager = [(PDOperation *)selfCopy manager];
+      v6 = !sub_100121714(manager);
     }
 
     goto LABEL_11;
@@ -524,22 +524,22 @@ LABEL_33:
   return v3 & 1;
 }
 
-- (id)createSearchRequestZoneForZoneName:(id)a3 usingQuery:(id)a4
+- (id)createSearchRequestZoneForZoneName:(id)name usingQuery:(id)query
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  queryCopy = query;
   v8 = objc_alloc_init(PDDPEESearchRequestZone);
   v9 = *(&self->_postFilterPersonsByRequiredClassMemberRole + 1);
   if (v9)
   {
-    v10 = [v9 searchString];
-    [(PDDPEESearchRequestZone *)v8 setKeyword:v10];
+    searchString = [v9 searchString];
+    [(PDDPEESearchRequestZone *)v8 setKeyword:searchString];
 
     -[PDDPEESearchRequestZone setCompareOptions:](v8, "setCompareOptions:", [*(&self->_postFilterPersonsByRequiredClassMemberRole + 1) compareOptions]);
-    v11 = [*(&self->_postFilterPersonsByRequiredClassMemberRole + 1) searchString];
+    searchString2 = [*(&self->_postFilterPersonsByRequiredClassMemberRole + 1) searchString];
 LABEL_5:
-    v14 = v11;
-    v15 = [PDASMSearchRecordZone hashForQuery:v7 withSearchText:v11];
+    v14 = searchString2;
+    v15 = [PDASMSearchRecordZone hashForQuery:queryCopy withSearchText:searchString2];
 
     goto LABEL_6;
   }
@@ -547,32 +547,32 @@ LABEL_5:
   v12 = *(&self->_searchSpec + 2);
   if (v12)
   {
-    v13 = [v12 keyword];
-    [(PDDPEESearchRequestZone *)v8 setKeyword:v13];
+    keyword = [v12 keyword];
+    [(PDDPEESearchRequestZone *)v8 setKeyword:keyword];
 
     [(PDDPEESearchRequestZone *)v8 setCompareOptions:393];
-    v11 = [*(&self->_searchSpec + 2) keyword];
+    searchString2 = [*(&self->_searchSpec + 2) keyword];
     goto LABEL_5;
   }
 
   [(PDDPEESearchRequestZone *)v8 setCompareOptions:2];
-  v15 = [PDASMSearchRecordZone hashForQuery:v7 withSearchText:0];
+  v15 = [PDASMSearchRecordZone hashForQuery:queryCopy withSearchText:0];
 LABEL_6:
-  [*(&self->_rosterQuery + 2) setObject:v15 forKeyedSubscript:v6];
-  v16 = [(PDOperation *)self database];
+  [*(&self->_rosterQuery + 2) setObject:v15 forKeyedSubscript:nameCopy];
+  database = [(PDOperation *)self database];
   v17 = objc_opt_class();
-  v26[0] = v6;
+  v26[0] = nameCopy;
   v26[1] = v15;
   v18 = [NSArray arrayWithObjects:v26 count:2];
-  v19 = [v16 select:v17 where:@"zoneName = ? AND queryHash = ?" bindings:v18];
+  v19 = [database select:v17 where:@"zoneName = ? AND queryHash = ?" bindings:v18];
 
-  v20 = sub_1000846EC(v6, v19);
+  v20 = sub_1000846EC(nameCopy, v19);
   [(PDDPEESearchRequestZone *)v8 setRequestZone:v20];
-  v21 = [(PDEndpointRequestOperation *)self endpointInfo];
-  v22 = v21;
-  if (v21)
+  endpointInfo = [(PDEndpointRequestOperation *)self endpointInfo];
+  v22 = endpointInfo;
+  if (endpointInfo)
   {
-    v23 = *(v21 + 64);
+    v23 = *(endpointInfo + 64);
   }
 
   else
@@ -580,12 +580,12 @@ LABEL_6:
     v23 = 0;
   }
 
-  v24 = [(PDDPEESearchRequestZone *)v8 requestZone];
-  [v24 setLimit:v23];
+  requestZone = [(PDDPEESearchRequestZone *)v8 requestZone];
+  [requestZone setLimit:v23];
 
-  if (v7)
+  if (queryCopy)
   {
-    [(PDDPEESearchRequestZone *)v8 setFilterQuery:v7];
+    [(PDDPEESearchRequestZone *)v8 setFilterQuery:queryCopy];
   }
 
   return v8;
@@ -683,37 +683,37 @@ LABEL_6:
         v15 = *(*(&v40 + 1) + 8 * i);
         v16 = [(PDASMSearchOperation *)self generateFilterQueryForZoneName:v15, v36];
         v17 = [(PDASMSearchOperation *)self createSearchRequestZoneForZoneName:v15 usingQuery:v16];
-        v18 = [(PDASMSearchOperation *)self searchSpec];
+        searchSpec = [(PDASMSearchOperation *)self searchSpec];
 
-        if (v18)
+        if (searchSpec)
         {
-          v19 = [(PDASMSearchOperation *)self searchSpec];
-          v20 = [v19 adminRequestor];
-          v21 = sub_1000864D8(v20);
-          v22 = [v17 requestZone];
-          [v22 setRequestor:v21];
+          searchSpec2 = [(PDASMSearchOperation *)self searchSpec];
+          adminRequestor = [searchSpec2 adminRequestor];
+          v21 = sub_1000864D8(adminRequestor);
+          requestZone = [v17 requestZone];
+          [requestZone setRequestor:v21];
         }
 
         v23 = +[PDUserDefaults sharedDefaults];
-        v24 = [v23 enableVerboseLogging];
+        enableVerboseLogging = [v23 enableVerboseLogging];
 
-        if (v24)
+        if (enableVerboseLogging)
         {
           CLSInitLog();
-          v25 = [(PDASMSearchOperation *)self logSubsystem];
-          if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
+          logSubsystem = [(PDASMSearchOperation *)self logSubsystem];
+          if (os_log_type_enabled(logSubsystem, OS_LOG_TYPE_DEBUG))
           {
             v26 = objc_opt_class();
             v37 = v26;
-            v27 = [(PDURLRequestOperation *)self operationID];
+            operationID = [(PDURLRequestOperation *)self operationID];
             v28 = [v17 description];
             *buf = v36;
             v45 = v26;
             v46 = 2114;
-            v47 = v27;
+            v47 = operationID;
             v48 = 2112;
             v49 = v28;
-            _os_log_debug_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ adding eeSearchRequestZone: %@", buf, 0x20u);
+            _os_log_debug_impl(&_mh_execute_header, logSubsystem, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ adding eeSearchRequestZone: %@", buf, 0x20u);
           }
         }
 
@@ -728,25 +728,25 @@ LABEL_6:
   }
 
   CLSInitLog();
-  v29 = [(PDASMSearchOperation *)self logSubsystem];
-  if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
+  logSubsystem2 = [(PDASMSearchOperation *)self logSubsystem];
+  if (os_log_type_enabled(logSubsystem2, OS_LOG_TYPE_DEBUG))
   {
     v32 = objc_opt_class();
     v33 = v32;
-    v34 = [(PDURLRequestOperation *)self operationID];
-    v35 = [(PDDPEESearchRequest *)v39 dictionaryRepresentation];
+    operationID2 = [(PDURLRequestOperation *)self operationID];
+    dictionaryRepresentation = [(PDDPEESearchRequest *)v39 dictionaryRepresentation];
     *buf = 138543874;
     v45 = v32;
     v46 = 2114;
-    v47 = v34;
+    v47 = operationID2;
     v48 = 2114;
-    v49 = v35;
-    _os_log_debug_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ Search request: %{public}@", buf, 0x20u);
+    v49 = dictionaryRepresentation;
+    _os_log_debug_impl(&_mh_execute_header, logSubsystem2, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ Search request: %{public}@", buf, 0x20u);
   }
 
-  v30 = [(PDDPEESearchRequest *)v39 data];
+  data = [(PDDPEESearchRequest *)v39 data];
 
-  return v30;
+  return data;
 }
 
 - (id)requestDataForRosterQuery
@@ -811,26 +811,26 @@ LABEL_6:
         v17 = [(PDASMSearchOperation *)self generateFilterQueryForZoneName:v16, v31];
         v18 = [(PDASMSearchOperation *)self createSearchRequestZoneForZoneName:v16 usingQuery:v17];
         v19 = +[PDUserDefaults sharedDefaults];
-        v20 = [v19 enableVerboseLogging];
+        enableVerboseLogging = [v19 enableVerboseLogging];
 
-        if (v20)
+        if (enableVerboseLogging)
         {
           CLSInitLog();
-          v21 = [(PDASMSearchOperation *)self logSubsystem];
-          if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
+          logSubsystem = [(PDASMSearchOperation *)self logSubsystem];
+          if (os_log_type_enabled(logSubsystem, OS_LOG_TYPE_DEBUG))
           {
             v32 = objc_opt_class();
             v34 = v32;
-            v33 = [(PDURLRequestOperation *)self operationID];
+            operationID = [(PDURLRequestOperation *)self operationID];
             v22 = [v18 description];
             *buf = v31;
             v41 = v32;
             v42 = 2114;
-            v43 = v33;
+            v43 = operationID;
             v44 = 2112;
             v45 = v22;
             v23 = v22;
-            _os_log_debug_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ adding eeSearchRequestZone: %@", buf, 0x20u);
+            _os_log_debug_impl(&_mh_execute_header, logSubsystem, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ adding eeSearchRequestZone: %@", buf, 0x20u);
           }
         }
 
@@ -844,25 +844,25 @@ LABEL_6:
   }
 
   CLSInitLog();
-  v24 = [(PDASMSearchOperation *)self logSubsystem];
-  if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
+  logSubsystem2 = [(PDASMSearchOperation *)self logSubsystem];
+  if (os_log_type_enabled(logSubsystem2, OS_LOG_TYPE_DEBUG))
   {
     v27 = objc_opt_class();
     v28 = v27;
-    v29 = [(PDURLRequestOperation *)self operationID];
-    v30 = [(PDDPEESearchRequest *)v35 dictionaryRepresentation];
+    operationID2 = [(PDURLRequestOperation *)self operationID];
+    dictionaryRepresentation = [(PDDPEESearchRequest *)v35 dictionaryRepresentation];
     *buf = 138543874;
     v41 = v27;
     v42 = 2114;
-    v43 = v29;
+    v43 = operationID2;
     v44 = 2114;
-    v45 = v30;
-    _os_log_debug_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ Search request: %{public}@", buf, 0x20u);
+    v45 = dictionaryRepresentation;
+    _os_log_debug_impl(&_mh_execute_header, logSubsystem2, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ Search request: %{public}@", buf, 0x20u);
   }
 
-  v25 = [(PDDPEESearchRequest *)v35 data];
+  data = [(PDDPEESearchRequest *)v35 data];
 
-  return v25;
+  return data;
 }
 
 - (BOOL)shouldProcessResponseBody
@@ -874,22 +874,22 @@ LABEL_6:
   return result;
 }
 
-- (BOOL)processResponseZone:(id)a3
+- (BOOL)processResponseZone:(id)zone
 {
-  v4 = a3;
-  v5 = [(PDOperation *)self database];
+  zoneCopy = zone;
+  database = [(PDOperation *)self database];
   v6 = *(&self->_rosterQuery + 2);
-  v7 = [v4 zoneName];
-  v8 = [v6 objectForKeyedSubscript:v7];
+  zoneName = [zoneCopy zoneName];
+  v8 = [v6 objectForKeyedSubscript:zoneName];
 
   if (v8)
   {
     v9 = objc_opt_class();
-    v10 = [v4 zoneName];
-    v36[0] = v10;
+    zoneName2 = [zoneCopy zoneName];
+    v36[0] = zoneName2;
     v36[1] = v8;
     v11 = [NSArray arrayWithObjects:v36 count:2];
-    v12 = [v5 select:v9 where:@"zoneName = ? AND queryHash = ?" bindings:v11];
+    v12 = [database select:v9 where:@"zoneName = ? AND queryHash = ?" bindings:v11];
   }
 
   else
@@ -897,28 +897,28 @@ LABEL_6:
     v12 = 0;
   }
 
-  v13 = [v4 status];
-  v14 = [v13 code];
+  status = [zoneCopy status];
+  code = [status code];
 
-  v15 = [v4 status];
-  v16 = [v15 code];
+  status2 = [zoneCopy status];
+  code2 = [status2 code];
 
-  if (v16 == 111)
+  if (code2 == 111)
   {
     CLSInitLog();
-    v17 = [(PDASMSearchOperation *)self logSubsystem];
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
+    logSubsystem = [(PDASMSearchOperation *)self logSubsystem];
+    if (os_log_type_enabled(logSubsystem, OS_LOG_TYPE_DEBUG))
     {
-      v30 = [v4 zoneName];
+      zoneName3 = [zoneCopy zoneName];
       *buf = 138412290;
-      v35 = v30;
-      _os_log_debug_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "zone access denied: %@", buf, 0xCu);
+      v35 = zoneName3;
+      _os_log_debug_impl(&_mh_execute_header, logSubsystem, OS_LOG_TYPE_DEBUG, "zone access denied: %@", buf, 0xCu);
     }
 
-    v18 = [v4 zoneName];
+    zoneName4 = [zoneCopy zoneName];
     v33.receiver = self;
     v33.super_class = PDASMSearchOperation;
-    v19 = [(PDASMPayloadOperation *)&v33 handleZoneRemoved:v18];
+    v19 = [(PDASMPayloadOperation *)&v33 handleZoneRemoved:zoneName4];
 LABEL_13:
     v25 = v19;
 LABEL_14:
@@ -926,31 +926,31 @@ LABEL_14:
     goto LABEL_20;
   }
 
-  if (v14 == 4)
+  if (code == 4)
   {
-    v20 = [v4 cursor];
+    cursor = [zoneCopy cursor];
 
-    if (v20)
+    if (cursor)
     {
       CLSInitLog();
-      v21 = [(PDASMSearchOperation *)self logSubsystem];
-      if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
+      logSubsystem2 = [(PDASMSearchOperation *)self logSubsystem];
+      if (os_log_type_enabled(logSubsystem2, OS_LOG_TYPE_DEBUG))
       {
-        v32 = [v4 zoneName];
+        zoneName5 = [zoneCopy zoneName];
         *buf = 138412290;
-        v35 = v32;
-        _os_log_debug_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEBUG, "search zone: %@ has more data, saving cursor.", buf, 0xCu);
+        v35 = zoneName5;
+        _os_log_debug_impl(&_mh_execute_header, logSubsystem2, OS_LOG_TYPE_DEBUG, "search zone: %@ has more data, saving cursor.", buf, 0xCu);
       }
 
       v22 = [PDASMSearchRecordZone alloc];
-      v23 = [v4 zoneName];
-      v18 = [(PDASMSearchRecordZone *)v22 initWithZoneName:v23 andQueryHash:v8];
+      zoneName6 = [zoneCopy zoneName];
+      zoneName4 = [(PDASMSearchRecordZone *)v22 initWithZoneName:zoneName6 andQueryHash:v8];
 
-      [v18 setExpiration:*(&self->_resultsBlockStop + 2)];
-      v24 = [v4 cursor];
-      [v18 setCursor:v24];
+      [zoneName4 setExpiration:*(&self->_resultsBlockStop + 2)];
+      cursor2 = [zoneCopy cursor];
+      [zoneName4 setCursor:cursor2];
 
-      v19 = [v5 insertOrUpdateObject:v18];
+      v19 = [database insertOrUpdateObject:zoneName4];
       goto LABEL_13;
     }
   }
@@ -958,23 +958,23 @@ LABEL_14:
   if (v12)
   {
     CLSInitLog();
-    v26 = [(PDASMSearchOperation *)self logSubsystem];
-    if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
+    logSubsystem3 = [(PDASMSearchOperation *)self logSubsystem];
+    if (os_log_type_enabled(logSubsystem3, OS_LOG_TYPE_DEBUG))
     {
-      v31 = [v4 zoneName];
+      zoneName7 = [zoneCopy zoneName];
       *buf = 138412290;
-      v35 = v31;
-      _os_log_debug_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEBUG, "search zone: %@ complete, deleting it.", buf, 0xCu);
+      v35 = zoneName7;
+      _os_log_debug_impl(&_mh_execute_header, logSubsystem3, OS_LOG_TYPE_DEBUG, "search zone: %@ complete, deleting it.", buf, 0xCu);
     }
 
-    if (([v5 deleteObject:v12] & 1) == 0)
+    if (([database deleteObject:v12] & 1) == 0)
     {
       CLSInitLog();
-      v18 = [(PDASMSearchOperation *)self logSubsystem];
-      if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
+      zoneName4 = [(PDASMSearchOperation *)self logSubsystem];
+      if (os_log_type_enabled(zoneName4, OS_LOG_TYPE_INFO))
       {
         *buf = 0;
-        _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "failed to delete old PDASMSearchRecordZone record.", buf, 2u);
+        _os_log_impl(&_mh_execute_header, zoneName4, OS_LOG_TYPE_INFO, "failed to delete old PDASMSearchRecordZone record.", buf, 2u);
       }
 
       v25 = 0;
@@ -984,24 +984,24 @@ LABEL_14:
 
   v25 = 1;
 LABEL_20:
-  if ([v4 hasRequestor])
+  if ([zoneCopy hasRequestor])
   {
-    v27 = [v4 requestor];
-    v28 = sub_1000865E4(v27);
+    requestor = [zoneCopy requestor];
+    v28 = sub_1000865E4(requestor);
 
     if (v28)
     {
-      v25 = [v5 insertOrUpdateObject:v28];
+      v25 = [database insertOrUpdateObject:v28];
     }
   }
 
   return v25;
 }
 
-- (BOOL)postFilterWillAcceptPerson:(id)a3 withRoleLocations:(id)a4
+- (BOOL)postFilterWillAcceptPerson:(id)person withRoleLocations:(id)locations
 {
-  v5 = a3;
-  if (([v5 isSearchable] & 1) != 0 || objc_msgSend(*(&self->_postFilterPersonsByRequiredClassMemberRole + 1), "includeUnsearchablePersons"))
+  personCopy = person;
+  if (([personCopy isSearchable] & 1) != 0 || objc_msgSend(*(&self->_postFilterPersonsByRequiredClassMemberRole + 1), "includeUnsearchablePersons"))
   {
     if (HIBYTE(self->_finisherLock._os_unfair_lock_opaque) != 1)
     {
@@ -1010,8 +1010,8 @@ LABEL_20:
     }
 
     v6 = *(&self->_queryHashesByZone + 2);
-    v7 = [v5 objectID];
-    [v6 setObject:v5 forKeyedSubscript:v7];
+    objectID = [personCopy objectID];
+    [v6 setObject:personCopy forKeyedSubscript:objectID];
   }
 
   v8 = 0;
@@ -1020,18 +1020,18 @@ LABEL_7:
   return v8;
 }
 
-- (id)postFilterWillAcceptClassMember:(id)a3
+- (id)postFilterWillAcceptClassMember:(id)member
 {
-  v4 = a3;
+  memberCopy = member;
   v5 = *(&self->_queryHashesByZone + 2);
-  v6 = [v4 personID];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  personID = [memberCopy personID];
+  v7 = [v5 objectForKeyedSubscript:personID];
 
   v8 = *(&self->_queryHashesByZone + 2);
-  v9 = [v4 personID];
-  [v8 removeObjectForKey:v9];
+  personID2 = [memberCopy personID];
+  [v8 removeObjectForKey:personID2];
 
-  if (v7 && (v10 = [v4 roles], (objc_msgSend(*(&self->_postFilterPersonsByRequiredClassMemberRole + 1), "requiredClassMemberRole") & v10) == 0))
+  if (v7 && (v10 = [memberCopy roles], (objc_msgSend(*(&self->_postFilterPersonsByRequiredClassMemberRole + 1), "requiredClassMemberRole") & v10) == 0))
   {
     v11 = 0;
   }
@@ -1044,30 +1044,30 @@ LABEL_7:
   return v11;
 }
 
-- (id)postFilterWillAcceptGroupMember:(id)a3
+- (id)postFilterWillAcceptGroupMember:(id)member
 {
   v4 = *(&self->_queryHashesByZone + 2);
-  v5 = a3;
-  v6 = [v5 personID];
-  v7 = [v4 objectForKeyedSubscript:v6];
+  memberCopy = member;
+  personID = [memberCopy personID];
+  v7 = [v4 objectForKeyedSubscript:personID];
 
   v8 = *(&self->_queryHashesByZone + 2);
-  v9 = [v5 personID];
+  personID2 = [memberCopy personID];
 
-  [v8 removeObjectForKey:v9];
+  [v8 removeObjectForKey:personID2];
 
   return v7;
 }
 
-- (BOOL)processPerson:(id)a3
+- (BOOL)processPerson:(id)person
 {
-  v4 = a3;
-  v5 = [(PDOperation *)self database];
-  v6 = sub_1000847C8(v4);
+  personCopy = person;
+  database = [(PDOperation *)self database];
+  v6 = sub_1000847C8(personCopy);
   [v6 setExpiration:*(&self->_resultsBlockStop + 2)];
-  v7 = sub_100084BC8(v4);
+  v7 = sub_100084BC8(personCopy);
 
-  v8 = sub_10011E700(v5, v6, v7);
+  v8 = sub_10011E700(database, v6, v7);
   if (v8 && *(&self->super._unresolvedMissingEntityIDs + 2) && (BYTE2(self->_finishBlock) & 1) == 0 && [(PDASMSearchOperation *)self postFilterWillAcceptPerson:v6 withRoleLocations:v7])
   {
     CLSInitLog();
@@ -1085,17 +1085,17 @@ LABEL_7:
   return v8;
 }
 
-- (BOOL)processClassPayload:(id)a3
+- (BOOL)processClassPayload:(id)payload
 {
-  v4 = a3;
-  if ([v4 hasClassInfo])
+  payloadCopy = payload;
+  if ([payloadCopy hasClassInfo])
   {
-    v5 = [v4 classInfo];
-    v6 = sub_1000851D4(v5);
+    classInfo = [payloadCopy classInfo];
+    v6 = sub_1000851D4(classInfo);
 
     [v6 setExpiration:*(&self->_resultsBlockStop + 2)];
-    v7 = [v4 tempObjectId];
-    [v6 setTempObjectID:v7];
+    tempObjectId = [payloadCopy tempObjectId];
+    [v6 setTempObjectID:tempObjectId];
 
     v8 = [(PDASMPayloadOperation *)self insertEntity:v6];
     if (v8 && *(&self->super._unresolvedMissingEntityIDs + 2) && (BYTE2(self->_finishBlock) & 1) == 0)
@@ -1121,9 +1121,9 @@ LABEL_7:
   return v8;
 }
 
-- (BOOL)processClassMember:(id)a3
+- (BOOL)processClassMember:(id)member
 {
-  sub_100085768(a3);
+  sub_100085768(member);
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
@@ -1150,15 +1150,15 @@ LABEL_7:
         v11 = [(PDASMPayloadOperation *)self insertEntity:v10];
         if (!v11)
         {
-          v13 = [v10 personID];
+          personID = [v10 personID];
           v14 = objc_opt_class();
-          v15 = [v10 objectID];
-          [(PDEndpointRequestOperation *)self checkForMissingEntityWithObjectID:v13 forClass:v14 fromEntityWithID:v15 withClass:objc_opt_class()];
+          objectID = [v10 objectID];
+          [(PDEndpointRequestOperation *)self checkForMissingEntityWithObjectID:personID forClass:v14 fromEntityWithID:objectID withClass:objc_opt_class()];
 
-          v16 = [v10 parentObjectID];
+          parentObjectID = [v10 parentObjectID];
           v17 = objc_opt_class();
-          v18 = [v10 objectID];
-          LODWORD(v17) = [(PDEndpointRequestOperation *)self checkForMissingEntityWithObjectID:v16 forClass:v17 fromEntityWithID:v18 withClass:objc_opt_class()];
+          objectID2 = [v10 objectID];
+          LODWORD(v17) = [(PDEndpointRequestOperation *)self checkForMissingEntityWithObjectID:parentObjectID forClass:v17 fromEntityWithID:objectID2 withClass:objc_opt_class()];
 
           if (!v17)
           {
@@ -1170,22 +1170,22 @@ LABEL_7:
           if (os_log_type_enabled(CLSLogSearch, OS_LOG_TYPE_DEBUG))
           {
             v21 = v19;
-            v22 = [v10 parentObjectID];
+            parentObjectID2 = [v10 parentObjectID];
             *buf = v24;
-            v32 = v22;
+            v32 = parentObjectID2;
             _os_log_debug_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEBUG, "ClassMember referenced missing class: '%@'", buf, 0xCu);
           }
 
           v20 = *(&self->super.super._responseStatusError + 2);
-          v12 = [v10 parentObjectID];
-          [v20 addObject:v12];
+          parentObjectID3 = [v10 parentObjectID];
+          [v20 addObject:parentObjectID3];
           goto LABEL_18;
         }
 
         if (*(&self->super._unresolvedMissingEntityIDs + 2) && (BYTE2(self->_finishBlock) & 1) == 0 && ([*(&self->_postFilterPersonsByRequiredClassMemberRole + 1) options] & 1) != 0)
         {
-          v12 = [(PDASMSearchOperation *)self postFilterWillAcceptClassMember:v10];
-          if (v12)
+          parentObjectID3 = [(PDASMSearchOperation *)self postFilterWillAcceptClassMember:v10];
+          if (parentObjectID3)
           {
             CLSInitLog();
             log = CLSLogSearch;
@@ -1220,20 +1220,20 @@ LABEL_23:
   return v8;
 }
 
-- (BOOL)processGroupPayload:(id)a3
+- (BOOL)processGroupPayload:(id)payload
 {
-  v4 = a3;
-  if ([v4 hasGroupInfo])
+  payloadCopy = payload;
+  if ([payloadCopy hasGroupInfo])
   {
-    v5 = [(PDOperation *)self database];
-    v6 = [v4 groupInfo];
-    v7 = sub_100084F40(v6);
+    database = [(PDOperation *)self database];
+    groupInfo = [payloadCopy groupInfo];
+    v7 = sub_100084F40(groupInfo);
 
     v8 = [PDGroupReferencesToExpand alloc];
-    v9 = [v7 objectID];
-    v10 = sub_1000D42EC(&v8->super.isa, v9);
+    objectID = [v7 objectID];
+    v10 = sub_1000D42EC(&v8->super.isa, objectID);
 
-    [v5 insertOrUpdateObject:v10];
+    [database insertOrUpdateObject:v10];
     BYTE6(self->_expireRecordsAfterSeconds) = 1;
     [v7 setExpiration:*(&self->_resultsBlockStop + 2)];
     v11 = [(PDASMPayloadOperation *)self insertEntity:v7];
@@ -1260,9 +1260,9 @@ LABEL_23:
   return v11;
 }
 
-- (BOOL)processGroupMember:(id)a3
+- (BOOL)processGroupMember:(id)member
 {
-  sub_1000858B0(a3);
+  sub_1000858B0(member);
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
@@ -1286,30 +1286,30 @@ LABEL_23:
         }
 
         v10 = *(*(&v38 + 1) + 8 * i);
-        v11 = [(PDOperation *)self database];
+        database = [(PDOperation *)self database];
         v12 = v8[86];
         v13 = objc_opt_class();
-        v14 = [v10 parentObjectID];
-        v15 = [v11 select:v13 identity:v14];
+        parentObjectID = [v10 parentObjectID];
+        v15 = [database select:v13 identity:parentObjectID];
 
         if (!v15)
         {
-          v16 = [objc_alloc(v8[86]) _init];
-          [v16 setGroupName:&stru_100206880];
-          v17 = [v10 parentObjectID];
-          [v16 setObjectID:v17];
+          _init = [objc_alloc(v8[86]) _init];
+          [_init setGroupName:&stru_100206880];
+          parentObjectID2 = [v10 parentObjectID];
+          [_init setObjectID:parentObjectID2];
 
-          [v16 setExpiration:*(&self->_resultsBlockStop + 2)];
-          if (![(PDASMPayloadOperation *)self insertEntity:v16])
+          [_init setExpiration:*(&self->_resultsBlockStop + 2)];
+          if (![(PDASMPayloadOperation *)self insertEntity:_init])
           {
             CLSInitLog();
             v18 = CLSLogSearch;
             if (os_log_type_enabled(CLSLogSearch, OS_LOG_TYPE_ERROR))
             {
               v31 = v18;
-              v32 = [v16 objectID];
+              objectID = [_init objectID];
               *buf = v34;
-              v43 = v32;
+              v43 = objectID;
               _os_log_error_impl(&_mh_execute_header, v31, OS_LOG_TYPE_ERROR, "Error inserting CLSGroup with identifier: %@", buf, 0xCu);
             }
           }
@@ -1319,15 +1319,15 @@ LABEL_23:
         v19 = [(PDASMPayloadOperation *)self insertEntity:v10];
         if (!v19)
         {
-          v21 = [v10 personID];
+          personID = [v10 personID];
           v22 = objc_opt_class();
-          v23 = [v10 objectID];
-          [(PDEndpointRequestOperation *)self checkForMissingEntityWithObjectID:v21 forClass:v22 fromEntityWithID:v23 withClass:objc_opt_class()];
+          objectID2 = [v10 objectID];
+          [(PDEndpointRequestOperation *)self checkForMissingEntityWithObjectID:personID forClass:v22 fromEntityWithID:objectID2 withClass:objc_opt_class()];
 
-          v24 = [v10 parentObjectID];
+          parentObjectID3 = [v10 parentObjectID];
           v25 = objc_opt_class();
-          v26 = [v10 objectID];
-          LODWORD(v25) = [(PDEndpointRequestOperation *)self checkForMissingEntityWithObjectID:v24 forClass:v25 fromEntityWithID:v26 withClass:objc_opt_class()];
+          objectID3 = [v10 objectID];
+          LODWORD(v25) = [(PDEndpointRequestOperation *)self checkForMissingEntityWithObjectID:parentObjectID3 forClass:v25 fromEntityWithID:objectID3 withClass:objc_opt_class()];
 
           if (!v25)
           {
@@ -1339,22 +1339,22 @@ LABEL_23:
           if (os_log_type_enabled(CLSLogSearch, OS_LOG_TYPE_DEBUG))
           {
             v29 = v27;
-            v30 = [v10 parentObjectID];
+            parentObjectID4 = [v10 parentObjectID];
             *buf = v34;
-            v43 = v30;
+            v43 = parentObjectID4;
             _os_log_debug_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEBUG, "GroupMember referenced missing group: '%@'", buf, 0xCu);
           }
 
           v28 = *(&self->super.super._responseStatusError + 2);
-          v20 = [v10 parentObjectID];
-          [v28 addObject:v20];
+          parentObjectID5 = [v10 parentObjectID];
+          [v28 addObject:parentObjectID5];
           goto LABEL_23;
         }
 
         if (*(&self->super._unresolvedMissingEntityIDs + 2) && (BYTE2(self->_finishBlock) & 1) == 0 && ([*(&self->_postFilterPersonsByRequiredClassMemberRole + 1) options] & 1) != 0)
         {
-          v20 = [(PDASMSearchOperation *)self postFilterWillAcceptGroupMember:v10];
-          if (v20)
+          parentObjectID5 = [(PDASMSearchOperation *)self postFilterWillAcceptGroupMember:v10];
+          if (parentObjectID5)
           {
             CLSInitLog();
             log = CLSLogSearch;
@@ -1391,13 +1391,13 @@ LABEL_28:
   return v7;
 }
 
-- (BOOL)processOrganization:(id)a3
+- (BOOL)processOrganization:(id)organization
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  organizationCopy = organization;
+  v5 = organizationCopy;
+  if (organizationCopy)
   {
-    v6 = sub_1000860D8(v4);
+    v6 = sub_1000860D8(organizationCopy);
     v29 = v6;
     v31 = v5;
     if ([v6 count])
@@ -1426,8 +1426,8 @@ LABEL_28:
             if (![(PDASMPayloadOperation *)self insertEntity:v12])
             {
               CLSInitLog();
-              v13 = [(PDASMSearchOperation *)self logSubsystem];
-              if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
+              logSubsystem = [(PDASMSearchOperation *)self logSubsystem];
+              if (os_log_type_enabled(logSubsystem, OS_LOG_TYPE_INFO))
               {
                 v14 = objc_opt_class();
                 *buf = 138543618;
@@ -1435,7 +1435,7 @@ LABEL_28:
                 v45 = 2114;
                 v46 = v12;
                 v15 = v14;
-                _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "%{public}@ failed to save location: %{public}@", buf, 0x16u);
+                _os_log_impl(&_mh_execute_header, logSubsystem, OS_LOG_TYPE_INFO, "%{public}@ failed to save location: %{public}@", buf, 0x16u);
               }
             }
           }
@@ -1475,8 +1475,8 @@ LABEL_28:
       v37 = 0u;
       v34 = 0u;
       v35 = 0u;
-      v20 = [v16 locationIDs];
-      v21 = [v20 countByEnumeratingWithState:&v34 objects:v42 count:16];
+      locationIDs = [v16 locationIDs];
+      v21 = [locationIDs countByEnumeratingWithState:&v34 objects:v42 count:16];
       if (v21)
       {
         v22 = v21;
@@ -1487,16 +1487,16 @@ LABEL_28:
           {
             if (*v35 != v23)
             {
-              objc_enumerationMutation(v20);
+              objc_enumerationMutation(locationIDs);
             }
 
             v25 = *(*(&v34 + 1) + 8 * j);
             v26 = objc_opt_class();
-            v27 = [v16 objectID];
-            [(PDEndpointRequestOperation *)self checkForMissingEntityWithObjectID:v25 forClass:v26 fromEntityWithID:v27 withClass:objc_opt_class()];
+            objectID = [v16 objectID];
+            [(PDEndpointRequestOperation *)self checkForMissingEntityWithObjectID:v25 forClass:v26 fromEntityWithID:objectID withClass:objc_opt_class()];
           }
 
-          v22 = [v20 countByEnumeratingWithState:&v34 objects:v42 count:16];
+          v22 = [locationIDs countByEnumeratingWithState:&v34 objects:v42 count:16];
         }
 
         while (v22);
@@ -1516,11 +1516,11 @@ LABEL_28:
   return v18;
 }
 
-- (id)generateFilterQueryForZoneName:(id)a3
+- (id)generateFilterQueryForZoneName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = sub_100084798(5);
-  v6 = [v4 isEqualToString:v5];
+  v6 = [nameCopy isEqualToString:v5];
 
   if (v6)
   {
@@ -1531,7 +1531,7 @@ LABEL_13:
   }
 
   v8 = sub_100084798(6);
-  v9 = [v4 isEqualToString:v8];
+  v9 = [nameCopy isEqualToString:v8];
 
   if (v9)
   {
@@ -1540,7 +1540,7 @@ LABEL_13:
   }
 
   v10 = sub_100084798(7);
-  v11 = [v4 isEqualToString:v10];
+  v11 = [nameCopy isEqualToString:v10];
 
   if (v11)
   {
@@ -1549,7 +1549,7 @@ LABEL_13:
   }
 
   v12 = sub_100084798(12);
-  v13 = [v4 isEqualToString:v12];
+  v13 = [nameCopy isEqualToString:v12];
 
   if (v13)
   {
@@ -1558,7 +1558,7 @@ LABEL_13:
   }
 
   v14 = sub_100084798(13);
-  v15 = [v4 isEqualToString:v14];
+  v15 = [nameCopy isEqualToString:v14];
 
   if (v15)
   {
@@ -1567,7 +1567,7 @@ LABEL_13:
   }
 
   v16 = sub_100084798(9);
-  v17 = [v4 isEqualToString:v16];
+  v17 = [nameCopy isEqualToString:v16];
 
   if (v17)
   {
@@ -1581,13 +1581,13 @@ LABEL_14:
   return v18;
 }
 
-- (id)createQueryIfNoneExists:(id)a3
+- (id)createQueryIfNoneExists:(id)exists
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  existsCopy = exists;
+  v4 = existsCopy;
+  if (existsCopy)
   {
-    v5 = v3;
+    v5 = existsCopy;
   }
 
   else
@@ -1600,39 +1600,39 @@ LABEL_14:
   return v6;
 }
 
-- (id)criteriaForFieldName:(id)a3 andValue:(id)a4
+- (id)criteriaForFieldName:(id)name andValue:(id)value
 {
-  v5 = a4;
-  v6 = a3;
+  valueCopy = value;
+  nameCopy = name;
   v7 = objc_alloc_init(PDDPSearchCriteria);
-  [(PDDPSearchCriteria *)v7 setFieldName:v6];
+  [(PDDPSearchCriteria *)v7 setFieldName:nameCopy];
 
   [(PDDPSearchCriteria *)v7 setSearchOperator:2];
   v8 = objc_alloc_init(PDDPTypedValue);
   [(PDDPTypedValue *)v8 setType:1];
-  [(PDDPTypedValue *)v8 setStringValue:v5];
+  [(PDDPTypedValue *)v8 setStringValue:valueCopy];
 
   [(PDDPSearchCriteria *)v7 setValue:v8];
 
   return v7;
 }
 
-- (id)criteriaForFieldName:(id)a3 andValues:(id)a4 withFormat:(id)a5
+- (id)criteriaForFieldName:(id)name andValues:(id)values withFormat:(id)format
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 count] == 1)
+  nameCopy = name;
+  valuesCopy = values;
+  formatCopy = format;
+  if ([valuesCopy count] == 1)
   {
-    v11 = [v9 firstObject];
-    v12 = [(PDASMSearchOperation *)self criteriaForFieldName:v8 andValue:v11];
+    firstObject = [valuesCopy firstObject];
+    v12 = [(PDASMSearchOperation *)self criteriaForFieldName:nameCopy andValue:firstObject];
   }
 
   else
   {
     v13 = objc_alloc_init(PDDPSearchCriteria);
-    v27 = v8;
-    [(PDDPSearchCriteria *)v13 setFieldName:v8];
+    v27 = nameCopy;
+    [(PDDPSearchCriteria *)v13 setFieldName:nameCopy];
     v25 = v13;
     [(PDDPSearchCriteria *)v13 setSearchOperator:7];
     v14 = objc_alloc_init(PDDPTypedValue);
@@ -1641,8 +1641,8 @@ LABEL_14:
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v26 = v9;
-    v15 = v9;
+    v26 = valuesCopy;
+    v15 = valuesCopy;
     v16 = [v15 countByEnumeratingWithState:&v29 objects:v37 count:16];
     if (v16)
     {
@@ -1659,10 +1659,10 @@ LABEL_14:
           }
 
           v20 = *(*(&v29 + 1) + 8 * v19);
-          if (v10)
+          if (formatCopy)
           {
             v28 = 0;
-            v21 = [NSString stringWithValidatedFormat:v10 validFormatSpecifiers:@"%@" error:&v28, v20];
+            v21 = [NSString stringWithValidatedFormat:formatCopy validFormatSpecifiers:@"%@" error:&v28, v20];
             v22 = v28;
             if (v21)
             {
@@ -1676,7 +1676,7 @@ LABEL_14:
               if (os_log_type_enabled(CLSLogSearch, OS_LOG_TYPE_ERROR))
               {
                 *buf = 138412546;
-                v34 = v10;
+                v34 = formatCopy;
                 v35 = 2112;
                 v36 = v22;
                 _os_log_error_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "Failed to validate formatString: '%@', error: %@", buf, 0x16u);
@@ -1702,96 +1702,96 @@ LABEL_14:
     v12 = v25;
     [(PDDPSearchCriteria *)v25 setValue:v14];
 
-    v9 = v26;
-    v8 = v27;
+    valuesCopy = v26;
+    nameCopy = v27;
   }
 
   return v12;
 }
 
-- (id)processClassLocationIDsSearchQuery:(id)a3
+- (id)processClassLocationIDsSearchQuery:(id)query
 {
-  v4 = a3;
-  v5 = [*(&self->_postFilterPersonsByRequiredClassMemberRole + 1) classLocationIDs];
-  v6 = [v5 count];
+  queryCopy = query;
+  classLocationIDs = [*(&self->_postFilterPersonsByRequiredClassMemberRole + 1) classLocationIDs];
+  v6 = [classLocationIDs count];
 
   if (v6)
   {
-    v7 = [(PDASMSearchOperation *)self createQueryIfNoneExists:v4];
+    v7 = [(PDASMSearchOperation *)self createQueryIfNoneExists:queryCopy];
     [v7 setType:3];
-    v8 = [*(&self->_postFilterPersonsByRequiredClassMemberRole + 1) classLocationIDs];
-    v9 = [(PDASMSearchOperation *)self criteriaForFieldName:@"location_uid" andValues:v8 withFormat:0];
+    classLocationIDs2 = [*(&self->_postFilterPersonsByRequiredClassMemberRole + 1) classLocationIDs];
+    v9 = [(PDASMSearchOperation *)self criteriaForFieldName:@"location_uid" andValues:classLocationIDs2 withFormat:0];
 
     [v7 setCriteria:v9];
   }
 
   else
   {
-    v7 = v4;
+    v7 = queryCopy;
   }
 
   return v7;
 }
 
-- (id)processGroupLocationIDsSearchQuery:(id)a3
+- (id)processGroupLocationIDsSearchQuery:(id)query
 {
-  v4 = a3;
-  v5 = [*(&self->_postFilterPersonsByRequiredClassMemberRole + 1) requiredGroupMemberGroupIDs];
-  v6 = [v5 count];
+  queryCopy = query;
+  requiredGroupMemberGroupIDs = [*(&self->_postFilterPersonsByRequiredClassMemberRole + 1) requiredGroupMemberGroupIDs];
+  v6 = [requiredGroupMemberGroupIDs count];
 
   if (v6)
   {
-    v7 = [(PDASMSearchOperation *)self createQueryIfNoneExists:v4];
+    v7 = [(PDASMSearchOperation *)self createQueryIfNoneExists:queryCopy];
     [v7 setType:3];
-    v8 = [*(&self->_postFilterPersonsByRequiredClassMemberRole + 1) groupLocationIDs];
-    v9 = [(PDASMSearchOperation *)self criteriaForFieldName:@"location_uid" andValues:v8 withFormat:0];
+    groupLocationIDs = [*(&self->_postFilterPersonsByRequiredClassMemberRole + 1) groupLocationIDs];
+    v9 = [(PDASMSearchOperation *)self criteriaForFieldName:@"location_uid" andValues:groupLocationIDs withFormat:0];
 
     [v7 setCriteria:v9];
   }
 
   else
   {
-    v7 = v4;
+    v7 = queryCopy;
   }
 
   return v7;
 }
 
-- (id)processGroupMemberSearchQuery:(id)a3
+- (id)processGroupMemberSearchQuery:(id)query
 {
-  v4 = a3;
-  v5 = [*(&self->_postFilterPersonsByRequiredClassMemberRole + 1) requiredGroupMemberGroupIDs];
-  v6 = [v5 count];
+  queryCopy = query;
+  requiredGroupMemberGroupIDs = [*(&self->_postFilterPersonsByRequiredClassMemberRole + 1) requiredGroupMemberGroupIDs];
+  v6 = [requiredGroupMemberGroupIDs count];
 
   if (v6)
   {
-    v7 = [(PDASMSearchOperation *)self createQueryIfNoneExists:v4];
+    v7 = [(PDASMSearchOperation *)self createQueryIfNoneExists:queryCopy];
     HIBYTE(self->_finisherLock._os_unfair_lock_opaque) = 1;
     [v7 setType:3];
-    v8 = [*(&self->_postFilterPersonsByRequiredClassMemberRole + 1) requiredGroupMemberGroupIDs];
-    v9 = [(PDASMSearchOperation *)self criteriaForFieldName:@"group_id" andValues:v8 withFormat:0];
+    requiredGroupMemberGroupIDs2 = [*(&self->_postFilterPersonsByRequiredClassMemberRole + 1) requiredGroupMemberGroupIDs];
+    v9 = [(PDASMSearchOperation *)self criteriaForFieldName:@"group_id" andValues:requiredGroupMemberGroupIDs2 withFormat:0];
 
     [v7 setCriteria:v9];
   }
 
   else
   {
-    v7 = v4;
+    v7 = queryCopy;
   }
 
   return v7;
 }
 
-- (id)processPersonSearchQuery:(id)a3
+- (id)processPersonSearchQuery:(id)query
 {
-  v7 = a3;
-  v8 = [*(&self->_postFilterPersonsByRequiredClassMemberRole + 1) requiredRoleType];
-  if (v8 || ([*(&self->_postFilterPersonsByRequiredClassMemberRole + 1) requiredRoleID], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+  queryCopy = query;
+  requiredRoleType = [*(&self->_postFilterPersonsByRequiredClassMemberRole + 1) requiredRoleType];
+  if (requiredRoleType || ([*(&self->_postFilterPersonsByRequiredClassMemberRole + 1) requiredRoleID], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v3 = [*(&self->_postFilterPersonsByRequiredClassMemberRole + 1) personLocationIDs];
+    personLocationIDs = [*(&self->_postFilterPersonsByRequiredClassMemberRole + 1) personLocationIDs];
     v9 = 1;
     v10 = 1;
-    if ([v3 count])
+    if ([personLocationIDs count])
     {
       goto LABEL_16;
     }
@@ -1802,11 +1802,11 @@ LABEL_14:
     v9 = 0;
   }
 
-  v11 = [*(&self->_postFilterPersonsByRequiredClassMemberRole + 1) requiredPrivilege];
-  if (v11)
+  requiredPrivilege = [*(&self->_postFilterPersonsByRequiredClassMemberRole + 1) requiredPrivilege];
+  if (requiredPrivilege)
   {
-    v4 = [*(&self->_postFilterPersonsByRequiredClassMemberRole + 1) requiredPrivilegeLocationIDs];
-    if ([v4 count])
+    requiredPrivilegeLocationIDs = [*(&self->_postFilterPersonsByRequiredClassMemberRole + 1) requiredPrivilegeLocationIDs];
+    if ([requiredPrivilegeLocationIDs count])
     {
       v10 = 1;
       goto LABEL_15;
@@ -1820,15 +1820,15 @@ LABEL_14:
     v35 = v5;
   }
 
-  v12 = [*(&self->_postFilterPersonsByRequiredClassMemberRole + 1) prohibitedPrivilege];
-  if (v12)
+  prohibitedPrivilege = [*(&self->_postFilterPersonsByRequiredClassMemberRole + 1) prohibitedPrivilege];
+  if (prohibitedPrivilege)
   {
-    v13 = v12;
+    v13 = prohibitedPrivilege;
     [*(&self->_postFilterPersonsByRequiredClassMemberRole + 1) prohibitedPrivilegeLocationIDs];
-    v14 = v37 = v7;
+    v14 = v37 = queryCopy;
     v10 = [v14 count] != 0;
 
-    v7 = v37;
+    queryCopy = v37;
   }
 
   else
@@ -1837,7 +1837,7 @@ LABEL_14:
   }
 
   v5 = v35;
-  if (v11)
+  if (requiredPrivilege)
   {
 LABEL_15:
 
@@ -1855,7 +1855,7 @@ LABEL_16:
   }
 
 LABEL_17:
-  if (!v8)
+  if (!requiredRoleType)
   {
 
     if (v10)
@@ -1864,7 +1864,7 @@ LABEL_17:
     }
 
 LABEL_25:
-    v22 = v7;
+    objectID = queryCopy;
     goto LABEL_45;
   }
 
@@ -1887,72 +1887,72 @@ LABEL_19:
   v39[4] = self;
   v40 = v15;
   v16 = objc_retainBlock(v39);
-  v17 = [(PDOperation *)self database];
-  v18 = [*(&self->_postFilterPersonsByRequiredClassMemberRole + 1) personLocationIDs];
-  v19 = [v18 count];
+  database = [(PDOperation *)self database];
+  personLocationIDs2 = [*(&self->_postFilterPersonsByRequiredClassMemberRole + 1) personLocationIDs];
+  v19 = [personLocationIDs2 count];
 
   if (!v19)
   {
     goto LABEL_30;
   }
 
-  v20 = [*(&self->_postFilterPersonsByRequiredClassMemberRole + 1) requiredRoleID];
-  if (v20)
+  requiredRoleID = [*(&self->_postFilterPersonsByRequiredClassMemberRole + 1) requiredRoleID];
+  if (requiredRoleID)
   {
-    v21 = v20;
+    v21 = requiredRoleID;
     goto LABEL_22;
   }
 
   if (![*(&self->_postFilterPersonsByRequiredClassMemberRole + 1) requiredRoleType])
   {
 LABEL_30:
-    v22 = 0;
+    objectID = 0;
     goto LABEL_31;
   }
 
-  v21 = sub_100051744(v17, [*(&self->_postFilterPersonsByRequiredClassMemberRole + 1) requiredRoleType]);
+  v21 = sub_100051744(database, [*(&self->_postFilterPersonsByRequiredClassMemberRole + 1) requiredRoleType]);
   if (![v21 count])
   {
-    v22 = 0;
+    objectID = 0;
     BYTE1(self->_finisherLock._os_unfair_lock_opaque) = 1;
     goto LABEL_23;
   }
 
-  v24 = [v21 firstObject];
-  v22 = [v24 objectID];
+  firstObject = [v21 firstObject];
+  objectID = [firstObject objectID];
 
-  if (!v22)
+  if (!objectID)
   {
     goto LABEL_31;
   }
 
-  v21 = v22;
+  v21 = objectID;
 LABEL_22:
-  v22 = [(PDASMSearchOperation *)self createQueryIfNoneExists:v7];
-  v23 = [*(&self->_postFilterPersonsByRequiredClassMemberRole + 1) personLocationIDs];
-  (v16[2])(v16, v21, v23, v22);
+  objectID = [(PDASMSearchOperation *)self createQueryIfNoneExists:queryCopy];
+  personLocationIDs3 = [*(&self->_postFilterPersonsByRequiredClassMemberRole + 1) personLocationIDs];
+  (v16[2])(v16, v21, personLocationIDs3, objectID);
 
 LABEL_23:
 LABEL_31:
-  v25 = [*(&self->_postFilterPersonsByRequiredClassMemberRole + 1) requiredPrivilegeLocationIDs];
-  v26 = [v25 count];
+  requiredPrivilegeLocationIDs2 = [*(&self->_postFilterPersonsByRequiredClassMemberRole + 1) requiredPrivilegeLocationIDs];
+  v26 = [requiredPrivilegeLocationIDs2 count];
 
   if (v26)
   {
-    v27 = [*(&self->_postFilterPersonsByRequiredClassMemberRole + 1) requiredRoleID];
-    v28 = [*(&self->_postFilterPersonsByRequiredClassMemberRole + 1) requiredPrivilege];
-    v36 = v17;
-    if (v28)
+    requiredRoleID2 = [*(&self->_postFilterPersonsByRequiredClassMemberRole + 1) requiredRoleID];
+    requiredPrivilege2 = [*(&self->_postFilterPersonsByRequiredClassMemberRole + 1) requiredPrivilege];
+    v36 = database;
+    if (requiredPrivilege2)
     {
-      v38 = v7;
-      v29 = sub_100051398(v17, v28);
+      v38 = queryCopy;
+      v29 = sub_100051398(database, requiredPrivilege2);
       if ([v29 count])
       {
-        v30 = [v29 firstObject];
-        [v30 objectID];
+        firstObject2 = [v29 firstObject];
+        [firstObject2 objectID];
         v32 = v31 = v15;
 
-        v27 = v32;
+        requiredRoleID2 = v32;
         v15 = v31;
       }
 
@@ -1961,71 +1961,71 @@ LABEL_31:
         BYTE2(self->_finisherLock._os_unfair_lock_opaque) = 1;
       }
 
-      v7 = v38;
+      queryCopy = v38;
     }
 
-    if (v27)
+    if (requiredRoleID2)
     {
-      if (!v22)
+      if (!objectID)
       {
-        v22 = [(PDASMSearchOperation *)self createQueryIfNoneExists:v7];
+        objectID = [(PDASMSearchOperation *)self createQueryIfNoneExists:queryCopy];
       }
 
-      v33 = [*(&self->_postFilterPersonsByRequiredClassMemberRole + 1) requiredPrivilegeLocationIDs];
-      (v16[2])(v16, v27, v33, v22);
+      requiredPrivilegeLocationIDs3 = [*(&self->_postFilterPersonsByRequiredClassMemberRole + 1) requiredPrivilegeLocationIDs];
+      (v16[2])(v16, requiredRoleID2, requiredPrivilegeLocationIDs3, objectID);
     }
 
-    v17 = v36;
+    database = v36;
   }
 
 LABEL_45:
 
-  return v22;
+  return objectID;
 }
 
-- (id)processClassMemberSearchQuery:(id)a3
+- (id)processClassMemberSearchQuery:(id)query
 {
-  v4 = a3;
-  v5 = [*(&self->_postFilterPersonsByRequiredClassMemberRole + 1) requiredClassMemberClassIDs];
-  v6 = [v5 count];
+  queryCopy = query;
+  requiredClassMemberClassIDs = [*(&self->_postFilterPersonsByRequiredClassMemberRole + 1) requiredClassMemberClassIDs];
+  v6 = [requiredClassMemberClassIDs count];
 
   if (v6)
   {
-    v7 = [(PDASMSearchOperation *)self createQueryIfNoneExists:v4];
+    v7 = [(PDASMSearchOperation *)self createQueryIfNoneExists:queryCopy];
     HIBYTE(self->_finisherLock._os_unfair_lock_opaque) = 1;
     [v7 setType:3];
-    v8 = [*(&self->_postFilterPersonsByRequiredClassMemberRole + 1) requiredClassMemberClassIDs];
-    v9 = [(PDASMSearchOperation *)self criteriaForFieldName:@"class_id" andValues:v8 withFormat:0];
+    requiredClassMemberClassIDs2 = [*(&self->_postFilterPersonsByRequiredClassMemberRole + 1) requiredClassMemberClassIDs];
+    v9 = [(PDASMSearchOperation *)self criteriaForFieldName:@"class_id" andValues:requiredClassMemberClassIDs2 withFormat:0];
 
     [v7 setCriteria:v9];
   }
 
   else
   {
-    v7 = v4;
+    v7 = queryCopy;
   }
 
   return v7;
 }
 
-- (id)processOrganizationSearchQuery:(id)a3
+- (id)processOrganizationSearchQuery:(id)query
 {
-  v4 = a3;
-  v5 = [*(&self->_postFilterPersonsByRequiredClassMemberRole + 1) requiredOrganizationEmailDomain];
+  queryCopy = query;
+  requiredOrganizationEmailDomain = [*(&self->_postFilterPersonsByRequiredClassMemberRole + 1) requiredOrganizationEmailDomain];
 
-  if (v5)
+  if (requiredOrganizationEmailDomain)
   {
-    v6 = [(PDASMSearchOperation *)self createQueryIfNoneExists:v4];
+    v6 = [(PDASMSearchOperation *)self createQueryIfNoneExists:queryCopy];
     [v6 setType:3];
-    v7 = [*(&self->_postFilterPersonsByRequiredClassMemberRole + 1) requiredOrganizationEmailDomain];
-    v8 = [(PDASMSearchOperation *)self criteriaForFieldName:@"org_email_domain" andValue:v7];
+    requiredOrganizationEmailDomain2 = [*(&self->_postFilterPersonsByRequiredClassMemberRole + 1) requiredOrganizationEmailDomain];
+    v8 = [(PDASMSearchOperation *)self criteriaForFieldName:@"org_email_domain" andValue:requiredOrganizationEmailDomain2];
 
     [v6 setCriteria:v8];
   }
 
   else
   {
-    v6 = v4;
+    v6 = queryCopy;
   }
 
   return v6;

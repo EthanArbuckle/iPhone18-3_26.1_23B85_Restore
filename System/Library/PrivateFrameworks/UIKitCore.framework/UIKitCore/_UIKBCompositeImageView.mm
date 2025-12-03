@@ -1,18 +1,18 @@
 @interface _UIKBCompositeImageView
 - (CGSize)imageSize;
 - (void)layoutSubviews;
-- (void)setImageViews:(id)a3;
+- (void)setImageViews:(id)views;
 @end
 
 @implementation _UIKBCompositeImageView
 
-- (void)setImageViews:(id)a3
+- (void)setImageViews:(id)views
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  objc_storeStrong(&self->_imageViews, a3);
-  v6 = [(UIView *)self subviews];
-  [v6 makeObjectsPerformSelector:sel_removeFromSuperview];
+  viewsCopy = views;
+  objc_storeStrong(&self->_imageViews, views);
+  subviews = [(UIView *)self subviews];
+  [subviews makeObjectsPerformSelector:sel_removeFromSuperview];
 
   v14 = 0u;
   v15 = 0u;

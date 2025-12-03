@@ -1,7 +1,7 @@
 @interface SCLockdownService
 - (SCLockdownService)init;
-- (void)fetchWifiSyncIdentifiersWithCompletion:(id)a3;
-- (void)hostForIdentifier:(id)a3 completion:(id)a4;
+- (void)fetchWifiSyncIdentifiersWithCompletion:(id)completion;
+- (void)hostForIdentifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation SCLockdownService
@@ -23,24 +23,24 @@
   return v2;
 }
 
-- (void)fetchWifiSyncIdentifiersWithCompletion:(id)a3
+- (void)fetchWifiSyncIdentifiersWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (_os_feature_enabled_impl())
   {
-    v5 = [(SCLockdownService *)self remotePairingStore];
-    v6 = [(SCLockdownService *)self workQueue];
+    remotePairingStore = [(SCLockdownService *)self remotePairingStore];
+    workQueue = [(SCLockdownService *)self workQueue];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __60__SCLockdownService_fetchWifiSyncIdentifiersWithCompletion___block_invoke;
     v7[3] = &unk_279B399F0;
-    v8 = v4;
-    [v5 fetchPairedDevicesOnQueue:v6 completion:v7];
+    v8 = completionCopy;
+    [remotePairingStore fetchPairedDevicesOnQueue:workQueue completion:v7];
   }
 
   else
   {
-    (*(v4 + 2))(v4, MEMORY[0x277CBEBF8]);
+    (*(completionCopy + 2))(completionCopy, MEMORY[0x277CBEBF8]);
   }
 }
 
@@ -98,13 +98,13 @@ void __60__SCLockdownService_fetchWifiSyncIdentifiersWithCompletion___block_invo
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)hostForIdentifier:(id)a3 completion:(id)a4
+- (void)hostForIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SCLockdownService *)self remotePairingStore];
-  v9 = [v8 isWifiSyncEnabled];
-  if (!v6 || !v9)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  remotePairingStore = [(SCLockdownService *)self remotePairingStore];
+  isWifiSyncEnabled = [remotePairingStore isWifiSyncEnabled];
+  if (!identifierCopy || !isWifiSyncEnabled)
   {
 
     goto LABEL_6;
@@ -115,20 +115,20 @@ void __60__SCLockdownService_fetchWifiSyncIdentifiersWithCompletion___block_invo
   if ((v10 & 1) == 0)
   {
 LABEL_6:
-    v7[2](v7, 0);
+    completionCopy[2](completionCopy, 0);
     goto LABEL_7;
   }
 
-  v11 = [(SCLockdownService *)self remotePairingStore];
-  v12 = [(SCLockdownService *)self workQueue];
+  remotePairingStore2 = [(SCLockdownService *)self remotePairingStore];
+  workQueue = [(SCLockdownService *)self workQueue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __50__SCLockdownService_hostForIdentifier_completion___block_invoke;
   v13[3] = &unk_279B39A18;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
-  [v11 fetchPairedDevicesOnQueue:v12 completion:v13];
+  v14 = identifierCopy;
+  v15 = completionCopy;
+  [remotePairingStore2 fetchPairedDevicesOnQueue:workQueue completion:v13];
 
 LABEL_7:
 }

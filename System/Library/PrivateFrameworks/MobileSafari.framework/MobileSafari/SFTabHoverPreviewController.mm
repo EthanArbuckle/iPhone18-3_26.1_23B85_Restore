@@ -1,14 +1,14 @@
 @interface SFTabHoverPreviewController
 - (SFTabHoverPreviewController)init;
 - (SFTabHoverPreviewControllerDelegate)delegate;
-- (void)_cancelOrCloseHoverPreviewWithGracePeriod:(BOOL)a3;
-- (void)_showHoverPreviewForItem:(id)a3;
+- (void)_cancelOrCloseHoverPreviewWithGracePeriod:(BOOL)period;
+- (void)_showHoverPreviewForItem:(id)item;
 - (void)_temporarilyDisableHover;
 - (void)dealloc;
 - (void)dismiss;
-- (void)setEnabled:(BOOL)a3;
+- (void)setEnabled:(BOOL)enabled;
 - (void)setNeedsSnapshotUpdate;
-- (void)updateWithItem:(id)a3 atLocation:(CGPoint)a4;
+- (void)updateWithItem:(id)item atLocation:(CGPoint)location;
 @end
 
 @implementation SFTabHoverPreviewController
@@ -45,26 +45,26 @@
   [(SFTabHoverPreviewController *)&v3 dealloc];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  self->_enabled = a3;
-  if (!a3)
+  self->_enabled = enabled;
+  if (!enabled)
   {
     [(SFTabHoverPreviewController *)self cancel];
   }
 }
 
-- (void)updateWithItem:(id)a3 atLocation:(CGPoint)a4
+- (void)updateWithItem:(id)item atLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  v8 = a3;
-  v9 = v8;
+  y = location.y;
+  x = location.x;
+  itemCopy = item;
+  v9 = itemCopy;
   if (self->_enabled)
   {
-    if (v8)
+    if (itemCopy)
     {
-      if (self->_itemShowingPreview != v8 && (self->_itemPendingPreview != v8 || sqrt((x - self->_pendingHoverLocation.x) * (x - self->_pendingHoverLocation.x) + (y - self->_pendingHoverLocation.y) * (y - self->_pendingHoverLocation.y)) >= 10.0))
+      if (self->_itemShowingPreview != itemCopy && (self->_itemPendingPreview != itemCopy || sqrt((x - self->_pendingHoverLocation.x) * (x - self->_pendingHoverLocation.x) + (y - self->_pendingHoverLocation.y) * (y - self->_pendingHoverLocation.y)) >= 10.0))
       {
         Current = CFAbsoluteTimeGetCurrent();
         if (self->_itemShowingPreview || (Current = Current - self->_lastTimeHoverPreviewWasDismissed, Current < 0.5))
@@ -74,7 +74,7 @@
 
         else
         {
-          objc_storeStrong(&self->_itemPendingPreview, a3);
+          objc_storeStrong(&self->_itemPendingPreview, item);
           self->_pendingHoverLocation.x = x;
           self->_pendingHoverLocation.y = y;
           [(BSAbsoluteMachTimer *)self->_tabHoverPreviewShowTimer cancel];
@@ -122,27 +122,27 @@ void __57__SFTabHoverPreviewController_updateWithItem_atLocation___block_invoke(
   [WeakRetained tabHoverPreviewControllerNeedsSnapshotUpdate:self];
 }
 
-- (void)_showHoverPreviewForItem:(id)a3
+- (void)_showHoverPreviewForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   [(BSAbsoluteMachTimer *)self->_tabHoverPreviewShowTimer cancel];
   itemPendingPreview = self->_itemPendingPreview;
   self->_itemPendingPreview = 0;
 
   itemShowingPreview = self->_itemShowingPreview;
-  self->_itemShowingPreview = v4;
-  v7 = v4;
+  self->_itemShowingPreview = itemCopy;
+  v7 = itemCopy;
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained tabHoverPreviewController:self showPreviewForItem:v7];
 }
 
-- (void)_cancelOrCloseHoverPreviewWithGracePeriod:(BOOL)a3
+- (void)_cancelOrCloseHoverPreviewWithGracePeriod:(BOOL)period
 {
-  v3 = a3;
+  periodCopy = period;
   [(BSAbsoluteMachTimer *)self->_tabHoverPreviewShowTimer cancel];
   Current = 0.0;
-  if (v3 && self->_itemShowingPreview)
+  if (periodCopy && self->_itemShowingPreview)
   {
     Current = CFAbsoluteTimeGetCurrent();
   }

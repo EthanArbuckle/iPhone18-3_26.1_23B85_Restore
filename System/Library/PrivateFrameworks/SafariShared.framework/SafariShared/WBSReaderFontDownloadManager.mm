@@ -1,9 +1,9 @@
 @interface WBSReaderFontDownloadManager
 + (WBSReaderFontDownloadManager)sharedManager;
-- (BOOL)hasOngoingRequestForFont:(id)a3;
+- (BOOL)hasOngoingRequestForFont:(id)font;
 - (WBSReaderFontDownloadManager)init;
-- (double)downloadProgressForFont:(id)a3;
-- (void)downloadFont:(id)a3;
+- (double)downloadProgressForFont:(id)font;
+- (void)downloadFont:(id)font;
 @end
 
 @implementation WBSReaderFontDownloadManager
@@ -30,9 +30,9 @@
   v2 = [(WBSReaderFontDownloadManager *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     fontFamilyToProgress = v2->_fontFamilyToProgress;
-    v2->_fontFamilyToProgress = v3;
+    v2->_fontFamilyToProgress = dictionary;
 
     v5 = v2;
   }
@@ -40,42 +40,42 @@
   return v2;
 }
 
-- (BOOL)hasOngoingRequestForFont:(id)a3
+- (BOOL)hasOngoingRequestForFont:(id)font
 {
   fontFamilyToProgress = self->_fontFamilyToProgress;
-  v4 = [a3 familyName];
-  v5 = [(NSMutableDictionary *)fontFamilyToProgress objectForKeyedSubscript:v4];
+  familyName = [font familyName];
+  v5 = [(NSMutableDictionary *)fontFamilyToProgress objectForKeyedSubscript:familyName];
   LOBYTE(fontFamilyToProgress) = v5 != 0;
 
   return fontFamilyToProgress;
 }
 
-- (double)downloadProgressForFont:(id)a3
+- (double)downloadProgressForFont:(id)font
 {
   fontFamilyToProgress = self->_fontFamilyToProgress;
-  v4 = [a3 familyName];
-  v5 = [(NSMutableDictionary *)fontFamilyToProgress objectForKeyedSubscript:v4];
+  familyName = [font familyName];
+  v5 = [(NSMutableDictionary *)fontFamilyToProgress objectForKeyedSubscript:familyName];
   [v5 doubleValue];
   v7 = v6;
 
   return v7;
 }
 
-- (void)downloadFont:(id)a3
+- (void)downloadFont:(id)font
 {
   v15[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  fontCopy = font;
+  v5 = fontCopy;
+  if (fontCopy)
   {
     fontFamilyToProgress = self->_fontFamilyToProgress;
-    v7 = [v4 familyName];
-    [(NSMutableDictionary *)fontFamilyToProgress setObject:&unk_1F3A9AFB8 forKeyedSubscript:v7];
+    familyName = [fontCopy familyName];
+    [(NSMutableDictionary *)fontFamilyToProgress setObject:&unk_1F3A9AFB8 forKeyedSubscript:familyName];
 
     v14[0] = *MEMORY[0x1E6965790];
-    v8 = [v5 familyName];
+    familyName2 = [v5 familyName];
     v14[1] = *MEMORY[0x1E6965840];
-    v15[0] = v8;
+    v15[0] = familyName2;
     v15[1] = &unk_1F3A9AFD0;
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:2];
 

@@ -1,8 +1,8 @@
 @interface BLSHBacklightEnvironmentStateMachine
 - (BLSHBacklightEnvironmentPresentation)presentation;
-- (BLSHBacklightEnvironmentStateMachine)initWithPresentation:(id)a3 backlightState:(int64_t)a4 delegate:(id)a5 inactiveBudgetPolicy:(id)a6 osTimerProvider:(id)a7 platformProvider:(id)a8;
+- (BLSHBacklightEnvironmentStateMachine)initWithPresentation:(id)presentation backlightState:(int64_t)state delegate:(id)delegate inactiveBudgetPolicy:(id)policy osTimerProvider:(id)provider platformProvider:(id)platformProvider;
 - (BLSHBacklightEnvironmentStateMachineDelegate)lock_delegate;
-- (BOOL)_lock_transitionCompleteAfterCompletingTransitionState:(uint64_t)a1;
+- (BOOL)_lock_transitionCompleteAfterCompletingTransitionState:(uint64_t)state;
 - (BOOL)isUpdatingPresentation;
 - (BOOL)isUpdatingState;
 - (BOOL)pendingNotifyBeganUpdatingState;
@@ -10,41 +10,41 @@
 - (NSSet)updatingVisualStateTransitionStates;
 - (NSString)debugDescription;
 - (NSString)description;
-- (id)_descriptionOfTransitionStates:(int)a3 shouldFilter:(char)a4 countOnly:(void *)a5 environmentFilter:(void *)a6 filter:;
-- (id)_lock_descriptionOfUpdatingTransitionStatesToBacklightState:(int)a3 shouldFilter:(char)a4 countOnly:;
-- (id)_lock_etsLoggingStringForBacklightState:(uint64_t)a1;
-- (id)_lock_transitionStateForEnvironment:(uint64_t)a1;
-- (id)transitionStateForEnvironment:(os_unfair_lock_s *)a1;
+- (id)_descriptionOfTransitionStates:(int)states shouldFilter:(char)filter countOnly:(void *)only environmentFilter:(void *)environmentFilter filter:;
+- (id)_lock_descriptionOfUpdatingTransitionStatesToBacklightState:(int)state shouldFilter:(char)filter countOnly:;
+- (id)_lock_etsLoggingStringForBacklightState:(uint64_t)state;
+- (id)_lock_transitionStateForEnvironment:(uint64_t)environment;
+- (id)transitionStateForEnvironment:(os_unfair_lock_s *)environment;
 - (int)_lock_debugDescription;
-- (uint64_t)_lock_allTransitionsDidBeginUpdateBacklightState:(void *)a3 environmentFilter:;
-- (uint64_t)_lock_isActiveTransitionState:(uint64_t)a1;
-- (uint64_t)_lock_isSetPresentationOperationComplete:(uint64_t)a1;
-- (uint64_t)_lock_numTransitionsDidNotBeginUpdateBacklightState:(uint64_t)a1;
+- (uint64_t)_lock_allTransitionsDidBeginUpdateBacklightState:(void *)state environmentFilter:;
+- (uint64_t)_lock_isActiveTransitionState:(uint64_t)state;
+- (uint64_t)_lock_isSetPresentationOperationComplete:(uint64_t)complete;
+- (uint64_t)_lock_numTransitionsDidNotBeginUpdateBacklightState:(uint64_t)state;
 - (uint64_t)isInvalid;
-- (void)_checkCompletedOperationsToBacklightState:(void *)a3 transitionState:(int)a4 shouldCompleteTransitionState:(void *)a5 setupWithLock:(void *)a6 completeWithoutLock:;
-- (void)_lock_descriptionOfDateSpecifierTransitionStatesShouldFilter:(char)a3 countOnly:;
-- (void)_lock_ifPossibleStopTrackingTransitionState:(uint64_t)a1;
-- (void)_lock_updateHistory:(uint64_t)a3 backlightState:(void *)a4 transitionState:(uint64_t)a5 pendingTransitionStateCount:;
-- (void)checkCompletedOperationsToBacklightState:(void *)a3 visualState:(void *)a4 transitionState:(int)a5 isBeginUpdate:;
-- (void)completedOperation:(uint64_t)a1;
+- (void)_checkCompletedOperationsToBacklightState:(void *)state transitionState:(int)transitionState shouldCompleteTransitionState:(void *)completeTransitionState setupWithLock:(void *)lock completeWithoutLock:;
+- (void)_lock_descriptionOfDateSpecifierTransitionStatesShouldFilter:(char)filter countOnly:;
+- (void)_lock_ifPossibleStopTrackingTransitionState:(uint64_t)state;
+- (void)_lock_updateHistory:(uint64_t)history backlightState:(void *)state transitionState:(uint64_t)transitionState pendingTransitionStateCount:;
+- (void)checkCompletedOperationsToBacklightState:(void *)state visualState:(void *)visualState transitionState:(int)transitionState isBeginUpdate:;
+- (void)completedOperation:(uint64_t)operation;
 - (void)dealloc;
 - (void)endAddingEnvironments;
-- (void)enumerateRemoteEnvironmentsFirstFromSource:(void *)a3 environmentTransformer:(void *)a4 block:;
+- (void)enumerateRemoteEnvironmentsFirstFromSource:(void *)source environmentTransformer:(void *)transformer block:;
 - (void)invalidate;
-- (void)onMain_performEvent:(void *)a3 withInitialSpecifier:(void *)a4 performBacklightRamp:;
-- (void)onMain_setPresentation:(uint64_t)a3 withTargetBacklightState:;
-- (void)onMain_updateEnvironment:(uint64_t)a1;
-- (void)onMain_updateToSpecifier:(uint64_t)a1;
-- (void)performEvent:(id)a3 withInitialSpecifier:(id)a4 performBacklightRamp:(id)a5;
-- (void)populateEnvironmentStateMachineStruct:(id *)a3;
-- (void)populateOperationCompletedMismatchedBacklightStatesStruct:(uint64_t)a3 backlightState:(uint64_t)a4 targetBacklightState:(void *)a5 performEventHistory:(void *)a6 didBeginUpdateHistory:(void *)a7 didCompleteUpdateHistory:;
-- (void)setPresentation:(id)a3 withTargetBacklightState:(int64_t)a4;
-- (void)transitionState:(id)a3 didUpdateToDateSpecifier:(id)a4;
+- (void)onMain_performEvent:(void *)event withInitialSpecifier:(void *)specifier performBacklightRamp:;
+- (void)onMain_setPresentation:(uint64_t)presentation withTargetBacklightState:;
+- (void)onMain_updateEnvironment:(uint64_t)environment;
+- (void)onMain_updateToSpecifier:(uint64_t)specifier;
+- (void)performEvent:(id)event withInitialSpecifier:(id)specifier performBacklightRamp:(id)ramp;
+- (void)populateEnvironmentStateMachineStruct:(id *)struct;
+- (void)populateOperationCompletedMismatchedBacklightStatesStruct:(uint64_t)struct backlightState:(uint64_t)state targetBacklightState:(void *)backlightState performEventHistory:(void *)history didBeginUpdateHistory:(void *)updateHistory didCompleteUpdateHistory:;
+- (void)setPresentation:(id)presentation withTargetBacklightState:(int64_t)state;
+- (void)transitionState:(id)state didUpdateToDateSpecifier:(id)specifier;
 - (void)updateAllEnvironmentsInPresentation;
-- (void)updateEnvironment:(id)a3;
+- (void)updateEnvironment:(id)environment;
 - (void)updateRemovedEnvironmentsToActiveOn;
-- (void)updateToSpecifier:(id)a3;
-- (void)updateTransitionStatesForEnvironments:(uint64_t)a3 toBacklightState:(void *)a4 forEvent:(void *)a5 withInitialSpecifier:(void *)a6 forReason:(void *)a7 performBacklightRamp:(void *)a8 environmentTransformer:;
+- (void)updateToSpecifier:(id)specifier;
+- (void)updateTransitionStatesForEnvironments:(uint64_t)environments toBacklightState:(void *)state forEvent:(void *)event withInitialSpecifier:(void *)specifier forReason:(void *)reason performBacklightRamp:(void *)ramp environmentTransformer:;
 @end
 
 @implementation BLSHBacklightEnvironmentStateMachine
@@ -63,7 +63,7 @@
   v2 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid condition not satisfying: %@"];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    v3 = NSStringFromSelector(a1);
+    v3 = NSStringFromSelector(self);
     v4 = objc_opt_class();
     v11 = NSStringFromClass(v4);
     OUTLINED_FUNCTION_1_1(&dword_21FD11000, MEMORY[0x277D86220], v5, "failure in %{public}@ of <%{public}@:%p> (%{public}@:%i) : %{public}@", v6, v7, v8, v9, @"_lock_addingEnvironmentsCount == 0", v10, 2u);
@@ -74,44 +74,44 @@
   __break(0);
 }
 
-- (BLSHBacklightEnvironmentStateMachine)initWithPresentation:(id)a3 backlightState:(int64_t)a4 delegate:(id)a5 inactiveBudgetPolicy:(id)a6 osTimerProvider:(id)a7 platformProvider:(id)a8
+- (BLSHBacklightEnvironmentStateMachine)initWithPresentation:(id)presentation backlightState:(int64_t)state delegate:(id)delegate inactiveBudgetPolicy:(id)policy osTimerProvider:(id)provider platformProvider:(id)platformProvider
 {
-  v16 = a3;
-  v17 = a5;
-  v33 = a6;
-  v32 = a7;
-  v18 = a8;
+  presentationCopy = presentation;
+  delegateCopy = delegate;
+  policyCopy = policy;
+  providerCopy = provider;
+  platformProviderCopy = platformProvider;
   v36.receiver = self;
   v36.super_class = BLSHBacklightEnvironmentStateMachine;
   v19 = [(BLSHBacklightEnvironmentStateMachine *)&v36 init];
   v20 = v19;
   if (v19)
   {
-    if (!v16)
+    if (!presentationCopy)
     {
       [BLSHBacklightEnvironmentStateMachine initWithPresentation:v19 backlightState:a2 delegate:? inactiveBudgetPolicy:? osTimerProvider:? platformProvider:?];
     }
 
     v19->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v19->_lock_presentation, a3);
-    v20->_lock_targetBacklightState = a4;
-    v20->_lock_performEventTargetBacklightState = a4;
-    v21 = [MEMORY[0x277CBEB18] array];
+    objc_storeStrong(&v19->_lock_presentation, presentation);
+    v20->_lock_targetBacklightState = state;
+    v20->_lock_performEventTargetBacklightState = state;
+    array = [MEMORY[0x277CBEB18] array];
     performEventHistory = v20->_performEventHistory;
-    v20->_performEventHistory = v21;
+    v20->_performEventHistory = array;
 
-    v23 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     didBeginUpdateHistory = v20->_didBeginUpdateHistory;
-    v20->_didBeginUpdateHistory = v23;
+    v20->_didBeginUpdateHistory = array2;
 
-    v25 = [MEMORY[0x277CBEB18] array];
+    array3 = [MEMORY[0x277CBEB18] array];
     didCompleteUpdateHistory = v20->_didCompleteUpdateHistory;
-    v20->_didCompleteUpdateHistory = v25;
+    v20->_didCompleteUpdateHistory = array3;
 
-    objc_storeWeak(&v20->_lock_delegate, v17);
-    objc_storeStrong(&v20->_inactiveBudgetPolicy, a6);
-    objc_storeStrong(&v20->_osTimerProvider, a7);
-    objc_storeStrong(&v20->_platformProvider, a8);
+    objc_storeWeak(&v20->_lock_delegate, delegateCopy);
+    objc_storeStrong(&v20->_inactiveBudgetPolicy, policy);
+    objc_storeStrong(&v20->_osTimerProvider, provider);
+    objc_storeStrong(&v20->_platformProvider, platformProvider);
     v27 = [objc_alloc(MEMORY[0x277CCAB00]) initWithKeyOptions:517 valueOptions:517 capacity:4];
     transitionStates = v20->_transitionStates;
     v20->_transitionStates = v27;
@@ -186,28 +186,28 @@ uint64_t __139__BLSHBacklightEnvironmentStateMachine_initWithPresentation_backli
   v18 = [v3 appendBool:self->_lock_setPresentationOperation != 0 withName:@"updatingPresentation"];
   if ([(NSMutableSet *)self->_lock_staleEnvironmentsThatNeedDeferredUpdate count])
   {
-    v19 = [(NSMutableSet *)self->_lock_staleEnvironmentsThatNeedDeferredUpdate allObjects];
-    v20 = [v19 valueForKey:@"identifier"];
+    allObjects = [(NSMutableSet *)self->_lock_staleEnvironmentsThatNeedDeferredUpdate allObjects];
+    v20 = [allObjects valueForKey:@"identifier"];
     v21 = [v20 componentsJoinedByString:{@", "}];
     [v3 appendString:v21 withName:@"removedEnvsForStateUpdateLater"];
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  v22 = [v3 build];
+  build = [v3 build];
 
-  return v22;
+  return build;
 }
 
 - (void)invalidate
 {
   v19 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(BLSHBacklightEnvironmentPresentation *)self->_lock_presentation presentationEntries];
+  presentationEntries = [(BLSHBacklightEnvironmentPresentation *)self->_lock_presentation presentationEntries];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v4 = [presentationEntries countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -219,17 +219,17 @@ uint64_t __139__BLSHBacklightEnvironmentStateMachine_initWithPresentation_backli
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(presentationEntries);
         }
 
-        v8 = [*(*(&v14 + 1) + 8 * v7) environment];
-        [v8 deactivateClient];
+        environment = [*(*(&v14 + 1) + 8 * v7) environment];
+        [environment deactivateClient];
 
         ++v7;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [presentationEntries countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v5);
@@ -262,7 +262,7 @@ uint64_t __139__BLSHBacklightEnvironmentStateMachine_initWithPresentation_backli
   v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"environment for later update must implement updateToVisualState:presentationDateSpecifier: from BLSHBacklightSceneHostEnvironment_Private"];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    v5 = NSStringFromSelector(a1);
+    v5 = NSStringFromSelector(self);
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
     v8 = 138544642;
@@ -285,25 +285,25 @@ uint64_t __139__BLSHBacklightEnvironmentStateMachine_initWithPresentation_backli
   __break(0);
 }
 
-- (void)setPresentation:(id)a3 withTargetBacklightState:(int64_t)a4
+- (void)setPresentation:(id)presentation withTargetBacklightState:(int64_t)state
 {
-  v5 = a3;
-  v4 = v5;
+  presentationCopy = presentation;
+  v4 = presentationCopy;
   BSDispatchMain();
 }
 
-- (void)onMain_setPresentation:(uint64_t)a3 withTargetBacklightState:
+- (void)onMain_setPresentation:(uint64_t)presentation withTargetBacklightState:
 {
   v84 = *MEMORY[0x277D85DE8];
   v53 = a2;
-  if (a1)
+  if (self)
   {
-    if ([(BLSHBacklightEnvironmentStateMachine *)a1 isInvalid])
+    if ([(BLSHBacklightEnvironmentStateMachine *)self isInvalid])
     {
       oslog = bls_backlight_log();
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_FAULT))
       {
-        [(BLSHBacklightEnvironmentStateMachine *)a1 onMain_setPresentation:v53 withTargetBacklightState:oslog];
+        [(BLSHBacklightEnvironmentStateMachine *)self onMain_setPresentation:v53 withTargetBacklightState:oslog];
       }
 
       goto LABEL_58;
@@ -311,35 +311,35 @@ uint64_t __139__BLSHBacklightEnvironmentStateMachine_initWithPresentation_backli
 
     if (!v53)
     {
-      [BLSHBacklightEnvironmentStateMachine onMain_setPresentation:a1 withTargetBacklightState:sel_onMain_setPresentation_withTargetBacklightState_];
+      [BLSHBacklightEnvironmentStateMachine onMain_setPresentation:self withTargetBacklightState:sel_onMain_setPresentation_withTargetBacklightState_];
     }
 
-    os_unfair_lock_lock((a1 + 8));
-    v5 = *(a1 + 16);
-    *(a1 + 112) = a3;
+    os_unfair_lock_lock((self + 8));
+    v5 = *(self + 16);
+    *(self + 112) = presentation;
     oslog = v5;
-    objc_storeStrong((a1 + 16), a2);
+    objc_storeStrong((self + 16), a2);
     v51 = [v53 differenceFromPresentation:oslog];
-    v6 = [v51 insertions];
-    v7 = *(a1 + 104);
+    insertions = [v51 insertions];
+    v7 = *(self + 104);
     v47 = v7;
     if (v7)
     {
-      v8 = v6;
-      v9 = [v7 additions];
-      v10 = [v53 presentationEntries];
+      v8 = insertions;
+      additions = [v7 additions];
+      presentationEntries = [v53 presentationEntries];
       v77[0] = MEMORY[0x277D85DD0];
       v77[1] = 3221225472;
       v77[2] = __88__BLSHBacklightEnvironmentStateMachine_onMain_setPresentation_withTargetBacklightState___block_invoke;
       v77[3] = &unk_27841F488;
       v78 = v8;
-      v11 = v9;
+      v11 = additions;
       v79 = v11;
-      v12 = [v10 bs_compactMap:v77];
+      v12 = [presentationEntries bs_compactMap:v77];
 
-      v13 = [v47 backlightState];
-      v14 = v13 != a3;
-      if (v13 == a3)
+      backlightState = [v47 backlightState];
+      v14 = backlightState != presentation;
+      if (backlightState == presentation)
       {
         v49 = v8;
       }
@@ -355,38 +355,38 @@ uint64_t __139__BLSHBacklightEnvironmentStateMachine_initWithPresentation_backli
     else
     {
       v14 = 0;
-      v48 = v6;
-      v49 = v6;
+      v48 = insertions;
+      v49 = insertions;
     }
 
-    v15 = [[BLSSetPresentationOperation alloc] initWithBacklightState:a3 additions:v48];
-    v16 = *(a1 + 104);
+    v15 = [[BLSSetPresentationOperation alloc] initWithBacklightState:presentation additions:v48];
+    v16 = *(self + 104);
     v46 = v15;
-    *(a1 + 104) = v15;
+    *(self + 104) = v15;
 
-    os_unfair_lock_unlock((a1 + 8));
-    v17 = [v51 hasChanges];
-    v18 = v17;
-    if ((v14 | v17) != 1)
+    os_unfair_lock_unlock((self + 8));
+    hasChanges = [v51 hasChanges];
+    v18 = hasChanges;
+    if ((v14 | hasChanges) != 1)
     {
-      v50 = bls_backlight_log();
-      if (os_log_type_enabled(v50, OS_LOG_TYPE_INFO))
+      removals = bls_backlight_log();
+      if (os_log_type_enabled(removals, OS_LOG_TYPE_INFO))
       {
         v26 = NSStringFromBLSBacklightState();
         *buf = 134218242;
-        *&buf[4] = a1;
+        *&buf[4] = self;
         *&buf[12] = 2114;
         *&buf[14] = v26;
-        _os_log_impl(&dword_21FD11000, v50, OS_LOG_TYPE_INFO, "ESM:%p setPresentation (redundant) targetBacklightState:%{public}@", buf, 0x16u);
+        _os_log_impl(&dword_21FD11000, removals, OS_LOG_TYPE_INFO, "ESM:%p setPresentation (redundant) targetBacklightState:%{public}@", buf, 0x16u);
       }
 
       v27 = 0;
       goto LABEL_57;
     }
 
-    v50 = [v51 removals];
+    removals = [v51 removals];
     v45 = [v49 count];
-    v19 = [v50 count];
+    v19 = [removals count];
     v20 = bls_backlight_log();
     v21 = os_log_type_enabled(v20, OS_LOG_TYPE_INFO);
 
@@ -403,7 +403,7 @@ uint64_t __139__BLSHBacklightEnvironmentStateMachine_initWithPresentation_backli
             v31 = [v49 bs_map:&__block_literal_global_139];
             v32 = NSStringFromBLSBacklightState();
             *buf = 134218498;
-            *&buf[4] = a1;
+            *&buf[4] = self;
             *&buf[12] = 2114;
             *&buf[14] = v31;
             *&buf[22] = 2114;
@@ -419,10 +419,10 @@ uint64_t __139__BLSHBacklightEnvironmentStateMachine_initWithPresentation_backli
           if (v22)
           {
             v23 = [v49 bs_map:&__block_literal_global_145];
-            v24 = [v50 bs_map:&__block_literal_global_148];
+            v24 = [removals bs_map:&__block_literal_global_148];
             v25 = NSStringFromBLSBacklightState();
             *buf = 134218754;
-            *&buf[4] = a1;
+            *&buf[4] = self;
             *&buf[12] = 2114;
             *&buf[14] = v23;
             *&buf[22] = 2114;
@@ -435,10 +435,10 @@ uint64_t __139__BLSHBacklightEnvironmentStateMachine_initWithPresentation_backli
 
         else if (v22)
         {
-          v33 = [v50 bs_map:&__block_literal_global_142];
+          v33 = [removals bs_map:&__block_literal_global_142];
           v34 = NSStringFromBLSBacklightState();
           *buf = 134218498;
-          *&buf[4] = a1;
+          *&buf[4] = self;
           *&buf[12] = 2114;
           *&buf[14] = v33;
           *&buf[22] = 2114;
@@ -467,33 +467,33 @@ LABEL_32:
               }
 
               v38 = *(*(&v73 + 1) + 8 * i);
-              os_unfair_lock_lock((a1 + 8));
-              v39 = [*(a1 + 48) objectForKey:v38];
+              os_unfair_lock_lock((self + 8));
+              v39 = [*(self + 48) objectForKey:v38];
               if (v39)
               {
                 v40 = bls_backlight_log();
                 if (os_log_type_enabled(v40, OS_LOG_TYPE_INFO))
                 {
                   *buf = 134218242;
-                  *&buf[4] = a1;
+                  *&buf[4] = self;
                   *&buf[12] = 2114;
                   *&buf[14] = v39;
                   _os_log_impl(&dword_21FD11000, v40, OS_LOG_TYPE_INFO, "ESM:%p removal— no longer active transitionState:%{public}@", buf, 0x16u);
                 }
 
-                [*(a1 + 56) removeObject:v39];
-                [*(a1 + 64) removeObject:v39];
-                os_unfair_lock_unlock((a1 + 8));
+                [*(self + 56) removeObject:v39];
+                [*(self + 64) removeObject:v39];
+                os_unfair_lock_unlock((self + 8));
                 [v39 performBacklightRampIfPendingForReason:@"removed"];
               }
 
               else
               {
-                os_unfair_lock_unlock((a1 + 8));
+                os_unfair_lock_unlock((self + 8));
               }
 
               [v38 deactivateClient];
-              if (a3 != 2 && (objc_opt_respondsToSelector() & 1) != 0 && [v38 wantsStateUpdateToActiveAfterRemovalFromPresentation])
+              if (presentation != 2 && (objc_opt_respondsToSelector() & 1) != 0 && [v38 wantsStateUpdateToActiveAfterRemovalFromPresentation])
               {
                 if (!v27)
                 {
@@ -521,10 +521,10 @@ LABEL_53:
           v41 = bls_backlight_log();
           if (os_log_type_enabled(v41, OS_LOG_TYPE_DEBUG))
           {
-            [(BLSHBacklightEnvironmentStateMachine *)a3 onMain_setPresentation:v49 withTargetBacklightState:v41];
+            [(BLSHBacklightEnvironmentStateMachine *)presentation onMain_setPresentation:v49 withTargetBacklightState:v41];
           }
 
-          [(BLSHBacklightEnvironmentStateMachine *)a1 updateTransitionStatesForEnvironments:v49 toBacklightState:a3 forEvent:0 withInitialSpecifier:0 forReason:@"setPresentation" performBacklightRamp:0 environmentTransformer:&__block_literal_global_160];
+          [(BLSHBacklightEnvironmentStateMachine *)self updateTransitionStatesForEnvironments:v49 toBacklightState:presentation forEvent:0 withInitialSpecifier:0 forReason:@"setPresentation" performBacklightRamp:0 environmentTransformer:&__block_literal_global_160];
         }
 
 LABEL_57:
@@ -555,14 +555,14 @@ LABEL_57:
         v57[3] = &unk_27841F4F0;
         v42 = v27;
         v58 = v42;
-        v59 = a1;
+        selfCopy = self;
         v43 = v49;
         v60 = v43;
         v62 = v71;
         v63 = buf;
         v64 = v67;
         v65 = v69;
-        v66 = a3;
+        presentationCopy = presentation;
         v61 = v53;
         v56[0] = MEMORY[0x277D85DD0];
         v56[1] = 3221225472;
@@ -570,10 +570,10 @@ LABEL_57:
         v56[3] = &unk_27841F518;
         v56[6] = v67;
         v56[7] = buf;
-        v56[4] = a1;
+        v56[4] = self;
         v56[5] = v71;
         v56[8] = v69;
-        [(BLSHBacklightEnvironmentStateMachine *)a1 _checkCompletedOperationsToBacklightState:a3 transitionState:0 shouldCompleteTransitionState:0 setupWithLock:v57 completeWithoutLock:v56];
+        [(BLSHBacklightEnvironmentStateMachine *)self _checkCompletedOperationsToBacklightState:presentation transitionState:0 shouldCompleteTransitionState:0 setupWithLock:v57 completeWithoutLock:v56];
 
         _Block_object_dispose(v67, 8);
         _Block_object_dispose(buf, 8);
@@ -592,7 +592,7 @@ LABEL_58:
         v29 = NSStringFromBLSBacklightState();
         v30 = [v49 bs_map:&__block_literal_global_9];
         *buf = 134218754;
-        *&buf[4] = a1;
+        *&buf[4] = self;
         *&buf[12] = 2114;
         *&buf[14] = v28;
         *&buf[22] = 2114;
@@ -1103,98 +1103,98 @@ void __112__BLSHBacklightEnvironmentStateMachine_enumerateRemoteEnvironmentsFirs
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)performEvent:(id)a3 withInitialSpecifier:(id)a4 performBacklightRamp:(id)a5
+- (void)performEvent:(id)event withInitialSpecifier:(id)specifier performBacklightRamp:(id)ramp
 {
-  v7 = a3;
-  v11 = a4;
-  v12 = a5;
-  v8 = v12;
-  v9 = v11;
-  v10 = v7;
+  eventCopy = event;
+  specifierCopy = specifier;
+  rampCopy = ramp;
+  v8 = rampCopy;
+  v9 = specifierCopy;
+  v10 = eventCopy;
   BSDispatchMain();
 }
 
-- (void)onMain_performEvent:(void *)a3 withInitialSpecifier:(void *)a4 performBacklightRamp:
+- (void)onMain_performEvent:(void *)event withInitialSpecifier:(void *)specifier performBacklightRamp:
 {
   v35 = *MEMORY[0x277D85DE8];
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  eventCopy = event;
+  specifierCopy = specifier;
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 8));
-    v10 = *(a1 + 142);
-    os_unfair_lock_unlock((a1 + 8));
+    os_unfair_lock_lock((self + 8));
+    v10 = *(self + 142);
+    os_unfair_lock_unlock((self + 8));
     if (v10 == 1)
     {
       v11 = bls_backlight_log();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
       {
-        v12 = [a1 debugDescription];
+        v12 = [self debugDescription];
         *buf = 134218754;
-        *&buf[4] = a1;
+        *&buf[4] = self;
         *&buf[12] = 2114;
         *&buf[14] = v12;
         *&buf[22] = 2114;
         v32 = v7;
         v33 = 2114;
-        v34 = v8;
+        v34 = eventCopy;
         _os_log_fault_impl(&dword_21FD11000, v11, OS_LOG_TYPE_FAULT, "ESM:%p calling performEvent on invalidated state machine:%{public}@ event:%{public}@ initialSpecifier:%{public}@", buf, 0x2Au);
       }
     }
 
     else
     {
-      os_unfair_lock_lock((a1 + 8));
-      v13 = [v7 previousState];
-      v14 = [v7 state];
-      v15 = *(a1 + 80);
-      v16 = [[BLSHEnvironmentPerformEventData alloc] initWithStateMachineOldBacklightState:*(a1 + 112) eventPreviousBacklightState:v13 eventNewBacklightState:v14];
+      os_unfair_lock_lock((self + 8));
+      previousState = [v7 previousState];
+      state = [v7 state];
+      v15 = *(self + 80);
+      v16 = [[BLSHEnvironmentPerformEventData alloc] initWithStateMachineOldBacklightState:*(self + 112) eventPreviousBacklightState:previousState eventNewBacklightState:state];
       [v15 addObject:v16];
 
-      v17 = [*(a1 + 80) count];
+      v17 = [*(self + 80) count];
       if (v17 >= 6)
       {
-        [*(a1 + 80) removeObjectsInRange:{0, v17 - 5}];
+        [*(self + 80) removeObjectsInRange:{0, v17 - 5}];
       }
 
-      *(a1 + 112) = v14;
-      *(a1 + 120) = v14;
-      *(a1 + 140) = 257;
-      v11 = *(a1 + 16);
-      v18 = [v11 presentationEntries];
-      os_unfair_lock_unlock((a1 + 8));
-      if ([v18 count])
+      *(self + 112) = state;
+      *(self + 120) = state;
+      *(self + 140) = 257;
+      v11 = *(self + 16);
+      presentationEntries = [v11 presentationEntries];
+      os_unfair_lock_unlock((self + 8));
+      if ([presentationEntries count])
       {
-        [v7 setAninmationPropertiesWithPlatformProvider:*(a1 + 40)];
+        [v7 setAninmationPropertiesWithPlatformProvider:*(self + 40)];
         v19 = bls_backlight_log();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
         {
           v25 = NSStringFromBLSBacklightState();
-          v23 = [v18 valueForKeyPath:@"environment.identifier"];
-          v24 = [v7 bls_shortLoggingString];
+          v23 = [presentationEntries valueForKeyPath:@"environment.identifier"];
+          bls_shortLoggingString = [v7 bls_shortLoggingString];
           *buf = 138412802;
           *&buf[4] = v25;
           *&buf[12] = 2112;
           *&buf[14] = v23;
           *&buf[22] = 2112;
-          v32 = v24;
+          v32 = bls_shortLoggingString;
           _os_log_debug_impl(&dword_21FD11000, v19, OS_LOG_TYPE_DEBUG, "ESM: performEvent: -> %@ environments:%@ event:%@", buf, 0x20u);
         }
 
-        [(BLSHBacklightEnvironmentStateMachine *)a1 updateTransitionStatesForEnvironments:v18 toBacklightState:v14 forEvent:v7 withInitialSpecifier:v8 forReason:@"performEvent" performBacklightRamp:v9 environmentTransformer:&__block_literal_global_185];
+        [(BLSHBacklightEnvironmentStateMachine *)self updateTransitionStatesForEnvironments:presentationEntries toBacklightState:state forEvent:v7 withInitialSpecifier:eventCopy forReason:@"performEvent" performBacklightRamp:specifierCopy environmentTransformer:&__block_literal_global_185];
       }
 
-      else if (v9)
+      else if (specifierCopy)
       {
-        v20 = [v7 isEnvironmentTransitionAnimated];
+        isEnvironmentTransitionAnimated = [v7 isEnvironmentTransitionAnimated];
         v21.n128_u64[0] = 0;
-        if (v20)
+        if (isEnvironmentTransitionAnimated)
         {
           v21.n128_f64[0] = 0.5;
         }
 
-        v9[2](v9, v21);
+        specifierCopy[2](specifierCopy, v21);
       }
 
       *buf = 0;
@@ -1206,15 +1206,15 @@ void __112__BLSHBacklightEnvironmentStateMachine_enumerateRemoteEnvironmentsFirs
       v27[2] = __102__BLSHBacklightEnvironmentStateMachine_onMain_performEvent_withInitialSpecifier_performBacklightRamp___block_invoke_2;
       v27[3] = &unk_27841F5E0;
       v29 = buf;
-      v30 = v14;
-      v27[4] = a1;
+      v30 = state;
+      v27[4] = self;
       v28 = v7;
       v26[0] = MEMORY[0x277D85DD0];
       v26[1] = 3221225472;
       v26[2] = __102__BLSHBacklightEnvironmentStateMachine_onMain_performEvent_withInitialSpecifier_performBacklightRamp___block_invoke_186;
       v26[3] = &unk_27841F608;
       v26[4] = buf;
-      [(BLSHBacklightEnvironmentStateMachine *)a1 _checkCompletedOperationsToBacklightState:v14 transitionState:0 shouldCompleteTransitionState:0 setupWithLock:v27 completeWithoutLock:v26];
+      [(BLSHBacklightEnvironmentStateMachine *)self _checkCompletedOperationsToBacklightState:state transitionState:0 shouldCompleteTransitionState:0 setupWithLock:v27 completeWithoutLock:v26];
 
       _Block_object_dispose(buf, 8);
     }
@@ -1346,17 +1346,17 @@ void __75__BLSHBacklightEnvironmentStateMachine_updateAllEnvironmentsInPresentat
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateEnvironment:(id)a3
+- (void)updateEnvironment:(id)environment
 {
-  v4 = a3;
-  v3 = v4;
+  environmentCopy = environment;
+  v3 = environmentCopy;
   BSDispatchMain();
 }
 
-- (void)updateToSpecifier:(id)a3
+- (void)updateToSpecifier:(id)specifier
 {
-  v4 = a3;
-  v3 = v4;
+  specifierCopy = specifier;
+  v3 = specifierCopy;
   BSDispatchMain();
 }
 
@@ -1368,15 +1368,15 @@ void __65__BLSHBacklightEnvironmentStateMachine_onMain_updateToSpecifier___block
   [v5 updateToDateSpecifier:v6];
 }
 
-- (void)populateEnvironmentStateMachineStruct:(id *)a3
+- (void)populateEnvironmentStateMachineStruct:(id *)struct
 {
   lock_presentation = self->_lock_presentation;
   lock_addingEnvironmentsCount = self->_lock_addingEnvironmentsCount;
-  v9 = [(NSMutableSet *)self->_lock_updatingVisualStateTransitionStates allObjects];
-  v7 = [(NSMutableSet *)self->_lock_updatingDateSpecifierTransitionStates allObjects];
+  allObjects = [(NSMutableSet *)self->_lock_updatingVisualStateTransitionStates allObjects];
+  allObjects2 = [(NSMutableSet *)self->_lock_updatingDateSpecifierTransitionStates allObjects];
   BYTE2(v8) = self->_lock_setPresentationOperation != 0;
   LOWORD(v8) = *&self->_pendingNotifyBeganUpdatingState;
-  [BLSHBacklightEnvironmentStateMachineAbortPayload populateEnvironmentStateMachineStruct:"populateEnvironmentStateMachineStruct:machineIsNil:presentation:addingEnvironmentsCount:updatingVisualStateTransitionStates:updatingDateSpecifierTransitionStates:backlightState:previousBacklightState:pendingNotifyBeganUpdatingState:updatingState:updatingPresentation:" machineIsNil:a3 presentation:0 addingEnvironmentsCount:lock_presentation updatingVisualStateTransitionStates:lock_addingEnvironmentsCount updatingDateSpecifierTransitionStates:v9 backlightState:v7 previousBacklightState:self->_lock_targetBacklightState pendingNotifyBeganUpdatingState:self->_lock_performEventTargetBacklightState updatingState:v8 updatingPresentation:?];
+  [BLSHBacklightEnvironmentStateMachineAbortPayload populateEnvironmentStateMachineStruct:"populateEnvironmentStateMachineStruct:machineIsNil:presentation:addingEnvironmentsCount:updatingVisualStateTransitionStates:updatingDateSpecifierTransitionStates:backlightState:previousBacklightState:pendingNotifyBeganUpdatingState:updatingState:updatingPresentation:" machineIsNil:struct presentation:0 addingEnvironmentsCount:lock_presentation updatingVisualStateTransitionStates:lock_addingEnvironmentsCount updatingDateSpecifierTransitionStates:allObjects backlightState:allObjects2 previousBacklightState:self->_lock_targetBacklightState pendingNotifyBeganUpdatingState:self->_lock_performEventTargetBacklightState updatingState:v8 updatingPresentation:?];
 }
 
 uint64_t __123__BLSHBacklightEnvironmentStateMachine__lock_descriptionOfUpdatingTransitionStatesToBacklightState_shouldFilter_countOnly___block_invoke(uint64_t a1, void *a2)
@@ -1395,12 +1395,12 @@ uint64_t __123__BLSHBacklightEnvironmentStateMachine__lock_descriptionOfUpdating
   return v4;
 }
 
-- (id)_descriptionOfTransitionStates:(int)a3 shouldFilter:(char)a4 countOnly:(void *)a5 environmentFilter:(void *)a6 filter:
+- (id)_descriptionOfTransitionStates:(int)states shouldFilter:(char)filter countOnly:(void *)only environmentFilter:(void *)environmentFilter filter:
 {
   v10 = a2;
-  v11 = a5;
-  v23 = a6;
-  if (a1)
+  onlyCopy = only;
+  environmentFilterCopy = environmentFilter;
+  if (self)
   {
     v12 = [v10 count];
     v38 = 0;
@@ -1417,14 +1417,14 @@ uint64_t __123__BLSHBacklightEnvironmentStateMachine__lock_descriptionOfUpdating
     v27[2] = __119__BLSHBacklightEnvironmentStateMachine__descriptionOfTransitionStates_shouldFilter_countOnly_environmentFilter_filter___block_invoke;
     v27[3] = &unk_27841F6E8;
     v28 = v10;
-    v14 = v23;
+    v14 = environmentFilterCopy;
     v31 = v14;
     v32 = &v38;
-    v34 = v11 != 0;
-    v29 = v11;
+    v34 = onlyCopy != 0;
+    v29 = onlyCopy;
     v33 = v37;
-    v35 = a4;
-    v36 = a3;
+    filterCopy = filter;
+    statesCopy = states;
     v15 = v13;
     v30 = v15;
     [v15 appendBodySectionWithName:0 block:v27];
@@ -1432,7 +1432,7 @@ uint64_t __123__BLSHBacklightEnvironmentStateMachine__lock_descriptionOfUpdating
     v17 = v16;
     if (v14)
     {
-      if (v11)
+      if (onlyCopy)
       {
         v18 = v24;
       }
@@ -1459,12 +1459,12 @@ uint64_t __123__BLSHBacklightEnvironmentStateMachine__lock_descriptionOfUpdating
 
     *v18 = v12;
     [v16 appendCustomFormatWithName:0 block:?];
-    if (a4)
+    if (filter)
     {
       goto LABEL_13;
     }
 
-    if (a3)
+    if (states)
     {
       if (v39[3] <= 0)
       {
@@ -1611,16 +1611,16 @@ void __80__BLSHBacklightEnvironmentStateMachine__lock_etsLoggingStringForBacklig
   }
 }
 
-- (uint64_t)_lock_isSetPresentationOperationComplete:(uint64_t)a1
+- (uint64_t)_lock_isSetPresentationOperationComplete:(uint64_t)complete
 {
   v3 = a2;
   v4 = v3;
   v5 = 0;
-  if (a1 && v3)
+  if (complete && v3)
   {
-    v6 = [v3 backlightState];
-    v7 = [v4 additions];
-    v5 = [(BLSHBacklightEnvironmentStateMachine *)a1 _lock_allTransitionsDidBeginUpdateBacklightState:v6 environmentFilter:v7];
+    backlightState = [v3 backlightState];
+    additions = [v4 additions];
+    v5 = [(BLSHBacklightEnvironmentStateMachine *)complete _lock_allTransitionsDidBeginUpdateBacklightState:backlightState environmentFilter:additions];
   }
 
   return v5;
@@ -1662,59 +1662,59 @@ uint64_t __92__BLSHBacklightEnvironmentStateMachine__lock_numTransitionsDidNotBe
 
 - (int)_lock_debugDescription
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [MEMORY[0x277CF0C00] builderWithObject:a1];
+    v2 = [MEMORY[0x277CF0C00] builderWithObject:self];
     v3 = v2;
-    if (v1[34] >= 1)
+    if (selfCopy[34] >= 1)
     {
       v4 = [v2 appendInt:? withName:?];
     }
 
-    v5 = [v3 appendObject:*(v1 + 7) withName:@"updatingVisualState"];
-    v6 = *(v1 + 8);
+    v5 = [v3 appendObject:*(selfCopy + 7) withName:@"updatingVisualState"];
+    v6 = *(selfCopy + 8);
     v7 = [OUTLINED_FUNCTION_9_0() appendObject:? withName:? skipIfNil:?];
-    v8 = [v3 appendObject:*(v1 + 2) withName:@"presentation"];
-    v9 = [v3 appendObject:*(v1 + 9) withName:@"updatingSpecifier"];
-    v10 = *(v1 + 14);
+    v8 = [v3 appendObject:*(selfCopy + 2) withName:@"presentation"];
+    v9 = [v3 appendObject:*(selfCopy + 9) withName:@"updatingSpecifier"];
+    v10 = *(selfCopy + 14);
     v11 = NSStringFromBLSBacklightState();
     [v3 appendString:v11 withName:@"target"];
 
-    if (*(v1 + 14) != *(v1 + 15))
+    if (*(selfCopy + 14) != *(selfCopy + 15))
     {
       v12 = NSStringFromBLSBacklightState();
       [v3 appendString:v12 withName:@"performEventTarget"];
     }
 
-    v13 = [v3 appendBool:*(v1 + 140) withName:@"pendingNotifyBeganUpdatingState"];
-    v14 = [v3 appendBool:*(v1 + 141) withName:@"updatingState"];
-    v15 = *(v1 + 13);
+    v13 = [v3 appendBool:*(selfCopy + 140) withName:@"pendingNotifyBeganUpdatingState"];
+    v14 = [v3 appendBool:*(selfCopy + 141) withName:@"updatingState"];
+    v15 = *(selfCopy + 13);
     v16 = [OUTLINED_FUNCTION_9_0() appendObject:? withName:? skipIfNil:?];
-    v17 = *(v1 + 10);
+    v17 = *(selfCopy + 10);
     [OUTLINED_FUNCTION_9_0() appendArraySection:? withName:? skipIfEmpty:?];
-    v18 = *(v1 + 11);
+    v18 = *(selfCopy + 11);
     [OUTLINED_FUNCTION_9_0() appendArraySection:? withName:? skipIfEmpty:?];
-    v19 = *(v1 + 12);
+    v19 = *(selfCopy + 12);
     [OUTLINED_FUNCTION_9_0() appendArraySection:? withName:? skipIfEmpty:?];
-    v1 = [v3 build];
+    selfCopy = [v3 build];
   }
 
-  return v1;
+  return selfCopy;
 }
 
-- (id)_lock_descriptionOfUpdatingTransitionStatesToBacklightState:(int)a3 shouldFilter:(char)a4 countOnly:
+- (id)_lock_descriptionOfUpdatingTransitionStatesToBacklightState:(int)state shouldFilter:(char)filter countOnly:
 {
-  if (a1)
+  if (self)
   {
-    v8 = *(a1 + 56);
-    v9 = [*(a1 + 104) additions];
+    v8 = *(self + 56);
+    additions = [*(self + 104) additions];
     OUTLINED_FUNCTION_0_5();
     OUTLINED_FUNCTION_18();
     v13 = __123__BLSHBacklightEnvironmentStateMachine__lock_descriptionOfUpdatingTransitionStatesToBacklightState_shouldFilter_countOnly___block_invoke;
     v14 = &__block_descriptor_40_e40_B16__0__BLSHEnvironmentTransitionState_8l;
     v15 = a2;
-    v10 = [(BLSHBacklightEnvironmentStateMachine *)a1 _descriptionOfTransitionStates:v8 shouldFilter:a3 countOnly:a4 environmentFilter:v9 filter:v12];
+    v10 = [(BLSHBacklightEnvironmentStateMachine *)self _descriptionOfTransitionStates:v8 shouldFilter:state countOnly:filter environmentFilter:additions filter:v12];
   }
 
   else
@@ -1725,34 +1725,34 @@ uint64_t __92__BLSHBacklightEnvironmentStateMachine__lock_numTransitionsDidNotBe
   return v10;
 }
 
-- (void)_lock_descriptionOfDateSpecifierTransitionStatesShouldFilter:(char)a3 countOnly:
+- (void)_lock_descriptionOfDateSpecifierTransitionStatesShouldFilter:(char)filter countOnly:
 {
-  if (a1)
+  if (self)
   {
-    a1 = [(BLSHBacklightEnvironmentStateMachine *)a1 _descriptionOfTransitionStates:a2 shouldFilter:a3 countOnly:0 environmentFilter:0 filter:?];
+    self = [(BLSHBacklightEnvironmentStateMachine *)self _descriptionOfTransitionStates:a2 shouldFilter:filter countOnly:0 environmentFilter:0 filter:?];
     v3 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (NSString)debugDescription
 {
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(BLSHBacklightEnvironmentStateMachine *)self _lock_debugDescription];
+  _lock_debugDescription = [(BLSHBacklightEnvironmentStateMachine *)self _lock_debugDescription];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return _lock_debugDescription;
 }
 
 - (uint64_t)isInvalid
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 8));
-    v2 = *(a1 + 142);
-    os_unfair_lock_unlock((a1 + 8));
+    os_unfair_lock_lock((self + 8));
+    v2 = *(self + 142);
+    os_unfair_lock_unlock((self + 8));
   }
 
   else
@@ -1763,55 +1763,55 @@ uint64_t __92__BLSHBacklightEnvironmentStateMachine__lock_numTransitionsDidNotBe
   return v2 & 1;
 }
 
-- (void)updateTransitionStatesForEnvironments:(uint64_t)a3 toBacklightState:(void *)a4 forEvent:(void *)a5 withInitialSpecifier:(void *)a6 forReason:(void *)a7 performBacklightRamp:(void *)a8 environmentTransformer:
+- (void)updateTransitionStatesForEnvironments:(uint64_t)environments toBacklightState:(void *)state forEvent:(void *)event withInitialSpecifier:(void *)specifier forReason:(void *)reason performBacklightRamp:(void *)ramp environmentTransformer:
 {
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  if (a1)
+  stateCopy = state;
+  eventCopy = event;
+  specifierCopy = specifier;
+  reasonCopy = reason;
+  if (self)
   {
-    v18 = a8;
+    rampCopy = ramp;
     v19 = a2;
-    os_unfair_lock_lock(a1 + 2);
-    ++a1[34]._os_unfair_lock_opaque;
-    os_unfair_lock_unlock(a1 + 2);
+    os_unfair_lock_lock(self + 2);
+    ++self[34]._os_unfair_lock_opaque;
+    os_unfair_lock_unlock(self + 2);
     [v19 firstObject];
-    v20 = v17;
-    v22 = v21 = v15;
-    v23 = v18[2](v18, v22);
+    v20 = reasonCopy;
+    v22 = v21 = eventCopy;
+    v23 = rampCopy[2](rampCopy, v22);
 
-    v15 = v21;
-    v17 = v20;
+    eventCopy = v21;
+    reasonCopy = v20;
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __179__BLSHBacklightEnvironmentStateMachine_updateTransitionStatesForEnvironments_toBacklightState_forEvent_withInitialSpecifier_forReason_performBacklightRamp_environmentTransformer___block_invoke;
     v26[3] = &unk_27841F540;
-    v26[4] = a1;
-    v32 = a3;
-    v27 = v15;
+    v26[4] = self;
+    environmentsCopy = environments;
+    v27 = eventCopy;
     v28 = v23;
-    v29 = v14;
-    v33 = v14 != 0;
+    v29 = stateCopy;
+    v33 = stateCopy != 0;
     v31 = v20;
-    v30 = v16;
+    v30 = specifierCopy;
     v24 = v23;
-    [(BLSHBacklightEnvironmentStateMachine *)a1 enumerateRemoteEnvironmentsFirstFromSource:v19 environmentTransformer:v18 block:v26];
+    [(BLSHBacklightEnvironmentStateMachine *)self enumerateRemoteEnvironmentsFirstFromSource:v19 environmentTransformer:rampCopy block:v26];
 
-    [(BLSHBacklightEnvironmentStateMachine *)a1 endAddingEnvironments];
+    [(BLSHBacklightEnvironmentStateMachine *)self endAddingEnvironments];
   }
 }
 
-- (id)_lock_transitionStateForEnvironment:(uint64_t)a1
+- (id)_lock_transitionStateForEnvironment:(uint64_t)environment
 {
   v3 = a2;
-  if (a1)
+  if (environment)
   {
-    v4 = [*(a1 + 48) objectForKey:v3];
+    v4 = [*(environment + 48) objectForKey:v3];
     if (!v4)
     {
-      v4 = [BLSHEnvironmentTransitionState createStateForEnvironment:v3 delegate:a1];
-      [*(a1 + 48) setObject:v4 forKey:v3];
+      v4 = [BLSHEnvironmentTransitionState createStateForEnvironment:v3 delegate:environment];
+      [*(environment + 48) setObject:v4 forKey:v3];
     }
   }
 
@@ -1823,24 +1823,24 @@ uint64_t __92__BLSHBacklightEnvironmentStateMachine__lock_numTransitionsDidNotBe
   return v4;
 }
 
-- (void)enumerateRemoteEnvironmentsFirstFromSource:(void *)a3 environmentTransformer:(void *)a4 block:
+- (void)enumerateRemoteEnvironmentsFirstFromSource:(void *)source environmentTransformer:(void *)transformer block:
 {
-  v7 = a3;
-  v8 = a4;
-  if (a1)
+  sourceCopy = source;
+  transformerCopy = transformer;
+  if (self)
   {
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __112__BLSHBacklightEnvironmentStateMachine_enumerateRemoteEnvironmentsFirstFromSource_environmentTransformer_block___block_invoke;
     v19[3] = &unk_27841F568;
-    v20 = v7;
+    v20 = sourceCopy;
     v9 = [a2 bs_map:v19];
     OUTLINED_FUNCTION_0_5();
     v14 = 3221225472;
     v15 = __112__BLSHBacklightEnvironmentStateMachine_enumerateRemoteEnvironmentsFirstFromSource_environmentTransformer_block___block_invoke_2;
     v16 = &unk_27841F590;
     v17 = v10;
-    v18 = v8;
+    v18 = transformerCopy;
     v11 = v9;
     v12 = MEMORY[0x223D70730](v13);
     v12[2](v12, 0);
@@ -1858,7 +1858,7 @@ uint64_t __92__BLSHBacklightEnvironmentStateMachine__lock_numTransitionsDidNotBe
     {
       v4 = [(BLSHBacklightEnvironmentStateMachine *)self debugDescription];
       *buf = 134218242;
-      v9 = self;
+      selfCopy = self;
       v10 = 2114;
       v11 = v4;
       _os_log_fault_impl(&dword_21FD11000, v3, OS_LOG_TYPE_FAULT, "ESM:%p calling updateAllEnvironmentsInPresentation on invalidated state machine:%{public}@", buf, 0x16u);
@@ -1868,66 +1868,66 @@ uint64_t __92__BLSHBacklightEnvironmentStateMachine__lock_numTransitionsDidNotBe
   else
   {
     os_unfair_lock_lock(&self->_lock);
-    v5 = [(BLSHBacklightEnvironmentPresentation *)self->_lock_presentation presentationEntries];
+    presentationEntries = [(BLSHBacklightEnvironmentPresentation *)self->_lock_presentation presentationEntries];
     os_unfair_lock_unlock(&self->_lock);
     OUTLINED_FUNCTION_12();
-    v7 = v5;
-    v3 = v5;
+    v7 = presentationEntries;
+    v3 = presentationEntries;
     BSDispatchMain();
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)onMain_updateEnvironment:(uint64_t)a1
+- (void)onMain_updateEnvironment:(uint64_t)environment
 {
   v31 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (environment)
   {
-    os_unfair_lock_lock((a1 + 8));
-    v4 = *(a1 + 142);
-    os_unfair_lock_unlock((a1 + 8));
+    os_unfair_lock_lock((environment + 8));
+    v4 = *(environment + 142);
+    os_unfair_lock_unlock((environment + 8));
     if (v4 == 1)
     {
-      v5 = bls_backlight_log();
-      if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
+      visualState = bls_backlight_log();
+      if (os_log_type_enabled(visualState, OS_LOG_TYPE_FAULT))
       {
-        v6 = [a1 debugDescription];
+        v6 = [environment debugDescription];
         OUTLINED_FUNCTION_1_0();
         v28 = v7;
         v29 = v8;
         v30 = v3;
-        _os_log_fault_impl(&dword_21FD11000, v5, OS_LOG_TYPE_FAULT, "ESM:%p calling updateEnvironment on invalidated state machine:%{public}@ environment:%{public}@", v27, 0x20u);
+        _os_log_fault_impl(&dword_21FD11000, visualState, OS_LOG_TYPE_FAULT, "ESM:%p calling updateEnvironment on invalidated state machine:%{public}@ environment:%{public}@", v27, 0x20u);
       }
 
       goto LABEL_11;
     }
 
-    v9 = [a1 presentation];
-    os_unfair_lock_lock((a1 + 8));
-    v10 = *(a1 + 112);
-    v11 = [*(a1 + 16) containsEnvironment:v3];
-    v12 = [*(a1 + 16) presentationEntries];
-    v13 = [v12 firstObject];
-    v14 = [v13 environment];
+    presentation = [environment presentation];
+    os_unfair_lock_lock((environment + 8));
+    v10 = *(environment + 112);
+    v11 = [*(environment + 16) containsEnvironment:v3];
+    presentationEntries = [*(environment + 16) presentationEntries];
+    firstObject = [presentationEntries firstObject];
+    environment = [firstObject environment];
 
-    os_unfair_lock_unlock((a1 + 8));
+    os_unfair_lock_unlock((environment + 8));
     if (!v11)
     {
-      v5 = bls_backlight_log();
-      if (!os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+      visualState = bls_backlight_log();
+      if (!os_log_type_enabled(visualState, OS_LOG_TYPE_DEBUG))
       {
         goto LABEL_11;
       }
 
-      v15 = [v3 identifier];
+      identifier = [v3 identifier];
       v23 = NSStringFromBLSBacklightState();
       OUTLINED_FUNCTION_1_0();
-      v28 = v15;
+      v28 = identifier;
       v29 = v24;
       v30 = v25;
-      _os_log_debug_impl(&dword_21FD11000, v5, OS_LOG_TYPE_DEBUG, "ESM:%p will not update environment:%{public}@ (not in presentation) to backlightState:%{public}@", v27, 0x20u);
+      _os_log_debug_impl(&dword_21FD11000, visualState, OS_LOG_TYPE_DEBUG, "ESM:%p will not update environment:%{public}@ (not in presentation) to backlightState:%{public}@", v27, 0x20u);
 
 LABEL_9:
 LABEL_11:
@@ -1935,9 +1935,9 @@ LABEL_11:
       goto LABEL_12;
     }
 
-    v5 = [v3 visualState];
-    v15 = BLSVisualStateForBacklightState(v10, [v5 updateFidelity], v3, *(a1 + 24), *(a1 + 32));
-    if (([v5 isEqual:v15]& 1) != 0)
+    visualState = [v3 visualState];
+    identifier = BLSVisualStateForBacklightState(v10, [visualState updateFidelity], v3, *(environment + 24), *(environment + 32));
+    if (([visualState isEqual:identifier]& 1) != 0)
     {
       v16 = bls_backlight_log();
       if (!os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -1947,35 +1947,35 @@ LABEL_8:
         goto LABEL_9;
       }
 
-      v22 = [v3 identifier];
+      identifier2 = [v3 identifier];
       v26 = NSStringFromBLSBacklightState();
       OUTLINED_FUNCTION_1_0();
-      v28 = v22;
+      v28 = identifier2;
       OUTLINED_FUNCTION_12_1();
       _os_log_debug_impl(&dword_21FD11000, v16, OS_LOG_TYPE_DEBUG, "ESM:%p not will update environment:%{public}@ (unchanged) to backlightState:%{public}@ visualState:%{public}@", v27, 0x2Au);
     }
 
     else
     {
-      v16 = [(BLSHBacklightEnvironmentStateMachine *)a1 transitionStateForEnvironment:v3];
-      os_unfair_lock_lock((a1 + 8));
-      [*(a1 + 56) addObject:v16];
-      os_unfair_lock_unlock((a1 + 8));
+      v16 = [(BLSHBacklightEnvironmentStateMachine *)environment transitionStateForEnvironment:v3];
+      os_unfair_lock_lock((environment + 8));
+      [*(environment + 56) addObject:v16];
+      os_unfair_lock_unlock((environment + 8));
       v18 = bls_backlight_log();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
       {
-        v19 = [v3 identifier];
+        identifier3 = [v3 identifier];
         v20 = NSStringFromBLSBacklightState();
         OUTLINED_FUNCTION_1_0();
-        v28 = v19;
+        v28 = identifier3;
         OUTLINED_FUNCTION_12_1();
         _os_log_impl(&dword_21FD11000, v18, OS_LOG_TYPE_INFO, "ESM:%p will update environment:%{public}@ to backlightState:%{public}@ visualState:%{public}@", v27, 0x2Au);
       }
 
-      v21 = v14 == v3;
+      v21 = environment == v3;
 
-      v22 = [v3 presentationDate];
-      [v16 updateToBacklightState:v10 forEvent:0 touchTargetable:v21 presentationDate:v22 sceneUpdate:0 performBacklightRamp:0];
+      identifier2 = [v3 presentationDate];
+      [v16 updateToBacklightState:v10 forEvent:0 touchTargetable:v21 presentationDate:identifier2 sceneUpdate:0 performBacklightRamp:0];
     }
 
     goto LABEL_8;
@@ -1986,15 +1986,15 @@ LABEL_12:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)transitionStateForEnvironment:(os_unfair_lock_s *)a1
+- (id)transitionStateForEnvironment:(os_unfair_lock_s *)environment
 {
-  if (a1)
+  if (environment)
   {
     v3 = a2;
-    os_unfair_lock_lock(a1 + 2);
-    v4 = [(BLSHBacklightEnvironmentStateMachine *)a1 _lock_transitionStateForEnvironment:v3];
+    os_unfair_lock_lock(environment + 2);
+    v4 = [(BLSHBacklightEnvironmentStateMachine *)environment _lock_transitionStateForEnvironment:v3];
 
-    os_unfair_lock_unlock(a1 + 2);
+    os_unfair_lock_unlock(environment + 2);
   }
 
   else
@@ -2005,30 +2005,30 @@ LABEL_12:
   return v4;
 }
 
-- (void)onMain_updateToSpecifier:(uint64_t)a1
+- (void)onMain_updateToSpecifier:(uint64_t)specifier
 {
   v4 = a2;
-  if (a1)
+  if (specifier)
   {
-    os_unfair_lock_lock((a1 + 8));
-    v5 = *(a1 + 64);
-    *(a1 + 64) = 0;
+    os_unfair_lock_lock((specifier + 8));
+    v5 = *(specifier + 64);
+    *(specifier + 64) = 0;
 
-    v6 = *(a1 + 16);
-    v7 = [v6 presentationEntries];
+    v6 = *(specifier + 16);
+    presentationEntries = [v6 presentationEntries];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __65__BLSHBacklightEnvironmentStateMachine_onMain_updateToSpecifier___block_invoke;
     v14[3] = &unk_27841F630;
-    v14[4] = a1;
-    v8 = [v7 bs_map:v14];
+    v14[4] = specifier;
+    v8 = [presentationEntries bs_map:v14];
     v9 = [v8 mutableCopy];
-    v10 = *(a1 + 64);
-    *(a1 + 64) = v9;
+    v10 = *(specifier + 64);
+    *(specifier + 64) = v9;
 
-    objc_storeStrong((a1 + 72), a2);
-    WeakRetained = objc_loadWeakRetained((a1 + 152));
-    os_unfair_lock_unlock((a1 + 8));
+    objc_storeStrong((specifier + 72), a2);
+    WeakRetained = objc_loadWeakRetained((specifier + 152));
+    os_unfair_lock_unlock((specifier + 8));
     if ([v8 count])
     {
       OUTLINED_FUNCTION_12();
@@ -2036,12 +2036,12 @@ LABEL_12:
       v12[2] = __65__BLSHBacklightEnvironmentStateMachine_onMain_updateToSpecifier___block_invoke_3;
       v12[3] = &unk_27841F678;
       v13 = v4;
-      [(BLSHBacklightEnvironmentStateMachine *)a1 enumerateRemoteEnvironmentsFirstFromSource:v8 environmentTransformer:&__block_literal_global_189 block:v12];
+      [(BLSHBacklightEnvironmentStateMachine *)specifier enumerateRemoteEnvironmentsFirstFromSource:v8 environmentTransformer:&__block_literal_global_189 block:v12];
     }
 
     else
     {
-      [WeakRetained environmentStateMachine:a1 didUpdateToSpecifier:v4];
+      [WeakRetained environmentStateMachine:specifier didUpdateToSpecifier:v4];
     }
   }
 }
@@ -2055,31 +2055,31 @@ id __65__BLSHBacklightEnvironmentStateMachine_onMain_updateToSpecifier___block_i
   return v4;
 }
 
-- (void)populateOperationCompletedMismatchedBacklightStatesStruct:(uint64_t)a3 backlightState:(uint64_t)a4 targetBacklightState:(void *)a5 performEventHistory:(void *)a6 didBeginUpdateHistory:(void *)a7 didCompleteUpdateHistory:
+- (void)populateOperationCompletedMismatchedBacklightStatesStruct:(uint64_t)struct backlightState:(uint64_t)state targetBacklightState:(void *)backlightState performEventHistory:(void *)history didBeginUpdateHistory:(void *)updateHistory didCompleteUpdateHistory:
 {
-  if (a1)
+  if (self)
   {
-    v12 = *(a1 + 16);
-    v13 = *(a1 + 136);
-    v14 = *(a1 + 56);
-    v15 = a7;
-    v16 = a6;
-    v17 = a5;
-    v23 = [v14 allObjects];
-    v18 = [*(a1 + 64) allObjects];
-    BYTE2(v21) = *(a1 + 104) != 0;
-    LOWORD(v21) = *(a1 + 140);
+    v12 = *(self + 16);
+    v13 = *(self + 136);
+    v14 = *(self + 56);
+    updateHistoryCopy = updateHistory;
+    historyCopy = history;
+    backlightStateCopy = backlightState;
+    allObjects = [v14 allObjects];
+    allObjects2 = [*(self + 64) allObjects];
+    BYTE2(v21) = *(self + 104) != 0;
+    LOWORD(v21) = *(self + 140);
     LODWORD(v20) = v13;
     LOBYTE(v19) = 0;
-    [BLSHBacklightEnvironmentStateMachineAbortPayload populateOperationCompletedMismatchedBacklightStatesStruct:"populateOperationCompletedMismatchedBacklightStatesStruct:backlightState:targetBacklightState:performEventHistory:didBeginUpdateHistory:didCompleteUpdateHistory:envStateMachineIsNil:envStateMachinePresentation:addingEnvironmentsCount:envStateMachineUpdatingVisualStateTransitionStates:envStateMachineUpdatingDateSpecifierTransitionStates:envStateMachineBacklightState:envStateMachinePreviousBacklightState:envStateMachinePendingNotifyBeganUpdatingState:envStateMachineUpdatingState:envStateMachineUpdatingPresentation:" backlightState:a2 targetBacklightState:a3 performEventHistory:a4 didBeginUpdateHistory:v17 didCompleteUpdateHistory:v16 envStateMachineIsNil:v15 envStateMachinePresentation:v19 addingEnvironmentsCount:v12 envStateMachineUpdatingVisualStateTransitionStates:v20 envStateMachineUpdatingDateSpecifierTransitionStates:v23 envStateMachineBacklightState:v18 envStateMachinePreviousBacklightState:*(a1 + 112) envStateMachinePendingNotifyBeganUpdatingState:*(a1 + 120) envStateMachineUpdatingState:v21 envStateMachineUpdatingPresentation:?];
+    [BLSHBacklightEnvironmentStateMachineAbortPayload populateOperationCompletedMismatchedBacklightStatesStruct:"populateOperationCompletedMismatchedBacklightStatesStruct:backlightState:targetBacklightState:performEventHistory:didBeginUpdateHistory:didCompleteUpdateHistory:envStateMachineIsNil:envStateMachinePresentation:addingEnvironmentsCount:envStateMachineUpdatingVisualStateTransitionStates:envStateMachineUpdatingDateSpecifierTransitionStates:envStateMachineBacklightState:envStateMachinePreviousBacklightState:envStateMachinePendingNotifyBeganUpdatingState:envStateMachineUpdatingState:envStateMachineUpdatingPresentation:" backlightState:a2 targetBacklightState:struct performEventHistory:state didBeginUpdateHistory:backlightStateCopy didCompleteUpdateHistory:historyCopy envStateMachineIsNil:updateHistoryCopy envStateMachinePresentation:v19 addingEnvironmentsCount:v12 envStateMachineUpdatingVisualStateTransitionStates:v20 envStateMachineUpdatingDateSpecifierTransitionStates:allObjects envStateMachineBacklightState:allObjects2 envStateMachinePreviousBacklightState:*(self + 112) envStateMachinePendingNotifyBeganUpdatingState:*(self + 120) envStateMachineUpdatingState:v21 envStateMachineUpdatingPresentation:?];
   }
 }
 
-- (id)_lock_etsLoggingStringForBacklightState:(uint64_t)a1
+- (id)_lock_etsLoggingStringForBacklightState:(uint64_t)state
 {
-  if (a1)
+  if (state)
   {
-    if (*(a1 + 112) == a2 && *(a1 + 120) == a2)
+    if (*(state + 112) == a2 && *(state + 120) == a2)
     {
       v4 = NSStringFromBLSBacklightState();
     }
@@ -2091,7 +2091,7 @@ id __65__BLSHBacklightEnvironmentStateMachine_onMain_updateToSpecifier___block_i
       OUTLINED_FUNCTION_18();
       v9 = __80__BLSHBacklightEnvironmentStateMachine__lock_etsLoggingStringForBacklightState___block_invoke;
       v10 = &unk_27841E510;
-      v12 = a1;
+      stateCopy = state;
       v13 = a2;
       v11 = v5;
       v6 = v5;
@@ -2108,16 +2108,16 @@ id __65__BLSHBacklightEnvironmentStateMachine_onMain_updateToSpecifier___block_i
   return v4;
 }
 
-- (void)_lock_updateHistory:(uint64_t)a3 backlightState:(void *)a4 transitionState:(uint64_t)a5 pendingTransitionStateCount:
+- (void)_lock_updateHistory:(uint64_t)history backlightState:(void *)state transitionState:(uint64_t)transitionState pendingTransitionStateCount:
 {
   v15 = a2;
-  v9 = a4;
-  if (a1)
+  stateCopy = state;
+  if (self)
   {
     v10 = [BLSHEnvironmentUpdateData alloc];
-    v11 = [v9 environment];
-    v12 = [v11 identifier];
-    v13 = [(BLSHEnvironmentUpdateData *)v10 initWithEnvironmentIdentifier:v12 newBacklightState:a3 pendingTransitionStateCount:a5];
+    environment = [stateCopy environment];
+    identifier = [environment identifier];
+    v13 = [(BLSHEnvironmentUpdateData *)v10 initWithEnvironmentIdentifier:identifier newBacklightState:history pendingTransitionStateCount:transitionState];
     [v15 addObject:v13];
 
     v14 = [v15 count];
@@ -2128,19 +2128,19 @@ id __65__BLSHBacklightEnvironmentStateMachine_onMain_updateToSpecifier___block_i
   }
 }
 
-- (void)_checkCompletedOperationsToBacklightState:(void *)a3 transitionState:(int)a4 shouldCompleteTransitionState:(void *)a5 setupWithLock:(void *)a6 completeWithoutLock:
+- (void)_checkCompletedOperationsToBacklightState:(void *)state transitionState:(int)transitionState shouldCompleteTransitionState:(void *)completeTransitionState setupWithLock:(void *)lock completeWithoutLock:
 {
-  v36 = a3;
-  v35 = a5;
-  if (a1)
+  stateCopy = state;
+  completeTransitionStateCopy = completeTransitionState;
+  if (self)
   {
-    v11 = a6;
-    os_unfair_lock_lock((a1 + 8));
-    v12 = *(a1 + 104);
-    v13 = *(a1 + 112);
-    if (v36)
+    lockCopy = lock;
+    os_unfair_lock_lock((self + 8));
+    v12 = *(self + 104);
+    v13 = *(self + 112);
+    if (stateCopy)
     {
-      v14 = [*(a1 + 56) containsObject:?] ^ 1;
+      v14 = [*(self + 56) containsObject:?] ^ 1;
     }
 
     else
@@ -2148,10 +2148,10 @@ id __65__BLSHBacklightEnvironmentStateMachine_onMain_updateToSpecifier___block_i
       LOBYTE(v14) = 0;
     }
 
-    v15 = *(a1 + 140);
-    if (a4)
+    v15 = *(self + 140);
+    if (transitionState)
     {
-      v16 = [(BLSHBacklightEnvironmentStateMachine *)a1 _lock_transitionCompleteAfterCompletingTransitionState:v36];
+      v16 = [(BLSHBacklightEnvironmentStateMachine *)self _lock_transitionCompleteAfterCompletingTransitionState:stateCopy];
     }
 
     else
@@ -2160,7 +2160,7 @@ id __65__BLSHBacklightEnvironmentStateMachine_onMain_updateToSpecifier___block_i
     }
 
     v34 = v15;
-    if (v13 != a2 || *(a1 + 136))
+    if (v13 != a2 || *(self + 136))
     {
       v17 = v12;
       v18 = 0;
@@ -2168,7 +2168,7 @@ id __65__BLSHBacklightEnvironmentStateMachine_onMain_updateToSpecifier___block_i
       goto LABEL_10;
     }
 
-    if (a4)
+    if (transitionState)
     {
       if (!v16)
       {
@@ -2186,16 +2186,16 @@ LABEL_24:
         else
         {
           v17 = v12;
-          v19 = [(BLSHBacklightEnvironmentStateMachine *)a1 _lock_isSetPresentationOperationComplete:v12];
+          v19 = [(BLSHBacklightEnvironmentStateMachine *)self _lock_isSetPresentationOperationComplete:v12];
           v16 = 0;
         }
 
 LABEL_10:
-        v20 = v35[2];
+        v20 = completeTransitionStateCopy[2];
         OUTLINED_FUNCTION_7_1();
         v21();
-        os_unfair_lock_unlock((a1 + 8));
-        v22 = v11[2];
+        os_unfair_lock_unlock((self + 8));
+        v22 = lockCopy[2];
         OUTLINED_FUNCTION_7_1();
         v24 = v23();
         if (v13 == a2)
@@ -2242,7 +2242,7 @@ LABEL_18:
       }
     }
 
-    else if ([*(a1 + 56) count])
+    else if ([*(self + 56) count])
     {
       goto LABEL_24;
     }
@@ -2257,13 +2257,13 @@ LABEL_18:
 LABEL_19:
 }
 
-- (BOOL)_lock_transitionCompleteAfterCompletingTransitionState:(uint64_t)a1
+- (BOOL)_lock_transitionCompleteAfterCompletingTransitionState:(uint64_t)state
 {
   v3 = a2;
-  if (a1)
+  if (state)
   {
-    [*(a1 + 56) removeObject:v3];
-    v4 = *(a1 + 136) <= 0 && [*(a1 + 56) count] == 0;
+    [*(state + 56) removeObject:v3];
+    v4 = *(state + 136) <= 0 && [*(state + 56) count] == 0;
     v5 = OUTLINED_FUNCTION_13_1();
     [(BLSHBacklightEnvironmentStateMachine *)v5 _lock_ifPossibleStopTrackingTransitionState:v6];
   }
@@ -2276,38 +2276,38 @@ LABEL_19:
   return v4;
 }
 
-- (void)completedOperation:(uint64_t)a1
+- (void)completedOperation:(uint64_t)operation
 {
   v101 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (operation)
   {
-    os_unfair_lock_lock((a1 + 8));
-    v4 = [v3 backlightState];
+    os_unfair_lock_lock((operation + 8));
+    backlightState = [v3 backlightState];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     objc_opt_class();
     v6 = objc_opt_isKindOfClass();
     objc_opt_class();
     v7 = objc_opt_isKindOfClass();
-    v8 = v6 & *(a1 + 141);
-    v73 = v4;
+    v8 = v6 & *(operation + 141);
+    v73 = backlightState;
     if (v8)
     {
-      *(a1 + 141) = 0;
-      v9 = *(a1 + 112);
-      if (v9 != v4 && *(a1 + 120) != v4)
+      *(operation + 141) = 0;
+      v9 = *(operation + 112);
+      if (v9 != backlightState && *(operation + 120) != backlightState)
       {
-        v58 = v4;
+        v58 = backlightState;
         v59 = malloc_type_calloc(1uLL, 0x290uLL, 0x3EC24470uLL);
-        [(BLSHBacklightEnvironmentStateMachine *)a1 populateOperationCompletedMismatchedBacklightStatesStruct:v59 backlightState:v9 targetBacklightState:v58 performEventHistory:*(a1 + 80) didBeginUpdateHistory:*(a1 + 88) didCompleteUpdateHistory:*(a1 + 96)];
+        [(BLSHBacklightEnvironmentStateMachine *)operation populateOperationCompletedMismatchedBacklightStatesStruct:v59 backlightState:v9 targetBacklightState:v58 performEventHistory:*(operation + 80) didBeginUpdateHistory:*(operation + 88) didCompleteUpdateHistory:*(operation + 96)];
         v60 = MEMORY[0x277CCACA8];
         v61 = NSStringFromBLSBacklightState();
-        v62 = *(a1 + 112);
+        v62 = *(operation + 112);
         v63 = NSStringFromBLSBacklightState();
-        v64 = *(a1 + 120);
+        v64 = *(operation + 120);
         v65 = NSStringFromBLSBacklightState();
-        v66 = [v60 stringWithFormat:@"no more transitionStates but state:%@ != target:%@ and != performEventTarget:%@ eventHistory:%@ didBeginUpdateHistory:%@ didCompleteHistory:%@", v61, v63, v65, *(a1 + 80), *(a1 + 88), *(a1 + 96)];
+        v66 = [v60 stringWithFormat:@"no more transitionStates but state:%@ != target:%@ and != performEventTarget:%@ eventHistory:%@ didBeginUpdateHistory:%@ didCompleteHistory:%@", v61, v63, v65, *(operation + 80), *(operation + 88), *(operation + 96)];
 
         BLSHRecordCriticalAssertFailure(v66, 1, 0);
         v75[0] = MEMORY[0x277D85DD0];
@@ -2331,8 +2331,8 @@ LABEL_19:
         }
       }
 
-      v10 = (a1 + 140);
-      if (*(a1 + 140) != 1)
+      v10 = (operation + 140);
+      if (*(operation + 140) != 1)
       {
         goto LABEL_10;
       }
@@ -2340,8 +2340,8 @@ LABEL_19:
 
     else
     {
-      v10 = (a1 + 140);
-      if ((*(a1 + 140) & isKindOfClass & 1) == 0 || v4 != *(a1 + 120))
+      v10 = (operation + 140);
+      if ((*(operation + 140) & isKindOfClass & 1) == 0 || backlightState != *(operation + 120))
       {
 LABEL_10:
         v11 = 0;
@@ -2352,11 +2352,11 @@ LABEL_10:
     *v10 = 0;
     v11 = 1;
 LABEL_11:
-    v12 = *(a1 + 104);
+    v12 = *(operation + 104);
     if ((v7 & (v12 == v3)) != 0 || (v13 = OUTLINED_FUNCTION_14_1(), [(BLSHBacklightEnvironmentStateMachine *)v13 _lock_isSetPresentationOperationComplete:v14]))
     {
-      v15 = *(a1 + 104);
-      *(a1 + 104) = 0;
+      v15 = *(operation + 104);
+      *(operation + 104) = 0;
 
       v16 = 1;
     }
@@ -2366,18 +2366,18 @@ LABEL_11:
       v16 = 0;
     }
 
-    v17 = *(a1 + 16);
-    WeakRetained = objc_loadWeakRetained((a1 + 152));
-    os_unfair_lock_unlock((a1 + 8));
+    v17 = *(operation + 16);
+    WeakRetained = objc_loadWeakRetained((operation + 152));
+    os_unfair_lock_unlock((operation + 8));
     v19 = bls_backlight_log();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
     {
-      v47 = *(a1 + 112);
+      v47 = *(operation + 112);
       v72 = NSStringFromBLSBacklightState();
-      v48 = *(a1 + 120);
+      v48 = *(operation + 120);
       v70 = NSStringFromBLSBacklightState();
-      v49 = *(a1 + 80);
-      v50 = *(a1 + 96);
+      v49 = *(operation + 80);
+      v50 = *(operation + 96);
       OUTLINED_FUNCTION_5_4();
       v84 = v72;
       v85 = v51;
@@ -2397,26 +2397,26 @@ LABEL_11:
 
     if (v16)
     {
-      [WeakRetained environmentStateMachine:a1 didUpdateToPresentation:v17];
+      [WeakRetained environmentStateMachine:operation didUpdateToPresentation:v17];
     }
 
     v20 = &off_21FDA5000;
     if (v11)
     {
-      os_unfair_lock_lock((a1 + 8));
+      os_unfair_lock_lock((operation + 8));
       if (*v10 == 1)
       {
         v21 = bls_backlight_log();
         v22 = v73;
         if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
         {
-          v23 = *(a1 + 112);
+          v23 = *(operation + 112);
           v71 = NSStringFromBLSBacklightState();
-          v24 = *(a1 + 120);
+          v24 = *(operation + 120);
           NSStringFromBLSBacklightState();
           objc_claimAutoreleasedReturnValue();
-          v25 = *(a1 + 80);
-          v26 = *(a1 + 96);
+          v25 = *(operation + 80);
+          v26 = *(operation + 96);
           OUTLINED_FUNCTION_5_4();
           v84 = v71;
           v85 = v27;
@@ -2435,7 +2435,7 @@ LABEL_11:
 
         v35 = v8;
 
-        os_unfair_lock_unlock((a1 + 8));
+        os_unfair_lock_unlock((operation + 8));
         v36 = 0;
         v20 = &off_21FDA5000;
         if ((v35 & 1) == 0)
@@ -2447,18 +2447,18 @@ LABEL_11:
       }
 
       v38 = v8;
-      os_unfair_lock_unlock((a1 + 8));
+      os_unfair_lock_unlock((operation + 8));
       v22 = v73;
-      [WeakRetained environmentStateMachine:a1 didBeginUpdateToState:v73];
+      [WeakRetained environmentStateMachine:operation didBeginUpdateToState:v73];
       v36 = 1;
       if (v38)
       {
 LABEL_28:
-        os_unfair_lock_lock((a1 + 8));
-        if (*(a1 + 112) == v22 && *(a1 + 120) == v22)
+        os_unfair_lock_lock((operation + 8));
+        if (*(operation + 112) == v22 && *(operation + 120) == v22)
         {
-          os_unfair_lock_unlock((a1 + 8));
-          [WeakRetained environmentStateMachine:a1 didCompleteUpdateToState:v22];
+          os_unfair_lock_unlock((operation + 8));
+          [WeakRetained environmentStateMachine:operation didCompleteUpdateToState:v22];
         }
 
         else
@@ -2466,15 +2466,15 @@ LABEL_28:
           v39 = bls_backlight_log();
           if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
           {
-            v40 = *(a1 + 112);
+            v40 = *(operation + 112);
             NSStringFromBLSBacklightState();
             v41 = v74 = v17;
-            v42 = *(a1 + 120);
+            v42 = *(operation + 120);
             v43 = NSStringFromBLSBacklightState();
-            v44 = *(a1 + 80);
-            v45 = *(a1 + 96);
+            v44 = *(operation + 80);
+            v45 = *(operation + 96);
             *buf = *(v20 + 83);
-            v80 = a1;
+            operationCopy = operation;
             v81 = 2114;
             v82 = v3;
             v83 = 2114;
@@ -2498,7 +2498,7 @@ LABEL_28:
             v17 = v74;
           }
 
-          os_unfair_lock_unlock((a1 + 8));
+          os_unfair_lock_unlock((operation + 8));
         }
       }
     }
@@ -2520,22 +2520,22 @@ LABEL_34:
   v46 = *MEMORY[0x277D85DE8];
 }
 
-- (void)checkCompletedOperationsToBacklightState:(void *)a3 visualState:(void *)a4 transitionState:(int)a5 isBeginUpdate:
+- (void)checkCompletedOperationsToBacklightState:(void *)state visualState:(void *)visualState transitionState:(int)transitionState isBeginUpdate:
 {
-  v9 = a3;
-  v10 = a4;
-  if (a1)
+  stateCopy = state;
+  visualStateCopy = visualState;
+  if (self)
   {
     OUTLINED_FUNCTION_0_5();
     OUTLINED_FUNCTION_18();
     v12 = __123__BLSHBacklightEnvironmentStateMachine_checkCompletedOperationsToBacklightState_visualState_transitionState_isBeginUpdate___block_invoke;
     v13 = &unk_27841F780;
-    v18 = a5;
-    v14 = a1;
+    transitionStateCopy = transitionState;
+    selfCopy = self;
     v17 = a2;
-    v15 = v10;
-    v16 = v9;
-    [(BLSHBacklightEnvironmentStateMachine *)a1 _checkCompletedOperationsToBacklightState:a2 transitionState:v15 shouldCompleteTransitionState:a5 ^ 1 setupWithLock:v11 completeWithoutLock:&__block_literal_global_234];
+    v15 = visualStateCopy;
+    v16 = stateCopy;
+    [(BLSHBacklightEnvironmentStateMachine *)self _checkCompletedOperationsToBacklightState:a2 transitionState:v15 shouldCompleteTransitionState:transitionState ^ 1 setupWithLock:v11 completeWithoutLock:&__block_literal_global_234];
   }
 }
 
@@ -2651,14 +2651,14 @@ void __123__BLSHBacklightEnvironmentStateMachine_checkCompletedOperationsToBackl
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (uint64_t)_lock_numTransitionsDidNotBeginUpdateBacklightState:(uint64_t)a1
+- (uint64_t)_lock_numTransitionsDidNotBeginUpdateBacklightState:(uint64_t)state
 {
-  if (!a1)
+  if (!state)
   {
     return 0;
   }
 
-  v1 = *(a1 + 56);
+  v1 = *(state + 56);
   OUTLINED_FUNCTION_0_5();
   OUTLINED_FUNCTION_18();
   v8 = __92__BLSHBacklightEnvironmentStateMachine__lock_numTransitionsDidNotBeginUpdateBacklightState___block_invoke;
@@ -2670,42 +2670,42 @@ void __123__BLSHBacklightEnvironmentStateMachine_checkCompletedOperationsToBackl
   return v5;
 }
 
-- (uint64_t)_lock_isActiveTransitionState:(uint64_t)a1
+- (uint64_t)_lock_isActiveTransitionState:(uint64_t)state
 {
   v3 = a2;
-  if (a1)
+  if (state)
   {
-    if ([*(a1 + 56) containsObject:v3])
+    if ([*(state + 56) containsObject:v3])
     {
-      a1 = 1;
+      state = 1;
     }
 
     else
     {
-      a1 = [*(a1 + 64) containsObject:v3];
+      state = [*(state + 64) containsObject:v3];
     }
   }
 
-  return a1;
+  return state;
 }
 
-- (void)_lock_ifPossibleStopTrackingTransitionState:(uint64_t)a1
+- (void)_lock_ifPossibleStopTrackingTransitionState:(uint64_t)state
 {
   v15 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (state)
   {
     v4 = OUTLINED_FUNCTION_13_1();
     v6 = [(BLSHBacklightEnvironmentStateMachine *)v4 _lock_isActiveTransitionState:v5];
     if (v6 & 1) != 0 || ([v3 isUpdatingInitialState] & 1) != 0 || (objc_msgSend(v3, "isUpdatingVisualState"))
     {
-      v7 = bls_backlight_log();
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
+      environment = bls_backlight_log();
+      if (os_log_type_enabled(environment, OS_LOG_TYPE_DEBUG))
       {
         OUTLINED_FUNCTION_8_0();
         v13 = 1024;
         v14 = v6;
-        _os_log_debug_impl(&dword_21FD11000, v7, OS_LOG_TYPE_DEBUG, "ESM:%p will not stop tracking transitionState:%{public}@ (isActiveTransitionState:%{BOOL}u)", v12, 0x1Cu);
+        _os_log_debug_impl(&dword_21FD11000, environment, OS_LOG_TYPE_DEBUG, "ESM:%p will not stop tracking transitionState:%{public}@ (isActiveTransitionState:%{BOOL}u)", v12, 0x1Cu);
       }
     }
 
@@ -2728,39 +2728,39 @@ void __123__BLSHBacklightEnvironmentStateMachine_checkCompletedOperationsToBackl
         _os_log_impl(&dword_21FD11000, v9, v10, "ESM:%p will stop tracking transitionState:%{public}@", v12, 0x16u);
       }
 
-      v11 = *(a1 + 48);
-      v7 = [v3 environment];
-      [v11 removeObjectForKey:v7];
+      v11 = *(state + 48);
+      environment = [v3 environment];
+      [v11 removeObjectForKey:environment];
     }
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)transitionState:(id)a3 didUpdateToDateSpecifier:(id)a4
+- (void)transitionState:(id)state didUpdateToDateSpecifier:(id)specifier
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  stateCopy = state;
+  specifierCopy = specifier;
   os_unfair_lock_lock(&self->_lock);
   v8 = self->_updatingSpecifier;
-  if (v8 && [(NSMutableSet *)self->_lock_updatingDateSpecifierTransitionStates containsObject:v6])
+  if (v8 && [(NSMutableSet *)self->_lock_updatingDateSpecifierTransitionStates containsObject:stateCopy])
   {
-    v9 = [v6 environment];
-    v10 = [(BLSHPresentationDateSpecifier *)v8 dateSpecifierForEnvironment:v9];
-    v11 = [v10 date];
+    environment = [stateCopy environment];
+    v10 = [(BLSHPresentationDateSpecifier *)v8 dateSpecifierForEnvironment:environment];
+    date = [v10 date];
 
-    if (v7)
+    if (specifierCopy)
     {
-      v20 = [v7 date];
-      if ([v20 isEqualToDate:v11])
+      date2 = [specifierCopy date];
+      if ([date2 isEqualToDate:date])
       {
       }
 
       else
       {
 
-        if (v11)
+        if (date)
         {
 LABEL_16:
           v21 = 0;
@@ -2769,12 +2769,12 @@ LABEL_16:
       }
     }
 
-    else if (v11)
+    else if (date)
     {
       goto LABEL_16;
     }
 
-    [(NSMutableSet *)self->_lock_updatingDateSpecifierTransitionStates removeObject:v6];
+    [(NSMutableSet *)self->_lock_updatingDateSpecifierTransitionStates removeObject:stateCopy];
     v21 = 1;
 LABEL_17:
     v22 = [(NSMutableSet *)self->_lock_updatingDateSpecifierTransitionStates count];
@@ -2791,8 +2791,8 @@ LABEL_17:
 
     if (os_log_type_enabled(v23, v24))
     {
-      v32 = [v7 bls_shortLoggingString];
-      v31 = [v6 bls_shortLoggingString];
+      bls_shortLoggingString = [specifierCopy bls_shortLoggingString];
+      bls_shortLoggingString2 = [stateCopy bls_shortLoggingString];
       v30 = bls_backlight_log();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
       {
@@ -2805,11 +2805,11 @@ LABEL_17:
       }
       v25 = ;
       OUTLINED_FUNCTION_15_0();
-      v34 = v32;
+      v34 = bls_shortLoggingString;
       v35 = 1024;
       *v36 = v21;
       *&v36[4] = v26;
-      *&v36[6] = v31;
+      *&v36[6] = bls_shortLoggingString2;
       *&v36[14] = v26;
       *&v36[16] = v27;
       _os_log_impl(&dword_21FD11000, v23, v24, "ESM:%p etsUpdateTo:%{public}@ dateMatch:%{BOOL}u for:%{public}@ ets:%{public}@", buf, 0x30u);
@@ -2830,26 +2830,26 @@ LABEL_17:
     goto LABEL_9;
   }
 
-  v11 = bls_backlight_log();
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
+  date = bls_backlight_log();
+  if (os_log_type_enabled(date, OS_LOG_TYPE_DEBUG))
   {
-    v12 = [v7 bls_shortLoggingString];
-    v13 = [v6 bls_shortLoggingString];
+    bls_shortLoggingString3 = [specifierCopy bls_shortLoggingString];
+    bls_shortLoggingString4 = [stateCopy bls_shortLoggingString];
     v14 = [(BLSHBacklightEnvironmentStateMachine *)&self->super.isa _lock_descriptionOfDateSpecifierTransitionStatesShouldFilter:0 countOnly:?];
     OUTLINED_FUNCTION_15_0();
-    v34 = v12;
+    v34 = bls_shortLoggingString3;
     v35 = v15;
-    *v36 = v13;
+    *v36 = bls_shortLoggingString4;
     *&v36[8] = v15;
     *&v36[10] = v16;
-    _os_log_debug_impl(&dword_21FD11000, v11, OS_LOG_TYPE_DEBUG, "ESM:%p (stale) etsUpdateTo:%{public}@ for:%{public}@ ets:%{public}@", buf, 0x2Au);
+    _os_log_debug_impl(&dword_21FD11000, date, OS_LOG_TYPE_DEBUG, "ESM:%p (stale) etsUpdateTo:%{public}@ for:%{public}@ ets:%{public}@", buf, 0x2Au);
   }
 
   v17 = 0;
 LABEL_9:
 
   WeakRetained = objc_loadWeakRetained(&self->_lock_delegate);
-  [(BLSHBacklightEnvironmentStateMachine *)self _lock_ifPossibleStopTrackingTransitionState:v6];
+  [(BLSHBacklightEnvironmentStateMachine *)self _lock_ifPossibleStopTrackingTransitionState:stateCopy];
   os_unfair_lock_unlock(&self->_lock);
   if (v17)
   {
@@ -2859,17 +2859,17 @@ LABEL_9:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (uint64_t)_lock_allTransitionsDidBeginUpdateBacklightState:(void *)a3 environmentFilter:
+- (uint64_t)_lock_allTransitionsDidBeginUpdateBacklightState:(void *)state environmentFilter:
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (a1 && *(a1 + 136) <= 0)
+  stateCopy = state;
+  if (self && *(self + 136) <= 0)
   {
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v7 = *(a1 + 56);
+    v7 = *(self + 56);
     v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v8)
     {
@@ -2886,7 +2886,7 @@ LABEL_9:
           }
 
           v12 = *(*(&v17 + 1) + 8 * v11);
-          if (!v5 || ([*(*(&v17 + 1) + 8 * v11) environment], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v5, "containsObject:", v13), v13, v14))
+          if (!stateCopy || ([*(*(&v17 + 1) + 8 * v11) environment], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(stateCopy, "containsObject:", v13), v13, v14))
           {
             if (([v12 isUpdatingInitialState] & 1) != 0 || !objc_msgSend(v12, "isUpdatedToBacklightState:", a2))
             {

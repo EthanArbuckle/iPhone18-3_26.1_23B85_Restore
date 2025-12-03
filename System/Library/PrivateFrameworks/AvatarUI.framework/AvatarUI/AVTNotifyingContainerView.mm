@@ -1,17 +1,17 @@
 @interface AVTNotifyingContainerView
 - (AVTNotifyingContainerViewDelegate)delegate;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation AVTNotifyingContainerView
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(AVTNotifyingContainerView *)self frame];
   if (width == v9 && height == v8)
   {
@@ -22,23 +22,23 @@
 
   else
   {
-    v11 = [(AVTNotifyingContainerView *)self delegate];
-    [v11 notifyingContainerViewWillChangeSize:{width, height}];
+    delegate = [(AVTNotifyingContainerView *)self delegate];
+    [delegate notifyingContainerViewWillChangeSize:{width, height}];
 
     v13.receiver = self;
     v13.super_class = AVTNotifyingContainerView;
     [(AVTNotifyingContainerView *)&v13 setFrame:x, y, width, height];
-    v12 = [(AVTNotifyingContainerView *)self delegate];
-    [v12 notifyingContainerViewDidChangeSize:{width, height}];
+    delegate2 = [(AVTNotifyingContainerView *)self delegate];
+    [delegate2 notifyingContainerViewDidChangeSize:{width, height}];
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(AVTNotifyingContainerView *)self bounds];
   if (width == v9 && height == v8)
   {
@@ -49,14 +49,14 @@
 
   else
   {
-    v11 = [(AVTNotifyingContainerView *)self delegate];
-    [v11 notifyingContainerViewWillChangeSize:{width, height}];
+    delegate = [(AVTNotifyingContainerView *)self delegate];
+    [delegate notifyingContainerViewWillChangeSize:{width, height}];
 
     v13.receiver = self;
     v13.super_class = AVTNotifyingContainerView;
     [(AVTNotifyingContainerView *)&v13 setBounds:x, y, width, height];
-    v12 = [(AVTNotifyingContainerView *)self delegate];
-    [v12 notifyingContainerViewDidChangeSize:{width, height}];
+    delegate2 = [(AVTNotifyingContainerView *)self delegate];
+    [delegate2 notifyingContainerViewDidChangeSize:{width, height}];
   }
 }
 

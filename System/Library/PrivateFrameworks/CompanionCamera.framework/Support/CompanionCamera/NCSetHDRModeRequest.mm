@@ -1,14 +1,14 @@
 @interface NCSetHDRModeRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsHdrMode:(id)a3;
+- (int)StringAsHdrMode:(id)mode;
 - (int)hdrMode;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NCSetHDRModeRequest
@@ -26,20 +26,20 @@
   }
 }
 
-- (int)StringAsHdrMode:(id)a3
+- (int)StringAsHdrMode:(id)mode
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Off"])
+  modeCopy = mode;
+  if ([modeCopy isEqualToString:@"Off"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"On"])
+  else if ([modeCopy isEqualToString:@"On"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Auto"])
+  else if ([modeCopy isEqualToString:@"Auto"])
   {
     v4 = 2;
   }
@@ -57,8 +57,8 @@
   v7.receiver = self;
   v7.super_class = NCSetHDRModeRequest;
   v3 = [(NCSetHDRModeRequest *)&v7 description];
-  v4 = [(NCSetHDRModeRequest *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(NCSetHDRModeRequest *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -85,7 +85,7 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {
@@ -94,18 +94,18 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 2) = self->_hdrMode;
-    *(a3 + 12) |= 1u;
+    *(to + 2) = self->_hdrMode;
+    *(to + 12) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (*&self->_has)
   {
     *(result + 2) = self->_hdrMode;
@@ -115,18 +115,18 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_6;
   }
 
-  v5 = (*(v4 + 12) & 1) == 0;
+  v5 = (*(equalCopy + 12) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 12) & 1) != 0 && self->_hdrMode == *(v4 + 2))
+    if ((*(equalCopy + 12) & 1) != 0 && self->_hdrMode == *(equalCopy + 2))
     {
       v5 = 1;
       goto LABEL_7;
@@ -154,11 +154,11 @@ LABEL_7:
   }
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 12))
+  if (*(from + 12))
   {
-    self->_hdrMode = *(a3 + 2);
+    self->_hdrMode = *(from + 2);
     *&self->_has |= 1u;
   }
 }

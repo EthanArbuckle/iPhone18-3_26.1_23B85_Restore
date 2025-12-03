@@ -2,11 +2,11 @@
 + (id)mappingContext;
 - (ECMappingContext)init;
 - (id).cxx_construct;
-- (id)mappingInfoAtIndex:(unint64_t)a3;
-- (id)mappingInfoForObject:(id)a3;
-- (unint64_t)mappedSheetIndexForSheetIndex:(unint64_t)a3;
-- (unint64_t)mappedSheetIndexForSheetName:(id)a3;
-- (void)associateMappingInfo:(id)a3 withSheetName:(id)a4 andSheetIndex:(unint64_t)a5 andObject:(id)a6;
+- (id)mappingInfoAtIndex:(unint64_t)index;
+- (id)mappingInfoForObject:(id)object;
+- (unint64_t)mappedSheetIndexForSheetIndex:(unint64_t)index;
+- (unint64_t)mappedSheetIndexForSheetName:(id)name;
+- (void)associateMappingInfo:(id)info withSheetName:(id)name andSheetIndex:(unint64_t)index andObject:(id)object;
 - (void)dealloc;
 @end
 
@@ -52,7 +52,7 @@
   [(ECMappingContext *)&v4 dealloc];
 }
 
-- (unint64_t)mappedSheetIndexForSheetIndex:(unint64_t)a3
+- (unint64_t)mappedSheetIndexForSheetIndex:(unint64_t)index
 {
   left = self->mIndexToMappedIndex.__tree_.__end_node_.__left_;
   p_end_node = &self->mIndexToMappedIndex.__tree_.__end_node_;
@@ -66,8 +66,8 @@
   do
   {
     v7 = *(v4 + 4);
-    v8 = v7 >= a3;
-    v9 = v7 < a3;
+    v8 = v7 >= index;
+    v9 = v7 < index;
     if (v8)
     {
       v6 = v4;
@@ -77,7 +77,7 @@
   }
 
   while (v4);
-  if (v6 != p_end_node && v6[4].__left_ <= a3)
+  if (v6 != p_end_node && v6[4].__left_ <= index)
   {
     return v6[5].__left_;
   }
@@ -88,35 +88,35 @@
   }
 }
 
-- (unint64_t)mappedSheetIndexForSheetName:(id)a3
+- (unint64_t)mappedSheetIndexForSheetName:(id)name
 {
-  v3 = [(NSMutableDictionary *)self->mSheetNameToMappedIndex objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->mSheetNameToMappedIndex objectForKey:name];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 unsignedIntegerValue];
+    unsignedIntegerValue = [v3 unsignedIntegerValue];
   }
 
   else
   {
-    v5 = -1;
+    unsignedIntegerValue = -1;
   }
 
-  return v5;
+  return unsignedIntegerValue;
 }
 
-- (id)mappingInfoForObject:(id)a3
+- (id)mappingInfoForObject:(id)object
 {
-  v3 = CFDictionaryGetValue(self->mObjectToMappingInfo, a3);
+  v3 = CFDictionaryGetValue(self->mObjectToMappingInfo, object);
 
   return v3;
 }
 
-- (id)mappingInfoAtIndex:(unint64_t)a3
+- (id)mappingInfoAtIndex:(unint64_t)index
 {
-  if ([(ECMappingContext *)self mappingInfoCount]>= a3)
+  if ([(ECMappingContext *)self mappingInfoCount]>= index)
   {
-    v5 = [(NSMutableArray *)self->mMappingInfos objectAtIndex:a3];
+    v5 = [(NSMutableArray *)self->mMappingInfos objectAtIndex:index];
   }
 
   else
@@ -135,30 +135,30 @@
   return self;
 }
 
-- (void)associateMappingInfo:(id)a3 withSheetName:(id)a4 andSheetIndex:(unint64_t)a5 andObject:(id)a6
+- (void)associateMappingInfo:(id)info withSheetName:(id)name andSheetIndex:(unint64_t)index andObject:(id)object
 {
-  v10 = a3;
-  v11 = a4;
-  v16[0] = a5;
-  v12 = a6;
+  infoCopy = info;
+  nameCopy = name;
+  v16[0] = index;
+  objectCopy = object;
   v13 = [(NSMutableArray *)self->mMappingInfos count];
-  [(NSMutableArray *)self->mMappingInfos addObject:v10];
-  if (a5 != -1)
+  [(NSMutableArray *)self->mMappingInfos addObject:infoCopy];
+  if (index != -1)
   {
     v16[2] = v16;
     std::__tree<std::__value_type<unsigned long,unsigned long>,std::__map_value_compare<unsigned long,std::__value_type<unsigned long,unsigned long>,std::less<unsigned long>,true>,std::allocator<std::__value_type<unsigned long,unsigned long>>>::__emplace_unique_key_args<unsigned long,std::piecewise_construct_t const&,std::tuple<unsigned long const&>,std::tuple<>>(&self->mIndexToMappedIndex, v16)[5] = v13;
   }
 
-  if (v11 && [v11 length])
+  if (nameCopy && [nameCopy length])
   {
     mSheetNameToMappedIndex = self->mSheetNameToMappedIndex;
     v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v13];
-    [(NSMutableDictionary *)mSheetNameToMappedIndex setValue:v15 forKey:v11];
+    [(NSMutableDictionary *)mSheetNameToMappedIndex setValue:v15 forKey:nameCopy];
   }
 
-  if (v12)
+  if (objectCopy)
   {
-    CFDictionarySetValue(self->mObjectToMappingInfo, v12, v10);
+    CFDictionarySetValue(self->mObjectToMappingInfo, objectCopy, infoCopy);
   }
 }
 

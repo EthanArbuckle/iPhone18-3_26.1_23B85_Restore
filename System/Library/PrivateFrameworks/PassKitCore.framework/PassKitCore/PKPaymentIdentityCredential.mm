@@ -1,24 +1,24 @@
 @interface PKPaymentIdentityCredential
-- (PKPaymentIdentityCredential)initWithCoder:(id)a3;
-- (PKPaymentIdentityCredential)initWithShareablePassMetadata:(id)a3 isoCredentialIdentifier:(id)a4;
+- (PKPaymentIdentityCredential)initWithCoder:(id)coder;
+- (PKPaymentIdentityCredential)initWithShareablePassMetadata:(id)metadata isoCredentialIdentifier:(id)identifier;
 - (id)paymentApplications;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPaymentIdentityCredential
 
-- (PKPaymentIdentityCredential)initWithShareablePassMetadata:(id)a3 isoCredentialIdentifier:(id)a4
+- (PKPaymentIdentityCredential)initWithShareablePassMetadata:(id)metadata isoCredentialIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  metadataCopy = metadata;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = PKPaymentIdentityCredential;
   v9 = [(PKPaymentCredential *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_shareableMetadata, a3);
-    objc_storeStrong(&v10->_isoCredentialIdentifier, a4);
+    objc_storeStrong(&v9->_shareableMetadata, metadata);
+    objc_storeStrong(&v10->_isoCredentialIdentifier, identifier);
     [(PKPaymentCredential *)v10 setCardType:4];
   }
 
@@ -36,35 +36,35 @@
   return v4;
 }
 
-- (PKPaymentIdentityCredential)initWithCoder:(id)a3
+- (PKPaymentIdentityCredential)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = PKPaymentIdentityCredential;
-  v5 = [(PKPaymentCredential *)&v19 initWithCoder:v4];
+  v5 = [(PKPaymentCredential *)&v19 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shareableMetadata"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shareableMetadata"];
     shareableMetadata = v5->_shareableMetadata;
     v5->_shareableMetadata = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"isoCredentialIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isoCredentialIdentifier"];
     isoCredentialIdentifier = v5->_isoCredentialIdentifier;
     v5->_isoCredentialIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"passTypeIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"passTypeIdentifier"];
     passTypeIdentifier = v5->_passTypeIdentifier;
     v5->_passTypeIdentifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"passSerialNumber"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"passSerialNumber"];
     passSerialNumber = v5->_passSerialNumber;
     v5->_passSerialNumber = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountKeyIdentifier"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountKeyIdentifier"];
     accountKeyIdentifier = v5->_accountKeyIdentifier;
     v5->_accountKeyIdentifier = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"attestations"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"attestations"];
     attestations = v5->_attestations;
     v5->_attestations = v16;
   }
@@ -72,18 +72,18 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKPaymentIdentityCredential;
-  v4 = a3;
-  [(PKPaymentCredential *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_shareableMetadata forKey:{@"shareableMetadata", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_passTypeIdentifier forKey:@"passTypeIdentifier"];
-  [v4 encodeObject:self->_isoCredentialIdentifier forKey:@"isoCredentialIdentifier"];
-  [v4 encodeObject:self->_passSerialNumber forKey:@"passSerialNumber"];
-  [v4 encodeObject:self->_accountKeyIdentifier forKey:@"accountKeyIdentifier"];
-  [v4 encodeObject:self->_attestations forKey:@"attestations"];
+  coderCopy = coder;
+  [(PKPaymentCredential *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_shareableMetadata forKey:{@"shareableMetadata", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_passTypeIdentifier forKey:@"passTypeIdentifier"];
+  [coderCopy encodeObject:self->_isoCredentialIdentifier forKey:@"isoCredentialIdentifier"];
+  [coderCopy encodeObject:self->_passSerialNumber forKey:@"passSerialNumber"];
+  [coderCopy encodeObject:self->_accountKeyIdentifier forKey:@"accountKeyIdentifier"];
+  [coderCopy encodeObject:self->_attestations forKey:@"attestations"];
 }
 
 @end

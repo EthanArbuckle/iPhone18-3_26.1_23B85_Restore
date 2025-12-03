@@ -1,13 +1,13 @@
 @interface WCDRetrieveInstalledAppsListOperation
-+ (id)md5HexDigest:(id)a3;
-- (void)doWorkWithCompletionHandler:(id)a3;
++ (id)md5HexDigest:(id)digest;
+- (void)doWorkWithCompletionHandler:(id)handler;
 @end
 
 @implementation WCDRetrieveInstalledAppsListOperation
 
-- (void)doWorkWithCompletionHandler:(id)a3
+- (void)doWorkWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = wc_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -17,9 +17,9 @@
   }
 
   v6 = objc_initWeak(buf, self);
-  v7 = [(WCDRetrieveInstalledAppsListOperation *)self isCancelled];
+  isCancelled = [(WCDRetrieveInstalledAppsListOperation *)self isCancelled];
 
-  if (v7)
+  if (isCancelled)
   {
     WeakRetained = objc_loadWeakRetained(buf);
     [WeakRetained finish];
@@ -29,17 +29,17 @@
   {
     v9 = +[NSMutableSet set];
     v10 = +[NRPairedDeviceRegistry sharedInstance];
-    v11 = [v10 getActivePairedDevice];
+    getActivePairedDevice = [v10 getActivePairedDevice];
 
     v12 = +[ACXDeviceConnection sharedDeviceConnection];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_10000BCFC;
     v14[3] = &unk_100048DA0;
-    v18 = v4;
-    v13 = v11;
+    v18 = handlerCopy;
+    v13 = getActivePairedDevice;
     v15 = v13;
-    v16 = self;
+    selfCopy = self;
     WeakRetained = v9;
     v17 = WeakRetained;
     objc_copyWeak(&v19, buf);
@@ -51,11 +51,11 @@
   objc_destroyWeak(buf);
 }
 
-+ (id)md5HexDigest:(id)a3
++ (id)md5HexDigest:(id)digest
 {
-  v3 = [a3 UTF8String];
-  v4 = strlen(v3);
-  CC_MD5(v3, v4, md);
+  uTF8String = [digest UTF8String];
+  v4 = strlen(uTF8String);
+  CC_MD5(uTF8String, v4, md);
   v5 = [NSMutableString stringWithCapacity:32];
   for (i = 0; i != 16; ++i)
   {

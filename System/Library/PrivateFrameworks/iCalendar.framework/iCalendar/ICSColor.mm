@@ -1,62 +1,62 @@
 @interface ICSColor
-+ (BOOL)colorDetailsAreEffectivelyDifferentFirstColor:(id)a3 secondColor:(id)a4 firstSymbolicName:(id)a5 secondSymbolicName:(id)a6;
-- (ICSColor)initWithCoder:(id)a3;
-- (ICSColor)initWithRed:(unsigned __int8)a3 green:(unsigned __int8)a4 blue:(unsigned __int8)a5;
-- (void)encodeWithCoder:(id)a3;
++ (BOOL)colorDetailsAreEffectivelyDifferentFirstColor:(id)color secondColor:(id)secondColor firstSymbolicName:(id)name secondSymbolicName:(id)symbolicName;
+- (ICSColor)initWithCoder:(id)coder;
+- (ICSColor)initWithRed:(unsigned __int8)red green:(unsigned __int8)green blue:(unsigned __int8)blue;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ICSColor
 
-- (ICSColor)initWithRed:(unsigned __int8)a3 green:(unsigned __int8)a4 blue:(unsigned __int8)a5
+- (ICSColor)initWithRed:(unsigned __int8)red green:(unsigned __int8)green blue:(unsigned __int8)blue
 {
   v9.receiver = self;
   v9.super_class = ICSColor;
   result = [(ICSColor *)&v9 init];
   if (result)
   {
-    result->_red = a3;
-    result->_green = a4;
-    result->_blue = a5;
+    result->_red = red;
+    result->_green = green;
+    result->_blue = blue;
   }
 
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   red = self->_red;
-  v5 = a3;
-  [v5 encodeInt:red forKey:@"Red"];
-  [v5 encodeInt:self->_green forKey:@"Green"];
-  [v5 encodeInt:self->_blue forKey:@"Blue"];
+  coderCopy = coder;
+  [coderCopy encodeInt:red forKey:@"Red"];
+  [coderCopy encodeInt:self->_green forKey:@"Green"];
+  [coderCopy encodeInt:self->_blue forKey:@"Blue"];
 }
 
-- (ICSColor)initWithCoder:(id)a3
+- (ICSColor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = ICSColor;
   v5 = [(ICSColor *)&v7 init];
   if (v5)
   {
-    v5->_red = [v4 decodeIntForKey:@"Red"];
-    v5->_green = [v4 decodeIntForKey:@"Green"];
-    v5->_blue = [v4 decodeIntForKey:@"Blue"];
+    v5->_red = [coderCopy decodeIntForKey:@"Red"];
+    v5->_green = [coderCopy decodeIntForKey:@"Green"];
+    v5->_blue = [coderCopy decodeIntForKey:@"Blue"];
   }
 
   return v5;
 }
 
-+ (BOOL)colorDetailsAreEffectivelyDifferentFirstColor:(id)a3 secondColor:(id)a4 firstSymbolicName:(id)a5 secondSymbolicName:(id)a6
++ (BOOL)colorDetailsAreEffectivelyDifferentFirstColor:(id)color secondColor:(id)secondColor firstSymbolicName:(id)name secondSymbolicName:(id)symbolicName
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = v12;
-  if (v11)
+  colorCopy = color;
+  secondColorCopy = secondColor;
+  nameCopy = name;
+  symbolicNameCopy = symbolicName;
+  v13 = symbolicNameCopy;
+  if (nameCopy)
   {
-    v14 = [v11 isEqualToString:@"custom"] ^ 1;
+    v14 = [nameCopy isEqualToString:@"custom"] ^ 1;
     if (v13)
     {
 LABEL_3:
@@ -68,7 +68,7 @@ LABEL_3:
   else
   {
     v14 = 0;
-    if (v12)
+    if (symbolicNameCopy)
     {
       goto LABEL_3;
     }
@@ -78,12 +78,12 @@ LABEL_3:
 LABEL_6:
   if ((v14 | v15))
   {
-    if (v11 != v13)
+    if (nameCopy != v13)
     {
       LOBYTE(v16) = 1;
-      if (v11 && v13)
+      if (nameCopy && v13)
       {
-        v17 = v11;
+        v17 = nameCopy;
         v18 = v13;
 LABEL_15:
         v16 = [v17 isEqualToString:v18] ^ 1;
@@ -98,16 +98,16 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (v9 == v10)
+  if (colorCopy == secondColorCopy)
   {
     goto LABEL_16;
   }
 
   LOBYTE(v16) = 1;
-  if (v9 && v10)
+  if (colorCopy && secondColorCopy)
   {
-    v17 = v9;
-    v18 = v10;
+    v17 = colorCopy;
+    v18 = secondColorCopy;
     goto LABEL_15;
   }
 

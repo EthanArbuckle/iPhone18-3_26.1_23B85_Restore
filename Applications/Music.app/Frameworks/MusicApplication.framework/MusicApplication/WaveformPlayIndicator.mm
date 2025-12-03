@@ -1,5 +1,5 @@
 @interface WaveformPlayIndicator
-- (_TtC11MusicCoreUI21WaveformPlayIndicator)initWithFrame:(CGRect)a3;
+- (_TtC11MusicCoreUI21WaveformPlayIndicator)initWithFrame:(CGRect)frame;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
 - (void)tintColorDidChange;
@@ -9,7 +9,7 @@
 
 - (void)tintColorDidChange
 {
-  v2 = self;
+  selfCopy = self;
   WaveformPlayIndicator.tintColorDidChange()();
 }
 
@@ -27,11 +27,11 @@
 
 - (void)didMoveToWindow
 {
-  v2 = self;
+  selfCopy = self;
   WaveformPlayIndicator.didMoveToWindow()();
 }
 
-- (_TtC11MusicCoreUI21WaveformPlayIndicator)initWithFrame:(CGRect)a3
+- (_TtC11MusicCoreUI21WaveformPlayIndicator)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

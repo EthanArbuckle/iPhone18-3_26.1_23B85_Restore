@@ -1,10 +1,10 @@
 @interface EFQueue
-+ (id)boundedQueueWithCapacity:(unint64_t)a3;
-+ (id)boundedQueueWithCapacity:(unint64_t)a3 overflowHandler:(id)a4;
-+ (id)bufferedQueueWithCapacity:(unint64_t)a3 batchHandler:(id)a4;
-+ (id)priorityQueueWithComparator:(id)a3;
++ (id)boundedQueueWithCapacity:(unint64_t)capacity;
++ (id)boundedQueueWithCapacity:(unint64_t)capacity overflowHandler:(id)handler;
++ (id)bufferedQueueWithCapacity:(unint64_t)capacity batchHandler:(id)handler;
++ (id)priorityQueueWithComparator:(id)comparator;
 - (EFQueue)init;
-- (EFQueue)initWithStrategy:(id)a3;
+- (EFQueue)initWithStrategy:(id)strategy;
 - (id)debugDescription;
 - (id)dequeue;
 - (id)description;
@@ -21,36 +21,36 @@
   return v3;
 }
 
-+ (id)priorityQueueWithComparator:(id)a3
++ (id)priorityQueueWithComparator:(id)comparator
 {
-  v3 = a3;
-  v4 = [[_EFPriorityQueueStrategy alloc] initWithComparator:v3];
+  comparatorCopy = comparator;
+  v4 = [[_EFPriorityQueueStrategy alloc] initWithComparator:comparatorCopy];
   v5 = [[EFQueue alloc] initWithStrategy:v4];
 
   return v5;
 }
 
-+ (id)boundedQueueWithCapacity:(unint64_t)a3 overflowHandler:(id)a4
++ (id)boundedQueueWithCapacity:(unint64_t)capacity overflowHandler:(id)handler
 {
-  v5 = a4;
-  v6 = [[_EFBoundedQueueStrategy alloc] initWithCapacity:a3 overflowHandler:v5];
+  handlerCopy = handler;
+  v6 = [[_EFBoundedQueueStrategy alloc] initWithCapacity:capacity overflowHandler:handlerCopy];
   v7 = [[EFQueue alloc] initWithStrategy:v6];
 
   return v7;
 }
 
-+ (id)boundedQueueWithCapacity:(unint64_t)a3
++ (id)boundedQueueWithCapacity:(unint64_t)capacity
 {
-  v3 = [[_EFBoundedQueueStrategy alloc] initWithCapacity:a3 overflowHandler:0];
+  v3 = [[_EFBoundedQueueStrategy alloc] initWithCapacity:capacity overflowHandler:0];
   v4 = [[EFQueue alloc] initWithStrategy:v3];
 
   return v4;
 }
 
-+ (id)bufferedQueueWithCapacity:(unint64_t)a3 batchHandler:(id)a4
++ (id)bufferedQueueWithCapacity:(unint64_t)capacity batchHandler:(id)handler
 {
-  v5 = a4;
-  v6 = [[_EFBufferedQueueStrategy alloc] initWithCapacity:a3 batchHandler:v5];
+  handlerCopy = handler;
+  v6 = [[_EFBufferedQueueStrategy alloc] initWithCapacity:capacity batchHandler:handlerCopy];
   v7 = [[EFQueue alloc] initWithStrategy:v6];
 
   return v7;
@@ -64,9 +64,9 @@
   return v4;
 }
 
-- (EFQueue)initWithStrategy:(id)a3
+- (EFQueue)initWithStrategy:(id)strategy
 {
-  v5 = a3;
+  strategyCopy = strategy;
   v10.receiver = self;
   v10.super_class = EFQueue;
   v6 = [(EFQueue *)&v10 init];
@@ -76,7 +76,7 @@
     buffer = v6->_buffer;
     v6->_buffer = v7;
 
-    objc_storeStrong(&v6->_strategy, a3);
+    objc_storeStrong(&v6->_strategy, strategy);
   }
 
   return v6;
@@ -102,21 +102,21 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(EFQueueingStrategy *)self->_strategy descriptionType];
-  v6 = [v3 stringWithFormat:@"<%@: %p> (%@) %lld items", v4, self, v5, -[NSMutableArray count](self->_buffer, "count")];
+  descriptionType = [(EFQueueingStrategy *)self->_strategy descriptionType];
+  v6 = [v3 stringWithFormat:@"<%@: %p> (%@) %lld items", v4, self, descriptionType, -[NSMutableArray count](self->_buffer, "count")];
 
   return v6;
 }
 
 - (id)dequeue
 {
-  v3 = [(EFQueue *)self peek];
-  if (v3)
+  peek = [(EFQueue *)self peek];
+  if (peek)
   {
     [(NSMutableArray *)self->_buffer removeObjectAtIndex:0];
   }
 
-  return v3;
+  return peek;
 }
 
 @end

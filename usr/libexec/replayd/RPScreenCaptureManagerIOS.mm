@@ -1,13 +1,13 @@
 @interface RPScreenCaptureManagerIOS
 - (RPScreenCaptureManagerIOS)init;
-- (id)setupFigCaptureForIOSWithCaptureType:(int)a3 windowSize:(CGSize)a4 contextIDs:(id)a5 systemCapture:(BOOL)a6;
-- (id)setupFigCaptureForVisionWithWindowSize:(CGSize)a3 contextIDs:(id)a4 systemCapture:(BOOL)a5;
-- (void)handleScreenCaptureFailureWithError:(id)a3;
-- (void)screenCaptureController:(id)a3 didFailWithStatus:(int)a4;
-- (void)screenCaptureController:(id)a3 didReceiveSampleBuffer:(opaqueCMSampleBuffer *)a4 transformFlags:(unint64_t)a5;
-- (void)screenCaptureControllerDidReceiveClearScreen:(id)a3;
-- (void)screenCaptureControllerMediaServicesWereReset:(id)a3;
-- (void)screenCaptureControllerWasPreempted:(id)a3;
+- (id)setupFigCaptureForIOSWithCaptureType:(int)type windowSize:(CGSize)size contextIDs:(id)ds systemCapture:(BOOL)capture;
+- (id)setupFigCaptureForVisionWithWindowSize:(CGSize)size contextIDs:(id)ds systemCapture:(BOOL)capture;
+- (void)handleScreenCaptureFailureWithError:(id)error;
+- (void)screenCaptureController:(id)controller didFailWithStatus:(int)status;
+- (void)screenCaptureController:(id)controller didReceiveSampleBuffer:(opaqueCMSampleBuffer *)buffer transformFlags:(unint64_t)flags;
+- (void)screenCaptureControllerDidReceiveClearScreen:(id)screen;
+- (void)screenCaptureControllerMediaServicesWereReset:(id)reset;
+- (void)screenCaptureControllerWasPreempted:(id)preempted;
 - (void)stop;
 @end
 
@@ -28,18 +28,18 @@
   return v3;
 }
 
-- (id)setupFigCaptureForIOSWithCaptureType:(int)a3 windowSize:(CGSize)a4 contextIDs:(id)a5 systemCapture:(BOOL)a6
+- (id)setupFigCaptureForIOSWithCaptureType:(int)type windowSize:(CGSize)size contextIDs:(id)ds systemCapture:(BOOL)capture
 {
-  v6 = a6;
-  height = a4.height;
-  width = a4.width;
-  v10 = a5;
+  captureCopy = capture;
+  height = size.height;
+  width = size.width;
+  dsCopy = ds;
   v11 = objc_alloc_init(FigScreenCaptureConfiguration);
   [v11 setSize:{width, height}];
   CMTimeMake(&v31, 1, 60);
   *buf = v31;
   [v11 setMinFrameInterval:buf];
-  if (v6)
+  if (captureCopy)
   {
     if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
@@ -50,7 +50,7 @@
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d mirror mode", buf, 0x12u);
     }
 
-    if (a3 == 2)
+    if (type == 2)
     {
       [v11 setPreset:7];
       v12 = 1;
@@ -59,7 +59,7 @@
     else
     {
       [v11 setPreset:0];
-      if (a3 == 1)
+      if (type == 1)
       {
         v12 = 1;
       }
@@ -115,16 +115,16 @@ LABEL_32:
     BKSDisplayServicesSetCloneMirroringMode();
     if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
-      v24 = [v11 preset];
-      v25 = [v11 toneMappingMode];
+      preset = [v11 preset];
+      toneMappingMode = [v11 toneMappingMode];
       *buf = 136446978;
       *&buf[4] = "[RPScreenCaptureManagerIOS setupFigCaptureForIOSWithCaptureType:windowSize:contextIDs:systemCapture:]";
       *&buf[12] = 1024;
       *&buf[14] = 106;
       *&buf[18] = 2048;
-      *&buf[20] = v24;
+      *&buf[20] = preset;
       v34 = 2048;
-      v35 = v25;
+      v35 = toneMappingMode;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d screenCaptureConfig.preset=%lu screenCaptureConfig.toneMappingMode=%lu", buf, 0x26u);
     }
 
@@ -145,7 +145,7 @@ LABEL_32:
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v14 = v10;
+  v14 = dsCopy;
   v15 = [v14 countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v15)
   {
@@ -170,8 +170,8 @@ LABEL_32:
     while (v16);
   }
 
-  v20 = [v13 allObjects];
-  [v11 setContentIDs:v20];
+  allObjects = [v13 allObjects];
+  [v11 setContentIDs:allObjects];
 
   BKSDisplayServicesSetCloneMirroringMode();
 LABEL_35:
@@ -179,18 +179,18 @@ LABEL_35:
   return v11;
 }
 
-- (id)setupFigCaptureForVisionWithWindowSize:(CGSize)a3 contextIDs:(id)a4 systemCapture:(BOOL)a5
+- (id)setupFigCaptureForVisionWithWindowSize:(CGSize)size contextIDs:(id)ds systemCapture:(BOOL)capture
 {
-  v5 = a5;
-  height = a3.height;
-  width = a3.width;
-  v8 = a4;
+  captureCopy = capture;
+  height = size.height;
+  width = size.width;
+  dsCopy = ds;
   v9 = objc_alloc_init(FigScreenCaptureConfiguration);
   [v9 setSize:{width, height}];
   CMTimeMake(&v23, 1, 60);
   buf = v23;
   [v9 setMinFrameInterval:&buf];
-  if (v5)
+  if (captureCopy)
   {
     if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
@@ -221,7 +221,7 @@ LABEL_35:
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v11 = v8;
+    v11 = dsCopy;
     v12 = [v11 countByEnumeratingWithState:&v19 objects:v24 count:16];
     if (v12)
     {
@@ -246,8 +246,8 @@ LABEL_35:
       while (v13);
     }
 
-    v17 = [v10 allObjects];
-    [v9 setContentIDs:v17];
+    allObjects = [v10 allObjects];
+    [v9 setContentIDs:allObjects];
 
     BKSDisplayServicesSetCloneMirroringMode();
   }
@@ -289,10 +289,10 @@ LABEL_35:
   [(RPScreenCaptureManager *)self setSystemBroadcastHostBundleId:0];
 }
 
-- (void)screenCaptureController:(id)a3 didReceiveSampleBuffer:(opaqueCMSampleBuffer *)a4 transformFlags:(unint64_t)a5
+- (void)screenCaptureController:(id)controller didReceiveSampleBuffer:(opaqueCMSampleBuffer *)buffer transformFlags:(unint64_t)flags
 {
-  v8 = a3;
-  if (a4)
+  controllerCopy = controller;
+  if (buffer)
   {
     if (!self->super._screenCaptureDidStart)
     {
@@ -300,7 +300,7 @@ LABEL_35:
       {
         self->super._screenCaptureDidStart = 1;
         (*(self->super._didStartScreenCaptureHandler + 2))();
-        v9 = sub_100057EA8(a4);
+        v9 = sub_100057EA8(buffer);
         if (dword_1000B6840 <= 1)
         {
           v10 = *&v9;
@@ -318,7 +318,7 @@ LABEL_35:
       }
     }
 
-    ImageBuffer = CMSampleBufferGetImageBuffer(a4);
+    ImageBuffer = CMSampleBufferGetImageBuffer(buffer);
     Width = CVPixelBufferGetWidth(ImageBuffer);
     Height = CVPixelBufferGetHeight(ImageBuffer);
     if (!dword_1000B6840)
@@ -335,7 +335,7 @@ LABEL_35:
         v22 = 2048;
         v23 = v14;
         v24 = 1024;
-        v25 = a5;
+        flagsCopy = flags;
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [DEBUG] %{public}s:%d screen sampled at window size width:%zu heigth:%zu transformFlags %d", &v16, 0x2Cu);
       }
     }
@@ -343,27 +343,27 @@ LABEL_35:
     screenCaptureOutputHandler = self->super._screenCaptureOutputHandler;
     if (screenCaptureOutputHandler)
     {
-      screenCaptureOutputHandler[2](screenCaptureOutputHandler, a4, a5);
+      screenCaptureOutputHandler[2](screenCaptureOutputHandler, buffer, flags);
     }
   }
 }
 
-- (void)handleScreenCaptureFailureWithError:(id)a3
+- (void)handleScreenCaptureFailureWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   [(RPScreenCaptureManagerIOS *)self stop];
-  [(RPScreenCaptureManagerProtocol *)self->super._delegate screenCaptureDidFailWithError:v4];
+  [(RPScreenCaptureManagerProtocol *)self->super._delegate screenCaptureDidFailWithError:errorCopy];
 }
 
-- (void)screenCaptureController:(id)a3 didFailWithStatus:(int)a4
+- (void)screenCaptureController:(id)controller didFailWithStatus:(int)status
 {
-  v6 = a3;
+  controllerCopy = controller;
   if (dword_1000B6840 <= 2 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_100061458();
   }
 
-  if (a4 == -12073)
+  if (status == -12073)
   {
     v10 = -5803;
 LABEL_9:
@@ -372,7 +372,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (a4 != -1030)
+  if (status != -1030)
   {
     v10 = -5817;
     goto LABEL_9;
@@ -389,9 +389,9 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)screenCaptureControllerWasPreempted:(id)a3
+- (void)screenCaptureControllerWasPreempted:(id)preempted
 {
-  v4 = a3;
+  preemptedCopy = preempted;
   if (dword_1000B6840 <= 2 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_1000614F0();
@@ -401,9 +401,9 @@ LABEL_10:
   [(RPScreenCaptureManagerIOS *)self handleScreenCaptureFailureWithError:v5];
 }
 
-- (void)screenCaptureControllerMediaServicesWereReset:(id)a3
+- (void)screenCaptureControllerMediaServicesWereReset:(id)reset
 {
-  v4 = a3;
+  resetCopy = reset;
   if (dword_1000B6840 <= 2 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_100061580();
@@ -413,9 +413,9 @@ LABEL_10:
   [(RPScreenCaptureManagerIOS *)self handleScreenCaptureFailureWithError:v5];
 }
 
-- (void)screenCaptureControllerDidReceiveClearScreen:(id)a3
+- (void)screenCaptureControllerDidReceiveClearScreen:(id)screen
 {
-  v3 = a3;
+  screenCopy = screen;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v4 = 136446466;

@@ -3,7 +3,7 @@
 - (id)allYValues;
 - (id)maxYValue;
 - (id)minYValue;
-- (id)yValueForKey:(id)a3;
+- (id)yValueForKey:(id)key;
 @end
 
 @implementation HealthChartsSeriesChartPoint
@@ -22,7 +22,7 @@
   return result;
 }
 
-- (id)yValueForKey:(id)a3
+- (id)yValueForKey:(id)key
 {
   v3 = sub_1C3D20A84();
 

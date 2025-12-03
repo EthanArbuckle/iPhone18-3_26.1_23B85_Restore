@@ -1,9 +1,9 @@
 @interface _HKMedicalIDMedication
-- (BOOL)isEqual:(id)a3;
-- (_HKMedicalIDMedication)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_HKMedicalIDMedication)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _HKMedicalIDMedication
@@ -13,63 +13,63 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(_HKMedicalIDMedication *)self textDescription];
-  v7 = [v3 stringWithFormat:@"[%@]:%@", v5, v6];
+  textDescription = [(_HKMedicalIDMedication *)self textDescription];
+  v7 = [v3 stringWithFormat:@"[%@]:%@", v5, textDescription];
 
   return v7;
 }
 
-- (_HKMedicalIDMedication)initWithCoder:(id)a3
+- (_HKMedicalIDMedication)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(_HKMedicalIDMedication *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HKMedicalIDMedicationTextDescriptionKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HKMedicalIDMedicationTextDescriptionKey"];
     [(_HKMedicalIDMedication *)v5 setTextDescription:v6];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[_HKMedicalIDMedication allocWithZone:?]];
-  v5 = [(_HKMedicalIDMedication *)self textDescription];
-  v6 = [v5 copy];
+  textDescription = [(_HKMedicalIDMedication *)self textDescription];
+  v6 = [textDescription copy];
   [(_HKMedicalIDMedication *)v4 setTextDescription:v6];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(_HKMedicalIDMedication *)self textDescription];
-  [v4 encodeObject:v5 forKey:@"HKMedicalIDMedicationTextDescriptionKey"];
+  coderCopy = coder;
+  textDescription = [(_HKMedicalIDMedication *)self textDescription];
+  [coderCopy encodeObject:textDescription forKey:@"HKMedicalIDMedicationTextDescriptionKey"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(_HKMedicalIDMedication *)self textDescription];
-    v6 = [v4 textDescription];
-    if (v5 == v6)
+    textDescription = [(_HKMedicalIDMedication *)self textDescription];
+    textDescription2 = [equalCopy textDescription];
+    if (textDescription == textDescription2)
     {
       v10 = 1;
     }
 
     else
     {
-      v7 = [v4 textDescription];
-      if (v7)
+      textDescription3 = [equalCopy textDescription];
+      if (textDescription3)
       {
-        v8 = [(_HKMedicalIDMedication *)self textDescription];
-        v9 = [v4 textDescription];
-        v10 = [v8 isEqualToString:v9];
+        textDescription4 = [(_HKMedicalIDMedication *)self textDescription];
+        textDescription5 = [equalCopy textDescription];
+        v10 = [textDescription4 isEqualToString:textDescription5];
       }
 
       else

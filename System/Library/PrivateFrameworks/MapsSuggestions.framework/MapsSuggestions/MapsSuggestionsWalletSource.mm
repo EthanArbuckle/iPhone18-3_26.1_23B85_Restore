@@ -1,9 +1,9 @@
 @interface MapsSuggestionsWalletSource
 + (BOOL)isEnabled;
-- (MapsSuggestionsWalletSource)initWithWallet:(id)a3 delegate:(id)a4 guardian:(id)a5 name:(id)a6;
-- (double)updateSuggestionEntriesWithHandler:(id)a3;
+- (MapsSuggestionsWalletSource)initWithWallet:(id)wallet delegate:(id)delegate guardian:(id)guardian name:(id)name;
+- (double)updateSuggestionEntriesWithHandler:(id)handler;
 - (id).cxx_construct;
-- (id)initFromResourceDepot:(id)a3 name:(id)a4;
+- (id)initFromResourceDepot:(id)depot name:(id)name;
 - (void)start;
 - (void)stop;
 @end
@@ -34,17 +34,17 @@
   return BOOL;
 }
 
-- (MapsSuggestionsWalletSource)initWithWallet:(id)a3 delegate:(id)a4 guardian:(id)a5 name:(id)a6
+- (MapsSuggestionsWalletSource)initWithWallet:(id)wallet delegate:(id)delegate guardian:(id)guardian name:(id)name
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (v11)
+  walletCopy = wallet;
+  delegateCopy = delegate;
+  guardianCopy = guardian;
+  nameCopy = name;
+  if (walletCopy)
   {
     v24.receiver = self;
     v24.super_class = MapsSuggestionsWalletSource;
-    v15 = [(MapsSuggestionsWalletSource *)&v24 initWithDelegate:v12 name:v14];
+    v15 = [(MapsSuggestionsWalletSource *)&v24 initWithDelegate:delegateCopy name:nameCopy];
     if (v15)
     {
       v16 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -59,12 +59,12 @@
       name = v15->_queue._name;
       v15->_queue._name = v19;
 
-      objc_storeStrong(&v15->_wallet, a3);
-      objc_storeStrong(&v15->_guardian, a5);
+      objc_storeStrong(&v15->_wallet, wallet);
+      objc_storeStrong(&v15->_guardian, guardian);
     }
 
     self = v15;
-    v21 = self;
+    selfCopy = self;
   }
 
   else
@@ -83,17 +83,17 @@
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_FAULT, "At %{public}s:%d, %{public}s forbids: %{public}s. Requires a wallet", buf, 0x26u);
     }
 
-    v21 = 0;
+    selfCopy = 0;
   }
 
-  return v21;
+  return selfCopy;
 }
 
-- (id)initFromResourceDepot:(id)a3 name:(id)a4
+- (id)initFromResourceDepot:(id)depot name:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  depotCopy = depot;
+  nameCopy = name;
+  if (!depotCopy)
   {
     v14 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
@@ -112,9 +112,9 @@
     goto LABEL_13;
   }
 
-  v8 = [v6 oneSourceDelegate];
+  oneSourceDelegate = [depotCopy oneSourceDelegate];
 
-  if (!v8)
+  if (!oneSourceDelegate)
   {
     v14 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
@@ -133,9 +133,9 @@
     goto LABEL_13;
   }
 
-  v9 = [v6 oneNetworkRequester];
+  oneNetworkRequester = [depotCopy oneNetworkRequester];
 
-  if (!v9)
+  if (!oneNetworkRequester)
   {
     v14 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
@@ -153,19 +153,19 @@
 
 LABEL_13:
 
-    v13 = 0;
+    selfCopy = 0;
     goto LABEL_14;
   }
 
-  v10 = [[MapsSuggestionsWallet alloc] initFromResourceDepot:v6];
-  v11 = [v6 oneSourceDelegate];
-  v12 = [v6 oneAppGuardian];
-  self = [(MapsSuggestionsWalletSource *)self initWithWallet:v10 delegate:v11 guardian:v12 name:v7];
+  v10 = [[MapsSuggestionsWallet alloc] initFromResourceDepot:depotCopy];
+  oneSourceDelegate2 = [depotCopy oneSourceDelegate];
+  oneAppGuardian = [depotCopy oneAppGuardian];
+  self = [(MapsSuggestionsWalletSource *)self initWithWallet:v10 delegate:oneSourceDelegate2 guardian:oneAppGuardian name:nameCopy];
 
-  v13 = self;
+  selfCopy = self;
 LABEL_14:
 
-  return v13;
+  return selfCopy;
 }
 
 - (void)stop
@@ -179,15 +179,15 @@ LABEL_14:
   }
 }
 
-- (double)updateSuggestionEntriesWithHandler:(id)a3
+- (double)updateSuggestionEntriesWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [(MapsSuggestionsWalletSource *)self uniqueName];
+    uniqueName = [(MapsSuggestionsWalletSource *)self uniqueName];
     *buf = 138412546;
-    v32 = v6;
+    v32 = uniqueName;
     v33 = 2080;
     v34 = "updateSuggestionEntriesWithHandler";
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s BEGIN", buf, 0x16u);
@@ -207,7 +207,7 @@ LABEL_14:
     v28[1] = 3221225472;
     v28[2] = sub_100034CD8;
     v28[3] = &unk_100076038;
-    v29 = v4;
+    v29 = handlerCopy;
     sub_100007A5C(&self->_queue, self, v28);
 
 LABEL_23:
@@ -228,7 +228,7 @@ LABEL_23:
     v26[1] = 3221225472;
     v26[2] = sub_100034E88;
     v26[3] = &unk_100076038;
-    v27 = v4;
+    v27 = handlerCopy;
     sub_100007A5C(&self->_queue, self, v26);
 
     goto LABEL_23;
@@ -240,7 +240,7 @@ LABEL_23:
     v24[1] = 3221225472;
     v24[2] = sub_100035038;
     v24[3] = &unk_100076038;
-    v25 = v4;
+    v25 = handlerCopy;
     sub_100007A5C(&self->_queue, self, v24);
 
     goto LABEL_23;
@@ -252,7 +252,7 @@ LABEL_23:
   v20 = sub_1000351E8;
   v21 = &unk_100076088;
   objc_copyWeak(&v23, &location);
-  v9 = v4;
+  v9 = handlerCopy;
   v22 = v9;
   if (![(MapsSuggestionsWallet *)wallet entriesFromPassesBefore:0 handler:&v18])
   {

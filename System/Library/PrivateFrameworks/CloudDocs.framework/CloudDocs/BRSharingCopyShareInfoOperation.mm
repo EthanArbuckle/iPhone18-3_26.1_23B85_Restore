@@ -1,21 +1,21 @@
 @interface BRSharingCopyShareInfoOperation
-- (BRSharingCopyShareInfoOperation)initWithURL:(id)a3;
-- (void)finishWithResult:(id)a3 error:(id)a4;
+- (BRSharingCopyShareInfoOperation)initWithURL:(id)l;
+- (void)finishWithResult:(id)result error:(id)error;
 - (void)main;
 @end
 
 @implementation BRSharingCopyShareInfoOperation
 
-- (BRSharingCopyShareInfoOperation)initWithURL:(id)a3
+- (BRSharingCopyShareInfoOperation)initWithURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = BRSharingCopyShareInfoOperation;
   v6 = [(BROperation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_fileURL, a3);
+    objc_storeStrong(&v6->_fileURL, l);
   }
 
   return v7;
@@ -27,23 +27,23 @@
   [(BROperation *)self completedWithResult:0 error:v3];
 }
 
-- (void)finishWithResult:(id)a3 error:(id)a4
+- (void)finishWithResult:(id)result error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BRSharingCopyShareInfoOperation *)self copyShareInfoCompletionBlock];
-  if (v8)
+  resultCopy = result;
+  errorCopy = error;
+  copyShareInfoCompletionBlock = [(BRSharingCopyShareInfoOperation *)self copyShareInfoCompletionBlock];
+  if (copyShareInfoCompletionBlock)
   {
-    v9 = [v6 objectAtIndexedSubscript:0];
-    v10 = [v6 objectAtIndexedSubscript:1];
-    (v8)[2](v8, v9, v10, v7);
+    v9 = [resultCopy objectAtIndexedSubscript:0];
+    v10 = [resultCopy objectAtIndexedSubscript:1];
+    (copyShareInfoCompletionBlock)[2](copyShareInfoCompletionBlock, v9, v10, errorCopy);
 
     [(BRSharingCopyShareInfoOperation *)self setCopyShareInfoCompletionBlock:0];
   }
 
   v11.receiver = self;
   v11.super_class = BRSharingCopyShareInfoOperation;
-  [(BROperation *)&v11 finishWithResult:0 error:v7];
+  [(BROperation *)&v11 finishWithResult:0 error:errorCopy];
 }
 
 @end

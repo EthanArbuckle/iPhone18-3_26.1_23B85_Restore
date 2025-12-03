@@ -1,11 +1,11 @@
 @interface _UISTouchAuthenticationVerifier
-+ (BOOL)shouldAuthenticateServiceBundleId:(id)a3;
++ (BOOL)shouldAuthenticateServiceBundleId:(id)id;
 + (id)runOverriddenThresholds;
-+ (id)verifierForServiceBundleId:(id)a3;
-- (id)failureDescriptionForSecurityAnalysis:(uint64_t)a3 minimumOpacity:(double)a4 occlusionThreshold:(double)a5 transformGrade:;
-- (id)verifyRecord:(id)a3;
-- (uint64_t)_hostSupportsStrictTouchVerificationForRecord:(uint64_t)a1;
-- (unint64_t)transformGradeFailureReasonsForRecord:(id)a3;
++ (id)verifierForServiceBundleId:(id)id;
+- (id)failureDescriptionForSecurityAnalysis:(uint64_t)analysis minimumOpacity:(double)opacity occlusionThreshold:(double)threshold transformGrade:;
+- (id)verifyRecord:(id)record;
+- (uint64_t)_hostSupportsStrictTouchVerificationForRecord:(uint64_t)record;
+- (unint64_t)transformGradeFailureReasonsForRecord:(id)record;
 @end
 
 @implementation _UISTouchAuthenticationVerifier
@@ -36,11 +36,11 @@
   return v0;
 }
 
-+ (BOOL)shouldAuthenticateServiceBundleId:(id)a3
++ (BOOL)shouldAuthenticateServiceBundleId:(id)id
 {
-  v3 = a3;
+  idCopy = id;
   objc_opt_self();
-  v4 = [&unk_1F0A84B68 objectForKeyedSubscript:v3];
+  v4 = [&unk_1F0A84B68 objectForKeyedSubscript:idCopy];
   if (v4)
   {
     v5 = 1;
@@ -49,23 +49,23 @@
   else
   {
     v6 = +[_UISTouchAuthenticationVerifier runOverriddenThresholds];
-    v7 = [v6 objectForKeyedSubscript:v3];
+    v7 = [v6 objectForKeyedSubscript:idCopy];
     v5 = v7 != 0;
   }
 
   return v5;
 }
 
-+ (id)verifierForServiceBundleId:(id)a3
++ (id)verifierForServiceBundleId:(id)id
 {
-  v3 = a3;
-  v4 = [verifierForServiceBundleId__verifiersByServiceBundleId objectForKeyedSubscript:v3];
+  idCopy = id;
+  v4 = [verifierForServiceBundleId__verifiersByServiceBundleId objectForKeyedSubscript:idCopy];
   if (!v4)
   {
     objc_opt_self();
-    v5 = [&unk_1F0A84B68 objectForKeyedSubscript:v3];
+    v5 = [&unk_1F0A84B68 objectForKeyedSubscript:idCopy];
     v6 = +[_UISTouchAuthenticationVerifier runOverriddenThresholds];
-    v7 = [v6 objectForKeyedSubscript:v3];
+    v7 = [v6 objectForKeyedSubscript:idCopy];
 
     v4 = [_UISTouchAuthenticationVerifier alloc];
     v8 = v5;
@@ -156,8 +156,8 @@
     {
       v36 = MEMORY[0x1E695DF90];
       objc_opt_self();
-      v37 = [&unk_1F0A84B68 allKeys];
-      v38 = [v36 sharedKeySetForKeys:v37];
+      allKeys = [&unk_1F0A84B68 allKeys];
+      v38 = [v36 sharedKeySetForKeys:allKeys];
       v39 = [v36 dictionaryWithSharedKeySet:v38];
       v40 = verifierForServiceBundleId__verifiersByServiceBundleId;
       verifierForServiceBundleId__verifiersByServiceBundleId = v39;
@@ -165,51 +165,51 @@
       v35 = verifierForServiceBundleId__verifiersByServiceBundleId;
     }
 
-    [v35 setObject:v4 forKeyedSubscript:{v3, v42, v43, v44, v45, v46}];
+    [v35 setObject:v4 forKeyedSubscript:{idCopy, v42, v43, v44, v45, v46}];
   }
 
   return v4;
 }
 
-- (uint64_t)_hostSupportsStrictTouchVerificationForRecord:(uint64_t)a1
+- (uint64_t)_hostSupportsStrictTouchVerificationForRecord:(uint64_t)record
 {
   v3 = a2;
-  if (!a1)
+  if (!record)
   {
     v7 = 0;
     goto LABEL_16;
   }
 
-  v4 = [*(a1 + 8) objectForKeyedSubscript:@"hostsForLenientTouchAuthentication"];
+  v4 = [*(record + 8) objectForKeyedSubscript:@"hostsForLenientTouchAuthentication"];
   if (!v4)
   {
     goto LABEL_7;
   }
 
-  v5 = [v3 hostBundleId];
-  if (([v4 containsObject:v5] & 1) == 0)
+  hostBundleId = [v3 hostBundleId];
+  if (([v4 containsObject:hostBundleId] & 1) == 0)
   {
 
 LABEL_7:
-    v8 = [v3 hostSDKVersion];
-    v9 = [*(a1 + 8) objectForKeyedSubscript:@"SDKVersionForStrictTouchAuthentication"];
-    if ([v8 length] && objc_msgSend(v9, "length"))
+    hostSDKVersion = [v3 hostSDKVersion];
+    v9 = [*(record + 8) objectForKeyedSubscript:@"SDKVersionForStrictTouchAuthentication"];
+    if ([hostSDKVersion length] && objc_msgSend(v9, "length"))
     {
-      v10 = [MEMORY[0x1E6963608] defaultWorkspace];
-      v7 = [v10 isVersion:v8 greaterThanOrEqualToVersion:v9];
+      defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
+      v7 = [defaultWorkspace isVersion:hostSDKVersion greaterThanOrEqualToVersion:v9];
     }
 
     else
     {
-      v7 = ![v8 length] && objc_msgSend(v9, "length");
+      v7 = ![hostSDKVersion length] && objc_msgSend(v9, "length");
     }
 
     goto LABEL_15;
   }
 
-  v6 = [v3 hostIsInternal];
+  hostIsInternal = [v3 hostIsInternal];
 
-  if ((v6 & 1) == 0)
+  if ((hostIsInternal & 1) == 0)
   {
     goto LABEL_7;
   }
@@ -221,10 +221,10 @@ LABEL_16:
   return v7;
 }
 
-- (unint64_t)transformGradeFailureReasonsForRecord:(id)a3
+- (unint64_t)transformGradeFailureReasonsForRecord:(id)record
 {
-  v4 = a3;
-  v5 = [(_UISTouchAuthenticationVerifier *)self _hostSupportsStrictTouchVerificationForRecord:v4];
+  recordCopy = record;
+  v5 = [(_UISTouchAuthenticationVerifier *)self _hostSupportsStrictTouchVerificationForRecord:recordCopy];
   v6 = 16;
   if (v5)
   {
@@ -232,11 +232,11 @@ LABEL_16:
   }
 
   v7 = *(&self->super.isa + v6);
-  v8 = [v4 securityAnalysis];
+  securityAnalysis = [recordCopy securityAnalysis];
 
-  if (v8)
+  if (securityAnalysis)
   {
-    [v8 cumulativeLayerTransform];
+    [securityAnalysis cumulativeLayerTransform];
   }
 
   else
@@ -249,10 +249,10 @@ LABEL_16:
   return v9;
 }
 
-- (id)failureDescriptionForSecurityAnalysis:(uint64_t)a3 minimumOpacity:(double)a4 occlusionThreshold:(double)a5 transformGrade:
+- (id)failureDescriptionForSecurityAnalysis:(uint64_t)analysis minimumOpacity:(double)opacity occlusionThreshold:(double)threshold transformGrade:
 {
   v9 = a2;
-  if (!a1 || !os_variant_allows_internal_security_policies())
+  if (!self || !os_variant_allows_internal_security_policies())
   {
     v10 = 0;
     goto LABEL_4;
@@ -267,11 +267,11 @@ LABEL_16:
   }
 
   [v9 cumulativeOpacity];
-  if (v13 < a4)
+  if (v13 < opacity)
   {
     v14 = MEMORY[0x1E696AEC0];
     [v9 cumulativeOpacity];
-    v16 = [v14 stringWithFormat:@" < computed opacity %.2f%% less than %.2f%% threshold >", (v15 * 100.0), a4 * 100.0];
+    v16 = [v14 stringWithFormat:@" < computed opacity %.2f%% less than %.2f%% threshold >", (v15 * 100.0), opacity * 100.0];
     [v10 appendString:v16];
   }
 
@@ -281,7 +281,7 @@ LABEL_16:
     [v10 appendString:v17];
   }
 
-  if (a3)
+  if (analysis)
   {
     memset(&v32, 0, sizeof(v32));
     [v9 cumulativeLayerTransform];
@@ -289,13 +289,13 @@ LABEL_16:
     CGAffineTransformDecompose(&v32, &transform);
     v18 = objc_opt_new();
     v19 = v18;
-    if (a3)
+    if (analysis)
     {
       [v18 appendString:@" non-finite"];
-      if ((a3 & 2) == 0)
+      if ((analysis & 2) == 0)
       {
 LABEL_15:
-        if ((a3 & 4) == 0)
+        if ((analysis & 4) == 0)
         {
           goto LABEL_16;
         }
@@ -304,16 +304,16 @@ LABEL_15:
       }
     }
 
-    else if ((a3 & 2) == 0)
+    else if ((analysis & 2) == 0)
     {
       goto LABEL_15;
     }
 
     [v19 appendString:@" non-affine"];
-    if ((a3 & 4) == 0)
+    if ((analysis & 4) == 0)
     {
 LABEL_16:
-      if ((a3 & 8) == 0)
+      if ((analysis & 8) == 0)
       {
         goto LABEL_17;
       }
@@ -325,12 +325,12 @@ LABEL_30:
     v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@" invalid-rotation[%.2f]", *&v32.rotation];
     [v19 appendString:v26];
 
-    if ((a3 & 8) == 0)
+    if ((analysis & 8) == 0)
     {
 LABEL_17:
-      if ((a3 & 0x10) == 0)
+      if ((analysis & 0x10) == 0)
       {
-        if ((a3 & 0x20) == 0)
+        if ((analysis & 0x20) == 0)
         {
           goto LABEL_19;
         }
@@ -344,10 +344,10 @@ LABEL_33:
       v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@" scale[width=%.2f, height=%.2f]", *&v32.scale.width, *&v32.scale.height];
       [v19 appendString:v27];
 
-      if ((a3 & 0x20) == 0)
+      if ((analysis & 0x20) == 0)
       {
 LABEL_19:
-        if ((a3 & 0x40) == 0)
+        if ((analysis & 0x40) == 0)
         {
           goto LABEL_20;
         }
@@ -359,10 +359,10 @@ LABEL_34:
       v28 = [MEMORY[0x1E696AEC0] stringWithFormat:@" invalid-shear[%.2f]", *&v32.horizontalShear];
       [v19 appendString:v28];
 
-      if ((a3 & 0x40) == 0)
+      if ((analysis & 0x40) == 0)
       {
 LABEL_20:
-        if ((a3 & 0x80) == 0)
+        if ((analysis & 0x80) == 0)
         {
 LABEL_22:
           v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@" < failed transforms: %@ >", v19];
@@ -380,7 +380,7 @@ LABEL_35:
       v29 = [MEMORY[0x1E696AEC0] stringWithFormat:@" invalid-translation[dx=%.2f, dy=%.2f]", *&v32.translation.dx, *&v32.translation.dy];
       [v19 appendString:v29];
 
-      if ((a3 & 0x80) == 0)
+      if ((analysis & 0x80) == 0)
       {
         goto LABEL_22;
       }
@@ -390,7 +390,7 @@ LABEL_35:
 
 LABEL_31:
     [v19 appendString:@" scale.not-uniform"];
-    if ((a3 & 0x10) == 0)
+    if ((analysis & 0x10) == 0)
     {
       goto LABEL_33;
     }
@@ -400,18 +400,18 @@ LABEL_31:
 
 LABEL_23:
   [v9 occlusionPercentage];
-  if (v21 >= a5)
+  if (v21 >= threshold)
   {
     v22 = MEMORY[0x1E696AEC0];
     [v9 occlusionPercentage];
-    v24 = [v22 stringWithFormat:@" < occlusion %.2f%% greater than %.2f%% threshold >", (v23 * 100.0), a5 * 100.0];
+    v24 = [v22 stringWithFormat:@" < occlusion %.2f%% greater than %.2f%% threshold >", (v23 * 100.0), threshold * 100.0];
     [v10 appendString:v24];
   }
 
   if (![v10 length])
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:sel_failureDescriptionForSecurityAnalysis_minimumOpacity_occlusionThreshold_transformGrade_ object:a1 file:@"_UISTouchAuthenticationVerifier.m" lineNumber:460 description:@"touch failed authentication but we were unable to describe why"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:sel_failureDescriptionForSecurityAnalysis_minimumOpacity_occlusionThreshold_transformGrade_ object:self file:@"_UISTouchAuthenticationVerifier.m" lineNumber:460 description:@"touch failed authentication but we were unable to describe why"];
   }
 
 LABEL_4:
@@ -419,10 +419,10 @@ LABEL_4:
   return v10;
 }
 
-- (id)verifyRecord:(id)a3
+- (id)verifyRecord:(id)record
 {
-  v4 = a3;
-  v5 = [(_UISTouchAuthenticationVerifier *)self _hostSupportsStrictTouchVerificationForRecord:v4];
+  recordCopy = record;
+  v5 = [(_UISTouchAuthenticationVerifier *)self _hostSupportsStrictTouchVerificationForRecord:recordCopy];
   if (v5)
   {
     v6 = @"minimumOpacityStrict";
@@ -451,14 +451,14 @@ LABEL_4:
   [v11 doubleValue];
   v13 = v12;
 
-  v14 = [v4 securityAnalysis];
-  v15 = [(_UISTouchAuthenticationVerifier *)self transformGradeFailureReasonsForRecord:v4];
+  securityAnalysis = [recordCopy securityAnalysis];
+  v15 = [(_UISTouchAuthenticationVerifier *)self transformGradeFailureReasonsForRecord:recordCopy];
 
-  if (!v14 || ([v14 cumulativeOpacity], v10 >= v16) || (objc_msgSend(v14, "hasInsecureFilter") & 1) != 0 || v15 || (objc_msgSend(v14, "occlusionPercentage"), v13 <= v17))
+  if (!securityAnalysis || ([securityAnalysis cumulativeOpacity], v10 >= v16) || (objc_msgSend(securityAnalysis, "hasInsecureFilter") & 1) != 0 || v15 || (objc_msgSend(securityAnalysis, "occlusionPercentage"), v13 <= v17))
   {
     if (os_variant_allows_internal_security_policies())
     {
-      v18 = [(_UISTouchAuthenticationVerifier *)self failureDescriptionForSecurityAnalysis:v14 minimumOpacity:v15 occlusionThreshold:v10 transformGrade:v13];
+      v18 = [(_UISTouchAuthenticationVerifier *)self failureDescriptionForSecurityAnalysis:securityAnalysis minimumOpacity:v15 occlusionThreshold:v10 transformGrade:v13];
       v19 = 0;
     }
 

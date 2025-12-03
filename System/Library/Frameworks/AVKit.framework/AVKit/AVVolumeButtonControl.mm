@@ -1,11 +1,11 @@
 @interface AVVolumeButtonControl
-- (AVVolumeButtonControl)initWithFrame:(CGRect)a3;
-- (BOOL)avkit_shouldPreventExternalGestureRecognizerAtPoint:(CGPoint)a3;
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (AVVolumeButtonControl)initWithFrame:(CGRect)frame;
+- (BOOL)avkit_shouldPreventExternalGestureRecognizerAtPoint:(CGPoint)point;
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event;
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (BOOL)isCollapsedOrExcluded;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGPoint)cumulativeTranslationSincePanningBegan;
 - (CGPoint)initialPreciseLocationOfTouch;
 - (CGPoint)locationOfTouchInWindow;
@@ -19,22 +19,22 @@
 - (UIViewPropertyAnimator)highlightAnimator;
 - (id)imageNameForMicaPackageState;
 - (void)_updateLayoutItem;
-- (void)_updateMicaPackage:(id)a3;
-- (void)cancelTrackingWithEvent:(id)a3;
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (void)_updateMicaPackage:(id)package;
+- (void)cancelTrackingWithEvent:(id)event;
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event;
 - (void)layoutAttributesDidChange;
 - (void)layoutSubviews;
-- (void)setBounds:(CGRect)a3;
-- (void)setCollapsed:(BOOL)a3;
-- (void)setExtrinsicContentSize:(CGSize)a3;
-- (void)setHasFullScreenAppearance:(BOOL)a3;
-- (void)setIncluded:(BOOL)a3;
-- (void)setMicaPackage:(id)a3;
-- (void)setMicaPackageStateName:(id)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setCollapsed:(BOOL)collapsed;
+- (void)setExtrinsicContentSize:(CGSize)size;
+- (void)setHasFullScreenAppearance:(BOOL)appearance;
+- (void)setIncluded:(BOOL)included;
+- (void)setMicaPackage:(id)package;
+- (void)setMicaPackageStateName:(id)name;
 - (void)setNeedsUpdateGlyphRenderingMode;
-- (void)setRemoved:(BOOL)a3;
-- (void)setShowsHighlightedAppearance:(BOOL)a3;
-- (void)setTrackingState:(int64_t)a3;
+- (void)setRemoved:(BOOL)removed;
+- (void)setShowsHighlightedAppearance:(BOOL)appearance;
+- (void)setTrackingState:(int64_t)state;
 - (void)triggerSelectionChangedFeedback;
 @end
 
@@ -114,11 +114,11 @@
 
 - (void)_updateLayoutItem
 {
-  v3 = [(AVVolumeButtonControl *)self layoutAttributes];
+  layoutAttributes = [(AVVolumeButtonControl *)self layoutAttributes];
   [(AVVolumeButtonControl *)self intrinsicContentSize];
-  [v3 setMinimumSize:?];
+  [layoutAttributes setMinimumSize:?];
 
-  v4 = [(AVVolumeButtonControl *)self layoutAttributes];
+  layoutAttributes2 = [(AVVolumeButtonControl *)self layoutAttributes];
   if ([(AVVolumeButtonControl *)self isIncluded])
   {
     v5 = [(AVVolumeButtonControl *)self isRemoved]^ 1;
@@ -129,35 +129,35 @@
     v5 = 0;
   }
 
-  [v4 setIncluded:v5];
+  [layoutAttributes2 setIncluded:v5];
 
-  v6 = [(AVVolumeButtonControl *)self layoutAttributes];
-  [v6 setCollapsed:{-[AVVolumeButtonControl isCollapsed](self, "isCollapsed")}];
+  layoutAttributes3 = [(AVVolumeButtonControl *)self layoutAttributes];
+  [layoutAttributes3 setCollapsed:{-[AVVolumeButtonControl isCollapsed](self, "isCollapsed")}];
 }
 
-- (void)_updateMicaPackage:(id)a3
+- (void)_updateMicaPackage:(id)package
 {
-  v4 = a3;
-  if (v4 && ![(AVVolumeButtonControl *)self hasFullScreenAppearance])
+  packageCopy = package;
+  if (packageCopy && ![(AVVolumeButtonControl *)self hasFullScreenAppearance])
   {
-    v41 = [(UIView *)self avkit_isBeingScrolled];
-    v42 = [(AVVolumeButtonControl *)self micaPackageStateName];
-    [v4 setState:v42 color:0];
+    avkit_isBeingScrolled = [(UIView *)self avkit_isBeingScrolled];
+    micaPackageStateName = [(AVVolumeButtonControl *)self micaPackageStateName];
+    [packageCopy setState:micaPackageStateName color:0];
 
-    if (v41)
+    if (avkit_isBeingScrolled)
     {
       objc_initWeak(&location, self);
-      v43 = [(AVVolumeButtonControl *)self imageNameForMicaPackageState];
+      imageNameForMicaPackageState = [(AVVolumeButtonControl *)self imageNameForMicaPackageState];
       v44 = MEMORY[0x1E69DCAB8];
-      v45 = [(AVVolumeButtonControl *)self imageNameForMicaPackageState];
+      imageNameForMicaPackageState2 = [(AVVolumeButtonControl *)self imageNameForMicaPackageState];
       v47[0] = MEMORY[0x1E69E9820];
       v47[1] = 3221225472;
       v47[2] = __44__AVVolumeButtonControl__updateMicaPackage___block_invoke;
       v47[3] = &unk_1E7209D60;
       objc_copyWeak(&v49, &location);
-      v46 = v43;
+      v46 = imageNameForMicaPackageState;
       v48 = v46;
-      [v44 avkit_imageNamed:v45 completion:v47];
+      [v44 avkit_imageNamed:imageNameForMicaPackageState2 completion:v47];
 
       objc_destroyWeak(&v49);
       objc_destroyWeak(&location);
@@ -167,47 +167,47 @@
 
   else
   {
-    v5 = [(AVVolumeButtonControl *)self micaPackageStateName];
-    [v4 setState:v5 color:0];
+    micaPackageStateName2 = [(AVVolumeButtonControl *)self micaPackageStateName];
+    [packageCopy setState:micaPackageStateName2 color:0];
   }
 
-  v6 = [v4 rootLayer];
-  v7 = [v6 superlayer];
-  v8 = [(AVVolumeButtonControl *)self micaPackageContainerView];
-  v9 = [v8 layer];
+  rootLayer = [packageCopy rootLayer];
+  superlayer = [rootLayer superlayer];
+  micaPackageContainerView = [(AVVolumeButtonControl *)self micaPackageContainerView];
+  layer = [micaPackageContainerView layer];
 
-  if (v7 != v9)
+  if (superlayer != layer)
   {
     [MEMORY[0x1E6979518] begin];
     [MEMORY[0x1E6979518] setDisableActions:1];
-    v10 = [(AVVolumeButtonControl *)self micaPackageContainerView];
-    [(AVVolumeButtonControl *)self addSubview:v10];
+    micaPackageContainerView2 = [(AVVolumeButtonControl *)self micaPackageContainerView];
+    [(AVVolumeButtonControl *)self addSubview:micaPackageContainerView2];
 
-    v11 = [(AVVolumeButtonControl *)self layer];
-    [v11 setCompositingFilter:0];
+    layer2 = [(AVVolumeButtonControl *)self layer];
+    [layer2 setCompositingFilter:0];
 
-    v12 = [(AVVolumeButtonControl *)self micaPackageContainerView];
-    v13 = [v12 layer];
-    [v13 setCompositingFilter:0];
+    micaPackageContainerView3 = [(AVVolumeButtonControl *)self micaPackageContainerView];
+    layer3 = [micaPackageContainerView3 layer];
+    [layer3 setCompositingFilter:0];
 
-    v14 = [(AVVolumeButtonControl *)self micaPackageContainerView];
-    v15 = [v14 layer];
-    v16 = [v4 rootLayer];
-    [v15 addSublayer:v16];
+    micaPackageContainerView4 = [(AVVolumeButtonControl *)self micaPackageContainerView];
+    layer4 = [micaPackageContainerView4 layer];
+    rootLayer2 = [packageCopy rootLayer];
+    [layer4 addSublayer:rootLayer2];
 
     [MEMORY[0x1E6979518] commit];
   }
 
   v17 = +[AVKitGlobalSettings shared];
-  v18 = [v17 thirdGenerationControlsEnabled];
+  thirdGenerationControlsEnabled = [v17 thirdGenerationControlsEnabled];
 
-  v19 = [MEMORY[0x1E69DCEB0] avkit_mainScreen];
-  v20 = [v19 traitCollection];
-  if ([v20 userInterfaceIdiom] == 1)
+  avkit_mainScreen = [MEMORY[0x1E69DCEB0] avkit_mainScreen];
+  traitCollection = [avkit_mainScreen traitCollection];
+  if ([traitCollection userInterfaceIdiom] == 1)
   {
-    v21 = [(AVVolumeButtonControl *)self volumeControllerType];
+    volumeControllerType = [(AVVolumeButtonControl *)self volumeControllerType];
 
-    if (v21 == 1)
+    if (volumeControllerType == 1)
     {
       v22 = 1.2;
     }
@@ -224,36 +224,36 @@
     v22 = 1.0;
   }
 
-  v23 = [MEMORY[0x1E69DCEB0] avkit_mainScreen];
-  v24 = [v23 traitCollection];
-  v25 = [v24 userInterfaceIdiom] == 5;
+  avkit_mainScreen2 = [MEMORY[0x1E69DCEB0] avkit_mainScreen];
+  traitCollection2 = [avkit_mainScreen2 traitCollection];
+  v25 = [traitCollection2 userInterfaceIdiom] == 5;
 
-  v26 = [(AVVolumeButtonControl *)self hasFullScreenAppearance];
+  hasFullScreenAppearance = [(AVVolumeButtonControl *)self hasFullScreenAppearance];
   v27 = 20.0;
-  if (v26)
+  if (hasFullScreenAppearance)
   {
     v27 = 24.0;
   }
 
   v28 = v22 * v27;
   v29 = 16.17;
-  if (v26)
+  if (hasFullScreenAppearance)
   {
     v29 = 17.71;
   }
 
-  if ((v25 & v18) != 0)
+  if ((v25 & thirdGenerationControlsEnabled) != 0)
   {
     v28 = v29;
   }
 
-  [v4 setTargetSize:{v28, v28}];
+  [packageCopy setTargetSize:{v28, v28}];
   [(AVVolumeButtonControl *)self bounds];
   UIRectGetCenter();
   v31 = v30;
   v33 = v32;
-  v34 = [v4 rootLayer];
-  [v34 position];
+  rootLayer3 = [packageCopy rootLayer];
+  [rootLayer3 position];
   v36 = v35;
   v38 = v37;
 
@@ -261,16 +261,16 @@
   {
     [MEMORY[0x1E6979518] begin];
     [MEMORY[0x1E6979518] setDisableActions:1];
-    v39 = [v4 rootLayer];
+    rootLayer4 = [packageCopy rootLayer];
     [(AVVolumeButtonControl *)self bounds];
     UIRectGetCenter();
-    [v39 setPosition:?];
+    [rootLayer4 setPosition:?];
 
     [MEMORY[0x1E6979518] commit];
   }
 
-  v40 = [(AVVolumeButtonControl *)self imageView];
-  [v40 removeFromSuperview];
+  imageView = [(AVVolumeButtonControl *)self imageView];
+  [imageView removeFromSuperview];
 
 LABEL_21:
 }
@@ -334,8 +334,8 @@ void __44__AVVolumeButtonControl__updateMicaPackage___block_invoke(uint64_t a1, 
 
 - (void)layoutAttributesDidChange
 {
-  v3 = [(AVVolumeButtonControl *)self layoutAttributes];
-  -[AVVolumeButtonControl setCollapsed:](self, "setCollapsed:", [v3 isCollapsed]);
+  layoutAttributes = [(AVVolumeButtonControl *)self layoutAttributes];
+  -[AVVolumeButtonControl setCollapsed:](self, "setCollapsed:", [layoutAttributes isCollapsed]);
 }
 
 - (CGSize)intrinsicContentSize
@@ -366,10 +366,10 @@ void __44__AVVolumeButtonControl__updateMicaPackage___block_invoke(uint64_t a1, 
   return result;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(AVVolumeButtonControl *)self hitRect];
   v10 = x;
   v11 = y;
@@ -412,48 +412,48 @@ void __44__AVVolumeButtonControl__updateMicaPackage___block_invoke(uint64_t a1, 
   return result;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   v5.receiver = self;
   v5.super_class = AVVolumeButtonControl;
-  [(AVVolumeButtonControl *)&v5 setBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
-  v4 = [(AVVolumeButtonControl *)self micaPackage];
-  [(AVVolumeButtonControl *)self _updateMicaPackage:v4];
+  [(AVVolumeButtonControl *)&v5 setBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
+  micaPackage = [(AVVolumeButtonControl *)self micaPackage];
+  [(AVVolumeButtonControl *)self _updateMicaPackage:micaPackage];
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = [a3 view];
-  LOBYTE(self) = [v4 isDescendantOfView:self];
+  view = [begin view];
+  LOBYTE(self) = [view isDescendantOfView:self];
 
   return self;
 }
 
-- (void)cancelTrackingWithEvent:(id)a3
+- (void)cancelTrackingWithEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = AVVolumeButtonControl;
-  [(AVVolumeButtonControl *)&v5 cancelTrackingWithEvent:a3];
-  v4 = [(AVVolumeButtonControl *)self longPressTimer];
-  [v4 invalidate];
+  [(AVVolumeButtonControl *)&v5 cancelTrackingWithEvent:event];
+  longPressTimer = [(AVVolumeButtonControl *)self longPressTimer];
+  [longPressTimer invalidate];
 
   [(AVVolumeButtonControl *)self setTrackingState:0];
 }
 
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  touchCopy = touch;
+  eventCopy = event;
   v9.receiver = self;
   v9.super_class = AVVolumeButtonControl;
-  [(AVVolumeButtonControl *)&v9 endTrackingWithTouch:v6 withEvent:v7];
-  v8 = [(AVVolumeButtonControl *)self longPressTimer];
-  [v8 invalidate];
+  [(AVVolumeButtonControl *)&v9 endTrackingWithTouch:touchCopy withEvent:eventCopy];
+  longPressTimer = [(AVVolumeButtonControl *)self longPressTimer];
+  [longPressTimer invalidate];
 
   if ([(AVVolumeButtonControl *)self trackingState]== 1)
   {
-    [v6 locationInView:self];
-    if ([(AVVolumeButtonControl *)self pointInside:v7 withEvent:?])
+    [touchCopy locationInView:self];
+    if ([(AVVolumeButtonControl *)self pointInside:eventCopy withEvent:?])
     {
       [(AVVolumeButtonControl *)self setTrackingState:2];
     }
@@ -462,17 +462,17 @@ void __44__AVVolumeButtonControl__updateMicaPackage___block_invoke(uint64_t a1, 
   [(AVVolumeButtonControl *)self setTrackingState:0];
 }
 
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v6 = a3;
+  touchCopy = touch;
   v39.receiver = self;
   v39.super_class = AVVolumeButtonControl;
-  v7 = [(AVVolumeButtonControl *)&v39 continueTrackingWithTouch:v6 withEvent:a4];
+  v7 = [(AVVolumeButtonControl *)&v39 continueTrackingWithTouch:touchCopy withEvent:event];
   if (v7)
   {
     if ([(AVVolumeButtonControl *)self trackingState]== 1)
     {
-      if (-[AVVolumeButtonControl isLongPressEnabled](self, "isLongPressEnabled") && ([v6 force], v8 > 3.0))
+      if (-[AVVolumeButtonControl isLongPressEnabled](self, "isLongPressEnabled") && ([touchCopy force], v8 > 3.0))
       {
         [(AVVolumeButtonControl *)self setTrackingState:3];
       }
@@ -484,7 +484,7 @@ void __44__AVVolumeButtonControl__updateMicaPackage___block_invoke(uint64_t a1, 
         v12 = v11;
         v14 = v13;
         v16 = v15;
-        [v6 locationInView:self];
+        [touchCopy locationInView:self];
         v40.x = v17;
         v40.y = v18;
         v41.origin.x = v10;
@@ -495,7 +495,7 @@ void __44__AVVolumeButtonControl__updateMicaPackage___block_invoke(uint64_t a1, 
       }
     }
 
-    [v6 preciseLocationInView:self];
+    [touchCopy preciseLocationInView:self];
     v20 = v19;
     [(AVVolumeButtonControl *)self initialPreciseLocationOfTouch];
     v22 = v20 - v21;
@@ -506,13 +506,13 @@ void __44__AVVolumeButtonControl__updateMicaPackage___block_invoke(uint64_t a1, 
 
     if (v22 > 15.0 || [(AVVolumeButtonControl *)self trackingState]== 4)
     {
-      v23 = [(AVVolumeButtonControl *)self trackingState];
-      if (v23 == 4)
+      trackingState = [(AVVolumeButtonControl *)self trackingState];
+      if (trackingState == 4)
       {
-        [v6 preciseLocationInView:self];
+        [touchCopy preciseLocationInView:self];
         v25 = v24;
         v27 = v26;
-        [v6 precisePreviousLocationInView:self];
+        [touchCopy precisePreviousLocationInView:self];
         [(AVVolumeButtonControl *)self setTranslationOfPanFromPreviousTouch:v25 - v28, v27 - v29];
         [(AVVolumeButtonControl *)self cumulativeTranslationSincePanningBegan];
         v31 = v30;
@@ -535,14 +535,14 @@ void __44__AVVolumeButtonControl__updateMicaPackage___block_invoke(uint64_t a1, 
         }
 
         [(AVVolumeButtonControl *)self setCumulativeTranslationSincePanningBegan:v31 + v35, v33 + v36];
-        v37 = [(AVVolumeButtonControl *)self window];
-        [v6 preciseLocationInView:v37];
+        window = [(AVVolumeButtonControl *)self window];
+        [touchCopy preciseLocationInView:window];
         [(AVVolumeButtonControl *)self setLocationOfTouchInWindow:?];
 
         [(AVVolumeButtonControl *)self sendActionsForControlEvents:0x2000000];
       }
 
-      else if (v23 == 3 || v23 == 1)
+      else if (trackingState == 3 || trackingState == 1)
       {
         [(AVVolumeButtonControl *)self setTrackingState:4];
       }
@@ -552,13 +552,13 @@ void __44__AVVolumeButtonControl__updateMicaPackage___block_invoke(uint64_t a1, 
   return v7;
 }
 
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  touchCopy = touch;
+  eventCopy = event;
   v19.receiver = self;
   v19.super_class = AVVolumeButtonControl;
-  v8 = [(AVVolumeButtonControl *)&v19 beginTrackingWithTouch:v6 withEvent:v7];
+  v8 = [(AVVolumeButtonControl *)&v19 beginTrackingWithTouch:touchCopy withEvent:eventCopy];
   if (v8)
   {
     if ([(AVVolumeButtonControl *)self isLongPressEnabled])
@@ -572,15 +572,15 @@ void __44__AVVolumeButtonControl__updateMicaPackage___block_invoke(uint64_t a1, 
       objc_copyWeak(&v17, &location);
       v10 = [v9 scheduledTimerWithTimeInterval:0 repeats:&v13 block:0.5];
       [(AVVolumeButtonControl *)self setLongPressTimer:v10, v13, v14, v15, v16];
-      v11 = [(AVVolumeButtonControl *)self longPressTimer];
-      [v11 setTolerance:0.05];
+      longPressTimer = [(AVVolumeButtonControl *)self longPressTimer];
+      [longPressTimer setTolerance:0.05];
 
       objc_destroyWeak(&v17);
       objc_destroyWeak(&location);
     }
 
     [(AVVolumeButtonControl *)self setTrackingState:1];
-    [v6 preciseLocationInView:self];
+    [touchCopy preciseLocationInView:self];
     [(AVVolumeButtonControl *)self setInitialPreciseLocationOfTouch:?];
   }
 
@@ -604,11 +604,11 @@ void __58__AVVolumeButtonControl_beginTrackingWithTouch_withEvent___block_invoke
   v10.receiver = self;
   v10.super_class = AVVolumeButtonControl;
   [(AVVolumeButtonControl *)&v10 layoutSubviews];
-  v3 = [(AVVolumeButtonControl *)self micaPackageContainerView];
-  v4 = v3;
-  if (v3)
+  micaPackageContainerView = [(AVVolumeButtonControl *)self micaPackageContainerView];
+  v4 = micaPackageContainerView;
+  if (micaPackageContainerView)
   {
-    [v3 transform];
+    [micaPackageContainerView transform];
   }
 
   else
@@ -620,26 +620,26 @@ void __58__AVVolumeButtonControl_beginTrackingWithTouch_withEvent___block_invoke
 
   if (IsIdentity)
   {
-    v6 = [(AVVolumeButtonControl *)self micaPackageContainerView];
+    micaPackageContainerView2 = [(AVVolumeButtonControl *)self micaPackageContainerView];
     [(AVVolumeButtonControl *)self bounds];
-    [v6 setFrame:?];
+    [micaPackageContainerView2 setFrame:?];
 
     [MEMORY[0x1E6979518] begin];
     [MEMORY[0x1E6979518] setDisableActions:1];
-    v7 = [(AVVolumeButtonControl *)self micaPackage];
-    v8 = [v7 rootLayer];
+    micaPackage = [(AVVolumeButtonControl *)self micaPackage];
+    rootLayer = [micaPackage rootLayer];
     [(AVVolumeButtonControl *)self bounds];
     UIRectGetCenter();
-    [v8 setPosition:?];
+    [rootLayer setPosition:?];
 
     [MEMORY[0x1E6979518] commit];
   }
 }
 
-- (BOOL)avkit_shouldPreventExternalGestureRecognizerAtPoint:(CGPoint)a3
+- (BOOL)avkit_shouldPreventExternalGestureRecognizerAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(AVVolumeButtonControl *)self hitRect];
   v9 = x;
   v10 = y;
@@ -655,11 +655,11 @@ void __58__AVVolumeButtonControl_beginTrackingWithTouch_withEvent___block_invoke
   }
 
   v3 = imageNameForMicaPackageState_imageNamesForStates;
-  v4 = [(AVVolumeButtonControl *)self micaPackageStateName];
-  v5 = v4;
-  if (v4)
+  micaPackageStateName = [(AVVolumeButtonControl *)self micaPackageStateName];
+  v5 = micaPackageStateName;
+  if (micaPackageStateName)
   {
-    v6 = v4;
+    v6 = micaPackageStateName;
   }
 
   else
@@ -692,22 +692,22 @@ void __53__AVVolumeButtonControl_imageNameForMicaPackageState__block_invoke()
 
 - (void)setNeedsUpdateGlyphRenderingMode
 {
-  v3 = [(AVVolumeButtonControl *)self micaPackage];
-  [(AVVolumeButtonControl *)self _updateMicaPackage:v3];
+  micaPackage = [(AVVolumeButtonControl *)self micaPackage];
+  [(AVVolumeButtonControl *)self _updateMicaPackage:micaPackage];
 }
 
-- (void)setTrackingState:(int64_t)a3
+- (void)setTrackingState:(int64_t)state
 {
   trackingState = self->_trackingState;
-  if (trackingState == a3)
+  if (trackingState == state)
   {
     return;
   }
 
-  self->_trackingState = a3;
-  if (a3 <= 1)
+  self->_trackingState = state;
+  if (state <= 1)
   {
-    if (!a3)
+    if (!state)
     {
       if (trackingState == 4)
       {
@@ -725,16 +725,16 @@ LABEL_21:
       return;
     }
 
-    if (a3 == 1)
+    if (state == 1)
     {
-      v8 = [(AVVolumeButtonControl *)self feedbackGenerator];
-      [v8 prepare];
+      feedbackGenerator = [(AVVolumeButtonControl *)self feedbackGenerator];
+      [feedbackGenerator prepare];
     }
   }
 
   else
   {
-    switch(a3)
+    switch(state)
     {
       case 2:
         v5 = 0x400000;
@@ -753,19 +753,19 @@ LABEL_21:
   }
 }
 
-- (void)setShowsHighlightedAppearance:(BOOL)a3
+- (void)setShowsHighlightedAppearance:(BOOL)appearance
 {
-  if ([(AVVolumeButtonControl *)self showsHighlightedAppearance]!= a3)
+  if ([(AVVolumeButtonControl *)self showsHighlightedAppearance]!= appearance)
   {
-    self->_showsHighlightedAppearance = a3;
-    v5 = [(AVVolumeButtonControl *)self highlightAnimator];
-    if ([v5 isRunning] && objc_msgSend(v5, "isInterruptible"))
+    self->_showsHighlightedAppearance = appearance;
+    highlightAnimator = [(AVVolumeButtonControl *)self highlightAnimator];
+    if ([highlightAnimator isRunning] && objc_msgSend(highlightAnimator, "isInterruptible"))
     {
-      [v5 stopAnimation:0];
-      [v5 finishAnimationAtPosition:2];
+      [highlightAnimator stopAnimation:0];
+      [highlightAnimator finishAnimationAtPosition:2];
     }
 
-    if (([v5 isRunning] & 1) == 0)
+    if (([highlightAnimator isRunning] & 1) == 0)
     {
       v6 = objc_alloc(MEMORY[0x1E69DD278]);
       v8[0] = MEMORY[0x1E69E9820];
@@ -777,7 +777,7 @@ LABEL_21:
 
       [v7 startAnimation];
       [(AVVolumeButtonControl *)self setHighlightAnimator:v7];
-      v5 = v7;
+      highlightAnimator = v7;
     }
   }
 }
@@ -803,13 +803,13 @@ void __55__AVVolumeButtonControl_setShowsHighlightedAppearance___block_invoke(ui
   [v3 setTransform:&v4];
 }
 
-- (void)setHasFullScreenAppearance:(BOOL)a3
+- (void)setHasFullScreenAppearance:(BOOL)appearance
 {
-  if (self->_hasFullScreenAppearance != a3)
+  if (self->_hasFullScreenAppearance != appearance)
   {
-    self->_hasFullScreenAppearance = a3;
-    v5 = [(AVVolumeButtonControl *)self micaPackage];
-    [(AVVolumeButtonControl *)self _updateMicaPackage:v5];
+    self->_hasFullScreenAppearance = appearance;
+    micaPackage = [(AVVolumeButtonControl *)self micaPackage];
+    [(AVVolumeButtonControl *)self _updateMicaPackage:micaPackage];
   }
 }
 
@@ -817,80 +817,80 @@ void __55__AVVolumeButtonControl_setShowsHighlightedAppearance___block_invoke(ui
 {
   if ([(AVVolumeButtonControl *)self isTracking])
   {
-    v3 = [(AVVolumeButtonControl *)self feedbackGenerator];
-    [v3 selectionChanged];
+    feedbackGenerator = [(AVVolumeButtonControl *)self feedbackGenerator];
+    [feedbackGenerator selectionChanged];
   }
 }
 
-- (void)setMicaPackageStateName:(id)a3
+- (void)setMicaPackageStateName:(id)name
 {
-  v7 = a3;
+  nameCopy = name;
   if (![(NSString *)self->_micaPackageStateName isEqualToString:?])
   {
-    v4 = [v7 copy];
+    v4 = [nameCopy copy];
     micaPackageStateName = self->_micaPackageStateName;
     self->_micaPackageStateName = v4;
 
-    v6 = [(AVVolumeButtonControl *)self micaPackage];
-    [(AVVolumeButtonControl *)self _updateMicaPackage:v6];
+    micaPackage = [(AVVolumeButtonControl *)self micaPackage];
+    [(AVVolumeButtonControl *)self _updateMicaPackage:micaPackage];
   }
 }
 
-- (void)setMicaPackage:(id)a3
+- (void)setMicaPackage:(id)package
 {
-  v5 = a3;
-  if (self->_micaPackage != v5)
+  packageCopy = package;
+  if (self->_micaPackage != packageCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_micaPackage, a3);
+    v6 = packageCopy;
+    objc_storeStrong(&self->_micaPackage, package);
     if (v6)
     {
       [(AVVolumeButtonControl *)self _updateMicaPackage:v6];
-      v5 = [(UIView *)self avkit_reevaluateHiddenStateOfItem:self];
+      packageCopy = [(UIView *)self avkit_reevaluateHiddenStateOfItem:self];
     }
   }
 
-  MEMORY[0x1EEE66BE0](v5);
+  MEMORY[0x1EEE66BE0](packageCopy);
 }
 
-- (void)setExtrinsicContentSize:(CGSize)a3
+- (void)setExtrinsicContentSize:(CGSize)size
 {
-  if (a3.width != self->_extrinsicContentSize.width || a3.height != self->_extrinsicContentSize.height)
+  if (size.width != self->_extrinsicContentSize.width || size.height != self->_extrinsicContentSize.height)
   {
-    self->_extrinsicContentSize = a3;
+    self->_extrinsicContentSize = size;
     [(AVVolumeButtonControl *)self invalidateIntrinsicContentSize];
 
     [(AVVolumeButtonControl *)self _updateLayoutItem];
   }
 }
 
-- (void)setRemoved:(BOOL)a3
+- (void)setRemoved:(BOOL)removed
 {
-  if (self->_removed != a3)
+  if (self->_removed != removed)
   {
-    self->_removed = a3;
+    self->_removed = removed;
     [(UIView *)self avkit_reevaluateHiddenStateOfItem:self];
 
     [(AVVolumeButtonControl *)self _updateLayoutItem];
   }
 }
 
-- (void)setCollapsed:(BOOL)a3
+- (void)setCollapsed:(BOOL)collapsed
 {
-  if (self->_collapsed != a3)
+  if (self->_collapsed != collapsed)
   {
-    self->_collapsed = a3;
+    self->_collapsed = collapsed;
     [(UIView *)self avkit_reevaluateHiddenStateOfItem:self];
 
     [(AVVolumeButtonControl *)self _updateLayoutItem];
   }
 }
 
-- (void)setIncluded:(BOOL)a3
+- (void)setIncluded:(BOOL)included
 {
-  if (self->_included != a3)
+  if (self->_included != included)
   {
-    self->_included = a3;
+    self->_included = included;
     [(UIView *)self avkit_reevaluateHiddenStateOfItem:self];
 
     [(AVVolumeButtonControl *)self _updateLayoutItem];
@@ -904,18 +904,18 @@ void __55__AVVolumeButtonControl_setShowsHighlightedAppearance___block_invoke(ui
     return 1;
   }
 
-  v3 = [(AVVolumeButtonControl *)self micaPackage];
-  if (v3)
+  micaPackage = [(AVVolumeButtonControl *)self micaPackage];
+  if (micaPackage)
   {
-    v4 = [(AVVolumeButtonControl *)self isRemoved];
+    isRemoved = [(AVVolumeButtonControl *)self isRemoved];
   }
 
   else
   {
-    v4 = 1;
+    isRemoved = 1;
   }
 
-  return v4;
+  return isRemoved;
 }
 
 - (UISelectionFeedbackGenerator)feedbackGenerator
@@ -933,11 +933,11 @@ void __55__AVVolumeButtonControl_setShowsHighlightedAppearance___block_invoke(ui
   return feedbackGenerator;
 }
 
-- (AVVolumeButtonControl)initWithFrame:(CGRect)a3
+- (AVVolumeButtonControl)initWithFrame:(CGRect)frame
 {
   v30.receiver = self;
   v30.super_class = AVVolumeButtonControl;
-  v3 = [(AVVolumeButtonControl *)&v30 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AVVolumeButtonControl *)&v30 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -959,11 +959,11 @@ void __55__AVVolumeButtonControl_setShowsHighlightedAppearance___block_invoke(ui
     micaPackageContainerView = v4->_micaPackageContainerView;
     v4->_micaPackageContainerView = v9;
 
-    v11 = [(AVVolumeButtonControl *)v4 layer];
-    [v11 setAllowsGroupBlending:0];
+    layer = [(AVVolumeButtonControl *)v4 layer];
+    [layer setAllowsGroupBlending:0];
 
-    v12 = [(UIView *)v4->_micaPackageContainerView layer];
-    [v12 setAllowsGroupBlending:0];
+    layer2 = [(UIView *)v4->_micaPackageContainerView layer];
+    [layer2 setAllowsGroupBlending:0];
 
     LODWORD(v13) = 1148846080;
     [(AVVolumeButtonControl *)v4 setContentHuggingPriority:0 forAxis:v13];
@@ -976,14 +976,14 @@ void __55__AVVolumeButtonControl_setShowsHighlightedAppearance___block_invoke(ui
     [(AVVolumeButtonControl *)v4 setAccessibilityIdentifier:@"Mute Toggle"];
     [(AVVolumeButtonControl *)v4 setIsAccessibilityElement:1];
     [(UIView *)v4 avkit_reevaluateHiddenStateOfItem:v4];
-    v17 = [(AVVolumeButtonControl *)v4 effectiveUserInterfaceLayoutDirection];
+    effectiveUserInterfaceLayoutDirection = [(AVVolumeButtonControl *)v4 effectiveUserInterfaceLayoutDirection];
     objc_initWeak(&location, v4);
     v24 = MEMORY[0x1E69E9820];
     v25 = 3221225472;
     v26 = __39__AVVolumeButtonControl_initWithFrame___block_invoke;
     v27 = &unk_1E7209E08;
     objc_copyWeak(&v28, &location);
-    [AVMicaPackage asynchronouslyPrepareMicaPackageWithName:@"VolumeGlyph" layoutDirection:v17 completion:&v24];
+    [AVMicaPackage asynchronouslyPrepareMicaPackageWithName:@"VolumeGlyph" layoutDirection:effectiveUserInterfaceLayoutDirection completion:&v24];
     v18 = objc_alloc_init(AVLayoutItemAttributes);
     layoutAttributes = v4->_layoutAttributes;
     v4->_layoutAttributes = v18;
@@ -995,8 +995,8 @@ void __55__AVVolumeButtonControl_setShowsHighlightedAppearance___block_invoke(ui
     [(AVLayoutItemAttributes *)v4->_layoutAttributes setIncluded:[(AVVolumeButtonControl *)v4 isIncluded]];
     [(AVLayoutItemAttributes *)v4->_layoutAttributes setHasFlexibleContentSize:0];
     v21 = v4->_layoutAttributes;
-    v22 = [(AVVolumeButtonControl *)v4 accessibilityIdentifier];
-    [(AVLayoutItemAttributes *)v21 setAccessibilityIdentifier:v22];
+    accessibilityIdentifier = [(AVVolumeButtonControl *)v4 accessibilityIdentifier];
+    [(AVLayoutItemAttributes *)v21 setAccessibilityIdentifier:accessibilityIdentifier];
 
     objc_destroyWeak(&v28);
     objc_destroyWeak(&location);

@@ -1,10 +1,10 @@
 @interface BTSDeviceConfigController
-- (BOOL)BOOLFromBluetoothPreferences:(id)a3;
+- (BOOL)BOOLFromBluetoothPreferences:(id)preferences;
 - (BOOL)adaptiveVolumeSupported;
 - (BOOL)canDisconnect;
 - (BOOL)conversationDetectSupported;
 - (BOOL)deviceSupportsCarPlay;
-- (BOOL)isCurrentDeviceApplePencil:(int *)a3;
+- (BOOL)isCurrentDeviceApplePencil:(int *)pencil;
 - (BOOL)isTempPaired;
 - (BOOL)isWatch;
 - (BOOL)isiCloudEnabled;
@@ -13,7 +13,7 @@
 - (BOOL)managedByDeviceAccess;
 - (BOOL)nicknameEnabled;
 - (BOOL)shouldForceShowFitTest;
-- (BOOL)shouldShowCaseSoundForNewAccessories:(id)a3 productID:(int64_t)a4;
+- (BOOL)shouldShowCaseSoundForNewAccessories:(id)accessories productID:(int64_t)d;
 - (BOOL)shouldShowFindMyNetworkAlert;
 - (BOOL)shouldShowInternalFitTestToggle;
 - (BOOL)shouldShowLoudSoundReduction;
@@ -29,7 +29,7 @@
 - (id)adaptiveVolumeMode;
 - (id)ancsAuthorized;
 - (id)automaticAnswerCallsEnabled;
-- (id)carPlayEnabled:(id)a3;
+- (id)carPlayEnabled:(id)enabled;
 - (id)classicSetupSpecifiers;
 - (id)clickHoldModeLeft;
 - (id)clickHoldModeRight;
@@ -42,25 +42,25 @@
 - (id)extraUnpairWarningMessage;
 - (id)forceShowFitTest;
 - (id)forgetButtonSpecifier;
-- (id)getANCAssetVersion:(id)a3;
-- (id)getAdaptiveVolumeMode:(id)a3;
-- (id)getAnswerCallOption:(id)a3;
-- (id)getBudFirmwareVersion:(id)a3;
-- (id)getBudLeftSerialNumber:(id)a3;
-- (id)getBudRightSerialNumber:(id)a3;
-- (id)getCaseFirmwareVersion:(id)a3;
-- (id)getCaseName:(id)a3;
-- (id)getCaseSoundEnabled:(id)a3;
-- (id)getConversationDetectMode:(id)a3;
+- (id)getANCAssetVersion:(id)version;
+- (id)getAdaptiveVolumeMode:(id)mode;
+- (id)getAnswerCallOption:(id)option;
+- (id)getBudFirmwareVersion:(id)version;
+- (id)getBudLeftSerialNumber:(id)number;
+- (id)getBudRightSerialNumber:(id)number;
+- (id)getCaseFirmwareVersion:(id)version;
+- (id)getCaseName:(id)name;
+- (id)getCaseSoundEnabled:(id)enabled;
+- (id)getConversationDetectMode:(id)mode;
 - (id)getEndCallMode;
-- (id)getFindMyEnable:(id)a3;
-- (id)getHearingProtectionEnabled:(id)a3;
-- (id)getModelName:(id)a3;
-- (id)getModelNumber:(id)a3;
+- (id)getFindMyEnable:(id)enable;
+- (id)getHearingProtectionEnabled:(id)enabled;
+- (id)getModelName:(id)name;
+- (id)getModelNumber:(id)number;
 - (id)getMuteCallMode;
 - (id)getOptimizedBatteryFeatureSpecifiers;
 - (id)getPermanentPairSpecifier;
-- (id)getSystemSerialNumber:(id)a3;
+- (id)getSystemSerialNumber:(id)number;
 - (id)getTemporaryPairSpecifier;
 - (id)getVoiceAssistant;
 - (id)inEarDetectEnabled;
@@ -68,11 +68,11 @@
 - (id)micMode;
 - (id)sealDetect;
 - (id)smartRouteMode;
-- (id)smartRoutingIndicationForRealityDevice:(id)a3;
+- (id)smartRoutingIndicationForRealityDevice:(id)device;
 - (id)soundProfileAllowed;
 - (id)spatialProfileVideoCapture;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (id)userSelectedDeviceType;
 - (id)userSelectedHealthDataSyncConfig;
 - (int)listeningMode;
@@ -81,116 +81,116 @@
 - (void)addAdaptiveVolumeSpecifier;
 - (void)addConversationDetectSpecifier;
 - (void)addHearingSpecifiers;
-- (void)addSmarRoutingSpecifiers:(id)a3;
-- (void)addTopLevelEntryWithHpDevice:(id)a3;
+- (void)addSmarRoutingSpecifiers:(id)specifiers;
+- (void)addTopLevelEntryWithHpDevice:(id)device;
 - (void)allowClassicConnection;
-- (void)caseSoundChangedHandler:(id)a3;
-- (void)contactGroupSelected:(id)a3;
-- (void)cycleBetweenLeftBudValueUpdated:(id)a3;
-- (void)cycleBetweenRightBudValueUpdated:(id)a3;
-- (void)cycleBetweenV2LeftBudValueUpdated:(id)a3;
-- (void)cycleBetweenV2RightBudValueUpdated:(id)a3;
+- (void)caseSoundChangedHandler:(id)handler;
+- (void)contactGroupSelected:(id)selected;
+- (void)cycleBetweenLeftBudValueUpdated:(id)updated;
+- (void)cycleBetweenRightBudValueUpdated:(id)updated;
+- (void)cycleBetweenV2LeftBudValueUpdated:(id)updated;
+- (void)cycleBetweenV2RightBudValueUpdated:(id)updated;
 - (void)dealloc;
-- (void)deviceAccessDeviceLost:(id)a3;
-- (void)deviceConnectedHandler:(id)a3;
-- (void)deviceDisconnectedHandler:(id)a3;
-- (void)deviceRemoved:(id)a3;
-- (void)deviceSupportsMAP:(id)a3;
-- (void)deviceSupportsSync:(id)a3;
-- (void)deviceUpdated:(id)a3;
-- (void)disconnectDevice:(id)a3;
+- (void)deviceAccessDeviceLost:(id)lost;
+- (void)deviceConnectedHandler:(id)handler;
+- (void)deviceDisconnectedHandler:(id)handler;
+- (void)deviceRemoved:(id)removed;
+- (void)deviceSupportsMAP:(id)p;
+- (void)deviceSupportsSync:(id)sync;
+- (void)deviceUpdated:(id)updated;
+- (void)disconnectDevice:(id)device;
 - (void)dismissCurrentViewController;
 - (void)doubleTapActionLeft;
 - (void)doubleTapActionRight;
-- (void)findMyStatusUpdatedHandler:(id)a3;
+- (void)findMyStatusUpdatedHandler:(id)handler;
 - (void)forgetDevice;
-- (void)forgetDeviceTapped:(id)a3;
+- (void)forgetDeviceTapped:(id)tapped;
 - (void)getFindMyUrl;
 - (void)getSoundMode;
 - (void)handleCarPlayAllowedDidChange;
-- (void)handlePairedVehiclesChanged:(id)a3;
+- (void)handlePairedVehiclesChanged:(id)changed;
 - (void)handleTapOnLabel;
 - (void)hearingModeUpdated;
 - (void)initializeCaseConnection;
-- (void)listeningModeConfigSelected:(id)a3;
-- (void)listeningModeUpdatedHandler:(id)a3;
-- (void)listeningModeUpdatedV2Handler:(id)a3;
+- (void)listeningModeConfigSelected:(id)selected;
+- (void)listeningModeUpdatedHandler:(id)handler;
+- (void)listeningModeUpdatedV2Handler:(id)handler;
 - (void)loadAccessoryFirmwareInfo;
 - (void)loadAccessoryInfo;
 - (void)loadAccessorySettings;
 - (void)loadSyncSettings;
-- (void)metaGroupSelected:(id)a3;
+- (void)metaGroupSelected:(id)selected;
 - (void)nicknameEnabled;
 - (void)presentAssetLocationLink;
 - (void)presentEnrollmentViewController;
 - (void)presentFindMyLink;
-- (void)presentFitTestController:(id)a3;
+- (void)presentFitTestController:(id)controller;
 - (void)presentImportantMsgLink;
-- (void)presentSpatialTutorialController:(id)a3;
+- (void)presentSpatialTutorialController:(id)controller;
 - (void)presentTuningViewController;
-- (void)pressAndHoldModeSelectedHandler:(id)a3;
+- (void)pressAndHoldModeSelectedHandler:(id)handler;
 - (void)refreshFindMyStatus;
 - (void)refreshFindMyStatusForPencilInBackground;
 - (void)refreshFindMyStatusForPencilSynchronously;
 - (void)releaseCaseConnection;
-- (void)reloadCellForSpecifierID:(id)a3 animated:(BOOL)a4;
-- (void)removeTopLevelEntryWithHpDevice:(id)a3;
-- (void)sealDetectSet:(id)a3;
+- (void)reloadCellForSpecifierID:(id)d animated:(BOOL)animated;
+- (void)removeTopLevelEntryWithHpDevice:(id)device;
+- (void)sealDetectSet:(id)set;
 - (void)sendSmartRoutingDisabledTipEvent;
-- (void)setANCSAuthorized:(id)a3;
-- (void)setAdaptiveVolumeMode:(id)a3;
-- (void)setAdaptiveVolumeMode:(id)a3 specifier:(id)a4;
-- (void)setAutomaticAnswerCallsEnabled:(id)a3;
-- (void)setCarPlayEnabled:(id)a3 specifier:(id)a4;
-- (void)setCaseSoundEnabled:(id)a3 specifier:(id)a4;
-- (void)setContactSync:(id)a3 specifier:(id)a4;
-- (void)setConversationDetectMode:(id)a3 specifier:(id)a4;
-- (void)setDigitalCrownMode:(id)a3;
-- (void)setDynamicEnrollmentFeedback:(id)a3;
-- (void)setEndCallMode:(id)a3;
-- (void)setFindMyEnable:(id)a3 specifier:(id)a4;
-- (void)setForceShowFitTest:(id)a3;
-- (void)setGestureMode:(id)a3 specifier:(id)a4;
-- (void)setHearingProtectionEnabled:(id)a3 specifier:(id)a4;
-- (void)setInEarDetectEnabled:(id)a3;
-- (void)setMessagesEnabled:(id)a3 specifier:(id)a4;
-- (void)setMicMode:(id)a3;
-- (void)setMuteCallMode:(id)a3;
-- (void)setSmartRouteMode:(id)a3;
-- (void)setSoundProfileAllowed:(id)a3;
-- (void)setSpatialProfileVideoCapture:(id)a3;
-- (void)setUserSelectedDeviceType:(id)a3;
-- (void)setUserSelectedHealthDataSyncConfig:(id)a3;
-- (void)setdoubleTapAction:(id)a3;
-- (void)setdoubleTapActionLeft:(id)a3;
-- (void)setdoubleTapActionRight:(id)a3;
-- (void)settingsChangedHandler:(id)a3;
+- (void)setANCSAuthorized:(id)authorized;
+- (void)setAdaptiveVolumeMode:(id)mode;
+- (void)setAdaptiveVolumeMode:(id)mode specifier:(id)specifier;
+- (void)setAutomaticAnswerCallsEnabled:(id)enabled;
+- (void)setCarPlayEnabled:(id)enabled specifier:(id)specifier;
+- (void)setCaseSoundEnabled:(id)enabled specifier:(id)specifier;
+- (void)setContactSync:(id)sync specifier:(id)specifier;
+- (void)setConversationDetectMode:(id)mode specifier:(id)specifier;
+- (void)setDigitalCrownMode:(id)mode;
+- (void)setDynamicEnrollmentFeedback:(id)feedback;
+- (void)setEndCallMode:(id)mode;
+- (void)setFindMyEnable:(id)enable specifier:(id)specifier;
+- (void)setForceShowFitTest:(id)test;
+- (void)setGestureMode:(id)mode specifier:(id)specifier;
+- (void)setHearingProtectionEnabled:(id)enabled specifier:(id)specifier;
+- (void)setInEarDetectEnabled:(id)enabled;
+- (void)setMessagesEnabled:(id)enabled specifier:(id)specifier;
+- (void)setMicMode:(id)mode;
+- (void)setMuteCallMode:(id)mode;
+- (void)setSmartRouteMode:(id)mode;
+- (void)setSoundProfileAllowed:(id)allowed;
+- (void)setSpatialProfileVideoCapture:(id)capture;
+- (void)setUserSelectedDeviceType:(id)type;
+- (void)setUserSelectedHealthDataSyncConfig:(id)config;
+- (void)setdoubleTapAction:(id)action;
+- (void)setdoubleTapActionLeft:(id)left;
+- (void)setdoubleTapActionRight:(id)right;
+- (void)settingsChangedHandler:(id)handler;
 - (void)setupShowModernHPSButton;
 - (void)showFindMyNetworkAlert;
 - (void)showModernHPS;
-- (void)spatialAudioProfileUpdateHandler:(id)a3;
-- (void)spatialProfileTappedHandler:(id)a3;
+- (void)spatialAudioProfileUpdateHandler:(id)handler;
+- (void)spatialProfileTappedHandler:(id)handler;
 - (void)specifiers;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)triggerSpatialProfileFeedback:(id)a3;
-- (void)unpairButtonTapped:(id)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)traitCollectionDidChange:(id)change;
+- (void)triggerSpatialProfileFeedback:(id)feedback;
+- (void)unpairButtonTapped:(id)tapped;
 - (void)updateASKHeader;
 - (void)updateBatteryStatus;
-- (void)updateDisconnectButton:(BOOL)a3;
+- (void)updateDisconnectButton:(BOOL)button;
 - (void)updateHearingProtectionSpecifiers;
-- (void)updateSerialNumberSpecifier:(id)a3;
-- (void)updateTopLevelEntryWithHpDevice:(id)a3;
-- (void)updateVersionSpecifier:(id)a3;
-- (void)upgradeDevice:(id)a3;
-- (void)userDidTapNiPrivacyLink:(id)a3;
-- (void)userDidTapRecommendedBuilds:(id)a3;
-- (void)userDidTapSpatialA2DPLatencyDisclosure:(id)a3;
-- (void)userDidTapSpatialProfileLearnMoreLink:(id)a3;
-- (void)userDidTapSpatialProfileWarningLearnMoreLink:(id)a3;
-- (void)userDidTapWalletLink:(id)a3;
-- (void)userDidTapWatchLink:(id)a3;
+- (void)updateSerialNumberSpecifier:(id)specifier;
+- (void)updateTopLevelEntryWithHpDevice:(id)device;
+- (void)updateVersionSpecifier:(id)specifier;
+- (void)upgradeDevice:(id)device;
+- (void)userDidTapNiPrivacyLink:(id)link;
+- (void)userDidTapRecommendedBuilds:(id)builds;
+- (void)userDidTapSpatialA2DPLatencyDisclosure:(id)disclosure;
+- (void)userDidTapSpatialProfileLearnMoreLink:(id)link;
+- (void)userDidTapSpatialProfileWarningLearnMoreLink:(id)link;
+- (void)userDidTapWalletLink:(id)link;
+- (void)userDidTapWatchLink:(id)link;
 - (void)viewDidLoad;
 @end
 
@@ -209,78 +209,78 @@
     *(&v2->super.super.super.super.super.isa + *MEMORY[0x277D3FC28]) = 0;
     *&v2->_syncSettings.supported = 0;
     v2->_syncSettings.userPermissionGranted = 0;
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 addObserver:v2 selector:sel_deviceRemoved_ name:*MEMORY[0x277CF31C8] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_deviceRemoved_ name:*MEMORY[0x277CF31C8] object:0];
 
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:v2 selector:sel_deviceUpdated_ name:*MEMORY[0x277CF31D0] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel_deviceUpdated_ name:*MEMORY[0x277CF31D0] object:0];
 
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 addObserver:v2 selector:sel_deviceConnectedHandler_ name:*MEMORY[0x277CF3190] object:0];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 addObserver:v2 selector:sel_deviceConnectedHandler_ name:*MEMORY[0x277CF3190] object:0];
 
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 addObserver:v2 selector:sel_deviceConnectedHandler_ name:*MEMORY[0x277CF3188] object:0];
+    defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter4 addObserver:v2 selector:sel_deviceConnectedHandler_ name:*MEMORY[0x277CF3188] object:0];
 
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:v2 selector:sel_deviceSupportsSync_ name:*MEMORY[0x277CF31B8] object:0];
+    defaultCenter5 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter5 addObserver:v2 selector:sel_deviceSupportsSync_ name:*MEMORY[0x277CF31B8] object:0];
 
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v9 addObserver:v2 selector:sel_deviceSupportsMAP_ name:*MEMORY[0x277CF31C0] object:0];
+    defaultCenter6 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter6 addObserver:v2 selector:sel_deviceSupportsMAP_ name:*MEMORY[0x277CF31C0] object:0];
 
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v10 addObserver:v2 selector:sel_deviceDisconnectedHandler_ name:*MEMORY[0x277CF31A0] object:0];
+    defaultCenter7 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter7 addObserver:v2 selector:sel_deviceDisconnectedHandler_ name:*MEMORY[0x277CF31A0] object:0];
 
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v11 addObserver:v2 selector:sel_deviceDisconnectedHandler_ name:*MEMORY[0x277CF3198] object:0];
+    defaultCenter8 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter8 addObserver:v2 selector:sel_deviceDisconnectedHandler_ name:*MEMORY[0x277CF3198] object:0];
 
-    v12 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v12 addObserver:v2 selector:sel_settingsChangedHandler_ name:*MEMORY[0x277CF3160] object:0];
+    defaultCenter9 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter9 addObserver:v2 selector:sel_settingsChangedHandler_ name:*MEMORY[0x277CF3160] object:0];
 
-    v13 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v13 addObserver:v2 selector:sel_deviceAccessDeviceLost_ name:@"DADeviceLost" object:0];
+    defaultCenter10 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter10 addObserver:v2 selector:sel_deviceAccessDeviceLost_ name:@"DADeviceLost" object:0];
 
-    v14 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v14 addObserver:v2 selector:sel_listeningModeUpdatedHandler_ name:@"BTAccessorySetListeningModeUpdated" object:0];
+    defaultCenter11 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter11 addObserver:v2 selector:sel_listeningModeUpdatedHandler_ name:@"BTAccessorySetListeningModeUpdated" object:0];
 
-    v15 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v15 addObserver:v2 selector:sel_listeningModeUpdatedV2Handler_ name:@"HPSSetListeningModeUpdated" object:0];
+    defaultCenter12 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter12 addObserver:v2 selector:sel_listeningModeUpdatedV2Handler_ name:@"HPSSetListeningModeUpdated" object:0];
 
-    v16 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v16 addObserver:v2 selector:sel_pressAndHoldModeSelectedHandler_ name:@"BTAccessoryPressAndHoldModeSelected" object:0];
+    defaultCenter13 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter13 addObserver:v2 selector:sel_pressAndHoldModeSelectedHandler_ name:@"BTAccessoryPressAndHoldModeSelected" object:0];
 
-    v17 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v17 addObserver:v2 selector:sel_cycleBetweenLeftBudValueUpdated_ name:@"CycleBetweenLeftBudValue" object:0];
+    defaultCenter14 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter14 addObserver:v2 selector:sel_cycleBetweenLeftBudValueUpdated_ name:@"CycleBetweenLeftBudValue" object:0];
 
-    v18 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v18 addObserver:v2 selector:sel_cycleBetweenRightBudValueUpdated_ name:@"CycleBetweenRightBudValue" object:0];
+    defaultCenter15 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter15 addObserver:v2 selector:sel_cycleBetweenRightBudValueUpdated_ name:@"CycleBetweenRightBudValue" object:0];
 
-    v19 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v19 addObserver:v2 selector:sel_cycleBetweenV2LeftBudValueUpdated_ name:@"CycleBetweenV2LeftBudValue" object:0];
+    defaultCenter16 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter16 addObserver:v2 selector:sel_cycleBetweenV2LeftBudValueUpdated_ name:@"CycleBetweenV2LeftBudValue" object:0];
 
-    v20 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v20 addObserver:v2 selector:sel_cycleBetweenV2RightBudValueUpdated_ name:@"CycleBetweenV2RightBudValue" object:0];
+    defaultCenter17 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter17 addObserver:v2 selector:sel_cycleBetweenV2RightBudValueUpdated_ name:@"CycleBetweenV2RightBudValue" object:0];
 
-    v21 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v21 addObserver:v2 selector:sel_spatialProfileTappedHandler_ name:@"HPSSpatialAudioProfileTapped" object:0];
+    defaultCenter18 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter18 addObserver:v2 selector:sel_spatialProfileTappedHandler_ name:@"HPSSpatialAudioProfileTapped" object:0];
 
-    v22 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v22 addObserver:v2 selector:sel_deviceUpdated_ name:@"BluetoothDeviceUpdatedNotificationConfig" object:0];
+    defaultCenter19 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter19 addObserver:v2 selector:sel_deviceUpdated_ name:@"BluetoothDeviceUpdatedNotificationConfig" object:0];
 
-    v23 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v23 addObserver:v2 selector:sel_triggerSpatialProfileFeedback_ name:@"SpatialProfileEnrollmentNotCompleted" object:0];
+    defaultCenter20 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter20 addObserver:v2 selector:sel_triggerSpatialProfileFeedback_ name:@"SpatialProfileEnrollmentNotCompleted" object:0];
 
-    v24 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v24 addObserver:v2 selector:sel_caseSoundChangedHandler_ name:@"BTNotificationForSpeakerSettingChange" object:0];
+    defaultCenter21 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter21 addObserver:v2 selector:sel_caseSoundChangedHandler_ name:@"BTNotificationForSpeakerSettingChange" object:0];
 
-    v25 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v25 addObserver:v2 selector:sel_updateHearingProtectionSpecifiers name:@"HPSSoundProtectionUpdated" object:0];
+    defaultCenter22 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter22 addObserver:v2 selector:sel_updateHearingProtectionSpecifiers name:@"HPSSoundProtectionUpdated" object:0];
 
-    v26 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v26 addObserver:v2 selector:sel_hearingModeUpdated name:@"HearingModeUpdated" object:0];
+    defaultCenter23 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter23 addObserver:v2 selector:sel_hearingModeUpdated name:@"HearingModeUpdated" object:0];
 
     v2->_listeningModeConfigs = 0;
-    v27 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v27 addObserver:v2 selector:sel_findMyStatusUpdatedHandler_ name:@"FindMyStatusUpdated" object:0];
+    defaultCenter24 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter24 addObserver:v2 selector:sel_findMyStatusUpdatedHandler_ name:@"FindMyStatusUpdated" object:0];
 
     v2->_findMySupport = 0;
     v2->_findMyEnable = 0;
@@ -329,14 +329,14 @@
   airPodsServiceclient = self->_airPodsServiceclient;
   self->_airPodsServiceclient = 0;
 
-  v5 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v5 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 removeObserver:self];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 removeObserver:self];
 
-  v7 = [(BTSDeviceConfigController *)self carplayPreferences];
-  [v7 setPreferencesDelegate:0];
+  carplayPreferences = [(BTSDeviceConfigController *)self carplayPreferences];
+  [carplayPreferences setPreferencesDelegate:0];
 
   v8.receiver = self;
   v8.super_class = BTSDeviceConfigController;
@@ -345,8 +345,8 @@
 
 - (BOOL)canDisconnect
 {
-  v3 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-  v4 = v3 && [(BluetoothDeviceProtocol *)self->_device connected]&& ([(BluetoothDeviceProtocol *)self->_device cloudPaired]& 1) == 0 && !self->_isWatch && !self->_isManagedByWallet && !self->_isManagedByAliroWallet;
+  classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+  v4 = classicDevice && [(BluetoothDeviceProtocol *)self->_device connected]&& ([(BluetoothDeviceProtocol *)self->_device cloudPaired]& 1) == 0 && !self->_isWatch && !self->_isManagedByWallet && !self->_isManagedByAliroWallet;
 
   return v4;
 }
@@ -358,11 +358,11 @@
   [(BTSDeviceConfigController *)&v6 viewDidLoad];
   if (_os_feature_enabled_impl())
   {
-    v3 = [(BTSDeviceConfigController *)self ndoController];
-    [v3 setParentViewController:self];
+    ndoController = [(BTSDeviceConfigController *)self ndoController];
+    [ndoController setParentViewController:self];
 
-    v4 = [(BTSDeviceConfigController *)self ndoController];
-    [v4 updateSpecifiersWithCompletionHandler:&__block_literal_global_1];
+    ndoController2 = [(BTSDeviceConfigController *)self ndoController];
+    [ndoController2 updateSpecifiersWithCompletionHandler:&__block_literal_global_1];
   }
 
   v5 = 0;
@@ -379,13 +379,13 @@
   [(BTSDeviceConfigController *)self updateASKHeader];
 }
 
-- (void)updateDisconnectButton:(BOOL)a3
+- (void)updateDisconnectButton:(BOOL)button
 {
-  v3 = a3;
+  buttonCopy = button;
   v5 = [(NSArray *)self->_controlGroupSpecifiers objectAtIndex:1];
   v6 = [(BTSDeviceConfigController *)self specifierForID:@"disconnect"];
   v7 = v6;
-  if (v3)
+  if (buttonCopy)
   {
     if (!v6)
     {
@@ -401,12 +401,12 @@
   if (_os_feature_enabled_impl())
   {
     v8 = [(NSArray *)self->_controlGroupSpecifiers objectAtIndex:3];
-    v9 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-    v10 = [v9 isGuestPairingMode];
+    classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+    isGuestPairingMode = [classicDevice isGuestPairingMode];
 
-    if (v3)
+    if (buttonCopy)
     {
-      if (v10)
+      if (isGuestPairingMode)
       {
         v11 = sharedBluetoothSettingsLogComponent();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -419,7 +419,7 @@
       }
     }
 
-    else if (v10)
+    else if (isGuestPairingMode)
     {
       v12 = sharedBluetoothSettingsLogComponent();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -432,30 +432,30 @@
     }
   }
 
-  v13 = [(BTSDeviceConfigController *)self headphoneObserver];
-  [v13 reloadAll];
+  headphoneObserver = [(BTSDeviceConfigController *)self headphoneObserver];
+  [headphoneObserver reloadAll];
 }
 
-- (void)unpairButtonTapped:(id)a3
+- (void)unpairButtonTapped:(id)tapped
 {
-  v4 = [(BluetoothDeviceProtocol *)self->_device name];
+  name = [(BluetoothDeviceProtocol *)self->_device name];
   v5 = MEMORY[0x277D75110];
-  v6 = [MEMORY[0x277CB8900] unpairDeviceAlertTitle:v4];
-  v7 = [MEMORY[0x277CB8900] unpairDeviceAlertBody];
-  v8 = [v5 alertControllerWithTitle:v6 message:v7 preferredStyle:1];
+  v6 = [MEMORY[0x277CB8900] unpairDeviceAlertTitle:name];
+  unpairDeviceAlertBody = [MEMORY[0x277CB8900] unpairDeviceAlertBody];
+  v8 = [v5 alertControllerWithTitle:v6 message:unpairDeviceAlertBody preferredStyle:1];
 
   v9 = MEMORY[0x277D750F8];
-  v10 = [MEMORY[0x277CB8900] unpairDeviceAlertConfirm];
+  unpairDeviceAlertConfirm = [MEMORY[0x277CB8900] unpairDeviceAlertConfirm];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __48__BTSDeviceConfigController_unpairButtonTapped___block_invoke;
   v15[3] = &unk_2796AD708;
   v15[4] = self;
-  v11 = [v9 actionWithTitle:v10 style:2 handler:v15];
+  v11 = [v9 actionWithTitle:unpairDeviceAlertConfirm style:2 handler:v15];
 
   v12 = MEMORY[0x277D750F8];
-  v13 = [MEMORY[0x277CB8900] unpairDeviceAlertCancel];
-  v14 = [v12 actionWithTitle:v13 style:0 handler:0];
+  unpairDeviceAlertCancel = [MEMORY[0x277CB8900] unpairDeviceAlertCancel];
+  v14 = [v12 actionWithTitle:unpairDeviceAlertCancel style:0 handler:0];
 
   [v8 addAction:v11];
   [v8 addAction:v14];
@@ -536,16 +536,16 @@ void __48__BTSDeviceConfigController_unpairButtonTapped___block_invoke(uint64_t 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)forgetDeviceTapped:(id)a3
+- (void)forgetDeviceTapped:(id)tapped
 {
-  v4 = [MEMORY[0x277D75418] currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v5 == 1)
+  if (userInterfaceIdiom == 1)
   {
     if ([(BTSDeviceConfigController *)self managedByDeviceAccess])
     {
-      v6 = [MEMORY[0x277CB8900] forgetDeviceAlertTitle];
+      forgetDeviceAlertTitle = [MEMORY[0x277CB8900] forgetDeviceAlertTitle];
     }
 
     else
@@ -553,42 +553,42 @@ void __48__BTSDeviceConfigController_unpairButtonTapped___block_invoke(uint64_t 
       v10 = MEMORY[0x277CCACA8];
       v11 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v12 = [v11 localizedStringForKey:@"FORGET_ALERT_TITLE" value:&stru_286339F58 table:@"DeviceConfig"];
-      v13 = [(BluetoothDeviceProtocol *)self->_device name];
-      v6 = [v10 stringWithFormat:v12, v13];
+      name = [(BluetoothDeviceProtocol *)self->_device name];
+      forgetDeviceAlertTitle = [v10 stringWithFormat:v12, name];
     }
 
     v14 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v15 = [v14 localizedStringForKey:@"FORGET_DEVICE" value:&stru_286339F58 table:@"DeviceConfig"];
+    forgetDeviceAlertConfirm = [v14 localizedStringForKey:@"FORGET_DEVICE" value:&stru_286339F58 table:@"DeviceConfig"];
 
     v16 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v17 = [v16 localizedStringForKey:@"CANCEL" value:&stru_286339F58 table:@"DeviceConfig"];
+    forgetDeviceAlertCancel = [v16 localizedStringForKey:@"CANCEL" value:&stru_286339F58 table:@"DeviceConfig"];
 
-    v18 = 0;
+    forgetDeviceAlertBody = 0;
 LABEL_19:
     v26 = 1;
     goto LABEL_28;
   }
 
-  v7 = [MEMORY[0x277D75418] currentDevice];
-  v8 = [v7 userInterfaceIdiom];
+  currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
-  v9 = [(BTSDeviceConfigController *)self managedByDeviceAccess];
-  if (v8 == 6)
+  managedByDeviceAccess = [(BTSDeviceConfigController *)self managedByDeviceAccess];
+  if (userInterfaceIdiom2 == 6)
   {
-    if (v9)
+    if (managedByDeviceAccess)
     {
-      v6 = [MEMORY[0x277CB8900] forgetDeviceAlertTitle];
+      forgetDeviceAlertTitle = [MEMORY[0x277CB8900] forgetDeviceAlertTitle];
     }
 
     else
     {
       v19 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-      v6 = [v19 localizedStringForKey:@"FORGET_SHEET_TITLE" value:&stru_286339F58 table:@"DeviceConfig"];
+      forgetDeviceAlertTitle = [v19 localizedStringForKey:@"FORGET_SHEET_TITLE" value:&stru_286339F58 table:@"DeviceConfig"];
     }
 
     if ([(BTSDeviceConfigController *)self managedByDeviceAccess])
     {
-      v18 = [MEMORY[0x277CB8900] forgetDeviceAlertBody];
+      forgetDeviceAlertBody = [MEMORY[0x277CB8900] forgetDeviceAlertBody];
     }
 
     else
@@ -596,71 +596,71 @@ LABEL_19:
       v20 = MEMORY[0x277CCACA8];
       v21 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v22 = [v21 localizedStringForKey:@"FORGET_ALERT_TITLE" value:&stru_286339F58 table:@"DeviceConfig"];
-      v23 = [(BluetoothDeviceProtocol *)self->_device name];
-      v18 = [v20 stringWithFormat:v22, v23];
+      name2 = [(BluetoothDeviceProtocol *)self->_device name];
+      forgetDeviceAlertBody = [v20 stringWithFormat:v22, name2];
     }
 
     v24 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v15 = [v24 localizedStringForKey:@"FORGET_DEVICE" value:&stru_286339F58 table:@"DeviceConfig"];
+    forgetDeviceAlertConfirm = [v24 localizedStringForKey:@"FORGET_DEVICE" value:&stru_286339F58 table:@"DeviceConfig"];
 
     v25 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v17 = [v25 localizedStringForKey:@"CANCEL" value:&stru_286339F58 table:@"DeviceConfig"];
+    forgetDeviceAlertCancel = [v25 localizedStringForKey:@"CANCEL" value:&stru_286339F58 table:@"DeviceConfig"];
 
     goto LABEL_19;
   }
 
-  if (v9)
+  if (managedByDeviceAccess)
   {
-    v6 = [MEMORY[0x277CB8900] forgetDeviceAlertTitle];
+    forgetDeviceAlertTitle = [MEMORY[0x277CB8900] forgetDeviceAlertTitle];
   }
 
   else
   {
-    v6 = 0;
+    forgetDeviceAlertTitle = 0;
   }
 
   if ([(BTSDeviceConfigController *)self managedByDeviceAccess])
   {
-    v18 = [MEMORY[0x277CB8900] forgetDeviceAlertBody];
+    forgetDeviceAlertBody = [MEMORY[0x277CB8900] forgetDeviceAlertBody];
   }
 
   else
   {
-    v18 = 0;
+    forgetDeviceAlertBody = 0;
   }
 
   if ([(BTSDeviceConfigController *)self managedByDeviceAccess])
   {
-    v15 = [MEMORY[0x277CB8900] forgetDeviceAlertConfirm];
+    forgetDeviceAlertConfirm = [MEMORY[0x277CB8900] forgetDeviceAlertConfirm];
   }
 
   else
   {
     v27 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v15 = [v27 localizedStringForKey:@"FORGET_DEVICE" value:&stru_286339F58 table:@"DeviceConfig"];
+    forgetDeviceAlertConfirm = [v27 localizedStringForKey:@"FORGET_DEVICE" value:&stru_286339F58 table:@"DeviceConfig"];
   }
 
   if ([(BTSDeviceConfigController *)self managedByDeviceAccess])
   {
-    v17 = [MEMORY[0x277CB8900] forgetDeviceAlertCancel];
+    forgetDeviceAlertCancel = [MEMORY[0x277CB8900] forgetDeviceAlertCancel];
   }
 
   else
   {
     v28 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v17 = [v28 localizedStringForKey:@"CANCEL" value:&stru_286339F58 table:@"DeviceConfig"];
+    forgetDeviceAlertCancel = [v28 localizedStringForKey:@"CANCEL" value:&stru_286339F58 table:@"DeviceConfig"];
   }
 
   v26 = 0;
 LABEL_28:
-  v29 = [MEMORY[0x277D75110] alertControllerWithTitle:v6 message:v18 preferredStyle:v26];
+  v29 = [MEMORY[0x277D75110] alertControllerWithTitle:forgetDeviceAlertTitle message:forgetDeviceAlertBody preferredStyle:v26];
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
   v32[2] = __48__BTSDeviceConfigController_forgetDeviceTapped___block_invoke;
   v32[3] = &unk_2796AD708;
   v32[4] = self;
-  v30 = [MEMORY[0x277D750F8] actionWithTitle:v15 style:2 handler:v32];
-  v31 = [MEMORY[0x277D750F8] actionWithTitle:v17 style:0 handler:0];
+  v30 = [MEMORY[0x277D750F8] actionWithTitle:forgetDeviceAlertConfirm style:2 handler:v32];
+  v31 = [MEMORY[0x277D750F8] actionWithTitle:forgetDeviceAlertCancel style:0 handler:0];
   [v29 addAction:v30];
   [v29 addAction:v31];
   [(BTSDeviceConfigController *)self presentViewController:v29 animated:1 completion:0];
@@ -766,19 +766,19 @@ LABEL_12:
 - (BOOL)isiCloudEnabled
 {
   v2 = objc_alloc_init(MEMORY[0x277CB8F48]);
-  v3 = [v2 aa_primaryAppleAccount];
-  v4 = v3 != 0;
+  aa_primaryAppleAccount = [v2 aa_primaryAppleAccount];
+  v4 = aa_primaryAppleAccount != 0;
 
   return v4;
 }
 
-- (BOOL)isCurrentDeviceApplePencil:(int *)a3
+- (BOOL)isCurrentDeviceApplePencil:(int *)pencil
 {
-  v4 = [(BTSDeviceConfigController *)self leDevice];
-  v5 = v4;
-  if (v4)
+  leDevice = [(BTSDeviceConfigController *)self leDevice];
+  v5 = leDevice;
+  if (leDevice)
   {
-    v6 = [v4 isApplePencil:a3];
+    v6 = [leDevice isApplePencil:pencil];
   }
 
   else
@@ -791,16 +791,16 @@ LABEL_12:
 
 - (id)extraUnpairWarningMessage
 {
-  v3 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-  v4 = [v3 magicPaired];
+  classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+  magicPaired = [classicDevice magicPaired];
 
-  if (v4)
+  if (magicPaired)
   {
     v5 = MEMORY[0x277CCACA8];
     v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v7 = [v6 localizedStringForKey:@"FORGET_MAGIC_PAIRED_DEVICE_WARNING" value:&stru_286339F58 table:@"DeviceConfig"];
-    v8 = [(BluetoothDeviceProtocol *)self->_device name];
-    v9 = [v5 stringWithFormat:v7, v8];
+    name = [(BluetoothDeviceProtocol *)self->_device name];
+    v9 = [v5 stringWithFormat:v7, name];
   }
 
   else
@@ -830,7 +830,7 @@ LABEL_12:
   return v9;
 }
 
-- (void)disconnectDevice:(id)a3
+- (void)disconnectDevice:(id)device
 {
   if ([(BTSDeviceConfigController *)self canDisconnect])
   {
@@ -842,12 +842,12 @@ LABEL_12:
   }
 }
 
-- (void)upgradeDevice:(id)a3
+- (void)upgradeDevice:(id)device
 {
-  v4 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-  v5 = [v4 isGuestPairingMode];
+  classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+  isGuestPairingMode = [classicDevice isGuestPairingMode];
 
-  if ((v5 & 1) == 0)
+  if ((isGuestPairingMode & 1) == 0)
   {
     v7 = sharedBluetoothSettingsLogComponent();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -878,8 +878,8 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v6 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-  [v6 setGuestPairingMode:0];
+  classicDevice2 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+  [classicDevice2 setGuestPairingMode:0];
 
   [(BTSDeviceConfigController *)self dismissCurrentViewController];
 }
@@ -897,8 +897,8 @@ LABEL_11:
       _os_log_impl(&dword_251143000, v4, OS_LOG_TYPE_DEFAULT, "Headphone Configs: Disconnect from Regular", v19, 2u);
     }
 
-    v16 = [(BTSDeviceConfigController *)self navigationController];
-    v18 = [v16 popViewControllerAnimated:1];
+    navigationController = [(BTSDeviceConfigController *)self navigationController];
+    v18 = [navigationController popViewControllerAnimated:1];
     goto LABEL_12;
   }
 
@@ -908,20 +908,20 @@ LABEL_11:
     _os_log_impl(&dword_251143000, v4, OS_LOG_TYPE_DEFAULT, "Headphone Configs: Disconnect from TLE", buf, 2u);
   }
 
-  v6 = [(BTSDeviceConfigController *)self parentViewController];
-  v7 = [v6 navigationController];
-  v8 = [v7 popViewControllerAnimated:1];
+  parentViewController = [(BTSDeviceConfigController *)self parentViewController];
+  navigationController2 = [parentViewController navigationController];
+  v8 = [navigationController2 popViewControllerAnimated:1];
 
   if ([(BTSDeviceConfigController *)self isiPad])
   {
     goto LABEL_6;
   }
 
-  v9 = [(BTSDeviceConfigController *)self view];
-  [v9 size];
+  view = [(BTSDeviceConfigController *)self view];
+  [view size];
   v11 = v10;
-  v12 = [(BTSDeviceConfigController *)self view];
-  [v12 size];
+  view2 = [(BTSDeviceConfigController *)self view];
+  [view2 size];
   v14 = v13;
 
   if (v11 > v14)
@@ -934,9 +934,9 @@ LABEL_6:
       _os_log_impl(&dword_251143000, v15, OS_LOG_TYPE_DEFAULT, "Headphone Configs: Disconnecting from TLE with side by side layout, jump to General", v20, 2u);
     }
 
-    v16 = [MEMORY[0x277CC1E80] defaultWorkspace];
+    navigationController = [MEMORY[0x277CC1E80] defaultWorkspace];
     v17 = [MEMORY[0x277CBEBC0] URLWithString:@"prefs:root=General"];
-    [v16 openSensitiveURL:v17 withOptions:0];
+    [navigationController openSensitiveURL:v17 withOptions:0];
 
 LABEL_12:
   }
@@ -983,11 +983,11 @@ LABEL_12:
   else
   {
     v10 = *MEMORY[0x277D3FD20];
-    v11 = [*(&self->super.super.super.super.super.isa + v10) userInfo];
-    v12 = [v11 objectForKeyedSubscript:@"ctkd-device"];
+    userInfo = [*(&self->super.super.super.super.super.isa + v10) userInfo];
+    v12 = [userInfo objectForKeyedSubscript:@"ctkd-device"];
 
-    v13 = [*(&self->super.super.super.super.super.isa + v10) userInfo];
-    v14 = v13;
+    userInfo2 = [*(&self->super.super.super.super.super.isa + v10) userInfo];
+    v14 = userInfo2;
     if (v12)
     {
       v15 = @"ctkd-device";
@@ -998,7 +998,7 @@ LABEL_12:
       v15 = @"linked-le-device";
     }
 
-    v9 = [v13 objectForKeyedSubscript:v15];
+    v9 = [userInfo2 objectForKeyedSubscript:v15];
   }
 
   return v9;
@@ -1006,27 +1006,27 @@ LABEL_12:
 
 - (BOOL)managedByDeviceAccess
 {
-  v2 = [(BTSDeviceConfigController *)self leDevice];
-  v3 = v2;
-  if (v2)
+  leDevice = [(BTSDeviceConfigController *)self leDevice];
+  v3 = leDevice;
+  if (leDevice)
   {
-    v4 = [v2 isManagedByDeviceAccess];
+    isManagedByDeviceAccess = [leDevice isManagedByDeviceAccess];
   }
 
   else
   {
-    v4 = 0;
+    isManagedByDeviceAccess = 0;
   }
 
-  return v4;
+  return isManagedByDeviceAccess;
 }
 
-- (void)deviceConnectedHandler:(id)a3
+- (void)deviceConnectedHandler:(id)handler
 {
-  v7 = [a3 object];
-  v4 = [v7 address];
-  v5 = [(BluetoothDeviceProtocol *)self->_device identifier];
-  if ([v4 isEqualToString:v5])
+  object = [handler object];
+  address = [object address];
+  identifier = [(BluetoothDeviceProtocol *)self->_device identifier];
+  if ([address isEqualToString:identifier])
   {
     dismissed = self->_dismissed;
 
@@ -1035,11 +1035,11 @@ LABEL_12:
       goto LABEL_8;
     }
 
-    v4 = [(BTSDeviceConfigController *)self forgetButtonSpecifier];
+    address = [(BTSDeviceConfigController *)self forgetButtonSpecifier];
     if ([(BTSDeviceConfigController *)self canUnpair])
     {
-      [v4 setProperty:*MEMORY[0x277CBED28] forKey:*MEMORY[0x277D3FF38]];
-      [(BTSDeviceConfigController *)self reloadSpecifier:v4];
+      [address setProperty:*MEMORY[0x277CBED28] forKey:*MEMORY[0x277D3FF38]];
+      [(BTSDeviceConfigController *)self reloadSpecifier:address];
     }
 
     self->_devicePendingCTKDConnection = 0;
@@ -1056,12 +1056,12 @@ LABEL_12:
 LABEL_8:
 }
 
-- (void)deviceDisconnectedHandler:(id)a3
+- (void)deviceDisconnectedHandler:(id)handler
 {
-  v4 = [a3 object];
-  v5 = [v4 address];
-  v6 = [(BluetoothDeviceProtocol *)self->_device identifier];
-  if ([v5 isEqualToString:v6])
+  object = [handler object];
+  address = [object address];
+  identifier = [(BluetoothDeviceProtocol *)self->_device identifier];
+  if ([address isEqualToString:identifier])
   {
     dismissed = self->_dismissed;
 
@@ -1085,7 +1085,7 @@ LABEL_8:
   [(BTSDeviceConfigController *)self releaseCaseConnection];
 }
 
-- (void)caseSoundChangedHandler:(id)a3
+- (void)caseSoundChangedHandler:(id)handler
 {
   v4 = sharedBluetoothSettingsLogComponent();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1097,31 +1097,31 @@ LABEL_8:
   [(BTSDeviceConfigController *)self getSoundMode];
 }
 
-- (void)deviceSupportsSync:(id)a3
+- (void)deviceSupportsSync:(id)sync
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 object];
+  syncCopy = sync;
+  object = [syncCopy object];
   v7 = sharedBluetoothSettingsLogComponent();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = NSStringFromSelector(a2);
-    v9 = [v5 name];
-    v10 = [v6 name];
+    name = [syncCopy name];
+    name2 = [object name];
     v16 = 138412802;
     v17 = v8;
     v18 = 2112;
-    v19 = v9;
+    v19 = name;
     v20 = 2112;
-    v21 = v10;
+    v21 = name2;
     _os_log_impl(&dword_251143000, v7, OS_LOG_TYPE_DEFAULT, "%@ received %@ for device %@", &v16, 0x20u);
   }
 
   if (!self->_syncSettings.supported)
   {
-    v11 = [v6 address];
-    v12 = [(BluetoothDeviceProtocol *)self->_device identifier];
-    if ([v11 isEqualToString:v12])
+    address = [object address];
+    identifier = [(BluetoothDeviceProtocol *)self->_device identifier];
+    if ([address isEqualToString:identifier])
     {
       dismissed = self->_dismissed;
 
@@ -1159,38 +1159,38 @@ LABEL_8:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deviceSupportsMAP:(id)a3
+- (void)deviceSupportsMAP:(id)p
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 object];
+  pCopy = p;
+  object = [pCopy object];
   v7 = sharedBluetoothSettingsLogComponent();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = NSStringFromSelector(a2);
-    v9 = [v5 name];
-    v10 = [v6 name];
+    name = [pCopy name];
+    name2 = [object name];
     v18 = 138412802;
     v19 = v8;
     v20 = 2112;
-    v21 = v9;
+    v21 = name;
     v22 = 2112;
-    v23 = v10;
+    v23 = name2;
     _os_log_impl(&dword_251143000, v7, OS_LOG_TYPE_DEFAULT, "%@ received %@ for device %@", &v18, 0x20u);
   }
 
   if (!self->_supportsMAP)
   {
-    v11 = [v6 address];
-    v12 = [(BluetoothDeviceProtocol *)self->_device identifier];
-    if ([v11 isEqualToString:v12])
+    address = [object address];
+    identifier = [(BluetoothDeviceProtocol *)self->_device identifier];
+    if ([address isEqualToString:identifier])
     {
       dismissed = self->_dismissed;
 
       if (!dismissed)
       {
         self->_supportsMAP = 1;
-        v14 = [v6 getServiceSetting:512 key:@"BT_KEY_MAP_ENABLED"];
+        v14 = [object getServiceSetting:512 key:@"BT_KEY_MAP_ENABLED"];
         self->_messagingEnabled = [v14 isEqualToString:@"BT_VALUE_MAP_ENABLED"];
 
         v15 = sharedBluetoothSettingsLogComponent();
@@ -1214,12 +1214,12 @@ LABEL_8:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deviceUpdated:(id)a3
+- (void)deviceUpdated:(id)updated
 {
-  v14 = [a3 object];
-  v4 = [v14 address];
-  v5 = [(BluetoothDeviceProtocol *)self->_device identifier];
-  if ([v4 isEqualToString:v5])
+  object = [updated object];
+  address = [object address];
+  identifier = [(BluetoothDeviceProtocol *)self->_device identifier];
+  if ([address isEqualToString:identifier])
   {
     dismissed = self->_dismissed;
 
@@ -1228,152 +1228,152 @@ LABEL_8:
       goto LABEL_10;
     }
 
-    v4 = [v14 productName];
+    address = [object productName];
     if ([(BTSDeviceConfigController *)self nicknameEnabled])
     {
-      v7 = [v14 name];
+      name = [object name];
 
-      v4 = v7;
+      address = name;
     }
 
-    v8 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-    if (v8)
+    classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+    if (classicDevice)
     {
-      v9 = v8;
-      v10 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-      v11 = [v10 magicPaired];
+      v9 = classicDevice;
+      classicDevice2 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+      magicPaired = [classicDevice2 magicPaired];
 
-      if (v11)
+      if (magicPaired)
       {
-        v12 = [v14 name];
+        name2 = [object name];
 
-        v4 = v12;
+        address = name2;
       }
     }
 
-    [(BTSDeviceConfigController *)self setTitle:v4];
-    v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v13 = [v5 localizedStringForKey:@"DEVICE_NAME_TITLE" value:&stru_286339F58 table:@"DeviceConfig"];
+    [(BTSDeviceConfigController *)self setTitle:address];
+    identifier = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
+    v13 = [identifier localizedStringForKey:@"DEVICE_NAME_TITLE" value:&stru_286339F58 table:@"DeviceConfig"];
     [(BTSDeviceConfigController *)self reloadSpecifierID:v13];
   }
 
 LABEL_10:
 }
 
-- (void)listeningModeUpdatedHandler:(id)a3
+- (void)listeningModeUpdatedHandler:(id)handler
 {
   if (self->_deviceAnalytics)
   {
-    v9 = [a3 userInfo];
-    v4 = [v9 objectForKey:@"ListeningModes"];
+    userInfo = [handler userInfo];
+    v4 = [userInfo objectForKey:@"ListeningModes"];
 
     if (v4)
     {
-      v5 = [v9 objectForKeyedSubscript:@"ListeningModes"];
-      v6 = [v5 unsignedIntValue];
+      v5 = [userInfo objectForKeyedSubscript:@"ListeningModes"];
+      unsignedIntValue = [v5 unsignedIntValue];
 
-      [(HPSDeviceAnalytics *)self->_deviceAnalytics updateFeatureValue:31 value:v6 featureValueString:0];
+      [(HPSDeviceAnalytics *)self->_deviceAnalytics updateFeatureValue:31 value:unsignedIntValue featureValueString:0];
       [(HPSDeviceAnalytics *)self->_deviceAnalytics updateFeatureChangeCount:30];
     }
 
     else
     {
-      v7 = [v9 objectForKeyedSubscript:@"ListeningModesValueOnly"];
-      v8 = [v7 unsignedIntValue];
+      v7 = [userInfo objectForKeyedSubscript:@"ListeningModesValueOnly"];
+      unsignedIntValue2 = [v7 unsignedIntValue];
 
-      [(HPSDeviceAnalytics *)self->_deviceAnalytics updateFeatureValue:31 value:v8 featureValueString:0];
+      [(HPSDeviceAnalytics *)self->_deviceAnalytics updateFeatureValue:31 value:unsignedIntValue2 featureValueString:0];
     }
   }
 }
 
-- (void)listeningModeUpdatedV2Handler:(id)a3
+- (void)listeningModeUpdatedV2Handler:(id)handler
 {
   if (self->_deviceAnalytics)
   {
-    v9 = [a3 userInfo];
-    v4 = [v9 objectForKey:@"ListeningModesV2"];
+    userInfo = [handler userInfo];
+    v4 = [userInfo objectForKey:@"ListeningModesV2"];
 
     if (v4)
     {
-      v5 = [v9 objectForKeyedSubscript:@"ListeningModesV2"];
-      v6 = [v5 unsignedIntValue];
+      v5 = [userInfo objectForKeyedSubscript:@"ListeningModesV2"];
+      unsignedIntValue = [v5 unsignedIntValue];
 
-      [(HPSDeviceAnalytics *)self->_deviceAnalytics updateFeatureValue:33 value:v6 featureValueString:0];
+      [(HPSDeviceAnalytics *)self->_deviceAnalytics updateFeatureValue:33 value:unsignedIntValue featureValueString:0];
       [(HPSDeviceAnalytics *)self->_deviceAnalytics updateFeatureChangeCount:32];
     }
 
     else
     {
-      v7 = [v9 objectForKeyedSubscript:@"ListeningModesV2ValueOnly"];
-      v8 = [v7 unsignedIntValue];
+      v7 = [userInfo objectForKeyedSubscript:@"ListeningModesV2ValueOnly"];
+      unsignedIntValue2 = [v7 unsignedIntValue];
 
-      [(HPSDeviceAnalytics *)self->_deviceAnalytics updateFeatureValue:33 value:v8 featureValueString:0];
+      [(HPSDeviceAnalytics *)self->_deviceAnalytics updateFeatureValue:33 value:unsignedIntValue2 featureValueString:0];
     }
   }
 }
 
-- (void)pressAndHoldModeSelectedHandler:(id)a3
+- (void)pressAndHoldModeSelectedHandler:(id)handler
 {
   if (self->_deviceAnalytics)
   {
-    v8 = [a3 userInfo];
-    v4 = [v8 objectForKeyedSubscript:@"pressHoldRightBudValue"];
-    v5 = [v4 unsignedIntValue];
+    userInfo = [handler userInfo];
+    v4 = [userInfo objectForKeyedSubscript:@"pressHoldRightBudValue"];
+    unsignedIntValue = [v4 unsignedIntValue];
 
-    v6 = [v8 objectForKeyedSubscript:@"pressHoldLeftBudValue"];
-    v7 = [v6 unsignedIntValue];
+    v6 = [userInfo objectForKeyedSubscript:@"pressHoldLeftBudValue"];
+    unsignedIntValue2 = [v6 unsignedIntValue];
 
-    [(HPSDeviceAnalytics *)self->_deviceAnalytics updateFeatureValue:44 value:v5 featureValueString:0];
-    [(HPSDeviceAnalytics *)self->_deviceAnalytics updateFeatureValue:43 value:v7 featureValueString:0];
+    [(HPSDeviceAnalytics *)self->_deviceAnalytics updateFeatureValue:44 value:unsignedIntValue featureValueString:0];
+    [(HPSDeviceAnalytics *)self->_deviceAnalytics updateFeatureValue:43 value:unsignedIntValue2 featureValueString:0];
     [(HPSDeviceAnalytics *)self->_deviceAnalytics updateFeatureChangeCount:42];
   }
 }
 
-- (void)cycleBetweenLeftBudValueUpdated:(id)a3
+- (void)cycleBetweenLeftBudValueUpdated:(id)updated
 {
   if (self->_deviceAnalytics)
   {
-    v5 = [a3 userInfo];
-    v4 = [v5 objectForKeyedSubscript:@"cycleBetweenLeftBudValue"];
+    userInfo = [updated userInfo];
+    v4 = [userInfo objectForKeyedSubscript:@"cycleBetweenLeftBudValue"];
     [(HPSDeviceAnalytics *)self->_deviceAnalytics updateFeatureValue:9 value:0 featureValueString:v4];
     [(HPSDeviceAnalytics *)self->_deviceAnalytics updateFeatureChangeCount:9];
   }
 }
 
-- (void)cycleBetweenRightBudValueUpdated:(id)a3
+- (void)cycleBetweenRightBudValueUpdated:(id)updated
 {
   if (self->_deviceAnalytics)
   {
-    v5 = [a3 userInfo];
-    v4 = [v5 objectForKeyedSubscript:@"cycleBetweenRightBudValue"];
+    userInfo = [updated userInfo];
+    v4 = [userInfo objectForKeyedSubscript:@"cycleBetweenRightBudValue"];
     [(HPSDeviceAnalytics *)self->_deviceAnalytics updateFeatureValue:11 value:0 featureValueString:v4];
     [(HPSDeviceAnalytics *)self->_deviceAnalytics updateFeatureChangeCount:11];
   }
 }
 
-- (void)cycleBetweenV2LeftBudValueUpdated:(id)a3
+- (void)cycleBetweenV2LeftBudValueUpdated:(id)updated
 {
   if (self->_deviceAnalytics)
   {
-    v5 = [a3 userInfo];
-    v4 = [v5 objectForKeyedSubscript:@"cycleBetweenV2LeftBudValue"];
+    userInfo = [updated userInfo];
+    v4 = [userInfo objectForKeyedSubscript:@"cycleBetweenV2LeftBudValue"];
     [(HPSDeviceAnalytics *)self->_deviceAnalytics updateFeatureValue:13 value:0 featureValueString:v4];
     [(HPSDeviceAnalytics *)self->_deviceAnalytics updateFeatureChangeCount:12];
   }
 }
 
-- (void)cycleBetweenV2RightBudValueUpdated:(id)a3
+- (void)cycleBetweenV2RightBudValueUpdated:(id)updated
 {
   if (self->_deviceAnalytics)
   {
-    v5 = [a3 userInfo];
-    v4 = [v5 objectForKeyedSubscript:@"cycleBetweenV2RightBudValue"];
+    userInfo = [updated userInfo];
+    v4 = [userInfo objectForKeyedSubscript:@"cycleBetweenV2RightBudValue"];
     [(HPSDeviceAnalytics *)self->_deviceAnalytics updateFeatureValue:15 value:0 featureValueString:v4];
     [(HPSDeviceAnalytics *)self->_deviceAnalytics updateFeatureChangeCount:14];
   }
 }
 
-- (void)spatialProfileTappedHandler:(id)a3
+- (void)spatialProfileTappedHandler:(id)handler
 {
   deviceAnalytics = self->_deviceAnalytics;
   if (deviceAnalytics)
@@ -1382,21 +1382,21 @@ LABEL_10:
   }
 }
 
-- (void)settingsChangedHandler:(id)a3
+- (void)settingsChangedHandler:(id)handler
 {
-  v4 = [a3 object];
-  v5 = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD20]) userInfo];
+  object = [handler object];
+  userInfo = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD20]) userInfo];
   v6 = +[HPSDevice deviceKey];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  v7 = [userInfo objectForKeyedSubscript:v6];
 
-  v8 = [v7 headphoneDevice];
+  headphoneDevice = [v7 headphoneDevice];
 
-  v9 = [v4 address];
-  v10 = [(BluetoothDeviceProtocol *)self->_device identifier];
-  if ([v9 isEqualToString:v10] && !self->_dismissed)
+  address = [object address];
+  identifier = [(BluetoothDeviceProtocol *)self->_device identifier];
+  if ([address isEqualToString:identifier] && !self->_dismissed)
   {
 
-    if (v8)
+    if (headphoneDevice)
     {
       v11 = sharedBluetoothSettingsLogComponent();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -1416,12 +1416,12 @@ LABEL_10:
   }
 }
 
-- (void)deviceRemoved:(id)a3
+- (void)deviceRemoved:(id)removed
 {
-  v4 = [a3 object];
-  v5 = [v4 address];
-  v6 = [(BluetoothDeviceProtocol *)self->_device identifier];
-  if ([v5 isEqualToString:v6])
+  object = [removed object];
+  address = [object address];
+  identifier = [(BluetoothDeviceProtocol *)self->_device identifier];
+  if ([address isEqualToString:identifier])
   {
     dismissed = self->_dismissed;
 
@@ -1444,11 +1444,11 @@ LABEL_10:
           goto LABEL_8;
         }
 
-        v11 = [(BTSDeviceConfigController *)self view];
-        [v11 size];
+        view = [(BTSDeviceConfigController *)self view];
+        [view size];
         v13 = v12;
-        v14 = [(BTSDeviceConfigController *)self view];
-        [v14 size];
+        view2 = [(BTSDeviceConfigController *)self view];
+        [view2 size];
         v16 = v15;
 
         if (v13 > v16)
@@ -1461,20 +1461,20 @@ LABEL_8:
             _os_log_impl(&dword_251143000, v17, OS_LOG_TYPE_DEFAULT, "Headphone Configs: Device Removed from TLE with side by side layout, jump to General", v24, 2u);
           }
 
-          v18 = [MEMORY[0x277CC1E80] defaultWorkspace];
+          defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
           v19 = MEMORY[0x277CBEBC0];
           v20 = @"prefs:root=General";
         }
 
         else
         {
-          v18 = [MEMORY[0x277CC1E80] defaultWorkspace];
+          defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
           v19 = MEMORY[0x277CBEBC0];
           v20 = @"prefs:root=ROOT";
         }
 
         v22 = [v19 URLWithString:v20];
-        [v18 openSensitiveURL:v22 withOptions:0];
+        [defaultWorkspace openSensitiveURL:v22 withOptions:0];
       }
 
       else
@@ -1485,8 +1485,8 @@ LABEL_8:
           _os_log_impl(&dword_251143000, v9, OS_LOG_TYPE_DEFAULT, "Headphone Configs: Device Removed from Regular", v23, 2u);
         }
 
-        v18 = [(BTSDeviceConfigController *)self navigationController];
-        v21 = [v18 popViewControllerAnimated:1];
+        defaultWorkspace = [(BTSDeviceConfigController *)self navigationController];
+        v21 = [defaultWorkspace popViewControllerAnimated:1];
       }
     }
   }
@@ -1496,34 +1496,34 @@ LABEL_8:
   }
 }
 
-- (void)deviceAccessDeviceLost:(id)a3
+- (void)deviceAccessDeviceLost:(id)lost
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lostCopy = lost;
   if (!self->_dismissed && [(BTSDeviceConfigController *)self managedByDeviceAccess])
   {
-    v5 = [(BTSDeviceConfigController *)self leDevice];
-    if (v5)
+    leDevice = [(BTSDeviceConfigController *)self leDevice];
+    if (leDevice)
     {
-      v6 = [v4 object];
-      v7 = [v5 underlyingDADevice];
-      v8 = [v7 identifier];
-      v9 = [v8 isEqualToString:v6];
+      object = [lostCopy object];
+      underlyingDADevice = [leDevice underlyingDADevice];
+      identifier = [underlyingDADevice identifier];
+      v9 = [identifier isEqualToString:object];
 
       if (v9)
       {
         v10 = sharedBluetoothSettingsLogComponent();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
         {
-          v11 = [v5 underlyingDADevice];
+          underlyingDADevice2 = [leDevice underlyingDADevice];
           v15 = 138412290;
-          v16 = v11;
+          v16 = underlyingDADevice2;
           _os_log_impl(&dword_251143000, v10, OS_LOG_TYPE_DEFAULT, "Headphone Configs: DADevice Lost, popping to previous page. %@", &v15, 0xCu);
         }
 
         self->_dismissed = 1;
-        v12 = [(BTSDeviceConfigController *)self navigationController];
-        v13 = [v12 popViewControllerAnimated:1];
+        navigationController = [(BTSDeviceConfigController *)self navigationController];
+        v13 = [navigationController popViewControllerAnimated:1];
       }
     }
   }
@@ -1533,11 +1533,11 @@ LABEL_8:
 
 - (void)allowClassicConnection
 {
-  v3 = [(BTSDeviceConfigController *)self leDevice];
-  if (v3)
+  leDevice = [(BTSDeviceConfigController *)self leDevice];
+  if (leDevice)
   {
-    v7 = v3;
-    [v3 setDenyIncomingClassicConnection:0];
+    v7 = leDevice;
+    [leDevice setDenyIncomingClassicConnection:0];
     [(BluetoothDeviceProtocol *)self->_device connect];
     self->_devicePendingCTKDConnection = 1;
     v4 = [(BTSDeviceConfigController *)self specifierForID:@"CLASSIC_SETUP_BUTTON_ID"];
@@ -1548,17 +1548,17 @@ LABEL_8:
     [v4 setProperty:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277D3FF38]];
     [(BTSDeviceConfigController *)self reloadCellForSpecifierID:@"CLASSIC_SETUP_BUTTON_ID"];
 
-    v3 = v7;
+    leDevice = v7;
   }
 }
 
-- (void)setMessagesEnabled:(id)a3 specifier:(id)a4
+- (void)setMessagesEnabled:(id)enabled specifier:(id)specifier
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (self->_messagingEnabled != [v5 BOOLValue])
+  enabledCopy = enabled;
+  if (self->_messagingEnabled != [enabledCopy BOOLValue])
   {
-    self->_messagingEnabled = [v5 BOOLValue];
+    self->_messagingEnabled = [enabledCopy BOOLValue];
     v6 = sharedBluetoothSettingsLogComponent();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
@@ -1568,8 +1568,8 @@ LABEL_8:
       _os_log_impl(&dword_251143000, v6, OS_LOG_TYPE_DEFAULT, "User wants MAP set to: %d", &v15, 8u);
     }
 
-    v8 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-    v9 = v8;
+    classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+    v9 = classicDevice;
     if (self->_messagingEnabled)
     {
       v10 = @"BT_VALUE_MAP_ENABLED";
@@ -1580,13 +1580,13 @@ LABEL_8:
       v10 = @"BT_VALUE_MAP_DISABLED";
     }
 
-    [v8 setServiceSetting:512 key:@"BT_KEY_MAP_ENABLED" value:v10];
+    [classicDevice setServiceSetting:512 key:@"BT_KEY_MAP_ENABLED" value:v10];
 
     v11 = sharedBluetoothSettingsLogComponent();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-      v13 = [v12 getServiceSetting:512 key:@"BT_KEY_MAP_ENABLED"];
+      classicDevice2 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+      v13 = [classicDevice2 getServiceSetting:512 key:@"BT_KEY_MAP_ENABLED"];
       v15 = 138412290;
       v16 = v13;
       _os_log_impl(&dword_251143000, v11, OS_LOG_TYPE_DEFAULT, "After setting MAP, result is: %@", &v15, 0xCu);
@@ -1596,15 +1596,15 @@ LABEL_8:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setContactSync:(id)a3 specifier:(id)a4
+- (void)setContactSync:(id)sync specifier:(id)specifier
 {
-  v7 = a3;
-  if (self->_syncSettings.enabled != [v7 BOOLValue])
+  syncCopy = sync;
+  if (self->_syncSettings.enabled != [syncCopy BOOLValue])
   {
-    self->_syncSettings.enabled = [v7 BOOLValue];
+    self->_syncSettings.enabled = [syncCopy BOOLValue];
     self->_syncSettings.userPermissionGranted = 1;
-    v5 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-    [v5 setSyncSettings:*&self->_syncSettings.supported | (self->_syncSettings.userPermissionGranted << 32)];
+    classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+    [classicDevice setSyncSettings:*&self->_syncSettings.supported | (self->_syncSettings.userPermissionGranted << 32)];
 
     syncGroupsSpecifiers = self->_syncGroupsSpecifiers;
     if (self->_syncSettings.enabled)
@@ -1621,44 +1621,44 @@ LABEL_8:
 
 - (id)userSelectedDeviceType
 {
-  v2 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-  v3 = [v2 getUserSelectedDeviceType];
+  classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+  getUserSelectedDeviceType = [classicDevice getUserSelectedDeviceType];
 
-  if (v3 <= 5)
+  if (getUserSelectedDeviceType <= 5)
   {
-    v4 = [MEMORY[0x277CCABB0] numberWithInt:dword_251217BA0[v3]];
+    v4 = [MEMORY[0x277CCABB0] numberWithInt:dword_251217BA0[getUserSelectedDeviceType]];
   }
 
   return v4;
 }
 
-- (void)setUserSelectedDeviceType:(id)a3
+- (void)setUserSelectedDeviceType:(id)type
 {
-  v4 = a3;
-  v5 = [v4 intValue];
-  if (v5 <= 2)
+  typeCopy = type;
+  intValue = [typeCopy intValue];
+  if (intValue <= 2)
   {
-    if (v5 == 1)
+    if (intValue == 1)
     {
-      v6 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-      v7 = v6;
+      classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+      v7 = classicDevice;
       v8 = 1;
     }
 
     else
     {
-      if (v5 != 2)
+      if (intValue != 2)
       {
         goto LABEL_13;
       }
 
-      v6 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-      v7 = v6;
+      classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+      v7 = classicDevice;
       v8 = 2;
     }
 
 LABEL_12:
-    v9 = [v6 setUserSelectedDeviceType:v8];
+    v9 = [classicDevice setUserSelectedDeviceType:v8];
 
     if (v9)
     {
@@ -1668,21 +1668,21 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  switch(v5)
+  switch(intValue)
   {
     case 3:
-      v6 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-      v7 = v6;
+      classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+      v7 = classicDevice;
       v8 = 3;
       goto LABEL_12;
     case 4:
-      v6 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-      v7 = v6;
+      classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+      v7 = classicDevice;
       v8 = 4;
       goto LABEL_12;
     case 5:
-      v6 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-      v7 = v6;
+      classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+      v7 = classicDevice;
       v8 = 5;
       goto LABEL_12;
   }
@@ -1691,7 +1691,7 @@ LABEL_13:
   v10 = sharedBluetoothSettingsLogComponent();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
-    [BTSDeviceConfigController setUserSelectedDeviceType:v4];
+    [BTSDeviceConfigController setUserSelectedDeviceType:typeCopy];
   }
 
 LABEL_16:
@@ -1699,26 +1699,26 @@ LABEL_16:
 
 - (id)automaticAnswerCallsEnabled
 {
-  v3 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-  v4 = [v3 autoAnswerMode];
+  classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+  autoAnswerMode = [classicDevice autoAnswerMode];
 
-  [(HPSDeviceAnalytics *)self->_deviceAnalytics updateFeatureValue:35 value:v4 featureValueString:0];
-  v5 = [MEMORY[0x277CCABB0] numberWithBool:v4 == 1];
+  [(HPSDeviceAnalytics *)self->_deviceAnalytics updateFeatureValue:35 value:autoAnswerMode featureValueString:0];
+  v5 = [MEMORY[0x277CCABB0] numberWithBool:autoAnswerMode == 1];
 
   return v5;
 }
 
-- (void)setAutomaticAnswerCallsEnabled:(id)a3
+- (void)setAutomaticAnswerCallsEnabled:(id)enabled
 {
   deviceAnalytics = self->_deviceAnalytics;
-  v5 = a3;
+  enabledCopy = enabled;
   [(HPSDeviceAnalytics *)deviceAnalytics updateFeatureChangeCount:34];
-  v6 = [v5 BOOLValue];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  [(HPSDeviceAnalytics *)self->_deviceAnalytics updateFeatureValue:35 value:v6 featureValueString:0];
-  v7 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-  v9 = v7;
-  if (v6)
+  [(HPSDeviceAnalytics *)self->_deviceAnalytics updateFeatureValue:35 value:bOOLValue featureValueString:0];
+  classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+  v9 = classicDevice;
+  if (bOOLValue)
   {
     v8 = 1;
   }
@@ -1728,35 +1728,35 @@ LABEL_16:
     v8 = 2;
   }
 
-  [v7 setAutoAnswerMode:v8];
+  [classicDevice setAutoAnswerMode:v8];
 }
 
 - (id)doubleTapAction
 {
   v2 = MEMORY[0x277CCABB0];
-  v3 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-  v4 = [v2 numberWithInt:{objc_msgSend(v3, "doubleTapAction")}];
+  classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+  v4 = [v2 numberWithInt:{objc_msgSend(classicDevice, "doubleTapAction")}];
 
   return v4;
 }
 
-- (void)setdoubleTapAction:(id)a3
+- (void)setdoubleTapAction:(id)action
 {
   deviceAnalytics = self->_deviceAnalytics;
-  v5 = a3;
+  actionCopy = action;
   [(HPSDeviceAnalytics *)deviceAnalytics updateFeatureChangeCount:19];
-  v7 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-  v6 = [v5 intValue];
+  classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+  intValue = [actionCopy intValue];
 
-  [v7 setDoubleTapAction:v6];
+  [classicDevice setDoubleTapAction:intValue];
 }
 
 - (id)doubleTapActionLeft
 {
   v7 = 1;
   v8 = 1;
-  v3 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-  [v3 doubleTapActionEx:&v8 rightAction:&v7];
+  classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+  [classicDevice doubleTapActionEx:&v8 rightAction:&v7];
 
   v4 = sharedBluetoothSettingsLogComponent();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -1770,24 +1770,24 @@ LABEL_16:
   return v5;
 }
 
-- (void)setdoubleTapActionLeft:(id)a3
+- (void)setdoubleTapActionLeft:(id)left
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  leftCopy = left;
   v5 = sharedBluetoothSettingsLogComponent();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v10[0] = 67109120;
-    v10[1] = [v4 intValue];
+    v10[1] = [leftCopy intValue];
     _os_log_impl(&dword_251143000, v5, OS_LOG_TYPE_DEFAULT, "Set Double tap action left : %d", v10, 8u);
   }
 
   [(HPSDeviceAnalytics *)self->_deviceAnalytics updateFeatureChangeCount:19];
-  -[HPSDeviceAnalytics updateFeatureValue:value:featureValueString:](self->_deviceAnalytics, "updateFeatureValue:value:featureValueString:", 20, [v4 intValue], 0);
-  v6 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-  v7 = [v4 intValue];
-  v8 = [(BTSDeviceConfigController *)self doubleTapActionRight];
-  [v6 setDoubleTapActionEx:v7 rightAction:{objc_msgSend(v8, "intValue")}];
+  -[HPSDeviceAnalytics updateFeatureValue:value:featureValueString:](self->_deviceAnalytics, "updateFeatureValue:value:featureValueString:", 20, [leftCopy intValue], 0);
+  classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+  intValue = [leftCopy intValue];
+  doubleTapActionRight = [(BTSDeviceConfigController *)self doubleTapActionRight];
+  [classicDevice setDoubleTapActionEx:intValue rightAction:{objc_msgSend(doubleTapActionRight, "intValue")}];
 
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -1796,8 +1796,8 @@ LABEL_16:
 {
   v7 = 1;
   v8 = 1;
-  v3 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-  [v3 doubleTapActionEx:&v8 rightAction:&v7];
+  classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+  [classicDevice doubleTapActionEx:&v8 rightAction:&v7];
 
   v4 = sharedBluetoothSettingsLogComponent();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -1811,23 +1811,23 @@ LABEL_16:
   return v5;
 }
 
-- (void)setdoubleTapActionRight:(id)a3
+- (void)setdoubleTapActionRight:(id)right
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  rightCopy = right;
   v5 = sharedBluetoothSettingsLogComponent();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9[0] = 67109120;
-    v9[1] = [v4 intValue];
+    v9[1] = [rightCopy intValue];
     _os_log_impl(&dword_251143000, v5, OS_LOG_TYPE_DEFAULT, "Set Double tap action right : %d", v9, 8u);
   }
 
   [(HPSDeviceAnalytics *)self->_deviceAnalytics updateFeatureChangeCount:19];
-  -[HPSDeviceAnalytics updateFeatureValue:value:featureValueString:](self->_deviceAnalytics, "updateFeatureValue:value:featureValueString:", 21, [v4 intValue], 0);
-  v6 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-  v7 = [(BTSDeviceConfigController *)self doubleTapActionLeft];
-  [v6 setDoubleTapActionEx:objc_msgSend(v7 rightAction:{"intValue"), objc_msgSend(v4, "intValue")}];
+  -[HPSDeviceAnalytics updateFeatureValue:value:featureValueString:](self->_deviceAnalytics, "updateFeatureValue:value:featureValueString:", 21, [rightCopy intValue], 0);
+  classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+  doubleTapActionLeft = [(BTSDeviceConfigController *)self doubleTapActionLeft];
+  [classicDevice setDoubleTapActionEx:objc_msgSend(doubleTapActionLeft rightAction:{"intValue"), objc_msgSend(rightCopy, "intValue")}];
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -1835,8 +1835,8 @@ LABEL_16:
 - (id)inEarDetectEnabled
 {
   deviceAnalytics = self->_deviceAnalytics;
-  v4 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-  if ([v4 inEarDetectEnabled])
+  classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+  if ([classicDevice inEarDetectEnabled])
   {
     v5 = @"On";
   }
@@ -1849,20 +1849,20 @@ LABEL_16:
   [(HPSDeviceAnalytics *)deviceAnalytics updateFeatureValue:29 value:0 featureValueString:v5];
 
   v6 = MEMORY[0x277CCABB0];
-  v7 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-  v8 = [v6 numberWithBool:{objc_msgSend(v7, "inEarDetectEnabled")}];
+  classicDevice2 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+  v8 = [v6 numberWithBool:{objc_msgSend(classicDevice2, "inEarDetectEnabled")}];
 
   return v8;
 }
 
-- (void)setInEarDetectEnabled:(id)a3
+- (void)setInEarDetectEnabled:(id)enabled
 {
   deviceAnalytics = self->_deviceAnalytics;
-  v5 = a3;
+  enabledCopy = enabled;
   [(HPSDeviceAnalytics *)deviceAnalytics updateFeatureChangeCount:28];
-  v6 = [v5 BOOLValue];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
     v7 = @"On";
   }
@@ -1873,22 +1873,22 @@ LABEL_16:
   }
 
   [(HPSDeviceAnalytics *)self->_deviceAnalytics updateFeatureValue:29 value:0 featureValueString:v7];
-  v8 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-  [v8 setInEarDetectEnabled:v6];
+  classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+  [classicDevice setInEarDetectEnabled:bOOLValue];
 }
 
-- (void)setSoundProfileAllowed:(id)a3
+- (void)setSoundProfileAllowed:(id)allowed
 {
-  v4 = [a3 BOOLValue];
-  v5 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-  [v5 setDeviceSoundProfileAllowed:v4];
+  bOOLValue = [allowed BOOLValue];
+  classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+  [classicDevice setDeviceSoundProfileAllowed:bOOLValue];
 }
 
 - (id)soundProfileAllowed
 {
   v2 = MEMORY[0x277CCABB0];
-  v3 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-  v4 = [v2 numberWithBool:{objc_msgSend(v3, "getDeviceSoundProfileAllowed")}];
+  classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+  v4 = [v2 numberWithBool:{objc_msgSend(classicDevice, "getDeviceSoundProfileAllowed")}];
 
   return v4;
 }
@@ -1896,37 +1896,37 @@ LABEL_16:
 - (id)getEndCallMode
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-  v4 = [v3 getCallManagementConfig];
-  v5 = HIDWORD(v4) & 0xFFFFFF;
+  classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+  getCallManagementConfig = [classicDevice getCallManagementConfig];
+  v5 = HIDWORD(getCallManagementConfig) & 0xFFFFFF;
 
   v6 = sharedBluetoothSettingsLogComponent();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-  if (v4 == 1)
+  if (getCallManagementConfig == 1)
   {
     if (v7)
     {
-      v11 = BYTE3(v4);
+      v11 = BYTE3(getCallManagementConfig);
       v18 = 67110144;
       v19 = 1;
-      LODWORD(v4) = BYTE4(v4);
+      LODWORD(getCallManagementConfig) = BYTE4(getCallManagementConfig);
       v20 = 1024;
       v21 = v11;
       v22 = 1024;
       v23 = v5;
       v24 = 1024;
-      v25 = BYTE5(v4);
+      v25 = BYTE5(getCallManagementConfig);
       v26 = 1024;
-      v27 = BYTE6(v4);
+      v27 = BYTE6(getCallManagementConfig);
       _os_log_impl(&dword_251143000, v6, OS_LOG_TYPE_DEFAULT, "Call Controls: getEndCallMode, version: %u, End Call Status: %d, End Call Config: %d, Mute Call Status: %d, Mute Call Config: %d", &v18, 0x20u);
     }
 
     else
     {
-      LODWORD(v4) = BYTE4(v4);
+      LODWORD(getCallManagementConfig) = BYTE4(getCallManagementConfig);
     }
 
-    if (v4 != 4 && v4 >= 2)
+    if (getCallManagementConfig != 4 && getCallManagementConfig >= 2)
     {
       v12 = v5;
     }
@@ -1937,12 +1937,12 @@ LABEL_16:
     }
   }
 
-  else if (v4)
+  else if (getCallManagementConfig)
   {
     if (v7)
     {
       v18 = 67109120;
-      v19 = v4;
+      v19 = getCallManagementConfig;
       _os_log_impl(&dword_251143000, v6, OS_LOG_TYPE_DEFAULT, "Call Controls: getEndCallMode invalid version: %u", &v18, 8u);
     }
 
@@ -1951,11 +1951,11 @@ LABEL_16:
 
   else
   {
-    v8 = v4 >> 16;
+    v8 = getCallManagementConfig >> 16;
     if (v7)
     {
-      v9 = BYTE1(v4);
-      v10 = BYTE2(v4);
+      v9 = BYTE1(getCallManagementConfig);
+      v10 = BYTE2(getCallManagementConfig);
       v18 = 67109632;
       v19 = 0;
       v20 = 1024;
@@ -1967,7 +1967,7 @@ LABEL_16:
 
     else
     {
-      v10 = BYTE2(v4);
+      v10 = BYTE2(getCallManagementConfig);
     }
 
     if (v10 != 4 && v10 >= 2)
@@ -1988,18 +1988,18 @@ LABEL_16:
   return v15;
 }
 
-- (void)setEndCallMode:(id)a3
+- (void)setEndCallMode:(id)mode
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  modeCopy = mode;
   [(HPSDeviceAnalytics *)self->_deviceAnalytics updateFeatureChangeCount:23];
-  v5 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-  v6 = [v5 getCallManagementConfig];
+  classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+  getCallManagementConfig = [classicDevice getCallManagementConfig];
 
-  v7 = v6;
-  if (v6 == 1)
+  v7 = getCallManagementConfig;
+  if (getCallManagementConfig == 1)
   {
-    LOBYTE(v8) = [v4 intValue];
+    LOBYTE(v8) = [modeCopy intValue];
     if (v8 == 3)
     {
       v12 = 2;
@@ -2007,7 +2007,7 @@ LABEL_16:
 
     else
     {
-      v12 = BYTE6(v6);
+      v12 = BYTE6(getCallManagementConfig);
     }
 
     if (v8 == 2)
@@ -2026,26 +2026,26 @@ LABEL_16:
       v18 = 67110144;
       v19 = 1;
       v20 = 1024;
-      v21 = BYTE3(v6);
+      v21 = BYTE3(getCallManagementConfig);
       v22 = 1024;
       v23 = v8;
       v24 = 1024;
-      v25 = BYTE5(v6);
+      v25 = BYTE5(getCallManagementConfig);
       v26 = 1024;
       v27 = v13;
       _os_log_impl(&dword_251143000, v14, OS_LOG_TYPE_DEFAULT, "Call Controls: setEndCallMode, version: %u, End Call Status: %d, End Call Config: %d, Mute Call Status: %d, Mute Call Config: %d", &v18, 0x20u);
     }
 
-    v15 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-    [v15 setCallConfig:v6 & 0xFF0000000000 | (v13 << 48) | (v8 << 32) | v6];
+    classicDevice2 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+    [classicDevice2 setCallConfig:getCallManagementConfig & 0xFF0000000000 | (v13 << 48) | (v8 << 32) | getCallManagementConfig];
 
     [(HPSDeviceAnalytics *)self->_deviceAnalytics updateFeatureValue:39 value:v13 featureValueString:0];
   }
 
   else
   {
-    v8 = HIDWORD(v6) & 0xFFFFFF;
-    if (v6)
+    v8 = HIDWORD(getCallManagementConfig) & 0xFFFFFF;
+    if (getCallManagementConfig)
     {
       v16 = sharedBluetoothSettingsLogComponent();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -2058,21 +2058,21 @@ LABEL_16:
 
     else
     {
-      v9 = [v4 intValue];
+      intValue = [modeCopy intValue];
       v10 = sharedBluetoothSettingsLogComponent();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         v18 = 67109632;
         v19 = 0;
         v20 = 1024;
-        v21 = BYTE1(v6);
+        v21 = BYTE1(getCallManagementConfig);
         v22 = 1024;
-        v23 = v9;
+        v23 = intValue;
         _os_log_impl(&dword_251143000, v10, OS_LOG_TYPE_DEFAULT, "End Call: Set Config, version: %u, Status: %d, Mode: %d", &v18, 0x14u);
       }
 
-      v11 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-      [v11 setCallConfig:v6 & 0xFFFFFFFF00FFFFLL | (v9 << 16)];
+      classicDevice3 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+      [classicDevice3 setCallConfig:getCallManagementConfig & 0xFFFFFFFF00FFFFLL | (intValue << 16)];
     }
   }
 
@@ -2084,35 +2084,35 @@ LABEL_16:
 - (id)getMuteCallMode
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-  v4 = [v3 getCallManagementConfig];
+  classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+  getCallManagementConfig = [classicDevice getCallManagementConfig];
 
   v5 = sharedBluetoothSettingsLogComponent();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v13[0] = 67110144;
-    v13[1] = v4;
+    v13[1] = getCallManagementConfig;
     v14 = 1024;
-    v15 = BYTE3(v4);
+    v15 = BYTE3(getCallManagementConfig);
     v16 = 1024;
-    v17 = BYTE4(v4);
+    v17 = BYTE4(getCallManagementConfig);
     v18 = 1024;
-    v19 = BYTE5(v4);
+    v19 = BYTE5(getCallManagementConfig);
     v20 = 1024;
-    v21 = BYTE6(v4);
+    v21 = BYTE6(getCallManagementConfig);
     _os_log_impl(&dword_251143000, v5, OS_LOG_TYPE_DEFAULT, "Call Controls: getMuteCallMode, version: %u, End Call Status: %d, End Call Config: %d, Mute Call Status: %d, Mute Call Config: %d", v13, 0x20u);
   }
 
-  v7 = BYTE6(v4) < 2u || BYTE6(v4) == 4;
+  v7 = BYTE6(getCallManagementConfig) < 2u || BYTE6(getCallManagementConfig) == 4;
   deviceAnalytics = self->_deviceAnalytics;
-  if (v4 == 1 && v7)
+  if (getCallManagementConfig == 1 && v7)
   {
     v9 = 3;
   }
 
   else
   {
-    v9 = BYTE6(v4);
+    v9 = BYTE6(getCallManagementConfig);
   }
 
   [(HPSDeviceAnalytics *)deviceAnalytics updateFeatureValue:39 value:v9 featureValueString:0];
@@ -2122,25 +2122,25 @@ LABEL_16:
   return v10;
 }
 
-- (void)setMuteCallMode:(id)a3
+- (void)setMuteCallMode:(id)mode
 {
   v23 = *MEMORY[0x277D85DE8];
   deviceAnalytics = self->_deviceAnalytics;
-  v5 = a3;
+  modeCopy = mode;
   [(HPSDeviceAnalytics *)deviceAnalytics updateFeatureChangeCount:38];
-  v6 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-  v7 = [v6 getCallManagementConfig];
+  classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+  getCallManagementConfig = [classicDevice getCallManagementConfig];
 
-  v8 = [v5 intValue];
-  if (v7 == 1)
+  intValue = [modeCopy intValue];
+  if (getCallManagementConfig == 1)
   {
-    v9 = HIDWORD(v7) & 0xFFFFFF;
-    if (v8 == 3)
+    v9 = HIDWORD(getCallManagementConfig) & 0xFFFFFF;
+    if (intValue == 3)
     {
       LOBYTE(v9) = 2;
     }
 
-    if (v8 == 2)
+    if (intValue == 2)
     {
       v10 = 3;
     }
@@ -2156,21 +2156,21 @@ LABEL_16:
       v14[0] = 67110144;
       v14[1] = 1;
       v15 = 1024;
-      v16 = BYTE3(v7);
+      v16 = BYTE3(getCallManagementConfig);
       v17 = 1024;
       v18 = v10;
       v19 = 1024;
-      v20 = BYTE5(v7);
+      v20 = BYTE5(getCallManagementConfig);
       v21 = 1024;
-      v22 = v8;
+      v22 = intValue;
       _os_log_impl(&dword_251143000, v11, OS_LOG_TYPE_DEFAULT, "Call Controls: setMuteCallMode, version: %u, End Call Status: %d, End Call Config: %d, Mute Call Status: %d, Mute Call Config: %d", v14, 0x20u);
     }
 
-    v12 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-    [v12 setCallConfig:v7 & 0xFF0000000000 | (v8 << 48) & 0xFFFFFFFFFFFFFFLL | (v10 << 32) & 0xFFFFFFFFFFFFFFLL | v7 & 0xFFFFFF00 | 1];
+    classicDevice2 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+    [classicDevice2 setCallConfig:getCallManagementConfig & 0xFF0000000000 | (intValue << 48) & 0xFFFFFFFFFFFFFFLL | (v10 << 32) & 0xFFFFFFFFFFFFFFLL | getCallManagementConfig & 0xFFFFFF00 | 1];
 
     [(HPSDeviceAnalytics *)self->_deviceAnalytics updateFeatureValue:24 value:v10 featureValueString:0];
-    [(HPSDeviceAnalytics *)self->_deviceAnalytics updateFeatureValue:39 value:v8 featureValueString:0];
+    [(HPSDeviceAnalytics *)self->_deviceAnalytics updateFeatureValue:39 value:intValue featureValueString:0];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -2179,53 +2179,53 @@ LABEL_16:
 - (id)micMode
 {
   deviceAnalytics = self->_deviceAnalytics;
-  v4 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-  -[HPSDeviceAnalytics updateFeatureValue:value:featureValueString:](deviceAnalytics, "updateFeatureValue:value:featureValueString:", 37, [v4 micMode], 0);
+  classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+  -[HPSDeviceAnalytics updateFeatureValue:value:featureValueString:](deviceAnalytics, "updateFeatureValue:value:featureValueString:", 37, [classicDevice micMode], 0);
 
   v5 = MEMORY[0x277CCABB0];
-  v6 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-  v7 = [v5 numberWithInt:{objc_msgSend(v6, "micMode")}];
+  classicDevice2 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+  v7 = [v5 numberWithInt:{objc_msgSend(classicDevice2, "micMode")}];
 
   return v7;
 }
 
-- (void)setMicMode:(id)a3
+- (void)setMicMode:(id)mode
 {
   deviceAnalytics = self->_deviceAnalytics;
-  v5 = a3;
+  modeCopy = mode;
   [(HPSDeviceAnalytics *)deviceAnalytics updateFeatureChangeCount:36];
-  -[HPSDeviceAnalytics updateFeatureValue:value:featureValueString:](self->_deviceAnalytics, "updateFeatureValue:value:featureValueString:", 37, [v5 intValue], 0);
-  v7 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-  v6 = [v5 intValue];
+  -[HPSDeviceAnalytics updateFeatureValue:value:featureValueString:](self->_deviceAnalytics, "updateFeatureValue:value:featureValueString:", 37, [modeCopy intValue], 0);
+  classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+  intValue = [modeCopy intValue];
 
-  [v7 setMicMode:v6];
+  [classicDevice setMicMode:intValue];
 }
 
 - (id)smartRouteMode
 {
   deviceAnalytics = self->_deviceAnalytics;
-  v4 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-  -[HPSDeviceAnalytics updateFeatureValue:value:featureValueString:](deviceAnalytics, "updateFeatureValue:value:featureValueString:", 49, [v4 smartRouteMode], 0);
+  classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+  -[HPSDeviceAnalytics updateFeatureValue:value:featureValueString:](deviceAnalytics, "updateFeatureValue:value:featureValueString:", 49, [classicDevice smartRouteMode], 0);
 
   v5 = MEMORY[0x277CCABB0];
-  v6 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-  v7 = [v5 numberWithInt:{objc_msgSend(v6, "smartRouteMode")}];
+  classicDevice2 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+  v7 = [v5 numberWithInt:{objc_msgSend(classicDevice2, "smartRouteMode")}];
 
   return v7;
 }
 
-- (void)setSmartRouteMode:(id)a3
+- (void)setSmartRouteMode:(id)mode
 {
   deviceAnalytics = self->_deviceAnalytics;
-  v5 = a3;
+  modeCopy = mode;
   [(HPSDeviceAnalytics *)deviceAnalytics updateFeatureChangeCount:48];
-  v6 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-  [v6 setSmartRouteMode:{objc_msgSend(v5, "intValue")}];
+  classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+  [classicDevice setSmartRouteMode:{objc_msgSend(modeCopy, "intValue")}];
 
-  -[HPSDeviceAnalytics updateFeatureValue:value:featureValueString:](self->_deviceAnalytics, "updateFeatureValue:value:featureValueString:", 49, [v5 intValue], 0);
-  LODWORD(v6) = [v5 intValue];
+  -[HPSDeviceAnalytics updateFeatureValue:value:featureValueString:](self->_deviceAnalytics, "updateFeatureValue:value:featureValueString:", 49, [modeCopy intValue], 0);
+  LODWORD(classicDevice) = [modeCopy intValue];
 
-  if (v6 == 2)
+  if (classicDevice == 2)
   {
 
     [(BTSDeviceConfigController *)self sendSmartRoutingDisabledTipEvent];
@@ -2234,21 +2234,21 @@ LABEL_16:
 
 - (void)sendSmartRoutingDisabledTipEvent
 {
-  v7 = [MEMORY[0x277CF1B58] discoverabilitySignal];
-  v2 = [v7 source];
+  discoverabilitySignal = [MEMORY[0x277CF1B58] discoverabilitySignal];
+  source = [discoverabilitySignal source];
   v3 = objc_alloc(MEMORY[0x277CF1938]);
-  v4 = [MEMORY[0x277CCA8D8] mainBundle];
-  v5 = [v4 bundleIdentifier];
-  v6 = [v3 initWithIdentifier:@"com.apple.bluetooth.smartrouting" bundleID:v5 context:@"off"];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v6 = [v3 initWithIdentifier:@"com.apple.bluetooth.smartrouting" bundleID:bundleIdentifier context:@"off"];
 
-  [v2 sendEvent:v6];
+  [source sendEvent:v6];
 }
 
 - (id)doubleTapCapability
 {
   v2 = MEMORY[0x277CCABB0];
-  v3 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-  v4 = [v2 numberWithInt:{objc_msgSend(v3, "doubleTapCapability")}];
+  classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+  v4 = [v2 numberWithInt:{objc_msgSend(classicDevice, "doubleTapCapability")}];
 
   return v4;
 }
@@ -2256,8 +2256,8 @@ LABEL_16:
 - (id)clickHoldModeLeft
 {
   v5 = 0;
-  v2 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-  [v2 clickHoldMode:&v5 + 4 rightAction:&v5];
+  classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+  [classicDevice clickHoldMode:&v5 + 4 rightAction:&v5];
 
   v3 = [MEMORY[0x277CCABB0] numberWithInt:HIDWORD(v5)];
 
@@ -2267,52 +2267,52 @@ LABEL_16:
 - (id)clickHoldModeRight
 {
   v5 = 0;
-  v2 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-  [v2 clickHoldMode:&v5 + 4 rightAction:&v5];
+  classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+  [classicDevice clickHoldMode:&v5 + 4 rightAction:&v5];
 
   v3 = [MEMORY[0x277CCABB0] numberWithInt:v5];
 
   return v3;
 }
 
-- (void)setGestureMode:(id)a3 specifier:(id)a4
+- (void)setGestureMode:(id)mode specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
+  modeCopy = mode;
+  specifierCopy = specifier;
   [(HPSDeviceAnalytics *)self->_deviceAnalytics updateFeatureChangeCount:42];
   v18 = 0;
-  v8 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-  [v8 clickHoldMode:&v18 + 4 rightAction:&v18];
+  classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+  [classicDevice clickHoldMode:&v18 + 4 rightAction:&v18];
 
-  v9 = [v7 identifier];
-  v10 = [v9 isEqualToString:@"LEFT_ID"];
+  identifier = [specifierCopy identifier];
+  v10 = [identifier isEqualToString:@"LEFT_ID"];
 
   if (v10)
   {
-    v11 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-    v12 = [v6 intValue];
-    v13 = v18;
-    v14 = v11;
+    classicDevice2 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+    intValue = [modeCopy intValue];
+    intValue2 = v18;
+    v14 = classicDevice2;
 LABEL_5:
-    [v14 setClickHoldMode:v12 rightMode:v13];
+    [v14 setClickHoldMode:intValue rightMode:intValue2];
     goto LABEL_8;
   }
 
-  v15 = [v7 identifier];
-  v16 = [v15 isEqualToString:@"RIGHT_ID"];
+  identifier2 = [specifierCopy identifier];
+  v16 = [identifier2 isEqualToString:@"RIGHT_ID"];
 
   if (v16)
   {
-    v11 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+    classicDevice2 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
     v17 = HIDWORD(v18);
-    v13 = [v6 intValue];
-    v14 = v11;
-    v12 = v17;
+    intValue2 = [modeCopy intValue];
+    v14 = classicDevice2;
+    intValue = v17;
     goto LABEL_5;
   }
 
-  v11 = sharedBluetoothSettingsLogComponent();
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+  classicDevice2 = sharedBluetoothSettingsLogComponent();
+  if (os_log_type_enabled(classicDevice2, OS_LOG_TYPE_ERROR))
   {
     [BTSDeviceConfigController setGestureMode:? specifier:?];
   }
@@ -2343,7 +2343,7 @@ LABEL_8:
   return 0;
 }
 
-- (void)sealDetectSet:(id)a3
+- (void)sealDetectSet:(id)set
 {
   v3 = sharedBluetoothSettingsLogComponent();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -2352,26 +2352,26 @@ LABEL_8:
   }
 }
 
-- (void)presentFitTestController:(id)a3
+- (void)presentFitTestController:(id)controller
 {
   [(HPSDeviceAnalytics *)self->_deviceAnalytics updateFeatureChangeCount:22];
   v13 = objc_alloc_init(BTSFitTestWelcomeController);
-  v4 = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD20]) userInfo];
+  userInfo = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD20]) userInfo];
   v5 = +[HPSDevice deviceKey];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  v6 = [userInfo objectForKeyedSubscript:v5];
   [(BTSFitTestWelcomeController *)v13 setCurrentDevice:v6];
 
   v7 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel_cancelFitTest];
-  v8 = [(BTSFitTestWelcomeController *)v13 navigationItem];
-  [v8 setLeftBarButtonItem:v7];
+  navigationItem = [(BTSFitTestWelcomeController *)v13 navigationItem];
+  [navigationItem setLeftBarButtonItem:v7];
 
   v9 = [objc_alloc(MEMORY[0x277D37660]) initWithRootViewController:v13];
-  v10 = [v9 navigationBar];
-  v11 = [MEMORY[0x277D75348] systemBackgroundColor];
-  [v10 setBackgroundColor:v11];
+  navigationBar = [v9 navigationBar];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  [navigationBar setBackgroundColor:systemBackgroundColor];
 
-  v12 = [v9 navigationBar];
-  [v12 _setHidesShadow:1];
+  navigationBar2 = [v9 navigationBar];
+  [navigationBar2 _setHidesShadow:1];
 
   [v9 setModalPresentationStyle:2];
   [(BTSDeviceConfigController *)self presentViewController:v9 animated:1 completion:0];
@@ -2382,14 +2382,14 @@ LABEL_8:
   v2 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:@"https://support.apple.com/kb/HT213102"];
   if (v2)
   {
-    v3 = [MEMORY[0x277D75128] sharedApplication];
-    [v3 openURL:v2 options:MEMORY[0x277CBEC10] completionHandler:0];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    [mEMORY[0x277D75128] openURL:v2 options:MEMORY[0x277CBEC10] completionHandler:0];
   }
 
   else
   {
-    v3 = sharedBluetoothSettingsLogComponent();
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
+    mEMORY[0x277D75128] = sharedBluetoothSettingsLogComponent();
+    if (os_log_type_enabled(mEMORY[0x277D75128], OS_LOG_TYPE_ERROR))
     {
       [BTSDeviceConfigController presentImportantMsgLink];
     }
@@ -2405,14 +2405,14 @@ LABEL_8:
   v5 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:v4];
   if (v5)
   {
-    v6 = [MEMORY[0x277CC1E80] defaultWorkspace];
-    [v6 openSensitiveURL:v5 withOptions:0];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+    [defaultWorkspace openSensitiveURL:v5 withOptions:0];
   }
 
   else
   {
-    v6 = sharedBluetoothSettingsLogComponent();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    defaultWorkspace = sharedBluetoothSettingsLogComponent();
+    if (os_log_type_enabled(defaultWorkspace, OS_LOG_TYPE_ERROR))
     {
       [BTSDeviceConfigController presentAssetLocationLink];
     }
@@ -2430,36 +2430,36 @@ LABEL_8:
   v3 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:self->_findMyUrl];
   if (v3)
   {
-    v4 = [MEMORY[0x277D75128] sharedApplication];
-    [v4 openURL:v3 options:MEMORY[0x277CBEC10] completionHandler:0];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    [mEMORY[0x277D75128] openURL:v3 options:MEMORY[0x277CBEC10] completionHandler:0];
   }
 
   else
   {
-    v4 = sharedBluetoothSettingsLogComponent();
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+    mEMORY[0x277D75128] = sharedBluetoothSettingsLogComponent();
+    if (os_log_type_enabled(mEMORY[0x277D75128], OS_LOG_TYPE_ERROR))
     {
       [BTSDeviceConfigController presentImportantMsgLink];
     }
   }
 }
 
-- (void)presentSpatialTutorialController:(id)a3
+- (void)presentSpatialTutorialController:(id)controller
 {
   [(HPSDeviceAnalytics *)self->_deviceAnalytics updateFeatureChangeCount:51];
   v53 = 3;
   v54 = 3;
-  v4 = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD20]) userInfo];
+  userInfo = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD20]) userInfo];
   v5 = +[HPSDevice deviceKey];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  v6 = [userInfo objectForKeyedSubscript:v5];
 
-  v7 = [v6 classicDevice];
-  [v7 inEarStatusPrimary:&v54 secondary:&v53];
+  classicDevice = [v6 classicDevice];
+  [classicDevice inEarStatusPrimary:&v54 secondary:&v53];
 
   v9 = v53;
   v8 = v54;
-  v10 = [v6 classicDevice];
-  if ([v10 productId] == 8215)
+  classicDevice2 = [v6 classicDevice];
+  if ([classicDevice2 productId] == 8215)
   {
 
 LABEL_3:
@@ -2469,10 +2469,10 @@ LABEL_3:
   }
 
   v12 = v8 | v9;
-  v13 = [v6 classicDevice];
-  v14 = [v13 productId];
+  classicDevice3 = [v6 classicDevice];
+  productId = [classicDevice3 productId];
 
-  if (!v12 || v14 == 8229)
+  if (!v12 || productId == 8229)
   {
     goto LABEL_3;
   }
@@ -2480,10 +2480,10 @@ LABEL_3:
   v15 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v11 = [v15 localizedStringForKey:@"SPATIAL_TUTORIAL_OUT_OF_EAR_WARNING" value:&stru_286339F58 table:@"DeviceConfig"];
 
-  v16 = [v6 classicDevice];
-  v17 = [v16 productId];
+  classicDevice4 = [v6 classicDevice];
+  productId2 = [classicDevice4 productId];
 
-  if (v17 == 8202)
+  if (productId2 == 8202)
   {
     v18 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v19 = [v18 localizedStringForKey:@"SPATIAL_TUTORIAL_NOT_ON_HEAD_WARNING" value:&stru_286339F58 table:@"DeviceConfig-b515"];
@@ -2491,10 +2491,10 @@ LABEL_3:
     v11 = v19;
   }
 
-  v20 = [v6 classicDevice];
-  v21 = [v20 productId];
+  classicDevice5 = [v6 classicDevice];
+  productId3 = [classicDevice5 productId];
 
-  if (v21 == 8223)
+  if (productId3 == 8223)
   {
     v22 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v23 = [v22 localizedStringForKey:@"SPATIAL_TUTORIAL_NOT_ON_HEAD_WARNING" value:&stru_286339F58 table:@"DeviceConfig-b515"];
@@ -2502,10 +2502,10 @@ LABEL_3:
     v11 = v23;
   }
 
-  v24 = [v6 classicDevice];
-  v25 = [v24 productId];
+  classicDevice6 = [v6 classicDevice];
+  productId4 = [classicDevice6 productId];
 
-  if (v25 == 8210)
+  if (productId4 == 8210)
   {
     v26 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v27 = [v26 localizedStringForKey:@"SPATIAL_TUTORIAL_OUT_OF_EAR_WARNING" value:&stru_286339F58 table:@"DeviceConfig-B494"];
@@ -2513,10 +2513,10 @@ LABEL_3:
     v11 = v27;
   }
 
-  v28 = [v6 classicDevice];
-  v29 = [v28 productId];
+  classicDevice7 = [v6 classicDevice];
+  productId5 = [classicDevice7 productId];
 
-  if (v29 == 8239)
+  if (productId5 == 8239)
   {
     v30 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v31 = [v30 localizedStringForKey:@"SPATIAL_TUTORIAL_OUT_OF_EAR_WARNING" value:&stru_286339F58 table:@"DeviceConfig-B494b"];
@@ -2524,10 +2524,10 @@ LABEL_3:
     v11 = v31;
   }
 
-  v32 = [v6 classicDevice];
-  v33 = [v32 productId];
+  classicDevice8 = [v6 classicDevice];
+  productId6 = [classicDevice8 productId];
 
-  if (v33 == 8221)
+  if (productId6 == 8221)
   {
     v34 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v35 = [v34 localizedStringForKey:@"SPATIAL_TUTORIAL_OUT_OF_EAR_WARNING" value:&stru_286339F58 table:@"DeviceConfig-B498-v2"];
@@ -2535,10 +2535,10 @@ LABEL_3:
     v11 = v35;
   }
 
-  v36 = [v6 classicDevice];
-  v37 = [v36 productId];
+  classicDevice9 = [v6 classicDevice];
+  productId7 = [classicDevice9 productId];
 
-  if (v37 == 8211)
+  if (productId7 == 8211)
   {
     v38 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v39 = [v38 localizedStringForKey:@"SPATIAL_TUTORIAL_OUT_OF_EAR_WARNING" value:&stru_286339F58 table:@"DeviceConfig-B688"];
@@ -2546,10 +2546,10 @@ LABEL_3:
     v11 = v39;
   }
 
-  v40 = [v6 classicDevice];
-  v41 = [v40 productId];
+  classicDevice10 = [v6 classicDevice];
+  productId8 = [classicDevice10 productId];
 
-  if (v41 == 8212)
+  if (productId8 == 8212)
   {
     v42 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v43 = [v42 localizedStringForKey:@"SPATIAL_TUTORIAL_OUT_OF_EAR_WARNING" value:&stru_286339F58 table:@"DeviceConfig-B698"];
@@ -2557,10 +2557,10 @@ LABEL_3:
     v11 = v43;
   }
 
-  v44 = [v6 classicDevice];
-  v45 = [v44 productId];
+  classicDevice11 = [v6 classicDevice];
+  productId9 = [classicDevice11 productId];
 
-  if (v45 == 8228)
+  if (productId9 == 8228)
   {
     v46 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v47 = [v46 localizedStringForKey:@"SPATIAL_TUTORIAL_OUT_OF_EAR_WARNING" value:&stru_286339F58 table:@"DeviceConfig-B698"];
@@ -2587,101 +2587,101 @@ LABEL_23:
     p_device = &self->_ctkdLeDevice;
   }
 
-  v4 = [*p_device ancsAuthorized];
+  ancsAuthorized = [*p_device ancsAuthorized];
   v5 = MEMORY[0x277CCABB0];
 
-  return [v5 numberWithBool:v4];
+  return [v5 numberWithBool:ancsAuthorized];
 }
 
-- (void)setANCSAuthorized:(id)a3
+- (void)setANCSAuthorized:(id)authorized
 {
   p_device = &self->_device;
   device = self->_device;
-  v6 = a3;
+  authorizedCopy = authorized;
   if ([(BluetoothDeviceProtocol *)device isCTKDDevice])
   {
     p_device = &self->_ctkdLeDevice;
   }
 
   v7 = *p_device;
-  v8 = [v6 BOOLValue];
+  bOOLValue = [authorizedCopy BOOLValue];
 
-  [v7 setANCSAuthorization:v8];
+  [v7 setANCSAuthorization:bOOLValue];
 }
 
 - (id)userSelectedHealthDataSyncConfig
 {
   v8 = *MEMORY[0x277D85DE8];
-  v2 = [(BluetoothDeviceProtocol *)self->_device userSelectedHealthDataSyncConfig];
+  userSelectedHealthDataSyncConfig = [(BluetoothDeviceProtocol *)self->_device userSelectedHealthDataSyncConfig];
   v3 = sharedBluetoothSettingsLogComponent();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v7[0] = 67109120;
-    v7[1] = v2;
+    v7[1] = userSelectedHealthDataSyncConfig;
     _os_log_impl(&dword_251143000, v3, OS_LOG_TYPE_DEFAULT, "Get user HealthDataSyncConfig: %d", v7, 8u);
   }
 
-  v4 = [MEMORY[0x277CCABB0] numberWithInt:v2];
+  v4 = [MEMORY[0x277CCABB0] numberWithInt:userSelectedHealthDataSyncConfig];
   v5 = *MEMORY[0x277D85DE8];
 
   return v4;
 }
 
-- (void)setUserSelectedHealthDataSyncConfig:(id)a3
+- (void)setUserSelectedHealthDataSyncConfig:(id)config
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  configCopy = config;
   v5 = sharedBluetoothSettingsLogComponent();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = configCopy;
     _os_log_impl(&dword_251143000, v5, OS_LOG_TYPE_DEFAULT, "User set HealthDataSyncConfig: %@", &v7, 0xCu);
   }
 
-  -[BluetoothDeviceProtocol setUserSelectedHealthDataSyncConfig:](self->_device, "setUserSelectedHealthDataSyncConfig:", [v4 intValue]);
+  -[BluetoothDeviceProtocol setUserSelectedHealthDataSyncConfig:](self->_device, "setUserSelectedHealthDataSyncConfig:", [configCopy intValue]);
   v6 = *MEMORY[0x277D85DE8];
 }
 
 - (id)digitalCrownMode
 {
   deviceAnalytics = self->_deviceAnalytics;
-  v4 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-  -[HPSDeviceAnalytics updateFeatureValue:value:featureValueString:](deviceAnalytics, "updateFeatureValue:value:featureValueString:", 7, [v4 crownRotationDirection], 0);
+  classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+  -[HPSDeviceAnalytics updateFeatureValue:value:featureValueString:](deviceAnalytics, "updateFeatureValue:value:featureValueString:", 7, [classicDevice crownRotationDirection], 0);
 
   v5 = MEMORY[0x277CCABB0];
-  v6 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-  v7 = [v5 numberWithInt:{objc_msgSend(v6, "crownRotationDirection")}];
+  classicDevice2 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+  v7 = [v5 numberWithInt:{objc_msgSend(classicDevice2, "crownRotationDirection")}];
 
   return v7;
 }
 
-- (void)setDigitalCrownMode:(id)a3
+- (void)setDigitalCrownMode:(id)mode
 {
   deviceAnalytics = self->_deviceAnalytics;
-  v5 = a3;
+  modeCopy = mode;
   [(HPSDeviceAnalytics *)deviceAnalytics updateFeatureChangeCount:6];
-  -[HPSDeviceAnalytics updateFeatureValue:value:featureValueString:](self->_deviceAnalytics, "updateFeatureValue:value:featureValueString:", 7, [v5 intValue], 0);
-  v7 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-  v6 = [v5 intValue];
+  -[HPSDeviceAnalytics updateFeatureValue:value:featureValueString:](self->_deviceAnalytics, "updateFeatureValue:value:featureValueString:", 7, [modeCopy intValue], 0);
+  classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+  intValue = [modeCopy intValue];
 
-  [v7 setCrownRotationDirection:v6];
+  [classicDevice setCrownRotationDirection:intValue];
 }
 
 - (void)refreshFindMyStatusForPencilInBackground
 {
   v3 = objc_alloc(MEMORY[0x277CCAD78]);
-  v4 = [(BluetoothDeviceProtocol *)self->_device identifier];
-  v5 = [v3 initWithUUIDString:v4];
+  identifier = [(BluetoothDeviceProtocol *)self->_device identifier];
+  v5 = [v3 initWithUUIDString:identifier];
 
   v6 = objc_alloc_init(MEMORY[0x277D49690]);
-  v7 = [v6 ownerSession];
+  ownerSession = [v6 ownerSession];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __69__BTSDeviceConfigController_refreshFindMyStatusForPencilInBackground__block_invoke;
   v8[3] = &unk_2796AD778;
   v8[4] = self;
-  [v7 peripheralConnectionMaterialForAccessoryIdentifier:v5 completion:v8];
+  [ownerSession peripheralConnectionMaterialForAccessoryIdentifier:v5 completion:v8];
 }
 
 void __69__BTSDeviceConfigController_refreshFindMyStatusForPencilInBackground__block_invoke(uint64_t a1, void *a2)
@@ -2727,8 +2727,8 @@ void __69__BTSDeviceConfigController_refreshFindMyStatusForPencilInBackground__b
 {
   v22 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277CCAD78]);
-  v4 = [(BluetoothDeviceProtocol *)self->_device identifier];
-  v5 = [v3 initWithUUIDString:v4];
+  identifier = [(BluetoothDeviceProtocol *)self->_device identifier];
+  v5 = [v3 initWithUUIDString:identifier];
 
   v14 = 0;
   v15 = &v14;
@@ -2738,14 +2738,14 @@ void __69__BTSDeviceConfigController_refreshFindMyStatusForPencilInBackground__b
   v19 = dispatch_group_create();
   dispatch_group_enter(v15[5]);
   v6 = objc_alloc_init(MEMORY[0x277D49690]);
-  v7 = [v6 ownerSession];
+  ownerSession = [v6 ownerSession];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __70__BTSDeviceConfigController_refreshFindMyStatusForPencilSynchronously__block_invoke;
   v13[3] = &unk_2796AD7A0;
   v13[4] = self;
   v13[5] = &v14;
-  [v7 peripheralConnectionMaterialForAccessoryIdentifier:v5 completion:v13];
+  [ownerSession peripheralConnectionMaterialForAccessoryIdentifier:v5 completion:v13];
   v8 = v15[5];
   v9 = dispatch_time(0, 20000000);
   dispatch_group_wait(v8, v9);
@@ -2781,24 +2781,24 @@ void __70__BTSDeviceConfigController_refreshFindMyStatusForPencilSynchronously__
 - (void)refreshFindMyStatus
 {
   v35 = *MEMORY[0x277D85DE8];
-  v3 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-  v4 = [v3 address];
+  classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+  address = [classicDevice address];
 
   v5 = sharedBluetoothSettingsLogComponent();
   v6 = v5;
-  if (v4)
+  if (address)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v4;
+      *(&buf + 4) = address;
       _os_log_impl(&dword_251143000, v6, OS_LOG_TYPE_DEFAULT, "FindMy Status: Get Address: %@", &buf, 0xCu);
     }
 
     v25 = 0;
     v24 = 0;
-    v7 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-    v8 = [v7 getHexDeviceAddress:&v24];
+    classicDevice2 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+    v8 = [classicDevice2 getHexDeviceAddress:&v24];
 
     if (v8)
     {
@@ -2813,14 +2813,14 @@ void __70__BTSDeviceConfigController_refreshFindMyStatusForPencilSynchronously__
         v34 = dispatch_group_create();
         dispatch_group_enter(*(*(&buf + 1) + 40));
         v10 = objc_alloc_init(MEMORY[0x277D49690]);
-        v11 = [v10 ownerSession];
+        ownerSession = [v10 ownerSession];
         v20[0] = MEMORY[0x277D85DD0];
         v20[1] = 3221225472;
         v20[2] = __48__BTSDeviceConfigController_refreshFindMyStatus__block_invoke;
         v20[3] = &unk_2796AD7C8;
-        v12 = v11;
+        v12 = ownerSession;
         v21 = v12;
-        v22 = self;
+        selfCopy = self;
         p_buf = &buf;
         [v12 fetchFindMyNetworkStatusForMACAddress:v9 completion:v20];
         v13 = *(*(&buf + 1) + 40);
@@ -2922,13 +2922,13 @@ void __48__BTSDeviceConfigController_refreshFindMyStatus__block_invoke(uint64_t 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)getFindMyEnable:(id)a3
+- (id)getFindMyEnable:(id)enable
 {
   v4 = MEMORY[0x277CCABB0];
   findMySetInProgress = self->_findMySetInProgress;
-  v6 = a3;
+  enableCopy = enable;
   v7 = [v4 numberWithBool:findMySetInProgress];
-  [v6 setProperty:v7 forKey:*MEMORY[0x277D3FEA8]];
+  [enableCopy setProperty:v7 forKey:*MEMORY[0x277D3FEA8]];
 
   if (self->_findMyEnable)
   {
@@ -2947,41 +2947,41 @@ void __48__BTSDeviceConfigController_refreshFindMyStatus__block_invoke(uint64_t 
   return [v9 numberWithBool:findMyEnable];
 }
 
-- (void)setFindMyEnable:(id)a3 specifier:(id)a4
+- (void)setFindMyEnable:(id)enable specifier:(id)specifier
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-  v9 = [v8 address];
+  enableCopy = enable;
+  specifierCopy = specifier;
+  classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+  address = [classicDevice address];
 
-  if (v9)
+  if (address)
   {
     v26 = 0;
     v25 = 0;
-    v10 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-    v11 = [v10 getHexDeviceAddress:&v25];
+    classicDevice2 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+    v11 = [classicDevice2 getHexDeviceAddress:&v25];
 
     if (v11)
     {
       v12 = [MEMORY[0x277CBEA90] dataWithBytes:&v25 length:6];
       if (v12)
       {
-        if (v6)
+        if (enableCopy)
         {
           [(HPSDeviceAnalytics *)self->_deviceAnalytics updateFeatureChangeCount:25];
-          v13 = [v6 BOOLValue];
+          bOOLValue = [enableCopy BOOLValue];
           v14 = sharedBluetoothSettingsLogComponent();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412546;
-            v28 = v9;
+            v28 = address;
             v29 = 1024;
-            v30 = v13;
+            v30 = bOOLValue;
             _os_log_impl(&dword_251143000, v14, OS_LOG_TYPE_DEFAULT, "FindMy Status: Set Address: %@, New Mode: %u", buf, 0x12u);
           }
 
-          if (v13)
+          if (bOOLValue)
           {
             v15 = @"On";
           }
@@ -2994,19 +2994,19 @@ void __48__BTSDeviceConfigController_refreshFindMyStatus__block_invoke(uint64_t 
           [(HPSDeviceAnalytics *)self->_deviceAnalytics updateFeatureValue:26 value:0 featureValueString:v15];
           self->_findMySetInProgress = 1;
           v16 = [MEMORY[0x277CCABB0] numberWithBool:1];
-          [v7 setProperty:v16 forKey:*MEMORY[0x277D3FEA8]];
+          [specifierCopy setProperty:v16 forKey:*MEMORY[0x277D3FEA8]];
 
           v17 = objc_alloc_init(MEMORY[0x277D49690]);
-          v18 = [v17 ownerSession];
+          ownerSession = [v17 ownerSession];
           v21[0] = MEMORY[0x277D85DD0];
           v21[1] = 3221225472;
           v21[2] = __55__BTSDeviceConfigController_setFindMyEnable_specifier___block_invoke;
           v21[3] = &unk_2796AD7F0;
-          v22 = v18;
-          v23 = self;
-          v24 = v13;
-          v19 = v18;
-          [v19 setFindMyNetworkStatusForMACAddress:v12 status:v13 completion:v21];
+          v22 = ownerSession;
+          selfCopy = self;
+          v24 = bOOLValue;
+          v19 = ownerSession;
+          [v19 setFindMyNetworkStatusForMACAddress:v12 status:bOOLValue completion:v21];
         }
 
         else
@@ -3092,7 +3092,7 @@ void __55__BTSDeviceConfigController_setFindMyEnable_specifier___block_invoke(ui
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)findMyStatusUpdatedHandler:(id)a3
+- (void)findMyStatusUpdatedHandler:(id)handler
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -3136,21 +3136,21 @@ void __56__BTSDeviceConfigController_findMyStatusUpdatedHandler___block_invoke(u
 
 - (BOOL)deviceSupportsCarPlay
 {
-  v2 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-  v3 = [v2 isServiceSupported:0x40000];
+  classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+  v3 = [classicDevice isServiceSupported:0x40000];
 
   return v3;
 }
 
 - (id)_carPlayVehicle
 {
-  v3 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-  v4 = [v3 address];
+  classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+  address = [classicDevice address];
 
-  if (v4)
+  if (address)
   {
-    v5 = [(BTSDeviceConfigController *)self vehicleManager];
-    v6 = [v5 vehicleForBluetoothAddress:v4];
+    vehicleManager = [(BTSDeviceConfigController *)self vehicleManager];
+    v6 = [vehicleManager vehicleForBluetoothAddress:address];
   }
 
   else
@@ -3161,7 +3161,7 @@ void __56__BTSDeviceConfigController_findMyStatusUpdatedHandler___block_invoke(u
   return v6;
 }
 
-- (id)carPlayEnabled:(id)a3
+- (id)carPlayEnabled:(id)enabled
 {
   v3 = MEMORY[0x277CCABB0];
   v4 = [(BTSDeviceConfigController *)self cachedCarplayPairingStatus]== 2;
@@ -3169,14 +3169,14 @@ void __56__BTSDeviceConfigController_findMyStatusUpdatedHandler___block_invoke(u
   return [v3 numberWithBool:v4];
 }
 
-- (void)setCarPlayEnabled:(id)a3 specifier:(id)a4
+- (void)setCarPlayEnabled:(id)enabled specifier:(id)specifier
 {
-  v12 = a4;
-  v6 = a3;
-  v7 = [(BTSDeviceConfigController *)self _carPlayVehicle];
-  v8 = [v6 BOOLValue];
+  specifierCopy = specifier;
+  enabledCopy = enabled;
+  _carPlayVehicle = [(BTSDeviceConfigController *)self _carPlayVehicle];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  if (v8)
+  if (bOOLValue)
   {
     v9 = 2;
   }
@@ -3186,9 +3186,9 @@ void __56__BTSDeviceConfigController_findMyStatusUpdatedHandler___block_invoke(u
     v9 = 1;
   }
 
-  [v7 setPairingStatus:v9];
-  v10 = [(BTSDeviceConfigController *)self vehicleManager];
-  v11 = [v10 saveVehicle:v7];
+  [_carPlayVehicle setPairingStatus:v9];
+  vehicleManager = [(BTSDeviceConfigController *)self vehicleManager];
+  v11 = [vehicleManager saveVehicle:_carPlayVehicle];
 
   if (v11)
   {
@@ -3197,11 +3197,11 @@ void __56__BTSDeviceConfigController_findMyStatusUpdatedHandler___block_invoke(u
 
   else
   {
-    [(BTSDeviceConfigController *)self reloadSpecifier:v12 animated:1];
+    [(BTSDeviceConfigController *)self reloadSpecifier:specifierCopy animated:1];
   }
 }
 
-- (void)handlePairedVehiclesChanged:(id)a3
+- (void)handlePairedVehiclesChanged:(id)changed
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -3240,16 +3240,16 @@ void __58__BTSDeviceConfigController_handleCarPlayAllowedDidChange__block_invoke
   [v1 reloadAll];
 }
 
-- (void)metaGroupSelected:(id)a3
+- (void)metaGroupSelected:(id)selected
 {
-  v12 = a3;
+  selectedCopy = selected;
   v4 = [(BTSDeviceConfigController *)self indexPathForSpecifier:?];
   if (v4)
   {
     v5 = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FC60]) cellForRowAtIndexPath:v4];
     [v5 setChecked:{objc_msgSend(v5, "isChecked") ^ 1}];
-    v6 = [v12 identifier];
-    v7 = [v6 isEqualToString:@"PhoneFavorites"];
+    identifier = [selectedCopy identifier];
+    v7 = [identifier isEqualToString:@"PhoneFavorites"];
 
     if (v7)
     {
@@ -3258,14 +3258,14 @@ void __58__BTSDeviceConfigController_handleCarPlayAllowedDidChange__block_invoke
 
     else
     {
-      v9 = [v12 identifier];
-      v10 = [v9 isEqualToString:@"PhoneRecents"];
+      identifier2 = [selectedCopy identifier];
+      v10 = [identifier2 isEqualToString:@"PhoneRecents"];
 
       if (!v10)
       {
 LABEL_7:
-        v11 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-        [v11 setSyncSettings:*&self->_syncSettings.supported | (self->_syncSettings.userPermissionGranted << 32)];
+        classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+        [classicDevice setSyncSettings:*&self->_syncSettings.supported | (self->_syncSettings.userPermissionGranted << 32)];
 
         goto LABEL_8;
       }
@@ -3280,11 +3280,11 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)contactGroupSelected:(id)a3
+- (void)contactGroupSelected:(id)selected
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(BTSDeviceConfigController *)self indexPathForSpecifier:v5];
+  selectedCopy = selected;
+  v6 = [(BTSDeviceConfigController *)self indexPathForSpecifier:selectedCopy];
   if (v6)
   {
     v7 = *MEMORY[0x277D3FC60];
@@ -3306,19 +3306,19 @@ LABEL_8:
       lastSelectedSyncGroup = 0;
     }
 
-    if (lastSelectedSyncGroup == v5)
+    if (lastSelectedSyncGroup == selectedCopy)
     {
       v14 = 0;
-      v13 = 4294967294;
+      intValue = 4294967294;
     }
 
     else
     {
       [v8 setChecked:1];
-      v12 = [(__CFString *)v5 identifier];
-      v13 = [v12 intValue];
+      identifier = [(__CFString *)selectedCopy identifier];
+      intValue = [identifier intValue];
 
-      v14 = v5;
+      v14 = selectedCopy;
       lastSelectedSyncGroup = self->_lastSelectedSyncGroup;
     }
 
@@ -3330,9 +3330,9 @@ LABEL_8:
       v16 = NSStringFromSelector(a2);
       v17 = v16;
       v18 = @"None";
-      if (v13 != -2)
+      if (intValue != -2)
       {
-        v18 = v5;
+        v18 = selectedCopy;
       }
 
       v21 = 138412546;
@@ -3342,17 +3342,17 @@ LABEL_8:
       _os_log_impl(&dword_251143000, v15, OS_LOG_TYPE_DEFAULT, "%@ new contact sync group is %@", &v21, 0x16u);
     }
 
-    v19 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-    [v19 setSyncGroup:v13 enabled:1];
+    classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+    [classicDevice setSyncGroup:intValue enabled:1];
   }
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)listeningModeConfigSelected:(id)a3
+- (void)listeningModeConfigSelected:(id)selected
 {
-  v4 = a3;
-  v5 = [v4 propertyForKey:*MEMORY[0x277D40148]];
+  selectedCopy = selected;
+  v5 = [selectedCopy propertyForKey:*MEMORY[0x277D40148]];
   p_listeningModeConfigs = &self->_listeningModeConfigs;
   p_anc = &self->_listeningModeConfigs.anc;
   if (self->_listeningModeConfigs.transparency + self->_listeningModeConfigs.anc + self->_listeningModeConfigs.normal != 2)
@@ -3360,39 +3360,39 @@ LABEL_8:
     goto LABEL_13;
   }
 
-  v8 = [v4 identifier];
-  if ([v8 isEqualToString:@"ANC"] && p_anc->normal)
+  identifier = [selectedCopy identifier];
+  if ([identifier isEqualToString:@"ANC"] && p_anc->normal)
   {
     goto LABEL_7;
   }
 
-  v9 = [v4 identifier];
-  if ([v9 isEqualToString:@"Passthrough"] && self->_listeningModeConfigs.transparency)
+  identifier2 = [selectedCopy identifier];
+  if ([identifier2 isEqualToString:@"Passthrough"] && self->_listeningModeConfigs.transparency)
   {
 
 LABEL_7:
     goto LABEL_10;
   }
 
-  v10 = [v4 identifier];
-  if (([v10 isEqualToString:@"Off"] & 1) == 0)
+  identifier3 = [selectedCopy identifier];
+  if (([identifier3 isEqualToString:@"Off"] & 1) == 0)
   {
 
 LABEL_13:
     [v5 setChecked:{objc_msgSend(v5, "isChecked") ^ 1}];
-    v13 = [v4 identifier];
-    v14 = [v13 isEqualToString:@"ANC"];
+    identifier4 = [selectedCopy identifier];
+    v14 = [identifier4 isEqualToString:@"ANC"];
 
     if (v14)
     {
       goto LABEL_16;
     }
 
-    v15 = [v4 identifier];
-    v16 = [v15 isEqualToString:@"Passthrough"];
+    identifier5 = [selectedCopy identifier];
+    v16 = [identifier5 isEqualToString:@"Passthrough"];
 
     p_anc = &self->_listeningModeConfigs.transparency;
-    if ((v16 & 1) != 0 || ([v4 identifier], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "isEqualToString:", @"Off"), v17, p_anc = &self->_listeningModeConfigs, v18))
+    if ((v16 & 1) != 0 || ([selectedCopy identifier], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "isEqualToString:", @"Off"), v17, p_anc = &self->_listeningModeConfigs, v18))
     {
 LABEL_16:
       p_anc->normal = [v5 isChecked];
@@ -3452,8 +3452,8 @@ LABEL_30:
 
 LABEL_31:
     [(HPSDeviceAnalytics *)self->_deviceAnalytics updateFeatureValue:16 value:0 featureValueString:v22];
-    v12 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-    [v12 setListeningModeConfigs:v20 | normal];
+    classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+    [classicDevice setListeningModeConfigs:v20 | normal];
     goto LABEL_32;
   }
 
@@ -3465,8 +3465,8 @@ LABEL_31:
   }
 
 LABEL_10:
-  v12 = sharedBluetoothSettingsLogComponent();
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+  classicDevice = sharedBluetoothSettingsLogComponent();
+  if (os_log_type_enabled(classicDevice, OS_LOG_TYPE_ERROR))
   {
     [BTSDeviceConfigController listeningModeConfigSelected:];
   }
@@ -3474,46 +3474,46 @@ LABEL_10:
 LABEL_32:
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v42 = a4;
-  v7 = -[BTSDeviceConfigController specifierAtIndex:](self, "specifierAtIndex:", -[BTSDeviceConfigController indexOfGroup:](self, "indexOfGroup:", [a5 section]));
+  cellCopy = cell;
+  v7 = -[BTSDeviceConfigController specifierAtIndex:](self, "specifierAtIndex:", -[BTSDeviceConfigController indexOfGroup:](self, "indexOfGroup:", [path section]));
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v42;
-    v9 = [v8 titleLabel];
-    [v9 setLineBreakMode:0];
+    v8 = cellCopy;
+    titleLabel = [v8 titleLabel];
+    [titleLabel setLineBreakMode:0];
 
-    v10 = [v8 titleLabel];
-    [v10 setNumberOfLines:0];
+    titleLabel2 = [v8 titleLabel];
+    [titleLabel2 setNumberOfLines:0];
 
-    v11 = [v8 valueLabel];
-    [v11 setLineBreakMode:0];
+    valueLabel = [v8 valueLabel];
+    [valueLabel setLineBreakMode:0];
 
-    v12 = [v8 valueLabel];
-    [v12 setNumberOfLines:0];
+    valueLabel2 = [v8 valueLabel];
+    [valueLabel2 setNumberOfLines:0];
 
-    v13 = [v8 detailTextLabel];
-    [v13 setLineBreakMode:0];
+    detailTextLabel = [v8 detailTextLabel];
+    [detailTextLabel setLineBreakMode:0];
 
-    v14 = [v8 detailTextLabel];
-    [v14 setNumberOfLines:0];
+    detailTextLabel2 = [v8 detailTextLabel];
+    [detailTextLabel2 setNumberOfLines:0];
 
-    v15 = [v8 specifier];
-    v16 = [v15 identifier];
-    v17 = [v16 isEqualToString:@"IMPORTANT_MSG_ID"];
+    specifier = [v8 specifier];
+    identifier = [specifier identifier];
+    v17 = [identifier isEqualToString:@"IMPORTANT_MSG_ID"];
 
     if (v17)
     {
       v18 = [MEMORY[0x277D74300] boldSystemFontOfSize:16.0];
-      v19 = [v8 titleLabel];
-      [v19 setFont:v18];
+      titleLabel3 = [v8 titleLabel];
+      [titleLabel3 setFont:v18];
     }
 
-    v20 = [v8 specifier];
-    v21 = [v20 identifier];
-    v22 = [v21 isEqualToString:@"PhoneFavorites"];
+    specifier2 = [v8 specifier];
+    identifier2 = [specifier2 identifier];
+    v22 = [identifier2 isEqualToString:@"PhoneFavorites"];
 
     if (v22)
     {
@@ -3522,9 +3522,9 @@ LABEL_32:
 
     else
     {
-      v24 = [v8 specifier];
-      v25 = [v24 identifier];
-      v26 = [v25 isEqualToString:@"PhoneRecents"];
+      specifier3 = [v8 specifier];
+      identifier3 = [specifier3 identifier];
+      v26 = [identifier3 isEqualToString:@"PhoneRecents"];
 
       if ((v26 & 1) == 0)
       {
@@ -3536,9 +3536,9 @@ LABEL_32:
         else
         {
           v37 = [v7 propertyForKey:*MEMORY[0x277D3FFE8]];
-          v38 = [v37 BOOLValue];
+          bOOLValue = [v37 BOOLValue];
 
-          if (v38)
+          if (bOOLValue)
           {
             goto LABEL_20;
           }
@@ -3548,9 +3548,9 @@ LABEL_32:
 
 LABEL_9:
         [v8 setChecked:v27 & 1];
-        v28 = [v8 specifier];
-        v29 = [v28 identifier];
-        v30 = [v29 isEqualToString:@"ANC"];
+        specifier4 = [v8 specifier];
+        identifier4 = [specifier4 identifier];
+        v30 = [identifier4 isEqualToString:@"ANC"];
 
         if (v30)
         {
@@ -3560,9 +3560,9 @@ LABEL_19:
           goto LABEL_20;
         }
 
-        v32 = [v8 specifier];
-        v33 = [v32 identifier];
-        v34 = [v33 isEqualToString:@"Passthrough"];
+        specifier5 = [v8 specifier];
+        identifier5 = [specifier5 identifier];
+        v34 = [identifier5 isEqualToString:@"Passthrough"];
 
         if (v34)
         {
@@ -3570,9 +3570,9 @@ LABEL_19:
           goto LABEL_19;
         }
 
-        v39 = [v8 specifier];
-        v40 = [v39 identifier];
-        v41 = [v40 isEqualToString:@"Off"];
+        specifier6 = [v8 specifier];
+        identifier6 = [specifier6 identifier];
+        v41 = [identifier6 isEqualToString:@"Off"];
 
         if (v41)
         {
@@ -3595,13 +3595,13 @@ LABEL_20:
 LABEL_21:
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BTSDeviceConfigController *)self specifierAtIndexPath:v7];
-  v9 = [v8 identifier];
-  v10 = [v9 isEqualToString:@"LISTENING_MODE_ID"];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(BTSDeviceConfigController *)self specifierAtIndexPath:pathCopy];
+  identifier = [v8 identifier];
+  v10 = [identifier isEqualToString:@"LISTENING_MODE_ID"];
 
   if (v10)
   {
@@ -3610,7 +3610,7 @@ LABEL_21:
     {
       v37.receiver = self;
       v37.super_class = BTSDeviceConfigController;
-      v12 = [(BTSDeviceConfigController *)&v37 tableView:v6 cellForRowAtIndexPath:v7];
+      v12 = [(BTSDeviceConfigController *)&v37 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
       v13 = self->_listeningModeCell;
       self->_listeningModeCell = v12;
 
@@ -3625,62 +3625,62 @@ LABEL_21:
   {
     v36.receiver = self;
     v36.super_class = BTSDeviceConfigController;
-    v14 = [(BTSDeviceConfigController *)&v36 tableView:v6 cellForRowAtIndexPath:v7];
-    v15 = [v8 identifier];
-    v16 = [v15 isEqualToString:@"CLASSIC_SETUP_TITLE_ID"];
+    v14 = [(BTSDeviceConfigController *)&v36 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
+    identifier2 = [v8 identifier];
+    v16 = [identifier2 isEqualToString:@"CLASSIC_SETUP_TITLE_ID"];
 
     if (v16)
     {
       [(PSTableCell *)v14 setSeparatorInset:0.0, 0.0, 0.0, 1.79769313e308];
     }
 
-    v17 = [v8 identifier];
-    v18 = [v17 isEqualToString:@"CLASSIC_SETUP_BODY_ID"];
+    identifier3 = [v8 identifier];
+    v18 = [identifier3 isEqualToString:@"CLASSIC_SETUP_BODY_ID"];
 
     if (v18)
     {
-      v19 = [(PSTableCell *)v14 defaultContentConfiguration];
-      v20 = [v8 name];
-      [v19 setText:v20];
+      defaultContentConfiguration = [(PSTableCell *)v14 defaultContentConfiguration];
+      name = [v8 name];
+      [defaultContentConfiguration setText:name];
 
-      v21 = [MEMORY[0x277D75348] secondaryLabelColor];
-      v22 = [v19 textProperties];
-      [v22 setColor:v21];
+      secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+      textProperties = [defaultContentConfiguration textProperties];
+      [textProperties setColor:secondaryLabelColor];
 
-      [(PSTableCell *)v14 setContentConfiguration:v19];
+      [(PSTableCell *)v14 setContentConfiguration:defaultContentConfiguration];
       v23 = v14;
     }
 
     else
     {
-      v24 = [v8 identifier];
-      v25 = [v24 isEqualToString:@"CLASSIC_SETUP_BUTTON_ID"];
+      identifier4 = [v8 identifier];
+      v25 = [identifier4 isEqualToString:@"CLASSIC_SETUP_BUTTON_ID"];
 
       if (v25)
       {
         if (self->_devicePendingCTKDConnection)
         {
-          v26 = [(PSTableCell *)v14 defaultContentConfiguration];
-          v27 = [v8 name];
-          [v26 setText:v27];
+          defaultContentConfiguration2 = [(PSTableCell *)v14 defaultContentConfiguration];
+          name2 = [v8 name];
+          [defaultContentConfiguration2 setText:name2];
 
-          v28 = [MEMORY[0x277D75348] secondaryLabelColor];
-          v29 = [v26 textProperties];
-          [v29 setColor:v28];
+          secondaryLabelColor2 = [MEMORY[0x277D75348] secondaryLabelColor];
+          textProperties2 = [defaultContentConfiguration2 textProperties];
+          [textProperties2 setColor:secondaryLabelColor2];
 
-          [(PSTableCell *)v14 setContentConfiguration:v26];
+          [(PSTableCell *)v14 setContentConfiguration:defaultContentConfiguration2];
           v30 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
           [(PSTableCell *)v14 setAccessoryView:v30];
 
-          v31 = [(PSTableCell *)v14 accessoryView];
-          [v31 startAnimating];
+          accessoryView = [(PSTableCell *)v14 accessoryView];
+          [accessoryView startAnimating];
         }
       }
 
       else
       {
-        v32 = [v8 identifier];
-        v33 = [v32 isEqualToString:@"OCCLUSION_DETECTION_ID"];
+        identifier5 = [v8 identifier];
+        v33 = [identifier5 isEqualToString:@"OCCLUSION_DETECTION_ID"];
 
         if (v33)
         {
@@ -3695,21 +3695,21 @@ LABEL_21:
   return v14;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-  v9 = [v8 accessorySettingFeatureBitMask];
+  viewCopy = view;
+  pathCopy = path;
+  classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+  accessorySettingFeatureBitMask = [classicDevice accessorySettingFeatureBitMask];
 
-  v10 = -[BTSDeviceConfigController specifierAtIndex:](self, "specifierAtIndex:", -[BTSDeviceConfigController indexOfGroup:](self, "indexOfGroup:", [v7 section]));
-  v11 = [(BTSDeviceConfigController *)self specifierAtIndexPath:v7];
-  if ((v9 & 6) == 2)
+  v10 = -[BTSDeviceConfigController specifierAtIndex:](self, "specifierAtIndex:", -[BTSDeviceConfigController indexOfGroup:](self, "indexOfGroup:", [pathCopy section]));
+  v11 = [(BTSDeviceConfigController *)self specifierAtIndexPath:pathCopy];
+  if ((accessorySettingFeatureBitMask & 6) == 2)
   {
     v12 = [v10 propertyForKey:*MEMORY[0x277D3FFE8]];
-    v13 = [v12 BOOLValue];
+    bOOLValue = [v12 BOOLValue];
 
-    if (v13)
+    if (bOOLValue)
     {
       v14 = [(BTSDeviceConfigController *)self specifierForID:@"SIRI_ID"];
 
@@ -3740,14 +3740,14 @@ LABEL_21:
         }
       }
 
-      v18 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-      [v18 setDoubleTapAction:v17];
+      classicDevice2 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+      [classicDevice2 setDoubleTapAction:v17];
     }
   }
 
 LABEL_10:
-  v19 = [v11 identifier];
-  v20 = [v19 isEqualToString:@"ACCESSORY_ABOUT_SERIAL_NUMBER_ID"];
+  identifier = [v11 identifier];
+  v20 = [identifier isEqualToString:@"ACCESSORY_ABOUT_SERIAL_NUMBER_ID"];
 
   if (v20)
   {
@@ -3757,8 +3757,8 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v21 = [v11 identifier];
-  v22 = [v21 isEqualToString:@"ACCESSORY_ABOUT_VERSION_ID"];
+  identifier2 = [v11 identifier];
+  v22 = [identifier2 isEqualToString:@"ACCESSORY_ABOUT_VERSION_ID"];
 
   if (v22)
   {
@@ -3769,15 +3769,15 @@ LABEL_14:
 LABEL_15:
   v23.receiver = self;
   v23.super_class = BTSDeviceConfigController;
-  [(BTSDeviceConfigController *)&v23 tableView:v6 didSelectRowAtIndexPath:v7];
+  [(BTSDeviceConfigController *)&v23 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
   [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FC60]) selectRowAtIndexPath:0 animated:1 scrollPosition:0];
 }
 
-- (void)reloadCellForSpecifierID:(id)a3 animated:(BOOL)a4
+- (void)reloadCellForSpecifierID:(id)d animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v12[1] = *MEMORY[0x277D85DE8];
-  v6 = [(BTSDeviceConfigController *)self specifierForID:a3];
+  v6 = [(BTSDeviceConfigController *)self specifierForID:d];
   v7 = [(BTSDeviceConfigController *)self indexPathForSpecifier:v6];
 
   if (v7)
@@ -3785,7 +3785,7 @@ LABEL_15:
     v8 = *(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FC60]);
     v12[0] = v7;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
-    if (v4)
+    if (animatedCopy)
     {
       v10 = 100;
     }
@@ -3801,54 +3801,54 @@ LABEL_15:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)userDidTapWatchLink:(id)a3
+- (void)userDidTapWatchLink:(id)link
 {
-  v4 = [MEMORY[0x277CC1E80] defaultWorkspace];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
   v3 = [MEMORY[0x277CBEBC0] URLWithString:@"bridge:"];
-  [v4 openSensitiveURL:v3 withOptions:0];
+  [defaultWorkspace openSensitiveURL:v3 withOptions:0];
 }
 
-- (void)userDidTapSpatialProfileLearnMoreLink:(id)a3
+- (void)userDidTapSpatialProfileLearnMoreLink:(id)link
 {
-  v4 = [MEMORY[0x277CC1E80] defaultWorkspace];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
   v3 = [MEMORY[0x277CBEBC0] URLWithString:@"https://support.apple.com/ht213318?cid=mc-ols-airpods-article_ht2133318-ios_ui-06162022"];
-  [v4 openSensitiveURL:v3 withOptions:0];
+  [defaultWorkspace openSensitiveURL:v3 withOptions:0];
 }
 
-- (void)userDidTapSpatialA2DPLatencyDisclosure:(id)a3
+- (void)userDidTapSpatialA2DPLatencyDisclosure:(id)disclosure
 {
-  v4 = [MEMORY[0x277CC1E80] defaultWorkspace];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
   v3 = [MEMORY[0x277CBEBC0] URLWithString:@"https://support.apple.com/ht213920?cid=mc-ols-visionpro-article_ht213920-visionos_ui-09182023"];
-  [v4 openSensitiveURL:v3 withOptions:0];
+  [defaultWorkspace openSensitiveURL:v3 withOptions:0];
 }
 
-- (void)userDidTapSpatialProfileWarningLearnMoreLink:(id)a3
+- (void)userDidTapSpatialProfileWarningLearnMoreLink:(id)link
 {
-  v4 = [MEMORY[0x277CC1E80] defaultWorkspace];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
   v3 = [MEMORY[0x277CBEBC0] URLWithString:@"https://support.apple.com/guide/airpods/control-spatial-audio-and-head-tracking-dev00eb7e0a3/web"];
-  [v4 openSensitiveURL:v3 withOptions:0];
+  [defaultWorkspace openSensitiveURL:v3 withOptions:0];
 }
 
-- (void)userDidTapRecommendedBuilds:(id)a3
+- (void)userDidTapRecommendedBuilds:(id)builds
 {
-  v3 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-  v4 = [v3 productId];
+  classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+  productId = [classicDevice productId];
 
-  if ((v4 - 8217) <= 0x16)
+  if ((productId - 8217) <= 0x16)
   {
-    if (((1 << (v4 - 25)) & 0xA5) != 0)
+    if (((1 << (productId - 25)) & 0xA5) != 0)
     {
       v5 = @"https://at.apple.com/5nbILf";
       goto LABEL_13;
     }
 
-    if (v4 == 8228)
+    if (productId == 8228)
     {
       v5 = @"https://at.apple.com/OLhUo";
       goto LABEL_13;
     }
 
-    if (v4 == 8239)
+    if (productId == 8239)
     {
       v5 = @"https://at.apple.com/oDu4dF";
       goto LABEL_13;
@@ -3856,12 +3856,12 @@ LABEL_15:
   }
 
   v6 = @"https://at.apple.com/n4WLN";
-  if (v4 == 8212)
+  if (productId == 8212)
   {
     v6 = @"https://at.apple.com/OLhUo";
   }
 
-  if (v4 == 8210)
+  if (productId == 8210)
   {
     v5 = @"https://at.apple.com/oDu4dF";
   }
@@ -3872,23 +3872,23 @@ LABEL_15:
   }
 
 LABEL_13:
-  v8 = [MEMORY[0x277CC1E80] defaultWorkspace];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
   v7 = [MEMORY[0x277CBEBC0] URLWithString:v5];
-  [v8 openSensitiveURL:v7 withOptions:0];
+  [defaultWorkspace openSensitiveURL:v7 withOptions:0];
 }
 
-- (void)userDidTapWalletLink:(id)a3
+- (void)userDidTapWalletLink:(id)link
 {
-  v4 = [MEMORY[0x277CC1E80] defaultWorkspace];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
   v3 = [MEMORY[0x277CBEBC0] URLWithString:@"wallet:"];
-  [v4 openSensitiveURL:v3 withOptions:0];
+  [defaultWorkspace openSensitiveURL:v3 withOptions:0];
 }
 
-- (void)userDidTapNiPrivacyLink:(id)a3
+- (void)userDidTapNiPrivacyLink:(id)link
 {
-  v4 = [MEMORY[0x277CC1E80] defaultWorkspace];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
   v3 = [MEMORY[0x277CBEBC0] URLWithString:@"prefs:root=Privacy&path=NEARBY_INTERACTIONS"];
-  [v4 openSensitiveURL:v3 withOptions:0];
+  [defaultWorkspace openSensitiveURL:v3 withOptions:0];
 }
 
 - (HearingModeUIService)hearingModeUIService
@@ -3922,8 +3922,8 @@ LABEL_13:
     v6 = v5;
     _Block_object_dispose(&v13, 8);
     v7 = [v5 alloc];
-    v8 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-    v9 = [v7 initWithDevice:v8];
+    classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+    v9 = [v7 initWithDevice:classicDevice];
     v10 = self->_hearingModeUIService;
     self->_hearingModeUIService = v9;
 
@@ -3936,15 +3936,15 @@ LABEL_13:
 
 - (id)specifiers
 {
-  v2 = self;
+  selfCopy = self;
   v384 = *MEMORY[0x277D85DE8];
   v3 = *MEMORY[0x277D3FD20];
-  v4 = [*(&self->super.super.super.super.super.isa + v3) userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"bt-device"];
+  userInfo = [*(&self->super.super.super.super.super.isa + v3) userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"bt-device"];
 
-  v6 = [*(&v2->super.super.super.super.super.isa + v3) userInfo];
+  userInfo2 = [*(&selfCopy->super.super.super.super.super.isa + v3) userInfo];
   v7 = +[HPSDevice deviceKey];
-  v8 = [v6 objectForKeyedSubscript:v7];
+  v8 = [userInfo2 objectForKeyedSubscript:v7];
 
   v9 = objc_opt_class();
   v10 = NSStringFromClass(v9);
@@ -3956,9 +3956,9 @@ LABEL_13:
     goto LABEL_6;
   }
 
-  v13 = [v5 classicDevice];
+  classicDevice = [v5 classicDevice];
 
-  if (v13)
+  if (classicDevice)
   {
 LABEL_6:
     if (_os_feature_enabled_impl())
@@ -3978,66 +3978,66 @@ LABEL_6:
     v364 = v3;
     if (!v5 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || ([v5 classicDevice], v19 = objc_claimAutoreleasedReturnValue(), v20 = +[HPSProductUtils isAppleHeadphone:](HPSProductUtils, "isAppleHeadphone:", v19), v19, v20))
     {
-      v21 = [*(&v2->super.super.super.super.super.isa + v3) userInfo];
+      userInfo3 = [*(&selfCopy->super.super.super.super.super.isa + v3) userInfo];
       v22 = +[HPSDevice deviceKey];
-      v23 = [v21 objectForKeyedSubscript:v22];
+      v23 = [userInfo3 objectForKeyedSubscript:v22];
 
       if (v23)
       {
-        objc_storeStrong(&v2->_device, v8);
+        objc_storeStrong(&selfCopy->_device, v8);
         v24 = +[HPSHeadphoneManager sharedInstance];
         [v24 updateHPSDevice:v8];
 
-        batteryStatusView = v2->_batteryStatusView;
-        v26 = [v8 headphoneDevice];
-        [(ModernBatteryStatusView *)batteryStatusView startLisentingWithDevice:v26];
+        batteryStatusView = selfCopy->_batteryStatusView;
+        headphoneDevice = [v8 headphoneDevice];
+        [(ModernBatteryStatusView *)batteryStatusView startLisentingWithDevice:headphoneDevice];
 
-        v27 = [v8 headphoneDevice];
-        v28 = [(BTSDeviceConfigController *)v2 headphoneObserver];
-        [v28 setHeadphoneDevice:v27];
+        headphoneDevice2 = [v8 headphoneDevice];
+        headphoneObserver = [(BTSDeviceConfigController *)selfCopy headphoneObserver];
+        [headphoneObserver setHeadphoneDevice:headphoneDevice2];
       }
 
       else
       {
         v29 = [HPSDevice alloc];
-        v30 = [*(&v2->super.super.super.super.super.isa + v3) userInfo];
-        v31 = [v30 objectForKeyedSubscript:@"bt-device"];
+        userInfo4 = [*(&selfCopy->super.super.super.super.super.isa + v3) userInfo];
+        v31 = [userInfo4 objectForKeyedSubscript:@"bt-device"];
         v32 = [(HPSDevice *)v29 initWithHeadphoneDevice:0 btsDevice:v31];
-        device = v2->_device;
-        v2->_device = v32;
+        device = selfCopy->_device;
+        selfCopy->_device = v32;
 
-        v34 = v2->_device;
-        v35 = [*(&v2->super.super.super.super.super.isa + v3) userInfo];
+        v34 = selfCopy->_device;
+        userInfo5 = [*(&selfCopy->super.super.super.super.super.isa + v3) userInfo];
         v36 = +[HPSDevice deviceKey];
-        [v35 setObject:v34 forKeyedSubscript:v36];
+        [userInfo5 setObject:v34 forKeyedSubscript:v36];
 
         v37 = +[HPSHeadphoneManager sharedInstance];
-        [v37 updateHPSDevice:v2->_device];
+        [v37 updateHPSDevice:selfCopy->_device];
 
-        v38 = v2->_batteryStatusView;
-        v27 = [v8 headphoneDevice];
-        [(ModernBatteryStatusView *)v38 startLisentingWithDevice:v27];
+        v38 = selfCopy->_batteryStatusView;
+        headphoneDevice2 = [v8 headphoneDevice];
+        [(ModernBatteryStatusView *)v38 startLisentingWithDevice:headphoneDevice2];
       }
     }
 
     else
     {
       v39 = v5;
-      v27 = v2->_device;
-      v2->_device = v39;
+      headphoneDevice2 = selfCopy->_device;
+      selfCopy->_device = v39;
     }
 
     v40 = sharedBluetoothSettingsLogComponent();
-    v371 = v2;
+    v371 = selfCopy;
     if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
     {
       v41 = [v5 debugDescription];
-      v42 = [*(&v2->super.super.super.super.super.isa + v3) userInfo];
+      userInfo6 = [*(&selfCopy->super.super.super.super.super.isa + v3) userInfo];
       v43 = +[HPSDevice deviceKey];
-      [v42 objectForKeyedSubscript:v43];
+      [userInfo6 objectForKeyedSubscript:v43];
       v45 = v44 = v5;
-      v46 = [*(&v371->super.super.super.super.super.isa + v3) userInfo];
-      [v46 objectForKeyedSubscript:@"HPS_DeviceInfo"];
+      userInfo7 = [*(&v371->super.super.super.super.super.isa + v3) userInfo];
+      [userInfo7 objectForKeyedSubscript:@"HPS_DeviceInfo"];
       v48 = v47 = v8;
       *buf = 138412802;
       v379 = v41;
@@ -4050,129 +4050,129 @@ LABEL_6:
       v8 = v47;
       v5 = v44;
 
-      v2 = v371;
+      selfCopy = v371;
     }
 
-    v49 = v2->_device;
+    v49 = selfCopy->_device;
     if (!v49)
     {
       v18 = 0;
       goto LABEL_148;
     }
 
-    deviceAnalytics = v2->_deviceAnalytics;
-    v51 = [(BluetoothDeviceProtocol *)v49 classicDevice];
-    -[HPSDeviceAnalytics updateProductID:](deviceAnalytics, "updateProductID:", [v51 productId]);
+    deviceAnalytics = selfCopy->_deviceAnalytics;
+    classicDevice2 = [(BluetoothDeviceProtocol *)v49 classicDevice];
+    -[HPSDeviceAnalytics updateProductID:](deviceAnalytics, "updateProductID:", [classicDevice2 productId]);
 
     v52 = *MEMORY[0x277D3FC48];
-    if (*(&v2->super.super.super.super.super.isa + v52))
+    if (*(&selfCopy->super.super.super.super.super.isa + v52))
     {
 LABEL_141:
-      v16 = [(BluetoothDeviceProtocol *)v2->_device productName];
-      if ([(BTSDeviceConfigController *)v2 nicknameEnabled])
+      productName = [(BluetoothDeviceProtocol *)selfCopy->_device productName];
+      if ([(BTSDeviceConfigController *)selfCopy nicknameEnabled])
       {
-        v332 = [(BluetoothDeviceProtocol *)v2->_device name];
+        name = [(BluetoothDeviceProtocol *)selfCopy->_device name];
 
-        v16 = v332;
+        productName = name;
       }
 
-      v333 = [(BluetoothDeviceProtocol *)v2->_device classicDevice];
-      if (v333)
+      classicDevice3 = [(BluetoothDeviceProtocol *)selfCopy->_device classicDevice];
+      if (classicDevice3)
       {
-        v334 = v333;
-        v335 = [(BluetoothDeviceProtocol *)v2->_device classicDevice];
-        v336 = [v335 magicPaired];
+        v334 = classicDevice3;
+        classicDevice4 = [(BluetoothDeviceProtocol *)selfCopy->_device classicDevice];
+        magicPaired = [classicDevice4 magicPaired];
 
-        if (v336)
+        if (magicPaired)
         {
-          v337 = [(BluetoothDeviceProtocol *)v2->_device name];
+          name2 = [(BluetoothDeviceProtocol *)selfCopy->_device name];
 
-          v16 = v337;
+          productName = name2;
         }
       }
 
-      [(BTSDeviceConfigController *)v2 setTitle:v16];
-      v18 = *(&v2->super.super.super.super.super.isa + v52);
+      [(BTSDeviceConfigController *)selfCopy setTitle:productName];
+      v18 = *(&selfCopy->super.super.super.super.super.isa + v52);
       goto LABEL_147;
     }
 
     v359 = *MEMORY[0x277D3FC48];
-    v53 = [(BluetoothDeviceProtocol *)v2->_device classicDevice];
-    v54 = [v53 accessoryInfo];
+    classicDevice5 = [(BluetoothDeviceProtocol *)selfCopy->_device classicDevice];
+    accessoryInfo = [classicDevice5 accessoryInfo];
 
-    v361 = v54;
-    v55 = [v54 objectForKey:@"AACPVersionInfo"];
+    v361 = accessoryInfo;
+    v55 = [accessoryInfo objectForKey:@"AACPVersionInfo"];
     v358 = v55;
     if (v55 && (v56 = v55, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [v56 count] >= 0xB)
     {
-      objc_storeStrong(&v2->_versionInfo, v56);
-      v57 = [v54 objectForKey:@"ANCAssetVersion"];
+      objc_storeStrong(&selfCopy->_versionInfo, v56);
+      v57 = [accessoryInfo objectForKey:@"ANCAssetVersion"];
       if (v57 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
         v58 = v57;
-        ancAssetVersion = v2->_ancAssetVersion;
-        v2->_ancAssetVersion = v58;
+        ancAssetVersion = selfCopy->_ancAssetVersion;
+        selfCopy->_ancAssetVersion = v58;
       }
 
       else
       {
-        ancAssetVersion = v2->_ancAssetVersion;
-        v2->_ancAssetVersion = 0;
+        ancAssetVersion = selfCopy->_ancAssetVersion;
+        selfCopy->_ancAssetVersion = 0;
       }
 
-      v340 = [v54 objectForKey:@"CaseInfo"];
+      v340 = [accessoryInfo objectForKey:@"CaseInfo"];
       if (v340 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
         v341 = v340;
-        caseInfo = v2->_caseInfo;
-        v2->_caseInfo = v341;
+        caseInfo = selfCopy->_caseInfo;
+        selfCopy->_caseInfo = v341;
       }
 
       else
       {
-        caseInfo = v2->_caseInfo;
-        v2->_caseInfo = 0;
+        caseInfo = selfCopy->_caseInfo;
+        selfCopy->_caseInfo = 0;
       }
     }
 
     else
     {
-      versionInfo = v2->_versionInfo;
-      v2->_versionInfo = 0;
+      versionInfo = selfCopy->_versionInfo;
+      selfCopy->_versionInfo = 0;
 
-      v61 = v2->_ancAssetVersion;
-      v2->_ancAssetVersion = 0;
+      v61 = selfCopy->_ancAssetVersion;
+      selfCopy->_ancAssetVersion = 0;
 
-      v57 = v2->_caseInfo;
-      v2->_caseInfo = 0;
+      v57 = selfCopy->_caseInfo;
+      selfCopy->_caseInfo = 0;
     }
 
     v62 = MEMORY[0x277CBEA60];
-    v63 = [(BTSDeviceConfigController *)v2 loadSpecifiersFromPlistName:@"DeviceConfig" target:v2];
+    v63 = [(BTSDeviceConfigController *)selfCopy loadSpecifiersFromPlistName:@"DeviceConfig" target:selfCopy];
     v64 = [v62 arrayWithArray:v63];
 
     v65 = objc_opt_new();
     v363 = v65;
-    if (v2->_accessoryHeaderController)
+    if (selfCopy->_accessoryHeaderController)
     {
       v66 = v65;
-      v67 = [(BTSDeviceConfigController *)v2 leDevice];
-      v68 = [v67 relatedFutureRadioAddress];
+      leDevice = [(BTSDeviceConfigController *)selfCopy leDevice];
+      relatedFutureRadioAddress = [leDevice relatedFutureRadioAddress];
 
-      if (v68)
+      if (relatedFutureRadioAddress)
       {
-        v69 = [(PSListController *)v2->_accessoryHeaderController specifiers];
-        v70 = [v69 objectAtIndexedSubscript:0];
+        specifiers = [(PSListController *)selfCopy->_accessoryHeaderController specifiers];
+        v70 = [specifiers objectAtIndexedSubscript:0];
         v71 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v72 = [v71 localizedStringForKey:@"FOLLOW_PAIR_INSTRUCTION_FOOTER" value:&stru_286339F58 table:@"DeviceConfig"];
         [v70 setProperty:v72 forKey:*MEMORY[0x277D3FF88]];
 
-        v2 = v371;
+        selfCopy = v371;
         v66 = v363;
       }
 
-      v73 = [(PSListController *)v2->_accessoryHeaderController specifiers];
-      [v66 addObjectsFromArray:v73];
+      specifiers2 = [(PSListController *)selfCopy->_accessoryHeaderController specifiers];
+      [v66 addObjectsFromArray:specifiers2];
     }
 
     v362 = v8;
@@ -4186,7 +4186,7 @@ LABEL_141:
     controlGroupSpecifiers = v371->_controlGroupSpecifiers;
     v371->_controlGroupSpecifiers = v79;
 
-    v2 = v371;
+    selfCopy = v371;
     v81 = objc_alloc(MEMORY[0x277CBEA60]);
     v82 = [v64 objectAtIndexedSubscript:3];
     v83 = [v64 objectAtIndexedSubscript:4];
@@ -4228,9 +4228,9 @@ LABEL_141:
     deviceTypeSpecifiers = v371->_deviceTypeSpecifiers;
     v371->_deviceTypeSpecifiers = v103;
 
-    v105 = [MEMORY[0x277D2BCF8] sharedInstance];
-    v106 = [MEMORY[0x277D2BCF8] pairedDevicesSelectorBlock];
-    v107 = [v105 getAllDevicesWithArchivedAltAccountDevicesMatching:v106];
+    mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+    pairedDevicesSelectorBlock = [MEMORY[0x277D2BCF8] pairedDevicesSelectorBlock];
+    v107 = [mEMORY[0x277D2BCF8] getAllDevicesWithArchivedAltAccountDevicesMatching:pairedDevicesSelectorBlock];
 
     v374 = 0u;
     v375 = 0u;
@@ -4253,11 +4253,11 @@ LABEL_141:
           }
 
           v113 = [*(*(&v372 + 1) + 8 * i) valueForProperty:v111];
-          v114 = [(BluetoothDeviceProtocol *)v2->_device identifier];
-          v115 = [v113 UUIDString];
-          v116 = [v114 isEqualToString:v115];
+          identifier = [(BluetoothDeviceProtocol *)selfCopy->_device identifier];
+          uUIDString = [v113 UUIDString];
+          v116 = [identifier isEqualToString:uUIDString];
 
-          v2 = v371;
+          selfCopy = v371;
           if (v116)
           {
             v371->_isWatch = 1;
@@ -4270,35 +4270,35 @@ LABEL_141:
       while (v109);
     }
 
-    [(BTSDeviceConfigController *)v2 loadAccessorySettings];
-    [(BTSDeviceConfigController *)v2 loadAccessoryInfo];
+    [(BTSDeviceConfigController *)selfCopy loadAccessorySettings];
+    [(BTSDeviceConfigController *)selfCopy loadAccessoryInfo];
     if (!+[HPSProductUtils isRealityDevice])
     {
-      [(BTSDeviceConfigController *)v2 loadAccessoryFirmwareInfo];
+      [(BTSDeviceConfigController *)selfCopy loadAccessoryFirmwareInfo];
     }
 
-    if (v2->_isWatch)
+    if (selfCopy->_isWatch)
     {
-      v117 = [(NSArray *)v2->_controlGroupSpecifiers objectAtIndexedSubscript:0];
+      v117 = [(NSArray *)selfCopy->_controlGroupSpecifiers objectAtIndexedSubscript:0];
       v118 = MEMORY[0x277CCACA8];
       v119 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v120 = [v119 localizedStringForKey:@"APPLE_WATCH_FOOTER_TEXT" value:&stru_286339F58 table:@"DeviceConfig"];
       v121 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v122 = [v121 localizedStringForKey:@"APPLE_WATCH_APP_LINK" value:&stru_286339F58 table:@"DeviceConfig"];
-      v123 = [v118 stringWithFormat:v120, v122];
+      v122 = [v118 stringWithFormat:v120, v122];
 
       v124 = objc_opt_class();
       v125 = NSStringFromClass(v124);
       [v117 setProperty:v125 forKey:*MEMORY[0x277D3FF48]];
 
-      [v117 setProperty:v123 forKey:*MEMORY[0x277D3FF70]];
+      [v117 setProperty:v122 forKey:*MEMORY[0x277D3FF70]];
       v126 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v127 = [v126 localizedStringForKey:@"APPLE_WATCH_APP_LINK" value:&stru_286339F58 table:@"DeviceConfig"];
-      v386.location = [v123 rangeOfString:v127];
+      v386.location = [v122 rangeOfString:v127];
       v128 = NSStringFromRange(v386);
       [v117 setProperty:v128 forKey:*MEMORY[0x277D3FF58]];
 
-      v2 = v371;
+      selfCopy = v371;
       v129 = [MEMORY[0x277CCAE60] valueWithNonretainedObject:v371];
       [v117 setProperty:v129 forKey:*MEMORY[0x277D3FF68]];
 
@@ -4306,86 +4306,86 @@ LABEL_141:
     }
 
     v5 = v360;
-    if ([(BluetoothDeviceProtocol *)v2->_device isManagedByWallet])
+    if ([(BluetoothDeviceProtocol *)selfCopy->_device isManagedByWallet])
     {
-      v2->_isManagedByWallet = 1;
-      v130 = [(NSArray *)v2->_controlGroupSpecifiers objectAtIndexedSubscript:0];
+      selfCopy->_isManagedByWallet = 1;
+      v130 = [(NSArray *)selfCopy->_controlGroupSpecifiers objectAtIndexedSubscript:0];
       v131 = MEMORY[0x277CCACA8];
       v132 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v133 = [v132 localizedStringForKey:@"MANAGED_BY_WALLET_FOOTER_TEXT" value:&stru_286339F58 table:@"DeviceConfig"];
       v134 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v135 = [v134 localizedStringForKey:@"WALLET_APP_LINK" value:&stru_286339F58 table:@"DeviceConfig"];
-      v136 = [v131 stringWithFormat:v133, v135];
+      v135 = [v131 stringWithFormat:v133, v135];
 
       v137 = objc_opt_class();
       v138 = NSStringFromClass(v137);
       [v130 setProperty:v138 forKey:*MEMORY[0x277D3FF48]];
 
-      [v130 setProperty:v136 forKey:*MEMORY[0x277D3FF70]];
+      [v130 setProperty:v135 forKey:*MEMORY[0x277D3FF70]];
       v139 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v140 = [v139 localizedStringForKey:@"WALLET_APP_LINK" value:&stru_286339F58 table:@"DeviceConfig"];
-      v387.location = [v136 rangeOfString:v140];
+      v387.location = [v135 rangeOfString:v140];
       v141 = NSStringFromRange(v387);
       [v130 setProperty:v141 forKey:*MEMORY[0x277D3FF58]];
 
-      v2 = v371;
+      selfCopy = v371;
       v142 = [MEMORY[0x277CCAE60] valueWithNonretainedObject:v371];
       [v130 setProperty:v142 forKey:*MEMORY[0x277D3FF68]];
 
       [v130 setProperty:@"userDidTapWalletLink:" forKey:*MEMORY[0x277D3FF50]];
     }
 
-    if ([(BluetoothDeviceProtocol *)v2->_device isManagedByAliroWallet])
+    if ([(BluetoothDeviceProtocol *)selfCopy->_device isManagedByAliroWallet])
     {
-      v2->_isManagedByAliroWallet = 1;
-      v143 = [(NSArray *)v2->_controlGroupSpecifiers objectAtIndexedSubscript:0];
+      selfCopy->_isManagedByAliroWallet = 1;
+      v143 = [(NSArray *)selfCopy->_controlGroupSpecifiers objectAtIndexedSubscript:0];
       v144 = MEMORY[0x277CCACA8];
       v145 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v146 = [v145 localizedStringForKey:@"MANAGED_BY_WALLET_ALIRO_FOOTER_TEXT" value:&stru_286339F58 table:@"DeviceConfig"];
       v147 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v148 = [v147 localizedStringForKey:@"WALLET_APP_LINK" value:&stru_286339F58 table:@"DeviceConfig"];
-      v149 = [v144 stringWithFormat:v146, v148];
+      v148 = [v144 stringWithFormat:v146, v148];
 
       v150 = objc_opt_class();
       v151 = NSStringFromClass(v150);
       [v143 setProperty:v151 forKey:*MEMORY[0x277D3FF48]];
 
-      [v143 setProperty:v149 forKey:*MEMORY[0x277D3FF70]];
+      [v143 setProperty:v148 forKey:*MEMORY[0x277D3FF70]];
       v152 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v153 = [v152 localizedStringForKey:@"WALLET_APP_LINK" value:&stru_286339F58 table:@"DeviceConfig"];
-      v388.location = [v149 rangeOfString:v153];
+      v388.location = [v148 rangeOfString:v153];
       v154 = NSStringFromRange(v388);
       [v143 setProperty:v154 forKey:*MEMORY[0x277D3FF58]];
 
-      v2 = v371;
+      selfCopy = v371;
       v155 = [MEMORY[0x277CCAE60] valueWithNonretainedObject:v371];
       [v143 setProperty:v155 forKey:*MEMORY[0x277D3FF68]];
 
       [v143 setProperty:@"userDidTapWalletLink:" forKey:*MEMORY[0x277D3FF50]];
     }
 
-    if ([(BluetoothDeviceProtocol *)v2->_device doesSupportBackgroundNI])
+    if ([(BluetoothDeviceProtocol *)selfCopy->_device doesSupportBackgroundNI])
     {
-      v156 = [(NSArray *)v2->_controlGroupSpecifiers objectAtIndexedSubscript:0];
+      v156 = [(NSArray *)selfCopy->_controlGroupSpecifiers objectAtIndexedSubscript:0];
       v157 = MEMORY[0x277CCACA8];
       v158 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v159 = [v158 localizedStringForKey:@"NI_BACKGROUND_FOOTER_TEXT" value:&stru_286339F58 table:@"DeviceConfig"];
       v160 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v161 = [v160 localizedStringForKey:@"NI_PRIVACY_LINK" value:&stru_286339F58 table:@"DeviceConfig"];
-      v162 = [v157 stringWithFormat:v159, v161];
+      v161 = [v157 stringWithFormat:v159, v161];
 
       v163 = objc_opt_class();
       v164 = NSStringFromClass(v163);
       [v156 setProperty:v164 forKey:*MEMORY[0x277D3FF48]];
 
-      [v156 setProperty:v162 forKey:*MEMORY[0x277D3FF70]];
+      [v156 setProperty:v161 forKey:*MEMORY[0x277D3FF70]];
       v165 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v166 = [v165 localizedStringForKey:@"NI_PRIVACY_LINK" value:&stru_286339F58 table:@"DeviceConfig"];
-      v389.location = [v162 rangeOfString:v166 options:4];
+      v389.location = [v161 rangeOfString:v166 options:4];
       v167 = NSStringFromRange(v389);
       [v156 setProperty:v167 forKey:*MEMORY[0x277D3FF58]];
 
-      v2 = v371;
+      selfCopy = v371;
       v168 = [MEMORY[0x277CCAE60] valueWithNonretainedObject:v371];
       [v156 setProperty:v168 forKey:*MEMORY[0x277D3FF68]];
 
@@ -4393,18 +4393,18 @@ LABEL_141:
     }
 
     v8 = v362;
-    if ([(BluetoothDeviceProtocol *)v2->_device isCTKDDevice])
+    if ([(BluetoothDeviceProtocol *)selfCopy->_device isCTKDDevice])
     {
-      v169 = [*(&v2->super.super.super.super.super.isa + v364) userInfo];
-      v170 = [v169 objectForKeyedSubscript:@"ctkd-device"];
-      ctkdLeDevice = v2->_ctkdLeDevice;
-      v2->_ctkdLeDevice = v170;
+      userInfo8 = [*(&selfCopy->super.super.super.super.super.isa + v364) userInfo];
+      v170 = [userInfo8 objectForKeyedSubscript:@"ctkd-device"];
+      ctkdLeDevice = selfCopy->_ctkdLeDevice;
+      selfCopy->_ctkdLeDevice = v170;
     }
 
-    v172 = [(BTSDeviceConfigController *)v2 classicSetupSpecifiers];
-    [v363 addObjectsFromArray:v172];
+    classicSetupSpecifiers = [(BTSDeviceConfigController *)selfCopy classicSetupSpecifiers];
+    [v363 addObjectsFromArray:classicSetupSpecifiers];
 
-    if (([(BluetoothDeviceProtocol *)v2->_device supportsANCS]& 1) != 0 || [(BluetoothDeviceProtocol *)v2->_device isCTKDDevice]&& [(BTSDeviceLE *)v2->_ctkdLeDevice supportsANCS])
+    if (([(BluetoothDeviceProtocol *)selfCopy->_device supportsANCS]& 1) != 0 || [(BluetoothDeviceProtocol *)selfCopy->_device isCTKDDevice]&& [(BTSDeviceLE *)selfCopy->_ctkdLeDevice supportsANCS])
     {
       v173 = MEMORY[0x277D3FAD8];
       v174 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -4414,17 +4414,17 @@ LABEL_141:
       [(NSMutableArray *)v371->_ancsControlSpecifiers addObject:v176];
       v177 = MEMORY[0x277D3FAD8];
       v178 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-      v2 = v371;
+      selfCopy = v371;
       v179 = [v178 localizedStringForKey:@"SHARE_SYSTEM_NOTIFICATIONS" value:&stru_286339F58 table:@"DeviceConfig"];
       v180 = [v177 preferenceSpecifierNamed:v179 target:v371 set:sel_setANCSAuthorized_ get:sel_ancsAuthorized detail:0 cell:6 edit:0];
 
       [(NSMutableArray *)v371->_ancsControlSpecifiers addObject:v180];
     }
 
-    v181 = [(BluetoothDeviceProtocol *)v2->_device classicDevice];
-    v182 = [v181 getLowSecurityStatus];
+    classicDevice6 = [(BluetoothDeviceProtocol *)selfCopy->_device classicDevice];
+    getLowSecurityStatus = [classicDevice6 getLowSecurityStatus];
 
-    if (v182)
+    if (getLowSecurityStatus)
     {
       v183 = MEMORY[0x277D3FAD8];
       v184 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -4433,14 +4433,14 @@ LABEL_141:
 
       v186 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:0 target:v371 set:0 get:0 detail:0 cell:-1 edit:0];
       [v186 setProperty:objc_opt_class() forKey:*MEMORY[0x277D3FE58]];
-      v187 = [(BluetoothDeviceProtocol *)v371->_device name];
+      name3 = [(BluetoothDeviceProtocol *)v371->_device name];
       v188 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v189 = [v188 localizedStringForKey:@"UNSECURED_ACCESSORY_TITLE" value:&stru_286339F58 table:@"DeviceConfig"];
 
       v190 = MEMORY[0x277CCACA8];
       v191 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v192 = [v191 localizedStringForKey:@"UNSECURED_ACCESSORY_BODY" value:&stru_286339F58 table:@"DeviceConfig"];
-      v193 = [v190 stringWithFormat:v192, v187];
+      v187 = [v190 stringWithFormat:v192, name3];
 
       v194 = objc_alloc_init(MEMORY[0x277CBEB38]);
       v195 = v371->_device;
@@ -4448,25 +4448,25 @@ LABEL_141:
       [v194 setObject:v195 forKey:v196];
 
       [v194 setObject:v189 forKey:@"warning-cell-title"];
-      [v194 setObject:v193 forKey:@"warning-cell-body"];
+      [v194 setObject:v187 forKey:@"warning-cell-body"];
       [v186 setUserInfo:v194];
       [v363 addObject:v365];
       [v363 addObject:v186];
 
-      v2 = v371;
+      selfCopy = v371;
       v8 = v362;
     }
 
-    if ([(BluetoothDeviceProtocol *)v2->_device isLimitedConnectivityDevice])
+    if ([(BluetoothDeviceProtocol *)selfCopy->_device isLimitedConnectivityDevice])
     {
       v197 = MEMORY[0x277D3FAD8];
       v198 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v199 = [v198 localizedStringForKey:&stru_286339F58 value:&stru_286339F58 table:@"DeviceConfig"];
-      v366 = [v197 preferenceSpecifierNamed:v199 target:v2 set:0 get:0 detail:0 cell:0 edit:0];
+      v366 = [v197 preferenceSpecifierNamed:v199 target:selfCopy set:0 get:0 detail:0 cell:0 edit:0];
 
-      v200 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:0 target:v2 set:0 get:0 detail:0 cell:-1 edit:0];
+      v200 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:0 target:selfCopy set:0 get:0 detail:0 cell:-1 edit:0];
       [v200 setProperty:objc_opt_class() forKey:*MEMORY[0x277D3FE58]];
-      v201 = [(BluetoothDeviceProtocol *)v2->_device name];
+      name4 = [(BluetoothDeviceProtocol *)selfCopy->_device name];
       v202 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v347 = [v202 localizedStringForKey:@"CONNECTIVITY_WARNING_TITLE" value:&stru_286339F58 table:@"DeviceConfig"];
 
@@ -4478,11 +4478,11 @@ LABEL_141:
       }
 
       v350 = v204;
-      v205 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_CONNECTIVITY_WARNING_BODY", v350];
+      v350 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_CONNECTIVITY_WARNING_BODY", v350];
       v206 = MEMORY[0x277CCACA8];
       v207 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-      v208 = [v207 localizedStringForKey:v205 value:&stru_286339F58 table:@"DeviceConfig"];
-      v209 = [v206 stringWithFormat:v208, v201];
+      v208 = [v207 localizedStringForKey:v350 value:&stru_286339F58 table:@"DeviceConfig"];
+      v201 = [v206 stringWithFormat:v208, name4];
 
       v210 = objc_alloc_init(MEMORY[0x277CBEB38]);
       v211 = v371->_device;
@@ -4490,17 +4490,17 @@ LABEL_141:
       [v210 setObject:v211 forKey:v212];
 
       [v210 setObject:v347 forKey:@"warning-cell-title"];
-      [v210 setObject:v209 forKey:@"warning-cell-body"];
+      [v210 setObject:v201 forKey:@"warning-cell-body"];
       [v200 setUserInfo:v210];
       [v363 addObject:v366];
       [v363 addObject:v200];
 
-      v2 = v371;
+      selfCopy = v371;
       v8 = v362;
     }
 
     v213 = v363;
-    if ([(BluetoothDeviceProtocol *)v2->_device isFirmwareUpdateRequiredDevice])
+    if ([(BluetoothDeviceProtocol *)selfCopy->_device isFirmwareUpdateRequiredDevice])
     {
       v214 = MEMORY[0x277D3FAD8];
       v215 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -4537,41 +4537,41 @@ LABEL_141:
       [v363 addObject:v367];
       [v363 addObject:v217];
 
-      v2 = v371;
+      selfCopy = v371;
       v8 = v362;
     }
 
-    if ([(BTSDeviceConfigController *)v2 deviceSupportsCarPlay])
+    if ([(BTSDeviceConfigController *)selfCopy deviceSupportsCarPlay])
     {
-      v230 = [(BTSDeviceConfigController *)v2 carplayPreferences];
+      carplayPreferences = [(BTSDeviceConfigController *)selfCopy carplayPreferences];
 
-      if (!v230)
+      if (!carplayPreferences)
       {
         v231 = objc_alloc_init(MEMORY[0x277CF8A40]);
-        [(BTSDeviceConfigController *)v2 setCarplayPreferences:v231];
-        [v231 setPreferencesDelegate:v2];
+        [(BTSDeviceConfigController *)selfCopy setCarplayPreferences:v231];
+        [v231 setPreferencesDelegate:selfCopy];
       }
 
-      v232 = [(BTSDeviceConfigController *)v2 carplayPreferences];
-      v233 = [v232 isCarPlayAllowed];
+      carplayPreferences2 = [(BTSDeviceConfigController *)selfCopy carplayPreferences];
+      isCarPlayAllowed = [carplayPreferences2 isCarPlayAllowed];
 
-      if (v233)
+      if (isCarPlayAllowed)
       {
-        v234 = [(BTSDeviceConfigController *)v2 vehicleManager];
+        vehicleManager = [(BTSDeviceConfigController *)selfCopy vehicleManager];
 
-        if (!v234)
+        if (!vehicleManager)
         {
           v235 = objc_alloc_init(MEMORY[0x277CF8A68]);
-          [(BTSDeviceConfigController *)v2 setVehicleManager:v235];
-          v236 = [MEMORY[0x277CCA9A0] defaultCenter];
-          [v236 addObserver:v2 selector:sel_handlePairedVehiclesChanged_ name:*MEMORY[0x277CF8970] object:0];
+          [(BTSDeviceConfigController *)selfCopy setVehicleManager:v235];
+          defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+          [defaultCenter addObserver:selfCopy selector:sel_handlePairedVehiclesChanged_ name:*MEMORY[0x277CF8970] object:0];
         }
 
-        v237 = [(BTSDeviceConfigController *)v2 _carPlayVehicle];
-        v238 = v237;
-        if (v237)
+        _carPlayVehicle = [(BTSDeviceConfigController *)selfCopy _carPlayVehicle];
+        v238 = _carPlayVehicle;
+        if (_carPlayVehicle)
         {
-          -[BTSDeviceConfigController setCachedCarplayPairingStatus:](v2, "setCachedCarplayPairingStatus:", [v237 pairingStatus]);
+          -[BTSDeviceConfigController setCachedCarplayPairingStatus:](selfCopy, "setCachedCarplayPairingStatus:", [_carPlayVehicle pairingStatus]);
           v239 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"CARPLAY_GROUP"];
           v240 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
           v241 = [v240 localizedStringForKey:@"CARPLAY_FOOTER_TEXT" value:&stru_286339F58 table:@"DeviceConfig"];
@@ -4579,7 +4579,7 @@ LABEL_141:
 
           v242 = MEMORY[0x277D3FAD8];
           v243 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-          v2 = v371;
+          selfCopy = v371;
           v244 = [v243 localizedStringForKey:@"CARPLAY_SWITCH" value:&stru_286339F58 table:@"DeviceConfig"];
           v245 = [v242 preferenceSpecifierNamed:v244 target:v371 set:sel_setCarPlayEnabled_specifier_ get:sel_carPlayEnabled_ detail:0 cell:6 edit:0];
 
@@ -4595,35 +4595,35 @@ LABEL_141:
       }
     }
 
-    v247 = [(BluetoothDeviceProtocol *)v2->_device classicDevice];
-    v248 = [v247 isServiceSupported:512];
+    classicDevice7 = [(BluetoothDeviceProtocol *)selfCopy->_device classicDevice];
+    v248 = [classicDevice7 isServiceSupported:512];
 
     if (v248)
     {
-      v2->_supportsMAP = 1;
-      v249 = [(BluetoothDeviceProtocol *)v2->_device classicDevice];
-      v250 = [v249 getServiceSetting:512 key:@"BT_KEY_MAP_ENABLED"];
-      v2->_messagingEnabled = [v250 isEqualToString:@"BT_VALUE_MAP_ENABLED"];
+      selfCopy->_supportsMAP = 1;
+      classicDevice8 = [(BluetoothDeviceProtocol *)selfCopy->_device classicDevice];
+      v250 = [classicDevice8 getServiceSetting:512 key:@"BT_KEY_MAP_ENABLED"];
+      selfCopy->_messagingEnabled = [v250 isEqualToString:@"BT_VALUE_MAP_ENABLED"];
 
-      [v213 addObjectsFromArray:v2->_messagingSpecifiers];
+      [v213 addObjectsFromArray:selfCopy->_messagingSpecifiers];
     }
 
     if (_os_feature_enabled_impl())
     {
-      v251 = [(BluetoothDeviceProtocol *)v2->_device classicDevice];
-      if ([HPSProductUtils isAppleHeadphone:v251])
+      classicDevice9 = [(BluetoothDeviceProtocol *)selfCopy->_device classicDevice];
+      if ([HPSProductUtils isAppleHeadphone:classicDevice9])
       {
-        v252 = [(BluetoothDeviceProtocol *)v2->_device classicDevice];
-        v253 = [v252 isTemporaryPaired];
+        classicDevice10 = [(BluetoothDeviceProtocol *)selfCopy->_device classicDevice];
+        isTemporaryPaired = [classicDevice10 isTemporaryPaired];
 
-        if ((v253 & 1) == 0)
+        if ((isTemporaryPaired & 1) == 0)
         {
-          v254 = [(BluetoothDeviceProtocol *)v2->_device classicDevice];
-          v255 = [v254 isGenuineAirPods];
+          classicDevice11 = [(BluetoothDeviceProtocol *)selfCopy->_device classicDevice];
+          isGenuineAirPods = [classicDevice11 isGenuineAirPods];
 
-          if (v255)
+          if (isGenuineAirPods)
           {
-            [(BTSDeviceConfigController *)v2 updateBatteryStatus];
+            [(BTSDeviceConfigController *)selfCopy updateBatteryStatus];
           }
         }
       }
@@ -4633,30 +4633,30 @@ LABEL_141:
       }
     }
 
-    v256 = [(BluetoothDeviceProtocol *)v2->_device classicDevice];
-    if ([v256 hearingAidSupport])
+    classicDevice12 = [(BluetoothDeviceProtocol *)selfCopy->_device classicDevice];
+    if ([classicDevice12 hearingAidSupport])
     {
       v257 = _os_feature_enabled_impl();
 
       if (!v257)
       {
 LABEL_94:
-        v260 = [(BluetoothDeviceProtocol *)v2->_device classicDevice];
-        if (v260)
+        classicDevice13 = [(BluetoothDeviceProtocol *)selfCopy->_device classicDevice];
+        if (classicDevice13)
         {
-          v261 = v260;
-          v262 = [(BluetoothDeviceProtocol *)v2->_device classicDevice];
-          v263 = [v262 isGenuineAirPods];
+          v261 = classicDevice13;
+          classicDevice14 = [(BluetoothDeviceProtocol *)selfCopy->_device classicDevice];
+          isGenuineAirPods2 = [classicDevice14 isGenuineAirPods];
 
-          if ((v263 & 1) == 0)
+          if ((isGenuineAirPods2 & 1) == 0)
           {
             v264 = sharedBluetoothSettingsLogComponent();
             if (os_log_type_enabled(v264, OS_LOG_TYPE_DEFAULT))
             {
-              v265 = [(BluetoothDeviceProtocol *)v2->_device classicDevice];
-              v266 = [v265 productId];
+              classicDevice15 = [(BluetoothDeviceProtocol *)selfCopy->_device classicDevice];
+              productId = [classicDevice15 productId];
               *buf = 67109120;
-              LODWORD(v379) = v266;
+              LODWORD(v379) = productId;
               _os_log_impl(&dword_251143000, v264, OS_LOG_TYPE_DEFAULT, "Device %i is fake", buf, 8u);
             }
 
@@ -4672,15 +4672,15 @@ LABEL_94:
 
             [v273 setIdentifier:@"IMPORTANT_MSG_ID"];
             v274 = MEMORY[0x277D3FAD8];
-            v275 = [(BluetoothDeviceProtocol *)v371->_device classicDevice];
-            v276 = [v275 productId];
+            classicDevice16 = [(BluetoothDeviceProtocol *)v371->_device classicDevice];
+            productId2 = [classicDevice16 productId];
             v277 = @"IMPORTANT_MSG_NON_GENUINE_AIRPODS";
-            if (((1 << (v276 - 2)) & 0x6472863101) == 0)
+            if (((1 << (productId2 - 2)) & 0x6472863101) == 0)
             {
               v277 = @"IMPORTANT_MSG_NON_GENUINE_BEATS";
             }
 
-            if ((v276 - 8194) <= 0x26)
+            if ((productId2 - 8194) <= 0x26)
             {
               v278 = v277;
             }
@@ -4701,7 +4701,7 @@ LABEL_94:
             v284 = [v283 localizedStringForKey:@"IMPORTANT_MSG_LEARN_MORE" value:&stru_286339F58 table:@"DeviceConfig"];
             v285 = [v282 preferenceSpecifierNamed:v284 target:v371 set:0 get:0 detail:0 cell:13 edit:0];
 
-            v2 = v371;
+            selfCopy = v371;
             [v285 setButtonAction:sel_presentImportantMsgLink];
             [v363 addObject:v368];
             [v363 addObject:v273];
@@ -4713,35 +4713,35 @@ LABEL_94:
           }
         }
 
-        if ([(BTSDeviceConfigController *)v2 isTempPaired])
+        if ([(BTSDeviceConfigController *)selfCopy isTempPaired])
         {
-          v286 = [(BTSDeviceConfigController *)v2 getTemporaryPairSpecifier];
-          [v213 addObject:v286];
+          getTemporaryPairSpecifier = [(BTSDeviceConfigController *)selfCopy getTemporaryPairSpecifier];
+          [v213 addObject:getTemporaryPairSpecifier];
         }
 
-        if ([(BTSDeviceConfigController *)v2 canDisconnect])
+        if ([(BTSDeviceConfigController *)selfCopy canDisconnect])
         {
-          [v213 addObjectsFromArray:v2->_nameControlSpecifiers];
+          [v213 addObjectsFromArray:selfCopy->_nameControlSpecifiers];
         }
 
-        v369 = [(BluetoothDeviceProtocol *)v2->_device classicDevice];
-        if (v369)
+        classicDevice17 = [(BluetoothDeviceProtocol *)selfCopy->_device classicDevice];
+        if (classicDevice17)
         {
-          v287 = [(BluetoothDeviceProtocol *)v2->_device classicDevice];
-          if ([v287 vendorId] == 76)
+          classicDevice18 = [(BluetoothDeviceProtocol *)selfCopy->_device classicDevice];
+          if ([classicDevice18 vendorId] == 76)
           {
 LABEL_114:
 
             goto LABEL_115;
           }
 
-          v288 = [(BluetoothDeviceProtocol *)v2->_device classicDevice];
-          if ([v288 isServiceSupported:1])
+          classicDevice19 = [(BluetoothDeviceProtocol *)selfCopy->_device classicDevice];
+          if ([classicDevice19 isServiceSupported:1])
           {
 
 LABEL_113:
-            v369 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"DEVICE_TYPE_GROUP_ID"];
-            [(NSMutableArray *)v2->_deviceTypeSpecifiers addObject:v369];
+            classicDevice17 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"DEVICE_TYPE_GROUP_ID"];
+            [(NSMutableArray *)selfCopy->_deviceTypeSpecifiers addObject:classicDevice17];
             v291 = MEMORY[0x277D3FAD8];
             v292 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
             v293 = [v292 localizedStringForKey:@"DEVICE_TYPE" value:? table:?];
@@ -4783,9 +4783,9 @@ LABEL_113:
             v315 = [v344 initWithObjects:{v307, v343, v309, v311, v313, 0}];
 
             v8 = v362;
-            v287 = v356;
+            classicDevice18 = v356;
 
-            v2 = v371;
+            selfCopy = v371;
             [v356 setValues:v353 titles:v355 shortTitles:v315];
             v316 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
             v317 = [v316 localizedStringForKey:@"DEVICE_TYPE_FOOTER" value:&stru_286339F58 table:@"DeviceConfig"];
@@ -4797,8 +4797,8 @@ LABEL_113:
             goto LABEL_114;
           }
 
-          v289 = [(BluetoothDeviceProtocol *)v2->_device classicDevice];
-          v290 = [v289 isServiceSupported:16];
+          classicDevice20 = [(BluetoothDeviceProtocol *)selfCopy->_device classicDevice];
+          v290 = [classicDevice20 isServiceSupported:16];
 
           if (v290)
           {
@@ -4807,25 +4807,25 @@ LABEL_113:
         }
 
 LABEL_115:
-        [(BTSDeviceConfigController *)v2 loadSyncSettings];
-        if (v2->_syncSettings.supported)
+        [(BTSDeviceConfigController *)selfCopy loadSyncSettings];
+        if (selfCopy->_syncSettings.supported)
         {
-          [v213 addObjectsFromArray:v2->_syncContactsSpecifiers];
-          if (v2->_syncSettings.enabled)
+          [v213 addObjectsFromArray:selfCopy->_syncContactsSpecifiers];
+          if (selfCopy->_syncSettings.enabled)
           {
-            [v213 addObjectsFromArray:v2->_syncGroupsSpecifiers];
+            [v213 addObjectsFromArray:selfCopy->_syncGroupsSpecifiers];
           }
         }
 
-        v318 = [(BluetoothDeviceProtocol *)v2->_device classicDevice];
-        if ([v318 isServiceSupported:0x80000])
+        classicDevice21 = [(BluetoothDeviceProtocol *)selfCopy->_device classicDevice];
+        if ([classicDevice21 isServiceSupported:0x80000])
         {
-          v319 = [(BTSDeviceConfigController *)v2 canDisconnect];
+          canDisconnect = [(BTSDeviceConfigController *)selfCopy canDisconnect];
 
           v52 = v359;
-          if (v319)
+          if (canDisconnect)
           {
-            [v213 addObjectsFromArray:v2->_aacpControlSpecifiers];
+            [v213 addObjectsFromArray:selfCopy->_aacpControlSpecifiers];
           }
         }
 
@@ -4835,41 +4835,41 @@ LABEL_115:
           v52 = v359;
         }
 
-        v320 = [(BluetoothDeviceProtocol *)v2->_device classicDevice];
-        v321 = [v320 connected];
+        classicDevice22 = [(BluetoothDeviceProtocol *)selfCopy->_device classicDevice];
+        connected = [classicDevice22 connected];
 
-        if (v321)
+        if (connected)
         {
-          [v213 addObjectsFromArray:v2->_accessoryFirmwareSpecifiers];
+          [v213 addObjectsFromArray:selfCopy->_accessoryFirmwareSpecifiers];
         }
 
-        [v213 addObjectsFromArray:v2->_accessoryInfoSpecifiers];
-        if ([(NSMutableArray *)v2->_deviceTypeSpecifiers count])
+        [v213 addObjectsFromArray:selfCopy->_accessoryInfoSpecifiers];
+        if ([(NSMutableArray *)selfCopy->_deviceTypeSpecifiers count])
         {
-          [v213 addObjectsFromArray:v2->_deviceTypeSpecifiers];
+          [v213 addObjectsFromArray:selfCopy->_deviceTypeSpecifiers];
         }
 
-        if ([(BTSDeviceConfigController *)v2 canDisconnect])
+        if ([(BTSDeviceConfigController *)selfCopy canDisconnect])
         {
-          [v213 addObjectsFromArray:v2->_ancsControlSpecifiers];
-          v322 = [(NSArray *)v2->_controlGroupSpecifiers objectAtIndexedSubscript:0];
+          [v213 addObjectsFromArray:selfCopy->_ancsControlSpecifiers];
+          v322 = [(NSArray *)selfCopy->_controlGroupSpecifiers objectAtIndexedSubscript:0];
           [v213 addObject:v322];
 
-          v323 = [(NSArray *)v2->_controlGroupSpecifiers objectAtIndexedSubscript:1];
+          v323 = [(NSArray *)selfCopy->_controlGroupSpecifiers objectAtIndexedSubscript:1];
           [v213 addObject:v323];
 
-          if ([(BTSDeviceConfigController *)v2 isTempPaired])
+          if ([(BTSDeviceConfigController *)selfCopy isTempPaired])
           {
-            v324 = [(BTSDeviceConfigController *)v2 getPermanentPairSpecifier];
-            [v213 addObject:v324];
+            getPermanentPairSpecifier = [(BTSDeviceConfigController *)selfCopy getPermanentPairSpecifier];
+            [v213 addObject:getPermanentPairSpecifier];
           }
 
-          v325 = [(BluetoothDeviceProtocol *)v2->_device classicDevice];
-          v326 = [v325 isGuestPairingMode];
+          classicDevice23 = [(BluetoothDeviceProtocol *)selfCopy->_device classicDevice];
+          isGuestPairingMode = [classicDevice23 isGuestPairingMode];
 
           v327 = sharedBluetoothSettingsLogComponent();
           v328 = os_log_type_enabled(v327, OS_LOG_TYPE_DEFAULT);
-          if (v326)
+          if (isGuestPairingMode)
           {
             if (v328)
             {
@@ -4877,7 +4877,7 @@ LABEL_115:
               _os_log_impl(&dword_251143000, v327, OS_LOG_TYPE_DEFAULT, "Guest Pairing: Adding Upgrade Button", buf, 2u);
             }
 
-            v327 = [(NSArray *)v2->_controlGroupSpecifiers objectAtIndexedSubscript:3];
+            v327 = [(NSArray *)selfCopy->_controlGroupSpecifiers objectAtIndexedSubscript:3];
             [v213 addObject:v327];
           }
 
@@ -4890,23 +4890,23 @@ LABEL_115:
 
         else
         {
-          if (![(BTSDeviceConfigController *)v2 canUnpair])
+          if (![(BTSDeviceConfigController *)selfCopy canUnpair])
           {
-            v330 = [(NSArray *)v2->_controlGroupSpecifiers objectAtIndexedSubscript:0];
+            forgetButtonSpecifier = [(NSArray *)selfCopy->_controlGroupSpecifiers objectAtIndexedSubscript:0];
             goto LABEL_140;
           }
 
-          [v213 addObjectsFromArray:v2->_ancsControlSpecifiers];
-          v329 = [(NSArray *)v2->_controlGroupSpecifiers objectAtIndexedSubscript:0];
+          [v213 addObjectsFromArray:selfCopy->_ancsControlSpecifiers];
+          v329 = [(NSArray *)selfCopy->_controlGroupSpecifiers objectAtIndexedSubscript:0];
           [v213 addObject:v329];
         }
 
-        v330 = [(BTSDeviceConfigController *)v2 forgetButtonSpecifier];
+        forgetButtonSpecifier = [(BTSDeviceConfigController *)selfCopy forgetButtonSpecifier];
 LABEL_140:
-        v331 = v330;
-        [v213 addObject:v330];
+        v331 = forgetButtonSpecifier;
+        [v213 addObject:forgetButtonSpecifier];
 
-        objc_storeStrong((&v2->super.super.super.super.super.isa + v52), v213);
+        objc_storeStrong((&selfCopy->super.super.super.super.super.isa + v52), v213);
         goto LABEL_141;
       }
 
@@ -4917,9 +4917,9 @@ LABEL_140:
         _os_log_impl(&dword_251143000, v258, OS_LOG_TYPE_DEFAULT, "Occlusion Detection: Get Occlusion Detection Specifiers", buf, 2u);
       }
 
-      v256 = [(BTSDeviceConfigController *)v2 hearingModeUIService];
-      v259 = [v256 occlusionDetectionSpecifiers];
-      [v213 addObjectsFromArray:v259];
+      classicDevice12 = [(BTSDeviceConfigController *)selfCopy hearingModeUIService];
+      occlusionDetectionSpecifiers = [classicDevice12 occlusionDetectionSpecifiers];
+      [v213 addObjectsFromArray:occlusionDetectionSpecifiers];
     }
 
     goto LABEL_94;
@@ -4933,8 +4933,8 @@ LABEL_140:
 
 LABEL_14:
 
-  v16 = [(BTSDeviceConfigController *)v2 navigationController];
-  v17 = [v16 popViewControllerAnimated:1];
+  productName = [(BTSDeviceConfigController *)selfCopy navigationController];
+  v17 = [productName popViewControllerAnimated:1];
   v18 = MEMORY[0x277CBEBF8];
 LABEL_147:
 
@@ -4949,15 +4949,15 @@ LABEL_148:
   v3 = [(NSArray *)self->_controlGroupSpecifiers objectAtIndexedSubscript:2];
   if ([(BTSDeviceConfigController *)self managedByDeviceAccess])
   {
-    v4 = [(BTSDeviceConfigController *)self leDevice];
-    v5 = [v4 underlyingDADevice];
-    v6 = [v5 wifiAwareDevicePairingID];
+    leDevice = [(BTSDeviceConfigController *)self leDevice];
+    underlyingDADevice = [leDevice underlyingDADevice];
+    wifiAwareDevicePairingID = [underlyingDADevice wifiAwareDevicePairingID];
 
-    if (v6)
+    if (wifiAwareDevicePairingID)
     {
       v7 = MEMORY[0x277D3FAD8];
-      v8 = [MEMORY[0x277CB8900] unpairDeviceButtonTitle];
-      v9 = [v7 preferenceSpecifierNamed:v8 target:self set:0 get:0 detail:0 cell:13 edit:0];
+      unpairDeviceButtonTitle = [MEMORY[0x277CB8900] unpairDeviceButtonTitle];
+      v9 = [v7 preferenceSpecifierNamed:unpairDeviceButtonTitle target:self set:0 get:0 detail:0 cell:13 edit:0];
 
       [v9 setButtonAction:sel_unpairButtonTapped_];
       [v9 setIdentifier:@"FORGET_BUTTON"];
@@ -4987,26 +4987,26 @@ LABEL_148:
     return;
   }
 
-  v22 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+  classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
   if ([HPSProductUtils isAppleHeadphone:?])
   {
-    v6 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-    v7 = [v6 isTemporaryPaired];
+    classicDevice2 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+    isTemporaryPaired = [classicDevice2 isTemporaryPaired];
 
-    if (v7)
+    if (isTemporaryPaired)
     {
       return;
     }
 
-    v8 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-    v9 = [v8 isGenuineAirPods];
+    classicDevice3 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+    isGenuineAirPods = [classicDevice3 isGenuineAirPods];
 
-    if (!v9)
+    if (!isGenuineAirPods)
     {
       return;
     }
 
-    v22 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:@"Internal" target:self set:0 get:0 detail:0 cell:0 edit:0];
+    classicDevice = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:@"Internal" target:self set:0 get:0 detail:0 cell:0 edit:0];
     [(NSMutableArray *)self->_accessoryFirmwareSpecifiers addObject:?];
     if ([(BTSDeviceConfigController *)self shouldShowInternalFitTestToggle])
     {
@@ -5014,13 +5014,13 @@ LABEL_148:
       [(NSMutableArray *)self->_accessoryFirmwareSpecifiers addObject:v10];
     }
 
-    v11 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-    if ([v11 getAACPCapabilityBit:64])
+    classicDevice4 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+    if ([classicDevice4 getAACPCapabilityBit:64])
     {
-      v12 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-      v13 = [v12 getSpatialAudioPlatformSupport];
+      classicDevice5 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+      getSpatialAudioPlatformSupport = [classicDevice5 getSpatialAudioPlatformSupport];
 
-      if (v13 != 1)
+      if (getSpatialAudioPlatformSupport != 1)
       {
 LABEL_15:
         v16 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:@"Configure Livability" target:self set:0 get:0 detail:0 cell:13 edit:0];
@@ -5028,24 +5028,24 @@ LABEL_15:
         v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"More details available at %@.", @"Recommended Builds"];
         v18 = objc_opt_class();
         v19 = NSStringFromClass(v18);
-        [v22 setProperty:v19 forKey:*MEMORY[0x277D3FF48]];
+        [classicDevice setProperty:v19 forKey:*MEMORY[0x277D3FF48]];
 
-        [v22 setProperty:v17 forKey:*MEMORY[0x277D3FF70]];
+        [classicDevice setProperty:v17 forKey:*MEMORY[0x277D3FF70]];
         v24.location = [v17 rangeOfString:@"Recommended Builds"];
         v20 = NSStringFromRange(v24);
-        [v22 setProperty:v20 forKey:*MEMORY[0x277D3FF58]];
+        [classicDevice setProperty:v20 forKey:*MEMORY[0x277D3FF58]];
 
         v21 = [MEMORY[0x277CCAE60] valueWithNonretainedObject:self];
-        [v22 setProperty:v21 forKey:*MEMORY[0x277D3FF68]];
+        [classicDevice setProperty:v21 forKey:*MEMORY[0x277D3FF68]];
 
-        [v22 setProperty:@"userDidTapRecommendedBuilds:" forKey:*MEMORY[0x277D3FF50]];
+        [classicDevice setProperty:@"userDidTapRecommendedBuilds:" forKey:*MEMORY[0x277D3FF50]];
         [(NSMutableArray *)self->_accessoryFirmwareSpecifiers addObject:v16];
 
         goto LABEL_16;
       }
 
-      v11 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:@"Use Spatial Audio Profile" target:self set:sel_setSoundProfileAllowed_ get:sel_soundProfileAllowed detail:0 cell:6 edit:0];
-      [(NSMutableArray *)self->_accessoryFirmwareSpecifiers addObject:v11];
+      classicDevice4 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:@"Use Spatial Audio Profile" target:self set:sel_setSoundProfileAllowed_ get:sel_soundProfileAllowed detail:0 cell:6 edit:0];
+      [(NSMutableArray *)self->_accessoryFirmwareSpecifiers addObject:classicDevice4];
       v14 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:@"Dynamic Audio Feedback" target:self set:sel_setDynamicEnrollmentFeedback_ get:sel_dynamicEnrollmentFeedback detail:0 cell:6 edit:0];
       [(NSMutableArray *)self->_accessoryFirmwareSpecifiers addObject:v14];
       v15 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:@"Video Capture Spatial Audio Profile" target:self set:sel_setSpatialProfileVideoCapture_ get:sel_spatialProfileVideoCapture detail:0 cell:6 edit:0];
@@ -5060,27 +5060,27 @@ LABEL_16:
 
 - (BOOL)shouldForceShowFitTest
 {
-  v3 = [(BTSDeviceConfigController *)self forceShowFitTest];
-  if ([v3 BOOLValue])
+  forceShowFitTest = [(BTSDeviceConfigController *)self forceShowFitTest];
+  if ([forceShowFitTest BOOLValue])
   {
-    v4 = [(BTSDeviceConfigController *)self shouldShowInternalFitTestToggle];
+    shouldShowInternalFitTestToggle = [(BTSDeviceConfigController *)self shouldShowInternalFitTestToggle];
   }
 
   else
   {
-    v4 = 0;
+    shouldShowInternalFitTestToggle = 0;
   }
 
-  return v4;
+  return shouldShowInternalFitTestToggle;
 }
 
 - (BOOL)shouldShowInternalFitTestToggle
 {
   v11 = *MEMORY[0x277D85DE8];
-  v2 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-  v3 = [v2 productId];
+  classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+  productId = [classicDevice productId];
 
-  v4 = ((v3 - 8217) < 8) & (0xA5u >> (v3 - 25));
+  v4 = ((productId - 8217) < 8) & (0xA5u >> (productId - 25));
   v5 = sharedBluetoothSettingsLogComponent();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -5123,12 +5123,12 @@ LABEL_16:
   return v5;
 }
 
-- (void)setForceShowFitTest:(id)a3
+- (void)setForceShowFitTest:(id)test
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = [a3 BOOLValue];
+  bOOLValue = [test BOOLValue];
   v4 = MEMORY[0x277CBED28];
-  if (!v3)
+  if (!bOOLValue)
   {
     v4 = MEMORY[0x277CBED10];
   }
@@ -5139,7 +5139,7 @@ LABEL_16:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = "No";
-    if (v3)
+    if (bOOLValue)
     {
       v7 = "Yes";
     }
@@ -5152,11 +5152,11 @@ LABEL_16:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setSpatialProfileVideoCapture:(id)a3
+- (void)setSpatialProfileVideoCapture:(id)capture
 {
-  v3 = [a3 BOOLValue];
+  bOOLValue = [capture BOOLValue];
   v4 = MEMORY[0x277CBED28];
-  if (!v3)
+  if (!bOOLValue)
   {
     v4 = MEMORY[0x277CBED10];
   }
@@ -5174,9 +5174,9 @@ LABEL_16:
   return [v3 numberWithBool:v2];
 }
 
-- (void)setAdaptiveVolumeMode:(id)a3
+- (void)setAdaptiveVolumeMode:(id)mode
 {
-  if ([a3 BOOLValue])
+  if ([mode BOOLValue])
   {
     v4 = 1;
   }
@@ -5186,23 +5186,23 @@ LABEL_16:
     v4 = 2;
   }
 
-  v5 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-  [v5 setDeviceAdaptiveVolumeMode:v4];
+  classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+  [classicDevice setDeviceAdaptiveVolumeMode:v4];
 }
 
 - (id)adaptiveVolumeMode
 {
-  v2 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-  v3 = [v2 getDeviceAdaptiveVolumeMode];
+  classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+  getDeviceAdaptiveVolumeMode = [classicDevice getDeviceAdaptiveVolumeMode];
 
-  if (v3 == 1)
+  if (getDeviceAdaptiveVolumeMode == 1)
   {
     v5 = 1;
   }
 
   else
   {
-    if (!v3)
+    if (!getDeviceAdaptiveVolumeMode)
     {
       v4 = sharedBluetoothSettingsLogComponent();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -5219,11 +5219,11 @@ LABEL_16:
   return v6;
 }
 
-- (void)setDynamicEnrollmentFeedback:(id)a3
+- (void)setDynamicEnrollmentFeedback:(id)feedback
 {
-  v3 = [a3 BOOLValue];
+  bOOLValue = [feedback BOOLValue];
   v4 = MEMORY[0x277CBED28];
-  if (!v3)
+  if (!bOOLValue)
   {
     v4 = MEMORY[0x277CBED10];
   }
@@ -5256,7 +5256,7 @@ LABEL_16:
 - (void)loadSyncSettings
 {
   v10 = *MEMORY[0x277D85DE8];
-  v1 = NSStringFromSelector(a1);
+  v1 = NSStringFromSelector(self);
   OUTLINED_FUNCTION_1();
   OUTLINED_FUNCTION_5(&dword_251143000, v2, v3, "%@ BTServer's sync group out-of-date, defaulting to None", v4, v5, v6, v7, v9);
 
@@ -5266,7 +5266,7 @@ LABEL_16:
 - (void)loadAccessorySettings
 {
   v8 = *MEMORY[0x277D85DE8];
-  v7 = *(a1 + 1471);
+  v7 = *(self + 1471);
   OUTLINED_FUNCTION_6();
   _os_log_debug_impl(v1, v2, v3, v4, v5, 8u);
   v6 = *MEMORY[0x277D85DE8];
@@ -5279,23 +5279,23 @@ LABEL_16:
     return;
   }
 
-  v4 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-  v5 = [v4 productId];
-  if (v5 >= 0x2002)
+  classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+  productId = [classicDevice productId];
+  if (productId >= 0x2002)
   {
-    v2 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-    if ([v2 productId] < 0x200A)
+    classicDevice2 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+    if ([classicDevice2 productId] < 0x200A)
     {
       goto LABEL_8;
     }
   }
 
-  v6 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-  if ([v6 productId] == 8208)
+  classicDevice3 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+  if ([classicDevice3 productId] == 8208)
   {
 LABEL_7:
 
-    if (v5 <= 0x2001)
+    if (productId <= 0x2001)
     {
 LABEL_9:
 
@@ -5305,28 +5305,28 @@ LABEL_10:
 
       v9 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v29 target:self set:0 get:0 detail:0 cell:0 edit:0];
       [v9 setProperty:@"SPATIAL_AUDIO_GROUP_ID_A2DP" forKey:*MEMORY[0x277D3FFB8]];
-      v10 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-      v11 = [v10 productId];
+      classicDevice4 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+      productId2 = [classicDevice4 productId];
 
       v12 = MEMORY[0x277CCACA8];
       v13 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v14 = v13;
-      if (v11 == 8194)
+      if (productId2 == 8194)
       {
         v15 = [v13 localizedStringForKey:@"SPATIAL_AUDIO_DETAIL_REALITYDEVICE_AIRPODS" value:&stru_286339F58 table:@"DeviceConfig"];
-        v16 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-        v17 = [v16 productName];
+        classicDevice5 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+        productName = [classicDevice5 productName];
         v18 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v19 = [v18 localizedStringForKey:@"LEARN_MORE" value:&stru_286339F58 table:@"SpatialAudioProfile"];
-        v20 = [v12 stringWithFormat:v15, v17, v19];
+        v20 = [v12 stringWithFormat:v15, productName, v19];
       }
 
       else
       {
         v15 = [v13 localizedStringForKey:@"SPATIAL_AUDIO_DETAIL_REALITYDEVICE_BEATS" value:&stru_286339F58 table:@"DeviceConfig"];
-        v16 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-        v17 = [v16 localizedStringForKey:@"LEARN_MORE" value:&stru_286339F58 table:@"SpatialAudioProfile"];
-        v20 = [v12 stringWithFormat:v15, v17];
+        classicDevice5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
+        productName = [classicDevice5 localizedStringForKey:@"LEARN_MORE" value:&stru_286339F58 table:@"SpatialAudioProfile"];
+        v20 = [v12 stringWithFormat:v15, productName];
       }
 
       [v9 setProperty:v20 forKey:*MEMORY[0x277D3FF88]];
@@ -5355,21 +5355,21 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v7 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-  if ([v7 productId] == 8214)
+  classicDevice6 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+  if ([classicDevice6 productId] == 8214)
   {
 
     goto LABEL_7;
   }
 
-  v27 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-  v28 = [v27 productId];
+  classicDevice7 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+  productId3 = [classicDevice7 productId];
 
-  if (v5 > 0x2001)
+  if (productId > 0x2001)
   {
   }
 
-  if (v28 == 8209)
+  if (productId3 == 8209)
   {
     goto LABEL_10;
   }
@@ -5378,8 +5378,8 @@ LABEL_8:
 - (void)addHearingSpecifiers
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = [(BTSDeviceConfigController *)self adaptiveTransparencySpecifier];
-  if ([(BTSDeviceConfigController *)self adaptiveVolumeSupported]|| [(BTSDeviceConfigController *)self conversationDetectSupported]|| v3)
+  adaptiveTransparencySpecifier = [(BTSDeviceConfigController *)self adaptiveTransparencySpecifier];
+  if ([(BTSDeviceConfigController *)self adaptiveVolumeSupported]|| [(BTSDeviceConfigController *)self conversationDetectSupported]|| adaptiveTransparencySpecifier)
   {
     v4 = sharedBluetoothSettingsLogComponent();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -5395,8 +5395,8 @@ LABEL_8:
 
     if (+[HPSProductUtils isRealityDevice])
     {
-      v9 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-      v10 = +[HPSProductUtils getProductSpecificString:descriptionKey:](HPSProductUtils, "getProductSpecificString:descriptionKey:", [v9 productId], @"AUDIO_GROUP_FOOTER");
+      classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+      v10 = +[HPSProductUtils getProductSpecificString:descriptionKey:](HPSProductUtils, "getProductSpecificString:descriptionKey:", [classicDevice productId], @"AUDIO_GROUP_FOOTER");
 
       [v8 setProperty:v10 forKey:*MEMORY[0x277D3FF88]];
     }
@@ -5404,9 +5404,9 @@ LABEL_8:
     [(NSMutableArray *)self->_aacpControlSpecifiers addObject:v8];
     [(BTSDeviceConfigController *)self addAdaptiveVolumeSpecifier];
     [(BTSDeviceConfigController *)self addConversationDetectSpecifier];
-    if (v3)
+    if (adaptiveTransparencySpecifier)
     {
-      [(NSMutableArray *)self->_aacpControlSpecifiers addObject:v3];
+      [(NSMutableArray *)self->_aacpControlSpecifiers addObject:adaptiveTransparencySpecifier];
     }
 
     if ([(BTSDeviceConfigController *)self supportAutoAncStrength])
@@ -5439,9 +5439,9 @@ LABEL_8:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109634;
-      v22 = [(BTSDeviceConfigController *)self adaptiveVolumeSupported];
+      adaptiveVolumeSupported = [(BTSDeviceConfigController *)self adaptiveVolumeSupported];
       v23 = 1024;
-      v24 = [(BTSDeviceConfigController *)self conversationDetectSupported];
+      conversationDetectSupported = [(BTSDeviceConfigController *)self conversationDetectSupported];
       v25 = 2112;
       v26 = 0;
       _os_log_impl(&dword_251143000, v8, OS_LOG_TYPE_DEFAULT, "Hearing: showHearing == False %i %i %@,", buf, 0x18u);
@@ -5463,10 +5463,10 @@ LABEL_23:
       goto LABEL_24;
     }
 
-    v24 = [MEMORY[0x277D12DF8] sharedInstance];
-    v25 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-    v26 = [v25 address];
-    v27 = [v24 activeHearingProtectionAvailableForAddress:v26];
+    mEMORY[0x277D12DF8] = [MEMORY[0x277D12DF8] sharedInstance];
+    classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+    address = [classicDevice address];
+    v27 = [mEMORY[0x277D12DF8] activeHearingProtectionAvailableForAddress:address];
 
     if (!v27)
     {
@@ -5485,8 +5485,8 @@ LABEL_23:
         }
 
         self->_adaptiveTransparencyIndex = [(NSMutableArray *)self->_aacpControlSpecifiers count];
-        v36 = [MEMORY[0x277D12DF8] sharedInstance];
-        [v36 registerUpdateBlock:&__block_literal_global_1710 forRetrieveSelector:sel_activeHearingProtectionAvailable withListener:self];
+        mEMORY[0x277D12DF8]2 = [MEMORY[0x277D12DF8] sharedInstance];
+        [mEMORY[0x277D12DF8]2 registerUpdateBlock:&__block_literal_global_1710 forRetrieveSelector:sel_activeHearingProtectionAvailable withListener:self];
       }
 
       goto LABEL_23;
@@ -5510,10 +5510,10 @@ LABEL_15:
     goto LABEL_24;
   }
 
-  v3 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-  v4 = [v3 productId];
+  classicDevice2 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+  productId = [classicDevice2 productId];
 
-  if (v4 != 8212 && v4 != 8228)
+  if (productId != 8212 && productId != 8228)
   {
     v31 = sharedBluetoothSettingsLogComponent();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
@@ -5538,9 +5538,9 @@ LABEL_15:
   [v9 setProperty:v11 forKey:*MEMORY[0x277D40160]];
 
   v12 = [(BTSDeviceConfigController *)self getHearingProtectionEnabled:v9];
-  v13 = [v12 BOOLValue];
+  bOOLValue = [v12 BOOLValue];
   v14 = @"CELL_LABEL_OFF";
-  if (v13)
+  if (bOOLValue)
   {
     v14 = @"CELL_LABEL_ON";
   }
@@ -5553,7 +5553,7 @@ LABEL_15:
   v18 = +[_TtC16HeadphoneConfigs37HPSVisionOSSubtitleOnOffIndicatorCell onOffKey];
   [v9 setProperty:v17 forKey:v18];
 
-  if (v4 == 8228 || v4 == 8212)
+  if (productId == 8228 || productId == 8212)
   {
     v19 = [MEMORY[0x277CCABB0] numberWithBool:1];
     v20 = +[_TtC16HeadphoneConfigs37HPSVisionOSSubtitleOnOffIndicatorCell cellDisabledKey];
@@ -5575,7 +5575,7 @@ void __58__BTSDeviceConfigController_adaptiveTransparencySpecifier__block_invoke
   [v0 postNotificationName:@"HPSSoundProtectionUpdated" object:0];
 }
 
-- (id)getHearingProtectionEnabled:(id)a3
+- (id)getHearingProtectionEnabled:(id)enabled
 {
   v14 = *MEMORY[0x277D85DE8];
   if (+[HPSProductUtils isRealityDevice])
@@ -5585,10 +5585,10 @@ void __58__BTSDeviceConfigController_adaptiveTransparencySpecifier__block_invoke
 
   else
   {
-    v5 = [MEMORY[0x277D12DF8] sharedInstance];
-    v6 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-    v7 = [v6 address];
-    v4 = [v5 activeHearingProtectionEnabledForAddress:v7];
+    mEMORY[0x277D12DF8] = [MEMORY[0x277D12DF8] sharedInstance];
+    classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+    address = [classicDevice address];
+    v4 = [mEMORY[0x277D12DF8] activeHearingProtectionEnabledForAddress:address];
 
     v8 = sharedBluetoothSettingsLogComponent();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -5617,20 +5617,20 @@ void __58__BTSDeviceConfigController_adaptiveTransparencySpecifier__block_invoke
   return v10;
 }
 
-- (void)setHearingProtectionEnabled:(id)a3 specifier:(id)a4
+- (void)setHearingProtectionEnabled:(id)enabled specifier:(id)specifier
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v6 = sharedBluetoothSettingsLogComponent();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v12[0] = 67109120;
-    v12[1] = v5;
+    v12[1] = bOOLValue;
     _os_log_impl(&dword_251143000, v6, OS_LOG_TYPE_DEFAULT, "Hearing: AdaptiveTransparency: setHearingProtectionEnabled %d", v12, 8u);
   }
 
   [(HPSDeviceAnalytics *)self->_deviceAnalytics updateFeatureChangeCount:0];
-  if (v5)
+  if (bOOLValue)
   {
     v7 = @"On";
   }
@@ -5641,10 +5641,10 @@ void __58__BTSDeviceConfigController_adaptiveTransparencySpecifier__block_invoke
   }
 
   [(HPSDeviceAnalytics *)self->_deviceAnalytics updateFeatureValue:1 value:0 featureValueString:v7];
-  v8 = [MEMORY[0x277D12DF8] sharedInstance];
-  v9 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-  v10 = [v9 address];
-  [v8 setActiveHearingProtectionEnabled:v5 forAddress:v10];
+  mEMORY[0x277D12DF8] = [MEMORY[0x277D12DF8] sharedInstance];
+  classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+  address = [classicDevice address];
+  [mEMORY[0x277D12DF8] setActiveHearingProtectionEnabled:bOOLValue forAddress:address];
 
   v11 = *MEMORY[0x277D85DE8];
 }
@@ -5698,8 +5698,8 @@ void __58__BTSDeviceConfigController_adaptiveTransparencySpecifier__block_invoke
     v14 = +[_TtC16HeadphoneConfigs37HPSVisionOSSubtitleOnOffIndicatorCell onOffKey];
     [v2 setProperty:v13 forKey:v14];
 
-    v15 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-    if ([v15 productId] == 8228)
+    classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+    if ([classicDevice productId] == 8228)
     {
 
 LABEL_13:
@@ -5710,10 +5710,10 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    v16 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-    v17 = [v16 productId];
+    classicDevice2 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+    productId = [classicDevice2 productId];
 
-    if (v17 == 8212)
+    if (productId == 8212)
     {
       goto LABEL_13;
     }
@@ -5755,11 +5755,11 @@ LABEL_17:
   if (_os_feature_enabled_impl())
   {
     v3 = +[HPSProductUtils isRealityDevice];
-    v4 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-    v5 = v4;
+    classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+    v5 = classicDevice;
     if (v3)
     {
-      v6 = [v4 getAACPCapabilityBit:160];
+      v6 = [classicDevice getAACPCapabilityBit:160];
 
       if ((v6 & 1) == 0)
       {
@@ -5780,9 +5780,9 @@ LABEL_8:
 
     else
     {
-      v10 = [v4 getConversationDetectSupport];
+      getConversationDetectSupport = [classicDevice getConversationDetectSupport];
 
-      if ((v10 & 1) == 0)
+      if ((getConversationDetectSupport & 1) == 0)
       {
         v7 = sharedBluetoothSettingsLogComponent();
         if (!os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -5836,8 +5836,8 @@ LABEL_8:
       v24 = +[_TtC16HeadphoneConfigs37HPSVisionOSSubtitleOnOffIndicatorCell onOffKey];
       [v7 setProperty:v23 forKey:v24];
 
-      v25 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-      if ([v25 productId] == 8228)
+      classicDevice2 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+      if ([classicDevice2 productId] == 8228)
       {
 
 LABEL_20:
@@ -5848,10 +5848,10 @@ LABEL_20:
         goto LABEL_21;
       }
 
-      v26 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-      v27 = [v26 productId];
+      classicDevice3 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+      productId = [classicDevice3 productId];
 
-      if (v27 == 8212)
+      if (productId == 8212)
       {
         goto LABEL_20;
       }
@@ -5874,17 +5874,17 @@ LABEL_21:
 LABEL_22:
 }
 
-- (id)getConversationDetectMode:(id)a3
+- (id)getConversationDetectMode:(id)mode
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-  v5 = [v4 getConversationDetectMode];
+  classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+  getConversationDetectMode = [classicDevice getConversationDetectMode];
 
   v6 = sharedBluetoothSettingsLogComponent();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = "Disabled";
-    if (v5 == 1)
+    if (getConversationDetectMode == 1)
     {
       v7 = "Enabled";
     }
@@ -5894,7 +5894,7 @@ LABEL_22:
     _os_log_impl(&dword_251143000, v6, OS_LOG_TYPE_DEFAULT, "Hearing: ConversationDetect: Get Mode: %s", &v12, 0xCu);
   }
 
-  v8 = v5 == 1;
+  v8 = getConversationDetectMode == 1;
 
   [(HPSDeviceAnalytics *)self->_deviceAnalytics updateFeatureValue:53 value:v8 featureValueString:0];
   v9 = [MEMORY[0x277CCABB0] numberWithBool:v8];
@@ -5903,19 +5903,19 @@ LABEL_22:
   return v9;
 }
 
-- (void)setConversationDetectMode:(id)a3 specifier:(id)a4
+- (void)setConversationDetectMode:(id)mode specifier:(id)specifier
 {
   v16 = *MEMORY[0x277D85DE8];
   deviceAnalytics = self->_deviceAnalytics;
-  v6 = a3;
+  modeCopy = mode;
   [(HPSDeviceAnalytics *)deviceAnalytics updateFeatureChangeCount:52];
-  v7 = [v6 BOOLValue];
+  bOOLValue = [modeCopy BOOLValue];
 
   v8 = sharedBluetoothSettingsLogComponent();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = "Disabled";
-    if (v7)
+    if (bOOLValue)
     {
       v9 = "Enabled";
     }
@@ -5925,9 +5925,9 @@ LABEL_22:
     _os_log_impl(&dword_251143000, v8, OS_LOG_TYPE_DEFAULT, "Hearing: ConversationDetect: Set Mode: %s", &v14, 0xCu);
   }
 
-  v10 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-  v11 = v10;
-  if (v7)
+  classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+  v11 = classicDevice;
+  if (bOOLValue)
   {
     v12 = 1;
   }
@@ -5937,9 +5937,9 @@ LABEL_22:
     v12 = 2;
   }
 
-  [v10 setConversationDetectMode:v12];
+  [classicDevice setConversationDetectMode:v12];
 
-  [(HPSDeviceAnalytics *)self->_deviceAnalytics updateFeatureValue:53 value:v7 featureValueString:0];
+  [(HPSDeviceAnalytics *)self->_deviceAnalytics updateFeatureValue:53 value:bOOLValue featureValueString:0];
   v13 = *MEMORY[0x277D85DE8];
 }
 
@@ -5948,11 +5948,11 @@ LABEL_22:
   if (_os_feature_enabled_impl())
   {
     v3 = +[HPSProductUtils isRealityDevice];
-    v4 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-    v5 = v4;
+    classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+    v5 = classicDevice;
     if (v3)
     {
-      v6 = [v4 getAACPCapabilityBit:144];
+      v6 = [classicDevice getAACPCapabilityBit:144];
 
       if ((v6 & 1) == 0)
       {
@@ -5973,9 +5973,9 @@ LABEL_8:
 
     else
     {
-      v10 = [v4 getAdaptiveVolumeSupport];
+      getAdaptiveVolumeSupport = [classicDevice getAdaptiveVolumeSupport];
 
-      if ((v10 & 1) == 0)
+      if ((getAdaptiveVolumeSupport & 1) == 0)
       {
         v7 = sharedBluetoothSettingsLogComponent();
         if (!os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -6029,8 +6029,8 @@ LABEL_8:
       v24 = +[_TtC16HeadphoneConfigs37HPSVisionOSSubtitleOnOffIndicatorCell onOffKey];
       [v7 setProperty:v23 forKey:v24];
 
-      v25 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-      if ([v25 productId] == 8228)
+      classicDevice2 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+      if ([classicDevice2 productId] == 8228)
       {
 
 LABEL_20:
@@ -6041,10 +6041,10 @@ LABEL_20:
         goto LABEL_21;
       }
 
-      v26 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-      v27 = [v26 productId];
+      classicDevice3 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+      productId = [classicDevice3 productId];
 
-      if (v27 == 8212)
+      if (productId == 8212)
       {
         goto LABEL_20;
       }
@@ -6067,17 +6067,17 @@ LABEL_21:
 LABEL_22:
 }
 
-- (id)getAdaptiveVolumeMode:(id)a3
+- (id)getAdaptiveVolumeMode:(id)mode
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-  v5 = [v4 getAdaptiveVolumeMode];
+  classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+  getAdaptiveVolumeMode = [classicDevice getAdaptiveVolumeMode];
 
   v6 = sharedBluetoothSettingsLogComponent();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = "Disabled";
-    if (v5 == 1)
+    if (getAdaptiveVolumeMode == 1)
     {
       v7 = "Enabled";
     }
@@ -6087,7 +6087,7 @@ LABEL_22:
     _os_log_impl(&dword_251143000, v6, OS_LOG_TYPE_DEFAULT, "Hearing: AdaptiveVolume: Get Mode: %s", &v12, 0xCu);
   }
 
-  v8 = v5 == 1;
+  v8 = getAdaptiveVolumeMode == 1;
 
   [(HPSDeviceAnalytics *)self->_deviceAnalytics updateFeatureValue:3 value:v8 featureValueString:0];
   v9 = [MEMORY[0x277CCABB0] numberWithBool:v8];
@@ -6096,19 +6096,19 @@ LABEL_22:
   return v9;
 }
 
-- (void)setAdaptiveVolumeMode:(id)a3 specifier:(id)a4
+- (void)setAdaptiveVolumeMode:(id)mode specifier:(id)specifier
 {
   v16 = *MEMORY[0x277D85DE8];
   deviceAnalytics = self->_deviceAnalytics;
-  v6 = a3;
+  modeCopy = mode;
   [(HPSDeviceAnalytics *)deviceAnalytics updateFeatureChangeCount:2];
-  v7 = [v6 BOOLValue];
+  bOOLValue = [modeCopy BOOLValue];
 
   v8 = sharedBluetoothSettingsLogComponent();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = "Disabled";
-    if (v7)
+    if (bOOLValue)
     {
       v9 = "Enabled";
     }
@@ -6118,9 +6118,9 @@ LABEL_22:
     _os_log_impl(&dword_251143000, v8, OS_LOG_TYPE_DEFAULT, "Hearing: AdaptiveVolume: Set Mode: %s", &v14, 0xCu);
   }
 
-  v10 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-  v11 = v10;
-  if (v7)
+  classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+  v11 = classicDevice;
+  if (bOOLValue)
   {
     v12 = 1;
   }
@@ -6130,18 +6130,18 @@ LABEL_22:
     v12 = 2;
   }
 
-  [v10 setAdaptiveVolumeMode:v12];
+  [classicDevice setAdaptiveVolumeMode:v12];
 
-  [(HPSDeviceAnalytics *)self->_deviceAnalytics updateFeatureValue:3 value:v7 featureValueString:0];
+  [(HPSDeviceAnalytics *)self->_deviceAnalytics updateFeatureValue:3 value:bOOLValue featureValueString:0];
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)BOOLFromBluetoothPreferences:(id)a3
+- (BOOL)BOOLFromBluetoothPreferences:(id)preferences
 {
   keyExistsAndHasValidFormat = 0;
-  v3 = a3;
+  preferencesCopy = preferences;
   CFPreferencesAppSynchronize(@"com.apple.BTServer");
-  AppBooleanValue = CFPreferencesGetAppBooleanValue(v3, @"com.apple.BTServer", &keyExistsAndHasValidFormat);
+  AppBooleanValue = CFPreferencesGetAppBooleanValue(preferencesCopy, @"com.apple.BTServer", &keyExistsAndHasValidFormat);
 
   if (AppBooleanValue)
   {
@@ -6170,35 +6170,35 @@ LABEL_22:
 - (void)loadAccessoryInfo
 {
   v3 = objc_opt_new();
-  v4 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-  v5 = [v4 isAppleAudioDevice];
+  classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+  isAppleAudioDevice = [classicDevice isAppleAudioDevice];
 
-  if (v5)
+  if (isAppleAudioDevice)
   {
     [(BTSDeviceConfigController *)self addSmarRoutingSpecifiers:v3];
   }
 
   if (_os_feature_enabled_impl())
   {
-    v6 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-    if ([HPSProductUtils isFeatureSupported:1 byDevice:v6]&& [(BTSDeviceConfigController *)self isiCloudEnabled])
+    classicDevice2 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+    if ([HPSProductUtils isFeatureSupported:1 byDevice:classicDevice2]&& [(BTSDeviceConfigController *)self isiCloudEnabled])
     {
-      v7 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-      v8 = [v7 connected];
+      classicDevice3 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+      connected = [classicDevice3 connected];
 
-      if (v8)
+      if (connected)
       {
         goto LABEL_9;
       }
 
-      v6 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"FIND_MY_GROUP_ID"];
+      classicDevice2 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"FIND_MY_GROUP_ID"];
       v9 = MEMORY[0x277D3FAD8];
       v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v11 = [v10 localizedStringForKey:@"FIND_MY" value:&stru_286339F58 table:@"DeviceConfig"];
       v12 = [v9 preferenceSpecifierNamed:v11 target:self set:0 get:0 detail:0 cell:13 edit:0];
 
       [v12 setButtonAction:sel_presentFindMyLink];
-      [(NSMutableArray *)v3 addObject:v6];
+      [(NSMutableArray *)v3 addObject:classicDevice2];
       [(NSMutableArray *)v3 addObject:v12];
     }
   }
@@ -6206,8 +6206,8 @@ LABEL_22:
 LABEL_9:
   if (_os_feature_enabled_impl())
   {
-    v13 = [(BTSDeviceConfigController *)self turnOffListeningModeSpecifiers];
-    [(NSMutableArray *)v3 addObjectsFromArray:v13];
+    turnOffListeningModeSpecifiers = [(BTSDeviceConfigController *)self turnOffListeningModeSpecifiers];
+    [(NSMutableArray *)v3 addObjectsFromArray:turnOffListeningModeSpecifiers];
   }
 
   if (self->_versionInfo)
@@ -6268,11 +6268,11 @@ LABEL_26:
 
           if (v40)
           {
-            v41 = [(BTSDeviceConfigController *)self supportsFirmwareReleaseNotes];
+            supportsFirmwareReleaseNotes = [(BTSDeviceConfigController *)self supportsFirmwareReleaseNotes];
             v42 = MEMORY[0x277D3FAD8];
             v43 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
             v44 = [v43 localizedStringForKey:@"ACCESSORY_ABOUT_BUD_VERSION_FIRMWARE" value:&stru_286339F58 table:@"DeviceConfig"];
-            if (v41)
+            if (supportsFirmwareReleaseNotes)
             {
               v45 = [v42 preferenceSpecifierNamed:v44 target:self set:0 get:sel_getBudFirmwareVersion_ detail:objc_opt_class() cell:2 edit:0];
 
@@ -6363,44 +6363,44 @@ LABEL_21:
 LABEL_38:
   if (_os_feature_enabled_impl())
   {
-    v56 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-    v57 = [HPSProductUtils isAppleHeadphone:v56];
+    classicDevice4 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+    v57 = [HPSProductUtils isAppleHeadphone:classicDevice4];
 
     if (v57)
     {
       v58 = [(BTSDeviceConfigController *)self getSystemSerialNumber:0];
       if (v58)
       {
-        v59 = [(BTSDeviceConfigController *)self ndoController];
+        ndoController = [(BTSDeviceConfigController *)self ndoController];
 
-        if (!v59)
+        if (!ndoController)
         {
           v60 = [objc_alloc(MEMORY[0x277D2D100]) initWithSerialNumber:v58];
           [(BTSDeviceConfigController *)self setNdoController:v60];
         }
 
-        v61 = [(NSMutableArray *)v3 lastObject];
-        v62 = [v61 identifier];
-        v63 = [(BTSDeviceConfigController *)self ndoController];
-        [v63 setSpecifierIDToInsertAfter:v62];
+        lastObject = [(NSMutableArray *)v3 lastObject];
+        identifier = [lastObject identifier];
+        ndoController2 = [(BTSDeviceConfigController *)self ndoController];
+        [ndoController2 setSpecifierIDToInsertAfter:identifier];
 
-        v64 = [(BTSDeviceConfigController *)self ndoController];
-        v65 = [v64 specifiers];
-        if (!v65)
+        ndoController3 = [(BTSDeviceConfigController *)self ndoController];
+        specifiers = [ndoController3 specifiers];
+        if (!specifiers)
         {
           goto LABEL_46;
         }
 
-        v66 = v65;
-        v67 = [(BTSDeviceConfigController *)self ndoController];
-        v68 = [v67 specifiers];
-        v69 = [v68 count];
+        v66 = specifiers;
+        ndoController4 = [(BTSDeviceConfigController *)self ndoController];
+        specifiers2 = [ndoController4 specifiers];
+        v69 = [specifiers2 count];
 
         if (v69)
         {
-          v64 = [(BTSDeviceConfigController *)self ndoController];
-          v70 = [v64 specifiers];
-          [(NSMutableArray *)v3 addObjectsFromArray:v70];
+          ndoController3 = [(BTSDeviceConfigController *)self ndoController];
+          specifiers3 = [ndoController3 specifiers];
+          [(NSMutableArray *)v3 addObjectsFromArray:specifiers3];
 
 LABEL_46:
         }
@@ -6412,77 +6412,77 @@ LABEL_46:
   self->_accessoryInfoSpecifiers = v3;
 }
 
-- (void)addSmarRoutingSpecifiers:(id)a3
+- (void)addSmarRoutingSpecifiers:(id)specifiers
 {
-  v60 = a3;
-  v4 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-  if (![v4 featureCapability:32])
+  specifiersCopy = specifiers;
+  classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+  if (![classicDevice featureCapability:32])
   {
     goto LABEL_35;
   }
 
-  v5 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-  if ([v5 smartRouteSupport])
+  classicDevice2 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+  if ([classicDevice2 smartRouteSupport])
   {
-    v6 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-    v7 = [v6 connected];
+    classicDevice3 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+    connected = [classicDevice3 connected];
 
-    if (v7)
+    if (connected)
     {
       goto LABEL_36;
     }
 
     v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v9 = [MGGetStringAnswer() uppercaseString];
-    v10 = [@"SMARTROUTE_" stringByAppendingString:v9];
-    v4 = [v8 localizedStringForKey:v10 value:&stru_286339F58 table:@"DeviceConfig"];
+    uppercaseString = [MGGetStringAnswer() uppercaseString];
+    v10 = [@"SMARTROUTE_" stringByAppendingString:uppercaseString];
+    classicDevice = [v8 localizedStringForKey:v10 value:&stru_286339F58 table:@"DeviceConfig"];
 
     v11 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v12 = [MGGetStringAnswer() uppercaseString];
-    v13 = [@"SMARTROUTE_MANUAL_" stringByAppendingString:v12];
-    v5 = [v11 localizedStringForKey:v13 value:&stru_286339F58 table:@"DeviceConfig"];
+    uppercaseString2 = [MGGetStringAnswer() uppercaseString];
+    v13 = [@"SMARTROUTE_MANUAL_" stringByAppendingString:uppercaseString2];
+    classicDevice2 = [v11 localizedStringForKey:v13 value:&stru_286339F58 table:@"DeviceConfig"];
 
-    v14 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-    v15 = [v14 productId];
+    classicDevice4 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+    productId = [classicDevice4 productId];
 
-    v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"ACCESSORY_MODEL_NAME_%d", v15 - 0x2000];
+    0x2000 = [MEMORY[0x277CCACA8] stringWithFormat:@"ACCESSORY_MODEL_NAME_%d", productId - 0x2000];
     v17 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v18 = [v17 localizedStringForKey:v16 value:&stru_286339F58 table:@"DeviceConfig"];
+    v18 = [v17 localizedStringForKey:0x2000 value:&stru_286339F58 table:@"DeviceConfig"];
     v19 = [v18 length];
 
-    v59 = v15;
-    if (!v19 || v15 >> 4 >= 0x201)
+    v59 = productId;
+    if (!v19 || productId >> 4 >= 0x201)
     {
 
-      switch(v15)
+      switch(productId)
       {
         case 0x2012u:
           v55 = 0;
           v54 = 0;
           v57 = 0;
           v52 = 1;
-          v16 = @"ACCESSORY_MODEL_NAME_18";
+          0x2000 = @"ACCESSORY_MODEL_NAME_18";
           goto LABEL_20;
         case 0x201Du:
           v54 = 0;
           v52 = 0;
           v57 = 0;
           v55 = 1;
-          v16 = @"ACCESSORY_MODEL_NAME_42";
+          0x2000 = @"ACCESSORY_MODEL_NAME_42";
           goto LABEL_20;
         case 0x202Fu:
           v55 = 0;
           v52 = 0;
           v57 = 0;
           v54 = 1;
-          v16 = @"ACCESSORY_MODEL_NAME_180";
+          0x2000 = @"ACCESSORY_MODEL_NAME_180";
           goto LABEL_20;
       }
 
-      v16 = @"ACCESSORY_MODEL_NAME_15";
+      0x2000 = @"ACCESSORY_MODEL_NAME_15";
     }
 
-    if (v15 == 8228)
+    if (productId == 8228)
     {
 
       v55 = 0;
@@ -6490,13 +6490,13 @@ LABEL_46:
       v52 = 0;
       v57 = 1;
 LABEL_16:
-      v16 = @"ACCESSORY_MODEL_NAME_20";
+      0x2000 = @"ACCESSORY_MODEL_NAME_20";
       goto LABEL_20;
     }
 
-    if (v15 != 8223)
+    if (productId != 8223)
     {
-      if (v15 != 8212)
+      if (productId != 8212)
       {
         v55 = 0;
         v54 = 0;
@@ -6516,18 +6516,18 @@ LABEL_16:
     v54 = 0;
     v52 = 0;
     v57 = 0;
-    v16 = @"ACCESSORY_MODEL_NAME_10";
+    0x2000 = @"ACCESSORY_MODEL_NAME_10";
 LABEL_20:
-    v20 = [MGGetStringAnswer() uppercaseString];
-    v58 = v16;
-    v51 = [@"SMARTROUTE_FOOTER_" stringByAppendingFormat:@"%@_%@", v20, v16];
+    uppercaseString3 = [MGGetStringAnswer() uppercaseString];
+    v58 = 0x2000;
+    v51 = [@"SMARTROUTE_FOOTER_" stringByAppendingFormat:@"%@_%@", uppercaseString3, 0x2000];
 
     v56 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"SMART_ROUTE_GROUP_ID"];
-    v50 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v4 target:self set:sel_setSmartRouteMode_ get:sel_smartRouteMode detail:objc_opt_class() cell:2 edit:0];
+    v50 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:classicDevice target:self set:sel_setSmartRouteMode_ get:sel_smartRouteMode detail:objc_opt_class() cell:2 edit:0];
     v21 = objc_alloc(MEMORY[0x277CBEA60]);
     v22 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v23 = [v22 localizedStringForKey:@"SMARTROUTE_AUTOMATIC" value:&stru_286339F58 table:@"DeviceConfig"];
-    v24 = [v21 initWithObjects:{v23, v5, 0}];
+    v24 = [v21 initWithObjects:{v23, classicDevice2, 0}];
 
     v25 = objc_alloc(MEMORY[0x277CBEA60]);
     v26 = [MEMORY[0x277CCABB0] numberWithInt:1];
@@ -6537,7 +6537,7 @@ LABEL_20:
     v29 = objc_alloc(MEMORY[0x277CBEA60]);
     v30 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v31 = [v30 localizedStringForKey:@"SMARTROUTE_AUTOMATIC" value:&stru_286339F58 table:@"DeviceConfig"];
-    v32 = [v29 initWithObjects:{v31, v5, 0}];
+    v32 = [v29 initWithObjects:{v31, classicDevice2, 0}];
 
     v53 = v28;
     v33 = v28;
@@ -6590,8 +6590,8 @@ LABEL_20:
       [v50 setProperty:v49 forKey:v37];
     }
 
-    [v60 addObject:v56];
-    [v60 addObject:v50];
+    [specifiersCopy addObject:v56];
+    [specifiersCopy addObject:v50];
   }
 
 LABEL_35:
@@ -6710,12 +6710,12 @@ void __41__BTSDeviceConfigController_getSoundMode__block_invoke_3(uint64_t a1)
   [v11 reloadSpecifierID:v10 animated:1];
 }
 
-- (id)getCaseSoundEnabled:(id)a3
+- (id)getCaseSoundEnabled:(id)enabled
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  enabledCopy = enabled;
   v5 = [MEMORY[0x277CCABB0] numberWithBool:self->_setCaseSoundModeInProgress];
-  [v4 setProperty:v5 forKey:*MEMORY[0x277D3FEA8]];
+  [enabledCopy setProperty:v5 forKey:*MEMORY[0x277D3FEA8]];
 
   if (self->_setCaseSoundModeInProgress)
   {
@@ -6728,7 +6728,7 @@ void __41__BTSDeviceConfigController_getSoundMode__block_invoke_3(uint64_t a1)
     v8 = *MEMORY[0x277D3FF38];
     if (self->_caseSoundSupport)
     {
-      [v4 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:v8];
+      [enabledCopy setObject:MEMORY[0x277CBEC38] forKeyedSubscript:v8];
       v9 = [(BTSDeviceConfigController *)self getGroupSpecifierForSpecifierID:@"CASE_SOUND_GROUP_ID"];
       [v9 setProperty:&stru_286339F58 forKey:*MEMORY[0x277D3FF88]];
 
@@ -6748,7 +6748,7 @@ void __41__BTSDeviceConfigController_getSoundMode__block_invoke_3(uint64_t a1)
 
     else
     {
-      [v4 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:v8];
+      [enabledCopy setObject:MEMORY[0x277CBEC28] forKeyedSubscript:v8];
     }
 
     p_caseSoundEnable = &self->_caseSoundEnable;
@@ -6783,18 +6783,18 @@ void __41__BTSDeviceConfigController_getSoundMode__block_invoke_3(uint64_t a1)
   return v16;
 }
 
-- (void)setCaseSoundEnabled:(id)a3 specifier:(id)a4
+- (void)setCaseSoundEnabled:(id)enabled specifier:(id)specifier
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  enabledCopy = enabled;
+  specifierCopy = specifier;
   [(HPSDeviceAnalytics *)self->_deviceAnalytics updateFeatureChangeCount:4];
   [(BTSDeviceConfigController *)self initializeCaseConnection];
   self->_setCaseSoundModeInProgress = 1;
-  [(BTSDeviceConfigController *)self reloadSpecifier:v7 animated:1];
+  [(BTSDeviceConfigController *)self reloadSpecifier:specifierCopy animated:1];
   objc_initWeak(&location, self);
-  v8 = [v6 BOOLValue];
-  if (v8)
+  bOOLValue = [enabledCopy BOOLValue];
+  if (bOOLValue)
   {
     v9 = @"On";
   }
@@ -6807,23 +6807,23 @@ void __41__BTSDeviceConfigController_getSoundMode__block_invoke_3(uint64_t a1)
   [(HPSDeviceAnalytics *)self->_deviceAnalytics updateFeatureValue:5 value:0 featureValueString:v9];
   v10 = MEMORY[0x277D85CD0];
   v11 = MEMORY[0x277D85CD0];
-  v12 = [(BTAirPodsControlServiceClient *)self->_airPodsServiceclient dispatchQueue];
+  dispatchQueue = [(BTAirPodsControlServiceClient *)self->_airPodsServiceclient dispatchQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__BTSDeviceConfigController_setCaseSoundEnabled_specifier___block_invoke;
   block[3] = &unk_2796AD8B8;
   block[4] = self;
-  v19 = v8 ^ 1;
+  v19 = bOOLValue ^ 1;
   v13 = v10;
   v17 = v10;
   objc_copyWeak(&v18, &location);
-  dispatch_async(v12, block);
+  dispatch_async(dispatchQueue, block);
 
   v14 = sharedBluetoothSettingsLogComponent();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v22 = v8;
+    v22 = bOOLValue;
     _os_log_impl(&dword_251143000, v14, OS_LOG_TYPE_DEFAULT, "Case Sound: setCaseSoundEnabled %d", buf, 8u);
   }
 
@@ -6890,23 +6890,23 @@ void __59__BTSDeviceConfigController_setCaseSoundEnabled_specifier___block_invok
   [WeakRetained reloadSpecifierID:v4 animated:1];
 }
 
-- (void)updateSerialNumberSpecifier:(id)a3
+- (void)updateSerialNumberSpecifier:(id)specifier
 {
-  v4 = a3;
-  if (!v4)
+  specifierCopy = specifier;
+  if (!specifierCopy)
   {
     goto LABEL_17;
   }
 
-  v13 = v4;
-  v5 = [v4 propertyForKey:@"SERIAL_NUMBER_TYPE"];
-  v6 = [v5 intValue];
+  v13 = specifierCopy;
+  v5 = [specifierCopy propertyForKey:@"SERIAL_NUMBER_TYPE"];
+  intValue = [v5 intValue];
 
-  v7 = ((v6 + 1) % 3);
-  if (v7 == v6)
+  v7 = ((intValue + 1) % 3);
+  if (v7 == intValue)
   {
 LABEL_13:
-    v7 = v6;
+    v7 = intValue;
     goto LABEL_16;
   }
 
@@ -6936,7 +6936,7 @@ LABEL_13:
 
 LABEL_12:
     v7 = ((v7 + 1) % 3);
-    if (v7 == v6)
+    if (v7 == intValue)
     {
       goto LABEL_13;
     }
@@ -6956,17 +6956,17 @@ LABEL_16:
   v12 = [MEMORY[0x277CCABB0] numberWithInt:v7];
   [v13 setProperty:v12 forKey:@"SERIAL_NUMBER_TYPE"];
 
-  v4 = v13;
+  specifierCopy = v13;
 LABEL_17:
 }
 
-- (void)updateVersionSpecifier:(id)a3
+- (void)updateVersionSpecifier:(id)specifier
 {
-  v4 = a3;
-  if (v4)
+  specifierCopy = specifier;
+  if (specifierCopy)
   {
-    v14 = v4;
-    v5 = [v4 propertyForKey:@"VERSION_TYPE"];
+    v14 = specifierCopy;
+    v5 = [specifierCopy propertyForKey:@"VERSION_TYPE"];
     LODWORD(v6) = [v5 intValue];
     v7 = @"ACCESSORY_ABOUT_BUD_VERSION_FIRMWARE";
     v8 = &selRef_getBudFirmwareVersion_;
@@ -7011,11 +7011,11 @@ LABEL_10:
     v13 = [MEMORY[0x277CCABB0] numberWithInt:v6];
     [v14 setProperty:v13 forKey:@"VERSION_TYPE"];
 
-    v4 = v14;
+    specifierCopy = v14;
   }
 }
 
-- (id)getAnswerCallOption:(id)a3
+- (id)getAnswerCallOption:(id)option
 {
   v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v4 = [v3 localizedStringForKey:@"PRESS_ONCE" value:&stru_286339F58 table:@"FeatureConfig-CallControls"];
@@ -7023,7 +7023,7 @@ LABEL_10:
   return v4;
 }
 
-- (id)smartRoutingIndicationForRealityDevice:(id)a3
+- (id)smartRoutingIndicationForRealityDevice:(id)device
 {
   v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v4 = [v3 localizedStringForKey:@"SMARTROUTE_AUTOMATIC" value:&stru_286339F58 table:@"DeviceConfig"];
@@ -7031,16 +7031,16 @@ LABEL_10:
   return v4;
 }
 
-- (id)getModelName:(id)a3
+- (id)getModelName:(id)name
 {
-  v3 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-  v4 = [v3 productId];
+  classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+  productId = [classicDevice productId];
 
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"ACCESSORY_MODEL_NAME_%d", (v4 - 0x2000)];
+  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"ACCESSORY_MODEL_NAME_%d", (productId - 0x2000)];
   v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v7 = [v6 localizedStringForKey:v5 value:&stru_286339F58 table:@"DeviceConfig"];
 
-  if (v4 == 8202 || v4 == 8223)
+  if (productId == 8202 || productId == 8223)
   {
     v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v10 = [v9 localizedStringForKey:@"ACCESSORY_MODEL_NAME_10" value:&stru_286339F58 table:@"DeviceConfig-b515"];
@@ -7048,7 +7048,7 @@ LABEL_10:
     v7 = v10;
   }
 
-  else if (v4 == 8208)
+  else if (productId == 8208)
   {
     v11 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v12 = v11;
@@ -7057,7 +7057,7 @@ LABEL_10:
     goto LABEL_28;
   }
 
-  switch(v4)
+  switch(productId)
   {
     case 8209:
       v11 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -7139,7 +7139,7 @@ LABEL_10:
       break;
   }
 
-  if (v4 == 8224 || v4 == 8219)
+  if (productId == 8224 || productId == 8219)
   {
     v11 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v12 = v11;
@@ -7167,7 +7167,7 @@ LABEL_29:
   return v21;
 }
 
-- (id)getModelNumber:(id)a3
+- (id)getModelNumber:(id)number
 {
   v3 = [(NSArray *)self->_versionInfo objectAtIndex:1];
   v4 = [v3 stringByApplyingTransform:@"Any-Hex/Java" reverse:1];
@@ -7187,7 +7187,7 @@ LABEL_29:
   return v5;
 }
 
-- (id)getSystemSerialNumber:(id)a3
+- (id)getSystemSerialNumber:(id)number
 {
   v3 = [(NSArray *)self->_versionInfo objectAtIndex:3];
   v4 = [v3 stringByApplyingTransform:@"Any-Hex/Java" reverse:1];
@@ -7207,7 +7207,7 @@ LABEL_29:
   return v5;
 }
 
-- (id)getBudLeftSerialNumber:(id)a3
+- (id)getBudLeftSerialNumber:(id)number
 {
   v3 = [(NSArray *)self->_versionInfo objectAtIndex:8];
   v4 = [v3 stringByApplyingTransform:@"Any-Hex/Java" reverse:1];
@@ -7228,7 +7228,7 @@ LABEL_29:
   return v8;
 }
 
-- (id)getBudRightSerialNumber:(id)a3
+- (id)getBudRightSerialNumber:(id)number
 {
   v3 = [(NSArray *)self->_versionInfo objectAtIndex:9];
   v4 = [v3 stringByApplyingTransform:@"Any-Hex/Java" reverse:1];
@@ -7249,7 +7249,7 @@ LABEL_29:
   return v8;
 }
 
-- (id)getBudFirmwareVersion:(id)a3
+- (id)getBudFirmwareVersion:(id)version
 {
   v3 = [(NSArray *)self->_versionInfo objectAtIndex:10];
   v4 = [v3 stringByApplyingTransform:@"Any-Hex/Java" reverse:1];
@@ -7269,7 +7269,7 @@ LABEL_29:
   return v5;
 }
 
-- (id)getANCAssetVersion:(id)a3
+- (id)getANCAssetVersion:(id)version
 {
   v3 = [(NSString *)self->_ancAssetVersion stringByApplyingTransform:@"Any-Hex/Java" reverse:1];
   if ([v3 length] <= 1)
@@ -7287,7 +7287,7 @@ LABEL_29:
   return v4;
 }
 
-- (id)getCaseName:(id)a3
+- (id)getCaseName:(id)name
 {
   v3 = [(NSDictionary *)self->_caseInfo objectForKey:@"CaseInfoName"];
   v4 = [v3 substringFromIndex:{objc_msgSend(v3, "length") - 1}];
@@ -7324,7 +7324,7 @@ LABEL_29:
   return v13;
 }
 
-- (id)getCaseFirmwareVersion:(id)a3
+- (id)getCaseFirmwareVersion:(id)version
 {
   v3 = [(NSDictionary *)self->_caseInfo objectForKey:@"CaseInfoVersion"];
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [v3 length] >= 2)
@@ -7340,31 +7340,31 @@ LABEL_29:
   return v4;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v15.receiver = self;
   v15.super_class = BTSDeviceConfigController;
-  v4 = a3;
-  [(BTSDeviceConfigController *)&v15 traitCollectionDidChange:v4];
-  v5 = [v4 userInterfaceStyle];
+  changeCopy = change;
+  [(BTSDeviceConfigController *)&v15 traitCollectionDidChange:changeCopy];
+  userInterfaceStyle = [changeCopy userInterfaceStyle];
 
-  v6 = [(BTSDeviceConfigController *)self traitCollection];
-  v7 = [v6 userInterfaceStyle];
+  traitCollection = [(BTSDeviceConfigController *)self traitCollection];
+  userInterfaceStyle2 = [traitCollection userInterfaceStyle];
 
-  if (v5 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
-    v8 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-    if ([HPSProductUtils isAppleHeadphone:v8])
+    classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+    if ([HPSProductUtils isAppleHeadphone:classicDevice])
     {
-      v9 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-      v10 = [v9 isTemporaryPaired];
+      classicDevice2 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+      isTemporaryPaired = [classicDevice2 isTemporaryPaired];
 
-      if ((v10 & 1) == 0)
+      if ((isTemporaryPaired & 1) == 0)
       {
-        v11 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-        v12 = [v11 isGenuineAirPods];
+        classicDevice3 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+        isGenuineAirPods = [classicDevice3 isGenuineAirPods];
 
-        if (v12)
+        if (isGenuineAirPods)
         {
           batteryStatusView = self->_batteryStatusView;
           if (batteryStatusView)
@@ -7392,25 +7392,25 @@ LABEL_29:
 {
   if (_os_feature_enabled_impl())
   {
-    v3 = [MEMORY[0x277CCACC8] currentThread];
-    if (([v3 isMainThread] & 1) == 0)
+    currentThread = [MEMORY[0x277CCACC8] currentThread];
+    if (([currentThread isMainThread] & 1) == 0)
     {
       [BTSDeviceConfigController updateASKHeader];
     }
 
-    v4 = [(BTSDeviceConfigController *)self leDevice];
-    if (v4)
+    leDevice = [(BTSDeviceConfigController *)self leDevice];
+    if (leDevice)
     {
-      v11 = v4;
-      if ([v4 isManagedByDeviceAccess])
+      v11 = leDevice;
+      if ([leDevice isManagedByDeviceAccess])
       {
-        v5 = [v11 underlyingDADevice];
+        underlyingDADevice = [v11 underlyingDADevice];
 
-        if (v5)
+        if (underlyingDADevice)
         {
           v6 = MEMORY[0x277CB8900];
-          v7 = [v11 underlyingDADevice];
-          v8 = [v6 infoViewControllerFromDevice:v7];
+          underlyingDADevice2 = [v11 underlyingDADevice];
+          v8 = [v6 infoViewControllerFromDevice:underlyingDADevice2];
           accessoryHeaderController = self->_accessoryHeaderController;
           self->_accessoryHeaderController = v8;
         }
@@ -7436,9 +7436,9 @@ LABEL_29:
   v29[4] = *MEMORY[0x277D85DE8];
   if (_os_feature_enabled_impl())
   {
-    v3 = [(BTSDeviceConfigController *)self leDevice];
-    v4 = v3;
-    if (v3 && ([v3 isManagedByDeviceAccess]&& ([v4 shouldDenyIncomingClassicConnection]& 1) != 0 || self->_devicePendingCTKDConnection))
+    leDevice = [(BTSDeviceConfigController *)self leDevice];
+    v4 = leDevice;
+    if (leDevice && ([leDevice isManagedByDeviceAccess]&& ([v4 shouldDenyIncomingClassicConnection]& 1) != 0 || self->_devicePendingCTKDConnection))
     {
       v5 = MEMORY[0x277D3FAD8];
       v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -7512,107 +7512,107 @@ LABEL_13:
 - (void)updateBatteryStatus
 {
   v44[4] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCACC8] currentThread];
-  if (([v3 isMainThread] & 1) == 0)
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  if (([currentThread isMainThread] & 1) == 0)
   {
     [BTSDeviceConfigController updateBatteryStatus];
   }
 
   if ([(BTSDeviceConfigController *)self canDisconnect])
   {
-    v4 = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD20]) userInfo];
+    userInfo = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD20]) userInfo];
     v5 = +[HPSDevice deviceKey];
-    v6 = [v4 objectForKeyedSubscript:v5];
+    v6 = [userInfo objectForKeyedSubscript:v5];
 
-    v7 = [(BTSDeviceConfigController *)self traitCollection];
-    v8 = [v7 userInterfaceStyle];
+    traitCollection = [(BTSDeviceConfigController *)self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
     if (!self->_batteryStatusView)
     {
       v9 = [_TtC16HeadphoneConfigs23ModernBatteryStatusView alloc];
-      v10 = [(ModernBatteryStatusView *)v9 initWithFrame:v6 device:v8 == 2 darkMode:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
+      v10 = [(ModernBatteryStatusView *)v9 initWithFrame:v6 device:userInterfaceStyle == 2 darkMode:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
       batteryStatusView = self->_batteryStatusView;
       self->_batteryStatusView = v10;
 
       [(ModernBatteryStatusView *)self->_batteryStatusView setTranslatesAutoresizingMaskIntoConstraints:0];
     }
 
-    v12 = [(BTSDeviceConfigController *)self table];
-    v13 = [v12 tableHeaderView];
+    table = [(BTSDeviceConfigController *)self table];
+    tableHeaderView = [table tableHeaderView];
 
-    if (!v13)
+    if (!tableHeaderView)
     {
       v14 = objc_alloc(MEMORY[0x277D75B70]);
       v15 = [v14 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
-      v16 = [v15 contentView];
-      [v16 addSubview:self->_batteryStatusView];
+      contentView = [v15 contentView];
+      [contentView addSubview:self->_batteryStatusView];
 
-      v17 = [(BTSDeviceConfigController *)self view];
-      [v17 bounds];
+      view = [(BTSDeviceConfigController *)self view];
+      [view bounds];
       [v15 setFrame:{0.0, 0.0}];
 
       v36 = MEMORY[0x277CCAAD0];
-      v42 = [(ModernBatteryStatusView *)self->_batteryStatusView leadingAnchor];
-      v43 = [v15 contentView];
-      v41 = [v43 leadingAnchor];
-      v40 = [v42 constraintEqualToAnchor:v41];
+      leadingAnchor = [(ModernBatteryStatusView *)self->_batteryStatusView leadingAnchor];
+      contentView2 = [v15 contentView];
+      leadingAnchor2 = [contentView2 leadingAnchor];
+      v40 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v44[0] = v40;
-      v38 = [(ModernBatteryStatusView *)self->_batteryStatusView trailingAnchor];
-      v39 = [v15 contentView];
-      v37 = [v39 trailingAnchor];
-      v35 = [v38 constraintEqualToAnchor:v37];
+      trailingAnchor = [(ModernBatteryStatusView *)self->_batteryStatusView trailingAnchor];
+      contentView3 = [v15 contentView];
+      trailingAnchor2 = [contentView3 trailingAnchor];
+      v35 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v44[1] = v35;
-      v33 = [(ModernBatteryStatusView *)self->_batteryStatusView topAnchor];
-      v34 = [v15 contentView];
-      v18 = [v34 topAnchor];
-      v19 = [v33 constraintEqualToAnchor:v18];
+      topAnchor = [(ModernBatteryStatusView *)self->_batteryStatusView topAnchor];
+      contentView4 = [v15 contentView];
+      topAnchor2 = [contentView4 topAnchor];
+      v19 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v44[2] = v19;
-      v20 = [(ModernBatteryStatusView *)self->_batteryStatusView bottomAnchor];
-      v21 = [v15 contentView];
-      v22 = [v21 bottomAnchor];
-      v23 = [v20 constraintEqualToAnchor:v22];
+      bottomAnchor = [(ModernBatteryStatusView *)self->_batteryStatusView bottomAnchor];
+      contentView5 = [v15 contentView];
+      bottomAnchor2 = [contentView5 bottomAnchor];
+      v23 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       v44[3] = v23;
       [MEMORY[0x277CBEA60] arrayWithObjects:v44 count:4];
       v25 = v24 = v6;
       [v36 activateConstraints:v25];
 
       v6 = v24;
-      v26 = [(BTSDeviceConfigController *)self table];
-      [v26 setTableHeaderView:v15];
+      table2 = [(BTSDeviceConfigController *)self table];
+      [table2 setTableHeaderView:v15];
     }
   }
 
   else
   {
-    v27 = [(BTSDeviceConfigController *)self table];
-    v28 = [v27 tableHeaderView];
-    [v28 removeFromSuperview];
+    table3 = [(BTSDeviceConfigController *)self table];
+    tableHeaderView2 = [table3 tableHeaderView];
+    [tableHeaderView2 removeFromSuperview];
 
-    v29 = [(BTSDeviceConfigController *)self table];
-    [v29 setTableHeaderView:0];
+    table4 = [(BTSDeviceConfigController *)self table];
+    [table4 setTableHeaderView:0];
   }
 
-  v30 = [(BTSDeviceConfigController *)self table];
-  v31 = [v30 tableHeaderView];
-  [v31 layoutIfNeeded];
+  table5 = [(BTSDeviceConfigController *)self table];
+  tableHeaderView3 = [table5 tableHeaderView];
+  [tableHeaderView3 layoutIfNeeded];
 
   v32 = *MEMORY[0x277D85DE8];
 }
 
 - (void)getFindMyUrl
 {
-  v3 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-  v4 = [v3 address];
+  classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+  address = [classicDevice address];
 
-  if ([v4 length])
+  if ([address length])
   {
-    v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"BT_%@", v4];
+    v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"BT_%@", address];
     v6 = [v5 dataUsingEncoding:4];
-    v7 = [v6 fm_sha256Hash];
-    v8 = [v7 fm_hexString];
-    v9 = [v8 lowercaseString];
+    fm_sha256Hash = [v6 fm_sha256Hash];
+    fm_hexString = [fm_sha256Hash fm_hexString];
+    lowercaseString = [fm_hexString lowercaseString];
 
-    v10 = [@"findmy://device/bridgemissingdevice?id=" stringByAppendingString:v9];
+    v10 = [@"findmy://device/bridgemissingdevice?id=" stringByAppendingString:lowercaseString];
     findMyUrl = self->_findMyUrl;
     self->_findMyUrl = v10;
   }
@@ -7630,7 +7630,7 @@ LABEL_13:
   }
 }
 
-- (void)spatialAudioProfileUpdateHandler:(id)a3
+- (void)spatialAudioProfileUpdateHandler:(id)handler
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -7646,7 +7646,7 @@ void __62__BTSDeviceConfigController_spatialAudioProfileUpdateHandler___block_in
   [v1 reloadAll];
 }
 
-- (void)triggerSpatialProfileFeedback:(id)a3
+- (void)triggerSpatialProfileFeedback:(id)feedback
 {
   v26 = *MEMORY[0x277D85DE8];
   v4 = sharedBluetoothSettingsLogComponent();
@@ -7660,8 +7660,8 @@ void __62__BTSDeviceConfigController_spatialAudioProfileUpdateHandler___block_in
   v5 = CFPreferencesCopyAppValue(@"LastSpatialProfileFeedbackDate", @"com.apple.springboard");
   v6 = objc_alloc_init(MEMORY[0x277CCA968]);
   [v6 setDateFormat:@"yyyyMMdd"];
-  v7 = [MEMORY[0x277CBEAA8] date];
-  v8 = [v6 stringFromDate:v7];
+  date = [MEMORY[0x277CBEAA8] date];
+  v8 = [v6 stringFromDate:date];
 
   v9 = MGGetBoolAnswer();
   v10 = v9 && (!v5 || ([(__CFString *)v8 isEqualToString:v5]& 1) == 0);
@@ -7726,10 +7726,10 @@ void __62__BTSDeviceConfigController_spatialAudioProfileUpdateHandler___block_in
 
 - (BOOL)supportsFirmwareReleaseNotes
 {
-  v2 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-  v3 = [v2 productId];
+  classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+  productId = [classicDevice productId];
 
-  return ((v3 - 8202) < 0x1B) & (0x4728631u >> (v3 - 10));
+  return ((productId - 8202) < 0x1B) & (0x4728631u >> (productId - 10));
 }
 
 - (BOOL)shouldShowFindMyNetworkAlert
@@ -7749,8 +7749,8 @@ void __62__BTSDeviceConfigController_spatialAudioProfileUpdateHandler___block_in
 
   else
   {
-    v5 = [(BluetoothDeviceProtocol *)self->_device classicDevice];
-    v6 = [HPSProductUtils isFeatureSupported:0 byDevice:v5];
+    classicDevice = [(BluetoothDeviceProtocol *)self->_device classicDevice];
+    v6 = [HPSProductUtils isFeatureSupported:0 byDevice:classicDevice];
 
     v4 = 0;
     if (v6)
@@ -7852,16 +7852,16 @@ void __47__BTSDeviceConfigController_hearingModeUpdated__block_invoke(uint64_t a
 
 - (void)presentEnrollmentViewController
 {
-  v4 = [(BTSDeviceConfigController *)self hearingModeUIService];
-  v3 = [v4 enrollmentViewController];
-  [(BTSDeviceConfigController *)self presentViewController:v3 animated:1 completion:0];
+  hearingModeUIService = [(BTSDeviceConfigController *)self hearingModeUIService];
+  enrollmentViewController = [hearingModeUIService enrollmentViewController];
+  [(BTSDeviceConfigController *)self presentViewController:enrollmentViewController animated:1 completion:0];
 }
 
 - (void)presentTuningViewController
 {
-  v4 = [(BTSDeviceConfigController *)self hearingModeUIService];
-  v3 = [v4 tuningViewController];
-  [(BTSDeviceConfigController *)self presentViewController:v3 animated:1 completion:0];
+  hearingModeUIService = [(BTSDeviceConfigController *)self hearingModeUIService];
+  tuningViewController = [hearingModeUIService tuningViewController];
+  [(BTSDeviceConfigController *)self presentViewController:tuningViewController animated:1 completion:0];
 }
 
 - (_TtC16HeadphoneConfigs34BTSHeadphoneDevicePropertyObserver)headphoneObserver
@@ -7869,13 +7869,13 @@ void __47__BTSDeviceConfigController_hearingModeUpdated__block_invoke(uint64_t a
   headphoneObserver = self->_headphoneObserver;
   if (!headphoneObserver)
   {
-    v4 = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD20]) userInfo];
+    userInfo = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD20]) userInfo];
     v5 = +[HPSDevice deviceKey];
-    v6 = [v4 objectForKeyedSubscript:v5];
+    v6 = [userInfo objectForKeyedSubscript:v5];
 
     objc_initWeak(&location, self);
     v7 = [_TtC16HeadphoneConfigs34BTSHeadphoneDevicePropertyObserver alloc];
-    v8 = [v6 headphoneDevice];
+    headphoneDevice = [v6 headphoneDevice];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __46__BTSDeviceConfigController_headphoneObserver__block_invoke;
@@ -7886,7 +7886,7 @@ void __47__BTSDeviceConfigController_hearingModeUpdated__block_invoke(uint64_t a
     v12[2] = __46__BTSDeviceConfigController_headphoneObserver__block_invoke_1921;
     v12[3] = &unk_2796AD668;
     objc_copyWeak(&v13, &location);
-    v9 = [(BTSHeadphoneDevicePropertyObserver *)v7 initWithDevice:v8 onChangeAction:v14 onChangeReloadAllAction:v12];
+    v9 = [(BTSHeadphoneDevicePropertyObserver *)v7 initWithDevice:headphoneDevice onChangeAction:v14 onChangeReloadAllAction:v12];
     v10 = self->_headphoneObserver;
     self->_headphoneObserver = v9;
 
@@ -7934,13 +7934,13 @@ void __46__BTSDeviceConfigController_headphoneObserver__block_invoke_1921(uint64
 
 - (void)handleTapOnLabel
 {
-  v2 = self;
+  selfCopy = self;
   sub_2511D911C();
 }
 
 - (NSArray)b498Specifiers
 {
-  v2 = self;
+  selfCopy = self;
   BTSDeviceConfigController.b498Specifiers.getter();
 
   sub_2511C8A48(0, &qword_27F422970, 0x277D3FAD8);
@@ -7949,28 +7949,28 @@ void __46__BTSDeviceConfigController_headphoneObserver__block_invoke_1921(uint64
   return v3;
 }
 
-- (void)addTopLevelEntryWithHpDevice:(id)a3
+- (void)addTopLevelEntryWithHpDevice:(id)device
 {
-  v4 = self;
-  v3 = [(BTSDeviceConfigController *)v4 specifier];
-  if (v3)
+  selfCopy = self;
+  specifier = [(BTSDeviceConfigController *)selfCopy specifier];
+  if (specifier)
   {
 
-    [(BTSDeviceConfigController *)v4 reloadSpecifiers];
+    [(BTSDeviceConfigController *)selfCopy reloadSpecifiers];
   }
 }
 
-- (void)removeTopLevelEntryWithHpDevice:(id)a3
+- (void)removeTopLevelEntryWithHpDevice:(id)device
 {
-  v4 = a3;
-  v5 = self;
+  deviceCopy = device;
+  selfCopy = self;
   BTSDeviceConfigController.removeTopLevelEntry(hpDevice:)();
 }
 
-- (void)updateTopLevelEntryWithHpDevice:(id)a3
+- (void)updateTopLevelEntryWithHpDevice:(id)device
 {
-  v4 = a3;
-  v5 = self;
+  deviceCopy = device;
+  selfCopy = self;
   _sSo25BTSDeviceConfigControllerC16HeadphoneConfigsE19updateTopLevelEntry8hpDevicey0D7Manager0dK0C_tF_0();
 }
 
@@ -7979,8 +7979,8 @@ void __46__BTSDeviceConfigController_headphoneObserver__block_invoke_1921(uint64
   swift_getObjectType();
   ObjCClassFromMetadata = swift_getObjCClassFromMetadata();
   v4 = objc_opt_self();
-  v5 = self;
-  v6 = [v4 bundleForClass_];
+  selfCopy = self;
+  bundleForClass_ = [v4 bundleForClass_];
   sub_251210D1C();
 
   v7 = sub_25121176C();
@@ -7990,7 +7990,7 @@ void __46__BTSDeviceConfigController_headphoneObserver__block_invoke_1921(uint64
 
 - (BOOL)adaptiveVolumeSupported
 {
-  v2 = self;
+  selfCopy = self;
   v3 = BTSDeviceConfigController.adaptiveVolumeSupported.getter();
 
   return v3 & 1;
@@ -7998,7 +7998,7 @@ void __46__BTSDeviceConfigController_headphoneObserver__block_invoke_1921(uint64
 
 - (BOOL)conversationDetectSupported
 {
-  v2 = self;
+  selfCopy = self;
   v3 = BTSDeviceConfigController.conversationDetectSupported.getter();
 
   return v3 & 1;
@@ -8006,8 +8006,8 @@ void __46__BTSDeviceConfigController_headphoneObserver__block_invoke_1921(uint64
 
 - (BOOL)supportAutoAncStrength
 {
-  v2 = self;
-  if ([(BTSDeviceConfigController *)v2 device]&& (v3 = sub_2511DF9D0(), swift_unknownObjectRelease(), v3))
+  selfCopy = self;
+  if ([(BTSDeviceConfigController *)selfCopy device]&& (v3 = sub_2511DF9D0(), swift_unknownObjectRelease(), v3))
   {
     v4 = sub_251210FCC();
   }
@@ -8020,21 +8020,21 @@ void __46__BTSDeviceConfigController_headphoneObserver__block_invoke_1921(uint64
   return v4 & 1;
 }
 
-- (BOOL)shouldShowCaseSoundForNewAccessories:(id)a3 productID:(int64_t)a4
+- (BOOL)shouldShowCaseSoundForNewAccessories:(id)accessories productID:(int64_t)d
 {
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   sub_251211B5C();
   swift_unknownObjectRelease();
-  LOBYTE(a4) = sub_2511E2034(v8, a4);
+  LOBYTE(d) = sub_2511E2034(v8, d);
 
   __swift_destroy_boxed_opaque_existential_0(v8);
-  return a4 & 1;
+  return d & 1;
 }
 
 - (BOOL)shouldShowLoudSoundReduction
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_2511E0654();
 
   return v3 & 1;
@@ -8042,7 +8042,7 @@ void __46__BTSDeviceConfigController_headphoneObserver__block_invoke_1921(uint64
 
 - (BOOL)isTempPaired
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_2511E0D68();
 
   return v3;
@@ -8050,7 +8050,7 @@ void __46__BTSDeviceConfigController_headphoneObserver__block_invoke_1921(uint64
 
 - (id)getPermanentPairSpecifier
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_2511E0F38();
 
   return v3;
@@ -8058,7 +8058,7 @@ void __46__BTSDeviceConfigController_headphoneObserver__block_invoke_1921(uint64
 
 - (id)getTemporaryPairSpecifier
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_2511E12D0();
 
   return v3;
@@ -8066,7 +8066,7 @@ void __46__BTSDeviceConfigController_headphoneObserver__block_invoke_1921(uint64
 
 - (id)getOptimizedBatteryFeatureSpecifiers
 {
-  v2 = self;
+  selfCopy = self;
   sub_2511E1658();
 
   sub_2511C8A48(0, &qword_27F422970, 0x277D3FAD8);
@@ -8077,19 +8077,19 @@ void __46__BTSDeviceConfigController_headphoneObserver__block_invoke_1921(uint64
 
 - (void)setupShowModernHPSButton
 {
-  v2 = self;
+  selfCopy = self;
   sub_2511E187C();
 }
 
 - (void)showModernHPS
 {
-  v2 = self;
+  selfCopy = self;
   sub_2511E1CA0();
 }
 
 - (NSArray)turnOffListeningModeSpecifiers
 {
-  v2 = self;
+  selfCopy = self;
   BTSDeviceConfigController.turnOffListeningModeSpecifiers.getter();
 
   sub_2511C8A48(0, &qword_27F422970, 0x277D3FAD8);
@@ -8110,7 +8110,7 @@ void __46__BTSDeviceConfigController_headphoneObserver__block_invoke_1921(uint64
 - (void)doubleTapActionLeft
 {
   v10 = *MEMORY[0x277D85DE8];
-  v1 = [MEMORY[0x277CCABB0] numberWithInteger:*a1];
+  v1 = [MEMORY[0x277CCABB0] numberWithInteger:*self];
   OUTLINED_FUNCTION_1();
   OUTLINED_FUNCTION_5(&dword_251143000, v2, v3, "Double tap action left : %@", v4, v5, v6, v7, v9);
 
@@ -8120,7 +8120,7 @@ void __46__BTSDeviceConfigController_headphoneObserver__block_invoke_1921(uint64
 - (void)doubleTapActionRight
 {
   v10 = *MEMORY[0x277D85DE8];
-  v1 = [MEMORY[0x277CCABB0] numberWithInteger:*a1];
+  v1 = [MEMORY[0x277CCABB0] numberWithInteger:*self];
   OUTLINED_FUNCTION_1();
   OUTLINED_FUNCTION_5(&dword_251143000, v2, v3, "Double tap action right : %@", v4, v5, v6, v7, v9);
 
@@ -8159,9 +8159,9 @@ void __55__BTSDeviceConfigController_setFindMyEnable_specifier___block_invoke_co
 - (void)specifiers
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = [a1 debugDescription];
-  v4 = [*a2 userInfo];
-  v11 = [v4 objectForKeyedSubscript:@"HPS_DeviceInfo"];
+  v3 = [self debugDescription];
+  userInfo = [*a2 userInfo];
+  v11 = [userInfo objectForKeyedSubscript:@"HPS_DeviceInfo"];
   OUTLINED_FUNCTION_3();
   _os_log_error_impl(v5, v6, v7, v8, v9, 0x16u);
 
@@ -8179,7 +8179,7 @@ void __55__BTSDeviceConfigController_setFindMyEnable_specifier___block_invoke_co
 - (void)nicknameEnabled
 {
   v8 = *MEMORY[0x277D85DE8];
-  v7 = *(a1 + 1456);
+  v7 = *(self + 1456);
   OUTLINED_FUNCTION_6();
   _os_log_debug_impl(v1, v2, v3, v4, v5, 0xCu);
   v6 = *MEMORY[0x277D85DE8];

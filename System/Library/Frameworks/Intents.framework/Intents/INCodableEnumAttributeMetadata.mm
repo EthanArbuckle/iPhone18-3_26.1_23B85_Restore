@@ -1,6 +1,6 @@
 @interface INCodableEnumAttributeMetadata
-+ (id)makeFromWidgetPlistableRepresentation:(id)a3 error:(id *)a4;
-- (INCodableEnumAttributeMetadata)initWithCoder:(id)a3;
++ (id)makeFromWidgetPlistableRepresentation:(id)representation error:(id *)error;
+- (INCodableEnumAttributeMetadata)initWithCoder:(id)coder;
 - (id)__INCodableDescriptionDefaultValueKey;
 - (id)__INCodableDescriptionKey;
 - (id)__INIntentResponseCodableDescriptionDefaultValueKey;
@@ -8,31 +8,31 @@
 - (id)__INTypeCodableDescriptionDefaultValueKey;
 - (id)__INTypeCodableDescriptionKey;
 - (id)defaultValueForIntentDefaultValueProvider;
-- (id)dictionaryRepresentationWithLocalizer:(id)a3;
-- (id)widgetPlistableRepresentationWithParameters:(id)a3 error:(id *)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateWithDictionary:(id)a3;
+- (id)dictionaryRepresentationWithLocalizer:(id)localizer;
+- (id)widgetPlistableRepresentationWithParameters:(id)parameters error:(id *)error;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateWithDictionary:(id)dictionary;
 @end
 
 @implementation INCodableEnumAttributeMetadata
 
 - (id)__INCodableDescriptionDefaultValueKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableEnumAttributeMetadataDefaultValueKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableEnumAttributeMetadataDefaultValueKey = [objc_opt_class() __INCodableEnumAttributeMetadataDefaultValueKey];
 
-  return v3;
+  return __INCodableEnumAttributeMetadataDefaultValueKey;
 }
 
-- (INCodableEnumAttributeMetadata)initWithCoder:(id)a3
+- (INCodableEnumAttributeMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = INCodableEnumAttributeMetadata;
-  v5 = [(INCodableAttributeMetadata *)&v9 initWithCoder:v4];
+  v5 = [(INCodableAttributeMetadata *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"defaultValue"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"defaultValue"];
     defaultValue = v5->_defaultValue;
     v5->_defaultValue = v6;
   }
@@ -40,32 +40,32 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = INCodableEnumAttributeMetadata;
-  v4 = a3;
-  [(INCodableAttributeMetadata *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_defaultValue forKey:{@"defaultValue", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(INCodableAttributeMetadata *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_defaultValue forKey:{@"defaultValue", v5.receiver, v5.super_class}];
 }
 
-- (id)widgetPlistableRepresentationWithParameters:(id)a3 error:(id *)a4
+- (id)widgetPlistableRepresentationWithParameters:(id)parameters error:(id *)error
 {
-  v6 = a3;
+  parametersCopy = parameters;
   v15.receiver = self;
   v15.super_class = INCodableEnumAttributeMetadata;
   v16 = 0;
-  v7 = [(INCodableAttributeMetadata *)&v15 widgetPlistableRepresentationWithParameters:v6 error:&v16];
+  v7 = [(INCodableAttributeMetadata *)&v15 widgetPlistableRepresentationWithParameters:parametersCopy error:&v16];
   v8 = v16;
   if (v8)
   {
     v9 = v8;
-    if (a4)
+    if (error)
     {
 LABEL_3:
       v10 = v9;
       v11 = 0;
-      *a4 = v9;
+      *error = v9;
       goto LABEL_8;
     }
 
@@ -74,11 +74,11 @@ LABEL_3:
 
   defaultValue = self->_defaultValue;
   v14 = 0;
-  [v7 intents_setWidgetPlistRepresentable:defaultValue forKey:@"defaultValue" parameters:v6 error:&v14];
+  [v7 intents_setWidgetPlistRepresentable:defaultValue forKey:@"defaultValue" parameters:parametersCopy error:&v14];
   v9 = v14;
   if (v9)
   {
-    if (a4)
+    if (error)
     {
       goto LABEL_3;
     }
@@ -97,49 +97,49 @@ LABEL_8:
 - (id)defaultValueForIntentDefaultValueProvider
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [(INCodableEnumAttributeMetadata *)self defaultValue];
-  v4 = [v2 numberWithInteger:{objc_msgSend(v3, "index")}];
+  defaultValue = [(INCodableEnumAttributeMetadata *)self defaultValue];
+  v4 = [v2 numberWithInteger:{objc_msgSend(defaultValue, "index")}];
 
   return v4;
 }
 
-- (id)dictionaryRepresentationWithLocalizer:(id)a3
+- (id)dictionaryRepresentationWithLocalizer:(id)localizer
 {
   v16[1] = *MEMORY[0x1E69E9840];
   v14.receiver = self;
   v14.super_class = INCodableEnumAttributeMetadata;
-  v4 = [(INCodableAttributeMetadata *)&v14 dictionaryRepresentationWithLocalizer:a3];
-  v5 = [(INCodableEnumAttributeMetadata *)self __INCodableDescriptionDefaultValueKey];
-  v15 = v5;
-  v6 = [(INCodableEnumAttributeMetadata *)self defaultValue];
-  v7 = [v6 name];
-  v8 = v7;
-  if (!v7)
+  v4 = [(INCodableAttributeMetadata *)&v14 dictionaryRepresentationWithLocalizer:localizer];
+  __INCodableDescriptionDefaultValueKey = [(INCodableEnumAttributeMetadata *)self __INCodableDescriptionDefaultValueKey];
+  v15 = __INCodableDescriptionDefaultValueKey;
+  defaultValue = [(INCodableEnumAttributeMetadata *)self defaultValue];
+  name = [defaultValue name];
+  null = name;
+  if (!name)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16[0] = v8;
+  v16[0] = null;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
   v10 = [v4 if_dictionaryByAddingEntriesFromDictionary:v9];
 
-  if (!v7)
+  if (!name)
   {
   }
 
-  v11 = [v10 if_dictionaryWithNonEmptyValues];
+  if_dictionaryWithNonEmptyValues = [v10 if_dictionaryWithNonEmptyValues];
 
   v12 = *MEMORY[0x1E69E9840];
 
-  return v11;
+  return if_dictionaryWithNonEmptyValues;
 }
 
-- (void)updateWithDictionary:(id)a3
+- (void)updateWithDictionary:(id)dictionary
 {
   v14.receiver = self;
   v14.super_class = INCodableEnumAttributeMetadata;
-  v4 = a3;
-  [(INCodableAttributeMetadata *)&v14 updateWithDictionary:v4];
+  dictionaryCopy = dictionary;
+  [(INCodableAttributeMetadata *)&v14 updateWithDictionary:dictionaryCopy];
   v5 = [(INCodableAttributeMetadata *)self codableAttribute:v14.receiver];
   if (v5)
   {
@@ -162,8 +162,8 @@ LABEL_8:
 
   v7 = v6;
 
-  v8 = [(INCodableEnumAttributeMetadata *)self __INCodableDescriptionDefaultValueKey];
-  v9 = [v4 objectForKeyedSubscript:v8];
+  __INCodableDescriptionDefaultValueKey = [(INCodableEnumAttributeMetadata *)self __INCodableDescriptionDefaultValueKey];
+  v9 = [dictionaryCopy objectForKeyedSubscript:__INCodableDescriptionDefaultValueKey];
 
   if (v9)
   {
@@ -192,23 +192,23 @@ LABEL_8:
   self->_defaultValue = v12;
 }
 
-+ (id)makeFromWidgetPlistableRepresentation:(id)a3 error:(id *)a4
++ (id)makeFromWidgetPlistableRepresentation:(id)representation error:(id *)error
 {
-  v6 = a3;
-  v16.receiver = a1;
+  representationCopy = representation;
+  v16.receiver = self;
   v16.super_class = &OBJC_METACLASS___INCodableEnumAttributeMetadata;
   v17 = 0;
-  v7 = objc_msgSendSuper2(&v16, sel_makeFromWidgetPlistableRepresentation_error_, v6, &v17);
+  v7 = objc_msgSendSuper2(&v16, sel_makeFromWidgetPlistableRepresentation_error_, representationCopy, &v17);
   v8 = v17;
   if (v8)
   {
     v9 = v8;
-    if (a4)
+    if (error)
     {
 LABEL_3:
       v10 = v9;
       v11 = 0;
-      *a4 = v9;
+      *error = v9;
       goto LABEL_8;
     }
 
@@ -216,14 +216,14 @@ LABEL_3:
   }
 
   v15 = 0;
-  v12 = [INCodableEnumValue intents_widgetPlistRepresentableInDict:v6 key:@"defaultValue" error:&v15];
+  v12 = [INCodableEnumValue intents_widgetPlistRepresentableInDict:representationCopy key:@"defaultValue" error:&v15];
   v9 = v15;
   v13 = v7[5];
   v7[5] = v12;
 
   if (v9)
   {
-    if (a4)
+    if (error)
     {
       goto LABEL_3;
     }
@@ -241,42 +241,42 @@ LABEL_8:
 
 - (id)__INTypeCodableDescriptionDefaultValueKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableEnumAttributeMetadataDefaultValueKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableEnumAttributeMetadataDefaultValueKey = [objc_opt_class() __INCodableEnumAttributeMetadataDefaultValueKey];
 
-  return v3;
+  return __INCodableEnumAttributeMetadataDefaultValueKey;
 }
 
 - (id)__INTypeCodableDescriptionKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableEnumAttributeMetadataKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableEnumAttributeMetadataKey = [objc_opt_class() __INCodableEnumAttributeMetadataKey];
 
-  return v3;
+  return __INCodableEnumAttributeMetadataKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionDefaultValueKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableEnumAttributeMetadataDefaultValueKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableEnumAttributeMetadataDefaultValueKey = [objc_opt_class() __INCodableEnumAttributeMetadataDefaultValueKey];
 
-  return v3;
+  return __INCodableEnumAttributeMetadataDefaultValueKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableEnumAttributeMetadataKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableEnumAttributeMetadataKey = [objc_opt_class() __INCodableEnumAttributeMetadataKey];
 
-  return v3;
+  return __INCodableEnumAttributeMetadataKey;
 }
 
 - (id)__INCodableDescriptionKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableEnumAttributeMetadataKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableEnumAttributeMetadataKey = [objc_opt_class() __INCodableEnumAttributeMetadataKey];
 
-  return v3;
+  return __INCodableEnumAttributeMetadataKey;
 }
 
 @end

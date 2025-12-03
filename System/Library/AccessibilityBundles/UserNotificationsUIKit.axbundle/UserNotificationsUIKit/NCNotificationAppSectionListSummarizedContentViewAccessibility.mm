@@ -1,15 +1,15 @@
 @interface NCNotificationAppSectionListSummarizedContentViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation NCNotificationAppSectionListSummarizedContentViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"NCNotificationAppSectionListSummarizedContentView" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCNotificationAppSectionListSummarizedContentView" hasInstanceMethod:@"count" withFullSignature:{"Q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"NCNotificationAppSectionListSummarizedContentView" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCNotificationAppSectionListSummarizedContentView" hasInstanceMethod:@"count" withFullSignature:{"Q", 0}];
 }
 
 - (id)accessibilityLabel

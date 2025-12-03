@@ -1,5 +1,5 @@
 @interface _AFAssertionContextMutation
-- (_AFAssertionContextMutation)initWithBase:(id)a3;
+- (_AFAssertionContextMutation)initWithBase:(id)base;
 - (double)getExpirationDuration;
 - (id)getEffectiveDate;
 - (id)getReason;
@@ -26,30 +26,30 @@
 {
   if ((*&self->_mutationFlags & 4) != 0)
   {
-    v2 = self->_reason;
+    reason = self->_reason;
   }
 
   else
   {
-    v2 = [(AFAssertionContext *)self->_base reason];
+    reason = [(AFAssertionContext *)self->_base reason];
   }
 
-  return v2;
+  return reason;
 }
 
 - (id)getEffectiveDate
 {
   if ((*&self->_mutationFlags & 8) != 0)
   {
-    v2 = self->_effectiveDate;
+    effectiveDate = self->_effectiveDate;
   }
 
   else
   {
-    v2 = [(AFAssertionContext *)self->_base effectiveDate];
+    effectiveDate = [(AFAssertionContext *)self->_base effectiveDate];
   }
 
-  return v2;
+  return effectiveDate;
 }
 
 - (double)getExpirationDuration
@@ -67,27 +67,27 @@
 {
   if ((*&self->_mutationFlags & 0x20) != 0)
   {
-    v2 = self->_userInfo;
+    userInfo = self->_userInfo;
   }
 
   else
   {
-    v2 = [(AFAssertionContext *)self->_base userInfo];
+    userInfo = [(AFAssertionContext *)self->_base userInfo];
   }
 
-  return v2;
+  return userInfo;
 }
 
-- (_AFAssertionContextMutation)initWithBase:(id)a3
+- (_AFAssertionContextMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _AFAssertionContextMutation;
   v6 = [(_AFAssertionContextMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

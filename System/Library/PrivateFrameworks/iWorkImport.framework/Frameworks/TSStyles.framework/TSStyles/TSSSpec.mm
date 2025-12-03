@@ -1,7 +1,7 @@
 @interface TSSSpec
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)operationPropertyName;
-- (TSSSpec)specWithCurrentProperty:(id)a3;
+- (TSSSpec)specWithCurrentProperty:(id)property;
 - (id)getUnsetSpec;
 - (id)initUnsetSpec;
 - (unint64_t)hash;
@@ -28,10 +28,10 @@
   objc_exception_throw(v19);
 }
 
-- (TSSSpec)specWithCurrentProperty:(id)a3
+- (TSSSpec)specWithCurrentProperty:(id)property
 {
   v4 = objc_alloc(objc_opt_class());
-  v6 = objc_msgSend_initWithCurrentProperty_(v4, v5, a3);
+  v6 = objc_msgSend_initWithCurrentProperty_(v4, v5, property);
 
   return v6;
 }
@@ -74,7 +74,7 @@
   objc_exception_throw(v19);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v3 = MEMORY[0x277D81150];
   v4 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSSSpec isEqual:]");

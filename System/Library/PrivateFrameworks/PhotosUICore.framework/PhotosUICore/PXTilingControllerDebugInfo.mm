@@ -5,7 +5,7 @@
 - (CGRect)pagedRect;
 - (CGRect)visibleRect;
 - (id)debugQuickLookObject;
-- (void)drawInRect:(CGRect)a3 inContext:(CGContext *)a4;
+- (void)drawInRect:(CGRect)rect inContext:(CGContext *)context;
 @end
 
 @implementation PXTilingControllerDebugInfo
@@ -87,20 +87,20 @@
   return v3;
 }
 
-- (void)drawInRect:(CGRect)a3 inContext:(CGContext *)a4
+- (void)drawInRect:(CGRect)rect inContext:(CGContext *)context
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v9 = *MEMORY[0x1E69E9840];
-  CGContextSaveGState(a4);
-  CGContextSetRGBFillColor(a4, 1.0, 1.0, 1.0, 1.0);
+  CGContextSaveGState(context);
+  CGContextSetRGBFillColor(context, 1.0, 1.0, 1.0, 1.0);
   v10.origin.x = x;
   v10.origin.y = y;
   v10.size.width = width;
   v10.size.height = height;
-  CGContextFillRect(a4, v10);
+  CGContextFillRect(context, v10);
   PXEdgeInsetsMake();
 }
 

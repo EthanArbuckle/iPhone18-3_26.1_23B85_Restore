@@ -1,30 +1,30 @@
 @interface AKPasswordResetPresenter
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (void)_launchViewServiceWithUserInfo:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (void)_launchViewServiceWithUserInfo:(id)info;
 - (void)dealloc;
-- (void)passwordResetFinishedWithResult:(id)a3 error:(id)a4 completion:(id)a5;
-- (void)presentWithContext:(id)a3 completion:(id)a4;
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4;
-- (void)remoteAlertHandleDidActivate:(id)a3;
-- (void)remoteAlertHandleDidDeactivate:(id)a3;
+- (void)passwordResetFinishedWithResult:(id)result error:(id)error completion:(id)completion;
+- (void)presentWithContext:(id)context completion:(id)completion;
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error;
+- (void)remoteAlertHandleDidActivate:(id)activate;
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate;
 @end
 
 @implementation AKPasswordResetPresenter
 
-- (void)presentWithContext:(id)a3 completion:(id)a4
+- (void)presentWithContext:(id)context completion:(id)completion
 {
-  v35 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v33 = 0;
-  objc_storeStrong(&v33, a4);
+  objc_storeStrong(&v33, completion);
   v18 = +[AKFeatureManager sharedManager];
-  v19 = [v18 isForgotPasswordNativeTakeoverEnabled];
+  isForgotPasswordNativeTakeoverEnabled = [v18 isForgotPasswordNativeTakeoverEnabled];
   _objc_release(v18);
-  if (v19)
+  if (isForgotPasswordNativeTakeoverEnabled)
   {
-    if ([(AKPasswordResetPresenter *)v35 isPasswordResetRequestInProgress])
+    if ([(AKPasswordResetPresenter *)selfCopy isPasswordResetRequestInProgress])
     {
       v28 = _AKLogSystem();
       v27 = 2;
@@ -50,7 +50,7 @@
 
     else
     {
-      [(AKPasswordResetPresenter *)v35 setIsPasswordResetRequestInProgress:1];
+      [(AKPasswordResetPresenter *)selfCopy setIsPasswordResetRequestInProgress:1];
       v25 = 0;
       v23 = 0;
       v8 = [NSKeyedArchiver archivedDataWithRootObject:location[0] requiringSecureCoding:1 error:&v23];
@@ -72,17 +72,17 @@
       v20 = objc_alloc_init(NSMutableDictionary);
       [v20 setObject:v24 forKeyedSubscript:@"context"];
       v4 = +[NSXPCListener anonymousListener];
-      [(AKPasswordResetPresenter *)v35 setRemoteListener:?];
+      [(AKPasswordResetPresenter *)selfCopy setRemoteListener:?];
       _objc_release(v4);
-      v5 = v35;
-      v6 = [(AKPasswordResetPresenter *)v35 remoteListener];
-      [(NSXPCListener *)v6 setDelegate:v5];
-      _objc_release(v6);
-      v7 = [(AKPasswordResetPresenter *)v35 remoteListener];
-      [(NSXPCListener *)v7 resume];
-      _objc_release(v7);
-      [(AKPasswordResetPresenter *)v35 setResetCompletion:v33];
-      [(AKPasswordResetPresenter *)v35 _launchViewServiceWithUserInfo:v20];
+      v5 = selfCopy;
+      remoteListener = [(AKPasswordResetPresenter *)selfCopy remoteListener];
+      [(NSXPCListener *)remoteListener setDelegate:v5];
+      _objc_release(remoteListener);
+      remoteListener2 = [(AKPasswordResetPresenter *)selfCopy remoteListener];
+      [(NSXPCListener *)remoteListener2 resume];
+      _objc_release(remoteListener2);
+      [(AKPasswordResetPresenter *)selfCopy setResetCompletion:v33];
+      [(AKPasswordResetPresenter *)selfCopy _launchViewServiceWithUserInfo:v20];
       objc_storeStrong(&v20, 0);
       objc_storeStrong(&v24, 0);
       objc_storeStrong(&v25, 0);
@@ -118,77 +118,77 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_launchViewServiceWithUserInfo:(id)a3
+- (void)_launchViewServiceWithUserInfo:(id)info
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, info);
   v3 = [SBSRemoteAlertDefinition alloc];
   v14 = [v3 initWithServiceName:off_100370728 viewControllerClassName:off_100370730];
   v13 = objc_alloc_init(SBSRemoteAlertConfigurationContext);
-  v8 = [(AKPasswordResetPresenter *)v16 remoteListener];
-  v7 = [(NSXPCListener *)v8 endpoint];
-  v6 = [(NSXPCListenerEndpoint *)v7 _endpoint];
+  remoteListener = [(AKPasswordResetPresenter *)selfCopy remoteListener];
+  endpoint = [(NSXPCListener *)remoteListener endpoint];
+  _endpoint = [(NSXPCListenerEndpoint *)endpoint _endpoint];
   [v13 setXpcEndpoint:?];
-  _objc_release(v6);
-  _objc_release(v7);
-  _objc_release(v8);
+  _objc_release(_endpoint);
+  _objc_release(endpoint);
+  _objc_release(remoteListener);
   [v13 setUserInfo:location[0]];
   v12 = objc_alloc_init(SBSRemoteAlertActivationContext);
   v9 = [SBSRemoteAlertHandle newHandleWithDefinition:v14 configurationContext:v13];
-  [(AKPasswordResetPresenter *)v16 setRemoteAlertHandle:?];
+  [(AKPasswordResetPresenter *)selfCopy setRemoteAlertHandle:?];
   _objc_release(v9);
-  v10 = [(AKPasswordResetPresenter *)v16 remoteAlertHandle];
-  [(SBSRemoteAlertHandle *)v10 registerObserver:v16];
-  _objc_release(v10);
+  remoteAlertHandle = [(AKPasswordResetPresenter *)selfCopy remoteAlertHandle];
+  [(SBSRemoteAlertHandle *)remoteAlertHandle registerObserver:selfCopy];
+  _objc_release(remoteAlertHandle);
   v11 = _AKLogSystem();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(AKPasswordResetPresenter *)v16 remoteAlertHandle];
-    sub_1000194D4(v17, v5);
+    remoteAlertHandle2 = [(AKPasswordResetPresenter *)selfCopy remoteAlertHandle];
+    sub_1000194D4(v17, remoteAlertHandle2);
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Activating handle: %@", v17, 0xCu);
-    _objc_release(v5);
+    _objc_release(remoteAlertHandle2);
   }
 
   objc_storeStrong(&v11, 0);
-  v4 = [(AKPasswordResetPresenter *)v16 remoteAlertHandle];
-  [(SBSRemoteAlertHandle *)v4 activateWithContext:v12];
-  _objc_release(v4);
+  remoteAlertHandle3 = [(AKPasswordResetPresenter *)selfCopy remoteAlertHandle];
+  [(SBSRemoteAlertHandle *)remoteAlertHandle3 activateWithContext:v12];
+  _objc_release(remoteAlertHandle3);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(&v13, 0);
   objc_storeStrong(&v14, 0);
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, listener);
   v7 = 0;
-  objc_storeStrong(&v7, a4);
+  objc_storeStrong(&v7, connection);
   v6 = +[AKPasswordResetPresenterHostInterface XPCInterface];
   [v7 setExportedInterface:?];
   _objc_release(v6);
-  [v7 setExportedObject:v9];
+  [v7 setExportedObject:selfCopy];
   [v7 resume];
   objc_storeStrong(&v7, 0);
   objc_storeStrong(location, 0);
   return 1;
 }
 
-- (void)passwordResetFinishedWithResult:(id)a3 error:(id)a4 completion:(id)a5
+- (void)passwordResetFinishedWithResult:(id)result error:(id)error completion:(id)completion
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, result);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
+  objc_storeStrong(&v14, error);
   v13 = 0;
-  objc_storeStrong(&v13, a5);
+  objc_storeStrong(&v13, completion);
   v12 = _AKLogSystem();
   v11 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -216,33 +216,33 @@
   }
 
   objc_storeStrong(&oslog, 0);
-  v7 = [(AKPasswordResetPresenter *)v16 resetCompletion];
-  _objc_release(v7);
-  if (v7)
+  resetCompletion = [(AKPasswordResetPresenter *)selfCopy resetCompletion];
+  _objc_release(resetCompletion);
+  if (resetCompletion)
   {
-    v6 = [(AKPasswordResetPresenter *)v16 resetCompletion];
-    v6[2](v6, location[0], v14);
-    _objc_release(v6);
+    resetCompletion2 = [(AKPasswordResetPresenter *)selfCopy resetCompletion];
+    resetCompletion2[2](resetCompletion2, location[0], v14);
+    _objc_release(resetCompletion2);
   }
 
-  [(AKPasswordResetPresenter *)v16 setResetCompletion:0];
+  [(AKPasswordResetPresenter *)selfCopy setResetCompletion:0];
   if (v13)
   {
     (*(v13 + 2))(v13, 1, 0);
   }
 
-  [(AKPasswordResetPresenter *)v16 setIsPasswordResetRequestInProgress:0];
+  [(AKPasswordResetPresenter *)selfCopy setIsPasswordResetRequestInProgress:0];
   objc_storeStrong(&v13, 0);
   objc_storeStrong(&v14, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)remoteAlertHandleDidActivate:(id)a3
+- (void)remoteAlertHandleDidActivate:(id)activate
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, activate);
   oslog = _AKLogSystem();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
@@ -254,12 +254,12 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)remoteAlertHandleDidDeactivate:(id)a3
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, deactivate);
   v7 = _AKLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -268,34 +268,34 @@
   }
 
   objc_storeStrong(&v7, 0);
-  v6 = [(AKPasswordResetPresenter *)v9 resetCompletion];
-  _objc_release(v6);
-  if (v6)
+  resetCompletion = [(AKPasswordResetPresenter *)selfCopy resetCompletion];
+  _objc_release(resetCompletion);
+  if (resetCompletion)
   {
-    v5 = [(AKPasswordResetPresenter *)v9 resetCompletion];
+    resetCompletion2 = [(AKPasswordResetPresenter *)selfCopy resetCompletion];
     v4 = [NSError ak_errorWithCode:-7034];
-    v5[2](v5, 0);
+    resetCompletion2[2](resetCompletion2, 0);
     _objc_release(v4);
-    _objc_release(v5);
+    _objc_release(resetCompletion2);
   }
 
-  [(AKPasswordResetPresenter *)v9 setResetCompletion:0];
-  [(AKPasswordResetPresenter *)v9 setIsPasswordResetRequestInProgress:0];
+  [(AKPasswordResetPresenter *)selfCopy setResetCompletion:0];
+  [(AKPasswordResetPresenter *)selfCopy setIsPasswordResetRequestInProgress:0];
   objc_storeStrong(location, obj);
 }
 
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error
 {
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, handle);
   v19 = 0;
-  objc_storeStrong(&v19, a4);
+  objc_storeStrong(&v19, error);
   v18 = 0;
-  v13 = [v19 domain];
+  domain = [v19 domain];
   v14 = 0;
-  if ([v13 isEqualToString:SBSRemoteAlertHandleInvalidationErrorDomain])
+  if ([domain isEqualToString:SBSRemoteAlertHandleInvalidationErrorDomain])
   {
     v11 = 1;
     if ([v19 code] != 4)
@@ -306,7 +306,7 @@
     v14 = v11;
   }
 
-  _objc_release(v13);
+  _objc_release(domain);
   if (v14)
   {
     v17 = _AKLogSystem();
@@ -340,17 +340,17 @@
     _objc_release(v7);
   }
 
-  v10 = [(AKPasswordResetPresenter *)v21 resetCompletion];
-  _objc_release(v10);
-  if (v10)
+  resetCompletion = [(AKPasswordResetPresenter *)selfCopy resetCompletion];
+  _objc_release(resetCompletion);
+  if (resetCompletion)
   {
-    v9 = [(AKPasswordResetPresenter *)v21 resetCompletion];
-    v9[2](v9, 0, v18);
-    _objc_release(v9);
+    resetCompletion2 = [(AKPasswordResetPresenter *)selfCopy resetCompletion];
+    resetCompletion2[2](resetCompletion2, 0, v18);
+    _objc_release(resetCompletion2);
   }
 
-  [(AKPasswordResetPresenter *)v21 setResetCompletion:0];
-  [(AKPasswordResetPresenter *)v21 setIsPasswordResetRequestInProgress:0];
+  [(AKPasswordResetPresenter *)selfCopy setResetCompletion:0];
+  [(AKPasswordResetPresenter *)selfCopy setIsPasswordResetRequestInProgress:0];
   objc_storeStrong(&v18, v8);
   objc_storeStrong(&v19, v8);
   objc_storeStrong(location, v8);
@@ -358,24 +358,24 @@
 
 - (void)dealloc
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = _AKLogSystem();
   v5 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(location[0], OS_LOG_TYPE_DEBUG))
   {
-    sub_1000194D4(v8, v7);
+    sub_1000194D4(v8, selfCopy);
     _os_log_debug_impl(&_mh_execute_header, location[0], v5, "%@ deallocated.", v8, 0xCu);
   }
 
   objc_storeStrong(location, 0);
-  v2 = [(AKPasswordResetPresenter *)v7 remoteAlertHandle];
-  [(SBSRemoteAlertHandle *)v2 unregisterObserver:v7];
-  _objc_release(v2);
-  v3 = [(AKPasswordResetPresenter *)v7 remoteAlertHandle];
-  [(SBSRemoteAlertHandle *)v3 invalidate];
-  _objc_release(v3);
-  v4.receiver = v7;
+  remoteAlertHandle = [(AKPasswordResetPresenter *)selfCopy remoteAlertHandle];
+  [(SBSRemoteAlertHandle *)remoteAlertHandle unregisterObserver:selfCopy];
+  _objc_release(remoteAlertHandle);
+  remoteAlertHandle2 = [(AKPasswordResetPresenter *)selfCopy remoteAlertHandle];
+  [(SBSRemoteAlertHandle *)remoteAlertHandle2 invalidate];
+  _objc_release(remoteAlertHandle2);
+  v4.receiver = selfCopy;
   v4.super_class = AKPasswordResetPresenter;
   [(AKPasswordResetPresenter *)&v4 dealloc];
 }

@@ -1,8 +1,8 @@
 @interface WGPlatterHeaderContentView
 - (CGAffineTransform)utilityButtonTransform;
 - (WGPlatterHeaderContentView)init;
-- (void)_layoutUtilityButtonWithScale:(double)a3;
-- (void)setUtilityButtonTransform:(CGAffineTransform *)a3;
+- (void)_layoutUtilityButtonWithScale:(double)scale;
+- (void)setUtilityButtonTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation WGPlatterHeaderContentView
@@ -24,22 +24,22 @@
   return result;
 }
 
-- (void)setUtilityButtonTransform:(CGAffineTransform *)a3
+- (void)setUtilityButtonTransform:(CGAffineTransform *)transform
 {
   p_utilityButtonTransform = &self->_utilityButtonTransform;
-  v6 = *&a3->c;
-  *&t1.a = *&a3->a;
+  v6 = *&transform->c;
+  *&t1.a = *&transform->a;
   *&t1.c = v6;
-  *&t1.tx = *&a3->tx;
+  *&t1.tx = *&transform->tx;
   v7 = *&self->_utilityButtonTransform.c;
   *&v10.a = *&self->_utilityButtonTransform.a;
   *&v10.c = v7;
   *&v10.tx = *&self->_utilityButtonTransform.tx;
   if (!CGAffineTransformEqualToTransform(&t1, &v10))
   {
-    v8 = *&a3->a;
-    v9 = *&a3->tx;
-    *&p_utilityButtonTransform->c = *&a3->c;
+    v8 = *&transform->a;
+    v9 = *&transform->tx;
+    *&p_utilityButtonTransform->c = *&transform->c;
     *&p_utilityButtonTransform->tx = v9;
     *&p_utilityButtonTransform->a = v8;
     [(WGPlatterHeaderContentView *)self setNeedsLayout];
@@ -47,24 +47,24 @@
   }
 }
 
-- (void)_layoutUtilityButtonWithScale:(double)a3
+- (void)_layoutUtilityButtonWithScale:(double)scale
 {
   v24.receiver = self;
   v24.super_class = WGPlatterHeaderContentView;
-  [(PLPlatterHeaderContentView *)&v24 _layoutUtilityButtonWithScale:a3];
-  v4 = [(PLPlatterHeaderContentView *)self utilityView];
-  v5 = v4;
-  if (v4)
+  [(PLPlatterHeaderContentView *)&v24 _layoutUtilityButtonWithScale:scale];
+  utilityView = [(PLPlatterHeaderContentView *)self utilityView];
+  v5 = utilityView;
+  if (utilityView)
   {
-    v6 = v4;
+    utilityButton = utilityView;
   }
 
   else
   {
-    v6 = [(PLPlatterHeaderContentView *)self utilityButton];
+    utilityButton = [(PLPlatterHeaderContentView *)self utilityButton];
   }
 
-  v7 = v6;
+  v7 = utilityButton;
 
   [v7 frame];
   x = v25.origin.x;

@@ -11,15 +11,15 @@
 
 - (uint64_t)_dnds_pairedDeviceClass
 {
-  v1 = [a1 deviceType];
-  if ((v1 - 1) > 8)
+  deviceType = [self deviceType];
+  if ((deviceType - 1) > 8)
   {
     return 0;
   }
 
   else
   {
-    return qword_2491FFB90[v1 - 1];
+    return qword_2491FFB90[deviceType - 1];
   }
 }
 
@@ -27,12 +27,12 @@
 {
   v8 = 0uLL;
   v9 = 0;
-  [a1 operatingSystemVersion];
-  v2 = [a1 productBuildVersion];
-  v3 = [a1 _dnds_pairedDeviceClass];
+  [self operatingSystemVersion];
+  productBuildVersion = [self productBuildVersion];
+  _dnds_pairedDeviceClass = [self _dnds_pairedDeviceClass];
   v6 = v8;
   v7 = v9;
-  v4 = DNDSAssertionSyncProtocolVersionFromOperatingSystemVersionAndBuildVersion(&v6, v2, v3);
+  v4 = DNDSAssertionSyncProtocolVersionFromOperatingSystemVersionAndBuildVersion(&v6, productBuildVersion, _dnds_pairedDeviceClass);
 
   return v4;
 }
@@ -41,20 +41,20 @@
 {
   v8 = 0uLL;
   v9 = 0;
-  [a1 operatingSystemVersion];
-  v2 = [a1 productBuildVersion];
-  v3 = [a1 _dnds_pairedDeviceClass];
+  [self operatingSystemVersion];
+  productBuildVersion = [self productBuildVersion];
+  _dnds_pairedDeviceClass = [self _dnds_pairedDeviceClass];
   v6 = v8;
   v7 = v9;
-  v4 = DNDSConfigurationSyncProtocolVersionFromOperatingSystemVersionAndBuildVersion(&v6, v2, v3);
+  v4 = DNDSConfigurationSyncProtocolVersionFromOperatingSystemVersionAndBuildVersion(&v6, productBuildVersion, _dnds_pairedDeviceClass);
 
   return v4;
 }
 
 - (uint64_t)_dnds_minorBuildVersion
 {
-  v1 = [a1 productBuildVersion];
-  v2 = DNDSMinorBuildVersionFromBuildVersion(v1);
+  productBuildVersion = [self productBuildVersion];
+  v2 = DNDSMinorBuildVersionFromBuildVersion(productBuildVersion);
 
   return v2;
 }
@@ -64,9 +64,9 @@
   v4 = 0;
   v5 = 0;
   v6 = 0;
-  [a1 operatingSystemVersion];
-  v2 = [a1 _dnds_pairedDeviceClass];
-  if (v2 == 1)
+  [self operatingSystemVersion];
+  _dnds_pairedDeviceClass = [self _dnds_pairedDeviceClass];
+  if (_dnds_pairedDeviceClass == 1)
   {
     if (v4 == 14)
     {
@@ -76,9 +76,9 @@
 
   else
   {
-    if (v2 != 3)
+    if (_dnds_pairedDeviceClass != 3)
     {
-      return v2 == 2 && v4 == 10 && v5 == 18;
+      return _dnds_pairedDeviceClass == 2 && v4 == 10 && v5 == 18;
     }
 
     if (v4 == 7)
@@ -94,11 +94,11 @@
 {
   v6 = 0uLL;
   v7 = 0;
-  [a1 operatingSystemVersion];
-  v2 = [a1 _dnds_pairedDeviceClass];
+  [self operatingSystemVersion];
+  _dnds_pairedDeviceClass = [self _dnds_pairedDeviceClass];
   v4 = v6;
   v5 = v7;
-  return DNDSsupportsSilenceListsSFromOperatingSystemVersionAndDeviceClass(&v4, v2);
+  return DNDSsupportsSilenceListsSFromOperatingSystemVersionAndDeviceClass(&v4, _dnds_pairedDeviceClass);
 }
 
 @end

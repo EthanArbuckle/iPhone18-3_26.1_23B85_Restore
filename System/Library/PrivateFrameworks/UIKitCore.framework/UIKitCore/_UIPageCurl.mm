@@ -1,58 +1,58 @@
 @interface _UIPageCurl
 - (BOOL)_isManualPageCurlInProgressAndUncommitted;
-- (BOOL)_isPreviousCurlCompatibleWithCurlOfType:(int64_t)a3 inDirection:(int64_t)a4;
-- (BOOL)_populateFromValue:(double *)a3 toValue:(double *)a4 fromState:(id)a5 forAnimationWithKeyPath:(id)a6;
-- (CGPoint)_referenceLocationForInitialLocation:(CGPoint)a3 direction:(int64_t)a4;
-- (CGRect)_pageViewFrame:(BOOL)a3;
+- (BOOL)_isPreviousCurlCompatibleWithCurlOfType:(int64_t)type inDirection:(int64_t)direction;
+- (BOOL)_populateFromValue:(double *)value toValue:(double *)toValue fromState:(id)state forAnimationWithKeyPath:(id)path;
+- (CGPoint)_referenceLocationForInitialLocation:(CGPoint)location direction:(int64_t)direction;
+- (CGRect)_pageViewFrame:(BOOL)frame;
 - (NSNumber)_wrappedManualPageCurlDirection;
-- (_UIPageCurl)initWithSpineLocation:(int64_t)a3 andContentRect:(CGRect)a4 inContentView:(id)a5;
-- (double)_baseAngleOffsetForState:(id)a3;
+- (_UIPageCurl)initWithSpineLocation:(int64_t)location andContentRect:(CGRect)rect inContentView:(id)view;
+- (double)_baseAngleOffsetForState:(id)state;
 - (double)_distanceToTravelWithCurrentSpineLocation;
-- (double)_durationForManualCurlEndAnimationWithSuggestedVelocity:(double)a3 shouldComplete:(BOOL)a4;
-- (double)_inputTimeForProgress:(double)a3 distanceToTravel:(double)a4 radius:(double *)a5 minRadius:(double)a6 angle:(double)a7 dAngle:(double)a8 touchLocation:(CGPoint)a9 state:(id)a10;
-- (id)_newAnimationForState:(id)a3 withKeyPath:(id)a4 duration:(double)a5 fromValue:(id)a6;
+- (double)_durationForManualCurlEndAnimationWithSuggestedVelocity:(double)velocity shouldComplete:(BOOL)complete;
+- (double)_inputTimeForProgress:(double)progress distanceToTravel:(double)travel radius:(double *)radius minRadius:(double)minRadius angle:(double)angle dAngle:(double)dAngle touchLocation:(CGPoint)location state:(id)self0;
+- (id)_newAnimationForState:(id)state withKeyPath:(id)path duration:(double)duration fromValue:(id)value;
 - (id)_newCurlFilter;
-- (int64_t)_validatedPageCurlTypeForPageCurlType:(int64_t)a3 inDirection:(int64_t)a4;
-- (void)_beginCurlWithState:(id)a3 previousState:(id)a4;
-- (void)_cancelAllActiveTransitionsAndAbandonCallbacks:(BOOL)a3;
-- (void)_cancelTransitionWithState:(id)a3 invalidatingPageCurl:(BOOL)a4;
-- (void)_endManualCurlAtLocation:(CGPoint)a3 withSuggestedVelocity:(double)a4 shouldComplete:(BOOL)a5;
-- (void)_enqueueCurlOfType:(int64_t)a3 fromLocation:(CGPoint)a4 inDirection:(int64_t)a5 withView:(id)a6 revealingView:(id)a7 completion:(id)a8 finally:(id)a9;
-- (void)_ensureCurlFilterOnLayer:(id)a3;
-- (void)_pageCurlAnimationDidStop:(id)a3 withState:(id)a4;
-- (void)_setContentRect:(CGRect)a3;
-- (void)_updateCurlFromState:(id)a3 withTime:(double)a4 radius:(double)a5 angle:(double)a6 addingAnimations:(id)a7;
-- (void)_updateManualCurlToLocation:(CGPoint)a3;
-- (void)_updatedInputsFromState:(id)a3 forLocation:(CGPoint)a4 time:(double *)a5 radius:(double *)a6 angle:(double *)a7;
+- (int64_t)_validatedPageCurlTypeForPageCurlType:(int64_t)type inDirection:(int64_t)direction;
+- (void)_beginCurlWithState:(id)state previousState:(id)previousState;
+- (void)_cancelAllActiveTransitionsAndAbandonCallbacks:(BOOL)callbacks;
+- (void)_cancelTransitionWithState:(id)state invalidatingPageCurl:(BOOL)curl;
+- (void)_endManualCurlAtLocation:(CGPoint)location withSuggestedVelocity:(double)velocity shouldComplete:(BOOL)complete;
+- (void)_enqueueCurlOfType:(int64_t)type fromLocation:(CGPoint)location inDirection:(int64_t)direction withView:(id)view revealingView:(id)revealingView completion:(id)completion finally:(id)finally;
+- (void)_ensureCurlFilterOnLayer:(id)layer;
+- (void)_pageCurlAnimationDidStop:(id)stop withState:(id)state;
+- (void)_setContentRect:(CGRect)rect;
+- (void)_updateCurlFromState:(id)state withTime:(double)time radius:(double)radius angle:(double)angle addingAnimations:(id)animations;
+- (void)_updateManualCurlToLocation:(CGPoint)location;
+- (void)_updatedInputsFromState:(id)state forLocation:(CGPoint)location time:(double *)time radius:(double *)radius angle:(double *)angle;
 - (void)dealloc;
 @end
 
 @implementation _UIPageCurl
 
-- (_UIPageCurl)initWithSpineLocation:(int64_t)a3 andContentRect:(CGRect)a4 inContentView:(id)a5
+- (_UIPageCurl)initWithSpineLocation:(int64_t)location andContentRect:(CGRect)rect inContentView:(id)view
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v13 = a5;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  viewCopy = view;
   v33.receiver = self;
   v33.super_class = _UIPageCurl;
   v14 = [(_UIPageCurl *)&v33 init];
   if (v14)
   {
-    if (a3 > 0x20 || ((1 << a3) & 0x10001011ELL) == 0)
+    if (location > 0x20 || ((1 << location) & 0x10001011ELL) == 0)
     {
-      v32 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v32 handleFailureInMethod:a2 object:v14 file:@"_UIPageCurl.m" lineNumber:500 description:{@"'%ld' is not a permissible spine location", a3}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v14 file:@"_UIPageCurl.m" lineNumber:500 description:{@"'%ld' is not a permissible spine location", location}];
     }
 
-    v14->_spineLocation = a3;
+    v14->_spineLocation = location;
     v14->_contentRect.origin.x = x;
     v14->_contentRect.origin.y = y;
     v14->_contentRect.size.width = width;
     v14->_contentRect.size.height = height;
-    objc_storeStrong(&v14->_contentView, a5);
+    objc_storeStrong(&v14->_contentView, view);
     v16 = objc_alloc_init(MEMORY[0x1E695DF70]);
     pendingStateQueue = v14->_pendingStateQueue;
     v14->_pendingStateQueue = v16;
@@ -165,14 +165,14 @@ LABEL_2:
   return manualPageCurlState;
 }
 
-- (void)_setContentRect:(CGRect)a3
+- (void)_setContentRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v21 = *MEMORY[0x1E69E9840];
-  if (!CGRectEqualToRect(self->_contentRect, a3))
+  if (!CGRectEqualToRect(self->_contentRect, rect))
   {
     self->_contentRect.origin.x = x;
     self->_contentRect.origin.y = y;
@@ -198,8 +198,8 @@ LABEL_2:
           }
 
           v13 = *(*(&v16 + 1) + 8 * i);
-          v14 = [v13 frontPageView];
-          v15 = [v13 backPageView];
+          frontPageView = [v13 frontPageView];
+          backPageView = [v13 backPageView];
         }
 
         v10 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -210,7 +210,7 @@ LABEL_2:
   }
 }
 
-- (CGRect)_pageViewFrame:(BOOL)a3
+- (CGRect)_pageViewFrame:(BOOL)frame
 {
   x = self->_contentRect.origin.x;
   y = self->_contentRect.origin.y;
@@ -220,7 +220,7 @@ LABEL_2:
   if (spineLocation == 8)
   {
     height = CGRectGetHeight(self->_contentRect) * 0.5;
-    if (!a3)
+    if (!frame)
     {
       y = CGRectGetMidY(self->_contentRect);
     }
@@ -229,7 +229,7 @@ LABEL_2:
   else if (spineLocation == 4)
   {
     width = CGRectGetWidth(self->_contentRect) * 0.5;
-    if (!a3)
+    if (!frame)
     {
       x = CGRectGetMidX(self->_contentRect);
     }
@@ -267,23 +267,23 @@ LABEL_2:
   return v3;
 }
 
-- (id)_newAnimationForState:(id)a3 withKeyPath:(id)a4 duration:(double)a5 fromValue:(id)a6
+- (id)_newAnimationForState:(id)state withKeyPath:(id)path duration:(double)duration fromValue:(id)value
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  stateCopy = state;
+  pathCopy = path;
+  valueCopy = value;
   v12 = objc_alloc_init(MEMORY[0x1E6979318]);
-  [v12 setKeyPath:v10];
-  [v12 setDuration:UIAnimationDragCoefficient() * a5];
+  [v12 setKeyPath:pathCopy];
+  [v12 setDuration:UIAnimationDragCoefficient() * duration];
   [v12 setFillMode:*MEMORY[0x1E69797D8]];
-  if (v11)
+  if (valueCopy)
   {
-    [v12 setFromValue:v11];
+    [v12 setFromValue:valueCopy];
   }
 
-  if (![v10 isEqualToString:@"filters.curl.inputTime"])
+  if (![pathCopy isEqualToString:@"filters.curl.inputTime"])
   {
-    if ([v10 isEqualToString:@"filters.curl.inputRadius"])
+    if ([pathCopy isEqualToString:@"filters.curl.inputRadius"])
     {
       v14 = MEMORY[0x1E69793D0];
       v15 = &kUIPageCurlSmoothControlPoints;
@@ -291,13 +291,13 @@ LABEL_2:
 
     else
     {
-      if (![v10 isEqualToString:@"filters.curl.inputAngle"])
+      if (![pathCopy isEqualToString:@"filters.curl.inputAngle"])
       {
         goto LABEL_13;
       }
 
       v16 = MEMORY[0x1E69793D0];
-      if ([v9 curlType] >= 3)
+      if ([stateCopy curlType] >= 3)
       {
         v15 = &kUIPageCurlEaseInControlPoints;
       }
@@ -319,16 +319,16 @@ LABEL_2:
   v13 = [MEMORY[0x1E69793D0] uiFunctionWithControlPoints:&kUIPageCurlSmoothControlPoints];
   [v12 setTimingFunction:v13];
 
-  [v12 setDelegate:v9];
+  [v12 setDelegate:stateCopy];
 LABEL_13:
 
   return v12;
 }
 
-- (double)_baseAngleOffsetForState:(id)a3
+- (double)_baseAngleOffsetForState:(id)state
 {
-  v5 = a3;
-  v6 = v5;
+  stateCopy = state;
+  v6 = stateCopy;
   spineLocation = self->_spineLocation;
   v8 = 3.14159265;
   if (spineLocation == 1)
@@ -338,7 +338,7 @@ LABEL_13:
 
   if (spineLocation == 4)
   {
-    if (![v5 transitionDirection])
+    if (![stateCopy transitionDirection])
     {
       goto LABEL_19;
     }
@@ -386,8 +386,8 @@ LABEL_10:
     v8 = 1.57079633;
     if (spineLocation != 32 && (spineLocation != 8 || [v6 transitionDirection] != 1))
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v9 handleFailureInMethod:a2 object:self file:@"_UIPageCurl.m" lineNumber:602 description:@"Not implemented yet!"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UIPageCurl.m" lineNumber:602 description:@"Not implemented yet!"];
 
       goto LABEL_18;
     }
@@ -398,42 +398,42 @@ LABEL_19:
   return v8;
 }
 
-- (BOOL)_populateFromValue:(double *)a3 toValue:(double *)a4 fromState:(id)a5 forAnimationWithKeyPath:(id)a6
+- (BOOL)_populateFromValue:(double *)value toValue:(double *)toValue fromState:(id)state forAnimationWithKeyPath:(id)path
 {
-  v11 = a5;
-  v12 = a6;
-  if ([v12 isEqualToString:@"filters.curl.inputTime"])
+  stateCopy = state;
+  pathCopy = path;
+  if ([pathCopy isEqualToString:@"filters.curl.inputTime"])
   {
-    if ([v11 curlType] <= 2)
+    if ([stateCopy curlType] <= 2)
     {
-      if (a3)
+      if (value)
       {
-        *a3 = 0.0;
+        *value = 0.0;
       }
 
-      if (a4)
+      if (toValue)
       {
-        *a4 = 1.0;
+        *toValue = 1.0;
       }
     }
 
     else
     {
-      if (a3)
+      if (value)
       {
-        *a3 = 1.0;
+        *value = 1.0;
       }
 
-      if (a4)
+      if (toValue)
       {
-        *a4 = 0.0;
+        *toValue = 0.0;
       }
     }
 
     goto LABEL_67;
   }
 
-  if ([v12 isEqualToString:@"filters.curl.inputRadius"])
+  if ([pathCopy isEqualToString:@"filters.curl.inputRadius"])
   {
     spineLocation = self->_spineLocation;
     if (spineLocation <= 0x20 && ((1 << spineLocation) & 0x100000104) != 0)
@@ -450,38 +450,38 @@ LABEL_19:
     v18 = self->_spineLocation;
     if (v18 == 8 || v18 == 4)
     {
-      if (a3)
+      if (value)
       {
-        if ([v11 curlType] == 1)
+        if ([stateCopy curlType] == 1)
         {
           v19 = 150.0;
         }
 
         else
         {
-          v21 = [v11 curlType];
+          curlType = [stateCopy curlType];
           v19 = v17 * 0.0203252033;
-          if (v21 == 4)
+          if (curlType == 4)
           {
             v19 = 150.0;
           }
         }
 
-        *a3 = v19;
+        *value = v19;
       }
 
-      if (!a4)
+      if (!toValue)
       {
         goto LABEL_67;
       }
 
-      v22 = [v11 curlType];
+      curlType2 = [stateCopy curlType];
       v23 = 1.0;
-      if (v22 != 1)
+      if (curlType2 != 1)
       {
-        v24 = [v11 curlType];
+        curlType3 = [stateCopy curlType];
         v23 = v17 * 0.00101626016;
-        if (v24 == 4)
+        if (curlType3 == 4)
         {
           v23 = 1.0;
         }
@@ -490,22 +490,22 @@ LABEL_19:
 
     else
     {
-      if (a3)
+      if (value)
       {
-        if ([v11 curlType] == 1)
+        if ([stateCopy curlType] == 1)
         {
           v20 = 0.152439024;
         }
 
         else
         {
-          v20 = dbl_18A679380[[v11 curlType] == 4];
+          v20 = dbl_18A679380[[stateCopy curlType] == 4];
         }
 
-        *a3 = v17 * v20;
+        *value = v17 * v20;
       }
 
-      if (!a4)
+      if (!toValue)
       {
         goto LABEL_67;
       }
@@ -516,7 +516,7 @@ LABEL_19:
     goto LABEL_66;
   }
 
-  if (![v12 isEqualToString:@"filters.curl.inputAngle"])
+  if (![pathCopy isEqualToString:@"filters.curl.inputAngle"])
   {
     goto LABEL_70;
   }
@@ -527,7 +527,7 @@ LABEL_19:
   {
     if (v15 == 4)
     {
-      if (![v11 transitionDirection])
+      if (![stateCopy transitionDirection])
       {
         goto LABEL_54;
       }
@@ -546,7 +546,7 @@ LABEL_24:
 
       if (v15 == 4)
       {
-        if ([v11 transitionDirection] == 1)
+        if ([stateCopy transitionDirection] == 1)
         {
           goto LABEL_24;
         }
@@ -562,7 +562,7 @@ LABEL_24:
 
       if (v15 == 8)
       {
-        if (![v11 transitionDirection])
+        if (![stateCopy transitionDirection])
         {
           goto LABEL_54;
         }
@@ -571,13 +571,13 @@ LABEL_24:
       }
 
       v16 = 1.57079633;
-      if (v15 == 32 || v15 == 8 && [v11 transitionDirection] == 1)
+      if (v15 == 32 || v15 == 8 && [stateCopy transitionDirection] == 1)
       {
         goto LABEL_54;
       }
 
-      v31 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v31 handleFailureInMethod:a2 object:self file:@"_UIPageCurl.m" lineNumber:640 description:@"Not implemented yet!"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UIPageCurl.m" lineNumber:640 description:@"Not implemented yet!"];
 
 LABEL_70:
       v29 = 0;
@@ -586,7 +586,7 @@ LABEL_70:
   }
 
 LABEL_54:
-  if (a3)
+  if (value)
   {
     v25 = 0.785398163;
     if (self->_spineLocation != 3)
@@ -595,7 +595,7 @@ LABEL_54:
     }
 
     v26 = v16 + v25;
-    if ([v11 curlType] == 1 || objc_msgSend(v11, "curlType") == 4)
+    if ([stateCopy curlType] == 1 || objc_msgSend(stateCopy, "curlType") == 4)
     {
       v27 = dbl_18A679370[v16 > 1.57079633];
     }
@@ -605,10 +605,10 @@ LABEL_54:
       v27 = -0.174532925;
     }
 
-    *a3 = v26 + v27;
+    *value = v26 + v27;
   }
 
-  if (!a4)
+  if (!toValue)
   {
     goto LABEL_67;
   }
@@ -621,7 +621,7 @@ LABEL_54:
 
   v23 = v16 + v28;
 LABEL_66:
-  *a4 = v23;
+  *toValue = v23;
 LABEL_67:
   v29 = 1;
 LABEL_68:
@@ -629,37 +629,37 @@ LABEL_68:
   return v29;
 }
 
-- (void)_ensureCurlFilterOnLayer:(id)a3
+- (void)_ensureCurlFilterOnLayer:(id)layer
 {
-  v6 = a3;
-  if (([v6 uiHasFilterWithName:@"curl"] & 1) == 0)
+  layerCopy = layer;
+  if (([layerCopy uiHasFilterWithName:@"curl"] & 1) == 0)
   {
-    v4 = [(_UIPageCurl *)self _newCurlFilter];
-    v5 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{v4, 0}];
-    [v6 setFilters:v5];
+    _newCurlFilter = [(_UIPageCurl *)self _newCurlFilter];
+    v5 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{_newCurlFilter, 0}];
+    [layerCopy setFilters:v5];
   }
 }
 
-- (double)_inputTimeForProgress:(double)a3 distanceToTravel:(double)a4 radius:(double *)a5 minRadius:(double)a6 angle:(double)a7 dAngle:(double)a8 touchLocation:(CGPoint)a9 state:(id)a10
+- (double)_inputTimeForProgress:(double)progress distanceToTravel:(double)travel radius:(double *)radius minRadius:(double)minRadius angle:(double)angle dAngle:(double)dAngle touchLocation:(CGPoint)location state:(id)self0
 {
-  v12 = a10;
-  v110 = *a5;
-  v13 = [v12 curlType];
+  stateCopy = state;
+  v110 = *radius;
+  curlType = [stateCopy curlType];
   spineLocation = self->_spineLocation;
-  v15 = [v12 transitionDirection];
+  transitionDirection = [stateCopy transitionDirection];
   v16 = -2.0;
-  if (v13 < 3)
+  if (curlType < 3)
   {
     v16 = 0.0;
   }
 
   if (spineLocation)
   {
-    if (!v15)
+    if (!transitionDirection)
     {
 LABEL_8:
       v16 = 0.0;
-      if (v13 < 3)
+      if (curlType < 3)
       {
         v16 = -2.0;
       }
@@ -676,7 +676,7 @@ LABEL_8:
       LOBYTE(v17) = 1;
     }
 
-    if (!v15 && (v17 & 1) != 0)
+    if (!transitionDirection && (v17 & 1) != 0)
     {
       goto LABEL_8;
     }
@@ -685,7 +685,7 @@ LABEL_8:
   if (spineLocation <= 0x20 && ((1 << spineLocation) & 0x100000104) != 0)
   {
     v16 = -3.0;
-    if (v13 < 3 != (v15 == 0))
+    if (curlType < 3 != (transitionDirection == 0))
     {
       v16 = -1.0;
     }
@@ -770,14 +770,14 @@ LABEL_18:
     v26 = v113.ty;
   }
 
-  if (a8 == 0.0)
+  if (dAngle == 0.0)
   {
     v35 = 0.0;
   }
 
   else
   {
-    v35 = v19 * 1.57079633 + a7;
+    v35 = v19 * 1.57079633 + angle;
     if (v35 < 0.0)
     {
       v35 = -v35;
@@ -785,9 +785,9 @@ LABEL_18:
   }
 
   v108 = v35;
-  v95 = a9.y * *&v24 + a9.x * *&v25;
+  v95 = location.y * *&v24 + location.x * *&v25;
   contentRect = self->_contentRect;
-  v36 = v26 + a9.y * v34 + a9.x * v33;
+  v36 = v26 + location.y * v34 + location.x * v33;
   *&v113.a = v25;
   v113.b = v33;
   *&v113.c = v24;
@@ -800,7 +800,7 @@ LABEL_18:
   v38 = v118.origin.y;
   v39 = v118.size.width;
   v40 = v118.size.height;
-  [v12 referenceLocation];
+  [stateCopy referenceLocation];
   v105 = v39;
   v96 = v37;
   v99 = v38;
@@ -819,29 +819,29 @@ LABEL_18:
   }
 
   v103 = v102 + v95;
-  if (a8 == 0.0)
+  if (dAngle == 0.0)
   {
-    v53 = a4 * 0.5;
-    v52 = a3 * a4 - a4 * 0.5;
+    v53 = travel * 0.5;
+    v52 = progress * travel - travel * 0.5;
     v55 = -v52;
     if (v52 >= 0.0)
     {
-      v55 = a3 * a4 - a4 * 0.5;
+      v55 = progress * travel - travel * 0.5;
     }
 
     v56 = (v53 - v55 + v110 * -3.14159265) * 0.5;
     if (v52 >= 0.0)
     {
-      v57 = a4 * 0.5;
+      v57 = travel * 0.5;
     }
 
     else
     {
-      v57 = a3 * a4;
+      v57 = progress * travel;
     }
 
     v51 = v57 - v56;
-    v54 = a3 * a4 + a3 * a4;
+    v54 = progress * travel + progress * travel;
   }
 
   else
@@ -898,7 +898,7 @@ LABEL_18:
   if (v68 > v69)
   {
     v51 = v64 * v67.__cosval;
-    if (a8 == 0.0)
+    if (dAngle == 0.0)
     {
       v85 = v52 + v53 + v51 + v51 - v54;
       if (v52 >= 0.0)
@@ -906,7 +906,7 @@ LABEL_18:
         v85 = v51 + v51 - v53 - v52;
       }
 
-      v84 = v85 / 3.14159265;
+      minRadiusCopy = v85 / 3.14159265;
     }
 
     else
@@ -925,16 +925,16 @@ LABEL_18:
       v81 = v108 * 0.5;
       v82 = sinf(v81);
       v83 = powf(v82, 6.0) * 6.28318531 * ((1.0 / v73.__sinval) * (1.0 / v73.__sinval)) * ((1.0 / v73.__cosval) * (1.0 / v73.__cosval)) + v80;
-      v84 = v78 / (v83 + v83);
+      minRadiusCopy = v78 / (v83 + v83);
     }
 
-    if (v84 < a6)
+    if (minRadiusCopy < minRadius)
     {
-      v84 = a6;
+      minRadiusCopy = minRadius;
     }
 
-    v110 = v84;
-    *a5 = v84;
+    v110 = minRadiusCopy;
+    *radius = minRadiusCopy;
   }
 
   pageDiagonalLength = self->_pageDiagonalLength;
@@ -1018,11 +1018,11 @@ LABEL_15:
   return CGRectGetWidth(*&v12);
 }
 
-- (void)_updatedInputsFromState:(id)a3 forLocation:(CGPoint)a4 time:(double *)a5 radius:(double *)a6 angle:(double *)a7
+- (void)_updatedInputsFromState:(id)state forLocation:(CGPoint)location time:(double *)time radius:(double *)radius angle:(double *)angle
 {
-  y = a4.y;
-  x = a4.x;
-  v13 = a3;
+  y = location.y;
+  x = location.x;
+  stateCopy = state;
   v14 = self->_contentRect.origin.x;
   v15 = self->_contentRect.origin.y;
   width = self->_contentRect.size.width;
@@ -1077,12 +1077,12 @@ LABEL_15:
     v23 = MinY;
   }
 
-  [v13 referenceLocation];
+  [stateCopy referenceLocation];
   v25 = v24;
   v27 = v26;
   spineLocation = self->_spineLocation;
-  v29 = [v13 transitionDirection];
-  v30 = v29;
+  transitionDirection = [stateCopy transitionDirection];
+  v30 = transitionDirection;
   v32 = self->_contentRect.origin.x;
   v31 = self->_contentRect.origin.y;
   v34 = self->_contentRect.size.width;
@@ -1105,7 +1105,7 @@ LABEL_15:
       v36 = self->_contentRect.origin.y;
       v37 = self->_contentRect.size.width;
       v38 = self->_contentRect.size.height;
-      if (v29)
+      if (transitionDirection)
       {
         v39 = CGRectGetMaxX(*&v35);
       }
@@ -1216,9 +1216,9 @@ LABEL_38:
   v54 = 0.0;
   v55 = 1.0;
   v56 = fmin(fmax(v53, 0.0), 1.0);
-  if ([v13 curlType] != 1)
+  if ([stateCopy curlType] != 1)
   {
-    if ([v13 curlType] == 4)
+    if ([stateCopy curlType] == 4)
     {
       v54 = 0.0;
     }
@@ -1230,7 +1230,7 @@ LABEL_38:
   }
 
   v57 = 1.0 - v56;
-  if ([v13 curlType] == 1 || objc_msgSend(v13, "curlType") == 4)
+  if ([stateCopy curlType] == 1 || objc_msgSend(stateCopy, "curlType") == 4)
   {
     v58 = self->_spineLocation;
     goto LABEL_45;
@@ -1253,7 +1253,7 @@ LABEL_45:
     if (v58 != 4 && (v58 & 0x11) == 0)
     {
       v102 = v55;
-      if (v58 == 2 || v58 == 8 && ![v13 transitionDirection])
+      if (v58 == 2 || v58 == 8 && ![stateCopy transitionDirection])
       {
         v71 = CGRectGetMaxY(self->_contentRect) - v50 * v54;
         if (v23 <= v71)
@@ -1266,9 +1266,9 @@ LABEL_45:
           v72 = v71;
         }
 
-        [v13 referenceLocation];
+        [stateCopy referenceLocation];
         v74 = v73 - v20;
-        [v13 referenceLocation];
+        [stateCopy referenceLocation];
         v76 = atan2(v74, v72 - v75) + 1.57079633;
         if (v76 >= 0.0)
         {
@@ -1294,9 +1294,9 @@ LABEL_45:
           v60 = v59;
         }
 
-        [v13 referenceLocation];
+        [stateCopy referenceLocation];
         v62 = v20 - v61;
-        [v13 referenceLocation];
+        [stateCopy referenceLocation];
         v64 = atan2(v62, v63 - v60) + 4.71238898;
         if (v64 + -6.28318531 <= 0.0)
         {
@@ -1323,7 +1323,7 @@ LABEL_45:
     }
   }
 
-  if (![v13 transitionDirection])
+  if (![stateCopy transitionDirection])
   {
 LABEL_63:
     v104 = v55;
@@ -1338,9 +1338,9 @@ LABEL_63:
       v67 = v66;
     }
 
-    [v13 referenceLocation];
+    [stateCopy referenceLocation];
     v69 = v68 - v23;
-    [v13 referenceLocation];
+    [stateCopy referenceLocation];
     v65 = atan2(v69, v70 - v67) + 3.14159265;
     goto LABEL_77;
   }
@@ -1364,12 +1364,12 @@ LABEL_62:
     v78 = v77;
   }
 
-  [v13 referenceLocation];
+  [stateCopy referenceLocation];
   v80 = v23 - v79;
-  [v13 referenceLocation];
+  [stateCopy referenceLocation];
   v65 = atan2(v80, v78 - v81);
 LABEL_77:
-  [(_UIPageCurl *)self _baseAngleOffsetForState:v13];
+  [(_UIPageCurl *)self _baseAngleOffsetForState:stateCopy];
   v83 = v82;
   manualPageCurlMaxDAngle = self->_manualPageCurlMaxDAngle;
   v85 = -manualPageCurlMaxDAngle;
@@ -1390,8 +1390,8 @@ LABEL_77:
 
   v109 = 0.0;
   v110 = 0.0;
-  [(_UIPageCurl *)self _fromValue:&v110 toValue:&v109 fromState:v13 forAnimationWithKeyPath:@"filters.curl.inputRadius"];
-  [v13 curlType];
+  [(_UIPageCurl *)self _fromValue:&v110 toValue:&v109 fromState:stateCopy forAnimationWithKeyPath:@"filters.curl.inputRadius"];
+  [stateCopy curlType];
   v87 = self->_spineLocation;
   v88 = v50 * 0.152439024;
   v89 = v87 == 4 || v87 == 8;
@@ -1418,7 +1418,7 @@ LABEL_77:
     v92 = v110 + v57 / v91 * (v88 - v110);
   }
 
-  if ([v13 curlType] == 1 || objc_msgSend(v13, "curlType") == 4)
+  if ([stateCopy curlType] == 1 || objc_msgSend(stateCopy, "curlType") == 4)
   {
     if (v109 <= v110)
     {
@@ -1487,8 +1487,8 @@ LABEL_77:
   }
 
   v108 = v100;
-  [_UIPageCurl _inputTimeForProgress:"_inputTimeForProgress:distanceToTravel:radius:minRadius:angle:dAngle:touchLocation:state:" distanceToTravel:&v108 radius:v13 minRadius:v57 angle:v50 dAngle:? touchLocation:? state:?];
-  if (a5)
+  [_UIPageCurl _inputTimeForProgress:"_inputTimeForProgress:distanceToTravel:radius:minRadius:angle:dAngle:touchLocation:state:" distanceToTravel:&v108 radius:stateCopy minRadius:v57 angle:v50 dAngle:? touchLocation:? state:?];
+  if (time)
   {
     if (v54 >= v101)
     {
@@ -1500,35 +1500,35 @@ LABEL_77:
       v101 = v103;
     }
 
-    *a5 = v101;
+    *time = v101;
   }
 
-  if (a6)
+  if (radius)
   {
-    *a6 = v108;
+    *radius = v108;
   }
 
-  if (a7)
+  if (angle)
   {
-    *a7 = v98;
+    *angle = v98;
   }
 }
 
-- (void)_updateCurlFromState:(id)a3 withTime:(double)a4 radius:(double)a5 angle:(double)a6 addingAnimations:(id)a7
+- (void)_updateCurlFromState:(id)state withTime:(double)time radius:(double)radius angle:(double)angle addingAnimations:(id)animations
 {
   v56 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a7;
+  stateCopy = state;
+  animationsCopy = animations;
   v14 = objc_alloc(MEMORY[0x1E695DEC8]);
-  v15 = [v12 frontPageView];
-  v16 = [v15 layer];
-  v17 = [v12 backPageView];
-  v18 = [v17 layer];
-  v19 = [v14 initWithObjects:{v16, v18, 0}];
+  frontPageView = [stateCopy frontPageView];
+  layer = [frontPageView layer];
+  backPageView = [stateCopy backPageView];
+  layer2 = [backPageView layer];
+  v19 = [v14 initWithObjects:{layer, layer2, 0}];
 
-  v38 = v13;
-  v20 = [v13 count];
-  v37 = [(_UIPageCurl *)self _animationKeyPaths];
+  v38 = animationsCopy;
+  v20 = [animationsCopy count];
+  _animationKeyPaths = [(_UIPageCurl *)self _animationKeyPaths];
   [MEMORY[0x1E6979518] activate];
   v52 = 0u;
   v53 = 0u;
@@ -1538,10 +1538,10 @@ LABEL_77:
   v42 = [obj countByEnumeratingWithState:&v50 objects:v55 count:16];
   if (v42)
   {
-    v21 = v13;
+    v21 = animationsCopy;
     if (!v20)
     {
-      v21 = v37;
+      v21 = _animationKeyPaths;
     }
 
     v40 = v21;
@@ -1581,49 +1581,49 @@ LABEL_77:
               v28 = *(*(&v46 + 1) + 8 * i);
               if (v20)
               {
-                v29 = [*(*(&v46 + 1) + 8 * i) keyPath];
+                keyPath = [*(*(&v46 + 1) + 8 * i) keyPath];
               }
 
               else
               {
-                v29 = v28;
+                keyPath = v28;
               }
 
-              v30 = v29;
-              v31 = _UIPageCurlFilterPropertyNameForAnimationKeyPath(v29);
+              v30 = keyPath;
+              v31 = _UIPageCurlFilterPropertyNameForAnimationKeyPath(keyPath);
               v32 = [v30 isEqualToString:@"filters.curl.inputTime"];
-              v33 = a4;
+              angleCopy = time;
               if ((v32 & 1) == 0)
               {
-                if ([v30 isEqualToString:{@"filters.curl.inputRadius", a4}])
+                if ([v30 isEqualToString:{@"filters.curl.inputRadius", time}])
                 {
-                  v33 = a5;
+                  angleCopy = radius;
                 }
 
                 else
                 {
-                  v33 = a6;
+                  angleCopy = angle;
                 }
               }
 
-              *&v33 = v33;
-              v34 = [MEMORY[0x1E696AD98] numberWithFloat:v33];
+              *&angleCopy = angleCopy;
+              v34 = [MEMORY[0x1E696AD98] numberWithFloat:angleCopy];
               if (v20)
               {
                 v35 = v28;
-                if ([v12 curlState] == 1 || objc_msgSend(v12, "curlState") == 5)
+                if ([stateCopy curlState] == 1 || objc_msgSend(stateCopy, "curlState") == 5)
                 {
                   [v35 setToValue:v34];
                 }
 
                 [v23 addAnimation:v35 forKey:v31];
-                if ([v12 curlState] == 1 || objc_msgSend(v12, "curlState") == 3 || objc_msgSend(v12, "curlState") == 5)
+                if ([stateCopy curlState] == 1 || objc_msgSend(stateCopy, "curlState") == 3 || objc_msgSend(stateCopy, "curlState") == 5)
                 {
-                  v36 = [v35 delegate];
+                  delegate = [v35 delegate];
 
-                  if (v36 == v12)
+                  if (delegate == stateCopy)
                   {
-                    [v12 incrementCompletionCount];
+                    [stateCopy incrementCompletionCount];
                   }
                 }
               }
@@ -1648,10 +1648,10 @@ LABEL_77:
   }
 }
 
-- (CGPoint)_referenceLocationForInitialLocation:(CGPoint)a3 direction:(int64_t)a4
+- (CGPoint)_referenceLocationForInitialLocation:(CGPoint)location direction:(int64_t)direction
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   spineLocation = self->_spineLocation;
   if (spineLocation > 2)
   {
@@ -1660,7 +1660,7 @@ LABEL_77:
       goto LABEL_29;
     }
 
-    if (a4)
+    if (direction)
     {
       v10 = 0;
     }
@@ -1673,13 +1673,13 @@ LABEL_77:
     v11 = v10;
     if (spineLocation != 3 && v11 == 0)
     {
-      v14 = a4 == 1 && spineLocation == 4;
+      v14 = direction == 1 && spineLocation == 4;
       if (spineLocation != 16 && !v14)
       {
-        v15 = [MEMORY[0x1E696AAA8] currentHandler];
-        v16 = v15;
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        v16 = currentHandler;
         v17 = a2;
-        v18 = self;
+        selfCopy2 = self;
         v19 = 1022;
         goto LABEL_45;
       }
@@ -1703,25 +1703,25 @@ LABEL_33:
   if (spineLocation != 2)
   {
 LABEL_29:
-    if (!a4 && spineLocation == 8)
+    if (!direction && spineLocation == 8)
     {
       goto LABEL_31;
     }
 
-    v23 = a4 == 1 && spineLocation == 8;
+    v23 = direction == 1 && spineLocation == 8;
     if (spineLocation == 32 || v23)
     {
       MinY = CGRectGetMinY(self->_contentRect);
       goto LABEL_32;
     }
 
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    v16 = v15;
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    v16 = currentHandler;
     v17 = a2;
-    v18 = self;
+    selfCopy2 = self;
     v19 = 1030;
 LABEL_45:
-    [v15 handleFailureInMethod:v17 object:v18 file:@"_UIPageCurl.m" lineNumber:v19 description:@"Not implemented yet!"];
+    [currentHandler handleFailureInMethod:v17 object:selfCopy2 file:@"_UIPageCurl.m" lineNumber:v19 description:@"Not implemented yet!"];
 
     goto LABEL_46;
   }
@@ -1738,13 +1738,13 @@ LABEL_46:
   return result;
 }
 
-- (int64_t)_validatedPageCurlTypeForPageCurlType:(int64_t)a3 inDirection:(int64_t)a4
+- (int64_t)_validatedPageCurlTypeForPageCurlType:(int64_t)type inDirection:(int64_t)direction
 {
-  if (a4)
+  if (direction)
   {
-    if (a4 != 1 || (self->_spineLocation - 1) >= 3)
+    if (direction != 1 || (self->_spineLocation - 1) >= 3)
     {
-      return a3;
+      return type;
     }
 
     goto LABEL_10;
@@ -1754,7 +1754,7 @@ LABEL_46:
   if (spineLocation == 32 || spineLocation == 16)
   {
 LABEL_10:
-    if (a3 == 4 || a3 == 1)
+    if (type == 4 || type == 1)
     {
       return 4;
     }
@@ -1765,21 +1765,21 @@ LABEL_10:
     }
   }
 
-  return a3;
+  return type;
 }
 
-- (BOOL)_isPreviousCurlCompatibleWithCurlOfType:(int64_t)a3 inDirection:(int64_t)a4
+- (BOOL)_isPreviousCurlCompatibleWithCurlOfType:(int64_t)type inDirection:(int64_t)direction
 {
-  v7 = [(NSMutableArray *)self->_activeStateQueue lastObject];
-  v8 = v7;
+  lastObject = [(NSMutableArray *)self->_activeStateQueue lastObject];
+  v8 = lastObject;
   if (self->_manualPageCurlState)
   {
     v9 = 0;
   }
 
-  else if (v7)
+  else if (lastObject)
   {
-    v9 = [v7 isCompatibleWithCurlOfType:-[_UIPageCurl _validatedPageCurlTypeForPageCurlType:inDirection:](self inDirection:{"_validatedPageCurlTypeForPageCurlType:inDirection:", a3, a4), a4}];
+    v9 = [lastObject isCompatibleWithCurlOfType:-[_UIPageCurl _validatedPageCurlTypeForPageCurlType:inDirection:](self inDirection:{"_validatedPageCurlTypeForPageCurlType:inDirection:", type, direction), direction}];
   }
 
   else
@@ -1790,22 +1790,22 @@ LABEL_10:
   return v9;
 }
 
-- (void)_enqueueCurlOfType:(int64_t)a3 fromLocation:(CGPoint)a4 inDirection:(int64_t)a5 withView:(id)a6 revealingView:(id)a7 completion:(id)a8 finally:(id)a9
+- (void)_enqueueCurlOfType:(int64_t)type fromLocation:(CGPoint)location inDirection:(int64_t)direction withView:(id)view revealingView:(id)revealingView completion:(id)completion finally:(id)finally
 {
-  y = a4.y;
-  x = a4.x;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  if (v18)
+  y = location.y;
+  x = location.x;
+  viewCopy = view;
+  revealingViewCopy = revealingView;
+  completionCopy = completion;
+  finallyCopy = finally;
+  if (viewCopy)
   {
-    v22 = [(_UIPageCurl *)self _validatedPageCurlTypeForPageCurlType:a3 inDirection:a5];
+    v22 = [(_UIPageCurl *)self _validatedPageCurlTypeForPageCurlType:type inDirection:direction];
     v23 = v22;
     if (v22 == 4 || v22 == 1)
     {
-      v24 = [[_UIPageCurlState alloc] initWithPageCurl:self andCurlType:v22 fromLocation:a5 withReferenceLocation:v18 inDirection:v19 withView:v20 revealingView:x completion:y finally:x, y, v21];
-      if (!v24)
+      finallyCopy = [[_UIPageCurlState alloc] initWithPageCurl:self andCurlType:v22 fromLocation:direction withReferenceLocation:viewCopy inDirection:revealingViewCopy withView:completionCopy revealingView:x completion:y finally:x, y, finallyCopy];
+      if (!finallyCopy)
       {
         goto LABEL_15;
       }
@@ -1823,12 +1823,12 @@ LABEL_10:
         goto LABEL_15;
       }
 
-      [(_UIPageCurl *)self _referenceLocationForInitialLocation:a5 direction:x, y];
-      v24 = [[_UIPageCurlState alloc] initWithPageCurl:self andCurlType:v23 fromLocation:a5 withReferenceLocation:v18 inDirection:v19 withView:v20 revealingView:x completion:y finally:v35, v36, v21];
+      [(_UIPageCurl *)self _referenceLocationForInitialLocation:direction direction:x, y];
+      finallyCopy = [[_UIPageCurlState alloc] initWithPageCurl:self andCurlType:v23 fromLocation:direction withReferenceLocation:viewCopy inDirection:revealingViewCopy withView:completionCopy revealingView:x completion:y finally:v35, v36, finallyCopy];
       manualPageCurlState = self->_manualPageCurlState;
-      self->_manualPageCurlState = v24;
+      self->_manualPageCurlState = finallyCopy;
 
-      if (!v24)
+      if (!finallyCopy)
       {
         goto LABEL_15;
       }
@@ -1836,13 +1836,13 @@ LABEL_10:
 
     if ([(NSMutableArray *)self->_activeStateQueue count]|| [(NSMutableArray *)self->_pendingStateQueue count])
     {
-      if (!-[NSMutableArray count](self->_pendingStateQueue, "count") && -[NSMutableArray count](self->_activeStateQueue, "count") && (-[NSMutableArray lastObject](self->_activeStateQueue, "lastObject"), v25 = objc_claimAutoreleasedReturnValue(), v26 = [v25 isCompatibleWithCurlOfType:-[_UIPageCurlState curlType](v24 inDirection:{"curlType"), -[_UITransitionState effectiveTransitionDirection](v24, "effectiveTransitionDirection")}], v25, v26))
+      if (!-[NSMutableArray count](self->_pendingStateQueue, "count") && -[NSMutableArray count](self->_activeStateQueue, "count") && (-[NSMutableArray lastObject](self->_activeStateQueue, "lastObject"), v25 = objc_claimAutoreleasedReturnValue(), v26 = [v25 isCompatibleWithCurlOfType:-[_UIPageCurlState curlType](finallyCopy inDirection:{"curlType"), -[_UITransitionState effectiveTransitionDirection](finallyCopy, "effectiveTransitionDirection")}], v25, v26))
       {
-        v27 = [(NSMutableArray *)self->_activeStateQueue lastObject];
-        [(NSMutableArray *)self->_activeStateQueue _ui_enqueue:v24];
+        lastObject = [(NSMutableArray *)self->_activeStateQueue lastObject];
+        [(NSMutableArray *)self->_activeStateQueue _ui_enqueue:finallyCopy];
         delayBetweenSuccessiveAnimations = self->_delayBetweenSuccessiveAnimations;
-        v29 = [v27 beginDate];
-        [v29 timeIntervalSinceNow];
+        beginDate = [lastObject beginDate];
+        [beginDate timeIntervalSinceNow];
         v31 = delayBetweenSuccessiveAnimations + v30;
 
         v32 = dispatch_time(0, (fmax(v31, 0.0) * 1000000000.0));
@@ -1851,46 +1851,46 @@ LABEL_10:
         block[2] = __101___UIPageCurl__enqueueCurlOfType_fromLocation_inDirection_withView_revealingView_completion_finally___block_invoke;
         block[3] = &unk_1E70F6228;
         block[4] = self;
-        v40 = v24;
-        v41 = v27;
-        v33 = v27;
-        v34 = v24;
+        v40 = finallyCopy;
+        v41 = lastObject;
+        v33 = lastObject;
+        v34 = finallyCopy;
         dispatch_after(v32, MEMORY[0x1E69E96A0], block);
       }
 
       else
       {
-        if ([(_UIPageCurlState *)v24 curlType]!= 1 && [(_UIPageCurlState *)v24 curlType]!= 4)
+        if ([(_UIPageCurlState *)finallyCopy curlType]!= 1 && [(_UIPageCurlState *)finallyCopy curlType]!= 4)
         {
-          v38 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v38 handleFailureInMethod:a2 object:self file:@"_UIPageCurl.m" lineNumber:1082 description:@"Attempting to enqueue a manual curl as a pending state"];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"_UIPageCurl.m" lineNumber:1082 description:@"Attempting to enqueue a manual curl as a pending state"];
         }
 
-        [(NSMutableArray *)self->_pendingStateQueue _ui_enqueue:v24];
+        [(NSMutableArray *)self->_pendingStateQueue _ui_enqueue:finallyCopy];
       }
     }
 
     else
     {
-      [(NSMutableArray *)self->_activeStateQueue _ui_enqueue:v24];
-      [(_UIPageCurl *)self _beginCurlWithState:v24 previousState:0];
+      [(NSMutableArray *)self->_activeStateQueue _ui_enqueue:finallyCopy];
+      [(_UIPageCurl *)self _beginCurlWithState:finallyCopy previousState:0];
     }
   }
 
 LABEL_15:
 }
 
-- (void)_cancelTransitionWithState:(id)a3 invalidatingPageCurl:(BOOL)a4
+- (void)_cancelTransitionWithState:(id)state invalidatingPageCurl:(BOOL)curl
 {
-  v4 = a4;
+  curlCopy = curl;
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  stateCopy = state;
+  v7 = stateCopy;
+  if (stateCopy)
   {
-    if (v4)
+    if (curlCopy)
     {
-      [v6 invalidatePageCurl];
+      [stateCopy invalidatePageCurl];
     }
 
     if ([v7 curlType] == 1)
@@ -1910,12 +1910,12 @@ LABEL_15:
 
     [v7 setCurlState:v8 willComplete:0];
     v9 = objc_alloc(MEMORY[0x1E695DEC8]);
-    v10 = [v7 frontPageView];
-    v11 = [v10 layer];
+    frontPageView = [v7 frontPageView];
+    layer = [frontPageView layer];
     v26 = v7;
-    v12 = [v7 backPageView];
-    v13 = [v12 layer];
-    v14 = [v9 initWithObjects:{v11, v13, 0}];
+    backPageView = [v7 backPageView];
+    layer2 = [backPageView layer];
+    v14 = [v9 initWithObjects:{layer, layer2, 0}];
 
     v34 = 0u;
     v35 = 0u;
@@ -1941,8 +1941,8 @@ LABEL_15:
           v29 = 0u;
           v30 = 0u;
           v31 = 0u;
-          v20 = [(_UIPageCurl *)self _animationKeyPaths];
-          v21 = [v20 countByEnumeratingWithState:&v28 objects:v36 count:16];
+          _animationKeyPaths = [(_UIPageCurl *)self _animationKeyPaths];
+          v21 = [_animationKeyPaths countByEnumeratingWithState:&v28 objects:v36 count:16];
           if (v21)
           {
             v22 = v21;
@@ -1953,14 +1953,14 @@ LABEL_15:
               {
                 if (*v29 != v23)
                 {
-                  objc_enumerationMutation(v20);
+                  objc_enumerationMutation(_animationKeyPaths);
                 }
 
                 v25 = _UIPageCurlFilterPropertyNameForAnimationKeyPath(*(*(&v28 + 1) + 8 * j));
                 [v19 removeAnimationForKey:v25];
               }
 
-              v22 = [v20 countByEnumeratingWithState:&v28 objects:v36 count:16];
+              v22 = [_animationKeyPaths countByEnumeratingWithState:&v28 objects:v36 count:16];
             }
 
             while (v22);
@@ -1977,9 +1977,9 @@ LABEL_15:
   }
 }
 
-- (void)_cancelAllActiveTransitionsAndAbandonCallbacks:(BOOL)a3
+- (void)_cancelAllActiveTransitionsAndAbandonCallbacks:(BOOL)callbacks
 {
-  v3 = a3;
+  callbacksCopy = callbacks;
   v16 = *MEMORY[0x1E69E9840];
   [(_UIPageCurl *)self _abortManualCurlAtLocation:*MEMORY[0x1E695EFF8] withSuggestedVelocity:*(MEMORY[0x1E695EFF8] + 8), 0.0];
   v13 = 0u;
@@ -2002,8 +2002,8 @@ LABEL_15:
         }
 
         v10 = *(*(&v11 + 1) + 8 * i);
-        [(_UIPageCurl *)self _cancelTransitionWithState:v10 invalidatingPageCurl:v3, v11];
-        if (v3)
+        [(_UIPageCurl *)self _cancelTransitionWithState:v10 invalidatingPageCurl:callbacksCopy, v11];
+        if (callbacksCopy)
         {
           [v10 finally];
         }
@@ -2018,68 +2018,68 @@ LABEL_15:
   [(NSMutableArray *)self->_pendingStateQueue removeAllObjects];
 }
 
-- (void)_beginCurlWithState:(id)a3 previousState:(id)a4
+- (void)_beginCurlWithState:(id)state previousState:(id)previousState
 {
   v48 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  stateCopy = state;
+  previousStateCopy = previousState;
+  if (stateCopy)
   {
-    v8 = [v6 frontPageView];
-    v9 = [v6 backPageView];
-    if ([v7 isActive])
+    frontPageView = [stateCopy frontPageView];
+    backPageView = [stateCopy backPageView];
+    if ([previousStateCopy isActive])
     {
-      v10 = [v7 frontPageView];
-      v11 = [v6 curlType];
+      frontPageView2 = [previousStateCopy frontPageView];
+      curlType = [stateCopy curlType];
       contentView = self->_contentView;
-      if (v11 > 2)
+      if (curlType > 2)
       {
-        [(UIView *)contentView insertSubview:v8 aboveSubview:v10];
+        [(UIView *)contentView insertSubview:frontPageView aboveSubview:frontPageView2];
       }
 
       else
       {
-        [(UIView *)contentView insertSubview:v8 belowSubview:v10];
+        [(UIView *)contentView insertSubview:frontPageView belowSubview:frontPageView2];
       }
 
-      [v6 addFrontPageContent];
-      if (v9)
+      [stateCopy addFrontPageContent];
+      if (backPageView)
       {
-        v13 = [v7 backPageView];
-        v14 = [v6 curlType];
+        backPageView2 = [previousStateCopy backPageView];
+        curlType2 = [stateCopy curlType];
         v15 = self->_contentView;
-        if (v14 > 2)
+        if (curlType2 > 2)
         {
-          [(UIView *)v15 insertSubview:v9 belowSubview:v13];
+          [(UIView *)v15 insertSubview:backPageView belowSubview:backPageView2];
         }
 
         else
         {
-          [(UIView *)v15 insertSubview:v9 aboveSubview:v13];
+          [(UIView *)v15 insertSubview:backPageView aboveSubview:backPageView2];
         }
 
-        [v6 addBackPageContent];
+        [stateCopy addBackPageContent];
       }
     }
 
     else
     {
-      [(UIView *)self->_contentView addSubview:v8];
-      [v6 addFrontPageContent];
-      if (v9)
+      [(UIView *)self->_contentView addSubview:frontPageView];
+      [stateCopy addFrontPageContent];
+      if (backPageView)
       {
-        [(UIView *)self->_contentView insertSubview:v9 aboveSubview:v8];
-        [v6 addBackPageContent];
+        [(UIView *)self->_contentView insertSubview:backPageView aboveSubview:frontPageView];
+        [stateCopy addBackPageContent];
       }
     }
 
-    if ([v6 curlState] == 2)
+    if ([stateCopy curlState] == 2)
     {
-      [v6 setCurlState:3 willComplete:0];
+      [stateCopy setCurlState:3 willComplete:0];
     }
 
-    v38 = v7;
-    if ([v6 curlState] == 3)
+    v38 = previousStateCopy;
+    if ([stateCopy curlState] == 3)
     {
       v16 = 0.25;
     }
@@ -2089,9 +2089,9 @@ LABEL_15:
       v16 = 0.4;
     }
 
-    if ([v6 curlType] != 1 && objc_msgSend(v6, "curlType") != 4)
+    if ([stateCopy curlType] != 1 && objc_msgSend(stateCopy, "curlType") != 4)
     {
-      [v8 frame];
+      [frontPageView frame];
       v19 = v17;
       v20 = v18;
       spineLocation = self->_spineLocation;
@@ -2111,9 +2111,9 @@ LABEL_15:
       self->_pageDiagonalLength = hypot(v19, v20);
     }
 
-    v37 = v8;
-    v24 = [(_UIPageCurl *)self _animationKeyPaths];
-    v25 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v24, "count")}];
+    v37 = frontPageView;
+    _animationKeyPaths = [(_UIPageCurl *)self _animationKeyPaths];
+    v25 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(_animationKeyPaths, "count")}];
     v45 = 0.0;
     v46 = 0.0;
     v44 = 0.0;
@@ -2121,7 +2121,7 @@ LABEL_15:
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v26 = v24;
+    v26 = _animationKeyPaths;
     v27 = [v26 countByEnumeratingWithState:&v40 objects:v47 count:16];
     if (v27)
     {
@@ -2138,7 +2138,7 @@ LABEL_15:
 
           v31 = *(*(&v40 + 1) + 8 * i);
           v39 = 0.0;
-          if ([v6 curlType] == 1 || objc_msgSend(v6, "curlType") == 4)
+          if ([stateCopy curlType] == 1 || objc_msgSend(stateCopy, "curlType") == 4)
           {
             if ([v31 isEqualToString:@"filters.curl.inputTime"])
             {
@@ -2158,16 +2158,16 @@ LABEL_15:
 
           else
           {
-            [v6 initialLocation];
-            [(_UIPageCurl *)self _updatedInputsFromState:v6 forLocation:&v46 time:&v45 radius:&v44 angle:?];
+            [stateCopy initialLocation];
+            [(_UIPageCurl *)self _updatedInputsFromState:stateCopy forLocation:&v46 time:&v45 radius:&v44 angle:?];
             v32 = 0;
           }
 
-          [(_UIPageCurl *)self _fromValue:&v39 toValue:v32 fromState:v6 forAnimationWithKeyPath:v31];
+          [(_UIPageCurl *)self _fromValue:&v39 toValue:v32 fromState:stateCopy forAnimationWithKeyPath:v31];
           HIDWORD(v33) = HIDWORD(v39);
           *&v33 = v39;
           v34 = [MEMORY[0x1E696AD98] numberWithFloat:v33];
-          v35 = [(_UIPageCurl *)self _newAnimationForState:v6 withKeyPath:v31 duration:v34 fromValue:v16];
+          v35 = [(_UIPageCurl *)self _newAnimationForState:stateCopy withKeyPath:v31 duration:v34 fromValue:v16];
 
           [v25 addObject:v35];
         }
@@ -2178,24 +2178,24 @@ LABEL_15:
       while (v28);
     }
 
-    [v6 markBeginDate];
-    [(_UIPageCurl *)self _updateCurlFromState:v6 withTime:v25 radius:v46 angle:v45 addingAnimations:v44];
-    if (([v6 curlType] == 1 || objc_msgSend(v6, "curlType") == 4) && (objc_msgSend(v6, "hasPendingAnimations") & 1) == 0)
+    [stateCopy markBeginDate];
+    [(_UIPageCurl *)self _updateCurlFromState:stateCopy withTime:v25 radius:v46 angle:v45 addingAnimations:v44];
+    if (([stateCopy curlType] == 1 || objc_msgSend(stateCopy, "curlType") == 4) && (objc_msgSend(stateCopy, "hasPendingAnimations") & 1) == 0)
     {
-      [(_UIPageCurl *)self _forceCleanupState:v6 finished:1 completed:1];
+      [(_UIPageCurl *)self _forceCleanupState:stateCopy finished:1 completed:1];
     }
 
-    v7 = v38;
+    previousStateCopy = v38;
   }
 }
 
-- (void)_updateManualCurlToLocation:(CGPoint)a3
+- (void)_updateManualCurlToLocation:(CGPoint)location
 {
   manualPageCurlState = self->_manualPageCurlState;
   if (manualPageCurlState)
   {
-    y = a3.y;
-    x = a3.x;
+    y = location.y;
+    x = location.x;
     if ([(_UIPageCurlState *)manualPageCurlState curlState]<= 4)
     {
       v8 = 0.0;
@@ -2207,9 +2207,9 @@ LABEL_15:
   }
 }
 
-- (double)_durationForManualCurlEndAnimationWithSuggestedVelocity:(double)a3 shouldComplete:(BOOL)a4
+- (double)_durationForManualCurlEndAnimationWithSuggestedVelocity:(double)velocity shouldComplete:(BOOL)complete
 {
-  if (a3 == 0.0)
+  if (velocity == 0.0)
   {
     return 0.25;
   }
@@ -2217,21 +2217,21 @@ LABEL_15:
   v27 = v12;
   v28 = v5;
   v29 = v4;
-  v16 = a4;
-  if (a3 < 0.0)
+  completeCopy = complete;
+  if (velocity < 0.0)
   {
-    a3 = -a3;
+    velocity = -velocity;
   }
 
-  v18 = fmin(fmax(a3, 2048.0), 4096.0);
+  v18 = fmin(fmax(velocity, 2048.0), 4096.0);
   v19 = [(_UIPageCurlState *)self->_manualPageCurlState frontPageView:v15];
-  v20 = [v19 layer];
-  v21 = [v20 presentationLayer];
-  v22 = [v21 valueForKeyPath:@"filters.curl.inputTime"];
+  layer = [v19 layer];
+  presentationLayer = [layer presentationLayer];
+  v22 = [presentationLayer valueForKeyPath:@"filters.curl.inputTime"];
   [v22 floatValue];
   v24 = v23;
 
-  if (v16)
+  if (completeCopy)
   {
     v24 = 1.0 - v24;
   }
@@ -2245,26 +2245,26 @@ LABEL_15:
   return v25 * v24 / v18;
 }
 
-- (void)_endManualCurlAtLocation:(CGPoint)a3 withSuggestedVelocity:(double)a4 shouldComplete:(BOOL)a5
+- (void)_endManualCurlAtLocation:(CGPoint)location withSuggestedVelocity:(double)velocity shouldComplete:(BOOL)complete
 {
-  v33 = a5;
+  completeCopy = complete;
   v42 = *MEMORY[0x1E69E9840];
   manualPageCurlState = self->_manualPageCurlState;
-  if (manualPageCurlState && [(_UIPageCurlState *)manualPageCurlState curlState:a3.x]<= 4)
+  if (manualPageCurlState && [(_UIPageCurlState *)manualPageCurlState curlState:location.x]<= 4)
   {
-    [(_UIPageCurlState *)self->_manualPageCurlState setCurlState:5 willComplete:v33];
+    [(_UIPageCurlState *)self->_manualPageCurlState setCurlState:5 willComplete:completeCopy];
     v39 = 0.0;
     v40 = 0.0;
     v38 = 0.0;
-    v8 = [(_UIPageCurl *)self _animationKeyPaths];
-    v32 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v8, "count")}];
-    [(_UIPageCurl *)self _durationForManualCurlEndAnimationWithSuggestedVelocity:v33 shouldComplete:a4];
+    _animationKeyPaths = [(_UIPageCurl *)self _animationKeyPaths];
+    v32 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(_animationKeyPaths, "count")}];
+    [(_UIPageCurl *)self _durationForManualCurlEndAnimationWithSuggestedVelocity:completeCopy shouldComplete:velocity];
     v10 = v9;
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
-    obj = v8;
+    obj = _animationKeyPaths;
     v11 = [obj countByEnumeratingWithState:&v34 objects:v41 count:16];
     if (v11)
     {
@@ -2282,7 +2282,7 @@ LABEL_15:
 
           v15 = *(*(&v34 + 1) + 8 * i);
           v16 = [v15 isEqualToString:{@"filters.curl.inputTime", v30}];
-          if (v33)
+          if (completeCopy)
           {
             if (v16)
             {
@@ -2329,10 +2329,10 @@ LABEL_15:
 
           [(_UIPageCurl *)self _fromValue:v17 toValue:v18 fromState:self->_manualPageCurlState forAnimationWithKeyPath:v15];
           v21 = self->_manualPageCurlState;
-          v22 = [(_UIPageCurlState *)v21 frontPageView];
-          v23 = [v22 layer];
-          v24 = [v23 presentationLayer];
-          v25 = [v24 valueForKeyPath:v15];
+          frontPageView = [(_UIPageCurlState *)v21 frontPageView];
+          layer = [frontPageView layer];
+          presentationLayer = [layer presentationLayer];
+          v25 = [presentationLayer valueForKeyPath:v15];
           v26 = [(_UIPageCurl *)self _newAnimationForState:v21 withKeyPath:v15 duration:v25 fromValue:v10];
 
           if ([v15 isEqualToString:@"filters.curl.inputAngle"])
@@ -2359,40 +2359,40 @@ LABEL_15:
   }
 }
 
-- (void)_pageCurlAnimationDidStop:(id)a3 withState:(id)a4
+- (void)_pageCurlAnimationDidStop:(id)stop withState:(id)state
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  stopCopy = stop;
+  stateCopy = state;
+  if (!stateCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"_UIPageCurl.m" lineNumber:1252 description:{@"Invalid parameter not satisfying: %@", @"state"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIPageCurl.m" lineNumber:1252 description:{@"Invalid parameter not satisfying: %@", @"state"}];
   }
 
   if (![(NSMutableArray *)self->_activeStateQueue count])
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"_UIPageCurl.m" lineNumber:1253 description:{@"Received CA callback for state, but active state queue is empty"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UIPageCurl.m" lineNumber:1253 description:{@"Received CA callback for state, but active state queue is empty"}];
   }
 
-  if (([v8 hasPendingAnimations] & 1) == 0 && (objc_msgSend(v8, "curlType") == 1 || objc_msgSend(v8, "curlType") == 4 || objc_msgSend(v8, "curlState") == 5))
+  if (([stateCopy hasPendingAnimations] & 1) == 0 && (objc_msgSend(stateCopy, "curlType") == 1 || objc_msgSend(stateCopy, "curlType") == 4 || objc_msgSend(stateCopy, "curlState") == 5))
   {
-    [(NSMutableSet *)self->_completedStates addObject:v8];
+    [(NSMutableSet *)self->_completedStates addObject:stateCopy];
     completedStates = self->_completedStates;
-    v10 = [(NSMutableArray *)self->_activeStateQueue _ui_peek];
-    LODWORD(completedStates) = [(NSMutableSet *)completedStates containsObject:v10];
+    _ui_peek = [(NSMutableArray *)self->_activeStateQueue _ui_peek];
+    LODWORD(completedStates) = [(NSMutableSet *)completedStates containsObject:_ui_peek];
 
     if (completedStates)
     {
       do
       {
-        v11 = [(NSMutableArray *)self->_activeStateQueue _ui_dequeue];
-        [(_UIPageCurl *)self _cleanupState:v11];
-        [(NSMutableSet *)self->_completedStates removeObject:v11];
+        _ui_dequeue = [(NSMutableArray *)self->_activeStateQueue _ui_dequeue];
+        [(_UIPageCurl *)self _cleanupState:_ui_dequeue];
+        [(NSMutableSet *)self->_completedStates removeObject:_ui_dequeue];
 
         v12 = self->_completedStates;
-        v13 = [(NSMutableArray *)self->_activeStateQueue _ui_peek];
-        LOBYTE(v12) = [(NSMutableSet *)v12 containsObject:v13];
+        _ui_peek2 = [(NSMutableArray *)self->_activeStateQueue _ui_peek];
+        LOBYTE(v12) = [(NSMutableSet *)v12 containsObject:_ui_peek2];
       }
 
       while ((v12 & 1) != 0);

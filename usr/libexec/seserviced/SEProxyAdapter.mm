@@ -1,13 +1,13 @@
 @interface SEProxyAdapter
-- (id)transceive:(id)a3 outError:(id *)a4;
-- (id)transceive:(id)a3 toOS:(int64_t)a4 outError:(id *)a5;
+- (id)transceive:(id)transceive outError:(id *)error;
+- (id)transceive:(id)transceive toOS:(int64_t)s outError:(id *)error;
 @end
 
 @implementation SEProxyAdapter
 
-- (id)transceive:(id)a3 outError:(id *)a4
+- (id)transceive:(id)transceive outError:(id *)error
 {
-  v6 = a3;
+  transceiveCopy = transceive;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -27,7 +27,7 @@
   v13[3] = &unk_1004C2AD8;
   v13[4] = &v20;
   v13[5] = &v14;
-  [(SEProxyInterface *)proxy transceive:v6 callback:v13];
+  [(SEProxyInterface *)proxy transceive:transceiveCopy callback:v13];
   if (!v21[5] && !v15[5])
   {
     v8 = SESDefaultLogObject();
@@ -36,9 +36,9 @@
     v15[5] = v9;
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = v15[5];
+    *error = v15[5];
   }
 
   v11 = v21[5];
@@ -49,12 +49,12 @@
   return v11;
 }
 
-- (id)transceive:(id)a3 toOS:(int64_t)a4 outError:(id *)a5
+- (id)transceive:(id)transceive toOS:(int64_t)s outError:(id *)error
 {
-  if (a5)
+  if (error)
   {
     v6 = SESDefaultLogObject();
-    *a5 = SESCreateAndLogError();
+    *error = SESCreateAndLogError();
   }
 
   return 0;

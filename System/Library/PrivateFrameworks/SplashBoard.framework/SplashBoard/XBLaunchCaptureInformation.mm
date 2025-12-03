@@ -1,7 +1,7 @@
 @interface XBLaunchCaptureInformation
 - (XBLaunchCaptureInformation)init;
-- (XBLaunchCaptureInformation)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (XBLaunchCaptureInformation)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation XBLaunchCaptureInformation
@@ -22,22 +22,22 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   estimatedMemoryImpact = self->_estimatedMemoryImpact;
-  v5 = a3;
-  [v5 encodeInt64:estimatedMemoryImpact forKey:@"XBLaunchCaptureInformationEstimatedSize"];
-  [v5 encodeObject:self->_caarFilePath forKey:@"XBLaunchCaptureInformationCaarPath"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:estimatedMemoryImpact forKey:@"XBLaunchCaptureInformationEstimatedSize"];
+  [coderCopy encodeObject:self->_caarFilePath forKey:@"XBLaunchCaptureInformationCaarPath"];
 }
 
-- (XBLaunchCaptureInformation)initWithCoder:(id)a3
+- (XBLaunchCaptureInformation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(XBLaunchCaptureInformation *)self init];
   if (v5)
   {
-    v5->_estimatedMemoryImpact = [v4 decodeInt64ForKey:@"XBLaunchCaptureInformationEstimatedSize"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"XBLaunchCaptureInformationCaarPath"];
+    v5->_estimatedMemoryImpact = [coderCopy decodeInt64ForKey:@"XBLaunchCaptureInformationEstimatedSize"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"XBLaunchCaptureInformationCaarPath"];
     caarFilePath = v5->_caarFilePath;
     v5->_caarFilePath = v6;
   }

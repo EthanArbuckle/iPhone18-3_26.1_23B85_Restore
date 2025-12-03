@@ -1,16 +1,16 @@
 @interface MIHelperBomVerifier
-+ (BOOL)applyAndVerifyBOMPropertiesForURL:(id)a3 toUID:(unsigned int)a4 GID:(unsigned int)a5 removeACLs:(BOOL)a6 setProtectionClass:(BOOL)a7 setFileAttributes:(id)a8 excludePathsAtURL:(id)a9 error:(id *)a10;
++ (BOOL)applyAndVerifyBOMPropertiesForURL:(id)l toUID:(unsigned int)d GID:(unsigned int)iD removeACLs:(BOOL)ls setProtectionClass:(BOOL)class setFileAttributes:(id)attributes excludePathsAtURL:(id)rL error:(id *)self0;
 @end
 
 @implementation MIHelperBomVerifier
 
-+ (BOOL)applyAndVerifyBOMPropertiesForURL:(id)a3 toUID:(unsigned int)a4 GID:(unsigned int)a5 removeACLs:(BOOL)a6 setProtectionClass:(BOOL)a7 setFileAttributes:(id)a8 excludePathsAtURL:(id)a9 error:(id *)a10
++ (BOOL)applyAndVerifyBOMPropertiesForURL:(id)l toUID:(unsigned int)d GID:(unsigned int)iD removeACLs:(BOOL)ls setProtectionClass:(BOOL)class setFileAttributes:(id)attributes excludePathsAtURL:(id)rL error:(id *)self0
 {
-  v53 = a3;
-  v52 = a8;
-  v51 = a9;
+  lCopy = l;
+  attributesCopy = attributes;
+  rLCopy = rL;
   v15 = +[MIFileManager defaultManager];
-  v16 = [v52 mutableCopy];
+  v16 = [attributesCopy mutableCopy];
   v76 = 0;
   v77 = &v76;
   v78 = 0x3032000000;
@@ -18,21 +18,21 @@
   v80 = sub_100003AF4;
   v81 = 0;
   v17 = [NSSet setWithObjects:@"embedded.provisionprofile", @"embedded.mobileprovision", 0];
-  if (v51)
+  if (rLCopy)
   {
-    v18 = [v51 path];
-    if ([v18 hasPrefix:@"/private/"])
+    path = [rLCopy path];
+    if ([path hasPrefix:@"/private/"])
     {
-      v19 = [v18 substringFromIndex:{objc_msgSend(@"/private", "length")}];
+      v19 = [path substringFromIndex:{objc_msgSend(@"/private", "length")}];
 
-      v18 = v19;
+      path = v19;
     }
 
     if (!gLogHandle || *(gLogHandle + 44) >= 5)
     {
-      v20 = [v53 path];
-      v46 = v20;
-      v47 = v18;
+      path2 = [lCopy path];
+      v46 = path2;
+      v47 = path;
       MOLogWrite();
 LABEL_10:
     }
@@ -42,36 +42,36 @@ LABEL_10:
   {
     if (!gLogHandle || *(gLogHandle + 44) >= 5)
     {
-      v20 = [v53 path];
-      v46 = v20;
+      path2 = [lCopy path];
+      v46 = path2;
       MOLogWrite();
-      v18 = 0;
+      path = 0;
       goto LABEL_10;
     }
 
-    v18 = 0;
+    path = 0;
   }
 
-  v21 = v53;
-  [v53 fileSystemRepresentation];
+  v21 = lCopy;
+  [lCopy fileSystemRepresentation];
   v75 = 0;
   v62 = _NSConcreteStackBlock;
   v63 = 3221225472;
   v64 = sub_100003AFC;
   v65 = &unk_1000248B8;
-  v49 = v18;
+  v49 = path;
   v66 = v49;
   v22 = v17;
   v67 = v22;
   v23 = v16;
   v68 = v23;
   v70 = &v76;
-  v73 = a7;
+  classCopy = class;
   v48 = v15;
   v69 = v48;
-  v71 = a4;
-  v72 = a5;
-  v74 = a6;
+  dCopy = d;
+  iDCopy = iD;
+  lsCopy = ls;
   v24 = TraverseDirectory();
   v50 = 0;
   v25 = v77;
@@ -100,8 +100,8 @@ LABEL_10:
             }
 
             v32 = *(*(&v58 + 1) + 8 * i);
-            v33 = [v32 lastPathComponent];
-            if (([v33 hasPrefix:@"._"] & 1) != 0 || objc_msgSend(v22, "containsObject:", v33))
+            lastPathComponent = [v32 lastPathComponent];
+            if (([lastPathComponent hasPrefix:@"._"] & 1) != 0 || objc_msgSend(v22, "containsObject:", lastPathComponent))
             {
               [v27 addObject:v32];
             }
@@ -147,7 +147,7 @@ LABEL_10:
         goto LABEL_38;
       }
 
-      v39 = [v28 allKeys];
+      allKeys = [v28 allKeys];
       v41 = _CreateAndLogError("+[MIHelperBomVerifier applyAndVerifyBOMPropertiesForURL:toUID:GID:removeACLs:setProtectionClass:setFileAttributes:excludePathsAtURL:error:]", 156, MIInstallerErrorDomain, 229, 0, 0, @"Failed to locate items in Bom (count: %lu) as paths in app bundle. Missing files: %@", v40, v38);
       v42 = v77[5];
       v77[5] = v41;
@@ -167,15 +167,15 @@ LABEL_33:
 
   v43 = v50;
   v34 = 0;
-  v39 = v25[5];
+  allKeys = v25[5];
   v25[5] = v43;
 LABEL_35:
 
 LABEL_36:
   v44 = 0;
-  if (a10)
+  if (error)
   {
-    *a10 = v77[5];
+    *error = v77[5];
   }
 
 LABEL_38:

@@ -1,6 +1,6 @@
 @interface _PXAssetsSceneAnchor
 - (CGPoint)anchorOrigin;
-- (_PXAssetsSceneAnchor)initWithAssetReference:(id)a3 anchorOrigin:(CGPoint)a4 distance:(double)a5;
+- (_PXAssetsSceneAnchor)initWithAssetReference:(id)reference anchorOrigin:(CGPoint)origin distance:(double)distance;
 @end
 
 @implementation _PXAssetsSceneAnchor
@@ -14,21 +14,21 @@
   return result;
 }
 
-- (_PXAssetsSceneAnchor)initWithAssetReference:(id)a3 anchorOrigin:(CGPoint)a4 distance:(double)a5
+- (_PXAssetsSceneAnchor)initWithAssetReference:(id)reference anchorOrigin:(CGPoint)origin distance:(double)distance
 {
-  y = a4.y;
-  x = a4.x;
-  v10 = a3;
+  y = origin.y;
+  x = origin.x;
+  referenceCopy = reference;
   v14.receiver = self;
   v14.super_class = _PXAssetsSceneAnchor;
   v11 = [(_PXAssetsSceneAnchor *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_assetReference, a3);
+    objc_storeStrong(&v11->_assetReference, reference);
     v12->_anchorOrigin.x = x;
     v12->_anchorOrigin.y = y;
-    v12->_distance = a5;
+    v12->_distance = distance;
   }
 
   return v12;

@@ -1,31 +1,31 @@
 @interface HDWorkoutRouteDataSource
 + (id)requiredEntitlements;
-- (HDWorkoutRouteDataSource)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6;
+- (HDWorkoutRouteDataSource)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate;
 - (NSString)description;
-- (id)_queue_createLocationDataCollectorWithConfiguration:(id)a3 workoutUUID:(id)a4;
+- (id)_queue_createLocationDataCollectorWithConfiguration:(id)configuration workoutUUID:(id)d;
 - (id)_unitTest_locationDataCollector;
 - (id)_workoutBuilderServer;
 - (void)_queue_setupLocationDataCollector;
-- (void)altitudeUpdated:(double)a3;
+- (void)altitudeUpdated:(double)updated;
 - (void)connectionInvalidated;
-- (void)elevationUpdated:(unint64_t)a3;
-- (void)remote_setupWithSessionIdentifier:(id)a3;
-- (void)workoutDataDestination:(id)a3 didBeginActivity:(id)a4;
-- (void)workoutDataDestination:(id)a3 didEndActivity:(id)a4;
-- (void)workoutDataDestination:(id)a3 didUpdateConfiguration:(id)a4;
-- (void)workoutDataDestination:(id)a3 requestsDataFrom:(id)a4 to:(id)a5;
-- (void)workoutDataDestination:(id)a3 requestsFinalDataFrom:(id)a4 to:(id)a5 completion:(id)a6;
-- (void)workoutRouteUpdated:(id)a3;
-- (void)workoutSession:(id)a3 didChangeToState:(int64_t)a4 fromState:(int64_t)a5 date:(id)a6;
+- (void)elevationUpdated:(unint64_t)updated;
+- (void)remote_setupWithSessionIdentifier:(id)identifier;
+- (void)workoutDataDestination:(id)destination didBeginActivity:(id)activity;
+- (void)workoutDataDestination:(id)destination didEndActivity:(id)activity;
+- (void)workoutDataDestination:(id)destination didUpdateConfiguration:(id)configuration;
+- (void)workoutDataDestination:(id)destination requestsDataFrom:(id)from to:(id)to;
+- (void)workoutDataDestination:(id)destination requestsFinalDataFrom:(id)from to:(id)to completion:(id)completion;
+- (void)workoutRouteUpdated:(id)updated;
+- (void)workoutSession:(id)session didChangeToState:(int64_t)state fromState:(int64_t)fromState date:(id)date;
 @end
 
 @implementation HDWorkoutRouteDataSource
 
-- (HDWorkoutRouteDataSource)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6
+- (HDWorkoutRouteDataSource)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate
 {
   v15.receiver = self;
   v15.super_class = HDWorkoutRouteDataSource;
-  v6 = [(HDStandardTaskServer *)&v15 initWithUUID:a3 configuration:a4 client:a5 delegate:a6];
+  v6 = [(HDStandardTaskServer *)&v15 initWithUUID:d configuration:configuration client:client delegate:delegate];
   if (v6)
   {
     v7 = HKCreateSerialDispatchQueue();
@@ -60,39 +60,39 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(HDStandardTaskServer *)self taskUUID];
-  v6 = [v3 stringWithFormat:@"<%@:%p %@>", v4, self, v5];
+  taskUUID = [(HDStandardTaskServer *)self taskUUID];
+  v6 = [v3 stringWithFormat:@"<%@:%p %@>", v4, self, taskUUID];
 
   return v6;
 }
 
-- (void)remote_setupWithSessionIdentifier:(id)a3
+- (void)remote_setupWithSessionIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   _HKInitializeLogging();
   v5 = *MEMORY[0x277CCC330];
   if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [v4 UUIDString];
+    uUIDString = [identifierCopy UUIDString];
     *buf = 138543618;
-    v15 = self;
+    selfCopy = self;
     v16 = 2114;
-    v17 = v7;
+    v17 = uUIDString;
     _os_log_impl(&dword_228986000, v6, OS_LOG_TYPE_DEFAULT, "[routes] Will setup route data source: %{public}@, session: %{public}@", buf, 0x16u);
   }
 
-  v8 = [(HDStandardTaskServer *)self profile];
-  v9 = [v8 workoutManager];
+  profile = [(HDStandardTaskServer *)self profile];
+  workoutManager = [profile workoutManager];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __62__HDWorkoutRouteDataSource_remote_setupWithSessionIdentifier___block_invoke;
   v12[3] = &unk_278613858;
   v12[4] = self;
-  v13 = v4;
-  v10 = v4;
-  [v9 sessionServerFromSessionIdentifier:v10 completion:v12];
+  v13 = identifierCopy;
+  v10 = identifierCopy;
+  [workoutManager sessionServerFromSessionIdentifier:v10 completion:v12];
 
   v11 = *MEMORY[0x277D85DE8];
 }
@@ -148,17 +148,17 @@ void __62__HDWorkoutRouteDataSource_remote_setupWithSessionIdentifier___block_in
   }
 }
 
-- (void)workoutSession:(id)a3 didChangeToState:(int64_t)a4 fromState:(int64_t)a5 date:(id)a6
+- (void)workoutSession:(id)session didChangeToState:(int64_t)state fromState:(int64_t)fromState date:(id)date
 {
-  v13 = a3;
+  sessionCopy = session;
   dispatch_assert_queue_V2(self->_queue);
-  if (a4 > 8)
+  if (state > 8)
   {
-    if (a4 == 9)
+    if (state == 9)
     {
-      v9 = [v13 workoutConfiguration];
-      v10 = [v9 activityType];
-      if (v10 == 67 || v10 == 61) && (_os_feature_enabled_impl())
+      workoutConfiguration = [sessionCopy workoutConfiguration];
+      activityType = [workoutConfiguration activityType];
+      if (activityType == 67 || activityType == 61) && (_os_feature_enabled_impl())
       {
 
         [(HDLocationDataCollector *)self->_locationDataCollector pauseUpdatesAfterDelay:15];
@@ -169,7 +169,7 @@ void __62__HDWorkoutRouteDataSource_remote_setupWithSessionIdentifier___block_in
       }
     }
 
-    else if (a4 == 11 || a4 == 17 && (a5 & 0xFFFFFFFFFFFFFFFDLL) == 8)
+    else if (state == 11 || state == 17 && (fromState & 0xFFFFFFFFFFFFFFFDLL) == 8)
     {
       [(HDLocationDataCollector *)self->_locationDataCollector stopUpdates];
     }
@@ -177,9 +177,9 @@ void __62__HDWorkoutRouteDataSource_remote_setupWithSessionIdentifier___block_in
     goto LABEL_21;
   }
 
-  if (a4 != 7)
+  if (state != 7)
   {
-    if (a4 == 8)
+    if (state == 8)
     {
       [(HDLocationDataCollector *)self->_locationDataCollector pauseUpdates];
     }
@@ -187,22 +187,22 @@ void __62__HDWorkoutRouteDataSource_remote_setupWithSessionIdentifier___block_in
     goto LABEL_21;
   }
 
-  if ((a5 & 0xFFFFFFFFFFFFFFFDLL) == 8)
+  if ((fromState & 0xFFFFFFFFFFFFFFFDLL) == 8)
   {
 LABEL_19:
     [(HDLocationDataCollector *)self->_locationDataCollector resumeUpdates];
     goto LABEL_21;
   }
 
-  v11 = [v13 workoutConfiguration];
-  v12 = [v11 activityType];
-  if ((v12 == 67 || v12 == 61) && _os_feature_enabled_impl())
+  workoutConfiguration2 = [sessionCopy workoutConfiguration];
+  activityType2 = [workoutConfiguration2 activityType];
+  if ((activityType2 == 67 || activityType2 == 61) && _os_feature_enabled_impl())
   {
 
     goto LABEL_19;
   }
 
-  if (a5 != 9)
+  if (fromState != 9)
   {
     [(HDLocationDataCollector *)self->_locationDataCollector startUpdates];
   }
@@ -210,7 +210,7 @@ LABEL_19:
 LABEL_21:
 }
 
-- (void)elevationUpdated:(unint64_t)a3
+- (void)elevationUpdated:(unint64_t)updated
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -218,7 +218,7 @@ LABEL_21:
   v4[2] = __45__HDWorkoutRouteDataSource_elevationUpdated___block_invoke;
   v4[3] = &unk_2786138F8;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = updated;
   dispatch_async(queue, v4);
 }
 
@@ -331,17 +331,17 @@ void __45__HDWorkoutRouteDataSource_elevationUpdated___block_invoke_3(uint64_t a
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)workoutRouteUpdated:(id)a3
+- (void)workoutRouteUpdated:(id)updated
 {
-  v4 = a3;
+  updatedCopy = updated;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__HDWorkoutRouteDataSource_workoutRouteUpdated___block_invoke;
   v7[3] = &unk_278613920;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = updatedCopy;
+  v6 = updatedCopy;
   dispatch_async(queue, v7);
 }
 
@@ -400,14 +400,14 @@ void __48__HDWorkoutRouteDataSource_workoutRouteUpdated___block_invoke_3(uint64_
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)altitudeUpdated:(double)a3
+- (void)altitudeUpdated:(double)updated
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __44__HDWorkoutRouteDataSource_altitudeUpdated___block_invoke;
   v4[3] = &unk_2786138F8;
-  *&v4[5] = a3;
+  *&v4[5] = updated;
   v4[4] = self;
   dispatch_async(queue, v4);
 }
@@ -511,10 +511,10 @@ void __44__HDWorkoutRouteDataSource_altitudeUpdated___block_invoke_2(uint64_t a1
 
 - (id)_workoutBuilderServer
 {
-  if (a1)
+  if (self)
   {
-    v1 = [*(a1 + 56) allDestinationProcessors];
-    v2 = [v1 hk_firstObjectPassingTest:&__block_literal_global_1];
+    allDestinationProcessors = [*(self + 56) allDestinationProcessors];
+    v2 = [allDestinationProcessors hk_firstObjectPassingTest:&__block_literal_global_1];
   }
 
   else
@@ -559,8 +559,8 @@ uint64_t __49__HDWorkoutRouteDataSource__workoutBuilderServer__block_invoke(uint
   dispatch_assert_queue_V2(self->_queue);
   if (!self->_locationDataCollector)
   {
-    v3 = [(HDWorkoutRouteDataSource *)self _workoutBuilderServer];
-    if (!v3)
+    _workoutBuilderServer = [(HDWorkoutRouteDataSource *)self _workoutBuilderServer];
+    if (!_workoutBuilderServer)
     {
       goto LABEL_18;
     }
@@ -573,23 +573,23 @@ uint64_t __49__HDWorkoutRouteDataSource__workoutBuilderServer__block_invoke(uint
     }
 
     v5 = objc_loadWeakRetained(&self->_sessionServer);
-    v6 = [v5 currentActivity];
-    v7 = [v6 workoutConfiguration];
-    v8 = v7;
-    if (v7)
+    currentActivity = [v5 currentActivity];
+    workoutConfiguration = [currentActivity workoutConfiguration];
+    v8 = workoutConfiguration;
+    if (workoutConfiguration)
     {
-      v9 = v7;
+      workoutConfiguration2 = workoutConfiguration;
     }
 
     else
     {
       v10 = objc_loadWeakRetained(&self->_sessionServer);
-      v9 = [v10 workoutConfiguration];
+      workoutConfiguration2 = [v10 workoutConfiguration];
     }
 
-    [v9 locationType];
-    [v9 activityType];
-    [v9 swimmingLocationType];
+    [workoutConfiguration2 locationType];
+    [workoutConfiguration2 activityType];
+    [workoutConfiguration2 swimmingLocationType];
     if ((_HKWorkoutActivityTypeIsRouteable() & 1) == 0)
     {
       _HKInitializeLogging();
@@ -598,11 +598,11 @@ uint64_t __49__HDWorkoutRouteDataSource__workoutBuilderServer__block_invoke(uint
       {
         v24 = v23;
         v25 = objc_loadWeakRetained(&self->_sessionServer);
-        v26 = [v25 identifier];
+        identifier = [v25 identifier];
         *v30 = 138543618;
-        *&v30[4] = v26;
+        *&v30[4] = identifier;
         *&v30[12] = 2112;
-        *&v30[14] = v9;
+        *&v30[14] = workoutConfiguration2;
         _os_log_impl(&dword_228986000, v24, OS_LOG_TYPE_DEFAULT, "[routes] Workout route will not be tracked because activity is not routeable for session %{public}@, workout configuration %@", v30, 0x16u);
       }
 
@@ -610,32 +610,32 @@ uint64_t __49__HDWorkoutRouteDataSource__workoutBuilderServer__block_invoke(uint
     }
 
     dispatch_assert_queue_V2(self->_queue);
-    v11 = [(HDWorkoutRouteDataSource *)self _workoutBuilderServer];
-    v12 = v11;
-    if (v11)
+    _workoutBuilderServer2 = [(HDWorkoutRouteDataSource *)self _workoutBuilderServer];
+    v12 = _workoutBuilderServer2;
+    if (_workoutBuilderServer2)
     {
-      v13 = [v11 currentMetadata];
-      v14 = [v13 objectForKeyedSubscript:*MEMORY[0x277CCC488]];
+      currentMetadata = [_workoutBuilderServer2 currentMetadata];
+      v14 = [currentMetadata objectForKeyedSubscript:*MEMORY[0x277CCC488]];
       currentElevation = self->_currentElevation;
       self->_currentElevation = v14;
 
       if (self->_currentElevation)
       {
-        v16 = [(HDStandardTaskServer *)self client];
-        v17 = [v16 connection];
+        client = [(HDStandardTaskServer *)self client];
+        connection = [client connection];
         *v30 = MEMORY[0x277D85DD0];
         *&v30[8] = 3221225472;
         *&v30[16] = __58__HDWorkoutRouteDataSource__queue_recoverCurrentElevation__block_invoke;
         v31 = &unk_2786138D0;
-        v32 = self;
-        v18 = [v17 remoteObjectProxyWithErrorHandler:v30];
+        selfCopy = self;
+        v18 = [connection remoteObjectProxyWithErrorHandler:v30];
 
         [v18 clientRemote_didUpdateElevation:self->_currentElevation];
       }
     }
 
-    v19 = [v3 taskUUID];
-    v20 = [(HDWorkoutRouteDataSource *)self _queue_createLocationDataCollectorWithConfiguration:v9 workoutUUID:v19];
+    taskUUID = [_workoutBuilderServer taskUUID];
+    v20 = [(HDWorkoutRouteDataSource *)self _queue_createLocationDataCollectorWithConfiguration:workoutConfiguration2 workoutUUID:taskUUID];
     locationDataCollector = self->_locationDataCollector;
     self->_locationDataCollector = v20;
 
@@ -648,9 +648,9 @@ uint64_t __49__HDWorkoutRouteDataSource__workoutBuilderServer__block_invoke(uint
     else
     {
       v27 = objc_loadWeakRetained(&self->_sessionServer);
-      v28 = [v27 state];
+      state = [v27 state];
 
-      if (v28 != 9)
+      if (state != 9)
       {
 LABEL_17:
 
@@ -667,17 +667,17 @@ LABEL_19:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_queue_createLocationDataCollectorWithConfiguration:(id)a3 workoutUUID:(id)a4
+- (id)_queue_createLocationDataCollectorWithConfiguration:(id)configuration workoutUUID:(id)d
 {
   queue = self->_queue;
-  v7 = a4;
-  v8 = a3;
+  dCopy = d;
+  configurationCopy = configuration;
   dispatch_assert_queue_V2(queue);
   v9 = [HDLocationDataCollector alloc];
-  v10 = [(HDStandardTaskServer *)self profile];
-  v11 = [(HDStandardTaskServer *)self delegate];
-  v12 = [v11 sampleSavingDelegate];
-  v13 = [(HDLocationDataCollector *)v9 initWithProfile:v10 sampleSavingDelegate:v12 configuration:v8 workoutUUID:v7];
+  profile = [(HDStandardTaskServer *)self profile];
+  delegate = [(HDStandardTaskServer *)self delegate];
+  sampleSavingDelegate = [delegate sampleSavingDelegate];
+  v13 = [(HDLocationDataCollector *)v9 initWithProfile:profile sampleSavingDelegate:sampleSavingDelegate configuration:configurationCopy workoutUUID:dCopy];
 
   return v13;
 }
@@ -700,17 +700,17 @@ void __49__HDWorkoutRouteDataSource_connectionInvalidated__block_invoke(uint64_t
   [WeakRetained removeObserver:*(a1 + 32)];
 }
 
-- (void)workoutDataDestination:(id)a3 requestsDataFrom:(id)a4 to:(id)a5
+- (void)workoutDataDestination:(id)destination requestsDataFrom:(id)from to:(id)to
 {
-  v6 = a3;
+  destinationCopy = destination;
   queue = self->_queue;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __71__HDWorkoutRouteDataSource_workoutDataDestination_requestsDataFrom_to___block_invoke;
   v9[3] = &unk_278613920;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = destinationCopy;
+  v8 = destinationCopy;
   dispatch_async(queue, v9);
 }
 
@@ -754,22 +754,22 @@ void __71__HDWorkoutRouteDataSource_workoutDataDestination_requestsDataFrom_to__
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)workoutDataDestination:(id)a3 requestsFinalDataFrom:(id)a4 to:(id)a5 completion:(id)a6
+- (void)workoutDataDestination:(id)destination requestsFinalDataFrom:(id)from to:(id)to completion:(id)completion
 {
-  v7 = a6;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __87__HDWorkoutRouteDataSource_workoutDataDestination_requestsFinalDataFrom_to_completion___block_invoke;
   block[3] = &unk_278613658;
-  v11 = v7;
-  v9 = v7;
+  v11 = completionCopy;
+  v9 = completionCopy;
   dispatch_async(queue, block);
 }
 
-- (void)workoutDataDestination:(id)a3 didUpdateConfiguration:(id)a4
+- (void)workoutDataDestination:(id)destination didUpdateConfiguration:(id)configuration
 {
-  if ([a4 locationType] == 2)
+  if ([configuration locationType] == 2)
   {
     _HKInitializeLogging();
     v5 = *MEMORY[0x277CCC330];
@@ -783,13 +783,13 @@ void __71__HDWorkoutRouteDataSource_workoutDataDestination_requestsDataFrom_to__
   }
 }
 
-- (void)workoutDataDestination:(id)a3 didBeginActivity:(id)a4
+- (void)workoutDataDestination:(id)destination didBeginActivity:(id)activity
 {
-  v5 = a4;
-  v6 = [(HKWorkoutActivity *)v5 workoutConfiguration];
-  [v6 locationType];
-  [v6 activityType];
-  [v6 swimmingLocationType];
+  activityCopy = activity;
+  workoutConfiguration = [(HKWorkoutActivity *)activityCopy workoutConfiguration];
+  [workoutConfiguration locationType];
+  [workoutConfiguration activityType];
+  [workoutConfiguration swimmingLocationType];
   if ((_HKWorkoutActivityTypeIsRouteable() & 1) == 0)
   {
     _HKInitializeLogging();
@@ -804,10 +804,10 @@ void __71__HDWorkoutRouteDataSource_workoutDataDestination_requestsDataFrom_to__
   }
 
   currentActivity = self->_currentActivity;
-  self->_currentActivity = v5;
+  self->_currentActivity = activityCopy;
 }
 
-- (void)workoutDataDestination:(id)a3 didEndActivity:(id)a4
+- (void)workoutDataDestination:(id)destination didEndActivity:(id)activity
 {
   currentActivity = self->_currentActivity;
   self->_currentActivity = 0;

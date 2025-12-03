@@ -9,9 +9,9 @@
 - (void)start
 {
   self->_finished = 0;
-  v3 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   start = self->_start;
-  self->_start = v3;
+  self->_start = date;
 
   MEMORY[0x2821F96F8]();
 }
@@ -26,10 +26,10 @@
     v5 = v3;
     if (os_log_type_enabled(v5, v4))
     {
-      v6 = [(WFOperation *)self name];
+      name = [(WFOperation *)self name];
       [(NSDate *)self->_start timeIntervalSinceNow];
       v9 = 138412546;
-      v10 = v6;
+      v10 = name;
       v11 = 2048;
       v12 = v7;
       _os_log_impl(&dword_273ECD000, v5, v4, "%@ finished.  Elapsed: %f seconds.", &v9, 0x16u);
@@ -49,12 +49,12 @@
   v5 = NSStringFromClass(v4);
   v6 = [v3 stringWithFormat:@"<%@ : %p", v5, self];
 
-  v7 = [(WFOperation *)self name];
+  name = [(WFOperation *)self name];
 
-  if (v7)
+  if (name)
   {
-    v8 = [(WFOperation *)self name];
-    [v6 appendFormat:@" %@", v8];
+    name2 = [(WFOperation *)self name];
+    [v6 appendFormat:@" %@", name2];
   }
 
   start = self->_start;

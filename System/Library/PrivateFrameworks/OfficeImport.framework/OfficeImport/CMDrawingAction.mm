@@ -1,6 +1,6 @@
 @interface CMDrawingAction
-- (CMDrawingAction)initWithType:(int)a3 andFloatValue:(float)a4;
-- (CMDrawingAction)initWithType:(int)a3 andValue:(id)a4;
+- (CMDrawingAction)initWithType:(int)type andFloatValue:(float)value;
+- (CMDrawingAction)initWithType:(int)type andValue:(id)value;
 - (id)description;
 - (void)dealloc;
 @end
@@ -30,11 +30,11 @@
   [(CMDrawingAction *)&v4 dealloc];
 }
 
-- (CMDrawingAction)initWithType:(int)a3 andValue:(id)a4
+- (CMDrawingAction)initWithType:(int)type andValue:(id)value
 {
-  v7 = a4;
-  self->_type = a3;
-  objc_storeStrong(&self->_value, a4);
+  valueCopy = value;
+  self->_type = type;
+  objc_storeStrong(&self->_value, value);
   type = self->_type;
   if ((type - 2) < 2)
   {
@@ -54,10 +54,10 @@
   return self;
 }
 
-- (CMDrawingAction)initWithType:(int)a3 andFloatValue:(float)a4
+- (CMDrawingAction)initWithType:(int)type andFloatValue:(float)value
 {
-  self->_type = a3;
-  self->_floatValue = a4;
+  self->_type = type;
+  self->_floatValue = value;
   return self;
 }
 

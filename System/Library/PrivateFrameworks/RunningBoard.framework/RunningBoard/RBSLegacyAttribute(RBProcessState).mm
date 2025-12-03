@@ -15,17 +15,17 @@
   v4 = a3;
   if (![v4 acquisitionPolicy])
   {
-    v5 = [a1 requestedReason];
-    v6 = [v4 descriptor];
-    v7 = v6;
-    if (v5 == 1 || v5 == 9 && ([v6 explanation], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isEqualToString:", @"com.apple.extension.session"), v8, v9))
+    requestedReason = [self requestedReason];
+    descriptor = [v4 descriptor];
+    v7 = descriptor;
+    if (requestedReason == 1 || requestedReason == 9 && ([descriptor explanation], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isEqualToString:", @"com.apple.extension.session"), v8, v9))
     {
       v10 = rbs_assertion_log();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
-        v11 = [v7 identifier];
+        identifier = [v7 identifier];
         v13 = 138412290;
-        v14 = v11;
+        v14 = identifier;
         _os_log_impl(&dword_262485000, v10, OS_LOG_TYPE_INFO, "forcing acquisition after state application for assertion %@", &v13, 0xCu);
       }
 
@@ -40,11 +40,11 @@
 {
   v7 = a3;
   v8 = a5;
-  [(RBSLegacyAttribute *)a1 _mutateReasonWithContext:v8];
+  [(RBSLegacyAttribute *)self _mutateReasonWithContext:v8];
   if ([v8 isActiveDueToInheritedEndowment])
   {
-    v9 = rbs_assertion_log();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    invalidatesOnConditions = rbs_assertion_log();
+    if (os_log_type_enabled(invalidatesOnConditions, OS_LOG_TYPE_ERROR))
     {
       [RBSLegacyAttribute(RBProcessState) applyToAssertionIntransientState:v8 attributePath:? context:?];
     }
@@ -59,7 +59,7 @@ LABEL_4:
     [RBSLegacyAttribute(RBProcessState) applyToAssertionIntransientState:attributePath:context:];
   }
 
-  v10 = [(RBSLegacyAttribute *)a1 _invalidationDurationExpiringTaskCompletionsQuickly:?];
+  v10 = [(RBSLegacyAttribute *)self _invalidationDurationExpiringTaskCompletionsQuickly:?];
   [v7 invalidationDuration];
   if (v10 > v11)
   {
@@ -82,54 +82,54 @@ LABEL_4:
     [v7 setWarningDuration:v12];
   }
 
-  started = [(RBSLegacyAttribute *)a1 _startPolicy];
+  started = [(RBSLegacyAttribute *)self _startPolicy];
   if (started > [v7 startPolicy])
   {
     [v7 setStartPolicy:started];
   }
 
-  v15 = 2 * (a1 != 0);
+  v15 = 2 * (self != 0);
   if (v15 > [v7 endPolicy])
   {
     [v7 setEndPolicy:v15];
   }
 
-  if (a1 && ([a1 reason] == 9 || objc_msgSend(a1, "reason") == 13))
+  if (self && ([self reason] == 9 || objc_msgSend(self, "reason") == 13))
   {
     [v7 setSuspendsOnOriginatorSuspension:1];
   }
 
-  if ([(RBSLegacyAttribute *)a1 _definesRelativeStartTime])
+  if ([(RBSLegacyAttribute *)self _definesRelativeStartTime])
   {
     [v7 setDefinesRelativeStartTime:1];
   }
 
-  if ([a1 reason])
+  if ([self reason])
   {
-    [v7 setLegacyReason:{objc_msgSend(a1, "reason")}];
+    [v7 setLegacyReason:{objc_msgSend(self, "reason")}];
   }
 
-  if ([(RBSLegacyAttribute *)a1 _role]>= 2)
+  if ([(RBSLegacyAttribute *)self _role]>= 2)
   {
     [v7 setPreventsSuspension:1];
   }
 
   if (_os_feature_enabled_impl())
   {
-    v16 = [(RBSLegacyAttribute *)a1 _invalidateOnThermalLevel];
-    v9 = [v7 invalidatesOnConditions];
-    if (!v9)
+    _invalidateOnThermalLevel = [(RBSLegacyAttribute *)self _invalidateOnThermalLevel];
+    invalidatesOnConditions = [v7 invalidatesOnConditions];
+    if (!invalidatesOnConditions)
     {
-      v9 = [MEMORY[0x277CBEB38] dictionary];
-      [v7 setInvalidatesOnConditions:v9];
+      invalidatesOnConditions = [MEMORY[0x277CBEB38] dictionary];
+      [v7 setInvalidatesOnConditions:invalidatesOnConditions];
     }
 
-    v17 = [v9 objectForKey:@"therm"];
+    v17 = [invalidatesOnConditions objectForKey:@"therm"];
     v18 = v17;
-    if (!v17 || v16 < [v17 integerValue])
+    if (!v17 || _invalidateOnThermalLevel < [v17 integerValue])
     {
-      v19 = [MEMORY[0x277CCABB0] numberWithInteger:v16];
-      [v9 setValue:v19 forKey:@"therm"];
+      v19 = [MEMORY[0x277CCABB0] numberWithInteger:_invalidateOnThermalLevel];
+      [invalidatesOnConditions setValue:v19 forKey:@"therm"];
     }
 
     goto LABEL_4;
@@ -153,7 +153,7 @@ LABEL_5:
 
   else
   {
-    [RBSLegacyAttribute(RBProcessState) applyToAssertionTransientState:a1 attributePath:v7 context:?];
+    [RBSLegacyAttribute(RBProcessState) applyToAssertionTransientState:self attributePath:v7 context:?];
   }
 }
 
@@ -163,8 +163,8 @@ LABEL_5:
   v8 = a5;
   if ([v8 isActiveDueToInheritedEndowment])
   {
-    v9 = rbs_assertion_log();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    process = rbs_assertion_log();
+    if (os_log_type_enabled(process, OS_LOG_TYPE_ERROR))
     {
       [RBSLegacyAttribute(RBProcessState) applyToAssertionIntransientState:v8 attributePath:? context:?];
     }
@@ -172,20 +172,20 @@ LABEL_5:
     goto LABEL_4;
   }
 
-  v10 = [(RBSLegacyAttribute *)a1 _explicitJetsamBand:v8];
+  v10 = [(RBSLegacyAttribute *)self _explicitJetsamBand:v8];
   if (v10 > [v7 explicitJetsamBand])
   {
     [v7 setExplicitJetsamBand:v10];
   }
 
-  v11 = [v7 memoryLimit];
-  v12 = [v8 target];
-  v9 = [v12 process];
+  memoryLimit = [v7 memoryLimit];
+  target = [v8 target];
+  process = [target process];
 
-  if (v9)
+  if (process)
   {
-    v13 = [v9 memoryLimits];
-    if (v10 == 100 || [a1 reason] == 9 && (objc_msgSend(v8, "assertion"), v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "explanation"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "isEqualToString:", @"com.apple.viewservice.session"), v16, v15, v17) && v10 == 80)
+    memoryLimits = [process memoryLimits];
+    if (v10 == 100 || [self reason] == 9 && (objc_msgSend(v8, "assertion"), v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "explanation"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "isEqualToString:", @"com.apple.viewservice.session"), v16, v15, v17) && v10 == 80)
     {
       v14 = *MEMORY[0x277D47070];
     }
@@ -200,14 +200,14 @@ LABEL_5:
     }
 
     v51 = 2;
-    v18 = [v13 memoryLimitForCategory:v14 strength:&v51];
-    if (v11 == v18)
+    v18 = [memoryLimits memoryLimitForCategory:v14 strength:&v51];
+    if (memoryLimit == v18)
     {
       v19 = v51;
-      v20 = [v7 memoryLimitStrength];
-      if (v19 <= v20)
+      memoryLimitStrength = [v7 memoryLimitStrength];
+      if (v19 <= memoryLimitStrength)
       {
-        v21 = v20;
+        v21 = memoryLimitStrength;
       }
 
       else
@@ -218,7 +218,7 @@ LABEL_5:
       [v7 setMemoryLimitStrength:v21];
     }
 
-    else if (v11 < v18)
+    else if (memoryLimit < v18)
     {
       v22 = v18;
       [v7 setMemoryLimitCategory:v14];
@@ -229,47 +229,47 @@ LABEL_5:
 
   else
   {
-    v13 = rbs_assertion_log();
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
+    memoryLimits = rbs_assertion_log();
+    if (os_log_type_enabled(memoryLimits, OS_LOG_TYPE_INFO))
     {
       *buf = 0;
-      _os_log_impl(&dword_262485000, v13, OS_LOG_TYPE_INFO, "applying Legacy Assertion to process state without concrete target", buf, 2u);
+      _os_log_impl(&dword_262485000, memoryLimits, OS_LOG_TYPE_INFO, "applying Legacy Assertion to process state without concrete target", buf, 2u);
     }
   }
 
-  v23 = [(RBSLegacyAttribute *)a1 _role];
-  if (v23 > [v7 role])
+  _role = [(RBSLegacyAttribute *)self _role];
+  if (_role > [v7 role])
   {
-    if (v23 >= 2)
+    if (_role >= 2)
     {
       [v7 setPreventSuspend:1];
     }
 
-    [v7 setRole:v23];
+    [v7 setRole:_role];
   }
 
-  v24 = [(RBSLegacyAttribute *)a1 _terminationResistance];
-  if (v24 > [v7 terminationResistance])
+  _terminationResistance = [(RBSLegacyAttribute *)self _terminationResistance];
+  if (_terminationResistance > [v7 terminationResistance])
   {
-    [v7 setTerminationResistance:v24];
+    [v7 setTerminationResistance:_terminationResistance];
   }
 
-  if (a1)
+  if (self)
   {
-    if (([a1 flags] & 4) == 0)
+    if (([self flags] & 4) == 0)
     {
       [v7 setPreventIdleSleep:1];
       v25 = MEMORY[0x277CCACA8];
-      v26 = [v8 assertionID];
-      v27 = [v8 assertion];
-      v28 = [v27 explanation];
-      [a1 reason];
+      assertionID = [v8 assertionID];
+      assertion = [v8 assertion];
+      explanation = [assertion explanation];
+      [self reason];
       v29 = NSStringFromRBSLegacyReason();
-      v30 = [v25 stringWithFormat:@"%@:%@(%@)", v26, v28, v29];
+      v30 = [v25 stringWithFormat:@"%@:%@(%@)", assertionID, explanation, v29];
       [v7 addPreventIdleSleepIdentifier:v30];
     }
 
-    if (([a1 flags] & 0x20) != 0)
+    if (([self flags] & 0x20) != 0)
     {
       goto LABEL_36;
     }
@@ -284,22 +284,22 @@ LABEL_36:
     }
   }
 
-  if (a1 && ([a1 reason] == 9 || objc_msgSend(a1, "reason") == 13))
+  if (self && ([self reason] == 9 || objc_msgSend(self, "reason") == 13))
   {
     [v7 setTargetedBySuspendableAssertion:1];
   }
 
-  v31 = [v8 targetIdentity];
-  v32 = [v31 embeddedApplicationIdentifier];
-  v33 = [v32 isEqualToString:@"com.apple.mobilesafari"];
+  targetIdentity = [v8 targetIdentity];
+  embeddedApplicationIdentifier = [targetIdentity embeddedApplicationIdentifier];
+  v33 = [embeddedApplicationIdentifier isEqualToString:@"com.apple.mobilesafari"];
 
   if (v33)
   {
     if (([v7 jetsamLenientMode] & 1) == 0)
     {
-      v34 = [v8 availableInheritances];
-      v35 = [v34 allNamespaces];
-      v36 = [v35 containsObject:*MEMORY[0x277D470D0]];
+      availableInheritances = [v8 availableInheritances];
+      allNamespaces = [availableInheritances allNamespaces];
+      v36 = [allNamespaces containsObject:*MEMORY[0x277D470D0]];
 
       if (v36)
       {
@@ -308,15 +308,15 @@ LABEL_36:
     }
   }
 
-  v37 = [a1 reason];
-  if (v37 == 10008)
+  reason = [self reason];
+  if (reason == 10008)
   {
     [v7 setThrottleBestEffortNetworking:1];
   }
 
-  if (a1)
+  if (self)
   {
-    v38 = [a1 reason] - 19;
+    v38 = [self reason] - 19;
     if (v38 > 4)
     {
       v39 = 80;
@@ -327,17 +327,17 @@ LABEL_36:
       v39 = qword_26250BA28[v38];
     }
 
-    v40 = [(RBSLegacyAttribute *)a1 _maxCPUDuration];
+    _maxCPUDuration = [(RBSLegacyAttribute *)self _maxCPUDuration];
 LABEL_53:
-    v41 = [v8 targetProcess];
-    v42 = [v41 isPlatformBinary];
+    targetProcess = [v8 targetProcess];
+    isPlatformBinary = [targetProcess isPlatformBinary];
 
-    if ((v42 & 1) == 0)
+    if ((isPlatformBinary & 1) == 0)
     {
-      if (a1)
+      if (self)
       {
-        v43 = [a1 reason];
-        if (v43 <= 0x17 && ((1 << v43) & 0xA80010) != 0)
+        reason2 = [self reason];
+        if (reason2 <= 0x17 && ((1 << reason2) & 0xA80010) != 0)
         {
           v44 = 1;
         }
@@ -353,7 +353,7 @@ LABEL_53:
         v44 = 0;
       }
 
-      v45 = [[RBProcessCPUMaximumLimits alloc] initWithPercentage:v39 duration:v40 violationPolicy:v44];
+      v45 = [[RBProcessCPUMaximumLimits alloc] initWithPercentage:v39 duration:_maxCPUDuration violationPolicy:v44];
       v46 = [[RBProcessCPUMaximumLimits alloc] initWithPercentage:80 duration:180 violationPolicy:0];
       v47 = [[RBProcessCPUMaximumLimits alloc] initWithPercentage:80 duration:180 violationPolicy:0];
       [v7 setMaxCPUUsageLimits:v45 forRole:2];
@@ -365,19 +365,19 @@ LABEL_53:
     goto LABEL_59;
   }
 
-  v49 = [(RBSLegacyAttribute *)0 _maxCPUDuration];
-  if (v49)
+  _maxCPUDuration2 = [(RBSLegacyAttribute *)0 _maxCPUDuration];
+  if (_maxCPUDuration2)
   {
-    v40 = v49;
+    _maxCPUDuration = _maxCPUDuration2;
     v39 = 0;
     goto LABEL_53;
   }
 
 LABEL_59:
-  v48 = [v7 legacyFinishTaskReason];
-  if ([(RBSLegacyAttribute *)a1 _isLegacyReasonFinishableTask:v37]&& v48 - 1 >= v37)
+  legacyFinishTaskReason = [v7 legacyFinishTaskReason];
+  if ([(RBSLegacyAttribute *)self _isLegacyReasonFinishableTask:reason]&& legacyFinishTaskReason - 1 >= reason)
   {
-    [v7 setLegacyFinishTaskReason:v37];
+    [v7 setLegacyFinishTaskReason:reason];
   }
 
 LABEL_4:
@@ -389,38 +389,38 @@ LABEL_4:
   v7 = a3;
   if (!a4)
   {
-    [RBSLegacyAttribute(RBProcessState) isValidForContext:a2 withError:a1];
+    [RBSLegacyAttribute(RBProcessState) isValidForContext:a2 withError:self];
   }
 
-  if ([a1 requestedReason] == 9)
+  if ([self requestedReason] == 9)
   {
-    v8 = [v7 targetIdentity];
-    v9 = [v8 isXPCService];
+    targetIdentity = [v7 targetIdentity];
+    isXPCService = [targetIdentity isXPCService];
 
-    if (v9)
+    if (isXPCService)
     {
       v10 = rbs_assertion_log();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
-        v11 = [v7 assertionDescriptor];
-        v12 = [v11 identifier];
+        assertionDescriptor = [v7 assertionDescriptor];
+        identifier = [assertionDescriptor identifier];
         *buf = 138543362;
-        v33 = v12;
+        v33 = identifier;
         _os_log_impl(&dword_262485000, v10, OS_LOG_TYPE_DEFAULT, "Mutating assertion %{public}@ reason from ViewService to Extension because it targets an xpc service.", buf, 0xCu);
       }
 
-      [a1 setReason:13];
+      [self setReason:13];
     }
   }
 
   v29 = 0;
-  v13 = [(RBSLegacyAttribute *)a1 _isOriginatorValidForContext:v7 errorReason:&v29];
+  v13 = [(RBSLegacyAttribute *)self _isOriginatorValidForContext:v7 errorReason:&v29];
   v14 = v29;
   v15 = v14;
   if (v13)
   {
     v28 = 0;
-    v27 = [(RBSLegacyAttribute *)a1 _isTargetValidForContext:v7 errorReason:&v28];
+    v27 = [(RBSLegacyAttribute *)self _isTargetValidForContext:v7 errorReason:&v28];
     v16 = v28;
 
     if (v27)
@@ -437,7 +437,7 @@ LABEL_4:
 
   if (!v16)
   {
-    [RBSLegacyAttribute(RBProcessState) isValidForContext:a2 withError:a1];
+    [RBSLegacyAttribute(RBProcessState) isValidForContext:a2 withError:self];
   }
 
   v17 = rbs_assertion_log();
@@ -453,7 +453,7 @@ LABEL_4:
   v21 = *MEMORY[0x277D47048];
   v30[0] = v20;
   v30[1] = v21;
-  v22 = [a1 description];
+  v22 = [self description];
   v31[1] = v22;
   v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v31 forKeys:v30 count:2];
   *a4 = [v18 errorWithDomain:v19 code:2 userInfo:v23];
@@ -469,11 +469,11 @@ LABEL_15:
 {
   v15[1] = *MEMORY[0x277D85DE8];
   v6 = a3;
-  if (v6 != a1 && (v7 = objc_opt_class(), v7 == objc_opt_class()))
+  if (v6 != self && (v7 = objc_opt_class(), v7 == objc_opt_class()))
   {
     if (a4)
     {
-      v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Attribute conflict: attribute %@ conflicts with attribute %@", a1, v6];
+      v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Attribute conflict: attribute %@ conflicts with attribute %@", self, v6];
       v11 = MEMORY[0x277CCA9B8];
       v12 = *MEMORY[0x277D47050];
       v14 = *MEMORY[0x277CCA470];

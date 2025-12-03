@@ -1,9 +1,9 @@
 @interface _HDDataEntitySyncMessageBuilder
-- (BOOL)finishAndFlushWithError:(id *)a3;
+- (BOOL)finishAndFlushWithError:(id *)error;
 - (_HDDataEntitySyncMessageBuilder)init;
-- (_HDDataEntitySyncMessageBuilder)initWithProfile:(id)a3 transaction:(id)a4 entityClass:(Class)a5 version:(id)a6 provenanceCache:(id)a7 encodingOptions:(id)a8 messageHandler:(id)a9 bytesPerChangeSet:(int64_t)a10 bytesPerChange:(int64_t)a11;
-- (int64_t)addEntity:(id)a3 row:(HDSQLiteRow *)a4 anchor:(int64_t)a5 error:(id *)a6;
-- (uint64_t)_sendCurrentCollectionIsFinal:(uint64_t)a3 error:;
+- (_HDDataEntitySyncMessageBuilder)initWithProfile:(id)profile transaction:(id)transaction entityClass:(Class)class version:(id)version provenanceCache:(id)cache encodingOptions:(id)options messageHandler:(id)handler bytesPerChangeSet:(int64_t)self0 bytesPerChange:(int64_t)self1;
+- (int64_t)addEntity:(id)entity row:(HDSQLiteRow *)row anchor:(int64_t)anchor error:(id *)error;
+- (uint64_t)_sendCurrentCollectionIsFinal:(uint64_t)final error:;
 @end
 
 @implementation _HDDataEntitySyncMessageBuilder
@@ -18,31 +18,31 @@
   return 0;
 }
 
-- (_HDDataEntitySyncMessageBuilder)initWithProfile:(id)a3 transaction:(id)a4 entityClass:(Class)a5 version:(id)a6 provenanceCache:(id)a7 encodingOptions:(id)a8 messageHandler:(id)a9 bytesPerChangeSet:(int64_t)a10 bytesPerChange:(int64_t)a11
+- (_HDDataEntitySyncMessageBuilder)initWithProfile:(id)profile transaction:(id)transaction entityClass:(Class)class version:(id)version provenanceCache:(id)cache encodingOptions:(id)options messageHandler:(id)handler bytesPerChangeSet:(int64_t)self0 bytesPerChange:(int64_t)self1
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
+  profileCopy = profile;
+  transactionCopy = transaction;
+  cacheCopy = cache;
+  optionsCopy = options;
+  handlerCopy = handler;
   v27.receiver = self;
   v27.super_class = _HDDataEntitySyncMessageBuilder;
   v21 = [(_HDDataEntitySyncMessageBuilder *)&v27 init];
   v22 = v21;
   if (v21)
   {
-    objc_storeWeak(&v21->_profile, v16);
-    v22->_entityClass = a5;
-    v22->_entityVersion = a6;
-    objc_storeStrong(&v22->_provenanceCache, a7);
-    objc_storeStrong(&v22->_transaction, a4);
-    v23 = [(objc_class *)a5 entityEncoderForProfile:v16 transaction:v17 purpose:0 encodingOptions:v19 authorizationFilter:0];
+    objc_storeWeak(&v21->_profile, profileCopy);
+    v22->_entityClass = class;
+    v22->_entityVersion = version;
+    objc_storeStrong(&v22->_provenanceCache, cache);
+    objc_storeStrong(&v22->_transaction, transaction);
+    v23 = [(objc_class *)class entityEncoderForProfile:profileCopy transaction:transactionCopy purpose:0 encodingOptions:optionsCopy authorizationFilter:0];
     entityEncoder = v22->_entityEncoder;
     v22->_entityEncoder = v23;
 
-    objc_storeStrong(&v22->_messageHandler, a9);
-    v22->_maxEncodedBytesPerChangeSet = a10;
-    v22->_maxEncodedBytesPerChange = a11;
+    objc_storeStrong(&v22->_messageHandler, handler);
+    v22->_maxEncodedBytesPerChangeSet = set;
+    v22->_maxEncodedBytesPerChange = change;
     *&v22->_totalEncodedBytes = 0u;
     *&v22->_lastEntityAnchor = 0u;
     *&v22->_hasEncodedAnyObject = 0;
@@ -51,15 +51,15 @@
   return v22;
 }
 
-- (int64_t)addEntity:(id)a3 row:(HDSQLiteRow *)a4 anchor:(int64_t)a5 error:(id *)a6
+- (int64_t)addEntity:(id)entity row:(HDSQLiteRow *)row anchor:(int64_t)anchor error:(id *)error
 {
   v44 = *MEMORY[0x277D85DE8];
-  v10 = a3;
+  entityCopy = entity;
   v11 = [MEMORY[0x277CCABB0] numberWithLongLong:HDSQLiteColumnWithNameAsInt64()];
   v12 = [(HDDataProvenanceCache *)self->_provenanceCache provenanceWithID:v11];
   if (!v12)
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a6 code:100 format:{@"Failed to retrieve provenance for id %@", v11}];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:100 format:{@"Failed to retrieve provenance for id %@", v11}];
 LABEL_9:
     v24 = 2;
     goto LABEL_10;
@@ -71,11 +71,11 @@ LABEL_9:
 
   if (!v15)
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a6 code:100 format:{@"Failed to find/create codable object collection for provenance %@", v12}];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:100 format:{@"Failed to find/create codable object collection for provenance %@", v12}];
     goto LABEL_9;
   }
 
-  v16 = v10;
+  v16 = entityCopy;
   v17 = v12;
   v38[0] = 0;
   v38[1] = v38;
@@ -87,9 +87,9 @@ LABEL_9:
   v37 = 0;
   entityEncoder = self->_entityEncoder;
   v27 = v16;
-  v19 = [v16 persistentID];
+  persistentID = [v16 persistentID];
   maxEncodedBytesPerChange = self->_maxEncodedBytesPerChange;
-  v32 = a5;
+  anchorCopy = anchor;
   v33 = 0;
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
@@ -100,7 +100,7 @@ LABEL_9:
   v31 = v38;
   v21 = v17;
   v29 = v21;
-  LOBYTE(v17) = [(HDEntityEncoder *)entityEncoder generateCodableRepresentationsForPersistentID:v19 row:a4 maxBytesPerRepresentation:maxEncodedBytesPerChange error:&v33 handler:v28];
+  LOBYTE(v17) = [(HDEntityEncoder *)entityEncoder generateCodableRepresentationsForPersistentID:persistentID row:row maxBytesPerRepresentation:maxEncodedBytesPerChange error:&v33 handler:v28];
   v22 = v33;
   if ((v17 & 1) == 0)
   {
@@ -109,7 +109,7 @@ LABEL_9:
     if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v41 = self;
+      selfCopy = self;
       v42 = 2114;
       v43 = v22;
       _os_log_error_impl(&dword_228986000, v23, OS_LOG_TYPE_ERROR, "%{public}@: failed to generate codable representation for sync: %{public}@", buf, 0x16u);
@@ -126,7 +126,7 @@ LABEL_10:
   return v24;
 }
 
-- (BOOL)finishAndFlushWithError:(id *)a3
+- (BOOL)finishAndFlushWithError:(id *)error
 {
   [(HDEntityEncoder *)self->_entityEncoder finish];
   if (!self->_hasEncodedAnyObject || self->_didSendFinal)
@@ -136,16 +136,16 @@ LABEL_10:
 
   self->_didSendFinal = 1;
 
-  return [(_HDDataEntitySyncMessageBuilder *)self _sendCurrentCollectionIsFinal:a3 error:?];
+  return [(_HDDataEntitySyncMessageBuilder *)self _sendCurrentCollectionIsFinal:error error:?];
 }
 
-- (uint64_t)_sendCurrentCollectionIsFinal:(uint64_t)a3 error:
+- (uint64_t)_sendCurrentCollectionIsFinal:(uint64_t)final error:
 {
   if (result)
   {
     v5 = result;
-    v6 = [*(result + 32) allCodableObjectCollections];
-    v7 = [*(v5 + 56) sendCodableChange:v6 version:*(v5 + 24) resultAnchor:*(v5 + 96) sequence:*(v5 + 104) done:a2 error:a3];
+    allCodableObjectCollections = [*(result + 32) allCodableObjectCollections];
+    v7 = [*(v5 + 56) sendCodableChange:allCodableObjectCollections version:*(v5 + 24) resultAnchor:*(v5 + 96) sequence:*(v5 + 104) done:a2 error:final];
     [*(v5 + 32) clearCodableObjectCollections];
     *(v5 + 88) = 0;
 

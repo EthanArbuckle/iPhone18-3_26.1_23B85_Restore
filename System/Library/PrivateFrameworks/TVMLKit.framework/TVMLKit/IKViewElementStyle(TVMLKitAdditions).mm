@@ -50,11 +50,11 @@
 
 - (TVViewElementStyle)tv_associatedViewElementStyle
 {
-  v2 = objc_getAssociatedObject(a1, "TVAssociatedViewElementStyle");
+  v2 = objc_getAssociatedObject(self, "TVAssociatedViewElementStyle");
   if (!v2)
   {
-    v2 = [[TVViewElementStyle alloc] initWithStyle:a1];
-    objc_setAssociatedObject(a1, "TVAssociatedViewElementStyle", v2, 0x301);
+    v2 = [[TVViewElementStyle alloc] initWithStyle:self];
+    objc_setAssociatedObject(self, "TVAssociatedViewElementStyle", v2, 0x301);
   }
 
   return v2;
@@ -63,19 +63,19 @@
 - (void)tv_setStyleMetrics:()TVMLKitAdditions
 {
   value = a3;
-  v4 = [value valuesByStyle];
-  [a1 setOverridingValuesByStyle:v4];
+  valuesByStyle = [value valuesByStyle];
+  [self setOverridingValuesByStyle:valuesByStyle];
 
-  objc_setAssociatedObject(a1, sel_tv_styleMetrics, value, 1);
+  objc_setAssociatedObject(self, sel_tv_styleMetrics, value, 1);
 }
 
 - (uint64_t)tv_edgeFlagForStyle:()TVMLKitAdditions
 {
   v4 = a3;
-  if ([a1 typeForStyle:v4] == 7)
+  if ([self typeForStyle:v4] == 7)
   {
-    v5 = [a1 tv_styleMetrics];
-    v6 = [v5 valueForStyle:v4];
+    tv_styleMetrics = [self tv_styleMetrics];
+    v6 = [tv_styleMetrics valueForStyle:v4];
 
     if (v6)
     {
@@ -84,7 +84,7 @@
 
     else
     {
-      v7 = [a1 edgeFlagForStyle:v4];
+      v7 = [self edgeFlagForStyle:v4];
     }
   }
 
@@ -98,7 +98,7 @@
 
 - (void)tv_transform
 {
-  v3 = [a1 tv_valueForStyle:@"transform"];
+  v3 = [self tv_valueForStyle:@"transform"];
   if (v3)
   {
     v6 = v3;
@@ -118,7 +118,7 @@
 
 - (void)tv_focusTransform
 {
-  v3 = [a1 tv_valueForStyle:@"tv-focus-transform"];
+  v3 = [self tv_valueForStyle:@"tv-focus-transform"];
   if (v3)
   {
     v6 = v3;
@@ -138,7 +138,7 @@
 
 - (double)tv_fontSize
 {
-  v1 = [a1 tv_valueForStyle:@"font-size"];
+  v1 = [self tv_valueForStyle:@"font-size"];
   [v1 doubleValue];
   v3 = v2;
 
@@ -147,7 +147,7 @@
 
 - (double)tv_height
 {
-  v1 = [a1 tv_valueForStyle:@"height"];
+  v1 = [self tv_valueForStyle:@"height"];
   [v1 doubleValue];
   v3 = v2;
 
@@ -156,7 +156,7 @@
 
 - (BOOL)tv_hasHeight
 {
-  v1 = [a1 tv_valueForStyle:@"height"];
+  v1 = [self tv_valueForStyle:@"height"];
   v2 = v1 != 0;
 
   return v2;
@@ -164,7 +164,7 @@
 
 - (double)tv_interitemSpacing
 {
-  v1 = [a1 tv_valueForStyle:@"tv-interitem-spacing"];
+  v1 = [self tv_valueForStyle:@"tv-interitem-spacing"];
   [v1 doubleValue];
   v3 = v2;
 
@@ -173,7 +173,7 @@
 
 - (double)tv_lineSpacing
 {
-  v1 = [a1 tv_valueForStyle:@"tv-line-spacing"];
+  v1 = [self tv_valueForStyle:@"tv-line-spacing"];
   [v1 doubleValue];
   v3 = v2;
 
@@ -182,7 +182,7 @@
 
 - (double)tv_maxHeight
 {
-  v1 = [a1 tv_valueForStyle:@"max-height"];
+  v1 = [self tv_valueForStyle:@"max-height"];
   [v1 doubleValue];
   v3 = v2;
 
@@ -191,7 +191,7 @@
 
 - (double)tv_maxWidth
 {
-  v1 = [a1 tv_valueForStyle:@"max-width"];
+  v1 = [self tv_valueForStyle:@"max-width"];
   [v1 doubleValue];
   v3 = v2;
 
@@ -200,7 +200,7 @@
 
 - (double)tv_minHeight
 {
-  v1 = [a1 tv_valueForStyle:@"min-height"];
+  v1 = [self tv_valueForStyle:@"min-height"];
   [v1 doubleValue];
   v3 = v2;
 
@@ -209,7 +209,7 @@
 
 - (double)tv_minWidth
 {
-  v1 = [a1 tv_valueForStyle:@"min-width"];
+  v1 = [self tv_valueForStyle:@"min-width"];
   [v1 doubleValue];
   v3 = v2;
 
@@ -218,7 +218,7 @@
 
 - (double)tv_transitionInterval
 {
-  v1 = [a1 tv_valueForStyle:@"tv-transition-interval"];
+  v1 = [self tv_valueForStyle:@"tv-transition-interval"];
   [v1 doubleValue];
   v3 = v2;
 
@@ -227,15 +227,15 @@
 
 - (uint64_t)tv_adjustsFontSizeToFitWidth
 {
-  v1 = [a1 tv_valueForStyle:@"tv-minimum-scale-factor"];
-  v2 = [v1 BOOLValue];
+  v1 = [self tv_valueForStyle:@"tv-minimum-scale-factor"];
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (double)tv_minimumScaleFactor
 {
-  v1 = [a1 tv_valueForStyle:@"tv-minimum-scale-factor"];
+  v1 = [self tv_valueForStyle:@"tv-minimum-scale-factor"];
   [v1 doubleValue];
   v3 = v2;
 
@@ -244,7 +244,7 @@
 
 - (double)tv_width
 {
-  v1 = [a1 tv_valueForStyle:@"width"];
+  v1 = [self tv_valueForStyle:@"width"];
   [v1 doubleValue];
   v3 = v2;
 
@@ -253,7 +253,7 @@
 
 - (BOOL)tv_hasWidth
 {
-  v1 = [a1 tv_valueForStyle:@"width"];
+  v1 = [self tv_valueForStyle:@"width"];
   v2 = v1 != 0;
 
   return v2;
@@ -261,7 +261,7 @@
 
 - (double)tv_columnPadding
 {
-  v1 = [a1 tv_valueForStyle:@"tv-column-padding"];
+  v1 = [self tv_valueForStyle:@"tv-column-padding"];
   [v1 doubleValue];
   v3 = v2;
 
@@ -270,15 +270,15 @@
 
 - (uint64_t)tv_fontStretch
 {
-  v1 = [a1 tv_valueForStyle:@"font-stretch"];
-  v2 = [v1 lowercaseString];
+  v1 = [self tv_valueForStyle:@"font-stretch"];
+  lowercaseString = [v1 lowercaseString];
 
-  if ([v2 isEqualToString:@"condensed"])
+  if ([lowercaseString isEqualToString:@"condensed"])
   {
     v3 = 64;
   }
 
-  else if ([v2 isEqualToString:@"expanded"])
+  else if ([lowercaseString isEqualToString:@"expanded"])
   {
     v3 = 32;
   }
@@ -293,18 +293,18 @@
 
 - (void)tv_textHyphenationFactor
 {
-  v2 = [a1 tv_valueForStyle:@"tv-text-hyphenation-factor"];
+  v2 = [self tv_valueForStyle:@"tv-text-hyphenation-factor"];
 
   if (v2)
   {
-    v3 = [a1 tv_valueForStyle:@"tv-text-hyphenation-factor"];
-    [v3 doubleValue];
+    mEMORY[0x277D75128] = [self tv_valueForStyle:@"tv-text-hyphenation-factor"];
+    [mEMORY[0x277D75128] doubleValue];
   }
 
   else
   {
-    v3 = [MEMORY[0x277D75128] sharedApplication];
-    v4 = [v3 preferredContentSizeCategory];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    preferredContentSizeCategory = [mEMORY[0x277D75128] preferredContentSizeCategory];
     _UIContentSizeCategoryIsAccessibilityContentSizeCategory();
   }
 }
@@ -316,52 +316,52 @@
     [IKViewElementStyle(TVMLKitAdditions) tv_textAlignment];
   }
 
-  v2 = [a1 tv_valueForStyle:@"text-align"];
+  v2 = [self tv_valueForStyle:@"text-align"];
   if (v2)
   {
     v3 = [tv_textAlignment_sAlignmentKeysMap objectForKeyedSubscript:v2];
-    v4 = [v3 unsignedIntegerValue];
+    unsignedIntegerValue = [v3 unsignedIntegerValue];
   }
 
   else
   {
-    v4 = 4;
+    unsignedIntegerValue = 4;
   }
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (uint64_t)tv_columnCount
 {
-  v1 = [a1 tv_valueForStyle:@"column-count"];
-  v2 = [v1 unsignedIntegerValue];
+  v1 = [self tv_valueForStyle:@"column-count"];
+  unsignedIntegerValue = [v1 unsignedIntegerValue];
 
-  return v2;
+  return unsignedIntegerValue;
 }
 
 - (uint64_t)tv_rowCount
 {
-  v1 = [a1 tv_valueForStyle:@"row-count"];
-  v2 = [v1 unsignedIntegerValue];
+  v1 = [self tv_valueForStyle:@"row-count"];
+  unsignedIntegerValue = [v1 unsignedIntegerValue];
 
-  return v2;
+  return unsignedIntegerValue;
 }
 
 - (uint64_t)tv_maxTextLines
 {
-  v1 = [a1 tv_valueForStyle:@"tv-text-max-lines"];
+  v1 = [self tv_valueForStyle:@"tv-text-max-lines"];
   v2 = v1;
   if (v1)
   {
-    v3 = [v1 unsignedIntegerValue];
+    unsignedIntegerValue = [v1 unsignedIntegerValue];
   }
 
   else
   {
-    v3 = 1;
+    unsignedIntegerValue = 1;
   }
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (uint64_t)tv_alignment
@@ -371,24 +371,24 @@
     [IKViewElementStyle(TVMLKitAdditions) tv_alignment];
   }
 
-  v2 = [a1 tv_valueForStyle:@"tv-align"];
+  v2 = [self tv_valueForStyle:@"tv-align"];
   if ([v2 length])
   {
     v3 = [tv_alignment_sAlignmentKeysMap objectForKeyedSubscript:v2];
-    v4 = [v3 unsignedIntegerValue];
+    unsignedIntegerValue = [v3 unsignedIntegerValue];
   }
 
   else
   {
-    v4 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (uint64_t)tv_position
 {
-  v1 = [a1 tv_valueForStyle:@"tv-position"];
+  v1 = [self tv_valueForStyle:@"tv-position"];
   if (tv_position_onceToken != -1)
   {
     [IKViewElementStyle(TVMLKitAdditions) tv_position];
@@ -397,20 +397,20 @@
   if ([v1 length])
   {
     v2 = [tv_position_sPositionKeysMap objectForKeyedSubscript:v1];
-    v3 = [v2 unsignedIntegerValue];
+    unsignedIntegerValue = [v2 unsignedIntegerValue];
   }
 
   else
   {
-    v3 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (double)tv_borderWidths
 {
-  v1 = [a1 tv_valueForStyle:@"border-width"];
+  v1 = [self tv_valueForStyle:@"border-width"];
   [v1 UIEdgeInsetsValue];
   v3 = v2;
 
@@ -419,7 +419,7 @@
 
 - (uint64_t)tv_borderContinuous
 {
-  v1 = [a1 tv_valueForStyle:@"tv-border-continuous"];
+  v1 = [self tv_valueForStyle:@"tv-border-continuous"];
   v2 = [v1 isEqualToString:@"true"];
 
   return v2;
@@ -427,7 +427,7 @@
 
 - (double)tv_margin
 {
-  v1 = [a1 tv_valueForStyle:@"margin"];
+  v1 = [self tv_valueForStyle:@"margin"];
   [v1 UIEdgeInsetsValue];
   v3 = v2;
 
@@ -436,7 +436,7 @@
 
 - (BOOL)tv_hasFocusMargin
 {
-  v1 = [a1 tv_valueForStyle:@"tv-focus-margin"];
+  v1 = [self tv_valueForStyle:@"tv-focus-margin"];
   v2 = v1 != 0;
 
   return v2;
@@ -444,7 +444,7 @@
 
 - (double)tv_focusMargin
 {
-  v1 = [a1 tv_valueForStyle:@"tv-focus-margin"];
+  v1 = [self tv_valueForStyle:@"tv-focus-margin"];
   [v1 UIEdgeInsetsValue];
   v3 = v2;
 
@@ -453,7 +453,7 @@
 
 - (double)tv_padding
 {
-  v1 = [a1 tv_valueForStyle:@"padding"];
+  v1 = [self tv_valueForStyle:@"padding"];
   [v1 UIEdgeInsetsValue];
   v3 = v2;
 
@@ -467,24 +467,24 @@
     [IKViewElementStyle(TVMLKitAdditions) tv_contentAlignment];
   }
 
-  v2 = [a1 tv_valueForStyle:@"tv-content-align"];
+  v2 = [self tv_valueForStyle:@"tv-content-align"];
   if ([v2 length])
   {
     v3 = [tv_contentAlignment_sAlignmentKeysMap objectForKeyedSubscript:v2];
-    v4 = [v3 unsignedIntegerValue];
+    unsignedIntegerValue = [v3 unsignedIntegerValue];
   }
 
   else
   {
-    v4 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (double)tv_imageUpscaleFactor
 {
-  v1 = [a1 tv_valueForStyle:@"tv-img-upscale-factor"];
+  v1 = [self tv_valueForStyle:@"tv-img-upscale-factor"];
   [v1 doubleValue];
   v3 = v2;
 
@@ -493,7 +493,7 @@
 
 - (double)tv_focusSizeIncrease
 {
-  v1 = [a1 tv_valueForStyle:@"tv-focus-size-increase"];
+  v1 = [self tv_valueForStyle:@"tv-focus-size-increase"];
   [v1 doubleValue];
   v3 = v2;
 
@@ -502,24 +502,24 @@
 
 - (uint64_t)tv_acceptsFocus
 {
-  v1 = [a1 tv_valueForStyle:@"tv-accepts-focus"];
+  v1 = [self tv_valueForStyle:@"tv-accepts-focus"];
   v2 = v1;
   if (v1)
   {
-    v3 = [v1 BOOLValue];
+    bOOLValue = [v1 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (double)tv_scrollableBoundsInset
 {
-  v1 = [a1 tv_valueForStyle:@"tv-scrollable-bounds-inset"];
+  v1 = [self tv_valueForStyle:@"tv-scrollable-bounds-inset"];
   [v1 UIEdgeInsetsValue];
   v3 = v2;
 
@@ -528,7 +528,7 @@
 
 - (uint64_t)tv_indexDisplayMode
 {
-  v1 = [a1 valueForStyle:@"tv-index-display"];
+  v1 = [self valueForStyle:@"tv-index-display"];
   if ([v1 isEqualToString:@"hidden"])
   {
     v2 = 1;
@@ -549,15 +549,15 @@
 
 - (uint64_t)tv_maxLines
 {
-  v1 = [a1 tv_valueForStyle:@"tv-max-lines"];
-  v2 = [v1 unsignedIntegerValue];
+  v1 = [self tv_valueForStyle:@"tv-max-lines"];
+  unsignedIntegerValue = [v1 unsignedIntegerValue];
 
-  return v2;
+  return unsignedIntegerValue;
 }
 
 - (double)tv_symbolPointSize
 {
-  v1 = [a1 tv_valueForStyle:@"tv-symbol-point-size"];
+  v1 = [self tv_valueForStyle:@"tv-symbol-point-size"];
   [v1 doubleValue];
   v3 = v2;
 
@@ -571,19 +571,19 @@
     [IKViewElementStyle(TVMLKitAdditions) tv_symbolWeight];
   }
 
-  v2 = [a1 tv_valueForStyle:@"tv-symbol-weight"];
+  v2 = [self tv_valueForStyle:@"tv-symbol-weight"];
   if ([v2 length])
   {
     v3 = [tv_symbolWeight_sSymbolWeightMap objectForKeyedSubscript:v2];
-    v4 = [v3 unsignedIntegerValue];
+    unsignedIntegerValue = [v3 unsignedIntegerValue];
   }
 
   else
   {
-    v4 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (uint64_t)tv_symbolScale
@@ -593,19 +593,19 @@
     [IKViewElementStyle(TVMLKitAdditions) tv_symbolScale];
   }
 
-  v2 = [a1 tv_valueForStyle:@"tv-symbol-scale"];
+  v2 = [self tv_valueForStyle:@"tv-symbol-scale"];
   if ([v2 length])
   {
     v3 = [tv_symbolScale_sSymbolScaleMap objectForKeyedSubscript:v2];
-    v4 = [v3 unsignedIntegerValue];
+    unsignedIntegerValue = [v3 unsignedIntegerValue];
   }
 
   else
   {
-    v4 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (id)tv_symbolTextStyle
@@ -615,7 +615,7 @@
     [IKViewElementStyle(TVMLKitAdditions) tv_symbolTextStyle];
   }
 
-  v2 = [a1 tv_valueForStyle:@"tv-symbol-text-style"];
+  v2 = [self tv_valueForStyle:@"tv-symbol-text-style"];
   if ([v2 length])
   {
     v3 = [tv_symbolTextStyle_sSymbolTextStyleMap objectForKeyedSubscript:v2];

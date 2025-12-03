@@ -1,25 +1,25 @@
 @interface FigBaseCALayer
 - (FigBaseCALayer)init;
-- (FigBaseCALayer)initWithDeferredTransaction:(OpaqueFigDeferredTransaction *)a3;
+- (FigBaseCALayer)initWithDeferredTransaction:(OpaqueFigDeferredTransaction *)transaction;
 - (float)getDisplayScale;
-- (id)actionForKey:(id)a3;
+- (id)actionForKey:(id)key;
 - (id)getLayerDisplay;
 - (uint64_t)layoutSublayers;
-- (void)addSublayer:(id)a3;
+- (void)addSublayer:(id)sublayer;
 - (void)dealloc;
 - (void)enableDRMFallback;
-- (void)insertSublayer:(id)a3 above:(id)a4;
-- (void)insertSublayer:(id)a3 atIndex:(unsigned int)a4;
-- (void)insertSublayer:(id)a3 below:(id)a4;
+- (void)insertSublayer:(id)sublayer above:(id)above;
+- (void)insertSublayer:(id)sublayer atIndex:(unsigned int)index;
+- (void)insertSublayer:(id)sublayer below:(id)below;
 - (void)layoutDRMLayerPositionsAndSizes;
 - (void)layoutSublayers;
 - (void)removeFromSuperlayer;
-- (void)replaceSublayer:(id)a3 with:(id)a4;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
+- (void)replaceSublayer:(id)sublayer with:(id)with;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
 - (void)setNeedsDisplay;
-- (void)setPosition:(CGPoint)a3;
-- (void)setSublayers:(id)a3;
+- (void)setPosition:(CGPoint)position;
+- (void)setSublayers:(id)sublayers;
 @end
 
 @implementation FigBaseCALayer
@@ -43,7 +43,7 @@
   return v4;
 }
 
-- (FigBaseCALayer)initWithDeferredTransaction:(OpaqueFigDeferredTransaction *)a3
+- (FigBaseCALayer)initWithDeferredTransaction:(OpaqueFigDeferredTransaction *)transaction
 {
   cf = 0;
   FigNote_AllowInternalDefaultLogs();
@@ -57,7 +57,7 @@
     return v5;
   }
 
-  if (!a3)
+  if (!transaction)
   {
     if (FigDeferredTransactionCreate(*MEMORY[0x1E695E480], &cf))
     {
@@ -71,11 +71,11 @@ LABEL_6:
       return 0;
     }
 
-    a3 = cf;
+    transaction = cf;
   }
 
   [(FigBaseCALayer *)v5 getDisplayScale];
-  v7 = FBLSupportAppendDeferredTransactionChangeToSetContentsScaleForFigCALayer(a3, v5, "[FigBaseCALayer initWithDeferredTransaction:]", v6);
+  v7 = FBLSupportAppendDeferredTransactionChangeToSetContentsScaleForFigCALayer(transaction, v5, "[FigBaseCALayer initWithDeferredTransaction:]", v6);
   v5->_enabledDRMFallback = 0;
   if (v7)
   {
@@ -91,75 +91,75 @@ LABEL_6:
   return v5;
 }
 
-- (id)actionForKey:(id)a3
+- (id)actionForKey:(id)key
 {
-  if (([a3 isEqualToString:@"contentsCDRStrength"] & 1) == 0 && (objc_msgSend(a3, "isEqualToString:", @"contentsEDRStrength") & 1) == 0 && !objc_msgSend(a3, "isEqualToString:", @"preferredDynamicRange"))
+  if (([key isEqualToString:@"contentsCDRStrength"] & 1) == 0 && (objc_msgSend(key, "isEqualToString:", @"contentsEDRStrength") & 1) == 0 && !objc_msgSend(key, "isEqualToString:", @"preferredDynamicRange"))
   {
     return 0;
   }
 
   v6.receiver = self;
   v6.super_class = FigBaseCALayer;
-  return [(FigBaseCALayer *)&v6 actionForKey:a3];
+  return [(FigBaseCALayer *)&v6 actionForKey:key];
 }
 
-- (void)setSublayers:(id)a3
+- (void)setSublayers:(id)sublayers
 {
   if (!self->_preventsChangesToSublayerHierarchy)
   {
     v3.receiver = self;
     v3.super_class = FigBaseCALayer;
-    [(FigBaseCALayer *)&v3 setSublayers:a3];
+    [(FigBaseCALayer *)&v3 setSublayers:sublayers];
   }
 }
 
-- (void)addSublayer:(id)a3
+- (void)addSublayer:(id)sublayer
 {
   if (!self->_preventsChangesToSublayerHierarchy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v5.receiver = self;
     v5.super_class = FigBaseCALayer;
-    [(FigBaseCALayer *)&v5 addSublayer:a3];
+    [(FigBaseCALayer *)&v5 addSublayer:sublayer];
   }
 }
 
-- (void)insertSublayer:(id)a3 atIndex:(unsigned int)a4
+- (void)insertSublayer:(id)sublayer atIndex:(unsigned int)index
 {
   if (!self->_preventsChangesToSublayerHierarchy)
   {
     v4.receiver = self;
     v4.super_class = FigBaseCALayer;
-    [(FigBaseCALayer *)&v4 insertSublayer:a3 atIndex:*&a4];
+    [(FigBaseCALayer *)&v4 insertSublayer:sublayer atIndex:*&index];
   }
 }
 
-- (void)insertSublayer:(id)a3 below:(id)a4
+- (void)insertSublayer:(id)sublayer below:(id)below
 {
   if (!self->_preventsChangesToSublayerHierarchy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v7.receiver = self;
     v7.super_class = FigBaseCALayer;
-    [(FigBaseCALayer *)&v7 insertSublayer:a3 below:a4];
+    [(FigBaseCALayer *)&v7 insertSublayer:sublayer below:below];
   }
 }
 
-- (void)insertSublayer:(id)a3 above:(id)a4
+- (void)insertSublayer:(id)sublayer above:(id)above
 {
   if (!self->_preventsChangesToSublayerHierarchy)
   {
     v4.receiver = self;
     v4.super_class = FigBaseCALayer;
-    [(FigBaseCALayer *)&v4 insertSublayer:a3 above:a4];
+    [(FigBaseCALayer *)&v4 insertSublayer:sublayer above:above];
   }
 }
 
-- (void)replaceSublayer:(id)a3 with:(id)a4
+- (void)replaceSublayer:(id)sublayer with:(id)with
 {
   if (!self->_preventsChangesToSublayerHierarchy)
   {
     v4.receiver = self;
     v4.super_class = FigBaseCALayer;
-    [(FigBaseCALayer *)&v4 replaceSublayer:a3 with:a4];
+    [(FigBaseCALayer *)&v4 replaceSublayer:sublayer with:with];
   }
 }
 
@@ -182,8 +182,8 @@ LABEL_6:
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = [MEMORY[0x1E6979328] displays];
-    v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    displays = [MEMORY[0x1E6979328] displays];
+    v6 = [displays countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
     {
       v7 = v6;
@@ -195,7 +195,7 @@ LABEL_6:
         {
           if (*v15 != v9)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(displays);
           }
 
           v11 = *(*(&v14 + 1) + 8 * i);
@@ -205,7 +205,7 @@ LABEL_6:
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v7 = [displays countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v7);
@@ -220,9 +220,9 @@ LABEL_6:
     return 0;
   }
 
-  v12 = [MEMORY[0x1E6979328] displays];
+  displays2 = [MEMORY[0x1E6979328] displays];
 
-  return [v12 objectAtIndex:0];
+  return [displays2 objectAtIndex:0];
 }
 
 - (float)getDisplayScale
@@ -605,22 +605,22 @@ uint64_t __35__FigBaseCALayer_enableDRMFallback__block_invoke_49(uint64_t a1)
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   v4.receiver = self;
   v4.super_class = FigBaseCALayer;
-  [(FigBaseCALayer *)&v4 setBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(FigBaseCALayer *)&v4 setBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   if (self->_enabledDRMFallback)
   {
     [(FigBaseCALayer *)self layoutDRMLayerPositionsAndSizes];
   }
 }
 
-- (void)setPosition:(CGPoint)a3
+- (void)setPosition:(CGPoint)position
 {
   v14.receiver = self;
   v14.super_class = FigBaseCALayer;
-  [(FigBaseCALayer *)&v14 setPosition:a3.x, a3.y];
+  [(FigBaseCALayer *)&v14 setPosition:position.x, position.y];
   if (self->_enabledDRMFallback)
   {
     [(FigBaseCALayer *)self bounds];
@@ -648,11 +648,11 @@ uint64_t __35__FigBaseCALayer_enableDRMFallback__block_invoke_49(uint64_t a1)
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = FigBaseCALayer;
-  [(FigBaseCALayer *)&v4 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(FigBaseCALayer *)&v4 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (self->_enabledDRMFallback)
   {
     [(FigBaseCALayer *)self layoutDRMLayerPositionsAndSizes];
@@ -684,8 +684,8 @@ uint64_t __35__FigBaseCALayer_enableDRMFallback__block_invoke_49(uint64_t a1)
 
 - (uint64_t)layoutSublayers
 {
-  [a1 layoutDRMLayerPositionsAndSizes];
-  v2 = a1[8];
+  [self layoutDRMLayerPositionsAndSizes];
+  v2 = self[8];
 
   return figUpdateFontSizeForDRMFallbackTextLayer(v2);
 }

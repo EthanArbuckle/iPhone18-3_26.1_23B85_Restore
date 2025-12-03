@@ -1,7 +1,7 @@
 @interface CLFPhotosSettings
 - (id)selectedSharedAlbumCloudIdentifiers;
 - (void)_migrateSelectedSharedAlbumNamesIfNecessary;
-- (void)_saveSelectedSharedAlbumCloudIdentifiersForNames:(id)a3;
+- (void)_saveSelectedSharedAlbumCloudIdentifiersForNames:(id)names;
 @end
 
 @implementation CLFPhotosSettings
@@ -11,9 +11,9 @@
   [(CLFPhotosSettings *)self _migrateSelectedSharedAlbumNamesIfNecessary];
   v5.receiver = self;
   v5.super_class = CLFPhotosSettings;
-  v3 = [(CLFPhotosSettings_GeneratedCode *)&v5 selectedSharedAlbumCloudIdentifiers];
+  selectedSharedAlbumCloudIdentifiers = [(CLFPhotosSettings_GeneratedCode *)&v5 selectedSharedAlbumCloudIdentifiers];
 
-  return v3;
+  return selectedSharedAlbumCloudIdentifiers;
 }
 
 - (void)_migrateSelectedSharedAlbumNamesIfNecessary
@@ -53,11 +53,11 @@ LABEL_10:
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_saveSelectedSharedAlbumCloudIdentifiersForNames:(id)a3
+- (void)_saveSelectedSharedAlbumCloudIdentifiersForNames:(id)names
 {
   v53 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF90] dictionary];
+  namesCopy = names;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v44 = 0;
   v45 = &v44;
   v46 = 0x2050000000;
@@ -81,16 +81,16 @@ LABEL_10:
   v42[1] = 3221225472;
   v42[2] = __81__CLFPhotosSettings_Migration___saveSelectedSharedAlbumCloudIdentifiersForNames___block_invoke;
   v42[3] = &unk_1E8704E50;
-  v8 = v4;
+  v8 = dictionary;
   v43 = v8;
   [v7 enumerateObjectsUsingBlock:v42];
 
-  v33 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v40 = 0u;
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  obj = v3;
+  obj = namesCopy;
   v9 = [obj countByEnumeratingWithState:&v38 objects:v49 count:16];
   if (v9)
   {
@@ -108,7 +108,7 @@ LABEL_10:
         v13 = [v8 objectForKeyedSubscript:v12];
         if ([v13 length])
         {
-          [v33 addObject:v13];
+          [array addObject:v13];
         }
 
         else
@@ -129,8 +129,8 @@ LABEL_10:
     while (v9);
   }
 
-  v31 = [MEMORY[0x1E695DF70] array];
-  if ([v33 count])
+  array2 = [MEMORY[0x1E695DF70] array];
+  if ([array count])
   {
     v44 = 0;
     v45 = &v44;
@@ -150,8 +150,8 @@ LABEL_10:
 
     v16 = v15;
     _Block_object_dispose(&v44, 8);
-    v17 = [v15 sharedPhotoLibrary];
-    v18 = [v17 cloudIdentifierMappingsForLocalIdentifiers:v33];
+    sharedPhotoLibrary = [v15 sharedPhotoLibrary];
+    v18 = [sharedPhotoLibrary cloudIdentifierMappingsForLocalIdentifiers:array];
 
     v36 = 0u;
     v37 = 0u;
@@ -173,12 +173,12 @@ LABEL_10:
 
           v23 = *(*(&v34 + 1) + 8 * j);
           v24 = [v19 objectForKeyedSubscript:v23];
-          v25 = [v24 cloudIdentifier];
-          v26 = [v25 stringValue];
+          cloudIdentifier = [v24 cloudIdentifier];
+          stringValue = [cloudIdentifier stringValue];
 
-          if ([v26 length])
+          if ([stringValue length])
           {
-            [v31 addObject:v26];
+            [array2 addObject:stringValue];
           }
 
           else
@@ -186,11 +186,11 @@ LABEL_10:
             v27 = +[CLFLog commonLog];
             if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
             {
-              v28 = [v24 error];
+              error = [v24 error];
               *buf = 138478083;
               *&buf[4] = v23;
               *&buf[12] = 2112;
-              *&buf[14] = v28;
+              *&buf[14] = error;
               _os_log_error_impl(&dword_1E115B000, v27, OS_LOG_TYPE_ERROR, "Unable to get cloud identifier for shared album with local identifier: %{private}@, error: %@", buf, 0x16u);
             }
           }
@@ -203,7 +203,7 @@ LABEL_10:
     }
   }
 
-  [(CLFPhotosSettings_GeneratedCode *)self setSelectedSharedAlbumCloudIdentifiers:v31];
+  [(CLFPhotosSettings_GeneratedCode *)self setSelectedSharedAlbumCloudIdentifiers:array2];
 
   v29 = *MEMORY[0x1E69E9840];
 }

@@ -5,14 +5,14 @@
 - (AVCaptureConnection)connection;
 - (AVCaptureSession)session;
 - (AVCaptureVideoOrientation)orientation;
-- (AVCaptureVideoPreviewLayer)initWithLayer:(id)a3;
+- (AVCaptureVideoPreviewLayer)initWithLayer:(id)layer;
 - (AVLayerVideoGravity)videoGravity;
 - (AVMetadataObject)transformedMetadataObjectForMetadataObject:(AVMetadataObject *)metadataObject;
-- (BOOL)_filtersAreOptimized:(id)a3 exceptionReason:(id *)a4;
-- (BOOL)_setVideoPreviewFilters:(id)a3 checkForExceptionalInput:(BOOL)a4 exceptionReason:(id *)a5;
+- (BOOL)_filtersAreOptimized:(id)optimized exceptionReason:(id *)reason;
+- (BOOL)_setVideoPreviewFilters:(id)filters checkForExceptionalInput:(BOOL)input exceptionReason:(id *)reason;
 - (BOOL)_zoomPictureInPictureOverlaySupported;
 - (BOOL)automaticallyAdjustsMirroring;
-- (BOOL)canAddConnection:(id)a3 failureReason:(id *)a4;
+- (BOOL)canAddConnection:(id)connection failureReason:(id *)reason;
 - (BOOL)isDeferredStartEnabled;
 - (BOOL)isDepthDataDeliveryEnabled;
 - (BOOL)isDepthDataDeliverySupported;
@@ -26,71 +26,71 @@
 - (BOOL)isUnoptimizedFilterRenderingEnabled;
 - (BOOL)isZoomPictureInPictureOverlayEnabled;
 - (BOOL)isZoomPictureInPictureOverlaySupported;
-- (CGAffineTransform)_updateTransformForMetadataOutputCorrections:(SEL)a3;
-- (CGAffineTransform)captureDeviceTransformForSensorSize:(SEL)a3 previewSize:(CGSize)a4 sensorToPreviewVTScalingMode:(CGSize)a5 applyDynamicAspectRatio:(id)a6;
+- (CGAffineTransform)_updateTransformForMetadataOutputCorrections:(SEL)corrections;
+- (CGAffineTransform)captureDeviceTransformForSensorSize:(SEL)size previewSize:(CGSize)previewSize sensorToPreviewVTScalingMode:(CGSize)mode applyDynamicAspectRatio:(id)ratio;
 - (CGPoint)captureDevicePointOfInterestForPoint:(CGPoint)pointInLayer;
 - (CGPoint)pointForCaptureDevicePointOfInterest:(CGPoint)captureDevicePointOfInterest;
 - (CGRect)metadataOutputRectOfInterestForRect:(CGRect)rectInLayerCoordinates;
 - (CGRect)rectForMetadataOutputRectOfInterest:(CGRect)rectInMetadataOutputCoordinates;
 - (CGRect)zoomPictureInPictureOverlayRect;
 - (double)previewRotationDegrees;
-- (id)_initWithSession:(id)a3 makeConnection:(BOOL)a4;
+- (id)_initWithSession:(id)session makeConnection:(BOOL)connection;
 - (id)_input;
-- (id)addConnection:(id)a3 error:(id *)a4;
+- (id)addConnection:(id)connection error:(id *)error;
 - (id)sinkID;
 - (id)videoPreviewFilters;
 - (unsigned)imageQueueSlot;
-- (void)_handleNotification:(id)a3 payload:(id)a4;
+- (void)_handleNotification:(id)notification payload:(id)payload;
 - (void)_setPortraitLightingEffectStrengthFromDeviceInput;
 - (void)_setSensorAndEstimatedPreviewSizes;
 - (void)_setSimulatedApertureFromDeviceInput;
 - (void)_updateCaptureDeviceTransform;
 - (void)_updateDepthDataDeliverySupported;
 - (void)_updatePortraitAutoSuggestSupported;
-- (void)_updatePreferredDynamicRangeForFirstPreviewFrameDisplayed:(BOOL)a3;
+- (void)_updatePreferredDynamicRangeForFirstPreviewFrameDisplayed:(BOOL)displayed;
 - (void)_updatePreviewTransforms;
 - (void)_updateSemanticStyleRenderingSupported;
-- (void)_updateZoomPIPOverlayRect:(CGRect)a3;
+- (void)_updateZoomPIPOverlayRect:(CGRect)rect;
 - (void)_updateZoomPictureInPictureOverlaySupported;
-- (void)attachSafelyToFigCaptureSession:(OpaqueFigCaptureSession *)a3;
-- (void)attachToFigCaptureSession:(OpaqueFigCaptureSession *)a3;
+- (void)attachSafelyToFigCaptureSession:(OpaqueFigCaptureSession *)session;
+- (void)attachToFigCaptureSession:(OpaqueFigCaptureSession *)session;
 - (void)bumpChangeSeed;
-- (void)centerSublayer:(int64_t)a3;
+- (void)centerSublayer:(int64_t)sublayer;
 - (void)dealloc;
-- (void)detachFromFigCaptureSession:(OpaqueFigCaptureSession *)a3;
-- (void)detachSafelyFromFigCaptureSession:(OpaqueFigCaptureSession *)a3;
-- (void)didUpdatePreviewFormatDescription:(opaqueCMFormatDescription *)a3;
-- (void)didUpdatePreviewImageQueueSlot:(unsigned int)a3 imageQueue:(id)a4 rotationDegrees:(double)a5 size:(CGSize)a6;
-- (void)handleChangedActiveFormat:(id)a3 forDevice:(id)a4;
-- (void)layerDidBecomeVisible:(BOOL)a3;
+- (void)detachFromFigCaptureSession:(OpaqueFigCaptureSession *)session;
+- (void)detachSafelyFromFigCaptureSession:(OpaqueFigCaptureSession *)session;
+- (void)didUpdatePreviewFormatDescription:(opaqueCMFormatDescription *)description;
+- (void)didUpdatePreviewImageQueueSlot:(unsigned int)slot imageQueue:(id)queue rotationDegrees:(double)degrees size:(CGSize)size;
+- (void)handleChangedActiveFormat:(id)format forDevice:(id)device;
+- (void)layerDidBecomeVisible:(BOOL)visible;
 - (void)layoutSublayers;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)performFigCaptureSessionOperationSafelyUsingBlock:(id)a3;
-- (void)removeConnection:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)performFigCaptureSessionOperationSafelyUsingBlock:(id)block;
+- (void)removeConnection:(id)connection;
 - (void)setAutomaticallyAdjustsMirroring:(BOOL)automaticallyAdjustsMirroring;
-- (void)setBounds:(CGRect)a3;
+- (void)setBounds:(CGRect)bounds;
 - (void)setCaptureDeviceTransformNeedsUpdate;
-- (void)setDeferredStartEnabled:(BOOL)a3;
-- (void)setDepthDataDeliveryEnabled:(BOOL)a3;
-- (void)setFilterRenderingEnabled:(BOOL)a3;
+- (void)setDeferredStartEnabled:(BOOL)enabled;
+- (void)setDepthDataDeliveryEnabled:(BOOL)enabled;
+- (void)setFilterRenderingEnabled:(BOOL)enabled;
 - (void)setMirrored:(BOOL)mirrored;
 - (void)setOrientation:(AVCaptureVideoOrientation)orientation;
-- (void)setPortraitAutoSuggestEnabled:(BOOL)a3;
-- (void)setSemanticStyle:(id)a3 animated:(BOOL)a4;
-- (void)setSemanticStyleRenderingEnabled:(BOOL)a3;
+- (void)setPortraitAutoSuggestEnabled:(BOOL)enabled;
+- (void)setSemanticStyle:(id)style animated:(BOOL)animated;
+- (void)setSemanticStyleRenderingEnabled:(BOOL)enabled;
 - (void)setSession:(AVCaptureSession *)session;
 - (void)setSessionWithNoConnection:(AVCaptureSession *)session;
-- (void)setUnoptimizedFilterRenderingEnabled:(BOOL)a3;
+- (void)setUnoptimizedFilterRenderingEnabled:(BOOL)enabled;
 - (void)setVideoGravity:(AVLayerVideoGravity)videoGravity;
-- (void)setVideoPreviewFilters:(id)a3;
-- (void)setZoomPictureInPictureOverlayEnabled:(BOOL)a3;
+- (void)setVideoPreviewFilters:(id)filters;
+- (void)setZoomPictureInPictureOverlayEnabled:(BOOL)enabled;
 @end
 
 @implementation AVCaptureVideoPreviewLayer
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1 || objc_opt_class() == a1)
+  if (objc_opt_class() == self || objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -184,12 +184,12 @@
 
 - (BOOL)_zoomPictureInPictureOverlaySupported
 {
-  v2 = [(AVCaptureConnection *)[(AVCaptureVideoPreviewLayer *)self connection] sourceDevice];
-  v3 = [v2 deviceType] == @"AVCaptureDeviceTypeBuiltInDualCamera" || objc_msgSend(v2, "deviceType") == @"AVCaptureDeviceTypeBuiltInTripleCamera" || objc_msgSend(v2, "deviceType") == @"AVCaptureDeviceTypeBuiltInTelephotoCamera";
-  v4 = [v2 activeFormat];
-  if (v4)
+  sourceDevice = [(AVCaptureConnection *)[(AVCaptureVideoPreviewLayer *)self connection] sourceDevice];
+  v3 = [sourceDevice deviceType] == @"AVCaptureDeviceTypeBuiltInDualCamera" || objc_msgSend(sourceDevice, "deviceType") == @"AVCaptureDeviceTypeBuiltInTripleCamera" || objc_msgSend(sourceDevice, "deviceType") == @"AVCaptureDeviceTypeBuiltInTelephotoCamera";
+  activeFormat = [sourceDevice activeFormat];
+  if (activeFormat)
   {
-    [v4 lowestSupportedVideoFrameDuration];
+    [activeFormat lowestSupportedVideoFrameDuration];
   }
 
   else
@@ -284,18 +284,18 @@
 
 - (void)_updateZoomPictureInPictureOverlaySupported
 {
-  v3 = [(AVCaptureVideoPreviewLayer *)self _zoomPictureInPictureOverlaySupported];
+  _zoomPictureInPictureOverlaySupported = [(AVCaptureVideoPreviewLayer *)self _zoomPictureInPictureOverlaySupported];
   internal = self->_internal;
   objc_sync_enter(internal);
   v5 = self->_internal;
-  if (v5->zoomPictureInPictureOverlaySupported != v3)
+  if (v5->zoomPictureInPictureOverlaySupported != _zoomPictureInPictureOverlaySupported)
   {
     zoomPictureInPictureOverlayEnabled = v5->zoomPictureInPictureOverlayEnabled;
     x = v5->zoomPictureInPictureOverlayRect.origin.x;
     y = v5->zoomPictureInPictureOverlayRect.origin.y;
     width = v5->zoomPictureInPictureOverlayRect.size.width;
     height = v5->zoomPictureInPictureOverlayRect.size.height;
-    if (v3)
+    if (_zoomPictureInPictureOverlaySupported)
     {
       v11 = 0;
       v12 = 0;
@@ -331,7 +331,7 @@
       [(AVCaptureVideoPreviewLayer *)self willChangeValueForKey:@"zoomPictureInPictureOverlayRect"];
     }
 
-    self->_internal->zoomPictureInPictureOverlaySupported = v3;
+    self->_internal->zoomPictureInPictureOverlaySupported = _zoomPictureInPictureOverlaySupported;
     v17 = self->_internal;
     v17->zoomPictureInPictureOverlayRect.origin.x = x;
     v17->zoomPictureInPictureOverlayRect.origin.y = y;
@@ -359,10 +359,10 @@
   connection = self->_internal->connection;
   [(AVCaptureVideoPreviewLayer *)self centerSublayer:[(AVCaptureConnection *)connection _videoOrientation]];
   gravity = self->_internal->gravity;
-  v5 = [(AVCaptureConnection *)connection _videoOrientation];
-  v6 = [(AVCaptureConnection *)connection isVideoMirrored];
-  v7 = [(AVCaptureConnection *)connection sourcesFromFrontFacingCamera];
-  v8 = [(AVCaptureConnection *)connection sourcesFromExternalCamera];
+  _videoOrientation = [(AVCaptureConnection *)connection _videoOrientation];
+  isVideoMirrored = [(AVCaptureConnection *)connection isVideoMirrored];
+  sourcesFromFrontFacingCamera = [(AVCaptureConnection *)connection sourcesFromFrontFacingCamera];
+  sourcesFromExternalCamera = [(AVCaptureConnection *)connection sourcesFromExternalCamera];
   internal = self->_internal;
   previewRotationDegrees = internal->previewRotationDegrees;
   [(AVCaptureVideoPreviewLayer *)self bounds];
@@ -392,7 +392,7 @@
     v24 = -1;
   }
 
-  v25 = v24 + v5;
+  v25 = v24 + _videoOrientation;
   if (v25 >= 2)
   {
     v26 = width;
@@ -479,13 +479,13 @@
     if (AVCapturePlatformMountsCamerasInLandscapeOrientation())
     {
       v38 = 0.0;
-      if (v5 <= 2)
+      if (_videoOrientation <= 2)
       {
-        if (v5 != 1)
+        if (_videoOrientation != 1)
         {
-          if (v5 == 2)
+          if (_videoOrientation == 2)
           {
-            v39 = !v8;
+            v39 = !sourcesFromExternalCamera;
 LABEL_53:
             v38 = 270.0;
             v40 = 90.0;
@@ -498,7 +498,7 @@ LABEL_58:
           goto LABEL_59;
         }
 
-        v39 = !v8;
+        v39 = !sourcesFromExternalCamera;
 LABEL_55:
         v38 = 90.0;
         v40 = 270.0;
@@ -511,9 +511,9 @@ LABEL_56:
         goto LABEL_58;
       }
 
-      if (v5 == 3)
+      if (_videoOrientation == 3)
       {
-        if (!v8 && v7)
+        if (!sourcesFromExternalCamera && sourcesFromFrontFacingCamera)
         {
           goto LABEL_48;
         }
@@ -521,15 +521,15 @@ LABEL_56:
 
       else
       {
-        if (v5 != 4)
+        if (_videoOrientation != 4)
         {
           goto LABEL_58;
         }
 
-        if (v8 || !v7)
+        if (sourcesFromExternalCamera || !sourcesFromFrontFacingCamera)
         {
 LABEL_48:
-          v39 = !v6;
+          v39 = !isVideoMirrored;
           v38 = 180.0;
           v40 = 0.0;
           goto LABEL_56;
@@ -537,7 +537,7 @@ LABEL_48:
       }
 
       v38 = 180.0;
-      if (!v6)
+      if (!isVideoMirrored)
       {
         v38 = 0.0;
       }
@@ -545,22 +545,22 @@ LABEL_48:
       goto LABEL_58;
     }
 
-    if (v5 == 4)
+    if (_videoOrientation == 4)
     {
-      if (!v7)
+      if (!sourcesFromFrontFacingCamera)
       {
 LABEL_50:
-        v39 = !v6;
+        v39 = !isVideoMirrored;
         goto LABEL_55;
       }
     }
 
     else
     {
-      if (v5 != 3)
+      if (_videoOrientation != 3)
       {
         v38 = 0.0;
-        if (v5 == 2)
+        if (_videoOrientation == 2)
         {
           v38 = 180.0;
         }
@@ -568,13 +568,13 @@ LABEL_50:
         goto LABEL_58;
       }
 
-      if (v7)
+      if (sourcesFromFrontFacingCamera)
       {
         goto LABEL_50;
       }
     }
 
-    v39 = !v6;
+    v39 = !isVideoMirrored;
     goto LABEL_53;
   }
 
@@ -609,7 +609,7 @@ LABEL_59:
     if (objc_opt_isKindOfClass())
     {
       figCaptureSession = self->_internal->figCaptureSession;
-      v6 = [(AVCaptureVideoPreviewLayer *)self sinkID];
+      sinkID = [(AVCaptureVideoPreviewLayer *)self sinkID];
       v7 = MEMORY[0x1E696AD98];
       [v4 portraitLightingEffectStrength];
       v8 = [v7 numberWithFloat:?];
@@ -618,7 +618,7 @@ LABEL_59:
       {
         v10 = *MEMORY[0x1E698FDC8];
 
-        v9(figCaptureSession, v6, v10, v8);
+        v9(figCaptureSession, sinkID, v10, v8);
       }
     }
   }
@@ -626,12 +626,12 @@ LABEL_59:
 
 - (BOOL)isDepthDataDeliveryEnabled
 {
-  v2 = self;
+  selfCopy = self;
   internal = self->_internal;
   objc_sync_enter(internal);
-  LOBYTE(v2) = v2->_internal->depthDataDeliveryEnabled;
+  LOBYTE(selfCopy) = selfCopy->_internal->depthDataDeliveryEnabled;
   objc_sync_exit(internal);
-  return v2;
+  return selfCopy;
 }
 
 - (AVCaptureSession)session
@@ -651,22 +651,22 @@ LABEL_59:
 
 - (BOOL)isDepthDataDeliverySupported
 {
-  v2 = self;
+  selfCopy = self;
   internal = self->_internal;
   objc_sync_enter(internal);
-  LOBYTE(v2) = v2->_internal->depthDataDeliverySupported;
+  LOBYTE(selfCopy) = selfCopy->_internal->depthDataDeliverySupported;
   objc_sync_exit(internal);
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)isPortraitAutoSuggestSupported
 {
-  v2 = self;
+  selfCopy = self;
   internal = self->_internal;
   objc_sync_enter(internal);
-  LOBYTE(v2) = v2->_internal->portraitAutoSuggestSupported;
+  LOBYTE(selfCopy) = selfCopy->_internal->portraitAutoSuggestSupported;
   objc_sync_exit(internal);
-  return v2;
+  return selfCopy;
 }
 
 - (id)videoPreviewFilters
@@ -681,52 +681,52 @@ LABEL_59:
 
 - (BOOL)isZoomPictureInPictureOverlaySupported
 {
-  v2 = self;
+  selfCopy = self;
   internal = self->_internal;
   objc_sync_enter(internal);
-  LOBYTE(v2) = v2->_internal->zoomPictureInPictureOverlaySupported;
+  LOBYTE(selfCopy) = selfCopy->_internal->zoomPictureInPictureOverlaySupported;
   objc_sync_exit(internal);
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)isFilterRenderingEnabled
 {
-  v2 = self;
+  selfCopy = self;
   internal = self->_internal;
   objc_sync_enter(internal);
-  LOBYTE(v2) = v2->_internal->filterRenderingEnabled;
+  LOBYTE(selfCopy) = selfCopy->_internal->filterRenderingEnabled;
   objc_sync_exit(internal);
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)isPortraitAutoSuggestEnabled
 {
-  v2 = self;
+  selfCopy = self;
   internal = self->_internal;
   objc_sync_enter(internal);
-  LOBYTE(v2) = v2->_internal->portraitAutoSuggestEnabled;
+  LOBYTE(selfCopy) = selfCopy->_internal->portraitAutoSuggestEnabled;
   objc_sync_exit(internal);
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)isZoomPictureInPictureOverlayEnabled
 {
-  v2 = self;
+  selfCopy = self;
   internal = self->_internal;
   objc_sync_enter(internal);
-  LOBYTE(v2) = v2->_internal->zoomPictureInPictureOverlayEnabled;
+  LOBYTE(selfCopy) = selfCopy->_internal->zoomPictureInPictureOverlayEnabled;
   objc_sync_exit(internal);
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)isDeferredStartEnabled
 {
-  v2 = self;
+  selfCopy = self;
   internal = self->_internal;
   objc_sync_enter(internal);
-  LOBYTE(v2) = v2->_internal->deferredStartEnabled;
+  LOBYTE(selfCopy) = selfCopy->_internal->deferredStartEnabled;
   objc_sync_exit(internal);
-  return v2;
+  return selfCopy;
 }
 
 - (id)sinkID
@@ -780,7 +780,7 @@ LABEL_59:
   [(AVCaptureVideoPreviewLayer *)&v8 layoutSublayers];
 }
 
-- (void)centerSublayer:(int64_t)a3
+- (void)centerSublayer:(int64_t)sublayer
 {
   [(AVCaptureVideoPreviewLayer *)self bounds];
   v8 = v7;
@@ -806,7 +806,7 @@ LABEL_59:
         v22 = -1;
       }
 
-      v23 = v22 + a3;
+      v23 = v22 + sublayer;
       internal = self->_internal;
       if (v23 >= 2)
       {
@@ -854,9 +854,9 @@ LABEL_59:
   return v3;
 }
 
-- (id)_initWithSession:(id)a3 makeConnection:(BOOL)a4
+- (id)_initWithSession:(id)session makeConnection:(BOOL)connection
 {
-  v4 = a4;
+  connectionCopy = connection;
   v21.receiver = self;
   v21.super_class = AVCaptureVideoPreviewLayer;
   v6 = [(AVCaptureVideoPreviewLayer *)&v21 init];
@@ -933,14 +933,14 @@ LABEL_59:
 
       v6->_internal->videoPreviewFilters = objc_alloc_init(MEMORY[0x1E695DEC8]);
       [MEMORY[0x1E6979518] commit];
-      if (v4)
+      if (connectionCopy)
       {
-        [(AVCaptureVideoPreviewLayer *)v6 setSession:a3];
+        [(AVCaptureVideoPreviewLayer *)v6 setSession:session];
       }
 
       else
       {
-        [(AVCaptureVideoPreviewLayer *)v6 setSessionWithNoConnection:a3];
+        [(AVCaptureVideoPreviewLayer *)v6 setSessionWithNoConnection:session];
       }
     }
 
@@ -963,7 +963,7 @@ LABEL_59:
   return previewRotationDegrees;
 }
 
-- (AVCaptureVideoPreviewLayer)initWithLayer:(id)a3
+- (AVCaptureVideoPreviewLayer)initWithLayer:(id)layer
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -973,7 +973,7 @@ LABEL_59:
 
   v16.receiver = self;
   v16.super_class = AVCaptureVideoPreviewLayer;
-  self = [(AVCaptureVideoPreviewLayer *)&v16 initWithLayer:a3];
+  self = [(AVCaptureVideoPreviewLayer *)&v16 initWithLayer:layer];
   if (!self)
   {
     return self;
@@ -1002,37 +1002,37 @@ LABEL_6:
 
   [(AVCaptureVideoPreviewLayer *)self setSinkID:v8];
   self->_internal->isPresentationLayer = 1;
-  self->_internal->gravity = [a3 videoGravity];
-  self->_internal->session = [a3 session];
-  self->_internal->connection = [a3 connection];
+  self->_internal->gravity = [layer videoGravity];
+  self->_internal->session = [layer session];
+  self->_internal->connection = [layer connection];
   if (!self->_internal->connection)
   {
-    self->_internal->orientation = [a3 _orientation];
-    self->_internal->automaticallyAdjustsMirroring = [a3 _automaticallyAdjustsMirroring];
-    self->_internal->mirrored = [a3 _isMirrored];
+    self->_internal->orientation = [layer _orientation];
+    self->_internal->automaticallyAdjustsMirroring = [layer _automaticallyAdjustsMirroring];
+    self->_internal->mirrored = [layer _isMirrored];
   }
 
-  [a3 previewRotationDegrees];
+  [layer previewRotationDegrees];
   self->_internal->previewRotationDegrees = v9;
-  self->_internal->depthDataDeliverySupported = [a3 isDepthDataDeliverySupported];
-  self->_internal->depthDataDeliveryEnabled = [a3 isDepthDataDeliveryEnabled];
-  self->_internal->filterRenderingEnabled = [a3 isFilterRenderingEnabled];
-  self->_internal->unoptimizedFilterRenderingEnabled = [a3 isUnoptimizedFilterRenderingEnabled];
-  self->_internal->videoPreviewFilters = [a3 videoPreviewFilters];
-  self->_internal->semanticStyleRenderingSupported = [a3 isSemanticStyleRenderingSupported];
-  self->_internal->semanticStyleRenderingEnabled = [a3 isSemanticStyleRenderingEnabled];
-  self->_internal->semanticStyle = [a3 semanticStyle];
-  self->_internal->zoomPictureInPictureOverlaySupported = [a3 isZoomPictureInPictureOverlaySupported];
-  self->_internal->zoomPictureInPictureOverlayEnabled = [a3 isZoomPictureInPictureOverlayEnabled];
+  self->_internal->depthDataDeliverySupported = [layer isDepthDataDeliverySupported];
+  self->_internal->depthDataDeliveryEnabled = [layer isDepthDataDeliveryEnabled];
+  self->_internal->filterRenderingEnabled = [layer isFilterRenderingEnabled];
+  self->_internal->unoptimizedFilterRenderingEnabled = [layer isUnoptimizedFilterRenderingEnabled];
+  self->_internal->videoPreviewFilters = [layer videoPreviewFilters];
+  self->_internal->semanticStyleRenderingSupported = [layer isSemanticStyleRenderingSupported];
+  self->_internal->semanticStyleRenderingEnabled = [layer isSemanticStyleRenderingEnabled];
+  self->_internal->semanticStyle = [layer semanticStyle];
+  self->_internal->zoomPictureInPictureOverlaySupported = [layer isZoomPictureInPictureOverlaySupported];
+  self->_internal->zoomPictureInPictureOverlayEnabled = [layer isZoomPictureInPictureOverlayEnabled];
   internal = self->_internal;
-  [a3 zoomPictureInPictureOverlayRect];
+  [layer zoomPictureInPictureOverlayRect];
   internal->zoomPictureInPictureOverlayRect.origin.x = v11;
   internal->zoomPictureInPictureOverlayRect.origin.y = v12;
   internal->zoomPictureInPictureOverlayRect.size.width = v13;
   internal->zoomPictureInPictureOverlayRect.size.height = v14;
-  self->_internal->portraitAutoSuggestEnabled = [a3 isPortraitAutoSuggestEnabled];
-  self->_internal->portraitAutoSuggestSupported = [a3 isPortraitAutoSuggestSupported];
-  self->_internal->deferredStartEnabled = [a3 isDeferredStartEnabled];
+  self->_internal->portraitAutoSuggestEnabled = [layer isPortraitAutoSuggestEnabled];
+  self->_internal->portraitAutoSuggestSupported = [layer isPortraitAutoSuggestSupported];
+  self->_internal->deferredStartEnabled = [layer isDeferredStartEnabled];
   return self;
 }
 
@@ -1089,13 +1089,13 @@ LABEL_6:
 {
   if (self->_internal->session != session && ([(AVCaptureSession *)session isEqual:?]& 1) == 0)
   {
-    v5 = [(AVCaptureSession *)self->_internal->session isRunning];
+    isRunning = [(AVCaptureSession *)self->_internal->session isRunning];
     internal = self->_internal;
-    if (!v5)
+    if (!isRunning)
     {
-      v7 = [(AVCaptureSession *)internal->session isBeingConfigured];
+      isBeingConfigured = [(AVCaptureSession *)internal->session isBeingConfigured];
       internal = self->_internal;
-      if (!v7)
+      if (!isBeingConfigured)
       {
         if (internal->figCaptureSession)
         {
@@ -1161,21 +1161,21 @@ LABEL_6:
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   self->_internal->disableActions = [MEMORY[0x1E6979518] disableActions];
   v8.receiver = self;
   v8.super_class = AVCaptureVideoPreviewLayer;
   [(AVCaptureVideoPreviewLayer *)&v8 setBounds:x, y, width, height];
 }
 
-- (void)handleChangedActiveFormat:(id)a3 forDevice:(id)a4
+- (void)handleChangedActiveFormat:(id)format forDevice:(id)device
 {
-  [(AVCaptureVideoPreviewLayer *)self _updateDepthDataDeliverySupported:a3];
+  [(AVCaptureVideoPreviewLayer *)self _updateDepthDataDeliverySupported:format];
   [(AVCaptureVideoPreviewLayer *)self _updateSemanticStyleRenderingSupported];
   [(AVCaptureVideoPreviewLayer *)self _updateZoomPictureInPictureOverlaySupported];
   [(AVCaptureVideoPreviewLayer *)self _updatePortraitAutoSuggestSupported];
@@ -1183,12 +1183,12 @@ LABEL_6:
   [(AVCaptureVideoPreviewLayer *)self _updatePreferredDynamicRangeForFirstPreviewFrameDisplayed:0];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (AVCaptureVideoPreviewLayerVideoMirroredChangedContext == a6)
+  if (AVCaptureVideoPreviewLayerVideoMirroredChangedContext == context)
   {
-    v10 = [objc_msgSend(a5 objectForKeyedSubscript:{*MEMORY[0x1E696A4F0], a4), "BOOLValue"}];
-    if (v10 != [objc_msgSend(a5 objectForKeyedSubscript:{*MEMORY[0x1E696A500]), "BOOLValue"}])
+    v10 = [objc_msgSend(change objectForKeyedSubscript:{*MEMORY[0x1E696A4F0], object), "BOOLValue"}];
+    if (v10 != [objc_msgSend(change objectForKeyedSubscript:{*MEMORY[0x1E696A500]), "BOOLValue"}])
     {
       internal = self->_internal;
       objc_sync_enter(internal);
@@ -1207,30 +1207,30 @@ LABEL_6:
     }
   }
 
-  else if (AVCaptureVideoPreviewLayerAutomaticallyAdjustsVideoMirroringChangedContext == a6)
+  else if (AVCaptureVideoPreviewLayerAutomaticallyAdjustsVideoMirroringChangedContext == context)
   {
-    v15 = [objc_msgSend(a5 objectForKeyedSubscript:{*MEMORY[0x1E696A4F0]), "BOOLValue"}];
-    if (([objc_msgSend(a5 objectForKeyedSubscript:{*MEMORY[0x1E696A500]), "BOOLValue"}] & 1) == 0 && v15)
+    v15 = [objc_msgSend(change objectForKeyedSubscript:{*MEMORY[0x1E696A4F0]), "BOOLValue"}];
+    if (([objc_msgSend(change objectForKeyedSubscript:{*MEMORY[0x1E696A500]), "BOOLValue"}] & 1) == 0 && v15)
     {
       [(AVCaptureVideoPreviewLayer *)self willChangeValueForKey:@"mirrored"];
       v16 = self->_internal;
       objc_sync_enter(v16);
-      v17 = [a4 isVideoMirrored];
-      v18 = [(AVCaptureConnection *)self->_internal->connection sourcesFromFrontFacingCamera];
+      isVideoMirrored = [object isVideoMirrored];
+      sourcesFromFrontFacingCamera = [(AVCaptureConnection *)self->_internal->connection sourcesFromFrontFacingCamera];
       objc_sync_exit(v16);
-      if (v17 != v18)
+      if (isVideoMirrored != sourcesFromFrontFacingCamera)
       {
-        [a4 _setVideoMirrored:v18];
+        [object _setVideoMirrored:sourcesFromFrontFacingCamera];
       }
 
       [(AVCaptureVideoPreviewLayer *)self didChangeValueForKey:@"mirrored"];
     }
   }
 
-  else if (AVCaptureVideoPreviewLayerVideoOrientationChangedContext == a6)
+  else if (AVCaptureVideoPreviewLayerVideoOrientationChangedContext == context)
   {
-    v19 = [objc_msgSend(a5 objectForKeyedSubscript:{*MEMORY[0x1E696A4F0], a4), "intValue"}];
-    if (v19 != [objc_msgSend(a5 objectForKeyedSubscript:{*MEMORY[0x1E696A500]), "intValue"}])
+    v19 = [objc_msgSend(change objectForKeyedSubscript:{*MEMORY[0x1E696A4F0], object), "intValue"}];
+    if (v19 != [objc_msgSend(change objectForKeyedSubscript:{*MEMORY[0x1E696A500]), "intValue"}])
     {
       v20 = self->_internal;
       objc_sync_enter(v20);
@@ -1247,10 +1247,10 @@ LABEL_6:
     }
   }
 
-  else if (AVCaptureVideoPreviewLayerDeviceInputPortraitLightingEffectStrengthChangedContext == a6)
+  else if (AVCaptureVideoPreviewLayerDeviceInputPortraitLightingEffectStrengthChangedContext == context)
   {
-    v8 = [a5 objectForKeyedSubscript:{*MEMORY[0x1E696A4F0], a4}];
-    if (([v8 isEqual:{objc_msgSend(a5, "objectForKeyedSubscript:", *MEMORY[0x1E696A500])}] & 1) == 0)
+    v8 = [change objectForKeyedSubscript:{*MEMORY[0x1E696A4F0], object}];
+    if (([v8 isEqual:{objc_msgSend(change, "objectForKeyedSubscript:", *MEMORY[0x1E696A500])}] & 1) == 0)
     {
       figCaptureSessionSyncQueue = self->_internal->figCaptureSessionSyncQueue;
       block[0] = MEMORY[0x1E69E9820];
@@ -1330,16 +1330,16 @@ LABEL_6:
   connection = self->_internal->connection;
   if (connection)
   {
-    v9 = [(AVCaptureConnection *)connection isVideoOrientationSupported];
+    isVideoOrientationSupported = [(AVCaptureConnection *)connection isVideoOrientationSupported];
   }
 
   else
   {
-    v9 = 1;
+    isVideoOrientationSupported = 1;
   }
 
   objc_sync_exit(internal);
-  return v9;
+  return isVideoOrientationSupported;
 }
 
 - (AVCaptureVideoOrientation)orientation
@@ -1569,17 +1569,17 @@ LABEL_17:
   objc_sync_exit(internal);
 }
 
-- (void)setDeferredStartEnabled:(BOOL)a3
+- (void)setDeferredStartEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  if ([(AVCaptureVideoPreviewLayer *)self isDeferredStartSupported]|| !v3)
+  enabledCopy = enabled;
+  if ([(AVCaptureVideoPreviewLayer *)self isDeferredStartSupported]|| !enabledCopy)
   {
     internal = self->_internal;
     objc_sync_enter(internal);
     v7 = self->_internal;
-    if (v7->deferredStartEnabled != v3)
+    if (v7->deferredStartEnabled != enabledCopy)
     {
-      v7->deferredStartEnabled = v3;
+      v7->deferredStartEnabled = enabledCopy;
       [(AVCaptureVideoPreviewLayer *)self bumpChangeSeed];
     }
 
@@ -1600,21 +1600,21 @@ LABEL_17:
 
 - (BOOL)isPaused
 {
-  v2 = self;
+  selfCopy = self;
   internal = self->_internal;
   objc_sync_enter(internal);
-  LOBYTE(v2) = v2->_internal->isPaused;
+  LOBYTE(selfCopy) = selfCopy->_internal->isPaused;
   objc_sync_exit(internal);
-  return v2;
+  return selfCopy;
 }
 
-- (void)setDepthDataDeliveryEnabled:(BOOL)a3
+- (void)setDepthDataDeliveryEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   internal = self->_internal;
   objc_sync_enter(internal);
   v6 = self->_internal;
-  if (v3 && !v6->depthDataDeliverySupported)
+  if (enabledCopy && !v6->depthDataDeliverySupported)
   {
     v7 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:0];
     if (AVCaptureShouldThrowForAPIViolations())
@@ -1625,9 +1625,9 @@ LABEL_17:
     NSLog(&cfstr_SuppressingExc.isa, v7);
   }
 
-  else if (v6->depthDataDeliveryEnabled != v3)
+  else if (v6->depthDataDeliveryEnabled != enabledCopy)
   {
-    v6->depthDataDeliveryEnabled = v3;
+    v6->depthDataDeliveryEnabled = enabledCopy;
     objc_sync_exit(internal);
 
     [(AVCaptureVideoPreviewLayer *)self bumpChangeSeed];
@@ -1637,13 +1637,13 @@ LABEL_17:
   objc_sync_exit(internal);
 }
 
-- (void)setFilterRenderingEnabled:(BOOL)a3
+- (void)setFilterRenderingEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   internal = self->_internal;
   objc_sync_enter(internal);
   v6 = self->_internal;
-  if (v6->filterRenderingEnabled == v3)
+  if (v6->filterRenderingEnabled == enabledCopy)
   {
 
     objc_sync_exit(internal);
@@ -1651,20 +1651,20 @@ LABEL_17:
 
   else
   {
-    v6->filterRenderingEnabled = v3;
+    v6->filterRenderingEnabled = enabledCopy;
     objc_sync_exit(internal);
 
     [(AVCaptureVideoPreviewLayer *)self bumpChangeSeed];
   }
 }
 
-- (void)setPortraitAutoSuggestEnabled:(BOOL)a3
+- (void)setPortraitAutoSuggestEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   internal = self->_internal;
   objc_sync_enter(internal);
   v6 = self->_internal;
-  if (v3 && !v6->portraitAutoSuggestSupported)
+  if (enabledCopy && !v6->portraitAutoSuggestSupported)
   {
     v7 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:0];
     if (AVCaptureShouldThrowForAPIViolations())
@@ -1675,9 +1675,9 @@ LABEL_17:
     NSLog(&cfstr_SuppressingExc.isa, v7);
   }
 
-  else if (v6->portraitAutoSuggestEnabled != v3)
+  else if (v6->portraitAutoSuggestEnabled != enabledCopy)
   {
-    v6->portraitAutoSuggestEnabled = v3;
+    v6->portraitAutoSuggestEnabled = enabledCopy;
     objc_sync_exit(internal);
 
     [(AVCaptureVideoPreviewLayer *)self bumpChangeSeed];
@@ -1687,10 +1687,10 @@ LABEL_17:
   objc_sync_exit(internal);
 }
 
-- (void)setVideoPreviewFilters:(id)a3
+- (void)setVideoPreviewFilters:(id)filters
 {
   v4 = 0;
-  if (![(AVCaptureVideoPreviewLayer *)self _setVideoPreviewFilters:a3 checkForExceptionalInput:1 exceptionReason:&v4])
+  if (![(AVCaptureVideoPreviewLayer *)self _setVideoPreviewFilters:filters checkForExceptionalInput:1 exceptionReason:&v4])
   {
     v3 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:0];
     if (AVCaptureShouldThrowForAPIViolations())
@@ -1704,24 +1704,24 @@ LABEL_17:
 
 - (BOOL)isUnoptimizedFilterRenderingEnabled
 {
-  v2 = self;
+  selfCopy = self;
   internal = self->_internal;
   objc_sync_enter(internal);
-  LOBYTE(v2) = v2->_internal->unoptimizedFilterRenderingEnabled;
+  LOBYTE(selfCopy) = selfCopy->_internal->unoptimizedFilterRenderingEnabled;
   objc_sync_exit(internal);
-  return v2;
+  return selfCopy;
 }
 
-- (void)setUnoptimizedFilterRenderingEnabled:(BOOL)a3
+- (void)setUnoptimizedFilterRenderingEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   internal = self->_internal;
   objc_sync_enter(internal);
   v6 = self->_internal;
-  if (v6->unoptimizedFilterRenderingEnabled != v3)
+  if (v6->unoptimizedFilterRenderingEnabled != enabledCopy)
   {
-    v6->unoptimizedFilterRenderingEnabled = v3;
-    if (!v3)
+    v6->unoptimizedFilterRenderingEnabled = enabledCopy;
+    if (!enabledCopy)
     {
       v8 = 0;
       if (![(AVCaptureVideoPreviewLayer *)self _filtersAreOptimized:self->_internal->videoPreviewFilters exceptionReason:&v8])
@@ -1740,10 +1740,10 @@ LABEL_17:
   objc_sync_exit(internal);
 }
 
-- (void)setSemanticStyleRenderingEnabled:(BOOL)a3
+- (void)setSemanticStyleRenderingEnabled:(BOOL)enabled
 {
   internal = self->_internal;
-  if (!a3)
+  if (!enabled)
   {
     if (!internal->semanticStyleRenderingEnabled)
     {
@@ -1764,13 +1764,13 @@ LABEL_17:
 
   if (internal->semanticStyleRenderingSupported)
   {
-    if (internal->semanticStyleRenderingEnabled == a3)
+    if (internal->semanticStyleRenderingEnabled == enabled)
     {
       return;
     }
 
 LABEL_8:
-    internal->semanticStyleRenderingEnabled = a3;
+    internal->semanticStyleRenderingEnabled = enabled;
 
     [(AVCaptureVideoPreviewLayer *)self bumpChangeSeed];
     return;
@@ -1785,7 +1785,7 @@ LABEL_8:
   NSLog(&cfstr_SuppressingExc.isa, v6);
 }
 
-- (void)setSemanticStyle:(id)a3 animated:(BOOL)a4
+- (void)setSemanticStyle:(id)style animated:(BOOL)animated
 {
   internal = self->_internal;
   if (internal->semanticStyleRenderingEnabled)
@@ -1794,15 +1794,15 @@ LABEL_8:
     {
       [(AVCaptureVideoPreviewLayer *)self willChangeValueForKey:@"semanticStyle"];
 
-      self->_internal->semanticStyle = a3;
+      self->_internal->semanticStyle = style;
       if (![(AVCaptureSession *)[(AVCaptureVideoPreviewLayer *)self session] isBeingConfigured])
       {
         v9[0] = MEMORY[0x1E69E9820];
         v9[1] = 3221225472;
         v9[2] = __56__AVCaptureVideoPreviewLayer_setSemanticStyle_animated___block_invoke;
         v9[3] = &unk_1E786EF80;
-        v10 = a4;
-        v9[4] = a3;
+        animatedCopy = animated;
+        v9[4] = style;
         v9[5] = self;
         [(AVCaptureVideoPreviewLayer *)self performFigCaptureSessionOperationSafelyUsingBlock:v9];
       }
@@ -1876,21 +1876,21 @@ uint64_t __56__AVCaptureVideoPreviewLayer_setSemanticStyle_animated___block_invo
 
 - (unsigned)imageQueueSlot
 {
-  v2 = self;
+  selfCopy = self;
   internal = self->_internal;
   objc_sync_enter(internal);
-  LODWORD(v2) = v2->_internal->imageQueueSlot;
+  LODWORD(selfCopy) = selfCopy->_internal->imageQueueSlot;
   objc_sync_exit(internal);
-  return v2;
+  return selfCopy;
 }
 
-- (void)setZoomPictureInPictureOverlayEnabled:(BOOL)a3
+- (void)setZoomPictureInPictureOverlayEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   internal = self->_internal;
   objc_sync_enter(internal);
   v6 = self->_internal;
-  if (v3 && !v6->zoomPictureInPictureOverlaySupported)
+  if (enabledCopy && !v6->zoomPictureInPictureOverlaySupported)
   {
     v7 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:0];
     if (AVCaptureShouldThrowForAPIViolations())
@@ -1901,10 +1901,10 @@ uint64_t __56__AVCaptureVideoPreviewLayer_setSemanticStyle_animated___block_invo
     NSLog(&cfstr_SuppressingExc.isa, v7);
   }
 
-  else if (v6->zoomPictureInPictureOverlayEnabled != v3)
+  else if (v6->zoomPictureInPictureOverlayEnabled != enabledCopy)
   {
     [(AVCaptureVideoPreviewLayer *)self willChangeValueForKey:@"zoomPictureInPictureOverlayEnabled"];
-    self->_internal->zoomPictureInPictureOverlayEnabled = v3;
+    self->_internal->zoomPictureInPictureOverlayEnabled = enabledCopy;
     [(AVCaptureVideoPreviewLayer *)self didChangeValueForKey:@"zoomPictureInPictureOverlayEnabled"];
     [(AVCaptureVideoPreviewLayer *)self bumpChangeSeed];
   }
@@ -1933,12 +1933,12 @@ uint64_t __56__AVCaptureVideoPreviewLayer_setSemanticStyle_animated___block_invo
   return result;
 }
 
-- (void)_updateZoomPIPOverlayRect:(CGRect)a3
+- (void)_updateZoomPIPOverlayRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   internal = self->_internal;
   objc_sync_enter(internal);
   v11.origin.x = x;
@@ -1959,14 +1959,14 @@ uint64_t __56__AVCaptureVideoPreviewLayer_setSemanticStyle_animated___block_invo
   objc_sync_exit(internal);
 }
 
-- (void)layerDidBecomeVisible:(BOOL)a3
+- (void)layerDidBecomeVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   internal = self->_internal;
   objc_sync_enter(internal);
-  self->_internal->visible = v3;
+  self->_internal->visible = visibleCopy;
   objc_sync_exit(internal);
-  if (v3)
+  if (visibleCopy)
   {
     if (dword_1ED8068C0)
     {
@@ -1982,24 +1982,24 @@ uint64_t __56__AVCaptureVideoPreviewLayer_setSemanticStyle_animated___block_invo
 
   v9.receiver = self;
   v9.super_class = AVCaptureVideoPreviewLayer;
-  [(AVCaptureVideoPreviewLayer *)&v9 layerDidBecomeVisible:v3];
+  [(AVCaptureVideoPreviewLayer *)&v9 layerDidBecomeVisible:visibleCopy];
 }
 
-- (id)addConnection:(id)a3 error:(id *)a4
+- (id)addConnection:(id)connection error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
-  if (a3)
+  if (connection)
   {
-    self->_internal->connection = a3;
-    [a3 _setVideoOrientation:self->_internal->orientation];
-    [a3 setAutomaticallyAdjustsVideoMirroring:self->_internal->automaticallyAdjustsMirroring];
-    if (([a3 automaticallyAdjustsVideoMirroring] & 1) == 0)
+    self->_internal->connection = connection;
+    [connection _setVideoOrientation:self->_internal->orientation];
+    [connection setAutomaticallyAdjustsVideoMirroring:self->_internal->automaticallyAdjustsMirroring];
+    if (([connection automaticallyAdjustsVideoMirroring] & 1) == 0)
     {
-      [a3 setVideoMirrored:self->_internal->mirrored];
+      [connection setVideoMirrored:self->_internal->mirrored];
     }
 
     [(AVCaptureConnection *)self->_internal->connection addObserver:self forKeyPath:@"videoMirrored" options:3 context:AVCaptureVideoPreviewLayerVideoMirroredChangedContext];
@@ -2015,12 +2015,12 @@ uint64_t __56__AVCaptureVideoPreviewLayer_setSemanticStyle_animated___block_invo
     [(AVCaptureVideoPreviewLayer *)self _updatePreferredDynamicRangeForFirstPreviewFrameDisplayed:0];
   }
 
-  return a3;
+  return connection;
 }
 
-- (void)removeConnection:(id)a3
+- (void)removeConnection:(id)connection
 {
-  if (a3 && [a3 isEqual:self->_internal->connection])
+  if (connection && [connection isEqual:self->_internal->connection])
   {
     [(AVCaptureVideoPreviewLayer *)self willChangeValueForKey:@"connection"];
     internal = self->_internal;
@@ -2031,9 +2031,9 @@ uint64_t __56__AVCaptureVideoPreviewLayer_setSemanticStyle_animated___block_invo
       [(AVCaptureConnection *)self->_internal->connection removeObserver:self forKeyPath:@"videoOrientation" context:AVCaptureVideoPreviewLayerVideoOrientationChangedContext];
       v6 = [-[NSArray firstObject](-[AVCaptureConnection inputPorts](self->_internal->connection "inputPorts")];
       [v6 removeObserver:self forKeyPath:@"portraitLightingEffectStrength" context:AVCaptureVideoPreviewLayerDeviceInputPortraitLightingEffectStrengthChangedContext];
-      self->_internal->orientation = [a3 _videoOrientation];
-      self->_internal->automaticallyAdjustsMirroring = [a3 automaticallyAdjustsVideoMirroring];
-      self->_internal->mirrored = [a3 isVideoMirrored];
+      self->_internal->orientation = [connection _videoOrientation];
+      self->_internal->automaticallyAdjustsMirroring = [connection automaticallyAdjustsVideoMirroring];
+      self->_internal->mirrored = [connection isVideoMirrored];
       internal = self->_internal;
     }
 
@@ -2057,10 +2057,10 @@ uint64_t __56__AVCaptureVideoPreviewLayer_setSemanticStyle_animated___block_invo
   }
 }
 
-- (BOOL)canAddConnection:(id)a3 failureReason:(id *)a4
+- (BOOL)canAddConnection:(id)connection failureReason:(id *)reason
 {
-  v7 = [a3 mediaType];
-  if (([v7 isEqualToString:*MEMORY[0x1E6987608]] & 1) == 0)
+  mediaType = [connection mediaType];
+  if (([mediaType isEqualToString:*MEMORY[0x1E6987608]] & 1) == 0)
   {
     v8 = 1;
     goto LABEL_5;
@@ -2070,16 +2070,16 @@ uint64_t __56__AVCaptureVideoPreviewLayer_setSemanticStyle_animated___block_invo
   {
     v8 = 2;
 LABEL_5:
-    v9 = AVCaptureOutputConnectionFailureReasonString(v8, self, a3);
+    v9 = AVCaptureOutputConnectionFailureReasonString(v8, self, connection);
     result = 0;
-    *a4 = v9;
+    *reason = v9;
     return result;
   }
 
   return 1;
 }
 
-- (void)attachToFigCaptureSession:(OpaqueFigCaptureSession *)a3
+- (void)attachToFigCaptureSession:(OpaqueFigCaptureSession *)session
 {
   figCaptureSessionSyncQueue = self->_internal->figCaptureSessionSyncQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -2087,7 +2087,7 @@ LABEL_5:
   v4[2] = __56__AVCaptureVideoPreviewLayer_attachToFigCaptureSession___block_invoke;
   v4[3] = &unk_1E786ECD0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = session;
   dispatch_sync(figCaptureSessionSyncQueue, v4);
 }
 
@@ -2118,21 +2118,21 @@ const void *__56__AVCaptureVideoPreviewLayer_attachToFigCaptureSession___block_i
   return result;
 }
 
-- (void)attachSafelyToFigCaptureSession:(OpaqueFigCaptureSession *)a3
+- (void)attachSafelyToFigCaptureSession:(OpaqueFigCaptureSession *)session
 {
   v5 = [MEMORY[0x1E6987F48] notificationDispatcherForCMNotificationCenter:CMNotificationCenterGetDefaultLocalCenter()];
   weakReference = self->_internal->weakReference;
-  [v5 addListenerWithWeakReference:weakReference callback:vpl_figCaptureSessionNotification name:*MEMORY[0x1E698FD68] object:a3 flags:0];
-  [v5 addListenerWithWeakReference:weakReference callback:vpl_figCaptureSessionNotification name:*MEMORY[0x1E698FD70] object:a3 flags:0];
-  [v5 addListenerWithWeakReference:weakReference callback:vpl_figCaptureSessionNotification name:*MEMORY[0x1E698FD78] object:a3 flags:0];
-  [v5 addListenerWithWeakReference:weakReference callback:vpl_figCaptureSessionNotification name:*MEMORY[0x1E698FD60] object:a3 flags:0];
-  [v5 addListenerWithWeakReference:weakReference callback:vpl_figCaptureSessionNotification name:*MEMORY[0x1E698FE98] object:a3 flags:0];
+  [v5 addListenerWithWeakReference:weakReference callback:vpl_figCaptureSessionNotification name:*MEMORY[0x1E698FD68] object:session flags:0];
+  [v5 addListenerWithWeakReference:weakReference callback:vpl_figCaptureSessionNotification name:*MEMORY[0x1E698FD70] object:session flags:0];
+  [v5 addListenerWithWeakReference:weakReference callback:vpl_figCaptureSessionNotification name:*MEMORY[0x1E698FD78] object:session flags:0];
+  [v5 addListenerWithWeakReference:weakReference callback:vpl_figCaptureSessionNotification name:*MEMORY[0x1E698FD60] object:session flags:0];
+  [v5 addListenerWithWeakReference:weakReference callback:vpl_figCaptureSessionNotification name:*MEMORY[0x1E698FE98] object:session flags:0];
   v7 = *MEMORY[0x1E698FEA8];
 
-  [v5 addListenerWithWeakReference:weakReference callback:vpl_figCaptureSessionNotification name:v7 object:a3 flags:0];
+  [v5 addListenerWithWeakReference:weakReference callback:vpl_figCaptureSessionNotification name:v7 object:session flags:0];
 }
 
-- (void)detachFromFigCaptureSession:(OpaqueFigCaptureSession *)a3
+- (void)detachFromFigCaptureSession:(OpaqueFigCaptureSession *)session
 {
   figCaptureSessionSyncQueue = self->_internal->figCaptureSessionSyncQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -2140,7 +2140,7 @@ const void *__56__AVCaptureVideoPreviewLayer_attachToFigCaptureSession___block_i
   v4[2] = __58__AVCaptureVideoPreviewLayer_detachFromFigCaptureSession___block_invoke;
   v4[3] = &unk_1E786ECD0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = session;
   dispatch_sync(figCaptureSessionSyncQueue, v4);
 }
 
@@ -2165,21 +2165,21 @@ void __58__AVCaptureVideoPreviewLayer_detachFromFigCaptureSession___block_invoke
   }
 }
 
-- (void)detachSafelyFromFigCaptureSession:(OpaqueFigCaptureSession *)a3
+- (void)detachSafelyFromFigCaptureSession:(OpaqueFigCaptureSession *)session
 {
   v5 = [MEMORY[0x1E6987F48] notificationDispatcherForCMNotificationCenter:CMNotificationCenterGetDefaultLocalCenter()];
-  [v5 removeListenerWithWeakReference:self->_internal->weakReference callback:vpl_figCaptureSessionNotification name:*MEMORY[0x1E698FD68] object:a3];
-  [v5 removeListenerWithWeakReference:self->_internal->weakReference callback:vpl_figCaptureSessionNotification name:*MEMORY[0x1E698FD70] object:a3];
-  [v5 removeListenerWithWeakReference:self->_internal->weakReference callback:vpl_figCaptureSessionNotification name:*MEMORY[0x1E698FD78] object:a3];
-  [v5 removeListenerWithWeakReference:self->_internal->weakReference callback:vpl_figCaptureSessionNotification name:*MEMORY[0x1E698FD60] object:a3];
-  [v5 removeListenerWithWeakReference:self->_internal->weakReference callback:vpl_figCaptureSessionNotification name:*MEMORY[0x1E698FE98] object:a3];
+  [v5 removeListenerWithWeakReference:self->_internal->weakReference callback:vpl_figCaptureSessionNotification name:*MEMORY[0x1E698FD68] object:session];
+  [v5 removeListenerWithWeakReference:self->_internal->weakReference callback:vpl_figCaptureSessionNotification name:*MEMORY[0x1E698FD70] object:session];
+  [v5 removeListenerWithWeakReference:self->_internal->weakReference callback:vpl_figCaptureSessionNotification name:*MEMORY[0x1E698FD78] object:session];
+  [v5 removeListenerWithWeakReference:self->_internal->weakReference callback:vpl_figCaptureSessionNotification name:*MEMORY[0x1E698FD60] object:session];
+  [v5 removeListenerWithWeakReference:self->_internal->weakReference callback:vpl_figCaptureSessionNotification name:*MEMORY[0x1E698FE98] object:session];
   weakReference = self->_internal->weakReference;
   v7 = *MEMORY[0x1E698FEA8];
 
-  [v5 removeListenerWithWeakReference:weakReference callback:vpl_figCaptureSessionNotification name:v7 object:a3];
+  [v5 removeListenerWithWeakReference:weakReference callback:vpl_figCaptureSessionNotification name:v7 object:session];
 }
 
-- (void)performFigCaptureSessionOperationSafelyUsingBlock:(id)a3
+- (void)performFigCaptureSessionOperationSafelyUsingBlock:(id)block
 {
   figCaptureSessionSyncQueue = self->_internal->figCaptureSessionSyncQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -2187,7 +2187,7 @@ void __58__AVCaptureVideoPreviewLayer_detachFromFigCaptureSession___block_invoke
   v4[2] = __80__AVCaptureVideoPreviewLayer_performFigCaptureSessionOperationSafelyUsingBlock___block_invoke;
   v4[3] = &unk_1E786F078;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = block;
   dispatch_sync(figCaptureSessionSyncQueue, v4);
 }
 
@@ -2250,13 +2250,13 @@ void __58__AVCaptureVideoPreviewLayer_detachFromFigCaptureSession___block_invoke
 
 - (AVMetadataObject)transformedMetadataObjectForMetadataObject:(AVMetadataObject *)metadataObject
 {
-  v5 = [(AVMetadataObject *)metadataObject input];
-  if (v5 != [(AVCaptureVideoPreviewLayer *)self _input])
+  input = [(AVMetadataObject *)metadataObject input];
+  if (input != [(AVCaptureVideoPreviewLayer *)self _input])
   {
     return 0;
   }
 
-  v7 = [(AVMetadataObject *)metadataObject originalMetadataObject];
+  originalMetadataObject = [(AVMetadataObject *)metadataObject originalMetadataObject];
   internal = self->_internal;
   objc_sync_enter(internal);
   v9 = self->_internal;
@@ -2264,22 +2264,22 @@ void __58__AVCaptureVideoPreviewLayer_detachFromFigCaptureSession___block_invoke
   v14 = *&v9->captureDeviceTransform.a;
   v15 = v10;
   v16 = *&v9->captureDeviceTransform.tx;
-  v11 = [(AVCaptureConnection *)[(AVCaptureVideoPreviewLayer *)self connection] isVideoMirrored];
+  isVideoMirrored = [(AVCaptureConnection *)[(AVCaptureVideoPreviewLayer *)self connection] isVideoMirrored];
   rollAdjustment = self->_internal->rollAdjustment;
   objc_sync_exit(internal);
   v13[0] = v14;
   v13[1] = v15;
   v13[2] = v16;
-  return [AVMetadataObject derivedMetadataObjectFromMetadataObject:v7 withTransform:v13 isVideoMirrored:v11 rollAdjustment:rollAdjustment];
+  return [AVMetadataObject derivedMetadataObjectFromMetadataObject:originalMetadataObject withTransform:v13 isVideoMirrored:isVideoMirrored rollAdjustment:rollAdjustment];
 }
 
-- (CGAffineTransform)_updateTransformForMetadataOutputCorrections:(SEL)a3
+- (CGAffineTransform)_updateTransformForMetadataOutputCorrections:(SEL)corrections
 {
   v6 = *&a4->c;
   *&retstr->a = *&a4->a;
   *&retstr->c = v6;
   *&retstr->tx = *&a4->tx;
-  v7 = [(AVCaptureConnection *)[(AVCaptureVideoPreviewLayer *)self connection] sourcesFromFrontFacingCamera];
+  sourcesFromFrontFacingCamera = [(AVCaptureConnection *)[(AVCaptureVideoPreviewLayer *)self connection] sourcesFromFrontFacingCamera];
   [(AVCaptureConnection *)[(AVCaptureVideoPreviewLayer *)self connection] sourcesFromFrontFacingCamera];
   [(AVCaptureConnection *)[(AVCaptureVideoPreviewLayer *)self connection] sourcesFromExternalCamera];
   v8 = AVCapturePlatformMountsCamerasInLandscapeOrientation();
@@ -2289,7 +2289,7 @@ void __58__AVCaptureVideoPreviewLayer_detachFromFigCaptureSession___block_invoke
   v11 = rollAdjustment != 270.0 && rollAdjustment != 90.0;
   v12 = rollAdjustment != 180.0 && rollAdjustment != 0.0;
   result = objc_sync_exit(internal);
-  if (v7)
+  if (sourcesFromFrontFacingCamera)
   {
     if (!v8 || ([(AVCaptureConnection *)[(AVCaptureVideoPreviewLayer *)self connection] sourcesFromExternalCamera], result = FigCaptureCameraRequires180DegreesRotation(), (result & 1) == 0))
     {
@@ -2426,14 +2426,14 @@ void __58__AVCaptureVideoPreviewLayer_detachFromFigCaptureSession___block_invoke
   return CGRectApplyAffineTransform(*&v11, &v15);
 }
 
-- (CGAffineTransform)captureDeviceTransformForSensorSize:(SEL)a3 previewSize:(CGSize)a4 sensorToPreviewVTScalingMode:(CGSize)a5 applyDynamicAspectRatio:(id)a6
+- (CGAffineTransform)captureDeviceTransformForSensorSize:(SEL)size previewSize:(CGSize)previewSize sensorToPreviewVTScalingMode:(CGSize)mode applyDynamicAspectRatio:(id)ratio
 {
   v7 = a7;
-  height = a5.height;
-  width = a5.width;
-  v11 = a4.height;
-  v12 = a4.width;
-  v15 = [(AVCaptureVideoPreviewLayer *)self connection];
+  height = mode.height;
+  width = mode.width;
+  v11 = previewSize.height;
+  v12 = previewSize.width;
+  connection = [(AVCaptureVideoPreviewLayer *)self connection];
   [(AVCaptureVideoPreviewLayer *)self bounds];
   v44.origin.x = v16;
   v44.origin.y = v17;
@@ -2451,7 +2451,7 @@ void __58__AVCaptureVideoPreviewLayer_detachFromFigCaptureSession___block_invoke
     v37 = v22;
     v38 = v21;
     v39 = v20;
-    if ([-[AVCaptureConnection sourceDevice](v15 "sourceDevice")])
+    if ([-[AVCaptureConnection sourceDevice](connection "sourceDevice")])
     {
       v23 = v12 / v11;
       v24 = width / height;
@@ -2479,19 +2479,19 @@ void __58__AVCaptureVideoPreviewLayer_detachFromFigCaptureSession___block_invoke
         v40 = v43;
         CGAffineTransformConcat(&t2, &v40, &t1);
         v43 = t2;
-        a6 = *MEMORY[0x1E69840E8];
+        ratio = *MEMORY[0x1E69840E8];
       }
     }
   }
 
   memset(&t2, 0, sizeof(t2));
-  [(AVCaptureConnection *)v15 sourcesFromFrontFacingCamera];
-  [(AVCaptureConnection *)v15 sourcesFromExternalCamera];
-  [(AVCaptureConnection *)v15 videoRotationAngle];
+  [(AVCaptureConnection *)connection sourcesFromFrontFacingCamera];
+  [(AVCaptureConnection *)connection sourcesFromExternalCamera];
+  [(AVCaptureConnection *)connection videoRotationAngle];
   v30 = v29;
   internal = self->_internal;
   [(AVCaptureVideoPreviewLayer *)self bounds];
-  AVCaptureVideoTransformForCaptureDevice(a6, 1, v30, &internal->rollAdjustment, 1, self->_internal->gravity, &t2, v12, v11, width, height, v32, v33, v34, v35, 1, [(AVCaptureConnection *)v15 isVideoMirrored]);
+  AVCaptureVideoTransformForCaptureDevice(ratio, 1, v30, &internal->rollAdjustment, 1, self->_internal->gravity, &t2, v12, v11, width, height, v32, v33, v34, v35, 1, [(AVCaptureConnection *)connection isVideoMirrored]);
   t1 = v43;
   v40 = t2;
   return CGAffineTransformConcat(retstr, &t1, &v40);
@@ -2584,7 +2584,7 @@ LABEL_18:
   }
 }
 
-- (BOOL)_filtersAreOptimized:(id)a3 exceptionReason:(id *)a4
+- (BOOL)_filtersAreOptimized:(id)optimized exceptionReason:(id *)reason
 {
   connection = self->_internal->connection;
   if (!connection)
@@ -2593,12 +2593,12 @@ LABEL_18:
   }
 
   v7 = [MEMORY[0x1E695DFA8] setWithArray:{objc_msgSend(objc_msgSend(-[AVCaptureConnection sourceDevice](connection, "sourceDevice"), "activeFormat"), "optimizedVideoPreviewFilterNames")}];
-  v8 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(a3, "count")}];
+  v8 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(optimized, "count")}];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = [a3 countByEnumeratingWithState:&v16 objects:v15 count:16];
+  v9 = [optimized countByEnumeratingWithState:&v16 objects:v15 count:16];
   if (v9)
   {
     v10 = v9;
@@ -2610,14 +2610,14 @@ LABEL_18:
       {
         if (*v17 != v11)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(optimized);
         }
 
         [v8 addObject:{objc_msgSend(*(*(&v16 + 1) + 8 * v12++), "name")}];
       }
 
       while (v10 != v12);
-      v10 = [a3 countByEnumeratingWithState:&v16 objects:v15 count:16];
+      v10 = [optimized countByEnumeratingWithState:&v16 objects:v15 count:16];
     }
 
     while (v10);
@@ -2631,14 +2631,14 @@ LABEL_18:
 
   v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"The following filters are unsupported: %@", objc_msgSend(v8, "allObjects")];
   result = 0;
-  *a4 = v13;
+  *reason = v13;
   return result;
 }
 
-- (BOOL)_setVideoPreviewFilters:(id)a3 checkForExceptionalInput:(BOOL)a4 exceptionReason:(id *)a5
+- (BOOL)_setVideoPreviewFilters:(id)filters checkForExceptionalInput:(BOOL)input exceptionReason:(id *)reason
 {
   v16 = 0;
-  if (!a4)
+  if (!input)
   {
     p_internal = &self->_internal;
     internal = self->_internal;
@@ -2646,16 +2646,16 @@ LABEL_18:
     goto LABEL_10;
   }
 
-  if (!a3)
+  if (!filters)
   {
     v13 = @"videoPreviewFilters must be a non-nil value (empty array is permissible)";
 LABEL_18:
     v16 = v13;
 LABEL_19:
     result = 0;
-    if (a5)
+    if (reason)
     {
-      *a5 = v16;
+      *reason = v16;
     }
 
     return result;
@@ -2667,7 +2667,7 @@ LABEL_19:
     goto LABEL_18;
   }
 
-  if ([a3 count] && !-[AVCaptureVideoPreviewLayer isFilterRenderingEnabled](self, "isFilterRenderingEnabled"))
+  if ([filters count] && !-[AVCaptureVideoPreviewLayer isFilterRenderingEnabled](self, "isFilterRenderingEnabled"))
   {
     v13 = @"filterRenderingEnabled must be set to YES before setting videoPreviewFilters with a non-empty array";
     goto LABEL_18;
@@ -2676,7 +2676,7 @@ LABEL_19:
   p_internal = &self->_internal;
   internal = self->_internal;
   objc_sync_enter(internal);
-  if (!self->_internal->unoptimizedFilterRenderingEnabled && ![(AVCaptureVideoPreviewLayer *)self _filtersAreOptimized:a3 exceptionReason:&v16])
+  if (!self->_internal->unoptimizedFilterRenderingEnabled && ![(AVCaptureVideoPreviewLayer *)self _filtersAreOptimized:filters exceptionReason:&v16])
   {
     objc_sync_exit(internal);
     goto LABEL_19;
@@ -2684,7 +2684,7 @@ LABEL_19:
 
 LABEL_10:
 
-  (*p_internal)->videoPreviewFilters = [a3 copy];
+  (*p_internal)->videoPreviewFilters = [filters copy];
   v10 = (*p_internal)->depthDataDeliveryEnabled || (*p_internal)->portraitAutoSuggestEnabled;
   objc_sync_exit(internal);
   figCaptureSessionSyncQueue = (*p_internal)->figCaptureSessionSyncQueue;
@@ -2693,7 +2693,7 @@ LABEL_10:
   v14[2] = __95__AVCaptureVideoPreviewLayer__setVideoPreviewFilters_checkForExceptionalInput_exceptionReason___block_invoke;
   v14[3] = &unk_1E7875C20;
   v14[4] = self;
-  v14[5] = a3;
+  v14[5] = filters;
   v15 = v10 & 1;
   dispatch_sync(figCaptureSessionSyncQueue, v14);
   return 1;
@@ -2726,15 +2726,15 @@ void *__95__AVCaptureVideoPreviewLayer__setVideoPreviewFilters_checkForException
   return result;
 }
 
-- (void)didUpdatePreviewFormatDescription:(opaqueCMFormatDescription *)a3
+- (void)didUpdatePreviewFormatDescription:(opaqueCMFormatDescription *)description
 {
-  v5 = [(AVCaptureConnection *)self->_internal->connection sourceDevice];
-  Dimensions = CMVideoFormatDescriptionGetDimensions(a3);
-  v7 = [v5 activeFormat];
-  v8 = CMVideoFormatDescriptionGetDimensions([v7 formatDescription]);
+  sourceDevice = [(AVCaptureConnection *)self->_internal->connection sourceDevice];
+  Dimensions = CMVideoFormatDescriptionGetDimensions(description);
+  activeFormat = [sourceDevice activeFormat];
+  v8 = CMVideoFormatDescriptionGetDimensions([activeFormat formatDescription]);
   internal = self->_internal;
   objc_sync_enter(internal);
-  IsHDR = AVCaptureColorSpaceIsHDR([v5 activeColorSpace]);
+  IsHDR = AVCaptureColorSpaceIsHDR([sourceDevice activeColorSpace]);
   v11 = HIDWORD(Dimensions);
   v12 = self->_internal;
   v13 = IsHDR && !v12->requestedPreferredDynamicRangeHigh;
@@ -2765,7 +2765,7 @@ void *__95__AVCaptureVideoPreviewLayer__setVideoPreviewFilters_checkForException
   self->_internal->previewSize.height = v11;
   self->_internal->sensorSize.width = v8.width;
   self->_internal->sensorSize.height = v8.height;
-  self->_internal->sensorToPreviewVTScalingMode = [v7 vtScalingMode];
+  self->_internal->sensorToPreviewVTScalingMode = [activeFormat vtScalingMode];
   [MEMORY[0x1E6979518] begin];
   [MEMORY[0x1E6979518] setValue:*MEMORY[0x1E695E4D0] forKey:*MEMORY[0x1E697A020]];
   [(AVCaptureVideoPreviewLayer *)self _updatePreviewTransforms];
@@ -2778,10 +2778,10 @@ void *__95__AVCaptureVideoPreviewLayer__setVideoPreviewFilters_checkForException
   }
 }
 
-- (void)didUpdatePreviewImageQueueSlot:(unsigned int)a3 imageQueue:(id)a4 rotationDegrees:(double)a5 size:(CGSize)a6
+- (void)didUpdatePreviewImageQueueSlot:(unsigned int)slot imageQueue:(id)queue rotationDegrees:(double)degrees size:(CGSize)size
 {
-  height = a6.height;
-  width = a6.width;
+  height = size.height;
+  width = size.width;
   internal = self->_internal;
   objc_sync_enter(internal);
   if (dword_1ED8068C0)
@@ -2793,10 +2793,10 @@ void *__95__AVCaptureVideoPreviewLayer__setVideoPreviewFilters_checkForException
     fig_log_call_emit_and_clean_up_after_send_and_compose();
   }
 
-  self->_internal->previewRotationDegrees = a5;
-  if (a4)
+  self->_internal->previewRotationDegrees = degrees;
+  if (queue)
   {
-    self->_internal->imageQueueSlot = a3;
+    self->_internal->imageQueueSlot = slot;
     if (width != 0.0 && height != 0.0)
     {
       v14 = self->_internal;
@@ -2819,21 +2819,21 @@ void *__95__AVCaptureVideoPreviewLayer__setVideoPreviewFilters_checkForException
     [MEMORY[0x1E6979518] begin];
     [MEMORY[0x1E6979518] setValue:*MEMORY[0x1E695E4D0] forKey:*MEMORY[0x1E697A020]];
     [(AVCaptureVideoPreviewLayer *)self _updatePreviewTransforms];
-    [(CALayer *)self->_internal->sublayer setContents:a4];
+    [(CALayer *)self->_internal->sublayer setContents:queue];
     [MEMORY[0x1E6979518] commit];
   }
 
   objc_sync_exit(internal);
 }
 
-- (void)_handleNotification:(id)a3 payload:(id)a4
+- (void)_handleNotification:(id)notification payload:(id)payload
 {
-  if (![objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E698FCD8]), "isEqualToString:", -[AVCaptureVideoPreviewLayer sinkID](self, "sinkID")}])
+  if (![objc_msgSend(payload objectForKeyedSubscript:{*MEMORY[0x1E698FCD8]), "isEqualToString:", -[AVCaptureVideoPreviewLayer sinkID](self, "sinkID")}])
   {
     return;
   }
 
-  if ([a3 isEqualToString:*MEMORY[0x1E698FD68]])
+  if ([notification isEqualToString:*MEMORY[0x1E698FD68]])
   {
     internal = self->_internal;
     if (internal->isPreviewing)
@@ -2860,7 +2860,7 @@ LABEL_32:
           v38 = 136315394;
           v39 = "[AVCaptureVideoPreviewLayer _handleNotification:payload:]";
           v40 = 2114;
-          v41 = self;
+          selfCopy2 = self;
           LODWORD(v36) = 22;
           v34 = &v38;
           _os_log_send_and_compose_impl();
@@ -2899,14 +2899,14 @@ LABEL_9:
       goto LABEL_9;
     }
 
-    v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unexpected image queue is nil, error (%d).", 4294894096];
+    4294894096 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unexpected image queue is nil, error (%d).", 4294894096];
     v48 = 0;
     v47 = OS_LOG_TYPE_DEFAULT;
     v25 = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
     os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT);
     fig_log_call_emit_and_clean_up_after_send_and_compose();
     LODWORD(rect.origin.x) = 138412290;
-    *(&rect.origin.x + 4) = v24;
+    *(&rect.origin.x + 4) = 4294894096;
     p_rect = &rect;
     v26 = _os_log_send_and_compose_impl();
     FigCaptureGetFrameworkRadarComponent();
@@ -2934,23 +2934,23 @@ LABEL_9:
       v38 = 136315906;
       v39 = "[AVCaptureVideoPreviewLayer _handleNotification:payload:]";
       v40 = 2114;
-      v41 = self;
+      selfCopy2 = self;
       v42 = 1024;
       v43 = imageQueueSlot;
       v44 = 2114;
-      v45 = v24;
+      v45 = 4294894096;
       LODWORD(v37) = 38;
       p_rect = &v38;
       _os_log_send_and_compose_impl();
     }
 
     fig_log_call_emit_and_clean_up_after_send_and_compose();
-    [v24 UTF8String];
+    [4294894096 UTF8String];
     v31 = abort_with_reason();
     [(AVCaptureVideoPreviewLayer *)v31 _updatePreferredDynamicRangeForFirstPreviewFrameDisplayed:v32, v33];
   }
 
-  else if ([a3 isEqualToString:*MEMORY[0x1E698FD70]])
+  else if ([notification isEqualToString:*MEMORY[0x1E698FD70]])
   {
     if (self->_internal->isPreviewing)
     {
@@ -2961,57 +2961,57 @@ LABEL_9:
     }
   }
 
-  else if ([a3 isEqualToString:*MEMORY[0x1E698FD78]])
+  else if ([notification isEqualToString:*MEMORY[0x1E698FD78]])
   {
-    v11 = [a4 objectForKeyedSubscript:*MEMORY[0x1E698FC48]];
+    v11 = [payload objectForKeyedSubscript:*MEMORY[0x1E698FC48]];
 
     [(AVCaptureVideoPreviewLayer *)self didUpdatePreviewFormatDescription:v11];
   }
 
-  else if ([a3 isEqualToString:*MEMORY[0x1E698FD60]])
+  else if ([notification isEqualToString:*MEMORY[0x1E698FD60]])
   {
 
     [(AVCaptureVideoPreviewLayer *)self _updatePreferredDynamicRangeForFirstPreviewFrameDisplayed:1];
   }
 
-  else if ([a3 isEqualToString:*MEMORY[0x1E698FE98]])
+  else if ([notification isEqualToString:*MEMORY[0x1E698FE98]])
   {
-    v12 = [a4 objectForKeyedSubscript:*MEMORY[0x1E698FAF0]];
-    v13 = [v12 intValue];
-    v14 = [a4 objectForKeyedSubscript:*MEMORY[0x1E698FAE0]];
+    v12 = [payload objectForKeyedSubscript:*MEMORY[0x1E698FAF0]];
+    intValue = [v12 intValue];
+    v14 = [payload objectForKeyedSubscript:*MEMORY[0x1E698FAE0]];
     v15 = v14;
     if (v12 && !v14)
     {
-      v15 = [MEMORY[0x1E6979320] objectForSlot:v13];
+      v15 = [MEMORY[0x1E6979320] objectForSlot:intValue];
     }
 
-    [objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E698FB00]), "floatValue"}];
+    [objc_msgSend(payload objectForKeyedSubscript:{*MEMORY[0x1E698FB00]), "floatValue"}];
     v17 = v16;
-    [objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E698FAF8]), "floatValue"}];
+    [objc_msgSend(payload objectForKeyedSubscript:{*MEMORY[0x1E698FAF8]), "floatValue"}];
     v19 = v18;
-    [objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E698FAE8]), "floatValue"}];
+    [objc_msgSend(payload objectForKeyedSubscript:{*MEMORY[0x1E698FAE8]), "floatValue"}];
 
-    [(AVCaptureVideoPreviewLayer *)self didUpdatePreviewImageQueueSlot:v13 imageQueue:v15 rotationDegrees:v17 size:v19, v20];
+    [(AVCaptureVideoPreviewLayer *)self didUpdatePreviewImageQueueSlot:intValue imageQueue:v15 rotationDegrees:v17 size:v19, v20];
   }
 
-  else if ([a3 isEqualToString:*MEMORY[0x1E698FEA8]])
+  else if ([notification isEqualToString:*MEMORY[0x1E698FEA8]])
   {
     memset(&rect, 0, sizeof(rect));
-    if (CGRectMakeWithDictionaryRepresentation([a4 objectForKeyedSubscript:*MEMORY[0x1E6990020]], &rect))
+    if (CGRectMakeWithDictionaryRepresentation([payload objectForKeyedSubscript:*MEMORY[0x1E6990020]], &rect))
     {
       [(AVCaptureVideoPreviewLayer *)self _updateZoomPIPOverlayRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
     }
   }
 }
 
-- (void)_updatePreferredDynamicRangeForFirstPreviewFrameDisplayed:(BOOL)a3
+- (void)_updatePreferredDynamicRangeForFirstPreviewFrameDisplayed:(BOOL)displayed
 {
-  v3 = a3;
+  displayedCopy = displayed;
   internal = self->_internal;
   objc_sync_enter(internal);
   IsHDR = AVCaptureColorSpaceIsHDR([-[AVCaptureConnection sourceDevice](self->_internal->connection "sourceDevice")]);
   v7 = IsHDR;
-  v8 = IsHDR ^ v3;
+  v8 = IsHDR ^ displayedCopy;
   if (v8 == 1)
   {
     self->_internal->requestedPreferredDynamicRangeHigh = IsHDR;
@@ -3044,10 +3044,10 @@ LABEL_9:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [v4 device];
+      device = [v4 device];
       [v4 simulatedAperture];
 
-      [v5 _setSimulatedAperture:?];
+      [device _setSimulatedAperture:?];
     }
   }
 }

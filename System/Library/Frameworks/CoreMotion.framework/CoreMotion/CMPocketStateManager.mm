@@ -2,17 +2,17 @@
 + (BOOL)isPocketStateAvailable;
 + (BOOL)isPocketStateSupported;
 - (CMPocketStateManager)init;
-- (id)externalStateToString:(int64_t)a3;
-- (int)translateExternalState:(int64_t)a3;
-- (int64_t)translateInternalState:(int)a3;
+- (id)externalStateToString:(int64_t)string;
+- (int)translateExternalState:(int64_t)state;
+- (int64_t)translateInternalState:(int)state;
 - (void)_disableDispatcher;
 - (void)_prepareDispatcher;
-- (void)addToAggdScalarWithName:(id)a3 andScalar:(unint64_t)a4;
+- (void)addToAggdScalarWithName:(id)name andScalar:(unint64_t)scalar;
 - (void)dealloc;
-- (void)onNotification:(id)a3;
-- (void)onPocketStateUpdated:(int)a3;
-- (void)queryStateOntoQueue:(id)a3 andMonitorFor:(double)a4 withTimeout:(double)a5 andHandler:(id)a6;
-- (void)setDelegate:(id)a3;
+- (void)onNotification:(id)notification;
+- (void)onPocketStateUpdated:(int)updated;
+- (void)queryStateOntoQueue:(id)queue andMonitorFor:(double)for withTimeout:(double)timeout andHandler:(id)handler;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation CMPocketStateManager
@@ -153,9 +153,9 @@
   [(CMPocketStateManager *)&v11 dealloc];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  objc_storeWeak(&self->_delegate, a3);
+  objc_storeWeak(&self->_delegate, delegate);
   fCachedState = self->fCachedState;
 
   MEMORY[0x1EEE66B58](self, sel_onPocketStateUpdated_, fCachedState);
@@ -204,46 +204,46 @@
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (int64_t)translateInternalState:(int)a3
+- (int64_t)translateInternalState:(int)state
 {
-  if ((a3 - 1) > 3)
+  if ((state - 1) > 3)
   {
     return 0;
   }
 
   else
   {
-    return qword_19B7BD1F0[a3 - 1];
+    return qword_19B7BD1F0[state - 1];
   }
 }
 
-- (int)translateExternalState:(int64_t)a3
+- (int)translateExternalState:(int64_t)state
 {
-  if ((a3 - 1) > 2)
+  if ((state - 1) > 2)
   {
     return 3;
   }
 
   else
   {
-    return dword_19B7BD210[a3 - 1];
+    return dword_19B7BD210[state - 1];
   }
 }
 
-- (id)externalStateToString:(int64_t)a3
+- (id)externalStateToString:(int64_t)string
 {
-  if (a3 > 3)
+  if (string > 3)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_1E7535800[a3];
+    return off_1E7535800[string];
   }
 }
 
-- (void)addToAggdScalarWithName:(id)a3 andScalar:(unint64_t)a4
+- (void)addToAggdScalarWithName:(id)name andScalar:(unint64_t)scalar
 {
   if (MEMORY[0x1EEE83328])
   {
@@ -252,16 +252,16 @@
     v5[1] = 3221225472;
     v5[2] = sub_19B7240A4;
     v5[3] = &unk_1E7533490;
-    v5[4] = a3;
-    v5[5] = a4;
+    v5[4] = name;
+    v5[5] = scalar;
     dispatch_async(fPrivateQueue, v5);
   }
 }
 
-- (void)queryStateOntoQueue:(id)a3 andMonitorFor:(double)a4 withTimeout:(double)a5 andHandler:(id)a6
+- (void)queryStateOntoQueue:(id)queue andMonitorFor:(double)for withTimeout:(double)timeout andHandler:(id)handler
 {
   v29 = *MEMORY[0x1E69E9840];
-  if (objc_msgSend_isPocketStateAvailable(CMPocketStateManager, a2, a3) & 1) != 0 || (objc_msgSend_isPocketStateSupported(CMPocketStateManager, v11, v12))
+  if (objc_msgSend_isPocketStateAvailable(CMPocketStateManager, a2, queue) & 1) != 0 || (objc_msgSend_isPocketStateSupported(CMPocketStateManager, v11, v12))
   {
     if (qword_1EAFE2848 != -1)
     {
@@ -305,10 +305,10 @@
     block[2] = sub_19B7246C4;
     block[3] = &unk_1E75339B0;
     block[4] = self;
-    block[5] = a3;
-    block[6] = a6;
-    *&block[7] = a5;
-    *&block[8] = a4;
+    block[5] = queue;
+    block[6] = handler;
+    *&block[7] = timeout;
+    *&block[8] = for;
     dispatch_sync(fPrivateQueue, block);
   }
 
@@ -348,19 +348,19 @@
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)onNotification:(id)a3
+- (void)onNotification:(id)notification
 {
   v5 = sub_19B420D84();
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = sub_19B72551C;
   v6[3] = &unk_1E7532A00;
-  v6[4] = a3;
+  v6[4] = notification;
   v6[5] = self;
   sub_19B420C9C(v5, v6);
 }
 
-- (void)onPocketStateUpdated:(int)a3
+- (void)onPocketStateUpdated:(int)updated
 {
   fPrivateQueue = self->fPrivateQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -368,7 +368,7 @@
   v4[2] = sub_19B7257CC;
   v4[3] = &unk_1E75357E0;
   v4[4] = self;
-  v5 = a3;
+  updatedCopy = updated;
   dispatch_async(fPrivateQueue, v4);
 }
 

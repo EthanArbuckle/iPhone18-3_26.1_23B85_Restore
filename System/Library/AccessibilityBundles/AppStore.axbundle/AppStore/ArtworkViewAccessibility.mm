@@ -1,5 +1,5 @@
 @interface ArtworkViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
@@ -7,13 +7,13 @@
 
 @implementation ArtworkViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AppStore.BrandedAppTodayBrickCollectionViewCell"];
-  [v3 validateClass:@"AppStore.ArcadeFooterCollectionViewCell"];
-  [v3 validateClass:@"AppStore.ArtworkSectionBackgroundView"];
-  [v3 validateClass:@"AppStore.CarouselItemLockupCollectionView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AppStore.BrandedAppTodayBrickCollectionViewCell"];
+  [validationsCopy validateClass:@"AppStore.ArcadeFooterCollectionViewCell"];
+  [validationsCopy validateClass:@"AppStore.ArtworkSectionBackgroundView"];
+  [validationsCopy validateClass:@"AppStore.CarouselItemLockupCollectionView"];
 }
 
 - (BOOL)isAccessibilityElement
@@ -61,7 +61,7 @@
   {
     v7.receiver = self;
     v7.super_class = ArtworkViewAccessibility;
-    v3 = [(ArtworkViewAccessibility *)&v7 accessibilityLabel];
+    accessibilityLabel = [(ArtworkViewAccessibility *)&v7 accessibilityLabel];
   }
 
   else
@@ -78,10 +78,10 @@
       v5 = @"artwork.view";
     }
 
-    v3 = accessibilityAppStoreLocalizedString(v5);
+    accessibilityLabel = accessibilityAppStoreLocalizedString(v5);
   }
 
-  return v3;
+  return accessibilityLabel;
 }
 
 @end

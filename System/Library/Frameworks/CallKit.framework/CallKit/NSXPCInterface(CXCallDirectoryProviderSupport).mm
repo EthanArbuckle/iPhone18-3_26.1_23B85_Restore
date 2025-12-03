@@ -16,11 +16,11 @@
 
 - (void)_cx_setAllowedClassesForCallDirectoryProviderHostProtocol
 {
-  v2 = [a1 _cx_callDirectoryProviderAllowedClasses];
-  [a1 setClasses:v2 forSelector:sel_addBlockingEntriesWithData_reply_ argumentIndex:0 ofReply:0];
+  _cx_callDirectoryProviderAllowedClasses = [self _cx_callDirectoryProviderAllowedClasses];
+  [self setClasses:_cx_callDirectoryProviderAllowedClasses forSelector:sel_addBlockingEntriesWithData_reply_ argumentIndex:0 ofReply:0];
 
-  v3 = [a1 _cx_callDirectoryProviderAllowedClasses];
-  [a1 setClasses:v3 forSelector:sel_addIdentificationEntriesWithData_reply_ argumentIndex:0 ofReply:0];
+  _cx_callDirectoryProviderAllowedClasses2 = [self _cx_callDirectoryProviderAllowedClasses];
+  [self setClasses:_cx_callDirectoryProviderAllowedClasses2 forSelector:sel_addIdentificationEntriesWithData_reply_ argumentIndex:0 ofReply:0];
 }
 
 - (id)_cx_callDirectoryProviderAllowedClasses
@@ -29,7 +29,7 @@
   block[1] = 3221225472;
   block[2] = __89__NSXPCInterface_CXCallDirectoryProviderSupport___cx_callDirectoryProviderAllowedClasses__block_invoke;
   block[3] = &unk_1E7C06CA8;
-  block[4] = a1;
+  block[4] = self;
   if (_cx_callDirectoryProviderAllowedClasses_onceToken != -1)
   {
     dispatch_once(&_cx_callDirectoryProviderAllowedClasses_onceToken, block);

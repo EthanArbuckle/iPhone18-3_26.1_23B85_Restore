@@ -1,14 +1,14 @@
 @interface ISLiveWallpaperUIView
-- (ISLiveWallpaperUIView)initWithCoder:(id)a3;
-- (ISLiveWallpaperUIView)initWithFrame:(CGRect)a3;
+- (ISLiveWallpaperUIView)initWithCoder:(id)coder;
+- (ISLiveWallpaperUIView)initWithFrame:(CGRect)frame;
 - (void)_ISLiveWallpaperUIViewCommonInitialization;
-- (void)_handlePlaybackRecognizer:(id)a3;
+- (void)_handlePlaybackRecognizer:(id)recognizer;
 - (void)_handleUpdateTimer;
 - (void)_updatePlayer;
 - (void)dealloc;
-- (void)setForce:(double)a3;
-- (void)setTouching:(BOOL)a3;
-- (void)willMoveToWindow:(id)a3;
+- (void)setForce:(double)force;
+- (void)setTouching:(BOOL)touching;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation ISLiveWallpaperUIView
@@ -23,18 +23,18 @@
 
 - (void)_updatePlayer
 {
-  v3 = [(ISLiveWallpaperUIView *)self touching];
+  touching = [(ISLiveWallpaperUIView *)self touching];
   [(ISLiveWallpaperUIView *)self force];
   v5 = v4;
-  v6 = [(ISBasePlayerUIView *)self player];
+  player = [(ISBasePlayerUIView *)self player];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __38__ISLiveWallpaperUIView__updatePlayer__block_invoke;
   v8[3] = &unk_279A29C80;
-  v9 = v6;
-  v11 = v3;
+  v9 = player;
+  v11 = touching;
   v10 = v5;
-  v7 = v6;
+  v7 = player;
   [v7 performChanges:v8];
 }
 
@@ -47,9 +47,9 @@ uint64_t __38__ISLiveWallpaperUIView__updatePlayer__block_invoke(uint64_t a1)
   return [v2 setForce:v3];
 }
 
-- (void)_handlePlaybackRecognizer:(id)a3
+- (void)_handlePlaybackRecognizer:(id)recognizer
 {
-  v4 = ([a3 state] - 1) < 2;
+  v4 = ([recognizer state] - 1) < 2;
 
   [(ISLiveWallpaperUIView *)self setTouching:v4];
 }
@@ -58,9 +58,9 @@ uint64_t __38__ISLiveWallpaperUIView__updatePlayer__block_invoke(uint64_t a1)
 {
   [(ISLiveWallpaperUIView *)self force];
   v4 = v3;
-  v5 = [(ISLiveWallpaperUIView *)self touching];
+  touching = [(ISLiveWallpaperUIView *)self touching];
   v6 = v4 + 0.25;
-  if (!v5)
+  if (!touching)
   {
     v6 = 0.0;
   }
@@ -74,31 +74,31 @@ uint64_t __38__ISLiveWallpaperUIView__updatePlayer__block_invoke(uint64_t a1)
   [(ISLiveWallpaperUIView *)self setForce:v7];
 }
 
-- (void)setForce:(double)a3
+- (void)setForce:(double)force
 {
-  if (self->_force != a3)
+  if (self->_force != force)
   {
-    self->_force = a3;
+    self->_force = force;
     [(ISLiveWallpaperUIView *)self _updatePlayer];
   }
 }
 
-- (void)setTouching:(BOOL)a3
+- (void)setTouching:(BOOL)touching
 {
-  if (self->_touching != a3)
+  if (self->_touching != touching)
   {
-    self->_touching = a3;
+    self->_touching = touching;
     [(ISLiveWallpaperUIView *)self _updatePlayer];
   }
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  v4 = a3;
+  windowCopy = window;
   v14.receiver = self;
   v14.super_class = ISLiveWallpaperUIView;
-  [(ISLiveWallpaperUIView *)&v14 willMoveToWindow:v4];
-  if (v4)
+  [(ISLiveWallpaperUIView *)&v14 willMoveToWindow:windowCopy];
+  if (windowCopy)
   {
     objc_initWeak(&location, self);
     v5 = MEMORY[0x277CBEBB8];
@@ -116,8 +116,8 @@ uint64_t __38__ISLiveWallpaperUIView__updatePlayer__block_invoke(uint64_t a1)
 
   else
   {
-    v7 = [(ISLiveWallpaperUIView *)self updateTimer];
-    [v7 invalidate];
+    updateTimer = [(ISLiveWallpaperUIView *)self updateTimer];
+    [updateTimer invalidate];
   }
 }
 
@@ -142,11 +142,11 @@ void __42__ISLiveWallpaperUIView_willMoveToWindow___block_invoke(uint64_t a1)
   self->_playbackGestureRecognizer = &v5->super;
 }
 
-- (ISLiveWallpaperUIView)initWithFrame:(CGRect)a3
+- (ISLiveWallpaperUIView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = ISLiveWallpaperUIView;
-  v3 = [(ISBasePlayerUIView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ISBasePlayerUIView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -156,11 +156,11 @@ void __42__ISLiveWallpaperUIView_willMoveToWindow___block_invoke(uint64_t a1)
   return v4;
 }
 
-- (ISLiveWallpaperUIView)initWithCoder:(id)a3
+- (ISLiveWallpaperUIView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = ISLiveWallpaperUIView;
-  v3 = [(ISBasePlayerUIView *)&v6 initWithCoder:a3];
+  v3 = [(ISBasePlayerUIView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {

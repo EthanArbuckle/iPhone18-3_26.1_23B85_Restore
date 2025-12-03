@@ -1,28 +1,28 @@
 @interface MFTextSelectionScrollHandler
-- (MFTextSelectionScrollHandler)initWithScrollView:(id)a3;
+- (MFTextSelectionScrollHandler)initWithScrollView:(id)view;
 - (double)_maxScrollOffset;
 - (double)_minScrollOffset;
 - (id)window;
 - (void)_reset;
-- (void)_scrollForTouchLocation:(CGPoint)a3;
-- (void)_setContentOffsetY:(double)a3;
+- (void)_scrollForTouchLocation:(CGPoint)location;
+- (void)_setContentOffsetY:(double)y;
 - (void)dealloc;
-- (void)handleTextSelectionChanged:(id)a3;
-- (void)handleTouchEvents:(id)a3;
+- (void)handleTextSelectionChanged:(id)changed;
+- (void)handleTouchEvents:(id)events;
 @end
 
 @implementation MFTextSelectionScrollHandler
 
-- (MFTextSelectionScrollHandler)initWithScrollView:(id)a3
+- (MFTextSelectionScrollHandler)initWithScrollView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v9.receiver = self;
   v9.super_class = MFTextSelectionScrollHandler;
   v6 = [(MFTextSelectionScrollHandler *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_scrollView, a3);
+    objc_storeStrong(&v6->_scrollView, view);
   }
 
   return v7;
@@ -36,10 +36,10 @@
   [(MFTextSelectionScrollHandler *)&v3 dealloc];
 }
 
-- (void)handleTextSelectionChanged:(id)a3
+- (void)handleTextSelectionChanged:(id)changed
 {
-  v4 = a3;
-  if ([v4 length])
+  changedCopy = changed;
+  if ([changedCopy length])
   {
     if (self->_isListeningForTouches)
     {
@@ -65,9 +65,9 @@
   }
 }
 
-- (void)handleTouchEvents:(id)a3
+- (void)handleTouchEvents:(id)events
 {
-  v14 = a3;
+  eventsCopy = events;
   p_textSelectionTouch = &self->_textSelectionTouch;
   textSelectionTouch = self->_textSelectionTouch;
   if (textSelectionTouch)
@@ -75,12 +75,12 @@
     goto LABEL_8;
   }
 
-  if ([v14 count] == 1)
+  if ([eventsCopy count] == 1)
   {
-    v6 = [v14 anyObject];
-    if ([v6 tapCount])
+    anyObject = [eventsCopy anyObject];
+    if ([anyObject tapCount])
     {
-      objc_storeStrong(&self->_textSelectionTouch, v6);
+      objc_storeStrong(&self->_textSelectionTouch, anyObject);
     }
   }
 
@@ -98,8 +98,8 @@ LABEL_8:
     v8 = *p_textSelectionTouch;
     if (*p_textSelectionTouch && self->_isMovingCursor)
     {
-      v9 = [(MFTextSelectionScrollHandler *)self scrollView];
-      [v8 locationInView:v9];
+      scrollView = [(MFTextSelectionScrollHandler *)self scrollView];
+      [v8 locationInView:scrollView];
       v11 = v10;
       v13 = v12;
 
@@ -108,18 +108,18 @@ LABEL_8:
   }
 }
 
-- (void)_scrollForTouchLocation:(CGPoint)a3
+- (void)_scrollForTouchLocation:(CGPoint)location
 {
-  y = a3.y;
+  y = location.y;
   self->_scrollOffsetIncrement = self->_scrollOffsetIncrement + 0.2;
-  v5 = [(MFTextSelectionScrollHandler *)self scrollView];
-  [v5 contentOffset];
+  scrollView = [(MFTextSelectionScrollHandler *)self scrollView];
+  [scrollView contentOffset];
   v7 = v6;
 
   if (y + -100.0 <= v7)
   {
-    v14 = [(MFTextSelectionScrollHandler *)self scrollView];
-    [v14 contentOffset];
+    scrollView2 = [(MFTextSelectionScrollHandler *)self scrollView];
+    [scrollView2 contentOffset];
     v16 = v15 - self->_scrollOffsetIncrement;
 
     [(MFTextSelectionScrollHandler *)self _minScrollOffset];
@@ -131,11 +131,11 @@ LABEL_8:
 
   else
   {
-    v8 = [(MFTextSelectionScrollHandler *)self scrollView];
-    [v8 contentOffset];
+    scrollView3 = [(MFTextSelectionScrollHandler *)self scrollView];
+    [scrollView3 contentOffset];
     v10 = v9;
-    v11 = [(MFTextSelectionScrollHandler *)self scrollView];
-    [v11 bounds];
+    scrollView4 = [(MFTextSelectionScrollHandler *)self scrollView];
+    [scrollView4 bounds];
     v13 = v10 + v12;
 
     if (y + 100.0 < v13)
@@ -144,8 +144,8 @@ LABEL_8:
       return;
     }
 
-    v18 = [(MFTextSelectionScrollHandler *)self scrollView];
-    [v18 contentOffset];
+    scrollView5 = [(MFTextSelectionScrollHandler *)self scrollView];
+    [scrollView5 contentOffset];
     v20 = v19 + self->_scrollOffsetIncrement;
 
     [(MFTextSelectionScrollHandler *)self _maxScrollOffset];
@@ -158,12 +158,12 @@ LABEL_8:
   [(MFTextSelectionScrollHandler *)self _setContentOffsetY:v17];
 }
 
-- (void)_setContentOffsetY:(double)a3
+- (void)_setContentOffsetY:(double)y
 {
-  v4 = [(MFTextSelectionScrollHandler *)self scrollView];
-  v5 = [(MFTextSelectionScrollHandler *)self scrollView];
-  [v5 contentOffset];
-  [v4 setContentOffset:0 animated:?];
+  scrollView = [(MFTextSelectionScrollHandler *)self scrollView];
+  scrollView2 = [(MFTextSelectionScrollHandler *)self scrollView];
+  [scrollView2 contentOffset];
+  [scrollView setContentOffset:0 animated:?];
 
   v6 = dispatch_time(0, 1000000000);
   block[0] = _NSConcreteStackBlock;
@@ -176,14 +176,14 @@ LABEL_8:
 
 - (double)_maxScrollOffset
 {
-  v3 = [(MFTextSelectionScrollHandler *)self scrollView];
-  [v3 contentSize];
+  scrollView = [(MFTextSelectionScrollHandler *)self scrollView];
+  [scrollView contentSize];
   v5 = v4;
-  v6 = [(MFTextSelectionScrollHandler *)self scrollView];
-  [v6 contentInset];
+  scrollView2 = [(MFTextSelectionScrollHandler *)self scrollView];
+  [scrollView2 contentInset];
   v8 = v7;
-  v9 = [(MFTextSelectionScrollHandler *)self scrollView];
-  [v9 bounds];
+  scrollView3 = [(MFTextSelectionScrollHandler *)self scrollView];
+  [scrollView3 bounds];
   v11 = v5 + v8 - v10;
 
   return v11;
@@ -191,8 +191,8 @@ LABEL_8:
 
 - (double)_minScrollOffset
 {
-  v2 = [(MFTextSelectionScrollHandler *)self scrollView];
-  [v2 contentInset];
+  scrollView = [(MFTextSelectionScrollHandler *)self scrollView];
+  [scrollView contentInset];
   v4 = -v3;
 
   return v4;
@@ -200,16 +200,16 @@ LABEL_8:
 
 - (id)window
 {
-  v2 = [(MFTextSelectionScrollHandler *)self scrollView];
-  v3 = [v2 window];
+  scrollView = [(MFTextSelectionScrollHandler *)self scrollView];
+  window = [scrollView window];
 
-  return v3;
+  return window;
 }
 
 - (void)_reset
 {
-  v3 = [(MFTextSelectionScrollHandler *)self window];
-  [v3 setTouchEventListener:0];
+  window = [(MFTextSelectionScrollHandler *)self window];
+  [window setTouchEventListener:0];
 
   textSelectionTouch = self->_textSelectionTouch;
   self->_textSelectionTouch = 0;

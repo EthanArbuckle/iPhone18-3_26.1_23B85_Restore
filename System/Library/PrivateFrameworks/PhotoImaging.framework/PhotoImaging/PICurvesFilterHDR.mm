@@ -8,11 +8,11 @@
 - (id)outputImage
 {
   v59[3] = *MEMORY[0x1E69E9840];
-  v3 = [(PICurvesFilterHDR *)self inputImage];
-  v4 = [(PICurvesFilterHDR *)self inputTableImage];
-  v5 = v4;
+  inputImage = [(PICurvesFilterHDR *)self inputImage];
+  inputTableImage = [(PICurvesFilterHDR *)self inputTableImage];
+  v5 = inputTableImage;
   v6 = 0;
-  if (v3 && v4)
+  if (inputImage && inputTableImage)
   {
     v7 = [MEMORY[0x1E695F688] vectorWithX:0.0 Y:2.0];
     v52 = [MEMORY[0x1E695F688] vectorWithX:0.998046875 Y:0.0009765625];
@@ -32,13 +32,13 @@
       v59[2] = v13;
       [MEMORY[0x1E695DF20] dictionaryWithObjects:v59 forKeys:v58 count:3];
       v14 = v51 = v7;
-      v15 = [v3 imageByApplyingFilter:@"CIColorMatrix" withInputParameters:v14];
+      v15 = [inputImage imageByApplyingFilter:@"CIColorMatrix" withInputParameters:v14];
 
-      v16 = [MEMORY[0x1E69B3A10] itur2100HLGColorSpace];
-      v17 = [v16 linearized];
-      v18 = [v17 extended];
+      itur2100HLGColorSpace = [MEMORY[0x1E69B3A10] itur2100HLGColorSpace];
+      linearized = [itur2100HLGColorSpace linearized];
+      extended = [linearized extended];
 
-      v19 = [v15 imageByColorMatchingWorkingSpaceToColorSpace:{objc_msgSend(v18, "CGColorSpace")}];
+      v19 = [v15 imageByColorMatchingWorkingSpaceToColorSpace:{objc_msgSend(extended, "CGColorSpace")}];
 
       v56[0] = @"inputMinComponents";
       v20 = [MEMORY[0x1E695F688] vectorWithX:0.0 Y:0.0 Z:0.0 W:0.0];
@@ -50,17 +50,17 @@
       v23 = [v19 imageByApplyingFilter:@"CIColorClamp" withInputParameters:v22];
 
       v10 = 0x1E69B3000uLL;
-      v3 = [v23 imageByColorMatchingColorSpaceToWorkingSpace:{objc_msgSend(v18, "CGColorSpace")}];
+      inputImage = [v23 imageByColorMatchingColorSpaceToWorkingSpace:{objc_msgSend(extended, "CGColorSpace")}];
 
       v7 = v51;
     }
 
-    v24 = [v3 imageByUnpremultiplyingAlpha];
+    imageByUnpremultiplyingAlpha = [inputImage imageByUnpremultiplyingAlpha];
 
-    v25 = [*(v10 + 2576) itur2100HLGColorSpace];
-    v26 = [v24 imageByColorMatchingWorkingSpaceToColorSpace:{objc_msgSend(v25, "CGColorSpace")}];
+    itur2100HLGColorSpace2 = [*(v10 + 2576) itur2100HLGColorSpace];
+    v26 = [imageByUnpremultiplyingAlpha imageByColorMatchingWorkingSpaceToColorSpace:{objc_msgSend(itur2100HLGColorSpace2, "CGColorSpace")}];
 
-    v27 = [(PICurvesFilterHDR *)self curvesKernel];
+    curvesKernel = [(PICurvesFilterHDR *)self curvesKernel];
     [v26 extent];
     v29 = v28;
     v31 = v30;
@@ -71,12 +71,12 @@
     v55[2] = v7;
     v55[3] = v52;
     v36 = [MEMORY[0x1E695DEC8] arrayWithObjects:v55 count:4];
-    v37 = [v27 applyWithExtent:v36 arguments:{v29, v31, v33, v35}];
+    v37 = [curvesKernel applyWithExtent:v36 arguments:{v29, v31, v33, v35}];
 
-    v38 = [*(v10 + 2576) itur2100HLGColorSpace];
-    v39 = [v37 imageByColorMatchingColorSpaceToWorkingSpace:{objc_msgSend(v38, "CGColorSpace")}];
+    itur2100HLGColorSpace3 = [*(v10 + 2576) itur2100HLGColorSpace];
+    v39 = [v37 imageByColorMatchingColorSpaceToWorkingSpace:{objc_msgSend(itur2100HLGColorSpace3, "CGColorSpace")}];
 
-    v40 = [v39 imageByPremultiplyingAlpha];
+    imageByPremultiplyingAlpha = [v39 imageByPremultiplyingAlpha];
 
     if (v9 > 1.0)
     {
@@ -92,17 +92,17 @@
       v54[2] = v44;
       [MEMORY[0x1E695DF20] dictionaryWithObjects:v54 forKeys:v53 count:3];
       v46 = v45 = v10;
-      v47 = [v40 imageByApplyingFilter:@"CIColorMatrix" withInputParameters:v46];
+      v47 = [imageByPremultiplyingAlpha imageByApplyingFilter:@"CIColorMatrix" withInputParameters:v46];
 
       v10 = v45;
-      v40 = v47;
+      imageByPremultiplyingAlpha = v47;
     }
 
-    v48 = [*(v10 + 2576) workingColorSpace];
-    v49 = [v40 imageByTaggingWithColorSpace:{objc_msgSend(v48, "CGColorSpace")}];
+    workingColorSpace = [*(v10 + 2576) workingColorSpace];
+    v49 = [imageByPremultiplyingAlpha imageByTaggingWithColorSpace:{objc_msgSend(workingColorSpace, "CGColorSpace")}];
 
-    v3 = v49;
-    v6 = v3;
+    inputImage = v49;
+    v6 = inputImage;
   }
 
   return v6;

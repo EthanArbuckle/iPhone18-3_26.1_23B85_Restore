@@ -1,23 +1,23 @@
 @interface MTRPluginRVCCleanModeMetric
-+ (id)transformInvokeCommandExpectationMetric:(id)a3;
++ (id)transformInvokeCommandExpectationMetric:(id)metric;
 - (id)additionalCoreAnalyticsEventDictionary;
 @end
 
 @implementation MTRPluginRVCCleanModeMetric
 
-+ (id)transformInvokeCommandExpectationMetric:(id)a3
++ (id)transformInvokeCommandExpectationMetric:(id)metric
 {
-  v3 = a3;
+  metricCopy = metric;
   v4 = [MTRPluginRVCCleanModeMetric alloc];
-  v5 = [v3 invokeCommandMetric];
-  v6 = [(MTRPluginMetric *)v4 initMetricWithName:@"com.apple.matter.rvcCleanModeEvent" sourceMetric:v5];
+  invokeCommandMetric = [metricCopy invokeCommandMetric];
+  v6 = [(MTRPluginMetric *)v4 initMetricWithName:@"com.apple.matter.rvcCleanModeEvent" sourceMetric:invokeCommandMetric];
 
-  v7 = [v3 invokeCommandMetric];
-  [v6 setInvokeCommandMetric:v7];
+  invokeCommandMetric2 = [metricCopy invokeCommandMetric];
+  [v6 setInvokeCommandMetric:invokeCommandMetric2];
 
-  v8 = [v3 error];
+  error = [metricCopy error];
 
-  [v6 setError:v8];
+  [v6 setError:error];
 
   return v6;
 }
@@ -29,10 +29,10 @@
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v3 = [(MTRPluginRVCCleanModeMetric *)self invokeCommandMetric];
-  v4 = [v3 expectedValues];
+  invokeCommandMetric = [(MTRPluginRVCCleanModeMetric *)self invokeCommandMetric];
+  expectedValues = [invokeCommandMetric expectedValues];
 
-  v5 = [v4 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  v5 = [expectedValues countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v5)
   {
     v6 = v5;
@@ -44,7 +44,7 @@
       {
         if (*v26 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(expectedValues);
         }
 
         v10 = *(*(&v25 + 1) + 8 * i);
@@ -73,7 +73,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v6 = [expectedValues countByEnumeratingWithState:&v25 objects:v29 count:16];
     }
 
     while (v6);
@@ -85,13 +85,13 @@
   }
 
   v16 = MEMORY[0x277CBEB38];
-  v17 = [(MTRPluginRVCCleanModeMetric *)self invokeCommandMetric];
-  v18 = [v17 additionalCoreAnalyticsEventDictionary];
-  v19 = [v16 dictionaryWithDictionary:v18];
+  invokeCommandMetric2 = [(MTRPluginRVCCleanModeMetric *)self invokeCommandMetric];
+  additionalCoreAnalyticsEventDictionary = [invokeCommandMetric2 additionalCoreAnalyticsEventDictionary];
+  v19 = [v16 dictionaryWithDictionary:additionalCoreAnalyticsEventDictionary];
 
-  v20 = [(MTRPluginRVCCleanModeMetric *)self invokeCommandMetric];
-  v21 = [v20 commandFields];
-  v22 = commandValueFromCommandFields(v21);
+  invokeCommandMetric3 = [(MTRPluginRVCCleanModeMetric *)self invokeCommandMetric];
+  commandFields = [invokeCommandMetric3 commandFields];
+  v22 = commandValueFromCommandFields(commandFields);
   [v19 setObject:v22 forKeyedSubscript:@"expectedRVCCleanMode"];
 
   [v19 setObject:v7 forKeyedSubscript:@"rvcCleanMode"];

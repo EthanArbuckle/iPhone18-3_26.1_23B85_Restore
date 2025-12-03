@@ -1,61 +1,61 @@
 @interface EKFrozenReminderCalendar
-- (BOOL)_applyChanges:(id)a3 error:(id *)a4;
-- (BOOL)_applyChangesToSaveRequest:(id)a3 error:(id *)a4;
-- (id)REMColorFromEKHexColorString:(id)a3;
+- (BOOL)_applyChanges:(id)changes error:(id *)error;
+- (BOOL)_applyChangesToSaveRequest:(id)request error:(id *)error;
+- (id)REMColorFromEKHexColorString:(id)string;
 - (id)_account;
 - (id)calendarIdentifier;
 - (id)colorStringRaw;
 - (id)externalID;
 - (id)frozenReminderSource;
-- (id)hexColorStringFromREMColor:(id)a3;
-- (id)initNewListInStore:(id)a3;
+- (id)hexColorStringFromREMColor:(id)color;
+- (id)initNewListInStore:(id)store;
 - (id)remObjectID;
 - (id)sharedOwnerName;
 - (id)source;
 - (id)title;
-- (id)updateListWithSaveRequest:(id)a3 error:(id *)a4;
+- (id)updateListWithSaveRequest:(id)request error:(id *)error;
 - (int)displayOrder;
-- (unint64_t)ekSharingStatusFromREMSharingStatus:(int64_t)a3;
+- (unint64_t)ekSharingStatusFromREMSharingStatus:(int64_t)status;
 - (unint64_t)sharingStatus;
 @end
 
 @implementation EKFrozenReminderCalendar
 
-- (id)initNewListInStore:(id)a3
+- (id)initNewListInStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v5 = objc_alloc_init(EKChangeSet);
   [(EKChangeSet *)v5 setSkipsPersistentObjectCopy:1];
-  v6 = [getREMListClass() newObjectID];
-  v7 = [v6 uuid];
-  v8 = [v7 UUIDString];
-  [(EKChangeSet *)v5 changeSingleValue:v8 forKey:@"UUID" basedOn:0];
+  newObjectID = [getREMListClass() newObjectID];
+  uuid = [newObjectID uuid];
+  uUIDString = [uuid UUIDString];
+  [(EKChangeSet *)v5 changeSingleValue:uUIDString forKey:@"UUID" basedOn:0];
 
   v11.receiver = self;
   v11.super_class = EKFrozenReminderCalendar;
-  v9 = [(EKFrozenReminderObject *)&v11 initWithREMObject:0 inStore:v4 withChanges:v5];
+  v9 = [(EKFrozenReminderObject *)&v11 initWithREMObject:0 inStore:storeCopy withChanges:v5];
 
   return v9;
 }
 
 - (id)remObjectID
 {
-  v3 = [(EKFrozenReminderCalendar *)self _list];
+  _list = [(EKFrozenReminderCalendar *)self _list];
 
-  if (v3)
+  if (_list)
   {
-    v4 = [(EKFrozenReminderCalendar *)self _list];
-    v5 = [v4 objectID];
+    _list2 = [(EKFrozenReminderCalendar *)self _list];
+    objectID = [_list2 objectID];
   }
 
   else
   {
-    v4 = [(EKFrozenReminderCalendar *)self calendarIdentifier];
-    v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v4];
-    v5 = [getREMListClass() objectIDWithUUID:v6];
+    _list2 = [(EKFrozenReminderCalendar *)self calendarIdentifier];
+    v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:_list2];
+    objectID = [getREMListClass() objectIDWithUUID:v6];
   }
 
-  return v5;
+  return objectID;
 }
 
 - (id)title
@@ -102,35 +102,35 @@ id __42__EKFrozenReminderCalendar_colorStringRaw__block_invoke(uint64_t a1)
 
 - (unint64_t)sharingStatus
 {
-  v3 = [(EKFrozenReminderCalendar *)self _list];
-  v4 = [v3 sharingStatus];
+  _list = [(EKFrozenReminderCalendar *)self _list];
+  sharingStatus = [_list sharingStatus];
 
-  return [(EKFrozenReminderCalendar *)self ekSharingStatusFromREMSharingStatus:v4];
+  return [(EKFrozenReminderCalendar *)self ekSharingStatusFromREMSharingStatus:sharingStatus];
 }
 
-- (unint64_t)ekSharingStatusFromREMSharingStatus:(int64_t)a3
+- (unint64_t)ekSharingStatusFromREMSharingStatus:(int64_t)status
 {
-  if (a3 == 1)
+  if (status == 1)
   {
     return 1;
   }
 
   else
   {
-    return 2 * (a3 == 2);
+    return 2 * (status == 2);
   }
 }
 
-- (id)REMColorFromEKHexColorString:(id)a3
+- (id)REMColorFromEKHexColorString:(id)string
 {
-  v3 = [a3 uppercaseString];
-  v4 = [getREMColorClass() colorWithHexString:v3];
+  uppercaseString = [string uppercaseString];
+  v4 = [getREMColorClass() colorWithHexString:uppercaseString];
   if (!v4)
   {
-    if ([v3 hasPrefix:@"#"] && objc_msgSend(v3, "length") == 9)
+    if ([uppercaseString hasPrefix:@"#"] && objc_msgSend(uppercaseString, "length") == 9)
     {
       REMColorClass = getREMColorClass();
-      v6 = [v3 substringToIndex:7];
+      v6 = [uppercaseString substringToIndex:7];
       v4 = [REMColorClass colorWithHexString:v6];
     }
 
@@ -143,17 +143,17 @@ id __42__EKFrozenReminderCalendar_colorStringRaw__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (id)hexColorStringFromREMColor:(id)a3
+- (id)hexColorStringFromREMColor:(id)color
 {
-  v3 = [a3 hexString];
-  if ([v3 length] <= 8)
+  hexString = [color hexString];
+  if ([hexString length] <= 8)
   {
-    v4 = [v3 stringByAppendingString:@"FF"];
+    v4 = [hexString stringByAppendingString:@"FF"];
 
-    v3 = v4;
+    hexString = v4;
   }
 
-  return v3;
+  return hexString;
 }
 
 - (id)calendarIdentifier
@@ -225,36 +225,36 @@ LABEL_3:
 
 - (id)_account
 {
-  v3 = [(EKFrozenReminderCalendar *)self frozenReminderSource];
-  v4 = v3;
-  if (v3)
+  frozenReminderSource = [(EKFrozenReminderCalendar *)self frozenReminderSource];
+  v4 = frozenReminderSource;
+  if (frozenReminderSource)
   {
-    v5 = [v3 remAccount];
+    remAccount = [frozenReminderSource remAccount];
   }
 
   else
   {
-    v6 = [(EKFrozenReminderCalendar *)self _list];
-    v5 = [v6 account];
+    _list = [(EKFrozenReminderCalendar *)self _list];
+    remAccount = [_list account];
   }
 
-  return v5;
+  return remAccount;
 }
 
-- (BOOL)_applyChanges:(id)a3 error:(id *)a4
+- (BOOL)_applyChanges:(id)changes error:(id *)error
 {
-  v6 = a3;
+  changesCopy = changes;
   if ([(EKChangeSet *)self->super._changeSet hasUnsavedChangeForKey:@"unlocalizedTitle"])
   {
     v7 = [(EKChangeSet *)self->super._changeSet valueForSingleValueKey:@"unlocalizedTitle" basedOn:0];
-    [v6 setName:v7];
+    [changesCopy setName:v7];
   }
 
   if ([(EKChangeSet *)self->super._changeSet hasUnsavedChangeForKey:@"colorStringRaw"])
   {
     v8 = [(EKChangeSet *)self->super._changeSet valueForSingleValueKey:@"colorStringRaw" basedOn:0];
     v9 = [(EKFrozenReminderCalendar *)self REMColorFromEKHexColorString:v8];
-    [v6 setColor:v9];
+    [changesCopy setColor:v9];
   }
 
   if (![(EKChangeSet *)self->super._changeSet hasUnsavedChangeForKey:@"source"])
@@ -262,24 +262,24 @@ LABEL_3:
     goto LABEL_8;
   }
 
-  v10 = [(EKFrozenReminderCalendar *)self frozenReminderSource];
-  if (v10)
+  frozenReminderSource = [(EKFrozenReminderCalendar *)self frozenReminderSource];
+  if (frozenReminderSource)
   {
-    v11 = v10;
-    v12 = [v10 REMObject];
-    v13 = [v6 saveRequest];
-    v14 = [v13 updateAccount:v12];
+    v11 = frozenReminderSource;
+    rEMObject = [frozenReminderSource REMObject];
+    saveRequest = [changesCopy saveRequest];
+    v14 = [saveRequest updateAccount:rEMObject];
 
-    [v14 addListChangeItem:v6];
+    [v14 addListChangeItem:changesCopy];
 LABEL_8:
     v15 = 1;
     goto LABEL_9;
   }
 
-  if (a4)
+  if (error)
   {
     [MEMORY[0x1E696ABC0] errorWithEKErrorCode:24];
-    *a4 = v15 = 0;
+    *error = v15 = 0;
   }
 
   else
@@ -292,12 +292,12 @@ LABEL_9:
   return v15;
 }
 
-- (BOOL)_applyChangesToSaveRequest:(id)a3 error:(id *)a4
+- (BOOL)_applyChangesToSaveRequest:(id)request error:(id *)error
 {
-  v6 = [(EKFrozenReminderCalendar *)self updateListWithSaveRequest:a3 error:?];
+  v6 = [(EKFrozenReminderCalendar *)self updateListWithSaveRequest:request error:?];
   if (v6)
   {
-    v7 = [(EKFrozenReminderCalendar *)self _applyChanges:v6 error:a4];
+    v7 = [(EKFrozenReminderCalendar *)self _applyChanges:v6 error:error];
   }
 
   else
@@ -314,42 +314,42 @@ LABEL_9:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    reminderSource = v2;
   }
 
   else
   {
-    v3 = [v2 reminderSource];
+    reminderSource = [v2 reminderSource];
   }
 
-  v4 = v3;
+  v4 = reminderSource;
 
   return v4;
 }
 
-- (id)updateListWithSaveRequest:(id)a3 error:(id *)a4
+- (id)updateListWithSaveRequest:(id)request error:(id *)error
 {
-  v5 = a3;
+  requestCopy = request;
   if ([(EKFrozenReminderObject *)self isNew])
   {
     listChange = self->_listChange;
     if (!listChange)
     {
-      v7 = [(EKFrozenReminderCalendar *)self frozenReminderSource];
-      v8 = [v7 REMObject];
-      v9 = [v5 updateAccount:v8];
-      v10 = [(EKFrozenReminderCalendar *)self title];
-      v11 = v10;
+      frozenReminderSource = [(EKFrozenReminderCalendar *)self frozenReminderSource];
+      rEMObject = [frozenReminderSource REMObject];
+      v9 = [requestCopy updateAccount:rEMObject];
+      title = [(EKFrozenReminderCalendar *)self title];
+      v11 = title;
       v12 = &stru_1F1B49D68;
-      if (v10)
+      if (title)
       {
-        v12 = v10;
+        v12 = title;
       }
 
       v13 = v12;
 
-      v14 = [(EKFrozenReminderCalendar *)self remObjectID];
-      v15 = [v5 addListWithName:v13 toAccountChangeItem:v9 listObjectID:v14];
+      remObjectID = [(EKFrozenReminderCalendar *)self remObjectID];
+      v15 = [requestCopy addListWithName:v13 toAccountChangeItem:v9 listObjectID:remObjectID];
 
       v16 = self->_listChange;
       self->_listChange = v15;
@@ -362,8 +362,8 @@ LABEL_9:
 
   else
   {
-    v18 = [(EKFrozenReminderCalendar *)self _list];
-    v17 = [v5 updateList:v18];
+    _list = [(EKFrozenReminderCalendar *)self _list];
+    v17 = [requestCopy updateList:_list];
   }
 
   return v17;
@@ -377,9 +377,9 @@ LABEL_9:
   v5[3] = &unk_1E77FCF40;
   v5[4] = self;
   v2 = [(EKFrozenReminderObject *)self valueForSingleValueKey:@"displayOrder" backingValue:v5];
-  v3 = [v2 intValue];
+  intValue = [v2 intValue];
 
-  return v3;
+  return intValue;
 }
 
 id __40__EKFrozenReminderCalendar_displayOrder__block_invoke(uint64_t a1)
@@ -413,10 +413,10 @@ id __38__EKFrozenReminderCalendar_externalID__block_invoke(uint64_t a1)
 
 - (id)sharedOwnerName
 {
-  v2 = [(EKFrozenReminderCalendar *)self _list];
-  v3 = [v2 sharedOwnerName];
+  _list = [(EKFrozenReminderCalendar *)self _list];
+  sharedOwnerName = [_list sharedOwnerName];
 
-  return v3;
+  return sharedOwnerName;
 }
 
 @end

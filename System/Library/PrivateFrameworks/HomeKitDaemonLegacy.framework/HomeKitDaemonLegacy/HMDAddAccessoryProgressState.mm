@@ -1,8 +1,8 @@
 @interface HMDAddAccessoryProgressState
-- (HMDAddAccessoryProgressState)initWithPairedAccessory:(id)a3;
-- (HMDAddAccessoryProgressState)initWithUUID:(id)a3 accessoryName:(id)a4 manufacturerName:(id)a5 category:(id)a6 certificationStatus:(unint64_t)a7 productData:(id)a8 commissioneeInfo:(id)a9 systemCommissionerUUID:(id)a10;
-- (HMDAddAccessoryProgressState)initWithUnpairedAccessory:(id)a3 server:(id)a4 accessoryInfo:(id)a5 certificationStatus:(unint64_t)a6;
-- (HMDAddAccessoryProgressState)initWithUnpairedAccessory:(id)a3 server:(id)a4 categoryIdentifier:(id)a5 certificationStatus:(unint64_t)a6;
+- (HMDAddAccessoryProgressState)initWithPairedAccessory:(id)accessory;
+- (HMDAddAccessoryProgressState)initWithUUID:(id)d accessoryName:(id)name manufacturerName:(id)manufacturerName category:(id)category certificationStatus:(unint64_t)status productData:(id)data commissioneeInfo:(id)info systemCommissionerUUID:(id)self0;
+- (HMDAddAccessoryProgressState)initWithUnpairedAccessory:(id)accessory server:(id)server accessoryInfo:(id)info certificationStatus:(unint64_t)status;
+- (HMDAddAccessoryProgressState)initWithUnpairedAccessory:(id)accessory server:(id)server categoryIdentifier:(id)identifier certificationStatus:(unint64_t)status;
 - (id)description;
 @end
 
@@ -11,107 +11,107 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMDAddAccessoryProgressState *)self accessoryUUID];
-  v5 = [(HMDAddAccessoryProgressState *)self accessoryName];
-  v6 = [(HMDAddAccessoryProgressState *)self manufacturerName];
-  v7 = [v3 stringWithFormat:@"HMDAddAccessoryProgressState - uuid: %@, name: %@, mfg: %@", v4, v5, v6];
+  accessoryUUID = [(HMDAddAccessoryProgressState *)self accessoryUUID];
+  accessoryName = [(HMDAddAccessoryProgressState *)self accessoryName];
+  manufacturerName = [(HMDAddAccessoryProgressState *)self manufacturerName];
+  v7 = [v3 stringWithFormat:@"HMDAddAccessoryProgressState - uuid: %@, name: %@, mfg: %@", accessoryUUID, accessoryName, manufacturerName];
 
   return v7;
 }
 
-- (HMDAddAccessoryProgressState)initWithUnpairedAccessory:(id)a3 server:(id)a4 categoryIdentifier:(id)a5 certificationStatus:(unint64_t)a6
+- (HMDAddAccessoryProgressState)initWithUnpairedAccessory:(id)accessory server:(id)server categoryIdentifier:(id)identifier certificationStatus:(unint64_t)status
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a4;
-  v13 = [v10 uuid];
-  v14 = [v10 name];
-  if (v11)
+  accessoryCopy = accessory;
+  identifierCopy = identifier;
+  serverCopy = server;
+  uuid = [accessoryCopy uuid];
+  name = [accessoryCopy name];
+  if (identifierCopy)
   {
-    [MEMORY[0x277CD1680] categoryWithCategoryIdentifier:v11];
+    [MEMORY[0x277CD1680] categoryWithCategoryIdentifier:identifierCopy];
   }
 
   else
   {
-    [v10 category];
+    [accessoryCopy category];
   }
   v15 = ;
-  v16 = [v12 productData];
-  v17 = [v12 commissioningID];
+  productData = [serverCopy productData];
+  commissioningID = [serverCopy commissioningID];
 
-  v18 = [(HMDAddAccessoryProgressState *)self initWithUUID:v13 accessoryName:v14 manufacturerName:0 category:v15 certificationStatus:a6 productData:v16 commissioneeInfo:0 systemCommissionerUUID:v17];
+  v18 = [(HMDAddAccessoryProgressState *)self initWithUUID:uuid accessoryName:name manufacturerName:0 category:v15 certificationStatus:status productData:productData commissioneeInfo:0 systemCommissionerUUID:commissioningID];
   return v18;
 }
 
-- (HMDAddAccessoryProgressState)initWithUnpairedAccessory:(id)a3 server:(id)a4 accessoryInfo:(id)a5 certificationStatus:(unint64_t)a6
+- (HMDAddAccessoryProgressState)initWithUnpairedAccessory:(id)accessory server:(id)server accessoryInfo:(id)info certificationStatus:(unint64_t)status
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a4;
-  v12 = [v9 uuid];
-  v13 = [v9 name];
-  v14 = [v10 manufacturer];
-  if (v10)
+  accessoryCopy = accessory;
+  infoCopy = info;
+  serverCopy = server;
+  uuid = [accessoryCopy uuid];
+  name = [accessoryCopy name];
+  manufacturer = [infoCopy manufacturer];
+  if (infoCopy)
   {
     v15 = MEMORY[0x277CD1680];
-    v21 = [v10 category];
+    category = [infoCopy category];
     [v15 categoryWithCategoryIdentifier:?];
   }
 
   else
   {
-    [v9 category];
+    [accessoryCopy category];
   }
   v16 = ;
-  v17 = [v11 productData];
-  v18 = [v11 commissioningID];
+  productData = [serverCopy productData];
+  commissioningID = [serverCopy commissioningID];
 
-  v19 = [(HMDAddAccessoryProgressState *)self initWithUUID:v12 accessoryName:v13 manufacturerName:v14 category:v16 certificationStatus:a6 productData:v17 commissioneeInfo:0 systemCommissionerUUID:v18];
-  if (v10)
+  v19 = [(HMDAddAccessoryProgressState *)self initWithUUID:uuid accessoryName:name manufacturerName:manufacturer category:v16 certificationStatus:status productData:productData commissioneeInfo:0 systemCommissionerUUID:commissioningID];
+  if (infoCopy)
   {
 
-    v16 = v21;
+    v16 = category;
   }
 
   return v19;
 }
 
-- (HMDAddAccessoryProgressState)initWithPairedAccessory:(id)a3
+- (HMDAddAccessoryProgressState)initWithPairedAccessory:(id)accessory
 {
-  v4 = a3;
-  v5 = [v4 uuid];
-  v6 = [v4 name];
-  v7 = [v4 manufacturer];
-  v8 = [v4 category];
-  v9 = [v4 productData];
+  accessoryCopy = accessory;
+  uuid = [accessoryCopy uuid];
+  name = [accessoryCopy name];
+  manufacturer = [accessoryCopy manufacturer];
+  category = [accessoryCopy category];
+  productData = [accessoryCopy productData];
 
-  v10 = [(HMDAddAccessoryProgressState *)self initWithUUID:v5 accessoryName:v6 manufacturerName:v7 category:v8 certificationStatus:0 productData:v9 commissioneeInfo:0 systemCommissionerUUID:0];
+  v10 = [(HMDAddAccessoryProgressState *)self initWithUUID:uuid accessoryName:name manufacturerName:manufacturer category:category certificationStatus:0 productData:productData commissioneeInfo:0 systemCommissionerUUID:0];
   return v10;
 }
 
-- (HMDAddAccessoryProgressState)initWithUUID:(id)a3 accessoryName:(id)a4 manufacturerName:(id)a5 category:(id)a6 certificationStatus:(unint64_t)a7 productData:(id)a8 commissioneeInfo:(id)a9 systemCommissionerUUID:(id)a10
+- (HMDAddAccessoryProgressState)initWithUUID:(id)d accessoryName:(id)name manufacturerName:(id)manufacturerName category:(id)category certificationStatus:(unint64_t)status productData:(id)data commissioneeInfo:(id)info systemCommissionerUUID:(id)self0
 {
-  v26 = a3;
-  v25 = a4;
-  v24 = a5;
-  v23 = a6;
-  v22 = a8;
-  v16 = a9;
-  v17 = a10;
+  dCopy = d;
+  nameCopy = name;
+  manufacturerNameCopy = manufacturerName;
+  categoryCopy = category;
+  dataCopy = data;
+  infoCopy = info;
+  iDCopy = iD;
   v27.receiver = self;
   v27.super_class = HMDAddAccessoryProgressState;
   v18 = [(HMDAddAccessoryProgressState *)&v27 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_accessoryUUID, a3);
-    objc_storeStrong(&v19->_accessoryName, a4);
-    objc_storeStrong(&v19->_manufacturerName, a5);
-    objc_storeStrong(&v19->_category, a6);
-    v19->_certificationStatus = a7;
-    objc_storeStrong(&v19->_productData, a8);
-    objc_storeStrong(&v19->_commissioneeInfo, a9);
-    objc_storeStrong(&v19->_systemCommissionerUUID, a10);
+    objc_storeStrong(&v18->_accessoryUUID, d);
+    objc_storeStrong(&v19->_accessoryName, name);
+    objc_storeStrong(&v19->_manufacturerName, manufacturerName);
+    objc_storeStrong(&v19->_category, category);
+    v19->_certificationStatus = status;
+    objc_storeStrong(&v19->_productData, data);
+    objc_storeStrong(&v19->_commissioneeInfo, info);
+    objc_storeStrong(&v19->_systemCommissionerUUID, iD);
   }
 
   return v19;

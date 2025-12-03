@@ -1,8 +1,8 @@
 @interface PKPaymentAuthorizationPaymentUIInterface
-- (PKPaymentAuthorizationPaymentUIInterface)initWithConfiguration:(id)a3 host:(id)a4;
+- (PKPaymentAuthorizationPaymentUIInterface)initWithConfiguration:(id)configuration host:(id)host;
 - (void)_startObservingLockButtonPresses;
 - (void)_stopObservingLockButtonPresses;
-- (void)consumeSinglePressUpForButtonKind:(int64_t)a3;
+- (void)consumeSinglePressUpForButtonKind:(int64_t)kind;
 - (void)dealloc;
 - (void)didAppear;
 - (void)initializePrimaryViewController;
@@ -12,23 +12,23 @@
 
 @implementation PKPaymentAuthorizationPaymentUIInterface
 
-- (PKPaymentAuthorizationPaymentUIInterface)initWithConfiguration:(id)a3 host:(id)a4
+- (PKPaymentAuthorizationPaymentUIInterface)initWithConfiguration:(id)configuration host:(id)host
 {
-  v7 = a3;
-  v8 = a4;
+  configurationCopy = configuration;
+  hostCopy = host;
   v22.receiver = self;
   v22.super_class = PKPaymentAuthorizationPaymentUIInterface;
   v9 = [(PKPaymentAuthorizationPaymentUIInterface *)&v22 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_configuration, a3);
-    objc_storeStrong(&v10->_host, a4);
+    objc_storeStrong(&v9->_configuration, configuration);
+    objc_storeStrong(&v10->_host, host);
     v11 = objc_alloc_init(MEMORY[0x1E69B8E80]);
     experiment = v10->_experiment;
     v10->_experiment = v11;
 
-    v13 = [[PKPaymentRequestViewInterface alloc] initWithConfiguration:v7 delegate:v8];
+    v13 = [[PKPaymentRequestViewInterface alloc] initWithConfiguration:configurationCopy delegate:hostCopy];
     paymentUIInterface = v10->_paymentUIInterface;
     v10->_paymentUIInterface = v13;
 
@@ -39,13 +39,13 @@
       goto LABEL_6;
     }
 
-    v16 = [(PKPaymentRequestViewInterface *)v15 serviceDelegate];
+    serviceDelegate = [(PKPaymentRequestViewInterface *)v15 serviceDelegate];
     serviceDelegate = v10->_serviceDelegate;
-    v10->_serviceDelegate = v16;
+    v10->_serviceDelegate = serviceDelegate;
 
-    v18 = [(PKPaymentRequestViewInterface *)v10->_paymentUIInterface viewController];
+    viewController = [(PKPaymentRequestViewInterface *)v10->_paymentUIInterface viewController];
     primaryViewController = v10->_primaryViewController;
-    v10->_primaryViewController = v18;
+    v10->_primaryViewController = viewController;
 
     [(PKPaymentAuthorizationPaymentUIInterface *)v10 initializePrimaryViewController];
   }
@@ -59,9 +59,9 @@ LABEL_6:
 - (void)initializePrimaryViewController
 {
   [(UIViewController *)self->_primaryViewController setModalPresentationStyle:5];
-  v4 = [(UIViewController *)self->_primaryViewController view];
-  v3 = [MEMORY[0x1E69DC888] clearColor];
-  [v4 setBackgroundColor:v3];
+  view = [(UIViewController *)self->_primaryViewController view];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [view setBackgroundColor:clearColor];
 }
 
 - (void)willAppear
@@ -102,8 +102,8 @@ LABEL_6:
 {
   if (!self->_lockButtonObserver)
   {
-    v6 = [MEMORY[0x1E69D4220] sharedInstance];
-    v4 = [v6 beginConsumingPressesForButtonKind:2 eventConsumer:self priority:0];
+    mEMORY[0x1E69D4220] = [MEMORY[0x1E69D4220] sharedInstance];
+    v4 = [mEMORY[0x1E69D4220] beginConsumingPressesForButtonKind:2 eventConsumer:self priority:0];
     lockButtonObserver = self->_lockButtonObserver;
     self->_lockButtonObserver = v4;
   }
@@ -116,7 +116,7 @@ LABEL_6:
   self->_lockButtonObserver = 0;
 }
 
-- (void)consumeSinglePressUpForButtonKind:(int64_t)a3
+- (void)consumeSinglePressUpForButtonKind:(int64_t)kind
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;

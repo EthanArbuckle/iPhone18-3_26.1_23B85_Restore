@@ -1,30 +1,30 @@
 @interface SOAuthorizationHintsCore
-- (SOAuthorizationHintsCore)initWithCoder:(id)a3;
-- (SOAuthorizationHintsCore)initWithLocalizedExtensionBundleDisplayName:(id)a3;
+- (SOAuthorizationHintsCore)initWithCoder:(id)coder;
+- (SOAuthorizationHintsCore)initWithLocalizedExtensionBundleDisplayName:(id)name;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SOAuthorizationHintsCore
 
-- (SOAuthorizationHintsCore)initWithLocalizedExtensionBundleDisplayName:(id)a3
+- (SOAuthorizationHintsCore)initWithLocalizedExtensionBundleDisplayName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = SOAuthorizationHintsCore;
   v6 = [(SOAuthorizationHintsCore *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_localizedExtensionBundleDisplayName, a3);
+    objc_storeStrong(&v6->_localizedExtensionBundleDisplayName, name);
   }
 
   return v7;
 }
 
-- (SOAuthorizationHintsCore)initWithCoder:(id)a3
+- (SOAuthorizationHintsCore)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = SOAuthorizationHintsCore;
   v5 = [(SOAuthorizationHintsCore *)&v11 init];
@@ -32,7 +32,7 @@
   {
     v6 = objc_opt_class();
     v7 = NSStringFromSelector(sel_localizedExtensionBundleDisplayName);
-    v8 = [v4 decodeObjectOfClass:v6 forKey:v7];
+    v8 = [coderCopy decodeObjectOfClass:v6 forKey:v7];
     localizedExtensionBundleDisplayName = v5->_localizedExtensionBundleDisplayName;
     v5->_localizedExtensionBundleDisplayName = v8;
   }
@@ -40,12 +40,12 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   localizedExtensionBundleDisplayName = self->_localizedExtensionBundleDisplayName;
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_localizedExtensionBundleDisplayName);
-  [v4 encodeObject:localizedExtensionBundleDisplayName forKey:v5];
+  [coderCopy encodeObject:localizedExtensionBundleDisplayName forKey:v5];
 }
 
 - (id)description

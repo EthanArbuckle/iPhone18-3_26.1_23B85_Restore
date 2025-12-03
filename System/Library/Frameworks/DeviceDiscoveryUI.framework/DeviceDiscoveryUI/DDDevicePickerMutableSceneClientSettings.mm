@@ -1,14 +1,14 @@
 @interface DDDevicePickerMutableSceneClientSettings
 - (NSUUID)agentUUID;
 - (NSUUID)endpointUUID;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setAgentUUID:(id)a3;
-- (void)setEndpointUUID:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setAgentUUID:(id)d;
+- (void)setEndpointUUID:(id)d;
 @end
 
 @implementation DDDevicePickerMutableSceneClientSettings
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [DDDevicePickerSceneClientSettings alloc];
 
@@ -17,32 +17,32 @@
 
 - (NSUUID)endpointUUID
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:18492847];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:18492847];
 
   return v3;
 }
 
-- (void)setEndpointUUID:(id)a3
+- (void)setEndpointUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(FBSSettings *)self otherSettings];
-  [v5 setObject:v4 forSetting:18492847];
+  dCopy = d;
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setObject:dCopy forSetting:18492847];
 }
 
 - (NSUUID)agentUUID
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:18492848];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:18492848];
 
   return v3;
 }
 
-- (void)setAgentUUID:(id)a3
+- (void)setAgentUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(FBSSettings *)self otherSettings];
-  [v5 setObject:v4 forSetting:18492848];
+  dCopy = d;
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setObject:dCopy forSetting:18492848];
 }
 
 @end

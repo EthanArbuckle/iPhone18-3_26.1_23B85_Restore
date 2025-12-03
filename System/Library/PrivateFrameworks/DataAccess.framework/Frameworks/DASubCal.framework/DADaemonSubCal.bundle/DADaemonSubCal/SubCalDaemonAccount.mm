@@ -1,83 +1,83 @@
 @interface SubCalDaemonAccount
-+ (BOOL)isBadPasswordError:(id)a3;
++ (BOOL)isBadPasswordError:(id)error;
 - (BOOL)_calendarExistsOnParent;
-- (BOOL)monitorFoldersWithIDs:(id)a3;
-- (BOOL)shouldRefreshSubCalForCalendar:(id)a3;
+- (BOOL)monitorFoldersWithIDs:(id)ds;
+- (BOOL)shouldRefreshSubCalForCalendar:(id)calendar;
 - (SubCalDaemonAccountDelegate)delegate;
 - (id)changeTrackingID;
 - (id)sourceExternalId;
 - (void)stopMonitoringFolders;
-- (void)subCalRefreshTask:(id)a3 didRedirectToURL:(id)a4;
-- (void)subCalRefreshTask:(id)a3 finishedWithError:(id)a4;
-- (void)subCalRefreshTask:(id)a3 needsUsernamePasswordForHost:(id)a4 continuation:(id)a5;
+- (void)subCalRefreshTask:(id)task didRedirectToURL:(id)l;
+- (void)subCalRefreshTask:(id)task finishedWithError:(id)error;
+- (void)subCalRefreshTask:(id)task needsUsernamePasswordForHost:(id)host continuation:(id)continuation;
 @end
 
 @implementation SubCalDaemonAccount
 
 - (id)changeTrackingID
 {
-  v3 = [(SubCalDaemonAccount *)self backingAccountInfo];
-  v4 = [v3 parentAccount];
+  backingAccountInfo = [(SubCalDaemonAccount *)self backingAccountInfo];
+  parentAccount = [backingAccountInfo parentAccount];
 
-  if (v4)
+  if (parentAccount)
   {
-    v5 = [(SubCalDaemonAccount *)self backingAccountInfo];
-    v6 = [v5 parentAccount];
-    v7 = [v6 identifier];
-    v8 = [NSString stringWithFormat:@"com.apple.dataaccessd-%@", v7];
+    backingAccountInfo2 = [(SubCalDaemonAccount *)self backingAccountInfo];
+    parentAccount2 = [backingAccountInfo2 parentAccount];
+    identifier = [parentAccount2 identifier];
+    changeTrackingID = [NSString stringWithFormat:@"com.apple.dataaccessd-%@", identifier];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = SubCalDaemonAccount;
-    v8 = [(SubCalDaemonAccount *)&v10 changeTrackingID];
+    changeTrackingID = [(SubCalDaemonAccount *)&v10 changeTrackingID];
   }
 
-  return v8;
+  return changeTrackingID;
 }
 
 - (id)sourceExternalId
 {
-  v3 = [(SubCalDaemonAccount *)self backingAccountInfo];
-  v4 = [v3 parentAccount];
+  backingAccountInfo = [(SubCalDaemonAccount *)self backingAccountInfo];
+  parentAccount = [backingAccountInfo parentAccount];
 
-  if (v4)
+  if (parentAccount)
   {
-    v5 = [(SubCalDaemonAccount *)self backingAccountInfo];
-    v6 = [v5 parentAccount];
-    v7 = [v6 identifier];
+    backingAccountInfo2 = [(SubCalDaemonAccount *)self backingAccountInfo];
+    parentAccount2 = [backingAccountInfo2 parentAccount];
+    identifier = [parentAccount2 identifier];
   }
 
   else
   {
-    v7 = kSubCalCalendarStoreExternalId;
+    identifier = kSubCalCalendarStoreExternalId;
   }
 
-  return v7;
+  return identifier;
 }
 
 - (BOOL)_calendarExistsOnParent
 {
-  v3 = [(SubCalDaemonAccount *)self backingAccountInfo];
-  v4 = [v3 parentAccount];
+  backingAccountInfo = [(SubCalDaemonAccount *)self backingAccountInfo];
+  parentAccount = [backingAccountInfo parentAccount];
 
-  if (!v4)
+  if (!parentAccount)
   {
     return 1;
   }
 
-  v5 = [(SubCalDaemonAccount *)self backingAccountInfo];
-  v6 = [v5 parentAccount];
+  backingAccountInfo2 = [(SubCalDaemonAccount *)self backingAccountInfo];
+  parentAccount2 = [backingAccountInfo2 parentAccount];
   v7 = +[DASharedAccountProperties CalDAVSubscribedCalendarsKey];
-  v8 = [v6 objectForKeyedSubscript:v7];
+  v8 = [parentAccount2 objectForKeyedSubscript:v7];
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = [v8 allKeys];
-  v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  allKeys = [v8 allKeys];
+  v10 = [allKeys countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
     v11 = v10;
@@ -88,12 +88,12 @@
       {
         if (*v19 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allKeys);
         }
 
         v14 = *(*(&v18 + 1) + 8 * i);
-        v15 = [(SubCalDaemonAccount *)self calDAVURLPath];
-        LOBYTE(v14) = [v14 isEqualToString:v15];
+        calDAVURLPath = [(SubCalDaemonAccount *)self calDAVURLPath];
+        LOBYTE(v14) = [v14 isEqualToString:calDAVURLPath];
 
         if (v14)
         {
@@ -102,7 +102,7 @@
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v11 = [allKeys countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v11)
       {
         continue;
@@ -118,15 +118,15 @@ LABEL_12:
   return v16;
 }
 
-- (BOOL)shouldRefreshSubCalForCalendar:(id)a3
+- (BOOL)shouldRefreshSubCalForCalendar:(id)calendar
 {
-  v3 = a3;
-  v4 = [v3 subcalURL];
-  v5 = [v4 lowercaseString];
-  v6 = [v5 containsString:@".icloud.com/holidays/cn_zh.ics"];
+  calendarCopy = calendar;
+  subcalURL = [calendarCopy subcalURL];
+  lowercaseString = [subcalURL lowercaseString];
+  v6 = [lowercaseString containsString:@".icloud.com/holidays/cn_zh.ics"];
 
-  LODWORD(v4) = [v3 migrationVersion];
-  if (v4 < 2)
+  LODWORD(subcalURL) = [calendarCopy migrationVersion];
+  if (subcalURL < 2)
   {
     return v6;
   }
@@ -137,36 +137,36 @@ LABEL_12:
   }
 }
 
-- (void)subCalRefreshTask:(id)a3 finishedWithError:(id)a4
+- (void)subCalRefreshTask:(id)task finishedWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  taskCopy = task;
+  errorCopy = error;
   v8 = DALoggingwithCategory();
   v9 = v8;
-  if (v7)
+  if (errorCopy)
   {
     v10 = _CPLog_to_os_log_type[4];
     if (os_log_type_enabled(v8, v10))
     {
-      v11 = [(SubCalDaemonAccount *)self accountID];
+      accountID = [(SubCalDaemonAccount *)self accountID];
       v40 = 138543618;
-      v41 = v11;
+      v41 = accountID;
       v42 = 2112;
-      v43 = v7;
+      v43 = errorCopy;
       _os_log_impl(&dword_0, v9, v10, "Refresh completed for account with ID %{public}@ with error %@", &v40, 0x16u);
     }
 
-    v12 = [v7 domain];
-    if ([v12 isEqualToString:kSubCalURLRequestErrorDomain])
+    domain = [errorCopy domain];
+    if ([domain isEqualToString:kSubCalURLRequestErrorDomain])
     {
-      v13 = [v7 code];
+      code = [errorCopy code];
 
-      if (v13 == &stru_158.flags + 2)
+      if (code == &stru_158.flags + 2)
       {
-        v14 = [(SubCalDaemonAccount *)self backingAccountInfo];
-        v15 = [v14 parentAccount];
+        backingAccountInfo = [(SubCalDaemonAccount *)self backingAccountInfo];
+        parentAccount = [backingAccountInfo parentAccount];
 
-        if (v15)
+        if (parentAccount)
         {
           goto LABEL_31;
         }
@@ -175,12 +175,12 @@ LABEL_12:
         v17 = _CPLog_to_os_log_type[3];
         if (os_log_type_enabled(v16, _CPLog_to_os_log_type[3]))
         {
-          v18 = [(SubCalDaemonAccount *)self accountDescription];
-          v19 = [(SubCalDaemonAccount *)self publicDescription];
+          accountDescription = [(SubCalDaemonAccount *)self accountDescription];
+          publicDescription = [(SubCalDaemonAccount *)self publicDescription];
           v40 = 138412546;
-          v41 = v18;
+          v41 = accountDescription;
           v42 = 2114;
-          v43 = v19;
+          v43 = publicDescription;
           _os_log_impl(&dword_0, v16, v17, "The server for account %@ (%{public}@) returned a 410 status code, which means this calendar is gone gone gone. Disabling calendars for this account.", &v40, 0x16u);
         }
 
@@ -194,7 +194,7 @@ LABEL_12:
     {
     }
 
-    if (![SubCalDaemonAccount isBadPasswordError:v7])
+    if (![SubCalDaemonAccount isBadPasswordError:errorCopy])
     {
       goto LABEL_31;
     }
@@ -203,17 +203,17 @@ LABEL_12:
     v24 = _CPLog_to_os_log_type[3];
     if (os_log_type_enabled(v23, v24))
     {
-      v25 = [(SubCalDaemonAccount *)self accountDescription];
-      v26 = [(SubCalDaemonAccount *)self publicDescription];
+      accountDescription2 = [(SubCalDaemonAccount *)self accountDescription];
+      publicDescription2 = [(SubCalDaemonAccount *)self publicDescription];
       v40 = 138412546;
-      v41 = v25;
+      v41 = accountDescription2;
       v42 = 2114;
-      v43 = v26;
+      v43 = publicDescription2;
       _os_log_impl(&dword_0, v23, v24, "Got a bad password error; marking account ad unauthenticated: %@ (%{public}@)", &v40, 0x16u);
     }
 
-    v27 = [(SubCalDaemonAccount *)self backingAccountInfo];
-    v28 = v27;
+    backingAccountInfo2 = [(SubCalDaemonAccount *)self backingAccountInfo];
+    v28 = backingAccountInfo2;
     v29 = 0;
     goto LABEL_29;
   }
@@ -221,9 +221,9 @@ LABEL_12:
   v20 = _CPLog_to_os_log_type[5];
   if (os_log_type_enabled(v8, v20))
   {
-    v21 = [(SubCalDaemonAccount *)self accountID];
+    accountID2 = [(SubCalDaemonAccount *)self accountID];
     v40 = 138543362;
-    v41 = v21;
+    v41 = accountID2;
     _os_log_impl(&dword_0, v9, v20, "Refresh completed for account with ID %{public}@", &v40, 0xCu);
   }
 
@@ -237,12 +237,12 @@ LABEL_12:
     v30 = DALoggingwithCategory();
     if (os_log_type_enabled(v30, v20))
     {
-      v31 = [(SubCalDaemonAccount *)self accountDescription];
-      v32 = [(SubCalDaemonAccount *)self publicDescription];
+      accountDescription3 = [(SubCalDaemonAccount *)self accountDescription];
+      publicDescription3 = [(SubCalDaemonAccount *)self publicDescription];
       v40 = 138412546;
-      v41 = v31;
+      v41 = accountDescription3;
       v42 = 2114;
-      v43 = v32;
+      v43 = publicDescription3;
       _os_log_impl(&dword_0, v30, v20, "Account %@ (%{public}@) successfully refreshed using https; updating the account", &v40, 0x16u);
     }
 
@@ -250,28 +250,28 @@ LABEL_12:
     [(SubCalDaemonAccount *)self setUseSSL:1];
   }
 
-  v33 = [(SubCalDaemonAccount *)self backingAccountInfo];
-  v34 = [v33 isAuthenticated];
+  backingAccountInfo3 = [(SubCalDaemonAccount *)self backingAccountInfo];
+  isAuthenticated = [backingAccountInfo3 isAuthenticated];
 
-  if ((v34 & 1) == 0)
+  if ((isAuthenticated & 1) == 0)
   {
     v35 = DALoggingwithCategory();
     if (os_log_type_enabled(v35, v20))
     {
-      v36 = [(SubCalDaemonAccount *)self accountDescription];
-      v37 = [(SubCalDaemonAccount *)self publicDescription];
+      accountDescription4 = [(SubCalDaemonAccount *)self accountDescription];
+      publicDescription4 = [(SubCalDaemonAccount *)self publicDescription];
       v40 = 138412546;
-      v41 = v36;
+      v41 = accountDescription4;
       v42 = 2114;
-      v43 = v37;
+      v43 = publicDescription4;
       _os_log_impl(&dword_0, v35, v20, "Account %@ (%{public}@) was marked as unauthenticated but refreshed successfully. Marking it as authenticated.", &v40, 0x16u);
     }
 
-    v27 = [(SubCalDaemonAccount *)self backingAccountInfo];
-    v28 = v27;
+    backingAccountInfo2 = [(SubCalDaemonAccount *)self backingAccountInfo];
+    v28 = backingAccountInfo2;
     v29 = 1;
 LABEL_29:
-    [v27 setAuthenticated:v29];
+    [backingAccountInfo2 setAuthenticated:v29];
 
     goto LABEL_30;
   }
@@ -283,22 +283,22 @@ LABEL_30:
   }
 
 LABEL_31:
-  v38 = [(SubCalDaemonAccount *)self delegate];
+  delegate = [(SubCalDaemonAccount *)self delegate];
 
-  if (v38)
+  if (delegate)
   {
-    v39 = [(SubCalDaemonAccount *)self delegate];
-    [v39 accountDidCompleteRefresh:self withError:v7];
+    delegate2 = [(SubCalDaemonAccount *)self delegate];
+    [delegate2 accountDidCompleteRefresh:self withError:errorCopy];
   }
 }
 
-+ (BOOL)isBadPasswordError:(id)a3
++ (BOOL)isBadPasswordError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  if ([v4 isEqualToString:kSubCalURLRequestErrorDomain])
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:kSubCalURLRequestErrorDomain])
   {
-    v5 = [v3 code] == &dword_4 + 1;
+    v5 = [errorCopy code] == &dword_4 + 1;
   }
 
   else
@@ -309,33 +309,33 @@ LABEL_31:
   return v5;
 }
 
-- (void)subCalRefreshTask:(id)a3 didRedirectToURL:(id)a4
+- (void)subCalRefreshTask:(id)task didRedirectToURL:(id)l
 {
-  v5 = a4;
+  lCopy = l;
   v6 = DALoggingwithCategory();
   v7 = _CPLog_to_os_log_type[5];
   if (os_log_type_enabled(v6, v7))
   {
-    v8 = [(SubCalDaemonAccount *)self accountDescription];
-    v9 = [(SubCalDaemonAccount *)self publicDescription];
+    accountDescription = [(SubCalDaemonAccount *)self accountDescription];
+    publicDescription = [(SubCalDaemonAccount *)self publicDescription];
     v11 = 138412802;
-    v12 = v8;
+    v12 = accountDescription;
     v13 = 2114;
-    v14 = v9;
+    v14 = publicDescription;
     v15 = 2112;
-    v16 = v5;
+    v16 = lCopy;
     _os_log_impl(&dword_0, v6, v7, "Account %@ (%{public}@) was redirected to %@", &v11, 0x20u);
   }
 
-  v10 = [v5 absoluteString];
-  [(SubCalDaemonAccount *)self setHost:v10];
+  absoluteString = [lCopy absoluteString];
+  [(SubCalDaemonAccount *)self setHost:absoluteString];
 
   [(SubCalDaemonAccount *)self saveAccountProperties];
 }
 
-- (BOOL)monitorFoldersWithIDs:(id)a3
+- (BOOL)monitorFoldersWithIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v5 = DALoggingwithCategory();
   v6 = _CPLog_to_os_log_type[5];
   if (os_log_type_enabled(v5, v6))
@@ -343,7 +343,7 @@ LABEL_31:
     v9 = 138412546;
     v10 = objc_opt_class();
     v11 = 2112;
-    v12 = v4;
+    v12 = dsCopy;
     v7 = v10;
     _os_log_impl(&dword_0, v5, v6, "%@ asked to monitor these folders: %@", &v9, 0x16u);
   }
@@ -364,21 +364,21 @@ LABEL_31:
     _os_log_impl(&dword_0, v3, v4, "%@ asked to stop monitoring folders", &v7, 0xCu);
   }
 
-  v6 = [(SubCalDaemonAccount *)self taskManager];
-  [v6 cancelAllTasks];
+  taskManager = [(SubCalDaemonAccount *)self taskManager];
+  [taskManager cancelAllTasks];
 }
 
-- (void)subCalRefreshTask:(id)a3 needsUsernamePasswordForHost:(id)a4 continuation:(id)a5
+- (void)subCalRefreshTask:(id)task needsUsernamePasswordForHost:(id)host continuation:(id)continuation
 {
-  v6 = a5;
+  continuationCopy = continuation;
   v7 = dataaccess_get_global_queue();
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_5EB4;
   v9[3] = &unk_1C530;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = continuationCopy;
+  v8 = continuationCopy;
   [(SubCalDaemonAccount *)self dropAssertionsAndRenewCredentialsInQueue:v7 withHandler:v9];
 }
 

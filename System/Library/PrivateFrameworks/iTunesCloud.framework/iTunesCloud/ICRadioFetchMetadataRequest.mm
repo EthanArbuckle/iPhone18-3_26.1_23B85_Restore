@@ -1,35 +1,35 @@
 @interface ICRadioFetchMetadataRequest
 - (ICRadioFetchMetadataRequest)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)performWithResponseHandler:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)performWithResponseHandler:(id)handler;
 @end
 
 @implementation ICRadioFetchMetadataRequest
 
-- (void)performWithResponseHandler:(id)a3
+- (void)performWithResponseHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [(ICRadioFetchMetadataRequest *)self copy];
-  v6 = [v5 storeRequestContext];
-  if (v6)
+  storeRequestContext = [v5 storeRequestContext];
+  if (storeRequestContext)
   {
     v7 = [ICAsyncBlockOperation alloc];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __58__ICRadioFetchMetadataRequest_performWithResponseHandler___block_invoke;
     v11[3] = &unk_1E7BF8BE8;
-    v14 = v4;
-    v12 = v6;
+    v14 = handlerCopy;
+    v12 = storeRequestContext;
     v13 = v5;
     v8 = [(ICAsyncBlockOperation *)v7 initWithStartHandler:v11];
     v9 = [MEMORY[0x1E696ADC8] ic_sharedRequestOperationQueueWithQualityOfService:self->_qualityOfService];
     [v9 addOperation:v8];
   }
 
-  else if (v4)
+  else if (handlerCopy)
   {
     v10 = [MEMORY[0x1E696ABC0] errorWithDomain:@"ICError" code:-7101 userInfo:0];
-    (*(v4 + 2))(v4, 0, v10);
+    (*(handlerCopy + 2))(handlerCopy, 0, v10);
   }
 }
 
@@ -196,7 +196,7 @@ LABEL_7:
 LABEL_9:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v5 = v4;

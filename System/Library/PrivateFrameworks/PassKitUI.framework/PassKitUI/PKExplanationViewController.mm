@@ -1,24 +1,24 @@
 @interface PKExplanationViewController
-- (PKExplanationViewController)initWithContext:(int64_t)a3;
+- (PKExplanationViewController)initWithContext:(int64_t)context;
 - (PKExplanationViewControllerDelegate)explanationViewControllerDelegate;
 - (void)_cancelAction;
 - (void)_donePressed;
-- (void)_setNavigationBarEnabled:(BOOL)a3;
+- (void)_setNavigationBarEnabled:(BOOL)enabled;
 - (void)_updateNavigationItemPlacement;
 - (void)loadView;
-- (void)setPrivacyLinkController:(id)a3;
-- (void)setShowCancelButton:(BOOL)a3;
-- (void)setShowCloseButton:(BOOL)a3;
-- (void)setShowDoneButton:(BOOL)a3;
-- (void)showNavigationBarSpinner:(BOOL)a3;
-- (void)showSpinner:(BOOL)a3;
+- (void)setPrivacyLinkController:(id)controller;
+- (void)setShowCancelButton:(BOOL)button;
+- (void)setShowCloseButton:(BOOL)button;
+- (void)setShowDoneButton:(BOOL)button;
+- (void)showNavigationBarSpinner:(BOOL)spinner;
+- (void)showSpinner:(BOOL)spinner;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation PKExplanationViewController
 
-- (PKExplanationViewController)initWithContext:(int64_t)a3
+- (PKExplanationViewController)initWithContext:(int64_t)context
 {
   v11.receiver = self;
   v11.super_class = PKExplanationViewController;
@@ -26,7 +26,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_context = a3;
+    v4->_context = context;
     v6 = [[PKExplanationView alloc] initWithContext:v4->_context delegate:v4];
     explanationView = v5->_explanationView;
     v5->_explanationView = v6;
@@ -38,9 +38,9 @@
 
     if ((_UISolariumEnabled() & 1) == 0)
     {
-      v9 = [(PKExplanationViewController *)v5 navigationItem];
-      [v9 pkui_setupScrollEdgeChromelessAppearance];
-      [v9 pkui_enableManualScrollEdgeAppearanceWithInitialProgress:0.0];
+      navigationItem = [(PKExplanationViewController *)v5 navigationItem];
+      [navigationItem pkui_setupScrollEdgeChromelessAppearance];
+      [navigationItem pkui_enableManualScrollEdgeAppearanceWithInitialProgress:0.0];
     }
   }
 
@@ -52,11 +52,11 @@
   v5.receiver = self;
   v5.super_class = PKExplanationViewController;
   [(PKExplanationViewController *)&v5 loadView];
-  v3 = [(PKExplanationViewController *)self view];
+  view = [(PKExplanationViewController *)self view];
   v4 = PKProvisioningBackgroundColor();
-  [v3 setBackgroundColor:v4];
+  [view setBackgroundColor:v4];
 
-  [v3 addSubview:self->_explanationView];
+  [view addSubview:self->_explanationView];
   [(PKExplanationViewController *)self _updateNavigationItemPlacement];
 }
 
@@ -65,9 +65,9 @@
   v5.receiver = self;
   v5.super_class = PKExplanationViewController;
   [(PKExplanationViewController *)&v5 viewDidLoad];
-  v3 = [(OBPrivacyLinkController *)self->_privacyLinkController view];
-  v4 = [MEMORY[0x1E69DC888] systemBlueColor];
-  [v3 setTintColor:v4];
+  view = [(OBPrivacyLinkController *)self->_privacyLinkController view];
+  systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+  [view setTintColor:systemBlueColor];
 
   PKPaymentSetupApplyContextAppearance(self->_context, self);
 }
@@ -77,19 +77,19 @@
   v16.receiver = self;
   v16.super_class = PKExplanationViewController;
   [(PKExplanationViewController *)&v16 viewWillLayoutSubviews];
-  v3 = [(PKExplanationViewController *)self view];
-  [v3 bounds];
+  view = [(PKExplanationViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  [v3 safeAreaInsets];
+  [view safeAreaInsets];
   [(PKExplanationView *)self->_explanationView setFrame:v5 + v12, v7 + 0.0, v9 - (v12 + v13), v11];
   if ((_UISolariumEnabled() & 1) == 0)
   {
-    v14 = [(PKExplanationView *)self->_explanationView scrollView];
-    v15 = [(PKExplanationViewController *)self navigationItem];
-    [v14 pkui_adjustManualScrollEdgeAppearanceProgressForNavigationItem:v15];
+    scrollView = [(PKExplanationView *)self->_explanationView scrollView];
+    navigationItem = [(PKExplanationViewController *)self navigationItem];
+    [scrollView pkui_adjustManualScrollEdgeAppearanceProgressForNavigationItem:navigationItem];
   }
 }
 
@@ -121,10 +121,10 @@
   }
 }
 
-- (void)setShowDoneButton:(BOOL)a3
+- (void)setShowDoneButton:(BOOL)button
 {
-  self->_showDoneButton = a3;
-  if (a3 && !self->_doneItem)
+  self->_showDoneButton = button;
+  if (button && !self->_doneItem)
   {
     objc_initWeak(&location, self);
     v4 = MEMORY[0x1E69DC628];
@@ -153,10 +153,10 @@ void __49__PKExplanationViewController_setShowDoneButton___block_invoke(uint64_t
   [WeakRetained _donePressed];
 }
 
-- (void)setShowCancelButton:(BOOL)a3
+- (void)setShowCancelButton:(BOOL)button
 {
-  self->_showCancelButton = a3;
-  if (a3 && !self->_cancelItem)
+  self->_showCancelButton = button;
+  if (button && !self->_cancelItem)
   {
     objc_initWeak(&location, self);
     v4 = MEMORY[0x1E69DC628];
@@ -185,10 +185,10 @@ void __51__PKExplanationViewController_setShowCancelButton___block_invoke(uint64
   [WeakRetained _cancelAction];
 }
 
-- (void)setShowCloseButton:(BOOL)a3
+- (void)setShowCloseButton:(BOOL)button
 {
-  self->_showCloseButton = a3;
-  if (a3 && !self->_closeItem)
+  self->_showCloseButton = button;
+  if (button && !self->_closeItem)
   {
     objc_initWeak(&location, self);
     v4 = MEMORY[0x1E69DC628];
@@ -224,28 +224,28 @@ void __50__PKExplanationViewController_setShowCloseButton___block_invoke(uint64_
     return;
   }
 
-  v3 = [(PKExplanationViewController *)self navigationItem];
-  v4 = [(PKExplanationViewController *)self navigationController];
-  v5 = [v4 viewControllers];
-  if ([v5 count] == 1)
+  navigationItem = [(PKExplanationViewController *)self navigationItem];
+  navigationController = [(PKExplanationViewController *)self navigationController];
+  viewControllers = [navigationController viewControllers];
+  if ([viewControllers count] == 1)
   {
 
     if (self->_showDoneButton)
     {
-      v6 = 1;
+      hidesBackButton = 1;
       goto LABEL_6;
     }
   }
 
   else
   {
-    v6 = [v3 hidesBackButton];
+    hidesBackButton = [navigationItem hidesBackButton];
 
     if (self->_showDoneButton)
     {
 LABEL_6:
       v7 = self->_doneItem;
-      if (!self->_showCloseButton || v6 == 0)
+      if (!self->_showCloseButton || hidesBackButton == 0)
       {
         closeItem = 0;
       }
@@ -255,7 +255,7 @@ LABEL_6:
         closeItem = self->_closeItem;
       }
 
-      if ((self->_showCancelButton & v6 & 1) == 0)
+      if ((self->_showCancelButton & hidesBackButton & 1) == 0)
       {
         goto LABEL_22;
       }
@@ -263,7 +263,7 @@ LABEL_6:
       goto LABEL_20;
     }
 
-    if (!v6)
+    if (!hidesBackButton)
     {
       if (self->_showCloseButton)
       {
@@ -311,22 +311,22 @@ LABEL_23:
   v11 = closeItem;
   v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v14 = [v3 rightBarButtonItems];
+  rightBarButtonItems = [navigationItem rightBarButtonItems];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __61__PKExplanationViewController__updateNavigationItemPlacement__block_invoke;
   v25[3] = &unk_1E801CC20;
   v25[4] = self;
-  v15 = [v14 pk_objectsPassingTest:v25];
+  v15 = [rightBarButtonItems pk_objectsPassingTest:v25];
   v16 = [v15 mutableCopy];
 
-  v17 = [v3 leftBarButtonItems];
+  leftBarButtonItems = [navigationItem leftBarButtonItems];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __61__PKExplanationViewController__updateNavigationItemPlacement__block_invoke_2;
   v24[3] = &unk_1E801CC20;
   v24[4] = self;
-  v18 = [v17 pk_objectsPassingTest:v24];
+  v18 = [leftBarButtonItems pk_objectsPassingTest:v24];
   v19 = [v18 mutableCopy];
 
   if (v16)
@@ -354,9 +354,9 @@ LABEL_23:
   v23 = v22;
 
   [v21 safelyAddObject:v7];
-  [v3 setRightBarButtonItems:v21];
+  [navigationItem setRightBarButtonItems:v21];
   [v23 safelyAddObject:v10];
-  [v3 setLeftBarButtonItems:v23];
+  [navigationItem setLeftBarButtonItems:v23];
 }
 
 BOOL __61__PKExplanationViewController__updateNavigationItemPlacement__block_invoke(uint64_t a1, void *a2)
@@ -377,39 +377,39 @@ BOOL __61__PKExplanationViewController__updateNavigationItemPlacement__block_inv
   return v5;
 }
 
-- (void)showNavigationBarSpinner:(BOOL)a3
+- (void)showNavigationBarSpinner:(BOOL)spinner
 {
-  if (self->_showingSpinner != a3)
+  if (self->_showingSpinner != spinner)
   {
-    v3 = a3;
-    self->_showingSpinner = a3;
-    v5 = [(PKExplanationViewController *)self navigationController];
-    v6 = [v5 view];
-    v7 = v6;
-    if (v6)
+    spinnerCopy = spinner;
+    self->_showingSpinner = spinner;
+    navigationController = [(PKExplanationViewController *)self navigationController];
+    view = [navigationController view];
+    v7 = view;
+    if (view)
     {
-      v8 = v6;
+      view2 = view;
     }
 
     else
     {
-      v8 = [(PKExplanationViewController *)self view];
+      view2 = [(PKExplanationViewController *)self view];
     }
 
-    v21 = v8;
+    v21 = view2;
 
-    [v21 setUserInteractionEnabled:!v3];
-    v9 = [(PKExplanationView *)self->_explanationView dockView];
-    [v9 setButtonsEnabled:!v3];
+    [v21 setUserInteractionEnabled:!spinnerCopy];
+    dockView = [(PKExplanationView *)self->_explanationView dockView];
+    [dockView setButtonsEnabled:!spinnerCopy];
 
-    v10 = [(PKExplanationViewController *)self navigationItem];
-    v11 = v10;
+    navigationItem = [(PKExplanationViewController *)self navigationItem];
+    v11 = navigationItem;
     if (self->_showingSpinner)
     {
-      self->_wasBackHidden = [v10 hidesBackButton];
-      v12 = [v11 rightBarButtonItem];
+      self->_wasBackHidden = [navigationItem hidesBackButton];
+      rightBarButtonItem = [v11 rightBarButtonItem];
       hiddenRightBarButtonItem = self->_hiddenRightBarButtonItem;
-      self->_hiddenRightBarButtonItem = v12;
+      self->_hiddenRightBarButtonItem = rightBarButtonItem;
 
       if (!self->_spinningItem)
       {
@@ -430,10 +430,10 @@ BOOL __61__PKExplanationViewController__updateNavigationItemPlacement__block_inv
     else
     {
       [(UIActivityIndicatorView *)self->_activityIndicatorView stopAnimating];
-      v14 = [v11 rightBarButtonItem];
+      rightBarButtonItem2 = [v11 rightBarButtonItem];
       v15 = self->_spinningItem;
 
-      if (v14 == v15)
+      if (rightBarButtonItem2 == v15)
       {
         [v11 setRightBarButtonItem:self->_hiddenRightBarButtonItem];
       }
@@ -442,67 +442,67 @@ BOOL __61__PKExplanationViewController__updateNavigationItemPlacement__block_inv
     }
 
     [v11 setHidesBackButton:wasBackHidden];
-    [(PKExplanationViewController *)self _setNavigationBarEnabled:!v3];
+    [(PKExplanationViewController *)self _setNavigationBarEnabled:!spinnerCopy];
     [v21 setNeedsLayout];
   }
 }
 
-- (void)showSpinner:(BOOL)a3
+- (void)showSpinner:(BOOL)spinner
 {
-  if (self->_showingSpinner != a3)
+  if (self->_showingSpinner != spinner)
   {
-    v4 = a3;
-    self->_showingSpinner = a3;
-    v7 = [(PKExplanationView *)self->_explanationView dockView];
-    if ([v7 hasPrimaryButton])
+    spinnerCopy = spinner;
+    self->_showingSpinner = spinner;
+    dockView = [(PKExplanationView *)self->_explanationView dockView];
+    if ([dockView hasPrimaryButton])
     {
-      v6 = [v7 primaryButton];
-      [v6 setShowSpinner:v4];
+      primaryButton = [dockView primaryButton];
+      [primaryButton setShowSpinner:spinnerCopy];
     }
 
     else
     {
-      [(PKExplanationViewController *)self showNavigationBarSpinner:v4];
+      [(PKExplanationViewController *)self showNavigationBarSpinner:spinnerCopy];
     }
 
-    [v7 setButtonsEnabled:v4 ^ 1];
+    [dockView setButtonsEnabled:spinnerCopy ^ 1];
   }
 }
 
-- (void)_setNavigationBarEnabled:(BOOL)a3
+- (void)_setNavigationBarEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v10 = [(PKExplanationViewController *)self navigationController];
-  v5 = [v10 navigationBar];
-  [v5 setUserInteractionEnabled:v3];
+  enabledCopy = enabled;
+  navigationController = [(PKExplanationViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar setUserInteractionEnabled:enabledCopy];
 
-  v6 = [v10 interactivePopGestureRecognizer];
-  [v6 setEnabled:v3];
+  interactivePopGestureRecognizer = [navigationController interactivePopGestureRecognizer];
+  [interactivePopGestureRecognizer setEnabled:enabledCopy];
 
-  v7 = [(PKExplanationViewController *)self navigationItem];
-  v8 = [v7 leftBarButtonItem];
-  [v8 setEnabled:v3];
+  navigationItem = [(PKExplanationViewController *)self navigationItem];
+  leftBarButtonItem = [navigationItem leftBarButtonItem];
+  [leftBarButtonItem setEnabled:enabledCopy];
 
-  v9 = [v7 rightBarButtonItem];
-  [v9 setEnabled:v3];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:enabledCopy];
 }
 
-- (void)setPrivacyLinkController:(id)a3
+- (void)setPrivacyLinkController:(id)controller
 {
-  v8 = a3;
+  controllerCopy = controller;
   if ((PKEqualObjects() & 1) == 0)
   {
     privacyLinkController = self->_privacyLinkController;
     if (privacyLinkController)
     {
       [(OBPrivacyLinkController *)privacyLinkController willMoveToParentViewController:0];
-      v6 = [(OBPrivacyLinkController *)self->_privacyLinkController view];
-      [v6 removeFromSuperview];
+      view = [(OBPrivacyLinkController *)self->_privacyLinkController view];
+      [view removeFromSuperview];
 
       [(OBPrivacyLinkController *)self->_privacyLinkController removeFromParentViewController];
     }
 
-    objc_storeStrong(&self->_privacyLinkController, a3);
+    objc_storeStrong(&self->_privacyLinkController, controller);
     v7 = self->_privacyLinkController;
     if (v7)
     {

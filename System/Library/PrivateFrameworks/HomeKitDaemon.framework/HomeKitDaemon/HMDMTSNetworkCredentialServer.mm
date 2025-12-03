@@ -1,25 +1,25 @@
 @interface HMDMTSNetworkCredentialServer
 + (id)logCategory;
-- (HMDMTSNetworkCredentialServer)initWithSystemCommissionerPairingManager:(id)a3;
-- (void)retrievePreferredThreadCredentialsOrCreateWithDataset:(id)a3 completionHandler:(id)a4;
+- (HMDMTSNetworkCredentialServer)initWithSystemCommissionerPairingManager:(id)manager;
+- (void)retrievePreferredThreadCredentialsOrCreateWithDataset:(id)dataset completionHandler:(id)handler;
 @end
 
 @implementation HMDMTSNetworkCredentialServer
 
-- (void)retrievePreferredThreadCredentialsOrCreateWithDataset:(id)a3 completionHandler:(id)a4
+- (void)retrievePreferredThreadCredentialsOrCreateWithDataset:(id)dataset completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HMDMTSNetworkCredentialServer *)self systemCommissionerPairingManager];
-  [v8 retrievePreferredThreadCredentialsOrCreateWithDataset:v7 completionHandler:v6];
+  handlerCopy = handler;
+  datasetCopy = dataset;
+  systemCommissionerPairingManager = [(HMDMTSNetworkCredentialServer *)self systemCommissionerPairingManager];
+  [systemCommissionerPairingManager retrievePreferredThreadCredentialsOrCreateWithDataset:datasetCopy completionHandler:handlerCopy];
 }
 
-- (HMDMTSNetworkCredentialServer)initWithSystemCommissionerPairingManager:(id)a3
+- (HMDMTSNetworkCredentialServer)initWithSystemCommissionerPairingManager:(id)manager
 {
-  v4 = a3;
-  if (v4)
+  managerCopy = manager;
+  if (managerCopy)
   {
-    v5 = v4;
+    v5 = managerCopy;
     v11.receiver = self;
     v11.super_class = HMDMTSNetworkCredentialServer;
     v6 = [(HMDMTSNetworkCredentialServer *)&v11 init];

@@ -1,38 +1,38 @@
 @interface _UIShareOverviewActionController
-- (BOOL)isHomeroomID:(id)a3;
-- (BOOL)shareActivityControllerShouldAddParticipants:(id)a3;
-- (BOOL)shareActivityControllerShouldPresentActivity:(id)a3;
-- (_UIShareOverviewActionController)initWithDelegate:(id)a3;
-- (id)_ownerLabelTextForName:(id)a3 displayHandle:(id)a4;
+- (BOOL)isHomeroomID:(id)d;
+- (BOOL)shareActivityControllerShouldAddParticipants:(id)participants;
+- (BOOL)shareActivityControllerShouldPresentActivity:(id)activity;
+- (_UIShareOverviewActionController)initWithDelegate:(id)delegate;
+- (id)_ownerLabelTextForName:(id)name displayHandle:(id)handle;
 - (id)_setupProgressView;
-- (id)activityViewControllerOperation:(id)a3;
-- (id)addPeopleTitleWithDelegate:(id)a3 isInitial:(BOOL)a4;
+- (id)activityViewControllerOperation:(id)operation;
+- (id)addPeopleTitleWithDelegate:(id)delegate isInitial:(BOOL)initial;
 - (int)popoverPresentationMode;
 - (void)_updateInfo;
 - (void)_updateSubviewsForNewGeometry;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setItemName:(id)a3;
-- (void)settingsControllerDidChange:(id)a3 changedAllowInviters:(BOOL)a4;
-- (void)shareActivityController:(id)a3 prepareActivityPresentation:(id)a4 completion:(id)a5;
-- (void)shareActivityController:(id)a3 prepareForActivity:(id)a4 completion:(id)a5;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setItemName:(id)name;
+- (void)settingsControllerDidChange:(id)change changedAllowInviters:(BOOL)inviters;
+- (void)shareActivityController:(id)controller prepareActivityPresentation:(id)presentation completion:(id)completion;
+- (void)shareActivityController:(id)controller prepareForActivity:(id)activity completion:(id)completion;
 - (void)shareDidChange;
-- (void)shareViewController:(id)a3 addParticipants:(id)a4 activityType:(id)a5 completion:(id)a6;
-- (void)showShareSettings:(id)a3;
+- (void)shareViewController:(id)controller addParticipants:(id)participants activityType:(id)type completion:(id)completion;
+- (void)showShareSettings:(id)settings;
 - (void)updatePermissionOptions;
-- (void)updatePreferredContentSize:(id)a3;
+- (void)updatePreferredContentSize:(id)size;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)waitForShareCreationWithActivityType:(id)a3 progressView:(id)a4 completion:(id)a5;
-- (void)willNavigateFromViewController:(id)a3;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)waitForShareCreationWithActivityType:(id)type progressView:(id)view completion:(id)completion;
+- (void)willNavigateFromViewController:(id)controller;
 @end
 
 @implementation _UIShareOverviewActionController
 
-- (_UIShareOverviewActionController)initWithDelegate:(id)a3
+- (_UIShareOverviewActionController)initWithDelegate:(id)delegate
 {
   v155.receiver = self;
   v155.super_class = _UIShareOverviewActionController;
-  v146 = a3;
+  delegateCopy = delegate;
   v3 = [(_UIShareOverviewController *)&v155 initWithDelegate:?];
   if (v3)
   {
@@ -40,8 +40,8 @@
     [v145 setParentViewController:v3];
     [(_UIShareOverviewActionController *)v3 setView:v145];
     v4 = +[UIColor systemGroupedBackgroundColor];
-    v5 = [(_UIShareOverviewActionController *)v3 view];
-    [v5 setBackgroundColor:v4];
+    view = [(_UIShareOverviewActionController *)v3 view];
+    [view setBackgroundColor:v4];
 
     v149 = objc_opt_new();
     v148 = objc_alloc_init(UIScrollView);
@@ -51,36 +51,36 @@
     [v148 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v148 setDelegate:v3];
     [(_UIShareOverviewActionController *)v3 setScrollView:v148];
-    v6 = [v148 topAnchor];
-    v7 = [(_UIShareOverviewActionController *)v3 view];
-    v8 = [v7 safeAreaLayoutGuide];
-    v9 = [v8 topAnchor];
-    v10 = [v6 constraintEqualToAnchor:v9];
+    topAnchor = [v148 topAnchor];
+    view2 = [(_UIShareOverviewActionController *)v3 view];
+    safeAreaLayoutGuide = [view2 safeAreaLayoutGuide];
+    topAnchor2 = [safeAreaLayoutGuide topAnchor];
+    v10 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v149 addObject:v10];
 
-    v11 = [v148 trailingAnchor];
-    v12 = [(_UIShareOverviewActionController *)v3 view];
-    v13 = [v12 safeAreaLayoutGuide];
-    v14 = [v13 trailingAnchor];
-    v15 = [v11 constraintEqualToAnchor:v14];
+    trailingAnchor = [v148 trailingAnchor];
+    view3 = [(_UIShareOverviewActionController *)v3 view];
+    safeAreaLayoutGuide2 = [view3 safeAreaLayoutGuide];
+    trailingAnchor2 = [safeAreaLayoutGuide2 trailingAnchor];
+    v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [v149 addObject:v15];
 
-    v16 = [v148 leadingAnchor];
-    v17 = [(_UIShareOverviewActionController *)v3 view];
-    v18 = [v17 safeAreaLayoutGuide];
-    v19 = [v18 leadingAnchor];
-    v20 = [v16 constraintEqualToAnchor:v19];
+    leadingAnchor = [v148 leadingAnchor];
+    view4 = [(_UIShareOverviewActionController *)v3 view];
+    safeAreaLayoutGuide3 = [view4 safeAreaLayoutGuide];
+    leadingAnchor2 = [safeAreaLayoutGuide3 leadingAnchor];
+    v20 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v149 addObject:v20];
 
-    v21 = [v148 bottomAnchor];
-    v22 = [(_UIShareOverviewActionController *)v3 view];
-    v23 = [v22 safeAreaLayoutGuide];
-    v24 = [v23 bottomAnchor];
-    v25 = [v21 constraintEqualToAnchor:v24];
+    bottomAnchor = [v148 bottomAnchor];
+    view5 = [(_UIShareOverviewActionController *)v3 view];
+    safeAreaLayoutGuide4 = [view5 safeAreaLayoutGuide];
+    bottomAnchor2 = [safeAreaLayoutGuide4 bottomAnchor];
+    v25 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [v149 addObject:v25];
 
-    v26 = [(_UIShareOverviewActionController *)v3 view];
-    [v26 addSubview:v148];
+    view6 = [(_UIShareOverviewActionController *)v3 view];
+    [view6 addSubview:v148];
 
     v147 = objc_alloc_init(UIStackView);
     [v147 setAxis:1];
@@ -93,35 +93,35 @@
     LODWORD(v28) = 1148846080;
     [v147 setContentHuggingPriority:1 forAxis:v28];
     [v148 addSubview:v147];
-    v29 = [v147 topAnchor];
-    v30 = [v148 contentLayoutGuide];
-    v31 = [v30 topAnchor];
-    v32 = [v29 constraintEqualToAnchor:v31];
+    topAnchor3 = [v147 topAnchor];
+    contentLayoutGuide = [v148 contentLayoutGuide];
+    topAnchor4 = [contentLayoutGuide topAnchor];
+    v32 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     [v149 addObject:v32];
 
-    v33 = [v147 trailingAnchor];
-    v34 = [v148 contentLayoutGuide];
-    v35 = [v34 trailingAnchor];
-    v36 = [v33 constraintEqualToAnchor:v35];
+    trailingAnchor3 = [v147 trailingAnchor];
+    contentLayoutGuide2 = [v148 contentLayoutGuide];
+    trailingAnchor4 = [contentLayoutGuide2 trailingAnchor];
+    v36 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     [v149 addObject:v36];
 
-    v37 = [v147 leadingAnchor];
-    v38 = [v148 contentLayoutGuide];
-    v39 = [v38 leadingAnchor];
-    v40 = [v37 constraintEqualToAnchor:v39];
+    leadingAnchor3 = [v147 leadingAnchor];
+    contentLayoutGuide3 = [v148 contentLayoutGuide];
+    leadingAnchor4 = [contentLayoutGuide3 leadingAnchor];
+    v40 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     [v149 addObject:v40];
 
-    v41 = [v147 bottomAnchor];
-    v42 = [v148 contentLayoutGuide];
-    v43 = [v42 bottomAnchor];
-    v44 = [v41 constraintEqualToAnchor:v43];
+    bottomAnchor3 = [v147 bottomAnchor];
+    contentLayoutGuide4 = [v148 contentLayoutGuide];
+    bottomAnchor4 = [contentLayoutGuide4 bottomAnchor];
+    v44 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     [v149 addObject:v44];
 
-    v45 = [v148 contentLayoutGuide];
-    v46 = [v45 widthAnchor];
-    v47 = [v148 frameLayoutGuide];
-    v48 = [v47 widthAnchor];
-    v49 = [v46 constraintEqualToAnchor:v48];
+    contentLayoutGuide5 = [v148 contentLayoutGuide];
+    widthAnchor = [contentLayoutGuide5 widthAnchor];
+    frameLayoutGuide = [v148 frameLayoutGuide];
+    widthAnchor2 = [frameLayoutGuide widthAnchor];
+    v49 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
     [v149 addObject:v49];
 
     [(_UIShareOverviewActionController *)v3 setVContainer:v147];
@@ -130,68 +130,68 @@
     v3->_infoView = v50;
 
     [(BRShareDocumentInfoView *)v3->_infoView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v52 = [(BRShareDocumentInfoView *)v3->_infoView leadingAnchor];
-    v53 = [(_UIShareOverviewActionController *)v3 vContainer];
-    v54 = [v53 leadingAnchor];
-    v55 = [v52 constraintEqualToAnchor:v54];
+    leadingAnchor5 = [(BRShareDocumentInfoView *)v3->_infoView leadingAnchor];
+    vContainer = [(_UIShareOverviewActionController *)v3 vContainer];
+    leadingAnchor6 = [vContainer leadingAnchor];
+    v55 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
     [v149 addObject:v55];
 
-    v56 = [(BRShareDocumentInfoView *)v3->_infoView trailingAnchor];
-    v57 = [(_UIShareOverviewActionController *)v3 vContainer];
-    v58 = [v57 trailingAnchor];
-    v59 = [v56 constraintEqualToAnchor:v58];
+    trailingAnchor5 = [(BRShareDocumentInfoView *)v3->_infoView trailingAnchor];
+    vContainer2 = [(_UIShareOverviewActionController *)v3 vContainer];
+    trailingAnchor6 = [vContainer2 trailingAnchor];
+    v59 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
     [v149 addObject:v59];
 
-    v60 = [v146 shareViewControllerIsInitialShare:v3];
-    v61 = [(_UIShareOverviewController *)v3 share];
-    v62 = [v61 publicPermission];
+    v60 = [delegateCopy shareViewControllerIsInitialShare:v3];
+    share = [(_UIShareOverviewController *)v3 share];
+    publicPermission = [share publicPermission];
 
     if (v60)
     {
-      v63 = [(_UIShareOverviewActionController *)v3 addPeopleTitleWithDelegate:v146 isInitial:1];
-      v64 = [(BRShareDocumentInfoView *)v3->_infoView titleLabel];
-      [v64 setText:v63];
+      v63 = [(_UIShareOverviewActionController *)v3 addPeopleTitleWithDelegate:delegateCopy isInitial:1];
+      titleLabel = [(BRShareDocumentInfoView *)v3->_infoView titleLabel];
+      [titleLabel setText:v63];
 
-      v65 = [NSBundle bundleWithIdentifier:@"com.apple.CloudDocsUI"];
-      v66 = [v65 localizedStringForKey:@"SHARE_INITIAL_INFO_LABEL" value:@"Add people to this iCloud Drive file and everyone will see the latest changes." table:@"Localizable"];
-      v67 = [v146 shareViewControllerItemUTI:v3];
+      infoTextLabel2 = [NSBundle bundleWithIdentifier:@"com.apple.CloudDocsUI"];
+      v66 = [infoTextLabel2 localizedStringForKey:@"SHARE_INITIAL_INFO_LABEL" value:@"Add people to this iCloud Drive file and everyone will see the latest changes." table:@"Localizable"];
+      v67 = [delegateCopy shareViewControllerItemUTI:v3];
       v68 = _CDAdaptLocalizedStringForItemType();
-      v69 = [(BRShareDocumentInfoView *)v3->_infoView infoTextLabel];
-      [v69 setText:v68];
+      infoTextLabel = [(BRShareDocumentInfoView *)v3->_infoView infoTextLabel];
+      [infoTextLabel setText:v68];
     }
 
     else
     {
-      if (v62 == 1)
+      if (publicPermission == 1)
       {
-        v70 = [(_UIShareOverviewActionController *)v3 addPeopleTitleWithDelegate:v146 isInitial:0];
-        v71 = [(BRShareDocumentInfoView *)v3->_infoView titleLabel];
-        [v71 setText:v70];
+        v70 = [(_UIShareOverviewActionController *)v3 addPeopleTitleWithDelegate:delegateCopy isInitial:0];
+        titleLabel2 = [(BRShareDocumentInfoView *)v3->_infoView titleLabel];
+        [titleLabel2 setText:v70];
       }
 
       else
       {
         v70 = [NSBundle bundleWithIdentifier:@"com.apple.CloudDocsUI"];
-        v71 = [v70 localizedStringForKey:@"SHARE_RESEND_PUBLIC_TITLE" value:@"Send Link" table:@"Localizable"];
-        v72 = [(BRShareDocumentInfoView *)v3->_infoView titleLabel];
-        [v72 setText:v71];
+        titleLabel2 = [v70 localizedStringForKey:@"SHARE_RESEND_PUBLIC_TITLE" value:@"Send Link" table:@"Localizable"];
+        titleLabel3 = [(BRShareDocumentInfoView *)v3->_infoView titleLabel];
+        [titleLabel3 setText:titleLabel2];
       }
 
-      v65 = [(BRShareDocumentInfoView *)v3->_infoView infoTextLabel];
-      [v65 setText:&stru_10004DE38];
+      infoTextLabel2 = [(BRShareDocumentInfoView *)v3->_infoView infoTextLabel];
+      [infoTextLabel2 setText:&stru_10004DE38];
     }
 
-    v73 = [(BRShareDocumentInfoView *)v3->_infoView infoTextLabel];
-    [v73 setHidden:v60 ^ 1];
+    infoTextLabel3 = [(BRShareDocumentInfoView *)v3->_infoView infoTextLabel];
+    [infoTextLabel3 setHidden:v60 ^ 1];
 
-    v74 = [(BRShareDocumentInfoView *)v3->_infoView titleLabel];
-    v75 = [v74 text];
-    v76 = [(_UIShareOverviewActionController *)v3 navigationItem];
-    [v76 setBackButtonTitle:v75];
+    titleLabel4 = [(BRShareDocumentInfoView *)v3->_infoView titleLabel];
+    text = [titleLabel4 text];
+    navigationItem = [(_UIShareOverviewActionController *)v3 navigationItem];
+    [navigationItem setBackButtonTitle:text];
 
     [v147 addArrangedSubview:v3->_infoView];
-    v77 = [(_UIShareOverviewController *)v3 itemURL];
-    if (v77)
+    itemURL = [(_UIShareOverviewController *)v3 itemURL];
+    if (itemURL)
     {
       v78 = v153;
       v153[0] = _NSConcreteStackBlock;
@@ -215,16 +215,16 @@
 
     BRTelemetryReportAddPeopleDisplayed();
     v79 = objc_opt_new();
-    v80 = [(UIView *)v79 leadingAnchor];
-    v81 = [(_UIShareOverviewActionController *)v3 view];
-    v82 = [v81 leadingAnchor];
-    v83 = [v80 constraintEqualToAnchor:v82];
+    leadingAnchor7 = [(UIView *)v79 leadingAnchor];
+    view7 = [(_UIShareOverviewActionController *)v3 view];
+    leadingAnchor8 = [view7 leadingAnchor];
+    v83 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
     [v149 addObject:v83];
 
-    v84 = [(UIView *)v79 trailingAnchor];
-    v85 = [(_UIShareOverviewActionController *)v3 view];
-    v86 = [v85 trailingAnchor];
-    v87 = [v84 constraintEqualToAnchor:v86];
+    trailingAnchor7 = [(UIView *)v79 trailingAnchor];
+    view8 = [(_UIShareOverviewActionController *)v3 view];
+    trailingAnchor8 = [view8 trailingAnchor];
+    v87 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8];
     [v149 addObject:v87];
 
     [v147 addArrangedSubview:v79];
@@ -259,11 +259,11 @@
     [(_UIShareOverviewActionController *)v3 setEmbeddedActivityViewController:v92];
     [(_BRShareOverviewActivityViewController *)v92 beginAppearanceTransition:1 animated:0];
     [(_UIShareOverviewActionController *)v3 addChildViewController:v92];
-    LODWORD(v93) = [v146 shareViewControllerIsFolderShare:v3];
-    v94 = [v146 shareViewControllerFolderShareIsPrepared:v3];
+    LODWORD(v93) = [delegateCopy shareViewControllerIsFolderShare:v3];
+    v94 = [delegateCopy shareViewControllerFolderShareIsPrepared:v3];
     v95 = [BRTransportRegionView alloc];
-    v96 = [(_BRShareOverviewActivityViewController *)v92 view];
-    v97 = [(BRTransportRegionView *)v95 initWithTransportView:v96];
+    view9 = [(_BRShareOverviewActivityViewController *)v92 view];
+    v97 = [(BRTransportRegionView *)v95 initWithTransportView:view9];
     transportRegion = v3->_transportRegion;
     v3->_transportRegion = v97;
 
@@ -284,32 +284,32 @@
     [(_UIShareOverviewActionController *)v3 setOverrideTraitCollection:v102 forChildViewController:v92];
     [(_BRShareOverviewActivityViewController *)v92 endAppearanceTransition];
     [(BRTransportRegionView *)v3->_transportRegion setTranslatesAutoresizingMaskIntoConstraints:0];
-    v103 = [(BRTransportRegionView *)v3->_transportRegion leadingAnchor];
-    v104 = [(_UIShareOverviewActionController *)v3 vContainer];
-    v105 = [v104 leadingAnchor];
-    v106 = [v103 constraintEqualToAnchor:v105];
+    leadingAnchor9 = [(BRTransportRegionView *)v3->_transportRegion leadingAnchor];
+    vContainer3 = [(_UIShareOverviewActionController *)v3 vContainer];
+    leadingAnchor10 = [vContainer3 leadingAnchor];
+    v106 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10];
     [v149 addObject:v106];
 
-    v107 = [(BRTransportRegionView *)v3->_transportRegion trailingAnchor];
-    v108 = [(_UIShareOverviewActionController *)v3 vContainer];
-    v109 = [v108 trailingAnchor];
-    v110 = [v107 constraintEqualToAnchor:v109];
+    trailingAnchor9 = [(BRTransportRegionView *)v3->_transportRegion trailingAnchor];
+    vContainer4 = [(_UIShareOverviewActionController *)v3 vContainer];
+    trailingAnchor10 = [vContainer4 trailingAnchor];
+    v110 = [trailingAnchor9 constraintEqualToAnchor:trailingAnchor10];
     [v149 addObject:v110];
 
     objc_destroyWeak(&v151);
     objc_destroyWeak(&location);
 
     v111 = objc_opt_new();
-    v112 = [(UIView *)v111 leadingAnchor];
-    v113 = [(_UIShareOverviewActionController *)v3 view];
-    v114 = [v113 leadingAnchor];
-    v115 = [v112 constraintEqualToAnchor:v114];
+    leadingAnchor11 = [(UIView *)v111 leadingAnchor];
+    view10 = [(_UIShareOverviewActionController *)v3 view];
+    leadingAnchor12 = [view10 leadingAnchor];
+    v115 = [leadingAnchor11 constraintEqualToAnchor:leadingAnchor12];
     [v149 addObject:v115];
 
-    v116 = [(UIView *)v111 trailingAnchor];
-    v117 = [(_UIShareOverviewActionController *)v3 view];
-    v118 = [v117 trailingAnchor];
-    v119 = [v116 constraintEqualToAnchor:v118];
+    trailingAnchor11 = [(UIView *)v111 trailingAnchor];
+    view11 = [(_UIShareOverviewActionController *)v3 view];
+    trailingAnchor12 = [view11 trailingAnchor];
+    v119 = [trailingAnchor11 constraintEqualToAnchor:trailingAnchor12];
     [v149 addObject:v119];
 
     [v147 addArrangedSubview:v111];
@@ -320,30 +320,30 @@
     [(BRShareSettingsButton *)v121 addTarget:v3 action:"showShareSettings:" forControlEvents:64];
     [(BRShareSettingsButton *)v121 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v147 addArrangedSubview:v121];
-    v122 = [(BRShareSettingsButton *)v121 trailingAnchor];
-    v123 = [(_UIShareOverviewActionController *)v3 view];
-    v124 = [v123 trailingAnchor];
-    v125 = [v122 constraintEqualToAnchor:v124];
+    trailingAnchor13 = [(BRShareSettingsButton *)v121 trailingAnchor];
+    view12 = [(_UIShareOverviewActionController *)v3 view];
+    trailingAnchor14 = [view12 trailingAnchor];
+    v125 = [trailingAnchor13 constraintEqualToAnchor:trailingAnchor14];
     [v149 addObject:v125];
 
-    v126 = [(BRShareSettingsButton *)v121 leadingAnchor];
-    v127 = [(_UIShareOverviewActionController *)v3 view];
-    v128 = [v127 leadingAnchor];
-    v129 = [v126 constraintEqualToAnchor:v128];
+    leadingAnchor13 = [(BRShareSettingsButton *)v121 leadingAnchor];
+    view13 = [(_UIShareOverviewActionController *)v3 view];
+    leadingAnchor14 = [view13 leadingAnchor];
+    v129 = [leadingAnchor13 constraintEqualToAnchor:leadingAnchor14];
     [v149 addObject:v129];
 
-    v130 = [(BRShareSettingsButton *)v121 hContainer];
-    v131 = [v130 trailingAnchor];
-    v132 = [(_UIShareOverviewActionController *)v3 vContainer];
-    v133 = [v132 trailingAnchor];
-    v134 = [v131 constraintEqualToAnchor:v133];
+    hContainer = [(BRShareSettingsButton *)v121 hContainer];
+    trailingAnchor15 = [hContainer trailingAnchor];
+    vContainer5 = [(_UIShareOverviewActionController *)v3 vContainer];
+    trailingAnchor16 = [vContainer5 trailingAnchor];
+    v134 = [trailingAnchor15 constraintEqualToAnchor:trailingAnchor16];
     [v149 addObject:v134];
 
-    v135 = [(BRShareSettingsButton *)v121 hContainer];
-    v136 = [v135 leadingAnchor];
-    v137 = [(_UIShareOverviewActionController *)v3 vContainer];
-    v138 = [v137 leadingAnchor];
-    v139 = [v136 constraintEqualToAnchor:v138];
+    hContainer2 = [(BRShareSettingsButton *)v121 hContainer];
+    leadingAnchor15 = [hContainer2 leadingAnchor];
+    vContainer6 = [(_UIShareOverviewActionController *)v3 vContainer];
+    leadingAnchor16 = [vContainer6 leadingAnchor];
+    v139 = [leadingAnchor15 constraintEqualToAnchor:leadingAnchor16];
     [v149 addObject:v139];
 
     shareSettingsButton = v3->_shareSettingsButton;
@@ -351,10 +351,10 @@
 
     v3->_lastPermissionOptions = -1;
     [(_UIShareOverviewActionController *)v3 updatePermissionOptions];
-    v141 = [v146 shareViewControllerCurrentParticipantsState];
-    if ([v146 shareViewControllerAllowOthersToInvite] != v141 < 2)
+    shareViewControllerCurrentParticipantsState = [delegateCopy shareViewControllerCurrentParticipantsState];
+    if ([delegateCopy shareViewControllerAllowOthersToInvite] != shareViewControllerCurrentParticipantsState < 2)
     {
-      [v146 shareViewControllerSetAllowOthersToInvite:v141 < 2];
+      [delegateCopy shareViewControllerSetAllowOthersToInvite:shareViewControllerCurrentParticipantsState < 2];
     }
 
     [NSLayoutConstraint activateConstraints:v149];
@@ -363,21 +363,21 @@
   return v3;
 }
 
-- (id)addPeopleTitleWithDelegate:(id)a3 isInitial:(BOOL)a4
+- (id)addPeopleTitleWithDelegate:(id)delegate isInitial:(BOOL)initial
 {
-  v6 = a3;
+  delegateCopy = delegate;
   v7 = [NSBundle bundleWithIdentifier:@"com.apple.CloudDocsUI"];
   v8 = [v7 localizedStringForKey:@"SHARE_INITIAL_TITLE" value:@"Add People" table:@"Localizable"];
 
-  if (a4)
+  if (initial)
   {
-    v9 = [v6 shareViewControllerItemUTI:self];
+    v9 = [delegateCopy shareViewControllerItemUTI:self];
     v10 = [NSBundle bundleWithIdentifier:@"com.apple.CloudDocsUI"];
     v11 = [v10 localizedStringForKey:@"SHARE_INITIAL_TITLE" value:@"Add People" table:@"Localizable"];
     v12 = _CDAdaptLocalizedStringForItemType();
 
-    v13 = [v6 shareViewControllerIsDocumentShare:self];
-    if (([v6 shareViewControllerIsFolderShare:self] & 1) != 0 || objc_msgSend(v9, "isEqualToString:", @"com.apple.notes.folder"))
+    v13 = [delegateCopy shareViewControllerIsDocumentShare:self];
+    if (([delegateCopy shareViewControllerIsFolderShare:self] & 1) != 0 || objc_msgSend(v9, "isEqualToString:", @"com.apple.notes.folder"))
     {
       v14 = [NSBundle bundleWithIdentifier:@"com.apple.CloudDocsUI"];
       v15 = v14;
@@ -426,31 +426,31 @@ LABEL_8:
   v25.receiver = self;
   v25.super_class = _UIShareOverviewActionController;
   [(_UIShareOverviewActionController *)&v25 viewWillLayoutSubviews];
-  v3 = [(_UIShareOverviewActionController *)self view];
-  [v3 frame];
+  view = [(_UIShareOverviewActionController *)self view];
+  [view frame];
   v5 = v4;
   [(_UIShareOverviewActionController *)self preferredContentSize];
   v7 = v6;
   v8 = v5 < v6;
 
-  v9 = [(_UIShareOverviewActionController *)self infoView];
-  [v9 setCompactMode:v8];
+  infoView = [(_UIShareOverviewActionController *)self infoView];
+  [infoView setCompactMode:v8];
 
-  v10 = [(_UIShareOverviewActionController *)self transportRegion];
-  [v10 setCompactMode:v8];
+  transportRegion = [(_UIShareOverviewActionController *)self transportRegion];
+  [transportRegion setCompactMode:v8];
 
-  v11 = [(_UIShareOverviewActionController *)self vContainer];
-  v12 = v11;
+  vContainer = [(_UIShareOverviewActionController *)self vContainer];
+  v12 = vContainer;
   infoView = self->_infoView;
   if (v5 >= v7)
   {
-    [v11 setCustomSpacing:infoView afterView:23.0];
+    [vContainer setCustomSpacing:infoView afterView:23.0];
 
-    v24 = [(_UIShareOverviewActionController *)self vContainer];
-    [v24 setCustomSpacing:self->_transportRegionTopSeparator afterView:23.0];
+    vContainer2 = [(_UIShareOverviewActionController *)self vContainer];
+    [vContainer2 setCustomSpacing:self->_transportRegionTopSeparator afterView:23.0];
 
-    v18 = [(_UIShareOverviewActionController *)self vContainer];
-    v19 = v18;
+    vContainer3 = [(_UIShareOverviewActionController *)self vContainer];
+    v19 = vContainer3;
     top = 0.0;
     v21 = 0.0;
     v22 = 16.0;
@@ -459,23 +459,23 @@ LABEL_8:
 
   else
   {
-    [v11 setCustomSpacing:infoView afterView:11.0];
+    [vContainer setCustomSpacing:infoView afterView:11.0];
 
-    v14 = [(_UIShareOverviewActionController *)self vContainer];
-    [v14 setCustomSpacing:self->_transportRegionTopSeparator afterView:11.0];
+    vContainer4 = [(_UIShareOverviewActionController *)self vContainer];
+    [vContainer4 setCustomSpacing:self->_transportRegionTopSeparator afterView:11.0];
 
     leading = NSDirectionalEdgeInsetsZero.leading;
     bottom = NSDirectionalEdgeInsetsZero.bottom;
     trailing = NSDirectionalEdgeInsetsZero.trailing;
-    v18 = [(_UIShareOverviewActionController *)self vContainer];
-    v19 = v18;
+    vContainer3 = [(_UIShareOverviewActionController *)self vContainer];
+    v19 = vContainer3;
     top = NSDirectionalEdgeInsetsZero.top;
     v21 = leading;
     v22 = bottom;
     v23 = trailing;
   }
 
-  [v18 setDirectionalLayoutMargins:{top, v21, v22, v23}];
+  [vContainer3 setDirectionalLayoutMargins:{top, v21, v22, v23}];
 }
 
 - (void)_updateSubviewsForNewGeometry
@@ -522,11 +522,11 @@ LABEL_8:
 - (void)_updateInfo
 {
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  v45 = [(_UIShareOverviewController *)self delegate];
-  v3 = [v45 shareViewControllerAllowOthersToInvite];
-  v4 = [(_UIShareOverviewController *)self share];
-  v5 = [v4 currentUserParticipant];
-  if (v4 && ([v4 owner], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "isEqual:", v5), v6, (v7 & 1) == 0))
+  delegate = [(_UIShareOverviewController *)self delegate];
+  shareViewControllerAllowOthersToInvite = [delegate shareViewControllerAllowOthersToInvite];
+  share = [(_UIShareOverviewController *)self share];
+  currentUserParticipant = [share currentUserParticipant];
+  if (share && ([share owner], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "isEqual:", currentUserParticipant), v6, (v7 & 1) == 0))
   {
     v8 = 1;
   }
@@ -556,14 +556,14 @@ LABEL_8:
   }
 
   [(BRShareSettingsButton *)self->_shareSettingsButton setHidden:v8 | v10];
-  v11 = [v45 shareViewControllerItemUTI:self];
+  v11 = [delegate shareViewControllerItemUTI:self];
   v12 = [v11 isEqualToString:@"com.apple.reminders.list"];
-  v13 = [v45 shareViewControllerIsInitialShare:self];
-  v14 = [(BRShareSettings *)self->_settings hasACL];
+  v13 = [delegate shareViewControllerIsInitialShare:self];
+  hasACL = [(BRShareSettings *)self->_settings hasACL];
   settings = self->_settings;
   if (!v13)
   {
-    if (v14)
+    if (hasACL)
     {
       if ([(BRShareSettings *)settings defaultPermission]!= 3)
       {
@@ -581,7 +581,7 @@ LABEL_8:
 
       v20 = [NSBundle bundleWithIdentifier:@"com.apple.CloudDocsUI"];
       v21 = v20;
-      if (v3)
+      if (shareViewControllerAllowOthersToInvite)
       {
         v22 = @"SETTINGS_DETAIL_ACL_RW_ADD_OTHERS_SUMMARY_TEXT";
         v23 = @"People you invite can make changes and add others.";
@@ -594,10 +594,10 @@ LABEL_8:
       }
 
       v31 = [v20 localizedStringForKey:v22 value:v23 table:@"Localizable"];
-      v32 = [(BRShareSettingsButton *)self->_shareSettingsButton detailLabel];
-      [v32 setText:v31];
+      detailLabel = [(BRShareSettingsButton *)self->_shareSettingsButton detailLabel];
+      [detailLabel setText:v31];
 
-      if (v3)
+      if (shareViewControllerAllowOthersToInvite)
       {
 
         if ((v12 & 1) == 0)
@@ -625,10 +625,10 @@ LABEL_40:
     }
 
 LABEL_20:
-    v24 = [(BRShareSettings *)settings publicPermission];
+    publicPermission = [(BRShareSettings *)settings publicPermission];
     v25 = [NSBundle bundleWithIdentifier:@"com.apple.CloudDocsUI"];
     v26 = v25;
-    if (v24 == 3)
+    if (publicPermission == 3)
     {
       v27 = @"SETTINGS_DETAIL_PUBLIC_RW_TEXT";
       v28 = @"Anyone with the link can make changes.";
@@ -643,7 +643,7 @@ LABEL_20:
     goto LABEL_41;
   }
 
-  if (!v14)
+  if (!hasACL)
   {
     goto LABEL_20;
   }
@@ -664,7 +664,7 @@ LABEL_20:
 
   v16 = [NSBundle bundleWithIdentifier:@"com.apple.CloudDocsUI"];
   v17 = v16;
-  if (v3)
+  if (shareViewControllerAllowOthersToInvite)
   {
     v18 = @"SETTINGS_DETAIL_ACL_RW_ADD_OTHERS_TEXT";
     v19 = @"People you invite can make changes and add others.";
@@ -677,10 +677,10 @@ LABEL_20:
   }
 
   v29 = [v16 localizedStringForKey:v18 value:v19 table:@"Localizable"];
-  v30 = [(BRShareSettingsButton *)self->_shareSettingsButton detailLabel];
-  [v30 setText:v29];
+  detailLabel2 = [(BRShareSettingsButton *)self->_shareSettingsButton detailLabel];
+  [detailLabel2 setText:v29];
 
-  if (!v3)
+  if (!shareViewControllerAllowOthersToInvite)
   {
 
     if ((v12 & 1) == 0)
@@ -706,12 +706,12 @@ LABEL_35:
   v28 = @"People you invite can add others.";
 LABEL_41:
   v33 = [v25 localizedStringForKey:v27 value:v28 table:@"Localizable"];
-  v34 = [(BRShareSettingsButton *)self->_shareSettingsButton detailLabel];
-  [v34 setText:v33];
+  detailLabel3 = [(BRShareSettingsButton *)self->_shareSettingsButton detailLabel];
+  [detailLabel3 setText:v33];
 
 LABEL_42:
-  v35 = [v45 shareViewControllerIsFolderShare:self];
-  v36 = [v45 shareViewControllerThumbnail:self];
+  v35 = [delegate shareViewControllerIsFolderShare:self];
+  v36 = [delegate shareViewControllerThumbnail:self];
   v37 = v36;
   if (v35)
   {
@@ -725,11 +725,11 @@ LABEL_42:
     v37 = [UIImage imageNamed:@"DefaultThumbnail"];
   }
 
-  v39 = [(_UIShareOverviewController *)self itemName];
-  v40 = v39;
-  if (v39)
+  itemName = [(_UIShareOverviewController *)self itemName];
+  v40 = itemName;
+  if (itemName)
   {
-    v41 = v39;
+    v41 = itemName;
   }
 
   else
@@ -737,28 +737,28 @@ LABEL_42:
     v41 = @" ";
   }
 
-  v42 = [(BRShareDocumentInfoView *)self->_infoView itemTitleLabel];
-  [v42 setText:v41];
+  itemTitleLabel = [(BRShareDocumentInfoView *)self->_infoView itemTitleLabel];
+  [itemTitleLabel setText:v41];
 
-  v43 = [(BRShareDocumentInfoView *)self->_infoView thumbnailView];
-  [v43 setImage:v37];
+  thumbnailView = [(BRShareDocumentInfoView *)self->_infoView thumbnailView];
+  [thumbnailView setImage:v37];
 
-  v44 = [(_UIShareOverviewActionController *)self traitCollection];
-  [(_UIShareOverviewActionController *)self updatePreferredContentSize:v44];
+  traitCollection = [(_UIShareOverviewActionController *)self traitCollection];
+  [(_UIShareOverviewActionController *)self updatePreferredContentSize:traitCollection];
 }
 
-- (void)setItemName:(id)a3
+- (void)setItemName:(id)name
 {
   v4.receiver = self;
   v4.super_class = _UIShareOverviewActionController;
-  [(_UIShareOverviewController *)&v4 setItemName:a3];
+  [(_UIShareOverviewController *)&v4 setItemName:name];
   [(_UIShareOverviewActionController *)self _updateInfo];
 }
 
-- (id)_ownerLabelTextForName:(id)a3 displayHandle:(id)a4
+- (id)_ownerLabelTextForName:(id)name displayHandle:(id)handle
 {
-  v5 = a4;
-  v6 = [NSPersonNameComponentsFormatter localizedStringFromPersonNameComponents:a3 style:0 options:0];
+  handleCopy = handle;
+  v6 = [NSPersonNameComponentsFormatter localizedStringFromPersonNameComponents:name style:0 options:0];
   v7 = +[UIFontMetrics defaultMetrics];
   v8 = [UIFont systemFontOfSize:12.0];
   v9 = [v7 scaledFontForFont:v8];
@@ -766,7 +766,7 @@ LABEL_42:
   v10 = [NSMutableAttributedString alloc];
   v11 = [NSBundle bundleWithIdentifier:@"com.apple.CloudDocsUI"];
   v12 = [v11 localizedStringForKey:@"SHARE_INVITE_SHARE_AS_OWNER_TEXT" value:@"%@ (%@)" table:@"Localizable"];
-  v13 = [NSString localizedStringWithFormat:v12, v6, v5];
+  handleCopy = [NSString localizedStringWithFormat:v12, v6, handleCopy];
 
   v18[0] = NSFontAttributeName;
   v18[1] = NSForegroundColorAttributeName;
@@ -774,37 +774,37 @@ LABEL_42:
   v14 = +[UIColor secondaryLabelColor];
   v19[1] = v14;
   v15 = [NSDictionary dictionaryWithObjects:v19 forKeys:v18 count:2];
-  v16 = [v10 initWithString:v13 attributes:v15];
+  v16 = [v10 initWithString:handleCopy attributes:v15];
 
   return v16;
 }
 
-- (void)updatePreferredContentSize:(id)a3
+- (void)updatePreferredContentSize:(id)size
 {
-  v4 = [a3 verticalSizeClass] == 1;
-  v5 = [(_UIShareOverviewActionController *)self infoView];
-  v6 = [v5 infoTextLabel];
-  [v6 setHidden:v4];
+  v4 = [size verticalSizeClass] == 1;
+  infoView = [(_UIShareOverviewActionController *)self infoView];
+  infoTextLabel = [infoView infoTextLabel];
+  [infoTextLabel setHidden:v4];
 
-  v8 = [(_UIShareOverviewActionController *)self infoView];
-  v7 = [v8 thumbnailView];
-  [v7 setHidden:v4];
+  infoView2 = [(_UIShareOverviewActionController *)self infoView];
+  thumbnailView = [infoView2 thumbnailView];
+  [thumbnailView setHidden:v4];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = _UIShareOverviewActionController;
-  v7 = a4;
-  [(_UIShareOverviewActionController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(_UIShareOverviewActionController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100026B18;
   v8[3] = &unk_10004D800;
   v8[4] = self;
-  [v7 animateAlongsideTransition:v8 completion:&stru_10004D840];
+  [coordinatorCopy animateAlongsideTransition:v8 completion:&stru_10004D840];
 }
 
 - (void)shareDidChange
@@ -818,20 +818,20 @@ LABEL_42:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[INFO] got a new share, applying settings (%@) to share", &v7, 0xCu);
   }
 
-  v5 = [(_UIShareOverviewActionController *)self settings];
-  v6 = [(_UIShareOverviewController *)self share];
-  [v5 applyToShare:v6];
+  settings = [(_UIShareOverviewActionController *)self settings];
+  share = [(_UIShareOverviewController *)self share];
+  [settings applyToShare:share];
 }
 
 - (void)updatePermissionOptions
 {
-  v3 = [(_UIShareOverviewController *)self delegate];
-  v4 = [(_UIShareOverviewController *)self share];
-  v5 = [v3 shareViewControllerAllowedPermissions:self];
+  delegate = [(_UIShareOverviewController *)self delegate];
+  share = [(_UIShareOverviewController *)self share];
+  v5 = [delegate shareViewControllerAllowedPermissions:self];
   v6 = v5;
   if (v5 == -1 || v5 != self->_lastPermissionOptions)
   {
-    if ([v3 shareViewControllerIsInitialShare:self])
+    if ([delegate shareViewControllerIsInitialShare:self])
     {
       v7 = [[BRShareSettings alloc] initWithPermissions:v6];
       settings = self->_settings;
@@ -844,17 +844,17 @@ LABEL_42:
         sub_10002D4A0(&self->_settings);
       }
 
-      v10 = [(_UIShareOverviewActionController *)self settings];
-      v11 = [(_UIShareOverviewController *)self share];
-      [v10 applyToShare:v11];
+      settings = [(_UIShareOverviewActionController *)self settings];
+      share2 = [(_UIShareOverviewController *)self share];
+      [settings applyToShare:share2];
     }
 
     else
     {
-      if ([v4 publicPermission] == 1)
+      if ([share publicPermission] == 1)
       {
         v12 = v6 | 2;
-        v13 = [[BRShareSettings alloc] initWithShare:v4 permissions:v12];
+        v13 = [[BRShareSettings alloc] initWithShare:share permissions:v12];
         v14 = self->_settings;
         self->_settings = v13;
 
@@ -873,7 +873,7 @@ LABEL_42:
 
       else
       {
-        if ([v4 publicPermission] == 2)
+        if ([share publicPermission] == 2)
         {
           v16 = 5;
         }
@@ -883,7 +883,7 @@ LABEL_42:
           v16 = 9;
         }
 
-        v17 = [[BRShareSettings alloc] initWithShare:v4 permissions:v16];
+        v17 = [[BRShareSettings alloc] initWithShare:share permissions:v16];
         v18 = self->_settings;
         self->_settings = v17;
 
@@ -914,38 +914,38 @@ LABEL_42:
   [(UIView *)self->_transportRegionBottomSeparator setHidden:1];
   v7 = [[BRShareProgressView alloc] initWithProgress:0];
   [(BRShareProgressView *)v7 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v8 = [(_UIShareOverviewActionController *)self view];
-  [v8 addSubview:v7];
+  view = [(_UIShareOverviewActionController *)self view];
+  [view addSubview:v7];
 
-  v9 = [(_UIShareOverviewActionController *)self view];
-  [v9 bringSubviewToFront:v7];
+  view2 = [(_UIShareOverviewActionController *)self view];
+  [view2 bringSubviewToFront:v7];
 
   v10 = objc_opt_new();
-  v11 = [(BRShareProgressView *)v7 topAnchor];
-  v12 = [(BRShareDocumentInfoView *)self->_infoView bottomAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
+  topAnchor = [(BRShareProgressView *)v7 topAnchor];
+  bottomAnchor = [(BRShareDocumentInfoView *)self->_infoView bottomAnchor];
+  v13 = [topAnchor constraintEqualToAnchor:bottomAnchor];
   [v10 addObject:v13];
 
-  v14 = [(BRShareProgressView *)v7 leadingAnchor];
-  v15 = [(_UIShareOverviewActionController *)self view];
-  v16 = [v15 leadingAnchor];
-  v17 = [v14 constraintEqualToAnchor:v16];
+  leadingAnchor = [(BRShareProgressView *)v7 leadingAnchor];
+  view3 = [(_UIShareOverviewActionController *)self view];
+  leadingAnchor2 = [view3 leadingAnchor];
+  v17 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v10 addObject:v17];
 
-  v18 = [(BRShareProgressView *)v7 trailingAnchor];
-  v19 = [(_UIShareOverviewActionController *)self view];
-  v20 = [v19 trailingAnchor];
-  v21 = [v18 constraintEqualToAnchor:v20];
+  trailingAnchor = [(BRShareProgressView *)v7 trailingAnchor];
+  view4 = [(_UIShareOverviewActionController *)self view];
+  trailingAnchor2 = [view4 trailingAnchor];
+  v21 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v10 addObject:v21];
 
-  v22 = [(BRShareProgressView *)v7 bottomAnchor];
-  v23 = [(_UIShareOverviewActionController *)self view];
-  v24 = [v23 bottomAnchor];
-  v25 = [v22 constraintEqualToAnchor:v24];
+  bottomAnchor2 = [(BRShareProgressView *)v7 bottomAnchor];
+  view5 = [(_UIShareOverviewActionController *)self view];
+  bottomAnchor3 = [view5 bottomAnchor];
+  v25 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   [v10 addObject:v25];
 
-  v26 = [(BRShareProgressView *)v7 heightAnchor];
-  v27 = [v26 constraintGreaterThanOrEqualToConstant:v6];
+  heightAnchor = [(BRShareProgressView *)v7 heightAnchor];
+  v27 = [heightAnchor constraintGreaterThanOrEqualToConstant:v6];
   [v10 addObject:v27];
 
   [NSLayoutConstraint activateConstraints:v10];
@@ -953,11 +953,11 @@ LABEL_42:
   return v7;
 }
 
-- (void)waitForShareCreationWithActivityType:(id)a3 progressView:(id)a4 completion:(id)a5
+- (void)waitForShareCreationWithActivityType:(id)type progressView:(id)view completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  viewCopy = view;
+  completionCopy = completion;
+  typeCopy = type;
   v11 = cdui_default_log();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -967,78 +967,78 @@ LABEL_42:
 
   v12 = [NSBundle bundleWithIdentifier:@"com.apple.CloudDocsUI"];
   v13 = [v12 localizedStringForKey:@"PROGRESS_UPLOADING_TEXT" value:@"Uploading" table:@"Localizable"];
-  [v8 setTitle:v13];
+  [viewCopy setTitle:v13];
 
-  v14 = [(_UIShareOverviewController *)self delegate];
+  delegate = [(_UIShareOverviewController *)self delegate];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_100027344;
   v19[3] = &unk_10004D868;
-  v20 = v8;
+  v20 = viewCopy;
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_100027350;
   v17[3] = &unk_10004D890;
   v17[4] = self;
-  v18 = v9;
-  v15 = v9;
-  v16 = v8;
-  [v14 shareViewController:self activityType:v10 waitForUploadWithProgress:v19 completion:v17];
+  v18 = completionCopy;
+  v15 = completionCopy;
+  v16 = viewCopy;
+  [delegate shareViewController:self activityType:typeCopy waitForUploadWithProgress:v19 completion:v17];
 }
 
 - (int)popoverPresentationMode
 {
-  v2 = [(_UIShareOverviewController *)self delegate];
-  v3 = [v2 popoverPresentationMode];
+  delegate = [(_UIShareOverviewController *)self delegate];
+  popoverPresentationMode = [delegate popoverPresentationMode];
 
-  return v3;
+  return popoverPresentationMode;
 }
 
-- (BOOL)shareActivityControllerShouldPresentActivity:(id)a3
+- (BOOL)shareActivityControllerShouldPresentActivity:(id)activity
 {
-  v3 = [(_UIShareOverviewController *)self error];
-  v4 = v3 == 0;
+  error = [(_UIShareOverviewController *)self error];
+  v4 = error == 0;
 
   return v4;
 }
 
-- (BOOL)shareActivityControllerShouldAddParticipants:(id)a3
+- (BOOL)shareActivityControllerShouldAddParticipants:(id)participants
 {
-  v3 = [(_UIShareOverviewController *)self share];
-  v4 = [v3 publicPermission] == 1;
+  share = [(_UIShareOverviewController *)self share];
+  v4 = [share publicPermission] == 1;
 
   return v4;
 }
 
-- (void)shareActivityController:(id)a3 prepareActivityPresentation:(id)a4 completion:(id)a5
+- (void)shareActivityController:(id)controller prepareActivityPresentation:(id)presentation completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(_UIShareOverviewController *)self delegate];
+  completionCopy = completion;
+  presentationCopy = presentation;
+  delegate = [(_UIShareOverviewController *)self delegate];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000275E8;
   v11[3] = &unk_10004D168;
   v11[4] = self;
-  v12 = v7;
-  v10 = v7;
-  [v9 shareViewController:self prepareActivity:v8 completion:v11];
+  v12 = completionCopy;
+  v10 = completionCopy;
+  [delegate shareViewController:self prepareActivity:presentationCopy completion:v11];
 }
 
-- (void)shareViewController:(id)a3 addParticipants:(id)a4 activityType:(id)a5 completion:(id)a6
+- (void)shareViewController:(id)controller addParticipants:(id)participants activityType:(id)type completion:(id)completion
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = [(_UIShareOverviewController *)self delegate];
-  [v12 shareViewController:self addParticipants:v11 activityType:v10 permission:-[BRShareSettings defaultPermission](self->_settings completion:{"defaultPermission"), v9}];
+  completionCopy = completion;
+  typeCopy = type;
+  participantsCopy = participants;
+  delegate = [(_UIShareOverviewController *)self delegate];
+  [delegate shareViewController:self addParticipants:participantsCopy activityType:typeCopy permission:-[BRShareSettings defaultPermission](self->_settings completion:{"defaultPermission"), completionCopy}];
 }
 
-- (void)shareActivityController:(id)a3 prepareForActivity:(id)a4 completion:(id)a5
+- (void)shareActivityController:(id)controller prepareForActivity:(id)activity completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(_UIShareOverviewActionController *)self _setupProgressView];
+  completionCopy = completion;
+  activityCopy = activity;
+  _setupProgressView = [(_UIShareOverviewActionController *)self _setupProgressView];
   v10 = cdui_default_log();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -1047,33 +1047,33 @@ LABEL_42:
   }
 
   +[NSDate timeIntervalSinceReferenceDate];
-  v11 = [v8 activityType];
+  activityType = [activityCopy activityType];
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100027838;
   v13[3] = &unk_10004D2D0;
-  v14 = v7;
-  v12 = v7;
-  [(_UIShareOverviewActionController *)self waitForShareCreationWithActivityType:v11 progressView:v9 completion:v13];
+  v14 = completionCopy;
+  v12 = completionCopy;
+  [(_UIShareOverviewActionController *)self waitForShareCreationWithActivityType:activityType progressView:_setupProgressView completion:v13];
 }
 
-- (void)willNavigateFromViewController:(id)a3
+- (void)willNavigateFromViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [(_UIShareInvitationSettingsController *)self->_settingsViewController settings];
-    [(_UIShareOverviewActionController *)self setSettings:v6];
+    settings = [(_UIShareInvitationSettingsController *)self->_settingsViewController settings];
+    [(_UIShareOverviewActionController *)self setSettings:settings];
 
     [(_UIShareOverviewActionController *)self _updateInfo];
   }
 }
 
-- (void)showShareSettings:(id)a3
+- (void)showShareSettings:(id)settings
 {
   if (!self->_settingsViewController)
   {
@@ -1082,30 +1082,30 @@ LABEL_42:
     self->_settingsViewController = v4;
 
     v6 = self->_settingsViewController;
-    v7 = self;
-    [(_UIShareInvitationSettingsController *)v6 setDelegate:v7];
-    v8 = [(_UIShareOverviewActionController *)v7 settings];
-    [(_UIShareInvitationSettingsController *)self->_settingsViewController setSettings:v8];
+    selfCopy = self;
+    [(_UIShareInvitationSettingsController *)v6 setDelegate:selfCopy];
+    settings = [(_UIShareOverviewActionController *)selfCopy settings];
+    [(_UIShareInvitationSettingsController *)self->_settingsViewController setSettings:settings];
 
-    v9 = [(_UIShareOverviewController *)v7 delegate];
-    [(_UIShareInvitationSettingsController *)self->_settingsViewController setOverviewControllerDelegate:v9];
-    [(_UIShareInvitationSettingsController *)self->_settingsViewController setProxiedOverviewController:v7];
+    delegate = [(_UIShareOverviewController *)selfCopy delegate];
+    [(_UIShareInvitationSettingsController *)self->_settingsViewController setOverviewControllerDelegate:delegate];
+    [(_UIShareInvitationSettingsController *)self->_settingsViewController setProxiedOverviewController:selfCopy];
 
-    v10 = [v9 shareViewControllerCurrentParticipantsState];
-    if ([v9 shareViewControllerAllowOthersToInvite] != v10 < 2)
+    shareViewControllerCurrentParticipantsState = [delegate shareViewControllerCurrentParticipantsState];
+    if ([delegate shareViewControllerAllowOthersToInvite] != shareViewControllerCurrentParticipantsState < 2)
     {
-      [v9 shareViewControllerSetAllowOthersToInvite:v10 < 2];
+      [delegate shareViewControllerSetAllowOthersToInvite:shareViewControllerCurrentParticipantsState < 2];
     }
   }
 
-  v11 = [(_UIShareOverviewActionController *)self navigationController];
-  [v11 pushViewController:self->_settingsViewController animated:1];
+  navigationController = [(_UIShareOverviewActionController *)self navigationController];
+  [navigationController pushViewController:self->_settingsViewController animated:1];
 }
 
-- (void)settingsControllerDidChange:(id)a3 changedAllowInviters:(BOOL)a4
+- (void)settingsControllerDidChange:(id)change changedAllowInviters:(BOOL)inviters
 {
-  v5 = [a3 settings];
-  v6 = [v5 copy];
+  settings = [change settings];
+  v6 = [settings copy];
   [(_UIShareOverviewActionController *)self setSettings:v6];
 
   v7 = cdui_default_log();
@@ -1115,32 +1115,32 @@ LABEL_42:
   }
 
   [(_UIShareOverviewActionController *)self _updateInfo];
-  v8 = [(_UIShareOverviewController *)self share];
+  share = [(_UIShareOverviewController *)self share];
 
-  if (v8)
+  if (share)
   {
-    v9 = [(_UIShareOverviewActionController *)self settings];
-    v10 = [(_UIShareOverviewController *)self share];
-    [v9 applyToShare:v10];
+    settings2 = [(_UIShareOverviewActionController *)self settings];
+    share2 = [(_UIShareOverviewController *)self share];
+    [settings2 applyToShare:share2];
   }
 }
 
-- (BOOL)isHomeroomID:(id)a3
+- (BOOL)isHomeroomID:(id)d
 {
   v3 = off_100060090;
-  v4 = a3;
+  dCopy = d;
   v5 = [NSPredicate predicateWithFormat:@"self LIKE %@", v3];
-  LOBYTE(v3) = [v5 evaluateWithObject:v4];
+  LOBYTE(v3) = [v5 evaluateWithObject:dCopy];
 
   return v3;
 }
 
-- (id)activityViewControllerOperation:(id)a3
+- (id)activityViewControllerOperation:(id)operation
 {
-  v4 = a3;
-  v5 = [(_UIShareOverviewController *)self error];
+  operationCopy = operation;
+  error = [(_UIShareOverviewController *)self error];
 
-  if (v5)
+  if (error)
   {
     v6 = 0;
   }
@@ -1152,33 +1152,33 @@ LABEL_42:
     v8[2] = sub_100027CB8;
     v8[3] = &unk_10004CA08;
     v8[4] = self;
-    v9 = v4;
+    v9 = operationCopy;
     v6 = [NSBlockOperation blockOperationWithBlock:v8];
   }
 
   return v6;
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  [a3 contentOffset];
+  [scroll contentOffset];
   v5 = v4;
   v6 = v4 > 0.0;
-  v7 = [(_UIShareOverviewActionController *)self navigationItem];
-  v8 = [v7 rightBarButtonItem];
-  v9 = [v8 _hidden];
+  navigationItem = [(_UIShareOverviewActionController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  _hidden = [rightBarButtonItem _hidden];
 
-  if (v6 != v9)
+  if (v6 != _hidden)
   {
-    v10 = [(_UIShareOverviewActionController *)self navigationController];
-    v11 = [v10 navigationBar];
+    navigationController = [(_UIShareOverviewActionController *)self navigationController];
+    navigationBar = [navigationController navigationBar];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_100028554;
     v12[3] = &unk_10004D208;
     v12[4] = self;
     v13 = v5 > 0.0;
-    [UIView transitionWithView:v11 duration:5242880 options:v12 animations:0 completion:0.3];
+    [UIView transitionWithView:navigationBar duration:5242880 options:v12 animations:0 completion:0.3];
   }
 }
 

@@ -1,26 +1,26 @@
 @interface CHBDefaultTextProperties
-+ (void)readWithState:(id)a3;
++ (void)readWithState:(id)state;
 @end
 
 @implementation CHBDefaultTextProperties
 
-+ (void)readWithState:(id)a3
++ (void)readWithState:(id)state
 {
-  v3 = a3;
-  v4 = [v3 chart];
-  v5 = [v3 xlReader];
-  v6 = [v4 defaultTextProperties];
+  stateCopy = state;
+  chart = [stateCopy chart];
+  xlReader = [stateCopy xlReader];
+  defaultTextProperties = [chart defaultTextProperties];
   v7 = 0;
   do
   {
     XlChartTextFrame::XlChartTextFrame(v11);
     v11[0] = &unk_286EC9A38;
     v19 = v7;
-    XlChartBinaryReader::read(v5, v11);
-    v8 = [v3 resources];
-    v9 = [CHDDefaultTextProperty defaultTextPropertyWithResources:v8];
+    XlChartBinaryReader::read(xlReader, v11);
+    resources = [stateCopy resources];
+    v9 = [CHDDefaultTextProperty defaultTextPropertyWithResources:resources];
 
-    v10 = [CHBString edRunsFromXlChartTextFrame:v11 state:v3];
+    v10 = [CHBString edRunsFromXlChartTextFrame:v11 state:stateCopy];
     [v9 setRuns:v10];
 
     [v9 setContentFormatId:v13];
@@ -31,7 +31,7 @@
     [v9 setIsShowPercentageLabel:v17];
     [v9 setIsShowBubbleSizeLabel:v18];
     [v9 setIsShowSeriesLabel:v16];
-    [v6 addObject:v9];
+    [defaultTextProperties addObject:v9];
 
     XlChartTextFrame::~XlChartTextFrame(v11);
     v7 = (v7 + 1);

@@ -1,11 +1,11 @@
 @interface SCNAVPlayerSource
 - (SCNAVPlayerSource)init;
-- (id)metalTextureWithEngineContext:(__C3DEngineContext *)a3 textureSampler:(__C3DTextureSampler *)a4 nextFrameTime:(double *)a5 status:(id *)a6;
-- (void)connectToProxy:(__C3DImageProxy *)a3;
+- (id)metalTextureWithEngineContext:(__C3DEngineContext *)context textureSampler:(__C3DTextureSampler *)sampler nextFrameTime:(double *)time status:(id *)status;
+- (void)connectToProxy:(__C3DImageProxy *)proxy;
 - (void)dealloc;
-- (void)registerPlayerIfNeeded:(id)a3;
-- (void)setPlayer:(id)a3;
-- (void)unregisterPlayer:(id)a3;
+- (void)registerPlayerIfNeeded:(id)needed;
+- (void)setPlayer:(id)player;
+- (void)unregisterPlayer:(id)player;
 @end
 
 @implementation SCNAVPlayerSource
@@ -17,7 +17,7 @@
   return [(SCNAVPlayerSource *)&v3 init];
 }
 
-- (void)registerPlayerIfNeeded:(id)a3
+- (void)registerPlayerIfNeeded:(id)needed
 {
   v13[5] = *MEMORY[0x277D85DE8];
   if (!self->_data.videoOutput)
@@ -40,16 +40,16 @@
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:5];
     v11 = [objc_alloc(MEMORY[0x277CE65D0]) initWithPixelBufferAttributes:v10];
     self->_data.videoOutput = v11;
-    [objc_msgSend(a3 "currentItem")];
+    [objc_msgSend(needed "currentItem")];
   }
 }
 
-- (void)unregisterPlayer:(id)a3
+- (void)unregisterPlayer:(id)player
 {
-  v4 = [a3 currentItem];
+  currentItem = [player currentItem];
   videoOutput = self->_data.videoOutput;
 
-  [v4 removeOutput:videoOutput];
+  [currentItem removeOutput:videoOutput];
 }
 
 - (void)dealloc
@@ -69,33 +69,33 @@
   [(SCNTextureSource *)&v4 dealloc];
 }
 
-- (void)setPlayer:(id)a3
+- (void)setPlayer:(id)player
 {
-  if (self->_player != a3)
+  if (self->_player != player)
   {
     [(SCNAVPlayerSource *)self unregisterPlayer:?];
 
-    self->_player = a3;
+    self->_player = player;
   }
 }
 
-- (void)connectToProxy:(__C3DImageProxy *)a3
+- (void)connectToProxy:(__C3DImageProxy *)proxy
 {
-  C3DImageProxySetSource(a3, self, 1);
+  C3DImageProxySetSource(proxy, self, 1);
   v4[0] = xmmword_282DC80B8;
   v4[1] = *&off_282DC80C8;
-  C3DImageProxySetCallbacks(a3, v4);
+  C3DImageProxySetCallbacks(proxy, v4);
 }
 
-- (id)metalTextureWithEngineContext:(__C3DEngineContext *)a3 textureSampler:(__C3DTextureSampler *)a4 nextFrameTime:(double *)a5 status:(id *)a6
+- (id)metalTextureWithEngineContext:(__C3DEngineContext *)context textureSampler:(__C3DTextureSampler *)sampler nextFrameTime:(double *)time status:(id *)status
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  RenderContext = C3DEngineContextGetRenderContext(a3);
+  RenderContext = C3DEngineContextGetRenderContext(context);
   [(SCNAVPlayerSource *)self registerPlayerIfNeeded:self->_player];
   videoOutput = self->_data.videoOutput;
   v20 = 0uLL;
   v21 = 0;
-  SystemTime = C3DEngineContextGetSystemTime(a3);
+  SystemTime = C3DEngineContextGetSystemTime(context);
   if (videoOutput)
   {
     [(pixelBuffer *)videoOutput itemTimeForHostTime:SystemTime];
@@ -129,7 +129,7 @@
     result = self->_data.mtlTextureForRenderer;
     if (result)
     {
-      *a6 = 256;
+      *status = 256;
     }
 
     else
@@ -137,15 +137,15 @@
       textureCache = self->_textureCache;
       if (!textureCache)
       {
-        v17 = [(SCNMTLRenderContext *)RenderContext device];
+        device = [(SCNMTLRenderContext *)RenderContext device];
         v22 = *MEMORY[0x277CC4D50];
         v23[0] = &unk_282E0F8E8;
-        CVMetalTextureCacheCreate(0, 0, v17, [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:&v22 count:1], &self->_textureCache);
+        CVMetalTextureCacheCreate(0, 0, device, [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:&v22 count:1], &self->_textureCache);
         textureCache = self->_textureCache;
       }
 
       SCNVideoTextureSourceCreateMetalTexture(&self->_data, RenderContext, textureCache);
-      *a6 = 257;
+      *status = 257;
       return self->_data.mtlTextureForRenderer;
     }
   }

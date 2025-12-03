@@ -1,136 +1,136 @@
 @interface CNGeminiPickerController
-- (CNGeminiPickerController)initWithGeminiResult:(id)a3;
-- (id)geminiChannelForIndexPath:(id)a3;
-- (id)indexPathForGeminiChannel:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)cancelPicker:(id)a3;
+- (CNGeminiPickerController)initWithGeminiResult:(id)result;
+- (id)geminiChannelForIndexPath:(id)path;
+- (id)indexPathForGeminiChannel:(id)channel;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)cancelPicker:(id)picker;
 - (void)didPickItem;
-- (void)prepareCell:(id)a3 atIndexPath:(id)a4;
-- (void)setGeminiResult:(id)a3 reload:(BOOL)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)prepareCell:(id)cell atIndexPath:(id)path;
+- (void)setGeminiResult:(id)result reload:(BOOL)reload;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation CNGeminiPickerController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v23.receiver = self;
   v23.super_class = CNGeminiPickerController;
-  [(CNGeminiPickerController *)&v23 viewWillAppear:a3];
-  v4 = [(CNGeminiPickerController *)self navigationBar];
-  [v4 _cnui_applyContactStyle];
+  [(CNGeminiPickerController *)&v23 viewWillAppear:appear];
+  navigationBar = [(CNGeminiPickerController *)self navigationBar];
+  [navigationBar _cnui_applyContactStyle];
 
-  v5 = [(UITableViewController *)self->_tableViewController tableView];
-  [v5 _cnui_applyContactStyle];
+  tableView = [(UITableViewController *)self->_tableViewController tableView];
+  [tableView _cnui_applyContactStyle];
 
   v6 = CNContactsUIBundle();
   v7 = [v6 localizedStringForKey:@"PREFERRED_LINE_PICKER_TITLE" value:&stru_1F0CE7398 table:@"Localized-GEMINI"];
-  v8 = [(UITableViewController *)self->_tableViewController navigationItem];
-  [v8 setTitle:v7];
+  navigationItem = [(UITableViewController *)self->_tableViewController navigationItem];
+  [navigationItem setTitle:v7];
 
-  v9 = [(UITableViewController *)self->_tableViewController navigationItem];
-  [v9 setLargeTitleDisplayMode:2];
+  navigationItem2 = [(UITableViewController *)self->_tableViewController navigationItem];
+  [navigationItem2 setLargeTitleDisplayMode:2];
 
   if ([(UIViewController *)self ab_shouldShowNavBarButtons])
   {
     v10 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:self action:sel_cancelPicker_];
-    v11 = [(UITableViewController *)self->_tableViewController navigationItem];
-    [v11 setLeftBarButtonItem:v10];
+    navigationItem3 = [(UITableViewController *)self->_tableViewController navigationItem];
+    [navigationItem3 setLeftBarButtonItem:v10];
 
     v12 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:self action:sel_donePicker_];
-    v13 = [(UITableViewController *)self->_tableViewController navigationItem];
-    [v13 setRightBarButtonItem:v12];
+    navigationItem4 = [(UITableViewController *)self->_tableViewController navigationItem];
+    [navigationItem4 setRightBarButtonItem:v12];
   }
 
   if ([(UIViewController *)self ab_shouldUseTransparentBackgroundInPopovers])
   {
     v14 = +[CNUIColorRepository popoverBackgroundColor];
-    v15 = [(CNGeminiPickerController *)self tableViewController];
-    v16 = [v15 tableView];
-    [v16 setBackgroundColor:v14];
+    tableViewController = [(CNGeminiPickerController *)self tableViewController];
+    tableView2 = [tableViewController tableView];
+    [tableView2 setBackgroundColor:v14];
 
-    v17 = [(UITableViewController *)self->_tableViewController tableView];
-    v18 = [v17 backgroundColor];
-    v19 = [(CNGeminiPickerController *)self tableViewController];
-    v20 = [v19 tableView];
-    [v20 setSectionIndexBackgroundColor:v18];
+    tableView3 = [(UITableViewController *)self->_tableViewController tableView];
+    backgroundColor = [tableView3 backgroundColor];
+    tableViewController2 = [(CNGeminiPickerController *)self tableViewController];
+    tableView4 = [tableViewController2 tableView];
+    [tableView4 setSectionIndexBackgroundColor:backgroundColor];
   }
 
-  v21 = [(CNGeminiPickerController *)self tableViewController];
-  v22 = [v21 tableView];
-  [v22 reloadData];
+  tableViewController3 = [(CNGeminiPickerController *)self tableViewController];
+  tableView5 = [tableViewController3 tableView];
+  [tableView5 reloadData];
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v14 = a3;
-  v7 = a4;
-  [v7 _cnui_applyContactStyle];
-  if (-[UIViewController ab_shouldUseTransparentBackgroundInPopovers](self, "ab_shouldUseTransparentBackgroundInPopovers") || ([v14 backgroundColor], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(MEMORY[0x1E69DC888], "clearColor"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "isEqual:", v9), v9, v8, v10))
+  viewCopy = view;
+  cellCopy = cell;
+  [cellCopy _cnui_applyContactStyle];
+  if (-[UIViewController ab_shouldUseTransparentBackgroundInPopovers](self, "ab_shouldUseTransparentBackgroundInPopovers") || ([viewCopy backgroundColor], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(MEMORY[0x1E69DC888], "clearColor"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "isEqual:", v9), v9, v8, v10))
   {
-    v11 = [(CNGeminiPickerController *)self tableViewController];
-    v12 = [v11 tableView];
-    v13 = [v12 backgroundColor];
-    [v7 setBackgroundColor:v13];
+    tableViewController = [(CNGeminiPickerController *)self tableViewController];
+    tableView = [tableViewController tableView];
+    backgroundColor = [tableView backgroundColor];
+    [cellCopy setBackgroundColor:backgroundColor];
   }
 
   else
   {
-    v11 = +[CNUIColorRepository contactStyleDefaultBackgroundColor];
-    [v7 setBackgroundColor:v11];
+    tableViewController = +[CNUIColorRepository contactStyleDefaultBackgroundColor];
+    [cellCopy setBackgroundColor:tableViewController];
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v17 = a4;
-  v6 = a3;
+  pathCopy = path;
+  viewCopy = view;
   if ([(UIViewController *)self ab_shouldShowNavBarButtons])
   {
-    v7 = [(CNGeminiPickerController *)self selectedIndexPath];
+    selectedIndexPath = [(CNGeminiPickerController *)self selectedIndexPath];
 
-    if (v7 != v17)
+    if (selectedIndexPath != pathCopy)
     {
-      v8 = [(CNGeminiPickerController *)self tableViewController];
-      v9 = [v8 tableView];
-      v10 = [(CNGeminiPickerController *)self selectedIndexPath];
-      v11 = [v9 cellForRowAtIndexPath:v10];
+      tableViewController = [(CNGeminiPickerController *)self tableViewController];
+      tableView = [tableViewController tableView];
+      selectedIndexPath2 = [(CNGeminiPickerController *)self selectedIndexPath];
+      v11 = [tableView cellForRowAtIndexPath:selectedIndexPath2];
       [v11 setAccessoryType:0];
 
-      v12 = [(CNGeminiPickerController *)self tableViewController];
-      v13 = [v12 tableView];
-      v14 = [v13 cellForRowAtIndexPath:v17];
+      tableViewController2 = [(CNGeminiPickerController *)self tableViewController];
+      tableView2 = [tableViewController2 tableView];
+      v14 = [tableView2 cellForRowAtIndexPath:pathCopy];
       [v14 setAccessoryType:3];
 
-      [(CNGeminiPickerController *)self setSelectedIndexPath:v17];
+      [(CNGeminiPickerController *)self setSelectedIndexPath:pathCopy];
     }
 
-    v15 = [v6 indexPathForSelectedRow];
-    [v6 deselectRowAtIndexPath:v15 animated:0];
+    indexPathForSelectedRow = [viewCopy indexPathForSelectedRow];
+    [viewCopy deselectRowAtIndexPath:indexPathForSelectedRow animated:0];
   }
 
   else
   {
-    [(CNGeminiPickerController *)self setSelectedIndexPath:v17];
+    [(CNGeminiPickerController *)self setSelectedIndexPath:pathCopy];
     [(CNGeminiPickerController *)self didPickItem];
-    v16 = [v6 indexPathForSelectedRow];
-    [v6 deselectRowAtIndexPath:v16 animated:0];
+    indexPathForSelectedRow2 = [viewCopy indexPathForSelectedRow];
+    [viewCopy deselectRowAtIndexPath:indexPathForSelectedRow2 animated:0];
 
     [(CNGeminiPickerController *)self dismissViewControllerAnimated:1 completion:0];
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [v5 section];
-  if (v6)
+  pathCopy = path;
+  section = [pathCopy section];
+  if (section)
   {
     v7 = 3;
   }
@@ -141,16 +141,16 @@
   }
 
   v8 = 0x1E69DD028;
-  if (v6)
+  if (section)
   {
     v8 = off_1E74DEBD8;
   }
 
   v9 = [objc_alloc(*v8) initWithStyle:v7 reuseIdentifier:0];
-  [(CNGeminiPickerController *)self prepareCell:v9 atIndexPath:v5];
-  v10 = [(CNGeminiPickerController *)self selectedIndexPath];
+  [(CNGeminiPickerController *)self prepareCell:v9 atIndexPath:pathCopy];
+  selectedIndexPath = [(CNGeminiPickerController *)self selectedIndexPath];
 
-  if (v10 == v5)
+  if (selectedIndexPath == pathCopy)
   {
     [v9 setAccessoryType:3];
   }
@@ -158,11 +158,11 @@
   return v9;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
   v5 = CNContactsUIBundle();
   v6 = v5;
-  if (a4)
+  if (section)
   {
     v7 = @"PREFERRED_LINE_PICKER_ALWAYS_USE_FOOTER";
   }
@@ -177,9 +177,9 @@
   return v8;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
     v4 = CNContactsUIBundle();
     v5 = [v4 localizedStringForKey:@"PREFERRED_LINE_PICKER_ALWAYS_USE_HEADER" value:&stru_1F0CE7398 table:@"Localized-GEMINI"];
@@ -193,23 +193,23 @@
   return v5;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if (!a4)
+  if (!section)
   {
     return 1;
   }
 
-  v4 = [(CNGeminiPickerController *)self geminiChannels];
-  v5 = [v4 count];
+  geminiChannels = [(CNGeminiPickerController *)self geminiChannels];
+  v5 = [geminiChannels count];
 
   return v5;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(CNGeminiPickerController *)self geminiChannels];
-  if ([v3 count])
+  geminiChannels = [(CNGeminiPickerController *)self geminiChannels];
+  if ([geminiChannels count])
   {
     v4 = 2;
   }
@@ -222,16 +222,16 @@
   return v4;
 }
 
-- (void)prepareCell:(id)a3 atIndexPath:(id)a4
+- (void)prepareCell:(id)cell atIndexPath:(id)path
 {
-  v32 = a3;
-  v6 = a4;
-  if ([v6 section])
+  cellCopy = cell;
+  pathCopy = path;
+  if ([pathCopy section])
   {
-    v7 = [(CNGeminiPickerController *)self geminiChannelForIndexPath:v6];
-    v8 = [v7 isAvailable];
+    v7 = [(CNGeminiPickerController *)self geminiChannelForIndexPath:pathCopy];
+    isAvailable = [v7 isAvailable];
     v9 = @"PREFERRED_LINE_PICKER_ALWAYS_USE_LABEL_UNAVAILABLE-%@";
-    if (v8)
+    if (isAvailable)
     {
       v9 = @"PREFERRED_LINE_PICKER_ALWAYS_USE_LABEL-%@";
     }
@@ -240,23 +240,23 @@
     v11 = v9;
     v12 = CNContactsUIBundle();
     v13 = [v12 localizedStringForKey:v11 value:&stru_1F0CE7398 table:@"Localized-GEMINI"];
-    v14 = [v7 localizedLabel];
-    v15 = [v10 stringWithFormat:v13, v14];
+    localizedLabel = [v7 localizedLabel];
+    v15 = [v10 stringWithFormat:v13, localizedLabel];
 
     v16 = MEMORY[0x1E695CF50];
-    v17 = [v7 handle];
-    v18 = [v16 phoneNumberWithStringValue:v17];
-    v19 = [v18 formattedInternationalStringValue];
+    handle = [v7 handle];
+    v18 = [v16 phoneNumberWithStringValue:handle];
+    formattedInternationalStringValue = [v18 formattedInternationalStringValue];
 
     v20 = MEMORY[0x1E696AEC0];
     v21 = CNContactsUIBundle();
     v22 = [v21 localizedStringForKey:v11 value:&stru_1F0CE7398 table:@"Localized-GEMINI"];
 
-    v23 = [v7 localizedBadgeLabel];
-    v24 = [v20 stringWithFormat:v22, v23];
+    localizedBadgeLabel = [v7 localizedBadgeLabel];
+    v24 = [v20 stringWithFormat:v22, localizedBadgeLabel];
 
     objc_opt_class();
-    v25 = v32;
+    v25 = cellCopy;
     if (objc_opt_isKindOfClass())
     {
       v26 = v25;
@@ -269,35 +269,35 @@
 
     v27 = v26;
 
-    [v27 setText:v15 detailText:v19 badgeText:v24];
+    [v27 setText:v15 detailText:formattedInternationalStringValue badgeText:v24];
   }
 
   else
   {
     v7 = CNContactsUIBundle();
     v15 = [v7 localizedStringForKey:@"PREFERRED_LINE_PICKER_LAST_USED_VALUE" value:&stru_1F0CE7398 table:@"Localized-GEMINI"];
-    v19 = [v32 textLabel];
-    [v19 setText:v15];
+    formattedInternationalStringValue = [cellCopy textLabel];
+    [formattedInternationalStringValue setText:v15];
   }
 
-  v28 = [(CNGeminiPickerController *)self tableViewController];
-  v29 = [v28 tableView];
-  v30 = -[CNGeminiPickerController tableView:numberOfRowsInSection:](self, "tableView:numberOfRowsInSection:", v29, [v6 section]);
-  v31 = [v6 row] + 1;
+  tableViewController = [(CNGeminiPickerController *)self tableViewController];
+  tableView = [tableViewController tableView];
+  v30 = -[CNGeminiPickerController tableView:numberOfRowsInSection:](self, "tableView:numberOfRowsInSection:", tableView, [pathCopy section]);
+  v31 = [pathCopy row] + 1;
 
   if (v30 == v31)
   {
-    [v32 setSeparatorInset:{*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
+    [cellCopy setSeparatorInset:{*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
   }
 }
 
-- (id)geminiChannelForIndexPath:(id)a3
+- (id)geminiChannelForIndexPath:(id)path
 {
-  v4 = a3;
-  if ([v4 section] == 1)
+  pathCopy = path;
+  if ([pathCopy section] == 1)
   {
-    v5 = [(CNGeminiPickerController *)self geminiChannels];
-    v6 = [v5 objectAtIndexedSubscript:{objc_msgSend(v4, "row")}];
+    geminiChannels = [(CNGeminiPickerController *)self geminiChannels];
+    v6 = [geminiChannels objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
   }
 
   else
@@ -308,35 +308,35 @@
   return v6;
 }
 
-- (id)indexPathForGeminiChannel:(id)a3
+- (id)indexPathForGeminiChannel:(id)channel
 {
-  if (!a3)
+  if (!channel)
   {
     v6 = MEMORY[0x1E696AC88];
     goto LABEL_5;
   }
 
-  v4 = [(CNGeminiPickerController *)self geminiChannels];
+  geminiChannels = [(CNGeminiPickerController *)self geminiChannels];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __54__CNGeminiPickerController_indexPathForGeminiChannel___block_invoke;
   v10[3] = &unk_1E74E2028;
   v10[4] = self;
-  v5 = [v4 _cn_indexOfFirstObjectPassingTest:v10];
+  v5 = [geminiChannels _cn_indexOfFirstObjectPassingTest:v10];
 
   v6 = MEMORY[0x1E696AC88];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    a3 = 0;
+    channel = 0;
 LABEL_5:
     v7 = 0;
     goto LABEL_7;
   }
 
-  a3 = v5;
+  channel = v5;
   v7 = 1;
 LABEL_7:
-  v8 = [v6 indexPathForRow:a3 inSection:v7];
+  v8 = [v6 indexPathForRow:channel inSection:v7];
 
   return v8;
 }
@@ -351,54 +351,54 @@ uint64_t __54__CNGeminiPickerController_indexPathForGeminiChannel___block_invoke
   return v6;
 }
 
-- (void)cancelPicker:(id)a3
+- (void)cancelPicker:(id)picker
 {
-  v4 = [(CNGeminiPickerController *)self delegate];
-  [v4 pickerDidCancel:self];
+  delegate = [(CNGeminiPickerController *)self delegate];
+  [delegate pickerDidCancel:self];
 }
 
 - (void)didPickItem
 {
-  v3 = [(CNGeminiPickerController *)self selectedIndexPath];
-  v6 = [(CNGeminiPickerController *)self geminiChannelForIndexPath:v3];
+  selectedIndexPath = [(CNGeminiPickerController *)self selectedIndexPath];
+  v6 = [(CNGeminiPickerController *)self geminiChannelForIndexPath:selectedIndexPath];
 
   if (v6 && ![v6 isAvailable])
   {
-    v4 = [(CNGeminiPickerController *)self delegate];
-    [v4 pickerDidCancel:self];
+    delegate = [(CNGeminiPickerController *)self delegate];
+    [delegate pickerDidCancel:self];
   }
 
   else
   {
-    v4 = [(CNGeminiPickerController *)self delegate];
-    v5 = [v6 senderIdentity];
-    [v4 picker:self didPickItem:v5];
+    delegate = [(CNGeminiPickerController *)self delegate];
+    senderIdentity = [v6 senderIdentity];
+    [delegate picker:self didPickItem:senderIdentity];
   }
 }
 
-- (void)setGeminiResult:(id)a3 reload:(BOOL)a4
+- (void)setGeminiResult:(id)result reload:(BOOL)reload
 {
-  v4 = a4;
-  v18 = a3;
+  reloadCopy = reload;
+  resultCopy = result;
   v6 = MEMORY[0x1E695DF70];
-  v7 = [v18 availableChannels];
-  v8 = [v6 arrayWithArray:v7];
+  availableChannels = [resultCopy availableChannels];
+  v8 = [v6 arrayWithArray:availableChannels];
   geminiChannels = self->_geminiChannels;
   self->_geminiChannels = v8;
 
-  v10 = [v18 usage];
-  if (v10 == 1)
+  usage = [resultCopy usage];
+  if (usage == 1)
   {
-    v11 = [v18 channel];
+    channel = [resultCopy channel];
   }
 
   else
   {
-    v11 = 0;
+    channel = 0;
   }
 
-  objc_storeStrong(&self->_preferredGeminiChannel, v11);
-  if (v10 == 1)
+  objc_storeStrong(&self->_preferredGeminiChannel, channel);
+  if (usage == 1)
   {
   }
 
@@ -408,22 +408,22 @@ uint64_t __54__CNGeminiPickerController_indexPathForGeminiChannel___block_invoke
     [(NSMutableArray *)self->_geminiChannels addObject:self->_preferredGeminiChannel];
   }
 
-  v13 = [(CNGeminiPickerController *)self preferredGeminiChannel];
-  v14 = [(CNGeminiPickerController *)self indexPathForGeminiChannel:v13];
+  preferredGeminiChannel = [(CNGeminiPickerController *)self preferredGeminiChannel];
+  v14 = [(CNGeminiPickerController *)self indexPathForGeminiChannel:preferredGeminiChannel];
   selectedIndexPath = self->_selectedIndexPath;
   self->_selectedIndexPath = v14;
 
-  if (v4)
+  if (reloadCopy)
   {
-    v16 = [(CNGeminiPickerController *)self tableViewController];
-    v17 = [v16 tableView];
-    [v17 reloadData];
+    tableViewController = [(CNGeminiPickerController *)self tableViewController];
+    tableView = [tableViewController tableView];
+    [tableView reloadData];
   }
 }
 
-- (CNGeminiPickerController)initWithGeminiResult:(id)a3
+- (CNGeminiPickerController)initWithGeminiResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v12.receiver = self;
   v12.super_class = CNGeminiPickerController;
   v5 = [(CNGeminiPickerController *)&v12 initWithNibName:0 bundle:0];
@@ -433,12 +433,12 @@ uint64_t __54__CNGeminiPickerController_indexPathForGeminiChannel___block_invoke
     tableViewController = v5->_tableViewController;
     v5->_tableViewController = v6;
 
-    v8 = [(UITableViewController *)v5->_tableViewController tableView];
-    [v8 setDelegate:v5];
-    [v8 setDataSource:v5];
-    [(CNGeminiPickerController *)v5 setGeminiResult:v4 reload:0];
-    v9 = [(CNGeminiPickerController *)v5 tableViewController];
-    [(CNGeminiPickerController *)v5 pushViewController:v9 animated:0];
+    tableView = [(UITableViewController *)v5->_tableViewController tableView];
+    [tableView setDelegate:v5];
+    [tableView setDataSource:v5];
+    [(CNGeminiPickerController *)v5 setGeminiResult:resultCopy reload:0];
+    tableViewController = [(CNGeminiPickerController *)v5 tableViewController];
+    [(CNGeminiPickerController *)v5 pushViewController:tableViewController animated:0];
 
     v10 = v5;
   }

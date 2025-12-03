@@ -1,37 +1,37 @@
 @interface CKPinnedConversationActivitySnapshot
 + (id)emptySnapshot;
-- (CKPinnedConversationActivitySnapshot)initWithActivityItems:(id)a3 contactItems:(id)a4;
-- (CKPinnedConversationActivitySnapshot)initWithConversation:(id)a3 recentMessagesInPinnedConversations:(id)a4 previousSnapshot:(id)a5;
-- (double)_contentScaleForContactItemAtIndex:(int64_t)a3 withMessageContentScale:(double)a4;
-- (double)_contentScaleForMessage:(id)a3 amongRecentMessagesInPinnedConversations:(id)a4;
-- (id)_contactItemMatchingIdentifier:(id)a3;
-- (int64_t)_firstContactItemAlignmentForContactItem:(id)a3 previousSnapshot:(id)a4 totalNumberOfContactItemIdentifiersWithUnreadMessages:(int64_t)a5;
+- (CKPinnedConversationActivitySnapshot)initWithActivityItems:(id)items contactItems:(id)contactItems;
+- (CKPinnedConversationActivitySnapshot)initWithConversation:(id)conversation recentMessagesInPinnedConversations:(id)conversations previousSnapshot:(id)snapshot;
+- (double)_contentScaleForContactItemAtIndex:(int64_t)index withMessageContentScale:(double)scale;
+- (double)_contentScaleForMessage:(id)message amongRecentMessagesInPinnedConversations:(id)conversations;
+- (id)_contactItemMatchingIdentifier:(id)identifier;
+- (int64_t)_firstContactItemAlignmentForContactItem:(id)item previousSnapshot:(id)snapshot totalNumberOfContactItemIdentifiersWithUnreadMessages:(int64_t)messages;
 @end
 
 @implementation CKPinnedConversationActivitySnapshot
 
 + (id)emptySnapshot
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = [v2 initWithActivityItems:MEMORY[0x1E695E0F0] contactItems:MEMORY[0x1E695E0F0]];
 
   return v3;
 }
 
-- (CKPinnedConversationActivitySnapshot)initWithActivityItems:(id)a3 contactItems:(id)a4
+- (CKPinnedConversationActivitySnapshot)initWithActivityItems:(id)items contactItems:(id)contactItems
 {
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  contactItemsCopy = contactItems;
   v14.receiver = self;
   v14.super_class = CKPinnedConversationActivitySnapshot;
   v8 = [(CKPinnedConversationActivitySnapshot *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [itemsCopy copy];
     activityItems = v8->_activityItems;
     v8->_activityItems = v9;
 
-    v11 = [v7 copy];
+    v11 = [contactItemsCopy copy];
     contactItems = v8->_contactItems;
     v8->_contactItems = v11;
   }
@@ -39,59 +39,59 @@
   return v8;
 }
 
-- (CKPinnedConversationActivitySnapshot)initWithConversation:(id)a3 recentMessagesInPinnedConversations:(id)a4 previousSnapshot:(id)a5
+- (CKPinnedConversationActivitySnapshot)initWithConversation:(id)conversation recentMessagesInPinnedConversations:(id)conversations previousSnapshot:(id)snapshot
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  conversationCopy = conversation;
+  conversationsCopy = conversations;
+  snapshotCopy = snapshot;
   v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v13 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v67 = [v8 chat];
-  v14 = [v67 lastIncomingMessage];
-  v66 = v14;
-  if ([v8 isGroupConversation])
+  chat = [conversationCopy chat];
+  lastIncomingMessage = [chat lastIncomingMessage];
+  v66 = lastIncomingMessage;
+  if ([conversationCopy isGroupConversation])
   {
-    v15 = [v8 isAdHocGroupConversation];
-    if ([v14 isTypingMessage])
+    isAdHocGroupConversation = [conversationCopy isAdHocGroupConversation];
+    if ([lastIncomingMessage isTypingMessage])
     {
-      if ((v15 & 1) == 0)
+      if ((isAdHocGroupConversation & 1) == 0)
       {
-        v16 = [v14 sender];
-        v17 = [v8 entityMatchingHandle:v16];
+        sender = [lastIncomingMessage sender];
+        v17 = [conversationCopy entityMatchingHandle:sender];
         [CKPinnedConversationContactItemProvider contactItemFromEntity:v17];
         v63 = v11;
-        v18 = self;
-        v19 = v10;
-        v21 = v20 = v9;
+        selfCopy = self;
+        v19 = snapshotCopy;
+        v21 = v20 = conversationsCopy;
         [v12 addObject:v21];
-        v22 = [v21 contactItemIdentifier];
-        [v13 addObject:v22];
+        contactItemIdentifier = [v21 contactItemIdentifier];
+        [v13 addObject:contactItemIdentifier];
 
-        v9 = v20;
-        v10 = v19;
-        self = v18;
+        conversationsCopy = v20;
+        snapshotCopy = v19;
+        self = selfCopy;
         v11 = v63;
 
-        v14 = v66;
+        lastIncomingMessage = v66;
 LABEL_7:
         v23 = 1.0;
-        v24 = [[CKPinnedConversationTypingBubbleActivityItem alloc] initWithMessage:v14 contentScale:v22 attachedContactItemIdentifier:1.0];
-        [v11 addObject:v24];
+        sender2 = [[CKPinnedConversationTypingBubbleActivityItem alloc] initWithMessage:lastIncomingMessage contentScale:contactItemIdentifier attachedContactItemIdentifier:1.0];
+        [v11 addObject:sender2];
         goto LABEL_8;
       }
 
 LABEL_6:
-      v22 = 0;
+      contactItemIdentifier = 0;
       goto LABEL_7;
     }
 
-    v25 = v15 ^ 1;
+    v25 = isAdHocGroupConversation ^ 1;
   }
 
   else
   {
-    if ([v14 isTypingMessage])
+    if ([lastIncomingMessage isTypingMessage])
     {
       goto LABEL_6;
     }
@@ -100,16 +100,16 @@ LABEL_6:
   }
 
   v23 = 1.0;
-  if ([v8 hasUnreadMessages])
+  if ([conversationCopy hasUnreadMessages])
   {
-    v22 = [v67 lastIncomingFinishedMessage];
-    if ([v22 isRead] & 1) != 0 || (objc_msgSend(v22, "isTypingMessage"))
+    contactItemIdentifier = [chat lastIncomingFinishedMessage];
+    if ([contactItemIdentifier isRead] & 1) != 0 || (objc_msgSend(contactItemIdentifier, "isTypingMessage"))
     {
       goto LABEL_9;
     }
 
-    v24 = [v22 sender];
-    if (!v24)
+    sender2 = [contactItemIdentifier sender];
+    if (!sender2)
     {
       v64 = IMLogHandleForCategory();
       if (os_log_type_enabled(v64, OS_LOG_TYPE_ERROR))
@@ -118,54 +118,54 @@ LABEL_6:
       }
     }
 
-    v33 = [v8 entityMatchingHandle:v24];
+    v33 = [conversationCopy entityMatchingHandle:sender2];
     v61 = v33;
-    v62 = v24;
+    v62 = sender2;
     if (v25)
     {
       v34 = [CKPinnedConversationContactItemProvider contactItemFromEntity:v33];
       [v12 addObject:v34];
-      v65 = [v34 contactItemIdentifier];
+      contactItemIdentifier2 = [v34 contactItemIdentifier];
       [v13 addObject:?];
 
-      v24 = v62;
+      sender2 = v62;
     }
 
     else
     {
-      v65 = 0;
+      contactItemIdentifier2 = 0;
     }
 
-    [(CKPinnedConversationActivitySnapshot *)self _contentScaleForMessage:v22 amongRecentMessagesInPinnedConversations:v9];
+    [(CKPinnedConversationActivitySnapshot *)self _contentScaleForMessage:contactItemIdentifier amongRecentMessagesInPinnedConversations:conversationsCopy];
     v23 = v43;
-    v60 = [v22 expressiveSendStyleID];
-    v57 = [v60 isEqualToString:*MEMORY[0x1E69A7088]];
+    expressiveSendStyleID = [contactItemIdentifier expressiveSendStyleID];
+    v57 = [expressiveSendStyleID isEqualToString:*MEMORY[0x1E69A7088]];
     v59 = v25;
-    if (([v22 associatedMessageType] & 0xFFFFFFFFFFFFFFF8) == 0x7D0)
+    if (([contactItemIdentifier associatedMessageType] & 0xFFFFFFFFFFFFFFF8) == 0x7D0)
     {
-      v44 = [[CKPinnedConversationTapbackBubbleActivityItem alloc] initWithMessage:v22 contentScale:v65 attachedContactItemIdentifier:v23];
+      v44 = [[CKPinnedConversationTapbackBubbleActivityItem alloc] initWithMessage:contactItemIdentifier contentScale:contactItemIdentifier2 attachedContactItemIdentifier:v23];
       [v11 addObject:v44];
     }
 
-    else if ([v22 isRichLinkMessage] && ((objc_msgSend(v22, "isSenderUnknown") | v57) & 1) == 0)
+    else if ([contactItemIdentifier isRichLinkMessage] && ((objc_msgSend(contactItemIdentifier, "isSenderUnknown") | v57) & 1) == 0)
     {
-      v44 = [MEMORY[0x1E69A5C08] chatContextForPinnedChat:v67];
-      v48 = [[CKPinnedConversationRichLinkActivityItem alloc] initWithMessage:v22 chatContext:v44 contentScale:v65 attachedContactItemIdentifier:v23];
+      v44 = [MEMORY[0x1E69A5C08] chatContextForPinnedChat:chat];
+      v48 = [[CKPinnedConversationRichLinkActivityItem alloc] initWithMessage:contactItemIdentifier chatContext:v44 contentScale:contactItemIdentifier2 attachedContactItemIdentifier:v23];
       [v11 addObject:v48];
 
-      v24 = v62;
+      sender2 = v62;
     }
 
     else
     {
-      v45 = [CKPinnedConversationMediaObjectActivityItem previewableMediaObjectFromMessage:v22];
+      v45 = [CKPinnedConversationMediaObjectActivityItem previewableMediaObjectFromMessage:contactItemIdentifier];
       v56 = v45;
       if ((v45 == 0) | v57 & 1)
       {
-        v58 = [v22 __ck_previewTextWithChat:v67];
+        v58 = [contactItemIdentifier __ck_previewTextWithChat:chat];
         if ([(CKPinnedConversationMediaObjectActivityItem *)v58 length])
         {
-          v46 = [[CKPinnedConversationSummaryBubbleActivityItem alloc] initWithMessage:v22 chat:v67 contentScale:v65 attachedContactItemIdentifier:v23];
+          v46 = [[CKPinnedConversationSummaryBubbleActivityItem alloc] initWithMessage:contactItemIdentifier chat:chat contentScale:contactItemIdentifier2 attachedContactItemIdentifier:v23];
           [v11 addObject:v46];
         }
 
@@ -178,28 +178,28 @@ LABEL_6:
           }
         }
 
-        v24 = v62;
+        sender2 = v62;
 
         v47 = v58;
       }
 
       else
       {
-        v47 = [[CKPinnedConversationMediaObjectActivityItem alloc] initWithMessage:v22 mediaObject:v45 contentScale:v65 attachedContactItemIdentifier:v23];
+        v47 = [[CKPinnedConversationMediaObjectActivityItem alloc] initWithMessage:contactItemIdentifier mediaObject:v45 contentScale:contactItemIdentifier2 attachedContactItemIdentifier:v23];
         [v11 addObject:v47];
-        v24 = v62;
+        sender2 = v62;
       }
 
       v44 = v56;
     }
 
-    if (v59 && [v8 limitToLoad] >= 2)
+    if (v59 && [conversationCopy limitToLoad] >= 2)
     {
       v72[0] = MEMORY[0x1E69E9820];
       v72[1] = 3221225472;
       v72[2] = __114__CKPinnedConversationActivitySnapshot_initWithConversation_recentMessagesInPinnedConversations_previousSnapshot___block_invoke;
       v72[3] = &unk_1E72F36D0;
-      v73 = v8;
+      v73 = conversationCopy;
       v74 = v13;
       v76 = 3;
       v75 = v12;
@@ -210,15 +210,15 @@ LABEL_8:
 LABEL_9:
   }
 
-  v35 = [v12 firstObject];
-  if (v35)
+  firstObject = [v12 firstObject];
+  if (firstObject)
   {
-    v36 = -[CKPinnedConversationActivitySnapshot _firstContactItemAlignmentForContactItem:previousSnapshot:totalNumberOfContactItemIdentifiersWithUnreadMessages:](self, "_firstContactItemAlignmentForContactItem:previousSnapshot:totalNumberOfContactItemIdentifiersWithUnreadMessages:", v35, v10, [v13 count]);
+    v36 = -[CKPinnedConversationActivitySnapshot _firstContactItemAlignmentForContactItem:previousSnapshot:totalNumberOfContactItemIdentifiersWithUnreadMessages:](self, "_firstContactItemAlignmentForContactItem:previousSnapshot:totalNumberOfContactItemIdentifiersWithUnreadMessages:", firstObject, snapshotCopy, [v13 count]);
     v68[0] = MEMORY[0x1E69E9820];
     v68[1] = 3221225472;
     v68[2] = __114__CKPinnedConversationActivitySnapshot_initWithConversation_recentMessagesInPinnedConversations_previousSnapshot___block_invoke_41;
     v68[3] = &unk_1E72F36F8;
-    v69 = self;
+    selfCopy2 = self;
     v70 = v36;
     v71 = v23;
     [v12 enumerateObjectsUsingBlock:v68];
@@ -227,7 +227,7 @@ LABEL_9:
   v37 = [v11 copy];
   v38 = [v12 copy];
   v39 = [(CKPinnedConversationActivitySnapshot *)self initWithActivityItems:v37 contactItems:v38];
-  v40 = v10;
+  v40 = snapshotCopy;
   v41 = v39;
 
   return v41;
@@ -280,40 +280,40 @@ void __114__CKPinnedConversationActivitySnapshot_initWithConversation_recentMess
   [v10 setContentScale:v9];
 }
 
-- (double)_contentScaleForContactItemAtIndex:(int64_t)a3 withMessageContentScale:(double)a4
+- (double)_contentScaleForContactItemAtIndex:(int64_t)index withMessageContentScale:(double)scale
 {
   v4 = 1;
-  if (a3)
+  if (index)
   {
     v4 = 2;
   }
 
-  return pow(v4, -0.7892) * a4;
+  return pow(v4, -0.7892) * scale;
 }
 
-- (int64_t)_firstContactItemAlignmentForContactItem:(id)a3 previousSnapshot:(id)a4 totalNumberOfContactItemIdentifiersWithUnreadMessages:(int64_t)a5
+- (int64_t)_firstContactItemAlignmentForContactItem:(id)item previousSnapshot:(id)snapshot totalNumberOfContactItemIdentifiersWithUnreadMessages:(int64_t)messages
 {
-  v7 = a4;
-  v8 = [a3 contactItemIdentifier];
-  v9 = [v7 _contactItemMatchingIdentifier:v8];
+  snapshotCopy = snapshot;
+  contactItemIdentifier = [item contactItemIdentifier];
+  v9 = [snapshotCopy _contactItemMatchingIdentifier:contactItemIdentifier];
 
   if (v9)
   {
-    v10 = [v9 contactItemAlignment];
+    contactItemAlignment = [v9 contactItemAlignment];
   }
 
   else
   {
-    v10 = (a5 & 0x8000000000000001) != 1;
+    contactItemAlignment = (messages & 0x8000000000000001) != 1;
   }
 
-  return v10;
+  return contactItemAlignment;
 }
 
-- (id)_contactItemMatchingIdentifier:(id)a3
+- (id)_contactItemMatchingIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -333,8 +333,8 @@ void __114__CKPinnedConversationActivitySnapshot_initWithConversation_recentMess
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 contactItemIdentifier];
-        v11 = [v10 isEqualToString:v4];
+        contactItemIdentifier = [v9 contactItemIdentifier];
+        v11 = [contactItemIdentifier isEqualToString:identifierCopy];
 
         if (v11)
         {
@@ -358,14 +358,14 @@ LABEL_11:
   return v6;
 }
 
-- (double)_contentScaleForMessage:(id)a3 amongRecentMessagesInPinnedConversations:(id)a4
+- (double)_contentScaleForMessage:(id)message amongRecentMessagesInPinnedConversations:(id)conversations
 {
-  v5 = a4;
-  v6 = [a3 guid];
-  if ([v6 length])
+  conversationsCopy = conversations;
+  guid = [message guid];
+  if ([guid length])
   {
-    v7 = [v5 __imArrayByApplyingBlock:&__block_literal_global_116];
-    v8 = [v7 indexOfObject:v6];
+    v7 = [conversationsCopy __imArrayByApplyingBlock:&__block_literal_global_116];
+    v8 = [v7 indexOfObject:guid];
     v9 = [v7 count];
     if (v8 == 0x7FFFFFFFFFFFFFFFLL)
     {

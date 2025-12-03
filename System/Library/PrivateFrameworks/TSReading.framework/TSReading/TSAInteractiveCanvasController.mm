@@ -1,16 +1,16 @@
 @interface TSAInteractiveCanvasController
 - (BOOL)hasEmptyWPSelection;
 - (BOOL)hasInspectableSelection;
-- (id)additionalVisibleInfosForCanvas:(id)a3;
+- (id)additionalVisibleInfosForCanvas:(id)canvas;
 - (id)p_activeTextRep;
-- (void)asyncProcessChanges:(id)a3 forChangeSource:(id)a4;
+- (void)asyncProcessChanges:(id)changes forChangeSource:(id)source;
 - (void)dealloc;
-- (void)didSetDocumentToMode:(int64_t)a3 fromMode:(int64_t)a4 animated:(BOOL)a5;
-- (void)handleHyperlinkGesture:(id)a3;
+- (void)didSetDocumentToMode:(int64_t)mode fromMode:(int64_t)fromMode animated:(BOOL)animated;
+- (void)handleHyperlinkGesture:(id)gesture;
 - (void)loadDocument;
 - (void)teardown;
 - (void)unloadDocument;
-- (void)willSetDocumentToMode:(int64_t)a3 fromMode:(int64_t)a4 animated:(BOOL)a5;
+- (void)willSetDocumentToMode:(int64_t)mode fromMode:(int64_t)fromMode animated:(BOOL)animated;
 @end
 
 @implementation TSAInteractiveCanvasController
@@ -31,32 +31,32 @@
 
 - (void)loadDocument
 {
-  v3 = [(TSDInteractiveCanvasController *)self documentRoot];
-  v4 = [(TSKDocumentRoot *)v3 changeNotifier];
+  documentRoot = [(TSDInteractiveCanvasController *)self documentRoot];
+  changeNotifier = [(TSKDocumentRoot *)documentRoot changeNotifier];
 
-  [(TSKChangeNotifier *)v4 addObserver:self forChangeSource:v3];
+  [(TSKChangeNotifier *)changeNotifier addObserver:self forChangeSource:documentRoot];
 }
 
 - (void)unloadDocument
 {
-  v3 = [(TSDInteractiveCanvasController *)self documentRoot];
-  v4 = [(TSKDocumentRoot *)v3 changeNotifier];
+  documentRoot = [(TSDInteractiveCanvasController *)self documentRoot];
+  changeNotifier = [(TSKDocumentRoot *)documentRoot changeNotifier];
 
-  [(TSKChangeNotifier *)v4 removeObserver:self forChangeSource:v3];
+  [(TSKChangeNotifier *)changeNotifier removeObserver:self forChangeSource:documentRoot];
 }
 
-- (void)handleHyperlinkGesture:(id)a3
+- (void)handleHyperlinkGesture:(id)gesture
 {
-  if ([a3 state] == 3)
+  if ([gesture state] == 3)
   {
     v4 = +[TSKApplicationDelegate sharedDelegate];
-    v5 = [objc_msgSend(a3 "hitField")];
+    v5 = [objc_msgSend(gesture "hitField")];
 
     [v4 openURL:v5];
   }
 }
 
-- (void)asyncProcessChanges:(id)a3 forChangeSource:(id)a4
+- (void)asyncProcessChanges:(id)changes forChangeSource:(id)source
 {
   v17 = *MEMORY[0x277D85DE8];
   v15.receiver = self;
@@ -69,7 +69,7 @@
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v6 = [a3 countByEnumeratingWithState:&v11 objects:v16 count:16];
+    v6 = [changes countByEnumeratingWithState:&v11 objects:v16 count:16];
     if (v6)
     {
       v7 = v6;
@@ -81,16 +81,16 @@
         {
           if (*v12 != v8)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(changes);
           }
 
-          v10 = [*(*(&v11 + 1) + 8 * v9) kind];
-          if (v10 == 100)
+          kind = [*(*(&v11 + 1) + 8 * v9) kind];
+          if (kind == 100)
           {
             [(TSDInteractiveCanvasController *)self recreateAllLayoutsAndReps];
           }
 
-          else if (v10 == 3)
+          else if (kind == 3)
           {
             [(TSDInteractiveCanvasController *)self setShouldAutoscrollToSelectionAfterLayout:1];
           }
@@ -99,7 +99,7 @@
         }
 
         while (v7 != v9);
-        v7 = [a3 countByEnumeratingWithState:&v11 objects:v16 count:16];
+        v7 = [changes countByEnumeratingWithState:&v11 objects:v16 count:16];
       }
 
       while (v7);
@@ -107,42 +107,42 @@
   }
 }
 
-- (void)willSetDocumentToMode:(int64_t)a3 fromMode:(int64_t)a4 animated:(BOOL)a5
+- (void)willSetDocumentToMode:(int64_t)mode fromMode:(int64_t)fromMode animated:(BOOL)animated
 {
   objc_opt_class();
   [(TSDInteractiveCanvasController *)self layerHost];
   v6 = TSUDynamicCast();
-  v7 = [v6 wantsHyperlinkGestureRecognizer];
-  v8 = [v6 hyperlinkGestureRecognizer];
+  wantsHyperlinkGestureRecognizer = [v6 wantsHyperlinkGestureRecognizer];
+  hyperlinkGestureRecognizer = [v6 hyperlinkGestureRecognizer];
 
-  [v8 setEnabled:v7];
+  [hyperlinkGestureRecognizer setEnabled:wantsHyperlinkGestureRecognizer];
 }
 
-- (void)didSetDocumentToMode:(int64_t)a3 fromMode:(int64_t)a4 animated:(BOOL)a5
+- (void)didSetDocumentToMode:(int64_t)mode fromMode:(int64_t)fromMode animated:(BOOL)animated
 {
-  v5 = [-[TSDCanvasLayerHosting asiOSCVC](-[TSDInteractiveCanvasController layerHost](self layerHost];
+  layerHost = [-[TSDCanvasLayerHosting asiOSCVC](-[TSDInteractiveCanvasController layerHost](self layerHost];
 
-  [v5 setEnabled:1];
+  [layerHost setEnabled:1];
 }
 
-- (id)additionalVisibleInfosForCanvas:(id)a3
+- (id)additionalVisibleInfosForCanvas:(id)canvas
 {
   v8.receiver = self;
   v8.super_class = TSAInteractiveCanvasController;
-  v4 = [(TSDInteractiveCanvasController *)&v8 additionalVisibleInfosForCanvas:a3];
+  v4 = [(TSDInteractiveCanvasController *)&v8 additionalVisibleInfosForCanvas:canvas];
   if (!self->super.super.mCreateRepsForOffscreenLayouts)
   {
-    v5 = [(TSAInteractiveCanvasController *)self infoBeingDragInserted];
-    if (v5)
+    infoBeingDragInserted = [(TSAInteractiveCanvasController *)self infoBeingDragInserted];
+    if (infoBeingDragInserted)
     {
       if (v4)
       {
-        return [v4 setByAddingObject:v5];
+        return [v4 setByAddingObject:infoBeingDragInserted];
       }
 
       else
       {
-        return [MEMORY[0x277CBEB98] setWithObject:v5];
+        return [MEMORY[0x277CBEB98] setWithObject:infoBeingDragInserted];
       }
     }
   }
@@ -161,8 +161,8 @@
   {
     objc_opt_class();
     [(TSDEditorController *)[(TSDInteractiveCanvasController *)self editorController] textInputEditor];
-    v4 = [TSUDynamicCast() selection];
-    if (!v4 || (v3 = [v4 isEmpty]) != 0)
+    selection = [TSUDynamicCast() selection];
+    if (!selection || (v3 = [selection isEmpty]) != 0)
     {
       LOBYTE(v3) = 1;
     }
@@ -175,13 +175,13 @@
 {
   v2 = [(TSDEditorController *)[(TSDInteractiveCanvasController *)self editorController] mostSpecificCurrentEditorOfClass:0];
   v3 = objc_opt_respondsToSelector();
-  v4 = 0;
+  topLevelInspectorViewControllers = 0;
   if (v3)
   {
-    v4 = [v2 topLevelInspectorViewControllers];
+    topLevelInspectorViewControllers = [v2 topLevelInspectorViewControllers];
   }
 
-  return [v4 count] != 0;
+  return [topLevelInspectorViewControllers count] != 0;
 }
 
 - (id)p_activeTextRep
@@ -189,11 +189,11 @@
   objc_opt_class();
   [(TSDEditorController *)[(TSDInteractiveCanvasController *)self editorController] textInputEditor];
   v3 = TSUDynamicCast();
-  v4 = [v3 storage];
-  v5 = [v3 selection];
-  if (v4)
+  storage = [v3 storage];
+  selection = [v3 selection];
+  if (storage)
   {
-    v6 = v5 == 0;
+    v6 = selection == 0;
   }
 
   else
@@ -206,15 +206,15 @@
     return 0;
   }
 
-  v7 = v5;
-  [v4 parentInfo];
+  v7 = selection;
+  [storage parentInfo];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     return 0;
   }
 
-  v8 = [(TSDInteractiveCanvasController *)self layoutForModel:v4 withSelection:v7];
+  v8 = [(TSDInteractiveCanvasController *)self layoutForModel:storage withSelection:v7];
   if (!v8)
   {
     return 0;

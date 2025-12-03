@@ -1,18 +1,18 @@
 @interface PKFinancialLabPermissionController
-- (PKFinancialLabPermissionController)initWithContext:(int64_t)a3;
-- (PKFinancialLabPermissionController)initWithContext:(int64_t)a3 performSave:(BOOL)a4;
-- (void)savePermission:(BOOL)a3;
-- (void)showLoadingUI:(BOOL)a3 animated:(BOOL)a4;
+- (PKFinancialLabPermissionController)initWithContext:(int64_t)context;
+- (PKFinancialLabPermissionController)initWithContext:(int64_t)context performSave:(BOOL)save;
+- (void)savePermission:(BOOL)permission;
+- (void)showLoadingUI:(BOOL)i animated:(BOOL)animated;
 - (void)viewDidLoad;
 @end
 
 @implementation PKFinancialLabPermissionController
 
-- (PKFinancialLabPermissionController)initWithContext:(int64_t)a3
+- (PKFinancialLabPermissionController)initWithContext:(int64_t)context
 {
   v7.receiver = self;
   v7.super_class = PKFinancialLabPermissionController;
-  v3 = [(PKExplanationViewController *)&v7 initWithContext:a3];
+  v3 = [(PKExplanationViewController *)&v7 initWithContext:context];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E6967DD0]);
@@ -25,12 +25,12 @@
   return v3;
 }
 
-- (PKFinancialLabPermissionController)initWithContext:(int64_t)a3 performSave:(BOOL)a4
+- (PKFinancialLabPermissionController)initWithContext:(int64_t)context performSave:(BOOL)save
 {
-  result = [(PKFinancialLabPermissionController *)self initWithContext:a3];
+  result = [(PKFinancialLabPermissionController *)self initWithContext:context];
   if (result)
   {
-    result->_performSave = a4;
+    result->_performSave = save;
   }
 
   return result;
@@ -41,47 +41,47 @@
   v16.receiver = self;
   v16.super_class = PKFinancialLabPermissionController;
   [(PKExplanationViewController *)&v16 viewDidLoad];
-  v3 = [(PKExplanationViewController *)self explanationView];
-  v4 = [(PKFinancialLabPermissionController *)self navigationItem];
-  [v4 setHidesBackButton:1 animated:0];
+  explanationView = [(PKExplanationViewController *)self explanationView];
+  navigationItem = [(PKFinancialLabPermissionController *)self navigationItem];
+  [navigationItem setHidesBackButton:1 animated:0];
 
   [(PKExplanationViewController *)self setShowCancelButton:0];
-  v5 = [(FKBankConnectOfflineLabConsentCoordinator *)self->_coordinator localizedTitle];
-  [v3 setTitleText:v5];
+  localizedTitle = [(FKBankConnectOfflineLabConsentCoordinator *)self->_coordinator localizedTitle];
+  [explanationView setTitleText:localizedTitle];
 
-  v6 = [(FKBankConnectOfflineLabConsentCoordinator *)self->_coordinator localizedSubtitle];
-  [v3 setBodyText:v6];
+  localizedSubtitle = [(FKBankConnectOfflineLabConsentCoordinator *)self->_coordinator localizedSubtitle];
+  [explanationView setBodyText:localizedSubtitle];
 
   v7 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:60.0];
   v8 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"chart.bar.xaxis" withConfiguration:v7];
-  [v3 setImage:v8];
+  [explanationView setImage:v8];
 
-  v9 = [v3 dockView];
-  v10 = [v9 primaryButton];
-  v11 = [(FKBankConnectOfflineLabConsentCoordinator *)self->_coordinator localizedOptInButtonTitle];
-  [v10 setTitle:v11 forState:0];
+  dockView = [explanationView dockView];
+  primaryButton = [dockView primaryButton];
+  localizedOptInButtonTitle = [(FKBankConnectOfflineLabConsentCoordinator *)self->_coordinator localizedOptInButtonTitle];
+  [primaryButton setTitle:localizedOptInButtonTitle forState:0];
 
-  [v10 addTarget:self action:sel_primaryButtonTapped forControlEvents:64];
-  v12 = [v9 footerView];
-  v13 = [v12 skipCardButton];
-  v14 = [(FKBankConnectOfflineLabConsentCoordinator *)self->_coordinator localizedOptOutButtonTitle];
-  [v13 setTitle:v14 forState:0];
+  [primaryButton addTarget:self action:sel_primaryButtonTapped forControlEvents:64];
+  footerView = [dockView footerView];
+  skipCardButton = [footerView skipCardButton];
+  localizedOptOutButtonTitle = [(FKBankConnectOfflineLabConsentCoordinator *)self->_coordinator localizedOptOutButtonTitle];
+  [skipCardButton setTitle:localizedOptOutButtonTitle forState:0];
 
-  [v13 addTarget:self action:sel_skipCardButtonTapped forControlEvents:64];
-  [v3 setShowPrivacyView:1];
+  [skipCardButton addTarget:self action:sel_skipCardButtonTapped forControlEvents:64];
+  [explanationView setShowPrivacyView:1];
   v15 = [MEMORY[0x1E69B7D50] pk_privacyLinkForContext:512];
   [(PKExplanationViewController *)self setPrivacyLinkController:v15];
 }
 
-- (void)savePermission:(BOOL)a3
+- (void)savePermission:(BOOL)permission
 {
-  v3 = a3;
+  permissionCopy = permission;
   v13 = *MEMORY[0x1E69E9840];
   v5 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v12 = v3;
+    v12 = permissionCopy;
     _os_log_impl(&dword_1BD026000, v5, OS_LOG_TYPE_DEFAULT, "Customer selected lab permissionGranted: %d", buf, 8u);
   }
 
@@ -94,7 +94,7 @@
       if (v7)
       {
         *buf = 67109120;
-        v12 = v3;
+        v12 = permissionCopy;
         _os_log_impl(&dword_1BD026000, v5, OS_LOG_TYPE_DEFAULT, "Calling coordinator with permissionGranted: %d", buf, 8u);
       }
 
@@ -104,8 +104,8 @@
       v9[2] = __53__PKFinancialLabPermissionController_savePermission___block_invoke;
       v9[3] = &unk_1E801C0A8;
       v9[4] = self;
-      v10 = v3;
-      [(FKBankConnectOfflineLabConsentCoordinator *)coordinator saveOfflineLabSharingPermission:v3 withCompletion:v9];
+      v10 = permissionCopy;
+      [(FKBankConnectOfflineLabConsentCoordinator *)coordinator saveOfflineLabSharingPermission:permissionCopy withCompletion:v9];
     }
 
     else
@@ -151,18 +151,18 @@ void __53__PKFinancialLabPermissionController_savePermission___block_invoke(uint
   dispatch_async(MEMORY[0x1E69E96A0], v5);
 }
 
-- (void)showLoadingUI:(BOOL)a3 animated:(BOOL)a4
+- (void)showLoadingUI:(BOOL)i animated:(BOOL)animated
 {
-  v4 = a3;
-  v6 = [(PKFinancialLabPermissionController *)self view:a3];
-  [v6 setUserInteractionEnabled:v4 ^ 1];
+  iCopy = i;
+  v6 = [(PKFinancialLabPermissionController *)self view:i];
+  [v6 setUserInteractionEnabled:iCopy ^ 1];
 
-  v7 = [(PKExplanationViewController *)self explanationView];
-  v9 = [v7 dockView];
+  explanationView = [(PKExplanationViewController *)self explanationView];
+  dockView = [explanationView dockView];
 
-  [v9 setButtonsEnabled:v4 ^ 1];
-  v8 = [v9 primaryButton];
-  [v8 setShowSpinner:v4];
+  [dockView setButtonsEnabled:iCopy ^ 1];
+  primaryButton = [dockView primaryButton];
+  [primaryButton setShowSpinner:iCopy];
 }
 
 @end

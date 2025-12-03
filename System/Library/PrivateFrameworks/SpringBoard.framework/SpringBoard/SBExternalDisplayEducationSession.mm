@@ -1,30 +1,30 @@
 @interface SBExternalDisplayEducationSession
-- (SBExternalDisplayEducationSession)initWithDisplayIdentity:(id)a3 hardwareAvailability:(BOOL)a4 bannerPoster:(id)a5;
-- (void)_dismissBanner:(id)a3;
+- (SBExternalDisplayEducationSession)initWithDisplayIdentity:(id)identity hardwareAvailability:(BOOL)availability bannerPoster:(id)poster;
+- (void)_dismissBanner:(id)banner;
 - (void)_presentBanner;
 - (void)dealloc;
 - (void)displayConnected;
 - (void)displayDisconnected;
-- (void)pillViewControllerDidReceiveUserTap:(id)a3;
-- (void)updateHardwareAvailability:(BOOL)a3 withinDisplayConnectionWindow:(BOOL)a4;
+- (void)pillViewControllerDidReceiveUserTap:(id)tap;
+- (void)updateHardwareAvailability:(BOOL)availability withinDisplayConnectionWindow:(BOOL)window;
 @end
 
 @implementation SBExternalDisplayEducationSession
 
-- (SBExternalDisplayEducationSession)initWithDisplayIdentity:(id)a3 hardwareAvailability:(BOOL)a4 bannerPoster:(id)a5
+- (SBExternalDisplayEducationSession)initWithDisplayIdentity:(id)identity hardwareAvailability:(BOOL)availability bannerPoster:(id)poster
 {
-  v9 = a3;
-  v10 = a5;
+  identityCopy = identity;
+  posterCopy = poster;
   v20.receiver = self;
   v20.super_class = SBExternalDisplayEducationSession;
   v11 = [(SBExternalDisplayEducationSession *)&v20 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_displayIdentity, a3);
-    v12->_isHardwareAvailable = a4;
-    v12->_isHardwareAvailableDuringDisplayConnectionWindow = a4;
-    objc_storeStrong(&v12->_bannerPoster, a5);
+    objc_storeStrong(&v11->_displayIdentity, identity);
+    v12->_isHardwareAvailable = availability;
+    v12->_isHardwareAvailableDuringDisplayConnectionWindow = availability;
+    objc_storeStrong(&v12->_bannerPoster, poster);
     v13 = objc_alloc(MEMORY[0x277CF0B50]);
     v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"SBExternalDisplayEducationSession-%@.bannerDismissTimer", v12->_displayIdentity];
     v15 = [v13 initWithIdentifier:v14];
@@ -65,17 +65,17 @@
   }
 }
 
-- (void)updateHardwareAvailability:(BOOL)a3 withinDisplayConnectionWindow:(BOOL)a4
+- (void)updateHardwareAvailability:(BOOL)availability withinDisplayConnectionWindow:(BOOL)window
 {
   v9 = *MEMORY[0x277D85DE8];
-  if (a3 && !self->_isHardwareAvailable)
+  if (availability && !self->_isHardwareAvailable)
   {
-    self->_isHardwareAvailable = a3;
-    if (a4)
+    self->_isHardwareAvailable = availability;
+    if (window)
     {
       if (!self->_isHardwareAvailableDuringDisplayConnectionWindow)
       {
-        self->_isHardwareAvailableDuringDisplayConnectionWindow = a3;
+        self->_isHardwareAvailableDuringDisplayConnectionWindow = availability;
       }
     }
 
@@ -167,16 +167,16 @@ void __51__SBExternalDisplayEducationSession__presentBanner__block_invoke(uint64
   [WeakRetained _dismissBanner:@"Timer Expired"];
 }
 
-- (void)_dismissBanner:(id)a3
+- (void)_dismissBanner:(id)banner
 {
-  v7 = a3;
+  bannerCopy = banner;
   self->_isPresenting = 0;
   bannerPoster = self->_bannerPoster;
   v5 = [MEMORY[0x277CF0AC0] uniqueIdentificationForPresentable:self->_educationBannerViewController];
-  v6 = [(BNPosting *)bannerPoster revokePresentablesWithIdentification:v5 reason:v7 options:0 userInfo:0 error:0];
+  v6 = [(BNPosting *)bannerPoster revokePresentablesWithIdentification:v5 reason:bannerCopy options:0 userInfo:0 error:0];
 }
 
-- (void)pillViewControllerDidReceiveUserTap:(id)a3
+- (void)pillViewControllerDidReceiveUserTap:(id)tap
 {
   [(BSAbsoluteMachTimer *)self->_bannerDismissTimer invalidate];
   bannerDismissTimer = self->_bannerDismissTimer;

@@ -1,32 +1,32 @@
 @interface BRCSharingCopyAccessTokenOperation
-- (BRCSharingCopyAccessTokenOperation)initWithItem:(id)a3 sessionContext:(id)a4;
+- (BRCSharingCopyAccessTokenOperation)initWithItem:(id)item sessionContext:(id)context;
 - (id)createActivity;
 - (void)main;
 @end
 
 @implementation BRCSharingCopyAccessTokenOperation
 
-- (BRCSharingCopyAccessTokenOperation)initWithItem:(id)a3 sessionContext:(id)a4
+- (BRCSharingCopyAccessTokenOperation)initWithItem:(id)item sessionContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 serverZone];
-  v9 = [v8 metadataSyncContext];
+  itemCopy = item;
+  contextCopy = context;
+  serverZone = [itemCopy serverZone];
+  metadataSyncContext = [serverZone metadataSyncContext];
   v15.receiver = self;
   v15.super_class = BRCSharingCopyAccessTokenOperation;
-  v10 = [(_BRCOperation *)&v15 initWithName:@"sharing/access-token" syncContext:v9 sessionContext:v7];
+  v10 = [(_BRCOperation *)&v15 initWithName:@"sharing/access-token" syncContext:metadataSyncContext sessionContext:contextCopy];
 
   if (v10)
   {
-    v11 = [v6 documentRecordID];
-    [(BRCSharingCopyAccessTokenOperation *)v10 setRecordID:v11];
+    documentRecordID = [itemCopy documentRecordID];
+    [(BRCSharingCopyAccessTokenOperation *)v10 setRecordID:documentRecordID];
 
-    v12 = [objc_alloc(MEMORY[0x277CBC5D0]) initShareIDWithShareableItem:v6];
+    v12 = [objc_alloc(MEMORY[0x277CBC5D0]) initShareIDWithShareableItem:itemCopy];
     [(BRCSharingCopyAccessTokenOperation *)v10 setShareID:v12];
 
     [(_BRCOperation *)v10 setNonDiscretionary:1];
-    v13 = [MEMORY[0x277CBC4F8] br_sharingMisc];
-    [(_BRCOperation *)v10 setGroup:v13];
+    br_sharingMisc = [MEMORY[0x277CBC4F8] br_sharingMisc];
+    [(_BRCOperation *)v10 setGroup:br_sharingMisc];
   }
 
   return v10;
@@ -43,8 +43,8 @@
 {
   v12[1] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277CBC3E0]);
-  v4 = [(BRCSharingCopyAccessTokenOperation *)self recordID];
-  v12[0] = v4;
+  recordID = [(BRCSharingCopyAccessTokenOperation *)self recordID];
+  v12[0] = recordID;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
   v6 = [v3 initWithRecordIDs:v5];
 

@@ -1,15 +1,15 @@
 @interface PRSPosterGalleryItemOptions
-+ (id)itemOptionsWithDictionaryRepresentation:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)itemOptionsWithDictionaryRepresentation:(id)representation error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (PRSPosterGalleryItemOptions)init;
-- (PRSPosterGalleryItemOptions)initWithCoder:(id)a3;
-- (PRSPosterGalleryItemOptions)initWithModularComplications:(id)a3 modularLandscapeComplications:(id)a4 inlineComplication:(id)a5 allowsSystemSuggestedComplications:(BOOL)a6 allowsSystemSuggestedComplicationsInLandscape:(BOOL)a7 featuredConfidenceLevel:(int64_t)a8 displayNameLocalizationKey:(id)a9 spokenNameLocalizationKey:(id)a10 descriptiveTextLocalizationKey:(id)a11 hero:(BOOL)a12 shouldShowAsShuffleStack:(BOOL)a13 photoSubtype:(int64_t)a14 focus:(int64_t)a15 onlyEligibleForMadeForFocusSection:(BOOL)a16;
-- (PRSPosterGalleryItemOptions)initWithProactiveRepresentation:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PRSPosterGalleryItemOptions)initWithCoder:(id)coder;
+- (PRSPosterGalleryItemOptions)initWithModularComplications:(id)complications modularLandscapeComplications:(id)landscapeComplications inlineComplication:(id)complication allowsSystemSuggestedComplications:(BOOL)suggestedComplications allowsSystemSuggestedComplicationsInLandscape:(BOOL)landscape featuredConfidenceLevel:(int64_t)level displayNameLocalizationKey:(id)key spokenNameLocalizationKey:(id)self0 descriptiveTextLocalizationKey:(id)self1 hero:(BOOL)self2 shouldShowAsShuffleStack:(BOOL)self3 photoSubtype:(int64_t)self4 focus:(int64_t)self5 onlyEligibleForMadeForFocusSection:(BOOL)self6;
+- (PRSPosterGalleryItemOptions)initWithProactiveRepresentation:(id)representation;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (id)proactiveRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PRSPosterGalleryItemOptions
@@ -21,106 +21,106 @@
   return [(PRSPosterGalleryItemOptions *)self initWithModularComplications:0 modularLandscapeComplications:0 inlineComplication:0 allowsSystemSuggestedComplications:0 allowsSystemSuggestedComplicationsInLandscape:0 featuredConfidenceLevel:1 displayNameLocalizationKey:0 spokenNameLocalizationKey:0 descriptiveTextLocalizationKey:0 hero:v3 shouldShowAsShuffleStack:0 photoSubtype:0 focus:v4 onlyEligibleForMadeForFocusSection:?];
 }
 
-- (PRSPosterGalleryItemOptions)initWithModularComplications:(id)a3 modularLandscapeComplications:(id)a4 inlineComplication:(id)a5 allowsSystemSuggestedComplications:(BOOL)a6 allowsSystemSuggestedComplicationsInLandscape:(BOOL)a7 featuredConfidenceLevel:(int64_t)a8 displayNameLocalizationKey:(id)a9 spokenNameLocalizationKey:(id)a10 descriptiveTextLocalizationKey:(id)a11 hero:(BOOL)a12 shouldShowAsShuffleStack:(BOOL)a13 photoSubtype:(int64_t)a14 focus:(int64_t)a15 onlyEligibleForMadeForFocusSection:(BOOL)a16
+- (PRSPosterGalleryItemOptions)initWithModularComplications:(id)complications modularLandscapeComplications:(id)landscapeComplications inlineComplication:(id)complication allowsSystemSuggestedComplications:(BOOL)suggestedComplications allowsSystemSuggestedComplicationsInLandscape:(BOOL)landscape featuredConfidenceLevel:(int64_t)level displayNameLocalizationKey:(id)key spokenNameLocalizationKey:(id)self0 descriptiveTextLocalizationKey:(id)self1 hero:(BOOL)self2 shouldShowAsShuffleStack:(BOOL)self3 photoSubtype:(int64_t)self4 focus:(int64_t)self5 onlyEligibleForMadeForFocusSection:(BOOL)self6
 {
-  v21 = a3;
-  v22 = a4;
-  v23 = a5;
-  v24 = a9;
-  v25 = a10;
-  v26 = a11;
+  complicationsCopy = complications;
+  landscapeComplicationsCopy = landscapeComplications;
+  complicationCopy = complication;
+  keyCopy = key;
+  localizationKeyCopy = localizationKey;
+  textLocalizationKeyCopy = textLocalizationKey;
   v42.receiver = self;
   v42.super_class = PRSPosterGalleryItemOptions;
   v27 = [(PRSPosterGalleryItemOptions *)&v42 init];
   if (v27)
   {
-    v28 = [v21 copy];
+    v28 = [complicationsCopy copy];
     modularComplications = v27->_modularComplications;
     v27->_modularComplications = v28;
 
-    v30 = [v22 copy];
+    v30 = [landscapeComplicationsCopy copy];
     modularLandscapeComplications = v27->_modularLandscapeComplications;
     v27->_modularLandscapeComplications = v30;
 
-    v32 = [v23 copy];
+    v32 = [complicationCopy copy];
     inlineComplication = v27->_inlineComplication;
     v27->_inlineComplication = v32;
 
-    v27->_allowsSystemSuggestedComplications = a6;
-    v27->_allowsSystemSuggestedComplicationsInLandscape = a7;
-    v27->_featuredConfidenceLevel = a8;
-    v34 = [v24 copy];
+    v27->_allowsSystemSuggestedComplications = suggestedComplications;
+    v27->_allowsSystemSuggestedComplicationsInLandscape = landscape;
+    v27->_featuredConfidenceLevel = level;
+    v34 = [keyCopy copy];
     displayNameLocalizationKey = v27->_displayNameLocalizationKey;
     v27->_displayNameLocalizationKey = v34;
 
-    v36 = [v25 copy];
+    v36 = [localizationKeyCopy copy];
     spokenNameLocalizationKey = v27->_spokenNameLocalizationKey;
     v27->_spokenNameLocalizationKey = v36;
 
-    v38 = [v26 copy];
+    v38 = [textLocalizationKeyCopy copy];
     descriptiveTextLocalizationKey = v27->_descriptiveTextLocalizationKey;
     v27->_descriptiveTextLocalizationKey = v38;
 
-    v27->_hero = a12;
-    v27->_shouldShowAsShuffleStack = a13;
-    v27->_photoSubtype = a14;
-    v27->_focus = a15;
-    v27->_onlyEligibleForMadeForFocusSection = a16;
+    v27->_hero = hero;
+    v27->_shouldShowAsShuffleStack = stack;
+    v27->_photoSubtype = subtype;
+    v27->_focus = focus;
+    v27->_onlyEligibleForMadeForFocusSection = section;
   }
 
   return v27;
 }
 
-- (PRSPosterGalleryItemOptions)initWithProactiveRepresentation:(id)a3
+- (PRSPosterGalleryItemOptions)initWithProactiveRepresentation:(id)representation
 {
-  v3 = a3;
-  v4 = [v3 modularComplications];
-  v25 = [v4 bs_map:&__block_literal_global_2];
+  representationCopy = representation;
+  modularComplications = [representationCopy modularComplications];
+  v25 = [modularComplications bs_map:&__block_literal_global_2];
 
-  v5 = [v3 modularLandscapeComplications];
-  v23 = [v5 bs_map:&__block_literal_global_21];
+  modularLandscapeComplications = [representationCopy modularLandscapeComplications];
+  v23 = [modularLandscapeComplications bs_map:&__block_literal_global_21];
 
-  v24 = [v3 inlineComplication];
-  v6 = [v24 posterBoardRepresentation];
-  v22 = [v3 allowsSystemSuggestedComplications];
-  v21 = [v3 allowsSystemSuggestedComplicationsInLandscape];
-  v7 = [v3 featuredConfidenceLevel];
-  v8 = [v3 displayNameLocalizationKey];
-  v9 = [v3 spokenNameLocalizationKey];
-  v10 = [v3 descriptiveTextLocalizationKey];
-  v11 = [v3 isHero];
-  v12 = [v3 shouldShowAsShuffleStack];
-  v13 = [v3 photoSubtype];
-  if ((v13 - 1) >= 8)
+  inlineComplication = [representationCopy inlineComplication];
+  posterBoardRepresentation = [inlineComplication posterBoardRepresentation];
+  allowsSystemSuggestedComplications = [representationCopy allowsSystemSuggestedComplications];
+  allowsSystemSuggestedComplicationsInLandscape = [representationCopy allowsSystemSuggestedComplicationsInLandscape];
+  featuredConfidenceLevel = [representationCopy featuredConfidenceLevel];
+  displayNameLocalizationKey = [representationCopy displayNameLocalizationKey];
+  spokenNameLocalizationKey = [representationCopy spokenNameLocalizationKey];
+  descriptiveTextLocalizationKey = [representationCopy descriptiveTextLocalizationKey];
+  isHero = [representationCopy isHero];
+  shouldShowAsShuffleStack = [representationCopy shouldShowAsShuffleStack];
+  photoSubtype = [representationCopy photoSubtype];
+  if ((photoSubtype - 1) >= 8)
   {
     v14 = 0;
   }
 
   else
   {
-    v14 = v13;
+    v14 = photoSubtype;
   }
 
-  v15 = [v3 focus];
-  if ((v15 - 1) >= 9)
+  focus = [representationCopy focus];
+  if ((focus - 1) >= 9)
   {
     v16 = 0;
   }
 
   else
   {
-    v16 = v15;
+    v16 = focus;
   }
 
-  if (v7 != 2)
+  if (featuredConfidenceLevel != 2)
   {
-    v7 = v7 == 1;
+    featuredConfidenceLevel = featuredConfidenceLevel == 1;
   }
 
-  LOBYTE(v20) = [v3 isOnlyEligibleForMadeForFocusSection];
-  BYTE1(v19) = v12;
-  LOBYTE(v19) = v11;
-  v17 = [(PRSPosterGalleryItemOptions *)self initWithModularComplications:v25 modularLandscapeComplications:v23 inlineComplication:v6 allowsSystemSuggestedComplications:v22 allowsSystemSuggestedComplicationsInLandscape:v21 featuredConfidenceLevel:v7 displayNameLocalizationKey:v8 spokenNameLocalizationKey:v9 descriptiveTextLocalizationKey:v10 hero:v19 shouldShowAsShuffleStack:v14 photoSubtype:v16 focus:v20 onlyEligibleForMadeForFocusSection:?];
+  LOBYTE(v20) = [representationCopy isOnlyEligibleForMadeForFocusSection];
+  BYTE1(v19) = shouldShowAsShuffleStack;
+  LOBYTE(v19) = isHero;
+  v17 = [(PRSPosterGalleryItemOptions *)self initWithModularComplications:v25 modularLandscapeComplications:v23 inlineComplication:posterBoardRepresentation allowsSystemSuggestedComplications:allowsSystemSuggestedComplications allowsSystemSuggestedComplicationsInLandscape:allowsSystemSuggestedComplicationsInLandscape featuredConfidenceLevel:featuredConfidenceLevel displayNameLocalizationKey:displayNameLocalizationKey spokenNameLocalizationKey:spokenNameLocalizationKey descriptiveTextLocalizationKey:descriptiveTextLocalizationKey hero:v19 shouldShowAsShuffleStack:v14 photoSubtype:v16 focus:v20 onlyEligibleForMadeForFocusSection:?];
 
   return v17;
 }
@@ -132,12 +132,12 @@
   return v2;
 }
 
-+ (id)itemOptionsWithDictionaryRepresentation:(id)a3 error:(id *)a4
++ (id)itemOptionsWithDictionaryRepresentation:(id)representation error:(id *)error
 {
   v141 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  representationCopy = representation;
   v6 = NSStringFromSelector(sel_modularComplications);
-  v7 = [v5 objectForKey:v6];
+  v7 = [representationCopy objectForKey:v6];
   v8 = 0x1E695D000uLL;
   v9 = objc_opt_class();
   v10 = v7;
@@ -163,7 +163,7 @@
 
   v13 = 0x1E695D000uLL;
   v128 = v12;
-  v129 = v5;
+  v129 = representationCopy;
   if (v12)
   {
     v130 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -211,9 +211,9 @@
 
           if (v23)
           {
-            v24 = [PRSPosterGallerySuggestedComplication suggestedComplicationWithDictionaryRepresentation:v23 error:a4];
+            v24 = [PRSPosterGallerySuggestedComplication suggestedComplicationWithDictionaryRepresentation:v23 error:error];
             v25 = v24;
-            if (a4 && *a4)
+            if (error && *error)
             {
               v33 = 0;
               v34 = v129;
@@ -240,7 +240,7 @@
 
     v26 = [v130 copy];
     v130 = v26;
-    v5 = v129;
+    representationCopy = v129;
     v8 = 0x1E695D000;
     v13 = 0x1E695D000;
   }
@@ -251,7 +251,7 @@
   }
 
   v27 = NSStringFromSelector(sel_modularLandscapeComplications);
-  v28 = [v5 objectForKey:v27];
+  v28 = [representationCopy objectForKey:v27];
   v29 = *(v8 + 3784);
   v30 = objc_opt_class();
   v31 = v28;
@@ -323,9 +323,9 @@
 
           if (v44)
           {
-            v45 = [PRSPosterGallerySuggestedComplication suggestedComplicationWithDictionaryRepresentation:v44 error:a4];
+            v45 = [PRSPosterGallerySuggestedComplication suggestedComplicationWithDictionaryRepresentation:v44 error:error];
             v46 = v45;
-            if (a4 && *a4)
+            if (error && *error)
             {
               v33 = 0;
               v34 = v129;
@@ -415,12 +415,12 @@ LABEL_65:
 
     if (v46)
     {
-      v125 = [v46 BOOLValue];
+      bOOLValue = [v46 BOOLValue];
     }
 
     else
     {
-      v125 = 0;
+      bOOLValue = 0;
     }
 
     v58 = NSStringFromSelector(sel_allowsSystemSuggestedComplicationsInLandscape);
@@ -450,12 +450,12 @@ LABEL_65:
     v124 = v63;
     if (v63)
     {
-      v123 = [v63 BOOLValue];
+      bOOLValue2 = [v63 BOOLValue];
     }
 
     else
     {
-      v123 = 0;
+      bOOLValue2 = 0;
     }
 
     v64 = NSStringFromSelector(sel_featuredConfidenceLevel);
@@ -485,12 +485,12 @@ LABEL_65:
     v122 = v69;
     if (v69)
     {
-      v121 = [v69 integerValue];
+      integerValue = [v69 integerValue];
     }
 
     else
     {
-      v121 = 0;
+      integerValue = 0;
     }
 
     v70 = NSStringFromSelector(sel_displayNameLocalizationKey);
@@ -573,7 +573,7 @@ LABEL_65:
       v80 = v85;
       if (!v80)
       {
-        v119 = 0;
+        bOOLValue5 = 0;
 LABEL_108:
         v86 = NSStringFromSelector(sel_shouldShowAsShuffleStack);
         v87 = [v129 objectForKey:v86];
@@ -602,12 +602,12 @@ LABEL_108:
         v118 = v91;
         if (v91)
         {
-          v117 = [v91 BOOLValue];
+          bOOLValue3 = [v91 BOOLValue];
         }
 
         else
         {
-          v117 = 0;
+          bOOLValue3 = 0;
         }
 
         v92 = NSStringFromSelector(sel_photoSubtype);
@@ -636,12 +636,12 @@ LABEL_108:
 
         if (v97)
         {
-          v115 = [v97 integerValue];
+          integerValue2 = [v97 integerValue];
         }
 
         else
         {
-          v115 = 0;
+          integerValue2 = 0;
         }
 
         v98 = NSStringFromSelector(sel_focus);
@@ -671,12 +671,12 @@ LABEL_108:
         v116 = v97;
         if (v103)
         {
-          v104 = [v103 integerValue];
+          integerValue3 = [v103 integerValue];
         }
 
         else
         {
-          v104 = 0;
+          integerValue3 = 0;
         }
 
         v105 = [v129 objectForKey:@"onlyEligibleForMadeForFocusSection"];
@@ -705,31 +705,31 @@ LABEL_108:
 
         if (v109)
         {
-          v110 = [v109 BOOLValue];
+          bOOLValue4 = [v109 BOOLValue];
         }
 
         else
         {
-          v110 = 0;
+          bOOLValue4 = 0;
         }
 
-        LOBYTE(v114) = v110;
-        BYTE1(v113) = v117;
-        LOBYTE(v113) = v119;
-        v33 = [[a1 alloc] initWithModularComplications:v130 modularLandscapeComplications:v23 inlineComplication:v25 allowsSystemSuggestedComplications:v125 allowsSystemSuggestedComplicationsInLandscape:v123 featuredConfidenceLevel:v121 displayNameLocalizationKey:v120 spokenNameLocalizationKey:0 descriptiveTextLocalizationKey:0 hero:v113 shouldShowAsShuffleStack:v115 photoSubtype:v104 focus:v114 onlyEligibleForMadeForFocusSection:?];
+        LOBYTE(v114) = bOOLValue4;
+        BYTE1(v113) = bOOLValue3;
+        LOBYTE(v113) = bOOLValue5;
+        v33 = [[self alloc] initWithModularComplications:v130 modularLandscapeComplications:v23 inlineComplication:v25 allowsSystemSuggestedComplications:bOOLValue allowsSystemSuggestedComplicationsInLandscape:bOOLValue2 featuredConfidenceLevel:integerValue displayNameLocalizationKey:v120 spokenNameLocalizationKey:0 descriptiveTextLocalizationKey:0 hero:v113 shouldShowAsShuffleStack:integerValue2 photoSubtype:integerValue3 focus:v114 onlyEligibleForMadeForFocusSection:?];
 
 LABEL_141:
         goto LABEL_142;
       }
     }
 
-    v119 = [v80 BOOLValue];
+    bOOLValue5 = [v80 BOOLValue];
 
     goto LABEL_108;
   }
 
-  v25 = [PRSPosterGallerySuggestedComplication suggestedComplicationWithDictionaryRepresentation:v44 error:a4];
-  if (!a4 || !*a4)
+  v25 = [PRSPosterGallerySuggestedComplication suggestedComplicationWithDictionaryRepresentation:v44 error:error];
+  if (!error || !*error)
   {
     goto LABEL_65;
   }
@@ -748,28 +748,28 @@ LABEL_143:
   v36[12] = *MEMORY[0x1E69E9840];
   v34 = NSStringFromSelector(sel_modularComplications);
   v35[0] = v34;
-  v3 = [(NSArray *)self->_modularComplications bs_map:&__block_literal_global_50];
-  v4 = v3;
-  if (!v3)
+  null = [(NSArray *)self->_modularComplications bs_map:&__block_literal_global_50];
+  v4 = null;
+  if (!null)
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v22 = v3;
-  v36[0] = v3;
+  v22 = null;
+  v36[0] = null;
   v32 = NSStringFromSelector(sel_modularLandscapeComplications);
   v35[1] = v32;
-  v5 = [(NSArray *)self->_modularLandscapeComplications bs_map:&__block_literal_global_53];
-  v6 = v5;
-  if (!v5)
+  null2 = [(NSArray *)self->_modularLandscapeComplications bs_map:&__block_literal_global_53];
+  v6 = null2;
+  if (!null2)
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
   v31 = v6;
   v33 = v4;
-  v21 = v5;
-  v36[1] = v5;
+  v21 = null2;
+  v36[1] = null2;
   v30 = NSStringFromSelector(sel_inlineComplication);
   v35[2] = v30;
   inlineComplication = self->_inlineComplication;
@@ -833,18 +833,18 @@ LABEL_143:
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   LOBYTE(v7) = self->_onlyEligibleForMadeForFocusSection;
   LOWORD(v6) = *&self->_hero;
   return [v4 initWithModularComplications:self->_modularComplications modularLandscapeComplications:self->_modularLandscapeComplications inlineComplication:self->_inlineComplication allowsSystemSuggestedComplications:self->_allowsSystemSuggestedComplications allowsSystemSuggestedComplicationsInLandscape:self->_allowsSystemSuggestedComplicationsInLandscape featuredConfidenceLevel:self->_featuredConfidenceLevel displayNameLocalizationKey:self->_displayNameLocalizationKey spokenNameLocalizationKey:self->_spokenNameLocalizationKey descriptiveTextLocalizationKey:self->_descriptiveTextLocalizationKey hero:v6 shouldShowAsShuffleStack:self->_photoSubtype photoSubtype:self->_focus focus:v7 onlyEligibleForMadeForFocusSection:?];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -852,7 +852,7 @@ LABEL_143:
   else
   {
     v5 = objc_opt_class();
-    v6 = v4;
+    v6 = equalCopy;
     if (v5)
     {
       if (objc_opt_isKindOfClass())
@@ -875,7 +875,7 @@ LABEL_143:
 
     if (v9)
     {
-      v10 = [MEMORY[0x1E698E6A0] builder];
+      builder = [MEMORY[0x1E698E6A0] builder];
       modularComplications = self->_modularComplications;
       v82[0] = MEMORY[0x1E69E9820];
       v82[1] = 3221225472;
@@ -883,7 +883,7 @@ LABEL_143:
       v82[3] = &unk_1E818CD58;
       v12 = v9;
       v83 = v12;
-      v13 = [v10 appendObject:modularComplications counterpart:v82];
+      v13 = [builder appendObject:modularComplications counterpart:v82];
       modularLandscapeComplications = self->_modularLandscapeComplications;
       v80[0] = MEMORY[0x1E69E9820];
       v80[1] = 3221225472;
@@ -891,7 +891,7 @@ LABEL_143:
       v80[3] = &unk_1E818CD58;
       v15 = v12;
       v81 = v15;
-      v16 = [v10 appendObject:modularLandscapeComplications counterpart:v80];
+      v16 = [builder appendObject:modularLandscapeComplications counterpart:v80];
       inlineComplication = self->_inlineComplication;
       v78[0] = MEMORY[0x1E69E9820];
       v78[1] = 3221225472;
@@ -899,7 +899,7 @@ LABEL_143:
       v78[3] = &unk_1E818CD58;
       v18 = v15;
       v79 = v18;
-      v19 = [v10 appendObject:inlineComplication counterpart:v78];
+      v19 = [builder appendObject:inlineComplication counterpart:v78];
       allowsSystemSuggestedComplications = self->_allowsSystemSuggestedComplications;
       v76[0] = MEMORY[0x1E69E9820];
       v76[1] = 3221225472;
@@ -907,7 +907,7 @@ LABEL_143:
       v76[3] = &unk_1E818CD80;
       v21 = v18;
       v77 = v21;
-      v22 = [v10 appendBool:allowsSystemSuggestedComplications counterpart:v76];
+      v22 = [builder appendBool:allowsSystemSuggestedComplications counterpart:v76];
       allowsSystemSuggestedComplicationsInLandscape = self->_allowsSystemSuggestedComplicationsInLandscape;
       v74[0] = MEMORY[0x1E69E9820];
       v74[1] = 3221225472;
@@ -915,7 +915,7 @@ LABEL_143:
       v74[3] = &unk_1E818CD80;
       v24 = v21;
       v75 = v24;
-      v25 = [v10 appendBool:allowsSystemSuggestedComplicationsInLandscape counterpart:v74];
+      v25 = [builder appendBool:allowsSystemSuggestedComplicationsInLandscape counterpart:v74];
       featuredConfidenceLevel = self->_featuredConfidenceLevel;
       v72[0] = MEMORY[0x1E69E9820];
       v72[1] = 3221225472;
@@ -923,7 +923,7 @@ LABEL_143:
       v72[3] = &unk_1E818CDA8;
       v27 = v24;
       v73 = v27;
-      v28 = [v10 appendInteger:featuredConfidenceLevel counterpart:v72];
+      v28 = [builder appendInteger:featuredConfidenceLevel counterpart:v72];
       displayNameLocalizationKey = self->_displayNameLocalizationKey;
       v70[0] = MEMORY[0x1E69E9820];
       v70[1] = 3221225472;
@@ -931,7 +931,7 @@ LABEL_143:
       v70[3] = &unk_1E818CD58;
       v30 = v27;
       v71 = v30;
-      v31 = [v10 appendObject:displayNameLocalizationKey counterpart:v70];
+      v31 = [builder appendObject:displayNameLocalizationKey counterpart:v70];
       spokenNameLocalizationKey = self->_spokenNameLocalizationKey;
       v68[0] = MEMORY[0x1E69E9820];
       v68[1] = 3221225472;
@@ -939,7 +939,7 @@ LABEL_143:
       v68[3] = &unk_1E818CD58;
       v33 = v30;
       v69 = v33;
-      v34 = [v10 appendObject:spokenNameLocalizationKey counterpart:v68];
+      v34 = [builder appendObject:spokenNameLocalizationKey counterpart:v68];
       descriptiveTextLocalizationKey = self->_descriptiveTextLocalizationKey;
       v66[0] = MEMORY[0x1E69E9820];
       v66[1] = 3221225472;
@@ -947,7 +947,7 @@ LABEL_143:
       v66[3] = &unk_1E818CD58;
       v36 = v33;
       v67 = v36;
-      v37 = [v10 appendObject:descriptiveTextLocalizationKey counterpart:v66];
+      v37 = [builder appendObject:descriptiveTextLocalizationKey counterpart:v66];
       hero = self->_hero;
       v64[0] = MEMORY[0x1E69E9820];
       v64[1] = 3221225472;
@@ -955,7 +955,7 @@ LABEL_143:
       v64[3] = &unk_1E818CD80;
       v39 = v36;
       v65 = v39;
-      v40 = [v10 appendBool:hero counterpart:v64];
+      v40 = [builder appendBool:hero counterpart:v64];
       shouldShowAsShuffleStack = self->_shouldShowAsShuffleStack;
       v62[0] = MEMORY[0x1E69E9820];
       v62[1] = 3221225472;
@@ -963,7 +963,7 @@ LABEL_143:
       v62[3] = &unk_1E818CD80;
       v42 = v39;
       v63 = v42;
-      v43 = [v10 appendBool:shouldShowAsShuffleStack counterpart:v62];
+      v43 = [builder appendBool:shouldShowAsShuffleStack counterpart:v62];
       photoSubtype = self->_photoSubtype;
       v60[0] = MEMORY[0x1E69E9820];
       v60[1] = 3221225472;
@@ -971,7 +971,7 @@ LABEL_143:
       v60[3] = &unk_1E818CDA8;
       v45 = v42;
       v61 = v45;
-      v46 = [v10 appendInteger:photoSubtype counterpart:v60];
+      v46 = [builder appendInteger:photoSubtype counterpart:v60];
       focus = self->_focus;
       v58[0] = MEMORY[0x1E69E9820];
       v58[1] = 3221225472;
@@ -979,15 +979,15 @@ LABEL_143:
       v58[3] = &unk_1E818CDA8;
       v48 = v45;
       v59 = v48;
-      v49 = [v10 appendInteger:focus counterpart:v58];
+      v49 = [builder appendInteger:focus counterpart:v58];
       onlyEligibleForMadeForFocusSection = self->_onlyEligibleForMadeForFocusSection;
       v53 = MEMORY[0x1E69E9820];
       v54 = 3221225472;
       v55 = __39__PRSPosterGalleryItemOptions_isEqual___block_invoke_14;
       v56 = &unk_1E818CD80;
       v57 = v48;
-      v51 = [v10 appendBool:onlyEligibleForMadeForFocusSection counterpart:&v53];
-      v8 = [v10 isEqual];
+      v51 = [builder appendBool:onlyEligibleForMadeForFocusSection counterpart:&v53];
+      v8 = [builder isEqual];
     }
 
     else
@@ -1002,7 +1002,7 @@ LABEL_143:
 - (unint64_t)hash
 {
   v41 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E698E6B8] builder];
+  builder = [MEMORY[0x1E698E6B8] builder];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
@@ -1023,7 +1023,7 @@ LABEL_143:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [v3 appendObject:*(*(&v35 + 1) + 8 * v8++)];
+        v9 = [builder appendObject:*(*(&v35 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
@@ -1053,7 +1053,7 @@ LABEL_143:
           objc_enumerationMutation(v10);
         }
 
-        v15 = [v3 appendObject:{*(*(&v31 + 1) + 8 * v14++), v31}];
+        v15 = [builder appendObject:{*(*(&v31 + 1) + 8 * v14++), v31}];
       }
 
       while (v12 != v14);
@@ -1063,74 +1063,74 @@ LABEL_143:
     while (v12);
   }
 
-  v16 = [v3 appendObject:self->_inlineComplication];
-  v17 = [v3 appendBool:self->_allowsSystemSuggestedComplications];
-  v18 = [v3 appendBool:self->_allowsSystemSuggestedComplicationsInLandscape];
-  v19 = [v3 appendInteger:self->_featuredConfidenceLevel];
-  v20 = [v3 appendObject:self->_displayNameLocalizationKey];
-  v21 = [v3 appendObject:self->_spokenNameLocalizationKey];
-  v22 = [v3 appendObject:self->_descriptiveTextLocalizationKey];
-  v23 = [v3 appendBool:self->_hero];
-  v24 = [v3 appendBool:self->_shouldShowAsShuffleStack];
-  v25 = [v3 appendInteger:self->_photoSubtype];
-  v26 = [v3 appendInteger:self->_focus];
-  v27 = [v3 appendBool:self->_onlyEligibleForMadeForFocusSection];
-  v28 = [v3 hash];
+  v16 = [builder appendObject:self->_inlineComplication];
+  v17 = [builder appendBool:self->_allowsSystemSuggestedComplications];
+  v18 = [builder appendBool:self->_allowsSystemSuggestedComplicationsInLandscape];
+  v19 = [builder appendInteger:self->_featuredConfidenceLevel];
+  v20 = [builder appendObject:self->_displayNameLocalizationKey];
+  v21 = [builder appendObject:self->_spokenNameLocalizationKey];
+  v22 = [builder appendObject:self->_descriptiveTextLocalizationKey];
+  v23 = [builder appendBool:self->_hero];
+  v24 = [builder appendBool:self->_shouldShowAsShuffleStack];
+  v25 = [builder appendInteger:self->_photoSubtype];
+  v26 = [builder appendInteger:self->_focus];
+  v27 = [builder appendBool:self->_onlyEligibleForMadeForFocusSection];
+  v28 = [builder hash];
 
   v29 = *MEMORY[0x1E69E9840];
   return v28;
 }
 
-- (PRSPosterGalleryItemOptions)initWithCoder:(id)a3
+- (PRSPosterGalleryItemOptions)initWithCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   v4 = objc_opt_class();
   v5 = NSStringFromSelector(sel_modularComplications);
-  v38 = [v3 decodeArrayOfObjectsOfClass:v4 forKey:v5];
+  v38 = [coderCopy decodeArrayOfObjectsOfClass:v4 forKey:v5];
 
   v6 = objc_opt_class();
   v7 = NSStringFromSelector(sel_modularLandscapeComplications);
-  v37 = [v3 decodeArrayOfObjectsOfClass:v6 forKey:v7];
+  v37 = [coderCopy decodeArrayOfObjectsOfClass:v6 forKey:v7];
 
   v8 = objc_opt_class();
   v9 = NSStringFromSelector(sel_inlineComplication);
-  v36 = [v3 decodeObjectOfClass:v8 forKey:v9];
+  v36 = [coderCopy decodeObjectOfClass:v8 forKey:v9];
 
   v10 = NSStringFromSelector(sel_allowsSystemSuggestedComplications);
-  v35 = [v3 decodeBoolForKey:v10];
+  v35 = [coderCopy decodeBoolForKey:v10];
 
   v11 = NSStringFromSelector(sel_allowsSystemSuggestedComplicationsInLandscape);
-  v34 = [v3 decodeBoolForKey:v11];
+  v34 = [coderCopy decodeBoolForKey:v11];
 
   v12 = NSStringFromSelector(sel_featuredConfidenceLevel);
-  v33 = [v3 decodeIntegerForKey:v12];
+  v33 = [coderCopy decodeIntegerForKey:v12];
 
   v13 = objc_opt_class();
   v14 = NSStringFromSelector(sel_displayNameLocalizationKey);
-  v15 = [v3 decodeObjectOfClass:v13 forKey:v14];
+  v15 = [coderCopy decodeObjectOfClass:v13 forKey:v14];
 
   v16 = objc_opt_class();
   v17 = NSStringFromSelector(sel_spokenNameLocalizationKey);
-  v18 = [v3 decodeObjectOfClass:v16 forKey:v17];
+  v18 = [coderCopy decodeObjectOfClass:v16 forKey:v17];
 
   v19 = objc_opt_class();
   v20 = NSStringFromSelector(sel_descriptiveTextLocalizationKey);
-  v21 = [v3 decodeObjectOfClass:v19 forKey:v20];
+  v21 = [coderCopy decodeObjectOfClass:v19 forKey:v20];
 
   v22 = NSStringFromSelector(sel_isHero);
-  LOBYTE(v20) = [v3 decodeBoolForKey:v22];
+  LOBYTE(v20) = [coderCopy decodeBoolForKey:v22];
 
   v23 = NSStringFromSelector(sel_shouldShowAsShuffleStack);
-  LOBYTE(v22) = [v3 decodeBoolForKey:v23];
+  LOBYTE(v22) = [coderCopy decodeBoolForKey:v23];
 
   v24 = NSStringFromSelector(sel_photoSubtype);
-  v25 = [v3 decodeIntegerForKey:v24];
+  v25 = [coderCopy decodeIntegerForKey:v24];
 
   v26 = NSStringFromSelector(sel_focus);
-  v27 = [v3 decodeIntegerForKey:v26];
+  v27 = [coderCopy decodeIntegerForKey:v26];
 
   v28 = NSStringFromSelector(sel_isOnlyEligibleForMadeForFocusSection);
-  LOBYTE(v7) = [v3 decodeBoolForKey:v28];
+  LOBYTE(v7) = [coderCopy decodeBoolForKey:v28];
 
   LOBYTE(v32) = v7;
   BYTE1(v31) = v22;
@@ -1140,64 +1140,64 @@ LABEL_143:
   return v29;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   modularComplications = self->_modularComplications;
-  v5 = a3;
+  coderCopy = coder;
   v6 = NSStringFromSelector(sel_modularComplications);
-  [v5 encodeObject:modularComplications forKey:v6];
+  [coderCopy encodeObject:modularComplications forKey:v6];
 
   modularLandscapeComplications = self->_modularLandscapeComplications;
   v8 = NSStringFromSelector(sel_modularLandscapeComplications);
-  [v5 encodeObject:modularLandscapeComplications forKey:v8];
+  [coderCopy encodeObject:modularLandscapeComplications forKey:v8];
 
   inlineComplication = self->_inlineComplication;
   v10 = NSStringFromSelector(sel_inlineComplication);
-  [v5 encodeObject:inlineComplication forKey:v10];
+  [coderCopy encodeObject:inlineComplication forKey:v10];
 
   allowsSystemSuggestedComplications = self->_allowsSystemSuggestedComplications;
   v12 = NSStringFromSelector(sel_allowsSystemSuggestedComplications);
-  [v5 encodeBool:allowsSystemSuggestedComplications forKey:v12];
+  [coderCopy encodeBool:allowsSystemSuggestedComplications forKey:v12];
 
   allowsSystemSuggestedComplicationsInLandscape = self->_allowsSystemSuggestedComplicationsInLandscape;
   v14 = NSStringFromSelector(sel_allowsSystemSuggestedComplicationsInLandscape);
-  [v5 encodeBool:allowsSystemSuggestedComplicationsInLandscape forKey:v14];
+  [coderCopy encodeBool:allowsSystemSuggestedComplicationsInLandscape forKey:v14];
 
   featuredConfidenceLevel = self->_featuredConfidenceLevel;
   v16 = NSStringFromSelector(sel_featuredConfidenceLevel);
-  [v5 encodeInteger:featuredConfidenceLevel forKey:v16];
+  [coderCopy encodeInteger:featuredConfidenceLevel forKey:v16];
 
   displayNameLocalizationKey = self->_displayNameLocalizationKey;
   v18 = NSStringFromSelector(sel_displayNameLocalizationKey);
-  [v5 encodeObject:displayNameLocalizationKey forKey:v18];
+  [coderCopy encodeObject:displayNameLocalizationKey forKey:v18];
 
   spokenNameLocalizationKey = self->_spokenNameLocalizationKey;
   v20 = NSStringFromSelector(sel_spokenNameLocalizationKey);
-  [v5 encodeObject:spokenNameLocalizationKey forKey:v20];
+  [coderCopy encodeObject:spokenNameLocalizationKey forKey:v20];
 
   descriptiveTextLocalizationKey = self->_descriptiveTextLocalizationKey;
   v22 = NSStringFromSelector(sel_descriptiveTextLocalizationKey);
-  [v5 encodeObject:descriptiveTextLocalizationKey forKey:v22];
+  [coderCopy encodeObject:descriptiveTextLocalizationKey forKey:v22];
 
   hero = self->_hero;
   v24 = NSStringFromSelector(sel_isHero);
-  [v5 encodeBool:hero forKey:v24];
+  [coderCopy encodeBool:hero forKey:v24];
 
   shouldShowAsShuffleStack = self->_shouldShowAsShuffleStack;
   v26 = NSStringFromSelector(sel_shouldShowAsShuffleStack);
-  [v5 encodeBool:shouldShowAsShuffleStack forKey:v26];
+  [coderCopy encodeBool:shouldShowAsShuffleStack forKey:v26];
 
   photoSubtype = self->_photoSubtype;
   v28 = NSStringFromSelector(sel_photoSubtype);
-  [v5 encodeInteger:photoSubtype forKey:v28];
+  [coderCopy encodeInteger:photoSubtype forKey:v28];
 
   focus = self->_focus;
   v30 = NSStringFromSelector(sel_focus);
-  [v5 encodeInteger:focus forKey:v30];
+  [coderCopy encodeInteger:focus forKey:v30];
 
   onlyEligibleForMadeForFocusSection = self->_onlyEligibleForMadeForFocusSection;
   v32 = NSStringFromSelector(sel_isOnlyEligibleForMadeForFocusSection);
-  [v5 encodeBool:onlyEligibleForMadeForFocusSection forKey:v32];
+  [coderCopy encodeBool:onlyEligibleForMadeForFocusSection forKey:v32];
 }
 
 @end

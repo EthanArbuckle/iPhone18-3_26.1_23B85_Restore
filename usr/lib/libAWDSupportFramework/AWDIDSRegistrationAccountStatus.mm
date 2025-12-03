@@ -1,22 +1,22 @@
 @interface AWDIDSRegistrationAccountStatus
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAccountType:(BOOL)a3;
-- (void)setHasDoesExist:(BOOL)a3;
-- (void)setHasIsEnabled:(BOOL)a3;
-- (void)setHasIsUserDisabled:(BOOL)a3;
-- (void)setHasIsiCloudSignedIn:(BOOL)a3;
-- (void)setHasIsiTunesSignedIn:(BOOL)a3;
-- (void)setHasRegistrationError:(BOOL)a3;
-- (void)setHasRegistrationErrorReason:(BOOL)a3;
-- (void)setHasRegistrationStatus:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasAccountType:(BOOL)type;
+- (void)setHasDoesExist:(BOOL)exist;
+- (void)setHasIsEnabled:(BOOL)enabled;
+- (void)setHasIsUserDisabled:(BOOL)disabled;
+- (void)setHasIsiCloudSignedIn:(BOOL)in;
+- (void)setHasIsiTunesSignedIn:(BOOL)in;
+- (void)setHasRegistrationError:(BOOL)error;
+- (void)setHasRegistrationErrorReason:(BOOL)reason;
+- (void)setHasRegistrationStatus:(BOOL)status;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDIDSRegistrationAccountStatus
@@ -29,9 +29,9 @@
   [(AWDIDSRegistrationAccountStatus *)&v3 dealloc];
 }
 
-- (void)setHasAccountType:(BOOL)a3
+- (void)setHasAccountType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -44,9 +44,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasDoesExist:(BOOL)a3
+- (void)setHasDoesExist:(BOOL)exist
 {
-  if (a3)
+  if (exist)
   {
     v3 = 4;
   }
@@ -59,9 +59,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasIsEnabled:(BOOL)a3
+- (void)setHasIsEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 8;
   }
@@ -74,9 +74,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasIsUserDisabled:(BOOL)a3
+- (void)setHasIsUserDisabled:(BOOL)disabled
 {
-  if (a3)
+  if (disabled)
   {
     v3 = 16;
   }
@@ -89,9 +89,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasIsiCloudSignedIn:(BOOL)a3
+- (void)setHasIsiCloudSignedIn:(BOOL)in
 {
-  if (a3)
+  if (in)
   {
     v3 = 32;
   }
@@ -104,9 +104,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasRegistrationStatus:(BOOL)a3
+- (void)setHasRegistrationStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 512;
   }
@@ -119,9 +119,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasRegistrationError:(BOOL)a3
+- (void)setHasRegistrationError:(BOOL)error
 {
-  if (a3)
+  if (error)
   {
     v3 = 128;
   }
@@ -134,9 +134,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasRegistrationErrorReason:(BOOL)a3
+- (void)setHasRegistrationErrorReason:(BOOL)reason
 {
-  if (a3)
+  if (reason)
   {
     v3 = 256;
   }
@@ -149,9 +149,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasIsiTunesSignedIn:(BOOL)a3
+- (void)setHasIsiTunesSignedIn:(BOOL)in
 {
-  if (a3)
+  if (in)
   {
     v3 = 64;
   }
@@ -173,29 +173,29 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_accountType), @"accountType"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_accountType), @"accountType"}];
   }
 
   serviceIdentifier = self->_serviceIdentifier;
   if (serviceIdentifier)
   {
-    [v3 setObject:serviceIdentifier forKey:@"serviceIdentifier"];
+    [dictionary setObject:serviceIdentifier forKey:@"serviceIdentifier"];
   }
 
   v6 = self->_has;
   if ((v6 & 4) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_doesExist), @"doesExist"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_doesExist), @"doesExist"}];
     v6 = self->_has;
     if ((v6 & 8) == 0)
     {
@@ -214,7 +214,7 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_isEnabled), @"isEnabled"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_isEnabled), @"isEnabled"}];
   v6 = self->_has;
   if ((v6 & 0x10) == 0)
   {
@@ -228,7 +228,7 @@ LABEL_10:
   }
 
 LABEL_19:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_isUserDisabled), @"isUserDisabled"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_isUserDisabled), @"isUserDisabled"}];
   v6 = self->_has;
   if ((v6 & 0x20) == 0)
   {
@@ -242,7 +242,7 @@ LABEL_11:
   }
 
 LABEL_20:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_isiCloudSignedIn), @"isiCloudSignedIn"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_isiCloudSignedIn), @"isiCloudSignedIn"}];
   v6 = self->_has;
   if ((v6 & 0x200) == 0)
   {
@@ -256,7 +256,7 @@ LABEL_12:
   }
 
 LABEL_21:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_registrationStatus), @"registrationStatus"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_registrationStatus), @"registrationStatus"}];
   v6 = self->_has;
   if ((v6 & 0x80) == 0)
   {
@@ -267,17 +267,17 @@ LABEL_13:
     }
 
 LABEL_23:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_registrationErrorReason), @"registrationErrorReason"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_registrationErrorReason), @"registrationErrorReason"}];
     if ((*&self->_has & 0x40) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_15;
   }
 
 LABEL_22:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_registrationError), @"registrationError"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_registrationError), @"registrationError"}];
   v6 = self->_has;
   if ((v6 & 0x100) != 0)
   {
@@ -288,13 +288,13 @@ LABEL_14:
   if ((v6 & 0x40) != 0)
   {
 LABEL_15:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_isiTunesSignedIn), @"isiTunesSignedIn"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_isiTunesSignedIn), @"isiTunesSignedIn"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if (has)
@@ -426,32 +426,32 @@ LABEL_23:
   PBDataWriterWriteUint32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if (has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 32) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 32) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(a3 + 4) = self->_accountType;
-    *(a3 + 32) |= 2u;
+    *(to + 4) = self->_accountType;
+    *(to + 32) |= 2u;
   }
 
   if (self->_serviceIdentifier)
   {
-    [a3 setServiceIdentifier:?];
+    [to setServiceIdentifier:?];
   }
 
   v6 = self->_has;
   if ((v6 & 4) != 0)
   {
-    *(a3 + 5) = self->_doesExist;
-    *(a3 + 32) |= 4u;
+    *(to + 5) = self->_doesExist;
+    *(to + 32) |= 4u;
     v6 = self->_has;
     if ((v6 & 8) == 0)
     {
@@ -470,8 +470,8 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  *(a3 + 6) = self->_isEnabled;
-  *(a3 + 32) |= 8u;
+  *(to + 6) = self->_isEnabled;
+  *(to + 32) |= 8u;
   v6 = self->_has;
   if ((v6 & 0x10) == 0)
   {
@@ -485,8 +485,8 @@ LABEL_10:
   }
 
 LABEL_19:
-  *(a3 + 7) = self->_isUserDisabled;
-  *(a3 + 32) |= 0x10u;
+  *(to + 7) = self->_isUserDisabled;
+  *(to + 32) |= 0x10u;
   v6 = self->_has;
   if ((v6 & 0x20) == 0)
   {
@@ -500,8 +500,8 @@ LABEL_11:
   }
 
 LABEL_20:
-  *(a3 + 8) = self->_isiCloudSignedIn;
-  *(a3 + 32) |= 0x20u;
+  *(to + 8) = self->_isiCloudSignedIn;
+  *(to + 32) |= 0x20u;
   v6 = self->_has;
   if ((v6 & 0x200) == 0)
   {
@@ -515,8 +515,8 @@ LABEL_12:
   }
 
 LABEL_21:
-  *(a3 + 12) = self->_registrationStatus;
-  *(a3 + 32) |= 0x200u;
+  *(to + 12) = self->_registrationStatus;
+  *(to + 32) |= 0x200u;
   v6 = self->_has;
   if ((v6 & 0x80) == 0)
   {
@@ -530,8 +530,8 @@ LABEL_13:
   }
 
 LABEL_22:
-  *(a3 + 10) = self->_registrationError;
-  *(a3 + 32) |= 0x80u;
+  *(to + 10) = self->_registrationError;
+  *(to + 32) |= 0x80u;
   v6 = self->_has;
   if ((v6 & 0x100) == 0)
   {
@@ -545,21 +545,21 @@ LABEL_14:
   }
 
 LABEL_23:
-  *(a3 + 11) = self->_registrationErrorReason;
-  *(a3 + 32) |= 0x100u;
+  *(to + 11) = self->_registrationErrorReason;
+  *(to + 32) |= 0x100u;
   if ((*&self->_has & 0x40) == 0)
   {
     return;
   }
 
 LABEL_15:
-  *(a3 + 9) = self->_isiTunesSignedIn;
-  *(a3 + 32) |= 0x40u;
+  *(to + 9) = self->_isiTunesSignedIn;
+  *(to + 32) |= 0x40u;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -575,7 +575,7 @@ LABEL_15:
     *(v5 + 64) |= 2u;
   }
 
-  *(v6 + 56) = [(NSString *)self->_serviceIdentifier copyWithZone:a3];
+  *(v6 + 56) = [(NSString *)self->_serviceIdentifier copyWithZone:zone];
   v8 = self->_has;
   if ((v8 & 4) != 0)
   {
@@ -686,16 +686,16 @@ LABEL_13:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 32);
+    v7 = *(equal + 32);
     if (has)
     {
-      if ((v7 & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((v7 & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_54;
       }
@@ -710,7 +710,7 @@ LABEL_54:
 
     if ((has & 2) != 0)
     {
-      if ((v7 & 2) == 0 || self->_accountType != *(a3 + 4))
+      if ((v7 & 2) == 0 || self->_accountType != *(equal + 4))
       {
         goto LABEL_54;
       }
@@ -722,7 +722,7 @@ LABEL_54:
     }
 
     serviceIdentifier = self->_serviceIdentifier;
-    if (serviceIdentifier | *(a3 + 7))
+    if (serviceIdentifier | *(equal + 7))
     {
       v5 = [(NSString *)serviceIdentifier isEqual:?];
       if (!v5)
@@ -733,10 +733,10 @@ LABEL_54:
       has = self->_has;
     }
 
-    v9 = *(a3 + 32);
+    v9 = *(equal + 32);
     if ((has & 4) != 0)
     {
-      if ((v9 & 4) == 0 || self->_doesExist != *(a3 + 5))
+      if ((v9 & 4) == 0 || self->_doesExist != *(equal + 5))
       {
         goto LABEL_54;
       }
@@ -749,7 +749,7 @@ LABEL_54:
 
     if ((has & 8) != 0)
     {
-      if ((v9 & 8) == 0 || self->_isEnabled != *(a3 + 6))
+      if ((v9 & 8) == 0 || self->_isEnabled != *(equal + 6))
       {
         goto LABEL_54;
       }
@@ -762,7 +762,7 @@ LABEL_54:
 
     if ((has & 0x10) != 0)
     {
-      if ((v9 & 0x10) == 0 || self->_isUserDisabled != *(a3 + 7))
+      if ((v9 & 0x10) == 0 || self->_isUserDisabled != *(equal + 7))
       {
         goto LABEL_54;
       }
@@ -775,7 +775,7 @@ LABEL_54:
 
     if ((has & 0x20) != 0)
     {
-      if ((v9 & 0x20) == 0 || self->_isiCloudSignedIn != *(a3 + 8))
+      if ((v9 & 0x20) == 0 || self->_isiCloudSignedIn != *(equal + 8))
       {
         goto LABEL_54;
       }
@@ -788,20 +788,20 @@ LABEL_54:
 
     if ((has & 0x200) != 0)
     {
-      if ((*(a3 + 32) & 0x200) == 0 || self->_registrationStatus != *(a3 + 12))
+      if ((*(equal + 32) & 0x200) == 0 || self->_registrationStatus != *(equal + 12))
       {
         goto LABEL_54;
       }
     }
 
-    else if ((*(a3 + 32) & 0x200) != 0)
+    else if ((*(equal + 32) & 0x200) != 0)
     {
       goto LABEL_54;
     }
 
     if ((has & 0x80) != 0)
     {
-      if ((v9 & 0x80) == 0 || self->_registrationError != *(a3 + 10))
+      if ((v9 & 0x80) == 0 || self->_registrationError != *(equal + 10))
       {
         goto LABEL_54;
       }
@@ -814,13 +814,13 @@ LABEL_54:
 
     if ((has & 0x100) != 0)
     {
-      if ((*(a3 + 32) & 0x100) == 0 || self->_registrationErrorReason != *(a3 + 11))
+      if ((*(equal + 32) & 0x100) == 0 || self->_registrationErrorReason != *(equal + 11))
       {
         goto LABEL_54;
       }
     }
 
-    else if ((*(a3 + 32) & 0x100) != 0)
+    else if ((*(equal + 32) & 0x100) != 0)
     {
       goto LABEL_54;
     }
@@ -828,7 +828,7 @@ LABEL_54:
     LOBYTE(v5) = (v9 & 0x40) == 0;
     if ((has & 0x40) != 0)
     {
-      if ((v9 & 0x40) == 0 || self->_isiTunesSignedIn != *(a3 + 9))
+      if ((v9 & 0x40) == 0 || self->_isiTunesSignedIn != *(equal + 9))
       {
         goto LABEL_54;
       }
@@ -975,33 +975,33 @@ LABEL_14:
   return v5 ^ v4 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v5 = *(a3 + 32);
+  v5 = *(from + 32);
   if (v5)
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
-    v5 = *(a3 + 32);
+    v5 = *(from + 32);
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_accountType = *(a3 + 4);
+    self->_accountType = *(from + 4);
     *&self->_has |= 2u;
   }
 
-  if (*(a3 + 7))
+  if (*(from + 7))
   {
     [(AWDIDSRegistrationAccountStatus *)self setServiceIdentifier:?];
   }
 
-  v6 = *(a3 + 32);
+  v6 = *(from + 32);
   if ((v6 & 4) != 0)
   {
-    self->_doesExist = *(a3 + 5);
+    self->_doesExist = *(from + 5);
     *&self->_has |= 4u;
-    v6 = *(a3 + 32);
+    v6 = *(from + 32);
     if ((v6 & 8) == 0)
     {
 LABEL_9:
@@ -1019,9 +1019,9 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  self->_isEnabled = *(a3 + 6);
+  self->_isEnabled = *(from + 6);
   *&self->_has |= 8u;
-  v6 = *(a3 + 32);
+  v6 = *(from + 32);
   if ((v6 & 0x10) == 0)
   {
 LABEL_10:
@@ -1034,9 +1034,9 @@ LABEL_10:
   }
 
 LABEL_19:
-  self->_isUserDisabled = *(a3 + 7);
+  self->_isUserDisabled = *(from + 7);
   *&self->_has |= 0x10u;
-  v6 = *(a3 + 32);
+  v6 = *(from + 32);
   if ((v6 & 0x20) == 0)
   {
 LABEL_11:
@@ -1049,9 +1049,9 @@ LABEL_11:
   }
 
 LABEL_20:
-  self->_isiCloudSignedIn = *(a3 + 8);
+  self->_isiCloudSignedIn = *(from + 8);
   *&self->_has |= 0x20u;
-  v6 = *(a3 + 32);
+  v6 = *(from + 32);
   if ((v6 & 0x200) == 0)
   {
 LABEL_12:
@@ -1064,9 +1064,9 @@ LABEL_12:
   }
 
 LABEL_21:
-  self->_registrationStatus = *(a3 + 12);
+  self->_registrationStatus = *(from + 12);
   *&self->_has |= 0x200u;
-  v6 = *(a3 + 32);
+  v6 = *(from + 32);
   if ((v6 & 0x80) == 0)
   {
 LABEL_13:
@@ -1079,9 +1079,9 @@ LABEL_13:
   }
 
 LABEL_22:
-  self->_registrationError = *(a3 + 10);
+  self->_registrationError = *(from + 10);
   *&self->_has |= 0x80u;
-  v6 = *(a3 + 32);
+  v6 = *(from + 32);
   if ((v6 & 0x100) == 0)
   {
 LABEL_14:
@@ -1094,15 +1094,15 @@ LABEL_14:
   }
 
 LABEL_23:
-  self->_registrationErrorReason = *(a3 + 11);
+  self->_registrationErrorReason = *(from + 11);
   *&self->_has |= 0x100u;
-  if ((*(a3 + 32) & 0x40) == 0)
+  if ((*(from + 32) & 0x40) == 0)
   {
     return;
   }
 
 LABEL_15:
-  self->_isiTunesSignedIn = *(a3 + 9);
+  self->_isiTunesSignedIn = *(from + 9);
   *&self->_has |= 0x40u;
 }
 

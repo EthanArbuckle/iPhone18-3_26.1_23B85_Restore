@@ -1,14 +1,14 @@
 @interface MODataExportManager
 - (MODataExportManager)init;
 - (void)_initConnectionToService;
-- (void)_scheduleSendBarrierBlock:(id)a3;
-- (void)addBundlesToDataExportSession:(id)a3;
-- (void)addEventsToDataExportSession:(id)a3;
-- (void)addMetadataToDataExportSession:(id)a3;
-- (void)addRankingModelToDataExportSession:(id)a3;
+- (void)_scheduleSendBarrierBlock:(id)block;
+- (void)addBundlesToDataExportSession:(id)session;
+- (void)addEventsToDataExportSession:(id)session;
+- (void)addMetadataToDataExportSession:(id)session;
+- (void)addRankingModelToDataExportSession:(id)session;
 - (void)dealloc;
 - (void)endSessionAndUploadAsync;
-- (void)endSessionSyncWithReply:(id)a3;
+- (void)endSessionSyncWithReply:(id)reply;
 - (void)startDataExportSession;
 @end
 
@@ -101,19 +101,19 @@ void __47__MODataExportManager__initConnectionToService__block_invoke_131(id a1)
   }
 }
 
-- (void)_scheduleSendBarrierBlock:(id)a3
+- (void)_scheduleSendBarrierBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = +[NSXPCConnection currentConnection];
   v5 = v4;
   if (v4)
   {
-    [v4 scheduleSendBarrierBlock:v3];
+    [v4 scheduleSendBarrierBlock:blockCopy];
   }
 
   else
   {
-    v3[2](v3);
+    blockCopy[2](blockCopy);
   }
 }
 
@@ -130,18 +130,18 @@ void __47__MODataExportManager__initConnectionToService__block_invoke_131(id a1)
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Starting session", v7, 2u);
     }
 
-    v6 = [(NSXPCConnection *)self->connection remoteObjectProxy];
-    [v6 startDataExportSession];
+    remoteObjectProxy = [(NSXPCConnection *)self->connection remoteObjectProxy];
+    [remoteObjectProxy startDataExportSession];
   }
 }
 
-- (void)addEventsToDataExportSession:(id)a3
+- (void)addEventsToDataExportSession:(id)session
 {
   if (self->_isAvailable)
   {
     v10 = v3;
     v11 = v4;
-    v6 = a3;
+    sessionCopy = session;
     v7 = _mo_log_facility_get_os_log(&MOLogFacilityDataExporter);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
@@ -149,16 +149,16 @@ void __47__MODataExportManager__initConnectionToService__block_invoke_131(id a1)
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Adding events to session session", v9, 2u);
     }
 
-    v8 = [(NSXPCConnection *)self->connection remoteObjectProxy];
-    [v8 addEventsToDataExportSession:v6];
+    remoteObjectProxy = [(NSXPCConnection *)self->connection remoteObjectProxy];
+    [remoteObjectProxy addEventsToDataExportSession:sessionCopy];
 
     [(MODataExportManager *)self _scheduleSendBarrierBlock:&__block_literal_global_135];
   }
 }
 
-- (void)addBundlesToDataExportSession:(id)a3
+- (void)addBundlesToDataExportSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   if (self->_isAvailable)
   {
     v5 = _mo_log_facility_get_os_log(&MOLogFacilityDataExporter);
@@ -168,7 +168,7 @@ void __47__MODataExportManager__initConnectionToService__block_invoke_131(id a1)
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Adding bundles to session session", buf, 2u);
     }
 
-    if (MomentsLibraryCore() && [v4 count])
+    if (MomentsLibraryCore() && [sessionCopy count])
     {
       v6 = _mo_log_facility_get_os_log(&MOLogFacilityDataExporter);
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -180,7 +180,7 @@ void __47__MODataExportManager__initConnectionToService__block_invoke_131(id a1)
       v7 = objc_alloc(getMOPromptManagerClass());
       v8 = objc_opt_class();
       v9 = [v7 initForSoftLinkwithMOEventClass:v8 moEventBundleClass:objc_opt_class()];
-      [v9 localizeEventBundles:v4];
+      [v9 localizeEventBundles:sessionCopy];
       v10 = _mo_log_facility_get_os_log(&MOLogFacilityDataExporter);
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
@@ -199,20 +199,20 @@ void __47__MODataExportManager__initConnectionToService__block_invoke_131(id a1)
       }
     }
 
-    v11 = [(NSXPCConnection *)self->connection remoteObjectProxy];
-    [v11 addBundlesToDataExportSession:v4];
+    remoteObjectProxy = [(NSXPCConnection *)self->connection remoteObjectProxy];
+    [remoteObjectProxy addBundlesToDataExportSession:sessionCopy];
 
     [(MODataExportManager *)self _scheduleSendBarrierBlock:&__block_literal_global_137];
   }
 }
 
-- (void)addMetadataToDataExportSession:(id)a3
+- (void)addMetadataToDataExportSession:(id)session
 {
   if (self->_isAvailable)
   {
     v10 = v3;
     v11 = v4;
-    v6 = a3;
+    sessionCopy = session;
     v7 = _mo_log_facility_get_os_log(&MOLogFacilityDataExporter);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
@@ -220,20 +220,20 @@ void __47__MODataExportManager__initConnectionToService__block_invoke_131(id a1)
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Adding metadata to session", v9, 2u);
     }
 
-    v8 = [(NSXPCConnection *)self->connection remoteObjectProxy];
-    [v8 addMetadataToDataExportSession:v6];
+    remoteObjectProxy = [(NSXPCConnection *)self->connection remoteObjectProxy];
+    [remoteObjectProxy addMetadataToDataExportSession:sessionCopy];
 
     [(MODataExportManager *)self _scheduleSendBarrierBlock:&__block_literal_global_139];
   }
 }
 
-- (void)addRankingModelToDataExportSession:(id)a3
+- (void)addRankingModelToDataExportSession:(id)session
 {
   if (self->_isAvailable)
   {
     v10 = v3;
     v11 = v4;
-    v6 = a3;
+    sessionCopy = session;
     v7 = _mo_log_facility_get_os_log(&MOLogFacilityDataExporter);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
@@ -241,8 +241,8 @@ void __47__MODataExportManager__initConnectionToService__block_invoke_131(id a1)
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Adding ranking model to session", v9, 2u);
     }
 
-    v8 = [(NSXPCConnection *)self->connection remoteObjectProxy];
-    [v8 addRankingModelToDataExportSession:v6];
+    remoteObjectProxy = [(NSXPCConnection *)self->connection remoteObjectProxy];
+    [remoteObjectProxy addRankingModelToDataExportSession:sessionCopy];
 
     [(MODataExportManager *)self _scheduleSendBarrierBlock:&__block_literal_global_141];
   }
@@ -261,14 +261,14 @@ void __47__MODataExportManager__initConnectionToService__block_invoke_131(id a1)
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Ending session", v7, 2u);
     }
 
-    v6 = [(NSXPCConnection *)self->connection remoteObjectProxy];
-    [v6 endSessionAndUploadAsync];
+    remoteObjectProxy = [(NSXPCConnection *)self->connection remoteObjectProxy];
+    [remoteObjectProxy endSessionAndUploadAsync];
   }
 }
 
-- (void)endSessionSyncWithReply:(id)a3
+- (void)endSessionSyncWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   if (self->_isAvailable)
   {
     v10 = 0;
@@ -292,7 +292,7 @@ void __47__MODataExportManager__initConnectionToService__block_invoke_131(id a1)
     v8[4] = &v10;
     [v6 endSessionSyncWithReply:v8];
 
-    v4[2](v4, v11[5], 0);
+    replyCopy[2](replyCopy, v11[5], 0);
     v7 = _mo_log_facility_get_os_log(&MOLogFacilityDataExporter);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {

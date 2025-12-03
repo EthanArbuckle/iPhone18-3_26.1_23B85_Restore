@@ -1,9 +1,9 @@
 @interface FCHLSPlaylist
-+ (void)playlistParsingData:(void *)a3 error:;
-- (BOOL)parserShouldCollectLine:(id)a3;
++ (void)playlistParsingData:(void *)data error:;
+- (BOOL)parserShouldCollectLine:(id)line;
 - (NSString)description;
-- (void)parser:(id)a3 lineIsTag:(id)a4 value:(id)a5 attributeList:(id)a6;
-- (void)parser:(id)a3 lineIsURL:(id)a4;
+- (void)parser:(id)parser lineIsTag:(id)tag value:(id)value attributeList:(id)list;
+- (void)parser:(id)parser lineIsURL:(id)l;
 @end
 
 @implementation FCHLSPlaylist
@@ -132,7 +132,7 @@ void __41__FCHLSPlaylist__parseUsingParser_error___block_invoke(uint64_t a1, voi
   [*(a1 + 32) addObject:v14];
 }
 
-+ (void)playlistParsingData:(void *)a3 error:
++ (void)playlistParsingData:(void *)data error:
 {
   v4 = a2;
   objc_opt_self();
@@ -180,17 +180,17 @@ LABEL_17:
   v21 = v20;
   if (!v19)
   {
-    if (a3)
+    if (data)
     {
       v41 = v20;
-      *a3 = v21;
+      *data = v21;
     }
 
     goto LABEL_17;
   }
 
   v22 = *(v9 + 6);
-  v23 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if (v22)
   {
     v24 = *(v22 + 1);
@@ -205,7 +205,7 @@ LABEL_17:
   v46.super_class = 3221225472;
   v47 = __41__FCHLSPlaylist__parseUsingParser_error___block_invoke;
   v48 = &unk_1E7C40868;
-  v25 = v23;
+  v25 = array;
   v49 = v25;
   [v24 enumerateKeysAndObjectsUsingBlock:&v46];
   v26 = [v25 copy];
@@ -261,9 +261,9 @@ LABEL_18:
   return v40;
 }
 
-- (void)parser:(id)a3 lineIsURL:(id)a4
+- (void)parser:(id)parser lineIsURL:(id)l
 {
-  v19 = a4;
+  lCopy = l;
   if (!self || (v6 = self->_state) == 0)
   {
     v9 = [FCHLSSegment alloc];
@@ -273,7 +273,7 @@ LABEL_18:
     v11 = 0.0;
     v13 = 1;
 LABEL_7:
-    v15 = v19;
+    v15 = lCopy;
     v16 = v12;
     v17 = v14;
     if (v9)
@@ -284,7 +284,7 @@ LABEL_7:
       v9 = v18;
       if (v18)
       {
-        objc_storeStrong(&v18->_groups, a4);
+        objc_storeStrong(&v18->_groups, l);
         v9->_duration = v11;
         objc_storeStrong(&v9->_map, v12);
         objc_storeStrong(&v9->_key, v14);
@@ -324,7 +324,7 @@ LABEL_7:
 
   v9 = currentStreamInf;
   [(FCHLSPlaylistState *)v7 setCurrentStreamInf:?];
-  objc_storeStrong(&v9->_map, a4);
+  objc_storeStrong(&v9->_map, l);
   v10 = *(v7 + 48);
 LABEL_12:
   [v10 addObject:v9];
@@ -332,11 +332,11 @@ LABEL_12:
 LABEL_13:
 }
 
-- (void)parser:(id)a3 lineIsTag:(id)a4 value:(id)a5 attributeList:(id)a6
+- (void)parser:(id)parser lineIsTag:(id)tag value:(id)value attributeList:(id)list
 {
-  v46 = a4;
-  v9 = a5;
-  v10 = a6;
+  tagCopy = tag;
+  valueCopy = value;
+  listCopy = list;
   if (self)
   {
     state = self->_state;
@@ -348,13 +348,13 @@ LABEL_13:
   }
 
   v12 = state;
-  if ([v46 isEqualToString:@"#EXT-X-MEDIA"])
+  if ([tagCopy isEqualToString:@"#EXT-X-MEDIA"])
   {
-    v13 = [v10 objectForKeyedSubscript:@"GROUP-ID"];
+    v13 = [listCopy objectForKeyedSubscript:@"GROUP-ID"];
     v14 = objc_alloc_init(FCHLSMedia);
     if (v14)
     {
-      v15 = v10;
+      v15 = listCopy;
       v16 = [v15 objectForKeyedSubscript:@"TYPE"];
       type = v14->_type;
       v14->_type = v16;
@@ -379,10 +379,10 @@ LABEL_13:
       mutableGroups = 0;
     }
 
-    v23 = [(NSMutableDictionary *)mutableGroups objectForKeyedSubscript:v13];
-    if (!v23)
+    array = [(NSMutableDictionary *)mutableGroups objectForKeyedSubscript:v13];
+    if (!array)
     {
-      v23 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       if (v12)
       {
         v24 = v12->_mutableGroups;
@@ -393,10 +393,10 @@ LABEL_13:
         v24 = 0;
       }
 
-      [(NSMutableDictionary *)v24 setObject:v23 forKeyedSubscript:v13];
+      [(NSMutableDictionary *)v24 setObject:array forKeyedSubscript:v13];
     }
 
-    [v23 addObject:v14];
+    [array addObject:v14];
 
 LABEL_13:
 LABEL_22:
@@ -404,12 +404,12 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  if ([v46 isEqualToString:@"#EXT-X-MAP"])
+  if ([tagCopy isEqualToString:@"#EXT-X-MAP"])
   {
     v13 = objc_alloc_init(FCHLSMap);
     if (v13)
     {
-      v25 = [v10 objectForKeyedSubscript:@"URI"];
+      v25 = [listCopy objectForKeyedSubscript:@"URI"];
       v26 = [MEMORY[0x1E695DFF8] URLWithString:v25];
       v27 = v13->_url;
       v13->_url = v26;
@@ -423,9 +423,9 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  if ([v46 isEqualToString:@"#EXTINF"])
+  if ([tagCopy isEqualToString:@"#EXTINF"])
   {
-    v13 = [v9 componentsSeparatedByString:{@", "}];
+    v13 = [valueCopy componentsSeparatedByString:{@", "}];
     v28 = [(FCHLSMap *)v13 objectAtIndexedSubscript:0];
     [v28 doubleValue];
     v30 = v29;
@@ -438,7 +438,7 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  if ([v46 isEqualToString:@"#EXT-X-INDEPENDENT-SEGMENTS"])
+  if ([tagCopy isEqualToString:@"#EXT-X-INDEPENDENT-SEGMENTS"])
   {
     if (self)
     {
@@ -448,7 +448,7 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  if ([v46 isEqualToString:@"#EXT-X-KEY"])
+  if ([tagCopy isEqualToString:@"#EXT-X-KEY"])
   {
     v31 = objc_alloc_init(FCHLSKey);
     if (!v31)
@@ -458,7 +458,7 @@ LABEL_49:
       goto LABEL_23;
     }
 
-    v32 = v10;
+    v32 = listCopy;
     v33 = [v32 objectForKeyedSubscript:@"METHOD"];
     if ([@"NONE" isEqualToString:v33])
     {
@@ -510,18 +510,18 @@ LABEL_47:
     goto LABEL_47;
   }
 
-  if ([v46 isEqualToString:@"#EXT-X-STREAM-INF"])
+  if ([tagCopy isEqualToString:@"#EXT-X-STREAM-INF"])
   {
     v13 = objc_alloc_init(FCHLSStreamInf);
-    [(FCHLSStreamInf *)v13 setPropertiesFromAttributeList:v10];
+    [(FCHLSStreamInf *)v13 setPropertiesFromAttributeList:listCopy];
     [(FCHLSPlaylistState *)v12 setCurrentStreamInf:v13];
     goto LABEL_22;
   }
 
-  if (([v46 isEqualToString:@"#EXT-X-BITRATE"] & 1) == 0 && objc_msgSend(v46, "isEqualToString:", @"#EXT-X-SESSION-DATA"))
+  if (([tagCopy isEqualToString:@"#EXT-X-BITRATE"] & 1) == 0 && objc_msgSend(tagCopy, "isEqualToString:", @"#EXT-X-SESSION-DATA"))
   {
-    v13 = [v10 objectForKeyedSubscript:@"DATA-ID"];
-    v35 = [v10 objectForKeyedSubscript:@"VALUE"];
+    v13 = [listCopy objectForKeyedSubscript:@"DATA-ID"];
+    v35 = [listCopy objectForKeyedSubscript:@"VALUE"];
     v14 = v35;
     if (v13 && v35)
     {
@@ -544,7 +544,7 @@ LABEL_47:
 LABEL_23:
 }
 
-- (BOOL)parserShouldCollectLine:(id)a3
+- (BOOL)parserShouldCollectLine:(id)line
 {
   if (!self || (v4 = self->_state) == 0)
   {

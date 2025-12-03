@@ -1,11 +1,11 @@
 @interface NTTodayResultsSource
-+ (id)placeholderResultsWithFetchDescriptor:(id)a3 contentContext:(id)a4 operationInfo:(id)a5;
++ (id)placeholderResultsWithFetchDescriptor:(id)descriptor contentContext:(id)context operationInfo:(id)info;
 - (NTTodayResultsSource)init;
-- (NTTodayResultsSource)initWithFetchDescriptor:(id)a3 feedPersonalizerFactory:(id)a4 groupingService:(id)a5 todayBannerValidator:(id)a6 articleExposureRegistry:(id)a7 privateDataStorage:(id)a8 contentContext:(id)a9 fetchQueue:(id)a10;
-- (id)placeholderResultsWithOperationInfo:(id)a3;
-- (void)_fetchLatestResultsWithOperationInfo:(id)a3 prefetchedContent:(id)a4 completion:(id)a5;
-- (void)fetchLatestResultsWithOperationInfo:(id)a3 completion:(id)a4;
-- (void)fetchModuleDescriptorsWithCompletion:(id)a3;
+- (NTTodayResultsSource)initWithFetchDescriptor:(id)descriptor feedPersonalizerFactory:(id)factory groupingService:(id)service todayBannerValidator:(id)validator articleExposureRegistry:(id)registry privateDataStorage:(id)storage contentContext:(id)context fetchQueue:(id)self0;
+- (id)placeholderResultsWithOperationInfo:(id)info;
+- (void)_fetchLatestResultsWithOperationInfo:(id)info prefetchedContent:(id)content completion:(id)completion;
+- (void)fetchLatestResultsWithOperationInfo:(id)info completion:(id)completion;
+- (void)fetchModuleDescriptorsWithCompletion:(id)completion;
 @end
 
 @implementation NTTodayResultsSource
@@ -36,27 +36,27 @@
   objc_exception_throw(v6);
 }
 
-- (NTTodayResultsSource)initWithFetchDescriptor:(id)a3 feedPersonalizerFactory:(id)a4 groupingService:(id)a5 todayBannerValidator:(id)a6 articleExposureRegistry:(id)a7 privateDataStorage:(id)a8 contentContext:(id)a9 fetchQueue:(id)a10
+- (NTTodayResultsSource)initWithFetchDescriptor:(id)descriptor feedPersonalizerFactory:(id)factory groupingService:(id)service todayBannerValidator:(id)validator articleExposureRegistry:(id)registry privateDataStorage:(id)storage contentContext:(id)context fetchQueue:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v29 = a5;
-  v28 = a6;
-  v27 = a7;
-  obj = a8;
-  v18 = a8;
-  v19 = a9;
-  v20 = a10;
-  if (!v16 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  descriptorCopy = descriptor;
+  factoryCopy = factory;
+  serviceCopy = service;
+  validatorCopy = validator;
+  registryCopy = registry;
+  obj = storage;
+  storageCopy = storage;
+  contextCopy = context;
+  queueCopy = queue;
+  if (!descriptorCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTTodayResultsSource initWithFetchDescriptor:feedPersonalizerFactory:groupingService:todayBannerValidator:articleExposureRegistry:privateDataStorage:contentContext:fetchQueue:];
-    if (v17)
+    if (factoryCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v17)
+  else if (factoryCopy)
   {
     goto LABEL_6;
   }
@@ -67,16 +67,16 @@
   }
 
 LABEL_6:
-  if (!v18 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!storageCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTTodayResultsSource initWithFetchDescriptor:feedPersonalizerFactory:groupingService:todayBannerValidator:articleExposureRegistry:privateDataStorage:contentContext:fetchQueue:];
-    if (v19)
+    if (contextCopy)
     {
       goto LABEL_11;
     }
   }
 
-  else if (v19)
+  else if (contextCopy)
   {
     goto LABEL_11;
   }
@@ -87,7 +87,7 @@ LABEL_6:
   }
 
 LABEL_11:
-  if (!v20 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!queueCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTTodayResultsSource initWithFetchDescriptor:feedPersonalizerFactory:groupingService:todayBannerValidator:articleExposureRegistry:privateDataStorage:contentContext:fetchQueue:];
   }
@@ -97,38 +97,38 @@ LABEL_11:
   v21 = [(NTTodayResultsSource *)&v30 init];
   if (v21)
   {
-    v22 = [v16 copy];
+    v22 = [descriptorCopy copy];
     fetchDescriptor = v21->_fetchDescriptor;
     v21->_fetchDescriptor = v22;
 
-    objc_storeStrong(&v21->_feedPersonalizerFactory, a4);
-    objc_storeStrong(&v21->_groupingService, a5);
-    objc_storeStrong(&v21->_todayBannerValidator, a6);
-    objc_storeStrong(&v21->_articleExposureRegistry, a7);
+    objc_storeStrong(&v21->_feedPersonalizerFactory, factory);
+    objc_storeStrong(&v21->_groupingService, service);
+    objc_storeStrong(&v21->_todayBannerValidator, validator);
+    objc_storeStrong(&v21->_articleExposureRegistry, registry);
     objc_storeStrong(&v21->_privateDataStorage, obj);
     objc_storeStrong(&v21->_contentContext, v25);
-    objc_storeStrong(&v21->_serialQueue, a10);
+    objc_storeStrong(&v21->_serialQueue, queue);
   }
 
   return v21;
 }
 
-- (void)fetchModuleDescriptorsWithCompletion:(id)a3
+- (void)fetchModuleDescriptorsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = MEMORY[0x277D30E28];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __61__NTTodayResultsSource_fetchModuleDescriptorsWithCompletion___block_invoke;
   v9[3] = &unk_2799829F8;
-  v10 = v4;
+  v10 = completionCopy;
   v11 = 25;
   v9[4] = self;
-  v6 = v4;
+  v6 = completionCopy;
   v7 = [v5 asyncBlockOperationWithBlock:v9];
   [v7 setQualityOfService:25];
-  v8 = [(NTTodayResultsSource *)self serialQueue];
-  [v8 enqueueOperation:v7];
+  serialQueue = [(NTTodayResultsSource *)self serialQueue];
+  [serialQueue enqueueOperation:v7];
 }
 
 void __61__NTTodayResultsSource_fetchModuleDescriptorsWithCompletion___block_invoke(uint64_t a1, void *a2)
@@ -154,20 +154,20 @@ uint64_t __61__NTTodayResultsSource_fetchModuleDescriptorsWithCompletion___block
   return v2();
 }
 
-- (void)fetchLatestResultsWithOperationInfo:(id)a3 completion:(id)a4
+- (void)fetchLatestResultsWithOperationInfo:(id)info completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 copy];
-  v9 = [v8 request];
+  infoCopy = info;
+  completionCopy = completion;
+  v8 = [infoCopy copy];
+  request = [v8 request];
 
-  if (!v9)
+  if (!request)
   {
-    v10 = [MEMORY[0x277D35548] nt_defaultModule];
-    v11 = [v10 availableContents];
-    v12 = [v11 fc_onlyObject];
-    v13 = [v12 request];
-    [v8 setRequest:v13];
+    nt_defaultModule = [MEMORY[0x277D35548] nt_defaultModule];
+    availableContents = [nt_defaultModule availableContents];
+    fc_onlyObject = [availableContents fc_onlyObject];
+    request2 = [fc_onlyObject request];
+    [v8 setRequest:request2];
   }
 
   v14 = MEMORY[0x277D30E28];
@@ -175,17 +175,17 @@ uint64_t __61__NTTodayResultsSource_fetchModuleDescriptorsWithCompletion___block
   v21 = 3221225472;
   v22 = __71__NTTodayResultsSource_fetchLatestResultsWithOperationInfo_completion___block_invoke;
   v23 = &unk_279982A98;
-  v24 = self;
+  selfCopy = self;
   v25 = v8;
-  v26 = v6;
-  v27 = v7;
-  v15 = v7;
-  v16 = v6;
+  v26 = infoCopy;
+  v27 = completionCopy;
+  v15 = completionCopy;
+  v16 = infoCopy;
   v17 = v8;
   v18 = [v14 asyncBlockOperationWithBlock:&v20];
-  [v18 setQualityOfService:{objc_msgSend(v16, "qualityOfService", v20, v21, v22, v23, v24)}];
-  v19 = [(NTTodayResultsSource *)self serialQueue];
-  [v19 enqueueOperation:v18];
+  [v18 setQualityOfService:{objc_msgSend(v16, "qualityOfService", v20, v21, v22, v23, selfCopy)}];
+  serialQueue = [(NTTodayResultsSource *)self serialQueue];
+  [serialQueue enqueueOperation:v18];
 }
 
 void __71__NTTodayResultsSource_fetchLatestResultsWithOperationInfo_completion___block_invoke(uint64_t a1, void *a2)
@@ -282,37 +282,37 @@ void __71__NTTodayResultsSource_fetchLatestResultsWithOperationInfo_completion__
   (*(*(a1 + 56) + 16))();
 }
 
-- (id)placeholderResultsWithOperationInfo:(id)a3
+- (id)placeholderResultsWithOperationInfo:(id)info
 {
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  infoCopy = info;
+  if (!infoCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTTodayResultsSource placeholderResultsWithOperationInfo:];
   }
 
   v5 = objc_opt_class();
-  v6 = [(NTTodayResultsSource *)self fetchDescriptor];
-  v7 = [(NTTodayResultsSource *)self contentContext];
-  v8 = [v5 placeholderResultsWithFetchDescriptor:v6 contentContext:v7 operationInfo:v4];
+  fetchDescriptor = [(NTTodayResultsSource *)self fetchDescriptor];
+  contentContext = [(NTTodayResultsSource *)self contentContext];
+  v8 = [v5 placeholderResultsWithFetchDescriptor:fetchDescriptor contentContext:contentContext operationInfo:infoCopy];
 
   return v8;
 }
 
-+ (id)placeholderResultsWithFetchDescriptor:(id)a3 contentContext:(id)a4 operationInfo:(id)a5
++ (id)placeholderResultsWithFetchDescriptor:(id)descriptor contentContext:(id)context operationInfo:(id)info
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v7 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  descriptorCopy = descriptor;
+  contextCopy = context;
+  infoCopy = info;
+  if (!descriptorCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     +[NTTodayResultsSource placeholderResultsWithFetchDescriptor:contentContext:operationInfo:];
-    if (v8)
+    if (contextCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v8)
+  else if (contextCopy)
   {
     goto LABEL_6;
   }
@@ -323,25 +323,25 @@ void __71__NTTodayResultsSource_fetchLatestResultsWithOperationInfo_completion__
   }
 
 LABEL_6:
-  if (!v9 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!infoCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     +[NTTodayResultsSource placeholderResultsWithFetchDescriptor:contentContext:operationInfo:];
   }
 
-  v10 = [v9 request];
-  v11 = v7;
-  v12 = [v7 placeholderSectionDescriptorsWithContentRequest:v10];
+  request = [infoCopy request];
+  v11 = descriptorCopy;
+  v12 = [descriptorCopy placeholderSectionDescriptorsWithContentRequest:request];
 
   v13 = [v12 fc_dictionaryWithValueBlock:&__block_literal_global_1];
   v14 = objc_opt_new();
-  v15 = [v9 sectionSlotCostInfo];
-  [v14 setSectionSlotCostInfo:v15];
+  sectionSlotCostInfo = [infoCopy sectionSlotCostInfo];
+  [v14 setSectionSlotCostInfo:sectionSlotCostInfo];
 
-  [v14 setRespectMinMaxLimit:{objc_msgSend(v9, "respectsWidgetSlotsLimit")}];
-  [v9 slotsLimit];
+  [v14 setRespectMinMaxLimit:{objc_msgSend(infoCopy, "respectsWidgetSlotsLimit")}];
+  [infoCopy slotsLimit];
   [v14 setSlotsLimit:?];
-  [v14 setAllowSectionTitles:{objc_msgSend(v9, "allowSectionTitles")}];
-  [v9 bannerSlotCost];
+  [v14 setAllowSectionTitles:{objc_msgSend(infoCopy, "allowSectionTitles")}];
+  [infoCopy bannerSlotCost];
   [v14 setBannerSlotCost:?];
   if ([v14 hasBannerSlotCost])
   {
@@ -352,14 +352,14 @@ LABEL_6:
   }
 
   v19 = [NTNewsTodayResultsExplicitAllocationAggregator alloc];
-  v20 = [v8 news_core_ConfigurationManager];
-  v21 = [MEMORY[0x277CBEAA8] date];
-  v39 = [(NTNewsTodayResultsExplicitAllocationAggregator *)v19 initWithConfigurationManager:v20 feedPersonalizer:0 filterDate:v21];
+  news_core_ConfigurationManager = [contextCopy news_core_ConfigurationManager];
+  date = [MEMORY[0x277CBEAA8] date];
+  v39 = [(NTNewsTodayResultsExplicitAllocationAggregator *)v19 initWithConfigurationManager:news_core_ConfigurationManager feedPersonalizer:0 filterDate:date];
 
   v22 = [NTNewsTodayResultsContentFillAggregator alloc];
-  [v9 minHeadlineScale];
+  [infoCopy minHeadlineScale];
   v24 = v23;
-  [v9 maxHeadlineScale];
+  [infoCopy maxHeadlineScale];
   v26 = [(NTNewsTodayResultsContentFillAggregator *)v22 initWithAggregator:v39 minHeadlineScale:v24 maxHeadlineScale:v25];
   v27 = [(NTNewsTodayResultsContentFillAggregator *)v26 aggregateSections:v12 itemsBySectionDescriptor:v13 budgetInfo:v14 todayData:0];
   v40[0] = MEMORY[0x277D85DD0];
@@ -367,18 +367,18 @@ LABEL_6:
   v40[2] = __91__NTTodayResultsSource_placeholderResultsWithFetchDescriptor_contentContext_operationInfo___block_invoke_3;
   v40[3] = &unk_279982B00;
   v41 = v27;
-  v42 = v9;
-  v28 = v9;
+  v42 = infoCopy;
+  v28 = infoCopy;
   v29 = v27;
   [v12 fc_orderedSetByTransformingWithBlock:v40];
   v30 = v38 = v13;
   v37 = v12;
   v31 = [NTTodayResults alloc];
-  [v7 sourceIdentifier];
-  v33 = v32 = v8;
-  v34 = [MEMORY[0x277CBEAA8] distantFuture];
+  [descriptorCopy sourceIdentifier];
+  v33 = v32 = contextCopy;
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
   [v29 headlineScale];
-  v35 = [(NTTodayResults *)v31 initWithSourceIdentifier:v33 sections:v30 expirationDate:v34 headlineScale:?];
+  v35 = [(NTTodayResults *)v31 initWithSourceIdentifier:v33 sections:v30 expirationDate:distantFuture headlineScale:?];
 
   return v35;
 }
@@ -474,31 +474,31 @@ NTSection *__91__NTTodayResultsSource_placeholderResultsWithFetchDescriptor_cont
   return v6;
 }
 
-- (void)_fetchLatestResultsWithOperationInfo:(id)a3 prefetchedContent:(id)a4 completion:(id)a5
+- (void)_fetchLatestResultsWithOperationInfo:(id)info prefetchedContent:(id)content completion:(id)completion
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  infoCopy = info;
+  completionCopy = completion;
+  contentCopy = content;
   v11 = NTSharedLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
-    [v8 slotsLimit];
+    [infoCopy slotsLimit];
     *buf = 134217984;
     v27 = v12;
     _os_log_impl(&dword_25BF21000, v11, OS_LOG_TYPE_INFO, "Requesting %f slots from headline results source", buf, 0xCu);
   }
 
-  if (!v8 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!infoCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTTodayResultsSource _fetchLatestResultsWithOperationInfo:prefetchedContent:completion:];
-    if (v9)
+    if (completionCopy)
     {
       goto LABEL_8;
     }
   }
 
-  else if (v9)
+  else if (completionCopy)
   {
     goto LABEL_8;
   }
@@ -509,36 +509,36 @@ NTSection *__91__NTTodayResultsSource_placeholderResultsWithFetchDescriptor_cont
   }
 
 LABEL_8:
-  v13 = [(NTTodayResultsSource *)self fetchDescriptor];
-  v14 = [(NTTodayResultsSource *)self contentContext];
-  [v13 fetchOperationClass];
+  fetchDescriptor = [(NTTodayResultsSource *)self fetchDescriptor];
+  contentContext = [(NTTodayResultsSource *)self contentContext];
+  [fetchDescriptor fetchOperationClass];
   v15 = objc_opt_new();
-  [v15 setContentContext:v14];
-  v16 = [(NTTodayResultsSource *)self feedPersonalizerFactory];
-  [v15 setFeedPersonalizerFactory:v16];
+  [v15 setContentContext:contentContext];
+  feedPersonalizerFactory = [(NTTodayResultsSource *)self feedPersonalizerFactory];
+  [v15 setFeedPersonalizerFactory:feedPersonalizerFactory];
 
-  v17 = [(NTTodayResultsSource *)self articleExposureRegistry];
-  [v15 setArticleExposureRegistry:v17];
+  articleExposureRegistry = [(NTTodayResultsSource *)self articleExposureRegistry];
+  [v15 setArticleExposureRegistry:articleExposureRegistry];
 
-  v18 = [(NTTodayResultsSource *)self groupingService];
-  [v15 setGroupingService:v18];
+  groupingService = [(NTTodayResultsSource *)self groupingService];
+  [v15 setGroupingService:groupingService];
 
-  v19 = [(NTTodayResultsSource *)self todayBannerValidator];
-  [v15 setTodayBannerValidator:v19];
+  todayBannerValidator = [(NTTodayResultsSource *)self todayBannerValidator];
+  [v15 setTodayBannerValidator:todayBannerValidator];
 
-  [v15 setPrefetchedContent:v10];
-  [v15 setOperationInfo:v8];
-  [v15 setQualityOfService:{objc_msgSend(v8, "qualityOfService")}];
+  [v15 setPrefetchedContent:contentCopy];
+  [v15 setOperationInfo:infoCopy];
+  [v15 setQualityOfService:{objc_msgSend(infoCopy, "qualityOfService")}];
   [v15 setRelativePriority:FCInferRelativePriorityFromQualityOfService()];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __90__NTTodayResultsSource__fetchLatestResultsWithOperationInfo_prefetchedContent_completion___block_invoke;
   v23[3] = &unk_279982B50;
   v23[4] = self;
-  v24 = v14;
-  v25 = v9;
-  v20 = v9;
-  v21 = v14;
+  v24 = contentContext;
+  v25 = completionCopy;
+  v20 = completionCopy;
+  v21 = contentContext;
   [v15 setHeadlineResultCompletionHandler:v23];
   [v15 start];
 

@@ -1,25 +1,25 @@
 @interface HUManagedConfigurationProfilesViewController
 - (BOOL)profileViewControllerIsProfileInstalled;
-- (HUManagedConfigurationProfilesViewController)initWithAccessory:(id)a3;
+- (HUManagedConfigurationProfilesViewController)initWithAccessory:(id)accessory;
 - (HUPresentationDelegate)presentationDelegate;
-- (id)_confirmProfileDeletion:(id)a3;
-- (id)_newCellForProfile:(id)a3;
-- (id)_profileForIdentifier:(id)a3;
-- (id)_removeProfileForIdentifier:(id)a3;
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4;
+- (id)_confirmProfileDeletion:(id)deletion;
+- (id)_newCellForProfile:(id)profile;
+- (id)_profileForIdentifier:(id)identifier;
+- (id)_removeProfileForIdentifier:(id)identifier;
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path;
 - (void)_fetchDataAndReloadTable;
 - (void)_reloadTableViewWithExistingData;
-- (void)profileViewControllerDidSelectRemoveProfile:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)profileViewControllerDidSelectRemoveProfile:(id)profile;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation HUManagedConfigurationProfilesViewController
 
-- (HUManagedConfigurationProfilesViewController)initWithAccessory:(id)a3
+- (HUManagedConfigurationProfilesViewController)initWithAccessory:(id)accessory
 {
-  v4 = a3;
+  accessoryCopy = accessory;
   v8.receiver = self;
   v8.super_class = HUManagedConfigurationProfilesViewController;
   v5 = [(HUManagedConfigurationProfilesViewController *)&v8 initWithStyle:2];
@@ -28,7 +28,7 @@
     v6 = _HULocalizedStringWithDefaultValue(@"HUManagedConfigurationProfilesTitle", @"HUManagedConfigurationProfilesTitle", 1);
     [(HUManagedConfigurationProfilesViewController *)v5 setTitle:v6];
 
-    [(HUManagedConfigurationProfilesViewController *)v5 setAccessory:v4];
+    [(HUManagedConfigurationProfilesViewController *)v5 setAccessory:accessoryCopy];
   }
 
   return v5;
@@ -40,13 +40,13 @@
   v7.super_class = HUManagedConfigurationProfilesViewController;
   [(HUManagedConfigurationProfilesViewController *)&v7 viewDidLoad];
   v3 = objc_alloc(MEMORY[0x277D75B60]);
-  v4 = [(HUManagedConfigurationProfilesViewController *)self tableView];
+  tableView = [(HUManagedConfigurationProfilesViewController *)self tableView];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __59__HUManagedConfigurationProfilesViewController_viewDidLoad__block_invoke;
   v6[3] = &unk_277DC1E08;
   v6[4] = self;
-  v5 = [v3 initWithTableView:v4 cellProvider:v6];
+  v5 = [v3 initWithTableView:tableView cellProvider:v6];
   [(HUManagedConfigurationProfilesViewController *)self setTableViewDataSource:v5];
 }
 
@@ -57,17 +57,17 @@ id __59__HUManagedConfigurationProfilesViewController_viewDidLoad__block_invoke(
   return v4;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v10 = *MEMORY[0x277D85DE8];
   v5.receiver = self;
   v5.super_class = HUManagedConfigurationProfilesViewController;
-  [(HUManagedConfigurationProfilesViewController *)&v5 viewWillAppear:a3];
+  [(HUManagedConfigurationProfilesViewController *)&v5 viewWillAppear:appear];
   v4 = HFLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v7 = self;
+    selfCopy = self;
     v8 = 2080;
     v9 = "[HUManagedConfigurationProfilesViewController viewWillAppear:]";
     _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "(%@)%s: beginning fetch & reload sequence", buf, 0x16u);
@@ -76,24 +76,24 @@ id __59__HUManagedConfigurationProfilesViewController_viewDidLoad__block_invoke(
   [(HUManagedConfigurationProfilesViewController *)self _fetchDataAndReloadTable];
 }
 
-- (id)_newCellForProfile:(id)a3
+- (id)_newCellForProfile:(id)profile
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  profileCopy = profile;
   v6 = objc_alloc_init(MEMORY[0x277D264D0]);
-  v7 = [(HUManagedConfigurationProfilesViewController *)self profiles];
+  profiles = [(HUManagedConfigurationProfilesViewController *)self profiles];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __67__HUManagedConfigurationProfilesViewController__newCellForProfile___block_invoke;
   v18[3] = &unk_277DC1E30;
-  v8 = v5;
+  v8 = profileCopy;
   v19 = v8;
-  v9 = [v7 na_firstObjectPassingTest:v18];
+  v9 = [profiles na_firstObjectPassingTest:v18];
 
   v10 = MEMORY[0x277D26290];
-  v11 = [v9 profileData];
+  profileData = [v9 profileData];
   v17 = 0;
-  v12 = [v10 profileWithData:v11 outError:&v17];
+  v12 = [v10 profileWithData:profileData outError:&v17];
   v13 = v17;
 
   if (v13)
@@ -127,26 +127,26 @@ uint64_t __67__HUManagedConfigurationProfilesViewController__newCellForProfile__
 - (void)_fetchDataAndReloadTable
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = [(HUManagedConfigurationProfilesViewController *)self fetchDataFuture];
-  if (v4)
+  fetchDataFuture = [(HUManagedConfigurationProfilesViewController *)self fetchDataFuture];
+  if (fetchDataFuture)
   {
-    v5 = [(HUManagedConfigurationProfilesViewController *)self fetchDataFuture];
-    v6 = [v5 isFinished];
+    fetchDataFuture2 = [(HUManagedConfigurationProfilesViewController *)self fetchDataFuture];
+    isFinished = [fetchDataFuture2 isFinished];
 
-    if ((v6 & 1) == 0)
+    if ((isFinished & 1) == 0)
     {
       v7 = HFLogForCategory();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v23 = self;
+        selfCopy2 = self;
         v24 = 2080;
         v25 = "[HUManagedConfigurationProfilesViewController _fetchDataAndReloadTable]";
         _os_log_impl(&dword_20CEB6000, v7, OS_LOG_TYPE_DEFAULT, "(%@)%s: Called with existing fetch future - cancelling existing future", buf, 0x16u);
       }
 
-      v8 = [(HUManagedConfigurationProfilesViewController *)self fetchDataFuture];
-      [v8 cancel];
+      fetchDataFuture3 = [(HUManagedConfigurationProfilesViewController *)self fetchDataFuture];
+      [fetchDataFuture3 cancel];
     }
   }
 
@@ -172,7 +172,7 @@ uint64_t __67__HUManagedConfigurationProfilesViewController__newCellForProfile__
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v23 = self;
+    selfCopy2 = self;
     v24 = 2080;
     v25 = "[HUManagedConfigurationProfilesViewController _fetchDataAndReloadTable]";
     _os_log_impl(&dword_20CEB6000, v12, OS_LOG_TYPE_DEFAULT, "(%@)%s: Kicking off fetch future - will reload if successful", buf, 0x16u);
@@ -257,13 +257,13 @@ id __72__HUManagedConfigurationProfilesViewController__fetchDataAndReloadTable__
 - (void)_reloadTableViewWithExistingData
 {
   objc_initWeak(&location, self);
-  v2 = [MEMORY[0x277D2C938] mainThreadScheduler];
+  mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __80__HUManagedConfigurationProfilesViewController__reloadTableViewWithExistingData__block_invoke;
   v3[3] = &unk_277DB8770;
   objc_copyWeak(&v4, &location);
-  [v2 performBlock:v3];
+  [mainThreadScheduler performBlock:v3];
 
   objc_destroyWeak(&v4);
   objc_destroyWeak(&location);
@@ -346,23 +346,23 @@ void __80__HUManagedConfigurationProfilesViewController__reloadTableViewWithExis
   }
 }
 
-- (id)_profileForIdentifier:(id)a3
+- (id)_profileForIdentifier:(id)identifier
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(HUManagedConfigurationProfilesViewController *)self profiles];
+  identifierCopy = identifier;
+  profiles = [(HUManagedConfigurationProfilesViewController *)self profiles];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __70__HUManagedConfigurationProfilesViewController__profileForIdentifier___block_invoke;
   v17[3] = &unk_277DC1E30;
-  v7 = v5;
+  v7 = identifierCopy;
   v18 = v7;
-  v8 = [v6 na_firstObjectPassingTest:v17];
+  v8 = [profiles na_firstObjectPassingTest:v17];
 
   v9 = MEMORY[0x277D26290];
-  v10 = [v8 profileData];
+  profileData = [v8 profileData];
   v16 = 0;
-  v11 = [v9 profileWithData:v10 outError:&v16];
+  v11 = [v9 profileWithData:profileData outError:&v16];
   v12 = v16;
 
   if (v12)
@@ -390,23 +390,23 @@ uint64_t __70__HUManagedConfigurationProfilesViewController__profileForIdentifie
   return v4;
 }
 
-- (id)_removeProfileForIdentifier:(id)a3
+- (id)_removeProfileForIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v15 = "[HUManagedConfigurationProfilesViewController _removeProfileForIdentifier:]";
     v16 = 2112;
-    v17 = self;
+    selfCopy = self;
     v18 = 2112;
-    v19 = v5;
+    v19 = identifierCopy;
     _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "%s(%@) Removing profileIdentifier = %@ ", buf, 0x20u);
   }
 
-  v7 = [(HUManagedConfigurationProfilesViewController *)self _profileForIdentifier:v5];
+  v7 = [(HUManagedConfigurationProfilesViewController *)self _profileForIdentifier:identifierCopy];
   if (v7)
   {
     objc_initWeak(buf, self);
@@ -416,9 +416,9 @@ uint64_t __70__HUManagedConfigurationProfilesViewController__profileForIdentifie
     v11[2] = __76__HUManagedConfigurationProfilesViewController__removeProfileForIdentifier___block_invoke;
     v11[3] = &unk_277DC1EC8;
     objc_copyWeak(v13, buf);
-    v12 = v5;
+    v12 = identifierCopy;
     v13[1] = a2;
-    v9 = [v8 flatMap:v11];
+    futureWithNoResult = [v8 flatMap:v11];
 
     objc_destroyWeak(v13);
     objc_destroyWeak(buf);
@@ -426,10 +426,10 @@ uint64_t __70__HUManagedConfigurationProfilesViewController__profileForIdentifie
 
   else
   {
-    v9 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
-  return v9;
+  return futureWithNoResult;
 }
 
 id __76__HUManagedConfigurationProfilesViewController__removeProfileForIdentifier___block_invoke(uint64_t a1, void *a2)
@@ -512,14 +512,14 @@ uint64_t __76__HUManagedConfigurationProfilesViewController__removeProfileForIde
   return [*(a1 + 40) _fetchDataAndReloadTable];
 }
 
-- (id)_confirmProfileDeletion:(id)a3
+- (id)_confirmProfileDeletion:(id)deletion
 {
-  v4 = a3;
+  deletionCopy = deletion;
   v5 = objc_opt_new();
   v6 = _HULocalizedStringWithDefaultValue(@"HUAccessorySettingsProfileViewControllerRemoveProfile", @"HUAccessorySettingsProfileViewControllerRemoveProfile", 1);
-  v7 = [v4 needsReboot];
+  needsReboot = [deletionCopy needsReboot];
 
-  if (v7)
+  if (needsReboot)
   {
     v8 = @"HUAccessorySettingsProfileViewControllerRemoveNeedsReboot";
   }
@@ -567,12 +567,12 @@ void __72__HUManagedConfigurationProfilesViewController__confirmProfileDeletion_
   [v1 finishWithError:v2];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [(HUManagedConfigurationProfilesViewController *)self tableViewDataSource];
-  v7 = [v6 itemIdentifierForIndexPath:v5];
+  pathCopy = path;
+  tableViewDataSource = [(HUManagedConfigurationProfilesViewController *)self tableViewDataSource];
+  v7 = [tableViewDataSource itemIdentifierForIndexPath:pathCopy];
 
   v8 = HFLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -580,9 +580,9 @@ void __72__HUManagedConfigurationProfilesViewController__confirmProfileDeletion_
     v12 = 136315906;
     v13 = "[HUManagedConfigurationProfilesViewController tableView:didSelectRowAtIndexPath:]";
     v14 = 2112;
-    v15 = self;
+    selfCopy = self;
     v16 = 2112;
-    v17 = v5;
+    v17 = pathCopy;
     v18 = 2112;
     v19 = v7;
     _os_log_impl(&dword_20CEB6000, v8, OS_LOG_TYPE_DEFAULT, "%s(%@) tapping indexPath = %@/profileIdentifier = %@ ", &v12, 0x2Au);
@@ -593,25 +593,25 @@ void __72__HUManagedConfigurationProfilesViewController__confirmProfileDeletion_
   {
     v10 = [objc_alloc(MEMORY[0x277D264D8]) initWithStyle:1 profile:v9 profileViewMode:2];
     [v10 setProfileViewControllerDelegate:self];
-    v11 = [(HUManagedConfigurationProfilesViewController *)self navigationController];
-    [v11 pushViewController:v10 animated:1];
+    navigationController = [(HUManagedConfigurationProfilesViewController *)self navigationController];
+    [navigationController pushViewController:v10 animated:1];
   }
 }
 
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v8 = HFLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v22 = "[HUManagedConfigurationProfilesViewController tableView:trailingSwipeActionsConfigurationForRowAtIndexPath:]";
     v23 = 2112;
-    v24 = self;
+    selfCopy = self;
     v25 = 2112;
-    v26 = v7;
+    v26 = pathCopy;
     _os_log_impl(&dword_20CEB6000, v8, OS_LOG_TYPE_DEFAULT, "%s(%@) User swiped for trailing actions on indexPath = %@", buf, 0x20u);
   }
 
@@ -623,7 +623,7 @@ void __72__HUManagedConfigurationProfilesViewController__confirmProfileDeletion_
   v17[2] = __109__HUManagedConfigurationProfilesViewController_tableView_trailingSwipeActionsConfigurationForRowAtIndexPath___block_invoke;
   v17[3] = &unk_277DBD9F8;
   objc_copyWeak(&v19, buf);
-  v11 = v7;
+  v11 = pathCopy;
   v18 = v11;
   v12 = [v9 contextualActionWithStyle:1 title:v10 handler:v17];
 
@@ -651,31 +651,31 @@ void __109__HUManagedConfigurationProfilesViewController_tableView_trailingSwipe
 
 - (BOOL)profileViewControllerIsProfileInstalled
 {
-  v2 = [(HUManagedConfigurationProfilesViewController *)self profiles];
-  v3 = [v2 count] != 0;
+  profiles = [(HUManagedConfigurationProfilesViewController *)self profiles];
+  v3 = [profiles count] != 0;
 
   return v3;
 }
 
-- (void)profileViewControllerDidSelectRemoveProfile:(id)a3
+- (void)profileViewControllerDidSelectRemoveProfile:(id)profile
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(HUManagedConfigurationProfilesViewController *)self profiles];
+  profileCopy = profile;
+  profiles = [(HUManagedConfigurationProfilesViewController *)self profiles];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __92__HUManagedConfigurationProfilesViewController_profileViewControllerDidSelectRemoveProfile___block_invoke;
   v19[3] = &unk_277DC1EF0;
   v21 = a2;
-  v7 = v5;
+  v7 = profileCopy;
   v20 = v7;
-  v8 = [v6 na_firstObjectPassingTest:v19];
+  v8 = [profiles na_firstObjectPassingTest:v19];
 
   if (v8)
   {
     objc_initWeak(location, self);
-    v9 = [v8 identifier];
-    v10 = [(HUManagedConfigurationProfilesViewController *)self _removeProfileForIdentifier:v9];
+    identifier = [v8 identifier];
+    v10 = [(HUManagedConfigurationProfilesViewController *)self _removeProfileForIdentifier:identifier];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __92__HUManagedConfigurationProfilesViewController_profileViewControllerDidSelectRemoveProfile___block_invoke_86;
@@ -694,12 +694,12 @@ void __109__HUManagedConfigurationProfilesViewController_tableView_trailingSwipe
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       v13 = NSStringFromSelector(a2);
-      v14 = [v7 UIProfile];
-      v15 = [v14 profile];
+      uIProfile = [v7 UIProfile];
+      profile = [uIProfile profile];
       *location = 138412546;
       *&location[4] = v13;
       v23 = 2112;
-      v24 = v15;
+      v24 = profile;
       _os_log_error_impl(&dword_20CEB6000, v12, OS_LOG_TYPE_ERROR, "%@ Profile %@ not found !?", location, 0x16u);
     }
   }

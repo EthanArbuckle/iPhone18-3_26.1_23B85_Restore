@@ -1,15 +1,15 @@
 @interface BLSHWatchdogTester
-- (BLSHWatchdogTester)initWithWatchdogProviderDelegate:(id)a3 testables:(id)a4;
+- (BLSHWatchdogTester)initWithWatchdogProviderDelegate:(id)delegate testables:(id)testables;
 - (id)_watchdogProvider;
-- (void)_triggerTestWatchdog:(id)a3;
+- (void)_triggerTestWatchdog:(id)watchdog;
 @end
 
 @implementation BLSHWatchdogTester
 
-- (BLSHWatchdogTester)initWithWatchdogProviderDelegate:(id)a3 testables:(id)a4
+- (BLSHWatchdogTester)initWithWatchdogProviderDelegate:(id)delegate testables:(id)testables
 {
-  v7 = a3;
-  v8 = a4;
+  delegateCopy = delegate;
+  testablesCopy = testables;
   v16.receiver = self;
   v16.super_class = BLSHWatchdogTester;
   v9 = [(BLSHWatchdogTester *)&v16 init];
@@ -18,17 +18,17 @@
   {
     v9->_lock._os_unfair_lock_opaque = 0;
     v9->_lock_nextTimerID = 1;
-    objc_storeStrong(&v9->_watchdogProviderDelegate, a3);
-    v11 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
+    objc_storeStrong(&v9->_watchdogProviderDelegate, delegate);
+    strongToWeakObjectsMapTable = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
     testables = v10->_testables;
-    v10->_testables = v11;
+    v10->_testables = strongToWeakObjectsMapTable;
 
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __65__BLSHWatchdogTester_initWithWatchdogProviderDelegate_testables___block_invoke;
     v14[3] = &unk_278420BD0;
     v15 = v10;
-    [v8 enumerateKeysAndObjectsUsingBlock:v14];
+    [testablesCopy enumerateKeysAndObjectsUsingBlock:v14];
   }
 
   return v10;
@@ -68,16 +68,16 @@ void __65__BLSHWatchdogTester_initWithWatchdogProviderDelegate_testables___block
   return watchdogProvider;
 }
 
-- (void)_triggerTestWatchdog:(id)a3
+- (void)_triggerTestWatchdog:(id)watchdog
 {
   v61 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NSMapTable *)self->_testables objectForKey:v4];
+  watchdogCopy = watchdog;
+  v5 = [(NSMapTable *)self->_testables objectForKey:watchdogCopy];
   v6 = bls_diagnostics_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     *buf = 138543618;
-    *&buf[4] = v4;
+    *&buf[4] = watchdogCopy;
     *&buf[12] = 2114;
     *&buf[14] = v5;
     _os_log_impl(&dword_21FD11000, v6, OS_LOG_TYPE_INFO, "got test watchdog %{public}@ with testable %{public}@", buf, 0x16u);
@@ -89,20 +89,20 @@ void __65__BLSHWatchdogTester_initWithWatchdogProviderDelegate_testables___block
   v58 = __Block_byref_object_copy__14;
   v59 = __Block_byref_object_dispose__14;
   v7 = [BLSHWatchdogTesterTimer alloc];
-  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"Test watchdog %@", v4];
-  v60 = [(BLSHWatchdogTesterTimer *)v7 initWithExplanation:v8];
+  watchdogCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Test watchdog %@", watchdogCopy];
+  v60 = [(BLSHWatchdogTesterTimer *)v7 initWithExplanation:watchdogCopy];
 
-  if ([v4 hasSuffix:@".sleepImminent"])
+  if ([watchdogCopy hasSuffix:@".sleepImminent"])
   {
     [*(*&buf[8] + 40) setSleepImminentSinceScheduled:1];
   }
 
-  if ([v4 hasSuffix:@".delayCBTransitions-15"])
+  if ([watchdogCopy hasSuffix:@".delayCBTransitions-15"])
   {
-    v9 = [v4 componentsSeparatedByString:@"-"];
-    v10 = [v9 lastObject];
+    v9 = [watchdogCopy componentsSeparatedByString:@"-"];
+    lastObject = [v9 lastObject];
 
-    [v10 doubleValue];
+    [lastObject doubleValue];
     v12 = v11;
     if (objc_opt_respondsToSelector())
     {
@@ -114,12 +114,12 @@ LABEL_8:
     goto LABEL_28;
   }
 
-  if ([v4 hasSuffix:@".delayCATransitions-7"])
+  if ([watchdogCopy hasSuffix:@".delayCATransitions-7"])
   {
-    v13 = [v4 componentsSeparatedByString:@"-"];
-    v10 = [v13 lastObject];
+    v13 = [watchdogCopy componentsSeparatedByString:@"-"];
+    lastObject = [v13 lastObject];
 
-    [v10 doubleValue];
+    [lastObject doubleValue];
     v15 = v14;
     if (objc_opt_respondsToSelector())
     {
@@ -129,10 +129,10 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v16 = [(BLSHWatchdogTester *)self _watchdogProvider];
-  [v16 fireWatchdogWithTimer:*(*&buf[8] + 40) delegate:v5 timeout:0.0 elapsedTime:3.0];
+  _watchdogProvider = [(BLSHWatchdogTester *)self _watchdogProvider];
+  [_watchdogProvider fireWatchdogWithTimer:*(*&buf[8] + 40) delegate:v5 timeout:0.0 elapsedTime:3.0];
 
-  if ([v4 hasSuffix:@".invalidateAfterFire"])
+  if ([watchdogCopy hasSuffix:@".invalidateAfterFire"])
   {
     BSContinuousMachTimeNow();
     v18 = v17;
@@ -147,12 +147,12 @@ LABEL_8:
     dispatch_after(v19, MEMORY[0x277D85CD0], block);
   }
 
-  else if ([v4 hasSuffix:@".completeAfterDelay-20"])
+  else if ([watchdogCopy hasSuffix:@".completeAfterDelay-20"])
   {
-    v20 = [v4 componentsSeparatedByString:@"-"];
-    v21 = [v20 lastObject];
+    v20 = [watchdogCopy componentsSeparatedByString:@"-"];
+    lastObject2 = [v20 lastObject];
 
-    [v21 doubleValue];
+    [lastObject2 doubleValue];
     v23 = v22;
     v24 = bls_diagnostics_log();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
@@ -176,16 +176,16 @@ LABEL_8:
     dispatch_after(v27, MEMORY[0x277D85CD0], v51);
   }
 
-  else if ([v4 hasSuffix:@".replaceAndCompleteAfterDelay-2-10"])
+  else if ([watchdogCopy hasSuffix:@".replaceAndCompleteAfterDelay-2-10"])
   {
-    v28 = [v4 componentsSeparatedByString:@"-"];
+    v28 = [watchdogCopy componentsSeparatedByString:@"-"];
     v29 = [v28 count];
     if (v29 <= 2)
     {
       v42 = bls_diagnostics_log();
       if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
       {
-        [(BLSHWatchdogTester *)v4 _triggerTestWatchdog:v29, v42];
+        [(BLSHWatchdogTester *)watchdogCopy _triggerTestWatchdog:v29, v42];
       }
     }
 
@@ -195,8 +195,8 @@ LABEL_8:
       [v30 doubleValue];
       v32 = v31;
 
-      v33 = [v28 lastObject];
-      [v33 doubleValue];
+      lastObject3 = [v28 lastObject];
+      [lastObject3 doubleValue];
       v35 = v34;
 
       v36 = bls_diagnostics_log();
@@ -220,7 +220,7 @@ LABEL_8:
       v50 = v32;
       v48 = buf;
       v45[4] = self;
-      v46 = v4;
+      v46 = watchdogCopy;
       v47 = v5;
       v40 = MEMORY[0x277D85CD0];
       dispatch_after(v39, MEMORY[0x277D85CD0], v45);

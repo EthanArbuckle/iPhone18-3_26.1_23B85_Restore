@@ -1,16 +1,16 @@
 @interface CHInvitationDestinationCoordinator
-- (void)fetchReachableDestinationsFor:(id)a3 completion:(id)a4;
-- (void)sendInvitationToDestinations:(id)a3 callerID:(id)a4 completion:(id)a5;
+- (void)fetchReachableDestinationsFor:(id)for completion:(id)completion;
+- (void)sendInvitationToDestinations:(id)destinations callerID:(id)d completion:(id)completion;
 @end
 
 @implementation CHInvitationDestinationCoordinator
 
-- (void)sendInvitationToDestinations:(id)a3 callerID:(id)a4 completion:(id)a5
+- (void)sendInvitationToDestinations:(id)destinations callerID:(id)d completion:(id)completion
 {
   v7 = sub_100140278(&qword_1008E1760);
   __chkstk_darwin(v7 - 8);
   v9 = &v19 - v8;
-  v10 = _Block_copy(a5);
+  v10 = _Block_copy(completion);
   v11 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v12 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v14 = v13;
@@ -27,16 +27,16 @@
   v17[7] = v14;
   v17[8] = sub_1005995DC;
   v17[9] = v15;
-  v18 = self;
+  selfCopy = self;
   sub_10026E198(0, 0, v9, &unk_1006FB1E8, v17);
 }
 
-- (void)fetchReachableDestinationsFor:(id)a3 completion:(id)a4
+- (void)fetchReachableDestinationsFor:(id)for completion:(id)completion
 {
   v5 = sub_100140278(&qword_1008E1760);
   __chkstk_darwin(v5 - 8);
   v7 = &v14 - v6;
-  v8 = _Block_copy(a4);
+  v8 = _Block_copy(completion);
   v9 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = swift_allocObject();
   *(v10 + 16) = v8;

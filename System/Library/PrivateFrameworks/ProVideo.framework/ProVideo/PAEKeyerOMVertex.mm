@@ -1,16 +1,16 @@
 @interface PAEKeyerOMVertex
 - (PAEKeyerOMVertex)init;
-- (PAEKeyerOMVertex)initWithCoder:(id)a3;
+- (PAEKeyerOMVertex)initWithCoder:(id)coder;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setBx:(id)a3;
-- (void)setBy:(id)a3;
-- (void)setLx:(id)a3;
-- (void)setLy:(id)a3;
-- (void)setMx:(id)a3;
-- (void)setMy:(id)a3;
-- (void)setRx:(id)a3;
-- (void)setRy:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setBx:(id)bx;
+- (void)setBy:(id)by;
+- (void)setLx:(id)lx;
+- (void)setLy:(id)ly;
+- (void)setMx:(id)mx;
+- (void)setMy:(id)my;
+- (void)setRx:(id)rx;
+- (void)setRy:(id)ry;
 @end
 
 @implementation PAEKeyerOMVertex
@@ -43,94 +43,94 @@
   [(PAEKeyerOMVertex *)&v3 dealloc];
 }
 
-- (PAEKeyerOMVertex)initWithCoder:(id)a3
+- (PAEKeyerOMVertex)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = PAEKeyerOMVertex;
   v4 = [(PAEKeyerOMVertex *)&v6 init];
   if (v4)
   {
-    -[PAEKeyerOMVertex setLx:](v4, "setLx:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"lx"]);
-    -[PAEKeyerOMVertex setMx:](v4, "setMx:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"mx"]);
-    -[PAEKeyerOMVertex setRx:](v4, "setRx:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"rx"]);
-    -[PAEKeyerOMVertex setBx:](v4, "setBx:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"bx"]);
-    -[PAEKeyerOMVertex setLy:](v4, "setLy:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"ly"]);
-    -[PAEKeyerOMVertex setMy:](v4, "setMy:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"my"]);
-    -[PAEKeyerOMVertex setRy:](v4, "setRy:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"ry"]);
-    -[PAEKeyerOMVertex setBy:](v4, "setBy:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"by"]);
+    -[PAEKeyerOMVertex setLx:](v4, "setLx:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"lx"]);
+    -[PAEKeyerOMVertex setMx:](v4, "setMx:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"mx"]);
+    -[PAEKeyerOMVertex setRx:](v4, "setRx:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"rx"]);
+    -[PAEKeyerOMVertex setBx:](v4, "setBx:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"bx"]);
+    -[PAEKeyerOMVertex setLy:](v4, "setLy:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"ly"]);
+    -[PAEKeyerOMVertex setMy:](v4, "setMy:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"my"]);
+    -[PAEKeyerOMVertex setRy:](v4, "setRy:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"ry"]);
+    -[PAEKeyerOMVertex setBy:](v4, "setBy:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"by"]);
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->_lx forKey:@"lx"];
-  [a3 encodeObject:self->_mx forKey:@"mx"];
-  [a3 encodeObject:self->_rx forKey:@"rx"];
-  [a3 encodeObject:self->_bx forKey:@"bx"];
-  [a3 encodeObject:self->_ly forKey:@"ly"];
-  [a3 encodeObject:self->_my forKey:@"my"];
-  [a3 encodeObject:self->_ry forKey:@"ry"];
+  [coder encodeObject:self->_lx forKey:@"lx"];
+  [coder encodeObject:self->_mx forKey:@"mx"];
+  [coder encodeObject:self->_rx forKey:@"rx"];
+  [coder encodeObject:self->_bx forKey:@"bx"];
+  [coder encodeObject:self->_ly forKey:@"ly"];
+  [coder encodeObject:self->_my forKey:@"my"];
+  [coder encodeObject:self->_ry forKey:@"ry"];
   by = self->_by;
 
-  [a3 encodeObject:by forKey:@"by"];
+  [coder encodeObject:by forKey:@"by"];
 }
 
-- (void)setLx:(id)a3
+- (void)setLx:(id)lx
 {
-  v5 = a3;
+  lxCopy = lx;
 
-  self->_lx = a3;
+  self->_lx = lx;
 }
 
-- (void)setMx:(id)a3
+- (void)setMx:(id)mx
 {
-  v5 = a3;
+  mxCopy = mx;
 
-  self->_mx = a3;
+  self->_mx = mx;
 }
 
-- (void)setRx:(id)a3
+- (void)setRx:(id)rx
 {
-  v5 = a3;
+  rxCopy = rx;
 
-  self->_rx = a3;
+  self->_rx = rx;
 }
 
-- (void)setBx:(id)a3
+- (void)setBx:(id)bx
 {
-  v5 = a3;
+  bxCopy = bx;
 
-  self->_bx = a3;
+  self->_bx = bx;
 }
 
-- (void)setLy:(id)a3
+- (void)setLy:(id)ly
 {
-  v5 = a3;
+  lyCopy = ly;
 
-  self->_ly = a3;
+  self->_ly = ly;
 }
 
-- (void)setMy:(id)a3
+- (void)setMy:(id)my
 {
-  v5 = a3;
+  myCopy = my;
 
-  self->_my = a3;
+  self->_my = my;
 }
 
-- (void)setRy:(id)a3
+- (void)setRy:(id)ry
 {
-  v5 = a3;
+  ryCopy = ry;
 
-  self->_ry = a3;
+  self->_ry = ry;
 }
 
-- (void)setBy:(id)a3
+- (void)setBy:(id)by
 {
-  v5 = a3;
+  byCopy = by;
 
-  self->_by = a3;
+  self->_by = by;
 }
 
 @end

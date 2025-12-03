@@ -1,25 +1,25 @@
 @interface FMCardContainerView
-- (_TtC6FindMy19FMCardContainerView)initWithFrame:(CGRect)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (_TtC6FindMy19FMCardContainerView)initWithFrame:(CGRect)frame;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation FMCardContainerView
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v7 = self;
-  v4 = a3;
+  selfCopy = self;
+  changeCopy = change;
   sub_10001DA30();
-  v5 = [(FMCardContainerView *)v7 traitCollection];
-  v6 = [v5 horizontalSizeClass];
+  traitCollection = [(FMCardContainerView *)selfCopy traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-  if (!v4 || v6 != [v4 horizontalSizeClass])
+  if (!changeCopy || horizontalSizeClass != [changeCopy horizontalSizeClass])
   {
     sub_100457A64();
   }
 }
 
-- (_TtC6FindMy19FMCardContainerView)initWithFrame:(CGRect)a3
+- (_TtC6FindMy19FMCardContainerView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,13 +1,13 @@
 @interface SGMessagesSuggestionsService
-- (BOOL)isMessageEligibleForSuggestions:(id)a3;
+- (BOOL)isMessageEligibleForSuggestions:(id)suggestions;
 - (SGMessagesSuggestionsService)init;
 - (SGMessagesSuggestionsServiceDelegate)delegate;
-- (void)harvestedSuggestionsFromMessage:(id)a3 bundleIdentifier:(id)a4 options:(unint64_t)a5 completionHandler:(id)a6;
-- (void)harvestedSuggestionsFromMessage:(id)a3 bundleIdentifier:(id)a4 options:(unint64_t)a5 withCompletion:(id)a6;
-- (void)harvestedSuggestionsFromMessages:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5;
-- (void)sendContextForMessage:(id)a3;
-- (void)setupContextIfNeededForConversation:(id)a3;
-- (void)suggestionsFromMessage:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5;
+- (void)harvestedSuggestionsFromMessage:(id)message bundleIdentifier:(id)identifier options:(unint64_t)options completionHandler:(id)handler;
+- (void)harvestedSuggestionsFromMessage:(id)message bundleIdentifier:(id)identifier options:(unint64_t)options withCompletion:(id)completion;
+- (void)harvestedSuggestionsFromMessages:(id)messages options:(unint64_t)options completionHandler:(id)handler;
+- (void)sendContextForMessage:(id)message;
+- (void)setupContextIfNeededForConversation:(id)conversation;
+- (void)suggestionsFromMessage:(id)message options:(unint64_t)options completionHandler:(id)handler;
 @end
 
 @implementation SGMessagesSuggestionsService
@@ -19,23 +19,23 @@
   return WeakRetained;
 }
 
-- (void)harvestedSuggestionsFromMessages:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5
+- (void)harvestedSuggestionsFromMessages:(id)messages options:(unint64_t)options completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a5;
-  if (!v9)
+  messagesCopy = messages;
+  handlerCopy = handler;
+  if (!messagesCopy)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"SGMessagesSuggestionsService.m" lineNumber:207 description:{@"Invalid parameter not satisfying: %@", @"messages"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGMessagesSuggestionsService.m" lineNumber:207 description:{@"Invalid parameter not satisfying: %@", @"messages"}];
   }
 
-  v11 = [MEMORY[0x1E696AAE8] mainBundle];
-  v12 = [v11 bundleIdentifier];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  if (!v12)
+  if (!bundleIdentifier)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"SGMessagesSuggestionsService.m" lineNumber:210 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"SGMessagesSuggestionsService.m" lineNumber:210 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier"}];
   }
 
   messagesDaemonConnection = self->_messagesDaemonConnection;
@@ -43,7 +43,7 @@
   v21[1] = 3221225472;
   v21[2] = __91__SGMessagesSuggestionsService_harvestedSuggestionsFromMessages_options_completionHandler___block_invoke;
   v21[3] = &unk_1E7EFD050;
-  v14 = v10;
+  v14 = handlerCopy;
   v22 = v14;
   v15 = [(SGMessagesDaemonConnection *)messagesDaemonConnection remoteSuggestionManagerWithErrorHandler:v21];
   v19[0] = MEMORY[0x1E69E9820];
@@ -52,7 +52,7 @@
   v19[3] = &unk_1E7EFD078;
   v20 = v14;
   v16 = v14;
-  [v15 harvestedSuggestionsFromMessages:v9 bundleIdentifier:v12 options:a4 completionHandler:v19];
+  [v15 harvestedSuggestionsFromMessages:messagesCopy bundleIdentifier:bundleIdentifier options:options completionHandler:v19];
 }
 
 void __91__SGMessagesSuggestionsService_harvestedSuggestionsFromMessages_options_completionHandler___block_invoke_2(uint64_t a1, void *a2)
@@ -67,35 +67,35 @@ void __91__SGMessagesSuggestionsService_harvestedSuggestionsFromMessages_options
   (*(v2 + 16))(v2, v7, v4, v5, v6);
 }
 
-- (void)harvestedSuggestionsFromMessage:(id)a3 bundleIdentifier:(id)a4 options:(unint64_t)a5 withCompletion:(id)a6
+- (void)harvestedSuggestionsFromMessage:(id)message bundleIdentifier:(id)identifier options:(unint64_t)options withCompletion:(id)completion
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  if (!v11)
+  messageCopy = message;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  if (!messageCopy)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"SGMessagesSuggestionsService.m" lineNumber:184 description:{@"Invalid parameter not satisfying: %@", @"message"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGMessagesSuggestionsService.m" lineNumber:184 description:{@"Invalid parameter not satisfying: %@", @"message"}];
   }
 
-  if ([(SGMessagesSuggestionsService *)self isMessageEligibleForSuggestions:v11])
+  if ([(SGMessagesSuggestionsService *)self isMessageEligibleForSuggestions:messageCopy])
   {
-    if (v12)
+    if (identifierCopy)
     {
-      v14 = v12;
+      bundleIdentifier = identifierCopy;
     }
 
     else
     {
-      v15 = [MEMORY[0x1E696AAE8] mainBundle];
-      v14 = [v15 bundleIdentifier];
+      mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+      bundleIdentifier = [mainBundle bundleIdentifier];
 
-      if (!v14)
+      if (!bundleIdentifier)
       {
-        v20 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v20 handleFailureInMethod:a2 object:self file:@"SGMessagesSuggestionsService.m" lineNumber:191 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier"}];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler2 handleFailureInMethod:a2 object:self file:@"SGMessagesSuggestionsService.m" lineNumber:191 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier"}];
 
-        v14 = 0;
+        bundleIdentifier = 0;
       }
     }
 
@@ -104,7 +104,7 @@ void __91__SGMessagesSuggestionsService_harvestedSuggestionsFromMessages_options
     v23[1] = 3221225472;
     v23[2] = __104__SGMessagesSuggestionsService_harvestedSuggestionsFromMessage_bundleIdentifier_options_withCompletion___block_invoke;
     v23[3] = &unk_1E7EFD050;
-    v17 = v13;
+    v17 = completionCopy;
     v24 = v17;
     v18 = [(SGMessagesDaemonConnection *)messagesDaemonConnection remoteSuggestionManagerWithErrorHandler:v23];
     v21[0] = MEMORY[0x1E69E9820];
@@ -112,12 +112,12 @@ void __91__SGMessagesSuggestionsService_harvestedSuggestionsFromMessages_options
     v21[2] = __104__SGMessagesSuggestionsService_harvestedSuggestionsFromMessage_bundleIdentifier_options_withCompletion___block_invoke_2;
     v21[3] = &unk_1E7EFD0A0;
     v22 = v17;
-    [v18 harvestedSuggestionsFromMessage:v11 bundleIdentifier:v14 options:a5 withCompletion:v21];
+    [v18 harvestedSuggestionsFromMessage:messageCopy bundleIdentifier:bundleIdentifier options:options withCompletion:v21];
   }
 
   else
   {
-    (*(v13 + 2))(v13, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
@@ -131,35 +131,35 @@ void __104__SGMessagesSuggestionsService_harvestedSuggestionsFromMessage_bundleI
   (*(v2 + 16))(v2, v5, v4);
 }
 
-- (void)harvestedSuggestionsFromMessage:(id)a3 bundleIdentifier:(id)a4 options:(unint64_t)a5 completionHandler:(id)a6
+- (void)harvestedSuggestionsFromMessage:(id)message bundleIdentifier:(id)identifier options:(unint64_t)options completionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  if (!v11)
+  messageCopy = message;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if (!messageCopy)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"SGMessagesSuggestionsService.m" lineNumber:158 description:{@"Invalid parameter not satisfying: %@", @"message"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGMessagesSuggestionsService.m" lineNumber:158 description:{@"Invalid parameter not satisfying: %@", @"message"}];
   }
 
-  if ([(SGMessagesSuggestionsService *)self isMessageEligibleForSuggestions:v11])
+  if ([(SGMessagesSuggestionsService *)self isMessageEligibleForSuggestions:messageCopy])
   {
-    if (v12)
+    if (identifierCopy)
     {
-      v14 = v12;
+      bundleIdentifier = identifierCopy;
     }
 
     else
     {
-      v15 = [MEMORY[0x1E696AAE8] mainBundle];
-      v14 = [v15 bundleIdentifier];
+      mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+      bundleIdentifier = [mainBundle bundleIdentifier];
 
-      if (!v14)
+      if (!bundleIdentifier)
       {
-        v20 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v20 handleFailureInMethod:a2 object:self file:@"SGMessagesSuggestionsService.m" lineNumber:165 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier"}];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler2 handleFailureInMethod:a2 object:self file:@"SGMessagesSuggestionsService.m" lineNumber:165 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier"}];
 
-        v14 = 0;
+        bundleIdentifier = 0;
       }
     }
 
@@ -168,7 +168,7 @@ void __104__SGMessagesSuggestionsService_harvestedSuggestionsFromMessage_bundleI
     v23[1] = 3221225472;
     v23[2] = __107__SGMessagesSuggestionsService_harvestedSuggestionsFromMessage_bundleIdentifier_options_completionHandler___block_invoke;
     v23[3] = &unk_1E7EFD050;
-    v17 = v13;
+    v17 = handlerCopy;
     v24 = v17;
     v18 = [(SGMessagesDaemonConnection *)messagesDaemonConnection remoteSuggestionManagerWithErrorHandler:v23];
     v21[0] = MEMORY[0x1E69E9820];
@@ -176,12 +176,12 @@ void __104__SGMessagesSuggestionsService_harvestedSuggestionsFromMessage_bundleI
     v21[2] = __107__SGMessagesSuggestionsService_harvestedSuggestionsFromMessage_bundleIdentifier_options_completionHandler___block_invoke_2;
     v21[3] = &unk_1E7EFD078;
     v22 = v17;
-    [v18 harvestedSuggestionsFromMessage:v11 bundleIdentifier:v14 options:a5 completionHandler:v21];
+    [v18 harvestedSuggestionsFromMessage:messageCopy bundleIdentifier:bundleIdentifier options:options completionHandler:v21];
   }
 
   else
   {
-    (*(v13 + 2))(v13, 0, MEMORY[0x1E695E0F0], MEMORY[0x1E695E0F0]);
+    (*(handlerCopy + 2))(handlerCopy, 0, MEMORY[0x1E695E0F0], MEMORY[0x1E695E0F0]);
   }
 }
 
@@ -196,25 +196,25 @@ void __107__SGMessagesSuggestionsService_harvestedSuggestionsFromMessage_bundleI
   (*(v2 + 16))(v2, v6, v4, v5);
 }
 
-- (void)suggestionsFromMessage:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5
+- (void)suggestionsFromMessage:(id)message options:(unint64_t)options completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a5;
-  if (!v9)
+  messageCopy = message;
+  handlerCopy = handler;
+  if (!messageCopy)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"SGMessagesSuggestionsService.m" lineNumber:134 description:{@"Invalid parameter not satisfying: %@", @"message"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGMessagesSuggestionsService.m" lineNumber:134 description:{@"Invalid parameter not satisfying: %@", @"message"}];
   }
 
-  if ([(SGMessagesSuggestionsService *)self isMessageEligibleForSuggestions:v9])
+  if ([(SGMessagesSuggestionsService *)self isMessageEligibleForSuggestions:messageCopy])
   {
-    [(SGMessagesSuggestionsService *)self sendContextForMessage:v9];
+    [(SGMessagesSuggestionsService *)self sendContextForMessage:messageCopy];
     messagesDaemonConnection = self->_messagesDaemonConnection;
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __81__SGMessagesSuggestionsService_suggestionsFromMessage_options_completionHandler___block_invoke;
     v17[3] = &unk_1E7EFD050;
-    v12 = v10;
+    v12 = handlerCopy;
     v18 = v12;
     v13 = [(SGMessagesDaemonConnection *)messagesDaemonConnection remoteSuggestionManagerWithErrorHandler:v17];
     v15[0] = MEMORY[0x1E69E9820];
@@ -222,12 +222,12 @@ void __107__SGMessagesSuggestionsService_harvestedSuggestionsFromMessage_bundleI
     v15[2] = __81__SGMessagesSuggestionsService_suggestionsFromMessage_options_completionHandler___block_invoke_2;
     v15[3] = &unk_1E7EFD078;
     v16 = v12;
-    [v13 suggestionsFromMessage:v9 options:a4 completionHandler:v15];
+    [v13 suggestionsFromMessage:messageCopy options:options completionHandler:v15];
   }
 
   else
   {
-    (*(v10 + 2))(v10, 0, MEMORY[0x1E695E0F0], MEMORY[0x1E695E0F0], MEMORY[0x1E695E0F0]);
+    (*(handlerCopy + 2))(handlerCopy, 0, MEMORY[0x1E695E0F0], MEMORY[0x1E695E0F0], MEMORY[0x1E695E0F0]);
   }
 }
 
@@ -243,33 +243,33 @@ void __81__SGMessagesSuggestionsService_suggestionsFromMessage_options_completio
   (*(v2 + 16))(v2, v7, v4, v5, v6);
 }
 
-- (BOOL)isMessageEligibleForSuggestions:(id)a3
+- (BOOL)isMessageEligibleForSuggestions:(id)suggestions
 {
-  v3 = [a3 attributeSet];
-  v4 = [v3 contentCreationDate];
-  [v4 timeIntervalSinceNow];
+  attributeSet = [suggestions attributeSet];
+  contentCreationDate = [attributeSet contentCreationDate];
+  [contentCreationDate timeIntervalSinceNow];
   v6 = v5 > -3600.0;
 
   return v6;
 }
 
-- (void)sendContextForMessage:(id)a3
+- (void)sendContextForMessage:(id)message
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = [a3 domainIdentifier];
-  if (!v5)
+  domainIdentifier = [message domainIdentifier];
+  if (!domainIdentifier)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"SGMessagesSuggestionsService.m" lineNumber:112 description:{@"Invalid parameter not satisfying: %@", @"conversationIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGMessagesSuggestionsService.m" lineNumber:112 description:{@"Invalid parameter not satisfying: %@", @"conversationIdentifier"}];
   }
 
-  [(SGMessagesSuggestionsService *)self setupContextIfNeededForConversation:v5];
+  [(SGMessagesSuggestionsService *)self setupContextIfNeededForConversation:domainIdentifier];
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v15 = v5;
-  v6 = [(NSMutableDictionary *)self->_previousMessages objectForKeyedSubscript:v5];
+  v15 = domainIdentifier;
+  v6 = [(NSMutableDictionary *)self->_previousMessages objectForKeyedSubscript:domainIdentifier];
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -298,11 +298,11 @@ void __81__SGMessagesSuggestionsService_suggestionsFromMessage_options_completio
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setupContextIfNeededForConversation:(id)a3
+- (void)setupContextIfNeededForConversation:(id)conversation
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_previousMessages objectForKeyedSubscript:v4];
+  conversationCopy = conversation;
+  v5 = [(NSMutableDictionary *)self->_previousMessages objectForKeyedSubscript:conversationCopy];
 
   if (!v5)
   {
@@ -311,8 +311,8 @@ void __81__SGMessagesSuggestionsService_suggestionsFromMessage_options_completio
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v7 = [(SGMessagesSuggestionsService *)self delegate];
-    v8 = [v7 suggestionsService:self needsContextForConversationIdentifier:v4 numberOfMessagesNeeded:10];
+    delegate = [(SGMessagesSuggestionsService *)self delegate];
+    v8 = [delegate suggestionsService:self needsContextForConversationIdentifier:conversationCopy numberOfMessagesNeeded:10];
 
     v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v9)
@@ -339,7 +339,7 @@ void __81__SGMessagesSuggestionsService_suggestionsFromMessage_options_completio
       while (v10);
     }
 
-    [(NSMutableDictionary *)self->_previousMessages setObject:v6 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_previousMessages setObject:v6 forKeyedSubscript:conversationCopy];
   }
 
   v13 = *MEMORY[0x1E69E9840];

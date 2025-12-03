@@ -1,5 +1,5 @@
 @interface DashboardFilterCategoryCell.ContentView
-- (_TtCC6HomeUI27DashboardFilterCategoryCell11ContentView)initWithFrame:(CGRect)a3;
+- (_TtCC6HomeUI27DashboardFilterCategoryCell11ContentView)initWithFrame:(CGRect)frame;
 - (void)updateConstraints;
 @end
 
@@ -7,11 +7,11 @@
 
 - (void)updateConstraints
 {
-  v2 = self;
+  selfCopy = self;
   sub_20CF520C8();
 }
 
-- (_TtCC6HomeUI27DashboardFilterCategoryCell11ContentView)initWithFrame:(CGRect)a3
+- (_TtCC6HomeUI27DashboardFilterCategoryCell11ContentView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

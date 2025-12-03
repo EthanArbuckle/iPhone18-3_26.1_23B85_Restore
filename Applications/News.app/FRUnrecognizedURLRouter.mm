@@ -1,8 +1,8 @@
 @interface FRUnrecognizedURLRouter
-- (BOOL)handleOpenURL:(id)a3 options:(id)a4 analyticsReferral:(id)a5;
+- (BOOL)handleOpenURL:(id)l options:(id)options analyticsReferral:(id)referral;
 - (FRURLRouterManagerType)retryHandler;
 - (FRUnrecognizedURLRouter)init;
-- (FRUnrecognizedURLRouter)initWithAnalyticsReferralFactory:(id)a3 redirectService:(id)a4;
+- (FRUnrecognizedURLRouter)initWithAnalyticsReferralFactory:(id)factory redirectService:(id)service;
 @end
 
 @implementation FRUnrecognizedURLRouter
@@ -30,20 +30,20 @@
   objc_exception_throw(v4);
 }
 
-- (FRUnrecognizedURLRouter)initWithAnalyticsReferralFactory:(id)a3 redirectService:(id)a4
+- (FRUnrecognizedURLRouter)initWithAnalyticsReferralFactory:(id)factory redirectService:(id)service
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  factoryCopy = factory;
+  serviceCopy = service;
+  if (!factoryCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_100068B94();
-    if (v8)
+    if (serviceCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v8)
+  else if (serviceCopy)
   {
     goto LABEL_6;
   }
@@ -60,26 +60,26 @@ LABEL_6:
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_analyticsReferralFactory, a3);
-    objc_storeStrong(&v10->_redirectService, a4);
+    objc_storeStrong(&v9->_analyticsReferralFactory, factory);
+    objc_storeStrong(&v10->_redirectService, service);
   }
 
   return v10;
 }
 
-- (BOOL)handleOpenURL:(id)a3 options:(id)a4 analyticsReferral:(id)a5
+- (BOOL)handleOpenURL:(id)l options:(id)options analyticsReferral:(id)referral
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [(FRUnrecognizedURLRouter *)self redirectService];
+  optionsCopy = options;
+  lCopy = l;
+  redirectService = [(FRUnrecognizedURLRouter *)self redirectService];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10000D378;
   v12[3] = &unk_1000C1A10;
   v12[4] = self;
-  v13 = v7;
-  v10 = v7;
-  [v9 resolveURL:v8 withQualityOfService:25 completion:v12];
+  v13 = optionsCopy;
+  v10 = optionsCopy;
+  [redirectService resolveURL:lCopy withQualityOfService:25 completion:v12];
 
   return 1;
 }

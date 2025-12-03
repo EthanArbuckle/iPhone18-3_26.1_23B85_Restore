@@ -1,11 +1,11 @@
 @interface VSLoadAllAppIconsOperation
 - (CGSize)preferredSize;
 - (VSLoadAllAppIconsOperation)init;
-- (VSLoadAllAppIconsOperation)initWithApps:(id)a3 shouldPrecomposeIcon:(BOOL)a4;
-- (VSLoadAllAppIconsOperation)initWithApps:(id)a3 shouldPrecomposeIcon:(BOOL)a4 preferredSize:(CGSize)a5;
+- (VSLoadAllAppIconsOperation)initWithApps:(id)apps shouldPrecomposeIcon:(BOOL)icon;
+- (VSLoadAllAppIconsOperation)initWithApps:(id)apps shouldPrecomposeIcon:(BOOL)icon preferredSize:(CGSize)size;
 - (void)cancel;
 - (void)executionDidBegin;
-- (void)setResultCompletionBlock:(id)a3;
+- (void)setResultCompletionBlock:(id)block;
 @end
 
 @implementation VSLoadAllAppIconsOperation
@@ -20,41 +20,41 @@
   return 0;
 }
 
-- (VSLoadAllAppIconsOperation)initWithApps:(id)a3 shouldPrecomposeIcon:(BOOL)a4
+- (VSLoadAllAppIconsOperation)initWithApps:(id)apps shouldPrecomposeIcon:(BOOL)icon
 {
-  v6 = a3;
+  appsCopy = apps;
   v10.receiver = self;
   v10.super_class = VSLoadAllAppIconsOperation;
   v7 = [(VSLoadAllAppIconsOperation *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    commonInit_1(&v7->super.super.super.isa, v6, a4, *MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8));
+    commonInit_1(&v7->super.super.super.isa, appsCopy, icon, *MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8));
   }
 
   return v8;
 }
 
-- (VSLoadAllAppIconsOperation)initWithApps:(id)a3 shouldPrecomposeIcon:(BOOL)a4 preferredSize:(CGSize)a5
+- (VSLoadAllAppIconsOperation)initWithApps:(id)apps shouldPrecomposeIcon:(BOOL)icon preferredSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v9 = a3;
+  height = size.height;
+  width = size.width;
+  appsCopy = apps;
   v13.receiver = self;
   v13.super_class = VSLoadAllAppIconsOperation;
   v10 = [(VSLoadAllAppIconsOperation *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    commonInit_1(&v10->super.super.super.isa, v9, a4, width, height);
+    commonInit_1(&v10->super.super.super.isa, appsCopy, icon, width, height);
   }
 
   return v11;
 }
 
-- (void)setResultCompletionBlock:(id)a3
+- (void)setResultCompletionBlock:(id)block
 {
-  v4 = MEMORY[0x2743B6E40](a3, a2);
+  v4 = MEMORY[0x2743B6E40](block, a2);
   resultCompletionBlock = self->_resultCompletionBlock;
   self->_resultCompletionBlock = v4;
 
@@ -63,10 +63,10 @@
 
 - (void)executionDidBegin
 {
-  v7 = [a2 displayName];
-  *a1 = 138412290;
-  *a3 = v7;
-  _os_log_error_impl(&dword_270DD4000, a4, OS_LOG_TYPE_ERROR, "No icon URL for %@", a1, 0xCu);
+  displayName = [a2 displayName];
+  *self = 138412290;
+  *a3 = displayName;
+  _os_log_error_impl(&dword_270DD4000, a4, OS_LOG_TYPE_ERROR, "No icon URL for %@", self, 0xCu);
 }
 
 uint64_t __47__VSLoadAllAppIconsOperation_executionDidBegin__block_invoke(uint64_t a1)
@@ -164,8 +164,8 @@ void __47__VSLoadAllAppIconsOperation_executionDidBegin__block_invoke_3(uint64_t
   v3 = VSDefaultLogObject();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(VSLoadAllAppIconsOperation *)self appDescriptions];
-    v5 = [v4 count];
+    appDescriptions = [(VSLoadAllAppIconsOperation *)self appDescriptions];
+    v5 = [appDescriptions count];
     *buf = 134217984;
     v9 = v5;
     _os_log_impl(&dword_270DD4000, v3, OS_LOG_TYPE_DEFAULT, "Cancelling Loading %lu Images", buf, 0xCu);

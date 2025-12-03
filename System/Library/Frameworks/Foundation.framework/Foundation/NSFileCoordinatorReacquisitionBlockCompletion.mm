@@ -1,13 +1,13 @@
 @interface NSFileCoordinatorReacquisitionBlockCompletion
-+ (id)completionWithBlock:(id)a3 queue:(id)a4;
++ (id)completionWithBlock:(id)block queue:(id)queue;
 - (void)dealloc;
 @end
 
 @implementation NSFileCoordinatorReacquisitionBlockCompletion
 
-+ (id)completionWithBlock:(id)a3 queue:(id)a4
++ (id)completionWithBlock:(id)block queue:(id)queue
 {
-  if (!a3)
+  if (!block)
   {
     return 0;
   }
@@ -16,7 +16,7 @@
   v7 = dispatch_group_create();
   v6[1] = v7;
   dispatch_group_enter(v7);
-  dispatch_group_notify(v6[1], a4, a3);
+  dispatch_group_notify(v6[1], queue, block);
   return v6;
 }
 

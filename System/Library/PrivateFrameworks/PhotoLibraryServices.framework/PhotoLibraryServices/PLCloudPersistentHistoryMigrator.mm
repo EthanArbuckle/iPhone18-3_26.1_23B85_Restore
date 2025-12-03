@@ -1,6 +1,6 @@
 @interface PLCloudPersistentHistoryMigrator
-+ (void)migrateToPersistentHistoryIfNecessaryWithMigratorContext:(id)a3;
-- (PLCloudPersistentHistoryMigrator)initWithMigratorContext:(id)a3;
++ (void)migrateToPersistentHistoryIfNecessaryWithMigratorContext:(id)context;
+- (PLCloudPersistentHistoryMigrator)initWithMigratorContext:(id)context;
 - (int64_t)migrate;
 - (void)migrateToPersistentHistoryIfNecessary;
 @end
@@ -10,9 +10,9 @@
 - (int64_t)migrate
 {
   WeakRetained = objc_loadWeakRetained(&self->_migratorContext);
-  v3 = [WeakRetained readLocalVersion];
+  readLocalVersion = [WeakRetained readLocalVersion];
 
-  return v3 != 0;
+  return readLocalVersion != 0;
 }
 
 - (void)migrateToPersistentHistoryIfNecessary
@@ -28,8 +28,8 @@
     }
   }
 
-  v5 = [(PLCloudPersistentHistoryMigrator *)self migrate];
-  if (v5 == 1)
+  migrate = [(PLCloudPersistentHistoryMigrator *)self migrate];
+  if (migrate == 1)
   {
     if ((*v3 & 1) == 0)
     {
@@ -49,7 +49,7 @@
     goto LABEL_15;
   }
 
-  if (!v5 && (*v3 & 1) == 0)
+  if (!migrate && (*v3 & 1) == 0)
   {
     v6 = __CPLAssetsdOSLogDomain();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -62,27 +62,27 @@ LABEL_15:
   }
 }
 
-- (PLCloudPersistentHistoryMigrator)initWithMigratorContext:(id)a3
+- (PLCloudPersistentHistoryMigrator)initWithMigratorContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = PLCloudPersistentHistoryMigrator;
   v5 = [(PLCloudPersistentHistoryMigrator *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_migratorContext, v4);
+    objc_storeWeak(&v5->_migratorContext, contextCopy);
     v7 = v6;
   }
 
   return v6;
 }
 
-+ (void)migrateToPersistentHistoryIfNecessaryWithMigratorContext:(id)a3
++ (void)migrateToPersistentHistoryIfNecessaryWithMigratorContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v3 = objc_autoreleasePoolPush();
-  v4 = [[PLCloudPersistentHistoryMigrator alloc] initWithMigratorContext:v5];
+  v4 = [[PLCloudPersistentHistoryMigrator alloc] initWithMigratorContext:contextCopy];
   [(PLCloudPersistentHistoryMigrator *)v4 migrateToPersistentHistoryIfNecessary];
 
   objc_autoreleasePoolPop(v3);

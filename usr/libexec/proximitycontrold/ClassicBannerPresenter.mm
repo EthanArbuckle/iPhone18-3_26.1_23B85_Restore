@@ -1,15 +1,15 @@
 @interface ClassicBannerPresenter
 - (_TtC17proximitycontrold22ClassicBannerPresenter)init;
-- (void)bannerSourceDidInvalidate:(id)a3;
+- (void)bannerSourceDidInvalidate:(id)invalidate;
 @end
 
 @implementation ClassicBannerPresenter
 
-- (void)bannerSourceDidInvalidate:(id)a3
+- (void)bannerSourceDidInvalidate:(id)invalidate
 {
   swift_unknownObjectRetain();
   self;
-  sub_1001E8E10(a3);
+  sub_1001E8E10(invalidate);
 }
 
 - (_TtC17proximitycontrold22ClassicBannerPresenter)init

@@ -1,47 +1,47 @@
 @interface _UIMorphingPlatterView
-- (BOOL)_previewPrefersApplyingMask:(id)a3;
+- (BOOL)_previewPrefersApplyingMask:(id)mask;
 - (BOOL)allowsUserInteractionInExpandedPreview;
 - (BOOL)bothViewsAreLikelyOpaque;
 - (BOOL)hidesCollapsedSourceView;
 - (BOOL)wantsEdgeAntialiasing;
-- (_UIMorphingPlatterView)initWithFrame:(CGRect)a3;
-- (double)_collapsedCornerRadius:(BOOL *)a3 maskedCorners:(unint64_t *)a4;
-- (double)_expandedCornerRadius:(BOOL *)a3 maskedCorners:(unint64_t *)a4 ignoreLiftScale:(BOOL)a5;
-- (void)_installPreview:(id)a3 inClippingView:(id)a4 transformView:(id)a5;
-- (void)_installShadowViewForStyleIfNecessary:(int64_t)a3;
+- (_UIMorphingPlatterView)initWithFrame:(CGRect)frame;
+- (double)_collapsedCornerRadius:(BOOL *)radius maskedCorners:(unint64_t *)corners;
+- (double)_expandedCornerRadius:(BOOL *)radius maskedCorners:(unint64_t *)corners ignoreLiftScale:(BOOL)scale;
+- (void)_installPreview:(id)preview inClippingView:(id)view transformView:(id)transformView;
+- (void)_installShadowViewForStyleIfNecessary:(int64_t)necessary;
 - (void)_modelUpdates;
 - (void)_prepareAnimatableProperties;
 - (void)_updateClippingViews;
 - (void)_updateCollapsedChrome;
 - (void)_updatePathShadow;
 - (void)_updatePathShadowTransform;
-- (void)_updateShadowsWithExpansionProgress:(double)a3 contentBounds:(CGRect)a4 center:(CGPoint)a5 forPresentation:(BOOL)a6;
+- (void)_updateShadowsWithExpansionProgress:(double)progress contentBounds:(CGRect)bounds center:(CGPoint)center forPresentation:(BOOL)presentation;
 - (void)didTearOffForDrag;
 - (void)freezeExpandedPreview;
 - (void)layoutSubviews;
-- (void)setAllowsUserInteractionInExpandedPreview:(BOOL)a3;
-- (void)setAlwaysCompact:(BOOL)a3;
-- (void)setCollapsedPreview:(id)a3;
-- (void)setCollapsedShadowIntensity:(double)a3;
-- (void)setCollapsedShadowStyle:(int64_t)a3;
-- (void)setExpanded:(BOOL)a3;
-- (void)setExpandedPreview:(id)a3;
-- (void)setExpandedShadowIntensity:(double)a3;
-- (void)setExpandedShadowStyle:(int64_t)a3;
-- (void)setHideChromeWhenCollapsed:(BOOL)a3;
-- (void)setHidesCollapsedSourceView:(BOOL)a3;
-- (void)setPreventPreviewRasterization:(BOOL)a3;
-- (void)setWantsEdgeAntialiasing:(BOOL)a3;
+- (void)setAllowsUserInteractionInExpandedPreview:(BOOL)preview;
+- (void)setAlwaysCompact:(BOOL)compact;
+- (void)setCollapsedPreview:(id)preview;
+- (void)setCollapsedShadowIntensity:(double)intensity;
+- (void)setCollapsedShadowStyle:(int64_t)style;
+- (void)setExpanded:(BOOL)expanded;
+- (void)setExpandedPreview:(id)preview;
+- (void)setExpandedShadowIntensity:(double)intensity;
+- (void)setExpandedShadowStyle:(int64_t)style;
+- (void)setHideChromeWhenCollapsed:(BOOL)collapsed;
+- (void)setHidesCollapsedSourceView:(BOOL)view;
+- (void)setPreventPreviewRasterization:(BOOL)rasterization;
+- (void)setWantsEdgeAntialiasing:(BOOL)antialiasing;
 - (void)updateContentSize;
 @end
 
 @implementation _UIMorphingPlatterView
 
-- (_UIMorphingPlatterView)initWithFrame:(CGRect)a3
+- (_UIMorphingPlatterView)initWithFrame:(CGRect)frame
 {
   v23.receiver = self;
   v23.super_class = _UIMorphingPlatterView;
-  v3 = [(_UIMorphPlatterViewBase *)&v23 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_UIMorphPlatterViewBase *)&v23 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -51,48 +51,48 @@
     v6 = [(_UIPlatterClippingView *)v5 initWithFrame:?];
     [(_UIMorphingPlatterView *)v4 setExpandedClippingView:v6];
 
-    v7 = [(_UIMorphingPlatterView *)v4 expandedClippingView];
-    [(UIView *)v4 addSubview:v7];
+    expandedClippingView = [(_UIMorphingPlatterView *)v4 expandedClippingView];
+    [(UIView *)v4 addSubview:expandedClippingView];
 
     v8 = [_UIPlatterTransformView alloc];
     [(UIView *)v4 bounds];
     v9 = [(_UIPlatterTransformView *)v8 initWithFrame:?];
     [(_UIMorphingPlatterView *)v4 setExpandedTransformView:v9];
 
-    v10 = [(_UIMorphingPlatterView *)v4 expandedTransformView];
-    [v10 setHidesSourceView:1];
+    expandedTransformView = [(_UIMorphingPlatterView *)v4 expandedTransformView];
+    [expandedTransformView setHidesSourceView:1];
 
-    v11 = [(_UIMorphingPlatterView *)v4 expandedClippingView];
-    v12 = [(_UIMorphingPlatterView *)v4 expandedTransformView];
-    [v11 addSubview:v12];
+    expandedClippingView2 = [(_UIMorphingPlatterView *)v4 expandedClippingView];
+    expandedTransformView2 = [(_UIMorphingPlatterView *)v4 expandedTransformView];
+    [expandedClippingView2 addSubview:expandedTransformView2];
 
     v13 = [_UIPlatterClippingView alloc];
     [(UIView *)v4 bounds];
     v14 = [(_UIPlatterClippingView *)v13 initWithFrame:?];
     [(_UIMorphingPlatterView *)v4 setCollapsedClippingView:v14];
 
-    v15 = [(_UIMorphingPlatterView *)v4 collapsedClippingView];
-    [(UIView *)v4 addSubview:v15];
+    collapsedClippingView = [(_UIMorphingPlatterView *)v4 collapsedClippingView];
+    [(UIView *)v4 addSubview:collapsedClippingView];
 
     v16 = [_UIPlatterTransformView alloc];
     [(UIView *)v4 bounds];
     v17 = [(_UIPlatterTransformView *)v16 initWithFrame:?];
     [(_UIMorphingPlatterView *)v4 setCollapsedTransformView:v17];
 
-    v18 = [(_UIMorphingPlatterView *)v4 collapsedTransformView];
-    [v18 setHidesSourceView:1];
+    collapsedTransformView = [(_UIMorphingPlatterView *)v4 collapsedTransformView];
+    [collapsedTransformView setHidesSourceView:1];
 
-    v19 = [(_UIMorphingPlatterView *)v4 collapsedClippingView];
-    v20 = [(_UIMorphingPlatterView *)v4 collapsedTransformView];
-    [v19 addSubview:v20];
+    collapsedClippingView2 = [(_UIMorphingPlatterView *)v4 collapsedClippingView];
+    collapsedTransformView2 = [(_UIMorphingPlatterView *)v4 collapsedTransformView];
+    [collapsedClippingView2 addSubview:collapsedTransformView2];
 
     [(_UIMorphingPlatterView *)v4 setPreventPreviewRasterization:0];
     [(UIView *)v4 _setSafeAreaInsetsFrozen:1];
     [(_UIMorphPlatterViewBase *)v4 setShouldMorphContents:1];
     [(_UIMorphingPlatterView *)v4 setOverrideCollapsedCornerRadius:2.22507386e-308];
     [(_UIMorphingPlatterView *)v4 setOverrideExpandedCornerRadius:2.22507386e-308];
-    v21 = [MEMORY[0x1E695DF90] dictionary];
-    [(_UIMorphingPlatterView *)v4 setShadowViews:v21];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [(_UIMorphingPlatterView *)v4 setShadowViews:dictionary];
 
     [(_UIMorphingPlatterView *)v4 _prepareAnimatableProperties];
   }
@@ -100,90 +100,90 @@
   return v4;
 }
 
-- (void)setAllowsUserInteractionInExpandedPreview:(BOOL)a3
+- (void)setAllowsUserInteractionInExpandedPreview:(BOOL)preview
 {
-  v3 = a3;
-  v4 = [(_UIMorphingPlatterView *)self expandedTransformView];
-  [v4 setAllowsUserInteraction:v3];
+  previewCopy = preview;
+  expandedTransformView = [(_UIMorphingPlatterView *)self expandedTransformView];
+  [expandedTransformView setAllowsUserInteraction:previewCopy];
 }
 
 - (BOOL)allowsUserInteractionInExpandedPreview
 {
-  v2 = [(_UIMorphingPlatterView *)self expandedTransformView];
-  v3 = [v2 allowsUserInteraction];
+  expandedTransformView = [(_UIMorphingPlatterView *)self expandedTransformView];
+  allowsUserInteraction = [expandedTransformView allowsUserInteraction];
 
-  return v3;
+  return allowsUserInteraction;
 }
 
-- (void)setPreventPreviewRasterization:(BOOL)a3
+- (void)setPreventPreviewRasterization:(BOOL)rasterization
 {
-  v3 = a3;
-  if ([(_UIMorphPlatterViewBase *)self preventPreviewRasterization]!= a3)
+  rasterizationCopy = rasterization;
+  if ([(_UIMorphPlatterViewBase *)self preventPreviewRasterization]!= rasterization)
   {
     v6.receiver = self;
     v6.super_class = _UIMorphingPlatterView;
-    [(_UIMorphPlatterViewBase *)&v6 setPreventPreviewRasterization:v3];
-    v5 = [(_UIMorphingPlatterView *)self expandedTransformView];
-    [v5 setAppliesMinificationFilter:v3 ^ 1];
+    [(_UIMorphPlatterViewBase *)&v6 setPreventPreviewRasterization:rasterizationCopy];
+    expandedTransformView = [(_UIMorphingPlatterView *)self expandedTransformView];
+    [expandedTransformView setAppliesMinificationFilter:rasterizationCopy ^ 1];
   }
 }
 
-- (void)setAlwaysCompact:(BOOL)a3
+- (void)setAlwaysCompact:(BOOL)compact
 {
-  v3 = a3;
-  if ([(_UIMorphPlatterViewBase *)self alwaysCompact]!= a3)
+  compactCopy = compact;
+  if ([(_UIMorphPlatterViewBase *)self alwaysCompact]!= compact)
   {
     v6.receiver = self;
     v6.super_class = _UIMorphingPlatterView;
-    [(_UIMorphPlatterViewBase *)&v6 setAlwaysCompact:v3];
-    if (v3)
+    [(_UIMorphPlatterViewBase *)&v6 setAlwaysCompact:compactCopy];
+    if (compactCopy)
     {
-      v5 = [(_UIMorphPlatterViewBase *)self collapsedShadowStyle];
+      collapsedShadowStyle = [(_UIMorphPlatterViewBase *)self collapsedShadowStyle];
     }
 
     else
     {
-      v5 = 2;
+      collapsedShadowStyle = 2;
     }
 
-    [(_UIMorphingPlatterView *)self setExpandedShadowStyle:v5];
+    [(_UIMorphingPlatterView *)self setExpandedShadowStyle:collapsedShadowStyle];
   }
 }
 
-- (void)setHidesCollapsedSourceView:(BOOL)a3
+- (void)setHidesCollapsedSourceView:(BOOL)view
 {
-  v3 = a3;
-  v4 = [(_UIMorphingPlatterView *)self collapsedTransformView];
-  [v4 setHidesSourceView:v3];
+  viewCopy = view;
+  collapsedTransformView = [(_UIMorphingPlatterView *)self collapsedTransformView];
+  [collapsedTransformView setHidesSourceView:viewCopy];
 }
 
 - (BOOL)hidesCollapsedSourceView
 {
-  v2 = [(_UIMorphingPlatterView *)self collapsedTransformView];
-  v3 = [v2 hidesSourceView];
+  collapsedTransformView = [(_UIMorphingPlatterView *)self collapsedTransformView];
+  hidesSourceView = [collapsedTransformView hidesSourceView];
 
-  return v3;
+  return hidesSourceView;
 }
 
-- (void)setWantsEdgeAntialiasing:(BOOL)a3
+- (void)setWantsEdgeAntialiasing:(BOOL)antialiasing
 {
-  v3 = a3;
-  v5 = [(_UIMorphingPlatterView *)self collapsedClippingView];
-  v6 = [v5 layer];
-  [v6 setAllowsEdgeAntialiasing:v3];
+  antialiasingCopy = antialiasing;
+  collapsedClippingView = [(_UIMorphingPlatterView *)self collapsedClippingView];
+  layer = [collapsedClippingView layer];
+  [layer setAllowsEdgeAntialiasing:antialiasingCopy];
 
-  v8 = [(_UIMorphingPlatterView *)self expandedClippingView];
-  v7 = [v8 layer];
-  [v7 setAllowsEdgeAntialiasing:v3];
+  expandedClippingView = [(_UIMorphingPlatterView *)self expandedClippingView];
+  layer2 = [expandedClippingView layer];
+  [layer2 setAllowsEdgeAntialiasing:antialiasingCopy];
 }
 
 - (BOOL)wantsEdgeAntialiasing
 {
-  v2 = [(_UIMorphingPlatterView *)self collapsedClippingView];
-  v3 = [v2 layer];
-  v4 = [v3 allowsEdgeAntialiasing];
+  collapsedClippingView = [(_UIMorphingPlatterView *)self collapsedClippingView];
+  layer = [collapsedClippingView layer];
+  allowsEdgeAntialiasing = [layer allowsEdgeAntialiasing];
 
-  return v4;
+  return allowsEdgeAntialiasing;
 }
 
 - (void)layoutSubviews
@@ -191,31 +191,31 @@
   v78.receiver = self;
   v78.super_class = _UIMorphingPlatterView;
   [(UIView *)&v78 layoutSubviews];
-  v3 = [(_UIMorphPlatterViewBase *)self expanded];
+  expanded = [(_UIMorphPlatterViewBase *)self expanded];
   [(UIView *)self bounds];
   rect_16 = v5;
   rect_24 = v4;
   v73 = v7;
   v74 = v6;
-  v8 = [(_UIMorphingPlatterView *)self collapsedTransformView];
-  v9 = [(_UIMorphingPlatterView *)self expandedTransformView];
+  collapsedTransformView = [(_UIMorphingPlatterView *)self collapsedTransformView];
+  expandedTransformView = [(_UIMorphingPlatterView *)self expandedTransformView];
   if ([(_UIMorphingPlatterView *)self contentSizeDidChange])
   {
     [(_UIMorphingPlatterView *)self setContentSizeDidChange:0];
-    [v8 sizeToFit];
-    [v9 sizeToFit];
+    [collapsedTransformView sizeToFit];
+    [expandedTransformView sizeToFit];
   }
 
   [(_UIMorphingPlatterView *)self _updatePathShadowTransform];
   [(_UIMorphingPlatterView *)self _updateClippingViews];
   if (![(_UIMorphPlatterViewBase *)self preferredMorphingAxis])
   {
-    [v8 bounds];
+    [collapsedTransformView bounds];
     v11 = v10;
     v13 = v12;
     v15 = v14;
     v17 = v16;
-    [v9 bounds];
+    [expandedTransformView bounds];
     rect = v79.origin.x;
     y = v79.origin.y;
     width = v79.size.width;
@@ -258,14 +258,14 @@
     [(_UIMorphPlatterViewBase *)self setPreferredMorphingAxis:v25];
   }
 
-  [v8 bounds];
+  [collapsedTransformView bounds];
   v27 = v26;
   v63 = v28;
   recta = v26;
   v29 = v28;
   v31 = v30;
   rect_8a = v32;
-  v33 = [(_UIMorphPlatterViewBase *)self preferredMorphingAxis];
+  preferredMorphingAxis = [(_UIMorphPlatterViewBase *)self preferredMorphingAxis];
   v85.origin.x = rect_24;
   v85.origin.y = rect_16;
   v85.size.width = v74;
@@ -287,7 +287,7 @@
   v88.size.height = rect_8a;
   v37 = CGRectGetHeight(v88);
   v38 = v36 / v37;
-  if (v33 == 1)
+  if (preferredMorphingAxis == 1)
   {
     v39 = v35;
   }
@@ -297,7 +297,7 @@
     v39 = v36 / v37;
   }
 
-  if (v33 == 2)
+  if (preferredMorphingAxis == 2)
   {
     v40 = v36 / v37;
   }
@@ -307,22 +307,22 @@
     v40 = v35;
   }
 
-  if (v33 != 2)
+  if (preferredMorphingAxis != 2)
   {
     v38 = v39;
   }
 
   CGAffineTransformMakeScale(&v77, v40, v38);
   v76 = v77;
-  [v8 setTransform:&v76];
-  [v9 bounds];
+  [collapsedTransformView setTransform:&v76];
+  [expandedTransformView bounds];
   v42 = v41;
   v64 = v43;
   rectb = v41;
   v44 = v43;
   rect_8b = v45;
   v47 = v46;
-  v48 = [(_UIMorphPlatterViewBase *)self preferredMorphingAxis];
+  preferredMorphingAxis2 = [(_UIMorphPlatterViewBase *)self preferredMorphingAxis];
   v89.origin.x = rect_24;
   v89.origin.y = rect_16;
   v89.size.width = v74;
@@ -344,7 +344,7 @@
   v92.size.height = v47;
   v52 = CGRectGetHeight(v92);
   v53 = v51 / v52;
-  if (v48 == 1)
+  if (preferredMorphingAxis2 == 1)
   {
     v54 = v50;
   }
@@ -354,7 +354,7 @@
     v54 = v51 / v52;
   }
 
-  if (v48 == 2)
+  if (preferredMorphingAxis2 == 2)
   {
     v55 = v51 / v52;
   }
@@ -364,18 +364,18 @@
     v55 = v50;
   }
 
-  if (v48 != 2)
+  if (preferredMorphingAxis2 != 2)
   {
     v53 = v54;
   }
 
   CGAffineTransformMakeScale(&v75, v55, v53);
   v76 = v75;
-  [v9 setTransform:&v76];
+  [expandedTransformView setTransform:&v76];
   if ([(_UIMorphingPlatterView *)self bothViewsAreLikelyOpaque])
   {
-    v56 = [(_UIMorphingPlatterView *)self collapsedClippingView];
-    [(UIView *)self bringSubviewToFront:v56];
+    collapsedClippingView = [(_UIMorphingPlatterView *)self collapsedClippingView];
+    [(UIView *)self bringSubviewToFront:collapsedClippingView];
   }
 
   if (!+[UIView _isInRetargetableAnimationBlock])
@@ -383,7 +383,7 @@
     [(_UIMorphingPlatterView *)self _modelUpdates];
   }
 
-  if (v3)
+  if (expanded)
   {
     v57 = 1.0;
   }
@@ -393,24 +393,24 @@
     v57 = 0.0;
   }
 
-  v58 = [(_UIMorphingPlatterView *)self expansionProgress];
-  [v58 setValue:v57];
+  expansionProgress = [(_UIMorphingPlatterView *)self expansionProgress];
+  [expansionProgress setValue:v57];
 
   v93.origin.x = rect_24;
   v93.origin.y = rect_16;
   v93.size.width = v74;
   v93.size.height = v73;
   v59 = CGRectGetWidth(v93);
-  v60 = [(_UIMorphingPlatterView *)self platterWidth];
-  [v60 setValue:v59];
+  platterWidth = [(_UIMorphingPlatterView *)self platterWidth];
+  [platterWidth setValue:v59];
 
   v94.origin.x = rect_24;
   v94.origin.y = rect_16;
   v94.size.width = v74;
   v94.size.height = v73;
   v61 = CGRectGetHeight(v94);
-  v62 = [(_UIMorphingPlatterView *)self platterHeight];
-  [v62 setValue:v61];
+  platterHeight = [(_UIMorphingPlatterView *)self platterHeight];
+  [platterHeight setValue:v61];
 
   [(_UIMorphingPlatterView *)self _updateCollapsedChrome];
 }
@@ -424,25 +424,25 @@
   v10 = v9;
   v11 = v3 + v7 * 0.5;
   v12 = v5 + v9 * 0.5;
-  v13 = [(_UIMorphingPlatterView *)self collapsedClippingView];
-  [v13 setBounds:{v4, v6, v8, v10}];
+  collapsedClippingView = [(_UIMorphingPlatterView *)self collapsedClippingView];
+  [collapsedClippingView setBounds:{v4, v6, v8, v10}];
 
-  v14 = [(_UIMorphingPlatterView *)self collapsedClippingView];
+  collapsedClippingView2 = [(_UIMorphingPlatterView *)self collapsedClippingView];
   v24 = v12;
-  [v14 setCenter:{v11, v12}];
+  [collapsedClippingView2 setCenter:{v11, v12}];
 
-  v15 = [(_UIMorphingPlatterView *)self expandedClippingView];
-  [v15 setBounds:{v4, v6, v8, v10}];
+  expandedClippingView = [(_UIMorphingPlatterView *)self expandedClippingView];
+  [expandedClippingView setBounds:{v4, v6, v8, v10}];
 
-  v16 = [(_UIMorphingPlatterView *)self expandedClippingView];
-  [v16 setCenter:{v11, v12}];
+  expandedClippingView2 = [(_UIMorphingPlatterView *)self expandedClippingView];
+  [expandedClippingView2 setCenter:{v11, v12}];
 
-  v17 = [(_UIMorphingPlatterView *)self collapsedTransformView];
+  collapsedTransformView = [(_UIMorphingPlatterView *)self collapsedTransformView];
   v18 = 0.0;
-  [v17 setCenter:{v11, 0.0}];
+  [collapsedTransformView setCenter:{v11, 0.0}];
 
-  v19 = [(_UIMorphingPlatterView *)self expandedTransformView];
-  [v19 setCenter:{v11, 0.0}];
+  expandedTransformView = [(_UIMorphingPlatterView *)self expandedTransformView];
+  [expandedTransformView setCenter:{v11, 0.0}];
 
   v20 = 1.0;
   if ([(_UIMorphPlatterViewBase *)self expanded])
@@ -461,11 +461,11 @@
     v18 = v21;
   }
 
-  v22 = [(_UIMorphingPlatterView *)self collapsedClippingView];
-  [v22 setAlpha:v20];
+  collapsedClippingView3 = [(_UIMorphingPlatterView *)self collapsedClippingView];
+  [collapsedClippingView3 setAlpha:v20];
 
-  v23 = [(_UIMorphingPlatterView *)self expandedClippingView];
-  [v23 setAlpha:v18];
+  expandedClippingView3 = [(_UIMorphingPlatterView *)self expandedClippingView];
+  [expandedClippingView3 setAlpha:v18];
 
   [(_UIMorphingPlatterView *)self _updateShadowsWithExpansionProgress:0 contentBounds:v21 center:v4 forPresentation:v6, v8, v10, v11, v24];
 }
@@ -482,12 +482,12 @@
   v5 = objc_opt_new();
   [(_UIMorphingPlatterView *)self setPlatterHeight:v5];
 
-  v6 = [(_UIMorphingPlatterView *)self expansionProgress];
-  v15[0] = v6;
-  v7 = [(_UIMorphingPlatterView *)self platterWidth];
-  v15[1] = v7;
-  v8 = [(_UIMorphingPlatterView *)self platterHeight];
-  v15[2] = v8;
+  expansionProgress = [(_UIMorphingPlatterView *)self expansionProgress];
+  v15[0] = expansionProgress;
+  platterWidth = [(_UIMorphingPlatterView *)self platterWidth];
+  v15[1] = platterWidth;
+  platterHeight = [(_UIMorphingPlatterView *)self platterHeight];
+  v15[2] = platterHeight;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:3];
 
   objc_initWeak(&location, self);
@@ -509,17 +509,17 @@
 
 - (void)_updateClippingViews
 {
-  v3 = [(_UIMorphPlatterViewBase *)self expanded];
+  expanded = [(_UIMorphPlatterViewBase *)self expanded];
   [(UIView *)self bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(_UIMorphingPlatterView *)self collapsedClippingView];
-  v13 = [(_UIMorphingPlatterView *)self expandedClippingView];
+  collapsedClippingView = [(_UIMorphingPlatterView *)self collapsedClippingView];
+  expandedClippingView = [(_UIMorphingPlatterView *)self expandedClippingView];
   v42 = 0;
   v41 = 15;
-  if (v3)
+  if (expanded)
   {
     [(_UIMorphingPlatterView *)self _expandedCornerRadius:&v42 maskedCorners:&v41 ignoreLiftScale:0];
     v15 = _UIClampedCornerRadius(15, v14, v5, v7, v9, v11);
@@ -541,38 +541,38 @@
   if (fabs(v16) < 2.22044605e-16)
   {
     v41 = 15;
-    if (v3)
+    if (expanded)
     {
-      v19 = v12;
+      v19 = collapsedClippingView;
     }
 
     else
     {
-      v19 = v13;
+      v19 = expandedClippingView;
     }
 
-    v20 = [v19 layer];
-    v21 = [v20 cornerCurve];
+    layer = [v19 layer];
+    cornerCurve = [layer cornerCurve];
 
-    v18 = v21;
+    v18 = cornerCurve;
   }
 
-  v22 = [v12 layer];
-  [v22 setCornerCurve:v18];
+  layer2 = [collapsedClippingView layer];
+  [layer2 setCornerCurve:v18];
 
-  v23 = [v13 layer];
-  [v23 setCornerCurve:v18];
+  layer3 = [expandedClippingView layer];
+  [layer3 setCornerCurve:v18];
 
-  v24 = [(UIView *)self traitCollection];
-  v25 = [v24 userInterfaceIdiom];
+  traitCollection = [(UIView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v25 == 6)
+  if (userInterfaceIdiom == 6)
   {
-    v26 = [v12 layer];
-    [v26 setCornerRadius:v16];
+    layer4 = [collapsedClippingView layer];
+    [layer4 setCornerRadius:v16];
 
-    v27 = [v13 layer];
-    [v27 setCornerRadius:v16];
+    layer5 = [expandedClippingView layer];
+    [layer5 setCornerRadius:v16];
   }
 
   else
@@ -617,7 +617,7 @@
       v31 = 0.0;
     }
 
-    v32 = [v12 layer];
+    layer6 = [collapsedClippingView layer];
     v33 = v30;
     v34 = v30;
     v35 = v31;
@@ -626,9 +626,9 @@
     v38 = v29;
     v39 = v28;
     v40 = v28;
-    [v32 setCornerRadii:&v33];
+    [layer6 setCornerRadii:&v33];
 
-    v27 = [v13 layer];
+    layer5 = [expandedClippingView layer];
     v33 = v30;
     v34 = v30;
     v35 = v31;
@@ -637,28 +637,28 @@
     v38 = v29;
     v39 = v28;
     v40 = v28;
-    [v27 setCornerRadii:&v33];
+    [layer5 setCornerRadii:&v33];
   }
 
   [(UIView *)self _setContinuousCornerRadius:v16];
 }
 
-- (double)_collapsedCornerRadius:(BOOL *)a3 maskedCorners:(unint64_t *)a4
+- (double)_collapsedCornerRadius:(BOOL *)radius maskedCorners:(unint64_t *)corners
 {
-  *a4 = 15;
-  *a3 = 1;
+  *corners = 15;
+  *radius = 1;
   [(_UIMorphingPlatterView *)self overrideCollapsedCornerRadius];
   if (v7 <= 2.22507386e-308)
   {
-    v9 = [(_UIMorphPlatterViewBase *)self collapsedPreview];
-    v10 = [v9 _outlineShape];
+    collapsedPreview = [(_UIMorphPlatterViewBase *)self collapsedPreview];
+    _outlineShape = [collapsedPreview _outlineShape];
 
-    [v10 cornerRadius];
+    [_outlineShape cornerRadius];
     v12 = v11;
-    v13 = [v10 cornerCurve];
-    *a3 = v13 == *MEMORY[0x1E69796E8];
+    cornerCurve = [_outlineShape cornerCurve];
+    *radius = cornerCurve == *MEMORY[0x1E69796E8];
 
-    *a4 = [v10 cornerMask];
+    *corners = [_outlineShape cornerMask];
     return v12;
   }
 
@@ -671,10 +671,10 @@
   return result;
 }
 
-- (double)_expandedCornerRadius:(BOOL *)a3 maskedCorners:(unint64_t *)a4 ignoreLiftScale:(BOOL)a5
+- (double)_expandedCornerRadius:(BOOL *)radius maskedCorners:(unint64_t *)corners ignoreLiftScale:(BOOL)scale
 {
-  *a4 = 15;
-  *a3 = 1;
+  *corners = 15;
+  *radius = 1;
   [(_UIMorphingPlatterView *)self overrideExpandedCornerRadius];
   if (v9 > 2.22507386e-308)
   {
@@ -693,27 +693,27 @@
     [(_UIMorphPlatterViewBase *)self expandedPreview];
   }
   v11 = ;
-  v12 = [v11 _outlineShape];
-  [v12 cornerRadius];
+  _outlineShape = [v11 _outlineShape];
+  [_outlineShape cornerRadius];
   v14 = v13;
   if ([(_UIMorphPlatterViewBase *)self alwaysCompact])
   {
-    v15 = [v12 cornerCurve];
-    *a3 = v15 == *MEMORY[0x1E69796E8];
+    cornerCurve = [_outlineShape cornerCurve];
+    *radius = cornerCurve == *MEMORY[0x1E69796E8];
 
-    v16 = [v12 cornerMask];
+    cornerMask = [_outlineShape cornerMask];
   }
 
   else
   {
-    *a3 = 1;
-    v16 = 15;
+    *radius = 1;
+    cornerMask = 15;
   }
 
-  *a4 = v16;
-  v17 = [v11 parameters];
-  v18 = [v17 visiblePath];
-  if (v18)
+  *corners = cornerMask;
+  parameters = [v11 parameters];
+  visiblePath = [parameters visiblePath];
+  if (visiblePath)
   {
 
 LABEL_16:
@@ -722,10 +722,10 @@ LABEL_16:
 
   if (fabs(v14) < 2.22044605e-16)
   {
-    v19 = [(UIView *)self traitCollection];
-    v17 = _UIContextMenuGetPlatformMetrics([v19 userInterfaceIdiom]);
+    traitCollection = [(UIView *)self traitCollection];
+    parameters = _UIContextMenuGetPlatformMetrics([traitCollection userInterfaceIdiom]);
 
-    [v17 previewPlatterCornerRadius];
+    [parameters previewPlatterCornerRadius];
     if (v14 < v20)
     {
       v14 = v20;
@@ -737,7 +737,7 @@ LABEL_16:
 LABEL_17:
   if ([(_UIMorphPlatterViewBase *)self alwaysCompact])
   {
-    if (!a5)
+    if (!scale)
     {
       [(UIView *)self bounds];
       Width = CGRectGetWidth(v24);
@@ -745,7 +745,7 @@ LABEL_17:
       v14 = v14 * (Width / v22);
     }
 
-    *a4 = 15;
+    *corners = 15;
   }
 
   return v14;
@@ -756,18 +756,18 @@ LABEL_17:
   if (![(_UIMorphingPlatterView *)self isFrozen]&& ![(_UIMorphPlatterViewBase *)self alwaysCompact])
   {
     [(_UIMorphingPlatterView *)self setFrozen:1];
-    v13 = [(_UIMorphPlatterViewBase *)self expandedPreview];
-    v3 = [v13 view];
-    [v3 bounds];
-    v8 = _UISnapshotViewRectAfterCommit(v3, 0, v4, v5, v6, v7);
-    [v3 bounds];
+    expandedPreview = [(_UIMorphPlatterViewBase *)self expandedPreview];
+    view = [expandedPreview view];
+    [view bounds];
+    v8 = _UISnapshotViewRectAfterCommit(view, 0, v4, v5, v6, v7);
+    [view bounds];
     [v8 setFrame:?];
     if (v8)
     {
       v9 = [UITargetedPreview alloc];
-      v10 = [v13 parameters];
-      v11 = [v13 target];
-      v12 = [(UITargetedPreview *)v9 initWithView:v8 parameters:v10 target:v11];
+      parameters = [expandedPreview parameters];
+      target = [expandedPreview target];
+      v12 = [(UITargetedPreview *)v9 initWithView:v8 parameters:parameters target:target];
       [(_UIMorphingPlatterView *)self setExpandedPreview:v12];
     }
   }
@@ -775,15 +775,15 @@ LABEL_17:
 
 - (void)didTearOffForDrag
 {
-  v3 = [(_UIMorphingPlatterView *)self collapsedTransformView];
-  [v3 didTearOffForDrag];
+  collapsedTransformView = [(_UIMorphingPlatterView *)self collapsedTransformView];
+  [collapsedTransformView didTearOffForDrag];
 
   if ([(_UIMorphPlatterViewBase *)self alwaysCompact])
   {
-    v4 = [(_UIMorphPlatterViewBase *)self collapsedPreview];
-    v5 = [v4 _previewMode];
+    collapsedPreview = [(_UIMorphPlatterViewBase *)self collapsedPreview];
+    _previewMode = [collapsedPreview _previewMode];
 
-    if (v5 == 4)
+    if (_previewMode == 4)
     {
       CGAffineTransformMakeScale(&v7, 0.909090909, 0.909090909);
       v6 = v7;
@@ -794,57 +794,57 @@ LABEL_17:
 
 - (BOOL)bothViewsAreLikelyOpaque
 {
-  v3 = [(_UIMorphPlatterViewBase *)self collapsedPreview];
-  if ([v3 _isLikelyOpaque])
+  collapsedPreview = [(_UIMorphPlatterViewBase *)self collapsedPreview];
+  if ([collapsedPreview _isLikelyOpaque])
   {
-    v4 = [(_UIMorphPlatterViewBase *)self expandedPreview];
-    v5 = [v4 _isLikelyOpaque];
+    expandedPreview = [(_UIMorphPlatterViewBase *)self expandedPreview];
+    _isLikelyOpaque = [expandedPreview _isLikelyOpaque];
   }
 
   else
   {
-    v5 = 0;
+    _isLikelyOpaque = 0;
   }
 
-  return v5;
+  return _isLikelyOpaque;
 }
 
-- (BOOL)_previewPrefersApplyingMask:(id)a3
+- (BOOL)_previewPrefersApplyingMask:(id)mask
 {
-  v3 = a3;
-  v4 = [v3 _previewMode] != 4 && objc_msgSend(v3, "_previewMode") != 5;
+  maskCopy = mask;
+  v4 = [maskCopy _previewMode] != 4 && objc_msgSend(maskCopy, "_previewMode") != 5;
 
   return v4;
 }
 
-- (void)setCollapsedPreview:(id)a3
+- (void)setCollapsedPreview:(id)preview
 {
-  v4 = a3;
-  v5 = [(_UIMorphPlatterViewBase *)self collapsedPreview];
-  if (v5 != v4)
+  previewCopy = preview;
+  collapsedPreview = [(_UIMorphPlatterViewBase *)self collapsedPreview];
+  if (collapsedPreview != previewCopy)
   {
     v15.receiver = self;
     v15.super_class = _UIMorphingPlatterView;
-    [(_UIMorphPlatterViewBase *)&v15 setCollapsedPreview:v4];
-    v6 = [(_UIMorphingPlatterView *)self collapsedTransformView];
-    [v6 setSourcePreview:v4];
+    [(_UIMorphPlatterViewBase *)&v15 setCollapsedPreview:previewCopy];
+    collapsedTransformView = [(_UIMorphingPlatterView *)self collapsedTransformView];
+    [collapsedTransformView setSourcePreview:previewCopy];
 
     if (_AXSReduceMotionEnabled())
     {
-      v7 = [(_UIMorphingPlatterView *)self collapsedTransformView];
-      [v7 setHidesSourceView:0];
+      collapsedTransformView2 = [(_UIMorphingPlatterView *)self collapsedTransformView];
+      [collapsedTransformView2 setHidesSourceView:0];
     }
 
-    v8 = [(_UIMorphingPlatterView *)self collapsedClippingView];
-    v9 = [(_UIMorphingPlatterView *)self collapsedTransformView];
-    [(_UIMorphingPlatterView *)self _installPreview:v4 inClippingView:v8 transformView:v9];
+    collapsedClippingView = [(_UIMorphingPlatterView *)self collapsedClippingView];
+    collapsedTransformView3 = [(_UIMorphingPlatterView *)self collapsedTransformView];
+    [(_UIMorphingPlatterView *)self _installPreview:previewCopy inClippingView:collapsedClippingView transformView:collapsedTransformView3];
 
-    v10 = [v4 parameters];
-    v11 = [v10 backgroundColor];
-    v12 = [v11 _isOpaque];
-    v13 = [(_UIMorphingPlatterView *)self collapsedClippingView];
-    v14 = [v13 layer];
-    [v14 setAllowsGroupOpacity:v12];
+    parameters = [previewCopy parameters];
+    backgroundColor = [parameters backgroundColor];
+    _isOpaque = [backgroundColor _isOpaque];
+    collapsedClippingView2 = [(_UIMorphingPlatterView *)self collapsedClippingView];
+    layer = [collapsedClippingView2 layer];
+    [layer setAllowsGroupOpacity:_isOpaque];
 
     [(_UIMorphingPlatterView *)self _updatePathShadow];
   }
@@ -854,21 +854,21 @@ LABEL_17:
 {
   if ([(_UIMorphPlatterViewBase *)self expanded])
   {
-    v3 = [(_UIMorphPlatterViewBase *)self expandedShadowStyle];
+    expandedShadowStyle = [(_UIMorphPlatterViewBase *)self expandedShadowStyle];
   }
 
   else
   {
-    v3 = [(_UIMorphPlatterViewBase *)self collapsedShadowStyle];
+    expandedShadowStyle = [(_UIMorphPlatterViewBase *)self collapsedShadowStyle];
   }
 
-  v4 = v3;
+  v4 = expandedShadowStyle;
   v12 = MEMORY[0x1E69E9820];
   v13 = 3221225472;
   v14 = __43___UIMorphingPlatterView__updatePathShadow__block_invoke;
   v15 = &unk_1E70F35E0;
-  v16 = self;
-  v17 = v3 == 1;
+  selfCopy = self;
+  v17 = expandedShadowStyle == 1;
   [UIView performWithoutAnimation:&v12];
   v5 = [(_UIMorphingPlatterView *)self pathShadowView:v12];
 
@@ -884,127 +884,127 @@ LABEL_17:
       v6 = 0.0;
     }
 
-    v7 = [(_UIMorphingPlatterView *)self pathShadowView];
-    [v7 setAlpha:v6];
+    pathShadowView = [(_UIMorphingPlatterView *)self pathShadowView];
+    [pathShadowView setAlpha:v6];
 
-    v8 = [(_UIMorphingPlatterView *)self shadowViews];
-    v9 = [v8 objectForKeyedSubscript:&unk_1EFE32620];
+    shadowViews = [(_UIMorphingPlatterView *)self shadowViews];
+    v9 = [shadowViews objectForKeyedSubscript:&unk_1EFE32620];
     [v9 removeFromSuperview];
 
-    v10 = [(_UIMorphingPlatterView *)self pathShadowView];
-    v11 = [(_UIMorphingPlatterView *)self shadowViews];
-    [v11 setObject:v10 forKeyedSubscript:&unk_1EFE32620];
+    pathShadowView2 = [(_UIMorphingPlatterView *)self pathShadowView];
+    shadowViews2 = [(_UIMorphingPlatterView *)self shadowViews];
+    [shadowViews2 setObject:pathShadowView2 forKeyedSubscript:&unk_1EFE32620];
   }
 }
 
-- (void)setCollapsedShadowStyle:(int64_t)a3
+- (void)setCollapsedShadowStyle:(int64_t)style
 {
   [(_UIMorphPlatterViewBase *)self collapsedShadowStyle];
-  if ([(_UIMorphPlatterViewBase *)self collapsedShadowStyle]!= a3)
+  if ([(_UIMorphPlatterViewBase *)self collapsedShadowStyle]!= style)
   {
     v5.receiver = self;
     v5.super_class = _UIMorphingPlatterView;
-    [(_UIMorphPlatterViewBase *)&v5 setCollapsedShadowStyle:a3];
+    [(_UIMorphPlatterViewBase *)&v5 setCollapsedShadowStyle:style];
     if ([(_UIMorphPlatterViewBase *)self alwaysCompact])
     {
-      [(_UIMorphingPlatterView *)self setExpandedShadowStyle:a3];
+      [(_UIMorphingPlatterView *)self setExpandedShadowStyle:style];
     }
 
-    [(_UIMorphingPlatterView *)self _installShadowViewForStyleIfNecessary:a3];
+    [(_UIMorphingPlatterView *)self _installShadowViewForStyleIfNecessary:style];
   }
 }
 
-- (void)setCollapsedShadowIntensity:(double)a3
+- (void)setCollapsedShadowIntensity:(double)intensity
 {
   [(_UIMorphPlatterViewBase *)self collapsedShadowIntensity];
-  if (vabdd_f64(a3, v5) > 2.22044605e-16)
+  if (vabdd_f64(intensity, v5) > 2.22044605e-16)
   {
     v17.receiver = self;
     v17.super_class = _UIMorphingPlatterView;
-    [(_UIMorphPlatterViewBase *)&v17 setCollapsedShadowIntensity:a3];
-    v6 = [(_UIMorphingPlatterView *)self expansionProgress];
-    [v6 value];
+    [(_UIMorphPlatterViewBase *)&v17 setCollapsedShadowIntensity:intensity];
+    expansionProgress = [(_UIMorphingPlatterView *)self expansionProgress];
+    [expansionProgress value];
     [(_UIMorphingPlatterView *)self _collapsedShadowAlphaForExpansionProgress:?];
     v8 = v7;
 
-    v9 = [(_UIMorphPlatterViewBase *)self shadowSettings];
+    shadowSettings = [(_UIMorphPlatterViewBase *)self shadowSettings];
 
-    if (v9)
+    if (shadowSettings)
     {
-      v10 = [(_UIMorphPlatterViewBase *)self shadowSettings];
-      [v10 opacity];
+      shadowSettings2 = [(_UIMorphPlatterViewBase *)self shadowSettings];
+      [shadowSettings2 opacity];
       v12 = v8 * v11;
-      v13 = [(UIView *)self layer];
+      layer = [(UIView *)self layer];
       *&v14 = v12;
-      [v13 setShadowOpacity:v14];
+      [layer setShadowOpacity:v14];
     }
 
     else
     {
-      v15 = [(_UIMorphingPlatterView *)self shadowViews];
+      shadowViews = [(_UIMorphingPlatterView *)self shadowViews];
       v16 = [MEMORY[0x1E696AD98] numberWithInteger:{-[_UIMorphPlatterViewBase collapsedShadowStyle](self, "collapsedShadowStyle")}];
-      v10 = [v15 objectForKeyedSubscript:v16];
+      shadowSettings2 = [shadowViews objectForKeyedSubscript:v16];
 
-      [v10 setAlpha:v8];
+      [shadowSettings2 setAlpha:v8];
     }
   }
 }
 
-- (void)setExpandedShadowStyle:(int64_t)a3
+- (void)setExpandedShadowStyle:(int64_t)style
 {
-  if ([(_UIMorphPlatterViewBase *)self expandedShadowStyle]!= a3)
+  if ([(_UIMorphPlatterViewBase *)self expandedShadowStyle]!= style)
   {
     v5.receiver = self;
     v5.super_class = _UIMorphingPlatterView;
-    [(_UIMorphPlatterViewBase *)&v5 setExpandedShadowStyle:a3];
-    [(_UIMorphingPlatterView *)self _installShadowViewForStyleIfNecessary:a3];
+    [(_UIMorphPlatterViewBase *)&v5 setExpandedShadowStyle:style];
+    [(_UIMorphingPlatterView *)self _installShadowViewForStyleIfNecessary:style];
   }
 }
 
-- (void)setExpandedShadowIntensity:(double)a3
+- (void)setExpandedShadowIntensity:(double)intensity
 {
   [(_UIMorphPlatterViewBase *)self expandedShadowIntensity];
-  if (vabdd_f64(a3, v5) > 2.22044605e-16)
+  if (vabdd_f64(intensity, v5) > 2.22044605e-16)
   {
     v17.receiver = self;
     v17.super_class = _UIMorphingPlatterView;
-    [(_UIMorphPlatterViewBase *)&v17 setExpandedShadowIntensity:a3];
-    v6 = [(_UIMorphingPlatterView *)self expansionProgress];
-    [v6 value];
+    [(_UIMorphPlatterViewBase *)&v17 setExpandedShadowIntensity:intensity];
+    expansionProgress = [(_UIMorphingPlatterView *)self expansionProgress];
+    [expansionProgress value];
     [(_UIMorphingPlatterView *)self _expandedShadowAlphaForExpansionProgress:?];
     v8 = v7;
 
-    v9 = [(_UIMorphPlatterViewBase *)self shadowSettings];
+    shadowSettings = [(_UIMorphPlatterViewBase *)self shadowSettings];
 
-    if (v9)
+    if (shadowSettings)
     {
-      v10 = [(_UIMorphPlatterViewBase *)self shadowSettings];
-      [v10 opacity];
+      shadowSettings2 = [(_UIMorphPlatterViewBase *)self shadowSettings];
+      [shadowSettings2 opacity];
       v12 = v8 * v11;
-      v13 = [(UIView *)self layer];
+      layer = [(UIView *)self layer];
       *&v14 = v12;
-      [v13 setShadowOpacity:v14];
+      [layer setShadowOpacity:v14];
     }
 
     else
     {
-      v15 = [(_UIMorphingPlatterView *)self shadowViews];
+      shadowViews = [(_UIMorphingPlatterView *)self shadowViews];
       v16 = [MEMORY[0x1E696AD98] numberWithInteger:{-[_UIMorphPlatterViewBase expandedShadowStyle](self, "expandedShadowStyle")}];
-      v10 = [v15 objectForKeyedSubscript:v16];
+      shadowSettings2 = [shadowViews objectForKeyedSubscript:v16];
 
-      [v10 setAlpha:v8];
+      [shadowSettings2 setAlpha:v8];
     }
   }
 }
 
-- (void)setHideChromeWhenCollapsed:(BOOL)a3
+- (void)setHideChromeWhenCollapsed:(BOOL)collapsed
 {
-  v3 = a3;
-  if ([(_UIMorphPlatterViewBase *)self hideChromeWhenCollapsed]!= a3)
+  collapsedCopy = collapsed;
+  if ([(_UIMorphPlatterViewBase *)self hideChromeWhenCollapsed]!= collapsed)
   {
     v5.receiver = self;
     v5.super_class = _UIMorphingPlatterView;
-    [(_UIMorphPlatterViewBase *)&v5 setHideChromeWhenCollapsed:v3];
+    [(_UIMorphPlatterViewBase *)&v5 setHideChromeWhenCollapsed:collapsedCopy];
     [(_UIMorphingPlatterView *)self _updateCollapsedChrome];
   }
 }
@@ -1013,62 +1013,62 @@ LABEL_17:
 {
   if ([(_UIMorphPlatterViewBase *)self hideChromeWhenCollapsed])
   {
-    v3 = [(_UIMorphPlatterViewBase *)self collapsedPreview];
-    v4 = [v3 _isLikelyOpaque];
+    collapsedPreview = [(_UIMorphPlatterViewBase *)self collapsedPreview];
+    _isLikelyOpaque = [collapsedPreview _isLikelyOpaque];
 
-    if ((v4 & 1) == 0)
+    if ((_isLikelyOpaque & 1) == 0)
     {
       v6 = +[UIColor clearColor];
-      v5 = [(_UIMorphingPlatterView *)self collapsedTransformView];
-      [v5 setBackgroundColor:v6];
+      collapsedTransformView = [(_UIMorphingPlatterView *)self collapsedTransformView];
+      [collapsedTransformView setBackgroundColor:v6];
     }
   }
 }
 
-- (void)setExpandedPreview:(id)a3
+- (void)setExpandedPreview:(id)preview
 {
-  v4 = a3;
-  v5 = [(_UIMorphPlatterViewBase *)self expandedPreview];
-  if (v5 != v4)
+  previewCopy = preview;
+  expandedPreview = [(_UIMorphPlatterViewBase *)self expandedPreview];
+  if (expandedPreview != previewCopy)
   {
     v10.receiver = self;
     v10.super_class = _UIMorphingPlatterView;
-    [(_UIMorphPlatterViewBase *)&v10 setExpandedPreview:v4];
+    [(_UIMorphPlatterViewBase *)&v10 setExpandedPreview:previewCopy];
     if ([(_UIMorphPlatterViewBase *)self alwaysCompact])
     {
-      v6 = [(_UIMorphPlatterViewBase *)self collapsedPreview];
-      [v4 _setPreviewMode:{objc_msgSend(v6, "_previewMode")}];
+      collapsedPreview = [(_UIMorphPlatterViewBase *)self collapsedPreview];
+      [previewCopy _setPreviewMode:{objc_msgSend(collapsedPreview, "_previewMode")}];
     }
 
-    v7 = [(_UIMorphingPlatterView *)self expandedTransformView];
-    [v7 setSourcePreview:v4];
+    expandedTransformView = [(_UIMorphingPlatterView *)self expandedTransformView];
+    [expandedTransformView setSourcePreview:previewCopy];
 
-    v8 = [(_UIMorphingPlatterView *)self expandedClippingView];
-    v9 = [(_UIMorphingPlatterView *)self expandedTransformView];
-    [(_UIMorphingPlatterView *)self _installPreview:v4 inClippingView:v8 transformView:v9];
+    expandedClippingView = [(_UIMorphingPlatterView *)self expandedClippingView];
+    expandedTransformView2 = [(_UIMorphingPlatterView *)self expandedTransformView];
+    [(_UIMorphingPlatterView *)self _installPreview:previewCopy inClippingView:expandedClippingView transformView:expandedTransformView2];
   }
 }
 
-- (void)setExpanded:(BOOL)a3
+- (void)setExpanded:(BOOL)expanded
 {
-  v3 = a3;
-  if ([(_UIMorphPlatterViewBase *)self expanded]!= a3)
+  expandedCopy = expanded;
+  if ([(_UIMorphPlatterViewBase *)self expanded]!= expanded)
   {
     v15.receiver = self;
     v15.super_class = _UIMorphingPlatterView;
-    [(_UIMorphPlatterViewBase *)&v15 setExpanded:v3];
-    v5 = [(_UIMorphingPlatterView *)self expandedTransformView];
-    [v5 setHidesSourceView:0];
+    [(_UIMorphPlatterViewBase *)&v15 setExpanded:expandedCopy];
+    expandedTransformView = [(_UIMorphingPlatterView *)self expandedTransformView];
+    [expandedTransformView setHidesSourceView:0];
 
-    v6 = [(_UIMorphingPlatterView *)self collapsedTransformView];
-    [v6 setForwardsHitTestingToSourceView:v3 ^ 1];
+    collapsedTransformView = [(_UIMorphingPlatterView *)self collapsedTransformView];
+    [collapsedTransformView setForwardsHitTestingToSourceView:expandedCopy ^ 1];
 
     [(UIView *)self setNeedsLayout];
-    v7 = [(_UIMorphPlatterViewBase *)self shadowSettings];
+    shadowSettings = [(_UIMorphPlatterViewBase *)self shadowSettings];
 
-    if (v7)
+    if (shadowSettings)
     {
-      if (v3)
+      if (expandedCopy)
       {
         [(_UIMorphPlatterViewBase *)self expandedPreview];
       }
@@ -1078,27 +1078,27 @@ LABEL_17:
         [(_UIMorphPlatterViewBase *)self collapsedPreview];
       }
       v8 = ;
-      v9 = [v8 parameters];
-      v10 = [v9 effectiveShadowPath];
+      parameters = [v8 parameters];
+      effectiveShadowPath = [parameters effectiveShadowPath];
 
-      v11 = [(UIView *)self layer];
-      v12 = v11;
-      if (v10)
+      layer = [(UIView *)self layer];
+      v12 = layer;
+      if (effectiveShadowPath)
       {
-        [v11 setShadowPathIsBounds:0];
+        [layer setShadowPathIsBounds:0];
 
-        v13 = [v10 CGPath];
+        cGPath = [effectiveShadowPath CGPath];
       }
 
       else
       {
-        [v11 setShadowPathIsBounds:1];
+        [layer setShadowPathIsBounds:1];
 
-        v13 = 0;
+        cGPath = 0;
       }
 
-      v14 = [(UIView *)self layer];
-      [v14 setShadowPath:v13];
+      layer2 = [(UIView *)self layer];
+      [layer2 setShadowPath:cGPath];
     }
   }
 }
@@ -1114,69 +1114,69 @@ LABEL_17:
   }
 }
 
-- (void)_installShadowViewForStyleIfNecessary:(int64_t)a3
+- (void)_installShadowViewForStyleIfNecessary:(int64_t)necessary
 {
-  v5 = [(_UIMorphPlatterViewBase *)self shadowSettings];
+  shadowSettings = [(_UIMorphPlatterViewBase *)self shadowSettings];
 
-  if (!v5)
+  if (!shadowSettings)
   {
-    v6 = [(_UIMorphingPlatterView *)self shadowViews];
-    v7 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-    v8 = [v6 objectForKeyedSubscript:v7];
+    shadowViews = [(_UIMorphingPlatterView *)self shadowViews];
+    v7 = [MEMORY[0x1E696AD98] numberWithInteger:necessary];
+    pathShadowView = [shadowViews objectForKeyedSubscript:v7];
 
-    if (v8)
+    if (pathShadowView)
     {
       goto LABEL_12;
     }
 
-    switch(a3)
+    switch(necessary)
     {
       case 1:
-        v8 = [(_UIMorphingPlatterView *)self pathShadowView];
+        pathShadowView = [(_UIMorphingPlatterView *)self pathShadowView];
         break;
       case 3:
         v14 = [_UIDiffuseShadowView alloc];
-        v15 = [(_UIMorphingPlatterView *)self expandedClippingView];
-        [v15 bounds];
-        v8 = [(_UIDiffuseShadowView *)v14 initWithFrame:?];
+        expandedClippingView = [(_UIMorphingPlatterView *)self expandedClippingView];
+        [expandedClippingView bounds];
+        pathShadowView = [(_UIDiffuseShadowView *)v14 initWithFrame:?];
 
         break;
       case 2:
-        v9 = [(_UIMorphPlatterViewBase *)self expandedPreview];
-        [v9 _previewMode];
+        expandedPreview = [(_UIMorphPlatterViewBase *)self expandedPreview];
+        [expandedPreview _previewMode];
         v10 = objc_opt_class();
 
         v25 = 0;
         v24 = 0;
         v11 = [v10 alloc];
         [(_UIMorphingPlatterView *)self _expandedCornerRadius:&v25 maskedCorners:&v24 ignoreLiftScale:1];
-        v8 = [v11 initWithCornerRadius:?];
+        pathShadowView = [v11 initWithCornerRadius:?];
         v12 = +[UIDevice currentDevice];
-        v13 = [v12 userInterfaceIdiom];
+        userInterfaceIdiom = [v12 userInterfaceIdiom];
 
-        [(_UIDiffuseShadowView *)v8 setUseLowerIntensity:(v13 & 0xFFFFFFFFFFFFFFFBLL) == 1];
+        [(_UIDiffuseShadowView *)pathShadowView setUseLowerIntensity:(userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1];
         break;
       default:
-        v8 = 0;
+        pathShadowView = 0;
 LABEL_12:
         v16 = [(_UIMorphingPlatterView *)self shadowViews:v18];
-        v17 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-        [v16 setObject:v8 forKeyedSubscript:v17];
+        v17 = [MEMORY[0x1E696AD98] numberWithInteger:necessary];
+        [v16 setObject:pathShadowView forKeyedSubscript:v17];
 
         [(UIView *)self setNeedsLayout];
         return;
     }
 
-    if (v8)
+    if (pathShadowView)
     {
-      [(UIView *)v8 setUserInteractionEnabled:0];
+      [(UIView *)pathShadowView setUserInteractionEnabled:0];
       v18 = MEMORY[0x1E69E9820];
       v19 = 3221225472;
       v20 = __64___UIMorphingPlatterView__installShadowViewForStyleIfNecessary___block_invoke;
       v21 = &unk_1E70F35B8;
-      v22 = self;
-      v8 = v8;
-      v23 = v8;
+      selfCopy = self;
+      pathShadowView = pathShadowView;
+      v23 = pathShadowView;
       [UIView performWithoutAnimation:&v18];
     }
 
@@ -1184,22 +1184,22 @@ LABEL_12:
   }
 }
 
-- (void)_updateShadowsWithExpansionProgress:(double)a3 contentBounds:(CGRect)a4 center:(CGPoint)a5 forPresentation:(BOOL)a6
+- (void)_updateShadowsWithExpansionProgress:(double)progress contentBounds:(CGRect)bounds center:(CGPoint)center forPresentation:(BOOL)presentation
 {
-  v6 = a6;
-  x = a5.x;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  v11 = a4.origin.x;
-  v14 = a3;
-  if (a6)
+  presentationCopy = presentation;
+  x = center.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  v11 = bounds.origin.x;
+  progressCopy = progress;
+  if (presentation)
   {
-    v14 = fmax(fmin(a3 / 0.4, 1.0), 0.0);
+    progressCopy = fmax(fmin(progress / 0.4, 1.0), 0.0);
   }
 
-  v15 = [(_UIMorphPlatterViewBase *)self collapsedShadowStyle];
-  if (v15 == [(_UIMorphPlatterViewBase *)self expandedShadowStyle])
+  collapsedShadowStyle = [(_UIMorphPlatterViewBase *)self collapsedShadowStyle];
+  if (collapsedShadowStyle == [(_UIMorphPlatterViewBase *)self expandedShadowStyle])
   {
     v16 = 1.0;
     v17 = 1.0;
@@ -1213,15 +1213,15 @@ LABEL_12:
 
   else
   {
-    [(_UIMorphingPlatterView *)self _expandedShadowAlphaForExpansionProgress:v14];
+    [(_UIMorphingPlatterView *)self _expandedShadowAlphaForExpansionProgress:progressCopy];
     v17 = v19;
-    [(_UIMorphingPlatterView *)self _collapsedShadowAlphaForExpansionProgress:v14];
+    [(_UIMorphingPlatterView *)self _collapsedShadowAlphaForExpansionProgress:progressCopy];
     v16 = v20;
   }
 
-  v21 = [(_UIMorphPlatterViewBase *)self shadowSettings];
+  shadowSettings = [(_UIMorphPlatterViewBase *)self shadowSettings];
 
-  if (v21)
+  if (shadowSettings)
   {
     v22 = 0.0;
     v23 = 0.0;
@@ -1237,28 +1237,28 @@ LABEL_12:
       v22 = v25;
     }
 
-    v26 = [(_UIMorphPlatterViewBase *)self shadowSettings];
-    [v26 opacity];
-    v28 = ((1.0 - a3) * v23 + v22 * a3) * v27;
+    shadowSettings2 = [(_UIMorphPlatterViewBase *)self shadowSettings];
+    [shadowSettings2 opacity];
+    v28 = ((1.0 - progress) * v23 + v22 * progress) * v27;
 
-    if (v6)
+    if (presentationCopy)
     {
-      v33 = [MEMORY[0x1E696AD98] numberWithDouble:v28];
-      [(UIView *)self _setPresentationValue:v33 forKey:@"shadowOpacity"];
+      layer = [MEMORY[0x1E696AD98] numberWithDouble:v28];
+      [(UIView *)self _setPresentationValue:layer forKey:@"shadowOpacity"];
     }
 
     else
     {
-      v33 = [(UIView *)self layer];
+      layer = [(UIView *)self layer];
       v30 = v28;
       *&v31 = v30;
-      [v33 setShadowOpacity:v31];
+      [layer setShadowOpacity:v31];
     }
   }
 
   else
   {
-    v29 = [(_UIMorphingPlatterView *)self shadowViews];
+    shadowViews = [(_UIMorphingPlatterView *)self shadowViews];
     v34[0] = MEMORY[0x1E69E9820];
     v34[1] = 3221225472;
     v34[2] = __99___UIMorphingPlatterView__updateShadowsWithExpansionProgress_contentBounds_center_forPresentation___block_invoke;
@@ -1270,11 +1270,11 @@ LABEL_12:
     v34[4] = self;
     *&v34[9] = v17;
     *&v34[10] = v16;
-    v35 = v6;
-    *&v34[11] = a3;
+    v35 = presentationCopy;
+    *&v34[11] = progress;
     *&v34[12] = x;
     v34[13] = v32;
-    [v29 enumerateKeysAndObjectsUsingBlock:v34];
+    [shadowViews enumerateKeysAndObjectsUsingBlock:v34];
   }
 }
 
@@ -1285,11 +1285,11 @@ LABEL_12:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(_UIMorphingPlatterView *)self pathShadowView];
+  pathShadowView = [(_UIMorphingPlatterView *)self pathShadowView];
   rect = v4;
-  [v11 setCenter:{v4 + v8 * 0.5, v6 + v10 * 0.5}];
-  v12 = [(_UIMorphingPlatterView *)self collapsedTransformView];
-  [v12 bounds];
+  [pathShadowView setCenter:{v4 + v8 * 0.5, v6 + v10 * 0.5}];
+  collapsedTransformView = [(_UIMorphingPlatterView *)self collapsedTransformView];
+  [collapsedTransformView bounds];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -1316,29 +1316,29 @@ LABEL_12:
   v24 = CGRectGetHeight(v31);
   CGAffineTransformMakeScale(&v27, v22, Height / v24);
   rect_8 = v27;
-  [v11 setTransform:&rect_8];
+  [pathShadowView setTransform:&rect_8];
 }
 
-- (void)_installPreview:(id)a3 inClippingView:(id)a4 transformView:(id)a5
+- (void)_installPreview:(id)preview inClippingView:(id)view transformView:(id)transformView
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (![(_UIMorphingPlatterView *)self _previewPrefersApplyingMask:v8])
+  previewCopy = preview;
+  viewCopy = view;
+  transformViewCopy = transformView;
+  if (![(_UIMorphingPlatterView *)self _previewPrefersApplyingMask:previewCopy])
   {
     goto LABEL_19;
   }
 
-  v11 = [v8 parameters];
-  v12 = [v11 backgroundColor];
+  parameters = [previewCopy parameters];
+  backgroundColor = [parameters backgroundColor];
 
-  v13 = [v8 parameters];
-  v14 = [v13 visiblePath];
-  v15 = [v14 copy];
+  parameters2 = [previewCopy parameters];
+  visiblePath = [parameters2 visiblePath];
+  v15 = [visiblePath copy];
 
-  v16 = [v8 view];
+  view = [previewCopy view];
   v17 = v15;
-  v18 = v16;
+  v18 = view;
   v19 = v18;
   if (v17)
   {
@@ -1360,18 +1360,18 @@ LABEL_10:
       CGAffineTransformMakeTranslation(&v48, v39, -MinY);
       [v17 applyTransform:&v48];
       v41 = [_UIShapeView alloc];
-      [v10 bounds];
+      [transformViewCopy bounds];
       v42 = [(UIView *)v41 initWithFrame:?];
-      v43 = [v17 CGPath];
-      v44 = [(_UIShapeView *)v42 shapeLayer];
-      [v44 setPath:v43];
+      cGPath = [v17 CGPath];
+      shapeLayer = [(_UIShapeView *)v42 shapeLayer];
+      [shapeLayer setPath:cGPath];
 
-      [v10 setMaskView:v42];
-      [v10 setBackgroundColor:v12];
+      [transformViewCopy setMaskView:v42];
+      [transformViewCopy setBackgroundColor:backgroundColor];
       v45 = +[UIColor clearColor];
-      [v9 setBackgroundColor:v45];
+      [viewCopy setBackgroundColor:v45];
 
-      [v9 setClipsToBounds:0];
+      [viewCopy setClipsToBounds:0];
 LABEL_15:
 
       goto LABEL_16;
@@ -1403,35 +1403,35 @@ LABEL_15:
   {
   }
 
-  [v10 setMaskView:0];
-  [v10 setBackgroundColor:v12];
-  v33 = [(_UIMorphPlatterViewBase *)self shouldApplyClippingHandler];
+  [transformViewCopy setMaskView:0];
+  [transformViewCopy setBackgroundColor:backgroundColor];
+  shouldApplyClippingHandler = [(_UIMorphPlatterViewBase *)self shouldApplyClippingHandler];
 
-  if (v33)
+  if (shouldApplyClippingHandler)
   {
-    v34 = [(_UIMorphPlatterViewBase *)self shouldApplyClippingHandler];
-    [v9 setClipsToBounds:{(v34)[2](v34, v8)}];
+    shouldApplyClippingHandler2 = [(_UIMorphPlatterViewBase *)self shouldApplyClippingHandler];
+    [viewCopy setClipsToBounds:{(shouldApplyClippingHandler2)[2](shouldApplyClippingHandler2, previewCopy)}];
   }
 
   else
   {
-    [v9 setClipsToBounds:1];
+    [viewCopy setClipsToBounds:1];
   }
 
-  if (![v12 _isOpaque])
+  if (![backgroundColor _isOpaque])
   {
     v42 = +[UIColor clearColor];
-    [v9 setBackgroundColor:v42];
+    [viewCopy setBackgroundColor:v42];
     goto LABEL_15;
   }
 
-  [v9 setBackgroundColor:v12];
+  [viewCopy setBackgroundColor:backgroundColor];
 LABEL_16:
   if ([(_UIMorphingPlatterView *)self bothViewsAreLikelyOpaque])
   {
     v46 = +[UIColor clearColor];
-    v47 = [(_UIMorphingPlatterView *)self collapsedClippingView];
-    [v47 setBackgroundColor:v46];
+    collapsedClippingView = [(_UIMorphingPlatterView *)self collapsedClippingView];
+    [collapsedClippingView setBackgroundColor:v46];
   }
 
 LABEL_19:

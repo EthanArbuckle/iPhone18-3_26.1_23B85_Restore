@@ -1,22 +1,22 @@
 @interface BLSRequestLiveUpdatingAttribute
-+ (id)requestLiveUpdatingForFBSScene:(id)a3;
-+ (id)requestLiveUpdatingForFBSSceneIdentityToken:(id)a3;
++ (id)requestLiveUpdatingForFBSScene:(id)scene;
++ (id)requestLiveUpdatingForFBSSceneIdentityToken:(id)token;
 @end
 
 @implementation BLSRequestLiveUpdatingAttribute
 
-+ (id)requestLiveUpdatingForFBSScene:(id)a3
++ (id)requestLiveUpdatingForFBSScene:(id)scene
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithFBSScene:v4];
+  sceneCopy = scene;
+  v5 = [[self alloc] initWithFBSScene:sceneCopy];
 
   return v5;
 }
 
-+ (id)requestLiveUpdatingForFBSSceneIdentityToken:(id)a3
++ (id)requestLiveUpdatingForFBSSceneIdentityToken:(id)token
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithSceneIdentityToken:v4];
+  tokenCopy = token;
+  v5 = [[self alloc] initWithSceneIdentityToken:tokenCopy];
 
   return v5;
 }

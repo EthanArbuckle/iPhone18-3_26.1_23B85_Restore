@@ -1,23 +1,23 @@
 @interface NEKPBValidationWrapper
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasMasterCount:(BOOL)a3;
-- (void)setHasOccurrenceCount:(BOOL)a3;
-- (void)setHasShowAlert:(BOOL)a3;
-- (void)setHasStartDate:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasMasterCount:(BOOL)count;
+- (void)setHasOccurrenceCount:(BOOL)count;
+- (void)setHasShowAlert:(BOOL)alert;
+- (void)setHasStartDate:(BOOL)date;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NEKPBValidationWrapper
 
-- (void)setHasStartDate:(BOOL)a3
+- (void)setHasStartDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 8;
   }
@@ -30,9 +30,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasMasterCount:(BOOL)a3
+- (void)setHasMasterCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 2;
   }
@@ -45,9 +45,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasOccurrenceCount:(BOOL)a3
+- (void)setHasOccurrenceCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 4;
   }
@@ -60,9 +60,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasShowAlert:(BOOL)a3
+- (void)setHasShowAlert:(BOOL)alert
 {
-  if (a3)
+  if (alert)
   {
     v3 = 16;
   }
@@ -80,8 +80,8 @@
   v7.receiver = self;
   v7.super_class = NEKPBValidationWrapper;
   v3 = [(NEKPBValidationWrapper *)&v7 description];
-  v4 = [(NEKPBValidationWrapper *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(NEKPBValidationWrapper *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -160,9 +160,9 @@ LABEL_7:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -228,14 +228,14 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 8) != 0)
   {
-    v4[4] = *&self->_startDate;
-    *(v4 + 44) |= 8u;
+    toCopy[4] = *&self->_startDate;
+    *(toCopy + 44) |= 8u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -254,8 +254,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[1] = *&self->_endDate;
-  *(v4 + 44) |= 1u;
+  toCopy[1] = *&self->_endDate;
+  *(toCopy + 44) |= 1u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -269,8 +269,8 @@ LABEL_4:
   }
 
 LABEL_12:
-  v4[2] = self->_masterCount;
-  *(v4 + 44) |= 2u;
+  toCopy[2] = self->_masterCount;
+  *(toCopy + 44) |= 2u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -284,21 +284,21 @@ LABEL_5:
   }
 
 LABEL_13:
-  v4[3] = self->_occurrenceCount;
-  *(v4 + 44) |= 4u;
+  toCopy[3] = self->_occurrenceCount;
+  *(toCopy + 44) |= 4u;
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_6:
-    *(v4 + 40) = self->_showAlert;
-    *(v4 + 44) |= 0x10u;
+    *(toCopy + 40) = self->_showAlert;
+    *(toCopy + 44) |= 0x10u;
   }
 
 LABEL_7:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -365,70 +365,70 @@ LABEL_6:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_24;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 44) & 8) == 0 || self->_startDate != *(v4 + 4))
+    if ((*(equalCopy + 44) & 8) == 0 || self->_startDate != *(equalCopy + 4))
     {
       goto LABEL_24;
     }
   }
 
-  else if ((*(v4 + 44) & 8) != 0)
+  else if ((*(equalCopy + 44) & 8) != 0)
   {
     goto LABEL_24;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 44) & 1) == 0 || self->_endDate != *(v4 + 1))
+    if ((*(equalCopy + 44) & 1) == 0 || self->_endDate != *(equalCopy + 1))
     {
       goto LABEL_24;
     }
   }
 
-  else if (*(v4 + 44))
+  else if (*(equalCopy + 44))
   {
     goto LABEL_24;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 44) & 2) == 0 || self->_masterCount != *(v4 + 2))
+    if ((*(equalCopy + 44) & 2) == 0 || self->_masterCount != *(equalCopy + 2))
     {
       goto LABEL_24;
     }
   }
 
-  else if ((*(v4 + 44) & 2) != 0)
+  else if ((*(equalCopy + 44) & 2) != 0)
   {
     goto LABEL_24;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 44) & 4) == 0 || self->_occurrenceCount != *(v4 + 3))
+    if ((*(equalCopy + 44) & 4) == 0 || self->_occurrenceCount != *(equalCopy + 3))
     {
       goto LABEL_24;
     }
   }
 
-  else if ((*(v4 + 44) & 4) != 0)
+  else if ((*(equalCopy + 44) & 4) != 0)
   {
     goto LABEL_24;
   }
 
-  v5 = (*(v4 + 44) & 0x10) == 0;
+  v5 = (*(equalCopy + 44) & 0x10) == 0;
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 44) & 0x10) == 0)
+    if ((*(equalCopy + 44) & 0x10) == 0)
     {
 LABEL_24:
       v5 = 0;
@@ -437,13 +437,13 @@ LABEL_24:
 
     if (self->_showAlert)
     {
-      if ((*(v4 + 40) & 1) == 0)
+      if ((*(equalCopy + 40) & 1) == 0)
       {
         goto LABEL_24;
       }
     }
 
-    else if (*(v4 + 40))
+    else if (*(equalCopy + 40))
     {
       goto LABEL_24;
     }
@@ -563,15 +563,15 @@ LABEL_20:
   return v8 ^ v4 ^ v12 ^ v13 ^ v14;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 44);
+  fromCopy = from;
+  v5 = *(fromCopy + 44);
   if ((v5 & 8) != 0)
   {
-    self->_startDate = *(v4 + 4);
+    self->_startDate = *(fromCopy + 4);
     *&self->_has |= 8u;
-    v5 = *(v4 + 44);
+    v5 = *(fromCopy + 44);
     if ((v5 & 1) == 0)
     {
 LABEL_3:
@@ -584,14 +584,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 44) & 1) == 0)
+  else if ((*(fromCopy + 44) & 1) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_endDate = *(v4 + 1);
+  self->_endDate = *(fromCopy + 1);
   *&self->_has |= 1u;
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 2) == 0)
   {
 LABEL_4:
@@ -604,9 +604,9 @@ LABEL_4:
   }
 
 LABEL_12:
-  self->_masterCount = *(v4 + 2);
+  self->_masterCount = *(fromCopy + 2);
   *&self->_has |= 2u;
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 4) == 0)
   {
 LABEL_5:
@@ -619,12 +619,12 @@ LABEL_5:
   }
 
 LABEL_13:
-  self->_occurrenceCount = *(v4 + 3);
+  self->_occurrenceCount = *(fromCopy + 3);
   *&self->_has |= 4u;
-  if ((*(v4 + 44) & 0x10) != 0)
+  if ((*(fromCopy + 44) & 0x10) != 0)
   {
 LABEL_6:
-    self->_showAlert = *(v4 + 40);
+    self->_showAlert = *(fromCopy + 40);
     *&self->_has |= 0x10u;
   }
 

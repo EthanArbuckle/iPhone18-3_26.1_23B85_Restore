@@ -3,8 +3,8 @@
 - (ENBusinessNoteStoreClientDelegate)delegate;
 - (NSString)noteStoreUrl;
 - (id)authenticationToken;
-- (void)createBusinessNotebook:(id)a3 completion:(id)a4;
-- (void)createBusinessNotebook:(id)a3 success:(id)a4 failure:(id)a5;
+- (void)createBusinessNotebook:(id)notebook completion:(id)completion;
+- (void)createBusinessNotebook:(id)notebook success:(id)success failure:(id)failure;
 @end
 
 @implementation ENBusinessNoteStoreClient
@@ -16,19 +16,19 @@
   return WeakRetained;
 }
 
-- (void)createBusinessNotebook:(id)a3 success:(id)a4 failure:(id)a5
+- (void)createBusinessNotebook:(id)notebook success:(id)success failure:(id)failure
 {
-  v8 = a4;
-  v9 = a5;
+  successCopy = success;
+  failureCopy = failure;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __68__ENBusinessNoteStoreClient_createBusinessNotebook_success_failure___block_invoke;
   v12[3] = &unk_278C1FE80;
-  v13 = v8;
-  v14 = v9;
-  v10 = v9;
-  v11 = v8;
-  [(ENBusinessNoteStoreClient *)self createBusinessNotebook:a3 completion:v12];
+  v13 = successCopy;
+  v14 = failureCopy;
+  v10 = failureCopy;
+  v11 = successCopy;
+  [(ENBusinessNoteStoreClient *)self createBusinessNotebook:notebook completion:v12];
 }
 
 uint64_t __68__ENBusinessNoteStoreClient_createBusinessNotebook_success_failure___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -44,16 +44,16 @@ uint64_t __68__ENBusinessNoteStoreClient_createBusinessNotebook_success_failure_
   }
 }
 
-- (void)createBusinessNotebook:(id)a3 completion:(id)a4
+- (void)createBusinessNotebook:(id)notebook completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __63__ENBusinessNoteStoreClient_createBusinessNotebook_completion___block_invoke;
   v8[3] = &unk_278C1A010;
-  v9 = v6;
-  v7 = v6;
-  [(ENNoteStoreClient *)self createNotebook:a3 completion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [(ENNoteStoreClient *)self createNotebook:notebook completion:v8];
 }
 
 void __63__ENBusinessNoteStoreClient_createBusinessNotebook_completion___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -95,32 +95,32 @@ void __63__ENBusinessNoteStoreClient_createBusinessNotebook_completion___block_i
 
 - (id)authenticationToken
 {
-  v4 = [(ENBusinessNoteStoreClient *)self delegate];
+  delegate = [(ENBusinessNoteStoreClient *)self delegate];
 
-  if (!v4)
+  if (!delegate)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"ENBusinessNoteStoreClient.m" lineNumber:46 description:@"ENBusinessNoteStoreClient delegate not set"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ENBusinessNoteStoreClient.m" lineNumber:46 description:@"ENBusinessNoteStoreClient delegate not set"];
   }
 
-  v5 = [(ENBusinessNoteStoreClient *)self delegate];
-  v6 = [v5 authenticationTokenForBusinessStoreClient:self];
+  delegate2 = [(ENBusinessNoteStoreClient *)self delegate];
+  v6 = [delegate2 authenticationTokenForBusinessStoreClient:self];
 
   return v6;
 }
 
 - (NSString)noteStoreUrl
 {
-  v4 = [(ENBusinessNoteStoreClient *)self delegate];
+  delegate = [(ENBusinessNoteStoreClient *)self delegate];
 
-  if (!v4)
+  if (!delegate)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"ENBusinessNoteStoreClient.m" lineNumber:40 description:@"ENBusinessNoteStoreClient delegate not set"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ENBusinessNoteStoreClient.m" lineNumber:40 description:@"ENBusinessNoteStoreClient delegate not set"];
   }
 
-  v5 = [(ENBusinessNoteStoreClient *)self delegate];
-  v6 = [v5 noteStoreUrlForBusinessStoreClient:self];
+  delegate2 = [(ENBusinessNoteStoreClient *)self delegate];
+  v6 = [delegate2 noteStoreUrlForBusinessStoreClient:self];
 
   return v6;
 }

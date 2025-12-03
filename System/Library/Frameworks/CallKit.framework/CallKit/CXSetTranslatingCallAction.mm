@@ -1,27 +1,27 @@
 @interface CXSetTranslatingCallAction
-- (CXSetTranslatingCallAction)initWithCallUUID:(id)a3 isTranslating:(BOOL)a4 isSystemInitiated:(BOOL)a5 localLanguage:(id)a6 remoteLanguage:(id)a7;
-- (CXSetTranslatingCallAction)initWithCallUUID:(id)a3 isTranslating:(BOOL)a4 localLanguage:(id)a5 remoteLanguage:(id)a6;
-- (CXSetTranslatingCallAction)initWithCoder:(id)a3;
+- (CXSetTranslatingCallAction)initWithCallUUID:(id)d isTranslating:(BOOL)translating isSystemInitiated:(BOOL)initiated localLanguage:(id)language remoteLanguage:(id)remoteLanguage;
+- (CXSetTranslatingCallAction)initWithCallUUID:(id)d isTranslating:(BOOL)translating localLanguage:(id)language remoteLanguage:(id)remoteLanguage;
+- (CXSetTranslatingCallAction)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)fulfillUsingTranslationEngine:(int64_t)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)fulfillUsingTranslationEngine:(int64_t)engine;
 @end
 
 @implementation CXSetTranslatingCallAction
 
-- (CXSetTranslatingCallAction)initWithCallUUID:(id)a3 isTranslating:(BOOL)a4 localLanguage:(id)a5 remoteLanguage:(id)a6
+- (CXSetTranslatingCallAction)initWithCallUUID:(id)d isTranslating:(BOOL)translating localLanguage:(id)language remoteLanguage:(id)remoteLanguage
 {
-  v11 = a5;
-  v12 = a6;
+  languageCopy = language;
+  remoteLanguageCopy = remoteLanguage;
   v16.receiver = self;
   v16.super_class = CXSetTranslatingCallAction;
-  v13 = [(CXCallAction *)&v16 initWithCallUUID:a3];
+  v13 = [(CXCallAction *)&v16 initWithCallUUID:d];
   v14 = v13;
   if (v13)
   {
-    v13->_isTranslating = a4;
-    objc_storeStrong(&v13->_localLanguage, a5);
-    objc_storeStrong(&v14->_remoteLanguage, a6);
+    v13->_isTranslating = translating;
+    objc_storeStrong(&v13->_localLanguage, language);
+    objc_storeStrong(&v14->_remoteLanguage, remoteLanguage);
     v14->_isSystemInitiated = 0;
     v14->_translationEngine = 0;
   }
@@ -29,20 +29,20 @@
   return v14;
 }
 
-- (CXSetTranslatingCallAction)initWithCallUUID:(id)a3 isTranslating:(BOOL)a4 isSystemInitiated:(BOOL)a5 localLanguage:(id)a6 remoteLanguage:(id)a7
+- (CXSetTranslatingCallAction)initWithCallUUID:(id)d isTranslating:(BOOL)translating isSystemInitiated:(BOOL)initiated localLanguage:(id)language remoteLanguage:(id)remoteLanguage
 {
-  v13 = a6;
-  v14 = a7;
+  languageCopy = language;
+  remoteLanguageCopy = remoteLanguage;
   v18.receiver = self;
   v18.super_class = CXSetTranslatingCallAction;
-  v15 = [(CXCallAction *)&v18 initWithCallUUID:a3];
+  v15 = [(CXCallAction *)&v18 initWithCallUUID:d];
   v16 = v15;
   if (v15)
   {
-    v15->_isTranslating = a4;
-    v15->_isSystemInitiated = a5;
-    objc_storeStrong(&v15->_localLanguage, a6);
-    objc_storeStrong(&v16->_remoteLanguage, a7);
+    v15->_isTranslating = translating;
+    v15->_isSystemInitiated = initiated;
+    objc_storeStrong(&v15->_localLanguage, language);
+    objc_storeStrong(&v16->_remoteLanguage, remoteLanguage);
     v16->_translationEngine = 0;
   }
 
@@ -59,61 +59,61 @@
 
   [v5 appendFormat:@" isTranslating=%d", -[CXSetTranslatingCallAction isTranslating](self, "isTranslating")];
   [v5 appendFormat:@" isSystemInitiated=%d", -[CXSetTranslatingCallAction isSystemInitiated](self, "isSystemInitiated")];
-  v6 = [(CXSetTranslatingCallAction *)self localLanguage];
-  [v5 appendFormat:@" localLanguage=%@", v6];
+  localLanguage = [(CXSetTranslatingCallAction *)self localLanguage];
+  [v5 appendFormat:@" localLanguage=%@", localLanguage];
 
-  v7 = [(CXSetTranslatingCallAction *)self remoteLanguage];
-  [v5 appendFormat:@" remoteLanguage=%@", v7];
+  remoteLanguage = [(CXSetTranslatingCallAction *)self remoteLanguage];
+  [v5 appendFormat:@" remoteLanguage=%@", remoteLanguage];
 
   [v5 appendFormat:@" translationEngine=%lu", -[CXSetTranslatingCallAction translationEngine](self, "translationEngine")];
 
   return v5;
 }
 
-- (CXSetTranslatingCallAction)initWithCoder:(id)a3
+- (CXSetTranslatingCallAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CXSetTranslatingCallAction;
-  v5 = [(CXCallAction *)&v11 initWithCoder:v4];
+  v5 = [(CXCallAction *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_isTranslating = [v4 decodeBoolForKey:@"isTranslating"];
-    v5->_isSystemInitiated = [v4 decodeBoolForKey:@"isSystemInitiated"];
-    v6 = [v4 decodeObjectForKey:@"localLanguage"];
+    v5->_isTranslating = [coderCopy decodeBoolForKey:@"isTranslating"];
+    v5->_isSystemInitiated = [coderCopy decodeBoolForKey:@"isSystemInitiated"];
+    v6 = [coderCopy decodeObjectForKey:@"localLanguage"];
     localLanguage = v5->_localLanguage;
     v5->_localLanguage = v6;
 
-    v8 = [v4 decodeObjectForKey:@"remoteLanguage"];
+    v8 = [coderCopy decodeObjectForKey:@"remoteLanguage"];
     remoteLanguage = v5->_remoteLanguage;
     v5->_remoteLanguage = v8;
 
-    v5->_translationEngine = [v4 decodeIntForKey:@"translationEngine"];
+    v5->_translationEngine = [coderCopy decodeIntForKey:@"translationEngine"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = CXSetTranslatingCallAction;
-  v4 = a3;
-  [(CXCallAction *)&v7 encodeWithCoder:v4];
-  [v4 encodeBool:-[CXSetTranslatingCallAction isTranslating](self forKey:{"isTranslating", v7.receiver, v7.super_class), @"isTranslating"}];
-  [v4 encodeBool:-[CXSetTranslatingCallAction isSystemInitiated](self forKey:{"isSystemInitiated"), @"isSystemInitiated"}];
-  v5 = [(CXSetTranslatingCallAction *)self localLanguage];
-  [v4 encodeObject:v5 forKey:@"localLanguage"];
+  coderCopy = coder;
+  [(CXCallAction *)&v7 encodeWithCoder:coderCopy];
+  [coderCopy encodeBool:-[CXSetTranslatingCallAction isTranslating](self forKey:{"isTranslating", v7.receiver, v7.super_class), @"isTranslating"}];
+  [coderCopy encodeBool:-[CXSetTranslatingCallAction isSystemInitiated](self forKey:{"isSystemInitiated"), @"isSystemInitiated"}];
+  localLanguage = [(CXSetTranslatingCallAction *)self localLanguage];
+  [coderCopy encodeObject:localLanguage forKey:@"localLanguage"];
 
-  v6 = [(CXSetTranslatingCallAction *)self remoteLanguage];
-  [v4 encodeObject:v6 forKey:@"remoteLanguage"];
+  remoteLanguage = [(CXSetTranslatingCallAction *)self remoteLanguage];
+  [coderCopy encodeObject:remoteLanguage forKey:@"remoteLanguage"];
 
-  [v4 encodeInteger:-[CXSetTranslatingCallAction translationEngine](self forKey:{"translationEngine"), @"translationEngine"}];
+  [coderCopy encodeInteger:-[CXSetTranslatingCallAction translationEngine](self forKey:{"translationEngine"), @"translationEngine"}];
 }
 
-- (void)fulfillUsingTranslationEngine:(int64_t)a3
+- (void)fulfillUsingTranslationEngine:(int64_t)engine
 {
-  self->_translationEngine = a3;
+  self->_translationEngine = engine;
   v3.receiver = self;
   v3.super_class = CXSetTranslatingCallAction;
   [(CXAction *)&v3 fulfill];

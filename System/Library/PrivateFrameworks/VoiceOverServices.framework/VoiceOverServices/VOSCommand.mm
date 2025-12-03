@@ -226,30 +226,30 @@
 + (VOSCommand)Undo;
 + (VOSCommand)VolumeDown;
 + (VOSCommand)VolumeUp;
-+ (VOSCommand)commandWithSiriShortcut:(id)a3;
-+ (id)builtInCommandWithStringValue:(id)a3;
-+ (id)commandForVOSEventCommand:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (VOSCommand)commandWithSiriShortcut:(id)shortcut;
++ (id)builtInCommandWithStringValue:(id)value;
++ (id)commandForVOSEventCommand:(id)command;
+- (BOOL)isEqual:(id)equal;
 - (NSString)localizedName;
-- (id)_initBuiltInCommandWithRawValue:(id)a3 votEventCommandName:(id)a4;
-- (id)_initWithSiriShortcut:(id)a3;
+- (id)_initBuiltInCommandWithRawValue:(id)value votEventCommandName:(id)name;
+- (id)_initWithSiriShortcut:(id)shortcut;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation VOSCommand
 
-+ (VOSCommand)commandWithSiriShortcut:(id)a3
++ (VOSCommand)commandWithSiriShortcut:(id)shortcut
 {
-  v3 = a3;
-  v4 = [[VOSCommand alloc] _initWithSiriShortcut:v3];
+  shortcutCopy = shortcut;
+  v4 = [[VOSCommand alloc] _initWithSiriShortcut:shortcutCopy];
 
   return v4;
 }
 
-- (id)_initWithSiriShortcut:(id)a3
+- (id)_initWithSiriShortcut:(id)shortcut
 {
-  v5 = a3;
+  shortcutCopy = shortcut;
   v9.receiver = self;
   v9.super_class = VOSCommand;
   v6 = [(VOSCommand *)&v9 init];
@@ -257,17 +257,17 @@
   if (v6)
   {
     v6->_commandType = 1;
-    objc_storeStrong(&v6->_siriShortcut, a3);
+    objc_storeStrong(&v6->_siriShortcut, shortcut);
     objc_storeStrong(p_isa + 3, kVOTEventCommandRunSiriShortcut);
   }
 
   return p_isa;
 }
 
-- (id)_initBuiltInCommandWithRawValue:(id)a3 votEventCommandName:(id)a4
+- (id)_initBuiltInCommandWithRawValue:(id)value votEventCommandName:(id)name
 {
-  v7 = a3;
-  v8 = a4;
+  valueCopy = value;
+  nameCopy = name;
   v12.receiver = self;
   v12.super_class = VOSCommand;
   v9 = [(VOSCommand *)&v12 init];
@@ -275,8 +275,8 @@
   if (v9)
   {
     v9->_commandType = 0;
-    objc_storeStrong(&v9->_rawValue, a3);
-    objc_storeStrong(p_isa + 3, a4);
+    objc_storeStrong(&v9->_rawValue, value);
+    objc_storeStrong(p_isa + 3, name);
   }
 
   return p_isa;
@@ -284,14 +284,14 @@
 
 - (id)description
 {
-  v3 = [(VOSCommand *)self commandType];
+  commandType = [(VOSCommand *)self commandType];
   v4 = @"Shortcut";
-  if (v3 != 1)
+  if (commandType != 1)
   {
     v4 = 0;
   }
 
-  if (v3)
+  if (commandType)
   {
     v5 = v4;
   }
@@ -304,8 +304,8 @@
   v6 = MEMORY[0x277CCACA8];
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  v9 = [(VOSCommand *)self localizedName];
-  v10 = [v6 stringWithFormat:@"%@<%p>: %@: %@", v8, self, v5, v9];
+  localizedName = [(VOSCommand *)self localizedName];
+  v10 = [v6 stringWithFormat:@"%@<%p>: %@: %@", v8, self, v5, localizedName];
 
   return v10;
 }
@@ -5074,16 +5074,16 @@ void __32__VOSCommand_allBuiltInCommands__block_invoke()
   allBuiltInCommands__AllCommands = v9;
 }
 
-+ (id)builtInCommandWithStringValue:(id)a3
++ (id)builtInCommandWithStringValue:(id)value
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  valueCopy = value;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [a1 allBuiltInCommands];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allBuiltInCommands = [self allBuiltInCommands];
+  v6 = [allBuiltInCommands countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = *v13;
@@ -5093,18 +5093,18 @@ void __32__VOSCommand_allBuiltInCommands__block_invoke()
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allBuiltInCommands);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        if ([v9[1] isEqualToString:v4])
+        if ([v9[1] isEqualToString:valueCopy])
         {
           v6 = v9;
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [allBuiltInCommands countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -5121,11 +5121,11 @@ LABEL_11:
   return v6;
 }
 
-+ (id)commandForVOSEventCommand:(id)a3
++ (id)commandForVOSEventCommand:(id)command
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  commandCopy = command;
+  if (commandCopy)
   {
     v15 = 0u;
     v16 = 0u;
@@ -5146,8 +5146,8 @@ LABEL_11:
           }
 
           v8 = *(*(&v13 + 1) + 8 * i);
-          v9 = [v8 votEventCommandName];
-          v10 = [v9 isEqualToString:v3];
+          votEventCommandName = [v8 votEventCommandName];
+          v10 = [votEventCommandName isEqualToString:commandCopy];
 
           if (v10)
           {
@@ -5179,13 +5179,13 @@ LABEL_12:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (-[VOSCommand commandType](self, "commandType") || [v5 commandType])
     {
       if (-[VOSCommand commandType](self, "commandType") != 1 || [v5 commandType] != 1)
@@ -5196,18 +5196,18 @@ LABEL_11:
         goto LABEL_12;
       }
 
-      v6 = [(VOSCommand *)self siriShortcut];
-      v7 = [v6 identifier];
-      v8 = [v5 siriShortcut];
-      v9 = [v8 identifier];
-      v10 = [v7 isEqual:v9];
+      siriShortcut = [(VOSCommand *)self siriShortcut];
+      identifier = [siriShortcut identifier];
+      siriShortcut2 = [v5 siriShortcut];
+      identifier2 = [siriShortcut2 identifier];
+      v10 = [identifier isEqual:identifier2];
     }
 
     else
     {
-      v6 = [(VOSCommand *)self rawValue];
-      v7 = [v5 rawValue];
-      v10 = [v6 isEqualToString:v7];
+      siriShortcut = [(VOSCommand *)self rawValue];
+      identifier = [v5 rawValue];
+      v10 = [siriShortcut isEqualToString:identifier];
     }
 
     goto LABEL_11;
@@ -5221,23 +5221,23 @@ LABEL_12:
 
 - (unint64_t)hash
 {
-  v3 = [(VOSCommand *)self commandType];
-  if (v3 == 1)
+  commandType = [(VOSCommand *)self commandType];
+  if (commandType == 1)
   {
-    v4 = [(VOSCommand *)self siriShortcut];
-    v6 = [v4 identifier];
-    v5 = [v6 hash];
+    siriShortcut = [(VOSCommand *)self siriShortcut];
+    identifier = [siriShortcut identifier];
+    v5 = [identifier hash];
   }
 
   else
   {
-    if (v3)
+    if (commandType)
     {
       return 0;
     }
 
-    v4 = [(VOSCommand *)self rawValue];
-    v5 = [v4 hash];
+    siriShortcut = [(VOSCommand *)self rawValue];
+    v5 = [siriShortcut hash];
   }
 
   return v5;
@@ -5245,27 +5245,27 @@ LABEL_12:
 
 - (NSString)localizedName
 {
-  if (!-[NSString hasPrefix:](self->_rawValue, "hasPrefix:", @"Braille") || (v3 = objc_opt_new(), -[VOSCommand votEventCommandName](self, "votEventCommandName"), v4 = objc_claimAutoreleasedReturnValue(), [v3 localizedNameForCommand:v4], v5 = objc_claimAutoreleasedReturnValue(), v4, v3, !v5))
+  if (!-[NSString hasPrefix:](self->_rawValue, "hasPrefix:", @"Braille") || (v3 = objc_opt_new(), -[VOSCommand votEventCommandName](self, "votEventCommandName"), v4 = objc_claimAutoreleasedReturnValue(), [v3 localizedNameForCommand:v4], shortcutName = objc_claimAutoreleasedReturnValue(), v4, v3, !shortcutName))
   {
     commandType = self->_commandType;
     if (commandType == 1)
     {
-      v5 = [(AXSiriShortcut *)self->_siriShortcut shortcutName];
+      shortcutName = [(AXSiriShortcut *)self->_siriShortcut shortcutName];
     }
 
     else if (commandType)
     {
-      v5 = 0;
+      shortcutName = 0;
     }
 
     else
     {
       v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"VOSCommand.%@", self->_rawValue];
-      v5 = VOSLocString(v7);
+      shortcutName = VOSLocString(v7);
     }
   }
 
-  return v5;
+  return shortcutName;
 }
 
 @end

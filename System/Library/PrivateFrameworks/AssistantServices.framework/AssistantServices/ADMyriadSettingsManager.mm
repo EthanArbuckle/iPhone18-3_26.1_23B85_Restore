@@ -3,45 +3,45 @@
 - (NSString)treatmentId;
 - (id)_init;
 - (void)_setupTrialRefresh;
-- (void)getSidekickBoostsFileWithCompletion:(id)a3;
-- (void)getTrialEnables:(id)a3 doubleFactors:(id)a4 withCompletion:(id)a5;
+- (void)getSidekickBoostsFileWithCompletion:(id)completion;
+- (void)getTrialEnables:(id)enables doubleFactors:(id)factors withCompletion:(id)completion;
 - (void)refreshTrial;
-- (void)setTrialTreatmentMultiDeviceConsensus:(BOOL)a3;
+- (void)setTrialTreatmentMultiDeviceConsensus:(BOOL)consensus;
 @end
 
 @implementation ADMyriadSettingsManager
 
-- (void)getSidekickBoostsFileWithCompletion:(id)a3
+- (void)getSidekickBoostsFileWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100268954;
   v7[3] = &unk_10051E038;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)getTrialEnables:(id)a3 doubleFactors:(id)a4 withCompletion:(id)a5
+- (void)getTrialEnables:(id)enables doubleFactors:(id)factors withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  enablesCopy = enables;
+  factorsCopy = factors;
+  completionCopy = completion;
   queue = self->_queue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100268E08;
   v15[3] = &unk_10051E0D8;
-  v16 = v9;
-  v17 = v8;
-  v18 = self;
-  v19 = v10;
-  v12 = v8;
-  v13 = v9;
-  v14 = v10;
+  v16 = factorsCopy;
+  v17 = enablesCopy;
+  selfCopy = self;
+  v19 = completionCopy;
+  v12 = enablesCopy;
+  v13 = factorsCopy;
+  v14 = completionCopy;
   dispatch_async(queue, v15);
 }
 
@@ -79,9 +79,9 @@
   objc_destroyWeak(buf);
 }
 
-- (void)setTrialTreatmentMultiDeviceConsensus:(BOOL)a3
+- (void)setTrialTreatmentMultiDeviceConsensus:(BOOL)consensus
 {
-  v3 = a3;
+  consensusCopy = consensus;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
@@ -91,13 +91,13 @@
     v9 = 1024;
     v10 = trialTreatmentMultiDeviceConsensus;
     v11 = 1024;
-    v12 = v3;
+    v12 = consensusCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s Consensus Updated From: %d To: %d", &v7, 0x18u);
   }
 
-  if (self->_trialTreatmentMultiDeviceConsensus != v3)
+  if (self->_trialTreatmentMultiDeviceConsensus != consensusCopy)
   {
-    self->_trialTreatmentMultiDeviceConsensus = v3;
+    self->_trialTreatmentMultiDeviceConsensus = consensusCopy;
     [(ADMyriadSettingsManager *)self refreshTrial];
   }
 }

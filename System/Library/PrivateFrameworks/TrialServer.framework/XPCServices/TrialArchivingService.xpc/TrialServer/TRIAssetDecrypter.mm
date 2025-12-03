@@ -1,30 +1,30 @@
 @interface TRIAssetDecrypter
-+ (BOOL)decryptAssetWithURL:(id)a3 destinationFileURL:(id)a4 keyFileURL:(id)a5;
++ (BOOL)decryptAssetWithURL:(id)l destinationFileURL:(id)rL keyFileURL:(id)uRL;
 @end
 
 @implementation TRIAssetDecrypter
 
-+ (BOOL)decryptAssetWithURL:(id)a3 destinationFileURL:(id)a4 keyFileURL:(id)a5
++ (BOOL)decryptAssetWithURL:(id)l destinationFileURL:(id)rL keyFileURL:(id)uRL
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  lCopy = l;
+  rLCopy = rL;
+  uRLCopy = uRL;
   v12 = TRILogCategory_Archiving();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v9 path];
-    v14 = [v10 path];
+    path = [lCopy path];
+    path2 = [rLCopy path];
     *buf = 138412546;
-    v71 = v13;
+    v71 = path;
     v72 = 2112;
-    v73 = v14;
+    v73 = path2;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Decrypting file with URL: %@ to destination: %@", buf, 0x16u);
   }
 
-  v15 = [v11 path];
+  path3 = [uRLCopy path];
 
-  v16 = [v15 fileSystemRepresentation];
-  v17 = open(v16, 0);
+  fileSystemRepresentation = [path3 fileSystemRepresentation];
+  v17 = open(fileSystemRepresentation, 0);
   v18 = v17;
   if (v17 < 0)
   {
@@ -35,7 +35,7 @@
       v40 = strerror(*v39);
       v41 = *__error();
       *buf = 136315650;
-      v71 = v16;
+      v71 = fileSystemRepresentation;
       v72 = 2080;
       v73 = v40;
       v74 = 1024;
@@ -54,31 +54,31 @@
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
         *v64 = 136315138;
-        v65 = v16;
+        v65 = fileSystemRepresentation;
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Found decryption key file at path: %s", v64, 0xCu);
       }
 
       close(v18);
-      v22 = [v9 path];
-      if (!v22)
+      path4 = [lCopy path];
+      if (!path4)
       {
         v62 = +[NSAssertionHandler currentHandler];
-        [v62 handleFailureInMethod:a2 object:a1 file:@"TRIAssetDecrypter.m" lineNumber:52 description:{@"Expression was unexpectedly nil/false: %@", @"assetURL.path"}];
+        [v62 handleFailureInMethod:a2 object:self file:@"TRIAssetDecrypter.m" lineNumber:52 description:{@"Expression was unexpectedly nil/false: %@", @"assetURL.path"}];
       }
 
-      v23 = AAFileStreamOpenWithPath([v22 fileSystemRepresentation], 0, 0x1A4u);
+      v23 = AAFileStreamOpenWithPath([path4 fileSystemRepresentation], 0, 0x1A4u);
 
       if (!v23)
       {
         v32 = TRILogCategory_Archiving();
         if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
         {
-          v47 = [v9 path];
+          path5 = [lCopy path];
           v48 = __error();
           v49 = strerror(*v48);
           v50 = *__error();
           *v64 = 138412802;
-          v65 = v47;
+          v65 = path5;
           v66 = 2080;
           v67 = v49;
           v68 = 1024;
@@ -99,16 +99,16 @@
           v26 = AEADecryptionInputStreamOpen(v23, v25, 0x4000000000000000uLL, 0);
           if (v26)
           {
-            v27 = [v10 path];
-            if (!v27)
+            path6 = [rLCopy path];
+            if (!path6)
             {
               v63 = +[NSAssertionHandler currentHandler];
-              [v63 handleFailureInMethod:a2 object:a1 file:@"TRIAssetDecrypter.m" lineNumber:91 description:{@"Expression was unexpectedly nil/false: %@", @"destinationFileURL.path"}];
+              [v63 handleFailureInMethod:a2 object:self file:@"TRIAssetDecrypter.m" lineNumber:91 description:{@"Expression was unexpectedly nil/false: %@", @"destinationFileURL.path"}];
             }
 
-            v28 = [v27 fileSystemRepresentation];
+            fileSystemRepresentation2 = [path6 fileSystemRepresentation];
 
-            v29 = AAFileStreamOpenWithPath(v28, 513, 0x1A4u);
+            v29 = AAFileStreamOpenWithPath(fileSystemRepresentation2, 513, 0x1A4u);
             v30 = v29 != 0;
             if (v29)
             {
@@ -120,12 +120,12 @@
               v45 = TRILogCategory_Archiving();
               if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
               {
-                v58 = [v10 path];
+                path7 = [rLCopy path];
                 v59 = __error();
                 v60 = strerror(*v59);
                 v61 = *__error();
                 *v64 = 138412802;
-                v65 = v58;
+                v65 = path7;
                 v66 = 2080;
                 v67 = v60;
                 v68 = 1024;
@@ -142,12 +142,12 @@
             v38 = TRILogCategory_Archiving();
             if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
             {
-              v54 = [v9 path];
+              path8 = [lCopy path];
               v55 = __error();
               v56 = strerror(*v55);
               v57 = *__error();
               *v64 = 138412802;
-              v65 = v54;
+              v65 = path8;
               v66 = 2080;
               v67 = v56;
               v68 = 1024;
@@ -181,12 +181,12 @@
         v33 = TRILogCategory_Archiving();
         if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
         {
-          v34 = [v9 path];
+          path9 = [lCopy path];
           v35 = __error();
           v36 = strerror(*v35);
           v37 = *__error();
           *v64 = 138412802;
-          v65 = v34;
+          v65 = path9;
           v66 = 2080;
           v67 = v36;
           v68 = 1024;
@@ -209,7 +209,7 @@ LABEL_41:
       v43 = strerror(*v42);
       v44 = *__error();
       *v64 = 136315650;
-      v65 = v16;
+      v65 = fileSystemRepresentation;
       v66 = 2080;
       v67 = v43;
       v68 = 1024;

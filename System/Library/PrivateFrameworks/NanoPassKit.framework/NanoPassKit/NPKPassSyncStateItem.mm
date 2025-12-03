@@ -1,44 +1,44 @@
 @interface NPKPassSyncStateItem
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPassSyncStateItem:(id)a3;
-- (NPKPassSyncStateItem)initWithCoder:(id)a3;
-- (NPKPassSyncStateItem)initWithPass:(id)a3;
-- (NPKPassSyncStateItem)initWithPassTypeIdentifier:(id)a3 serialNumber:(id)a4 sequenceCounter:(id)a5 manifestHash:(id)a6 manifest:(id)a7;
-- (NPKPassSyncStateItem)initWithProtoSyncStateItem:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPassSyncStateItem:(id)item;
+- (NPKPassSyncStateItem)initWithCoder:(id)coder;
+- (NPKPassSyncStateItem)initWithPass:(id)pass;
+- (NPKPassSyncStateItem)initWithPassTypeIdentifier:(id)identifier serialNumber:(id)number sequenceCounter:(id)counter manifestHash:(id)hash manifest:(id)manifest;
+- (NPKPassSyncStateItem)initWithProtoSyncStateItem:(id)item;
 - (NSString)uniqueID;
 - (id)description;
 - (id)protoSyncStateItem;
 - (id)shortDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NPKPassSyncStateItem
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  [v3 safelyAddObject:self->_passTypeIdentifier];
-  [v3 safelyAddObject:self->_serialNumber];
-  [v3 safelyAddObject:self->_sequenceCounter];
-  [v3 safelyAddObject:self->_manifestHash];
+  array = [MEMORY[0x277CBEB18] array];
+  [array safelyAddObject:self->_passTypeIdentifier];
+  [array safelyAddObject:self->_serialNumber];
+  [array safelyAddObject:self->_sequenceCounter];
+  [array safelyAddObject:self->_manifestHash];
   v4 = *MEMORY[0x277D38638];
   v5 = PKCombinedHash();
 
   return v5;
 }
 
-- (NPKPassSyncStateItem)initWithProtoSyncStateItem:(id)a3
+- (NPKPassSyncStateItem)initWithProtoSyncStateItem:(id)item
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  itemCopy = item;
+  v5 = itemCopy;
+  if (itemCopy)
   {
-    v6 = [v4 passTypeIdentifier];
+    passTypeIdentifier = [itemCopy passTypeIdentifier];
     [v5 serialNumber];
-    v22 = self;
-    v21 = v23 = v6;
+    selfCopy = self;
+    v21 = v23 = passTypeIdentifier;
     if ([v5 hasSequenceCounter])
     {
       v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v5, "sequenceCounter")}];
@@ -49,14 +49,14 @@
       v7 = 0;
     }
 
-    v9 = [v5 manifestHash];
-    v10 = [MEMORY[0x277CBEB38] dictionary];
+    manifestHash = [v5 manifestHash];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v11 = [v5 manifestEntrys];
-    v12 = [v11 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    manifestEntrys = [v5 manifestEntrys];
+    v12 = [manifestEntrys countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v12)
     {
       v13 = v12;
@@ -67,22 +67,22 @@
         {
           if (*v25 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(manifestEntrys);
           }
 
           v16 = *(*(&v24 + 1) + 8 * i);
-          v17 = [v16 fileHash];
-          v18 = [v16 relativePath];
-          [v10 setObject:v17 forKey:v18];
+          fileHash = [v16 fileHash];
+          relativePath = [v16 relativePath];
+          [dictionary setObject:fileHash forKey:relativePath];
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v24 objects:v28 count:16];
+        v13 = [manifestEntrys countByEnumeratingWithState:&v24 objects:v28 count:16];
       }
 
       while (v13);
     }
 
-    v8 = [(NPKPassSyncStateItem *)v22 initWithPassTypeIdentifier:v23 serialNumber:v21 sequenceCounter:v7 manifestHash:v9 manifest:v10];
+    v8 = [(NPKPassSyncStateItem *)selfCopy initWithPassTypeIdentifier:v23 serialNumber:v21 sequenceCounter:v7 manifestHash:manifestHash manifest:dictionary];
   }
 
   else
@@ -98,33 +98,33 @@
 - (id)protoSyncStateItem
 {
   v3 = objc_alloc_init(NPKProtoPassSyncStateItem);
-  v4 = [(NPKPassSyncStateItem *)self passTypeIdentifier];
-  [(NPKProtoPassSyncStateItem *)v3 setPassTypeIdentifier:v4];
+  passTypeIdentifier = [(NPKPassSyncStateItem *)self passTypeIdentifier];
+  [(NPKProtoPassSyncStateItem *)v3 setPassTypeIdentifier:passTypeIdentifier];
 
-  v5 = [(NPKPassSyncStateItem *)self serialNumber];
-  [(NPKProtoPassSyncStateItem *)v3 setSerialNumber:v5];
+  serialNumber = [(NPKPassSyncStateItem *)self serialNumber];
+  [(NPKProtoPassSyncStateItem *)v3 setSerialNumber:serialNumber];
 
-  v6 = [(NPKPassSyncStateItem *)self sequenceCounter];
+  sequenceCounter = [(NPKPassSyncStateItem *)self sequenceCounter];
 
-  if (v6)
+  if (sequenceCounter)
   {
-    v7 = [(NPKPassSyncStateItem *)self sequenceCounter];
-    -[NPKProtoPassSyncStateItem setSequenceCounter:](v3, "setSequenceCounter:", [v7 unsignedIntValue]);
+    sequenceCounter2 = [(NPKPassSyncStateItem *)self sequenceCounter];
+    -[NPKProtoPassSyncStateItem setSequenceCounter:](v3, "setSequenceCounter:", [sequenceCounter2 unsignedIntValue]);
 
     [(NPKProtoPassSyncStateItem *)v3 setHasSequenceCounter:1];
   }
 
-  v8 = [(NPKPassSyncStateItem *)self manifestHash];
-  [(NPKProtoPassSyncStateItem *)v3 setManifestHash:v8];
+  manifestHash = [(NPKPassSyncStateItem *)self manifestHash];
+  [(NPKProtoPassSyncStateItem *)v3 setManifestHash:manifestHash];
 
-  v9 = [(NPKPassSyncStateItem *)self manifest];
+  manifest = [(NPKPassSyncStateItem *)self manifest];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __59__NPKPassSyncStateItem_ProtobufSupport__protoSyncStateItem__block_invoke;
   v12[3] = &unk_279949020;
   v10 = v3;
   v13 = v10;
-  [v9 enumerateKeysAndObjectsUsingBlock:v12];
+  [manifest enumerateKeysAndObjectsUsingBlock:v12];
 
   return v10;
 }
@@ -140,37 +140,37 @@ void __59__NPKPassSyncStateItem_ProtobufSupport__protoSyncStateItem__block_invok
   [*(a1 + 32) addManifestEntry:v7];
 }
 
-- (NPKPassSyncStateItem)initWithPass:(id)a3
+- (NPKPassSyncStateItem)initWithPass:(id)pass
 {
-  v4 = a3;
-  v5 = [v4 passTypeIdentifier];
-  v6 = [v4 serialNumber];
-  v7 = [v4 sequenceCounter];
-  v8 = NPKManifestHashForPass(v4);
-  v9 = NPKManifestForPass(v4);
+  passCopy = pass;
+  passTypeIdentifier = [passCopy passTypeIdentifier];
+  serialNumber = [passCopy serialNumber];
+  sequenceCounter = [passCopy sequenceCounter];
+  v8 = NPKManifestHashForPass(passCopy);
+  v9 = NPKManifestForPass(passCopy);
 
-  v10 = [(NPKPassSyncStateItem *)self initWithPassTypeIdentifier:v5 serialNumber:v6 sequenceCounter:v7 manifestHash:v8 manifest:v9];
+  v10 = [(NPKPassSyncStateItem *)self initWithPassTypeIdentifier:passTypeIdentifier serialNumber:serialNumber sequenceCounter:sequenceCounter manifestHash:v8 manifest:v9];
   return v10;
 }
 
-- (NPKPassSyncStateItem)initWithPassTypeIdentifier:(id)a3 serialNumber:(id)a4 sequenceCounter:(id)a5 manifestHash:(id)a6 manifest:(id)a7
+- (NPKPassSyncStateItem)initWithPassTypeIdentifier:(id)identifier serialNumber:(id)number sequenceCounter:(id)counter manifestHash:(id)hash manifest:(id)manifest
 {
-  v20 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  identifierCopy = identifier;
+  numberCopy = number;
+  counterCopy = counter;
+  hashCopy = hash;
+  manifestCopy = manifest;
   v21.receiver = self;
   v21.super_class = NPKPassSyncStateItem;
   v17 = [(NPKPassSyncStateItem *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_passTypeIdentifier, a3);
-    objc_storeStrong(&v18->_serialNumber, a4);
-    objc_storeStrong(&v18->_sequenceCounter, a5);
-    objc_storeStrong(&v18->_manifestHash, a6);
-    objc_storeStrong(&v18->_manifest, a7);
+    objc_storeStrong(&v17->_passTypeIdentifier, identifier);
+    objc_storeStrong(&v18->_serialNumber, number);
+    objc_storeStrong(&v18->_sequenceCounter, counter);
+    objc_storeStrong(&v18->_manifestHash, hash);
+    objc_storeStrong(&v18->_manifest, manifest);
   }
 
   return v18;
@@ -188,18 +188,18 @@ void __59__NPKPassSyncStateItem_ProtobufSupport__protoSyncStateItem__block_invok
   sequenceCounter = self->_sequenceCounter;
   if (sequenceCounter)
   {
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@", sequence counter %@", sequenceCounter];
+    sequenceCounter = [MEMORY[0x277CCACA8] stringWithFormat:@", sequence counter %@", sequenceCounter];
   }
 
   else
   {
-    v4 = &stru_286C934F8;
+    sequenceCounter = &stru_286C934F8;
   }
 
   v5 = MEMORY[0x277CCACA8];
   v6 = objc_opt_class();
-  v7 = [(NPKPassSyncStateItem *)self uniqueID];
-  v8 = objc_msgSend(v5, "stringWithFormat:", @"<%@: %p unique ID %@ manifest hash %@ manifest %@ (pass type identifier %@, serial number %@%@>"), v6, self, v7, self->_manifestHash, self->_manifest, self->_passTypeIdentifier, self->_serialNumber, v4;
+  uniqueID = [(NPKPassSyncStateItem *)self uniqueID];
+  v8 = objc_msgSend(v5, "stringWithFormat:", @"<%@: %p unique ID %@ manifest hash %@ manifest %@ (pass type identifier %@, serial number %@%@>"), v6, self, uniqueID, self->_manifestHash, self->_manifest, self->_passTypeIdentifier, self->_serialNumber, sequenceCounter;
 
   return v8;
 }
@@ -209,52 +209,52 @@ void __59__NPKPassSyncStateItem_ProtobufSupport__protoSyncStateItem__block_invok
   sequenceCounter = self->_sequenceCounter;
   if (sequenceCounter)
   {
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@" seq %@", sequenceCounter];
+    sequenceCounter = [MEMORY[0x277CCACA8] stringWithFormat:@" seq %@", sequenceCounter];
   }
 
   else
   {
-    v4 = &stru_286C934F8;
+    sequenceCounter = &stru_286C934F8;
   }
 
   v5 = MEMORY[0x277CCACA8];
-  v6 = [(NPKPassSyncStateItem *)self uniqueID];
+  uniqueID = [(NPKPassSyncStateItem *)self uniqueID];
   passTypeIdentifier = self->_passTypeIdentifier;
   serialNumber = self->_serialNumber;
-  v9 = [(NSData *)self->_manifestHash hexEncoding];
-  v10 = [v5 stringWithFormat:@"%@ %@ %@ (hash %@%@)", v6, passTypeIdentifier, serialNumber, v9, v4];
+  hexEncoding = [(NSData *)self->_manifestHash hexEncoding];
+  v10 = [v5 stringWithFormat:@"%@ %@ %@ (hash %@%@)", uniqueID, passTypeIdentifier, serialNumber, hexEncoding, sequenceCounter];
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(NPKPassSyncStateItem *)self isEqualToPassSyncStateItem:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(NPKPassSyncStateItem *)self isEqualToPassSyncStateItem:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToPassSyncStateItem:(id)a3
+- (BOOL)isEqualToPassSyncStateItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   passTypeIdentifier = self->_passTypeIdentifier;
-  v6 = v4[1];
+  v6 = itemCopy[1];
   if (!PKEqualObjects())
   {
     goto LABEL_11;
   }
 
-  v7 = v4[2];
+  v7 = itemCopy[2];
   v8 = self->_serialNumber;
   v9 = v7;
   v10 = v9;
@@ -279,7 +279,7 @@ void __59__NPKPassSyncStateItem_ProtobufSupport__protoSyncStateItem__block_invok
   }
 
   sequenceCounter = self->_sequenceCounter;
-  v13 = v4[3];
+  v13 = itemCopy[3];
   if (!PKEqualObjects())
   {
 LABEL_11:
@@ -288,50 +288,50 @@ LABEL_11:
   }
 
   manifestHash = self->_manifestHash;
-  v15 = v4[4];
+  v15 = itemCopy[4];
   v16 = PKEqualObjects();
 LABEL_12:
 
   return v16;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   passTypeIdentifier = self->_passTypeIdentifier;
-  v5 = a3;
-  [v5 encodeObject:passTypeIdentifier forKey:@"passTypeIdentifier"];
-  [v5 encodeObject:self->_serialNumber forKey:@"serialNumber"];
-  [v5 encodeObject:self->_sequenceCounter forKey:@"sequenceCounter"];
-  [v5 encodeObject:self->_manifestHash forKey:@"manifestHash"];
-  [v5 encodeObject:self->_manifest forKey:@"manifest"];
+  coderCopy = coder;
+  [coderCopy encodeObject:passTypeIdentifier forKey:@"passTypeIdentifier"];
+  [coderCopy encodeObject:self->_serialNumber forKey:@"serialNumber"];
+  [coderCopy encodeObject:self->_sequenceCounter forKey:@"sequenceCounter"];
+  [coderCopy encodeObject:self->_manifestHash forKey:@"manifestHash"];
+  [coderCopy encodeObject:self->_manifest forKey:@"manifest"];
 }
 
-- (NPKPassSyncStateItem)initWithCoder:(id)a3
+- (NPKPassSyncStateItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = NPKPassSyncStateItem;
   v5 = [(NPKPassSyncStateItem *)&v18 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"passTypeIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"passTypeIdentifier"];
     passTypeIdentifier = v5->_passTypeIdentifier;
     v5->_passTypeIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serialNumber"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serialNumber"];
     serialNumber = v5->_serialNumber;
     v5->_serialNumber = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sequenceCounter"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sequenceCounter"];
     sequenceCounter = v5->_sequenceCounter;
     v5->_sequenceCounter = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"manifestHash"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"manifestHash"];
     manifestHash = v5->_manifestHash;
     v5->_manifestHash = v12;
 
     v14 = objc_opt_class();
-    v15 = [v4 decodeDictionaryWithKeysOfClass:v14 objectsOfClass:objc_opt_class() forKey:@"manifest"];
+    v15 = [coderCopy decodeDictionaryWithKeysOfClass:v14 objectsOfClass:objc_opt_class() forKey:@"manifest"];
     manifest = v5->_manifest;
     v5->_manifest = v15;
   }

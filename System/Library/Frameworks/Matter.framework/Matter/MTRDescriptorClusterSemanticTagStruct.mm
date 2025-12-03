@@ -1,6 +1,6 @@
 @interface MTRDescriptorClusterSemanticTagStruct
 - (MTRDescriptorClusterSemanticTagStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -30,20 +30,20 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRDescriptorClusterSemanticTagStruct);
-  v5 = [(MTRDescriptorClusterSemanticTagStruct *)self mfgCode];
-  [(MTRDescriptorClusterSemanticTagStruct *)v4 setMfgCode:v5];
+  mfgCode = [(MTRDescriptorClusterSemanticTagStruct *)self mfgCode];
+  [(MTRDescriptorClusterSemanticTagStruct *)v4 setMfgCode:mfgCode];
 
-  v6 = [(MTRDescriptorClusterSemanticTagStruct *)self namespaceID];
-  [(MTRDescriptorClusterSemanticTagStruct *)v4 setNamespaceID:v6];
+  namespaceID = [(MTRDescriptorClusterSemanticTagStruct *)self namespaceID];
+  [(MTRDescriptorClusterSemanticTagStruct *)v4 setNamespaceID:namespaceID];
 
   v7 = [(MTRDescriptorClusterSemanticTagStruct *)self tag];
   [(MTRDescriptorClusterSemanticTagStruct *)v4 setTag:v7];
 
-  v8 = [(MTRDescriptorClusterSemanticTagStruct *)self label];
-  [(MTRDescriptorClusterSemanticTagStruct *)v4 setLabel:v8];
+  label = [(MTRDescriptorClusterSemanticTagStruct *)self label];
+  [(MTRDescriptorClusterSemanticTagStruct *)v4 setLabel:label];
 
   return v4;
 }

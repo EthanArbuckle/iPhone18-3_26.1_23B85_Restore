@@ -1,37 +1,37 @@
 @interface AWDPowerWifiMetrics
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasWifi2P4GHzRxDuration:(BOOL)a3;
-- (void)setHasWifi2P4GHzTxDuration:(BOOL)a3;
-- (void)setHasWifi5GHz20MHzRxDuration:(BOOL)a3;
-- (void)setHasWifi5GHz20MHzTxDuration:(BOOL)a3;
-- (void)setHasWifi5GHz40MHzRxDuration:(BOOL)a3;
-- (void)setHasWifi5GHz40MHzTxDuration:(BOOL)a3;
-- (void)setHasWifi5GHz80MHzRxDuration:(BOOL)a3;
-- (void)setHasWifi5GHz80MHzTxDuration:(BOOL)a3;
-- (void)setHasWifiFRTSDuration:(BOOL)a3;
-- (void)setHasWifiHsicActiveDuration:(BOOL)a3;
-- (void)setHasWifiPcieL0Duration:(BOOL)a3;
-- (void)setHasWifiPcieL10Duration:(BOOL)a3;
-- (void)setHasWifiPcieL11Duration:(BOOL)a3;
-- (void)setHasWifiPcieL12Duration:(BOOL)a3;
-- (void)setHasWifiScanDuration:(BOOL)a3;
-- (void)setHasWifiSleepDuration:(BOOL)a3;
-- (void)setHasWifiTotalDuration:(BOOL)a3;
-- (void)setHasWifiTotalPowerMicroWatt:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasWifi2P4GHzRxDuration:(BOOL)duration;
+- (void)setHasWifi2P4GHzTxDuration:(BOOL)duration;
+- (void)setHasWifi5GHz20MHzRxDuration:(BOOL)duration;
+- (void)setHasWifi5GHz20MHzTxDuration:(BOOL)duration;
+- (void)setHasWifi5GHz40MHzRxDuration:(BOOL)duration;
+- (void)setHasWifi5GHz40MHzTxDuration:(BOOL)duration;
+- (void)setHasWifi5GHz80MHzRxDuration:(BOOL)duration;
+- (void)setHasWifi5GHz80MHzTxDuration:(BOOL)duration;
+- (void)setHasWifiFRTSDuration:(BOOL)duration;
+- (void)setHasWifiHsicActiveDuration:(BOOL)duration;
+- (void)setHasWifiPcieL0Duration:(BOOL)duration;
+- (void)setHasWifiPcieL10Duration:(BOOL)duration;
+- (void)setHasWifiPcieL11Duration:(BOOL)duration;
+- (void)setHasWifiPcieL12Duration:(BOOL)duration;
+- (void)setHasWifiScanDuration:(BOOL)duration;
+- (void)setHasWifiSleepDuration:(BOOL)duration;
+- (void)setHasWifiTotalDuration:(BOOL)duration;
+- (void)setHasWifiTotalPowerMicroWatt:(BOOL)watt;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDPowerWifiMetrics
 
-- (void)setHasWifi2P4GHzTxDuration:(BOOL)a3
+- (void)setHasWifi2P4GHzTxDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 4;
   }
@@ -44,9 +44,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFB | v3);
 }
 
-- (void)setHasWifi2P4GHzRxDuration:(BOOL)a3
+- (void)setHasWifi2P4GHzRxDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 2;
   }
@@ -59,9 +59,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFD | v3);
 }
 
-- (void)setHasWifi5GHz20MHzTxDuration:(BOOL)a3
+- (void)setHasWifi5GHz20MHzTxDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 16;
   }
@@ -74,9 +74,9 @@
   self->_has = (*&self->_has & 0xFFFFFFEF | v3);
 }
 
-- (void)setHasWifi5GHz40MHzTxDuration:(BOOL)a3
+- (void)setHasWifi5GHz40MHzTxDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 64;
   }
@@ -89,9 +89,9 @@
   self->_has = (*&self->_has & 0xFFFFFFBF | v3);
 }
 
-- (void)setHasWifi5GHz80MHzTxDuration:(BOOL)a3
+- (void)setHasWifi5GHz80MHzTxDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 256;
   }
@@ -104,9 +104,9 @@
   self->_has = (*&self->_has & 0xFFFFFEFF | v3);
 }
 
-- (void)setHasWifi5GHz20MHzRxDuration:(BOOL)a3
+- (void)setHasWifi5GHz20MHzRxDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 8;
   }
@@ -119,9 +119,9 @@
   self->_has = (*&self->_has & 0xFFFFFFF7 | v3);
 }
 
-- (void)setHasWifi5GHz40MHzRxDuration:(BOOL)a3
+- (void)setHasWifi5GHz40MHzRxDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 32;
   }
@@ -134,9 +134,9 @@
   self->_has = (*&self->_has & 0xFFFFFFDF | v3);
 }
 
-- (void)setHasWifi5GHz80MHzRxDuration:(BOOL)a3
+- (void)setHasWifi5GHz80MHzRxDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 128;
   }
@@ -149,9 +149,9 @@
   self->_has = (*&self->_has & 0xFFFFFF7F | v3);
 }
 
-- (void)setHasWifiSleepDuration:(BOOL)a3
+- (void)setHasWifiSleepDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 0x10000;
   }
@@ -164,9 +164,9 @@
   self->_has = (*&self->_has & 0xFFFEFFFF | v3);
 }
 
-- (void)setHasWifiTotalDuration:(BOOL)a3
+- (void)setHasWifiTotalDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 0x20000;
   }
@@ -179,9 +179,9 @@
   self->_has = (*&self->_has & 0xFFFDFFFF | v3);
 }
 
-- (void)setHasWifiFRTSDuration:(BOOL)a3
+- (void)setHasWifiFRTSDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 512;
   }
@@ -194,9 +194,9 @@
   self->_has = (*&self->_has & 0xFFFFFDFF | v3);
 }
 
-- (void)setHasWifiScanDuration:(BOOL)a3
+- (void)setHasWifiScanDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 0x8000;
   }
@@ -209,9 +209,9 @@
   self->_has = (*&self->_has & 0xFFFF7FFF | v3);
 }
 
-- (void)setHasWifiPcieL0Duration:(BOOL)a3
+- (void)setHasWifiPcieL0Duration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 2048;
   }
@@ -224,9 +224,9 @@
   self->_has = (*&self->_has & 0xFFFFF7FF | v3);
 }
 
-- (void)setHasWifiPcieL10Duration:(BOOL)a3
+- (void)setHasWifiPcieL10Duration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 4096;
   }
@@ -239,9 +239,9 @@
   self->_has = (*&self->_has & 0xFFFFEFFF | v3);
 }
 
-- (void)setHasWifiPcieL11Duration:(BOOL)a3
+- (void)setHasWifiPcieL11Duration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 0x2000;
   }
@@ -254,9 +254,9 @@
   self->_has = (*&self->_has & 0xFFFFDFFF | v3);
 }
 
-- (void)setHasWifiPcieL12Duration:(BOOL)a3
+- (void)setHasWifiPcieL12Duration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 0x4000;
   }
@@ -269,9 +269,9 @@
   self->_has = (*&self->_has & 0xFFFFBFFF | v3);
 }
 
-- (void)setHasWifiTotalPowerMicroWatt:(BOOL)a3
+- (void)setHasWifiTotalPowerMicroWatt:(BOOL)watt
 {
-  if (a3)
+  if (watt)
   {
     v3 = 0x40000;
   }
@@ -284,9 +284,9 @@
   self->_has = (*&self->_has & 0xFFFBFFFF | v3);
 }
 
-- (void)setHasWifiHsicActiveDuration:(BOOL)a3
+- (void)setHasWifiHsicActiveDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 1024;
   }
@@ -308,11 +308,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if (*&has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
     if ((*&has & 4) == 0)
     {
@@ -331,7 +331,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_wifi2P4GHzTxDuration), @"wifi2P4GHzTxDuration"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_wifi2P4GHzTxDuration), @"wifi2P4GHzTxDuration"}];
   has = self->_has;
   if ((*&has & 2) == 0)
   {
@@ -345,7 +345,7 @@ LABEL_4:
   }
 
 LABEL_24:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_wifi2P4GHzRxDuration), @"wifi2P4GHzRxDuration"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_wifi2P4GHzRxDuration), @"wifi2P4GHzRxDuration"}];
   has = self->_has;
   if ((*&has & 0x10) == 0)
   {
@@ -359,7 +359,7 @@ LABEL_5:
   }
 
 LABEL_25:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_wifi5GHz20MHzTxDuration), @"wifi5GHz20MHzTxDuration"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_wifi5GHz20MHzTxDuration), @"wifi5GHz20MHzTxDuration"}];
   has = self->_has;
   if ((*&has & 0x40) == 0)
   {
@@ -373,7 +373,7 @@ LABEL_6:
   }
 
 LABEL_26:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_wifi5GHz40MHzTxDuration), @"wifi5GHz40MHzTxDuration"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_wifi5GHz40MHzTxDuration), @"wifi5GHz40MHzTxDuration"}];
   has = self->_has;
   if ((*&has & 0x100) == 0)
   {
@@ -387,7 +387,7 @@ LABEL_7:
   }
 
 LABEL_27:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_wifi5GHz80MHzTxDuration), @"wifi5GHz80MHzTxDuration"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_wifi5GHz80MHzTxDuration), @"wifi5GHz80MHzTxDuration"}];
   has = self->_has;
   if ((*&has & 8) == 0)
   {
@@ -401,7 +401,7 @@ LABEL_8:
   }
 
 LABEL_28:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_wifi5GHz20MHzRxDuration), @"wifi5GHz20MHzRxDuration"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_wifi5GHz20MHzRxDuration), @"wifi5GHz20MHzRxDuration"}];
   has = self->_has;
   if ((*&has & 0x20) == 0)
   {
@@ -415,7 +415,7 @@ LABEL_9:
   }
 
 LABEL_29:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_wifi5GHz40MHzRxDuration), @"wifi5GHz40MHzRxDuration"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_wifi5GHz40MHzRxDuration), @"wifi5GHz40MHzRxDuration"}];
   has = self->_has;
   if ((*&has & 0x80) == 0)
   {
@@ -429,7 +429,7 @@ LABEL_10:
   }
 
 LABEL_30:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_wifi5GHz80MHzRxDuration), @"wifi5GHz80MHzRxDuration"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_wifi5GHz80MHzRxDuration), @"wifi5GHz80MHzRxDuration"}];
   has = self->_has;
   if ((*&has & 0x10000) == 0)
   {
@@ -443,7 +443,7 @@ LABEL_11:
   }
 
 LABEL_31:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_wifiSleepDuration), @"wifiSleepDuration"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_wifiSleepDuration), @"wifiSleepDuration"}];
   has = self->_has;
   if ((*&has & 0x20000) == 0)
   {
@@ -457,7 +457,7 @@ LABEL_12:
   }
 
 LABEL_32:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_wifiTotalDuration), @"wifiTotalDuration"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_wifiTotalDuration), @"wifiTotalDuration"}];
   has = self->_has;
   if ((*&has & 0x200) == 0)
   {
@@ -471,7 +471,7 @@ LABEL_13:
   }
 
 LABEL_33:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_wifiFRTSDuration), @"wifiFRTSDuration"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_wifiFRTSDuration), @"wifiFRTSDuration"}];
   has = self->_has;
   if ((*&has & 0x8000) == 0)
   {
@@ -485,7 +485,7 @@ LABEL_14:
   }
 
 LABEL_34:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_wifiScanDuration), @"wifiScanDuration"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_wifiScanDuration), @"wifiScanDuration"}];
   has = self->_has;
   if ((*&has & 0x800) == 0)
   {
@@ -499,7 +499,7 @@ LABEL_15:
   }
 
 LABEL_35:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_wifiPcieL0Duration), @"wifiPcieL0Duration"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_wifiPcieL0Duration), @"wifiPcieL0Duration"}];
   has = self->_has;
   if ((*&has & 0x1000) == 0)
   {
@@ -513,7 +513,7 @@ LABEL_16:
   }
 
 LABEL_36:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_wifiPcieL10Duration), @"wifiPcieL10Duration"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_wifiPcieL10Duration), @"wifiPcieL10Duration"}];
   has = self->_has;
   if ((*&has & 0x2000) == 0)
   {
@@ -527,7 +527,7 @@ LABEL_17:
   }
 
 LABEL_37:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_wifiPcieL11Duration), @"wifiPcieL11Duration"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_wifiPcieL11Duration), @"wifiPcieL11Duration"}];
   has = self->_has;
   if ((*&has & 0x4000) == 0)
   {
@@ -538,17 +538,17 @@ LABEL_18:
     }
 
 LABEL_39:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_wifiTotalPowerMicroWatt), @"wifiTotalPowerMicroWatt"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_wifiTotalPowerMicroWatt), @"wifiTotalPowerMicroWatt"}];
     if ((*&self->_has & 0x400) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_20;
   }
 
 LABEL_38:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_wifiPcieL12Duration), @"wifiPcieL12Duration"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_wifiPcieL12Duration), @"wifiPcieL12Duration"}];
   has = self->_has;
   if ((*&has & 0x40000) != 0)
   {
@@ -559,13 +559,13 @@ LABEL_19:
   if ((*&has & 0x400) != 0)
   {
 LABEL_20:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_wifiHsicActiveDuration), @"wifiHsicActiveDuration"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_wifiHsicActiveDuration), @"wifiHsicActiveDuration"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if (*&has)
@@ -843,13 +843,13 @@ LABEL_39:
   PBDataWriterWriteUint32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if (*&has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 22) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 22) |= 1u;
     has = self->_has;
     if ((*&has & 4) == 0)
     {
@@ -868,8 +868,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 5) = self->_wifi2P4GHzTxDuration;
-  *(a3 + 22) |= 4u;
+  *(to + 5) = self->_wifi2P4GHzTxDuration;
+  *(to + 22) |= 4u;
   has = self->_has;
   if ((*&has & 2) == 0)
   {
@@ -883,8 +883,8 @@ LABEL_4:
   }
 
 LABEL_23:
-  *(a3 + 4) = self->_wifi2P4GHzRxDuration;
-  *(a3 + 22) |= 2u;
+  *(to + 4) = self->_wifi2P4GHzRxDuration;
+  *(to + 22) |= 2u;
   has = self->_has;
   if ((*&has & 0x10) == 0)
   {
@@ -898,8 +898,8 @@ LABEL_5:
   }
 
 LABEL_24:
-  *(a3 + 7) = self->_wifi5GHz20MHzTxDuration;
-  *(a3 + 22) |= 0x10u;
+  *(to + 7) = self->_wifi5GHz20MHzTxDuration;
+  *(to + 22) |= 0x10u;
   has = self->_has;
   if ((*&has & 0x40) == 0)
   {
@@ -913,8 +913,8 @@ LABEL_6:
   }
 
 LABEL_25:
-  *(a3 + 9) = self->_wifi5GHz40MHzTxDuration;
-  *(a3 + 22) |= 0x40u;
+  *(to + 9) = self->_wifi5GHz40MHzTxDuration;
+  *(to + 22) |= 0x40u;
   has = self->_has;
   if ((*&has & 0x100) == 0)
   {
@@ -928,8 +928,8 @@ LABEL_7:
   }
 
 LABEL_26:
-  *(a3 + 11) = self->_wifi5GHz80MHzTxDuration;
-  *(a3 + 22) |= 0x100u;
+  *(to + 11) = self->_wifi5GHz80MHzTxDuration;
+  *(to + 22) |= 0x100u;
   has = self->_has;
   if ((*&has & 8) == 0)
   {
@@ -943,8 +943,8 @@ LABEL_8:
   }
 
 LABEL_27:
-  *(a3 + 6) = self->_wifi5GHz20MHzRxDuration;
-  *(a3 + 22) |= 8u;
+  *(to + 6) = self->_wifi5GHz20MHzRxDuration;
+  *(to + 22) |= 8u;
   has = self->_has;
   if ((*&has & 0x20) == 0)
   {
@@ -958,8 +958,8 @@ LABEL_9:
   }
 
 LABEL_28:
-  *(a3 + 8) = self->_wifi5GHz40MHzRxDuration;
-  *(a3 + 22) |= 0x20u;
+  *(to + 8) = self->_wifi5GHz40MHzRxDuration;
+  *(to + 22) |= 0x20u;
   has = self->_has;
   if ((*&has & 0x80) == 0)
   {
@@ -973,8 +973,8 @@ LABEL_10:
   }
 
 LABEL_29:
-  *(a3 + 10) = self->_wifi5GHz80MHzRxDuration;
-  *(a3 + 22) |= 0x80u;
+  *(to + 10) = self->_wifi5GHz80MHzRxDuration;
+  *(to + 22) |= 0x80u;
   has = self->_has;
   if ((*&has & 0x10000) == 0)
   {
@@ -988,8 +988,8 @@ LABEL_11:
   }
 
 LABEL_30:
-  *(a3 + 19) = self->_wifiSleepDuration;
-  *(a3 + 22) |= 0x10000u;
+  *(to + 19) = self->_wifiSleepDuration;
+  *(to + 22) |= 0x10000u;
   has = self->_has;
   if ((*&has & 0x20000) == 0)
   {
@@ -1003,8 +1003,8 @@ LABEL_12:
   }
 
 LABEL_31:
-  *(a3 + 20) = self->_wifiTotalDuration;
-  *(a3 + 22) |= 0x20000u;
+  *(to + 20) = self->_wifiTotalDuration;
+  *(to + 22) |= 0x20000u;
   has = self->_has;
   if ((*&has & 0x200) == 0)
   {
@@ -1018,8 +1018,8 @@ LABEL_13:
   }
 
 LABEL_32:
-  *(a3 + 12) = self->_wifiFRTSDuration;
-  *(a3 + 22) |= 0x200u;
+  *(to + 12) = self->_wifiFRTSDuration;
+  *(to + 22) |= 0x200u;
   has = self->_has;
   if ((*&has & 0x8000) == 0)
   {
@@ -1033,8 +1033,8 @@ LABEL_14:
   }
 
 LABEL_33:
-  *(a3 + 18) = self->_wifiScanDuration;
-  *(a3 + 22) |= 0x8000u;
+  *(to + 18) = self->_wifiScanDuration;
+  *(to + 22) |= 0x8000u;
   has = self->_has;
   if ((*&has & 0x800) == 0)
   {
@@ -1048,8 +1048,8 @@ LABEL_15:
   }
 
 LABEL_34:
-  *(a3 + 14) = self->_wifiPcieL0Duration;
-  *(a3 + 22) |= 0x800u;
+  *(to + 14) = self->_wifiPcieL0Duration;
+  *(to + 22) |= 0x800u;
   has = self->_has;
   if ((*&has & 0x1000) == 0)
   {
@@ -1063,8 +1063,8 @@ LABEL_16:
   }
 
 LABEL_35:
-  *(a3 + 15) = self->_wifiPcieL10Duration;
-  *(a3 + 22) |= 0x1000u;
+  *(to + 15) = self->_wifiPcieL10Duration;
+  *(to + 22) |= 0x1000u;
   has = self->_has;
   if ((*&has & 0x2000) == 0)
   {
@@ -1078,8 +1078,8 @@ LABEL_17:
   }
 
 LABEL_36:
-  *(a3 + 16) = self->_wifiPcieL11Duration;
-  *(a3 + 22) |= 0x2000u;
+  *(to + 16) = self->_wifiPcieL11Duration;
+  *(to + 22) |= 0x2000u;
   has = self->_has;
   if ((*&has & 0x4000) == 0)
   {
@@ -1093,8 +1093,8 @@ LABEL_18:
   }
 
 LABEL_37:
-  *(a3 + 17) = self->_wifiPcieL12Duration;
-  *(a3 + 22) |= 0x4000u;
+  *(to + 17) = self->_wifiPcieL12Duration;
+  *(to + 22) |= 0x4000u;
   has = self->_has;
   if ((*&has & 0x40000) == 0)
   {
@@ -1105,23 +1105,23 @@ LABEL_19:
     }
 
 LABEL_39:
-    *(a3 + 13) = self->_wifiHsicActiveDuration;
-    *(a3 + 22) |= 0x400u;
+    *(to + 13) = self->_wifiHsicActiveDuration;
+    *(to + 22) |= 0x400u;
     return;
   }
 
 LABEL_38:
-  *(a3 + 21) = self->_wifiTotalPowerMicroWatt;
-  *(a3 + 22) |= 0x40000u;
+  *(to + 21) = self->_wifiTotalPowerMicroWatt;
+  *(to + 22) |= 0x40000u;
   if ((*&self->_has & 0x400) != 0)
   {
     goto LABEL_39;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (*&has)
   {
@@ -1398,16 +1398,16 @@ LABEL_20:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 22);
+    v7 = *(equal + 22);
     if (*&has)
     {
-      if ((v7 & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((v7 & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_96;
       }
@@ -1422,7 +1422,7 @@ LABEL_96:
 
     if ((*&has & 4) != 0)
     {
-      if ((v7 & 4) == 0 || self->_wifi2P4GHzTxDuration != *(a3 + 5))
+      if ((v7 & 4) == 0 || self->_wifi2P4GHzTxDuration != *(equal + 5))
       {
         goto LABEL_96;
       }
@@ -1435,7 +1435,7 @@ LABEL_96:
 
     if ((*&has & 2) != 0)
     {
-      if ((v7 & 2) == 0 || self->_wifi2P4GHzRxDuration != *(a3 + 4))
+      if ((v7 & 2) == 0 || self->_wifi2P4GHzRxDuration != *(equal + 4))
       {
         goto LABEL_96;
       }
@@ -1448,7 +1448,7 @@ LABEL_96:
 
     if ((*&has & 0x10) != 0)
     {
-      if ((v7 & 0x10) == 0 || self->_wifi5GHz20MHzTxDuration != *(a3 + 7))
+      if ((v7 & 0x10) == 0 || self->_wifi5GHz20MHzTxDuration != *(equal + 7))
       {
         goto LABEL_96;
       }
@@ -1461,7 +1461,7 @@ LABEL_96:
 
     if ((*&has & 0x40) != 0)
     {
-      if ((v7 & 0x40) == 0 || self->_wifi5GHz40MHzTxDuration != *(a3 + 9))
+      if ((v7 & 0x40) == 0 || self->_wifi5GHz40MHzTxDuration != *(equal + 9))
       {
         goto LABEL_96;
       }
@@ -1474,7 +1474,7 @@ LABEL_96:
 
     if ((*&has & 0x100) != 0)
     {
-      if ((v7 & 0x100) == 0 || self->_wifi5GHz80MHzTxDuration != *(a3 + 11))
+      if ((v7 & 0x100) == 0 || self->_wifi5GHz80MHzTxDuration != *(equal + 11))
       {
         goto LABEL_96;
       }
@@ -1487,7 +1487,7 @@ LABEL_96:
 
     if ((*&has & 8) != 0)
     {
-      if ((v7 & 8) == 0 || self->_wifi5GHz20MHzRxDuration != *(a3 + 6))
+      if ((v7 & 8) == 0 || self->_wifi5GHz20MHzRxDuration != *(equal + 6))
       {
         goto LABEL_96;
       }
@@ -1500,7 +1500,7 @@ LABEL_96:
 
     if ((*&has & 0x20) != 0)
     {
-      if ((v7 & 0x20) == 0 || self->_wifi5GHz40MHzRxDuration != *(a3 + 8))
+      if ((v7 & 0x20) == 0 || self->_wifi5GHz40MHzRxDuration != *(equal + 8))
       {
         goto LABEL_96;
       }
@@ -1513,7 +1513,7 @@ LABEL_96:
 
     if ((*&has & 0x80) != 0)
     {
-      if ((v7 & 0x80) == 0 || self->_wifi5GHz80MHzRxDuration != *(a3 + 10))
+      if ((v7 & 0x80) == 0 || self->_wifi5GHz80MHzRxDuration != *(equal + 10))
       {
         goto LABEL_96;
       }
@@ -1526,7 +1526,7 @@ LABEL_96:
 
     if ((*&has & 0x10000) != 0)
     {
-      if ((v7 & 0x10000) == 0 || self->_wifiSleepDuration != *(a3 + 19))
+      if ((v7 & 0x10000) == 0 || self->_wifiSleepDuration != *(equal + 19))
       {
         goto LABEL_96;
       }
@@ -1539,7 +1539,7 @@ LABEL_96:
 
     if ((*&has & 0x20000) != 0)
     {
-      if ((v7 & 0x20000) == 0 || self->_wifiTotalDuration != *(a3 + 20))
+      if ((v7 & 0x20000) == 0 || self->_wifiTotalDuration != *(equal + 20))
       {
         goto LABEL_96;
       }
@@ -1552,7 +1552,7 @@ LABEL_96:
 
     if ((*&has & 0x200) != 0)
     {
-      if ((v7 & 0x200) == 0 || self->_wifiFRTSDuration != *(a3 + 12))
+      if ((v7 & 0x200) == 0 || self->_wifiFRTSDuration != *(equal + 12))
       {
         goto LABEL_96;
       }
@@ -1565,7 +1565,7 @@ LABEL_96:
 
     if ((*&has & 0x8000) != 0)
     {
-      if ((v7 & 0x8000) == 0 || self->_wifiScanDuration != *(a3 + 18))
+      if ((v7 & 0x8000) == 0 || self->_wifiScanDuration != *(equal + 18))
       {
         goto LABEL_96;
       }
@@ -1578,7 +1578,7 @@ LABEL_96:
 
     if ((*&has & 0x800) != 0)
     {
-      if ((v7 & 0x800) == 0 || self->_wifiPcieL0Duration != *(a3 + 14))
+      if ((v7 & 0x800) == 0 || self->_wifiPcieL0Duration != *(equal + 14))
       {
         goto LABEL_96;
       }
@@ -1591,7 +1591,7 @@ LABEL_96:
 
     if ((*&has & 0x1000) != 0)
     {
-      if ((v7 & 0x1000) == 0 || self->_wifiPcieL10Duration != *(a3 + 15))
+      if ((v7 & 0x1000) == 0 || self->_wifiPcieL10Duration != *(equal + 15))
       {
         goto LABEL_96;
       }
@@ -1604,7 +1604,7 @@ LABEL_96:
 
     if ((*&has & 0x2000) != 0)
     {
-      if ((v7 & 0x2000) == 0 || self->_wifiPcieL11Duration != *(a3 + 16))
+      if ((v7 & 0x2000) == 0 || self->_wifiPcieL11Duration != *(equal + 16))
       {
         goto LABEL_96;
       }
@@ -1617,7 +1617,7 @@ LABEL_96:
 
     if ((*&has & 0x4000) != 0)
     {
-      if ((v7 & 0x4000) == 0 || self->_wifiPcieL12Duration != *(a3 + 17))
+      if ((v7 & 0x4000) == 0 || self->_wifiPcieL12Duration != *(equal + 17))
       {
         goto LABEL_96;
       }
@@ -1630,7 +1630,7 @@ LABEL_96:
 
     if ((*&has & 0x40000) != 0)
     {
-      if ((v7 & 0x40000) == 0 || self->_wifiTotalPowerMicroWatt != *(a3 + 21))
+      if ((v7 & 0x40000) == 0 || self->_wifiTotalPowerMicroWatt != *(equal + 21))
       {
         goto LABEL_96;
       }
@@ -1641,10 +1641,10 @@ LABEL_96:
       goto LABEL_96;
     }
 
-    LOBYTE(v5) = (*(a3 + 22) & 0x400) == 0;
+    LOBYTE(v5) = (*(equal + 22) & 0x400) == 0;
     if ((*&has & 0x400) != 0)
     {
-      if ((v7 & 0x400) == 0 || self->_wifiHsicActiveDuration != *(a3 + 13))
+      if ((v7 & 0x400) == 0 || self->_wifiHsicActiveDuration != *(equal + 13))
       {
         goto LABEL_96;
       }
@@ -1915,14 +1915,14 @@ LABEL_36:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18 ^ v19 ^ v20 ^ v21;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 22);
+  v3 = *(from + 22);
   if (v3)
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
-    v3 = *(a3 + 22);
+    v3 = *(from + 22);
     if ((v3 & 4) == 0)
     {
 LABEL_3:
@@ -1940,9 +1940,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_wifi2P4GHzTxDuration = *(a3 + 5);
+  self->_wifi2P4GHzTxDuration = *(from + 5);
   *&self->_has |= 4u;
-  v3 = *(a3 + 22);
+  v3 = *(from + 22);
   if ((v3 & 2) == 0)
   {
 LABEL_4:
@@ -1955,9 +1955,9 @@ LABEL_4:
   }
 
 LABEL_23:
-  self->_wifi2P4GHzRxDuration = *(a3 + 4);
+  self->_wifi2P4GHzRxDuration = *(from + 4);
   *&self->_has |= 2u;
-  v3 = *(a3 + 22);
+  v3 = *(from + 22);
   if ((v3 & 0x10) == 0)
   {
 LABEL_5:
@@ -1970,9 +1970,9 @@ LABEL_5:
   }
 
 LABEL_24:
-  self->_wifi5GHz20MHzTxDuration = *(a3 + 7);
+  self->_wifi5GHz20MHzTxDuration = *(from + 7);
   *&self->_has |= 0x10u;
-  v3 = *(a3 + 22);
+  v3 = *(from + 22);
   if ((v3 & 0x40) == 0)
   {
 LABEL_6:
@@ -1985,9 +1985,9 @@ LABEL_6:
   }
 
 LABEL_25:
-  self->_wifi5GHz40MHzTxDuration = *(a3 + 9);
+  self->_wifi5GHz40MHzTxDuration = *(from + 9);
   *&self->_has |= 0x40u;
-  v3 = *(a3 + 22);
+  v3 = *(from + 22);
   if ((v3 & 0x100) == 0)
   {
 LABEL_7:
@@ -2000,9 +2000,9 @@ LABEL_7:
   }
 
 LABEL_26:
-  self->_wifi5GHz80MHzTxDuration = *(a3 + 11);
+  self->_wifi5GHz80MHzTxDuration = *(from + 11);
   *&self->_has |= 0x100u;
-  v3 = *(a3 + 22);
+  v3 = *(from + 22);
   if ((v3 & 8) == 0)
   {
 LABEL_8:
@@ -2015,9 +2015,9 @@ LABEL_8:
   }
 
 LABEL_27:
-  self->_wifi5GHz20MHzRxDuration = *(a3 + 6);
+  self->_wifi5GHz20MHzRxDuration = *(from + 6);
   *&self->_has |= 8u;
-  v3 = *(a3 + 22);
+  v3 = *(from + 22);
   if ((v3 & 0x20) == 0)
   {
 LABEL_9:
@@ -2030,9 +2030,9 @@ LABEL_9:
   }
 
 LABEL_28:
-  self->_wifi5GHz40MHzRxDuration = *(a3 + 8);
+  self->_wifi5GHz40MHzRxDuration = *(from + 8);
   *&self->_has |= 0x20u;
-  v3 = *(a3 + 22);
+  v3 = *(from + 22);
   if ((v3 & 0x80) == 0)
   {
 LABEL_10:
@@ -2045,9 +2045,9 @@ LABEL_10:
   }
 
 LABEL_29:
-  self->_wifi5GHz80MHzRxDuration = *(a3 + 10);
+  self->_wifi5GHz80MHzRxDuration = *(from + 10);
   *&self->_has |= 0x80u;
-  v3 = *(a3 + 22);
+  v3 = *(from + 22);
   if ((v3 & 0x10000) == 0)
   {
 LABEL_11:
@@ -2060,9 +2060,9 @@ LABEL_11:
   }
 
 LABEL_30:
-  self->_wifiSleepDuration = *(a3 + 19);
+  self->_wifiSleepDuration = *(from + 19);
   *&self->_has |= 0x10000u;
-  v3 = *(a3 + 22);
+  v3 = *(from + 22);
   if ((v3 & 0x20000) == 0)
   {
 LABEL_12:
@@ -2075,9 +2075,9 @@ LABEL_12:
   }
 
 LABEL_31:
-  self->_wifiTotalDuration = *(a3 + 20);
+  self->_wifiTotalDuration = *(from + 20);
   *&self->_has |= 0x20000u;
-  v3 = *(a3 + 22);
+  v3 = *(from + 22);
   if ((v3 & 0x200) == 0)
   {
 LABEL_13:
@@ -2090,9 +2090,9 @@ LABEL_13:
   }
 
 LABEL_32:
-  self->_wifiFRTSDuration = *(a3 + 12);
+  self->_wifiFRTSDuration = *(from + 12);
   *&self->_has |= 0x200u;
-  v3 = *(a3 + 22);
+  v3 = *(from + 22);
   if ((v3 & 0x8000) == 0)
   {
 LABEL_14:
@@ -2105,9 +2105,9 @@ LABEL_14:
   }
 
 LABEL_33:
-  self->_wifiScanDuration = *(a3 + 18);
+  self->_wifiScanDuration = *(from + 18);
   *&self->_has |= 0x8000u;
-  v3 = *(a3 + 22);
+  v3 = *(from + 22);
   if ((v3 & 0x800) == 0)
   {
 LABEL_15:
@@ -2120,9 +2120,9 @@ LABEL_15:
   }
 
 LABEL_34:
-  self->_wifiPcieL0Duration = *(a3 + 14);
+  self->_wifiPcieL0Duration = *(from + 14);
   *&self->_has |= 0x800u;
-  v3 = *(a3 + 22);
+  v3 = *(from + 22);
   if ((v3 & 0x1000) == 0)
   {
 LABEL_16:
@@ -2135,9 +2135,9 @@ LABEL_16:
   }
 
 LABEL_35:
-  self->_wifiPcieL10Duration = *(a3 + 15);
+  self->_wifiPcieL10Duration = *(from + 15);
   *&self->_has |= 0x1000u;
-  v3 = *(a3 + 22);
+  v3 = *(from + 22);
   if ((v3 & 0x2000) == 0)
   {
 LABEL_17:
@@ -2150,9 +2150,9 @@ LABEL_17:
   }
 
 LABEL_36:
-  self->_wifiPcieL11Duration = *(a3 + 16);
+  self->_wifiPcieL11Duration = *(from + 16);
   *&self->_has |= 0x2000u;
-  v3 = *(a3 + 22);
+  v3 = *(from + 22);
   if ((v3 & 0x4000) == 0)
   {
 LABEL_18:
@@ -2165,9 +2165,9 @@ LABEL_18:
   }
 
 LABEL_37:
-  self->_wifiPcieL12Duration = *(a3 + 17);
+  self->_wifiPcieL12Duration = *(from + 17);
   *&self->_has |= 0x4000u;
-  v3 = *(a3 + 22);
+  v3 = *(from + 22);
   if ((v3 & 0x40000) == 0)
   {
 LABEL_19:
@@ -2177,15 +2177,15 @@ LABEL_19:
     }
 
 LABEL_39:
-    self->_wifiHsicActiveDuration = *(a3 + 13);
+    self->_wifiHsicActiveDuration = *(from + 13);
     *&self->_has |= 0x400u;
     return;
   }
 
 LABEL_38:
-  self->_wifiTotalPowerMicroWatt = *(a3 + 21);
+  self->_wifiTotalPowerMicroWatt = *(from + 21);
   *&self->_has |= 0x40000u;
-  if ((*(a3 + 22) & 0x400) != 0)
+  if ((*(from + 22) & 0x400) != 0)
   {
     goto LABEL_39;
   }

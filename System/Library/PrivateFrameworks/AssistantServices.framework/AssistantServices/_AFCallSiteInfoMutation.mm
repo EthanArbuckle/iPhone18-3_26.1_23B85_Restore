@@ -1,5 +1,5 @@
 @interface _AFCallSiteInfoMutation
-- (_AFCallSiteInfoMutation)initWithBase:(id)a3;
+- (_AFCallSiteInfoMutation)initWithBase:(id)base;
 - (id)getImagePath;
 - (id)getSymbolName;
 @end
@@ -10,42 +10,42 @@
 {
   if ((*&self->_mutationFlags & 2) != 0)
   {
-    v2 = self->_imagePath;
+    imagePath = self->_imagePath;
   }
 
   else
   {
-    v2 = [(AFCallSiteInfo *)self->_base imagePath];
+    imagePath = [(AFCallSiteInfo *)self->_base imagePath];
   }
 
-  return v2;
+  return imagePath;
 }
 
 - (id)getSymbolName
 {
   if ((*&self->_mutationFlags & 4) != 0)
   {
-    v2 = self->_symbolName;
+    symbolName = self->_symbolName;
   }
 
   else
   {
-    v2 = [(AFCallSiteInfo *)self->_base symbolName];
+    symbolName = [(AFCallSiteInfo *)self->_base symbolName];
   }
 
-  return v2;
+  return symbolName;
 }
 
-- (_AFCallSiteInfoMutation)initWithBase:(id)a3
+- (_AFCallSiteInfoMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _AFCallSiteInfoMutation;
   v6 = [(_AFCallSiteInfoMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

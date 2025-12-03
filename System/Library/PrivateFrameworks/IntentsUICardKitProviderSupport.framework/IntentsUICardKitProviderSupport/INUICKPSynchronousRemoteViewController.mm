@@ -1,5 +1,5 @@
 @interface INUICKPSynchronousRemoteViewController
-+ (void)requestInstanceWithInfo:(id)a3 configuration:(id)a4 synchronousRemoteViewControllerDelegate:(id)a5 reply:(id)a6;
++ (void)requestInstanceWithInfo:(id)info configuration:(id)configuration synchronousRemoteViewControllerDelegate:(id)delegate reply:(id)reply;
 - (CGSize)preferredContentSize;
 - (CRKCardSectionViewControllingDelegate)cardSectionViewControllingDelegate;
 - (INUICKPInterfaceSectionOrganizing)interfaceSectionOrganizer;
@@ -7,36 +7,36 @@
 - (NSSet)cachedRepresentedParameters;
 - (id)_interaction;
 - (id)_minimumSizesBySystemVersion;
-- (id)interfaceSectionsForRemoteViewController:(id)a3;
-- (id)maximumSizesBySystemVersionForRemoteViewController:(id)a3;
+- (id)interfaceSectionsForRemoteViewController:(id)controller;
+- (id)maximumSizesBySystemVersionForRemoteViewController:(id)controller;
 - (void)loadView;
-- (void)remoteViewControllerServiceDidTerminate:(id)a3;
-- (void)setRemoteViewController:(id)a3;
+- (void)remoteViewControllerServiceDidTerminate:(id)terminate;
+- (void)setRemoteViewController:(id)controller;
 @end
 
 @implementation INUICKPSynchronousRemoteViewController
 
-+ (void)requestInstanceWithInfo:(id)a3 configuration:(id)a4 synchronousRemoteViewControllerDelegate:(id)a5 reply:(id)a6
++ (void)requestInstanceWithInfo:(id)info configuration:(id)configuration synchronousRemoteViewControllerDelegate:(id)delegate reply:(id)reply
 {
-  v10 = a4;
-  v11 = a6;
-  v12 = a5;
-  v13 = a3;
-  v14 = objc_alloc_init(a1);
-  [v14 setDelegate:v12];
+  configurationCopy = configuration;
+  replyCopy = reply;
+  delegateCopy = delegate;
+  infoCopy = info;
+  v14 = objc_alloc_init(self);
+  [v14 setDelegate:delegateCopy];
 
   v15 = MEMORY[0x277CD4600];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __126__INUICKPSynchronousRemoteViewController_requestInstanceWithInfo_configuration_synchronousRemoteViewControllerDelegate_reply___block_invoke;
   v19[3] = &unk_2797EB898;
-  v21 = v10;
-  v22 = v11;
+  v21 = configurationCopy;
+  v22 = replyCopy;
   v20 = v14;
-  v16 = v10;
+  v16 = configurationCopy;
   v17 = v14;
-  v18 = v11;
-  [v15 requestRemoteViewControllerWithRequestInfo:v13 reply:v19];
+  v18 = replyCopy;
+  [v15 requestRemoteViewControllerWithRequestInfo:infoCopy reply:v19];
 }
 
 void __126__INUICKPSynchronousRemoteViewController_requestInstanceWithInfo_configuration_synchronousRemoteViewControllerDelegate_reply___block_invoke(id *a1, void *a2, void *a3)
@@ -134,25 +134,25 @@ uint64_t __126__INUICKPSynchronousRemoteViewController_requestInstanceWithInfo_c
   [(INUICKPSynchronousRemoteViewController *)self setView:v3];
 }
 
-- (void)setRemoteViewController:(id)a3
+- (void)setRemoteViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   remoteViewController = self->_remoteViewController;
-  v10 = v5;
-  if (remoteViewController != v5)
+  v10 = controllerCopy;
+  if (remoteViewController != controllerCopy)
   {
     [(INUIRemoteViewController *)remoteViewController removeFromParentViewController];
-    v7 = [(INUIRemoteViewController *)self->_remoteViewController view];
-    [v7 removeFromSuperview];
+    view = [(INUIRemoteViewController *)self->_remoteViewController view];
+    [view removeFromSuperview];
 
     [(INUIRemoteViewController *)self->_remoteViewController didMoveToParentViewController:0];
-    objc_storeStrong(&self->_remoteViewController, a3);
+    objc_storeStrong(&self->_remoteViewController, controller);
     if (self->_remoteViewController)
     {
       [(INUICKPSynchronousRemoteViewController *)self addChildViewController:?];
-      v8 = [(INUICKPSynchronousRemoteViewController *)self view];
-      v9 = [(INUIRemoteViewController *)self->_remoteViewController view];
-      [v8 addSubview:v9];
+      view2 = [(INUICKPSynchronousRemoteViewController *)self view];
+      view3 = [(INUIRemoteViewController *)self->_remoteViewController view];
+      [view2 addSubview:view3];
 
       [(INUIRemoteViewController *)self->_remoteViewController didMoveToParentViewController:self];
     }
@@ -161,27 +161,27 @@ uint64_t __126__INUICKPSynchronousRemoteViewController_requestInstanceWithInfo_c
 
 - (NSSet)cachedRepresentedParameters
 {
-  v2 = [(INUICKPSynchronousRemoteViewController *)self remoteViewController];
-  v3 = [v2 configuration];
-  v4 = [v3 parameters];
+  remoteViewController = [(INUICKPSynchronousRemoteViewController *)self remoteViewController];
+  configuration = [remoteViewController configuration];
+  parameters = [configuration parameters];
 
-  return v4;
+  return parameters;
 }
 
 - (id)_interaction
 {
-  v2 = [(INUICKPSynchronousRemoteViewController *)self remoteViewController];
-  v3 = [v2 requestInfo];
-  v4 = [v3 interaction];
+  remoteViewController = [(INUICKPSynchronousRemoteViewController *)self remoteViewController];
+  requestInfo = [remoteViewController requestInfo];
+  interaction = [requestInfo interaction];
 
-  return v4;
+  return interaction;
 }
 
 - (id)_minimumSizesBySystemVersion
 {
   v12[2] = *MEMORY[0x277D85DE8];
-  v3 = [(INUICKPSynchronousRemoteViewController *)self delegate];
-  [v3 boundingWidthForSynchronousRemoteViewController:self];
+  delegate = [(INUICKPSynchronousRemoteViewController *)self delegate];
+  [delegate boundingWidthForSynchronousRemoteViewController:self];
   v5 = v4;
 
   v11[0] = &unk_286772998;
@@ -197,7 +197,7 @@ uint64_t __126__INUICKPSynchronousRemoteViewController_requestInstanceWithInfo_c
   return v8;
 }
 
-- (void)remoteViewControllerServiceDidTerminate:(id)a3
+- (void)remoteViewControllerServiceDidTerminate:(id)terminate
 {
   v4 = *MEMORY[0x277CF93F0];
   if (os_log_type_enabled(*MEMORY[0x277CF93F0], OS_LOG_TYPE_ERROR))
@@ -206,11 +206,11 @@ uint64_t __126__INUICKPSynchronousRemoteViewController_requestInstanceWithInfo_c
   }
 }
 
-- (id)maximumSizesBySystemVersionForRemoteViewController:(id)a3
+- (id)maximumSizesBySystemVersionForRemoteViewController:(id)controller
 {
   v15[2] = *MEMORY[0x277D85DE8];
-  v4 = [(INUICKPSynchronousRemoteViewController *)self delegate];
-  [v4 boundingWidthForSynchronousRemoteViewController:self];
+  delegate = [(INUICKPSynchronousRemoteViewController *)self delegate];
+  [delegate boundingWidthForSynchronousRemoteViewController:self];
   v6 = v5;
 
   v14[0] = &unk_286772998;
@@ -218,8 +218,8 @@ uint64_t __126__INUICKPSynchronousRemoteViewController_requestInstanceWithInfo_c
   v14[1] = &unk_2867729B0;
   v15[0] = v7;
   v8 = MEMORY[0x277CCAE60];
-  v9 = [MEMORY[0x277D759A0] mainScreen];
-  [v9 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v10 = [v8 valueWithCGSize:{v6, CGRectGetHeight(v17)}];
   v15[1] = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:2];
@@ -229,28 +229,28 @@ uint64_t __126__INUICKPSynchronousRemoteViewController_requestInstanceWithInfo_c
   return v11;
 }
 
-- (id)interfaceSectionsForRemoteViewController:(id)a3
+- (id)interfaceSectionsForRemoteViewController:(id)controller
 {
-  v3 = [(INUICKPSynchronousRemoteViewController *)self interfaceSectionOrganizer];
-  v4 = [v3 organizedInterfaceSections];
+  interfaceSectionOrganizer = [(INUICKPSynchronousRemoteViewController *)self interfaceSectionOrganizer];
+  organizedInterfaceSections = [interfaceSectionOrganizer organizedInterfaceSections];
 
-  return v4;
+  return organizedInterfaceSections;
 }
 
 - (CGSize)preferredContentSize
 {
-  v3 = [(INUICKPSynchronousRemoteViewController *)self remoteViewController];
-  v4 = v3;
-  if (v3)
+  remoteViewController = [(INUICKPSynchronousRemoteViewController *)self remoteViewController];
+  v4 = remoteViewController;
+  if (remoteViewController)
   {
-    [v3 preferredContentSize];
+    [remoteViewController preferredContentSize];
     v6 = v5;
     v8 = v7;
   }
 
   else
   {
-    v9 = [(INUICKPSynchronousRemoteViewController *)self _minimumSizesBySystemVersion];
+    _minimumSizesBySystemVersion = [(INUICKPSynchronousRemoteViewController *)self _minimumSizesBySystemVersion];
     _INUIUtilitiesBestFittingSizeForSizeBySystemVersionDictionary();
     v6 = v10;
     v8 = v11;

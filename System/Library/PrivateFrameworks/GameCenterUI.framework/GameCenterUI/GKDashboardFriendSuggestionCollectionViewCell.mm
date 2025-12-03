@@ -1,20 +1,20 @@
 @interface GKDashboardFriendSuggestionCollectionViewCell
-+ (CGSize)sizeWithFitting:(CGSize)a3 in:(id)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
++ (CGSize)sizeWithFitting:(CGSize)fitting in:(id)in;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (id)tapHandler;
-- (void)applyWithSuggestedFriend:(id)a3 previouslyInvited:(BOOL)a4;
+- (void)applyWithSuggestedFriend:(id)friend previouslyInvited:(BOOL)invited;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setInviteButtonTitleColor:(id)a3;
-- (void)setTapHandler:(id)a3;
+- (void)setInviteButtonTitleColor:(id)color;
+- (void)setTapHandler:(id)handler;
 @end
 
 @implementation GKDashboardFriendSuggestionCollectionViewCell
 
-+ (CGSize)sizeWithFitting:(CGSize)a3 in:(id)a4
++ (CGSize)sizeWithFitting:(CGSize)fitting in:(id)in
 {
   swift_unknownObjectRetain();
-  v5 = static GKDashboardFriendSuggestionCollectionViewCell.size(fitting:in:)(a4);
+  v5 = static GKDashboardFriendSuggestionCollectionViewCell.size(fitting:in:)(in);
   v7 = v6;
   swift_unknownObjectRelease();
   v8 = v5;
@@ -24,9 +24,9 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
+  selfCopy = self;
   sub_24DFE8A80();
   v5 = v4;
   v7 = v6;
@@ -60,9 +60,9 @@
   return v4;
 }
 
-- (void)setTapHandler:(id)a3
+- (void)setTapHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -75,34 +75,34 @@
     v5 = 0;
   }
 
-  v6 = self;
+  selfCopy = self;
   sub_24DFE8CCC(v4, v5);
 }
 
-- (void)applyWithSuggestedFriend:(id)a3 previouslyInvited:(BOOL)a4
+- (void)applyWithSuggestedFriend:(id)friend previouslyInvited:(BOOL)invited
 {
-  v4 = a4;
-  v7 = a3;
-  v8 = self;
-  sub_24DFE8E7C(a3, v4);
+  invitedCopy = invited;
+  friendCopy = friend;
+  selfCopy = self;
+  sub_24DFE8E7C(friend, invitedCopy);
 }
 
-- (void)setInviteButtonTitleColor:(id)a3
+- (void)setInviteButtonTitleColor:(id)color
 {
-  v4 = a3;
-  v5 = self;
-  sub_24DFE948C(v4);
+  colorCopy = color;
+  selfCopy = self;
+  sub_24DFE948C(colorCopy);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_24DFE9534();
 }
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_24DFE96FC();
 }
 

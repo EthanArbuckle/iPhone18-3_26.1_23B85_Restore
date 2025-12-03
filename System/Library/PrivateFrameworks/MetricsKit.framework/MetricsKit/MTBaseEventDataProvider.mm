@@ -1,160 +1,160 @@
 @interface MTBaseEventDataProvider
-- (id)app:(id)a3;
-- (id)appVersion:(id)a3;
-- (id)baseVersion:(id)a3;
-- (id)capacityData:(id)a3;
-- (id)capacityDataAvailable:(id)a3;
-- (id)capacityDisk:(id)a3;
-- (id)capacitySystem:(id)a3;
-- (id)capacitySystemAvailable:(id)a3;
-- (id)clientEventId:(id)a3;
-- (id)clientId:(id)a3;
-- (id)connection:(id)a3;
-- (id)cookies:(id)a3;
-- (id)dsId:(id)a3;
-- (id)eventTime:(id)a3;
+- (id)app:(id)app;
+- (id)appVersion:(id)version;
+- (id)baseVersion:(id)version;
+- (id)capacityData:(id)data;
+- (id)capacityDataAvailable:(id)available;
+- (id)capacityDisk:(id)disk;
+- (id)capacitySystem:(id)system;
+- (id)capacitySystemAvailable:(id)available;
+- (id)clientEventId:(id)id;
+- (id)clientId:(id)id;
+- (id)connection:(id)connection;
+- (id)cookies:(id)cookies;
+- (id)dsId:(id)id;
+- (id)eventTime:(id)time;
 - (id)fetchAllCookies;
-- (id)hardwareFamily:(id)a3;
-- (id)hardwareModel:(id)a3;
-- (id)hostApp:(id)a3;
-- (id)hostAppVersion:(id)a3;
-- (id)isSignedIn:(id)a3;
+- (id)hardwareFamily:(id)family;
+- (id)hardwareModel:(id)model;
+- (id)hostApp:(id)app;
+- (id)hostAppVersion:(id)version;
+- (id)isSignedIn:(id)in;
 - (id)knownFields;
-- (id)os:(id)a3;
-- (id)osBuildNumber:(id)a3;
-- (id)osVersion:(id)a3;
-- (id)page:(id)a3;
-- (id)pageContext:(id)a3;
-- (id)pageDetails:(id)a3;
-- (id)pageId:(id)a3;
-- (id)pageType:(id)a3;
-- (id)pageUrl:(id)a3;
-- (id)parentPageUrl:(id)a3;
-- (id)pixelRatio:(id)a3;
-- (id)resourceRevNum:(id)a3;
-- (id)screenHeight:(id)a3;
-- (id)screenWidth:(id)a3;
-- (id)storeFrontHeader:(id)a3;
-- (id)timezoneOffset:(id)a3;
-- (id)userAgent:(id)a3;
-- (id)windowInnerHeight:(id)a3;
-- (id)windowInnerWidth:(id)a3;
-- (id)windowOuterHeight:(id)a3;
-- (id)windowOuterWidth:(id)a3;
-- (id)xpPostFrequency:(id)a3;
-- (id)xpSendMethod:(id)a3;
-- (id)xpVersionMetricsKit:(id)a3;
+- (id)os:(id)os;
+- (id)osBuildNumber:(id)number;
+- (id)osVersion:(id)version;
+- (id)page:(id)page;
+- (id)pageContext:(id)context;
+- (id)pageDetails:(id)details;
+- (id)pageId:(id)id;
+- (id)pageType:(id)type;
+- (id)pageUrl:(id)url;
+- (id)parentPageUrl:(id)url;
+- (id)pixelRatio:(id)ratio;
+- (id)resourceRevNum:(id)num;
+- (id)screenHeight:(id)height;
+- (id)screenWidth:(id)width;
+- (id)storeFrontHeader:(id)header;
+- (id)timezoneOffset:(id)offset;
+- (id)userAgent:(id)agent;
+- (id)windowInnerHeight:(id)height;
+- (id)windowInnerWidth:(id)width;
+- (id)windowOuterHeight:(id)height;
+- (id)windowOuterWidth:(id)width;
+- (id)xpPostFrequency:(id)frequency;
+- (id)xpSendMethod:(id)method;
+- (id)xpVersionMetricsKit:(id)kit;
 @end
 
 @implementation MTBaseEventDataProvider
 
 - (id)knownFields
 {
-  v3 = [(MTEventDataProvider *)self delegate];
+  delegate = [(MTEventDataProvider *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(MTEventDataProvider *)self delegate];
-    v6 = [v5 knownFields];
+    delegate2 = [(MTEventDataProvider *)self delegate];
+    knownFields = [delegate2 knownFields];
   }
 
   else
   {
-    v6 = 0;
+    knownFields = 0;
   }
 
-  return v6;
+  return knownFields;
 }
 
-- (id)app:(id)a3
+- (id)app:(id)app
 {
-  v4 = a3;
-  v5 = [(MTEventDataProvider *)self delegate];
+  appCopy = app;
+  delegate = [(MTEventDataProvider *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MTEventDataProvider *)self delegate];
-    v8 = [v7 app:v4];
+    delegate2 = [(MTEventDataProvider *)self delegate];
+    v8 = [delegate2 app:appCopy];
 LABEL_5:
     v10 = v8;
     goto LABEL_6;
   }
 
-  v9 = [v4 objectForKeyedSubscript:@"app"];
-  v7 = v9;
+  v9 = [appCopy objectForKeyedSubscript:@"app"];
+  delegate2 = v9;
   if (v9)
   {
     v8 = v9;
-    v7 = v8;
+    delegate2 = v8;
     goto LABEL_5;
   }
 
-  v12 = [(MTObject *)self metricsKit];
-  v13 = [v12 system];
-  v14 = [v13 environment];
-  v10 = [v14 app];
+  metricsKit = [(MTObject *)self metricsKit];
+  system = [metricsKit system];
+  environment = [system environment];
+  v10 = [environment app];
 
 LABEL_6:
 
   return v10;
 }
 
-- (id)appVersion:(id)a3
+- (id)appVersion:(id)version
 {
-  v4 = a3;
-  v5 = [(MTEventDataProvider *)self delegate];
+  versionCopy = version;
+  delegate = [(MTEventDataProvider *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MTEventDataProvider *)self delegate];
-    v8 = [v7 appVersion:v4];
+    delegate2 = [(MTEventDataProvider *)self delegate];
+    v8 = [delegate2 appVersion:versionCopy];
 LABEL_5:
-    v10 = v8;
+    appVersion = v8;
     goto LABEL_6;
   }
 
-  v9 = [v4 objectForKeyedSubscript:@"appVersion"];
-  v7 = v9;
+  v9 = [versionCopy objectForKeyedSubscript:@"appVersion"];
+  delegate2 = v9;
   if (v9)
   {
     v8 = v9;
-    v7 = v8;
+    delegate2 = v8;
     goto LABEL_5;
   }
 
-  v12 = [(MTObject *)self metricsKit];
-  v13 = [v12 system];
-  v14 = [v13 environment];
-  v10 = [v14 appVersion];
+  metricsKit = [(MTObject *)self metricsKit];
+  system = [metricsKit system];
+  environment = [system environment];
+  appVersion = [environment appVersion];
 
 LABEL_6:
 
-  return v10;
+  return appVersion;
 }
 
-- (id)baseVersion:(id)a3
+- (id)baseVersion:(id)version
 {
-  v4 = a3;
-  v5 = [(MTEventDataProvider *)self delegate];
+  versionCopy = version;
+  delegate = [(MTEventDataProvider *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MTEventDataProvider *)self delegate];
-    v8 = [v7 baseVersion:v4];
+    delegate2 = [(MTEventDataProvider *)self delegate];
+    v8 = [delegate2 baseVersion:versionCopy];
   }
 
   else
   {
-    v9 = [v4 objectForKeyedSubscript:@"baseVersion"];
-    v7 = v9;
+    v9 = [versionCopy objectForKeyedSubscript:@"baseVersion"];
+    delegate2 = v9;
     if (v9)
     {
       v8 = v9;
-      v7 = v8;
+      delegate2 = v8;
     }
 
     else
@@ -168,182 +168,182 @@ LABEL_6:
   return v10;
 }
 
-- (id)capacityData:(id)a3
+- (id)capacityData:(id)data
 {
-  v4 = a3;
-  v5 = [(MTEventDataProvider *)self delegate];
+  dataCopy = data;
+  delegate = [(MTEventDataProvider *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MTEventDataProvider *)self delegate];
-    v8 = [v7 capacityData:v4];
+    delegate2 = [(MTEventDataProvider *)self delegate];
+    v8 = [delegate2 capacityData:dataCopy];
 LABEL_5:
-    v10 = v8;
+    capacityData = v8;
     goto LABEL_6;
   }
 
-  v9 = [v4 objectForKeyedSubscript:@"capacityData"];
-  v7 = v9;
+  v9 = [dataCopy objectForKeyedSubscript:@"capacityData"];
+  delegate2 = v9;
   if (v9)
   {
     v8 = v9;
-    v7 = v8;
+    delegate2 = v8;
     goto LABEL_5;
   }
 
-  v12 = [(MTObject *)self metricsKit];
-  v13 = [v12 system];
-  v14 = [v13 environment];
-  v10 = [v14 capacityData];
+  metricsKit = [(MTObject *)self metricsKit];
+  system = [metricsKit system];
+  environment = [system environment];
+  capacityData = [environment capacityData];
 
 LABEL_6:
 
-  return v10;
+  return capacityData;
 }
 
-- (id)capacityDataAvailable:(id)a3
+- (id)capacityDataAvailable:(id)available
 {
-  v4 = a3;
-  v5 = [(MTEventDataProvider *)self delegate];
+  availableCopy = available;
+  delegate = [(MTEventDataProvider *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MTEventDataProvider *)self delegate];
-    v8 = [v7 capacityDataAvailable:v4];
+    delegate2 = [(MTEventDataProvider *)self delegate];
+    v8 = [delegate2 capacityDataAvailable:availableCopy];
 LABEL_5:
-    v10 = v8;
+    capacityDataAvailable = v8;
     goto LABEL_6;
   }
 
-  v9 = [v4 objectForKeyedSubscript:@"capacityDataAvailable"];
-  v7 = v9;
+  v9 = [availableCopy objectForKeyedSubscript:@"capacityDataAvailable"];
+  delegate2 = v9;
   if (v9)
   {
     v8 = v9;
-    v7 = v8;
+    delegate2 = v8;
     goto LABEL_5;
   }
 
-  v12 = [(MTObject *)self metricsKit];
-  v13 = [v12 system];
-  v14 = [v13 environment];
-  v10 = [v14 capacityDataAvailable];
+  metricsKit = [(MTObject *)self metricsKit];
+  system = [metricsKit system];
+  environment = [system environment];
+  capacityDataAvailable = [environment capacityDataAvailable];
 
 LABEL_6:
 
-  return v10;
+  return capacityDataAvailable;
 }
 
-- (id)capacityDisk:(id)a3
+- (id)capacityDisk:(id)disk
 {
-  v4 = a3;
-  v5 = [(MTEventDataProvider *)self delegate];
+  diskCopy = disk;
+  delegate = [(MTEventDataProvider *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MTEventDataProvider *)self delegate];
-    v8 = [v7 capacityDisk:v4];
+    delegate2 = [(MTEventDataProvider *)self delegate];
+    v8 = [delegate2 capacityDisk:diskCopy];
 LABEL_5:
-    v10 = v8;
+    capacityDisk = v8;
     goto LABEL_6;
   }
 
-  v9 = [v4 objectForKeyedSubscript:@"capacityDisk"];
-  v7 = v9;
+  v9 = [diskCopy objectForKeyedSubscript:@"capacityDisk"];
+  delegate2 = v9;
   if (v9)
   {
     v8 = v9;
-    v7 = v8;
+    delegate2 = v8;
     goto LABEL_5;
   }
 
-  v12 = [(MTObject *)self metricsKit];
-  v13 = [v12 system];
-  v14 = [v13 environment];
-  v10 = [v14 capacityDisk];
+  metricsKit = [(MTObject *)self metricsKit];
+  system = [metricsKit system];
+  environment = [system environment];
+  capacityDisk = [environment capacityDisk];
 
 LABEL_6:
 
-  return v10;
+  return capacityDisk;
 }
 
-- (id)capacitySystem:(id)a3
+- (id)capacitySystem:(id)system
 {
-  v4 = a3;
-  v5 = [(MTEventDataProvider *)self delegate];
+  systemCopy = system;
+  delegate = [(MTEventDataProvider *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MTEventDataProvider *)self delegate];
-    v8 = [v7 capacitySystem:v4];
+    delegate2 = [(MTEventDataProvider *)self delegate];
+    v8 = [delegate2 capacitySystem:systemCopy];
 LABEL_5:
-    v10 = v8;
+    capacitySystem = v8;
     goto LABEL_6;
   }
 
-  v9 = [v4 objectForKeyedSubscript:@"capacitySystem"];
-  v7 = v9;
+  v9 = [systemCopy objectForKeyedSubscript:@"capacitySystem"];
+  delegate2 = v9;
   if (v9)
   {
     v8 = v9;
-    v7 = v8;
+    delegate2 = v8;
     goto LABEL_5;
   }
 
-  v12 = [(MTObject *)self metricsKit];
-  v13 = [v12 system];
-  v14 = [v13 environment];
-  v10 = [v14 capacitySystem];
+  metricsKit = [(MTObject *)self metricsKit];
+  system = [metricsKit system];
+  environment = [system environment];
+  capacitySystem = [environment capacitySystem];
 
 LABEL_6:
 
-  return v10;
+  return capacitySystem;
 }
 
-- (id)capacitySystemAvailable:(id)a3
+- (id)capacitySystemAvailable:(id)available
 {
-  v4 = a3;
-  v5 = [(MTEventDataProvider *)self delegate];
+  availableCopy = available;
+  delegate = [(MTEventDataProvider *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MTEventDataProvider *)self delegate];
-    v8 = [v7 capacitySystemAvailable:v4];
+    delegate2 = [(MTEventDataProvider *)self delegate];
+    v8 = [delegate2 capacitySystemAvailable:availableCopy];
 LABEL_5:
-    v10 = v8;
+    capacitySystemAvailable = v8;
     goto LABEL_6;
   }
 
-  v9 = [v4 objectForKeyedSubscript:@"capacityDataAvailable"];
-  v7 = v9;
+  v9 = [availableCopy objectForKeyedSubscript:@"capacityDataAvailable"];
+  delegate2 = v9;
   if (v9)
   {
     v8 = v9;
-    v7 = v8;
+    delegate2 = v8;
     goto LABEL_5;
   }
 
-  v12 = [(MTObject *)self metricsKit];
-  v13 = [v12 system];
-  v14 = [v13 environment];
-  v10 = [v14 capacitySystemAvailable];
+  metricsKit = [(MTObject *)self metricsKit];
+  system = [metricsKit system];
+  environment = [system environment];
+  capacitySystemAvailable = [environment capacitySystemAvailable];
 
 LABEL_6:
 
-  return v10;
+  return capacitySystemAvailable;
 }
 
 - (id)fetchAllCookies
 {
-  v2 = [(MTObject *)self metricsKit];
-  v3 = [v2 system];
-  v4 = [v3 environment];
-  v5 = [v4 cookies];
+  metricsKit = [(MTObject *)self metricsKit];
+  system = [metricsKit system];
+  environment = [system environment];
+  cookies = [environment cookies];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -352,66 +352,66 @@ LABEL_6:
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
 
-      v5 = MEMORY[0x277CBEC10];
+      cookies = MEMORY[0x277CBEC10];
     }
 
-    v6 = [MTPromise promiseWithResult:v5];
+    v6 = [MTPromise promiseWithResult:cookies];
 
-    v5 = v6;
+    cookies = v6;
   }
 
-  return v5;
+  return cookies;
 }
 
-- (id)clientEventId:(id)a3
+- (id)clientEventId:(id)id
 {
-  v4 = a3;
-  v5 = [(MTEventDataProvider *)self delegate];
+  idCopy = id;
+  delegate = [(MTEventDataProvider *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MTEventDataProvider *)self delegate];
-    v8 = [v7 clientEventId:v4];
+    delegate2 = [(MTEventDataProvider *)self delegate];
+    v8 = [delegate2 clientEventId:idCopy];
   }
 
   else
   {
     v9 = MEMORY[0x277CCACA8];
-    v7 = [MEMORY[0x277CCAD78] UUID];
-    v10 = [v7 mt_base62String];
-    v8 = [v9 stringWithFormat:@"1_1_%@", v10];
+    delegate2 = [MEMORY[0x277CCAD78] UUID];
+    mt_base62String = [delegate2 mt_base62String];
+    v8 = [v9 stringWithFormat:@"1_1_%@", mt_base62String];
   }
 
   return v8;
 }
 
-- (id)clientId:(id)a3
+- (id)clientId:(id)id
 {
-  v4 = a3;
-  v5 = [(MTEventDataProvider *)self delegate];
+  idCopy = id;
+  delegate = [(MTEventDataProvider *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MTEventDataProvider *)self delegate];
-    v8 = [v7 clientId:v4];
+    delegate2 = [(MTEventDataProvider *)self delegate];
+    v8 = [delegate2 clientId:idCopy];
 LABEL_5:
     v10 = v8;
     goto LABEL_6;
   }
 
-  v9 = [v4 objectForKeyedSubscript:@"clientId"];
-  v7 = v9;
+  v9 = [idCopy objectForKeyedSubscript:@"clientId"];
+  delegate2 = v9;
   if (v9)
   {
     v8 = v9;
     goto LABEL_5;
   }
 
-  v12 = [(MTObject *)self metricsKit];
-  v13 = [v12 config];
-  v14 = [v13 configValueForKeyPath:@"ignoreClientIdCookie" default:MEMORY[0x277CBEC28]];
+  metricsKit = [(MTObject *)self metricsKit];
+  config = [metricsKit config];
+  v14 = [config configValueForKeyPath:@"ignoreClientIdCookie" default:MEMORY[0x277CBEC28]];
 
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
@@ -460,61 +460,61 @@ id __36__MTBaseEventDataProvider_clientId___block_invoke_2(uint64_t a1, void *a2
   return v3;
 }
 
-- (id)connection:(id)a3
+- (id)connection:(id)connection
 {
-  v4 = a3;
-  v5 = [(MTEventDataProvider *)self delegate];
+  connectionCopy = connection;
+  delegate = [(MTEventDataProvider *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MTEventDataProvider *)self delegate];
-    v8 = [v7 connection:v4];
+    delegate2 = [(MTEventDataProvider *)self delegate];
+    v8 = [delegate2 connection:connectionCopy];
 LABEL_5:
-    v10 = v8;
+    connectionType = v8;
     goto LABEL_6;
   }
 
-  v9 = [v4 objectForKeyedSubscript:@"connection"];
-  v7 = v9;
+  v9 = [connectionCopy objectForKeyedSubscript:@"connection"];
+  delegate2 = v9;
   if (v9)
   {
     v8 = v9;
-    v7 = v8;
+    delegate2 = v8;
     goto LABEL_5;
   }
 
-  v12 = [(MTObject *)self metricsKit];
-  v13 = [v12 system];
-  v14 = [v13 environment];
-  v10 = [v14 connectionType];
+  metricsKit = [(MTObject *)self metricsKit];
+  system = [metricsKit system];
+  environment = [system environment];
+  connectionType = [environment connectionType];
 
 LABEL_6:
 
-  return v10;
+  return connectionType;
 }
 
-- (id)cookies:(id)a3
+- (id)cookies:(id)cookies
 {
-  v4 = a3;
-  v5 = [(MTEventDataProvider *)self delegate];
+  cookiesCopy = cookies;
+  delegate = [(MTEventDataProvider *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MTEventDataProvider *)self delegate];
-    v8 = [v7 cookies:v4];
+    delegate2 = [(MTEventDataProvider *)self delegate];
+    v8 = [delegate2 cookies:cookiesCopy];
   }
 
   else
   {
-    v7 = [(MTBaseEventDataProvider *)self fetchAllCookies];
+    delegate2 = [(MTBaseEventDataProvider *)self fetchAllCookies];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __35__MTBaseEventDataProvider_cookies___block_invoke;
     v11[3] = &unk_2798CD570;
     v11[4] = self;
-    v8 = [v7 thenWithBlock:v11];
+    v8 = [delegate2 thenWithBlock:v11];
   }
 
   v9 = v8;
@@ -597,227 +597,227 @@ id __35__MTBaseEventDataProvider_cookies___block_invoke_2(uint64_t a1, void *a2)
   return v16;
 }
 
-- (id)dsId:(id)a3
+- (id)dsId:(id)id
 {
-  v4 = a3;
-  v5 = [(MTEventDataProvider *)self delegate];
+  idCopy = id;
+  delegate = [(MTEventDataProvider *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MTEventDataProvider *)self delegate];
-    v8 = [v7 dsId:v4];
+    delegate2 = [(MTEventDataProvider *)self delegate];
+    v8 = [delegate2 dsId:idCopy];
 LABEL_5:
-    v10 = v8;
+    dsId = v8;
     goto LABEL_6;
   }
 
-  v9 = [v4 objectForKeyedSubscript:@"dsId"];
-  v7 = v9;
+  v9 = [idCopy objectForKeyedSubscript:@"dsId"];
+  delegate2 = v9;
   if (v9)
   {
     v8 = v9;
-    v7 = v8;
+    delegate2 = v8;
     goto LABEL_5;
   }
 
-  v12 = [(MTObject *)self metricsKit];
-  v13 = [v12 system];
-  v14 = [v13 environment];
-  v10 = [v14 dsId];
+  metricsKit = [(MTObject *)self metricsKit];
+  system = [metricsKit system];
+  environment = [system environment];
+  dsId = [environment dsId];
 
 LABEL_6:
 
-  return v10;
+  return dsId;
 }
 
-- (id)eventTime:(id)a3
+- (id)eventTime:(id)time
 {
-  v4 = a3;
-  v5 = [(MTEventDataProvider *)self delegate];
+  timeCopy = time;
+  delegate = [(MTEventDataProvider *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MTEventDataProvider *)self delegate];
-    v8 = [v7 eventTime:v4];
+    delegate2 = [(MTEventDataProvider *)self delegate];
+    mt_millisecondsSince1970 = [delegate2 eventTime:timeCopy];
   }
 
   else
   {
-    v9 = [v4 objectForKeyedSubscript:@"eventTime"];
-    v7 = v9;
+    v9 = [timeCopy objectForKeyedSubscript:@"eventTime"];
+    delegate2 = v9;
     if (v9)
     {
-      v8 = v9;
-      v7 = v8;
+      mt_millisecondsSince1970 = v9;
+      delegate2 = mt_millisecondsSince1970;
     }
 
     else
     {
-      v8 = [MEMORY[0x277CBEAA8] mt_millisecondsSince1970];
+      mt_millisecondsSince1970 = [MEMORY[0x277CBEAA8] mt_millisecondsSince1970];
     }
   }
 
-  v10 = v8;
+  v10 = mt_millisecondsSince1970;
 
   return v10;
 }
 
-- (id)hardwareFamily:(id)a3
+- (id)hardwareFamily:(id)family
 {
-  v4 = a3;
-  v5 = [(MTEventDataProvider *)self delegate];
+  familyCopy = family;
+  delegate = [(MTEventDataProvider *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MTEventDataProvider *)self delegate];
-    v8 = [v7 hardwareFamily:v4];
+    delegate2 = [(MTEventDataProvider *)self delegate];
+    v8 = [delegate2 hardwareFamily:familyCopy];
 LABEL_5:
-    v10 = v8;
+    hardwareFamily = v8;
     goto LABEL_6;
   }
 
-  v9 = [v4 objectForKeyedSubscript:@"hardwareFamily"];
-  v7 = v9;
+  v9 = [familyCopy objectForKeyedSubscript:@"hardwareFamily"];
+  delegate2 = v9;
   if (v9)
   {
     v8 = v9;
-    v7 = v8;
+    delegate2 = v8;
     goto LABEL_5;
   }
 
-  v12 = [(MTObject *)self metricsKit];
-  v13 = [v12 system];
-  v14 = [v13 environment];
-  v10 = [v14 hardwareFamily];
+  metricsKit = [(MTObject *)self metricsKit];
+  system = [metricsKit system];
+  environment = [system environment];
+  hardwareFamily = [environment hardwareFamily];
 
 LABEL_6:
 
-  return v10;
+  return hardwareFamily;
 }
 
-- (id)hardwareModel:(id)a3
+- (id)hardwareModel:(id)model
 {
-  v4 = a3;
-  v5 = [(MTEventDataProvider *)self delegate];
+  modelCopy = model;
+  delegate = [(MTEventDataProvider *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MTEventDataProvider *)self delegate];
-    v8 = [v7 hardwareModel:v4];
+    delegate2 = [(MTEventDataProvider *)self delegate];
+    v8 = [delegate2 hardwareModel:modelCopy];
 LABEL_5:
-    v10 = v8;
+    hardwareModel = v8;
     goto LABEL_6;
   }
 
-  v9 = [v4 objectForKeyedSubscript:@"hardwareModel"];
-  v7 = v9;
+  v9 = [modelCopy objectForKeyedSubscript:@"hardwareModel"];
+  delegate2 = v9;
   if (v9)
   {
     v8 = v9;
-    v7 = v8;
+    delegate2 = v8;
     goto LABEL_5;
   }
 
-  v12 = [(MTObject *)self metricsKit];
-  v13 = [v12 system];
-  v14 = [v13 environment];
-  v10 = [v14 hardwareModel];
+  metricsKit = [(MTObject *)self metricsKit];
+  system = [metricsKit system];
+  environment = [system environment];
+  hardwareModel = [environment hardwareModel];
 
 LABEL_6:
 
-  return v10;
+  return hardwareModel;
 }
 
-- (id)hostApp:(id)a3
+- (id)hostApp:(id)app
 {
-  v4 = a3;
-  v5 = [(MTEventDataProvider *)self delegate];
+  appCopy = app;
+  delegate = [(MTEventDataProvider *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MTEventDataProvider *)self delegate];
-    v8 = [v7 hostApp:v4];
+    delegate2 = [(MTEventDataProvider *)self delegate];
+    v8 = [delegate2 hostApp:appCopy];
 LABEL_5:
-    v10 = v8;
+    hostApp = v8;
     goto LABEL_6;
   }
 
-  v9 = [v4 objectForKeyedSubscript:@"hostApp"];
-  v7 = v9;
+  v9 = [appCopy objectForKeyedSubscript:@"hostApp"];
+  delegate2 = v9;
   if (v9)
   {
     v8 = v9;
-    v7 = v8;
+    delegate2 = v8;
     goto LABEL_5;
   }
 
-  v12 = [(MTObject *)self metricsKit];
-  v13 = [v12 system];
-  v14 = [v13 environment];
-  v10 = [v14 hostApp];
+  metricsKit = [(MTObject *)self metricsKit];
+  system = [metricsKit system];
+  environment = [system environment];
+  hostApp = [environment hostApp];
 
 LABEL_6:
 
-  return v10;
+  return hostApp;
 }
 
-- (id)hostAppVersion:(id)a3
+- (id)hostAppVersion:(id)version
 {
-  v4 = a3;
-  v5 = [(MTEventDataProvider *)self delegate];
+  versionCopy = version;
+  delegate = [(MTEventDataProvider *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MTEventDataProvider *)self delegate];
-    v8 = [v7 hostAppVersion:v4];
+    delegate2 = [(MTEventDataProvider *)self delegate];
+    v8 = [delegate2 hostAppVersion:versionCopy];
 LABEL_5:
-    v10 = v8;
+    hostAppVersion = v8;
     goto LABEL_6;
   }
 
-  v9 = [v4 objectForKeyedSubscript:@"hostAppVersion"];
-  v7 = v9;
+  v9 = [versionCopy objectForKeyedSubscript:@"hostAppVersion"];
+  delegate2 = v9;
   if (v9)
   {
     v8 = v9;
-    v7 = v8;
+    delegate2 = v8;
     goto LABEL_5;
   }
 
-  v12 = [(MTObject *)self metricsKit];
-  v13 = [v12 system];
-  v14 = [v13 environment];
-  v10 = [v14 hostAppVersion];
+  metricsKit = [(MTObject *)self metricsKit];
+  system = [metricsKit system];
+  environment = [system environment];
+  hostAppVersion = [environment hostAppVersion];
 
 LABEL_6:
 
-  return v10;
+  return hostAppVersion;
 }
 
-- (id)isSignedIn:(id)a3
+- (id)isSignedIn:(id)in
 {
-  v4 = a3;
-  v5 = [(MTEventDataProvider *)self delegate];
+  inCopy = in;
+  delegate = [(MTEventDataProvider *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MTEventDataProvider *)self delegate];
-    v8 = [v7 isSignedIn:v4];
+    delegate2 = [(MTEventDataProvider *)self delegate];
+    v8 = [delegate2 isSignedIn:inCopy];
     goto LABEL_3;
   }
 
-  v10 = [v4 objectForKeyedSubscript:@"isSignedIn"];
+  v10 = [inCopy objectForKeyedSubscript:@"isSignedIn"];
 
   if (!v10)
   {
-    v7 = [(MTBaseEventDataProvider *)self dsId:v4];
+    delegate2 = [(MTBaseEventDataProvider *)self dsId:inCopy];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     if (isKindOfClass)
@@ -827,13 +827,13 @@ LABEL_6:
       v14[2] = __38__MTBaseEventDataProvider_isSignedIn___block_invoke_2;
       v14[3] = &unk_2798CE760;
       v15 = &__block_literal_global_64;
-      v13 = [v7 thenWithBlock:v14];
+      v13 = [delegate2 thenWithBlock:v14];
       v9 = [v13 catchWithBlock:&__block_literal_global_69_0];
 
       goto LABEL_4;
     }
 
-    v8 = __38__MTBaseEventDataProvider_isSignedIn___block_invoke(isKindOfClass, v7);
+    v8 = __38__MTBaseEventDataProvider_isSignedIn___block_invoke(isKindOfClass, delegate2);
 LABEL_3:
     v9 = v8;
 LABEL_4:
@@ -841,7 +841,7 @@ LABEL_4:
     goto LABEL_7;
   }
 
-  v9 = [v4 objectForKeyedSubscript:@"isSignedIn"];
+  v9 = [inCopy objectForKeyedSubscript:@"isSignedIn"];
 LABEL_7:
 
   return v9;
@@ -886,145 +886,145 @@ id __38__MTBaseEventDataProvider_isSignedIn___block_invoke_2(uint64_t a1)
   return v2;
 }
 
-- (id)os:(id)a3
+- (id)os:(id)os
 {
-  v4 = a3;
-  v5 = [(MTEventDataProvider *)self delegate];
+  osCopy = os;
+  delegate = [(MTEventDataProvider *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MTEventDataProvider *)self delegate];
-    v8 = [v7 os:v4];
+    delegate2 = [(MTEventDataProvider *)self delegate];
+    v8 = [delegate2 os:osCopy];
 LABEL_5:
     v10 = v8;
     goto LABEL_6;
   }
 
-  v9 = [v4 objectForKeyedSubscript:@"os"];
-  v7 = v9;
+  v9 = [osCopy objectForKeyedSubscript:@"os"];
+  delegate2 = v9;
   if (v9)
   {
     v8 = v9;
-    v7 = v8;
+    delegate2 = v8;
     goto LABEL_5;
   }
 
-  v12 = [(MTObject *)self metricsKit];
-  v13 = [v12 system];
-  v14 = [v13 environment];
-  v10 = [v14 os];
+  metricsKit = [(MTObject *)self metricsKit];
+  system = [metricsKit system];
+  environment = [system environment];
+  v10 = [environment os];
 
 LABEL_6:
 
   return v10;
 }
 
-- (id)osBuildNumber:(id)a3
+- (id)osBuildNumber:(id)number
 {
-  v4 = a3;
-  v5 = [(MTEventDataProvider *)self delegate];
+  numberCopy = number;
+  delegate = [(MTEventDataProvider *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MTEventDataProvider *)self delegate];
-    v8 = [v7 osBuildNumber:v4];
+    delegate2 = [(MTEventDataProvider *)self delegate];
+    v8 = [delegate2 osBuildNumber:numberCopy];
 LABEL_5:
-    v10 = v8;
+    osBuildNumber = v8;
     goto LABEL_6;
   }
 
-  v9 = [v4 objectForKeyedSubscript:@"osBuildNumber"];
-  v7 = v9;
+  v9 = [numberCopy objectForKeyedSubscript:@"osBuildNumber"];
+  delegate2 = v9;
   if (v9)
   {
     v8 = v9;
-    v7 = v8;
+    delegate2 = v8;
     goto LABEL_5;
   }
 
-  v12 = [(MTObject *)self metricsKit];
-  v13 = [v12 system];
-  v14 = [v13 environment];
-  v10 = [v14 osBuildNumber];
+  metricsKit = [(MTObject *)self metricsKit];
+  system = [metricsKit system];
+  environment = [system environment];
+  osBuildNumber = [environment osBuildNumber];
 
 LABEL_6:
 
-  return v10;
+  return osBuildNumber;
 }
 
-- (id)osVersion:(id)a3
+- (id)osVersion:(id)version
 {
-  v4 = a3;
-  v5 = [(MTEventDataProvider *)self delegate];
+  versionCopy = version;
+  delegate = [(MTEventDataProvider *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MTEventDataProvider *)self delegate];
-    v8 = [v7 osVersion:v4];
+    delegate2 = [(MTEventDataProvider *)self delegate];
+    v8 = [delegate2 osVersion:versionCopy];
 LABEL_5:
-    v10 = v8;
+    osVersion = v8;
     goto LABEL_6;
   }
 
-  v9 = [v4 objectForKeyedSubscript:@"osVersion"];
-  v7 = v9;
+  v9 = [versionCopy objectForKeyedSubscript:@"osVersion"];
+  delegate2 = v9;
   if (v9)
   {
     v8 = v9;
-    v7 = v8;
+    delegate2 = v8;
     goto LABEL_5;
   }
 
-  v12 = [(MTObject *)self metricsKit];
-  v13 = [v12 system];
-  v14 = [v13 environment];
-  v10 = [v14 osVersion];
+  metricsKit = [(MTObject *)self metricsKit];
+  system = [metricsKit system];
+  environment = [system environment];
+  osVersion = [environment osVersion];
 
 LABEL_6:
 
-  return v10;
+  return osVersion;
 }
 
-- (id)page:(id)a3
+- (id)page:(id)page
 {
-  v4 = a3;
-  v5 = [(MTEventDataProvider *)self delegate];
+  pageCopy = page;
+  delegate = [(MTEventDataProvider *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MTEventDataProvider *)self delegate];
-    v8 = [v7 page:v4];
+    delegate2 = [(MTEventDataProvider *)self delegate];
+    v8 = [delegate2 page:pageCopy];
 LABEL_3:
 
     goto LABEL_10;
   }
 
-  v9 = [v4 objectForKeyedSubscript:@"page"];
+  v9 = [pageCopy objectForKeyedSubscript:@"page"];
 
   if (v9)
   {
-    v8 = [v4 objectForKeyedSubscript:@"page"];
+    v8 = [pageCopy objectForKeyedSubscript:@"page"];
   }
 
   else
   {
-    v10 = [v4 objectForKeyedSubscript:@"pageType"];
+    v10 = [pageCopy objectForKeyedSubscript:@"pageType"];
     if (v10)
     {
       v11 = v10;
-      v12 = [v4 objectForKeyedSubscript:@"pageId"];
+      v12 = [pageCopy objectForKeyedSubscript:@"pageId"];
 
       if (v12)
       {
-        v13 = [v4 objectForKeyedSubscript:@"pageType"];
-        v14 = [v4 objectForKeyedSubscript:@"pageId"];
-        v15 = [(MTObject *)self metricsKit];
-        v16 = [v15 config];
-        v17 = [v16 configValueForKeyPath:@"compoundSeparator" default:@"_"];
+        v13 = [pageCopy objectForKeyedSubscript:@"pageType"];
+        v14 = [pageCopy objectForKeyedSubscript:@"pageId"];
+        metricsKit = [(MTObject *)self metricsKit];
+        config = [metricsKit config];
+        v17 = [config configValueForKeyPath:@"compoundSeparator" default:@"_"];
 
         v20[0] = MEMORY[0x277D85DD0];
         v20[1] = 3221225472;
@@ -1033,7 +1033,7 @@ LABEL_3:
         v21 = v13;
         v22 = v14;
         v18 = v14;
-        v7 = v13;
+        delegate2 = v13;
         v8 = [v17 thenWithBlock:v20];
 
         goto LABEL_3;
@@ -1056,352 +1056,352 @@ id __32__MTBaseEventDataProvider_page___block_invoke(uint64_t a1, uint64_t a2)
   return v3;
 }
 
-- (id)pageContext:(id)a3
+- (id)pageContext:(id)context
 {
-  v4 = a3;
-  v5 = [(MTEventDataProvider *)self delegate];
+  contextCopy = context;
+  delegate = [(MTEventDataProvider *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MTEventDataProvider *)self delegate];
-    v8 = [v7 pageContext:v4];
+    delegate2 = [(MTEventDataProvider *)self delegate];
+    v8 = [delegate2 pageContext:contextCopy];
   }
 
   else
   {
-    v8 = [v4 objectForKeyedSubscript:@"pageContext"];
+    v8 = [contextCopy objectForKeyedSubscript:@"pageContext"];
   }
 
   return v8;
 }
 
-- (id)pageDetails:(id)a3
+- (id)pageDetails:(id)details
 {
-  v4 = a3;
-  v5 = [(MTEventDataProvider *)self delegate];
+  detailsCopy = details;
+  delegate = [(MTEventDataProvider *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MTEventDataProvider *)self delegate];
-    v8 = [v7 pageDetails:v4];
+    delegate2 = [(MTEventDataProvider *)self delegate];
+    v8 = [delegate2 pageDetails:detailsCopy];
   }
 
   else
   {
-    v8 = [v4 objectForKeyedSubscript:@"pageDetails"];
+    v8 = [detailsCopy objectForKeyedSubscript:@"pageDetails"];
   }
 
   return v8;
 }
 
-- (id)pageId:(id)a3
+- (id)pageId:(id)id
 {
-  v4 = a3;
-  v5 = [(MTEventDataProvider *)self delegate];
+  idCopy = id;
+  delegate = [(MTEventDataProvider *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MTEventDataProvider *)self delegate];
-    v8 = [v7 pageId:v4];
+    delegate2 = [(MTEventDataProvider *)self delegate];
+    v8 = [delegate2 pageId:idCopy];
   }
 
   else
   {
-    v8 = [v4 objectForKeyedSubscript:@"pageId"];
+    v8 = [idCopy objectForKeyedSubscript:@"pageId"];
   }
 
   return v8;
 }
 
-- (id)pageType:(id)a3
+- (id)pageType:(id)type
 {
-  v4 = a3;
-  v5 = [(MTEventDataProvider *)self delegate];
+  typeCopy = type;
+  delegate = [(MTEventDataProvider *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MTEventDataProvider *)self delegate];
-    v8 = [v7 pageType:v4];
+    delegate2 = [(MTEventDataProvider *)self delegate];
+    v8 = [delegate2 pageType:typeCopy];
   }
 
   else
   {
-    v8 = [v4 objectForKeyedSubscript:@"pageType"];
+    v8 = [typeCopy objectForKeyedSubscript:@"pageType"];
   }
 
   return v8;
 }
 
-- (id)pageUrl:(id)a3
+- (id)pageUrl:(id)url
 {
-  v4 = a3;
-  v5 = [(MTEventDataProvider *)self delegate];
+  urlCopy = url;
+  delegate = [(MTEventDataProvider *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MTEventDataProvider *)self delegate];
-    v8 = [v7 pageUrl:v4];
+    delegate2 = [(MTEventDataProvider *)self delegate];
+    v8 = [delegate2 pageUrl:urlCopy];
 LABEL_5:
-    v10 = v8;
+    pageUrl = v8;
     goto LABEL_6;
   }
 
-  v9 = [v4 objectForKeyedSubscript:@"pageUrl"];
-  v7 = v9;
+  v9 = [urlCopy objectForKeyedSubscript:@"pageUrl"];
+  delegate2 = v9;
   if (v9)
   {
     v8 = v9;
-    v7 = v8;
+    delegate2 = v8;
     goto LABEL_5;
   }
 
-  v12 = [(MTObject *)self metricsKit];
-  v13 = [v12 system];
-  v14 = [v13 environment];
-  v10 = [v14 pageUrl];
+  metricsKit = [(MTObject *)self metricsKit];
+  system = [metricsKit system];
+  environment = [system environment];
+  pageUrl = [environment pageUrl];
 
 LABEL_6:
 
-  return v10;
+  return pageUrl;
 }
 
-- (id)parentPageUrl:(id)a3
+- (id)parentPageUrl:(id)url
 {
-  v4 = a3;
-  v5 = [(MTEventDataProvider *)self delegate];
+  urlCopy = url;
+  delegate = [(MTEventDataProvider *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MTEventDataProvider *)self delegate];
-    v8 = [v7 parentPageUrl:v4];
+    delegate2 = [(MTEventDataProvider *)self delegate];
+    v8 = [delegate2 parentPageUrl:urlCopy];
 LABEL_5:
-    v10 = v8;
+    parentPageUrl = v8;
     goto LABEL_6;
   }
 
-  v9 = [v4 objectForKeyedSubscript:@"parentPageUrl"];
-  v7 = v9;
+  v9 = [urlCopy objectForKeyedSubscript:@"parentPageUrl"];
+  delegate2 = v9;
   if (v9)
   {
     v8 = v9;
-    v7 = v8;
+    delegate2 = v8;
     goto LABEL_5;
   }
 
-  v12 = [(MTObject *)self metricsKit];
-  v13 = [v12 system];
-  v14 = [v13 environment];
-  v10 = [v14 parentPageUrl];
+  metricsKit = [(MTObject *)self metricsKit];
+  system = [metricsKit system];
+  environment = [system environment];
+  parentPageUrl = [environment parentPageUrl];
 
 LABEL_6:
 
-  return v10;
+  return parentPageUrl;
 }
 
-- (id)pixelRatio:(id)a3
+- (id)pixelRatio:(id)ratio
 {
-  v4 = a3;
-  v5 = [(MTEventDataProvider *)self delegate];
+  ratioCopy = ratio;
+  delegate = [(MTEventDataProvider *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MTEventDataProvider *)self delegate];
-    v8 = [v7 pixelRatio:v4];
+    delegate2 = [(MTEventDataProvider *)self delegate];
+    v8 = [delegate2 pixelRatio:ratioCopy];
 LABEL_5:
-    v10 = v8;
+    pixelRatio = v8;
     goto LABEL_6;
   }
 
-  v9 = [v4 objectForKeyedSubscript:@"pixelRatio"];
-  v7 = v9;
+  v9 = [ratioCopy objectForKeyedSubscript:@"pixelRatio"];
+  delegate2 = v9;
   if (v9)
   {
     v8 = v9;
-    v7 = v8;
+    delegate2 = v8;
     goto LABEL_5;
   }
 
-  v12 = [(MTObject *)self metricsKit];
-  v13 = [v12 system];
-  v14 = [v13 environment];
-  v10 = [v14 pixelRatio];
+  metricsKit = [(MTObject *)self metricsKit];
+  system = [metricsKit system];
+  environment = [system environment];
+  pixelRatio = [environment pixelRatio];
 
 LABEL_6:
 
-  return v10;
+  return pixelRatio;
 }
 
-- (id)resourceRevNum:(id)a3
+- (id)resourceRevNum:(id)num
 {
-  v4 = a3;
-  v5 = [(MTEventDataProvider *)self delegate];
+  numCopy = num;
+  delegate = [(MTEventDataProvider *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MTEventDataProvider *)self delegate];
-    v8 = [v7 resourceRevNum:v4];
+    delegate2 = [(MTEventDataProvider *)self delegate];
+    v8 = [delegate2 resourceRevNum:numCopy];
 LABEL_5:
-    v10 = v8;
+    resourceRevNum = v8;
     goto LABEL_6;
   }
 
-  v9 = [v4 objectForKeyedSubscript:@"resourceRevNum"];
-  v7 = v9;
+  v9 = [numCopy objectForKeyedSubscript:@"resourceRevNum"];
+  delegate2 = v9;
   if (v9)
   {
     v8 = v9;
-    v7 = v8;
+    delegate2 = v8;
     goto LABEL_5;
   }
 
-  v12 = [(MTObject *)self metricsKit];
-  v13 = [v12 system];
-  v14 = [v13 environment];
-  v10 = [v14 resourceRevNum];
+  metricsKit = [(MTObject *)self metricsKit];
+  system = [metricsKit system];
+  environment = [system environment];
+  resourceRevNum = [environment resourceRevNum];
 
 LABEL_6:
 
-  return v10;
+  return resourceRevNum;
 }
 
-- (id)screenHeight:(id)a3
+- (id)screenHeight:(id)height
 {
-  v4 = a3;
-  v5 = [(MTEventDataProvider *)self delegate];
+  heightCopy = height;
+  delegate = [(MTEventDataProvider *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MTEventDataProvider *)self delegate];
-    v8 = [v7 screenHeight:v4];
+    delegate2 = [(MTEventDataProvider *)self delegate];
+    v8 = [delegate2 screenHeight:heightCopy];
 LABEL_5:
-    v10 = v8;
+    screenHeight = v8;
     goto LABEL_6;
   }
 
-  v9 = [v4 objectForKeyedSubscript:@"screenHeight"];
-  v7 = v9;
+  v9 = [heightCopy objectForKeyedSubscript:@"screenHeight"];
+  delegate2 = v9;
   if (v9)
   {
     v8 = v9;
-    v7 = v8;
+    delegate2 = v8;
     goto LABEL_5;
   }
 
-  v12 = [(MTObject *)self metricsKit];
-  v13 = [v12 system];
-  v14 = [v13 environment];
-  v10 = [v14 screenHeight];
+  metricsKit = [(MTObject *)self metricsKit];
+  system = [metricsKit system];
+  environment = [system environment];
+  screenHeight = [environment screenHeight];
 
 LABEL_6:
 
-  return v10;
+  return screenHeight;
 }
 
-- (id)screenWidth:(id)a3
+- (id)screenWidth:(id)width
 {
-  v4 = a3;
-  v5 = [(MTEventDataProvider *)self delegate];
+  widthCopy = width;
+  delegate = [(MTEventDataProvider *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MTEventDataProvider *)self delegate];
-    v8 = [v7 screenWidth:v4];
+    delegate2 = [(MTEventDataProvider *)self delegate];
+    v8 = [delegate2 screenWidth:widthCopy];
 LABEL_5:
-    v10 = v8;
+    screenWidth = v8;
     goto LABEL_6;
   }
 
-  v9 = [v4 objectForKeyedSubscript:@"screenWidth"];
-  v7 = v9;
+  v9 = [widthCopy objectForKeyedSubscript:@"screenWidth"];
+  delegate2 = v9;
   if (v9)
   {
     v8 = v9;
-    v7 = v8;
+    delegate2 = v8;
     goto LABEL_5;
   }
 
-  v12 = [(MTObject *)self metricsKit];
-  v13 = [v12 system];
-  v14 = [v13 environment];
-  v10 = [v14 screenWidth];
+  metricsKit = [(MTObject *)self metricsKit];
+  system = [metricsKit system];
+  environment = [system environment];
+  screenWidth = [environment screenWidth];
 
 LABEL_6:
 
-  return v10;
+  return screenWidth;
 }
 
-- (id)storeFrontHeader:(id)a3
+- (id)storeFrontHeader:(id)header
 {
-  v4 = a3;
-  v5 = [(MTEventDataProvider *)self delegate];
+  headerCopy = header;
+  delegate = [(MTEventDataProvider *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MTEventDataProvider *)self delegate];
-    v8 = [v7 storeFrontHeader:v4];
+    delegate2 = [(MTEventDataProvider *)self delegate];
+    v8 = [delegate2 storeFrontHeader:headerCopy];
 LABEL_5:
-    v10 = v8;
+    storeFrontHeader = v8;
     goto LABEL_6;
   }
 
-  v9 = [v4 objectForKeyedSubscript:@"storeFrontHeader"];
-  v7 = v9;
+  v9 = [headerCopy objectForKeyedSubscript:@"storeFrontHeader"];
+  delegate2 = v9;
   if (v9)
   {
     v8 = v9;
-    v7 = v8;
+    delegate2 = v8;
     goto LABEL_5;
   }
 
-  v12 = [(MTObject *)self metricsKit];
-  v13 = [v12 system];
-  v14 = [v13 environment];
-  v10 = [v14 storeFrontHeader];
+  metricsKit = [(MTObject *)self metricsKit];
+  system = [metricsKit system];
+  environment = [system environment];
+  storeFrontHeader = [environment storeFrontHeader];
 
 LABEL_6:
 
-  return v10;
+  return storeFrontHeader;
 }
 
-- (id)timezoneOffset:(id)a3
+- (id)timezoneOffset:(id)offset
 {
-  v4 = a3;
-  v5 = [(MTEventDataProvider *)self delegate];
+  offsetCopy = offset;
+  delegate = [(MTEventDataProvider *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MTEventDataProvider *)self delegate];
-    v8 = [v7 timezoneOffset:v4];
+    delegate2 = [(MTEventDataProvider *)self delegate];
+    v8 = [delegate2 timezoneOffset:offsetCopy];
 LABEL_5:
     v10 = v8;
     goto LABEL_6;
   }
 
-  v9 = [v4 objectForKeyedSubscript:@"timezoneOffset"];
-  v7 = v9;
+  v9 = [offsetCopy objectForKeyedSubscript:@"timezoneOffset"];
+  delegate2 = v9;
   if (v9)
   {
     v8 = v9;
-    v7 = v8;
+    delegate2 = v8;
     goto LABEL_5;
   }
 
   v12 = MEMORY[0x277CCABB0];
-  v13 = [MEMORY[0x277CBEBB0] localTimeZone];
-  v14 = [v13 secondsFromGMT];
-  v15 = ((v14 * 0x7777777777777777) >> 64) - v14;
+  localTimeZone = [MEMORY[0x277CBEBB0] localTimeZone];
+  secondsFromGMT = [localTimeZone secondsFromGMT];
+  v15 = ((secondsFromGMT * 0x7777777777777777) >> 64) - secondsFromGMT;
   v10 = [v12 numberWithInteger:(v15 >> 5) + (v15 >> 63)];
 
 LABEL_6:
@@ -1409,207 +1409,207 @@ LABEL_6:
   return v10;
 }
 
-- (id)userAgent:(id)a3
+- (id)userAgent:(id)agent
 {
-  v4 = a3;
-  v5 = [(MTEventDataProvider *)self delegate];
+  agentCopy = agent;
+  delegate = [(MTEventDataProvider *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MTEventDataProvider *)self delegate];
-    v8 = [v7 userAgent:v4];
+    delegate2 = [(MTEventDataProvider *)self delegate];
+    v8 = [delegate2 userAgent:agentCopy];
 LABEL_5:
-    v10 = v8;
+    userAgent = v8;
     goto LABEL_6;
   }
 
-  v9 = [v4 objectForKeyedSubscript:@"userAgent"];
-  v7 = v9;
+  v9 = [agentCopy objectForKeyedSubscript:@"userAgent"];
+  delegate2 = v9;
   if (v9)
   {
     v8 = v9;
-    v7 = v8;
+    delegate2 = v8;
     goto LABEL_5;
   }
 
-  v12 = [(MTObject *)self metricsKit];
-  v13 = [v12 system];
-  v14 = [v13 environment];
-  v10 = [v14 userAgent];
+  metricsKit = [(MTObject *)self metricsKit];
+  system = [metricsKit system];
+  environment = [system environment];
+  userAgent = [environment userAgent];
 
 LABEL_6:
 
-  return v10;
+  return userAgent;
 }
 
-- (id)windowInnerHeight:(id)a3
+- (id)windowInnerHeight:(id)height
 {
-  v4 = a3;
-  v5 = [(MTEventDataProvider *)self delegate];
+  heightCopy = height;
+  delegate = [(MTEventDataProvider *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MTEventDataProvider *)self delegate];
-    v8 = [v7 windowInnerHeight:v4];
+    delegate2 = [(MTEventDataProvider *)self delegate];
+    v8 = [delegate2 windowInnerHeight:heightCopy];
 LABEL_5:
-    v10 = v8;
+    windowInnerHeight = v8;
     goto LABEL_6;
   }
 
-  v9 = [v4 objectForKeyedSubscript:@"windowInnerHeight"];
-  v7 = v9;
+  v9 = [heightCopy objectForKeyedSubscript:@"windowInnerHeight"];
+  delegate2 = v9;
   if (v9)
   {
     v8 = v9;
-    v7 = v8;
+    delegate2 = v8;
     goto LABEL_5;
   }
 
-  v12 = [(MTObject *)self metricsKit];
-  v13 = [v12 system];
-  v14 = [v13 environment];
-  v10 = [v14 windowInnerHeight];
+  metricsKit = [(MTObject *)self metricsKit];
+  system = [metricsKit system];
+  environment = [system environment];
+  windowInnerHeight = [environment windowInnerHeight];
 
 LABEL_6:
 
-  return v10;
+  return windowInnerHeight;
 }
 
-- (id)windowInnerWidth:(id)a3
+- (id)windowInnerWidth:(id)width
 {
-  v4 = a3;
-  v5 = [(MTEventDataProvider *)self delegate];
+  widthCopy = width;
+  delegate = [(MTEventDataProvider *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MTEventDataProvider *)self delegate];
-    v8 = [v7 windowInnerWidth:v4];
+    delegate2 = [(MTEventDataProvider *)self delegate];
+    v8 = [delegate2 windowInnerWidth:widthCopy];
 LABEL_5:
-    v10 = v8;
+    windowInnerWidth = v8;
     goto LABEL_6;
   }
 
-  v9 = [v4 objectForKeyedSubscript:@"windowInnerWidth"];
-  v7 = v9;
+  v9 = [widthCopy objectForKeyedSubscript:@"windowInnerWidth"];
+  delegate2 = v9;
   if (v9)
   {
     v8 = v9;
-    v7 = v8;
+    delegate2 = v8;
     goto LABEL_5;
   }
 
-  v12 = [(MTObject *)self metricsKit];
-  v13 = [v12 system];
-  v14 = [v13 environment];
-  v10 = [v14 windowInnerWidth];
+  metricsKit = [(MTObject *)self metricsKit];
+  system = [metricsKit system];
+  environment = [system environment];
+  windowInnerWidth = [environment windowInnerWidth];
 
 LABEL_6:
 
-  return v10;
+  return windowInnerWidth;
 }
 
-- (id)windowOuterHeight:(id)a3
+- (id)windowOuterHeight:(id)height
 {
-  v4 = a3;
-  v5 = [(MTEventDataProvider *)self delegate];
+  heightCopy = height;
+  delegate = [(MTEventDataProvider *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MTEventDataProvider *)self delegate];
-    v8 = [v7 windowOuterHeight:v4];
+    delegate2 = [(MTEventDataProvider *)self delegate];
+    v8 = [delegate2 windowOuterHeight:heightCopy];
 LABEL_5:
-    v10 = v8;
+    windowOuterHeight = v8;
     goto LABEL_6;
   }
 
-  v9 = [v4 objectForKeyedSubscript:@"windowOuterHeight"];
-  v7 = v9;
+  v9 = [heightCopy objectForKeyedSubscript:@"windowOuterHeight"];
+  delegate2 = v9;
   if (v9)
   {
     v8 = v9;
-    v7 = v8;
+    delegate2 = v8;
     goto LABEL_5;
   }
 
-  v12 = [(MTObject *)self metricsKit];
-  v13 = [v12 system];
-  v14 = [v13 environment];
-  v10 = [v14 windowOuterHeight];
+  metricsKit = [(MTObject *)self metricsKit];
+  system = [metricsKit system];
+  environment = [system environment];
+  windowOuterHeight = [environment windowOuterHeight];
 
 LABEL_6:
 
-  return v10;
+  return windowOuterHeight;
 }
 
-- (id)windowOuterWidth:(id)a3
+- (id)windowOuterWidth:(id)width
 {
-  v4 = a3;
-  v5 = [(MTEventDataProvider *)self delegate];
+  widthCopy = width;
+  delegate = [(MTEventDataProvider *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MTEventDataProvider *)self delegate];
-    v8 = [v7 windowOuterWidth:v4];
+    delegate2 = [(MTEventDataProvider *)self delegate];
+    v8 = [delegate2 windowOuterWidth:widthCopy];
 LABEL_5:
-    v10 = v8;
+    windowOuterWidth = v8;
     goto LABEL_6;
   }
 
-  v9 = [v4 objectForKeyedSubscript:@"windowOuterWidth"];
-  v7 = v9;
+  v9 = [widthCopy objectForKeyedSubscript:@"windowOuterWidth"];
+  delegate2 = v9;
   if (v9)
   {
     v8 = v9;
-    v7 = v8;
+    delegate2 = v8;
     goto LABEL_5;
   }
 
-  v12 = [(MTObject *)self metricsKit];
-  v13 = [v12 system];
-  v14 = [v13 environment];
-  v10 = [v14 windowOuterWidth];
+  metricsKit = [(MTObject *)self metricsKit];
+  system = [metricsKit system];
+  environment = [system environment];
+  windowOuterWidth = [environment windowOuterWidth];
 
 LABEL_6:
 
-  return v10;
+  return windowOuterWidth;
 }
 
-- (id)xpPostFrequency:(id)a3
+- (id)xpPostFrequency:(id)frequency
 {
-  v4 = a3;
-  v5 = [(MTEventDataProvider *)self delegate];
+  frequencyCopy = frequency;
+  delegate = [(MTEventDataProvider *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MTEventDataProvider *)self delegate];
-    v8 = [v7 xpPostFrequency:v4];
+    delegate2 = [(MTEventDataProvider *)self delegate];
+    v8 = [delegate2 xpPostFrequency:frequencyCopy];
 LABEL_5:
     v10 = v8;
     goto LABEL_6;
   }
 
-  v9 = [v4 objectForKeyedSubscript:@"xpPostFrequency"];
-  v7 = v9;
+  v9 = [frequencyCopy objectForKeyedSubscript:@"xpPostFrequency"];
+  delegate2 = v9;
   if (v9)
   {
     v8 = v9;
     goto LABEL_5;
   }
 
-  v12 = [(MTObject *)self metricsKit];
-  v13 = [v12 config];
+  metricsKit = [(MTObject *)self metricsKit];
+  config = [metricsKit config];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __43__MTBaseEventDataProvider_xpPostFrequency___block_invoke;
   v14[3] = &unk_2798CD4D0;
   v14[4] = self;
-  v10 = [v13 computeWithConfigSources:v14];
+  v10 = [config computeWithConfigSources:v14];
 
 LABEL_6:
 
@@ -1627,55 +1627,55 @@ id __43__MTBaseEventDataProvider_xpPostFrequency___block_invoke(uint64_t a1, voi
   return v6;
 }
 
-- (id)xpSendMethod:(id)a3
+- (id)xpSendMethod:(id)method
 {
-  v4 = a3;
-  v5 = [(MTEventDataProvider *)self delegate];
+  methodCopy = method;
+  delegate = [(MTEventDataProvider *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MTEventDataProvider *)self delegate];
-    v8 = [v7 xpSendMethod:v4];
+    delegate2 = [(MTEventDataProvider *)self delegate];
+    v8 = [delegate2 xpSendMethod:methodCopy];
 LABEL_5:
-    v10 = v8;
+    sendMethod = v8;
     goto LABEL_6;
   }
 
-  v9 = [v4 objectForKeyedSubscript:@"xpSendMethod"];
-  v7 = v9;
+  v9 = [methodCopy objectForKeyedSubscript:@"xpSendMethod"];
+  delegate2 = v9;
   if (v9)
   {
     v8 = v9;
-    v7 = v8;
+    delegate2 = v8;
     goto LABEL_5;
   }
 
-  v12 = [(MTObject *)self metricsKit];
-  v13 = [v12 system];
-  v14 = [v13 eventRecorder];
-  v10 = [v14 sendMethod];
+  metricsKit = [(MTObject *)self metricsKit];
+  system = [metricsKit system];
+  eventRecorder = [system eventRecorder];
+  sendMethod = [eventRecorder sendMethod];
 
 LABEL_6:
 
-  return v10;
+  return sendMethod;
 }
 
-- (id)xpVersionMetricsKit:(id)a3
+- (id)xpVersionMetricsKit:(id)kit
 {
-  v4 = a3;
-  v5 = [(MTEventDataProvider *)self delegate];
+  kitCopy = kit;
+  delegate = [(MTEventDataProvider *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MTEventDataProvider *)self delegate];
-    v8 = [v7 xpVersionMetricsKit:v4];
+    delegate2 = [(MTEventDataProvider *)self delegate];
+    v8 = [delegate2 xpVersionMetricsKit:kitCopy];
   }
 
   else
   {
-    v8 = [v4 objectForKeyedSubscript:@"xpVersionMetricsKit"];
+    v8 = [kitCopy objectForKeyedSubscript:@"xpVersionMetricsKit"];
     if (!v8)
     {
       block[0] = MEMORY[0x277D85DD0];

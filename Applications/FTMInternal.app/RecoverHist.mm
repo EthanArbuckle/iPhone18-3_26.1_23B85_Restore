@@ -1,18 +1,18 @@
 @interface RecoverHist
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsRecoverDurationEnum:(id)a3;
+- (int)StringAsRecoverDurationEnum:(id)enum;
 - (int)recoverDurationEnum;
 - (unint64_t)hash;
-- (unsigned)recoverCountStateBreakAtIndex:(unint64_t)a3;
-- (void)copyTo:(id)a3;
+- (unsigned)recoverCountStateBreakAtIndex:(unint64_t)index;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasRecoverDurationEnum2:(BOOL)a3;
-- (void)setHasRecoverDurationEnum:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasRecoverDurationEnum2:(BOOL)enum2;
+- (void)setHasRecoverDurationEnum:(BOOL)enum;
+- (void)writeTo:(id)to;
 @end
 
 @implementation RecoverHist
@@ -38,9 +38,9 @@
   }
 }
 
-- (void)setHasRecoverDurationEnum:(BOOL)a3
+- (void)setHasRecoverDurationEnum:(BOOL)enum
 {
-  if (a3)
+  if (enum)
   {
     v3 = 2;
   }
@@ -53,35 +53,35 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsRecoverDurationEnum:(id)a3
+- (int)StringAsRecoverDurationEnum:(id)enum
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"LT_5S"])
+  enumCopy = enum;
+  if ([enumCopy isEqualToString:@"LT_5S"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"GE_5S_LT_20S"])
+  else if ([enumCopy isEqualToString:@"GE_5S_LT_20S"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"GE_20S_LT_5M"])
+  else if ([enumCopy isEqualToString:@"GE_20S_LT_5M"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"GE_5M_LT_15M"])
+  else if ([enumCopy isEqualToString:@"GE_5M_LT_15M"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"GE_15M_LT_30M"])
+  else if ([enumCopy isEqualToString:@"GE_15M_LT_30M"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"GE_30M"])
+  else if ([enumCopy isEqualToString:@"GE_30M"])
   {
     v4 = 5;
   }
@@ -94,23 +94,23 @@
   return v4;
 }
 
-- (unsigned)recoverCountStateBreakAtIndex:(unint64_t)a3
+- (unsigned)recoverCountStateBreakAtIndex:(unint64_t)index
 {
   p_recoverCountStateBreaks = &self->_recoverCountStateBreaks;
   count = self->_recoverCountStateBreaks.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_recoverCountStateBreaks->list[a3];
+  return p_recoverCountStateBreaks->list[index];
 }
 
-- (void)setHasRecoverDurationEnum2:(BOOL)a3
+- (void)setHasRecoverDurationEnum2:(BOOL)enum2
 {
-  if (a3)
+  if (enum2)
   {
     v3 = 4;
   }
@@ -128,8 +128,8 @@
   v7.receiver = self;
   v7.super_class = RecoverHist;
   v3 = [(RecoverHist *)&v7 description];
-  v4 = [(RecoverHist *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(RecoverHist *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -174,16 +174,16 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v11 = v4;
+  v11 = toCopy;
   if ((has & 2) != 0)
   {
     recoverDurationEnum = self->_recoverDurationEnum;
     PBDataWriterWriteInt32Field();
-    v4 = v11;
+    toCopy = v11;
     has = self->_has;
   }
 
@@ -191,7 +191,7 @@
   {
     recoverCount = self->_recoverCount;
     PBDataWriterWriteUint32Field();
-    v4 = v11;
+    toCopy = v11;
   }
 
   if (self->_recoverCountStateBreaks.count)
@@ -201,7 +201,7 @@
     {
       v9 = self->_recoverCountStateBreaks.list[v8];
       PBDataWriterWriteUint32Field();
-      v4 = v11;
+      toCopy = v11;
       ++v8;
     }
 
@@ -212,35 +212,35 @@
   {
     recoverDurationEnum2 = self->_recoverDurationEnum2;
     PBDataWriterWriteUint32Field();
-    v4 = v11;
+    toCopy = v11;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[9] = self->_recoverDurationEnum;
-    *(v4 + 44) |= 2u;
+    toCopy[9] = self->_recoverDurationEnum;
+    *(toCopy + 44) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    v4[8] = self->_recoverCount;
-    *(v4 + 44) |= 1u;
+    toCopy[8] = self->_recoverCount;
+    *(toCopy + 44) |= 1u;
   }
 
-  v9 = v4;
+  v9 = toCopy;
   if ([(RecoverHist *)self recoverCountStateBreaksCount])
   {
     [v9 clearRecoverCountStateBreaks];
-    v6 = [(RecoverHist *)self recoverCountStateBreaksCount];
-    if (v6)
+    recoverCountStateBreaksCount = [(RecoverHist *)self recoverCountStateBreaksCount];
+    if (recoverCountStateBreaksCount)
     {
-      v7 = v6;
+      v7 = recoverCountStateBreaksCount;
       for (i = 0; i != v7; ++i)
       {
         [v9 addRecoverCountStateBreak:{-[RecoverHist recoverCountStateBreakAtIndex:](self, "recoverCountStateBreakAtIndex:", i)}];
@@ -255,9 +255,9 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   has = self->_has;
   if ((has & 2) != 0)
@@ -283,37 +283,37 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = *(v4 + 44);
+  v5 = *(equalCopy + 44);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 44) & 2) == 0 || self->_recoverDurationEnum != *(v4 + 9))
+    if ((*(equalCopy + 44) & 2) == 0 || self->_recoverDurationEnum != *(equalCopy + 9))
     {
       goto LABEL_17;
     }
   }
 
-  else if ((*(v4 + 44) & 2) != 0)
+  else if ((*(equalCopy + 44) & 2) != 0)
   {
     goto LABEL_17;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 44) & 1) == 0 || self->_recoverCount != *(v4 + 8))
+    if ((*(equalCopy + 44) & 1) == 0 || self->_recoverCount != *(equalCopy + 8))
     {
       goto LABEL_17;
     }
   }
 
-  else if (*(v4 + 44))
+  else if (*(equalCopy + 44))
   {
     goto LABEL_17;
   }
@@ -325,10 +325,10 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v6 = (*(v4 + 44) & 4) == 0;
+  v6 = (*(equalCopy + 44) & 4) == 0;
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 44) & 4) == 0 || self->_recoverDurationEnum2 != *(v4 + 10))
+    if ((*(equalCopy + 44) & 4) == 0 || self->_recoverDurationEnum2 != *(equalCopy + 10))
     {
       goto LABEL_17;
     }
@@ -379,28 +379,28 @@ LABEL_6:
   return v4 ^ v3 ^ v6 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 44);
+  fromCopy = from;
+  v5 = *(fromCopy + 44);
   if ((v5 & 2) != 0)
   {
-    self->_recoverDurationEnum = *(v4 + 9);
+    self->_recoverDurationEnum = *(fromCopy + 9);
     *&self->_has |= 2u;
-    v5 = *(v4 + 44);
+    v5 = *(fromCopy + 44);
   }
 
   if (v5)
   {
-    self->_recoverCount = *(v4 + 8);
+    self->_recoverCount = *(fromCopy + 8);
     *&self->_has |= 1u;
   }
 
-  v9 = v4;
-  v6 = [v4 recoverCountStateBreaksCount];
-  if (v6)
+  v9 = fromCopy;
+  recoverCountStateBreaksCount = [fromCopy recoverCountStateBreaksCount];
+  if (recoverCountStateBreaksCount)
   {
-    v7 = v6;
+    v7 = recoverCountStateBreaksCount;
     for (i = 0; i != v7; ++i)
     {
       -[RecoverHist addRecoverCountStateBreak:](self, "addRecoverCountStateBreak:", [v9 recoverCountStateBreakAtIndex:i]);

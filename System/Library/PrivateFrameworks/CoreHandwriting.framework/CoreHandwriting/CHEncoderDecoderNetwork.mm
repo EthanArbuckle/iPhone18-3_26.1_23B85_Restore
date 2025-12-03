@@ -1,40 +1,40 @@
 @interface CHEncoderDecoderNetwork
-- (CHEncoderDecoderNetwork)initWithModelNames:(id)a3 decoderName:(id)a4;
-- (FeatureArray)_extractFeaturesFromDrawing:(SEL)a3 error:(id)a4;
-- (id)_bestPathTokensFromDecodingStates:(const void *)a3 drawing:(id)a4 codemap:(const void *)a5;
-- (id)loadCodemap:(id)a3;
-- (id)loadModel:(id)a3;
-- (id)recognizeDrawing:(id)a3 beamSize:(int64_t)a4 shouldCancel:(id)a5;
-- (int)getIndexInCodemap:(id)a3;
-- (vector<std::vector<std::unordered_map<int,)_createCompressedInputImage:()std:(int>>>> *__return_ptr)retstr :(CHEncoderDecoderNetwork *)self allocator<std:(SEL)a3 :(const void *)a4 vector<std::unordered_map<int;
+- (CHEncoderDecoderNetwork)initWithModelNames:(id)names decoderName:(id)name;
+- (FeatureArray)_extractFeaturesFromDrawing:(SEL)drawing error:(id)error;
+- (id)_bestPathTokensFromDecodingStates:(const void *)states drawing:(id)drawing codemap:(const void *)codemap;
+- (id)loadCodemap:(id)codemap;
+- (id)loadModel:(id)model;
+- (id)recognizeDrawing:(id)drawing beamSize:(int64_t)size shouldCancel:(id)cancel;
+- (int)getIndexInCodemap:(id)codemap;
+- (vector<std::vector<std::unordered_map<int,)_createCompressedInputImage:()std:(int>>>> *__return_ptr)retstr :(CHEncoderDecoderNetwork *)self allocator<std:(SEL)std :(const void *)a4 vector<std::unordered_map<int;
 - (void)dealloc;
-- (void)filterOutAlternatives:(void *)a3 codemap:(const void *)a4;
-- (void)setUpDecoderConfusableAlternatives:(void *)a3;
-- (void)setUpDecoderOutOfAlphabetAlternatives:(void *)a3;
-- (void)setUpMathDecoder:(void *)a3 imageCompressed:(void *)a4;
+- (void)filterOutAlternatives:(void *)alternatives codemap:(const void *)codemap;
+- (void)setUpDecoderConfusableAlternatives:(void *)alternatives;
+- (void)setUpDecoderOutOfAlphabetAlternatives:(void *)alternatives;
+- (void)setUpMathDecoder:(void *)decoder imageCompressed:(void *)compressed;
 @end
 
 @implementation CHEncoderDecoderNetwork
 
-- (CHEncoderDecoderNetwork)initWithModelNames:(id)a3 decoderName:(id)a4
+- (CHEncoderDecoderNetwork)initWithModelNames:(id)names decoderName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  namesCopy = names;
+  nameCopy = name;
   v49.receiver = self;
   v49.super_class = CHEncoderDecoderNetwork;
   v8 = [(CHEncoderDecoderNetwork *)&v49 init];
   v13 = v8;
   if (v8)
   {
-    v14 = objc_msgSend_loadModel_(v8, v9, v6, v10, v11, v12);
+    v14 = objc_msgSend_loadModel_(v8, v9, namesCopy, v10, v11, v12);
     encoderModel = v13->_encoderModel;
     v13->_encoderModel = v14;
 
-    v20 = objc_msgSend_loadModel_(v13, v16, v7, v17, v18, v19);
+    v20 = objc_msgSend_loadModel_(v13, v16, nameCopy, v17, v18, v19);
     decoderModel = v13->_decoderModel;
     v13->_decoderModel = v20;
 
-    v26 = objc_msgSend_loadCodemap_(v13, v22, v6, v23, v24, v25);
+    v26 = objc_msgSend_loadCodemap_(v13, v22, namesCopy, v23, v24, v25);
     codeMap = v13->_codeMap;
     v13->_codeMap = v26;
 
@@ -123,11 +123,11 @@ LABEL_13:
   [(CHEncoderDecoderNetwork *)&v34 dealloc];
 }
 
-- (id)loadModel:(id)a3
+- (id)loadModel:(id)model
 {
   v55 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
+  modelCopy = model;
+  v4 = modelCopy;
   v10 = objc_msgSend_UTF8String(v4, v5, v6, v7, v8, v9);
   sub_1837A3290(v10, 0, __s);
   v11 = strlen(__s);
@@ -177,7 +177,7 @@ LABEL_13:
     {
       v38 = objc_msgSend_localizedDescription(v31, v33, v34, v35, v36, v37);
       *buf = 138412546;
-      v51 = v3;
+      v51 = modelCopy;
       v52 = 2112;
       v53 = v38;
       _os_log_impl(&dword_18366B000, v32, OS_LOG_TYPE_ERROR, "Error loading model %@: %@", buf, 0x16u);
@@ -206,7 +206,7 @@ LABEL_18:
 
     v45 = objc_msgSend_localizedDescription(v31, v40, v41, v42, v43, v44);
     *buf = 138412546;
-    v51 = v3;
+    v51 = modelCopy;
     v52 = 2112;
     v53 = v45;
     _os_log_impl(&dword_18366B000, v39, OS_LOG_TYPE_FAULT, "Error loading model %@: %@", buf, 0x16u);
@@ -224,11 +224,11 @@ LABEL_19:
   return v30;
 }
 
-- (id)loadCodemap:(id)a3
+- (id)loadCodemap:(id)codemap
 {
   v37 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
+  codemapCopy = codemap;
+  v4 = codemapCopy;
   v10 = objc_msgSend_UTF8String(v4, v5, v6, v7, v8, v9);
   sub_1837A3290(v10, 0, __s);
   v11 = strlen(__s);
@@ -316,23 +316,23 @@ LABEL_19:
   return v28;
 }
 
-- (void)setUpMathDecoder:(void *)a3 imageCompressed:(void *)a4
+- (void)setUpMathDecoder:(void *)decoder imageCompressed:(void *)compressed
 {
   v6 = *MEMORY[0x1E69E9840];
-  objc_msgSend_segmentationAttThreshold(self, a2, a3, a4, v4, v5);
+  objc_msgSend_segmentationAttThreshold(self, a2, decoder, compressed, v4, v5);
   sub_183830970();
 }
 
-- (int)getIndexInCodemap:(id)a3
+- (int)getIndexInCodemap:(id)codemap
 {
-  v4 = a3;
+  codemapCopy = codemap;
   v10 = objc_msgSend_codeMap(self, v5, v6, v7, v8, v9);
-  v15 = objc_msgSend_indexOfObject_(v10, v11, v4, v12, v13, v14);
+  v15 = objc_msgSend_indexOfObject_(v10, v11, codemapCopy, v12, v13, v14);
 
   return v15;
 }
 
-- (void)setUpDecoderOutOfAlphabetAlternatives:(void *)a3
+- (void)setUpDecoderOutOfAlphabetAlternatives:(void *)alternatives
 {
   v135 = *MEMORY[0x1E69E9840];
   *v130 = 0u;
@@ -605,16 +605,16 @@ LABEL_19:
   }
 
   sub_183989A20(v119, v127);
-  if (a3 + 560 != v130)
+  if (alternatives + 560 != v130)
   {
-    *(a3 + 148) = v132;
-    sub_18383D8D0(a3 + 560, v131[0], 0);
+    *(alternatives + 148) = v132;
+    sub_18383D8D0(alternatives + 560, v131[0], 0);
   }
 
-  if (a3 + 600 != v119)
+  if (alternatives + 600 != v119)
   {
-    *(a3 + 158) = v121;
-    sub_18383E010(a3 + 600, __p, 0);
+    *(alternatives + 158) = v121;
+    sub_18383E010(alternatives + 600, __p, 0);
   }
 
   v108 = __p;
@@ -685,7 +685,7 @@ LABEL_19:
   }
 }
 
-- (void)setUpDecoderConfusableAlternatives:(void *)a3
+- (void)setUpDecoderConfusableAlternatives:(void *)alternatives
 {
   v257[3] = *MEMORY[0x1E69E9840];
   *__n = 0u;
@@ -842,13 +842,13 @@ LABEL_19:
   operator new();
 }
 
-- (id)recognizeDrawing:(id)a3 beamSize:(int64_t)a4 shouldCancel:(id)a5
+- (id)recognizeDrawing:(id)drawing beamSize:(int64_t)size shouldCancel:(id)cancel
 {
   v84 = *MEMORY[0x1E69E9840];
-  v63 = a3;
-  v64 = a5;
+  drawingCopy = drawing;
+  cancelCopy = cancel;
   v73 = 0;
-  objc_msgSend__extractFeaturesFromDrawing_error_(self, v7, v63, &v73, v8, v9, a4);
+  objc_msgSend__extractFeaturesFromDrawing_error_(self, v7, drawingCopy, &v73, v8, v9, size);
   v62 = v73;
   if (v62)
   {
@@ -896,7 +896,7 @@ LABEL_9:
   }
 
 LABEL_10:
-  if (!v64 || (v64[2]() & 1) == 0)
+  if (!cancelCopy || (cancelCopy[2]() & 1) == 0)
   {
     objc_msgSend__createCompressedInputImage_(self, v10, v74, v11, v12, v13);
     __p = 0;
@@ -1053,9 +1053,9 @@ LABEL_10:
   return 0;
 }
 
-- (FeatureArray)_extractFeaturesFromDrawing:(SEL)a3 error:(id)a4
+- (FeatureArray)_extractFeaturesFromDrawing:(SEL)drawing error:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   v12 = objc_msgSend_renderSymbolSize(self, v7, v8, v9, v10, v11);
   v18 = objc_msgSend_minInputHeight(self, v13, v14, v15, v16, v17);
   v24 = objc_msgSend_maxInputHeight(self, v19, v20, v21, v22, v23);
@@ -1067,11 +1067,11 @@ LABEL_10:
   v37 = &unk_1EF1BF8B8;
   v44 = v12;
   v39 = vmovn_s64(*&self->_padToMultipleOf);
-  sub_1837BD608(v6, MEMORY[0x1E695EFF8], 0, &v36);
+  sub_1837BD608(errorCopy, MEMORY[0x1E695EFF8], 0, &v36);
   sub_183969890(&v37, &v36);
 }
 
-- (vector<std::vector<std::unordered_map<int,)_createCompressedInputImage:()std:(int>>>> *__return_ptr)retstr :(CHEncoderDecoderNetwork *)self allocator<std:(SEL)a3 :(const void *)a4 vector<std::unordered_map<int
+- (vector<std::vector<std::unordered_map<int,)_createCompressedInputImage:()std:(int>>>> *__return_ptr)retstr :(CHEncoderDecoderNetwork *)self allocator<std:(SEL)std :(const void *)a4 vector<std::unordered_map<int
 {
   encoderCompressionFactor = self->_encoderCompressionFactor;
   retstr->var1 = 0;
@@ -1091,12 +1091,12 @@ LABEL_10:
   operator new();
 }
 
-- (void)filterOutAlternatives:(void *)a3 codemap:(const void *)a4
+- (void)filterOutAlternatives:(void *)alternatives codemap:(const void *)codemap
 {
-  v4 = *a3;
-  v5 = *(a3 + 1);
-  v6 = v5 - *a3;
-  if (v5 != *a3)
+  v4 = *alternatives;
+  v5 = *(alternatives + 1);
+  v6 = v5 - *alternatives;
+  if (v5 != *alternatives)
   {
     v8 = *(v4 + 80) - *(v4 + 72);
     if (v8)
@@ -1122,8 +1122,8 @@ LABEL_10:
     v12 = 0xEF7BDEF7BDEF7BDFLL * (v6 >> 3);
     do
     {
-      v14 = *a3;
-      v15 = *a3 + 248 * (v12 - 1);
+      v14 = *alternatives;
+      v15 = *alternatives + 248 * (v12 - 1);
       v16 = *(v15 + 80) - *(v15 + 72);
       if (v16)
       {
@@ -1150,7 +1150,7 @@ LABEL_12:
           }
 
           while (v21 != v5);
-          v5 = *(a3 + 1);
+          v5 = *(alternatives + 1);
           v19 = v20;
         }
 
@@ -1160,7 +1160,7 @@ LABEL_12:
           sub_18383AB38(v5);
         }
 
-        *(a3 + 1) = v19;
+        *(alternatives + 1) = v19;
         v5 = v19;
       }
     }
@@ -1169,10 +1169,10 @@ LABEL_12:
   }
 }
 
-- (id)_bestPathTokensFromDecodingStates:(const void *)a3 drawing:(id)a4 codemap:(const void *)a5
+- (id)_bestPathTokensFromDecodingStates:(const void *)states drawing:(id)drawing codemap:(const void *)codemap
 {
-  v12 = a4;
-  if (*(a3 + 1) == *a3)
+  drawingCopy = drawing;
+  if (*(states + 1) == *states)
   {
     v56 = 0;
   }
@@ -1184,11 +1184,11 @@ LABEL_12:
     v60[1] = 3221225472;
     v60[2] = sub_18398D0C0;
     v60[3] = &unk_1E6DE07B8;
-    v62 = a5;
-    v61 = v12;
+    codemapCopy = codemap;
+    v61 = drawingCopy;
     v17 = MEMORY[0x1865E6810](v60);
-    v18 = *a3;
-    if (*(a3 + 1) != *a3)
+    v18 = *states;
+    if (*(states + 1) != *states)
     {
       v19 = 0;
       do
@@ -1207,8 +1207,8 @@ LABEL_12:
             _os_log_impl(&dword_18366B000, v20, OS_LOG_TYPE_ERROR, "Predicted sequence and segmentation have different length", buf, 2u);
           }
 
-          v18 = *a3;
-          if (0xAAAAAAAAAAAAAAABLL * ((*(*a3 + 248 * v19 + 56) - *(*a3 + 248 * v19 + 48)) >> 3) != (*(*a3 + 248 * v19 + 80) - *(*a3 + 248 * v19 + 72)) >> 2)
+          v18 = *states;
+          if (0xAAAAAAAAAAAAAAABLL * ((*(*states + 248 * v19 + 56) - *(*states + 248 * v19 + 48)) >> 3) != (*(*states + 248 * v19 + 80) - *(*states + 248 * v19 + 72)) >> 2)
           {
             if (qword_1EA84DC48 != -1)
             {
@@ -1222,13 +1222,13 @@ LABEL_12:
               _os_log_impl(&dword_18366B000, v21, OS_LOG_TYPE_FAULT, "Predicted sequence and segmentation have different length", buf, 2u);
             }
 
-            v18 = *a3;
+            v18 = *states;
           }
         }
 
         v26 = objc_msgSend_arrayWithCapacity_(MEMORY[0x1E695DF70], v13, (*(v18 + 248 * v19 + 80) - *(v18 + 248 * v19 + 72)) >> 2, v14, v15, v16);
-        v28 = *a3;
-        if (((*(*a3 + 248 * v19 + 80) - *(*a3 + 248 * v19 + 72)) >> 2) >= 1)
+        v28 = *states;
+        if (((*(*states + 248 * v19 + 80) - *(*states + 248 * v19 + 72)) >> 2) >= 1)
         {
           v29 = 0;
           do
@@ -1281,15 +1281,15 @@ LABEL_12:
                 v45 = v31;
               }
 
-              v48 = *a5 + 24 * *(v45 + 32);
+              v48 = *codemap + 24 * *(v45 + 32);
               if (*(v48 + 23) < 0)
               {
                 v48 = *v48;
               }
 
               v39 = objc_msgSend_stringWithUTF8String_(MEMORY[0x1E696AEC0], v22, v48, v23, v24, v25, 0.0);
-              v28 = *a3;
-              v49 = *a3 + 248 * v19;
+              v28 = *states;
+              v49 = *states + 248 * v19;
               v52 = *(v49 + 176);
               v50 = v49 + 176;
               v51 = v52;
@@ -1332,19 +1332,19 @@ LABEL_25:
             objc_msgSend_addObject_(v26, v41, v40, v42, v43, v44);
 
             ++v29;
-            v28 = *a3;
+            v28 = *states;
           }
 
-          while (v29 < ((*(*a3 + 248 * v19 + 80) - *(*a3 + 248 * v19 + 72)) >> 2));
+          while (v29 < ((*(*states + 248 * v19 + 80) - *(*states + 248 * v19 + 72)) >> 2));
         }
 
         objc_msgSend_addObject_(v58, v22, v26, v23, v24, v25);
 
         ++v19;
-        v18 = *a3;
+        v18 = *states;
       }
 
-      while (v19 < 0xEF7BDEF7BDEF7BDFLL * ((*(a3 + 1) - *a3) >> 3));
+      while (v19 < 0xEF7BDEF7BDEF7BDFLL * ((*(states + 1) - *states) >> 3));
     }
 
     v56 = v58;

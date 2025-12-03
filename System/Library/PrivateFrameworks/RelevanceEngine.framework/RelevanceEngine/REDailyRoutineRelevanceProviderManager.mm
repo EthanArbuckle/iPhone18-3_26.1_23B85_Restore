@@ -1,8 +1,8 @@
 @interface REDailyRoutineRelevanceProviderManager
 + (id)_features;
-- (BOOL)_isInRoutine:(unint64_t)a3 forDate:(id)a4;
-- (id)_valueForProvider:(id)a3 context:(id)a4 feature:(id)a5;
-- (id)_valueForProvider:(id)a3 feature:(id)a4;
+- (BOOL)_isInRoutine:(unint64_t)routine forDate:(id)date;
+- (id)_valueForProvider:(id)provider context:(id)context feature:(id)feature;
+- (id)_valueForProvider:(id)provider feature:(id)feature;
 - (void)_prepareForUpdate;
 - (void)_updateRoutines;
 - (void)pause;
@@ -25,23 +25,23 @@
   return v4;
 }
 
-- (id)_valueForProvider:(id)a3 feature:(id)a4
+- (id)_valueForProvider:(id)provider feature:(id)feature
 {
-  v6 = a3;
-  v7 = a4;
+  providerCopy = provider;
+  featureCopy = feature;
   v8 = +[REFeature dailyRoutineFeature];
-  v9 = [v7 isEqual:v8];
+  v9 = [featureCopy isEqual:v8];
 
   if (v9)
   {
-    v10 = +[REFeatureValue featureValueWithInt64:](REFeatureValue, "featureValueWithInt64:", [v6 type]);
+    v10 = +[REFeatureValue featureValueWithInt64:](REFeatureValue, "featureValueWithInt64:", [providerCopy type]);
 LABEL_11:
     v14 = v10;
     goto LABEL_12;
   }
 
-  v11 = [v6 type];
-  switch(v11)
+  type = [providerCopy type];
+  switch(type)
   {
     case 0:
       v12 = 96;
@@ -64,19 +64,19 @@ LABEL_12:
   return v14;
 }
 
-- (id)_valueForProvider:(id)a3 context:(id)a4 feature:(id)a5
+- (id)_valueForProvider:(id)provider context:(id)context feature:(id)feature
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = v8;
-  v11 = [a4 attributeForKey:@"RETrainingContextDateKey"];
+  providerCopy = provider;
+  featureCopy = feature;
+  v10 = providerCopy;
+  v11 = [context attributeForKey:@"RETrainingContextDateKey"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     if (v11)
     {
       v12 = +[REFeature isInDailyRoutineFeature];
-      v13 = [v9 isEqual:v12];
+      v13 = [featureCopy isEqual:v12];
 
       if (v13)
       {
@@ -92,18 +92,18 @@ LABEL_12:
     v11 = 0;
   }
 
-  v14 = [(REDailyRoutineRelevanceProviderManager *)self _valueForProvider:v10 feature:v9];
+  v14 = [(REDailyRoutineRelevanceProviderManager *)self _valueForProvider:v10 feature:featureCopy];
 LABEL_7:
   v15 = v14;
 
   return v15;
 }
 
-- (BOOL)_isInRoutine:(unint64_t)a3 forDate:(id)a4
+- (BOOL)_isInRoutine:(unint64_t)routine forDate:(id)date
 {
-  v5 = a3 == 1;
-  v6 = a4;
-  if (a3)
+  v5 = routine == 1;
+  dateCopy = date;
+  if (routine)
   {
     v7 = 2 * v5;
   }
@@ -114,8 +114,8 @@ LABEL_7:
   }
 
   v8 = +[(RESingleton *)REDailyRoutinePredictor];
-  v9 = [v8 currentRoutineInterval];
-  v10 = [v9 containsDate:v6];
+  currentRoutineInterval = [v8 currentRoutineInterval];
+  v10 = [currentRoutineInterval containsDate:dateCopy];
 
   if (v10)
   {
@@ -125,7 +125,7 @@ LABEL_7:
   else
   {
     v12 = [v8 routineIntervalForPreviousRoutine:v7];
-    if ([v12 containsDate:v6])
+    if ([v12 containsDate:dateCopy])
     {
       v11 = 1;
     }
@@ -134,7 +134,7 @@ LABEL_7:
     {
       v13 = [v8 routineIntervalForNextRoutine:v7];
 
-      v11 = [v13 containsDate:v6];
+      v11 = [v13 containsDate:dateCopy];
       v12 = v13;
     }
   }
@@ -157,9 +157,9 @@ LABEL_7:
 - (void)_prepareForUpdate
 {
   v3 = +[(RESingleton *)REDailyRoutinePredictor];
-  v4 = [v3 currentRoutineType];
+  currentRoutineType = [v3 currentRoutineType];
 
-  if (v4 == 1)
+  if (currentRoutineType == 1)
   {
     v5 = 0;
     self->_inMorningRoutine = 1;
@@ -168,7 +168,7 @@ LABEL_7:
   else
   {
     self->_inMorningRoutine = REUpNextDemoAlwaysShowRoutines();
-    if (v4 == 2)
+    if (currentRoutineType == 2)
     {
       v5 = REUpNextDemoAlwaysShowRoutines() ^ 1;
     }

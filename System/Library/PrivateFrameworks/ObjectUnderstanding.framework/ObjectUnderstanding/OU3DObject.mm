@@ -1,34 +1,34 @@
 @interface OU3DObject
-- (BOOL)getDimension:(id)a3 dim:;
-- (BOOL)getTransform:(id)a3 transform:(id *)a4;
-- (BOOL)hasBoxesDict:(id)a3;
+- (BOOL)getDimension:(id)dimension dim:;
+- (BOOL)getTransform:(id)transform transform:(id *)a4;
+- (BOOL)hasBoxesDict:(id)dict;
 - (OU3DObject)init;
-- (OU3DObject)initWithCoder:(id)a3;
-- (OU3DObject)initWithDictionaryRepresentation:(id)a3;
+- (OU3DObject)initWithCoder:(id)coder;
+- (OU3DObject)initWithDictionaryRepresentation:(id)representation;
 - (double)transform;
 - (float32x2_t)dimensions;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (int)getFrameIndexOfLastRefine;
-- (void)addBoxesDict:(const box3d *)a3 forDictKey:(id)a4;
-- (void)addObjectPartAttribute:(id)a3;
-- (void)clearGroupInfo:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)removeBoxesDict:(id)a3;
-- (void)updateObjectEmbedding2d:(id)a3;
-- (void)updateObjectEmbedding3d:(id)a3;
+- (void)addBoxesDict:(const box3d *)dict forDictKey:(id)key;
+- (void)addObjectPartAttribute:(id)attribute;
+- (void)clearGroupInfo:(id)info;
+- (void)encodeWithCoder:(id)coder;
+- (void)removeBoxesDict:(id)dict;
+- (void)updateObjectEmbedding2d:(id)embedding2d;
+- (void)updateObjectEmbedding3d:(id)embedding3d;
 @end
 
 @implementation OU3DObject
 
 - (float32x2_t)dimensions
 {
-  v2 = [a1 hasBoxesDict:@"rawdetection"];
+  v2 = [self hasBoxesDict:@"rawdetection"];
   result = 0;
   if (v2)
   {
-    v4 = [a1[3] objectForKeyedSubscript:{@"rawdetection", 0.0}];
+    v4 = [self[3] objectForKeyedSubscript:{@"rawdetection", 0.0}];
     v5 = box3dFromNSArray(v4, &v10);
 
     result = 0;
@@ -47,11 +47,11 @@
 
 - (double)transform
 {
-  v2 = [a1 hasBoxesDict:@"rawdetection"];
+  v2 = [self hasBoxesDict:@"rawdetection"];
   v3.i64[0] = 0;
   if (v2)
   {
-    v4 = [a1[3] objectForKeyedSubscript:{@"rawdetection", 0.0}];
+    v4 = [self[3] objectForKeyedSubscript:{@"rawdetection", 0.0}];
     v5 = box3dFromNSArray(v4, v22);
 
     v3 = 0uLL;
@@ -103,9 +103,9 @@
   return *v3.i64;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   objc_storeStrong((v4 + 56), self->type);
   objc_storeStrong((v4 + 64), self->identifier);
   objc_storeStrong((v4 + 72), self->parent_id);
@@ -143,50 +143,50 @@
   return v4;
 }
 
-- (OU3DObject)initWithCoder:(id)a3
+- (OU3DObject)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v50.receiver = self;
   v50.super_class = OU3DObject;
   v5 = [(OU3DObject *)&v50 init];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
   type = v5->type;
   v5->type = v6;
 
-  if ((isValidType(v5->type) & 1) != 0 && ([v4 decodeObjectOfClass:objc_opt_class() forKey:@"detectionsource"], v8 = objc_claimAutoreleasedReturnValue(), detection_source = v5->detection_source, v5->detection_source = v8, detection_source, isValidODSourceType(v5->detection_source)))
+  if ((isValidType(v5->type) & 1) != 0 && ([coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"detectionsource"], v8 = objc_claimAutoreleasedReturnValue(), detection_source = v5->detection_source, v5->detection_source = v8, detection_source, isValidODSourceType(v5->detection_source)))
   {
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->identifier;
     v5->identifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"parent_id"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"parent_id"];
     parent_id = v5->parent_id;
     v5->parent_id = v12;
 
-    [v4 decodeFloatForKey:@"confidence"];
+    [coderCopy decodeFloatForKey:@"confidence"];
     v5->confidence = v14;
-    v5->status = [v4 decodeBoolForKey:@"status"];
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"logits"];
+    v5->status = [coderCopy decodeBoolForKey:@"status"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"logits"];
     logits = v5->logits;
     v5->logits = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"embedding2d"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"embedding2d"];
     embedding2d = v5->embedding2d;
     v5->embedding2d = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"embedding3d"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"embedding3d"];
     embedding3d = v5->embedding3d;
     v5->embedding3d = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"corners_status"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"corners_status"];
     corners_status = v5->corners_status;
     v5->corners_status = v21;
 
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"edges_status"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"edges_status"];
     edges_status = v5->edges_status;
     v5->edges_status = v23;
 
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"color"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"color"];
     *v5->color = *[v25 bytes];
     v26 = MEMORY[0x277CBEB98];
     v27 = objc_opt_class();
@@ -197,28 +197,28 @@
     v32 = objc_opt_class();
     v33 = [v29 setWithObjects:{v30, v31, v32, objc_opt_class(), 0}];
 
-    v34 = [v4 decodeObjectOfClasses:v33 forKey:@"groups"];
+    v34 = [coderCopy decodeObjectOfClasses:v33 forKey:@"groups"];
     v35 = [v34 mutableCopy];
 
     v36 = [v35 mutableCopy];
     groups = v5->_groups;
     v5->_groups = v36;
 
-    v38 = [v4 decodeObjectOfClasses:v33 forKey:@"parts"];
+    v38 = [coderCopy decodeObjectOfClasses:v33 forKey:@"parts"];
     v39 = [v38 mutableCopy];
 
     v40 = [v39 mutableCopy];
     parts = v5->_parts;
     v5->_parts = v40;
 
-    v42 = [v4 decodeObjectOfClasses:v33 forKey:@"boxes_dict"];
+    v42 = [coderCopy decodeObjectOfClasses:v33 forKey:@"boxes_dict"];
     v43 = [v42 mutableCopy];
 
     v44 = [v43 mutableCopy];
     boxesDict = v5->_boxesDict;
     v5->_boxesDict = v44;
 
-    v46 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cadmodelname"];
+    v46 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cadmodelname"];
     cadModelName = v5->cadModelName;
     v5->cadModelName = v46;
 
@@ -233,37 +233,37 @@
   return v48;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  [v6 encodeObject:self->type forKey:@"type"];
-  [v6 encodeObject:self->detection_source forKey:@"detectionsource"];
-  [v6 encodeObject:self->identifier forKey:@"identifier"];
-  [v6 encodeObject:self->parent_id forKey:@"parent_id"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->type forKey:@"type"];
+  [coderCopy encodeObject:self->detection_source forKey:@"detectionsource"];
+  [coderCopy encodeObject:self->identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->parent_id forKey:@"parent_id"];
   *&v4 = self->confidence;
-  [v6 encodeFloat:@"confidence" forKey:v4];
-  [v6 encodeObject:self->logits forKey:@"logits"];
-  [v6 encodeObject:self->embedding2d forKey:@"embedding2d"];
-  [v6 encodeObject:self->embedding3d forKey:@"embedding3d"];
-  [v6 encodeObject:self->corners_status forKey:@"corners_status"];
-  [v6 encodeObject:self->edges_status forKey:@"edges_status"];
-  [v6 encodeBool:self->status forKey:@"status"];
+  [coderCopy encodeFloat:@"confidence" forKey:v4];
+  [coderCopy encodeObject:self->logits forKey:@"logits"];
+  [coderCopy encodeObject:self->embedding2d forKey:@"embedding2d"];
+  [coderCopy encodeObject:self->embedding3d forKey:@"embedding3d"];
+  [coderCopy encodeObject:self->corners_status forKey:@"corners_status"];
+  [coderCopy encodeObject:self->edges_status forKey:@"edges_status"];
+  [coderCopy encodeBool:self->status forKey:@"status"];
   v5 = [MEMORY[0x277CBEA90] dataWithBytes:self->color length:16];
-  [v6 encodeObject:v5 forKey:@"color"];
-  [v6 encodeObject:self->_groups forKey:@"groups"];
-  [v6 encodeObject:self->_parts forKey:@"parts"];
-  [v6 encodeObject:self->_boxesDict forKey:@"boxes_dict"];
-  [v6 encodeObject:self->cadModelName forKey:@"cadmodelname"];
+  [coderCopy encodeObject:v5 forKey:@"color"];
+  [coderCopy encodeObject:self->_groups forKey:@"groups"];
+  [coderCopy encodeObject:self->_parts forKey:@"parts"];
+  [coderCopy encodeObject:self->_boxesDict forKey:@"boxes_dict"];
+  [coderCopy encodeObject:self->cadModelName forKey:@"cadmodelname"];
 }
 
-- (BOOL)hasBoxesDict:(id)a3
+- (BOOL)hasBoxesDict:(id)dict
 {
-  v4 = a3;
+  dictCopy = dict;
   boxesDict = self->_boxesDict;
   if (boxesDict)
   {
-    v6 = [(NSMutableDictionary *)boxesDict allKeys];
-    v7 = [v6 containsObject:v4];
+    allKeys = [(NSMutableDictionary *)boxesDict allKeys];
+    v7 = [allKeys containsObject:dictCopy];
   }
 
   else
@@ -274,18 +274,18 @@
   return v7;
 }
 
-- (BOOL)getDimension:(id)a3 dim:
+- (BOOL)getDimension:(id)dimension dim:
 {
   v4 = v3;
-  v6 = a3;
-  if (![(OU3DObject *)self hasBoxesDict:v6])
+  dimensionCopy = dimension;
+  if (![(OU3DObject *)self hasBoxesDict:dimensionCopy])
   {
     LOBYTE(v8) = 0;
     v16 = 0uLL;
     goto LABEL_5;
   }
 
-  v7 = [(NSMutableDictionary *)self->_boxesDict objectForKeyedSubscript:v6];
+  v7 = [(NSMutableDictionary *)self->_boxesDict objectForKeyedSubscript:dimensionCopy];
   v8 = box3dFromNSArray(v7, &v18);
 
   if (v8)
@@ -307,12 +307,12 @@ LABEL_5:
   return v8;
 }
 
-- (BOOL)getTransform:(id)a3 transform:(id *)a4
+- (BOOL)getTransform:(id)transform transform:(id *)a4
 {
-  v6 = a3;
-  if ([(OU3DObject *)self hasBoxesDict:v6])
+  transformCopy = transform;
+  if ([(OU3DObject *)self hasBoxesDict:transformCopy])
   {
-    v7 = [(NSMutableDictionary *)self->_boxesDict objectForKeyedSubscript:v6];
+    v7 = [(NSMutableDictionary *)self->_boxesDict objectForKeyedSubscript:transformCopy];
     v8 = box3dFromNSArray(v7, &v30);
 
     if (v8)
@@ -384,39 +384,39 @@ LABEL_5:
 - (id)dictionaryRepresentation
 {
   v20[4] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  [v3 setObject:self->type forKeyedSubscript:@"type"];
-  [v3 setObject:self->detection_source forKeyedSubscript:@"detectionsource"];
-  v4 = [(NSUUID *)self->identifier UUIDString];
-  [v3 setObject:v4 forKeyedSubscript:@"identifier"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setObject:self->type forKeyedSubscript:@"type"];
+  [dictionary setObject:self->detection_source forKeyedSubscript:@"detectionsource"];
+  uUIDString = [(NSUUID *)self->identifier UUIDString];
+  [dictionary setObject:uUIDString forKeyedSubscript:@"identifier"];
 
   parent_id = self->parent_id;
   if (parent_id)
   {
-    v6 = [(NSUUID *)self->parent_id UUIDString];
+    uUIDString2 = [(NSUUID *)self->parent_id UUIDString];
   }
 
   else
   {
-    v6 = 0;
+    uUIDString2 = 0;
   }
 
-  [v3 setObject:v6 forKeyedSubscript:@"parent_id"];
+  [dictionary setObject:uUIDString2 forKeyedSubscript:@"parent_id"];
   if (parent_id)
   {
   }
 
   *&v7 = self->confidence;
   v8 = [MEMORY[0x277CCABB0] numberWithFloat:v7];
-  [v3 setObject:v8 forKeyedSubscript:@"confidence"];
+  [dictionary setObject:v8 forKeyedSubscript:@"confidence"];
 
-  [v3 setObject:self->logits forKeyedSubscript:@"logits"];
-  [v3 setObject:self->embedding2d forKeyedSubscript:@"embedding2d"];
-  [v3 setObject:self->embedding3d forKeyedSubscript:@"embedding3d"];
-  [v3 setObject:self->corners_status forKeyedSubscript:@"corners_status"];
-  [v3 setObject:self->edges_status forKeyedSubscript:@"edges_status"];
+  [dictionary setObject:self->logits forKeyedSubscript:@"logits"];
+  [dictionary setObject:self->embedding2d forKeyedSubscript:@"embedding2d"];
+  [dictionary setObject:self->embedding3d forKeyedSubscript:@"embedding3d"];
+  [dictionary setObject:self->corners_status forKeyedSubscript:@"corners_status"];
+  [dictionary setObject:self->edges_status forKeyedSubscript:@"edges_status"];
   v9 = [MEMORY[0x277CCABB0] numberWithBool:self->status];
-  [v3 setObject:v9 forKeyedSubscript:@"status"];
+  [dictionary setObject:v9 forKeyedSubscript:@"status"];
 
   v19 = *self->color;
   v10 = [MEMORY[0x277CCABB0] numberWithFloat:?];
@@ -431,16 +431,16 @@ LABEL_5:
   v20[3] = v14;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:4];
 
-  [v3 setObject:v15 forKeyedSubscript:@"color"];
-  [v3 setObject:self->_groups forKeyedSubscript:@"groups"];
-  [v3 setObject:self->_parts forKeyedSubscript:@"parts"];
+  [dictionary setObject:v15 forKeyedSubscript:@"color"];
+  [dictionary setObject:self->_groups forKeyedSubscript:@"groups"];
+  [dictionary setObject:self->_parts forKeyedSubscript:@"parts"];
   if ([(NSMutableDictionary *)self->_boxesDict count])
   {
-    [v3 setObject:self->_boxesDict forKeyedSubscript:@"boxes_dict"];
+    [dictionary setObject:self->_boxesDict forKeyedSubscript:@"boxes_dict"];
   }
 
-  [v3 setObject:self->cadModelName forKeyedSubscript:@"cadmodelname"];
-  v16 = [v3 copy];
+  [dictionary setObject:self->cadModelName forKeyedSubscript:@"cadmodelname"];
+  v16 = [dictionary copy];
 
   v17 = *MEMORY[0x277D85DE8];
 
@@ -491,14 +491,14 @@ LABEL_5:
   return v2;
 }
 
-- (OU3DObject)initWithDictionaryRepresentation:(id)a3
+- (OU3DObject)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v75.receiver = self;
   v75.super_class = OU3DObject;
   v5 = [(OU3DObject *)&v75 init];
   v6 = v5;
-  v7 = [v4 objectForKeyedSubscript:@"type"];
+  v7 = [representationCopy objectForKeyedSubscript:@"type"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -525,7 +525,7 @@ LABEL_5:
     goto LABEL_39;
   }
 
-  v12 = [v4 objectForKeyedSubscript:@"detectionsource"];
+  v12 = [representationCopy objectForKeyedSubscript:@"detectionsource"];
   objc_opt_class();
   v13 = (objc_opt_isKindOfClass() & 1) != 0 ? v12 : 0;
 
@@ -544,7 +544,7 @@ LABEL_5:
     goto LABEL_39;
   }
 
-  v17 = [v4 objectForKeyedSubscript:@"identifier"];
+  v17 = [representationCopy objectForKeyedSubscript:@"identifier"];
   if (!v17)
   {
     goto LABEL_39;
@@ -554,12 +554,12 @@ LABEL_5:
   identifier = v5->identifier;
   v5->identifier = v18;
 
-  v20 = [v4 objectForKeyedSubscript:@"parent_id"];
+  v20 = [representationCopy objectForKeyedSubscript:@"parent_id"];
   v21 = v20 ? [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v20] : 0;
   parent_id = v5->parent_id;
   v5->parent_id = v21;
 
-  v23 = [v4 objectForKeyedSubscript:@"status"];
+  v23 = [representationCopy objectForKeyedSubscript:@"status"];
   objc_opt_class();
   v24 = (objc_opt_isKindOfClass() & 1) != 0 ? v23 : 0;
 
@@ -570,7 +570,7 @@ LABEL_5:
 
   v5->status = [v24 BOOLValue];
 
-  v25 = [v4 objectForKeyedSubscript:@"confidence"];
+  v25 = [representationCopy objectForKeyedSubscript:@"confidence"];
   v26 = objc_cast<NSNumber>(v25);
 
   if (v26)
@@ -578,7 +578,7 @@ LABEL_5:
     [v26 floatValue];
     v5->confidence = v27;
 
-    v28 = [v4 objectForKeyedSubscript:@"logits"];
+    v28 = [representationCopy objectForKeyedSubscript:@"logits"];
     v29 = objc_cast<NSArray<NSNumber *>>(v28);
     logits = v5->logits;
     v5->logits = v29;
@@ -590,7 +590,7 @@ LABEL_5:
       v5->logits = v31;
     }
 
-    v33 = [v4 objectForKeyedSubscript:@"embedding2d"];
+    v33 = [representationCopy objectForKeyedSubscript:@"embedding2d"];
     v34 = objc_cast<NSArray<NSArray*<NSNumber *>>>(v33);
     embedding2d = v5->embedding2d;
     v5->embedding2d = v34;
@@ -602,7 +602,7 @@ LABEL_5:
       v5->embedding2d = v36;
     }
 
-    v38 = [v4 objectForKeyedSubscript:@"embedding3d"];
+    v38 = [representationCopy objectForKeyedSubscript:@"embedding3d"];
     v39 = objc_cast<NSArray<NSNumber *>>(v38);
     embedding3d = v5->embedding3d;
     v5->embedding3d = v39;
@@ -614,7 +614,7 @@ LABEL_5:
       v5->embedding3d = v41;
     }
 
-    v43 = [v4 objectForKeyedSubscript:@"corners_status"];
+    v43 = [representationCopy objectForKeyedSubscript:@"corners_status"];
     v44 = objc_cast<NSArray<NSNumber *>>(v43);
     corners_status = v5->corners_status;
     v5->corners_status = v44;
@@ -626,7 +626,7 @@ LABEL_5:
       v5->corners_status = v46;
     }
 
-    v48 = [v4 objectForKeyedSubscript:@"edges_status"];
+    v48 = [representationCopy objectForKeyedSubscript:@"edges_status"];
     v49 = objc_cast<NSArray<NSNumber *>>(v48);
     edges_status = v5->edges_status;
     v5->edges_status = v49;
@@ -638,7 +638,7 @@ LABEL_5:
       v5->edges_status = v51;
     }
 
-    v53 = [v4 objectForKeyedSubscript:@"color"];
+    v53 = [representationCopy objectForKeyedSubscript:@"color"];
     v54 = objc_cast<NSArray>(v53);
 
     if (v54)
@@ -646,7 +646,7 @@ LABEL_5:
       float4FromNSArray(v54, v5->color);
     }
 
-    v55 = [v4 objectForKeyedSubscript:@"groups"];
+    v55 = [representationCopy objectForKeyedSubscript:@"groups"];
     v56 = objc_cast<NSMutableDictionary>(v55);
     groups = v5->_groups;
     v5->_groups = v56;
@@ -658,7 +658,7 @@ LABEL_5:
       v5->_groups = v58;
     }
 
-    v60 = [v4 objectForKeyedSubscript:@"parts"];
+    v60 = [representationCopy objectForKeyedSubscript:@"parts"];
     v61 = objc_cast<NSMutableDictionary>(v60);
     parts = v5->_parts;
     v5->_parts = v61;
@@ -670,7 +670,7 @@ LABEL_5:
       v5->_parts = v63;
     }
 
-    v65 = [v4 objectForKeyedSubscript:@"boxes_dict"];
+    v65 = [representationCopy objectForKeyedSubscript:@"boxes_dict"];
     v66 = objc_cast<NSMutableDictionary>(v65);
     boxesDict = v5->_boxesDict;
     v5->_boxesDict = v66;
@@ -682,7 +682,7 @@ LABEL_5:
       v5->_boxesDict = v68;
     }
 
-    v70 = [v4 objectForKeyedSubscript:@"cadmodelname"];
+    v70 = [representationCopy objectForKeyedSubscript:@"cadmodelname"];
     v71 = objc_cast<NSString>(v70);
     cadModelName = v5->cadModelName;
     v5->cadModelName = v71;
@@ -714,54 +714,54 @@ LABEL_39:
   [(OU3DObject *)self getDimension:@"rawdetection" dim:&v14];
   v9 = v14;
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(NSUUID *)self->identifier UUIDString];
-  v5 = [v4 UTF8String];
+  uUIDString = [(NSUUID *)self->identifier UUIDString];
+  uTF8String = [uUIDString UTF8String];
   v6 = vaddq_f32(v12, vmlaq_f32(vmlaq_f32(vmulq_f32(v10, 0), 0, v11), 0, v13));
-  v7 = [v3 stringWithFormat:@"<OU3DObject> [id=%s conf=%0.2f] %@ { position = < %.2f, %.2f, %.2f > dimension = < %.2f x %.2f x %.2f > color = < r=%.2f, g=%.2f, b=%.2f, a=%.2f > }", v5, self->confidence, self->type, v6.f32[0], v6.f32[1], v6.f32[2], *&v9, *(&v9 + 1), *(&v9 + 2), COERCE_FLOAT(*self->color), COERCE_FLOAT(HIDWORD(*self->color)), COERCE_FLOAT(*&self->color[8]), COERCE_FLOAT(HIDWORD(*self->color))];
+  v7 = [v3 stringWithFormat:@"<OU3DObject> [id=%s conf=%0.2f] %@ { position = < %.2f, %.2f, %.2f > dimension = < %.2f x %.2f x %.2f > color = < r=%.2f, g=%.2f, b=%.2f, a=%.2f > }", uTF8String, self->confidence, self->type, v6.f32[0], v6.f32[1], v6.f32[2], *&v9, *(&v9 + 1), *(&v9 + 2), COERCE_FLOAT(*self->color), COERCE_FLOAT(HIDWORD(*self->color)), COERCE_FLOAT(*&self->color[8]), COERCE_FLOAT(HIDWORD(*self->color))];
 
   return v7;
 }
 
-- (void)addBoxesDict:(const box3d *)a3 forDictKey:(id)a4
+- (void)addBoxesDict:(const box3d *)dict forDictKey:(id)key
 {
   v17[8] = *MEMORY[0x277D85DE8];
-  v16 = a4;
-  v6 = float3ToNSArray(*a3);
+  keyCopy = key;
+  v6 = float3ToNSArray(*dict);
   v17[0] = v6;
-  v7 = float3ToNSArray(*(a3 + 1));
+  v7 = float3ToNSArray(*(dict + 1));
   v17[1] = v7;
-  v8 = float3ToNSArray(*(a3 + 2));
+  v8 = float3ToNSArray(*(dict + 2));
   v17[2] = v8;
-  v9 = float3ToNSArray(*(a3 + 3));
+  v9 = float3ToNSArray(*(dict + 3));
   v17[3] = v9;
-  v10 = float3ToNSArray(*(a3 + 4));
+  v10 = float3ToNSArray(*(dict + 4));
   v17[4] = v10;
-  v11 = float3ToNSArray(*(a3 + 5));
+  v11 = float3ToNSArray(*(dict + 5));
   v17[5] = v11;
-  v12 = float3ToNSArray(*(a3 + 6));
+  v12 = float3ToNSArray(*(dict + 6));
   v17[6] = v12;
-  v13 = float3ToNSArray(*(a3 + 7));
+  v13 = float3ToNSArray(*(dict + 7));
   v17[7] = v13;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:8];
 
-  [(NSMutableDictionary *)self->_boxesDict setObject:v14 forKeyedSubscript:v16];
+  [(NSMutableDictionary *)self->_boxesDict setObject:v14 forKeyedSubscript:keyCopy];
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addObjectPartAttribute:(id)a3
+- (void)addObjectPartAttribute:(id)attribute
 {
-  v5 = a3;
+  attributeCopy = attribute;
   v4 = objc_alloc_init(MEMORY[0x277CBEA60]);
-  [(NSMutableDictionary *)self->_parts setObject:v4 forKeyedSubscript:v5];
+  [(NSMutableDictionary *)self->_parts setObject:v4 forKeyedSubscript:attributeCopy];
 }
 
-- (void)updateObjectEmbedding2d:(id)a3
+- (void)updateObjectEmbedding2d:(id)embedding2d
 {
-  v4 = a3;
+  embedding2dCopy = embedding2d;
   if (![(NSArray *)self->embedding2d count])
   {
     v8 = objc_opt_new();
-    v20 = [v4 mutableCopy];
+    v20 = [embedding2dCopy mutableCopy];
     [v8 addObject:v20];
 
     v21 = [v8 copy];
@@ -774,19 +774,19 @@ LABEL_14:
 
   v5 = [(NSArray *)self->embedding2d objectAtIndexedSubscript:0];
   v6 = [v5 count];
-  v7 = [v4 count];
+  v7 = [embedding2dCopy count];
 
   if (v6 == v7)
   {
     v8 = [(NSArray *)self->embedding2d mutableCopy];
-    for (i = 0; [v4 count] > i; ++i)
+    for (i = 0; [embedding2dCopy count] > i; ++i)
     {
       v10 = [v8 objectAtIndexedSubscript:0];
       v11 = [v10 objectAtIndex:i];
       [v11 floatValue];
       v13 = v12;
 
-      v14 = [v4 objectAtIndex:i];
+      v14 = [embedding2dCopy objectAtIndex:i];
       [v14 floatValue];
       v16 = v15;
 
@@ -818,10 +818,10 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)updateObjectEmbedding3d:(id)a3
+- (void)updateObjectEmbedding3d:(id)embedding3d
 {
-  v4 = a3;
-  if (-[NSArray count](self->embedding3d, "count") && (v5 = -[NSArray count](self->embedding3d, "count"), v5 != [v4 count]))
+  embedding3dCopy = embedding3d;
+  if (-[NSArray count](self->embedding3d, "count") && (v5 = -[NSArray count](self->embedding3d, "count"), v5 != [embedding3dCopy count]))
   {
     v8 = _OULoggingGetOSLogForCategoryObjectUnderstanding();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -832,7 +832,7 @@ LABEL_15:
 
   else
   {
-    v6 = [v4 mutableCopy];
+    v6 = [embedding3dCopy mutableCopy];
     embedding3d = self->embedding3d;
     self->embedding3d = v6;
   }
@@ -847,8 +847,8 @@ LABEL_15:
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v3 = [(NSMutableArray *)self->_refined_box_history reverseObjectEnumerator];
-    v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    reverseObjectEnumerator = [(NSMutableArray *)self->_refined_box_history reverseObjectEnumerator];
+    v4 = [reverseObjectEnumerator countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v4)
     {
       v5 = *v15;
@@ -858,25 +858,25 @@ LABEL_15:
         {
           if (*v15 != v5)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           v7 = *(*(&v14 + 1) + 8 * i);
-          v8 = [v7 refinedBox];
-          if (v8)
+          refinedBox = [v7 refinedBox];
+          if (refinedBox)
           {
-            v9 = [v7 refinedBox];
-            v10 = [v9 count] == 8;
+            refinedBox2 = [v7 refinedBox];
+            v10 = [refinedBox2 count] == 8;
 
             if (v10)
             {
-              v11 = [v7 frameIndex];
+              frameIndex = [v7 frameIndex];
               goto LABEL_14;
             }
           }
         }
 
-        v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v4 = [reverseObjectEnumerator countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v4)
         {
           continue;
@@ -886,36 +886,36 @@ LABEL_15:
       }
     }
 
-    v11 = -1;
+    frameIndex = -1;
 LABEL_14:
   }
 
   else
   {
-    v11 = -1;
+    frameIndex = -1;
   }
 
   v12 = *MEMORY[0x277D85DE8];
-  return v11;
+  return frameIndex;
 }
 
-- (void)removeBoxesDict:(id)a3
+- (void)removeBoxesDict:(id)dict
 {
-  v5 = a3;
+  dictCopy = dict;
   v4 = [(NSMutableDictionary *)self->_boxesDict objectForKey:?];
 
   if (v4)
   {
-    [(NSMutableDictionary *)self->_boxesDict removeObjectForKey:v5];
+    [(NSMutableDictionary *)self->_boxesDict removeObjectForKey:dictCopy];
   }
 }
 
-- (void)clearGroupInfo:(id)a3
+- (void)clearGroupInfo:(id)info
 {
-  v4 = a3;
-  if (isValidGroupType(v4))
+  infoCopy = info;
+  if (isValidGroupType(infoCopy))
   {
-    [(NSMutableDictionary *)self->_groups setObject:0 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_groups setObject:0 forKeyedSubscript:infoCopy];
   }
 }
 

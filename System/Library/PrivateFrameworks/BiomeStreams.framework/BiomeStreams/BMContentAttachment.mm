@@ -1,28 +1,28 @@
 @interface BMContentAttachment
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BMContentAttachment)initWithCoder:(id)a3;
-- (BMContentAttachment)initWithProto:(id)a3;
-- (BMContentAttachment)initWithProtoData:(id)a3;
-- (BMContentAttachment)initWithType:(id)a3 filename:(id)a4 path:(id)a5;
-- (BOOL)isCompleteWithContext:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BMContentAttachment)initWithCoder:(id)coder;
+- (BMContentAttachment)initWithProto:(id)proto;
+- (BMContentAttachment)initWithProtoData:(id)data;
+- (BMContentAttachment)initWithType:(id)type filename:(id)filename path:(id)path;
+- (BOOL)isCompleteWithContext:(id)context error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (id)encodeAsProto;
 - (id)json;
 - (id)jsonDict;
 - (id)proto;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BMContentAttachment
 
-- (BMContentAttachment)initWithType:(id)a3 filename:(id)a4 path:(id)a5
+- (BMContentAttachment)initWithType:(id)type filename:(id)filename path:(id)path
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v10)
+  typeCopy = type;
+  filenameCopy = filename;
+  pathCopy = path;
+  if (typeCopy)
   {
-    if (v11)
+    if (filenameCopy)
     {
       goto LABEL_3;
     }
@@ -31,7 +31,7 @@
   else
   {
     [BMContentAttachment initWithType:a2 filename:self path:?];
-    if (v11)
+    if (filenameCopy)
     {
       goto LABEL_3;
     }
@@ -45,20 +45,20 @@ LABEL_3:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_type, a3);
-    objc_storeStrong(&v14->_filename, a4);
-    objc_storeStrong(&v14->_path, a5);
+    objc_storeStrong(&v13->_type, type);
+    objc_storeStrong(&v14->_filename, filename);
+    objc_storeStrong(&v14->_path, path);
   }
 
   return v14;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v6 = a3;
-  if (a4 == 1)
+  dataCopy = data;
+  if (version == 1)
   {
-    v7 = [[a1 alloc] initWithProtoData:v6];
+    v7 = [[self alloc] initWithProtoData:dataCopy];
   }
 
   else
@@ -66,7 +66,7 @@ LABEL_3:
     v8 = __biome_log_for_category();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [BMContentAttachment eventWithData:a4 dataVersion:v8];
+      [BMContentAttachment eventWithData:version dataVersion:v8];
     }
 
     v7 = 0;
@@ -85,13 +85,13 @@ LABEL_3:
   v9[1] = filename;
   v8[2] = @"path";
   path = self->_path;
-  v4 = path;
+  null = path;
   if (!path)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v9[2] = v4;
+  v9[2] = null;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:v8 count:3];
   if (!path)
   {
@@ -105,9 +105,9 @@ LABEL_3:
 - (id)json
 {
   v2 = MEMORY[0x1E696ACB0];
-  v3 = [(BMContentAttachment *)self jsonDict];
+  jsonDict = [(BMContentAttachment *)self jsonDict];
   v8 = 0;
-  v4 = [v2 dataWithJSONObject:v3 options:1 error:&v8];
+  v4 = [v2 dataWithJSONObject:jsonDict options:1 error:&v8];
   v5 = v8;
 
   if (!v4)
@@ -122,58 +122,58 @@ LABEL_3:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(BMContentAttachment *)self encodeAsProto];
-  [v4 encodeObject:v5 forKey:@"dat"];
+  coderCopy = coder;
+  encodeAsProto = [(BMContentAttachment *)self encodeAsProto];
+  [coderCopy encodeObject:encodeAsProto forKey:@"dat"];
 }
 
-- (BMContentAttachment)initWithCoder:(id)a3
+- (BMContentAttachment)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E69C5D78];
-  v5 = a3;
-  v6 = [v4 robustDecodeObjectOfClass:objc_opt_class() forKey:@"dat" withCoder:v5 expectNonNull:1 errorDomain:@"BMStreamErrorDomain" errorCode:2 logHandle:0];
+  coderCopy = coder;
+  v6 = [v4 robustDecodeObjectOfClass:objc_opt_class() forKey:@"dat" withCoder:coderCopy expectNonNull:1 errorDomain:@"BMStreamErrorDomain" errorCode:2 logHandle:0];
 
   if (v6)
   {
     self = [(BMContentAttachment *)self initWithProtoData:v6];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (id)encodeAsProto
 {
-  v2 = [(BMContentAttachment *)self proto];
-  v3 = [v2 data];
+  proto = [(BMContentAttachment *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (BMContentAttachment)initWithProto:(id)a3
+- (BMContentAttachment)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (v4)
+  protoCopy = proto;
+  if (protoCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = protoCopy;
       if ([v5 hasType]&& ([v5 hasFilename]& 1) != 0)
       {
-        v6 = [v5 type];
-        v7 = [v5 filename];
-        v8 = [v5 path];
-        self = [(BMContentAttachment *)self initWithType:v6 filename:v7 path:v8];
+        type = [v5 type];
+        filename = [v5 filename];
+        path = [v5 path];
+        self = [(BMContentAttachment *)self initWithType:type filename:filename path:path];
 
-        v9 = self;
+        selfCopy = self;
 LABEL_13:
 
         goto LABEL_14;
@@ -195,60 +195,60 @@ LABEL_13:
       }
     }
 
-    v9 = 0;
+    selfCopy = 0;
     goto LABEL_13;
   }
 
-  v9 = 0;
+  selfCopy = 0;
 LABEL_14:
 
-  return v9;
+  return selfCopy;
 }
 
-- (BMContentAttachment)initWithProtoData:(id)a3
+- (BMContentAttachment)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[BMPBContentAttachment alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[BMPBContentAttachment alloc] initWithData:dataCopy];
 
     self = [(BMContentAttachment *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
 {
   v3 = objc_opt_new();
-  v4 = [(BMContentAttachment *)self type];
-  [v3 setType:v4];
+  type = [(BMContentAttachment *)self type];
+  [v3 setType:type];
 
-  v5 = [(BMContentAttachment *)self filename];
-  [v3 setFilename:v5];
+  filename = [(BMContentAttachment *)self filename];
+  [v3 setFilename:filename];
 
-  v6 = [(BMContentAttachment *)self path];
-  [v3 setPath:v6];
+  path = [(BMContentAttachment *)self path];
+  [v3 setPath:path];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     type = self->_type;
-    v7 = [v5 type];
-    if (![(NSString *)type isEqualToString:v7])
+    type = [v5 type];
+    if (![(NSString *)type isEqualToString:type])
     {
       v13 = 0;
 LABEL_15:
@@ -257,8 +257,8 @@ LABEL_15:
     }
 
     filename = self->_filename;
-    v9 = [v5 filename];
-    if ([filename isEqualToString:v9])
+    filename = [v5 filename];
+    if ([filename isEqualToString:filename])
     {
       path = self->_path;
       v11 = path;
@@ -276,8 +276,8 @@ LABEL_13:
         v11 = self->_path;
       }
 
-      v12 = [v5 path];
-      v13 = [(NSString *)v11 isEqualToString:v12];
+      path = [v5 path];
+      v13 = [(NSString *)v11 isEqualToString:path];
 
       if (!path)
       {
@@ -301,18 +301,18 @@ LABEL_16:
   return v13;
 }
 
-- (BOOL)isCompleteWithContext:(id)a3 error:(id *)a4
+- (BOOL)isCompleteWithContext:(id)context error:(id *)error
 {
-  v6 = a3;
+  contextCopy = context;
   if (self->_type && self->_filename)
   {
     v7 = 1;
   }
 
-  else if (a4)
+  else if (error)
   {
     [MEMORY[0x1E696ABC0] errorWithDomain:@"BMStreamErrorDomain" code:3 userInfo:0];
-    *a4 = v7 = 0;
+    *error = v7 = 0;
   }
 
   else

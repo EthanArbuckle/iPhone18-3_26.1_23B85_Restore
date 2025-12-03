@@ -12,7 +12,7 @@
   __chkstk_darwin();
   v7 = &v12 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_100008A68();
-  v8 = self;
+  selfCopy = self;
   sub_1000089F8();
   v14 = &OBJC_PROTOCOL___PREditingDelegate;
   v9 = swift_dynamicCastObjCProtocolConditional();
@@ -27,7 +27,7 @@
 
   (*(v4 + 8))(v7, v3);
   v11 = type metadata accessor for ClockPosterExtensionController();
-  v13.receiver = v8;
+  v13.receiver = selfCopy;
   v13.super_class = v11;
   [(ClockPosterExtensionController *)&v13 dealloc];
 }

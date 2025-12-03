@@ -1,26 +1,26 @@
 @interface HROnboardingElectrocardiogramExplanationViewController
 - (id)buttonTitleString;
 - (id)createHeroView;
-- (id)initForOnboarding:(BOOL)a3 upgradingFromAlgorithmVersion:(int64_t)a4;
+- (id)initForOnboarding:(BOOL)onboarding upgradingFromAlgorithmVersion:(int64_t)version;
 - (void)setUpUI;
 - (void)viewControllerDidLeaveAdaptiveModal;
 - (void)viewControllerWillEnterAdaptiveModal;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation HROnboardingElectrocardiogramExplanationViewController
 
-- (id)initForOnboarding:(BOOL)a3 upgradingFromAlgorithmVersion:(int64_t)a4
+- (id)initForOnboarding:(BOOL)onboarding upgradingFromAlgorithmVersion:(int64_t)version
 {
-  v4 = a3;
+  onboardingCopy = onboarding;
   v9.receiver = self;
   v9.super_class = HROnboardingElectrocardiogramExplanationViewController;
-  v5 = [(HROnboardingElectrocardiogramExplanationViewController *)&v9 initForOnboarding:a3 upgradingFromAlgorithmVersion:a4];
+  v5 = [(HROnboardingElectrocardiogramExplanationViewController *)&v9 initForOnboarding:onboarding upgradingFromAlgorithmVersion:version];
   v6 = v5;
   if (v5)
   {
-    v7 = !v4;
+    v7 = !onboardingCopy;
   }
 
   else
@@ -36,25 +36,25 @@
   return v6;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = HROnboardingElectrocardiogramExplanationViewController;
-  [(HROnboardingElectrocardiogramExplanationViewController *)&v6 viewWillAppear:a3];
-  v4 = [MEMORY[0x277CB83F8] sharedInstance];
-  [v4 setCategory:*MEMORY[0x277CB8020] error:0];
+  [(HROnboardingElectrocardiogramExplanationViewController *)&v6 viewWillAppear:appear];
+  mEMORY[0x277CB83F8] = [MEMORY[0x277CB83F8] sharedInstance];
+  [mEMORY[0x277CB83F8] setCategory:*MEMORY[0x277CB8020] error:0];
 
-  v5 = [(HROnboardingElectrocardiogramExplanationViewController *)self animatedWatchRhythmVideoView];
-  [v5 play];
+  animatedWatchRhythmVideoView = [(HROnboardingElectrocardiogramExplanationViewController *)self animatedWatchRhythmVideoView];
+  [animatedWatchRhythmVideoView play];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = HROnboardingElectrocardiogramExplanationViewController;
-  [(HROnboardingElectrocardiogramExplanationViewController *)&v5 viewDidDisappear:a3];
-  v4 = [(HROnboardingElectrocardiogramExplanationViewController *)self animatedWatchRhythmVideoView];
-  [v4 pause];
+  [(HROnboardingElectrocardiogramExplanationViewController *)&v5 viewDidDisappear:disappear];
+  animatedWatchRhythmVideoView = [(HROnboardingElectrocardiogramExplanationViewController *)self animatedWatchRhythmVideoView];
+  [animatedWatchRhythmVideoView pause];
 }
 
 - (void)setUpUI
@@ -71,14 +71,14 @@
   if (!animatedWatchRhythmVideoView)
   {
     v4 = MEMORY[0x277CBEBC0];
-    v5 = [MEMORY[0x277CCACA8] hrui_explanationVideoPath];
-    v6 = [v4 fileURLWithPath:v5];
+    hrui_explanationVideoPath = [MEMORY[0x277CCACA8] hrui_explanationVideoPath];
+    v6 = [v4 fileURLWithPath:hrui_explanationVideoPath];
 
     v7 = [HRVideoPlayerView playerViewWithURL:v6 looping:1];
     [(HROnboardingElectrocardiogramExplanationViewController *)self setAnimatedWatchRhythmVideoView:v7];
 
-    v8 = [(HROnboardingElectrocardiogramExplanationViewController *)self animatedWatchRhythmVideoView];
-    [v8 hrui_maskAllCornersWithRadius:*MEMORY[0x277D12798]];
+    animatedWatchRhythmVideoView = [(HROnboardingElectrocardiogramExplanationViewController *)self animatedWatchRhythmVideoView];
+    [animatedWatchRhythmVideoView hrui_maskAllCornersWithRadius:*MEMORY[0x277D12798]];
 
     animatedWatchRhythmVideoView = self->_animatedWatchRhythmVideoView;
   }
@@ -107,8 +107,8 @@
   v5 = [v4 actionWithHandler:&v8];
   v6 = [v3 initWithBarButtonSystemItem:0 primaryAction:{v5, v8, v9, v10, v11}];
 
-  v7 = [(HROnboardingElectrocardiogramExplanationViewController *)self navigationItem];
-  [v7 setLeftBarButtonItem:v6];
+  navigationItem = [(HROnboardingElectrocardiogramExplanationViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v6];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -122,8 +122,8 @@ void __94__HROnboardingElectrocardiogramExplanationViewController_viewController
 
 - (void)viewControllerDidLeaveAdaptiveModal
 {
-  v2 = [(HROnboardingElectrocardiogramExplanationViewController *)self navigationItem];
-  [v2 setLeftBarButtonItem:0];
+  navigationItem = [(HROnboardingElectrocardiogramExplanationViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:0];
 }
 
 @end

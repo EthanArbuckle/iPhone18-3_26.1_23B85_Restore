@@ -1,23 +1,23 @@
 @interface PUPhotoEditTaskManager
 + (id)sharedManager;
 - (PUPhotoEditTaskManager)init;
-- (void)createEditableCopyForReadOnlyPhoto:(id)a3 completionHandler:(id)a4;
+- (void)createEditableCopyForReadOnlyPhoto:(id)photo completionHandler:(id)handler;
 @end
 
 @implementation PUPhotoEditTaskManager
 
-- (void)createEditableCopyForReadOnlyPhoto:(id)a3 completionHandler:(id)a4
+- (void)createEditableCopyForReadOnlyPhoto:(id)photo completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  photoCopy = photo;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PUPhotoEditTaskManager.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUPhotoEditTaskManager.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
   }
 
-  v9 = [v7 pl_managedAsset];
-  v10 = [v9 mainFileURL];
+  pl_managedAsset = [photoCopy pl_managedAsset];
+  mainFileURL = [pl_managedAsset mainFileURL];
 
   v23[0] = 0;
   v23[1] = v23;
@@ -25,12 +25,12 @@
   v23[3] = __Block_byref_object_copy__56684;
   v23[4] = __Block_byref_object_dispose__56685;
   v24 = 0;
-  v11 = [v7 photoLibrary];
+  photoLibrary = [photoCopy photoLibrary];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __79__PUPhotoEditTaskManager_createEditableCopyForReadOnlyPhoto_completionHandler___block_invoke;
   v20[3] = &unk_1E7B800C8;
-  v12 = v10;
+  v12 = mainFileURL;
   v21 = v12;
   v22 = v23;
   v16[0] = MEMORY[0x1E69E9820];
@@ -38,9 +38,9 @@
   v16[2] = __79__PUPhotoEditTaskManager_createEditableCopyForReadOnlyPhoto_completionHandler___block_invoke_2;
   v16[3] = &unk_1E7B7ADC8;
   v19 = v23;
-  v13 = v11;
+  v13 = photoLibrary;
   v17 = v13;
-  v14 = v8;
+  v14 = handlerCopy;
   v18 = v14;
   [v13 performChanges:v20 completionHandler:v16];
 

@@ -1,25 +1,25 @@
 @interface PUImageTileViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_axImageView;
 - (id)_axMainImageView;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axApplyAssetToView;
-- (void)_axApplyCustomAction:(id)a3;
+- (void)_axApplyCustomAction:(id)action;
 - (void)assetDidChange;
 - (void)dealloc;
 @end
 
 @implementation PUImageTileViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PHLivePhotoView"];
-  [v3 validateClass:@"PUIrisImageTileViewController"];
-  [v3 validateClass:@"PUImageTileViewController" hasInstanceMethod:@"assetDidChange" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PUImageTileViewController" hasInstanceMethod:@"asset" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUImageTileViewController" hasInstanceMethod:@"_imageView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUIrisImageTileViewController" hasInstanceMethod:@"_livePhotoView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PHLivePhotoView"];
+  [validationsCopy validateClass:@"PUIrisImageTileViewController"];
+  [validationsCopy validateClass:@"PUImageTileViewController" hasInstanceMethod:@"assetDidChange" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PUImageTileViewController" hasInstanceMethod:@"asset" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUImageTileViewController" hasInstanceMethod:@"_imageView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUIrisImageTileViewController" hasInstanceMethod:@"_livePhotoView" withFullSignature:{"@", 0}];
 }
 
 - (void)dealloc
@@ -53,8 +53,8 @@
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = [v4 subviews];
-    v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    subviews = [v4 subviews];
+    v6 = [subviews countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
       v7 = v6;
@@ -65,7 +65,7 @@
         {
           if (*v14 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(subviews);
           }
 
           v10 = *(*(&v13 + 1) + 8 * i);
@@ -85,7 +85,7 @@
           goto LABEL_13;
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v7 = [subviews countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v7)
         {
           continue;
@@ -145,13 +145,13 @@ LABEL_13:
   return v3;
 }
 
-- (void)_axApplyCustomAction:(id)a3
+- (void)_axApplyCustomAction:(id)action
 {
   v22 = *MEMORY[0x29EDCA608];
-  v4 = a3;
-  v5 = [(PUImageTileViewControllerAccessibility *)self _axMainImageView];
-  v6 = [v5 accessibilityCustomActions];
-  v7 = [v6 mutableCopy];
+  actionCopy = action;
+  _axMainImageView = [(PUImageTileViewControllerAccessibility *)self _axMainImageView];
+  accessibilityCustomActions = [_axMainImageView accessibilityCustomActions];
+  v7 = [accessibilityCustomActions mutableCopy];
 
   if (!v7)
   {
@@ -178,9 +178,9 @@ LABEL_13:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v17 + 1) + 8 * v12) name];
-        v14 = [v4 name];
-        v15 = [v13 isEqualToString:v14];
+        name = [*(*(&v17 + 1) + 8 * v12) name];
+        name2 = [actionCopy name];
+        v15 = [name isEqualToString:name2];
 
         if (v15)
         {
@@ -202,8 +202,8 @@ LABEL_13:
     }
   }
 
-  [v8 addObject:v4];
-  [v5 setAccessibilityCustomActions:v8];
+  [v8 addObject:actionCopy];
+  [_axMainImageView setAccessibilityCustomActions:v8];
 LABEL_13:
 
   v16 = *MEMORY[0x29EDCA608];

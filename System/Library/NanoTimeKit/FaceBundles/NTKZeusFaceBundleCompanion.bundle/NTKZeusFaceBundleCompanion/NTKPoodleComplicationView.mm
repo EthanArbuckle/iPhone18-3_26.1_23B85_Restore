@@ -1,13 +1,13 @@
 @interface NTKPoodleComplicationView
-+ (id)viewForComplicationType:(unint64_t)a3;
++ (id)viewForComplicationType:(unint64_t)type;
 @end
 
 @implementation NTKPoodleComplicationView
 
-+ (id)viewForComplicationType:(unint64_t)a3
++ (id)viewForComplicationType:(unint64_t)type
 {
   v4 = objc_alloc_init(NTKPoodleComplicationBackgroundView);
-  if (a3 <= 5 && ((0x33u >> a3) & 1) != 0)
+  if (type <= 5 && ((0x33u >> type) & 1) != 0)
   {
     v5 = objc_opt_class();
   }

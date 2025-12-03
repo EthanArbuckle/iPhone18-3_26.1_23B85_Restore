@@ -1,29 +1,29 @@
 @interface NLSessionActivityPedometerCadenceAccumulator
-- (NLSessionActivityPedometerCadenceAccumulator)initWithBuilder:(id)a3;
-- (void)startAccumulatingWithStartDate:(id)a3 updateHandler:(id)a4;
-- (void)updateWithStatistics:(id)a3 duration:(double)a4;
+- (NLSessionActivityPedometerCadenceAccumulator)initWithBuilder:(id)builder;
+- (void)startAccumulatingWithStartDate:(id)date updateHandler:(id)handler;
+- (void)updateWithStatistics:(id)statistics duration:(double)duration;
 @end
 
 @implementation NLSessionActivityPedometerCadenceAccumulator
 
-- (NLSessionActivityPedometerCadenceAccumulator)initWithBuilder:(id)a3
+- (NLSessionActivityPedometerCadenceAccumulator)initWithBuilder:(id)builder
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v8;
-  v8 = 0;
+  objc_storeStrong(location, builder);
+  v3 = selfCopy;
+  selfCopy = 0;
   v6.receiver = v3;
   v6.super_class = NLSessionActivityPedometerCadenceAccumulator;
-  v8 = [(NLSessionActivityBuilderAccumulator *)&v6 initWithBuilder:location[0]];
-  objc_storeStrong(&v8, v8);
-  if (v8)
+  selfCopy = [(NLSessionActivityBuilderAccumulator *)&v6 initWithBuilder:location[0]];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
     objc_opt_class();
     v4 = (objc_opt_isKindOfClass() & 1) == 0;
-    *(v8 + 40) = v4;
-    v9 = MEMORY[0x277D82BE0](v8);
+    *(selfCopy + 40) = v4;
+    v9 = MEMORY[0x277D82BE0](selfCopy);
   }
 
   else
@@ -32,23 +32,23 @@
   }
 
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v8, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v9;
 }
 
-- (void)startAccumulatingWithStartDate:(id)a3 updateHandler:(id)a4
+- (void)startAccumulatingWithStartDate:(id)date updateHandler:(id)handler
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, date);
   v18 = 0;
-  objc_storeStrong(&v18, a4);
-  v17.receiver = v20;
+  objc_storeStrong(&v18, handler);
+  v17.receiver = selfCopy;
   v17.super_class = NLSessionActivityPedometerCadenceAccumulator;
   [(NLSessionActivityDataAccumulator *)&v17 startAccumulatingWithStartDate:location[0] updateHandler:v18];
-  objc_initWeak(&from, v20);
-  if (v20->_isTesting)
+  objc_initWeak(&from, selfCopy);
+  if (selfCopy->_isTesting)
   {
     v15 = 1;
   }
@@ -56,10 +56,10 @@
   else
   {
     v7 = objc_alloc_init(MEMORY[0x277CC1D18]);
-    pedometer = v20->_pedometer;
-    v20->_pedometer = v7;
+    pedometer = selfCopy->_pedometer;
+    selfCopy->_pedometer = v7;
     MEMORY[0x277D82BD8](pedometer);
-    v5 = v20->_pedometer;
+    v5 = selfCopy->_pedometer;
     v6 = location[0];
     v9 = MEMORY[0x277D85DD0];
     v10 = -1073741824;
@@ -143,29 +143,29 @@ double __93__NLSessionActivityPedometerCadenceAccumulator_startAccumulatingWithS
   return result;
 }
 
-- (void)updateWithStatistics:(id)a3 duration:(double)a4
+- (void)updateWithStatistics:(id)statistics duration:(double)duration
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v7 = [location[0] sumQuantity];
-  v6 = [MEMORY[0x277CCDAB0] countUnit];
-  [v7 doubleValueForUnit:?];
+  objc_storeStrong(location, statistics);
+  sumQuantity = [location[0] sumQuantity];
+  countUnit = [MEMORY[0x277CCDAB0] countUnit];
+  [sumQuantity doubleValueForUnit:?];
   v8 = v4;
-  MEMORY[0x277D82BD8](v6);
-  MEMORY[0x277D82BD8](v7);
-  if (a4 == 0.0)
+  MEMORY[0x277D82BD8](countUnit);
+  MEMORY[0x277D82BD8](sumQuantity);
+  if (duration == 0.0)
   {
-    v10->_averageCadence = 0.0;
+    selfCopy->_averageCadence = 0.0;
   }
 
   else
   {
-    v10->_averageCadence = v8 / a4 * 60.0;
+    selfCopy->_averageCadence = v8 / duration * 60.0;
   }
 
-  [(NLSessionActivityBuilderAccumulator *)v10 update];
+  [(NLSessionActivityBuilderAccumulator *)selfCopy update];
   objc_storeStrong(location, 0);
 }
 

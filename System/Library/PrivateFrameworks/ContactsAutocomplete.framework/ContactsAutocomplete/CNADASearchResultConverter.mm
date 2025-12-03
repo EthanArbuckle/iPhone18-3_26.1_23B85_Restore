@@ -1,83 +1,83 @@
 @interface CNADASearchResultConverter
-+ (id)autocompleteResultsForDASearchResultElement:(id)a3 request:(id)a4 factory:(id)a5;
-+ (id)resultTransformForRequest:(id)a3 factory:(id)a4;
-- (CNADASearchResultConverter)initWithFactory:(id)a3;
-- (void)addEmailAddress:(id)a3;
-- (void)addPhoneNumber:(id)a3;
++ (id)autocompleteResultsForDASearchResultElement:(id)element request:(id)request factory:(id)factory;
++ (id)resultTransformForRequest:(id)request factory:(id)factory;
+- (CNADASearchResultConverter)initWithFactory:(id)factory;
+- (void)addEmailAddress:(id)address;
+- (void)addPhoneNumber:(id)number;
 @end
 
 @implementation CNADASearchResultConverter
 
-+ (id)autocompleteResultsForDASearchResultElement:(id)a3 request:(id)a4 factory:(id)a5
++ (id)autocompleteResultsForDASearchResultElement:(id)element request:(id)request factory:(id)factory
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [[a1 alloc] initWithFactory:v10];
+  elementCopy = element;
+  requestCopy = request;
+  factoryCopy = factory;
+  v11 = [[self alloc] initWithFactory:factoryCopy];
 
-  v12 = [a1 displayNameForElement:v8];
+  v12 = [self displayNameForElement:elementCopy];
   [v11 setDisplayName:v12];
 
-  v13 = [a1 nameComponentsForElement:v8];
+  v13 = [self nameComponentsForElement:elementCopy];
   [v11 setNameComponents:v13];
 
-  if ([a1 shouldIncludeEmailAddressesForRequest:v9])
+  if ([self shouldIncludeEmailAddressesForRequest:requestCopy])
   {
-    v14 = [v8 emailAddress];
-    [v11 addEmailAddress:v14];
+    emailAddress = [elementCopy emailAddress];
+    [v11 addEmailAddress:emailAddress];
   }
 
-  if ([a1 shouldIncludePhoneNumbersForRequest:v9])
+  if ([self shouldIncludePhoneNumbersForRequest:requestCopy])
   {
-    v15 = [v8 homePhone];
-    [v11 addPhoneNumber:v15];
+    homePhone = [elementCopy homePhone];
+    [v11 addPhoneNumber:homePhone];
 
-    v16 = [v8 workPhone];
-    [v11 addPhoneNumber:v16];
+    workPhone = [elementCopy workPhone];
+    [v11 addPhoneNumber:workPhone];
 
-    v17 = [v8 mobilePhone];
-    [v11 addPhoneNumber:v17];
+    mobilePhone = [elementCopy mobilePhone];
+    [v11 addPhoneNumber:mobilePhone];
 
-    v18 = [v8 iPhone];
-    [v11 addPhoneNumber:v18];
+    iPhone = [elementCopy iPhone];
+    [v11 addPhoneNumber:iPhone];
 
-    v19 = [v8 mainPhone];
-    [v11 addPhoneNumber:v19];
+    mainPhone = [elementCopy mainPhone];
+    [v11 addPhoneNumber:mainPhone];
   }
 
-  v20 = [v11 build];
+  build = [v11 build];
 
-  return v20;
+  return build;
 }
 
-+ (id)resultTransformForRequest:(id)a3 factory:(id)a4
++ (id)resultTransformForRequest:(id)request factory:(id)factory
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  factoryCopy = factory;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __64__CNADASearchResultConverter_resultTransformForRequest_factory___block_invoke;
   aBlock[3] = &unk_2781C4658;
-  v14 = v7;
-  v15 = a1;
-  v13 = v6;
-  v8 = v7;
-  v9 = v6;
+  v14 = factoryCopy;
+  selfCopy = self;
+  v13 = requestCopy;
+  v8 = factoryCopy;
+  v9 = requestCopy;
   v10 = _Block_copy(aBlock);
 
   return v10;
 }
 
-- (CNADASearchResultConverter)initWithFactory:(id)a3
+- (CNADASearchResultConverter)initWithFactory:(id)factory
 {
-  v5 = a3;
+  factoryCopy = factory;
   v12.receiver = self;
   v12.super_class = CNADASearchResultConverter;
   v6 = [(CNADASearchResultConverter *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_factory, a3);
+    objc_storeStrong(&v6->_factory, factory);
     v8 = objc_opt_new();
     results = v7->_results;
     v7->_results = v8;
@@ -88,26 +88,26 @@
   return v7;
 }
 
-- (void)addEmailAddress:(id)a3
+- (void)addEmailAddress:(id)address
 {
-  v6 = a3;
+  addressCopy = address;
   if (((*(*MEMORY[0x277CFBD30] + 16))() & 1) == 0)
   {
     v4 = objc_alloc_init(CNAutocompleteResultValue);
-    [(CNAutocompleteResultValue *)v4 setAddress:v6];
+    [(CNAutocompleteResultValue *)v4 setAddress:addressCopy];
     [(CNAutocompleteResultValue *)v4 setAddressType:1];
     v5 = [(CNAutocompleteResultFactory *)self->_factory directoryServerResultWithDisplayName:self->_displayName value:v4 nameComponents:self->_nameComponents];
     [(NSMutableArray *)self->_results addObject:v5];
   }
 }
 
-- (void)addPhoneNumber:(id)a3
+- (void)addPhoneNumber:(id)number
 {
-  v6 = a3;
+  numberCopy = number;
   if (((*(*MEMORY[0x277CFBD30] + 16))() & 1) == 0)
   {
     v4 = objc_alloc_init(CNAutocompleteResultValue);
-    [(CNAutocompleteResultValue *)v4 setAddress:v6];
+    [(CNAutocompleteResultValue *)v4 setAddress:numberCopy];
     [(CNAutocompleteResultValue *)v4 setAddressType:2];
     v5 = [(CNAutocompleteResultFactory *)self->_factory directoryServerResultWithDisplayName:self->_displayName value:v4 nameComponents:self->_nameComponents];
     [(NSMutableArray *)self->_results addObject:v5];

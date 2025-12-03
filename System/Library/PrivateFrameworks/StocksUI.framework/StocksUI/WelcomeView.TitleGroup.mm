@@ -1,12 +1,12 @@
 @interface WelcomeView.TitleGroup
 - (CGRect)accessibilityFrame;
 - (NSString)accessibilityLabel;
-- (_TtCC8StocksUI11WelcomeView10TitleGroup)initWithCoder:(id)a3;
+- (_TtCC8StocksUI11WelcomeView10TitleGroup)initWithCoder:(id)coder;
 @end
 
 @implementation WelcomeView.TitleGroup
 
-- (_TtCC8StocksUI11WelcomeView10TitleGroup)initWithCoder:(id)a3
+- (_TtCC8StocksUI11WelcomeView10TitleGroup)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtCC8StocksUI11WelcomeView10TitleGroup_appIcon;
   *(&self->super.super.super.isa + v4) = [objc_allocWithZone(MEMORY[0x277D755E8]) initWithFrame_];
@@ -30,11 +30,11 @@
 - (NSString)accessibilityLabel
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtCC8StocksUI11WelcomeView10TitleGroup_welcomeLabel);
-  v3 = self;
-  v4 = [v2 text];
-  if (v4)
+  selfCopy = self;
+  text = [v2 text];
+  if (text)
   {
-    v5 = v4;
+    v5 = text;
     sub_22089136C();
 
     v6 = sub_22089132C();

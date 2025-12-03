@@ -1,35 +1,35 @@
 @interface BSUIElementReadingGoalsGauge
-+ (void)configureBox:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6;
-+ (void)configureObject:(id)a3 withBuilder:(id)a4 context:(id)a5;
++ (void)configureBox:(id)box withNode:(id)node attributes:(id)attributes context:(id)context;
++ (void)configureObject:(id)object withBuilder:(id)builder context:(id)context;
 @end
 
 @implementation BSUIElementReadingGoalsGauge
 
-+ (void)configureObject:(id)a3 withBuilder:(id)a4 context:(id)a5
++ (void)configureObject:(id)object withBuilder:(id)builder context:(id)context
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  contextCopy = context;
+  builderCopy = builder;
+  objectCopy = object;
   v10 = [TUIConfiguration alloc];
-  v11 = [v8 finalizeWidgetWithParent:0];
+  v11 = [builderCopy finalizeWidgetWithParent:0];
 
   v12 = [v10 initWithData:v11];
-  [v9 setConfiguration:v12];
+  [objectCopy setConfiguration:v12];
 
-  v14 = [v9 readingGoalsGaugeMetrics];
-  v13 = [v9 configuration];
+  readingGoalsGaugeMetrics = [objectCopy readingGoalsGaugeMetrics];
+  configuration = [objectCopy configuration];
 
-  [v14 updateWithConfiguration:v13 context:v7];
+  [readingGoalsGaugeMetrics updateWithConfiguration:configuration context:contextCopy];
 }
 
-+ (void)configureBox:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6
++ (void)configureBox:(id)box withNode:(id)node attributes:(id)attributes context:(id)context
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a3;
-  v12 = [[BSUIReadingGoalsGaugeMetrics alloc] initWithNode:a4.var0 attributes:v10 context:v9];
+  contextCopy = context;
+  attributesCopy = attributes;
+  boxCopy = box;
+  v12 = [[BSUIReadingGoalsGaugeMetrics alloc] initWithNode:node.var0 attributes:attributesCopy context:contextCopy];
 
-  [v11 setReadingGoalsGaugeMetrics:v12];
+  [boxCopy setReadingGoalsGaugeMetrics:v12];
 }
 
 @end

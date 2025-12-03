@@ -1,36 +1,36 @@
 @interface HAMenstrualAlgorithmsHeartRateStatistics
-- (HAMenstrualAlgorithmsHeartRateStatistics)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (HAMenstrualAlgorithmsHeartRateStatistics)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HAMenstrualAlgorithmsHeartRateStatistics
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
+  coderCopy = coder;
   lowerPercentile = self->_lowerPercentile;
   v5 = NSStringFromSelector(sel_lowerPercentile);
-  [v8 encodeObject:lowerPercentile forKey:v5];
+  [coderCopy encodeObject:lowerPercentile forKey:v5];
 
   sampleCount = self->_sampleCount;
   v7 = NSStringFromSelector(sel_sampleCount);
-  [v8 encodeInteger:sampleCount forKey:v7];
+  [coderCopy encodeInteger:sampleCount forKey:v7];
 }
 
-- (HAMenstrualAlgorithmsHeartRateStatistics)initWithCoder:(id)a3
+- (HAMenstrualAlgorithmsHeartRateStatistics)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(HAMenstrualAlgorithmsHeartRateStatistics *)self init];
   if (v5)
   {
     v6 = objc_opt_class();
     v7 = NSStringFromSelector(sel_lowerPercentile);
-    v8 = [v4 decodeObjectOfClass:v6 forKey:v7];
+    v8 = [coderCopy decodeObjectOfClass:v6 forKey:v7];
     lowerPercentile = v5->_lowerPercentile;
     v5->_lowerPercentile = v8;
 
     v10 = NSStringFromSelector(sel_sampleCount);
-    v5->_sampleCount = [v4 decodeIntegerForKey:v10];
+    v5->_sampleCount = [coderCopy decodeIntegerForKey:v10];
 
     v11 = v5;
   }

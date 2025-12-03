@@ -39,8 +39,8 @@
   [CMIStyleEngineProcessor coefficientPixelBufferSizeForConfiguration:self->_styleEngineConfiguration float16:1];
   v3 = v2;
   v5 = v4;
-  v6 = [NSNumber numberWithUnsignedInt:1278226536, kCVPixelBufferPixelFormatTypeKey];
-  v12[0] = v6;
+  kCVPixelBufferPixelFormatTypeKey = [NSNumber numberWithUnsignedInt:1278226536, kCVPixelBufferPixelFormatTypeKey];
+  v12[0] = kCVPixelBufferPixelFormatTypeKey;
   v11[1] = kCVPixelBufferWidthKey;
   v7 = [NSNumber numberWithDouble:v3];
   v12[1] = v7;

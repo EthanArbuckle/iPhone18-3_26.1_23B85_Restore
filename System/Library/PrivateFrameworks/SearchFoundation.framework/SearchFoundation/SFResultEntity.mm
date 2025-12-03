@@ -1,44 +1,44 @@
 @interface SFResultEntity
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFResultEntity)initWithCoder:(id)a3;
-- (SFResultEntity)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFResultEntity)initWithCoder:(id)coder;
+- (SFResultEntity)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFResultEntity
 
 - (unint64_t)hash
 {
-  v3 = [(SFResultEntity *)self name];
-  v4 = [v3 hash];
-  v5 = [(SFResultEntity *)self maps_encrypted_muid];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(SFResultEntity *)self location_type_info];
-  v8 = [v7 hash];
+  name = [(SFResultEntity *)self name];
+  v4 = [name hash];
+  maps_encrypted_muid = [(SFResultEntity *)self maps_encrypted_muid];
+  v6 = [maps_encrypted_muid hash] ^ v4;
+  location_type_info = [(SFResultEntity *)self location_type_info];
+  v8 = [location_type_info hash];
 
   return v6 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(SFResultEntity *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(SFResultEntity *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v6 = v5;
-      v7 = [(SFResultEntity *)self name];
-      v8 = [(SFResultEntity *)v6 name];
-      if ((v7 != 0) == (v8 == 0))
+      v6 = equalCopy;
+      name = [(SFResultEntity *)self name];
+      name2 = [(SFResultEntity *)v6 name];
+      if ((name != 0) == (name2 == 0))
       {
         v11 = 0;
 LABEL_30:
@@ -46,63 +46,63 @@ LABEL_30:
         goto LABEL_31;
       }
 
-      v9 = [(SFResultEntity *)self name];
-      if (v9)
+      name3 = [(SFResultEntity *)self name];
+      if (name3)
       {
-        v3 = [(SFResultEntity *)self name];
-        v10 = [(SFResultEntity *)v6 name];
-        if (![v3 isEqual:v10])
+        name4 = [(SFResultEntity *)self name];
+        name5 = [(SFResultEntity *)v6 name];
+        if (![name4 isEqual:name5])
         {
           v11 = 0;
           goto LABEL_28;
         }
 
-        v31 = v10;
+        v31 = name5;
       }
 
-      v12 = [(SFResultEntity *)self maps_encrypted_muid];
-      v13 = [(SFResultEntity *)v6 maps_encrypted_muid];
-      v14 = v13;
-      if ((v12 != 0) == (v13 == 0))
+      maps_encrypted_muid = [(SFResultEntity *)self maps_encrypted_muid];
+      maps_encrypted_muid2 = [(SFResultEntity *)v6 maps_encrypted_muid];
+      v14 = maps_encrypted_muid2;
+      if ((maps_encrypted_muid != 0) == (maps_encrypted_muid2 == 0))
       {
 
         v11 = 0;
         goto LABEL_27;
       }
 
-      v15 = [(SFResultEntity *)self maps_encrypted_muid];
-      if (v15)
+      maps_encrypted_muid3 = [(SFResultEntity *)self maps_encrypted_muid];
+      if (maps_encrypted_muid3)
       {
-        v25 = v12;
-        v16 = [(SFResultEntity *)self maps_encrypted_muid];
-        v27 = [(SFResultEntity *)v6 maps_encrypted_muid];
-        v28 = v16;
-        if (![v16 isEqual:?])
+        v25 = maps_encrypted_muid;
+        maps_encrypted_muid4 = [(SFResultEntity *)self maps_encrypted_muid];
+        maps_encrypted_muid5 = [(SFResultEntity *)v6 maps_encrypted_muid];
+        v28 = maps_encrypted_muid4;
+        if (![maps_encrypted_muid4 isEqual:?])
         {
           v11 = 0;
-          v12 = v25;
+          maps_encrypted_muid = v25;
           goto LABEL_25;
         }
 
-        v29 = v15;
-        v30 = v3;
-        v12 = v25;
+        v29 = maps_encrypted_muid3;
+        v30 = name4;
+        maps_encrypted_muid = v25;
       }
 
       else
       {
         v29 = 0;
-        v30 = v3;
+        v30 = name4;
       }
 
-      v17 = [(SFResultEntity *)self location_type_info];
-      v18 = [(SFResultEntity *)v6 location_type_info];
-      if ((v17 != 0) == (v18 == 0))
+      location_type_info = [(SFResultEntity *)self location_type_info];
+      location_type_info2 = [(SFResultEntity *)v6 location_type_info];
+      if ((location_type_info != 0) == (location_type_info2 == 0))
       {
 
         v11 = 0;
-        v15 = v29;
-        v3 = v30;
+        maps_encrypted_muid3 = v29;
+        name4 = v30;
         if (!v29)
         {
           goto LABEL_26;
@@ -111,16 +111,16 @@ LABEL_30:
 
       else
       {
-        v24 = v17;
-        v26 = v18;
-        v19 = [(SFResultEntity *)self location_type_info];
-        v15 = v29;
-        if (v19)
+        v24 = location_type_info;
+        v26 = location_type_info2;
+        location_type_info3 = [(SFResultEntity *)self location_type_info];
+        maps_encrypted_muid3 = v29;
+        if (location_type_info3)
         {
-          v23 = v19;
-          v22 = [(SFResultEntity *)self location_type_info];
-          v20 = [(SFResultEntity *)v6 location_type_info];
-          v11 = [v22 isEqual:?];
+          v23 = location_type_info3;
+          location_type_info4 = [(SFResultEntity *)self location_type_info];
+          location_type_info5 = [(SFResultEntity *)v6 location_type_info];
+          v11 = [location_type_info4 isEqual:?];
         }
 
         else
@@ -129,7 +129,7 @@ LABEL_30:
           v11 = 1;
         }
 
-        v3 = v30;
+        name4 = v30;
         if (!v29)
         {
           goto LABEL_26;
@@ -140,8 +140,8 @@ LABEL_25:
 
 LABEL_26:
 LABEL_27:
-      v10 = v31;
-      if (!v9)
+      name5 = v31;
+      if (!name3)
       {
 LABEL_29:
 
@@ -161,19 +161,19 @@ LABEL_31:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(SFResultEntity *)self name];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  name = [(SFResultEntity *)self name];
+  v6 = [name copy];
   [v4 setName:v6];
 
-  v7 = [(SFResultEntity *)self maps_encrypted_muid];
-  v8 = [v7 copy];
+  maps_encrypted_muid = [(SFResultEntity *)self maps_encrypted_muid];
+  v8 = [maps_encrypted_muid copy];
   [v4 setMaps_encrypted_muid:v8];
 
-  v9 = [(SFResultEntity *)self location_type_info];
-  v10 = [v9 copy];
+  location_type_info = [(SFResultEntity *)self location_type_info];
+  v10 = [location_type_info copy];
   [v4 setLocation_type_info:v10];
 
   return v4;
@@ -182,31 +182,31 @@ LABEL_31:
 - (NSData)jsonData
 {
   v2 = [[_SFPBResultEntity alloc] initWithFacade:self];
-  v3 = [(_SFPBResultEntity *)v2 jsonData];
+  jsonData = [(_SFPBResultEntity *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBResultEntity alloc] initWithFacade:self];
-  v3 = [(_SFPBResultEntity *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBResultEntity *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBResultEntity alloc] initWithFacade:self];
-  v5 = [(_SFPBResultEntity *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBResultEntity *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFResultEntity)initWithCoder:(id)a3
+- (SFResultEntity)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBResultEntity alloc] initWithData:v5];
   v7 = [(SFResultEntity *)self initWithProtobuf:v6];
@@ -214,37 +214,37 @@ LABEL_31:
   return v7;
 }
 
-- (SFResultEntity)initWithProtobuf:(id)a3
+- (SFResultEntity)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v16.receiver = self;
   v16.super_class = SFResultEntity;
   v5 = [(SFResultEntity *)&v16 init];
   if (v5)
   {
-    v6 = [v4 name];
+    name = [protobufCopy name];
 
-    if (v6)
+    if (name)
     {
-      v7 = [v4 name];
-      [(SFResultEntity *)v5 setName:v7];
+      name2 = [protobufCopy name];
+      [(SFResultEntity *)v5 setName:name2];
     }
 
-    v8 = [v4 maps_encrypted_muid];
+    maps_encrypted_muid = [protobufCopy maps_encrypted_muid];
 
-    if (v8)
+    if (maps_encrypted_muid)
     {
-      v9 = [v4 maps_encrypted_muid];
-      [(SFResultEntity *)v5 setMaps_encrypted_muid:v9];
+      maps_encrypted_muid2 = [protobufCopy maps_encrypted_muid];
+      [(SFResultEntity *)v5 setMaps_encrypted_muid:maps_encrypted_muid2];
     }
 
-    v10 = [v4 location_type_info];
+    location_type_info = [protobufCopy location_type_info];
 
-    if (v10)
+    if (location_type_info)
     {
       v11 = [SFLocationTypeInfo alloc];
-      v12 = [v4 location_type_info];
-      v13 = [(SFLocationTypeInfo *)v11 initWithProtobuf:v12];
+      location_type_info2 = [protobufCopy location_type_info];
+      v13 = [(SFLocationTypeInfo *)v11 initWithProtobuf:location_type_info2];
       [(SFResultEntity *)v5 setLocation_type_info:v13];
     }
 

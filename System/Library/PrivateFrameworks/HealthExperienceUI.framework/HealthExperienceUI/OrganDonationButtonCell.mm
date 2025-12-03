@@ -1,14 +1,14 @@
 @interface OrganDonationButtonCell
-- (_TtC18HealthExperienceUI23OrganDonationButtonCell)initWithCoder:(id)a3;
-- (_TtC18HealthExperienceUI23OrganDonationButtonCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC18HealthExperienceUI23OrganDonationButtonCell)initWithCoder:(id)coder;
+- (_TtC18HealthExperienceUI23OrganDonationButtonCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)awakeFromNib;
 @end
 
 @implementation OrganDonationButtonCell
 
-- (_TtC18HealthExperienceUI23OrganDonationButtonCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC18HealthExperienceUI23OrganDonationButtonCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     _sSo19HKFeatureIdentifiera18HealthExperienceUIE2idSSvg_0();
     v6 = self + OBJC_IVAR____TtC18HealthExperienceUI23OrganDonationButtonCell_item;
@@ -29,12 +29,12 @@
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for OrganDonationButtonCell();
-  v9 = [(OrganDonationButtonCell *)&v11 initWithStyle:a3 reuseIdentifier:v7];
+  v9 = [(OrganDonationButtonCell *)&v11 initWithStyle:style reuseIdentifier:v7];
 
   return v9;
 }
 
-- (_TtC18HealthExperienceUI23OrganDonationButtonCell)initWithCoder:(id)a3
+- (_TtC18HealthExperienceUI23OrganDonationButtonCell)initWithCoder:(id)coder
 {
   v4 = self + OBJC_IVAR____TtC18HealthExperienceUI23OrganDonationButtonCell_item;
   *v4 = 0u;
@@ -42,8 +42,8 @@
   *(v4 + 4) = 0;
   v8.receiver = self;
   v8.super_class = type metadata accessor for OrganDonationButtonCell();
-  v5 = a3;
-  v6 = [(OrganDonationButtonCell *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(OrganDonationButtonCell *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {
@@ -54,7 +54,7 @@
 
 - (void)awakeFromNib
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BA39498C();
 }
 

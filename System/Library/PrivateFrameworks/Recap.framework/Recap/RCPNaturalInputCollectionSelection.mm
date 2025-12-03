@@ -1,19 +1,19 @@
 @interface RCPNaturalInputCollectionSelection
 - (CGPoint)direction;
 - (CGPoint)location;
-- (RCPNaturalInputCollectionSelection)initWithLocation:(CGPoint)a3 zPosition:(double)a4 direction:(CGPoint)a5 zDirection:(double)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (RCPNaturalInputCollectionSelection)initWithLocation:(CGPoint)location zPosition:(double)position direction:(CGPoint)direction zDirection:(double)zDirection;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation RCPNaturalInputCollectionSelection
 
-- (RCPNaturalInputCollectionSelection)initWithLocation:(CGPoint)a3 zPosition:(double)a4 direction:(CGPoint)a5 zDirection:(double)a6
+- (RCPNaturalInputCollectionSelection)initWithLocation:(CGPoint)location zPosition:(double)position direction:(CGPoint)direction zDirection:(double)zDirection
 {
-  y = a5.y;
-  x = a5.x;
-  v10 = a3.y;
-  v11 = a3.x;
+  y = direction.y;
+  x = direction.x;
+  v10 = location.y;
+  v11 = location.x;
   v13.receiver = self;
   v13.super_class = RCPNaturalInputCollectionSelection;
   result = [(RCPNaturalInputCollectionSelection *)&v13 init];
@@ -21,8 +21,8 @@
   result->_location.y = v10;
   result->_direction.x = x;
   result->_direction.y = y;
-  result->_zPosition = a4;
-  result->_zDirection = a6;
+  result->_zPosition = position;
+  result->_zDirection = zDirection;
   return result;
 }
 
@@ -44,9 +44,9 @@
   return [v3 stringWithFormat:@"<%@: { location: (%f, %f), zPosition: %f, direction: (%f, %f), zDirection: %f }>", v4, v6, v8, v10, v12, v14, v15];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   zPosition = self->_zPosition;
   zDirection = self->_zDirection;
   x = self->_location.x;

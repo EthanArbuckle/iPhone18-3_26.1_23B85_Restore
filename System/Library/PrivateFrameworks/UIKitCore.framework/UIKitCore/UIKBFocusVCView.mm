@@ -19,8 +19,8 @@
 
 - (id)preferredFocusedView
 {
-  v2 = [(UIView *)self nextResponder];
-  v3 = __UIFocusEnvironmentPreferredFocusedView(v2, 0);
+  nextResponder = [(UIView *)self nextResponder];
+  v3 = __UIFocusEnvironmentPreferredFocusedView(nextResponder, 0);
 
   return v3;
 }

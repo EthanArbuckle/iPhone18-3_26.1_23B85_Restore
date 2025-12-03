@@ -1,100 +1,100 @@
 @interface VNFgBgE5MLInstanceSegmenter
-+ (id)instanceSegmenterWithConfiguration:(id)a3 error:(id *)a4;
-+ (id)instanceSegmenterWithRevision:(int64_t)a3 error:(id *)a4;
-- (CGRect)getDetection:(const void *)a3 mapSize:(CGSize)a4 isRotated:(BOOL)a5;
-- (ConnectedComponentResult)generateInstanceConnectedComponentsFromMLMultiArray:(SEL)a3 maskThreshold:(id)a4 queryID:(float)a5 inverseColor:(int)a6;
-- (ConnectedComponentResult)generateInstanceConnectedComponentsFromMask:(SEL)a3 fillGapsAreaRatio:(vImage_Buffer *)a4;
-- (id)_initWithConfiguration:(id)a3 e5mlProcess:(id)a4;
-- (id)composeInstanceFeatures:(id)a3 miyoshiConfidence:(id)a4 cocoConfidence:(id)a5 predictionIoU:(id)a6 stabilityScore:(id)a7 decodeMatch:(id)a8 isRotated:(BOOL)a9 minimumMaskPixelCount:(unint64_t)a10 useInteractive:(BOOL)a11;
-- (vImage_Buffer)generateMaskForInstanceFeatures:(SEL)a3 maskImageType:(id)a4;
-- (vImage_Buffer)generateMaskForLabel:(SEL)a3 fromConnectedComponents:(unint64_t)a4 error:(const void *)a5;
-- (vImage_Buffer)generateMaskFromInstanceFeatures:(SEL)a3 toCategory:(id)a4 drawBox:(int)a5 maskImageType:(BOOL)a6;
-- (vector<std::vector<CGPoint>,)computeSegmentation:(VNFgBgE5MLInstanceSegmenter *)self withQueryID:(SEL)a3;
-- (vector<std::vector<CGPoint>,)computeVectorConnectedComponentSegmentation:(VNFgBgE5MLInstanceSegmenter *)self minimumMaskPixelCount:(SEL)a3 withQueryID:(id)a4;
-- (void)computeConfidenceInput:(id)a3 confidence:(float *)a4 withQueryID:(int)a5 category:(int *)a6 invalidCategory:(int)a7;
-- (void)modifyMask:(vImage_Buffer *)a3 forLabel:(unint64_t)a4 fromConnectedComponents:(const void *)a5 error:(id *)a6;
-- (void)removeIsolatedShadow:(id)a3;
++ (id)instanceSegmenterWithConfiguration:(id)configuration error:(id *)error;
++ (id)instanceSegmenterWithRevision:(int64_t)revision error:(id *)error;
+- (CGRect)getDetection:(const void *)detection mapSize:(CGSize)size isRotated:(BOOL)rotated;
+- (ConnectedComponentResult)generateInstanceConnectedComponentsFromMLMultiArray:(SEL)array maskThreshold:(id)threshold queryID:(float)d inverseColor:(int)color;
+- (ConnectedComponentResult)generateInstanceConnectedComponentsFromMask:(SEL)mask fillGapsAreaRatio:(vImage_Buffer *)ratio;
+- (id)_initWithConfiguration:(id)configuration e5mlProcess:(id)process;
+- (id)composeInstanceFeatures:(id)features miyoshiConfidence:(id)confidence cocoConfidence:(id)cocoConfidence predictionIoU:(id)u stabilityScore:(id)score decodeMatch:(id)match isRotated:(BOOL)rotated minimumMaskPixelCount:(unint64_t)self0 useInteractive:(BOOL)self1;
+- (vImage_Buffer)generateMaskForInstanceFeatures:(SEL)features maskImageType:(id)type;
+- (vImage_Buffer)generateMaskForLabel:(SEL)label fromConnectedComponents:(unint64_t)components error:(const void *)error;
+- (vImage_Buffer)generateMaskFromInstanceFeatures:(SEL)features toCategory:(id)category drawBox:(int)box maskImageType:(BOOL)type;
+- (vector<std::vector<CGPoint>,)computeSegmentation:(VNFgBgE5MLInstanceSegmenter *)self withQueryID:(SEL)d;
+- (vector<std::vector<CGPoint>,)computeVectorConnectedComponentSegmentation:(VNFgBgE5MLInstanceSegmenter *)self minimumMaskPixelCount:(SEL)count withQueryID:(id)d;
+- (void)computeConfidenceInput:(id)input confidence:(float *)confidence withQueryID:(int)d category:(int *)category invalidCategory:(int)invalidCategory;
+- (void)modifyMask:(vImage_Buffer *)mask forLabel:(unint64_t)label fromConnectedComponents:(const void *)components error:(id *)error;
+- (void)removeIsolatedShadow:(id)shadow;
 @end
 
 @implementation VNFgBgE5MLInstanceSegmenter
 
-- (void)removeIsolatedShadow:(id)a3
+- (void)removeIsolatedShadow:(id)shadow
 {
-  v66 = a3;
+  shadowCopy = shadow;
   v58 = objc_alloc_init(MEMORY[0x1E696AD50]);
-  for (i = 0; [v66 count] > i; ++i)
+  for (i = 0; [shadowCopy count] > i; ++i)
   {
-    v4 = [v66 objectAtIndexedSubscript:i];
-    v5 = [v4 cocoCategoryName];
-    v6 = [v5 isEqualToString:@"shadow"];
+    v4 = [shadowCopy objectAtIndexedSubscript:i];
+    cocoCategoryName = [v4 cocoCategoryName];
+    v6 = [cocoCategoryName isEqualToString:@"shadow"];
 
     if (v6)
     {
-      for (j = 0; [v66 count] > j; ++j)
+      for (j = 0; [shadowCopy count] > j; ++j)
       {
-        v8 = [v66 objectAtIndexedSubscript:j];
-        v9 = [v8 cocoCategoryName];
-        if ([v9 isEqualToString:@"shadow"])
+        v8 = [shadowCopy objectAtIndexedSubscript:j];
+        cocoCategoryName2 = [v8 cocoCategoryName];
+        if ([cocoCategoryName2 isEqualToString:@"shadow"])
         {
         }
 
         else
         {
-          v10 = [v66 objectAtIndexedSubscript:j];
-          v11 = [v10 miyoshiCategoryName];
-          v12 = [v66 objectAtIndexedSubscript:i];
-          v13 = [v12 miyoshiCategoryName];
-          v14 = [v11 isEqualToString:v13];
+          v10 = [shadowCopy objectAtIndexedSubscript:j];
+          miyoshiCategoryName = [v10 miyoshiCategoryName];
+          v12 = [shadowCopy objectAtIndexedSubscript:i];
+          miyoshiCategoryName2 = [v12 miyoshiCategoryName];
+          v14 = [miyoshiCategoryName isEqualToString:miyoshiCategoryName2];
 
           if (v14)
           {
-            v15 = [v66 objectAtIndexedSubscript:i];
+            v15 = [shadowCopy objectAtIndexedSubscript:i];
             [v15 bbox];
             v17 = v16;
-            v18 = [v66 objectAtIndexedSubscript:i];
+            v18 = [shadowCopy objectAtIndexedSubscript:i];
             [v18 mapSize];
             v20 = v19;
-            v21 = [v66 objectAtIndexedSubscript:i];
+            v21 = [shadowCopy objectAtIndexedSubscript:i];
             [v21 bbox];
             v23 = v22;
-            v24 = [v66 objectAtIndexedSubscript:i];
+            v24 = [shadowCopy objectAtIndexedSubscript:i];
             [v24 mapSize];
             v65 = v25;
-            v26 = [v66 objectAtIndexedSubscript:i];
+            v26 = [shadowCopy objectAtIndexedSubscript:i];
             [v26 bbox];
             v64 = v27;
-            v28 = [v66 objectAtIndexedSubscript:i];
+            v28 = [shadowCopy objectAtIndexedSubscript:i];
             [v28 mapSize];
             v63 = v29;
-            v30 = [v66 objectAtIndexedSubscript:i];
+            v30 = [shadowCopy objectAtIndexedSubscript:i];
             [v30 bbox];
             v62 = v31;
-            v32 = [v66 objectAtIndexedSubscript:i];
+            v32 = [shadowCopy objectAtIndexedSubscript:i];
             [v32 mapSize];
             v61 = v33;
 
-            v34 = [v66 objectAtIndexedSubscript:j];
+            v34 = [shadowCopy objectAtIndexedSubscript:j];
             [v34 bbox];
             v60 = v35;
-            v36 = [v66 objectAtIndexedSubscript:j];
+            v36 = [shadowCopy objectAtIndexedSubscript:j];
             [v36 mapSize];
             v59 = v37;
-            v38 = [v66 objectAtIndexedSubscript:j];
+            v38 = [shadowCopy objectAtIndexedSubscript:j];
             [v38 bbox];
             v40 = v39;
-            v41 = [v66 objectAtIndexedSubscript:j];
+            v41 = [shadowCopy objectAtIndexedSubscript:j];
             [v41 mapSize];
             v43 = v42;
-            v44 = [v66 objectAtIndexedSubscript:j];
+            v44 = [shadowCopy objectAtIndexedSubscript:j];
             [v44 bbox];
             v46 = v45;
-            v47 = [v66 objectAtIndexedSubscript:j];
+            v47 = [shadowCopy objectAtIndexedSubscript:j];
             [v47 mapSize];
             v49 = v48;
-            v50 = [v66 objectAtIndexedSubscript:j];
+            v50 = [shadowCopy objectAtIndexedSubscript:j];
             [v50 bbox];
             v52 = v51;
-            v53 = [v66 objectAtIndexedSubscript:j];
+            v53 = [shadowCopy objectAtIndexedSubscript:j];
             [v53 mapSize];
             v54 = v40 * v43;
             v55 = v46 * v49;
@@ -123,41 +123,41 @@ LABEL_12:
     ;
   }
 
-  [v66 removeObjectsAtIndexes:v58];
+  [shadowCopy removeObjectsAtIndexes:v58];
 }
 
-- (ConnectedComponentResult)generateInstanceConnectedComponentsFromMLMultiArray:(SEL)a3 maskThreshold:(id)a4 queryID:(float)a5 inverseColor:(int)a6
+- (ConnectedComponentResult)generateInstanceConnectedComponentsFromMLMultiArray:(SEL)array maskThreshold:(id)threshold queryID:(float)d inverseColor:(int)color
 {
-  v8 = a4;
-  v9 = [v8 shape];
-  v10 = [v9 objectAtIndexedSubscript:1];
-  v11 = [v10 intValue];
+  thresholdCopy = threshold;
+  shape = [thresholdCopy shape];
+  v10 = [shape objectAtIndexedSubscript:1];
+  intValue = [v10 intValue];
 
-  v12 = [v8 shape];
-  v13 = [v12 objectAtIndexedSubscript:2];
-  LODWORD(v9) = [v13 intValue];
+  shape2 = [thresholdCopy shape];
+  v13 = [shape2 objectAtIndexedSubscript:2];
+  LODWORD(shape) = [v13 intValue];
 
-  apple::vision::fgbg::ConnectedComponentResult::ConnectedComponentResult(retstr, v9, v11, 1, 1, 1);
+  apple::vision::fgbg::ConnectedComponentResult::ConnectedComponentResult(retstr, shape, intValue, 1, 1, 1);
 }
 
-- (vector<std::vector<CGPoint>,)computeVectorConnectedComponentSegmentation:(VNFgBgE5MLInstanceSegmenter *)self minimumMaskPixelCount:(SEL)a3 withQueryID:(id)a4
+- (vector<std::vector<CGPoint>,)computeVectorConnectedComponentSegmentation:(VNFgBgE5MLInstanceSegmenter *)self minimumMaskPixelCount:(SEL)count withQueryID:(id)d
 {
   v6 = *&a6;
-  v10 = a4;
-  v11 = [(VNFgBgE5MLInstanceSegmenter *)self configuration];
-  v12 = [v11 thresholds];
-  [v12 maskThreshold];
+  dCopy = d;
+  configuration = [(VNFgBgE5MLInstanceSegmenter *)self configuration];
+  thresholds = [configuration thresholds];
+  [thresholds maskThreshold];
   v14 = v13;
 
-  v15 = [(VNFgBgE5MLInstanceSegmenter *)self configuration];
-  v16 = [v15 thresholds];
-  [v16 defaultValidMinimumMaskPixelCount];
+  configuration2 = [(VNFgBgE5MLInstanceSegmenter *)self configuration];
+  thresholds2 = [configuration2 thresholds];
+  [thresholds2 defaultValidMinimumMaskPixelCount];
 
   retstr->var0 = 0;
   retstr->var1 = 0;
   retstr->var2 = 0;
   LODWORD(v17) = v14;
-  [(VNFgBgE5MLInstanceSegmenter *)self generateInstanceConnectedComponentsFromMLMultiArray:v10 maskThreshold:v6 queryID:0 inverseColor:v17];
+  [(VNFgBgE5MLInstanceSegmenter *)self generateInstanceConnectedComponentsFromMLMultiArray:dCopy maskThreshold:v6 queryID:0 inverseColor:v17];
   for (i = 0; i < (v27 - v26) >> 3; ++i)
   {
     if (*(v26 + i) > a5)
@@ -212,17 +212,17 @@ LABEL_12:
   return result;
 }
 
-- (vImage_Buffer)generateMaskForInstanceFeatures:(SEL)a3 maskImageType:(id)a4
+- (vImage_Buffer)generateMaskForInstanceFeatures:(SEL)features maskImageType:(id)type
 {
   v35 = *MEMORY[0x1E69E9840];
-  v8 = a4;
+  typeCopy = type;
   if (a5)
   {
     *a5 = 1;
   }
 
-  v9 = [(VNFgBgE5MLInstanceSegmenter *)self configuration];
-  [v9 inputSize];
+  configuration = [(VNFgBgE5MLInstanceSegmenter *)self configuration];
+  [configuration inputSize];
   v11 = v10;
   v13 = v12;
 
@@ -253,7 +253,7 @@ LABEL_12:
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v18 = v8;
+  v18 = typeCopy;
   v19 = [v18 countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v19)
   {
@@ -302,12 +302,12 @@ LABEL_12:
   return result;
 }
 
-- (void)modifyMask:(vImage_Buffer *)a3 forLabel:(unint64_t)a4 fromConnectedComponents:(const void *)a5 error:(id *)a6
+- (void)modifyMask:(vImage_Buffer *)mask forLabel:(unint64_t)label fromConnectedComponents:(const void *)components error:(id *)error
 {
-  data = a3->data;
-  if (a3->data)
+  data = mask->data;
+  if (mask->data)
   {
-    v7 = (*(a5 + 10) + 24 * (a4 - *(a5 + 30)));
+    v7 = (*(components + 10) + 24 * (label - *(components + 30)));
     v8 = *v7;
     if (v7[1] != *v7)
     {
@@ -315,32 +315,32 @@ LABEL_12:
       v10 = 0;
       do
       {
-        data[(*(v8 + v9) + *(v8 + v9 + 8) * *(a5 + 13))] = -1;
+        data[(*(v8 + v9) + *(v8 + v9 + 8) * *(components + 13))] = -1;
         ++v10;
-        v8 = *(*(a5 + 10) + 24 * (a4 - *(a5 + 30)));
+        v8 = *(*(components + 10) + 24 * (label - *(components + 30)));
         v9 += 16;
       }
 
-      while (v10 < (*(*(a5 + 10) + 24 * (a4 - *(a5 + 30)) + 8) - v8) >> 4);
+      while (v10 < (*(*(components + 10) + 24 * (label - *(components + 30)) + 8) - v8) >> 4);
     }
   }
 
-  else if (a6)
+  else if (error)
   {
-    *a6 = [VNFgBgInstanceSegmenterError errorWithCode:-6 description:@"null mask image", a5];
+    *error = [VNFgBgInstanceSegmenterError errorWithCode:-6 description:@"null mask image", components];
   }
 }
 
-- (vImage_Buffer)generateMaskForLabel:(SEL)a3 fromConnectedComponents:(unint64_t)a4 error:(const void *)a5
+- (vImage_Buffer)generateMaskForLabel:(SEL)label fromConnectedComponents:(unint64_t)components error:(const void *)error
 {
-  v9 = *(a5 + 13);
-  v10 = *(a5 + 14);
+  v9 = *(error + 13);
+  v10 = *(error + 14);
   retstr->height = v10;
   retstr->width = v9;
   retstr->rowBytes = v9;
   result = malloc_type_calloc(v10 * v9, 1uLL, 0x100004077774924uLL);
   retstr->data = result;
-  v12 = (*(a5 + 10) + 24 * (a4 - *(a5 + 30)));
+  v12 = (*(error + 10) + 24 * (components - *(error + 30)));
   v13 = *v12;
   if (v12[1] != *v12)
   {
@@ -348,30 +348,30 @@ LABEL_12:
     v15 = 0;
     do
     {
-      *(&result->data + (*(v13 + v14) + *(v13 + v14 + 8) * *(a5 + 13))) = -1;
+      *(&result->data + (*(v13 + v14) + *(v13 + v14 + 8) * *(error + 13))) = -1;
       ++v15;
-      v13 = *(*(a5 + 10) + 24 * (a4 - *(a5 + 30)));
+      v13 = *(*(error + 10) + 24 * (components - *(error + 30)));
       v14 += 16;
     }
 
-    while (v15 < (*(*(a5 + 10) + 24 * (a4 - *(a5 + 30)) + 8) - v13) >> 4);
+    while (v15 < (*(*(error + 10) + 24 * (components - *(error + 30)) + 8) - v13) >> 4);
   }
 
   return result;
 }
 
-- (vImage_Buffer)generateMaskFromInstanceFeatures:(SEL)a3 toCategory:(id)a4 drawBox:(int)a5 maskImageType:(BOOL)a6
+- (vImage_Buffer)generateMaskFromInstanceFeatures:(SEL)features toCategory:(id)category drawBox:(int)box maskImageType:(BOOL)type
 {
-  v8 = a6;
+  typeCopy = type;
   v128 = *MEMORY[0x1E69E9840];
-  v97 = a4;
+  categoryCopy = category;
   if (a7)
   {
     *a7 = 1;
   }
 
-  v12 = [(VNFgBgE5MLInstanceSegmenter *)self configuration];
-  [v12 inputSize];
+  configuration = [(VNFgBgE5MLInstanceSegmenter *)self configuration];
+  [configuration inputSize];
   v14 = v13;
   v16 = v15;
 
@@ -419,7 +419,7 @@ LABEL_12:
         }
 
         v26 = *(*(&v122 + 1) + 8 * i);
-        if ([v26 miyoshiCategory] == a5 && v26)
+        if ([v26 miyoshiCategory] == box && v26)
         {
           [v26 segmentation];
           v27 = __p;
@@ -458,7 +458,7 @@ LABEL_12:
     while (v22);
   }
 
-  if (v8)
+  if (typeCopy)
   {
     v108 = v17;
     v118 = 0u;
@@ -476,7 +476,7 @@ LABEL_12:
       v34 = (v18 - 1);
       v35 = 16 * v17;
       v107 = v21;
-      v99 = a5;
+      boxCopy = box;
       do
       {
         v36 = 0;
@@ -490,7 +490,7 @@ LABEL_12:
 
           v37 = *(*(&v116 + 1) + 8 * v36);
           v113 = v36;
-          if ([v37 miyoshiCategory] == a5)
+          if ([v37 miyoshiCategory] == box)
           {
             [v37 bbox];
             v39 = fmax(fmin(v38 * v31, v32), 0.0);
@@ -638,7 +638,7 @@ LABEL_12:
 
               while (v115 != v48);
               v82 = 0;
-              a5 = v99;
+              box = boxCopy;
               v83 = v106;
               v21 = v107;
               v84 = v110;
@@ -756,38 +756,38 @@ LABEL_12:
   return result;
 }
 
-- (vector<std::vector<CGPoint>,)computeSegmentation:(VNFgBgE5MLInstanceSegmenter *)self withQueryID:(SEL)a3
+- (vector<std::vector<CGPoint>,)computeSegmentation:(VNFgBgE5MLInstanceSegmenter *)self withQueryID:(SEL)d
 {
   v25 = a4;
-  v8 = [(VNFgBgE5MLInstanceSegmenter *)self configuration];
-  v9 = [v8 thresholds];
-  [v9 maskThreshold];
+  configuration = [(VNFgBgE5MLInstanceSegmenter *)self configuration];
+  thresholds = [configuration thresholds];
+  [thresholds maskThreshold];
   v11 = v10;
 
-  v12 = [v25 shape];
-  v13 = [v12 objectAtIndexedSubscript:1];
-  v14 = [v13 intValue];
+  shape = [v25 shape];
+  v13 = [shape objectAtIndexedSubscript:1];
+  intValue = [v13 intValue];
 
-  v15 = [v25 shape];
-  v16 = [v15 objectAtIndexedSubscript:2];
-  v17 = [v16 intValue];
+  shape2 = [v25 shape];
+  v16 = [shape2 objectAtIndexedSubscript:2];
+  intValue2 = [v16 intValue];
 
   retstr->var0 = 0;
   retstr->var1 = 0;
   retstr->var2 = 0;
   memset(__p, 0, sizeof(__p));
-  v18 = [v25 dataPointer];
-  if (v14 >= 1)
+  dataPointer = [v25 dataPointer];
+  if (intValue >= 1)
   {
-    v19 = v18;
+    v19 = dataPointer;
     v20 = 0;
-    v21 = v14;
-    v22 = v14 * v17 * a5;
+    v21 = intValue;
+    v22 = intValue * intValue2 * a5;
     do
     {
-      if (v17 >= 1)
+      if (intValue2 >= 1)
       {
-        for (i = 0; i != v17; ++i)
+        for (i = 0; i != intValue2; ++i)
         {
           if (*(v19 + 4 * v22 + 4 * i) > v11)
           {
@@ -799,7 +799,7 @@ LABEL_12:
       }
 
       ++v20;
-      v22 += v17;
+      v22 += intValue2;
     }
 
     while (v20 != v21);
@@ -814,44 +814,44 @@ LABEL_12:
   return result;
 }
 
-- (void)computeConfidenceInput:(id)a3 confidence:(float *)a4 withQueryID:(int)a5 category:(int *)a6 invalidCategory:(int)a7
+- (void)computeConfidenceInput:(id)input confidence:(float *)confidence withQueryID:(int)d category:(int *)category invalidCategory:(int)invalidCategory
 {
-  v11 = a3;
-  *a4 = 0.0;
-  *a6 = a7;
-  v21 = v11;
-  v12 = [v21 dataPointer];
+  inputCopy = input;
+  *confidence = 0.0;
+  *category = invalidCategory;
+  v21 = inputCopy;
+  dataPointer = [v21 dataPointer];
   for (i = 0; ; ++i)
   {
-    v14 = [v21 shape];
-    v15 = [v14 objectAtIndexedSubscript:1];
-    v16 = [v15 intValue];
+    shape = [v21 shape];
+    v15 = [shape objectAtIndexedSubscript:1];
+    intValue = [v15 intValue];
 
-    if (i >= v16)
+    if (i >= intValue)
     {
       break;
     }
 
-    v17 = [v21 shape];
-    v18 = [v17 objectAtIndexedSubscript:1];
-    v19 = i + [v18 intValue] * a5;
+    shape2 = [v21 shape];
+    v18 = [shape2 objectAtIndexedSubscript:1];
+    v19 = i + [v18 intValue] * d;
 
-    v20 = *(v12 + 4 * v19);
-    if (v20 > *a4)
+    v20 = *(dataPointer + 4 * v19);
+    if (v20 > *confidence)
     {
-      *a4 = v20;
-      *a6 = i;
+      *confidence = v20;
+      *category = i;
     }
   }
 }
 
-- (CGRect)getDetection:(const void *)a3 mapSize:(CGSize)a4 isRotated:(BOOL)a5
+- (CGRect)getDetection:(const void *)detection mapSize:(CGSize)size isRotated:(BOOL)rotated
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = *a3;
-  v8 = *(a3 + 1);
-  if (*a3 == v8)
+  height = size.height;
+  width = size.width;
+  v7 = *detection;
+  v8 = *(detection + 1);
+  if (*detection == v8)
   {
     v10 = 0;
     v9 = 0;
@@ -890,11 +890,11 @@ LABEL_12:
     while (v7 != v8);
   }
 
-  v13 = vcvtd_n_f64_s32(width + v10, 1uLL) / a4.width;
-  v14 = vcvtd_n_f64_s32(height + v9, 1uLL) / a4.height;
-  v15 = (v9 - height + 1) / a4.height;
-  v16 = (v10 - width + 1) / a4.width;
-  if (a5)
+  v13 = vcvtd_n_f64_s32(width + v10, 1uLL) / size.width;
+  v14 = vcvtd_n_f64_s32(height + v9, 1uLL) / size.height;
+  v15 = (v9 - height + 1) / size.height;
+  v16 = (v10 - width + 1) / size.width;
+  if (rotated)
   {
     v17 = 1.0 - v14;
   }
@@ -904,17 +904,17 @@ LABEL_12:
     v17 = v13;
   }
 
-  if (a5)
+  if (rotated)
   {
     v18 = v15;
   }
 
   else
   {
-    v18 = (v10 - width + 1) / a4.width;
+    v18 = (v10 - width + 1) / size.width;
   }
 
-  if (a5)
+  if (rotated)
   {
     v19 = v13;
   }
@@ -924,7 +924,7 @@ LABEL_12:
     v19 = v14;
   }
 
-  if (a5)
+  if (rotated)
   {
     v15 = v16;
   }
@@ -944,54 +944,54 @@ LABEL_12:
   return result;
 }
 
-- (id)composeInstanceFeatures:(id)a3 miyoshiConfidence:(id)a4 cocoConfidence:(id)a5 predictionIoU:(id)a6 stabilityScore:(id)a7 decodeMatch:(id)a8 isRotated:(BOOL)a9 minimumMaskPixelCount:(unint64_t)a10 useInteractive:(BOOL)a11
+- (id)composeInstanceFeatures:(id)features miyoshiConfidence:(id)confidence cocoConfidence:(id)cocoConfidence predictionIoU:(id)u stabilityScore:(id)score decodeMatch:(id)match isRotated:(BOOL)rotated minimumMaskPixelCount:(unint64_t)self0 useInteractive:(BOOL)self1
 {
-  v91 = a3;
-  v17 = a4;
-  v99 = a5;
-  v89 = a6;
-  v88 = a7;
-  v87 = a8;
+  featuresCopy = features;
+  confidenceCopy = confidence;
+  cocoConfidenceCopy = cocoConfidence;
+  uCopy = u;
+  scoreCopy = score;
+  matchCopy = match;
   v18 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v19 = [(VNFgBgE5MLInstanceSegmenter *)self configuration];
-  v95 = [v19 thresholds];
+  configuration = [(VNFgBgE5MLInstanceSegmenter *)self configuration];
+  thresholds = [configuration thresholds];
 
-  v20 = [v91 shape];
-  v92 = v17;
+  shape = [featuresCopy shape];
+  v92 = confidenceCopy;
   v98 = v18;
-  v21 = [v20 objectAtIndexedSubscript:1];
-  v22 = [v21 intValue];
+  v21 = [shape objectAtIndexedSubscript:1];
+  intValue = [v21 intValue];
 
-  v23 = [v91 shape];
-  v24 = [v23 objectAtIndexedSubscript:2];
-  v25 = [v24 intValue];
+  shape2 = [featuresCopy shape];
+  v24 = [shape2 objectAtIndexedSubscript:2];
+  intValue2 = [v24 intValue];
 
-  v97 = [v89 dataPointer];
-  v96 = [v88 dataPointer];
-  v94 = [v87 dataPointer];
-  [v95 matchScoreThreshold];
+  dataPointer = [uCopy dataPointer];
+  dataPointer2 = [scoreCopy dataPointer];
+  dataPointer3 = [matchCopy dataPointer];
+  [thresholds matchScoreThreshold];
   v93 = *&v26;
   v90 = 0xFFFFFFFFLL;
-  if (a11 && *&v26 <= 0.0)
+  if (interactive && *&v26 <= 0.0)
   {
     v27 = 0;
     v28 = -1;
     v29 = -3.4028e38;
     while (1)
     {
-      v30 = [(VNFgBgE5MLInstanceSegmenter *)self configuration];
-      v31 = [v30 queryNumber];
+      configuration2 = [(VNFgBgE5MLInstanceSegmenter *)self configuration];
+      queryNumber = [configuration2 queryNumber];
 
-      if (v27 >= v31)
+      if (v27 >= queryNumber)
       {
         break;
       }
 
-      LODWORD(v26) = *(v94 + 4 * v27);
+      LODWORD(v26) = *(dataPointer3 + 4 * v27);
       if (*&v26 > v29)
       {
         v28 = v27;
-        v29 = *(v94 + 4 * v27);
+        v29 = *(dataPointer3 + 4 * v27);
       }
 
       ++v27;
@@ -1001,36 +1001,36 @@ LABEL_12:
   }
 
   v32 = 0;
-  v33 = v25;
-  v34 = v22;
+  v33 = intValue2;
+  v34 = intValue;
   while (1)
   {
-    v35 = [(VNFgBgE5MLInstanceSegmenter *)self configuration];
-    v36 = [v35 queryNumber];
+    configuration3 = [(VNFgBgE5MLInstanceSegmenter *)self configuration];
+    queryNumber2 = [configuration3 queryNumber];
 
-    if (v32 >= v36)
+    if (v32 >= queryNumber2)
     {
       break;
     }
 
     context = objc_autoreleasePoolPush();
     v108 = 0;
-    v37 = [(VNFgBgE5MLInstanceSegmenter *)self configuration];
-    v38 = [v37 modelOutputInstanceInvalidMiyoshiCategory];
-    v39 = [v38 objectAtIndexedSubscript:0];
-    v40 = [v39 intValue];
+    configuration4 = [(VNFgBgE5MLInstanceSegmenter *)self configuration];
+    modelOutputInstanceInvalidMiyoshiCategory = [configuration4 modelOutputInstanceInvalidMiyoshiCategory];
+    v39 = [modelOutputInstanceInvalidMiyoshiCategory objectAtIndexedSubscript:0];
+    intValue3 = [v39 intValue];
 
-    v107 = v40;
-    v41 = [(VNFgBgE5MLInstanceSegmenter *)self configuration];
-    v42 = [v41 modelOutputInstanceInvalidCocoCategory];
-    v43 = [v42 objectAtIndexedSubscript:0];
-    v44 = [v43 intValue];
+    v107 = intValue3;
+    configuration5 = [(VNFgBgE5MLInstanceSegmenter *)self configuration];
+    modelOutputInstanceInvalidCocoCategory = [configuration5 modelOutputInstanceInvalidCocoCategory];
+    v43 = [modelOutputInstanceInvalidCocoCategory objectAtIndexedSubscript:0];
+    intValue4 = [v43 intValue];
 
-    v106 = v44;
-    [(VNFgBgE5MLInstanceSegmenter *)self computeConfidenceInput:v17 confidence:&v108 + 4 withQueryID:v32 category:&v107 invalidCategory:v107];
-    [(VNFgBgE5MLInstanceSegmenter *)self computeConfidenceInput:v99 confidence:&v108 withQueryID:v32 category:&v106 invalidCategory:v106];
-    v45 = *(v97 + 4 * v32);
-    v46 = *(v96 + 4 * v32);
+    v106 = intValue4;
+    [(VNFgBgE5MLInstanceSegmenter *)self computeConfidenceInput:confidenceCopy confidence:&v108 + 4 withQueryID:v32 category:&v107 invalidCategory:v107];
+    [(VNFgBgE5MLInstanceSegmenter *)self computeConfidenceInput:cocoConfidenceCopy confidence:&v108 withQueryID:v32 category:&v106 invalidCategory:v106];
+    v45 = *(dataPointer + 4 * v32);
+    v46 = *(dataPointer2 + 4 * v32);
     v47 = v107;
     if (_categoryMiyoshiNameForCategoryIndex(int)::onceToken != -1)
     {
@@ -1064,14 +1064,14 @@ LABEL_12:
       v50 = [_categoryCocoNameForCategoryIndex(int)::categoryNames objectAtIndex:v49];
     }
 
-    v51 = [(VNFgBgE5MLInstanceSegmenter *)self configuration];
-    v52 = [v51 modelOutputInstanceInvalidMiyoshiCategory];
+    configuration6 = [(VNFgBgE5MLInstanceSegmenter *)self configuration];
+    modelOutputInstanceInvalidMiyoshiCategory2 = [configuration6 modelOutputInstanceInvalidMiyoshiCategory];
     v53 = [MEMORY[0x1E696AD98] numberWithInt:v107];
-    if ([v52 containsObject:v53])
+    if ([modelOutputInstanceInvalidMiyoshiCategory2 containsObject:v53])
     {
 
       v18 = v98;
-      if (!a11)
+      if (!interactive)
       {
         goto LABEL_44;
       }
@@ -1079,10 +1079,10 @@ LABEL_12:
 
     else
     {
-      v55 = [(VNFgBgE5MLInstanceSegmenter *)self configuration];
-      v56 = [v55 modelOutputInstanceInvalidCocoCategory];
+      configuration7 = [(VNFgBgE5MLInstanceSegmenter *)self configuration];
+      modelOutputInstanceInvalidCocoCategory2 = [configuration7 modelOutputInstanceInvalidCocoCategory];
       v57 = [MEMORY[0x1E696AD98] numberWithInt:v106];
-      if (([v56 containsObject:v57] & 1) != 0 || (objc_msgSend(v95, "IoUThreshold"), v45 <= v58) || (v59 = *(&v108 + 1), objc_msgSend(v95, "cocoConfidenceThreshold"), v59 <= v60))
+      if (([modelOutputInstanceInvalidCocoCategory2 containsObject:v57] & 1) != 0 || (objc_msgSend(thresholds, "IoUThreshold"), v45 <= v58) || (v59 = *(&v108 + 1), objc_msgSend(thresholds, "cocoConfidenceThreshold"), v59 <= v60))
       {
         v63 = 0;
       }
@@ -1090,13 +1090,13 @@ LABEL_12:
       else
       {
         v61 = *&v108;
-        [v95 cocoConfidenceThreshold];
+        [thresholds cocoConfidenceThreshold];
         v63 = v61 > v62;
       }
 
-      v17 = v92;
+      confidenceCopy = v92;
       v18 = v98;
-      if (!a11)
+      if (!interactive)
       {
         if (!v63)
         {
@@ -1106,14 +1106,14 @@ LABEL_12:
 LABEL_37:
         v104 = 0uLL;
         v105 = 0;
-        if (a10)
+        if (count)
         {
-          [(VNFgBgE5MLInstanceSegmenter *)self computeVectorConnectedComponentSegmentation:v91 minimumMaskPixelCount:a10 withQueryID:v32];
+          [(VNFgBgE5MLInstanceSegmenter *)self computeVectorConnectedComponentSegmentation:featuresCopy minimumMaskPixelCount:count withQueryID:v32];
         }
 
         else
         {
-          [(VNFgBgE5MLInstanceSegmenter *)self computeSegmentation:v91 withQueryID:v32];
+          [(VNFgBgE5MLInstanceSegmenter *)self computeSegmentation:featuresCopy withQueryID:v32];
         }
 
         std::vector<std::vector<CGPoint>>::__vdeallocate(&v104);
@@ -1126,7 +1126,7 @@ LABEL_37:
         v71 = *(&v104 + 1);
         for (i = v104; i != v71; i += 24)
         {
-          [(VNFgBgE5MLInstanceSegmenter *)self getDetection:i mapSize:a9 isRotated:v33, v34];
+          [(VNFgBgE5MLInstanceSegmenter *)self getDetection:i mapSize:rotated isRotated:v33, v34];
           v73 = v72;
           v75 = v74;
           v77 = v76;
@@ -1149,10 +1149,10 @@ LABEL_37:
     *&v54 = v93;
     if (v93 > 0.0)
     {
-      v64 = *(v94 + 4 * v32);
-      v65 = [(VNFgBgE5MLInstanceSegmenter *)self configuration];
-      v66 = [v65 thresholds];
-      [v66 matchScoreThreshold];
+      v64 = *(dataPointer3 + 4 * v32);
+      configuration8 = [(VNFgBgE5MLInstanceSegmenter *)self configuration];
+      thresholds2 = [configuration8 thresholds];
+      [thresholds2 matchScoreThreshold];
       v68 = v67;
 
       if (v64 <= v68)
@@ -1166,7 +1166,7 @@ LABEL_37:
       goto LABEL_44;
     }
 
-    [v95 stabilityScoreThreshold];
+    [thresholds stabilityScoreThreshold];
     if (v46 > v69)
     {
       goto LABEL_37;
@@ -1183,14 +1183,14 @@ LABEL_44:
   return v18;
 }
 
-- (ConnectedComponentResult)generateInstanceConnectedComponentsFromMask:(SEL)a3 fillGapsAreaRatio:(vImage_Buffer *)a4
+- (ConnectedComponentResult)generateInstanceConnectedComponentsFromMask:(SEL)mask fillGapsAreaRatio:(vImage_Buffer *)ratio
 {
-  v9 = *&a4->width;
-  v47 = *&a4->data;
+  v9 = *&ratio->width;
+  v47 = *&ratio->data;
   v48 = v9;
   [(VNFgBgE5MLInstanceSegmenter *)self generateInstanceConnectedComponentsFromMask:&v47 inverseColor:1];
-  v10 = *&a4->width;
-  v47 = *&a4->data;
+  v10 = *&ratio->width;
+  v47 = *&ratio->data;
   v48 = v10;
   [(VNFgBgE5MLInstanceSegmenter *)self generateInstanceConnectedComponentsFromMask:&v47 inverseColor:0];
   for (i = 0; i < (v51 - v50) >> 3; ++i)
@@ -1342,29 +1342,29 @@ LABEL_44:
   return result;
 }
 
-- (id)_initWithConfiguration:(id)a3 e5mlProcess:(id)a4
+- (id)_initWithConfiguration:(id)configuration e5mlProcess:(id)process
 {
-  v7 = a3;
-  v8 = a4;
+  configurationCopy = configuration;
+  processCopy = process;
   v12.receiver = self;
   v12.super_class = VNFgBgE5MLInstanceSegmenter;
   v9 = [(VNFgBgE5MLInstanceSegmenter *)&v12 init];
   p_isa = &v9->super.isa;
   if (v9)
   {
-    objc_storeStrong(&v9->_configuration, a3);
-    objc_storeStrong(p_isa + 2, a4);
+    objc_storeStrong(&v9->_configuration, configuration);
+    objc_storeStrong(p_isa + 2, process);
   }
 
   return p_isa;
 }
 
-+ (id)instanceSegmenterWithRevision:(int64_t)a3 error:(id *)a4
++ (id)instanceSegmenterWithRevision:(int64_t)revision error:(id *)error
 {
-  v6 = [VNFgBgE5MLInstanceSegmenterConfiguration configurationForRevision:a3 error:?];
+  v6 = [VNFgBgE5MLInstanceSegmenterConfiguration configurationForRevision:revision error:?];
   if (v6)
   {
-    v7 = [a1 instanceSegmenterWithConfiguration:v6 error:a4];
+    v7 = [self instanceSegmenterWithConfiguration:v6 error:error];
   }
 
   else
@@ -1375,25 +1375,25 @@ LABEL_44:
   return v7;
 }
 
-+ (id)instanceSegmenterWithConfiguration:(id)a3 error:(id *)a4
++ (id)instanceSegmenterWithConfiguration:(id)configuration error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 revision];
-  if (v6 == 1)
+  configurationCopy = configuration;
+  revision = [configurationCopy revision];
+  if (revision == 1)
   {
     v7 = objc_opt_class();
-    v8 = [[VNFgBgE5MLProcess alloc] initWithConfiguration:v5];
-    v9 = [[v7 alloc] _initWithConfiguration:v5 e5mlProcess:v8];
+    v8 = [[VNFgBgE5MLProcess alloc] initWithConfiguration:configurationCopy];
+    v9 = [[v7 alloc] _initWithConfiguration:configurationCopy e5mlProcess:v8];
 LABEL_5:
 
     goto LABEL_6;
   }
 
-  if (a4)
+  if (error)
   {
-    v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Revision %lu is not supported", v6];
+    v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Revision %lu is not supported", revision];
     [VNFgBgInstanceSegmenterError errorWithCode:-4 description:v8];
-    *a4 = v9 = 0;
+    *error = v9 = 0;
     goto LABEL_5;
   }
 

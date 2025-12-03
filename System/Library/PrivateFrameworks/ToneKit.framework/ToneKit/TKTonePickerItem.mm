@@ -1,37 +1,37 @@
 @interface TKTonePickerItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (TKTonePickerSectionItem)parentSectionItem;
-- (id)childItemAtIndex:(int64_t)a3;
+- (id)childItemAtIndex:(int64_t)index;
 - (unint64_t)hash;
-- (void)_appendDescriptionOfAttributesToString:(id)a3;
+- (void)_appendDescriptionOfAttributesToString:(id)string;
 @end
 
 @implementation TKTonePickerItem
 
-- (id)childItemAtIndex:(int64_t)a3
+- (id)childItemAtIndex:(int64_t)index
 {
-  if ([(NSArray *)self->_childrenToneClassicsPickerItems count]<= a3)
+  if ([(NSArray *)self->_childrenToneClassicsPickerItems count]<= index)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [(NSArray *)self->_childrenToneClassicsPickerItems objectAtIndex:a3];
+    v5 = [(NSArray *)self->_childrenToneClassicsPickerItems objectAtIndex:index];
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D71F68] sharedCapabilitiesManager];
-  v6 = [v5 supportsReflectionRemixes];
+  equalCopy = equal;
+  mEMORY[0x277D71F68] = [MEMORY[0x277D71F68] sharedCapabilitiesManager];
+  supportsReflectionRemixes = [mEMORY[0x277D71F68] supportsReflectionRemixes];
 
-  if (v6)
+  if (supportsReflectionRemixes)
   {
-    if (self == v4)
+    if (self == equalCopy)
     {
       v14 = 1;
     }
@@ -41,7 +41,7 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v7 = v4;
+        v7 = equalCopy;
         v19.receiver = self;
         v19.super_class = TKTonePickerItem;
         if (![(TKPickerSelectableItem *)&v19 isEqual:v7])
@@ -132,7 +132,7 @@ LABEL_30:
   {
     v20.receiver = self;
     v20.super_class = TKTonePickerItem;
-    v14 = [(TKPickerSelectableItem *)&v20 isEqual:v4];
+    v14 = [(TKPickerSelectableItem *)&v20 isEqual:equalCopy];
   }
 
 LABEL_33:
@@ -142,10 +142,10 @@ LABEL_33:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277D71F68] sharedCapabilitiesManager];
-  v4 = [v3 supportsReflectionRemixes];
+  mEMORY[0x277D71F68] = [MEMORY[0x277D71F68] sharedCapabilitiesManager];
+  supportsReflectionRemixes = [mEMORY[0x277D71F68] supportsReflectionRemixes];
 
-  if (v4)
+  if (supportsReflectionRemixes)
   {
     v9.receiver = self;
     v9.super_class = TKTonePickerItem;
@@ -164,16 +164,16 @@ LABEL_33:
   }
 }
 
-- (void)_appendDescriptionOfAttributesToString:(id)a3
+- (void)_appendDescriptionOfAttributesToString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v6.receiver = self;
   v6.super_class = TKTonePickerItem;
-  [(TKPickerSelectableItem *)&v6 _appendDescriptionOfAttributesToString:v4];
+  [(TKPickerSelectableItem *)&v6 _appendDescriptionOfAttributesToString:stringCopy];
   v5 = [(TKTonePickerItem *)self itemKind]- 1;
   if (v5 <= 3)
   {
-    [(TKPickerItem *)self _appendDescriptionOfAttributeNamed:@"itemKind" withStringValue:off_278316850[v5] toString:v4];
+    [(TKPickerItem *)self _appendDescriptionOfAttributeNamed:@"itemKind" withStringValue:off_278316850[v5] toString:stringCopy];
   }
 }
 

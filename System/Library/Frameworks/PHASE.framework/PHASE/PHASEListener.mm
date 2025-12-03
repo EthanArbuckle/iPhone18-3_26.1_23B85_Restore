@@ -1,10 +1,10 @@
 @interface PHASEListener
 - (PHASEListener)init;
 - (PHASEListener)initWithEngine:(PHASEEngine *)engine;
-- (PHASEListener)initWithEngine:(id)a3 entityType:(unsigned int)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setAutomaticHeadTrackingFlags:(unint64_t)a3;
-- (void)setDopplerFactor:(double)a3;
+- (PHASEListener)initWithEngine:(id)engine entityType:(unsigned int)type;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setAutomaticHeadTrackingFlags:(unint64_t)flags;
+- (void)setDopplerFactor:(double)factor;
 - (void)setGain:(double)gain;
 @end
 
@@ -17,14 +17,14 @@
   return 0;
 }
 
-- (PHASEListener)initWithEngine:(id)a3 entityType:(unsigned int)a4
+- (PHASEListener)initWithEngine:(id)engine entityType:(unsigned int)type
 {
-  v4 = *&a4;
+  v4 = *&type;
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  engineCopy = engine;
   v11.receiver = self;
   v11.super_class = PHASEListener;
-  v7 = [(PHASEObject *)&v11 initWithEngine:v6 entityType:v4 shapes:0];
+  v7 = [(PHASEObject *)&v11 initWithEngine:engineCopy entityType:v4 shapes:0];
   v8 = v7;
   if (v7)
   {
@@ -84,30 +84,30 @@
   return v5;
 }
 
-- (void)setAutomaticHeadTrackingFlags:(unint64_t)a3
+- (void)setAutomaticHeadTrackingFlags:(unint64_t)flags
 {
-  v7 = [(PHASEObject *)self engine];
-  if (v7)
+  engine = [(PHASEObject *)self engine];
+  if (engine)
   {
-    v5 = [v7 implementation];
-    if (v5)
+    implementation = [engine implementation];
+    if (implementation)
     {
-      v6 = *(v5 + 368);
+      v6 = *(implementation + 368);
       if (v6)
       {
-        (*(*v6 + 272))(v6, [(PHASEObject *)self geoEntityHandle], a3 & 1);
+        (*(*v6 + 272))(v6, [(PHASEObject *)self geoEntityHandle], flags & 1);
       }
     }
 
-    [(PHASEListener *)self internalSetAutomaticHeadTrackingFlags:a3];
+    [(PHASEListener *)self internalSetAutomaticHeadTrackingFlags:flags];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(PHASEObject *)self engine];
-  v6 = [v4 initWithEngine:v5];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  engine = [(PHASEObject *)self engine];
+  v6 = [v4 initWithEngine:engine];
 
   [v6 setGain:self->_gain];
   [v6 setDopplerFactor:self->_dopplerFactor];
@@ -125,13 +125,13 @@
   v8 = NSStringFromSelector(a2);
   v9 = PHASEGetPropertyBounded<double>(v7, v8, gain, 0.0, 1.0);
 
-  v10 = [(PHASEObject *)self engine];
-  v11 = v10;
-  if (v10)
+  engine = [(PHASEObject *)self engine];
+  v11 = engine;
+  if (engine)
   {
     if (self->_gain != v9)
     {
-      v12 = *([v10 implementation] + 368);
+      v12 = *([engine implementation] + 368);
       v13.mData = [(PHASEObject *)self geoEntityHandle];
       v14 = v9;
       (*(*v12 + 152))(v12, v13, v14);
@@ -157,18 +157,18 @@
       v24 = 1024;
       v25 = 133;
       v26 = 2080;
-      v27 = [v20 UTF8String];
+      uTF8String = [v20 UTF8String];
       _os_log_impl(&dword_23A302000, v19, OS_LOG_TYPE_ERROR, "%25s:%-5d %s", &v22, 0x1Cu);
     }
   }
 }
 
-- (void)setDopplerFactor:(double)a3
+- (void)setDopplerFactor:(double)factor
 {
   v6 = objc_opt_class();
   v8 = NSStringFromClass(v6);
   v7 = NSStringFromSelector(a2);
-  self->_dopplerFactor = PHASEGetPropertyBounded<double>(v8, v7, a3, 0.0, 1.79769313e308);
+  self->_dopplerFactor = PHASEGetPropertyBounded<double>(v8, v7, factor, 0.0, 1.79769313e308);
 }
 
 @end

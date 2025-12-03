@@ -1,42 +1,42 @@
 @interface MPSGraphRandomTruncatedNormalOp
-- (MPSGraphRandomTruncatedNormalOp)initWithGraph:(id)a3 inputTensors:(id)a4 controlDependencies:(id)a5 descriptor:(id)a6 name:(id)a7;
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7;
+- (MPSGraphRandomTruncatedNormalOp)initWithGraph:(id)graph inputTensors:(id)tensors controlDependencies:(id)dependencies descriptor:(id)descriptor name:(id)name;
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name;
 @end
 
 @implementation MPSGraphRandomTruncatedNormalOp
 
-- (MPSGraphRandomTruncatedNormalOp)initWithGraph:(id)a3 inputTensors:(id)a4 controlDependencies:(id)a5 descriptor:(id)a6 name:(id)a7
+- (MPSGraphRandomTruncatedNormalOp)initWithGraph:(id)graph inputTensors:(id)tensors controlDependencies:(id)dependencies descriptor:(id)descriptor name:(id)name
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  *(&self->_dataType + 1) = [v15 dataType];
-  [v15 mean];
+  graphCopy = graph;
+  tensorsCopy = tensors;
+  dependenciesCopy = dependencies;
+  descriptorCopy = descriptor;
+  nameCopy = name;
+  *(&self->_dataType + 1) = [descriptorCopy dataType];
+  [descriptorCopy mean];
   self->_mean = v17;
-  [v15 standardDeviation];
+  [descriptorCopy standardDeviation];
   self->_standardDeviation = v18;
-  self->_samplingMethod = [v15 samplingMethod];
-  [v15 min];
+  self->_samplingMethod = [descriptorCopy samplingMethod];
+  [descriptorCopy min];
   self->_minimum = v19;
-  [v15 max];
+  [descriptorCopy max];
   self->_maximum = v20;
-  v21 = [(MPSGraphOperation *)self initWithGraph:v12 inputTensors:v13 controlDependencies:v14 name:v16];
+  v21 = [(MPSGraphOperation *)self initWithGraph:graphCopy inputTensors:tensorsCopy controlDependencies:dependenciesCopy name:nameCopy];
 
   return v21;
 }
 
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name
 {
   v66 = *MEMORY[0x1E69E9840];
-  v11 = a7;
+  nameCopy = name;
   mpsFileLoc("[MPSGraphRandomTruncatedNormalOp makeMLIROpWithBuilder:symbolTable:inputValues:opInitialization:name:]", "/Library/Caches/com.apple.xbs/Sources/MetalPerformanceShadersGraph/mpsgraph/MetalPerformanceShadersGraph/Core/Files/Operations/MPSGraphRandomOps.mm", __p);
-  v12 = v11;
+  v12 = nameCopy;
   v57 = 260;
   v56[0] = __p;
   v45 = v12;
-  StringAttr = mlir::Builder::getStringAttr(a3, v56);
+  StringAttr = mlir::Builder::getStringAttr(builder, v56);
   v14 = mlir::FileLineColLoc::get(StringAttr, 0x155u, 0);
   if (!v12)
   {
@@ -44,8 +44,8 @@
   }
 
   v15 = v12;
-  v16 = [v12 UTF8String];
-  v17 = strlen(v16);
+  uTF8String = [v12 UTF8String];
+  v17 = strlen(uTF8String);
   if (v17 >= 0x7FFFFFFFFFFFFFF8)
   {
     std::string::__throw_length_error[abi:ne200100]();
@@ -60,11 +60,11 @@
   v65[0].n128_u8[15] = v17;
   if (v17)
   {
-    memmove(&__dst, v16, v17);
+    memmove(&__dst, uTF8String, v17);
   }
 
   *(&__dst + v19) = 0;
-  MPSSymbolTable::insertOpInSymbolTable(a4, &__dst, v18, &v61);
+  MPSSymbolTable::insertOpInSymbolTable(table, &__dst, v18, &v61);
   v20 = v61.__r_.__value_.__r.__words[0];
   if ((v61.__r_.__value_.__r.__words[2] & 0x8000000000000000) == 0)
   {
@@ -80,7 +80,7 @@
   }
 
   LOBYTE(v57) = v21;
-  v22 = mlir::Builder::getStringAttr(a3, v56);
+  v22 = mlir::Builder::getStringAttr(builder, v56);
   v23 = mlir::NameLoc::get(v22, v14);
   if (SHIBYTE(v61.__r_.__value_.__r.__words[2]) < 0)
   {
@@ -104,9 +104,9 @@ LABEL_15:
     operator delete(__p[0]);
   }
 
-  MLIRElementType = getMLIRElementType(*a3, *(&self->_dataType + 1));
-  v25 = *a5;
-  if (*(a5 + 1) - *a5 <= 8uLL)
+  MLIRElementType = getMLIRElementType(*builder, *(&self->_dataType + 1));
+  v25 = *values;
+  if (*(values + 1) - *values <= 8uLL)
   {
     std::vector<mlir::Value>::__throw_out_of_range[abi:ne200100]();
   }
@@ -185,7 +185,7 @@ LABEL_15:
     llvm::detail::IEEEFloat::IEEEFloat(&v55, &v50);
   }
 
-  mlir::mps::RandomTruncatedNormalOp::build(a3, v56, v34, v35, v33, &__dst, &v61, &v58, v54, samplingMethod);
+  mlir::mps::RandomTruncatedNormalOp::build(builder, v56, v34, v35, v33, &__dst, &v61, &v58, v54, samplingMethod);
   if (v38 == v55.n128_u64[0])
   {
     llvm::detail::DoubleAPFloat::~DoubleAPFloat(&v55);
@@ -238,7 +238,7 @@ LABEL_37:
 LABEL_41:
   llvm::detail::DoubleAPFloat::~DoubleAPFloat(v65);
 LABEL_42:
-  v40 = mlir::OpBuilder::create(a3, v56);
+  v40 = mlir::OpBuilder::create(builder, v56);
   v41 = *(*(v40 + 48) + 16);
   mlir::OperationState::~OperationState(v56);
   if (v41 == &mlir::detail::TypeIDResolver<mlir::mps::RandomTruncatedNormalOp,void>::id)

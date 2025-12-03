@@ -1,15 +1,15 @@
 @interface MKLookAroundContainerBadgeView
-- (MKLookAroundContainerBadgeView)initWithFrame:(CGRect)a3;
+- (MKLookAroundContainerBadgeView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation MKLookAroundContainerBadgeView
 
-- (MKLookAroundContainerBadgeView)initWithFrame:(CGRect)a3
+- (MKLookAroundContainerBadgeView)initWithFrame:(CGRect)frame
 {
   v63[3] = *MEMORY[0x1E69E9840];
   v60.receiver = self;
   v60.super_class = MKLookAroundContainerBadgeView;
-  v3 = [(MKLookAroundContainerBadgeView *)&v60 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MKLookAroundContainerBadgeView *)&v60 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -18,13 +18,13 @@
     v5 = [MEMORY[0x1E69DB7F0] textAttachmentWithImage:v59];
     v58 = v5;
     v6 = +[MKSystemController sharedInstance];
-    v7 = [v6 isGlassEnabled];
+    isGlassEnabled = [v6 isGlassEnabled];
 
     v8 = objc_alloc_init(MEMORY[0x1E69DB7D8]);
-    v9 = [MEMORY[0x1E69DC888] blackColor];
-    v10 = v9;
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    v10 = blackColor;
     v11 = 0.64;
-    if (v7)
+    if (isGlassEnabled)
     {
       v12 = 16.0;
     }
@@ -35,7 +35,7 @@
       v12 = 4.0;
     }
 
-    if (v7)
+    if (isGlassEnabled)
     {
       v13 = 2.0;
     }
@@ -45,7 +45,7 @@
       v13 = 1.0;
     }
 
-    if (v7)
+    if (isGlassEnabled)
     {
       v14 = MEMORY[0x1E69DDD40];
     }
@@ -55,7 +55,7 @@
       v14 = MEMORY[0x1E69DDD80];
     }
 
-    if (v7)
+    if (isGlassEnabled)
     {
       v15 = 0.0;
     }
@@ -65,7 +65,7 @@
       v15 = -2.0;
     }
 
-    if (v7)
+    if (isGlassEnabled)
     {
       v16 = 0.0;
     }
@@ -75,7 +75,7 @@
       v16 = 6.0;
     }
 
-    if (v7)
+    if (isGlassEnabled)
     {
       v17 = 0.0;
     }
@@ -85,7 +85,7 @@
       v17 = -6.0;
     }
 
-    if (v7)
+    if (isGlassEnabled)
     {
       v18 = 0.0;
     }
@@ -95,7 +95,7 @@
       v18 = 8.0;
     }
 
-    v19 = [v9 colorWithAlphaComponent:v11];
+    v19 = [blackColor colorWithAlphaComponent:v11];
     [v8 setShadowColor:v19];
 
     [v8 setShadowBlurRadius:v12];
@@ -115,8 +115,8 @@
     v63[0] = v8;
     v63[1] = v56;
     v62[2] = *MEMORY[0x1E69DB650];
-    v26 = [MEMORY[0x1E69DC888] whiteColor];
-    v63[2] = v26;
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    v63[2] = whiteColor;
     v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v63 forKeys:v62 count:3];
     v55 = v21;
     [v21 addAttributes:v27 range:{0, objc_msgSend(v21, "length")}];
@@ -134,27 +134,27 @@
     v32 = v31;
     v34 = v33;
     v48 = MEMORY[0x1E696ACD8];
-    v54 = [(_MKUILabel *)v4->_label topAnchor];
-    v53 = [(MKLookAroundContainerBadgeView *)v4 topAnchor];
-    v52 = [v54 constraintEqualToAnchor:v53 constant:v15];
+    topAnchor = [(_MKUILabel *)v4->_label topAnchor];
+    topAnchor2 = [(MKLookAroundContainerBadgeView *)v4 topAnchor];
+    v52 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:v15];
     v61[0] = v52;
-    v51 = [(_MKUILabel *)v4->_label bottomAnchor];
-    v50 = [(MKLookAroundContainerBadgeView *)v4 bottomAnchor];
-    v49 = [v51 constraintEqualToAnchor:v50 constant:v16];
+    bottomAnchor = [(_MKUILabel *)v4->_label bottomAnchor];
+    bottomAnchor2 = [(MKLookAroundContainerBadgeView *)v4 bottomAnchor];
+    v49 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:v16];
     v61[1] = v49;
-    v47 = [(_MKUILabel *)v4->_label leadingAnchor];
-    v46 = [(MKLookAroundContainerBadgeView *)v4 leadingAnchor];
-    v35 = [v47 constraintEqualToAnchor:v46 constant:v17];
+    leadingAnchor = [(_MKUILabel *)v4->_label leadingAnchor];
+    leadingAnchor2 = [(MKLookAroundContainerBadgeView *)v4 leadingAnchor];
+    v35 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v17];
     v61[2] = v35;
-    v36 = [(_MKUILabel *)v4->_label trailingAnchor];
-    v37 = [(MKLookAroundContainerBadgeView *)v4 trailingAnchor];
-    v38 = [v36 constraintEqualToAnchor:v37 constant:v16];
+    trailingAnchor = [(_MKUILabel *)v4->_label trailingAnchor];
+    trailingAnchor2 = [(MKLookAroundContainerBadgeView *)v4 trailingAnchor];
+    v38 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:v16];
     v61[3] = v38;
-    v39 = [(_MKUILabel *)v4->_label widthAnchor];
-    v40 = [v39 constraintEqualToConstant:v18 + v32];
+    widthAnchor = [(_MKUILabel *)v4->_label widthAnchor];
+    v40 = [widthAnchor constraintEqualToConstant:v18 + v32];
     v61[4] = v40;
-    v41 = [(_MKUILabel *)v4->_label heightAnchor];
-    v42 = [v41 constraintEqualToConstant:v18 + v34];
+    heightAnchor = [(_MKUILabel *)v4->_label heightAnchor];
+    v42 = [heightAnchor constraintEqualToConstant:v18 + v34];
     v61[5] = v42;
     v43 = [MEMORY[0x1E695DEC8] arrayWithObjects:v61 count:6];
     [v48 activateConstraints:v43];

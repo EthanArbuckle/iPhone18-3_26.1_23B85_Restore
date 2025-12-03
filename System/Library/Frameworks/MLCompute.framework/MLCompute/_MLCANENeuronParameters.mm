@@ -1,20 +1,20 @@
 @interface _MLCANENeuronParameters
-- (_MLCANENeuronParameters)initWithNeuronParams:(id)a3 neuronType:(int)a4;
+- (_MLCANENeuronParameters)initWithNeuronParams:(id)params neuronType:(int)type;
 @end
 
 @implementation _MLCANENeuronParameters
 
-- (_MLCANENeuronParameters)initWithNeuronParams:(id)a3 neuronType:(int)a4
+- (_MLCANENeuronParameters)initWithNeuronParams:(id)params neuronType:(int)type
 {
-  v7 = a3;
+  paramsCopy = params;
   v11.receiver = self;
   v11.super_class = _MLCANENeuronParameters;
   v8 = [(_MLCANENeuronParameters *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_neuronParams, a3);
-    v9->_type = a4;
+    objc_storeStrong(&v8->_neuronParams, params);
+    v9->_type = type;
   }
 
   return v9;

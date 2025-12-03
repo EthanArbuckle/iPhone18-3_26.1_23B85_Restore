@@ -1,48 +1,48 @@
 @interface SXDebugComponentView
-- (SXDebugComponentView)initWithDOMObjectProvider:(id)a3 viewport:(id)a4 presentationDelegate:(id)a5 componentStyleRendererFactory:(id)a6 invalidator:(id)a7;
-- (void)loadComponent:(id)a3;
-- (void)presentComponentWithChanges:(id)a3;
+- (SXDebugComponentView)initWithDOMObjectProvider:(id)provider viewport:(id)viewport presentationDelegate:(id)delegate componentStyleRendererFactory:(id)factory invalidator:(id)invalidator;
+- (void)loadComponent:(id)component;
+- (void)presentComponentWithChanges:(id)changes;
 @end
 
 @implementation SXDebugComponentView
 
-- (SXDebugComponentView)initWithDOMObjectProvider:(id)a3 viewport:(id)a4 presentationDelegate:(id)a5 componentStyleRendererFactory:(id)a6 invalidator:(id)a7
+- (SXDebugComponentView)initWithDOMObjectProvider:(id)provider viewport:(id)viewport presentationDelegate:(id)delegate componentStyleRendererFactory:(id)factory invalidator:(id)invalidator
 {
-  v13 = a7;
+  invalidatorCopy = invalidator;
   v17.receiver = self;
   v17.super_class = SXDebugComponentView;
-  v14 = [(SXComponentView *)&v17 initWithDOMObjectProvider:a3 viewport:a4 presentationDelegate:a5 componentStyleRendererFactory:a6];
+  v14 = [(SXComponentView *)&v17 initWithDOMObjectProvider:provider viewport:viewport presentationDelegate:delegate componentStyleRendererFactory:factory];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_invalidator, a7);
+    objc_storeStrong(&v14->_invalidator, invalidator);
   }
 
   return v15;
 }
 
-- (void)loadComponent:(id)a3
+- (void)loadComponent:(id)component
 {
   v9.receiver = self;
   v9.super_class = SXDebugComponentView;
-  [(SXComponentView *)&v9 loadComponent:a3];
-  v4 = [MEMORY[0x1E69DC888] redColor];
-  [(SXDebugComponentView *)self setBackgroundColor:v4];
+  [(SXComponentView *)&v9 loadComponent:component];
+  redColor = [MEMORY[0x1E69DC888] redColor];
+  [(SXDebugComponentView *)self setBackgroundColor:redColor];
 
-  v5 = [MEMORY[0x1E69DC888] blackColor];
-  v6 = [v5 CGColor];
-  v7 = [(SXDebugComponentView *)self layer];
-  [v7 setBorderColor:v6];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  cGColor = [blackColor CGColor];
+  layer = [(SXDebugComponentView *)self layer];
+  [layer setBorderColor:cGColor];
 
-  v8 = [(SXDebugComponentView *)self layer];
-  [v8 setBorderWidth:1.0];
+  layer2 = [(SXDebugComponentView *)self layer];
+  [layer2 setBorderWidth:1.0];
 }
 
-- (void)presentComponentWithChanges:(id)a3
+- (void)presentComponentWithChanges:(id)changes
 {
   v7.receiver = self;
   v7.super_class = SXDebugComponentView;
-  [(SXComponentView *)&v7 presentComponentWithChanges:*&a3.var0 & 0xFFFFFFLL];
+  [(SXComponentView *)&v7 presentComponentWithChanges:*&changes.var0 & 0xFFFFFFLL];
   v4 = arc4random_uniform(0xAu);
   v5 = dispatch_time(0, 1000000000 * v4);
   block[0] = MEMORY[0x1E69E9820];

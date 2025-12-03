@@ -7,7 +7,7 @@
 
 - (uint64_t)rbs_pid
 {
-  LODWORD(result) = [a1 intValue];
+  LODWORD(result) = [self intValue];
   if (result < 0)
   {
     return 0xFFFFFFFFLL;
@@ -22,10 +22,10 @@
 - (BOOL)matchesProcess:()RBSProcessIdentifier
 {
   v4 = a3;
-  LODWORD(a1) = [a1 rbs_pid];
-  v5 = [v4 rbs_pid];
+  LODWORD(self) = [self rbs_pid];
+  rbs_pid = [v4 rbs_pid];
 
-  return a1 == v5;
+  return self == rbs_pid;
 }
 
 @end

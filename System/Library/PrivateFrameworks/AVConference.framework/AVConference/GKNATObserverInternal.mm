@@ -1,35 +1,35 @@
 @interface GKNATObserverInternal
 - (BOOL)ensureNatCachePathExists;
-- (GKNATObserverInternal)initWithOptions:(id)a3;
+- (GKNATObserverInternal)initWithOptions:(id)options;
 - (id)copyNatTypeCachePlistScheme;
 - (id)copyNatTypeCache_OSXGamedScheme;
-- (id)lookupCachedNATFlagsForNetwork:(id)a3;
-- (id)nameForNetworkWithIPPort:(tagIPPORT *)a3 interfaceName:(id)a4;
-- (int)callHTTPTestFromIPPort:(tagIPPORT *)a3 ipv6Prefix:(id *)a4 ToServer:(id)a5 isSSL:(BOOL)a6;
+- (id)lookupCachedNATFlagsForNetwork:(id)network;
+- (id)nameForNetworkWithIPPort:(tagIPPORT *)port interfaceName:(id)name;
+- (int)callHTTPTestFromIPPort:(tagIPPORT *)port ipv6Prefix:(id *)prefix ToServer:(id)server isSSL:(BOOL)l;
 - (int)currentNATType;
-- (int)natTypeForCommNATFlags:(unsigned int)a3 isCarrier:(BOOL)a4;
-- (tagCommNATInfo)callCommNATTestFromIPPort:(tagIPPORT *)a3 ipv6Prefix:(id *)a4;
-- (unsigned)setFlags:(unsigned int)a3 forInterface:(id)a4 isCached:(BOOL)a5 isCachedKey:(id)a6 mask:(unsigned int)a7;
-- (void)HTTPCheckWithIPPort:(tagIPPORT *)a3 ipv6Prefix:(id *)a4 useCache:(BOOL)a5;
-- (void)HTTPSCheckWithIPPort:(tagIPPORT *)a3 ipv6Prefix:(id *)a4 useCache:(BOOL)a5;
-- (void)NATCheckWithIPPort:(tagIPPORT *)a3 ipv6Prefix:(id *)a4 useCache:(BOOL)a5;
-- (void)cacheNATFlags:(id)a3 forNetwork:(id)a4;
-- (void)calculateSummmaryNATType:(int *)a3 andCarrierNATType:(int *)a4 andNonCarrierNATType:(int *)a5 copyInterfaceInfoDictionary:(id *)a6;
+- (int)natTypeForCommNATFlags:(unsigned int)flags isCarrier:(BOOL)carrier;
+- (tagCommNATInfo)callCommNATTestFromIPPort:(tagIPPORT *)port ipv6Prefix:(id *)prefix;
+- (unsigned)setFlags:(unsigned int)flags forInterface:(id)interface isCached:(BOOL)cached isCachedKey:(id)key mask:(unsigned int)mask;
+- (void)HTTPCheckWithIPPort:(tagIPPORT *)port ipv6Prefix:(id *)prefix useCache:(BOOL)cache;
+- (void)HTTPSCheckWithIPPort:(tagIPPORT *)port ipv6Prefix:(id *)prefix useCache:(BOOL)cache;
+- (void)NATCheckWithIPPort:(tagIPPORT *)port ipv6Prefix:(id *)prefix useCache:(BOOL)cache;
+- (void)cacheNATFlags:(id)flags forNetwork:(id)network;
+- (void)calculateSummmaryNATType:(int *)type andCarrierNATType:(int *)tType andNonCarrierNATType:(int *)aTType copyInterfaceInfoDictionary:(id *)dictionary;
 - (void)clearRetries;
 - (void)dealloc;
 - (void)registerForNetworkChanges;
 - (void)release;
 - (void)reportNATType;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 - (void)shouldTryNATCheck;
-- (void)tryNATCheckWithDelay:(double)a3;
-- (void)updateNatTypeCache_CachePlistScheme:(id)a3;
-- (void)updateNatTypeCache_OSXGamedScheme:(id)a3;
+- (void)tryNATCheckWithDelay:(double)delay;
+- (void)updateNatTypeCache_CachePlistScheme:(id)scheme;
+- (void)updateNatTypeCache_OSXGamedScheme:(id)scheme;
 @end
 
 @implementation GKNATObserverInternal
 
-- (GKNATObserverInternal)initWithOptions:(id)a3
+- (GKNATObserverInternal)initWithOptions:(id)options
 {
   v25 = *MEMORY[0x1E69E9840];
   v16.receiver = self;
@@ -45,44 +45,44 @@
       return 0;
     }
 
-    if ([a3 objectForKeyedSubscript:@"nonCarrier"])
+    if ([options objectForKeyedSubscript:@"nonCarrier"])
     {
-      v4->_nonCarrierInterfacesOnly = [objc_msgSend(a3 objectForKeyedSubscript:{@"nonCarrier", "BOOLValue"}];
+      v4->_nonCarrierInterfacesOnly = [objc_msgSend(options objectForKeyedSubscript:{@"nonCarrier", "BOOLValue"}];
     }
 
-    if ([a3 objectForKeyedSubscript:@"checkTCPSSL"])
+    if ([options objectForKeyedSubscript:@"checkTCPSSL"])
     {
-      v4->_checkTCPAndSSL = [objc_msgSend(a3 objectForKeyedSubscript:{@"checkTCPSSL", "BOOLValue"}];
+      v4->_checkTCPAndSSL = [objc_msgSend(options objectForKeyedSubscript:{@"checkTCPSSL", "BOOLValue"}];
     }
 
-    if ([a3 objectForKeyedSubscript:@"favorNonCar"])
+    if ([options objectForKeyedSubscript:@"favorNonCar"])
     {
-      v4->_favorNonCarrier = [objc_msgSend(a3 objectForKeyedSubscript:{@"favorNonCar", "BOOLValue"}];
+      v4->_favorNonCarrier = [objc_msgSend(options objectForKeyedSubscript:{@"favorNonCar", "BOOLValue"}];
     }
 
-    if ([a3 objectForKeyedSubscript:@"carrierType"])
+    if ([options objectForKeyedSubscript:@"carrierType"])
     {
-      v4->_newCarrierType = [objc_msgSend(a3 objectForKeyedSubscript:{@"carrierType", "BOOLValue"}];
+      v4->_newCarrierType = [objc_msgSend(options objectForKeyedSubscript:{@"carrierType", "BOOLValue"}];
     }
 
-    if ([a3 objectForKeyedSubscript:@"addInRange"])
+    if ([options objectForKeyedSubscript:@"addInRange"])
     {
-      v4->_addInRangeFlag = [objc_msgSend(a3 objectForKeyedSubscript:{@"addInRange", "BOOLValue"}];
+      v4->_addInRangeFlag = [objc_msgSend(options objectForKeyedSubscript:{@"addInRange", "BOOLValue"}];
     }
 
-    if ([a3 objectForKeyedSubscript:@"addCarrier"])
+    if ([options objectForKeyedSubscript:@"addCarrier"])
     {
-      v4->_addCarrierFlag = [objc_msgSend(a3 objectForKeyedSubscript:{@"addCarrier", "BOOLValue"}];
+      v4->_addCarrierFlag = [objc_msgSend(options objectForKeyedSubscript:{@"addCarrier", "BOOLValue"}];
     }
 
-    if ([a3 objectForKeyedSubscript:@"ignoreCache"])
+    if ([options objectForKeyedSubscript:@"ignoreCache"])
     {
-      v4->_ignoreNatTypeCache = [objc_msgSend(a3 objectForKeyedSubscript:{@"ignoreCache", "BOOLValue"}];
+      v4->_ignoreNatTypeCache = [objc_msgSend(options objectForKeyedSubscript:{@"ignoreCache", "BOOLValue"}];
     }
 
-    if ([a3 objectForKeyedSubscript:@"ignoreCarrierBundle"])
+    if ([options objectForKeyedSubscript:@"ignoreCarrierBundle"])
     {
-      v4->_ignoreCarrierBundle = [objc_msgSend(a3 objectForKeyedSubscript:{@"ignoreCarrierBundle", "BOOLValue"}];
+      v4->_ignoreCarrierBundle = [objc_msgSend(options objectForKeyedSubscript:{@"ignoreCarrierBundle", "BOOLValue"}];
     }
 
     v4->_interfaceInfoDictionary = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -175,7 +175,7 @@
       v10 = 1024;
       v11 = 377;
       v12 = 2048;
-      v13 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v4, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d GKNATObserverInternal(%p) -dealloc", buf, 0x26u);
     }
   }
@@ -195,18 +195,18 @@
   [(GKNATObserverInternal *)&v5 dealloc];
 }
 
-- (int)natTypeForCommNATFlags:(unsigned int)a3 isCarrier:(BOOL)a4
+- (int)natTypeForCommNATFlags:(unsigned int)flags isCarrier:(BOOL)carrier
 {
-  if (!a3)
+  if (!flags)
   {
     v4 = 0;
     goto LABEL_26;
   }
 
-  if (a3)
+  if (flags)
   {
     v4 = 6;
-    if ((a3 & 0x800) != 0)
+    if ((flags & 0x800) != 0)
     {
       v5 = 5;
     }
@@ -216,15 +216,15 @@
       v5 = 4;
     }
 
-    v6 = (a3 & 0x1000) == 0;
+    v6 = (flags & 0x1000) == 0;
   }
 
   else
   {
-    if (a4 && self->_newCarrierType && !self->_addCarrierFlag)
+    if (carrier && self->_newCarrierType && !self->_addCarrierFlag)
     {
       v4 = 128;
-      if ((a3 & 0x2000) == 0)
+      if ((flags & 0x2000) == 0)
       {
         goto LABEL_22;
       }
@@ -233,7 +233,7 @@
     }
 
     v4 = 1;
-    if ((a3 & 4) != 0)
+    if ((flags & 4) != 0)
     {
       v5 = 3;
     }
@@ -243,7 +243,7 @@
       v5 = 2;
     }
 
-    v6 = (a3 & 2) == 0;
+    v6 = (flags & 2) == 0;
   }
 
   if (v6)
@@ -251,21 +251,21 @@
     v4 = v5;
   }
 
-  if ((a3 & 0x2000) != 0)
+  if ((flags & 0x2000) != 0)
   {
 LABEL_19:
-    if (a4 && self->_addCarrierFlag)
+    if (carrier && self->_addCarrierFlag)
     {
       v4 = 4;
     }
   }
 
 LABEL_22:
-  if ((a3 & 0x10) == 0 || !self->_addInRangeFlag)
+  if ((flags & 0x10) == 0 || !self->_addInRangeFlag)
   {
 LABEL_26:
     v7 = 0;
-    if (!a4)
+    if (!carrier)
     {
       return v4 + v7;
     }
@@ -274,7 +274,7 @@ LABEL_26:
   }
 
   v7 = 64;
-  if (!a4)
+  if (!carrier)
   {
     return v4 + v7;
   }
@@ -293,17 +293,17 @@ LABEL_27:
   return v4 + v7;
 }
 
-- (unsigned)setFlags:(unsigned int)a3 forInterface:(id)a4 isCached:(BOOL)a5 isCachedKey:(id)a6 mask:(unsigned int)a7
+- (unsigned)setFlags:(unsigned int)flags forInterface:(id)interface isCached:(BOOL)cached isCachedKey:(id)key mask:(unsigned int)mask
 {
-  v9 = a5;
+  cachedCopy = cached;
   v36 = *MEMORY[0x1E69E9840];
-  v13 = [(NSMutableDictionary *)self->_interfaceInfoDictionary objectForKeyedSubscript:a4];
-  if (!v13)
+  dictionary = [(NSMutableDictionary *)self->_interfaceInfoDictionary objectForKeyedSubscript:interface];
+  if (!dictionary)
   {
-    v13 = [MEMORY[0x1E695DF90] dictionary];
-    [(NSMutableDictionary *)self->_interfaceInfoDictionary setObject:v13 forKeyedSubscript:a4];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [(NSMutableDictionary *)self->_interfaceInfoDictionary setObject:dictionary forKeyedSubscript:interface];
     v14 = MEMORY[0x1E696AD98];
-    if ([a4 hasPrefix:@"gk_ci_"])
+    if ([interface hasPrefix:@"gk_ci_"])
     {
       v15 = 1;
     }
@@ -313,12 +313,12 @@ LABEL_27:
       v15 = 2;
     }
 
-    [v13 setObject:objc_msgSend(v14 forKeyedSubscript:{"numberWithInt:", v15), @"interfaceType"}];
+    [dictionary setObject:objc_msgSend(v14 forKeyedSubscript:{"numberWithInt:", v15), @"interfaceType"}];
   }
 
-  v16 = [objc_msgSend(v13 objectForKeyedSubscript:{@"commnatFlags", "unsignedLongValue"}];
-  [v13 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", v16 & ~a7 | a7 & a3), @"commnatFlags"}];
-  [v13 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", v9), a6}];
+  v16 = [objc_msgSend(dictionary objectForKeyedSubscript:{@"commnatFlags", "unsignedLongValue"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", v16 & ~mask | mask & flags), @"commnatFlags"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", cachedCopy), key}];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
     v17 = VRTraceErrorLogLevelToCSTR();
@@ -332,23 +332,23 @@ LABEL_27:
       v24 = 1024;
       v25 = 467;
       v26 = 1024;
-      v27 = a3;
+      flagsCopy = flags;
       v28 = 1024;
-      v29 = a7;
+      maskCopy = mask;
       v30 = 1024;
       v31 = v16;
       v32 = 1024;
-      v33 = v16 & ~a7 | a7 & a3;
+      v33 = v16 & ~mask | mask & flags;
       v34 = 1024;
-      v35 = v9;
+      v35 = cachedCopy;
       _os_log_impl(&dword_1DB56E000, v18, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d GKNATObserver setting flags[%08X] mask[%08X] old[%08X]=>result[%08X] (cached:%d)", &v20, 0x3Au);
     }
   }
 
-  return v16 & ~a7 | a7 & a3;
+  return v16 & ~mask | mask & flags;
 }
 
-- (void)calculateSummmaryNATType:(int *)a3 andCarrierNATType:(int *)a4 andNonCarrierNATType:(int *)a5 copyInterfaceInfoDictionary:(id *)a6
+- (void)calculateSummmaryNATType:(int *)type andCarrierNATType:(int *)tType andNonCarrierNATType:(int *)aTType copyInterfaceInfoDictionary:(id *)dictionary
 {
   v40 = *MEMORY[0x1E69E9840];
   v36 = 0u;
@@ -362,7 +362,7 @@ LABEL_27:
     v14 = 0;
     v13 = 0;
     v29 = 0;
-    if (!a3)
+    if (!type)
     {
       goto LABEL_51;
     }
@@ -371,10 +371,10 @@ LABEL_27:
   }
 
   v12 = v11;
-  v30 = a3;
-  v31 = a4;
-  v32 = a5;
-  v33 = a6;
+  typeCopy = type;
+  tTypeCopy = tType;
+  aTTypeCopy = aTType;
+  dictionaryCopy = dictionary;
   v13 = 0;
   v14 = 0;
   v15 = *v37;
@@ -388,10 +388,10 @@ LABEL_27:
       }
 
       v17 = *(*(&v36 + 1) + 8 * i);
-      v18 = [(NSMutableDictionary *)self->_interfaceInfoDictionary objectForKeyedSubscript:v17, v30];
-      if (v18)
+      typeCopy = [(NSMutableDictionary *)self->_interfaceInfoDictionary objectForKeyedSubscript:v17, typeCopy];
+      if (typeCopy)
       {
-        v19 = v18;
+        v19 = typeCopy;
         v20 = [v17 hasPrefix:@"gk_ci_"];
         v21 = -[GKNATObserverInternal natTypeForCommNATFlags:isCarrier:](self, "natTypeForCommNATFlags:isCarrier:", [objc_msgSend(v19 objectForKeyedSubscript:{@"commnatFlags", "unsignedLongValue"}], objc_msgSend(v17, "hasPrefix:", @"gk_ci_"));
         if (v20)
@@ -440,17 +440,17 @@ LABEL_27:
   if (self->_favorNonCarrier && (v14 & 0xFFFFFFFB) != 0)
   {
     v29 = v14;
-    a5 = v32;
-    a6 = v33;
-    a3 = v30;
-    a4 = v31;
-    if (!v30)
+    aTType = aTTypeCopy;
+    dictionary = dictionaryCopy;
+    type = typeCopy;
+    tType = tTypeCopy;
+    if (!typeCopy)
     {
       goto LABEL_51;
     }
 
 LABEL_50:
-    *a3 = v29;
+    *type = v29;
     goto LABEL_51;
   }
 
@@ -466,14 +466,14 @@ LABEL_50:
     v27 = v14;
   }
 
-  a3 = v30;
+  type = typeCopy;
   if (!v26)
   {
     v29 = v14;
-    a5 = v32;
-    a6 = v33;
-    a4 = v31;
-    if (!v30)
+    aTType = aTTypeCopy;
+    dictionary = dictionaryCopy;
+    tType = tTypeCopy;
+    if (!typeCopy)
     {
       goto LABEL_51;
     }
@@ -481,13 +481,13 @@ LABEL_50:
     goto LABEL_50;
   }
 
-  a5 = v32;
-  a6 = v33;
-  a4 = v31;
+  aTType = aTTypeCopy;
+  dictionary = dictionaryCopy;
+  tType = tTypeCopy;
   if (!v27 || v26 != 4 && (v26 >= v27 ? (v28 = v27 == 4) : (v28 = 1), v28))
   {
     v29 = v13;
-    if (!v30)
+    if (!typeCopy)
     {
       goto LABEL_51;
     }
@@ -496,25 +496,25 @@ LABEL_50:
   }
 
   v29 = v14;
-  if (v30)
+  if (typeCopy)
   {
     goto LABEL_50;
   }
 
 LABEL_51:
-  if (a4)
+  if (tType)
   {
-    *a4 = v13;
+    *tType = v13;
   }
 
-  if (a5)
+  if (aTType)
   {
-    *a5 = v14;
+    *aTType = v14;
   }
 
-  if (a6)
+  if (dictionary)
   {
-    *a6 = [(NSMutableDictionary *)self->_interfaceInfoDictionary copyGKSDeepMutable];
+    *dictionary = [(NSMutableDictionary *)self->_interfaceInfoDictionary copyGKSDeepMutable];
   }
 }
 
@@ -810,15 +810,15 @@ LABEL_19:
 LABEL_40:
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   objc_sync_enter(self);
-  if (!a3 || [(GKNATObserverInternal *)self delegate]!= a3)
+  if (!delegate || [(GKNATObserverInternal *)self delegate]!= delegate)
   {
-    objc_storeWeak(&self->_delegate, a3);
-    v5 = [(GKNATObserverInternal *)self delegate];
+    objc_storeWeak(&self->_delegate, delegate);
+    delegate = [(GKNATObserverInternal *)self delegate];
     dynamicStore = self->_dynamicStore;
-    if (v5)
+    if (delegate)
     {
       if (!dynamicStore)
       {
@@ -844,7 +844,7 @@ LABEL_40:
   objc_sync_exit(self);
 }
 
-- (tagCommNATInfo)callCommNATTestFromIPPort:(tagIPPORT *)a3 ipv6Prefix:(id *)a4
+- (tagCommNATInfo)callCommNATTestFromIPPort:(tagIPPORT *)port ipv6Prefix:(id *)prefix
 {
   v44 = *MEMORY[0x1E69E9840];
   dwIPv4 = InterpretAddressX();
@@ -855,10 +855,10 @@ LABEL_40:
     v6 = [GKSConnectivitySettings getIPPortForService:@"gk-commnat-main0"];
   }
 
-  v7 = [GKSConnectivitySettings getIPPortForService:@"gk-commnat-main1-name", a4, a3];
-  if (!v7)
+  port = [GKSConnectivitySettings getIPPortForService:@"gk-commnat-main1-name", prefix, port];
+  if (!port)
   {
-    v7 = [GKSConnectivitySettings getIPPortForService:@"gk-commnat-main1"];
+    port = [GKSConnectivitySettings getIPPortForService:@"gk-commnat-main1"];
   }
 
   v8 = [GKSConnectivitySettings getIPPortForService:@"gk-commnat-cohort-name"];
@@ -913,12 +913,12 @@ LABEL_14:
     }
   }
 
-  v16 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v17 = [v16 objectForKey:@"CommNATMainIP"];
-  v18 = [v16 objectForKey:@"CommNATMainPort0"];
-  v19 = [v16 objectForKey:@"CommNATMainPort1"];
-  v20 = [v16 objectForKey:@"CommNATCohortIP"];
-  v21 = [v16 objectForKey:@"CommNATCohortPort0"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v17 = [standardUserDefaults objectForKey:@"CommNATMainIP"];
+  v18 = [standardUserDefaults objectForKey:@"CommNATMainPort0"];
+  v19 = [standardUserDefaults objectForKey:@"CommNATMainPort1"];
+  v20 = [standardUserDefaults objectForKey:@"CommNATCohortIP"];
+  v21 = [standardUserDefaults objectForKey:@"CommNATCohortPort0"];
   if (!v17)
   {
     if (v6)
@@ -940,7 +940,7 @@ LABEL_27:
       }
 
 LABEL_25:
-      v23 = [v19 integerValue];
+      integerValue = [v19 integerValue];
       if (v20)
       {
         goto LABEL_30;
@@ -979,9 +979,9 @@ LABEL_20:
   }
 
 LABEL_28:
-  if (v7)
+  if (port)
   {
-    v23 = v7->wPort;
+    integerValue = port->wPort;
     if (v20)
     {
       goto LABEL_30;
@@ -990,7 +990,7 @@ LABEL_28:
 
   else
   {
-    v23 = 16386;
+    integerValue = 16386;
     if (v20)
     {
 LABEL_30:
@@ -1025,10 +1025,10 @@ LABEL_37:
 
 LABEL_38:
   free(v6);
-  free(v7);
+  free(port);
   free(v8);
   v24 = micro();
-  v25 = CommNAT_Test(v33, 0x4013u, dwIPv4, v10, wPort, v23, v5);
+  v25 = CommNAT_Test(v33, 0x4013u, dwIPv4, v10, wPort, integerValue, v5);
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
     v26 = VRTraceErrorLogLevelToCSTR();
@@ -1065,9 +1065,9 @@ LABEL_38:
   return v25;
 }
 
-- (int)callHTTPTestFromIPPort:(tagIPPORT *)a3 ipv6Prefix:(id *)a4 ToServer:(id)a5 isSSL:(BOOL)a6
+- (int)callHTTPTestFromIPPort:(tagIPPORT *)port ipv6Prefix:(id *)prefix ToServer:(id)server isSSL:(BOOL)l
 {
-  v6 = a6;
+  lCopy = l;
   v97 = *MEMORY[0x1E69E9840];
   *&v9.sa_len = 0xAAAAAAAAAAAAAAAALL;
   *&v9.sa_data[6] = 0xAAAAAAAAAAAAAAAALL;
@@ -1105,14 +1105,14 @@ LABEL_38:
   }
 
   v14 = *MEMORY[0x1E695E480];
-  v15 = CFURLCreateWithString(*MEMORY[0x1E695E480], a5, 0);
+  v15 = CFURLCreateWithString(*MEMORY[0x1E695E480], server, 0);
   v16 = CFURLCopyHostName(v15);
   [(__CFString *)v16 UTF8String];
   v75 = InterpretAddressX();
   v17 = CFURLGetPortNumber(v15);
   if (v17 < 1)
   {
-    if (v6)
+    if (lCopy)
     {
       v18 = 443;
     }
@@ -1126,18 +1126,18 @@ LABEL_38:
   else
   {
     v18 = v17;
-    v19 = v6;
+    v19 = lCopy;
     v20 = CFStringCreateWithFormat(v14, 0, @"%@:%u", v16, v17);
     CFRelease(v16);
     v16 = v20;
-    v6 = v19;
+    lCopy = v19;
   }
 
   v21 = buf;
   memset(buf, 170, sizeof(buf));
   memset(__b, 170, sizeof(__b));
-  v71 = v6;
-  if (v6)
+  v71 = lCopy;
+  if (lCopy)
   {
     v21 = &cSSLClientHello;
     v70 = 51;
@@ -1173,9 +1173,9 @@ LABEL_38:
     v27 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      if (a5)
+      if (server)
       {
-        v28 = [objc_msgSend(a5 "description")];
+        v28 = [objc_msgSend(server "description")];
       }
 
       else
@@ -1207,7 +1207,7 @@ LABEL_38:
 
   CFRelease(v15);
   CFRelease(v16);
-  if (a3->iFlags)
+  if (port->iFlags)
   {
     v29 = 30;
   }
@@ -1660,17 +1660,17 @@ LABEL_85:
 
   else
   {
-    v8 = [(GKNATObserverInternal *)self ensureNatCachePathExists];
+    ensureNatCachePathExists = [(GKNATObserverInternal *)self ensureNatCachePathExists];
     CFPreferencesAppSynchronize(@"com.apple.conference");
     v9 = CFPreferencesCopyAppValue(@"natTypeCache", @"com.apple.conference");
     v10 = v9;
-    if (v8 && v9)
+    if (ensureNatCachePathExists && v9)
     {
       CFPreferencesSetAppValue(@"natTypeCache", 0, @"com.apple.conference");
       CFPreferencesAppSynchronize(@"com.apple.conference");
     }
 
-    if (v8)
+    if (ensureNatCachePathExists)
     {
       [(GKNATObserverInternal *)self updateNatTypeCache_CachePlistScheme:v10];
     }
@@ -1679,7 +1679,7 @@ LABEL_85:
   }
 }
 
-- (void)updateNatTypeCache_CachePlistScheme:(id)a3
+- (void)updateNatTypeCache_CachePlistScheme:(id)scheme
 {
   v4 = [objc_msgSend(MEMORY[0x1E6986628] "getCachesDirectoryPath")];
   v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithContentsOfFile:v4];
@@ -1689,9 +1689,9 @@ LABEL_85:
   }
 
   v6 = v5;
-  if (a3)
+  if (scheme)
   {
-    [v5 setObject:a3 forKeyedSubscript:@"natTypeCache"];
+    [v5 setObject:scheme forKeyedSubscript:@"natTypeCache"];
     v5 = v6;
   }
 
@@ -1705,21 +1705,21 @@ LABEL_85:
   return CFPreferencesCopyAppValue(@"natTypeCache", @"com.apple.gamed");
 }
 
-- (void)updateNatTypeCache_OSXGamedScheme:(id)a3
+- (void)updateNatTypeCache_OSXGamedScheme:(id)scheme
 {
-  CFPreferencesSetAppValue(@"natTypeCache", a3, @"com.apple.gamed");
+  CFPreferencesSetAppValue(@"natTypeCache", scheme, @"com.apple.gamed");
 
   CFPreferencesAppSynchronize(@"com.apple.gamed");
 }
 
-- (id)lookupCachedNATFlagsForNetwork:(id)a3
+- (id)lookupCachedNATFlagsForNetwork:(id)network
 {
-  v3 = a3;
+  networkCopy = network;
   v17 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (network)
   {
-    v4 = [(GKNATObserverInternal *)self copyNatTypeCache];
-    v3 = [objc_msgSend(v4 objectForKeyedSubscript:{v3), "objectForKey:", @"natFlags"}];
+    copyNatTypeCache = [(GKNATObserverInternal *)self copyNatTypeCache];
+    networkCopy = [objc_msgSend(copyNatTypeCache objectForKeyedSubscript:{networkCopy), "objectForKey:", @"natFlags"}];
     if (VRTraceGetErrorLogLevelForModule() >= 8)
     {
       v5 = VRTraceErrorLogLevelToCSTR();
@@ -1736,11 +1736,11 @@ LABEL_85:
           v13 = 1024;
           v14 = 1082;
           v15 = 2080;
-          v16 = [objc_msgSend(v4 "description")];
+          v16 = [objc_msgSend(copyNatTypeCache "description")];
           _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d GKNATObserver: NAT Cache = %s", &v9, 0x26u);
-          if (!v4)
+          if (!copyNatTypeCache)
           {
-            return v3;
+            return networkCopy;
           }
 
           goto LABEL_9;
@@ -1749,30 +1749,30 @@ LABEL_85:
 
       else if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
       {
-        [(GKNATObserverInternal *)v5 lookupCachedNATFlagsForNetwork:v4];
-        if (!v4)
+        [(GKNATObserverInternal *)v5 lookupCachedNATFlagsForNetwork:copyNatTypeCache];
+        if (!copyNatTypeCache)
         {
-          return v3;
+          return networkCopy;
         }
 
         goto LABEL_9;
       }
     }
 
-    if (v4)
+    if (copyNatTypeCache)
     {
 LABEL_9:
-      CFRelease(v4);
+      CFRelease(copyNatTypeCache);
     }
   }
 
-  return v3;
+  return networkCopy;
 }
 
-- (void)cacheNATFlags:(id)a3 forNetwork:(id)a4
+- (void)cacheNATFlags:(id)flags forNetwork:(id)network
 {
   v47 = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (network)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
@@ -1787,17 +1787,17 @@ LABEL_9:
         v41 = 1024;
         v42 = 1095;
         v43 = 2080;
-        v44 = [objc_msgSend(a3 "description")];
+        v44 = [objc_msgSend(flags "description")];
         v45 = 2080;
-        v46 = [objc_msgSend(a4 "description")];
+        v46 = [objc_msgSend(network "description")];
         _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d GKNATObserver: Caching NAT flags [%s] for network %s...", buf, 0x30u);
       }
     }
 
-    v9 = [(GKNATObserverInternal *)self copyNatTypeCache];
-    if (v9)
+    copyNatTypeCache = [(GKNATObserverInternal *)self copyNatTypeCache];
+    if (copyNatTypeCache)
     {
-      v10 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:v9];
+      v10 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:copyNatTypeCache];
     }
 
     else
@@ -1806,10 +1806,10 @@ LABEL_9:
     }
 
     v11 = v10;
-    v31 = self;
-    if ([v10 objectForKeyedSubscript:a4])
+    selfCopy = self;
+    if ([v10 objectForKeyedSubscript:network])
     {
-      v12 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:{objc_msgSend(v11, "objectForKeyedSubscript:", a4)}];
+      v12 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:{objc_msgSend(v11, "objectForKeyedSubscript:", network)}];
     }
 
     else
@@ -1818,10 +1818,10 @@ LABEL_9:
     }
 
     v13 = v12;
-    cf = v9;
-    if (a3)
+    cf = copyNatTypeCache;
+    if (flags)
     {
-      [v12 setObject:a3 forKeyedSubscript:@"natFlags"];
+      [v12 setObject:flags forKeyedSubscript:@"natFlags"];
       [v13 setObject:objc_msgSend(MEMORY[0x1E695DF00] forKeyedSubscript:{"date"), @"natFlagsLastUpdated"}];
     }
 
@@ -1830,7 +1830,7 @@ LABEL_9:
       [v12 removeObjectForKey:@"natFlags"];
     }
 
-    [v11 setObject:v13 forKeyedSubscript:a4];
+    [v11 setObject:v13 forKeyedSubscript:network];
     if ([v11 count] >= 0x65)
     {
       *&v14 = 136316162;
@@ -1900,7 +1900,7 @@ LABEL_29:
           {
             if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
             {
-              v27 = [v18 UTF8String];
+              uTF8String = [v18 UTF8String];
               *buf = v29;
               v38 = v24;
               v39 = 2080;
@@ -1908,7 +1908,7 @@ LABEL_29:
               v41 = 1024;
               v42 = 1142;
               v43 = 2080;
-              v44 = v27;
+              v44 = uTF8String;
               v45 = 1024;
               LODWORD(v46) = 100;
               _os_log_impl(&dword_1DB56E000, v25, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d GKNATObserver: Pruning network %s from NAT flags cache. (GKNATObserverMaxCachedNetworks=%d)", buf, 0x2Cu);
@@ -1917,7 +1917,7 @@ LABEL_29:
 
           else if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
           {
-            v28 = [v18 UTF8String];
+            uTF8String2 = [v18 UTF8String];
             *buf = v29;
             v38 = v24;
             v39 = 2080;
@@ -1925,7 +1925,7 @@ LABEL_29:
             v41 = 1024;
             v42 = 1142;
             v43 = 2080;
-            v44 = v28;
+            v44 = uTF8String2;
             v45 = 1024;
             LODWORD(v46) = 100;
             _os_log_debug_impl(&dword_1DB56E000, v25, OS_LOG_TYPE_DEBUG, " [%s] %s:%d GKNATObserver: Pruning network %s from NAT flags cache. (GKNATObserverMaxCachedNetworks=%d)", buf, 0x2Cu);
@@ -1938,7 +1938,7 @@ LABEL_29:
       while ([v11 count] > 0x64);
     }
 
-    [(GKNATObserverInternal *)v31 updateNatTypeCache:v11];
+    [(GKNATObserverInternal *)selfCopy updateNatTypeCache:v11];
     if (cf)
     {
       CFRelease(cf);
@@ -1946,19 +1946,19 @@ LABEL_29:
   }
 }
 
-- (void)NATCheckWithIPPort:(tagIPPORT *)a3 ipv6Prefix:(id *)a4 useCache:(BOOL)a5
+- (void)NATCheckWithIPPort:(tagIPPORT *)port ipv6Prefix:(id *)prefix useCache:(BOOL)cache
 {
-  v5 = a5;
+  cacheCopy = cache;
   v63 = *MEMORY[0x1E69E9840];
   v9 = objc_alloc_init(MEMORY[0x1E696AAC8]);
-  if ((a3->iFlags & 4) != 0)
+  if ((port->iFlags & 4) != 0)
   {
-    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"gk_ci_%s", a3->szIfName];
+    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"gk_ci_%s", port->szIfName];
   }
 
   else
   {
-    v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:a3->szIfName];
+    v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:port->szIfName];
   }
 
   v11 = v10;
@@ -1991,14 +1991,14 @@ LABEL_29:
   }
 
   v15 = micro();
-  if ((a3->iFlags & 4) != 0)
+  if ((port->iFlags & 4) != 0)
   {
     v16 = @"gk_ci_cache";
   }
 
   else
   {
-    v16 = [(GKNATObserverInternal *)self nameForNetworkWithIPPort:a3 interfaceName:v11];
+    v16 = [(GKNATObserverInternal *)self nameForNetworkWithIPPort:port interfaceName:v11];
   }
 
   v17 = micro() - v15;
@@ -2022,7 +2022,7 @@ LABEL_29:
 
   v20 = micro();
   dispatch_semaphore_wait(self->_natCheckNetNameSema, 0xFFFFFFFFFFFFFFFFLL);
-  if (v5)
+  if (cacheCopy)
   {
     if (v16)
     {
@@ -2054,10 +2054,10 @@ LABEL_29:
       }
 
       [(NSRecursiveLock *)self->_xNATCheck lock];
-      v26 = [v22 unsignedLongValue];
-      [(GKNATObserverInternal *)self setCommNATFlags:v26 forInterface:v11 isCached:1];
-      [(GKNATObserverInternal *)self setTCPFlags:v26 forInterface:v11 isCached:1];
-      [(GKNATObserverInternal *)self setSSLFlags:v26 forInterface:v11 isCached:1];
+      unsignedLongValue = [v22 unsignedLongValue];
+      [(GKNATObserverInternal *)self setCommNATFlags:unsignedLongValue forInterface:v11 isCached:1];
+      [(GKNATObserverInternal *)self setTCPFlags:unsignedLongValue forInterface:v11 isCached:1];
+      [(GKNATObserverInternal *)self setSSLFlags:unsignedLongValue forInterface:v11 isCached:1];
       if (VRTraceGetErrorLogLevelForModule() >= 7)
       {
         v51 = VRTraceErrorLogLevelToCSTR();
@@ -2074,7 +2074,7 @@ LABEL_29:
           v59 = 2080;
           v60 = *&v28;
           v61 = 2048;
-          v62 = v26;
+          v62 = unsignedLongValue;
           _os_log_impl(&dword_1DB56E000, v27, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d GKNATObserver: Cached NAT flags for network %s: [%08lX]", buf, 0x30u);
         }
       }
@@ -2082,7 +2082,7 @@ LABEL_29:
       [(NSRecursiveLock *)self->_xNATCheck unlock];
       [(GKNATObserverInternal *)self reportNATType];
       v29 = [-[NSMutableDictionary objectForKeyedSubscript:](self->_currentNetworkNames objectForKeyedSubscript:{v11), "isEqualToString:", v16}];
-      if (v26)
+      if (unsignedLongValue)
       {
 LABEL_34:
         v9 = v52;
@@ -2161,7 +2161,7 @@ LABEL_34:
     }
   }
 
-  v36 = [(GKNATObserverInternal *)self callCommNATTestFromIPPort:a3 ipv6Prefix:a4];
+  v36 = [(GKNATObserverInternal *)self callCommNATTestFromIPPort:port ipv6Prefix:prefix];
   if (v36)
   {
     var0 = v36->var0;
@@ -2197,7 +2197,7 @@ LABEL_34:
   }
 
   [(GKNATObserverInternal *)self reportNATType];
-  if (v5)
+  if (cacheCopy)
   {
     if (v16)
     {
@@ -2231,40 +2231,40 @@ LABEL_55:
 LABEL_56:
 }
 
-- (void)HTTPCheckWithIPPort:(tagIPPORT *)a3 ipv6Prefix:(id *)a4 useCache:(BOOL)a5
+- (void)HTTPCheckWithIPPort:(tagIPPORT *)port ipv6Prefix:(id *)prefix useCache:(BOOL)cache
 {
-  v5 = a5;
+  cacheCopy = cache;
   v9 = objc_alloc_init(MEMORY[0x1E696AAC8]);
-  if ((a3->iFlags & 4) != 0)
+  if ((port->iFlags & 4) != 0)
   {
-    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"gk_ci_%s", a3->szIfName];
+    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"gk_ci_%s", port->szIfName];
   }
 
   else
   {
-    v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:a3->szIfName];
+    v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:port->szIfName];
   }
 
   v11 = v10;
-  if ((a3->iFlags & 4) != 0)
+  if ((port->iFlags & 4) != 0)
   {
     v12 = @"gk_ci_cache";
   }
 
   else
   {
-    v12 = [(GKNATObserverInternal *)self nameForNetworkWithIPPort:a3 interfaceName:v10];
+    v12 = [(GKNATObserverInternal *)self nameForNetworkWithIPPort:port interfaceName:v10];
   }
 
   v13 = [GKSConnectivitySettings getAddressForService:@"gk-p2p-tcp-check-url"];
   if (v13)
   {
-    v14 = ([(GKNATObserverInternal *)self callHTTPTestFromIPPort:a3 ipv6Prefix:a4 ToServer:v13 isSSL:0]!= 0) << 11;
+    v14 = ([(GKNATObserverInternal *)self callHTTPTestFromIPPort:port ipv6Prefix:prefix ToServer:v13 isSSL:0]!= 0) << 11;
     [(NSRecursiveLock *)self->_xNATCheck lock];
     v15 = [(GKNATObserverInternal *)self setTCPFlags:v14 forInterface:v11 isCached:0];
     [(NSRecursiveLock *)self->_xNATCheck unlock];
     [(GKNATObserverInternal *)self reportNATType];
-    if (v5 && v12)
+    if (cacheCopy && v12)
     {
       -[GKNATObserverInternal cacheNATFlags:forNetwork:](self, "cacheNATFlags:forNetwork:", [MEMORY[0x1E696AD98] numberWithUnsignedInt:v15], v12);
     }
@@ -2280,40 +2280,40 @@ LABEL_56:
   }
 }
 
-- (void)HTTPSCheckWithIPPort:(tagIPPORT *)a3 ipv6Prefix:(id *)a4 useCache:(BOOL)a5
+- (void)HTTPSCheckWithIPPort:(tagIPPORT *)port ipv6Prefix:(id *)prefix useCache:(BOOL)cache
 {
-  v5 = a5;
+  cacheCopy = cache;
   v9 = objc_alloc_init(MEMORY[0x1E696AAC8]);
-  if ((a3->iFlags & 4) != 0)
+  if ((port->iFlags & 4) != 0)
   {
-    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"gk_ci_%s", a3->szIfName];
+    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"gk_ci_%s", port->szIfName];
   }
 
   else
   {
-    v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:a3->szIfName];
+    v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:port->szIfName];
   }
 
   v11 = v10;
-  if ((a3->iFlags & 4) != 0)
+  if ((port->iFlags & 4) != 0)
   {
     v12 = @"gk_ci_cache";
   }
 
   else
   {
-    v12 = [(GKNATObserverInternal *)self nameForNetworkWithIPPort:a3 interfaceName:v10];
+    v12 = [(GKNATObserverInternal *)self nameForNetworkWithIPPort:port interfaceName:v10];
   }
 
   v13 = [GKSConnectivitySettings getAddressForService:@"gk-p2p-ssl-check-url"];
   if (v13)
   {
-    v14 = ([(GKNATObserverInternal *)self callHTTPTestFromIPPort:a3 ipv6Prefix:a4 ToServer:v13 isSSL:1]!= 0) << 12;
+    v14 = ([(GKNATObserverInternal *)self callHTTPTestFromIPPort:port ipv6Prefix:prefix ToServer:v13 isSSL:1]!= 0) << 12;
     [(NSRecursiveLock *)self->_xNATCheck lock];
     v15 = [(GKNATObserverInternal *)self setSSLFlags:v14 forInterface:v11 isCached:0];
     [(NSRecursiveLock *)self->_xNATCheck unlock];
     [(GKNATObserverInternal *)self reportNATType];
-    if (v5 && v12)
+    if (cacheCopy && v12)
     {
       -[GKNATObserverInternal cacheNATFlags:forNetwork:](self, "cacheNATFlags:forNetwork:", [MEMORY[0x1E696AD98] numberWithUnsignedInt:v15], v12);
     }
@@ -2338,7 +2338,7 @@ LABEL_56:
   [(NSRecursiveLock *)xNATCheck unlock];
 }
 
-- (void)tryNATCheckWithDelay:(double)a3
+- (void)tryNATCheckWithDelay:(double)delay
 {
   v19 = *MEMORY[0x1E69E9840];
   self->_hasNATCheckStarted = 1;
@@ -2386,7 +2386,7 @@ LABEL_56:
     block[2] = __46__GKNATObserverInternal_tryNATCheckWithDelay___block_invoke;
     block[3] = &unk_1E85F4090;
     block[4] = self;
-    *&block[5] = a3;
+    *&block[5] = delay;
     *&block[6] = v8;
     dispatch_async(natCheckQueue, block);
   }
@@ -2992,7 +2992,7 @@ uint64_t __46__GKNATObserverInternal_tryNATCheckWithDelay___block_invoke_161(uin
   return result;
 }
 
-- (id)nameForNetworkWithIPPort:(tagIPPORT *)a3 interfaceName:(id)a4
+- (id)nameForNetworkWithIPPort:(tagIPPORT *)port interfaceName:(id)name
 {
   v31 = *MEMORY[0x1E69E9840];
   objc_sync_enter(self);
@@ -3000,7 +3000,7 @@ uint64_t __46__GKNATObserverInternal_tryNATCheckWithDelay___block_invoke_161(uin
   objc_sync_exit(self);
   if (v7)
   {
-    v8 = [(__CFDictionary *)v7 allValues];
+    allValues = [(__CFDictionary *)v7 allValues];
     if (VRTraceGetErrorLogLevelForModule() >= 8)
     {
       v9 = VRTraceErrorLogLevelToCSTR();
@@ -3032,7 +3032,7 @@ uint64_t __46__GKNATObserverInternal_tryNATCheckWithDelay___block_invoke_161(uin
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v12 = [v8 countByEnumeratingWithState:&v19 objects:v18 count:16];
+    v12 = [allValues countByEnumeratingWithState:&v19 objects:v18 count:16];
     if (v12)
     {
       v13 = *v20;
@@ -3042,18 +3042,18 @@ LABEL_10:
       {
         if (*v20 != v13)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allValues);
         }
 
         v15 = *(*(&v19 + 1) + 8 * v14);
-        if ([objc_msgSend(v15 objectForKeyedSubscript:{@"InterfaceName", "isEqual:", a4}])
+        if ([objc_msgSend(v15 objectForKeyedSubscript:{@"InterfaceName", "isEqual:", name}])
         {
           break;
         }
 
         if (v12 == ++v14)
         {
-          v12 = [v8 countByEnumeratingWithState:&v19 objects:v18 count:16];
+          v12 = [allValues countByEnumeratingWithState:&v19 objects:v18 count:16];
           if (v12)
           {
             goto LABEL_10;
@@ -3083,7 +3083,7 @@ LABEL_16:
     [GKNATObserverInternal nameForNetworkWithIPPort:interfaceName:];
   }
 
-  return [MEMORY[0x1E696AEC0] stringWithFormat:@"%u.%u.%u.%u%%%@", HIBYTE(a3->IP.dwIPv4), BYTE2(a3->IP.dwIPv4), BYTE1(a3->IP.dwIPv4), a3->IP.dwIPv4, a4];
+  return [MEMORY[0x1E696AEC0] stringWithFormat:@"%u.%u.%u.%u%%%@", HIBYTE(port->IP.dwIPv4), BYTE2(port->IP.dwIPv4), BYTE1(port->IP.dwIPv4), port->IP.dwIPv4, name];
 }
 
 - (void)registerForNetworkChanges

@@ -1,5 +1,5 @@
 @interface CADPooledConnection
-- (CADPooledConnection)initWithDatabase:(CalDatabase *)a3;
+- (CADPooledConnection)initWithDatabase:(CalDatabase *)database;
 - (void)dealloc;
 @end
 
@@ -13,15 +13,15 @@
   [(CADPooledConnection *)&v3 dealloc];
 }
 
-- (CADPooledConnection)initWithDatabase:(CalDatabase *)a3
+- (CADPooledConnection)initWithDatabase:(CalDatabase *)database
 {
   v6.receiver = self;
   v6.super_class = CADPooledConnection;
   v4 = [(CADPooledConnection *)&v6 init];
   if (v4)
   {
-    CFRetain(a3);
-    v4->_database = a3;
+    CFRetain(database);
+    v4->_database = database;
   }
 
   return v4;

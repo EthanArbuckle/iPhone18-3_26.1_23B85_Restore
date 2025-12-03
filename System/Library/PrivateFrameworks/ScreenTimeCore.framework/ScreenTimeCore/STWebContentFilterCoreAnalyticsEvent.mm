@@ -1,16 +1,16 @@
 @interface STWebContentFilterCoreAnalyticsEvent
 - (NSDictionary)payload;
-- (STWebContentFilterCoreAnalyticsEvent)initWithWebContentFilterEnabled:(BOOL)a3;
+- (STWebContentFilterCoreAnalyticsEvent)initWithWebContentFilterEnabled:(BOOL)enabled;
 @end
 
 @implementation STWebContentFilterCoreAnalyticsEvent
 
-- (STWebContentFilterCoreAnalyticsEvent)initWithWebContentFilterEnabled:(BOOL)a3
+- (STWebContentFilterCoreAnalyticsEvent)initWithWebContentFilterEnabled:(BOOL)enabled
 {
   v5.receiver = self;
   v5.super_class = STWebContentFilterCoreAnalyticsEvent;
   result = [(STWebContentFilterCoreAnalyticsEvent *)&v5 init];
-  result->_webContentFilterEnabled = a3;
+  result->_webContentFilterEnabled = enabled;
   return result;
 }
 

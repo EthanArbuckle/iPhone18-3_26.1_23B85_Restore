@@ -1,6 +1,6 @@
 @interface AMSAutoBugCaptureService
 + (AMSAutoBugCaptureService)sharedService;
-- (void)captureSnapshotWithSignature:(id)a3 delay:(double)a4 events:(id)a5 payload:(id)a6 actions:(id)a7 completion:(id)a8;
+- (void)captureSnapshotWithSignature:(id)signature delay:(double)delay events:(id)events payload:(id)payload actions:(id)actions completion:(id)completion;
 @end
 
 @implementation AMSAutoBugCaptureService
@@ -24,14 +24,14 @@ uint64_t __41__AMSAutoBugCaptureService_sharedService__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)captureSnapshotWithSignature:(id)a3 delay:(double)a4 events:(id)a5 payload:(id)a6 actions:(id)a7 completion:(id)a8
+- (void)captureSnapshotWithSignature:(id)signature delay:(double)delay events:(id)events payload:(id)payload actions:(id)actions completion:(id)completion
 {
   v51 = *MEMORY[0x1E69E9840];
-  v38 = a3;
-  v39 = a5;
-  v40 = a6;
-  v41 = a7;
-  v15 = a8;
+  signatureCopy = signature;
+  eventsCopy = events;
+  payloadCopy = payload;
+  actionsCopy = actions;
+  completionCopy = completion;
   v16 = objc_alloc_init(AMSDaemonConnection);
   v46 = 0;
   v17 = [(AMSDaemonConnection *)v16 autoBugCaptureServiceProxySyncWithError:&v46];
@@ -40,16 +40,16 @@ uint64_t __41__AMSAutoBugCaptureService_sharedService__block_invoke()
   {
     v19 = +[AMSUnitTests isRunningUnitTests];
     v20 = +[AMSLogConfig sharedConfig];
-    v21 = v20;
+    defaultCenter = v20;
     if (v19)
     {
       if (!v20)
       {
-        v21 = +[AMSLogConfig sharedConfig];
+        defaultCenter = +[AMSLogConfig sharedConfig];
       }
 
-      v22 = [v21 OSLogObject];
-      if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+      oSLogObject = [defaultCenter OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v36 = AMSLogKey();
         v23 = MEMORY[0x1E696AEC0];
@@ -73,26 +73,26 @@ uint64_t __41__AMSAutoBugCaptureService_sharedService__block_invoke()
         *&buf[4] = v26;
         *&buf[12] = 2114;
         *&buf[14] = v32;
-        _os_log_impl(&dword_192869000, v22, OS_LOG_TYPE_ERROR, "%{public}@Failed to get XPC proxy object for auto bug capture service. error = %{public}@", buf, 0x16u);
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@Failed to get XPC proxy object for auto bug capture service. error = %{public}@", buf, 0x16u);
         if (v36)
         {
         }
       }
 
-      v21 = [MEMORY[0x1E696AD88] defaultCenter];
-      v27 = +[AMSLogConfig sharedConfig];
-      [v21 postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:v27 userInfo:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      oSLogObject2 = +[AMSLogConfig sharedConfig];
+      [defaultCenter postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:oSLogObject2 userInfo:0];
     }
 
     else
     {
       if (!v20)
       {
-        v21 = +[AMSLogConfig sharedConfig];
+        defaultCenter = +[AMSLogConfig sharedConfig];
       }
 
-      v27 = [v21 OSLogObject];
-      if (os_log_type_enabled(v27, OS_LOG_TYPE_FAULT))
+      oSLogObject2 = [defaultCenter OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_FAULT))
       {
         v37 = AMSLogKey();
         v28 = MEMORY[0x1E696AEC0];
@@ -116,14 +116,14 @@ uint64_t __41__AMSAutoBugCaptureService_sharedService__block_invoke()
         *&buf[4] = v31;
         *&buf[12] = 2114;
         *&buf[14] = v33;
-        _os_log_impl(&dword_192869000, v27, OS_LOG_TYPE_FAULT, "%{public}@Failed to get XPC proxy object for auto bug capture service. error = %{public}@", buf, 0x16u);
+        _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_FAULT, "%{public}@Failed to get XPC proxy object for auto bug capture service. error = %{public}@", buf, 0x16u);
         if (v37)
         {
         }
       }
     }
 
-    v15[2](v15, 0, v18);
+    completionCopy[2](completionCopy, 0, v18);
   }
 
   else
@@ -141,8 +141,8 @@ uint64_t __41__AMSAutoBugCaptureService_sharedService__block_invoke()
     v44 = buf;
     v45 = a2;
     v42[4] = self;
-    v43 = v15;
-    [v17 captureSnapshotWithSignature:v38 delay:v39 events:v40 payload:v41 actions:v42 completion:a4];
+    v43 = completionCopy;
+    [v17 captureSnapshotWithSignature:signatureCopy delay:eventsCopy events:payloadCopy payload:actionsCopy actions:v42 completion:delay];
 
     _Block_object_dispose(buf, 8);
   }

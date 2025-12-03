@@ -1,7 +1,7 @@
 @interface HomeResultCache
 - (HomeResultCache)init;
-- (id)resultForKey:(id)a3;
-- (void)setResult:(id)a3 forKey:(id)a4;
+- (id)resultForKey:(id)key;
+- (void)setResult:(id)result forKey:(id)key;
 @end
 
 @implementation HomeResultCache
@@ -27,13 +27,13 @@
   return v2;
 }
 
-- (void)setResult:(id)a3 forKey:(id)a4
+- (void)setResult:(id)result forKey:(id)key
 {
-  v6 = a3;
-  if (v6 && a4)
+  resultCopy = result;
+  if (resultCopy && key)
   {
-    [(NSMutableArray *)self->_keys insertObject:a4 atIndex:0];
-    [(NSMutableArray *)self->_values insertObject:v6 atIndex:0];
+    [(NSMutableArray *)self->_keys insertObject:key atIndex:0];
+    [(NSMutableArray *)self->_values insertObject:resultCopy atIndex:0];
     while ([(NSMutableArray *)self->_keys count]> self->_capacity)
     {
       [(NSMutableArray *)self->_keys removeLastObject];
@@ -42,15 +42,15 @@
   }
 }
 
-- (id)resultForKey:(id)a3
+- (id)resultForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   keys = self->_keys;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1007D9B44;
   v12[3] = &unk_10162A810;
-  v6 = v4;
+  v6 = keyCopy;
   v13 = v6;
   v7 = [(NSMutableArray *)keys indexOfObjectPassingTest:v12];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)

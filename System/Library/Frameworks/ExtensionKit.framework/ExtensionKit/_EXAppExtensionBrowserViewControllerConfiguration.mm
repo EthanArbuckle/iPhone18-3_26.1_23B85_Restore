@@ -1,24 +1,24 @@
 @interface _EXAppExtensionBrowserViewControllerConfiguration
 - (NSArray)extensionPointIdentifiers;
 - (_TtC12ExtensionKit49_EXAppExtensionBrowserViewControllerConfiguration)init;
-- (_TtC12ExtensionKit49_EXAppExtensionBrowserViewControllerConfiguration)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setExtensionPointIdentifiers:(id)a3;
+- (_TtC12ExtensionKit49_EXAppExtensionBrowserViewControllerConfiguration)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
+- (void)setExtensionPointIdentifiers:(id)identifiers;
 @end
 
 @implementation _EXAppExtensionBrowserViewControllerConfiguration
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D29D90C0(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_1D29D90C0(coderCopy);
 }
 
-- (_TtC12ExtensionKit49_EXAppExtensionBrowserViewControllerConfiguration)initWithCoder:(id)a3
+- (_TtC12ExtensionKit49_EXAppExtensionBrowserViewControllerConfiguration)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = sub_1D29D93E0(v3);
+  coderCopy = coder;
+  v4 = sub_1D29D93E0(coderCopy);
 
   return v4;
 }
@@ -40,9 +40,9 @@
   return v3;
 }
 
-- (void)setExtensionPointIdentifiers:(id)a3
+- (void)setExtensionPointIdentifiers:(id)identifiers
 {
-  if (a3)
+  if (identifiers)
   {
     v4 = sub_1D2A004A8();
   }

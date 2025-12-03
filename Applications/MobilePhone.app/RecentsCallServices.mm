@@ -1,24 +1,24 @@
 @interface RecentsCallServices
 - (_TtC11MobilePhone19RecentsCallServices)init;
-- (_TtC11MobilePhone19RecentsCallServices)initWithGroupConversationsEnabled:(BOOL)a3 recentsCallServicesDialer:(id)a4;
-- (void)placeCallWithRecentCall:(id)a3;
+- (_TtC11MobilePhone19RecentsCallServices)initWithGroupConversationsEnabled:(BOOL)enabled recentsCallServicesDialer:(id)dialer;
+- (void)placeCallWithRecentCall:(id)call;
 @end
 
 @implementation RecentsCallServices
 
-- (_TtC11MobilePhone19RecentsCallServices)initWithGroupConversationsEnabled:(BOOL)a3 recentsCallServicesDialer:(id)a4
+- (_TtC11MobilePhone19RecentsCallServices)initWithGroupConversationsEnabled:(BOOL)enabled recentsCallServicesDialer:(id)dialer
 {
   swift_getObjectType();
   swift_unknownObjectRetain();
 
-  return specialized RecentsCallServices.init(groupConversationsEnabled:recentsCallServicesDialer:)(a3, a4, self);
+  return specialized RecentsCallServices.init(groupConversationsEnabled:recentsCallServicesDialer:)(enabled, dialer, self);
 }
 
-- (void)placeCallWithRecentCall:(id)a3
+- (void)placeCallWithRecentCall:(id)call
 {
-  v4 = a3;
-  v5 = self;
-  RecentsCallServices.placeCall(with:)(v4);
+  callCopy = call;
+  selfCopy = self;
+  RecentsCallServices.placeCall(with:)(callCopy);
 }
 
 - (_TtC11MobilePhone19RecentsCallServices)init

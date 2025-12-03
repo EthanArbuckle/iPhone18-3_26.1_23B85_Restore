@@ -1,7 +1,7 @@
 @interface CoreDAVPropStatItem
 + (id)copyParseRules;
 - (id)description;
-- (void)setErrorItem:(id)a3;
+- (void)setErrorItem:(id)item;
 @end
 
 @implementation CoreDAVPropStatItem
@@ -14,17 +14,17 @@
   v4 = [(CoreDAVItem *)&v10 description];
   [v3 appendFormat:@"[%@]", v4];
 
-  v5 = [(CoreDAVPropStatItem *)self status];
-  [v3 appendFormat:@"\n  Status: [%@]", v5];
+  status = [(CoreDAVPropStatItem *)self status];
+  [v3 appendFormat:@"\n  Status: [%@]", status];
 
-  v6 = [(CoreDAVPropStatItem *)self prop];
-  [v3 appendFormat:@"\n  Prop: [%@]", v6];
+  prop = [(CoreDAVPropStatItem *)self prop];
+  [v3 appendFormat:@"\n  Prop: [%@]", prop];
 
-  v7 = [(CoreDAVPropStatItem *)self errorItem];
-  [v3 appendFormat:@"\n  Error: [%@]", v7];
+  errorItem = [(CoreDAVPropStatItem *)self errorItem];
+  [v3 appendFormat:@"\n  Error: [%@]", errorItem];
 
-  v8 = [(CoreDAVPropStatItem *)self responseDescription];
-  [v3 appendFormat:@"\n  Response description: [%@]", v8];
+  responseDescription = [(CoreDAVPropStatItem *)self responseDescription];
+  [v3 appendFormat:@"\n  Response description: [%@]", responseDescription];
 
   return v3;
 }
@@ -32,7 +32,7 @@
 + (id)copyParseRules
 {
   v3 = +[CoreDAVItem parseRuleCache];
-  v4 = NSStringFromClass(a1);
+  v4 = NSStringFromClass(self);
   v5 = [v3 objectForKey:v4];
 
   if (!v5)
@@ -49,19 +49,19 @@
     v5 = [v17 initWithObjectsAndKeys:{v16, v15, v6, v7, v8, v9, v10, v11, 0}];
 
     v12 = +[CoreDAVItem parseRuleCache];
-    v13 = NSStringFromClass(a1);
+    v13 = NSStringFromClass(self);
     [v12 setObject:v5 forKey:v13];
   }
 
   return v5;
 }
 
-- (void)setErrorItem:(id)a3
+- (void)setErrorItem:(id)item
 {
-  v5 = a3;
-  if (self->_errorItem != v5)
+  itemCopy = item;
+  if (self->_errorItem != itemCopy)
   {
-    objc_storeStrong(&self->_errorItem, a3);
+    objc_storeStrong(&self->_errorItem, item);
     if (self->_status)
     {
       [(CoreDAVErrorItem *)self->_errorItem setStatus:?];

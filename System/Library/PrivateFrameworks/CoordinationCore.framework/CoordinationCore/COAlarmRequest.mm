@@ -1,20 +1,20 @@
 @interface COAlarmRequest
-- (COAlarmRequest)initWithAlarm:(id)a3;
-- (COAlarmRequest)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (COAlarmRequest)initWithAlarm:(id)alarm;
+- (COAlarmRequest)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation COAlarmRequest
 
-- (COAlarmRequest)initWithAlarm:(id)a3
+- (COAlarmRequest)initWithAlarm:(id)alarm
 {
-  v4 = a3;
+  alarmCopy = alarm;
   v9.receiver = self;
   v9.super_class = COAlarmRequest;
   v5 = [(COMeshCommand *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [alarmCopy copy];
     alarm = v5->_alarm;
     v5->_alarm = v6;
   }
@@ -22,15 +22,15 @@
   return v5;
 }
 
-- (COAlarmRequest)initWithCoder:(id)a3
+- (COAlarmRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = COAlarmRequest;
-  v5 = [(COMeshCommand *)&v9 initWithCoder:v4];
+  v5 = [(COMeshCommand *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"alarm"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"alarm"];
     alarm = v5->_alarm;
     v5->_alarm = v6;
   }
@@ -38,14 +38,14 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = COAlarmRequest;
-  v4 = a3;
-  [(COMeshCommand *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(COMeshCommand *)&v6 encodeWithCoder:coderCopy];
   v5 = [(COAlarmRequest *)self alarm:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"alarm"];
+  [coderCopy encodeObject:v5 forKey:@"alarm"];
 }
 
 @end

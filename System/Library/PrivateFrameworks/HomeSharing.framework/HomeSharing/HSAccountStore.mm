@@ -4,15 +4,15 @@
 - (HSAccountStore)init;
 - (NSString)appleID;
 - (NSString)groupID;
-- (void)_onBackgroundQueue_determineGroupIDWithCompletionHandler:(id)a3;
+- (void)_onBackgroundQueue_determineGroupIDWithCompletionHandler:(id)handler;
 - (void)clearAllCredentials;
 - (void)clearCaches;
 - (void)clearGroupID;
 - (void)dealloc;
-- (void)determineGroupIDWithCompletionHandler:(id)a3;
-- (void)setAppleID:(id)a3;
-- (void)setGroupID:(id)a3;
-- (void)setPassword:(id)a3;
+- (void)determineGroupIDWithCompletionHandler:(id)handler;
+- (void)setAppleID:(id)d;
+- (void)setGroupID:(id)d;
+- (void)setPassword:(id)password;
 @end
 
 @implementation HSAccountStore
@@ -23,7 +23,7 @@
   block[1] = 3221225472;
   block[2] = __30__HSAccountStore_defaultStore__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (defaultStore_onceToken != -1)
   {
     dispatch_once(&defaultStore_onceToken, block);
@@ -73,11 +73,11 @@ uint64_t __30__HSAccountStore_defaultStore__block_invoke()
 
 - (BOOL)canDetermineGroupID
 {
-  v3 = [(HSAccountStore *)self appleID];
-  if (v3)
+  appleID = [(HSAccountStore *)self appleID];
+  if (appleID)
   {
-    v4 = [(HSAccountStore *)self password];
-    v5 = v4 != 0;
+    password = [(HSAccountStore *)self password];
+    v5 = password != 0;
   }
 
   else
@@ -99,8 +99,8 @@ uint64_t __30__HSAccountStore_defaultStore__block_invoke()
   if (!CFPreferencesGetAppBooleanValue(@"homeSharingDidSetDefaultAppleID", @"com.apple.homesharing", 0) && ![v13[5] length])
   {
     v3 = dispatch_semaphore_create(0);
-    v4 = [MEMORY[0x277D7FCA8] defaultIdentityStore];
-    v5 = [MEMORY[0x277D7FCA0] activeAccount];
+    defaultIdentityStore = [MEMORY[0x277D7FCA8] defaultIdentityStore];
+    activeAccount = [MEMORY[0x277D7FCA0] activeAccount];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __25__HSAccountStore_appleID__block_invoke;
@@ -109,7 +109,7 @@ uint64_t __30__HSAccountStore_defaultStore__block_invoke()
     v9[4] = self;
     v6 = v3;
     v10 = v6;
-    [v4 getPropertiesForUserIdentity:v5 completionHandler:v9];
+    [defaultIdentityStore getPropertiesForUserIdentity:activeAccount completionHandler:v9];
   }
 
   v7 = v13[5];
@@ -151,19 +151,19 @@ void __25__HSAccountStore_appleID__block_invoke(uint64_t a1, void *a2)
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-- (void)setGroupID:(id)a3
+- (void)setGroupID:(id)d
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = os_log_create("com.apple.amp.HomeSharing", "Accounts");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = v4;
+    v7 = dCopy;
     _os_log_impl(&dword_254418000, v5, OS_LOG_TYPE_DEFAULT, "Setting groupID=%{public}@", &v6, 0xCu);
   }
 
-  CFPreferencesSetAppValue(@"homeSharingGroupID", v4, @"com.apple.homesharing");
+  CFPreferencesSetAppValue(@"homeSharingGroupID", dCopy, @"com.apple.homesharing");
   CFPreferencesAppSynchronize(@"com.apple.homesharing");
   notify_set_state(self->_defaultsDidChangeToken, 1uLL);
   notify_post("com.apple.mobileipod.HomeSharingDefaultsDidChange");
@@ -185,7 +185,7 @@ void __25__HSAccountStore_appleID__block_invoke(uint64_t a1, void *a2)
 {
   v18 = *MEMORY[0x277D85DE8];
   v2 = HSLibraryCacheAllKnownCacheDirectories();
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -214,7 +214,7 @@ void __25__HSAccountStore_appleID__block_invoke(uint64_t a1, void *a2)
           _os_log_impl(&dword_254418000, v10, OS_LOG_TYPE_DEFAULT, "Removing sharing Home Sharing library caches at path: %{public}@", buf, 0xCu);
         }
 
-        [v3 removeItemAtPath:v9 error:0];
+        [defaultManager removeItemAtPath:v9 error:0];
       }
 
       v6 = [v4 countByEnumeratingWithState:&v11 objects:v17 count:16];
@@ -240,40 +240,40 @@ void __25__HSAccountStore_appleID__block_invoke(uint64_t a1, void *a2)
   [(HSAccountStore *)self setGroupID:0];
 }
 
-- (void)_onBackgroundQueue_determineGroupIDWithCompletionHandler:(id)a3
+- (void)_onBackgroundQueue_determineGroupIDWithCompletionHandler:(id)handler
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   if ([(HSAccountStore *)self canDetermineGroupID])
   {
     v5 = os_log_create("com.apple.amp.HomeSharing", "Accounts");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(HSAccountStore *)self appleID];
+      appleID = [(HSAccountStore *)self appleID];
       *buf = 138412290;
-      v16 = v6;
+      v16 = appleID;
       _os_log_impl(&dword_254418000, v5, OS_LOG_TYPE_DEFAULT, "Determining Group ID for Apple ID: %@", buf, 0xCu);
     }
 
     v7 = objc_alloc(MEMORY[0x277D7FC30]);
-    v8 = [MEMORY[0x277D7FCA0] activeAccount];
-    v9 = [v7 initWithIdentity:v8];
+    activeAccount = [MEMORY[0x277D7FCA0] activeAccount];
+    v9 = [v7 initWithIdentity:activeAccount];
 
-    v10 = [MEMORY[0x277D7FC68] sharedBagProvider];
+    mEMORY[0x277D7FC68] = [MEMORY[0x277D7FC68] sharedBagProvider];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __75__HSAccountStore__onBackgroundQueue_determineGroupIDWithCompletionHandler___block_invoke;
     v12[3] = &unk_279779D50;
     v13 = v9;
-    v14 = v4;
+    v14 = handlerCopy;
     v12[4] = self;
     v11 = v9;
-    [v10 getBagForRequestContext:v11 withCompletionHandler:v12];
+    [mEMORY[0x277D7FC68] getBagForRequestContext:v11 withCompletionHandler:v12];
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
@@ -487,29 +487,29 @@ void __75__HSAccountStore__onBackgroundQueue_determineGroupIDWithCompletionHandl
   }
 }
 
-- (void)determineGroupIDWithCompletionHandler:(id)a3
+- (void)determineGroupIDWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = dispatch_get_global_queue(0, 0);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__HSAccountStore_determineGroupIDWithCompletionHandler___block_invoke;
   v7[3] = &unk_27977A2D8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(v5, v7);
 }
 
-- (void)setPassword:(id)a3
+- (void)setPassword:(id)password
 {
-  v4 = a3;
-  v5 = [(HSAccountStore *)self password];
-  v6 = [v4 isEqualToString:v5];
+  passwordCopy = password;
+  password = [(HSAccountStore *)self password];
+  v6 = [passwordCopy isEqualToString:password];
 
   if ((v6 & 1) == 0)
   {
-    if (v4)
+    if (passwordCopy)
     {
       v7 = os_log_create("com.apple.amp.HomeSharing", "Accounts");
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -528,7 +528,7 @@ void __75__HSAccountStore__onBackgroundQueue_determineGroupIDWithCompletionHandl
     block[3] = &unk_27977A350;
     block[4] = self;
     dispatch_sync(queue, block);
-    HSSetKeychainValueForAccountWithService(v4);
+    HSSetKeychainValueForAccountWithService(passwordCopy);
   }
 }
 
@@ -545,23 +545,23 @@ void __30__HSAccountStore_setPassword___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setAppleID:(id)a3
+- (void)setAppleID:(id)d
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HSAccountStore *)self appleID];
-  v6 = [v4 isEqualToString:v5];
+  dCopy = d;
+  appleID = [(HSAccountStore *)self appleID];
+  v6 = [dCopy isEqualToString:appleID];
 
   if ((v6 & 1) == 0)
   {
     v7 = os_log_create("com.apple.amp.HomeSharing", "Accounts");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(HSAccountStore *)self appleID];
+      appleID2 = [(HSAccountStore *)self appleID];
       *buf = 138412546;
-      v12 = v4;
+      v12 = dCopy;
       v13 = 2112;
-      v14 = v8;
+      v14 = appleID2;
       _os_log_impl(&dword_254418000, v7, OS_LOG_TYPE_DEFAULT, "ids are different new=%@, old=%@", buf, 0x16u);
     }
 
@@ -573,7 +573,7 @@ void __30__HSAccountStore_setPassword___block_invoke(uint64_t a1)
     block[3] = &unk_27977A350;
     block[4] = self;
     dispatch_sync(queue, block);
-    CFPreferencesSetAppValue(@"homeSharingAppleID", v4, @"com.apple.homesharing");
+    CFPreferencesSetAppValue(@"homeSharingAppleID", dCopy, @"com.apple.homesharing");
     CFPreferencesAppSynchronize(@"com.apple.homesharing");
     notify_set_state(self->_defaultsDidChangeToken, 0);
     notify_post("com.apple.mobileipod.HomeSharingDefaultsDidChange");
@@ -598,8 +598,8 @@ void __29__HSAccountStore_setAppleID___block_invoke(uint64_t a1)
   notify_cancel(self->_defaultsDidChangeToken);
   if (self->_groupIDRequest)
   {
-    v3 = [MEMORY[0x277D7FC90] defaultSession];
-    [v3 cancelRequest:self->_groupIDRequest];
+    defaultSession = [MEMORY[0x277D7FC90] defaultSession];
+    [defaultSession cancelRequest:self->_groupIDRequest];
 
     groupIDRequest = self->_groupIDRequest;
     self->_groupIDRequest = 0;

@@ -1,10 +1,10 @@
 @interface _UIFocusAnimationConfiguration
-+ (_UIFocusAnimationConfiguration)configurationWithStyle:(int64_t)a3;
++ (_UIFocusAnimationConfiguration)configurationWithStyle:(int64_t)style;
 - (_UIFocusAnimationConfiguration)init;
-- (double)_focusingVelocityBasedDurationScaleFactorForAnimationInContext:(id)a3;
-- (double)_unfocusingRepositionVelocityBasedDurationScaleFactorForAnimationInContext:(id)a3;
-- (double)_unfocusingVelocityBasedDurationScaleFactorForAnimationInContext:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (double)_focusingVelocityBasedDurationScaleFactorForAnimationInContext:(id)context;
+- (double)_unfocusingRepositionVelocityBasedDurationScaleFactorForAnimationInContext:(id)context;
+- (double)_unfocusingVelocityBasedDurationScaleFactorForAnimationInContext:(id)context;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation _UIFocusAnimationConfiguration
@@ -24,9 +24,9 @@
   return result;
 }
 
-+ (_UIFocusAnimationConfiguration)configurationWithStyle:(int64_t)a3
++ (_UIFocusAnimationConfiguration)configurationWithStyle:(int64_t)style
 {
-  v4 = objc_alloc_init(a1);
+  v4 = objc_alloc_init(self);
   [v4 setAnimationOptions:327686];
   v5 = _UIInternalPreferenceUsesDefault_1(&unk_1ED48AE00, @"FocusAnimationDefaultFocusingBaseDuration");
   v6 = *&qword_1ED48AE08;
@@ -100,7 +100,7 @@
   }
 
   [v4 setUnfocusingBackgroundFadeDurationPercentage:v22];
-  if (a3 == 2)
+  if (style == 2)
   {
     v25 = _UIInternalPreferenceUsesDefault_1(&unk_1ED48AE20, @"FocusAnimationListUnfocusingBaseDuration");
     v26 = *&qword_1ED48AE28;
@@ -120,7 +120,7 @@
 
   else
   {
-    if (a3 != 1)
+    if (style != 1)
     {
       goto LABEL_29;
     }
@@ -139,7 +139,7 @@ LABEL_29:
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(_UIFocusAnimationConfiguration);
   [(_UIFocusAnimationConfiguration *)v4 setAnimationOptions:[(_UIFocusAnimationConfiguration *)self animationOptions]];
@@ -166,34 +166,34 @@ LABEL_29:
   return v4;
 }
 
-- (double)_focusingVelocityBasedDurationScaleFactorForAnimationInContext:(id)a3
+- (double)_focusingVelocityBasedDurationScaleFactorForAnimationInContext:(id)context
 {
-  v4 = _UIFocusAnimationNormalizedDurationScaleFactorInContext(a3);
+  v4 = _UIFocusAnimationNormalizedDurationScaleFactorInContext(context);
   [(_UIFocusAnimationConfiguration *)self focusingDurationScaleFactorLowerBound];
   v6 = v5;
   [(_UIFocusAnimationConfiguration *)self focusingDurationScaleFactorUpperBound];
   return v6 + v4 * (v7 - v6);
 }
 
-- (double)_unfocusingVelocityBasedDurationScaleFactorForAnimationInContext:(id)a3
+- (double)_unfocusingVelocityBasedDurationScaleFactorForAnimationInContext:(id)context
 {
-  v4 = _UIFocusAnimationNormalizedDurationScaleFactorInContext(a3);
+  v4 = _UIFocusAnimationNormalizedDurationScaleFactorInContext(context);
   [(_UIFocusAnimationConfiguration *)self unfocusingDurationScaleFactorLowerBound];
   v6 = v5;
   [(_UIFocusAnimationConfiguration *)self unfocusingDurationScaleFactorUpperBound];
   return v6 + v4 * (v7 - v6);
 }
 
-- (double)_unfocusingRepositionVelocityBasedDurationScaleFactorForAnimationInContext:(id)a3
+- (double)_unfocusingRepositionVelocityBasedDurationScaleFactorForAnimationInContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   [(_UIFocusAnimationConfiguration *)self unfocusingDurationScaleFactorLowerBound];
   v6 = v5;
   [(_UIFocusAnimationConfiguration *)self unfocusingBaseDuration];
   v8 = v7;
   [(_UIFocusAnimationConfiguration *)self unfocusingRepositionBaseDuration];
   v10 = v6 * (v8 / v9);
-  v11 = _UIFocusAnimationNormalizedDurationScaleFactorInContext(v4);
+  v11 = _UIFocusAnimationNormalizedDurationScaleFactorInContext(contextCopy);
 
   v12 = pow(v11, 1.5);
   [(_UIFocusAnimationConfiguration *)self unfocusingDurationScaleFactorUpperBound];

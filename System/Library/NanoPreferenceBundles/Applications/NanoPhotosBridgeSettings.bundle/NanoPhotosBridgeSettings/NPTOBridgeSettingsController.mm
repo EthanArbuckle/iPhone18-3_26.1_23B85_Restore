@@ -3,9 +3,9 @@
 - (BOOL)_shouldShowPhotoSyncingSettings;
 - (id)_device;
 - (id)_preferencesAccessor;
-- (id)albumLimit:(id)a3;
+- (id)albumLimit:(id)limit;
 - (id)albumSpecifiers;
-- (id)albumTitle:(id)a3;
+- (id)albumTitle:(id)title;
 - (id)featuredPhotosSpecifiers;
 - (id)featuredPhotosSyncingEnabled;
 - (id)localizedMirroringDetailFooter;
@@ -16,11 +16,11 @@
 - (id)photoSyncingEnabled;
 - (id)photoSyncingSpecifiers;
 - (id)specifiers;
-- (void)_addHyperlinkToText:(id)a3 inString:(id)a4 forSpecifier:(id)a5;
+- (void)_addHyperlinkToText:(id)text inString:(id)string forSpecifier:(id)specifier;
 - (void)_showAboutActionSheet;
-- (void)setFeaturedPhotosSyncingEnabled:(id)a3;
-- (void)setMemoriesSyncingEnabled:(id)a3;
-- (void)setPhotoSyncingEnabled:(id)a3;
+- (void)setFeaturedPhotosSyncingEnabled:(id)enabled;
+- (void)setMemoriesSyncingEnabled:(id)enabled;
+- (void)setPhotoSyncingEnabled:(id)enabled;
 @end
 
 @implementation NPTOBridgeSettingsController
@@ -37,10 +37,10 @@
 {
   if ([(NPTOBridgeSettingsController *)self mirrorSettings])
   {
-    v3 = [(NPTOBridgeSettingsController *)self showAlerts];
+    showAlerts = [(NPTOBridgeSettingsController *)self showAlerts];
     v4 = [NSBundle bundleForClass:objc_opt_class()];
     v5 = v4;
-    if (v3)
+    if (showAlerts)
     {
       v6 = @"ALERTS_ENABLED";
     }
@@ -68,11 +68,11 @@
   if (!v4)
   {
     v5 = +[NSMutableArray array];
-    v6 = [(NPTOBridgeSettingsController *)self _isTinkerPaired];
-    v7 = [(NPTOBridgeSettingsController *)self photoSyncingSpecifiers];
-    [v5 addObjectsFromArray:v7];
+    _isTinkerPaired = [(NPTOBridgeSettingsController *)self _isTinkerPaired];
+    photoSyncingSpecifiers = [(NPTOBridgeSettingsController *)self photoSyncingSpecifiers];
+    [v5 addObjectsFromArray:photoSyncingSpecifiers];
 
-    if (v6)
+    if (_isTinkerPaired)
     {
       if (![(NPTOBridgeSettingsController *)self _shouldShowPhotoSyncingSettings])
       {
@@ -84,7 +84,7 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v8 = [(NPTOBridgeSettingsController *)self albumSpecifiers];
+      albumSpecifiers = [(NPTOBridgeSettingsController *)self albumSpecifiers];
     }
 
     else
@@ -93,9 +93,9 @@ LABEL_15:
       {
         if ([(NPTOBridgeSettingsController *)self _shouldShowPhotoSyncingSettings])
         {
-          v9 = [(NPTOBridgeSettingsController *)self _device];
+          _device = [(NPTOBridgeSettingsController *)self _device];
           v10 = [[NSUUID alloc] initWithUUIDString:@"AD784C80-650B-11EB-8572-0800200C9A66"];
-          v11 = [v9 supportsCapability:v10];
+          v11 = [_device supportsCapability:v10];
 
           if (v11)
           {
@@ -104,27 +104,27 @@ LABEL_15:
 
             if (v13)
             {
-              v14 = [(NPTOBridgeSettingsController *)self memoriesSpecifiers];
-              [v5 addObjectsFromArray:v14];
+              memoriesSpecifiers = [(NPTOBridgeSettingsController *)self memoriesSpecifiers];
+              [v5 addObjectsFromArray:memoriesSpecifiers];
             }
 
-            v15 = [(NPTOBridgeSettingsController *)self featuredPhotosSpecifiers];
-            [v5 addObjectsFromArray:v15];
+            featuredPhotosSpecifiers = [(NPTOBridgeSettingsController *)self featuredPhotosSpecifiers];
+            [v5 addObjectsFromArray:featuredPhotosSpecifiers];
           }
         }
       }
 
       if ([(NPTOBridgeSettingsController *)self _shouldShowPhotoSyncingSettings])
       {
-        v16 = [(NPTOBridgeSettingsController *)self albumSpecifiers];
-        [v5 addObjectsFromArray:v16];
+        albumSpecifiers2 = [(NPTOBridgeSettingsController *)self albumSpecifiers];
+        [v5 addObjectsFromArray:albumSpecifiers2];
       }
 
-      v8 = [(NPTOBridgeSettingsController *)self notificationSpecifiers];
+      albumSpecifiers = [(NPTOBridgeSettingsController *)self notificationSpecifiers];
     }
 
-    v17 = v8;
-    [v5 addObjectsFromArray:v8];
+    v17 = albumSpecifiers;
+    [v5 addObjectsFromArray:albumSpecifiers];
 
     goto LABEL_15;
   }
@@ -145,8 +145,8 @@ LABEL_16:
 
   if ([(NPTOBridgeSettingsController *)self _isTinkerPaired])
   {
-    v8 = [(NPTOBridgeSettingsController *)self _device];
-    v9 = [v8 valueForProperty:NRDevicePropertyName];
+    _device = [(NPTOBridgeSettingsController *)self _device];
+    v9 = [_device valueForProperty:NRDevicePropertyName];
 
     v10 = [NSBundle bundleForClass:objc_opt_class()];
     v11 = [v10 localizedStringForKey:@"PHOTOS_SYNCING_SECTION_FOOTER_TINKER" value:&stru_C578 table:@"NanoPhotosBridgeSettings"];
@@ -177,13 +177,13 @@ LABEL_16:
   return v18;
 }
 
-- (void)_addHyperlinkToText:(id)a3 inString:(id)a4 forSpecifier:(id)a5
+- (void)_addHyperlinkToText:(id)text inString:(id)string forSpecifier:(id)specifier
 {
-  v10 = a5;
-  v8 = [a4 rangeOfString:a3];
+  specifierCopy = specifier;
+  v8 = [string rangeOfString:text];
   if (v9)
   {
-    [v10 addFooterHyperlinkWithRange:v8 target:v9 action:{self, "_showAboutActionSheet"}];
+    [specifierCopy addFooterHyperlinkWithRange:v8 target:v9 action:{self, "_showAboutActionSheet"}];
   }
 }
 
@@ -266,12 +266,12 @@ LABEL_16:
 {
   v10.receiver = self;
   v10.super_class = NPTOBridgeSettingsController;
-  v2 = [(NPTOBridgeSettingsController *)&v10 specifiers];
-  v3 = v2;
+  specifiers = [(NPTOBridgeSettingsController *)&v10 specifiers];
+  v3 = specifiers;
   v4 = &__NSArray0__struct;
-  if (v2)
+  if (specifiers)
   {
-    v4 = v2;
+    v4 = specifiers;
   }
 
   v5 = v4;
@@ -284,96 +284,96 @@ LABEL_16:
   return v5;
 }
 
-- (void)setPhotoSyncingEnabled:(id)a3
+- (void)setPhotoSyncingEnabled:(id)enabled
 {
-  v4 = a3;
-  v5 = [(NPTOBridgeSettingsController *)self _preferencesAccessor];
-  v6 = [v4 BOOLValue];
+  enabledCopy = enabled;
+  _preferencesAccessor = [(NPTOBridgeSettingsController *)self _preferencesAccessor];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  v7 = [NSNumber numberWithBool:v6];
-  [v5 setObject:v7 forKey:NPTOPreferencesAppPhotosSyncingEnabledKey];
+  v7 = [NSNumber numberWithBool:bOOLValue];
+  [_preferencesAccessor setObject:v7 forKey:NPTOPreferencesAppPhotosSyncingEnabledKey];
 
   [(NPTOBridgeSettingsController *)self reloadSpecifiers];
 }
 
 - (id)photoSyncingEnabled
 {
-  v2 = [(NPTOBridgeSettingsController *)self _preferencesAccessor];
-  v3 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v2 npto_appPhotosSyncingEnabled]);
+  _preferencesAccessor = [(NPTOBridgeSettingsController *)self _preferencesAccessor];
+  v3 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [_preferencesAccessor npto_appPhotosSyncingEnabled]);
 
   return v3;
 }
 
-- (void)setMemoriesSyncingEnabled:(id)a3
+- (void)setMemoriesSyncingEnabled:(id)enabled
 {
-  v4 = a3;
-  v7 = [(NPTOBridgeSettingsController *)self _preferencesAccessor];
-  v5 = [v4 BOOLValue];
+  enabledCopy = enabled;
+  _preferencesAccessor = [(NPTOBridgeSettingsController *)self _preferencesAccessor];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  v6 = [NSNumber numberWithBool:v5];
-  [v7 setObject:v6 forKey:NPTOPreferencesMemoriesSyncingEnabledKey];
+  v6 = [NSNumber numberWithBool:bOOLValue];
+  [_preferencesAccessor setObject:v6 forKey:NPTOPreferencesMemoriesSyncingEnabledKey];
 }
 
 - (id)memoriesSyncingEnabled
 {
-  v2 = [(NPTOBridgeSettingsController *)self _preferencesAccessor];
-  v3 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v2 npto_memoriesSyncingEnabled]);
+  _preferencesAccessor = [(NPTOBridgeSettingsController *)self _preferencesAccessor];
+  v3 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [_preferencesAccessor npto_memoriesSyncingEnabled]);
 
   return v3;
 }
 
-- (void)setFeaturedPhotosSyncingEnabled:(id)a3
+- (void)setFeaturedPhotosSyncingEnabled:(id)enabled
 {
-  v4 = a3;
-  v7 = [(NPTOBridgeSettingsController *)self _preferencesAccessor];
-  v5 = [v4 BOOLValue];
+  enabledCopy = enabled;
+  _preferencesAccessor = [(NPTOBridgeSettingsController *)self _preferencesAccessor];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  v6 = [NSNumber numberWithBool:v5];
-  [v7 setObject:v6 forKey:NPTOPreferencesFeaturedPhotosSyncingEnabledKey];
+  v6 = [NSNumber numberWithBool:bOOLValue];
+  [_preferencesAccessor setObject:v6 forKey:NPTOPreferencesFeaturedPhotosSyncingEnabledKey];
 }
 
 - (id)featuredPhotosSyncingEnabled
 {
-  v2 = [(NPTOBridgeSettingsController *)self _preferencesAccessor];
-  v3 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v2 npto_featuredPhotosSyncingEnabled]);
+  _preferencesAccessor = [(NPTOBridgeSettingsController *)self _preferencesAccessor];
+  v3 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [_preferencesAccessor npto_featuredPhotosSyncingEnabled]);
 
   return v3;
 }
 
-- (id)albumTitle:(id)a3
+- (id)albumTitle:(id)title
 {
-  v3 = [(NPTOBridgeSettingsController *)self _preferencesAccessor];
-  v4 = [v3 npto_fetchSyncedAlbum];
-  v5 = [v4 firstObject];
+  _preferencesAccessor = [(NPTOBridgeSettingsController *)self _preferencesAccessor];
+  npto_fetchSyncedAlbum = [_preferencesAccessor npto_fetchSyncedAlbum];
+  firstObject = [npto_fetchSyncedAlbum firstObject];
 
-  if (v5)
+  if (firstObject)
   {
-    v6 = [v5 localizedTitle];
+    localizedTitle = [firstObject localizedTitle];
   }
 
   else
   {
     v7 = [NSBundle bundleForClass:objc_opt_class()];
-    v6 = [v7 localizedStringForKey:@"ALBUM_NONE" value:&stru_C578 table:@"NanoPhotosBridgeSettings"];
+    localizedTitle = [v7 localizedStringForKey:@"ALBUM_NONE" value:&stru_C578 table:@"NanoPhotosBridgeSettings"];
   }
 
   v8 = nanophotos_log_bridge();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v10 = 138412290;
-    v11 = v6;
+    v11 = localizedTitle;
     _os_log_debug_impl(&dword_0, v8, OS_LOG_TYPE_DEBUG, "title is %@", &v10, 0xCu);
   }
 
-  return v6;
+  return localizedTitle;
 }
 
-- (id)albumLimit:(id)a3
+- (id)albumLimit:(id)limit
 {
   v4 = [NSBundle bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"AMOUNT_COUNT" value:&stru_C578 table:@"NanoPhotosBridgeSettings"];
-  v6 = [(NPTOBridgeSettingsController *)self _preferencesAccessor];
-  v7 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v5, [v6 npto_syncedPhotosLimit]);
+  _preferencesAccessor = [(NPTOBridgeSettingsController *)self _preferencesAccessor];
+  v7 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v5, [_preferencesAccessor npto_syncedPhotosLimit]);
 
   v8 = nanophotos_log_bridge();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -388,10 +388,10 @@ LABEL_16:
 
 - (BOOL)_shouldShowPhotoSyncingSettings
 {
-  v2 = [(NPTOBridgeSettingsController *)self _preferencesAccessor];
-  v3 = [v2 npto_appPhotosSyncingEnabled];
+  _preferencesAccessor = [(NPTOBridgeSettingsController *)self _preferencesAccessor];
+  npto_appPhotosSyncingEnabled = [_preferencesAccessor npto_appPhotosSyncingEnabled];
 
-  return v3;
+  return npto_appPhotosSyncingEnabled;
 }
 
 - (id)_preferencesAccessor
@@ -400,8 +400,8 @@ LABEL_16:
   if (!preferencesAccessor)
   {
     v4 = [NPTOPreferencesAccessor alloc];
-    v5 = [(NPTOBridgeSettingsController *)self _device];
-    v6 = [v4 initWithDevice:v5];
+    _device = [(NPTOBridgeSettingsController *)self _device];
+    v6 = [v4 initWithDevice:_device];
     v7 = self->_preferencesAccessor;
     self->_preferencesAccessor = v6;
 
@@ -416,18 +416,18 @@ LABEL_16:
   v2 = +[NRPairedDeviceRegistry sharedInstance];
   v3 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
   v4 = [v2 getAllDevicesWithArchivedAltAccountDevicesMatching:v3];
-  v5 = [v4 firstObject];
+  firstObject = [v4 firstObject];
 
-  return v5;
+  return firstObject;
 }
 
 - (BOOL)_isTinkerPaired
 {
-  v2 = [(NPTOBridgeSettingsController *)self _device];
-  v3 = [v2 valueForProperty:NRDevicePropertyIsAltAccount];
-  v4 = [v3 BOOLValue];
+  _device = [(NPTOBridgeSettingsController *)self _device];
+  v3 = [_device valueForProperty:NRDevicePropertyIsAltAccount];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 @end

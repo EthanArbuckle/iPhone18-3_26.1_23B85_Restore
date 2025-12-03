@@ -1,16 +1,16 @@
 @interface WFAlarmTableViewCell
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (WFAlarmTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)refreshUI:(id)a3 animated:(BOOL)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (WFAlarmTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)refreshUI:(id)i animated:(BOOL)animated;
 @end
 
 @implementation WFAlarmTableViewCell
 
-- (void)refreshUI:(id)a3 animated:(BOOL)a4
+- (void)refreshUI:(id)i animated:(BOOL)animated
 {
-  v5 = a3;
-  self->_enabled = [v5 isEnabled];
-  v6 = [v5 repeatSchedule];
+  iCopy = i;
+  self->_enabled = [iCopy isEnabled];
+  repeatSchedule = [iCopy repeatSchedule];
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -30,39 +30,39 @@
   _Block_object_dispose(&v19, 8);
   if (v7)
   {
-    v8 = v7(v6);
-    v9 = [(MTUIAlarmView *)self->_alarmView timeLabel];
-    [v9 setHour:objc_msgSend(v5 minute:{"hour"), objc_msgSend(v5, "minute")}];
+    v8 = v7(repeatSchedule);
+    timeLabel = [(MTUIAlarmView *)self->_alarmView timeLabel];
+    [timeLabel setHour:objc_msgSend(iCopy minute:{"hour"), objc_msgSend(iCopy, "minute")}];
 
-    v10 = [MEMORY[0x277D75348] labelColor];
-    v11 = [MEMORY[0x277D75348] secondaryLabelColor];
-    v12 = [MEMORY[0x277D75348] systemBackgroundColor];
-    [(WFAlarmTableViewCell *)self setBackgroundColor:v12];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    [(WFAlarmTableViewCell *)self setBackgroundColor:systemBackgroundColor];
 
-    v13 = [(MTUIAlarmView *)self->_alarmView timeLabel];
-    [v13 setTextColor:v10];
+    timeLabel2 = [(MTUIAlarmView *)self->_alarmView timeLabel];
+    [timeLabel2 setTextColor:labelColor];
 
     alarmView = self->_alarmView;
-    v15 = [v5 displayTitle];
-    [(MTUIAlarmView *)alarmView setName:v15 andRepeatText:v8 textColor:v11];
+    displayTitle = [iCopy displayTitle];
+    [(MTUIAlarmView *)alarmView setName:displayTitle andRepeatText:v8 textColor:secondaryLabelColor];
 
     [(MTUIAlarmView *)self->_alarmView setNeedsLayout];
   }
 
   else
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString * _Nonnull WFDetailDateMaskToString(uint32_t)"];
-    [v16 handleFailureInFunction:v17 file:@"WFAlarmTableViewCell.m" lineNumber:23 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v17 file:@"WFAlarmTableViewCell.m" lineNumber:23 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  if (*&sizeThatFits__width == a3.width)
+  height = fits.height;
+  if (*&sizeThatFits__width == fits.width)
   {
     v8 = *&sizeThatFits__result_0;
     v9 = *&sizeThatFits__result_1;
@@ -70,9 +70,9 @@
 
   else
   {
-    sizeThatFits__width = *&a3.width;
-    v5 = [(WFAlarmTableViewCell *)self contentView];
-    [v5 bounds];
+    sizeThatFits__width = *&fits.width;
+    contentView = [(WFAlarmTableViewCell *)self contentView];
+    [contentView bounds];
     v7 = v6;
 
     [(MTUIAlarmView *)self->_alarmView effectiveLayoutSizeFittingSize:v7, height];
@@ -85,12 +85,12 @@
   return result;
 }
 
-- (WFAlarmTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (WFAlarmTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  v5 = a4;
+  identifierCopy = identifier;
   v16.receiver = self;
   v16.super_class = WFAlarmTableViewCell;
-  v6 = [(WFAlarmTableViewCell *)&v16 initWithStyle:0 reuseIdentifier:v5];
+  v6 = [(WFAlarmTableViewCell *)&v16 initWithStyle:0 reuseIdentifier:identifierCopy];
   if (v6)
   {
     v18 = 0;
@@ -112,8 +112,8 @@
     v8 = v7;
     _Block_object_dispose(&v18, 8);
     v9 = [v7 alloc];
-    v10 = [(WFAlarmTableViewCell *)v6 contentView];
-    [v10 bounds];
+    contentView = [(WFAlarmTableViewCell *)v6 contentView];
+    [contentView bounds];
     v11 = [v9 initWithFrame:?];
     alarmView = v6->_alarmView;
     v6->_alarmView = v11;
@@ -121,8 +121,8 @@
     [(MTUIAlarmView *)v6->_alarmView setAutoresizingMask:18];
     [(MTUIAlarmView *)v6->_alarmView setSwitchVisible:0];
     [(MTUIAlarmView *)v6->_alarmView setStyle:0];
-    v13 = [(WFAlarmTableViewCell *)v6 contentView];
-    [v13 addSubview:v6->_alarmView];
+    contentView2 = [(WFAlarmTableViewCell *)v6 contentView];
+    [contentView2 addSubview:v6->_alarmView];
 
     v14 = v6;
   }

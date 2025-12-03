@@ -1,22 +1,22 @@
 @interface HKMedicalIDEditorWeightCell
-- (HKMedicalIDEditorWeightCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (HKMedicalIDEditorWeightCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (id)formattedValue;
 - (void)_hidePicker;
-- (void)_localeDidChange:(id)a3;
+- (void)_localeDidChange:(id)change;
 - (void)_showPicker;
 - (void)beginEditing;
 - (void)dealloc;
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5;
-- (void)setKilogramValue:(id)a3;
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component;
+- (void)setKilogramValue:(id)value;
 @end
 
 @implementation HKMedicalIDEditorWeightCell
 
-- (HKMedicalIDEditorWeightCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (HKMedicalIDEditorWeightCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = HKMedicalIDEditorWeightCell;
-  v4 = [(HKMedicalIDEditorCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(HKMedicalIDEditorCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -26,16 +26,16 @@
   return v5;
 }
 
-- (void)_localeDidChange:(id)a3
+- (void)_localeDidChange:(id)change
 {
   [(HKMedicalIDEditorWeightCell *)self _commonInit];
 
   [(HKMedicalIDEditorCell *)self updateValueLabel];
 }
 
-- (void)setKilogramValue:(id)a3
+- (void)setKilogramValue:(id)value
 {
-  objc_storeStrong(&self->_kilogramValue, a3);
+  objc_storeStrong(&self->_kilogramValue, value);
 
   [(HKMedicalIDEditorCell *)self updateValueLabel];
 }
@@ -43,17 +43,17 @@
 - (id)formattedValue
 {
   v3 = +[HKPersonWeightFormatter sharedFormatter];
-  v4 = [(HKMedicalIDEditorWeightCell *)self kilogramValue];
-  v5 = [v3 stringFromWeightInKilograms:v4];
+  kilogramValue = [(HKMedicalIDEditorWeightCell *)self kilogramValue];
+  v5 = [v3 stringFromWeightInKilograms:kilogramValue];
 
   return v5;
 }
 
 - (void)_showPicker
 {
-  v3 = [(HKMedicalIDEditorWeightCell *)self kilogramValue];
+  kilogramValue = [(HKMedicalIDEditorWeightCell *)self kilogramValue];
 
-  if (!v3)
+  if (!kilogramValue)
   {
     v4 = MEMORY[0x1E696AD98];
     [objc_opt_class() defaultKilogramValue];
@@ -71,21 +71,21 @@
     [(UIPickerView *)self->_picker setDataSource:self];
     [(UIPickerView *)self->_picker setDelegate:self];
     v9 = [HKHostingAreaLayoutView viewHostingView:self->_picker];
-    v10 = [(HKMedicalIDEditorCell *)self inputTextField];
-    [v10 setInputView:v9];
+    inputTextField = [(HKMedicalIDEditorCell *)self inputTextField];
+    [inputTextField setInputView:v9];
 
     picker = self->_picker;
   }
 
   [(UIPickerView *)picker reloadAllComponents];
-  v11 = [(HKMedicalIDEditorWeightCell *)self kilogramValue];
-  [v11 doubleValue];
+  kilogramValue2 = [(HKMedicalIDEditorWeightCell *)self kilogramValue];
+  [kilogramValue2 doubleValue];
   v12 = [HKMedicalIDWeightPickerDataProvider rowForWeightInKilograms:?];
 
   [(UIPickerView *)self->_picker selectRow:v12 inComponent:0 animated:0];
   [(HKMedicalIDEditorWeightCell *)self reloadInputViews];
-  v13 = [(HKMedicalIDEditorCell *)self inputTextField];
-  [v13 becomeFirstResponder];
+  inputTextField2 = [(HKMedicalIDEditorCell *)self inputTextField];
+  [inputTextField2 becomeFirstResponder];
 }
 
 - (void)dealloc
@@ -99,8 +99,8 @@
 
 - (void)_hidePicker
 {
-  v2 = [(HKMedicalIDEditorCell *)self inputTextField];
-  [v2 resignFirstResponder];
+  inputTextField = [(HKMedicalIDEditorCell *)self inputTextField];
+  [inputTextField resignFirstResponder];
 }
 
 - (void)beginEditing
@@ -111,10 +111,10 @@
   [(HKMedicalIDEditorWeightCell *)self _showPicker];
 }
 
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component
 {
   v6 = MEMORY[0x1E696AD98];
-  [HKMedicalIDWeightPickerDataProvider getWeightInKilogramsForRow:a4];
+  [HKMedicalIDWeightPickerDataProvider getWeightInKilogramsForRow:row];
   v7 = [v6 numberWithDouble:?];
   kilogramValue = self->_kilogramValue;
   self->_kilogramValue = v7;

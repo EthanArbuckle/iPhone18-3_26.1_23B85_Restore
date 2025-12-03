@@ -1,12 +1,12 @@
 @interface VSAccountMetadata
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)SAMLAttributeQueryResponse;
 - (VSAccountMetadata)init;
-- (VSAccountMetadata)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (VSAccountMetadata)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VSAccountMetadata
@@ -25,32 +25,32 @@
   return v2;
 }
 
-- (VSAccountMetadata)initWithCoder:(id)a3
+- (VSAccountMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = VSAccountMetadata;
   v5 = [(VSAccountMetadata *)&v8 init];
   if (v5)
   {
     v6 = VSAccountMetadataValueType();
-    VSValueTypeInitWithCoder(v6, v5, v4);
+    VSValueTypeInitWithCoder(v6, v5, coderCopy);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = VSAccountMetadataValueType();
-  VSValueTypeEncodeWithCoder(v5, self, v4);
+  VSValueTypeEncodeWithCoder(v5, self, coderCopy);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = VSAccountMetadataValueType();
-  v6 = VSValueTypeCopyWithZone(v5, self, a3);
+  v6 = VSValueTypeCopyWithZone(v5, self, zone);
 
   return v6;
 }
@@ -63,11 +63,11 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = VSAccountMetadataValueType();
-  LOBYTE(self) = VSValueTypeIsEqual(v5, self, v4);
+  LOBYTE(self) = VSValueTypeIsEqual(v5, self, equalCopy);
 
   return self;
 }
@@ -82,21 +82,21 @@
 
 - (NSString)SAMLAttributeQueryResponse
 {
-  v2 = [(VSAccountMetadata *)self accountProviderResponse];
-  v3 = [v2 authenticationScheme];
-  v4 = [v3 isEqual:@"SAML"];
+  accountProviderResponse = [(VSAccountMetadata *)self accountProviderResponse];
+  authenticationScheme = [accountProviderResponse authenticationScheme];
+  v4 = [authenticationScheme isEqual:@"SAML"];
 
   if (v4)
   {
-    v5 = [v2 body];
+    body = [accountProviderResponse body];
   }
 
   else
   {
-    v5 = 0;
+    body = 0;
   }
 
-  return v5;
+  return body;
 }
 
 @end

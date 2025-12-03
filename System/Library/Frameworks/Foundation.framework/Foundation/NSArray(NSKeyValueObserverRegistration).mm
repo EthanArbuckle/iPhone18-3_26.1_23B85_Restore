@@ -9,12 +9,12 @@
 - (uint64_t)addObserver:()NSKeyValueObserverRegistration toObjectsAtIndexes:forKeyPath:options:context:
 {
   os_unfair_recursive_lock_lock_with_options();
-  v13 = [a4 firstIndex];
+  firstIndex = [a4 firstIndex];
   v14 = 0;
   v15 = 0;
-  while (v13 != 0x7FFFFFFFFFFFFFFFLL)
+  while (firstIndex != 0x7FFFFFFFFFFFFFFFLL)
   {
-    Class = object_getClass([a1 objectAtIndex:v13]);
+    Class = object_getClass([self objectAtIndex:firstIndex]);
     v17 = Class;
     if (Class != v15)
     {
@@ -22,8 +22,8 @@
       v15 = v17;
     }
 
-    [objc_msgSend(a1 objectAtIndex:{v13), "_addObserver:forProperty:options:context:", a3, v14, a6, a7}];
-    v13 = [a4 indexGreaterThanIndex:v13];
+    [objc_msgSend(self objectAtIndex:{firstIndex), "_addObserver:forProperty:options:context:", a3, v14, a6, a7}];
+    firstIndex = [a4 indexGreaterThanIndex:firstIndex];
   }
 
   return os_unfair_recursive_lock_unlock();
@@ -52,12 +52,12 @@
   *(v11 + 56) = 0;
   *(v11 + 64) = a6;
   *(v11 + 72) = 1;
-  v14 = [a4 firstIndex];
+  firstIndex = [a4 firstIndex];
   v15 = 0;
   v16 = 0;
-  while (v14 != 0x7FFFFFFFFFFFFFFFLL)
+  while (firstIndex != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v17 = [a1 objectAtIndex:v14];
+    v17 = [self objectAtIndex:firstIndex];
     Class = object_getClass(v17);
     v19 = Class;
     if (Class != v15)
@@ -68,7 +68,7 @@
 
     *(v11 + 32) = v17;
     [v17 _removeObserver:a3 forProperty:{v16, v21, v22, v23, v24, v25}];
-    v14 = [a4 indexGreaterThanIndex:v14];
+    firstIndex = [a4 indexGreaterThanIndex:firstIndex];
   }
 
   result = os_unfair_recursive_lock_unlock();
@@ -84,12 +84,12 @@
 - (uint64_t)removeObserver:()NSKeyValueObserverRegistration fromObjectsAtIndexes:forKeyPath:
 {
   os_unfair_recursive_lock_lock_with_options();
-  v9 = [a4 firstIndex];
+  firstIndex = [a4 firstIndex];
   v10 = 0;
   v11 = 0;
-  while (v9 != 0x7FFFFFFFFFFFFFFFLL)
+  while (firstIndex != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v12 = [a1 objectAtIndex:v9];
+    v12 = [self objectAtIndex:firstIndex];
     Class = object_getClass(v12);
     v14 = Class;
     if (Class != v11)
@@ -99,7 +99,7 @@
     }
 
     [v12 _removeObserver:a3 forProperty:v10];
-    v9 = [a4 indexGreaterThanIndex:v9];
+    firstIndex = [a4 indexGreaterThanIndex:firstIndex];
   }
 
   return os_unfair_recursive_lock_unlock();

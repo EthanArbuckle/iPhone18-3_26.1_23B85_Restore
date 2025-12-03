@@ -7,8 +7,8 @@
 
 - (id)_web_createTarget
 {
-  v2 = [(WKObject *)self _apiObject];
-  if ((*(v2->var0 + 2))(v2) == 24)
+  _apiObject = [(WKObject *)self _apiObject];
+  if ((*(_apiObject->var0 + 2))(_apiObject) == 24)
   {
     v3 = WebCore::ResourceRequest::nsURLRequest();
 
@@ -26,10 +26,10 @@
 
 - (id)URL
 {
-  v2 = [(WKObject *)self _apiObject];
-  if ((*(v2->var0 + 2))(v2) == 24)
+  _apiObject = [(WKObject *)self _apiObject];
+  if ((*(_apiObject->var0 + 2))(_apiObject) == 24)
   {
-    v3 = WebCore::ResourceRequestBase::url(&v2[1]);
+    v3 = WebCore::ResourceRequestBase::url(&_apiObject[1]);
     WTF::URL::createCFURL(&v8, v3);
     v4 = v8;
     v8 = 0;

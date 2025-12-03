@@ -7,16 +7,16 @@
 - (void)pk_applyAppearance:()PKAppearanceObject
 {
   v4 = a3;
-  v5 = [v4 tintColor];
-  [a1 setTintColor:v5];
+  tintColor = [v4 tintColor];
+  [self setTintColor:tintColor];
 
-  [a1 tintColorDidChange];
-  v6 = [v4 progressBarTintColor];
-  [a1 setProgressTintColor:v6];
+  [self tintColorDidChange];
+  progressBarTintColor = [v4 progressBarTintColor];
+  [self setProgressTintColor:progressBarTintColor];
 
-  v7 = [v4 progressBarTrackTintColor];
+  progressBarTrackTintColor = [v4 progressBarTrackTintColor];
 
-  [a1 setTrackTintColor:v7];
+  [self setTrackTintColor:progressBarTrackTintColor];
 }
 
 @end

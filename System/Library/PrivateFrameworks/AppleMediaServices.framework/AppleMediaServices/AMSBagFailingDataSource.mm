@@ -1,36 +1,36 @@
 @interface AMSBagFailingDataSource
-- (AMSBagFailingDataSource)initWithProfile:(id)a3 profileVersion:(id)a4 error:(id)a5 delay:(double)a6;
-- (void)loadWithCompletion:(id)a3;
+- (AMSBagFailingDataSource)initWithProfile:(id)profile profileVersion:(id)version error:(id)error delay:(double)delay;
+- (void)loadWithCompletion:(id)completion;
 @end
 
 @implementation AMSBagFailingDataSource
 
-- (AMSBagFailingDataSource)initWithProfile:(id)a3 profileVersion:(id)a4 error:(id)a5 delay:(double)a6
+- (AMSBagFailingDataSource)initWithProfile:(id)profile profileVersion:(id)version error:(id)error delay:(double)delay
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  profileCopy = profile;
+  versionCopy = version;
+  errorCopy = error;
   v18.receiver = self;
   v18.super_class = AMSBagFailingDataSource;
   v14 = [(AMSBagFailingDataSource *)&v18 init];
   v15 = v14;
   if (v14)
   {
-    v14->_delay = a6;
-    objc_storeStrong(&v14->_error, a5);
+    v14->_delay = delay;
+    objc_storeStrong(&v14->_error, error);
     expirationDate = v15->_expirationDate;
     v15->_expirationDate = 0;
 
-    objc_storeStrong(&v15->_profile, a3);
-    objc_storeStrong(&v15->_profileVersion, a4);
+    objc_storeStrong(&v15->_profile, profile);
+    objc_storeStrong(&v15->_profileVersion, version);
   }
 
   return v15;
 }
 
-- (void)loadWithCompletion:(id)a3
+- (void)loadWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   [(AMSBagFailingDataSource *)self delay];
   v6 = dispatch_time(0, (v5 * 1000000000.0));
@@ -40,8 +40,8 @@
   block[2] = __46__AMSBagFailingDataSource_loadWithCompletion___block_invoke;
   block[3] = &unk_1E73BA198;
   objc_copyWeak(&v11, &location);
-  v10 = v4;
-  v8 = v4;
+  v10 = completionCopy;
+  v8 = completionCopy;
   dispatch_after(v6, v7, block);
 
   objc_destroyWeak(&v11);

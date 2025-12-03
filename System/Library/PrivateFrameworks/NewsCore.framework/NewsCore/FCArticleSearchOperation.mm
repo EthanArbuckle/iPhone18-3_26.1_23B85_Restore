@@ -1,21 +1,21 @@
 @interface FCArticleSearchOperation
 - (BOOL)validateOperation;
-- (FCArticleSearchOperation)initWithParsecQueryID:(unint64_t)a3;
-- (void)_performSearchQuery:(id)a3;
-- (void)operationWillFinishWithError:(id)a3;
+- (FCArticleSearchOperation)initWithParsecQueryID:(unint64_t)d;
+- (void)_performSearchQuery:(id)query;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 @end
 
 @implementation FCArticleSearchOperation
 
-- (FCArticleSearchOperation)initWithParsecQueryID:(unint64_t)a3
+- (FCArticleSearchOperation)initWithParsecQueryID:(unint64_t)d
 {
   v5.receiver = self;
   v5.super_class = FCArticleSearchOperation;
   result = [(FCOperation *)&v5 init];
   if (result)
   {
-    result->_parsecQueryID = a3;
+    result->_parsecQueryID = d;
   }
 
   return result;
@@ -24,9 +24,9 @@
 - (BOOL)validateOperation
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(FCArticleSearchOperation *)self query];
+  query = [(FCArticleSearchOperation *)self query];
 
-  if (!v3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!query && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"article search operation requires a query"];
     v10 = 136315906;
@@ -40,9 +40,9 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", &v10, 0x26u);
   }
 
-  v4 = [(FCArticleSearchOperation *)self articleSearchCompletion];
+  articleSearchCompletion = [(FCArticleSearchOperation *)self articleSearchCompletion];
 
-  if (!v4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!articleSearchCompletion && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"article search operation requires a completion"];
     v10 = 136315906;
@@ -56,9 +56,9 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", &v10, 0x26u);
   }
 
-  if (v3)
+  if (query)
   {
-    v5 = v4 == 0;
+    v5 = articleSearchCompletion == 0;
   }
 
   else
@@ -93,33 +93,33 @@ void __44__FCArticleSearchOperation_performOperation__block_invoke(uint64_t a1, 
   [*(a1 + 32) finishedPerformingOperationWithError:v9];
 }
 
-- (void)_performSearchQuery:(id)a3
+- (void)_performSearchQuery:(id)query
 {
-  v4 = a3;
+  queryCopy = query;
   v5 = [[FCArticleSearchStream alloc] initWithParsecQueryID:[(FCArticleSearchOperation *)self parsecQueryID]];
-  v6 = [(FCArticleSearchOperation *)self cloudContext];
-  [(FCArticleSearchStream *)v5 setCloudContext:v6];
+  cloudContext = [(FCArticleSearchOperation *)self cloudContext];
+  [(FCArticleSearchStream *)v5 setCloudContext:cloudContext];
 
-  v7 = [(FCArticleSearchOperation *)self query];
-  [(FCArticleSearchStream *)v5 setQuery:v7];
+  query = [(FCArticleSearchOperation *)self query];
+  [(FCArticleSearchStream *)v5 setQuery:query];
 
-  v8 = [(FCArticleSearchOperation *)self keyboardInputMode];
-  [(FCArticleSearchStream *)v5 setKeyboardInputMode:v8];
+  keyboardInputMode = [(FCArticleSearchOperation *)self keyboardInputMode];
+  [(FCArticleSearchStream *)v5 setKeyboardInputMode:keyboardInputMode];
 
   [(FCArticleSearchOperation *)self scale];
   [(FCArticleSearchStream *)v5 setScale:?];
-  v9 = [(FCArticleSearchOperation *)self resultsLimit];
-  v10 = [(FCArticleSearchOperation *)self qualityOfService];
+  resultsLimit = [(FCArticleSearchOperation *)self resultsLimit];
+  qualityOfService = [(FCArticleSearchOperation *)self qualityOfService];
   v11 = FCDispatchQueueForQualityOfService([(FCArticleSearchOperation *)self qualityOfService]);
   v15 = MEMORY[0x1E69E9820];
   v16 = 3221225472;
   v17 = __48__FCArticleSearchOperation__performSearchQuery___block_invoke;
   v18 = &unk_1E7C43E68;
   v19 = v5;
-  v20 = v4;
+  v20 = queryCopy;
   v12 = v5;
-  v13 = v4;
-  v14 = [(FCArticleSearchStream *)v12 fetchMoreResultsWithLimit:v9 qualityOfService:v10 callbackQueue:v11 completionHandler:&v15];
+  v13 = queryCopy;
+  v14 = [(FCArticleSearchStream *)v12 fetchMoreResultsWithLimit:resultsLimit qualityOfService:qualityOfService callbackQueue:v11 completionHandler:&v15];
 
   [(FCOperation *)self associateChildOperation:v14, v15, v16, v17, v18];
 }
@@ -143,17 +143,17 @@ void __48__FCArticleSearchOperation__performSearchQuery___block_invoke(uint64_t 
   }
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v8 = a3;
-  v4 = [(FCArticleSearchOperation *)self articleSearchCompletion];
+  errorCopy = error;
+  articleSearchCompletion = [(FCArticleSearchOperation *)self articleSearchCompletion];
 
-  if (v4)
+  if (articleSearchCompletion)
   {
-    v5 = [(FCArticleSearchOperation *)self articleSearchCompletion];
-    v6 = [(FCArticleSearchOperation *)self results];
-    v7 = [(FCArticleSearchOperation *)self feedbackResult];
-    (v5)[2](v5, v6, v7, v8);
+    articleSearchCompletion2 = [(FCArticleSearchOperation *)self articleSearchCompletion];
+    results = [(FCArticleSearchOperation *)self results];
+    feedbackResult = [(FCArticleSearchOperation *)self feedbackResult];
+    (articleSearchCompletion2)[2](articleSearchCompletion2, results, feedbackResult, errorCopy);
   }
 }
 

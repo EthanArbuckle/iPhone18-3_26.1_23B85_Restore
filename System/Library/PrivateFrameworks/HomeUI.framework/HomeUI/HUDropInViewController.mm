@@ -1,6 +1,6 @@
 @interface HUDropInViewController
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (HUDropInViewController)initWithServiceContext:(id)a3 blurEffectStyle:(int64_t)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (HUDropInViewController)initWithServiceContext:(id)context blurEffectStyle:(int64_t)style;
 - (UIButton)doneButton;
 - (UIButton)talkButton;
 - (id)_contentViewBackgroundColor;
@@ -9,55 +9,55 @@
 - (id)hu_preloadContent;
 - (void)_cancelStartSessionRequestTimerIfNeeded;
 - (void)_cleanUp;
-- (void)_didPan:(id)a3;
-- (void)_didTap:(id)a3;
-- (void)_dismissDownRecordingView:(id)a3;
-- (void)_dismissRecordingUIWithError:(id)a3;
-- (void)_dismissUpRecordingView:(id)a3;
+- (void)_didPan:(id)pan;
+- (void)_didTap:(id)tap;
+- (void)_dismissDownRecordingView:(id)view;
+- (void)_dismissRecordingUIWithError:(id)error;
+- (void)_dismissUpRecordingView:(id)view;
 - (void)_endDropInSession;
 - (void)_hideSpinner;
 - (void)_launchDropInSessionIfNeeded;
-- (void)_preloadContent:(id)a3;
-- (void)_refreshHomeGraph:(id)a3;
+- (void)_preloadContent:(id)content;
+- (void)_refreshHomeGraph:(id)graph;
 - (void)_showSpinner;
-- (void)_toggleMicrophone:(id)a3;
+- (void)_toggleMicrophone:(id)microphone;
 - (void)_updateRecordingUIWithConnectedState;
 - (void)_updateRecordingUIWithDefaultState;
 - (void)_updateRecordingUIWithMicrophoneOff;
 - (void)_updateRecordingUIWithMicrophoneOn;
-- (void)controller:(id)a3 didUpdateAudioPowerForDropInDevice:(float)a4;
+- (void)controller:(id)controller didUpdateAudioPowerForDropInDevice:(float)device;
 - (void)dealloc;
-- (void)device:(id)a3 didUpdateState:(int64_t)a4;
-- (void)manager:(id)a3 didAddDevice:(id)a4;
-- (void)manager:(id)a3 didUpdateActiveSession:(id)a4;
-- (void)managerDidUpdateDevices:(id)a3;
-- (void)serverDisconnectedForDropInCenter:(id)a3;
-- (void)session:(id)a3 didFailWithError:(id)a4;
-- (void)session:(id)a3 didUpdateState:(unint64_t)a4 reason:(unint64_t)a5;
-- (void)session:(id)a3 didUpdateUplinkMuteStatus:(BOOL)a4;
-- (void)streamControllerStateDidUpdate:(id)a3;
-- (void)subscriber:(id)a3 didUpdateBulletins:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)device:(id)device didUpdateState:(int64_t)state;
+- (void)manager:(id)manager didAddDevice:(id)device;
+- (void)manager:(id)manager didUpdateActiveSession:(id)session;
+- (void)managerDidUpdateDevices:(id)devices;
+- (void)serverDisconnectedForDropInCenter:(id)center;
+- (void)session:(id)session didFailWithError:(id)error;
+- (void)session:(id)session didUpdateState:(unint64_t)state reason:(unint64_t)reason;
+- (void)session:(id)session didUpdateUplinkMuteStatus:(BOOL)status;
+- (void)streamControllerStateDidUpdate:(id)update;
+- (void)subscriber:(id)subscriber didUpdateBulletins:(id)bulletins;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation HUDropInViewController
 
-- (HUDropInViewController)initWithServiceContext:(id)a3 blurEffectStyle:(int64_t)a4
+- (HUDropInViewController)initWithServiceContext:(id)context blurEffectStyle:(int64_t)style
 {
-  v7 = a3;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = HUDropInViewController;
   v8 = [(HUDropInViewController *)&v12 init];
   if (v8)
   {
-    v9 = [MEMORY[0x277D75210] effectWithStyle:a4];
+    v9 = [MEMORY[0x277D75210] effectWithStyle:style];
     blurEffect = v8->_blurEffect;
     v8->_blurEffect = v9;
 
-    objc_storeStrong(&v8->_serviceContext, a3);
+    objc_storeStrong(&v8->_serviceContext, context);
   }
 
   return v8;
@@ -69,8 +69,8 @@
   v374.receiver = self;
   v374.super_class = HUDropInViewController;
   [(HUDropInViewController *)&v374 viewDidLoad];
-  v3 = [(HUDropInViewController *)self currentHome];
-  if (!v3 || (v4 = v3, [(HUDropInViewController *)self currentAccessory], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, !v5))
+  currentHome = [(HUDropInViewController *)self currentHome];
+  if (!currentHome || (v4 = currentHome, [(HUDropInViewController *)self currentAccessory], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, !v5))
   {
     v6 = [MEMORY[0x277CCA9B8] hf_errorWithCode:87];
     [(HUDropInViewController *)self _dismissRecordingUIWithError:v6];
@@ -85,22 +85,22 @@
   self->_tapGestureRecognizer = v9;
 
   [(UITapGestureRecognizer *)self->_tapGestureRecognizer setDelegate:self];
-  v11 = [(HUDropInViewController *)self view];
-  [v11 addGestureRecognizer:self->_tapGestureRecognizer];
+  view = [(HUDropInViewController *)self view];
+  [view addGestureRecognizer:self->_tapGestureRecognizer];
 
-  v12 = [(HUDropInViewController *)self view];
-  [v12 setAlpha:0.0];
+  view2 = [(HUDropInViewController *)self view];
+  [view2 setAlpha:0.0];
 
   v13 = MEMORY[0x277D75D00];
-  v14 = [(HUDropInViewController *)self blurEffect];
-  v15 = [v13 effectForBlurEffect:v14 style:1];
+  blurEffect = [(HUDropInViewController *)self blurEffect];
+  v15 = [v13 effectForBlurEffect:blurEffect style:1];
 
   v16 = [objc_alloc(MEMORY[0x277D75D68]) initWithEffect:v15];
   dismissLabelVisualEffectView = self->_dismissLabelVisualEffectView;
   self->_dismissLabelVisualEffectView = v16;
 
-  v18 = [(HUDropInViewController *)self view];
-  [v18 naui_addAutoLayoutSubview:self->_dismissLabelVisualEffectView];
+  view3 = [(HUDropInViewController *)self view];
+  [view3 naui_addAutoLayoutSubview:self->_dismissLabelVisualEffectView];
 
   v19 = objc_alloc_init(MEMORY[0x277D756B8]);
   dismissLabel = self->_dismissLabel;
@@ -116,22 +116,22 @@
   [(UILabel *)v22 setText:v23];
 
   v24 = self->_dismissLabel;
-  v25 = [MEMORY[0x277D75348] whiteColor];
-  [(UILabel *)v24 setTextColor:v25];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [(UILabel *)v24 setTextColor:whiteColor];
 
   [(UILabel *)self->_dismissLabel setAlpha:0.0];
-  v26 = [(UIVisualEffectView *)self->_dismissLabelVisualEffectView contentView];
-  [v26 naui_addAutoLayoutSubview:self->_dismissLabel];
+  contentView = [(UIVisualEffectView *)self->_dismissLabelVisualEffectView contentView];
+  [contentView naui_addAutoLayoutSubview:self->_dismissLabel];
 
-  v27 = [(UILabel *)self->_dismissLabel text];
-  v28 = [(HUDropInViewController *)self view];
-  [v28 bounds];
+  text = [(UILabel *)self->_dismissLabel text];
+  view4 = [(HUDropInViewController *)self view];
+  [view4 bounds];
   v30 = v29;
   v376 = *MEMORY[0x277D740A8];
-  v31 = [(UILabel *)self->_dismissLabel font];
-  v377[0] = v31;
+  font = [(UILabel *)self->_dismissLabel font];
+  v377[0] = font;
   v32 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v377 forKeys:&v376 count:1];
-  [v27 boundingRectWithSize:1 options:v32 attributes:0 context:{v30, 3.40282347e38}];
+  [text boundingRectWithSize:1 options:v32 attributes:0 context:{v30, 3.40282347e38}];
   v366 = v33;
 
   v34 = MEMORY[0x277D75D00];
@@ -143,8 +143,8 @@
   closeButtonVisualEffectView = self->_closeButtonVisualEffectView;
   self->_closeButtonVisualEffectView = v37;
 
-  v39 = [(HUDropInViewController *)self view];
-  [v39 naui_addAutoLayoutSubview:self->_closeButtonVisualEffectView];
+  view5 = [(HUDropInViewController *)self view];
+  [view5 naui_addAutoLayoutSubview:self->_closeButtonVisualEffectView];
 
   v40 = [MEMORY[0x277D75220] buttonWithType:1];
   closeButton = self->_closeButton;
@@ -152,11 +152,11 @@
 
   [(UIButton *)self->_closeButton addTarget:self action:sel__dismissDownRecordingView_ forControlEvents:64];
   v42 = self->_closeButton;
-  v43 = [MEMORY[0x277D755B8] hu_closeButtonImage];
-  [(UIButton *)v42 setImage:v43 forState:0];
+  hu_closeButtonImage = [MEMORY[0x277D755B8] hu_closeButtonImage];
+  [(UIButton *)v42 setImage:hu_closeButtonImage forState:0];
 
-  v44 = [(UIVisualEffectView *)self->_closeButtonVisualEffectView contentView];
-  [v44 naui_addAutoLayoutSubview:self->_closeButton];
+  contentView2 = [(UIVisualEffectView *)self->_closeButtonVisualEffectView contentView];
+  [contentView2 naui_addAutoLayoutSubview:self->_closeButton];
 
   v45 = objc_alloc(MEMORY[0x277D75D18]);
   v46 = *MEMORY[0x277CBF3A0];
@@ -168,13 +168,13 @@
   self->_contentView = v50;
 
   v52 = self->_contentView;
-  v53 = [(HUDropInViewController *)self _contentViewBackgroundColor];
-  [(UIView *)v52 setBackgroundColor:v53];
+  _contentViewBackgroundColor = [(HUDropInViewController *)self _contentViewBackgroundColor];
+  [(UIView *)v52 setBackgroundColor:_contentViewBackgroundColor];
 
   [(UIView *)self->_contentView _setContinuousCornerRadius:16.0];
   [(UIView *)self->_contentView setAlpha:0.0];
-  v54 = [(HUDropInViewController *)self view];
-  [v54 naui_addAutoLayoutSubview:self->_contentView];
+  view6 = [(HUDropInViewController *)self view];
+  [view6 naui_addAutoLayoutSubview:self->_contentView];
 
   v55 = [objc_alloc(MEMORY[0x277D755E8]) initWithFrame:{v46, v47, v48, v49}];
   iconImageView = self->_iconImageView;
@@ -189,10 +189,10 @@
 
   [(HUIconView *)self->_iconView setTranslatesAutoresizingMaskIntoConstraints:0];
   v59 = MEMORY[0x277D755D0];
-  v60 = [MEMORY[0x277D75348] systemWhiteColor];
-  v375[0] = v60;
-  v61 = [MEMORY[0x277D75348] systemRedColor];
-  v375[1] = v61;
+  systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+  v375[0] = systemWhiteColor;
+  systemRedColor = [MEMORY[0x277D75348] systemRedColor];
+  v375[1] = systemRedColor;
   v62 = [MEMORY[0x277CBEA60] arrayWithObjects:v375 count:2];
   v63 = [v59 configurationWithPaletteColors:v62];
 
@@ -213,13 +213,13 @@
   descriptionTextView = self->_descriptionTextView;
   self->_descriptionTextView = v68;
 
-  v70 = [MEMORY[0x277D75348] systemGrayColor];
-  [(UITextView *)self->_descriptionTextView setTextColor:v70];
+  systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+  [(UITextView *)self->_descriptionTextView setTextColor:systemGrayColor];
 
   [(UITextView *)self->_descriptionTextView setScrollEnabled:0];
   [(UITextView *)self->_descriptionTextView setEditable:0];
-  v71 = [(UITextView *)self->_descriptionTextView textContainer];
-  [v71 setLineFragmentPadding:0.0];
+  textContainer = [(UITextView *)self->_descriptionTextView textContainer];
+  [textContainer setLineFragmentPadding:0.0];
 
   v72 = *MEMORY[0x277D768C8];
   v73 = *(MEMORY[0x277D768C8] + 8);
@@ -227,34 +227,34 @@
   v74 = *(MEMORY[0x277D768C8] + 24);
   [(UITextView *)self->_descriptionTextView setTextContainerInset:*MEMORY[0x277D768C8], v73, v75, v74];
   [(UITextView *)self->_descriptionTextView setContentInset:v72, v73, v75, v74];
-  v76 = [MEMORY[0x277D75348] clearColor];
-  [(UITextView *)self->_descriptionTextView setBackgroundColor:v76];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(UITextView *)self->_descriptionTextView setBackgroundColor:clearColor];
 
   [(UITextView *)self->_descriptionTextView setDataDetectorTypes:2];
   [(UITextView *)self->_descriptionTextView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UITextView *)self->_descriptionTextView setAdjustsFontForContentSizeCategory:1];
   [(UIView *)self->_contentView naui_addAutoLayoutSubview:self->_descriptionTextView];
   v77 = [MEMORY[0x277D180C8] preferredFontForTextStyle:v367 traits:32770];
-  v78 = [(HUDropInViewController *)self titleLabel];
-  [v78 setFont:v77];
+  titleLabel = [(HUDropInViewController *)self titleLabel];
+  [titleLabel setFont:v77];
 
-  v79 = [(HUDropInViewController *)self titleLabel];
-  [v79 setNumberOfLines:0];
+  titleLabel2 = [(HUDropInViewController *)self titleLabel];
+  [titleLabel2 setNumberOfLines:0];
 
-  v80 = [(HUDropInViewController *)self titleLabel];
-  [v80 sizeToFit];
+  titleLabel3 = [(HUDropInViewController *)self titleLabel];
+  [titleLabel3 sizeToFit];
 
   v81 = *MEMORY[0x277D769C0];
   v82 = [MEMORY[0x277D180C8] preferredFontForTextStyle:*MEMORY[0x277D769C0] traits:0x8000];
-  v83 = [(HUDropInViewController *)self descriptionTextView];
-  [v83 setFont:v82];
+  descriptionTextView = [(HUDropInViewController *)self descriptionTextView];
+  [descriptionTextView setFont:v82];
 
-  v84 = [(HUDropInViewController *)self descriptionTextView];
-  v85 = [v84 textContainer];
-  [v85 setMaximumNumberOfLines:0];
+  descriptionTextView2 = [(HUDropInViewController *)self descriptionTextView];
+  textContainer2 = [descriptionTextView2 textContainer];
+  [textContainer2 setMaximumNumberOfLines:0];
 
-  v86 = [(HUDropInViewController *)self descriptionTextView];
-  [v86 sizeToFit];
+  descriptionTextView3 = [(HUDropInViewController *)self descriptionTextView];
+  [descriptionTextView3 sizeToFit];
 
   v368 = [objc_alloc(MEMORY[0x277D757F8]) initWithTarget:self action:sel__didPan_];
   [(UIView *)self->_contentView addGestureRecognizer:?];
@@ -271,65 +271,65 @@
   v91 = [MEMORY[0x277D74300] preferredFontForTextStyle:v81];
   [(UILabel *)self->_spinnerLabel setFont:v91];
 
-  v92 = [MEMORY[0x277D75348] secondaryLabelColor];
-  [(UILabel *)self->_spinnerLabel setTextColor:v92];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  [(UILabel *)self->_spinnerLabel setTextColor:secondaryLabelColor];
 
   [(UILabel *)self->_spinnerLabel setTextAlignment:1];
   [(UILabel *)self->_spinnerLabel setAlpha:0.0];
   [(UIView *)self->_contentView naui_addAutoLayoutSubview:self->_spinnerLabel];
   v93 = [HUWaveformView alloc];
-  v94 = [(HUDropInViewController *)self _waveformColor];
-  v95 = [MEMORY[0x277D75348] systemGrayColor];
-  v96 = [(HUWaveformView *)v93 initWithFrame:v94 waveformColor:v95 backgroundColor:v46, v47, v48, v49];
+  _waveformColor = [(HUDropInViewController *)self _waveformColor];
+  systemGrayColor2 = [MEMORY[0x277D75348] systemGrayColor];
+  v96 = [(HUWaveformView *)v93 initWithFrame:_waveformColor waveformColor:systemGrayColor2 backgroundColor:v46, v47, v48, v49];
   audioWaveformView = self->_audioWaveformView;
   self->_audioWaveformView = v96;
 
   [(HUWaveformView *)self->_audioWaveformView setAlpha:0.0];
   [(UIView *)self->_contentView naui_addAutoLayoutSubview:self->_audioWaveformView];
-  v98 = [(HUDropInViewController *)self talkButton];
-  [v98 setAlpha:0.0];
+  talkButton = [(HUDropInViewController *)self talkButton];
+  [talkButton setAlpha:0.0];
 
-  v99 = [(HUDropInViewController *)self talkButton];
-  [v99 setIsAccessibilityElement:1];
+  talkButton2 = [(HUDropInViewController *)self talkButton];
+  [talkButton2 setIsAccessibilityElement:1];
 
-  v100 = [(HUDropInViewController *)self talkButton];
-  [v100 addTarget:self action:sel__toggleMicrophone_ forControlEvents:64];
+  talkButton3 = [(HUDropInViewController *)self talkButton];
+  [talkButton3 addTarget:self action:sel__toggleMicrophone_ forControlEvents:64];
 
   v101 = self->_contentView;
-  v102 = [(HUDropInViewController *)self talkButton];
-  [(UIView *)v101 naui_addAutoLayoutSubview:v102];
+  talkButton4 = [(HUDropInViewController *)self talkButton];
+  [(UIView *)v101 naui_addAutoLayoutSubview:talkButton4];
 
-  v103 = [(HUDropInViewController *)self doneButton];
-  [v103 setAlpha:0.0];
+  doneButton = [(HUDropInViewController *)self doneButton];
+  [doneButton setAlpha:0.0];
 
-  v104 = [(HUDropInViewController *)self doneButton];
-  [v104 setIsAccessibilityElement:1];
+  doneButton2 = [(HUDropInViewController *)self doneButton];
+  [doneButton2 setIsAccessibilityElement:1];
 
-  v105 = [(HUDropInViewController *)self doneButton];
-  [v105 addTarget:self action:sel__toggleMicrophone_ forControlEvents:64];
+  doneButton3 = [(HUDropInViewController *)self doneButton];
+  [doneButton3 addTarget:self action:sel__toggleMicrophone_ forControlEvents:64];
 
   v106 = self->_contentView;
-  v107 = [(HUDropInViewController *)self doneButton];
-  [(UIView *)v106 naui_addAutoLayoutSubview:v107];
+  doneButton4 = [(HUDropInViewController *)self doneButton];
+  [(UIView *)v106 naui_addAutoLayoutSubview:doneButton4];
 
-  v108 = [(HUDropInViewController *)self nearbyCameraProfile];
+  nearbyCameraProfile = [(HUDropInViewController *)self nearbyCameraProfile];
 
-  if (v108)
+  if (nearbyCameraProfile)
   {
-    v109 = [(HUDropInViewController *)self liveStreamController];
-    v110 = [v109 view];
+    liveStreamController = [(HUDropInViewController *)self liveStreamController];
+    view7 = [liveStreamController view];
     liveCameraView = self->_liveCameraView;
-    self->_liveCameraView = v110;
+    self->_liveCameraView = view7;
 
     [(UIView *)self->_liveCameraView _setContinuousCornerRadius:14.0];
     [(UIView *)self->_liveCameraView setClipsToBounds:1];
     [(UIView *)self->_liveCameraView setAlpha:0.0];
     [(UIView *)self->_contentView naui_addAutoLayoutSubview:self->_liveCameraView];
     v112 = [MEMORY[0x277D760A8] sharedInstanceForStyle:0];
-    v113 = [(HUDropInViewController *)self nearbyCameraProfile];
-    v114 = [v113 streamControl];
+    nearbyCameraProfile2 = [(HUDropInViewController *)self nearbyCameraProfile];
+    streamControl = [nearbyCameraProfile2 streamControl];
     v115 = 0;
-    if ([v114 streamState] == 2)
+    if ([streamControl streamState] == 2)
     {
       v115 = _HULocalizedStringWithDefaultValue(@"HUCameraLive", @"HUCameraLive", 1);
     }
@@ -359,456 +359,456 @@
   }
 
   v125 = objc_opt_new();
-  v126 = [MEMORY[0x277D75418] currentDevice];
-  v127 = [v126 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v128 = self->_dismissLabelVisualEffectView;
-  if ((v127 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
-    v129 = [(UIVisualEffectView *)v128 centerXAnchor];
-    v130 = [(UIView *)self->_contentView centerXAnchor];
-    v131 = [v129 constraintEqualToAnchor:v130];
-    [v125 addObject:v131];
+    centerXAnchor = [(UIVisualEffectView *)v128 centerXAnchor];
+    centerXAnchor2 = [(UIView *)self->_contentView centerXAnchor];
+    safeAreaLayoutGuide = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
+    [v125 addObject:safeAreaLayoutGuide];
   }
 
   else
   {
-    v129 = [(UIVisualEffectView *)v128 leadingAnchor];
-    v130 = [(HUDropInViewController *)self view];
-    v131 = [v130 safeAreaLayoutGuide];
-    v132 = [v131 leadingAnchor];
-    v133 = [v129 constraintEqualToAnchor:v132];
+    centerXAnchor = [(UIVisualEffectView *)v128 leadingAnchor];
+    centerXAnchor2 = [(HUDropInViewController *)self view];
+    safeAreaLayoutGuide = [centerXAnchor2 safeAreaLayoutGuide];
+    leadingAnchor = [safeAreaLayoutGuide leadingAnchor];
+    v133 = [centerXAnchor constraintEqualToAnchor:leadingAnchor];
     [v125 addObject:v133];
   }
 
-  v134 = [(UIVisualEffectView *)self->_dismissLabelVisualEffectView trailingAnchor];
-  v135 = [(HUDropInViewController *)self view];
-  v136 = [v135 safeAreaLayoutGuide];
-  v137 = [v136 trailingAnchor];
-  v138 = [v134 constraintEqualToAnchor:v137];
+  trailingAnchor = [(UIVisualEffectView *)self->_dismissLabelVisualEffectView trailingAnchor];
+  view8 = [(HUDropInViewController *)self view];
+  safeAreaLayoutGuide2 = [view8 safeAreaLayoutGuide];
+  trailingAnchor2 = [safeAreaLayoutGuide2 trailingAnchor];
+  v138 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v125 addObject:v138];
 
-  v139 = [(UIVisualEffectView *)self->_dismissLabelVisualEffectView topAnchor];
-  v140 = [(HUDropInViewController *)self view];
-  v141 = [v140 safeAreaLayoutGuide];
-  v142 = [v141 topAnchor];
-  v143 = [v139 constraintEqualToAnchor:v142 constant:-25.0];
+  topAnchor = [(UIVisualEffectView *)self->_dismissLabelVisualEffectView topAnchor];
+  view9 = [(HUDropInViewController *)self view];
+  safeAreaLayoutGuide3 = [view9 safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide3 topAnchor];
+  v143 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:-25.0];
   dismissLabelTopConstraint = self->_dismissLabelTopConstraint;
   self->_dismissLabelTopConstraint = v143;
 
   [v125 addObject:self->_dismissLabelTopConstraint];
-  v145 = [(UIVisualEffectView *)self->_dismissLabelVisualEffectView heightAnchor];
-  v146 = [v145 constraintEqualToConstant:v366];
+  heightAnchor = [(UIVisualEffectView *)self->_dismissLabelVisualEffectView heightAnchor];
+  v146 = [heightAnchor constraintEqualToConstant:v366];
   [v125 addObject:v146];
 
-  v147 = [(UILabel *)self->_dismissLabel leadingAnchor];
-  v148 = [(UIVisualEffectView *)self->_dismissLabelVisualEffectView leadingAnchor];
-  v149 = [v147 constraintEqualToAnchor:v148];
+  leadingAnchor2 = [(UILabel *)self->_dismissLabel leadingAnchor];
+  leadingAnchor3 = [(UIVisualEffectView *)self->_dismissLabelVisualEffectView leadingAnchor];
+  v149 = [leadingAnchor2 constraintEqualToAnchor:leadingAnchor3];
   [v125 addObject:v149];
 
-  v150 = [(UILabel *)self->_dismissLabel trailingAnchor];
-  v151 = [(UIVisualEffectView *)self->_dismissLabelVisualEffectView trailingAnchor];
-  v152 = [v150 constraintEqualToAnchor:v151];
+  trailingAnchor3 = [(UILabel *)self->_dismissLabel trailingAnchor];
+  trailingAnchor4 = [(UIVisualEffectView *)self->_dismissLabelVisualEffectView trailingAnchor];
+  v152 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   [v125 addObject:v152];
 
-  v153 = [(UILabel *)self->_dismissLabel topAnchor];
-  v154 = [(UIVisualEffectView *)self->_dismissLabelVisualEffectView topAnchor];
-  v155 = [v153 constraintEqualToAnchor:v154];
+  topAnchor3 = [(UILabel *)self->_dismissLabel topAnchor];
+  topAnchor4 = [(UIVisualEffectView *)self->_dismissLabelVisualEffectView topAnchor];
+  v155 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   [v125 addObject:v155];
 
-  v156 = [(UILabel *)self->_dismissLabel heightAnchor];
-  v157 = [(UIVisualEffectView *)self->_dismissLabelVisualEffectView heightAnchor];
-  v158 = [v156 constraintEqualToAnchor:v157];
+  heightAnchor2 = [(UILabel *)self->_dismissLabel heightAnchor];
+  heightAnchor3 = [(UIVisualEffectView *)self->_dismissLabelVisualEffectView heightAnchor];
+  v158 = [heightAnchor2 constraintEqualToAnchor:heightAnchor3];
   [v125 addObject:v158];
 
-  v159 = [(UIVisualEffectView *)self->_closeButtonVisualEffectView topAnchor];
-  v160 = [(HUDropInViewController *)self view];
-  v161 = [v160 topAnchor];
-  v162 = [v159 constraintEqualToAnchor:v161 constant:30.0];
+  topAnchor5 = [(UIVisualEffectView *)self->_closeButtonVisualEffectView topAnchor];
+  view10 = [(HUDropInViewController *)self view];
+  topAnchor6 = [view10 topAnchor];
+  v162 = [topAnchor5 constraintEqualToAnchor:topAnchor6 constant:30.0];
   closeButtonTopConstraint = self->_closeButtonTopConstraint;
   self->_closeButtonTopConstraint = v162;
 
   [v125 addObject:self->_closeButtonTopConstraint];
-  v164 = [(UIVisualEffectView *)self->_closeButtonVisualEffectView trailingAnchor];
-  v165 = [(HUDropInViewController *)self view];
-  v166 = [v165 safeAreaLayoutGuide];
-  v167 = [v166 trailingAnchor];
-  v168 = [v164 constraintEqualToAnchor:v167 constant:-16.0];
+  trailingAnchor5 = [(UIVisualEffectView *)self->_closeButtonVisualEffectView trailingAnchor];
+  view11 = [(HUDropInViewController *)self view];
+  safeAreaLayoutGuide4 = [view11 safeAreaLayoutGuide];
+  trailingAnchor6 = [safeAreaLayoutGuide4 trailingAnchor];
+  v168 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:-16.0];
   [v125 addObject:v168];
 
-  v169 = [(UIVisualEffectView *)self->_closeButtonVisualEffectView heightAnchor];
-  v170 = [v169 constraintEqualToConstant:30.0];
+  heightAnchor4 = [(UIVisualEffectView *)self->_closeButtonVisualEffectView heightAnchor];
+  v170 = [heightAnchor4 constraintEqualToConstant:30.0];
   [v125 addObject:v170];
 
-  v171 = [(UIVisualEffectView *)self->_closeButtonVisualEffectView widthAnchor];
-  v172 = [(UIVisualEffectView *)self->_closeButtonVisualEffectView heightAnchor];
-  v173 = [v171 constraintEqualToAnchor:v172];
+  widthAnchor = [(UIVisualEffectView *)self->_closeButtonVisualEffectView widthAnchor];
+  heightAnchor5 = [(UIVisualEffectView *)self->_closeButtonVisualEffectView heightAnchor];
+  v173 = [widthAnchor constraintEqualToAnchor:heightAnchor5];
   [v125 addObject:v173];
 
-  v174 = [(UIButton *)self->_closeButton topAnchor];
-  v175 = [(UIVisualEffectView *)self->_closeButtonVisualEffectView topAnchor];
-  v176 = [v174 constraintEqualToAnchor:v175];
+  topAnchor7 = [(UIButton *)self->_closeButton topAnchor];
+  topAnchor8 = [(UIVisualEffectView *)self->_closeButtonVisualEffectView topAnchor];
+  v176 = [topAnchor7 constraintEqualToAnchor:topAnchor8];
   [v125 addObject:v176];
 
-  v177 = [(UIButton *)self->_closeButton trailingAnchor];
-  v178 = [(UIVisualEffectView *)self->_closeButtonVisualEffectView trailingAnchor];
-  v179 = [v177 constraintEqualToAnchor:v178];
+  trailingAnchor7 = [(UIButton *)self->_closeButton trailingAnchor];
+  trailingAnchor8 = [(UIVisualEffectView *)self->_closeButtonVisualEffectView trailingAnchor];
+  v179 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8];
   [v125 addObject:v179];
 
-  v180 = [(UIButton *)self->_closeButton heightAnchor];
-  v181 = [(UIVisualEffectView *)self->_closeButtonVisualEffectView heightAnchor];
-  v182 = [v180 constraintEqualToAnchor:v181];
+  heightAnchor6 = [(UIButton *)self->_closeButton heightAnchor];
+  heightAnchor7 = [(UIVisualEffectView *)self->_closeButtonVisualEffectView heightAnchor];
+  v182 = [heightAnchor6 constraintEqualToAnchor:heightAnchor7];
   [v125 addObject:v182];
 
-  v183 = [(UIButton *)self->_closeButton widthAnchor];
-  v184 = [(UIButton *)self->_closeButton heightAnchor];
-  v185 = [v183 constraintEqualToAnchor:v184];
+  widthAnchor2 = [(UIButton *)self->_closeButton widthAnchor];
+  heightAnchor8 = [(UIButton *)self->_closeButton heightAnchor];
+  v185 = [widthAnchor2 constraintEqualToAnchor:heightAnchor8];
   [v125 addObject:v185];
 
-  v186 = [MEMORY[0x277D75418] currentDevice];
-  v187 = [v186 userInterfaceIdiom];
+  currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
-  v188 = v187 & 0xFFFFFFFFFFFFFFFBLL;
-  v189 = [(UIView *)self->_contentView topAnchor];
+  v188 = userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL;
+  topAnchor9 = [(UIView *)self->_contentView topAnchor];
   if (v188 == 1)
   {
-    v190 = [(HUDropInViewController *)self view];
-    v191 = [v190 topAnchor];
-    v192 = [v189 constraintEqualToAnchor:v191 constant:30.0];
+    view12 = [(HUDropInViewController *)self view];
+    topAnchor10 = [view12 topAnchor];
+    v192 = [topAnchor9 constraintEqualToAnchor:topAnchor10 constant:30.0];
     contentViewTopConstraint = self->_contentViewTopConstraint;
     self->_contentViewTopConstraint = v192;
 
     [v125 addObject:self->_contentViewTopConstraint];
-    v194 = [(UIView *)self->_contentView trailingAnchor];
-    v195 = [(UIVisualEffectView *)self->_closeButtonVisualEffectView leadingAnchor];
-    v196 = [v194 constraintEqualToAnchor:v195 constant:-8.0];
-    [v125 addObject:v196];
+    trailingAnchor9 = [(UIView *)self->_contentView trailingAnchor];
+    leadingAnchor4 = [(UIVisualEffectView *)self->_closeButtonVisualEffectView leadingAnchor];
+    safeAreaLayoutGuide5 = [trailingAnchor9 constraintEqualToAnchor:leadingAnchor4 constant:-8.0];
+    [v125 addObject:safeAreaLayoutGuide5];
   }
 
   else
   {
-    v197 = [(UIVisualEffectView *)self->_closeButtonVisualEffectView bottomAnchor];
-    v198 = [v189 constraintEqualToAnchor:v197 constant:8.0];
+    bottomAnchor = [(UIVisualEffectView *)self->_closeButtonVisualEffectView bottomAnchor];
+    v198 = [topAnchor9 constraintEqualToAnchor:bottomAnchor constant:8.0];
     [v125 addObject:v198];
 
-    v194 = [(UIView *)self->_contentView trailingAnchor];
-    v195 = [(HUDropInViewController *)self view];
-    v196 = [v195 safeAreaLayoutGuide];
-    v199 = [v196 trailingAnchor];
-    v200 = [v194 constraintEqualToAnchor:v199 constant:-10.0];
+    trailingAnchor9 = [(UIView *)self->_contentView trailingAnchor];
+    leadingAnchor4 = [(HUDropInViewController *)self view];
+    safeAreaLayoutGuide5 = [leadingAnchor4 safeAreaLayoutGuide];
+    trailingAnchor10 = [safeAreaLayoutGuide5 trailingAnchor];
+    v200 = [trailingAnchor9 constraintEqualToAnchor:trailingAnchor10 constant:-10.0];
     [v125 addObject:v200];
   }
 
-  v201 = [(UIView *)self->_contentView widthAnchor];
-  v202 = [v201 constraintEqualToConstant:100.0];
+  widthAnchor3 = [(UIView *)self->_contentView widthAnchor];
+  v202 = [widthAnchor3 constraintEqualToConstant:100.0];
   contentViewWidthConstraint = self->_contentViewWidthConstraint;
   self->_contentViewWidthConstraint = v202;
 
   [v125 addObject:self->_contentViewWidthConstraint];
-  v204 = [(UIView *)self->_contentView heightAnchor];
+  heightAnchor9 = [(UIView *)self->_contentView heightAnchor];
   v205 = 0.0;
-  v206 = [v204 constraintEqualToConstant:0.0];
+  v206 = [heightAnchor9 constraintEqualToConstant:0.0];
   contentViewHeightConstraint = self->_contentViewHeightConstraint;
   self->_contentViewHeightConstraint = v206;
 
   [v125 addObject:self->_contentViewHeightConstraint];
-  v208 = [(HUDropInViewController *)self view];
-  [v208 frame];
+  view13 = [(HUDropInViewController *)self view];
+  [view13 frame];
   v211 = HUViewSizeSubclassForViewSize(v209, v210);
 
   v212 = [HUGridBannerCellLayoutOptions defaultOptionsForCellSizeSubclass:HUCellSizeSubclassForViewSizeSubclass(v211)];
-  v213 = [(HUDropInViewController *)self iconView];
-  v214 = [v213 leadingAnchor];
-  v215 = [(UIView *)self->_contentView leadingAnchor];
+  iconView = [(HUDropInViewController *)self iconView];
+  leadingAnchor5 = [iconView leadingAnchor];
+  leadingAnchor6 = [(UIView *)self->_contentView leadingAnchor];
   [v212 leadingInset];
-  v216 = [v214 constraintEqualToAnchor:v215 constant:?];
+  v216 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6 constant:?];
   [v125 addObject:v216];
 
-  v217 = [(HUDropInViewController *)self iconImageView];
-  v218 = [v217 leadingAnchor];
-  v219 = [(HUDropInViewController *)self iconView];
-  v220 = [v219 leadingAnchor];
-  v221 = [v218 constraintEqualToAnchor:v220];
+  iconImageView = [(HUDropInViewController *)self iconImageView];
+  leadingAnchor7 = [iconImageView leadingAnchor];
+  iconView2 = [(HUDropInViewController *)self iconView];
+  leadingAnchor8 = [iconView2 leadingAnchor];
+  v221 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
   [v125 addObject:v221];
 
-  v222 = [(HUDropInViewController *)self iconView];
-  v223 = [v222 topAnchor];
-  v224 = [(UIView *)self->_contentView topAnchor];
+  iconView3 = [(HUDropInViewController *)self iconView];
+  topAnchor11 = [iconView3 topAnchor];
+  topAnchor12 = [(UIView *)self->_contentView topAnchor];
   [v212 titleTopInset];
-  v225 = [v223 constraintEqualToAnchor:v224 constant:?];
+  v225 = [topAnchor11 constraintEqualToAnchor:topAnchor12 constant:?];
   [v125 addObject:v225];
 
-  v226 = [(HUDropInViewController *)self iconImageView];
-  v227 = [v226 topAnchor];
-  v228 = [(HUDropInViewController *)self iconView];
-  v229 = [v228 topAnchor];
-  v230 = [v227 constraintEqualToAnchor:v229];
+  iconImageView2 = [(HUDropInViewController *)self iconImageView];
+  topAnchor13 = [iconImageView2 topAnchor];
+  iconView4 = [(HUDropInViewController *)self iconView];
+  topAnchor14 = [iconView4 topAnchor];
+  v230 = [topAnchor13 constraintEqualToAnchor:topAnchor14];
   [v125 addObject:v230];
 
-  v231 = [(HUDropInViewController *)self iconView];
-  v232 = [v231 heightAnchor];
+  iconView5 = [(HUDropInViewController *)self iconView];
+  heightAnchor10 = [iconView5 heightAnchor];
   [v212 iconHeight];
-  v233 = [v232 constraintEqualToConstant:?];
+  v233 = [heightAnchor10 constraintEqualToConstant:?];
   [v125 addObject:v233];
 
-  v234 = [(HUDropInViewController *)self iconImageView];
-  v235 = [v234 heightAnchor];
-  v236 = [(HUDropInViewController *)self iconImageView];
-  v237 = [v236 image];
-  if (v237)
+  iconImageView3 = [(HUDropInViewController *)self iconImageView];
+  heightAnchor11 = [iconImageView3 heightAnchor];
+  iconImageView4 = [(HUDropInViewController *)self iconImageView];
+  image = [iconImageView4 image];
+  if (image)
   {
     [v212 iconHeight];
     v205 = v238;
   }
 
-  v239 = [v235 constraintEqualToConstant:v205];
+  v239 = [heightAnchor11 constraintEqualToConstant:v205];
   [v125 addObject:v239];
 
-  v240 = [(HUDropInViewController *)self iconView];
-  v241 = [v240 widthAnchor];
-  v242 = [(HUDropInViewController *)self iconView];
-  v243 = [v242 heightAnchor];
-  v244 = [v241 constraintEqualToAnchor:v243];
+  iconView6 = [(HUDropInViewController *)self iconView];
+  widthAnchor4 = [iconView6 widthAnchor];
+  iconView7 = [(HUDropInViewController *)self iconView];
+  heightAnchor12 = [iconView7 heightAnchor];
+  v244 = [widthAnchor4 constraintEqualToAnchor:heightAnchor12];
   [v125 addObject:v244];
 
-  v245 = [(HUDropInViewController *)self iconImageView];
-  v246 = [v245 widthAnchor];
-  v247 = [(HUDropInViewController *)self iconImageView];
-  v248 = [v247 heightAnchor];
-  v249 = [v246 constraintEqualToAnchor:v248];
+  iconImageView5 = [(HUDropInViewController *)self iconImageView];
+  widthAnchor5 = [iconImageView5 widthAnchor];
+  iconImageView6 = [(HUDropInViewController *)self iconImageView];
+  heightAnchor13 = [iconImageView6 heightAnchor];
+  v249 = [widthAnchor5 constraintEqualToAnchor:heightAnchor13];
   [v125 addObject:v249];
 
-  v250 = [(HUDropInViewController *)self traitCollection];
-  v251 = [v250 preferredContentSizeCategory];
+  traitCollection = [(HUDropInViewController *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
   v252 = *MEMORY[0x277D767F8];
 
-  v253 = [(HUDropInViewController *)self titleLabel];
-  v254 = [v253 topAnchor];
-  if (v251 >= v252)
+  titleLabel4 = [(HUDropInViewController *)self titleLabel];
+  topAnchor15 = [titleLabel4 topAnchor];
+  if (preferredContentSizeCategory >= v252)
   {
-    v262 = [(HUDropInViewController *)self iconView];
-    v263 = [v262 bottomAnchor];
+    iconView8 = [(HUDropInViewController *)self iconView];
+    bottomAnchor2 = [iconView8 bottomAnchor];
     [v212 verticalSpacingForLipElements];
-    v264 = [v254 constraintEqualToAnchor:v263 constant:?];
+    v264 = [topAnchor15 constraintEqualToAnchor:bottomAnchor2 constant:?];
     [v125 addObject:v264];
 
-    v257 = [(HUDropInViewController *)self titleLabel];
-    v258 = [v257 leadingAnchor];
-    v259 = [(UIView *)self->_contentView leadingAnchor];
+    titleLabel5 = [(HUDropInViewController *)self titleLabel];
+    leadingAnchor9 = [titleLabel5 leadingAnchor];
+    leadingAnchor10 = [(UIView *)self->_contentView leadingAnchor];
     [v212 leadingInset];
-    v260 = [v258 constraintEqualToAnchor:v259 constant:?];
-    [v125 addObject:v260];
+    trailingAnchor11 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10 constant:?];
+    [v125 addObject:trailingAnchor11];
   }
 
   else
   {
-    v255 = [(UIView *)self->_contentView topAnchor];
+    topAnchor16 = [(UIView *)self->_contentView topAnchor];
     [v212 titleTopInset];
-    v256 = [v254 constraintEqualToAnchor:v255 constant:?];
+    v256 = [topAnchor15 constraintEqualToAnchor:topAnchor16 constant:?];
     [v125 addObject:v256];
 
-    v257 = [(HUDropInViewController *)self titleLabel];
-    v258 = [v257 leadingAnchor];
-    v259 = [(HUDropInViewController *)self iconView];
-    v260 = [v259 trailingAnchor];
+    titleLabel5 = [(HUDropInViewController *)self titleLabel];
+    leadingAnchor9 = [titleLabel5 leadingAnchor];
+    leadingAnchor10 = [(HUDropInViewController *)self iconView];
+    trailingAnchor11 = [leadingAnchor10 trailingAnchor];
     [v212 horizontalItemSpacing];
-    v261 = [v258 constraintEqualToAnchor:v260 constant:?];
+    v261 = [leadingAnchor9 constraintEqualToAnchor:trailingAnchor11 constant:?];
     [v125 addObject:v261];
   }
 
-  v265 = [(HUDropInViewController *)self titleLabel];
-  v266 = [v265 trailingAnchor];
-  v267 = [(UIView *)self->_contentView trailingAnchor];
+  titleLabel6 = [(HUDropInViewController *)self titleLabel];
+  trailingAnchor12 = [titleLabel6 trailingAnchor];
+  trailingAnchor13 = [(UIView *)self->_contentView trailingAnchor];
   [v212 trailingInset];
-  v269 = [v266 constraintEqualToAnchor:v267 constant:-v268];
+  v269 = [trailingAnchor12 constraintEqualToAnchor:trailingAnchor13 constant:-v268];
   [v125 addObject:v269];
 
-  v270 = [(HUDropInViewController *)self descriptionTextView];
-  v271 = [v270 topAnchor];
-  v272 = [(HUDropInViewController *)self titleLabel];
-  v273 = [v272 bottomAnchor];
+  descriptionTextView4 = [(HUDropInViewController *)self descriptionTextView];
+  topAnchor17 = [descriptionTextView4 topAnchor];
+  titleLabel7 = [(HUDropInViewController *)self titleLabel];
+  bottomAnchor3 = [titleLabel7 bottomAnchor];
   [v212 verticalLabelSpacing];
-  v274 = [v271 constraintEqualToAnchor:v273 constant:?];
+  v274 = [topAnchor17 constraintEqualToAnchor:bottomAnchor3 constant:?];
   [v125 addObject:v274];
 
-  v275 = [(HUDropInViewController *)self traitCollection];
-  v276 = [v275 preferredContentSizeCategory];
+  traitCollection2 = [(HUDropInViewController *)self traitCollection];
+  preferredContentSizeCategory2 = [traitCollection2 preferredContentSizeCategory];
 
-  v277 = [(HUDropInViewController *)self descriptionTextView];
-  v278 = [v277 leadingAnchor];
-  if (v276 >= v252)
+  descriptionTextView5 = [(HUDropInViewController *)self descriptionTextView];
+  leadingAnchor11 = [descriptionTextView5 leadingAnchor];
+  if (preferredContentSizeCategory2 >= v252)
   {
-    v279 = [(UIView *)self->_contentView leadingAnchor];
+    leadingAnchor12 = [(UIView *)self->_contentView leadingAnchor];
     [v212 leadingInset];
-    v280 = [v278 constraintEqualToAnchor:v279 constant:?];
-    [v125 addObject:v280];
+    trailingAnchor14 = [leadingAnchor11 constraintEqualToAnchor:leadingAnchor12 constant:?];
+    [v125 addObject:trailingAnchor14];
   }
 
   else
   {
-    v279 = [(HUDropInViewController *)self iconView];
-    v280 = [v279 trailingAnchor];
+    leadingAnchor12 = [(HUDropInViewController *)self iconView];
+    trailingAnchor14 = [leadingAnchor12 trailingAnchor];
     [v212 horizontalItemSpacing];
-    v281 = [v278 constraintEqualToAnchor:v280 constant:?];
+    v281 = [leadingAnchor11 constraintEqualToAnchor:trailingAnchor14 constant:?];
     [v125 addObject:v281];
   }
 
-  v282 = [(HUDropInViewController *)self descriptionTextView];
-  v283 = [v282 trailingAnchor];
-  v284 = [(UIView *)self->_contentView trailingAnchor];
+  descriptionTextView6 = [(HUDropInViewController *)self descriptionTextView];
+  trailingAnchor15 = [descriptionTextView6 trailingAnchor];
+  trailingAnchor16 = [(UIView *)self->_contentView trailingAnchor];
   [v212 trailingInset];
-  v286 = [v283 constraintEqualToAnchor:v284 constant:-v285];
+  v286 = [trailingAnchor15 constraintEqualToAnchor:trailingAnchor16 constant:-v285];
   [v125 addObject:v286];
 
-  v287 = [(UIActivityIndicatorView *)self->_spinner centerYAnchor];
-  v288 = [(UIView *)self->_contentView centerYAnchor];
-  v289 = [v287 constraintEqualToAnchor:v288];
+  centerYAnchor = [(UIActivityIndicatorView *)self->_spinner centerYAnchor];
+  centerYAnchor2 = [(UIView *)self->_contentView centerYAnchor];
+  v289 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v125 addObject:v289];
 
-  v290 = [(UIActivityIndicatorView *)self->_spinner centerXAnchor];
-  v291 = [(UIView *)self->_contentView centerXAnchor];
-  v292 = [v290 constraintEqualToAnchor:v291];
+  centerXAnchor3 = [(UIActivityIndicatorView *)self->_spinner centerXAnchor];
+  centerXAnchor4 = [(UIView *)self->_contentView centerXAnchor];
+  v292 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   [v125 addObject:v292];
 
-  v293 = [(UILabel *)self->_spinnerLabel leadingAnchor];
-  v294 = [(UIView *)self->_contentView leadingAnchor];
-  v295 = [v293 constraintEqualToAnchor:v294];
+  leadingAnchor13 = [(UILabel *)self->_spinnerLabel leadingAnchor];
+  leadingAnchor14 = [(UIView *)self->_contentView leadingAnchor];
+  v295 = [leadingAnchor13 constraintEqualToAnchor:leadingAnchor14];
   [v125 addObject:v295];
 
-  v296 = [(UILabel *)self->_spinnerLabel trailingAnchor];
-  v297 = [(UIView *)self->_contentView trailingAnchor];
-  v298 = [v296 constraintEqualToAnchor:v297];
+  trailingAnchor17 = [(UILabel *)self->_spinnerLabel trailingAnchor];
+  trailingAnchor18 = [(UIView *)self->_contentView trailingAnchor];
+  v298 = [trailingAnchor17 constraintEqualToAnchor:trailingAnchor18];
   [v125 addObject:v298];
 
-  v299 = [(UILabel *)self->_spinnerLabel topAnchor];
-  v300 = [(UIActivityIndicatorView *)self->_spinner bottomAnchor];
-  v301 = [v299 constraintEqualToAnchor:v300 constant:24.0];
+  topAnchor18 = [(UILabel *)self->_spinnerLabel topAnchor];
+  bottomAnchor4 = [(UIActivityIndicatorView *)self->_spinner bottomAnchor];
+  v301 = [topAnchor18 constraintEqualToAnchor:bottomAnchor4 constant:24.0];
   [v125 addObject:v301];
 
-  v302 = [(UILabel *)self->_spinnerLabel centerXAnchor];
-  v303 = [(UIView *)self->_contentView centerXAnchor];
-  v304 = [v302 constraintEqualToAnchor:v303];
+  centerXAnchor5 = [(UILabel *)self->_spinnerLabel centerXAnchor];
+  centerXAnchor6 = [(UIView *)self->_contentView centerXAnchor];
+  v304 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
   [v125 addObject:v304];
 
-  v305 = [(HUDropInViewController *)self nearbyCameraProfile];
+  nearbyCameraProfile3 = [(HUDropInViewController *)self nearbyCameraProfile];
 
-  if (v305)
+  if (nearbyCameraProfile3)
   {
-    v306 = [(UIView *)self->_liveCameraView centerXAnchor];
-    v307 = [(UIView *)self->_contentView centerXAnchor];
-    v308 = [v306 constraintEqualToAnchor:v307];
+    centerXAnchor7 = [(UIView *)self->_liveCameraView centerXAnchor];
+    centerXAnchor8 = [(UIView *)self->_contentView centerXAnchor];
+    v308 = [centerXAnchor7 constraintEqualToAnchor:centerXAnchor8];
     [v125 addObject:v308];
 
-    v309 = [(HUDropInViewController *)self liveCameraView];
-    v310 = [v309 topAnchor];
-    v311 = [(UILabel *)self->_spinnerLabel bottomAnchor];
-    v312 = [v310 constraintEqualToAnchor:v311 constant:20.0];
+    liveCameraView = [(HUDropInViewController *)self liveCameraView];
+    topAnchor19 = [liveCameraView topAnchor];
+    bottomAnchor5 = [(UILabel *)self->_spinnerLabel bottomAnchor];
+    v312 = [topAnchor19 constraintEqualToAnchor:bottomAnchor5 constant:20.0];
     [(HUDropInViewController *)self setCameraLiveStreamViewTopConstraintToSpinnerLabel:v312];
 
-    v313 = [(HUDropInViewController *)self liveCameraView];
-    v314 = [v313 topAnchor];
-    v315 = [(UITextView *)self->_descriptionTextView bottomAnchor];
-    v316 = [v314 constraintEqualToAnchor:v315 constant:20.0];
+    liveCameraView2 = [(HUDropInViewController *)self liveCameraView];
+    topAnchor20 = [liveCameraView2 topAnchor];
+    bottomAnchor6 = [(UITextView *)self->_descriptionTextView bottomAnchor];
+    v316 = [topAnchor20 constraintEqualToAnchor:bottomAnchor6 constant:20.0];
     [(HUDropInViewController *)self setCameraLiveStreamViewTopConstraintToDescriptionTextView:v316];
 
-    v317 = [(UIView *)self->_liveCameraView widthAnchor];
-    v318 = [(UIView *)self->_contentView widthAnchor];
-    v319 = [v317 constraintEqualToAnchor:v318 multiplier:0.85];
+    widthAnchor6 = [(UIView *)self->_liveCameraView widthAnchor];
+    widthAnchor7 = [(UIView *)self->_contentView widthAnchor];
+    v319 = [widthAnchor6 constraintEqualToAnchor:widthAnchor7 multiplier:0.85];
     [v125 addObject:v319];
 
-    v320 = [(UIView *)self->_liveCameraView heightAnchor];
-    v321 = [(UIView *)self->_liveCameraView widthAnchor];
-    v322 = [v320 constraintEqualToAnchor:v321 multiplier:0.5625];
+    heightAnchor14 = [(UIView *)self->_liveCameraView heightAnchor];
+    widthAnchor8 = [(UIView *)self->_liveCameraView widthAnchor];
+    v322 = [heightAnchor14 constraintEqualToAnchor:widthAnchor8 multiplier:0.5625];
     [v125 addObject:v322];
 
-    v323 = [(HUWaveformView *)self->_audioWaveformView topAnchor];
-    v324 = [(UIView *)self->_liveCameraView bottomAnchor];
-    v325 = [v323 constraintEqualToAnchor:v324 constant:20.0];
+    topAnchor21 = [(HUWaveformView *)self->_audioWaveformView topAnchor];
+    bottomAnchor7 = [(UIView *)self->_liveCameraView bottomAnchor];
+    v325 = [topAnchor21 constraintEqualToAnchor:bottomAnchor7 constant:20.0];
     [v125 addObject:v325];
 
-    v326 = [(HULegibilityLabel *)self->_descriptionLabel bottomAnchor];
-    v327 = [(UIView *)self->_liveCameraView bottomAnchor];
-    v328 = [v326 constraintEqualToAnchor:v327 constant:-10.0];
+    bottomAnchor8 = [(HULegibilityLabel *)self->_descriptionLabel bottomAnchor];
+    bottomAnchor9 = [(UIView *)self->_liveCameraView bottomAnchor];
+    v328 = [bottomAnchor8 constraintEqualToAnchor:bottomAnchor9 constant:-10.0];
     [v125 addObject:v328];
 
-    v329 = [(HULegibilityLabel *)self->_descriptionLabel leadingAnchor];
-    v330 = [(UIView *)self->_liveCameraView leadingAnchor];
-    v331 = [v329 constraintEqualToAnchor:v330 constant:10.0];
+    leadingAnchor15 = [(HULegibilityLabel *)self->_descriptionLabel leadingAnchor];
+    leadingAnchor16 = [(UIView *)self->_liveCameraView leadingAnchor];
+    v331 = [leadingAnchor15 constraintEqualToAnchor:leadingAnchor16 constant:10.0];
     [v125 addObject:v331];
 
-    v332 = [(HULegibilityLabel *)self->_descriptionLabel trailingAnchor];
-    v333 = [(UIView *)self->_liveCameraView trailingAnchor];
-    [v332 constraintLessThanOrEqualToAnchor:v333 constant:-10.0];
+    trailingAnchor19 = [(HULegibilityLabel *)self->_descriptionLabel trailingAnchor];
+    trailingAnchor20 = [(UIView *)self->_liveCameraView trailingAnchor];
+    [trailingAnchor19 constraintLessThanOrEqualToAnchor:trailingAnchor20 constant:-10.0];
   }
 
   else
   {
-    v332 = [(HUWaveformView *)self->_audioWaveformView centerYAnchor];
-    v333 = [(UIView *)self->_contentView centerYAnchor];
-    [v332 constraintEqualToAnchor:v333];
+    trailingAnchor19 = [(HUWaveformView *)self->_audioWaveformView centerYAnchor];
+    trailingAnchor20 = [(UIView *)self->_contentView centerYAnchor];
+    [trailingAnchor19 constraintEqualToAnchor:trailingAnchor20];
   }
   v334 = ;
   [v125 addObject:v334];
 
-  v335 = [(HUWaveformView *)self->_audioWaveformView leadingAnchor];
-  v336 = [(UIView *)self->_contentView leadingAnchor];
-  v337 = [v335 constraintEqualToAnchor:v336];
+  leadingAnchor17 = [(HUWaveformView *)self->_audioWaveformView leadingAnchor];
+  leadingAnchor18 = [(UIView *)self->_contentView leadingAnchor];
+  v337 = [leadingAnchor17 constraintEqualToAnchor:leadingAnchor18];
   [v125 addObject:v337];
 
-  v338 = [(HUWaveformView *)self->_audioWaveformView trailingAnchor];
-  v339 = [(UIView *)self->_contentView trailingAnchor];
-  v340 = [v338 constraintEqualToAnchor:v339];
+  trailingAnchor21 = [(HUWaveformView *)self->_audioWaveformView trailingAnchor];
+  trailingAnchor22 = [(UIView *)self->_contentView trailingAnchor];
+  v340 = [trailingAnchor21 constraintEqualToAnchor:trailingAnchor22];
   [v125 addObject:v340];
 
-  v341 = [(HUWaveformView *)self->_audioWaveformView heightAnchor];
-  v342 = [v341 constraintEqualToConstant:70.0];
+  heightAnchor15 = [(HUWaveformView *)self->_audioWaveformView heightAnchor];
+  v342 = [heightAnchor15 constraintEqualToConstant:70.0];
   [v125 addObject:v342];
 
-  v343 = [(UIButton *)self->_talkButton heightAnchor];
-  v344 = [v343 constraintEqualToConstant:44.0];
+  heightAnchor16 = [(UIButton *)self->_talkButton heightAnchor];
+  v344 = [heightAnchor16 constraintEqualToConstant:44.0];
   [v125 addObject:v344];
 
-  v345 = [(UIButton *)self->_talkButton widthAnchor];
-  v346 = [v345 constraintLessThanOrEqualToConstant:355.0];
+  widthAnchor9 = [(UIButton *)self->_talkButton widthAnchor];
+  v346 = [widthAnchor9 constraintLessThanOrEqualToConstant:355.0];
   [v125 addObject:v346];
 
-  v347 = [(UIButton *)self->_talkButton centerXAnchor];
-  v348 = [(UIView *)self->_contentView centerXAnchor];
-  v349 = [v347 constraintEqualToAnchor:v348];
+  centerXAnchor9 = [(UIButton *)self->_talkButton centerXAnchor];
+  centerXAnchor10 = [(UIView *)self->_contentView centerXAnchor];
+  v349 = [centerXAnchor9 constraintEqualToAnchor:centerXAnchor10];
   [v125 addObject:v349];
 
-  v350 = [(UIButton *)self->_talkButton bottomAnchor];
-  v351 = [(UIView *)self->_contentView bottomAnchor];
-  v352 = [v350 constraintEqualToAnchor:v351 constant:-45.0];
+  bottomAnchor10 = [(UIButton *)self->_talkButton bottomAnchor];
+  bottomAnchor11 = [(UIView *)self->_contentView bottomAnchor];
+  v352 = [bottomAnchor10 constraintEqualToAnchor:bottomAnchor11 constant:-45.0];
   [v125 addObject:v352];
 
-  v353 = [(UIButton *)self->_doneButton heightAnchor];
-  v354 = [v353 constraintEqualToConstant:44.0];
+  heightAnchor17 = [(UIButton *)self->_doneButton heightAnchor];
+  v354 = [heightAnchor17 constraintEqualToConstant:44.0];
   [v125 addObject:v354];
 
-  v355 = [(UIButton *)self->_doneButton widthAnchor];
-  v356 = [v355 constraintLessThanOrEqualToConstant:355.0];
+  widthAnchor10 = [(UIButton *)self->_doneButton widthAnchor];
+  v356 = [widthAnchor10 constraintLessThanOrEqualToConstant:355.0];
   [v125 addObject:v356];
 
-  v357 = [(UIButton *)self->_doneButton centerXAnchor];
-  v358 = [(UIView *)self->_contentView centerXAnchor];
-  v359 = [v357 constraintEqualToAnchor:v358];
+  centerXAnchor11 = [(UIButton *)self->_doneButton centerXAnchor];
+  centerXAnchor12 = [(UIView *)self->_contentView centerXAnchor];
+  v359 = [centerXAnchor11 constraintEqualToAnchor:centerXAnchor12];
   [v125 addObject:v359];
 
-  v360 = [(UIButton *)self->_doneButton bottomAnchor];
-  v361 = [(UIView *)self->_contentView bottomAnchor];
-  v362 = [v360 constraintEqualToAnchor:v361 constant:-45.0];
+  bottomAnchor12 = [(UIButton *)self->_doneButton bottomAnchor];
+  bottomAnchor13 = [(UIView *)self->_contentView bottomAnchor];
+  v362 = [bottomAnchor12 constraintEqualToAnchor:bottomAnchor13 constant:-45.0];
   [v125 addObject:v362];
 
   [MEMORY[0x277CCAAD0] activateConstraints:v125];
-  v363 = [(HUDropInViewController *)self view];
-  [v363 layoutIfNeeded];
+  view14 = [(HUDropInViewController *)self view];
+  [view14 layoutIfNeeded];
 
-  v364 = [(HUDropInViewController *)self titleLabel];
-  [v364 becomeFirstResponder];
+  titleLabel8 = [(HUDropInViewController *)self titleLabel];
+  [titleLabel8 becomeFirstResponder];
 
-  v365 = [MEMORY[0x277D146E8] sharedDispatcher];
-  [v365 addAccessoryObserver:self];
+  mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+  [mEMORY[0x277D146E8] addAccessoryObserver:self];
 
   v373[0] = MEMORY[0x277D85DD0];
   v373[1] = 3221225472;
@@ -926,18 +926,18 @@ void __37__HUDropInViewController_viewDidLoad__block_invoke_3(uint64_t a1, int a
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v12 = *MEMORY[0x277D85DE8];
   v7.receiver = self;
   v7.super_class = HUDropInViewController;
-  [(HUDropInViewController *)&v7 viewWillDisappear:a3];
+  [(HUDropInViewController *)&v7 viewWillDisappear:disappear];
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = NSStringFromSelector(a2);
     *buf = 138412546;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
     v11 = v6;
     _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "%@: %@", buf, 0x16u);
@@ -954,7 +954,7 @@ void __37__HUDropInViewController_viewDidLoad__block_invoke_3(uint64_t a1, int a
   {
     v5 = NSStringFromSelector(a2);
     *buf = 138412546;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
     v10 = v5;
     _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "%@: %@", buf, 0x16u);
@@ -978,26 +978,26 @@ void __37__HUDropInViewController_viewDidLoad__block_invoke_3(uint64_t a1, int a
   {
     v5 = NSStringFromSelector(a2);
     *buf = 138412546;
-    v24 = self;
+    selfCopy2 = self;
     v25 = 2112;
     v26 = v5;
     _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "%@: %@", buf, 0x16u);
   }
 
-  v6 = [(HUDropInViewController *)self dropInCenter];
-  v7 = [v6 deviceManager];
-  v8 = [v7 devices];
+  dropInCenter = [(HUDropInViewController *)self dropInCenter];
+  deviceManager = [dropInCenter deviceManager];
+  devices = [deviceManager devices];
 
   v9 = HFLogForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = NSStringFromSelector(a2);
     *buf = 138412802;
-    v24 = self;
+    selfCopy2 = self;
     v25 = 2112;
     v26 = v10;
     v27 = 2112;
-    v28 = v8;
+    v28 = devices;
     _os_log_impl(&dword_20CEB6000, v9, OS_LOG_TYPE_DEFAULT, "%@: %@ Device list for drop-in: %@", buf, 0x20u);
   }
 
@@ -1006,7 +1006,7 @@ void __37__HUDropInViewController_viewDidLoad__block_invoke_3(uint64_t a1, int a
   v22[2] = __43__HUDropInViewController__endDropInSession__block_invoke;
   v22[3] = &unk_277DC1F40;
   v22[4] = self;
-  v11 = [v8 na_firstObjectPassingTest:v22];
+  v11 = [devices na_firstObjectPassingTest:v22];
   [v11 setDelegate:0];
   if (!v11)
   {
@@ -1018,19 +1018,19 @@ void __37__HUDropInViewController_viewDidLoad__block_invoke_3(uint64_t a1, int a
     }
   }
 
-  v13 = [(HUDropInViewController *)self dropInCenter];
-  v14 = [v13 sessionManager];
-  v15 = [v14 activeSession];
+  dropInCenter2 = [(HUDropInViewController *)self dropInCenter];
+  sessionManager = [dropInCenter2 sessionManager];
+  activeSession = [sessionManager activeSession];
 
   v16 = HFLogForCategory();
   v17 = v16;
-  if (v15)
+  if (activeSession)
   {
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [MEMORY[0x277D069D0] stringForDropInSessionState:{objc_msgSend(v15, "state")}];
+      v18 = [MEMORY[0x277D069D0] stringForDropInSessionState:{objc_msgSend(activeSession, "state")}];
       *buf = 138412290;
-      v24 = v18;
+      selfCopy2 = v18;
       _os_log_impl(&dword_20CEB6000, v17, OS_LOG_TYPE_DEFAULT, "Current dropin session state: %@", buf, 0xCu);
     }
 
@@ -1039,8 +1039,8 @@ void __37__HUDropInViewController_viewDidLoad__block_invoke_3(uint64_t a1, int a
     v19[1] = 3221225472;
     v19[2] = __43__HUDropInViewController__endDropInSession__block_invoke_66;
     v19[3] = &unk_277DB7E90;
-    v20 = v15;
-    v21 = self;
+    v20 = activeSession;
+    selfCopy3 = self;
     [v20 endWithCompletionHandler:v19];
   }
 
@@ -1095,28 +1095,28 @@ void __43__HUDropInViewController__endDropInSession__block_invoke_66(uint64_t a1
 - (void)_cleanUp
 {
   [(HUDropInViewController *)self _cancelStartSessionRequestTimerIfNeeded];
-  v3 = [(HUDropInViewController *)self dropInCenter];
-  v4 = [v3 deviceManager];
-  [v4 setDelegate:0];
+  dropInCenter = [(HUDropInViewController *)self dropInCenter];
+  deviceManager = [dropInCenter deviceManager];
+  [deviceManager setDelegate:0];
 
-  v5 = [(HUDropInViewController *)self dropInCenter];
-  v6 = [v5 sessionManager];
-  [v6 setDelegate:0];
+  dropInCenter2 = [(HUDropInViewController *)self dropInCenter];
+  sessionManager = [dropInCenter2 sessionManager];
+  [sessionManager setDelegate:0];
 
-  v7 = [(HUDropInViewController *)self dropInAudioPowerController];
-  [v7 setDelegate:0];
+  dropInAudioPowerController = [(HUDropInViewController *)self dropInAudioPowerController];
+  [dropInAudioPowerController setDelegate:0];
 
-  v8 = [(HUDropInViewController *)self lastKnownEventSubscriber];
-  [v8 setDelegate:0];
+  lastKnownEventSubscriber = [(HUDropInViewController *)self lastKnownEventSubscriber];
+  [lastKnownEventSubscriber setDelegate:0];
 
-  v9 = [(HUDropInViewController *)self liveStreamController];
-  [v9 setLiveStreamControllerDelegate:0];
+  liveStreamController = [(HUDropInViewController *)self liveStreamController];
+  [liveStreamController setLiveStreamControllerDelegate:0];
 
   [(HUDropInViewController *)self setLiveStreamController:0];
   [(HUDropInViewController *)self setLastKnownEventSubscriber:0];
   [(HUDropInViewController *)self setDropInAudioPowerController:0];
-  v10 = [(HUDropInViewController *)self audioWaveformView];
-  [v10 clearPowerLevels];
+  audioWaveformView = [(HUDropInViewController *)self audioWaveformView];
+  [audioWaveformView clearPowerLevels];
 
   [(HUDropInViewController *)self setAudioWaveformView:0];
   [(HUDropInViewController *)self setDropInCenter:0];
@@ -1127,97 +1127,97 @@ void __43__HUDropInViewController__endDropInSession__block_invoke_66(uint64_t a1
 - (void)_cancelStartSessionRequestTimerIfNeeded
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = [(HUDropInViewController *)self startSessionRequestTimer];
+  startSessionRequestTimer = [(HUDropInViewController *)self startSessionRequestTimer];
 
-  if (v3)
+  if (startSessionRequestTimer)
   {
     v4 = HFLogForCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [(HUDropInViewController *)self startSessionRequestTimer];
+      startSessionRequestTimer2 = [(HUDropInViewController *)self startSessionRequestTimer];
       v7 = 138412546;
-      v8 = self;
+      selfCopy = self;
       v9 = 2112;
-      v10 = v5;
+      v10 = startSessionRequestTimer2;
       _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "%@: Cancelling start session request timer %@", &v7, 0x16u);
     }
 
-    v6 = [(HUDropInViewController *)self startSessionRequestTimer];
-    [v6 invalidate];
+    startSessionRequestTimer3 = [(HUDropInViewController *)self startSessionRequestTimer];
+    [startSessionRequestTimer3 invalidate];
 
     [(HUDropInViewController *)self setStartSessionRequestTimer:0];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = [(HUDropInViewController *)self contentView];
-  v5 = [(HUDropInViewController *)self _contentViewBackgroundColor];
-  [v4 setBackgroundColor:v5];
+  contentView = [(HUDropInViewController *)self contentView];
+  _contentViewBackgroundColor = [(HUDropInViewController *)self _contentViewBackgroundColor];
+  [contentView setBackgroundColor:_contentViewBackgroundColor];
 
-  v7 = [(HUDropInViewController *)self audioWaveformView];
-  v6 = [(HUDropInViewController *)self _waveformColor];
-  [v7 setWaveformColor:v6];
+  audioWaveformView = [(HUDropInViewController *)self audioWaveformView];
+  _waveformColor = [(HUDropInViewController *)self _waveformColor];
+  [audioWaveformView setWaveformColor:_waveformColor];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   v8.receiver = self;
   v8.super_class = HUDropInViewController;
-  [(HUDropInViewController *)&v8 viewWillTransitionToSize:a4 withTransitionCoordinator:a3.width, a3.height];
-  v5 = [MEMORY[0x277D75418] currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  [(HUDropInViewController *)&v8 viewWillTransitionToSize:coordinator withTransitionCoordinator:size.width, size.height];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v6 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
-    v7 = [(HUDropInViewController *)self contentViewWidthConstraint];
-    [v7 setConstant:395.0];
+    contentViewWidthConstraint = [(HUDropInViewController *)self contentViewWidthConstraint];
+    [contentViewWidthConstraint setConstant:395.0];
   }
 }
 
 - (void)_showSpinner
 {
-  v3 = [(HUDropInViewController *)self spinnerLabel];
-  [v3 setHidden:0];
+  spinnerLabel = [(HUDropInViewController *)self spinnerLabel];
+  [spinnerLabel setHidden:0];
 
-  v4 = [(HUDropInViewController *)self spinner];
-  [v4 setHidden:0];
+  spinner = [(HUDropInViewController *)self spinner];
+  [spinner setHidden:0];
 
-  v5 = [(HUDropInViewController *)self spinner];
-  [v5 startAnimating];
+  spinner2 = [(HUDropInViewController *)self spinner];
+  [spinner2 startAnimating];
 
-  v6 = [(HUDropInViewController *)self cameraLiveStreamViewTopConstraintToDescriptionTextView];
-  [v6 setActive:0];
+  cameraLiveStreamViewTopConstraintToDescriptionTextView = [(HUDropInViewController *)self cameraLiveStreamViewTopConstraintToDescriptionTextView];
+  [cameraLiveStreamViewTopConstraintToDescriptionTextView setActive:0];
 
-  v7 = [(HUDropInViewController *)self cameraLiveStreamViewTopConstraintToSpinnerLabel];
-  [v7 setActive:1];
+  cameraLiveStreamViewTopConstraintToSpinnerLabel = [(HUDropInViewController *)self cameraLiveStreamViewTopConstraintToSpinnerLabel];
+  [cameraLiveStreamViewTopConstraintToSpinnerLabel setActive:1];
 
-  v8 = [(HUDropInViewController *)self contentView];
-  [v8 setNeedsLayout];
+  contentView = [(HUDropInViewController *)self contentView];
+  [contentView setNeedsLayout];
 }
 
 - (void)_hideSpinner
 {
-  v3 = [(HUDropInViewController *)self spinnerLabel];
-  [v3 setHidden:1];
+  spinnerLabel = [(HUDropInViewController *)self spinnerLabel];
+  [spinnerLabel setHidden:1];
 
-  v4 = [(HUDropInViewController *)self spinner];
-  [v4 setHidden:1];
+  spinner = [(HUDropInViewController *)self spinner];
+  [spinner setHidden:1];
 
-  v5 = [(HUDropInViewController *)self spinner];
-  [v5 stopAnimating];
+  spinner2 = [(HUDropInViewController *)self spinner];
+  [spinner2 stopAnimating];
 
-  v6 = [(HUDropInViewController *)self cameraLiveStreamViewTopConstraintToSpinnerLabel];
-  [v6 setActive:0];
+  cameraLiveStreamViewTopConstraintToSpinnerLabel = [(HUDropInViewController *)self cameraLiveStreamViewTopConstraintToSpinnerLabel];
+  [cameraLiveStreamViewTopConstraintToSpinnerLabel setActive:0];
 
-  v7 = [(HUDropInViewController *)self cameraLiveStreamViewTopConstraintToDescriptionTextView];
-  [v7 setActive:1];
+  cameraLiveStreamViewTopConstraintToDescriptionTextView = [(HUDropInViewController *)self cameraLiveStreamViewTopConstraintToDescriptionTextView];
+  [cameraLiveStreamViewTopConstraintToDescriptionTextView setActive:1];
 
-  v8 = [(HUDropInViewController *)self contentView];
-  [v8 setNeedsLayout];
+  contentView = [(HUDropInViewController *)self contentView];
+  [contentView setNeedsLayout];
 }
 
-- (void)_toggleMicrophone:(id)a3
+- (void)_toggleMicrophone:(id)microphone
 {
   v18 = *MEMORY[0x277D85DE8];
   v5 = HFLogForCategory();
@@ -1225,20 +1225,20 @@ void __43__HUDropInViewController__endDropInSession__block_invoke_66(uint64_t a1
   {
     v6 = NSStringFromSelector(a2);
     v14 = 138412546;
-    v15 = self;
+    selfCopy = self;
     v16 = 2112;
     v17 = v6;
     _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "%@: %@", &v14, 0x16u);
   }
 
-  v7 = [(HUDropInViewController *)self dropInCenter];
-  v8 = [v7 sessionManager];
-  v9 = [v8 activeSession];
-  v10 = [v9 isUplinkMuted];
-  v11 = [(HUDropInViewController *)self dropInCenter];
-  v12 = [v11 sessionManager];
-  v13 = [v12 activeSession];
-  [v13 setUplinkMuted:v10 ^ 1u];
+  dropInCenter = [(HUDropInViewController *)self dropInCenter];
+  sessionManager = [dropInCenter sessionManager];
+  activeSession = [sessionManager activeSession];
+  isUplinkMuted = [activeSession isUplinkMuted];
+  dropInCenter2 = [(HUDropInViewController *)self dropInCenter];
+  sessionManager2 = [dropInCenter2 sessionManager];
+  activeSession2 = [sessionManager2 activeSession];
+  [activeSession2 setUplinkMuted:isUplinkMuted ^ 1u];
 }
 
 - (void)_updateRecordingUIWithDefaultState
@@ -1249,33 +1249,33 @@ void __43__HUDropInViewController__endDropInSession__block_invoke_66(uint64_t a1
   {
     v5 = NSStringFromSelector(a2);
     v13 = 138412546;
-    v14 = self;
+    selfCopy = self;
     v15 = 2112;
     v16 = v5;
     _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "%@: %@", &v13, 0x16u);
   }
 
   [(HUDropInViewController *)self _showSpinner];
-  v6 = [(HUDropInViewController *)self talkButton];
-  [v6 setAlpha:0.0];
+  talkButton = [(HUDropInViewController *)self talkButton];
+  [talkButton setAlpha:0.0];
 
-  v7 = [(HUDropInViewController *)self doneButton];
-  [v7 setAlpha:0.0];
+  doneButton = [(HUDropInViewController *)self doneButton];
+  [doneButton setAlpha:0.0];
 
-  v8 = [(HUDropInViewController *)self audioWaveformView];
-  [v8 clearPowerLevels];
+  audioWaveformView = [(HUDropInViewController *)self audioWaveformView];
+  [audioWaveformView clearPowerLevels];
 
-  v9 = [(HUDropInViewController *)self audioWaveformView];
-  [v9 setAlpha:0.0];
+  audioWaveformView2 = [(HUDropInViewController *)self audioWaveformView];
+  [audioWaveformView2 setAlpha:0.0];
 
-  v10 = [(HUDropInViewController *)self liveCameraView];
-  [v10 setAlpha:0.0];
+  liveCameraView = [(HUDropInViewController *)self liveCameraView];
+  [liveCameraView setAlpha:0.0];
 
-  v11 = [(HUDropInViewController *)self descriptionLabel];
-  [v11 setAlpha:0.0];
+  descriptionLabel = [(HUDropInViewController *)self descriptionLabel];
+  [descriptionLabel setAlpha:0.0];
 
-  v12 = [(HUDropInViewController *)self view];
-  [v12 layoutIfNeeded];
+  view = [(HUDropInViewController *)self view];
+  [view layoutIfNeeded];
 }
 
 - (void)_updateRecordingUIWithConnectedState
@@ -1286,7 +1286,7 @@ void __43__HUDropInViewController__endDropInSession__block_invoke_66(uint64_t a1
   {
     v5 = NSStringFromSelector(a2);
     *buf = 138412546;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
     v10 = v5;
     _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "%@: %@", buf, 0x16u);
@@ -1330,7 +1330,7 @@ void __62__HUDropInViewController__updateRecordingUIWithConnectedState__block_in
   {
     v5 = NSStringFromSelector(a2);
     *buf = 138412546;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
     v10 = v5;
     _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "%@: %@", buf, 0x16u);
@@ -1374,7 +1374,7 @@ void __60__HUDropInViewController__updateRecordingUIWithMicrophoneOn__block_invo
   {
     v5 = NSStringFromSelector(a2);
     *buf = 138412546;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
     v10 = v5;
     _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "%@: %@", buf, 0x16u);
@@ -1410,20 +1410,20 @@ void __61__HUDropInViewController__updateRecordingUIWithMicrophoneOff__block_inv
   [v7 layoutIfNeeded];
 }
 
-- (void)_dismissRecordingUIWithError:(id)a3
+- (void)_dismissRecordingUIWithError:(id)error
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  errorCopy = error;
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = NSStringFromSelector(a2);
     *buf = 138412802;
-    v17 = self;
+    selfCopy = self;
     v18 = 2112;
     v19 = v7;
     v20 = 2112;
-    v21 = v5;
+    v21 = errorCopy;
     _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "%@: %@ Dismissing UI due to error: %@", buf, 0x20u);
   }
 
@@ -1431,11 +1431,11 @@ void __61__HUDropInViewController__updateRecordingUIWithMicrophoneOff__block_inv
   v11 = 3221225472;
   v12 = __55__HUDropInViewController__dismissRecordingUIWithError___block_invoke;
   v13 = &unk_277DB8AB0;
-  v14 = self;
-  v15 = v5;
-  v8 = v5;
+  selfCopy2 = self;
+  v15 = errorCopy;
+  v8 = errorCopy;
   v9 = _Block_copy(&v10);
-  [(HUDropInViewController *)self _dismissUpRecordingView:v9, v10, v11, v12, v13, v14];
+  [(HUDropInViewController *)self _dismissUpRecordingView:v9, v10, v11, v12, v13, selfCopy2];
 }
 
 void __55__HUDropInViewController__dismissRecordingUIWithError___block_invoke(uint64_t a1, int a2)
@@ -1474,17 +1474,17 @@ void __55__HUDropInViewController__dismissRecordingUIWithError___block_invoke(ui
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 view];
-  v11 = [(HUDropInViewController *)self talkButton];
-  if (v10 != v11)
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  view = [touchCopy view];
+  talkButton = [(HUDropInViewController *)self talkButton];
+  if (view != talkButton)
   {
-    v4 = [v9 view];
-    v5 = [(HUDropInViewController *)self doneButton];
-    if (v4 != v5)
+    view2 = [touchCopy view];
+    doneButton = [(HUDropInViewController *)self doneButton];
+    if (view2 != doneButton)
     {
       v12 = 0;
 LABEL_5:
@@ -1493,10 +1493,10 @@ LABEL_5:
     }
   }
 
-  v13 = [(HUDropInViewController *)self tapGestureRecognizer];
-  v12 = v13 == v8;
+  tapGestureRecognizer = [(HUDropInViewController *)self tapGestureRecognizer];
+  v12 = tapGestureRecognizer == recognizerCopy;
 
-  if (v10 != v11)
+  if (view != talkButton)
   {
     goto LABEL_5;
   }
@@ -1506,19 +1506,19 @@ LABEL_6:
   return !v12;
 }
 
-- (void)_didTap:(id)a3
+- (void)_didTap:(id)tap
 {
-  v4 = a3;
-  v5 = [(HUDropInViewController *)self view];
-  [v4 locationOfTouch:0 inView:v5];
+  tapCopy = tap;
+  view = [(HUDropInViewController *)self view];
+  [tapCopy locationOfTouch:0 inView:view];
   v7 = v6;
   v9 = v8;
 
-  v10 = [(HUDropInViewController *)self contentView];
-  [v10 frame];
+  contentView = [(HUDropInViewController *)self contentView];
+  [contentView frame];
   v12 = v11;
-  v13 = [(HUDropInViewController *)self contentView];
-  [v13 frame];
+  contentView2 = [(HUDropInViewController *)self contentView];
+  [contentView2 frame];
   if (v9 > v12 + v14)
   {
     v17 = 1;
@@ -1526,19 +1526,19 @@ LABEL_6:
 
   else
   {
-    v15 = [(HUDropInViewController *)self contentView];
-    [v15 frame];
+    contentView3 = [(HUDropInViewController *)self contentView];
+    [contentView3 frame];
     v17 = v9 < v16;
   }
 
-  v18 = [(HUDropInViewController *)self contentView];
-  [v18 frame];
+  contentView4 = [(HUDropInViewController *)self contentView];
+  [contentView4 frame];
   v20 = v7 < v19;
 
-  v21 = [MEMORY[0x277D75418] currentDevice];
-  v22 = [v21 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v22 & 0xFFFFFFFFFFFFFFFBLL) == 1 && (v17 || v20) || v17)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1 && (v17 || v20) || v17)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
@@ -1560,18 +1560,18 @@ void __34__HUDropInViewController__didTap___block_invoke(uint64_t a1, int a2)
   }
 }
 
-- (void)_didPan:(id)a3
+- (void)_didPan:(id)pan
 {
-  v4 = a3;
-  v5 = [(HUDropInViewController *)self view];
-  [v4 translationInView:v5];
+  panCopy = pan;
+  view = [(HUDropInViewController *)self view];
+  [panCopy translationInView:view];
   v7 = v6;
 
-  v8 = [v4 state];
-  if (v8 == 3)
+  state = [panCopy state];
+  if (state == 3)
   {
-    v9 = [(HUDropInViewController *)self closeButtonTopConstraint];
-    [v9 constant];
+    closeButtonTopConstraint = [(HUDropInViewController *)self closeButtonTopConstraint];
+    [closeButtonTopConstraint constant];
     v11 = v10;
 
     if (v11 > 120.0)
@@ -1581,68 +1581,68 @@ void __34__HUDropInViewController__didTap___block_invoke(uint64_t a1, int a2)
       return;
     }
 
-    v22 = [MEMORY[0x277D75418] currentDevice];
-    v23 = [v22 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if ((v23 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
-      v24 = [(HUDropInViewController *)self contentViewTopConstraint];
-      [v24 setConstant:30.0];
+      contentViewTopConstraint = [(HUDropInViewController *)self contentViewTopConstraint];
+      [contentViewTopConstraint setConstant:30.0];
     }
 
-    v25 = [(HUDropInViewController *)self closeButtonTopConstraint];
-    [v25 setConstant:30.0];
+    closeButtonTopConstraint2 = [(HUDropInViewController *)self closeButtonTopConstraint];
+    [closeButtonTopConstraint2 setConstant:30.0];
 
     [(NSLayoutConstraint *)self->_dismissLabelTopConstraint setConstant:-25.0];
     [(UILabel *)self->_dismissLabel setAlpha:0.0];
-    v26 = [(HUDropInViewController *)self view];
-    [v26 setNeedsLayout];
+    view2 = [(HUDropInViewController *)self view];
+    [view2 setNeedsLayout];
     goto LABEL_15;
   }
 
   if (v7 > 49.0)
   {
-    v12 = [MEMORY[0x277D75418] currentDevice];
-    v13 = [v12 userInterfaceIdiom];
+    currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
-    if ((v13 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
-      v14 = [(HUDropInViewController *)self contentViewTopConstraint];
-      [v14 setConstant:v7];
+      contentViewTopConstraint2 = [(HUDropInViewController *)self contentViewTopConstraint];
+      [contentViewTopConstraint2 setConstant:v7];
     }
 
-    v15 = [(HUDropInViewController *)self closeButtonTopConstraint];
-    [v15 setConstant:v7];
+    closeButtonTopConstraint3 = [(HUDropInViewController *)self closeButtonTopConstraint];
+    [closeButtonTopConstraint3 setConstant:v7];
 
     v16 = v7 + -25.0;
     [(NSLayoutConstraint *)self->_dismissLabelTopConstraint setConstant:v16];
-    v17 = [(HUDropInViewController *)self dismissLabel];
-    [v17 setAlpha:v16 / 120.0];
+    dismissLabel = [(HUDropInViewController *)self dismissLabel];
+    [dismissLabel setAlpha:v16 / 120.0];
 
-    v18 = [(HUDropInViewController *)self view];
-    [v18 layoutIfNeeded];
+    view3 = [(HUDropInViewController *)self view];
+    [view3 layoutIfNeeded];
 
-    v19 = [(HUDropInViewController *)self closeButtonTopConstraint];
-    [v19 constant];
+    closeButtonTopConstraint4 = [(HUDropInViewController *)self closeButtonTopConstraint];
+    [closeButtonTopConstraint4 constant];
     v21 = v20;
 
     if (v21 > 120.0)
     {
-      v26 = [(HUDropInViewController *)self feedbackGenerator];
-      [v26 impactOccurredWithIntensity:1.0];
+      view2 = [(HUDropInViewController *)self feedbackGenerator];
+      [view2 impactOccurredWithIntensity:1.0];
 LABEL_15:
     }
   }
 }
 
-- (void)_dismissUpRecordingView:(id)a3
+- (void)_dismissUpRecordingView:(id)view
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __50__HUDropInViewController__dismissUpRecordingView___block_invoke;
   v3[3] = &unk_277DB8488;
   v3[4] = self;
-  [MEMORY[0x277D75D18] animateWithDuration:0 delay:v3 options:a3 animations:0.25 completion:0.0];
+  [MEMORY[0x277D75D18] animateWithDuration:0 delay:v3 options:view animations:0.25 completion:0.0];
 }
 
 uint64_t __50__HUDropInViewController__dismissUpRecordingView___block_invoke(uint64_t a1)
@@ -1691,7 +1691,7 @@ void __50__HUDropInViewController__dismissUpRecordingView___block_invoke_2(uint6
   [v12 layoutIfNeeded];
 }
 
-- (void)_dismissDownRecordingView:(id)a3
+- (void)_dismissDownRecordingView:(id)view
 {
   v3[4] = self;
   v4[0] = MEMORY[0x277D85DD0];
@@ -1800,53 +1800,53 @@ void __52__HUDropInViewController__dismissDownRecordingView___block_invoke_6(uin
 
 - (id)_waveformColor
 {
-  v3 = [MEMORY[0x277D75348] systemBlackColor];
-  v4 = [(HUDropInViewController *)self traitCollection];
-  v5 = [v4 userInterfaceStyle];
+  systemBlackColor = [MEMORY[0x277D75348] systemBlackColor];
+  traitCollection = [(HUDropInViewController *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v5 == 2)
+  if (userInterfaceStyle == 2)
   {
-    v6 = [MEMORY[0x277D75348] systemWhiteColor];
+    systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
 
-    v3 = v6;
+    systemBlackColor = systemWhiteColor;
   }
 
-  return v3;
+  return systemBlackColor;
 }
 
 - (id)_contentViewBackgroundColor
 {
-  v3 = [MEMORY[0x277D75348] systemWhiteColor];
-  v4 = [(HUDropInViewController *)self traitCollection];
-  v5 = [v4 userInterfaceStyle];
+  systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+  traitCollection = [(HUDropInViewController *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v5 == 2)
+  if (userInterfaceStyle == 2)
   {
-    v6 = [MEMORY[0x277D75348] systemBlackColor];
+    systemBlackColor = [MEMORY[0x277D75348] systemBlackColor];
 
-    v3 = v6;
+    systemWhiteColor = systemBlackColor;
   }
 
-  return v3;
+  return systemWhiteColor;
 }
 
 - (void)_launchDropInSessionIfNeeded
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = [(HUDropInViewController *)self dropInCenter];
-  v5 = [v4 deviceManager];
-  v6 = [v5 devices];
+  dropInCenter = [(HUDropInViewController *)self dropInCenter];
+  deviceManager = [dropInCenter deviceManager];
+  devices = [deviceManager devices];
 
   v7 = HFLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = NSStringFromSelector(a2);
     *buf = 138412802;
-    v36 = self;
+    selfCopy7 = self;
     v37 = 2112;
     v38 = v8;
     v39 = 2112;
-    v40 = v6;
+    v40 = devices;
     _os_log_impl(&dword_20CEB6000, v7, OS_LOG_TYPE_DEFAULT, "%@: %@ Device list for drop-in: %@", buf, 0x20u);
   }
 
@@ -1855,14 +1855,14 @@ void __52__HUDropInViewController__dismissDownRecordingView___block_invoke_6(uin
   v34[2] = __54__HUDropInViewController__launchDropInSessionIfNeeded__block_invoke;
   v34[3] = &unk_277DC1F40;
   v34[4] = self;
-  v9 = [v6 na_firstObjectPassingTest:v34];
+  v9 = [devices na_firstObjectPassingTest:v34];
   [v9 setDelegate:self];
   v10 = HFLogForCategory();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = NSStringFromSelector(a2);
     *buf = 138412802;
-    v36 = self;
+    selfCopy7 = self;
     v37 = 2112;
     v38 = v11;
     v39 = 2112;
@@ -1877,7 +1877,7 @@ void __52__HUDropInViewController__dismissDownRecordingView___block_invoke_6(uin
     {
       v13 = NSStringFromSelector(a2);
       *buf = 138412546;
-      v36 = self;
+      selfCopy7 = self;
       v37 = 2112;
       v38 = v13;
       _os_log_impl(&dword_20CEB6000, v12, OS_LOG_TYPE_DEFAULT, "%@: %@ A dropin session has already been attempted before. No more attempts will occur.", buf, 0x16u);
@@ -1893,7 +1893,7 @@ void __52__HUDropInViewController__dismissDownRecordingView___block_invoke_6(uin
       {
         v20 = NSStringFromSelector(a2);
         *buf = 138412546;
-        v36 = self;
+        selfCopy7 = self;
         v37 = 2112;
         v38 = v20;
         _os_log_impl(&dword_20CEB6000, v19, OS_LOG_TYPE_DEFAULT, "%@: %@ This device is supposedly not available for DropIn at this time. Will attempt session start anyway.", buf, 0x16u);
@@ -1904,15 +1904,15 @@ void __52__HUDropInViewController__dismissDownRecordingView___block_invoke_6(uin
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
         v23 = NSStringFromSelector(a2);
-        v24 = [v9 stateExpiration];
+        stateExpiration = [v9 stateExpiration];
         *buf = 138413058;
-        v36 = self;
+        selfCopy7 = self;
         v37 = 2112;
         v38 = v23;
         v39 = 2112;
         v40 = v21;
         v41 = 2112;
-        v42 = v24;
+        v42 = stateExpiration;
         _os_log_impl(&dword_20CEB6000, v22, OS_LOG_TYPE_DEFAULT, "%@: %@ Current date (%@) vs DropIn expiration date (%@)", buf, 0x2Au);
       }
     }
@@ -1922,7 +1922,7 @@ void __52__HUDropInViewController__dismissDownRecordingView___block_invoke_6(uin
     {
       v26 = NSStringFromSelector(a2);
       *buf = 138412802;
-      v36 = self;
+      selfCopy7 = self;
       v37 = 2112;
       v38 = v26;
       v39 = 2112;
@@ -1931,24 +1931,24 @@ void __52__HUDropInViewController__dismissDownRecordingView___block_invoke_6(uin
     }
 
     v12 = [objc_alloc(MEMORY[0x277D069C0]) initWithDevice:v9];
-    v27 = [(HUDropInViewController *)self dropInCenter];
-    v28 = [v27 sessionManager];
-    [v28 setDelegate:self];
+    dropInCenter2 = [(HUDropInViewController *)self dropInCenter];
+    sessionManager = [dropInCenter2 sessionManager];
+    [sessionManager setDelegate:self];
 
     [(HUDropInViewController *)self setHasAttemptedDropInSessionCall:1];
     [(HUDropInViewController *)self _updateRecordingUIWithDefaultState];
-    v29 = [(HUDropInViewController *)self spinnerLabel];
+    spinnerLabel = [(HUDropInViewController *)self spinnerLabel];
     v30 = _HULocalizedStringWithDefaultValue(@"HUDropIn_Label_Connecting_State", @"HUDropIn_Label_Connecting_State", 1);
-    [v29 setText:v30];
+    [spinnerLabel setText:v30];
 
     objc_initWeak(buf, self);
-    v31 = [(HUDropInViewController *)self dropInCenter];
+    dropInCenter3 = [(HUDropInViewController *)self dropInCenter];
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
     v32[2] = __54__HUDropInViewController__launchDropInSessionIfNeeded__block_invoke_76;
     v32[3] = &unk_277DC1F68;
     objc_copyWeak(&v33, buf);
-    [v31 startSessionWithRequest:v12 completionHandler:v32];
+    [dropInCenter3 startSessionWithRequest:v12 completionHandler:v32];
 
     objc_destroyWeak(&v33);
     objc_destroyWeak(buf);
@@ -1961,7 +1961,7 @@ void __52__HUDropInViewController__dismissDownRecordingView___block_invoke_6(uin
     {
       v18 = NSStringFromSelector(a2);
       *buf = 138412802;
-      v36 = self;
+      selfCopy7 = self;
       v37 = 2112;
       v38 = v18;
       v39 = 2112;
@@ -2123,11 +2123,11 @@ void __54__HUDropInViewController__launchDropInSessionIfNeeded__block_invoke_79(
     v6 = _HULocalizedStringWithDefaultValue(@"HUDropInButton_AX_Label_Hint_Enable_Mic", @"HUDropInButton_AX_Label_Hint_Enable_Mic", 1);
     [(UIButton *)v4 setAccessibilityHint:v6];
 
-    v7 = [MEMORY[0x277D75348] systemYellowColor];
-    [(UIButton *)v4 setBackgroundColor:v7];
+    systemYellowColor = [MEMORY[0x277D75348] systemYellowColor];
+    [(UIButton *)v4 setBackgroundColor:systemYellowColor];
 
-    v8 = [MEMORY[0x277D75348] systemBlackColor];
-    [(UIButton *)v4 setTintColor:v8];
+    systemBlackColor = [MEMORY[0x277D75348] systemBlackColor];
+    [(UIButton *)v4 setTintColor:systemBlackColor];
 
     [(UIButton *)v4 _setContinuousCornerRadius:16.0];
     v9 = [MEMORY[0x277D755B8] hu_microphoneGlyphForTalkingState:0 usingStandardSymbolConfiguration:1];
@@ -2137,45 +2137,45 @@ void __54__HUDropInViewController__launchDropInSessionIfNeeded__block_invoke_79(
     [(UIButton *)v4 addSubview:v10];
     v11 = objc_alloc_init(MEMORY[0x277D756B8]);
     [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v12 = [MEMORY[0x277D75348] systemBlackColor];
-    [v11 setTextColor:v12];
+    systemBlackColor2 = [MEMORY[0x277D75348] systemBlackColor];
+    [v11 setTextColor:systemBlackColor2];
 
     [(UIButton *)v4 addSubview:v11];
-    v13 = [v10 topAnchor];
-    v14 = [(UIButton *)v4 topAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14 constant:13.0];
+    topAnchor = [v10 topAnchor];
+    topAnchor2 = [(UIButton *)v4 topAnchor];
+    v15 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:13.0];
     [v15 setActive:1];
 
-    v16 = [v10 leadingAnchor];
-    v17 = [(UIButton *)v4 leadingAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17 constant:25.0];
+    leadingAnchor = [v10 leadingAnchor];
+    leadingAnchor2 = [(UIButton *)v4 leadingAnchor];
+    v18 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:25.0];
     [v18 setActive:1];
 
-    v19 = [v10 widthAnchor];
-    v20 = [v19 constraintEqualToConstant:18.0];
+    widthAnchor = [v10 widthAnchor];
+    v20 = [widthAnchor constraintEqualToConstant:18.0];
     [v20 setActive:1];
 
-    v21 = [v10 heightAnchor];
-    v22 = [v21 constraintEqualToConstant:18.0];
+    heightAnchor = [v10 heightAnchor];
+    v22 = [heightAnchor constraintEqualToConstant:18.0];
     [v22 setActive:1];
 
-    v23 = [v11 topAnchor];
-    v24 = [(UIButton *)v4 topAnchor];
-    v25 = [v23 constraintEqualToAnchor:v24 constant:13.0];
+    topAnchor3 = [v11 topAnchor];
+    topAnchor4 = [(UIButton *)v4 topAnchor];
+    v25 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:13.0];
     [v25 setActive:1];
 
-    v26 = [v11 leadingAnchor];
-    v27 = [v10 trailingAnchor];
-    v28 = [v26 constraintEqualToAnchor:v27 constant:10.0];
+    leadingAnchor3 = [v11 leadingAnchor];
+    trailingAnchor = [v10 trailingAnchor];
+    v28 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:10.0];
     [v28 setActive:1];
 
-    v29 = [v11 trailingAnchor];
-    v30 = [(UIButton *)v4 trailingAnchor];
-    v31 = [v29 constraintEqualToAnchor:v30 constant:-25.0];
+    trailingAnchor2 = [v11 trailingAnchor];
+    trailingAnchor3 = [(UIButton *)v4 trailingAnchor];
+    v31 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:-25.0];
     [v31 setActive:1];
 
-    v32 = [v11 heightAnchor];
-    v33 = [v32 constraintEqualToConstant:18.0];
+    heightAnchor2 = [v11 heightAnchor];
+    v33 = [heightAnchor2 constraintEqualToConstant:18.0];
     [v33 setActive:1];
 
     [(UIButton *)v4 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -2204,36 +2204,36 @@ void __54__HUDropInViewController__launchDropInSessionIfNeeded__block_invoke_79(
     v6 = _HULocalizedStringWithDefaultValue(@"HUDropInButton_AX_Label_Hint_Disable_Mic", @"HUDropInButton_AX_Label_Hint_Disable_Mic", 1);
     [(UIButton *)v4 setAccessibilityHint:v6];
 
-    v7 = [MEMORY[0x277D75348] systemYellowColor];
-    [(UIButton *)v4 setBackgroundColor:v7];
+    systemYellowColor = [MEMORY[0x277D75348] systemYellowColor];
+    [(UIButton *)v4 setBackgroundColor:systemYellowColor];
 
-    v8 = [MEMORY[0x277D75348] systemBlackColor];
-    [(UIButton *)v4 setTintColor:v8];
+    systemBlackColor = [MEMORY[0x277D75348] systemBlackColor];
+    [(UIButton *)v4 setTintColor:systemBlackColor];
 
     [(UIButton *)v4 _setContinuousCornerRadius:16.0];
     v9 = objc_alloc_init(MEMORY[0x277D756B8]);
     [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v10 = [MEMORY[0x277D75348] systemBlackColor];
-    [v9 setTextColor:v10];
+    systemBlackColor2 = [MEMORY[0x277D75348] systemBlackColor];
+    [v9 setTextColor:systemBlackColor2];
 
     [(UIButton *)v4 addSubview:v9];
-    v11 = [v9 topAnchor];
-    v12 = [(UIButton *)v4 topAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12 constant:13.0];
+    topAnchor = [v9 topAnchor];
+    topAnchor2 = [(UIButton *)v4 topAnchor];
+    v13 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:13.0];
     [v13 setActive:1];
 
-    v14 = [v9 leadingAnchor];
-    v15 = [(UIButton *)v4 leadingAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15 constant:25.0];
+    leadingAnchor = [v9 leadingAnchor];
+    leadingAnchor2 = [(UIButton *)v4 leadingAnchor];
+    v16 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:25.0];
     [v16 setActive:1];
 
-    v17 = [v9 trailingAnchor];
-    v18 = [(UIButton *)v4 trailingAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18 constant:-25.0];
+    trailingAnchor = [v9 trailingAnchor];
+    trailingAnchor2 = [(UIButton *)v4 trailingAnchor];
+    v19 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-25.0];
     [v19 setActive:1];
 
-    v20 = [v9 heightAnchor];
-    v21 = [v20 constraintEqualToConstant:18.0];
+    heightAnchor = [v9 heightAnchor];
+    v21 = [heightAnchor constraintEqualToConstant:18.0];
     [v21 setActive:1];
 
     [(UIButton *)v4 setContentEdgeInsets:0.0, 18.0, 0.0, 18.0];
@@ -2252,59 +2252,59 @@ void __54__HUDropInViewController__launchDropInSessionIfNeeded__block_invoke_79(
 
 - (id)_displayedAccessoryName
 {
-  v3 = [(HUDropInViewController *)self currentAccessory];
-  v4 = [v3 hf_serviceNameComponents];
-  v5 = [v4 composedString];
+  currentAccessory = [(HUDropInViewController *)self currentAccessory];
+  hf_serviceNameComponents = [currentAccessory hf_serviceNameComponents];
+  composedString = [hf_serviceNameComponents composedString];
 
-  v6 = [(HUDropInViewController *)self currentAccessory];
-  LOBYTE(v4) = objc_opt_respondsToSelector();
+  currentAccessory2 = [(HUDropInViewController *)self currentAccessory];
+  LOBYTE(hf_serviceNameComponents) = objc_opt_respondsToSelector();
 
-  if (v4)
+  if (hf_serviceNameComponents)
   {
-    v7 = [(HUDropInViewController *)self currentAccessory];
-    v8 = [v7 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];
-    v9 = [v8 composedString];
+    currentAccessory3 = [(HUDropInViewController *)self currentAccessory];
+    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 = [currentAccessory3 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];
+    composedString2 = [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 composedString];
 
-    v5 = v9;
+    composedString = composedString2;
   }
 
-  return v5;
+  return composedString;
 }
 
-- (void)managerDidUpdateDevices:(id)a3
+- (void)managerDidUpdateDevices:(id)devices
 {
   v40 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  devicesCopy = devices;
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = NSStringFromSelector(a2);
     *buf = 138412802;
-    v35 = self;
+    selfCopy4 = self;
     v36 = 2112;
     v37 = v7;
     v38 = 2112;
-    v39 = v5;
+    v39 = devicesCopy;
     _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "%@: %@ Device manager: %@", buf, 0x20u);
   }
 
-  v8 = [(HUDropInViewController *)self dropInCenter];
-  v9 = [v8 deviceManager];
-  v10 = [v9 devices];
+  dropInCenter = [(HUDropInViewController *)self dropInCenter];
+  deviceManager = [dropInCenter deviceManager];
+  devices = [deviceManager devices];
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
   v33[2] = __50__HUDropInViewController_managerDidUpdateDevices___block_invoke;
   v33[3] = &unk_277DC1F40;
   v33[4] = self;
-  v11 = [v10 na_firstObjectPassingTest:v33];
+  v11 = [devices na_firstObjectPassingTest:v33];
 
   if (v11)
   {
     v12 = [MEMORY[0x277CBEAA8] now];
     [v12 timeIntervalSince1970];
     v14 = v13;
-    v15 = [v11 stateExpiration];
-    [v15 timeIntervalSince1970];
+    stateExpiration = [v11 stateExpiration];
+    [stateExpiration timeIntervalSince1970];
     v17 = v14 > v16;
 
     if ([v11 state] == 0 || v17)
@@ -2314,7 +2314,7 @@ void __54__HUDropInViewController__launchDropInSessionIfNeeded__block_invoke_79(
       {
         v19 = NSStringFromSelector(a2);
         *buf = 138412802;
-        v35 = self;
+        selfCopy4 = self;
         v36 = 2112;
         v37 = v19;
         v38 = 2112;
@@ -2341,18 +2341,18 @@ void __54__HUDropInViewController__launchDropInSessionIfNeeded__block_invoke_79(
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       v21 = NSStringFromSelector(a2);
-      v22 = [(HUDropInViewController *)self currentAccessory];
+      currentAccessory = [(HUDropInViewController *)self currentAccessory];
       *buf = 138412802;
-      v35 = self;
+      selfCopy4 = self;
       v36 = 2112;
       v37 = v21;
       v38 = 2112;
-      v39 = v22;
+      v39 = currentAccessory;
       _os_log_impl(&dword_20CEB6000, v20, OS_LOG_TYPE_DEFAULT, "%@: %@ Unable to find dropin device for accessory %@", buf, 0x20u);
     }
 
-    v23 = [(HUDropInViewController *)self startSessionRequestTimer];
-    v24 = v23 == 0;
+    startSessionRequestTimer = [(HUDropInViewController *)self startSessionRequestTimer];
+    v24 = startSessionRequestTimer == 0;
 
     if (v24)
     {
@@ -2360,7 +2360,7 @@ void __54__HUDropInViewController__launchDropInSessionIfNeeded__block_invoke_79(
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v35 = self;
+        selfCopy4 = self;
         v36 = 2048;
         v37 = 30;
         _os_log_impl(&dword_20CEB6000, v25, OS_LOG_TYPE_DEFAULT, "%@: Starting start session request timer (%lus)", buf, 0x16u);
@@ -2451,32 +2451,32 @@ LABEL_6:
   }
 }
 
-- (void)manager:(id)a3 didAddDevice:(id)a4
+- (void)manager:(id)manager didAddDevice:(id)device
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  deviceCopy = device;
   v7 = HFLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = NSStringFromSelector(a2);
     *buf = 138412802;
-    v17 = self;
+    selfCopy2 = self;
     v18 = 2112;
     v19 = v8;
     v20 = 2112;
-    v21 = v6;
+    v21 = deviceCopy;
     _os_log_impl(&dword_20CEB6000, v7, OS_LOG_TYPE_DEFAULT, "%@: %@ Added Device: %@", buf, 0x20u);
   }
 
-  v9 = [(HUDropInViewController *)self dropInCenter];
-  v10 = [v9 deviceManager];
-  v11 = [v10 devices];
+  dropInCenter = [(HUDropInViewController *)self dropInCenter];
+  deviceManager = [dropInCenter deviceManager];
+  devices = [deviceManager devices];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __47__HUDropInViewController_manager_didAddDevice___block_invoke;
   v15[3] = &unk_277DC1F40;
   v15[4] = self;
-  v12 = [v11 na_firstObjectPassingTest:v15];
+  v12 = [devices na_firstObjectPassingTest:v15];
 
   if (v12)
   {
@@ -2485,11 +2485,11 @@ LABEL_6:
     {
       v14 = NSStringFromSelector(a2);
       *buf = 138412802;
-      v17 = self;
+      selfCopy2 = self;
       v18 = 2112;
       v19 = v14;
       v20 = 2112;
-      v21 = v6;
+      v21 = deviceCopy;
       _os_log_impl(&dword_20CEB6000, v13, OS_LOG_TYPE_DEFAULT, "%@: %@ Found DIDevice in device manager list: %@", buf, 0x20u);
     }
 
@@ -2508,32 +2508,32 @@ uint64_t __47__HUDropInViewController_manager_didAddDevice___block_invoke(uint64
   return v6;
 }
 
-- (void)device:(id)a3 didUpdateState:(int64_t)a4
+- (void)device:(id)device didUpdateState:(int64_t)state
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  deviceCopy = device;
   v8 = HFLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = NSStringFromSelector(a2);
-    v10 = [MEMORY[0x277D069B0] stringForDeviceState:a4];
+    v10 = [MEMORY[0x277D069B0] stringForDeviceState:state];
     v15 = 138413058;
-    v16 = self;
+    selfCopy = self;
     v17 = 2112;
     v18 = v9;
     v19 = 2112;
     v20 = v10;
     v21 = 2112;
-    v22 = v7;
+    v22 = deviceCopy;
     _os_log_impl(&dword_20CEB6000, v8, OS_LOG_TYPE_DEFAULT, "%@: %@ Updated Device state to %@ for device: %@", &v15, 0x2Au);
   }
 
-  v11 = [(HUDropInViewController *)self dropInCenter];
-  v12 = [v11 sessionManager];
-  v13 = [v12 activeSession];
-  v14 = [v13 state];
+  dropInCenter = [(HUDropInViewController *)self dropInCenter];
+  sessionManager = [dropInCenter sessionManager];
+  activeSession = [sessionManager activeSession];
+  state = [activeSession state];
 
-  if (a4 == 2 && v14 == 2)
+  if (state == 2 && state == 2)
   {
     [(HUDropInViewController *)self _launchDropInSessionIfNeeded];
   }
@@ -2547,31 +2547,31 @@ uint64_t __47__HUDropInViewController_manager_didAddDevice___block_invoke(uint64
   {
     v5 = NSStringFromSelector(a2);
     *buf = 138412546;
-    v23 = self;
+    selfCopy = self;
     v24 = 2112;
     v25 = v5;
     _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "%@: %@ Preload content", buf, 0x16u);
   }
 
-  v6 = [(HUDropInViewController *)self serviceContext];
-  v7 = [v6 homeIdentifier];
+  serviceContext = [(HUDropInViewController *)self serviceContext];
+  homeIdentifier = [serviceContext homeIdentifier];
 
-  v8 = [(HUDropInViewController *)self serviceContext];
-  v9 = [v8 accessoryIdentifier];
+  serviceContext2 = [(HUDropInViewController *)self serviceContext];
+  accessoryIdentifier = [serviceContext2 accessoryIdentifier];
 
   objc_initWeak(buf, self);
-  v10 = [MEMORY[0x277D146E8] sharedDispatcher];
-  v11 = [v10 allHomesFuture];
+  mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+  allHomesFuture = [mEMORY[0x277D146E8] allHomesFuture];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __43__HUDropInViewController_hu_preloadContent__block_invoke;
   v18[3] = &unk_277DBD400;
   objc_copyWeak(&v21, buf);
-  v12 = v7;
+  v12 = homeIdentifier;
   v19 = v12;
-  v13 = v9;
+  v13 = accessoryIdentifier;
   v20 = v13;
-  v14 = [v11 flatMap:v18];
+  v14 = [allHomesFuture flatMap:v18];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __43__HUDropInViewController_hu_preloadContent__block_invoke_113;
@@ -2677,78 +2677,78 @@ id __43__HUDropInViewController_hu_preloadContent__block_invoke_113(uint64_t a1,
   return v8;
 }
 
-- (void)_preloadContent:(id)a3
+- (void)_preloadContent:(id)content
 {
   v40 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  contentCopy = content;
+  if (!contentCopy)
   {
-    v34 = [MEMORY[0x277CCA890] currentHandler];
-    [v34 handleFailureInMethod:a2 object:self file:@"HUDropInViewController.m" lineNumber:1133 description:{@"Invalid parameter not satisfying: %@", @"promise"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUDropInViewController.m" lineNumber:1133 description:{@"Invalid parameter not satisfying: %@", @"promise"}];
   }
 
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(HUDropInViewController *)self currentAccessory];
-    v8 = [(HUDropInViewController *)self currentHome];
+    currentAccessory = [(HUDropInViewController *)self currentAccessory];
+    currentHome = [(HUDropInViewController *)self currentHome];
     *buf = 138412546;
-    v37 = v7;
+    v37 = currentAccessory;
     v38 = 2112;
-    v39 = v8;
+    v39 = currentHome;
     _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "Current accessory = %@ | Current home = %@", buf, 0x16u);
   }
 
-  v9 = [(HUDropInViewController *)self currentHome];
-  if (v9 && (v10 = v9, [(HUDropInViewController *)self currentAccessory], v11 = objc_claimAutoreleasedReturnValue(), v11, v10, v11))
+  currentHome2 = [(HUDropInViewController *)self currentHome];
+  if (currentHome2 && (v10 = currentHome2, [(HUDropInViewController *)self currentAccessory], v11 = objc_claimAutoreleasedReturnValue(), v11, v10, v11))
   {
-    v12 = [(HUDropInViewController *)self currentHome];
-    v13 = [v12 createHomeAudioAnalysisEventSubscriber];
-    [(HUDropInViewController *)self setLastKnownEventSubscriber:v13];
+    currentHome3 = [(HUDropInViewController *)self currentHome];
+    createHomeAudioAnalysisEventSubscriber = [currentHome3 createHomeAudioAnalysisEventSubscriber];
+    [(HUDropInViewController *)self setLastKnownEventSubscriber:createHomeAudioAnalysisEventSubscriber];
 
-    v14 = [(HUDropInViewController *)self lastKnownEventSubscriber];
-    [v14 setDelegate:self];
+    lastKnownEventSubscriber = [(HUDropInViewController *)self lastKnownEventSubscriber];
+    [lastKnownEventSubscriber setDelegate:self];
 
-    v15 = [(HUDropInViewController *)self lastKnownEventSubscriber];
-    v16 = [(HUDropInViewController *)self currentAccessory];
-    v17 = [v16 uniqueIdentifier];
-    [v15 subscribeLastKnownEventsForAccessory:v17 completion:&__block_literal_global_224];
+    lastKnownEventSubscriber2 = [(HUDropInViewController *)self lastKnownEventSubscriber];
+    currentAccessory2 = [(HUDropInViewController *)self currentAccessory];
+    uniqueIdentifier = [currentAccessory2 uniqueIdentifier];
+    [lastKnownEventSubscriber2 subscribeLastKnownEventsForAccessory:uniqueIdentifier completion:&__block_literal_global_224];
 
     v18 = objc_alloc(MEMORY[0x277D069B8]);
-    v19 = [(HUDropInViewController *)self currentHome];
-    v20 = [v19 uniqueIdentifier];
-    v21 = [v18 initWithHomeIdentifier:v20 queue:MEMORY[0x277D85CD0]];
+    currentHome4 = [(HUDropInViewController *)self currentHome];
+    uniqueIdentifier2 = [currentHome4 uniqueIdentifier];
+    v21 = [v18 initWithHomeIdentifier:uniqueIdentifier2 queue:MEMORY[0x277D85CD0]];
     [(HUDropInViewController *)self setDropInCenter:v21];
 
-    v22 = [(HUDropInViewController *)self dropInCenter];
-    [v22 setDelegate:self];
+    dropInCenter = [(HUDropInViewController *)self dropInCenter];
+    [dropInCenter setDelegate:self];
 
-    v23 = [(HUDropInViewController *)self dropInCenter];
-    v24 = [v23 deviceManager];
-    [v24 setDelegate:self];
+    dropInCenter2 = [(HUDropInViewController *)self dropInCenter];
+    deviceManager = [dropInCenter2 deviceManager];
+    [deviceManager setDelegate:self];
 
-    v25 = [(HUDropInViewController *)self currentHome];
-    v26 = [v25 hf_allCameraProfiles];
+    currentHome5 = [(HUDropInViewController *)self currentHome];
+    hf_allCameraProfiles = [currentHome5 hf_allCameraProfiles];
     v35[0] = MEMORY[0x277D85DD0];
     v35[1] = 3221225472;
     v35[2] = __42__HUDropInViewController__preloadContent___block_invoke_129;
     v35[3] = &unk_277DC1F90;
     v35[4] = self;
     v35[5] = a2;
-    v27 = [v26 na_firstObjectPassingTest:v35];
+    v27 = [hf_allCameraProfiles na_firstObjectPassingTest:v35];
     [(HUDropInViewController *)self setNearbyCameraProfile:v27];
 
-    v28 = [(HUDropInViewController *)self nearbyCameraProfile];
+    nearbyCameraProfile = [(HUDropInViewController *)self nearbyCameraProfile];
 
-    if (v28)
+    if (nearbyCameraProfile)
     {
       v29 = [HUCameraLiveStreamViewController alloc];
-      v30 = [(HUDropInViewController *)self nearbyCameraProfile];
-      v31 = [(HUCameraLiveStreamViewController *)v29 initWithCameraProfile:v30];
+      nearbyCameraProfile2 = [(HUDropInViewController *)self nearbyCameraProfile];
+      v31 = [(HUCameraLiveStreamViewController *)v29 initWithCameraProfile:nearbyCameraProfile2];
       [(HUDropInViewController *)self setLiveStreamController:v31];
 
-      v32 = [(HUDropInViewController *)self liveStreamController];
-      [v32 setLiveStreamControllerDelegate:self];
+      liveStreamController = [(HUDropInViewController *)self liveStreamController];
+      [liveStreamController setLiveStreamControllerDelegate:self];
     }
   }
 
@@ -2762,7 +2762,7 @@ id __43__HUDropInViewController_hu_preloadContent__block_invoke_113(uint64_t a1,
     }
   }
 
-  [v5 finishWithNoResult];
+  [contentCopy finishWithNoResult];
 }
 
 void __42__HUDropInViewController__preloadContent___block_invoke(uint64_t a1, void *a2)
@@ -2841,39 +2841,39 @@ uint64_t __42__HUDropInViewController__preloadContent___block_invoke_129(uint64_
   return v8;
 }
 
-- (void)_refreshHomeGraph:(id)a3
+- (void)_refreshHomeGraph:(id)graph
 {
-  v5 = a3;
-  if (!v5)
+  graphCopy = graph;
+  if (!graphCopy)
   {
-    v19 = [MEMORY[0x277CCA890] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"HUDropInViewController.m" lineNumber:1168 description:{@"Invalid parameter not satisfying: %@", @"promise"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUDropInViewController.m" lineNumber:1168 description:{@"Invalid parameter not satisfying: %@", @"promise"}];
   }
 
-  v6 = [(HUDropInViewController *)self serviceContext];
-  v7 = [v6 homeIdentifier];
+  serviceContext = [(HUDropInViewController *)self serviceContext];
+  homeIdentifier = [serviceContext homeIdentifier];
 
-  v8 = [(HUDropInViewController *)self serviceContext];
-  v9 = [v8 accessoryIdentifier];
+  serviceContext2 = [(HUDropInViewController *)self serviceContext];
+  accessoryIdentifier = [serviceContext2 accessoryIdentifier];
 
   v10 = [MEMORY[0x277CBEAA8] now];
-  v11 = [MEMORY[0x277D146E8] sharedDispatcher];
-  v12 = [v11 homeManager];
+  mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+  homeManager = [mEMORY[0x277D146E8] homeManager];
   v13 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:5.0];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __44__HUDropInViewController__refreshHomeGraph___block_invoke;
   v20[3] = &unk_277DBBFB8;
   v21 = v10;
-  v22 = v5;
-  v23 = self;
-  v24 = v7;
-  v25 = v9;
-  v14 = v9;
-  v15 = v7;
-  v16 = v5;
+  v22 = graphCopy;
+  selfCopy = self;
+  v24 = homeIdentifier;
+  v25 = accessoryIdentifier;
+  v14 = accessoryIdentifier;
+  v15 = homeIdentifier;
+  v16 = graphCopy;
   v17 = v10;
-  v18 = [v12 _refreshBeforeDate:v13 completionHandler:v20];
+  v18 = [homeManager _refreshBeforeDate:v13 completionHandler:v20];
 }
 
 void __44__HUDropInViewController__refreshHomeGraph___block_invoke(uint64_t a1, uint64_t a2)
@@ -3002,35 +3002,35 @@ void __44__HUDropInViewController__refreshHomeGraph___block_invoke_135(uint64_t 
   v3 = [v2 addCompletionBlock:*(a1 + 32)];
 }
 
-- (void)streamControllerStateDidUpdate:(id)a3
+- (void)streamControllerStateDidUpdate:(id)update
 {
-  v11 = [(HUDropInViewController *)self nearbyCameraProfile];
-  v7 = [v11 streamControl];
-  v8 = [v7 streamState];
-  if (v8 == 2)
+  nearbyCameraProfile = [(HUDropInViewController *)self nearbyCameraProfile];
+  streamControl = [nearbyCameraProfile streamControl];
+  streamState = [streamControl streamState];
+  if (streamState == 2)
   {
     _HULocalizedStringWithDefaultValue(@"HUCameraLive", @"HUCameraLive", 1);
   }
 
   else
   {
-    v3 = [(HUDropInViewController *)self nearbyCameraProfile];
-    v4 = [v3 snapshotControl];
-    v5 = [v4 mostRecentSnapshot];
-    [v5 hf_localizedAge];
+    nearbyCameraProfile2 = [(HUDropInViewController *)self nearbyCameraProfile];
+    snapshotControl = [nearbyCameraProfile2 snapshotControl];
+    mostRecentSnapshot = [snapshotControl mostRecentSnapshot];
+    [mostRecentSnapshot hf_localizedAge];
   }
   v9 = ;
-  v10 = [(HUDropInViewController *)self descriptionLabel];
-  [v10 setText:v9];
+  descriptionLabel = [(HUDropInViewController *)self descriptionLabel];
+  [descriptionLabel setText:v9];
 
-  if (v8 != 2)
+  if (streamState != 2)
   {
 
-    v9 = v3;
+    v9 = nearbyCameraProfile2;
   }
 }
 
-- (void)serverDisconnectedForDropInCenter:(id)a3
+- (void)serverDisconnectedForDropInCenter:(id)center
 {
   v16 = *MEMORY[0x277D85DE8];
   v5 = HFLogForCategory();
@@ -3038,17 +3038,17 @@ void __44__HUDropInViewController__refreshHomeGraph___block_invoke_135(uint64_t 
   {
     v11 = NSStringFromSelector(a2);
     v12 = 138412546;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
     v15 = v11;
     _os_log_error_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_ERROR, "%@: %@ Disconnected from DropIn process", &v12, 0x16u);
   }
 
-  v6 = [(HUDropInViewController *)self dropInCenter];
-  v7 = [v6 sessionManager];
-  v8 = [v7 activeSession];
+  dropInCenter = [(HUDropInViewController *)self dropInCenter];
+  sessionManager = [dropInCenter sessionManager];
+  activeSession = [sessionManager activeSession];
 
-  if (v8)
+  if (activeSession)
   {
     v9 = 88;
   }
@@ -3062,31 +3062,31 @@ void __44__HUDropInViewController__refreshHomeGraph___block_invoke_135(uint64_t 
   [(HUDropInViewController *)self _dismissRecordingUIWithError:v10];
 }
 
-- (void)session:(id)a3 didUpdateState:(unint64_t)a4 reason:(unint64_t)a5
+- (void)session:(id)session didUpdateState:(unint64_t)state reason:(unint64_t)reason
 {
   v41 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = [(HUDropInViewController *)self activeDropInSession];
-  v11 = v10;
-  if (v9 && v10)
+  sessionCopy = session;
+  activeDropInSession = [(HUDropInViewController *)self activeDropInSession];
+  v11 = activeDropInSession;
+  if (sessionCopy && activeDropInSession)
   {
-    v12 = [(HUDropInViewController *)self activeDropInSession];
+    activeDropInSession2 = [(HUDropInViewController *)self activeDropInSession];
 
-    if (v12 != v9)
+    if (activeDropInSession2 != sessionCopy)
     {
       v13 = HFLogForCategory();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         v14 = NSStringFromSelector(a2);
-        v15 = [(HUDropInViewController *)self activeDropInSession];
+        activeDropInSession3 = [(HUDropInViewController *)self activeDropInSession];
         v33 = 138413058;
-        v34 = self;
+        selfCopy3 = self;
         v35 = 2112;
         v36 = v14;
         v37 = 2112;
-        v38 = v9;
+        v38 = sessionCopy;
         v39 = 2112;
-        v40 = v15;
+        v40 = activeDropInSession3;
         _os_log_impl(&dword_20CEB6000, v13, OS_LOG_TYPE_DEFAULT, "%@: %@ Received callback for session %@ which is different from current Session %@. Not Handling...", &v33, 0x2Au);
       }
 
@@ -3104,10 +3104,10 @@ LABEL_24:
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     v17 = NSStringFromSelector(a2);
-    v18 = [MEMORY[0x277D069D0] stringForDropInSessionState:a4];
-    v19 = [MEMORY[0x277D069D0] stringForDropInSessionStateReason:a5];
+    v18 = [MEMORY[0x277D069D0] stringForDropInSessionState:state];
+    v19 = [MEMORY[0x277D069D0] stringForDropInSessionStateReason:reason];
     v33 = 138413058;
-    v34 = self;
+    selfCopy3 = self;
     v35 = 2112;
     v36 = v17;
     v37 = 2112;
@@ -3117,40 +3117,40 @@ LABEL_24:
     _os_log_impl(&dword_20CEB6000, v16, OS_LOG_TYPE_DEFAULT, "%@: %@ Dropin Session state: %@ with reason: %@", &v33, 0x2Au);
   }
 
-  if ([v9 state] == 1)
+  if ([sessionCopy state] == 1)
   {
-    v20 = [(HUDropInViewController *)self spinnerLabel];
+    spinnerLabel = [(HUDropInViewController *)self spinnerLabel];
     v21 = _HULocalizedStringWithDefaultValue(@"HUDropIn_Label_Connecting_State", @"HUDropIn_Label_Connecting_State", 1);
-    [v20 setText:v21];
+    [spinnerLabel setText:v21];
   }
 
-  else if ([v9 state] == 4 && !-[HUDropInViewController hasSessionStarted](self, "hasSessionStarted"))
+  else if ([sessionCopy state] == 4 && !-[HUDropInViewController hasSessionStarted](self, "hasSessionStarted"))
   {
     [(HUDropInViewController *)self setHasSessionStarted:1];
     v22 = HFLogForCategory();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       v23 = NSStringFromSelector(a2);
-      v24 = [(HUDropInViewController *)self dropInCenter];
-      v25 = [v24 sessionManager];
-      v26 = [v25 activeSession];
-      v27 = [v26 isUplinkMuted];
+      dropInCenter = [(HUDropInViewController *)self dropInCenter];
+      sessionManager = [dropInCenter sessionManager];
+      activeSession = [sessionManager activeSession];
+      isUplinkMuted = [activeSession isUplinkMuted];
       v33 = 138412802;
-      v34 = self;
+      selfCopy3 = self;
       v35 = 2112;
       v36 = v23;
       v37 = 1024;
-      LODWORD(v38) = v27;
+      LODWORD(v38) = isUplinkMuted;
       _os_log_impl(&dword_20CEB6000, v22, OS_LOG_TYPE_DEFAULT, "%@: %@ Is uplink audio muted?: %{BOOL}d", &v33, 0x1Cu);
     }
 
     [(HUDropInViewController *)self _updateRecordingUIWithConnectedState];
-    v28 = [(HUDropInViewController *)self dropInCenter];
-    v29 = [v28 sessionManager];
-    v30 = [v29 activeSession];
-    v31 = [v30 isUplinkMuted];
+    dropInCenter2 = [(HUDropInViewController *)self dropInCenter];
+    sessionManager2 = [dropInCenter2 sessionManager];
+    activeSession2 = [sessionManager2 activeSession];
+    isUplinkMuted2 = [activeSession2 isUplinkMuted];
 
-    if (v31)
+    if (isUplinkMuted2)
     {
       [(HUDropInViewController *)self _updateRecordingUIWithMicrophoneOff];
     }
@@ -3161,9 +3161,9 @@ LABEL_24:
     }
   }
 
-  if ([v9 state] == 6 || objc_msgSend(v9, "state") == 7)
+  if ([sessionCopy state] == 6 || objc_msgSend(sessionCopy, "state") == 7)
   {
-    if (a5 == 6)
+    if (reason == 6)
     {
       v32 = 91;
     }
@@ -3181,21 +3181,21 @@ LABEL_24:
 LABEL_25:
 }
 
-- (void)session:(id)a3 didFailWithError:(id)a4
+- (void)session:(id)session didFailWithError:(id)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  sessionCopy = session;
+  errorCopy = error;
   v9 = HFLogForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = NSStringFromSelector(a2);
     *buf = 138412802;
-    v16 = self;
+    selfCopy = self;
     v17 = 2112;
     v18 = v10;
     v19 = 2112;
-    v20 = v8;
+    v20 = errorCopy;
     _os_log_impl(&dword_20CEB6000, v9, OS_LOG_TYPE_DEFAULT, "%@: %@ Dropin session failed with error: %@", buf, 0x20u);
   }
 
@@ -3204,9 +3204,9 @@ LABEL_25:
   block[2] = __51__HUDropInViewController_session_didFailWithError___block_invoke;
   block[3] = &unk_277DC1FE0;
   block[4] = self;
-  v13 = v7;
+  v13 = sessionCopy;
   v14 = a2;
-  v11 = v7;
+  v11 = sessionCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -3303,32 +3303,32 @@ uint64_t __51__HUDropInViewController_session_didFailWithError___block_invoke_13
   return v6;
 }
 
-- (void)session:(id)a3 didUpdateUplinkMuteStatus:(BOOL)a4
+- (void)session:(id)session didUpdateUplinkMuteStatus:(BOOL)status
 {
-  v4 = a4;
+  statusCopy = status;
   v43 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [(HUDropInViewController *)self activeDropInSession];
-  v9 = v8;
-  if (v7 && v8)
+  sessionCopy = session;
+  activeDropInSession = [(HUDropInViewController *)self activeDropInSession];
+  v9 = activeDropInSession;
+  if (sessionCopy && activeDropInSession)
   {
-    v10 = [(HUDropInViewController *)self activeDropInSession];
+    activeDropInSession2 = [(HUDropInViewController *)self activeDropInSession];
 
-    if (v10 != v7)
+    if (activeDropInSession2 != sessionCopy)
     {
       v11 = HFLogForCategory();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         v12 = NSStringFromSelector(a2);
-        v13 = [(HUDropInViewController *)self activeDropInSession];
+        activeDropInSession3 = [(HUDropInViewController *)self activeDropInSession];
         *buf = 138413058;
-        v36 = self;
+        selfCopy4 = self;
         v37 = 2112;
         v38 = v12;
         v39 = 2112;
-        v40 = v7;
+        v40 = sessionCopy;
         v41 = 2112;
-        v42 = v13;
+        v42 = activeDropInSession3;
         _os_log_impl(&dword_20CEB6000, v11, OS_LOG_TYPE_DEFAULT, "%@: %@ Received callback for session %@ which is different from current Session %@. Not Handling...", buf, 0x2Au);
 
 LABEL_16:
@@ -3348,27 +3348,27 @@ LABEL_16:
   {
     v15 = NSStringFromSelector(a2);
     *buf = 138412802;
-    v36 = self;
+    selfCopy4 = self;
     v37 = 2112;
     v38 = v15;
     v39 = 1024;
-    LODWORD(v40) = v4;
+    LODWORD(v40) = statusCopy;
     _os_log_impl(&dword_20CEB6000, v14, OS_LOG_TYPE_DEFAULT, "%@: %@ Uplink dropin audio muted? %{BOOL}d", buf, 0x1Cu);
   }
 
-  v34 = v4;
+  v34 = statusCopy;
 
   v16 = HFLogForCategory();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     v17 = NSStringFromSelector(a2);
     v18 = MEMORY[0x277D069D0];
-    v19 = [(HUDropInViewController *)self dropInCenter];
-    v20 = [v19 sessionManager];
-    v21 = [v20 activeSession];
-    v22 = [v18 stringForDropInSessionState:{objc_msgSend(v21, "state")}];
+    dropInCenter = [(HUDropInViewController *)self dropInCenter];
+    sessionManager = [dropInCenter sessionManager];
+    activeSession = [sessionManager activeSession];
+    v22 = [v18 stringForDropInSessionState:{objc_msgSend(activeSession, "state")}];
     *buf = 138412802;
-    v36 = self;
+    selfCopy4 = self;
     v37 = 2112;
     v38 = v17;
     v39 = 2112;
@@ -3376,21 +3376,21 @@ LABEL_16:
     _os_log_impl(&dword_20CEB6000, v16, OS_LOG_TYPE_DEFAULT, "%@: %@ Dropin Session state: %@", buf, 0x20u);
   }
 
-  v23 = [(HUDropInViewController *)self dropInCenter];
-  v24 = [v23 sessionManager];
-  v25 = [v24 activeSession];
-  if ([v25 state] == 6)
+  dropInCenter2 = [(HUDropInViewController *)self dropInCenter];
+  sessionManager2 = [dropInCenter2 sessionManager];
+  activeSession2 = [sessionManager2 activeSession];
+  if ([activeSession2 state] == 6)
   {
 
     goto LABEL_14;
   }
 
-  v26 = [(HUDropInViewController *)self dropInCenter];
-  v27 = [v26 sessionManager];
-  v28 = [v27 activeSession];
-  v29 = [v28 state];
+  dropInCenter3 = [(HUDropInViewController *)self dropInCenter];
+  sessionManager3 = [dropInCenter3 sessionManager];
+  activeSession3 = [sessionManager3 activeSession];
+  state = [activeSession3 state];
 
-  if (v29 == 7)
+  if (state == 7)
   {
 LABEL_14:
     v11 = HFLogForCategory();
@@ -3398,7 +3398,7 @@ LABEL_14:
     {
       v12 = NSStringFromSelector(a2);
       *buf = 138412546;
-      v36 = self;
+      selfCopy4 = self;
       v37 = 2112;
       v38 = v12;
       _os_log_impl(&dword_20CEB6000, v11, OS_LOG_TYPE_DEFAULT, "%@: %@ Active session is already ended or removed. Ignoring mute status change.", buf, 0x16u);
@@ -3410,12 +3410,12 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v30 = [(HUDropInViewController *)self dropInCenter];
-  v31 = [v30 sessionManager];
-  v32 = [v31 activeSession];
-  v33 = [v32 state];
+  dropInCenter4 = [(HUDropInViewController *)self dropInCenter];
+  sessionManager4 = [dropInCenter4 sessionManager];
+  activeSession4 = [sessionManager4 activeSession];
+  state2 = [activeSession4 state];
 
-  if (v33 == 4)
+  if (state2 == 4)
   {
     if (![(HUDropInViewController *)self hasSessionStarted])
     {
@@ -3437,38 +3437,38 @@ LABEL_17:
 LABEL_18:
 }
 
-- (void)subscriber:(id)a3 didUpdateBulletins:(id)a4
+- (void)subscriber:(id)subscriber didUpdateBulletins:(id)bulletins
 {
   v46 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  bulletinsCopy = bulletins;
   v7 = HFLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = NSStringFromSelector(a2);
     *buf = 138412802;
-    v41 = self;
+    selfCopy2 = self;
     v42 = 2112;
     v43 = v8;
     v44 = 2112;
-    v45 = v6;
+    v45 = bulletinsCopy;
     _os_log_impl(&dword_20CEB6000, v7, OS_LOG_TYPE_DEFAULT, "%@: %@ Last Known Event Bulletins: %@", buf, 0x20u);
   }
 
-  [(HUDropInViewController *)self setEventBulletins:v6];
-  v9 = [(HUDropInViewController *)self eventBulletins];
+  [(HUDropInViewController *)self setEventBulletins:bulletinsCopy];
+  eventBulletins = [(HUDropInViewController *)self eventBulletins];
   v39[0] = MEMORY[0x277D85DD0];
   v39[1] = 3221225472;
   v39[2] = __56__HUDropInViewController_subscriber_didUpdateBulletins___block_invoke;
   v39[3] = &unk_277DC2008;
   v39[4] = self;
-  v10 = [v9 na_firstObjectPassingTest:v39];
+  v10 = [eventBulletins na_firstObjectPassingTest:v39];
 
   v11 = HFLogForCategory();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v12 = NSStringFromSelector(a2);
     *buf = 138412802;
-    v41 = self;
+    selfCopy2 = self;
     v42 = 2112;
     v43 = v12;
     v44 = 2112;
@@ -3476,13 +3476,13 @@ LABEL_18:
     _os_log_impl(&dword_20CEB6000, v11, OS_LOG_TYPE_DEFAULT, "%@: %@ Found last known event for accessory: %@", buf, 0x20u);
   }
 
-  v13 = [v10 startDate];
-  v14 = [v10 dateOfOccurrence];
-  v15 = [(HUDropInViewController *)self _displayedAccessoryName];
-  v16 = [MEMORY[0x277CCA968] localizedStringFromDate:v13 dateStyle:0 timeStyle:1];
+  startDate = [v10 startDate];
+  dateOfOccurrence = [v10 dateOfOccurrence];
+  _displayedAccessoryName = [(HUDropInViewController *)self _displayedAccessoryName];
+  v16 = [MEMORY[0x277CCA968] localizedStringFromDate:startDate dateStyle:0 timeStyle:1];
   if (![v10 state])
   {
-    if ([v13 hf_isSingularHour])
+    if ([startDate hf_isSingularHour])
     {
       v35 = @"HUDropIn_Description_Alarm_Started_SingularHour_FormatString";
     }
@@ -3492,9 +3492,9 @@ LABEL_18:
       v35 = @"HUDropIn_Description_Alarm_Started_PluralHour_FormatString";
     }
 
-    v17 = HULocalizedStringWithFormat(v35, @"%@%@", v29, v30, v31, v32, v33, v34, v15);
-    v18 = [(HUDropInViewController *)self descriptionTextView];
-    [v18 setText:v17];
+    v17 = HULocalizedStringWithFormat(v35, @"%@%@", v29, v30, v31, v32, v33, v34, _displayedAccessoryName);
+    descriptionTextView = [(HUDropInViewController *)self descriptionTextView];
+    [descriptionTextView setText:v17];
 LABEL_21:
 
     goto LABEL_22;
@@ -3505,13 +3505,13 @@ LABEL_21:
     v17 = objc_alloc_init(MEMORY[0x277CCA958]);
     [v17 setUnitsStyle:3];
     [v17 setAllowedUnits:64];
-    v18 = [v17 stringFromDate:v13 toDate:v14];
-    [v14 timeIntervalSinceDate:v13];
+    descriptionTextView = [v17 stringFromDate:startDate toDate:dateOfOccurrence];
+    [dateOfOccurrence timeIntervalSinceDate:startDate];
     v20 = v19;
-    v21 = [v13 hf_isSingularHour];
+    hf_isSingularHour = [startDate hf_isSingularHour];
     if (v20 >= 60.0)
     {
-      if (v21)
+      if (hf_isSingularHour)
       {
         v36 = @"HUDropIn_Description_Alarm_Ended_SingularHour_FormatString";
       }
@@ -3521,12 +3521,12 @@ LABEL_21:
         v36 = @"HUDropIn_Description_Alarm_Ended_PluralHour_FormatString";
       }
 
-      HULocalizedStringWithFormat(v36, @"%@%@%@", v22, v23, v24, v25, v26, v27, v15);
+      HULocalizedStringWithFormat(v36, @"%@%@%@", v22, v23, v24, v25, v26, v27, _displayedAccessoryName);
     }
 
     else
     {
-      if (v21)
+      if (hf_isSingularHour)
       {
         v28 = @"HUDropIn_Description_Alarm_Ended_SingularHour_LessThanOneMin_FormatString";
       }
@@ -3536,11 +3536,11 @@ LABEL_21:
         v28 = @"HUDropIn_Description_Alarm_Ended_PluralHour_LessThanOneMin_FormatString";
       }
 
-      HULocalizedStringWithFormat(v28, @"%@%@", v22, v23, v24, v25, v26, v27, v15);
+      HULocalizedStringWithFormat(v28, @"%@%@", v22, v23, v24, v25, v26, v27, _displayedAccessoryName);
     }
     v37 = ;
-    v38 = [(HUDropInViewController *)self descriptionTextView];
-    [v38 setText:v37];
+    descriptionTextView2 = [(HUDropInViewController *)self descriptionTextView];
+    [descriptionTextView2 setText:v37];
 
     goto LABEL_21;
   }
@@ -3558,69 +3558,69 @@ uint64_t __56__HUDropInViewController_subscriber_didUpdateBulletins___block_invo
   return v6;
 }
 
-- (void)controller:(id)a3 didUpdateAudioPowerForDropInDevice:(float)a4
+- (void)controller:(id)controller didUpdateAudioPowerForDropInDevice:(float)device
 {
   v18 = *MEMORY[0x277D85DE8];
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"HUDropInViewController.m" lineNumber:1379 description:@"didUpdateAudioPowerForDropInDevice called from secondary thread"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUDropInViewController.m" lineNumber:1379 description:@"didUpdateAudioPowerForDropInDevice called from secondary thread"];
   }
 
   v7 = HFLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = NSStringFromSelector(a2);
-    v9 = a4;
+    deviceCopy2 = device;
     v12 = 138412802;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
     v15 = v8;
     v16 = 2048;
-    v17 = v9;
+    v17 = deviceCopy2;
     _os_log_impl(&dword_20CEB6000, v7, OS_LOG_TYPE_DEFAULT, "%@: %@ Updated audio power: %f", &v12, 0x20u);
   }
 
   else
   {
-    v9 = a4;
+    deviceCopy2 = device;
   }
 
-  v10 = [(HUDropInViewController *)self audioWaveformView];
-  [v10 appendPowerLevel:(log10(v9) * 20.0)];
+  audioWaveformView = [(HUDropInViewController *)self audioWaveformView];
+  [audioWaveformView appendPowerLevel:(log10(deviceCopy2) * 20.0)];
 }
 
-- (void)manager:(id)a3 didUpdateActiveSession:(id)a4
+- (void)manager:(id)manager didUpdateActiveSession:(id)session
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(HUDropInViewController *)self activeDropInSession];
-  v8 = v7;
-  if (v6 && v7)
+  sessionCopy = session;
+  activeDropInSession = [(HUDropInViewController *)self activeDropInSession];
+  v8 = activeDropInSession;
+  if (sessionCopy && activeDropInSession)
   {
-    v9 = [(HUDropInViewController *)self activeDropInSession];
+    activeDropInSession2 = [(HUDropInViewController *)self activeDropInSession];
 
-    if (v9 != v6)
+    if (activeDropInSession2 != sessionCopy)
     {
-      v10 = HFLogForCategory();
-      if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+      dropInCenter3 = HFLogForCategory();
+      if (!os_log_type_enabled(dropInCenter3, OS_LOG_TYPE_DEFAULT))
       {
 LABEL_14:
 
         goto LABEL_15;
       }
 
-      v11 = NSStringFromSelector(a2);
-      v12 = [(HUDropInViewController *)self activeDropInSession];
+      sessionManager3 = NSStringFromSelector(a2);
+      activeDropInSession3 = [(HUDropInViewController *)self activeDropInSession];
       v23 = 138413058;
-      v24 = self;
+      selfCopy2 = self;
       v25 = 2112;
-      v26 = v11;
+      v26 = sessionManager3;
       v27 = 2112;
-      v28 = v6;
+      v28 = sessionCopy;
       v29 = 2112;
-      v30 = v12;
-      _os_log_impl(&dword_20CEB6000, v10, OS_LOG_TYPE_DEFAULT, "%@: %@ Received callback for session %@ which is different from current Session %@. Not Handling...", &v23, 0x2Au);
+      v30 = activeDropInSession3;
+      _os_log_impl(&dword_20CEB6000, dropInCenter3, OS_LOG_TYPE_DEFAULT, "%@: %@ Received callback for session %@ which is different from current Session %@. Not Handling...", &v23, 0x2Au);
 LABEL_13:
 
       goto LABEL_14;
@@ -3636,36 +3636,36 @@ LABEL_13:
   {
     v14 = NSStringFromSelector(a2);
     v23 = 138412802;
-    v24 = self;
+    selfCopy2 = self;
     v25 = 2112;
     v26 = v14;
     v27 = 2112;
-    v28 = v6;
+    v28 = sessionCopy;
     _os_log_impl(&dword_20CEB6000, v13, OS_LOG_TYPE_DEFAULT, "%@: %@ Updated active session: %@", &v23, 0x20u);
   }
 
-  v15 = [(HUDropInViewController *)self dropInCenter];
-  v16 = [v15 sessionManager];
-  v17 = [v16 activeSession];
-  v18 = [v17 delegate];
+  dropInCenter = [(HUDropInViewController *)self dropInCenter];
+  sessionManager = [dropInCenter sessionManager];
+  activeSession = [sessionManager activeSession];
+  delegate = [activeSession delegate];
 
-  if (!v18)
+  if (!delegate)
   {
     v19 = HFLogForCategory();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [(HUDropInViewController *)self dropInCenter];
-      v21 = [v20 sessionManager];
-      v22 = [v21 activeSession];
+      dropInCenter2 = [(HUDropInViewController *)self dropInCenter];
+      sessionManager2 = [dropInCenter2 sessionManager];
+      activeSession2 = [sessionManager2 activeSession];
       v23 = 138412290;
-      v24 = v22;
+      selfCopy2 = activeSession2;
       _os_log_impl(&dword_20CEB6000, v19, OS_LOG_TYPE_DEFAULT, "Active dropin session == %@", &v23, 0xCu);
     }
 
-    v10 = [(HUDropInViewController *)self dropInCenter];
-    v11 = [v10 sessionManager];
-    v12 = [v11 activeSession];
-    [v12 setDelegate:self];
+    dropInCenter3 = [(HUDropInViewController *)self dropInCenter];
+    sessionManager3 = [dropInCenter3 sessionManager];
+    activeDropInSession3 = [sessionManager3 activeSession];
+    [activeDropInSession3 setDelegate:self];
     goto LABEL_13;
   }
 

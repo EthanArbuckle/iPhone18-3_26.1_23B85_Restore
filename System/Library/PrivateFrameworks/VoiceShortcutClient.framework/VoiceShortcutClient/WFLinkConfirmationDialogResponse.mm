@@ -1,36 +1,36 @@
 @interface WFLinkConfirmationDialogResponse
-- (WFLinkConfirmationDialogResponse)initWithBSXPCCoder:(id)a3;
-- (WFLinkConfirmationDialogResponse)initWithCoder:(id)a3;
-- (WFLinkConfirmationDialogResponse)initWithConfirmationResponseCode:(unint64_t)a3 value:(id)a4;
-- (WFLinkConfirmationDialogResponse)initWithRequestedOpenURL:(id)a3;
+- (WFLinkConfirmationDialogResponse)initWithBSXPCCoder:(id)coder;
+- (WFLinkConfirmationDialogResponse)initWithCoder:(id)coder;
+- (WFLinkConfirmationDialogResponse)initWithConfirmationResponseCode:(unint64_t)code value:(id)value;
+- (WFLinkConfirmationDialogResponse)initWithRequestedOpenURL:(id)l;
 - (id)description;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFLinkConfirmationDialogResponse
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = WFLinkConfirmationDialogResponse;
-  v4 = a3;
-  [(WFLinkSnippetDialogResponse *)&v6 encodeWithBSXPCCoder:v4];
-  [v4 encodeInt64:-[WFLinkConfirmationDialogResponse requestResponseCode](self forKey:{"requestResponseCode", v6.receiver, v6.super_class), @"requestResponseCode"}];
-  v5 = [(WFLinkConfirmationDialogResponse *)self value];
-  [v4 encodeObject:v5 forKey:@"value"];
+  coderCopy = coder;
+  [(WFLinkSnippetDialogResponse *)&v6 encodeWithBSXPCCoder:coderCopy];
+  [coderCopy encodeInt64:-[WFLinkConfirmationDialogResponse requestResponseCode](self forKey:{"requestResponseCode", v6.receiver, v6.super_class), @"requestResponseCode"}];
+  value = [(WFLinkConfirmationDialogResponse *)self value];
+  [coderCopy encodeObject:value forKey:@"value"];
 }
 
-- (WFLinkConfirmationDialogResponse)initWithBSXPCCoder:(id)a3
+- (WFLinkConfirmationDialogResponse)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = WFLinkConfirmationDialogResponse;
-  v5 = [(WFLinkSnippetDialogResponse *)&v10 initWithBSXPCCoder:v4];
+  v5 = [(WFLinkSnippetDialogResponse *)&v10 initWithBSXPCCoder:coderCopy];
   if (v5)
   {
-    v5->_requestResponseCode = [v4 decodeInt64ForKey:@"requestResponseCode"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"value"];
+    v5->_requestResponseCode = [coderCopy decodeInt64ForKey:@"requestResponseCode"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"value"];
     value = v5->_value;
     v5->_value = v6;
 
@@ -40,27 +40,27 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = WFLinkConfirmationDialogResponse;
-  v4 = a3;
-  [(WFLinkSnippetDialogResponse *)&v6 encodeWithCoder:v4];
-  [v4 encodeInteger:-[WFLinkConfirmationDialogResponse requestResponseCode](self forKey:{"requestResponseCode", v6.receiver, v6.super_class), @"requestResponseCode"}];
-  v5 = [(WFLinkConfirmationDialogResponse *)self value];
-  [v4 encodeObject:v5 forKey:@"value"];
+  coderCopy = coder;
+  [(WFLinkSnippetDialogResponse *)&v6 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:-[WFLinkConfirmationDialogResponse requestResponseCode](self forKey:{"requestResponseCode", v6.receiver, v6.super_class), @"requestResponseCode"}];
+  value = [(WFLinkConfirmationDialogResponse *)self value];
+  [coderCopy encodeObject:value forKey:@"value"];
 }
 
-- (WFLinkConfirmationDialogResponse)initWithCoder:(id)a3
+- (WFLinkConfirmationDialogResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = WFLinkConfirmationDialogResponse;
-  v5 = [(WFLinkSnippetDialogResponse *)&v10 initWithCoder:v4];
+  v5 = [(WFLinkSnippetDialogResponse *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_requestResponseCode = [v4 decodeIntegerForKey:@"requestResponseCode"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"value"];
+    v5->_requestResponseCode = [coderCopy decodeIntegerForKey:@"requestResponseCode"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"value"];
     value = v5->_value;
     v5->_value = v6;
 
@@ -80,11 +80,11 @@
   return v6;
 }
 
-- (WFLinkConfirmationDialogResponse)initWithRequestedOpenURL:(id)a3
+- (WFLinkConfirmationDialogResponse)initWithRequestedOpenURL:(id)l
 {
   v7.receiver = self;
   v7.super_class = WFLinkConfirmationDialogResponse;
-  v3 = [(WFLinkSnippetDialogResponse *)&v7 initWithRequestedOpenURL:a3];
+  v3 = [(WFLinkSnippetDialogResponse *)&v7 initWithRequestedOpenURL:l];
   v4 = v3;
   if (v3)
   {
@@ -95,17 +95,17 @@
   return v4;
 }
 
-- (WFLinkConfirmationDialogResponse)initWithConfirmationResponseCode:(unint64_t)a3 value:(id)a4
+- (WFLinkConfirmationDialogResponse)initWithConfirmationResponseCode:(unint64_t)code value:(id)value
 {
-  v7 = a4;
+  valueCopy = value;
   v12.receiver = self;
   v12.super_class = WFLinkConfirmationDialogResponse;
-  v8 = [(WFLinkSnippetDialogResponse *)&v12 initWithCancelled:a3 == 0];
+  v8 = [(WFLinkSnippetDialogResponse *)&v12 initWithCancelled:code == 0];
   v9 = v8;
   if (v8)
   {
-    v8->_requestResponseCode = a3;
-    objc_storeStrong(&v8->_value, a4);
+    v8->_requestResponseCode = code;
+    objc_storeStrong(&v8->_value, value);
     v10 = v9;
   }
 

@@ -1,19 +1,19 @@
 @interface SSRSpeakerRecognitionOrchestrator
-- (SSRSpeakerRecognitionOrchestrator)initWithContext:(id)a3 withDelegate:(id)a4 error:(id *)a5;
+- (SSRSpeakerRecognitionOrchestrator)initWithContext:(id)context withDelegate:(id)delegate error:(id *)error;
 - (SSRSpeakerRecognitionOrchestratorDelegate)delegate;
 - (id)getLatestVoiceRecognitionInfo;
-- (id)orchestratorScoresWithPSRScores:(id)a3 withSATScores:(id)a4 withSegmentStartTime:(double)a5;
-- (id)resetWithContext:(id)a3;
-- (void)SSRVoiceActivityDetector:(id)a3 didDetectEndPointAt:(unint64_t)a4;
-- (void)SSRVoiceActivityDetector:(id)a3 didDetectStartPointAt:(unint64_t)a4;
-- (void)_logSpeakerIdProcessorScoreDelayWithScoreInfo:(id)a3 hasFinished:(BOOL)a4;
-- (void)_resetWithContext:(id)a3;
+- (id)orchestratorScoresWithPSRScores:(id)scores withSATScores:(id)tScores withSegmentStartTime:(double)time;
+- (id)resetWithContext:(id)context;
+- (void)SSRVoiceActivityDetector:(id)detector didDetectEndPointAt:(unint64_t)at;
+- (void)SSRVoiceActivityDetector:(id)detector didDetectStartPointAt:(unint64_t)at;
+- (void)_logSpeakerIdProcessorScoreDelayWithScoreInfo:(id)info hasFinished:(BOOL)finished;
+- (void)_resetWithContext:(id)context;
 - (void)dealloc;
 - (void)endAudio;
-- (void)processAudio:(id)a3 numSamples:(unint64_t)a4;
-- (void)speakerRecognizer:(id)a3 hasSpeakerIdInfo:(id)a4;
-- (void)speakerRecognizerFinishedProcessing:(id)a3 withFinalSpeakerIdInfo:(id)a4;
-- (void)updateDebugFilePathsForSegment:(unint64_t)a3;
+- (void)processAudio:(id)audio numSamples:(unint64_t)samples;
+- (void)speakerRecognizer:(id)recognizer hasSpeakerIdInfo:(id)info;
+- (void)speakerRecognizerFinishedProcessing:(id)processing withFinalSpeakerIdInfo:(id)info;
+- (void)updateDebugFilePathsForSegment:(unint64_t)segment;
 @end
 
 @implementation SSRSpeakerRecognitionOrchestrator
@@ -25,7 +25,7 @@
   return WeakRetained;
 }
 
-- (void)SSRVoiceActivityDetector:(id)a3 didDetectEndPointAt:(unint64_t)a4
+- (void)SSRVoiceActivityDetector:(id)detector didDetectEndPointAt:(unint64_t)at
 {
   queue = self->_queue;
   v5[0] = MEMORY[0x277D85DD0];
@@ -33,7 +33,7 @@
   v5[2] = __82__SSRSpeakerRecognitionOrchestrator_SSRVoiceActivityDetector_didDetectEndPointAt___block_invoke;
   v5[3] = &unk_278578170;
   v5[4] = self;
-  v5[5] = a4;
+  v5[5] = at;
   dispatch_async(queue, v5);
 }
 
@@ -63,7 +63,7 @@ uint64_t __82__SSRSpeakerRecognitionOrchestrator_SSRVoiceActivityDetector_didDet
   return result;
 }
 
-- (void)SSRVoiceActivityDetector:(id)a3 didDetectStartPointAt:(unint64_t)a4
+- (void)SSRVoiceActivityDetector:(id)detector didDetectStartPointAt:(unint64_t)at
 {
   queue = self->_queue;
   v5[0] = MEMORY[0x277D85DD0];
@@ -71,7 +71,7 @@ uint64_t __82__SSRSpeakerRecognitionOrchestrator_SSRVoiceActivityDetector_didDet
   v5[2] = __84__SSRSpeakerRecognitionOrchestrator_SSRVoiceActivityDetector_didDetectStartPointAt___block_invoke;
   v5[3] = &unk_278578170;
   v5[4] = self;
-  v5[5] = a4;
+  v5[5] = at;
   dispatch_async(queue, v5);
 }
 
@@ -98,20 +98,20 @@ void __84__SSRSpeakerRecognitionOrchestrator_SSRVoiceActivityDetector_didDetectS
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)speakerRecognizerFinishedProcessing:(id)a3 withFinalSpeakerIdInfo:(id)a4
+- (void)speakerRecognizerFinishedProcessing:(id)processing withFinalSpeakerIdInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  processingCopy = processing;
+  infoCopy = info;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __96__SSRSpeakerRecognitionOrchestrator_speakerRecognizerFinishedProcessing_withFinalSpeakerIdInfo___block_invoke;
   block[3] = &unk_2785793A0;
-  v12 = v7;
-  v13 = self;
-  v14 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = infoCopy;
+  selfCopy = self;
+  v14 = processingCopy;
+  v9 = processingCopy;
+  v10 = infoCopy;
   dispatch_async(queue, block);
 }
 
@@ -336,20 +336,20 @@ LABEL_30:
   v47 = *MEMORY[0x277D85DE8];
 }
 
-- (void)speakerRecognizer:(id)a3 hasSpeakerIdInfo:(id)a4
+- (void)speakerRecognizer:(id)recognizer hasSpeakerIdInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  recognizerCopy = recognizer;
+  infoCopy = info;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __72__SSRSpeakerRecognitionOrchestrator_speakerRecognizer_hasSpeakerIdInfo___block_invoke;
   block[3] = &unk_2785793A0;
-  v12 = v7;
-  v13 = self;
-  v14 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = infoCopy;
+  selfCopy = self;
+  v14 = recognizerCopy;
+  v9 = recognizerCopy;
+  v10 = infoCopy;
   dispatch_async(queue, block);
 }
 
@@ -448,7 +448,7 @@ LABEL_15:
   v24 = __Block_byref_object_copy__749;
   v25 = __Block_byref_object_dispose__750;
   v26 = 0;
-  v3 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -457,22 +457,22 @@ LABEL_15:
   block[4] = self;
   block[5] = &v21;
   dispatch_async_and_wait(queue, block);
-  v5 = [MEMORY[0x277CBEAA8] date];
+  date2 = [MEMORY[0x277CBEAA8] date];
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
-  [v5 timeIntervalSinceDate:v3];
+  [date2 timeIntervalSinceDate:date];
   v19 = v6;
   v7 = *MEMORY[0x277D01970];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(SSRSpeakerRecognitionContext *)self->_context sessionId];
+    sessionId = [(SSRSpeakerRecognitionContext *)self->_context sessionId];
     v9 = v17[3];
     v10 = [v22[5] objectForKeyedSubscript:@"spIdKnownUserScores"];
     *buf = 136315906;
     v28 = "[SSRSpeakerRecognitionOrchestrator getLatestVoiceRecognitionInfo]";
     v29 = 2114;
-    v30 = v8;
+    v30 = sessionId;
     v31 = 2050;
     v32 = v9;
     v33 = 2114;
@@ -530,34 +530,34 @@ void __66__SSRSpeakerRecognitionOrchestrator_getLatestVoiceRecognitionInfo__bloc
   [v5 pushAnalytics];
 }
 
-- (void)updateDebugFilePathsForSegment:(unint64_t)a3
+- (void)updateDebugFilePathsForSegment:(unint64_t)segment
 {
-  v5 = [(SSRSpeakerRecognitionContext *)self->_context debugUtteranceAudioFile];
-  v17 = [v5 stringByDeletingLastPathComponent];
+  debugUtteranceAudioFile = [(SSRSpeakerRecognitionContext *)self->_context debugUtteranceAudioFile];
+  stringByDeletingLastPathComponent = [debugUtteranceAudioFile stringByDeletingLastPathComponent];
 
-  v6 = [(SSRSpeakerRecognitionContext *)self->_context debugUtteranceAudioFile];
-  v7 = [v6 lastPathComponent];
+  debugUtteranceAudioFile2 = [(SSRSpeakerRecognitionContext *)self->_context debugUtteranceAudioFile];
+  lastPathComponent = [debugUtteranceAudioFile2 lastPathComponent];
 
   v8 = MEMORY[0x277CCACA8];
-  v9 = [v7 stringByDeletingPathExtension];
-  v10 = [v8 stringWithFormat:@"%@_%d", v9, a3];
+  stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
+  segment = [v8 stringWithFormat:@"%@_%d", stringByDeletingPathExtension, segment];
 
-  v11 = [v10 stringByAppendingPathExtension:@"wav"];
-  v12 = [v17 stringByAppendingPathComponent:v11];
+  v11 = [segment stringByAppendingPathExtension:@"wav"];
+  v12 = [stringByDeletingLastPathComponent stringByAppendingPathComponent:v11];
   debugUtteranceAudioFilePath = self->_debugUtteranceAudioFilePath;
   self->_debugUtteranceAudioFilePath = v12;
 
-  v14 = [v10 stringByAppendingPathExtension:@"json"];
-  v15 = [v17 stringByAppendingPathComponent:v14];
+  v14 = [segment stringByAppendingPathExtension:@"json"];
+  v15 = [stringByDeletingLastPathComponent stringByAppendingPathComponent:v14];
   debugUtteranceJsonFilePath = self->_debugUtteranceJsonFilePath;
   self->_debugUtteranceJsonFilePath = v15;
 }
 
-- (void)_resetWithContext:(id)a3
+- (void)_resetWithContext:(id)context
 {
-  v5 = a3;
-  objc_storeStrong(&self->_context, a3);
-  if ([v5 recognitionStyle] == 2)
+  contextCopy = context;
+  objc_storeStrong(&self->_context, context);
+  if ([contextCopy recognitionStyle] == 2)
   {
     [(CSAudioFileWriter *)self->_ssrUttLogger endAudio];
     [SSRUtils logSpeakerRecognitionGradingMetadataAtFilepath:self->_debugUtteranceJsonFilePath withScoreInfo:self->_combinedScores];
@@ -594,21 +594,21 @@ void __66__SSRSpeakerRecognitionOrchestrator_getLatestVoiceRecognitionInfo__bloc
 
   self->_numSamplesAddedToSpeakerRecognizers = 0;
   self->_startPointReported = 0;
-  [(SSRVoiceActivityDetector *)self->_vad resetWithContext:v5];
-  [(SSRSpeakerRecognizer *)self->_psrRecognizer resetWithContext:v5];
-  [(SSRSpeakerRecognizer *)self->_satRecognizer resetWithContext:v5];
+  [(SSRVoiceActivityDetector *)self->_vad resetWithContext:contextCopy];
+  [(SSRSpeakerRecognizer *)self->_psrRecognizer resetWithContext:contextCopy];
+  [(SSRSpeakerRecognizer *)self->_satRecognizer resetWithContext:contextCopy];
 }
 
-- (id)orchestratorScoresWithPSRScores:(id)a3 withSATScores:(id)a4 withSegmentStartTime:(double)a5
+- (id)orchestratorScoresWithPSRScores:(id)scores withSATScores:(id)tScores withSegmentStartTime:(double)time
 {
   context = self->_context;
-  v9 = a4;
-  v10 = a3;
+  tScoresCopy = tScores;
+  scoresCopy = scores;
   [(SSRSpeakerRecognitionContext *)context combinationWeight];
-  v11 = [SSRUtils combineScoreFromPSR:v10 fromSAT:v9 withCombinedWt:?];
+  v11 = [SSRUtils combineScoreFromPSR:scoresCopy fromSAT:tScoresCopy withCombinedWt:?];
 
-  v12 = [(SSRSpeakerRecognitionContext *)self->_context numEnrollmentUtterances];
-  [v11 setObject:v12 forKeyedSubscript:@"numEnrollmentUtt"];
+  numEnrollmentUtterances = [(SSRSpeakerRecognitionContext *)self->_context numEnrollmentUtterances];
+  [v11 setObject:numEnrollmentUtterances forKeyedSubscript:@"numEnrollmentUtt"];
 
   v13 = MEMORY[0x277CCABB0];
   [(SSRSpeakerRecognitionContext *)self->_context combinationWeight];
@@ -618,13 +618,13 @@ void __66__SSRSpeakerRecognitionOrchestrator_getLatestVoiceRecognitionInfo__bloc
   v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[SSRSpeakerRecognitionContext scoreType](self->_context, "scoreType")}];
   [v11 setObject:v15 forKeyedSubscript:@"spIdUserScoresVersion"];
 
-  v16 = [(SSRSpeakerRecognitionContext *)self->_context sessionId];
-  [v11 setObject:v16 forKeyedSubscript:@"sessionId"];
+  sessionId = [(SSRSpeakerRecognitionContext *)self->_context sessionId];
+  [v11 setObject:sessionId forKeyedSubscript:@"sessionId"];
 
-  v17 = [(SSRSpeakerRecognitionContext *)self->_context configVersion];
-  [v11 setObject:v17 forKeyedSubscript:@"spIdAssetVersion"];
+  configVersion = [(SSRSpeakerRecognitionContext *)self->_context configVersion];
+  [v11 setObject:configVersion forKeyedSubscript:@"spIdAssetVersion"];
 
-  v18 = [MEMORY[0x277CCABB0] numberWithDouble:a5];
+  v18 = [MEMORY[0x277CCABB0] numberWithDouble:time];
   [v11 setObject:v18 forKeyedSubscript:@"segmentStartTime"];
 
   v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_segmentCounter];
@@ -643,28 +643,28 @@ void __66__SSRSpeakerRecognitionOrchestrator_getLatestVoiceRecognitionInfo__bloc
   return v11;
 }
 
-- (void)_logSpeakerIdProcessorScoreDelayWithScoreInfo:(id)a3 hasFinished:(BOOL)a4
+- (void)_logSpeakerIdProcessorScoreDelayWithScoreInfo:(id)info hasFinished:(BOOL)finished
 {
-  v4 = a4;
+  finishedCopy = finished;
   v37 = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277CBEAA8];
-  v7 = a3;
-  v8 = [v6 date];
-  [v8 timeIntervalSinceReferenceDate];
+  infoCopy = info;
+  date = [v6 date];
+  [date timeIntervalSinceReferenceDate];
   v10 = v9;
 
   v11 = v10 - self->_lastScoreReportTimeStamp;
-  v12 = [v7 objectForKeyedSubscript:@"spIdAudioProcessedDuration"];
+  v12 = [infoCopy objectForKeyedSubscript:@"spIdAudioProcessedDuration"];
 
-  v13 = [v12 integerValue];
+  integerValue = [v12 integerValue];
   v14 = MEMORY[0x277D01970];
   v15 = *MEMORY[0x277D01970];
   if (os_log_type_enabled(*MEMORY[0x277D01970], OS_LOG_TYPE_DEFAULT))
   {
     context = self->_context;
     v17 = v15;
-    v18 = [(SSRSpeakerRecognitionContext *)context sessionId];
-    if (v4)
+    sessionId = [(SSRSpeakerRecognitionContext *)context sessionId];
+    if (finishedCopy)
     {
       v19 = @"finished";
     }
@@ -679,15 +679,15 @@ void __66__SSRSpeakerRecognitionOrchestrator_getLatestVoiceRecognitionInfo__bloc
     v25 = 136316418;
     v26 = "[SSRSpeakerRecognitionOrchestrator _logSpeakerIdProcessorScoreDelayWithScoreInfo:hasFinished:]";
     v27 = 2114;
-    v28 = v18;
+    v28 = sessionId;
     v29 = 2114;
     v30 = v19;
     v31 = 2050;
     v32 = (v11 * 1000.0);
     v33 = 2050;
-    v34 = v13;
+    v34 = integerValue;
     v35 = 2050;
-    v36 = (v20 / v21 - v13);
+    v36 = (v20 / v21 - integerValue);
     _os_log_impl(&dword_225E12000, v17, OS_LOG_TYPE_DEFAULT, "%s SSROrch[%{public}@]:: Scorecard %{public}@ with delay:%{public}ldms, processed:%{public}ldms, await:%{public}ldms", &v25, 0x3Eu);
   }
 
@@ -703,25 +703,25 @@ void __66__SSRSpeakerRecognitionOrchestrator_getLatestVoiceRecognitionInfo__bloc
       _os_log_error_impl(&dword_225E12000, v22, OS_LOG_TYPE_ERROR, "%s ERR: Posting diagnostic report for abnormal score delay - %ldms", &v25, 0x16u);
     }
 
-    v23 = [MEMORY[0x277D01708] sharedInstance];
-    [v23 submitVoiceIdIssueReport:*MEMORY[0x277D01A68]];
+    mEMORY[0x277D01708] = [MEMORY[0x277D01708] sharedInstance];
+    [mEMORY[0x277D01708] submitVoiceIdIssueReport:*MEMORY[0x277D01A68]];
   }
 
   self->_lastScoreReportTimeStamp = v10;
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (id)resetWithContext:(id)a3
+- (id)resetWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __54__SSRSpeakerRecognitionOrchestrator_resetWithContext___block_invoke;
   v8[3] = &unk_278579350;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = contextCopy;
+  v6 = contextCopy;
   dispatch_async_and_wait(queue, v8);
 
   return 0;
@@ -815,13 +815,13 @@ uint64_t __45__SSRSpeakerRecognitionOrchestrator_endAudio__block_invoke(uint64_t
   return [v2 endAudio];
 }
 
-- (void)processAudio:(id)a3 numSamples:(unint64_t)a4
+- (void)processAudio:(id)audio numSamples:(unint64_t)samples
 {
-  v6 = a3;
+  audioCopy = audio;
   if (self->_lastScoreReportTimeStamp == 0.0)
   {
-    v7 = [MEMORY[0x277CBEAA8] date];
-    [v7 timeIntervalSinceReferenceDate];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSinceReferenceDate];
     self->_lastScoreReportTimeStamp = v8;
   }
 
@@ -830,10 +830,10 @@ uint64_t __45__SSRSpeakerRecognitionOrchestrator_endAudio__block_invoke(uint64_t
   block[1] = 3221225472;
   block[2] = __61__SSRSpeakerRecognitionOrchestrator_processAudio_numSamples___block_invoke;
   block[3] = &unk_278579780;
-  v12 = v6;
-  v13 = a4;
+  v12 = audioCopy;
+  samplesCopy = samples;
   block[4] = self;
-  v10 = v6;
+  v10 = audioCopy;
   dispatch_async(queue, block);
 }
 
@@ -911,11 +911,11 @@ void __61__SSRSpeakerRecognitionOrchestrator_processAudio_numSamples___block_inv
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (SSRSpeakerRecognitionOrchestrator)initWithContext:(id)a3 withDelegate:(id)a4 error:(id *)a5
+- (SSRSpeakerRecognitionOrchestrator)initWithContext:(id)context withDelegate:(id)delegate error:(id *)error
 {
   v74[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
+  contextCopy = context;
+  delegateCopy = delegate;
   v62.receiver = self;
   v62.super_class = SSRSpeakerRecognitionOrchestrator;
   v11 = [(SSRSpeakerRecognitionOrchestrator *)&v62 init];
@@ -927,8 +927,8 @@ LABEL_35:
     goto LABEL_36;
   }
 
-  objc_storeStrong(&v11->_context, a3);
-  v13 = [[SSRSpeakerRecognizerPSR alloc] initWithContext:v9 delegate:v12];
+  objc_storeStrong(&v11->_context, context);
+  v13 = [[SSRSpeakerRecognizerPSR alloc] initWithContext:contextCopy delegate:v12];
   psrRecognizer = v12->_psrRecognizer;
   v12->_psrRecognizer = v13;
 
@@ -940,16 +940,16 @@ LABEL_35:
     {
       context = v12->_context;
       v18 = v16;
-      v19 = [(SSRSpeakerRecognitionContext *)context sessionId];
+      sessionId = [(SSRSpeakerRecognitionContext *)context sessionId];
       *buf = 136315394;
       v64 = "[SSRSpeakerRecognitionOrchestrator initWithContext:withDelegate:error:]";
       v65 = 2114;
-      v66 = v19;
+      v66 = sessionId;
       _os_log_impl(&dword_225E12000, v18, OS_LOG_TYPE_DEFAULT, "%s SSROrch[%{public}@]:: Failed to create PSR Recognizer", buf, 0x16u);
     }
   }
 
-  v20 = [[SSRSpeakerRecognizerSAT alloc] initWithContext:v9 delegate:v12];
+  v20 = [[SSRSpeakerRecognizerSAT alloc] initWithContext:contextCopy delegate:v12];
   satRecognizer = v12->_satRecognizer;
   v12->_satRecognizer = v20;
 
@@ -960,11 +960,11 @@ LABEL_35:
     {
       v23 = v12->_context;
       v24 = v22;
-      v25 = [(SSRSpeakerRecognitionContext *)v23 sessionId];
+      sessionId2 = [(SSRSpeakerRecognitionContext *)v23 sessionId];
       *buf = 136315394;
       v64 = "[SSRSpeakerRecognitionOrchestrator initWithContext:withDelegate:error:]";
       v65 = 2114;
-      v66 = v25;
+      v66 = sessionId2;
       _os_log_impl(&dword_225E12000, v24, OS_LOG_TYPE_DEFAULT, "%s SSROrch[%{public}@]:: Failed to create SAT Recognizer", buf, 0x16u);
     }
   }
@@ -980,17 +980,17 @@ LABEL_35:
       v65 = 2114;
       v66 = v46;
       _os_log_error_impl(&dword_225E12000, v53, OS_LOG_TYPE_ERROR, "%s %{public}@", buf, 0x16u);
-      if (!a5)
+      if (!error)
       {
         goto LABEL_29;
       }
     }
 
-    else if (!a5)
+    else if (!error)
     {
 LABEL_29:
-      v50 = [(SSRSpeakerRecognitionContext *)v12->_context logAggregator];
-      v51 = v50;
+      logAggregator = [(SSRSpeakerRecognitionContext *)v12->_context logAggregator];
+      v51 = logAggregator;
       v52 = 101;
       goto LABEL_30;
     }
@@ -999,31 +999,31 @@ LABEL_29:
     v73 = @"reason";
     v74[0] = v46;
     v55 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v74 forKeys:&v73 count:1];
-    *a5 = [v54 errorWithDomain:@"com.apple.speakerrecognition" code:101 userInfo:v55];
+    *error = [v54 errorWithDomain:@"com.apple.speakerrecognition" code:101 userInfo:v55];
 
     goto LABEL_29;
   }
 
-  v26 = [v9 debugUtteranceAudioFile];
+  debugUtteranceAudioFile = [contextCopy debugUtteranceAudioFile];
   debugUtteranceAudioFilePath = v12->_debugUtteranceAudioFilePath;
-  v12->_debugUtteranceAudioFilePath = v26;
+  v12->_debugUtteranceAudioFilePath = debugUtteranceAudioFile;
 
-  v28 = [v9 debugUtteranceMetaFile];
+  debugUtteranceMetaFile = [contextCopy debugUtteranceMetaFile];
   debugUtteranceJsonFilePath = v12->_debugUtteranceJsonFilePath;
-  v12->_debugUtteranceJsonFilePath = v28;
+  v12->_debugUtteranceJsonFilePath = debugUtteranceMetaFile;
 
   v12->_segmentCounter = 0;
-  if ([v9 recognitionStyle] != 2 || (v30 = -[SSRVoiceActivityDetector initWithContext:delegate:]([SSRVoiceActivityDetector alloc], "initWithContext:delegate:", v9, v12), vad = v12->_vad, v12->_vad = v30, vad, v12->_vad))
+  if ([contextCopy recognitionStyle] != 2 || (v30 = -[SSRVoiceActivityDetector initWithContext:delegate:]([SSRVoiceActivityDetector alloc], "initWithContext:delegate:", contextCopy, v12), vad = v12->_vad, v12->_vad = v30, vad, v12->_vad))
   {
     v32 = [MEMORY[0x277D018F8] getSerialQueueWithQOS:33 name:@"com.apple.ssr.orchestratorq" fixedPriority:*MEMORY[0x277D019B0]];
     queue = v12->_queue;
     v12->_queue = v32;
 
-    objc_storeWeak(&v12->_delegate, v10);
+    objc_storeWeak(&v12->_delegate, delegateCopy);
     v12->_myriadResult = 0;
     v12->_numSamplesAddedToSpeakerRecognizers = 0;
     *&v12->_endAudioCalled = 0;
-    if ([v9 recognitionStyle] == 2)
+    if ([contextCopy recognitionStyle] == 2)
     {
       [(SSRSpeakerRecognitionOrchestrator *)v12 updateDebugFilePathsForSegment:v12->_segmentCounter];
     }
@@ -1033,10 +1033,10 @@ LABEL_29:
 
     if (CSIsInternalBuild())
     {
-      v35 = [MEMORY[0x277D01788] sharedPreferences];
-      v36 = [v35 speakerRecognitionAudioLoggingEnabled];
+      mEMORY[0x277D01788] = [MEMORY[0x277D01788] sharedPreferences];
+      speakerRecognitionAudioLoggingEnabled = [mEMORY[0x277D01788] speakerRecognitionAudioLoggingEnabled];
 
-      if (v36)
+      if (speakerRecognitionAudioLoggingEnabled)
       {
         v37 = +[SSRUtils ssrAudioLogsDir];
         v38 = [SSRUtils createDirectoryIfDoesNotExist:v37];
@@ -1057,7 +1057,7 @@ LABEL_29:
     v43 = *v15;
     if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
     {
-      v44 = [(SSRSpeakerRecognitionContext *)v12->_context sessionId];
+      sessionId3 = [(SSRSpeakerRecognitionContext *)v12->_context sessionId];
       if (v12->_satRecognizer)
       {
         if (v12->_psrRecognizer)
@@ -1076,16 +1076,16 @@ LABEL_29:
         v45 = @"PSR";
       }
 
-      v57 = [(SSRSpeakerRecognitionContext *)v12->_context debugUtteranceAudioFile];
-      v58 = [v57 lastPathComponent];
+      debugUtteranceAudioFile2 = [(SSRSpeakerRecognitionContext *)v12->_context debugUtteranceAudioFile];
+      lastPathComponent = [debugUtteranceAudioFile2 lastPathComponent];
       *buf = 136315906;
       v64 = "[SSRSpeakerRecognitionOrchestrator initWithContext:withDelegate:error:]";
       v65 = 2114;
-      v66 = v44;
+      v66 = sessionId3;
       v67 = 2114;
       v68 = v45;
       v69 = 2114;
-      v70 = v58;
+      v70 = lastPathComponent;
       _os_log_impl(&dword_225E12000, v43, OS_LOG_TYPE_DEFAULT, "%s SSROrch[%{public}@]:: Successfully initialized with {%{public}@, %{public}@}", buf, 0x2Au);
     }
 
@@ -1101,7 +1101,7 @@ LABEL_29:
     v65 = 2114;
     v66 = v46;
     _os_log_error_impl(&dword_225E12000, v47, OS_LOG_TYPE_ERROR, "%s %{public}@", buf, 0x16u);
-    if (!a5)
+    if (!error)
     {
       goto LABEL_25;
     }
@@ -1109,22 +1109,22 @@ LABEL_29:
     goto LABEL_24;
   }
 
-  if (a5)
+  if (error)
   {
 LABEL_24:
     v48 = MEMORY[0x277CCA9B8];
     v71 = @"reason";
     v72 = v46;
     v49 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v72 forKeys:&v71 count:1];
-    *a5 = [v48 errorWithDomain:@"com.apple.speakerrecognition" code:102 userInfo:v49];
+    *error = [v48 errorWithDomain:@"com.apple.speakerrecognition" code:102 userInfo:v49];
   }
 
 LABEL_25:
-  v50 = [(SSRSpeakerRecognitionContext *)v12->_context logAggregator];
-  v51 = v50;
+  logAggregator = [(SSRSpeakerRecognitionContext *)v12->_context logAggregator];
+  v51 = logAggregator;
   v52 = 102;
 LABEL_30:
-  [v50 setSpeakerRecognitionProcessingStatus:v52];
+  [logAggregator setSpeakerRecognitionProcessingStatus:v52];
 
   v56 = 0;
 LABEL_36:

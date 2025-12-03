@@ -1,19 +1,19 @@
 @interface NMSSequentialItemEnumerator
-- (NMSSequentialItemEnumerator)initWithItemEnumerators:(id)a3;
+- (NMSSequentialItemEnumerator)initWithItemEnumerators:(id)enumerators;
 - (id)nextItem;
 @end
 
 @implementation NMSSequentialItemEnumerator
 
-- (NMSSequentialItemEnumerator)initWithItemEnumerators:(id)a3
+- (NMSSequentialItemEnumerator)initWithItemEnumerators:(id)enumerators
 {
-  v4 = a3;
+  enumeratorsCopy = enumerators;
   v9.receiver = self;
   v9.super_class = NMSSequentialItemEnumerator;
   v5 = [(NMSSequentialItemEnumerator *)&v9 init];
   if (v5)
   {
-    v6 = [v4 mutableCopy];
+    v6 = [enumeratorsCopy mutableCopy];
     itemEnumerators = v5->_itemEnumerators;
     v5->_itemEnumerators = v6;
   }
@@ -25,10 +25,10 @@
 {
   for (i = self->_itemEnumerators; [(NSMutableArray *)i count]; i = self->_itemEnumerators)
   {
-    v4 = [(NSMutableArray *)self->_itemEnumerators firstObject];
-    v5 = [v4 nextItem];
+    firstObject = [(NSMutableArray *)self->_itemEnumerators firstObject];
+    nextItem = [firstObject nextItem];
 
-    if (v5)
+    if (nextItem)
     {
       goto LABEL_6;
     }
@@ -36,10 +36,10 @@
     [(NSMutableArray *)self->_itemEnumerators removeObjectAtIndex:0];
   }
 
-  v5 = 0;
+  nextItem = 0;
 LABEL_6:
 
-  return v5;
+  return nextItem;
 }
 
 @end

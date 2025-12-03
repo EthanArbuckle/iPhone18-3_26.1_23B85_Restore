@@ -7,7 +7,7 @@
 - (id)initSubclass;
 - (void)closePreviewStream;
 - (void)dealloc;
-- (void)openPreviewStreamWithOptions:(id)a3;
+- (void)openPreviewStreamWithOptions:(id)options;
 @end
 
 @implementation FigCameraViewfinderSession
@@ -21,8 +21,8 @@
 
 - (FigCameraViewfinderSession)init
 {
-  v2 = [(FigCameraViewfinderSession *)self initSubclass];
-  if (v2)
+  initSubclass = [(FigCameraViewfinderSession *)self initSubclass];
+  if (initSubclass)
   {
     v3 = objc_opt_class();
     if (v3 == objc_opt_class())
@@ -36,7 +36,7 @@
     }
   }
 
-  return v2;
+  return initSubclass;
 }
 
 - (void)dealloc
@@ -89,7 +89,7 @@
   return 0;
 }
 
-- (void)openPreviewStreamWithOptions:(id)a3
+- (void)openPreviewStreamWithOptions:(id)options
 {
   v5 = objc_opt_class();
 

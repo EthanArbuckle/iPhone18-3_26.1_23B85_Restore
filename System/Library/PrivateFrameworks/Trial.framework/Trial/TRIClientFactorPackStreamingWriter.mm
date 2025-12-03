@@ -1,25 +1,25 @@
 @interface TRIClientFactorPackStreamingWriter
-+ (BOOL)copySourceFactorPack:(id)a3 toDestPath:(id)a4 error:(id *)a5 modifyFactorLevel:(id)a6;
-- (BOOL)_streamExecWithError:(id *)a3 block:(id)a4;
-- (BOOL)closeWithError:(id *)a3;
-- (TRIClientFactorPackStreamingWriter)initWithPath:(id)a3;
-- (unsigned)_fieldNumberForFieldName:(id)a3;
-- (void)appendFactorLevel:(id)a3;
-- (void)writeFactorPackId:(id)a3;
-- (void)writeSelectedNamespace:(id)a3;
++ (BOOL)copySourceFactorPack:(id)pack toDestPath:(id)path error:(id *)error modifyFactorLevel:(id)level;
+- (BOOL)_streamExecWithError:(id *)error block:(id)block;
+- (BOOL)closeWithError:(id *)error;
+- (TRIClientFactorPackStreamingWriter)initWithPath:(id)path;
+- (unsigned)_fieldNumberForFieldName:(id)name;
+- (void)appendFactorLevel:(id)level;
+- (void)writeFactorPackId:(id)id;
+- (void)writeSelectedNamespace:(id)namespace;
 @end
 
 @implementation TRIClientFactorPackStreamingWriter
 
-- (TRIClientFactorPackStreamingWriter)initWithPath:(id)a3
+- (TRIClientFactorPackStreamingWriter)initWithPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v11.receiver = self;
   v11.super_class = TRIClientFactorPackStreamingWriter;
   v5 = [(TRIClientFactorPackStreamingWriter *)&v11 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CBEB78] outputStreamToFileAtPath:v4 append:0];
+    v6 = [MEMORY[0x277CBEB78] outputStreamToFileAtPath:pathCopy append:0];
     underlying = v5->_underlying;
     v5->_underlying = v6;
 
@@ -31,18 +31,18 @@
   return v5;
 }
 
-- (unsigned)_fieldNumberForFieldName:(id)a3
+- (unsigned)_fieldNumberForFieldName:(id)name
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  nameCopy = name;
   v4 = objc_autoreleasePoolPush();
-  v5 = [MEMORY[0x277D73AD8] descriptor];
+  descriptor = [MEMORY[0x277D73AD8] descriptor];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = [v5 fields];
-  v7 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  fields = [descriptor fields];
+  v7 = [fields countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v7)
   {
     v8 = v7;
@@ -53,12 +53,12 @@ LABEL_3:
     {
       if (*v21 != v9)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(fields);
       }
 
       v11 = *(*(&v20 + 1) + 8 * v10);
-      v12 = [v11 name];
-      v13 = [v3 isEqualToString:v12];
+      name = [v11 name];
+      v13 = [nameCopy isEqualToString:name];
 
       if (v13)
       {
@@ -67,7 +67,7 @@ LABEL_3:
 
       if (v8 == ++v10)
       {
-        v8 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v8 = [fields countByEnumeratingWithState:&v20 objects:v24 count:16];
         if (v8)
         {
           goto LABEL_3;
@@ -77,9 +77,9 @@ LABEL_3:
       }
     }
 
-    v15 = [v11 number];
+    number = [v11 number];
 
-    if (v15 == -1)
+    if (number == -1)
     {
       goto LABEL_10;
     }
@@ -90,54 +90,54 @@ LABEL_3:
 LABEL_9:
 
 LABEL_10:
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"TRIClientFactorPackStreaming.m" lineNumber:209 description:{@"Failed to determine field number for %@", v3}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIClientFactorPackStreaming.m" lineNumber:209 description:{@"Failed to determine field number for %@", nameCopy}];
 
-    v15 = -1;
+    number = -1;
   }
 
   objc_autoreleasePoolPop(v4);
   v16 = *MEMORY[0x277D85DE8];
-  return v15;
+  return number;
 }
 
-- (BOOL)_streamExecWithError:(id *)a3 block:(id)a4
+- (BOOL)_streamExecWithError:(id *)error block:(id)block
 {
   v12 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  blockCopy = block;
   if (!self->_stream)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"TRIClientFactorPackStreaming.m" lineNumber:216 description:@"writing a field to a closed stream"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIClientFactorPackStreaming.m" lineNumber:216 description:@"writing a field to a closed stream"];
   }
 
   firstError = self->_firstError;
   if (firstError)
   {
-    if (a3)
+    if (error)
     {
-      objc_storeStrong(a3, firstError);
-      LOBYTE(a3) = 0;
+      objc_storeStrong(error, firstError);
+      LOBYTE(error) = 0;
     }
   }
 
   else
   {
-    v7[2](v7, self->_stream);
-    LOBYTE(a3) = 1;
+    blockCopy[2](blockCopy, self->_stream);
+    LOBYTE(error) = 1;
   }
 
   v9 = *MEMORY[0x277D85DE8];
-  return a3;
+  return error;
 }
 
-- (void)writeFactorPackId:(id)a3
+- (void)writeFactorPackId:(id)id
 {
-  v5 = a3;
+  idCopy = id;
   if (self->_hasFactorPackId)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"TRIClientFactorPackStreaming.m" lineNumber:243 description:@"writeFactorPackId: must be called no more than once"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIClientFactorPackStreaming.m" lineNumber:243 description:@"writeFactorPackId: must be called no more than once"];
   }
 
   self->_hasFactorPackId = 1;
@@ -149,18 +149,18 @@ LABEL_10:
     v8[2] = __56__TRIClientFactorPackStreamingWriter_writeFactorPackId___block_invoke;
     v8[3] = &unk_27885E168;
     v10 = v6;
-    v9 = v5;
+    v9 = idCopy;
     [(TRIClientFactorPackStreamingWriter *)self _streamExecWithError:0 block:v8];
   }
 }
 
-- (void)writeSelectedNamespace:(id)a3
+- (void)writeSelectedNamespace:(id)namespace
 {
-  v5 = a3;
+  namespaceCopy = namespace;
   if (self->_hasSelectedNamespace)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"TRIClientFactorPackStreaming.m" lineNumber:255 description:@"writeSelectedNamespace: must be called no more than once"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIClientFactorPackStreaming.m" lineNumber:255 description:@"writeSelectedNamespace: must be called no more than once"];
   }
 
   self->_hasSelectedNamespace = 1;
@@ -172,14 +172,14 @@ LABEL_10:
     v8[2] = __61__TRIClientFactorPackStreamingWriter_writeSelectedNamespace___block_invoke;
     v8[3] = &unk_27885E168;
     v10 = v6;
-    v9 = v5;
+    v9 = namespaceCopy;
     [(TRIClientFactorPackStreamingWriter *)self _streamExecWithError:0 block:v8];
   }
 }
 
-- (void)appendFactorLevel:(id)a3
+- (void)appendFactorLevel:(id)level
 {
-  v4 = a3;
+  levelCopy = level;
   if (!self->_firstError)
   {
     block[0] = MEMORY[0x277D85DD0];
@@ -197,7 +197,7 @@ LABEL_10:
     v5[2] = __56__TRIClientFactorPackStreamingWriter_appendFactorLevel___block_invoke_2;
     v5[3] = &unk_27885E168;
     v7 = _MergedGlobals_6;
-    v6 = v4;
+    v6 = levelCopy;
     [(TRIClientFactorPackStreamingWriter *)self _streamExecWithError:0 block:v5];
   }
 }
@@ -210,16 +210,16 @@ void __56__TRIClientFactorPackStreamingWriter_appendFactorLevel___block_invoke(u
   objc_autoreleasePoolPop(v2);
 }
 
-- (BOOL)closeWithError:(id *)a3
+- (BOOL)closeWithError:(id *)error
 {
   v8 = *MEMORY[0x277D85DE8];
   [(TRIPBCodedOutputStream *)self->_stream flush];
   stream = self->_stream;
   self->_stream = 0;
 
-  if (a3)
+  if (error)
   {
-    objc_storeStrong(a3, self->_firstError);
+    objc_storeStrong(error, self->_firstError);
   }
 
   result = self->_firstError == 0;
@@ -227,22 +227,22 @@ void __56__TRIClientFactorPackStreamingWriter_appendFactorLevel___block_invoke(u
   return result;
 }
 
-+ (BOOL)copySourceFactorPack:(id)a3 toDestPath:(id)a4 error:(id *)a5 modifyFactorLevel:(id)a6
++ (BOOL)copySourceFactorPack:(id)pack toDestPath:(id)path error:(id *)error modifyFactorLevel:(id)level
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = [[TRIClientFactorPackStreamingWriter alloc] initWithPath:v10];
-  if ([v9 hasFactorPackId])
+  packCopy = pack;
+  pathCopy = path;
+  levelCopy = level;
+  v12 = [[TRIClientFactorPackStreamingWriter alloc] initWithPath:pathCopy];
+  if ([packCopy hasFactorPackId])
   {
-    v13 = [v9 factorPackId];
-    [(TRIClientFactorPackStreamingWriter *)v12 writeFactorPackId:v13];
+    factorPackId = [packCopy factorPackId];
+    [(TRIClientFactorPackStreamingWriter *)v12 writeFactorPackId:factorPackId];
   }
 
-  if ([v9 hasSelectedNamespace])
+  if ([packCopy hasSelectedNamespace])
   {
-    v14 = [v9 selectedNamespace];
-    [(TRIClientFactorPackStreamingWriter *)v12 writeSelectedNamespace:v14];
+    selectedNamespace = [packCopy selectedNamespace];
+    [(TRIClientFactorPackStreamingWriter *)v12 writeSelectedNamespace:selectedNamespace];
   }
 
   v25 = 0;
@@ -253,20 +253,20 @@ void __56__TRIClientFactorPackStreamingWriter_appendFactorLevel___block_invoke(u
   v21[1] = 3221225472;
   v21[2] = __94__TRIClientFactorPackStreamingWriter_copySourceFactorPack_toDestPath_error_modifyFactorLevel___block_invoke;
   v21[3] = &unk_27885E1B8;
-  v15 = v11;
+  v15 = levelCopy;
   v23 = v15;
   v24 = &v25;
   v16 = v12;
   v22 = v16;
-  [v9 enumerateFactorLevelsWithBlock:v21];
-  v17 = [(TRIClientFactorPackStreamingWriter *)v16 closeWithError:a5];
+  [packCopy enumerateFactorLevelsWithBlock:v21];
+  v17 = [(TRIClientFactorPackStreamingWriter *)v16 closeWithError:error];
   if (*(v26 + 24) == 1)
   {
-    if (a5)
+    if (error)
     {
       v18 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"TRIGeneralErrorDomain" code:1 userInfo:0];
-      v19 = *a5;
-      *a5 = v18;
+      v19 = *error;
+      *error = v18;
     }
 
     v17 = 0;

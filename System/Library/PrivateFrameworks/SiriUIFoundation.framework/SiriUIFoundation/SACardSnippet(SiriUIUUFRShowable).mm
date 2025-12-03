@@ -8,47 +8,47 @@
 {
   v35 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v33.receiver = a1;
+  v33.receiver = self;
   v33.super_class = &off_287A263A8;
   v5 = objc_msgSendSuper2(&v33, sel__uufrShownRequestedByInstrumentationManager_, v4);
-  v6 = [a1 aceId];
-  v7 = [v4 cardIDforSnippetAceID:v6];
+  aceId = [self aceId];
+  v7 = [v4 cardIDforSnippetAceID:aceId];
 
   if (v7)
   {
-    v8 = [a1 aceId];
-    v9 = [v4 cardIDforSnippetAceID:v8];
-    [v5 setViewID:v9];
+    aceId2 = [self aceId];
+    backingCard = [v4 cardIDforSnippetAceID:aceId2];
+    [v5 setViewID:backingCard];
   }
 
   else
   {
-    v8 = [a1 siriui_card];
-    v9 = [v8 backingCard];
-    v10 = [v9 cardId];
-    [v5 setViewID:v10];
+    aceId2 = [self siriui_card];
+    backingCard = [aceId2 backingCard];
+    cardId = [backingCard cardId];
+    [v5 setViewID:cardId];
   }
 
-  v11 = [a1 siriui_card];
+  siriui_card = [self siriui_card];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
-    v13 = [a1 siriui_card];
-    v14 = [v13 backingCard];
-    v15 = [v14 cardSections];
-    v16 = [v15 firstObject];
+    siriui_card2 = [self siriui_card];
+    backingCard2 = [siriui_card2 backingCard];
+    cardSections = [backingCard2 cardSections];
+    firstObject = [cardSections firstObject];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v17 = [MEMORY[0x277CBEB18] array];
-      v18 = [v16 cardSections];
+      array = [MEMORY[0x277CBEB18] array];
+      cardSections2 = [firstObject cardSections];
       v29 = 0u;
       v30 = 0u;
       v31 = 0u;
       v32 = 0u;
-      v19 = [v18 countByEnumeratingWithState:&v29 objects:v34 count:16];
+      v19 = [cardSections2 countByEnumeratingWithState:&v29 objects:v34 count:16];
       if (v19)
       {
         v20 = v19;
@@ -59,27 +59,27 @@
           {
             if (*v30 != v21)
             {
-              objc_enumerationMutation(v18);
+              objc_enumerationMutation(cardSections2);
             }
 
             v23 = *(*(&v29 + 1) + 8 * i);
-            v24 = [v23 resultIdentifier];
+            resultIdentifier = [v23 resultIdentifier];
 
-            if (v24)
+            if (resultIdentifier)
             {
-              v25 = [v23 resultIdentifier];
-              [v17 addObject:v25];
+              resultIdentifier2 = [v23 resultIdentifier];
+              [array addObject:resultIdentifier2];
             }
           }
 
-          v20 = [v18 countByEnumeratingWithState:&v29 objects:v34 count:16];
+          v20 = [cardSections2 countByEnumeratingWithState:&v29 objects:v34 count:16];
         }
 
         while (v20);
       }
 
       v26 = objc_alloc_init(MEMORY[0x277D5A8C8]);
-      [v26 setResultIdentifiers:v17];
+      [v26 setResultIdentifiers:array];
       [v5 setGridCardSection:v26];
     }
   }

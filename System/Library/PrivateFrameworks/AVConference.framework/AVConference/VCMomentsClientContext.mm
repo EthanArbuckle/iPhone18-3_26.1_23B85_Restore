@@ -1,10 +1,10 @@
 @interface VCMomentsClientContext
-- (VCMomentsClientContext)initWithStreamToken:(int64_t)a3;
+- (VCMomentsClientContext)initWithStreamToken:(int64_t)token;
 @end
 
 @implementation VCMomentsClientContext
 
-- (VCMomentsClientContext)initWithStreamToken:(int64_t)a3
+- (VCMomentsClientContext)initWithStreamToken:(int64_t)token
 {
   v6 = *MEMORY[0x1E69E9840];
   v5.receiver = self;
@@ -12,7 +12,7 @@
   result = [(VCMomentsClientContext *)&v5 init];
   if (result)
   {
-    result->_streamToken = a3;
+    result->_streamToken = token;
   }
 
   return result;

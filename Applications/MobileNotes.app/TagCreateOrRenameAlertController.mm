@@ -1,55 +1,55 @@
 @interface TagCreateOrRenameAlertController
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
 - (_TtC11MobileNotes32TagCreateOrRenameAlertController)init;
-- (_TtC11MobileNotes32TagCreateOrRenameAlertController)initWithTagObjectID:(id)a3 presentingViewController:(id)a4 eventReporter:(id)a5 renameMethod:(int64_t)a6;
+- (_TtC11MobileNotes32TagCreateOrRenameAlertController)initWithTagObjectID:(id)d presentingViewController:(id)controller eventReporter:(id)reporter renameMethod:(int64_t)method;
 - (id)makeAlertController;
-- (void)setAlertTextField:(id)a3;
-- (void)textChanged:(id)a3;
+- (void)setAlertTextField:(id)field;
+- (void)textChanged:(id)changed;
 @end
 
 @implementation TagCreateOrRenameAlertController
 
-- (void)setAlertTextField:(id)a3
+- (void)setAlertTextField:(id)field
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC11MobileNotes32TagCreateOrRenameAlertController_alertTextField);
-  *(&self->super.isa + OBJC_IVAR____TtC11MobileNotes32TagCreateOrRenameAlertController_alertTextField) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC11MobileNotes32TagCreateOrRenameAlertController_alertTextField) = field;
+  fieldCopy = field;
 }
 
-- (_TtC11MobileNotes32TagCreateOrRenameAlertController)initWithTagObjectID:(id)a3 presentingViewController:(id)a4 eventReporter:(id)a5 renameMethod:(int64_t)a6
+- (_TtC11MobileNotes32TagCreateOrRenameAlertController)initWithTagObjectID:(id)d presentingViewController:(id)controller eventReporter:(id)reporter renameMethod:(int64_t)method
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = sub_1003A87D4(a3, a4, a5, a6);
+  dCopy = d;
+  controllerCopy = controller;
+  reporterCopy = reporter;
+  v13 = sub_1003A87D4(d, controller, reporter, method);
 
   return v13;
 }
 
 - (id)makeAlertController
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1003A5870(0, 0, 0, 0);
 
   return v3;
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
   v7 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v9 = v8;
-  v10 = a3;
-  v11 = self;
+  fieldCopy = field;
+  selfCopy = self;
   LOBYTE(v7) = sub_1003A8998(v7, v9);
 
   return v7 & 1;
 }
 
-- (void)textChanged:(id)a3
+- (void)textChanged:(id)changed
 {
-  if (a3)
+  if (changed)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -58,7 +58,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_1003A6234();

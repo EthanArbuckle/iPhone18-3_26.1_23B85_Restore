@@ -1,16 +1,16 @@
 @interface HSAuthorizedDSIDsUpdateRequest
 - (HSAuthorizedDSIDsUpdateRequest)init;
-- (id)canonicalResponseForResponse:(id)a3;
+- (id)canonicalResponseForResponse:(id)response;
 @end
 
 @implementation HSAuthorizedDSIDsUpdateRequest
 
-- (id)canonicalResponseForResponse:(id)a3
+- (id)canonicalResponseForResponse:(id)response
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(HSResponse *)HSAuthorizedDSIDsUpdateResponse responseWithResponse:a3];
-  v4 = [v3 responseData];
-  v5 = [HSResponseDataParser parseResponseData:v4];
+  v3 = [(HSResponse *)HSAuthorizedDSIDsUpdateResponse responseWithResponse:response];
+  responseData = [v3 responseData];
+  v5 = [HSResponseDataParser parseResponseData:responseData];
 
   if ([v5 count])
   {

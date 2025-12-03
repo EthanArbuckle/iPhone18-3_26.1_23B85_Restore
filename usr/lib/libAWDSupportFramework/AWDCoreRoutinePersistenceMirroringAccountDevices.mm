@@ -1,18 +1,18 @@
 @interface AWDCoreRoutinePersistenceMirroringAccountDevices
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addProfiles:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addProfiles:(id)profiles;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasTopDeviceClass:(BOOL)a3;
-- (void)setHasTotalPlaces:(BOOL)a3;
-- (void)setHasTotalTransitions:(BOOL)a3;
-- (void)setHasTotalVisits:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasTopDeviceClass:(BOOL)class;
+- (void)setHasTotalPlaces:(BOOL)places;
+- (void)setHasTotalTransitions:(BOOL)transitions;
+- (void)setHasTotalVisits:(BOOL)visits;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDCoreRoutinePersistenceMirroringAccountDevices
@@ -25,7 +25,7 @@
   [(AWDCoreRoutinePersistenceMirroringAccountDevices *)&v3 dealloc];
 }
 
-- (void)addProfiles:(id)a3
+- (void)addProfiles:(id)profiles
 {
   profiles = self->_profiles;
   if (!profiles)
@@ -34,12 +34,12 @@
     self->_profiles = profiles;
   }
 
-  [(NSMutableArray *)profiles addObject:a3];
+  [(NSMutableArray *)profiles addObject:profiles];
 }
 
-- (void)setHasTopDeviceClass:(BOOL)a3
+- (void)setHasTopDeviceClass:(BOOL)class
 {
-  if (a3)
+  if (class)
   {
     v3 = 2;
   }
@@ -52,9 +52,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasTotalVisits:(BOOL)a3
+- (void)setHasTotalVisits:(BOOL)visits
 {
-  if (a3)
+  if (visits)
   {
     v3 = 16;
   }
@@ -67,9 +67,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasTotalPlaces:(BOOL)a3
+- (void)setHasTotalPlaces:(BOOL)places
 {
-  if (a3)
+  if (places)
   {
     v3 = 4;
   }
@@ -82,9 +82,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasTotalTransitions:(BOOL)a3
+- (void)setHasTotalTransitions:(BOOL)transitions
 {
-  if (a3)
+  if (transitions)
   {
     v3 = 8;
   }
@@ -107,10 +107,10 @@
 - (id)dictionaryRepresentation
 {
   v18 = *MEMORY[0x29EDCA608];
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if (*&self->_has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
   if ([(NSMutableArray *)self->_profiles count])
@@ -144,13 +144,13 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"profiles"];
+    [dictionary setObject:v4 forKey:@"profiles"];
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_topDeviceClass), @"topDeviceClass"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_topDeviceClass), @"topDeviceClass"}];
     has = self->_has;
     if ((has & 0x10) == 0)
     {
@@ -161,7 +161,7 @@ LABEL_14:
       }
 
 LABEL_20:
-      [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_totalPlaces), @"totalPlaces"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_totalPlaces), @"totalPlaces"}];
       if ((*&self->_has & 8) == 0)
       {
         goto LABEL_17;
@@ -176,7 +176,7 @@ LABEL_20:
     goto LABEL_14;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_totalVisits), @"totalVisits"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_totalVisits), @"totalVisits"}];
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -187,15 +187,15 @@ LABEL_15:
   if ((has & 8) != 0)
   {
 LABEL_16:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_totalTransitions), @"totalTransitions"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_totalTransitions), @"totalTransitions"}];
   }
 
 LABEL_17:
   v11 = *MEMORY[0x29EDCA608];
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v22 = *MEMORY[0x29EDCA608];
   if (*&self->_has)
@@ -284,24 +284,24 @@ LABEL_15:
   v13 = *MEMORY[0x29EDCA608];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 40) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 40) |= 1u;
   }
 
   if ([(AWDCoreRoutinePersistenceMirroringAccountDevices *)self profilesCount])
   {
-    [a3 clearProfiles];
-    v5 = [(AWDCoreRoutinePersistenceMirroringAccountDevices *)self profilesCount];
-    if (v5)
+    [to clearProfiles];
+    profilesCount = [(AWDCoreRoutinePersistenceMirroringAccountDevices *)self profilesCount];
+    if (profilesCount)
     {
-      v6 = v5;
+      v6 = profilesCount;
       for (i = 0; i != v6; ++i)
       {
-        [a3 addProfiles:{-[AWDCoreRoutinePersistenceMirroringAccountDevices profilesAtIndex:](self, "profilesAtIndex:", i)}];
+        [to addProfiles:{-[AWDCoreRoutinePersistenceMirroringAccountDevices profilesAtIndex:](self, "profilesAtIndex:", i)}];
       }
     }
   }
@@ -309,8 +309,8 @@ LABEL_15:
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(a3 + 6) = self->_topDeviceClass;
-    *(a3 + 40) |= 2u;
+    *(to + 6) = self->_topDeviceClass;
+    *(to + 40) |= 2u;
     has = self->_has;
     if ((has & 0x10) == 0)
     {
@@ -329,8 +329,8 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  *(a3 + 9) = self->_totalVisits;
-  *(a3 + 40) |= 0x10u;
+  *(to + 9) = self->_totalVisits;
+  *(to + 40) |= 0x10u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -344,22 +344,22 @@ LABEL_10:
   }
 
 LABEL_15:
-  *(a3 + 7) = self->_totalPlaces;
-  *(a3 + 40) |= 4u;
+  *(to + 7) = self->_totalPlaces;
+  *(to + 40) |= 4u;
   if ((*&self->_has & 8) == 0)
   {
     return;
   }
 
 LABEL_11:
-  *(a3 + 8) = self->_totalTransitions;
-  *(a3 + 40) |= 8u;
+  *(to + 8) = self->_totalTransitions;
+  *(to + 40) |= 8u;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x29EDCA608];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -386,7 +386,7 @@ LABEL_11:
           objc_enumerationMutation(profiles);
         }
 
-        v12 = [*(*(&v16 + 1) + 8 * i) copyWithZone:a3];
+        v12 = [*(*(&v16 + 1) + 8 * i) copyWithZone:zone];
         [v6 addProfiles:v12];
       }
 
@@ -448,22 +448,22 @@ LABEL_15:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 40);
+    v7 = *(equal + 40);
     if (has)
     {
-      if ((*(a3 + 40) & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((*(equal + 40) & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_29;
       }
     }
 
-    else if (*(a3 + 40))
+    else if (*(equal + 40))
     {
 LABEL_29:
       LOBYTE(v5) = 0;
@@ -471,7 +471,7 @@ LABEL_29:
     }
 
     profiles = self->_profiles;
-    if (profiles | *(a3 + 2))
+    if (profiles | *(equal + 2))
     {
       v5 = [(NSMutableArray *)profiles isEqual:?];
       if (!v5)
@@ -484,47 +484,47 @@ LABEL_29:
 
     if ((has & 2) != 0)
     {
-      if ((*(a3 + 40) & 2) == 0 || self->_topDeviceClass != *(a3 + 6))
+      if ((*(equal + 40) & 2) == 0 || self->_topDeviceClass != *(equal + 6))
       {
         goto LABEL_29;
       }
     }
 
-    else if ((*(a3 + 40) & 2) != 0)
+    else if ((*(equal + 40) & 2) != 0)
     {
       goto LABEL_29;
     }
 
     if ((has & 0x10) != 0)
     {
-      if ((*(a3 + 40) & 0x10) == 0 || self->_totalVisits != *(a3 + 9))
+      if ((*(equal + 40) & 0x10) == 0 || self->_totalVisits != *(equal + 9))
       {
         goto LABEL_29;
       }
     }
 
-    else if ((*(a3 + 40) & 0x10) != 0)
+    else if ((*(equal + 40) & 0x10) != 0)
     {
       goto LABEL_29;
     }
 
     if ((has & 4) != 0)
     {
-      if ((*(a3 + 40) & 4) == 0 || self->_totalPlaces != *(a3 + 7))
+      if ((*(equal + 40) & 4) == 0 || self->_totalPlaces != *(equal + 7))
       {
         goto LABEL_29;
       }
     }
 
-    else if ((*(a3 + 40) & 4) != 0)
+    else if ((*(equal + 40) & 4) != 0)
     {
       goto LABEL_29;
     }
 
-    LOBYTE(v5) = (*(a3 + 40) & 8) == 0;
+    LOBYTE(v5) = (*(equal + 40) & 8) == 0;
     if ((has & 8) != 0)
     {
-      if ((*(a3 + 40) & 8) == 0 || self->_totalTransitions != *(a3 + 8))
+      if ((*(equal + 40) & 8) == 0 || self->_totalTransitions != *(equal + 8))
       {
         goto LABEL_29;
       }
@@ -601,12 +601,12 @@ LABEL_8:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v17 = *MEMORY[0x29EDCA608];
-  if (*(a3 + 40))
+  if (*(from + 40))
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
   }
 
@@ -614,7 +614,7 @@ LABEL_8:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = *(a3 + 2);
+  v5 = *(from + 2);
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -638,12 +638,12 @@ LABEL_8:
     while (v7);
   }
 
-  v10 = *(a3 + 40);
+  v10 = *(from + 40);
   if ((v10 & 2) != 0)
   {
-    self->_topDeviceClass = *(a3 + 6);
+    self->_topDeviceClass = *(from + 6);
     *&self->_has |= 2u;
-    v10 = *(a3 + 40);
+    v10 = *(from + 40);
     if ((v10 & 0x10) == 0)
     {
 LABEL_12:
@@ -653,9 +653,9 @@ LABEL_12:
       }
 
 LABEL_18:
-      self->_totalPlaces = *(a3 + 7);
+      self->_totalPlaces = *(from + 7);
       *&self->_has |= 4u;
-      if ((*(a3 + 40) & 8) == 0)
+      if ((*(from + 40) & 8) == 0)
       {
         goto LABEL_15;
       }
@@ -664,14 +664,14 @@ LABEL_18:
     }
   }
 
-  else if ((*(a3 + 40) & 0x10) == 0)
+  else if ((*(from + 40) & 0x10) == 0)
   {
     goto LABEL_12;
   }
 
-  self->_totalVisits = *(a3 + 9);
+  self->_totalVisits = *(from + 9);
   *&self->_has |= 0x10u;
-  v10 = *(a3 + 40);
+  v10 = *(from + 40);
   if ((v10 & 4) != 0)
   {
     goto LABEL_18;
@@ -681,7 +681,7 @@ LABEL_13:
   if ((v10 & 8) != 0)
   {
 LABEL_14:
-    self->_totalTransitions = *(a3 + 8);
+    self->_totalTransitions = *(from + 8);
     *&self->_has |= 8u;
   }
 

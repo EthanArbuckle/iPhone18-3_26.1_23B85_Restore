@@ -1,54 +1,54 @@
 @interface PDSharingManager
 - (BOOL)hasActiveExternallySharedPasses;
-- (BOOL)hasShareableEntitlementsForPassIdentifier:(id)a3;
-- (BOOL)hasSharesForPassIdentifier:(id)a3;
-- (PDSharingManager)initWithWebServiceCoordinator:(id)a3 databaseManager:(id)a4 notificationManager:(id)a5 pushNotificationManager:(id)a6 cardFileManager:(id)a7 subcredentialManager:(id)a8 remoteInterfacePresenter:(id)a9 idsSharingService:(id)a10 cloudStoreDelegate:(id)a11 delegate:(id)a12;
-- (id)entitlementsForPassIdentifier:(id)a3;
-- (void)acceptCarKeyShareForMessage:(id)a3 activationCode:(id)a4 completion:(id)a5;
-- (void)cacheSharingMessageFromMailboxAddress:(id)a3 message:(id)a4;
-- (void)channelWasRemotelyTerminatedWithTransportIdentifier:(id)a3;
-- (void)checkInvitationStatusForMailboxAddress:(id)a3 completion:(id)a4;
-- (void)createShareForPartialShareInvitation:(id)a3 authorization:(id)a4 completion:(id)a5;
-- (void)createShareInvitationForPartialShareInvitation:(id)a3 existingTransportIdentifier:(id)a4 authorization:(id)a5 completion:(id)a6;
-- (void)createSingleUseShareURLWithMessage:(id)a3 timeToLive:(unint64_t)a4 completion:(id)a5;
-- (void)deleteSharingMessage:(id)a3;
-- (void)displayableEntitlementsForPassIdentifier:(id)a3 completion:(id)a4;
-- (void)displayableSharesForPassIdentifier:(id)a3 completion:(id)a4;
-- (void)handleOutstandingShareMessage:(id)a3 transportIdentifier:(id)a4;
-- (void)insertPassMessage:(id)a3 pass:(id)a4;
-- (void)passWillBeRemoved:(id)a3;
-- (void)pendingCredentialsBeingProvisioned:(id)a3;
-- (void)pendingShareActivationForShareIdentifier:(id)a3 completion:(id)a4;
-- (void)prewarmCreateShareForPassIdentifier:(id)a3 completion:(id)a4;
-- (void)processCLICommands:(id)a3 completion:(id)a4;
-- (void)rejectShareForMailboxAddress:(id)a3;
-- (void)relinquishInvitation:(id)a3 completion:(id)a4;
-- (void)retrieveShareInvitationForMailboxAddress:(id)a3 completion:(id)a4;
-- (void)revokePendingCredentialsForReaderIdentifier:(id)a3 completion:(id)a4;
-- (void)revokeShareForPassIdentifier:(id)a3 share:(id)a4 shouldCascade:(BOOL)a5 completion:(id)a6;
-- (void)revokeSharesForPassIdentifier:(id)a3 shares:(id)a4 shouldCascade:(BOOL)a5 completion:(id)a6;
-- (void)sendSharingMessageTo:(id)a3 message:(id)a4 completion:(id)a5;
-- (void)sharesForPassIdentifier:(id)a3 completion:(id)a4;
-- (void)updateShareForPassIdentifier:(id)a3 share:(id)a4 authorization:(id)a5 completion:(id)a6;
-- (void)userNotificationActionPerformed:(unint64_t)a3 notificationIdentifier:(id)a4;
+- (BOOL)hasShareableEntitlementsForPassIdentifier:(id)identifier;
+- (BOOL)hasSharesForPassIdentifier:(id)identifier;
+- (PDSharingManager)initWithWebServiceCoordinator:(id)coordinator databaseManager:(id)manager notificationManager:(id)notificationManager pushNotificationManager:(id)pushNotificationManager cardFileManager:(id)fileManager subcredentialManager:(id)subcredentialManager remoteInterfacePresenter:(id)presenter idsSharingService:(id)self0 cloudStoreDelegate:(id)self1 delegate:(id)self2;
+- (id)entitlementsForPassIdentifier:(id)identifier;
+- (void)acceptCarKeyShareForMessage:(id)message activationCode:(id)code completion:(id)completion;
+- (void)cacheSharingMessageFromMailboxAddress:(id)address message:(id)message;
+- (void)channelWasRemotelyTerminatedWithTransportIdentifier:(id)identifier;
+- (void)checkInvitationStatusForMailboxAddress:(id)address completion:(id)completion;
+- (void)createShareForPartialShareInvitation:(id)invitation authorization:(id)authorization completion:(id)completion;
+- (void)createShareInvitationForPartialShareInvitation:(id)invitation existingTransportIdentifier:(id)identifier authorization:(id)authorization completion:(id)completion;
+- (void)createSingleUseShareURLWithMessage:(id)message timeToLive:(unint64_t)live completion:(id)completion;
+- (void)deleteSharingMessage:(id)message;
+- (void)displayableEntitlementsForPassIdentifier:(id)identifier completion:(id)completion;
+- (void)displayableSharesForPassIdentifier:(id)identifier completion:(id)completion;
+- (void)handleOutstandingShareMessage:(id)message transportIdentifier:(id)identifier;
+- (void)insertPassMessage:(id)message pass:(id)pass;
+- (void)passWillBeRemoved:(id)removed;
+- (void)pendingCredentialsBeingProvisioned:(id)provisioned;
+- (void)pendingShareActivationForShareIdentifier:(id)identifier completion:(id)completion;
+- (void)prewarmCreateShareForPassIdentifier:(id)identifier completion:(id)completion;
+- (void)processCLICommands:(id)commands completion:(id)completion;
+- (void)rejectShareForMailboxAddress:(id)address;
+- (void)relinquishInvitation:(id)invitation completion:(id)completion;
+- (void)retrieveShareInvitationForMailboxAddress:(id)address completion:(id)completion;
+- (void)revokePendingCredentialsForReaderIdentifier:(id)identifier completion:(id)completion;
+- (void)revokeShareForPassIdentifier:(id)identifier share:(id)share shouldCascade:(BOOL)cascade completion:(id)completion;
+- (void)revokeSharesForPassIdentifier:(id)identifier shares:(id)shares shouldCascade:(BOOL)cascade completion:(id)completion;
+- (void)sendSharingMessageTo:(id)to message:(id)message completion:(id)completion;
+- (void)sharesForPassIdentifier:(id)identifier completion:(id)completion;
+- (void)updateShareForPassIdentifier:(id)identifier share:(id)share authorization:(id)authorization completion:(id)completion;
+- (void)userNotificationActionPerformed:(unint64_t)performed notificationIdentifier:(id)identifier;
 @end
 
 @implementation PDSharingManager
 
-- (PDSharingManager)initWithWebServiceCoordinator:(id)a3 databaseManager:(id)a4 notificationManager:(id)a5 pushNotificationManager:(id)a6 cardFileManager:(id)a7 subcredentialManager:(id)a8 remoteInterfacePresenter:(id)a9 idsSharingService:(id)a10 cloudStoreDelegate:(id)a11 delegate:(id)a12
+- (PDSharingManager)initWithWebServiceCoordinator:(id)coordinator databaseManager:(id)manager notificationManager:(id)notificationManager pushNotificationManager:(id)pushNotificationManager cardFileManager:(id)fileManager subcredentialManager:(id)subcredentialManager remoteInterfacePresenter:(id)presenter idsSharingService:(id)self0 cloudStoreDelegate:(id)self1 delegate:(id)self2
 {
-  v51 = a3;
-  v50 = a4;
-  obj = a5;
-  v18 = a5;
-  v44 = a6;
-  v49 = a6;
-  v19 = a7;
-  v48 = a8;
-  v47 = a9;
-  v52 = a10;
-  v46 = a11;
-  v20 = v19;
+  coordinatorCopy = coordinator;
+  managerCopy = manager;
+  obj = notificationManager;
+  notificationManagerCopy = notificationManager;
+  pushNotificationManagerCopy = pushNotificationManager;
+  pushNotificationManagerCopy2 = pushNotificationManager;
+  fileManagerCopy = fileManager;
+  subcredentialManagerCopy = subcredentialManager;
+  presenterCopy = presenter;
+  serviceCopy = service;
+  delegateCopy = delegate;
+  v20 = fileManagerCopy;
   v21 = a12;
   v53.receiver = self;
   v53.super_class = PDSharingManager;
@@ -56,13 +56,13 @@
   v23 = v22;
   if (v22)
   {
-    objc_storeStrong(&v22->_webServiceCoordinator, a3);
-    objc_storeStrong(&v23->_databaseManager, a4);
+    objc_storeStrong(&v22->_webServiceCoordinator, coordinator);
+    objc_storeStrong(&v23->_databaseManager, manager);
     objc_storeStrong(&v23->_userNotificationManager, obj);
-    objc_storeStrong(&v23->_pushNotificationManager, v44);
-    objc_storeStrong(&v23->_subcredentialManager, a8);
-    objc_storeStrong(&v23->_remoteInterfacePresenter, a9);
-    objc_storeStrong(&v23->_cloudStoreDelegate, a11);
+    objc_storeStrong(&v23->_pushNotificationManager, pushNotificationManagerCopy);
+    objc_storeStrong(&v23->_subcredentialManager, subcredentialManager);
+    objc_storeStrong(&v23->_remoteInterfacePresenter, presenter);
+    objc_storeStrong(&v23->_cloudStoreDelegate, delegate);
     objc_storeWeak(&v23->_delegate, v21);
     v24 = dispatch_queue_create("com.apple.passd.sharingmanager", 0);
     queue = v23->_queue;
@@ -84,7 +84,7 @@
     homeManagementService = v23->_homeManagementService;
     v23->_homeManagementService = v32;
 
-    v34 = [[PDSharingChannelManager alloc] initWithWebServiceCoordinator:v23->_webServiceCoordinator databaseManager:v23->_databaseManager pushNotificationManager:v23->_pushNotificationManager idsSharingService:v52];
+    v34 = [[PDSharingChannelManager alloc] initWithWebServiceCoordinator:v23->_webServiceCoordinator databaseManager:v23->_databaseManager pushNotificationManager:v23->_pushNotificationManager idsSharingService:serviceCopy];
     channelManager = v23->_channelManager;
     v23->_channelManager = v34;
 
@@ -93,7 +93,7 @@
     statefulProvisioningManager = v23->_statefulProvisioningManager;
     v23->_statefulProvisioningManager = v36;
 
-    v38 = [[PDSharingUserCommunicationManager alloc] initWithNotificationManager:v18 delegate:v23];
+    v38 = [[PDSharingUserCommunicationManager alloc] initWithNotificationManager:notificationManagerCopy delegate:v23];
     userCommunicationManager = v23->_userCommunicationManager;
     v23->_userCommunicationManager = v38;
 
@@ -107,76 +107,76 @@
   return v23;
 }
 
-- (void)checkInvitationStatusForMailboxAddress:(id)a3 completion:(id)a4
+- (void)checkInvitationStatusForMailboxAddress:(id)address completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  addressCopy = address;
+  completionCopy = completion;
+  if (addressCopy)
   {
     queue = self->_queue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000E32BC;
     block[3] = &unk_10083D320;
-    v11 = v6;
-    v12 = self;
-    v13 = v7;
+    v11 = addressCopy;
+    selfCopy = self;
+    v13 = completionCopy;
     dispatch_async(queue, block);
   }
 
   else
   {
     v9 = PDBasicError();
-    (*(v7 + 2))(v7, 0, v9);
+    (*(completionCopy + 2))(completionCopy, 0, v9);
   }
 }
 
-- (void)retrieveShareInvitationForMailboxAddress:(id)a3 completion:(id)a4
+- (void)retrieveShareInvitationForMailboxAddress:(id)address completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  addressCopy = address;
+  completionCopy = completion;
+  if (addressCopy)
   {
     queue = self->_queue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000E3474;
     block[3] = &unk_10083D320;
-    v11 = v6;
-    v12 = self;
-    v13 = v7;
+    v11 = addressCopy;
+    selfCopy = self;
+    v13 = completionCopy;
     dispatch_async(queue, block);
   }
 
   else
   {
     v9 = PDBasicError();
-    (*(v7 + 2))(v7, 0, v9);
+    (*(completionCopy + 2))(completionCopy, 0, v9);
   }
 }
 
-- (void)relinquishInvitation:(id)a3 completion:(id)a4
+- (void)relinquishInvitation:(id)invitation completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  invitationCopy = invitation;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000E38BC;
   block[3] = &unk_10083D320;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = invitationCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = invitationCopy;
   dispatch_async(queue, block);
 }
 
-- (void)deleteSharingMessage:(id)a3
+- (void)deleteSharingMessage:(id)message
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  messageCopy = message;
+  v5 = messageCopy;
+  if (messageCopy)
   {
     queue = self->_queue;
     v8[0] = _NSConcreteStackBlock;
@@ -184,7 +184,7 @@
     v8[2] = sub_1000E3BDC;
     v8[3] = &unk_10083C420;
     v8[4] = self;
-    v9 = v4;
+    v9 = messageCopy;
     dispatch_async(queue, v8);
   }
 
@@ -199,51 +199,51 @@
   }
 }
 
-- (void)rejectShareForMailboxAddress:(id)a3
+- (void)rejectShareForMailboxAddress:(id)address
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  addressCopy = address;
+  v5 = addressCopy;
+  if (addressCopy)
   {
     queue = self->_queue;
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_1000E3EA4;
     v7[3] = &unk_10083C420;
-    v8 = v4;
-    v9 = self;
+    v8 = addressCopy;
+    selfCopy = self;
     dispatch_async(queue, v7);
   }
 }
 
-- (void)prewarmCreateShareForPassIdentifier:(id)a3 completion:(id)a4
+- (void)prewarmCreateShareForPassIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000E4388;
   block[3] = &unk_10083D320;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifierCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = identifierCopy;
   dispatch_async(queue, block);
 }
 
-- (void)createShareForPartialShareInvitation:(id)a3 authorization:(id)a4 completion:(id)a5
+- (void)createShareForPartialShareInvitation:(id)invitation authorization:(id)authorization completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
+  invitationCopy = invitation;
+  authorizationCopy = authorization;
   v43[0] = _NSConcreteStackBlock;
   v43[1] = 3221225472;
   v43[2] = sub_1000E4B2C;
   v43[3] = &unk_1008445E8;
   v43[4] = self;
-  v10 = a5;
-  v44 = v10;
+  completionCopy = completion;
+  v44 = completionCopy;
   v11 = objc_retainBlock(v43);
   v12 = objc_alloc_init(PKAsyncUnaryOperationComposer);
   v41[0] = 0;
@@ -268,9 +268,9 @@
   v32[1] = 3221225472;
   v32[2] = sub_1000E4D10;
   v32[3] = &unk_100844610;
-  v13 = v8;
+  v13 = invitationCopy;
   v33 = v13;
-  v34 = self;
+  selfCopy = self;
   v36 = v39;
   v37 = v41;
   v14 = v11;
@@ -283,7 +283,7 @@
   v31 = v39;
   v15 = v13;
   v29 = v15;
-  v30 = self;
+  selfCopy2 = self;
   [v12 addOperation:v28];
   v16 = +[NSNull null];
   v21[0] = _NSConcreteStackBlock;
@@ -294,10 +294,10 @@
   v22 = v17;
   v26 = v41;
   v27 = v39;
-  v18 = v9;
+  v18 = authorizationCopy;
   v23 = v18;
   v19 = v14;
-  v24 = self;
+  selfCopy3 = self;
   v25 = v19;
   v20 = [v12 evaluateWithInput:v16 completion:v21];
 
@@ -305,12 +305,12 @@
   _Block_object_dispose(v41, 8);
 }
 
-- (void)createShareInvitationForPartialShareInvitation:(id)a3 existingTransportIdentifier:(id)a4 authorization:(id)a5 completion:(id)a6
+- (void)createShareInvitationForPartialShareInvitation:(id)invitation existingTransportIdentifier:(id)identifier authorization:(id)authorization completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  invitationCopy = invitation;
+  identifierCopy = identifier;
+  authorizationCopy = authorization;
+  completionCopy = completion;
   v14 = objc_alloc_init(PKAsyncUnaryOperationComposer);
   v55[0] = 0;
   v55[1] = v55;
@@ -342,7 +342,7 @@
   v45[3] = &unk_1008446D8;
   v47 = v53;
   v45[4] = self;
-  v15 = v10;
+  v15 = invitationCopy;
   v46 = v15;
   v48 = v55;
   v49 = v51;
@@ -376,11 +376,11 @@
   v30 = v17;
   v33 = v55;
   v34 = v53;
-  v18 = v12;
+  v18 = authorizationCopy;
   v31 = v18;
   v35 = v51;
   v36 = v38;
-  v19 = v11;
+  v19 = identifierCopy;
   v32 = v19;
   v37 = v40;
   [v14 addOperation:v29];
@@ -393,7 +393,7 @@
   v25 = v40;
   v26 = v38;
   v27 = v53;
-  v21 = v13;
+  v21 = completionCopy;
   v24 = v21;
   v28 = v51;
   v22 = [v14 evaluateWithInput:v20 completion:v23];
@@ -407,87 +407,87 @@
   _Block_object_dispose(v55, 8);
 }
 
-- (void)updateShareForPassIdentifier:(id)a3 share:(id)a4 authorization:(id)a5 completion:(id)a6
+- (void)updateShareForPassIdentifier:(id)identifier share:(id)share authorization:(id)authorization completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  shareCopy = share;
+  authorizationCopy = authorization;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000E7244;
   block[3] = &unk_100842440;
   block[4] = self;
-  v20 = v10;
-  v22 = v12;
-  v23 = v13;
-  v21 = v11;
-  v15 = v12;
-  v16 = v11;
-  v17 = v13;
-  v18 = v10;
+  v20 = identifierCopy;
+  v22 = authorizationCopy;
+  v23 = completionCopy;
+  v21 = shareCopy;
+  v15 = authorizationCopy;
+  v16 = shareCopy;
+  v17 = completionCopy;
+  v18 = identifierCopy;
   dispatch_async(queue, block);
 }
 
-- (void)revokeShareForPassIdentifier:(id)a3 share:(id)a4 shouldCascade:(BOOL)a5 completion:(id)a6
+- (void)revokeShareForPassIdentifier:(id)identifier share:(id)share shouldCascade:(BOOL)cascade completion:(id)completion
 {
-  v6 = a5;
-  v14 = a4;
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  v13 = [NSArray arrayWithObjects:&v14 count:1];
+  cascadeCopy = cascade;
+  shareCopy = share;
+  completionCopy = completion;
+  shareCopy2 = share;
+  identifierCopy = identifier;
+  v13 = [NSArray arrayWithObjects:&shareCopy count:1];
 
-  [(PDSharingManager *)self revokeSharesForPassIdentifier:v12 shares:v13 shouldCascade:v6 completion:v10, v14];
+  [(PDSharingManager *)self revokeSharesForPassIdentifier:identifierCopy shares:v13 shouldCascade:cascadeCopy completion:completionCopy, shareCopy];
 }
 
-- (void)revokeSharesForPassIdentifier:(id)a3 shares:(id)a4 shouldCascade:(BOOL)a5 completion:(id)a6
+- (void)revokeSharesForPassIdentifier:(id)identifier shares:(id)shares shouldCascade:(BOOL)cascade completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  identifierCopy = identifier;
+  sharesCopy = shares;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000E7948;
   block[3] = &unk_10083C678;
   block[4] = self;
-  v18 = v10;
-  v19 = v11;
-  v20 = v12;
-  v21 = a5;
-  v14 = v11;
-  v15 = v12;
-  v16 = v10;
+  v18 = identifierCopy;
+  v19 = sharesCopy;
+  v20 = completionCopy;
+  cascadeCopy = cascade;
+  v14 = sharesCopy;
+  v15 = completionCopy;
+  v16 = identifierCopy;
   dispatch_async(queue, block);
 }
 
-- (void)createSingleUseShareURLWithMessage:(id)a3 timeToLive:(unint64_t)a4 completion:(id)a5
+- (void)createSingleUseShareURLWithMessage:(id)message timeToLive:(unint64_t)live completion:(id)completion
 {
-  v7 = a3;
-  v8 = a5;
+  messageCopy = message;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000E823C;
   block[3] = &unk_10083D320;
-  v13 = v7;
-  v14 = self;
-  v15 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = messageCopy;
+  selfCopy = self;
+  v15 = completionCopy;
+  v10 = completionCopy;
+  v11 = messageCopy;
   dispatch_async(queue, block);
 }
 
-- (void)cacheSharingMessageFromMailboxAddress:(id)a3 message:(id)a4
+- (void)cacheSharingMessageFromMailboxAddress:(id)address message:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  addressCopy = address;
+  messageCopy = message;
+  v8 = messageCopy;
+  if (addressCopy && messageCopy)
   {
-    v9 = [PKSharingRelayChannelDescriptor existingChannelForURL:v6];
+    v9 = [PKSharingRelayChannelDescriptor existingChannelForURL:addressCopy];
     [(PDSharingChannelManager *)self->_channelManager cacheSharingMessageForDescriptor:v9 message:v8];
   }
 
@@ -521,26 +521,26 @@
   return v3;
 }
 
-- (void)sharesForPassIdentifier:(id)a3 completion:(id)a4
+- (void)sharesForPassIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000E889C;
   block[3] = &unk_10083D320;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifierCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = identifierCopy;
   dispatch_async(queue, block);
 }
 
-- (BOOL)hasSharesForPassIdentifier:(id)a3
+- (BOOL)hasSharesForPassIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -550,10 +550,10 @@
   block[1] = 3221225472;
   block[2] = sub_1000E8A40;
   block[3] = &unk_10083F120;
-  v9 = v4;
+  v9 = identifierCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = identifierCopy;
   dispatch_sync(queue, block);
   LOBYTE(queue) = *(v12 + 24);
 
@@ -561,9 +561,9 @@
   return queue;
 }
 
-- (BOOL)hasShareableEntitlementsForPassIdentifier:(id)a3
+- (BOOL)hasShareableEntitlementsForPassIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -573,10 +573,10 @@
   block[1] = 3221225472;
   block[2] = sub_1000E8B54;
   block[3] = &unk_10083F120;
-  v9 = v4;
+  v9 = identifierCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = identifierCopy;
   dispatch_sync(queue, block);
   LOBYTE(queue) = *(v12 + 24);
 
@@ -584,9 +584,9 @@
   return queue;
 }
 
-- (id)entitlementsForPassIdentifier:(id)a3
+- (id)entitlementsForPassIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -598,10 +598,10 @@
   block[1] = 3221225472;
   block[2] = sub_1000E8C9C;
   block[3] = &unk_10083F120;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = identifierCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -610,221 +610,221 @@
   return v7;
 }
 
-- (void)displayableSharesForPassIdentifier:(id)a3 completion:(id)a4
+- (void)displayableSharesForPassIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000E8DB0;
   block[3] = &unk_10083D320;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifierCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = identifierCopy;
   dispatch_async(queue, block);
 }
 
-- (void)displayableEntitlementsForPassIdentifier:(id)a3 completion:(id)a4
+- (void)displayableEntitlementsForPassIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000E9294;
   block[3] = &unk_10083D320;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifierCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = identifierCopy;
   dispatch_async(queue, block);
 }
 
-- (void)userNotificationActionPerformed:(unint64_t)a3 notificationIdentifier:(id)a4
+- (void)userNotificationActionPerformed:(unint64_t)performed notificationIdentifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000E9514;
   block[3] = &unk_10083D690;
-  v10 = v6;
-  v11 = a3;
+  v10 = identifierCopy;
+  performedCopy = performed;
   block[4] = self;
-  v8 = v6;
+  v8 = identifierCopy;
   dispatch_async(queue, block);
 }
 
-- (void)passWillBeRemoved:(id)a3
+- (void)passWillBeRemoved:(id)removed
 {
-  v4 = a3;
+  removedCopy = removed;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000E9C68;
   v7[3] = &unk_10083C420;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = removedCopy;
+  v6 = removedCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)sendSharingMessageTo:(id)a3 message:(id)a4 completion:(id)a5
+- (void)sendSharingMessageTo:(id)to message:(id)message completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  toCopy = to;
+  messageCopy = message;
+  completionCopy = completion;
   queue = self->_queue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1000E9FDC;
   v15[3] = &unk_10083E468;
-  v16 = v8;
-  v17 = v9;
-  v18 = self;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = toCopy;
+  v17 = messageCopy;
+  selfCopy = self;
+  v19 = completionCopy;
+  v12 = completionCopy;
+  v13 = messageCopy;
+  v14 = toCopy;
   dispatch_async(queue, v15);
 }
 
-- (void)acceptCarKeyShareForMessage:(id)a3 activationCode:(id)a4 completion:(id)a5
+- (void)acceptCarKeyShareForMessage:(id)message activationCode:(id)code completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
+  messageCopy = message;
+  codeCopy = code;
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_1000EA3C0;
   v23[3] = &unk_100844B08;
   v23[4] = self;
-  v10 = a5;
-  v24 = v10;
+  completionCopy = completion;
+  v24 = completionCopy;
   v11 = objc_retainBlock(v23);
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000EA4B4;
   block[3] = &unk_100844B58;
-  v18 = v8;
-  v19 = self;
+  v18 = messageCopy;
+  selfCopy = self;
   v21 = v11;
-  v22 = v10;
-  v20 = v9;
-  v13 = v9;
-  v14 = v10;
+  v22 = completionCopy;
+  v20 = codeCopy;
+  v13 = codeCopy;
+  v14 = completionCopy;
   v15 = v11;
-  v16 = v8;
+  v16 = messageCopy;
   dispatch_async(queue, block);
 }
 
-- (void)pendingShareActivationForShareIdentifier:(id)a3 completion:(id)a4
+- (void)pendingShareActivationForShareIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000EB218;
   block[3] = &unk_10083D320;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifierCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = identifierCopy;
   dispatch_async(queue, block);
 }
 
-- (void)pendingCredentialsBeingProvisioned:(id)a3
+- (void)pendingCredentialsBeingProvisioned:(id)provisioned
 {
-  v4 = a3;
+  provisionedCopy = provisioned;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000EB694;
   v7[3] = &unk_10083DCB8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = provisionedCopy;
+  v6 = provisionedCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)revokePendingCredentialsForReaderIdentifier:(id)a3 completion:(id)a4
+- (void)revokePendingCredentialsForReaderIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000EB8FC;
   block[3] = &unk_10083D320;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifierCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = identifierCopy;
   dispatch_async(queue, block);
 }
 
-- (void)insertPassMessage:(id)a3 pass:(id)a4
+- (void)insertPassMessage:(id)message pass:(id)pass
 {
-  v9 = a3;
+  messageCopy = message;
   databaseManager = self->_databaseManager;
-  v7 = [a4 uniqueID];
-  v8 = [(PDDatabaseManager *)databaseManager insertOrUpdatePaymentMessage:v9 forPassUniqueIdentifier:v7 paymentApplication:0 performTruncation:0];
+  uniqueID = [pass uniqueID];
+  v8 = [(PDDatabaseManager *)databaseManager insertOrUpdatePaymentMessage:messageCopy forPassUniqueIdentifier:uniqueID paymentApplication:0 performTruncation:0];
 }
 
-- (void)handleOutstandingShareMessage:(id)a3 transportIdentifier:(id)a4
+- (void)handleOutstandingShareMessage:(id)message transportIdentifier:(id)identifier
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [v8 type];
-  if (v7 != 1)
+  messageCopy = message;
+  identifierCopy = identifier;
+  type = [messageCopy type];
+  if (type != 1)
   {
-    if (v7 == 2001)
+    if (type == 2001)
     {
-      sub_1005BA010(self, v8);
+      sub_1005BA010(self, messageCopy);
     }
 
-    else if (v7 == 1002)
+    else if (type == 1002)
     {
-      sub_1005BAC30(self, v8);
+      sub_1005BAC30(self, messageCopy);
     }
 
-    else if (v7 == 1001)
+    else if (type == 1001)
     {
-      sub_1005BAB9C(self, v8);
+      sub_1005BAB9C(self, messageCopy);
     }
 
     else
     {
-      sub_1005BACC4(self, v8);
+      sub_1005BACC4(self, messageCopy);
     }
   }
 }
 
-- (void)channelWasRemotelyTerminatedWithTransportIdentifier:(id)a3
+- (void)channelWasRemotelyTerminatedWithTransportIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000EF23C;
   v7[3] = &unk_10083C420;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)processCLICommands:(id)a3 completion:(id)a4
+- (void)processCLICommands:(id)commands completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  commandsCopy = commands;
+  completionCopy = completion;
   if (os_variant_has_internal_ui())
   {
     queue = self->_queue;
@@ -832,15 +832,15 @@
     block[1] = 3221225472;
     block[2] = sub_1000EF708;
     block[3] = &unk_10083F418;
-    v10 = v6;
-    v11 = self;
-    v12 = v7;
+    v10 = commandsCopy;
+    selfCopy = self;
+    v12 = completionCopy;
     dispatch_async(queue, block);
   }
 
   else
   {
-    (*(v7 + 2))(v7, @"Unsupported on non internal builds");
+    (*(completionCopy + 2))(completionCopy, @"Unsupported on non internal builds");
   }
 }
 

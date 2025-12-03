@@ -1,52 +1,52 @@
 @interface TIAssetManager
-+ (id)_addressFromRegion:(id)a3;
-+ (id)_regionFromAddress:(id)a3;
-+ (id)sharedAssetManagerWithEnabledInputModesProvider:(id)a3;
-+ (id)singletonInstanceWithEnabledInputModesProvider:(id)a3;
-+ (int64_t)assetUpdateStatusforDDSAssetUpdateStatus:(int64_t)a3;
-+ (void)setSharedAssetManager:(id)a3;
-- (BOOL)inputModeHasRegions:(id)a3;
-- (BOOL)requireMecabraDictionaryRapidUpdatesAssetsForLanguageIdentifier:(id)a3;
++ (id)_addressFromRegion:(id)region;
++ (id)_regionFromAddress:(id)address;
++ (id)sharedAssetManagerWithEnabledInputModesProvider:(id)provider;
++ (id)singletonInstanceWithEnabledInputModesProvider:(id)provider;
++ (int64_t)assetUpdateStatusforDDSAssetUpdateStatus:(int64_t)status;
++ (void)setSharedAssetManager:(id)manager;
+- (BOOL)inputModeHasRegions:(id)regions;
+- (BOOL)requireMecabraDictionaryRapidUpdatesAssetsForLanguageIdentifier:(id)identifier;
 - (NSMutableSet)languagesWithWarmedAssets;
-- (TIAssetManager)initWithRequestedInputModes:(id)a3 inputModePreferenceProvider:(id)a4 enabledInputModesProvider:(id)a5;
-- (id)_ddsContentItemsFromAssets:(id)a3 contentType:(id)a4 filteredWithRegion:(BOOL)a5;
+- (TIAssetManager)initWithRequestedInputModes:(id)modes inputModePreferenceProvider:(id)provider enabledInputModesProvider:(id)modesProvider;
+- (id)_ddsContentItemsFromAssets:(id)assets contentType:(id)type filteredWithRegion:(BOOL)region;
 - (id)activeInputModeLevels;
 - (id)activeInputModes;
-- (id)assetTypeForAssertionId:(id)a3;
-- (id)ddsAssertionIDsFromInputMode:(id)a3 withPotentialRegions:(id)a4;
-- (id)ddsLanguageIdentifierFromInputMode:(id)a3;
-- (id)ddsLinguisticAssetQueryWithAssetType:(id)a3 inputModeIdentifier:(id)a4 withRegions:(id)a5;
+- (id)assetTypeForAssertionId:(id)id;
+- (id)ddsAssertionIDsFromInputMode:(id)mode withPotentialRegions:(id)regions;
+- (id)ddsLanguageIdentifierFromInputMode:(id)mode;
+- (id)ddsLinguisticAssetQueryWithAssetType:(id)type inputModeIdentifier:(id)identifier withRegions:(id)regions;
 - (id)defaultEnabledInputModes;
 - (id)enabledInputModes;
-- (id)levelsForInputMode:(id)a3;
-- (id)localeIdentifierForAssertionId:(id)a3 inputMode:(id)a4;
-- (id)multilingualLocaleIdentifierForInputMode:(id)a3;
+- (id)levelsForInputMode:(id)mode;
+- (id)localeIdentifierForAssertionId:(id)id inputMode:(id)mode;
+- (id)multilingualLocaleIdentifierForInputMode:(id)mode;
 - (id)topActiveRegions;
 - (id)updatedActiveRegions;
-- (void)_warmAssetQueriesForInputModes:(id)a3;
-- (void)_warmAssetQueryForLanguage:(id)a3;
-- (void)_warmLDEnumerateAssetQueriesForInputMode:(id)a3;
-- (void)addAssertionWithInputMode:(id)a3 assertionID:(id)a4 potentialRegions:(id)a5;
-- (void)addLinguisticAssetsAssertionForLanguage:(id)a3 assertionID:(id)a4 region:(id)a5 clientID:(id)a6 withHandler:(id)a7;
-- (void)appleKeyboardsPreferencesChanged:(id)a3;
-- (void)ddsAssetContentItemsWithContentType:(id)a3 inputMode:(id)a4 filteredWithRegion:(BOOL)a5 completion:(id)a6;
-- (void)ddsAssetsForInputMode:(id)a3 cachedOnly:(BOOL)a4 completion:(id)a5;
+- (void)_warmAssetQueriesForInputModes:(id)modes;
+- (void)_warmAssetQueryForLanguage:(id)language;
+- (void)_warmLDEnumerateAssetQueriesForInputMode:(id)mode;
+- (void)addAssertionWithInputMode:(id)mode assertionID:(id)d potentialRegions:(id)regions;
+- (void)addLinguisticAssetsAssertionForLanguage:(id)language assertionID:(id)d region:(id)region clientID:(id)iD withHandler:(id)handler;
+- (void)appleKeyboardsPreferencesChanged:(id)changed;
+- (void)ddsAssetContentItemsWithContentType:(id)type inputMode:(id)mode filteredWithRegion:(BOOL)region completion:(id)completion;
+- (void)ddsAssetsForInputMode:(id)mode cachedOnly:(BOOL)only completion:(id)completion;
 - (void)dealloc;
 - (void)didUpdateAssets;
-- (void)didUpdateAssetsWithType:(id)a3;
-- (void)fetchAssetUpdateStatusForInputModeIdentifier:(id)a3 callback:(id)a4;
-- (void)getActiveRegionsWithCompletion:(id)a3;
-- (void)normalizedRegionsForGeoCodedAddresses:(id)a3 withCompletion:(id)a4;
+- (void)didUpdateAssetsWithType:(id)type;
+- (void)fetchAssetUpdateStatusForInputModeIdentifier:(id)identifier callback:(id)callback;
+- (void)getActiveRegionsWithCompletion:(id)completion;
+- (void)normalizedRegionsForGeoCodedAddresses:(id)addresses withCompletion:(id)completion;
 - (void)registerCacheDeleteCallbacks;
 - (void)registerForNotifications;
-- (void)removeLinguisticAssetsAssertionWithIdentifier:(id)a3 forClientID:(id)a4 withHandler:(id)a5;
-- (void)requestAssetDownloadForLanguage:(id)a3 completion:(id)a4;
-- (void)scheduleAssetsDidChangeNotificationWithDelay:(double)a3;
-- (void)setEnabledInputModeIdentifiersProviderBlock:(id)a3;
+- (void)removeLinguisticAssetsAssertionWithIdentifier:(id)identifier forClientID:(id)d withHandler:(id)handler;
+- (void)requestAssetDownloadForLanguage:(id)language completion:(id)completion;
+- (void)scheduleAssetsDidChangeNotificationWithDelay:(double)delay;
+- (void)setEnabledInputModeIdentifiersProviderBlock:(id)block;
 - (void)unregisterForNotifications;
-- (void)updateAssertionsForInputModes:(id)a3;
-- (void)updateAssetForInputModeIdentifier:(id)a3 callback:(id)a4;
-- (void)updatedActiveRegionsWithCompletionWithCompletion:(id)a3;
+- (void)updateAssertionsForInputModes:(id)modes;
+- (void)updateAssetForInputModeIdentifier:(id)identifier callback:(id)callback;
+- (void)updatedActiveRegionsWithCompletionWithCompletion:(id)completion;
 @end
 
 @implementation TIAssetManager
@@ -162,31 +162,31 @@ uint64_t __46__TIAssetManager_registerCacheDeleteCallbacks__block_invoke_2(uint6
   return v4;
 }
 
-- (void)getActiveRegionsWithCompletion:(id)a3
+- (void)getActiveRegionsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __49__TIAssetManager_getActiveRegionsWithCompletion___block_invoke;
   v6[3] = &unk_2787312C0;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(TIAssetManager *)self updatedActiveRegionsWithCompletionWithCompletion:v6];
 }
 
-- (void)updateAssetForInputModeIdentifier:(id)a3 callback:(id)a4
+- (void)updateAssetForInputModeIdentifier:(id)identifier callback:(id)callback
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  callbackCopy = callback;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __61__TIAssetManager_updateAssetForInputModeIdentifier_callback___block_invoke;
   v10[3] = &unk_2787313D8;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = identifierCopy;
+  v12 = callbackCopy;
+  v8 = callbackCopy;
+  v9 = identifierCopy;
   [(TIAssetManager *)self getActiveRegionsWithCompletion:v10];
 }
 
@@ -304,19 +304,19 @@ LABEL_6:
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchAssetUpdateStatusForInputModeIdentifier:(id)a3 callback:(id)a4
+- (void)fetchAssetUpdateStatusForInputModeIdentifier:(id)identifier callback:(id)callback
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  callbackCopy = callback;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __72__TIAssetManager_fetchAssetUpdateStatusForInputModeIdentifier_callback___block_invoke;
   v10[3] = &unk_2787313D8;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = identifierCopy;
+  v12 = callbackCopy;
+  v8 = callbackCopy;
+  v9 = identifierCopy;
   [(TIAssetManager *)self getActiveRegionsWithCompletion:v10];
 }
 
@@ -439,30 +439,30 @@ LABEL_10:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)ddsLinguisticAssetQueryWithAssetType:(id)a3 inputModeIdentifier:(id)a4 withRegions:(id)a5
+- (id)ddsLinguisticAssetQueryWithAssetType:(id)type inputModeIdentifier:(id)identifier withRegions:(id)regions
 {
   v39 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(TIAssetManager *)self ddsLanguageIdentifierFromInputMode:v9];
-  v12 = [objc_alloc(MEMORY[0x277D04020]) initWithAssetType:v8 languageIdentifier:v11];
+  typeCopy = type;
+  identifierCopy = identifier;
+  regionsCopy = regions;
+  v11 = [(TIAssetManager *)self ddsLanguageIdentifierFromInputMode:identifierCopy];
+  v12 = [objc_alloc(MEMORY[0x277D04020]) initWithAssetType:typeCopy languageIdentifier:v11];
   [v12 setInstalledOnly:0];
   v33 = v12;
   [v12 setLocalOnly:0];
-  if ([(TIAssetManager *)self inputModeHasRegions:v9])
+  if ([(TIAssetManager *)self inputModeHasRegions:identifierCopy])
   {
-    if ([v10 count])
+    if ([regionsCopy count])
     {
       v28 = v11;
-      v29 = v10;
-      v30 = v9;
-      v31 = v8;
+      v29 = regionsCopy;
+      v30 = identifierCopy;
+      v31 = typeCopy;
       v36 = 0u;
       v37 = 0u;
       v34 = 0u;
       v35 = 0u;
-      obj = v10;
+      obj = regionsCopy;
       v13 = [obj countByEnumeratingWithState:&v34 objects:v38 count:16];
       if (v13)
       {
@@ -484,8 +484,8 @@ LABEL_10:
             v21 = [v20 objectForKeyedSubscript:{v16, v28, v29, v30, v31}];
             v22 = [v20 objectForKeyedSubscript:v17];
             v23 = [v20 objectForKeyedSubscript:v18];
-            v24 = [v33 filter];
-            [v24 addRegionWithCountry:v21 province:v22 city:v23];
+            filter = [v33 filter];
+            [filter addRegionWithCountry:v21 province:v22 city:v23];
           }
 
           v14 = [obj countByEnumeratingWithState:&v34 objects:v38 count:16];
@@ -494,16 +494,16 @@ LABEL_10:
         while (v14);
       }
 
-      v9 = v30;
-      v8 = v31;
+      identifierCopy = v30;
+      typeCopy = v31;
       v11 = v28;
-      v10 = v29;
+      regionsCopy = v29;
     }
 
     else
     {
-      v25 = [v12 filter];
-      [v25 addRegionWithCountry:0 province:0 city:0];
+      filter2 = [v12 filter];
+      [filter2 addRegionWithCountry:0 province:0 city:0];
     }
   }
 
@@ -514,20 +514,20 @@ LABEL_10:
 
 - (id)topActiveRegions
 {
-  v2 = [(TIAssetManager *)self currentNormalizedActiveRegions];
-  v3 = [TIMobileAssetMatch mobileAssetMatchWithTypes:MEMORY[0x277CBEBF8] inputModeLevels:MEMORY[0x277CBEBF8] regions:v2];
+  currentNormalizedActiveRegions = [(TIAssetManager *)self currentNormalizedActiveRegions];
+  v3 = [TIMobileAssetMatch mobileAssetMatchWithTypes:MEMORY[0x277CBEBF8] inputModeLevels:MEMORY[0x277CBEBF8] regions:currentNormalizedActiveRegions];
 
-  v4 = [v3 regions];
+  regions = [v3 regions];
 
-  return v4;
+  return regions;
 }
 
-- (void)normalizedRegionsForGeoCodedAddresses:(id)a3 withCompletion:(id)a4
+- (void)normalizedRegionsForGeoCodedAddresses:(id)addresses withCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  addressesCopy = addresses;
+  completionCopy = completion;
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if ([v5 count])
+  if ([addressesCopy count])
   {
     v25 = 0;
     v26 = &v25;
@@ -557,13 +557,13 @@ LABEL_10:
     aBlock[1] = 3221225472;
     aBlock[2] = __71__TIAssetManager_normalizedRegionsForGeoCodedAddresses_withCompletion___block_invoke;
     aBlock[3] = &unk_278730668;
-    v12 = v5;
+    v12 = addressesCopy;
     v19 = v12;
     v24 = &v25;
     v20 = v7;
     v21 = v10;
     v22 = v11;
-    v23 = v6;
+    v23 = completionCopy;
     v13 = v11;
     v14 = v10;
     v15 = _Block_copy(aBlock);
@@ -577,7 +577,7 @@ LABEL_10:
 
   else
   {
-    (*(v6 + 2))(v6, v7);
+    (*(completionCopy + 2))(completionCopy, v7);
   }
 }
 
@@ -690,22 +690,22 @@ void __71__TIAssetManager_normalizedRegionsForGeoCodedAddresses_withCompletion__
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updatedActiveRegionsWithCompletionWithCompletion:(id)a3
+- (void)updatedActiveRegionsWithCompletionWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = MEMORY[0x277CBEB98];
-  v6 = [(TIAssetManager *)self currentActiveRegions];
-  v7 = [v5 setWithArray:v6];
+  currentActiveRegions = [(TIAssetManager *)self currentActiveRegions];
+  v7 = [v5 setWithArray:currentActiveRegions];
 
   v12[0] = 0;
   v12[1] = v12;
   v12[2] = 0x3032000000;
   v12[3] = __Block_byref_object_copy__7036;
   v12[4] = __Block_byref_object_dispose__7037;
-  v13 = _Block_copy(v4);
+  v13 = _Block_copy(completionCopy);
   dispatchQueue = self->_dispatchQueue;
-  v11 = v4;
-  v9 = v4;
+  v11 = completionCopy;
+  v9 = completionCopy;
   v10 = v7;
   TIDispatchAsync();
 
@@ -1005,9 +1005,9 @@ void __67__TIAssetManager_updatedActiveRegionsWithCompletionWithCompletion___blo
 - (id)activeInputModeLevels
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [(TIAssetManager *)self enabledInputModes];
-  v4 = [(TIAssetManager *)self requestedInputModes_mainThreadCache];
-  v5 = [v3 arrayByAddingObjectsFromArray:v4];
+  enabledInputModes = [(TIAssetManager *)self enabledInputModes];
+  requestedInputModes_mainThreadCache = [(TIAssetManager *)self requestedInputModes_mainThreadCache];
+  v5 = [enabledInputModes arrayByAddingObjectsFromArray:requestedInputModes_mainThreadCache];
   v6 = [MEMORY[0x277CBEB58] set];
   v16 = 0u;
   v17 = 0u;
@@ -1038,18 +1038,18 @@ void __67__TIAssetManager_updatedActiveRegionsWithCompletionWithCompletion___blo
     while (v9);
   }
 
-  v13 = [v6 allObjects];
+  allObjects = [v6 allObjects];
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v13;
+  return allObjects;
 }
 
 - (id)activeInputModes
 {
-  v3 = [(TIAssetManager *)self enabledInputModes];
-  v4 = [(TIAssetManager *)self requestedInputModes_mainThreadCache];
-  v5 = [v3 arrayByAddingObjectsFromArray:v4];
+  enabledInputModes = [(TIAssetManager *)self enabledInputModes];
+  requestedInputModes_mainThreadCache = [(TIAssetManager *)self requestedInputModes_mainThreadCache];
+  v5 = [enabledInputModes arrayByAddingObjectsFromArray:requestedInputModes_mainThreadCache];
 
   return v5;
 }
@@ -1057,15 +1057,15 @@ void __67__TIAssetManager_updatedActiveRegionsWithCompletionWithCompletion___blo
 - (id)defaultEnabledInputModes
 {
   v19 = *MEMORY[0x277D85DE8];
-  v2 = [(TIAssetManager *)self inputModePreferenceProvider];
-  v3 = [v2 defaultEnabledInputModesForCurrentLocale];
+  inputModePreferenceProvider = [(TIAssetManager *)self inputModePreferenceProvider];
+  defaultEnabledInputModesForCurrentLocale = [inputModePreferenceProvider defaultEnabledInputModesForCurrentLocale];
 
-  v4 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = defaultEnabledInputModesForCurrentLocale;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -1082,7 +1082,7 @@ void __67__TIAssetManager_updatedActiveRegionsWithCompletionWithCompletion___blo
 
         v10 = *(*(&v14 + 1) + 8 * i);
         v11 = TIInputModeGetNormalizedIdentifier();
-        [v4 addObject:{v11, v14}];
+        [array addObject:{v11, v14}];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -1093,27 +1093,27 @@ void __67__TIAssetManager_updatedActiveRegionsWithCompletionWithCompletion___blo
 
   v12 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return array;
 }
 
 - (id)enabledInputModes
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [(TIAssetManager *)self enabledInputModeIdentifiersProviderBlock];
-  if (v3)
+  enabledInputModeIdentifiersProviderBlock = [(TIAssetManager *)self enabledInputModeIdentifiersProviderBlock];
+  if (enabledInputModeIdentifiersProviderBlock)
   {
-    v4 = [(TIAssetManager *)self enabledInputModeIdentifiersProviderBlock];
-    v4[2]();
+    enabledInputModeIdentifiersProviderBlock2 = [(TIAssetManager *)self enabledInputModeIdentifiersProviderBlock];
+    enabledInputModeIdentifiersProviderBlock2[2]();
   }
 
   else
   {
-    v4 = [(TIAssetManager *)self inputModePreferenceProvider];
-    [v4 enabledInputModeIdentifiers];
+    enabledInputModeIdentifiersProviderBlock2 = [(TIAssetManager *)self inputModePreferenceProvider];
+    [enabledInputModeIdentifiersProviderBlock2 enabledInputModeIdentifiers];
   }
   v5 = ;
 
-  v6 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -1135,7 +1135,7 @@ void __67__TIAssetManager_updatedActiveRegionsWithCompletionWithCompletion___blo
 
         v12 = *(*(&v16 + 1) + 8 * i);
         v13 = TIInputModeGetNormalizedIdentifier();
-        [v6 addObject:{v13, v16}];
+        [array addObject:{v13, v16}];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -1146,10 +1146,10 @@ void __67__TIAssetManager_updatedActiveRegionsWithCompletionWithCompletion___blo
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return array;
 }
 
-- (id)levelsForInputMode:(id)a3
+- (id)levelsForInputMode:(id)mode
 {
   v3 = TIInputModeGetComponentsFromIdentifier();
   v4 = TIInputModeGetNormalizedLevelsFromComponents();
@@ -1169,15 +1169,15 @@ void __67__TIAssetManager_updatedActiveRegionsWithCompletionWithCompletion___blo
     _os_log_impl(&dword_22CA55000, v3, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
   }
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 postNotificationName:@"TIAssetsDidChangeNotification" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"TIAssetsDidChangeNotification" object:self];
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)scheduleAssetsDidChangeNotificationWithDelay:(double)a3
+- (void)scheduleAssetsDidChangeNotificationWithDelay:(double)delay
 {
-  v3 = [(TIAssetManager *)self dispatchQueue];
+  dispatchQueue = [(TIAssetManager *)self dispatchQueue];
   TIDispatchAsync();
 }
 
@@ -1240,27 +1240,27 @@ uint64_t __63__TIAssetManager_scheduleAssetsDidChangeNotificationWithDelay___blo
   return result;
 }
 
-- (BOOL)inputModeHasRegions:(id)a3
+- (BOOL)inputModeHasRegions:(id)regions
 {
-  v3 = a3;
-  if ([v3 containsString:@"zh"])
+  regionsCopy = regions;
+  if ([regionsCopy containsString:@"zh"])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 containsString:@"yue"];
+    v4 = [regionsCopy containsString:@"yue"];
   }
 
   return v4;
 }
 
-- (id)ddsLanguageIdentifierFromInputMode:(id)a3
+- (id)ddsLanguageIdentifierFromInputMode:(id)mode
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([(__CFString *)v3 hasPrefix:@"ars"])
+  modeCopy = mode;
+  if ([(__CFString *)modeCopy hasPrefix:@"ars"])
   {
     v4 = TIAssetsOSLogFacility();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -1271,10 +1271,10 @@ uint64_t __63__TIAssetManager_scheduleAssetsDidChangeNotificationWithDelay___blo
       _os_log_impl(&dword_22CA55000, v4, OS_LOG_TYPE_INFO, "%@", buf, 0xCu);
     }
 
-    v3 = @"ar";
+    modeCopy = @"ar";
   }
 
-  v6 = [MEMORY[0x277CBEAF8] baseLanguageFromLanguage:v3];
+  v6 = [MEMORY[0x277CBEAF8] baseLanguageFromLanguage:modeCopy];
   if ([v6 hasPrefix:@"fil"])
   {
     v7 = TIAssetsOSLogFacility();
@@ -1293,7 +1293,7 @@ uint64_t __63__TIAssetManager_scheduleAssetsDidChangeNotificationWithDelay___blo
   {
     if ([v6 isEqualToString:@"mul"])
     {
-      v10 = v3;
+      v10 = modeCopy;
     }
 
     else
@@ -1312,26 +1312,26 @@ uint64_t __63__TIAssetManager_scheduleAssetsDidChangeNotificationWithDelay___blo
   return v9;
 }
 
-- (id)ddsAssertionIDsFromInputMode:(id)a3 withPotentialRegions:(id)a4
+- (id)ddsAssertionIDsFromInputMode:(id)mode withPotentialRegions:(id)regions
 {
   v51 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TIAssetManager *)self ddsLanguageIdentifierFromInputMode:v6];
+  modeCopy = mode;
+  regionsCopy = regions;
+  v8 = [(TIAssetManager *)self ddsLanguageIdentifierFromInputMode:modeCopy];
   v9 = [@"com.apple.TextInput.assertion" stringByAppendingFormat:@".%@", v8];
   v45 = [v9 mutableCopy];
 
   if ([(TIAssetManager *)self inputModeHasRegions:v8])
   {
-    v39 = self;
+    selfCopy = self;
     v40 = v8;
-    v41 = v7;
-    v42 = v6;
+    v41 = regionsCopy;
+    v42 = modeCopy;
     v48 = 0u;
     v49 = 0u;
     v46 = 0u;
     v47 = 0u;
-    obj = v7;
+    obj = regionsCopy;
     v10 = [obj countByEnumeratingWithState:&v46 objects:v50 count:16];
     if (v10)
     {
@@ -1402,9 +1402,9 @@ uint64_t __63__TIAssetManager_scheduleAssetsDidChangeNotificationWithDelay___blo
       while (v11);
     }
 
-    v7 = v41;
-    v6 = v42;
-    self = v39;
+    regionsCopy = v41;
+    modeCopy = v42;
+    self = selfCopy;
     v8 = v40;
   }
 
@@ -1415,11 +1415,11 @@ uint64_t __63__TIAssetManager_scheduleAssetsDidChangeNotificationWithDelay___blo
     [v30 addObject:v31];
   }
 
-  v32 = [(TIAssetManager *)self multilingualLocaleIdentifierForInputMode:v6];
+  v32 = [(TIAssetManager *)self multilingualLocaleIdentifierForInputMode:modeCopy];
   if (v32)
   {
     v33 = [(TIAssetManager *)self ddsLanguageIdentifierFromInputMode:v32];
-    v34 = [@"com.apple.TextInput.assertion" stringByAppendingFormat:@".%@.%@", v6, v33];
+    v34 = [@"com.apple.TextInput.assertion" stringByAppendingFormat:@".%@.%@", modeCopy, v33];
     v35 = [v34 mutableCopy];
 
     v36 = [v35 stringByAppendingString:@".preferred_mul_locale"];
@@ -1431,16 +1431,16 @@ uint64_t __63__TIAssetManager_scheduleAssetsDidChangeNotificationWithDelay___blo
   return v30;
 }
 
-- (void)addAssertionWithInputMode:(id)a3 assertionID:(id)a4 potentialRegions:(id)a5
+- (void)addAssertionWithInputMode:(id)mode assertionID:(id)d potentialRegions:(id)regions
 {
   v21 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [(TIAssetManager *)self assetTypeForAssertionId:v8];
-  v12 = [(TIAssetManager *)self localeIdentifierForAssertionId:v8 inputMode:v10];
+  dCopy = d;
+  regionsCopy = regions;
+  modeCopy = mode;
+  v11 = [(TIAssetManager *)self assetTypeForAssertionId:dCopy];
+  v12 = [(TIAssetManager *)self localeIdentifierForAssertionId:dCopy inputMode:modeCopy];
 
-  v13 = [(TIAssetManager *)self ddsLinguisticAssetQueryWithAssetType:v11 inputModeIdentifier:v12 withRegions:v9];
+  v13 = [(TIAssetManager *)self ddsLinguisticAssetQueryWithAssetType:v11 inputModeIdentifier:v12 withRegions:regionsCopy];
 
   v14 = objc_alloc_init(MEMORY[0x277D04018]);
   [v14 setPreferredDownloadFrequency:2];
@@ -1452,24 +1452,24 @@ uint64_t __63__TIAssetManager_scheduleAssetsDidChangeNotificationWithDelay___blo
   v15 = TIOSLogFacility();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
-    v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s Adding assertion: %@ with assetType: %@ query: %@ policy: %@", "-[TIAssetManager addAssertionWithInputMode:assertionID:potentialRegions:]", v11, v8, v13, v14];
+    v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s Adding assertion: %@ with assetType: %@ query: %@ policy: %@", "-[TIAssetManager addAssertionWithInputMode:assertionID:potentialRegions:]", v11, dCopy, v13, v14];
     *buf = 138412290;
     v20 = v18;
     _os_log_debug_impl(&dword_22CA55000, v15, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
   }
 
-  v16 = [MEMORY[0x277D04010] sharedInstance];
-  [v16 addAssertionForAssetsWithQuery:v13 policy:v14 assertionID:v8 clientID:@"com.apple.TextInput"];
+  mEMORY[0x277D04010] = [MEMORY[0x277D04010] sharedInstance];
+  [mEMORY[0x277D04010] addAssertionForAssetsWithQuery:v13 policy:v14 assertionID:dCopy clientID:@"com.apple.TextInput"];
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)localeIdentifierForAssertionId:(id)a3 inputMode:(id)a4
+- (id)localeIdentifierForAssertionId:(id)id inputMode:(id)mode
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(TIAssetManager *)self multilingualLocaleIdentifierForInputMode:v6];
-  v9 = [v7 hasSuffix:@".preferred_mul_locale"];
+  modeCopy = mode;
+  idCopy = id;
+  v8 = [(TIAssetManager *)self multilingualLocaleIdentifierForInputMode:modeCopy];
+  v9 = [idCopy hasSuffix:@".preferred_mul_locale"];
 
   if ((v9 & (v8 != 0)) != 0)
   {
@@ -1478,7 +1478,7 @@ uint64_t __63__TIAssetManager_scheduleAssetsDidChangeNotificationWithDelay___blo
 
   else
   {
-    v10 = v6;
+    v10 = modeCopy;
   }
 
   v11 = v10;
@@ -1486,7 +1486,7 @@ uint64_t __63__TIAssetManager_scheduleAssetsDidChangeNotificationWithDelay___blo
   return v11;
 }
 
-- (id)multilingualLocaleIdentifierForInputMode:(id)a3
+- (id)multilingualLocaleIdentifierForInputMode:(id)mode
 {
   v3 = TIGetInputModeProperties();
   v4 = [v3 objectForKey:*MEMORY[0x277D6F718]];
@@ -1511,9 +1511,9 @@ LABEL_7:
   return v6;
 }
 
-- (id)assetTypeForAssertionId:(id)a3
+- (id)assetTypeForAssertionId:(id)id
 {
-  if ([a3 hasSuffix:@".mecabra_dictionary_rapid_updates_new"])
+  if ([id hasSuffix:@".mecabra_dictionary_rapid_updates_new"])
   {
     v3 = @"com.apple.MobileAsset.MecabraDictionaryRapidUpdates";
   }
@@ -1526,18 +1526,18 @@ LABEL_7:
   return v3;
 }
 
-- (void)updateAssertionsForInputModes:(id)a3
+- (void)updateAssertionsForInputModes:(id)modes
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CCA8D8] mainBundle];
-  v5 = [v4 bundleIdentifier];
-  v6 = [v5 isEqualToString:@"com.apple.kbd"];
+  modesCopy = modes;
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v6 = [bundleIdentifier isEqualToString:@"com.apple.kbd"];
 
   if (v6)
   {
     v7 = _TIQueueUserInitiated();
-    v11 = v3;
+    v11 = modesCopy;
     TIDispatchAsync();
   }
 
@@ -1691,10 +1691,10 @@ void __48__TIAssetManager_updateAssertionsForInputModes___block_invoke_2(uint64_
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)requireMecabraDictionaryRapidUpdatesAssetsForLanguageIdentifier:(id)a3
+- (BOOL)requireMecabraDictionaryRapidUpdatesAssetsForLanguageIdentifier:(id)identifier
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  identifierCopy = identifier;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -1713,7 +1713,7 @@ void __48__TIAssetManager_updateAssertionsForInputModes___block_invoke_2(uint64_
           objc_enumerationMutation(&unk_28400B970);
         }
 
-        if ([v3 isEqualToString:*(*(&v11 + 1) + 8 * i)])
+        if ([identifierCopy isEqualToString:*(*(&v11 + 1) + 8 * i)])
         {
           v8 = 1;
           goto LABEL_11;
@@ -1737,7 +1737,7 @@ LABEL_11:
   return v8;
 }
 
-- (void)appleKeyboardsPreferencesChanged:(id)a3
+- (void)appleKeyboardsPreferencesChanged:(id)changed
 {
   v11 = *MEMORY[0x277D85DE8];
   v4 = TIAssetsOSLogFacility();
@@ -1751,9 +1751,9 @@ LABEL_11:
 
   if ([MEMORY[0x277CCACC8] isMainThread])
   {
-    v8 = self;
-    v6 = [(TIAssetManager *)self activeInputModeLevels];
-    [(TIAssetManager *)v8 updateAssertionsForInputModes:v6];
+    selfCopy = self;
+    activeInputModeLevels = [(TIAssetManager *)self activeInputModeLevels];
+    [(TIAssetManager *)selfCopy updateAssertionsForInputModes:activeInputModeLevels];
   }
 
   else
@@ -1776,16 +1776,16 @@ void __51__TIAssetManager_appleKeyboardsPreferencesChanged___block_invoke_2(uint
   [*(a1 + 32) updateAssertionsForInputModes:v2];
 }
 
-- (void)didUpdateAssetsWithType:(id)a3
+- (void)didUpdateAssetsWithType:(id)type
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  typeCopy = type;
   v4 = TIAssetsOSLogFacility();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s Handling DDS update of asset type: %@", "-[TIAssetManager didUpdateAssetsWithType:]", v3];
+    typeCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%s Handling DDS update of asset type: %@", "-[TIAssetManager didUpdateAssetsWithType:]", typeCopy];
     *buf = 138412290;
-    v8 = v5;
+    v8 = typeCopy;
     _os_log_impl(&dword_22CA55000, v4, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
   }
 
@@ -1828,74 +1828,74 @@ uint64_t __42__TIAssetManager_didUpdateAssetsWithType___block_invoke_3(uint64_t 
 
 - (void)unregisterForNotifications
 {
-  v3 = [MEMORY[0x277D04010] sharedInstance];
-  [v3 unregisterDelegate:self];
+  mEMORY[0x277D04010] = [MEMORY[0x277D04010] sharedInstance];
+  [mEMORY[0x277D04010] unregisterDelegate:self];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 }
 
 - (void)registerForNotifications
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel_appleKeyboardsPreferencesChanged_ name:@"AppleKeyboardsPreferencesChangedNotification_Private" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_appleKeyboardsPreferencesChanged_ name:@"AppleKeyboardsPreferencesChangedNotification_Private" object:0];
 
-  v4 = [MEMORY[0x277D04010] sharedInstance];
-  [v4 registerDelegate:self];
+  mEMORY[0x277D04010] = [MEMORY[0x277D04010] sharedInstance];
+  [mEMORY[0x277D04010] registerDelegate:self];
 
   [(TIAssetManager *)self registerCacheDeleteCallbacks];
 }
 
-- (void)removeLinguisticAssetsAssertionWithIdentifier:(id)a3 forClientID:(id)a4 withHandler:(id)a5
+- (void)removeLinguisticAssetsAssertionWithIdentifier:(id)identifier forClientID:(id)d withHandler:(id)handler
 {
   v6 = MEMORY[0x277D04010];
-  v9 = a5;
-  v7 = a3;
-  v8 = [v6 sharedInstance];
-  [v8 removeAssertionWithIdentifier:v7];
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  sharedInstance = [v6 sharedInstance];
+  [sharedInstance removeAssertionWithIdentifier:identifierCopy];
 
-  v9[2](v9, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
-- (void)addLinguisticAssetsAssertionForLanguage:(id)a3 assertionID:(id)a4 region:(id)a5 clientID:(id)a6 withHandler:(id)a7
+- (void)addLinguisticAssetsAssertionForLanguage:(id)language assertionID:(id)d region:(id)region clientID:(id)iD withHandler:(id)handler
 {
-  v22 = a5;
-  v12 = a7;
-  v13 = a6;
-  v14 = a4;
-  v15 = [(TIAssetManager *)self ddsLanguageIdentifierFromInputMode:a3];
+  regionCopy = region;
+  handlerCopy = handler;
+  iDCopy = iD;
+  dCopy = d;
+  v15 = [(TIAssetManager *)self ddsLanguageIdentifierFromInputMode:language];
   v16 = [objc_alloc(MEMORY[0x277D04020]) initWithLanguageIdentifier:v15];
   [v16 setLocalOnly:0];
   [v16 setInstalledOnly:0];
-  if ([v22 count])
+  if ([regionCopy count])
   {
-    v17 = [v22 objectForKey:*MEMORY[0x277D03FE8]];
-    v18 = [v22 objectForKey:*MEMORY[0x277D03FF0]];
-    v19 = [v22 objectForKey:*MEMORY[0x277D03FE0]];
+    v17 = [regionCopy objectForKey:*MEMORY[0x277D03FE8]];
+    v18 = [regionCopy objectForKey:*MEMORY[0x277D03FF0]];
+    v19 = [regionCopy objectForKey:*MEMORY[0x277D03FE0]];
     [v16 addRegionWithCountry:v17 province:v18 city:v19];
   }
 
   v20 = objc_alloc_init(MEMORY[0x277D04018]);
   [v20 setPreferredDownloadFrequency:1];
-  v21 = [MEMORY[0x277D04010] sharedInstance];
-  [v21 addAssertionForAssetsWithQuery:v16 policy:v20 assertionID:v14 clientID:v13];
+  mEMORY[0x277D04010] = [MEMORY[0x277D04010] sharedInstance];
+  [mEMORY[0x277D04010] addAssertionForAssetsWithQuery:v16 policy:v20 assertionID:dCopy clientID:iDCopy];
 
-  v12[2](v12, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
-- (void)requestAssetDownloadForLanguage:(id)a3 completion:(id)a4
+- (void)requestAssetDownloadForLanguage:(id)language completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  languageCopy = language;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __61__TIAssetManager_requestAssetDownloadForLanguage_completion___block_invoke;
   v10[3] = &unk_2787313D8;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = languageCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = languageCopy;
   [(TIAssetManager *)self getActiveRegionsWithCompletion:v10];
 }
 
@@ -1959,11 +1959,11 @@ void __61__TIAssetManager_requestAssetDownloadForLanguage_completion___block_inv
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_warmAssetQueryForLanguage:(id)a3
+- (void)_warmAssetQueryForLanguage:(id)language
 {
-  v4 = a3;
-  v5 = [(TIAssetManager *)self dispatchQueue];
-  v6 = v4;
+  languageCopy = language;
+  dispatchQueue = [(TIAssetManager *)self dispatchQueue];
+  v6 = languageCopy;
   TIDispatchAsync();
 }
 
@@ -2037,11 +2037,11 @@ void __45__TIAssetManager__warmAssetQueryForLanguage___block_invoke(uint64_t a1)
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_warmLDEnumerateAssetQueriesForInputMode:(id)a3
+- (void)_warmLDEnumerateAssetQueriesForInputMode:(id)mode
 {
-  v4 = a3;
-  v5 = [(TIAssetManager *)self dispatchQueue];
-  v6 = v4;
+  modeCopy = mode;
+  dispatchQueue = [(TIAssetManager *)self dispatchQueue];
+  v6 = modeCopy;
   TIDispatchAsync();
 }
 
@@ -2092,15 +2092,15 @@ void __59__TIAssetManager__warmLDEnumerateAssetQueriesForInputMode___block_invok
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_warmAssetQueriesForInputModes:(id)a3
+- (void)_warmAssetQueriesForInputModes:(id)modes
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  modesCopy = modes;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [modesCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2111,7 +2111,7 @@ void __59__TIAssetManager__warmLDEnumerateAssetQueriesForInputMode___block_invok
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(modesCopy);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -2120,7 +2120,7 @@ void __59__TIAssetManager__warmLDEnumerateAssetQueriesForInputMode___block_invok
         [(TIAssetManager *)self _warmLDEnumerateAssetQueriesForInputMode:v9];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [modesCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -2129,61 +2129,61 @@ void __59__TIAssetManager__warmLDEnumerateAssetQueriesForInputMode___block_invok
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_ddsContentItemsFromAssets:(id)a3 contentType:(id)a4 filteredWithRegion:(BOOL)a5
+- (id)_ddsContentItemsFromAssets:(id)assets contentType:(id)type filteredWithRegion:(BOOL)region
 {
-  v5 = a5;
+  regionCopy = region;
   v47 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  assetsCopy = assets;
+  typeCopy = type;
   v10 = TIAssetsOSLogFacility();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = MEMORY[0x277CCACA8];
-    v12 = [v8 count];
+    v12 = [assetsCopy count];
     v13 = "NO";
-    if (v5)
+    if (regionCopy)
     {
       v13 = "YES";
     }
 
-    v14 = [v11 stringWithFormat:@"%s Filtering content items from %lu asset(s) for contentType '%@' (filteredWithRegion: %s)", "-[TIAssetManager _ddsContentItemsFromAssets:contentType:filteredWithRegion:]", v12, v9, v13];
+    v14 = [v11 stringWithFormat:@"%s Filtering content items from %lu asset(s) for contentType '%@' (filteredWithRegion: %s)", "-[TIAssetManager _ddsContentItemsFromAssets:contentType:filteredWithRegion:]", v12, typeCopy, v13];
     *buf = 138412290;
     v46 = v14;
     _os_log_impl(&dword_22CA55000, v10, OS_LOG_TYPE_INFO, "%@", buf, 0xCu);
   }
 
-  if ([v8 count])
+  if ([assetsCopy count])
   {
-    v15 = [MEMORY[0x277D04028] attributeFilter];
-    [v15 addContentType:v9];
-    if ([v9 isEqualToString:@"LanguageModel"])
+    attributeFilter = [MEMORY[0x277D04028] attributeFilter];
+    [attributeFilter addContentType:typeCopy];
+    if ([typeCopy isEqualToString:@"LanguageModel"])
     {
-      [v15 addContentType:@"MultilingualLanguageModel"];
+      [attributeFilter addContentType:@"MultilingualLanguageModel"];
     }
 
-    if (v5)
+    if (regionCopy)
     {
-      v36 = v5;
-      v37 = v9;
-      v38 = v8;
+      v36 = regionCopy;
+      v37 = typeCopy;
+      v38 = assetsCopy;
       v42 = 0u;
       v43 = 0u;
       v40 = 0u;
       v41 = 0u;
-      v16 = [(TIAssetManager *)self topActiveRegions];
-      v17 = [v16 countByEnumeratingWithState:&v40 objects:v44 count:16];
+      topActiveRegions = [(TIAssetManager *)self topActiveRegions];
+      v17 = [topActiveRegions countByEnumeratingWithState:&v40 objects:v44 count:16];
       if (v17)
       {
         v18 = v17;
         v19 = *v41;
-        v39 = v16;
+        v39 = topActiveRegions;
         do
         {
           for (i = 0; i != v18; ++i)
           {
             if (*v41 != v19)
             {
-              objc_enumerationMutation(v16);
+              objc_enumerationMutation(topActiveRegions);
             }
 
             v21 = *(*(&v40 + 1) + 8 * i);
@@ -2198,26 +2198,26 @@ void __59__TIAssetManager__warmLDEnumerateAssetQueriesForInputMode___block_invok
               v46 = v26;
               _os_log_debug_impl(&dword_22CA55000, v25, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
 
-              v16 = v39;
+              topActiveRegions = v39;
             }
 
-            [v15 addRegionWithCountry:v22 province:v23 city:v24];
+            [attributeFilter addRegionWithCountry:v22 province:v23 city:v24];
           }
 
-          v18 = [v16 countByEnumeratingWithState:&v40 objects:v44 count:16];
+          v18 = [topActiveRegions countByEnumeratingWithState:&v40 objects:v44 count:16];
         }
 
         while (v18);
       }
 
-      v9 = v37;
-      v8 = v38;
-      v5 = v36;
+      typeCopy = v37;
+      assetsCopy = v38;
+      regionCopy = v36;
     }
 
-    [v15 addRegionWithCountry:&stru_283FDFAF8 province:&stru_283FDFAF8 city:&stru_283FDFAF8];
-    v27 = [MEMORY[0x277D04010] sharedInstance];
-    v28 = [v27 contentItemsFromAssets:v8 matchingFilter:v15];
+    [attributeFilter addRegionWithCountry:&stru_283FDFAF8 province:&stru_283FDFAF8 city:&stru_283FDFAF8];
+    mEMORY[0x277D04010] = [MEMORY[0x277D04010] sharedInstance];
+    v28 = [mEMORY[0x277D04010] contentItemsFromAssets:assetsCopy matchingFilter:attributeFilter];
 
     v29 = TIAssetsOSLogFacility();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
@@ -2225,12 +2225,12 @@ void __59__TIAssetManager__warmLDEnumerateAssetQueriesForInputMode___block_invok
       v30 = MEMORY[0x277CCACA8];
       v31 = [v28 count];
       v32 = "NO";
-      if (v5)
+      if (regionCopy)
       {
         v32 = "YES";
       }
 
-      v33 = [v30 stringWithFormat:@"%s Found %lu content item(s) for contentType '%@' (filteredWithRegion: %s)", "-[TIAssetManager _ddsContentItemsFromAssets:contentType:filteredWithRegion:]", v31, v9, v32];
+      v33 = [v30 stringWithFormat:@"%s Found %lu content item(s) for contentType '%@' (filteredWithRegion: %s)", "-[TIAssetManager _ddsContentItemsFromAssets:contentType:filteredWithRegion:]", v31, typeCopy, v32];
       *buf = 138412290;
       v46 = v33;
       _os_log_impl(&dword_22CA55000, v29, OS_LOG_TYPE_INFO, "%@", buf, 0xCu);
@@ -2247,14 +2247,14 @@ void __59__TIAssetManager__warmLDEnumerateAssetQueriesForInputMode___block_invok
   return v28;
 }
 
-- (void)ddsAssetsForInputMode:(id)a3 cachedOnly:(BOOL)a4 completion:(id)a5
+- (void)ddsAssetsForInputMode:(id)mode cachedOnly:(BOOL)only completion:(id)completion
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [(TIAssetManager *)self dispatchQueue];
-  v12 = v8;
-  v10 = v7;
-  v11 = v8;
+  modeCopy = mode;
+  completionCopy = completion;
+  dispatchQueue = [(TIAssetManager *)self dispatchQueue];
+  v12 = completionCopy;
+  v10 = modeCopy;
+  v11 = completionCopy;
   TIDispatchAsync();
 }
 
@@ -2271,17 +2271,17 @@ void __62__TIAssetManager_ddsAssetsForInputMode_cachedOnly_completion___block_in
   }
 }
 
-- (void)ddsAssetContentItemsWithContentType:(id)a3 inputMode:(id)a4 filteredWithRegion:(BOOL)a5 completion:(id)a6
+- (void)ddsAssetContentItemsWithContentType:(id)type inputMode:(id)mode filteredWithRegion:(BOOL)region completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = [(TIAssetManager *)self dispatchQueue];
-  v16 = v10;
-  v17 = v11;
-  v13 = v11;
-  v14 = v9;
-  v15 = v10;
+  typeCopy = type;
+  modeCopy = mode;
+  completionCopy = completion;
+  dispatchQueue = [(TIAssetManager *)self dispatchQueue];
+  v16 = modeCopy;
+  v17 = completionCopy;
+  v13 = completionCopy;
+  v14 = typeCopy;
+  v15 = modeCopy;
   TIDispatchAsync();
 }
 
@@ -2300,9 +2300,9 @@ void __94__TIAssetManager_ddsAssetContentItemsWithContentType_inputMode_filtered
   }
 }
 
-- (void)setEnabledInputModeIdentifiersProviderBlock:(id)a3
+- (void)setEnabledInputModeIdentifiersProviderBlock:(id)block
 {
-  v4 = [a3 copy];
+  v4 = [block copy];
   enabledInputModeIdentifiersProviderBlock = self->_enabledInputModeIdentifiersProviderBlock;
   self->_enabledInputModeIdentifiersProviderBlock = v4;
 
@@ -2317,11 +2317,11 @@ void __94__TIAssetManager_ddsAssetContentItemsWithContentType_inputMode_filtered
   [(TIAssetManager *)&v3 dealloc];
 }
 
-- (TIAssetManager)initWithRequestedInputModes:(id)a3 inputModePreferenceProvider:(id)a4 enabledInputModesProvider:(id)a5
+- (TIAssetManager)initWithRequestedInputModes:(id)modes inputModePreferenceProvider:(id)provider enabledInputModesProvider:(id)modesProvider
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  modesCopy = modes;
+  providerCopy = provider;
+  modesProviderCopy = modesProvider;
   v40.receiver = self;
   v40.super_class = TIAssetManager;
   v11 = [(TIAssetManager *)&v40 init];
@@ -2332,9 +2332,9 @@ void __94__TIAssetManager_ddsAssetContentItemsWithContentType_inputMode_filtered
     dispatchQueue = v11->_dispatchQueue;
     v11->_dispatchQueue = v13;
 
-    if (v8)
+    if (modesCopy)
     {
-      v15 = v8;
+      v15 = modesCopy;
       requestedInputModes = v11->_requestedInputModes;
       v11->_requestedInputModes = v15;
     }
@@ -2352,9 +2352,9 @@ void __94__TIAssetManager_ddsAssetContentItemsWithContentType_inputMode_filtered
     v21 = MEMORY[0x277CBEBF8];
     v11->_requestedInputModes_mainThreadCache = MEMORY[0x277CBEBF8];
 
-    if (v9)
+    if (providerCopy)
     {
-      v22 = v9;
+      v22 = providerCopy;
     }
 
     else
@@ -2365,7 +2365,7 @@ void __94__TIAssetManager_ddsAssetContentItemsWithContentType_inputMode_filtered
     inputModePreferenceProvider = v11->_inputModePreferenceProvider;
     v11->_inputModePreferenceProvider = v22;
 
-    v24 = [v10 copy];
+    v24 = [modesProviderCopy copy];
     enabledInputModeIdentifiersProviderBlock = v11->_enabledInputModeIdentifiersProviderBlock;
     v11->_enabledInputModeIdentifiersProviderBlock = v24;
 
@@ -2439,38 +2439,38 @@ uint64_t __100__TIAssetManager_initWithRequestedInputModes_inputModePreferencePr
   return [v2 scheduleAssetsDidChangeNotificationWithDelay:3.0];
 }
 
-+ (int64_t)assetUpdateStatusforDDSAssetUpdateStatus:(int64_t)a3
++ (int64_t)assetUpdateStatusforDDSAssetUpdateStatus:(int64_t)status
 {
-  v3 = a3;
+  statusCopy = status;
   v10 = *MEMORY[0x277D85DE8];
-  if (a3 >= 3)
+  if (status >= 3)
   {
     v4 = TIAssetsOSLogFacility();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
-      v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s Unexpected asset update status: %ld returned from the data delivery service", "+[TIAssetManager assetUpdateStatusforDDSAssetUpdateStatus:]", v3];
+      statusCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%s Unexpected asset update status: %ld returned from the data delivery service", "+[TIAssetManager assetUpdateStatusforDDSAssetUpdateStatus:]", statusCopy];
       *buf = 138412290;
-      v9 = v7;
+      v9 = statusCopy;
       _os_log_error_impl(&dword_22CA55000, v4, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
     }
 
-    v3 = 0;
+    statusCopy = 0;
   }
 
   v5 = *MEMORY[0x277D85DE8];
-  return v3;
+  return statusCopy;
 }
 
-+ (id)_regionFromAddress:(id)a3
++ (id)_regionFromAddress:(id)address
 {
   v16[3] = *MEMORY[0x277D85DE8];
   v15[0] = @"City";
-  v3 = a3;
-  v4 = [v3 city];
-  v5 = v4;
-  if (v4)
+  addressCopy = address;
+  city = [addressCopy city];
+  v5 = city;
+  if (city)
   {
-    v6 = v4;
+    v6 = city;
   }
 
   else
@@ -2480,11 +2480,11 @@ uint64_t __100__TIAssetManager_initWithRequestedInputModes_inputModePreferencePr
 
   v16[0] = v6;
   v15[1] = @"Province";
-  v7 = [v3 state];
-  v8 = v7;
-  if (v7)
+  state = [addressCopy state];
+  v8 = state;
+  if (state)
   {
-    v9 = v7;
+    v9 = state;
   }
 
   else
@@ -2494,11 +2494,11 @@ uint64_t __100__TIAssetManager_initWithRequestedInputModes_inputModePreferencePr
 
   v16[1] = v9;
   v15[2] = @"Country";
-  v10 = [v3 country];
+  country = [addressCopy country];
 
-  if (v10)
+  if (country)
   {
-    v11 = v10;
+    v11 = country;
   }
 
   else
@@ -2514,34 +2514,34 @@ uint64_t __100__TIAssetManager_initWithRequestedInputModes_inputModePreferencePr
   return v12;
 }
 
-+ (id)_addressFromRegion:(id)a3
++ (id)_addressFromRegion:(id)region
 {
   v3 = MEMORY[0x277CBDB60];
-  v4 = a3;
+  regionCopy = region;
   v5 = objc_alloc_init(v3);
-  v6 = [v4 objectForKeyedSubscript:@"City"];
+  v6 = [regionCopy objectForKeyedSubscript:@"City"];
   [v5 setCity:v6];
 
-  v7 = [v4 objectForKeyedSubscript:@"Province"];
+  v7 = [regionCopy objectForKeyedSubscript:@"Province"];
   [v5 setState:v7];
 
-  v8 = [v4 objectForKeyedSubscript:@"Country"];
+  v8 = [regionCopy objectForKeyedSubscript:@"Country"];
 
   [v5 setCountry:v8];
 
   return v5;
 }
 
-+ (id)singletonInstanceWithEnabledInputModesProvider:(id)a3
++ (id)singletonInstanceWithEnabledInputModesProvider:(id)provider
 {
-  v3 = a3;
+  providerCopy = provider;
   if (TI_DEVICE_UNLOCKED_SINCE_BOOT())
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __65__TIAssetManager_singletonInstanceWithEnabledInputModesProvider___block_invoke;
     block[3] = &unk_2787338C0;
-    v7 = v3;
+    v7 = providerCopy;
     if (singletonInstanceWithEnabledInputModesProvider__onceToken != -1)
     {
       dispatch_once(&singletonInstanceWithEnabledInputModesProvider__onceToken, block);
@@ -2565,7 +2565,7 @@ uint64_t __65__TIAssetManager_singletonInstanceWithEnabledInputModesProvider___b
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)sharedAssetManagerWithEnabledInputModesProvider:(id)a3
++ (id)sharedAssetManagerWithEnabledInputModesProvider:(id)provider
 {
   if (__testingInstance_7212)
   {
@@ -2574,20 +2574,20 @@ uint64_t __65__TIAssetManager_singletonInstanceWithEnabledInputModesProvider___b
 
   else
   {
-    v3 = [TIAssetManager singletonInstanceWithEnabledInputModesProvider:a3];
+    v3 = [TIAssetManager singletonInstanceWithEnabledInputModesProvider:provider];
   }
 
   return v3;
 }
 
-+ (void)setSharedAssetManager:(id)a3
++ (void)setSharedAssetManager:(id)manager
 {
-  v4 = a3;
-  if (__testingInstance_7212 != v4)
+  managerCopy = manager;
+  if (__testingInstance_7212 != managerCopy)
   {
-    v5 = v4;
-    objc_storeStrong(&__testingInstance_7212, a3);
-    v4 = v5;
+    v5 = managerCopy;
+    objc_storeStrong(&__testingInstance_7212, manager);
+    managerCopy = v5;
   }
 }
 

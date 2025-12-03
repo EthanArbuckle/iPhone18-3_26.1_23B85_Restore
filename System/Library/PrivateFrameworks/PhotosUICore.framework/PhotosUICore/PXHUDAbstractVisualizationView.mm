@@ -1,19 +1,19 @@
 @interface PXHUDAbstractVisualizationView
-- (void)setVisualization:(id)a3;
+- (void)setVisualization:(id)visualization;
 @end
 
 @implementation PXHUDAbstractVisualizationView
 
-- (void)setVisualization:(id)a3
+- (void)setVisualization:(id)visualization
 {
-  v5 = a3;
-  if (self->_visualization != v5)
+  visualizationCopy = visualization;
+  if (self->_visualization != visualizationCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_visualization, a3);
+    v6 = visualizationCopy;
+    objc_storeStrong(&self->_visualization, visualization);
     [(PXHUDVisualization *)self->_visualization setDelegate:self];
     [(PXHUDAbstractVisualizationView *)self visualizationDidUpdate];
-    v5 = v6;
+    visualizationCopy = v6;
   }
 }
 

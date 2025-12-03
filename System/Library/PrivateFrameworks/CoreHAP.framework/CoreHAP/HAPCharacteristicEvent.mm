@@ -1,56 +1,56 @@
 @interface HAPCharacteristicEvent
-+ (id)eventWithCharacteristic:(id)a3;
-- (HAPCharacteristicEvent)initWithCharacteristic:(id)a3;
++ (id)eventWithCharacteristic:(id)characteristic;
+- (HAPCharacteristicEvent)initWithCharacteristic:(id)characteristic;
 @end
 
 @implementation HAPCharacteristicEvent
 
-- (HAPCharacteristicEvent)initWithCharacteristic:(id)a3
+- (HAPCharacteristicEvent)initWithCharacteristic:(id)characteristic
 {
-  v4 = a3;
+  characteristicCopy = characteristic;
   v23.receiver = self;
   v23.super_class = HAPCharacteristicEvent;
   v5 = [(HAPCharacteristicEvent *)&v23 init];
   if (v5)
   {
-    v6 = [v4 service];
-    v7 = [v6 accessory];
-    v8 = [v7 serverIdentifier];
+    service = [characteristicCopy service];
+    accessory = [service accessory];
+    serverIdentifier = [accessory serverIdentifier];
     serverIdentifier = v5->_serverIdentifier;
-    v5->_serverIdentifier = v8;
+    v5->_serverIdentifier = serverIdentifier;
 
-    v10 = [v7 instanceID];
+    instanceID = [accessory instanceID];
     accessoryInstanceID = v5->_accessoryInstanceID;
-    v5->_accessoryInstanceID = v10;
+    v5->_accessoryInstanceID = instanceID;
 
-    v12 = [v6 instanceID];
+    instanceID2 = [service instanceID];
     serviceInstanceID = v5->_serviceInstanceID;
-    v5->_serviceInstanceID = v12;
+    v5->_serviceInstanceID = instanceID2;
 
-    v14 = [v4 instanceID];
+    instanceID3 = [characteristicCopy instanceID];
     characteristicInstanceID = v5->_characteristicInstanceID;
-    v5->_characteristicInstanceID = v14;
+    v5->_characteristicInstanceID = instanceID3;
 
-    v16 = [v4 value];
+    value = [characteristicCopy value];
     value = v5->_value;
-    v5->_value = v16;
+    v5->_value = value;
 
-    v18 = [v4 stateNumber];
+    stateNumber = [characteristicCopy stateNumber];
     stateNumber = v5->_stateNumber;
-    v5->_stateNumber = v18;
+    v5->_stateNumber = stateNumber;
 
-    v20 = [v4 valueUpdatedTime];
+    valueUpdatedTime = [characteristicCopy valueUpdatedTime];
     updateTime = v5->_updateTime;
-    v5->_updateTime = v20;
+    v5->_updateTime = valueUpdatedTime;
   }
 
   return v5;
 }
 
-+ (id)eventWithCharacteristic:(id)a3
++ (id)eventWithCharacteristic:(id)characteristic
 {
-  v3 = a3;
-  v4 = [[HAPCharacteristicEvent alloc] initWithCharacteristic:v3];
+  characteristicCopy = characteristic;
+  v4 = [[HAPCharacteristicEvent alloc] initWithCharacteristic:characteristicCopy];
 
   return v4;
 }

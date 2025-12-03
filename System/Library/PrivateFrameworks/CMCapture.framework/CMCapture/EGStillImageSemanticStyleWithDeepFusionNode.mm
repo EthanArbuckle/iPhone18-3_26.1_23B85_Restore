@@ -1,22 +1,22 @@
 @interface EGStillImageSemanticStyleWithDeepFusionNode
-- (EGStillImageSemanticStyleWithDeepFusionNode)initWithName:(id)a3 stillImageSettings:(id)a4 resourceCoordinator:(id)a5 portType:(id)a6 delegate:(id)a7;
+- (EGStillImageSemanticStyleWithDeepFusionNode)initWithName:(id)name stillImageSettings:(id)settings resourceCoordinator:(id)coordinator portType:(id)type delegate:(id)delegate;
 - (void)dealloc;
-- (void)processorController:(id)a3 didFinishProcessingSampleBuffer:(opaqueCMSampleBuffer *)a4 type:(unint64_t)a5 processorInput:(id)a6 err:(int)a7;
-- (void)queueManagedReceiveData:(id)a3 fromInputGroup:(id)a4;
+- (void)processorController:(id)controller didFinishProcessingSampleBuffer:(opaqueCMSampleBuffer *)buffer type:(unint64_t)type processorInput:(id)input err:(int)err;
+- (void)queueManagedReceiveData:(id)data fromInputGroup:(id)group;
 @end
 
 @implementation EGStillImageSemanticStyleWithDeepFusionNode
 
-- (EGStillImageSemanticStyleWithDeepFusionNode)initWithName:(id)a3 stillImageSettings:(id)a4 resourceCoordinator:(id)a5 portType:(id)a6 delegate:(id)a7
+- (EGStillImageSemanticStyleWithDeepFusionNode)initWithName:(id)name stillImageSettings:(id)settings resourceCoordinator:(id)coordinator portType:(id)type delegate:(id)delegate
 {
   v16.receiver = self;
   v16.super_class = EGStillImageSemanticStyleWithDeepFusionNode;
-  v10 = [(EGStillImageProcessorControllerDelegateNode *)&v16 initWithName:a3 delegate:a7];
+  v10 = [(EGStillImageProcessorControllerDelegateNode *)&v16 initWithName:name delegate:delegate];
   if (v10)
   {
-    v10->_stillImageSettings = a4;
-    v10->_resourceCoordinator = a5;
-    v10->_portType = a6;
+    v10->_stillImageSettings = settings;
+    v10->_resourceCoordinator = coordinator;
+    v10->_portType = type;
     v11 = [[EGInputGroup alloc] initWithName:@"mainInputGroup"];
     v12 = +[EGStillImageProcessorControllerDelegateNode newProcessorControllerInput];
     v10->_processorInput = v12;
@@ -40,10 +40,10 @@
   [(EGQueueManagementNode *)&v3 dealloc];
 }
 
-- (void)queueManagedReceiveData:(id)a3 fromInputGroup:(id)a4
+- (void)queueManagedReceiveData:(id)data fromInputGroup:(id)group
 {
-  v6 = [objc_msgSend(a3 objectForKeyedSubscript:{-[EGInput name](self->_sbufInput, "name", a3, a4)), "sampleBuffer"}];
-  if (v6 && (v7 = v6, (v8 = [objc_msgSend(a3 objectForKeyedSubscript:{-[EGInput name](-[EGStillImageSemanticStyleWithDeepFusionNode processorInput](self, "processorInput"), "name")), "processorController"}]) != 0) && (v9 = v8, (v10 = +[BWDeepFusionProcessorInput inputForOnlyApplyingSemanticStyleWithSettings:portType:](BWDeepFusionProcessorInput, "inputForOnlyApplyingSemanticStyleWithSettings:portType:", self->_stillImageSettings, self->_portType)) != 0))
+  v6 = [objc_msgSend(data objectForKeyedSubscript:{-[EGInput name](self->_sbufInput, "name", data, group)), "sampleBuffer"}];
+  if (v6 && (v7 = v6, (v8 = [objc_msgSend(data objectForKeyedSubscript:{-[EGInput name](-[EGStillImageSemanticStyleWithDeepFusionNode processorInput](self, "processorInput"), "name")), "processorController"}]) != 0) && (v9 = v8, (v10 = +[BWDeepFusionProcessorInput inputForOnlyApplyingSemanticStyleWithSettings:portType:](BWDeepFusionProcessorInput, "inputForOnlyApplyingSemanticStyleWithSettings:portType:", self->_stillImageSettings, self->_portType)) != 0))
   {
     v11 = v10;
     [(BWPhotonicEngineNodeResourceCoordinator *)self->_resourceCoordinator flushDeepFusionEnhancedResolutionOutputPool];
@@ -69,22 +69,22 @@
   }
 }
 
-- (void)processorController:(id)a3 didFinishProcessingSampleBuffer:(opaqueCMSampleBuffer *)a4 type:(unint64_t)a5 processorInput:(id)a6 err:(int)a7
+- (void)processorController:(id)controller didFinishProcessingSampleBuffer:(opaqueCMSampleBuffer *)buffer type:(unint64_t)type processorInput:(id)input err:(int)err
 {
-  if (a7)
+  if (err)
   {
     goto LABEL_7;
   }
 
-  if (!a4)
+  if (!buffer)
   {
-    *&a7 = 4294954516;
+    *&err = 4294954516;
 LABEL_7:
-    [EGStillImageSemanticStyleWithDeepFusionNode processorController:*&a7 didFinishProcessingSampleBuffer:? type:? processorInput:? err:?];
+    [EGStillImageSemanticStyleWithDeepFusionNode processorController:*&err didFinishProcessingSampleBuffer:? type:? processorInput:? err:?];
     return;
   }
 
-  v8 = [[EGStillImageGraphPayload alloc] initWithSampleBuffer:a4];
+  v8 = [[EGStillImageGraphPayload alloc] initWithSampleBuffer:buffer];
   [(EGStillImageOutput *)self->_sbufOutput emitPayload:v8];
 }
 

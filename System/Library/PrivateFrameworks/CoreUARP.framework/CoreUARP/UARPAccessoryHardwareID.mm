@@ -1,6 +1,6 @@
 @interface UARPAccessoryHardwareID
 - (UARPAccessoryHardwareID)init;
-- (UARPAccessoryHardwareID)initWithTransport:(int64_t)a3;
+- (UARPAccessoryHardwareID)initWithTransport:(int64_t)transport;
 @end
 
 @implementation UARPAccessoryHardwareID
@@ -12,14 +12,14 @@
   return 0;
 }
 
-- (UARPAccessoryHardwareID)initWithTransport:(int64_t)a3
+- (UARPAccessoryHardwareID)initWithTransport:(int64_t)transport
 {
   v5.receiver = self;
   v5.super_class = UARPAccessoryHardwareID;
   result = [(UARPAccessoryHardwareID *)&v5 init];
   if (result)
   {
-    result->_transport = a3;
+    result->_transport = transport;
   }
 
   return result;

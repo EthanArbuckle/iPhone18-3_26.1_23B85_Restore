@@ -1,15 +1,15 @@
 @interface OpacitySliderView.Coordinator
 - (_TtCV8PaperKit17OpacitySliderView11Coordinator)init;
-- (void)didChange:(id)a3;
+- (void)didChange:(id)change;
 @end
 
 @implementation OpacitySliderView.Coordinator
 
-- (void)didChange:(id)a3
+- (void)didChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  OpacitySliderView.Coordinator.didChange(_:)(v4);
+  changeCopy = change;
+  selfCopy = self;
+  OpacitySliderView.Coordinator.didChange(_:)(changeCopy);
 }
 
 - (_TtCV8PaperKit17OpacitySliderView11Coordinator)init

@@ -1,18 +1,18 @@
 @interface _NAUIAmbigousLayoutView
-+ (void)installOnView:(id)a3 forVariable:(id)a4;
-- (void)drawRect:(CGRect)a3;
++ (void)installOnView:(id)view forVariable:(id)variable;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation _NAUIAmbigousLayoutView
 
-+ (void)installOnView:(id)a3 forVariable:(id)a4
++ (void)installOnView:(id)view forVariable:(id)variable
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v5;
+  viewCopy = view;
+  variableCopy = variable;
+  v7 = viewCopy;
   v8 = [v7 valueForKey:@"_boundsWidthVariable"];
 
-  if (v8 == v6)
+  if (v8 == variableCopy)
   {
     v14 = @".Width";
   }
@@ -21,7 +21,7 @@
   {
     v9 = [v7 valueForKey:@"_boundsHeightVariable"];
 
-    if (v9 == v6)
+    if (v9 == variableCopy)
     {
       v14 = @".Height";
     }
@@ -30,7 +30,7 @@
     {
       v10 = [v7 valueForKey:@"_minXVariable"];
 
-      if (v10 == v6)
+      if (v10 == variableCopy)
       {
         v14 = @".minX";
       }
@@ -39,7 +39,7 @@
       {
         v11 = [v7 valueForKey:@"_minYVariable"];
 
-        if (v11 == v6)
+        if (v11 == variableCopy)
         {
           v14 = @".minY";
         }
@@ -48,7 +48,7 @@
         {
           v12 = [v7 valueForKey:@"_contentWidthVariable"];
 
-          if (v12 == v6)
+          if (v12 == variableCopy)
           {
             v14 = @".contentWidth";
           }
@@ -57,7 +57,7 @@
           {
             v13 = [v7 valueForKey:@"_contentHeightVariable"];
 
-            if (v13 == v6)
+            if (v13 == variableCopy)
             {
               v14 = @".contentHeight";
             }
@@ -138,7 +138,7 @@
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
-      [_NAUIAmbigousLayoutView installOnView:v7 forVariable:v6];
+      [_NAUIAmbigousLayoutView installOnView:v7 forVariable:variableCopy];
     }
 
     v27 = [[_NAUIAmbigousLayoutView alloc] initWithFrame:v18, v19, v17, v20];
@@ -146,8 +146,8 @@
     if (_showAutolayoutIssues == 1)
     {
       [(_NAUIAmbigousLayoutView *)v27 setOpaque:0];
-      v29 = [MEMORY[0x277D75348] orangeColor];
-      [(_NAUIAmbigousLayoutView *)v28 setTintColor:v29];
+      orangeColor = [MEMORY[0x277D75348] orangeColor];
+      [(_NAUIAmbigousLayoutView *)v28 setTintColor:orangeColor];
 
       [v7 addSubview:v28];
       [v7 setClipsToBounds:0];
@@ -157,11 +157,11 @@
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   CurrentContext = UIGraphicsGetCurrentContext();
-  v5 = [(_NAUIAmbigousLayoutView *)self tintColor];
-  [v5 setFill];
+  tintColor = [(_NAUIAmbigousLayoutView *)self tintColor];
+  [tintColor setFill];
 
   [(_NAUIAmbigousLayoutView *)self bounds];
   Width = CGRectGetWidth(v23);

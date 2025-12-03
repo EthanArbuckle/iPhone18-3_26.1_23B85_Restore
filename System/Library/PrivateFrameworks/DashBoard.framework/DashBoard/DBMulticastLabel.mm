@@ -1,12 +1,12 @@
 @interface DBMulticastLabel
 - (CGSize)intrinsicContentSize;
-- (_TtC9DashBoard16DBMulticastLabel)initWithCoder:(id)a3;
-- (_TtC9DashBoard16DBMulticastLabel)initWithFrame:(CGRect)a3;
+- (_TtC9DashBoard16DBMulticastLabel)initWithCoder:(id)coder;
+- (_TtC9DashBoard16DBMulticastLabel)initWithFrame:(CGRect)frame;
 @end
 
 @implementation DBMulticastLabel
 
-- (_TtC9DashBoard16DBMulticastLabel)initWithCoder:(id)a3
+- (_TtC9DashBoard16DBMulticastLabel)initWithCoder:(id)coder
 {
   result = sub_248384580();
   __break(1u);
@@ -21,7 +21,7 @@
   return result;
 }
 
-- (_TtC9DashBoard16DBMulticastLabel)initWithFrame:(CGRect)a3
+- (_TtC9DashBoard16DBMulticastLabel)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

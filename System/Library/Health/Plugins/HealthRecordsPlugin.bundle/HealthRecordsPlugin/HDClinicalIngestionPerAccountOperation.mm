@@ -1,19 +1,19 @@
 @interface HDClinicalIngestionPerAccountOperation
-- (HDClinicalIngestionPerAccountOperation)initWithTask:(id)a3 account:(id)a4 nextOperation:(id)a5;
+- (HDClinicalIngestionPerAccountOperation)initWithTask:(id)task account:(id)account nextOperation:(id)operation;
 - (id)debugDescription;
 @end
 
 @implementation HDClinicalIngestionPerAccountOperation
 
-- (HDClinicalIngestionPerAccountOperation)initWithTask:(id)a3 account:(id)a4 nextOperation:(id)a5
+- (HDClinicalIngestionPerAccountOperation)initWithTask:(id)task account:(id)account nextOperation:(id)operation
 {
-  v8 = a4;
+  accountCopy = account;
   v13.receiver = self;
   v13.super_class = HDClinicalIngestionPerAccountOperation;
-  v9 = [(HDClinicalIngestionOperation *)&v13 initWithTask:a3 nextOperation:a5];
+  v9 = [(HDClinicalIngestionOperation *)&v13 initWithTask:task nextOperation:operation];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [accountCopy copy];
     account = v9->_account;
     v9->_account = v10;
   }
@@ -24,10 +24,10 @@
 - (id)debugDescription
 {
   v3 = objc_opt_class();
-  v4 = [(HDClinicalIngestionOperation *)self task];
-  v5 = [v4 taskIdentifier];
-  v6 = [(HDClinicalAccount *)self->_account identifier];
-  v7 = [NSString stringWithFormat:@"%@ task:%@ account:%@", v3, v5, v6];
+  task = [(HDClinicalIngestionOperation *)self task];
+  taskIdentifier = [task taskIdentifier];
+  identifier = [(HDClinicalAccount *)self->_account identifier];
+  v7 = [NSString stringWithFormat:@"%@ task:%@ account:%@", v3, taskIdentifier, identifier];
 
   return v7;
 }

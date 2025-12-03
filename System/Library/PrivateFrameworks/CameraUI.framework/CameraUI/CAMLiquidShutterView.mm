@@ -1,22 +1,22 @@
 @interface CAMLiquidShutterView
-- (_TtC8CameraUI20CAMLiquidShutterView)initWithCoder:(id)a3;
+- (_TtC8CameraUI20CAMLiquidShutterView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
-- (void)setShowDragHandle:(BOOL)a3;
+- (void)setShowDragHandle:(BOOL)handle;
 @end
 
 @implementation CAMLiquidShutterView
 
-- (void)setShowDragHandle:(BOOL)a3
+- (void)setShowDragHandle:(BOOL)handle
 {
   v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC8CameraUI20CAMLiquidShutterView_showDragHandle);
-  *(&self->super.super.super.isa + OBJC_IVAR____TtC8CameraUI20CAMLiquidShutterView_showDragHandle) = a3;
-  if (v3 != a3)
+  *(&self->super.super.super.isa + OBJC_IVAR____TtC8CameraUI20CAMLiquidShutterView_showDragHandle) = handle;
+  if (v3 != handle)
   {
     [(CAMLiquidShutterView *)self setNeedsLayout];
   }
 }
 
-- (_TtC8CameraUI20CAMLiquidShutterView)initWithCoder:(id)a3
+- (_TtC8CameraUI20CAMLiquidShutterView)initWithCoder:(id)coder
 {
   v3 = self + OBJC_IVAR____TtC8CameraUI20CAMLiquidShutterView_centerShape;
   *(v3 + 2) = *ymmword_1A3A6AD10;
@@ -39,7 +39,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A3993094();
 }
 

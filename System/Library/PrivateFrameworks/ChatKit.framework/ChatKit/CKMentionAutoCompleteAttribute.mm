@@ -1,26 +1,26 @@
 @interface CKMentionAutoCompleteAttribute
-- (CKMentionAutoCompleteAttribute)initWithMentionEntityNode:(id)a3 originalText:(id)a4 displayText:(id)a5;
+- (CKMentionAutoCompleteAttribute)initWithMentionEntityNode:(id)node originalText:(id)text displayText:(id)displayText;
 @end
 
 @implementation CKMentionAutoCompleteAttribute
 
-- (CKMentionAutoCompleteAttribute)initWithMentionEntityNode:(id)a3 originalText:(id)a4 displayText:(id)a5
+- (CKMentionAutoCompleteAttribute)initWithMentionEntityNode:(id)node originalText:(id)text displayText:(id)displayText
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  nodeCopy = node;
+  textCopy = text;
+  displayTextCopy = displayText;
   v19.receiver = self;
   v19.super_class = CKMentionAutoCompleteAttribute;
   v12 = [(CKMentionAutoCompleteAttribute *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_mentionEntityNode, a3);
-    v14 = [v10 copy];
+    objc_storeStrong(&v12->_mentionEntityNode, node);
+    v14 = [textCopy copy];
     originalText = v13->_originalText;
     v13->_originalText = v14;
 
-    v16 = [v11 copy];
+    v16 = [displayTextCopy copy];
     displayText = v13->_displayText;
     v13->_displayText = v16;
   }

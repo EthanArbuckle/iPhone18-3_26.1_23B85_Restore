@@ -1,26 +1,26 @@
 @interface CRLiOSInsertPageViewControllerTitlesPageControl
-- (CRLiOSInsertPageViewControllerTitlesPageControl)initWithTitles:(id)a3;
+- (CRLiOSInsertPageViewControllerTitlesPageControl)initWithTitles:(id)titles;
 - (UIButton)selectedButton;
 - (UIStackView)p_stackView;
-- (id)p_buttonAtIndex:(unint64_t)a3;
+- (id)p_buttonAtIndex:(unint64_t)index;
 - (unint64_t)p_buttonCount;
-- (unint64_t)p_indexOfButton:(id)a3;
-- (void)p_didTapButton:(id)a3;
-- (void)setSelectedTitleIndex:(unint64_t)a3;
+- (unint64_t)p_indexOfButton:(id)button;
+- (void)p_didTapButton:(id)button;
+- (void)setSelectedTitleIndex:(unint64_t)index;
 @end
 
 @implementation CRLiOSInsertPageViewControllerTitlesPageControl
 
-- (CRLiOSInsertPageViewControllerTitlesPageControl)initWithTitles:(id)a3
+- (CRLiOSInsertPageViewControllerTitlesPageControl)initWithTitles:(id)titles
 {
-  v4 = a3;
+  titlesCopy = titles;
   v34.receiver = self;
   v34.super_class = CRLiOSInsertPageViewControllerTitlesPageControl;
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v8 = [(CRLiOSInsertPageViewControllerTitlesPageControl *)&v34 initWithFrame:CGRectZero.origin.x, y, width, height];
-  if (v8)
+  height = [(CRLiOSInsertPageViewControllerTitlesPageControl *)&v34 initWithFrame:CGRectZero.origin.x, y, width, height];
+  if (height)
   {
     v9 = [[UIStackView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
     [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -44,49 +44,49 @@
     }
 
     [v9 setLayoutMargins:{8.0, v11, 8.0, v12}];
-    [(CRLiOSInsertPageViewControllerTitlesPageControl *)v8 addSubview:v9];
-    v13 = [v9 topAnchor];
-    v14 = [(CRLiOSInsertPageViewControllerTitlesPageControl *)v8 topAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
+    [(CRLiOSInsertPageViewControllerTitlesPageControl *)height addSubview:v9];
+    topAnchor = [v9 topAnchor];
+    topAnchor2 = [(CRLiOSInsertPageViewControllerTitlesPageControl *)height topAnchor];
+    v15 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v15 setActive:1];
 
-    v16 = [v9 leadingAnchor];
-    v17 = [(CRLiOSInsertPageViewControllerTitlesPageControl *)v8 leadingAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17];
+    leadingAnchor = [v9 leadingAnchor];
+    leadingAnchor2 = [(CRLiOSInsertPageViewControllerTitlesPageControl *)height leadingAnchor];
+    v18 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v18 setActive:1];
 
-    v19 = [v9 bottomAnchor];
-    v20 = [(CRLiOSInsertPageViewControllerTitlesPageControl *)v8 bottomAnchor];
-    v21 = [v19 constraintEqualToAnchor:v20];
+    bottomAnchor = [v9 bottomAnchor];
+    bottomAnchor2 = [(CRLiOSInsertPageViewControllerTitlesPageControl *)height bottomAnchor];
+    v21 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [v21 setActive:1];
 
-    v22 = [v9 trailingAnchor];
-    v23 = [(CRLiOSInsertPageViewControllerTitlesPageControl *)v8 trailingAnchor];
-    v24 = [v22 constraintEqualToAnchor:v23];
+    trailingAnchor = [v9 trailingAnchor];
+    trailingAnchor2 = [(CRLiOSInsertPageViewControllerTitlesPageControl *)height trailingAnchor];
+    v24 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [v24 setActive:1];
 
-    objc_storeWeak(&v8->_stackView, v9);
+    objc_storeWeak(&height->_stackView, v9);
     v28 = _NSConcreteStackBlock;
     v29 = 3221225472;
     v30 = sub_1002047F0;
     v31 = &unk_101848CF0;
-    v32 = v8;
+    v32 = height;
     v33 = v9;
     v25 = v9;
-    [v4 enumerateObjectsUsingBlock:&v28];
+    [titlesCopy enumerateObjectsUsingBlock:&v28];
     v26 = objc_alloc_init(UILargeContentViewerInteraction);
     [v25 addInteraction:{v26, v28, v29, v30, v31}];
   }
 
-  return v8;
+  return height;
 }
 
-- (void)setSelectedTitleIndex:(unint64_t)a3
+- (void)setSelectedTitleIndex:(unint64_t)index
 {
-  v5 = [(CRLiOSInsertPageViewControllerTitlesPageControl *)self p_buttonCount];
-  if (v5 <= a3)
+  p_buttonCount = [(CRLiOSInsertPageViewControllerTitlesPageControl *)self p_buttonCount];
+  if (p_buttonCount <= index)
   {
-    v8 = v5;
+    v8 = p_buttonCount;
     v9 = +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
     {
@@ -108,7 +108,7 @@
       v23 = 2112;
       v24 = objc_opt_class();
       v25 = 2048;
-      v26 = a3;
+      indexCopy = index;
       v27 = 2048;
       v28 = v8;
       _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "#Assert *** Assertion failure #%u: %{public}s %{public}s:%d %@: Attempted to set a selected title index of %lu but there are only %lu buttons.", buf, 0x40u);
@@ -127,70 +127,70 @@
 
     v12 = [NSString stringWithUTF8String:"[CRLiOSInsertPageViewControllerTitlesPageControl setSelectedTitleIndex:]"];
     v13 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/iOS/Views/CRLiOSInsertPageViewController.m"];
-    [CRLAssertionHandler handleFailureInFunction:v12 file:v13 lineNumber:185 isFatal:0 description:"%@: Attempted to set a selected title index of %lu but there are only %lu buttons.", objc_opt_class(), a3, v8];
+    [CRLAssertionHandler handleFailureInFunction:v12 file:v13 lineNumber:185 isFatal:0 description:"%@: Attempted to set a selected title index of %lu but there are only %lu buttons.", objc_opt_class(), index, v8];
   }
 
   else
   {
-    v6 = [(CRLiOSInsertPageViewControllerTitlesPageControl *)self selectedButton];
-    [v6 setSelected:0];
-    v7 = [(CRLiOSInsertPageViewControllerTitlesPageControl *)self p_buttonAtIndex:a3];
+    selectedButton = [(CRLiOSInsertPageViewControllerTitlesPageControl *)self selectedButton];
+    [selectedButton setSelected:0];
+    v7 = [(CRLiOSInsertPageViewControllerTitlesPageControl *)self p_buttonAtIndex:index];
     [v7 setSelected:1];
   }
 
-  self->_selectedTitleIndex = a3;
+  self->_selectedTitleIndex = index;
 }
 
 - (UIButton)selectedButton
 {
-  v3 = [(CRLiOSInsertPageViewControllerTitlesPageControl *)self selectedTitleIndex];
+  selectedTitleIndex = [(CRLiOSInsertPageViewControllerTitlesPageControl *)self selectedTitleIndex];
 
-  return [(CRLiOSInsertPageViewControllerTitlesPageControl *)self p_buttonAtIndex:v3];
+  return [(CRLiOSInsertPageViewControllerTitlesPageControl *)self p_buttonAtIndex:selectedTitleIndex];
 }
 
-- (id)p_buttonAtIndex:(unint64_t)a3
+- (id)p_buttonAtIndex:(unint64_t)index
 {
   v5 = objc_opt_class();
-  v6 = [(CRLiOSInsertPageViewControllerTitlesPageControl *)self p_stackView];
-  v7 = [v6 arrangedSubviews];
-  v8 = [v7 objectAtIndexedSubscript:a3];
+  p_stackView = [(CRLiOSInsertPageViewControllerTitlesPageControl *)self p_stackView];
+  arrangedSubviews = [p_stackView arrangedSubviews];
+  v8 = [arrangedSubviews objectAtIndexedSubscript:index];
   v9 = sub_100013F00(v5, v8);
 
   return v9;
 }
 
-- (unint64_t)p_indexOfButton:(id)a3
+- (unint64_t)p_indexOfButton:(id)button
 {
-  v4 = a3;
-  v5 = [(CRLiOSInsertPageViewControllerTitlesPageControl *)self p_stackView];
-  v6 = [v5 arrangedSubviews];
-  v7 = [v6 indexOfObject:v4];
+  buttonCopy = button;
+  p_stackView = [(CRLiOSInsertPageViewControllerTitlesPageControl *)self p_stackView];
+  arrangedSubviews = [p_stackView arrangedSubviews];
+  v7 = [arrangedSubviews indexOfObject:buttonCopy];
 
   return v7;
 }
 
 - (unint64_t)p_buttonCount
 {
-  v2 = [(CRLiOSInsertPageViewControllerTitlesPageControl *)self p_stackView];
-  v3 = [v2 arrangedSubviews];
-  v4 = [v3 count];
+  p_stackView = [(CRLiOSInsertPageViewControllerTitlesPageControl *)self p_stackView];
+  arrangedSubviews = [p_stackView arrangedSubviews];
+  v4 = [arrangedSubviews count];
 
   return v4;
 }
 
-- (void)p_didTapButton:(id)a3
+- (void)p_didTapButton:(id)button
 {
-  v4 = [(CRLiOSInsertPageViewControllerTitlesPageControl *)self p_indexOfButton:a3];
-  v5 = [(CRLiOSInsertPageViewControllerTitlesPageControl *)self selectedTitleIndex];
+  v4 = [(CRLiOSInsertPageViewControllerTitlesPageControl *)self p_indexOfButton:button];
+  selectedTitleIndex = [(CRLiOSInsertPageViewControllerTitlesPageControl *)self selectedTitleIndex];
   [(CRLiOSInsertPageViewControllerTitlesPageControl *)self setSelectedTitleIndex:v4];
-  if (v5 != v4)
+  if (selectedTitleIndex != v4)
   {
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v6 = [(CRLiOSInsertPageViewControllerTitlesPageControl *)self allTargets];
-    v7 = [v6 countByEnumeratingWithState:&v21 objects:v26 count:16];
+    allTargets = [(CRLiOSInsertPageViewControllerTitlesPageControl *)self allTargets];
+    v7 = [allTargets countByEnumeratingWithState:&v21 objects:v26 count:16];
     if (v7)
     {
       v8 = v7;
@@ -202,7 +202,7 @@
         {
           if (*v22 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allTargets);
           }
 
           v11 = *(*(&v21 + 1) + 8 * v10);
@@ -241,7 +241,7 @@
         }
 
         while (v10 != v8);
-        v8 = [v6 countByEnumeratingWithState:&v21 objects:v26 count:16];
+        v8 = [allTargets countByEnumeratingWithState:&v21 objects:v26 count:16];
       }
 
       while (v8);

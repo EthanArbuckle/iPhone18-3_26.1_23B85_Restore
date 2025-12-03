@@ -1,16 +1,16 @@
 @interface BKViewBookUpdatesOperation
 - (BKViewBookUpdatesOperation)init;
-- (BKViewBookUpdatesOperation)initWithAdamID:(id)a3 version:(id)a4;
+- (BKViewBookUpdatesOperation)initWithAdamID:(id)d version:(id)version;
 - (NSError)error;
 - (NSString)parameters;
 - (void)main;
-- (void)setError:(id)a3;
-- (void)setParameters:(id)a3;
+- (void)setError:(id)error;
+- (void)setParameters:(id)parameters;
 @end
 
 @implementation BKViewBookUpdatesOperation
 
-- (BKViewBookUpdatesOperation)initWithAdamID:(id)a3 version:(id)a4
+- (BKViewBookUpdatesOperation)initWithAdamID:(id)d version:(id)version
 {
   v5 = sub_1007A2254();
   v7 = v6;
@@ -48,9 +48,9 @@
   return v3;
 }
 
-- (void)setParameters:(id)a3
+- (void)setParameters:(id)parameters
 {
-  if (a3)
+  if (parameters)
   {
     v4 = sub_1007A2254();
     v6 = v5;
@@ -86,18 +86,18 @@
   return v4;
 }
 
-- (void)setError:(id)a3
+- (void)setError:(id)error
 {
   v5 = OBJC_IVAR___BKViewBookUpdatesOperation_error;
   swift_beginAccess();
-  *(self + v5) = a3;
-  v6 = self;
-  v7 = a3;
+  *(self + v5) = error;
+  selfCopy = self;
+  errorCopy = error;
 }
 
 - (void)main
 {
-  v2 = self;
+  selfCopy = self;
   ViewBookUpdatesOperation.main()();
 }
 

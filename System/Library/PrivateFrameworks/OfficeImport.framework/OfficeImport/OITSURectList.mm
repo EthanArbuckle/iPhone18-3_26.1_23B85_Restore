@@ -1,20 +1,20 @@
 @interface OITSURectList
-+ (id)rectListWithDifference:(CGRect)a3 withRect:(CGRect)a4;
-- (CGRect)rectAtIndex:(unint64_t)a3;
-- (OITSURectList)initWithRect:(CGRect)a3;
-- (OITSURectList)initWithRectList:(id)a3;
++ (id)rectListWithDifference:(CGRect)difference withRect:(CGRect)rect;
+- (CGRect)rectAtIndex:(unint64_t)index;
+- (OITSURectList)initWithRect:(CGRect)rect;
+- (OITSURectList)initWithRectList:(id)list;
 - (id).cxx_construct;
-- (void)addRect:(CGRect)a3;
+- (void)addRect:(CGRect)rect;
 @end
 
 @implementation OITSURectList
 
-- (OITSURectList)initWithRect:(CGRect)a3
+- (OITSURectList)initWithRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v7 = [(OITSURectList *)self init];
   v8 = v7;
   if (v7)
@@ -30,19 +30,19 @@
   return v8;
 }
 
-- (OITSURectList)initWithRectList:(id)a3
+- (OITSURectList)initWithRectList:(id)list
 {
   v4 = [(OITSURectList *)self init];
   if (v4)
   {
-    std::vector<CGRect>::resize(&v4->mRectList.__begin_, [a3 count]);
-    if ([a3 count])
+    std::vector<CGRect>::resize(&v4->mRectList.__begin_, [list count]);
+    if ([list count])
     {
       v5 = 0;
       v6 = 0;
       do
       {
-        [a3 rectAtIndex:v6];
+        [list rectAtIndex:v6];
         p_x = &v4->mRectList.__begin_[v5].origin.x;
         *p_x = v8;
         p_x[1] = v9;
@@ -52,14 +52,14 @@
         ++v5;
       }
 
-      while (v6 < [a3 count]);
+      while (v6 < [list count]);
     }
   }
 
   return v4;
 }
 
-- (void)addRect:(CGRect)a3
+- (void)addRect:(CGRect)rect
 {
   end = self->mRectList.__end_;
   cap = self->mRectList.__cap_;
@@ -90,7 +90,7 @@
       std::__allocate_at_least[abi:ne200100]<std::allocator<CGRect>>(&self->mRectList, v10);
     }
 
-    *(32 * v9) = a3;
+    *(32 * v9) = rect;
     v6 = (32 * v9 + 32);
     memcpy(0, begin, v8);
     v12 = self->mRectList.__begin_;
@@ -105,23 +105,23 @@
 
   else
   {
-    *end = a3;
+    *end = rect;
     v6 = end + 1;
   }
 
   self->mRectList.__end_ = v6;
 }
 
-- (CGRect)rectAtIndex:(unint64_t)a3
+- (CGRect)rectAtIndex:(unint64_t)index
 {
   begin = self->mRectList.__begin_;
   v8 = self->mRectList.__end_ - begin;
-  if (v8 <= a3)
+  if (v8 <= index)
   {
-    objc_exception_throw([MEMORY[0x277CBEAD8] exceptionWithName:@"IndexOutOfBound" reason:objc_msgSend(MEMORY[0x277CCACA8] userInfo:{"stringWithFormat:", @"Getting object at %lu from an array with size %lu", a3, v8, v4, v3, v5, v6), 0}]);
+    objc_exception_throw([MEMORY[0x277CBEAD8] exceptionWithName:@"IndexOutOfBound" reason:objc_msgSend(MEMORY[0x277CCACA8] userInfo:{"stringWithFormat:", @"Getting object at %lu from an array with size %lu", index, v8, v4, v3, v5, v6), 0}]);
   }
 
-  p_x = &begin[a3].origin.x;
+  p_x = &begin[index].origin.x;
   v10 = *p_x;
   v11 = p_x[1];
   v12 = p_x[2];
@@ -133,13 +133,13 @@
   return result;
 }
 
-+ (id)rectListWithDifference:(CGRect)a3 withRect:(CGRect)a4
++ (id)rectListWithDifference:(CGRect)difference withRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v28 = CGRectIntersection(a3, a4);
+  height = difference.size.height;
+  width = difference.size.width;
+  y = difference.origin.y;
+  x = difference.origin.x;
+  v28 = CGRectIntersection(difference, rect);
   v8 = v28.origin.x;
   v9 = v28.origin.y;
   v10 = v28.size.width;

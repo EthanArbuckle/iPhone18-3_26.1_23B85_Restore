@@ -1,57 +1,57 @@
 @interface SBEmbeddedDisplayUICommandValidator
-- (BOOL)validateCommand:(id)a3;
-- (SBEmbeddedDisplayUICommandValidator)initWithLayoutStateProvider:(id)a3;
+- (BOOL)validateCommand:(id)command;
+- (SBEmbeddedDisplayUICommandValidator)initWithLayoutStateProvider:(id)provider;
 @end
 
 @implementation SBEmbeddedDisplayUICommandValidator
 
-- (SBEmbeddedDisplayUICommandValidator)initWithLayoutStateProvider:(id)a3
+- (SBEmbeddedDisplayUICommandValidator)initWithLayoutStateProvider:(id)provider
 {
-  v6 = a3;
+  providerCopy = provider;
   v10.receiver = self;
   v10.super_class = SBEmbeddedDisplayUICommandValidator;
   v7 = [(SBEmbeddedDisplayUICommandValidator *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    if (!v6)
+    if (!providerCopy)
     {
       [(SBEmbeddedDisplayUICommandValidator *)a2 initWithLayoutStateProvider:v7];
     }
 
-    objc_storeStrong(&v7->_layoutStateProvider, a3);
+    objc_storeStrong(&v7->_layoutStateProvider, provider);
   }
 
   return v8;
 }
 
-- (BOOL)validateCommand:(id)a3
+- (BOOL)validateCommand:(id)command
 {
-  v4 = a3;
-  if ([v4 action] == sel__handleToggleFloatingAppVisibilityKeyShortcut_)
+  commandCopy = command;
+  if ([commandCopy action] == sel__handleToggleFloatingAppVisibilityKeyShortcut_)
   {
-    v6 = [(SBSceneLayoutStateProvider *)self->_layoutStateProvider layoutState];
-    v7 = [v6 elementWithRole:3];
+    layoutState = [(SBSceneLayoutStateProvider *)self->_layoutStateProvider layoutState];
+    v7 = [layoutState elementWithRole:3];
     v8 = @"SHOW_SLIDE_OVER_DISCOVERABILITY";
-    if (v7 && !SBFloatingConfigurationIsStashed([v6 floatingConfiguration]))
+    if (v7 && !SBFloatingConfigurationIsStashed([layoutState floatingConfiguration]))
     {
       v8 = @"HIDE_SLIDE_OVER_DISCOVERABILITY";
     }
 
     v9 = MEMORY[0x277CCA8D8];
     v10 = v8;
-    v11 = [v9 mainBundle];
-    v12 = [v11 localizedStringForKey:v10 value:&stru_283094718 table:@"SpringBoard"];
+    mainBundle = [v9 mainBundle];
+    v12 = [mainBundle localizedStringForKey:v10 value:&stru_283094718 table:@"SpringBoard"];
 
-    [v4 setDiscoverabilityTitle:v12];
+    [commandCopy setDiscoverabilityTitle:v12];
     goto LABEL_9;
   }
 
-  if ([v4 action] == sel__handleMoveToOtherDisplayKeyShortcut_)
+  if ([commandCopy action] == sel__handleMoveToOtherDisplayKeyShortcut_)
   {
-    v6 = [MEMORY[0x277CCA8D8] mainBundle];
-    v11 = [v6 localizedStringForKey:@"MOVE_TO_OTHER_DISPLAY_DISCOVERABILITY" value:&stru_283094718 table:@"SpringBoard"];
-    [v4 setTitle:v11];
+    layoutState = [MEMORY[0x277CCA8D8] mainBundle];
+    mainBundle = [layoutState localizedStringForKey:@"MOVE_TO_OTHER_DISPLAY_DISCOVERABILITY" value:&stru_283094718 table:@"SpringBoard"];
+    [commandCopy setTitle:mainBundle];
 LABEL_9:
 
     v5 = 1;

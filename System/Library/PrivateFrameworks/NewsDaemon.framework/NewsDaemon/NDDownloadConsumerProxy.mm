@@ -1,32 +1,32 @@
 @interface NDDownloadConsumerProxy
 - (NDDownloadConsumerProxy)init;
-- (NDDownloadConsumerProxy)initWithConsumer:(id)a3 connection:(id)a4;
+- (NDDownloadConsumerProxy)initWithConsumer:(id)consumer connection:(id)connection;
 - (NSXPCConnection)connection;
-- (void)_enqueueBarrierMessage:(id)a3;
-- (void)_enqueueMessage:(id)a3;
+- (void)_enqueueBarrierMessage:(id)message;
+- (void)_enqueueMessage:(id)message;
 - (void)_sendNextMessage;
-- (void)downloadFinishedForRequest:(id)a3 error:(id)a4;
-- (void)downloadProgressedForRequest:(id)a3 contentArchive:(id)a4;
-- (void)downloadProgressedForRequest:(id)a3 progress:(double)a4;
+- (void)downloadFinishedForRequest:(id)request error:(id)error;
+- (void)downloadProgressedForRequest:(id)request contentArchive:(id)archive;
+- (void)downloadProgressedForRequest:(id)request progress:(double)progress;
 @end
 
 @implementation NDDownloadConsumerProxy
 
-- (NDDownloadConsumerProxy)initWithConsumer:(id)a3 connection:(id)a4
+- (NDDownloadConsumerProxy)initWithConsumer:(id)consumer connection:(id)connection
 {
-  v7 = a3;
-  v8 = a4;
+  consumerCopy = consumer;
+  connectionCopy = connection;
   v16.receiver = self;
   v16.super_class = NDDownloadConsumerProxy;
   v9 = [(NDDownloadConsumerProxy *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_consumer, a3);
-    objc_storeWeak(&v10->_connection, v8);
-    v11 = [NSString stringWithFormat:@"%p", v8];
+    objc_storeStrong(&v9->_consumer, consumer);
+    objc_storeWeak(&v10->_connection, connectionCopy);
+    connectionCopy = [NSString stringWithFormat:@"%p", connectionCopy];
     connectionDescription = v10->_connectionDescription;
-    v10->_connectionDescription = v11;
+    v10->_connectionDescription = connectionCopy;
 
     v13 = +[NSMutableArray array];
     pendingMessages = v10->_pendingMessages;
@@ -59,79 +59,79 @@
   objc_exception_throw(v4);
 }
 
-- (void)downloadProgressedForRequest:(id)a3 progress:(double)a4
+- (void)downloadProgressedForRequest:(id)request progress:(double)progress
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100006C88;
   v6[3] = &unk_100071E50;
-  v7 = self;
-  v8 = a3;
-  v9 = a4;
-  v5 = v8;
-  [(NDDownloadConsumerProxy *)v7 _enqueueMessage:v6];
+  selfCopy = self;
+  requestCopy = request;
+  progressCopy = progress;
+  v5 = requestCopy;
+  [(NDDownloadConsumerProxy *)selfCopy _enqueueMessage:v6];
 }
 
-- (void)downloadProgressedForRequest:(id)a3 contentArchive:(id)a4
+- (void)downloadProgressedForRequest:(id)request contentArchive:(id)archive
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100006DA0;
   v7[3] = &unk_100071E78;
-  v8 = self;
-  v9 = a3;
-  v10 = a4;
-  v5 = v10;
-  v6 = v9;
-  [(NDDownloadConsumerProxy *)v8 _enqueueBarrierMessage:v7];
+  selfCopy = self;
+  requestCopy = request;
+  archiveCopy = archive;
+  v5 = archiveCopy;
+  v6 = requestCopy;
+  [(NDDownloadConsumerProxy *)selfCopy _enqueueBarrierMessage:v7];
 }
 
-- (void)downloadFinishedForRequest:(id)a3 error:(id)a4
+- (void)downloadFinishedForRequest:(id)request error:(id)error
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100006EB4;
   v7[3] = &unk_100071E78;
-  v8 = self;
-  v9 = a3;
-  v10 = a4;
-  v5 = v10;
-  v6 = v9;
-  [(NDDownloadConsumerProxy *)v8 _enqueueMessage:v7];
+  selfCopy = self;
+  requestCopy = request;
+  errorCopy = error;
+  v5 = errorCopy;
+  v6 = requestCopy;
+  [(NDDownloadConsumerProxy *)selfCopy _enqueueMessage:v7];
 }
 
-- (void)_enqueueMessage:(id)a3
+- (void)_enqueueMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   +[NSThread isMainThread];
-  v5 = [(NDDownloadConsumerProxy *)self pendingMessages];
+  pendingMessages = [(NDDownloadConsumerProxy *)self pendingMessages];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100006FE0;
   v8[3] = &unk_100071EA0;
-  v9 = v4;
-  v6 = v4;
+  v9 = messageCopy;
+  v6 = messageCopy;
   v7 = objc_retainBlock(v8);
-  [v5 addObject:v7];
+  [pendingMessages addObject:v7];
 
   [(NDDownloadConsumerProxy *)self _sendNextMessage];
 }
 
-- (void)_enqueueBarrierMessage:(id)a3
+- (void)_enqueueBarrierMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   +[NSThread isMainThread];
   objc_initWeak(&location, self);
-  v5 = [(NDDownloadConsumerProxy *)self pendingMessages];
+  pendingMessages = [(NDDownloadConsumerProxy *)self pendingMessages];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100007184;
   v8[3] = &unk_100071EC8;
-  v6 = v4;
+  v6 = messageCopy;
   v9 = v6;
   objc_copyWeak(&v10, &location);
   v7 = objc_retainBlock(v8);
-  [v5 addObject:v7];
+  [pendingMessages addObject:v7];
 
   [(NDDownloadConsumerProxy *)self _sendNextMessage];
   objc_destroyWeak(&v10);
@@ -144,26 +144,26 @@
   +[NSThread isMainThread];
   if (![(NDDownloadConsumerProxy *)self sendingMesssage])
   {
-    v3 = [(NDDownloadConsumerProxy *)self pendingMessages];
-    v4 = [v3 count];
+    pendingMessages = [(NDDownloadConsumerProxy *)self pendingMessages];
+    v4 = [pendingMessages count];
 
     if (v4)
     {
-      v5 = [(NDDownloadConsumerProxy *)self connection];
+      connection = [(NDDownloadConsumerProxy *)self connection];
 
-      if (v5)
+      if (connection)
       {
         [(NDDownloadConsumerProxy *)self setSendingMesssage:1];
-        v6 = [(NDDownloadConsumerProxy *)self pendingMessages];
-        v7 = [v6 fc_popFirstObject];
+        pendingMessages2 = [(NDDownloadConsumerProxy *)self pendingMessages];
+        fc_popFirstObject = [pendingMessages2 fc_popFirstObject];
 
         v8 = FCOfflineDownloadsLog;
         if (os_log_type_enabled(FCOfflineDownloadsLog, OS_LOG_TYPE_DEFAULT))
         {
           v9 = v8;
-          v10 = [(NDDownloadConsumerProxy *)self connectionDescription];
+          connectionDescription = [(NDDownloadConsumerProxy *)self connectionDescription];
           *buf = 138543362;
-          v14 = v10;
+          v14 = connectionDescription;
           _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "consumer proxy will send message, connection=%{public}@", buf, 0xCu);
         }
 
@@ -172,7 +172,7 @@
         v11[2] = sub_1000074CC;
         v11[3] = &unk_100071D20;
         v11[4] = self;
-        (v7)[2](v7, v11);
+        (fc_popFirstObject)[2](fc_popFirstObject, v11);
       }
 
       else

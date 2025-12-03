@@ -1,9 +1,9 @@
 @interface HDRefreshAccountInformationTask
 - (HDRefreshAccountInformationTask)init;
-- (id)createUpdateGatewaysOperationForAccount:(id)a3 providerServiceManager:(id)a4;
-- (id)initForUseWithAccountManager:(id)a3 accountIdentifier:(id)a4;
-- (void)fetchOrRefreshCredentialForAccountConnectionInformation:(id)a3 completion:(id)a4;
-- (void)runWithCompletion:(id)a3;
+- (id)createUpdateGatewaysOperationForAccount:(id)account providerServiceManager:(id)manager;
+- (id)initForUseWithAccountManager:(id)manager accountIdentifier:(id)identifier;
+- (void)fetchOrRefreshCredentialForAccountConnectionInformation:(id)information completion:(id)completion;
+- (void)runWithCompletion:(id)completion;
 @end
 
 @implementation HDRefreshAccountInformationTask
@@ -16,11 +16,11 @@
   return 0;
 }
 
-- (id)initForUseWithAccountManager:(id)a3 accountIdentifier:(id)a4
+- (id)initForUseWithAccountManager:(id)manager accountIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v9)
+  managerCopy = manager;
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     sub_9D7F4(a2, self);
   }
@@ -31,8 +31,8 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_accountManager, a3);
-    v12 = [v9 copy];
+    objc_storeStrong(&v10->_accountManager, manager);
+    v12 = [identifierCopy copy];
     accountIdentifier = v11->_accountIdentifier;
     v11->_accountIdentifier = v12;
 
@@ -42,17 +42,17 @@
   return v11;
 }
 
-- (void)runWithCompletion:(id)a3
+- (void)runWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   _HKInitializeLogging();
   v5 = HKLogHealthRecords;
   if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [(HDRefreshAccountInformationTask *)self logPrefix];
+    logPrefix = [(HDRefreshAccountInformationTask *)self logPrefix];
     *buf = 138543362;
-    v46 = v7;
+    v46 = logPrefix;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: beginning", buf, 0xCu);
   }
 
@@ -65,26 +65,26 @@
 
   if (v10)
   {
-    v12 = [v10 firstObject];
-    v13 = v12;
-    if (v12)
+    firstObject = [v10 firstObject];
+    v13 = firstObject;
+    if (firstObject)
     {
-      v14 = [v12 lastFetchDate];
-      if (!v14 || (v15 = v14, [v13 lastFetchDate], v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "timeIntervalSinceNow"), v18 = v17, v16, v15, v18 < -43200.0))
+      lastFetchDate = [firstObject lastFetchDate];
+      if (!lastFetchDate || (v15 = lastFetchDate, [v13 lastFetchDate], v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "timeIntervalSinceNow"), v18 = v17, v16, v15, v18 < -43200.0))
       {
-        v19 = [(HDClinicalAccountManager *)self->_accountManager profileExtension];
-        v20 = [v19 providerServiceManager];
+        profileExtension = [(HDClinicalAccountManager *)self->_accountManager profileExtension];
+        providerServiceManager = [profileExtension providerServiceManager];
 
-        if (v20)
+        if (providerServiceManager)
         {
-          v21 = [(HDRefreshAccountInformationTask *)self createUpdateGatewaysOperationForAccount:v13 providerServiceManager:v20];
+          v21 = [(HDRefreshAccountInformationTask *)self createUpdateGatewaysOperationForAccount:v13 providerServiceManager:providerServiceManager];
           if (v21)
           {
-            [v20 addOperationUnlessAlreadyEnqueued:v21];
+            [providerServiceManager addOperationUnlessAlreadyEnqueued:v21];
             [v21 waitUntilFinished];
-            v22 = [v21 error];
+            error = [v21 error];
 
-            if (v22)
+            if (error)
             {
               _HKInitializeLogging();
               v23 = HKLogHealthRecords;
@@ -93,18 +93,18 @@
                 sub_9D870(v23, self, v21);
               }
 
-              v24 = [v13 credential];
-              v25 = v24;
-              if (!v24)
+              credential = [v13 credential];
+              v25 = credential;
+              if (!credential)
               {
                 v25 = +[HKFHIRCredential nilCredential];
               }
 
-              v26 = [v21 error];
-              v27 = [v25 asRefreshResultWithError:v26];
-              v4[2](v4, v27);
+              error2 = [v21 error];
+              v27 = [v25 asRefreshResultWithError:error2];
+              completionCopy[2](completionCopy, v27);
 
-              if (!v24)
+              if (!credential)
               {
               }
 
@@ -127,18 +127,18 @@
       }
 
       v42 = v11;
-      v20 = [v13 connectionInformationWithError:&v42];
+      providerServiceManager = [v13 connectionInformationWithError:&v42];
       v35 = v42;
 
-      if (v20)
+      if (providerServiceManager)
       {
         v40[0] = _NSConcreteStackBlock;
         v40[1] = 3221225472;
         v40[2] = sub_179C4;
         v40[3] = &unk_106368;
         v40[4] = self;
-        v41 = v4;
-        [(HDRefreshAccountInformationTask *)self fetchOrRefreshCredentialForAccountConnectionInformation:v20 completion:v40];
+        v41 = completionCopy;
+        [(HDRefreshAccountInformationTask *)self fetchOrRefreshCredentialForAccountConnectionInformation:providerServiceManager completion:v40];
       }
 
       else
@@ -150,17 +150,17 @@
           sub_9D9C8(v36);
         }
 
-        v37 = [v13 credential];
-        v38 = v37;
-        if (!v37)
+        credential2 = [v13 credential];
+        v38 = credential2;
+        if (!credential2)
         {
           v38 = +[HKFHIRCredential nilCredential];
         }
 
         v39 = [v38 asRefreshResultWithError:v35];
-        v4[2](v4, v39);
+        completionCopy[2](completionCopy, v39);
 
-        if (!v37)
+        if (!credential2)
         {
         }
       }
@@ -175,16 +175,16 @@
       if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEFAULT))
       {
         v30 = v29;
-        v31 = [(HDRefreshAccountInformationTask *)self logPrefix];
+        logPrefix2 = [(HDRefreshAccountInformationTask *)self logPrefix];
         *buf = 138543362;
-        v46 = v31;
+        v46 = logPrefix2;
         _os_log_impl(&dword_0, v30, OS_LOG_TYPE_DEFAULT, "%{public}@: not user fetch eligible, not trying to refresh", buf, 0xCu);
       }
 
-      v20 = [NSError hk_error:3 description:@"account is not user fetch eligible"];
+      providerServiceManager = [NSError hk_error:3 description:@"account is not user fetch eligible"];
       v32 = +[HKFHIRCredential nilCredential];
-      v33 = [v32 asRefreshResultWithError:v20];
-      v4[2](v4, v33);
+      v33 = [v32 asRefreshResultWithError:providerServiceManager];
+      completionCopy[2](completionCopy, v33);
     }
   }
 
@@ -198,33 +198,33 @@
     }
 
     v13 = +[HKFHIRCredential nilCredential];
-    v20 = [v13 asRefreshResultWithError:v11];
-    v4[2](v4, v20);
+    providerServiceManager = [v13 asRefreshResultWithError:v11];
+    completionCopy[2](completionCopy, providerServiceManager);
   }
 
 LABEL_38:
 }
 
-- (void)fetchOrRefreshCredentialForAccountConnectionInformation:(id)a3 completion:(id)a4
+- (void)fetchOrRefreshCredentialForAccountConnectionInformation:(id)information completion:(id)completion
 {
   accountManager = self->_accountManager;
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HDClinicalAccountManager *)accountManager legacyXPCIngestionServiceClient];
-  [v8 fetchOrRefreshCredentialForAccount:v7 completion:v6];
+  completionCopy = completion;
+  informationCopy = information;
+  legacyXPCIngestionServiceClient = [(HDClinicalAccountManager *)accountManager legacyXPCIngestionServiceClient];
+  [legacyXPCIngestionServiceClient fetchOrRefreshCredentialForAccount:informationCopy completion:completionCopy];
 }
 
-- (id)createUpdateGatewaysOperationForAccount:(id)a3 providerServiceManager:(id)a4
+- (id)createUpdateGatewaysOperationForAccount:(id)account providerServiceManager:(id)manager
 {
-  v12 = a3;
-  v5 = a4;
-  v6 = a3;
-  v7 = [NSArray arrayWithObjects:&v12 count:1];
-  v8 = [v5 createUpdateGatewaysOperationsForAccounts:{v7, v12}];
+  accountCopy = account;
+  managerCopy = manager;
+  accountCopy2 = account;
+  v7 = [NSArray arrayWithObjects:&accountCopy count:1];
+  v8 = [managerCopy createUpdateGatewaysOperationsForAccounts:{v7, accountCopy}];
 
-  v9 = [v6 identifier];
+  identifier = [accountCopy2 identifier];
 
-  v10 = [v8 objectForKeyedSubscript:v9];
+  v10 = [v8 objectForKeyedSubscript:identifier];
 
   return v10;
 }

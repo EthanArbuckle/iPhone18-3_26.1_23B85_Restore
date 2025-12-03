@@ -1,64 +1,64 @@
 @interface TSWPColumns
 + (id)columns;
-+ (id)instanceWithArchive:(const Message *)a3 unarchiver:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)p_validate:(BOOL)a3;
-- (TSWPColumns)initWithArchive:(const void *)a3 unarchiver:(id)a4;
-- (TSWPColumns)initWithColumnCount:(unint64_t)a3 equalWidth:(BOOL)a4 widthArray:(const double *)a5 gapArray:(const double *)a6 assert:(BOOL)a7;
-- (TSWPColumns)initWithEqualColumnCount:(unint64_t)a3 gapFraction:(double)a4 assert:(BOOL)a5;
-- (double)p_equalGapForEqualWidth:(double)a3;
-- (double)p_equalWidthForEqualGap:(double)a3;
-- (double)p_maxEqualGapForBodyWidth:(double)a3;
-- (double)positionForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4 outWidth:(double *)a5 outGap:(double *)a6;
-- (id)copyWithColumnCount:(unint64_t)a3;
-- (id)copyWithEqualWidth:(BOOL)a3;
-- (id)copyWithGap:(double)a3 forColumnIndex:(unint64_t)a4 bodyWidth:(double)a5;
-- (id)copyWithWidth:(double)a3 forColumnIndex:(unint64_t)a4 bodyWidth:(double)a5;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)instanceWithArchive:(const Message *)archive unarchiver:(id)unarchiver;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)p_validate:(BOOL)p_validate;
+- (TSWPColumns)initWithArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (TSWPColumns)initWithColumnCount:(unint64_t)count equalWidth:(BOOL)width widthArray:(const double *)array gapArray:(const double *)gapArray assert:(BOOL)assert;
+- (TSWPColumns)initWithEqualColumnCount:(unint64_t)count gapFraction:(double)fraction assert:(BOOL)assert;
+- (double)p_equalGapForEqualWidth:(double)width;
+- (double)p_equalWidthForEqualGap:(double)gap;
+- (double)p_maxEqualGapForBodyWidth:(double)width;
+- (double)positionForColumnIndex:(unint64_t)index bodyWidth:(double)width outWidth:(double *)outWidth outGap:(double *)gap;
+- (id)copyWithColumnCount:(unint64_t)count;
+- (id)copyWithEqualWidth:(BOOL)width;
+- (id)copyWithGap:(double)gap forColumnIndex:(unint64_t)index bodyWidth:(double)width;
+- (id)copyWithWidth:(double)width forColumnIndex:(unint64_t)index bodyWidth:(double)bodyWidth;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)p_description;
 - (unint64_t)hash;
-- (void)p_setColumnCount:(unint64_t)a3;
-- (void)p_setEqualWidth:(double)a3 equalGap:(double)a4;
-- (void)p_setGap:(double)a3 forColumnIndex:(unint64_t)a4 bodyWidth:(double)a5;
-- (void)p_setWidth:(double)a3 forColumnIndex:(unint64_t)a4 bodyWidth:(double)a5;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
-- (void)setEqualWidth:(BOOL)a3;
+- (void)p_setColumnCount:(unint64_t)count;
+- (void)p_setEqualWidth:(double)width equalGap:(double)gap;
+- (void)p_setGap:(double)gap forColumnIndex:(unint64_t)index bodyWidth:(double)width;
+- (void)p_setWidth:(double)width forColumnIndex:(unint64_t)index bodyWidth:(double)bodyWidth;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
+- (void)setEqualWidth:(BOOL)width;
 @end
 
 @implementation TSWPColumns
 
 + (id)columns
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v4 = objc_msgSend_initWithColumnCount_(v2, v3, 1);
 
   return v4;
 }
 
-- (TSWPColumns)initWithColumnCount:(unint64_t)a3 equalWidth:(BOOL)a4 widthArray:(const double *)a5 gapArray:(const double *)a6 assert:(BOOL)a7
+- (TSWPColumns)initWithColumnCount:(unint64_t)count equalWidth:(BOOL)width widthArray:(const double *)array gapArray:(const double *)gapArray assert:(BOOL)assert
 {
-  v7 = a7;
+  assertCopy = assert;
   v19.receiver = self;
   v19.super_class = TSWPColumns;
   v12 = [(TSWPColumns *)&v19 init];
   v14 = v12;
   if (v12)
   {
-    if (a3)
+    if (count)
     {
-      v15 = 10;
-      if (a3 < 0xA)
+      countCopy = 10;
+      if (count < 0xA)
       {
-        v15 = a3;
+        countCopy = count;
       }
 
-      v12->_columnCount = v15;
-      v12->_equalWidth = a4;
-      v16 = 8 * v15;
-      memcpy(v12->_widthArray, a5, 8 * v15);
-      memcpy(v14->_gapArray, a6, v16 - 8);
-      objc_msgSend_p_validate_(v14, v17, v7);
+      v12->_columnCount = countCopy;
+      v12->_equalWidth = width;
+      v16 = 8 * countCopy;
+      memcpy(v12->_widthArray, array, 8 * countCopy);
+      memcpy(v14->_gapArray, gapArray, v16 - 8);
+      objc_msgSend_p_validate_(v14, v17, assertCopy);
     }
 
     else
@@ -70,9 +70,9 @@
   return v14;
 }
 
-- (TSWPColumns)initWithEqualColumnCount:(unint64_t)a3 gapFraction:(double)a4 assert:(BOOL)a5
+- (TSWPColumns)initWithEqualColumnCount:(unint64_t)count gapFraction:(double)fraction assert:(BOOL)assert
 {
-  v5 = a5;
+  assertCopy = assert;
   v12.receiver = self;
   v12.super_class = TSWPColumns;
   v8 = [(TSWPColumns *)&v12 init];
@@ -80,46 +80,46 @@
   if (v8)
   {
     v8->_equalWidth = 1;
-    objc_msgSend_p_setColumnCount_gapFraction_(v8, v9, a3, a4);
+    objc_msgSend_p_setColumnCount_gapFraction_(v8, v9, count, fraction);
   }
 
-  objc_msgSend_p_validate_(v10, v9, v5);
+  objc_msgSend_p_validate_(v10, v9, assertCopy);
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = objc_msgSend_allocWithZone_(TSWPColumns, a2, a3);
+  v4 = objc_msgSend_allocWithZone_(TSWPColumns, a2, zone);
   columnCount = self->_columnCount;
   equalWidth = self->_equalWidth;
 
   return objc_msgSend_initWithColumnCount_equalWidth_widthArray_gapArray_assert_(v4, v5, columnCount, equalWidth, self->_widthArray, self->_gapArray, 0);
 }
 
-- (id)copyWithEqualWidth:(BOOL)a3
+- (id)copyWithEqualWidth:(BOOL)width
 {
-  v3 = a3;
-  v4 = objc_msgSend_copy(self, a2, a3);
-  objc_msgSend_setEqualWidth_(v4, v5, v3);
+  widthCopy = width;
+  v4 = objc_msgSend_copy(self, a2, width);
+  objc_msgSend_setEqualWidth_(v4, v5, widthCopy);
   return v4;
 }
 
-+ (id)instanceWithArchive:(const Message *)a3 unarchiver:(id)a4
++ (id)instanceWithArchive:(const Message *)archive unarchiver:(id)unarchiver
 {
-  v5 = a4;
+  unarchiverCopy = unarchiver;
   v6 = [TSWPColumns alloc];
-  v8 = objc_msgSend_initWithArchive_unarchiver_(v6, v7, a3, v5);
+  v8 = objc_msgSend_initWithArchive_unarchiver_(v6, v7, archive, unarchiverCopy);
 
   return v8;
 }
 
-- (TSWPColumns)initWithArchive:(const void *)a3 unarchiver:(id)a4
+- (TSWPColumns)initWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
   v43[9] = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  if (*(a3 + 16))
+  unarchiverCopy = unarchiver;
+  if (*(archive + 16))
   {
-    v14 = *(a3 + 3);
+    v14 = *(archive + 3);
     v15 = *(v14 + 6);
     if (v15 >= 0xB)
     {
@@ -129,7 +129,7 @@
       objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v16, v20, v17, v19, 134, 0, "Too many column gaps in archive");
 
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v21, v22);
-      v14 = *(a3 + 3);
+      v14 = *(archive + 3);
     }
 
     if (v15 >= 0xA)
@@ -166,9 +166,9 @@ LABEL_31:
     goto LABEL_32;
   }
 
-  if (*(a3 + 4))
+  if (*(archive + 4))
   {
-    v9 = *(a3 + 4);
+    v9 = *(archive + 4);
   }
 
   else
@@ -247,23 +247,23 @@ LABEL_33:
   return v38;
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v102 = a4;
+  archiverCopy = archiver;
   if (self->_equalWidth || !self->_columnCount)
   {
-    *(a3 + 4) |= 1u;
-    v53 = *(a3 + 3);
+    *(archive + 4) |= 1u;
+    v53 = *(archive + 3);
     if (!v53)
     {
-      v54 = *(a3 + 1);
+      v54 = *(archive + 1);
       if (v54)
       {
         v54 = *(v54 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v53 = google::protobuf::Arena::CreateMaybeMessage<TSWP::ColumnsArchive_EqualColumnsArchive>(v54);
-      *(a3 + 3) = v53;
+      *(archive + 3) = v53;
     }
 
     columnCount = self->_columnCount;
@@ -291,18 +291,18 @@ LABEL_33:
       goto LABEL_60;
     }
 
-    *(a3 + 4) |= 1u;
-    v57 = *(a3 + 3);
+    *(archive + 4) |= 1u;
+    v57 = *(archive + 3);
     if (!v57)
     {
-      v58 = *(a3 + 1);
+      v58 = *(archive + 1);
       if (v58)
       {
         v58 = *(v58 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v57 = google::protobuf::Arena::CreateMaybeMessage<TSWP::ColumnsArchive_EqualColumnsArchive>(v58);
-      *(a3 + 3) = v57;
+      *(archive + 3) = v57;
     }
 
     v59 = self->_gapArray[0];
@@ -347,18 +347,18 @@ LABEL_59:
     goto LABEL_59;
   }
 
-  *(a3 + 4) |= 2u;
-  v7 = *(a3 + 4);
+  *(archive + 4) |= 2u;
+  v7 = *(archive + 4);
   if (!v7)
   {
-    v8 = *(a3 + 1);
+    v8 = *(archive + 1);
     if (v8)
     {
       v8 = *(v8 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v7 = google::protobuf::Arena::CreateMaybeMessage<TSWP::ColumnsArchive_NonEqualColumnsArchive>(v8);
-    *(a3 + 4) = v7;
+    *(archive + 4) = v7;
   }
 
   v9 = self->_widthArray[0];
@@ -525,7 +525,7 @@ LABEL_34:
 LABEL_60:
 }
 
-- (void)p_setEqualWidth:(double)a3 equalGap:(double)a4
+- (void)p_setEqualWidth:(double)width equalGap:(double)gap
 {
   columnCount = self->_columnCount;
   if (columnCount)
@@ -534,10 +534,10 @@ LABEL_60:
     v6 = 11;
     do
     {
-      *(gapArray - 10) = a3;
+      *(gapArray - 10) = width;
       if (columnCount - 1 > v6 - 11)
       {
-        *gapArray = a4;
+        *gapArray = gap;
       }
 
       v7 = (v6++ - 10);
@@ -548,18 +548,18 @@ LABEL_60:
   }
 }
 
-- (id)copyWithColumnCount:(unint64_t)a3
+- (id)copyWithColumnCount:(unint64_t)count
 {
-  v5 = objc_msgSend_copy(self, a2, a3);
-  objc_msgSend_p_setColumnCount_(v5, v6, a3);
+  v5 = objc_msgSend_copy(self, a2, count);
+  objc_msgSend_p_setColumnCount_(v5, v6, count);
   v8 = objc_msgSend_p_validate_(self, v7, 0);
   objc_msgSend_p_validate_(v5, v9, v8);
   return v5;
 }
 
-- (void)p_setColumnCount:(unint64_t)a3
+- (void)p_setColumnCount:(unint64_t)count
 {
-  if (a3 - 1 <= 9)
+  if (count - 1 <= 9)
   {
     v3 = 0.0500000007;
     if (self->_equalWidth && self->_columnCount >= 2)
@@ -567,26 +567,26 @@ LABEL_60:
       v3 = self->_gapArray[0];
     }
 
-    objc_msgSend_p_setColumnCount_gapFraction_(self, a2, a3, v3);
+    objc_msgSend_p_setColumnCount_gapFraction_(self, a2, count, v3);
   }
 }
 
-- (void)setEqualWidth:(BOOL)a3
+- (void)setEqualWidth:(BOOL)width
 {
-  self->_equalWidth = a3;
-  if (a3)
+  self->_equalWidth = width;
+  if (width)
   {
     objc_msgSend_p_setColumnCount_gapFraction_(self, a2, self->_columnCount, 0.0500000007);
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = TSUDynamicCast();
-  v6 = v4 == self;
-  if (v4 != self && v5)
+  v6 = equalCopy == self;
+  if (equalCopy != self && v5)
   {
     columnCount = self->_columnCount;
     if (columnCount == *(v5 + 168) && self->_equalWidth == *(v5 + 160))
@@ -664,7 +664,7 @@ LABEL_19:
   return v8;
 }
 
-- (double)positionForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4 outWidth:(double *)a5 outGap:(double *)a6
+- (double)positionForColumnIndex:(unint64_t)index bodyWidth:(double)width outWidth:(double *)outWidth outGap:(double *)gap
 {
   v6 = self->_columnCount - 1;
   v7 = 0.0;
@@ -683,33 +683,33 @@ LABEL_19:
     ++gapArray;
   }
 
-  while (v11 <= a3);
-  if (a5)
+  while (v11 <= index);
+  if (outWidth)
   {
-    *a5 = self->_widthArray[a3] * a4;
+    *outWidth = self->_widthArray[index] * width;
   }
 
-  if (a6)
+  if (gap)
   {
     v12 = 0.0;
-    if (v6 > a3)
+    if (v6 > index)
     {
-      v12 = self->_gapArray[a3] * a4;
+      v12 = self->_gapArray[index] * width;
     }
 
-    *a6 = v12;
+    *gap = v12;
   }
 
-  return v10 * a4;
+  return v10 * width;
 }
 
-- (double)p_equalGapForEqualWidth:(double)a3
+- (double)p_equalGapForEqualWidth:(double)width
 {
   columnCount = self->_columnCount;
   v4 = 0.0;
   if (columnCount >= 2)
   {
-    v5 = columnCount * a3;
+    v5 = columnCount * width;
     if (v5 <= 0.0 || v5 > 1.0)
     {
       v8 = MEMORY[0x277D81150];
@@ -731,13 +731,13 @@ LABEL_19:
   return v4;
 }
 
-- (double)p_equalWidthForEqualGap:(double)a3
+- (double)p_equalWidthForEqualGap:(double)gap
 {
   columnCount = self->_columnCount;
   v4 = 1.0;
   if (columnCount >= 2)
   {
-    v5 = (columnCount - 1) * a3;
+    v5 = (columnCount - 1) * gap;
     if (v5 < 0.0 || v5 > 1.0)
     {
       v8 = MEMORY[0x277D81150];
@@ -763,26 +763,26 @@ LABEL_19:
   return v4;
 }
 
-- (id)copyWithWidth:(double)a3 forColumnIndex:(unint64_t)a4 bodyWidth:(double)a5
+- (id)copyWithWidth:(double)width forColumnIndex:(unint64_t)index bodyWidth:(double)bodyWidth
 {
-  v9 = objc_msgSend_copy(self, a2, a4);
-  objc_msgSend_p_setWidth_forColumnIndex_bodyWidth_(v9, v10, a4, a3, a5);
+  v9 = objc_msgSend_copy(self, a2, index);
+  objc_msgSend_p_setWidth_forColumnIndex_bodyWidth_(v9, v10, index, width, bodyWidth);
   v12 = objc_msgSend_p_validate_(self, v11, 0);
   objc_msgSend_p_validate_(v9, v13, v12);
   return v9;
 }
 
-- (void)p_setWidth:(double)a3 forColumnIndex:(unint64_t)a4 bodyWidth:(double)a5
+- (void)p_setWidth:(double)width forColumnIndex:(unint64_t)index bodyWidth:(double)bodyWidth
 {
   if (self->_columnCount < 2)
   {
 LABEL_10:
 
-    MEMORY[0x2821F9670](self, sel_p_setEqualWidth_equalGap_, a4);
+    MEMORY[0x2821F9670](self, sel_p_setEqualWidth_equalGap_, index);
     return;
   }
 
-  if (a5 <= 0.0)
+  if (bodyWidth <= 0.0)
   {
     v9 = MEMORY[0x277D81150];
     v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPColumns p_setWidth:forColumnIndex:bodyWidth:]");
@@ -792,24 +792,24 @@ LABEL_10:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v14, v15);
   }
 
-  v16 = 36.0 / a5;
+  v16 = 36.0 / bodyWidth;
   columnCount = self->_columnCount;
-  v18 = a3 / a5;
+  v18 = width / bodyWidth;
   if (self->_equalWidth)
   {
     if (v18 >= v16)
     {
-      v19 = a3 / a5;
+      v19 = width / bodyWidth;
     }
 
     else
     {
-      v19 = 36.0 / a5;
+      v19 = 36.0 / bodyWidth;
     }
 
     if (v19 < (1.0 / columnCount))
     {
-      objc_msgSend_p_equalGapForEqualWidth_(self, a2, a4, v19, 0.0);
+      objc_msgSend_p_equalGapForEqualWidth_(self, a2, index, v19, 0.0);
     }
 
     goto LABEL_10;
@@ -831,7 +831,7 @@ LABEL_10:
 
   if (v18 <= v20)
   {
-    v20 = a3 / a5;
+    v20 = width / bodyWidth;
   }
 
   if (v20 >= v16)
@@ -841,19 +841,19 @@ LABEL_10:
 
   else
   {
-    v25 = 36.0 / a5;
+    v25 = 36.0 / bodyWidth;
   }
 
   widthArray = self->_widthArray;
-  v27 = self->_widthArray[a4] - v25;
+  v27 = self->_widthArray[index] - v25;
   if (v27 == 0.0)
   {
     return;
   }
 
-  if (a4 + 1 < columnCount)
+  if (index + 1 < columnCount)
   {
-    v28 = a4 + 1;
+    v28 = index + 1;
   }
 
   else
@@ -867,8 +867,8 @@ LABEL_10:
     goto LABEL_39;
   }
 
-  v29 = self->_widthArray[a4] - v25;
-  if (v28 == a4)
+  v29 = self->_widthArray[index] - v25;
+  if (v28 == index)
   {
     goto LABEL_38;
   }
@@ -893,7 +893,7 @@ LABEL_31:
       v28 = 0;
     }
 
-    if (v28 == a4)
+    if (v28 == index)
     {
       goto LABEL_38;
     }
@@ -914,18 +914,18 @@ LABEL_31:
   widthArray[v28] = v29 + v30;
   v29 = 0.0;
 LABEL_38:
-  v25 = widthArray[a4] + v29 - v27;
+  v25 = widthArray[index] + v29 - v27;
 LABEL_39:
-  widthArray[a4] = v25;
+  widthArray[index] = v25;
 }
 
-- (double)p_maxEqualGapForBodyWidth:(double)a3
+- (double)p_maxEqualGapForBodyWidth:(double)width
 {
   columnCount = self->_columnCount;
   v4 = 0.0;
   if (columnCount >= 2)
   {
-    v5 = ((columnCount * -36.0) / a3 + 1.0) / (columnCount - 1);
+    v5 = ((columnCount * -36.0) / width + 1.0) / (columnCount - 1);
     v4 = 0.0;
     if (v5 >= 0.0)
     {
@@ -936,27 +936,27 @@ LABEL_39:
   return v4;
 }
 
-- (id)copyWithGap:(double)a3 forColumnIndex:(unint64_t)a4 bodyWidth:(double)a5
+- (id)copyWithGap:(double)gap forColumnIndex:(unint64_t)index bodyWidth:(double)width
 {
-  v9 = objc_msgSend_copy(self, a2, a4);
-  objc_msgSend_p_setGap_forColumnIndex_bodyWidth_(v9, v10, a4, a3, a5);
+  v9 = objc_msgSend_copy(self, a2, index);
+  objc_msgSend_p_setGap_forColumnIndex_bodyWidth_(v9, v10, index, gap, width);
   v12 = objc_msgSend_p_validate_(self, v11, 0);
   objc_msgSend_p_validate_(v9, v13, v12);
   return v9;
 }
 
-- (void)p_setGap:(double)a3 forColumnIndex:(unint64_t)a4 bodyWidth:(double)a5
+- (void)p_setGap:(double)gap forColumnIndex:(unint64_t)index bodyWidth:(double)width
 {
-  v5 = self;
+  selfCopy = self;
   if (self->_columnCount < 2)
   {
 LABEL_9:
 
-    MEMORY[0x2821F9670](self, sel_p_setEqualWidth_equalGap_, a4);
+    MEMORY[0x2821F9670](self, sel_p_setEqualWidth_equalGap_, index);
     return;
   }
 
-  if (a5 <= 0.0)
+  if (width <= 0.0)
   {
     v9 = MEMORY[0x277D81150];
     v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPColumns p_setGap:forColumnIndex:bodyWidth:]");
@@ -966,40 +966,40 @@ LABEL_9:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v14, v15);
   }
 
-  if (v5->_equalWidth)
+  if (selfCopy->_equalWidth)
   {
-    objc_msgSend_p_maxEqualGapForBodyWidth_(v5, a2, a4, a5);
-    if (a3 / a5 <= v18)
+    objc_msgSend_p_maxEqualGapForBodyWidth_(selfCopy, a2, index, width);
+    if (gap / width <= v18)
     {
-      objc_msgSend_p_equalWidthForEqualGap_(v5, v16, v17, a3 / a5);
+      objc_msgSend_p_equalWidthForEqualGap_(selfCopy, v16, v17, gap / width);
     }
 
     else
     {
-      objc_msgSend_p_equalWidthForEqualGap_(v5, v16, v17, v18);
+      objc_msgSend_p_equalWidthForEqualGap_(selfCopy, v16, v17, v18);
     }
 
-    self = v5;
+    self = selfCopy;
     goto LABEL_9;
   }
 
-  v19 = a3 / a5;
-  v20 = 36.0 / a5;
-  columnCount = v5->_columnCount;
-  v22 = 1.0 - 36.0 / a5 * columnCount;
+  v19 = gap / width;
+  v20 = 36.0 / width;
+  columnCount = selfCopy->_columnCount;
+  v22 = 1.0 - 36.0 / width * columnCount;
   if (columnCount != 1)
   {
-    gapArray = v5->_gapArray;
+    gapArray = selfCopy->_gapArray;
     v24 = 1;
-    v25 = a4;
+    indexCopy = index;
     do
     {
-      if (v25)
+      if (indexCopy)
       {
         v22 = v22 - *gapArray;
       }
 
-      --v25;
+      --indexCopy;
       ++gapArray;
     }
 
@@ -1017,16 +1017,16 @@ LABEL_9:
     v27 = v19;
   }
 
-  v28 = v5->_gapArray;
-  v29 = v5->_gapArray[a4] - v27;
+  v28 = selfCopy->_gapArray;
+  v29 = selfCopy->_gapArray[index] - v27;
   if (v29 == 0.0)
   {
     return;
   }
 
-  if (a4 + 1 < columnCount)
+  if (index + 1 < columnCount)
   {
-    v30 = a4 + 1;
+    v30 = index + 1;
   }
 
   else
@@ -1036,17 +1036,17 @@ LABEL_9:
 
   if (v29 >= 0.0)
   {
-    v5->_widthArray[v30] = v29 + v5->_widthArray[v30];
+    selfCopy->_widthArray[v30] = v29 + selfCopy->_widthArray[v30];
     goto LABEL_39;
   }
 
-  v31 = v5->_gapArray[a4] - v27;
-  if (v30 == a4)
+  v31 = selfCopy->_gapArray[index] - v27;
+  if (v30 == index)
   {
     goto LABEL_38;
   }
 
-  widthArray = v5->_widthArray;
+  widthArray = selfCopy->_widthArray;
   v31 = v29;
   while (1)
   {
@@ -1067,7 +1067,7 @@ LABEL_31:
       v30 = 0;
     }
 
-    if (v30 == a4)
+    if (v30 == index)
     {
       goto LABEL_38;
     }
@@ -1088,9 +1088,9 @@ LABEL_31:
   widthArray[v30] = v31 + v33;
   v31 = 0.0;
 LABEL_38:
-  v27 = v28[a4] + v31 - v29;
+  v27 = v28[index] + v31 - v29;
 LABEL_39:
-  v28[a4] = v27;
+  v28[index] = v27;
 }
 
 - (id)description
@@ -1136,10 +1136,10 @@ LABEL_39:
   return v5;
 }
 
-- (BOOL)p_validate:(BOOL)a3
+- (BOOL)p_validate:(BOOL)p_validate
 {
   columnCount = self->_columnCount;
-  if (columnCount - 11 <= 0xFFFFFFFFFFFFFFF5 && a3)
+  if (columnCount - 11 <= 0xFFFFFFFFFFFFFFF5 && p_validate)
   {
     v10 = MEMORY[0x277D81150];
     v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPColumns p_validate:]");
@@ -1182,7 +1182,7 @@ LABEL_39:
 
   v18 = vabdd_f64(1.0, v7);
   result = v18 < 0.000001;
-  if (v18 < 0.000001 && a3)
+  if (v18 < 0.000001 && p_validate)
   {
     if (*MEMORY[0x277D81500] != -1)
     {

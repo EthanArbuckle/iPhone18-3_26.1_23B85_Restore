@@ -1,28 +1,28 @@
 @interface OpenURLHandler
 - (BOOL)isFinished;
 - (BOOL)isLoadingSharedWatchURL;
-- (BOOL)isRedeemURL:(id)a3;
+- (BOOL)isRedeemURL:(id)l;
 - (NSURL)deferredOpenURL;
-- (id)queryParameterStringfromURL:(id)a3 parameter:(id)a4;
-- (void)handleDeferredURLWithAppContext:(id)a3;
-- (void)openSharedWatchURL:(id)a3 appContext:(id)a4 completion:(id)a5;
-- (void)processDeeplink:(id)a3 appContext:(id)a4 completion:(id)a5;
-- (void)processEngagementResult:(id)a3 error:(id)a4;
-- (void)processEntityWithContextData:(id)a3 appContext:(id)a4;
-- (void)processItunesExtrasStoreLink:(id)a3;
-- (void)processNonDeeplinkURL:(id)a3 contextData:(id)a4 sharedWatchUrl:(id)a5 appContext:(id)a6 completion:(id)a7;
-- (void)processRouterDeeplink:(id)a3 completion:(id)a4;
-- (void)saveDeferredURL:(id)a3 completion:(id)a4;
-- (void)setDeferredOpenURL:(id)a3;
-- (void)setIsFinished:(BOOL)a3;
-- (void)setIsLoadingSharedWatchURL:(BOOL)a3;
+- (id)queryParameterStringfromURL:(id)l parameter:(id)parameter;
+- (void)handleDeferredURLWithAppContext:(id)context;
+- (void)openSharedWatchURL:(id)l appContext:(id)context completion:(id)completion;
+- (void)processDeeplink:(id)deeplink appContext:(id)context completion:(id)completion;
+- (void)processEngagementResult:(id)result error:(id)error;
+- (void)processEntityWithContextData:(id)data appContext:(id)context;
+- (void)processItunesExtrasStoreLink:(id)link;
+- (void)processNonDeeplinkURL:(id)l contextData:(id)data sharedWatchUrl:(id)url appContext:(id)context completion:(id)completion;
+- (void)processRouterDeeplink:(id)deeplink completion:(id)completion;
+- (void)saveDeferredURL:(id)l completion:(id)completion;
+- (void)setDeferredOpenURL:(id)l;
+- (void)setIsFinished:(BOOL)finished;
+- (void)setIsLoadingSharedWatchURL:(BOOL)l;
 @end
 
 @implementation OpenURLHandler
 
 - (BOOL)isLoadingSharedWatchURL
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E32A3C60();
   v4 = v3;
 
@@ -51,14 +51,14 @@
   return v7;
 }
 
-- (void)setDeferredOpenURL:(id)a3
+- (void)setDeferredOpenURL:(id)l
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1ECF363C0);
   OUTLINED_FUNCTION_17_2(v5);
   OUTLINED_FUNCTION_5_7();
   MEMORY[0x1EEE9AC00](v6);
   v8 = &v13 - v7;
-  if (a3)
+  if (l)
   {
     sub_1E41FE3C4();
     sub_1E41FE414();
@@ -72,42 +72,42 @@
   }
 
   __swift_storeEnumTagSinglePayload(v8, v9, 1, v10);
-  v11 = self;
+  selfCopy = self;
   v12 = OUTLINED_FUNCTION_12_1();
   sub_1E3A2D8EC(v12);
 }
 
 - (BOOL)isFinished
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E3A2DB24();
   v4 = v3;
 
   return v4 & 1;
 }
 
-- (void)setIsFinished:(BOOL)a3
+- (void)setIsFinished:(BOOL)finished
 {
-  v3 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_10_0();
   sub_1E3A2DB80();
 }
 
-- (void)setIsLoadingSharedWatchURL:(BOOL)a3
+- (void)setIsLoadingSharedWatchURL:(BOOL)l
 {
-  v3 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_10_0();
   sub_1E3A2DC50();
 }
 
-- (BOOL)isRedeemURL:(id)a3
+- (BOOL)isRedeemURL:(id)l
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1ECF363C0);
   OUTLINED_FUNCTION_17_2(v5);
   OUTLINED_FUNCTION_5_7();
   MEMORY[0x1EEE9AC00](v6);
   v8 = &v15 - v7;
-  if (a3)
+  if (l)
   {
     sub_1E41FE3C4();
     sub_1E41FE414();
@@ -121,7 +121,7 @@
   }
 
   __swift_storeEnumTagSinglePayload(v8, v9, 1, v10);
-  v11 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_12_1();
   sub_1E3A2DE7C();
   v13 = v12;
@@ -130,14 +130,14 @@
   return v13 & 1;
 }
 
-- (id)queryParameterStringfromURL:(id)a3 parameter:(id)a4
+- (id)queryParameterStringfromURL:(id)l parameter:(id)parameter
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1ECF363C0);
   OUTLINED_FUNCTION_17_2(v7);
   OUTLINED_FUNCTION_5_7();
   MEMORY[0x1EEE9AC00](v8);
   OUTLINED_FUNCTION_50_1();
-  if (a3)
+  if (l)
   {
     sub_1E41FE3C4();
     sub_1E41FE414();
@@ -153,7 +153,7 @@
   __swift_storeEnumTagSinglePayload(v4, v9, 1, v10);
   sub_1E4205F14();
   OUTLINED_FUNCTION_9_9();
-  v11 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_27_0();
   sub_1E3A2E65C();
   v13 = v12;
@@ -174,7 +174,7 @@
   return v4;
 }
 
-- (void)openSharedWatchURL:(id)a3 appContext:(id)a4 completion:(id)a5
+- (void)openSharedWatchURL:(id)l appContext:(id)context completion:(id)completion
 {
   OUTLINED_FUNCTION_82_2();
   v7 = v6;
@@ -204,7 +204,7 @@
   OUTLINED_FUNCTION_95();
 }
 
-- (void)processDeeplink:(id)a3 appContext:(id)a4 completion:(id)a5
+- (void)processDeeplink:(id)deeplink appContext:(id)context completion:(id)completion
 {
   OUTLINED_FUNCTION_82_2();
   v7 = v6;
@@ -234,7 +234,7 @@
   OUTLINED_FUNCTION_95();
 }
 
-- (void)processNonDeeplinkURL:(id)a3 contextData:(id)a4 sharedWatchUrl:(id)a5 appContext:(id)a6 completion:(id)a7
+- (void)processNonDeeplinkURL:(id)l contextData:(id)data sharedWatchUrl:(id)url appContext:(id)context completion:(id)completion
 {
   OUTLINED_FUNCTION_31_1();
   v10 = v9;
@@ -283,31 +283,31 @@ LABEL_7:
   OUTLINED_FUNCTION_25_2();
 }
 
-- (void)processRouterDeeplink:(id)a3 completion:(id)a4
+- (void)processRouterDeeplink:(id)deeplink completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   if (v6)
   {
     OUTLINED_FUNCTION_4_0();
     *(swift_allocObject() + 16) = v6;
   }
 
-  v7 = a3;
-  v9 = self;
+  deeplinkCopy = deeplink;
+  selfCopy = self;
   OUTLINED_FUNCTION_53();
   sub_1E3A32134();
   v8 = OUTLINED_FUNCTION_74();
   sub_1E34AF594(v8);
 }
 
-- (void)saveDeferredURL:(id)a3 completion:(id)a4
+- (void)saveDeferredURL:(id)l completion:(id)completion
 {
   OUTLINED_FUNCTION_144_0();
   sub_1E41FE414();
   OUTLINED_FUNCTION_2_10();
   MEMORY[0x1EEE9AC00](v7);
   OUTLINED_FUNCTION_4_12();
-  v8 = _Block_copy(a4);
+  v8 = _Block_copy(completion);
   sub_1E41FE3C4();
   OUTLINED_FUNCTION_4_0();
   v9 = swift_allocObject();
@@ -319,39 +319,39 @@ LABEL_7:
   v12(v11);
 }
 
-- (void)handleDeferredURLWithAppContext:(id)a3
+- (void)handleDeferredURLWithAppContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
+  contextCopy = context;
+  selfCopy = self;
   sub_1E3A3297C();
 }
 
-- (void)processEntityWithContextData:(id)a3 appContext:(id)a4
+- (void)processEntityWithContextData:(id)data appContext:(id)context
 {
   sub_1E4205C64();
-  v6 = a4;
-  v7 = self;
+  contextCopy = context;
+  selfCopy = self;
   OUTLINED_FUNCTION_13_8();
   sub_1E3A32C2C();
 }
 
-- (void)processEngagementResult:(id)a3 error:(id)a4
+- (void)processEngagementResult:(id)result error:(id)error
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
+  resultCopy = result;
+  selfCopy = self;
+  errorCopy = error;
   OUTLINED_FUNCTION_13_8();
   sub_1E3A341CC();
 }
 
-- (void)processItunesExtrasStoreLink:(id)a3
+- (void)processItunesExtrasStoreLink:(id)link
 {
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1ECF363C0);
   OUTLINED_FUNCTION_17_2(v6);
   OUTLINED_FUNCTION_5_7();
   MEMORY[0x1EEE9AC00](v7);
   OUTLINED_FUNCTION_19_2();
-  if (a3)
+  if (link)
   {
     sub_1E41FE3C4();
     sub_1E41FE414();
@@ -365,7 +365,7 @@ LABEL_7:
   }
 
   __swift_storeEnumTagSinglePayload(v3, v8, 1, v9);
-  v10 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_38();
   sub_1E3A349F0();
 

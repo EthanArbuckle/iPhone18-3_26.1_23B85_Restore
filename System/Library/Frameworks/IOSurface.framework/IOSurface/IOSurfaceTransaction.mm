@@ -1,12 +1,12 @@
 @interface IOSurfaceTransaction
-- (IOSurfaceTransaction)initWithSharedEvent:(id)a3 waitValue:(unint64_t)a4 isWrite:(BOOL)a5;
-- (id)fromSerialized:(const void *)a3;
+- (IOSurfaceTransaction)initWithSharedEvent:(id)event waitValue:(unint64_t)value isWrite:(BOOL)write;
+- (id)fromSerialized:(const void *)serialized;
 - (void)dealloc;
 @end
 
 @implementation IOSurfaceTransaction
 
-- (IOSurfaceTransaction)initWithSharedEvent:(id)a3 waitValue:(unint64_t)a4 isWrite:(BOOL)a5
+- (IOSurfaceTransaction)initWithSharedEvent:(id)event waitValue:(unint64_t)value isWrite:(BOOL)write
 {
   v13 = *MEMORY[0x1E69E9840];
   v12.receiver = self;
@@ -15,11 +15,11 @@
   v9 = v8;
   if (v8)
   {
-    if (a3)
+    if (event)
     {
-      v8->_event = a3;
-      v9->_waitValue = a4;
-      v9->_isWrite = a5;
+      v8->_event = event;
+      v9->_waitValue = value;
+      v9->_isWrite = write;
     }
 
     else
@@ -33,17 +33,17 @@
   return v9;
 }
 
-- (id)fromSerialized:(const void *)a3
+- (id)fromSerialized:(const void *)serialized
 {
   v5 = objc_autoreleasePoolPush();
-  if (!a3 || !*a3)
+  if (!serialized || !*serialized)
   {
 LABEL_7:
     v9 = 0;
     goto LABEL_8;
   }
 
-  v6 = [[IOSurfaceSharedEvent alloc] initWithMachPort:*a3];
+  v6 = [[IOSurfaceSharedEvent alloc] initWithMachPort:*serialized];
   if (!v6)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
@@ -56,7 +56,7 @@ LABEL_7:
 
   v7 = v6;
   v8 = v6;
-  v9 = [(IOSurfaceTransaction *)self initWithSharedEvent:v7 waitValue:*(a3 + 1) isWrite:*(a3 + 16) != 0];
+  v9 = [(IOSurfaceTransaction *)self initWithSharedEvent:v7 waitValue:*(serialized + 1) isWrite:*(serialized + 16) != 0];
 LABEL_8:
   objc_autoreleasePoolPop(v5);
   return v9;

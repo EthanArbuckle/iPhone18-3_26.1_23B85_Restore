@@ -1,71 +1,71 @@
 @interface AEAssessmentStatePublishingProxy
-+ (id)proxyWithEndpoint:(id)a3 queue:(id)a4;
-- (id)initWithXPCProxy:(void *)a3 queue:;
-- (void)_endPublications:(uint64_t)a1;
-- (void)_publishAssessmentState:(void *)a3 withCompletion:;
-- (void)endPublications:(id)a3;
-- (void)publishAssessmentState:(id)a3 withCompletion:(id)a4;
++ (id)proxyWithEndpoint:(id)endpoint queue:(id)queue;
+- (id)initWithXPCProxy:(void *)proxy queue:;
+- (void)_endPublications:(uint64_t)publications;
+- (void)_publishAssessmentState:(void *)state withCompletion:;
+- (void)endPublications:(id)publications;
+- (void)publishAssessmentState:(id)state withCompletion:(id)completion;
 @end
 
 @implementation AEAssessmentStatePublishingProxy
 
-- (void)publishAssessmentState:(id)a3 withCompletion:(id)a4
+- (void)publishAssessmentState:(id)state withCompletion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __74__AEAssessmentStatePublishingProxy_publishAssessmentState_withCompletion___block_invoke;
   v8[3] = &unk_278BB6D40;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  [(AEAssessmentStatePublishingProxy *)self _publishAssessmentState:a3 withCompletion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [(AEAssessmentStatePublishingProxy *)self _publishAssessmentState:state withCompletion:v8];
 }
 
-- (void)endPublications:(id)a3
+- (void)endPublications:(id)publications
 {
-  v4 = a3;
+  publicationsCopy = publications;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __52__AEAssessmentStatePublishingProxy_endPublications___block_invoke;
   v6[3] = &unk_278BB6D40;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = publicationsCopy;
+  v5 = publicationsCopy;
   [(AEAssessmentStatePublishingProxy *)self _endPublications:v6];
 }
 
-- (id)initWithXPCProxy:(void *)a3 queue:
+- (id)initWithXPCProxy:(void *)proxy queue:
 {
   v6 = a2;
-  v7 = a3;
-  if (a1)
+  proxyCopy = proxy;
+  if (self)
   {
-    v10.receiver = a1;
+    v10.receiver = self;
     v10.super_class = AEAssessmentStatePublishingProxy;
     v8 = objc_msgSendSuper2(&v10, sel_init);
-    a1 = v8;
+    self = v8;
     if (v8)
     {
       objc_storeStrong(v8 + 1, a2);
-      objc_storeStrong(a1 + 2, a3);
+      objc_storeStrong(self + 2, proxy);
     }
   }
 
-  return a1;
+  return self;
 }
 
-+ (id)proxyWithEndpoint:(id)a3 queue:(id)a4
++ (id)proxyWithEndpoint:(id)endpoint queue:(id)queue
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[AEAnonymousXPCConnectionOrigin alloc] initWithEndpoint:v6];
+  queueCopy = queue;
+  endpointCopy = endpoint;
+  v7 = [[AEAnonymousXPCConnectionOrigin alloc] initWithEndpoint:endpointCopy];
 
   v8 = objc_opt_new();
-  v9 = [v8 makeInterface];
+  makeInterface = [v8 makeInterface];
 
-  v10 = [[AEXPCProxy alloc] initWithOrigin:v7 interface:v9];
-  v11 = [[AEAssessmentStatePublishingProxy alloc] initWithXPCProxy:v10 queue:v5];
+  v10 = [[AEXPCProxy alloc] initWithOrigin:v7 interface:makeInterface];
+  v11 = [[AEAssessmentStatePublishingProxy alloc] initWithXPCProxy:v10 queue:queueCopy];
 
   return v11;
 }
@@ -95,17 +95,17 @@ void __74__AEAssessmentStatePublishingProxy_publishAssessmentState_withCompletio
   dispatch_async(v5, v8);
 }
 
-- (void)_publishAssessmentState:(void *)a3 withCompletion:
+- (void)_publishAssessmentState:(void *)state withCompletion:
 {
-  v5 = a3;
-  if (a1)
+  stateCopy = state;
+  if (self)
   {
-    v6 = *(a1 + 8);
+    v6 = *(self + 8);
     OUTLINED_FUNCTION_0();
     v11 = 3221225472;
     v12 = __75__AEAssessmentStatePublishingProxy__publishAssessmentState_withCompletion___block_invoke;
     v13 = &unk_278BB6D68;
-    v7 = v5;
+    v7 = stateCopy;
     v14 = v7;
     v8 = a2;
     v9 = [(AEXPCProxy *)v6 remoteObjectProxyWithErrorHandler:v10];
@@ -138,12 +138,12 @@ void __52__AEAssessmentStatePublishingProxy_endPublications___block_invoke(uint6
   dispatch_async(v5, v8);
 }
 
-- (void)_endPublications:(uint64_t)a1
+- (void)_endPublications:(uint64_t)publications
 {
   v3 = a2;
-  if (a1)
+  if (publications)
   {
-    v4 = *(a1 + 8);
+    v4 = *(publications + 8);
     OUTLINED_FUNCTION_0();
     v8 = 3221225472;
     v9 = __53__AEAssessmentStatePublishingProxy__endPublications___block_invoke;

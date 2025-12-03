@@ -1,11 +1,11 @@
 @interface TPSExperiment
 - (BOOL)updateCampIfNeeded;
-- (BOOL)updateWithExperimentDictionary:(id)a3;
+- (BOOL)updateWithExperimentDictionary:(id)dictionary;
 - (TPSExperiment)init;
-- (TPSExperiment)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TPSExperiment)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TPSExperiment
@@ -25,19 +25,19 @@
   return result;
 }
 
-- (TPSExperiment)initWithCoder:(id)a3
+- (TPSExperiment)initWithCoder:(id)coder
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = TPSExperiment;
   v5 = [(TPSExperiment *)&v14 init];
   if (v5)
   {
-    v5->_identifier = [v4 decodeIntegerForKey:@"id"];
-    [v4 decodeDoubleForKey:@"holdoutAllocation"];
+    v5->_identifier = [coderCopy decodeIntegerForKey:@"id"];
+    [coderCopy decodeDoubleForKey:@"holdoutAllocation"];
     v5->_holdoutAllocation = v6;
-    v7 = [v4 decodeIntegerForKey:@"camp"];
+    v7 = [coderCopy decodeIntegerForKey:@"camp"];
     if (v7 > 2)
     {
       v8 = 1;
@@ -66,32 +66,32 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeInteger:identifier forKey:@"id"];
-  [v5 encodeInteger:self->_camp forKey:@"camp"];
-  [v5 encodeDouble:@"holdoutAllocation" forKey:self->_holdoutAllocation];
+  coderCopy = coder;
+  [coderCopy encodeInteger:identifier forKey:@"id"];
+  [coderCopy encodeInteger:self->_camp forKey:@"camp"];
+  [coderCopy encodeDouble:@"holdoutAllocation" forKey:self->_holdoutAllocation];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   [v4 setIdentifier:self->_identifier];
   [v4 setCamp:self->_camp];
   [v4 setHoldoutAllocation:self->_holdoutAllocation];
   return v4;
 }
 
-- (BOOL)updateWithExperimentDictionary:(id)a3
+- (BOOL)updateWithExperimentDictionary:(id)dictionary
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dictionaryCopy = dictionary;
+  v5 = dictionaryCopy;
+  if (dictionaryCopy)
   {
-    v6 = [v4 TPSSafeIntegerForKey:@"id"];
+    v6 = [dictionaryCopy TPSSafeIntegerForKey:@"id"];
     if (self->_identifier != v6)
     {
       v7 = v6;
@@ -153,16 +153,16 @@ LABEL_18:
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 integerValue];
-    v6 = v5;
-    if (v5 == self->_camp)
+    integerValue = [v3 integerValue];
+    v6 = integerValue;
+    if (integerValue == self->_camp)
     {
       v7 = 0;
     }
 
     else
     {
-      self->_camp = v5;
+      self->_camp = integerValue;
       v8 = +[TPSLogger data];
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {

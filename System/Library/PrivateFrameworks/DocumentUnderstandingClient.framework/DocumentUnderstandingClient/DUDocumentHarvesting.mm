@@ -1,12 +1,12 @@
 @interface DUDocumentHarvesting
-- (void)addSerializedDocument:(id)a3 documentType:(int64_t)a4;
+- (void)addSerializedDocument:(id)document documentType:(int64_t)type;
 @end
 
 @implementation DUDocumentHarvesting
 
-- (void)addSerializedDocument:(id)a3 documentType:(int64_t)a4
+- (void)addSerializedDocument:(id)document documentType:(int64_t)type
 {
-  v5 = a3;
+  documentCopy = document;
   if (!+[_TtC27DocumentUnderstandingClient38DocumentUnderstandingFeatureFlagReader isSearchAndOrganizationDocumentIngestEnabled])
   {
     if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
@@ -38,7 +38,7 @@ LABEL_9:
   }
 
   v6 = +[DUXPCClient sharedInstance];
-  [v6 addSerializedDocument:v5 documentType:a4 completion:&unk_285CF06D0];
+  [v6 addSerializedDocument:documentCopy documentType:type completion:&unk_285CF06D0];
 
 LABEL_7:
 }

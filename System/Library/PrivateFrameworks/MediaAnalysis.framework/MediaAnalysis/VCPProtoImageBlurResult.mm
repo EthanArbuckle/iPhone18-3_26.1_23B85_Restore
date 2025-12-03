@@ -1,14 +1,14 @@
 @interface VCPProtoImageBlurResult
-+ (id)resultFromLegacyDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)resultFromLegacyDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)exportToLegacyDictionary;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCPProtoImageBlurResult
@@ -19,32 +19,32 @@
   v8.receiver = self;
   v8.super_class = VCPProtoImageBlurResult;
   v4 = [(VCPProtoImageBlurResult *)&v8 description];
-  v5 = [(VCPProtoImageBlurResult *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(VCPProtoImageBlurResult *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   *&v4 = self->_sharpness;
   v5 = [MEMORY[0x1E696AD98] numberWithFloat:v4];
-  [v3 setObject:v5 forKey:@"sharpness"];
+  [dictionary setObject:v5 forKey:@"sharpness"];
 
   if (*&self->_has)
   {
     *&v6 = self->_faceSharpness;
     v7 = [MEMORY[0x1E696AD98] numberWithFloat:v6];
-    [v3 setObject:v7 forKey:@"faceSharpness"];
+    [dictionary setObject:v7 forKey:@"faceSharpness"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   PBDataWriterWriteFloatField();
   if (*&self->_has)
   {
@@ -52,19 +52,19 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  *(a3 + 3) = LODWORD(self->_sharpness);
+  *(to + 3) = LODWORD(self->_sharpness);
   if (*&self->_has)
   {
-    *(a3 + 2) = LODWORD(self->_faceSharpness);
-    *(a3 + 16) |= 1u;
+    *(to + 2) = LODWORD(self->_faceSharpness);
+    *(to + 16) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 3) = LODWORD(self->_sharpness);
   if (*&self->_has)
   {
@@ -75,18 +75,18 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()] || self->_sharpness != *(v4 + 3))
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()] || self->_sharpness != *(equalCopy + 3))
   {
     goto LABEL_7;
   }
 
-  v5 = (*(v4 + 16) & 1) == 0;
+  v5 = (*(equalCopy + 16) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 16) & 1) != 0 && self->_faceSharpness == *(v4 + 2))
+    if ((*(equalCopy + 16) & 1) != 0 && self->_faceSharpness == *(equalCopy + 2))
     {
       v5 = 1;
       goto LABEL_8;
@@ -163,19 +163,19 @@ LABEL_8:
   return v12 ^ v11;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  self->_sharpness = *(a3 + 3);
-  if (*(a3 + 16))
+  self->_sharpness = *(from + 3);
+  if (*(from + 16))
   {
-    self->_faceSharpness = *(a3 + 2);
+    self->_faceSharpness = *(from + 2);
     *&self->_has |= 1u;
   }
 }
 
-+ (id)resultFromLegacyDictionary:(id)a3
++ (id)resultFromLegacyDictionary:(id)dictionary
 {
-  v3 = [a3 objectForKeyedSubscript:@"attributes"];
+  v3 = [dictionary objectForKeyedSubscript:@"attributes"];
   v4 = [v3 objectForKeyedSubscript:@"sharpness"];
   v5 = [v3 objectForKeyedSubscript:@"sharpnessFaces"];
   if (v4)
@@ -202,22 +202,22 @@ LABEL_8:
 - (id)exportToLegacyDictionary
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = MEMORY[0x1E696AD98];
   [(VCPProtoImageBlurResult *)self sharpness];
   v5 = [v4 numberWithFloat:?];
-  [v3 setObject:v5 forKeyedSubscript:@"sharpness"];
+  [dictionary setObject:v5 forKeyedSubscript:@"sharpness"];
 
   if ([(VCPProtoImageBlurResult *)self hasFaceSharpness])
   {
     v6 = MEMORY[0x1E696AD98];
     [(VCPProtoImageBlurResult *)self faceSharpness];
     v7 = [v6 numberWithFloat:?];
-    [v3 setObject:v7 forKeyedSubscript:@"sharpnessFaces"];
+    [dictionary setObject:v7 forKeyedSubscript:@"sharpnessFaces"];
   }
 
   v10 = @"attributes";
-  v11[0] = v3;
+  v11[0] = dictionary;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
 
   return v8;

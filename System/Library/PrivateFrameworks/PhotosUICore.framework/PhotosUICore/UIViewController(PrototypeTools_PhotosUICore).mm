@@ -11,7 +11,7 @@
 {
   v3 = a3;
   v4 = objc_alloc_init(_PXConsoleViewController);
-  v5 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   objc_initWeak(&location, v4);
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -23,7 +23,7 @@
   v8[2] = __95__UIViewController_PrototypeTools_PhotosUICore__px_viewControllerWithContinuousOutputProducer___block_invoke_2;
   v8[3] = &unk_1E77323C8;
   objc_copyWeak(&v10, &location);
-  v6 = v5;
+  v6 = date;
   v9 = v6;
   (*(v3 + 2))(v3, v11, v8);
 
@@ -43,7 +43,7 @@
   v8[3] = &unk_1E77323A0;
   v9 = v4;
   v5 = v4;
-  v6 = [a1 px_viewControllerWithContinuousOutputProducer:v8];
+  v6 = [self px_viewControllerWithContinuousOutputProducer:v8];
 
   return v6;
 }
@@ -57,7 +57,7 @@
   v8[3] = &unk_1E77322E0;
   v9 = v4;
   v5 = v4;
-  v6 = [a1 px_viewControllerWithAsynchronousOutputProducer:v8];
+  v6 = [self px_viewControllerWithAsynchronousOutputProducer:v8];
 
   return v6;
 }
@@ -68,9 +68,9 @@
   v4 = a3;
   v5 = [[v3 alloc] initWithRootSettings:v4];
 
-  v6 = [v5 topViewController];
+  topViewController = [v5 topViewController];
 
-  return v6;
+  return topViewController;
 }
 
 @end

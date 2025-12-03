@@ -20,17 +20,17 @@
 - (id)mutableUserAppProfile;
 - (id)mutableUserGlobalProfile;
 - (int)activeAppOrientation;
-- (void)setActiveAppID:(id)a3;
-- (void)setECID:(id)a3;
-- (void)setLastActivationDate:(id)a3;
-- (void)setLastPasscodeSetDate:(id)a3;
-- (void)setProductBuildVersion:(id)a3;
-- (void)setSavedASAMAppIdForLostMode:(id)a3;
-- (void)setSavedAccessibilityFeatures:(id)a3;
-- (void)setSavedAccessibilityTripleClickOptions:(id)a3;
-- (void)setUserAppProfile:(id)a3;
-- (void)setUserConfiguredAppIDs:(id)a3;
-- (void)setUserGlobalProfile:(id)a3;
+- (void)setActiveAppID:(id)d;
+- (void)setECID:(id)d;
+- (void)setLastActivationDate:(id)date;
+- (void)setLastPasscodeSetDate:(id)date;
+- (void)setProductBuildVersion:(id)version;
+- (void)setSavedASAMAppIdForLostMode:(id)mode;
+- (void)setSavedAccessibilityFeatures:(id)features;
+- (void)setSavedAccessibilityTripleClickOptions:(id)options;
+- (void)setUserAppProfile:(id)profile;
+- (void)setUserConfiguredAppIDs:(id)ds;
+- (void)setUserGlobalProfile:(id)profile;
 @end
 
 @implementation GAXSettings
@@ -64,37 +64,37 @@
 - (id)description
 {
   v3 = [NSMutableString stringWithFormat:@"GAXSettings:<%p>.\n", self];
-  v4 = [(GAXSettings *)self activeAppID];
+  activeAppID = [(GAXSettings *)self activeAppID];
   v5 = [NSNumber numberWithInt:[(GAXSettings *)self activeAppOrientation]];
   v6 = [NSNumber numberWithBool:[(GAXSettings *)self isActiveAppSelfLocked]];
   v7 = [NSNumber numberWithBool:[(GAXSettings *)self systemDidRestartDueToLowBattery]];
-  [v3 appendFormat:@"\tActive App ID: %@. Orientation:%@. Self-Locked:%@ Low-battery-restart:%@\n", v4, v5, v6, v7];
+  [v3 appendFormat:@"\tActive App ID: %@. Orientation:%@. Self-Locked:%@ Low-battery-restart:%@\n", activeAppID, v5, v6, v7];
 
-  v8 = [(GAXSettings *)self ECID];
-  v9 = [(GAXSettings *)self productBuildVersion];
-  v10 = [(GAXSettings *)self lastActivationDate];
-  v11 = [(GAXSettings *)self lastPasscodeSetDate];
-  [v3 appendFormat:@"\x1BCID:%@ version:%@ activationDate:%@ passcodeSetDate:%@\n", v8, v9, v10, v11];
+  eCID = [(GAXSettings *)self ECID];
+  productBuildVersion = [(GAXSettings *)self productBuildVersion];
+  lastActivationDate = [(GAXSettings *)self lastActivationDate];
+  lastPasscodeSetDate = [(GAXSettings *)self lastPasscodeSetDate];
+  [v3 appendFormat:@"\x1BCID:%@ version:%@ activationDate:%@ passcodeSetDate:%@\n", eCID, productBuildVersion, lastActivationDate, lastPasscodeSetDate];
 
   v12 = [NSNumber numberWithBool:[(GAXSettings *)self timeRestrictionHasExpired]];
   [v3 appendFormat:@"\tTime Restriction expired:%@\n", v12];
 
-  v13 = [(GAXSettings *)self userAppProfile];
-  v14 = [NSNumber numberWithInt:v13 != 0];
-  v15 = [(GAXSettings *)self userGlobalProfile];
-  v16 = [NSNumber numberWithInt:v15 != 0];
+  userAppProfile = [(GAXSettings *)self userAppProfile];
+  v14 = [NSNumber numberWithInt:userAppProfile != 0];
+  userGlobalProfile = [(GAXSettings *)self userGlobalProfile];
+  v16 = [NSNumber numberWithInt:userGlobalProfile != 0];
   [v3 appendFormat:@"\tHas User App Profile:%@. Has User Global Profile:%@\n", v14, v16];
 
   v17 = +[NSMutableString string];
-  v18 = [(GAXSettings *)self userConfiguredAppIDs];
-  if ([v18 count])
+  userConfiguredAppIDs = [(GAXSettings *)self userConfiguredAppIDs];
+  if ([userConfiguredAppIDs count])
   {
     v44 = 0u;
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v19 = [(GAXSettings *)self userConfiguredAppIDs];
-    v20 = [v19 countByEnumeratingWithState:&v42 objects:v47 count:16];
+    userConfiguredAppIDs2 = [(GAXSettings *)self userConfiguredAppIDs];
+    v20 = [userConfiguredAppIDs2 countByEnumeratingWithState:&v42 objects:v47 count:16];
     if (v20)
     {
       v21 = v20;
@@ -105,13 +105,13 @@
         {
           if (*v43 != v22)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(userConfiguredAppIDs2);
           }
 
           [v17 appendFormat:@"%@, ", *(*(&v42 + 1) + 8 * i)];
         }
 
-        v21 = [v19 countByEnumeratingWithState:&v42 objects:v47 count:16];
+        v21 = [userConfiguredAppIDs2 countByEnumeratingWithState:&v42 objects:v47 count:16];
       }
 
       while (v21);
@@ -124,16 +124,16 @@
   }
 
   [v3 appendFormat:@"\tUser Configured Apps: %@\n", v17];
-  v24 = [(GAXSettings *)self savedAccessibilityFeatures];
+  savedAccessibilityFeatures = [(GAXSettings *)self savedAccessibilityFeatures];
   v25 = +[NSMutableString string];
-  if ([v24 count])
+  if ([savedAccessibilityFeatures count])
   {
     v40[0] = _NSConcreteStackBlock;
     v40[1] = 3221225472;
     v40[2] = sub_B1DC;
     v40[3] = &unk_4D2D0;
     v41 = v25;
-    [v24 enumerateKeysAndObjectsUsingBlock:v40];
+    [savedAccessibilityFeatures enumerateKeysAndObjectsUsingBlock:v40];
   }
 
   else
@@ -143,16 +143,16 @@
 
   [v3 appendFormat:@"\tSaved AX Features:%@\n", v25];
   v26 = +[NSMutableString string];
-  v27 = [(GAXSettings *)self savedAccessibilityTripleClickOptions];
-  if ([v27 count])
+  savedAccessibilityTripleClickOptions = [(GAXSettings *)self savedAccessibilityTripleClickOptions];
+  if ([savedAccessibilityTripleClickOptions count])
   {
-    v34 = v24;
-    v35 = v18;
+    v34 = savedAccessibilityFeatures;
+    v35 = userConfiguredAppIDs;
     v38 = 0u;
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v28 = v27;
+    v28 = savedAccessibilityTripleClickOptions;
     v29 = [v28 countByEnumeratingWithState:&v36 objects:v46 count:16];
     if (v29)
     {
@@ -176,8 +176,8 @@
       while (v30);
     }
 
-    v24 = v34;
-    v18 = v35;
+    savedAccessibilityFeatures = v34;
+    userConfiguredAppIDs = v35;
   }
 
   else
@@ -193,234 +193,234 @@
 - (NSArray)userConfiguredAppIDs
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 gaxInternalSettingsUserConfiguredAppIDs];
+  gaxInternalSettingsUserConfiguredAppIDs = [v2 gaxInternalSettingsUserConfiguredAppIDs];
 
-  return v3;
+  return gaxInternalSettingsUserConfiguredAppIDs;
 }
 
-- (void)setUserConfiguredAppIDs:(id)a3
+- (void)setUserConfiguredAppIDs:(id)ds
 {
-  v3 = a3;
+  dsCopy = ds;
   v4 = +[AXSettings sharedInstance];
-  [v4 setGaxInternalSettingsUserConfiguredAppIDs:v3];
+  [v4 setGaxInternalSettingsUserConfiguredAppIDs:dsCopy];
 }
 
 - (NSDictionary)savedAccessibilityFeatures
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 gaxInternalSettingsSavedAccessibilityFeatures];
+  gaxInternalSettingsSavedAccessibilityFeatures = [v2 gaxInternalSettingsSavedAccessibilityFeatures];
 
-  return v3;
+  return gaxInternalSettingsSavedAccessibilityFeatures;
 }
 
-- (void)setSavedAccessibilityFeatures:(id)a3
+- (void)setSavedAccessibilityFeatures:(id)features
 {
-  v3 = a3;
+  featuresCopy = features;
   v4 = +[AXSettings sharedInstance];
-  [v4 setGaxInternalSettingsSavedAccessibilityFeatures:v3];
+  [v4 setGaxInternalSettingsSavedAccessibilityFeatures:featuresCopy];
 }
 
 - (NSArray)savedAccessibilityTripleClickOptions
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 gaxInternalSettingsSavedAccessibilityTripleClickOptions];
+  gaxInternalSettingsSavedAccessibilityTripleClickOptions = [v2 gaxInternalSettingsSavedAccessibilityTripleClickOptions];
 
-  return v3;
+  return gaxInternalSettingsSavedAccessibilityTripleClickOptions;
 }
 
-- (void)setSavedAccessibilityTripleClickOptions:(id)a3
+- (void)setSavedAccessibilityTripleClickOptions:(id)options
 {
-  v3 = a3;
+  optionsCopy = options;
   v4 = +[AXSettings sharedInstance];
-  [v4 setGaxInternalSettingsSavedAccessibilityTripleClickOptions:v3];
+  [v4 setGaxInternalSettingsSavedAccessibilityTripleClickOptions:optionsCopy];
 }
 
 - (int)activeAppOrientation
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 gaxInternalSettingsActiveAppOrientation];
-  v4 = [v3 unsignedIntegerValue];
+  gaxInternalSettingsActiveAppOrientation = [v2 gaxInternalSettingsActiveAppOrientation];
+  unsignedIntegerValue = [gaxInternalSettingsActiveAppOrientation unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (NSString)activeAppID
 {
-  v2 = [(GAXSettings *)self fastStorage];
-  v3 = [v2 activeAppID];
+  fastStorage = [(GAXSettings *)self fastStorage];
+  activeAppID = [fastStorage activeAppID];
 
-  return v3;
+  return activeAppID;
 }
 
-- (void)setActiveAppID:(id)a3
+- (void)setActiveAppID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = GAXLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    sub_2A88C(self, v4, v5);
+    sub_2A88C(self, dCopy, v5);
   }
 
-  v6 = [(GAXSettings *)self fastStorage];
-  [v6 setActiveAppID:v4];
+  fastStorage = [(GAXSettings *)self fastStorage];
+  [fastStorage setActiveAppID:dCopy];
 }
 
 - (NSString)savedASAMAppIdForLostMode
 {
-  v2 = [(GAXSettings *)self fastStorage];
-  v3 = [v2 savedASAMAppIdForLostMode];
+  fastStorage = [(GAXSettings *)self fastStorage];
+  savedASAMAppIdForLostMode = [fastStorage savedASAMAppIdForLostMode];
 
-  return v3;
+  return savedASAMAppIdForLostMode;
 }
 
-- (void)setSavedASAMAppIdForLostMode:(id)a3
+- (void)setSavedASAMAppIdForLostMode:(id)mode
 {
-  v4 = a3;
-  v5 = [(GAXSettings *)self fastStorage];
-  [v5 setSavedASAMAppIdForLostMode:v4];
+  modeCopy = mode;
+  fastStorage = [(GAXSettings *)self fastStorage];
+  [fastStorage setSavedASAMAppIdForLostMode:modeCopy];
 }
 
 - (BOOL)timeRestrictionHasExpired
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 gaxInternalSettingsTimeRestrictionHasExpired];
+  gaxInternalSettingsTimeRestrictionHasExpired = [v2 gaxInternalSettingsTimeRestrictionHasExpired];
 
-  return v3;
+  return gaxInternalSettingsTimeRestrictionHasExpired;
 }
 
 - (BOOL)isActiveAppSelfLocked
 {
-  v2 = [(GAXSettings *)self fastStorage];
-  v3 = [v2 isActiveAppSelfLocked];
+  fastStorage = [(GAXSettings *)self fastStorage];
+  isActiveAppSelfLocked = [fastStorage isActiveAppSelfLocked];
 
-  return v3;
+  return isActiveAppSelfLocked;
 }
 
 - (BOOL)selfLockUnmanaged
 {
-  v2 = [(GAXSettings *)self fastStorage];
-  v3 = [v2 selfLockUnmanaged];
+  fastStorage = [(GAXSettings *)self fastStorage];
+  selfLockUnmanaged = [fastStorage selfLockUnmanaged];
 
-  return v3;
+  return selfLockUnmanaged;
 }
 
 - (BOOL)systemDidRestartDueToLowBattery
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 gaxInternalSettingsSystemDidRestartDueToLowBattery];
+  gaxInternalSettingsSystemDidRestartDueToLowBattery = [v2 gaxInternalSettingsSystemDidRestartDueToLowBattery];
 
-  return v3;
+  return gaxInternalSettingsSystemDidRestartDueToLowBattery;
 }
 
 - (NSNumber)ECID
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 gaxInternalSettingsECID];
+  gaxInternalSettingsECID = [v2 gaxInternalSettingsECID];
 
-  return v3;
+  return gaxInternalSettingsECID;
 }
 
-- (void)setECID:(id)a3
+- (void)setECID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = +[AXSettings sharedInstance];
-  [v4 setGaxInternalSettingsECID:v3];
+  [v4 setGaxInternalSettingsECID:dCopy];
 }
 
 - (NSString)productBuildVersion
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 gaxInternalSettingsProductBuildVersion];
+  gaxInternalSettingsProductBuildVersion = [v2 gaxInternalSettingsProductBuildVersion];
 
-  return v3;
+  return gaxInternalSettingsProductBuildVersion;
 }
 
-- (void)setProductBuildVersion:(id)a3
+- (void)setProductBuildVersion:(id)version
 {
-  v3 = a3;
+  versionCopy = version;
   v4 = +[AXSettings sharedInstance];
-  [v4 setGaxInternalSettingsProductBuildVersion:v3];
+  [v4 setGaxInternalSettingsProductBuildVersion:versionCopy];
 }
 
 - (NSDate)lastActivationDate
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 gaxInternalSettingsLastActivationDate];
+  gaxInternalSettingsLastActivationDate = [v2 gaxInternalSettingsLastActivationDate];
 
-  return v3;
+  return gaxInternalSettingsLastActivationDate;
 }
 
-- (void)setLastActivationDate:(id)a3
+- (void)setLastActivationDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   v4 = +[AXSettings sharedInstance];
-  [v4 setGaxInternalSettingsLastActivationDate:v3];
+  [v4 setGaxInternalSettingsLastActivationDate:dateCopy];
 }
 
 - (NSDate)lastPasscodeSetDate
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 gaxInternalSettingsLastPasscodeSetDate];
+  gaxInternalSettingsLastPasscodeSetDate = [v2 gaxInternalSettingsLastPasscodeSetDate];
 
-  return v3;
+  return gaxInternalSettingsLastPasscodeSetDate;
 }
 
-- (void)setLastPasscodeSetDate:(id)a3
+- (void)setLastPasscodeSetDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   v4 = +[AXSettings sharedInstance];
-  [v4 setGaxInternalSettingsLastPasscodeSetDate:v3];
+  [v4 setGaxInternalSettingsLastPasscodeSetDate:dateCopy];
 }
 
 - (NSDictionary)userAppProfile
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 gaxInternalSettingsUserAppProfile];
+  gaxInternalSettingsUserAppProfile = [v2 gaxInternalSettingsUserAppProfile];
 
-  return v3;
+  return gaxInternalSettingsUserAppProfile;
 }
 
-- (void)setUserAppProfile:(id)a3
+- (void)setUserAppProfile:(id)profile
 {
-  v3 = a3;
+  profileCopy = profile;
   v4 = +[AXSettings sharedInstance];
-  [v4 setGaxInternalSettingsUserAppProfile:v3];
+  [v4 setGaxInternalSettingsUserAppProfile:profileCopy];
 }
 
 - (NSDictionary)userGlobalProfile
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 gaxInternalSettingsUserGlobalProfile];
+  gaxInternalSettingsUserGlobalProfile = [v2 gaxInternalSettingsUserGlobalProfile];
 
-  return v3;
+  return gaxInternalSettingsUserGlobalProfile;
 }
 
-- (void)setUserGlobalProfile:(id)a3
+- (void)setUserGlobalProfile:(id)profile
 {
-  v3 = a3;
+  profileCopy = profile;
   v4 = +[AXSettings sharedInstance];
-  [v4 setGaxInternalSettingsUserAppProfile:v3];
+  [v4 setGaxInternalSettingsUserAppProfile:profileCopy];
 }
 
 - (id)mutableUserAppProfile
 {
   v3 = +[NSMutableDictionary dictionary];
-  v4 = [(GAXSettings *)self userAppProfile];
+  userAppProfile = [(GAXSettings *)self userAppProfile];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_BDC8;
   v7[3] = &unk_4D2F8;
   v5 = v3;
   v8 = v5;
-  [v4 enumerateKeysAndObjectsUsingBlock:v7];
+  [userAppProfile enumerateKeysAndObjectsUsingBlock:v7];
 
   return v5;
 }
 
 - (id)mutableUserGlobalProfile
 {
-  v2 = [(GAXSettings *)self userGlobalProfile];
-  v3 = [v2 mutableCopy];
+  userGlobalProfile = [(GAXSettings *)self userGlobalProfile];
+  v3 = [userGlobalProfile mutableCopy];
 
   if (!v3)
   {

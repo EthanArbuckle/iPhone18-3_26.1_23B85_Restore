@@ -1,13 +1,13 @@
 @interface ODIVenn3
-+ (CGRect)mapGSpaceWithState:(id)a3;
-+ (void)mapNode:(id)a3 index:(unsigned int)a4 state:(id)a5;
++ (CGRect)mapGSpaceWithState:(id)state;
++ (void)mapNode:(id)node index:(unsigned int)index state:(id)state;
 @end
 
 @implementation ODIVenn3
 
-+ (CGRect)mapGSpaceWithState:(id)a3
++ (CGRect)mapGSpaceWithState:(id)state
 {
-  v3 = ((([a1 nodeCountWithState:a3] - 1) * 1.6) + 2.0);
+  v3 = ((([self nodeCountWithState:state] - 1) * 1.6) + 2.0);
   v4 = 0.0;
   v5 = 0.0;
   v6 = 2.0;
@@ -18,18 +18,18 @@
   return result;
 }
 
-+ (void)mapNode:(id)a3 index:(unsigned int)a4 state:(id)a5
++ (void)mapNode:(id)node index:(unsigned int)index state:(id)state
 {
-  v17 = a3;
-  v7 = a5;
-  v8 = TSURectWithCenterAndSize(((a4 * 1.6) + 1.0), 1.0, 2.0);
+  nodeCopy = node;
+  stateCopy = state;
+  v8 = TSURectWithCenterAndSize(((index * 1.6) + 1.0), 1.0, 2.0);
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v15 = +[ODIDrawable shapeGeometryForEllipse];
-  v16 = [ODIDrawable addShapeWithBounds:v15 rotation:v7 geometry:v8 state:v10, v12, v14, 0.0];
+  v16 = [ODIDrawable addShapeWithBounds:v15 rotation:stateCopy geometry:v8 state:v10, v12, v14, 0.0];
 
-  [ODIDrawable mapStyleAndTextFromPoint:v17 shape:v16 state:v7];
+  [ODIDrawable mapStyleAndTextFromPoint:nodeCopy shape:v16 state:stateCopy];
 }
 
 @end

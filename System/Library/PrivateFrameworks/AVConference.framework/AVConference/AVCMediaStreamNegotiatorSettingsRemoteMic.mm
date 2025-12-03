@@ -1,7 +1,7 @@
 @interface AVCMediaStreamNegotiatorSettingsRemoteMic
-- (AVCMediaStreamNegotiatorSettingsRemoteMic)initWithOptions:(id)a3 deviceRole:(unsigned __int8)a4 error:(id *)a5;
+- (AVCMediaStreamNegotiatorSettingsRemoteMic)initWithOptions:(id)options deviceRole:(unsigned __int8)role error:(id *)error;
 - (id)newAudioRuleCollection;
-- (void)setUpPropertiesWithOptions:(id)a3;
+- (void)setUpPropertiesWithOptions:(id)options;
 @end
 
 @implementation AVCMediaStreamNegotiatorSettingsRemoteMic
@@ -21,9 +21,9 @@
   return v4;
 }
 
-- (void)setUpPropertiesWithOptions:(id)a3
+- (void)setUpPropertiesWithOptions:(id)options
 {
-  v4 = [objc_msgSend(a3 objectForKeyedSubscript:{@"AVCMediaStreamNegotiatorRemoteMicChannelCount", "unsignedIntegerValue"}];
+  v4 = [objc_msgSend(options objectForKeyedSubscript:{@"AVCMediaStreamNegotiatorRemoteMicChannelCount", "unsignedIntegerValue"}];
   self->_pTime = 10;
   if (v4 == 4)
   {
@@ -43,7 +43,7 @@
   }
 }
 
-- (AVCMediaStreamNegotiatorSettingsRemoteMic)initWithOptions:(id)a3 deviceRole:(unsigned __int8)a4 error:(id *)a5
+- (AVCMediaStreamNegotiatorSettingsRemoteMic)initWithOptions:(id)options deviceRole:(unsigned __int8)role error:(id *)error
 {
   v14 = *MEMORY[0x1E69E9840];
   v13.receiver = self;
@@ -52,12 +52,12 @@
   v8 = v7;
   if (v7)
   {
-    [(AVCMediaStreamNegotiatorSettingsRemoteMic *)v7 setUpPropertiesWithOptions:a3];
-    v9 = [(AVCMediaStreamNegotiatorSettingsRemoteMic *)v8 newAudioRuleCollection];
-    if (v9)
+    [(AVCMediaStreamNegotiatorSettingsRemoteMic *)v7 setUpPropertiesWithOptions:options];
+    newAudioRuleCollection = [(AVCMediaStreamNegotiatorSettingsRemoteMic *)v8 newAudioRuleCollection];
+    if (newAudioRuleCollection)
     {
-      v10 = v9;
-      v8->super._audioConfiguration = [[VCMediaNegotiatorAudioConfiguration alloc] initWithAllowAudioRecording:0 ssrc:v8->super._localSSRC audioUnitNumber:0 audioRuleCollection:v9];
+      v10 = newAudioRuleCollection;
+      v8->super._audioConfiguration = [[VCMediaNegotiatorAudioConfiguration alloc] initWithAllowAudioRecording:0 ssrc:v8->super._localSSRC audioUnitNumber:0 audioRuleCollection:newAudioRuleCollection];
 
       if (v8->super._audioConfiguration)
       {
@@ -73,9 +73,9 @@
       v12 = @"audioRules init failed";
     }
 
-    if (a5)
+    if (error)
     {
-      *a5 = v12;
+      *error = v12;
     }
 
     return 0;

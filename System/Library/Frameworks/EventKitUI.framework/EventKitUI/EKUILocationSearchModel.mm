@@ -1,51 +1,51 @@
 @interface EKUILocationSearchModel
-+ (id)URLsFromSource:(id)a3;
++ (id)URLsFromSource:(id)source;
 + (id)_dataDetector;
-+ (id)_linksInSource:(id)a3;
++ (id)_linksInSource:(id)source;
 + (void)initialize;
-- (BOOL)removeRecentLocation:(id)a3;
-- (EKUILocationSearchModel)initWithEventStore:(id)a3;
+- (BOOL)removeRecentLocation:(id)location;
+- (EKUILocationSearchModel)initWithEventStore:(id)store;
 - (EKUILocationSearchModelDelegate)delegate;
-- (id)_imageForAttributes:(id)a3;
-- (id)_imageForMapHandle:(id)a3;
-- (id)availabilityRequestForConferenceRooms:(id)a3 duringEvent:(id)a4 resultsBlock:(id)a5 completionBlock:(id)a6;
-- (id)splitEventLocations:(id)a3;
+- (id)_imageForAttributes:(id)attributes;
+- (id)_imageForMapHandle:(id)handle;
+- (id)availabilityRequestForConferenceRooms:(id)rooms duringEvent:(id)event resultsBlock:(id)block completionBlock:(id)completionBlock;
+- (id)splitEventLocations:(id)locations;
 - (unint64_t)dedupeResults;
-- (void)_addDiscoveredConferenceRooms:(id)a3;
-- (void)_addLocationToRecents:(id)a3 addressString:(id)a4 mapItem:(id)a5;
-- (void)_handleAvailabilityResults:(id)a3 forOperation:(id)a4;
-- (void)_processDirectorySearchResultSet:(id)a3 forOperation:(id)a4;
-- (void)_updateAllPossibleVirtualConferenceResultsWithRoomTypes:(id)a3;
-- (void)_updateContactsSearchWithResults:(id)a3 forToken:(id)a4;
-- (void)_updateMapURL:(id)a3;
-- (void)_updateVirtualConferenceCustomOptions:(id)a3;
-- (void)_updateVirtualConferenceOptions:(id)a3;
-- (void)addConferenceRoomToRecents:(id)a3 fromSource:(id)a4;
-- (void)beginSearchForTerm:(id)a3;
+- (void)_addDiscoveredConferenceRooms:(id)rooms;
+- (void)_addLocationToRecents:(id)recents addressString:(id)string mapItem:(id)item;
+- (void)_handleAvailabilityResults:(id)results forOperation:(id)operation;
+- (void)_processDirectorySearchResultSet:(id)set forOperation:(id)operation;
+- (void)_updateAllPossibleVirtualConferenceResultsWithRoomTypes:(id)types;
+- (void)_updateContactsSearchWithResults:(id)results forToken:(id)token;
+- (void)_updateMapURL:(id)l;
+- (void)_updateVirtualConferenceCustomOptions:(id)options;
+- (void)_updateVirtualConferenceOptions:(id)options;
+- (void)addConferenceRoomToRecents:(id)recents fromSource:(id)source;
+- (void)beginSearchForTerm:(id)term;
 - (void)cancelSearch;
-- (void)completerDidFail:(id)a3 error:(id)a4;
-- (void)completerDidUpdateResults:(id)a3 finished:(BOOL)a4;
+- (void)completerDidFail:(id)fail error:(id)error;
+- (void)completerDidUpdateResults:(id)results finished:(BOOL)finished;
 - (void)dealloc;
 - (void)getCurrentLocation;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
 - (void)resetConferenceRoomSearchResults;
 - (void)resetContactsSearchResults;
 - (void)resetEventsSearchResults;
 - (void)resetRecentsSearchResults;
-- (void)resetSearchResults:(BOOL)a3;
-- (void)searchConferenceRooms:(id)a3;
-- (void)searchFrequentLocations:(id)a3;
+- (void)resetSearchResults:(BOOL)results;
+- (void)searchConferenceRooms:(id)rooms;
+- (void)searchFrequentLocations:(id)locations;
 - (void)selectCurrentLocation;
-- (void)selectLocation:(id)a3;
-- (void)selectMapSearchCompletion:(id)a3;
-- (void)selectVirtualConferenceRoomType:(id)a3;
+- (void)selectLocation:(id)location;
+- (void)selectMapSearchCompletion:(id)completion;
+- (void)selectVirtualConferenceRoomType:(id)type;
 - (void)stopUpdatingLocation;
-- (void)updateConferenceRoomAvailability:(id)a3 duringEvent:(id)a4 completionBlock:(id)a5;
-- (void)updateContacts:(id)a3;
-- (void)updateEventLocations:(id)a3;
-- (void)updateRecents:(id)a3;
-- (void)updateVirtualConferenceRoomOptions:(id)a3;
+- (void)updateConferenceRoomAvailability:(id)availability duringEvent:(id)event completionBlock:(id)block;
+- (void)updateContacts:(id)contacts;
+- (void)updateEventLocations:(id)locations;
+- (void)updateRecents:(id)recents;
+- (void)updateVirtualConferenceRoomOptions:(id)options;
 @end
 
 @implementation EKUILocationSearchModel
@@ -65,16 +65,16 @@ void __37__EKUILocationSearchModel_initialize__block_invoke()
   _mapItemCache = v0;
 }
 
-- (EKUILocationSearchModel)initWithEventStore:(id)a3
+- (EKUILocationSearchModel)initWithEventStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v38.receiver = self;
   v38.super_class = EKUILocationSearchModel;
   v6 = [(EKUILocationSearchModel *)&v38 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_eventStore, a3);
+    objc_storeStrong(&v6->_eventStore, store);
     v8 = objc_alloc_init(EKWeakLinkClass());
     [v8 setIncludeIncludeManagedAppleIDs:1];
     v9 = [objc_alloc(EKWeakLinkClass()) initWithConfiguration:v8];
@@ -82,9 +82,9 @@ void __37__EKUILocationSearchModel_initialize__block_invoke()
     v7->_contactStore = v9;
 
     v7->_supportedSearchTypes = 2047;
-    v11 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
     whitespaceAndNewlineCharacterSet = v7->_whitespaceAndNewlineCharacterSet;
-    v7->_whitespaceAndNewlineCharacterSet = v11;
+    v7->_whitespaceAndNewlineCharacterSet = whitespaceAndNewlineCharacterSet;
 
     v13 = dispatch_queue_create("com.apple.mobilecal.ConferenceRoomProcessing", 0);
     conferenceRoomProcessingQueue = v7->_conferenceRoomProcessingQueue;
@@ -102,9 +102,9 @@ void __37__EKUILocationSearchModel_initialize__block_invoke()
     conferenceRoomAddressesToConferenceRooms = v7->_conferenceRoomAddressesToConferenceRooms;
     v7->_conferenceRoomAddressesToConferenceRooms = v19;
 
-    v21 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     recentsSearchResults = v7->_recentsSearchResults;
-    v7->_recentsSearchResults = v21;
+    v7->_recentsSearchResults = array;
 
     v23 = EKWeakLinkClass();
     v24 = EKWeakLinkSymbol();
@@ -214,25 +214,25 @@ void __37__EKUILocationSearchModel_initialize__block_invoke()
   }
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
   v9 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  errorCopy = error;
   v6 = kEKUILogLocationSearchHandle;
   if (os_log_type_enabled(kEKUILogLocationSearchHandle, OS_LOG_TYPE_ERROR))
   {
     v7 = 138412290;
-    v8 = v5;
+    v8 = errorCopy;
     _os_log_impl(&dword_1D3400000, v6, OS_LOG_TYPE_ERROR, "Updating current location failed with error: %@", &v7, 0xCu);
   }
 
   [(EKUILocationSearchModel *)self stopUpdatingLocation];
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
-  v6 = a4;
-  v7 = [a3 _limitsPrecision];
+  locationsCopy = locations;
+  _limitsPrecision = [manager _limitsPrecision];
   v8 = kEKUILogLocationSearchHandle;
   if (os_log_type_enabled(kEKUILogLocationSearchHandle, OS_LOG_TYPE_INFO))
   {
@@ -240,16 +240,16 @@ void __37__EKUILocationSearchModel_initialize__block_invoke()
     _os_log_impl(&dword_1D3400000, v8, OS_LOG_TYPE_INFO, "Found current location, shifting...", buf, 2u);
   }
 
-  v9 = [v6 lastObject];
+  lastObject = [locationsCopy lastObject];
 
   v10 = objc_alloc_init(EKWeakLinkClass());
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __62__EKUILocationSearchModel_locationManager_didUpdateLocations___block_invoke;
   v11[3] = &unk_1E8440A98;
-  v12 = v7;
+  v12 = _limitsPrecision;
   v11[4] = self;
-  [v10 shiftLocation:v9 withCompletionHandler:v11];
+  [v10 shiftLocation:lastObject withCompletionHandler:v11];
   [(EKUILocationSearchModel *)self stopUpdatingLocation];
 }
 
@@ -360,9 +360,9 @@ void __62__EKUILocationSearchModel_locationManager_didUpdateLocations___block_in
   [(NSMutableArray *)recentsSearchResults removeAllObjects];
 }
 
-- (void)resetSearchResults:(BOOL)a3
+- (void)resetSearchResults:(BOOL)results
 {
-  v3 = a3;
+  resultsCopy = results;
   v5 = kEKUILogLocationSearchHandle;
   if (os_log_type_enabled(kEKUILogLocationSearchHandle, OS_LOG_TYPE_INFO))
   {
@@ -370,7 +370,7 @@ void __62__EKUILocationSearchModel_locationManager_didUpdateLocations___block_in
     _os_log_impl(&dword_1D3400000, v5, OS_LOG_TYPE_INFO, "Resetting location search results", v13, 2u);
   }
 
-  if (v3)
+  if (resultsCopy)
   {
     [(CLGeocoder *)self->_geocoder cancelGeocode];
     [(MKLocalSearchCompleter *)self->_completer cancel];
@@ -398,10 +398,10 @@ void __62__EKUILocationSearchModel_locationManager_didUpdateLocations___block_in
   virtualConferenceCustomSearchResults = self->_virtualConferenceCustomSearchResults;
   self->_virtualConferenceCustomSearchResults = 0;
 
-  if (v3)
+  if (resultsCopy)
   {
-    v12 = [(EKUILocationSearchModel *)self delegate];
-    [v12 locationSearchModel:self updatedSearchTypes:2047];
+    delegate = [(EKUILocationSearchModel *)self delegate];
+    [delegate locationSearchModel:self updatedSearchTypes:2047];
   }
 }
 
@@ -416,10 +416,10 @@ void __62__EKUILocationSearchModel_locationManager_didUpdateLocations___block_in
   }
 }
 
-- (void)beginSearchForTerm:(id)a3
+- (void)beginSearchForTerm:(id)term
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  termCopy = term;
   v5 = ICSRedactString();
   v6 = kEKUILogLocationSearchHandle;
   if (os_log_type_enabled(kEKUILogLocationSearchHandle, OS_LOG_TYPE_INFO))
@@ -444,8 +444,8 @@ void __62__EKUILocationSearchModel_locationManager_didUpdateLocations___block_in
       currentLocation = self->_currentLocation;
       if (currentLocation)
       {
-        v11 = [(EKStructuredLocation *)currentLocation geoLocation];
-        [(MKLocalSearchCompleter *)self->_completer setDeviceLocation:v11];
+        geoLocation = [(EKStructuredLocation *)currentLocation geoLocation];
+        [(MKLocalSearchCompleter *)self->_completer setDeviceLocation:geoLocation];
       }
 
       else if (self->_currentImpreciseLocation)
@@ -462,7 +462,7 @@ void __62__EKUILocationSearchModel_locationManager_didUpdateLocations___block_in
       _os_log_impl(&dword_1D3400000, v12, OS_LOG_TYPE_INFO, "[%{public}@] >>>> MapKit", &v21, 0xCu);
     }
 
-    [(MKLocalSearchCompleter *)self->_completer setFragment:v4];
+    [(MKLocalSearchCompleter *)self->_completer setFragment:termCopy];
     supportedSearchTypes = self->_supportedSearchTypes;
     if ((supportedSearchTypes & 2) == 0)
     {
@@ -489,7 +489,7 @@ LABEL_5:
     _os_log_impl(&dword_1D3400000, v13, OS_LOG_TYPE_INFO, "[%{public}@] >>>> MapKit from URL", &v21, 0xCu);
   }
 
-  [(EKUILocationSearchModel *)self _updateMapURL:v4];
+  [(EKUILocationSearchModel *)self _updateMapURL:termCopy];
   supportedSearchTypes = self->_supportedSearchTypes;
   if ((supportedSearchTypes & 8) == 0)
   {
@@ -511,7 +511,7 @@ LABEL_21:
     _os_log_impl(&dword_1D3400000, v14, OS_LOG_TYPE_INFO, "[%{public}@] >>>> Contacts", &v21, 0xCu);
   }
 
-  [(EKUILocationSearchModel *)self updateContacts:v4];
+  [(EKUILocationSearchModel *)self updateContacts:termCopy];
   supportedSearchTypes = self->_supportedSearchTypes;
   if ((supportedSearchTypes & 0x10) == 0)
   {
@@ -533,7 +533,7 @@ LABEL_24:
     _os_log_impl(&dword_1D3400000, v15, OS_LOG_TYPE_INFO, "[%{public}@] >>>> Recents", &v21, 0xCu);
   }
 
-  [(EKUILocationSearchModel *)self updateRecents:v4];
+  [(EKUILocationSearchModel *)self updateRecents:termCopy];
   supportedSearchTypes = self->_supportedSearchTypes;
   if ((supportedSearchTypes & 0x20) == 0)
   {
@@ -555,7 +555,7 @@ LABEL_27:
     _os_log_impl(&dword_1D3400000, v16, OS_LOG_TYPE_INFO, "[%{public}@] >>>> Frequents", &v21, 0xCu);
   }
 
-  [(EKUILocationSearchModel *)self searchFrequentLocations:v4];
+  [(EKUILocationSearchModel *)self searchFrequentLocations:termCopy];
   supportedSearchTypes = self->_supportedSearchTypes;
   if ((supportedSearchTypes & 0x100) != 0)
   {
@@ -568,7 +568,7 @@ LABEL_30:
       _os_log_impl(&dword_1D3400000, v17, OS_LOG_TYPE_INFO, "[%{public}@] >>>> ConferenceRooms", &v21, 0xCu);
     }
 
-    [(EKUILocationSearchModel *)self searchConferenceRooms:v4];
+    [(EKUILocationSearchModel *)self searchConferenceRooms:termCopy];
     supportedSearchTypes = self->_supportedSearchTypes;
   }
 
@@ -583,7 +583,7 @@ LABEL_33:
       _os_log_impl(&dword_1D3400000, v18, OS_LOG_TYPE_INFO, "[%{public}@] >>>> Events", &v21, 0xCu);
     }
 
-    [(EKUILocationSearchModel *)self updateEventLocations:v4];
+    [(EKUILocationSearchModel *)self updateEventLocations:termCopy];
     supportedSearchTypes = self->_supportedSearchTypes;
   }
 
@@ -597,7 +597,7 @@ LABEL_33:
       _os_log_impl(&dword_1D3400000, v19, OS_LOG_TYPE_INFO, "[%{public}@] >>>> Virtual Conference Rooms", &v21, 0xCu);
     }
 
-    [(EKUILocationSearchModel *)self updateVirtualConferenceRoomOptions:v4];
+    [(EKUILocationSearchModel *)self updateVirtualConferenceRoomOptions:termCopy];
     supportedSearchTypes = self->_supportedSearchTypes;
   }
 
@@ -611,7 +611,7 @@ LABEL_33:
       _os_log_impl(&dword_1D3400000, v20, OS_LOG_TYPE_INFO, "[%{public}@] >>>> Virtual Conference Custom", &v21, 0xCu);
     }
 
-    [(EKUILocationSearchModel *)self _updateVirtualConferenceCustomOptions:v4];
+    [(EKUILocationSearchModel *)self _updateVirtualConferenceCustomOptions:termCopy];
   }
 }
 
@@ -639,8 +639,8 @@ LABEL_33:
         }
 
         v9 = MEMORY[0x1E6966AA8];
-        v10 = [*(*(&v46 + 1) + 8 * i) recent];
-        v11 = [v9 locationForRecent:v10];
+        recent = [*(*(&v46 + 1) + 8 * i) recent];
+        v11 = [v9 locationForRecent:recent];
 
         frequentsSearchResults = self->_frequentsSearchResults;
         if (frequentsSearchResults && [(NSMutableArray *)frequentsSearchResults count])
@@ -787,24 +787,24 @@ uint64_t __40__EKUILocationSearchModel_dedupeResults__block_invoke_3(uint64_t a1
   return v4;
 }
 
-- (void)completerDidUpdateResults:(id)a3 finished:(BOOL)a4
+- (void)completerDidUpdateResults:(id)results finished:(BOOL)finished
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 queryFragment];
+  resultsCopy = results;
+  queryFragment = [resultsCopy queryFragment];
   v7 = ICSRedactString();
 
-  v8 = [v5 resultsAreCurrent];
+  resultsAreCurrent = [resultsCopy resultsAreCurrent];
   v9 = kEKUILogLocationSearchHandle;
   v10 = os_log_type_enabled(kEKUILogLocationSearchHandle, OS_LOG_TYPE_INFO);
-  if (v8)
+  if (resultsAreCurrent)
   {
     if (v10)
     {
       v11 = MEMORY[0x1E696AD98];
       v12 = v9;
-      v13 = [v5 results];
-      v14 = [v11 numberWithUnsignedInteger:{objc_msgSend(v13, "count")}];
+      results = [resultsCopy results];
+      v14 = [v11 numberWithUnsignedInteger:{objc_msgSend(results, "count")}];
       v18 = 138543618;
       v19 = v7;
       v20 = 2114;
@@ -812,12 +812,12 @@ uint64_t __40__EKUILocationSearchModel_dedupeResults__block_invoke_3(uint64_t a1
       _os_log_impl(&dword_1D3400000, v12, OS_LOG_TYPE_INFO, "[%{public}@] <<<< MapKit %{public}@ results", &v18, 0x16u);
     }
 
-    v15 = [v5 results];
+    results2 = [resultsCopy results];
     mapCompletionSearchResults = self->_mapCompletionSearchResults;
-    self->_mapCompletionSearchResults = v15;
+    self->_mapCompletionSearchResults = results2;
 
-    v17 = [(EKUILocationSearchModel *)self delegate];
-    [v17 locationSearchModel:self updatedSearchTypes:4];
+    delegate = [(EKUILocationSearchModel *)self delegate];
+    [delegate locationSearchModel:self updatedSearchTypes:4];
   }
 
   else if (v10)
@@ -828,11 +828,11 @@ uint64_t __40__EKUILocationSearchModel_dedupeResults__block_invoke_3(uint64_t a1
   }
 }
 
-- (void)completerDidFail:(id)a3 error:(id)a4
+- (void)completerDidFail:(id)fail error:(id)error
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [a3 queryFragment];
+  errorCopy = error;
+  queryFragment = [fail queryFragment];
   v7 = ICSRedactString();
 
   v8 = kEKUILogLocationSearchHandle;
@@ -841,28 +841,28 @@ uint64_t __40__EKUILocationSearchModel_dedupeResults__block_invoke_3(uint64_t a1
     v9 = 138543618;
     v10 = v7;
     v11 = 2112;
-    v12 = v5;
+    v12 = errorCopy;
     _os_log_impl(&dword_1D3400000, v8, OS_LOG_TYPE_ERROR, "[%{public}@] MapKit failed with error: %@", &v9, 0x16u);
   }
 }
 
-- (void)updateContacts:(id)a3
+- (void)updateContacts:(id)contacts
 {
-  v4 = a3;
+  contactsCopy = contacts;
   v18 = ICSRedactString();
   [(EKUILocationSearchModel *)self resetContactsSearchResults];
   v5 = objc_opt_new();
   contactsSearchResults = self->_contactsSearchResults;
   self->_contactsSearchResults = v5;
 
-  v7 = [(EKUILocationSearchModel *)self delegate];
-  [v7 locationSearchModel:self updatedSearchTypes:8];
+  delegate = [(EKUILocationSearchModel *)self delegate];
+  [delegate locationSearchModel:self updatedSearchTypes:8];
 
   v8 = EKUIDescriptorForRequiredKeysForLabeledDisplayString();
   v9 = [v8 arrayByAddingObject:*MEMORY[0x1E695C360]];
 
   v10 = [objc_alloc(EKWeakLinkClass()) initWithKeysToFetch:v9];
-  v11 = [MEMORY[0x1E695CD58] predicateForContactsMatchingFullTextSearch:v4 containerIdentifiers:0 groupIdentifiers:0];
+  v11 = [MEMORY[0x1E695CD58] predicateForContactsMatchingFullTextSearch:contactsCopy containerIdentifiers:0 groupIdentifiers:0];
   [v10 setPredicate:v11];
 
   v43[0] = 0;
@@ -900,7 +900,7 @@ uint64_t __40__EKUILocationSearchModel_dedupeResults__block_invoke_3(uint64_t a1
   v29 = v33;
   v30 = v35;
   v26 = v18;
-  v27 = self;
+  selfCopy = self;
   v31 = &v37;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
@@ -908,7 +908,7 @@ uint64_t __40__EKUILocationSearchModel_dedupeResults__block_invoke_3(uint64_t a1
   v19[3] = &unk_1E8440BB0;
   v14 = v26;
   v20 = v14;
-  v21 = self;
+  selfCopy2 = self;
   v23 = v43;
   v24 = &v37;
   v15 = v12;
@@ -1093,24 +1093,24 @@ void __42__EKUILocationSearchModel_updateContacts___block_invoke_2_86(uint64_t a
   }
 }
 
-- (void)_updateContactsSearchWithResults:(id)a3 forToken:(id)a4
+- (void)_updateContactsSearchWithResults:(id)results forToken:(id)token
 {
-  if (self->_contactsSearchToken == a4)
+  if (self->_contactsSearchToken == token)
   {
-    [(NSMutableArray *)self->_contactsSearchResults addObjectsFromArray:a3];
-    v6 = [(EKUILocationSearchModel *)self delegate];
-    [v6 locationSearchModel:self updatedSearchTypes:8];
+    [(NSMutableArray *)self->_contactsSearchResults addObjectsFromArray:results];
+    delegate = [(EKUILocationSearchModel *)self delegate];
+    [delegate locationSearchModel:self updatedSearchTypes:8];
   }
 }
 
-- (void)updateRecents:(id)a3
+- (void)updateRecents:(id)recents
 {
   v37[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  recentsCopy = recents;
+  v5 = recentsCopy;
   if ((self->_supportedSearchTypes & 0x10) != 0)
   {
-    if (v4)
+    if (recentsCopy)
     {
       v28 = EKWeakLinkStringConstant();
       v27 = EKWeakLinkStringConstant();
@@ -1157,11 +1157,11 @@ void __42__EKUILocationSearchModel_updateContacts___block_invoke_2_86(uint64_t a
     v20 = objc_alloc_init(v19);
     [v20 setSearchPredicate:v14];
     [v20 setDomains:&unk_1F4F321B8];
-    v21 = [(objc_class *)v19 frecencyComparator];
-    [v20 setComparator:v21];
+    frecencyComparator = [(objc_class *)v19 frecencyComparator];
+    [v20 setComparator:frecencyComparator];
 
     objc_storeStrong(&self->_currentRecentsSearch, v20);
-    v22 = [v18 defaultInstance];
+    defaultInstance = [v18 defaultInstance];
     v23 = self->_recentsQueue;
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
@@ -1170,10 +1170,10 @@ void __42__EKUILocationSearchModel_updateContacts___block_invoke_2_86(uint64_t a
     objc_copyWeak(v33, &buf);
     v24 = v20;
     v30 = v24;
-    v31 = self;
+    selfCopy = self;
     v33[1] = v18;
     v32 = v5;
-    [v22 performRecentsSearch:v24 queue:v23 completion:v29];
+    [defaultInstance performRecentsSearch:v24 queue:v23 completion:v29];
 
     objc_destroyWeak(v33);
     objc_destroyWeak(&buf);
@@ -1482,10 +1482,10 @@ LABEL_9:
   }
 }
 
-- (id)_imageForMapHandle:(id)a3
+- (id)_imageForMapHandle:(id)handle
 {
-  v3 = a3;
-  if (!v3 || ([_mapItemCache objectForKey:v3], v4 = objc_claimAutoreleasedReturnValue(), ImageForMapItem(v4), v5 = objc_claimAutoreleasedReturnValue(), v4, !v5))
+  handleCopy = handle;
+  if (!handleCopy || ([_mapItemCache objectForKey:handleCopy], v4 = objc_claimAutoreleasedReturnValue(), ImageForMapItem(v4), v5 = objc_claimAutoreleasedReturnValue(), v4, !v5))
   {
     v5 = MapPinImage();
   }
@@ -1493,11 +1493,11 @@ LABEL_9:
   return v5;
 }
 
-- (id)_imageForAttributes:(id)a3
+- (id)_imageForAttributes:(id)attributes
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3 || (ImageForAttributes(v3), (v5 = objc_claimAutoreleasedReturnValue()) == 0))
+  attributesCopy = attributes;
+  v4 = attributesCopy;
+  if (!attributesCopy || (ImageForAttributes(attributesCopy), (v5 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v5 = MapPinImage();
   }
@@ -1505,9 +1505,9 @@ LABEL_9:
   return v5;
 }
 
-- (void)searchFrequentLocations:(id)a3
+- (void)searchFrequentLocations:(id)locations
 {
-  v4 = a3;
+  locationsCopy = locations;
   objc_initWeak(&location, self);
   v5 = MEMORY[0x1E6966B30];
   v7[0] = MEMORY[0x1E69E9820];
@@ -1515,7 +1515,7 @@ LABEL_9:
   v7[2] = __51__EKUILocationSearchModel_searchFrequentLocations___block_invoke;
   v7[3] = &unk_1E8440CA0;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = locationsCopy;
   v8 = v6;
   [v5 estimateGeolocationFromHistoricDevicePositionAtLocation:v6 withCompletionBlock:v7];
 
@@ -1589,18 +1589,18 @@ void __51__EKUILocationSearchModel_searchFrequentLocations___block_invoke_2(uint
   [v15 locationSearchModel:*(a1 + 32) updatedSearchTypes:v14 | 0x20];
 }
 
-- (id)splitEventLocations:(id)a3
+- (id)splitEventLocations:(id)locations
 {
   v35 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v22 = [v3 structuredLocationWithoutPrediction];
-  v4 = [v3 preferredLocationWithoutPrediction];
-  v5 = [v4 title];
-  v6 = [v5 componentsSeparatedByString:@" "];;
+  locationsCopy = locations;
+  structuredLocationWithoutPrediction = [locationsCopy structuredLocationWithoutPrediction];
+  preferredLocationWithoutPrediction = [locationsCopy preferredLocationWithoutPrediction];
+  title = [preferredLocationWithoutPrediction title];
+  v6 = [title componentsSeparatedByString:@" "];;
 
   [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v6, "count")}];
-  v21 = v20 = v3;
-  v24 = [v3 attendees];
+  v21 = v20 = locationsCopy;
+  attendees = [locationsCopy attendees];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
@@ -1625,7 +1625,7 @@ void __51__EKUILocationSearchModel_searchFrequentLocations___block_invoke_2(uint
         v26 = 0u;
         v27 = 0u;
         v28 = 0u;
-        v12 = v24;
+        v12 = attendees;
         v13 = [v12 countByEnumeratingWithState:&v25 objects:v33 count:16];
         if (v13)
         {
@@ -1640,8 +1640,8 @@ LABEL_8:
               objc_enumerationMutation(v12);
             }
 
-            v17 = [*(*(&v25 + 1) + 8 * v16) name];
-            v18 = [v17 isEqualToString:v11];
+            name = [*(*(&v25 + 1) + 8 * v16) name];
+            v18 = [name isEqualToString:v11];
 
             if (v18)
             {
@@ -1665,9 +1665,9 @@ LABEL_8:
         {
 LABEL_14:
 
-          if (v22)
+          if (structuredLocationWithoutPrediction)
           {
-            [v22 duplicate];
+            [structuredLocationWithoutPrediction duplicate];
           }
 
           else
@@ -1689,13 +1689,13 @@ LABEL_14:
   return v21;
 }
 
-- (void)updateEventLocations:(id)a3
+- (void)updateEventLocations:(id)locations
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  locationsCopy = locations;
+  v5 = locationsCopy;
+  if (locationsCopy)
   {
-    if (([v4 isEqualToString:&stru_1F4EF6790] & 1) == 0)
+    if (([locationsCopy isEqualToString:&stru_1F4EF6790] & 1) == 0)
     {
       eventStore = self->_eventStore;
       if (eventStore)
@@ -1711,7 +1711,7 @@ LABEL_14:
         v20[2] = __48__EKUILocationSearchModel_updateEventLocations___block_invoke;
         v20[3] = &unk_1E8440D90;
         v21 = v5;
-        v22 = self;
+        selfCopy = self;
         v12 = [v10 searchWithCalendars:v9 searchTerm:v21 store:v11 callback:v20];
         eventsSearch = self->_eventsSearch;
         self->_eventsSearch = v12;
@@ -2264,16 +2264,16 @@ void __48__EKUILocationSearchModel_updateEventLocations___block_invoke_138(uint6
   }
 }
 
-- (void)searchConferenceRooms:(id)a3
+- (void)searchConferenceRooms:(id)rooms
 {
-  v4 = a3;
+  roomsCopy = rooms;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __49__EKUILocationSearchModel_searchConferenceRooms___block_invoke;
   v6[3] = &unk_1E843EFB8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = roomsCopy;
+  v5 = roomsCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -2457,19 +2457,19 @@ void __49__EKUILocationSearchModel_searchConferenceRooms___block_invoke_144(uint
   [v8 locationSearchModel:*(a1 + 32) updatedSearchTypes:256];
 }
 
-- (void)_processDirectorySearchResultSet:(id)a3 forOperation:(id)a4
+- (void)_processDirectorySearchResultSet:(id)set forOperation:(id)operation
 {
-  v6 = a3;
-  v7 = a4;
+  setCopy = set;
+  operationCopy = operation;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __73__EKUILocationSearchModel__processDirectorySearchResultSet_forOperation___block_invoke;
   block[3] = &unk_1E843EC38;
-  v11 = v7;
-  v12 = self;
-  v13 = v6;
-  v8 = v6;
-  v9 = v7;
+  v11 = operationCopy;
+  selfCopy = self;
+  v13 = setCopy;
+  v8 = setCopy;
+  v9 = operationCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -2534,16 +2534,16 @@ void __73__EKUILocationSearchModel__processDirectorySearchResultSet_forOperation
   }
 }
 
-- (void)_addDiscoveredConferenceRooms:(id)a3
+- (void)_addDiscoveredConferenceRooms:(id)rooms
 {
-  v4 = a3;
+  roomsCopy = rooms;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __57__EKUILocationSearchModel__addDiscoveredConferenceRooms___block_invoke;
   v6[3] = &unk_1E843EFB8;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = roomsCopy;
+  selfCopy = self;
+  v5 = roomsCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -2829,41 +2829,41 @@ void __57__EKUILocationSearchModel__addDiscoveredConferenceRooms___block_invoke_
   }
 }
 
-- (id)availabilityRequestForConferenceRooms:(id)a3 duringEvent:(id)a4 resultsBlock:(id)a5 completionBlock:(id)a6
+- (id)availabilityRequestForConferenceRooms:(id)rooms duringEvent:(id)event resultsBlock:(id)block completionBlock:(id)completionBlock
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [v11 startDate];
-  v14 = [v11 endDateUnadjustedForLegacyClients];
-  v15 = [v11 calendar];
-  v16 = [v15 source];
+  completionBlockCopy = completionBlock;
+  blockCopy = block;
+  eventCopy = event;
+  roomsCopy = rooms;
+  startDate = [eventCopy startDate];
+  endDateUnadjustedForLegacyClients = [eventCopy endDateUnadjustedForLegacyClients];
+  calendar = [eventCopy calendar];
+  source = [calendar source];
 
-  v17 = [objc_alloc(MEMORY[0x1E6966AE0]) initWithSource:v16 startDate:v13 endDate:v14 ignoredEvent:v11 addresses:v12 resultsBlock:v10];
-  [v17 setCompletionBlock:v9];
+  v17 = [objc_alloc(MEMORY[0x1E6966AE0]) initWithSource:source startDate:startDate endDate:endDateUnadjustedForLegacyClients ignoredEvent:eventCopy addresses:roomsCopy resultsBlock:blockCopy];
+  [v17 setCompletionBlock:completionBlockCopy];
 
   return v17;
 }
 
-- (void)updateConferenceRoomAvailability:(id)a3 duringEvent:(id)a4 completionBlock:(id)a5
+- (void)updateConferenceRoomAvailability:(id)availability duringEvent:(id)event completionBlock:(id)block
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  availabilityCopy = availability;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __88__EKUILocationSearchModel_updateConferenceRoomAvailability_duringEvent_completionBlock___block_invoke;
   aBlock[3] = &unk_1E843EFE0;
-  v22 = v8;
-  v9 = v8;
-  v10 = a5;
-  v11 = a4;
+  v22 = availabilityCopy;
+  v9 = availabilityCopy;
+  blockCopy = block;
+  eventCopy = event;
   v12 = _Block_copy(aBlock);
-  v13 = [v9 location];
-  v14 = [v13 preferredAddress];
-  v23[0] = v14;
+  location = [v9 location];
+  preferredAddress = [location preferredAddress];
+  v23[0] = preferredAddress;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:1];
-  v16 = [(EKUILocationSearchModel *)self availabilityRequestForConferenceRooms:v15 duringEvent:v11 resultsBlock:v12 completionBlock:v10];
+  v16 = [(EKUILocationSearchModel *)self availabilityRequestForConferenceRooms:v15 duringEvent:eventCopy resultsBlock:v12 completionBlock:blockCopy];
 
   [v9 setAvailabilityRequestInProgress:1];
   conferenceRoomProcessingQueue = self->_conferenceRoomProcessingQueue;
@@ -2889,17 +2889,17 @@ void __88__EKUILocationSearchModel_updateConferenceRoomAvailability_duringEvent_
   [*(a1 + 32) setAvailabilityRequestInProgress:0];
 }
 
-- (void)_handleAvailabilityResults:(id)a3 forOperation:(id)a4
+- (void)_handleAvailabilityResults:(id)results forOperation:(id)operation
 {
-  v6 = a3;
-  if (([a4 isCancelled] & 1) == 0)
+  resultsCopy = results;
+  if (([operation isCancelled] & 1) == 0)
   {
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __67__EKUILocationSearchModel__handleAvailabilityResults_forOperation___block_invoke;
     v7[3] = &unk_1E843EFB8;
-    v8 = v6;
-    v9 = self;
+    v8 = resultsCopy;
+    selfCopy = self;
     dispatch_async(MEMORY[0x1E69E96A0], v7);
   }
 }
@@ -2928,34 +2928,34 @@ void __67__EKUILocationSearchModel__handleAvailabilityResults_forOperation___blo
   [v8 setAvailabilityRequestInProgress:0];
 }
 
-- (void)_addLocationToRecents:(id)a3 addressString:(id)a4 mapItem:(id)a5
+- (void)_addLocationToRecents:(id)recents addressString:(id)string mapItem:(id)item
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 contactLabel];
-  v11 = v10;
-  if (v10)
+  recentsCopy = recents;
+  stringCopy = string;
+  itemCopy = item;
+  contactLabel = [recentsCopy contactLabel];
+  v11 = contactLabel;
+  if (contactLabel)
   {
-    v12 = v10;
+    title = contactLabel;
   }
 
   else
   {
-    v12 = [v7 title];
+    title = [recentsCopy title];
   }
 
-  v13 = v12;
+  v13 = title;
 
-  if (v8 && v13)
+  if (stringCopy && v13)
   {
     v14 = EKWeakLinkClass();
-    v15 = [MEMORY[0x1E6966AA8] recentForLocation:v7 withAddressString:v8 andTitle:v13 mapItem:v9];
-    v16 = [v14 defaultInstance];
+    v15 = [MEMORY[0x1E6966AA8] recentForLocation:recentsCopy withAddressString:stringCopy andTitle:v13 mapItem:itemCopy];
+    defaultInstance = [v14 defaultInstance];
     v25[0] = v15;
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:1];
-    [v16 recordContactEvents:v17 recentsDomain:@"com.apple.eventkit.ios" sendingAddress:0 completion:0];
+    [defaultInstance recordContactEvents:v17 recentsDomain:@"com.apple.eventkit.ios" sendingAddress:0 completion:0];
   }
 
   else
@@ -2964,41 +2964,41 @@ void __67__EKUILocationSearchModel__handleAvailabilityResults_forOperation___blo
     if (os_log_type_enabled(kEKUILogLocationSearchHandle, OS_LOG_TYPE_ERROR))
     {
       v19 = v18;
-      v20 = [v7 title];
+      title2 = [recentsCopy title];
       v21 = 138412546;
-      v22 = v8;
+      v22 = stringCopy;
       v23 = 2112;
-      v24 = v20;
+      v24 = title2;
       _os_log_impl(&dword_1D3400000, v19, OS_LOG_TYPE_ERROR, "can't add to recents, missing info: %@ %@", &v21, 0x16u);
     }
   }
 }
 
-- (void)addConferenceRoomToRecents:(id)a3 fromSource:(id)a4
+- (void)addConferenceRoomToRecents:(id)recents fromSource:(id)source
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = a3;
+  sourceCopy = source;
+  recentsCopy = recents;
   v7 = EKWeakLinkClass();
   v8 = MEMORY[0x1E6966AA8];
-  v9 = [v6 location];
+  location = [recentsCopy location];
 
-  v10 = [v8 recentForDirectoryLocation:v9 onSource:v5];
+  v10 = [v8 recentForDirectoryLocation:location onSource:sourceCopy];
 
-  v11 = [v7 defaultInstance];
+  defaultInstance = [v7 defaultInstance];
   v13[0] = v10;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
-  [v11 recordContactEvents:v12 recentsDomain:@"com.apple.eventkit.ios" sendingAddress:0 completion:0];
+  [defaultInstance recordContactEvents:v12 recentsDomain:@"com.apple.eventkit.ios" sendingAddress:0 completion:0];
 }
 
-- (BOOL)removeRecentLocation:(id)a3
+- (BOOL)removeRecentLocation:(id)location
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [EKWeakLinkClass() defaultInstance];
-  v13[0] = v4;
+  locationCopy = location;
+  defaultInstance = [EKWeakLinkClass() defaultInstance];
+  v13[0] = locationCopy;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
-  v7 = [v5 removeRecentContacts:v6 error:0];
+  v7 = [defaultInstance removeRecentContacts:v6 error:0];
 
   if (v7)
   {
@@ -3007,10 +3007,10 @@ void __67__EKUILocationSearchModel__handleAvailabilityResults_forOperation___blo
     v11[1] = 3221225472;
     v11[2] = __48__EKUILocationSearchModel_removeRecentLocation___block_invoke;
     v11[3] = &unk_1E8440EF0;
-    v12 = v4;
+    v12 = locationCopy;
     [(NSMutableArray *)self->_recentsSearchResults removeObjectAtIndex:[(NSMutableArray *)recentsSearchResults indexOfObjectPassingTest:v11]];
-    v9 = [(EKUILocationSearchModel *)self delegate];
-    [v9 locationSearchModel:self updatedSearchTypes:16];
+    delegate = [(EKUILocationSearchModel *)self delegate];
+    [delegate locationSearchModel:self updatedSearchTypes:16];
   }
 
   return v7;
@@ -3024,9 +3024,9 @@ uint64_t __48__EKUILocationSearchModel_removeRecentLocation___block_invoke(uint6
   return v4;
 }
 
-- (void)selectMapSearchCompletion:(id)a3
+- (void)selectMapSearchCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   localSearch = self->_localSearch;
   if (localSearch)
   {
@@ -3037,7 +3037,7 @@ uint64_t __48__EKUILocationSearchModel_removeRecentLocation___block_invoke(uint6
 
   v7 = EKWeakLinkClass();
   v8 = EKWeakLinkClass();
-  v9 = [v7 searchRequestWithCompletion:v4];
+  v9 = [v7 searchRequestWithCompletion:completionCopy];
   v10 = [[v8 alloc] initWithRequest:v9];
   v11 = self->_localSearch;
   self->_localSearch = v10;
@@ -3047,9 +3047,9 @@ uint64_t __48__EKUILocationSearchModel_removeRecentLocation___block_invoke(uint6
   v15 = 3221225472;
   v16 = __53__EKUILocationSearchModel_selectMapSearchCompletion___block_invoke;
   v17 = &unk_1E8440F18;
-  v18 = v4;
-  v19 = self;
-  v13 = v4;
+  v18 = completionCopy;
+  selfCopy = self;
+  v13 = completionCopy;
   [(MKLocalSearch *)v12 startWithCompletionHandler:&v14];
   [v13 sendFeedback];
 }
@@ -3099,43 +3099,43 @@ void __53__EKUILocationSearchModel_selectMapSearchCompletion___block_invoke(uint
   [v25 locationSearchModel:*(a1 + 40) selectedLocation:v7 withError:v5];
 }
 
-- (void)selectLocation:(id)a3
+- (void)selectLocation:(id)location
 {
-  v4 = a3;
-  v5 = [v4 mapKitHandle];
+  locationCopy = location;
+  mapKitHandle = [locationCopy mapKitHandle];
 
-  if (v5)
+  if (mapKitHandle)
   {
     v6 = MEMORY[0x1E696F270];
-    v7 = [v4 mapKitHandle];
+    mapKitHandle2 = [locationCopy mapKitHandle];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __42__EKUILocationSearchModel_selectLocation___block_invoke;
     v18[3] = &unk_1E8440F40;
     v18[4] = self;
-    v19 = v4;
-    v8 = v4;
-    [v6 _mapItemFromHandle:v7 completionHandler:v18];
+    v19 = locationCopy;
+    v8 = locationCopy;
+    [v6 _mapItemFromHandle:mapKitHandle2 completionHandler:v18];
 
-    v9 = [(EKUILocationSearchModel *)self delegate];
-    [v9 locationSearchModel:self selectedLocation:v8 withError:0];
+    delegate = [(EKUILocationSearchModel *)self delegate];
+    [delegate locationSearchModel:self selectedLocation:v8 withError:0];
   }
 
   else
   {
     v10 = MEMORY[0x1E6992FD8];
-    v11 = [v4 title];
-    v12 = [v4 address];
-    v8 = [v10 fullDisplayStringWithTitle:v11 address:v12];
+    title = [locationCopy title];
+    address = [locationCopy address];
+    v8 = [v10 fullDisplayStringWithTitle:title address:address];
 
     v13 = MEMORY[0x1E6992FB8];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __42__EKUILocationSearchModel_selectLocation___block_invoke_172;
     v15[3] = &unk_1E8440F40;
-    v16 = v4;
-    v17 = self;
-    v14 = v4;
+    v16 = locationCopy;
+    selfCopy = self;
+    v14 = locationCopy;
     [v13 geocodeLocationString:v8 withCompletionBlock:v15];
   }
 }
@@ -3213,13 +3213,13 @@ void __42__EKUILocationSearchModel_selectLocation___block_invoke_172(uint64_t a1
 
   objc_initWeak(&location, self);
   v6 = self->_geocoder;
-  v7 = [(EKStructuredLocation *)self->_currentLocation geoLocation];
+  geoLocation = [(EKStructuredLocation *)self->_currentLocation geoLocation];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __48__EKUILocationSearchModel_selectCurrentLocation__block_invoke;
   v8[3] = &unk_1E8440F68;
   objc_copyWeak(&v9, &location);
-  [(CLGeocoder *)v6 reverseGeocodeLocation:v7 completionHandler:v8];
+  [(CLGeocoder *)v6 reverseGeocodeLocation:geoLocation completionHandler:v8];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -3312,25 +3312,25 @@ void __40__EKUILocationSearchModel__dataDetector__block_invoke()
   }
 }
 
-+ (id)_linksInSource:(id)a3
++ (id)_linksInSource:(id)source
 {
-  v3 = a3;
-  v4 = [objc_opt_class() _dataDetector];
-  v5 = [v4 matchesInString:v3 options:0 range:{0, objc_msgSend(v3, "length")}];
+  sourceCopy = source;
+  _dataDetector = [objc_opt_class() _dataDetector];
+  v5 = [_dataDetector matchesInString:sourceCopy options:0 range:{0, objc_msgSend(sourceCopy, "length")}];
 
   return v5;
 }
 
-+ (id)URLsFromSource:(id)a3
++ (id)URLsFromSource:(id)source
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  sourceCopy = source;
+  array = [MEMORY[0x1E695DF70] array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [a1 _linksInSource:{v4, 0}];
+  v6 = [self _linksInSource:{sourceCopy, 0}];
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -3348,14 +3348,14 @@ void __40__EKUILocationSearchModel__dataDetector__block_invoke()
         v11 = *(*(&v15 + 1) + 8 * i);
         if ([v11 resultType] == 32)
         {
-          v12 = [v11 URL];
+          phoneURL = [v11 URL];
         }
 
         else
         {
           if ([v11 resultType] != 2048)
           {
-            v12 = 0;
+            phoneURL = 0;
             if (([0 cal_hasSchemeMailto] & 1) == 0)
             {
               continue;
@@ -3364,18 +3364,18 @@ void __40__EKUILocationSearchModel__dataDetector__block_invoke()
             goto LABEL_14;
           }
 
-          v13 = [v11 phoneNumber];
-          v12 = [v13 phoneURL];
+          phoneNumber = [v11 phoneNumber];
+          phoneURL = [phoneNumber phoneURL];
         }
 
-        if (([v12 cal_hasSchemeMailto] & 1) == 0)
+        if (([phoneURL cal_hasSchemeMailto] & 1) == 0)
         {
-          if (!v12)
+          if (!phoneURL)
           {
             continue;
           }
 
-          [v5 addObject:v12];
+          [array addObject:phoneURL];
         }
 
 LABEL_14:
@@ -3387,17 +3387,17 @@ LABEL_14:
     while (v8);
   }
 
-  return v5;
+  return array;
 }
 
-- (void)_updateVirtualConferenceCustomOptions:(id)a3
+- (void)_updateVirtualConferenceCustomOptions:(id)options
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  optionsCopy = options;
+  v5 = optionsCopy;
   if ((self->_supportedSearchTypes & 0x400) != 0)
   {
-    if ([v4 length])
+    if ([optionsCopy length])
     {
       customConferenceQueue = self->_customConferenceQueue;
       if (!customConferenceQueue)
@@ -3438,8 +3438,8 @@ LABEL_14:
         _os_log_impl(&dword_1D3400000, v14, OS_LOG_TYPE_INFO, "[%{public}@] <<<< Virtual Conference Custom %{public}@ results", buf, 0x16u);
       }
 
-      v16 = [(EKUILocationSearchModel *)self delegate];
-      [v16 locationSearchModel:self updatedSearchTypes:1024];
+      delegate = [(EKUILocationSearchModel *)self delegate];
+      [delegate locationSearchModel:self updatedSearchTypes:1024];
     }
   }
 }
@@ -3498,21 +3498,21 @@ void __65__EKUILocationSearchModel__updateVirtualConferenceCustomOptions___block
   [v8 locationSearchModel:*(a1 + 32) updatedSearchTypes:1024];
 }
 
-- (void)selectVirtualConferenceRoomType:(id)a3
+- (void)selectVirtualConferenceRoomType:(id)type
 {
-  v4 = a3;
-  v5 = [(EKUILocationSearchModel *)self delegate];
-  v9 = [v5 calendarItemForSearchModel:self];
+  typeCopy = type;
+  delegate = [(EKUILocationSearchModel *)self delegate];
+  v9 = [delegate calendarItemForSearchModel:self];
 
   v6 = MEMORY[0x1E6966B50];
-  v7 = [v9 calendar];
-  v8 = [v7 source];
-  [v6 selectRoomType:v4 forSource:v8];
+  calendar = [v9 calendar];
+  source = [calendar source];
+  [v6 selectRoomType:typeCopy forSource:source];
 }
 
-- (void)updateVirtualConferenceRoomOptions:(id)a3
+- (void)updateVirtualConferenceRoomOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   if ((self->_supportedSearchTypes & 0x200) != 0)
   {
     if (updateVirtualConferenceRoomOptions__onceToken != -1)
@@ -3522,7 +3522,7 @@ void __65__EKUILocationSearchModel__updateVirtualConferenceCustomOptions___block
 
     if (self->_allPossibleVirtualConferenceRooms)
     {
-      [(EKUILocationSearchModel *)self _updateVirtualConferenceOptions:v4];
+      [(EKUILocationSearchModel *)self _updateVirtualConferenceOptions:optionsCopy];
     }
 
     else
@@ -3533,7 +3533,7 @@ void __65__EKUILocationSearchModel__updateVirtualConferenceCustomOptions___block
       v6[2] = __62__EKUILocationSearchModel_updateVirtualConferenceRoomOptions___block_invoke_2;
       v6[3] = &unk_1E8440D90;
       v6[4] = self;
-      v7 = v4;
+      v7 = optionsCopy;
       [v5 virtualConferenceRoomTypesWithCompletion:v6 queue:MEMORY[0x1E69E96A0]];
     }
   }
@@ -3555,18 +3555,18 @@ uint64_t __62__EKUILocationSearchModel_updateVirtualConferenceRoomOptions___bloc
   return [v8 _updateVirtualConferenceOptions:v9];
 }
 
-- (void)_updateAllPossibleVirtualConferenceResultsWithRoomTypes:(id)a3
+- (void)_updateAllPossibleVirtualConferenceResultsWithRoomTypes:(id)types
 {
   allPossibleVirtualConferenceRooms = self->_allPossibleVirtualConferenceRooms;
-  v5 = a3;
+  typesCopy = types;
   [(NSMutableArray *)allPossibleVirtualConferenceRooms removeAllObjects];
-  v6 = [(EKUILocationSearchModel *)self delegate];
-  v11 = [v6 calendarItemForSearchModel:self];
+  delegate = [(EKUILocationSearchModel *)self delegate];
+  v11 = [delegate calendarItemForSearchModel:self];
 
   v7 = MEMORY[0x1E6966B50];
-  v8 = [v11 calendar];
-  v9 = [v8 source];
-  v10 = [v7 roomTypesOrderedByMRU:v5 forSource:v9];
+  calendar = [v11 calendar];
+  source = [calendar source];
+  v10 = [v7 roomTypesOrderedByMRU:typesCopy forSource:source];
 
   if (v10)
   {
@@ -3574,10 +3574,10 @@ uint64_t __62__EKUILocationSearchModel_updateVirtualConferenceRoomOptions___bloc
   }
 }
 
-- (void)_updateVirtualConferenceOptions:(id)a3
+- (void)_updateVirtualConferenceOptions:(id)options
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  optionsCopy = options;
   virtualConferenceRoomSearchResults = self->_virtualConferenceRoomSearchResults;
   if (!virtualConferenceRoomSearchResults)
   {
@@ -3589,7 +3589,7 @@ uint64_t __62__EKUILocationSearchModel_updateVirtualConferenceRoomOptions___bloc
   }
 
   [(NSMutableArray *)virtualConferenceRoomSearchResults removeAllObjects];
-  if (v4)
+  if (optionsCopy)
   {
     v25 = 0u;
     v26 = 0u;
@@ -3611,8 +3611,8 @@ uint64_t __62__EKUILocationSearchModel_updateVirtualConferenceRoomOptions___bloc
           }
 
           v13 = *(*(&v23 + 1) + 8 * i);
-          v14 = [v13 title];
-          v15 = [v14 rangeOfString:v4 options:1];
+          title = [v13 title];
+          v15 = [title rangeOfString:optionsCopy options:1];
 
           if (v15 != 0x7FFFFFFFFFFFFFFFLL)
           {
@@ -3647,53 +3647,53 @@ uint64_t __62__EKUILocationSearchModel_updateVirtualConferenceRoomOptions___bloc
     _os_log_impl(&dword_1D3400000, v20, OS_LOG_TYPE_INFO, "[%{public}@] <<<< Virtual Conference Rooms %{public}@ results", buf, 0x16u);
   }
 
-  v22 = [(EKUILocationSearchModel *)self delegate];
-  [v22 locationSearchModel:self updatedSearchTypes:512];
+  delegate = [(EKUILocationSearchModel *)self delegate];
+  [delegate locationSearchModel:self updatedSearchTypes:512];
 }
 
-- (void)_updateMapURL:(id)a3
+- (void)_updateMapURL:(id)l
 {
   v45 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  lCopy = l;
   v5 = ICSRedactString();
-  v6 = [MEMORY[0x1E695DFF8] URLWithString:v4];
+  v6 = [MEMORY[0x1E695DFF8] URLWithString:lCopy];
   if (!v6)
   {
     goto LABEL_5;
   }
 
   v7 = [MEMORY[0x1E696F270] _mapItemBackedByURL:v6];
-  v8 = v7;
+  delegate2 = v7;
   if (v7 && ([v7 isCurrentLocation] & 1) == 0)
   {
     v15 = objc_alloc_init(EKStructuredLocationWithImage);
     locationFromMapsURL = self->_locationFromMapsURL;
     self->_locationFromMapsURL = v15;
 
-    v17 = [MEMORY[0x1E6966B08] locationWithMapItem:v8];
-    v18 = [v8 _geoAddress];
-    v19 = [v18 formattedAddressLines];
-    v37 = [v19 lastObject];
+    v17 = [MEMORY[0x1E6966B08] locationWithMapItem:delegate2];
+    _geoAddress = [delegate2 _geoAddress];
+    formattedAddressLines = [_geoAddress formattedAddressLines];
+    lastObject = [formattedAddressLines lastObject];
 
-    [v17 setAddress:v37];
+    [v17 setAddress:lastObject];
     [(EKStructuredLocationWithImage *)self->_locationFromMapsURL setLocation:v17];
-    v20 = ImageForMapItem(v8);
+    v20 = ImageForMapItem(delegate2);
     [(EKStructuredLocationWithImage *)self->_locationFromMapsURL setImage:v20];
 
-    if (([v8 isPlaceHolder] & 1) == 0)
+    if (([delegate2 isPlaceHolder] & 1) == 0)
     {
-      v21 = [(EKStructuredLocationWithImage *)self->_locationFromMapsURL location];
-      [v21 setTitle:0];
+      location = [(EKStructuredLocationWithImage *)self->_locationFromMapsURL location];
+      [location setTitle:0];
     }
 
-    v22 = [(EKStructuredLocationWithImage *)self->_locationFromMapsURL location];
-    v23 = [v22 address];
-    if (v23)
+    location2 = [(EKStructuredLocationWithImage *)self->_locationFromMapsURL location];
+    address = [location2 address];
+    if (address)
     {
-      v24 = [(EKStructuredLocationWithImage *)self->_locationFromMapsURL location];
-      v25 = [v24 title];
+      location3 = [(EKStructuredLocationWithImage *)self->_locationFromMapsURL location];
+      title = [location3 title];
 
-      if (v25)
+      if (title)
       {
         v26 = kEKUILogLocationSearchHandle;
         if (os_log_type_enabled(kEKUILogLocationSearchHandle, OS_LOG_TYPE_INFO))
@@ -3709,8 +3709,8 @@ uint64_t __62__EKUILocationSearchModel_updateVirtualConferenceRoomOptions___bloc
           _os_log_impl(&dword_1D3400000, v29, OS_LOG_TYPE_INFO, "[%{public}@] <<<< MapKit from URL %{public}@ results", buf, 0x16u);
         }
 
-        v31 = [(EKUILocationSearchModel *)self delegate];
-        [v31 locationSearchModel:self updatedSearchTypes:2];
+        delegate = [(EKUILocationSearchModel *)self delegate];
+        [delegate locationSearchModel:self updatedSearchTypes:2];
 
 LABEL_22:
         goto LABEL_8;
@@ -3738,14 +3738,14 @@ LABEL_22:
 
     objc_initWeak(buf, self);
     v35 = self->_geocoder;
-    v36 = [v17 geoLocation];
+    geoLocation = [v17 geoLocation];
     v38[0] = MEMORY[0x1E69E9820];
     v38[1] = 3221225472;
     v38[2] = __41__EKUILocationSearchModel__updateMapURL___block_invoke;
     v38[3] = &unk_1E8440FB0;
     objc_copyWeak(&v40, buf);
     v39 = v5;
-    [(CLGeocoder *)v35 reverseGeocodeLocation:v36 completionHandler:v38];
+    [(CLGeocoder *)v35 reverseGeocodeLocation:geoLocation completionHandler:v38];
 
     objc_destroyWeak(&v40);
     objc_destroyWeak(buf);
@@ -3770,8 +3770,8 @@ LABEL_5:
     _os_log_impl(&dword_1D3400000, v13, OS_LOG_TYPE_INFO, "[%{public}@] <<<< MapKit from URL %{public}@ results", buf, 0x16u);
   }
 
-  v8 = [(EKUILocationSearchModel *)self delegate];
-  [v8 locationSearchModel:self updatedSearchTypes:2];
+  delegate2 = [(EKUILocationSearchModel *)self delegate];
+  [delegate2 locationSearchModel:self updatedSearchTypes:2];
 LABEL_8:
 }
 

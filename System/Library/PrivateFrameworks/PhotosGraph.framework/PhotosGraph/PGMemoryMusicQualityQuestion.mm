@@ -1,44 +1,44 @@
 @interface PGMemoryMusicQualityQuestion
-- (PGMemoryMusicQualityQuestion)initWithMemory:(id)a3 withSongInfo:(id)a4 localFactoryScore:(double)a5;
+- (PGMemoryMusicQualityQuestion)initWithMemory:(id)memory withSongInfo:(id)info localFactoryScore:(double)score;
 @end
 
 @implementation PGMemoryMusicQualityQuestion
 
-- (PGMemoryMusicQualityQuestion)initWithMemory:(id)a3 withSongInfo:(id)a4 localFactoryScore:(double)a5
+- (PGMemoryMusicQualityQuestion)initWithMemory:(id)memory withSongInfo:(id)info localFactoryScore:(double)score
 {
   v37 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  memoryCopy = memory;
+  infoCopy = info;
   v32.receiver = self;
   v32.super_class = PGMemoryMusicQualityQuestion;
   v10 = [(PGMemoryMusicQualityQuestion *)&v32 init];
   if (v10)
   {
-    v11 = [v8 uuid];
+    uuid = [memoryCopy uuid];
     entityIdentifier = v10->_entityIdentifier;
-    v10->_entityIdentifier = v11;
+    v10->_entityIdentifier = uuid;
 
     v10->_state = 0;
-    v10->_localFactoryScore = a5;
+    v10->_localFactoryScore = score;
     v13 = PLStoryGetLog();
     v14 = v13;
-    if (v9)
+    if (infoCopy)
     {
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v36 = v9;
+        v36 = infoCopy;
         _os_log_impl(&dword_22F0FC000, v14, OS_LOG_TYPE_DEBUG, "[MusicQualityQuestion] songInfo: %@", buf, 0xCu);
       }
 
       v33[0] = *MEMORY[0x277D3C950];
-      v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v8, "category")}];
+      v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(memoryCopy, "category")}];
       v34[0] = v14;
       v33[1] = *MEMORY[0x277D3C958];
-      v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v8, "subcategory")}];
-      v34[1] = v15;
+      uuid2 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(memoryCopy, "subcategory")}];
+      v34[1] = uuid2;
       v33[2] = *MEMORY[0x277D3C970];
-      v16 = [v9 objectForKeyedSubscript:?];
+      v16 = [infoCopy objectForKeyedSubscript:?];
       v17 = v16;
       if (v16)
       {
@@ -52,7 +52,7 @@
 
       v34[2] = v18;
       v33[3] = *MEMORY[0x277D3C978];
-      v19 = [v9 objectForKeyedSubscript:?];
+      v19 = [infoCopy objectForKeyedSubscript:?];
       v20 = v19;
       if (v19)
       {
@@ -66,7 +66,7 @@
 
       v34[3] = v21;
       v33[4] = *MEMORY[0x277D3C960];
-      v22 = [v9 objectForKeyedSubscript:?];
+      v22 = [infoCopy objectForKeyedSubscript:?];
       v23 = v22;
       if (v22)
       {
@@ -80,7 +80,7 @@
 
       v34[4] = v24;
       v33[5] = *MEMORY[0x277D3C968];
-      v25 = [v9 objectForKeyedSubscript:?];
+      v25 = [infoCopy objectForKeyedSubscript:?];
       v26 = v25;
       if (v25)
       {
@@ -107,9 +107,9 @@ LABEL_21:
         goto LABEL_22;
       }
 
-      v15 = [v8 uuid];
+      uuid2 = [memoryCopy uuid];
       *buf = 138412290;
-      v36 = v15;
+      v36 = uuid2;
       _os_log_impl(&dword_22F0FC000, v14, OS_LOG_TYPE_ERROR, "[MusicQualityQuestion] Unable to extract songInfo for memory %@", buf, 0xCu);
     }
 

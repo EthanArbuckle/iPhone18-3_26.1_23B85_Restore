@@ -1,6 +1,6 @@
 @interface ColorPickerViewController
 - (_TtC13CalendarUIKit25ColorPickerViewController)init;
-- (_TtC13CalendarUIKit25ColorPickerViewController)initWithCoder:(id)a3;
+- (_TtC13CalendarUIKit25ColorPickerViewController)initWithCoder:(id)coder;
 @end
 
 @implementation ColorPickerViewController
@@ -12,12 +12,12 @@
   return [(UIColorPickerViewController *)&v3 init];
 }
 
-- (_TtC13CalendarUIKit25ColorPickerViewController)initWithCoder:(id)a3
+- (_TtC13CalendarUIKit25ColorPickerViewController)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for ColorPickerViewController();
-  v4 = a3;
-  v5 = [(UIColorPickerViewController *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(UIColorPickerViewController *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

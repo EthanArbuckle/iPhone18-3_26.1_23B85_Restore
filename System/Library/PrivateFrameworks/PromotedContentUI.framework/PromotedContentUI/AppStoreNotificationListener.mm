@@ -1,12 +1,12 @@
 @interface AppStoreNotificationListener
-- (void)backgrounded:(id)a3;
-- (void)becameActive:(id)a3;
-- (void)resignActive:(id)a3;
+- (void)backgrounded:(id)backgrounded;
+- (void)becameActive:(id)active;
+- (void)resignActive:(id)active;
 @end
 
 @implementation AppStoreNotificationListener
 
-- (void)becameActive:(id)a3
+- (void)becameActive:(id)active
 {
   v4 = sub_1C1A6D25C();
   v5 = *(v4 - 8);
@@ -29,7 +29,7 @@
   (*(v5 + 8))(v7, v4);
 }
 
-- (void)resignActive:(id)a3
+- (void)resignActive:(id)active
 {
   v4 = sub_1C1A6D25C();
   v5 = *(v4 - 8);
@@ -52,7 +52,7 @@
   (*(v5 + 8))(v7, v4);
 }
 
-- (void)backgrounded:(id)a3
+- (void)backgrounded:(id)backgrounded
 {
   v4 = sub_1C1A6D25C();
   v5 = *(v4 - 8);

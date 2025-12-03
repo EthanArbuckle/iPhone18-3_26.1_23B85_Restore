@@ -1,18 +1,18 @@
 @interface CDPWalrusSecurityProxyImpl
-- (void)webAccessStatusWithCompletion:(id)a3;
+- (void)webAccessStatusWithCompletion:(id)completion;
 @end
 
 @implementation CDPWalrusSecurityProxyImpl
 
-- (void)webAccessStatusWithCompletion:(id)a3
+- (void)webAccessStatusWithCompletion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  completionCopy = completion;
   os_unfair_lock_lock(&_accountSettingsLock);
-  v4 = [MEMORY[0x277CFD4A8] contextForPrimaryAccount];
-  v5 = [v4 cliqueConfiguration];
+  contextForPrimaryAccount = [MEMORY[0x277CFD4A8] contextForPrimaryAccount];
+  cliqueConfiguration = [contextForPrimaryAccount cliqueConfiguration];
   v16 = 0;
-  v6 = [MEMORY[0x277CDBD48] fetchAccountWideSettingsDefaultWithForceFetch:0 configuration:v5 error:&v16];
+  v6 = [MEMORY[0x277CDBD48] fetchAccountWideSettingsDefaultWithForceFetch:0 configuration:cliqueConfiguration error:&v16];
   v7 = v16;
   os_unfair_lock_unlock(&_accountSettingsLock);
   v8 = _CDPLogSystem();
@@ -24,24 +24,24 @@
       [(CDPWalrusSecurityProxyImpl *)v7 webAccessStatusWithCompletion:v9];
     }
 
-    v3[2](v3, 0, v7);
+    completionCopy[2](completionCopy, 0, v7);
   }
 
   else
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v6 webAccess];
-      v11 = [v10 enabled];
+      webAccess = [v6 webAccess];
+      enabled = [webAccess enabled];
       *buf = 67109120;
-      v18 = v11;
+      v18 = enabled;
       _os_log_impl(&dword_24510B000, v9, OS_LOG_TYPE_DEFAULT, "Successfully fetched web access status (%{BOOL}d)", buf, 8u);
     }
 
-    v12 = [v6 webAccess];
-    v13 = [v12 enabled];
+    webAccess2 = [v6 webAccess];
+    enabled2 = [webAccess2 enabled];
 
-    if (v13)
+    if (enabled2)
     {
       v14 = 1;
     }
@@ -51,7 +51,7 @@
       v14 = 2;
     }
 
-    v3[2](v3, v14, 0);
+    completionCopy[2](completionCopy, v14, 0);
   }
 
   v15 = *MEMORY[0x277D85DE8];

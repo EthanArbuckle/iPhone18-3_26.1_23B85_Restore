@@ -1,5 +1,5 @@
 @interface SensorAccessIndicator
-- (id)getRemainingTimeThrowsAndReturnError:(id *)a3;
+- (id)getRemainingTimeThrowsAndReturnError:(id *)error;
 - (void)dealloc;
 @end
 
@@ -7,19 +7,19 @@
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   sub_2655E640C();
-  v3 = *(&v2->super.isa + OBJC_IVAR___SensorAccessIndicator_logger);
+  v3 = *(&selfCopy->super.isa + OBJC_IVAR___SensorAccessIndicator_logger);
   sub_2655E63CC();
 
-  v4.receiver = v2;
+  v4.receiver = selfCopy;
   v4.super_class = SensorAccessIndicator;
   [(SensorAccessIndicator *)&v4 dealloc];
 }
 
-- (id)getRemainingTimeThrowsAndReturnError:(id *)a3
+- (id)getRemainingTimeThrowsAndReturnError:(id *)error
 {
-  v3 = self;
+  selfCopy = self;
   v4 = sub_2655E59D8();
 
   return v4;

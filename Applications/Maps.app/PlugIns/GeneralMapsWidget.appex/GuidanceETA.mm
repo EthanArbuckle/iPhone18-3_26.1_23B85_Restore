@@ -1,17 +1,17 @@
 @interface GuidanceETA
-+ (id)_arrivalTimeStringForEtaDate:(id)a3 timeZone:(id)a4 includingAMPMSymbols:(BOOL)a5;
++ (id)_arrivalTimeStringForEtaDate:(id)date timeZone:(id)zone includingAMPMSymbols:(BOOL)symbols;
 + (id)defaultArrivalString;
 + (id)defaultBatteryOnArrivalString;
 + (id)defaultDistanceUnit;
 + (id)defaultDistanceUnitAccessibility;
 + (id)defaultTimeUnit;
 + (id)defaultTimeUnitAccessibility;
-+ (id)displayDateForDate:(id)a3;
++ (id)displayDateForDate:(id)date;
 + (id)invalidValueString;
-- (BOOL)isVisuallyDistinctFromGuidanceETA:(id)a3;
-- (GuidanceETA)initWithDisplayETA:(id)a3 remainingDistance:(id)a4 batteryChargeInfo:(id)a5 destinationTimeZone:(id)a6 transportType:(int)a7;
-- (GuidanceETA)initWithLeaveByDate:(id)a3 remainingTime:(double)a4 remainingDistance:(double)a5 arrivalBatteryCharge:(id)a6 destinationTimeZone:(id)a7 transportType:(int)a8;
-- (GuidanceETA)initWithRemainingTime:(double)a3 remainingDistance:(double)a4 arrivalBatteryCharge:(id)a5 destinationTimeZone:(id)a6 transportType:(int)a7;
+- (BOOL)isVisuallyDistinctFromGuidanceETA:(id)a;
+- (GuidanceETA)initWithDisplayETA:(id)a remainingDistance:(id)distance batteryChargeInfo:(id)info destinationTimeZone:(id)zone transportType:(int)type;
+- (GuidanceETA)initWithLeaveByDate:(id)date remainingTime:(double)time remainingDistance:(double)distance arrivalBatteryCharge:(id)charge destinationTimeZone:(id)zone transportType:(int)type;
+- (GuidanceETA)initWithRemainingTime:(double)time remainingDistance:(double)distance arrivalBatteryCharge:(id)charge destinationTimeZone:(id)zone transportType:(int)type;
 - (NSString)arrivalAMPMTimeString;
 - (NSString)arrivalChargeString;
 - (NSString)arrivalTimeBottomString;
@@ -25,30 +25,30 @@
 - (NSString)timeUnit;
 - (NSString)timeUnitAccessibility;
 - (NSString)timeValue;
-- (id)_chargeImageAttachmentWithFont:(id)a3;
-- (id)arrivalWithBatteryChargeStringWithFont:(id)a3;
-- (id)batteryChargeStringWithFont:(id)a3;
+- (id)_chargeImageAttachmentWithFont:(id)font;
+- (id)arrivalWithBatteryChargeStringWithFont:(id)font;
+- (id)batteryChargeStringWithFont:(id)font;
 - (id)description;
-- (id)extendedArrivalBatteryChargeStringWithFont:(id)a3;
-- (int64_t)_lengthUnitFromUnit:(id)a3;
-- (int64_t)_unitStyleForUnit:(int64_t)a3;
+- (id)extendedArrivalBatteryChargeStringWithFont:(id)font;
+- (int64_t)_lengthUnitFromUnit:(id)unit;
+- (int64_t)_unitStyleForUnit:(int64_t)unit;
 - (void)_computeDistanceProperties;
 - (void)_computeTimeProperties;
 @end
 
 @implementation GuidanceETA
 
-- (GuidanceETA)initWithRemainingTime:(double)a3 remainingDistance:(double)a4 arrivalBatteryCharge:(id)a5 destinationTimeZone:(id)a6 transportType:(int)a7
+- (GuidanceETA)initWithRemainingTime:(double)time remainingDistance:(double)distance arrivalBatteryCharge:(id)charge destinationTimeZone:(id)zone transportType:(int)type
 {
-  v13 = a5;
-  v14 = a6;
+  chargeCopy = charge;
+  zoneCopy = zone;
   v23.receiver = self;
   v23.super_class = GuidanceETA;
   v15 = [(GuidanceETA *)&v23 init];
   if (v15)
   {
-    v15->_remainingMinutes = [objc_opt_class() displayMinutesForTimeInterval:a3];
-    v15->_remainingDistance = a4;
+    v15->_remainingMinutes = [objc_opt_class() displayMinutesForTimeInterval:time];
+    v15->_remainingDistance = distance;
     v16 = +[NSDate date];
     v17 = [GuidanceETA displayDateForDate:v16];
 
@@ -56,10 +56,10 @@
     etaDate = v15->_etaDate;
     v15->_etaDate = v18;
 
-    objc_storeStrong(&v15->_arrivalBatteryCharge, a5);
-    if (v14)
+    objc_storeStrong(&v15->_arrivalBatteryCharge, charge);
+    if (zoneCopy)
     {
-      v20 = v14;
+      v20 = zoneCopy;
     }
 
     else
@@ -70,34 +70,34 @@
     destinationTimeZone = v15->_destinationTimeZone;
     v15->_destinationTimeZone = v20;
 
-    v15->_transportType = a7;
+    v15->_transportType = type;
     v15->_isEtaToFinalDestination = 1;
   }
 
   return v15;
 }
 
-- (GuidanceETA)initWithDisplayETA:(id)a3 remainingDistance:(id)a4 batteryChargeInfo:(id)a5 destinationTimeZone:(id)a6 transportType:(int)a7
+- (GuidanceETA)initWithDisplayETA:(id)a remainingDistance:(id)distance batteryChargeInfo:(id)info destinationTimeZone:(id)zone transportType:(int)type
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  aCopy = a;
+  distanceCopy = distance;
+  infoCopy = info;
+  zoneCopy = zone;
   v26.receiver = self;
   v26.super_class = GuidanceETA;
   v16 = [(GuidanceETA *)&v26 init];
   if (v16)
   {
-    v16->_remainingMinutes = [v12 displayRemainingMinutesToEndOfLeg];
-    [v13 distanceRemainingToEndOfLeg];
+    v16->_remainingMinutes = [aCopy displayRemainingMinutesToEndOfLeg];
+    [distanceCopy distanceRemainingToEndOfLeg];
     v16->_remainingDistance = v17;
-    v18 = [v12 displayETAToEndOfLeg];
+    displayETAToEndOfLeg = [aCopy displayETAToEndOfLeg];
     etaDate = v16->_etaDate;
-    v16->_etaDate = v18;
+    v16->_etaDate = displayETAToEndOfLeg;
 
-    if (v14)
+    if (infoCopy)
     {
-      [v14 batteryChargeRemainingAtEndOfLeg];
+      [infoCopy batteryChargeRemainingAtEndOfLeg];
       v20 = [NSNumber numberWithDouble:?];
     }
 
@@ -109,9 +109,9 @@
     arrivalBatteryCharge = v16->_arrivalBatteryCharge;
     v16->_arrivalBatteryCharge = v20;
 
-    if (v15)
+    if (zoneCopy)
     {
-      v22 = v15;
+      v22 = zoneCopy;
     }
 
     else
@@ -122,35 +122,35 @@
     destinationTimeZone = v16->_destinationTimeZone;
     v16->_destinationTimeZone = v22;
 
-    v16->_transportType = a7;
-    v24 = [v12 legInfos];
-    v16->_isEtaToFinalDestination = [v24 count] < 2;
+    v16->_transportType = type;
+    legInfos = [aCopy legInfos];
+    v16->_isEtaToFinalDestination = [legInfos count] < 2;
   }
 
   return v16;
 }
 
-- (GuidanceETA)initWithLeaveByDate:(id)a3 remainingTime:(double)a4 remainingDistance:(double)a5 arrivalBatteryCharge:(id)a6 destinationTimeZone:(id)a7 transportType:(int)a8
+- (GuidanceETA)initWithLeaveByDate:(id)date remainingTime:(double)time remainingDistance:(double)distance arrivalBatteryCharge:(id)charge destinationTimeZone:(id)zone transportType:(int)type
 {
-  v14 = a3;
-  v15 = a6;
-  v16 = a7;
+  dateCopy = date;
+  chargeCopy = charge;
+  zoneCopy = zone;
   v24.receiver = self;
   v24.super_class = GuidanceETA;
   v17 = [(GuidanceETA *)&v24 init];
   if (v17)
   {
-    v17->_remainingMinutes = [objc_opt_class() displayMinutesForTimeInterval:a4];
-    v17->_remainingDistance = a5;
-    v18 = [GuidanceETA displayDateForDate:v14];
+    v17->_remainingMinutes = [objc_opt_class() displayMinutesForTimeInterval:time];
+    v17->_remainingDistance = distance;
+    v18 = [GuidanceETA displayDateForDate:dateCopy];
     v19 = [v18 dateByAddingTimeInterval:v17->_remainingMinutes * 60.0];
     etaDate = v17->_etaDate;
     v17->_etaDate = v19;
 
-    objc_storeStrong(&v17->_arrivalBatteryCharge, a6);
-    if (v16)
+    objc_storeStrong(&v17->_arrivalBatteryCharge, charge);
+    if (zoneCopy)
     {
-      v21 = v16;
+      v21 = zoneCopy;
     }
 
     else
@@ -161,7 +161,7 @@
     destinationTimeZone = v17->_destinationTimeZone;
     v17->_destinationTimeZone = v21;
 
-    v17->_transportType = a8;
+    v17->_transportType = type;
     v17->_isEtaToFinalDestination = 1;
   }
 
@@ -185,8 +185,8 @@
   {
     [qword_1000E2B40 setTimeZone:self->_destinationTimeZone];
     v5 = qword_1000E2B40;
-    v6 = [(GuidanceETA *)self etaDate];
-    v7 = [v5 stringFromDate:v6];
+    etaDate = [(GuidanceETA *)self etaDate];
+    v7 = [v5 stringFromDate:etaDate];
 
     v8 = +[NSBundle mainBundle];
     v9 = [v8 localizedStringForKey:@"00:00 ETA [CarPlay]" value:@"localized string not found" table:0];
@@ -201,14 +201,14 @@
   return v4;
 }
 
-+ (id)displayDateForDate:(id)a3
++ (id)displayDateForDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   v4 = +[NSCalendar currentCalendar];
   v5 = +[NSCalendar currentCalendar];
-  v6 = [v5 components:96 fromDate:v3];
+  v6 = [v5 components:96 fromDate:dateCopy];
 
-  v7 = [v4 dateBySettingHour:objc_msgSend(v6 minute:"hour") second:objc_msgSend(v6 ofDate:"minute") options:{0, v3, 2}];
+  v7 = [v4 dateBySettingHour:objc_msgSend(v6 minute:"hour") second:objc_msgSend(v6 ofDate:"minute") options:{0, dateCopy, 2}];
 
   return v7;
 }
@@ -219,16 +219,16 @@
   v4 = objc_opt_class();
   remainingMinutes = self->_remainingMinutes;
   remainingDistance = self->_remainingDistance;
-  v7 = [(GuidanceETA *)self etaDate];
-  v8 = v7;
+  etaDate = [(GuidanceETA *)self etaDate];
+  v8 = etaDate;
   if (arrivalBatteryCharge)
   {
-    [NSString stringWithFormat:@"<%@: %p remainingMinutes=%lu remainingDistance=%f etaDate=%@ arrivalBatteryCharge=%lu timezone=%@>", v4, self, remainingMinutes, *&remainingDistance, v7, [(NSNumber *)self->_arrivalBatteryCharge unsignedIntegerValue], self->_destinationTimeZone];
+    [NSString stringWithFormat:@"<%@: %p remainingMinutes=%lu remainingDistance=%f etaDate=%@ arrivalBatteryCharge=%lu timezone=%@>", v4, self, remainingMinutes, *&remainingDistance, etaDate, [(NSNumber *)self->_arrivalBatteryCharge unsignedIntegerValue], self->_destinationTimeZone];
   }
 
   else
   {
-    [NSString stringWithFormat:@"<%@: %p remainingMinutes=%lu remainingDistance=%f etaDate=%@ timezone=%@>", v4, self, remainingMinutes, *&remainingDistance, v7, self->_destinationTimeZone, v11];
+    [NSString stringWithFormat:@"<%@: %p remainingMinutes=%lu remainingDistance=%f etaDate=%@ timezone=%@>", v4, self, remainingMinutes, *&remainingDistance, etaDate, self->_destinationTimeZone, v11];
   }
   v9 = ;
 
@@ -241,8 +241,8 @@
   if (!arrivalTimeString)
   {
     v4 = objc_opt_class();
-    v5 = [(GuidanceETA *)self etaDate];
-    v6 = [v4 _arrivalTimeStringForEtaDate:v5 timeZone:self->_destinationTimeZone includingAMPMSymbols:0];
+    etaDate = [(GuidanceETA *)self etaDate];
+    v6 = [v4 _arrivalTimeStringForEtaDate:etaDate timeZone:self->_destinationTimeZone includingAMPMSymbols:0];
     v7 = self->_arrivalTimeString;
     self->_arrivalTimeString = v6;
 
@@ -258,8 +258,8 @@
   if (!arrivalAMPMTimeString)
   {
     v4 = objc_opt_class();
-    v5 = [(GuidanceETA *)self etaDate];
-    v6 = [v4 _arrivalTimeStringForEtaDate:v5 timeZone:self->_destinationTimeZone includingAMPMSymbols:1];
+    etaDate = [(GuidanceETA *)self etaDate];
+    v6 = [v4 _arrivalTimeStringForEtaDate:etaDate timeZone:self->_destinationTimeZone includingAMPMSymbols:1];
     v7 = self->_arrivalAMPMTimeString;
     self->_arrivalAMPMTimeString = v6;
 
@@ -271,10 +271,10 @@
 
 - (NSString)arrivalTimeBottomString
 {
-  v2 = [(GuidanceETA *)self isEtaToFinalDestination];
+  isEtaToFinalDestination = [(GuidanceETA *)self isEtaToFinalDestination];
   v3 = +[NSBundle mainBundle];
   v4 = v3;
-  if (v2)
+  if (isEtaToFinalDestination)
   {
     v5 = @"[NavTray] arrival label";
   }
@@ -292,8 +292,8 @@
 - (NSString)arrivalTimeExpandedString
 {
   v3 = objc_opt_class();
-  v4 = [(GuidanceETA *)self etaDate];
-  v5 = [v3 _arrivalTimeStringForEtaDate:v4 timeZone:self->_destinationTimeZone includingAMPMSymbols:0];
+  etaDate = [(GuidanceETA *)self etaDate];
+  v5 = [v3 _arrivalTimeStringForEtaDate:etaDate timeZone:self->_destinationTimeZone includingAMPMSymbols:0];
 
   LODWORD(self) = [(GuidanceETA *)self isEtaToFinalDestination];
   v6 = +[NSBundle mainBundle];
@@ -314,18 +314,18 @@
   return v10;
 }
 
-+ (id)_arrivalTimeStringForEtaDate:(id)a3 timeZone:(id)a4 includingAMPMSymbols:(BOOL)a5
++ (id)_arrivalTimeStringForEtaDate:(id)date timeZone:(id)zone includingAMPMSymbols:(BOOL)symbols
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
+  symbolsCopy = symbols;
+  dateCopy = date;
+  zoneCopy = zone;
   if (qword_1000E2B58 != -1)
   {
     sub_10007D13C();
   }
 
-  [qword_1000E2B50 setTimeZone:v8];
-  if (v5)
+  [qword_1000E2B50 setTimeZone:zoneCopy];
+  if (symbolsCopy)
   {
     v9 = @"j:mm";
   }
@@ -336,7 +336,7 @@
   }
 
   [qword_1000E2B50 setLocalizedDateFormatFromTemplate:v9];
-  v10 = [qword_1000E2B50 stringFromDate:v7];
+  v10 = [qword_1000E2B50 stringFromDate:dateCopy];
 
   return v10;
 }
@@ -450,9 +450,9 @@
 
       v22 = +[NSBundle mainBundle];
       v23 = [v22 localizedStringForKey:@"Minutes label [ETA]" value:@"localized string not found" table:0];
-      v24 = [NSString stringWithFormat:v23, remainingMinutes_low];
+      remainingMinutes_low = [NSString stringWithFormat:v23, remainingMinutes_low];
       v25 = self->_timeUnit;
-      self->_timeUnit = v24;
+      self->_timeUnit = remainingMinutes_low;
 
       +[NSBundle mainBundle];
       v26 = [objc_claimAutoreleasedReturnValue() localizedStringForKey:@"Minutes accessibility label [ETA]" value:@"localized string not found" table:0];
@@ -519,12 +519,12 @@
   return distanceUnitAccessibility;
 }
 
-- (int64_t)_lengthUnitFromUnit:(id)a3
+- (int64_t)_lengthUnitFromUnit:(id)unit
 {
-  v3 = a3;
+  unitCopy = unit;
   v4 = +[NSUnitLength kilometers];
 
-  if (v4 == v3)
+  if (v4 == unitCopy)
   {
     v9 = 14;
   }
@@ -533,7 +533,7 @@
   {
     v5 = +[NSUnitLength meters];
 
-    if (v5 == v3)
+    if (v5 == unitCopy)
     {
       v9 = 11;
     }
@@ -542,7 +542,7 @@
     {
       v6 = +[NSUnitLength miles];
 
-      if (v6 == v3)
+      if (v6 == unitCopy)
       {
         v9 = 1284;
       }
@@ -551,7 +551,7 @@
       {
         v7 = +[NSUnitLength yards];
 
-        if (v7 == v3)
+        if (v7 == unitCopy)
         {
           v9 = 1283;
         }
@@ -560,7 +560,7 @@
         {
           v8 = +[NSUnitLength feet];
 
-          if (v8 == v3)
+          if (v8 == unitCopy)
           {
             v9 = 1282;
           }
@@ -577,18 +577,18 @@
   return v9;
 }
 
-- (int64_t)_unitStyleForUnit:(int64_t)a3
+- (int64_t)_unitStyleForUnit:(int64_t)unit
 {
   result = 1;
-  if (a3 > 1282)
+  if (unit > 1282)
   {
-    if ((a3 - 1283) >= 2)
+    if ((unit - 1283) >= 2)
     {
       return 2;
     }
   }
 
-  else if (a3 != 11 && a3 != 14)
+  else if (unit != 11 && unit != 14)
   {
     return 2;
   }
@@ -627,8 +627,8 @@
     self->_distanceValue = v8;
   }
 
-  v11 = [v19 unit];
-  v12 = [(GuidanceETA *)self _lengthUnitFromUnit:v11];
+  unit = [v19 unit];
+  v12 = [(GuidanceETA *)self _lengthUnitFromUnit:unit];
 
   if (qword_1000E2B68 != -1)
   {
@@ -687,11 +687,11 @@
 + (id)defaultDistanceUnit
 {
   v2 = +[NSLocale currentLocale];
-  v3 = [v2 _navigation_distanceUsesMetricSystem];
+  _navigation_distanceUsesMetricSystem = [v2 _navigation_distanceUsesMetricSystem];
 
   v4 = +[NSBundle mainBundle];
   v5 = v4;
-  if (v3)
+  if (_navigation_distanceUsesMetricSystem)
   {
     v6 = @"[NavTray][Metric] default distance units";
   }
@@ -709,11 +709,11 @@
 + (id)defaultDistanceUnitAccessibility
 {
   v2 = +[NSLocale currentLocale];
-  v3 = [v2 _navigation_distanceUsesMetricSystem];
+  _navigation_distanceUsesMetricSystem = [v2 _navigation_distanceUsesMetricSystem];
 
   v4 = +[NSBundle mainBundle];
   v5 = v4;
-  if (v3)
+  if (_navigation_distanceUsesMetricSystem)
   {
     v6 = @"[NavTray][Metric] default distance units accessibility";
   }
@@ -736,17 +736,17 @@
   return v3;
 }
 
-- (id)_chargeImageAttachmentWithFont:(id)a3
+- (id)_chargeImageAttachmentWithFont:(id)font
 {
-  v4 = a3;
+  fontCopy = font;
   v5 = objc_opt_new();
-  [v4 pointSize];
+  [fontCopy pointSize];
   v7 = v6;
-  v8 = [(GuidanceETA *)self arrivalBatteryCharge];
-  v9 = +[UIImage chargeImageOfSize:batteryLevel:](UIImage, "chargeImageOfSize:batteryLevel:", [v8 unsignedIntegerValue], v7);
+  arrivalBatteryCharge = [(GuidanceETA *)self arrivalBatteryCharge];
+  v9 = +[UIImage chargeImageOfSize:batteryLevel:](UIImage, "chargeImageOfSize:batteryLevel:", [arrivalBatteryCharge unsignedIntegerValue], v7);
 
   [v5 setImage:v9];
-  [v4 capHeight];
+  [fontCopy capHeight];
   v11 = v10;
 
   [v9 size];
@@ -760,26 +760,26 @@
   return v17;
 }
 
-- (id)batteryChargeStringWithFont:(id)a3
+- (id)batteryChargeStringWithFont:(id)font
 {
-  v4 = a3;
-  v5 = [(GuidanceETA *)self _chargeImageAttachmentWithFont:v4];
+  fontCopy = font;
+  v5 = [(GuidanceETA *)self _chargeImageAttachmentWithFont:fontCopy];
   v6 = [v5 mutableCopy];
 
   v7 = [[NSAttributedString alloc] initWithString:@" "];
   [v6 appendAttributedString:v7];
 
   v8 = [NSAttributedString alloc];
-  v9 = [(GuidanceETA *)self arrivalBatteryCharge];
-  v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%ld%%", [v9 integerValue]);
+  arrivalBatteryCharge = [(GuidanceETA *)self arrivalBatteryCharge];
+  v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%ld%%", [arrivalBatteryCharge integerValue]);
   v11 = [v8 initWithString:v10];
   [v6 appendAttributedString:v11];
 
-  v12 = [v6 string];
-  v13 = [v12 length];
+  string = [v6 string];
+  v13 = [string length];
 
   v17 = NSFontAttributeName;
-  v18 = v4;
+  v18 = fontCopy;
   v14 = [NSDictionary dictionaryWithObjects:&v18 forKeys:&v17 count:1];
 
   [v6 addAttributes:v14 range:{0, v13}];
@@ -788,21 +788,21 @@
   return v15;
 }
 
-- (id)arrivalWithBatteryChargeStringWithFont:(id)a3
+- (id)arrivalWithBatteryChargeStringWithFont:(id)font
 {
-  v4 = a3;
-  v5 = [(GuidanceETA *)self _chargeImageAttachmentWithFont:v4];
-  v6 = [(GuidanceETA *)self arrivalTimeString];
+  fontCopy = font;
+  v5 = [(GuidanceETA *)self _chargeImageAttachmentWithFont:fontCopy];
+  arrivalTimeString = [(GuidanceETA *)self arrivalTimeString];
   v7 = +[NSBundle mainBundle];
   v8 = [v7 localizedStringForKey:@"00:00 arrival with X%" value:@"localized string not found" table:0];
-  v9 = [(GuidanceETA *)self arrivalBatteryCharge];
-  v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", v8, v6, [v9 integerValue]);
+  arrivalBatteryCharge = [(GuidanceETA *)self arrivalBatteryCharge];
+  v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", v8, arrivalTimeString, [arrivalBatteryCharge integerValue]);
 
   v11 = [[NSAttributedString alloc] initWithString:v10];
   v12 = [v11 mutableCopy];
 
-  v13 = [v12 string];
-  v14 = [v13 rangeOfString:@"$1$@"];
+  string = [v12 string];
+  v14 = [string rangeOfString:@"$1$@"];
   v16 = v15;
 
   if (v14 != 0x7FFFFFFFFFFFFFFFLL)
@@ -810,11 +810,11 @@
     [v12 replaceCharactersInRange:v14 withAttributedString:{v16, v5}];
   }
 
-  v17 = [v12 string];
-  v18 = [v17 length];
+  string2 = [v12 string];
+  v18 = [string2 length];
 
   v22 = NSFontAttributeName;
-  v23 = v4;
+  v23 = fontCopy;
   v19 = [NSDictionary dictionaryWithObjects:&v23 forKeys:&v22 count:1];
   [v12 addAttributes:v19 range:{0, v18}];
 
@@ -823,10 +823,10 @@
   return v20;
 }
 
-- (id)extendedArrivalBatteryChargeStringWithFont:(id)a3
+- (id)extendedArrivalBatteryChargeStringWithFont:(id)font
 {
-  v4 = a3;
-  v5 = [(GuidanceETA *)self _chargeImageAttachmentWithFont:v4];
+  fontCopy = font;
+  v5 = [(GuidanceETA *)self _chargeImageAttachmentWithFont:fontCopy];
   v6 = [v5 mutableCopy];
 
   v7 = [[NSAttributedString alloc] initWithString:@" "];
@@ -835,16 +835,16 @@
   v8 = [NSAttributedString alloc];
   v9 = +[NSBundle mainBundle];
   v10 = [v9 localizedStringForKey:@"[NavTray] Extended arrival battery charge format" value:@"localized string not found" table:0];
-  v11 = [(GuidanceETA *)self arrivalBatteryCharge];
-  v12 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", v10, [v11 integerValue]);
+  arrivalBatteryCharge = [(GuidanceETA *)self arrivalBatteryCharge];
+  v12 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", v10, [arrivalBatteryCharge integerValue]);
   v13 = [v8 initWithString:v12];
   [v6 appendAttributedString:v13];
 
-  v14 = [v6 string];
-  v15 = [v14 length];
+  string = [v6 string];
+  v15 = [string length];
 
   v19 = NSFontAttributeName;
-  v20 = v4;
+  v20 = fontCopy;
   v16 = [NSDictionary dictionaryWithObjects:&v20 forKeys:&v19 count:1];
 
   [v6 addAttributes:v16 range:{0, v15}];
@@ -860,8 +860,8 @@
   {
     v4 = +[NSBundle mainBundle];
     v5 = [v4 localizedStringForKey:@"[NavTray] arrival charge percentage" value:@"localized string not found" table:0];
-    v6 = [(GuidanceETA *)self arrivalBatteryCharge];
-    v7 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v5, [v6 integerValue]);
+    arrivalBatteryCharge = [(GuidanceETA *)self arrivalBatteryCharge];
+    v7 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v5, [arrivalBatteryCharge integerValue]);
     v8 = self->_arrivalChargeString;
     self->_arrivalChargeString = v7;
 
@@ -878,8 +878,8 @@
   {
     v4 = +[NSBundle mainBundle];
     v5 = [v4 localizedStringForKey:@"[NavTray] short arrival charge percentage" value:@"localized string not found" table:0];
-    v6 = [(GuidanceETA *)self arrivalBatteryCharge];
-    v7 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v5, [v6 integerValue]);
+    arrivalBatteryCharge = [(GuidanceETA *)self arrivalBatteryCharge];
+    v7 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v5, [arrivalBatteryCharge integerValue]);
     v8 = self->_shortArrivalChargeString;
     self->_shortArrivalChargeString = v7;
 
@@ -889,24 +889,24 @@
   return shortArrivalChargeString;
 }
 
-- (BOOL)isVisuallyDistinctFromGuidanceETA:(id)a3
+- (BOOL)isVisuallyDistinctFromGuidanceETA:(id)a
 {
-  v4 = a3;
-  if (!v4)
+  aCopy = a;
+  if (!aCopy)
   {
     goto LABEL_3;
   }
 
-  v5 = [(GuidanceETA *)self isEtaToFinalDestination];
-  if (v5 != [v4 isEtaToFinalDestination])
+  isEtaToFinalDestination = [(GuidanceETA *)self isEtaToFinalDestination];
+  if (isEtaToFinalDestination != [aCopy isEtaToFinalDestination])
   {
     goto LABEL_3;
   }
 
-  v7 = [(GuidanceETA *)self arrivalTimeString];
-  v8 = [v4 arrivalTimeString];
-  v9 = v7;
-  v10 = v8;
+  arrivalTimeString = [(GuidanceETA *)self arrivalTimeString];
+  arrivalTimeString2 = [aCopy arrivalTimeString];
+  v9 = arrivalTimeString;
+  v10 = arrivalTimeString2;
   if (v9 | v10)
   {
     v11 = v10;
@@ -918,13 +918,13 @@
     }
   }
 
-  v13 = [(GuidanceETA *)self timeValue];
-  v14 = [v4 timeValue];
-  v15 = v13;
-  v16 = v14;
-  if (v15 | v16)
+  timeValue = [(GuidanceETA *)self timeValue];
+  timeValue2 = [aCopy timeValue];
+  arrivalBatteryCharge = timeValue;
+  arrivalBatteryCharge2 = timeValue2;
+  if (arrivalBatteryCharge | arrivalBatteryCharge2)
   {
-    v17 = [v15 isEqual:v16];
+    v17 = [arrivalBatteryCharge isEqual:arrivalBatteryCharge2];
 
     if (!v17)
     {
@@ -934,10 +934,10 @@ LABEL_24:
     }
   }
 
-  v18 = [(GuidanceETA *)self timeUnit];
-  v19 = [v4 timeUnit];
-  v20 = v18;
-  v21 = v19;
+  timeUnit = [(GuidanceETA *)self timeUnit];
+  timeUnit2 = [aCopy timeUnit];
+  v20 = timeUnit;
+  v21 = timeUnit2;
   if (v20 | v21)
   {
     v22 = [v20 isEqual:v21];
@@ -950,10 +950,10 @@ LABEL_23:
     }
   }
 
-  v23 = [(GuidanceETA *)self timeUnitAccessibility];
-  v24 = [v4 timeUnitAccessibility];
-  v25 = v23;
-  v26 = v24;
+  timeUnitAccessibility = [(GuidanceETA *)self timeUnitAccessibility];
+  timeUnitAccessibility2 = [aCopy timeUnitAccessibility];
+  v25 = timeUnitAccessibility;
+  v26 = timeUnitAccessibility2;
   if (v25 | v26)
   {
     v27 = [v25 isEqual:v26];
@@ -966,10 +966,10 @@ LABEL_23:
   }
 
   v48 = v25;
-  v28 = [(GuidanceETA *)self distanceValue];
-  v29 = [v4 distanceValue];
-  v30 = v28;
-  v31 = v29;
+  distanceValue = [(GuidanceETA *)self distanceValue];
+  distanceValue2 = [aCopy distanceValue];
+  v30 = distanceValue;
+  v31 = distanceValue2;
   v32 = v30;
   v33 = v31;
   if (v30 | v31)
@@ -985,10 +985,10 @@ LABEL_23:
 
   v46 = v32;
   v47 = v20;
-  v35 = [(GuidanceETA *)self distanceUnit];
-  v36 = [v4 distanceUnit];
-  v37 = v35;
-  v38 = v36;
+  distanceUnit = [(GuidanceETA *)self distanceUnit];
+  distanceUnit2 = [aCopy distanceUnit];
+  v37 = distanceUnit;
+  v38 = distanceUnit2;
   if (v37 | v38)
   {
     v39 = [v37 isEqual:v38];
@@ -1000,12 +1000,12 @@ LABEL_23:
     }
   }
 
-  v45 = v15;
-  v40 = [(GuidanceETA *)self distanceUnitAccessibility];
-  v41 = [v4 distanceUnitAccessibility];
-  if (v40 | v41)
+  v45 = arrivalBatteryCharge;
+  distanceUnitAccessibility = [(GuidanceETA *)self distanceUnitAccessibility];
+  distanceUnitAccessibility2 = [aCopy distanceUnitAccessibility];
+  if (distanceUnitAccessibility | distanceUnitAccessibility2)
   {
-    v44 = [v40 isEqual:v41] ^ 1;
+    v44 = [distanceUnitAccessibility isEqual:distanceUnitAccessibility2] ^ 1;
   }
 
   else
@@ -1015,10 +1015,10 @@ LABEL_23:
 
   if ((v44 & 1) == 0)
   {
-    v15 = [(GuidanceETA *)self arrivalBatteryCharge];
-    v42 = [v15 integerValue];
-    v16 = [v4 arrivalBatteryCharge];
-    v6 = v42 != [v16 integerValue];
+    arrivalBatteryCharge = [(GuidanceETA *)self arrivalBatteryCharge];
+    integerValue = [arrivalBatteryCharge integerValue];
+    arrivalBatteryCharge2 = [aCopy arrivalBatteryCharge];
+    v6 = integerValue != [arrivalBatteryCharge2 integerValue];
 LABEL_25:
 
     goto LABEL_26;

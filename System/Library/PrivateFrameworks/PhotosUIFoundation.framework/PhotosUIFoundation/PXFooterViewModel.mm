@@ -1,29 +1,29 @@
 @interface PXFooterViewModel
 - (PXFooterViewModel)init;
-- (void)configureWithPhotosEnvironment:(id)a3;
-- (void)performChanges:(id)a3;
-- (void)setAccessoryView:(id)a3;
-- (void)setAction:(id)a3;
-- (void)setActionConfirmationAlertButtonTitle:(id)a3;
-- (void)setActionConfirmationAlertSubtitle:(id)a3;
-- (void)setActionConfirmationAlertTitle:(id)a3;
-- (void)setActionTitle:(id)a3;
-- (void)setAnimatedIconMode:(int64_t)a3;
-- (void)setExtendedSystemImageName:(id)a3;
-- (void)setExtendedTitle:(id)a3;
-- (void)setFilterView:(id)a3;
-- (void)setHasImportantInformation:(BOOL)a3;
-- (void)setInternalMessageSubtitle:(id)a3;
-- (void)setIsPaused:(BOOL)a3;
-- (void)setIsProcessing:(BOOL)a3;
-- (void)setProgress:(float)a3;
-- (void)setShowBadge:(BOOL)a3;
-- (void)setSubtitle1:(id)a3;
-- (void)setSubtitle1Style:(int64_t)a3;
-- (void)setSubtitle2:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setTopAccessoryView:(id)a3;
-- (void)setUseBlankActionSeparator:(BOOL)a3;
+- (void)configureWithPhotosEnvironment:(id)environment;
+- (void)performChanges:(id)changes;
+- (void)setAccessoryView:(id)view;
+- (void)setAction:(id)action;
+- (void)setActionConfirmationAlertButtonTitle:(id)title;
+- (void)setActionConfirmationAlertSubtitle:(id)subtitle;
+- (void)setActionConfirmationAlertTitle:(id)title;
+- (void)setActionTitle:(id)title;
+- (void)setAnimatedIconMode:(int64_t)mode;
+- (void)setExtendedSystemImageName:(id)name;
+- (void)setExtendedTitle:(id)title;
+- (void)setFilterView:(id)view;
+- (void)setHasImportantInformation:(BOOL)information;
+- (void)setInternalMessageSubtitle:(id)subtitle;
+- (void)setIsPaused:(BOOL)paused;
+- (void)setIsProcessing:(BOOL)processing;
+- (void)setProgress:(float)progress;
+- (void)setShowBadge:(BOOL)badge;
+- (void)setSubtitle1:(id)subtitle1;
+- (void)setSubtitle1Style:(int64_t)style;
+- (void)setSubtitle2:(id)subtitle2;
+- (void)setTitle:(id)title;
+- (void)setTopAccessoryView:(id)view;
+- (void)setUseBlankActionSeparator:(BOOL)separator;
 @end
 
 @implementation PXFooterViewModel
@@ -41,10 +41,10 @@
   return result;
 }
 
-- (void)configureWithPhotosEnvironment:(id)a3
+- (void)configureWithPhotosEnvironment:(id)environment
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_1B405DAF4();
   swift_unknownObjectRelease();
   sub_1B3FCB920(v5);
@@ -52,89 +52,89 @@
   __swift_destroy_boxed_opaque_existential_1(v5);
 }
 
-- (void)setShowBadge:(BOOL)a3
+- (void)setShowBadge:(BOOL)badge
 {
-  if (self->_showBadge != a3)
+  if (self->_showBadge != badge)
   {
-    self->_showBadge = a3;
+    self->_showBadge = badge;
     [(PXObservable *)self signalChange:0x200000];
   }
 }
 
-- (void)setIsProcessing:(BOOL)a3
+- (void)setIsProcessing:(BOOL)processing
 {
-  if (self->_isProcessing != a3)
+  if (self->_isProcessing != processing)
   {
-    self->_isProcessing = a3;
+    self->_isProcessing = processing;
     [(PXObservable *)self signalChange:0x100000];
   }
 }
 
-- (void)setSubtitle1Style:(int64_t)a3
+- (void)setSubtitle1Style:(int64_t)style
 {
-  if (self->_subtitle1Style != a3)
+  if (self->_subtitle1Style != style)
   {
-    self->_subtitle1Style = a3;
+    self->_subtitle1Style = style;
     [(PXObservable *)self signalChange:0x80000];
   }
 }
 
-- (void)setHasImportantInformation:(BOOL)a3
+- (void)setHasImportantInformation:(BOOL)information
 {
-  if (self->_hasImportantInformation != a3)
+  if (self->_hasImportantInformation != information)
   {
-    self->_hasImportantInformation = a3;
+    self->_hasImportantInformation = information;
     [(PXObservable *)self signalChange:0x40000];
   }
 }
 
-- (void)setAnimatedIconMode:(int64_t)a3
+- (void)setAnimatedIconMode:(int64_t)mode
 {
-  if (self->_animatedIconMode != a3)
+  if (self->_animatedIconMode != mode)
   {
-    self->_animatedIconMode = a3;
+    self->_animatedIconMode = mode;
     [(PXObservable *)self signalChange:0x8000];
   }
 }
 
-- (void)setTopAccessoryView:(id)a3
+- (void)setTopAccessoryView:(id)view
 {
-  v5 = a3;
-  if (self->_topAccessoryView != v5)
+  viewCopy = view;
+  if (self->_topAccessoryView != viewCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_topAccessoryView, a3);
+    v6 = viewCopy;
+    objc_storeStrong(&self->_topAccessoryView, view);
     [(PXObservable *)self signalChange:0x10000];
-    v5 = v6;
+    viewCopy = v6;
   }
 }
 
-- (void)setAccessoryView:(id)a3
+- (void)setAccessoryView:(id)view
 {
-  v5 = a3;
-  if (self->_accessoryView != v5)
+  viewCopy = view;
+  if (self->_accessoryView != viewCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_accessoryView, a3);
+    v6 = viewCopy;
+    objc_storeStrong(&self->_accessoryView, view);
     [(PXObservable *)self signalChange:0x4000];
-    v5 = v6;
+    viewCopy = v6;
   }
 }
 
-- (void)setUseBlankActionSeparator:(BOOL)a3
+- (void)setUseBlankActionSeparator:(BOOL)separator
 {
-  if (self->_useBlankActionSeparator != a3)
+  if (self->_useBlankActionSeparator != separator)
   {
-    self->_useBlankActionSeparator = a3;
+    self->_useBlankActionSeparator = separator;
     [(PXObservable *)self signalChange:0x400000];
   }
 }
 
-- (void)setAction:(id)a3
+- (void)setAction:(id)action
 {
-  if (self->_action != a3)
+  if (self->_action != action)
   {
-    v4 = [a3 copy];
+    v4 = [action copy];
     action = self->_action;
     self->_action = v4;
 
@@ -142,15 +142,15 @@
   }
 }
 
-- (void)setActionConfirmationAlertButtonTitle:(id)a3
+- (void)setActionConfirmationAlertButtonTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   actionConfirmationAlertButtonTitle = self->_actionConfirmationAlertButtonTitle;
-  if (actionConfirmationAlertButtonTitle != v4)
+  if (actionConfirmationAlertButtonTitle != titleCopy)
   {
-    v8 = v4;
-    actionConfirmationAlertButtonTitle = [actionConfirmationAlertButtonTitle isEqualToString:v4];
-    v4 = v8;
+    v8 = titleCopy;
+    actionConfirmationAlertButtonTitle = [actionConfirmationAlertButtonTitle isEqualToString:titleCopy];
+    titleCopy = v8;
     if ((actionConfirmationAlertButtonTitle & 1) == 0)
     {
       v6 = [v8 copy];
@@ -158,22 +158,22 @@
       self->_actionConfirmationAlertButtonTitle = v6;
 
       actionConfirmationAlertButtonTitle = [(PXObservable *)self signalChange:4096];
-      v4 = v8;
+      titleCopy = v8;
     }
   }
 
-  MEMORY[0x1EEE66BB8](actionConfirmationAlertButtonTitle, v4);
+  MEMORY[0x1EEE66BB8](actionConfirmationAlertButtonTitle, titleCopy);
 }
 
-- (void)setActionConfirmationAlertSubtitle:(id)a3
+- (void)setActionConfirmationAlertSubtitle:(id)subtitle
 {
-  v4 = a3;
+  subtitleCopy = subtitle;
   actionConfirmationAlertSubtitle = self->_actionConfirmationAlertSubtitle;
-  if (actionConfirmationAlertSubtitle != v4)
+  if (actionConfirmationAlertSubtitle != subtitleCopy)
   {
-    v8 = v4;
-    actionConfirmationAlertSubtitle = [actionConfirmationAlertSubtitle isEqualToString:v4];
-    v4 = v8;
+    v8 = subtitleCopy;
+    actionConfirmationAlertSubtitle = [actionConfirmationAlertSubtitle isEqualToString:subtitleCopy];
+    subtitleCopy = v8;
     if ((actionConfirmationAlertSubtitle & 1) == 0)
     {
       v6 = [v8 copy];
@@ -181,22 +181,22 @@
       self->_actionConfirmationAlertSubtitle = v6;
 
       actionConfirmationAlertSubtitle = [(PXObservable *)self signalChange:2048];
-      v4 = v8;
+      subtitleCopy = v8;
     }
   }
 
-  MEMORY[0x1EEE66BB8](actionConfirmationAlertSubtitle, v4);
+  MEMORY[0x1EEE66BB8](actionConfirmationAlertSubtitle, subtitleCopy);
 }
 
-- (void)setActionConfirmationAlertTitle:(id)a3
+- (void)setActionConfirmationAlertTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   actionConfirmationAlertTitle = self->_actionConfirmationAlertTitle;
-  if (actionConfirmationAlertTitle != v4)
+  if (actionConfirmationAlertTitle != titleCopy)
   {
-    v8 = v4;
-    actionConfirmationAlertTitle = [actionConfirmationAlertTitle isEqualToString:v4];
-    v4 = v8;
+    v8 = titleCopy;
+    actionConfirmationAlertTitle = [actionConfirmationAlertTitle isEqualToString:titleCopy];
+    titleCopy = v8;
     if ((actionConfirmationAlertTitle & 1) == 0)
     {
       v6 = [v8 copy];
@@ -204,22 +204,22 @@
       self->_actionConfirmationAlertTitle = v6;
 
       actionConfirmationAlertTitle = [(PXObservable *)self signalChange:1024];
-      v4 = v8;
+      titleCopy = v8;
     }
   }
 
-  MEMORY[0x1EEE66BB8](actionConfirmationAlertTitle, v4);
+  MEMORY[0x1EEE66BB8](actionConfirmationAlertTitle, titleCopy);
 }
 
-- (void)setActionTitle:(id)a3
+- (void)setActionTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   actionTitle = self->_actionTitle;
-  if (actionTitle != v4)
+  if (actionTitle != titleCopy)
   {
-    v8 = v4;
-    actionTitle = [actionTitle isEqualToString:v4];
-    v4 = v8;
+    v8 = titleCopy;
+    actionTitle = [actionTitle isEqualToString:titleCopy];
+    titleCopy = v8;
     if ((actionTitle & 1) == 0)
     {
       v6 = [v8 copy];
@@ -227,47 +227,47 @@
       self->_actionTitle = v6;
 
       actionTitle = [(PXObservable *)self signalChange:512];
-      v4 = v8;
+      titleCopy = v8;
     }
   }
 
-  MEMORY[0x1EEE66BB8](actionTitle, v4);
+  MEMORY[0x1EEE66BB8](actionTitle, titleCopy);
 }
 
-- (void)setProgress:(float)a3
+- (void)setProgress:(float)progress
 {
-  if (a3 != -1.0 && (a3 < 0.0 || a3 > 1.0))
+  if (progress != -1.0 && (progress < 0.0 || progress > 1.0))
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PXFooterViewModel.m" lineNumber:107 description:{@"Invalid parameter not satisfying: %@", @"(progress == PXFooterViewModelNoProgress) || ((progress >= 0.0f) && (progress <= 1.0f))"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXFooterViewModel.m" lineNumber:107 description:{@"Invalid parameter not satisfying: %@", @"(progress == PXFooterViewModelNoProgress) || ((progress >= 0.0f) && (progress <= 1.0f))"}];
   }
 
-  if (vabdd_f64(self->_progress, a3) > 0.00000999999975)
+  if (vabdd_f64(self->_progress, progress) > 0.00000999999975)
   {
-    self->_progress = a3;
+    self->_progress = progress;
 
     [(PXObservable *)self signalChange:128];
   }
 }
 
-- (void)setIsPaused:(BOOL)a3
+- (void)setIsPaused:(BOOL)paused
 {
-  if (self->_isPaused != a3)
+  if (self->_isPaused != paused)
   {
-    self->_isPaused = a3;
+    self->_isPaused = paused;
     [(PXObservable *)self signalChange:64];
   }
 }
 
-- (void)setInternalMessageSubtitle:(id)a3
+- (void)setInternalMessageSubtitle:(id)subtitle
 {
-  v4 = a3;
+  subtitleCopy = subtitle;
   internalMessageSubtitle = self->_internalMessageSubtitle;
-  if (internalMessageSubtitle != v4)
+  if (internalMessageSubtitle != subtitleCopy)
   {
-    v8 = v4;
-    internalMessageSubtitle = [internalMessageSubtitle isEqualToString:v4];
-    v4 = v8;
+    v8 = subtitleCopy;
+    internalMessageSubtitle = [internalMessageSubtitle isEqualToString:subtitleCopy];
+    subtitleCopy = v8;
     if ((internalMessageSubtitle & 1) == 0)
     {
       v6 = [v8 copy];
@@ -275,22 +275,22 @@
       self->_internalMessageSubtitle = v6;
 
       internalMessageSubtitle = [(PXObservable *)self signalChange:32];
-      v4 = v8;
+      subtitleCopy = v8;
     }
   }
 
-  MEMORY[0x1EEE66BB8](internalMessageSubtitle, v4);
+  MEMORY[0x1EEE66BB8](internalMessageSubtitle, subtitleCopy);
 }
 
-- (void)setSubtitle2:(id)a3
+- (void)setSubtitle2:(id)subtitle2
 {
-  v4 = a3;
+  subtitle2Copy = subtitle2;
   subtitle2 = self->_subtitle2;
-  if (subtitle2 != v4)
+  if (subtitle2 != subtitle2Copy)
   {
-    v8 = v4;
-    subtitle2 = [subtitle2 isEqualToString:v4];
-    v4 = v8;
+    v8 = subtitle2Copy;
+    subtitle2 = [subtitle2 isEqualToString:subtitle2Copy];
+    subtitle2Copy = v8;
     if ((subtitle2 & 1) == 0)
     {
       v6 = [v8 copy];
@@ -298,22 +298,22 @@
       self->_subtitle2 = v6;
 
       subtitle2 = [(PXObservable *)self signalChange:16];
-      v4 = v8;
+      subtitle2Copy = v8;
     }
   }
 
-  MEMORY[0x1EEE66BB8](subtitle2, v4);
+  MEMORY[0x1EEE66BB8](subtitle2, subtitle2Copy);
 }
 
-- (void)setSubtitle1:(id)a3
+- (void)setSubtitle1:(id)subtitle1
 {
-  v4 = a3;
+  subtitle1Copy = subtitle1;
   subtitle1 = self->_subtitle1;
-  if (subtitle1 != v4)
+  if (subtitle1 != subtitle1Copy)
   {
-    v8 = v4;
-    subtitle1 = [subtitle1 isEqualToString:v4];
-    v4 = v8;
+    v8 = subtitle1Copy;
+    subtitle1 = [subtitle1 isEqualToString:subtitle1Copy];
+    subtitle1Copy = v8;
     if ((subtitle1 & 1) == 0)
     {
       v6 = [v8 copy];
@@ -321,34 +321,34 @@
       self->_subtitle1 = v6;
 
       subtitle1 = [(PXObservable *)self signalChange:8];
-      v4 = v8;
+      subtitle1Copy = v8;
     }
   }
 
-  MEMORY[0x1EEE66BB8](subtitle1, v4);
+  MEMORY[0x1EEE66BB8](subtitle1, subtitle1Copy);
 }
 
-- (void)setFilterView:(id)a3
+- (void)setFilterView:(id)view
 {
-  v5 = a3;
-  if (self->_filterView != v5)
+  viewCopy = view;
+  if (self->_filterView != viewCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_filterView, a3);
+    v6 = viewCopy;
+    objc_storeStrong(&self->_filterView, view);
     [(PXObservable *)self signalChange:4];
-    v5 = v6;
+    viewCopy = v6;
   }
 }
 
-- (void)setExtendedSystemImageName:(id)a3
+- (void)setExtendedSystemImageName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   extendedSystemImageName = self->_extendedSystemImageName;
-  if (extendedSystemImageName != v4)
+  if (extendedSystemImageName != nameCopy)
   {
-    v8 = v4;
-    extendedSystemImageName = [extendedSystemImageName isEqualToString:v4];
-    v4 = v8;
+    v8 = nameCopy;
+    extendedSystemImageName = [extendedSystemImageName isEqualToString:nameCopy];
+    nameCopy = v8;
     if ((extendedSystemImageName & 1) == 0)
     {
       v6 = [v8 copy];
@@ -356,22 +356,22 @@
       self->_extendedSystemImageName = v6;
 
       extendedSystemImageName = [(PXObservable *)self signalChange:0x20000];
-      v4 = v8;
+      nameCopy = v8;
     }
   }
 
-  MEMORY[0x1EEE66BB8](extendedSystemImageName, v4);
+  MEMORY[0x1EEE66BB8](extendedSystemImageName, nameCopy);
 }
 
-- (void)setExtendedTitle:(id)a3
+- (void)setExtendedTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   extendedTitle = self->_extendedTitle;
-  if (extendedTitle != v4)
+  if (extendedTitle != titleCopy)
   {
-    v8 = v4;
-    extendedTitle = [extendedTitle isEqualToString:v4];
-    v4 = v8;
+    v8 = titleCopy;
+    extendedTitle = [extendedTitle isEqualToString:titleCopy];
+    titleCopy = v8;
     if ((extendedTitle & 1) == 0)
     {
       v6 = [v8 copy];
@@ -379,22 +379,22 @@
       self->_extendedTitle = v6;
 
       extendedTitle = [(PXObservable *)self signalChange:2];
-      v4 = v8;
+      titleCopy = v8;
     }
   }
 
-  MEMORY[0x1EEE66BB8](extendedTitle, v4);
+  MEMORY[0x1EEE66BB8](extendedTitle, titleCopy);
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   title = self->_title;
-  if (title != v4)
+  if (title != titleCopy)
   {
-    v8 = v4;
-    title = [title isEqualToString:v4];
-    v4 = v8;
+    v8 = titleCopy;
+    title = [title isEqualToString:titleCopy];
+    titleCopy = v8;
     if ((title & 1) == 0)
     {
       v6 = [v8 copy];
@@ -402,18 +402,18 @@
       self->_title = v6;
 
       title = [(PXObservable *)self signalChange:1];
-      v4 = v8;
+      titleCopy = v8;
     }
   }
 
-  MEMORY[0x1EEE66BB8](title, v4);
+  MEMORY[0x1EEE66BB8](title, titleCopy);
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
   v3.receiver = self;
   v3.super_class = PXFooterViewModel;
-  [(PXObservable *)&v3 performChanges:a3];
+  [(PXObservable *)&v3 performChanges:changes];
 }
 
 @end

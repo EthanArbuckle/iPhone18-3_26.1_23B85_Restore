@@ -1,5 +1,5 @@
 @interface PLCropOverlayBottomBarAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axUpdatePlayPauseButtonWithImage;
 - (void)_updatePreviewBottomBarForPlaybackState;
@@ -8,13 +8,13 @@
 
 @implementation PLCropOverlayBottomBarAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PLCropOverlayPreviewBottomBar" hasInstanceMethod:@"playbackButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PLCropOverlayBottomBar" hasInstanceMethod:@"_updateStyle" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PLCropOverlayBottomBar" hasInstanceMethod:@"isPlayingVideo" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"PLCropOverlayBottomBar" hasInstanceMethod:@"setStyle: animated:" withFullSignature:{"v", "q", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PLCropOverlayPreviewBottomBar" hasInstanceMethod:@"playbackButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PLCropOverlayBottomBar" hasInstanceMethod:@"_updateStyle" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PLCropOverlayBottomBar" hasInstanceMethod:@"isPlayingVideo" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"PLCropOverlayBottomBar" hasInstanceMethod:@"setStyle: animated:" withFullSignature:{"v", "q", "B", 0}];
 }
 
 - (void)_axUpdatePlayPauseButtonWithImage

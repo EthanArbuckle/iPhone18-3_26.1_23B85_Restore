@@ -1,25 +1,25 @@
 @interface ICSCallAnnouncement
-+ (id)announcementWithCall:(id)a3;
++ (id)announcementWithCall:(id)call;
 - (CNContactStore)contactStore;
 - (ICSCallAnnouncement)init;
-- (ICSCallAnnouncement)initWithCall:(id)a3;
+- (ICSCallAnnouncement)initWithCall:(id)call;
 - (NSArray)contactKeyDescriptors;
 - (NSArray)contacts;
-- (id)callServiceNameForCall:(id)a3;
-- (id)callerNameForCall:(id)a3;
-- (id)contactForIdentifier:(id)a3;
-- (id)contactsForDestinationID:(id)a3 isoCountryCode:(id)a4;
+- (id)callServiceNameForCall:(id)call;
+- (id)callerNameForCall:(id)call;
+- (id)contactForIdentifier:(id)identifier;
+- (id)contactsForDestinationID:(id)d isoCountryCode:(id)code;
 - (id)text;
-- (int64_t)callerNameTypeForCall:(id)a3;
+- (int64_t)callerNameTypeForCall:(id)call;
 - (void)dealloc;
 @end
 
 @implementation ICSCallAnnouncement
 
-+ (id)announcementWithCall:(id)a3
++ (id)announcementWithCall:(id)call
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithCall:v3];
+  callCopy = call;
+  v4 = [objc_alloc(objc_opt_class()) initWithCall:callCopy];
 
   return v4;
 }
@@ -33,37 +33,37 @@
   return 0;
 }
 
-- (ICSCallAnnouncement)initWithCall:(id)a3
+- (ICSCallAnnouncement)initWithCall:(id)call
 {
-  v4 = a3;
+  callCopy = call;
   v20.receiver = self;
   v20.super_class = ICSCallAnnouncement;
   v5 = [(ICSAnnouncement *)&v20 init];
   if (v5)
   {
-    v6 = [v4 handle];
-    v7 = [v6 value];
+    handle = [callCopy handle];
+    value = [handle value];
     callDestinationID = v5->_callDestinationID;
-    v5->_callDestinationID = v7;
+    v5->_callDestinationID = value;
 
-    v9 = [v4 displayName];
+    displayName = [callCopy displayName];
     callDisplayName = v5->_callDisplayName;
-    v5->_callDisplayName = v9;
+    v5->_callDisplayName = displayName;
 
-    v11 = [v4 isoCountryCode];
+    isoCountryCode = [callCopy isoCountryCode];
     callISOCountryCode = v5->_callISOCountryCode;
-    v5->_callISOCountryCode = v11;
+    v5->_callISOCountryCode = isoCountryCode;
 
-    v13 = [(ICSCallAnnouncement *)v5 callServiceNameForCall:v4];
+    v13 = [(ICSCallAnnouncement *)v5 callServiceNameForCall:callCopy];
     callServiceName = v5->_callServiceName;
     v5->_callServiceName = v13;
 
-    v15 = [(ICSCallAnnouncement *)v5 callerNameForCall:v4];
+    v15 = [(ICSCallAnnouncement *)v5 callerNameForCall:callCopy];
     v16 = [v15 copy];
     callerName = v5->_callerName;
     v5->_callerName = v16;
 
-    v5->_callerNameType = [(ICSCallAnnouncement *)v5 callerNameTypeForCall:v4];
+    v5->_callerNameType = [(ICSCallAnnouncement *)v5 callerNameTypeForCall:callCopy];
     v18 = +[NSNotificationCenter defaultCenter];
     [v18 addObserver:v5 selector:"handleContactStoreDidChangeNotification:" name:CNContactStoreDidChangeNotification object:0];
   }
@@ -86,13 +86,13 @@
   contacts = self->_contacts;
   if (!contacts)
   {
-    v4 = [(ICSCallAnnouncement *)self contactIdentifier];
-    v5 = [v4 length];
+    contactIdentifier = [(ICSCallAnnouncement *)self contactIdentifier];
+    v5 = [contactIdentifier length];
 
     if (v5)
     {
-      v6 = [(ICSCallAnnouncement *)self contactIdentifier];
-      v7 = [(ICSCallAnnouncement *)self contactForIdentifier:v6];
+      contactIdentifier2 = [(ICSCallAnnouncement *)self contactIdentifier];
+      v7 = [(ICSCallAnnouncement *)self contactForIdentifier:contactIdentifier2];
 
       if (v7)
       {
@@ -106,9 +106,9 @@
     contacts = self->_contacts;
     if (!contacts)
     {
-      v10 = [(ICSCallAnnouncement *)self callDestinationID];
-      v11 = [(ICSCallAnnouncement *)self callISOCountryCode];
-      v12 = [(ICSCallAnnouncement *)self contactsForDestinationID:v10 isoCountryCode:v11];
+      callDestinationID = [(ICSCallAnnouncement *)self callDestinationID];
+      callISOCountryCode = [(ICSCallAnnouncement *)self callISOCountryCode];
+      v12 = [(ICSCallAnnouncement *)self contactsForDestinationID:callDestinationID isoCountryCode:callISOCountryCode];
       v13 = self->_contacts;
       self->_contacts = v12;
 
@@ -119,69 +119,69 @@
   return contacts;
 }
 
-- (id)callerNameForCall:(id)a3
+- (id)callerNameForCall:(id)call
 {
-  v3 = a3;
-  v4 = [v3 callerNameFromNetwork];
-  v5 = [v4 length];
+  callCopy = call;
+  callerNameFromNetwork = [callCopy callerNameFromNetwork];
+  v5 = [callerNameFromNetwork length];
 
   if (v5)
   {
-    v6 = [v3 callerNameFromNetwork];
+    callerNameFromNetwork2 = [callCopy callerNameFromNetwork];
 LABEL_9:
-    v13 = v6;
+    value = callerNameFromNetwork2;
     goto LABEL_10;
   }
 
-  v7 = [v3 suggestedDisplayName];
-  v8 = [v7 length];
+  suggestedDisplayName = [callCopy suggestedDisplayName];
+  v8 = [suggestedDisplayName length];
 
   if (v8)
   {
-    v6 = [v3 suggestedDisplayName];
+    callerNameFromNetwork2 = [callCopy suggestedDisplayName];
     goto LABEL_9;
   }
 
-  v9 = [v3 companyName];
-  v10 = [v9 length];
+  companyName = [callCopy companyName];
+  v10 = [companyName length];
 
   if (v10)
   {
-    v6 = [v3 companyName];
+    callerNameFromNetwork2 = [callCopy companyName];
     goto LABEL_9;
   }
 
-  v11 = [v3 localizedLabel];
-  v12 = [v11 length];
+  localizedLabel = [callCopy localizedLabel];
+  v12 = [localizedLabel length];
 
   if (v12)
   {
-    v6 = [v3 localizedLabel];
+    callerNameFromNetwork2 = [callCopy localizedLabel];
     goto LABEL_9;
   }
 
-  v15 = [v3 remoteParticipantHandles];
-  v16 = [v15 anyObject];
-  v13 = [v16 value];
+  remoteParticipantHandles = [callCopy remoteParticipantHandles];
+  anyObject = [remoteParticipantHandles anyObject];
+  value = [anyObject value];
 
 LABEL_10:
 
-  return v13;
+  return value;
 }
 
-- (int64_t)callerNameTypeForCall:(id)a3
+- (int64_t)callerNameTypeForCall:(id)call
 {
-  v3 = a3;
-  v4 = [v3 callerNameFromNetwork];
-  v5 = [v4 length];
+  callCopy = call;
+  callerNameFromNetwork = [callCopy callerNameFromNetwork];
+  v5 = [callerNameFromNetwork length];
 
   if (v5)
   {
     goto LABEL_2;
   }
 
-  v7 = [v3 suggestedDisplayName];
-  v8 = [v7 length];
+  suggestedDisplayName = [callCopy suggestedDisplayName];
+  v8 = [suggestedDisplayName length];
 
   if (v8)
   {
@@ -189,8 +189,8 @@ LABEL_10:
     goto LABEL_5;
   }
 
-  v10 = [v3 companyName];
-  v11 = [v10 length];
+  companyName = [callCopy companyName];
+  v11 = [companyName length];
 
   if (v11)
   {
@@ -200,8 +200,8 @@ LABEL_2:
 
   else
   {
-    v12 = [v3 localizedLabel];
-    v13 = [v12 length];
+    localizedLabel = [callCopy localizedLabel];
+    v13 = [localizedLabel length];
 
     if (v13)
     {
@@ -219,16 +219,16 @@ LABEL_5:
   return v6;
 }
 
-- (id)callServiceNameForCall:(id)a3
+- (id)callServiceNameForCall:(id)call
 {
-  v3 = a3;
-  v4 = [v3 provider];
-  if ([v4 isFaceTimeProvider])
+  callCopy = call;
+  provider = [callCopy provider];
+  if ([provider isFaceTimeProvider])
   {
-    v5 = [v3 isVideo];
+    isVideo = [callCopy isVideo];
     v6 = +[NSBundle mainBundle];
     v7 = v6;
-    if (v5)
+    if (isVideo)
     {
       v8 = @"ANNOUNCEMENT_FACETIME_VIDEO";
     }
@@ -243,22 +243,22 @@ LABEL_5:
 
   else
   {
-    if ([v4 isTelephonyProvider])
+    if ([provider isTelephonyProvider])
     {
       v9 = 0;
       goto LABEL_13;
     }
 
     v10 = @"ANNOUNCEMENT_CALL_PROVIDER_NAME_%@_CALL_TYPE_VIDEO";
-    if (([v3 isVideo] & 1) == 0 && !objc_msgSend(v3, "isThirdPartyVideo"))
+    if (([callCopy isVideo] & 1) == 0 && !objc_msgSend(callCopy, "isThirdPartyVideo"))
     {
       v10 = @"ANNOUNCEMENT_CALL_PROVIDER_NAME_%@_CALL_TYPE_AUDIO";
     }
 
     v7 = +[NSBundle mainBundle];
     v11 = [v7 localizedStringForKey:v10 value:&stru_100361FD0 table:@"InCallService"];
-    v12 = [v4 localizedName];
-    v9 = [NSString stringWithFormat:v11, v12];
+    localizedName = [provider localizedName];
+    v9 = [NSString stringWithFormat:v11, localizedName];
   }
 
 LABEL_13:
@@ -283,24 +283,24 @@ LABEL_13:
 
 - (id)text
 {
-  v3 = [(ICSCallAnnouncement *)self contactIdentifier];
+  contactIdentifier = [(ICSCallAnnouncement *)self contactIdentifier];
 
-  if (v3)
+  if (contactIdentifier)
   {
-    v3 = [(ICSCallAnnouncement *)self callDisplayName];
+    contactIdentifier = [(ICSCallAnnouncement *)self callDisplayName];
   }
 
-  if (![v3 length])
+  if (![contactIdentifier length])
   {
-    v4 = [(ICSCallAnnouncement *)self callerName];
+    callerName = [(ICSCallAnnouncement *)self callerName];
 
-    v3 = v4;
+    contactIdentifier = callerName;
   }
 
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:@"%@ call from %@." value:&stru_100361FD0 table:@"InCallService"];
-  v7 = [(ICSCallAnnouncement *)self callServiceName];
-  v8 = [NSString stringWithFormat:v6, v7, v3];
+  callServiceName = [(ICSCallAnnouncement *)self callServiceName];
+  v8 = [NSString stringWithFormat:v6, callServiceName, contactIdentifier];
 
   return v8;
 }
@@ -323,23 +323,23 @@ LABEL_13:
   return v2;
 }
 
-- (id)contactForIdentifier:(id)a3
+- (id)contactForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v20 = v4;
+    v20 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Retrieving contact matching the specified contact identifier (%@).", buf, 0xCu);
   }
 
-  v6 = [(ICSCallAnnouncement *)self contactStore];
-  if (v6)
+  contactStore = [(ICSCallAnnouncement *)self contactStore];
+  if (contactStore)
   {
-    v7 = [(ICSCallAnnouncement *)self contactKeyDescriptors];
+    contactKeyDescriptors = [(ICSCallAnnouncement *)self contactKeyDescriptors];
     v18 = 0;
-    v8 = [v6 unifiedContactWithIdentifier:v4 keysToFetch:v7 error:&v18];
+    v8 = [contactStore unifiedContactWithIdentifier:identifierCopy keysToFetch:contactKeyDescriptors error:&v18];
     v9 = v18;
 
     if (v9 && [v9 code] != 200)
@@ -360,37 +360,37 @@ LABEL_13:
   return v8;
 }
 
-- (id)contactsForDestinationID:(id)a3 isoCountryCode:(id)a4
+- (id)contactsForDestinationID:(id)d isoCountryCode:(id)code
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  codeCopy = code;
   v8 = sub_100004F84();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v33 = v6;
+    v33 = dCopy;
     v34 = 2112;
-    v35 = v7;
+    v35 = codeCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Retrieving contact matching the specified identifier (%@) and ISO country code (%@).", buf, 0x16u);
   }
 
-  v9 = [(ICSCallAnnouncement *)self contactStore];
-  if (!v9)
+  contactStore = [(ICSCallAnnouncement *)self contactStore];
+  if (!contactStore)
   {
     v11 = 0;
     goto LABEL_26;
   }
 
-  if (![v6 destinationIdIsEmailAddress])
+  if (![dCopy destinationIdIsEmailAddress])
   {
-    if (![v6 destinationIdIsPhoneNumber])
+    if (![dCopy destinationIdIsPhoneNumber])
     {
       goto LABEL_22;
     }
 
-    if (![v7 length] || (objc_msgSend(v7, "lowercaseString"), v12 = objc_claimAutoreleasedReturnValue(), +[CNPhoneNumber phoneNumberWithDigits:countryCode:](CNPhoneNumber, "phoneNumberWithDigits:countryCode:", v6, v12), v13 = objc_claimAutoreleasedReturnValue(), v12, !v13))
+    if (![codeCopy length] || (objc_msgSend(codeCopy, "lowercaseString"), v12 = objc_claimAutoreleasedReturnValue(), +[CNPhoneNumber phoneNumberWithDigits:countryCode:](CNPhoneNumber, "phoneNumberWithDigits:countryCode:", dCopy, v12), v13 = objc_claimAutoreleasedReturnValue(), v12, !v13))
     {
-      v13 = [CNPhoneNumber phoneNumberWithStringValue:v6];
+      v13 = [CNPhoneNumber phoneNumberWithStringValue:dCopy];
     }
 
     v10 = [CNContact predicateForContactsMatchingPhoneNumber:v13];
@@ -401,9 +401,9 @@ LABEL_13:
     }
 
 LABEL_13:
-    v14 = [(ICSCallAnnouncement *)self contactKeyDescriptors];
+    contactKeyDescriptors = [(ICSCallAnnouncement *)self contactKeyDescriptors];
     v31 = 0;
-    v11 = [v9 unifiedContactsMatchingPredicate:v10 keysToFetch:v14 error:&v31];
+    v11 = [contactStore unifiedContactsMatchingPredicate:v10 keysToFetch:contactKeyDescriptors error:&v31];
     v15 = v31;
 
     if (![v11 count])
@@ -429,7 +429,7 @@ LABEL_13:
     goto LABEL_25;
   }
 
-  v10 = [CNContact predicateForContactsMatchingEmailAddress:v6];
+  v10 = [CNContact predicateForContactsMatchingEmailAddress:dCopy];
   if (v10)
   {
     goto LABEL_13;
@@ -439,7 +439,7 @@ LABEL_22:
   v10 = sub_100004F84();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
-    sub_100256FEC(v6, v10, v24, v25, v26, v27, v28, v29);
+    sub_100256FEC(dCopy, v10, v24, v25, v26, v27, v28, v29);
   }
 
   v11 = 0;

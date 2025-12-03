@@ -1,34 +1,34 @@
 @interface JFXInstructionGraphBuilder
-+ (double)JFX_scaleForMediaSize:(CGSize)a3 mediaContentMode:(int)a4 clipAspectRatio:(double)a5 outputSize:(CGSize)a6 outputContentMode:(int)a7;
-+ (id)JFX_maskNode:(id)a3 maskRect:(CGRect)a4 basisSize:(CGSize)a5;
-+ (id)JFX_transformNode:(id)a3 scale:(double)a4;
-- (CGAffineTransform)JFX_calculateCompositeNodeTransformForCropWithCompositeNodeOutputSize:(SEL)a3 mediaScale:(CGSize)a4;
++ (double)JFX_scaleForMediaSize:(CGSize)size mediaContentMode:(int)mode clipAspectRatio:(double)ratio outputSize:(CGSize)outputSize outputContentMode:(int)contentMode;
++ (id)JFX_maskNode:(id)node maskRect:(CGRect)rect basisSize:(CGSize)size;
++ (id)JFX_transformNode:(id)node scale:(double)scale;
+- (CGAffineTransform)JFX_calculateCompositeNodeTransformForCropWithCompositeNodeOutputSize:(SEL)size mediaScale:(CGSize)scale;
 - (CGSize)frameSize;
 - (CGSize)outputSize;
-- (JFXInstructionGraphBuilder)initWithOutputSize:(CGSize)a3 frameSize:(CGSize)a4 outputColorSpace:(id)a5;
-- (id)JFX_applyCustomRenderingPropertiesToInputNode:(id)a3 customRendererProperties:(id)a4 transformAnimation:(id)a5 transformAnimationContentMode:(int)a6 mediaScale:(double)a7;
-- (id)JFX_mediaTransformAnimationForPlayableElement:(id)a3 liveTransform:(PVTransformAnimationInfo *)a4;
-- (id)_buildTestXFormAnimation:(id *)a3 baseTransform:(CGAffineTransform *)a4 clipNaturalSize:(CGSize)a5;
-- (id)_sourceNodeForStillMediaItem:(id)a3 sourceTransform:(CGAffineTransform *)a4 transformAnimation:(id)a5 transformAnimationContentMode:(int)a6 presentationRange:(id *)a7;
-- (id)_sourceNodeForVideoMediaItem:(id)a3 sourceTransform:(CGAffineTransform *)a4 compositionTrackID:(int)a5 transformAnimation:(id)a6 transformAnimationContentMode:(int)a7;
-- (id)applyEffectStack:(id)a3 presentationRange:(id *)a4 toInput:(id)a5;
-- (id)applyEffectStack:(id)a3 toInput:(id)a4;
-- (id)blendNodeForClipSourceNodes:(id)a3;
-- (id)instructionGraphForPlayableElement:(id)a3 presentationTimeRange:(id *)a4 sourceTransform:(CGAffineTransform *)a5 compositionTrackID:(int)a6 liveTransform:(PVTransformAnimationInfo *)a7 excludingEffectType:(int)a8 customRendererProperties:(id)a9;
-- (id)sourceNodeForGeneratorEffect:(id)a3 effectRange:(id *)a4;
-- (id)sourceNodeForImageBuffer:(id)a3 sourceTransform:(CGAffineTransform *)a4;
-- (id)sourceNodeForMediaItem:(id)a3 sourceTransform:(CGAffineTransform *)a4 compositionTrackID:(int)a5 transformAnimation:(id)a6 transformAnimationContentMode:(int)a7 presentationTimeRange:(id *)a8 mediaScale:(double)a9 playableAspectRatio:(int64_t)a10 playableAspectRatioPreservationMode:(int64_t)a11;
+- (JFXInstructionGraphBuilder)initWithOutputSize:(CGSize)size frameSize:(CGSize)frameSize outputColorSpace:(id)space;
+- (id)JFX_applyCustomRenderingPropertiesToInputNode:(id)node customRendererProperties:(id)properties transformAnimation:(id)animation transformAnimationContentMode:(int)mode mediaScale:(double)scale;
+- (id)JFX_mediaTransformAnimationForPlayableElement:(id)element liveTransform:(PVTransformAnimationInfo *)transform;
+- (id)_buildTestXFormAnimation:(id *)animation baseTransform:(CGAffineTransform *)transform clipNaturalSize:(CGSize)size;
+- (id)_sourceNodeForStillMediaItem:(id)item sourceTransform:(CGAffineTransform *)transform transformAnimation:(id)animation transformAnimationContentMode:(int)mode presentationRange:(id *)range;
+- (id)_sourceNodeForVideoMediaItem:(id)item sourceTransform:(CGAffineTransform *)transform compositionTrackID:(int)d transformAnimation:(id)animation transformAnimationContentMode:(int)mode;
+- (id)applyEffectStack:(id)stack presentationRange:(id *)range toInput:(id)input;
+- (id)applyEffectStack:(id)stack toInput:(id)input;
+- (id)blendNodeForClipSourceNodes:(id)nodes;
+- (id)instructionGraphForPlayableElement:(id)element presentationTimeRange:(id *)range sourceTransform:(CGAffineTransform *)transform compositionTrackID:(int)d liveTransform:(PVTransformAnimationInfo *)liveTransform excludingEffectType:(int)type customRendererProperties:(id)properties;
+- (id)sourceNodeForGeneratorEffect:(id)effect effectRange:(id *)range;
+- (id)sourceNodeForImageBuffer:(id)buffer sourceTransform:(CGAffineTransform *)transform;
+- (id)sourceNodeForMediaItem:(id)item sourceTransform:(CGAffineTransform *)transform compositionTrackID:(int)d transformAnimation:(id)animation transformAnimationContentMode:(int)mode presentationTimeRange:(id *)range mediaScale:(double)scale playableAspectRatio:(int64_t)self0 playableAspectRatioPreservationMode:(int64_t)self1;
 @end
 
 @implementation JFXInstructionGraphBuilder
 
-- (JFXInstructionGraphBuilder)initWithOutputSize:(CGSize)a3 frameSize:(CGSize)a4 outputColorSpace:(id)a5
+- (JFXInstructionGraphBuilder)initWithOutputSize:(CGSize)size frameSize:(CGSize)frameSize outputColorSpace:(id)space
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = a3.height;
-  v9 = a3.width;
-  v11 = a5;
+  height = frameSize.height;
+  width = frameSize.width;
+  v8 = size.height;
+  v9 = size.width;
+  spaceCopy = space;
   v15.receiver = self;
   v15.super_class = JFXInstructionGraphBuilder;
   v12 = [(JFXInstructionGraphBuilder *)&v15 init];
@@ -40,40 +40,40 @@
     v12->_outputSize.height = v8;
     v12->_frameSize.width = width;
     v12->_frameSize.height = height;
-    objc_storeStrong(&v12->_outputColorSpace, a5);
+    objc_storeStrong(&v12->_outputColorSpace, space);
   }
 
   return v13;
 }
 
-- (id)sourceNodeForMediaItem:(id)a3 sourceTransform:(CGAffineTransform *)a4 compositionTrackID:(int)a5 transformAnimation:(id)a6 transformAnimationContentMode:(int)a7 presentationTimeRange:(id *)a8 mediaScale:(double)a9 playableAspectRatio:(int64_t)a10 playableAspectRatioPreservationMode:(int64_t)a11
+- (id)sourceNodeForMediaItem:(id)item sourceTransform:(CGAffineTransform *)transform compositionTrackID:(int)d transformAnimation:(id)animation transformAnimationContentMode:(int)mode presentationTimeRange:(id *)range mediaScale:(double)scale playableAspectRatio:(int64_t)self0 playableAspectRatioPreservationMode:(int64_t)self1
 {
-  v12 = *&a7;
-  v14 = *&a5;
-  v17 = a3;
-  v18 = a6;
-  v19 = [v17 mediaType];
-  if (v19 == 2)
+  v12 = *&mode;
+  v14 = *&d;
+  itemCopy = item;
+  animationCopy = animation;
+  mediaType = [itemCopy mediaType];
+  if (mediaType == 2)
   {
-    v22 = *&a4->c;
-    v27 = *&a4->a;
+    v22 = *&transform->c;
+    v27 = *&transform->a;
     v28 = v22;
-    v29 = *&a4->tx;
-    v23 = *&a8->var0.var3;
-    v26[0] = *&a8->var0.var0;
+    v29 = *&transform->tx;
+    v23 = *&range->var0.var3;
+    v26[0] = *&range->var0.var0;
     v26[1] = v23;
-    v26[2] = *&a8->var1.var1;
-    v21 = [(JFXInstructionGraphBuilder *)self _sourceNodeForStillMediaItem:v17 sourceTransform:&v27 transformAnimation:v18 transformAnimationContentMode:v12 presentationRange:v26];
+    v26[2] = *&range->var1.var1;
+    v21 = [(JFXInstructionGraphBuilder *)self _sourceNodeForStillMediaItem:itemCopy sourceTransform:&v27 transformAnimation:animationCopy transformAnimationContentMode:v12 presentationRange:v26];
     goto LABEL_5;
   }
 
-  if (v19 == 1)
+  if (mediaType == 1)
   {
-    v20 = *&a4->c;
-    v27 = *&a4->a;
+    v20 = *&transform->c;
+    v27 = *&transform->a;
     v28 = v20;
-    v29 = *&a4->tx;
-    v21 = [(JFXInstructionGraphBuilder *)self _sourceNodeForVideoMediaItem:v17 sourceTransform:&v27 compositionTrackID:v14 transformAnimation:v18 transformAnimationContentMode:v12];
+    v29 = *&transform->tx;
+    v21 = [(JFXInstructionGraphBuilder *)self _sourceNodeForVideoMediaItem:itemCopy sourceTransform:&v27 compositionTrackID:v14 transformAnimation:animationCopy transformAnimationContentMode:v12];
 LABEL_5:
     v24 = v21;
     goto LABEL_7;
@@ -85,74 +85,74 @@ LABEL_7:
   return v24;
 }
 
-- (id)sourceNodeForImageBuffer:(id)a3 sourceTransform:(CGAffineTransform *)a4
+- (id)sourceNodeForImageBuffer:(id)buffer sourceTransform:(CGAffineTransform *)transform
 {
   v5 = MEMORY[0x277D41630];
-  v6 = a3;
+  bufferCopy = buffer;
   v7 = [v5 alloc];
-  v8 = *&a4->c;
-  v11[0] = *&a4->a;
+  v8 = *&transform->c;
+  v11[0] = *&transform->a;
   v11[1] = v8;
-  v11[2] = *&a4->tx;
-  v9 = [v7 initWithPVImageBuffer:v6 transform:v11];
+  v11[2] = *&transform->tx;
+  v9 = [v7 initWithPVImageBuffer:bufferCopy transform:v11];
 
   return v9;
 }
 
-- (id)sourceNodeForGeneratorEffect:(id)a3 effectRange:(id *)a4
+- (id)sourceNodeForGeneratorEffect:(id)effect effectRange:(id *)range
 {
-  v5 = [a3 renderEffect];
-  v6 = *&a4->var0.var3;
-  v9[0] = *&a4->var0.var0;
+  renderEffect = [effect renderEffect];
+  v6 = *&range->var0.var3;
+  v9[0] = *&range->var0.var0;
   v9[1] = v6;
-  v9[2] = *&a4->var1.var1;
-  [v5 setEffectRange:v9];
-  v7 = [MEMORY[0x277D41628] newGeneratorNode:v5];
+  v9[2] = *&range->var1.var1;
+  [renderEffect setEffectRange:v9];
+  v7 = [MEMORY[0x277D41628] newGeneratorNode:renderEffect];
 
   return v7;
 }
 
-- (id)applyEffectStack:(id)a3 presentationRange:(id *)a4 toInput:(id)a5
+- (id)applyEffectStack:(id)stack presentationRange:(id *)range toInput:(id)input
 {
   v31 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
+  stackCopy = stack;
+  inputCopy = input;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v9 = [v7 countByEnumeratingWithState:&v26 objects:v30 count:16];
-  v10 = v8;
+  v9 = [stackCopy countByEnumeratingWithState:&v26 objects:v30 count:16];
+  v10 = inputCopy;
   if (v9)
   {
     v11 = v9;
     v12 = *v27;
-    v10 = v8;
+    v10 = inputCopy;
     do
     {
       for (i = 0; i != v11; ++i)
       {
         if (*v27 != v12)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(stackCopy);
         }
 
         v14 = *(*(&v26 + 1) + 8 * i);
         if (([v14 isNone] & 1) == 0)
         {
-          v15 = [v14 renderEffect];
+          renderEffect = [v14 renderEffect];
 
-          if (v15)
+          if (renderEffect)
           {
-            v16 = [v14 renderEffect];
-            if ((a4->var0.var2 & 1) != 0 && (a4->var1.var2 & 1) != 0 && !a4->var1.var3 && (a4->var1.var0 & 0x8000000000000000) == 0)
+            renderEffect2 = [v14 renderEffect];
+            if ((range->var0.var2 & 1) != 0 && (range->var1.var2 & 1) != 0 && !range->var1.var3 && (range->var1.var0 & 0x8000000000000000) == 0)
             {
               if (v14)
               {
-                v17 = *&a4->var0.var3;
-                v20 = *&a4->var0.var0;
+                v17 = *&range->var0.var3;
+                v20 = *&range->var0.var0;
                 v21 = v17;
-                v22 = *&a4->var1.var1;
+                v22 = *&range->var1.var1;
                 [v14 rangeForPresentationRange:&v20];
               }
 
@@ -166,17 +166,17 @@ LABEL_7:
               v20 = v23;
               v21 = v24;
               v22 = v25;
-              [v16 setEffectRange:&v20];
+              [renderEffect2 setEffectRange:&v20];
             }
 
-            v18 = [MEMORY[0x277D41620] newEffectNodeToFilterInput:v10 effect:v16];
+            v18 = [MEMORY[0x277D41620] newEffectNodeToFilterInput:v10 effect:renderEffect2];
 
             v10 = v18;
           }
         }
       }
 
-      v11 = [v7 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      v11 = [stackCopy countByEnumeratingWithState:&v26 objects:v30 count:16];
     }
 
     while (v11);
@@ -185,28 +185,28 @@ LABEL_7:
   return v10;
 }
 
-- (id)applyEffectStack:(id)a3 toInput:(id)a4
+- (id)applyEffectStack:(id)stack toInput:(id)input
 {
   v4 = *(MEMORY[0x277CC08C8] + 16);
   v7[0] = *MEMORY[0x277CC08C8];
   v7[1] = v4;
   v7[2] = *(MEMORY[0x277CC08C8] + 32);
-  v5 = [(JFXInstructionGraphBuilder *)self applyEffectStack:a3 presentationRange:v7 toInput:a4];
+  v5 = [(JFXInstructionGraphBuilder *)self applyEffectStack:stack presentationRange:v7 toInput:input];
 
   return v5;
 }
 
-- (id)blendNodeForClipSourceNodes:(id)a3
+- (id)blendNodeForClipSourceNodes:(id)nodes
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  nodesCopy = nodes;
   v4 = objc_opt_new();
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  obj = v3;
+  obj = nodesCopy;
   v6 = [obj countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
@@ -245,26 +245,26 @@ LABEL_7:
   return v4;
 }
 
-- (id)JFX_mediaTransformAnimationForPlayableElement:(id)a3 liveTransform:(PVTransformAnimationInfo *)a4
+- (id)JFX_mediaTransformAnimationForPlayableElement:(id)element liveTransform:(PVTransformAnimationInfo *)transform
 {
-  v5 = a3;
-  v6 = [v5 transformAnimation];
-  v7 = [v6 animationData];
-  v8 = [v7 count];
+  elementCopy = element;
+  transformAnimation = [elementCopy transformAnimation];
+  animationData = [transformAnimation animationData];
+  v8 = [animationData count];
 
   if (v8)
   {
-    if (!a4)
+    if (!transform)
     {
-      v9 = [v5 transformAnimation];
+      transformAnimation2 = [elementCopy transformAnimation];
       goto LABEL_8;
     }
 
     goto LABEL_7;
   }
 
-  v10 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v11 = [v10 BOOLForKey:@"noPanZoomAnchoring"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v11 = [standardUserDefaults BOOLForKey:@"noPanZoomAnchoring"];
 
   if (v11)
   {
@@ -272,10 +272,10 @@ LABEL_7:
     goto LABEL_10;
   }
 
-  if (a4)
+  if (transform)
   {
 LABEL_7:
-    v9 = [objc_alloc(MEMORY[0x277D416B0]) initWithLiveTransform:a4];
+    transformAnimation2 = [objc_alloc(MEMORY[0x277D416B0]) initWithLiveTransform:transform];
     goto LABEL_8;
   }
 
@@ -286,12 +286,12 @@ LABEL_7:
   PVTransformAnimationInfoIdentity();
   memset(v14, 0, sizeof(v14));
   v15 = 0;
-  v9 = [objc_alloc(MEMORY[0x277D416B0]) initWithAnimationInfo:v14];
+  transformAnimation2 = [objc_alloc(MEMORY[0x277D416B0]) initWithAnimationInfo:v14];
 LABEL_8:
-  v12 = v9;
-  if (v9)
+  v12 = transformAnimation2;
+  if (transformAnimation2)
   {
-    [v9 setAspectRatio:{multiplierForAspectRatio(objc_msgSend(v5, "playableAspectRatio"))}];
+    [transformAnimation2 setAspectRatio:{multiplierForAspectRatio(objc_msgSend(elementCopy, "playableAspectRatio"))}];
   }
 
 LABEL_10:
@@ -299,25 +299,25 @@ LABEL_10:
   return v12;
 }
 
-- (id)instructionGraphForPlayableElement:(id)a3 presentationTimeRange:(id *)a4 sourceTransform:(CGAffineTransform *)a5 compositionTrackID:(int)a6 liveTransform:(PVTransformAnimationInfo *)a7 excludingEffectType:(int)a8 customRendererProperties:(id)a9
+- (id)instructionGraphForPlayableElement:(id)element presentationTimeRange:(id *)range sourceTransform:(CGAffineTransform *)transform compositionTrackID:(int)d liveTransform:(PVTransformAnimationInfo *)liveTransform excludingEffectType:(int)type customRendererProperties:(id)properties
 {
   v76 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v66 = a9;
+  elementCopy = element;
+  propertiesCopy = properties;
   [(JFXInstructionGraphBuilder *)self outputSize];
   v15 = v14;
   v17 = v16;
-  [v13 playableMediaSizeWithTransform];
+  [elementCopy playableMediaSizeWithTransform];
   v19 = v18;
   v21 = v20;
-  v22 = [v13 playableMediaContentMode];
-  v23 = multiplierForAspectRatio([v13 playableAspectRatio]);
+  playableMediaContentMode = [elementCopy playableMediaContentMode];
+  v23 = multiplierForAspectRatio([elementCopy playableAspectRatio]);
   v24 = 0;
   v25 = 1.0;
-  v63 = PVViewContentModeFromAspectRatioPreservationMode([v13 playableAspectRatioPreservationMode]);
+  v63 = PVViewContentModeFromAspectRatioPreservationMode([elementCopy playableAspectRatioPreservationMode]);
   if (v63 && fabs(v23) >= 0.0000001)
   {
-    v26 = sizeForAspectRatio([v13 playableAspectRatio]);
+    v26 = sizeForAspectRatio([elementCopy playableAspectRatio]);
     if (v17)
     {
       v28 = v17;
@@ -363,14 +363,14 @@ LABEL_10:
 
     else
     {
-      [objc_opt_class() JFX_scaleForMediaSize:v22 mediaContentMode:14 clipAspectRatio:v19 outputSize:v21 outputContentMode:{v23, v15, v17}];
+      [objc_opt_class() JFX_scaleForMediaSize:playableMediaContentMode mediaContentMode:14 clipAspectRatio:v19 outputSize:v21 outputContentMode:{v23, v15, v17}];
       v25 = v34;
       v24 = 1;
     }
   }
 
-  v35 = [(JFXInstructionGraphBuilder *)self JFX_mediaTransformAnimationForPlayableElement:v13 liveTransform:a7];
-  v36 = [v13 playableEffectsOfType:2];
+  v35 = [(JFXInstructionGraphBuilder *)self JFX_mediaTransformAnimationForPlayableElement:elementCopy liveTransform:liveTransform];
+  v36 = [elementCopy playableEffectsOfType:2];
   v71 = 0u;
   v72 = 0u;
   v73 = 0u;
@@ -398,30 +398,30 @@ LABEL_10:
     while (v38);
   }
 
-  v41 = [v13 mediaItem];
-  v42 = [v13 playableAspectRatio];
-  v43 = [v13 playableAspectRatioPreservationMode];
-  v44 = *&a5->c;
-  v68 = *&a5->a;
+  mediaItem = [elementCopy mediaItem];
+  playableAspectRatio = [elementCopy playableAspectRatio];
+  playableAspectRatioPreservationMode = [elementCopy playableAspectRatioPreservationMode];
+  v44 = *&transform->c;
+  v68 = *&transform->a;
   v69 = v44;
-  v70 = *&a5->tx;
-  v45 = *&a4->var0.var3;
-  v67[0] = *&a4->var0.var0;
+  v70 = *&transform->tx;
+  v45 = *&range->var0.var3;
+  v67[0] = *&range->var0.var0;
   v67[1] = v45;
-  v67[2] = *&a4->var1.var1;
-  v46 = [(JFXInstructionGraphBuilder *)self sourceNodeForMediaItem:v41 sourceTransform:&v68 compositionTrackID:a6 transformAnimation:v35 transformAnimationContentMode:14 presentationTimeRange:v67 mediaScale:v25 playableAspectRatio:v42 playableAspectRatioPreservationMode:v43];
+  v67[2] = *&range->var1.var1;
+  v46 = [(JFXInstructionGraphBuilder *)self sourceNodeForMediaItem:mediaItem sourceTransform:&v68 compositionTrackID:d transformAnimation:v35 transformAnimationContentMode:14 presentationTimeRange:v67 mediaScale:v25 playableAspectRatio:playableAspectRatio playableAspectRatioPreservationMode:playableAspectRatioPreservationMode];
 
   v47 = v46;
-  if ([v13 shouldRenderVideoAsBlack])
+  if ([elementCopy shouldRenderVideoAsBlack])
   {
     v48 = [MEMORY[0x277D415F8] newEffectWithID:*MEMORY[0x277D41720]];
-    v49 = [MEMORY[0x277D75348] blackColor];
-    [v48 setInspectableProperty:v49 forKey:*MEMORY[0x277D41AF0]];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [v48 setInspectableProperty:blackColor forKey:*MEMORY[0x277D41AF0]];
 
-    v50 = *&a4->var0.var3;
-    v68 = *&a4->var0.var0;
+    v50 = *&range->var0.var3;
+    v68 = *&range->var0.var0;
     v69 = v50;
-    v70 = *&a4->var1.var1;
+    v70 = *&range->var1.var1;
     [v48 setEffectRange:&v68];
     v51 = [MEMORY[0x277D41620] newEffectNodeToFilterInput:v47 effect:v48];
     v52 = v47;
@@ -434,22 +434,22 @@ LABEL_10:
     v53 = [objc_opt_class() JFX_transformNode:v47 scale:v25];
   }
 
-  v54 = [(JFXInstructionGraphBuilder *)self JFX_applyCustomRenderingPropertiesToInputNode:v53 customRendererProperties:v66 transformAnimation:v35 transformAnimationContentMode:14 mediaScale:v25];
+  v54 = [(JFXInstructionGraphBuilder *)self JFX_applyCustomRenderingPropertiesToInputNode:v53 customRendererProperties:propertiesCopy transformAnimation:v35 transformAnimationContentMode:14 mediaScale:v25];
 
-  if (a8)
+  if (type)
   {
-    [v13 playableEffectStackExcludingType:?];
+    [elementCopy playableEffectStackExcludingType:?];
   }
 
   else
   {
-    [v13 playableEffectStack];
+    [elementCopy playableEffectStack];
   }
   v48 = ;
-  v55 = *&a4->var0.var3;
-  v68 = *&a4->var0.var0;
+  v55 = *&range->var0.var3;
+  v68 = *&range->var0.var0;
   v69 = v55;
-  v70 = *&a4->var1.var1;
+  v70 = *&range->var1.var1;
   v56 = [(JFXInstructionGraphBuilder *)self applyEffectStack:v48 presentationRange:&v68 toInput:v54];
 
   if (v24)
@@ -600,79 +600,79 @@ LABEL_60:
   return v51;
 }
 
-+ (double)JFX_scaleForMediaSize:(CGSize)a3 mediaContentMode:(int)a4 clipAspectRatio:(double)a5 outputSize:(CGSize)a6 outputContentMode:(int)a7
++ (double)JFX_scaleForMediaSize:(CGSize)size mediaContentMode:(int)mode clipAspectRatio:(double)ratio outputSize:(CGSize)outputSize outputContentMode:(int)contentMode
 {
   v7 = 1.0;
-  if (a4 != a7 && a4 && a7)
+  if (mode != contentMode && mode && contentMode)
   {
-    if (a4 <= 2)
+    if (mode <= 2)
     {
-      if (a4 == 1)
+      if (mode == 1)
       {
-        if (a6.width <= a6.height)
+        if (outputSize.width <= outputSize.height)
         {
-          v13 = a6.height / a3.height;
-          if (a3.width * (a6.height / a3.height) < a6.width)
+          v13 = outputSize.height / size.height;
+          if (size.width * (outputSize.height / size.height) < outputSize.width)
           {
-            v13 = a6.width / a3.width;
+            v13 = outputSize.width / size.width;
           }
         }
 
         else
         {
-          v13 = a6.width / a3.width;
-          if (a3.height * (a6.width / a3.width) < a6.height)
+          v13 = outputSize.width / size.width;
+          if (size.height * (outputSize.width / size.width) < outputSize.height)
           {
-            v13 = a6.height / a3.height;
+            v13 = outputSize.height / size.height;
           }
         }
 
-        a3.width = a3.width * v13;
-        a3.height = a3.height * v13;
+        size.width = size.width * v13;
+        size.height = size.height * v13;
 LABEL_27:
-        v14 = a3.width / a5;
-        if (v14 <= a3.height)
+        v14 = size.width / ratio;
+        if (v14 <= size.height)
         {
           height = v14;
         }
 
         else
         {
-          height = a3.height;
+          height = size.height;
         }
 
 LABEL_30:
-        width = height * a5;
+        width = height * ratio;
         goto LABEL_31;
       }
 
-      if (a4 == 2)
+      if (mode == 2)
       {
-        if (a3.height * (a6.width / a3.width) <= a6.height)
+        if (size.height * (outputSize.width / size.width) <= outputSize.height)
         {
-          v10 = a6.width / a3.width;
+          v10 = outputSize.width / size.width;
         }
 
         else
         {
-          v10 = a6.height / a3.height;
+          v10 = outputSize.height / size.height;
         }
 
-        v11 = a3.width * v10;
-        v12 = a3.height * v10;
-        if (v11 <= a3.height * v10)
+        v11 = size.width * v10;
+        v12 = size.height * v10;
+        if (v11 <= size.height * v10)
         {
-          height = a3.height * v10;
-          if (v12 * a5 < v11)
+          height = size.height * v10;
+          if (v12 * ratio < v11)
           {
-            height = v11 / a5;
+            height = v11 / ratio;
           }
         }
 
         else
         {
-          height = v11 / a5;
-          if (v11 / a5 < v12)
+          height = v11 / ratio;
+          if (v11 / ratio < v12)
           {
             height = v12;
           }
@@ -684,82 +684,82 @@ LABEL_30:
 
     else
     {
-      switch(a4)
+      switch(mode)
       {
         case 3:
-          height = a6.height;
-          width = a6.width;
+          height = outputSize.height;
+          width = outputSize.width;
           goto LABEL_31;
         case 13:
-          width = a6.width;
-          height = a6.width / a5;
+          width = outputSize.width;
+          height = outputSize.width / ratio;
           goto LABEL_31;
         case 14:
-          width = a6.height * a5;
-          height = a6.height;
+          width = outputSize.height * ratio;
+          height = outputSize.height;
           goto LABEL_31;
       }
     }
 
     height = 1.0;
-    width = a5;
-    if ((a4 - 4) < 9)
+    width = ratio;
+    if ((mode - 4) < 9)
     {
 LABEL_31:
-      if (a7 > 2)
+      if (contentMode > 2)
       {
-        switch(a7)
+        switch(contentMode)
         {
           case 3:
-            a5 = a6.width;
+            ratio = outputSize.width;
             break;
           case 13:
-            return a6.width / a5 / height;
+            return outputSize.width / ratio / height;
           case 14:
-            a5 = a6.height * a5;
+            ratio = outputSize.height * ratio;
             break;
         }
 
-        return a5 / width;
+        return ratio / width;
       }
 
-      if (a7 == 1)
+      if (contentMode == 1)
       {
-        if (a6.width <= a6.height)
+        if (outputSize.width <= outputSize.height)
         {
-          v15 = a6.height;
-          if (a6.height * a5 < a6.width)
+          v15 = outputSize.height;
+          if (outputSize.height * ratio < outputSize.width)
           {
-            v15 = a6.width / a5;
+            v15 = outputSize.width / ratio;
           }
         }
 
         else
         {
-          v15 = a6.width / a5;
-          if (a6.width / a5 < a6.height)
+          v15 = outputSize.width / ratio;
+          if (outputSize.width / ratio < outputSize.height)
           {
-            v15 = a6.height;
+            v15 = outputSize.height;
           }
         }
       }
 
       else
       {
-        if (a7 != 2)
+        if (contentMode != 2)
         {
-          return a5 / width;
+          return ratio / width;
         }
 
-        v15 = a6.width / a5;
-        if (a6.width / a5 > a6.height)
+        v15 = outputSize.width / ratio;
+        if (outputSize.width / ratio > outputSize.height)
         {
-          v15 = a6.height;
+          v15 = outputSize.height;
         }
       }
 
-      a5 = v15 * a5;
-      return a5 / width;
+      ratio = v15 * ratio;
+      return ratio / width;
     }
 
     goto LABEL_27;
@@ -768,14 +768,14 @@ LABEL_31:
   return v7;
 }
 
-+ (id)JFX_transformNode:(id)a3 scale:(double)a4
++ (id)JFX_transformNode:(id)node scale:(double)scale
 {
-  v5 = a3;
-  v6 = v5;
-  if (fabs(a4 + -1.0) >= 0.0001)
+  nodeCopy = node;
+  v6 = nodeCopy;
+  if (fabs(scale + -1.0) >= 0.0001)
   {
     memset(&v10, 0, sizeof(v10));
-    CGAffineTransformMakeScale(&v10, a4, a4);
+    CGAffineTransformMakeScale(&v10, scale, scale);
     v9 = v10;
     v7 = [MEMORY[0x277D41658] newTransformNode:v6 transform:&v9];
     [v7 setIsDebugDrawingEnabled:JFX_isDrawInstructionGraphNodesEnabled()];
@@ -783,61 +783,61 @@ LABEL_31:
 
   else
   {
-    v7 = v5;
+    v7 = nodeCopy;
   }
 
   return v7;
 }
 
-+ (id)JFX_maskNode:(id)a3 maskRect:(CGRect)a4 basisSize:(CGSize)a5
++ (id)JFX_maskNode:(id)node maskRect:(CGRect)rect basisSize:(CGSize)size
 {
-  v5 = [MEMORY[0x277D41640] newMaskNode:a3 normalizedMaskRect:{a4.origin.x / a5.width, a4.origin.y / a5.height, a4.size.width / a5.width, a4.size.height / a5.height}];
+  v5 = [MEMORY[0x277D41640] newMaskNode:node normalizedMaskRect:{rect.origin.x / size.width, rect.origin.y / size.height, rect.size.width / size.width, rect.size.height / size.height}];
   [v5 setIsDebugDrawingEnabled:JFX_isDrawInstructionGraphNodesEnabled()];
 
   return v5;
 }
 
-- (id)JFX_applyCustomRenderingPropertiesToInputNode:(id)a3 customRendererProperties:(id)a4 transformAnimation:(id)a5 transformAnimationContentMode:(int)a6 mediaScale:(double)a7
+- (id)JFX_applyCustomRenderingPropertiesToInputNode:(id)node customRendererProperties:(id)properties transformAnimation:(id)animation transformAnimationContentMode:(int)mode mediaScale:(double)scale
 {
-  v8 = *&a6;
+  v8 = *&mode;
   v36[2] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = v12;
+  nodeCopy = node;
+  propertiesCopy = properties;
+  animationCopy = animation;
+  v15 = nodeCopy;
   v16 = v15;
-  if (v13)
+  if (propertiesCopy)
   {
-    v17 = [v13 objectForKeyedSubscript:@"JFXCustomRenderingPropertiesKey_Animoji"];
+    v17 = [propertiesCopy objectForKeyedSubscript:@"JFXCustomRenderingPropertiesKey_Animoji"];
 
     v16 = v15;
     if (v17)
     {
-      v18 = [v13 objectForKeyedSubscript:@"JFXCustomRenderingPropertiesKey_Animoji"];
-      v19 = [v18 metadata];
-      v20 = [v19 objectForKeyedSubscript:@"JFXAnimojiRendererMetadata_RenderSize"];
+      v18 = [propertiesCopy objectForKeyedSubscript:@"JFXCustomRenderingPropertiesKey_Animoji"];
+      metadata = [v18 metadata];
+      v20 = [metadata objectForKeyedSubscript:@"JFXAnimojiRendererMetadata_RenderSize"];
       [v20 CGSizeValue];
       v22 = v21;
       v24 = v23;
 
       v25 = MEMORY[0x277D41648];
-      v26 = [v18 renderingDelegate];
-      v27 = [v18 metadata];
-      v28 = [v25 newSourceCompositeNodeWithDelegate:v26 inputs:0 userContext:v27 outputSize:1111970369 outputFormat:v22, v24];
+      renderingDelegate = [v18 renderingDelegate];
+      metadata2 = [v18 metadata];
+      v28 = [v25 newSourceCompositeNodeWithDelegate:renderingDelegate inputs:0 userContext:metadata2 outputSize:1111970369 outputFormat:v22, v24];
 
       v34 = 0u;
       v35 = 0u;
       v33 = 0u;
-      [(JFXInstructionGraphBuilder *)self JFX_calculateCompositeNodeTransformForCropWithCompositeNodeOutputSize:v22 mediaScale:v24, a7];
+      [(JFXInstructionGraphBuilder *)self JFX_calculateCompositeNodeTransformForCropWithCompositeNodeOutputSize:v22 mediaScale:v24, scale];
       v32[0] = v33;
       v32[1] = v34;
       v32[2] = v35;
       [v28 setTransform:v32];
-      v29 = [MEMORY[0x277D415E0] sRGBColorSpace];
-      [v28 setColorSpace:v29];
+      sRGBColorSpace = [MEMORY[0x277D415E0] sRGBColorSpace];
+      [v28 setColorSpace:sRGBColorSpace];
 
       [v28 setTransformAnimationContentMode:v8];
-      [v28 setTransformAnimation:v14];
+      [v28 setTransformAnimation:animationCopy];
       v36[0] = v15;
       v36[1] = v28;
       v30 = [MEMORY[0x277CBEA60] arrayWithObjects:v36 count:2];
@@ -848,10 +848,10 @@ LABEL_31:
   return v16;
 }
 
-- (CGAffineTransform)JFX_calculateCompositeNodeTransformForCropWithCompositeNodeOutputSize:(SEL)a3 mediaScale:(CGSize)a4
+- (CGAffineTransform)JFX_calculateCompositeNodeTransformForCropWithCompositeNodeOutputSize:(SEL)size mediaScale:(CGSize)scale
 {
-  height = a4.height;
-  width = a4.width;
+  height = scale.height;
+  width = scale.width;
   v8 = MEMORY[0x277CBF2C0];
   v24 = *(MEMORY[0x277CBF2C0] + 16);
   v25 = *MEMORY[0x277CBF2C0];
@@ -904,68 +904,68 @@ LABEL_31:
   return result;
 }
 
-- (id)_sourceNodeForVideoMediaItem:(id)a3 sourceTransform:(CGAffineTransform *)a4 compositionTrackID:(int)a5 transformAnimation:(id)a6 transformAnimationContentMode:(int)a7
+- (id)_sourceNodeForVideoMediaItem:(id)item sourceTransform:(CGAffineTransform *)transform compositionTrackID:(int)d transformAnimation:(id)animation transformAnimationContentMode:(int)mode
 {
-  v7 = *&a7;
-  v8 = *&a5;
+  v7 = *&mode;
+  v8 = *&d;
   v11 = MEMORY[0x277D41650];
-  v12 = a6;
-  v13 = a3;
-  v14 = [v13 playableMediaContentMode];
-  [v13 naturalSize];
+  animationCopy = animation;
+  itemCopy = item;
+  playableMediaContentMode = [itemCopy playableMediaContentMode];
+  [itemCopy naturalSize];
   v16 = v15;
   v18 = v17;
 
-  v19 = [v11 newSourceTrackNode:v8 animation:v12 fillMode:v14 clipNaturalSize:{v16, v18}];
-  v20 = *&a4->c;
-  v22[0] = *&a4->a;
+  v19 = [v11 newSourceTrackNode:v8 animation:animationCopy fillMode:playableMediaContentMode clipNaturalSize:{v16, v18}];
+  v20 = *&transform->c;
+  v22[0] = *&transform->a;
   v22[1] = v20;
-  v22[2] = *&a4->tx;
+  v22[2] = *&transform->tx;
   [v19 setTransform:v22];
   [v19 setTransformAnimationContentMode:v7];
 
   return v19;
 }
 
-- (id)_sourceNodeForStillMediaItem:(id)a3 sourceTransform:(CGAffineTransform *)a4 transformAnimation:(id)a5 transformAnimationContentMode:(int)a6 presentationRange:(id *)a7
+- (id)_sourceNodeForStillMediaItem:(id)item sourceTransform:(CGAffineTransform *)transform transformAnimation:(id)animation transformAnimationContentMode:(int)mode presentationRange:(id *)range
 {
-  v7 = *&a6;
-  v11 = a3;
-  v12 = a5;
-  v13 = [v11 assetURL];
-  if ([v11 mediaState] == 3)
+  v7 = *&mode;
+  itemCopy = item;
+  animationCopy = animation;
+  assetURL = [itemCopy assetURL];
+  if ([itemCopy mediaState] == 3)
   {
-    v14 = [v13 URLByAppendingPathComponent:@"trash"];
+    v14 = [assetURL URLByAppendingPathComponent:@"trash"];
 
-    v13 = v14;
+    assetURL = v14;
   }
 
-  v15 = [objc_alloc(MEMORY[0x277D41638]) initWithURL:v13 animation:v12 isExporting:self->_renderingIntent == 1 imageDelegate:v11 renderingIntent:self->_renderingIntent fillMode:{objc_msgSend(v11, "playableMediaContentMode")}];
+  v15 = [objc_alloc(MEMORY[0x277D41638]) initWithURL:assetURL animation:animationCopy isExporting:self->_renderingIntent == 1 imageDelegate:itemCopy renderingIntent:self->_renderingIntent fillMode:{objc_msgSend(itemCopy, "playableMediaContentMode")}];
 
-  v16 = *&a4->c;
-  v18[0] = *&a4->a;
+  v16 = *&transform->c;
+  v18[0] = *&transform->a;
   v18[1] = v16;
-  v18[2] = *&a4->tx;
+  v18[2] = *&transform->tx;
   [v15 setTransform:v18];
   [v15 setTransformAnimationContentMode:v7];
 
   return v15;
 }
 
-- (id)_buildTestXFormAnimation:(id *)a3 baseTransform:(CGAffineTransform *)a4 clipNaturalSize:(CGSize)a5
+- (id)_buildTestXFormAnimation:(id *)animation baseTransform:(CGAffineTransform *)transform clipNaturalSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
+  height = size.height;
+  width = size.width;
   v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:0];
-  v36 = *&a3->var0.var0;
-  var3 = a3->var0.var3;
-  tx = a4->tx;
-  ty = a4->ty;
-  v12 = sqrt(a4->d * a4->d + a4->a * a4->a);
+  v36 = *&animation->var0.var0;
+  var3 = animation->var0.var3;
+  tx = transform->tx;
+  ty = transform->ty;
+  v12 = sqrt(transform->d * transform->d + transform->a * transform->a);
   v13 = JFXLog_DebugComposition();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
-    [JFXInstructionGraphBuilder _buildTestXFormAnimation:a4 baseTransform:v13 clipNaturalSize:?];
+    [JFXInstructionGraphBuilder _buildTestXFormAnimation:transform baseTransform:v13 clipNaturalSize:?];
   }
 
   *&range.start.value = v36;
@@ -976,15 +976,15 @@ LABEL_31:
   v35 = 0;
   v14 = [MEMORY[0x277CCAE60] valueWithPVTransformAnimationInfo:&range];
   [v9 addObject:v14];
-  var0 = a3->var1.var0;
-  v16 = a3->var0.var0;
-  v17 = *&a3->var0.var1;
+  var0 = animation->var1.var0;
+  v16 = animation->var0.var0;
+  v17 = *&animation->var0.var1;
   memset(&v32, 0, sizeof(v32));
-  v18 = *&a3->var0.var0;
-  v19 = *&a3->var0.var3;
+  v18 = *&animation->var0.var0;
+  v19 = *&animation->var0.var3;
   v33 = v17;
   *&range.start.value = v18;
-  v20 = *&a3->var1.var1;
+  v20 = *&animation->var1.var1;
   *&range.start.epoch = v19;
   *&range.duration.timescale = v20;
   CMTimeRangeGetEnd(&v32, &range);
@@ -999,7 +999,7 @@ LABEL_31:
     v24 = 0.1 / v22;
     do
     {
-      v25 = v21 - a3->var0.var0;
+      v25 = v21 - animation->var0.var0;
       v26 = ty + v21 * v24;
       v27 = tx + v21 * v24;
       if (height <= width)

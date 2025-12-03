@@ -1,21 +1,21 @@
 @interface LAAuthenticationMethodConfiguration
-- (LAAuthenticationMethodConfiguration)initWithAllowedUsers:(id)a3 authenticationContext:(id)a4;
+- (LAAuthenticationMethodConfiguration)initWithAllowedUsers:(id)users authenticationContext:(id)context;
 @end
 
 @implementation LAAuthenticationMethodConfiguration
 
-- (LAAuthenticationMethodConfiguration)initWithAllowedUsers:(id)a3 authenticationContext:(id)a4
+- (LAAuthenticationMethodConfiguration)initWithAllowedUsers:(id)users authenticationContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  usersCopy = users;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = LAAuthenticationMethodConfiguration;
   v9 = [(LAAuthenticationMethodConfiguration *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_allowedUsers, a3);
-    objc_storeStrong(&v10->_authenticationContext, a4);
+    objc_storeStrong(&v9->_allowedUsers, users);
+    objc_storeStrong(&v10->_authenticationContext, context);
   }
 
   return v10;

@@ -1,13 +1,13 @@
 @interface BaseExtensionViewController
-- (_TtC22HomePlatformSettingsUI27BaseExtensionViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC22HomePlatformSettingsUI27BaseExtensionViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
 @implementation BaseExtensionViewController
 
-- (_TtC22HomePlatformSettingsUI27BaseExtensionViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC22HomePlatformSettingsUI27BaseExtensionViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_2542AD71C();
     v7 = v6;
@@ -19,14 +19,14 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_2542A7084(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_2542A7084(v5, v7, bundle);
 }
 
 - (void)viewDidLoad
 {
-  v4 = self;
-  sub_2542A72F0(v4, v2, v3);
+  selfCopy = self;
+  sub_2542A72F0(selfCopy, v2, v3);
 }
 
 @end

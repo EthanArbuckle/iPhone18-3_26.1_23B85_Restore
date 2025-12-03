@@ -16,13 +16,13 @@
   v7 = 0;
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
-  v3 = [v2 _accessibleSubviews];
+  _accessibleSubviews = [v2 _accessibleSubviews];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = __79__FIUIWorkoutSummaryColoredDetailTableViewCellAccessibility_accessibilityLabel__block_invoke;
   v6[3] = &unk_83D8;
   v6[4] = &v8;
-  [v3 enumerateObjectsUsingBlock:v6];
+  [_accessibleSubviews enumerateObjectsUsingBlock:v6];
 
   v4 = v9[5];
   _Block_object_dispose(&v8, 8);

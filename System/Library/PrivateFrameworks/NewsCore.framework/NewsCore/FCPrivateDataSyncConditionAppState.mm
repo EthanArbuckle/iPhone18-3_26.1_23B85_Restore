@@ -8,25 +8,25 @@
 
 - (BOOL)isSatisfied
 {
-  v2 = [(FCPrivateDataSyncConditionAppState *)self _appState];
-  if ([v2 isRestricted])
+  _appState = [(FCPrivateDataSyncConditionAppState *)self _appState];
+  if ([_appState isRestricted])
   {
-    v3 = 0;
+    isInstalled = 0;
   }
 
   else
   {
-    v3 = [v2 isInstalled];
+    isInstalled = [_appState isInstalled];
   }
 
-  return v3;
+  return isInstalled;
 }
 
 - (id)description
 {
-  v3 = [(FCPrivateDataSyncConditionAppState *)self _appState];
+  _appState = [(FCPrivateDataSyncConditionAppState *)self _appState];
   v4 = MEMORY[0x1E696AEC0];
-  if ([v3 isRestricted])
+  if ([_appState isRestricted])
   {
     v5 = @"YES";
   }
@@ -36,7 +36,7 @@
     v5 = @"NO";
   }
 
-  if ([v3 isBlocked])
+  if ([_appState isBlocked])
   {
     v6 = @"YES";
   }
@@ -54,9 +54,9 @@
 - (id)_appState
 {
   v2 = [MEMORY[0x1E69635E0] applicationProxyForIdentifier:@"com.apple.news"];
-  v3 = [v2 appState];
+  appState = [v2 appState];
 
-  return v3;
+  return appState;
 }
 
 @end

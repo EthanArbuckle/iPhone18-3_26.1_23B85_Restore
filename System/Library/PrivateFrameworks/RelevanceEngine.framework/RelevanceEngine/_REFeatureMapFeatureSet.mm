@@ -1,33 +1,33 @@
 @interface _REFeatureMapFeatureSet
-- (_REFeatureMapFeatureSet)initWithFeatureMap:(id)a3;
-- (id)member:(id)a3;
+- (_REFeatureMapFeatureSet)initWithFeatureMap:(id)map;
+- (id)member:(id)member;
 @end
 
 @implementation _REFeatureMapFeatureSet
 
-- (_REFeatureMapFeatureSet)initWithFeatureMap:(id)a3
+- (_REFeatureMapFeatureSet)initWithFeatureMap:(id)map
 {
-  v5 = a3;
+  mapCopy = map;
   v9.receiver = self;
   v9.super_class = _REFeatureMapFeatureSet;
   v6 = [(_REFeatureMapFeatureSet *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_map, a3);
+    objc_storeStrong(&v6->_map, map);
   }
 
   return v7;
 }
 
-- (id)member:(id)a3
+- (id)member:(id)member
 {
-  v4 = a3;
-  v5 = [(NSDictionary *)self->_map objectForKeyedSubscript:v4];
+  memberCopy = member;
+  v5 = [(NSDictionary *)self->_map objectForKeyedSubscript:memberCopy];
 
   if (v5)
   {
-    v5 = v4;
+    v5 = memberCopy;
   }
 
   return v5;

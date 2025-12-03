@@ -7,9 +7,9 @@
 - (id)voiceOverSoundsMatchSpeechVolumeEnabled;
 - (void)_clearSoundVolumeSpecifiers;
 - (void)_createSoundVolumeSpecifiers;
-- (void)_updateSoundVolumeSpecifiers:(BOOL)a3;
-- (void)setVoiceOverSoundsEnabled:(id)a3;
-- (void)setVoiceOverSoundsMatchSpeechVolumeEnabled:(id)a3;
+- (void)_updateSoundVolumeSpecifiers:(BOOL)specifiers;
+- (void)setVoiceOverSoundsEnabled:(id)enabled;
+- (void)setVoiceOverSoundsMatchSpeechVolumeEnabled:(id)enabled;
 @end
 
 @implementation VoiceOverSoundsAndHapticsController
@@ -29,14 +29,14 @@
     soundsEnabledSpecifier = self->_soundsEnabledSpecifier;
     self->_soundsEnabledSpecifier = v8;
 
-    v10 = [(VoiceOverSoundsAndHapticsController *)self voiceOverSoundsEnabled];
-    v11 = [v10 BOOLValue];
+    voiceOverSoundsEnabled = [(VoiceOverSoundsAndHapticsController *)self voiceOverSoundsEnabled];
+    bOOLValue = [voiceOverSoundsEnabled BOOLValue];
 
-    if (v11)
+    if (bOOLValue)
     {
       [(VoiceOverSoundsAndHapticsController *)self _createSoundVolumeSpecifiers];
-      v12 = [(VoiceOverSoundsAndHapticsController *)self _soundVolumeSpecifiers];
-      [v5 ps_insertObjectsFromArray:v12 afterObject:self->_soundsEnabledSpecifier];
+      _soundVolumeSpecifiers = [(VoiceOverSoundsAndHapticsController *)self _soundVolumeSpecifiers];
+      [v5 ps_insertObjectsFromArray:_soundVolumeSpecifiers afterObject:self->_soundsEnabledSpecifier];
 
       [(VoiceOverSoundsAndHapticsController *)self _updateSoundVolumeSpecifiers:0];
     }
@@ -53,8 +53,8 @@
 - (id)voiceOverSoundsEnabled
 {
   v6 = 0;
-  v2 = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
-  v3 = [v2 BOOLForKey:*MEMORY[0x277CE7F88] keyExistsAndHasValidFormat:&v6];
+  accessibilityDomainAccessor = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
+  v3 = [accessibilityDomainAccessor BOOLForKey:*MEMORY[0x277CE7F88] keyExistsAndHasValidFormat:&v6];
 
   if (v6 == 1)
   {
@@ -69,9 +69,9 @@
   return v4;
 }
 
-- (void)setVoiceOverSoundsEnabled:(id)a3
+- (void)setVoiceOverSoundsEnabled:(id)enabled
 {
-  [(AccessibilityBridgeBaseController *)self setGizmoAccessibilityPref:a3 forKey:*MEMORY[0x277CE7F88]];
+  [(AccessibilityBridgeBaseController *)self setGizmoAccessibilityPref:enabled forKey:*MEMORY[0x277CE7F88]];
 
   [(VoiceOverSoundsAndHapticsController *)self _updateSoundVolumeSpecifiers:1];
 }
@@ -79,15 +79,15 @@
 - (id)voiceOverSoundsMatchSpeechVolumeEnabled
 {
   v2 = MEMORY[0x277CCABB0];
-  v3 = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
-  v4 = [v2 numberWithInt:{objc_msgSend(v3, "BOOLForKey:", *MEMORY[0x277CE7F48]) ^ 1}];
+  accessibilityDomainAccessor = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
+  v4 = [v2 numberWithInt:{objc_msgSend(accessibilityDomainAccessor, "BOOLForKey:", *MEMORY[0x277CE7F48]) ^ 1}];
 
   return v4;
 }
 
-- (void)setVoiceOverSoundsMatchSpeechVolumeEnabled:(id)a3
+- (void)setVoiceOverSoundsMatchSpeechVolumeEnabled:(id)enabled
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(a3, "BOOLValue") ^ 1}];
+  v4 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(enabled, "BOOLValue") ^ 1}];
   [(AccessibilityBridgeBaseController *)self setGizmoAccessibilityPref:v4 forKey:*MEMORY[0x277CE7F48]];
 
   [(VoiceOverSoundsAndHapticsController *)self _updateSoundVolumeSpecifiers:1];
@@ -96,8 +96,8 @@
 - (id)voiceOverSoundVolume
 {
   v2 = MEMORY[0x277CCABB0];
-  v3 = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
-  [v3 floatForKey:*MEMORY[0x277CE7F90]];
+  accessibilityDomainAccessor = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
+  [accessibilityDomainAccessor floatForKey:*MEMORY[0x277CE7F90]];
   v4 = [v2 numberWithFloat:?];
 
   return v4;
@@ -106,8 +106,8 @@
 - (id)voiceOverHapticsEnabled
 {
   v2 = MEMORY[0x277CCABB0];
-  v3 = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
-  v4 = [v2 numberWithBool:{objc_msgSend(v3, "BOOLForKey:", @"VoiceOverTouchDetentsEnabled"}];
+  accessibilityDomainAccessor = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
+  v4 = [v2 numberWithBool:{objc_msgSend(accessibilityDomainAccessor, "BOOLForKey:", @"VoiceOverTouchDetentsEnabled"}];
 
   return v4;
 }
@@ -156,11 +156,11 @@
   v16 = *MEMORY[0x277D85DE8];
   if ([(VoiceOverSoundsAndHapticsController *)self hasSoundVolumeSpecifiers])
   {
-    v3 = [(VoiceOverSoundsAndHapticsController *)self voiceOverSoundsMatchSpeechVolumeEnabled];
-    v4 = [v3 BOOLValue];
+    voiceOverSoundsMatchSpeechVolumeEnabled = [(VoiceOverSoundsAndHapticsController *)self voiceOverSoundsMatchSpeechVolumeEnabled];
+    bOOLValue = [voiceOverSoundsMatchSpeechVolumeEnabled BOOLValue];
 
     soundVolumeMatchesSpeechSwitchSpecifier = self->_soundVolumeMatchesSpeechSwitchSpecifier;
-    if (v4)
+    if (bOOLValue)
     {
       v13 = self->_soundVolumeMatchesSpeechSwitchSpecifier;
       v6 = MEMORY[0x277CBEA60];
@@ -191,9 +191,9 @@
   return v9;
 }
 
-- (void)_updateSoundVolumeSpecifiers:(BOOL)a3
+- (void)_updateSoundVolumeSpecifiers:(BOOL)specifiers
 {
-  v3 = a3;
+  specifiersCopy = specifiers;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -202,14 +202,14 @@
   aBlock[1] = 3221225472;
   aBlock[2] = __68__VoiceOverSoundsAndHapticsController__updateSoundVolumeSpecifiers___block_invoke;
   aBlock[3] = &unk_278B90E60;
-  v23 = a3;
+  specifiersCopy2 = specifiers;
   aBlock[4] = self;
   aBlock[5] = &v24;
   v5 = _Block_copy(aBlock);
-  v6 = [(VoiceOverSoundsAndHapticsController *)self voiceOverSoundsEnabled];
-  v7 = [v6 BOOLValue];
+  voiceOverSoundsEnabled = [(VoiceOverSoundsAndHapticsController *)self voiceOverSoundsEnabled];
+  bOOLValue = [voiceOverSoundsEnabled BOOLValue];
 
-  if (v7)
+  if (bOOLValue)
   {
     if (![(VoiceOverSoundsAndHapticsController *)self hasSoundVolumeSpecifiers])
     {
@@ -222,10 +222,10 @@
       v5[2](v5, v21);
     }
 
-    v8 = [(VoiceOverSoundsAndHapticsController *)self voiceOverSoundsMatchSpeechVolumeEnabled];
-    v9 = [v8 BOOLValue];
+    voiceOverSoundsMatchSpeechVolumeEnabled = [(VoiceOverSoundsAndHapticsController *)self voiceOverSoundsMatchSpeechVolumeEnabled];
+    bOOLValue2 = [voiceOverSoundsMatchSpeechVolumeEnabled BOOLValue];
 
-    if (v9)
+    if (bOOLValue2)
     {
       v19[0] = MEMORY[0x277D85DD0];
       v19[1] = 3221225472;
@@ -245,17 +245,17 @@
       v5[2](v5, v20);
     }
 
-    if (v3)
+    if (specifiersCopy)
     {
-      v10 = [(VoiceOverSoundsAndHapticsController *)self voiceOverSoundsMatchSpeechVolumeEnabled];
-      v11 = [v10 BOOLValue];
+      voiceOverSoundsMatchSpeechVolumeEnabled2 = [(VoiceOverSoundsAndHapticsController *)self voiceOverSoundsMatchSpeechVolumeEnabled];
+      bOOLValue3 = [voiceOverSoundsMatchSpeechVolumeEnabled2 BOOLValue];
 
-      if (v11)
+      if (bOOLValue3)
       {
         if (self->_soundVolumeSliderSpecifier)
         {
-          v12 = [(VoiceOverSoundsAndHapticsController *)self specifiers];
-          v13 = [v12 containsObject:self->_soundVolumeSliderSpecifier];
+          specifiers = [(VoiceOverSoundsAndHapticsController *)self specifiers];
+          v13 = [specifiers containsObject:self->_soundVolumeSliderSpecifier];
 
           if (v13)
           {
@@ -271,8 +271,8 @@
 
       else
       {
-        v14 = [(VoiceOverSoundsAndHapticsController *)self specifiers];
-        v15 = [v14 containsObject:self->_soundVolumeSliderSpecifier];
+        specifiers2 = [(VoiceOverSoundsAndHapticsController *)self specifiers];
+        v15 = [specifiers2 containsObject:self->_soundVolumeSliderSpecifier];
 
         if ((v15 & 1) == 0)
         {

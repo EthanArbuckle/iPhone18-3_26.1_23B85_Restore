@@ -1,30 +1,30 @@
 @interface FCTodayFeedConfigOperation
 - (BOOL)validateOperation;
-- (FCTodayFeedConfigOperation)initWithContext:(id)a3 appConfig:(id)a4 request:(id)a5;
+- (FCTodayFeedConfigOperation)initWithContext:(id)context appConfig:(id)config request:(id)request;
 - (id)_fetchFromCK;
 - (id)_fetchFromNewsEdge;
 - (id)fetchCompletionHandler;
-- (void)operationWillFinishWithError:(id)a3;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
-- (void)setFetchCompletionHandler:(id)a3;
+- (void)setFetchCompletionHandler:(id)handler;
 @end
 
 @implementation FCTodayFeedConfigOperation
 
-- (FCTodayFeedConfigOperation)initWithContext:(id)a3 appConfig:(id)a4 request:(id)a5
+- (FCTodayFeedConfigOperation)initWithContext:(id)context appConfig:(id)config request:(id)request
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  contextCopy = context;
+  configCopy = config;
+  requestCopy = request;
   v19.receiver = self;
   v19.super_class = FCTodayFeedConfigOperation;
   v12 = [(FCOperation *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_context, a3);
-    objc_storeStrong(&v13->_appConfig, a4);
-    v14 = [v11 copy];
+    objc_storeStrong(&v12->_context, context);
+    objc_storeStrong(&v13->_appConfig, config);
+    v14 = [requestCopy copy];
     request = v13->_request;
     v13->_request = v14;
 
@@ -44,14 +44,14 @@
   v10 = __Block_byref_object_copy__33;
   v11 = __Block_byref_object_dispose__33;
   v12 = 0;
-  v3 = [(FCTodayFeedConfigOperation *)self completionLock];
+  completionLock = [(FCTodayFeedConfigOperation *)self completionLock];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __52__FCTodayFeedConfigOperation_fetchCompletionHandler__block_invoke;
   v6[3] = &unk_1E7C37160;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 performWithLockSync:v6];
+  [completionLock performWithLockSync:v6];
 
   v4 = _Block_copy(v8[5]);
   _Block_object_dispose(&v7, 8);
@@ -69,28 +69,28 @@ uint64_t __52__FCTodayFeedConfigOperation_fetchCompletionHandler__block_invoke(u
   return MEMORY[0x1EEE66BB8](v2, v4);
 }
 
-- (void)setFetchCompletionHandler:(id)a3
+- (void)setFetchCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [(FCTodayFeedConfigOperation *)self completionLock];
+  completionLock = [(FCTodayFeedConfigOperation *)self completionLock];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __56__FCTodayFeedConfigOperation_setFetchCompletionHandler___block_invoke;
   v8[3] = &unk_1E7C40248;
   v8[4] = self;
   v10 = &v11;
-  v6 = v4;
+  v6 = handlerCopy;
   v9 = v6;
-  [v5 performWithLockSync:v8];
+  [completionLock performWithLockSync:v8];
 
   if (*(v12 + 24) == 1)
   {
-    v7 = [(FCTodayFeedConfigOperation *)self reusableCompletionHandler];
-    (v7)[2](v7, v6);
+    reusableCompletionHandler = [(FCTodayFeedConfigOperation *)self reusableCompletionHandler];
+    (reusableCompletionHandler)[2](reusableCompletionHandler, v6);
   }
 
   _Block_object_dispose(&v11, 8);
@@ -119,9 +119,9 @@ void __56__FCTodayFeedConfigOperation_setFetchCompletionHandler___block_invoke(u
 - (BOOL)validateOperation
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [(FCTodayFeedConfigOperation *)self context];
+  context = [(FCTodayFeedConfigOperation *)self context];
 
-  if (!v3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!context && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Today feed config operation must have a context"];
     v13 = 136315906;
@@ -135,9 +135,9 @@ void __56__FCTodayFeedConfigOperation_setFetchCompletionHandler___block_invoke(u
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", &v13, 0x26u);
   }
 
-  v4 = [(FCTodayFeedConfigOperation *)self appConfig];
+  appConfig = [(FCTodayFeedConfigOperation *)self appConfig];
 
-  if (!v3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!context && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Today feed config operation must have an app config"];
     v13 = 136315906;
@@ -151,9 +151,9 @@ void __56__FCTodayFeedConfigOperation_setFetchCompletionHandler___block_invoke(u
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", &v13, 0x26u);
   }
 
-  v5 = [(FCTodayFeedConfigOperation *)self request];
+  request = [(FCTodayFeedConfigOperation *)self request];
 
-  if (!v5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!request && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v12 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Today feed config operation must have a request"];
     v13 = 136315906;
@@ -167,9 +167,9 @@ void __56__FCTodayFeedConfigOperation_setFetchCompletionHandler___block_invoke(u
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", &v13, 0x26u);
   }
 
-  if (v3)
+  if (context)
   {
-    v6 = v4 == 0;
+    v6 = appConfig == 0;
   }
 
   else
@@ -177,48 +177,48 @@ void __56__FCTodayFeedConfigOperation_setFetchCompletionHandler___block_invoke(u
     v6 = 1;
   }
 
-  result = !v6 && v5 != 0;
+  result = !v6 && request != 0;
   v9 = *MEMORY[0x1E69E9840];
   return result;
 }
 
 - (void)performOperation
 {
-  v3 = [(FCTodayFeedConfigOperation *)self parentNetworkActivity];
+  parentNetworkActivity = [(FCTodayFeedConfigOperation *)self parentNetworkActivity];
 
-  if (v3)
+  if (parentNetworkActivity)
   {
     v4 = [FCNetworkActivity activityWithLabel:2];
-    v5 = [(FCTodayFeedConfigOperation *)self parentNetworkActivity];
-    [v4 setParentActivity:v5];
+    parentNetworkActivity2 = [(FCTodayFeedConfigOperation *)self parentNetworkActivity];
+    [v4 setParentActivity:parentNetworkActivity2];
 
     [v4 startActivity];
     [(FCTodayFeedConfigOperation *)self setNetworkActivity:v4];
   }
 
-  v6 = [MEMORY[0x1E695DF00] date];
-  v7 = [(FCTodayFeedConfigOperation *)self _fetchFromCK];
+  date = [MEMORY[0x1E695DF00] date];
+  _fetchFromCK = [(FCTodayFeedConfigOperation *)self _fetchFromCK];
   v8 = zalgo();
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __46__FCTodayFeedConfigOperation_performOperation__block_invoke;
   v26[3] = &unk_1E7C36C58;
   v26[4] = self;
-  v27 = v6;
-  v9 = v6;
-  v10 = [v7 alwaysOn:v8 always:v26];
+  v27 = date;
+  v9 = date;
+  v10 = [_fetchFromCK alwaysOn:v8 always:v26];
 
-  v11 = [MEMORY[0x1E695DF00] date];
-  v12 = [(FCTodayFeedConfigOperation *)self _fetchFromNewsEdge];
+  date2 = [MEMORY[0x1E695DF00] date];
+  _fetchFromNewsEdge = [(FCTodayFeedConfigOperation *)self _fetchFromNewsEdge];
   v13 = zalgo();
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __46__FCTodayFeedConfigOperation_performOperation__block_invoke_12;
   v24[3] = &unk_1E7C36C58;
   v24[4] = self;
-  v25 = v11;
-  v14 = v11;
-  v15 = [v12 alwaysOn:v13 always:v24];
+  v25 = date2;
+  v14 = date2;
+  v15 = [_fetchFromNewsEdge alwaysOn:v13 always:v24];
 
   v16 = zalgo();
   v22[0] = MEMORY[0x1E69E9820];
@@ -226,9 +226,9 @@ void __56__FCTodayFeedConfigOperation_setFetchCompletionHandler___block_invoke(u
   v22[2] = __46__FCTodayFeedConfigOperation_performOperation__block_invoke_13;
   v22[3] = &unk_1E7C40298;
   v22[4] = self;
-  v23 = v12;
-  v17 = v12;
-  v18 = [v7 thenOn:v16 then:v22];
+  v23 = _fetchFromNewsEdge;
+  v17 = _fetchFromNewsEdge;
+  v18 = [_fetchFromCK thenOn:v16 then:v22];
 
   v19 = zalgo();
   v21[0] = MEMORY[0x1E69E9820];
@@ -236,7 +236,7 @@ void __56__FCTodayFeedConfigOperation_setFetchCompletionHandler___block_invoke(u
   v21[2] = __46__FCTodayFeedConfigOperation_performOperation__block_invoke_19;
   v21[3] = &unk_1E7C36E50;
   v21[4] = self;
-  v20 = [v7 errorOn:v19 error:v21];
+  v20 = [_fetchFromCK errorOn:v19 error:v21];
 }
 
 void __46__FCTodayFeedConfigOperation_performOperation__block_invoke(uint64_t a1)
@@ -361,10 +361,10 @@ LABEL_5:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v4 = a3;
-  if (v4)
+  errorCopy = error;
+  if (errorCopy)
   {
     v5 = 0;
   }
@@ -372,10 +372,10 @@ LABEL_5:
   else
   {
     v6 = [FCTodayFeedConfigResponse alloc];
-    v7 = [(FCTodayFeedConfigOperation *)self resultCKConfigData];
-    v8 = [(FCTodayFeedConfigOperation *)self resultCKRecordsByType];
-    v9 = [(FCTodayFeedConfigOperation *)self resultNewsEdgeConfigData];
-    v5 = [(FCTodayFeedConfigResponse *)v6 initWithCKConfigData:v7 ckRecordsByType:v8 newsEdgeConfigData:v9];
+    resultCKConfigData = [(FCTodayFeedConfigOperation *)self resultCKConfigData];
+    resultCKRecordsByType = [(FCTodayFeedConfigOperation *)self resultCKRecordsByType];
+    resultNewsEdgeConfigData = [(FCTodayFeedConfigOperation *)self resultNewsEdgeConfigData];
+    v5 = [(FCTodayFeedConfigResponse *)v6 initWithCKConfigData:resultCKConfigData ckRecordsByType:resultCKRecordsByType newsEdgeConfigData:resultNewsEdgeConfigData];
   }
 
   v25 = 0;
@@ -384,32 +384,32 @@ LABEL_5:
   v28 = __Block_byref_object_copy__33;
   v29 = __Block_byref_object_dispose__33;
   v30 = 0;
-  v10 = [(FCTodayFeedConfigOperation *)self completionLock];
+  completionLock = [(FCTodayFeedConfigOperation *)self completionLock];
   v17 = MEMORY[0x1E69E9820];
   v18 = 3221225472;
   v19 = __59__FCTodayFeedConfigOperation_operationWillFinishWithError___block_invoke;
   v20 = &unk_1E7C3A350;
-  v21 = self;
+  selfCopy = self;
   v11 = v5;
   v22 = v11;
-  v12 = v4;
+  v12 = errorCopy;
   v23 = v12;
   v24 = &v25;
-  [v10 performWithLockSync:&v17];
+  [completionLock performWithLockSync:&v17];
 
   v13 = [(FCTodayFeedConfigOperation *)self networkActivity:v17];
 
   if (v13)
   {
-    v14 = [(FCTodayFeedConfigOperation *)self networkActivity];
-    [v14 completeActivityWithSuccess:v4 == 0];
+    networkActivity = [(FCTodayFeedConfigOperation *)self networkActivity];
+    [networkActivity completeActivityWithSuccess:errorCopy == 0];
 
-    v15 = [(FCTodayFeedConfigOperation *)self parentNetworkActivity];
-    [v15 completeActivityWithSuccess:v4 == 0];
+    parentNetworkActivity = [(FCTodayFeedConfigOperation *)self parentNetworkActivity];
+    [parentNetworkActivity completeActivityWithSuccess:errorCopy == 0];
   }
 
-  v16 = [(FCTodayFeedConfigOperation *)self reusableCompletionHandler];
-  v16[2](v16, v26[5]);
+  reusableCompletionHandler = [(FCTodayFeedConfigOperation *)self reusableCompletionHandler];
+  reusableCompletionHandler[2](reusableCompletionHandler, v26[5]);
 
   _Block_object_dispose(&v25, 8);
 }

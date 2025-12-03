@@ -1,5 +1,5 @@
 @interface SBControlCenterController
-- (BOOL)_isLocationXWithinTrailingStatusBarRegion:(double)a3 regionPadding:(double)a4;
+- (BOOL)_isLocationXWithinTrailingStatusBarRegion:(double)region regionPadding:(double)padding;
 - (BOOL)_isStatusBarHiddenIgnoringControlCenter;
 - (BOOL)_shouldAllowControlCenterGesture;
 - (BOOL)_shouldShowGrabberOnFirstSwipe;
@@ -7,24 +7,24 @@
 - (BOOL)allowGestureForContentBelow;
 - (BOOL)allowShowTransitionSystemGesture;
 - (BOOL)canBePresented;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (BOOL)grabberTongue:(id)a3 shouldAllowSecondSwipeWithEdgeLocation:(double)a4;
-- (BOOL)grabberTongue:(id)a3 shouldReceiveTouch:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (BOOL)grabberTongue:(id)tongue shouldAllowSecondSwipeWithEdgeLocation:(double)location;
+- (BOOL)grabberTongue:(id)tongue shouldReceiveTouch:(id)touch;
 - (BOOL)handleIndirectStatusBarAction;
 - (BOOL)handleMenuButtonTap;
 - (BOOL)isDismissedOrDismissing;
 - (BOOL)isPresented;
 - (BOOL)isPresentedOrDismissing;
 - (CCUIStatusBarStyleSnapshot)hostStatusBarStyle;
-- (CGPoint)_locationOfTouchInActiveInterfaceOrientation:(id)a3 gestureRecognizer:(id)a4;
+- (CGPoint)_locationOfTouchInActiveInterfaceOrientation:(id)orientation gestureRecognizer:(id)recognizer;
 - (CGPoint)_presentGestureLocationInView;
-- (CGPoint)_presentGestureTranslationInView:(BOOL)a3;
+- (CGPoint)_presentGestureTranslationInView:(BOOL)view;
 - (CGPoint)_presentGestureVelocityInView;
 - (NSArray)presentationRegions;
 - (NSSet)components;
 - (NSString)coverSheetIdentifier;
-- (SBControlCenterController)initWithWindowScene:(id)a3 controlCenterCoordinator:(id)a4;
+- (SBControlCenterController)initWithWindowScene:(id)scene controlCenterCoordinator:(id)coordinator;
 - (SBControlCenterCoordinator)controlCenterCoordinator;
 - (SBIdleTimerCoordinating)idleTimerCoordinator;
 - (SBSensorActivityDataProvider)sensorActivityDataProvider;
@@ -33,166 +33,166 @@
 - (double)_homeAffordanceAnimationDelay;
 - (double)_reachabilityOffset;
 - (double)_trailingStatusBarRegionWidth;
-- (id)_newSystemApertureRestrictionAssertionForType:(unint64_t)a3 withReason:(id)a4;
+- (id)_newSystemApertureRestrictionAssertionForType:(unint64_t)type withReason:(id)reason;
 - (id)_presentGestureRecognizers;
-- (id)_touchesForGesture:(id)a3;
-- (id)customGestureRecognizerForGrabberTongue:(id)a3;
-- (id)hasExistingControlFromExtension:(id)a3;
-- (id)hideAnimationSettingsForBarSwipeAffordanceView:(id)a3;
-- (id)reachabilitySpringAnimationBehaviorForControlCenterViewController:(id)a3;
-- (id)unhideAnimationSettingsForBarSwipeAffordanceView:(id)a3;
+- (id)_touchesForGesture:(id)gesture;
+- (id)customGestureRecognizerForGrabberTongue:(id)tongue;
+- (id)hasExistingControlFromExtension:(id)extension;
+- (id)hideAnimationSettingsForBarSwipeAffordanceView:(id)view;
+- (id)reachabilitySpringAnimationBehaviorForControlCenterViewController:(id)controller;
+- (id)unhideAnimationSettingsForBarSwipeAffordanceView:(id)view;
 - (int64_t)participantState;
-- (unint64_t)barSwipeAffordanceView:(id)a3 systemGestureTypeForType:(int64_t)a4;
+- (unint64_t)barSwipeAffordanceView:(id)view systemGestureTypeForType:(int64_t)type;
 - (unint64_t)presentingEdge;
 - (void)_didDismiss;
 - (void)_didEndTransition;
 - (void)_didPresent;
 - (void)_disableReachability;
-- (void)_handleStatusBarPullDownGesture:(id)a3;
-- (void)_policyAggregatorCapabilitiesDidChange:(id)a3;
-- (void)_requireGestureRecognizerToFailForPresentGestureRecognizer:(id)a3;
-- (void)_requirePresentGestureRecognizerToFailForGestureRecognizer:(id)a3;
+- (void)_handleStatusBarPullDownGesture:(id)gesture;
+- (void)_policyAggregatorCapabilitiesDidChange:(id)change;
+- (void)_requireGestureRecognizerToFailForPresentGestureRecognizer:(id)recognizer;
+- (void)_requirePresentGestureRecognizerToFailForGestureRecognizer:(id)recognizer;
 - (void)_screenDidDim;
-- (void)_setDisplayLayoutElementActive:(BOOL)a3;
-- (void)_setStatusBarHidden:(BOOL)a3;
+- (void)_setDisplayLayoutElementActive:(BOOL)active;
+- (void)_setStatusBarHidden:(BOOL)hidden;
 - (void)_setupGestureRecognizersForUpdatedWindowScene;
 - (void)_setupPhysicalButtonPreferencesForUpdatedWindowScene;
 - (void)_updateWindowContentHitTesting;
-- (void)_updateWindowForScene:(id)a3;
-- (void)_updateWindowLevelForScene:(id)a3;
+- (void)_updateWindowForScene:(id)scene;
+- (void)_updateWindowLevelForScene:(id)scene;
 - (void)_updateWindowOrientation;
 - (void)_updateWindowVisibility;
 - (void)_willBeginTransition;
 - (void)_willDismiss;
 - (void)_willPresent;
-- (void)activityDidChangeForSensorActivityDataProvider:(id)a3;
-- (void)controlCenterViewController:(id)a3 didChangePresentationState:(unint64_t)a4;
-- (void)controlCenterViewController:(id)a3 significantPresentationProgressChange:(double)a4;
-- (void)controlCenterViewController:(id)a3 wantsHostStatusBarHidden:(BOOL)a4;
-- (void)controlCenterViewControllerWillContinuePresentationIntoPaging:(id)a3;
+- (void)activityDidChangeForSensorActivityDataProvider:(id)provider;
+- (void)controlCenterViewController:(id)controller didChangePresentationState:(unint64_t)state;
+- (void)controlCenterViewController:(id)controller significantPresentationProgressChange:(double)change;
+- (void)controlCenterViewController:(id)controller wantsHostStatusBarHidden:(BOOL)hidden;
+- (void)controlCenterViewControllerWillContinuePresentationIntoPaging:(id)paging;
 - (void)dealloc;
-- (void)didCloseExpandedModuleForControlCenterViewController:(id)a3;
-- (void)didRequestPowerDownTransientOverlayForControlCenterViewController:(id)a3;
-- (void)dismissAnimated:(BOOL)a3 completion:(id)a4;
-- (void)grabberTongueBeganPulling:(id)a3 withDistance:(double)a4 andVelocity:(double)a5 andGesture:(id)a6;
-- (void)grabberTongueCanceledPulling:(id)a3 withDistance:(double)a4 andVelocity:(double)a5 andGesture:(id)a6;
-- (void)grabberTongueEndedPulling:(id)a3 withDistance:(double)a4 andVelocity:(double)a5 andGesture:(id)a6;
-- (void)grabberTongueUpdatedPulling:(id)a3 withDistance:(double)a4 andVelocity:(double)a5 andGesture:(id)a6;
-- (void)grabberTongueWillPresent:(id)a3;
+- (void)didCloseExpandedModuleForControlCenterViewController:(id)controller;
+- (void)didRequestPowerDownTransientOverlayForControlCenterViewController:(id)controller;
+- (void)dismissAnimated:(BOOL)animated completion:(id)completion;
+- (void)grabberTongueBeganPulling:(id)pulling withDistance:(double)distance andVelocity:(double)velocity andGesture:(id)gesture;
+- (void)grabberTongueCanceledPulling:(id)pulling withDistance:(double)distance andVelocity:(double)velocity andGesture:(id)gesture;
+- (void)grabberTongueEndedPulling:(id)pulling withDistance:(double)distance andVelocity:(double)velocity andGesture:(id)gesture;
+- (void)grabberTongueUpdatedPulling:(id)pulling withDistance:(double)distance andVelocity:(double)velocity andGesture:(id)gesture;
+- (void)grabberTongueWillPresent:(id)present;
 - (void)handleDidEndReachabilityAnimation;
 - (void)handleReachabilityModeActivated;
 - (void)handleReachabilityModeDeactivated;
 - (void)handleReachabilityYOffsetDidChange;
-- (void)homeGesturePerformedForBarSwipeAffordanceView:(id)a3;
-- (void)homeGrabberViewDidReceiveClick:(id)a3;
+- (void)homeGesturePerformedForBarSwipeAffordanceView:(id)view;
+- (void)homeGrabberViewDidReceiveClick:(id)click;
 - (void)invalidate;
-- (void)invalidateSystemApertureAssertionForType:(unint64_t)a3 withReason:(id)a4;
-- (void)launchControl:(id)a3 completion:(id)a4;
-- (void)presentAnimated:(BOOL)a3 completion:(id)a4;
-- (void)restrictSystemApertureToType:(unint64_t)a3 withReason:(id)a4;
-- (void)setSensorActivityDataProvider:(id)a3;
-- (void)willOpenExpandedModuleForControlCenterViewController:(id)a3;
-- (void)zStackParticipant:(id)a3 updatePreferences:(id)a4;
+- (void)invalidateSystemApertureAssertionForType:(unint64_t)type withReason:(id)reason;
+- (void)launchControl:(id)control completion:(id)completion;
+- (void)presentAnimated:(BOOL)animated completion:(id)completion;
+- (void)restrictSystemApertureToType:(unint64_t)type withReason:(id)reason;
+- (void)setSensorActivityDataProvider:(id)provider;
+- (void)willOpenExpandedModuleForControlCenterViewController:(id)controller;
+- (void)zStackParticipant:(id)participant updatePreferences:(id)preferences;
 @end
 
 @implementation SBControlCenterController
 
 - (BOOL)isPresented
 {
-  v3 = [(CCUIMainViewController *)self->_viewController presentationState];
-  if (v3 != 1)
+  presentationState = [(CCUIMainViewController *)self->_viewController presentationState];
+  if (presentationState != 1)
   {
-    LOBYTE(v3) = [(CCUIMainViewController *)self->_viewController presentationState]== 2;
+    LOBYTE(presentationState) = [(CCUIMainViewController *)self->_viewController presentationState]== 2;
   }
 
-  return v3;
+  return presentationState;
 }
 
 - (unint64_t)presentingEdge
 {
   v3 = objc_opt_class();
-  v4 = [(SBGrabberTongue *)self->_grabberTongue edgePullGestureRecognizer];
-  v5 = SBSafeCast(v3, v4);
+  edgePullGestureRecognizer = [(SBGrabberTongue *)self->_grabberTongue edgePullGestureRecognizer];
+  v5 = SBSafeCast(v3, edgePullGestureRecognizer);
 
   if (v5)
   {
-    v6 = [v5 edges];
+    edges = [v5 edges];
   }
 
   else if (SBFEffectiveHomeButtonType() == 2)
   {
-    v6 = 1;
+    edges = 1;
   }
 
   else
   {
-    v7 = [MEMORY[0x277D75418] currentDevice];
-    v8 = [v7 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if ((v8 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
-      v6 = 1;
+      edges = 1;
     }
 
     else
     {
-      v6 = 4;
+      edges = 4;
     }
   }
 
-  return v6;
+  return edges;
 }
 
 - (BOOL)_shouldShowGrabberOnFirstSwipe
 {
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v4 = [WeakRetained transientOverlayPresenter];
-  v5 = [v4 hasActivePresentation];
+  transientOverlayPresenter = [WeakRetained transientOverlayPresenter];
+  hasActivePresentation = [transientOverlayPresenter hasActivePresentation];
 
-  if (v5 & 1) != 0 || ([WeakRetained lockScreenManager], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "isUILocked"), v6, (v7))
+  if (hasActivePresentation & 1) != 0 || ([WeakRetained lockScreenManager], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "isUILocked"), v6, (v7))
   {
     v8 = 0;
   }
 
   else
   {
-    v9 = [WeakRetained switcherController];
-    if ([v9 unlockedEnvironmentMode] == 2)
+    switcherController = [WeakRetained switcherController];
+    if ([switcherController unlockedEnvironmentMode] == 2)
     {
       v8 = 0;
     }
 
     else
     {
-      v10 = [v9 layoutStateSideElement];
-      v11 = [v10 workspaceEntity];
-      v12 = [v11 applicationSceneEntity];
-      v13 = [v12 sceneHandle];
+      layoutStateSideElement = [switcherController layoutStateSideElement];
+      workspaceEntity = [layoutStateSideElement workspaceEntity];
+      applicationSceneEntity = [workspaceEntity applicationSceneEntity];
+      sceneHandle = [applicationSceneEntity sceneHandle];
 
-      if (v13)
+      if (sceneHandle)
       {
         v8 = 0;
       }
 
       else
       {
-        v14 = [v9 layoutStatePrimaryElement];
-        v15 = [v14 workspaceEntity];
-        v16 = [v15 applicationSceneEntity];
-        v17 = [v16 sceneHandle];
+        layoutStatePrimaryElement = [switcherController layoutStatePrimaryElement];
+        workspaceEntity2 = [layoutStatePrimaryElement workspaceEntity];
+        applicationSceneEntity2 = [workspaceEntity2 applicationSceneEntity];
+        sceneHandle2 = [applicationSceneEntity2 sceneHandle];
 
-        v18 = [(SBControlCenterController *)self presentingEdge];
-        if ([v17 isDeviceApplicationSceneHandle])
+        presentingEdge = [(SBControlCenterController *)self presentingEdge];
+        if ([sceneHandle2 isDeviceApplicationSceneHandle])
         {
-          v19 = [v17 screenEdgesDeferringSystemGestures];
+          screenEdgesDeferringSystemGestures = [sceneHandle2 screenEdgesDeferringSystemGestures];
         }
 
         else
         {
-          v19 = 0;
+          screenEdgesDeferringSystemGestures = 0;
         }
 
-        v8 = (v19 & v18) != 0;
+        v8 = (screenEdgesDeferringSystemGestures & presentingEdge) != 0;
       }
     }
   }
@@ -202,30 +202,30 @@
 
 - (double)_trailingStatusBarRegionWidth
 {
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  [v3 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v5 = v4;
 
-  v6 = [SBApp activeInterfaceOrientation];
-  v7 = [MEMORY[0x277D75418] currentDevice];
-  v8 = [v7 userInterfaceIdiom];
+  activeInterfaceOrientation = [SBApp activeInterfaceOrientation];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v8 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-    v10 = [WeakRetained switcherController];
+    switcherController = [WeakRetained switcherController];
 
-    [v10 effectiveTrailingStatusBarPartFrame];
+    [switcherController effectiveTrailingStatusBarPartFrame];
     v12 = v11;
     v14 = v13;
     v16 = v15;
     v18 = v17;
-    v19 = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
+    userInterfaceLayoutDirection = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
     v20 = v12;
     v21 = v14;
     v22 = v16;
     v23 = v18;
-    if (v19 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       MaxX = CGRectGetMaxX(*&v20);
     }
@@ -246,7 +246,7 @@
   else
   {
     v25 = 0.172;
-    if ((v6 - 1) < 2)
+    if ((activeInterfaceOrientation - 1) < 2)
     {
       v25 = 0.25;
     }
@@ -281,9 +281,9 @@
 
 - (BOOL)isPresentedOrDismissing
 {
-  v3 = [(CCUIMainViewController *)self->_viewController presentationState];
+  presentationState = [(CCUIMainViewController *)self->_viewController presentationState];
   result = [(SBControlCenterController *)self isPresented];
-  if (v3 == 3)
+  if (presentationState == 3)
   {
     return 1;
   }
@@ -291,11 +291,11 @@
   return result;
 }
 
-- (SBControlCenterController)initWithWindowScene:(id)a3 controlCenterCoordinator:(id)a4
+- (SBControlCenterController)initWithWindowScene:(id)scene controlCenterCoordinator:(id)coordinator
 {
   v58[1] = *MEMORY[0x277D85DE8];
-  obj = a3;
-  v6 = a4;
+  obj = scene;
+  coordinatorCopy = coordinator;
   v57.receiver = self;
   v57.super_class = SBControlCenterController;
   v7 = [(SBControlCenterController *)&v57 init];
@@ -306,14 +306,14 @@
   }
 
   objc_storeWeak(&v7->_windowScene, obj);
-  objc_storeWeak(&v8->_controlCenterCoordinator, v6);
-  v9 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v9 addObserver:v8 selector:sel__screenDidDim name:*MEMORY[0x277D67A18] object:0];
-  [v9 addObserver:v8 selector:sel__uiRelockedNotification_ name:@"SBLockScreenUIRelockedNotification" object:0];
-  [v9 addObserver:v8 selector:sel__policyAggregatorCapabilitiesDidChange_ name:@"SBPolicyAggregatorCapabilitiesChangedNotification" object:0];
+  objc_storeWeak(&v8->_controlCenterCoordinator, coordinatorCopy);
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:v8 selector:sel__screenDidDim name:*MEMORY[0x277D67A18] object:0];
+  [defaultCenter addObserver:v8 selector:sel__uiRelockedNotification_ name:@"SBLockScreenUIRelockedNotification" object:0];
+  [defaultCenter addObserver:v8 selector:sel__policyAggregatorCapabilitiesDidChange_ name:@"SBPolicyAggregatorCapabilitiesChangedNotification" object:0];
   v10 = +[SBSceneManagerCoordinator sharedInstance];
-  v11 = [v10 sceneDeactivationManager];
-  v12 = [v11 newAssertionWithReason:2];
+  sceneDeactivationManager = [v10 sceneDeactivationManager];
+  v12 = [sceneDeactivationManager newAssertionWithReason:2];
   resignActiveAssertion = v8->_resignActiveAssertion;
   v8->_resignActiveAssertion = v12;
 
@@ -327,22 +327,22 @@
 
   [(SBWindowLevelAssertionManager *)v8->_windowLevelAssertionManager setDelegate:v8];
   v18 = +[SBMainWorkspace sharedInstance];
-  v19 = [v18 keyboardFocusController];
+  keyboardFocusController = [v18 keyboardFocusController];
   keyboardFocusController = v8->_keyboardFocusController;
-  v8->_keyboardFocusController = v19;
+  v8->_keyboardFocusController = keyboardFocusController;
 
   v21 = obj;
   if ([v21 isMainDisplayWindowScene])
   {
-    v22 = [MEMORY[0x277D0AD20] configurationForDefaultMainDisplayMonitor];
+    configurationForDefaultMainDisplayMonitor = [MEMORY[0x277D0AD20] configurationForDefaultMainDisplayMonitor];
 LABEL_6:
-    v23 = v22;
+    v23 = configurationForDefaultMainDisplayMonitor;
     goto LABEL_7;
   }
 
   if ([v21 isContinuityDisplayWindowScene])
   {
-    v22 = [MEMORY[0x277D0AD20] configurationForContinuityDisplay];
+    configurationForDefaultMainDisplayMonitor = [MEMORY[0x277D0AD20] configurationForContinuityDisplay];
     goto LABEL_6;
   }
 
@@ -352,8 +352,8 @@ LABEL_6:
   }
 
   v47 = MEMORY[0x277D0AD20];
-  v48 = [v21 _fbsDisplayIdentity];
-  v23 = [v47 configurationForExternalDisplay:v48];
+  _fbsDisplayIdentity = [v21 _fbsDisplayIdentity];
+  v23 = [v47 configurationForExternalDisplay:_fbsDisplayIdentity];
 
 LABEL_7:
   if (!v23)
@@ -363,10 +363,10 @@ LABEL_17:
     v23 = 0;
   }
 
-  v49 = [v6 viewControllerFactory];
+  viewControllerFactory = [coordinatorCopy viewControllerFactory];
   v24 = v8->_systemAgent;
-  v25 = [v6 sensorActivityDataProvider];
-  v26 = [v49 mainViewControllerWithSystemAgent:v24 sensorActivityDataProvider:v25 displayLayoutMonitorConfiguration:v23];
+  sensorActivityDataProvider = [coordinatorCopy sensorActivityDataProvider];
+  v26 = [viewControllerFactory mainViewControllerWithSystemAgent:v24 sensorActivityDataProvider:sensorActivityDataProvider displayLayoutMonitorConfiguration:v23];
 
   objc_storeStrong(&v8->_viewController, v26);
   [(CCUIMainViewController *)v8->_viewController setDelegate:v8];
@@ -382,8 +382,8 @@ LABEL_17:
   objc_copyWeak(&v55, &location);
   v30 = [(CCUIMainViewController *)viewController registerForTraitChanges:v29 withHandler:v54];
 
-  v31 = [v21 isMainDisplayWindowScene];
-  if ((SBHomeGestureEnabled() & v31) == 1)
+  isMainDisplayWindowScene = [v21 isMainDisplayWindowScene];
+  if ((SBHomeGestureEnabled() & isMainDisplayWindowScene) == 1)
   {
     v32 = [[SBBarSwipeAffordanceViewController alloc] initWithZStackParticipantIdentifier:19 windowScene:v21];
     homeAffordanceViewController = v8->_homeAffordanceViewController;
@@ -392,14 +392,14 @@ LABEL_17:
     [(SBBarSwipeAffordanceViewController *)v8->_homeAffordanceViewController setPointerClickDelegate:v8];
     [(SBBarSwipeAffordanceViewController *)v8->_homeAffordanceViewController setDelegate:v8];
     __74__SBControlCenterController_initWithWindowScene_controlCenterCoordinator___block_invoke_2([(SBBarSwipeAffordanceViewController *)v8->_homeAffordanceViewController setAllowsTouchesToPassThrough:1], v8->_viewController, v8->_homeAffordanceViewController);
-    v34 = [(SBBarSwipeAffordanceViewController *)v8->_homeAffordanceViewController view];
-    [v34 setDelegate:v8];
+    view = [(SBBarSwipeAffordanceViewController *)v8->_homeAffordanceViewController view];
+    [view setDelegate:v8];
 
-    v35 = [(SBBarSwipeAffordanceViewController *)v8->_homeAffordanceViewController view];
-    [v35 addObserver:v8];
+    view2 = [(SBBarSwipeAffordanceViewController *)v8->_homeAffordanceViewController view];
+    [view2 addObserver:v8];
 
-    v36 = [(SBBarSwipeAffordanceViewController *)v8->_homeAffordanceViewController view];
-    [v36 setColorBias:2];
+    view3 = [(SBBarSwipeAffordanceViewController *)v8->_homeAffordanceViewController view];
+    [view3 setColorBias:2];
 
     [(CCUIMainViewController *)v8->_viewController setHostStatusBarStyleProvider:v8];
     [(SBBarSwipeAffordanceViewController *)v8->_homeAffordanceViewController setSuppressAffordance:[(CCUIMainViewController *)v8->_viewController isHomeGestureDismissalAllowed]^ 1];
@@ -414,7 +414,7 @@ LABEL_17:
     __74__SBControlCenterController_initWithWindowScene_controlCenterCoordinator___block_invoke_2(v39, v8->_viewController, v8->_homeButtonWrapperViewController);
   }
 
-  if (v31)
+  if (isMainDisplayWindowScene)
   {
     v40 = MEMORY[0x277D43280];
     v51[0] = MEMORY[0x277D85DD0];
@@ -438,7 +438,7 @@ LABEL_17:
   }
 
   [(SBControlCenterController *)v8 _updateWindowForScene:v21];
-  [v6 registerControlCenterController:v8 forWindowScene:v21];
+  [coordinatorCopy registerControlCenterController:v8 forWindowScene:v21];
   objc_destroyWeak(&v55);
   objc_destroyWeak(&location);
 
@@ -492,21 +492,21 @@ void __74__SBControlCenterController_initWithWindowScene_controlCenterCoordinato
 
 - (void)dealloc
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"SBControlCenterController.m" lineNumber:287 description:@"Don't dealloc SBControlCenterController without invalidation!"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SBControlCenterController.m" lineNumber:287 description:@"Don't dealloc SBControlCenterController without invalidation!"];
 }
 
 - (void)invalidate
 {
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v3 = [WeakRetained systemGestureManager];
-  [v3 removeGestureRecognizer:self->_statusBarPullGestureRecognizer];
-  [v3 removeGestureRecognizer:self->_indirectStatusBarPullGestureRecognizer];
-  v4 = [WeakRetained coverSheetViewController];
-  [v4 unregisterExternalBehaviorProvider:self];
-  [v4 unregisterExternalPresentationProvider:self];
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 removeObserver:self];
+  systemGestureManager = [WeakRetained systemGestureManager];
+  [systemGestureManager removeGestureRecognizer:self->_statusBarPullGestureRecognizer];
+  [systemGestureManager removeGestureRecognizer:self->_indirectStatusBarPullGestureRecognizer];
+  coverSheetViewController = [WeakRetained coverSheetViewController];
+  [coverSheetViewController unregisterExternalBehaviorProvider:self];
+  [coverSheetViewController unregisterExternalPresentationProvider:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(UIApplicationSceneDeactivationAssertion *)self->_resignActiveAssertion relinquish];
   if ([(SBControlCenterController *)self isPresented])
@@ -535,24 +535,24 @@ void __74__SBControlCenterController_initWithWindowScene_controlCenterCoordinato
   self->_invalidated = 1;
 }
 
-- (void)zStackParticipant:(id)a3 updatePreferences:(id)a4
+- (void)zStackParticipant:(id)participant updatePreferences:(id)preferences
 {
-  v6 = a4;
-  [v6 setSuppressSystemApertureForSystemChromeSuppression:0];
-  [v6 setActivationPolicyForParticipantsBelow:1];
-  v5 = [(SBControlCenterController *)self physicalButtonSceneTargets];
-  [v6 setPhysicalButtonSceneTargets:v5];
+  preferencesCopy = preferences;
+  [preferencesCopy setSuppressSystemApertureForSystemChromeSuppression:0];
+  [preferencesCopy setActivationPolicyForParticipantsBelow:1];
+  physicalButtonSceneTargets = [(SBControlCenterController *)self physicalButtonSceneTargets];
+  [preferencesCopy setPhysicalButtonSceneTargets:physicalButtonSceneTargets];
 
-  [v6 setAllowsKeyboardArbiterToDetermineFocusTarget:2];
+  [preferencesCopy setAllowsKeyboardArbiterToDetermineFocusTarget:2];
 }
 
 - (BOOL)isDismissedOrDismissing
 {
-  v3 = [(SBControlCenterController *)self viewController];
-  if ([v3 presentationState])
+  viewController = [(SBControlCenterController *)self viewController];
+  if ([viewController presentationState])
   {
-    v4 = [(SBControlCenterController *)self viewController];
-    v5 = [v4 presentationState] == 3;
+    viewController2 = [(SBControlCenterController *)self viewController];
+    v5 = [viewController2 presentationState] == 3;
   }
 
   else
@@ -565,14 +565,14 @@ void __74__SBControlCenterController_initWithWindowScene_controlCenterCoordinato
 
 - (BOOL)allowGestureForContentBelow
 {
-  v3 = [(SBControlCenterController *)self viewController];
-  if ([v3 presentationState])
+  viewController = [(SBControlCenterController *)self viewController];
+  if ([viewController presentationState])
   {
-    v4 = [(SBControlCenterController *)self viewController];
-    if ([v4 presentationState] == 3)
+    viewController2 = [(SBControlCenterController *)self viewController];
+    if ([viewController2 presentationState] == 3)
     {
-      v5 = [(SBControlCenterController *)self viewController];
-      v6 = [v5 transitionState] != 1;
+      viewController3 = [(SBControlCenterController *)self viewController];
+      v6 = [viewController3 transitionState] != 1;
     }
 
     else
@@ -593,13 +593,13 @@ void __74__SBControlCenterController_initWithWindowScene_controlCenterCoordinato
 {
   if ([(SBControlCenterController *)self isPresented]|| [(SBGrabberTongue *)self->_grabberTongue isVisible])
   {
-    v3 = [(SBControlCenterController *)self viewController];
-    v4 = [v3 canDismissPresentedContent];
+    viewController = [(SBControlCenterController *)self viewController];
+    canDismissPresentedContent = [viewController canDismissPresentedContent];
 
-    if (v4)
+    if (canDismissPresentedContent)
     {
-      v5 = [(SBControlCenterController *)self viewController];
-      [v5 dismissPresentedContent];
+      viewController2 = [(SBControlCenterController *)self viewController];
+      [viewController2 dismissPresentedContent];
 
       return 1;
     }
@@ -626,28 +626,28 @@ void __74__SBControlCenterController_initWithWindowScene_controlCenterCoordinato
 
 - (BOOL)handleIndirectStatusBarAction
 {
-  v3 = [(SBControlCenterController *)self _shouldAllowControlCenterGesture];
-  if (v3)
+  _shouldAllowControlCenterGesture = [(SBControlCenterController *)self _shouldAllowControlCenterGesture];
+  if (_shouldAllowControlCenterGesture)
   {
     [(SBControlCenterController *)self presentAnimated:1 completion:0];
   }
 
-  return v3;
+  return _shouldAllowControlCenterGesture;
 }
 
-- (void)presentAnimated:(BOOL)a3 completion:(id)a4
+- (void)presentAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   [(SBControlCenterController *)self _disableReachability];
-  v7 = [(SBControlCenterController *)self viewController];
-  [v7 presentAnimated:v4 withCompletionHandler:v6];
+  viewController = [(SBControlCenterController *)self viewController];
+  [viewController presentAnimated:animatedCopy withCompletionHandler:completionCopy];
 }
 
-- (void)dismissAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   if ([(SBControlCenterController *)self isPresentedOrDismissing])
   {
     v16[0] = 0;
@@ -659,9 +659,9 @@ void __74__SBControlCenterController_initWithWindowScene_controlCenterCoordinato
     v13[2] = __56__SBControlCenterController_dismissAnimated_completion___block_invoke;
     v13[3] = &unk_2783B2050;
     v15 = v16;
-    v14 = v6;
+    v14 = completionCopy;
     v7 = MEMORY[0x223D6F7F0](v13);
-    [(CCUIMainViewController *)self->_viewController dismissAnimated:v4 withCompletionHandler:v7];
+    [(CCUIMainViewController *)self->_viewController dismissAnimated:animatedCopy withCompletionHandler:v7];
     [MEMORY[0x277CF0D38] globalSlowDownFactor];
     v9 = dispatch_time(0, (v8 * 450000000.0));
     block[0] = MEMORY[0x277D85DD0];
@@ -679,12 +679,12 @@ void __74__SBControlCenterController_initWithWindowScene_controlCenterCoordinato
   {
     if ([(SBGrabberTongue *)self->_grabberTongue isVisible])
     {
-      [(SBGrabberTongue *)self->_grabberTongue dismissWithStyle:0 animated:v4];
+      [(SBGrabberTongue *)self->_grabberTongue dismissWithStyle:0 animated:animatedCopy];
     }
 
-    if (v6)
+    if (completionCopy)
     {
-      v6[2](v6);
+      completionCopy[2](completionCopy);
     }
   }
 }
@@ -705,97 +705,97 @@ uint64_t __56__SBControlCenterController_dismissAnimated_completion___block_invo
   return result;
 }
 
-- (void)setSensorActivityDataProvider:(id)a3
+- (void)setSensorActivityDataProvider:(id)provider
 {
-  v4 = a3;
-  objc_storeWeak(&self->_sensorActivityDataProvider, v4);
-  [v4 addObserver:self];
-  [(SBControlCenterController *)self activityDidChangeForSensorActivityDataProvider:v4];
+  providerCopy = provider;
+  objc_storeWeak(&self->_sensorActivityDataProvider, providerCopy);
+  [providerCopy addObserver:self];
+  [(SBControlCenterController *)self activityDidChangeForSensorActivityDataProvider:providerCopy];
 }
 
-- (void)_requirePresentGestureRecognizerToFailForGestureRecognizer:(id)a3
+- (void)_requirePresentGestureRecognizerToFailForGestureRecognizer:(id)recognizer
 {
-  v5 = a3;
-  v4 = [(SBGrabberTongue *)self->_grabberTongue edgePullGestureRecognizer];
-  [v5 requireGestureRecognizerToFail:v4];
+  recognizerCopy = recognizer;
+  edgePullGestureRecognizer = [(SBGrabberTongue *)self->_grabberTongue edgePullGestureRecognizer];
+  [recognizerCopy requireGestureRecognizerToFail:edgePullGestureRecognizer];
 
   if (self->_statusBarPullGestureRecognizer)
   {
-    [v5 requireGestureRecognizerToFail:?];
+    [recognizerCopy requireGestureRecognizerToFail:?];
   }
 }
 
-- (void)_requireGestureRecognizerToFailForPresentGestureRecognizer:(id)a3
+- (void)_requireGestureRecognizerToFailForPresentGestureRecognizer:(id)recognizer
 {
-  v6 = a3;
-  v4 = [(SBGrabberTongue *)self->_grabberTongue edgePullGestureRecognizer];
-  [v4 requireGestureRecognizerToFail:v6];
+  recognizerCopy = recognizer;
+  edgePullGestureRecognizer = [(SBGrabberTongue *)self->_grabberTongue edgePullGestureRecognizer];
+  [edgePullGestureRecognizer requireGestureRecognizerToFail:recognizerCopy];
 
   statusBarPullGestureRecognizer = self->_statusBarPullGestureRecognizer;
   if (statusBarPullGestureRecognizer)
   {
-    [(UIPanGestureRecognizer *)statusBarPullGestureRecognizer requireGestureRecognizerToFail:v6];
+    [(UIPanGestureRecognizer *)statusBarPullGestureRecognizer requireGestureRecognizerToFail:recognizerCopy];
   }
 }
 
 - (id)_presentGestureRecognizers
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(SBGrabberTongue *)self->_grabberTongue edgePullGestureRecognizer];
+  array = [MEMORY[0x277CBEB18] array];
+  edgePullGestureRecognizer = [(SBGrabberTongue *)self->_grabberTongue edgePullGestureRecognizer];
 
-  if (v4)
+  if (edgePullGestureRecognizer)
   {
-    v5 = [(SBGrabberTongue *)self->_grabberTongue edgePullGestureRecognizer];
-    [v3 addObject:v5];
+    edgePullGestureRecognizer2 = [(SBGrabberTongue *)self->_grabberTongue edgePullGestureRecognizer];
+    [array addObject:edgePullGestureRecognizer2];
   }
 
   if (self->_statusBarPullGestureRecognizer)
   {
-    [v3 addObject:?];
+    [array addObject:?];
   }
 
-  v6 = [v3 copy];
+  v6 = [array copy];
 
   return v6;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [SBApp multiDisplayUserInteractionCoordinator];
-  v6 = [v5 activeTouchDownOriginatedWindowScene];
+  beginCopy = begin;
+  multiDisplayUserInteractionCoordinator = [SBApp multiDisplayUserInteractionCoordinator];
+  activeTouchDownOriginatedWindowScene = [multiDisplayUserInteractionCoordinator activeTouchDownOriginatedWindowScene];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (v6)
+    if (activeTouchDownOriginatedWindowScene)
     {
       WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-      v8 = [WeakRetained isEqual:v6];
+      v8 = [WeakRetained isEqual:activeTouchDownOriginatedWindowScene];
 
       if ((v8 & 1) == 0)
       {
-        v11 = SBLogSystemGestureControlCenter();
-        if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+        edgePullGestureRecognizer = SBLogSystemGestureControlCenter();
+        if (os_log_type_enabled(edgePullGestureRecognizer, OS_LOG_TYPE_DEFAULT))
         {
-          v12 = [(SBIndirectPanGestureRecognizer *)v4 name];
+          name = [(SBIndirectPanGestureRecognizer *)beginCopy name];
           *buf = 138412290;
-          v34 = v12;
-          _os_log_impl(&dword_21ED4E000, v11, OS_LOG_TYPE_DEFAULT, "Not allowing %@ to begin because it was started from another display", buf, 0xCu);
+          v34 = name;
+          _os_log_impl(&dword_21ED4E000, edgePullGestureRecognizer, OS_LOG_TYPE_DEFAULT, "Not allowing %@ to begin because it was started from another display", buf, 0xCu);
         }
 
-        v10 = 0;
+        _shouldAllowControlCenterGesture = 0;
         v9 = @"NotForCurrentDisplay";
         goto LABEL_36;
       }
     }
   }
 
-  if (self->_statusBarPullGestureRecognizer == v4 || self->_indirectStatusBarPullGestureRecognizer == v4)
+  if (self->_statusBarPullGestureRecognizer == beginCopy || self->_indirectStatusBarPullGestureRecognizer == beginCopy)
   {
-    v10 = [(SBControlCenterController *)self _shouldAllowControlCenterGesture];
-    if (v10)
+    _shouldAllowControlCenterGesture = [(SBControlCenterController *)self _shouldAllowControlCenterGesture];
+    if (_shouldAllowControlCenterGesture)
     {
       v9 = 0;
     }
@@ -812,7 +812,7 @@ uint64_t __56__SBControlCenterController_dismissAnimated_completion___block_invo
       v9 = @"ControlCenterNotAllowed";
     }
 
-    if ([(SBControlCenterController *)self _shouldShowGrabberOnFirstSwipe]&& self->_indirectStatusBarPullGestureRecognizer != v4)
+    if ([(SBControlCenterController *)self _shouldShowGrabberOnFirstSwipe]&& self->_indirectStatusBarPullGestureRecognizer != beginCopy)
     {
       v14 = SBLogSystemGestureControlCenter();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -821,12 +821,12 @@ uint64_t __56__SBControlCenterController_dismissAnimated_completion___block_invo
         _os_log_impl(&dword_21ED4E000, v14, OS_LOG_TYPE_DEFAULT, "Not allowing the status bar pull down gesture to begin because we require a grabber on first swipe.", buf, 2u);
       }
 
-      v10 = 0;
+      _shouldAllowControlCenterGesture = 0;
       v9 = @"StatusBarGestureNotAllowedBecauseGrabberRequired";
     }
 
-    v11 = [(SBGrabberTongue *)self->_grabberTongue edgePullGestureRecognizer];
-    if ([v11 state]== 1 || [v11 state]== 2 || [v11 state]== 3)
+    edgePullGestureRecognizer = [(SBGrabberTongue *)self->_grabberTongue edgePullGestureRecognizer];
+    if ([edgePullGestureRecognizer state]== 1 || [edgePullGestureRecognizer state]== 2 || [edgePullGestureRecognizer state]== 3)
     {
       v15 = SBLogSystemGestureControlCenter();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -835,16 +835,16 @@ uint64_t __56__SBControlCenterController_dismissAnimated_completion___block_invo
         _os_log_impl(&dword_21ED4E000, v15, OS_LOG_TYPE_DEFAULT, "Not allowing the status bar pull down gesture to begin because the screen edge gesture's state is active.", buf, 2u);
       }
 
-      v10 = 0;
+      _shouldAllowControlCenterGesture = 0;
       v9 = @"StatusBarGestureNotAllowedBecauseEdgeGestureIsActive";
     }
 
     statusBarPullGestureRecognizer = self->_statusBarPullGestureRecognizer;
-    if (statusBarPullGestureRecognizer == v4)
+    if (statusBarPullGestureRecognizer == beginCopy)
     {
-      v17 = [(SBControlCenterController *)self viewController];
-      v18 = [v17 view];
-      [(UIPanGestureRecognizer *)statusBarPullGestureRecognizer velocityInView:v18];
+      viewController = [(SBControlCenterController *)self viewController];
+      view = [viewController view];
+      [(UIPanGestureRecognizer *)statusBarPullGestureRecognizer velocityInView:view];
       v20 = v19;
       v22 = v21;
 
@@ -857,22 +857,22 @@ uint64_t __56__SBControlCenterController_dismissAnimated_completion___block_invo
           _os_log_impl(&dword_21ED4E000, v23, OS_LOG_TYPE_DEFAULT, "Preventing the status bar pull down gesture because we're moving up or horizontally.", buf, 2u);
         }
 
-        v10 = 0;
+        _shouldAllowControlCenterGesture = 0;
         v9 = @"StatusBarGestureNotAllowedBecauseMovingUpOrHorizontally";
       }
     }
 
-    if (self->_indirectStatusBarPullGestureRecognizer == v4)
+    if (self->_indirectStatusBarPullGestureRecognizer == beginCopy)
     {
-      v24 = [(SBControlCenterController *)self viewForSystemGestureRecognizer:v4];
-      [(SBIndirectPanGestureRecognizer *)v4 locationInView:v24];
+      v24 = [(SBControlCenterController *)self viewForSystemGestureRecognizer:beginCopy];
+      [(SBIndirectPanGestureRecognizer *)beginCopy locationInView:v24];
       v25 = [(SBControlCenterController *)self _isLocationXWithinExtendedTrailingStatusBarRegion:?];
       if (!v25)
       {
         v9 = @"StatusBarGestureNotAllowedBecausePointerIsNotInTheTrailingStatusBarRegion";
       }
 
-      v10 &= v25;
+      _shouldAllowControlCenterGesture &= v25;
     }
 
 LABEL_36:
@@ -881,20 +881,20 @@ LABEL_36:
   }
 
   v9 = 0;
-  v10 = 1;
+  _shouldAllowControlCenterGesture = 1;
 LABEL_37:
-  v26 = [MEMORY[0x277D6A798] sharedInstance];
+  mEMORY[0x277D6A798] = [MEMORY[0x277D6A798] sharedInstance];
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __58__SBControlCenterController_gestureRecognizerShouldBegin___block_invoke;
   v29[3] = &unk_2783B77A8;
-  v32 = v10;
-  v30 = v4;
+  v32 = _shouldAllowControlCenterGesture;
+  v30 = beginCopy;
   v31 = v9;
-  v27 = v4;
-  [v26 logBlock:v29];
+  v27 = beginCopy;
+  [mEMORY[0x277D6A798] logBlock:v29];
 
-  return v10;
+  return _shouldAllowControlCenterGesture;
 }
 
 id __58__SBControlCenterController_gestureRecognizerShouldBegin___block_invoke(uint64_t a1)
@@ -936,17 +936,17 @@ id __58__SBControlCenterController_gestureRecognizerShouldBegin___block_invoke(u
   return v9;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
-  if (self->_statusBarPullGestureRecognizer == v6)
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  if (self->_statusBarPullGestureRecognizer == recognizerCopy)
   {
-    [(SBControlCenterController *)self _locationOfTouchInActiveInterfaceOrientation:v7 gestureRecognizer:v6];
+    [(SBControlCenterController *)self _locationOfTouchInActiveInterfaceOrientation:touchCopy gestureRecognizer:recognizerCopy];
     v11 = v10;
     v13 = v12;
-    v14 = [MEMORY[0x277D759A0] mainScreen];
-    [v14 bounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen bounds];
     v16 = v15;
 
     [*MEMORY[0x277D76620] statusBarHeightForOrientation:{objc_msgSend(SBApp, "activeInterfaceOrientation")}];
@@ -962,7 +962,7 @@ id __58__SBControlCenterController_gestureRecognizerShouldBegin___block_invoke(u
     v21 = CGRectContainsPoint(v38, v37);
     v22 = [(SBControlCenterController *)self _isLocationXWithinTrailingStatusBarRegion:v11];
     v8 = v21 && v22;
-    v23 = [MEMORY[0x277D6A798] sharedInstance];
+    mEMORY[0x277D6A798] = [MEMORY[0x277D6A798] sharedInstance];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __66__SBControlCenterController_gestureRecognizer_shouldReceiveTouch___block_invoke;
@@ -974,18 +974,18 @@ id __58__SBControlCenterController_gestureRecognizerShouldBegin___block_invoke(u
     v31 = 0;
     v32 = v16;
     v33 = v20;
-    v26 = v6;
-    v27 = self;
+    v26 = recognizerCopy;
+    selfCopy = self;
     v35 = v21;
     v36 = v22;
-    [v23 logBlock:v25];
+    [mEMORY[0x277D6A798] logBlock:v25];
   }
 
-  else if (self->_outsideContentInteractionTapGestureRecognizer == v6 || self->_outsideContentInteractionPanGestureRecognizer == v6)
+  else if (self->_outsideContentInteractionTapGestureRecognizer == recognizerCopy || self->_outsideContentInteractionPanGestureRecognizer == recognizerCopy)
   {
     if ([(SBControlCenterController *)self isPresentedOrDismissing])
     {
-      v9 = [(CCUIMainViewController *)self->_viewController view];
+      view = [(CCUIMainViewController *)self->_viewController view];
       _UISystemGestureLocationForTouchInView();
       v8 = [(CCUIMainViewController *)self->_viewController shouldRecognizeOutsideContentInteractionAtLocation:?];
     }
@@ -1068,39 +1068,39 @@ id __66__SBControlCenterController_gestureRecognizer_shouldReceiveTouch___block_
 
 - (void)handleReachabilityModeActivated
 {
-  v3 = [(SBControlCenterController *)self viewController];
-  [v3 setReachabilityActive:1];
+  viewController = [(SBControlCenterController *)self viewController];
+  [viewController setReachabilityActive:1];
 
   statusBarPullGestureRecognizer = self->_statusBarPullGestureRecognizer;
-  v5 = [(SBGrabberTongue *)self->_grabberTongue edgePullGestureRecognizer];
-  [(UIPanGestureRecognizer *)statusBarPullGestureRecognizer requireGestureRecognizerToFail:v5];
+  edgePullGestureRecognizer = [(SBGrabberTongue *)self->_grabberTongue edgePullGestureRecognizer];
+  [(UIPanGestureRecognizer *)statusBarPullGestureRecognizer requireGestureRecognizerToFail:edgePullGestureRecognizer];
 }
 
 - (void)handleReachabilityModeDeactivated
 {
-  v3 = [(SBControlCenterController *)self viewController];
-  [v3 setReachabilityActive:0];
+  viewController = [(SBControlCenterController *)self viewController];
+  [viewController setReachabilityActive:0];
 
   statusBarPullGestureRecognizer = self->_statusBarPullGestureRecognizer;
-  v5 = [(SBGrabberTongue *)self->_grabberTongue edgePullGestureRecognizer];
-  [(UIPanGestureRecognizer *)statusBarPullGestureRecognizer removeFailureRequirement:v5];
+  edgePullGestureRecognizer = [(SBGrabberTongue *)self->_grabberTongue edgePullGestureRecognizer];
+  [(UIPanGestureRecognizer *)statusBarPullGestureRecognizer removeFailureRequirement:edgePullGestureRecognizer];
 }
 
 - (void)handleReachabilityYOffsetDidChange
 {
-  v3 = [(SBControlCenterController *)self viewController];
-  v4 = [v3 view];
-  [v4 setNeedsLayout];
+  viewController = [(SBControlCenterController *)self viewController];
+  view = [viewController view];
+  [view setNeedsLayout];
 
-  v6 = [(SBControlCenterController *)self viewController];
-  v5 = [v6 view];
-  [v5 layoutIfNeeded];
+  viewController2 = [(SBControlCenterController *)self viewController];
+  view2 = [viewController2 view];
+  [view2 layoutIfNeeded];
 }
 
 - (void)handleDidEndReachabilityAnimation
 {
-  v2 = [(SBControlCenterController *)self viewController];
-  [v2 reachabilityAnimationDidEnd];
+  viewController = [(SBControlCenterController *)self viewController];
+  [viewController reachabilityAnimationDidEnd];
 }
 
 - (void)_disableReachability
@@ -1112,29 +1112,29 @@ id __66__SBControlCenterController_gestureRecognizer_shouldReceiveTouch___block_
 - (BOOL)_supportsReachability
 {
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v3 = [WeakRetained isMainDisplayWindowScene];
+  isMainDisplayWindowScene = [WeakRetained isMainDisplayWindowScene];
 
-  return v3;
+  return isMainDisplayWindowScene;
 }
 
-- (void)_handleStatusBarPullDownGesture:(id)a3
+- (void)_handleStatusBarPullDownGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [(SBControlCenterController *)self viewController];
-  v6 = [v5 view];
-  [(SBIndirectPanGestureRecognizer *)v4 locationInView:v6];
+  gestureCopy = gesture;
+  viewController = [(SBControlCenterController *)self viewController];
+  view = [viewController view];
+  [(SBIndirectPanGestureRecognizer *)gestureCopy locationInView:view];
   v8 = v7;
   v10 = v9;
 
-  v11 = [(SBControlCenterController *)self viewController];
-  v12 = [v11 view];
-  [(SBIndirectPanGestureRecognizer *)v4 translationInView:v12];
+  viewController2 = [(SBControlCenterController *)self viewController];
+  view2 = [viewController2 view];
+  [(SBIndirectPanGestureRecognizer *)gestureCopy translationInView:view2];
   v14 = v13;
   v16 = v15;
 
-  v17 = [(SBControlCenterController *)self viewController];
-  v18 = [v17 view];
-  [(SBIndirectPanGestureRecognizer *)v4 velocityInView:v18];
+  viewController3 = [(SBControlCenterController *)self viewController];
+  view3 = [viewController3 view];
+  [(SBIndirectPanGestureRecognizer *)gestureCopy velocityInView:view3];
   v20 = v19;
   v22 = v21;
 
@@ -1143,39 +1143,39 @@ id __66__SBControlCenterController_gestureRecognizer_shouldReceiveTouch___block_
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v23 = v4;
-      v24 = [(SBControlCenterController *)self viewController];
-      v25 = [v24 view];
-      [(SBIndirectPanGestureRecognizer *)v23 setTranslation:v25 inView:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)];
+      v23 = gestureCopy;
+      viewController4 = [(SBControlCenterController *)self viewController];
+      view4 = [viewController4 view];
+      [(SBIndirectPanGestureRecognizer *)v23 setTranslation:view4 inView:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)];
     }
 
     [(SBControlCenterController *)self _reachabilityOffset];
     if (v10 >= v26)
     {
-      if (self->_statusBarPullGestureRecognizer == v4)
+      if (self->_statusBarPullGestureRecognizer == gestureCopy)
       {
-        v29 = [(SBControlCenterController *)self viewController];
-        v30 = [(SBControlCenterController *)self _touchesForGesture:v4];
-        [v29 beginPresentationWithLocation:v30 translation:v8 velocity:v10 touches:{v14, v16, v20, v22}];
+        viewController5 = [(SBControlCenterController *)self viewController];
+        v30 = [(SBControlCenterController *)self _touchesForGesture:gestureCopy];
+        [viewController5 beginPresentationWithLocation:v30 translation:v8 velocity:v10 touches:{v14, v16, v20, v22}];
       }
 
-      else if (self->_indirectStatusBarPullGestureRecognizer == v4 && !self->_indirectStatusBarPullGestureCalledBegin && v16 != 0.0)
+      else if (self->_indirectStatusBarPullGestureRecognizer == gestureCopy && !self->_indirectStatusBarPullGestureCalledBegin && v16 != 0.0)
       {
-        v27 = [(SBControlCenterController *)self viewController];
-        v28 = [(SBControlCenterController *)self _touchesForGesture:v4];
-        [v27 beginPresentationWithLocation:v28 translation:v8 velocity:v10 touches:{v14, v16, v20, v22}];
+        viewController6 = [(SBControlCenterController *)self viewController];
+        v28 = [(SBControlCenterController *)self _touchesForGesture:gestureCopy];
+        [viewController6 beginPresentationWithLocation:v28 translation:v8 velocity:v10 touches:{v14, v16, v20, v22}];
 
         self->_indirectStatusBarPullGestureCalledBegin = 1;
       }
     }
   }
 
-  if ([(SBIndirectPanGestureRecognizer *)v4 state]== 1)
+  if ([(SBIndirectPanGestureRecognizer *)gestureCopy state]== 1)
   {
     [(SBControlCenterController *)self restrictSystemApertureToType:1 withReason:@"Control Center Presentation Began"];
   }
 
-  else if ([(SBIndirectPanGestureRecognizer *)v4 state]== 3 || [(SBIndirectPanGestureRecognizer *)v4 state]== 4 || [(SBIndirectPanGestureRecognizer *)v4 state]== 5)
+  else if ([(SBIndirectPanGestureRecognizer *)gestureCopy state]== 3 || [(SBIndirectPanGestureRecognizer *)gestureCopy state]== 4 || [(SBIndirectPanGestureRecognizer *)gestureCopy state]== 5)
   {
     if ([(SBControlCenterController *)self isPresented])
     {
@@ -1185,15 +1185,15 @@ id __66__SBControlCenterController_gestureRecognizer_shouldReceiveTouch___block_
     [(SBControlCenterController *)self invalidateSystemApertureAssertionForType:1 withReason:@"Control Center Presentation Ended"];
   }
 
-  v31 = [(SBControlCenterController *)self viewController];
-  v32 = [v31 presentationState];
+  viewController7 = [(SBControlCenterController *)self viewController];
+  presentationState = [viewController7 presentationState];
 
-  if (v32)
+  if (presentationState)
   {
-    v33 = [(SBIndirectPanGestureRecognizer *)v4 state];
-    if (v33 <= 2)
+    state = [(SBIndirectPanGestureRecognizer *)gestureCopy state];
+    if (state <= 2)
     {
-      if (v33 == 1)
+      if (state == 1)
       {
         v39 = SBLogTelemetrySignposts();
         if (os_signpost_enabled(v39))
@@ -1206,28 +1206,28 @@ id __66__SBControlCenterController_gestureRecognizer_shouldReceiveTouch___block_
         self->_presentationGestureContinuedIntoPaging = 0;
       }
 
-      else if (v33 == 2 && (self->_statusBarPullGestureRecognizer == v4 || self->_indirectStatusBarPullGestureRecognizer == v4 && self->_indirectStatusBarPullGestureCalledBegin))
+      else if (state == 2 && (self->_statusBarPullGestureRecognizer == gestureCopy || self->_indirectStatusBarPullGestureRecognizer == gestureCopy && self->_indirectStatusBarPullGestureCalledBegin))
       {
-        v38 = [(SBControlCenterController *)self viewController];
-        [v38 updatePresentationWithLocation:v8 translation:v10 velocity:{v14, v16, v20, v22}];
+        viewController8 = [(SBControlCenterController *)self viewController];
+        [viewController8 updatePresentationWithLocation:v8 translation:v10 velocity:{v14, v16, v20, v22}];
       }
     }
 
     else
     {
-      switch(v33)
+      switch(state)
       {
         case 3:
 LABEL_25:
           *&self->_indirectStatusBarPullGestureCalledBegin = 0;
           v34 = v16 + fabs(v22 * 0.03);
-          if (self->_indirectStatusBarPullGestureRecognizer == v4)
+          if (self->_indirectStatusBarPullGestureRecognizer == gestureCopy)
           {
             v16 = v34;
           }
 
-          v35 = [(SBControlCenterController *)self viewController];
-          [v35 endPresentationWithLocation:v8 translation:v10 velocity:{v14, v16, v20, v22}];
+          viewController9 = [(SBControlCenterController *)self viewController];
+          [viewController9 endPresentationWithLocation:v8 translation:v10 velocity:{v14, v16, v20, v22}];
 
           if ([(SBControlCenterController *)self isPresented])
           {
@@ -1242,7 +1242,7 @@ LABEL_25:
           }
 
           kdebug_trace();
-          v37 = [MEMORY[0x277D6A798] sharedInstance];
+          mEMORY[0x277D6A798] = [MEMORY[0x277D6A798] sharedInstance];
           v42[0] = MEMORY[0x277D85DD0];
           v42[1] = 3221225472;
           v42[2] = __61__SBControlCenterController__handleStatusBarPullDownGesture___block_invoke;
@@ -1254,7 +1254,7 @@ LABEL_25:
           *&v42[9] = v20;
           *&v42[10] = v22;
           v42[4] = self;
-          [v37 logBlock:v42];
+          [mEMORY[0x277D6A798] logBlock:v42];
 
           break;
         case 5:
@@ -1267,8 +1267,8 @@ LABEL_25:
           }
 
           self->_indirectStatusBarPullGestureCalledBegin = 0;
-          v40 = [(SBControlCenterController *)self viewController];
-          [v40 cancelPresentationWithLocation:v8 translation:v10 velocity:{v14, v16, v20, v22}];
+          viewController10 = [(SBControlCenterController *)self viewController];
+          [viewController10 cancelPresentationWithLocation:v8 translation:v10 velocity:{v14, v16, v20, v22}];
 
           if ([(SBControlCenterController *)self isPresented])
           {
@@ -1330,10 +1330,10 @@ id __61__SBControlCenterController__handleStatusBarPullDownGesture___block_invok
   return v10;
 }
 
-- (void)_setDisplayLayoutElementActive:(BOOL)a3
+- (void)_setDisplayLayoutElementActive:(BOOL)active
 {
   displayLayoutAssertion = self->_displayLayoutAssertion;
-  if (a3)
+  if (active)
   {
     if (displayLayoutAssertion)
     {
@@ -1346,8 +1346,8 @@ id __61__SBControlCenterController__handleStatusBarPullDownGesture___block_invok
     [v11 setLevel:v6];
     [v11 setFillsDisplayBounds:1];
     [v11 setLayoutRole:4];
-    v7 = [MEMORY[0x277D0AAA0] sharedInstance];
-    v8 = [v7 addElement:v11];
+    mEMORY[0x277D0AAA0] = [MEMORY[0x277D0AAA0] sharedInstance];
+    v8 = [mEMORY[0x277D0AAA0] addElement:v11];
     v9 = self->_displayLayoutAssertion;
     self->_displayLayoutAssertion = v8;
 
@@ -1367,9 +1367,9 @@ id __61__SBControlCenterController__handleStatusBarPullDownGesture___block_invok
   }
 }
 
-- (BOOL)grabberTongue:(id)a3 shouldAllowSecondSwipeWithEdgeLocation:(double)a4
+- (BOOL)grabberTongue:(id)tongue shouldAllowSecondSwipeWithEdgeLocation:(double)location
 {
-  v6 = a3;
+  tongueCopy = tongue;
   if ([(SBControlCenterController *)self presentingEdge]== 1)
   {
     v7 = 1;
@@ -1377,39 +1377,39 @@ id __61__SBControlCenterController__handleStatusBarPullDownGesture___block_invok
 
   else
   {
-    v7 = [v6 isEdgeLocationInGrabberRegion:a4];
+    v7 = [tongueCopy isEdgeLocationInGrabberRegion:location];
   }
 
   return v7;
 }
 
-- (BOOL)grabberTongue:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)grabberTongue:(id)tongue shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
+  tongueCopy = tongue;
+  touchCopy = touch;
   if ([(SBControlCenterController *)self presentingEdge]== 1 && (![(SBControlCenterController *)self _shouldShowGrabberOnFirstSwipe]|| [(SBGrabberTongue *)self->_grabberTongue isVisible]))
   {
-    v8 = [v6 edgePullGestureRecognizer];
-    [(SBControlCenterController *)self _locationOfTouchInActiveInterfaceOrientation:v7 gestureRecognizer:v8];
+    edgePullGestureRecognizer = [tongueCopy edgePullGestureRecognizer];
+    [(SBControlCenterController *)self _locationOfTouchInActiveInterfaceOrientation:touchCopy gestureRecognizer:edgePullGestureRecognizer];
     v10 = v9;
     v12 = v11;
 
     v13 = [(SBControlCenterController *)self _isLocationXWithinTrailingStatusBarRegion:v10];
     if (!v13 && [(SBGrabberTongue *)self->_grabberTongue isVisible])
     {
-      [v6 dismissWithStyle:0 animated:1];
+      [tongueCopy dismissWithStyle:0 animated:1];
     }
 
-    v14 = [MEMORY[0x277D6A798] sharedInstance];
+    mEMORY[0x277D6A798] = [MEMORY[0x277D6A798] sharedInstance];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __62__SBControlCenterController_grabberTongue_shouldReceiveTouch___block_invoke;
     v16[3] = &unk_2783B7820;
     v20 = v13;
-    v17 = v6;
+    v17 = tongueCopy;
     v18 = v10;
     v19 = v12;
-    [v14 logBlock:v16];
+    [mEMORY[0x277D6A798] logBlock:v16];
   }
 
   else
@@ -1459,17 +1459,17 @@ id __62__SBControlCenterController_grabberTongue_shouldReceiveTouch___block_invo
   return v14;
 }
 
-- (void)grabberTongueWillPresent:(id)a3
+- (void)grabberTongueWillPresent:(id)present
 {
   [(SBControlCenterController *)self _updateWindowOrientation];
 
   [(SBControlCenterController *)self _updateWindowVisibility];
 }
 
-- (void)grabberTongueBeganPulling:(id)a3 withDistance:(double)a4 andVelocity:(double)a5 andGesture:(id)a6
+- (void)grabberTongueBeganPulling:(id)pulling withDistance:(double)distance andVelocity:(double)velocity andGesture:(id)gesture
 {
-  v8 = a6;
-  v9 = a3;
+  gestureCopy = gesture;
+  pullingCopy = pulling;
   v10 = SBLogTelemetrySignposts();
   if (os_signpost_enabled(v10))
   {
@@ -1481,9 +1481,9 @@ id __62__SBControlCenterController_grabberTongue_shouldReceiveTouch___block_invo
   self->_presentationGestureContinuedIntoPaging = 0;
   [(SBControlCenterController *)self _disableReachability];
   [(SBControlCenterController *)self restrictSystemApertureToType:1 withReason:@"Control Center Presentation Began"];
-  [v9 dismissWithStyle:0 animated:1];
+  [pullingCopy dismissWithStyle:0 animated:1];
 
-  v11 = [(SBControlCenterController *)self viewController];
+  viewController = [(SBControlCenterController *)self viewController];
   [(SBControlCenterController *)self _presentGestureLocationInView];
   v13 = v12;
   v15 = v14;
@@ -1493,14 +1493,14 @@ id __62__SBControlCenterController_grabberTongue_shouldReceiveTouch___block_invo
   [(SBControlCenterController *)self _presentGestureVelocityInView];
   v21 = v20;
   v23 = v22;
-  v24 = [(SBControlCenterController *)self _touchesForGesture:v8];
+  v24 = [(SBControlCenterController *)self _touchesForGesture:gestureCopy];
 
-  [v11 beginPresentationWithLocation:v24 translation:v13 velocity:v15 touches:{v17, v19, v21, v23}];
+  [viewController beginPresentationWithLocation:v24 translation:v13 velocity:v15 touches:{v17, v19, v21, v23}];
 }
 
-- (void)grabberTongueUpdatedPulling:(id)a3 withDistance:(double)a4 andVelocity:(double)a5 andGesture:(id)a6
+- (void)grabberTongueUpdatedPulling:(id)pulling withDistance:(double)distance andVelocity:(double)velocity andGesture:(id)gesture
 {
-  v17 = [(SBControlCenterController *)self viewController:a3];
+  v17 = [(SBControlCenterController *)self viewController:pulling];
   [(SBControlCenterController *)self _presentGestureLocationInView];
   v8 = v7;
   v10 = v9;
@@ -1511,10 +1511,10 @@ id __62__SBControlCenterController_grabberTongue_shouldReceiveTouch___block_invo
   [v17 updatePresentationWithLocation:v8 translation:v10 velocity:{v12, v14, v15, v16}];
 }
 
-- (void)grabberTongueEndedPulling:(id)a3 withDistance:(double)a4 andVelocity:(double)a5 andGesture:(id)a6
+- (void)grabberTongueEndedPulling:(id)pulling withDistance:(double)distance andVelocity:(double)velocity andGesture:(id)gesture
 {
   self->_presentationGestureContinuedIntoPaging = 0;
-  [(SBControlCenterController *)self _presentGestureLocationInView:a3];
+  [(SBControlCenterController *)self _presentGestureLocationInView:pulling];
   v8 = v7;
   v10 = v9;
   [(SBControlCenterController *)self _presentGestureTranslationInView:0];
@@ -1523,8 +1523,8 @@ id __62__SBControlCenterController_grabberTongue_shouldReceiveTouch___block_invo
   [(SBControlCenterController *)self _presentGestureVelocityInView];
   v16 = v15;
   v18 = v17;
-  v19 = [(SBControlCenterController *)self viewController];
-  [v19 endPresentationWithLocation:v8 translation:v10 velocity:{v12, v14, v16, v18}];
+  viewController = [(SBControlCenterController *)self viewController];
+  [viewController endPresentationWithLocation:v8 translation:v10 velocity:{v12, v14, v16, v18}];
 
   if ([(SBControlCenterController *)self isPresented])
   {
@@ -1545,7 +1545,7 @@ id __62__SBControlCenterController_grabberTongue_shouldReceiveTouch___block_invo
   }
 
   kdebug_trace();
-  v21 = [MEMORY[0x277D6A798] sharedInstance];
+  mEMORY[0x277D6A798] = [MEMORY[0x277D6A798] sharedInstance];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __91__SBControlCenterController_grabberTongueEndedPulling_withDistance_andVelocity_andGesture___block_invoke;
@@ -1557,7 +1557,7 @@ id __62__SBControlCenterController_grabberTongue_shouldReceiveTouch___block_invo
   *&v22[9] = v16;
   *&v22[10] = v18;
   v22[4] = self;
-  [v21 logBlock:v22];
+  [mEMORY[0x277D6A798] logBlock:v22];
 }
 
 id __91__SBControlCenterController_grabberTongueEndedPulling_withDistance_andVelocity_andGesture___block_invoke(uint64_t a1)
@@ -1601,18 +1601,18 @@ id __91__SBControlCenterController_grabberTongueEndedPulling_withDistance_andVel
   return v10;
 }
 
-- (void)grabberTongueCanceledPulling:(id)a3 withDistance:(double)a4 andVelocity:(double)a5 andGesture:(id)a6
+- (void)grabberTongueCanceledPulling:(id)pulling withDistance:(double)distance andVelocity:(double)velocity andGesture:(id)gesture
 {
   if (self->_presentationGestureContinuedIntoPaging)
   {
 
-    [(SBControlCenterController *)self grabberTongueEndedPulling:a3 withDistance:a6 andVelocity:a4 andGesture:a5];
+    [(SBControlCenterController *)self grabberTongueEndedPulling:pulling withDistance:gesture andVelocity:distance andGesture:velocity];
   }
 
   else
   {
-    [(SBControlCenterController *)self _disableReachability:a3];
-    v7 = [(SBControlCenterController *)self viewController];
+    [(SBControlCenterController *)self _disableReachability:pulling];
+    viewController = [(SBControlCenterController *)self viewController];
     [(SBControlCenterController *)self _presentGestureLocationInView];
     v9 = v8;
     v11 = v10;
@@ -1620,7 +1620,7 @@ id __91__SBControlCenterController_grabberTongueEndedPulling_withDistance_andVel
     v13 = v12;
     v15 = v14;
     [(SBControlCenterController *)self _presentGestureVelocityInView];
-    [v7 cancelPresentationWithLocation:v9 translation:v11 velocity:{v13, v15, v16, v17}];
+    [viewController cancelPresentationWithLocation:v9 translation:v11 velocity:{v13, v15, v16, v17}];
 
     if ([(SBControlCenterController *)self isPresented])
     {
@@ -1639,10 +1639,10 @@ id __91__SBControlCenterController_grabberTongueEndedPulling_withDistance_andVel
   }
 }
 
-- (id)customGestureRecognizerForGrabberTongue:(id)a3
+- (id)customGestureRecognizerForGrabberTongue:(id)tongue
 {
-  v3 = [(SBControlCenterController *)self presentingEdge];
-  if (v3 == 4)
+  presentingEdge = [(SBControlCenterController *)self presentingEdge];
+  if (presentingEdge == 4)
   {
     v4 = 2;
   }
@@ -1653,28 +1653,28 @@ id __91__SBControlCenterController_grabberTongueEndedPulling_withDistance_andVel
   }
 
   v5 = [[SBScreenEdgePanGestureRecognizer alloc] initWithTarget:0 action:0 type:v4 options:0];
-  [(UIScreenEdgePanGestureRecognizer *)v5 setEdges:v3];
+  [(UIScreenEdgePanGestureRecognizer *)v5 setEdges:presentingEdge];
 
   return v5;
 }
 
-- (void)controlCenterViewController:(id)a3 wantsHostStatusBarHidden:(BOOL)a4
+- (void)controlCenterViewController:(id)controller wantsHostStatusBarHidden:(BOOL)hidden
 {
-  v4 = a4;
-  v6 = a3;
+  hiddenCopy = hidden;
+  controllerCopy = controller;
   hideStatusBarAssertion = self->_hideStatusBarAssertion;
-  if (v4)
+  if (hiddenCopy)
   {
     if (hideStatusBarAssertion)
     {
       goto LABEL_7;
     }
 
-    v13 = v6;
+    v13 = controllerCopy;
     WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-    v9 = [WeakRetained statusBarManager];
-    v10 = [v9 assertionManager];
-    v11 = [v10 acquireHideFrontmostStatusBarAssertionForReason:@"Control Center Transitioning"];
+    statusBarManager = [WeakRetained statusBarManager];
+    assertionManager = [statusBarManager assertionManager];
+    v11 = [assertionManager acquireHideFrontmostStatusBarAssertionForReason:@"Control Center Transitioning"];
     v12 = self->_hideStatusBarAssertion;
     self->_hideStatusBarAssertion = v11;
   }
@@ -1686,30 +1686,30 @@ id __91__SBControlCenterController_grabberTongueEndedPulling_withDistance_andVel
       goto LABEL_7;
     }
 
-    v13 = v6;
+    v13 = controllerCopy;
     [(BSSimpleAssertion *)hideStatusBarAssertion invalidate];
     WeakRetained = self->_hideStatusBarAssertion;
     self->_hideStatusBarAssertion = 0;
   }
 
-  v6 = v13;
+  controllerCopy = v13;
 LABEL_7:
 }
 
-- (id)reachabilitySpringAnimationBehaviorForControlCenterViewController:(id)a3
+- (id)reachabilitySpringAnimationBehaviorForControlCenterViewController:(id)controller
 {
   v3 = +[SBReachabilityDomain rootSettings];
-  v4 = [v3 animationSettings];
+  animationSettings = [v3 animationSettings];
 
-  return v4;
+  return animationSettings;
 }
 
-- (void)controlCenterViewController:(id)a3 didChangePresentationState:(unint64_t)a4
+- (void)controlCenterViewController:(id)controller didChangePresentationState:(unint64_t)state
 {
-  v6 = a3;
-  if (a4 > 1)
+  controllerCopy = controller;
+  if (state > 1)
   {
-    if (a4 == 2)
+    if (state == 2)
     {
       [(SBControlCenterController *)self _didEndTransition];
       [(SBControlCenterController *)self _didPresent];
@@ -1718,13 +1718,13 @@ LABEL_7:
       v15 = 3221225472;
       v16 = __84__SBControlCenterController_controlCenterViewController_didChangePresentationState___block_invoke;
       v17 = &unk_2783A8C18;
-      v18 = self;
+      selfCopy = self;
       v8 = &v14;
     }
 
     else
     {
-      if (a4 != 3)
+      if (state != 3)
       {
         goto LABEL_11;
       }
@@ -1736,17 +1736,17 @@ LABEL_7:
       v10 = 3221225472;
       v11 = __84__SBControlCenterController_controlCenterViewController_didChangePresentationState___block_invoke_2;
       v12 = &unk_2783A8C18;
-      v13 = self;
+      selfCopy2 = self;
       v8 = &v9;
     }
 
-    [v7 animateWithDuration:v8 animations:{0.35, v9, v10, v11, v12, v13, v14, v15, v16, v17, v18}];
+    [v7 animateWithDuration:v8 animations:{0.35, v9, v10, v11, v12, selfCopy2, v14, v15, v16, v17, selfCopy}];
     goto LABEL_11;
   }
 
-  if (a4)
+  if (state)
   {
-    if (a4 == 1)
+    if (state == 1)
     {
       [(SBControlCenterController *)self _willBeginTransition];
       [(SBControlCenterController *)self _willPresent];
@@ -1764,9 +1764,9 @@ LABEL_11:
   [(SBControlCenterController *)self _updateWindowContentHitTesting];
 }
 
-- (void)controlCenterViewController:(id)a3 significantPresentationProgressChange:(double)a4
+- (void)controlCenterViewController:(id)controller significantPresentationProgressChange:(double)change
 {
-  v19 = a3;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
   if (!WeakRetained)
   {
@@ -1785,8 +1785,8 @@ LABEL_11:
 
     if (!self->_zStackParticipant)
     {
-      v12 = [v7 zStackResolver];
-      v13 = [v12 acquireParticipantWithIdentifier:19 delegate:self];
+      zStackResolver = [v7 zStackResolver];
+      v13 = [zStackResolver acquireParticipantWithIdentifier:19 delegate:self];
       zStackParticipant = self->_zStackParticipant;
       self->_zStackParticipant = v13;
 
@@ -1806,8 +1806,8 @@ LABEL_17:
 
   if ((BSFloatIsZero() & 1) == 0 && v8)
   {
-    v10 = [(SBBarSwipeAffordanceViewController *)v8 view];
-    v9 = [v10 isTrackingHomeGestureOfType:1];
+    view = [(SBBarSwipeAffordanceViewController *)v8 view];
+    v9 = [view isTrackingHomeGestureOfType:1];
 
     goto LABEL_10;
   }
@@ -1816,9 +1816,9 @@ LABEL_17:
   {
     v9 = 0;
 LABEL_10:
-    v11 = [(SBBarSwipeAffordanceViewController *)v8 wantsToBeActiveAffordance];
+    wantsToBeActiveAffordance = [(SBBarSwipeAffordanceViewController *)v8 wantsToBeActiveAffordance];
     [(SBBarSwipeAffordanceViewController *)v8 setWantsToBeActiveAffordance:v9];
-    if (v9 == v11)
+    if (v9 == wantsToBeActiveAffordance)
     {
       goto LABEL_18;
     }
@@ -1830,13 +1830,13 @@ LABEL_10:
   if (v15)
   {
     [(SBFZStackParticipant *)v15 invalidate];
-    v12 = self->_zStackParticipant;
+    zStackResolver = self->_zStackParticipant;
     self->_zStackParticipant = 0;
     goto LABEL_16;
   }
 
 LABEL_18:
-  if (self->_asynchronousRenderingAssertion && BSFloatIsZero() && [v19 transitionState] == 2 && objc_msgSend(v19, "presentationState") == 3)
+  if (self->_asynchronousRenderingAssertion && BSFloatIsZero() && [controllerCopy transitionState] == 2 && objc_msgSend(controllerCopy, "presentationState") == 3)
   {
     [(BSSimpleAssertion *)self->_asynchronousRenderingAssertion invalidate];
     asynchronousRenderingAssertion = self->_asynchronousRenderingAssertion;
@@ -1846,7 +1846,7 @@ LABEL_18:
   [(SBControlCenterController *)self _updateWindowContentHitTesting];
 }
 
-- (void)controlCenterViewControllerWillContinuePresentationIntoPaging:(id)a3
+- (void)controlCenterViewControllerWillContinuePresentationIntoPaging:(id)paging
 {
   v4 = SBLogSystemGestureControlCenter();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1858,19 +1858,19 @@ LABEL_18:
   self->_presentationGestureContinuedIntoPaging = 1;
 }
 
-- (void)willOpenExpandedModuleForControlCenterViewController:(id)a3
+- (void)willOpenExpandedModuleForControlCenterViewController:(id)controller
 {
   v3 = +[SBReachabilityManager sharedInstance];
   [v3 setReachabilityTemporarilyDisabled:1 forReason:@"Control Center Module"];
 }
 
-- (void)didCloseExpandedModuleForControlCenterViewController:(id)a3
+- (void)didCloseExpandedModuleForControlCenterViewController:(id)controller
 {
   v3 = +[SBReachabilityManager sharedInstance];
   [v3 setReachabilityTemporarilyDisabled:0 forReason:@"Control Center Module"];
 }
 
-- (void)didRequestPowerDownTransientOverlayForControlCenterViewController:(id)a3
+- (void)didRequestPowerDownTransientOverlayForControlCenterViewController:(id)controller
 {
   v3 = +[SBWorkspace mainWorkspace];
   [v3 presentPowerDownTransientOverlay];
@@ -1889,8 +1889,8 @@ LABEL_18:
     [(BSInvalidatable *)bannerSuppressionAssertion invalidate];
   }
 
-  v9 = [SBApp bannerManager];
-  v7 = [v9 acquireBannerSuppressionAssertionForReason:@"Control Center Transitioning"];
+  bannerManager = [SBApp bannerManager];
+  v7 = [bannerManager acquireBannerSuppressionAssertionForReason:@"Control Center Transitioning"];
   v8 = self->_bannerSuppressionAssertion;
   self->_bannerSuppressionAssertion = v7;
 }
@@ -1908,26 +1908,26 @@ LABEL_18:
 
 - (void)_willPresent
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"SBControlCenterController.m" lineNumber:1117 description:@"we should have cleared this assertion in _willDismiss"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SBControlCenterController.m" lineNumber:1117 description:@"we should have cleared this assertion in _willDismiss"];
 }
 
 - (void)_didPresent
 {
   [(SBControlCenterController *)self _updateWindowVisibility];
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v3 = [WeakRetained coverSheetViewController];
-  [v3 externalBehaviorProviderBehaviorChanged:self];
-  [v3 externalPresentationProviderPresentationChanged:self];
-  v4 = [(SBControlCenterController *)self idleTimerCoordinator];
-  v5 = [(SBControlCenterController *)self coordinatorRequestedIdleTimerBehavior:v4];
-  v6 = [v4 idleTimerProvider:self didProposeBehavior:v5 forReason:@"Control Center Visible"];
+  coverSheetViewController = [WeakRetained coverSheetViewController];
+  [coverSheetViewController externalBehaviorProviderBehaviorChanged:self];
+  [coverSheetViewController externalPresentationProviderPresentationChanged:self];
+  idleTimerCoordinator = [(SBControlCenterController *)self idleTimerCoordinator];
+  v5 = [(SBControlCenterController *)self coordinatorRequestedIdleTimerBehavior:idleTimerCoordinator];
+  v6 = [idleTimerCoordinator idleTimerProvider:self didProposeBehavior:v5 forReason:@"Control Center Visible"];
   v7 = objc_loadWeakRetained(&self->_controlCenterCoordinator);
   [v7 notifyObserversThatControlCenterController:self didPresentOnWindowScene:WeakRetained];
 
   [(SBFWindow *)self->_window makeKeyWindow];
-  v8 = [MEMORY[0x277D65DD0] sharedInstance];
-  [v8 emitEvent:47];
+  mEMORY[0x277D65DD0] = [MEMORY[0x277D65DD0] sharedInstance];
+  [mEMORY[0x277D65DD0] emitEvent:47];
 }
 
 - (void)_willDismiss
@@ -1947,20 +1947,20 @@ LABEL_18:
 
 - (void)_didDismiss
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"SBControlCenterController.m" lineNumber:1158 description:@"skipped _willDismiss"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SBControlCenterController.m" lineNumber:1158 description:@"skipped _willDismiss"];
 }
 
 - (void)_updateWindowOrientation
 {
   if ((SBTraitsArbiterOrientationActuationEnabledForRole(@"SBTraitsParticipantRoleControlCenter") & 1) == 0)
   {
-    v3 = [SBApp activeInterfaceOrientation];
-    if ([(SBControlCenterWindow *)self->_window _windowInterfaceOrientation]!= v3)
+    activeInterfaceOrientation = [SBApp activeInterfaceOrientation];
+    if ([(SBControlCenterWindow *)self->_window _windowInterfaceOrientation]!= activeInterfaceOrientation)
     {
       window = self->_window;
 
-      [(SBControlCenterWindow *)window _legacySetRotatableViewOrientation:v3 updateStatusBar:0 duration:1 force:0.0];
+      [(SBControlCenterWindow *)window _legacySetRotatableViewOrientation:activeInterfaceOrientation updateStatusBar:0 duration:1 force:0.0];
     }
   }
 }
@@ -1975,8 +1975,8 @@ LABEL_18:
 
   else
   {
-    v4 = [(SBControlCenterController *)self viewController];
-    v3 = [v4 presentationState] == 0;
+    viewController = [(SBControlCenterController *)self viewController];
+    v3 = [viewController presentationState] == 0;
   }
 
   v7[0] = MEMORY[0x277D85DD0];
@@ -2030,16 +2030,16 @@ uint64_t __52__SBControlCenterController__updateWindowVisibility__block_invoke(u
 
 - (void)_updateWindowContentHitTesting
 {
-  v3 = [(SBControlCenterController *)self allowGestureForContentBelow];
-  v5 = [(SBControlCenterWindow *)self->_window rootViewController];
-  v4 = [v5 viewIfLoaded];
-  [v4 bs_setHitTestingDisabled:v3];
+  allowGestureForContentBelow = [(SBControlCenterController *)self allowGestureForContentBelow];
+  rootViewController = [(SBControlCenterWindow *)self->_window rootViewController];
+  viewIfLoaded = [rootViewController viewIfLoaded];
+  [viewIfLoaded bs_setHitTestingDisabled:allowGestureForContentBelow];
 }
 
-- (void)_setStatusBarHidden:(BOOL)a3
+- (void)_setStatusBarHidden:(BOOL)hidden
 {
   statusBarAssertion = self->_statusBarAssertion;
-  if (a3)
+  if (hidden)
   {
     if (statusBarAssertion)
     {
@@ -2047,15 +2047,15 @@ uint64_t __52__SBControlCenterController__updateWindowVisibility__block_invoke(u
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-    v6 = [WeakRetained statusBarManager];
-    v10 = [v6 assertionManager];
+    statusBarManager = [WeakRetained statusBarManager];
+    assertionManager = [statusBarManager assertionManager];
 
-    v7 = [(SBWindowSceneStatusBarSettingsAssertion *)v10 newSettingsAssertionWithStatusBarHidden:1 atLevel:12 reason:@"Control Center Visible"];
+    v7 = [(SBWindowSceneStatusBarSettingsAssertion *)assertionManager newSettingsAssertionWithStatusBarHidden:1 atLevel:12 reason:@"Control Center Visible"];
     v8 = self->_statusBarAssertion;
     self->_statusBarAssertion = v7;
 
     [(SBWindowSceneStatusBarSettingsAssertion *)self->_statusBarAssertion acquire];
-    v9 = v10;
+    v9 = assertionManager;
   }
 
   else
@@ -2071,13 +2071,13 @@ uint64_t __52__SBControlCenterController__updateWindowVisibility__block_invoke(u
   }
 }
 
-- (void)activityDidChangeForSensorActivityDataProvider:(id)a3
+- (void)activityDidChangeForSensorActivityDataProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   WeakRetained = objc_loadWeakRetained(&self->_sensorActivityDataProvider);
 
   v5 = WeakRetained;
-  if (WeakRetained == v4)
+  if (WeakRetained == providerCopy)
   {
     [(CCUIMainViewController *)self->_viewController setSensorActivityDataProvider:WeakRetained];
     v5 = WeakRetained;
@@ -2086,48 +2086,48 @@ uint64_t __52__SBControlCenterController__updateWindowVisibility__block_invoke(u
 
 - (void)_screenDidDim
 {
-  v3 = [(SBControlCenterController *)self viewController];
-  [v3 displayWillTurnOff];
+  viewController = [(SBControlCenterController *)self viewController];
+  [viewController displayWillTurnOff];
 
   [(SBControlCenterController *)self dismissAnimated:0];
 }
 
-- (void)_policyAggregatorCapabilitiesDidChange:(id)a3
+- (void)_policyAggregatorCapabilitiesDidChange:(id)change
 {
   v4 = +[SBSceneManagerCoordinator mainDisplaySceneManager];
-  v5 = [v4 policyAggregator];
+  policyAggregator = [v4 policyAggregator];
 
-  if (([v5 allowsCapability:15] & 1) == 0)
+  if (([policyAggregator allowsCapability:15] & 1) == 0)
   {
     [(SBControlCenterController *)self dismissAnimated:1];
   }
 }
 
-- (id)_touchesForGesture:(id)a3
+- (id)_touchesForGesture:(id)gesture
 {
-  v3 = a3;
+  gestureCopy = gesture;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = 0;
+    allObjects = 0;
   }
 
   else
   {
-    v5 = [v3 _activeEventOfType:0];
+    v5 = [gestureCopy _activeEventOfType:0];
     if (v5)
     {
-      v6 = [v3 _activeTouchesForEvent:v5];
-      v4 = [v6 allObjects];
+      v6 = [gestureCopy _activeTouchesForEvent:v5];
+      allObjects = [v6 allObjects];
 
-      if (!v4)
+      if (!allObjects)
       {
         v7 = SBLogCommon();
         v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG);
 
         if (v8)
         {
-          NSLog(&cfstr_FailedToFindAc.isa, v3, v5);
+          NSLog(&cfstr_FailedToFindAc.isa, gestureCopy, v5);
         }
       }
     }
@@ -2139,22 +2139,22 @@ uint64_t __52__SBControlCenterController__updateWindowVisibility__block_invoke(u
 
       if (v10)
       {
-        NSLog(&cfstr_FailedToFindAn.isa, v3);
+        NSLog(&cfstr_FailedToFindAn.isa, gestureCopy);
       }
 
-      v4 = 0;
+      allObjects = 0;
     }
   }
 
-  return v4;
+  return allObjects;
 }
 
 - (CGPoint)_presentGestureLocationInView
 {
-  v3 = [(SBGrabberTongue *)self->_grabberTongue edgePullGestureRecognizer];
-  v4 = [(SBControlCenterController *)self viewController];
-  v5 = [v4 view];
-  [v3 locationInView:v5];
+  edgePullGestureRecognizer = [(SBGrabberTongue *)self->_grabberTongue edgePullGestureRecognizer];
+  viewController = [(SBControlCenterController *)self viewController];
+  view = [viewController view];
+  [edgePullGestureRecognizer locationInView:view];
   v7 = v6;
   v9 = v8;
 
@@ -2165,23 +2165,23 @@ uint64_t __52__SBControlCenterController__updateWindowVisibility__block_invoke(u
   return result;
 }
 
-- (CGPoint)_presentGestureTranslationInView:(BOOL)a3
+- (CGPoint)_presentGestureTranslationInView:(BOOL)view
 {
-  v3 = a3;
-  v5 = [(SBControlCenterController *)self presentingEdge];
-  v6 = [(SBGrabberTongue *)self->_grabberTongue edgePullGestureRecognizer];
-  v7 = [(SBControlCenterController *)self viewController];
-  v8 = [v7 view];
-  if (v3 && v5 == 1)
+  viewCopy = view;
+  presentingEdge = [(SBControlCenterController *)self presentingEdge];
+  edgePullGestureRecognizer = [(SBGrabberTongue *)self->_grabberTongue edgePullGestureRecognizer];
+  viewController = [(SBControlCenterController *)self viewController];
+  view = [viewController view];
+  if (viewCopy && presentingEdge == 1)
   {
     v9 = *MEMORY[0x277CBF348];
     v10 = *(MEMORY[0x277CBF348] + 8);
-    [v6 setTranslation:v8 inView:{*MEMORY[0x277CBF348], v10}];
+    [edgePullGestureRecognizer setTranslation:view inView:{*MEMORY[0x277CBF348], v10}];
   }
 
   else
   {
-    [v6 translationInView:v8];
+    [edgePullGestureRecognizer translationInView:view];
     v9 = v11;
     v10 = v12;
   }
@@ -2195,10 +2195,10 @@ uint64_t __52__SBControlCenterController__updateWindowVisibility__block_invoke(u
 
 - (CGPoint)_presentGestureVelocityInView
 {
-  v3 = [(SBGrabberTongue *)self->_grabberTongue edgePullGestureRecognizer];
-  v4 = [(SBControlCenterController *)self viewController];
-  v5 = [v4 view];
-  [v3 velocityInView:v5];
+  edgePullGestureRecognizer = [(SBGrabberTongue *)self->_grabberTongue edgePullGestureRecognizer];
+  viewController = [(SBControlCenterController *)self viewController];
+  view = [viewController view];
+  [edgePullGestureRecognizer velocityInView:view];
   v7 = v6;
   v9 = v8;
 
@@ -2209,14 +2209,14 @@ uint64_t __52__SBControlCenterController__updateWindowVisibility__block_invoke(u
   return result;
 }
 
-- (CGPoint)_locationOfTouchInActiveInterfaceOrientation:(id)a3 gestureRecognizer:(id)a4
+- (CGPoint)_locationOfTouchInActiveInterfaceOrientation:(id)orientation gestureRecognizer:(id)recognizer
 {
-  v5 = a4;
-  [a3 locationInView:0];
+  recognizerCopy = recognizer;
+  [orientation locationInView:0];
   [SBApp activeInterfaceOrientation];
-  v6 = [v5 view];
+  view = [recognizerCopy view];
 
-  [v6 size];
+  [view size];
   _UIWindowConvertPointFromOrientationToOrientation();
   v8 = v7;
   v10 = v9;
@@ -2228,25 +2228,25 @@ uint64_t __52__SBControlCenterController__updateWindowVisibility__block_invoke(u
   return result;
 }
 
-- (BOOL)_isLocationXWithinTrailingStatusBarRegion:(double)a3 regionPadding:(double)a4
+- (BOOL)_isLocationXWithinTrailingStatusBarRegion:(double)region regionPadding:(double)padding
 {
-  v7 = [MEMORY[0x277D759A0] mainScreen];
-  [v7 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v9 = v8;
 
   [(SBControlCenterController *)self _trailingStatusBarRegionWidth];
-  v11 = v10 + a4;
+  v11 = v10 + padding;
   if ([*MEMORY[0x277D76620] userInterfaceLayoutDirection] == 1)
   {
-    v12 = v11 > a3;
+    v12 = v11 > region;
   }
 
   else
   {
-    v12 = v9 - v11 < a3;
+    v12 = v9 - v11 < region;
   }
 
-  v13 = [MEMORY[0x277D6A798] sharedInstance];
+  mEMORY[0x277D6A798] = [MEMORY[0x277D6A798] sharedInstance];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __85__SBControlCenterController__isLocationXWithinTrailingStatusBarRegion_regionPadding___block_invoke;
@@ -2254,7 +2254,7 @@ uint64_t __52__SBControlCenterController__updateWindowVisibility__block_invoke(u
   v16 = v12;
   *&v15[4] = v9;
   *&v15[5] = v11;
-  [v13 logBlock:v15];
+  [mEMORY[0x277D6A798] logBlock:v15];
 
   return v12;
 }
@@ -2279,10 +2279,10 @@ id __85__SBControlCenterController__isLocationXWithinTrailingStatusBarRegion_reg
   return v6;
 }
 
-- (void)_updateWindowLevelForScene:(id)a3
+- (void)_updateWindowLevelForScene:(id)scene
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = [(SBWindowLevelAssertionManager *)self->_windowLevelAssertionManager highestPriorityWindowLevelAssertionForWindowScene:a3];
+  v4 = [(SBWindowLevelAssertionManager *)self->_windowLevelAssertionManager highestPriorityWindowLevelAssertionForWindowScene:scene];
   v5 = SBLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -2305,23 +2305,23 @@ id __85__SBControlCenterController__isLocationXWithinTrailingStatusBarRegion_reg
   [(SBControlCenterWindow *)window setWindowLevel:v7];
 }
 
-- (void)_updateWindowForScene:(id)a3
+- (void)_updateWindowForScene:(id)scene
 {
-  obj = a3;
+  obj = scene;
   if (!self->_window || (WeakRetained = objc_loadWeakRetained(&self->_windowScene), WeakRetained, v5 = obj, WeakRetained != obj))
   {
-    v6 = self->_homeAffordanceViewController;
-    if (!v6)
+    viewController = self->_homeAffordanceViewController;
+    if (!viewController)
     {
-      v6 = self->_homeButtonWrapperViewController;
-      if (!v6)
+      viewController = self->_homeButtonWrapperViewController;
+      if (!viewController)
       {
-        v6 = [(SBControlCenterController *)self viewController];
+        viewController = [(SBControlCenterController *)self viewController];
       }
     }
 
-    v7 = v6;
-    v8 = [(SBWindow *)[SBControlCenterWindow alloc] initWithWindowScene:obj rootViewController:v6 role:@"SBTraitsParticipantRoleControlCenter" debugName:@"ControlCenterWindow"];
+    v7 = viewController;
+    v8 = [(SBWindow *)[SBControlCenterWindow alloc] initWithWindowScene:obj rootViewController:viewController role:@"SBTraitsParticipantRoleControlCenter" debugName:@"ControlCenterWindow"];
     window = self->_window;
     self->_window = v8;
 
@@ -2330,8 +2330,8 @@ id __85__SBControlCenterController__isLocationXWithinTrailingStatusBarRegion_reg
     [v10 ignoreWindowForReachability:self->_window];
 
     [(SBWindow *)self->_window setHidden:1];
-    v11 = [(SBControlCenterWindow *)self->_window rootViewController];
-    [v11 bs_endAppearanceTransition:0];
+    rootViewController = [(SBControlCenterWindow *)self->_window rootViewController];
+    [rootViewController bs_endAppearanceTransition:0];
 
     objc_storeWeak(&self->_windowScene, obj);
     v12 = [[SBGrabberTongue alloc] initWithDelegate:self edge:[(SBControlCenterController *)self presentingEdge] type:56 windowScene:obj];
@@ -2341,10 +2341,10 @@ id __85__SBControlCenterController__isLocationXWithinTrailingStatusBarRegion_reg
     [(SBGrabberTongue *)self->_grabberTongue setName:@"ControlCenterGrabberTongue"];
     [(SBGrabberTongue *)self->_grabberTongue installInView:self->_window withColorStyle:0];
     [(SBControlCenterSystemAgent *)self->_systemAgent setWindowScene:obj];
-    v14 = [obj coverSheetViewController];
-    [v14 registerExternalBehaviorProvider:self];
-    [v14 registerExternalPresentationProvider:self];
-    [v14 registerExternalAppearanceProvider:self];
+    coverSheetViewController = [obj coverSheetViewController];
+    [coverSheetViewController registerExternalBehaviorProvider:self];
+    [coverSheetViewController registerExternalPresentationProvider:self];
+    [coverSheetViewController registerExternalAppearanceProvider:self];
     [(SBControlCenterController *)self _setupGestureRecognizersForUpdatedWindowScene];
     [(SBControlCenterController *)self _setupPhysicalButtonPreferencesForUpdatedWindowScene];
 
@@ -2355,10 +2355,10 @@ id __85__SBControlCenterController__isLocationXWithinTrailingStatusBarRegion_reg
 - (void)_setupGestureRecognizersForUpdatedWindowScene
 {
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v4 = [WeakRetained systemGestureManager];
+  systemGestureManager = [WeakRetained systemGestureManager];
 
-  v5 = [(SBControlCenterController *)self presentingEdge];
-  if (v5 == 1)
+  presentingEdge = [(SBControlCenterController *)self presentingEdge];
+  if (presentingEdge == 1)
   {
     v6 = [objc_alloc(MEMORY[0x277D757F8]) initWithTarget:self action:sel__handleStatusBarPullDownGesture_];
     statusBarPullGestureRecognizer = self->_statusBarPullGestureRecognizer;
@@ -2367,7 +2367,7 @@ id __85__SBControlCenterController__isLocationXWithinTrailingStatusBarRegion_reg
     [(UIPanGestureRecognizer *)self->_statusBarPullGestureRecognizer setAllowedTouchTypes:&unk_28336E490];
     [(UIPanGestureRecognizer *)self->_statusBarPullGestureRecognizer sbf_setPencilTouchesAllowed:_os_feature_enabled_impl()];
     [(UIPanGestureRecognizer *)self->_statusBarPullGestureRecognizer setDelegate:self];
-    [v4 addGestureRecognizer:self->_statusBarPullGestureRecognizer withType:57];
+    [systemGestureManager addGestureRecognizer:self->_statusBarPullGestureRecognizer withType:57];
     v8 = [[SBIndirectPanGestureRecognizer alloc] initWithTarget:self action:sel__handleStatusBarPullDownGesture_ edges:1];
     indirectStatusBarPullGestureRecognizer = self->_indirectStatusBarPullGestureRecognizer;
     self->_indirectStatusBarPullGestureRecognizer = v8;
@@ -2390,48 +2390,48 @@ id __85__SBControlCenterController__isLocationXWithinTrailingStatusBarRegion_reg
     v12 = v10;
     [(SBIndirectPanGestureRecognizer *)v11 setTranslationAdjustmentBlock:v22];
     v13 = +[SBCoverSheetPresentationManager sharedInstance];
-    v14 = [v13 coverSheetSlidingViewController];
-    v15 = [v14 indirectPresentGestureRecognizer];
+    coverSheetSlidingViewController = [v13 coverSheetSlidingViewController];
+    indirectPresentGestureRecognizer = [coverSheetSlidingViewController indirectPresentGestureRecognizer];
 
-    [v15 requireGestureRecognizerToFail:self->_indirectStatusBarPullGestureRecognizer];
-    [v4 addGestureRecognizer:self->_indirectStatusBarPullGestureRecognizer withType:58];
-    [v4 gestureRecognizerOfType:135 shouldBeRequiredToFailByGestureRecognizer:self->_indirectStatusBarPullGestureRecognizer];
+    [indirectPresentGestureRecognizer requireGestureRecognizerToFail:self->_indirectStatusBarPullGestureRecognizer];
+    [systemGestureManager addGestureRecognizer:self->_indirectStatusBarPullGestureRecognizer withType:58];
+    [systemGestureManager gestureRecognizerOfType:135 shouldBeRequiredToFailByGestureRecognizer:self->_indirectStatusBarPullGestureRecognizer];
   }
 
   if ([(SBControlCenterController *)self _supportsReachability])
   {
     v16 = +[SBReachabilityManager sharedInstance];
     [v16 addObserver:self];
-    if (v5 == 1)
+    if (presentingEdge == 1)
     {
-      v17 = [v16 dismissPanGestureRecognizer];
-      v18 = v17;
+      dismissPanGestureRecognizer = [v16 dismissPanGestureRecognizer];
+      dismissEdgeGestureRecognizer = dismissPanGestureRecognizer;
       if (self->_statusBarPullGestureRecognizer)
       {
-        [v17 requireGestureRecognizerToFail:?];
+        [dismissPanGestureRecognizer requireGestureRecognizerToFail:?];
       }
 
-      v19 = [(SBGrabberTongue *)self->_grabberTongue edgePullGestureRecognizer];
-      v20 = v18;
-      v21 = v19;
+      edgePullGestureRecognizer = [(SBGrabberTongue *)self->_grabberTongue edgePullGestureRecognizer];
+      edgePullGestureRecognizer2 = dismissEdgeGestureRecognizer;
+      v21 = edgePullGestureRecognizer;
     }
 
     else
     {
-      v18 = [v16 dismissEdgeGestureRecognizer];
-      if (!v18)
+      dismissEdgeGestureRecognizer = [v16 dismissEdgeGestureRecognizer];
+      if (!dismissEdgeGestureRecognizer)
       {
 LABEL_11:
 
         goto LABEL_12;
       }
 
-      v20 = [(SBGrabberTongue *)self->_grabberTongue edgePullGestureRecognizer];
-      v19 = v20;
-      v21 = v18;
+      edgePullGestureRecognizer2 = [(SBGrabberTongue *)self->_grabberTongue edgePullGestureRecognizer];
+      edgePullGestureRecognizer = edgePullGestureRecognizer2;
+      v21 = dismissEdgeGestureRecognizer;
     }
 
-    [v20 requireGestureRecognizerToFail:v21];
+    [edgePullGestureRecognizer2 requireGestureRecognizerToFail:v21];
 
     goto LABEL_11;
   }
@@ -2456,23 +2456,23 @@ double __74__SBControlCenterController__setupGestureRecognizersForUpdatedWindowS
 
 - (void)_setupPhysicalButtonPreferencesForUpdatedWindowScene
 {
-  v3 = [(SBControlCenterController *)self window];
-  v19 = [v3 windowScene];
+  window = [(SBControlCenterController *)self window];
+  windowScene = [window windowScene];
 
-  v4 = [v19 _FBSScene];
-  v5 = [v4 identity];
+  _FBSScene = [windowScene _FBSScene];
+  identity = [_FBSScene identity];
 
   v6 = MEMORY[0x277D65F10];
-  v7 = [MEMORY[0x277CF0CD0] processHandle];
-  v8 = [v7 auditToken];
-  v9 = [v6 targetWithPhysicalButton:1 generation:2 auditToken:v8 identifier:2];
+  processHandle = [MEMORY[0x277CF0CD0] processHandle];
+  auditToken = [processHandle auditToken];
+  v9 = [v6 targetWithPhysicalButton:1 generation:2 auditToken:auditToken identifier:2];
 
   v10 = MEMORY[0x277D65F10];
-  v11 = [MEMORY[0x277CF0CD0] processHandle];
-  v12 = [v11 auditToken];
-  v13 = [v10 targetWithPhysicalButton:2 generation:2 auditToken:v12 identifier:2];
+  processHandle2 = [MEMORY[0x277CF0CD0] processHandle];
+  auditToken2 = [processHandle2 auditToken];
+  v13 = [v10 targetWithPhysicalButton:2 generation:2 auditToken:auditToken2 identifier:2];
 
-  v14 = [MEMORY[0x277D65F00] targetWithSceneIdentity:v5];
+  v14 = [MEMORY[0x277D65F00] targetWithSceneIdentity:identity];
   [v14 addButtonTarget:v9];
   [v14 addButtonTarget:v13];
   v15 = MEMORY[0x277CBEA60];
@@ -2484,15 +2484,15 @@ double __74__SBControlCenterController__setupGestureRecognizersForUpdatedWindowS
 
 - (BOOL)canBePresented
 {
-  v2 = self;
+  selfCopy = self;
   v71 = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v4 = [WeakRetained sceneManager];
-  v5 = [v4 policyAggregator];
+  sceneManager = [WeakRetained sceneManager];
+  policyAggregator = [sceneManager policyAggregator];
 
   if (objc_opt_respondsToSelector())
   {
-    v6 = v5;
+    v6 = policyAggregator;
   }
 
   else
@@ -2590,21 +2590,21 @@ double __74__SBControlCenterController__setupGestureRecognizersForUpdatedWindowS
   }
 
 LABEL_27:
-  v23 = [WeakRetained lockScreenManager];
-  v24 = [v23 isUILocked];
-  v25 = v24;
-  v58 = v23;
-  if (v24)
+  lockScreenManager = [WeakRetained lockScreenManager];
+  isUILocked = [lockScreenManager isUILocked];
+  v25 = isUILocked;
+  v58 = lockScreenManager;
+  if (isUILocked)
   {
     v54 = WeakRetained;
-    v26 = v5;
+    v26 = policyAggregator;
     v27 = v19;
-    v28 = v2;
-    v29 = [v23 lockScreenEnvironment];
-    v30 = [v29 behaviorSuppressor];
-    v31 = [v30 suppressesControlCenter];
+    v28 = selfCopy;
+    lockScreenEnvironment = [lockScreenManager lockScreenEnvironment];
+    behaviorSuppressor = [lockScreenEnvironment behaviorSuppressor];
+    suppressesControlCenter = [behaviorSuppressor suppressesControlCenter];
 
-    if (v31)
+    if (suppressesControlCenter)
     {
       v32 = SBLogSystemGestureControlCenter();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
@@ -2617,21 +2617,21 @@ LABEL_27:
       v8 = @"ControlCenterNotAllowedBecauseLockScreenSuppressesCC";
     }
 
-    v2 = v28;
+    selfCopy = v28;
     v19 = v27;
-    v5 = v26;
+    policyAggregator = v26;
     WeakRetained = v54;
   }
 
-  v57 = [WeakRetained transientOverlayPresenter];
-  if ([v57 shouldDisableControlCenter])
+  transientOverlayPresenter = [WeakRetained transientOverlayPresenter];
+  if ([transientOverlayPresenter shouldDisableControlCenter])
   {
     v56 = v19;
-    v33 = SBLogSystemGestureControlCenter();
-    if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
+    layoutStateApplicationSceneHandles = SBLogSystemGestureControlCenter();
+    if (os_log_type_enabled(layoutStateApplicationSceneHandles, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_21ED4E000, v33, OS_LOG_TYPE_DEFAULT, "Not allowing transition because transient overlay suppresses CC.", buf, 2u);
+      _os_log_impl(&dword_21ED4E000, layoutStateApplicationSceneHandles, OS_LOG_TYPE_DEFAULT, "Not allowing transition because transient overlay suppresses CC.", buf, 2u);
     }
 
     v9 = 0;
@@ -2643,9 +2643,9 @@ LABEL_37:
     goto LABEL_40;
   }
 
-  v35 = [WeakRetained switcherController];
-  v34 = v35;
-  if ((v25 & 1) == 0 && ([(__CFString *)v35 isAnySwitcherVisible]& 1) == 0)
+  switcherController = [WeakRetained switcherController];
+  v34 = switcherController;
+  if ((v25 & 1) == 0 && ([(__CFString *)switcherController isAnySwitcherVisible]& 1) == 0)
   {
     v56 = v19;
     v53 = v7;
@@ -2653,13 +2653,13 @@ LABEL_37:
     v65 = 0u;
     v62 = 0u;
     v63 = 0u;
-    v33 = [(__CFString *)v34 layoutStateApplicationSceneHandles];
-    v41 = [v33 countByEnumeratingWithState:&v62 objects:v68 count:16];
+    layoutStateApplicationSceneHandles = [(__CFString *)v34 layoutStateApplicationSceneHandles];
+    v41 = [layoutStateApplicationSceneHandles countByEnumeratingWithState:&v62 objects:v68 count:16];
     if (v41)
     {
       v42 = v41;
       v51 = v34;
-      v52 = v5;
+      v52 = policyAggregator;
       v55 = WeakRetained;
       v43 = *v63;
       do
@@ -2668,37 +2668,37 @@ LABEL_37:
         {
           if (*v63 != v43)
           {
-            objc_enumerationMutation(v33);
+            objc_enumerationMutation(layoutStateApplicationSceneHandles);
           }
 
-          v45 = [*(*(&v62 + 1) + 8 * i) application];
-          if ([v45 suppressesControlCenter])
+          application = [*(*(&v62 + 1) + 8 * i) application];
+          if ([application suppressesControlCenter])
           {
             v46 = SBLogSystemGestureControlCenter();
             if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
             {
-              v47 = [v45 bundleIdentifier];
+              bundleIdentifier = [application bundleIdentifier];
               *buf = 138543362;
-              v70 = v47;
+              v70 = bundleIdentifier;
               _os_log_impl(&dword_21ED4E000, v46, OS_LOG_TYPE_DEFAULT, "Not allowing transition because the top app (%{public}@) suppresses CC.", buf, 0xCu);
             }
 
             v48 = MEMORY[0x277CCACA8];
-            v49 = [v45 bundleIdentifier];
-            v50 = [v48 stringWithFormat:@"ControlCenterNotAllowedBecauseTopAppSuppressesCC (%@)", v49];
+            bundleIdentifier2 = [application bundleIdentifier];
+            v50 = [v48 stringWithFormat:@"ControlCenterNotAllowedBecauseTopAppSuppressesCC (%@)", bundleIdentifier2];
 
             v9 = 0;
             v8 = v50;
           }
         }
 
-        v42 = [v33 countByEnumeratingWithState:&v62 objects:v68 count:16];
+        v42 = [layoutStateApplicationSceneHandles countByEnumeratingWithState:&v62 objects:v68 count:16];
       }
 
       while (v42);
       v7 = v53;
       WeakRetained = v55;
-      v5 = v52;
+      policyAggregator = v52;
       v34 = v51;
     }
 
@@ -2707,7 +2707,7 @@ LABEL_37:
 
 LABEL_40:
 
-  if ([(SBControlCenterController *)v2 presentingEdge]== 4)
+  if ([(SBControlCenterController *)selfCopy presentingEdge]== 4)
   {
     v36 = v58;
     if ([SBApp isTypingActive])
@@ -2729,7 +2729,7 @@ LABEL_40:
     v36 = v58;
   }
 
-  v38 = [MEMORY[0x277D6A798] sharedInstance];
+  mEMORY[0x277D6A798] = [MEMORY[0x277D6A798] sharedInstance];
   v59[0] = MEMORY[0x277D85DD0];
   v59[1] = 3221225472;
   v59[2] = __43__SBControlCenterController_canBePresented__block_invoke;
@@ -2737,7 +2737,7 @@ LABEL_40:
   v61 = v9;
   v60 = v8;
   v39 = v8;
-  [v38 logBlock:v59];
+  [mEMORY[0x277D6A798] logBlock:v59];
 
   return v9;
 }
@@ -2766,21 +2766,21 @@ id __43__SBControlCenterController_canBePresented__block_invoke(uint64_t a1)
 
 - (BOOL)allowShowTransitionSystemGesture
 {
-  v3 = [(SBControlCenterController *)self isDismissedOrDismissing];
-  if (v3)
+  isDismissedOrDismissing = [(SBControlCenterController *)self isDismissedOrDismissing];
+  if (isDismissedOrDismissing)
   {
 
-    LOBYTE(v3) = [(SBControlCenterController *)self canBePresented];
+    LOBYTE(isDismissedOrDismissing) = [(SBControlCenterController *)self canBePresented];
   }
 
-  return v3;
+  return isDismissedOrDismissing;
 }
 
 - (BOOL)_shouldAllowControlCenterGesture
 {
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v4 = [WeakRetained systemGestureManager];
-  v5 = [v4 isGestureWithTypeAllowed:56];
+  systemGestureManager = [WeakRetained systemGestureManager];
+  v5 = [systemGestureManager isGestureWithTypeAllowed:56];
 
   if (v5)
   {
@@ -2813,9 +2813,9 @@ id __43__SBControlCenterController_canBePresented__block_invoke(uint64_t a1)
   }
 
   v9 = +[SBReachabilityManager sharedInstance];
-  v10 = [v9 reachabilityModeActive];
+  reachabilityModeActive = [v9 reachabilityModeActive];
 
-  if ((v10 & 1) == 0 && ([(UIPanGestureRecognizer *)self->_statusBarPullGestureRecognizer state]== 1 || [(UIPanGestureRecognizer *)self->_statusBarPullGestureRecognizer state]== 2 || [(UIPanGestureRecognizer *)self->_statusBarPullGestureRecognizer state]== 3))
+  if ((reachabilityModeActive & 1) == 0 && ([(UIPanGestureRecognizer *)self->_statusBarPullGestureRecognizer state]== 1 || [(UIPanGestureRecognizer *)self->_statusBarPullGestureRecognizer state]== 2 || [(UIPanGestureRecognizer *)self->_statusBarPullGestureRecognizer state]== 3))
   {
     v11 = SBLogSystemGestureControlCenter();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -2828,8 +2828,8 @@ id __43__SBControlCenterController_canBePresented__block_invoke(uint64_t a1)
     v6 = @"GestureNotAllowedBecauseStatusBarGestureIsActive";
   }
 
-  v12 = [SBApp bannerManager];
-  v13 = [v12 isDisplayingFullScreenBannerInWindowScene:WeakRetained];
+  bannerManager = [SBApp bannerManager];
+  v13 = [bannerManager isDisplayingFullScreenBannerInWindowScene:WeakRetained];
 
   if (v13)
   {
@@ -2844,14 +2844,14 @@ id __43__SBControlCenterController_canBePresented__block_invoke(uint64_t a1)
     v6 = @"GestureNotAllowedBecauseFullScreenBannerIsActive";
   }
 
-  v15 = [MEMORY[0x277D6A798] sharedInstance];
+  mEMORY[0x277D6A798] = [MEMORY[0x277D6A798] sharedInstance];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __61__SBControlCenterController__shouldAllowControlCenterGesture__block_invoke;
   v17[3] = &unk_2783B1200;
   v19 = v5;
   v18 = v6;
-  [v15 logBlock:v17];
+  [mEMORY[0x277D6A798] logBlock:v17];
 
   return v5;
 }
@@ -2878,25 +2878,25 @@ id __61__SBControlCenterController__shouldAllowControlCenterGesture__block_invok
   return v5;
 }
 
-- (id)_newSystemApertureRestrictionAssertionForType:(unint64_t)a3 withReason:(id)a4
+- (id)_newSystemApertureRestrictionAssertionForType:(unint64_t)type withReason:(id)reason
 {
-  v5 = a4;
-  if (a3 == 1)
+  reasonCopy = reason;
+  if (type == 1)
   {
-    v6 = [SBApp systemApertureControllerForMainDisplay];
-    v7 = [v6 restrictSystemApertureToInertWithReason:v5];
+    systemApertureControllerForMainDisplay = [SBApp systemApertureControllerForMainDisplay];
+    v7 = [systemApertureControllerForMainDisplay restrictSystemApertureToInertWithReason:reasonCopy];
   }
 
   else
   {
-    if (a3)
+    if (type)
     {
       v8 = 0;
       goto LABEL_7;
     }
 
-    v6 = [SBApp systemApertureControllerForMainDisplay];
-    v7 = [v6 restrictSystemApertureToDefaultLayoutWithReason:v5];
+    systemApertureControllerForMainDisplay = [SBApp systemApertureControllerForMainDisplay];
+    v7 = [systemApertureControllerForMainDisplay restrictSystemApertureToDefaultLayoutWithReason:reasonCopy];
   }
 
   v8 = v7;
@@ -2905,18 +2905,18 @@ LABEL_7:
   return v8;
 }
 
-- (void)restrictSystemApertureToType:(unint64_t)a3 withReason:(id)a4
+- (void)restrictSystemApertureToType:(unint64_t)type withReason:(id)reason
 {
-  v6 = a4;
-  if (a3 != 1 || !BSEqualStrings() || (+[SBSystemApertureDomain rootSettings](SBSystemApertureDomain, "rootSettings"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 suppressWhilePresentingControlCenter], v7, v8))
+  reasonCopy = reason;
+  if (type != 1 || !BSEqualStrings() || (+[SBSystemApertureDomain rootSettings](SBSystemApertureDomain, "rootSettings"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 suppressWhilePresentingControlCenter], v7, v8))
   {
-    v9 = [(SBControlCenterController *)self systemApertureAssertionForRestrictionType];
-    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-    v11 = [v9 objectForKey:v10];
+    systemApertureAssertionForRestrictionType = [(SBControlCenterController *)self systemApertureAssertionForRestrictionType];
+    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
+    v11 = [systemApertureAssertionForRestrictionType objectForKey:v10];
 
     if (!v11)
     {
-      v12 = [(SBControlCenterController *)self _newSystemApertureRestrictionAssertionForType:a3 withReason:v6];
+      v12 = [(SBControlCenterController *)self _newSystemApertureRestrictionAssertionForType:type withReason:reasonCopy];
       if (v12)
       {
         objc_initWeak(&location, self);
@@ -2925,20 +2925,20 @@ LABEL_7:
         v18[2] = __69__SBControlCenterController_restrictSystemApertureToType_withReason___block_invoke;
         v18[3] = &unk_2783B7890;
         objc_copyWeak(v19, &location);
-        v19[1] = a3;
+        v19[1] = type;
         [v12 addInvalidationBlock:v18];
-        v13 = [(SBControlCenterController *)self systemApertureAssertionForRestrictionType];
+        systemApertureAssertionForRestrictionType2 = [(SBControlCenterController *)self systemApertureAssertionForRestrictionType];
 
-        if (!v13)
+        if (!systemApertureAssertionForRestrictionType2)
         {
           v14 = objc_alloc_init(MEMORY[0x277CBEB38]);
           systemApertureAssertionForRestrictionType = self->_systemApertureAssertionForRestrictionType;
           self->_systemApertureAssertionForRestrictionType = v14;
         }
 
-        v16 = [(SBControlCenterController *)self systemApertureAssertionForRestrictionType];
-        v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-        [v16 setObject:v12 forKey:v17];
+        systemApertureAssertionForRestrictionType3 = [(SBControlCenterController *)self systemApertureAssertionForRestrictionType];
+        v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
+        [systemApertureAssertionForRestrictionType3 setObject:v12 forKey:v17];
 
         objc_destroyWeak(v19);
         objc_destroyWeak(&location);
@@ -2963,16 +2963,16 @@ void __69__SBControlCenterController_restrictSystemApertureToType_withReason___b
   }
 }
 
-- (void)invalidateSystemApertureAssertionForType:(unint64_t)a3 withReason:(id)a4
+- (void)invalidateSystemApertureAssertionForType:(unint64_t)type withReason:(id)reason
 {
-  v9 = a4;
-  v6 = [(SBControlCenterController *)self systemApertureAssertionForRestrictionType];
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  v8 = [v6 objectForKey:v7];
+  reasonCopy = reason;
+  systemApertureAssertionForRestrictionType = [(SBControlCenterController *)self systemApertureAssertionForRestrictionType];
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
+  v8 = [systemApertureAssertionForRestrictionType objectForKey:v7];
 
   if (v8)
   {
-    [v8 invalidateWithReason:v9];
+    [v8 invalidateWithReason:reasonCopy];
   }
 }
 
@@ -2985,10 +2985,10 @@ void __69__SBControlCenterController_restrictSystemApertureToType_withReason___b
 
 - (UICoordinateSpace)presentationCoordinateSpace
 {
-  v2 = [(SBControlCenterController *)self viewController];
-  v3 = [v2 view];
+  viewController = [(SBControlCenterController *)self viewController];
+  view = [viewController view];
 
-  return v3;
+  return view;
 }
 
 - (NSArray)presentationRegions
@@ -2997,9 +2997,9 @@ void __69__SBControlCenterController_restrictSystemApertureToType_withReason___b
   if ([(SBControlCenterController *)self isPresented])
   {
     v3 = MEMORY[0x277D02C80];
-    v4 = [(SBControlCenterController *)self viewController];
-    v5 = [v4 view];
-    v6 = [v3 regionForCoordinateSpace:v5];
+    viewController = [(SBControlCenterController *)self viewController];
+    view = [viewController view];
+    v6 = [v3 regionForCoordinateSpace:view];
     v7 = [v6 role:3];
     v10[0] = v7;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
@@ -3019,8 +3019,8 @@ void __69__SBControlCenterController_restrictSystemApertureToType_withReason___b
   if ([(SBControlCenterController *)self isPresented])
   {
     v4 = objc_opt_new();
-    v5 = [(SBControlCenterController *)self appearanceIdentifier];
-    v6 = [v4 identifier:v5];
+    appearanceIdentifier = [(SBControlCenterController *)self appearanceIdentifier];
+    v6 = [v4 identifier:appearanceIdentifier];
     v7 = [v6 priority:50];
     v8 = [v7 suppressTeachableMomentsAnimation:1];
     [v3 addObject:v8];
@@ -3029,9 +3029,9 @@ void __69__SBControlCenterController_restrictSystemApertureToType_withReason___b
   return v3;
 }
 
-- (id)hasExistingControlFromExtension:(id)a3
+- (id)hasExistingControlFromExtension:(id)extension
 {
-  v3 = [(CCUIMainViewController *)self->_viewController existingControlKindFromWidgetExtension:a3];
+  v3 = [(CCUIMainViewController *)self->_viewController existingControlKindFromWidgetExtension:extension];
   if (v3)
   {
     v4 = [[SBWidgetExtensionDebugSearchResult alloc] initWithKind:v3];
@@ -3045,23 +3045,23 @@ void __69__SBControlCenterController_restrictSystemApertureToType_withReason___b
   return v4;
 }
 
-- (void)launchControl:(id)a3 completion:(id)a4
+- (void)launchControl:(id)control completion:(id)completion
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  controlCopy = control;
+  completionCopy = completion;
   v8 = SBLogWidgets();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v13 = v6;
+    v13 = controlCopy;
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "Launch control: %{public}@", buf, 0xCu);
   }
 
   if ([(SBControlCenterController *)self isPresented])
   {
-    [(CCUIMainViewController *)self->_viewController addIfNecessaryAndScrollToControlMatching:v6 animated:1];
-    v7[2](v7, 0);
+    [(CCUIMainViewController *)self->_viewController addIfNecessaryAndScrollToControlMatching:controlCopy animated:1];
+    completionCopy[2](completionCopy, 0);
   }
 
   else
@@ -3071,8 +3071,8 @@ void __69__SBControlCenterController_restrictSystemApertureToType_withReason___b
     v9[2] = __54__SBControlCenterController_launchControl_completion___block_invoke;
     v9[3] = &unk_2783AE5A0;
     v9[4] = self;
-    v10 = v6;
-    v11 = v7;
+    v10 = controlCopy;
+    v11 = completionCopy;
     SBWorkspaceForceToSpringBoard(v9);
   }
 }
@@ -3109,15 +3109,15 @@ uint64_t __54__SBControlCenterController_launchControl_completion___block_invoke
   return v2();
 }
 
-- (void)homeGesturePerformedForBarSwipeAffordanceView:(id)a3
+- (void)homeGesturePerformedForBarSwipeAffordanceView:(id)view
 {
-  v4 = [(SBControlCenterController *)self viewController];
-  v5 = [v4 canDismissPresentedContent];
+  viewController = [(SBControlCenterController *)self viewController];
+  canDismissPresentedContent = [viewController canDismissPresentedContent];
 
-  if (v5)
+  if (canDismissPresentedContent)
   {
-    v6 = [(SBControlCenterController *)self viewController];
-    [v6 dismissPresentedContent];
+    viewController2 = [(SBControlCenterController *)self viewController];
+    [viewController2 dismissPresentedContent];
   }
 
   else
@@ -3127,11 +3127,11 @@ uint64_t __54__SBControlCenterController_launchControl_completion___block_invoke
   }
 }
 
-- (void)homeGrabberViewDidReceiveClick:(id)a3
+- (void)homeGrabberViewDidReceiveClick:(id)click
 {
-  v4 = [(SBBarSwipeAffordanceViewController *)self->_homeAffordanceViewController zStackParticipant];
-  v5 = v4;
-  if (v4 && [v4 ownsHomeGesture])
+  zStackParticipant = [(SBBarSwipeAffordanceViewController *)self->_homeAffordanceViewController zStackParticipant];
+  v5 = zStackParticipant;
+  if (zStackParticipant && [zStackParticipant ownsHomeGesture])
   {
     [(SBControlCenterController *)self dismissAnimated:1];
   }
@@ -3147,25 +3147,25 @@ uint64_t __54__SBControlCenterController_launchControl_completion___block_invoke
   }
 }
 
-- (unint64_t)barSwipeAffordanceView:(id)a3 systemGestureTypeForType:(int64_t)a4
+- (unint64_t)barSwipeAffordanceView:(id)view systemGestureTypeForType:(int64_t)type
 {
-  if ((a4 - 1) > 2)
+  if ((type - 1) > 2)
   {
     return 0;
   }
 
   else
   {
-    return qword_21F8A6E50[a4 - 1];
+    return qword_21F8A6E50[type - 1];
   }
 }
 
-- (id)hideAnimationSettingsForBarSwipeAffordanceView:(id)a3
+- (id)hideAnimationSettingsForBarSwipeAffordanceView:(id)view
 {
-  v4 = [MEMORY[0x277D65E80] rootSettings];
-  v5 = [v4 hideForHomeGestureOwnershipAnimationSettings];
-  v6 = [v5 BSAnimationSettings];
-  v7 = [v6 mutableCopy];
+  rootSettings = [MEMORY[0x277D65E80] rootSettings];
+  hideForHomeGestureOwnershipAnimationSettings = [rootSettings hideForHomeGestureOwnershipAnimationSettings];
+  bSAnimationSettings = [hideForHomeGestureOwnershipAnimationSettings BSAnimationSettings];
+  v7 = [bSAnimationSettings mutableCopy];
 
   [(SBControlCenterController *)self _homeAffordanceAnimationDelay];
   v9 = v8;
@@ -3175,12 +3175,12 @@ uint64_t __54__SBControlCenterController_launchControl_completion___block_invoke
   return v7;
 }
 
-- (id)unhideAnimationSettingsForBarSwipeAffordanceView:(id)a3
+- (id)unhideAnimationSettingsForBarSwipeAffordanceView:(id)view
 {
-  v4 = [MEMORY[0x277D65E80] rootSettings];
-  v5 = [v4 unhideForHomeGestureOwnershipAnimationSettings];
-  v6 = [v5 BSAnimationSettings];
-  v7 = [v6 mutableCopy];
+  rootSettings = [MEMORY[0x277D65E80] rootSettings];
+  unhideForHomeGestureOwnershipAnimationSettings = [rootSettings unhideForHomeGestureOwnershipAnimationSettings];
+  bSAnimationSettings = [unhideForHomeGestureOwnershipAnimationSettings BSAnimationSettings];
+  v7 = [bSAnimationSettings mutableCopy];
 
   [(SBControlCenterController *)self _homeAffordanceAnimationDelay];
   v9 = v8;
@@ -3192,13 +3192,13 @@ uint64_t __54__SBControlCenterController_launchControl_completion___block_invoke
 
 - (double)_homeAffordanceAnimationDelay
 {
-  v2 = [(SBControlCenterController *)self viewController];
-  v3 = [v2 moduleRowCount];
+  viewController = [(SBControlCenterController *)self viewController];
+  moduleRowCount = [viewController moduleRowCount];
 
   v4 = 8;
-  if (v3 < 8)
+  if (moduleRowCount < 8)
   {
-    v4 = v3;
+    v4 = moduleRowCount;
   }
 
   return (v4 + 1) * 0.016;
@@ -3207,27 +3207,27 @@ uint64_t __54__SBControlCenterController_launchControl_completion___block_invoke
 - (BOOL)_isStatusBarHiddenIgnoringControlCenter
 {
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v4 = [WeakRetained statusBarManager];
-  v5 = [v4 assertionManager];
+  statusBarManager = [WeakRetained statusBarManager];
+  assertionManager = [statusBarManager assertionManager];
 
   if (*&self->_hideStatusBarAssertion == 0)
   {
-    IsZero = [v5 isFrontmostStatusBarHidden];
+    IsZero = [assertionManager isFrontmostStatusBarHidden];
   }
 
   else
   {
-    v6 = [WeakRetained switcherController];
-    if ([v6 unlockedEnvironmentMode] == 3)
+    switcherController = [WeakRetained switcherController];
+    if ([switcherController unlockedEnvironmentMode] == 3)
     {
-      IsZero = [v6 isInAppStatusBarHidden];
+      IsZero = [switcherController isInAppStatusBarHidden];
     }
 
     else
     {
-      v7 = [v5 statusBarSettingsForLevel:7];
-      v8 = [v7 alpha];
-      [v8 doubleValue];
+      v7 = [assertionManager statusBarSettingsForLevel:7];
+      alpha = [v7 alpha];
+      [alpha doubleValue];
       IsZero = BSFloatIsZero();
     }
   }
@@ -3238,24 +3238,24 @@ uint64_t __54__SBControlCenterController_launchControl_completion___block_invoke
 - (CCUIStatusBarStyleSnapshot)hostStatusBarStyle
 {
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v4 = [WeakRetained statusBarManager];
-  v5 = [v4 assertionManager];
-  v6 = [WeakRetained lockScreenManager];
-  v7 = [v6 isUILocked];
+  statusBarManager = [WeakRetained statusBarManager];
+  assertionManager = [statusBarManager assertionManager];
+  lockScreenManager = [WeakRetained lockScreenManager];
+  isUILocked = [lockScreenManager isUILocked];
 
-  if (v7)
+  if (isUILocked)
   {
-    v40 = [v5 isFrontmostStatusBarHidden];
+    isFrontmostStatusBarHidden = [assertionManager isFrontmostStatusBarHidden];
     if ([(SBControlCenterController *)self isPresentedOrDismissing])
     {
-      v8 = [v5 effectiveStatusBarStyleRequestWithSettings:0];
-      v9 = v8;
+      trailingStatusBarStyleRequest = [assertionManager effectiveStatusBarStyleRequestWithSettings:0];
+      leadingStatusBarStyleRequest = trailingStatusBarStyleRequest;
     }
 
     else
     {
-      v9 = [v4 leadingStatusBarStyleRequest];
-      v8 = [v4 trailingStatusBarStyleRequest];
+      leadingStatusBarStyleRequest = [statusBarManager leadingStatusBarStyleRequest];
+      trailingStatusBarStyleRequest = [statusBarManager trailingStatusBarStyleRequest];
     }
 
     v12 = *MEMORY[0x277CBF3A0];
@@ -3266,46 +3266,46 @@ uint64_t __54__SBControlCenterController_launchControl_completion___block_invoke
     v22 = *(MEMORY[0x277D768C8] + 8);
     v24 = *(MEMORY[0x277D768C8] + 16);
     v26 = *(MEMORY[0x277D768C8] + 24);
-    v10 = [WeakRetained coverSheetViewController];
-    v30 = [v10 shouldShowLockStatusBarTime];
+    coverSheetViewController = [WeakRetained coverSheetViewController];
+    shouldShowLockStatusBarTime = [coverSheetViewController shouldShowLockStatusBarTime];
     v31 = *MEMORY[0x277D775B8];
-    if (v30)
+    if (shouldShowLockStatusBarTime)
     {
       v31 = 0;
     }
 
     v29 = v31;
-    v28 = 0;
-    v27 = 0;
+    statusBarActionsByPartIdentifier = 0;
+    statusBarOverlayData = 0;
   }
 
   else
   {
-    v40 = [(SBControlCenterController *)self _isStatusBarHiddenIgnoringControlCenter];
-    v9 = [v4 leadingStatusBarStyleRequest];
-    v8 = [v4 trailingStatusBarStyleRequest];
-    v10 = [WeakRetained switcherController];
-    [v10 statusBarAvoidanceFrameForLayoutRole:2];
+    isFrontmostStatusBarHidden = [(SBControlCenterController *)self _isStatusBarHiddenIgnoringControlCenter];
+    leadingStatusBarStyleRequest = [statusBarManager leadingStatusBarStyleRequest];
+    trailingStatusBarStyleRequest = [statusBarManager trailingStatusBarStyleRequest];
+    coverSheetViewController = [WeakRetained switcherController];
+    [coverSheetViewController statusBarAvoidanceFrameForLayoutRole:2];
     v12 = v11;
     v14 = v13;
     v16 = v15;
     v18 = v17;
-    [v10 statusBarEdgeInsets];
+    [coverSheetViewController statusBarEdgeInsets];
     v20 = v19;
     v22 = v21;
     v24 = v23;
     v26 = v25;
-    v27 = [v10 statusBarOverlayData];
-    v28 = [v10 statusBarActionsByPartIdentifier];
+    statusBarOverlayData = [coverSheetViewController statusBarOverlayData];
+    statusBarActionsByPartIdentifier = [coverSheetViewController statusBarActionsByPartIdentifier];
     v29 = 0;
   }
 
   if (!__sb__runningInSpringBoard())
   {
-    v32 = [MEMORY[0x277D75418] currentDevice];
-    v33 = [v32 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v33)
+    if (userInterfaceIdiom)
     {
       goto LABEL_15;
     }
@@ -3316,7 +3316,7 @@ uint64_t __54__SBControlCenterController_launchControl_completion___block_invoke
   if (!SBFEffectiveDeviceClass() || SBFEffectiveDeviceClass() == 1)
   {
 LABEL_14:
-    [v4 avoidanceFrameForStatusBar:0];
+    [statusBarManager avoidanceFrameForStatusBar:0];
     v12 = v34;
     v14 = v35;
     v16 = v36;
@@ -3324,7 +3324,7 @@ LABEL_14:
   }
 
 LABEL_15:
-  v38 = [objc_alloc(MEMORY[0x277CFC8A0]) initWithHidden:v40 hiddenPartIdentifier:v29 leadingStyleRequest:v9 trailingStyleRequest:v8 overlayData:v27 actionsByPartIdentifier:v28 statusBarInsets:v20 avoidanceFrame:{v22, v24, v26, v12, v14, v16, v18}];
+  v38 = [objc_alloc(MEMORY[0x277CFC8A0]) initWithHidden:isFrontmostStatusBarHidden hiddenPartIdentifier:v29 leadingStyleRequest:leadingStatusBarStyleRequest trailingStyleRequest:trailingStatusBarStyleRequest overlayData:statusBarOverlayData actionsByPartIdentifier:statusBarActionsByPartIdentifier statusBarInsets:v20 avoidanceFrame:{v22, v24, v26, v12, v14, v16, v18}];
 
   return v38;
 }

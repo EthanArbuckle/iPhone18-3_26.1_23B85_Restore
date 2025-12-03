@@ -46,8 +46,8 @@
   v9 = [(SUBannerCellAccessibility *)self safeValueForKey:@"_leftButton"];
   v10 = [(SUBannerCellAccessibility *)self safeValueForKey:@"_configurationView"];
   v11 = [v10 safeValueForKey:@"_configuration"];
-  v12 = [v11 accessibilityTableViewCellText];
-  [v9 setAccessibilityLabel:v12];
+  accessibilityTableViewCellText = [v11 accessibilityTableViewCellText];
+  [v9 setAccessibilityLabel:accessibilityTableViewCellText];
 
   v13 = [(SUBannerCellAccessibility *)self safeValueForKey:@"_rightButton"];
   [v13 setIsAccessibilityElement:1];
@@ -55,8 +55,8 @@
   v14 = [(SUBannerCellAccessibility *)self safeValueForKey:@"_rightButton"];
   v15 = [(SUBannerCellAccessibility *)self safeValueForKey:@"_configurationView"];
   v16 = [v15 safeValueForKey:@"_configuration"];
-  v17 = [v16 accessibilityTableViewCellText];
-  [v14 setAccessibilityLabel:v17];
+  accessibilityTableViewCellText2 = [v16 accessibilityTableViewCellText];
+  [v14 setAccessibilityLabel:accessibilityTableViewCellText2];
 
   v18 = *MEMORY[0x29EDCA608];
 }

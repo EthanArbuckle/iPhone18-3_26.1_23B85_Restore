@@ -1,13 +1,13 @@
 @interface IOGPUMTLEvent
-- (IOGPUMTLEvent)initWithDeviceRef:(__IOGPUDevice *)a3 options:(unint64_t)a4;
-- (unsigned)_encodeIOGPUKernelSignalEventCommandArgs:(IOGPUKernelCommandSignalOrWaitEventArgs *)a3 value:(unint64_t)a4;
-- (unsigned)_encodeIOGPUKernelWaitEventCommandArgs:(IOGPUKernelCommandSignalOrWaitEventArgs *)a3 value:(unint64_t)a4 timeout:(unsigned int)a5;
+- (IOGPUMTLEvent)initWithDeviceRef:(__IOGPUDevice *)ref options:(unint64_t)options;
+- (unsigned)_encodeIOGPUKernelSignalEventCommandArgs:(IOGPUKernelCommandSignalOrWaitEventArgs *)args value:(unint64_t)value;
+- (unsigned)_encodeIOGPUKernelWaitEventCommandArgs:(IOGPUKernelCommandSignalOrWaitEventArgs *)args value:(unint64_t)value timeout:(unsigned int)timeout;
 - (void)dealloc;
 @end
 
 @implementation IOGPUMTLEvent
 
-- (IOGPUMTLEvent)initWithDeviceRef:(__IOGPUDevice *)a3 options:(unint64_t)a4
+- (IOGPUMTLEvent)initWithDeviceRef:(__IOGPUDevice *)ref options:(unint64_t)options
 {
   v13.receiver = self;
   v13.super_class = IOGPUMTLEvent;
@@ -15,9 +15,9 @@
   v7 = v6;
   if (v6)
   {
-    v6->_deviceRef = a3;
-    CFRetain(a3);
-    input = a4;
+    v6->_deviceRef = ref;
+    CFRetain(ref);
+    input = options;
     outputStruct = 0;
     v11 = 0uLL;
     v9 = 24;
@@ -58,19 +58,19 @@
   [(IOGPUMTLEvent *)&v4 dealloc];
 }
 
-- (unsigned)_encodeIOGPUKernelSignalEventCommandArgs:(IOGPUKernelCommandSignalOrWaitEventArgs *)a3 value:(unint64_t)a4
+- (unsigned)_encodeIOGPUKernelSignalEventCommandArgs:(IOGPUKernelCommandSignalOrWaitEventArgs *)args value:(unint64_t)value
 {
-  a3->var0 = self->_eventName;
-  a3->var2 = a4;
+  args->var0 = self->_eventName;
+  args->var2 = value;
   return 5;
 }
 
-- (unsigned)_encodeIOGPUKernelWaitEventCommandArgs:(IOGPUKernelCommandSignalOrWaitEventArgs *)a3 value:(unint64_t)a4 timeout:(unsigned int)a5
+- (unsigned)_encodeIOGPUKernelWaitEventCommandArgs:(IOGPUKernelCommandSignalOrWaitEventArgs *)args value:(unint64_t)value timeout:(unsigned int)timeout
 {
   eventName = self->_eventName;
-  a3->var2 = a4;
-  a3->var0 = eventName;
-  a3->var1 = a5;
+  args->var2 = value;
+  args->var0 = eventName;
+  args->var1 = timeout;
   if (self->_enableBarrier)
   {
     return 6;

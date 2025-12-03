@@ -1,47 +1,47 @@
 @interface PHBatchPerformChanges
-- (BOOL)_addBatchRangeAtIndex:(unint64_t)a3 toOutError:(id *)a4;
-- (BOOL)_performChangesAndWaitStartingAtIndex:(unint64_t)a3 error:(id *)a4;
-- (BOOL)performChangesAndWait:(id *)a3;
-- (PHBatchPerformChanges)initWithPhotoLibrary:(id)a3 itemCount:(unint64_t)a4 batchSize:(unint64_t)a5 batchBlock:(id)a6;
-- (PHBatchPerformChanges)performChangesWithCompletionHandler:(id)a3;
-- (_NSRange)_batchRangeAtIndex:(unint64_t)a3;
-- (id)_errorByAddingBatchRangeAtIndex:(unint64_t)a3 tofError:(id)a4;
-- (unint64_t)_performBatchAtIndex:(unint64_t)a3;
-- (unint64_t)_performBatchAtIndexAndWait:(unint64_t)a3 error:(id *)a4;
-- (void)_performChangesStartingAtIndex:(unint64_t)a3 withCompletionHandler:(id)a4;
-- (void)_performNextBatchAtIndex:(unint64_t)a3 withCompletionHandler:(id)a4;
+- (BOOL)_addBatchRangeAtIndex:(unint64_t)index toOutError:(id *)error;
+- (BOOL)_performChangesAndWaitStartingAtIndex:(unint64_t)index error:(id *)error;
+- (BOOL)performChangesAndWait:(id *)wait;
+- (PHBatchPerformChanges)initWithPhotoLibrary:(id)library itemCount:(unint64_t)count batchSize:(unint64_t)size batchBlock:(id)block;
+- (PHBatchPerformChanges)performChangesWithCompletionHandler:(id)handler;
+- (_NSRange)_batchRangeAtIndex:(unint64_t)index;
+- (id)_errorByAddingBatchRangeAtIndex:(unint64_t)index tofError:(id)error;
+- (unint64_t)_performBatchAtIndex:(unint64_t)index;
+- (unint64_t)_performBatchAtIndexAndWait:(unint64_t)wait error:(id *)error;
+- (void)_performChangesStartingAtIndex:(unint64_t)index withCompletionHandler:(id)handler;
+- (void)_performNextBatchAtIndex:(unint64_t)index withCompletionHandler:(id)handler;
 @end
 
 @implementation PHBatchPerformChanges
 
-- (id)_errorByAddingBatchRangeAtIndex:(unint64_t)a3 tofError:(id)a4
+- (id)_errorByAddingBatchRangeAtIndex:(unint64_t)index tofError:(id)error
 {
-  v6 = a4;
-  if (v6)
+  errorCopy = error;
+  if (errorCopy)
   {
-    v7 = [(PHBatchPerformChanges *)self _batchRangeAtIndex:a3];
+    v7 = [(PHBatchPerformChanges *)self _batchRangeAtIndex:index];
     v9 = v8;
-    v10 = [v6 userInfo];
-    v11 = [v10 mutableCopy];
+    userInfo = [errorCopy userInfo];
+    v11 = [userInfo mutableCopy];
     v12 = v11;
     if (v11)
     {
-      v13 = v11;
+      dictionary = v11;
     }
 
     else
     {
-      v13 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
     }
 
-    v15 = v13;
+    v15 = dictionary;
 
     v16 = [MEMORY[0x1E696B098] valueWithRange:{v7, v9}];
     [v15 setObject:v16 forKeyedSubscript:@"PHBatchPerformChangesRangeErrorKey"];
 
     v17 = MEMORY[0x1E696ABC0];
-    v18 = [v6 domain];
-    v14 = [v17 errorWithDomain:v18 code:objc_msgSend(v6 userInfo:{"code"), v15}];
+    domain = [errorCopy domain];
+    v14 = [v17 errorWithDomain:domain code:objc_msgSend(errorCopy userInfo:{"code"), v15}];
   }
 
   else
@@ -52,20 +52,20 @@
   return v14;
 }
 
-- (BOOL)_addBatchRangeAtIndex:(unint64_t)a3 toOutError:(id *)a4
+- (BOOL)_addBatchRangeAtIndex:(unint64_t)index toOutError:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    v5 = [(PHBatchPerformChanges *)self _errorByAddingBatchRangeAtIndex:a3 tofError:*a4];
-    *a4 = v5;
+    v5 = [(PHBatchPerformChanges *)self _errorByAddingBatchRangeAtIndex:index tofError:*error];
+    *error = v5;
   }
 
   return 0;
 }
 
-- (unint64_t)_performBatchAtIndex:(unint64_t)a3
+- (unint64_t)_performBatchAtIndex:(unint64_t)index
 {
-  [(PHBatchPerformChanges *)self _batchRangeAtIndex:a3];
+  [(PHBatchPerformChanges *)self _batchRangeAtIndex:index];
   v5 = v4;
   v6 = objc_autoreleasePoolPush();
   (*(self->_batchBlock + 2))();
@@ -73,18 +73,18 @@
   return v5;
 }
 
-- (_NSRange)_batchRangeAtIndex:(unint64_t)a3
+- (_NSRange)_batchRangeAtIndex:(unint64_t)index
 {
   itemCount = self->_itemCount;
-  if (itemCount <= a3)
+  if (itemCount <= index)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PHBatchPerformChanges.m" lineNumber:136 description:{@"Batch index %tu must be less than item count %tu", a3, self->_itemCount}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHBatchPerformChanges.m" lineNumber:136 description:{@"Batch index %tu must be less than item count %tu", index, self->_itemCount}];
 
     itemCount = self->_itemCount;
   }
 
-  v6 = itemCount - a3;
+  v6 = itemCount - index;
   if (self->_batchSize >= v6)
   {
     batchSize = v6;
@@ -95,15 +95,15 @@
     batchSize = self->_batchSize;
   }
 
-  v8 = a3;
+  indexCopy = index;
   result.length = batchSize;
-  result.location = v8;
+  result.location = indexCopy;
   return result;
 }
 
-- (void)_performNextBatchAtIndex:(unint64_t)a3 withCompletionHandler:(id)a4
+- (void)_performNextBatchAtIndex:(unint64_t)index withCompletionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v13[0] = 0;
   v13[1] = v13;
   v13[2] = 0x2020000000;
@@ -115,12 +115,12 @@
   v12[3] = &unk_1E75A9F38;
   v12[4] = self;
   v12[5] = v13;
-  v12[6] = a3;
+  v12[6] = index;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __72__PHBatchPerformChanges__performNextBatchAtIndex_withCompletionHandler___block_invoke_2;
   v9[3] = &unk_1E75A9F88;
-  v8 = v6;
+  v8 = handlerCopy;
   v10 = v8;
   v11 = v13;
   [(PHPhotoLibrary *)library performChanges:v12 completionHandler:v9];
@@ -149,24 +149,24 @@ uint64_t __72__PHBatchPerformChanges__performNextBatchAtIndex_withCompletionHand
   }
 }
 
-- (void)_performChangesStartingAtIndex:(unint64_t)a3 withCompletionHandler:(id)a4
+- (void)_performChangesStartingAtIndex:(unint64_t)index withCompletionHandler:(id)handler
 {
-  v6 = a4;
-  if ([(PHBatchPerformChanges *)self _hasMoreBatchesAtIndex:a3])
+  handlerCopy = handler;
+  if ([(PHBatchPerformChanges *)self _hasMoreBatchesAtIndex:index])
   {
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __78__PHBatchPerformChanges__performChangesStartingAtIndex_withCompletionHandler___block_invoke;
     v7[3] = &unk_1E75A9F60;
     v7[4] = self;
-    v8 = v6;
-    v9 = a3;
-    [(PHBatchPerformChanges *)self _performNextBatchAtIndex:a3 withCompletionHandler:v7];
+    v8 = handlerCopy;
+    indexCopy = index;
+    [(PHBatchPerformChanges *)self _performNextBatchAtIndex:index withCompletionHandler:v7];
   }
 
   else
   {
-    (*(v6 + 2))(v6, 1, 0);
+    (*(handlerCopy + 2))(handlerCopy, 1, 0);
   }
 }
 
@@ -189,15 +189,15 @@ void __78__PHBatchPerformChanges__performChangesStartingAtIndex_withCompletionHa
   }
 }
 
-- (PHBatchPerformChanges)performChangesWithCompletionHandler:(id)a3
+- (PHBatchPerformChanges)performChangesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __61__PHBatchPerformChanges_performChangesWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E75AA5B8;
-  v8 = v4;
-  v5 = v4;
+  v8 = handlerCopy;
+  v5 = handlerCopy;
   [(PHBatchPerformChanges *)self _performChangesStartingAtIndex:0 withCompletionHandler:v7];
 
   return result;
@@ -214,7 +214,7 @@ uint64_t __61__PHBatchPerformChanges_performChangesWithCompletionHandler___block
   return result;
 }
 
-- (unint64_t)_performBatchAtIndexAndWait:(unint64_t)a3 error:(id *)a4
+- (unint64_t)_performBatchAtIndexAndWait:(unint64_t)wait error:(id *)error
 {
   v8 = 0;
   v9 = &v8;
@@ -227,8 +227,8 @@ uint64_t __61__PHBatchPerformChanges_performChangesWithCompletionHandler___block
   v7[3] = &unk_1E75A9F38;
   v7[4] = self;
   v7[5] = &v8;
-  v7[6] = a3;
-  if ([(PHPhotoLibrary *)library performChangesAndWait:v7 error:a4])
+  v7[6] = wait;
+  if ([(PHPhotoLibrary *)library performChangesAndWait:v7 error:error])
   {
     v5 = v9[3];
   }
@@ -249,55 +249,55 @@ uint64_t __59__PHBatchPerformChanges__performBatchAtIndexAndWait_error___block_i
   return result;
 }
 
-- (BOOL)_performChangesAndWaitStartingAtIndex:(unint64_t)a3 error:(id *)a4
+- (BOOL)_performChangesAndWaitStartingAtIndex:(unint64_t)index error:(id *)error
 {
   if (![(PHBatchPerformChanges *)self _hasMoreBatchesAtIndex:?])
   {
     return 1;
   }
 
-  v7 = [(PHBatchPerformChanges *)self _performBatchAtIndexAndWait:a3 error:a4];
+  v7 = [(PHBatchPerformChanges *)self _performBatchAtIndexAndWait:index error:error];
   if (v7)
   {
 
-    return [(PHBatchPerformChanges *)self _performChangesAndWaitStartingAtIndex:v7 + a3 error:a4];
+    return [(PHBatchPerformChanges *)self _performChangesAndWaitStartingAtIndex:v7 + index error:error];
   }
 
   else
   {
-    [(PHBatchPerformChanges *)self _addBatchRangeAtIndex:a3 toOutError:a4];
+    [(PHBatchPerformChanges *)self _addBatchRangeAtIndex:index toOutError:error];
     return 0;
   }
 }
 
-- (BOOL)performChangesAndWait:(id *)a3
+- (BOOL)performChangesAndWait:(id *)wait
 {
   v7 = 0;
   v4 = [(PHBatchPerformChanges *)self _performChangesAndWaitStartingAtIndex:0 error:&v7];
   v5 = v7;
-  if (a3)
+  if (wait)
   {
     v5 = v5;
-    *a3 = v5;
+    *wait = v5;
   }
 
   return v4;
 }
 
-- (PHBatchPerformChanges)initWithPhotoLibrary:(id)a3 itemCount:(unint64_t)a4 batchSize:(unint64_t)a5 batchBlock:(id)a6
+- (PHBatchPerformChanges)initWithPhotoLibrary:(id)library itemCount:(unint64_t)count batchSize:(unint64_t)size batchBlock:(id)block
 {
-  v11 = a3;
-  v12 = a6;
+  libraryCopy = library;
+  blockCopy = block;
   v19.receiver = self;
   v19.super_class = PHBatchPerformChanges;
   v13 = [(PHBatchPerformChanges *)&v19 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_library, a3);
-    v14->_itemCount = a4;
-    v14->_batchSize = a5;
-    v15 = [v12 copy];
+    objc_storeStrong(&v13->_library, library);
+    v14->_itemCount = count;
+    v14->_batchSize = size;
+    v15 = [blockCopy copy];
     batchBlock = v14->_batchBlock;
     v14->_batchBlock = v15;
 

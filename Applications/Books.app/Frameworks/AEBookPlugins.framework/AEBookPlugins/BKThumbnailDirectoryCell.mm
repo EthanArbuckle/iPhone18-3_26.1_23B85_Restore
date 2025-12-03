@@ -1,39 +1,39 @@
 @interface BKThumbnailDirectoryCell
 - (BKPageThumbnailView)pageView;
-- (BKThumbnailDirectoryCell)initWithFrame:(CGRect)a3;
-- (CGRect)contentRectForBounds:(CGRect)a3;
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4;
+- (BKThumbnailDirectoryCell)initWithFrame:(CGRect)frame;
+- (CGRect)contentRectForBounds:(CGRect)bounds;
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setHasRibbon:(BOOL)a3;
+- (void)setHasRibbon:(BOOL)ribbon;
 @end
 
 @implementation BKThumbnailDirectoryCell
 
-- (BKThumbnailDirectoryCell)initWithFrame:(CGRect)a3
+- (BKThumbnailDirectoryCell)initWithFrame:(CGRect)frame
 {
   v16.receiver = self;
   v16.super_class = BKThumbnailDirectoryCell;
-  v3 = [(BKThumbnailDirectoryCell *)&v16 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(BKThumbnailDirectoryCell *)&v16 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[UIScreen mainScreen];
     [v4 scale];
     v6 = 1.0 / v5;
 
-    v7 = [(BKThumbnailDirectoryCell *)v3 layer];
-    [v7 setBorderWidth:v6];
+    layer = [(BKThumbnailDirectoryCell *)v3 layer];
+    [layer setBorderWidth:v6];
 
     v8 = +[UIColor bc_booksQuaternaryLabelColor];
-    v9 = [v8 CGColor];
-    v10 = [(BKThumbnailDirectoryCell *)v3 layer];
-    [v10 setBorderColor:v9];
+    cGColor = [v8 CGColor];
+    layer2 = [(BKThumbnailDirectoryCell *)v3 layer];
+    [layer2 setBorderColor:cGColor];
 
-    v11 = [(BKThumbnailDirectoryCell *)v3 layer];
-    [v11 setMasksToBounds:1];
+    layer3 = [(BKThumbnailDirectoryCell *)v3 layer];
+    [layer3 setMasksToBounds:1];
 
-    v12 = [(BKThumbnailDirectoryCell *)v3 layer];
-    [v12 setCornerRadius:6.0];
+    layer4 = [(BKThumbnailDirectoryCell *)v3 layer];
+    [layer4 setCornerRadius:6.0];
 
     [(BKThumbnailDirectoryCell *)v3 setClipsToBounds:1];
     v13 = +[UITraitCollection bc_allAPITraits];
@@ -53,21 +53,21 @@
   [(BKPageThumbnailView *)self->_pageView setImage:0];
   [(BKPageThumbnailView *)self->_pageView setPageNumber:0x7FFFFFFFFFFFFFFFLL];
   v3 = +[UIColor bc_booksQuaternaryLabelColor];
-  v4 = [v3 CGColor];
-  v5 = [(BKThumbnailDirectoryCell *)self layer];
-  [v5 setBorderColor:v4];
+  cGColor = [v3 CGColor];
+  layer = [(BKThumbnailDirectoryCell *)self layer];
+  [layer setBorderColor:cGColor];
 }
 
-- (CGRect)contentRectForBounds:(CGRect)a3
+- (CGRect)contentRectForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   pageView = self->_pageView;
   if (pageView)
   {
-    [(BKPageThumbnailView *)pageView sizeThatFits:a3.size.width, a3.size.height];
+    [(BKPageThumbnailView *)pageView sizeThatFits:bounds.size.width, bounds.size.height];
     CGRectFitRectInRect();
     x = v8;
     y = v9;
@@ -86,12 +86,12 @@
   return result;
 }
 
-- (void)setHasRibbon:(BOOL)a3
+- (void)setHasRibbon:(BOOL)ribbon
 {
-  if (self->_hasRibbon != a3)
+  if (self->_hasRibbon != ribbon)
   {
-    self->_hasRibbon = a3;
-    [(UIImageView *)self->_ribbonView setHidden:!a3];
+    self->_hasRibbon = ribbon;
+    [(UIImageView *)self->_ribbonView setHidden:!ribbon];
 
     [(BKThumbnailDirectoryCell *)self setNeedsLayout];
   }
@@ -118,8 +118,8 @@
   v36.receiver = self;
   v36.super_class = BKThumbnailDirectoryCell;
   [(BKThumbnailDirectoryCell *)&v36 layoutSubviews];
-  v3 = [(BKThumbnailDirectoryCell *)self contentView];
-  [v3 bounds];
+  contentView = [(BKThumbnailDirectoryCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -140,18 +140,18 @@
       v23 = self->_ribbonView;
       self->_ribbonView = v22;
 
-      v24 = [(BKThumbnailDirectoryCell *)self contentView];
-      [v24 addSubview:self->_ribbonView];
+      contentView2 = [(BKThumbnailDirectoryCell *)self contentView];
+      [contentView2 addSubview:self->_ribbonView];
 
       ribbonView = self->_ribbonView;
     }
 
-    v25 = [(UIImageView *)ribbonView image];
+    image = [(UIImageView *)ribbonView image];
 
-    if (v25)
+    if (image)
     {
-      v26 = [(UIImageView *)self->_ribbonView image];
-      [v26 size];
+      image2 = [(UIImageView *)self->_ribbonView image];
+      [image2 size];
       v28 = v27;
       v30 = v29;
 
@@ -180,18 +180,18 @@
 
   [(BKPageThumbnailView *)self->_pageView setFrame:v13, v15, v17, v19];
   v33 = [UIBezierPath bezierPathWithRect:v13, v15, v17, v19];
-  v34 = [v33 CGPath];
-  v35 = [(BKThumbnailDirectoryCell *)self layer];
-  [v35 setShadowPath:v34];
+  cGPath = [v33 CGPath];
+  layer = [(BKThumbnailDirectoryCell *)self layer];
+  [layer setShadowPath:cGPath];
 }
 
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection
 {
-  v8 = [UIColor bc_booksQuaternaryLabelColor:a3];
+  v8 = [UIColor bc_booksQuaternaryLabelColor:change];
   v5 = v8;
-  v6 = [v8 CGColor];
-  v7 = [(BKThumbnailDirectoryCell *)self layer];
-  [v7 setBorderColor:v6];
+  cGColor = [v8 CGColor];
+  layer = [(BKThumbnailDirectoryCell *)self layer];
+  [layer setBorderColor:cGColor];
 }
 
 @end

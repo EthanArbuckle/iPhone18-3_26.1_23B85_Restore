@@ -5,46 +5,46 @@
 - (LACCompanionAuthenticationProviding)authenticationProvider;
 - (LACCompanionAuthenticationProviding)mockedAuthProvider;
 - (NSString)description;
-- (void)authenticateRequest:(id)a3 completion:(id)a4;
-- (void)authenticationProvider:(id)a3 didFailAuthenticationWithID:(id)a4 error:(id)a5;
-- (void)cancelAuthenticationForRequestIdentifier:(unsigned int)a3;
+- (void)authenticateRequest:(id)request completion:(id)completion;
+- (void)authenticationProvider:(id)provider didFailAuthenticationWithID:(id)d error:(id)error;
+- (void)cancelAuthenticationForRequestIdentifier:(unsigned int)identifier;
 - (void)dealloc;
-- (void)domainStateForRequest:(id)a3 completion:(id)a4;
-- (void)notificationCenter:(id)a3 didReceiveNotification:(const __CFString *)a4;
-- (void)setAuthProvider:(id)a3;
-- (void)setMockedAuthProvider:(id)a3;
+- (void)domainStateForRequest:(id)request completion:(id)completion;
+- (void)notificationCenter:(id)center didReceiveNotification:(const __CFString *)notification;
+- (void)setAuthProvider:(id)provider;
+- (void)setMockedAuthProvider:(id)provider;
 @end
 
 @implementation LACCompanionAuthenticationCoordinator
 
 - (BOOL)isAvailable
 {
-  v2 = self;
-  v3 = [(LACCompanionAuthenticationProviding *)[(LACCompanionAuthenticationCoordinator *)v2 authenticationProvider] isAvailable];
+  selfCopy = self;
+  isAvailable = [(LACCompanionAuthenticationProviding *)[(LACCompanionAuthenticationCoordinator *)selfCopy authenticationProvider] isAvailable];
 
   swift_unknownObjectRelease();
-  return v3;
+  return isAvailable;
 }
 
 - (LACCompanionAuthenticationProviding)authenticationProvider
 {
-  v2 = self;
-  v3 = [(LACCompanionAuthenticationProviding *)[(LACCompanionAuthenticationCoordinator *)v2 mockedAuthProvider] isAvailable];
+  selfCopy = self;
+  isAvailable = [(LACCompanionAuthenticationProviding *)[(LACCompanionAuthenticationCoordinator *)selfCopy mockedAuthProvider] isAvailable];
   swift_unknownObjectRelease();
   v4 = &selRef_authProvider;
-  if (v3)
+  if (isAvailable)
   {
     v4 = &selRef_mockedAuthProvider;
   }
 
-  v5 = [v2 *v4];
+  v5 = [selfCopy *v4];
 
   return v5;
 }
 
 - (LACCompanionAuthenticationProviding)mockedAuthProvider
 {
-  v2 = self;
+  selfCopy = self;
   v3 = LACCompanionAuthenticationCoordinator.mockedAuthProvider.getter();
 
   return v3;
@@ -58,29 +58,29 @@
   return v3;
 }
 
-- (void)notificationCenter:(id)a3 didReceiveNotification:(const __CFString *)a4
+- (void)notificationCenter:(id)center didReceiveNotification:(const __CFString *)notification
 {
-  v5 = a4;
-  v6 = self;
-  if (LACDarwinNotificationsEqual(v5, @"com.apple.LocalAuthentication.GlobalDomainDidChange"))
+  notificationCopy = notification;
+  selfCopy = self;
+  if (LACDarwinNotificationsEqual(notificationCopy, @"com.apple.LocalAuthentication.GlobalDomainDidChange"))
   {
     LACCompanionAuthenticationCoordinator.simulateAuthenticationSuccess()();
   }
 }
 
-- (void)setAuthProvider:(id)a3
+- (void)setAuthProvider:(id)provider
 {
   v3 = *(&self->super.isa + OBJC_IVAR___LACCompanionAuthenticationCoordinator_authProvider);
-  *(&self->super.isa + OBJC_IVAR___LACCompanionAuthenticationCoordinator_authProvider) = a3;
+  *(&self->super.isa + OBJC_IVAR___LACCompanionAuthenticationCoordinator_authProvider) = provider;
   swift_unknownObjectRetain();
 
   swift_unknownObjectRelease();
 }
 
-- (void)setMockedAuthProvider:(id)a3
+- (void)setMockedAuthProvider:(id)provider
 {
   v3 = *(&self->super.isa + OBJC_IVAR___LACCompanionAuthenticationCoordinator____lazy_storage___mockedAuthProvider);
-  *(&self->super.isa + OBJC_IVAR___LACCompanionAuthenticationCoordinator____lazy_storage___mockedAuthProvider) = a3;
+  *(&self->super.isa + OBJC_IVAR___LACCompanionAuthenticationCoordinator____lazy_storage___mockedAuthProvider) = provider;
   swift_unknownObjectRetain();
 
   swift_unknownObjectRelease();
@@ -89,18 +89,18 @@
 - (void)dealloc
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 sharedInstance];
-  [v5 removeObserver_];
+  selfCopy = self;
+  sharedInstance = [v3 sharedInstance];
+  [sharedInstance removeObserver_];
 
-  v6.receiver = v4;
+  v6.receiver = selfCopy;
   v6.super_class = LACCompanionAuthenticationCoordinator;
   [(LACCompanionAuthenticationCoordinator *)&v6 dealloc];
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = LACCompanionAuthenticationCoordinator.description.getter();
   v5 = v4;
 
@@ -109,14 +109,14 @@
   return v6;
 }
 
-- (void)domainStateForRequest:(id)a3 completion:(id)a4
+- (void)domainStateForRequest:(id)request completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
   swift_unknownObjectRetain();
-  v8 = self;
-  v9 = [(LACCompanionAuthenticationCoordinator *)v8 authenticationProvider];
+  selfCopy = self;
+  authenticationProvider = [(LACCompanionAuthenticationCoordinator *)selfCopy authenticationProvider];
   v11[4] = thunk for @escaping @callee_unowned @convention(block) (@unowned NSDictionary?, @unowned NSError?) -> ()partial apply;
   v11[5] = v7;
   v11[0] = MEMORY[0x1E69E9820];
@@ -125,28 +125,28 @@
   v11[3] = &block_descriptor_27;
   v10 = _Block_copy(v11);
 
-  [(LACCompanionAuthenticationProviding *)v9 domainStateForRequest:a3 completion:v10];
+  [(LACCompanionAuthenticationProviding *)authenticationProvider domainStateForRequest:request completion:v10];
   swift_unknownObjectRelease();
 
   _Block_release(v10);
   swift_unknownObjectRelease();
 }
 
-- (void)authenticateRequest:(id)a3 completion:(id)a4
+- (void)authenticateRequest:(id)request completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
   swift_unknownObjectRetain();
-  v8 = self;
-  LACCompanionAuthenticationCoordinator.authenticateRequest(_:completion:)(a3, partial apply for thunk for @escaping @callee_unowned @convention(block) (@unowned NSDictionary?, @unowned NSError?) -> (), v7);
+  selfCopy = self;
+  LACCompanionAuthenticationCoordinator.authenticateRequest(_:completion:)(request, partial apply for thunk for @escaping @callee_unowned @convention(block) (@unowned NSDictionary?, @unowned NSError?) -> (), v7);
   swift_unknownObjectRelease();
 }
 
-- (void)cancelAuthenticationForRequestIdentifier:(unsigned int)a3
+- (void)cancelAuthenticationForRequestIdentifier:(unsigned int)identifier
 {
-  v4 = self;
-  LACCompanionAuthenticationCoordinator.cancelAuthentication(forRequestIdentifier:)(a3);
+  selfCopy = self;
+  LACCompanionAuthenticationCoordinator.cancelAuthentication(forRequestIdentifier:)(identifier);
 }
 
 - (LACCompanionAuthenticationCoordinator)init
@@ -156,7 +156,7 @@
   return result;
 }
 
-- (void)authenticationProvider:(id)a3 didFailAuthenticationWithID:(id)a4 error:(id)a5
+- (void)authenticationProvider:(id)provider didFailAuthenticationWithID:(id)d error:(id)error
 {
   v7 = type metadata accessor for UUID();
   v8 = *(v7 - 8);
@@ -165,9 +165,9 @@
   v11 = &v14 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
   swift_unknownObjectRetain();
-  v12 = a5;
-  v13 = self;
-  specialized LACCompanionAuthenticationCoordinator.authenticationProvider(_:didFailAuthenticationWith:error:)(v11, v12);
+  errorCopy = error;
+  selfCopy = self;
+  specialized LACCompanionAuthenticationCoordinator.authenticationProvider(_:didFailAuthenticationWith:error:)(v11, errorCopy);
   swift_unknownObjectRelease();
 
   (*(v8 + 8))(v11, v7);

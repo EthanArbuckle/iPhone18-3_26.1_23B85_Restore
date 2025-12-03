@@ -1,8 +1,8 @@
 @interface LPAppleMusicLyricExcerptFetcher
 - (LPAppleMusicLyricExcerptFetcher)init;
 - (void)cancel;
-- (void)completedWithLyrics:(id)a3;
-- (void)fetchWithConfiguration:(id)a3 completionHandler:(id)a4;
+- (void)completedWithLyrics:(id)lyrics;
+- (void)fetchWithConfiguration:(id)configuration completionHandler:(id)handler;
 @end
 
 @implementation LPAppleMusicLyricExcerptFetcher
@@ -21,9 +21,9 @@
   return v3;
 }
 
-- (void)fetchWithConfiguration:(id)a3 completionHandler:(id)a4
+- (void)fetchWithConfiguration:(id)configuration completionHandler:(id)handler
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(handler);
   completionHandler = self->_completionHandler;
   self->_completionHandler = v5;
 
@@ -107,16 +107,16 @@ void __76__LPAppleMusicLyricExcerptFetcher_fetchWithConfiguration_completionHand
   self->_completionHandler = 0;
 }
 
-- (void)completedWithLyrics:(id)a3
+- (void)completedWithLyrics:(id)lyrics
 {
-  v4 = a3;
+  lyricsCopy = lyrics;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __55__LPAppleMusicLyricExcerptFetcher_completedWithLyrics___block_invoke;
   v6[3] = &unk_1E7A35478;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = lyricsCopy;
+  v5 = lyricsCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 

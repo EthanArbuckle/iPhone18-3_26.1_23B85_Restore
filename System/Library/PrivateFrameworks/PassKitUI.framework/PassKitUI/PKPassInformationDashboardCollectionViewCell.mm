@@ -1,24 +1,24 @@
 @interface PKPassInformationDashboardCollectionViewCell
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKPassInformationDashboardCollectionViewCell)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKPassInformationDashboardCollectionViewCell)initWithFrame:(CGRect)frame;
 - (void)_createDisclosureViewIfNecessary;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 - (void)refreshFonts;
-- (void)setSecondaryText:(id)a3;
-- (void)setShowsDisclosureView:(BOOL)a3;
-- (void)setTertiaryText:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setSecondaryText:(id)text;
+- (void)setShowsDisclosureView:(BOOL)view;
+- (void)setTertiaryText:(id)text;
+- (void)setTitle:(id)title;
 @end
 
 @implementation PKPassInformationDashboardCollectionViewCell
 
-- (PKPassInformationDashboardCollectionViewCell)initWithFrame:(CGRect)a3
+- (PKPassInformationDashboardCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v21[2] = *MEMORY[0x1E69E9840];
   v20.receiver = self;
   v20.super_class = PKPassInformationDashboardCollectionViewCell;
-  v3 = [(PKDashboardCollectionViewCell *)&v20 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKDashboardCollectionViewCell *)&v20 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DCC10]);
@@ -27,29 +27,29 @@
 
     [(UILabel *)v3->_titleLabel setNumberOfLines:1];
     v6 = v3->_titleLabel;
-    v7 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)v6 setTextColor:v7];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)v6 setTextColor:labelColor];
 
     v8 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     secondaryLabel = v3->_secondaryLabel;
     v3->_secondaryLabel = v8;
 
     v10 = v3->_secondaryLabel;
-    v11 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v10 setTextColor:v11];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v10 setTextColor:secondaryLabelColor];
 
     v12 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     tertiaryLabel = v3->_tertiaryLabel;
     v3->_tertiaryLabel = v12;
 
     v14 = v3->_tertiaryLabel;
-    v15 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v14 setTextColor:v15];
+    secondaryLabelColor2 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v14 setTextColor:secondaryLabelColor2];
 
-    v16 = [(PKPassInformationDashboardCollectionViewCell *)v3 contentView];
-    [v16 addSubview:v3->_titleLabel];
-    [v16 addSubview:v3->_secondaryLabel];
-    [v16 addSubview:v3->_tertiaryLabel];
+    contentView = [(PKPassInformationDashboardCollectionViewCell *)v3 contentView];
+    [contentView addSubview:v3->_titleLabel];
+    [contentView addSubview:v3->_secondaryLabel];
+    [contentView addSubview:v3->_tertiaryLabel];
     [(PKPassInformationDashboardCollectionViewCell *)v3 refreshFonts];
     v21[0] = objc_opt_class();
     v21[1] = objc_opt_class();
@@ -168,15 +168,15 @@
   [(UILabel *)tertiaryLabel setFrame:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v5 = [(UILabel *)self->_titleLabel font:a3.width];
+  width = fits.width;
+  v5 = [(UILabel *)self->_titleLabel font:fits.width];
   [v5 lineHeight];
-  v6 = [(UILabel *)self->_secondaryLabel font];
-  [v6 lineHeight];
-  v7 = [(UILabel *)self->_tertiaryLabel font];
-  [v7 lineHeight];
+  font = [(UILabel *)self->_secondaryLabel font];
+  [font lineHeight];
+  font2 = [(UILabel *)self->_tertiaryLabel font];
+  [font2 lineHeight];
 
   PKFloatRoundToPixel();
   v9 = v8;
@@ -186,47 +186,47 @@
   return result;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   titleLabel = self->_titleLabel;
-  v5 = [a3 copy];
+  v5 = [title copy];
   [(UILabel *)titleLabel setText:v5];
 
   [(PKPassInformationDashboardCollectionViewCell *)self setNeedsLayout];
 }
 
-- (void)setSecondaryText:(id)a3
+- (void)setSecondaryText:(id)text
 {
   secondaryLabel = self->_secondaryLabel;
-  v5 = [a3 copy];
+  v5 = [text copy];
   [(UILabel *)secondaryLabel setText:v5];
 
   [(PKPassInformationDashboardCollectionViewCell *)self setNeedsLayout];
 }
 
-- (void)setTertiaryText:(id)a3
+- (void)setTertiaryText:(id)text
 {
   tertiaryLabel = self->_tertiaryLabel;
-  v5 = [a3 copy];
+  v5 = [text copy];
   [(UILabel *)tertiaryLabel setText:v5];
 
   [(PKPassInformationDashboardCollectionViewCell *)self setNeedsLayout];
 }
 
-- (void)setShowsDisclosureView:(BOOL)a3
+- (void)setShowsDisclosureView:(BOOL)view
 {
-  if (self->_showsDisclosureView == !a3)
+  if (self->_showsDisclosureView == !view)
   {
-    self->_showsDisclosureView = a3;
-    if (a3)
+    self->_showsDisclosureView = view;
+    if (view)
     {
       [(PKPassInformationDashboardCollectionViewCell *)self _createDisclosureViewIfNecessary];
-      v5 = [(UIImageView *)self->_disclosureView superview];
+      superview = [(UIImageView *)self->_disclosureView superview];
 
-      if (!v5)
+      if (!superview)
       {
-        v6 = [(PKPassInformationDashboardCollectionViewCell *)self contentView];
-        [v6 addSubview:self->_disclosureView];
+        contentView = [(PKPassInformationDashboardCollectionViewCell *)self contentView];
+        [contentView addSubview:self->_disclosureView];
       }
     }
 
@@ -247,8 +247,8 @@
     v4 = PKUISmallChevronImage();
     v5 = [v3 initWithImage:v4];
 
-    v6 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
-    [(UIImageView *)v5 setTintColor:v6];
+    tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+    [(UIImageView *)v5 setTintColor:tertiaryLabelColor];
 
     [(UIImageView *)v5 setContentMode:1];
     disclosureView = self->_disclosureView;
@@ -258,8 +258,8 @@
 
 - (void)refreshFonts
 {
-  v3 = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v3);
+  preferredContentSizeCategory = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (IsAccessibilityCategory)
   {

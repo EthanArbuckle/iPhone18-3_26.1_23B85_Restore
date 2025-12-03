@@ -6,33 +6,33 @@
 - (void)_closeLocationRefinement;
 - (void)_createNewContactCard;
 - (void)_doneLocationRefinement;
-- (void)_presentContactVC:(id)a3;
-- (void)_presentViewController:(id)a3 sourceView:(id)a4 sourceRect:(CGRect)a5;
-- (void)_showContactCard:(id)a3;
+- (void)_presentContactVC:(id)c;
+- (void)_presentViewController:(id)controller sourceView:(id)view sourceRect:(CGRect)rect;
+- (void)_showContactCard:(id)card;
 - (void)_showContactPicker;
-- (void)addFavoriteButtonShortcut:(id)a3;
+- (void)addFavoriteButtonShortcut:(id)shortcut;
 - (void)capturePresenter;
-- (void)closeViewController:(id)a3;
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4;
-- (void)contactPickerDidCancel:(id)a3;
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4;
-- (void)createOrUpdateMeCardWithFavorite:(id)a3 completion:(id)a4;
-- (void)editShortcut:(id)a3 sourceView:(id)a4 sourceRect:(CGRect)a5;
+- (void)closeViewController:(id)controller;
+- (void)contactPicker:(id)picker didSelectContact:(id)contact;
+- (void)contactPickerDidCancel:(id)cancel;
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact;
+- (void)createOrUpdateMeCardWithFavorite:(id)favorite completion:(id)completion;
+- (void)editShortcut:(id)shortcut sourceView:(id)view sourceRect:(CGRect)rect;
 - (void)endSession;
-- (void)presentChoicePickerFrom:(id)a3;
-- (void)presentationControllerWillDismiss:(id)a3;
-- (void)presentedViewControllerWasDismissedBySwiping:(id)a3;
-- (void)refinementCoordinator:(id)a3 finishedRefiningCoordinate:(CLLocationCoordinate2D)a4 withShortcut:(id)a5;
-- (void)refinementCoordinator:(id)a3 presentViewController:(id)a4;
-- (void)refinementCoordinatorDidComplete:(id)a3;
-- (void)refinementCoordinatorRequestsChangeAddress:(id)a3 withShortcut:(id)a4;
-- (void)removeShortcut:(id)a3;
-- (void)showAddContact:(id)a3;
-- (void)showAddShortcut:(id)a3;
+- (void)presentChoicePickerFrom:(id)from;
+- (void)presentationControllerWillDismiss:(id)dismiss;
+- (void)presentedViewControllerWasDismissedBySwiping:(id)swiping;
+- (void)refinementCoordinator:(id)coordinator finishedRefiningCoordinate:(CLLocationCoordinate2D)coordinate withShortcut:(id)shortcut;
+- (void)refinementCoordinator:(id)coordinator presentViewController:(id)controller;
+- (void)refinementCoordinatorDidComplete:(id)complete;
+- (void)refinementCoordinatorRequestsChangeAddress:(id)address withShortcut:(id)shortcut;
+- (void)removeShortcut:(id)shortcut;
+- (void)showAddContact:(id)contact;
+- (void)showAddShortcut:(id)shortcut;
 - (void)showMeCard;
-- (void)showMeCardWithAddress:(id)a3 from:(id)a4;
-- (void)showRefineLocation:(id)a3;
-- (void)viewController:(id)a3 didEditMapItemInSession:(id)a4;
+- (void)showMeCardWithAddress:(id)address from:(id)from;
+- (void)showRefineLocation:(id)location;
+- (void)viewController:(id)controller didEditMapItemInSession:(id)session;
 @end
 
 @implementation ShortcutEditSessionControllerImpl
@@ -58,43 +58,43 @@
   return WeakRetained;
 }
 
-- (void)presentationControllerWillDismiss:(id)a3
+- (void)presentationControllerWillDismiss:(id)dismiss
 {
-  if (self->_popoverPresentationController == a3)
+  if (self->_popoverPresentationController == dismiss)
   {
     [(ShortcutEditSessionControllerImpl *)self closeViewController:self->_editShortcutViewController];
   }
 }
 
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4
+- (void)contactPicker:(id)picker didSelectContact:(id)contact
 {
-  v7 = a4;
+  contactCopy = contact;
   v8 = self->_meCardSetupViewController;
-  objc_storeStrong(&self->_meCardContact, a4);
-  v9 = a3;
+  objc_storeStrong(&self->_meCardContact, contact);
+  pickerCopy = picker;
   [(MeCardShortcutViewController *)self->_meCardSetupViewController updateContact];
   v10 = +[AddressBookManager sharedManager];
-  v11 = [v10 contactStore];
-  [v11 setMeContact:v7 error:0];
+  contactStore = [v10 contactStore];
+  [contactStore setMeContact:contactCopy error:0];
 
-  v12 = [v9 presentingViewController];
+  presentingViewController = [pickerCopy presentingViewController];
 
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100B0D8F4;
   v15[3] = &unk_101661A40;
-  v16 = v7;
+  v16 = contactCopy;
   v17 = v8;
-  v18 = self;
+  selfCopy = self;
   v13 = v8;
-  v14 = v7;
-  [v12 dismissViewControllerAnimated:1 completion:v15];
+  v14 = contactCopy;
+  [presentingViewController dismissViewControllerAnimated:1 completion:v15];
 }
 
-- (void)contactPickerDidCancel:(id)a3
+- (void)contactPickerDidCancel:(id)cancel
 {
-  v4 = [a3 presentingViewController];
-  [v4 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [cancel presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 
   if (self->_addressToAdd)
   {
@@ -104,26 +104,26 @@
   }
 }
 
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  contactCopy = contact;
   v8 = self->_meCardSetupViewController;
-  if (v7)
+  if (contactCopy)
   {
     v9 = +[AddressBookManager sharedManager];
-    v10 = [v9 meCardExists];
+    meCardExists = [v9 meCardExists];
 
-    if ((v10 & 1) == 0)
+    if ((meCardExists & 1) == 0)
     {
       v11 = +[AddressBookManager sharedManager];
-      v12 = [v11 contactStore];
-      [v12 setMeContact:v7 error:0];
+      contactStore = [v11 contactStore];
+      [contactStore setMeContact:contactCopy error:0];
     }
 
     if (self->_addressToAdd)
     {
-      [v7 postalAddresses];
+      [contactCopy postalAddresses];
       v33 = 0u;
       v34 = 0u;
       v35 = 0u;
@@ -131,7 +131,7 @@
       v14 = [v13 countByEnumeratingWithState:&v33 objects:v37 count:16];
       if (v14)
       {
-        v26 = a4;
+        contactCopy2 = contact;
         v27 = v8;
         v15 = *v34;
         while (2)
@@ -144,9 +144,9 @@
             }
 
             v17 = *(*(&v33 + 1) + 8 * i);
-            v18 = [(CNLabeledValue *)self->_addressToAdd identifier:v26];
-            v19 = [v17 identifier];
-            v20 = [v18 isEqualToString:v19];
+            v18 = [(CNLabeledValue *)self->_addressToAdd identifier:contactCopy2];
+            identifier = [v17 identifier];
+            v20 = [v18 isEqualToString:identifier];
 
             if (v20)
             {
@@ -165,7 +165,7 @@
         }
 
 LABEL_17:
-        a4 = v26;
+        contact = contactCopy2;
         v8 = v27;
       }
 
@@ -174,7 +174,7 @@ LABEL_17:
       self->_addressToAdd = 0;
     }
 
-    objc_storeStrong(&self->_meCardContact, a4);
+    objc_storeStrong(&self->_meCardContact, contact);
     [(MeCardShortcutViewController *)v8 updateContact];
   }
 
@@ -183,30 +183,30 @@ LABEL_17:
     [(EditShortcutViewController *)self->_editShortcutViewController resetToMapItemType];
   }
 
-  v22 = [v6 presentingViewController];
+  presentingViewController = [controllerCopy presentingViewController];
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;
   v28[2] = sub_100B0DCC4;
   v28[3] = &unk_101656A00;
-  v29 = v7;
+  v29 = contactCopy;
   v30 = v8;
-  v31 = self;
-  v32 = v6;
-  v23 = v6;
+  selfCopy = self;
+  v32 = controllerCopy;
+  v23 = controllerCopy;
   v24 = v8;
-  v25 = v7;
-  [v22 dismissViewControllerAnimated:1 completion:v28];
+  v25 = contactCopy;
+  [presentingViewController dismissViewControllerAnimated:1 completion:v28];
 }
 
-- (void)presentChoicePickerFrom:(id)a3
+- (void)presentChoicePickerFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:@"[Shortcut] No Existing Contact Card" value:@"localized string not found" table:0];
   v7 = [UIAlertController alertControllerWithTitle:v6 message:0 preferredStyle:0];
 
-  v8 = [v7 popoverPresentationController];
-  [v8 setSourceView:v4];
+  popoverPresentationController = [v7 popoverPresentationController];
+  [popoverPresentationController setSourceView:fromCopy];
 
   objc_initWeak(&location, self);
   v9 = +[NSBundle mainBundle];
@@ -239,8 +239,8 @@ LABEL_17:
   v17 = [UIAlertAction actionWithTitle:v16 style:1 handler:&v19];
   [v7 addAction:{v17, v19, v20, v21, v22}];
 
-  v18 = [(ShortcutEditSessionControllerImpl *)self containerViewController];
-  [v18 _maps_topMostPresentViewController:v7 animated:1 completion:0];
+  containerViewController = [(ShortcutEditSessionControllerImpl *)self containerViewController];
+  [containerViewController _maps_topMostPresentViewController:v7 animated:1 completion:0];
 
   objc_destroyWeak(&v23);
   objc_destroyWeak(&v25);
@@ -248,21 +248,21 @@ LABEL_17:
   objc_destroyWeak(&location);
 }
 
-- (void)_presentContactVC:(id)a3
+- (void)_presentContactVC:(id)c
 {
-  v4 = a3;
-  if (sub_10000FA08(v4) == 5)
+  cCopy = c;
+  if (sub_10000FA08(cCopy) == 5)
   {
     [(EditShortcutViewController *)self->_editShortcutViewController setOpeningContactController:1];
     objc_initWeak(&location, self);
-    v5 = [(ShortcutEditSessionControllerImpl *)self containerViewController];
+    containerViewController = [(ShortcutEditSessionControllerImpl *)self containerViewController];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_100B0E300;
     v7[3] = &unk_101661340;
     objc_copyWeak(&v9, &location);
-    v8 = v4;
-    [v5 dismissViewControllerAnimated:1 completion:v7];
+    v8 = cCopy;
+    [containerViewController dismissViewControllerAnimated:1 completion:v7];
 
     objc_destroyWeak(&v9);
     objc_destroyWeak(&location);
@@ -270,8 +270,8 @@ LABEL_17:
 
   else
   {
-    v6 = [(ShortcutEditSessionControllerImpl *)self containerViewController];
-    [v6 _maps_topMostPresentViewController:v4 animated:1 completion:0];
+    containerViewController2 = [(ShortcutEditSessionControllerImpl *)self containerViewController];
+    [containerViewController2 _maps_topMostPresentViewController:cCopy animated:1 completion:0];
   }
 }
 
@@ -293,12 +293,12 @@ LABEL_17:
   [(ShortcutEditSessionControllerImpl *)self _presentContactVC:v4];
 }
 
-- (void)_showContactCard:(id)a3
+- (void)_showContactCard:(id)card
 {
-  v4 = a3;
-  [v4 setDelegate:self];
-  [v4 setDisplayMode:1];
-  v6 = [[UINavigationController alloc] initWithRootViewController:v4];
+  cardCopy = card;
+  [cardCopy setDelegate:self];
+  [cardCopy setDisplayMode:1];
+  v6 = [[UINavigationController alloc] initWithRootViewController:cardCopy];
 
   if (sub_10000FA08(v6) == 5)
   {
@@ -333,72 +333,72 @@ LABEL_17:
   [(ShortcutEditSessionControllerImpl *)self _showContactCard:v5];
 }
 
-- (void)createOrUpdateMeCardWithFavorite:(id)a3 completion:(id)a4
+- (void)createOrUpdateMeCardWithFavorite:(id)favorite completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 cnLabledAddress];
-  if (v8 && ([v6 isMeCardWritebackEnabled] & 1) != 0)
+  favoriteCopy = favorite;
+  completionCopy = completion;
+  cnLabledAddress = [favoriteCopy cnLabledAddress];
+  if (cnLabledAddress && ([favoriteCopy isMeCardWritebackEnabled] & 1) != 0)
   {
     v9 = +[AddressBookManager sharedManager];
-    v10 = [v9 meCard];
+    meCard = [v9 meCard];
 
-    if (v10)
+    if (meCard)
     {
-      v11 = [v8 value];
-      v12 = [v10 postalAddresses];
-      v13 = [CNLabeledValue firstLabeledValueWithValue:v11 inArray:v12];
+      value = [cnLabledAddress value];
+      postalAddresses = [meCard postalAddresses];
+      v13 = [CNLabeledValue firstLabeledValueWithValue:value inArray:postalAddresses];
 
       if (v13)
       {
-        v7[2](v7);
+        completionCopy[2](completionCopy);
 LABEL_14:
 
         goto LABEL_15;
       }
 
-      v15 = [v10 mutableCopy];
-      v24 = [v15 postalAddresses];
-      v17 = [v24 mutableCopy];
+      aa_firstName = [meCard mutableCopy];
+      postalAddresses2 = [aa_firstName postalAddresses];
+      aa_lastName = [postalAddresses2 mutableCopy];
 
-      [v17 addObject:v8];
-      [v15 setPostalAddresses:v17];
+      [aa_lastName addObject:cnLabledAddress];
+      [aa_firstName setPostalAddresses:aa_lastName];
       v25 = +[AddressBookManager sharedManager];
       v31[0] = _NSConcreteStackBlock;
       v31[1] = 3221225472;
       v31[2] = sub_100B0E944;
       v31[3] = &unk_1016382C0;
-      v32 = v7;
-      [v25 updateContact:v15 completion:v31];
+      v32 = completionCopy;
+      [v25 updateContact:aa_firstName completion:v31];
     }
 
     else
     {
       v14 = +[GEOUserAccountInfo primaryICloudAccount];
-      v15 = [v14 aa_firstName];
+      aa_firstName = [v14 aa_firstName];
 
       v16 = +[GEOUserAccountInfo primaryICloudAccount];
-      v17 = [v16 aa_lastName];
+      aa_lastName = [v16 aa_lastName];
 
-      if (v15 && v17)
+      if (aa_firstName && aa_lastName)
       {
         v18 = objc_alloc_init(CNMutableContact);
-        v34 = v8;
+        v34 = cnLabledAddress;
         v19 = [NSArray arrayWithObjects:&v34 count:1];
         [v18 setPostalAddresses:v19];
 
-        [v18 setGivenName:v15];
+        [v18 setGivenName:aa_firstName];
         v20 = +[GEOUserAccountInfo primaryICloudAccount];
-        v21 = [v20 aa_middleName];
-        [v18 setMiddleName:v21];
+        aa_middleName = [v20 aa_middleName];
+        [v18 setMiddleName:aa_middleName];
 
-        [v18 setFamilyName:v17];
+        [v18 setFamilyName:aa_lastName];
         v22 = +[AddressBookManager sharedManager];
         v29[0] = _NSConcreteStackBlock;
         v29[1] = 3221225472;
         v29[2] = sub_100B0E954;
         v29[3] = &unk_1016382C0;
-        v30 = v7;
+        v30 = completionCopy;
         [v22 createMeCardWithContact:v18 completion:v29];
 
         v23 = v30;
@@ -406,12 +406,12 @@ LABEL_14:
 
       else
       {
-        v26 = objc_retainBlock(v7);
+        v26 = objc_retainBlock(completionCopy);
         contactsSaveHandler = self->contactsSaveHandler;
         self->contactsSaveHandler = v26;
 
         v18 = objc_alloc_init(CNMutableContact);
-        v33 = v8;
+        v33 = cnLabledAddress;
         v28 = [NSArray arrayWithObjects:&v33 count:1];
         [v18 setPostalAddresses:v28];
 
@@ -423,35 +423,35 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v7[2](v7);
+  completionCopy[2](completionCopy);
 LABEL_15:
 }
 
-- (void)showMeCardWithAddress:(id)a3 from:(id)a4
+- (void)showMeCardWithAddress:(id)address from:(id)from
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(ShortcutEditSessionControllerImpl *)self meCardContact];
+  addressCopy = address;
+  fromCopy = from;
+  meCardContact = [(ShortcutEditSessionControllerImpl *)self meCardContact];
 
-  if (v9)
+  if (meCardContact)
   {
-    if (v7)
+    if (addressCopy)
     {
       v10 = objc_alloc_init(CNMutableContact);
-      v15 = v7;
+      v15 = addressCopy;
       v11 = [NSArray arrayWithObjects:&v15 count:1];
       [v10 setPostalAddresses:v11];
 
-      v12 = [(ShortcutEditSessionControllerImpl *)self meCardContact];
-      v13 = [CNContactViewController viewControllerForUpdatingContact:v12 withPropertiesFromContact:v10];
+      meCardContact2 = [(ShortcutEditSessionControllerImpl *)self meCardContact];
+      v13 = [CNContactViewController viewControllerForUpdatingContact:meCardContact2 withPropertiesFromContact:v10];
 
-      objc_storeStrong(&self->_addressToAdd, a3);
+      objc_storeStrong(&self->_addressToAdd, address);
     }
 
     else
     {
-      v14 = [(ShortcutEditSessionControllerImpl *)self meCardContact];
-      v13 = [CNContactViewController viewControllerForContact:v14];
+      meCardContact3 = [(ShortcutEditSessionControllerImpl *)self meCardContact];
+      v13 = [CNContactViewController viewControllerForContact:meCardContact3];
 
       [v13 setActions:{objc_msgSend(v13, "actions") | 0x100}];
     }
@@ -460,23 +460,23 @@ LABEL_15:
     [(ShortcutEditSessionControllerImpl *)self _showContactCard:v13];
   }
 
-  else if (v8)
+  else if (fromCopy)
   {
-    objc_storeStrong(&self->_addressToAdd, a3);
-    [(ShortcutEditSessionControllerImpl *)self presentChoicePickerFrom:v8];
+    objc_storeStrong(&self->_addressToAdd, address);
+    [(ShortcutEditSessionControllerImpl *)self presentChoicePickerFrom:fromCopy];
   }
 }
 
 - (void)showMeCard
 {
-  v3 = [(ShortcutEditSessionControllerImpl *)self meCardContact];
+  meCardContact = [(ShortcutEditSessionControllerImpl *)self meCardContact];
   objc_initWeak(&location, self);
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100B0ECB0;
   v11[3] = &unk_101661340;
   objc_copyWeak(&v13, &location);
-  v4 = v3;
+  v4 = meCardContact;
   v12 = v4;
   v5 = objc_retainBlock(v11);
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
@@ -508,9 +508,9 @@ LABEL_15:
   if (!meCardContact)
   {
     v4 = +[AddressBookManager sharedManager];
-    v5 = [v4 meCard];
+    meCard = [v4 meCard];
     v6 = self->_meCardContact;
-    self->_meCardContact = v5;
+    self->_meCardContact = meCard;
 
     meCardContact = self->_meCardContact;
   }
@@ -518,10 +518,10 @@ LABEL_15:
   return meCardContact;
 }
 
-- (void)closeViewController:(id)a3
+- (void)closeViewController:(id)controller
 {
-  v11 = a3;
-  if (self->_meCardSetupViewController == v11 && self->_editShortcutViewController)
+  controllerCopy = controller;
+  if (self->_meCardSetupViewController == controllerCopy && self->_editShortcutViewController)
   {
     WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
     v7 = WeakRetained;
@@ -556,11 +556,11 @@ LABEL_4:
       goto LABEL_18;
     }
 
-    v9 = sub_10000FA08(v11);
+    v9 = sub_10000FA08(controllerCopy);
     presentingViewController = self->_presentingViewController;
-    if (v9 == 5 && presentingViewController == v11)
+    if (v9 == 5 && presentingViewController == controllerCopy)
     {
-      if ([(MeCardShortcutViewController *)v11 modalPresentationStyle]== 2)
+      if ([(MeCardShortcutViewController *)controllerCopy modalPresentationStyle]== 2)
       {
         goto LABEL_4;
       }
@@ -572,7 +572,7 @@ LABEL_4:
     goto LABEL_19;
   }
 
-  if (sub_10000FA08(v11) == 5 && [(MeCardShortcutViewController *)v11 modalPresentationStyle]== 2)
+  if (sub_10000FA08(controllerCopy) == 5 && [(MeCardShortcutViewController *)controllerCopy modalPresentationStyle]== 2)
   {
     goto LABEL_4;
   }
@@ -584,40 +584,40 @@ LABEL_19:
 {
   if (self->_didReplaceShortcut)
   {
-    v3 = [(ShortcutEditSession *)self->_shortcutEditSession shortcut];
+    shortcut = [(ShortcutEditSession *)self->_shortcutEditSession shortcut];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(ShortcutEditSession *)self->_shortcutEditSession shortcut];
+      shortcut2 = [(ShortcutEditSession *)self->_shortcutEditSession shortcut];
     }
 
     else
     {
-      v7 = 0;
+      shortcut2 = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    shortcut2 = 0;
   }
 
   self->_didReplaceShortcut = 0;
-  v4 = [(ShortcutEditSessionControllerImpl *)self delegate];
-  [v4 shortcutEditSessionControllerFinished:self shortcutWasReplacedBy:v7];
+  delegate = [(ShortcutEditSessionControllerImpl *)self delegate];
+  [delegate shortcutEditSessionControllerFinished:self shortcutWasReplacedBy:shortcut2];
 
-  v5 = [(ShortcutEditSession *)self->_shortcutEditSession completionHandler];
+  completionHandler = [(ShortcutEditSession *)self->_shortcutEditSession completionHandler];
 
-  if (v5)
+  if (completionHandler)
   {
-    v6 = [(ShortcutEditSession *)self->_shortcutEditSession completionHandler];
-    v6[2]();
+    completionHandler2 = [(ShortcutEditSession *)self->_shortcutEditSession completionHandler];
+    completionHandler2[2]();
   }
 }
 
-- (void)presentedViewControllerWasDismissedBySwiping:(id)a3
+- (void)presentedViewControllerWasDismissedBySwiping:(id)swiping
 {
-  v4 = a3;
+  swipingCopy = swiping;
   [(ShortcutEditSessionControllerImpl *)self endSession];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -630,16 +630,16 @@ LABEL_19:
   }
 }
 
-- (void)removeShortcut:(id)a3
+- (void)removeShortcut:(id)shortcut
 {
-  [a3 removeFromShortcutsWithCompletion:&stru_101638298];
+  [shortcut removeFromShortcutsWithCompletion:&stru_101638298];
   if (self->_popoverPresentationController)
   {
     WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-    v5 = [WeakRetained presentedViewController];
+    presentedViewController = [WeakRetained presentedViewController];
     editShortcutViewController = self->_editShortcutViewController;
 
-    if (v5 == editShortcutViewController)
+    if (presentedViewController == editShortcutViewController)
     {
       v7 = objc_loadWeakRetained(&self->_containerViewController);
       [v7 dismissViewControllerAnimated:1 completion:0];
@@ -653,23 +653,23 @@ LABEL_19:
   }
 }
 
-- (void)_presentViewController:(id)a3 sourceView:(id)a4 sourceRect:(CGRect)a5
+- (void)_presentViewController:(id)controller sourceView:(id)view sourceRect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a3;
-  v12 = a4;
-  if (v12)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  controllerCopy = controller;
+  viewCopy = view;
+  if (viewCopy)
   {
-    [v11 setModalPresentationStyle:7];
-    v13 = [v11 popoverPresentationController];
+    [controllerCopy setModalPresentationStyle:7];
+    popoverPresentationController = [controllerCopy popoverPresentationController];
     popoverPresentationController = self->_popoverPresentationController;
-    self->_popoverPresentationController = v13;
+    self->_popoverPresentationController = popoverPresentationController;
 
     [(UIPopoverPresentationController *)self->_popoverPresentationController setDelegate:self];
-    [(UIPopoverPresentationController *)self->_popoverPresentationController setSourceView:v12];
+    [(UIPopoverPresentationController *)self->_popoverPresentationController setSourceView:viewCopy];
     [(UIPopoverPresentationController *)self->_popoverPresentationController setSourceRect:x, y, width, height];
     [(UIPopoverPresentationController *)self->_popoverPresentationController setPermittedArrowDirections:4];
   }
@@ -686,7 +686,7 @@ LABEL_19:
     v19[2] = sub_100B0F31C;
     v19[3] = &unk_101661340;
     objc_copyWeak(&v21, &location);
-    v20 = v11;
+    v20 = controllerCopy;
     [v17 dismissViewControllerAnimated:1 completion:v19];
 
     objc_destroyWeak(&v21);
@@ -696,31 +696,31 @@ LABEL_19:
   else
   {
     v18 = objc_loadWeakRetained(&self->_containerViewController);
-    [v18 _maps_topMostPresentViewController:v11 animated:1 completion:0];
+    [v18 _maps_topMostPresentViewController:controllerCopy animated:1 completion:0];
   }
 }
 
-- (void)editShortcut:(id)a3 sourceView:(id)a4 sourceRect:(CGRect)a5
+- (void)editShortcut:(id)shortcut sourceView:(id)view sourceRect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v12 = a3;
-  v13 = a4;
-  objc_storeStrong(&self->_shortcutEditSession, a3);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  shortcutCopy = shortcut;
+  viewCopy = view;
+  objc_storeStrong(&self->_shortcutEditSession, shortcut);
   [(ShortcutEditSessionControllerImpl *)self capturePresenter];
-  if ([v12 editOnlyLocation])
+  if ([shortcutCopy editOnlyLocation])
   {
-    [(ShortcutEditSessionControllerImpl *)self showRefineLocation:v12];
+    [(ShortcutEditSessionControllerImpl *)self showRefineLocation:shortcutCopy];
   }
 
   else
   {
-    if (([v12 editOnlyAddress] & 1) != 0 || objc_msgSend(v12, "editingModeType") == 1)
+    if (([shortcutCopy editOnlyAddress] & 1) != 0 || objc_msgSend(shortcutCopy, "editingModeType") == 1)
     {
       WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-      v15 = [WeakRetained currentViewController];
+      currentViewController = [WeakRetained currentViewController];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -732,7 +732,7 @@ LABEL_19:
         v20[2] = sub_100B0F61C;
         v20[3] = &unk_10165FC50;
         objc_copyWeak(&v22, &location);
-        v21 = v15;
+        v21 = currentViewController;
         [(ShortcutEditSession *)shortcutEditSession saveWithCompletion:v20];
 
         objc_destroyWeak(&v22);
@@ -741,26 +741,26 @@ LABEL_19:
 
       else
       {
-        [(ShortcutEditSessionControllerImpl *)self showAddShortcut:v12];
+        [(ShortcutEditSessionControllerImpl *)self showAddShortcut:shortcutCopy];
       }
     }
 
     else
     {
-      if ([v12 isSetupPlaceholder] && !+[LibraryUIUtilities isMyPlacesEnabled](_TtC4Maps18LibraryUIUtilities, "isMyPlacesEnabled") || +[LibraryUIUtilities isMyPlacesEnabled](_TtC4Maps18LibraryUIUtilities, "isMyPlacesEnabled") && (objc_msgSend(v12, "shortcut"), v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v17, "geoMapItem"), v18 = objc_claimAutoreleasedReturnValue(), v18, v17, !v18))
+      if ([shortcutCopy isSetupPlaceholder] && !+[LibraryUIUtilities isMyPlacesEnabled](_TtC4Maps18LibraryUIUtilities, "isMyPlacesEnabled") || +[LibraryUIUtilities isMyPlacesEnabled](_TtC4Maps18LibraryUIUtilities, "isMyPlacesEnabled") && (objc_msgSend(shortcutCopy, "shortcut"), v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v17, "geoMapItem"), v18 = objc_claimAutoreleasedReturnValue(), v18, v17, !v18))
       {
-        [(ShortcutEditSessionControllerImpl *)self showAddShortcut:v12];
+        [(ShortcutEditSessionControllerImpl *)self showAddShortcut:shortcutCopy];
         goto LABEL_9;
       }
 
-      v15 = [[EditShortcutViewController alloc] initWithShortcutEditSession:v12];
-      [(EditShortcutViewController *)v15 setSessionController:self];
-      objc_storeStrong(&self->_editShortcutViewController, v15);
-      if (v13)
+      currentViewController = [[EditShortcutViewController alloc] initWithShortcutEditSession:shortcutCopy];
+      [(EditShortcutViewController *)currentViewController setSessionController:self];
+      objc_storeStrong(&self->_editShortcutViewController, currentViewController);
+      if (viewCopy)
       {
         if (!self->_popoverPresentationController)
         {
-          [(ShortcutEditSessionControllerImpl *)self _presentViewController:self->_editShortcutViewController sourceView:v13 sourceRect:x, y, width, height];
+          [(ShortcutEditSessionControllerImpl *)self _presentViewController:self->_editShortcutViewController sourceView:viewCopy sourceRect:x, y, width, height];
         }
       }
 
@@ -775,21 +775,21 @@ LABEL_19:
 LABEL_9:
 }
 
-- (void)viewController:(id)a3 didEditMapItemInSession:(id)a4
+- (void)viewController:(id)controller didEditMapItemInSession:(id)session
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (self->_shortcutEditSession == v7 && [(ShortcutEditSession *)v7 editOnlyLocation])
+  controllerCopy = controller;
+  sessionCopy = session;
+  v8 = sessionCopy;
+  if (self->_shortcutEditSession == sessionCopy && [(ShortcutEditSession *)sessionCopy editOnlyLocation])
   {
     self->_didReplaceShortcut = 1;
     [(ShortcutEditSession *)v8 setEditingModeType:1];
   }
 
-  if (sub_10000FA08(v6) == 5)
+  if (sub_10000FA08(controllerCopy) == 5)
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && self->_addShortcutSetupViewController == v6)
+    if ((objc_opt_isKindOfClass() & 1) != 0 && self->_addShortcutSetupViewController == controllerCopy)
     {
       objc_initWeak(&location, self);
       shortcutEditSession = self->_shortcutEditSession;
@@ -810,7 +810,7 @@ LABEL_9:
       v11[2] = sub_100B0F92C;
       v11[3] = &unk_10165FC50;
       objc_copyWeak(&v13, &location);
-      v12 = v6;
+      v12 = controllerCopy;
       [(ShortcutEditSession *)v8 saveWithCompletion:v11];
 
       v9 = &v13;
@@ -826,17 +826,17 @@ LABEL_9:
   }
 }
 
-- (void)addFavoriteButtonShortcut:(id)a3
+- (void)addFavoriteButtonShortcut:(id)shortcut
 {
-  v4 = a3;
-  [v4 setEditingModeType:1];
-  [(ShortcutEditSessionControllerImpl *)self editShortcut:v4 sourceView:0 sourceRect:CGRectNull.origin.x, CGRectNull.origin.y, CGRectNull.size.width, CGRectNull.size.height];
-  v7 = [v4 shortcut];
+  shortcutCopy = shortcut;
+  [shortcutCopy setEditingModeType:1];
+  [(ShortcutEditSessionControllerImpl *)self editShortcut:shortcutCopy sourceView:0 sourceRect:CGRectNull.origin.x, CGRectNull.origin.y, CGRectNull.size.width, CGRectNull.size.height];
+  shortcut = [shortcutCopy shortcut];
 
-  if ([v7 type] == 6)
+  if ([shortcut type] == 6)
   {
-    v5 = [v7 identifier];
-    v6 = [v5 isEqualToString:@"NearbyTransit"];
+    identifier = [shortcut identifier];
+    v6 = [identifier isEqualToString:@"NearbyTransit"];
 
     if (v6)
     {
@@ -850,31 +850,31 @@ LABEL_9:
   }
 }
 
-- (void)showAddContact:(id)a3
+- (void)showAddContact:(id)contact
 {
-  v4 = a3;
+  contactCopy = contact;
   [(ShortcutEditSessionControllerImpl *)self capturePresenter];
-  v7 = [[ContactSearchViewController alloc] initWithShortcutEditSession:v4];
+  v7 = [[ContactSearchViewController alloc] initWithShortcutEditSession:contactCopy];
 
-  v5 = [(ShortcutEditSessionControllerImpl *)self delegate];
-  [(ContaineeViewController *)v7 setContaineeDelegate:v5];
+  delegate = [(ShortcutEditSessionControllerImpl *)self delegate];
+  [(ContaineeViewController *)v7 setContaineeDelegate:delegate];
 
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
   [WeakRetained presentController:v7 animated:1];
 }
 
-- (void)showAddShortcut:(id)a3
+- (void)showAddShortcut:(id)shortcut
 {
-  v4 = a3;
+  shortcutCopy = shortcut;
   [(ShortcutEditSessionControllerImpl *)self capturePresenter];
-  v5 = [v4 shortcut];
-  v6 = [v5 type];
+  shortcut = [shortcutCopy shortcut];
+  type = [shortcut type];
 
-  if (v6 <= 6)
+  if (type <= 6)
   {
-    if (((1 << v6) & 0x2C) != 0)
+    if (((1 << type) & 0x2C) != 0)
     {
-      v11 = [[AddShortcutViewController alloc] initWithShortcutEditSession:v4];
+      v11 = [[AddShortcutViewController alloc] initWithShortcutEditSession:shortcutCopy];
       [(AddShortcutViewController *)v11 setSessionController:self];
       objc_storeStrong(&self->_addShortcutSetupViewController, v11);
       objc_initWeak(&location, self);
@@ -891,9 +891,9 @@ LABEL_9:
       objc_destroyWeak(&location);
     }
 
-    else if (((1 << v6) & 0x43) != 0)
+    else if (((1 << type) & 0x43) != 0)
     {
-      v7 = [[AddShortcutViewController alloc] initWithShortcutEditSession:v4];
+      v7 = [[AddShortcutViewController alloc] initWithShortcutEditSession:shortcutCopy];
       [(AddShortcutViewController *)v7 setSessionController:self];
       addShortcutViewController = self->_addShortcutViewController;
       self->_addShortcutViewController = v7;
@@ -934,40 +934,40 @@ LABEL_9:
 - (void)_closeLocationRefinement
 {
   objc_initWeak(&location, self);
-  v3 = [(EditLocationViewController *)self->_refineCoordinateViewController presentingViewController];
+  presentingViewController = [(EditLocationViewController *)self->_refineCoordinateViewController presentingViewController];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100B0FF9C;
   v4[3] = &unk_101661B98;
   objc_copyWeak(&v5, &location);
-  [v3 dismissViewControllerAnimated:1 completion:v4];
+  [presentingViewController dismissViewControllerAnimated:1 completion:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
 }
 
-- (void)showRefineLocation:(id)a3
+- (void)showRefineLocation:(id)location
 {
-  v10 = a3;
-  v4 = [v10 shortcut];
+  locationCopy = location;
+  shortcut = [locationCopy shortcut];
 
-  if (v4)
+  if (shortcut)
   {
     v5 = [RAPPersonalPlaceRefinementCoordinator alloc];
     WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-    v7 = [v10 shortcut];
-    v8 = [(RAPPersonalPlaceRefinementCoordinator *)v5 initWithPresentingViewController:WeakRetained delegate:self shortcut:v7];
+    shortcut2 = [locationCopy shortcut];
+    v8 = [(RAPPersonalPlaceRefinementCoordinator *)v5 initWithPresentingViewController:WeakRetained delegate:self shortcut:shortcut2];
     homeWorkCoordinator = self->_homeWorkCoordinator;
     self->_homeWorkCoordinator = v8;
 
-    [v10 setEditingModeType:3];
+    [locationCopy setEditingModeType:3];
     [(RAPPersonalPlaceRefinementCoordinator *)self->_homeWorkCoordinator beginShortcutRefinement];
   }
 }
 
-- (void)refinementCoordinatorDidComplete:(id)a3
+- (void)refinementCoordinatorDidComplete:(id)complete
 {
-  v5 = a3;
+  completeCopy = complete;
   editShortcutViewController = self->_editShortcutViewController;
   if (editShortcutViewController)
   {
@@ -983,17 +983,17 @@ LABEL_9:
   }
 }
 
-- (void)refinementCoordinator:(id)a3 presentViewController:(id)a4
+- (void)refinementCoordinator:(id)coordinator presentViewController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  coordinatorCopy = coordinator;
+  controllerCopy = controller;
   objc_initWeak(&location, self);
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100B1029C;
   v13[3] = &unk_101661340;
   objc_copyWeak(&v15, &location);
-  v8 = v7;
+  v8 = controllerCopy;
   v14 = v8;
   v9 = objc_retainBlock(v13);
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
@@ -1014,11 +1014,11 @@ LABEL_9:
   objc_destroyWeak(&location);
 }
 
-- (void)refinementCoordinator:(id)a3 finishedRefiningCoordinate:(CLLocationCoordinate2D)a4 withShortcut:(id)a5
+- (void)refinementCoordinator:(id)coordinator finishedRefiningCoordinate:(CLLocationCoordinate2D)coordinate withShortcut:(id)shortcut
 {
-  longitude = a4.longitude;
-  latitude = a4.latitude;
-  v8 = a5;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  shortcutCopy = shortcut;
   [(ShortcutEditSession *)self->_shortcutEditSession setAdjustedCoordinate:latitude, longitude];
   if ([(ShortcutEditSession *)self->_shortcutEditSession editOnlyLocation])
   {
@@ -1027,7 +1027,7 @@ LABEL_9:
     v10[1] = 3221225472;
     v10[2] = sub_100B103E4;
     v10[3] = &unk_101661738;
-    v11 = v8;
+    v11 = shortcutCopy;
     [(ShortcutEditSession *)shortcutEditSession saveWithCompletion:v10];
     if (!self->_editShortcutViewController)
     {
@@ -1036,21 +1036,21 @@ LABEL_9:
   }
 }
 
-- (void)refinementCoordinatorRequestsChangeAddress:(id)a3 withShortcut:(id)a4
+- (void)refinementCoordinatorRequestsChangeAddress:(id)address withShortcut:(id)shortcut
 {
   shortcutEditSession = self->_shortcutEditSession;
-  v6 = a4;
+  shortcutCopy = shortcut;
   [(ShortcutEditSessionControllerImpl *)self showAddShortcut:shortcutEditSession];
-  v7 = [v6 type];
+  type = [shortcutCopy type];
 
-  if ((v7 - 2) > 3)
+  if ((type - 2) > 3)
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = dword_101212C40[(v7 - 2)];
+    v8 = dword_101212C40[(type - 2)];
   }
 
   [GEOAPPortal captureUserAction:v8 target:253 value:0];
@@ -1061,9 +1061,9 @@ LABEL_9:
   if (!self->_presentingViewController)
   {
     WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-    v4 = [WeakRetained currentViewController];
+    currentViewController = [WeakRetained currentViewController];
     presentingViewController = self->_presentingViewController;
-    self->_presentingViewController = v4;
+    self->_presentingViewController = currentViewController;
   }
 }
 

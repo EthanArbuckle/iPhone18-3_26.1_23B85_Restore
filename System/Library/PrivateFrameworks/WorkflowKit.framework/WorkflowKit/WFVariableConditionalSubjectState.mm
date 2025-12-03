@@ -1,7 +1,7 @@
 @interface WFVariableConditionalSubjectState
 - (BOOL)isCaseInsensitive;
 - (BOOL)isEnumeration;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isIrrational;
 - (Class)contentClassProvidingContentProperty;
 - (Class)effectiveContentClass;
@@ -9,10 +9,10 @@
 - (WFContentProperty)effectiveContentProperty;
 - (WFPropertyListObject)serializedRepresentation;
 - (WFVariable)variable;
-- (WFVariableConditionalSubjectState)initWithSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5;
-- (WFVariableConditionalSubjectState)initWithVariable:(id)a3;
-- (WFVariableConditionalSubjectState)initWithVariableState:(id)a3;
-- (id)localizedLabelForEnumerationPossibleState:(id)a3;
+- (WFVariableConditionalSubjectState)initWithSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter;
+- (WFVariableConditionalSubjectState)initWithVariable:(id)variable;
+- (WFVariableConditionalSubjectState)initWithVariableState:(id)state;
+- (id)localizedLabelForEnumerationPossibleState:(id)state;
 - (id)supportedComparisonOperators;
 - (id)unitType;
 - (int64_t)contentType;
@@ -20,18 +20,18 @@
 - (unint64_t)displayableTimeUnits;
 - (unint64_t)hash;
 - (unint64_t)tense;
-- (void)getContentWithContext:(id)a3 completionHandler:(id)a4;
-- (void)getEnumerationPossibleStatesWithCompletionHandler:(id)a3;
+- (void)getContentWithContext:(id)context completionHandler:(id)handler;
+- (void)getEnumerationPossibleStatesWithCompletionHandler:(id)handler;
 @end
 
 @implementation WFVariableConditionalSubjectState
 
-- (id)localizedLabelForEnumerationPossibleState:(id)a3
+- (id)localizedLabelForEnumerationPossibleState:(id)state
 {
-  v4 = a3;
-  v5 = [v4 variable];
+  stateCopy = state;
+  variable = [stateCopy variable];
 
-  if (v5)
+  if (variable)
   {
     goto LABEL_2;
   }
@@ -42,8 +42,8 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [v4 value];
-      v6 = WFLocalizedContentPropertyPossibleValue(v9);
+      value = [stateCopy value];
+      v6 = WFLocalizedContentPropertyPossibleValue(value);
       goto LABEL_11;
     }
 
@@ -52,23 +52,23 @@ LABEL_2:
     goto LABEL_3;
   }
 
-  v8 = [(WFVariableConditionalSubjectState *)self effectiveContentClass];
-  if (![(objc_class *)v8 isSubclassOfClass:objc_opt_class()])
+  effectiveContentClass = [(WFVariableConditionalSubjectState *)self effectiveContentClass];
+  if (![(objc_class *)effectiveContentClass isSubclassOfClass:objc_opt_class()])
   {
     goto LABEL_2;
   }
 
-  v9 = [(objc_class *)v8 enumMetadata];
-  v10 = [v9 cases];
+  value = [(objc_class *)effectiveContentClass enumMetadata];
+  cases = [value cases];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __79__WFVariableConditionalSubjectState_localizedLabelForEnumerationPossibleState___block_invoke;
   v14[3] = &unk_1E837F1B0;
-  v15 = v4;
-  v11 = [v10 if_firstObjectPassingTest:v14];
-  v12 = [v11 displayRepresentation];
-  v13 = [v12 title];
-  v6 = [v13 localizedStringForLocaleIdentifier:0];
+  v15 = stateCopy;
+  v11 = [cases if_firstObjectPassingTest:v14];
+  displayRepresentation = [v11 displayRepresentation];
+  title = [displayRepresentation title];
+  v6 = [title localizedStringForLocaleIdentifier:0];
 
 LABEL_11:
 LABEL_3:
@@ -107,36 +107,36 @@ uint64_t __79__WFVariableConditionalSubjectState_localizedLabelForEnumerationPos
   return v8;
 }
 
-- (void)getEnumerationPossibleStatesWithCompletionHandler:(id)a3
+- (void)getEnumerationPossibleStatesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(WFVariableConditionalSubjectState *)self effectiveContentProperty];
-  v6 = v5;
-  if (v5)
+  handlerCopy = handler;
+  effectiveContentProperty = [(WFVariableConditionalSubjectState *)self effectiveContentProperty];
+  v6 = effectiveContentProperty;
+  if (effectiveContentProperty)
   {
-    v7 = [v5 possibleValues];
+    possibleValues = [effectiveContentProperty possibleValues];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __87__WFVariableConditionalSubjectState_getEnumerationPossibleStatesWithCompletionHandler___block_invoke_2;
     v12[3] = &unk_1E837EC18;
-    v13 = v4;
-    [v7 getValuesWithCompletionBlock:v12];
+    v13 = handlerCopy;
+    [possibleValues getValuesWithCompletionBlock:v12];
   }
 
   else
   {
-    v8 = [(WFVariableConditionalSubjectState *)self effectiveContentClass];
-    if ([(objc_class *)v8 isSubclassOfClass:objc_opt_class()])
+    effectiveContentClass = [(WFVariableConditionalSubjectState *)self effectiveContentClass];
+    if ([(objc_class *)effectiveContentClass isSubclassOfClass:objc_opt_class()])
     {
-      v9 = [(objc_class *)v8 enumMetadata];
-      v10 = [v9 cases];
-      v11 = [v10 if_map:&__block_literal_global_68722];
-      (*(v4 + 2))(v4, v11);
+      enumMetadata = [(objc_class *)effectiveContentClass enumMetadata];
+      cases = [enumMetadata cases];
+      v11 = [cases if_map:&__block_literal_global_68722];
+      (*(handlerCopy + 2))(handlerCopy, v11);
     }
 
     else
     {
-      (*(v4 + 2))(v4, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0);
     }
   }
 }
@@ -249,85 +249,85 @@ WFLinkEnumerationSubstitutableState *__87__WFVariableConditionalSubjectState_get
 
 - (BOOL)isEnumeration
 {
-  v3 = [(WFVariableConditionalSubjectState *)self effectiveContentProperty];
-  v4 = ([v3 hasPossibleValues] & 1) != 0 || -[WFVariableConditionalSubjectState contentType](self, "contentType") == 8;
+  effectiveContentProperty = [(WFVariableConditionalSubjectState *)self effectiveContentProperty];
+  v4 = ([effectiveContentProperty hasPossibleValues] & 1) != 0 || -[WFVariableConditionalSubjectState contentType](self, "contentType") == 8;
 
   return v4;
 }
 
 - (unint64_t)comparableTimeUnits
 {
-  v3 = [(WFVariableConditionalSubjectState *)self effectiveContentProperty];
-  if (v3)
+  effectiveContentProperty = [(WFVariableConditionalSubjectState *)self effectiveContentProperty];
+  if (effectiveContentProperty)
   {
-    v4 = [(WFVariableConditionalSubjectState *)self effectiveContentProperty];
-    v5 = [v4 comparableUnits];
+    effectiveContentProperty2 = [(WFVariableConditionalSubjectState *)self effectiveContentProperty];
+    comparableUnits = [effectiveContentProperty2 comparableUnits];
   }
 
   else
   {
-    v5 = 8444;
+    comparableUnits = 8444;
   }
 
-  return v5;
+  return comparableUnits;
 }
 
 - (unint64_t)displayableTimeUnits
 {
-  v3 = [(WFVariableConditionalSubjectState *)self effectiveContentProperty];
-  if (v3)
+  effectiveContentProperty = [(WFVariableConditionalSubjectState *)self effectiveContentProperty];
+  if (effectiveContentProperty)
   {
-    v4 = [(WFVariableConditionalSubjectState *)self effectiveContentProperty];
-    v5 = [v4 timeUnits];
+    effectiveContentProperty2 = [(WFVariableConditionalSubjectState *)self effectiveContentProperty];
+    timeUnits = [effectiveContentProperty2 timeUnits];
   }
 
   else
   {
-    v5 = 8444;
+    timeUnits = 8444;
   }
 
-  return v5;
+  return timeUnits;
 }
 
 - (unint64_t)tense
 {
-  v3 = [(WFVariableConditionalSubjectState *)self effectiveContentProperty];
-  if (v3)
+  effectiveContentProperty = [(WFVariableConditionalSubjectState *)self effectiveContentProperty];
+  if (effectiveContentProperty)
   {
-    v4 = [(WFVariableConditionalSubjectState *)self effectiveContentProperty];
-    v5 = [v4 tense];
+    effectiveContentProperty2 = [(WFVariableConditionalSubjectState *)self effectiveContentProperty];
+    tense = [effectiveContentProperty2 tense];
   }
 
   else
   {
-    v5 = 3;
+    tense = 3;
   }
 
-  return v5;
+  return tense;
 }
 
 - (BOOL)isIrrational
 {
-  v3 = [(WFVariableConditionalSubjectState *)self effectiveContentProperty];
-  if (v3)
+  effectiveContentProperty = [(WFVariableConditionalSubjectState *)self effectiveContentProperty];
+  if (effectiveContentProperty)
   {
-    v4 = [(WFVariableConditionalSubjectState *)self effectiveContentProperty];
-    v5 = [v4 isIrrational];
+    effectiveContentProperty2 = [(WFVariableConditionalSubjectState *)self effectiveContentProperty];
+    isIrrational = [effectiveContentProperty2 isIrrational];
   }
 
   else
   {
-    v5 = 0;
+    isIrrational = 0;
   }
 
-  return v5;
+  return isIrrational;
 }
 
 - (id)unitType
 {
-  v3 = [(WFVariableConditionalSubjectState *)self variable];
-  v4 = [v3 aggrandizements];
-  if ([v4 count])
+  variable = [(WFVariableConditionalSubjectState *)self variable];
+  aggrandizements = [variable aggrandizements];
+  if ([aggrandizements count])
   {
   }
 
@@ -338,97 +338,97 @@ WFLinkEnumerationSubstitutableState *__87__WFVariableConditionalSubjectState_get
 
     if (isKindOfClass)
     {
-      v6 = [v3 action];
-      v7 = [v6 outputMeasurementUnitType];
+      action = [variable action];
+      outputMeasurementUnitType = [action outputMeasurementUnitType];
 LABEL_7:
-      v9 = v7;
+      measurementUnitType = outputMeasurementUnitType;
       goto LABEL_9;
     }
   }
 
-  v8 = [v3 aggrandizements];
-  v6 = [v8 lastObject];
+  aggrandizements2 = [variable aggrandizements];
+  action = [aggrandizements2 lastObject];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 unitType];
+    outputMeasurementUnitType = [action unitType];
     goto LABEL_7;
   }
 
-  v10 = [(WFVariableConditionalSubjectState *)self effectiveContentProperty];
-  v9 = [v10 measurementUnitType];
+  effectiveContentProperty = [(WFVariableConditionalSubjectState *)self effectiveContentProperty];
+  measurementUnitType = [effectiveContentProperty measurementUnitType];
 
 LABEL_9:
 
-  return v9;
+  return measurementUnitType;
 }
 
 - (BOOL)isCaseInsensitive
 {
-  v3 = [(WFVariableConditionalSubjectState *)self effectiveContentProperty];
-  if (v3)
+  effectiveContentProperty = [(WFVariableConditionalSubjectState *)self effectiveContentProperty];
+  if (effectiveContentProperty)
   {
-    v4 = [(WFVariableConditionalSubjectState *)self effectiveContentProperty];
-    v5 = [v4 caseInsensitive];
+    effectiveContentProperty2 = [(WFVariableConditionalSubjectState *)self effectiveContentProperty];
+    caseInsensitive = [effectiveContentProperty2 caseInsensitive];
   }
 
   else
   {
-    v5 = 0;
+    caseInsensitive = 0;
   }
 
-  return v5;
+  return caseInsensitive;
 }
 
 - (Class)effectiveContentClass
 {
-  v3 = [(WFVariableConditionalSubjectState *)self effectiveContentProperty];
+  effectiveContentProperty = [(WFVariableConditionalSubjectState *)self effectiveContentProperty];
 
-  if (v3)
+  if (effectiveContentProperty)
   {
-    v4 = [(WFVariableConditionalSubjectState *)self effectiveContentProperty];
-    v5 = [v4 propertyClasses];
-    v6 = [v5 firstObject];
+    effectiveContentProperty2 = [(WFVariableConditionalSubjectState *)self effectiveContentProperty];
+    propertyClasses = [effectiveContentProperty2 propertyClasses];
+    firstObject = [propertyClasses firstObject];
   }
 
   else
   {
-    v7 = [(WFVariableConditionalSubjectState *)self variable];
-    v4 = [v7 possibleAggrandizedContentClasses];
+    variable = [(WFVariableConditionalSubjectState *)self variable];
+    effectiveContentProperty2 = [variable possibleAggrandizedContentClasses];
 
-    if ([v4 count] <= 1)
+    if ([effectiveContentProperty2 count] <= 1)
     {
-      v6 = [v4 firstObject];
+      firstObject = [effectiveContentProperty2 firstObject];
     }
 
     else
     {
-      v6 = 0;
+      firstObject = 0;
     }
   }
 
-  return v6;
+  return firstObject;
 }
 
 - (id)supportedComparisonOperators
 {
-  v3 = [(WFVariableConditionalSubjectState *)self effectiveContentProperty];
-  v4 = [v3 allowedOperators];
+  effectiveContentProperty = [(WFVariableConditionalSubjectState *)self effectiveContentProperty];
+  allowedOperators = [effectiveContentProperty allowedOperators];
 
-  if ([v4 count])
+  if ([allowedOperators count])
   {
-    v5 = v4;
+    supportedComparisonOperators = allowedOperators;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = WFVariableConditionalSubjectState;
-    v5 = [(WFConditionalSubjectParameterState *)&v8 supportedComparisonOperators];
+    supportedComparisonOperators = [(WFConditionalSubjectParameterState *)&v8 supportedComparisonOperators];
   }
 
-  v6 = v5;
+  v6 = supportedComparisonOperators;
 
   return v6;
 }
@@ -441,26 +441,26 @@ LABEL_9:
     goto LABEL_4;
   }
 
-  v4 = [(WFVariableConditionalSubjectState *)self variable];
-  v5 = [v4 aggrandizements];
-  v6 = [v5 lastObject];
+  variable = [(WFVariableConditionalSubjectState *)self variable];
+  aggrandizements = [variable aggrandizements];
+  lastObject = [aggrandizements lastObject];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 propertyName];
-    v8 = [(objc_class *)[(WFVariableConditionalSubjectState *)self contentClassProvidingContentProperty] propertyForName:v7];
+    propertyName = [lastObject propertyName];
+    v8 = [(objc_class *)[(WFVariableConditionalSubjectState *)self contentClassProvidingContentProperty] propertyForName:propertyName];
     v9 = self->_effectiveContentProperty;
     self->_effectiveContentProperty = v8;
 
     effectiveContentProperty = self->_effectiveContentProperty;
 LABEL_4:
-    v10 = effectiveContentProperty;
+    selectedProperty = effectiveContentProperty;
     goto LABEL_5;
   }
 
-  v12 = [v4 aggrandizements];
-  if ([v12 count])
+  aggrandizements2 = [variable aggrandizements];
+  if ([aggrandizements2 count])
   {
     goto LABEL_9;
   }
@@ -470,36 +470,36 @@ LABEL_4:
 
   if ((isKindOfClass & 1) == 0)
   {
-    v10 = 0;
+    selectedProperty = 0;
     goto LABEL_11;
   }
 
-  v12 = [v4 action];
+  aggrandizements2 = [variable action];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
 LABEL_9:
-    v10 = 0;
+    selectedProperty = 0;
   }
 
   else
   {
-    v10 = [v12 selectedProperty];
+    selectedProperty = [aggrandizements2 selectedProperty];
   }
 
 LABEL_11:
 LABEL_5:
 
-  return v10;
+  return selectedProperty;
 }
 
 - (Class)contentClassProvidingContentProperty
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [(WFVariableConditionalSubjectState *)self variable];
-  v4 = [v3 isAvailable];
+  variable = [(WFVariableConditionalSubjectState *)self variable];
+  isAvailable = [variable isAvailable];
 
-  if (!v4)
+  if (!isAvailable)
   {
     v15 = 0;
     goto LABEL_19;
@@ -509,33 +509,33 @@ LABEL_5:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = [(WFVariableConditionalSubjectState *)self variable];
-  v6 = [v5 aggrandizements];
+  variable2 = [(WFVariableConditionalSubjectState *)self variable];
+  aggrandizements = [variable2 aggrandizements];
 
-  v7 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v7 = [aggrandizements countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (!v7)
   {
 
 LABEL_15:
-    v16 = [(WFVariableConditionalSubjectState *)self variable];
-    v9 = [v16 possibleContentClasses];
+    variable3 = [(WFVariableConditionalSubjectState *)self variable];
+    possibleContentClasses = [variable3 possibleContentClasses];
 
-    v17 = [v9 firstObject];
-    if (v17 == objc_opt_class())
+    firstObject = [possibleContentClasses firstObject];
+    if (firstObject == objc_opt_class())
     {
-      v14 = objc_opt_class();
+      coercionItemClass = objc_opt_class();
     }
 
     else
     {
-      v14 = v17;
+      coercionItemClass = firstObject;
     }
 
     goto LABEL_18;
   }
 
   v8 = v7;
-  v9 = 0;
+  possibleContentClasses = 0;
   v10 = *v21;
   do
   {
@@ -543,7 +543,7 @@ LABEL_15:
     {
       if (*v21 != v10)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(aggrandizements);
       }
 
       v12 = *(*(&v20 + 1) + 8 * i);
@@ -552,23 +552,23 @@ LABEL_15:
       {
         v13 = v12;
 
-        v9 = v13;
+        possibleContentClasses = v13;
       }
     }
 
-    v8 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    v8 = [aggrandizements countByEnumeratingWithState:&v20 objects:v24 count:16];
   }
 
   while (v8);
 
-  if (!v9)
+  if (!possibleContentClasses)
   {
     goto LABEL_15;
   }
 
-  v14 = [v9 coercionItemClass];
+  coercionItemClass = [possibleContentClasses coercionItemClass];
 LABEL_18:
-  v15 = v14;
+  v15 = coercionItemClass;
 
 LABEL_19:
   v18 = *MEMORY[0x1E69E9840];
@@ -578,59 +578,59 @@ LABEL_19:
 
 - (int64_t)contentType
 {
-  v3 = [(WFVariableConditionalSubjectState *)self effectiveContentProperty];
-  if (!v3)
+  effectiveContentProperty = [(WFVariableConditionalSubjectState *)self effectiveContentProperty];
+  if (!effectiveContentProperty)
   {
-    v5 = [(WFVariableConditionalSubjectState *)self variable];
-    v6 = [v5 possibleAggrandizedContentClasses];
+    variable = [(WFVariableConditionalSubjectState *)self variable];
+    possibleAggrandizedContentClasses = [variable possibleAggrandizedContentClasses];
 
-    if (([v6 containsObject:objc_opt_class()] & 1) == 0)
+    if (([possibleAggrandizedContentClasses containsObject:objc_opt_class()] & 1) == 0)
     {
-      if ([v6 count] > 1)
+      if ([possibleAggrandizedContentClasses count] > 1)
       {
         v4 = 0;
         goto LABEL_27;
       }
 
-      v9 = [v6 firstObject];
-      if (([v9 isSubclassOfClass:objc_opt_class()] & 1) == 0)
+      firstObject = [possibleAggrandizedContentClasses firstObject];
+      if (([firstObject isSubclassOfClass:objc_opt_class()] & 1) == 0)
       {
-        if (v9 == objc_opt_class() || ([v9 isSubclassOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v9, "isSubclassOfClass:", objc_opt_class()) & 1) != 0 || (objc_msgSend(v9, "isSubclassOfClass:", objc_opt_class()) & 1) != 0 || (objc_msgSend(v9, "isSubclassOfClass:", objc_opt_class()) & 1) != 0 || (objc_msgSend(v9, "isSubclassOfClass:", objc_opt_class()) & 1) != 0)
+        if (firstObject == objc_opt_class() || ([firstObject isSubclassOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(firstObject, "isSubclassOfClass:", objc_opt_class()) & 1) != 0 || (objc_msgSend(firstObject, "isSubclassOfClass:", objc_opt_class()) & 1) != 0 || (objc_msgSend(firstObject, "isSubclassOfClass:", objc_opt_class()) & 1) != 0 || (objc_msgSend(firstObject, "isSubclassOfClass:", objc_opt_class()) & 1) != 0)
         {
           v4 = 2;
         }
 
-        else if ([v9 isSubclassOfClass:objc_opt_class()])
+        else if ([firstObject isSubclassOfClass:objc_opt_class()])
         {
           v4 = 9;
         }
 
-        else if ([v9 isSubclassOfClass:objc_opt_class()])
+        else if ([firstObject isSubclassOfClass:objc_opt_class()])
         {
           v4 = 3;
         }
 
-        else if ([v9 isSubclassOfClass:objc_opt_class()])
+        else if ([firstObject isSubclassOfClass:objc_opt_class()])
         {
           v4 = 5;
         }
 
-        else if ([v9 isSubclassOfClass:objc_opt_class()])
+        else if ([firstObject isSubclassOfClass:objc_opt_class()])
         {
           v4 = 6;
         }
 
-        else if ([v9 isSubclassOfClass:objc_opt_class()])
+        else if ([firstObject isSubclassOfClass:objc_opt_class()])
         {
           v4 = 7;
         }
 
-        else if ([v9 isSubclassOfClass:objc_opt_class()])
+        else if ([firstObject isSubclassOfClass:objc_opt_class()])
         {
           v4 = 4;
         }
 
-        else if ([v9 isSubclassOfClass:objc_opt_class()])
+        else if ([firstObject isSubclassOfClass:objc_opt_class()])
         {
           v4 = 8;
         }
@@ -650,12 +650,12 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  if ([v3 hasPropertyClassSubclassingClass:objc_opt_class()])
+  if ([effectiveContentProperty hasPropertyClassSubclassingClass:objc_opt_class()])
   {
     v4 = 8;
   }
 
-  else if ([v3 hasPropertyClassOfKind:objc_opt_class()])
+  else if ([effectiveContentProperty hasPropertyClassOfKind:objc_opt_class()])
   {
     v4 = 9;
   }
@@ -664,41 +664,41 @@ LABEL_27:
   {
     v4 = 1;
     v7 = [MEMORY[0x1E696AD98] numberWithBool:1];
-    v8 = [v3 hasPropertyClassSubclassingClass:objc_opt_class()];
+    v8 = [effectiveContentProperty hasPropertyClassSubclassingClass:objc_opt_class()];
 
     if ((v8 & 1) == 0)
     {
-      if ([v3 hasPropertyClassSubclassingClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v3, "hasPropertyClassSubclassingClass:", objc_opt_class()) & 1) != 0 || (objc_msgSend(v3, "hasPropertyClassSubclassingClass:", objc_opt_class()) & 1) != 0 || (objc_msgSend(v3, "hasPropertyClassSubclassingClass:", objc_opt_class()) & 1) != 0 || (objc_msgSend(v3, "hasPropertyClassSubclassingClass:", objc_opt_class()) & 1) != 0 || (objc_msgSend(v3, "hasPropertyClassSubclassingClass:", objc_opt_class()) & 1) != 0 || (objc_msgSend(v3, "hasPropertyClassSubclassingClass:", objc_opt_class()))
+      if ([effectiveContentProperty hasPropertyClassSubclassingClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(effectiveContentProperty, "hasPropertyClassSubclassingClass:", objc_opt_class()) & 1) != 0 || (objc_msgSend(effectiveContentProperty, "hasPropertyClassSubclassingClass:", objc_opt_class()) & 1) != 0 || (objc_msgSend(effectiveContentProperty, "hasPropertyClassSubclassingClass:", objc_opt_class()) & 1) != 0 || (objc_msgSend(effectiveContentProperty, "hasPropertyClassSubclassingClass:", objc_opt_class()) & 1) != 0 || (objc_msgSend(effectiveContentProperty, "hasPropertyClassSubclassingClass:", objc_opt_class()) & 1) != 0 || (objc_msgSend(effectiveContentProperty, "hasPropertyClassSubclassingClass:", objc_opt_class()))
       {
         v4 = 2;
       }
 
-      else if ([v3 hasPropertyClassSubclassingClass:objc_opt_class()])
+      else if ([effectiveContentProperty hasPropertyClassSubclassingClass:objc_opt_class()])
       {
         v4 = 3;
       }
 
-      else if ([v3 hasPropertyClassSubclassingClass:objc_opt_class()])
+      else if ([effectiveContentProperty hasPropertyClassSubclassingClass:objc_opt_class()])
       {
         v4 = 5;
       }
 
-      else if ([v3 hasPropertyClassSubclassingClass:objc_opt_class()])
+      else if ([effectiveContentProperty hasPropertyClassSubclassingClass:objc_opt_class()])
       {
         v4 = 6;
       }
 
-      else if ([v3 hasPropertyClassSubclassingClass:objc_opt_class()])
+      else if ([effectiveContentProperty hasPropertyClassSubclassingClass:objc_opt_class()])
       {
         v4 = 7;
       }
 
-      else if ([v3 hasPropertyClassSubclassingClass:objc_opt_class()])
+      else if ([effectiveContentProperty hasPropertyClassSubclassingClass:objc_opt_class()])
       {
         v4 = 4;
       }
 
-      else if ([v3 hasPropertyClassSubclassingClass:objc_opt_class()])
+      else if ([effectiveContentProperty hasPropertyClassSubclassingClass:objc_opt_class()])
       {
         v4 = 4;
       }
@@ -715,34 +715,34 @@ LABEL_28:
   return v4;
 }
 
-- (void)getContentWithContext:(id)a3 completionHandler:(id)a4
+- (void)getContentWithContext:(id)context completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(WFVariableConditionalSubjectState *)self variable];
-  [v8 getContentWithContext:v7 completionHandler:v6];
+  handlerCopy = handler;
+  contextCopy = context;
+  variable = [(WFVariableConditionalSubjectState *)self variable];
+  [variable getContentWithContext:contextCopy completionHandler:handlerCopy];
 }
 
 - (NSArray)containedVariables
 {
-  v2 = [(WFVariableConditionalSubjectState *)self variableState];
-  v3 = [v2 containedVariables];
+  variableState = [(WFVariableConditionalSubjectState *)self variableState];
+  containedVariables = [variableState containedVariables];
 
-  return v3;
+  return containedVariables;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(WFVariableConditionalSubjectState *)self variableState];
-  v3 = [v2 hash];
+  variableState = [(WFVariableConditionalSubjectState *)self variableState];
+  v3 = [variableState hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -752,9 +752,9 @@ LABEL_28:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(WFVariableConditionalSubjectState *)self variableState];
-      v6 = [(WFVariableConditionalSubjectState *)v4 variableState];
-      v7 = [v5 isEqual:v6];
+      variableState = [(WFVariableConditionalSubjectState *)self variableState];
+      variableState2 = [(WFVariableConditionalSubjectState *)equalCopy variableState];
+      v7 = [variableState isEqual:variableState2];
     }
 
     else
@@ -768,34 +768,34 @@ LABEL_28:
 
 - (WFVariable)variable
 {
-  v2 = [(WFVariableConditionalSubjectState *)self variableState];
-  v3 = [v2 variable];
+  variableState = [(WFVariableConditionalSubjectState *)self variableState];
+  variable = [variableState variable];
 
-  return v3;
+  return variable;
 }
 
 - (WFPropertyListObject)serializedRepresentation
 {
   v8.receiver = self;
   v8.super_class = WFVariableConditionalSubjectState;
-  v3 = [(WFConditionalSubjectParameterState *)&v8 serializedRepresentation];
-  v4 = [v3 mutableCopy];
+  serializedRepresentation = [(WFConditionalSubjectParameterState *)&v8 serializedRepresentation];
+  v4 = [serializedRepresentation mutableCopy];
 
-  v5 = [(WFVariableConditionalSubjectState *)self variableState];
-  v6 = [v5 serializedRepresentation];
-  [v4 setValue:v6 forKey:@"Variable"];
+  variableState = [(WFVariableConditionalSubjectState *)self variableState];
+  serializedRepresentation2 = [variableState serializedRepresentation];
+  [v4 setValue:serializedRepresentation2 forKey:@"Variable"];
 
   return v4;
 }
 
-- (WFVariableConditionalSubjectState)initWithSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5
+- (WFVariableConditionalSubjectState)initWithSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  representationCopy = representation;
+  parameterCopy = parameter;
+  providerCopy = provider;
   v11 = objc_opt_class();
-  v12 = v8;
+  v12 = representationCopy;
   if (v12 && (objc_opt_isKindOfClass() & 1) == 0)
   {
     v14 = getWFGeneralLogObject();
@@ -822,45 +822,45 @@ LABEL_28:
   }
 
   v16 = [v13 objectForKey:@"Variable"];
-  v17 = [[WFVariableParameterState alloc] initWithSerializedRepresentation:v16 variableProvider:v10 parameter:v9];
+  v17 = [[WFVariableParameterState alloc] initWithSerializedRepresentation:v16 variableProvider:providerCopy parameter:parameterCopy];
 
   if (v17)
   {
     self = [(WFVariableConditionalSubjectState *)self initWithVariableState:v17];
-    v18 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v18 = 0;
+    selfCopy = 0;
   }
 
   v19 = *MEMORY[0x1E69E9840];
-  return v18;
+  return selfCopy;
 }
 
-- (WFVariableConditionalSubjectState)initWithVariable:(id)a3
+- (WFVariableConditionalSubjectState)initWithVariable:(id)variable
 {
-  v5 = a3;
-  if (!v5)
+  variableCopy = variable;
+  if (!variableCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"WFVariableConditionalSubjectState.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"variable"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFVariableConditionalSubjectState.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"variable"}];
   }
 
-  v6 = [[WFVariableParameterState alloc] initWithVariable:v5];
+  v6 = [[WFVariableParameterState alloc] initWithVariable:variableCopy];
   v7 = [(WFVariableConditionalSubjectState *)self initWithVariableState:v6];
 
   return v7;
 }
 
-- (WFVariableConditionalSubjectState)initWithVariableState:(id)a3
+- (WFVariableConditionalSubjectState)initWithVariableState:(id)state
 {
-  v6 = a3;
-  if (!v6)
+  stateCopy = state;
+  if (!stateCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"WFVariableConditionalSubjectState.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"variableState"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFVariableConditionalSubjectState.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"variableState"}];
   }
 
   v12.receiver = self;
@@ -869,7 +869,7 @@ LABEL_28:
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_variableState, a3);
+    objc_storeStrong(&v7->_variableState, state);
     v9 = v8;
   }
 

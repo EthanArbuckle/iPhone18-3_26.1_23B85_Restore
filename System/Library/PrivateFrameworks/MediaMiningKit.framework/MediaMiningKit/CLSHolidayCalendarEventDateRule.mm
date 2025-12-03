@@ -1,14 +1,14 @@
 @interface CLSHolidayCalendarEventDateRule
-+ (id)_dateComponentsFromRuleDescription:(id)a3;
-- (CLSHolidayCalendarEventDateRule)initWithEventDescription:(id)a3;
++ (id)_dateComponentsFromRuleDescription:(id)description;
+- (CLSHolidayCalendarEventDateRule)initWithEventDescription:(id)description;
 - (CLSHolidayCalendarEventDateRuleDelegate)delegate;
 - (id)_endDate;
-- (id)_estimateBestEventDateComponentsToMatchDate:(id)a3;
+- (id)_estimateBestEventDateComponentsToMatchDate:(id)date;
 - (id)_startDate;
-- (id)_stringDescriptionForDateRuleComponentValue:(int64_t)a3;
+- (id)_stringDescriptionForDateRuleComponentValue:(int64_t)value;
 - (id)description;
-- (id)localDateByEvaluatingRuleForDate:(id)a3;
-- (void)enumerateDatesFromStartDate:(id)a3 toEndDate:(id)a4 usingBlock:(id)a5;
+- (id)localDateByEvaluatingRuleForDate:(id)date;
+- (void)enumerateDatesFromStartDate:(id)date toEndDate:(id)endDate usingBlock:(id)block;
 @end
 
 @implementation CLSHolidayCalendarEventDateRule
@@ -20,19 +20,19 @@
   return WeakRetained;
 }
 
-- (id)_stringDescriptionForDateRuleComponentValue:(int64_t)a3
+- (id)_stringDescriptionForDateRuleComponentValue:(int64_t)value
 {
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (value == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v4 = @"N/A";
+    value = @"N/A";
   }
 
   else
   {
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", a3];
+    value = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", value];
   }
 
-  return v4;
+  return value;
 }
 
 - (id)description
@@ -146,31 +146,31 @@
   return v5;
 }
 
-- (void)enumerateDatesFromStartDate:(id)a3 toEndDate:(id)a4 usingBlock:(id)a5
+- (void)enumerateDatesFromStartDate:(id)date toEndDate:(id)endDate usingBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v32 = a5;
-  v10 = [(CLSHolidayCalendarEventDateRule *)self _startDate];
-  v31 = v10;
-  if (v10)
+  dateCopy = date;
+  endDateCopy = endDate;
+  blockCopy = block;
+  _startDate = [(CLSHolidayCalendarEventDateRule *)self _startDate];
+  v31 = _startDate;
+  if (_startDate)
   {
-    v11 = [v8 laterDate:v10];
+    v11 = [dateCopy laterDate:_startDate];
 
-    v8 = v11;
+    dateCopy = v11;
   }
 
-  v12 = [(CLSHolidayCalendarEventDateRule *)self _endDate];
-  v30 = v12;
-  if (v12)
+  _endDate = [(CLSHolidayCalendarEventDateRule *)self _endDate];
+  v30 = _endDate;
+  if (_endDate)
   {
-    v13 = [v9 earlierDate:v12];
+    v13 = [endDateCopy earlierDate:_endDate];
 
-    v9 = v13;
+    endDateCopy = v13;
   }
 
-  v14 = [CLSCalendar components:6 fromDate:v9 withCalendarIdentifier:self->_calendarIdentifier];
-  v15 = v8;
+  v14 = [CLSCalendar components:6 fromDate:endDateCopy withCalendarIdentifier:self->_calendarIdentifier];
+  v15 = dateCopy;
   v16 = 299;
   v17 = v15;
   do
@@ -180,9 +180,9 @@
     v19 = [(CLSHolidayCalendarEventDateRule *)self localDateByEvaluatingRuleForDate:v17];
     if (v19)
     {
-      if ([v15 compare:v19] != 1 && objc_msgSend(v19, "compare:", v9) != 1)
+      if ([v15 compare:v19] != 1 && objc_msgSend(v19, "compare:", endDateCopy) != 1)
       {
-        v32[2](v32, v19, &v33);
+        blockCopy[2](blockCopy, v19, &v33);
       }
 
       calendarIdentifier = self->_calendarIdentifier;
@@ -204,8 +204,8 @@
     v26 = [v23 era];
     if (v26 == [v14 era])
     {
-      v27 = [v23 year];
-      v28 = v27 > [v14 year];
+      year = [v23 year];
+      v28 = year > [v14 year];
     }
 
     else
@@ -228,20 +228,20 @@
   while (v18);
 }
 
-- (id)_estimateBestEventDateComponentsToMatchDate:(id)a3
+- (id)_estimateBestEventDateComponentsToMatchDate:(id)date
 {
-  v4 = a3;
-  v5 = [(CLSHolidayCalendarEventDateRule *)self _startDate];
-  v23 = [(CLSHolidayCalendarEventDateRule *)self _endDate];
+  dateCopy = date;
+  _startDate = [(CLSHolidayCalendarEventDateRule *)self _startDate];
+  _endDate = [(CLSHolidayCalendarEventDateRule *)self _endDate];
   v21 = 0;
   v22 = *MEMORY[0x277CBE5C8];
   v6 = -1;
   v7 = 1.79769313e308;
   do
   {
-    v8 = [CLSCalendar dateByAddingYears:v6 toDate:v4 withCalendarIdentifier:self->_calendarIdentifier];
+    v8 = [CLSCalendar dateByAddingYears:v6 toDate:dateCopy withCalendarIdentifier:self->_calendarIdentifier];
     v9 = [CLSCalendar components:6 fromDate:v8 withCalendarIdentifier:self->_calendarIdentifier];
-    if (!self->_leapYearOverrideComponents || ![(NSString *)self->_calendarIdentifier isEqualToString:v22]|| (v10 = [CLSCalendar isLeapYearForDate:v4 withCalendarIdentifier:self->_calendarIdentifier], p_simpleRuleComponents = &self->_leapYearOverrideComponents, !v10))
+    if (!self->_leapYearOverrideComponents || ![(NSString *)self->_calendarIdentifier isEqualToString:v22]|| (v10 = [CLSCalendar isLeapYearForDate:dateCopy withCalendarIdentifier:self->_calendarIdentifier], p_simpleRuleComponents = &self->_leapYearOverrideComponents, !v10))
     {
       p_simpleRuleComponents = &self->_simpleRuleComponents;
     }
@@ -259,9 +259,9 @@
 
     v13 = [CLSCalendar dateFromComponents:v12 inTimeZone:0 withCalendarIdentifier:self->_calendarIdentifier];
     v14 = v13;
-    if (v5)
+    if (_startDate)
     {
-      v15 = [v13 compare:v5] == -1;
+      v15 = [v13 compare:_startDate] == -1;
     }
 
     else
@@ -269,13 +269,13 @@
       v15 = 0;
     }
 
-    v16 = v23;
-    if (v23)
+    v16 = _endDate;
+    if (_endDate)
     {
       v16 = [v14 compare:v8] == -1;
     }
 
-    if (v15 || v16 || ([v14 timeIntervalSinceDate:v4], v18 = fabs(v17), v18 >= v7))
+    if (v15 || v16 || ([v14 timeIntervalSinceDate:dateCopy], v18 = fabs(v17), v18 >= v7))
     {
       v18 = v7;
     }
@@ -296,15 +296,15 @@
   return v21;
 }
 
-- (id)localDateByEvaluatingRuleForDate:(id)a3
+- (id)localDateByEvaluatingRuleForDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   if (self->_relativeToRuleUUID)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (objc_opt_respondsToSelector())
     {
-      v6 = [WeakRetained dateForRuleWithUUID:self->_relativeToRuleUUID byEvaluatingForDate:v4];
+      v6 = [WeakRetained dateForRuleWithUUID:self->_relativeToRuleUUID byEvaluatingForDate:dateCopy];
       if (v6)
       {
         v7 = [CLSCalendar components:28 fromDate:v6 withCalendarIdentifier:self->_calendarIdentifier];
@@ -331,11 +331,11 @@ LABEL_14:
     goto LABEL_7;
   }
 
-  v7 = [(CLSHolidayCalendarEventDateRule *)self _estimateBestEventDateComponentsToMatchDate:v4];
-  v8 = [v7 weekdayOrdinal];
-  if (v8 < 0)
+  v7 = [(CLSHolidayCalendarEventDateRule *)self _estimateBestEventDateComponentsToMatchDate:dateCopy];
+  weekdayOrdinal = [v7 weekdayOrdinal];
+  if (weekdayOrdinal < 0)
   {
-    v12 = v8;
+    v12 = weekdayOrdinal;
     WeakRetained = [CLSCalendar dateFromComponents:v7 inTimeZone:0 withCalendarIdentifier:self->_calendarIdentifier];
     [v7 setWeekdayOrdinal:{v12 + +[CLSCalendar countOfWeekday:inMonthOfDate:withCalendarIdentifier:](CLSCalendar, "countOfWeekday:inMonthOfDate:withCalendarIdentifier:", objc_msgSend(v7, "weekday"), WeakRetained, self->_calendarIdentifier) + 1}];
     goto LABEL_14;
@@ -366,9 +366,9 @@ LABEL_16:
   return v9;
 }
 
-- (CLSHolidayCalendarEventDateRule)initWithEventDescription:(id)a3
+- (CLSHolidayCalendarEventDateRule)initWithEventDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   v26.receiver = self;
   v26.super_class = CLSHolidayCalendarEventDateRule;
   v5 = [(CLSHolidayCalendarEventDateRule *)&v26 init];
@@ -380,46 +380,46 @@ LABEL_16:
     v8 = vnegq_f64(v7);
     *(v5 + 24) = v8;
     *(v5 + 40) = v8;
-    v9 = [CLSHolidayCalendarEventDateRule _dateComponentsFromRuleDescription:v4];
+    v9 = [CLSHolidayCalendarEventDateRule _dateComponentsFromRuleDescription:descriptionCopy];
     simpleRuleComponents = v6->_simpleRuleComponents;
     v6->_simpleRuleComponents = v9;
 
-    v11 = [v4 objectForKeyedSubscript:@"startYear"];
+    v11 = [descriptionCopy objectForKeyedSubscript:@"startYear"];
     v12 = v11;
     if (v11)
     {
       v6->_startYear = [v11 integerValue];
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"startEra"];
+    v13 = [descriptionCopy objectForKeyedSubscript:@"startEra"];
 
     if (v13)
     {
       v6->_startEra = [v13 integerValue];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"endYear"];
+    v14 = [descriptionCopy objectForKeyedSubscript:@"endYear"];
 
     if (v14)
     {
       v6->_endYear = [v14 integerValue];
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"endEra"];
+    v15 = [descriptionCopy objectForKeyedSubscript:@"endEra"];
 
     if (v15)
     {
       v6->_endEra = [v15 integerValue];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"relativeToRule"];
+    v16 = [descriptionCopy objectForKeyedSubscript:@"relativeToRule"];
     relativeToRuleUUID = v6->_relativeToRuleUUID;
     v6->_relativeToRuleUUID = v16;
 
-    v18 = [v4 objectForKeyedSubscript:@"offsetDays"];
+    v18 = [descriptionCopy objectForKeyedSubscript:@"offsetDays"];
     v6->_offsetDays = [v18 integerValue];
 
-    v19 = [v4 objectForKeyedSubscript:@"calendar"];
+    v19 = [descriptionCopy objectForKeyedSubscript:@"calendar"];
     v20 = v19;
     if (v19)
     {
@@ -433,7 +433,7 @@ LABEL_16:
 
     objc_storeStrong(&v6->_calendarIdentifier, v21);
 
-    v22 = [v4 objectForKeyedSubscript:@"leapYearOverride"];
+    v22 = [descriptionCopy objectForKeyedSubscript:@"leapYearOverride"];
     if (v22)
     {
       v23 = [CLSHolidayCalendarEventDateRule _dateComponentsFromRuleDescription:v22];
@@ -445,46 +445,46 @@ LABEL_16:
   return v6;
 }
 
-+ (id)_dateComponentsFromRuleDescription:(id)a3
++ (id)_dateComponentsFromRuleDescription:(id)description
 {
-  v3 = a3;
+  descriptionCopy = description;
   v4 = objc_alloc_init(MEMORY[0x277CBEAB8]);
-  v5 = [v3 objectForKeyedSubscript:@"era"];
+  v5 = [descriptionCopy objectForKeyedSubscript:@"era"];
   v6 = v5;
   if (v5)
   {
     [v4 setEra:{objc_msgSend(v5, "integerValue")}];
   }
 
-  v7 = [v3 objectForKeyedSubscript:@"year"];
+  v7 = [descriptionCopy objectForKeyedSubscript:@"year"];
 
   if (v7)
   {
     [v4 setYear:{objc_msgSend(v7, "integerValue")}];
   }
 
-  v8 = [v3 objectForKeyedSubscript:@"month"];
+  v8 = [descriptionCopy objectForKeyedSubscript:@"month"];
 
   if (v8)
   {
     [v4 setMonth:{objc_msgSend(v8, "integerValue")}];
   }
 
-  v9 = [v3 objectForKeyedSubscript:@"day"];
+  v9 = [descriptionCopy objectForKeyedSubscript:@"day"];
 
   if (v9)
   {
     [v4 setDay:{objc_msgSend(v9, "integerValue")}];
   }
 
-  v10 = [v3 objectForKeyedSubscript:@"weekday"];
+  v10 = [descriptionCopy objectForKeyedSubscript:@"weekday"];
 
   if (v10)
   {
     [v4 setWeekday:{objc_msgSend(v10, "integerValue")}];
   }
 
-  v11 = [v3 objectForKeyedSubscript:@"weekdayOrdinal"];
+  v11 = [descriptionCopy objectForKeyedSubscript:@"weekdayOrdinal"];
 
   if (v11)
   {

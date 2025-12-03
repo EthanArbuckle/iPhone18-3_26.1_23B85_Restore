@@ -1,8 +1,8 @@
 @interface HKOSEligibilityDataSource
-- (BOOL)getAnswer:(unint64_t *)a3 forDomain:(unint64_t)a4 error:(id *)a5;
+- (BOOL)getAnswer:(unint64_t *)answer forDomain:(unint64_t)domain error:(id *)error;
 - (HKOSEligibilityDataSource)init;
-- (HKOSEligibilityDataSource)initWithAnswerOverrideHandler:(id)a3 darwinNotificationOverride:(id)a4;
-- (id)notificationNameForDomain:(unint64_t)a3;
+- (HKOSEligibilityDataSource)initWithAnswerOverrideHandler:(id)handler darwinNotificationOverride:(id)override;
+- (id)notificationNameForDomain:(unint64_t)domain;
 @end
 
 @implementation HKOSEligibilityDataSource
@@ -14,20 +14,20 @@
   return [(HKOSEligibilityDataSource *)&v3 init];
 }
 
-- (HKOSEligibilityDataSource)initWithAnswerOverrideHandler:(id)a3 darwinNotificationOverride:(id)a4
+- (HKOSEligibilityDataSource)initWithAnswerOverrideHandler:(id)handler darwinNotificationOverride:(id)override
 {
-  v6 = a3;
-  v7 = a4;
+  handlerCopy = handler;
+  overrideCopy = override;
   v14.receiver = self;
   v14.super_class = HKOSEligibilityDataSource;
   v8 = [(HKOSEligibilityDataSource *)&v14 init];
   if (v8)
   {
-    v9 = _Block_copy(v6);
+    v9 = _Block_copy(handlerCopy);
     answerOverrideHandler = v8->_answerOverrideHandler;
     v8->_answerOverrideHandler = v9;
 
-    v11 = [v7 copy];
+    v11 = [overrideCopy copy];
     darwinNotificationOverride = v8->_darwinNotificationOverride;
     v8->_darwinNotificationOverride = v11;
   }
@@ -35,13 +35,13 @@
   return v8;
 }
 
-- (BOOL)getAnswer:(unint64_t *)a3 forDomain:(unint64_t)a4 error:(id *)a5
+- (BOOL)getAnswer:(unint64_t *)answer forDomain:(unint64_t)domain error:(id *)error
 {
   v12 = 0;
   answerOverrideHandler = self->_answerOverrideHandler;
   if (answerOverrideHandler)
   {
-    domain_answer = (*(answerOverrideHandler + 2))(answerOverrideHandler, a4, &v12, 0, 0, 0);
+    domain_answer = (*(answerOverrideHandler + 2))(answerOverrideHandler, domain, &v12, 0, 0, 0);
   }
 
   else
@@ -62,18 +62,18 @@
   v10 = !v9;
   if (v9)
   {
-    [MEMORY[0x1E696ABC0] hk_assignError:a5 code:100 format:{@"Error attempting to retrieve eligibility answer: %d %s", domain_answer, strerror(domain_answer)}];
+    [MEMORY[0x1E696ABC0] hk_assignError:error code:100 format:{@"Error attempting to retrieve eligibility answer: %d %s", domain_answer, strerror(domain_answer)}];
   }
 
-  else if (a3)
+  else if (answer)
   {
-    *a3 = v12;
+    *answer = v12;
   }
 
   return v10;
 }
 
-- (id)notificationNameForDomain:(unint64_t)a3
+- (id)notificationNameForDomain:(unint64_t)domain
 {
   v3 = self->_darwinNotificationOverride;
   v4 = v3;

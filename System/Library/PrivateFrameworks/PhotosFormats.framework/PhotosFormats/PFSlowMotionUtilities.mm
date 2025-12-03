@@ -1,79 +1,79 @@
 @interface PFSlowMotionUtilities
-+ ($E33AF59C8D263E738CA17719EFF006B3)_timeRangeFromTime:(SEL)a3 toTime:(float)a4;
-+ ($E33AF59C8D263E738CA17719EFF006B3)adjustTimeRange:(SEL)a3 forNewStartTime:(id *)a4 endTime:(id *)a5;
-+ (BOOL)_isValidSlowMotionTimeRange:(id *)a3;
-+ (BOOL)_scaleComposition:(id)a3 baseDuration:(double)a4 slowMotionRate:(float)a5 slowMotionRegions:(id)a6 forExport:(BOOL)a7 outTimeRangeMapper:(id *)a8;
-+ (double)_scaleWithinComposition:(id)a3 fromCursor:(double)a4 timeStep:(double)a5 rate:(float)a6 timeRangeMapper:(id)a7;
-+ (id)_scaledCompositionForAsset:(id)a3 slowMotionRate:(float)a4 slowMotionTimeRange:(id *)a5 forExport:(BOOL)a6 outTimeRangeMapper:(id *)a7;
-+ (id)_setVolume:(float)a3 forSlowMotionRegionsInTrack:(id)a4 timeRangeMapper:(id)a5;
-+ (id)_slowMotionRegionsFromSlowMotionTimeRange:(id *)a3;
-+ (id)assetFromVideoAsset:(id)a3 slowMotionRate:(float)a4 slowMotionTimeRange:(id *)a5 forExport:(BOOL)a6 outAudioMix:(id *)a7 outTimeRangeMapper:(id *)a8;
-+ (id)audioMixForScaledComposition:(id)a3 timeRangeMapper:(id)a4;
-+ (id)exportPresetForAsset:(id)a3 preferredPreset:(id)a4;
++ ($E33AF59C8D263E738CA17719EFF006B3)_timeRangeFromTime:(SEL)time toTime:(float)toTime;
++ ($E33AF59C8D263E738CA17719EFF006B3)adjustTimeRange:(SEL)range forNewStartTime:(id *)time endTime:(id *)endTime;
++ (BOOL)_isValidSlowMotionTimeRange:(id *)range;
++ (BOOL)_scaleComposition:(id)composition baseDuration:(double)duration slowMotionRate:(float)rate slowMotionRegions:(id)regions forExport:(BOOL)export outTimeRangeMapper:(id *)mapper;
++ (double)_scaleWithinComposition:(id)composition fromCursor:(double)cursor timeStep:(double)step rate:(float)rate timeRangeMapper:(id)mapper;
++ (id)_scaledCompositionForAsset:(id)asset slowMotionRate:(float)rate slowMotionTimeRange:(id *)range forExport:(BOOL)export outTimeRangeMapper:(id *)mapper;
++ (id)_setVolume:(float)volume forSlowMotionRegionsInTrack:(id)track timeRangeMapper:(id)mapper;
++ (id)_slowMotionRegionsFromSlowMotionTimeRange:(id *)range;
++ (id)assetFromVideoAsset:(id)asset slowMotionRate:(float)rate slowMotionTimeRange:(id *)range forExport:(BOOL)export outAudioMix:(id *)mix outTimeRangeMapper:(id *)mapper;
++ (id)audioMixForScaledComposition:(id)composition timeRangeMapper:(id)mapper;
++ (id)exportPresetForAsset:(id)asset preferredPreset:(id)preset;
 + (id)sharedConfiguration;
-+ (id)timeRangeMapperForSourceDuration:(double)a3 slowMotionRate:(float)a4 slowMotionTimeRange:(id *)a5 forExport:(BOOL)a6;
-+ (void)configureExportSession:(id)a3 forcePreciseConversion:(BOOL)a4;
++ (id)timeRangeMapperForSourceDuration:(double)duration slowMotionRate:(float)rate slowMotionTimeRange:(id *)range forExport:(BOOL)export;
++ (void)configureExportSession:(id)session forcePreciseConversion:(BOOL)conversion;
 @end
 
 @implementation PFSlowMotionUtilities
 
-+ ($E33AF59C8D263E738CA17719EFF006B3)adjustTimeRange:(SEL)a3 forNewStartTime:(id *)a4 endTime:(id *)a5
++ ($E33AF59C8D263E738CA17719EFF006B3)adjustTimeRange:(SEL)range forNewStartTime:(id *)time endTime:(id *)endTime
 {
   memset(&v17, 0, sizeof(v17));
   CMTimeMake(&v17, 0, 600);
   memset(&v16, 0, sizeof(v16));
   lhs.start = *a6;
-  rhs.start = *a5;
+  rhs.start = *endTime;
   CMTimeSubtract(&v16, &lhs.start, &rhs.start);
   memset(&lhs, 0, sizeof(lhs));
   rhs.start = v17;
   v12.start = v16;
   CMTimeRangeFromTimeToTime(&lhs, &rhs.start, &v12.start);
   memset(&v14, 0, sizeof(v14));
-  *&rhs.start.value = *&a4->var0.var0;
-  rhs.start.epoch = a4->var0.var3;
-  v12.start = *a5;
+  *&rhs.start.value = *&time->var0.var0;
+  rhs.start.epoch = time->var0.var3;
+  v12.start = *endTime;
   CMTimeSubtract(&v14, &rhs.start, &v12.start);
-  a4->var0 = v14;
+  time->var0 = v14;
   *&retstr->var0.var0 = 0u;
   *&retstr->var0.var3 = 0u;
   *&retstr->var1.var1 = 0u;
   rhs = lhs;
-  v10 = *&a4->var0.var3;
-  *&v12.start.value = *&a4->var0.var0;
+  v10 = *&time->var0.var3;
+  *&v12.start.value = *&time->var0.var0;
   *&v12.start.epoch = v10;
-  *&v12.duration.timescale = *&a4->var1.var1;
+  *&v12.duration.timescale = *&time->var1.var1;
   return CMTimeRangeGetIntersection(retstr, &rhs, &v12);
 }
 
-+ (id)audioMixForScaledComposition:(id)a3 timeRangeMapper:(id)a4
++ (id)audioMixForScaledComposition:(id)composition timeRangeMapper:(id)mapper
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 sharedConfiguration];
-  [v8 volumeDuringSlowMotion];
+  compositionCopy = composition;
+  mapperCopy = mapper;
+  sharedConfiguration = [self sharedConfiguration];
+  [sharedConfiguration volumeDuringSlowMotion];
   v10 = v9;
 
-  v11 = 0;
-  if (v7 && v10 != 1.0)
+  audioMix = 0;
+  if (mapperCopy && v10 != 1.0)
   {
-    v11 = [MEMORY[0x1E6988038] audioMix];
-    v12 = [MEMORY[0x1E695DF70] array];
-    v13 = [PFMediaUtilities tracksWithMediaType:*MEMORY[0x1E69875A0] forAsset:v6];
+    audioMix = [MEMORY[0x1E6988038] audioMix];
+    array = [MEMORY[0x1E695DF70] array];
+    v13 = [PFMediaUtilities tracksWithMediaType:*MEMORY[0x1E69875A0] forAsset:compositionCopy];
     v17 = MEMORY[0x1E69E9820];
     v18 = 3221225472;
     v19 = __70__PFSlowMotionUtilities_audioMixForScaledComposition_timeRangeMapper___block_invoke;
     v20 = &unk_1E7B65C60;
-    v23 = a1;
+    selfCopy = self;
     v24 = v10;
-    v21 = v7;
-    v22 = v12;
-    v14 = v12;
+    v21 = mapperCopy;
+    v22 = array;
+    v14 = array;
     [v13 enumerateObjectsUsingBlock:&v17];
-    [v11 setInputParameters:{v14, v17, v18, v19, v20}];
+    [audioMix setInputParameters:{v14, v17, v18, v19, v20}];
   }
 
-  v15 = [v11 copy];
+  v15 = [audioMix copy];
 
   return v15;
 }
@@ -85,26 +85,26 @@ void __70__PFSlowMotionUtilities_audioMixForScaledComposition_timeRangeMapper___
   [*(a1 + 40) addObject:v4];
 }
 
-+ ($E33AF59C8D263E738CA17719EFF006B3)_timeRangeFromTime:(SEL)a3 toTime:(float)a4
++ ($E33AF59C8D263E738CA17719EFF006B3)_timeRangeFromTime:(SEL)time toTime:(float)toTime
 {
   *&retstr->var0.var3 = 0u;
   *&retstr->var1.var1 = 0u;
   *&retstr->var0.var0 = 0u;
-  CMTimeMakeWithSeconds(&start, a4, 600);
+  CMTimeMakeWithSeconds(&start, toTime, 600);
   CMTimeMakeWithSeconds(&v8, a5, 600);
   return CMTimeRangeFromTimeToTime(retstr, &start, &v8);
 }
 
-+ (id)_setVolume:(float)a3 forSlowMotionRegionsInTrack:(id)a4 timeRangeMapper:(id)a5
++ (id)_setVolume:(float)volume forSlowMotionRegionsInTrack:(id)track timeRangeMapper:(id)mapper
 {
   v8 = MEMORY[0x1E6988040];
-  v9 = a5;
-  v10 = [v8 audioMixInputParametersWithTrack:a4];
-  v11 = [a1 sharedConfiguration];
-  v12 = [v11 rampDown];
-  v13 = [v11 rampUp];
-  v14 = [a1 sharedConfiguration];
-  [v14 volumeDuringRampToSlowMotion];
+  mapperCopy = mapper;
+  v10 = [v8 audioMixInputParametersWithTrack:track];
+  sharedConfiguration = [self sharedConfiguration];
+  rampDown = [sharedConfiguration rampDown];
+  rampUp = [sharedConfiguration rampUp];
+  sharedConfiguration2 = [self sharedConfiguration];
+  [sharedConfiguration2 volumeDuringRampToSlowMotion];
   v16 = v15;
 
   v23[0] = MEMORY[0x1E69E9820];
@@ -112,15 +112,15 @@ void __70__PFSlowMotionUtilities_audioMixForScaledComposition_timeRangeMapper___
   v23[2] = __80__PFSlowMotionUtilities__setVolume_forSlowMotionRegionsInTrack_timeRangeMapper___block_invoke;
   v23[3] = &unk_1E7B65C38;
   v17 = v10;
-  v28 = a3;
+  volumeCopy = volume;
   v29 = v16;
   v24 = v17;
-  v25 = v12;
-  v26 = v13;
-  v27 = a1;
-  v18 = v13;
-  v19 = v12;
-  [v9 enumerateScaledRegionsUsingBlock:v23];
+  v25 = rampDown;
+  v26 = rampUp;
+  selfCopy = self;
+  v18 = rampUp;
+  v19 = rampDown;
+  [mapperCopy enumerateScaledRegionsUsingBlock:v23];
 
   [v17 setAudioTimePitchAlgorithm:*MEMORY[0x1E69873A0]];
   v20 = v26;
@@ -321,85 +321,85 @@ uint64_t __80__PFSlowMotionUtilities__setVolume_forSlowMotionRegionsInTrack_time
   return result;
 }
 
-+ (id)exportPresetForAsset:(id)a3 preferredPreset:(id)a4
++ (id)exportPresetForAsset:(id)asset preferredPreset:(id)preset
 {
-  v5 = a4;
-  v6 = a3;
+  presetCopy = preset;
+  assetCopy = asset;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  if ((isKindOfClass & 1) != 0 && [v5 isEqualToString:*MEMORY[0x1E6987338]])
+  if ((isKindOfClass & 1) != 0 && [presetCopy isEqualToString:*MEMORY[0x1E6987338]])
   {
     v8 = *MEMORY[0x1E69872E0];
 
-    v5 = v8;
+    presetCopy = v8;
   }
 
-  return v5;
+  return presetCopy;
 }
 
-+ (void)configureExportSession:(id)a3 forcePreciseConversion:(BOOL)a4
++ (void)configureExportSession:(id)session forcePreciseConversion:(BOOL)conversion
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [v5 asset];
+  conversionCopy = conversion;
+  sessionCopy = session;
+  asset = [sessionCopy asset];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [PFMediaUtilities mainVideoTrackForAsset:v6];
+    v7 = [PFMediaUtilities mainVideoTrackForAsset:asset];
     v11 = 0uLL;
     v12 = 0;
     [v7 nominalFrameRate];
     [PFVideoAdjustments minFrameDurationForNominalFrameRate:?];
     v9 = v11;
     v10 = v12;
-    [v5 setMinVideoFrameDuration:&v9];
+    [sessionCopy setMinVideoFrameDuration:&v9];
     v8 = MEMORY[0x1E6987D58];
-    if (!v4)
+    if (!conversionCopy)
     {
       v8 = MEMORY[0x1E6987D50];
     }
 
-    [v5 setVideoFrameRateConversionAlgorithm:*v8];
+    [sessionCopy setVideoFrameRateConversionAlgorithm:*v8];
   }
 }
 
-+ (double)_scaleWithinComposition:(id)a3 fromCursor:(double)a4 timeStep:(double)a5 rate:(float)a6 timeRangeMapper:(id)a7
++ (double)_scaleWithinComposition:(id)composition fromCursor:(double)cursor timeStep:(double)step rate:(float)rate timeRangeMapper:(id)mapper
 {
-  v10 = a4 + a5;
+  v10 = cursor + step;
   memset(&v21, 0, sizeof(v21));
-  v11 = a5 / a6;
-  v12 = a7;
-  v13 = a3;
-  CMTimeMakeWithSeconds(&start.start, a4, 600);
+  v11 = step / rate;
+  mapperCopy = mapper;
+  compositionCopy = composition;
+  CMTimeMakeWithSeconds(&start.start, cursor, 600);
   CMTimeMakeWithSeconds(&end, v10, 600);
   CMTimeRangeFromTimeToTime(&v21, &start.start, &end);
   memset(&end, 0, sizeof(end));
   CMTimeMakeWithSeconds(&end, v11, 600);
   start = v21;
   v18 = end;
-  [v13 scaleTimeRange:&start toDuration:&v18];
+  [compositionCopy scaleTimeRange:&start toDuration:&v18];
 
   start.start = end;
   Seconds = CMTimeGetSeconds(&start.start);
-  v15 = Seconds + a4;
-  *&Seconds = a5;
+  v15 = Seconds + cursor;
+  *&Seconds = step;
   *&v16 = v11;
-  [v12 addNextRange:Seconds scaledLength:v16];
+  [mapperCopy addNextRange:Seconds scaledLength:v16];
 
   return v15;
 }
 
-+ (BOOL)_scaleComposition:(id)a3 baseDuration:(double)a4 slowMotionRate:(float)a5 slowMotionRegions:(id)a6 forExport:(BOOL)a7 outTimeRangeMapper:(id *)a8
++ (BOOL)_scaleComposition:(id)composition baseDuration:(double)duration slowMotionRate:(float)rate slowMotionRegions:(id)regions forExport:(BOOL)export outTimeRangeMapper:(id *)mapper
 {
-  v9 = a7;
+  exportCopy = export;
   v106 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a6;
-  if (a8)
+  compositionCopy = composition;
+  regionsCopy = regions;
+  if (mapper)
   {
     v14 = objc_alloc_init(PFSlowMotionTimeRangeMapper);
-    *a8 = v14;
+    *mapper = v14;
   }
 
   else
@@ -407,19 +407,19 @@ uint64_t __80__PFSlowMotionUtilities__setVolume_forSlowMotionRegionsInTrack_time
     v14 = 0;
   }
 
-  v57 = [a1 sharedConfiguration];
-  v61 = [v57 rampDown];
-  v60 = [v57 rampUp];
+  sharedConfiguration = [self sharedConfiguration];
+  rampDown = [sharedConfiguration rampDown];
+  rampUp = [sharedConfiguration rampUp];
   v102 = 0;
   v101 = 0;
-  *&v15 = a5;
-  [v61 computeRampToTargetRate:v9 forExport:&v102 outTimeSteps:&v101 outIntermediateRates:v15];
+  *&v15 = rate;
+  [rampDown computeRampToTargetRate:exportCopy forExport:&v102 outTimeSteps:&v101 outIntermediateRates:v15];
   v16 = v102;
   v59 = v101;
   v100 = 0;
   v99 = 0;
-  *&v17 = a5;
-  [v60 computeRampToTargetRate:v9 forExport:&v100 outTimeSteps:&v99 outIntermediateRates:v17];
+  *&v17 = rate;
+  [rampUp computeRampToTargetRate:exportCopy forExport:&v100 outTimeSteps:&v99 outIntermediateRates:v17];
   v18 = v100;
   v58 = v99;
   v95 = 0u;
@@ -494,7 +494,7 @@ uint64_t __80__PFSlowMotionUtilities__setVolume_forSlowMotionRegionsInTrack_time
   v90 = 0u;
   v87 = 0u;
   v88 = 0u;
-  obj = v13;
+  obj = regionsCopy;
   v31 = [obj countByEnumeratingWithState:&v87 objects:v103 count:16];
   if (v31)
   {
@@ -539,7 +539,7 @@ uint64_t __80__PFSlowMotionUtilities__setVolume_forSlowMotionRegionsInTrack_time
           v41 = CMTimeGetSeconds(&time.start);
           time = v86;
           CMTimeRangeGetEnd(&v81, &time);
-          v43 = a4 - CMTimeGetSeconds(&v81);
+          v43 = duration - CMTimeGetSeconds(&v81);
           if (v41 >= 0.1)
           {
             v73[0] = MEMORY[0x1E69E9820];
@@ -550,8 +550,8 @@ uint64_t __80__PFSlowMotionUtilities__setVolume_forSlowMotionRegionsInTrack_time
             v74 = v44;
             v75 = v59;
             v78 = &v82;
-            v79 = a1;
-            v76 = v12;
+            selfCopy = self;
+            v76 = compositionCopy;
             v77 = v14;
             [v44 enumerateObjectsUsingBlock:v73];
 
@@ -570,9 +570,9 @@ uint64_t __80__PFSlowMotionUtilities__setVolume_forSlowMotionRegionsInTrack_time
             }
 
 LABEL_34:
-            if (v12)
+            if (compositionCopy)
             {
-              [v12 duration];
+              [compositionCopy duration];
               v46 = CMTimeGetSeconds(&time.start);
               v47 = v83[3];
               HIDWORD(v42) = 1062948481;
@@ -584,11 +584,11 @@ LABEL_34:
               }
 
 LABEL_42:
-              [v61 rampTime];
+              [rampDown rampTime];
               v45 = v83[3];
 LABEL_43:
-              *&v42 = a5;
-              [a1 _scaleWithinComposition:v12 fromCursor:v14 timeStep:v45 rate:v37 timeRangeMapper:v42];
+              *&v42 = rate;
+              [self _scaleWithinComposition:compositionCopy fromCursor:v14 timeStep:v45 rate:v37 timeRangeMapper:v42];
               v54 = v49;
               v83[3] = v49;
               if (v43 >= 0.1)
@@ -601,8 +601,8 @@ LABEL_43:
                 v67 = v55;
                 v68 = v58;
                 v71 = &v82;
-                v72 = a1;
-                v69 = v12;
+                selfCopy2 = self;
+                v69 = compositionCopy;
                 v70 = v14;
                 [v55 enumerateObjectsWithOptions:2 usingBlock:v66];
 
@@ -613,12 +613,12 @@ LABEL_43:
               *&v51 = v47;
               *&v52 = v54;
               *&v53 = v49;
-              *&v49 = a5;
+              *&v49 = rate;
               [(PFSlowMotionTimeRangeMapper *)v14 markScaledRegionWithRate:v49 rampInStartTime:v50 rampInEndTime:v51 rampOutStartTime:v52 rampOutEndTime:v53];
               v33 = v83[3];
               if (v43 >= 0.1)
               {
-                [v60 rampTime];
+                [rampUp rampTime];
               }
 
               v65 = v65 + v33 - v38 - Seconds;
@@ -628,7 +628,7 @@ LABEL_43:
 
             *&time.start.value = *&v86.start.value;
             time.start.epoch = v86.start.epoch;
-            v48 = a4 - CMTimeGetSeconds(&time.start);
+            v48 = duration - CMTimeGetSeconds(&time.start);
             if (v41 < 0.1)
             {
               v37 = v48 + 0.00166666667;
@@ -691,21 +691,21 @@ uint64_t __118__PFSlowMotionUtilities__scaleComposition_baseDuration_slowMotionR
   return result;
 }
 
-+ (id)timeRangeMapperForSourceDuration:(double)a3 slowMotionRate:(float)a4 slowMotionTimeRange:(id *)a5 forExport:(BOOL)a6
++ (id)timeRangeMapperForSourceDuration:(double)duration slowMotionRate:(float)rate slowMotionTimeRange:(id *)range forExport:(BOOL)export
 {
-  v6 = a6;
-  v9 = a1;
-  v10 = *&a5->var0.var3;
-  v17[0] = *&a5->var0.var0;
+  exportCopy = export;
+  selfCopy = self;
+  v10 = *&range->var0.var3;
+  v17[0] = *&range->var0.var0;
   v17[1] = v10;
-  v17[2] = *&a5->var1.var1;
-  v11 = [a1 _slowMotionRegionsFromSlowMotionTimeRange:v17];
+  v17[2] = *&range->var1.var1;
+  v11 = [self _slowMotionRegionsFromSlowMotionTimeRange:v17];
   v16 = 0;
-  *&v12 = a4;
-  LOBYTE(v9) = [v9 _scaleComposition:0 baseDuration:v11 slowMotionRate:v6 slowMotionRegions:&v16 forExport:a3 outTimeRangeMapper:v12];
+  *&v12 = rate;
+  LOBYTE(selfCopy) = [selfCopy _scaleComposition:0 baseDuration:v11 slowMotionRate:exportCopy slowMotionRegions:&v16 forExport:duration outTimeRangeMapper:v12];
   v13 = v16;
   v14 = v13;
-  if ((v9 & 1) == 0)
+  if ((selfCopy & 1) == 0)
   {
 
     v14 = 0;
@@ -714,14 +714,14 @@ uint64_t __118__PFSlowMotionUtilities__scaleComposition_baseDuration_slowMotionR
   return v14;
 }
 
-+ (id)_slowMotionRegionsFromSlowMotionTimeRange:(id *)a3
++ (id)_slowMotionRegionsFromSlowMotionTimeRange:(id *)range
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E695E480];
-  v4 = *&a3->var0.var3;
-  *&v9.start.value = *&a3->var0.var0;
+  v4 = *&range->var0.var3;
+  *&v9.start.value = *&range->var0.var0;
   *&v9.start.epoch = v4;
-  *&v9.duration.timescale = *&a3->var1.var1;
+  *&v9.duration.timescale = *&range->var1.var1;
   v5 = CMTimeRangeCopyAsDictionary(&v9, v3);
   if (v5)
   {
@@ -739,15 +739,15 @@ uint64_t __118__PFSlowMotionUtilities__scaleComposition_baseDuration_slowMotionR
   return v7;
 }
 
-+ (id)_scaledCompositionForAsset:(id)a3 slowMotionRate:(float)a4 slowMotionTimeRange:(id *)a5 forExport:(BOOL)a6 outTimeRangeMapper:(id *)a7
++ (id)_scaledCompositionForAsset:(id)asset slowMotionRate:(float)rate slowMotionTimeRange:(id *)range forExport:(BOOL)export outTimeRangeMapper:(id *)mapper
 {
   v51 = *MEMORY[0x1E69E9840];
-  v40 = a3;
-  if (!v40 || (*&v11 = a4, ![a1 _isValidSlowMotionRate:v11]) || (v12 = *&a5->var0.var3, *&v49.start.value = *&a5->var0.var0, *&v49.start.epoch = v12, *&v49.duration.timescale = *&a5->var1.var1, !objc_msgSend(a1, "_isValidSlowMotionTimeRange:", &v49)))
+  assetCopy = asset;
+  if (!assetCopy || (*&v11 = rate, ![self _isValidSlowMotionRate:v11]) || (v12 = *&range->var0.var3, *&v49.start.value = *&range->var0.var0, *&v49.start.epoch = v12, *&v49.duration.timescale = *&range->var1.var1, !objc_msgSend(self, "_isValidSlowMotionTimeRange:", &v49)))
   {
     v31 = 0;
     v30 = 0;
-    if (!a7)
+    if (!mapper)
     {
       goto LABEL_21;
     }
@@ -755,9 +755,9 @@ uint64_t __118__PFSlowMotionUtilities__scaleComposition_baseDuration_slowMotionR
     goto LABEL_19;
   }
 
-  v13 = [MEMORY[0x1E6988048] composition];
+  composition = [MEMORY[0x1E6988048] composition];
   memset(&v48, 0, sizeof(v48));
-  [v40 duration];
+  [assetCopy duration];
   memset(&v49, 0, sizeof(v49));
   *&start.start.value = *MEMORY[0x1E6960CC0];
   v38 = *&start.start.value;
@@ -769,27 +769,27 @@ uint64_t __118__PFSlowMotionUtilities__scaleComposition_baseDuration_slowMotionR
   start = v49;
   *&end.value = v38;
   end.epoch = epoch;
-  [PFMediaUtilities insertTimeRange:&start ofAsset:v40 atTime:&end intoMutableComposition:v13 error:&v46];
+  [PFMediaUtilities insertTimeRange:&start ofAsset:assetCopy atTime:&end intoMutableComposition:composition error:&v46];
   v36 = v46;
   start.start = v48;
   Seconds = CMTimeGetSeconds(&start.start);
-  v16 = *&a5->var0.var3;
-  *&start.start.value = *&a5->var0.var0;
+  v16 = *&range->var0.var3;
+  *&start.start.value = *&range->var0.var0;
   *&start.start.epoch = v16;
-  *&start.duration.timescale = *&a5->var1.var1;
-  v17 = [a1 _slowMotionRegionsFromSlowMotionTimeRange:&start];
-  *&v18 = a4;
+  *&start.duration.timescale = *&range->var1.var1;
+  v17 = [self _slowMotionRegionsFromSlowMotionTimeRange:&start];
+  *&v18 = rate;
   v34 = v17;
-  v39 = a7;
-  v35 = [a1 _scaleComposition:v13 baseDuration:Seconds slowMotionRate:v18 slowMotionRegions:? forExport:? outTimeRangeMapper:?];
-  v19 = [PFMediaUtilities mainVideoTrackForAsset:v40];
+  mapperCopy = mapper;
+  v35 = [self _scaleComposition:composition baseDuration:Seconds slowMotionRate:v18 slowMotionRegions:? forExport:? outTimeRangeMapper:?];
+  v19 = [PFMediaUtilities mainVideoTrackForAsset:assetCopy];
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v37 = v13;
-  v20 = [v13 tracks];
-  v21 = [v20 countByEnumeratingWithState:&v41 objects:v50 count:16];
+  v37 = composition;
+  tracks = [composition tracks];
+  v21 = [tracks countByEnumeratingWithState:&v41 objects:v50 count:16];
   if (v21)
   {
     v22 = v21;
@@ -801,12 +801,12 @@ uint64_t __118__PFSlowMotionUtilities__scaleComposition_baseDuration_slowMotionR
       {
         if (*v42 != v23)
         {
-          objc_enumerationMutation(v20);
+          objc_enumerationMutation(tracks);
         }
 
         v26 = *(*(&v41 + 1) + 8 * i);
-        v27 = [v26 mediaType];
-        v28 = [v27 isEqualToString:v24];
+        mediaType = [v26 mediaType];
+        v28 = [mediaType isEqualToString:v24];
 
         if (v28)
         {
@@ -823,25 +823,25 @@ uint64_t __118__PFSlowMotionUtilities__scaleComposition_baseDuration_slowMotionR
           [v26 setPreferredTransform:&start];
         }
 
-        v29 = +[PFMediaUtilities trackWithTrackID:forAsset:](PFMediaUtilities, "trackWithTrackID:forAsset:", [v26 trackID], v40);
+        v29 = +[PFMediaUtilities trackWithTrackID:forAsset:](PFMediaUtilities, "trackWithTrackID:forAsset:", [v26 trackID], assetCopy);
         [v26 setEnabled:{objc_msgSend(v29, "isEnabled")}];
       }
 
-      v22 = [v20 countByEnumeratingWithState:&v41 objects:v50 count:16];
+      v22 = [tracks countByEnumeratingWithState:&v41 objects:v50 count:16];
     }
 
     while (v22);
   }
 
   v30 = v37;
-  a7 = v39;
+  mapper = mapperCopy;
   v31 = v35;
-  if (v39)
+  if (mapperCopy)
   {
 LABEL_19:
     if ((v31 & 1) == 0)
     {
-      *a7 = 0;
+      *mapper = 0;
     }
   }
 
@@ -859,45 +859,45 @@ LABEL_21:
   return v32;
 }
 
-+ (BOOL)_isValidSlowMotionTimeRange:(id *)a3
++ (BOOL)_isValidSlowMotionTimeRange:(id *)range
 {
-  if ((a3->var0.var2 & 1) == 0 || (a3->var1.var2 & 1) == 0 || a3->var1.var3 || a3->var1.var0 < 0)
+  if ((range->var0.var2 & 1) == 0 || (range->var1.var2 & 1) == 0 || range->var1.var3 || range->var1.var0 < 0)
   {
     return 0;
   }
 
   v8 = v3;
   v9 = v4;
-  time1 = a3->var1;
+  time1 = range->var1;
   v6 = **&MEMORY[0x1E6960CC0];
   return CMTimeCompare(&time1, &v6) != 0;
 }
 
-+ (id)assetFromVideoAsset:(id)a3 slowMotionRate:(float)a4 slowMotionTimeRange:(id *)a5 forExport:(BOOL)a6 outAudioMix:(id *)a7 outTimeRangeMapper:(id *)a8
++ (id)assetFromVideoAsset:(id)asset slowMotionRate:(float)rate slowMotionTimeRange:(id *)range forExport:(BOOL)export outAudioMix:(id *)mix outTimeRangeMapper:(id *)mapper
 {
-  v10 = a6;
-  v14 = a3;
-  *&v15 = a4;
-  v16 = [a1 _isValidSlowMotionRate:v15];
-  v17 = *&a5->var0.var3;
-  v27 = *&a5->var0.var0;
+  exportCopy = export;
+  assetCopy = asset;
+  *&v15 = rate;
+  v16 = [self _isValidSlowMotionRate:v15];
+  v17 = *&range->var0.var3;
+  v27 = *&range->var0.var0;
   v28 = v17;
-  v29 = *&a5->var1.var1;
-  v18 = [a1 _isValidSlowMotionTimeRange:&v27];
+  v29 = *&range->var1.var1;
+  v18 = [self _isValidSlowMotionTimeRange:&v27];
   v19 = 0;
   if (v16 && v18)
   {
     v26 = 0;
-    v20 = *&a5->var0.var3;
-    v27 = *&a5->var0.var0;
+    v20 = *&range->var0.var3;
+    v27 = *&range->var0.var0;
     v28 = v20;
-    v29 = *&a5->var1.var1;
-    v21 = [a1 _scaledCompositionForAsset:v14 slowMotionRate:&v27 slowMotionTimeRange:v10 forExport:&v26 outTimeRangeMapper:{COERCE_DOUBLE(__PAIR64__(DWORD1(v29), LODWORD(a4)))}];
+    v29 = *&range->var1.var1;
+    v21 = [self _scaledCompositionForAsset:assetCopy slowMotionRate:&v27 slowMotionTimeRange:exportCopy forExport:&v26 outTimeRangeMapper:{COERCE_DOUBLE(__PAIR64__(DWORD1(v29), LODWORD(rate)))}];
     v22 = v26;
     if (v21)
     {
-      v19 = [a1 audioMixForScaledComposition:v21 timeRangeMapper:v22];
-      if (!a8)
+      v19 = [self audioMixForScaledComposition:v21 timeRangeMapper:v22];
+      if (!mapper)
       {
         goto LABEL_6;
       }
@@ -906,7 +906,7 @@ LABEL_21:
     else
     {
       v19 = 0;
-      if (!a8)
+      if (!mapper)
       {
 LABEL_6:
 
@@ -920,17 +920,17 @@ LABEL_6:
     }
 
     v23 = v22;
-    *a8 = v22;
+    *mapper = v22;
     goto LABEL_6;
   }
 
 LABEL_7:
-  v21 = v14;
+  v21 = assetCopy;
 LABEL_8:
-  if (a7)
+  if (mix)
   {
     v24 = v19;
-    *a7 = v19;
+    *mix = v19;
   }
 
   return v21;

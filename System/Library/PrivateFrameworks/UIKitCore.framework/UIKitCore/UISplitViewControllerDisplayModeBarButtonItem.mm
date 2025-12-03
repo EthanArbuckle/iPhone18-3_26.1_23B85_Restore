@@ -2,21 +2,21 @@
 - (SEL)action;
 - (UISplitViewControllerImpl)_impl;
 - (id)target;
-- (void)_setOwningNavigationItem:(id)a3;
+- (void)_setOwningNavigationItem:(id)item;
 - (void)_wasUsed;
 @end
 
 @implementation UISplitViewControllerDisplayModeBarButtonItem
 
-- (void)_setOwningNavigationItem:(id)a3
+- (void)_setOwningNavigationItem:(id)item
 {
-  v4 = a3;
-  v5 = [(UIBarButtonItem *)self _owningNavigationItem];
+  itemCopy = item;
+  _owningNavigationItem = [(UIBarButtonItem *)self _owningNavigationItem];
   v6.receiver = self;
   v6.super_class = UISplitViewControllerDisplayModeBarButtonItem;
-  [(UIBarButtonItem *)&v6 _setOwningNavigationItem:v4];
+  [(UIBarButtonItem *)&v6 _setOwningNavigationItem:itemCopy];
 
-  if (v4 && !v5)
+  if (itemCopy && !_owningNavigationItem)
   {
     [(UISplitViewControllerDisplayModeBarButtonItem *)self _wasUsed];
   }
@@ -27,9 +27,9 @@
   [(UISplitViewControllerDisplayModeBarButtonItem *)self _wasUsed];
   v5.receiver = self;
   v5.super_class = UISplitViewControllerDisplayModeBarButtonItem;
-  v3 = [(UIBarButtonItem *)&v5 target];
+  target = [(UIBarButtonItem *)&v5 target];
 
-  return v3;
+  return target;
 }
 
 - (SEL)action
@@ -45,8 +45,8 @@
   if (!self->_hasBeenUsed)
   {
     self->_hasBeenUsed = 1;
-    v4 = [(UISplitViewControllerDisplayModeBarButtonItem *)self _impl];
-    [v4 _displayModeBarButtonItemWasUsedForFirstTime:self];
+    _impl = [(UISplitViewControllerDisplayModeBarButtonItem *)self _impl];
+    [_impl _displayModeBarButtonItemWasUsedForFirstTime:self];
   }
 }
 

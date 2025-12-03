@@ -1,21 +1,21 @@
 @interface _SWCServiceSettings
-+ (BOOL)removeObjectsForKeys:(id)a3 serviceSpecifier:(id)a4 error:(id *)a5;
-+ (BOOL)removeObjectsForKeys:(id)a3 serviceType:(id)a4 error:(id *)a5;
++ (BOOL)removeObjectsForKeys:(id)keys serviceSpecifier:(id)specifier error:(id *)error;
++ (BOOL)removeObjectsForKeys:(id)keys serviceType:(id)type error:(id *)error;
 + (NSNotificationCenter)notificationCenter;
-+ (id)serviceSettingsWithServiceSpecifier:(id)a3 error:(id *)a4;
-+ (void)postChangeNotificationForServiceSpecifier:(id)a3;
-+ (void)serviceSettingsDidChange:(id)a3;
-- (BOOL)commitReturningError:(id *)a3;
++ (id)serviceSettingsWithServiceSpecifier:(id)specifier error:(id *)error;
++ (void)postChangeNotificationForServiceSpecifier:(id)specifier;
++ (void)serviceSettingsDidChange:(id)change;
+- (BOOL)commitReturningError:(id *)error;
 - (NSDictionary)dictionaryRepresentation;
-- (_SWCServiceSettings)initWithCoder:(id)a3;
-- (id)_initWithServiceSpecifier:(id)a3 dictionary:(id)a4 generation:(id)a5;
+- (_SWCServiceSettings)initWithCoder:(id)coder;
+- (id)_initWithServiceSpecifier:(id)specifier dictionary:(id)dictionary generation:(id)generation;
 - (id)debugDescription;
 - (id)description;
-- (id)objectForKey:(id)a3 ofClass:(Class)a4;
-- (id)objectForKey:(id)a3 ofClass:(Class)a4 valuesOfClass:(Class)a5;
+- (id)objectForKey:(id)key ofClass:(Class)class;
+- (id)objectForKey:(id)key ofClass:(Class)class valuesOfClass:(Class)ofClass;
 - (id)redactedDescription;
-- (void)encodeWithCoder:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation _SWCServiceSettings
@@ -26,7 +26,7 @@
   block[1] = 3221225472;
   block[2] = __41___SWCServiceSettings_notificationCenter__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280B21808 != -1)
   {
     dispatch_once(&qword_280B21808, block);
@@ -37,9 +37,9 @@
   return v2;
 }
 
-+ (id)serviceSettingsWithServiceSpecifier:(id)a3 error:(id *)a4
++ (id)serviceSettingsWithServiceSpecifier:(id)specifier error:(id *)error
 {
-  v7 = a3;
+  specifierCopy = specifier;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -52,12 +52,12 @@
   v20 = __Block_byref_object_copy__0;
   v21 = __Block_byref_object_dispose__0;
   v22 = 0;
-  v8 = [v7 serviceType];
+  serviceType = [specifierCopy serviceType];
 
-  if (!v8)
+  if (!serviceType)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:a1 file:@"SWCServiceSettings.mm" lineNumber:71 description:{@"Invalid parameter not satisfying: %@", @"specifier.serviceType != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SWCServiceSettings.mm" lineNumber:71 description:{@"Invalid parameter not satisfying: %@", @"specifier.serviceType != nil"}];
   }
 
   v9 = _SWCGetServerConnection();
@@ -73,11 +73,11 @@
   v15[3] = &unk_279BBDE98;
   v15[4] = &v23;
   v15[5] = &v17;
-  [v10 getServiceSettingsWithServiceSpecifier:v7 completionHandler:v15];
+  [v10 getServiceSettingsWithServiceSpecifier:specifierCopy completionHandler:v15];
   v11 = v24[5];
-  if (a4 && !v11)
+  if (error && !v11)
   {
-    *a4 = v18[5];
+    *error = v18[5];
     v11 = v24[5];
   }
 
@@ -89,33 +89,33 @@
   return v12;
 }
 
-- (id)objectForKey:(id)a3 ofClass:(Class)a4
+- (id)objectForKey:(id)key ofClass:(Class)class
 {
-  v7 = a3;
-  if (!v7)
+  keyCopy = key;
+  if (!keyCopy)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"SWCServiceSettings.mm" lineNumber:95 description:{@"Invalid parameter not satisfying: %@", @"key != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SWCServiceSettings.mm" lineNumber:95 description:{@"Invalid parameter not satisfying: %@", @"key != nil"}];
 
-    if (a4)
+    if (class)
     {
       goto LABEL_3;
     }
 
 LABEL_10:
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"SWCServiceSettings.mm" lineNumber:96 description:{@"Invalid parameter not satisfying: %@", @"clazz != Nil"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"SWCServiceSettings.mm" lineNumber:96 description:{@"Invalid parameter not satisfying: %@", @"clazz != Nil"}];
 
     goto LABEL_3;
   }
 
-  if (!a4)
+  if (!class)
   {
     goto LABEL_10;
   }
 
 LABEL_3:
-  v8 = [(NSMutableDictionary *)self->_dict objectForKeyedSubscript:v7];
+  v8 = [(NSMutableDictionary *)self->_dict objectForKeyedSubscript:keyCopy];
   if (v8 && (objc_opt_isKindOfClass() & 1) == 0)
   {
 
@@ -125,17 +125,17 @@ LABEL_3:
   return v8;
 }
 
-- (id)objectForKey:(id)a3 ofClass:(Class)a4 valuesOfClass:(Class)a5
+- (id)objectForKey:(id)key ofClass:(Class)class valuesOfClass:(Class)ofClass
 {
   v29 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  if (!a5)
+  keyCopy = key;
+  if (!ofClass)
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"SWCServiceSettings.mm" lineNumber:110 description:{@"Invalid parameter not satisfying: %@", @"valueClazz != Nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SWCServiceSettings.mm" lineNumber:110 description:{@"Invalid parameter not satisfying: %@", @"valueClazz != Nil"}];
   }
 
-  v10 = [(_SWCServiceSettings *)self objectForKey:v9 ofClass:a4];
+  v10 = [(_SWCServiceSettings *)self objectForKey:keyCopy ofClass:class];
   if (v10)
   {
     v24 = 0;
@@ -190,7 +190,7 @@ LABEL_17:
       v19[2] = __58___SWCServiceSettings_objectForKey_ofClass_valuesOfClass___block_invoke;
       v19[3] = &unk_279BBDEC0;
       v19[4] = &v24;
-      v19[5] = a5;
+      v19[5] = ofClass;
       [v10 enumerateKeysAndObjectsUsingBlock:v19];
     }
 
@@ -208,17 +208,17 @@ LABEL_17:
   return v10;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  propertyList = a3;
-  v7 = a4;
-  if (!v7)
+  propertyList = object;
+  keyCopy = key;
+  if (!keyCopy)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"SWCServiceSettings.mm" lineNumber:144 description:{@"Invalid parameter not satisfying: %@", @"key != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SWCServiceSettings.mm" lineNumber:144 description:{@"Invalid parameter not satisfying: %@", @"key != nil"}];
   }
 
-  v8 = [(NSMutableDictionary *)self->_dict objectForKeyedSubscript:v7];
+  v8 = [(NSMutableDictionary *)self->_dict objectForKeyedSubscript:keyCopy];
   v9 = v8;
   if (propertyList | v8)
   {
@@ -229,8 +229,8 @@ LABEL_17:
       {
         if (([MEMORY[0x277CCAC58] propertyList:propertyList isValidForFormat:200] & 1) == 0)
         {
-          v13 = [MEMORY[0x277CCA890] currentHandler];
-          [v13 handleFailureInMethod:a2 object:self file:@"SWCServiceSettings.mm" lineNumber:154 description:{@"Invalid parameter not satisfying: %@", @"[NSPropertyListSerialization propertyList:newValue isValidForFormat:NSPropertyListBinaryFormat_v1_0]"}];
+          currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+          [currentHandler2 handleFailureInMethod:a2 object:self file:@"SWCServiceSettings.mm" lineNumber:154 description:{@"Invalid parameter not satisfying: %@", @"[NSPropertyListSerialization propertyList:newValue isValidForFormat:NSPropertyListBinaryFormat_v1_0]"}];
         }
 
         DeepCopy = CFPropertyListCreateDeepCopy(*MEMORY[0x277CBECE8], propertyList, 0);
@@ -250,7 +250,7 @@ LABEL_17:
   }
 }
 
-- (BOOL)commitReturningError:(id *)a3
+- (BOOL)commitReturningError:(id *)error
 {
   v17 = 0;
   v18 = &v17;
@@ -285,9 +285,9 @@ LABEL_17:
     }
 
     v7 = *(v18 + 24);
-    if (a3 && (v18[3] & 1) == 0)
+    if (error && (v18[3] & 1) == 0)
     {
-      *a3 = v12[5];
+      *error = v12[5];
       v7 = *(v18 + 24);
     }
   }
@@ -304,21 +304,21 @@ LABEL_17:
   return v7 & 1;
 }
 
-- (id)_initWithServiceSpecifier:(id)a3 dictionary:(id)a4 generation:(id)a5
+- (id)_initWithServiceSpecifier:(id)specifier dictionary:(id)dictionary generation:(id)generation
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  specifierCopy = specifier;
+  dictionaryCopy = dictionary;
+  generationCopy = generation;
   v18.receiver = self;
   v18.super_class = _SWCServiceSettings;
   v12 = [(_SWCServiceSettings *)&v18 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_serviceSpecifier, a3);
-    if (v10)
+    objc_storeStrong(&v12->_serviceSpecifier, specifier);
+    if (dictionaryCopy)
     {
-      v14 = v10;
+      v14 = dictionaryCopy;
     }
 
     else
@@ -330,7 +330,7 @@ LABEL_17:
     dict = v13->_dict;
     v13->_dict = v15;
 
-    objc_storeStrong(&v13->_generation, a5);
+    objc_storeStrong(&v13->_generation, generation);
   }
 
   return v13;
@@ -343,11 +343,11 @@ LABEL_17:
   return v2;
 }
 
-+ (void)serviceSettingsDidChange:(id)a3
++ (void)serviceSettingsDidChange:(id)change
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"serviceSpecifierData"];
+  userInfo = [change userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"serviceSpecifierData"];
 
   if (v5 && _NSIsNSData())
   {
@@ -356,8 +356,8 @@ LABEL_17:
     v7 = v11;
     if (v6)
     {
-      v8 = [a1 notificationCenter];
-      [v8 postNotificationName:@"com.apple.swc.serviceSettingsDidChangeNotification" object:v6];
+      notificationCenter = [self notificationCenter];
+      [notificationCenter postNotificationName:@"com.apple.swc.serviceSettingsDidChangeNotification" object:v6];
     }
 
     else
@@ -380,14 +380,14 @@ LABEL_17:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)postChangeNotificationForServiceSpecifier:(id)a3
++ (void)postChangeNotificationForServiceSpecifier:(id)specifier
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  specifierCopy = specifier;
+  if (specifierCopy)
   {
     v14 = 0;
-    v4 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v3 requiringSecureCoding:1 error:&v14];
+    v4 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:specifierCopy requiringSecureCoding:1 error:&v14];
     v5 = v14;
     if (v4)
     {
@@ -433,8 +433,8 @@ LABEL_17:
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
-  v4 = [(_SWCServiceSettings *)self serviceSpecifier];
-  v5 = [v3 initWithFormat:@"{ s = %@, %llu values }", v4, -[NSMutableDictionary count](self->_dict, "count")];
+  serviceSpecifier = [(_SWCServiceSettings *)self serviceSpecifier];
+  v5 = [v3 initWithFormat:@"{ s = %@, %llu values }", serviceSpecifier, -[NSMutableDictionary count](self->_dict, "count")];
 
   return v5;
 }
@@ -452,26 +452,26 @@ LABEL_17:
 - (id)redactedDescription
 {
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
-  v4 = [(_SWCServiceSettings *)self serviceSpecifier];
-  v5 = [v4 redactedDescription];
-  v6 = [v3 initWithFormat:@"{ s = %@, %llu values }", v5, -[NSMutableDictionary count](self->_dict, "count")];
+  serviceSpecifier = [(_SWCServiceSettings *)self serviceSpecifier];
+  redactedDescription = [serviceSpecifier redactedDescription];
+  v6 = [v3 initWithFormat:@"{ s = %@, %llu values }", redactedDescription, -[NSMutableDictionary count](self->_dict, "count")];
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_serviceSpecifier forKey:@"serviceSpecifier"];
-  [v4 encodeObject:self->_dict forKey:@"dictionaryRepresentation"];
-  [v4 encodeObject:self->_generation forKey:@"generation"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_serviceSpecifier forKey:@"serviceSpecifier"];
+  [coderCopy encodeObject:self->_dict forKey:@"dictionaryRepresentation"];
+  [coderCopy encodeObject:self->_generation forKey:@"generation"];
 }
 
-- (_SWCServiceSettings)initWithCoder:(id)a3
+- (_SWCServiceSettings)initWithCoder:(id)coder
 {
   v37[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 swc_decodeObjectOfClass:objc_opt_class() forKey:@"serviceSpecifier"];
+  coderCopy = coder;
+  v5 = [coderCopy swc_decodeObjectOfClass:objc_opt_class() forKey:@"serviceSpecifier"];
   v6 = v5;
   if (!v5 || ([v5 serviceType], v7 = objc_claimAutoreleasedReturnValue(), v7, !v7))
   {
@@ -483,7 +483,7 @@ LABEL_17:
     v37[1] = v9;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v37 forKeys:v36 count:2];
     v11 = [v8 initWithDomain:*MEMORY[0x277CCA050] code:4865 userInfo:v10];
-    [v4 failWithError:v11];
+    [coderCopy failWithError:v11];
 
     self = 0;
   }
@@ -498,7 +498,7 @@ LABEL_17:
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v35 count:6];
   v14 = [v12 initWithArray:v13];
 
-  v15 = [v4 swc_decodeObjectOfClasses:v14 forKey:@"dictionaryRepresentation"];
+  v15 = [coderCopy swc_decodeObjectOfClasses:v14 forKey:@"dictionaryRepresentation"];
   if (!v15)
   {
     v20 = objc_alloc(MEMORY[0x277CCA9B8]);
@@ -509,7 +509,7 @@ LABEL_17:
     v34[1] = v17;
     v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v34 forKeys:v33 count:2];
     v19 = [v20 initWithDomain:*MEMORY[0x277CCA050] code:4865 userInfo:v18];
-    [v4 failWithError:v19];
+    [coderCopy failWithError:v19];
     goto LABEL_9;
   }
 
@@ -523,13 +523,13 @@ LABEL_17:
     v32[1] = v17;
     v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v32 forKeys:v31 count:2];
     v19 = [v16 initWithDomain:*MEMORY[0x277CCA050] code:4864 userInfo:v18];
-    [v4 failWithError:v19];
+    [coderCopy failWithError:v19];
 LABEL_9:
 
     self = 0;
   }
 
-  v21 = [v4 swc_decodeObjectOfClass:objc_opt_class() forKey:@"generation"];
+  v21 = [coderCopy swc_decodeObjectOfClass:objc_opt_class() forKey:@"generation"];
   if (!v21)
   {
     v22 = objc_alloc(MEMORY[0x277CCA9B8]);
@@ -537,7 +537,7 @@ LABEL_9:
     v30[1] = v23;
     v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:&v29 count:2];
     v25 = [v22 initWithDomain:*MEMORY[0x277CCA050] code:4865 userInfo:v24];
-    [v4 failWithError:v25];
+    [coderCopy failWithError:v25];
 
     self = 0;
   }
@@ -548,10 +548,10 @@ LABEL_9:
   return v26;
 }
 
-+ (BOOL)removeObjectsForKeys:(id)a3 serviceType:(id)a4 error:(id *)a5
++ (BOOL)removeObjectsForKeys:(id)keys serviceType:(id)type error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
+  keysCopy = keys;
+  typeCopy = type;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -562,10 +562,10 @@ LABEL_9:
   v21 = __Block_byref_object_copy__0;
   v22 = __Block_byref_object_dispose__0;
   v23 = 0;
-  if (!v10)
+  if (!typeCopy)
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:a1 file:@"SWCServiceSettings.mm" lineNumber:353 description:{@"Invalid parameter not satisfying: %@", @"serviceType != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SWCServiceSettings.mm" lineNumber:353 description:{@"Invalid parameter not satisfying: %@", @"serviceType != nil"}];
   }
 
   v11 = _SWCGetServerConnection();
@@ -581,11 +581,11 @@ LABEL_9:
   v16[3] = &unk_279BBDF38;
   v16[4] = &v24;
   v16[5] = &v18;
-  [v12 removeSettingsForKeys:v9 serviceType:v10 completionHandler:v16];
+  [v12 removeSettingsForKeys:keysCopy serviceType:typeCopy completionHandler:v16];
   v13 = *(v25 + 24);
-  if (a5 && (v25[3] & 1) == 0)
+  if (error && (v25[3] & 1) == 0)
   {
-    *a5 = v19[5];
+    *error = v19[5];
     v13 = *(v25 + 24);
   }
 
@@ -595,10 +595,10 @@ LABEL_9:
   return v13 & 1;
 }
 
-+ (BOOL)removeObjectsForKeys:(id)a3 serviceSpecifier:(id)a4 error:(id *)a5
++ (BOOL)removeObjectsForKeys:(id)keys serviceSpecifier:(id)specifier error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
+  keysCopy = keys;
+  specifierCopy = specifier;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -609,10 +609,10 @@ LABEL_9:
   v21 = __Block_byref_object_copy__0;
   v22 = __Block_byref_object_dispose__0;
   v23 = 0;
-  if (!v10)
+  if (!specifierCopy)
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:a1 file:@"SWCServiceSettings.mm" lineNumber:377 description:{@"Invalid parameter not satisfying: %@", @"specifier != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SWCServiceSettings.mm" lineNumber:377 description:{@"Invalid parameter not satisfying: %@", @"specifier != nil"}];
   }
 
   v11 = _SWCGetServerConnection();
@@ -628,11 +628,11 @@ LABEL_9:
   v16[3] = &unk_279BBDF38;
   v16[4] = &v24;
   v16[5] = &v18;
-  [v12 removeSettingsForKeys:v9 serviceSpecifier:v10 completionHandler:v16];
+  [v12 removeSettingsForKeys:keysCopy serviceSpecifier:specifierCopy completionHandler:v16];
   v13 = *(v25 + 24);
-  if (a5 && (v25[3] & 1) == 0)
+  if (error && (v25[3] & 1) == 0)
   {
-    *a5 = v19[5];
+    *error = v19[5];
     v13 = *(v25 + 24);
   }
 

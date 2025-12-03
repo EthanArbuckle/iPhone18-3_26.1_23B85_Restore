@@ -1,32 +1,32 @@
 @interface TIKeyboardBehaviors_Pinyin
-- (id)keyBehaviorsForState:(id)a3;
+- (id)keyBehaviorsForState:(id)state;
 @end
 
 @implementation TIKeyboardBehaviors_Pinyin
 
-- (id)keyBehaviorsForState:(id)a3
+- (id)keyBehaviorsForState:(id)state
 {
-  v3 = a3;
-  v4 = [v3 hasInput];
-  v5 = [v3 hasCandidates];
-  if (!v4)
+  stateCopy = state;
+  hasInput = [stateCopy hasInput];
+  hasCandidates = [stateCopy hasCandidates];
+  if (!hasInput)
   {
-    if (!v5)
+    if (!hasCandidates)
     {
       v19 = 0;
       goto LABEL_51;
     }
 
-    if (![v3 hardwareKeyboardMode])
+    if (![stateCopy hardwareKeyboardMode])
     {
-      if ([v3 hasCandidateSelected])
+      if ([stateCopy hasCandidateSelected])
       {
-        if ([v3 showsExtendedList] && !objc_msgSend(v3, "hardwareKeyboardMode"))
+        if ([stateCopy showsExtendedList] && !objc_msgSend(stateCopy, "hardwareKeyboardMode"))
         {
           v18 = 4;
         }
 
-        else if ([v3 spaceConfirmation])
+        else if ([stateCopy spaceConfirmation])
         {
           v18 = 5;
         }
@@ -48,11 +48,11 @@
       goto LABEL_50;
     }
 
-    v16 = [v3 spaceConfirmation];
-    v17 = [v3 hasCandidateSelected];
-    if (v16)
+    spaceConfirmation = [stateCopy spaceConfirmation];
+    hasCandidateSelected = [stateCopy hasCandidateSelected];
+    if (spaceConfirmation)
     {
-      if (v17)
+      if (hasCandidateSelected)
       {
         v13 = 2;
       }
@@ -62,10 +62,10 @@
         v13 = 7;
       }
 
-      v17 = [v3 hasCandidateSelected];
+      hasCandidateSelected = [stateCopy hasCandidateSelected];
     }
 
-    else if (v17)
+    else if (hasCandidateSelected)
     {
       v13 = 4;
     }
@@ -75,7 +75,7 @@
       v13 = 7;
     }
 
-    if (v17)
+    if (hasCandidateSelected)
     {
       v15 = 2;
     }
@@ -88,22 +88,22 @@
     goto LABEL_49;
   }
 
-  if (v5)
+  if (hasCandidates)
   {
-    v6 = [v3 hardwareKeyboardMode];
-    v7 = [v3 spaceConfirmation];
-    v8 = v7;
-    if (v6)
+    hardwareKeyboardMode = [stateCopy hardwareKeyboardMode];
+    spaceConfirmation2 = [stateCopy spaceConfirmation];
+    v8 = spaceConfirmation2;
+    if (hardwareKeyboardMode)
     {
-      v9 = [v3 hasCandidateSelected];
+      hasCandidateSelected2 = [stateCopy hasCandidateSelected];
       v10 = 5;
-      if (v9)
+      if (hasCandidateSelected2)
       {
         v10 = 2;
       }
 
       v11 = 3;
-      if (v9)
+      if (hasCandidateSelected2)
       {
         v11 = 4;
       }
@@ -129,7 +129,7 @@
         v14 = 10;
       }
 
-      if ([v3 userSelectedCurrentCandidate])
+      if ([stateCopy userSelectedCurrentCandidate])
       {
         v15 = 2;
       }
@@ -140,9 +140,9 @@
       }
     }
 
-    else if (v7 && (![v3 showsExtendedList] || (objc_msgSend(v3, "showsCandidatesInLayout") & 1) != 0))
+    else if (spaceConfirmation2 && (![stateCopy showsExtendedList] || (objc_msgSend(stateCopy, "showsCandidatesInLayout") & 1) != 0))
     {
-      if ([v3 hasCandidateSelected])
+      if ([stateCopy hasCandidateSelected])
       {
         v13 = 2;
       }
@@ -157,7 +157,7 @@
 
     else
     {
-      if ([v3 hasCandidateSelected])
+      if ([stateCopy hasCandidateSelected])
       {
         v13 = 4;
       }

@@ -1,13 +1,13 @@
 @interface HMMissingWalletKeyValue
 + (id)shortDescription;
-+ (id)valueForMissingWalletKey:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (HMMissingWalletKeyValue)initWithAccessoryUUID:(id)a3 userUUID:(id)a4;
-- (HMMissingWalletKeyValue)initWithCoder:(id)a3;
++ (id)valueForMissingWalletKey:(id)key;
+- (BOOL)isEqual:(id)equal;
+- (HMMissingWalletKeyValue)initWithAccessoryUUID:(id)d userUUID:(id)iD;
+- (HMMissingWalletKeyValue)initWithCoder:(id)coder;
 - (NSArray)attributeDescriptions;
 - (NSString)shortDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMMissingWalletKeyValue
@@ -16,12 +16,12 @@
 {
   v12[2] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v4 = [(HMMissingWalletKeyValue *)self accessoryUUID];
-  v5 = [v3 initWithName:@"accessoryUUID" value:v4];
+  accessoryUUID = [(HMMissingWalletKeyValue *)self accessoryUUID];
+  v5 = [v3 initWithName:@"accessoryUUID" value:accessoryUUID];
   v12[0] = v5;
   v6 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v7 = [(HMMissingWalletKeyValue *)self userUUID];
-  v8 = [v6 initWithName:@"userUUID" value:v7];
+  userUUID = [(HMMissingWalletKeyValue *)self userUUID];
+  v8 = [v6 initWithName:@"userUUID" value:userUUID];
   v12[1] = v8;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:2];
 
@@ -37,12 +37,12 @@
   return [v2 shortDescription];
 }
 
-- (HMMissingWalletKeyValue)initWithCoder:(id)a3
+- (HMMissingWalletKeyValue)initWithCoder:(id)coder
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMMissingWalletKeyValueCodingKeyAccessoryUUID"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMMissingWalletKeyValueCodingKeyUserUUID"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMMissingWalletKeyValueCodingKeyAccessoryUUID"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMMissingWalletKeyValueCodingKeyUserUUID"];
   v7 = v6;
   if (v5)
   {
@@ -57,7 +57,7 @@
   if (v8)
   {
     v9 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -77,41 +77,41 @@
 
   else
   {
-    v12 = [(HMMissingWalletKeyValue *)self initWithAccessoryUUID:v5 userUUID:v6];
-    v13 = v12;
+    selfCopy = [(HMMissingWalletKeyValue *)self initWithAccessoryUUID:v5 userUUID:v6];
+    v13 = selfCopy;
   }
 
   v14 = *MEMORY[0x1E69E9840];
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMMissingWalletKeyValue *)self accessoryUUID];
-  [v4 encodeObject:v5 forKey:@"HMMissingWalletKeyValueCodingKeyAccessoryUUID"];
+  coderCopy = coder;
+  accessoryUUID = [(HMMissingWalletKeyValue *)self accessoryUUID];
+  [coderCopy encodeObject:accessoryUUID forKey:@"HMMissingWalletKeyValueCodingKeyAccessoryUUID"];
 
-  v6 = [(HMMissingWalletKeyValue *)self userUUID];
-  [v4 encodeObject:v6 forKey:@"HMMissingWalletKeyValueCodingKeyUserUUID"];
+  userUUID = [(HMMissingWalletKeyValue *)self userUUID];
+  [coderCopy encodeObject:userUUID forKey:@"HMMissingWalletKeyValueCodingKeyUserUUID"];
 }
 
 - (unint64_t)hash
 {
-  v3 = [(HMMissingWalletKeyValue *)self accessoryUUID];
-  v4 = [v3 hash];
-  v5 = [(HMMissingWalletKeyValue *)self userUUID];
-  v6 = [v5 hash];
+  accessoryUUID = [(HMMissingWalletKeyValue *)self accessoryUUID];
+  v4 = [accessoryUUID hash];
+  userUUID = [(HMMissingWalletKeyValue *)self userUUID];
+  v6 = [userUUID hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -122,13 +122,13 @@
   v6 = v5;
   if (v6)
   {
-    v7 = [(HMMissingWalletKeyValue *)self accessoryUUID];
-    v8 = [v6 accessoryUUID];
-    if ([v7 isEqual:v8])
+    accessoryUUID = [(HMMissingWalletKeyValue *)self accessoryUUID];
+    accessoryUUID2 = [v6 accessoryUUID];
+    if ([accessoryUUID isEqual:accessoryUUID2])
     {
-      v9 = [(HMMissingWalletKeyValue *)self userUUID];
-      v10 = [v6 userUUID];
-      v11 = [v9 isEqual:v10];
+      userUUID = [(HMMissingWalletKeyValue *)self userUUID];
+      userUUID2 = [v6 userUUID];
+      v11 = [userUUID isEqual:userUUID2];
     }
 
     else
@@ -145,20 +145,20 @@
   return v11;
 }
 
-- (HMMissingWalletKeyValue)initWithAccessoryUUID:(id)a3 userUUID:(id)a4
+- (HMMissingWalletKeyValue)initWithAccessoryUUID:(id)d userUUID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v14.receiver = self;
   v14.super_class = HMMissingWalletKeyValue;
   v8 = [(HMMissingWalletKeyValue *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [dCopy copy];
     accessoryUUID = v8->_accessoryUUID;
     v8->_accessoryUUID = v9;
 
-    v11 = [v7 copy];
+    v11 = [iDCopy copy];
     userUUID = v8->_userUUID;
     v8->_userUUID = v11;
   }
@@ -173,16 +173,16 @@
   return NSStringFromClass(v2);
 }
 
-+ (id)valueForMissingWalletKey:(id)a3
++ (id)valueForMissingWalletKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = [HMMissingWalletKeyValue alloc];
-  v5 = [v3 accessory];
-  v6 = [v5 uuid];
-  v7 = [v3 user];
+  accessory = [keyCopy accessory];
+  uuid = [accessory uuid];
+  user = [keyCopy user];
 
-  v8 = [v7 uuid];
-  v9 = [(HMMissingWalletKeyValue *)v4 initWithAccessoryUUID:v6 userUUID:v8];
+  uuid2 = [user uuid];
+  v9 = [(HMMissingWalletKeyValue *)v4 initWithAccessoryUUID:uuid userUUID:uuid2];
 
   return v9;
 }

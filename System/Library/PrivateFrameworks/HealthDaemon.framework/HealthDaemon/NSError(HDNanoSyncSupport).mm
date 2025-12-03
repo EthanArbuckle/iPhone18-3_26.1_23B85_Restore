@@ -6,8 +6,8 @@
 
 - (id)hd_persistentMessage
 {
-  v1 = [a1 hd_persistentUserInfo];
-  v2 = [HDCodableNanoSyncMessage messageFromPersistentUserInfo:v1];
+  hd_persistentUserInfo = [self hd_persistentUserInfo];
+  v2 = [HDCodableNanoSyncMessage messageFromPersistentUserInfo:hd_persistentUserInfo];
 
   return v2;
 }

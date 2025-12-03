@@ -1,31 +1,31 @@
 @interface CSSiriAudioPlaybackSessionImplAVPlayerBased
-- (CSSiriAudioPlaybackSessionImplAVPlayerBased)initWithQueue:(id)a3 request:(id)a4 options:(unint64_t)a5;
+- (CSSiriAudioPlaybackSessionImplAVPlayerBased)initWithQueue:(id)queue request:(id)request options:(unint64_t)options;
 - (NSString)description;
-- (void)_finalizeWithError:(id)a3;
-- (void)_handleEndInterruption:(BOOL)a3;
-- (void)_prepareWithOptions:(unint64_t)a3 audioSession:(id)a4 completion:(id)a5;
+- (void)_finalizeWithError:(id)error;
+- (void)_handleEndInterruption:(BOOL)interruption;
+- (void)_prepareWithOptions:(unint64_t)options audioSession:(id)session completion:(id)completion;
 - (void)_resetPlayerItem;
-- (void)_startWithOptions:(unint64_t)a3 audioSession:(id)a4 preparationHandler:(id)a5 executionHandler:(id)a6 finalizationHandler:(id)a7;
-- (void)_stop:(BOOL)a3;
-- (void)playerItemDidPlayToEndTime:(id)a3;
-- (void)playerItemFailedToPlayToEndTime:(id)a3;
-- (void)prepareWithOptions:(unint64_t)a3 audioSession:(id)a4 completion:(id)a5;
-- (void)startWithOptions:(unint64_t)a3 audioSession:(id)a4 preparationHandler:(id)a5 executionHandler:(id)a6 finalizationHandler:(id)a7;
+- (void)_startWithOptions:(unint64_t)options audioSession:(id)session preparationHandler:(id)handler executionHandler:(id)executionHandler finalizationHandler:(id)finalizationHandler;
+- (void)_stop:(BOOL)_stop;
+- (void)playerItemDidPlayToEndTime:(id)time;
+- (void)playerItemFailedToPlayToEndTime:(id)time;
+- (void)prepareWithOptions:(unint64_t)options audioSession:(id)session completion:(id)completion;
+- (void)startWithOptions:(unint64_t)options audioSession:(id)session preparationHandler:(id)handler executionHandler:(id)executionHandler finalizationHandler:(id)finalizationHandler;
 @end
 
 @implementation CSSiriAudioPlaybackSessionImplAVPlayerBased
 
-- (void)playerItemFailedToPlayToEndTime:(id)a3
+- (void)playerItemFailedToPlayToEndTime:(id)time
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  timeCopy = time;
   v5 = *MEMORY[0x277CEF0A0];
   if (os_log_type_enabled(*MEMORY[0x277CEF0A0], OS_LOG_TYPE_ERROR))
   {
     *buf = 136315394;
     v12 = "[CSSiriAudioPlaybackSessionImplAVPlayerBased playerItemFailedToPlayToEndTime:]";
     v13 = 2112;
-    v14 = v4;
+    v14 = timeCopy;
     _os_log_error_impl(&dword_222E4D000, v5, OS_LOG_TYPE_ERROR, "%s %@", buf, 0x16u);
   }
 
@@ -35,8 +35,8 @@
   v9[2] = __79__CSSiriAudioPlaybackSessionImplAVPlayerBased_playerItemFailedToPlayToEndTime___block_invoke;
   v9[3] = &unk_2784C6FA8;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
+  v10 = timeCopy;
+  v7 = timeCopy;
   dispatch_async(queue, v9);
 
   v8 = *MEMORY[0x277D85DE8];
@@ -52,17 +52,17 @@ void __79__CSSiriAudioPlaybackSessionImplAVPlayerBased_playerItemFailedToPlayToE
   [v2 _finalizeWithError:v4];
 }
 
-- (void)playerItemDidPlayToEndTime:(id)a3
+- (void)playerItemDidPlayToEndTime:(id)time
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  timeCopy = time;
   v5 = *MEMORY[0x277CEF0A0];
   if (os_log_type_enabled(*MEMORY[0x277CEF0A0], OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v10 = "[CSSiriAudioPlaybackSessionImplAVPlayerBased playerItemDidPlayToEndTime:]";
     v11 = 2112;
-    v12 = v4;
+    v12 = timeCopy;
     _os_log_impl(&dword_222E4D000, v5, OS_LOG_TYPE_INFO, "%s %@", buf, 0x16u);
   }
 
@@ -93,9 +93,9 @@ void __79__CSSiriAudioPlaybackSessionImplAVPlayerBased_playerItemFailedToPlayToE
       _os_log_impl(&dword_222E4D000, v4, OS_LOG_TYPE_INFO, "%s Reset player item %@.", &v8, 0x16u);
     }
 
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 removeObserver:self name:*MEMORY[0x277CE60C0] object:self->_playerItem];
-    [v5 removeObserver:self name:*MEMORY[0x277CE60D0] object:self->_playerItem];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277CE60C0] object:self->_playerItem];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277CE60D0] object:self->_playerItem];
     [(AVPlayer *)self->_player replaceCurrentItemWithPlayerItem:0];
     v6 = self->_playerItem;
     self->_playerItem = 0;
@@ -104,13 +104,13 @@ void __79__CSSiriAudioPlaybackSessionImplAVPlayerBased_playerItemFailedToPlayToE
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_finalizeWithError:(id)a3
+- (void)_finalizeWithError:(id)error
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v5 = *MEMORY[0x277CEF0A0];
   v6 = os_log_type_enabled(*MEMORY[0x277CEF0A0], OS_LOG_TYPE_INFO);
-  if (v4)
+  if (errorCopy)
   {
     if (!v6)
     {
@@ -120,7 +120,7 @@ void __79__CSSiriAudioPlaybackSessionImplAVPlayerBased_playerItemFailedToPlayToE
     *v16 = 136315394;
     *&v16[4] = "[CSSiriAudioPlaybackSessionImplAVPlayerBased _finalizeWithError:]";
     *&v16[12] = 2112;
-    *&v16[14] = v4;
+    *&v16[14] = errorCopy;
     v7 = "%s error = %@";
     v8 = v5;
     v9 = 22;
@@ -144,23 +144,23 @@ void __79__CSSiriAudioPlaybackSessionImplAVPlayerBased_playerItemFailedToPlayToE
 LABEL_7:
   if (self->_playerItem)
   {
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v10 removeObserver:self name:*MEMORY[0x277CE60C0] object:self->_playerItem];
-    [v10 removeObserver:self name:*MEMORY[0x277CE60D0] object:self->_playerItem];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277CE60C0] object:self->_playerItem];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277CE60D0] object:self->_playerItem];
   }
 
   if (self->_isActive)
   {
     self->_isActive = 0;
     [(AVPlayer *)self->_player setRate:0.0];
-    if (v4)
+    if (errorCopy)
     {
-      v11 = [v4 domain];
-      if ([v11 isEqualToString:*MEMORY[0x277CEF588]])
+      domain = [errorCopy domain];
+      if ([domain isEqualToString:*MEMORY[0x277CEF588]])
       {
-        v12 = [v4 code];
+        code = [errorCopy code];
 
-        if (v12 == 1408)
+        if (code == 1408)
         {
           goto LABEL_16;
         }
@@ -178,7 +178,7 @@ LABEL_16:
   completion = self->_completion;
   if (completion)
   {
-    completion[2](completion, v4);
+    completion[2](completion, errorCopy);
     v14 = self->_completion;
     self->_completion = 0;
   }
@@ -186,16 +186,16 @@ LABEL_16:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleEndInterruption:(BOOL)a3
+- (void)_handleEndInterruption:(BOOL)interruption
 {
-  if (a3 && self->_isActive)
+  if (interruption && self->_isActive)
   {
     LODWORD(v3) = 1.0;
     [(AVPlayer *)self->_player setRate:v3];
   }
 }
 
-- (void)_stop:(BOOL)a3
+- (void)_stop:(BOOL)_stop
 {
   v4 = [MEMORY[0x277CEF2A0] errorWithCode:1408 description:@"Stopped playback."];
   [(CSSiriAudioPlaybackSessionImplAVPlayerBased *)self _finalizeWithError:v4];
@@ -211,13 +211,13 @@ LABEL_16:
   [(AVPlayer *)player seekToTime:&v10 toleranceBefore:&v8 toleranceAfter:&v6];
 }
 
-- (void)_startWithOptions:(unint64_t)a3 audioSession:(id)a4 preparationHandler:(id)a5 executionHandler:(id)a6 finalizationHandler:(id)a7
+- (void)_startWithOptions:(unint64_t)options audioSession:(id)session preparationHandler:(id)handler executionHandler:(id)executionHandler finalizationHandler:(id)finalizationHandler
 {
   v35 = *MEMORY[0x277D85DE8];
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  sessionCopy = session;
+  handlerCopy = handler;
+  executionHandlerCopy = executionHandler;
+  finalizationHandlerCopy = finalizationHandler;
   v16 = MEMORY[0x277CEF0A0];
   v17 = *MEMORY[0x277CEF0A0];
   if (os_log_type_enabled(*MEMORY[0x277CEF0A0], OS_LOG_TYPE_INFO))
@@ -229,7 +229,7 @@ LABEL_16:
     *buf = 136315650;
     v30 = "[CSSiriAudioPlaybackSessionImplAVPlayerBased _startWithOptions:audioSession:preparationHandler:executionHandler:finalizationHandler:]";
     v31 = 2112;
-    v32 = request;
+    selfCopy = request;
     v33 = 2112;
     v34 = v21;
     _os_log_impl(&dword_222E4D000, v20, OS_LOG_TYPE_INFO, "%s request = %@, options = %@", buf, 0x20u);
@@ -243,9 +243,9 @@ LABEL_16:
       *buf = 136315394;
       v30 = "[CSSiriAudioPlaybackSessionImplAVPlayerBased _startWithOptions:audioSession:preparationHandler:executionHandler:finalizationHandler:]";
       v31 = 2112;
-      v32 = self;
+      selfCopy = self;
       _os_log_error_impl(&dword_222E4D000, v22, OS_LOG_TYPE_ERROR, "%s Attempted to start %@ when it is already active.", buf, 0x16u);
-      if (!v15)
+      if (!finalizationHandlerCopy)
       {
         goto LABEL_10;
       }
@@ -253,24 +253,24 @@ LABEL_16:
       goto LABEL_6;
     }
 
-    if (v15)
+    if (finalizationHandlerCopy)
     {
 LABEL_6:
       v23 = [MEMORY[0x277CEF2A0] errorWithCode:1405 description:@"Attempted to start audio playback session when it is already active." underlyingError:0];
-      v15[2](v15, v23);
+      finalizationHandlerCopy[2](finalizationHandlerCopy, v23);
     }
   }
 
   else
   {
     self->_isActive = 1;
-    v24 = MEMORY[0x223DD26C0](v15);
+    v24 = MEMORY[0x223DD26C0](finalizationHandlerCopy);
     completion = self->_completion;
     self->_completion = v24;
 
-    if (v13)
+    if (handlerCopy)
     {
-      v13[2](v13);
+      handlerCopy[2](handlerCopy);
     }
 
     v27[0] = MEMORY[0x277D85DD0];
@@ -278,8 +278,8 @@ LABEL_6:
     v27[2] = __134__CSSiriAudioPlaybackSessionImplAVPlayerBased__startWithOptions_audioSession_preparationHandler_executionHandler_finalizationHandler___block_invoke;
     v27[3] = &unk_2784C4798;
     v27[4] = self;
-    v28 = v14;
-    [(CSSiriAudioPlaybackSessionImplAVPlayerBased *)self _prepareWithOptions:a3 audioSession:v12 completion:v27];
+    v28 = executionHandlerCopy;
+    [(CSSiriAudioPlaybackSessionImplAVPlayerBased *)self _prepareWithOptions:options audioSession:sessionCopy completion:v27];
   }
 
 LABEL_10:
@@ -438,11 +438,11 @@ LABEL_14:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_prepareWithOptions:(unint64_t)a3 audioSession:(id)a4 completion:(id)a5
+- (void)_prepareWithOptions:(unint64_t)options audioSession:(id)session completion:(id)completion
 {
   v80 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  sessionCopy = session;
+  completionCopy = completion;
   v9 = MEMORY[0x277CEF0A0];
   v10 = *MEMORY[0x277CEF0A0];
   if (os_log_type_enabled(*MEMORY[0x277CEF0A0], OS_LOG_TYPE_INFO))
@@ -465,7 +465,7 @@ LABEL_14:
   v75[1] = 3221225472;
   v75[2] = __91__CSSiriAudioPlaybackSessionImplAVPlayerBased__prepareWithOptions_audioSession_completion___block_invoke;
   v75[3] = &unk_2784C6480;
-  v16 = v8;
+  v16 = completionCopy;
   v76 = v16;
   v17 = [MEMORY[0x277CEF2A0] errorWithCode:40];
   v18 = [v15 initWithBlock:v75 defaultValue:v17];
@@ -477,13 +477,13 @@ LABEL_14:
     {
       playerItem = self->_playerItem;
       v54 = v19;
-      v55 = [(AVPlayerItem *)playerItem error];
+      error = [(AVPlayerItem *)playerItem error];
       *buf = 136315650;
       *&buf[4] = "[CSSiriAudioPlaybackSessionImplAVPlayerBased _prepareWithOptions:audioSession:completion:]";
       *&buf[12] = 2112;
       *&buf[14] = playerItem;
       *&buf[22] = 2112;
-      v78 = v55;
+      v78 = error;
       _os_log_error_impl(&dword_222E4D000, v54, OS_LOG_TYPE_ERROR, "%s Player item %@ status is failed with error %@.", buf, 0x20u);
     }
 
@@ -495,10 +495,10 @@ LABEL_14:
     goto LABEL_17;
   }
 
-  v20 = [(AFAudioPlaybackRequest *)self->_request itemURL];
-  if (v20)
+  itemURL = [(AFAudioPlaybackRequest *)self->_request itemURL];
+  if (itemURL)
   {
-    v21 = [objc_alloc(MEMORY[0x277CE65B0]) initWithURL:v20];
+    v21 = [objc_alloc(MEMORY[0x277CE65B0]) initWithURL:itemURL];
     v22 = self->_playerItem;
     self->_playerItem = v21;
 
@@ -511,7 +511,7 @@ LABEL_14:
       *&buf[12] = 2112;
       *&buf[14] = v57;
       *&buf[22] = 2112;
-      v78 = v20;
+      v78 = itemURL;
       _os_log_debug_impl(&dword_222E4D000, v23, OS_LOG_TYPE_DEBUG, "%s Created player item %@ from URL %@.", buf, 0x20u);
     }
   }
@@ -521,10 +521,10 @@ LABEL_14:
     goto LABEL_17;
   }
 
-  v24 = [(AFAudioPlaybackRequest *)self->_request itemData];
-  if (v24)
+  itemData = [(AFAudioPlaybackRequest *)self->_request itemData];
+  if (itemData)
   {
-    v25 = [MEMORY[0x277CE63D8] assetWithData:v24 contentType:*MEMORY[0x277CE5DB8] options:0];
+    v25 = [MEMORY[0x277CE63D8] assetWithData:itemData contentType:*MEMORY[0x277CE5DB8] options:0];
     v26 = [objc_alloc(MEMORY[0x277CE65B0]) initWithAsset:v25];
     v27 = self->_playerItem;
     self->_playerItem = v26;
@@ -534,7 +534,7 @@ LABEL_14:
     {
       v61 = self->_playerItem;
       v59 = v28;
-      v60 = [v24 length];
+      v60 = [itemData length];
       *buf = 136315650;
       *&buf[4] = "[CSSiriAudioPlaybackSessionImplAVPlayerBased _prepareWithOptions:audioSession:completion:]";
       *&buf[12] = 2112;
@@ -573,11 +573,11 @@ LABEL_17:
       player = self->_player;
     }
 
-    [(AVPlayer *)player setAudioSession:v7, v61];
+    [(AVPlayer *)player setAudioSession:sessionCopy, v61];
     [(AVPlayer *)self->_player replaceCurrentItemWithPlayerItem:self->_playerItem];
-    v34 = [(AVPlayer *)self->_player currentItem];
+    currentItem = [(AVPlayer *)self->_player currentItem];
     v35 = self->_playerItem;
-    if (v34 == v35)
+    if (currentItem == v35)
     {
       if ([(AVPlayerItem *)self->_playerItem status]== AVPlayerItemStatusReadyToPlay)
       {
@@ -624,7 +624,7 @@ LABEL_17:
         v64[3] = &unk_2784C6C68;
         v42 = v18;
         v65 = v42;
-        v66 = self;
+        selfCopy = self;
         v43 = v39;
         v67 = v43;
         v44 = [v40 initWithTimeoutInterval:queue onQueue:v64 timeoutHandler:2.0];
@@ -658,7 +658,7 @@ LABEL_17:
         *&buf[22] = 2112;
         v78 = v35;
         LOWORD(v79) = 2112;
-        *(&v79 + 2) = v34;
+        *(&v79 + 2) = currentItem;
         _os_log_error_impl(&dword_222E4D000, v36, OS_LOG_TYPE_ERROR, "%s Unable to replace current item of player %@. Expected current item is %@, actual current item is %@.", buf, 0x2Au);
       }
 
@@ -677,8 +677,8 @@ LABEL_17:
       _os_log_error_impl(&dword_222E4D000, v50, OS_LOG_TYPE_ERROR, "%s Unable to create player item.", buf, 0xCu);
     }
 
-    v34 = [MEMORY[0x277CEF2A0] errorWithCode:1423 description:{@"Unable to create player item.", v61}];
-    [v18 invokeWithValue:v34];
+    currentItem = [MEMORY[0x277CEF2A0] errorWithCode:1423 description:{@"Unable to create player item.", v61}];
+    [v18 invokeWithValue:currentItem];
   }
 
   v51 = *MEMORY[0x277D85DE8];
@@ -813,52 +813,52 @@ void __91__CSSiriAudioPlaybackSessionImplAVPlayerBased__prepareWithOptions_audio
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startWithOptions:(unint64_t)a3 audioSession:(id)a4 preparationHandler:(id)a5 executionHandler:(id)a6 finalizationHandler:(id)a7
+- (void)startWithOptions:(unint64_t)options audioSession:(id)session preparationHandler:(id)handler executionHandler:(id)executionHandler finalizationHandler:(id)finalizationHandler
 {
   queue = self->_queue;
-  v13 = a7;
-  v14 = a6;
-  v15 = a5;
-  v16 = a4;
+  finalizationHandlerCopy = finalizationHandler;
+  executionHandlerCopy = executionHandler;
+  handlerCopy = handler;
+  sessionCopy = session;
   dispatch_assert_queue_V2(queue);
-  [(CSSiriAudioPlaybackSessionImplAVPlayerBased *)self _startWithOptions:a3 audioSession:v16 preparationHandler:v15 executionHandler:v14 finalizationHandler:v13];
+  [(CSSiriAudioPlaybackSessionImplAVPlayerBased *)self _startWithOptions:options audioSession:sessionCopy preparationHandler:handlerCopy executionHandler:executionHandlerCopy finalizationHandler:finalizationHandlerCopy];
 }
 
-- (void)prepareWithOptions:(unint64_t)a3 audioSession:(id)a4 completion:(id)a5
+- (void)prepareWithOptions:(unint64_t)options audioSession:(id)session completion:(id)completion
 {
-  v9 = a4;
-  v8 = a5;
+  sessionCopy = session;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
   if (self->_isActive)
   {
-    if (v8)
+    if (completionCopy)
     {
-      v8[2](v8, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 
   else
   {
-    [(CSSiriAudioPlaybackSessionImplAVPlayerBased *)self _prepareWithOptions:a3 audioSession:v9 completion:v8];
+    [(CSSiriAudioPlaybackSessionImplAVPlayerBased *)self _prepareWithOptions:options audioSession:sessionCopy completion:completionCopy];
   }
 }
 
-- (CSSiriAudioPlaybackSessionImplAVPlayerBased)initWithQueue:(id)a3 request:(id)a4 options:(unint64_t)a5
+- (CSSiriAudioPlaybackSessionImplAVPlayerBased)initWithQueue:(id)queue request:(id)request options:(unint64_t)options
 {
-  v9 = a3;
-  v10 = a4;
+  queueCopy = queue;
+  requestCopy = request;
   v16.receiver = self;
   v16.super_class = CSSiriAudioPlaybackSessionImplAVPlayerBased;
   v11 = [(CSSiriAudioPlaybackSessionImplAVPlayerBased *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_queue, a3);
-    v13 = [v10 copy];
+    objc_storeStrong(&v11->_queue, queue);
+    v13 = [requestCopy copy];
     request = v12->_request;
     v12->_request = v13;
 
-    v12->_options = a5;
+    v12->_options = options;
   }
 
   return v12;

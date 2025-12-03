@@ -1,6 +1,6 @@
 @interface GKPlayerEmailInternal
 + (id)secureCodedPropertyKeys;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 @end
 
@@ -32,25 +32,25 @@ void __48__GKPlayerEmailInternal_secureCodedPropertyKeys__block_invoke()
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(GKPlayerEmailInternal *)self address];
-    if (v6)
+    v5 = equalCopy;
+    address = [(GKPlayerEmailInternal *)self address];
+    if (address)
     {
-      v7 = [v5 address];
-      v8 = [v6 isEqualToString:v7];
+      address2 = [v5 address];
+      v8 = [address isEqualToString:address2];
     }
 
     else
     {
-      v7 = [(GKPlayerEmailInternal *)self addressSHA1];
-      v9 = [v5 addressSHA1];
-      v8 = [v7 isEqualToString:v9];
+      address2 = [(GKPlayerEmailInternal *)self addressSHA1];
+      addressSHA1 = [v5 addressSHA1];
+      v8 = [address2 isEqualToString:addressSHA1];
     }
   }
 
@@ -64,8 +64,8 @@ void __48__GKPlayerEmailInternal_secureCodedPropertyKeys__block_invoke()
 
 - (unint64_t)hash
 {
-  v3 = [(GKPlayerEmailInternal *)self address];
-  if (v3)
+  address = [(GKPlayerEmailInternal *)self address];
+  if (address)
   {
     [(GKPlayerEmailInternal *)self address];
   }

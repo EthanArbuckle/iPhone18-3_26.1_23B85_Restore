@@ -1,17 +1,17 @@
 @interface NavTrafficIncidentReportSubmissionContaineeViewController
 - (NavTrafficIncidentReportSubmissionContaineeDelegate)reportingDelegate;
-- (NavTrafficIncidentReportSubmissionContaineeViewController)initWithItem:(id)a3 report:(id)a4;
-- (double)heightForLayout:(unint64_t)a3;
+- (NavTrafficIncidentReportSubmissionContaineeViewController)initWithItem:(id)item report:(id)report;
+- (double)heightForLayout:(unint64_t)layout;
 - (void)_cancelDismissTimer;
 - (void)_dismissAfterUserInteraction;
 - (void)_performDismissal;
 - (void)addCircularProgressButtonSubview;
-- (void)headerViewButtonTapped:(id)a3 buttonType:(unint64_t)a4;
+- (void)headerViewButtonTapped:(id)tapped buttonType:(unint64_t)type;
 - (void)updateContent;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation NavTrafficIncidentReportSubmissionContaineeViewController
@@ -25,51 +25,51 @@
 
 - (void)_performDismissal
 {
-  v3 = [(NavTrafficIncidentReportSubmissionContaineeViewController *)self dismissTimer];
-  [v3 invalidate];
+  dismissTimer = [(NavTrafficIncidentReportSubmissionContaineeViewController *)self dismissTimer];
+  [dismissTimer invalidate];
 
-  v4 = [(NavTrafficIncidentReportSubmissionContaineeViewController *)self reportingDelegate];
-  [v4 incidentReportSubmissionContaineeDidFinish:self];
+  reportingDelegate = [(NavTrafficIncidentReportSubmissionContaineeViewController *)self reportingDelegate];
+  [reportingDelegate incidentReportSubmissionContaineeDidFinish:self];
 }
 
 - (void)_dismissAfterUserInteraction
 {
   v3 = +[MKMapService sharedService];
-  v4 = [(TrafficIncidentLayoutItem *)self->_layoutItem incidentTypeAsString];
-  [v3 captureUserAction:4 onTarget:740 eventValue:v4];
+  incidentTypeAsString = [(TrafficIncidentLayoutItem *)self->_layoutItem incidentTypeAsString];
+  [v3 captureUserAction:4 onTarget:740 eventValue:incidentTypeAsString];
 
   [(NavTrafficIncidentReportSubmissionContaineeViewController *)self _performDismissal];
 }
 
 - (void)_cancelDismissTimer
 {
-  v3 = [(NavTrafficIncidentReportSubmissionContaineeViewController *)self dismissTimer];
-  [v3 invalidate];
+  dismissTimer = [(NavTrafficIncidentReportSubmissionContaineeViewController *)self dismissTimer];
+  [dismissTimer invalidate];
 
   [(NavTrafficIncidentReportSubmissionContaineeViewController *)self setDismissTimer:0];
 }
 
-- (double)heightForLayout:(unint64_t)a3
+- (double)heightForLayout:(unint64_t)layout
 {
   v3 = -1.0;
-  if (a3 == 5)
+  if (layout == 5)
   {
     [(ContaineeViewController *)self headerHeight];
     v6 = v5 + 16.0;
-    v7 = [(ContaineeViewController *)self cardPresentationController];
-    [v7 bottomSafeOffset];
+    cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController bottomSafeOffset];
     v3 = v6 + v8;
   }
 
   return v3;
 }
 
-- (void)headerViewButtonTapped:(id)a3 buttonType:(unint64_t)a4
+- (void)headerViewButtonTapped:(id)tapped buttonType:(unint64_t)type
 {
-  [(NavTrafficIncidentReportSubmissionContaineeViewController *)self _dismissAfterUserInteraction:a3];
+  [(NavTrafficIncidentReportSubmissionContaineeViewController *)self _dismissAfterUserInteraction:tapped];
   v6 = +[MKMapService sharedService];
-  v5 = [(TrafficIncidentLayoutItem *)self->_layoutItem incidentTypeAsString];
-  [v6 captureUserAction:4 onTarget:740 eventValue:v5];
+  incidentTypeAsString = [(TrafficIncidentLayoutItem *)self->_layoutItem incidentTypeAsString];
+  [v6 captureUserAction:4 onTarget:740 eventValue:incidentTypeAsString];
 }
 
 - (void)addCircularProgressButtonSubview
@@ -80,31 +80,31 @@
   self->_progressDismissButton = v4;
 
   [(MapsCircularProgressButton *)self->_progressDismissButton setProgressStyle:0];
-  v6 = [(MapsCircularProgressButton *)self->_progressDismissButton progressView];
-  [v6 setLineWidth:3.5];
+  progressView = [(MapsCircularProgressButton *)self->_progressDismissButton progressView];
+  [progressView setLineWidth:3.5];
 
   [(MapsCircularProgressButton *)self->_progressDismissButton setProgressionHidden:1];
   [(MapsCircularProgressButton *)self->_progressDismissButton setTranslatesAutoresizingMaskIntoConstraints:0];
   [(MapsCircularProgressButton *)self->_progressDismissButton addTarget:self action:"_dismissAfterUserInteraction" forControlEvents:64];
-  v7 = [(NavTrafficIncidentReportSubmissionContaineeViewController *)self view];
-  [v7 addSubview:self->_progressDismissButton];
+  view = [(NavTrafficIncidentReportSubmissionContaineeViewController *)self view];
+  [view addSubview:self->_progressDismissButton];
 
-  v20 = [(MapsCircularProgressButton *)self->_progressDismissButton trailingAnchor];
-  v21 = [(NavTrafficIncidentReportSubmissionContaineeViewController *)self view];
-  v19 = [v21 trailingAnchor];
-  v18 = [v20 constraintEqualToAnchor:v19 constant:-16.0];
+  trailingAnchor = [(MapsCircularProgressButton *)self->_progressDismissButton trailingAnchor];
+  view2 = [(NavTrafficIncidentReportSubmissionContaineeViewController *)self view];
+  trailingAnchor2 = [view2 trailingAnchor];
+  v18 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-16.0];
   v22[0] = v18;
-  v8 = [(MapsCircularProgressButton *)self->_progressDismissButton topAnchor];
-  v9 = [(NavTrafficIncidentReportSubmissionContaineeViewController *)self view];
-  v10 = [v9 topAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10 constant:18.0];
+  topAnchor = [(MapsCircularProgressButton *)self->_progressDismissButton topAnchor];
+  view3 = [(NavTrafficIncidentReportSubmissionContaineeViewController *)self view];
+  topAnchor2 = [view3 topAnchor];
+  v11 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:18.0];
   v22[1] = v11;
-  v12 = [(MapsCircularProgressButton *)self->_progressDismissButton widthAnchor];
-  v13 = [v12 constraintEqualToConstant:38.0];
+  widthAnchor = [(MapsCircularProgressButton *)self->_progressDismissButton widthAnchor];
+  v13 = [widthAnchor constraintEqualToConstant:38.0];
   v22[2] = v13;
-  v14 = [(MapsCircularProgressButton *)self->_progressDismissButton heightAnchor];
-  v15 = [(MapsCircularProgressButton *)self->_progressDismissButton widthAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15];
+  heightAnchor = [(MapsCircularProgressButton *)self->_progressDismissButton heightAnchor];
+  widthAnchor2 = [(MapsCircularProgressButton *)self->_progressDismissButton widthAnchor];
+  v16 = [heightAnchor constraintEqualToAnchor:widthAnchor2];
   v22[3] = v16;
   v17 = [NSArray arrayWithObjects:v22 count:4];
   [NSLayoutConstraint activateConstraints:v17];
@@ -112,11 +112,11 @@
 
 - (void)updateContent
 {
-  v3 = [(TrafficIncidentLayoutItem *)self->_layoutItem preferredConfirmationTitle];
-  [(UILabel *)self->_titleLabel setText:v3];
+  preferredConfirmationTitle = [(TrafficIncidentLayoutItem *)self->_layoutItem preferredConfirmationTitle];
+  [(UILabel *)self->_titleLabel setText:preferredConfirmationTitle];
 
-  v4 = [(TrafficIncidentLayoutItem *)self->_layoutItem displayImage];
-  [(UIImageView *)self->_imageView setImage:v4];
+  displayImage = [(TrafficIncidentLayoutItem *)self->_layoutItem displayImage];
+  [(UIImageView *)self->_imageView setImage:displayImage];
 }
 
 - (void)viewDidLayoutSubviews
@@ -125,26 +125,26 @@
   v10.super_class = NavTrafficIncidentReportSubmissionContaineeViewController;
   [(ContaineeViewController *)&v10 viewDidLayoutSubviews];
   previousWidth = self->_previousWidth;
-  v4 = [(NavTrafficIncidentReportSubmissionContaineeViewController *)self view];
-  [v4 bounds];
+  view = [(NavTrafficIncidentReportSubmissionContaineeViewController *)self view];
+  [view bounds];
   v6 = v5;
 
   if (previousWidth != v6)
   {
-    v7 = [(NavTrafficIncidentReportSubmissionContaineeViewController *)self view];
-    [v7 bounds];
+    view2 = [(NavTrafficIncidentReportSubmissionContaineeViewController *)self view];
+    [view2 bounds];
     self->_previousWidth = v8;
 
-    v9 = [(ContaineeViewController *)self cardPresentationController];
-    [v9 updateHeightForCurrentLayout];
+    cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController updateHeightForCurrentLayout];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v16.receiver = self;
   v16.super_class = NavTrafficIncidentReportSubmissionContaineeViewController;
-  [(NavTrafficIncidentReportSubmissionContaineeViewController *)&v16 viewDidAppear:a3];
+  [(NavTrafficIncidentReportSubmissionContaineeViewController *)&v16 viewDidAppear:appear];
   objc_initWeak(&location, self);
   GEOConfigGetDouble();
   v5 = v4;
@@ -163,18 +163,18 @@
   [(MapsCircularProgressButton *)self->_progressDismissButton setProgress:1.0];
   [(MapsCircularProgressButton *)self->_progressDismissButton startProgressAnimation];
   v8 = +[MKMapService sharedService];
-  v9 = [(TrafficIncidentLayoutItem *)self->_layoutItem incidentTypeAsString];
-  [v8 captureUserAction:112 onTarget:0 eventValue:v9];
+  incidentTypeAsString = [(TrafficIncidentLayoutItem *)self->_layoutItem incidentTypeAsString];
+  [v8 captureUserAction:112 onTarget:0 eventValue:incidentTypeAsString];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = NavTrafficIncidentReportSubmissionContaineeViewController;
-  [(ContaineeViewController *)&v4 viewWillAppear:a3];
+  [(ContaineeViewController *)&v4 viewWillAppear:appear];
   [(NavTrafficIncidentReportSubmissionContaineeViewController *)self updateContent];
 }
 
@@ -183,11 +183,11 @@
   v81.receiver = self;
   v81.super_class = NavTrafficIncidentReportSubmissionContaineeViewController;
   [(ContaineeViewController *)&v81 viewDidLoad];
-  v3 = [(ContaineeViewController *)self cardPresentationController];
-  [v3 setPresentedModally:1];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController setPresentedModally:1];
 
-  v4 = [(ContaineeViewController *)self cardPresentationController];
-  [v4 setShouldHidePreviousCards:1];
+  cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController2 setShouldHidePreviousCards:1];
 
   v5 = objc_opt_new();
   [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -207,36 +207,36 @@
 
   [(UILabel *)self->_titleLabel setAccessibilityIdentifier:@"HeaderLabel"];
   [v5 addSubview:self->_titleLabel];
-  v79 = [(UILabel *)self->_titleLabel leadingAnchor];
-  v77 = [v5 leadingAnchor];
-  v75 = [v79 constraintEqualToAnchor:v77 constant:16.0];
+  leadingAnchor = [(UILabel *)self->_titleLabel leadingAnchor];
+  leadingAnchor2 = [v5 leadingAnchor];
+  v75 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
   v83[0] = v75;
-  v73 = [(UILabel *)self->_titleLabel trailingAnchor];
-  v71 = [v5 trailingAnchor];
-  v13 = [v73 constraintEqualToAnchor:v71];
+  trailingAnchor = [(UILabel *)self->_titleLabel trailingAnchor];
+  trailingAnchor2 = [v5 trailingAnchor];
+  v13 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v83[1] = v13;
-  v14 = [(UILabel *)self->_titleLabel topAnchor];
-  v15 = [v5 topAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15 constant:16.0];
+  topAnchor = [(UILabel *)self->_titleLabel topAnchor];
+  topAnchor2 = [v5 topAnchor];
+  v16 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:16.0];
   v83[2] = v16;
-  v17 = [(UILabel *)self->_titleLabel bottomAnchor];
-  v18 = [v5 bottomAnchor];
-  v19 = [v17 constraintEqualToAnchor:v18 constant:-16.0];
+  bottomAnchor = [(UILabel *)self->_titleLabel bottomAnchor];
+  bottomAnchor2 = [v5 bottomAnchor];
+  v19 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-16.0];
   v83[3] = v19;
   v20 = [NSArray arrayWithObjects:v83 count:4];
   [NSLayoutConstraint activateConstraints:v20];
 
-  v21 = [[ContainerHeaderView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+  height = [[ContainerHeaderView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
   headerView = self->_headerView;
-  self->_headerView = v21;
+  self->_headerView = height;
 
   [(ContainerHeaderView *)self->_headerView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(ContainerHeaderView *)self->_headerView setHairLineAlpha:0.0];
   [(ContainerHeaderView *)self->_headerView setDelegate:self];
   v80 = v5;
   [(ContainerHeaderView *)self->_headerView setTitleView:v5];
-  v23 = [(NavTrafficIncidentReportSubmissionContaineeViewController *)self view];
-  [v23 addSubview:self->_headerView];
+  view = [(NavTrafficIncidentReportSubmissionContaineeViewController *)self view];
+  [view addSubview:self->_headerView];
 
   [(ContainerHeaderView *)self->_headerView setButtonHidden:1];
   [(NavTrafficIncidentReportSubmissionContaineeViewController *)self addCircularProgressButtonSubview];
@@ -248,16 +248,16 @@
   if (MapsFeature_IsEnabled_MoreReportTypes() && (+[MNNavigationService sharedService](MNNavigationService, "sharedService"), v26 = objc_claimAutoreleasedReturnValue(), [v26 lastLocation], v27 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v27, "roadName"), v28 = objc_claimAutoreleasedReturnValue(), v28, v27, v26, v28))
   {
     v29 = +[MNNavigationService sharedService];
-    v30 = [v29 lastLocation];
-    v31 = [v30 roadName];
-    [(UILabel *)self->_primaryLabel setText:v31];
+    lastLocation = [v29 lastLocation];
+    roadName = [lastLocation roadName];
+    [(UILabel *)self->_primaryLabel setText:roadName];
   }
 
   else
   {
     v29 = +[NSBundle mainBundle];
-    v30 = [v29 localizedStringForKey:@"Report [Nav Tray value:Incident Report now]" table:{@"localized string not found", 0}];
-    [(UILabel *)self->_primaryLabel setText:v30];
+    lastLocation = [v29 localizedStringForKey:@"Report [Nav Tray value:Incident Report now]" table:{@"localized string not found", 0}];
+    [(UILabel *)self->_primaryLabel setText:lastLocation];
   }
 
   v32 = [UIFont _maps_systemFontWithFixedSize:20.0];
@@ -266,63 +266,63 @@
   v33 = +[UIColor secondaryLabelColor];
   [(UILabel *)self->_primaryLabel setTextColor:v33];
 
-  v34 = [(NavTrafficIncidentReportSubmissionContaineeViewController *)self view];
-  [v34 addSubview:self->_primaryLabel];
+  view2 = [(NavTrafficIncidentReportSubmissionContaineeViewController *)self view];
+  [view2 addSubview:self->_primaryLabel];
 
   v35 = objc_alloc_init(UIImageView);
   imageView = self->_imageView;
   self->_imageView = v35;
 
   [(UIImageView *)self->_imageView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v37 = [(NavTrafficIncidentReportSubmissionContaineeViewController *)self view];
-  [v37 addSubview:self->_imageView];
+  view3 = [(NavTrafficIncidentReportSubmissionContaineeViewController *)self view];
+  [view3 addSubview:self->_imageView];
 
-  v76 = [(UIImageView *)self->_imageView leadingAnchor];
-  v78 = [(NavTrafficIncidentReportSubmissionContaineeViewController *)self view];
-  v74 = [v78 leadingAnchor];
-  v72 = [v76 constraintEqualToAnchor:v74 constant:18.0];
+  leadingAnchor3 = [(UIImageView *)self->_imageView leadingAnchor];
+  view4 = [(NavTrafficIncidentReportSubmissionContaineeViewController *)self view];
+  leadingAnchor4 = [view4 leadingAnchor];
+  v72 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:18.0];
   v82[0] = v72;
-  v69 = [(UIImageView *)self->_imageView topAnchor];
-  v70 = [(NavTrafficIncidentReportSubmissionContaineeViewController *)self view];
-  v68 = [v70 topAnchor];
-  v67 = [v69 constraintEqualToAnchor:v68 constant:20.0];
+  topAnchor3 = [(UIImageView *)self->_imageView topAnchor];
+  view5 = [(NavTrafficIncidentReportSubmissionContaineeViewController *)self view];
+  topAnchor4 = [view5 topAnchor];
+  v67 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:20.0];
   v82[1] = v67;
-  v66 = [(UIImageView *)self->_imageView widthAnchor];
-  v65 = [v66 constraintEqualToConstant:42.0];
+  widthAnchor = [(UIImageView *)self->_imageView widthAnchor];
+  v65 = [widthAnchor constraintEqualToConstant:42.0];
   v82[2] = v65;
-  v64 = [(UIImageView *)self->_imageView heightAnchor];
-  v63 = [v64 constraintEqualToConstant:42.0];
+  heightAnchor = [(UIImageView *)self->_imageView heightAnchor];
+  v63 = [heightAnchor constraintEqualToConstant:42.0];
   v82[3] = v63;
-  v62 = [(ContainerHeaderView *)self->_headerView leadingAnchor];
-  v61 = [(UIImageView *)self->_imageView trailingAnchor];
-  v60 = [v62 constraintEqualToAnchor:v61];
+  leadingAnchor5 = [(ContainerHeaderView *)self->_headerView leadingAnchor];
+  trailingAnchor3 = [(UIImageView *)self->_imageView trailingAnchor];
+  v60 = [leadingAnchor5 constraintEqualToAnchor:trailingAnchor3];
   v82[4] = v60;
-  v58 = [(ContainerHeaderView *)self->_headerView trailingAnchor];
-  v59 = [(NavTrafficIncidentReportSubmissionContaineeViewController *)self view];
-  v57 = [v59 trailingAnchor];
-  v56 = [v58 constraintEqualToAnchor:v57];
+  trailingAnchor4 = [(ContainerHeaderView *)self->_headerView trailingAnchor];
+  view6 = [(NavTrafficIncidentReportSubmissionContaineeViewController *)self view];
+  trailingAnchor5 = [view6 trailingAnchor];
+  v56 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5];
   v82[5] = v56;
-  v54 = [(ContainerHeaderView *)self->_headerView topAnchor];
-  v55 = [(NavTrafficIncidentReportSubmissionContaineeViewController *)self view];
-  v53 = [v55 topAnchor];
-  v52 = [v54 constraintEqualToAnchor:v53];
+  topAnchor5 = [(ContainerHeaderView *)self->_headerView topAnchor];
+  view7 = [(NavTrafficIncidentReportSubmissionContaineeViewController *)self view];
+  topAnchor6 = [view7 topAnchor];
+  v52 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
   v82[6] = v52;
-  v51 = [(UILabel *)self->_primaryLabel leadingAnchor];
-  v50 = [(ContainerHeaderView *)self->_headerView leadingAnchor];
-  v49 = [v51 constraintEqualToAnchor:v50 constant:16.0];
+  leadingAnchor6 = [(UILabel *)self->_primaryLabel leadingAnchor];
+  leadingAnchor7 = [(ContainerHeaderView *)self->_headerView leadingAnchor];
+  v49 = [leadingAnchor6 constraintEqualToAnchor:leadingAnchor7 constant:16.0];
   v82[7] = v49;
-  v48 = [(UILabel *)self->_primaryLabel trailingAnchor];
-  v47 = [(MapsCircularProgressButton *)self->_progressDismissButton leadingAnchor];
-  v38 = [v48 constraintEqualToAnchor:v47 constant:-10.0];
+  trailingAnchor6 = [(UILabel *)self->_primaryLabel trailingAnchor];
+  leadingAnchor8 = [(MapsCircularProgressButton *)self->_progressDismissButton leadingAnchor];
+  v38 = [trailingAnchor6 constraintEqualToAnchor:leadingAnchor8 constant:-10.0];
   v82[8] = v38;
-  v39 = [(UILabel *)self->_primaryLabel topAnchor];
-  v40 = [(ContainerHeaderView *)self->_headerView bottomAnchor];
-  v41 = [v39 constraintEqualToAnchor:v40 constant:-14.0];
+  topAnchor7 = [(UILabel *)self->_primaryLabel topAnchor];
+  bottomAnchor3 = [(ContainerHeaderView *)self->_headerView bottomAnchor];
+  v41 = [topAnchor7 constraintEqualToAnchor:bottomAnchor3 constant:-14.0];
   v82[9] = v41;
-  v42 = [(UILabel *)self->_primaryLabel bottomAnchor];
-  v43 = [(NavTrafficIncidentReportSubmissionContaineeViewController *)self view];
-  v44 = [v43 bottomAnchor];
-  v45 = [v42 constraintEqualToAnchor:v44 constant:-10.0];
+  bottomAnchor4 = [(UILabel *)self->_primaryLabel bottomAnchor];
+  view8 = [(NavTrafficIncidentReportSubmissionContaineeViewController *)self view];
+  bottomAnchor5 = [view8 bottomAnchor];
+  v45 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5 constant:-10.0];
   v82[10] = v45;
   v46 = [NSArray arrayWithObjects:v82 count:11];
   [NSLayoutConstraint activateConstraints:v46];
@@ -330,25 +330,25 @@
   [(NavTrafficIncidentReportSubmissionContaineeViewController *)self updateContent];
 }
 
-- (NavTrafficIncidentReportSubmissionContaineeViewController)initWithItem:(id)a3 report:(id)a4
+- (NavTrafficIncidentReportSubmissionContaineeViewController)initWithItem:(id)item report:(id)report
 {
-  v7 = a3;
-  v8 = a4;
+  itemCopy = item;
+  reportCopy = report;
   v15.receiver = self;
   v15.super_class = NavTrafficIncidentReportSubmissionContaineeViewController;
   v9 = [(NavTrafficIncidentReportSubmissionContaineeViewController *)&v15 initWithNibName:0 bundle:0];
   v10 = v9;
   if (v9)
   {
-    v11 = [(ContaineeViewController *)v9 cardPresentationController];
-    [v11 setBlurInCardView:0];
+    cardPresentationController = [(ContaineeViewController *)v9 cardPresentationController];
+    [cardPresentationController setBlurInCardView:0];
 
     v12 = [UIColor colorNamed:@"NavigationMaterialColor"];
-    v13 = [(ContaineeViewController *)v10 cardPresentationController];
-    [v13 setCardColor:v12];
+    cardPresentationController2 = [(ContaineeViewController *)v10 cardPresentationController];
+    [cardPresentationController2 setCardColor:v12];
 
-    objc_storeStrong(&v10->_layoutItem, a3);
-    [v8 submitWithCompletionHandler:0];
+    objc_storeStrong(&v10->_layoutItem, item);
+    [reportCopy submitWithCompletionHandler:0];
   }
 
   return v10;

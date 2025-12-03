@@ -1,18 +1,18 @@
 @interface SSSnippetHighlightTool
-+ (BOOL)isSegmentHighlighted:(id)a3;
-- (SSSnippetHighlightTool)initWithTerms:(id)a3;
-- (id)findAndMergeHighlightRangesInSnippet:(id)a3;
-- (id)makeHighlightedSnippet:(id)a3;
++ (BOOL)isSegmentHighlighted:(id)highlighted;
+- (SSSnippetHighlightTool)initWithTerms:(id)terms;
+- (id)findAndMergeHighlightRangesInSnippet:(id)snippet;
+- (id)makeHighlightedSnippet:(id)snippet;
 @end
 
 @implementation SSSnippetHighlightTool
 
-+ (BOOL)isSegmentHighlighted:(id)a3
++ (BOOL)isSegmentHighlighted:(id)highlighted
 {
-  v3 = a3;
-  if ([v3 length])
+  highlightedCopy = highlighted;
+  if ([highlightedCopy length])
   {
-    v4 = [v3 attribute:@"com.apple.SSSnippetHighlightTool.TextHighlightAttribute" atIndex:0 effectiveRange:0];
+    v4 = [highlightedCopy attribute:@"com.apple.SSSnippetHighlightTool.TextHighlightAttribute" atIndex:0 effectiveRange:0];
     v5 = v4;
     if (v4)
     {
@@ -33,38 +33,38 @@
   return v6;
 }
 
-- (SSSnippetHighlightTool)initWithTerms:(id)a3
+- (SSSnippetHighlightTool)initWithTerms:(id)terms
 {
-  v4 = a3;
-  if ([v4 count])
+  termsCopy = terms;
+  if ([termsCopy count])
   {
     v10.receiver = self;
     v10.super_class = SSSnippetHighlightTool;
     v5 = [(SSSnippetHighlightTool *)&v10 init];
     if (v5)
     {
-      v6 = [v4 copy];
+      v6 = [termsCopy copy];
       terms = v5->_terms;
       v5->_terms = v6;
     }
 
     self = v5;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (id)findAndMergeHighlightRangesInSnippet:(id)a3
+- (id)findAndMergeHighlightRangesInSnippet:(id)snippet
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  snippetCopy = snippet;
+  array = [MEMORY[0x1E695DF70] array];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
@@ -87,8 +87,8 @@
         v9 = *(*(&v36 + 1) + 8 * i);
         if ([v9 length])
         {
-          v10 = [v4 length];
-          if ([v4 length])
+          v10 = [snippetCopy length];
+          if ([snippetCopy length])
           {
             v11 = 0;
             v12 = 1001;
@@ -99,7 +99,7 @@
                 break;
               }
 
-              v13 = [v4 rangeOfString:v9 options:129 range:{v11, v10}];
+              v13 = [snippetCopy rangeOfString:v9 options:129 range:{v11, v10}];
               if (v13 == 0x7FFFFFFFFFFFFFFFLL)
               {
                 break;
@@ -108,13 +108,13 @@
               v15 = v13;
               v16 = v14;
               v17 = [MEMORY[0x1E696B098] valueWithRange:{v13, v14}];
-              [v5 addObject:v17];
+              [array addObject:v17];
 
               v11 = v15 + v16;
-              v10 = [v4 length] - v11;
+              v10 = [snippetCopy length] - v11;
             }
 
-            while (v11 < [v4 length]);
+            while (v11 < [snippetCopy length]);
           }
         }
       }
@@ -125,53 +125,53 @@
     while (v7);
   }
 
-  if ([v5 count])
+  if ([array count])
   {
-    [v5 sortUsingComparator:&__block_literal_global_27];
-    v18 = [MEMORY[0x1E695DF70] array];
-    v19 = [v5 firstObject];
-    v20 = [v19 rangeValue];
+    [array sortUsingComparator:&__block_literal_global_27];
+    array2 = [MEMORY[0x1E695DF70] array];
+    firstObject = [array firstObject];
+    rangeValue = [firstObject rangeValue];
     v22 = v21;
 
-    if ([v5 count] >= 2)
+    if ([array count] >= 2)
     {
       v23 = 1;
       do
       {
-        v24 = [v5 objectAtIndexedSubscript:v23];
-        v25 = [v24 rangeValue];
+        v24 = [array objectAtIndexedSubscript:v23];
+        rangeValue2 = [v24 rangeValue];
         v27 = v26;
 
-        v28 = v22 + v20;
-        if (v22 + v20 >= v25)
+        v28 = v22 + rangeValue;
+        if (v22 + rangeValue >= rangeValue2)
         {
-          if (v28 <= v25 + v27)
+          if (v28 <= rangeValue2 + v27)
           {
-            v28 = v25 + v27;
+            v28 = rangeValue2 + v27;
           }
 
-          v22 = v28 - v20;
+          v22 = v28 - rangeValue;
         }
 
         else
         {
-          v29 = [MEMORY[0x1E696B098] valueWithRange:{v20, v22}];
-          [v18 addObject:v29];
+          v29 = [MEMORY[0x1E696B098] valueWithRange:{rangeValue, v22}];
+          [array2 addObject:v29];
 
-          v20 = v25;
+          rangeValue = rangeValue2;
           v22 = v27;
         }
 
         ++v23;
       }
 
-      while (v23 < [v5 count]);
+      while (v23 < [array count]);
     }
 
-    v30 = [MEMORY[0x1E696B098] valueWithRange:{v20, v22}];
-    [v18 addObject:v30];
+    v30 = [MEMORY[0x1E696B098] valueWithRange:{rangeValue, v22}];
+    [array2 addObject:v30];
 
-    v31 = [v18 copy];
+    v31 = [array2 copy];
   }
 
   else
@@ -198,19 +198,19 @@ uint64_t __63__SSSnippetHighlightTool_findAndMergeHighlightRangesInSnippet___blo
   return v10;
 }
 
-- (id)makeHighlightedSnippet:(id)a3
+- (id)makeHighlightedSnippet:(id)snippet
 {
   v34[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 length])
+  snippetCopy = snippet;
+  if ([snippetCopy length])
   {
     v33 = @"com.apple.SSSnippetHighlightTool.TextHighlightAttribute";
     v34[0] = MEMORY[0x1E695E118];
     v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v34 forKeys:&v33 count:1];
-    v5 = [(SSSnippetHighlightTool *)self findAndMergeHighlightRangesInSnippet:v4];
+    v5 = [(SSSnippetHighlightTool *)self findAndMergeHighlightRangesInSnippet:snippetCopy];
     if ([v5 count])
     {
-      v6 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v27 = 0u;
       v28 = 0u;
       v29 = 0u;
@@ -232,19 +232,19 @@ uint64_t __63__SSSnippetHighlightTool_findAndMergeHighlightRangesInSnippet___blo
               objc_enumerationMutation(obj);
             }
 
-            v12 = [*(*(&v27 + 1) + 8 * i) rangeValue];
+            rangeValue = [*(*(&v27 + 1) + 8 * i) rangeValue];
             v14 = v13;
-            if (v12 > v9)
+            if (rangeValue > v9)
             {
-              v15 = [v4 substringWithRange:{v9, v12 - v9}];
+              v15 = [snippetCopy substringWithRange:{v9, rangeValue - v9}];
               v16 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v15];
-              [v6 addObject:v16];
+              [array addObject:v16];
             }
 
-            v17 = [v4 substringWithRange:{v12, v14}];
+            v17 = [snippetCopy substringWithRange:{rangeValue, v14}];
             v18 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v17 attributes:v26];
-            [v6 addObject:v18];
-            v9 = v12 + v14;
+            [array addObject:v18];
+            v9 = rangeValue + v14;
           }
 
           v8 = [obj countByEnumeratingWithState:&v27 objects:v31 count:16];
@@ -258,21 +258,21 @@ uint64_t __63__SSSnippetHighlightTool_findAndMergeHighlightRangesInSnippet___blo
         v9 = 0;
       }
 
-      if (v9 < [v4 length])
+      if (v9 < [snippetCopy length])
       {
-        v20 = [v4 substringWithRange:{v9, objc_msgSend(v4, "length") - v9}];
+        v20 = [snippetCopy substringWithRange:{v9, objc_msgSend(snippetCopy, "length") - v9}];
         v21 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v20];
-        [v6 addObject:v21];
+        [array addObject:v21];
       }
 
-      v19 = [v6 copy];
+      v19 = [array copy];
       v5 = v24;
     }
 
     else
     {
-      v6 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v4];
-      v32 = v6;
+      array = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:snippetCopy];
+      v32 = array;
       v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v32 count:1];
     }
   }

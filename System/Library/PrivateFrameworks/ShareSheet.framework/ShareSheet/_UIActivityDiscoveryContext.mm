@@ -1,28 +1,28 @@
 @interface _UIActivityDiscoveryContext
-+ (id)contextFromExtensionItem:(id)a3;
-- (_UIActivityDiscoveryContext)initWithCoder:(id)a3;
++ (id)contextFromExtensionItem:(id)item;
+- (_UIActivityDiscoveryContext)initWithCoder:(id)coder;
 - (id)newExtensionItem;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UIActivityDiscoveryContext
 
-+ (id)contextFromExtensionItem:(id)a3
++ (id)contextFromExtensionItem:(id)item
 {
   v3 = MEMORY[0x1E696ACD0];
-  v4 = a3;
+  itemCopy = item;
   v5 = objc_opt_class();
-  v6 = [v4 userInfo];
+  userInfo = [itemCopy userInfo];
 
-  v7 = [v6 objectForKeyedSubscript:@"_UIActivityViewDiscoveryContextKey"];
+  v7 = [userInfo objectForKeyedSubscript:@"_UIActivityViewDiscoveryContextKey"];
   v8 = [v3 unarchivedObjectOfClass:v5 fromData:v7 error:0];
 
   return v8;
 }
 
-- (_UIActivityDiscoveryContext)initWithCoder:(id)a3
+- (_UIActivityDiscoveryContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = _UIActivityDiscoveryContext;
   v5 = [(_UIActivityDiscoveryContext *)&v11 init];
@@ -30,7 +30,7 @@
   {
     v6 = _UISecureStandardPropertyListClasses();
     v7 = NSStringFromSelector(sel_activityItemValueExtensionMatchingDictionaries);
-    v8 = [v4 decodeObjectOfClasses:v6 forKey:v7];
+    v8 = [coderCopy decodeObjectOfClasses:v6 forKey:v7];
     activityItemValueExtensionMatchingDictionaries = v5->_activityItemValueExtensionMatchingDictionaries;
     v5->_activityItemValueExtensionMatchingDictionaries = v8;
   }
@@ -38,12 +38,12 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   activityItemValueExtensionMatchingDictionaries = self->_activityItemValueExtensionMatchingDictionaries;
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_activityItemValueExtensionMatchingDictionaries);
-  [v4 encodeObject:activityItemValueExtensionMatchingDictionaries forKey:v5];
+  [coderCopy encodeObject:activityItemValueExtensionMatchingDictionaries forKey:v5];
 }
 
 - (id)newExtensionItem

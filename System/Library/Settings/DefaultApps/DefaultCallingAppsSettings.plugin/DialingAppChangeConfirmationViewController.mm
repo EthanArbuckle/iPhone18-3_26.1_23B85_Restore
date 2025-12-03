@@ -1,12 +1,12 @@
 @interface DialingAppChangeConfirmationViewController
-- (_TtC26DefaultCallingAppsSettings42DialingAppChangeConfirmationViewController)initWithCoder:(id)a3;
-- (_TtC26DefaultCallingAppsSettings42DialingAppChangeConfirmationViewController)initWithRootViewController:(id)a3;
+- (_TtC26DefaultCallingAppsSettings42DialingAppChangeConfirmationViewController)initWithCoder:(id)coder;
+- (_TtC26DefaultCallingAppsSettings42DialingAppChangeConfirmationViewController)initWithRootViewController:(id)controller;
 - (void)viewDidLoad;
 @end
 
 @implementation DialingAppChangeConfirmationViewController
 
-- (_TtC26DefaultCallingAppsSettings42DialingAppChangeConfirmationViewController)initWithCoder:(id)a3
+- (_TtC26DefaultCallingAppsSettings42DialingAppChangeConfirmationViewController)initWithCoder:(id)coder
 {
   sub_18F54();
   sub_18F44();
@@ -35,14 +35,14 @@
 
   v4.receiver = self;
   v4.super_class = type metadata accessor for DialingAppChangeConfirmationViewController();
-  v3 = self;
+  selfCopy = self;
   [(DialingAppChangeConfirmationViewController *)&v4 viewDidLoad];
   sub_15758();
   sub_16704();
   sub_16E34();
 }
 
-- (_TtC26DefaultCallingAppsSettings42DialingAppChangeConfirmationViewController)initWithRootViewController:(id)a3
+- (_TtC26DefaultCallingAppsSettings42DialingAppChangeConfirmationViewController)initWithRootViewController:(id)controller
 {
   sub_18F54();
   sub_18F44();

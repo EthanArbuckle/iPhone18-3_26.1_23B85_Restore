@@ -1,15 +1,15 @@
 @interface NMCompressedArgument
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)_nm_uncompressedArgument;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsCompressionType:(id)a3;
+- (int)StringAsCompressionType:(id)type;
 - (int)compressionType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NMCompressedArgument
@@ -27,13 +27,13 @@
   }
 }
 
-- (int)StringAsCompressionType:(id)a3
+- (int)StringAsCompressionType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   v4 = 1;
-  if (([v3 isEqualToString:@"ZLIB"] & 1) == 0)
+  if (([typeCopy isEqualToString:@"ZLIB"] & 1) == 0)
   {
-    if ([v3 isEqualToString:@"BZIP2"])
+    if ([typeCopy isEqualToString:@"BZIP2"])
     {
       v4 = 2;
     }
@@ -52,8 +52,8 @@
   v7.receiver = self;
   v7.super_class = NMCompressedArgument;
   v3 = [(NMCompressedArgument *)&v7 description];
-  v4 = [(NMCompressedArgument *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(NMCompressedArgument *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -92,45 +92,45 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_dataValue)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     compressionType = self->_compressionType;
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_dataValue)
   {
-    v5 = v4;
-    [v4 setDataValue:?];
-    v4 = v5;
+    v5 = toCopy;
+    [toCopy setDataValue:?];
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 2) = self->_compressionType;
-    *(v4 + 24) |= 1u;
+    *(toCopy + 2) = self->_compressionType;
+    *(toCopy + 24) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_dataValue copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_dataValue copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
@@ -143,16 +143,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_8;
   }
 
   dataValue = self->_dataValue;
-  if (dataValue | *(v4 + 2))
+  if (dataValue | *(equalCopy + 2))
   {
     if (![(NSData *)dataValue isEqual:?])
     {
@@ -160,10 +160,10 @@
     }
   }
 
-  v6 = (*(v4 + 24) & 1) == 0;
+  v6 = (*(equalCopy + 24) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 24) & 1) != 0 && self->_compressionType == *(v4 + 2))
+    if ((*(equalCopy + 24) & 1) != 0 && self->_compressionType == *(equalCopy + 2))
     {
       v6 = 1;
       goto LABEL_9;
@@ -194,46 +194,46 @@ LABEL_9:
   return v4 ^ v3;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 2))
+  fromCopy = from;
+  if (*(fromCopy + 2))
   {
-    v5 = v4;
+    v5 = fromCopy;
     [(NMCompressedArgument *)self setDataValue:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[6])
+  if (fromCopy[6])
   {
-    self->_compressionType = v4[2];
+    self->_compressionType = fromCopy[2];
     *&self->_has |= 1u;
   }
 }
 
 - (id)_nm_uncompressedArgument
 {
-  v3 = [(NMCompressedArgument *)self compressionType];
-  if (v3 == 2)
+  compressionType = [(NMCompressedArgument *)self compressionType];
+  if (compressionType == 2)
   {
-    v4 = [(NMCompressedArgument *)self dataValue];
-    [v4 bytes];
-    v5 = [(NMCompressedArgument *)self dataValue];
-    [v5 length];
+    dataValue = [(NMCompressedArgument *)self dataValue];
+    [dataValue bytes];
+    dataValue2 = [(NMCompressedArgument *)self dataValue];
+    [dataValue2 length];
     GEOBZ2Uncompress();
   }
 
   else
   {
-    if (v3 != 1)
+    if (compressionType != 1)
     {
       goto LABEL_6;
     }
 
-    v4 = [(NMCompressedArgument *)self dataValue];
-    [v4 bytes];
-    v5 = [(NMCompressedArgument *)self dataValue];
-    [v5 length];
+    dataValue = [(NMCompressedArgument *)self dataValue];
+    [dataValue bytes];
+    dataValue2 = [(NMCompressedArgument *)self dataValue];
+    [dataValue2 length];
     GEOZlibUncompress();
   }
 

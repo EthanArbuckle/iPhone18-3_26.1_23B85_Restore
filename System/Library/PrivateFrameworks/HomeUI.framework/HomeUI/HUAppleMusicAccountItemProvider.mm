@@ -1,21 +1,21 @@
 @interface HUAppleMusicAccountItemProvider
-- (HUAppleMusicAccountItemProvider)initWithMediaProfileContainer:(id)a3;
+- (HUAppleMusicAccountItemProvider)initWithMediaProfileContainer:(id)container;
 - (id)invalidationReasons;
 - (id)reloadItems;
 @end
 
 @implementation HUAppleMusicAccountItemProvider
 
-- (HUAppleMusicAccountItemProvider)initWithMediaProfileContainer:(id)a3
+- (HUAppleMusicAccountItemProvider)initWithMediaProfileContainer:(id)container
 {
-  v5 = a3;
+  containerCopy = container;
   v11.receiver = self;
   v11.super_class = HUAppleMusicAccountItemProvider;
   v6 = [(HFItemProvider *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mediaProfileContainer, a3);
+    objc_storeStrong(&v6->_mediaProfileContainer, container);
     v8 = objc_opt_new();
     items = v7->_items;
     v7->_items = v8;
@@ -27,16 +27,16 @@
 - (id)reloadItems
 {
   objc_initWeak(&location, self);
-  v3 = [MEMORY[0x277D14808] sharedDispatcher];
-  v4 = [v3 appleMusicMagicAuthCapableAccounts];
+  mEMORY[0x277D14808] = [MEMORY[0x277D14808] sharedDispatcher];
+  appleMusicMagicAuthCapableAccounts = [mEMORY[0x277D14808] appleMusicMagicAuthCapableAccounts];
 
-  v5 = [(HUAppleMusicAccountItemProvider *)self filter];
+  filter = [(HUAppleMusicAccountItemProvider *)self filter];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __46__HUAppleMusicAccountItemProvider_reloadItems__block_invoke_3;
   v11[3] = &unk_277DBFE20;
   objc_copyWeak(&v12, &location);
-  v6 = [(HFItemProvider *)self reloadItemsWithObjects:v4 keyAdaptor:&__block_literal_global_163 itemAdaptor:&__block_literal_global_4_1 filter:v5 itemMap:v11];
+  v6 = [(HFItemProvider *)self reloadItemsWithObjects:appleMusicMagicAuthCapableAccounts keyAdaptor:&__block_literal_global_163 itemAdaptor:&__block_literal_global_4_1 filter:filter itemMap:v11];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __46__HUAppleMusicAccountItemProvider_reloadItems__block_invoke_5;
@@ -114,12 +114,12 @@ id __46__HUAppleMusicAccountItemProvider_reloadItems__block_invoke_5(uint64_t a1
   v8[2] = *MEMORY[0x277D85DE8];
   v7.receiver = self;
   v7.super_class = HUAppleMusicAccountItemProvider;
-  v2 = [(HFItemProvider *)&v7 invalidationReasons];
+  invalidationReasons = [(HFItemProvider *)&v7 invalidationReasons];
   v3 = *MEMORY[0x277D13B38];
   v8[0] = *MEMORY[0x277D13B28];
   v8[1] = v3;
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:2];
-  v5 = [v2 setByAddingObjectsFromArray:v4];
+  v5 = [invalidationReasons setByAddingObjectsFromArray:v4];
 
   return v5;
 }

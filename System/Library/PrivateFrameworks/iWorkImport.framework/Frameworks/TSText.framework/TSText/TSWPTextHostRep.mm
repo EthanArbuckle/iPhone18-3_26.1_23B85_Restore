@@ -1,5 +1,5 @@
 @interface TSWPTextHostRep
-- (TSWPTextHostRep)initWithLayout:(id)a3 canvas:(id)a4;
+- (TSWPTextHostRep)initWithLayout:(id)layout canvas:(id)canvas;
 - (id)childReps;
 - (void)dealloc;
 - (void)updateChildrenFromLayout;
@@ -7,11 +7,11 @@
 
 @implementation TSWPTextHostRep
 
-- (TSWPTextHostRep)initWithLayout:(id)a3 canvas:(id)a4
+- (TSWPTextHostRep)initWithLayout:(id)layout canvas:(id)canvas
 {
   v5.receiver = self;
   v5.super_class = TSWPTextHostRep;
-  return [(TSDRep *)&v5 initWithLayout:a3 canvas:a4];
+  return [(TSDRep *)&v5 initWithLayout:layout canvas:canvas];
 }
 
 - (void)dealloc
@@ -75,12 +75,12 @@
 {
   v9.receiver = self;
   v9.super_class = TSWPTextHostRep;
-  v3 = [(TSDRep *)&v9 childReps];
-  v5 = v3;
+  childReps = [(TSDRep *)&v9 childReps];
+  v5 = childReps;
   editingRep = self->_editingRep;
   if (editingRep)
   {
-    v7 = objc_msgSend_arrayByAddingObject_(v3, v4, editingRep);
+    v7 = objc_msgSend_arrayByAddingObject_(childReps, v4, editingRep);
 
     v5 = v7;
   }

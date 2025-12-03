@@ -1,40 +1,40 @@
 @interface RAPWebBundleContaineeViewController
 - (BOOL)_supportsFullHeightCardsOnly;
-- (RAPWebBundleContaineeViewController)initWithReport:(id)a3 completion:(id)a4;
-- (double)heightForLayout:(unint64_t)a3;
+- (RAPWebBundleContaineeViewController)initWithReport:(id)report completion:(id)completion;
+- (double)heightForLayout:(unint64_t)layout;
 - (id)_backgroundColorForModalFormSheet;
 - (id)webBundleQuestion;
-- (void)_handleKeyboardNotification:(id)a3 aboutToHide:(BOOL)a4;
-- (void)_keyboardAboutToChangeFrame:(id)a3;
+- (void)_handleKeyboardNotification:(id)notification aboutToHide:(BOOL)hide;
+- (void)_keyboardAboutToChangeFrame:(id)frame;
 - (void)_setInitialCardHeightIfNeeded;
 - (void)_setupConstraints;
 - (void)_setupViews;
 - (void)didDismissByGesture;
-- (void)enableDismissByGesture:(BOOL)a3;
-- (void)saveInitialCardHeight:(double)a3;
-- (void)updateCardHeight:(double)a3;
+- (void)enableDismissByGesture:(BOOL)gesture;
+- (void)saveInitialCardHeight:(double)height;
+- (void)updateCardHeight:(double)height;
 - (void)updatePreferredContentSize;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation RAPWebBundleContaineeViewController
 
-- (void)_keyboardAboutToChangeFrame:(id)a3
+- (void)_keyboardAboutToChangeFrame:(id)frame
 {
   if (self->_keyboardShown)
   {
-    [(RAPWebBundleContaineeViewController *)self _handleKeyboardNotification:a3 aboutToHide:0];
+    [(RAPWebBundleContaineeViewController *)self _handleKeyboardNotification:frame aboutToHide:0];
   }
 }
 
-- (void)_handleKeyboardNotification:(id)a3 aboutToHide:(BOOL)a4
+- (void)_handleKeyboardNotification:(id)notification aboutToHide:(BOOL)hide
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (v4)
+  hideCopy = hide;
+  notificationCopy = notification;
+  v7 = notificationCopy;
+  if (hideCopy)
   {
     x = CGRectZero.origin.x;
     y = CGRectZero.origin.y;
@@ -44,8 +44,8 @@
 
   else
   {
-    v12 = [v6 userInfo];
-    v13 = [v12 objectForKey:UIKeyboardFrameEndUserInfoKey];
+    userInfo = [notificationCopy userInfo];
+    v13 = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
     [v13 CGRectValue];
     x = v14;
     y = v15;
@@ -53,14 +53,14 @@
     height = v17;
   }
 
-  v18 = [v7 userInfo];
-  v19 = [v18 objectForKeyedSubscript:UIKeyboardAnimationDurationUserInfoKey];
+  userInfo2 = [v7 userInfo];
+  v19 = [userInfo2 objectForKeyedSubscript:UIKeyboardAnimationDurationUserInfoKey];
   [v19 doubleValue];
   v21 = v20;
 
-  v22 = [v7 userInfo];
-  v23 = [v22 objectForKeyedSubscript:UIKeyboardAnimationCurveUserInfoKey];
-  v24 = [v23 unsignedIntegerValue];
+  userInfo3 = [v7 userInfo];
+  v23 = [userInfo3 objectForKeyedSubscript:UIKeyboardAnimationCurveUserInfoKey];
+  unsignedIntegerValue = [v23 unsignedIntegerValue];
 
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
@@ -71,30 +71,30 @@
   *&v25[6] = y;
   *&v25[7] = width;
   *&v25[8] = height;
-  [UIView animateWithDuration:v24 delay:v25 options:0 animations:v21 completion:0.0];
+  [UIView animateWithDuration:unsignedIntegerValue delay:v25 options:0 animations:v21 completion:0.0];
 }
 
 - (void)updatePreferredContentSize
 {
   if (sub_10000FA08(self) == 5)
   {
-    v3 = [(RAPWebBundleContaineeViewController *)self presentingViewController];
-    v4 = [v3 view];
-    v5 = [v4 window];
-    [v5 bounds];
+    presentingViewController = [(RAPWebBundleContaineeViewController *)self presentingViewController];
+    view = [presentingViewController view];
+    window = [view window];
+    [window bounds];
     v6 = 520.0;
     if (v7 < 520.0)
     {
-      v8 = [(RAPWebBundleContaineeViewController *)self presentingViewController];
-      v9 = [v8 view];
-      v10 = [v9 window];
-      [v10 bounds];
+      presentingViewController2 = [(RAPWebBundleContaineeViewController *)self presentingViewController];
+      view2 = [presentingViewController2 view];
+      window2 = [view2 window];
+      [window2 bounds];
       v6 = v11;
     }
 
-    v12 = [(RAPWebBundleContaineeViewController *)self _supportsFullHeightCardsOnly];
+    _supportsFullHeightCardsOnly = [(RAPWebBundleContaineeViewController *)self _supportsFullHeightCardsOnly];
     v13 = v6;
-    if ((v12 & 1) == 0)
+    if ((_supportsFullHeightCardsOnly & 1) == 0)
     {
       v14 = self->_contentViewController;
       objc_opt_class();
@@ -110,12 +110,12 @@
 
       v16 = v15;
 
-      v17 = [(RAPWebBundleHomeViewController *)v16 headerView];
-      [v17 frame];
+      headerView = [(RAPWebBundleHomeViewController *)v16 headerView];
+      [headerView frame];
       v19 = v18;
-      v20 = [(RAPWebBundleHomeViewController *)v16 footerView];
+      footerView = [(RAPWebBundleHomeViewController *)v16 footerView];
 
-      [v20 frame];
+      [footerView frame];
       v22 = v21 + v19;
 
       v13 = fmax(self->_cardContentsHeight, 160.0 - v22) + v22;
@@ -127,7 +127,7 @@
   }
 }
 
-- (void)saveInitialCardHeight:(double)a3
+- (void)saveInitialCardHeight:(double)height
 {
   if (![(RAPWebBundleContaineeViewController *)self _supportsFullHeightCardsOnly])
   {
@@ -147,18 +147,18 @@
 
     v9 = v8;
 
-    v10 = [(RAPWebBundleContaineeViewController *)self webBundleQuestion];
-    v11 = [v10 questionTypeAsString];
-    v12 = [v9 objectForKeyedSubscript:v11];
+    webBundleQuestion = [(RAPWebBundleContaineeViewController *)self webBundleQuestion];
+    questionTypeAsString = [webBundleQuestion questionTypeAsString];
+    v12 = [v9 objectForKeyedSubscript:questionTypeAsString];
     [v12 doubleValue];
     v14 = v13;
 
-    if (v14 != a3)
+    if (v14 != height)
     {
-      v15 = [NSNumber numberWithDouble:a3];
-      v16 = [(RAPWebBundleContaineeViewController *)self webBundleQuestion];
-      v17 = [v16 questionTypeAsString];
-      [v9 setObject:v15 forKeyedSubscript:v17];
+      v15 = [NSNumber numberWithDouble:height];
+      webBundleQuestion2 = [(RAPWebBundleContaineeViewController *)self webBundleQuestion];
+      questionTypeAsString2 = [webBundleQuestion2 questionTypeAsString];
+      [v9 setObject:v15 forKeyedSubscript:questionTypeAsString2];
 
       v18 = [v9 copy];
       [v19 setObject:v18 forKey:@"RAPInlineCardHeightDictionary"];
@@ -166,32 +166,32 @@
   }
 }
 
-- (void)updateCardHeight:(double)a3
+- (void)updateCardHeight:(double)height
 {
-  if (self->_cardContentsHeight != a3)
+  if (self->_cardContentsHeight != height)
   {
-    self->_cardContentsHeight = a3;
-    v5 = [(ContaineeViewController *)self cardPresentationController];
-    [v5 updateHeightForCurrentLayoutAnimated:1];
+    self->_cardContentsHeight = height;
+    cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController updateHeightForCurrentLayoutAnimated:1];
 
     [(RAPWebBundleContaineeViewController *)self updatePreferredContentSize];
   }
 }
 
-- (void)enableDismissByGesture:(BOOL)a3
+- (void)enableDismissByGesture:(BOOL)gesture
 {
-  v3 = a3;
-  [(RAPWebBundleContaineeViewController *)self setModalInPresentation:!a3];
-  v5 = [(ContaineeViewController *)self cardPresentationController];
-  [v5 setAllowsSwipeToDismiss:v3];
+  gestureCopy = gesture;
+  [(RAPWebBundleContaineeViewController *)self setModalInPresentation:!gesture];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController setAllowsSwipeToDismiss:gestureCopy];
 
-  v6 = [(RAPWebBundleContaineeViewController *)self presentationController];
-  v7 = [v6 delegate];
+  presentationController = [(RAPWebBundleContaineeViewController *)self presentationController];
+  delegate = [presentationController delegate];
 
-  if (!v7)
+  if (!delegate)
   {
-    v8 = [(RAPWebBundleContaineeViewController *)self presentationController];
-    [v8 setDelegate:self];
+    presentationController2 = [(RAPWebBundleContaineeViewController *)self presentationController];
+    [presentationController2 setDelegate:self];
   }
 }
 
@@ -210,21 +210,21 @@
     return 1;
   }
 
-  v3 = [(RAPWebBundleContaineeViewController *)self webBundleQuestion];
-  v4 = [v3 questionType] - 21 < 0xFFFFFFFFFFFFFFF8;
+  webBundleQuestion = [(RAPWebBundleContaineeViewController *)self webBundleQuestion];
+  v4 = [webBundleQuestion questionType] - 21 < 0xFFFFFFFFFFFFFFF8;
 
   return v4;
 }
 
-- (double)heightForLayout:(unint64_t)a3
+- (double)heightForLayout:(unint64_t)layout
 {
   result = -1.0;
-  if (a3 == 5)
+  if (layout == 5)
   {
     if ([(RAPWebBundleContaineeViewController *)self _supportsFullHeightCardsOnly]|| self->_cardContentsHeight <= 0.0)
     {
-      v11 = [(ContaineeViewController *)self cardPresentationController];
-      [v11 availableHeight];
+      cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+      [cardPresentationController availableHeight];
       v13 = v12;
 
       return v13;
@@ -232,8 +232,8 @@
 
     else
     {
-      v5 = [(UINavigationController *)self->_navController navigationBar];
-      [v5 frame];
+      navigationBar = [(UINavigationController *)self->_navController navigationBar];
+      [navigationBar frame];
       v7 = v6;
 
       v8 = 470.0 - v7;
@@ -250,8 +250,8 @@
       else
       {
         v14 = fmax(cardContentsHeight, v8);
-        v15 = [(ContaineeViewController *)self cardPresentationController];
-        [v15 bottomSafeOffset];
+        cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+        [cardPresentationController2 bottomSafeOffset];
         cardContentsHeight = v16 + v14;
       }
 
@@ -264,21 +264,21 @@
 
 - (id)webBundleQuestion
 {
-  v3 = [(RAPReport *)self->_report initialQuestion];
+  initialQuestion = [(RAPReport *)self->_report initialQuestion];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(RAPReport *)self->_report initialQuestion];
+    initialQuestion2 = [(RAPReport *)self->_report initialQuestion];
   }
 
   else
   {
-    v5 = 0;
+    initialQuestion2 = 0;
   }
 
-  return v5;
+  return initialQuestion2;
 }
 
 - (void)_setInitialCardHeightIfNeeded
@@ -287,9 +287,9 @@
   {
     v8 = +[NSUserDefaults standardUserDefaults];
     v3 = [v8 dictionaryForKey:@"RAPInlineCardHeightDictionary"];
-    v4 = [(RAPWebBundleContaineeViewController *)self webBundleQuestion];
-    v5 = [v4 questionTypeAsString];
-    v6 = [v3 objectForKeyedSubscript:v5];
+    webBundleQuestion = [(RAPWebBundleContaineeViewController *)self webBundleQuestion];
+    questionTypeAsString = [webBundleQuestion questionTypeAsString];
+    v6 = [v3 objectForKeyedSubscript:questionTypeAsString];
 
     if (v6)
     {
@@ -307,29 +307,29 @@
 
 - (void)_setupConstraints
 {
-  v23 = [(UINavigationController *)self->_navController view];
-  v21 = [v23 topAnchor];
-  v22 = [(RAPWebBundleContaineeViewController *)self view];
-  v20 = [v22 topAnchor];
-  v19 = [v21 constraintEqualToAnchor:v20];
+  view = [(UINavigationController *)self->_navController view];
+  topAnchor = [view topAnchor];
+  view2 = [(RAPWebBundleContaineeViewController *)self view];
+  topAnchor2 = [view2 topAnchor];
+  v19 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v24[0] = v19;
-  v18 = [(UINavigationController *)self->_navController view];
-  v16 = [v18 leadingAnchor];
-  v17 = [(RAPWebBundleContaineeViewController *)self view];
-  v15 = [v17 leadingAnchor];
-  v14 = [v16 constraintEqualToAnchor:v15];
+  view3 = [(UINavigationController *)self->_navController view];
+  leadingAnchor = [view3 leadingAnchor];
+  view4 = [(RAPWebBundleContaineeViewController *)self view];
+  leadingAnchor2 = [view4 leadingAnchor];
+  v14 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v24[1] = v14;
-  v13 = [(UINavigationController *)self->_navController view];
-  v3 = [v13 trailingAnchor];
-  v4 = [(RAPWebBundleContaineeViewController *)self view];
-  v5 = [v4 trailingAnchor];
-  v6 = [v3 constraintEqualToAnchor:v5];
+  view5 = [(UINavigationController *)self->_navController view];
+  trailingAnchor = [view5 trailingAnchor];
+  view6 = [(RAPWebBundleContaineeViewController *)self view];
+  trailingAnchor2 = [view6 trailingAnchor];
+  v6 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v24[2] = v6;
-  v7 = [(UINavigationController *)self->_navController view];
-  v8 = [v7 bottomAnchor];
-  v9 = [(RAPWebBundleContaineeViewController *)self view];
-  v10 = [v9 bottomAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10];
+  view7 = [(UINavigationController *)self->_navController view];
+  bottomAnchor = [view7 bottomAnchor];
+  view8 = [(RAPWebBundleContaineeViewController *)self view];
+  bottomAnchor2 = [view8 bottomAnchor];
+  v11 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v24[3] = v11;
   v12 = [NSArray arrayWithObjects:v24 count:4];
   [NSLayoutConstraint activateConstraints:v12];
@@ -337,26 +337,26 @@
 
 - (void)_setupViews
 {
-  v3 = [(ContaineeViewController *)self cardPresentationController];
-  [v3 setPresentedModally:1];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController setPresentedModally:1];
 
-  v4 = [(ContaineeViewController *)self cardPresentationController];
-  [v4 setTakesAvailableHeight:1];
+  cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController2 setTakesAvailableHeight:1];
 
-  v5 = [(ContaineeViewController *)self cardPresentationController];
-  [v5 setAllowsSwipeToDismiss:0];
+  cardPresentationController3 = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController3 setAllowsSwipeToDismiss:0];
 
-  v6 = [(ContaineeViewController *)self cardPresentationController];
-  [v6 setDefaultContaineeLayout:5];
+  cardPresentationController4 = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController4 setDefaultContaineeLayout:5];
 
   v7 = [[UINavigationController alloc] initWithRootViewController:self->_contentViewController];
-  v8 = [(UINavigationController *)v7 view];
-  [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view = [(UINavigationController *)v7 view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
   [(RAPWebBundleContaineeViewController *)self addChildViewController:v7];
-  v9 = [(RAPWebBundleContaineeViewController *)self view];
-  v10 = [(UINavigationController *)v7 view];
-  [v9 addSubview:v10];
+  view2 = [(RAPWebBundleContaineeViewController *)self view];
+  view3 = [(UINavigationController *)v7 view];
+  [view2 addSubview:view3];
 
   [(UINavigationController *)v7 didMoveToParentViewController:self];
   navController = self->_navController;
@@ -367,26 +367,26 @@
 
 - (id)_backgroundColorForModalFormSheet
 {
-  v2 = [(RAPWebBundleContaineeViewController *)self theme];
-  v3 = [v2 backgroundColorForModalFormSheet];
+  theme = [(RAPWebBundleContaineeViewController *)self theme];
+  backgroundColorForModalFormSheet = [theme backgroundColorForModalFormSheet];
 
-  return v3;
+  return backgroundColorForModalFormSheet;
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = RAPWebBundleContaineeViewController;
-  [(RAPWebBundleContaineeViewController *)&v5 viewDidDisappear:a3];
+  [(RAPWebBundleContaineeViewController *)&v5 viewDidDisappear:disappear];
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 removeObserver:self];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = RAPWebBundleContaineeViewController;
-  [(ContaineeViewController *)&v7 viewWillAppear:a3];
+  [(ContaineeViewController *)&v7 viewWillAppear:appear];
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 addObserver:self selector:"_keyboardAboutToShow:" name:UIKeyboardWillShowNotification object:0];
 
@@ -408,18 +408,18 @@
   [(RAPWebBundleContaineeViewController *)self setModalInPresentation:0];
 }
 
-- (RAPWebBundleContaineeViewController)initWithReport:(id)a3 completion:(id)a4
+- (RAPWebBundleContaineeViewController)initWithReport:(id)report completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  reportCopy = report;
+  completionCopy = completion;
   v14.receiver = self;
   v14.super_class = RAPWebBundleContaineeViewController;
   v9 = [(RAPWebBundleContaineeViewController *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_report, a3);
-    v11 = [[RAPWebBundleHomeViewController alloc] initWithReport:v7 completion:v8];
+    objc_storeStrong(&v9->_report, report);
+    v11 = [[RAPWebBundleHomeViewController alloc] initWithReport:reportCopy completion:completionCopy];
     contentViewController = v10->_contentViewController;
     v10->_contentViewController = v11;
 

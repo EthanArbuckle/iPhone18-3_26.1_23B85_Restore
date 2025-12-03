@@ -1,15 +1,15 @@
 @interface SUControllerMessageEndpoint
 + (id)sharedEndpoint;
 - (SUControllerMessageEndpoint)init;
-- (void)sendErrorReply:(id)a3 toMessage:(id)a4;
-- (void)sendMessage:(id)a3 completion:(id)a4;
-- (void)sendMessage:(id)a3 isCritical:(BOOL)a4 completion:(id)a5;
-- (void)sendMessage:(id)a3 withReply:(id)a4;
-- (void)sendReply:(id)a3 toMessage:(id)a4;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7;
-- (void)service:(id)a3 account:(id)a4 incomingData:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)setHandler:(id)a3 forMessagesOfType:(id)a4;
-- (void)setHandler:(id)a3 forMessagesOfTypes:(id)a4;
+- (void)sendErrorReply:(id)reply toMessage:(id)message;
+- (void)sendMessage:(id)message completion:(id)completion;
+- (void)sendMessage:(id)message isCritical:(BOOL)critical completion:(id)completion;
+- (void)sendMessage:(id)message withReply:(id)reply;
+- (void)sendReply:(id)reply toMessage:(id)message;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error;
+- (void)service:(id)service account:(id)account incomingData:(id)data fromID:(id)d context:(id)context;
+- (void)setHandler:(id)handler forMessagesOfType:(id)type;
+- (void)setHandler:(id)handler forMessagesOfTypes:(id)types;
 @end
 
 @implementation SUControllerMessageEndpoint
@@ -72,67 +72,67 @@ uint64_t __45__SUControllerMessageEndpoint_sharedEndpoint__block_invoke()
   return v2;
 }
 
-- (void)sendMessage:(id)a3 completion:(id)a4
+- (void)sendMessage:(id)message completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  messageCopy = message;
+  completionCopy = completion;
   v7 = +[SUControllerLogger sharedLogger];
   v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:SUControllerMessageTypeKey];
-  v9 = [v5 objectForKey:v8];
+  v9 = [messageCopy objectForKey:v8];
   [v7 logAtLevel:0 label:"-[SUControllerMessageEndpoint sendMessage:completion:]" format:{@"Trying to send this message over IDS... %@", v9}];
 
   __assert_rtn("[SUControllerMessageEndpoint sendMessage:completion:]", "SUControllerMessageEndpoint.m", 92, "false");
 }
 
-- (void)sendMessage:(id)a3 isCritical:(BOOL)a4 completion:(id)a5
+- (void)sendMessage:(id)message isCritical:(BOOL)critical completion:(id)completion
 {
-  v6 = a3;
-  v7 = a5;
+  messageCopy = message;
+  completionCopy = completion;
   v8 = +[SUControllerLogger sharedLogger];
   v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:SUControllerMessageTypeKey];
-  v10 = [v6 objectForKey:v9];
+  v10 = [messageCopy objectForKey:v9];
   [v8 logAtLevel:0 label:"-[SUControllerMessageEndpoint sendMessage:isCritical:completion:]" format:{@"Trying to send this message over IDS... %@", v10}];
 
   __assert_rtn("[SUControllerMessageEndpoint sendMessage:isCritical:completion:]", "SUControllerMessageEndpoint.m", 99, "false");
 }
 
-- (void)sendMessage:(id)a3 withReply:(id)a4
+- (void)sendMessage:(id)message withReply:(id)reply
 {
-  v5 = a3;
-  v6 = a4;
+  messageCopy = message;
+  replyCopy = reply;
   v7 = +[SUControllerLogger sharedLogger];
   v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:SUControllerMessageTypeKey];
-  v9 = [v5 objectForKey:v8];
+  v9 = [messageCopy objectForKey:v8];
   [v7 logAtLevel:0 label:"-[SUControllerMessageEndpoint sendMessage:withReply:]" format:{@"Trying to send this message over IDS... %@", v9}];
 
   __assert_rtn("[SUControllerMessageEndpoint sendMessage:withReply:]", "SUControllerMessageEndpoint.m", 120, "false");
 }
 
-- (void)sendReply:(id)a3 toMessage:(id)a4
+- (void)sendReply:(id)reply toMessage:(id)message
 {
-  v5 = a3;
-  v6 = a4;
+  replyCopy = reply;
+  messageCopy = message;
   v7 = +[SUControllerLogger sharedLogger];
-  [v7 logAtLevel:0 label:"-[SUControllerMessageEndpoint sendReply:toMessage:]" format:{@"Trying to send this message over IDS... %@", v5}];
+  [v7 logAtLevel:0 label:"-[SUControllerMessageEndpoint sendReply:toMessage:]" format:{@"Trying to send this message over IDS... %@", replyCopy}];
 
   __assert_rtn("[SUControllerMessageEndpoint sendReply:toMessage:]", "SUControllerMessageEndpoint.m", 142, "false");
 }
 
-- (void)setHandler:(id)a3 forMessagesOfType:(id)a4
+- (void)setHandler:(id)handler forMessagesOfType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SUControllerMessageEndpoint *)self queue];
+  handlerCopy = handler;
+  typeCopy = type;
+  queue = [(SUControllerMessageEndpoint *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__SUControllerMessageEndpoint_setHandler_forMessagesOfType___block_invoke;
   block[3] = &unk_279CA8638;
-  v12 = v7;
-  v13 = v6;
+  v12 = typeCopy;
+  v13 = handlerCopy;
   block[4] = self;
-  v9 = v7;
-  v10 = v6;
-  dispatch_sync(v8, block);
+  v9 = typeCopy;
+  v10 = handlerCopy;
+  dispatch_sync(queue, block);
 }
 
 void __60__SUControllerMessageEndpoint_setHandler_forMessagesOfType___block_invoke(uint64_t a1)
@@ -142,21 +142,21 @@ void __60__SUControllerMessageEndpoint_setHandler_forMessagesOfType___block_invo
   [v3 setObject:v2 forKey:*(a1 + 40)];
 }
 
-- (void)setHandler:(id)a3 forMessagesOfTypes:(id)a4
+- (void)setHandler:(id)handler forMessagesOfTypes:(id)types
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SUControllerMessageEndpoint *)self queue];
+  handlerCopy = handler;
+  typesCopy = types;
+  queue = [(SUControllerMessageEndpoint *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __61__SUControllerMessageEndpoint_setHandler_forMessagesOfTypes___block_invoke;
   block[3] = &unk_279CA8660;
-  v12 = v7;
-  v13 = self;
-  v14 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_sync(v8, block);
+  v12 = typesCopy;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = typesCopy;
+  dispatch_sync(queue, block);
 }
 
 void __61__SUControllerMessageEndpoint_setHandler_forMessagesOfTypes___block_invoke(uint64_t a1)
@@ -215,14 +215,14 @@ void __89__SUControllerMessageEndpoint_sendMessage_replyingTo_expectingResponse_
   *a4 = 0;
 }
 
-- (void)sendErrorReply:(id)a3 toMessage:(id)a4
+- (void)sendErrorReply:(id)reply toMessage:(id)message
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  replyCopy = reply;
+  messageCopy = message;
+  if (messageCopy)
   {
-    v8 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v6 requiringSecureCoding:1 error:0];
+    v8 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:replyCopy requiringSecureCoding:1 error:0];
     if (v8)
     {
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:SUControllerMessageErrorKey];
@@ -230,7 +230,7 @@ void __89__SUControllerMessageEndpoint_sendMessage_replyingTo_expectingResponse_
       v17[0] = v8;
       v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:&v16 count:1];
       v15 = 0;
-      v11 = [(SUControllerMessageEndpoint *)self sendMessage:v10 replyingTo:v7 expectingResponse:0 isCritical:1 error:&v15];
+      v11 = [(SUControllerMessageEndpoint *)self sendMessage:v10 replyingTo:messageCopy expectingResponse:0 isCritical:1 error:&v15];
       v12 = v15;
 
       if (!v11)
@@ -243,42 +243,42 @@ void __89__SUControllerMessageEndpoint_sendMessage_replyingTo_expectingResponse_
     else
     {
       v12 = +[SUControllerLogger sharedLogger];
-      [v12 logAtLevel:2 label:"-[SUControllerMessageEndpoint sendErrorReply:toMessage:]" format:{@"Failed to archive error '%@'", v6}];
+      [v12 logAtLevel:2 label:"-[SUControllerMessageEndpoint sendErrorReply:toMessage:]" format:{@"Failed to archive error '%@'", replyCopy}];
     }
   }
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingData:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingData:(id)data fromID:(id)d context:(id)context
 {
-  v9 = a7;
+  contextCopy = context;
   v51 = 0;
-  v10 = [MEMORY[0x277CCAC58] propertyListWithData:a5 options:0 format:0 error:&v51];
+  v10 = [MEMORY[0x277CCAC58] propertyListWithData:data options:0 format:0 error:&v51];
   v11 = v51;
   if (!v10)
   {
     v12 = +[SUControllerLogger sharedLogger];
-    v13 = [v9 outgoingResponseIdentifier];
-    v41 = [v13 UTF8String];
+    outgoingResponseIdentifier = [contextCopy outgoingResponseIdentifier];
+    uTF8String = [outgoingResponseIdentifier UTF8String];
     [v11 code];
     [v12 logAtLevel:0 label:"-[SUControllerMessageEndpoint service:account:incomingData:fromID:context:]" format:@"Failed to parse IDS message %s: %ld"];
   }
 
-  v14 = [v9 incomingResponseIdentifier];
+  incomingResponseIdentifier = [contextCopy incomingResponseIdentifier];
 
-  if (v14)
+  if (incomingResponseIdentifier)
   {
-    v19 = [(SUControllerMessageEndpoint *)self queue];
+    queue = [(SUControllerMessageEndpoint *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __75__SUControllerMessageEndpoint_service_account_incomingData_fromID_context___block_invoke;
     block[3] = &unk_279CA8688;
     block[4] = self;
-    v48 = v9;
+    v48 = contextCopy;
     v49 = v11;
     v50 = v10;
-    dispatch_async(v19, block);
+    dispatch_async(queue, block);
   }
 
   else
@@ -290,57 +290,57 @@ void __89__SUControllerMessageEndpoint_sendMessage_replyingTo_expectingResponse_
 
       if (v21)
       {
-        v22 = [(SUControllerMessageEndpoint *)self messageHandlers];
-        v23 = [v22 objectForKeyedSubscript:v21];
+        messageHandlers = [(SUControllerMessageEndpoint *)self messageHandlers];
+        outgoingResponseIdentifier6 = [messageHandlers objectForKeyedSubscript:v21];
 
-        if (v23)
+        if (outgoingResponseIdentifier6)
         {
-          v24 = [(SUControllerMessageEndpoint *)self processingQueue];
+          processingQueue = [(SUControllerMessageEndpoint *)self processingQueue];
           v42[0] = MEMORY[0x277D85DD0];
           v42[1] = 3221225472;
           v42[2] = __75__SUControllerMessageEndpoint_service_account_incomingData_fromID_context___block_invoke_2;
           v42[3] = &unk_279CA86B0;
           v43 = v21;
-          v23 = v23;
-          v46 = v23;
+          outgoingResponseIdentifier6 = outgoingResponseIdentifier6;
+          v46 = outgoingResponseIdentifier6;
           v44 = v10;
-          v45 = v9;
-          dispatch_async(v24, v42);
+          v45 = contextCopy;
+          dispatch_async(processingQueue, v42);
 
-          v25 = v43;
+          outgoingResponseIdentifier5 = v43;
         }
 
         else
         {
           v33 = +[SUControllerLogger sharedLogger];
-          v34 = [v9 outgoingResponseIdentifier];
-          v35 = [v34 UTF8String];
-          [v33 logAtLevel:0 label:"-[SUControllerMessageEndpoint service:account:incomingData:fromID:context:]" format:{@"No handler for message %s of type %s", v35, SUControllerMessageTypeKey}];
+          outgoingResponseIdentifier2 = [contextCopy outgoingResponseIdentifier];
+          uTF8String2 = [outgoingResponseIdentifier2 UTF8String];
+          [v33 logAtLevel:0 label:"-[SUControllerMessageEndpoint service:account:incomingData:fromID:context:]" format:{@"No handler for message %s of type %s", uTF8String2, SUControllerMessageTypeKey}];
 
-          v25 = SUControllerError(@"SUControllerError", 1, 0, @"No handler for message type '%@'", v36, v37, v38, v39, v21);
-          v40 = [v9 outgoingResponseIdentifier];
-          [(SUControllerMessageEndpoint *)self sendErrorReply:v25 toMessage:v40];
+          outgoingResponseIdentifier5 = SUControllerError(@"SUControllerError", 1, 0, @"No handler for message type '%@'", v36, v37, v38, v39, v21);
+          outgoingResponseIdentifier3 = [contextCopy outgoingResponseIdentifier];
+          [(SUControllerMessageEndpoint *)self sendErrorReply:outgoingResponseIdentifier5 toMessage:outgoingResponseIdentifier3];
         }
       }
 
       else
       {
         v26 = +[SUControllerLogger sharedLogger];
-        v27 = [v9 outgoingResponseIdentifier];
-        v28 = [v27 UTF8String];
-        [v26 logAtLevel:0 label:"-[SUControllerMessageEndpoint service:account:incomingData:fromID:context:]" format:{@"Got message %s without %s key", v28, SUControllerMessageTypeKey}];
+        outgoingResponseIdentifier4 = [contextCopy outgoingResponseIdentifier];
+        uTF8String3 = [outgoingResponseIdentifier4 UTF8String];
+        [v26 logAtLevel:0 label:"-[SUControllerMessageEndpoint service:account:incomingData:fromID:context:]" format:{@"Got message %s without %s key", uTF8String3, SUControllerMessageTypeKey}];
 
-        v23 = SUControllerError(@"SUControllerError", 1, 0, @"Dropping message without '%@' key", v29, v30, v31, v32, SUControllerMessageTypeKey);
-        v25 = [v9 outgoingResponseIdentifier];
-        [(SUControllerMessageEndpoint *)self sendErrorReply:v23 toMessage:v25];
+        outgoingResponseIdentifier6 = SUControllerError(@"SUControllerError", 1, 0, @"Dropping message without '%@' key", v29, v30, v31, v32, SUControllerMessageTypeKey);
+        outgoingResponseIdentifier5 = [contextCopy outgoingResponseIdentifier];
+        [(SUControllerMessageEndpoint *)self sendErrorReply:outgoingResponseIdentifier6 toMessage:outgoingResponseIdentifier5];
       }
     }
 
     else
     {
-      v21 = SUControllerError(@"SUControllerError", 1, v11, @"Unparseable IDS message", v15, v16, v17, v18, v41);
-      v23 = [v9 outgoingResponseIdentifier];
-      [(SUControllerMessageEndpoint *)self sendErrorReply:v21 toMessage:v23];
+      v21 = SUControllerError(@"SUControllerError", 1, v11, @"Unparseable IDS message", v15, v16, v17, v18, uTF8String);
+      outgoingResponseIdentifier6 = [contextCopy outgoingResponseIdentifier];
+      [(SUControllerMessageEndpoint *)self sendErrorReply:v21 toMessage:outgoingResponseIdentifier6];
     }
   }
 }
@@ -404,22 +404,22 @@ void __75__SUControllerMessageEndpoint_service_account_incomingData_fromID_conte
   (*(v3 + 16))(v3, v4, v5);
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error
 {
-  v10 = a5;
-  v11 = a7;
-  v12 = [(SUControllerMessageEndpoint *)self queue];
+  identifierCopy = identifier;
+  errorCopy = error;
+  queue = [(SUControllerMessageEndpoint *)self queue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __83__SUControllerMessageEndpoint_service_account_identifier_didSendWithSuccess_error___block_invoke;
   v15[3] = &unk_279CA86D8;
-  v16 = v11;
-  v17 = self;
-  v18 = v10;
-  v19 = a6;
-  v13 = v10;
-  v14 = v11;
-  dispatch_async(v12, v15);
+  v16 = errorCopy;
+  selfCopy = self;
+  v18 = identifierCopy;
+  successCopy = success;
+  v13 = identifierCopy;
+  v14 = errorCopy;
+  dispatch_async(queue, v15);
 }
 
 void __83__SUControllerMessageEndpoint_service_account_identifier_didSendWithSuccess_error___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4, uint64_t a5, uint64_t a6, uint64_t a7, uint64_t a8)

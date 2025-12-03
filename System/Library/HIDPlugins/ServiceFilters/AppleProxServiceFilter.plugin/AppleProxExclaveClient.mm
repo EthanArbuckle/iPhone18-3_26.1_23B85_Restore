@@ -1,15 +1,15 @@
 @interface AppleProxExclaveClient
-- (BOOL)loadCalibration:(id)a3;
+- (BOOL)loadCalibration:(id)calibration;
 - (_TtC22AppleProxServiceFilter22AppleProxExclaveClient)init;
 @end
 
 @implementation AppleProxExclaveClient
 
-- (BOOL)loadCalibration:(id)a3
+- (BOOL)loadCalibration:(id)calibration
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = AppleProxExclaveClient.loadCalibration(_:)(v4);
+  calibrationCopy = calibration;
+  selfCopy = self;
+  LOBYTE(self) = AppleProxExclaveClient.loadCalibration(_:)(calibrationCopy);
 
   return self & 1;
 }

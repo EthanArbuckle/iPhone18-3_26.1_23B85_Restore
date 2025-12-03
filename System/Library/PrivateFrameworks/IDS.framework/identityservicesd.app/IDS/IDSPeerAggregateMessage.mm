@@ -1,20 +1,20 @@
 @interface IDSPeerAggregateMessage
-- (BOOL)addAggregatableMessage:(id)a3;
+- (BOOL)addAggregatableMessage:(id)message;
 - (IDSPeerAggregateMessage)init;
-- (IDSPeerAggregateMessage)initWithHighPriority:(BOOL)a3;
-- (IDSPeerAggregateMessage)initWithPeerMessage:(id)a3 service:(id)a4 fromIdentity:(id)a5 maxSize:(unint64_t)a6;
-- (id)_processMessageResponseForMessage:(id)a3 withError:(id)a4 resultCode:(int64_t)a5 toURI:(id)a6 fromURI:(id)a7 service:(id)a8 fromIdentity:(id)a9;
-- (id)copyWithZone:(_NSZone *)a3;
+- (IDSPeerAggregateMessage)initWithHighPriority:(BOOL)priority;
+- (IDSPeerAggregateMessage)initWithPeerMessage:(id)message service:(id)service fromIdentity:(id)identity maxSize:(unint64_t)size;
+- (id)_processMessageResponseForMessage:(id)message withError:(id)error resultCode:(int64_t)code toURI:(id)i fromURI:(id)rI service:(id)service fromIdentity:(id)identity;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)messageBody;
 - (id)requiredKeys;
 - (unint64_t)sizeOfKeysWithValues;
 - (void)callAllAckBlocks;
-- (void)callAllIndividualCompletionBlocksWithDeliveryContext:(id)a3;
+- (void)callAllIndividualCompletionBlocksWithDeliveryContext:(id)context;
 - (void)clearAllPendingResponseTokens;
 - (void)logFailureInfo;
-- (void)noteResponseForToken:(id)a3;
-- (void)setGroupIdentifer:(id)a3;
-- (void)setGroupPayload:(id)a3;
+- (void)noteResponseForToken:(id)token;
+- (void)setGroupIdentifer:(id)identifer;
+- (void)setGroupPayload:(id)payload;
 @end
 
 @implementation IDSPeerAggregateMessage
@@ -33,15 +33,15 @@
   return v3;
 }
 
-- (IDSPeerAggregateMessage)initWithHighPriority:(BOOL)a3
+- (IDSPeerAggregateMessage)initWithHighPriority:(BOOL)priority
 {
-  v3 = a3;
+  priorityCopy = priority;
   v4 = [(IDSPeerAggregateMessage *)self init];
   v5 = v4;
   if (v4)
   {
-    [(IDSPeerAggregateMessage *)v4 setHighPriority:v3];
-    if (!v3)
+    [(IDSPeerAggregateMessage *)v4 setHighPriority:priorityCopy];
+    if (!priorityCopy)
     {
       [(IDSPeerAggregateMessage *)v5 setTimeout:1200.0];
     }
@@ -52,18 +52,18 @@
   return v5;
 }
 
-- (IDSPeerAggregateMessage)initWithPeerMessage:(id)a3 service:(id)a4 fromIdentity:(id)a5 maxSize:(unint64_t)a6
+- (IDSPeerAggregateMessage)initWithPeerMessage:(id)message service:(id)service fromIdentity:(id)identity maxSize:(unint64_t)size
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  messageCopy = message;
+  serviceCopy = service;
+  identityCopy = identity;
   v13 = [(IDSPeerAggregateMessage *)self init];
   if (v13)
   {
-    -[IDSPeerAggregateMessage setHighPriority:](v13, "setHighPriority:", [v10 highPriority]);
+    -[IDSPeerAggregateMessage setHighPriority:](v13, "setHighPriority:", [messageCopy highPriority]);
     if ([(IDSPeerAggregateMessage *)v13 highPriority])
     {
-      [v10 timeout];
+      [messageCopy timeout];
     }
 
     else
@@ -72,74 +72,74 @@
     }
 
     [(IDSPeerAggregateMessage *)v13 setTimeout:v14];
-    v15 = [v10 sourcePeerID];
-    [(IDSPeerAggregateMessage *)v13 setSourcePeerID:v15];
+    sourcePeerID = [messageCopy sourcePeerID];
+    [(IDSPeerAggregateMessage *)v13 setSourcePeerID:sourcePeerID];
 
-    v16 = [v10 sourceShortHandle];
-    [(IDSPeerAggregateMessage *)v13 setSourceShortHandle:v16];
+    sourceShortHandle = [messageCopy sourceShortHandle];
+    [(IDSPeerAggregateMessage *)v13 setSourceShortHandle:sourceShortHandle];
 
-    v17 = [v10 messageID];
-    [(IDSPeerAggregateMessage *)v13 setMessageID:v17];
+    messageID = [messageCopy messageID];
+    [(IDSPeerAggregateMessage *)v13 setMessageID:messageID];
 
-    -[IDSPeerAggregateMessage setFireAndForget:](v13, "setFireAndForget:", [v10 fireAndForget]);
-    -[IDSPeerAggregateMessage setHighPriority:](v13, "setHighPriority:", [v10 highPriority]);
-    -[IDSPeerAggregateMessage setWantsResponse:](v13, "setWantsResponse:", [v10 wantsResponse]);
-    v18 = [v10 topic];
-    [(IDSPeerAggregateMessage *)v13 setTopic:v18];
+    -[IDSPeerAggregateMessage setFireAndForget:](v13, "setFireAndForget:", [messageCopy fireAndForget]);
+    -[IDSPeerAggregateMessage setHighPriority:](v13, "setHighPriority:", [messageCopy highPriority]);
+    -[IDSPeerAggregateMessage setWantsResponse:](v13, "setWantsResponse:", [messageCopy wantsResponse]);
+    topic = [messageCopy topic];
+    [(IDSPeerAggregateMessage *)v13 setTopic:topic];
 
-    v19 = [v10 additionalDictionary];
-    [(IDSPeerAggregateMessage *)v13 setAdditionalDictionary:v19];
+    additionalDictionary = [messageCopy additionalDictionary];
+    [(IDSPeerAggregateMessage *)v13 setAdditionalDictionary:additionalDictionary];
 
-    v20 = [v10 encryptionType];
-    [(IDSPeerAggregateMessage *)v13 setEncryptionType:v20];
+    encryptionType = [messageCopy encryptionType];
+    [(IDSPeerAggregateMessage *)v13 setEncryptionType:encryptionType];
 
-    v21 = [v10 expirationDate];
-    [(IDSPeerAggregateMessage *)v13 setExpirationDate:v21];
+    expirationDate = [messageCopy expirationDate];
+    [(IDSPeerAggregateMessage *)v13 setExpirationDate:expirationDate];
 
-    -[IDSPeerAggregateMessage setWantsMultipleResponses:](v13, "setWantsMultipleResponses:", [v10 wantsResponse]);
-    [(IDSPeerAggregateMessage *)v13 setMaxSize:a6];
-    v22 = [v10 originalTimestamp];
-    [(IDSPeerAggregateMessage *)v13 setOriginalTimestamp:v22];
+    -[IDSPeerAggregateMessage setWantsMultipleResponses:](v13, "setWantsMultipleResponses:", [messageCopy wantsResponse]);
+    [(IDSPeerAggregateMessage *)v13 setMaxSize:size];
+    originalTimestamp = [messageCopy originalTimestamp];
+    [(IDSPeerAggregateMessage *)v13 setOriginalTimestamp:originalTimestamp];
 
-    v23 = [v10 priority];
-    [(IDSPeerAggregateMessage *)v13 setPriority:v23];
+    priority = [messageCopy priority];
+    [(IDSPeerAggregateMessage *)v13 setPriority:priority];
 
-    v24 = [v10 deliveryStatusContext];
-    [(IDSPeerAggregateMessage *)v13 setDeliveryStatusContext:v24];
+    deliveryStatusContext = [messageCopy deliveryStatusContext];
+    [(IDSPeerAggregateMessage *)v13 setDeliveryStatusContext:deliveryStatusContext];
 
-    v25 = [v10 userInfo];
-    [(IDSPeerAggregateMessage *)v13 setUserInfo:v25];
+    userInfo = [messageCopy userInfo];
+    [(IDSPeerAggregateMessage *)v13 setUserInfo:userInfo];
 
-    v26 = [v10 serviceData];
-    [(IDSPeerAggregateMessage *)v13 setServiceData:v26];
+    serviceData = [messageCopy serviceData];
+    [(IDSPeerAggregateMessage *)v13 setServiceData:serviceData];
 
-    v27 = [v10 clientInfo];
-    [(IDSPeerAggregateMessage *)v13 setClientInfo:v27];
+    clientInfo = [messageCopy clientInfo];
+    [(IDSPeerAggregateMessage *)v13 setClientInfo:clientInfo];
 
     [(IDSPeerAggregateMessage *)v13 setChunkNumber:&off_100C3BB90];
-    [(IDSPeerAggregateMessage *)v13 setTargetService:v11];
-    [(IDSPeerAggregateMessage *)v13 setFromIdentity:v12];
-    -[IDSPeerAggregateMessage setIgnoreMaxRetryCount:](v13, "setIgnoreMaxRetryCount:", [v10 ignoreMaxRetryCount]);
-    v28 = [v10 deliveryMinimumTimeDelay];
-    [(IDSPeerAggregateMessage *)v13 setDeliveryMinimumTimeDelay:v28];
+    [(IDSPeerAggregateMessage *)v13 setTargetService:serviceCopy];
+    [(IDSPeerAggregateMessage *)v13 setFromIdentity:identityCopy];
+    -[IDSPeerAggregateMessage setIgnoreMaxRetryCount:](v13, "setIgnoreMaxRetryCount:", [messageCopy ignoreMaxRetryCount]);
+    deliveryMinimumTimeDelay = [messageCopy deliveryMinimumTimeDelay];
+    [(IDSPeerAggregateMessage *)v13 setDeliveryMinimumTimeDelay:deliveryMinimumTimeDelay];
 
-    v29 = [v10 deliveryMinimumTime];
-    [(IDSPeerAggregateMessage *)v13 setDeliveryMinimumTime:v29];
+    deliveryMinimumTime = [messageCopy deliveryMinimumTime];
+    [(IDSPeerAggregateMessage *)v13 setDeliveryMinimumTime:deliveryMinimumTime];
 
-    v30 = [v10 sendReasonContainer];
-    [(IDSPeerAggregateMessage *)v13 setSendReasonContainer:v30];
+    sendReasonContainer = [messageCopy sendReasonContainer];
+    [(IDSPeerAggregateMessage *)v13 setSendReasonContainer:sendReasonContainer];
 
-    -[IDSPeerAggregateMessage setLastBeforeRateLimit:](v13, "setLastBeforeRateLimit:", [v10 lastBeforeRateLimit]);
-    v31 = [v10 sendMetric];
-    [(IDSPeerAggregateMessage *)v13 setSendMetric:v31];
+    -[IDSPeerAggregateMessage setLastBeforeRateLimit:](v13, "setLastBeforeRateLimit:", [messageCopy lastBeforeRateLimit]);
+    sendMetric = [messageCopy sendMetric];
+    [(IDSPeerAggregateMessage *)v13 setSendMetric:sendMetric];
   }
 
   return v13;
 }
 
-- (BOOL)addAggregatableMessage:(id)a3
+- (BOOL)addAggregatableMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   individualPeerMessages = self->_individualPeerMessages;
   if (!individualPeerMessages)
   {
@@ -150,7 +150,7 @@
     individualPeerMessages = self->_individualPeerMessages;
   }
 
-  [(NSMutableSet *)individualPeerMessages addObject:v4];
+  [(NSMutableSet *)individualPeerMessages addObject:messageCopy];
   if ([(IDSPeerAggregateMessage *)self wantsMultipleResponses])
   {
     pendingResponseTokens = self->_pendingResponseTokens;
@@ -163,37 +163,37 @@
       pendingResponseTokens = self->_pendingResponseTokens;
     }
 
-    v11 = [v4 targetToken];
-    [(NSMutableSet *)pendingResponseTokens addObject:v11];
+    targetToken = [messageCopy targetToken];
+    [(NSMutableSet *)pendingResponseTokens addObject:targetToken];
   }
 
   currentSize = self->_currentSize;
-  self->_currentSize = [v4 sizeOfKeysWithValues] + currentSize;
+  self->_currentSize = [messageCopy sizeOfKeysWithValues] + currentSize;
 
   return 1;
 }
 
-- (void)setGroupPayload:(id)a3
+- (void)setGroupPayload:(id)payload
 {
-  objc_storeStrong(&self->_groupPayload, a3);
-  v5 = a3;
-  v6 = [v5 length];
+  objc_storeStrong(&self->_groupPayload, payload);
+  payloadCopy = payload;
+  v6 = [payloadCopy length];
 
   self->_currentSize += v6;
 }
 
-- (void)setGroupIdentifer:(id)a3
+- (void)setGroupIdentifer:(id)identifer
 {
-  objc_storeStrong(&self->_groupIdentifer, a3);
-  v5 = a3;
-  v6 = [v5 length];
+  objc_storeStrong(&self->_groupIdentifer, identifer);
+  identiferCopy = identifer;
+  v6 = [identiferCopy length];
 
   self->_currentSize += v6;
 }
 
-- (void)callAllIndividualCompletionBlocksWithDeliveryContext:(id)a3
+- (void)callAllIndividualCompletionBlocksWithDeliveryContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -214,8 +214,8 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v11 + 1) + 8 * v9) completionBlock];
-        (v10)[2](v10, v4);
+        completionBlock = [*(*(&v11 + 1) + 8 * v9) completionBlock];
+        (completionBlock)[2](completionBlock, contextCopy);
 
         v9 = v9 + 1;
       }
@@ -261,8 +261,8 @@
           objc_enumerationMutation(v3);
         }
 
-        v8 = [*(*(&v9 + 1) + 8 * v7) ackBlock];
-        (v8)[2](v8, self);
+        ackBlock = [*(*(&v9 + 1) + 8 * v7) ackBlock];
+        (ackBlock)[2](ackBlock, self);
 
         v7 = v7 + 1;
       }
@@ -277,16 +277,16 @@
   [(IDSPeerAggregateMessage *)self setHasReceivedAPSDAck:1];
 }
 
-- (void)noteResponseForToken:(id)a3
+- (void)noteResponseForToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   v5 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 responseToken];
+    responseToken = [tokenCopy responseToken];
     pendingResponseTokens = self->_pendingResponseTokens;
     *buf = 138412546;
-    v44 = v6;
+    v44 = responseToken;
     v45 = 2112;
     v46 = pendingResponseTokens;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "removing token %@ from %@", buf, 0x16u);
@@ -294,17 +294,17 @@
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v34 = [v4 responseToken];
+    responseToken2 = [tokenCopy responseToken];
     v36 = self->_pendingResponseTokens;
     _IDSLogV();
   }
 
-  v8 = [v4 responseToken];
-  v9 = v8 == 0;
+  responseToken3 = [tokenCopy responseToken];
+  v9 = responseToken3 == 0;
 
   if (v9)
   {
-    [(IDSPeerAggregateMessage *)self callAllIndividualCompletionBlocksWithDeliveryContext:v4];
+    [(IDSPeerAggregateMessage *)self callAllIndividualCompletionBlocksWithDeliveryContext:tokenCopy];
     [(IDSPeerAggregateMessage *)self clearAllPendingResponseTokens];
   }
 
@@ -320,14 +320,14 @@
     self->_pendingResponseTokens = v10;
 
     v12 = self->_pendingResponseTokens;
-    v13 = [v4 responseToken];
-    LODWORD(v12) = [(NSMutableSet *)v12 containsObject:v13];
+    responseToken4 = [tokenCopy responseToken];
+    LODWORD(v12) = [(NSMutableSet *)v12 containsObject:responseToken4];
 
     if (v12)
     {
       v14 = self->_pendingResponseTokens;
-      v15 = [v4 responseToken];
-      [(NSMutableSet *)v14 removeObject:v15];
+      responseToken5 = [tokenCopy responseToken];
+      [(NSMutableSet *)v14 removeObject:responseToken5];
 
       v16 = [[NSMutableSet alloc] initWithSet:self->_individualPeerMessages];
       v40 = 0u;
@@ -349,38 +349,38 @@
             }
 
             v21 = *(*(&v38 + 1) + 8 * i);
-            v22 = [v21 targetToken];
-            v23 = [v4 responseToken];
-            v24 = [v22 isEqual:v23];
+            targetToken = [v21 targetToken];
+            responseToken6 = [tokenCopy responseToken];
+            v24 = [targetToken isEqual:responseToken6];
 
             if (v24)
             {
-              v37 = [v21 completionBlock];
-              v25 = [v4 responseError];
-              v26 = [v4 responseCode];
-              v27 = [v21 targetPeerID];
-              v28 = [(IDSPeerAggregateMessage *)self sourcePeerID];
-              v29 = [(IDSPeerAggregateMessage *)self targetService];
-              v30 = [(IDSPeerAggregateMessage *)self fromIdentity];
-              v31 = [(IDSPeerAggregateMessage *)self _processMessageResponseForMessage:v21 withError:v25 resultCode:v26 toURI:v27 fromURI:v28 service:v29 fromIdentity:v30];
+              completionBlock = [v21 completionBlock];
+              responseError = [tokenCopy responseError];
+              responseCode = [tokenCopy responseCode];
+              targetPeerID = [v21 targetPeerID];
+              sourcePeerID = [(IDSPeerAggregateMessage *)self sourcePeerID];
+              targetService = [(IDSPeerAggregateMessage *)self targetService];
+              fromIdentity = [(IDSPeerAggregateMessage *)self fromIdentity];
+              v31 = [(IDSPeerAggregateMessage *)self _processMessageResponseForMessage:v21 withError:responseError resultCode:responseCode toURI:targetPeerID fromURI:sourcePeerID service:targetService fromIdentity:fromIdentity];
 
-              [v4 setResponseError:v31];
+              [tokenCopy setResponseError:v31];
               v32 = OSLogHandleForIDSCategory();
               if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
               {
-                v33 = [v4 responseTimeStamp];
+                responseTimeStamp = [tokenCopy responseTimeStamp];
                 *buf = 138412290;
-                v44 = v33;
+                v44 = responseTimeStamp;
                 _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "DeliveryContext Timestamp is %@", buf, 0xCu);
               }
 
               if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
               {
-                v35 = [v4 responseTimeStamp];
+                responseTimeStamp2 = [tokenCopy responseTimeStamp];
                 _IDSLogV();
               }
 
-              (v37)[2](v37, v4);
+              (completionBlock)[2](completionBlock, tokenCopy);
               [v17 removeObject:v21];
 
               goto LABEL_26;
@@ -404,62 +404,62 @@ LABEL_26:
   }
 }
 
-- (id)_processMessageResponseForMessage:(id)a3 withError:(id)a4 resultCode:(int64_t)a5 toURI:(id)a6 fromURI:(id)a7 service:(id)a8 fromIdentity:(id)a9
+- (id)_processMessageResponseForMessage:(id)message withError:(id)error resultCode:(int64_t)code toURI:(id)i fromURI:(id)rI service:(id)service fromIdentity:(id)identity
 {
-  v15 = a3;
-  v56 = a4;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v55 = a9;
+  messageCopy = message;
+  errorCopy = error;
+  iCopy = i;
+  rICopy = rI;
+  serviceCopy = service;
+  identityCopy = identity;
   v19 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v58 = a5;
+    codeCopy = code;
     v59 = 2112;
-    v60 = v15;
+    v60 = messageCopy;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Processing response %ld for message %@", buf, 0x16u);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v42 = a5;
-    v45 = v15;
+    codeCopy2 = code;
+    v45 = messageCopy;
     _IDSLogV();
   }
 
-  if (a5 < 2 || a5 == 1003)
+  if (code < 2 || code == 1003)
   {
     goto LABEL_13;
   }
 
-  if (a5 == 1002)
+  if (code == 1002)
   {
     v20 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
-      v21 = [(IDSPeerAggregateMessage *)self pushToken];
+      pushToken = [(IDSPeerAggregateMessage *)self pushToken];
       *buf = 138412802;
-      v58 = v17;
+      codeCopy = rICopy;
       v59 = 2112;
-      v60 = v16;
+      v60 = iCopy;
       v61 = 2112;
-      v62 = v21;
+      v62 = pushToken;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "Message has been removed, Add Honeybee support here to grab logs from the other side who sent this FromURI:%@ ToURI:%@ Token:%@ ", buf, 0x20u);
     }
 
     if (os_log_shim_legacy_logging_enabled())
     {
-      v49 = [(IDSPeerAggregateMessage *)self pushToken];
+      pushToken2 = [(IDSPeerAggregateMessage *)self pushToken];
       _IDSWarnV();
 
-      v50 = [(IDSPeerAggregateMessage *)self pushToken:v17];
+      v50 = [(IDSPeerAggregateMessage *)self pushToken:rICopy];
       _IDSLogV();
 
-      [(IDSPeerAggregateMessage *)self pushToken:v17];
-      v48 = v45 = v16;
-      v42 = v17;
+      [(IDSPeerAggregateMessage *)self pushToken:rICopy];
+      v48 = v45 = iCopy;
+      codeCopy2 = rICopy;
       _IDSLogTransport();
     }
 
@@ -470,7 +470,7 @@ LABEL_13:
 
   v22 = 0;
 LABEL_15:
-  v23 = [IDSURI URIWithPrefixedURI:v17 withServiceLoggingHint:v18, v42, v45, v48];
+  v23 = [IDSURI URIWithPrefixedURI:rICopy withServiceLoggingHint:serviceCopy, codeCopy2, v45, v48];
   if (v22)
   {
     v24 = 0;
@@ -478,15 +478,15 @@ LABEL_15:
 
   else
   {
-    if (a5 == 7000)
+    if (code == 7000)
     {
       v38 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v58 = v17;
+        codeCopy = rICopy;
         v59 = 2112;
-        v60 = v16;
+        v60 = iCopy;
         _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_ERROR, "Message was rate limited from the server, failing message (%@ -> %@)", buf, 0x16u);
       }
 
@@ -494,8 +494,8 @@ LABEL_15:
       {
         _IDSWarnV();
         _IDSLogV();
-        v43 = v17;
-        v46 = v16;
+        v43 = rICopy;
+        v46 = iCopy;
         _IDSLogTransport();
       }
 
@@ -505,54 +505,54 @@ LABEL_15:
       }
     }
 
-    else if (a5 == 5032)
+    else if (code == 5032)
     {
       v25 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
       {
-        v26 = [v15 targetToken];
-        v27 = [v26 debugDescription];
-        v28 = [v15 targetSessionToken];
-        v29 = [v28 debugDescription];
+        targetToken = [messageCopy targetToken];
+        v27 = [targetToken debugDescription];
+        targetSessionToken = [messageCopy targetSessionToken];
+        v29 = [targetSessionToken debugDescription];
         *buf = 138413570;
-        v58 = v15;
+        codeCopy = messageCopy;
         v59 = 2112;
-        v60 = v16;
+        v60 = iCopy;
         v61 = 2112;
-        v62 = v17;
+        v62 = rICopy;
         v63 = 2112;
         v64 = v27;
         v65 = 2112;
         v66 = v29;
         v67 = 2112;
-        v68 = v18;
+        v68 = serviceCopy;
         _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "Bad signature {message: %@, localURI: %@, remoteURI: %@, remotePushToken: %@, sessionToken: %@, service: %@}", buf, 0x3Eu);
       }
 
       if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
       {
-        v30 = [v15 targetToken];
-        v31 = [v30 debugDescription];
-        v32 = [v15 targetSessionToken];
-        v53 = [v32 debugDescription];
-        v54 = v18;
-        v51 = v17;
+        targetToken2 = [messageCopy targetToken];
+        v31 = [targetToken2 debugDescription];
+        targetSessionToken2 = [messageCopy targetSessionToken];
+        v53 = [targetSessionToken2 debugDescription];
+        v54 = serviceCopy;
+        v51 = rICopy;
         v52 = v31;
-        v43 = v15;
-        v46 = v16;
+        v43 = messageCopy;
+        v46 = iCopy;
         _IDSLogV();
       }
 
       v33 = [IDSPeerIDManager sharedInstance:v43];
-      v34 = [v15 targetToken];
+      targetToken3 = [messageCopy targetToken];
       LOBYTE(v47) = 0;
-      v35 = [v33 sessionTokenForURI:v16 pushToken:v34 fromURI:v23 service:v18 expirationDate:0 refreshDate:0 fromIdentity:v55 includeSelfDevice:v47];
+      v35 = [v33 sessionTokenForURI:iCopy pushToken:targetToken3 fromURI:v23 service:serviceCopy expirationDate:0 refreshDate:0 fromIdentity:identityCopy includeSelfDevice:v47];
 
       v36 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v58 = v35;
+        codeCopy = v35;
         _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, " current sessionToken: %@", buf, 0xCu);
       }
 
@@ -563,7 +563,7 @@ LABEL_15:
       }
 
       v37 = +[IDSPeerIDManager sharedInstance];
-      [v37 forgetPeerTokensForURI:v16 fromURI:v23 service:v18 reason:6];
+      [v37 forgetPeerTokensForURI:iCopy fromURI:v23 service:serviceCopy reason:6];
     }
 
     else
@@ -583,7 +583,7 @@ LABEL_15:
       }
     }
 
-    v40 = [NSDictionary dictionaryWithObjectsAndKeys:v56, NSUnderlyingErrorKey, 0];
+    v40 = [NSDictionary dictionaryWithObjectsAndKeys:errorCopy, NSUnderlyingErrorKey, 0];
     v24 = [NSError errorWithDomain:IDSSendErrorDomain code:2 userInfo:v40];
   }
 
@@ -595,19 +595,19 @@ LABEL_15:
   v3 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(IDSPeerAggregateMessage *)self messageID];
-    v5 = [(IDSPeerAggregateMessage *)self uniqueIDString];
+    messageID = [(IDSPeerAggregateMessage *)self messageID];
+    uniqueIDString = [(IDSPeerAggregateMessage *)self uniqueIDString];
     *buf = 138412546;
-    v15 = v4;
+    v15 = messageID;
     v16 = 2112;
-    v17 = v5;
+    v17 = uniqueIDString;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Msg with GUID: %@ & i:%@ is missing 255s", buf, 0x16u);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v6 = [(IDSPeerAggregateMessage *)self messageID];
-    v13 = [(IDSPeerAggregateMessage *)self uniqueIDString];
+    messageID2 = [(IDSPeerAggregateMessage *)self messageID];
+    uniqueIDString2 = [(IDSPeerAggregateMessage *)self uniqueIDString];
     _IDSLogV();
   }
 
@@ -702,9 +702,9 @@ LABEL_15:
     v6 = 0;
   }
 
-  v9 = [(IDSPeerAggregateMessage *)self messageID];
-  v10 = v9;
-  if (v9 && (v11 = [v9 UTF8String]) != 0)
+  messageID = [(IDSPeerAggregateMessage *)self messageID];
+  v10 = messageID;
+  if (messageID && (v11 = [messageID UTF8String]) != 0)
   {
     memset(uu, 170, sizeof(uu));
     uuid_parse(v11, uu);
@@ -718,77 +718,77 @@ LABEL_15:
     v13 = 0;
   }
 
-  v14 = [(IDSPeerAggregateMessage *)self sourcePeerID];
-  v15 = [v14 lengthOfBytesUsingEncoding:4];
+  sourcePeerID = [(IDSPeerAggregateMessage *)self sourcePeerID];
+  v15 = [sourcePeerID lengthOfBytesUsingEncoding:4];
 
-  v16 = [(IDSPeerAggregateMessage *)self encryptionType];
-  v17 = [v16 lengthOfBytesUsingEncoding:4];
+  encryptionType = [(IDSPeerAggregateMessage *)self encryptionType];
+  v17 = [encryptionType lengthOfBytesUsingEncoding:4];
 
   return v15 + v13 + v6 + v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v25.receiver = self;
   v25.super_class = IDSPeerAggregateMessage;
-  v4 = [(IDSPeerAggregateMessage *)&v25 copyWithZone:a3];
-  v5 = [(IDSPeerAggregateMessage *)self sourcePeerID];
-  [v4 setSourcePeerID:v5];
+  v4 = [(IDSPeerAggregateMessage *)&v25 copyWithZone:zone];
+  sourcePeerID = [(IDSPeerAggregateMessage *)self sourcePeerID];
+  [v4 setSourcePeerID:sourcePeerID];
 
-  v6 = [(IDSPeerAggregateMessage *)self encryptionType];
-  [v4 setEncryptionType:v6];
+  encryptionType = [(IDSPeerAggregateMessage *)self encryptionType];
+  [v4 setEncryptionType:encryptionType];
 
-  v7 = [(IDSPeerAggregateMessage *)self messageID];
-  [v4 setMessageID:v7];
+  messageID = [(IDSPeerAggregateMessage *)self messageID];
+  [v4 setMessageID:messageID];
 
-  v8 = [(IDSPeerAggregateMessage *)self priority];
-  [v4 setPriority:v8];
+  priority = [(IDSPeerAggregateMessage *)self priority];
+  [v4 setPriority:priority];
 
-  v9 = [(IDSPeerAggregateMessage *)self expirationDate];
-  [v4 setExpirationDate:v9];
+  expirationDate = [(IDSPeerAggregateMessage *)self expirationDate];
+  [v4 setExpirationDate:expirationDate];
 
-  v10 = [(IDSPeerAggregateMessage *)self additionalDictionary];
-  [v4 setAdditionalDictionary:v10];
+  additionalDictionary = [(IDSPeerAggregateMessage *)self additionalDictionary];
+  [v4 setAdditionalDictionary:additionalDictionary];
 
-  v11 = [(IDSPeerAggregateMessage *)self individualPeerMessages];
-  [v4 setIndividualPeerMessages:v11];
+  individualPeerMessages = [(IDSPeerAggregateMessage *)self individualPeerMessages];
+  [v4 setIndividualPeerMessages:individualPeerMessages];
 
-  v12 = [(IDSPeerAggregateMessage *)self pendingResponseTokens];
-  v13 = [v12 mutableCopy];
+  pendingResponseTokens = [(IDSPeerAggregateMessage *)self pendingResponseTokens];
+  v13 = [pendingResponseTokens mutableCopy];
   [v4 setPendingResponseTokens:v13];
 
   [v4 setMaxSize:{-[IDSPeerAggregateMessage maxSize](self, "maxSize")}];
   [v4 setCurrentSize:{-[IDSPeerAggregateMessage currentSize](self, "currentSize")}];
   [v4 setFireAndForget:{-[IDSPeerAggregateMessage fireAndForget](self, "fireAndForget")}];
   [v4 setHasReceivedAPSDAck:{-[IDSPeerAggregateMessage hasReceivedAPSDAck](self, "hasReceivedAPSDAck")}];
-  v14 = [(IDSPeerAggregateMessage *)self chunkNumber];
-  [v4 setChunkNumber:v14];
+  chunkNumber = [(IDSPeerAggregateMessage *)self chunkNumber];
+  [v4 setChunkNumber:chunkNumber];
 
   [v4 setIsFinalMessage:{-[IDSPeerAggregateMessage isFinalMessage](self, "isFinalMessage")}];
-  v15 = [(IDSPeerAggregateMessage *)self targetService];
-  [v4 setTargetService:v15];
+  targetService = [(IDSPeerAggregateMessage *)self targetService];
+  [v4 setTargetService:targetService];
 
-  v16 = [(IDSPeerAggregateMessage *)self fromIdentity];
-  [v4 setFromIdentity:v16];
+  fromIdentity = [(IDSPeerAggregateMessage *)self fromIdentity];
+  [v4 setFromIdentity:fromIdentity];
 
-  v17 = [(IDSPeerAggregateMessage *)self groupPayload];
-  [v4 setGroupPayload:v17];
+  groupPayload = [(IDSPeerAggregateMessage *)self groupPayload];
+  [v4 setGroupPayload:groupPayload];
 
-  v18 = [(IDSPeerAggregateMessage *)self groupIdentifer];
-  [v4 setGroupIdentifer:v18];
+  groupIdentifer = [(IDSPeerAggregateMessage *)self groupIdentifer];
+  [v4 setGroupIdentifer:groupIdentifer];
 
-  v19 = [(IDSPeerAggregateMessage *)self deliveryMinimumTimeDelay];
-  [v4 setDeliveryMinimumTimeDelay:v19];
+  deliveryMinimumTimeDelay = [(IDSPeerAggregateMessage *)self deliveryMinimumTimeDelay];
+  [v4 setDeliveryMinimumTimeDelay:deliveryMinimumTimeDelay];
 
-  v20 = [(IDSPeerAggregateMessage *)self deliveryMinimumTime];
-  [v4 setDeliveryMinimumTime:v20];
+  deliveryMinimumTime = [(IDSPeerAggregateMessage *)self deliveryMinimumTime];
+  [v4 setDeliveryMinimumTime:deliveryMinimumTime];
 
-  v21 = [(IDSPeerAggregateMessage *)self sendReasonContainer];
-  [v4 setSendReasonContainer:v21];
+  sendReasonContainer = [(IDSPeerAggregateMessage *)self sendReasonContainer];
+  [v4 setSendReasonContainer:sendReasonContainer];
 
   [v4 setLastBeforeRateLimit:{-[IDSPeerAggregateMessage lastBeforeRateLimit](self, "lastBeforeRateLimit")}];
-  v22 = [(IDSPeerAggregateMessage *)self sendMetric];
-  v23 = [v22 copy];
+  sendMetric = [(IDSPeerAggregateMessage *)self sendMetric];
+  v23 = [sendMetric copy];
   [v4 setSendMetric:v23];
 
   return v4;
@@ -798,8 +798,8 @@ LABEL_15:
 {
   v5.receiver = self;
   v5.super_class = IDSPeerAggregateMessage;
-  v2 = [(IDSPeerAggregateMessage *)&v5 requiredKeys];
-  v3 = [v2 mutableCopy];
+  requiredKeys = [(IDSPeerAggregateMessage *)&v5 requiredKeys];
+  v3 = [requiredKeys mutableCopy];
 
   if (!v3)
   {
@@ -815,23 +815,23 @@ LABEL_15:
 {
   v67.receiver = self;
   v67.super_class = IDSPeerAggregateMessage;
-  v3 = [(IDSPeerAggregateMessage *)&v67 messageBody];
-  Mutable = [v3 mutableCopy];
+  messageBody = [(IDSPeerAggregateMessage *)&v67 messageBody];
+  Mutable = [messageBody mutableCopy];
 
   if (!Mutable)
   {
     Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
   }
 
-  v5 = [(IDSPeerAggregateMessage *)self messageID];
-  v6 = v5;
-  if (v5)
+  messageID = [(IDSPeerAggregateMessage *)self messageID];
+  v6 = messageID;
+  if (messageID)
   {
-    v7 = [v5 UTF8String];
-    if (v7)
+    uTF8String = [messageID UTF8String];
+    if (uTF8String)
     {
       memset(uu, 170, sizeof(uu));
-      uuid_parse(v7, uu);
+      uuid_parse(uTF8String, uu);
       v66 = 0;
       jw_uuid_to_data();
       v8 = 0;
@@ -850,10 +850,10 @@ LABEL_15:
   v10 = Mutable;
   v65 = v10;
   [(NSDictionary *)additionalDictionary enumerateKeysAndObjectsUsingBlock:v64];
-  v11 = [(IDSPeerAggregateMessage *)self sourcePeerID];
-  if (v11)
+  sourcePeerID = [(IDSPeerAggregateMessage *)self sourcePeerID];
+  if (sourcePeerID)
   {
-    CFDictionarySetValue(v10, @"sP", v11);
+    CFDictionarySetValue(v10, @"sP", sourcePeerID);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -861,10 +861,10 @@ LABEL_15:
     sub_1009184F8();
   }
 
-  v12 = [(IDSPeerAggregateMessage *)self sourceShortHandle];
-  if (v12)
+  sourceShortHandle = [(IDSPeerAggregateMessage *)self sourceShortHandle];
+  if (sourceShortHandle)
   {
-    CFDictionarySetValue(v10, @"sPs", v12);
+    CFDictionarySetValue(v10, @"sPs", sourceShortHandle);
   }
 
   if ([(IDSPeerAggregateMessage *)self fireAndForget])
@@ -874,12 +874,12 @@ LABEL_15:
 
   else
   {
-    v13 = [(IDSPeerAggregateMessage *)self expirationDate];
+    expirationDate = [(IDSPeerAggregateMessage *)self expirationDate];
 
-    if (v13)
+    if (expirationDate)
     {
-      v14 = [(IDSPeerAggregateMessage *)self expirationDate];
-      [v14 timeIntervalSince1970];
+      expirationDate2 = [(IDSPeerAggregateMessage *)self expirationDate];
+      [expirationDate2 timeIntervalSince1970];
       v16 = [NSNumber numberWithUnsignedLong:v15];
 
       if (v16)
@@ -889,26 +889,26 @@ LABEL_15:
     }
   }
 
-  v17 = [(IDSPeerAggregateMessage *)self encryptionType];
-  if (v17)
+  encryptionType = [(IDSPeerAggregateMessage *)self encryptionType];
+  if (encryptionType)
   {
-    v18 = v17;
-    v19 = [(IDSPeerAggregateMessage *)self encryptionType];
+    v18 = encryptionType;
+    encryptionType2 = [(IDSPeerAggregateMessage *)self encryptionType];
     v20 = IDSEncryptionTypeStringFromEncryptionType();
-    v21 = [v19 isEqualToIgnoringCase:v20];
+    v21 = [encryptionType2 isEqualToIgnoringCase:v20];
 
     if ((v21 & 1) == 0)
     {
-      v22 = [(IDSPeerAggregateMessage *)self encryptionType];
-      if (v22)
+      encryptionType3 = [(IDSPeerAggregateMessage *)self encryptionType];
+      if (encryptionType3)
       {
-        CFDictionarySetValue(v10, @"E", v22);
+        CFDictionarySetValue(v10, @"E", encryptionType3);
       }
     }
   }
 
-  v23 = [(IDSPeerAggregateMessage *)self groupPayload];
-  v24 = [v23 length];
+  groupPayload = [(IDSPeerAggregateMessage *)self groupPayload];
+  v24 = [groupPayload length];
 
   if (v24)
   {
@@ -919,30 +919,30 @@ LABEL_15:
     }
   }
 
-  v26 = [(IDSPeerAggregateMessage *)self additionalDictionary];
-  v27 = [v26 objectForKey:@"c"];
+  additionalDictionary = [(IDSPeerAggregateMessage *)self additionalDictionary];
+  v27 = [additionalDictionary objectForKey:@"c"];
 
-  v28 = [(IDSPeerAggregateMessage *)self topic];
+  topic = [(IDSPeerAggregateMessage *)self topic];
   v29 = IDSServiceNameiMessageLite;
-  if ([v28 isEqualToString:IDSServiceNameiMessageLite])
+  if ([topic isEqualToString:IDSServiceNameiMessageLite])
   {
-    v30 = [v27 unsignedIntegerValue];
+    unsignedIntegerValue = [v27 unsignedIntegerValue];
 
-    if (v30 != 100)
+    if (unsignedIntegerValue != 100)
     {
       goto LABEL_34;
     }
 
-    v28 = IDSEncryptionTypeStringFromEncryptionType();
-    if (v28)
+    topic = IDSEncryptionTypeStringFromEncryptionType();
+    if (topic)
     {
-      CFDictionarySetValue(v10, @"E", v28);
+      CFDictionarySetValue(v10, @"E", topic);
     }
   }
 
 LABEL_34:
-  v31 = [(IDSPeerAggregateMessage *)self topic];
-  if ([v31 isEqualToString:v29])
+  topic2 = [(IDSPeerAggregateMessage *)self topic];
+  if ([topic2 isEqualToString:v29])
   {
     if ([v27 unsignedIntegerValue] == 100)
     {
@@ -952,9 +952,9 @@ LABEL_39:
       goto LABEL_40;
     }
 
-    v32 = [v27 unsignedIntegerValue];
+    unsignedIntegerValue2 = [v27 unsignedIntegerValue];
 
-    if (v32 == 128)
+    if (unsignedIntegerValue2 == 128)
     {
       goto LABEL_39;
     }
@@ -965,27 +965,27 @@ LABEL_39:
   }
 
 LABEL_40:
-  v33 = [(IDSPeerAggregateMessage *)self priority];
-  if (v33)
+  priority = [(IDSPeerAggregateMessage *)self priority];
+  if (priority)
   {
-    v34 = v33;
-    v35 = [(IDSPeerAggregateMessage *)self priority];
-    v36 = [v35 intValue];
+    v34 = priority;
+    priority2 = [(IDSPeerAggregateMessage *)self priority];
+    intValue = [priority2 intValue];
 
-    if (v36 != 10)
+    if (intValue != 10)
     {
-      v37 = [(IDSPeerAggregateMessage *)self priority];
-      if (v37)
+      priority3 = [(IDSPeerAggregateMessage *)self priority];
+      if (priority3)
       {
-        CFDictionarySetValue(v10, @"pri", v37);
+        CFDictionarySetValue(v10, @"pri", priority3);
       }
     }
   }
 
-  v38 = [(IDSPeerAggregateMessage *)self chunkNumber];
-  if (v38)
+  chunkNumber = [(IDSPeerAggregateMessage *)self chunkNumber];
+  if (chunkNumber)
   {
-    CFDictionarySetValue(v10, @"fcn", v38);
+    CFDictionarySetValue(v10, @"fcn", chunkNumber);
   }
 
   if ([(IDSPeerAggregateMessage *)self isFinalMessage])
@@ -993,25 +993,25 @@ LABEL_40:
     CFDictionarySetValue(v10, @"flc", &off_100C3BB90);
   }
 
-  v39 = [(IDSPeerAggregateMessage *)self deliveryMinimumTimeDelay];
+  deliveryMinimumTimeDelay = [(IDSPeerAggregateMessage *)self deliveryMinimumTimeDelay];
 
-  if (v39)
+  if (deliveryMinimumTimeDelay)
   {
-    v40 = [(IDSPeerAggregateMessage *)self deliveryMinimumTimeDelay];
-    if (v40)
+    deliveryMinimumTimeDelay2 = [(IDSPeerAggregateMessage *)self deliveryMinimumTimeDelay];
+    if (deliveryMinimumTimeDelay2)
     {
-      CFDictionarySetValue(v10, IDSDeliveryMinimumTimeDelayKey, v40);
+      CFDictionarySetValue(v10, IDSDeliveryMinimumTimeDelayKey, deliveryMinimumTimeDelay2);
     }
   }
 
-  v41 = [(IDSPeerAggregateMessage *)self deliveryMinimumTime];
+  deliveryMinimumTime = [(IDSPeerAggregateMessage *)self deliveryMinimumTime];
 
-  if (v41)
+  if (deliveryMinimumTime)
   {
-    v42 = [(IDSPeerAggregateMessage *)self deliveryMinimumTime];
-    if (v42)
+    deliveryMinimumTime2 = [(IDSPeerAggregateMessage *)self deliveryMinimumTime];
+    if (deliveryMinimumTime2)
     {
-      CFDictionarySetValue(v10, IDSDeliveryMinimumTimeKey, v42);
+      CFDictionarySetValue(v10, IDSDeliveryMinimumTimeKey, deliveryMinimumTime2);
     }
   }
 
@@ -1020,16 +1020,16 @@ LABEL_40:
     CFDictionarySetValue(v10, IDSLastBeforeRateLimitKey, &off_100C3BB90);
   }
 
-  v43 = [(IDSPeerAggregateMessage *)self sendMetric];
-  v44 = [v43 samplingID];
+  sendMetric = [(IDSPeerAggregateMessage *)self sendMetric];
+  samplingID = [sendMetric samplingID];
 
-  if (v44)
+  if (samplingID)
   {
-    v45 = [v44 UTF8String];
-    if (v45)
+    uTF8String2 = [samplingID UTF8String];
+    if (uTF8String2)
     {
       memset(uu, 170, sizeof(uu));
-      uuid_parse(v45, uu);
+      uuid_parse(uTF8String2, uu);
       v63 = 0;
       jw_uuid_to_data();
       v46 = 0;
@@ -1040,16 +1040,16 @@ LABEL_40:
     }
   }
 
-  v47 = [(IDSPeerAggregateMessage *)self groupPayload];
-  if (v47)
+  groupPayload2 = [(IDSPeerAggregateMessage *)self groupPayload];
+  if (groupPayload2)
   {
-    CFDictionarySetValue(v10, @"P", v47);
+    CFDictionarySetValue(v10, @"P", groupPayload2);
   }
 
-  v48 = [(IDSPeerAggregateMessage *)self groupIdentifer];
-  if (v48)
+  groupIdentifer = [(IDSPeerAggregateMessage *)self groupIdentifer];
+  if (groupIdentifer)
   {
-    CFDictionarySetValue(v10, @"gI", v48);
+    CFDictionarySetValue(v10, @"gI", groupIdentifer);
   }
 
   v49 = objc_alloc_init(NSMutableArray);
@@ -1072,8 +1072,8 @@ LABEL_40:
           objc_enumerationMutation(v50);
         }
 
-        v55 = [*(*(&v59 + 1) + 8 * i) dictionaryRepresentation];
-        [v49 addObject:v55];
+        dictionaryRepresentation = [*(*(&v59 + 1) + 8 * i) dictionaryRepresentation];
+        [v49 addObject:dictionaryRepresentation];
       }
 
       v52 = [(NSMutableSet *)v50 countByEnumeratingWithState:&v59 objects:v68 count:16];

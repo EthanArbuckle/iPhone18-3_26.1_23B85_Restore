@@ -1,59 +1,59 @@
 @interface TSDCAAnimationCache
 + (id)supportedKeyPaths;
-- (BOOL)doubleSidedCachedValueAtTime:(double)a3;
-- (BOOL)doubleSidedCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5;
-- (BOOL)hiddenCachedValueAtTime:(double)a3;
-- (BOOL)hiddenCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5;
-- (CATransform3D)transformCachedValueAtTime:(SEL)a3;
-- (CATransform3D)transformCachedValueAtTime:(SEL)a3 layer:(double)a4 animation:(id)a5;
+- (BOOL)doubleSidedCachedValueAtTime:(double)time;
+- (BOOL)doubleSidedCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation;
+- (BOOL)hiddenCachedValueAtTime:(double)time;
+- (BOOL)hiddenCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation;
+- (CATransform3D)transformCachedValueAtTime:(SEL)time;
+- (CATransform3D)transformCachedValueAtTime:(SEL)time layer:(double)layer animation:(id)animation;
 - (CATransform3D)transformInitialValue;
-- (CGPoint)anchorPointCachedValueAtTime:(double)a3;
-- (CGPoint)anchorPointCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5;
+- (CGPoint)anchorPointCachedValueAtTime:(double)time;
+- (CGPoint)anchorPointCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation;
 - (CGPoint)anchorPointInitialValue;
-- (CGPoint)positionCachedValueAtTime:(double)a3;
-- (CGPoint)positionCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5;
+- (CGPoint)positionCachedValueAtTime:(double)time;
+- (CGPoint)positionCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation;
 - (CGPoint)positionInitialValue;
-- (CGPoint)transformTranslationCachedValueAtTime:(double)a3;
-- (CGPoint)transformTranslationCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5;
+- (CGPoint)transformTranslationCachedValueAtTime:(double)time;
+- (CGPoint)transformTranslationCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation;
 - (CGPoint)transformTranslationInitialValue;
-- (CGRect)boundsCachedValueAtTime:(double)a3;
-- (CGRect)boundsCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5;
+- (CGRect)boundsCachedValueAtTime:(double)time;
+- (CGRect)boundsCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation;
 - (CGRect)boundsInitialValue;
-- (TSDCAAnimationCache)initWithLayer:(id)a3 animation:(id)a4 overrideInitialValues:(id)a5 cacheAnimationValues:(BOOL)a6;
-- (_TSDContentBlend)contentsCachedValueAtTime:(SEL)a3;
-- (_TSDContentBlend)contentsCachedValueAtTime:(SEL)a3 layer:(double)a4 animation:(id)a5;
-- (double)anchorPointZCachedValueAtTime:(double)a3;
-- (double)anchorPointZCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5;
-- (double)animationPercentByApplyingTimingFunctionForKeyPath:(id)a3 atTime:(double)a4;
-- (double)borderWidthCachedValueAtTime:(double)a3;
-- (double)borderWidthCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5;
-- (double)opacityCachedValueAtTime:(double)a3;
-- (double)opacityCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5;
-- (double)transformRotationCachedValueAtTime:(double)a3;
-- (double)transformRotationCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5;
-- (double)transformRotationXCachedValueAtTime:(double)a3;
-- (double)transformRotationXCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5;
-- (double)transformRotationYCachedValueAtTime:(double)a3;
-- (double)transformRotationYCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5;
-- (double)transformRotationZCachedValueAtTime:(double)a3;
-- (double)transformRotationZCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5;
-- (double)transformScaleXCachedValueAtTime:(double)a3;
-- (double)transformScaleXCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5;
-- (double)transformScaleXYCachedValueAtTime:(double)a3;
-- (double)transformScaleXYCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5;
-- (double)transformScaleYCachedValueAtTime:(double)a3;
-- (double)transformScaleYCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5;
-- (double)transformTranslationXCachedValueAtTime:(double)a3;
-- (double)transformTranslationXCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5;
-- (double)transformTranslationYCachedValueAtTime:(double)a3;
-- (double)transformTranslationYCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5;
-- (double)transformTranslationZCachedValueAtTime:(double)a3;
-- (double)transformTranslationZCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5;
-- (double)zPositionCachedValueAtTime:(double)a3;
-- (double)zPositionCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5;
-- (id)getKeyPathsFromAnimation:(id)a3;
-- (id)p_valueForKeyPath:(id)a3 atTime:(double)a4;
-- (void)p_setupAndCacheAnimationValues:(BOOL)a3;
+- (TSDCAAnimationCache)initWithLayer:(id)layer animation:(id)animation overrideInitialValues:(id)values cacheAnimationValues:(BOOL)animationValues;
+- (_TSDContentBlend)contentsCachedValueAtTime:(SEL)time;
+- (_TSDContentBlend)contentsCachedValueAtTime:(SEL)time layer:(double)layer animation:(id)animation;
+- (double)anchorPointZCachedValueAtTime:(double)time;
+- (double)anchorPointZCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation;
+- (double)animationPercentByApplyingTimingFunctionForKeyPath:(id)path atTime:(double)time;
+- (double)borderWidthCachedValueAtTime:(double)time;
+- (double)borderWidthCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation;
+- (double)opacityCachedValueAtTime:(double)time;
+- (double)opacityCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation;
+- (double)transformRotationCachedValueAtTime:(double)time;
+- (double)transformRotationCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation;
+- (double)transformRotationXCachedValueAtTime:(double)time;
+- (double)transformRotationXCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation;
+- (double)transformRotationYCachedValueAtTime:(double)time;
+- (double)transformRotationYCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation;
+- (double)transformRotationZCachedValueAtTime:(double)time;
+- (double)transformRotationZCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation;
+- (double)transformScaleXCachedValueAtTime:(double)time;
+- (double)transformScaleXCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation;
+- (double)transformScaleXYCachedValueAtTime:(double)time;
+- (double)transformScaleXYCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation;
+- (double)transformScaleYCachedValueAtTime:(double)time;
+- (double)transformScaleYCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation;
+- (double)transformTranslationXCachedValueAtTime:(double)time;
+- (double)transformTranslationXCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation;
+- (double)transformTranslationYCachedValueAtTime:(double)time;
+- (double)transformTranslationYCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation;
+- (double)transformTranslationZCachedValueAtTime:(double)time;
+- (double)transformTranslationZCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation;
+- (double)zPositionCachedValueAtTime:(double)time;
+- (double)zPositionCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation;
+- (id)getKeyPathsFromAnimation:(id)animation;
+- (id)p_valueForKeyPath:(id)path atTime:(double)time;
+- (void)p_setupAndCacheAnimationValues:(BOOL)values;
 @end
 
 @implementation TSDCAAnimationCache
@@ -70,21 +70,21 @@
   return v3;
 }
 
-- (double)animationPercentByApplyingTimingFunctionForKeyPath:(id)a3 atTime:(double)a4
+- (double)animationPercentByApplyingTimingFunctionForKeyPath:(id)path atTime:(double)time
 {
-  v5 = objc_msgSend_p_bestAnimationContextCachesForKeyPath_atTime_(self->_animationContextCache, a2, a3);
+  v5 = objc_msgSend_p_bestAnimationContextCachesForKeyPath_atTime_(self->_animationContextCache, a2, path);
   v8 = objc_msgSend_firstObject(v5, v6, v7);
 
-  objc_msgSend_percentAtTime_(v8, v9, v10, a4);
+  objc_msgSend_percentAtTime_(v8, v9, v10, time);
   v12 = v11;
 
   return v12;
 }
 
-- (id)getKeyPathsFromAnimation:(id)a3
+- (id)getKeyPathsFromAnimation:(id)animation
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  animationCopy = animation;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -93,7 +93,7 @@
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v10 = objc_msgSend_animations(v4, v8, v9, 0);
+    v10 = objc_msgSend_animations(animationCopy, v8, v9, 0);
     v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(v10, v11, &v21, v26, 16);
     if (v12)
     {
@@ -121,7 +121,7 @@
 
   else
   {
-    v10 = objc_msgSend_keyPath(v4, v5, v6);
+    v10 = objc_msgSend_keyPath(animationCopy, v5, v6);
     v25 = v10;
     v7 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v19, &v25, 1);
   }
@@ -129,10 +129,10 @@
   return v7;
 }
 
-- (void)p_setupAndCacheAnimationValues:(BOOL)a3
+- (void)p_setupAndCacheAnimationValues:(BOOL)values
 {
   v363 = *MEMORY[0x277D85DE8];
-  v4 = objc_msgSend_animation(self, a2, a3);
+  v4 = objc_msgSend_animation(self, a2, values);
   v6 = objc_msgSend_getKeyPathsFromAnimation_(self, v5, v4);
 
   v7 = objc_alloc(MEMORY[0x277CBEB40]);
@@ -649,35 +649,35 @@ LABEL_10:
   self->_zPositionAnimationExists = objc_msgSend_containsObject_(v349, v348, @"zPosition");
 }
 
-- (TSDCAAnimationCache)initWithLayer:(id)a3 animation:(id)a4 overrideInitialValues:(id)a5 cacheAnimationValues:(BOOL)a6
+- (TSDCAAnimationCache)initWithLayer:(id)layer animation:(id)animation overrideInitialValues:(id)values cacheAnimationValues:(BOOL)animationValues
 {
-  v6 = a6;
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  animationValuesCopy = animationValues;
+  layerCopy = layer;
+  animationCopy = animation;
+  valuesCopy = values;
   v25.receiver = self;
   v25.super_class = TSDCAAnimationCache;
   v14 = [(TSDCAAnimationCache *)&v25 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_layer, a3);
-    objc_storeStrong(&v15->_animation, a4);
-    objc_msgSend_duration(v12, v16, v17);
+    objc_storeStrong(&v14->_layer, layer);
+    objc_storeStrong(&v15->_animation, animation);
+    objc_msgSend_duration(animationCopy, v16, v17);
     v15->_animationDuration = v18;
-    v21 = objc_msgSend_copy(v13, v19, v20);
+    v21 = objc_msgSend_copy(valuesCopy, v19, v20);
     overrideInitialValuesDict = v15->_overrideInitialValuesDict;
     v15->_overrideInitialValuesDict = v21;
 
-    objc_msgSend_p_setupAndCacheAnimationValues_(v15, v23, v6);
+    objc_msgSend_p_setupAndCacheAnimationValues_(v15, v23, animationValuesCopy);
   }
 
   return v15;
 }
 
-- (CGPoint)anchorPointCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5
+- (CGPoint)anchorPointCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation
 {
-  v5 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"anchorPoint", a5, a3);
+  v5 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"anchorPoint", animation, time);
   objc_msgSend_CGPointValue(v5, v6, v7);
   v9 = v8;
   v11 = v10;
@@ -689,9 +689,9 @@ LABEL_10:
   return result;
 }
 
-- (CGPoint)anchorPointCachedValueAtTime:(double)a3
+- (CGPoint)anchorPointCachedValueAtTime:(double)time
 {
-  v3 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"anchorPoint", a3);
+  v3 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"anchorPoint", time);
   objc_msgSend_CGPointValue(v3, v4, v5);
   v7 = v6;
   v9 = v8;
@@ -703,45 +703,45 @@ LABEL_10:
   return result;
 }
 
-- (double)anchorPointZCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5
+- (double)anchorPointZCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation
 {
-  v5 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"anchorPointZ", a5, a3);
+  v5 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"anchorPointZ", animation, time);
   objc_msgSend_doubleValue(v5, v6, v7);
   v9 = v8;
 
   return v9;
 }
 
-- (double)anchorPointZCachedValueAtTime:(double)a3
+- (double)anchorPointZCachedValueAtTime:(double)time
 {
-  v3 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"anchorPointZ", a3);
+  v3 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"anchorPointZ", time);
   objc_msgSend_doubleValue(v3, v4, v5);
   v7 = v6;
 
   return v7;
 }
 
-- (double)borderWidthCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5
+- (double)borderWidthCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation
 {
-  v5 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"borderWidth", a5, a3);
+  v5 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"borderWidth", animation, time);
   objc_msgSend_doubleValue(v5, v6, v7);
   v9 = v8;
 
   return v9;
 }
 
-- (double)borderWidthCachedValueAtTime:(double)a3
+- (double)borderWidthCachedValueAtTime:(double)time
 {
-  v3 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"borderWidth", a3);
+  v3 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"borderWidth", time);
   objc_msgSend_doubleValue(v3, v4, v5);
   v7 = v6;
 
   return v7;
 }
 
-- (CGRect)boundsCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5
+- (CGRect)boundsCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation
 {
-  v5 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"bounds", a5, a3);
+  v5 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"bounds", animation, time);
   objc_msgSend_CGRectValue(v5, v6, v7);
   v9 = v8;
   v11 = v10;
@@ -759,9 +759,9 @@ LABEL_10:
   return result;
 }
 
-- (CGRect)boundsCachedValueAtTime:(double)a3
+- (CGRect)boundsCachedValueAtTime:(double)time
 {
-  v3 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"bounds", a3);
+  v3 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"bounds", time);
   objc_msgSend_CGRectValue(v3, v4, v5);
   v7 = v6;
   v9 = v8;
@@ -779,9 +779,9 @@ LABEL_10:
   return result;
 }
 
-- (_TSDContentBlend)contentsCachedValueAtTime:(SEL)a3 layer:(double)a4 animation:(id)a5
+- (_TSDContentBlend)contentsCachedValueAtTime:(SEL)time layer:(double)layer animation:(id)animation
 {
-  v7 = objc_msgSend_p_valueForKeyPath_atTime_(self, a3, @"contents", a6, a4);
+  v7 = objc_msgSend_p_valueForKeyPath_atTime_(self, time, @"contents", a6, layer);
   if (v7)
   {
     v11 = v7;
@@ -799,9 +799,9 @@ LABEL_10:
   return result;
 }
 
-- (_TSDContentBlend)contentsCachedValueAtTime:(SEL)a3
+- (_TSDContentBlend)contentsCachedValueAtTime:(SEL)time
 {
-  v5 = objc_msgSend_p_valueForKeyPath_atTime_(self, a3, @"contents", a4);
+  v5 = objc_msgSend_p_valueForKeyPath_atTime_(self, time, @"contents", a4);
   if (v5)
   {
     v9 = v5;
@@ -819,59 +819,59 @@ LABEL_10:
   return result;
 }
 
-- (BOOL)doubleSidedCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5
+- (BOOL)doubleSidedCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation
 {
-  v5 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"doubleSided", a5, a3);
+  v5 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"doubleSided", animation, time);
   v8 = objc_msgSend_BOOLValue(v5, v6, v7);
 
   return v8;
 }
 
-- (BOOL)doubleSidedCachedValueAtTime:(double)a3
+- (BOOL)doubleSidedCachedValueAtTime:(double)time
 {
-  v3 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"doubleSided", a3);
+  v3 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"doubleSided", time);
   v6 = objc_msgSend_BOOLValue(v3, v4, v5);
 
   return v6;
 }
 
-- (BOOL)hiddenCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5
+- (BOOL)hiddenCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation
 {
-  v5 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"hidden", a5, a3);
+  v5 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"hidden", animation, time);
   v8 = objc_msgSend_BOOLValue(v5, v6, v7);
 
   return v8;
 }
 
-- (BOOL)hiddenCachedValueAtTime:(double)a3
+- (BOOL)hiddenCachedValueAtTime:(double)time
 {
-  v3 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"hidden", a3);
+  v3 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"hidden", time);
   v6 = objc_msgSend_BOOLValue(v3, v4, v5);
 
   return v6;
 }
 
-- (double)opacityCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5
+- (double)opacityCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation
 {
-  v5 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"opacity", a5, a3);
+  v5 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"opacity", animation, time);
   objc_msgSend_doubleValue(v5, v6, v7);
   v9 = v8;
 
   return v9;
 }
 
-- (double)opacityCachedValueAtTime:(double)a3
+- (double)opacityCachedValueAtTime:(double)time
 {
-  v3 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"opacity", a3);
+  v3 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"opacity", time);
   objc_msgSend_doubleValue(v3, v4, v5);
   v7 = v6;
 
   return v7;
 }
 
-- (CGPoint)positionCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5
+- (CGPoint)positionCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation
 {
-  v5 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"position", a5, a3);
+  v5 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"position", animation, time);
   objc_msgSend_CGPointValue(v5, v6, v7);
   v9 = v8;
   v11 = v10;
@@ -883,9 +883,9 @@ LABEL_10:
   return result;
 }
 
-- (CGPoint)positionCachedValueAtTime:(double)a3
+- (CGPoint)positionCachedValueAtTime:(double)time
 {
-  v3 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"position", a3);
+  v3 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"position", time);
   objc_msgSend_CGPointValue(v3, v4, v5);
   v7 = v6;
   v9 = v8;
@@ -897,9 +897,9 @@ LABEL_10:
   return result;
 }
 
-- (CATransform3D)transformCachedValueAtTime:(SEL)a3 layer:(double)a4 animation:(id)a5
+- (CATransform3D)transformCachedValueAtTime:(SEL)time layer:(double)layer animation:(id)animation
 {
-  v7 = objc_msgSend_p_valueForKeyPath_atTime_(self, a3, @"transform", a6, a4);
+  v7 = objc_msgSend_p_valueForKeyPath_atTime_(self, time, @"transform", a6, layer);
   if (v7)
   {
     v11 = v7;
@@ -922,9 +922,9 @@ LABEL_10:
   return result;
 }
 
-- (CATransform3D)transformCachedValueAtTime:(SEL)a3
+- (CATransform3D)transformCachedValueAtTime:(SEL)time
 {
-  v5 = objc_msgSend_p_valueForKeyPath_atTime_(self, a3, @"transform", a4);
+  v5 = objc_msgSend_p_valueForKeyPath_atTime_(self, time, @"transform", a4);
   if (v5)
   {
     v9 = v5;
@@ -947,135 +947,135 @@ LABEL_10:
   return result;
 }
 
-- (double)transformRotationCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5
+- (double)transformRotationCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation
 {
-  v5 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"transform.rotation", a5, a3);
+  v5 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"transform.rotation", animation, time);
   objc_msgSend_doubleValue(v5, v6, v7);
   v9 = v8;
 
   return v9;
 }
 
-- (double)transformRotationCachedValueAtTime:(double)a3
+- (double)transformRotationCachedValueAtTime:(double)time
 {
-  v3 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"transform.rotation", a3);
+  v3 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"transform.rotation", time);
   objc_msgSend_doubleValue(v3, v4, v5);
   v7 = v6;
 
   return v7;
 }
 
-- (double)transformRotationXCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5
+- (double)transformRotationXCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation
 {
-  v5 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"transform.rotation.x", a5, a3);
+  v5 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"transform.rotation.x", animation, time);
   objc_msgSend_doubleValue(v5, v6, v7);
   v9 = v8;
 
   return v9;
 }
 
-- (double)transformRotationXCachedValueAtTime:(double)a3
+- (double)transformRotationXCachedValueAtTime:(double)time
 {
-  v3 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"transform.rotation.x", a3);
+  v3 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"transform.rotation.x", time);
   objc_msgSend_doubleValue(v3, v4, v5);
   v7 = v6;
 
   return v7;
 }
 
-- (double)transformRotationYCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5
+- (double)transformRotationYCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation
 {
-  v5 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"transform.rotation.y", a5, a3);
+  v5 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"transform.rotation.y", animation, time);
   objc_msgSend_doubleValue(v5, v6, v7);
   v9 = v8;
 
   return v9;
 }
 
-- (double)transformRotationYCachedValueAtTime:(double)a3
+- (double)transformRotationYCachedValueAtTime:(double)time
 {
-  v3 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"transform.rotation.y", a3);
+  v3 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"transform.rotation.y", time);
   objc_msgSend_doubleValue(v3, v4, v5);
   v7 = v6;
 
   return v7;
 }
 
-- (double)transformRotationZCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5
+- (double)transformRotationZCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation
 {
-  v5 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"transform.rotation.z", a5, a3);
+  v5 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"transform.rotation.z", animation, time);
   objc_msgSend_doubleValue(v5, v6, v7);
   v9 = v8;
 
   return v9;
 }
 
-- (double)transformRotationZCachedValueAtTime:(double)a3
+- (double)transformRotationZCachedValueAtTime:(double)time
 {
-  v3 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"transform.rotation.z", a3);
+  v3 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"transform.rotation.z", time);
   objc_msgSend_doubleValue(v3, v4, v5);
   v7 = v6;
 
   return v7;
 }
 
-- (double)transformScaleXCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5
+- (double)transformScaleXCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation
 {
-  v5 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"transform.scale.x", a5, a3);
+  v5 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"transform.scale.x", animation, time);
   objc_msgSend_doubleValue(v5, v6, v7);
   v9 = v8;
 
   return v9;
 }
 
-- (double)transformScaleXCachedValueAtTime:(double)a3
+- (double)transformScaleXCachedValueAtTime:(double)time
 {
-  v3 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"transform.scale.x", a3);
+  v3 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"transform.scale.x", time);
   objc_msgSend_doubleValue(v3, v4, v5);
   v7 = v6;
 
   return v7;
 }
 
-- (double)transformScaleYCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5
+- (double)transformScaleYCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation
 {
-  v5 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"transform.scale.y", a5, a3);
+  v5 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"transform.scale.y", animation, time);
   objc_msgSend_doubleValue(v5, v6, v7);
   v9 = v8;
 
   return v9;
 }
 
-- (double)transformScaleYCachedValueAtTime:(double)a3
+- (double)transformScaleYCachedValueAtTime:(double)time
 {
-  v3 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"transform.scale.y", a3);
+  v3 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"transform.scale.y", time);
   objc_msgSend_doubleValue(v3, v4, v5);
   v7 = v6;
 
   return v7;
 }
 
-- (double)transformScaleXYCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5
+- (double)transformScaleXYCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation
 {
-  v5 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"transform.scale.xy", a5, a3);
+  v5 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"transform.scale.xy", animation, time);
   objc_msgSend_doubleValue(v5, v6, v7);
   v9 = v8;
 
   return v9;
 }
 
-- (double)transformScaleXYCachedValueAtTime:(double)a3
+- (double)transformScaleXYCachedValueAtTime:(double)time
 {
-  v3 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"transform.scale.xy", a3);
+  v3 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"transform.scale.xy", time);
   objc_msgSend_doubleValue(v3, v4, v5);
   v7 = v6;
 
   return v7;
 }
 
-- (CGPoint)transformTranslationCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5
+- (CGPoint)transformTranslationCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation
 {
-  v5 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"transform.translation", a5, a3);
+  v5 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"transform.translation", animation, time);
   objc_msgSend_CGPointValue(v5, v6, v7);
   v9 = v8;
   v11 = v10;
@@ -1087,9 +1087,9 @@ LABEL_10:
   return result;
 }
 
-- (CGPoint)transformTranslationCachedValueAtTime:(double)a3
+- (CGPoint)transformTranslationCachedValueAtTime:(double)time
 {
-  v3 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"transform.translation", a3);
+  v3 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"transform.translation", time);
   objc_msgSend_CGPointValue(v3, v4, v5);
   v7 = v6;
   v9 = v8;
@@ -1101,83 +1101,83 @@ LABEL_10:
   return result;
 }
 
-- (double)transformTranslationXCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5
+- (double)transformTranslationXCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation
 {
-  v5 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"transform.translation.x", a5, a3);
+  v5 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"transform.translation.x", animation, time);
   objc_msgSend_doubleValue(v5, v6, v7);
   v9 = v8;
 
   return v9;
 }
 
-- (double)transformTranslationXCachedValueAtTime:(double)a3
+- (double)transformTranslationXCachedValueAtTime:(double)time
 {
-  v3 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"transform.translation.x", a3);
+  v3 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"transform.translation.x", time);
   objc_msgSend_doubleValue(v3, v4, v5);
   v7 = v6;
 
   return v7;
 }
 
-- (double)transformTranslationYCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5
+- (double)transformTranslationYCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation
 {
-  v5 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"transform.translation.y", a5, a3);
+  v5 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"transform.translation.y", animation, time);
   objc_msgSend_doubleValue(v5, v6, v7);
   v9 = v8;
 
   return v9;
 }
 
-- (double)transformTranslationYCachedValueAtTime:(double)a3
+- (double)transformTranslationYCachedValueAtTime:(double)time
 {
-  v3 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"transform.translation.y", a3);
+  v3 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"transform.translation.y", time);
   objc_msgSend_doubleValue(v3, v4, v5);
   v7 = v6;
 
   return v7;
 }
 
-- (double)transformTranslationZCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5
+- (double)transformTranslationZCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation
 {
-  v5 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"transform.translation.z", a5, a3);
+  v5 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"transform.translation.z", animation, time);
   objc_msgSend_doubleValue(v5, v6, v7);
   v9 = v8;
 
   return v9;
 }
 
-- (double)transformTranslationZCachedValueAtTime:(double)a3
+- (double)transformTranslationZCachedValueAtTime:(double)time
 {
-  v3 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"transform.translation.z", a3);
+  v3 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"transform.translation.z", time);
   objc_msgSend_doubleValue(v3, v4, v5);
   v7 = v6;
 
   return v7;
 }
 
-- (double)zPositionCachedValueAtTime:(double)a3 layer:(id)a4 animation:(id)a5
+- (double)zPositionCachedValueAtTime:(double)time layer:(id)layer animation:(id)animation
 {
-  v5 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"zPosition", a5, a3);
+  v5 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"zPosition", animation, time);
   objc_msgSend_doubleValue(v5, v6, v7);
   v9 = v8;
 
   return v9;
 }
 
-- (double)zPositionCachedValueAtTime:(double)a3
+- (double)zPositionCachedValueAtTime:(double)time
 {
-  v3 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"zPosition", a3);
+  v3 = objc_msgSend_p_valueForKeyPath_atTime_(self, a2, @"zPosition", time);
   objc_msgSend_doubleValue(v3, v4, v5);
   v7 = v6;
 
   return v7;
 }
 
-- (id)p_valueForKeyPath:(id)a3 atTime:(double)a4
+- (id)p_valueForKeyPath:(id)path atTime:(double)time
 {
-  v6 = a3;
+  pathCopy = path;
   v9 = objc_msgSend_animationContextCache(self, v7, v8);
-  v11 = objc_msgSend_valueForKeyPath_atTime_animationCache_(v9, v10, v6, self, a4);
+  v11 = objc_msgSend_valueForKeyPath_atTime_animationCache_(v9, v10, pathCopy, self, time);
 
   return v11;
 }

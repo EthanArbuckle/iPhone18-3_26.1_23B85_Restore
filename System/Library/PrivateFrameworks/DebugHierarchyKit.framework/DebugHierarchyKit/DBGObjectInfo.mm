@@ -1,7 +1,7 @@
 @interface DBGObjectInfo
-+ (id)valueWithEncodedValue:(id)a3 format:(id)a4 error:(id *)a5;
-+ (id)withInfo:(id)a3;
-- (DBGObjectInfo)initWithInfo:(id)a3;
++ (id)valueWithEncodedValue:(id)value format:(id)format error:(id *)error;
++ (id)withInfo:(id)info;
+- (DBGObjectInfo)initWithInfo:(id)info;
 - (NSString)debugDescription;
 - (NSString)description;
 - (NSString)displayString;
@@ -11,24 +11,24 @@
 
 @implementation DBGObjectInfo
 
-+ (id)withInfo:(id)a3
++ (id)withInfo:(id)info
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithInfo:v4];
+  infoCopy = info;
+  v5 = [[self alloc] initWithInfo:infoCopy];
 
   return v5;
 }
 
-- (DBGObjectInfo)initWithInfo:(id)a3
+- (DBGObjectInfo)initWithInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   v9.receiver = self;
   v9.super_class = DBGObjectInfo;
   v6 = [(DBGObjectInfo *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_objectInfo, a3);
+    objc_storeStrong(&v6->_objectInfo, info);
   }
 
   return v7;
@@ -36,17 +36,17 @@
 
 - (NSString)displayString
 {
-  v3 = [(DBGObjectInfo *)self objectInfo];
+  objectInfo = [(DBGObjectInfo *)self objectInfo];
 
-  if (v3)
+  if (objectInfo)
   {
-    v4 = [(DBGObjectInfo *)self objectClassName];
-    v5 = [(DBGObjectInfo *)self objectPointer];
-    v6 = v5;
+    objectClassName = [(DBGObjectInfo *)self objectClassName];
+    objectPointer = [(DBGObjectInfo *)self objectPointer];
+    v6 = objectPointer;
     v7 = 0;
-    if (v4 && v5)
+    if (objectClassName && objectPointer)
     {
-      v7 = [NSString stringWithFormat:@"<%@: %@>", v4, v5];
+      v7 = [NSString stringWithFormat:@"<%@: %@>", objectClassName, objectPointer];
     }
   }
 
@@ -60,24 +60,24 @@
 
 - (id)objectClassName
 {
-  v2 = [(DBGObjectInfo *)self objectInfo];
-  v3 = [v2 objectForKeyedSubscript:@"className"];
+  objectInfo = [(DBGObjectInfo *)self objectInfo];
+  v3 = [objectInfo objectForKeyedSubscript:@"className"];
 
   return v3;
 }
 
 - (id)objectPointer
 {
-  v2 = [(DBGObjectInfo *)self objectInfo];
-  v3 = [v2 objectForKeyedSubscript:@"memoryAddress"];
+  objectInfo = [(DBGObjectInfo *)self objectInfo];
+  v3 = [objectInfo objectForKeyedSubscript:@"memoryAddress"];
 
   return v3;
 }
 
 - (NSString)description
 {
-  v2 = [(DBGObjectInfo *)self objectValue];
-  v3 = [v2 description];
+  objectValue = [(DBGObjectInfo *)self objectValue];
+  v3 = [objectValue description];
 
   return v3;
 }
@@ -92,21 +92,21 @@
   return v6;
 }
 
-+ (id)valueWithEncodedValue:(id)a3 format:(id)a4 error:(id *)a5
++ (id)valueWithEncodedValue:(id)value format:(id)format error:(id *)error
 {
-  v8 = a3;
-  if ([a4 isEqualToString:@"objectInfo"] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  valueCopy = value;
+  if ([format isEqualToString:@"objectInfo"] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v9 = [a1 withInfo:v8];
+    v9 = [self withInfo:valueCopy];
   }
 
   else
   {
     v9 = 0;
-    if (!v8 && a5)
+    if (!valueCopy && error)
     {
       v9 = 0;
-      *a5 = 0;
+      *error = 0;
     }
   }
 

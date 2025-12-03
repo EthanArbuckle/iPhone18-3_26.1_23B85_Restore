@@ -1,8 +1,8 @@
 @interface NTKRichComplicationBaseCircularStackImageView
 - (id)line1View;
 - (int64_t)tritiumUpdateMode;
-- (void)setPaused:(BOOL)a3;
-- (void)transitionToMonochromeWithFraction:(double)a3;
+- (void)setPaused:(BOOL)paused;
+- (void)transitionToMonochromeWithFraction:(double)fraction;
 - (void)updateMonochromeColor;
 @end
 
@@ -13,12 +13,12 @@
   line1ImageView = self->_line1ImageView;
   if (!line1ImageView)
   {
-    v4 = [(CDRichComplicationView *)self device];
-    v5 = NTKShowGossamerUI(v4);
+    device = [(CDRichComplicationView *)self device];
+    v5 = NTKShowGossamerUI(device);
 
     v6 = [off_27877BEB0 alloc];
-    v7 = [(CDRichComplicationView *)self device];
-    v8 = [v6 initWithDevice:v7 useAccentColor:v5];
+    device2 = [(CDRichComplicationView *)self device];
+    v8 = [v6 initWithDevice:device2 useAccentColor:v5];
     v9 = self->_line1ImageView;
     self->_line1ImageView = v8;
 
@@ -30,30 +30,30 @@
   return line1ImageView;
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
-  v3 = a3;
+  pausedCopy = paused;
   v5.receiver = self;
   v5.super_class = NTKRichComplicationBaseCircularStackImageView;
   [(CDRichComplicationView *)&v5 setPaused:?];
-  [(CDRichComplicationImageView *)self->_line1ImageView setPaused:v3];
+  [(CDRichComplicationImageView *)self->_line1ImageView setPaused:pausedCopy];
 }
 
 - (int64_t)tritiumUpdateMode
 {
-  v3 = [(CDRichComplicationImageView *)self->_line1ImageView tritiumUpdateMode];
-  v4 = v3;
-  if (v3)
+  tritiumUpdateMode = [(CDRichComplicationImageView *)self->_line1ImageView tritiumUpdateMode];
+  v4 = tritiumUpdateMode;
+  if (tritiumUpdateMode)
   {
-    v5 = [v3 integerValue];
-    if (v5 >= 2)
+    integerValue = [tritiumUpdateMode integerValue];
+    if (integerValue >= 2)
     {
-      v6 = 2;
+      tritiumUpdateMode2 = 2;
     }
 
     else
     {
-      v6 = v5;
+      tritiumUpdateMode2 = integerValue;
     }
   }
 
@@ -61,18 +61,18 @@
   {
     v8.receiver = self;
     v8.super_class = NTKRichComplicationBaseCircularStackImageView;
-    v6 = [(CDRichComplicationTemplateView *)&v8 tritiumUpdateMode];
+    tritiumUpdateMode2 = [(CDRichComplicationTemplateView *)&v8 tritiumUpdateMode];
   }
 
-  return v6;
+  return tritiumUpdateMode2;
 }
 
-- (void)transitionToMonochromeWithFraction:(double)a3
+- (void)transitionToMonochromeWithFraction:(double)fraction
 {
   v5.receiver = self;
   v5.super_class = NTKRichComplicationBaseCircularStackImageView;
   [(NTKRichComplicationCircularStackContentTextView *)&v5 transitionToMonochromeWithFraction:?];
-  [(CDRichComplicationImageView *)self->_line1ImageView transitionToMonochromeWithFraction:a3];
+  [(CDRichComplicationImageView *)self->_line1ImageView transitionToMonochromeWithFraction:fraction];
 }
 
 - (void)updateMonochromeColor

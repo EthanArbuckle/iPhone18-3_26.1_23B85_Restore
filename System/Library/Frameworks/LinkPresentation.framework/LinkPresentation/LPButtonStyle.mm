@@ -1,12 +1,12 @@
 @interface LPButtonStyle
-+ (id)systemPillButtonStyleForPlatform:(int64_t)a3 sizeClass:(unint64_t)a4;
-- (LPButtonStyle)initWithPlatform:(int64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)systemPillButtonStyleForPlatform:(int64_t)platform sizeClass:(unint64_t)class;
+- (LPButtonStyle)initWithPlatform:(int64_t)platform;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation LPButtonStyle
 
-- (LPButtonStyle)initWithPlatform:(int64_t)a3
+- (LPButtonStyle)initWithPlatform:(int64_t)platform
 {
   v13.receiver = self;
   v13.super_class = LPButtonStyle;
@@ -22,7 +22,7 @@
     v4->_margin = v7;
 
     v4->_enableUserInteractionForDecorativeButton = 1;
-    v9 = [[LPCircularProgressIndicatorStyle alloc] initWithPlatform:a3];
+    v9 = [[LPCircularProgressIndicatorStyle alloc] initWithPlatform:platform];
     progressIndicatorStyle = v4->_progressIndicatorStyle;
     v4->_progressIndicatorStyle = v9;
 
@@ -32,9 +32,9 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [LPButtonStyle allocWithZone:a3];
+  v4 = [LPButtonStyle allocWithZone:zone];
   if (v4)
   {
     v5 = [(UIColor *)self->_foregroundColor copy];
@@ -98,17 +98,17 @@
   return v4;
 }
 
-+ (id)systemPillButtonStyleForPlatform:(int64_t)a3 sizeClass:(unint64_t)a4
++ (id)systemPillButtonStyleForPlatform:(int64_t)platform sizeClass:(unint64_t)class
 {
-  v6 = [[LPButtonStyle alloc] initWithPlatform:a3];
-  v7 = [MEMORY[0x1E69DC888] whiteColor];
-  [(LPButtonStyle *)v6 setForegroundColor:v7];
+  v6 = [[LPButtonStyle alloc] initWithPlatform:platform];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [(LPButtonStyle *)v6 setForegroundColor:whiteColor];
 
-  v8 = [MEMORY[0x1E69DC888] systemBlueColor];
-  [(LPButtonStyle *)v6 setBackgroundColor:v8];
+  systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+  [(LPButtonStyle *)v6 setBackgroundColor:systemBlueColor];
 
-  v9 = [MEMORY[0x1E69DC888] secondarySystemFillColor];
-  [(LPButtonStyle *)v6 setMenuBackgroundColor:v9];
+  secondarySystemFillColor = [MEMORY[0x1E69DC888] secondarySystemFillColor];
+  [(LPButtonStyle *)v6 setMenuBackgroundColor:secondarySystemFillColor];
 
   if (+[LPTestingOverrides forceMonospaceFonts])
   {
@@ -117,7 +117,7 @@
 
   else
   {
-    if (a3 == 5)
+    if (platform == 5)
     {
       v11 = 0x8000;
     }
@@ -128,12 +128,12 @@
     }
 
     v12 = MEMORY[0x1E69DDD40];
-    if (a3 != 5)
+    if (platform != 5)
     {
       v12 = MEMORY[0x1E69DDD80];
     }
 
-    v10 = fontWithTraits(*v12, v11, a4);
+    v10 = fontWithTraits(*v12, v11, class);
   }
 
   v13 = v10;
@@ -146,19 +146,19 @@
 
   else
   {
-    fontWithTraits(*MEMORY[0x1E69DDD80], 0x8000, a4);
+    fontWithTraits(*MEMORY[0x1E69DDD80], 0x8000, class);
   }
   v14 = ;
   [(LPButtonStyle *)v6 setMenuFont:v14];
 
-  if (a3 < 5 || a3 == 6)
+  if (platform < 5 || platform == 6)
   {
     v15 = [MEMORY[0x1E69DCAD8] _lp_configurationWithTextStyle:*MEMORY[0x1E69DDCF8] weight:7 scale:1];
   }
 
   else
   {
-    if (a3 != 5)
+    if (platform != 5)
     {
       goto LABEL_15;
     }
@@ -170,22 +170,22 @@
 LABEL_15:
   [(LPButtonStyle *)v6 setSymbolConfiguration:v14];
 
-  if (a3 <= 6)
+  if (platform <= 6)
   {
-    v14 = [[LPPointUnit alloc] initWithValue:dbl_1AE9C67B0[a3]];
+    v14 = [[LPPointUnit alloc] initWithValue:dbl_1AE9C67B0[platform]];
   }
 
-  v16 = [(LPButtonStyle *)v6 padding];
-  [v16 setLeading:v14];
+  padding = [(LPButtonStyle *)v6 padding];
+  [padding setLeading:v14];
 
-  v17 = [(LPButtonStyle *)v6 padding];
-  v18 = [v17 leading];
-  v19 = [(LPButtonStyle *)v6 padding];
-  [v19 setTrailing:v18];
+  padding2 = [(LPButtonStyle *)v6 padding];
+  leading = [padding2 leading];
+  padding3 = [(LPButtonStyle *)v6 padding];
+  [padding3 setTrailing:leading];
 
-  if (a3 <= 6)
+  if (platform <= 6)
   {
-    if (((1 << a3) & 0x65) != 0)
+    if (((1 << platform) & 0x65) != 0)
     {
       v20 = +[LPPointUnit zero];
     }
@@ -195,59 +195,59 @@ LABEL_15:
       v20 = [[LPPointUnit alloc] initWithValue:3.0];
     }
 
-    v17 = v20;
+    padding2 = v20;
   }
 
-  v21 = [(LPButtonStyle *)v6 padding];
-  [v21 setTop:v17];
+  padding4 = [(LPButtonStyle *)v6 padding];
+  [padding4 setTop:padding2];
 
-  v22 = [(LPButtonStyle *)v6 padding];
-  v23 = [v22 top];
-  v24 = [(LPButtonStyle *)v6 padding];
-  [v24 setBottom:v23];
+  padding5 = [(LPButtonStyle *)v6 padding];
+  v23 = [padding5 top];
+  padding6 = [(LPButtonStyle *)v6 padding];
+  [padding6 setBottom:v23];
 
-  v25 = outerHorizontalIconMargin(a3);
-  v26 = [(LPButtonStyle *)v6 margin];
-  [v26 setLeading:v25];
+  v25 = outerHorizontalIconMargin(platform);
+  margin = [(LPButtonStyle *)v6 margin];
+  [margin setLeading:v25];
 
-  if (a3 < 5)
+  if (platform < 5)
   {
     goto LABEL_26;
   }
 
-  if (a3 == 5)
+  if (platform == 5)
   {
     v27 = [[LPPointUnit alloc] initWithValue:20.0];
     goto LABEL_27;
   }
 
-  if (a3 == 6)
+  if (platform == 6)
   {
 LABEL_26:
-    v27 = outerHorizontalIconMargin(a3);
+    v27 = outerHorizontalIconMargin(platform);
 LABEL_27:
     v25 = v27;
   }
 
-  v28 = [(LPButtonStyle *)v6 margin];
-  [v28 setTrailing:v25];
+  margin2 = [(LPButtonStyle *)v6 margin];
+  [margin2 setTrailing:v25];
 
-  v29 = [(LPButtonStyle *)v6 margin];
-  v30 = [v29 trailing];
-  v31 = [(LPButtonStyle *)v6 margin];
-  [v31 setTop:v30];
+  margin3 = [(LPButtonStyle *)v6 margin];
+  trailing = [margin3 trailing];
+  margin4 = [(LPButtonStyle *)v6 margin];
+  [margin4 setTop:trailing];
 
-  v32 = [(LPButtonStyle *)v6 margin];
-  v33 = [v32 trailing];
-  v34 = [(LPButtonStyle *)v6 margin];
-  [v34 setBottom:v33];
+  margin5 = [(LPButtonStyle *)v6 margin];
+  trailing2 = [margin5 trailing];
+  margin6 = [(LPButtonStyle *)v6 margin];
+  [margin6 setBottom:trailing2];
 
   v35 = [[LPPointUnit alloc] initWithValue:24.0];
   [(LPButtonStyle *)v6 setIndicatorSpacing:v35];
 
-  if (a3 <= 6)
+  if (platform <= 6)
   {
-    if (((1 << a3) & 0x65) != 0)
+    if (((1 << platform) & 0x65) != 0)
     {
       v36 = [[LPPointUnit alloc] initWithValue:72.0];
     }
@@ -262,9 +262,9 @@ LABEL_27:
 
   [(LPButtonStyle *)v6 setMinimumWidth:v35];
 
-  if (a3 <= 6)
+  if (platform <= 6)
   {
-    if (((1 << a3) & 0x1A) != 0)
+    if (((1 << platform) & 0x1A) != 0)
     {
       v39 = +[LPPointUnit zero];
     }
@@ -272,7 +272,7 @@ LABEL_27:
     else
     {
       v37 = [LPPointUnit alloc];
-      if (((1 << a3) & 0x45) != 0)
+      if (((1 << platform) & 0x45) != 0)
       {
         v38 = 36.0;
       }
@@ -290,9 +290,9 @@ LABEL_27:
 
   [(LPButtonStyle *)v6 setMinimumHeight:v35];
 
-  if (a3 <= 6)
+  if (platform <= 6)
   {
-    if (((1 << a3) & 0x1A) != 0)
+    if (((1 << platform) & 0x1A) != 0)
     {
       v42 = +[LPPointUnit zero];
     }
@@ -300,7 +300,7 @@ LABEL_27:
     else
     {
       v40 = [LPPointUnit alloc];
-      if (((1 << a3) & 0x45) != 0)
+      if (((1 << platform) & 0x45) != 0)
       {
         v41 = 36.0;
       }
@@ -318,14 +318,14 @@ LABEL_27:
 
   [(LPButtonStyle *)v6 setHeight:v35];
 
-  if (a4 == 12)
+  if (class == 12)
   {
     v43 = [[LPSize alloc] initWithSquareSize:44.0];
     [(LPButtonStyle *)v6 setFixedCollapsedSize:v43];
   }
 
   [(LPButtonStyle *)v6 setIgnoresInvertColors:0];
-  if (a3 == 5)
+  if (platform == 5)
   {
     [(LPButtonStyle *)v6 setUseSystemButtonAppearance:1];
   }

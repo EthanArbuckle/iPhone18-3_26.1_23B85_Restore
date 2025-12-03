@@ -1,24 +1,24 @@
 @interface InstallAttributionManager
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7;
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler;
 @end
 
 @implementation InstallAttributionManager
 
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler
 {
-  v8 = a6;
-  v9 = a7;
+  requestCopy = request;
+  handlerCopy = handler;
   v10 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
-    v11 = [v8 URL];
-    v12 = [v11 absoluteString];
+    v11 = [requestCopy URL];
+    absoluteString = [v11 absoluteString];
     v13 = 138543362;
-    v14 = v12;
+    v14 = absoluteString;
     _os_log_error_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "Redirects not allowed/handled. URL: %{public}@", &v13, 0xCu);
   }
 
-  v9[2](v9, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
 @end

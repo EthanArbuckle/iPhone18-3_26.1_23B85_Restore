@@ -1,20 +1,20 @@
 @interface APAMSMescalSigningService
 - (APMescalSigningStateChangedDelegate)delegate;
-- (id)rawSignatureForData:(id)a3 error:(id *)a4;
+- (id)rawSignatureForData:(id)data error:(id *)error;
 - (void)retrySetup;
-- (void)setState:(int64_t)a3;
+- (void)setState:(int64_t)state;
 @end
 
 @implementation APAMSMescalSigningService
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
-  v5 = [(APAMSMescalSigningService *)self delegate];
+  delegate = [(APAMSMescalSigningService *)self delegate];
 
-  if (v5)
+  if (delegate)
   {
-    v6 = [(APAMSMescalSigningService *)self delegate];
-    [v6 mescalStateChanged:a3];
+    delegate2 = [(APAMSMescalSigningService *)self delegate];
+    [delegate2 mescalStateChanged:state];
   }
 }
 
@@ -39,12 +39,12 @@
   }
 }
 
-- (id)rawSignatureForData:(id)a3 error:(id *)a4
+- (id)rawSignatureForData:(id)data error:(id *)error
 {
-  v6 = a3;
-  if (a4)
+  dataCopy = data;
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   if (+[APSystemInternal isAppleInternalInstall])
@@ -76,7 +76,7 @@
 
   v14 = +[APAMSBagManager adprivacydBag];
   v21 = 0;
-  v12 = [AMSMescal signatureFromData:v6 type:1 bag:v14 error:&v21];
+  v12 = [AMSMescal signatureFromData:dataCopy type:1 bag:v14 error:&v21];
   v15 = v21;
 
   v13 = v15 != 0;
@@ -108,15 +108,15 @@ LABEL_13:
 
   [(APAMSMescalSigningService *)self setState:3];
   v18 = !v13;
-  if (!a4)
+  if (!error)
   {
     v18 = 1;
   }
 
   if ((v18 & 1) == 0)
   {
-    v19 = [v11 domain];
-    *a4 = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", v19, [v11 code], 0);
+    domain = [v11 domain];
+    *error = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", domain, [v11 code], 0);
   }
 
 LABEL_20:

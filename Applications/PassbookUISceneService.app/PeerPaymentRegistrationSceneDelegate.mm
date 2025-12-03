@@ -1,7 +1,7 @@
 @interface PeerPaymentRegistrationSceneDelegate
 - (PeerPaymentRegistrationSceneDelegate)init;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidEnterBackground:(id)a3;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidEnterBackground:(id)background;
 @end
 
 @implementation PeerPaymentRegistrationSceneDelegate
@@ -13,21 +13,21 @@
   return [(PeerPaymentRegistrationSceneDelegate *)&v3 init];
 }
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = v8;
-    v12 = [v10 userActivities];
-    v13 = [v12 pk_anyObjectPassingTest:&stru_10000C3E0];
+    v11 = sceneCopy;
+    userActivities = [optionsCopy userActivities];
+    v13 = [userActivities pk_anyObjectPassingTest:&stru_10000C3E0];
 
-    v14 = [v13 userInfo];
-    v27 = [v14 objectForKeyedSubscript:@"hostSceneIdentifier"];
-    v26 = [v14 objectForKeyedSubscript:@"hostSceneBundleIdentifier"];
+    userInfo = [v13 userInfo];
+    v27 = [userInfo objectForKeyedSubscript:@"hostSceneIdentifier"];
+    v26 = [userInfo objectForKeyedSubscript:@"hostSceneBundleIdentifier"];
     if ([v26 length])
     {
       v25 = v26;
@@ -35,14 +35,14 @@
 
     else
     {
-      v25 = [v14 objectForKeyedSubscript:@"hostBundleIdentifier"];
+      v25 = [userInfo objectForKeyedSubscript:@"hostBundleIdentifier"];
     }
 
     if ([v27 length] && objc_msgSend(v25, "length"))
     {
-      v15 = [[PKPeerPaymentRegistrationViewController alloc] initWithUserInfo:v14];
+      v15 = [[PKPeerPaymentRegistrationViewController alloc] initWithUserInfo:userInfo];
       objc_initWeak(location, self);
-      objc_initWeak(&from, v9);
+      objc_initWeak(&from, sessionCopy);
       v30[0] = _NSConcreteStackBlock;
       v30[1] = 3221225472;
       v30[2] = sub_100003118;
@@ -94,15 +94,15 @@
       v34[1] = 3221225472;
       v34[2] = sub_100003054;
       v34[3] = &unk_10000C408;
-      v35 = v9;
+      v35 = sessionCopy;
       [v23 requestSceneSessionDestruction:v35 options:0 errorHandler:v34];
     }
   }
 }
 
-- (void)sceneDidEnterBackground:(id)a3
+- (void)sceneDidEnterBackground:(id)background
 {
-  v4 = a3;
+  backgroundCopy = background;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 

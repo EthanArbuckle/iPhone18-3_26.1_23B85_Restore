@@ -1,33 +1,33 @@
 @interface DarwinNotificationInvalidationSource
-- (DarwinNotificationInvalidationSource)initWithPreflightCache:(id)a3 notificationName:(const char *)a4;
+- (DarwinNotificationInvalidationSource)initWithPreflightCache:(id)cache notificationName:(const char *)name;
 - (id)invalidationReason;
 - (void)dealloc;
 @end
 
 @implementation DarwinNotificationInvalidationSource
 
-- (DarwinNotificationInvalidationSource)initWithPreflightCache:(id)a3 notificationName:(const char *)a4
+- (DarwinNotificationInvalidationSource)initWithPreflightCache:(id)cache notificationName:(const char *)name
 {
-  v6 = a3;
+  cacheCopy = cache;
   v19.receiver = self;
   v19.super_class = DarwinNotificationInvalidationSource;
-  v7 = [(PreflightCacheInvalidationSource *)&v19 initWithPreflightCache:v6];
+  v7 = [(PreflightCacheInvalidationSource *)&v19 initWithPreflightCache:cacheCopy];
   if (v7)
   {
-    v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:a4];
+    v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:name];
     notificationName = v7->_notificationName;
     v7->_notificationName = v8;
 
     objc_initWeak(&location, v7);
-    v10 = [(DarwinNotificationInvalidationSource *)v7 notificationName];
-    v11 = [v10 UTF8String];
+    notificationName = [(DarwinNotificationInvalidationSource *)v7 notificationName];
+    uTF8String = [notificationName UTF8String];
     v12 = +[DaemonUtils queue];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __80__DarwinNotificationInvalidationSource_initWithPreflightCache_notificationName___block_invoke;
     v16[3] = &unk_278A61600;
     objc_copyWeak(&v17, &location);
-    v13 = notify_register_dispatch(v11, &v7->_token, v12, v16);
+    v13 = notify_register_dispatch(uTF8String, &v7->_token, v12, v16);
 
     if (v13)
     {
@@ -72,8 +72,8 @@ void __80__DarwinNotificationInvalidationSource_initWithPreflightCache_notificat
 - (id)invalidationReason
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(DarwinNotificationInvalidationSource *)self notificationName];
-  v4 = [v2 stringWithFormat:@"received %@", v3];
+  notificationName = [(DarwinNotificationInvalidationSource *)self notificationName];
+  v4 = [v2 stringWithFormat:@"received %@", notificationName];
 
   return v4;
 }

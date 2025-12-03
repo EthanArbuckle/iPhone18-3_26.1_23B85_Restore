@@ -1,6 +1,6 @@
 @interface IKFolder
-+ (id)folderWithFolderID:(int64_t)a3;
-- (IKFolder)initWithFolderID:(int64_t)a3;
++ (id)folderWithFolderID:(int64_t)d;
+- (IKFolder)initWithFolderID:(int64_t)d;
 - (id)description;
 - (void)dealloc;
 @end
@@ -21,14 +21,14 @@
   return [v3 stringWithFormat:@"<%@: %@ (%ld)>", NSStringFromClass(v4), -[IKFolder title](self, "title"), -[IKFolder folderID](self, "folderID")];
 }
 
-- (IKFolder)initWithFolderID:(int64_t)a3
+- (IKFolder)initWithFolderID:(int64_t)d
 {
   v5.receiver = self;
   v5.super_class = IKFolder;
   result = [(IKFolder *)&v5 init];
   if (result)
   {
-    result->_folderID = a3;
+    result->_folderID = d;
     result->_title = 0;
     result->_syncToMobile = 0;
     result->_position = 0;
@@ -37,9 +37,9 @@
   return result;
 }
 
-+ (id)folderWithFolderID:(int64_t)a3
++ (id)folderWithFolderID:(int64_t)d
 {
-  v3 = [[IKFolder alloc] initWithFolderID:a3];
+  v3 = [[IKFolder alloc] initWithFolderID:d];
 
   return v3;
 }

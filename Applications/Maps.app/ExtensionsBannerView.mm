@@ -1,10 +1,10 @@
 @interface ExtensionsBannerView
 - (CGSize)intrinsicContentSize;
-- (ExtensionsBannerView)initWithCoder:(id)a3;
-- (ExtensionsBannerView)initWithFrame:(CGRect)a3;
+- (ExtensionsBannerView)initWithCoder:(id)coder;
+- (ExtensionsBannerView)initWithFrame:(CGRect)frame;
 - (void)_commonInit;
 - (void)_updateConstraints;
-- (void)setRemoteView:(id)a3;
+- (void)setRemoteView:(id)view;
 @end
 
 @implementation ExtensionsBannerView
@@ -18,16 +18,16 @@
   return result;
 }
 
-- (void)setRemoteView:(id)a3
+- (void)setRemoteView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   remoteView = self->_remoteView;
-  if (remoteView != v5)
+  if (remoteView != viewCopy)
   {
-    v8 = v5;
+    v8 = viewCopy;
     [(UIView *)remoteView removeFromSuperview];
-    objc_storeStrong(&self->_remoteView, a3);
-    v5 = v8;
+    objc_storeStrong(&self->_remoteView, view);
+    viewCopy = v8;
     if (v8)
     {
       [(ExtensionsBannerView *)self insertSubview:v8 belowSubview:self->_occludingView];
@@ -35,7 +35,7 @@
       v7 = [(UIView *)v8 _maps_constraintsForCenteringInView:self];
       [NSLayoutConstraint activateConstraints:v7];
 
-      v5 = v8;
+      viewCopy = v8;
     }
   }
 }
@@ -54,19 +54,19 @@
   occludingView = self->_occludingView;
   self->_occludingView = v3;
 
-  v5 = [(UIView *)self->_occludingView layer];
-  [v5 setHitTestsAsOpaque:1];
+  layer = [(UIView *)self->_occludingView layer];
+  [layer setHitTestsAsOpaque:1];
 
   [(ExtensionsBannerView *)self addSubview:self->_occludingView];
 
   [(ExtensionsBannerView *)self _updateConstraints];
 }
 
-- (ExtensionsBannerView)initWithFrame:(CGRect)a3
+- (ExtensionsBannerView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = ExtensionsBannerView;
-  v3 = [(ExtensionsBannerView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ExtensionsBannerView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -76,11 +76,11 @@
   return v4;
 }
 
-- (ExtensionsBannerView)initWithCoder:(id)a3
+- (ExtensionsBannerView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = ExtensionsBannerView;
-  v3 = [(ExtensionsBannerView *)&v6 initWithCoder:a3];
+  v3 = [(ExtensionsBannerView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {

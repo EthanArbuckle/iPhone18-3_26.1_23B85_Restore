@@ -1,9 +1,9 @@
 @interface VoiceOverBrailleUIBRFFilesViewController
-- (id)brfReflowEnabled:(id)a3;
-- (id)brfStripPageIndicatorsEnabled:(id)a3;
+- (id)brfReflowEnabled:(id)enabled;
+- (id)brfStripPageIndicatorsEnabled:(id)enabled;
 - (id)specifiers;
-- (void)setBRFReflowEnabled:(id)a3 specifier:(id)a4;
-- (void)setBRFStripPageIndicatorsEnabled:(id)a3 specifier:(id)a4;
+- (void)setBRFReflowEnabled:(id)enabled specifier:(id)specifier;
+- (void)setBRFStripPageIndicatorsEnabled:(id)enabled specifier:(id)specifier;
 @end
 
 @implementation VoiceOverBrailleUIBRFFilesViewController
@@ -41,14 +41,14 @@
   return v4;
 }
 
-- (void)setBRFReflowEnabled:(id)a3 specifier:(id)a4
+- (void)setBRFReflowEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setVoiceOverTouchBrailleUIIsBRFReflowEnabled:v4];
+  [v5 setVoiceOverTouchBrailleUIIsBRFReflowEnabled:bOOLValue];
 }
 
-- (id)brfReflowEnabled:(id)a3
+- (id)brfReflowEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 voiceOverTouchBrailleUIIsBRFReflowEnabled]);
@@ -56,14 +56,14 @@
   return v4;
 }
 
-- (void)setBRFStripPageIndicatorsEnabled:(id)a3 specifier:(id)a4
+- (void)setBRFStripPageIndicatorsEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setVoiceOverTouchBrailleUIIsBRFStripPageIndicatorsEnabled:v4];
+  [v5 setVoiceOverTouchBrailleUIIsBRFStripPageIndicatorsEnabled:bOOLValue];
 }
 
-- (id)brfStripPageIndicatorsEnabled:(id)a3
+- (id)brfStripPageIndicatorsEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 voiceOverTouchBrailleUIIsBRFStripPageIndicatorsEnabled]);

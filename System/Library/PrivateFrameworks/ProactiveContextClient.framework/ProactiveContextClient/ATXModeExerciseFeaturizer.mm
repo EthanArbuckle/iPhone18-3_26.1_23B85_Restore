@@ -124,8 +124,8 @@ void __43__ATXModeExerciseFeaturizer_beginListening__block_invoke(uint64_t a1, u
 
   v3 = v2;
   _Block_object_dispose(&v13, 8);
-  v4 = [v2 _allWorkoutActivityTypes];
-  if (v4)
+  _allWorkoutActivityTypes = [v2 _allWorkoutActivityTypes];
+  if (_allWorkoutActivityTypes)
   {
     v5 = objc_opt_new();
     v6 = __HKWorkoutSessionStateName(2);
@@ -135,7 +135,7 @@ void __43__ATXModeExerciseFeaturizer_beginListening__block_invoke(uint64_t a1, u
     [v5 addObject:v7];
 
     v8 = MEMORY[0x277CFE380];
-    v9 = [MEMORY[0x277CBEB98] setWithArray:v4];
+    v9 = [MEMORY[0x277CBEB98] setWithArray:_allWorkoutActivityTypes];
     v10 = [v8 predicateForFirstPartyWorkoutMatchingTypes:v9 states:v5];
   }
 
@@ -157,9 +157,9 @@ void __43__ATXModeExerciseFeaturizer_beginListening__block_invoke(uint64_t a1, u
 {
   if (!self->_userContext)
   {
-    v4 = [MEMORY[0x277CFE318] userContext];
+    userContext = [MEMORY[0x277CFE318] userContext];
     userContext = self->_userContext;
-    self->_userContext = v4;
+    self->_userContext = userContext;
 
     MEMORY[0x2821F96F8]();
   }

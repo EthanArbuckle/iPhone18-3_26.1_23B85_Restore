@@ -1,9 +1,9 @@
 @interface ENUIExposureDetailsViewController
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
 - (ENExposureNotification)notification;
 - (_TtC28HealthExposureNotificationUI27ENUIPublicHealthAgencyModel)agencyModel;
 - (id)specifiers;
-- (void)exposureDetailHeaderViewDidTapContinueButton:(id)a3;
+- (void)exposureDetailHeaderViewDidTapContinueButton:(id)button;
 - (void)viewDidLoad;
 @end
 
@@ -20,11 +20,11 @@
 
 - (_TtC28HealthExposureNotificationUI27ENUIPublicHealthAgencyModel)agencyModel
 {
-  v2 = [(ENUIExposureDetailsViewController *)self notification];
-  v3 = v2;
-  if (v2)
+  notification = [(ENUIExposureDetailsViewController *)self notification];
+  v3 = notification;
+  if (notification)
   {
-    v4 = [v2 region];
+    region = [notification region];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
@@ -44,8 +44,8 @@
           }
 
           v9 = *(*(&v13 + 1) + 8 * i);
-          v10 = [v9 region];
-          v11 = [v10 isEqual:v4];
+          region2 = [v9 region];
+          v11 = [region2 isEqual:region];
 
           if (v11)
           {
@@ -77,13 +77,13 @@ LABEL_12:
 
 - (ENExposureNotification)notification
 {
-  v3 = [(ENUIExposureDetailsViewController *)self specifier];
-  v4 = [v3 userInfo];
+  specifier = [(ENUIExposureDetailsViewController *)self specifier];
+  userInfo = [specifier userInfo];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v6 = [(ENUIExposureDetailsViewController *)self specifier];
-  v7 = [v6 userInfo];
+  specifier2 = [(ENUIExposureDetailsViewController *)self specifier];
+  userInfo2 = [specifier2 userInfo];
   if (isKindOfClass)
   {
     goto LABEL_4;
@@ -94,19 +94,19 @@ LABEL_12:
 
   if (v8)
   {
-    v9 = [(ENUIExposureDetailsViewController *)self specifier];
-    v6 = [v9 userInfo];
+    specifier3 = [(ENUIExposureDetailsViewController *)self specifier];
+    specifier2 = [specifier3 userInfo];
 
-    v7 = [v6 objectForKey:@"notification"];
+    userInfo2 = [specifier2 objectForKey:@"notification"];
 LABEL_4:
 
     goto LABEL_6;
   }
 
-  v7 = 0;
+  userInfo2 = 0;
 LABEL_6:
 
-  return v7;
+  return userInfo2;
 }
 
 - (id)specifiers
@@ -118,44 +118,44 @@ LABEL_6:
     goto LABEL_2;
   }
 
-  v6 = [(ENUIExposureDetailsViewController *)self notification];
+  notification = [(ENUIExposureDetailsViewController *)self notification];
 
-  if (v6)
+  if (notification)
   {
-    v7 = [(ENUIExposureDetailsViewController *)self agencyModel];
-    if (v7)
+    agencyModel = [(ENUIExposureDetailsViewController *)self agencyModel];
+    if (agencyModel)
     {
-      v8 = v7;
+      v8 = agencyModel;
       v9 = [PSSpecifier preferenceSpecifierNamed:&stru_2D818 target:0 set:0 get:0 detail:0 cell:-1 edit:0];
       v10 = objc_opt_class();
       v28 = PSCellClassKey;
       [v9 setObject:v10 forKeyedSubscript:?];
       v29 = ENUILocalizedString();
-      v11 = [v8 header];
-      v12 = [v11 title];
-      v13 = [v8 header];
-      v14 = [v13 subtitle];
-      v15 = [NSString stringWithFormat:v29, v12, v14];
+      header = [v8 header];
+      title = [header title];
+      header2 = [v8 header];
+      subtitle = [header2 subtitle];
+      v15 = [NSString stringWithFormat:v29, title, subtitle];
 
       v16 = objc_alloc_init(ENUIExposureDetailHeaderConfiguration);
       [(ENUIExposureDetailHeaderConfiguration *)v16 setName:v15];
-      v17 = [(ENUIExposureDetailsViewController *)self notification];
-      v18 = [v17 localizedSubjectText];
-      [(ENUIExposureDetailHeaderConfiguration *)v16 setTitle:v18];
+      notification2 = [(ENUIExposureDetailsViewController *)self notification];
+      localizedSubjectText = [notification2 localizedSubjectText];
+      [(ENUIExposureDetailHeaderConfiguration *)v16 setTitle:localizedSubjectText];
 
-      v19 = [(ENUIExposureDetailsViewController *)self notification];
-      v20 = [v19 localizedDetailBodyText];
-      [(ENUIExposureDetailHeaderConfiguration *)v16 setMessage:v20];
+      notification3 = [(ENUIExposureDetailsViewController *)self notification];
+      localizedDetailBodyText = [notification3 localizedDetailBodyText];
+      [(ENUIExposureDetailHeaderConfiguration *)v16 setMessage:localizedDetailBodyText];
 
-      v21 = [(ENUIExposureDetailsViewController *)self notification];
-      v22 = [v21 learnMoreURL];
-      [(ENUIExposureDetailHeaderConfiguration *)v16 setLearnMoreURL:v22];
+      notification4 = [(ENUIExposureDetailsViewController *)self notification];
+      learnMoreURL = [notification4 learnMoreURL];
+      [(ENUIExposureDetailHeaderConfiguration *)v16 setLearnMoreURL:learnMoreURL];
 
       [v9 setUserInfo:v16];
       v23 = [PSSpecifier preferenceSpecifierNamed:&stru_2D818 target:0 set:0 get:0 detail:0 cell:-1 edit:0];
       [v23 setObject:objc_opt_class() forKeyedSubscript:v28];
-      v24 = [v8 name];
-      [v23 setObject:v24 forKeyedSubscript:PSTitleKey];
+      name = [v8 name];
+      [v23 setObject:name forKeyedSubscript:PSTitleKey];
 
       [v23 setUserInfo:v8];
       v30 = v9;
@@ -176,48 +176,48 @@ LABEL_7:
   return v4;
 }
 
-- (void)exposureDetailHeaderViewDidTapContinueButton:(id)a3
+- (void)exposureDetailHeaderViewDidTapContinueButton:(id)button
 {
-  v4 = [(ENUIExposureDetailsViewController *)self notification];
-  v5 = [v4 learnMoreURL];
-  if (v5)
+  notification = [(ENUIExposureDetailsViewController *)self notification];
+  learnMoreURL = [notification learnMoreURL];
+  if (learnMoreURL)
   {
-    v11 = v5;
+    regionWebsiteURL = learnMoreURL;
   }
 
   else
   {
-    v6 = [(ENUIExposureDetailsViewController *)self agencyModel];
-    v11 = [v6 regionWebsiteURL];
+    agencyModel = [(ENUIExposureDetailsViewController *)self agencyModel];
+    regionWebsiteURL = [agencyModel regionWebsiteURL];
 
-    if (!v11)
+    if (!regionWebsiteURL)
     {
-      v11 = 0;
+      regionWebsiteURL = 0;
       goto LABEL_7;
     }
   }
 
   v7 = +[UIApplication sharedApplication];
-  v8 = [v7 canOpenURL:v11];
+  v8 = [v7 canOpenURL:regionWebsiteURL];
 
   if (v8)
   {
-    v9 = +[UIApplication sharedApplication];
-    [v9 openURL:v11 options:&__NSDictionary0__struct completionHandler:0];
+    navigationController = +[UIApplication sharedApplication];
+    [navigationController openURL:regionWebsiteURL options:&__NSDictionary0__struct completionHandler:0];
     goto LABEL_8;
   }
 
 LABEL_7:
-  v9 = [(ENUIExposureDetailsViewController *)self navigationController];
-  v10 = [v9 popViewControllerAnimated:1];
+  navigationController = [(ENUIExposureDetailsViewController *)self navigationController];
+  v10 = [navigationController popViewControllerAnimated:1];
 LABEL_8:
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 cellForRowAtIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [viewCopy cellForRowAtIndexPath:pathCopy];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -230,7 +230,7 @@ LABEL_8:
   {
     v12.receiver = self;
     v12.super_class = ENUIExposureDetailsViewController;
-    v10 = [(ENUIExposureDetailsViewController *)&v12 tableView:v6 shouldHighlightRowAtIndexPath:v7];
+    v10 = [(ENUIExposureDetailsViewController *)&v12 tableView:viewCopy shouldHighlightRowAtIndexPath:pathCopy];
   }
 
   return v10;

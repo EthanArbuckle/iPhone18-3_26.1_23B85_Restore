@@ -8,7 +8,7 @@
 
 - (id)_uikit_stringByTrimmingWhitespaceAndNewlines
 {
-  v2 = [a1 length];
+  v2 = [self length];
   if (!v2)
   {
     goto LABEL_11;
@@ -25,7 +25,7 @@
       goto LABEL_10;
     }
 
-    [a1 characterAtIndex:v4 - 2];
+    [self characterAtIndex:v4 - 2];
     IsMemberOf = CFUniCharIsMemberOf();
     v4 = v5;
   }
@@ -34,7 +34,7 @@
   v7 = 0;
   do
   {
-    [a1 characterAtIndex:v7];
+    [self characterAtIndex:v7];
     if (!CFUniCharIsMemberOf())
     {
       break;
@@ -48,21 +48,21 @@
 LABEL_10:
   if (v3 != v5)
   {
-    v8 = [a1 substringWithRange:{v7, v5}];
+    selfCopy = [self substringWithRange:{v7, v5}];
   }
 
   else
   {
 LABEL_11:
-    v8 = a1;
+    selfCopy = self;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (id)_uikit_stringWithWritingDirection:()UIWebViewAdditions asOverride:
 {
-  v7 = [a1 length];
+  v7 = [self length];
   if (a3 != -1 && v7)
   {
     if (a4)
@@ -80,11 +80,11 @@ LABEL_5:
         v8 = v8;
       }
 
-      v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%C%@%C", v8, a1, 8236];
+      selfCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%C%@%C", v8, self, 8236];
       goto LABEL_14;
     }
 
-    v11 = MEMORY[0x18CFEA880]([a1 characterAtIndex:0]);
+    v11 = MEMORY[0x18CFEA880]([self characterAtIndex:0]);
     if (a3 || v11)
     {
       LODWORD(v8) = 8234;
@@ -96,17 +96,17 @@ LABEL_5:
     }
   }
 
-  v10 = a1;
+  selfCopy = self;
 LABEL_14:
 
-  return v10;
+  return selfCopy;
 }
 
 - (id)_uikit_stringByRemovingFirstMatchFromPrefixes:()UIWebViewAdditions
 {
   v18 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  if ([a1 length])
+  if ([self length])
   {
     v15 = 0u;
     v16 = 0u;
@@ -128,9 +128,9 @@ LABEL_14:
           }
 
           v10 = *(*(&v13 + 1) + 8 * i);
-          if ([a1 hasPrefix:{v10, v13}])
+          if ([self hasPrefix:{v10, v13}])
           {
-            v11 = [a1 substringFromIndex:{objc_msgSend(v10, "length")}];
+            selfCopy = [self substringFromIndex:{objc_msgSend(v10, "length")}];
 
             goto LABEL_13;
           }
@@ -147,10 +147,10 @@ LABEL_14:
     }
   }
 
-  v11 = a1;
+  selfCopy = self;
 LABEL_13:
 
-  return v11;
+  return selfCopy;
 }
 
 @end

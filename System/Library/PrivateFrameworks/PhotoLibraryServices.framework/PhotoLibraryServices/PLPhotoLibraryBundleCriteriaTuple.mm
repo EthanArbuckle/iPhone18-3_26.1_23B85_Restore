@@ -1,6 +1,6 @@
 @interface PLPhotoLibraryBundleCriteriaTuple
-- (BOOL)isEqual:(id)a3;
-- (PLPhotoLibraryBundleCriteriaTuple)initWithBundle:(id)a3 withCriteria:(id)a4 withProgressReportBlock:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (PLPhotoLibraryBundleCriteriaTuple)initWithBundle:(id)bundle withCriteria:(id)criteria withProgressReportBlock:(id)block;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -9,19 +9,19 @@
 
 - (unint64_t)hash
 {
-  v3 = [(PLPhotoLibraryBundleCriteriaTuple *)self bundle];
-  v4 = [v3 libraryURL];
-  v5 = [v4 hash];
-  v6 = [(PLPhotoLibraryBundleCriteriaTuple *)self criteria];
-  v7 = [v6 hash];
+  bundle = [(PLPhotoLibraryBundleCriteriaTuple *)self bundle];
+  libraryURL = [bundle libraryURL];
+  v5 = [libraryURL hash];
+  criteria = [(PLPhotoLibraryBundleCriteriaTuple *)self criteria];
+  v7 = [criteria hash];
 
   return v7 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v13 = 1;
   }
@@ -30,19 +30,19 @@
   {
     v15.receiver = self;
     v15.super_class = PLPhotoLibraryBundleCriteriaTuple;
-    if ([(PLPhotoLibraryBundleCriteriaTuple *)&v15 isEqual:v4])
+    if ([(PLPhotoLibraryBundleCriteriaTuple *)&v15 isEqual:equalCopy])
     {
-      v5 = [(PLPhotoLibraryBundleCriteriaTuple *)self bundle];
-      v6 = [v5 libraryURL];
-      v7 = [v6 absoluteString];
-      v8 = [(PLPhotoLibraryBundleCriteriaTuple *)v4 bundle];
-      v9 = [v8 libraryURL];
-      v10 = [v9 absoluteString];
-      if ([v7 isEqualToString:v10])
+      bundle = [(PLPhotoLibraryBundleCriteriaTuple *)self bundle];
+      libraryURL = [bundle libraryURL];
+      absoluteString = [libraryURL absoluteString];
+      bundle2 = [(PLPhotoLibraryBundleCriteriaTuple *)equalCopy bundle];
+      libraryURL2 = [bundle2 libraryURL];
+      absoluteString2 = [libraryURL2 absoluteString];
+      if ([absoluteString isEqualToString:absoluteString2])
       {
-        v11 = [(PLPhotoLibraryBundleCriteriaTuple *)self criteria];
-        v12 = [(PLPhotoLibraryBundleCriteriaTuple *)v4 criteria];
-        v13 = [v11 isEqual:v12];
+        criteria = [(PLPhotoLibraryBundleCriteriaTuple *)self criteria];
+        criteria2 = [(PLPhotoLibraryBundleCriteriaTuple *)equalCopy criteria];
+        v13 = [criteria isEqual:criteria2];
       }
 
       else
@@ -63,26 +63,26 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(PLBackgroundJobCriteria *)self->_criteria shortCode];
-  v5 = [v3 stringWithFormat:@"[%@] - %@", v4, self->_bundle];
+  shortCode = [(PLBackgroundJobCriteria *)self->_criteria shortCode];
+  v5 = [v3 stringWithFormat:@"[%@] - %@", shortCode, self->_bundle];
 
   return v5;
 }
 
-- (PLPhotoLibraryBundleCriteriaTuple)initWithBundle:(id)a3 withCriteria:(id)a4 withProgressReportBlock:(id)a5
+- (PLPhotoLibraryBundleCriteriaTuple)initWithBundle:(id)bundle withCriteria:(id)criteria withProgressReportBlock:(id)block
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  bundleCopy = bundle;
+  criteriaCopy = criteria;
+  blockCopy = block;
   v17.receiver = self;
   v17.super_class = PLPhotoLibraryBundleCriteriaTuple;
   v12 = [(PLPhotoLibraryBundleCriteriaTuple *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_bundle, a3);
-    objc_storeStrong(&v13->_criteria, a4);
-    v14 = _Block_copy(v11);
+    objc_storeStrong(&v12->_bundle, bundle);
+    objc_storeStrong(&v13->_criteria, criteria);
+    v14 = _Block_copy(blockCopy);
     progressBlock = v13->_progressBlock;
     v13->_progressBlock = v14;
   }

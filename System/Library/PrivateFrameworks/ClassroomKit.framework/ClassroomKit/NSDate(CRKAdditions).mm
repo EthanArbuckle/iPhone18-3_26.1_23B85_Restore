@@ -9,16 +9,16 @@
 - (BOOL)crk_isInPast
 {
   v2 = objc_opt_new();
-  v3 = [a1 earlierDate:v2];
-  v4 = v3 == a1;
+  v3 = [self earlierDate:v2];
+  v4 = v3 == self;
 
   return v4;
 }
 
 - (id)crk_JSONStringValue
 {
-  v2 = [objc_opt_class() crk_sharedDateFormatter];
-  v3 = [v2 stringFromDate:a1];
+  crk_sharedDateFormatter = [objc_opt_class() crk_sharedDateFormatter];
+  v3 = [crk_sharedDateFormatter stringFromDate:self];
 
   return v3;
 }

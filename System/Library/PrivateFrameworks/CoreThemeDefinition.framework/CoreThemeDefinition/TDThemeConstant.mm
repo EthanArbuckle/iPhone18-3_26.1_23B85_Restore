@@ -3,18 +3,18 @@
 - (id)copyDataFromAttributes;
 - (id)displayName;
 - (unsigned)identifier;
-- (void)setAttributesFromCopyData:(id)a3;
-- (void)setConstantName:(id)a3;
-- (void)setDisplayName:(id)a3;
-- (void)setIdentifier:(unsigned int)a3;
+- (void)setAttributesFromCopyData:(id)data;
+- (void)setConstantName:(id)name;
+- (void)setDisplayName:(id)name;
+- (void)setIdentifier:(unsigned int)identifier;
 @end
 
 @implementation TDThemeConstant
 
-- (void)setIdentifier:(unsigned int)a3
+- (void)setIdentifier:(unsigned int)identifier
 {
   [(TDThemeConstant *)self willChangeValueForKey:@"identifier"];
-  self->_identifier = a3;
+  self->_identifier = identifier;
 
   [(TDThemeConstant *)self didChangeValueForKey:@"identifier"];
 }
@@ -27,12 +27,12 @@
   return identifier;
 }
 
-- (void)setDisplayName:(id)a3
+- (void)setDisplayName:(id)name
 {
-  if (a3)
+  if (name)
   {
     [(TDThemeConstant *)self willChangeValueForKey:@"displayName"];
-    [(TDThemeConstant *)self setPrimitiveValue:a3 forKey:@"displayName"];
+    [(TDThemeConstant *)self setPrimitiveValue:name forKey:@"displayName"];
 
     [(TDThemeConstant *)self didChangeValueForKey:@"displayName"];
   }
@@ -46,12 +46,12 @@
   return v3;
 }
 
-- (void)setConstantName:(id)a3
+- (void)setConstantName:(id)name
 {
-  if (a3)
+  if (name)
   {
     [(TDThemeConstant *)self willChangeValueForKey:@"constantName"];
-    [(TDThemeConstant *)self setPrimitiveValue:a3 forKey:@"constantName"];
+    [(TDThemeConstant *)self setPrimitiveValue:name forKey:@"constantName"];
 
     [(TDThemeConstant *)self didChangeValueForKey:@"constantName"];
   }
@@ -91,9 +91,9 @@
   return [v7 copy];
 }
 
-- (void)setAttributesFromCopyData:(id)a3
+- (void)setAttributesFromCopyData:(id)data
 {
-  v4 = [MEMORY[0x277CCAC58] propertyListWithData:a3 options:0 format:0 error:0];
+  v4 = [MEMORY[0x277CCAC58] propertyListWithData:data options:0 format:0 error:0];
   v5 = [v4 objectForKey:@"constantName"];
   if (v5)
   {

@@ -1,15 +1,15 @@
 @interface PKPassShareSectionController
-- (PKPassShareSectionController)initWithIdentifiers:(id)a3;
-- (id)layoutWithLayoutEnvironment:(id)a3 sectionIdentifier:(id)a4;
+- (PKPassShareSectionController)initWithIdentifiers:(id)identifiers;
+- (id)layoutWithLayoutEnvironment:(id)environment sectionIdentifier:(id)identifier;
 @end
 
 @implementation PKPassShareSectionController
 
-- (PKPassShareSectionController)initWithIdentifiers:(id)a3
+- (PKPassShareSectionController)initWithIdentifiers:(id)identifiers
 {
   v6.receiver = self;
   v6.super_class = PKPassShareSectionController;
-  v3 = [(PKPaymentSetupListSectionController *)&v6 initWithIdentifiers:a3];
+  v3 = [(PKPaymentSetupListSectionController *)&v6 initWithIdentifiers:identifiers];
   v4 = v3;
   if (v3)
   {
@@ -19,12 +19,12 @@
   return v4;
 }
 
-- (id)layoutWithLayoutEnvironment:(id)a3 sectionIdentifier:(id)a4
+- (id)layoutWithLayoutEnvironment:(id)environment sectionIdentifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   v19.receiver = self;
   v19.super_class = PKPassShareSectionController;
-  v7 = [(PKPaymentSetupListSectionController *)&v19 layoutWithLayoutEnvironment:a3 sectionIdentifier:v6];
+  v7 = [(PKPaymentSetupListSectionController *)&v19 layoutWithLayoutEnvironment:environment sectionIdentifier:identifierCopy];
   [v7 contentInsets];
   v10 = v9;
   v12 = v11;
@@ -37,7 +37,7 @@
   else
   {
     v15 = v8;
-    v16 = [(PKPaymentSetupListSectionController *)self headerAttributedStringForIdentifier:v6];
+    v16 = [(PKPaymentSetupListSectionController *)self headerAttributedStringForIdentifier:identifierCopy];
 
     if (v16)
     {
@@ -51,7 +51,7 @@
 
     if (!self->_useCompactInsets)
     {
-      v17 = [(PKPaymentSetupListSectionController *)self footerAttributedStringForIdentifier:v6];
+      v17 = [(PKPaymentSetupListSectionController *)self footerAttributedStringForIdentifier:identifierCopy];
 
       if (v17)
       {

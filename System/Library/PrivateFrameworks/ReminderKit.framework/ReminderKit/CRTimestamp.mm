@@ -1,146 +1,146 @@
 @interface CRTimestamp
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToTimestamp:(id)a3;
-- (CRTimestamp)initWithCRCoder:(id)a3;
-- (CRTimestamp)initWithProtobufTimestamp:(const void *)a3 decoder:(id)a4;
-- (CRTimestamp)initWithReplica:(id)a3 andCounter:(int64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToTimestamp:(id)timestamp;
+- (CRTimestamp)initWithCRCoder:(id)coder;
+- (CRTimestamp)initWithProtobufTimestamp:(const void *)timestamp decoder:(id)decoder;
+- (CRTimestamp)initWithReplica:(id)replica andCounter:(int64_t)counter;
 - (NSString)description;
-- (id)earlierTimestamp:(id)a3;
-- (id)laterTimestamp:(id)a3;
+- (id)earlierTimestamp:(id)timestamp;
+- (id)laterTimestamp:(id)timestamp;
 - (id)nextTimestamp;
-- (id)nextTimestampForReplica:(id)a3;
+- (id)nextTimestampForReplica:(id)replica;
 - (id)shortDescription;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 - (unint64_t)hash;
-- (void)encodeIntoProtobufTimestamp:(void *)a3 coder:(id)a4;
-- (void)encodeWithCRCoder:(id)a3;
-- (void)mergeWith:(id)a3;
+- (void)encodeIntoProtobufTimestamp:(void *)timestamp coder:(id)coder;
+- (void)encodeWithCRCoder:(id)coder;
+- (void)mergeWith:(id)with;
 @end
 
 @implementation CRTimestamp
 
-- (CRTimestamp)initWithCRCoder:(id)a3
+- (CRTimestamp)initWithCRCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 currentDocumentObjectForDecoding];
-  if (*(v5 + 48) == 7)
+  coderCopy = coder;
+  currentDocumentObjectForDecoding = [coderCopy currentDocumentObjectForDecoding];
+  if (*(currentDocumentObjectForDecoding + 48) == 7)
   {
-    self = [(CRTimestamp *)self initWithProtobufTimestamp:*(v5 + 40) decoder:v4];
-    v6 = self;
+    self = [(CRTimestamp *)self initWithProtobufTimestamp:*(currentDocumentObjectForDecoding + 40) decoder:coderCopy];
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)encodeWithCRCoder:(id)a3
+- (void)encodeWithCRCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [v6 currentDocumentObjectForEncoding];
-  v5 = v4;
-  if (*(v4 + 48) != 7)
+  coderCopy = coder;
+  currentDocumentObjectForEncoding = [coderCopy currentDocumentObjectForEncoding];
+  v5 = currentDocumentObjectForEncoding;
+  if (*(currentDocumentObjectForEncoding + 48) != 7)
   {
-    CRDT::Document_DocObject::clear_contents(v4);
+    CRDT::Document_DocObject::clear_contents(currentDocumentObjectForEncoding);
     *(v5 + 48) = 7;
     operator new();
   }
 
-  [(CRTimestamp *)self encodeIntoProtobufTimestamp:*(v4 + 40) coder:v6];
+  [(CRTimestamp *)self encodeIntoProtobufTimestamp:*(currentDocumentObjectForEncoding + 40) coder:coderCopy];
 }
 
-- (CRTimestamp)initWithProtobufTimestamp:(const void *)a3 decoder:(id)a4
+- (CRTimestamp)initWithProtobufTimestamp:(const void *)timestamp decoder:(id)decoder
 {
-  v6 = a4;
+  decoderCopy = decoder;
   v7 = [(CRTimestamp *)self init];
   if (v7)
   {
-    v8 = *(a3 + 8);
+    v8 = *(timestamp + 8);
     if (v8)
     {
-      v9 = [v6 decodeUUIDFromUUIDIndex:*(a3 + 5)];
+      v9 = [decoderCopy decodeUUIDFromUUIDIndex:*(timestamp + 5)];
       replica = v7->_replica;
       v7->_replica = v9;
 
-      v8 = *(a3 + 8);
+      v8 = *(timestamp + 8);
     }
 
     if ((v8 & 2) != 0)
     {
-      v7->_counter = *(a3 + 6);
+      v7->_counter = *(timestamp + 6);
     }
   }
 
   return v7;
 }
 
-- (void)encodeIntoProtobufTimestamp:(void *)a3 coder:(id)a4
+- (void)encodeIntoProtobufTimestamp:(void *)timestamp coder:(id)coder
 {
-  v10 = a4;
-  v6 = [(CRTimestamp *)self replica];
+  coderCopy = coder;
+  replica = [(CRTimestamp *)self replica];
 
-  if (v6)
+  if (replica)
   {
-    v7 = [(CRTimestamp *)self replica];
-    v8 = [v10 encodeUUIDIndexFromUUID:v7];
-    *(a3 + 8) |= 1u;
-    *(a3 + 5) = v8;
+    replica2 = [(CRTimestamp *)self replica];
+    v8 = [coderCopy encodeUUIDIndexFromUUID:replica2];
+    *(timestamp + 8) |= 1u;
+    *(timestamp + 5) = v8;
   }
 
-  v9 = [(CRTimestamp *)self counter];
-  *(a3 + 8) |= 2u;
-  *(a3 + 6) = v9;
+  counter = [(CRTimestamp *)self counter];
+  *(timestamp + 8) |= 2u;
+  *(timestamp + 6) = counter;
 }
 
-- (CRTimestamp)initWithReplica:(id)a3 andCounter:(int64_t)a4
+- (CRTimestamp)initWithReplica:(id)replica andCounter:(int64_t)counter
 {
-  v7 = a3;
+  replicaCopy = replica;
   v11.receiver = self;
   v11.super_class = CRTimestamp;
   v8 = [(CRTimestamp *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_replica, a3);
-    v9->_counter = a4;
+    objc_storeStrong(&v8->_replica, replica);
+    v9->_counter = counter;
   }
 
   return v9;
 }
 
-- (void)mergeWith:(id)a3
+- (void)mergeWith:(id)with
 {
-  v5 = a3;
-  if ([v5 compare:self] == 1)
+  withCopy = with;
+  if ([withCopy compare:self] == 1)
   {
-    v4 = [v5 replica];
-    [(CRTimestamp *)self setReplica:v4];
+    replica = [withCopy replica];
+    [(CRTimestamp *)self setReplica:replica];
 
-    -[CRTimestamp setCounter:](self, "setCounter:", [v5 counter]);
+    -[CRTimestamp setCounter:](self, "setCounter:", [withCopy counter]);
   }
 }
 
-- (id)nextTimestampForReplica:(id)a3
+- (id)nextTimestampForReplica:(id)replica
 {
-  v4 = a3;
-  v5 = [(CRTimestamp *)self replica];
-  v6 = [v5 CR_compare:v4];
+  replicaCopy = replica;
+  replica = [(CRTimestamp *)self replica];
+  v6 = [replica CR_compare:replicaCopy];
 
   v7 = [CRTimestamp alloc];
   if (v6 == -1)
   {
-    v8 = [(CRTimestamp *)self counter];
+    counter = [(CRTimestamp *)self counter];
   }
 
   else
   {
-    v8 = [(CRTimestamp *)self counter]+ 1;
+    counter = [(CRTimestamp *)self counter]+ 1;
   }
 
-  v9 = [(CRTimestamp *)v7 initWithReplica:v4 andCounter:v8];
+  v9 = [(CRTimestamp *)v7 initWithReplica:replicaCopy andCounter:counter];
 
   return v9;
 }
@@ -148,30 +148,30 @@
 - (id)nextTimestamp
 {
   v3 = [CRTimestamp alloc];
-  v4 = [(CRTimestamp *)self replica];
-  v5 = [(CRTimestamp *)v3 initWithReplica:v4 andCounter:[(CRTimestamp *)self counter]+ 1];
+  replica = [(CRTimestamp *)self replica];
+  v5 = [(CRTimestamp *)v3 initWithReplica:replica andCounter:[(CRTimestamp *)self counter]+ 1];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CRTimestamp *)self isEqualToTimestamp:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CRTimestamp *)self isEqualToTimestamp:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToTimestamp:(id)a3
+- (BOOL)isEqualToTimestamp:(id)timestamp
 {
-  v4 = a3;
-  v5 = [(CRTimestamp *)self counter];
-  if (v5 == [v4 counter])
+  timestampCopy = timestamp;
+  counter = [(CRTimestamp *)self counter];
+  if (counter == [timestampCopy counter])
   {
-    v6 = [(CRTimestamp *)self replica];
-    v7 = [v4 replica];
-    v8 = [v6 isEqual:v7];
+    replica = [(CRTimestamp *)self replica];
+    replica2 = [timestampCopy replica];
+    v8 = [replica isEqual:replica2];
   }
 
   else
@@ -184,28 +184,28 @@
 
 - (unint64_t)hash
 {
-  v3 = [(CRTimestamp *)self replica];
-  v4 = [v3 hash];
-  v5 = [(CRTimestamp *)self counter];
+  replica = [(CRTimestamp *)self replica];
+  v4 = [replica hash];
+  counter = [(CRTimestamp *)self counter];
 
-  return v5 ^ v4;
+  return counter ^ v4;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(CRTimestamp *)self counter];
-  if (v5 == [v4 counter])
+  compareCopy = compare;
+  counter = [(CRTimestamp *)self counter];
+  if (counter == [compareCopy counter])
   {
-    v6 = [(CRTimestamp *)self replica];
-    v7 = [v4 replica];
-    v8 = [v6 CR_compare:v7];
+    replica = [(CRTimestamp *)self replica];
+    replica2 = [compareCopy replica];
+    v8 = [replica CR_compare:replica2];
   }
 
   else
   {
-    v9 = [(CRTimestamp *)self counter];
-    if (v9 > [v4 counter])
+    counter2 = [(CRTimestamp *)self counter];
+    if (counter2 > [compareCopy counter])
     {
       v8 = 1;
     }
@@ -219,28 +219,28 @@
   return v8;
 }
 
-- (id)earlierTimestamp:(id)a3
+- (id)earlierTimestamp:(id)timestamp
 {
-  v4 = a3;
-  if ([(CRTimestamp *)self compare:v4]== 1)
+  timestampCopy = timestamp;
+  if ([(CRTimestamp *)self compare:timestampCopy]== 1)
   {
-    self = v4;
+    self = timestampCopy;
   }
 
-  v5 = self;
+  selfCopy = self;
 
   return self;
 }
 
-- (id)laterTimestamp:(id)a3
+- (id)laterTimestamp:(id)timestamp
 {
-  v4 = a3;
-  if ([(CRTimestamp *)self compare:v4]== -1)
+  timestampCopy = timestamp;
+  if ([(CRTimestamp *)self compare:timestampCopy]== -1)
   {
-    self = v4;
+    self = timestampCopy;
   }
 
-  v5 = self;
+  selfCopy = self;
 
   return self;
 }
@@ -250,9 +250,9 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(CRTimestamp *)self counter];
-  v7 = [(CRTimestamp *)self replica];
-  v8 = [v3 stringWithFormat:@"<%@ %p %ld:%@>", v5, self, v6, v7];
+  counter = [(CRTimestamp *)self counter];
+  replica = [(CRTimestamp *)self replica];
+  v8 = [v3 stringWithFormat:@"<%@ %p %ld:%@>", v5, self, counter, replica];
 
   return v8;
 }
@@ -260,10 +260,10 @@
 - (id)shortDescription
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(CRTimestamp *)self counter];
-  v5 = [(CRTimestamp *)self replica];
-  v6 = [v5 CR_shortDescription];
-  v7 = [v3 stringWithFormat:@"%ld:%@", v4, v6];
+  counter = [(CRTimestamp *)self counter];
+  replica = [(CRTimestamp *)self replica];
+  cR_shortDescription = [replica CR_shortDescription];
+  v7 = [v3 stringWithFormat:@"%ld:%@", counter, cR_shortDescription];
 
   return v7;
 }

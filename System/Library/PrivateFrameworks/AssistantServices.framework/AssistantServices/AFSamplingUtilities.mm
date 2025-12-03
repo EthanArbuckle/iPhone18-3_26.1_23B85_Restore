@@ -1,35 +1,35 @@
 @interface AFSamplingUtilities
-+ (BOOL)deleteItemAtFilePath:(id)a3 error:(id *)a4;
-+ (BOOL)fileExistsAndNotEmpty:(id)a3 samplingComponent:(id)a4;
-+ (BOOL)isFileNameValid:(id)a3;
-+ (BOOL)isFileOlderThanAgeInSeconds:(double)a3 filePath:(id)a4 samplingComponent:(id)a5;
++ (BOOL)deleteItemAtFilePath:(id)path error:(id *)error;
++ (BOOL)fileExistsAndNotEmpty:(id)empty samplingComponent:(id)component;
++ (BOOL)isFileNameValid:(id)valid;
++ (BOOL)isFileOlderThanAgeInSeconds:(double)seconds filePath:(id)path samplingComponent:(id)component;
 + (id)createSamplingDirectory;
 + (id)dateFormatter;
-+ (id)deleteItemAtFilePath:(id)a3;
++ (id)deleteItemAtFilePath:(id)path;
 + (id)sampledLibraryDirectoryPath;
-+ (int64_t)calculateFileNameAgeInDays:(id)a3;
++ (int64_t)calculateFileNameAgeInDays:(id)days;
 + (void)deleteAllSamplingData;
 @end
 
 @implementation AFSamplingUtilities
 
-+ (BOOL)fileExistsAndNotEmpty:(id)a3 samplingComponent:(id)a4
++ (BOOL)fileExistsAndNotEmpty:(id)empty samplingComponent:(id)component
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
-  if ([v7 fileExistsAtPath:v5])
+  emptyCopy = empty;
+  componentCopy = component;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  if ([defaultManager fileExistsAtPath:emptyCopy])
   {
     v20 = 0;
-    v8 = [v7 attributesOfItemAtPath:v5 error:&v20];
+    v8 = [defaultManager attributesOfItemAtPath:emptyCopy error:&v20];
     v9 = v20;
     if (v8)
     {
       v10 = [v8 objectForKey:*MEMORY[0x1E696A3B8]];
-      v11 = [v10 unsignedLongLongValue];
-      v12 = v11 != 0;
-      if (!v11)
+      unsignedLongLongValue = [v10 unsignedLongLongValue];
+      v12 = unsignedLongLongValue != 0;
+      if (!unsignedLongLongValue)
       {
         v13 = AFSiriLogContextSpeech;
         if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_ERROR))
@@ -37,9 +37,9 @@
           *buf = 136315650;
           v22 = "+[AFSamplingUtilities fileExistsAndNotEmpty:samplingComponent:]";
           v23 = 2112;
-          v24 = v6;
+          v24 = componentCopy;
           v25 = 2112;
-          v26 = v5;
+          v26 = emptyCopy;
           _os_log_error_impl(&dword_1912FE000, v13, OS_LOG_TYPE_ERROR, "%s %@ Sampling: File is empty: %@", buf, 0x20u);
         }
       }
@@ -51,15 +51,15 @@
       if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_ERROR))
       {
         v18 = v15;
-        v19 = [v9 localizedDescription];
+        localizedDescription = [v9 localizedDescription];
         *buf = 136315906;
         v22 = "+[AFSamplingUtilities fileExistsAndNotEmpty:samplingComponent:]";
         v23 = 2112;
-        v24 = v6;
+        v24 = componentCopy;
         v25 = 2112;
-        v26 = v5;
+        v26 = emptyCopy;
         v27 = 2112;
-        v28 = v19;
+        v28 = localizedDescription;
         _os_log_error_impl(&dword_1912FE000, v18, OS_LOG_TYPE_ERROR, "%s %@ Sampling: Failed to resolve attributes for file: %@, error: %@", buf, 0x2Au);
       }
 
@@ -75,9 +75,9 @@
       *buf = 136315650;
       v22 = "+[AFSamplingUtilities fileExistsAndNotEmpty:samplingComponent:]";
       v23 = 2112;
-      v24 = v6;
+      v24 = componentCopy;
       v25 = 2112;
-      v26 = v5;
+      v26 = emptyCopy;
       _os_log_error_impl(&dword_1912FE000, v14, OS_LOG_TYPE_ERROR, "%s %@ Sampling: No file at path: %@", buf, 0x20u);
     }
 
@@ -92,27 +92,27 @@
 {
   v3 = objc_alloc_init(MEMORY[0x1E696AB78]);
   v4 = MEMORY[0x1E695DFE8];
-  v5 = [a1 timezone];
-  v6 = [v4 timeZoneWithAbbreviation:v5];
+  timezone = [self timezone];
+  v6 = [v4 timeZoneWithAbbreviation:timezone];
   [v3 setTimeZone:v6];
 
-  v7 = [a1 sampledSubDirectoryNameFormat];
-  [v3 setDateFormat:v7];
+  sampledSubDirectoryNameFormat = [self sampledSubDirectoryNameFormat];
+  [v3 setDateFormat:sampledSubDirectoryNameFormat];
 
   return v3;
 }
 
-+ (int64_t)calculateFileNameAgeInDays:(id)a3
++ (int64_t)calculateFileNameAgeInDays:(id)days
 {
-  v3 = a3;
-  v4 = [objc_opt_class() dateFormatter];
-  v5 = [v4 dateFromString:v3];
+  daysCopy = days;
+  dateFormatter = [objc_opt_class() dateFormatter];
+  v5 = [dateFormatter dateFromString:daysCopy];
 
   if (v5)
   {
-    v6 = [MEMORY[0x1E695DF00] date];
-    v7 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v8 = [v7 components:16 fromDate:v5 toDate:v6 options:0];
+    date = [MEMORY[0x1E695DF00] date];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    v8 = [currentCalendar components:16 fromDate:v5 toDate:date options:0];
     v9 = [v8 day];
   }
 
@@ -124,17 +124,17 @@
   return v9;
 }
 
-+ (BOOL)isFileNameValid:(id)a3
++ (BOOL)isFileNameValid:(id)valid
 {
-  v3 = a3;
-  v4 = [v3 length];
-  v5 = [objc_opt_class() sampledSubDirectoryNameFormat];
-  v6 = [v5 length];
+  validCopy = valid;
+  v4 = [validCopy length];
+  sampledSubDirectoryNameFormat = [objc_opt_class() sampledSubDirectoryNameFormat];
+  v6 = [sampledSubDirectoryNameFormat length];
 
   if (v4 == v6)
   {
-    v7 = [objc_opt_class() dateFormatter];
-    v8 = [v7 dateFromString:v3];
+    dateFormatter = [objc_opt_class() dateFormatter];
+    v8 = [dateFormatter dateFromString:validCopy];
 
     v9 = v8 != 0;
   }
@@ -147,14 +147,14 @@
   return v9;
 }
 
-+ (BOOL)isFileOlderThanAgeInSeconds:(double)a3 filePath:(id)a4 samplingComponent:(id)a5
++ (BOOL)isFileOlderThanAgeInSeconds:(double)seconds filePath:(id)path samplingComponent:(id)component
 {
   v30 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
-  v9 = [MEMORY[0x1E696AC08] defaultManager];
+  pathCopy = path;
+  componentCopy = component;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v21 = 0;
-  v10 = [v9 attributesOfItemAtPath:v7 error:&v21];
+  v10 = [defaultManager attributesOfItemAtPath:pathCopy error:&v21];
   v11 = v21;
 
   if (!v10)
@@ -170,9 +170,9 @@ LABEL_7:
     *buf = 136315906;
     v23 = "+[AFSamplingUtilities isFileOlderThanAgeInSeconds:filePath:samplingComponent:]";
     v24 = 2112;
-    v25 = v8;
+    v25 = componentCopy;
     v26 = 2112;
-    v27 = v7;
+    v27 = pathCopy;
     v28 = 2112;
     v29 = v11;
     v17 = "%s %@ Sampling: Failed to resolve attributes for file: %@, error: %@";
@@ -181,11 +181,11 @@ LABEL_10:
     goto LABEL_7;
   }
 
-  v12 = [v10 fileCreationDate];
-  [v12 timeIntervalSinceNow];
+  fileCreationDate = [v10 fileCreationDate];
+  [fileCreationDate timeIntervalSinceNow];
   v14 = fabs(v13);
 
-  if (v14 <= a3)
+  if (v14 <= seconds)
   {
     v16 = AFSiriLogContextUtility;
     if (!os_log_type_enabled(AFSiriLogContextUtility, OS_LOG_TYPE_ERROR))
@@ -197,11 +197,11 @@ LABEL_10:
     *buf = 136315906;
     v23 = "+[AFSamplingUtilities isFileOlderThanAgeInSeconds:filePath:samplingComponent:]";
     v24 = 2112;
-    v25 = v8;
+    v25 = componentCopy;
     v26 = 2048;
     v27 = rintf(v20);
     v28 = 2112;
-    v29 = v7;
+    v29 = pathCopy;
     v17 = "%s %@ Sampling: File ineligible for upload as it is only %ld minutes old: %@";
     goto LABEL_10;
   }
@@ -220,21 +220,21 @@ LABEL_8:
   if (os_log_type_enabled(AFSiriLogContextUtility, OS_LOG_TYPE_INFO))
   {
     v4 = v3;
-    v5 = [a1 component];
+    component = [self component];
     v21 = 136315394;
     v22 = "+[AFSamplingUtilities deleteAllSamplingData]";
     v23 = 2112;
-    v24 = v5;
+    v24 = component;
     _os_log_impl(&dword_1912FE000, v4, OS_LOG_TYPE_INFO, "%s %@ Sampling - Deletion: Deleting all sampling data.", &v21, 0x16u);
   }
 
   v6 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, 1uLL, 1);
-  v7 = [v6 firstObject];
+  firstObject = [v6 firstObject];
 
-  v8 = [a1 sampledCachesSubDirectoryPath];
-  v9 = [v7 stringByAppendingPathComponent:v8];
+  sampledCachesSubDirectoryPath = [self sampledCachesSubDirectoryPath];
+  v9 = [firstObject stringByAppendingPathComponent:sampledCachesSubDirectoryPath];
 
-  v10 = [a1 deleteItemAtFilePath:v9 error:0];
+  v10 = [self deleteItemAtFilePath:v9 error:0];
   v11 = AFSiriLogContextUtility;
   if (v10)
   {
@@ -244,11 +244,11 @@ LABEL_8:
     }
 
     v12 = v11;
-    v13 = [a1 component];
+    component2 = [self component];
     v21 = 136315650;
     v22 = "+[AFSamplingUtilities deleteAllSamplingData]";
     v23 = 2112;
-    v24 = v13;
+    v24 = component2;
     v25 = 2112;
     v26 = v9;
     _os_log_impl(&dword_1912FE000, v12, OS_LOG_TYPE_INFO, "%s %@ Sampling - Deletion: Successfully deleted sampling cache: %@", &v21, 0x20u);
@@ -258,11 +258,11 @@ LABEL_8:
   if (os_log_type_enabled(AFSiriLogContextUtility, OS_LOG_TYPE_ERROR))
   {
     v12 = v11;
-    v13 = [a1 component];
+    component2 = [self component];
     v21 = 136315650;
     v22 = "+[AFSamplingUtilities deleteAllSamplingData]";
     v23 = 2112;
-    v24 = v13;
+    v24 = component2;
     v25 = 2112;
     v26 = v9;
     _os_log_error_impl(&dword_1912FE000, v12, OS_LOG_TYPE_ERROR, "%s %@ Sampling - Deletion: Failed to delete sampling cache: %@", &v21, 0x20u);
@@ -270,8 +270,8 @@ LABEL_6:
   }
 
 LABEL_8:
-  v14 = [a1 sampledLibraryDirectoryPath];
-  v15 = [a1 deleteItemAtFilePath:v14 error:0];
+  sampledLibraryDirectoryPath = [self sampledLibraryDirectoryPath];
+  v15 = [self deleteItemAtFilePath:sampledLibraryDirectoryPath error:0];
 
   v16 = AFSiriLogContextUtility;
   if ((v15 & 1) == 0)
@@ -282,14 +282,14 @@ LABEL_8:
     }
 
     v17 = v16;
-    v18 = [a1 component];
-    v19 = [a1 sampledLibraryDirectoryPath];
+    component3 = [self component];
+    sampledLibraryDirectoryPath2 = [self sampledLibraryDirectoryPath];
     v21 = 136315650;
     v22 = "+[AFSamplingUtilities deleteAllSamplingData]";
     v23 = 2112;
-    v24 = v18;
+    v24 = component3;
     v25 = 2112;
-    v26 = v19;
+    v26 = sampledLibraryDirectoryPath2;
     _os_log_error_impl(&dword_1912FE000, v17, OS_LOG_TYPE_ERROR, "%s %@ Sampling - Deletion: Failed to delete sampling directory: %@", &v21, 0x20u);
     goto LABEL_11;
   }
@@ -297,14 +297,14 @@ LABEL_8:
   if (os_log_type_enabled(AFSiriLogContextUtility, OS_LOG_TYPE_INFO))
   {
     v17 = v16;
-    v18 = [a1 component];
-    v19 = [a1 sampledLibraryDirectoryPath];
+    component3 = [self component];
+    sampledLibraryDirectoryPath2 = [self sampledLibraryDirectoryPath];
     v21 = 136315650;
     v22 = "+[AFSamplingUtilities deleteAllSamplingData]";
     v23 = 2112;
-    v24 = v18;
+    v24 = component3;
     v25 = 2112;
-    v26 = v19;
+    v26 = sampledLibraryDirectoryPath2;
     _os_log_impl(&dword_1912FE000, v17, OS_LOG_TYPE_INFO, "%s %@ Sampling - Deletion: Successfully deleted sampling directory: %@", &v21, 0x20u);
 LABEL_11:
   }
@@ -314,22 +314,22 @@ LABEL_13:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)deleteItemAtFilePath:(id)a3
++ (id)deleteItemAtFilePath:(id)path
 {
   v5 = 0;
-  [a1 deleteItemAtFilePath:a3 error:&v5];
+  [self deleteItemAtFilePath:path error:&v5];
   v3 = v5;
 
   return v3;
 }
 
-+ (BOOL)deleteItemAtFilePath:(id)a3 error:(id *)a4
++ (BOOL)deleteItemAtFilePath:(id)path error:(id *)error
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
+  pathCopy = path;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v21 = 0;
-  v8 = [v7 removeItemAtPath:v6 error:&v21];
+  v8 = [defaultManager removeItemAtPath:pathCopy error:&v21];
   v9 = v21;
   v10 = v9;
   if ((v8 & 1) == 0 && !AFIsFileNotFoundError(v9))
@@ -338,29 +338,29 @@ LABEL_13:
     if (os_log_type_enabled(AFSiriLogContextUtility, OS_LOG_TYPE_ERROR))
     {
       v17 = v15;
-      v18 = [a1 component];
+      component = [self component];
       *buf = 136315906;
       v23 = "+[AFSamplingUtilities deleteItemAtFilePath:error:]";
       v24 = 2112;
-      v25 = v18;
+      v25 = component;
       v26 = 2112;
-      v27 = v6;
+      v27 = pathCopy;
       v28 = 2112;
       v29 = v10;
       _os_log_error_impl(&dword_1912FE000, v17, OS_LOG_TYPE_ERROR, "%s %@ Sampling - Deletion: Failed to delete file: %@, error: %@", buf, 0x2Au);
 
-      if (a4)
+      if (error)
       {
         goto LABEL_7;
       }
     }
 
-    else if (a4)
+    else if (error)
     {
 LABEL_7:
       v16 = v10;
       v12 = 0;
-      *a4 = v10;
+      *error = v10;
       goto LABEL_10;
     }
 
@@ -373,13 +373,13 @@ LABEL_7:
   if (os_log_type_enabled(AFSiriLogContextUtility, OS_LOG_TYPE_INFO))
   {
     v13 = v11;
-    v14 = [a1 component];
+    component2 = [self component];
     *buf = 136315650;
     v23 = "+[AFSamplingUtilities deleteItemAtFilePath:error:]";
     v24 = 2112;
-    v25 = v14;
+    v25 = component2;
     v26 = 2112;
-    v27 = v6;
+    v27 = pathCopy;
     _os_log_impl(&dword_1912FE000, v13, OS_LOG_TYPE_INFO, "%s %@ Sampling - Deletion: Successfully deleted file: %@", buf, 0x20u);
   }
 
@@ -392,15 +392,15 @@ LABEL_10:
 + (id)createSamplingDirectory
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [a1 sampledLibraryDirectoryPath];
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
+  sampledLibraryDirectoryPath = [self sampledLibraryDirectoryPath];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v13 = 0;
-  v5 = [v4 createDirectoryAtPath:v3 withIntermediateDirectories:1 attributes:0 error:&v13];
+  v5 = [defaultManager createDirectoryAtPath:sampledLibraryDirectoryPath withIntermediateDirectories:1 attributes:0 error:&v13];
   v6 = v13;
 
   if (v5)
   {
-    v7 = v3;
+    v7 = sampledLibraryDirectoryPath;
   }
 
   else
@@ -409,13 +409,13 @@ LABEL_10:
     if (os_log_type_enabled(AFSiriLogContextUtility, OS_LOG_TYPE_ERROR))
     {
       v11 = v8;
-      v12 = [a1 component];
+      component = [self component];
       *buf = 136315906;
       v15 = "+[AFSamplingUtilities createSamplingDirectory]";
       v16 = 2112;
-      v17 = v12;
+      v17 = component;
       v18 = 2112;
-      v19 = v3;
+      v19 = sampledLibraryDirectoryPath;
       v20 = 2112;
       v21 = v6;
       _os_log_error_impl(&dword_1912FE000, v11, OS_LOG_TYPE_ERROR, "%s %@ Sampling: Failed to create sampling directory (%@), error: %@", buf, 0x2Au);
@@ -432,10 +432,10 @@ LABEL_10:
 + (id)sampledLibraryDirectoryPath
 {
   v3 = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, 1uLL, 1);
-  v4 = [v3 firstObject];
+  firstObject = [v3 firstObject];
 
-  v5 = [a1 sampledSubDirectoryPath];
-  v6 = [v4 stringByAppendingPathComponent:v5];
+  sampledSubDirectoryPath = [self sampledSubDirectoryPath];
+  v6 = [firstObject stringByAppendingPathComponent:sampledSubDirectoryPath];
 
   return v6;
 }

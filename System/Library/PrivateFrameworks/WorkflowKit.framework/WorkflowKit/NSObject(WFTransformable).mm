@@ -13,7 +13,7 @@
   aBlock[2] = __84__NSObject_WFTransformable__wf_transformValueForCodableAttribute_completionHandler___block_invoke;
   aBlock[3] = &unk_1E837D7C0;
   v27 = a2;
-  aBlock[4] = a1;
+  aBlock[4] = self;
   v9 = v7;
   v26 = v9;
   v10 = _Block_copy(aBlock);
@@ -21,7 +21,7 @@
   if (objc_opt_isKindOfClass())
   {
     v11 = objc_opt_class();
-    v12 = WFEnforceClass_1501(a1, v11);
+    v12 = WFEnforceClass_1501(self, v11);
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __84__NSObject_WFTransformable__wf_transformValueForCodableAttribute_completionHandler___block_invoke_3;
@@ -47,13 +47,13 @@
       v15[2] = __84__NSObject_WFTransformable__wf_transformValueForCodableAttribute_completionHandler___block_invoke_9;
       v15[3] = &unk_1E837D798;
       v16 = v8;
-      (*(v10 + 2))(v10, a1, v15);
+      (*(v10 + 2))(v10, self, v15);
       v12 = v16;
       goto LABEL_7;
     }
 
     v14 = objc_opt_class();
-    v12 = WFEnforceClass_1501(a1, v14);
+    v12 = WFEnforceClass_1501(self, v14);
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __84__NSObject_WFTransformable__wf_transformValueForCodableAttribute_completionHandler___block_invoke_6;

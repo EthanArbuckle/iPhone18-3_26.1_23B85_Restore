@@ -1,17 +1,17 @@
 @interface PXStoryChromeButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityIsInFeedView;
 - (id)accessibilityLabel;
 @end
 
 @implementation PXStoryChromeButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PXStoryChromeButton" hasInstanceMethod:@"userData" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXStoryChromeButtonConfiguration" hasInstanceMethod:@"systemImageName" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXFeedView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PXStoryChromeButton" hasInstanceMethod:@"userData" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXStoryChromeButtonConfiguration" hasInstanceMethod:@"systemImageName" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXFeedView"];
 }
 
 - (id)accessibilityLabel
@@ -23,7 +23,7 @@
   {
     v5 = @"photo.volume.button";
 LABEL_5:
-    v6 = accessibilityPhotosUICoreLocalizedString(v5);
+    accessibilityLabel = accessibilityPhotosUICoreLocalizedString(v5);
     goto LABEL_6;
   }
 
@@ -34,7 +34,7 @@ LABEL_5:
   }
 
   v7 = AXSSAccessibilityDescriptionForSymbolName();
-  v6 = v7;
+  accessibilityLabel = v7;
   if (v7 && [v7 length])
   {
     goto LABEL_10;
@@ -44,20 +44,20 @@ LABEL_5:
   {
     v9 = accessibilityPhotosUICoreLocalizedString(@"story.replay");
 
-    v6 = v9;
+    accessibilityLabel = v9;
   }
 
 LABEL_6:
-  if (!v6)
+  if (!accessibilityLabel)
   {
     v10.receiver = self;
     v10.super_class = PXStoryChromeButtonAccessibility;
-    v6 = [(PXStoryChromeButtonAccessibility *)&v10 accessibilityLabel];
+    accessibilityLabel = [(PXStoryChromeButtonAccessibility *)&v10 accessibilityLabel];
   }
 
 LABEL_10:
 
-  return v6;
+  return accessibilityLabel;
 }
 
 - (BOOL)_accessibilityIsInFeedView

@@ -1,7 +1,7 @@
 @interface HMFHTTPRequestInternal
 - (HMFHTTPRequestInternal)init;
 - (NSDictionary)headerFields;
-- (id)responseWithStatusCode:(int64_t)a3;
+- (id)responseWithStatusCode:(int64_t)code;
 @end
 
 @implementation HMFHTTPRequestInternal
@@ -13,9 +13,9 @@
   v2 = [(HMFHTTPRequestInternal *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     headerFields = v2->_headerFields;
-    v2->_headerFields = v3;
+    v2->_headerFields = dictionary;
 
     v5 = [[HMFActivity alloc] initWithName:@"HTTPRequest"];
     activity = v2->_activity;
@@ -32,14 +32,14 @@
   return v2;
 }
 
-- (id)responseWithStatusCode:(int64_t)a3
+- (id)responseWithStatusCode:(int64_t)code
 {
   v5 = [HMFActivity alloc];
-  v6 = [(HMFHTTPRequestInternal *)self activity];
-  v7 = [(HMFActivity *)v5 initWithName:@"HTTPResponse" parent:v6];
+  activity = [(HMFHTTPRequestInternal *)self activity];
+  v7 = [(HMFActivity *)v5 initWithName:@"HTTPResponse" parent:activity];
 
   v8 = [HMFHTTPResponseInternal alloc];
-  v9 = [(HMFHTTPResponseInternal *)v8 initWithStatusCode:a3 headerFields:MEMORY[0x277CBEC10] body:0 activity:v7];
+  v9 = [(HMFHTTPResponseInternal *)v8 initWithStatusCode:code headerFields:MEMORY[0x277CBEC10] body:0 activity:v7];
 
   return v9;
 }

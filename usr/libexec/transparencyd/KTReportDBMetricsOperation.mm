@@ -1,21 +1,21 @@
 @interface KTReportDBMetricsOperation
-- (KTReportDBMetricsOperation)initWithDependencies:(id)a3;
+- (KTReportDBMetricsOperation)initWithDependencies:(id)dependencies;
 - (void)groupStart;
 - (void)logSharedMetrics;
 @end
 
 @implementation KTReportDBMetricsOperation
 
-- (KTReportDBMetricsOperation)initWithDependencies:(id)a3
+- (KTReportDBMetricsOperation)initWithDependencies:(id)dependencies
 {
-  v5 = a3;
+  dependenciesCopy = dependencies;
   v9.receiver = self;
   v9.super_class = KTReportDBMetricsOperation;
   v6 = [(KTGroupOperation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_deps, a3);
+    objc_storeStrong(&v6->_deps, dependencies);
   }
 
   return v7;
@@ -36,17 +36,17 @@
   }
 
   [(KTReportDBMetricsOperation *)self logSharedMetrics];
-  v4 = [(KTReportDBMetricsOperation *)self deps];
-  v5 = [v4 dataStore];
-  [v5 logMetricsForApplication:kKTApplicationIdentifierIDS error:0];
+  deps = [(KTReportDBMetricsOperation *)self deps];
+  dataStore = [deps dataStore];
+  [dataStore logMetricsForApplication:kKTApplicationIdentifierIDS error:0];
 
-  v6 = [(KTReportDBMetricsOperation *)self deps];
-  v7 = [v6 dataStore];
-  [v7 logMetricsForApplication:kKTApplicationIdentifierIDSFaceTime error:0];
+  deps2 = [(KTReportDBMetricsOperation *)self deps];
+  dataStore2 = [deps2 dataStore];
+  [dataStore2 logMetricsForApplication:kKTApplicationIdentifierIDSFaceTime error:0];
 
-  v8 = [(KTReportDBMetricsOperation *)self deps];
-  v9 = [v8 dataStore];
-  [v9 logMetricsForApplication:kKTApplicationIdentifierIDSMultiplex error:0];
+  deps3 = [(KTReportDBMetricsOperation *)self deps];
+  dataStore3 = [deps3 dataStore];
+  [dataStore3 logMetricsForApplication:kKTApplicationIdentifierIDSMultiplex error:0];
 
   if (qword_10038BD40 != -1)
   {
@@ -82,15 +82,15 @@
     }
   }
 
-  v6 = [(KTReportDBMetricsOperation *)self deps];
-  v7 = [v6 logger];
+  deps = [(KTReportDBMetricsOperation *)self deps];
+  logger = [deps logger];
   v8 = [NSNumber numberWithInteger:v3];
-  [v7 logMetric:v8 withName:@"ktTotalStorageSize"];
+  [logger logMetric:v8 withName:@"ktTotalStorageSize"];
 
-  v9 = [(KTReportDBMetricsOperation *)self deps];
-  v10 = [v9 dataStore];
+  deps2 = [(KTReportDBMetricsOperation *)self deps];
+  dataStore = [deps2 dataStore];
   v12 = v4;
-  [v10 logSTHMetricsForApplication:kKTApplicationIdentifierTLT error:&v12];
+  [dataStore logSTHMetricsForApplication:kKTApplicationIdentifierTLT error:&v12];
   v11 = v12;
 }
 

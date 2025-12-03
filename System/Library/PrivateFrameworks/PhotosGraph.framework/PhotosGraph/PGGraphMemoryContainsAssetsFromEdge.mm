@@ -1,15 +1,15 @@
 @interface PGGraphMemoryContainsAssetsFromEdge
 + (id)filter;
-- (id)initFromMemoryNode:(id)a3 toMomentSourceNode:(id)a4;
+- (id)initFromMemoryNode:(id)node toMomentSourceNode:(id)sourceNode;
 @end
 
 @implementation PGGraphMemoryContainsAssetsFromEdge
 
-- (id)initFromMemoryNode:(id)a3 toMomentSourceNode:(id)a4
+- (id)initFromMemoryNode:(id)node toMomentSourceNode:(id)sourceNode
 {
   v5.receiver = self;
   v5.super_class = PGGraphMemoryContainsAssetsFromEdge;
-  return [(PGGraphEdge *)&v5 initWithSourceNode:a3 targetNode:a4];
+  return [(PGGraphEdge *)&v5 initWithSourceNode:node targetNode:sourceNode];
 }
 
 + (id)filter

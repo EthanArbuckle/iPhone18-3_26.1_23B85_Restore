@@ -1,13 +1,13 @@
 @interface SBCursiveTextView
 - (SBCursiveTextView)init;
-- (SBCursiveTextView)initWithFrame:(CGRect)a3;
+- (SBCursiveTextView)initWithFrame:(CGRect)frame;
 - (void)configure;
 - (void)layoutSubviews;
-- (void)loadText:(id)a3 pointSize:(double)a4;
-- (void)setAccessibilityLabel:(id)a3;
-- (void)setAccessibilityLanguage:(id)a3;
-- (void)setFillColor:(id)a3;
-- (void)setTime:(float)a3;
+- (void)loadText:(id)text pointSize:(double)size;
+- (void)setAccessibilityLabel:(id)label;
+- (void)setAccessibilityLanguage:(id)language;
+- (void)setFillColor:(id)color;
+- (void)setTime:(float)time;
 @end
 
 @implementation SBCursiveTextView
@@ -26,11 +26,11 @@
   return v3;
 }
 
-- (SBCursiveTextView)initWithFrame:(CGRect)a3
+- (SBCursiveTextView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = SBCursiveTextView;
-  v3 = [(SBCursiveTextView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBCursiveTextView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -53,8 +53,8 @@
   LODWORD(v6) = 1036831949;
   [(CAShapeLayer *)self->_textLayer setShadowOpacity:v6];
   [(CAShapeLayer *)self->_textLayer setShadowOffset:0.0, 1.0];
-  v7 = [(SBCursiveTextView *)self layer];
-  [v7 addSublayer:self->_textLayer];
+  layer = [(SBCursiveTextView *)self layer];
+  [layer addSublayer:self->_textLayer];
 }
 
 - (void)layoutSubviews
@@ -67,10 +67,10 @@
   [(CAShapeLayer *)textLayer setFrame:?];
 }
 
-- (void)loadText:(id)a3 pointSize:(double)a4
+- (void)loadText:(id)text pointSize:(double)size
 {
-  v5 = a3;
-  v6 = [[SBCursiveTextPath alloc] initWithURL:v5];
+  textCopy = text;
+  v6 = [[SBCursiveTextPath alloc] initWithURL:textCopy];
 
   textPath = self->_textPath;
   self->_textPath = v6;
@@ -86,9 +86,9 @@
   }
 }
 
-- (void)setTime:(float)a3
+- (void)setTime:(float)time
 {
-  v4 = [(SBCursiveTextPath *)self->_textPath pathForTime:a3];
+  v4 = [(SBCursiveTextPath *)self->_textPath pathForTime:time];
   v5 = MEMORY[0x223D6BD80](v4, &self->_textTransform);
   [(CAShapeLayer *)self->_textLayer setPath:v5];
   [(CAShapeLayer *)self->_textLayer setShadowPath:v5];
@@ -97,31 +97,31 @@
   CGPathRelease(v4);
 }
 
-- (void)setFillColor:(id)a3
+- (void)setFillColor:(id)color
 {
   textLayer = self->_textLayer;
-  v5 = a3;
-  v6 = [a3 CGColor];
+  colorCopy = color;
+  cGColor = [color CGColor];
 
-  [(CAShapeLayer *)textLayer setFillColor:v6];
+  [(CAShapeLayer *)textLayer setFillColor:cGColor];
 }
 
-- (void)setAccessibilityLabel:(id)a3
+- (void)setAccessibilityLabel:(id)label
 {
   v5.receiver = self;
   v5.super_class = SBCursiveTextView;
-  v4 = a3;
-  [(SBCursiveTextView *)&v5 setAccessibilityLabel:v4];
-  [(SBCursiveTextPath *)self->_textPath setAccessibilityLabel:v4, v5.receiver, v5.super_class];
+  labelCopy = label;
+  [(SBCursiveTextView *)&v5 setAccessibilityLabel:labelCopy];
+  [(SBCursiveTextPath *)self->_textPath setAccessibilityLabel:labelCopy, v5.receiver, v5.super_class];
 }
 
-- (void)setAccessibilityLanguage:(id)a3
+- (void)setAccessibilityLanguage:(id)language
 {
   v5.receiver = self;
   v5.super_class = SBCursiveTextView;
-  v4 = a3;
-  [(SBCursiveTextView *)&v5 setAccessibilityLanguage:v4];
-  [(SBCursiveTextPath *)self->_textPath setAccessibilityLanguage:v4, v5.receiver, v5.super_class];
+  languageCopy = language;
+  [(SBCursiveTextView *)&v5 setAccessibilityLanguage:languageCopy];
+  [(SBCursiveTextPath *)self->_textPath setAccessibilityLanguage:languageCopy, v5.receiver, v5.super_class];
 }
 
 @end

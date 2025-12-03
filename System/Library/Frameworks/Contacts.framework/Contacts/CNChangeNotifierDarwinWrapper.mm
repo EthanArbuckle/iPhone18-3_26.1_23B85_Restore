@@ -1,30 +1,30 @@
 @interface CNChangeNotifierDarwinWrapper
-- (void)addObserver:(id)a3 notification:(id)a4;
-- (void)postNotification:(id)a3;
-- (void)removeObserver:(id)a3 notification:(id)a4;
+- (void)addObserver:(id)observer notification:(id)notification;
+- (void)postNotification:(id)notification;
+- (void)removeObserver:(id)observer notification:(id)notification;
 @end
 
 @implementation CNChangeNotifierDarwinWrapper
 
-- (void)addObserver:(id)a3 notification:(id)a4
+- (void)addObserver:(id)observer notification:(id)notification
 {
-  v5 = a4;
-  observer = a3;
+  notificationCopy = notification;
+  observer = observer;
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
-  CFNotificationCenterAddObserver(DarwinNotifyCenter, observer, CNChangesNotifierCFNotificationCenterCallback, v5, 0, CFNotificationSuspensionBehaviorCoalesce);
+  CFNotificationCenterAddObserver(DarwinNotifyCenter, observer, CNChangesNotifierCFNotificationCenterCallback, notificationCopy, 0, CFNotificationSuspensionBehaviorCoalesce);
 }
 
-- (void)removeObserver:(id)a3 notification:(id)a4
+- (void)removeObserver:(id)observer notification:(id)notification
 {
-  v5 = a4;
-  observer = a3;
+  notificationCopy = notification;
+  observer = observer;
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
-  CFNotificationCenterRemoveObserver(DarwinNotifyCenter, observer, v5, 0);
+  CFNotificationCenterRemoveObserver(DarwinNotifyCenter, observer, notificationCopy, 0);
 }
 
-- (void)postNotification:(id)a3
+- (void)postNotification:(id)notification
 {
-  name = a3;
+  name = notification;
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterPostNotification(DarwinNotifyCenter, name, 0, 0, 0);
 }

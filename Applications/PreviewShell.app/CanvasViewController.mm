@@ -1,6 +1,6 @@
 @interface CanvasViewController
-- (_TtC12PreviewShell20CanvasViewController)initWithCoder:(id)a3;
-- (_TtC12PreviewShell20CanvasViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC12PreviewShell20CanvasViewController)initWithCoder:(id)coder;
+- (_TtC12PreviewShell20CanvasViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
@@ -8,7 +8,7 @@
 
 @implementation CanvasViewController
 
-- (_TtC12PreviewShell20CanvasViewController)initWithCoder:(id)a3
+- (_TtC12PreviewShell20CanvasViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC12PreviewShell20CanvasViewController_active) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC12PreviewShell20CanvasViewController_activating) = 0;
@@ -23,7 +23,7 @@
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1000367D0();
 
   return v3;
@@ -31,17 +31,17 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000369C0();
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100036B90();
 }
 
-- (_TtC12PreviewShell20CanvasViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC12PreviewShell20CanvasViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
